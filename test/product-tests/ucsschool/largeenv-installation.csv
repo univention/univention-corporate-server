@@ -30,10 +30,10 @@
  /usr/share/ucs-school-import/scripts/create_ou ""--verbose"" ""School2"" ""ptiedu2"" --displayName=""Zweite Schule""
  /usr/share/ucs-school-import/scripts/ucs-school-testuser-import --students 50 --classes 3 --teachers 10 --inclasses 2 -v School1 School2";;;". utils.sh && run_minimal_tests
  . utils.sh && prepare_results
- LOCAL utils/utils-local.sh fetch-results [ENV:ptimaster_IP] ptimaster
+ LOCAL utils/utils-local.sh fetch-results [SELF_IP] [SELF]
 ";;". utils.sh && run_minimal_tests
  . utils.sh && prepare_results
- LOCAL utils/utils-local.sh fetch-results [ENV:ptimaster_IP] ptimaster-postrejoin
+ LOCAL utils/utils-local.sh fetch-results [SELF_IP] [SELF]-postrejoin
 ";" utils/schoolinstaller.py /root/
  utils/utils.sh /root/
  ~/ec2/license/license.secret /etc/
@@ -63,10 +63,10 @@
 ";" . utils.sh && switch_to_test_app_center";". utils.sh && run_join_scripts
  . utils.sh && assert_packages univention-server-slave";;;;". utils.sh && run_minimal_tests
  . utils.sh && prepare_results
- LOCAL utils/utils-local.sh fetch-results [ENV:ptibackup1_IP] ptibackup1
+ LOCAL utils/utils-local.sh fetch-results [SELF_IP] [SELF]
 ";". utils.sh && run_rejoin";". utils.sh && run_minimal_tests
  . utils.sh && prepare_results
- LOCAL utils/utils-local.sh fetch-results [ENV:ptibackup1_IP] ptibackup1-postrejoin
+ LOCAL utils/utils-local.sh fetch-results [SELF_IP] [SELF]-postrejoin
 ";" utils/schoolinstaller.py /root/
  utils/utils.sh /root/
  ~/ec2/license/license.secret /etc/
@@ -95,10 +95,10 @@
  . utils.sh && assert_packages univention-server-backup
 ";". utils.sh && run_minimal_tests
  . utils.sh && prepare_results
- LOCAL utils/utils-local.sh fetch-results [ENV:ptibackup2_IP] ptibackup2
+ LOCAL utils/utils-local.sh fetch-results [SELF_IP] [SELF]
 ";;". utils.sh && run_minimal_tests
  . utils.sh && prepare_results
- LOCAL utils/utils-local.sh fetch-results [ENV:ptibackup2_IP] ptibackup2-postrejoin
+ LOCAL utils/utils-local.sh fetch-results [SELF_IP] [SELF]-postrejoin
 ";" utils/schoolinstaller.py /root/
  utils/utils.sh /root/
  ~/ec2/license/license.secret /etc/
@@ -127,10 +127,10 @@
 ";" . utils.sh && switch_to_test_app_center";". utils.sh && run_join_scripts
  . utils.sh && assert_packages univention-server-slave";;;;". utils.sh && run_minimal_tests
  . utils.sh && prepare_results
- LOCAL utils/utils-local.sh fetch-results [ENV:ptislave1_IP] ptislave1
+ LOCAL utils/utils-local.sh fetch-results [SELF_IP] [SELF]
 ";;". utils.sh && run_minimal_tests
  . utils.sh && prepare_results
- LOCAL utils/utils-local.sh fetch-results [ENV:ptislave1_IP] ptislave1-postrejoin
+ LOCAL utils/utils-local.sh fetch-results [SELF_IP] [SELF]-postrejoin
 ";" utils/schoolinstaller.py /root/
  utils/utils.sh /root/
  ~/ec2/license/license.secret /etc/
@@ -158,10 +158,10 @@
  . utils.sh && assert_packages univention-server-slave
 ";". utils.sh && run_minimal_tests
  . utils.sh && prepare_results
- LOCAL utils/utils-local.sh fetch-results [ENV:ptislave2_IP] ptislave2
+ LOCAL utils/utils-local.sh fetch-results [SELF_IP] [SELF]
 ";". utils.sh && run_rejoin";". utils.sh && run_minimal_tests
  . utils.sh && prepare_results
- LOCAL utils/utils-local.sh fetch-results [ENV:ptislave2_IP] ptislave2-postrejoin
+ LOCAL utils/utils-local.sh fetch-results [SELF_IP] [SELF]-postrejoin
 ";" utils/schoolinstaller.py /root/
  utils/utils.sh /root/
  ~/ec2/license/license.secret /etc/
@@ -189,10 +189,10 @@
  . utils.sh && assert_packages univention-server-slave
 ";;". utils.sh && run_minimal_tests
  . utils.sh && prepare_results
- LOCAL utils/utils-local.sh fetch-results [ENV:ptiedu1_IP] ptiedu1
+ LOCAL utils/utils-local.sh fetch-results [SELF_IP] [SELF]
 ";". utils.sh && run_rejoin";". utils.sh && run_minimal_tests
  . utils.sh && prepare_results
- LOCAL utils/utils-local.sh fetch-results [ENV:ptiedu1_IP] ptiedu1-postrejoin
+ LOCAL utils/utils-local.sh fetch-results [SELF_IP] [SELF]-postrejoin
 ";" utils/schoolinstaller.py /root/
  utils/utils.sh /root/
  ~/ec2/license/license.secret /etc/
@@ -220,10 +220,10 @@
  . utils.sh && assert_packages univention-server-slave
 ";;". utils.sh && run_minimal_tests
  . utils.sh && prepare_results
- LOCAL utils/utils-local.sh fetch-results [ENV:ptiadm1_IP] ptiadm1
+ LOCAL utils/utils-local.sh fetch-results [SELF_IP] [SELF]
 ";". utils.sh && run_rejoin";". utils.sh && run_minimal_tests
  . utils.sh && prepare_results
- LOCAL utils/utils-local.sh fetch-results [ENV:ptiadm1_IP] ptiadm1-postrejoin
+ LOCAL utils/utils-local.sh fetch-results [SELF_IP] [SELF]-postrejoin
 ";" utils/schoolinstaller.py /root/
  utils/utils.sh /root/
  ~/ec2/license/license.secret /etc/
@@ -251,10 +251,10 @@
  . utils.sh && assert_packages univention-server-slave
 ";;". utils.sh && run_minimal_tests
  . utils.sh && prepare_results
- LOCAL utils/utils-local.sh fetch-results [ENV:ptiedu2_IP] ptiedu2
+ LOCAL utils/utils-local.sh fetch-results [SELF_IP] [SELF]
 ";;". utils.sh && run_minimal_tests
  . utils.sh && prepare_results
- LOCAL utils/utils-local.sh fetch-results [ENV:ptiedu2_IP] ptiedu2-postrejoin
+ LOCAL utils/utils-local.sh fetch-results [SELF_IP] [SELF]-postrejoin
 ";" utils/schoolinstaller.py /root/
  utils/utils.sh /root/
  ~/ec2/license/license.secret /etc/
