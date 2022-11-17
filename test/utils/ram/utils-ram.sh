@@ -113,3 +113,34 @@ EOF
 	univention-install -y ucsschool-divis-custom-ldap-extension ucsschool-iserv-custom-ldap-extension ucsschool-moodle-custom-ldap-extension univention-saml
 	systemctl restart univention-directory-manager-rest.service
 }
+
+create_test_admin_account () {
+	local username password fqdn token
+	test -z "$(which jq)" && univention-install -y jq
+	test -z "$(which curl)" && univention-install -y curl
+	username="Administrator"
+	password="univention"
+	fqdn="$(hostname -f)"
+	token="$(curl -s -k -X POST "https://$fqdn/ucsschool/kelvin/token" \
+		-H "Content-Type:application/x-www-form-urlencoded" \
+		-d "username=$username" \
+		-d "password=$password" | jq -r '.access_token')"
+	curl -X POST "https://$fqdn/ucsschool/kelvin/v1/users/" \
+		-H "Authorization: Bearer $token" \
+		-H "accept: application/json" \
+		-H "Content-Type: application/json" \
+		-d '{
+			"name": "admin",
+			"firstname": "test",
+			"lastname": "admin",
+			"password": "univentionunivention",
+			"school": "https://'"$fqdn"'/ucsschool/kelvin/v1/schools/school1",
+			"roles": ["https://'"$fqdn"'/ucsschool/kelvin/v1/roles/teacher"],
+			"record_uid": "admin",
+			"ucsschool_roles": ["technical_admin:bsb:*"]
+		}'
+	udm users/user modify \
+		--dn "uid=admin,cn=lehrer,cn=users,ou=school1,$(ucr get ldap/base)" \
+		--set password=univention  \
+		--append groups="cn=Domain Users,cn=groups,$(ucr get ldap/base)"
+}
