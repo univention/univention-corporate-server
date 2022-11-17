@@ -1,0 +1,17 @@
+product: ucs
+release: "5.0"
+version: [2]
+scope: ucs_5.0-0-errata5.0-2
+src: grub2
+fix: 2.06-3~deb10u2
+desc: |
+ This update addresses the following issues:
+ 2.06-3~deb10u2 (Sun, 13 Nov 2022 21:07:01 +0000)
+ [ Steve McIntyre ]
+ * Pull in upstream patches to harden font and image handling - CVE-2022-2601,
+   CVE-2022-3775.
+ * Bump SBAT level to 3 for grub-efi packages.
+bug: [55434]
+cve:
+- CVE-2022-2601
+- CVE-2022-3775
