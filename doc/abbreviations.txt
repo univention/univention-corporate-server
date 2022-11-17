@@ -1,7 +1,13 @@
+.. |ACL| replace:: :abbr:`ACL (access control list)`
 .. |APT| replace:: :abbr:`APT (advanced package tool)`
 .. |CA| replace:: :abbr:`CA (certificate authority)`
+.. |IPC| replace:: :abbr:`IPC (interprocess-communication)`
 .. |IT| replace:: :abbr:`IT (information technology)`
+.. |PAM| replace:: :abbr:`PAM (pluggable authentication module)`
+.. |SAML| replace:: :abbr:`SAML (Secure Authentication Markup Language)`
 .. |TLS| replace:: :abbr:`TLS (Transport Layer Security)`
+.. |UCR| replace:: :abbr:`UCR (Univention Configuration Registry)`
 .. |UCS| replace:: :abbr:`UCS (Univention Corporate Server)`
 .. |UDM| replace:: :abbr:`UDM (Univention Directory Manager)`
 .. |UMC| replace:: :abbr:`UMC (Univention Management Console)`
+.. |UMCP| replace:: :abbr:`UMCP (Univention Management Console Protocol)`
