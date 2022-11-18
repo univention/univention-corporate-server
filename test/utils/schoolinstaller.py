@@ -36,14 +36,16 @@ from __future__ import print_function
 import sys
 import time
 import traceback
-from argparse import ArgumentParser, Namespace
-from typing import Any, Dict
+from argparse import ArgumentParser
 
 from univention.config_registry import ucr
 from univention.lib.umc import Client, ConnectionError, HTTPError
 
+# we need python2.7 compatibility as this is also
+# used to setup school in UCS 4 (update tests, ...)
 
-def parse_args() -> Namespace:
+
+def parse_args():
 	parser = ArgumentParser()
 	parser.add_argument(
 		'-H', '--host',
@@ -160,7 +162,7 @@ if result and not result.get('success', True):  # backwards compatibility
 	sys.exit(1)
 
 print('=== INSTALLATION STARTED ===')
-status: Dict[str, Any] = {'finished': False}
+status = {'finished': False}
 failcount = 0
 last_message = None
 while not status['finished']:
