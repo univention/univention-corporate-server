@@ -1,5 +1,5 @@
 #!/usr/bin/python3
-# coding: UTF-8
+# -*- coding: utf-8 -*-
 #
 # Like what you see? Join us!
 # https://www.univention.com/about-us/careers/vacancies/
