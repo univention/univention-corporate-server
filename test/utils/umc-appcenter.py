@@ -33,7 +33,7 @@ class Apps(object):
 			"-i", "--ignore-no-update",
 			action="store_true",
 			help="normally -u fails if no update is available, with this switch just return in that case")
-		self.options, = parser.parse_args()
+		self.options, _ = parser.parse_args()
 		self.client = None  # type: Optional[univention.lib.umc.Client]
 		print(self.options)
 
