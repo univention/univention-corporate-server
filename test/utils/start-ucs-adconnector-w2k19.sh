@@ -11,6 +11,6 @@ export UCS_TEST_RUN=false
 
 # user specific instances "username_..."
 export KVM_OWNER="${BUILD_USER_ID:=$USER}"
-export JOB_BASE_NAME="${JOB_BASE_NAME:=ucs-school-multiserver-joined}"
+export JOB_BASE_NAME="${JOB_BASE_NAME:=ucs-adconnector-w2k19-env}"
 
-exec ./utils/start-test.sh scenarios/base/ucs-school-multiserver-joined-primary-school1.cfg
+exec ./utils/start-test.sh scenarios/base/ucs-ad-connector-w2k19.cfg
