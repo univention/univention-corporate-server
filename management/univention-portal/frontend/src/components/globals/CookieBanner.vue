@@ -35,6 +35,7 @@
     <modal-dialog
       :title="cookieTitle"
       :cancel-allowed="false"
+      class="cookie-banner-modal"
     >
       <main class="cookie-banner">
         <div
@@ -109,6 +110,7 @@ export default defineComponent({
 
 <style lang="stylus">
 .cookie-banner
+  overflow-y: auto !important
   a
     color: inherit
     transition: color var(--portal-transition-duration), text-decoration-thickness var(--portal-transition-duration)
@@ -118,4 +120,7 @@ export default defineComponent({
     &:focus
       color: var(--color-accent)
       text-decoration-thickness: 3px
+.cookie-banner-modal
+  display: flex
+  flex-direction: column
 </style>

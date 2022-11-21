@@ -140,9 +140,7 @@ export default defineComponent({
   @media $mqSmartphone
     max-width: calc(100% - 8 * var(--layout-spacing-unit))
     padding: calc(2 * var(--layout-spacing-unit)) calc(2 * var(--layout-spacing-unit))
-    position: absolute
-    top: 110px
-    max-height: 70vh
+    max-height: 90vh
     overflow: auto
     overflow-x: hidden
 
