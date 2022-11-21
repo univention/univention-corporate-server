@@ -1,0 +1,13 @@
+product: ucs
+release: "5.0"
+version: [2]
+scope: ucs_5.0-0-errata5.0-2
+src: univention-samba4
+fix: 9.0.8-8A~5.0.0.202211211027
+desc: |
+ This update addresses the following issues:
+ * The join process for UCS@School replica servers has been sped up by
+  syncing certain objects during join in an earlier erratum.
+  The speedup was only applied if there was no S4-Connector installed
+  on the DC primary. This has been fixed.
+bug: [55218]
