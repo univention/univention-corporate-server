@@ -42,7 +42,13 @@ try:
 except ImportError:
 	pass
 
-from univention.config_registry import ucr
+try:
+	from univention.config_registry import ucr
+except ImportError:
+	from univention.config_registry import ConfigRegistry
+	ucr = ConfigRegistry()
+	ucr.load()
+
 from univention.lib.umc import Client, ConnectionError, HTTPError
 
 # we need python2.7 compatibility as this is also
