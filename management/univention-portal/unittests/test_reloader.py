@@ -33,18 +33,7 @@
 # <https://www.gnu.org/licenses/>.
 #
 
-from importlib import reload
-from os import path
-
 import pytest
-
-
-@pytest.fixture()
-def mocked_portal_config(portal_config, request):
-    reload(portal_config)
-    test_path = request.fspath.dirname
-    portal_config._CONF = path.join(test_path, "configs", "*.json")
-    return portal_config
 
 
 def test_imports(dynamic_class):

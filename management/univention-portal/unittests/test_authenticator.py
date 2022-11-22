@@ -37,13 +37,6 @@ import json
 
 import pytest
 import tornado
-from univentionunittests import import_module
-
-
-@pytest.fixture()
-def user_module(request):
-    use_installed = request.config.getoption("--installed-portal")
-    return import_module("univention.portal.user", "python/", "univention.portal.user", use_installed=use_installed)
 
 
 def test_imports(dynamic_class):
@@ -78,7 +71,9 @@ class TestUMCAuthenticator:
         mocked_authenticator.refresh("reason")
         mocked_authenticator.group_cache.refresh.assert_called_once_with(reason="reason")
 
-    def test_get_existing_user(self, mocked_authenticator, mocker, user_module):
+    def test_get_existing_user(self, mocked_authenticator, mocker):
+        from univention.portal import user as user_module
+
         # Set up
         cookie = "session_cookie"
         request_mock = mocker.Mock()
@@ -100,7 +95,9 @@ class TestUMCAuthenticator:
         assert user.username == self._username.lower()
         assert user.groups == [x.lower() for x in self._groups]
 
-    def test_get_non_existing_user(self, mocked_authenticator, mocker, user_module):
+    def test_get_non_existing_user(self, mocked_authenticator, mocker):
+        from univention.portal import user as user_module
+
         # Set up
         cookie = "session_cookie"
         request_mock = mocker.Mock()
@@ -138,6 +135,10 @@ class TestUMCAuthenticator:
         mocker.MagicMock.__await__ = lambda x: async_magic_none().__await__()
         mocked_authenticator._ask_umc = mocker.MagicMock()
         assert loop.run_until_complete(mocked_authenticator._get_username({self._umc_cookie_name: "test_session"})) == (None, None)
+        mocker.MagicMock.__await__ = lambda x: async_magic().__await__()
+        mocked_authenticator._ask_umc = mocker.MagicMock()
+        umc_cookie_name = f"{self._umc_cookie_name}-1234"
+        assert loop.run_until_complete(mocked_authenticator._get_username({umc_cookie_name: "test_session"})) == (self._username.lower(), self._username)
 
     def test_ask_umc_request_success(self, mocked_authenticator, mocker):
         def _side_effect(req):

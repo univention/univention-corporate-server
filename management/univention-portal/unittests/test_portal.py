@@ -34,57 +34,102 @@
 #
 
 import asyncio
+import json
+import tempfile
 
 import pytest
+
+from univention.portal.extensions.portal import Portal
+from univention.portal.extensions.reloader import MtimeBasedLazyFileReloader
 
 
 def test_imports(dynamic_class):
     assert dynamic_class("Portal")
 
 
+class StubReloader(MtimeBasedLazyFileReloader):
+
+    def __init__(self, portal_file):
+        super().__init__(portal_file)
+        self.content = {}
+
+    def get_portal_cache_json(self) -> dict:
+        with open(self._cache_file) as portal_cache:
+            return json.load(portal_cache)
+
+    def update_portal_cache(self, portal_data: dict):
+        self.content = portal_data
+        self.refresh("force")
+
+    def _refresh(self):  # pragma: no cover
+        with tempfile.NamedTemporaryFile(mode="w", delete=False) as fd:
+            json.dump(self.content, fd, sort_keys=True, indent=4)
+        return fd
+
+
+@pytest.fixture()
+def mocked_user(mocker):
+    user = mocker.Mock()
+    user.username = "hindenkampp"
+    user.display_name = "Hans Hindenkampp"
+    user.groups = []
+    user.headers = {}
+    return user
+
+
+@pytest.fixture()
+def mocked_anonymous_user(mocker):
+    user = mocker.Mock()
+    user.username = None
+    user.display_name = None
+    user.groups = []
+    user.headers = {}
+    return user
+
+
+@pytest.fixture()
+def portal_file(get_file_path):
+    return get_file_path("portal_cache.json")
+
+
+@pytest.fixture()
+def reloader(portal_file):
+    return StubReloader(portal_file=portal_file)
+
+
+@pytest.fixture()
+def portal_data(reloader):
+    original_data = reloader.get_portal_cache_json()
+    yield reloader
+    reloader.update_portal_cache(original_data)
+
+
+@pytest.fixture()
+def standard_portal(dynamic_class, mocker, portal_file, reloader):
+    # Portal = dynamic_class("Portal")
+    scorer = dynamic_class("Scorer")()
+    portal_cache = dynamic_class("PortalFileCache")(portal_file, reloader)
+    authenticator = dynamic_class("UMCAuthenticator")("ucs", "session_url", "group_cache")
+    return Portal(scorer, portal_cache, authenticator)
+
+
+@pytest.fixture()
+def mocked_portal(dynamic_class, mocker):
+    async def async_magic():
+        return
+
+    Portal = dynamic_class("Portal")
+    scorer = mocker.Mock()
+    portal_cache = mocker.Mock()
+    authenticator = mocker.Mock()
+    mocker.MagicMock.__await__ = lambda x: async_magic().__await__()
+    authenticator.get_user = mocker.MagicMock()
+    authenticator.login_user = mocker.MagicMock()
+    authenticator.login_request = mocker.MagicMock()
+    return Portal(scorer, portal_cache, authenticator)
+
+
 class TestPortal:
-    @pytest.fixture()
-    def mocked_user(self, mocker):
-        user = mocker.Mock()
-        user.username = "hindenkampp"
-        user.display_name = "Hans Hindenkampp"
-        user.groups = []
-        user.headers = {}
-        return user
-
-    @pytest.fixture()
-    def mocked_anonymous_user(self, mocker):
-        user = mocker.Mock()
-        user.username = None
-        user.display_name = None
-        user.groups = []
-        user.headers = {}
-        return user
-
-    @pytest.fixture()
-    def standard_portal(self, dynamic_class, mocker, get_file_path):
-        Portal = dynamic_class("Portal")
-        cache_file_path = get_file_path("portal_cache.json")
-        scorer = dynamic_class("Scorer")()
-        portal_cache = dynamic_class("PortalFileCache")(cache_file_path)
-        authenticator = dynamic_class("UMCAuthenticator")("ucs", "session_url", "group_cache")
-        return Portal(scorer, portal_cache, authenticator)
-
-    @pytest.fixture()
-    def mocked_portal(self, dynamic_class, mocker):
-        async def async_magic():
-            return
-
-        Portal = dynamic_class("Portal")
-        scorer = mocker.Mock()
-        portal_cache = mocker.Mock()
-        authenticator = mocker.Mock()
-        mocker.MagicMock.__await__ = lambda x: async_magic().__await__()
-        authenticator.get_user = mocker.MagicMock()
-        authenticator.login_user = mocker.MagicMock()
-        authenticator.login_request = mocker.MagicMock()
-        return Portal(scorer, portal_cache, authenticator)
-
     def test_user(self, mocked_portal, mocker):
         request = "request"
         loop = asyncio.get_event_loop()

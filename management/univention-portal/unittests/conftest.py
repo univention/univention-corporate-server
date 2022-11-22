@@ -33,40 +33,16 @@
 # <https://www.gnu.org/licenses/>.
 #
 
+from importlib import reload
 from os import path
 
 import pytest
-from univentionunittests import import_module
-
-
-def pytest_addoption(parser):
-    parser.addoption("--installed-portal", action="store_true", help="Test against installed portal")
 
 
 @pytest.fixture()
-def portal_config(request):
-    use_installed = request.config.getoption("--installed-portal")
-    module = import_module("univention.portal.config", "python/", "univention.portal.config", use_installed=use_installed)
-    return module
-
-
-@pytest.fixture()
-def portal_factory(request):
-    use_installed = request.config.getoption("--installed-portal")
-    module = import_module("univention.portal.factory", "python/", "univention.portal.factory", use_installed=use_installed)
-    return module
-
-
-@pytest.fixture()
-def portal_lib(request):
-    use_installed = request.config.getoption("--installed-portal")
-    module = import_module("univention.portal", "python/", "univention.portal", use_installed=use_installed)
-    return module
-
-
-@pytest.fixture()
-def dynamic_class(portal_lib):
-    return portal_lib.get_dynamic_classes
+def dynamic_class():
+    from univention import portal
+    return portal.get_dynamic_classes
 
 
 # Helper function fixtures
@@ -92,3 +68,26 @@ def get_file_path(request):
         return path.join(unittest_path, files_directory, file_name)
 
     return _
+
+
+@pytest.fixture()
+def mock_portal_config(mocker):
+    """Returns a callable which can be used to inject configuration values."""
+    from univention.portal import config
+
+    reload(config)
+    mocker.patch.object(config.load, "never_loaded", False)
+
+    def _mock_portal_config(values):
+        mocker.patch.object(config, "_DB", values)
+
+    return _mock_portal_config
+
+
+@pytest.fixture()
+def mocked_portal_config(get_file_path):
+    from univention.portal import config
+
+    reload(config)
+    config._CONF = get_file_path("config*.json")
+    return config

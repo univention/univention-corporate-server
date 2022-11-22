@@ -70,7 +70,7 @@ class TestPortalFileCache:
         mocked_reloader = mocker.Mock()
         cache = Cache(cache_file_path, reloader=mocked_reloader)
         content = cache.get()
-        mocked_reloader.refresh.assert_not_called
+        mocked_reloader.refresh.assert_not_called()
         cache.refresh(reason="force")
         mocked_reloader.refresh.assert_called_with(reason="force", content=content)
 
