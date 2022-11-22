@@ -4,6 +4,8 @@
 
 ### [Default](https://jenkins2022.knut.univention.de/job/UCS-5.0/job/UCS-5.0-2/)
 
+* [scenarios/check-maintained/check-maintained.cfg](scenarios/check-maintained/check-maintained.cfg)
+
 #### [MultiEnv: AMI<5.0, join, upgrade=5.0, Autotest](https://jenkins2022.knut.univention.de/job/UCS-5.0/job/UCS-5.0-2/job/AutotestUpgrade/)
 
 1. previous AMI
@@ -50,8 +52,7 @@
 * [scenarios/ad-connector/autotest-234-adsync-w2k16-german.cfg](scenarios/ad-connector/autotest-234-adsync-w2k16-german.cfg)
 * [scenarios/ad-connector/autotest-235-adsync-w2k19-english.cfg](scenarios/ad-connector/autotest-235-adsync-w2k19-english.cfg)
 * [scenarios/ad-connector/autotest-236-adsync-w2k8r2-german.cfg](scenarios/ad-connector/autotest-236-adsync-w2k8r2-german.cfg)
-* [scenarios/ad-connector/autotest-237-adsync-s4connector-w2k8r2-german.cfg](scenarios/ad-connector/autotest-237-adsync-s4connector-w2k8r2-german.cfg)
-* [scenarios/ad-connector/autotest-adsync-w2012-german.cfg](scenarios/ad-connector/autotest-adsync-w2012-german.cfg)
+* [scenarios/ad-connector/autotest-237-adsync-s4connector-w2k19-english.cfg](scenarios/ad-connector/autotest-237-adsync-s4connector-w2k19-english.cfg)
 
 #### [Tests - AD Member Mode (ec2)](https://jenkins2022.knut.univention.de/job/UCS-5.0/job/UCS-5.0-r/job/ADMemberMultiEnv/)
 
@@ -67,6 +68,8 @@
 
 UCS with pre-installed App, to check if changes in UCS break the appliance setup
 
+* [scenarios/app-appliance-base.cfg](scenarios/app-appliance-base.cfg): Create base image for App Appliance (Stable.ISO)
+* [scenarios/app-appliance.cfg](scenarios/app-appliance.cfg): Create App Appliance (Stable.ISO → $mm-99 → +App → `$BS2/mirror/appcenter.test/univention-apps/current/`KVM,VMware,ESX,VirtualBox)
 * [scenarios/appliance-testing/app-appliance-errata-test.cfg](scenarios/appliance-testing/app-appliance-errata-test.cfg)
 * [scenarios/appliance-testing/app-appliance-only-released.cfg](scenarios/appliance-testing/app-appliance-only-released.cfg)
 
@@ -76,9 +79,9 @@ UCS with pre-installed App, to check if changes in UCS break the appliance setup
 
 * [scenarios/install-testing/ad-member.cfg](scenarios/install-testing/ad-member.cfg)
 * [scenarios/install-testing/base.cfg](scenarios/install-testing/base.cfg)
-* [scenarios/install-testing/master-all-components.cfg](scenarios/install-testing/master-all-components.cfg)
 * [scenarios/install-testing/master-english-static-ip.cfg](scenarios/install-testing/master-english-static-ip.cfg)
 * [scenarios/install-testing/master-french-static-ip.cfg](scenarios/install-testing/master-french-static-ip.cfg)
+* [scenarios/install-testing/master-german.cfg](scenarios/install-testing/master-german.cfg)
 * [scenarios/install-testing/net-installer.cfg](scenarios/install-testing/net-installer.cfg)
 * [scenarios/install-testing/samba-env.cfg](scenarios/install-testing/samba-env.cfg)
 * [scenarios/install-testing/school.cfg](scenarios/install-testing/school.cfg)
@@ -97,19 +100,16 @@ UCS with pre-installed App, to check if changes in UCS break the appliance setup
 
 1. Various UCS update tests (fail immediately if one setup step fails, only basic tests)
 
-* [scenarios/update-testing/smbtorture.cfg](scenarios/update-testing/smbtorture.cfg): Master to latest and smbtorture tests
-* [scenarios/update-testing/update-from-1.2.cfg](scenarios/update-testing/update-from-1.2.cfg)
-* [scenarios/update-testing/update-from-1.2-start-4.3-4.cfg](scenarios/update-testing/update-from-1.2-start-4.3-4.cfg): Update from old UCS-1.2 system
+* [scenarios/update-testing/update-from-1.2-backup2master.cfg](scenarios/update-testing/update-from-1.2-backup2master.cfg): Update from old UCS 1.2 system
+* [scenarios/update-testing/update-from-2.4-start-4.4-7.cfg](scenarios/update-testing/update-from-2.4-start-4.4-7.cfg): Update from old UCS 2.4 system
 * [scenarios/update-testing/update-from-4.2-4.cfg](scenarios/update-testing/update-from-4.2-4.cfg): Update system with all UCS components
 
 -----
 
 ### [Appliances](https://jenkins2022.knut.univention.de/job/UCS-5.0/job/UCS-5.0-2/view/Appliances/)
 
-* [scenarios/app-appliance.cfg](scenarios/app-appliance.cfg): Create App Appliance (Stable.ISO → $mm-99 → +App → `$BS2/mirror/appcenter.test/univention-apps/current/`KVM,VMware,ESX,VirtualBox)
-* [scenarios/ucs-appliance.cfg](scenarios/ucs-appliance.cfg): Create UCS Appliance (Stable.ISO → $mm-99 → `$BS2/temp/build/appliance/`KVM,VMware,ESX,VirtualBox,HyperV)
+* [scenarios/appliances/ucs-appliance.cfg](scenarios/appliances/ucs-appliance.cfg): Create UCS Appliance (Stable.ISO → $mm-99 → `$BS2/temp/build/appliance/`KVM,VMware,ESX,VirtualBox,HyperV)
 * [scenarios/appliances/ec2-appliance.cfg](scenarios/appliances/ec2-appliance.cfg): Create UCS ec2 image (Stable.ISO → `$VIRT/images/`KVM → EC2)
-* [scenarios/cloud-init-image.cfg](scenarios/cloud-init-image.cfg)
 
 #### [Test UCS Appliance](https://jenkins2022.knut.univention.de/job/UCS-5.0/job/UCS-5.0-2/view/Appliances/job/TestUCSAppliance/)
 
@@ -127,16 +127,39 @@ UCS with pre-installed App, to check if changes in UCS break the appliance setup
 
 ### [KVM Templates](https://jenkins2022.knut.univention.de/job/UCS-5.0/job/UCS-5.0-2/view/KVM%20Templates/)
 
-* [scenarios/appliances/generic-kvm-template.cfg](scenarios/appliances/generic-kvm-template.cfg): Create generic `ucs-kt-get` template
-* [scenarios/appliances/joined-kvm-templates.cfg](scenarios/appliances/joined-kvm-templates.cfg): Create `ucs-kt-get` templates for joined UCS roles
-* [scenarios/appliances/role-kvm-templates.cfg](scenarios/appliances/role-kvm-templates.cfg): Create `ucs-kt-get` templates for UCS roles
-
------
+* [scenarios/kvm-templates/generic-kvm-template.cfg](scenarios/kvm-templates/generic-kvm-template.cfg): Create generic `ucs-kt-get` template
+* [scenarios/kvm-templates/joined-kvm-templates.cfg](scenarios/kvm-templates/joined-kvm-templates.cfg): Create `ucs-kt-get` templates for joined UCS roles
+* [scenarios/kvm-templates/role-kvm-templates.cfg](scenarios/kvm-templates/role-kvm-templates.cfg): Create `ucs-kt-get` templates for UCS roles
+* [scenarios/kvm-templates/ucs-school-singleserver-joined.cfg](scenarios/kvm-templates/ucs-school-singleserver-joined.cfg)
+* [scenarios/kvm-templates/w2k19-ad-template.cfg](scenarios/kvm-templates/w2k19-ad-template.cfg)
+* [scenarios/kvm-templates/ucs-school-multiserver-joined.cfg](scenarios/kvm-templates/ucs-school-multiserver-joined.cfg)
+* [scenarios/kvm-templates/ucs-school-performance-env1.cfg](scenarios/kvm-templates/ucs-school-performance-env1.cfg)
+* [scenarios/kvm-templates/primary-with-200000-users-kvm-template.cfg](scenarios/kvm-templates/primary-with-200000-users-kvm-template.cfg)
+* [scenarios/kvm-templates/samba-primary-replica-kvm-templates.cfg](scenarios/kvm-templates/samba-primary-replica-kvm-templates.cfg)
 
 ### VM creation
 
-* [scenarios/base/ucs-master-backup.cfg](scenarios/base/ucs-master-backup.cfg): Setup Master and Backup unjoined
-* [scenarios/base/ucs-master-backup-joined.cfg](scenarios/base/ucs-master-backup-joined.cfg): Setup Master and Backup joined
+* [scenarios/base/school.cfg](scenarios/base/school.cfg): Master and Slave
+* [scenarios/base/ucs-ad-connector-w2k12.cfg](scenarios/base/ucs-ad-connector-w2k12.cfg): Master and Windows 2012
+* [scenarios/base/ucs-ad-connector-w2k19.cfg](scenarios/base/ucs-ad-connector-w2k19.cfg): Master and Windows 2019
+* [scenarios/base/ucs-samba-env1-primary-replica.cfg](scenarios/base/ucs-samba-env1-primary-replica.cfg): Master and Replica
+* [scenarios/base/ucs-school-performance-env1.cfg](scenarios/base/ucs-school-performance-env1.cfg): Master
+* [scenarios/base/ucs-win2012.cfg](scenarios/base/ucs-win2012.cfg): Master and Windows 2012
+* [scenarios/base/w2k19-ad.cfg](scenarios/base/w2k19-ad.cfg): Master and Windows 2019 AD with certtificate authority
+* [scenarios/base/w2k19-ad-example-org.cfg](scenarios/base/w2k19-ad-example-org.cfg): Windows 2019 AD
+
+#### Unjoined
+
+* [scenarios/base/master-role-template.cfg](scenarios/base/master-role-template.cfg): Setup Master
+* [scenarios/base/ucs-master-backup.cfg](scenarios/base/ucs-master-backup.cfg): Setup Master and Backup
+
+#### Joined
+
+* [scenarios/base/master-windows-clients.cfg](scenarios/base/master-windows-clients.cfg): Setup Master + 2 Windows 10
+* [scenarios/base/ucs-master-backup-joined.cfg](scenarios/base/ucs-master-backup-joined.cfg): Setup Master and Backup
+* [scenarios/base/ucs-master-slave-joined.cfg](scenarios/base/ucs-master-slave-joined.cfg): Setup Master and Slave
+* [scenarios/base/ucs-primary-with-200000-users.cfg](scenarios/base/ucs-primary-with-200000-users.cfg): Setup Master with 200k users
+* [scenarios/base/ucs-school-multiserver-joined-primary-school1.cfg](scenarios/base/ucs-school-multiserver-joined-primary-school1.cfg)
 
 -----
 
@@ -224,7 +247,6 @@ UCS with pre-installed App, to check if changes in UCS break the appliance setup
 1. Last minute tests before new release
 
 * [product-tests/appcenter/first-run.cfg](product-tests/appcenter/first-run.cfg)
-* [product-tests/appcenter/ucs-tests.cfg](product-tests/appcenter/ucs-tests.cfg)
 * [product-tests/base/fake-listener.cfg](product-tests/base/fake-listener.cfg): Test joining with FAKE init
 * [product-tests/base/ldap-in-samba-domain.cfg](product-tests/base/ldap-in-samba-domain.cfg)
 * [product-tests/base/ldap-non-samba-domain.cfg](product-tests/base/ldap-non-samba-domain.cfg)
@@ -234,29 +256,31 @@ UCS with pre-installed App, to check if changes in UCS break the appliance setup
 * [product-tests/component/openid-connect.cfg](product-tests/component/openid-connect.cfg)
 * [product-tests/domain-join/linuxmint-20.cfg](product-tests/domain-join/linuxmint-20.cfg)
 * [product-tests/domain-join/ubuntu-20.04.cfg](product-tests/domain-join/ubuntu-20.04.cfg)
-* [product-tests/extsec4.3/00026.cfg](product-tests/extsec4.3/00026.cfg)
-* [product-tests/python3/ucs-tests.cfg](product-tests/python3/ucs-tests.cfg)
 * [product-tests/samba/ad-takeover-admembermode.cfg](product-tests/samba/ad-takeover-admembermode.cfg)
 * [product-tests/samba/ad-takeover-all-tests.cfg](product-tests/samba/ad-takeover-all-tests.cfg)
 * [product-tests/samba/ad-trust.cfg](product-tests/samba/ad-trust.cfg)
 * [product-tests/samba/bigenv.cfg](product-tests/samba/bigenv.cfg)
 * [product-tests/samba/multi-server.cfg](product-tests/samba/multi-server.cfg)
-* [product-tests/samba/s4-connector.cfg](product-tests/samba/s4-connector.cfg)
-* [product-tests/samba/scaling-test.cfg](product-tests/samba/scaling-test.cfg)
 * [product-tests/samba/single-server.cfg](product-tests/samba/single-server.cfg)
-* [product-tests/samba/update-tests.cfg](product-tests/samba/update-tests.cfg)
-* [product-tests/ucsschool/largeenv-installation.cfg](product-tests/ucsschool/largeenv-installation.cfg)
-* [product-tests/ucsschool/migration.cfg](product-tests/ucsschool/migration.cfg)
-* [product-tests/ucsschool/multiserver.cfg](product-tests/ucsschool/multiserver.cfg)
-* [product-tests/ucsschool/performance-30000.cfg](product-tests/ucsschool/performance-30000.cfg)
-* [product-tests/ucsschool/performance-500.cfg](product-tests/ucsschool/performance-500.cfg)
-* [product-tests/ucsschool/performance-65000.cfg](product-tests/ucsschool/performance-65000.cfg)
 * [product-tests/umc/multi-server.cfg](product-tests/umc/multi-server.cfg)
-* [product-tests/umc/singlemaster.cfg](product-tests/umc/singlemaster.cfg)
+* [product-tests/samba/smbtorture.cfg](product-tests/samba/smbtorture.cfg)
+* [product-tests/component/keycloak_2backups.cfg](product-tests/component/keycloak_2backups.cfg)
+* [product-tests/component/dcd_all_roles.cfg](product-tests/component/dcd_all_roles.cfg)
+* [product-tests/component/dcd_redis_primary_change.cfg](product-tests/component/dcd_redis_primary_change.cfg)
+* [product-tests/component/office365_update.cfg](product-tests/component/office365_update.cfg)
 
 -----
 
 ## [UCS@school](https://jenkins2022.knut.univention.de/job/UCSschool-5.0/)
+
+* [product-tests/ucsschool/largeenv-installation.cfg](product-tests/ucsschool/largeenv-installation.cfg)
+* [product-tests/ucsschool/migration.cfg](product-tests/ucsschool/migration.cfg)
+* [product-tests/ucsschool/multiserver.cfg](product-tests/ucsschool/multiserver.cfg)
+* [product-tests/ucsschool/performance-500.cfg](product-tests/ucsschool/performance-500.cfg)
+* [product-tests/ucsschool/performance-30000.cfg](product-tests/ucsschool/performance-30000.cfg)
+* [product-tests/ucsschool/performance-65000.cfg](product-tests/ucsschool/performance-65000.cfg)
+* [product-tests/ucsschool/schooljoin-200000-users.cfg](product-tests/ucsschool/schooljoin-200000-users.cfg)
+* [scenarios/veyon/veyon.cfg](scenarios/veyon/veyon.cfg)
 
 ### [U@S performance tests](https://jenkins.knut.univention.de:8181/job/UCSschool%205.0%20Performance/)
 
@@ -271,9 +295,16 @@ UCS with pre-installed App, to check if changes in UCS break the appliance setup
 * [scenarios/autotest-203-ucsschool-multiserver-s4.cfg](scenarios/autotest-203-ucsschool-multiserver-s4.cfg): Install U@S 5.0 Multiserver
 * [scenarios/autotest-206-ucsschool-update-singleserver-s4.cfg](scenarios/autotest-206-ucsschool-update-singleserver-s4.cfg): Update U@S 4.3 to U@S 5.0 Singleserver
 * [scenarios/autotest-208-ucsschool-update-multiserver-s4.cfg](scenarios/autotest-208-ucsschool-update-multiserver-s4.cfg): Update U@S 4.3 to U@S 5.0 Multiserver
-* [scenarios/autotest-241-ucsschool-HTTP-API.cfg](scenarios/autotest-241-ucsschool-HTTP-API.cfg): HTTP-APIs tests
+* [scenarios/autotest-241-ucsschool-kelvin-API.cfg](scenarios/autotest-241-ucsschool-kelvin-API.cfg): HTTP-APIs tests
 * [scenarios/autotest-242-ucsschool-DL-MV.cfg](scenarios/autotest-242-ucsschool-DL-MV.cfg): DL MV
 * [scenarios/autotest-243-ucsschool-DL-SH.cfg](scenarios/autotest-243-ucsschool-DL-SH.cfg): DL SH
 * [scenarios/autotest-244-ucsschool-id-sync.cfg](scenarios/autotest-244-ucsschool-id-sync.cfg): UCSschool ID Connector
+* [scenarios/autotest-245-ucsschool-apple-school-manager.cfg](scenarios/autotest-245-ucsschool-apple-school-manager.cfg)
+* [scenarios/autotest-246-ucsschool-id-broker-performance.cfg](scenarios/autotest-246-ucsschool-id-broker-performance.cfg)
+* [scenarios/autotest-247-ucsschool-id-broker.cfg](scenarios/autotest-247-ucsschool-id-broker.cfg)
+* [scenarios/autotest-247-ucsschool-id-broker-additional-traeger-staging.cfg](scenarios/autotest-247-ucsschool-id-broker-additional-traeger-staging.cfg)
+* [scenarios/autotest-247-ucsschool-id-broker-perf-ec2.cfg](scenarios/autotest-247-ucsschool-id-broker-perf-ec2.cfg): ID Broker Performance (EC2)
+* [scenarios/autotest-247-ucsschool-id-broker-perf-kvm.cfg](scenarios/autotest-247-ucsschool-id-broker-perf-kvm.cfg): ID Broker Performance (KVM)
+* [scenarios/autotest-248-ram-rankine.cfg](scenarios/autotest-248-ram-rankine.cfg)
 * [scenarios/autotest-248-ram-rankine-performance.cfg](scenarios/autotest-248-ram-rankine-performance.cfg): UCS@School RAM performance tests
 * [scenarios/autotest-300-ucsschool-large.cfg](scenarios/autotest-300-ucsschool-large.cfg): Install U@S 5.0 Multiserver Large Env
