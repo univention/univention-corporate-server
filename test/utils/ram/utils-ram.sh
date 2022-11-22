@@ -138,7 +138,7 @@ create_test_admin_account () {
 			"school": "https://'"$fqdn"'/ucsschool/kelvin/v1/schools/school1",
 			"roles": ["https://'"$fqdn"'/ucsschool/kelvin/v1/roles/teacher"],
 			"record_uid": "admin",
-			"ucsschool_roles": ["technical_admin:bsb:*"]
+			"ucsschool_roles": ["technical_admin:bsb:*", "teacher:school:school1"]
 		}'
 	udm users/user modify \
 		--dn "uid=admin,cn=lehrer,cn=users,ou=school1,$(ucr get ldap/base)" \
