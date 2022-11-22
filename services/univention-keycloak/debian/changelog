@@ -1,3 +1,9 @@
+univention-keycloak (1.0.4) unstable; urgency=medium
+
+  * Bug #55448: Add backup/restore options
+
+ -- Juan Pedro Torres <torres-munoz.extern@univention.de>  Wed, 07 Dec 2022 12:53:48 +0100
+
 univention-keycloak (1.0.3) unstable; urgency=medium
 
   * Bug #55478: Set login page title and tabname

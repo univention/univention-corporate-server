@@ -9,4 +9,6 @@ desc: |
  * The login page and tab name of the Keycloak Single-Sign On
    page have been modified to match those of the simpleSAMLphp
    login page
-bug: [55478]
+ * Added backup and restore options to the univention-keycloak
+   CLI tool.
+bug: [55478, 55448]

@@ -35,10 +35,12 @@
 """Manage Univention Keycloak app"""
 
 import json
+import sys
 from argparse import ArgumentParser, Namespace
 from base64 import b64decode
 from os.path import exists
 from subprocess import PIPE, Popen
+import urllib.parse
 
 import requests
 from defusedxml import ElementTree
@@ -517,6 +519,17 @@ def parse_args(args=None):
 	adhoc_parser_opp.add_argument("--group-2fa", default="2FA group")
 	adhoc_parser_opp.set_defaults(func=enable_2fa)
 
+	export_parser = subparsers.add_parser("backup", help="export UCS realm configuration")
+	export_parser.add_argument("--export-clients", action="store_true", help="Flag to determine if the backup file contains the keycloak clients")
+	export_parser.add_argument("--export-group-roles", action="store_true", help="Flag to determine if the backup file contains the keycloak group and roles")
+	export_parser.add_argument("--output", required=True)
+	export_parser.set_defaults(func=export_realm)
+
+	import_parser = subparsers.add_parser("restore", help="import UCS realm configuration")
+	import_parser.add_argument("input")
+	import_parser.add_argument("--resource-exists", default="SKIP", choices=["SKIP", "FAIL", "OVERWRITE"])
+	import_parser.set_defaults(func=import_realm)
+
 	opt = parser.parse_args(args)
 	if opt.binddn:
 		opt.binduser = explode_rdn(opt.binddn, 1)[0]
@@ -534,6 +547,34 @@ def parse_args(args=None):
 			with open(opt.ldap_system_user_pwdfile) as fd:
 				opt.ldap_system_user_pwd = fd.read().strip()
 	return opt
+
+
+def export_realm(opt):
+	# log into default realm in case UCS realm doesn't exist yet
+	kc_admin = KeycloakAdmin(server_url=opt.keycloak_url, username=opt.binduser, password=opt.bindpwd, realm_name=opt.realm, user_realm_name=DEFAULT_REALM, verify=opt.no_ssl_verify)
+
+	data_raw = kc_admin.raw_post("admin/realms/{}/partial-export?exportClients={}&exportGroupsAndRoles={}".format(urllib.parse.quote(opt.realm, ''), urllib.parse.quote(str(opt.export_clients), ''), urllib.parse.quote(str(opt.export_group_roles), '')), data='')
+	if data_raw.status_code == 200:
+		with open(opt.output, 'w') as outputfile:
+			json.dump(json.loads(data_raw.content), outputfile, indent=2)
+
+
+def import_realm(opt):
+	# log into default realm in case UCS realm doesn't exist yet
+	kc_admin = KeycloakAdmin(server_url=opt.keycloak_url, username=opt.binduser, password=opt.bindpwd, realm_name=opt.realm, user_realm_name=DEFAULT_REALM, verify=opt.no_ssl_verify)
+
+	with open(opt.input, 'r') as inputfile:
+		realm_data = json.load(inputfile)
+	realm_data["ifResourceExists"] = opt.resource_exists
+
+	data_raw = kc_admin.raw_post("admin/realms/ucs/partialImport", data=json.dumps(realm_data))
+	if data_raw.status_code == 200:
+		response = json.loads(data_raw.content)
+		print(f'Overwritten: {response["overwritten"]}, Skipped: {response["skipped"]}, Added: {response["added"]}')
+	elif data_raw.status_code == 409:
+		print(f'Import failed because some resource already exists\n{json.loads(data_raw.content)["errorMessage"]}', file=sys.stderr)
+	else:
+		print(f'Something went wrong. Error code {data_raw.status_code}\n{data_raw.content}', file=sys.stderr)
 
 
 def create_adhoc_idp(opt):
