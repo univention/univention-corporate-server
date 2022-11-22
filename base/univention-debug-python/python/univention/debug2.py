@@ -295,7 +295,7 @@ class function(object):
     """
 
     def __init__(self, fname, utf8=True):
-        warn('univention.debug2.function is deprecated and will be removed with UCS-5', PendingDeprecationWarning)  # noqa: B028
+        warn('univention.debug2.function is deprecated and will be removed with UCS-5', PendingDeprecationWarning, stacklevel=2)
         self.fname = fname
         if _enable_function:
             logging.getLogger('MAIN').log(100, 'UNIVENTION_DEBUG_BEGIN : ' + self.fname)
