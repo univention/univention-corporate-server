@@ -6,10 +6,11 @@ src: ntfs-3g
 fix: 1:2016.2.22AR.1+dfsg-1+deb9u4
 desc: |
  This update addresses the following issue:
- 1:2016.2.22AR.1+dfsg-1+deb9u4 (Sun, 20 Nov 2022 22:03:02 +0100)
- * Non-maintainer upload by the ELTS Team.
- * CVE-2022-40284 - Rejected zero-sized runs - Avoided merging runlists with
-   no runs
+ * A buffer overflow was discovered in NTFS-3G before 2022.10.3. Crafted
+   metadata in an NTFS image can cause code execution. A local attacker can
+   exploit this if the ntfs-3g binary is setuid root. A physically proximate
+   attacker can exploit this if NTFS-3G software is configured to execute upon
+   attachment of an external storage device. (CVE-2022-40284)
 bug: [55444]
 cve:
 - CVE-2022-40284
