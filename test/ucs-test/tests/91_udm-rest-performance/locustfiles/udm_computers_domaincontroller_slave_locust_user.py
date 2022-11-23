@@ -7,7 +7,7 @@ from tasks.computers_domaincontroller_slave.computers_domaincontroller_slave_dn_
 from tasks.computers_domaincontroller_slave.computers_domaincontroller_slave_dn_put import computers_domaincontroller_slave_dn_put
 from tasks.computers_domaincontroller_slave.computers_domaincontroller_slave_dn_patch import computers_domaincontroller_slave_dn_patch
 
-tag = 'computers/domaincontroller/slave'
+tag = 'computers/domaincontroller_slave'
 
 
 class ComputersDomaincontrollerSlaveGet(GenericUser):
