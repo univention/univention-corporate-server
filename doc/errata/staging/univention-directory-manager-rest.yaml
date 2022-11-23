@@ -6,9 +6,9 @@ src: univention-directory-manager-rest
 fix: 10.0.4-9A~5.0.0.202211221124
 desc: |
  This update addresses the following issues:
- * The performance of the UDM REST API has been improoved:
+ * The performance of the UDM REST API has been improved:
    A duplicated LDAP search has been eliminated for `GET`, `PATCH` and
-   `DELETE` operations on a object.
+   `DELETE` operations on an object.
  * The LDAP connections for read and write operations have been separated and
    are now individually configurable via the UCR variables
    `directory/manager/rest/ldap-connection/.*/.*`.
