@@ -31,9 +31,22 @@ class UsersUserDnGet(GenericUser):
     tag = tag
 
 
-class UsersUserDnDelete(GenericUser):
+class UsersUserDnDeleteStudent(GenericUser):
     tasks = [users_user_dn_delete]
     tag = tag
+    role = 'student'
+
+
+class UsersUserDnDeleteTeacher(GenericUser):
+    tasks = [users_user_dn_delete]
+    tag = tag
+    role = 'teacher'
+
+
+class UsersUserDnDeleteStaff(GenericUser):
+    tasks = [users_user_dn_delete]
+    tag = tag
+    role = 'staff'
 
 
 class UsersUserDnPut(GenericUser):
