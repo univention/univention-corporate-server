@@ -11,3 +11,5 @@ desc: |
   The speedup was only applied if there was no S4-Connector installed
   on the DC primary. This has been fixed.
 bug: [55218]
+erratum: 493
+announced: 2022-11-23
