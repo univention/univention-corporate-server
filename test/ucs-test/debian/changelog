@@ -1,3 +1,9 @@
+ucs-test (10.0.20-30) unstable; urgency=medium
+
+  * Bug #55437: Added test for udm-rest performance
+
+ -- Ivan Barbecho Delgado <delgado.extern@univention.de>  Tue, 08 Feb 2024 10:42:37 +0100
+
 ucs-test (10.0.20-29) unstable; urgency=medium
 
   * Bug #55765: add new scenarios to custom settings for apps
