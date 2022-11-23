@@ -3,7 +3,7 @@ release: "5.0"
 version: [2]
 scope: ucs_5.0-0-errata5.0-2
 src: univention-directory-manager-modules
-fix:
+fix: 15.0.13-25A~5.0.0.202211221120
 desc: |
  This update addresses the following issues:
  * The `univention.admin.uldap.access()` now supports a LDAP URI to connect to.
