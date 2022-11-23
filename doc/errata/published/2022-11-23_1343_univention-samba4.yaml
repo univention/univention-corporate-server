@@ -15,3 +15,5 @@ desc: |
    scripts have been modified to sync these vital objects first, which speeds
    up the join process considerably.
 bug: [55137]
+erratum: 1343
+announced: 2022-11-23
