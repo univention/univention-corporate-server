@@ -1,3 +1,9 @@
+ucs-test (10.0.7-28) unstable; urgency=medium
+
+  * Bug #55437: Added test for udm-rest performance
+
+ -- Ivan Barbecho Delgado <delgado.extern@univention.de>  Tue, 22 Nov 2022 10:42:37 +0100
+
 ucs-test (10.0.7-27) unstable; urgency=medium
 
   * Bug #20235: add
