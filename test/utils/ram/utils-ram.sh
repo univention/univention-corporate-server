@@ -82,8 +82,20 @@ install_frontend_apps () {
 }
 
 install_frontend_packages () {
+	# also add internal school repo for up-to-date frontend packages
+	local version
+	if [ "$UCSSCHOOL_RELEASE" != "public" ]; then
+		version="${UCS_VERSION%%-*}"
+		cat <<EOF > "/etc/apt/sources.list.d/99_internal_school.list"
+deb [trusted=yes] http://192.168.0.10/build2/ ucs_$version-0-ucs-school-$version/all/
+deb [trusted=yes] http://192.168.0.10/build2/ ucs_$version-0-ucs-school-$version/\$(ARCH)/
+EOF
+	fi
+
 	univention-install -y ucs-school-ui-users-frontend
 	univention-install -y ucs-school-ui-groups-frontend
+
+	rm -f /etc/apt/sources.list.d/99_internal_school.list
 
 	# create dev clients for easier testing
 	/usr/share/ucs-school-ui-common/scripts/univention-create-keycloak-clients --admin-password univention --client-id school-ui-users-dev --direct-access
