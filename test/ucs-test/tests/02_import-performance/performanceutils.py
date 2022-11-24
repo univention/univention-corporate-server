@@ -74,7 +74,7 @@ def wait_for_s4connector():
 		highestCommittedUSN = -1
 		ldbsearch = subprocess.Popen("ldbsearch -H /var/lib/samba/private/sam.ldb -s base -b '' highestCommittedUSN", shell=True, stdout=subprocess.PIPE)
 		ldbresult = ldbsearch.communicate()
-		for line in ldbresult[0].split('\n'):
+		for line in ldbresult[0].decode('UTF-8', 'replace').split('\n'):
 			line = line.strip()
 			if line.startswith('highestCommittedUSN: '):
 				highestCommittedUSN = line.replace('highestCommittedUSN: ', '')
@@ -158,7 +158,7 @@ def get_user_dn_list_new(CSV_IMPORT_FILE):
 	from ucsschool.importer.utils.shell import logger  # noqa: F401
 	up = user_import.UserImport()
 	imported_users = up.read_input()
-	user_dns = list()
+	user_dns = []
 	for user in imported_users:
 		user.make_username()
 		if re.match(r'.*\d$', user.name):
@@ -217,7 +217,7 @@ def count_samba4_users():
 
 	ldbsearch = subprocess.Popen("ldbsearch -H /var/lib/samba/private/sam.ldb objectClass=user dn", shell=True, stdout=subprocess.PIPE)
 	ldbresult = ldbsearch.communicate()
-	for line in ldbresult[0].split('\n'):
+	for line in ldbresult[0].decode('UTF-8', 'replace').split('\n'):
 		line = line.strip()
 		if line.startswith('dn: '):
 			count += 1
