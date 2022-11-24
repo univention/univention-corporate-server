@@ -48,7 +48,6 @@ _ = translation.translate
 
 module = 'users/passwd'
 operations = ['edit']
-uid_umlauts = 0
 
 childs = False
 short_description = _('User: Password')

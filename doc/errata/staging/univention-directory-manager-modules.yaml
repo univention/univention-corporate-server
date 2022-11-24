@@ -6,5 +6,7 @@ src: univention-directory-manager-modules
 fix: 15.0.13-25A~5.0.0.202211221120
 desc: |
  This update addresses the following issue:
+ * Changes for the UDM REST API required adjustments for the `users/self` UDM
+   module.
  * `univention.admin.uldap.access()` now supports LDAP URIs to connect to.
-bug: [54623]
+bug: [55430, 54623]
