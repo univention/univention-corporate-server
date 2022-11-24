@@ -210,6 +210,10 @@ def init(lo, position, module, template_object=None, force_reload=False):
 	# called twice will have side-effects
 	if force_reload:
 		reload_module(module)  # type: ignore
+		if module.module == 'users/user':
+			# users/self inherits from users/user leading to errors when not reloading it as well
+			# TODO: remove when droppng Python2.7 support and all super(object, self) calls have been replaced with super()
+			reload_module(univention.admin.modules.get('users/self'))  # type: ignore
 	# reset property descriptions to defaults if possible
 	if hasattr(module, 'default_property_descriptions'):
 		module.property_descriptions = copy.deepcopy(module.default_property_descriptions)
