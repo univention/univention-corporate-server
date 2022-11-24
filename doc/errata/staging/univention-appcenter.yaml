@@ -23,4 +23,6 @@ desc: |
    additional repositories. If the scheme in the 'server' variable is
    different to http or https an error message is raised, the 'server'
    variable is not updated and the deprecated variables are not deleted.
-bug: [55044]
+ * The help text of `univention-app configure` has been fixed so that the
+   usage prints the allowed arguments in the correct positional order.
+bug: [55044, 52514]

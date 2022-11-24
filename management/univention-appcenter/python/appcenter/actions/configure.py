@@ -36,7 +36,7 @@
 #
 
 from tempfile import NamedTemporaryFile
-from argparse import SUPPRESS
+from argparse import SUPPRESS, HelpFormatter
 
 from univention.appcenter.actions import UniventionAppAction, StoreAppAction
 from univention.appcenter.exceptions import ConfigureFailed
@@ -52,6 +52,7 @@ class Configure(UniventionAppAction):
 	help = 'Configure an app'
 
 	def setup_parser(self, parser):
+		parser.formatter_class = PatchedHelpFormatter
 		parser.add_argument('app', action=StoreAppAction, help='The ID of the App that shall be configured')
 		parser.add_argument('--list', action='store_true', help='List all configuration options as well as their current values')
 		parser.add_argument('--set', nargs='+', action=StoreConfigAction, metavar='KEY=VALUE', dest='set_vars', help='Sets the configuration variable. Example: --set some/variable=value some/other/variable="value 2"')
@@ -135,3 +136,10 @@ class Configure(UniventionAppAction):
 				for line in error_file:
 					self.fatal(line)
 			return success
+
+
+class PatchedHelpFormatter(HelpFormatter):
+	def _format_usage(self, *args, **kwargs):
+		usage = super(PatchedHelpFormatter, self)._format_usage(*args, **kwargs)
+
+		return usage.replace(' app\n\n', ' ').replace('[-h]', '[-h] app').rstrip()
