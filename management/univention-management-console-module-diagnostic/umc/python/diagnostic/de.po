@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-management-console-module-diagnostic\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-11-10 20:07+0100\n"
+"POT-Creation-Date: 2022-11-25 11:13+0100\n"
 "PO-Revision-Date: 2022-10-17 19:54+0200\n"
 "Last-Translator: Univention GmbH <packages@univention.de>\n"
 "Language-Team: Univention GmbH <packages@univention.de>\n"
@@ -1331,20 +1331,15 @@ msgstr "Ungültiger Typ %(type)r für Variable %(variable)r definiert."
 msgid "The variable %(variable)r has the invalid value %(value)r."
 msgstr "Die Variable %(variable)r hat den ungültigen Wert %(value)r."
 
-#: umc/python/diagnostic/plugins/65_check_repository_config.py:54
-#: umc/python/diagnostic/plugins/65_check_repository_config.py:55
-msgid "Repository Settings"
-msgstr "Repository Einstellungen"
-
-#: umc/python/diagnostic/plugins/65_check_repository_config.py:59
+#: umc/python/diagnostic/plugins/65_check_repository_config.py:60
 msgid "Check repository configuration for correctness"
 msgstr "Repository Konfiguration auf Korrektheit prüfen"
 
-#: umc/python/diagnostic/plugins/65_check_repository_config.py:61
+#: umc/python/diagnostic/plugins/65_check_repository_config.py:62
 msgid "Some UCR variables for the repository configuration are deprecated."
 msgstr "Einige UCR Variablen für die Repository Konfiguration sind deprecated."
 
-#: umc/python/diagnostic/plugins/65_check_repository_config.py:62
+#: umc/python/diagnostic/plugins/65_check_repository_config.py:63
 msgid ""
 "As these variables should be no longer used, this check has been added to "
 "check for the existence of these variables."
@@ -1352,34 +1347,40 @@ msgstr ""
 "Dieser Check wurde eingeführt um das Vorhandensein dieser Variablen zu "
 "prüfen, weil diese Variablen nicht mehr benutzt werden sollen."
 
-#: umc/python/diagnostic/plugins/65_check_repository_config.py:63
-#, python-brace-format
-msgid ""
-"Use the {appcenter:components} to correct these values by once saving "
-"the General repository settings "
-msgstr ""
-"Verwenden Sie das {appcenter:components} um dies zu korrigieren, indem "
-"Sie die Konfiguration dort für die Allgmeinen Repository-Einstellungen "
-
 #: umc/python/diagnostic/plugins/65_check_repository_config.py:64
 msgid ""
-"as well as saving the settings for all Additional repositories "
-"or press the Button ADJUST ALL COMPONENTS "
+"Use the {appcenter:components} to correct these values by once saving the "
+"General repository settings "
 msgstr ""
-"und für alle zusätzlichen Repositories neu abspeichern "
-"oder drücken Sie den Button Alle Komponenten korrigieren "
+"Verwenden Sie das {appcenter:components} um dies zu korrigieren, indem Sie "
+"die Konfiguration dort für die Allgmeinen Repository-Einstellungen "
 
 #: umc/python/diagnostic/plugins/65_check_repository_config.py:65
 msgid ""
-"to correct these settings and delete the obsolete variables"
+"as well as saving the settings for all Additional repositories or press the "
+"Button ADJUST ALL COMPONENTS "
 msgstr ""
-"um die Konfiguration zu korrigieren und die überflüssigen Variablen zu löschen."
+"und für alle zusätzlichen Repositories neu abspeichern oder drücken Sie den "
+"Button Alle Komponenten korrigieren "
 
-#: umc/python/diagnostic/plugins/65_check_repository_config.py:78
+#: umc/python/diagnostic/plugins/65_check_repository_config.py:66
+msgid "to correct these settings and delete the obsolete variables."
+msgstr ""
+"um die Konfiguration zu korrigieren und die überflüssigen Variablen zu "
+"löschen."
+
+#: umc/python/diagnostic/plugins/65_check_repository_config.py:67
+msgid ""
+"Furthermore, it is checked if the scheme of the server variable is either "
+"http or https"
+msgstr ""
+"Es wird auch geprüft, ob das Schema der server Variablen http oder https ist"
+
+#: umc/python/diagnostic/plugins/65_check_repository_config.py:81
 msgid "Cleanup of deprecated variables is executed !"
 msgstr "Die Korrektur der deprecated Variablen wird ausgeführt !"
 
-#: umc/python/diagnostic/plugins/65_check_repository_config.py:96
+#: umc/python/diagnostic/plugins/65_check_repository_config.py:99
 msgid ""
 "After fixing the problem please use the Repository Settings module to check "
 "the changes made"
@@ -1387,15 +1388,30 @@ msgstr ""
 "Nach der Korrektur der Variablen prüfen Sie bitte im Repository "
 "Einstellungen Modul welche Änderungen gemacht wurden."
 
-#: umc/python/diagnostic/plugins/65_check_repository_config.py:120
+#: umc/python/diagnostic/plugins/65_check_repository_config.py:123
 msgid "Adjust all components"
 msgstr "Alle Komponenten korrigieren"
 
-#: umc/python/diagnostic/plugins/65_check_repository_config.py:131
-#, python-brace-format
+#: umc/python/diagnostic/plugins/65_check_repository_config.py:136
+#, python-format
 msgid "The variable %(name)r is deprecated and should no longer be used."
 msgstr ""
 "Die Variable %(name)r ist deprecated und sollte nicht mehr benutzt werden."
+
+#: umc/python/diagnostic/plugins/65_check_repository_config.py:143
+msgid "No http/https used as scheme in %(name)r: %(value)r."
+msgstr "Das Schema ist weder http noch https in Variable: %(name)r: %(value)r"
+
+#: umc/python/diagnostic/plugins/65_check_repository_config.py:144
+msgid ""
+"This can be fixed only manually using the Repository Settings module or the "
+"UCR module."
+msgstr ""
+"Dies kann nur manuell im Modul Repository Einstellungen oder "
+"im UCR Modul korrigiert werden."
+
+#~ msgid "Repository Settings"
+#~ msgstr "Repository Einstellungen"
 
 #~ msgid "Test again"
 #~ msgstr "Erneut testen"

@@ -135,15 +135,17 @@ def get_md5(filename):
 			return m.hexdigest()
 
 
+def scheme_is_http(server: str) -> bool:
+	surl = urlparse(server)
+	return surl.scheme in ['http', 'https']
+
+
 def create_url(server: str, prefix: str, username: str, password: str, port: str) -> str:
 	surl = urlparse(server)
 	if all([surl.scheme, surl.netloc]):
 		netloc = surl.netloc
 		path = surl.path or prefix
-		if surl.scheme not in ['http', 'https']:
-			scheme = 'https' if port.strip() == '443' else 'http'
-		else:
-			scheme = surl.scheme
+		scheme = surl.scheme
 	else:
 		scheme = 'https' if port.strip() == '443' else 'http'
 		netloc = server

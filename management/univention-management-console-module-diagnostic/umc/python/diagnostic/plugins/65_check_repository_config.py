@@ -43,7 +43,7 @@ from univention.config_registry import handler_set as ucr_set, handler_unset as 
 from univention.lib.i18n import Translation
 
 from univention.management.console.modules.diagnostic import MODULE, Instance, Warning, main, ProblemFixed
-from univention.management.console.modules.appcenter.util import create_url
+from univention.management.console.modules.appcenter.util import create_url, scheme_is_http
 
 _ = Translation('univention-management-console-module-diagnostic').translate
 
@@ -63,7 +63,8 @@ description = "\n".join((
 	_("As these variables should be no longer used, this check has been added to check for the existence of these variables."),
 	_("Use the {appcenter:components} to correct these values by once saving the General repository settings "),
 	_("as well as saving the settings for all Additional repositories or press the Button ADJUST ALL COMPONENTS "),
-	_("to correct these settings and delete the obsolete variables"),
+	_("to correct these settings and delete the obsolete variables."),
+	_('Furthermore, it is checked if the scheme of the server variable is either http or https')
 ))
 
 ONLINE_BASE = 'repository/online'
@@ -124,6 +125,7 @@ def run(_umc_instance: Instance) -> None:
 
 	info = _get_config_registry_info()
 
+	ignore_scheme_check = ucr.get("diagnostic/check/65_check_repository_config/ignore", "")
 	for name in info.variables.keys():
 		if _repo_relevant(name, RE_KEY):
 			value = ucr.get(name, "")
@@ -134,7 +136,15 @@ def run(_umc_instance: Instance) -> None:
 				msg = _('The variable %(name)r is deprecated and should no longer be used.') % {'name': name}
 				MODULE.warn(msg)
 				error_descriptions.append(msg)
-
+		elif not ignore_scheme_check and name.startswith(ONLINE_BASE) and name.endswith("server"):
+			value = ucr.get(name, "")
+			if not scheme_is_http(value):
+				msg = "\n".join((
+					_('No http/https used as scheme in %(name)r: %(value)r.') % {'name': name, 'value': value},
+					_('This can be fixed only manually using the Repository Settings module or the UCR module.')
+				))
+				MODULE.warn(msg)
+				error_descriptions.append(msg)
 	if error_descriptions:
 		raise Warning(f"{description}\n" + "\n".join(error_descriptions), buttons=buttons)
 

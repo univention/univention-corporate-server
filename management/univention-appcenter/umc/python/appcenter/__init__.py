@@ -58,7 +58,6 @@ from univention.management.console.modules.decorators import simple_response, sa
 from univention.management.console.modules.mixins import ProgressMixin
 from univention.management.console.modules.sanitizers import PatternSanitizer, MappingSanitizer, DictSanitizer, StringSanitizer, ChoicesSanitizer, ListSanitizer, BooleanSanitizer
 from univention.updater.tools import UniventionUpdater
-from univention.updater.errors import ConfigurationError
 import univention.management.console as umc
 import univention.management.console.modules as umcm
 from univention.appcenter.actions import get_action
@@ -74,8 +73,8 @@ from univention.appcenter.settings import FileSetting, PasswordFileSetting
 
 # local application
 from .sanitizers import error_handling, AppSanitizer, basic_components_sanitizer, advanced_components_sanitizer, add_components_sanitizer
-from .util import install_opener, ComponentManager, set_save_commit_load, create_url
-from .constants import ONLINE_BASE, COMPONENT_BASE, DEPRECATED_PARAMS, PUT_WRITE_ERROR, PUT_UPDATER_ERROR, PUT_SUCCESS, PUT_UPDATER_NOREPOS
+from .util import install_opener, ComponentManager, set_save_commit_load, create_url, scheme_is_http
+from .constants import ONLINE_BASE, COMPONENT_BASE, DEPRECATED_PARAMS, PUT_WRITE_ERROR, PUT_SUCCESS, PUT_PARAMETER_ERROR
 
 _ = umc.Translation('univention-management-console-module-appcenter').translate
 
@@ -1012,6 +1011,15 @@ class Instance(umcm.Base, ProgressMixin):
 		#		},
 		#		... more such entries ...
 		#	]
+		# check if scheme of server is correct
+		for object, in iterator:
+			name = object['name']
+			named_component_base = '%s/%s' % (COMPONENT_BASE, name)
+			for key, value in object.items():
+				if key.endswith("server") and not scheme_is_http(value):
+					msg = _("Invalid scheme, use http or https: %(base)r/%(key)r: %(value)r") % {'base': named_component_base, 'key': key, 'value': value}
+					yield [{'message': msg, 'status': PUT_PARAMETER_ERROR}]
+					return
 		with set_save_commit_load(self.ucr) as super_ucr:
 			for object, in iterator:
 				try:
@@ -1022,7 +1030,8 @@ class Instance(umcm.Base, ProgressMixin):
 							super_ucr.set_registry_var(f'{named_component_base}/{deprecated}', None)
 				except Exception as e:
 					MODULE.warn("   !! Writing UCR failed: %s" % str(e))
-					return [{'message': str(e), 'status': PUT_WRITE_ERROR}]
+					yield [{'message': str(e), 'status': PUT_WRITE_ERROR}]
+					return
 				yield self.get_component_manager().put(object, super_ucr)
 
 		self.package_manager.update()
@@ -1063,7 +1072,12 @@ class Instance(umcm.Base, ProgressMixin):
 	@multi_response
 	def settings_put(self, iterator, object):
 		# FIXME: returns values although it should yield (multi_response)
-		changed = False
+		# check if scheme of server is correct
+		for object, in iterator:
+			for key, value in object.items():
+				if key.endswith("server") and not scheme_is_http(value):
+					msg = _("Invalid scheme, use http or https: %(base)r/%(key)r: %(value)r") % {'base': ONLINE_BASE, 'key': key, 'value': value}
+					return [{'message': msg, 'status': PUT_PARAMETER_ERROR}]
 		# Set values into our UCR copy.
 		try:
 			with set_save_commit_load(self.ucr) as super_ucr:
@@ -1071,7 +1085,7 @@ class Instance(umcm.Base, ProgressMixin):
 					for key, value in object.items():
 						MODULE.info("   ++ Setting new value for '%s' to '%s'" % (key, value))
 						super_ucr.set_registry_var('%s/%s' % (ONLINE_BASE, key), value)
-				changed = super_ucr.changed()
+				super_ucr.changed()
 		except Exception as e:
 			MODULE.warn("   !! Writing UCR failed: %s" % str(e))
 			return [{'message': str(e), 'status': PUT_WRITE_ERROR}]
@@ -1089,24 +1103,4 @@ class Instance(umcm.Base, ProgressMixin):
 
 		self.package_manager.update()
 
-		# Bug #24878: emit a warning if repository is not reachable
-		try:
-			updater = self.get_updater()
-			for line in updater.print_version_repositories().split('\n'):
-				if line.strip():
-					break
-			else:
-				raise ConfigurationError()
-		except ConfigurationError:
-			msg = _("There is no repository at this server (or at least none for the current UCS version)")
-			MODULE.warn("   !! Updater error: %s" % msg)
-			response = {'message': msg, 'status': PUT_UPDATER_ERROR}
-			# if nothing was committed, we want a different type of error code,
-			# just to appropriately inform the user
-			if changed:
-				response['status'] = PUT_UPDATER_NOREPOS
-			return [response]
-		except BaseException as ex:
-			MODULE.warn("   !! Updater error: %s" % (ex,))
-			return [{'message': str(ex), 'status': PUT_UPDATER_ERROR}]
 		return [{'status': PUT_SUCCESS}]

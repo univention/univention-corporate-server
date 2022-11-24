@@ -36,12 +36,13 @@ define([
 	"dojo/_base/lang",
 	"dojo/dom-class",
 	"dojox/html/entities",
+	"umc/dialog",
 	"umc/widgets/Page",
 	"umc/widgets/Form",
 	"umc/widgets/CheckBox",
 	"umc/widgets/TextBox",
 	"umc/i18n!umc/modules/appcenter"
-], function(declare, lang, domClass, entities, Page, Form, CheckBox, TextBox, _) {
+], function(declare, lang, domClass, entities, dialog, Page, Form, CheckBox, TextBox, _) {
 	return declare("umc.modules.appcenter.DetailsPage", [ Page ], {
 		moduleStore: null,
 		standby: null, // parents standby method must be passed. weird IE-Bug (#29587)
@@ -59,7 +60,7 @@ define([
 					label: _("Back to overview"),
 					callback: lang.hitch(this, function() {
 						try {
-							this.onCloseDetail();
+							this.onCloseDetail(0);
 						} catch(error) {
 							console.error("onCancel: " + error.message);
 						}
@@ -139,21 +140,11 @@ define([
 
 			// the onSubmit event should not be overwritten, instead connect should
 			// be used (see Bug #25093)
-			this._form.on('submit', lang.hitch(this, function() {
+            this._form.on('submit', lang.hitch(this, function() {
 				this.standby(true);
-				this._form.save();
+				this._form.save().then(lang.hitch(this, function(data) {this.standby(false); this.onCloseDetail(data); }));
 			}));
 
-			this._form.on('saved', lang.hitch(this, function(success) {
-				this.standby(false);
-				try {
-					if (success) {
-						this.onCloseDetail();
-					}
-				} catch(error) {
-					console.error("DetailsPage.onSaved: " + error.message);
-				}
-			}));
 		},
 
 		// Entry point for opening the edit page. API now changed, so the detail knowledge
@@ -191,7 +182,37 @@ define([
 		},
 
 		// return to grid view
-		onCloseDetail: function() {
+		onCloseDetail: function(data) {
+			var result = data;
+			if (data instanceof Array) {
+				result = data[0];
+			}
+
+			if (!(result.status && result.message)) {
+				return;
+			}
+
+			// result['status'] is kind of error code:
+			//	1 ... invalid field input
+			//	2 ... error setting registry variable
+			//	3 ... error committing UCR
+			//	4 ... any kind of 'repo not found' conditions
+			//	5 ... repo not found, but encountered without commit
+			var txt = _("An unknown error with code %d occurred.", result.status);
+			switch(result.status) {
+				case 1: txt = _("Please correct the corresponding input fields.");
+						break;
+				case 2:
+				case 3: txt = _("The data you entered could not be saved correctly.");
+						break;
+				case 4: txt = _("Using the data you entered, no valid repository could be found.<br/>Since this may be a temporary server problem as well, your data was saved though.<br/>The problem was:");
+						break;
+				case 5: txt = _("With the current (already changed) settings, the following problem was encountered:");
+						break;
+			}
+
+			var message = lang.replace('<p>{txt}</p><p><strong>{msg}</strong></p>', {txt : txt, msg : result.message});
+			dialog.alert(message);
 		},
 
 		// Returns defaults for a new component definition.

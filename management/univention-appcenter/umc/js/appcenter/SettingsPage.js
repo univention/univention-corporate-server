@@ -88,8 +88,9 @@ define([
 				'default': true,
 				label: _("Apply changes"),
 				callback: lang.hitch(this, function() {
-					this.standby(true);
-					this._form.save();
+					this.standbyDuring(this._form.save().then(lang.hitch(this, function(data) {
+					    this._onSavedRepositorySettings(data);
+					})));
 				})
 			}];
 
@@ -99,7 +100,6 @@ define([
 				buttons: formButtons,
 				style: 'margin-bottom:0;',
 				moduleStore: store('server', 'appcenter/settings'),
-				onSaved: lang.hitch(this, '_onSavedRepositorySettings')
 			});
 			this._form.load({}); // ID does not matter here but must be dict
 
@@ -318,13 +318,8 @@ define([
 			]);
 		},
 
-		_onSavedRepositorySettings: function(success, data) {
-			this.standby(false);
-			if (!success) {
-				return;
-			}
-
-			// this is only Python module result, not data validation result!
+		_onSavedRepositorySettings: function(data) {
+ 			// this is only Python module result, not data validation result!
 			var result = data;
 			if (data instanceof Array) {
 				result = data[0];
