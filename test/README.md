@@ -130,36 +130,34 @@ UCS with pre-installed App, to check if changes in UCS break the appliance setup
 * [scenarios/kvm-templates/generic-kvm-template.cfg](scenarios/kvm-templates/generic-kvm-template.cfg): Create generic `ucs-kt-get` template
 * [scenarios/kvm-templates/joined-kvm-templates.cfg](scenarios/kvm-templates/joined-kvm-templates.cfg): Create `ucs-kt-get` templates for joined UCS roles
 * [scenarios/kvm-templates/role-kvm-templates.cfg](scenarios/kvm-templates/role-kvm-templates.cfg): Create `ucs-kt-get` templates for UCS roles
-* [scenarios/kvm-templates/ucs-school-singleserver-joined.cfg](scenarios/kvm-templates/ucs-school-singleserver-joined.cfg)
-* [scenarios/kvm-templates/w2k19-ad-template.cfg](scenarios/kvm-templates/w2k19-ad-template.cfg)
-* [scenarios/kvm-templates/ucs-school-multiserver-joined.cfg](scenarios/kvm-templates/ucs-school-multiserver-joined.cfg)
-* [scenarios/kvm-templates/ucs-school-performance-env1.cfg](scenarios/kvm-templates/ucs-school-performance-env1.cfg)
-* [scenarios/kvm-templates/primary-with-200000-users-kvm-template.cfg](scenarios/kvm-templates/primary-with-200000-users-kvm-template.cfg)
-* [scenarios/kvm-templates/samba-primary-replica-kvm-templates.cfg](scenarios/kvm-templates/samba-primary-replica-kvm-templates.cfg)
+* [scenarios/kvm-templates/w2k19-ad-template.cfg](scenarios/kvm-templates/w2k19-ad-template.cfg): Create `ucs-kt-get` template for provisioned w2k19 ad
+* [scenarios/kvm-templates/ucs-school-multiserver-joined.cfg](scenarios/kvm-templates/ucs-school-multiserver-joined.cfg): Create `ucs-kt-get` templates for UCS@School environment
+* [scenarios/kvm-templates/ucs-school-performance-env1.cfg](scenarios/kvm-templates/ucs-school-performance-env1.cfg): Create `ucs-kt-get` templates for UCS@School performance environment
+* [scenarios/kvm-templates/primary-with-200000-users-kvm-template.cfg](scenarios/kvm-templates/primary-with-200000-users-kvm-template.cfg) Create `ucs-kt-get` templates for UCS performance environment
+* [scenarios/kvm-templates/samba-primary-replica-kvm-templates.cfg](scenarios/kvm-templates/samba-primary-replica-kvm-templates.cfg): Create `ucs-kt-get` templates for UCS samba environment
 
 ### VM creation
-
-* [scenarios/base/school.cfg](scenarios/base/school.cfg): Master and Slave
-* [scenarios/base/ucs-ad-connector-w2k12.cfg](scenarios/base/ucs-ad-connector-w2k12.cfg): Master and Windows 2012
-* [scenarios/base/ucs-ad-connector-w2k19.cfg](scenarios/base/ucs-ad-connector-w2k19.cfg): Master and Windows 2019
-* [scenarios/base/ucs-samba-env1-primary-replica.cfg](scenarios/base/ucs-samba-env1-primary-replica.cfg): Master and Replica
-* [scenarios/base/ucs-school-performance-env1.cfg](scenarios/base/ucs-school-performance-env1.cfg): Master
-* [scenarios/base/ucs-win2012.cfg](scenarios/base/ucs-win2012.cfg): Master and Windows 2012
-* [scenarios/base/w2k19-ad.cfg](scenarios/base/w2k19-ad.cfg): Master and Windows 2019 AD with certtificate authority
-* [scenarios/base/w2k19-ad-example-org.cfg](scenarios/base/w2k19-ad-example-org.cfg): Windows 2019 AD
 
 #### Unjoined
 
 * [scenarios/base/master-role-template.cfg](scenarios/base/master-role-template.cfg): Setup Master
 * [scenarios/base/ucs-master-backup.cfg](scenarios/base/ucs-master-backup.cfg): Setup Master and Backup
+* [scenarios/base/ucs-ad-connector-w2k12.cfg](scenarios/base/ucs-ad-connector-w2k12.cfg): Master and Windows 2012 AD Connector setup
+* [scenarios/base/school.cfg](scenarios/base/school.cfg): Master and Slave with UCS@School
+* [scenarios/base/ucs-win2012.cfg](scenarios/base/ucs-win2012.cfg): Master and Windows 2012
+* [scenarios/base/w2k19-ad.cfg](scenarios/base/w2k19-ad.cfg): Master and Windows 2019 AD with certtificate authority
+* [scenarios/base/w2k19-ad-example-org.cfg](scenarios/base/w2k19-ad-example-org.cfg): Windows 2019 AD already provisioned
 
 #### Joined
 
+* [scenarios/base/ucs-samba-env1-primary-replica.cfg](scenarios/base/ucs-samba-env1-primary-replica.cfg): Master and Replica with samba
+* [scenarios/base/ucs-ad-connector-w2k19.cfg](scenarios/base/ucs-ad-connector-w2k19.cfg): Master and Windows 2019 AD Connector setup
 * [scenarios/base/master-windows-clients.cfg](scenarios/base/master-windows-clients.cfg): Setup Master + 2 Windows 10
 * [scenarios/base/ucs-master-backup-joined.cfg](scenarios/base/ucs-master-backup-joined.cfg): Setup Master and Backup
 * [scenarios/base/ucs-master-slave-joined.cfg](scenarios/base/ucs-master-slave-joined.cfg): Setup Master and Slave
 * [scenarios/base/ucs-primary-with-200000-users.cfg](scenarios/base/ucs-primary-with-200000-users.cfg): Setup Master with 200k users
-* [scenarios/base/ucs-school-multiserver-joined-primary-school1.cfg](scenarios/base/ucs-school-multiserver-joined-primary-school1.cfg)
+* [scenarios/base/ucs-school-multiserver-joined-primary-school1.cfg](scenarios/base/ucs-school-multiserver-joined-primary-school1.cfg) UCS@School primary with school replica
+* [scenarios/base/ucs-school-performance-env1.cfg](scenarios/base/ucs-school-performance-env1.cfg): UCS@School primary from school performance template
 
 -----
 
@@ -295,16 +293,16 @@ UCS with pre-installed App, to check if changes in UCS break the appliance setup
 * [scenarios/autotest-203-ucsschool-multiserver-s4.cfg](scenarios/autotest-203-ucsschool-multiserver-s4.cfg): Install U@S 5.0 Multiserver
 * [scenarios/autotest-206-ucsschool-update-singleserver-s4.cfg](scenarios/autotest-206-ucsschool-update-singleserver-s4.cfg): Update U@S 4.3 to U@S 5.0 Singleserver
 * [scenarios/autotest-208-ucsschool-update-multiserver-s4.cfg](scenarios/autotest-208-ucsschool-update-multiserver-s4.cfg): Update U@S 4.3 to U@S 5.0 Multiserver
-* [scenarios/autotest-241-ucsschool-kelvin-API.cfg](scenarios/autotest-241-ucsschool-kelvin-API.cfg): HTTP-APIs tests
-* [scenarios/autotest-242-ucsschool-DL-MV.cfg](scenarios/autotest-242-ucsschool-DL-MV.cfg): DL MV
-* [scenarios/autotest-243-ucsschool-DL-SH.cfg](scenarios/autotest-243-ucsschool-DL-SH.cfg): DL SH
+* [scenarios/autotest-241-ucsschool-kelvin-API.cfg](scenarios/autotest-241-ucsschool-kelvin-API.cfg): UCS@School KELVIN tests
+* [scenarios/autotest-242-ucsschool-DL-MV.cfg](scenarios/autotest-242-ucsschool-DL-MV.cfg): obsolete, remove?
+* [scenarios/autotest-243-ucsschool-DL-SH.cfg](scenarios/autotest-243-ucsschool-DL-SH.cfg): obsolete, remove?
 * [scenarios/autotest-244-ucsschool-id-sync.cfg](scenarios/autotest-244-ucsschool-id-sync.cfg): UCSschool ID Connector
-* [scenarios/autotest-245-ucsschool-apple-school-manager.cfg](scenarios/autotest-245-ucsschool-apple-school-manager.cfg)
-* [scenarios/autotest-246-ucsschool-id-broker-performance.cfg](scenarios/autotest-246-ucsschool-id-broker-performance.cfg)
-* [scenarios/autotest-247-ucsschool-id-broker.cfg](scenarios/autotest-247-ucsschool-id-broker.cfg)
+* [scenarios/autotest-245-ucsschool-apple-school-manager.cfg](scenarios/autotest-245-ucsschool-apple-school-manager.cfg): UCS@School apple school manager tests
+* [scenarios/autotest-246-ucsschool-id-broker-performance.cfg](scenarios/autotest-246-ucsschool-id-broker-performance.cfg): obsolete, remove?
+* [scenarios/autotest-247-ucsschool-id-broker.cfg](scenarios/autotest-247-ucsschool-id-broker.cfg) UCS@School ID Broker tests
 * [scenarios/autotest-247-ucsschool-id-broker-additional-traeger-staging.cfg](scenarios/autotest-247-ucsschool-id-broker-additional-traeger-staging.cfg)
 * [scenarios/autotest-247-ucsschool-id-broker-perf-ec2.cfg](scenarios/autotest-247-ucsschool-id-broker-perf-ec2.cfg): ID Broker Performance (EC2)
 * [scenarios/autotest-247-ucsschool-id-broker-perf-kvm.cfg](scenarios/autotest-247-ucsschool-id-broker-perf-kvm.cfg): ID Broker Performance (KVM)
-* [scenarios/autotest-248-ram-rankine.cfg](scenarios/autotest-248-ram-rankine.cfg)
+* [scenarios/autotest-248-ram-rankine.cfg](scenarios/autotest-248-ram-rankine.cfg): UCS@School RAM tests
 * [scenarios/autotest-248-ram-rankine-performance.cfg](scenarios/autotest-248-ram-rankine-performance.cfg): UCS@School RAM performance tests
 * [scenarios/autotest-300-ucsschool-large.cfg](scenarios/autotest-300-ucsschool-large.cfg): Install U@S 5.0 Multiserver Large Env
