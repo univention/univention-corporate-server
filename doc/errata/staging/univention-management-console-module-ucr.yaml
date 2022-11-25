@@ -1,0 +1,14 @@
+product: ucs
+release: "5.0"
+version: [2]
+scope: ucs_5.0-0-errata5.0-2
+src: univention-management-console-module-ucr
+fix:
+desc: |
+ This update addresses the following issues:
+ * In the UCR module of the management console the following deprecated
+   variables are hidden and therefore no longer displayed:
+   repository/online/(prefix, port)
+   repository/online/component/*/(prefix, port, username, password,
+      unmaintained)
+bug: [55044]

@@ -1012,18 +1012,18 @@ class Instance(umcm.Base, ProgressMixin):
 		#		... more such entries ...
 		#	]
 		# check if scheme of server is correct
-		for object, in iterator:
-			name = object['name']
+		for repo, in iterator:
+			name = repo['name']
 			named_component_base = '%s/%s' % (COMPONENT_BASE, name)
-			for key, value in object.items():
+			for key, value in repo.items():
 				if key.endswith("server") and not scheme_is_http(value):
 					msg = _("Invalid scheme, use http or https: %(base)r/%(key)r: %(value)r") % {'base': named_component_base, 'key': key, 'value': value}
 					yield [{'message': msg, 'status': PUT_PARAMETER_ERROR}]
 					return
 		with set_save_commit_load(self.ucr) as super_ucr:
-			for object, in iterator:
+			for repo, in iterator:
 				try:
-					name = object['name']
+					name = repo['name']
 					named_component_base = '%s/%s' % (COMPONENT_BASE, name)
 					for deprecated in DEPRECATED_PARAMS:
 						if self.ucr.get(f'{named_component_base}/{deprecated}', ''):
@@ -1032,7 +1032,7 @@ class Instance(umcm.Base, ProgressMixin):
 					MODULE.warn("   !! Writing UCR failed: %s" % str(e))
 					yield [{'message': str(e), 'status': PUT_WRITE_ERROR}]
 					return
-				yield self.get_component_manager().put(object, super_ucr)
+				yield self.get_component_manager().put(repo, super_ucr)
 
 		self.package_manager.update()
 
@@ -1073,16 +1073,16 @@ class Instance(umcm.Base, ProgressMixin):
 	def settings_put(self, iterator, object):
 		# FIXME: returns values although it should yield (multi_response)
 		# check if scheme of server is correct
-		for object, in iterator:
-			for key, value in object.items():
+		for repo, in iterator:
+			for key, value in repo.items():
 				if key.endswith("server") and not scheme_is_http(value):
 					msg = _("Invalid scheme, use http or https: %(base)r/%(key)r: %(value)r") % {'base': ONLINE_BASE, 'key': key, 'value': value}
 					return [{'message': msg, 'status': PUT_PARAMETER_ERROR}]
 		# Set values into our UCR copy.
 		try:
 			with set_save_commit_load(self.ucr) as super_ucr:
-				for object, in iterator:
-					for key, value in object.items():
+				for repo, in iterator:
+					for key, value in repo.items():
 						MODULE.info("   ++ Setting new value for '%s' to '%s'" % (key, value))
 						super_ucr.set_registry_var('%s/%s' % (ONLINE_BASE, key), value)
 				super_ucr.changed()

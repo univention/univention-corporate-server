@@ -1,0 +1,15 @@
+product: ucs
+release: "5.0"
+version: [2]
+scope: ucs_5.0-0-errata5.0-2
+src: univention-updater
+fix:
+desc: |
+ This update addresses the following issues:
+ * The description of the repository/online/* UCR variables which is displayed
+   by using the ucr info command was updated to document which variables are
+   defined as deprecated and should no longer be used.
+ * The types of the repository/online/* and repository/online/component/*
+   ending with 'server' or 'port' have been updated to ucr type 'url_http'
+   and respectively 'portnumer' in order to allow a better type checking.
+bug: [55044]

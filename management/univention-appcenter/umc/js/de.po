@@ -1422,7 +1422,6 @@ msgid "Are you sure you want to delete the following components: [{ids}]"
 msgstr "Möchten Sie die folgenden Komponenten wirklich löschen: [{ids}]"
 
 #: umc/js/appcenter/Tile.js:78
-#, fuzzy
 msgid ""
 "This application will not get any further updates. We suggest to uninstall "
 "%(app)s and search for an alternative application."
@@ -1431,7 +1430,6 @@ msgstr ""
 "%(app)s zu deinstallieren und alternative Software zu suchen."
 
 #: umc/js/appcenter/Tile.js:80
-#, fuzzy
 msgid "This application will not get any further updates."
 msgstr "Diese App wird keine weiteren Aktualisierungen erhalten."
 
