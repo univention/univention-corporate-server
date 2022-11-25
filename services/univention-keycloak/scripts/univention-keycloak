@@ -1276,6 +1276,11 @@ def init_keycloak_ucs(opt):
 	# find existing uid->uid mapper or create if none exits
 	check_and_create_component(kc_admin, payload_ldap_mapper["name"], payload_ldap_mapper["providerId"], payload_ldap_mapper)
 
+	# Modify default mappers to correct ones
+	modify_component(kc_admin, firstname_ldap_mapper)
+	modify_component(kc_admin, mail_ldap_mapper)
+	modify_component(kc_admin, lastname_ldap_mapper)
+
 	# Setting admin level to all Domain Admins
 	# Change realm to master
 	kc_admin.realm_name = DEFAULT_REALM
