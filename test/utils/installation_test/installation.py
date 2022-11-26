@@ -27,6 +27,12 @@ def build_parser():  # type: () -> ArgumentParser
         help="Directory for storing screenshots",
         metavar="DIR",
     )
+    parser.add_argument(
+        "--logging", "-l",
+        default="info",
+        choices=("critical", "error", "warning", "info", "debug"),
+        help="Set debug level",
+    )
 
     group = parser.add_argument_group("Virtual machine settings")
     group.add_argument(
@@ -74,7 +80,7 @@ class VNCInstallation(object):
     def __init__(self, args):  # type: (Namespace) -> None
         # see https://github.com/tesseract-ocr/tesseract/issues/2611
         os.environ['OMP_THREAD_LIMIT'] = '1'
-        init_logger('info')
+        init_logger(args.logging)
         self.args = args
         self.config = OCRConfig()
         self.config.update(lang=self.args.language)
