@@ -36,11 +36,11 @@ Description: Univention Self Service
 Package: univention-self-service-master
 Architecture: all
 Depends:
+ python3-univention-directory-manager-rest(>> 10.0.2-8),
  univention-mail-postfix | mail-transport-agent,
  univention-postgresql,
  univention-self-service-invitation,
  univention-self-service-passwordreset-umc,
- python3-univention-directory-manager-rest(>> 10.0.2-8),
  ${misc:Depends},
 Description: Univention Self Service
  This package contains the required dependencies for the Primary Directory Node

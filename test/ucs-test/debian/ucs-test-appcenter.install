@@ -1,2 +1,2 @@
-tests/20_appcenter usr/share/ucs-test/
-univention/appcenter/testing usr/lib/python3/dist-packages/univention
+tests/20_appcenter	usr/share/ucs-test/
+univention/appcenter/testing	usr/lib/python3/dist-packages/univention/

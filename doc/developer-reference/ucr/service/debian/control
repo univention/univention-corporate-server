@@ -9,8 +9,9 @@ Standards-Version: 4.3.0.3
 
 Package: service
 Architecture: all
-Depends: ${misc:Depends},
+Depends:
  univention-base-files,
+ ${misc:Depends},
 Description: An example package to configure services
  This purpose of this package is to show how Univention Config
  Registry is used.

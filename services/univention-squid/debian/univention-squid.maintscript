@@ -1,6 +1,6 @@
-rm_conffile /etc/univention/templates/files/etc/squid3/allowed_ldap_groups.conf 11.0.0-3~
-rm_conffile /etc/univention/templates/files/etc/squid3/squid.conf 11.0.0-3~
-rm_conffile /etc/univention/templates/files/etc/default/squid3 11.0.0-3~
-rm_conffile /etc/univention/templates/files/etc/default/squid 13.0.3-3~
 mv_conffile /etc/squid3/local_bottom.conf /etc/squid/local_bottom.conf 11.0.0-3~
 mv_conffile /etc/squid3/local_rules.conf /etc/squid/local_rules.conf 11.0.0-3~
+rm_conffile /etc/univention/templates/files/etc/default/squid 13.0.3-3~
+rm_conffile /etc/univention/templates/files/etc/default/squid3 11.0.0-3~
+rm_conffile /etc/univention/templates/files/etc/squid3/allowed_ldap_groups.conf 11.0.0-3~
+rm_conffile /etc/univention/templates/files/etc/squid3/squid.conf 11.0.0-3~

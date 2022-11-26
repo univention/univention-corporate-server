@@ -9,5 +9,6 @@ Standards-Version: 4.3.0.3
 
 Package: hosts
 Architecture: all
-Depends: ${misc:Depends}
+Depends:
+ ${misc:Depends},
 Description: An example package to configure the host access

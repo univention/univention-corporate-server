@@ -5,11 +5,9 @@ Maintainer: Univention GmbH <packages@univention.de>
 Build-Depends:
  debhelper,
  dh-python,
- python3-all,
-#python3-asyncio, # when enabling unit-tests during build process!
- python3-debian,
-#python3-tornado, # when enabling unit-tests during build process!
  npm,
+ python3-all,
+ python3-debian,
  univention-config-dev (>= 15.0.3),
  univention-join-dev,
  univention-l10n-dev (>= 7.0.1),
@@ -19,10 +17,10 @@ Package: univention-portal
 Architecture: all
 Depends:
  netcat-openbsd,
- python3-univention-portal (= ${source:Version}),
- python3-ldap,
  python3-click,
+ python3-ldap,
  python3-tornado,
+ python3-univention-portal (= ${source:Version}),
  univention-config,
  univention-directory-listener,
  univention-directory-manager-tools,
@@ -46,8 +44,8 @@ Package: python3-univention-portal
 Architecture: all
 Depends:
  python3-ldap,
- python3-tornado,
  python3-requests,
+ python3-tornado,
  python3-univention-directory-manager,
  ${python:Depends},
 Provides:

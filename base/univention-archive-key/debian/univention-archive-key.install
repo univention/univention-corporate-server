@@ -1,2 +1,2 @@
-univention-archive-key-ucs-?x.gpg /usr/share/keyrings/
-univention-archive-key-ucs-?x.gpg /etc/apt/trusted.gpg.d/
+univention-archive-key-ucs-?x.gpg	etc/apt/trusted.gpg.d/
+univention-archive-key-ucs-?x.gpg	usr/share/keyrings/

@@ -1,2 +1,2 @@
-rm_conffile /etc/init.d/univention-network-common 12.0.0-2~
 rm_conffile /etc/dhcp/dhclient-exit-hooks.d/resolvconf 12.0.1-2~
+rm_conffile /etc/init.d/univention-network-common 12.0.0-2~

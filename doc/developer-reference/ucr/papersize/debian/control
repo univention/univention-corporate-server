@@ -9,7 +9,8 @@ Standards-Version: 4.3.0.3
 
 Package: papersize
 Architecture: all
-Depends: ${misc:Depends}
+Depends:
+ ${misc:Depends},
 Description: An example package to configure the papersize
  This purpose of this package is to show how Univention Config
  Registry is used.

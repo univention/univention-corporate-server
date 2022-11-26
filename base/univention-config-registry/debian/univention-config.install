@@ -1,6 +1,6 @@
-scripts/jitter usr/sbin/
-scripts/univention-ldapsearch usr/bin/
-scripts/univention-check-templates usr/sbin/
-scripts/ucr.sh usr/share/univention-lib/
-python/univention-config-registry usr/sbin/
-etc/bash_completion.d/univention-config-registry etc/bash_completion.d/
+etc/bash_completion.d/univention-config-registry	etc/bash_completion.d/
+python/univention-config-registry	usr/sbin/
+scripts/jitter	usr/sbin/
+scripts/ucr.sh	usr/share/univention-lib/
+scripts/univention-check-templates	usr/sbin/
+scripts/univention-ldapsearch	usr/bin/

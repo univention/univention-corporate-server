@@ -1,7 +1,7 @@
-scripts/univention-config-registry-backup usr/share/univention-config-registry/
-scripts/init-autostart.lib usr/share/univention-config-registry/
-scripts/univention-set-logfile-permissions usr/sbin/
-scripts/univention-keyboardmapping usr/bin/
-etc/X11/Xsession.d/33-univention-environment etc/X11/Xsession.d/
-univention-directory-policy/nfsmounts.py usr/lib/univention-directory-policy/
-univention-directory-policy/univention-policy-update-config-registry.py usr/lib/univention-directory-policy/
+etc/X11/Xsession.d/33-univention-environment	etc/X11/Xsession.d/
+scripts/init-autostart.lib	usr/share/univention-config-registry/
+scripts/univention-config-registry-backup	usr/share/univention-config-registry/
+scripts/univention-keyboardmapping	usr/bin/
+scripts/univention-set-logfile-permissions	usr/sbin/
+univention-directory-policy/nfsmounts.py	usr/lib/univention-directory-policy/
+univention-directory-policy/univention-policy-update-config-registry.py	usr/lib/univention-directory-policy/

@@ -1,6 +1,6 @@
-dhcp.py usr/lib/univention-directory-listener/system
-25univention-dhcp.inst usr/lib/univention-install
+25univention-dhcp.inst	usr/lib/univention-install/
+dhcp.py	usr/lib/univention-directory-listener/system/
 etc/dhcp
+univention-dhcp.conf	lib/systemd/system/isc-dhcp-server.service.d/
 usr/lib/univention-dhcp
 usr/lib/univention-server
-univention-dhcp.conf	/lib/systemd/system/isc-dhcp-server.service.d/

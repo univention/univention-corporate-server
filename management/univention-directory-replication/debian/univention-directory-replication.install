@@ -1,2 +1,2 @@
-replication.py usr/lib/univention-directory-listener/system/
-univention-directory-replication-resync usr/sbin/
+replication.py	usr/lib/univention-directory-listener/system/
+univention-directory-replication-resync	usr/sbin/

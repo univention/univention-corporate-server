@@ -1,5 +1,5 @@
-etc/freeradius/3.0/mods-available/ldap etc/freeradius/3.0/mods-enabled/ldap
 etc/freeradius/3.0/mods-available/eap etc/freeradius/3.0/mods-enabled/eap
+etc/freeradius/3.0/mods-available/ldap etc/freeradius/3.0/mods-enabled/ldap
 etc/freeradius/3.0/mods-available/mschap etc/freeradius/3.0/mods-enabled/mschap
 etc/freeradius/3.0/sites-available/default etc/freeradius/3.0/sites-enabled/default
 etc/freeradius/3.0/sites-available/inner-tunnel etc/freeradius/3.0/sites-enabled/inner-tunnel

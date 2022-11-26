@@ -12,8 +12,8 @@ Standards-Version: 3.5.2
 Package: univention-management-console-module-welcome
 Architecture: all
 Depends:
- univention-management-console-server,
  univention-management-console-module-udm,
+ univention-management-console-server,
  ${python3:Depends},
 Provides:
  ${python3:Provides},

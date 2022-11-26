@@ -1,5 +1,5 @@
-etc/univention/templates/removed
 etc/univention/templates/files
-etc/univention/templates/scripts
 etc/univention/templates/info
+etc/univention/templates/removed
+etc/univention/templates/scripts
 var/cache/univention-config

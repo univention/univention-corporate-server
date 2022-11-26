@@ -9,15 +9,15 @@ Build-Depends:
  python-all,
  python-debian,
  python3-all,
- python3-pytest,
- python3-univentionunittests,
- python3-debian,
  python3-cracklib,
+ python3-debian,
  python3-ldap,
+ python3-pytest,
  python3-samba,
  python3-six,
- python3-univention-debug,
  python3-univention-config-registry (>= 15.0.7-16),
+ python3-univention-debug,
+ python3-univentionunittests,
 
 Package: python-univention-namespace
 Architecture: all
@@ -46,9 +46,9 @@ Depends:
  python-ipaddress,
  python-ldap,
  python-six,
+ python-univention-config-registry (>= 15.0.7-16),
  python-univention-debug,
  python-univention-namespace,
- python-univention-config-registry (>= 15.0.7-16),
  ${misc:Depends},
  ${python:Depends},
 Provides:
@@ -70,8 +70,8 @@ Depends:
  python3-ldap | python3-pyldap,
  python3-samba,
  python3-six,
- python3-univention-debug,
  python3-univention-config-registry (>= 15.0.7-16),
+ python3-univention-debug,
  ${misc:Depends},
  ${python3:Depends},
 Provides:

@@ -3,12 +3,13 @@ Section: univention
 Priority: optional
 Maintainer: John Doe <user@example.com>
 Build-Depends:
-  debhelper-compat (= 12),
+ debhelper-compat (= 12),
 Standards-Version: 4.3.0.3
 
 Package: testdeb
 Architecture: all
-Depends: ${misc:Depends}
+Depends:
+ ${misc:Depends},
 Description: An example package for the developer guide
  This purpose of this package is to describe the structure of a Debian
  packages. It also documents

@@ -12,9 +12,9 @@ Build-Depends:
 Package: univention-bootsplash
 Architecture: all
 Depends:
+ fonts-open-sans,
  plymouth,
  plymouth-themes,
- fonts-open-sans,
  ${misc:Depends},
 Description: UCS - bootsplash
  This package configures the graphical boot screen.

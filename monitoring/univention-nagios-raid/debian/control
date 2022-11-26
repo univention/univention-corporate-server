@@ -13,8 +13,8 @@ Depends:
  mdadm,
  nagios-plugins-contrib,
  univention-directory-manager-tools (>> 7.0.147),
- univention-nagios-client,
  univention-monitoring-raid,
+ univention-nagios-client,
  ${misc:Depends},
 Description: nagios raid plugin
  This package installs a nagios plugin to monitor software

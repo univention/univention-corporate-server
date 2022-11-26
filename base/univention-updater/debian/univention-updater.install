@@ -1,31 +1,25 @@
-usr/bin/univention-upgrade usr/sbin/
-usr/bin/univention-updater usr/share/univention-updater/
-usr/bin/univention-actualise usr/share/univention-updater/
-usr/bin/univention-repository-create usr/sbin/
-usr/bin/univention-repository-update usr/sbin/
-usr/bin/univention-list-installed-unmaintained-packages usr/sbin/
-
-usr/bin/univention-policy-set-repository-server usr/lib/univention-directory-policy/
-usr/bin/univention-policy-repository-sync usr/lib/univention-directory-policy/
-usr/bin/univention-policy-maintenance usr/lib/univention-directory-policy/
-
-script/univention-install usr/sbin/
-script/univention-remove usr/sbin/
-script/reboot.at var/lib/univention-updater/
-script/univention-updater-check usr/share/univention-updater/
-script/disable-apache2-umc usr/share/univention-updater/
-script/enable-apache2-umc usr/share/univention-updater/
-usr/bin/updater-statistics usr/share/univention-updater/
-script/univention-updater-umc-dist-upgrade usr/share/univention-updater/
-script/univention-updater-umc-univention-install usr/share/univention-updater/
-usr/bin/univention-prune-kernels usr/sbin/
-
-license_uuid.py usr/lib/univention-directory-listener/system/
-
-# script/preup.sh usr/share/univention-updater/
-script/check.sh usr/share/univention-updater/
-script/postup.sh usr/share/univention-updater/
-
-appliance-hooks.d/updater usr/lib/univention-system-setup/appliance-hooks.d/
-
+#script/preup.sh	usr/share/univention-updater/
+appliance-hooks.d/updater	usr/lib/univention-system-setup/appliance-hooks.d/
 apt.conf.d/*	etc/apt/apt.conf.d/
+license_uuid.py	usr/lib/univention-directory-listener/system/
+script/check.sh	usr/share/univention-updater/
+script/disable-apache2-umc	usr/share/univention-updater/
+script/enable-apache2-umc	usr/share/univention-updater/
+script/postup.sh	usr/share/univention-updater/
+script/reboot.at	var/lib/univention-updater/
+script/univention-install	usr/sbin/
+script/univention-remove	usr/sbin/
+script/univention-updater-check	usr/share/univention-updater/
+script/univention-updater-umc-dist-upgrade	usr/share/univention-updater/
+script/univention-updater-umc-univention-install	usr/share/univention-updater/
+usr/bin/univention-actualise	usr/share/univention-updater/
+usr/bin/univention-list-installed-unmaintained-packages	usr/sbin/
+usr/bin/univention-policy-maintenance	usr/lib/univention-directory-policy/
+usr/bin/univention-policy-repository-sync	usr/lib/univention-directory-policy/
+usr/bin/univention-policy-set-repository-server	usr/lib/univention-directory-policy/
+usr/bin/univention-prune-kernels	usr/sbin/
+usr/bin/univention-repository-create	usr/sbin/
+usr/bin/univention-repository-update	usr/sbin/
+usr/bin/univention-updater	usr/share/univention-updater/
+usr/bin/univention-upgrade	usr/sbin/
+usr/bin/updater-statistics	usr/share/univention-updater/

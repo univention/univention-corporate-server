@@ -9,9 +9,10 @@ Standards-Version: 4.3.0.3
 
 Package: join-template
 Architecture: all
-Depends: univention-join (>= 5.0.20-1),
+Depends:
  shell-univention-lib (>= 2.0.17-1),
- ${misc:Depends}
+ univention-join (>= 5.0.20-1),
+ ${misc:Depends},
 Description: An example package for join scripts
  This purpose of this package is to show how
  Univention Join scripts are used.

@@ -1,2 +1,2 @@
-tests/86_selenium usr/share/ucs-test/
-univention/testing/selenium/suppress_notifications.js var/www/univention/js/umc/hooks/
+tests/86_selenium	usr/share/ucs-test/
+univention/testing/selenium/suppress_notifications.js	var/www/univention/js/umc/hooks/

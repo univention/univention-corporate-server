@@ -3,13 +3,14 @@ Section: univention
 Priority: optional
 Maintainer: John Doe <user@example.com>
 Build-Depends:
-  debhelper-compat (= 12),
+ debhelper-compat (= 12),
 Standards-Version: 4.3.0.3
 
 Package: extended-attribute
 Architecture: all
-Depends: shell-univention-lib (>= 2.0.25),
- ${misc:Depends}
+Depends:
+ shell-univention-lib (>= 2.0.25),
+ ${misc:Depends},
 Description: Example package for an Extended Attribute
  This purpose of this package is to describe the structure of a Debian
  packages. It also documents

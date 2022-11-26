@@ -1,4 +1,4 @@
-sql                                               usr/share/univention-pkgdb
-conffiles/etc/cron.d/univention-pkgdb-check       etc/cron.d
-pkgdb.py                                          usr/lib/univention-directory-listener/system
-univention-pkgdb-check                            usr/sbin
+conffiles/etc/cron.d/univention-pkgdb-check	etc/cron.d/
+pkgdb.py	usr/lib/univention-directory-listener/system/
+sql	usr/share/univention-pkgdb/
+univention-pkgdb-check	usr/sbin/

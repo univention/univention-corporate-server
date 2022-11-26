@@ -1,7 +1,7 @@
-make-certificates.sh usr/share/univention-ssl/
-ssl-sync usr/share/univention-ssl/
-gencertificate.py usr/lib/univention-directory-listener/system
-univention-certificate usr/sbin/
-univention-certificate-check-validity usr/sbin/
-extensions-example.sh usr/share/doc/univention-ssl/
-univention-fetch-certificate usr/sbin/
+extensions-example.sh	usr/share/doc/univention-ssl/
+gencertificate.py	usr/lib/univention-directory-listener/system/
+make-certificates.sh	usr/share/univention-ssl/
+ssl-sync	usr/share/univention-ssl/
+univention-certificate	usr/sbin/
+univention-certificate-check-validity	usr/sbin/
+univention-fetch-certificate	usr/sbin/

@@ -1,6 +1,6 @@
-var/lib/postgres
 usr/share/locale/de/LC_MESSAGES
-usr/share/univention-webui-style/icon
 usr/share/univention-console/uniconf
+usr/share/univention-webui-style/icon
+var/lib/postgres
 var/lib/univention-pkgdb/add
 var/lib/univention-pkgdb/delete

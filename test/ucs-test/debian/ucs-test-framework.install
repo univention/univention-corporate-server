@@ -1,6 +1,6 @@
-bin/ldiff usr/bin/
-bin/ucs-test usr/sbin/
-bin/runner usr/share/ucs-test/
-bin/udm-test usr/sbin/
-bin/udm-test-rest usr/sbin/
-tests/conftest.py usr/share/ucs-test/
+bin/ldiff	usr/bin/
+bin/runner	usr/share/ucs-test/
+bin/ucs-test	usr/sbin/
+bin/udm-test	usr/sbin/
+bin/udm-test-rest	usr/sbin/
+tests/conftest.py	usr/share/ucs-test/

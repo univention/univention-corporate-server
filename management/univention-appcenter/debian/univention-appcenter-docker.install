@@ -1,1 +1,1 @@
-scripts/docker-app-container-init-script usr/share
+scripts/docker-app-container-init-script	usr/share/

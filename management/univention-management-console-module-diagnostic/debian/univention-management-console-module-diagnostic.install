@@ -1,2 +1,2 @@
 umc/js/diagnostic.css	usr/share/univention-management-console-frontend/js/umc/modules/
-umc/python/diagnostic/univention-run-diagnostic-checks	/usr/bin/
+umc/python/diagnostic/univention-run-diagnostic-checks	usr/bin/

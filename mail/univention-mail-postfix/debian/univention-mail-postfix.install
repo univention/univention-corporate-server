@@ -1,6 +1,6 @@
-share/* usr/share/univention-mail-postfix/
-usr/lib/univention-server/server_password_change.d/50univention-mail-server usr/lib/univention-server/server_password_change.d/
-hosteddomains.py /usr/lib/univention-directory-listener/system
-dh_*.pem usr/share/univention-mail-postfix/
-etc/univention/docker/init.d etc/univention/docker/
-etc/postfix/postscreen_access.cidr etc/postfix/
+dh_*.pem	usr/share/univention-mail-postfix/
+etc/postfix/postscreen_access.cidr	etc/postfix/
+etc/univention/docker/init.d	etc/univention/docker/
+hosteddomains.py	usr/lib/univention-directory-listener/system/
+share/*	usr/share/univention-mail-postfix/
+usr/lib/univention-server/server_password_change.d/50univention-mail-server	usr/lib/univention-server/server_password_change.d/

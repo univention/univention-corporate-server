@@ -28,9 +28,9 @@ Description: UCS - automatic profile-based installation services
 Package: univention-net-installer-daemon
 Architecture: all
 Depends:
+ python3-ldap,
  python3-univention,
  python3-univention-debug,
- python3-ldap,
  univention-config,
  ${misc:Depends},
 Description: UCS - automatic profile server installation

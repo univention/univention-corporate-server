@@ -1,4 +1,4 @@
 usr/share/univention-system-activation/www/css/
-var/www/univention-management-console/js/umc/modules/appliance
-var/www/icon
 var/cache/univention-app-appliance
+var/www/icon
+var/www/univention-management-console/js/umc/modules/appliance

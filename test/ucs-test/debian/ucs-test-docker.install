@@ -1,2 +1,2 @@
 tests/80_docker	usr/share/ucs-test/
-tests/80_docker/create_appcenter_json.py usr/sbin
+tests/80_docker/create_appcenter_json.py	usr/sbin/

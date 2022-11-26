@@ -7,8 +7,8 @@ Build-Depends:
  dh-python,
  python-polib,
  python2.7,
- python3-polib,
  python3,
+ python3-polib,
  univention-config-dev (>= 15.0.3),
  univention-l10n-dev (>= 7.0.1),
 Standards-Version: 3.7.2

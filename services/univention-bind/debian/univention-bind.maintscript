@@ -1,2 +1,2 @@
-rm_conffile /etc/univention/templates/files/etc/init.d/bind9 14.0.0-2~
 rm_conffile /etc/init.d/bind9 14.0.0-2~
+rm_conffile /etc/univention/templates/files/etc/init.d/bind9 14.0.0-2~

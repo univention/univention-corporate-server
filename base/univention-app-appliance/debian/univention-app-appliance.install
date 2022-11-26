@@ -1,9 +1,9 @@
-plymouth/ucs-appliance-dark usr/share/plymouth/themes/
-plymouth/ucs-appliance-light usr/share/plymouth/themes/
-python/univention-app-appliance	usr/sbin/
 images/*	usr/share/univention-app-appliance/images/
-templates/* usr/share/univention-app-appliance/templates/
+plymouth/ucs-appliance-dark	usr/share/plymouth/themes/
+plymouth/ucs-appliance-light	usr/share/plymouth/themes/
+python/univention-app-appliance	usr/sbin/
+templates/*	usr/share/univention-app-appliance/templates/
 tools/*	usr/share/univention-app-appliance/
+usr/lib/univention-system-setup/appliance-hooks.d/
 usr/share/univention-system-setup/www/
 usr/share/univention-web/js/
-usr/lib/univention-system-setup/appliance-hooks.d/

@@ -75,8 +75,8 @@ Depends:
 Recommends:
  dbus-x11,
  firefox-esr,
- smbclient,
  linux-image-amd64,
+ smbclient,
  xinit,
 Replaces:
  univention-setup-boot,

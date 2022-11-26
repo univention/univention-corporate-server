@@ -1,2 +1,2 @@
-31univention-nagios-raid.inst usr/lib/univention-install/
-69univention-nagios-raid.uinst usr/lib/univention-uninstall/
+31univention-nagios-raid.inst	usr/lib/univention-install/
+69univention-nagios-raid.uinst	usr/lib/univention-uninstall/

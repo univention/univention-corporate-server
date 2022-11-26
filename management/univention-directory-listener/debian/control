@@ -22,9 +22,9 @@ Build-Depends:
 Package: univention-directory-listener
 Architecture: any
 Depends:
- python3-univention-lib (>= 1.0.25-1),
  python3-univention (>= 13),
  python3-univention-debug,
+ python3-univention-lib (>= 1.0.25-1),
  shell-univention-lib (>= 1.0.6),
  univention-base-files,
  ${misc:Depends},

@@ -3,13 +3,14 @@ Section: univention
 Priority: optional
 Maintainer: Univention GmbH <packages@univention.de>
 Build-Depends:
-  debhelper-compat (= 12),
+ debhelper-compat (= 12),
 Standards-Version: 4.3.0.3
 
 Package: printusers
 Architecture: all
-Depends: ${misc:Depends},
+Depends:
  univention-directory-listener,
+ ${misc:Depends},
 Description: An example listener module for the developer guide
  This purpose of this package is to describe the structure of a Univention
  Directory Listener module package.

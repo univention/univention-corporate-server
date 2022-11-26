@@ -1,2 +1,2 @@
-sysvol-sync-scripts/*.sh usr/share/univention-samba4/scripts
-sysvol-sync-scripts/*.py usr/share/univention-samba4/scripts
+sysvol-sync-scripts/*.py	usr/share/univention-samba4/scripts/
+sysvol-sync-scripts/*.sh	usr/share/univention-samba4/scripts/

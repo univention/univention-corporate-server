@@ -1,7 +1,7 @@
-ucs usr/share/plymouth/themes
-ucs-light usr/share/plymouth/themes
-systemd/20set_start_status.conf lib/systemd/system/plymouth-start.service.d
-systemd/20set_shutdown_status.conf lib/systemd/system/plymouth-halt.service.d
-systemd/20set_shutdown_status.conf lib/systemd/system/plymouth-poweroff.service.d
-systemd/20set_shutdown_status.conf lib/systemd/system/plymouth-reboot.service.d
-systemd/20set_shutdown_status.conf lib/systemd/system/plymouth-kexec.service.d
+systemd/20set_shutdown_status.conf	lib/systemd/system/plymouth-halt.service.d/
+systemd/20set_shutdown_status.conf	lib/systemd/system/plymouth-kexec.service.d/
+systemd/20set_shutdown_status.conf	lib/systemd/system/plymouth-poweroff.service.d/
+systemd/20set_shutdown_status.conf	lib/systemd/system/plymouth-reboot.service.d/
+systemd/20set_start_status.conf	lib/systemd/system/plymouth-start.service.d/
+ucs	usr/share/plymouth/themes/
+ucs-light	usr/share/plymouth/themes/

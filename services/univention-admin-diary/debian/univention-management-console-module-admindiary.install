@@ -1,2 +1,2 @@
-umc/js/admindiary/icons/* usr/share/univention-management-console-frontend/js/umc/modules/admindiary/icons
-umc/icons/scalable/* usr/share/univention-management-console-frontend/js/umc/modules/admindiary/icons
+umc/icons/scalable/*	usr/share/univention-management-console-frontend/js/umc/modules/admindiary/icons/
+umc/js/admindiary/icons/*	usr/share/univention-management-console-frontend/js/umc/modules/admindiary/icons/

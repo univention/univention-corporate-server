@@ -1,2 +1,2 @@
-univention-ssh usr/sbin/
-univention-openssh-recreate-host-keys usr/sbin/
+univention-openssh-recreate-host-keys	usr/sbin/
+univention-ssh	usr/sbin/
