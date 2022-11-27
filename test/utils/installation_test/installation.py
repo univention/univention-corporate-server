@@ -27,11 +27,43 @@ def build_parser():  # type: () -> ArgumentParser
         help="Directory for storing screenshots",
         metavar="DIR",
     )
-    parser.add_argument(
+
+    group = parser.add_argument_group("Debugging")
+    group.add_argument(
         "--logging", "-l",
         default="info",
         choices=("critical", "error", "warning", "info", "debug"),
         help="Set debug level",
+    )
+    group.add_argument(
+        "--debug-boxes",
+        default=OCRConfig.dump_boxes,
+        help=OCRConfig._dump_boxes,
+        metavar="FILE",
+    )
+    group.add_argument(
+        "--debug-screen",
+        default=OCRConfig.dump_screen,
+        help=OCRConfig._dump_screen,
+        metavar="FILE",
+    )
+    group.add_argument(
+        "--debug-gradients-x",
+        default=OCRConfig.dump_x_gradients,
+        help=OCRConfig._dump_y_gradients,
+        metavar="FILE",
+    )
+    group.add_argument(
+        "--debug-gradients-y",
+        default=OCRConfig.dump_y_gradients,
+        help=OCRConfig._dump_y_gradients,
+        metavar="FILE",
+    )
+    group.add_argument(
+        "--debug-dir",
+        default=OCRConfig.dump_dir,
+        help=OCRConfig._dump_dir,
+        metavar="DIR",
     )
 
     group = parser.add_argument_group("Virtual machine settings")
@@ -82,8 +114,14 @@ class VNCInstallation(object):
         os.environ['OMP_THREAD_LIMIT'] = '1'
         init_logger(args.logging)
         self.args = args
-        self.config = OCRConfig()
-        self.config.update(lang=self.args.language)
+        self.config = OCRConfig(
+            lang=args.language,
+            dump_boxes=args.debug_boxes,
+            dump_screen=args.debug_screen,
+            dump_x_gradients=args.debug_gradients_x,
+            dump_y_gradients=args.debug_gradients_y,
+            dump_dir=args.debug_dir,
+        )
         self.timeout = 120
         self.setup_finish_sleep = 900
         self.connect()
