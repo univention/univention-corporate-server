@@ -9,6 +9,7 @@ default_admin_groups = "cn=%s,cn=groups,%s" % (
 admin_groups = configRegistry.get("portal/admin-groups", default_admin_groups).split(", ")
 admin_groups = [group.strip() for group in admin_groups]
 config = {
+    "assets_root": "/usr/share/univention-portal",
     "port": configRegistry.get("portal/port"),
     "admin_groups": admin_groups,
     "fqdn": "%(hostname)s.%(domainname)s" % configRegistry,

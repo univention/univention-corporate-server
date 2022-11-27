@@ -38,11 +38,12 @@ import json
 import os.path
 import shutil
 import tempfile
+from binascii import a2b_base64
 from imghdr import what
-from io import BytesIO
+from pathlib import Path
 from urllib.parse import quote
 
-from univention.portal import Plugin
+from univention.portal import Plugin, config
 from univention.portal.log import get_logger
 
 
@@ -181,12 +182,12 @@ class PortalReloaderUDM(MtimeBasedLazyFileReloader):
         ret["dn"] = portal.dn
         ret["showUmc"] = portal.props.showUmc
         if portal.props.logo:
-            ret["logo"] = self._write_image(portal.props.name, portal.props.logo.raw, "logos")
+            ret["logo"] = self._write_image(portal.props.logo.raw, portal.props.name, "logos")
         else:
             ret["logo"] = None
         if portal.props.background:
             ret["background"] = self._write_image(
-                portal.props.name, portal.props.background.raw, "backgrounds",
+                portal.props.background.raw, portal.props.name, "backgrounds",
             )
         else:
             ret["background"] = None
@@ -277,29 +278,27 @@ class PortalReloaderUDM(MtimeBasedLazyFileReloader):
 
         return ret
 
-    def _write_image(self, name, img, dirname):
+    @classmethod
+    def _write_image(cls, image, name, dirname):
+        assets_root = Path(config.fetch("assets_root"))
+
         try:
             name = name.replace(
                 "/", "-",
             )  # name must not contain / and must be a path which can be accessed via the web!
-            string_buffer = BytesIO(img)
-            suffix = what(string_buffer) or "svg"
-            fname = "/usr/share/univention-portal/icons/%s/%s.%s" % (dirname, name, suffix)
-            with open(fname, "wb") as fd:
-                fd.write(img)
-        except (EnvironmentError, TypeError, IOError):
+            binary_image = a2b_base64(image)
+            extension = what(None, binary_image) or "svg"
+            path = assets_root / "icons" / dirname / f"{name}.{extension}"
+            path.write_bytes(binary_image)
+        except (OSError, TypeError):
             get_logger("img").exception("Error saving image for %s" % name)
         else:
-            return "./icons/%s/%s.%s" % (
-                quote(dirname),
-                quote(name),
-                quote(suffix),
-            )
+            return f"./icons/{quote(dirname)}/{quote(name)}.{extension}"
 
     def _save_image(self, portal, entry):
         img = entry.props.icon
         if img:
-            return self._write_image(entry.props.name, img.raw, "entries")
+            return self._write_image(img.raw, entry.props.name, "entries")
 
 
 class GroupsReloaderLDAP(MtimeBasedLazyFileReloader):
