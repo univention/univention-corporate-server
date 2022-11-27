@@ -44,12 +44,14 @@ import uuid
 import zlib
 import base64
 import hashlib
+import inspect
 import binascii
 import datetime
 import traceback
 import functools
 from email.utils import parsedate
 from http.client import responses
+from typing import Dict, List, Optional
 from urllib.parse import urljoin, urlparse, urlencode, urlunparse, parse_qs, quote, unquote
 
 import tornado.web
@@ -142,50 +144,90 @@ def get_ldap_connection(type_, binddn, bindpw):
 	return get_connection(bind=None, binddn=binddn, bindpw=bindpw, host=None, port=None, base=ucr['ldap/base'], start_tls=start_tls, uri=uri)
 
 
-def add_sanitizers(type_, sanitizers):
-	def _decorator(method):
-		setattr(method, 'sanitizers', getattr(method, 'sanitizers', {}))
-		method.sanitizers[type_] = sanitizers
-		return method
-	return _decorator
+class Param:
+
+	@property
+	def type(self):
+		return type(self).__name__.lower()
+
+	def __init__(self, sanitizer, alias=None, description=None, deprecated=None, example=None, examples=None, style=None, explode=None):
+		self.sanitizer = sanitizer
+		self.alias = alias
+		self.description = description
+		self.deprecated = deprecated
+		self.example = example
+		self.examples = examples
+		self.style = style
+		self.explode = explode
 
 
-def sanitize_body_arguments(**sanitizers):
-	return add_sanitizers('body', sanitizers)
+class Path(Param):
+	pass
 
 
-def sanitize_query_string(**sanitizers):
-	return add_sanitizers('query', sanitizers)
+class Body(Param):
+
+	def __init__(self, sanitizer, content_type='application/json', **kwargs):
+		super().__init__(sanitizer, **kwargs)
+		self.content_type = content_type
 
 
-class RequestSanitizer(DictSanitizer):
+class Query(Param):
+	pass
 
-	def __init__(self, resource):
-		sanitizers = getattr(getattr(resource, resource.request.method.lower()), 'sanitizers', {})
-		super().__init__({
-			'query_string': QueryStringSanitizer(sanitizers.get('query', {}), required=True, further_arguments=['resource'], _copy_value=False),
-			'body_arguments': DictSanitizer(sanitizers.get('body', {}), required=True, further_arguments=['resource'], _copy_value=False)
-		}, further_arguments=['resource'], _copy_value=False)
 
-	def sanitize(self, resource, *args, **kwargs):
+def parse_content_type(content_type):
+	return content_type.partition(';')[0].strip().lower()
+
+
+def sanitize(method):
+	args = inspect.getfullargspec(method)
+	all_args = dict(zip(reversed(args.args), reversed(args.defaults)))
+	method.params = {
+		ptype: {
+			key: param
+			for key, param in all_args.items()
+			if isinstance(param, Param) and param.type == ptype
+		} for ptype in ('path', 'query', 'body')
+	}
+	method.sanitizers = {}
+	if method.params.get('query'):
+		query_sanitizers = {param.alias or key: param.sanitizer for key, param in method.params['query'].items()}
+		method.sanitizers['query_string'] = QueryStringSanitizer(query_sanitizers, required=True, further_arguments=['resource'], _copy_value=False)
+	if method.params['body']:
+		content_types = {param.content_type for param in method.params['body'].values()}
+		method.sanitizers['body_arguments'] = DictSanitizer({
+			content_type: DictSanitizer({
+				param.alias or key: param.sanitizer if param.content_type == content_type else Sanitizer() for key, param in method.params['body'].items()
+			}, required=True, further_arguments=['resource'], _copy_value=False)
+			for content_type in content_types
+		}, required=True, further_arguments=['resource'], _copy_value=False)
+
+	method.sanitizer = DictSanitizer(method.sanitizers, further_arguments=['resource'], _copy_value=False)
+
+	@functools.wraps(method)
+	async def decorator(self, *args, **params):
+		content_type = parse_content_type(self.request.headers.get('Content-Type', ''))
 		payload = {
-			'query_string': {k: [v.decode('UTF-8') for v in val] for k, val in resource.request.query_arguments.items()} if resource.request.query_arguments else {},
-			'body_arguments': resource.request.body_arguments or {},
-			'__resource': resource,
-			'__args': args,
-			'__kwargs': kwargs,
+			'query_string': {k: [v.decode('UTF-8') for v in val] for k, val in self.request.query_arguments.items()} if self.request.query_arguments else {},
+			'body_arguments': {
+				'application/json': {},
+				'application/x-www-form-urlencoded': {},
+				'multipart/form-data': {},
+			},
 		}
-		if isinstance(payload['query_string'], dict):
-			payload['query_string']['__resource'] = resource
-		if isinstance(payload['body_arguments'], dict):
-			payload['body_arguments']['__resource'] = resource
-		value = super().sanitize('request.arguments', {'request.arguments': payload, 'resource': resource})
-		resource.request.decoded_query_arguments = value['query_string']
-		resource.request.body_arguments = value['body_arguments']
-		return value
-
-	def _sanitize(self, value, name, further_arguments):
-		return super()._sanitize(value, name, further_arguments)
+		payload['body_arguments'][content_type] = self.request.body_arguments
+		arguments = self.sanitize_arguments(method.sanitizer, 'request.arguments', {'request.arguments': payload, 'resource': self})
+		self.request.decoded_query_arguments = {
+			key: arguments['query_string'][param.alias or key]
+			for key, param in method.params['query'].items()
+		}
+		self.request.body_arguments = {
+			key: arguments['body_arguments'][content_type][param.alias or key]
+			for key, param in method.params['body'].items()
+		}
+		return await method(self, *self.path_args, **self.path_kwargs, **self.request.decoded_query_arguments, **self.request.body_arguments)
+	return decorator
 
 
 class DictSanitizer(DictSanitizer):
@@ -258,68 +300,16 @@ class PropertiesSanitizer(DictSanitizer):
 	def __init__(self, *args, **kwargs):
 		super().__init__({}, *args, default_sanitizer=PropertySanitizer(), **kwargs)
 
-	def sanitize(self, resource, module, obj):
-		# FIXME: for the automatic IP address assignment, we need to make sure that
-		# the network is set before the IP address (see Bug #24077, comment 6)
-		# The following code is a workaround to make sure that this is the
-		# case, however, this should be fixed correctly.
-		# This workaround has been documented as Bug #25163.
-		def _tmp_cmp(i):
-			if i[0] == 'network':
-				return ("\x00", i[1])
-			return i
-		properties = resource.request.body_arguments['properties']
+	def sanitize(self, properties, module, obj):
 		# TODO: add sanitizer for e.g. required properties (respect options!)
-
-		# properties = dict(encode_properties(module, obj, properties))
 
 		self.default_sanitizer._module = module
 		self.default_sanitizer._obj = obj
 		try:
-			properties = super().sanitize('properties', {'properties': properties})
+			return super().sanitize('properties', {'properties': properties})
 		finally:
 			self.default_sanitizer._module = None
 			self.default_sanitizer._obj = None
-
-		password_properties = module.password_properties
-		for property_name, value in sorted(properties.items(), key=_tmp_cmp):
-			if property_name in password_properties:
-				MODULE.info(f'Setting password property {property_name}')
-			else:
-				MODULE.info(f'Setting property {property_name} to {value!r}')
-
-			try:
-				try:
-					obj[property_name] = value
-				except KeyError:
-					if property_name != 'objectFlag':
-						raise
-				except udm_errors.valueMayNotChange:
-					if obj[property_name] == value:  # UDM does not check equality before raising the exception
-						continue
-					raise udm_errors.valueMayNotChange()  # the original exception is ugly!
-				except udm_errors.valueRequired:
-					if value is None:
-						# examples where this happens:
-						# "password" of users/user: because password is required but on modify() None is send, which must not alter the current password
-						# "unixhome" of users/user: is required, set to None in the request, the default value is set afterwards in create(). Bug #50053
-						if property_name in password_properties:
-							MODULE.info(f'Ignore unsetting password property {property_name}')
-						else:
-							current_value = obj.info.pop(property_name, None)
-							MODULE.info(f'Unsetting property {property_name} value {current_value!r}')
-						continue
-					raise
-			except (udm_errors.valueInvalidSyntax, udm_errors.valueError, udm_errors.valueMayNotChange, udm_errors.valueRequired, udm_errors.noProperty) as exc:
-				multi_error = MultiValidationError()
-				try:
-					self.raise_formatted_validation_error(_('The property %(name)s has an invalid value: %(details)s'), property_name, value, details=str(UDM_Error(exc)))
-				except ValidationError as exc:
-					multi_error.add_error(exc, property_name)
-					raise multi_error
-
-		resource.request.body_arguments['properties'] = properties
-		return properties
 
 
 class PropertySanitizer(Sanitizer):
@@ -428,7 +418,6 @@ class ResourceBase:
 		finally:
 			self.request.content_negotiation_lang = self.check_acceptable()
 			self.decode_request_arguments()
-			self.sanitize_arguments(RequestSanitizer(self), self)
 
 	def _request_summary(self):
 		return '%s: %s' % (self.request.x_request_id[:10], super()._request_summary())
@@ -546,30 +535,30 @@ class ResourceBase:
 		return lang
 
 	def decode_request_arguments(self):
-		content_type = self.request.headers.get('Content-Type', '')
+		content_type = parse_content_type(self.request.headers.get('Content-Type', ''))
 		if self.request.method in ('HEAD', 'GET', 'OPTIONS', 'DELETE'):
 			if self.request.body:
 				raise HTTPError(400, 'Safe HTTP method should not contain request body/Content-Type header.')
 			return
 
-		if content_type.startswith('application/json'):
+		if content_type in ('application/json',):
 			try:
 				self.request.body_arguments = json.loads(self.request.body)
 			except ValueError as exc:
 				raise HTTPError(400, _('Invalid JSON document: %r') % (exc,))
-		elif content_type.startswith('application/x-www-form-urlencoded') or content_type.startswith('multipart/form-data'):
+		elif content_type in ('application/x-www-form-urlencoded', 'multipart/form-data'):
 			self.decode_form_arguments()
 
 	def decode_form_arguments(self):
 		pass
 
 	def get_body_argument(self, name, *args):
-		if self.request.headers.get('Content-Type', '').startswith('application/json'):
+		if parse_content_type(self.request.headers.get('Content-Type', '')) in ('application/json',):
 			return self.request.body_arguments.get(name)
 		return super().get_body_argument(name, *args)
 
 	def get_body_arguments(self, name, *args):
-		if self.request.headers.get('Content-Type', '').startswith('application/json'):
+		if parse_content_type(self.request.headers.get('Content-Type', '')) in ('application/json',):
 			return self.request.body_arguments.get(name)
 		return super().get_body_arguments(name, *args)
 
@@ -999,15 +988,23 @@ class ResourceBase:
 		return ('udm:object-modules', 'udm:object-module', 'type', 'up', 'self')
 
 
-def _sanitizer_to_openapi(san):
+def _param_to_openapi(param):
+	san = param.sanitizer
 	type_ = ''
-	definition = {}
+	definition = {key: val for key, val in {
+		'description': param.description,
+		'deprecated': param.deprecated,
+		'example': param.example,
+		'examples': param.examples,
+		'style': param.style,
+		'explode': param.explode,
+	}.items() if val is not None}
 	schema = {}
 	if isinstance(san, DictSanitizer):
 		type_ = 'object'
 		schema['additionalProperties'] = san.allow_other_keys
 		schema['properties'] = {
-			prop: _sanitizer_to_openapi(s or san.default_sanitizer)['schema']
+			prop: _param_to_openapi(Param(s or san.default_sanitizer))['schema']
 			for prop, s in san.sanitizers.items()
 			if s or san.default_sanitizer
 		}
@@ -1018,7 +1015,7 @@ def _sanitizer_to_openapi(san):
 		if san.max_elements is not None:
 			schema['maxItems'] = san.max_elements
 		if san.sanitizer:
-			schema['items'] = _sanitizer_to_openapi(san.sanitizer)['schema']
+			schema['items'] = _param_to_openapi(Param(san.sanitizer))['schema']
 	elif isinstance(san, DNSanitizer):
 		type_ = 'string'
 		schema['format'] = 'dn'
@@ -1316,123 +1313,36 @@ class _OpenAPIBase:
 				},
 			},
 			'template.get.query.position': {
-				"in": "query",
-				"name": "position",
-				"description": "Position which is used as search base.",
 			},
 			'template.get.query.superordinate': {
-				"in": "query",
-				"name": "superordinate",
-				"description": "The superordinate DN of the object to create. `position` is sufficient.",
-				# "example": f"cn=superordinate,{ldap_base}",
 			},
 			'template.get.query.template': {
-				"in": "query",
-				"name": "template",
-				"deprecated": True,
-				"description": "**Experimental**: A |UDM| template object.",
 			},
 			'objects.get.query.position': {
-				"in": "query",
-				"name": "position",
-				"description": "Position which is used as search base.",
 			},
 			'objects.get.query.scope': {
-				"in": "query",
-				"name": "scope",
-				"description": "The LDAP search scope (sub, base, one).",
 			},
 			'objects.get.query.filter': {
-				"in": "query",
-				"name": "filter",
-				"description": "A LDAP filter which may contain `UDM` property names instead of `LDAP` attribute names.",
-				"examples": {
-					"any-object": {
-						"value": "(objectClass=*)",
-					},
-					"admin-user": {
-						"value": "(|(username=Administrator)(username=Admin*))",
-					},
-				},
 			},
 			'objects.get.query.query': {
-				"in": "query",
-				"name": "query",
-				"style": "deepObject",
-				"description": "The values to search for (propertyname and search filter value). Alternatively with `filter` a raw LDAP filter can be given.",
-				"examples": {
-					'nothing': {
-						'value': None,
-					},
-					'property': {
-						'value': {'': '*'},
-					},
-				},
 			},
 			'objects.get.query.hidden': {
-				"in": "query",
-				"name": "hidden",
-				"description": "Include hidden/system objects in the response.",
-				"example": True,
 			},
 			'objects.get.query.superordinate': {
-				"in": "query",
-				"name": "superordinate",
-				"description": "The superordinate DN of the objects to find. `position` is sufficient.",
-				# "example": f"cn=superordinate,{ldap_base}",
 			},
 			'objects.get.query.properties': {
-				"in": "query",
-				"name": "properties",
-				"style": "form",
-				"explode": True,
-				"description": "The properties which should be returned, if not given all properties are returned.",
-				'examples': {
-					'no restrictions': {'value': None},
-					'only small subset': {'value': ['username', 'firstname', 'lastname']},
-				}
 			},
 			'objects.get.query.limit': {
-				"in": "query",
-				"name": "limit",
-				"deprecated": True,
-				"description": "**Broken/Experimental**: How many results should be shown per page.",
-				"examples": {
-					"no limit": {"value": "", "summary": "get all entries"},
-					"limit to 50": {"value": 50, "summary": "limit to 50 entries"},
-				},
 			},
 			'objects.get.query.page': {
-				"in": "query",
-				"name": "page",
-				"deprecated": True,
-				"description": "**Broken/Experimental**: The search page, starting at one.",
-				"example": 1,
 			},
 			'objects.get.query.dir': {
-				"in": "query",
-				"name": "dir",
-				"deprecated": True,
-				"description": "**Broken/Experimental**: The Sort direction (ASC or DESC).",
 			},
 			'objects.get.query.by': {
-				"in": "query",
-				"name": "by",
-				"deprecated": True,
-				"description": "**Broken/Experimental**: Sort the search result by the specified property.",
-				#"example": "username",
 			},
 			'object.delete.query.cleanup': {
-				"in": "query",
-				"name": "cleanup",
-				"description": "Whether to perform a cleanup (e.g. of temporary objects, locks, etc).",
-				"example": True,
 			},
 			'object.delete.query.recursive': {
-				"in": "query",
-				"name": "recursive",
-				"description": "Whether to remove referring objects (e.g. DNS or DHCP references).",
-				"example": True,
 			},
 			'user-agent': {
 				"in": "header",
@@ -1675,12 +1585,13 @@ class _OpenAPIBase:
 		for name, klass in classes.items():
 			for method in ('get', 'post', 'put', 'delete'):
 				func = getattr(klass, method, None)
-				if not hasattr(func, 'sanitizers'):
+				if not hasattr(func, 'params'):
 					continue
-				for param, san in func.sanitizers.get('query', {}).items():
-					key = '%s.%s.query.%s' % (name, method, param)
+				for pname, param in func.params.get('query', {}).items():
+					key = '%s.%s.query.%s' % (name, method, param.alias or pname)
 					if key in openapi_parameters:
-						openapi_parameters[key].update(_sanitizer_to_openapi(san))
+						openapi_parameters[key].update({'in': 'query', 'name': param.alias or pname})
+						openapi_parameters[key].update(_param_to_openapi(param))
 
 		def docstring(key, method, module):
 			obj = getattr(classes[key], method)
@@ -2175,10 +2086,12 @@ class Modules(Resource):
 class ObjectTypes(Resource):
 	"""get the object types of a specific flavor"""
 
-	@sanitize_query_string(
-		superordinate=DNSanitizer(required=False, allow_none=True)
-	)
-	def get(self, module_type):
+	@sanitize
+	async def get(
+		self,
+		module_type,
+		superordinate: Optional[str] = Query(DNSanitizer(required=False, allow_none=True)),
+	):
 		object_type = Modules.mapping.get(module_type)
 		if not object_type:
 			raise NotFound(object_type)
@@ -2187,7 +2100,6 @@ class ObjectTypes(Resource):
 		module = None
 		if '/' in object_type:
 			# FIXME: what was/is the superordinate for?
-			superordinate = self.request.decoded_query_arguments['superordinate']
 			module = UDM_Module(object_type, ldap_connection=self.ldap_connection, ldap_position=self.ldap_position)
 			if superordinate:
 				module = get_module(object_type, superordinate, self.ldap_connection) or module  # FIXME: the object_type param is wrong?!
@@ -2390,12 +2302,13 @@ class ContainerQueryBase(Resource):
 class Tree(ContainerQueryBase):
 	"""GET udm/(dns/dns|dhcp/dhcp|)/tree/ (the tree content of navigation/DNS/DHCP)"""
 
-	@sanitize_query_string(
-		container=DNSanitizer(default=None)
-	)
-	async def get(self, object_type):
+	@sanitize
+	async def get(
+		self,
+		object_type,
+		container: str = Query(DNSanitizer(default=None)),
+	):
 		ldap_base = ucr['ldap/base']
-		container = self.request.decoded_query_arguments['container']
 
 		modules = container_modules()
 		scope = 'one'
@@ -2414,13 +2327,14 @@ class Tree(ContainerQueryBase):
 
 class MoveDestinations(ContainerQueryBase):
 
-	@sanitize_query_string(
-		container=DNSanitizer(default=None)
-	)
-	async def get(self, object_type):
+	@sanitize
+	async def get(
+		self,
+		object_type,
+		container: str = Query(DNSanitizer(default=None)),
+	):
 		scope = 'one'
 		modules = container_modules()
-		container = self.request.decoded_query_arguments['container']
 		if not container:
 			scope = 'base'
 
@@ -2432,10 +2346,13 @@ class MoveDestinations(ContainerQueryBase):
 class Properties(Resource):
 	"""GET udm/users/user/properties (get properties of users/user object type)"""
 
-	@sanitize_query_string(
-		searchable=BoolSanitizer(required=False)
-	)
-	def get(self, object_type, dn=None):
+	@sanitize
+	async def get(
+		self,
+		object_type,
+		dn=None,
+		searchable: bool = Query(BoolSanitizer(required=False)),
+	):
 		result = {}
 		if dn:
 			dn = unquote_dn(dn)
@@ -2444,7 +2361,6 @@ class Properties(Resource):
 
 		self.add_link(result, 'up', self.urljoin('.'))
 		properties = self.get_properties(module, dn)
-		searchable = self.request.decoded_query_arguments['searchable']
 		if searchable:
 			properties = {name: prop for name, prop in properties.items() if prop.get('searchable', False)}
 		result['properties'] = properties
@@ -2558,9 +2474,14 @@ class Report(ReportingBase, Resource):
 		dns = self.get_query_arguments('dn')
 		await self.create_report(object_type, report_type, dns)
 
-	async def post(self, object_type, report_type):
-		dns = self.get_body_arguments('dn')
-		await self.create_report(object_type, report_type, dns)
+	@sanitize
+	async def post(
+		self,
+		object_type,
+		report_type,
+		dn: List[str] = Query(ListSanitizer(DNSanitizer()))
+	):
+		await self.create_report(object_type, report_type, dn)
 
 	async def create_report(self, object_type, report_type, dns):
 		try:
@@ -2693,52 +2614,103 @@ class FormBase:
 
 class Objects(FormBase, ReportingBase, _OpenAPIBase, Resource):
 
-	@sanitize_query_string(
-		position=DNSanitizer(required=False, default=None, allow_none=True),
-		filter=LDAPFilterSanitizer(required=False, default="", allow_none=True),
-		query=DictSanitizer({}, default_sanitizer=LDAPSearchSanitizer(required=False, default='*', add_asterisks=False, use_asterisks=True), key_sanitizer=ObjectPropertySanitizer()),
-		property=ObjectPropertySanitizer(required=False, default=None),
-		scope=ChoicesSanitizer(choices=['sub', 'one', 'base', 'base+one'], default='sub'),
-		hidden=BoolSanitizer(default=True),
-		properties=ListSanitizer(StringSanitizer(), required=False, default=['*'], allow_none=True, min_elements=0),
-		superordinate=DNSanitizer(required=False, default=None, allow_none=True),
-		dir=ChoicesSanitizer(choices=['ASC', 'DESC'], default='ASC'),
-		by=StringSanitizer(required=False),
-		page=IntegerSanitizer(required=False, default=1, minimum=1),
-		limit=IntegerSanitizer(required=False, default=None, allow_none=True, minimum=0),
-	)
-	async def get(self, object_type):
+	@sanitize
+	async def get(
+		self,
+		object_type,
+		position: str = Query(DNSanitizer(required=False, default=None, allow_none=True), description="Position which is used as search base."),
+		ldap_filter: str = Query(
+			LDAPFilterSanitizer(required=False, default="", allow_none=True),
+			alias='filter',
+			description="A LDAP filter which may contain `UDM` property names instead of `LDAP` attribute names.",
+			examples={
+				"any-object": {
+					"value": "(objectClass=*)",
+				},
+				"admin-user": {
+					"value": "(|(username=Administrator)(username=Admin*))",
+				},
+			},
+		),
+		query: Dict = Query(
+			DictSanitizer({}, default_sanitizer=LDAPSearchSanitizer(required=False, default='*', add_asterisks=False, use_asterisks=True), key_sanitizer=ObjectPropertySanitizer()),
+			description="The values to search for (propertyname and search filter value). Alternatively with `filter` a raw LDAP filter can be given.",
+			style="deepObject",
+			examples={
+				'nothing': {
+					'value': None,
+				},
+				'property': {
+					'value': {'': '*'},
+				},
+			},
+		),
+		property: str = Query(ObjectPropertySanitizer(required=False, default=None)),
+		scope: str = Query(ChoicesSanitizer(choices=['sub', 'one', 'base', 'base+one'], default='sub'), description="The LDAP search scope (sub, base, one)."),
+		hidden: bool = Query(BoolSanitizer(default=True), description="Include hidden/system objects in the response.", example=True),
+		properties: List[str] = Query(
+			ListSanitizer(StringSanitizer(), required=False, default=['*'], allow_none=True, min_elements=0),
+			style="form",
+			explode=True,
+			description="The properties which should be returned, if not given all properties are returned.",
+			examples={
+				'no restrictions': {'value': None},
+				'only small subset': {'value': ['username', 'firstname', 'lastname']},
+			}
+		),
+		superordinate: Optional[str] = Query(DNSanitizer(required=False, default=None, allow_none=True), description="The superordinate DN of the objects to find. `position` is sufficient."),  # example=f"cn=superordinate,{ldap_base}"
+		dir: str = Query(
+			ChoicesSanitizer(choices=['ASC', 'DESC'], default='ASC'),
+			deprecated=True,
+			description="**Broken/Experimental**: The Sort direction (ASC or DESC).",
+		),
+		by: str = Query(
+			StringSanitizer(required=False),
+			deprecated=True,
+			description="**Broken/Experimental**: Sort the search result by the specified property.",
+			# example="username",
+		),
+		page: int = Query(
+			IntegerSanitizer(required=False, default=1, minimum=1),
+			deprecated=True,
+			description="**Broken/Experimental**: The search page, starting at one.",
+			example=1,
+		),
+		limit: int = Query(
+			IntegerSanitizer(required=False, default=None, allow_none=True, minimum=0),
+			deprecated=True,
+			description="**Broken/Experimental**: How many results should be shown per page.",
+			examples={
+				"no limit": {"value": "", "summary": "get all entries"},
+				"limit to 50": {"value": 50, "summary": "limit to 50 entries"},
+			},
+		),
+	):
 		"""Search for {module.object_name_plural} objects"""
 		module = self.get_module(object_type)
 		result = self._options(object_type)
 
 		search = bool(self.request.query)
-		container = self.request.decoded_query_arguments['position']
-		hidden = self.request.decoded_query_arguments['hidden']
-		ldap_filter = self.request.decoded_query_arguments['filter']
-		scope = self.request.decoded_query_arguments['scope']
-		properties = self.request.decoded_query_arguments['properties'][:]
-		direction = self.request.decoded_query_arguments['dir']
-		property_ = self.request.decoded_query_arguments['property']
+		properties = properties[:]
+		direction = dir
+		property_ = property
 		reverse = direction == 'DESC'
-		by = self.request.decoded_query_arguments['by']
-		page = self.request.decoded_query_arguments['page']
-		items_per_page = self.request.decoded_query_arguments['limit']
+		items_per_page = limit
 
 		if not ldap_filter:
-			filters = filter(None, [(module._object_property_filter(attribute or property_ or None, value, hidden)) for attribute, value in self.request.decoded_query_arguments['query'].items()])
+			filters = filter(None, [(module._object_property_filter(attribute or property_ or None, value, hidden)) for attribute, value in query.items()])
 			if filters:
 				ldap_filter = str(univention.admin.filter.conjunction('&', [univention.admin.filter.parse(fil) for fil in filters]))
 
 		# TODO: replace the superordinate concept with container
-		superordinate = self.superordinate_dn_to_object(module, self.request.decoded_query_arguments['superordinate'])
+		superordinate = self.superordinate_dn_to_object(module, superordinate)
 		if superordinate:
-			container = container or superordinate.dn
+			position = position or superordinate.dn
 
 		objects = []
 		if search:
 			try:
-				objects, last_page = await self.search(module, container, ldap_filter, superordinate, scope, hidden, items_per_page, page, by, reverse)
+				objects, last_page = await self.search(module, position, ldap_filter, superordinate, scope, hidden, items_per_page, page, by, reverse)
 			except ObjectDoesNotExist as exc:
 				self.raise_sanitization_error('position', str(exc))
 			except SuperordinateDoesNotExist as exc:
@@ -2788,14 +2760,14 @@ class Objects(FormBase, ReportingBase, _OpenAPIBase, Resource):
 		search_layout = search_layout_base[0]['layout']
 		self.add_layout(result, search_layout_base, 'search')
 		form = self.add_form(result, self.urljoin(''), 'GET', rel='search', id='search', layout='search')
-		self.add_form_element(form, 'position', container or '', label=_('Search in'))
+		self.add_form_element(form, 'position', position or '', label=_('Search in'))
 		search_layout.append(['position', 'hidden'])
 		if superordinate_names(module):
 			self.add_form_element(form, 'superordinate', superordinate.dn if superordinate else '', label=_('Superordinate'))
 			search_layout.append(['superordinate'])
 		searchable_properties = [{'value': '', 'label': _('Defaults')}] + [{'value': prop['id'], 'label': prop['label']} for prop in module.properties(None) if prop.get('searchable')]
 		self.add_form_element(form, 'property', property_ or '', element='select', options=searchable_properties, label=_('Property'))
-		self.add_form_element(form, 'query*', self.request.decoded_query_arguments['query'].get('', '*'), label=_('Search for'), placeholder=_('Search value (e.g. *)'))
+		self.add_form_element(form, 'query*', query.get('', '*'), label=_('Search for'), placeholder=_('Search value (e.g. *)'))
 		self.add_form_element(form, 'scope', scope, element='select', options=[{'value': 'sub'}, {'value': 'one'}, {'value': 'base'}, {'value': 'base+one'}], label=_('Search scope'))
 		self.add_form_element(form, 'hidden', '1', type='checkbox', checked=bool(hidden), label=_('Include hidden objects'))
 		search_layout.append(['property', 'query*'])
@@ -2882,30 +2854,41 @@ class Objects(FormBase, ReportingBase, _OpenAPIBase, Resource):
 					root.append(ET.Element("br"))
 		return root
 
-	@sanitize_body_arguments(
-		position=DNSanitizer(required=False, allow_none=True),
-		superordinate=DNSanitizer(required=False, allow_none=True),
-		options=DictSanitizer({}, default_sanitizer=BooleanSanitizer(), required=False),
-		policies=DictSanitizer({}, default_sanitizer=ListSanitizer(DNSanitizer()), required=False),
-		properties=DictSanitizer({}, required=True),
-	)
-	async def post(self, object_type):
+	@sanitize
+	async def post(
+		self,
+		object_type,
+		position: str = Body(DNSanitizer(required=False, allow_none=True)),
+		superordinate: str = Body(DNSanitizer(required=False, allow_none=True)),
+		options: Dict = Body(DictSanitizer({}, default_sanitizer=BooleanSanitizer(), required=False)),
+		policies: Dict = Body(DictSanitizer({}, default_sanitizer=ListSanitizer(DNSanitizer()), required=False)),
+		properties: Dict = Body(DictSanitizer({}, required=True)),
+	):
 		"""Create a new {module.object_name} object"""
 		obj = Object(self.application, self.request)
 		obj.ldap_connection, obj.ldap_position = self.ldap_connection, self.ldap_position
 		serverctrls = [PostReadControl(True, ['entryUUID'])]
 		response = {}
-		obj = await obj.create(object_type, serverctrls=serverctrls, response=response)
+		result = {}
+		representation = {
+			'position': position,
+			'superordinate': superordinate,
+			'options': options,
+			'policies': policies,
+			'properties': properties,
+		}
+		obj = await obj.create(object_type, None, representation, result, serverctrls=serverctrls, response=response)
 		self.set_header('Location', self.urljoin(quote_dn(obj.dn)))
 		self.set_status(201)
 		self.add_caching(public=False, must_revalidate=True)
 
 		uuid = _get_post_read_entry_uuid(response)
 
-		self.content_negotiation({
+		result.update({
 			'dn': obj.dn,
 			'uuid': uuid,
 		})
+		self.content_negotiation(result)
 
 	def _options(self, object_type):
 		result = {}
@@ -2945,14 +2928,15 @@ class Objects(FormBase, ReportingBase, _OpenAPIBase, Resource):
 
 class ObjectsMove(Resource):
 
-	@sanitize_body_arguments(
-		position=DNSanitizer(required=True),
-		dn=ListSanitizer(DNSanitizer(required=True), min_elements=1),
-	)
-	async def post(self, object_type):
+	@sanitize
+	async def post(
+		self,
+		object_type,
+		position: str = Body(DNSanitizer(required=True),),
+		dn: List[str] = Body(ListSanitizer(DNSanitizer(required=True), min_elements=1),),
+	):
 		# FIXME: this can only move objects of the same object_type but should move everything
-		position = self.request.body_arguments['position']
-		dns = self.request.body_arguments['dn']  # TODO: validate: moveable, etc.
+		dns = dn  # TODO: validate: moveable, etc.
 
 		status_id = str(uuid.uuid4())
 		status = shared_memory.dict()
@@ -3168,14 +3152,17 @@ class Object(FormBase, _OpenAPIBase, Resource):
 			props.pop('id', None)
 		return props
 
-	@sanitize_body_arguments(
-		position=DNSanitizer(required=True),
-		superordinate=DNSanitizer(required=False, allow_none=True),
-		options=DictSanitizer({}, default_sanitizer=BooleanSanitizer()),
-		policies=DictSanitizer({}, default_sanitizer=ListSanitizer(DNSanitizer())),
-		properties=DictSanitizer({}, required=True),
-	)
-	async def put(self, object_type, dn):
+	@sanitize
+	async def put(
+		self,
+		object_type,
+		dn,
+		position: str = Body(DNSanitizer(required=True),),
+		superordinate: str = Body(DNSanitizer(required=False, allow_none=True),),
+		options: Dict = Body(DictSanitizer({}, default_sanitizer=BooleanSanitizer()),),
+		policies: Dict = Body(DictSanitizer({}, default_sanitizer=ListSanitizer(DNSanitizer())),),
+		properties: Dict = Body(DictSanitizer({}, required=True),),
+	):
 		"""Modify or move an {module.object_name} object"""
 		dn = unquote_dn(dn)
 		try:
@@ -3183,45 +3170,60 @@ class Object(FormBase, _OpenAPIBase, Resource):
 		except NotFound:
 			module, obj = None
 
+		representation = {
+			'position': position,
+			'superordinate': superordinate,
+			'options': options,
+			'policies': policies,
+			'properties': properties,
+		}
 		if not obj:
 			module = self.get_module(object_type)
 			serverctrls = [PostReadControl(True, ['entryUUID'])]
 			response = {}
+			result = {}
 
-			obj = await self.create(object_type, dn, serverctrls=serverctrls, response=response)
+			obj = await self.create(object_type, dn, representation, result, serverctrls=serverctrls, response=response)
 			self.set_header('Location', self.urljoin(quote_dn(obj.dn)))
 			self.set_status(201)
 			self.add_caching(public=False, must_revalidate=True)
 
 			uuid = _get_post_read_entry_uuid(response)
 
-			self.content_negotiation({
+			result.update({
 				'dn': obj.dn,
 				'uuid': uuid,
 			})
+			self.content_negotiation(result)
 			return
 
 		self.set_entity_tags(obj)
 
-		position = self.request.body_arguments['position']
 		if position and not self.ldap_write_connection.compare_dn(self.ldap_write_connection.parentDn(dn), position):
 			await self.move(module, dn, position)
 			return
 		else:
-			obj = await self.modify(module, obj)
+			result = {}
+			obj = await self.modify(module, obj, representation, result)
 			self.set_header('Location', self.urljoin(quote_dn(obj.dn)))
 			self.add_caching(public=False, must_revalidate=True, no_cache=True, no_store=True)
-			self.set_status(204)
+			if result:
+				self.content_negotiation(result)
+			else:
+				self.set_status(204)
 			raise Finish()
 
-	@sanitize_body_arguments(
-		position=DNSanitizer(required=False, default=''),
-		superordinate=DNSanitizer(required=False, allow_none=True),
-		options=DictSanitizer({}, default_sanitizer=BooleanSanitizer(), required=False),
-		policies=DictSanitizer({}, default_sanitizer=ListSanitizer(DNSanitizer()), required=False),
-		properties=DictSanitizer({}),
-	)
-	async def patch(self, object_type, dn):
+	@sanitize
+	async def patch(
+		self,
+		object_type,
+		dn,
+		position: Optional[str] = Body(DNSanitizer(required=False, default='')),
+		superordinate: Optional[str] = Body(DNSanitizer(required=False, allow_none=True)),
+		options: Optional[Dict] = Body(DictSanitizer({}, default_sanitizer=BooleanSanitizer(), required=False)),
+		policies: Optional[Dict] = Body(DictSanitizer({}, default_sanitizer=ListSanitizer(DNSanitizer()), required=False)),
+		properties: Optional[Dict] = Body(DictSanitizer({})),
+	):
 		"""Modify an {module.object_name} object (moving is currently not possible)"""
 		dn = unquote_dn(dn)
 		module, obj = await self.pool_submit(self.get_module_object, object_type, dn, self.ldap_write_connection)
@@ -3229,21 +3231,34 @@ class Object(FormBase, _OpenAPIBase, Resource):
 		self.set_entity_tags(obj)
 
 		entry = Object.get_representation(module, obj, ['*'], self.ldap_write_connection, False)
-		if self.request.body_arguments['options'] is None:
-			self.request.body_arguments['options'] = entry['options']
-		if self.request.body_arguments['policies'] is None:
-			self.request.body_arguments['policies'] = entry['policies']
-		if self.request.body_arguments['properties'] is None:
-			self.request.body_arguments['properties'] = {}
-		if self.request.body_arguments['position'] is None:
-			self.request.body_arguments['position'] = entry['position']
-		obj = await self.modify(module, obj)
+		representation = {
+			'position': position,
+			'superordinate': superordinate,
+			'options': options,
+			'policies': policies,
+			'properties': properties,
+		}
+		if representation['options'] is None:
+			representation['options'] = entry['options']
+		if representation['policies'] is None:
+			representation['policies'] = entry['policies']
+		if representation['properties'] is None:
+			representation['properties'] = {}
+		if representation['position'] is None:
+			representation['position'] = entry['position']
+		if representation['superordinate'] is None:
+			representation['superordinate'] = entry.get('superordinate')
+		result = {}
+		obj = await self.modify(module, obj, representation, result)
 		self.add_caching(public=False, must_revalidate=True, no_cache=True, no_store=True)
 		self.set_header('Location', self.urljoin(quote_dn(obj.dn)))
-		self.set_status(204)
+		if result:
+			self.content_negotiation(result)
+		else:
+			self.set_status(204)
 		raise Finish()
 
-	async def create(self, object_type, dn=None, **kwargs):
+	async def create(self, object_type, dn=None, representation=None, result=None, **kwargs):
 		module = self.get_module(object_type, ldap_connection=self.ldap_write_connection)
 		container = self.request.body_arguments['position']
 		superordinate = self.request.body_arguments['superordinate']
@@ -3263,7 +3278,7 @@ class Object(FormBase, _OpenAPIBase, Resource):
 
 		obj = module.module.object(None, self.ldap_write_connection, ldap_position, superordinate=superordinate)
 		obj.open()
-		self.set_properties(module, obj)
+		self.set_properties(module, obj, representation, result)
 
 		if dn and not self.ldap_write_connection.compare_dn(dn, obj._ldap_dn()):
 			self.raise_sanitization_error('dn', _('Trying to create an object with wrong RDN.'))
@@ -3271,9 +3286,9 @@ class Object(FormBase, _OpenAPIBase, Resource):
 		dn = await self.pool_submit(self.handle_udm_errors, obj.create, **kwargs)
 		return obj
 
-	async def modify(self, module, obj):
+	async def modify(self, module, obj, representation, result):
 		assert obj._open
-		self.set_properties(module, obj)
+		self.set_properties(module, obj, representation, result)
 		await self.pool_submit(self.handle_udm_errors, obj.modify)
 		return obj
 
@@ -3328,14 +3343,76 @@ class Object(FormBase, _OpenAPIBase, Resource):
 		except udm_errors.base as exc:
 			UDM_Error(exc).reraise()
 
-	def set_properties(self, module, obj):
-		options = self.request.body_arguments['options'] or {}  # TODO: AppAttributes.data_for_module(self.name).iteritems() ?
+	def set_properties(self, module, obj, representation, result):
+		options = representation['options'] or {}  # TODO: AppAttributes.data_for_module(self.name).iteritems() ?
 		options_enable = {opt for opt, enabled in options.items() if enabled}
 		options_disable = {opt for opt, enabled in options.items() if enabled is False}  # ignore None!
 		obj.options = list(set(obj.options) - options_disable | options_enable)
-		if self.request.body_arguments['policies']:
-			obj.policies = functools.reduce(lambda x, y: x + y, self.request.body_arguments['policies'].values())
-		self.sanitize_arguments(PropertiesSanitizer(), self, module=module, obj=obj)
+		if representation['policies']:
+			obj.policies = functools.reduce(lambda x, y: x + y, representation['policies'].values())
+		try:
+			properties = PropertiesSanitizer(_copy_value=False).sanitize(representation['properties'], module=module, obj=obj)
+		except MultiValidationError as exc:
+			multi_error = exc
+			properties = representation['properties']
+			for prop_name in multi_error.validation_errors:
+				properties.pop(prop_name)
+		else:
+			multi_error = MultiValidationError()
+
+		# FIXME: for the automatic IP address assignment, we need to make sure that
+		# the network is set before the IP address (see Bug #24077, comment 6)
+		# The following code is a workaround to make sure that this is the
+		# case, however, this should be fixed correctly.
+		# This workaround has been documented as Bug #25163.
+		def _tmp_cmp(i):
+			if i[0] == 'network':
+				return ("\x00", i[1])
+			return i
+
+		password_properties = module.password_properties
+		for property_name, value in sorted(properties.items(), key=_tmp_cmp):
+			self.set_property(obj, property_name, value, result, multi_error, password_properties)
+
+		if multi_error.has_errors():
+			class FalseSanitizer(Sanitizer):
+				def sanitize(self):
+					raise multi_error
+			self.sanitize_arguments(FalseSanitizer())
+
+	def set_property(self, obj, property_name, value, result, multi_error, password_properties):
+		if property_name in password_properties:
+			MODULE.info(f'Setting password property {property_name}')
+		else:
+			MODULE.info(f'Setting property {property_name} to {value!r}')
+
+		try:
+			try:
+				obj[property_name] = value
+			except KeyError:
+				if property_name != 'objectFlag':
+					raise
+			except udm_errors.valueMayNotChange:
+				if obj[property_name] == value:  # UDM does not check equality before raising the exception
+					return
+				raise udm_errors.valueMayNotChange()  # the original exception is ugly!
+			except udm_errors.valueRequired:
+				if value is None:
+					# examples where this happens:
+					# "password" of users/user: because password is required but on modify() None is send, which must not alter the current password
+					# "unixhome" of users/user: is required, set to None in the request, the default value is set afterwards in create(). Bug #50053
+					if property_name in password_properties:
+						MODULE.info(f'Ignore unsetting password property {property_name}')
+					else:
+						current_value = obj.info.pop(property_name, None)
+						MODULE.info(f'Unsetting property {property_name} value {current_value!r}')
+					return
+				raise
+		except (udm_errors.valueInvalidSyntax, udm_errors.valueError, udm_errors.valueMayNotChange, udm_errors.valueRequired, udm_errors.noProperty) as exc:
+			try:
+				self.raise_sanitization_error(property_name, _('The property %(name)s has an invalid value: %(details)s') % {'name': property_name, 'details': UDM_Error(exc)})
+			except ValidationError as exc:
+				multi_error.add_error(exc, property_name)
 
 	async def move(self, module, dn, position):
 		status_id = str(uuid.uuid4())
@@ -3368,18 +3445,19 @@ class Object(FormBase, _OpenAPIBase, Resource):
 		finally:
 			status['finished'] = True
 
-	@sanitize_query_string(
-		cleanup=BoolSanitizer(default=True),
-		recursive=BoolSanitizer(default=True),
-	)
-	async def delete(self, object_type, dn):
+	@sanitize
+	async def delete(
+		self,
+		object_type,
+		dn,
+		cleanup: bool = Query(BoolSanitizer(default=True), description="Whether to perform a cleanup (e.g. of temporary objects, locks, etc).", example=True),
+		recursive: bool = Query(BoolSanitizer(default=True), description="Whether to remove referring objects (e.g. DNS or DHCP references).", example=True),
+	):
 		"""Remove a {module.object_name_plural} object"""
 		dn = unquote_dn(dn)
 		module, obj = await self.pool_submit(self.get_module_object, object_type, dn, self.ldap_write_connection)
 		assert obj._open
 
-		cleanup = bool(self.request.decoded_query_arguments['cleanup'])
-		recursive = bool(self.request.decoded_query_arguments['recursive'])
 		try:
 			def remove():
 				try:
@@ -3507,12 +3585,14 @@ class UserPhoto(Resource):
 class ObjectAdd(FormBase, _OpenAPIBase, Resource):
 	"""GET a form containing information about all properties, methods, URLs to create a specific object"""
 
-	@sanitize_query_string(
-		position=DNSanitizer(required=False, allow_none=True),
-		superordinate=DNSanitizer(required=False, allow_none=True),
-		template=DNSanitizer(required=False, allow_none=True),
-	)
-	async def get(self, object_type):
+	@sanitize
+	async def get(
+		self,
+		object_type,
+		position: str = Query(DNSanitizer(required=False, allow_none=True), description="Position which is used as search base."),
+		superordinate: str = Query(DNSanitizer(required=False, allow_none=True), description="The superordinate DN of the object to create. `position` is sufficient."),  # example=f"cn=superordinate,{ldap_base}"
+		template: str = Query(DNSanitizer(required=False, allow_none=True), description="**Experimental**: A |UDM| template object.", deprecated=True),
+	):
 		"""Get a template for creating an {module.object_name} object (contains all properties and their default values)"""
 		module = self.get_module(object_type)  # ldap_connection=self.ldap_write_connection ?
 		if 'add' not in module.operations:
@@ -3523,10 +3603,9 @@ class ObjectAdd(FormBase, _OpenAPIBase, Resource):
 		result = {}
 
 		self.add_link(result, 'self', self.urljoin(''), title=_('Add %s') % (module.object_name,))
-		template = None
-		if module.template:
-			template = self.request.decoded_query_arguments.get('template')
-		result.update(self.get_create_form(module, template=template, position=self.request.decoded_query_arguments.get('position'), superordinate=self.request.decoded_query_arguments.get('superordinate')))
+		if not module.template:
+			template = None
+		result.update(self.get_create_form(module, template=template, position=position, superordinate=superordinate))
 
 		if module.template:
 			template = UDM_Module(module.template, ldap_connection=self.ldap_connection, ldap_position=self.ldap_position)  # ldap_connection=self.ldap_write_connection ?
@@ -3613,17 +3692,19 @@ class ObjectAdd(FormBase, _OpenAPIBase, Resource):
 
 class ObjectCopy(ObjectAdd):
 
-	@sanitize_query_string(
-		dn=DNSanitizer(required=True)
-	)
-	async def get(self, object_type):
+	@sanitize
+	async def get(
+		self,
+		object_type,
+		dn: str = Query(DNSanitizer(required=True)),
+	):
 		module = self.get_module(object_type)  # ldap_connection=self.ldap_write_connection ?
 		if 'copy' not in module.operations:
 			raise NotFound(object_type)
 
 		result = {}
 		self.add_link(result, 'self', self.urljoin(''), title=_('Copy %s') % (module.object_name,))
-		result.update(self.get_create_form(module, dn=self.request.decoded_query_arguments['dn'], copy=True))
+		result.update(self.get_create_form(module, dn=dn, copy=True))
 		self.add_caching(public=True, must_revalidate=True)
 		self.content_negotiation(result)
 
@@ -3752,14 +3833,18 @@ class ObjectMultiEdit(ObjectEdit):
 class PropertyChoices(Resource):
 	"""GET udm/users/user/$DN/properties/$name/choices (get possible values/choices for that property)"""
 
-	@sanitize_query_string(
-		dn=DNSanitizer(required=False),
-		property=ObjectPropertySanitizer(required=False),
-		value=SearchSanitizer(required=False),
-		hidden=BooleanSanitizer(required=False, default=True),
-		dependencies=DictSanitizer({}, required=False)
-	)
-	async def get(self, object_type, dn, property_):
+	@sanitize
+	async def get(
+		self,
+		object_type,
+		dn,
+		property_,
+		dn_: str = Query(DNSanitizer(required=False), alias='dn'),
+		property: str = Query(ObjectPropertySanitizer(required=False)),
+		value: str = Query(SearchSanitizer(required=False)),
+		hidden: bool = Query(BooleanSanitizer(required=False, default=True)),
+		dependencies: str = Query(DictSanitizer({}, required=False)),
+	):
 		dn = unquote_dn(dn)
 		module = self.get_module(object_type)
 		try:
@@ -3767,11 +3852,13 @@ class PropertyChoices(Resource):
 		except KeyError:
 			raise NotFound(object_type, dn)
 		type_ = udm_types.TypeHint.detect(prop, property_)
-		options = {
-			opt: self.request.decoded_query_arguments[opt]
-			for opt in ('dn', 'property', 'value', 'hidden', 'dependencies')
-			if self.request.decoded_query_arguments[opt] is not None
-		}
+		options = {key: val for key, val in {
+			'dn': dn_,
+			'property': property,
+			'value': value,
+			'hidden': hidden,
+			'dependencies': dependencies,
+		} if val is not None}
 		choices = await self.pool_submit(type_.get_choices, self.ldap_connection, options)
 		self.add_caching(public=False, must_revalidate=True)
 		self.content_negotiation({'choices': choices})
@@ -3849,10 +3936,14 @@ class PolicyResult(PolicyResultBase):
 	GET udm/users/user/$userdn/policies/$policy_type/?policy=$dn (for a existing object)
 	"""
 
-	@sanitize_query_string(
-		policy=DNSanitizer(required=False, default=None)
-	)
-	async def get(self, object_type, dn, policy_type):
+	@sanitize
+	async def get(
+		self,
+		object_type,
+		dn,
+		policy_type,
+		policy: str = Query(DNSanitizer(required=False, default=None)),
+	):
 		dn = unquote_dn(dn)
 		infos = await self._get(object_type, policy_type, dn, is_container=False)
 		self.add_caching(public=False, no_cache=True, must_revalidate=True, no_store=True)
@@ -3864,13 +3955,15 @@ class PolicyResultContainer(PolicyResultBase):
 	GET udm/users/user/policies/$policy_type/?policy=$dn&position=$dn (for a container, where a object should be created in)
 	"""
 
-	@sanitize_query_string(
-		policy=DNSanitizer(required=False, default=None),
-		position=DNSanitizer(required=True)
-	)
-	async def get(self, object_type, policy_type):
-		container = self.request.decoded_query_arguments['position']
-		infos = await self._get(object_type, policy_type, container, is_container=True)
+	@sanitize
+	async def get(
+		self,
+		object_type,
+		policy_type,
+		policy: str = Query(DNSanitizer(required=False, default=None)),
+		position: str = Query(DNSanitizer(required=True)),
+	):
+		infos = await self._get(object_type, policy_type, position, is_container=True)
 		self.add_caching(public=False, no_cache=True, must_revalidate=True, no_store=True)
 		self.content_negotiation(infos)
 
@@ -3908,12 +4001,13 @@ class Operations(Resource):
 
 class LicenseRequest(Resource):
 
-	@sanitize_query_string(
-		email=EmailSanitizer(required=True),
-	)
-	async def get(self):
+	@sanitize
+	async def get(
+		self,
+		email: str = Query(EmailSanitizer(required=True)),
+	):
 		data = {
-			'email': self.request.decoded_query_arguments['email'],
+			'email': email,
 			'licence': dump_license(),
 		}
 		if not data['licence']:
@@ -4025,10 +4119,11 @@ class License(Resource):
 
 class LicenseImport(Resource):
 
-	@sanitize_query_string(
-		license=StringSanitizer(required=True),
-	)
-	def get(self):
+	@sanitize
+	async def get(
+		self,
+		license: str = Query(StringSanitizer(required=True)),
+	):
 		text = '''dn: cn=admin,cn=license,cn=univention,%(ldap/base)s
 cn: admin
 objectClass: top
@@ -4036,7 +4131,7 @@ objectClass: univentionLicense
 objectClass: univentionObject
 univentionObjectType: settings/license
 ''' % ucr
-		for line in zlib.decompress(base64.b64decode(self.request.query_arguments['license'].encode('ASCII')), -15).decode('UTF-8').splitlines():
+		for line in zlib.decompress(base64.b64decode(license.encode('ASCII')), -15).decode('UTF-8').splitlines():
 			text += f'univentionLicense{line.strip()}\n'
 
 		self.import_license(io.BytesIO(text.encode('UTF-8')))
@@ -4064,28 +4159,29 @@ univentionObjectType: settings/license
 
 class ServiceSpecificPassword(Resource):
 
-	@sanitize_body_arguments(
-		service=StringSanitizer(required=True),
-	)
-	async def post(self, object_type, dn):
+	@sanitize
+	async def post(
+		self,
+		object_type,
+		dn,
+		service: str = Body(StringSanitizer(required=True),),
+	):
 		module = get_module(object_type, dn, self.ldap_write_connection)
 		if module is None:
 			raise NotFound(object_type, dn)
 
-		service_type = self.get_body_argument('service')
-
-		cfg = password_config(service_type)
+		cfg = password_config(service)
 		new_password = generate_password(**cfg)
 
 		obj = await self.pool_submit(module.get, dn)
-		obj['serviceSpecificPassword'] = {'service': service_type, 'password': new_password}
+		obj['serviceSpecificPassword'] = {'service': service, 'password': new_password}
 
 		try:
 			await self.pool_submit(obj.modify)
 		except udm_errors.valueError as exc:
 			# ValueError raised if Service is not supported
 			raise HTTPError(400, str(exc))
-		result = {'service': service_type, 'password': new_password}
+		result = {'service': service, 'password': new_password}
 		self.content_negotiation(result)
 
 
