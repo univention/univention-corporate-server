@@ -9,5 +9,5 @@
 .. |UCR| replace:: :abbr:`UCR (Univention Configuration Registry)`
 .. |UCS| replace:: :abbr:`UCS (Univention Corporate Server)`
 .. |UDM| replace:: :abbr:`UDM (Univention Directory Manager)`
-.. |UMC| replace:: :abbr:`UMC (Univention Management Console)`
 .. |UMCP| replace:: :abbr:`UMCP (Univention Management Console Protocol)`
+.. |UMC| replace:: :abbr:`UMC (Univention Management Console)`
