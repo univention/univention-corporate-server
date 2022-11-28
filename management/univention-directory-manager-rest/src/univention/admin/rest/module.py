@@ -1684,7 +1684,7 @@ class ObjectsMove(Resource):
             shared_memory.queue[self.request.user_dn] = shared_memory.dict()
         shared_memory.queue[self.request.user_dn][status_id] = status
 
-        self.set_status(201)  # FIXME: must be 202
+        self.set_status(202)
         self.set_header('Location', self.abspath('progress', status['id']))
         self.finish()
         try:
@@ -2260,7 +2260,7 @@ class Object(ConditionalResource, FormBase, _OpenAPIBase, Resource):
             shared_memory.queue[self.request.user_dn] = shared_memory.dict()
         shared_memory.queue[self.request.user_dn][status_id] = status
 
-        self.set_status(201)  # FIXME: must be 202
+        self.set_status(202)
         self.set_header('Location', self.abspath('progress', status['id']))
         self.add_caching(public=False, must_revalidate=True)
         self.content_negotiation(dict(status))
