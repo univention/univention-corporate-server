@@ -507,7 +507,7 @@ class _OpenAPIBase:
                 }),
             },
             "PUTObjectCreated": {  # 201
-                "description": "Created: The object did not exist and has been created. Deprecated: a move operation started, expect 202 in the future!",
+                "description": "Created: The object did not exist and has been created.",
                 "content": content_schema({
                     "type": "object",
                             "properties": {
@@ -520,7 +520,7 @@ class _OpenAPIBase:
                     'Last-Modified': {'$ref': '#/components/headers/Last-Modified'},
                 }),
             },
-            'MoveStarted': {  # 202 (actually still 201)
+            'MoveStarted': {  # 202
                 "description": "Accepted: asynchronous move or rename operation started.",
                 'headers': global_response_headers({
                     'Location': {'$ref': '#/components/headers/Location'},
