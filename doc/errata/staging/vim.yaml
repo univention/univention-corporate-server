@@ -1,0 +1,21 @@
+product: ucs
+release: "4.4"
+version: [9]
+scope: ucs_4.4-0-errata4.4-9
+src: vim
+fix: 2:8.0.0197-4+deb9u9
+desc: |
+ This update addresses the following issues:
+ 2:8.0.0197-4+deb9u9 (Wed, 23 Nov 2022 15:55:06 +0100)
+ * Non-maintainer upload by the ELTS Team.
+ * Fix CVE-2022-1897, CVE-2022-1942, CVE-2022-2000, CVE-2022-2129,
+   CVE-2022-3235, CVE-2022-3256, CVE-2022-3352
+bug: [55462]
+cve:
+- CVE-2022-1897
+- CVE-2022-1942
+- CVE-2022-2000
+- CVE-2022-2129
+- CVE-2022-3235
+- CVE-2022-3256
+- CVE-2022-3352
