@@ -65,7 +65,7 @@ umc_operation_create "udm-printers" "UDM - Printers" "shares/print" "udm/*:objec
 umc_operation_create "udm-shares" "UDM - Shares" "shares/share" "udm/*:objectType=shares/share" "udm/*:!objectType" \
 	"udm/properties:objectType=policies/*" "udm/layout:objectType=policies/*" "udm/query:objectType=policies/*"
 
-umc_operation_create "udm-polcies" "UDM - Policies" "policies/policy" "udm/*:objectType=policies/*" "udm/*:!objectType" \
+umc_operation_create "udm-policies" "UDM - Policies" "policies/policy" "udm/*:objectType=policies/*" "udm/*:!objectType" \
 	"udm/properties:objectType=policies/*" "udm/layout:objectType=policies/*" "udm/query:objectType=policies/*"
 
 umc_operation_create "udm-mail" "UDM - Mail" "mail/mail" "udm/*:objectType=mail/*" \

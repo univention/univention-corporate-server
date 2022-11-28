@@ -1,3 +1,9 @@
+univention-management-console-module-udm (10.0.2-4) unstable; urgency=medium
+
+  * Bug #55460: fix "polcies" typo in join script
+
+ -- Maximilian Janßen <mjanssen@klabb.knut.univention.de>  Mon, 28 Nov 2022 13:00:13 +0100
+
 univention-management-console-module-udm (10.0.2-3) unstable; urgency=medium
 
   * Bug #54981: fix KeyError on opening the users/user module while
