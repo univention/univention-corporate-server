@@ -23,7 +23,7 @@ MAPPED_UDM_PROPERTIES = [
 # if changed: check kelvin-api/tests/test_route_user.test_search_filter_udm_properties()
 
 
-def setup_kelvin_traeger() -> None:
+def setup_kelvin_traeger():
 	with open('/var/lib/ucs-school-import/configs/kelvin.json', 'r+w') as fp:
 		config = json.load(fp)
 		config['configuration_checks'] = ['defaults', 'class_overwrites', 'mapped_udm_properties']
@@ -32,7 +32,7 @@ def setup_kelvin_traeger() -> None:
 		json.dump(config, fp, indent=4, sort_keys=True)
 
 
-def create_extended_attr() -> None:
+def create_extended_attr():
 	sea_mod = UDM.admin().version(1).get('settings/extended_attribute')
 	ldap_base = ucr['ldap/base']
 	ucsschool_id_connector_last_update = sea_mod.new(superordinate='cn=univention,{}'.format(ldap_base))
