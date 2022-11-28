@@ -1537,7 +1537,7 @@ class _OpenAPIBase:
                 "headers": global_response_headers(),
             },
             "PUTObjectCreated": {  # 201
-                "description": "Created: The object did not exist and has been created. Deprecated: a move operation started, expect 202 in the future!",
+                "description": "Created: The object did not exist and has been created.",
                 "content": content_schema({
                     "type": "object",
                             "properties": {
@@ -1547,7 +1547,7 @@ class _OpenAPIBase:
                 }),
                 "headers": global_response_headers(),
             },
-            'MoveStarted': {  # 202 (actually still 201)
+            'MoveStarted': {  # 202
                 "description": "Accepted: asynchronous move or rename operation started.",
                 'headers': global_response_headers({
                     'Location': {'$ref': '#/components/headers/Location'},
@@ -3035,7 +3035,7 @@ class ObjectsMove(Resource):
             shared_memory.queue[self.request.user_dn] = shared_memory.dict()
         shared_memory.queue[self.request.user_dn][status_id] = status
 
-        self.set_status(201)  # FIXME: must be 202
+        self.set_status(202)
         self.set_header('Location', self.abspath('progress', status['id']))
         self.finish()
         try:
@@ -3517,7 +3517,7 @@ class Object(FormBase, _OpenAPIBase, Resource):
             shared_memory.queue[self.request.user_dn] = shared_memory.dict()
         shared_memory.queue[self.request.user_dn][status_id] = status
 
-        self.set_status(201)  # FIXME: must be 202
+        self.set_status(202)
         self.set_header('Location', self.abspath('progress', status['id']))
         self.add_caching(public=False, must_revalidate=True)
         self.content_negotiation(dict(status))
