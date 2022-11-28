@@ -1,3 +1,9 @@
+univention-directory-manager-rest (10.0.6-2) unstable; urgency=medium
+
+  * Bug #55057: change status code to 202 for move operations
+
+ -- Florian Best <best@univention.de>  Tue, 14 Feb 2023 17:30:57 +0100
+
 univention-directory-manager-rest (10.0.6-1) unstable; urgency=medium
 
   * Bug #31771: migrate tabs to spaces
