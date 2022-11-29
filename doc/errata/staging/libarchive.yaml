@@ -6,10 +6,10 @@ src: libarchive
 fix: 3.3.3-4+deb10u2
 desc: |
  This update addresses the following issues:
- * out-of-bounds read in archive_wstring_append_from_mbs in archive_string.c
-   (CVE-2019-19221)
- * extracting a symlink with ACLs modifies ACLs of target (CVE-2021-23177)
- * symbolic links incorrectly followed when changing modes, times, ACL and
+ * Out-of-bounds read in `archive_wstring_append_from_mbs` in
+   `archive_string.c` (CVE-2019-19221)
+ * Extracting a symlink with ACLs modifies ACLs of target (CVE-2021-23177)
+ * Symbolic links incorrectly followed when changing modes, times, ACL and
    flags of a file while extracting an archive (CVE-2021-31566)
 bug: [55464]
 cve:
