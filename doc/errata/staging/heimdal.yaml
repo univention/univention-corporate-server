@@ -9,18 +9,17 @@ desc: |
  * The DelegationNotAllowed Kerberos feature restriction was not being applied
    when processing protocol transition requests (S4U2Self), in the AD DC KDC
    (CVE-2019-14870)
- * Null pointer dereference on missing sname in TGS-REQ (CVE-2021-3671)
- * heimdal (CVE-2021-44758)
- * heap buffer overflow in GSSAPI unwrap_des() and unwrap_des3() routines of
-   Heimdal (CVE-2022-3437)
- * Heimdal is an implementation of ASN.1/DER, PKIX, and Kerberos. Versions
-   prior to 7.7.1 are vulnerable to a denial of service vulnerability in
-   Heimdal's PKI certificate validation library, affecting the KDC (via
-   PKINIT) and kinit (via PKINIT), as well as any third-party applications
-   using Heimdal's libhx509. Users should upgrade to Heimdal 7.7.1 or 7.8.
-   There are no known workarounds for this issue. (CVE-2022-41916)
- * integer overflow vulnerabilities in PAC parsing (CVE-2022-42898)
- * heimdal (CVE-2022-44640)
+ * NULL pointer dereference on missing sname in TGS-REQ (CVE-2021-3671)
+ * Denial of service in spnego: `send_reject` when no mech selected
+   (CVE-2021-44758)
+ * Heap buffer overflow in `GSSAPI` unwrap_des() and `unwrap_des3()` routines
+   of Heimdal (CVE-2022-3437)
+ * Heimdal is vulnerable to a denial of service vulnerability in Heimdal's PKI
+   certificate validation library, affecting the KDC (via PKINIT) and kinit
+   (via PKINIT), as well as any third-party applications using Heimdal's
+   libhx509. (CVE-2022-41916)
+ * Integer overflow vulnerabilities in PAC parsing (CVE-2022-42898)
+ * Invalid `free()` in ASN.1 codec (CVE-2022-44640)
 bug: [55461]
 cve:
 - CVE-2019-14870
