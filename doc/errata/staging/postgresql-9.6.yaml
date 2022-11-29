@@ -6,30 +6,20 @@ src: postgresql-9.6
 fix: 9.6.24-0+deb9u3
 desc: |
  This update addresses the following issues:
-
- Debian update 9.6.24-0+deb9u2
- 9.6.24-0+deb9u2 (Wed, 23 Nov 2022 13:36:58 -0500)
- * Non-maintainer upload by the ELTS Team.
  * CVE-2022-1552: There is an issue with incomplete efforts to operate safely
-   when a privileged user is maintaining another user's objects. The
-   Autovacuum, REINDEX, CREATE INDEX, REFRESH MATERIALIZED VIEW, CLUSTER, and
-   pg_amcheck commands activated relevant protections too late or not at all
-   during the process. This flaw allows an attacker with permission to create
-   non-temporary objects in at least one schema to execute arbitrary SQL
-   functions under a superuser identity.
+   when a privileged user is maintaining another user's objects. The commands
+   `AUTOVACUUM`, `REINDEX`, `CREATE INDEX`, `REFRESH MATERIALIZED VIEW`,
+   `CLUSTER`, and `pg_amcheck` activated relevant protections too late or not
+   at all during the process. This flaw allows an attacker with permission to
+   create non-temporary objects in at least one schema to execute arbitrary
+   SQL functions under a superuser identity.
  * CVE-2022-2625: This attack requires permission to create non-temporary
    objects in at least one schema, the ability to lure or wait for an
    administrator to create or update an affected extension in that schema, and
    the ability to lure or wait for a victim to use the object targeted in
-   CREATE OR REPLACE or CREATE IF NOT EXISTS. Given all three prerequisites,
-   this flaw allows an attacker to run arbitrary code as the victim role,
-   which may be a superuser.
-
- Debian update 9.6.24-0+deb9u3
- 9.6.24-0+deb9u3 (Sat, 26 Nov 2022 13:08:33 -0500)
- * debian/rules: set locale to "C" and pass --no-locale option to regression
-   test suite so that ELTS build host default locale does not cause spurious
-   test failure.
+   `CREATE OR REPLACE` or `CREATE IF NOT EXISTS`. Given all three
+   prerequisites, this flaw allows an attacker to run arbitrary code as the
+   victim role, which may be a superuser.
 bug: [55463]
 cve:
 - CVE-2022-1552
