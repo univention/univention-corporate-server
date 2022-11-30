@@ -59,7 +59,6 @@
 
 #include "ldb_module.h"
 #include <string.h>
-#include <univention/config.h>
 
 static char *LOGFILENAME = "/tmp/univention_ldb_log_module.log";
 
