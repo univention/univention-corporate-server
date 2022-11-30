@@ -60,14 +60,14 @@ install_frontend_app () {
 	local app="$1"
 	local main_image="$2"
 	local branch_image="$3"
-	univention-install --yes univention-appcenter-dev
-	if [ -n "$branch_image" ]; then
-		univention-app dev-set "$app" "DockerImage=$branch_image"
-	else
-		if [ "$UCSSCHOOL_RELEASE" = "scope" ]; then
-			univention-app dev-set "$app" "DockerImage=$main_image"
-		fi
-	fi
+#	univention-install --yes univention-appcenter-dev
+#	if [ -n "$branch_image" ]; then
+#		univention-app dev-set "$app" "DockerImage=$branch_image"
+#	else
+#		if [ "$UCSSCHOOL_RELEASE" = "scope" ]; then
+#			univention-app dev-set "$app" "DockerImage=$main_image"
+#		fi
+#	fi
 	univention-app install --noninteractive --username Administrator --pwdfile /tmp/univention "$app"
 }
 
@@ -93,7 +93,7 @@ EOF
 	fi
 
 	univention-install -y ucs-school-ui-users-frontend
-	univention-install -y ucs-school-ui-groups-frontend
+#	univention-install -y ucs-school-ui-groups-frontend
 
 	rm -f /etc/apt/sources.list.d/99_internal_school.list
 
