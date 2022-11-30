@@ -52,6 +52,7 @@ in more detail.
 The absolute URL of the download server is to be entered in the input field
 *Repository server*, and can also optionally contain a *Username*, *Password*,
 *Repository prefix* (file path) and *port* if required.
+For example :samp:`https://{username}:{password}@{fqdn}:{port}/{repository_prefix}`
 
 
 .. warning::
