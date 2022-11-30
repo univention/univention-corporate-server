@@ -9,3 +9,5 @@ desc: |
  * Users can now login with their mailPrimaryAddress as well as their username
    at keycloak.
 bug: [55458]
+erratum: 501
+announced: 2022-11-30
