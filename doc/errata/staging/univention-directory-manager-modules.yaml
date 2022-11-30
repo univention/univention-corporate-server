@@ -3,7 +3,7 @@ release: "5.0"
 version: [2]
 scope: ucs_5.0-0-errata5.0-2
 src: univention-directory-manager-modules
-fix: 15.0.13-25A~5.0.0.202211221120
+fix: 15.0.13-25A~5.0.0.202211251515
 desc: |
  This update addresses the following issue:
  * Changes for the UDM REST API required adjustments for the `users/self` UDM
