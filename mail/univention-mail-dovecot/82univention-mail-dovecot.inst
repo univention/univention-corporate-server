@@ -85,7 +85,7 @@ else
 fi
 
 . /usr/share/univention-lib/ldap.sh
-ucs_addServiceToLocalhost "IMAP" "$@"
+ucs_addServiceToLocalhost "IMAP" "$@" || die
 
 # Terminate UDM server to force module reload
 . /usr/share/univention-lib/base.sh

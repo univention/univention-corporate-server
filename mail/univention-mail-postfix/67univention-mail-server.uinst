@@ -45,7 +45,7 @@ eval "$(ucr shell)"
 joinscript_init
 
 
-ucs_removeServiceFromLocalhost "SMTP" "$@"
+ucs_removeServiceFromLocalhost "SMTP" "$@" || die
 
 
 joinscript_remove_script_from_status_file univention-mail-server

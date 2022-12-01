@@ -43,7 +43,7 @@ joinscript_init
 
 # shellcheck source=/dev/null
 . /usr/share/univention-lib/all.sh
-ucs_removeServiceFromLocalhost 'RADIUS' "$@"
+ucs_removeServiceFromLocalhost 'RADIUS' "$@" || die
 if ucs_isServiceUnused 'RADIUS' "$@"
 then
 	ldap_base="$(ucr get ldap/base)"

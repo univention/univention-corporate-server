@@ -391,7 +391,7 @@ if [ $winbind_was_running -eq 1 ]; then
 	/etc/init.d/winbind restart >/dev/null 2>&1
 fi
 
-ucs_addServiceToLocalhost 'Samba 3' "$@"
+ucs_addServiceToLocalhost 'Samba 3' "$@" || die
 
 joinscript_save_current_version
 

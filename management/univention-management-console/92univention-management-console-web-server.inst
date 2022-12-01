@@ -116,7 +116,7 @@ fi
 systemctl restart univention-management-console-web-server
 /etc/init.d/slapd crestart
 
-ucs_addServiceToLocalhost 'Univention Management Console' "$@"
+ucs_addServiceToLocalhost 'Univention Management Console' "$@" || die
 
 joinscript_save_current_version
 

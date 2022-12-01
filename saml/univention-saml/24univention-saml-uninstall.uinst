@@ -45,7 +45,7 @@ joinscript_init
 
 eval "$(univention-config-registry shell)"
 
-ucs_removeServiceFromLocalhost "univention-saml" "$@"
+ucs_removeServiceFromLocalhost "univention-saml" "$@" || die
 
 if ucs_isServiceUnused "univention-saml" "$@"; then
 	univention-directory-manager container/cn remove "$@" \

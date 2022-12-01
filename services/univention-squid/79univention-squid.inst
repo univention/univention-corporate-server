@@ -48,7 +48,7 @@ cp /etc/machine.secret "$dest"
 chown proxy:root "$dest"
 chmod 600  "$dest"
 
-ucs_addServiceToLocalhost 'PROXY' "$@"
+ucs_addServiceToLocalhost 'PROXY' "$@" || die
 
 # add squid to nagios' UNIVENTION_SQUID service check
 if [ ! "$nagios_client_autoregister" = "no" ] ; then

@@ -1,3 +1,9 @@
+univention-radius (7.0.4-1) unstable; urgency=medium
+
+  * Bug #53092: Added fail checks for the join scripts
+
+ -- Mika Westphal <westphal@univention.de>  Thu, 02 Feb 2023 13:18:04 +0100
+
 univention-radius (7.0.3-1) unstable; urgency=medium
 
   * Bug #55554: Fix UCR variable typing

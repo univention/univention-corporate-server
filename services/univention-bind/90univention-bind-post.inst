@@ -117,7 +117,7 @@ if [ -z "$old" -o "$old" = "None" ]; then
 	fi
 fi
 
-ucs_addServiceToLocalhost 'DNS' "$@"
+ucs_addServiceToLocalhost 'DNS' "$@" || die
 
 joinscript_save_current_version
 

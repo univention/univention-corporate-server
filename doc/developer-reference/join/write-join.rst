@@ -55,7 +55,7 @@ Source code:
       eval "$(ucr shell)"
 
       . /usr/share/univention-lib/ldap.sh
-      ucs_addServiceToLocalhost "$SERVICE" "$@"
+      ucs_addServiceToLocalhost "$SERVICE" "$@" || die
 
       udm "computers/$server_role" modify "$@" \
           --dn "$ldap_hostdn" \

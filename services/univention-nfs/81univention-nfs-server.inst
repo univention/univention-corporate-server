@@ -55,7 +55,7 @@ if [ -n "$create_home_share" -a "$create_home_share" = "true" ]; then
 	univention-config-registry unset create/home/share
 fi
 
-ucs_addServiceToLocalhost 'NFS' "$@"
+ucs_addServiceToLocalhost 'NFS' "$@" || die
 
 joinscript_save_current_version
 

@@ -1,3 +1,9 @@
+univention-dhcp (14.0.6-1) unstable; urgency=medium
+
+  * Bug #53092: Added fail checks to the join scripts
+
+ -- Mika Westphal <westphal@univention.de>  Thu, 02 Feb 2023 13:17:30 +0100
+
 univention-dhcp (14.0.5-1) unstable; urgency=medium
 
   * Bug #54273: Include debug script in server_password_change.d/univention-dhcp subscript

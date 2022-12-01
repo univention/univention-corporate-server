@@ -45,7 +45,7 @@ SERVICE="AD Connector"
 eval "$(ucr shell)"
 
 . /usr/share/univention-lib/ldap.sh
-ucs_addServiceToLocalhost "$SERVICE" "$@"
+ucs_addServiceToLocalhost "$SERVICE" "$@" || die
 
 joinscript_save_current_version
 

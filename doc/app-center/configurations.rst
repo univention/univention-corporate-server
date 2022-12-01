@@ -242,7 +242,7 @@ own join script.
    . /usr/share/univention-appcenter/joinscripthelper.sh
    joinscript_init
    eval "$(univention-config-registry shell)"
-   ucs_addServiceToLocalhost "$SERVICE" "$@"
+   ucs_addServiceToLocalhost "$SERVICE" "$@" || die
 
    ... # Place for the app's join script code
 

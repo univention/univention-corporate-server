@@ -14880,7 +14880,7 @@ if [ ! "$nagios_client_autoregister" = "no" ] ; then
 	fi
 fi
 
-ucs_addServiceToLocalhost 'Print' "$@"
+ucs_addServiceToLocalhost 'Print' "$@" || die
 
 if [ -x "/etc/init.d/cups" ]; then
 	/etc/init.d/cups restart

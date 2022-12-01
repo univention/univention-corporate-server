@@ -44,7 +44,7 @@ joinscript_init
 eval "$(ucr shell)"
 
 # add service to my host object
-ucs_addServiceToLocalhost "SMTP" "$@"
+ucs_addServiceToLocalhost "SMTP" "$@" || die
 
 
 # create initial mail domain object(s) if missing

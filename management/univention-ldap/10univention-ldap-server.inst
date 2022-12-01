@@ -380,7 +380,7 @@ if [ "$server_role" = "domaincontroller_master" -o "$server_role" = "domaincontr
 	fi
 fi
 
-ucs_addServiceToLocalhost 'LDAP' "$@"
+ucs_addServiceToLocalhost 'LDAP' "$@" || die
 
 joinscript_save_current_version
 exit 0

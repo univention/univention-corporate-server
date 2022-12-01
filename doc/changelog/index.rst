@@ -38,6 +38,9 @@ General
 * A UMC operation set was added, which allows users without admin privileges, to use the user templates
   (:uv:bug:`37927`).
 
+* Join scripts now handle errors when the registration of a service fails
+  (:uv:bug:`53092`).
+
 .. _security:
 
 * All security updates issued for UCS 5.0-2 are included:

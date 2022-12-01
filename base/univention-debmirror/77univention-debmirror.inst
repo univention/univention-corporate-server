@@ -68,7 +68,7 @@ then
 		;;
 	esac
 
-	ucs_addServiceToLocalhost "Repository-Server" "$@"
+	ucs_addServiceToLocalhost "Repository-Server" "$@" || die
 fi
 
 univention-config-registry set \

@@ -253,7 +253,7 @@ if [ -z "$s4connector_dc" ] \
 		/usr/share/univention-s4-connector/sync_krbtgt "$@"
 	fi
 
-	ucs_addServiceToLocalhost "${NAME}" "$@"
+	ucs_addServiceToLocalhost "${NAME}" "$@" || die
 
 	univention-config-registry set connector/s4/autostart=yes
 	/usr/share/univention-s4-connector/resync_object_from_ucs.py --filter "objectClass=dnsZone" --first

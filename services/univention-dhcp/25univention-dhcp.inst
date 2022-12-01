@@ -100,7 +100,7 @@ prepare_policies "$@"
 
 /usr/lib/univention-dhcp/create-subnets --service "$SERVICE" "$@" "${policies[@]}" || die
 
-ucs_addServiceToLocalhost 'DHCP' "$@"
+ucs_addServiceToLocalhost 'DHCP' "$@" || die
 systemctl restart -- isc-dhcp-server.service
 
 joinscript_save_current_version

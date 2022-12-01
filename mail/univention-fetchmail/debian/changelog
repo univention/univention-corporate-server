@@ -1,3 +1,9 @@
+univention-fetchmail (13.0.2-1) unstable; urgency=medium
+
+  * Bug #53092: Added fail checks for the join scripts
+
+ -- Mika Westphal <westphal@univention.de>  Thu, 02 Feb 2023 13:13:22 +0100
+
 univention-fetchmail (13.0.1-4) unstable; urgency=medium
 
   * Bug #55159: remove unnecessary LDAP ACL for cn=admin which always have all access rights

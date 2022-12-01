@@ -45,7 +45,7 @@ VERSION=13
 
 joinscript_init
 
-ucs_addServiceToLocalhost "univention-self-service" "$@"
+ucs_addServiceToLocalhost "univention-self-service" "$@" || die
 
 eval "$(ucr shell)"
 

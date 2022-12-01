@@ -1,3 +1,9 @@
+univention-nfs (12.0.1-3) unstable; urgency=medium
+
+  * Bug #53092: Added fail checks to the join scripts
+
+ -- Mika Westphal <westphal@univention.de>  Thu, 02 Feb 2023 13:17:44 +0100
+
 univention-nfs (12.0.1-2) unstable; urgency=medium
 
   * Bug #43686: replace init.d with systemctl calls for UDL

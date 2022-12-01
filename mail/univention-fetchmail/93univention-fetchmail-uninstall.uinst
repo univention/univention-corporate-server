@@ -47,7 +47,7 @@ SERVICE="Fetchmail"
 
 eval "$(univention-config-registry shell)"
 
-ucs_removeServiceFromLocalhost "${SERVICE}" "$@"
+ucs_removeServiceFromLocalhost "${SERVICE}" "$@" || die
 
 if ucs_isServiceUnused "${SERVICE}" "$@"; then
 	univention-directory-manager settings/extended_attribute remove "$@" --dn "cn=UniventionFetchmail-User-Server,cn=mail,cn=custom attributes,cn=univention,$ldap_base"
