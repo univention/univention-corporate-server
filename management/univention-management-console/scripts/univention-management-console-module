@@ -102,7 +102,7 @@ if __name__ == '__main__':
     # init logging
     import tornado.log
     logfile = options.logfile % {'module': options.module}
-    debug_fd = log_init(logfile, options.debug)
+    log_init(logfile, options.debug)
     if logfile in {'stdout', 'stderr', '/dev/stdout', '/dev/stderr'}:
         channel = logging.StreamHandler(sys.stdout if logfile in {'stdout', '/dev/stdout'} else sys.stderr)
     else:

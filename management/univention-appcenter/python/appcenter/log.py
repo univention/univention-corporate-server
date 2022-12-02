@@ -192,11 +192,10 @@ def _reverse_umc_module_logger(exclusive=True):
     except ImportError:
         pass
     else:
-        logger = MODULE._fallbackLogger  # pylint: disable=protected-access
         if exclusive:
-            for handler in logger.handlers:
-                logger.removeHandler(handler)
-        logger.parent = get_base_logger()
+            for handler in MODULE.root.handlers:
+                MODULE.root.removeHandler(handler)
+        MODULE.parent = get_base_logger()
 
 
 @contextmanager

@@ -40,24 +40,22 @@ Logging
 This module provides a wrapper for univention.debug
 """
 
+import functools
 import grp
 import logging
 import os
 
 import univention.debug as ud
+import univention.logging
 from univention.management.console.config import ucr
 
 
 # no exceptions from logging
 # otherwise shutdown the server will raise an exception that the logging stream could not be closed
-logging.raiseExceptions = 0
-
-#: list of available debugging components
-COMPONENTS = (ud.MAIN, ud.LDAP, ud.NETWORK, ud.SSL, ud.ADMIN, ud.MODULE, ud.AUTH, ud.PARSER, ud.LOCALE, ud.ACL, ud.RESOURCES, ud.PROTOCOL)
+logging.raiseExceptions = False
 
 _debug_ready = False
 _debug_loglevel = 2
-_log_pid = None
 
 
 def _reset_debug_loglevel():
@@ -79,16 +77,21 @@ def log_init(filename, log_level=2, log_pid=None):
     """
     if not os.path.isabs(filename) and filename not in {'stdout', 'stderr'}:
         filename = '/var/log/univention/%s.log' % filename
-    fd = ud.init(filename, ud.FLUSH, ud.NO_FUNCTION)
+
+    # basic config is not able to return the fd, so we do it here
+    fd = CORE.init(filename, ud.FLUSH, ud.NO_FUNCTION)
+    univention.logging.basicConfig(
+        filename=filename,
+        log_pid=log_pid,
+        univention_debug_level=log_level,
+        univention_debug_flush=True,
+        univention_debug_function=False,
+        univention_debug_categories=('MAIN', 'LDAP', 'NETWORK', 'SSL', 'ADMIN', 'MODULE', 'AUTH', 'PARSER', 'LOCALE', 'ACL', 'RESOURCES', 'PROTOCOL'),
+    )
     adm = grp.getgrnam('adm')
     os.fchown(fd.fileno(), 0, adm.gr_gid)
     os.fchmod(fd.fileno(), 0o640)
-    log_set_level(log_level)
-
-    global _debug_ready, _log_pid
-    _debug_ready = True
-    if log_pid is not None:
-        _log_pid = log_pid
+    CORE.root.removeHandler(fallbackLoggingHandler)
 
     return fd
 
@@ -99,82 +102,35 @@ def log_set_level(level=0):
 
     :param int level: log level to set
     """
-    for component in COMPONENTS:
-        ud.set_level(component, level)
+    for _component in (CORE, NETWORK, CRYPT, UDM, MODULE, AUTH, PARSER, LOCALE, ACL, RESOURCES, PROTOCOL):
+        CORE.set_ud_level(level)
 
 
 def log_reopen():
     """Reopenes the logfile and reset the current loglevel"""
-    if not _debug_ready:
-        return
-    ud.reopen()
+    CORE.reopen()
     _reset_debug_loglevel()
     log_set_level(_debug_loglevel)
 
 
-class ILogger(object):
-    """
-    This class provides a simple interface to access the univention
-    debug function for the given component.
+CORE = logging.getLogger('MAIN')
+NETWORK = logging.getLogger('NETWORK')
+CRYPT = logging.getLogger('SSL')
+UDM = logging.getLogger('ADMIN')
+MODULE = logging.getLogger('MODULE')
+AUTH = logging.getLogger('AUTH')
+PARSER = logging.getLogger('PARSER')
+LOCALE = logging.getLogger('LOCALE')
+ACL = logging.getLogger('ACL')
+RESOURCES = logging.getLogger('RESOURCES')
+PROTOCOL = logging.getLogger('PROTOCOL')
 
-    :param int id: id of the component to use
-    """
+for _logger in (CORE, NETWORK, CRYPT, UDM, MODULE, AUTH, PARSER, LOCALE, ACL, RESOURCES, PROTOCOL):
+    _logger.process = _logger.info
+    _logger.info = _logger.debug
+    _logger.debug = functools.partial(lambda _logger, msg, *args, **kwargs: _logger.log(1, msg, *args, **kwargs), _logger)
 
-    def __init__(self, id):
-        self._id = getattr(ud, id)
-        fallbackLoggingFormatter = logging.Formatter('%%(asctime)s.%%(msecs)03d %(component)-11s ( %%(level)-7s ) : %%(message)s' % {'component': id}, '%d.%m.%y %H:%M:%S')
-        fallbackLoggingHandler = logging.StreamHandler()
-        fallbackLoggingHandler.setFormatter(fallbackLoggingFormatter)
-        self._fallbackLogger = logging.getLogger('UMC.%s' % id)
-        self._fallbackLogger.setLevel(logging.DEBUG)
-        self._fallbackLogger.addHandler(fallbackLoggingHandler)
-        self._extras = [
-            {'level': 'ERROR'},
-            {'level': 'WARN'},
-            {'level': 'PROCESS'},
-            {'level': 'INFO'},
-        ]
-
-    def error(self, message):
-        """Write a debug message with level ERROR"""
-        self.__log(ud.ERROR, message, self._fallbackLogger.error)
-
-    def warn(self, message):
-        """Write a debug message with level WARN"""
-        self.__log(ud.WARN, message, self._fallbackLogger.warning)
-
-    def process(self, message):
-        """Write a debug message with level PROCESS"""
-        self.__log(ud.PROCESS, message, self._fallbackLogger.info)
-
-    def info(self, message):
-        """Write a debug message with level INFO"""
-        self.__log(ud.INFO, message, self._fallbackLogger.debug)
-
-    def debug(self, message):
-        """Write a debug message with level INFO"""
-        self.__log(ud.ALL, message, self._fallbackLogger.debug)
-
-    def __log(self, level, message, logger):
-        if _log_pid:
-            message = '%s: %s' % (os.getpid(), message)
-        if _debug_ready:
-            try:
-                ud.debug(self._id, level, message)
-            except TypeError:
-                ud.debug(self._id, ud.ERROR, 'Could not log message %r' % (message,))
-        elif _debug_loglevel >= level:
-            logger(message, extra=self._extras[level])
-
-
-CORE = ILogger('MAIN')
-NETWORK = ILogger('NETWORK')
-CRYPT = ILogger('SSL')
-UDM = ILogger('ADMIN')
-MODULE = ILogger('MODULE')
-AUTH = ILogger('AUTH')
-PARSER = ILogger('PARSER')
-LOCALE = ILogger('LOCALE')
-ACL = ILogger('ACL')
-RESOURCES = ILogger('RESOURCES')
-PROTOCOL = ILogger('PROTOCOL')
+fallbackLoggingHandler = logging.StreamHandler()
+fallbackLoggingHandler.setFormatter(logging.Formatter('%(asctime)s.%(msecs)03d ( %(levelname)-7s ) : %(message)s', '%d.%m.%y %H:%M:%S'))
+CORE.root.setLevel(logging.DEBUG)
+CORE.root.addHandler(fallbackLoggingHandler)
