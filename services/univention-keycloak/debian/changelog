@@ -1,3 +1,9 @@
+univention-keycloak (1.0.3) unstable; urgency=medium
+
+  * Bug #55478: Set login page title and tabname
+
+ -- Julia Bremer <bremer@univention.de>  Tue, 06 Dec 2022 17:34:20 +0100
+
 univention-keycloak (1.0.2) unstable; urgency=medium
 
   * Bug #55458: modify default mappers on ldap user federation
