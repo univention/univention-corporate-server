@@ -102,7 +102,7 @@ EOF
 	/usr/share/ucs-school-ui-common/scripts/univention-create-keycloak-clients --admin-password univention --client-id school-ui-groups-dev --direct-access
 }
 
-install_all_attributes_primary () {
+enable_bsb_repos () {
 	# get APT customer repo $username and @password from the RAM secrets
 	# shellcheck disable=SC2046
 	export $(grep -v '^#' /etc/ram.secrets| xargs)
@@ -122,8 +122,20 @@ install_all_attributes_primary () {
 deb [trusted=yes] http://192.168.0.10/build2/ ucs_5.0-0-fhh-bsb-iam-dev/all/
 deb [trusted=yes] http://192.168.0.10/build2/ ucs_5.0-0-fhh-bsb-iam-dev/$(ARCH)/
 EOF
+}
+
+install_all_attributes_primary () {
+	enable_bsb_repos
 
 	univention-install -y ucsschool-divis-custom-ldap-extension ucsschool-iserv-custom-ldap-extension ucsschool-moodle-custom-ldap-extension univention-saml
+	systemctl restart univention-directory-manager-rest.service
+}
+
+install_bsb_m2 () {
+	# install the bsb milestone 2 metapackage
+	enable_bsb_repos
+
+	univention-install -y bsb-release-m2
 	systemctl restart univention-directory-manager-rest.service
 }
 
