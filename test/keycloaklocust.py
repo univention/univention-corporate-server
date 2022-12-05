@@ -13,21 +13,23 @@ account = utils.UCSTestDomainAdminCredentials()
 
 WAIT_MIN = 1
 WAIT_MAX = 1
-hosts = ["https://master.ucs.test", "https://backup.ucs.test"]
-#hosts = ["https://backup.ucs.test"]
+#hosts = ["https://master.ucs.test", "https://backup.ucs.test"]
+hosts = ["https://master.ucs.test"]
+login_user = ["testuser" + str(i) for i in range(10000)]
 
 
 def logout_at_idp(client, host):
 	logout = "/univention/logout"
 	uri = host + logout
-	with client.get(uri, name="/univention/logout/", allow_redirects=True, timeout=10, catch_response=True) as req3:
+	with client.get(uri, name="/univention/logout/", allow_redirects=True, timeout=30, catch_response=True) as req3:
 		if not (200 <= req3.status_code <= 399):
 			return None
 
 
 def login_at_idp_with_credentials(client, login_link):
-	data = {'username': "Administrator", 'password': "univention"}
-	with client.post(login_link, name="/realms/ucs/login-actions/authenticate", allow_redirects=True, timeout=10, catch_response=True, data=data) as req2:
+	username = login_user.pop()
+	data = {'username': username, 'password': "univention"}
+	with client.post(login_link, name="/realms/ucs/login-actions/authenticate", allow_redirects=True, timeout=30, catch_response=True, data=data) as req2:
 		soup = BeautifulSoup(req2.content, features="lxml")
 		saml_response = soup.find("input", {"name": "SAMLResponse"}).get("value")
 		if not saml_response:
@@ -39,17 +41,19 @@ def login_at_idp_with_credentials(client, login_link):
 def entry(client, host):
 	entry = "/univention/saml/"
 	uri = host + entry
-	with client.get(uri, name="/univention/saml/", allow_redirects=True, timeout=10, catch_response=True) as req1:
-		if not (200 <= req1.status_code <= 399):
-			return None
-		if req1.content is None or len(req1.content) == 0:
-			return None
-	soup = BeautifulSoup(req1.content, features="lxml")
-	login_link = soup.find("form", {"id": "kc-form-login"}).get("action")
-	login_link = html.unescape(login_link)
-	login_at_idp_with_credentials(client, login_link)
-	logout_at_idp(client, host)
-	client.cookies.clear()
+	try:
+		with client.get(uri, name="/univention/saml/", allow_redirects=True, timeout=30, catch_response=True) as req1:
+			if not (200 <= req1.status_code <= 399):
+				return None
+			if req1.content is None or len(req1.content) == 0:
+				return None
+		soup = BeautifulSoup(req1.content, features="lxml")
+		login_link = soup.find("form", {"id": "kc-form-login"}).get("action")
+		login_link = html.unescape(login_link)
+		login_at_idp_with_credentials(client, login_link)
+	finally:
+		#logout_at_idp(client, host)
+		client.cookies.clear()
 
 
 class QuickstartUser(HttpUser):
