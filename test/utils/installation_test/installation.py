@@ -125,6 +125,10 @@ class VNCInstallation(object):
         self.timeout = 120
         self.setup_finish_sleep = 900
         self.connect()
+        self._ = self.load_translation(self.args.language)
+
+    def load_translation(self, language: str) -> Dict[str, str]:
+        return {}
 
     def run(self):  # type: () -> None
         try:

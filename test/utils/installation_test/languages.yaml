@@ -1,0 +1,216 @@
+cancel:
+  eng: Cancel
+  fra: Annuler
+  deu: Abbrechen
+continue:
+  eng: Continue
+  fra: Continuer
+  deu: Weiter
+next:
+  eng: Next
+  fra: suivant
+  deu: Weiter
+
+english_language_name:
+  eng: English
+  fra: French
+  deu: German
+select_location:
+  eng: The selected location will be used
+  fra: Le pays choisi permet
+  deu: Der hier ausgewählte Standort
+location:
+  eng: United States
+  fra: France
+  deu: Deutschland
+select_keyboard:
+  eng: Configure the keyboard
+  fra: Configurer le clavier
+  deu: Tastatur konfigurieren
+default_keyboard_layout_of_current_language:
+  eng: English
+  fra: Français
+  deu: Deutsch
+us_keyboard_layout:
+  eng: American English
+  fra: E
+  deu: Amerikanisches Englisch
+configure_network:
+  eng: Configure the network
+  fra: Configurer le réseau
+  deu: Netzwerk einrichten
+not_using_dhcp:
+  eng: probably not using
+  fra: Le protocole DHCP
+  deu: Ihr Netzwerk benutzt möglicherweise nicht
+manual_network_config:
+  eng: Configure the network
+  fra: Configurer vous-même le réseau
+  deu: Netzwerk manuell einrichten
+ip_address:
+  eng: The IP address is unique
+  fra: L'adresse IP est propre
+  deu: Die IP-Adresse ist für ihren Rechner eindeutig
+netmask:
+  eng: The netmask
+  fra: Le masque-réseau
+  deu: Durch die Netzmaske kann bestimmt
+gateway:
+  eng: The gateway is an IP address
+  fra: La passerelle
+  deu: Geben Sie hier die IP-Adresse
+name_server:
+  eng: The name servers are used
+  fra: Les serveurs deu noms
+  deu: um Rechnernamen im Internet aufzulösen
+user_and_password:
+  eng: You need to set a password
+  fra: Un bon met deu passe est composé
+  deu: Benutzer und Passwörter einrichten
+configure_clock:
+  eng: Configure the clock
+clock:
+  eng: Eastern
+partition_disks:
+  eng: Partition disks
+  fra: Patintionner les disques
+  deu: Festplatten partitionieren
+entire_disk:
+  eng: use entire disk
+  fra: utiliser un disque entier
+  deu: Festplatte verwenden
+entire_disk_with_lvm:
+  eng: gesamte Platte verwenden und LVM
+  fra: utiliser tout un disque avec LVM
+  deu: gesamte Platte verwenden und LVM
+all_files_on_partition:
+  eng: All files in one partition
+  fra: Tout dans une seule partition
+  deu: Alle Dateien auf eine Partition
+finish_partition:
+  eng: Finish partitioning and
+  fra: Terminer le partitionnement et
+  deu: Partitionierung beenden und
+continue_partition:
+  eng: If you continue
+  fra: Si vous continuez
+  deu: Wenn Sie fortfahren
+manual:
+  deu: Manuell
+free_space:
+  deu: FREIER SPEICHER
+boot_flag:
+  deu: Boot-Flag
+finish_create_partition:
+  fra: Terminer le partitionnement
+  deu: Anlegen der Partition beenden
+"no":
+  deu: Nein
+finish_installation:
+  eng: Finish the installation
+  fra: Terminer l'installation
+  deu: Installation abschließen
+
+domain_setup:
+  eng: Domain Setup
+  fra: Veuillez sélectionner les réglages
+  deu: Domäneneinstellungen
+new_domain:
+  eng: Create a new UCS domain
+  fra: Créer un nouveau
+  deu: Erstellen einer neuen UCS-Domäne
+ad_domain:
+  eng: into an existing Microsoft Active
+  fra: Active Directory
+  deu: bestehenden Microsoft Active-Directory
+no_domain:
+  eng: Do not use any domain
+  fra: Ne pas utiliser deu domaine
+  deu: Keine Domäne
+warning_no_domain:
+  eng: No domain
+  deu: Keine Domäne
+no_dc_dns:
+  eng: No domain controller was found at
+  deu: Unter der Adresse des DNS-Servers
+no_dc_dns_adapt:
+  eng: Adapt settings
+  deu: Einstellungen anpassen
+preferred_dns:
+  eng: Preferred DNS server
+  deu: Bevorzugter DNS-Server
+repositories_not_reachable:
+  eng: cannot be reached
+  deu: nicht erreicht werden
+username:
+  deu: Benutzername
+password:
+  deu: Passwort
+join_domain:
+  eng: Join into an existing UCS
+  deu: Einer bestehenden UCS-Domäne
+start_join:
+  eng: Start join at the end
+  deu: Informationen zum
+hostname_primary:
+  eng: Hostname of the Primary
+  deu: Rechnername des Primary
+system_name:
+  eng: Host settings
+  deu: Eingabe des Namens
+account_information:
+  eng: Account information
+  fra: Informations du compte
+  deu: Kontoinformationen
+ad_account_information:
+  eng: Active Directory join information
+  deu: Active Directory-Kontoinformationen
+address_ad:
+  deu: Adresse des Active Directory
+host_settings:
+  eng: Host settings
+  fra: Réglages deu l'hôte
+  deu: Rechnereinstellungen
+software_configuration:
+  eng: Software configuration
+  fra: Configuration logicielle
+  deu: Software-Konfiguration
+software_configuration_non_master:
+  eng: Select UCS software
+  deu: Wählen Sie UCS-Software
+confirm_config:
+  eng: Confirm configuration
+  fra: Composants logiciels
+  deu: UCS-Konfiguration
+confirm_config_non_maste:
+  eng: Please confirm the
+  deu: Bitte bestätigen Sie
+setup_successful:
+  eng: UCS setup successful
+  fra: Installation d'UCS réussie
+  deu: UCS-Einrichtung erfolgreich
+finish:
+  eng: FINISH
+  fra: TERMINER
+  deu: Fertigstellen
+role:
+  deu: Systemrolle
+error:
+  eng: An error occurred
+  deu: Ein Fehler ist
+change_settings:
+  eng: Adjust settings
+  deu: Einstellungen anpassen
+
+school_role:
+  deu: Serverrolle in der UCS@school
+school_edu:
+  deu: Edukativnetz
+school_adm:
+  deu: Verwaltungsnetz
+school_central:
+  deu: Zentraler Schulserver
+
+appliance_modus:
+  eng: appliance mode
+  deu: Appliance-Modus

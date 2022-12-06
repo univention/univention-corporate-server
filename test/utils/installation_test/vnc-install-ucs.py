@@ -4,22 +4,26 @@
 """UCS installation via VNC"""
 
 from argparse import ArgumentDefaultsHelpFormatter, ArgumentParser
+from os.path import dirname, join
+from typing import Dict  # noqa: F401
 
 from installation import VNCInstallation, build_parser, sleep, verbose
-from languages import english, french, german
 from vncdotool.client import VNCDoException
+from yaml import safe_load
 
 
 class UCSInstallation(VNCInstallation):
 
+    def load_translation(self, language):  # type: (str) -> Dict[str, str]
+        name = join(dirname(__file__), "languages.yaml")
+        with open(name) as fd:
+            return {
+                key: values.get(self.args.language, "")
+                for key, values in safe_load(fd).items()
+            }
+
     @verbose("MAIN")
     def main(self):  # type: () -> None
-        self._ = {
-            "eng": english.strings,
-            "fra": french.strings,
-            "deu": german.strings,
-        }[self.args.language]
-
         self.bootmenu()
         self.installer()
         self.setup()
