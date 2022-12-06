@@ -1,3 +1,9 @@
+univention-appcenter (9.0.3-7) unstable; urgency=medium
+
+  * Bug #55044: Simplify repository UCRVs still use unmaintained
+
+ -- Peter Stoll <stoll.extern@univention.de>  Tue, 06 Dec 2022 13:20:27 +0200
+
 univention-appcenter (9.0.3-6) unstable; urgency=medium
 
   * Bug #52514: Patches the wrong usage of configure through text replacement

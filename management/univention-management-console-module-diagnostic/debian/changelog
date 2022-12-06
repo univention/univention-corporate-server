@@ -1,3 +1,9 @@
+univention-management-console-module-diagnostic (6.0.2-8) unstable; urgency=medium
+
+  * Bug #55044: Simplify repository UCRVs - still use unmaintained
+
+ -- Peter Stoll <stoll.extern@univention.de>  Tue, 06 Dec 2022 13:03:05 +0200
+
 univention-management-console-module-diagnostic (6.0.2-7) unstable; urgency=medium
 
   * Bug #55044: Simplify repository UCRVs - added diagnostic module to check

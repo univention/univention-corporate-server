@@ -107,6 +107,11 @@ define([
 					name: 'version',
 					label: _("Version"),
 					regExp: '^((([0-9]+\\.[0-9]+|current),)*([0-9]+\\.[0-9]+|current))?$'
+				},
+				{
+					type: CheckBox,
+					name: 'unmaintained',
+					label: _("Use unmaintained repositories")
 				}
 			];
 
@@ -125,7 +130,7 @@ define([
 					label: _("Advanced settings"),
 					layout:
 					[
-						['version']
+						['version', 'unmaintained']
 					]
 				}
 			];
@@ -224,7 +229,8 @@ define([
 					// Empty fields
 					name: '',
 					description: '',
-					server: ''
+					server: '',
+					unmaintained: false
 					// TODO These have to be copied from the current settings
 				});
 		}

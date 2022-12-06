@@ -1337,14 +1337,14 @@ msgstr "Repository Konfiguration auf Korrektheit prüfen"
 
 #: umc/python/diagnostic/plugins/65_check_repository_config.py:62
 msgid "Some UCR variables for the repository configuration are deprecated."
-msgstr "Einige UCR Variablen für die Repository Konfiguration sind deprecated."
+msgstr "Einige UCR Variablen für die Repository Konfiguration sind veraltet."
 
 #: umc/python/diagnostic/plugins/65_check_repository_config.py:63
 msgid ""
 "As these variables should be no longer used, this check has been added to "
 "check for the existence of these variables."
 msgstr ""
-"Dieser Check wurde eingeführt um das Vorhandensein dieser Variablen zu "
+"Dieser Check wurde eingeführt, um das Vorhandensein dieser Variablen zu "
 "prüfen, weil diese Variablen nicht mehr benutzt werden sollen."
 
 #: umc/python/diagnostic/plugins/65_check_repository_config.py:64
@@ -1360,8 +1360,8 @@ msgid ""
 "as well as saving the settings for all Additional repositories or press the "
 "Button ADJUST ALL COMPONENTS "
 msgstr ""
-"und für alle zusätzlichen Repositories neu abspeichern oder drücken Sie den "
-"Button Alle Komponenten korrigieren "
+"und für alle zusätzlichen Repositories neu abspeichern, oder drücken Sie den "
+"Button ALLE KOMPONENTEN KORRIGIEREN "
 
 #: umc/python/diagnostic/plugins/65_check_repository_config.py:66
 msgid "to correct these settings and delete the obsolete variables."
@@ -1374,11 +1374,11 @@ msgid ""
 "Furthermore, it is checked if the scheme of the server variable is either "
 "http or https"
 msgstr ""
-"Es wird auch geprüft, ob das Schema der server Variablen http oder https ist"
+"Es wird auch geprüft, ob das Schema der Server-Variablen http oder https ist."
 
 #: umc/python/diagnostic/plugins/65_check_repository_config.py:81
 msgid "Cleanup of deprecated variables is executed !"
-msgstr "Die Korrektur der deprecated Variablen wird ausgeführt !"
+msgstr "Die Korrektur der veralteten Variablen wird ausgeführt !"
 
 #: umc/python/diagnostic/plugins/65_check_repository_config.py:99
 msgid ""
@@ -1396,7 +1396,7 @@ msgstr "Alle Komponenten korrigieren"
 #, python-format
 msgid "The variable %(name)r is deprecated and should no longer be used."
 msgstr ""
-"Die Variable %(name)r ist deprecated und sollte nicht mehr benutzt werden."
+"Die Variable %(name)r ist veraltet und sollte nicht mehr benutzt werden."
 
 #: umc/python/diagnostic/plugins/65_check_repository_config.py:143
 msgid "No http/https used as scheme in %(name)r: %(value)r."

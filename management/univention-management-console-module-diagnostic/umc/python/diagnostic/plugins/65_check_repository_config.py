@@ -69,7 +69,7 @@ description = "\n".join((
 
 ONLINE_BASE = 'repository/online'
 COMPONENT_BASE = f'{ONLINE_BASE}/component'
-DEPRECATED_VARS = ['prefix', 'username', 'password', 'unmaintained', 'port']
+DEPRECATED_VARS = ['prefix', 'username', 'password', 'port']
 DEPRECATED_GEN = [f'{ONLINE_BASE}/{dep}' for dep in DEPRECATED_VARS]
 RE_KEY = re.compile(f'{COMPONENT_BASE}/([^/]+)/({"|".join(DEPRECATED_VARS)})')
 
