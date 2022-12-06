@@ -23,6 +23,7 @@ refer to :ref:`architecture-notation`.
    udm
    umc
    ucr
+   app-center
    samba
    file
    print
