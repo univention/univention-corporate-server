@@ -2,8 +2,10 @@
 .. |APT| replace:: :abbr:`APT (advanced package tool)`
 .. |CA| replace:: :abbr:`CA (certificate authority)`
 .. |IPC| replace:: :abbr:`IPC (interprocess-communication)`
+.. |ISV| replace:: :abbr:`ISV (independent software vendor)`
 .. |IT| replace:: :abbr:`IT (information technology)`
 .. |PAM| replace:: :abbr:`PAM (pluggable authentication module)`
+.. |RDBMS| replace:: :abbr:`RDBMS (relational database management system)`
 .. |SAML| replace:: :abbr:`SAML (Secure Authentication Markup Language)`
 .. |TLS| replace:: :abbr:`TLS (Transport Layer Security)`
 .. |UCR| replace:: :abbr:`UCR (Univention Configuration Registry)`
