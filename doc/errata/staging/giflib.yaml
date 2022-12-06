@@ -1,0 +1,16 @@
+product: ucs
+release: "4.4"
+version: [9]
+scope: ucs_4.4-0-errata4.4-9
+src: giflib
+fix: 5.1.4-0.4+deb9u1
+desc: |
+ This update addresses the following issues:
+ 5.1.4-0.4+deb9u1 (Fri, 02 Dec 2022 21:09:11 +0100)
+ * Non-maintainer upload by the ELTS Team.
+ * Fix CVE-2016-3977, CVE-2018-11490, CVE-2019-15133
+bug: [55475]
+cve:
+- CVE-2016-3977
+- CVE-2018-11490
+- CVE-2019-15133
