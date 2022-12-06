@@ -41,6 +41,7 @@ import binascii
 import datetime
 import functools
 import hashlib
+import ipaddress
 import json
 import os
 import re
@@ -289,12 +290,12 @@ class UMCP_Dispatcher(object):
             client.client.signal_connect('closed', callback)
 
         # make sure a lost connection to the UMC-Server does not bind the session to ::1
-        if client.ip in ('127.0.0.1', '::1') and queuerequest.ip != client.ip:
+        if queuerequest.ip != client.ip and any(ipaddress.ip_address(client.ip) in ipaddress.ip_network(network) for network in ('127.0.0.1,::1,' + ucr.get('umc/http/allowed-session-overtake/ranges', '').split(',')) if network):
             CORE.warn('Switching session IP from=%r to=%r' % (client.ip, queuerequest.ip))
             client.ip = queuerequest.ip
 
         # bind session to IP (allow requests from localhost)
-        if queuerequest.ip not in (client.ip, '127.0.0.1', '::1'):
+        if queuerequest.ip != client.ip and any(ipaddress.ip_address(queuerequest.ip) in ipaddress.ip_network(network) for network in ('127.0.0.1,::1,' + ucr.get('umc/http/allowed-session-overtake/ranges', '').split(',')) if network):
             CORE.warn('The sessionid (ip=%s) is not valid for this IP address (%s)' % (client.ip, queuerequest.ip))
             response = Response(queuerequest.request)
             response.status = UNAUTHORIZED
