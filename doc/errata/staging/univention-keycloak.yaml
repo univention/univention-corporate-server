@@ -1,0 +1,12 @@
+product: ucs
+release: "5.0"
+version: [2]
+scope: ucs_5.0-0-errata5.0-2
+src: univention-keycloak
+fix: 1.0.3A~5.0.0.202212061817
+desc: |
+ This update addresses the following issues:
+ * The login page and tab name of the Keycloak Single-Sign On
+   page have been modified to match those of the simpleSAMLphp
+   login page
+bug: [55478]
