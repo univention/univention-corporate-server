@@ -43,7 +43,8 @@ extensions = [
 intersphinx_mapping = {
     "uv-manual": ("https://docs.software-univention.de/manual/5.0/en", None),
     "uv-developer-reference": ("https://docs.software-univention.de/developer-reference/5.0/en", None),
-    "uv-ucs-python-api": ("https://docs.software-univention.de/ucs-python-api/", None),
+    "uv-app-center": ("https://docs.software-univention.de/app-center/5.0/en", None),
+    "uv-ucs-python-api": ("https://docs.software-univention.de/ucs-python-api", None),
 }
 
 bibtex_bibfiles = ["../bibliography.bib", "bibliography.bib"]
@@ -89,14 +90,16 @@ html_context = {
 # so a file named "default.css" will overwrite the builtin "default.css".
 html_static_path = []  # value usually is ['_static']
 
-
 html_last_updated_fmt = "%d. %b %Y at %H:%M (UTC%z)"
 
 # https://github.com/mgeier/sphinx-last-updated-by-git
 git_last_updated_timezone = 'Europe/Berlin'
 
-
 numfig = True
+
+# Warnings may come up by sphinx-last-updated-by-git. Shall be suppressed to
+# avoid the warnings from failing the pipeline.
+suppress_warnings = ['git.too_shallow']
 
 if "spelling" in sys.argv:
     spelling_lang = "en_US"
