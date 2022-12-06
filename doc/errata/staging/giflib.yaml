@@ -1,0 +1,16 @@
+product: ucs
+release: "5.0"
+version: [2]
+scope: ucs_5.0-0-errata5.0-2
+src: giflib
+fix: 5.1.4-3+deb10u1
+desc: |
+ This update addresses the following issues:
+ * heap-based buffer overflow in DGifDecompressLine function in dgif_lib.c
+   (CVE-2018-11490)
+ * divide-by-zero exception in the decoder function DGifSlurp in dgif_lib.c
+   (CVE-2019-15133)
+bug: [55473]
+cve:
+- CVE-2018-11490
+- CVE-2019-15133
