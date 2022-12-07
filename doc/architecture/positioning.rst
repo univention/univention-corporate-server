@@ -8,6 +8,8 @@ To comprehend the architecture of Univention Corporate Server (UCS), it is
 important to understand the origin and where it is located in the world of
 information technology (IT).
 
+.. _positioning-origin:
+
 Origin
 ======
 
@@ -19,6 +21,8 @@ the years, Debian has been and is a solid basis for UCS.
 UCS is part of the open source family and has strong relations to important
 projects like for example `Samba <w-samba_>`_ and `OpenLDAP <w-openldap_>`_.
 
+.. _positioning-history:
+
 History
 -------
 
@@ -28,6 +32,8 @@ was to offer companies and organizations a standardized Linux server as
 alternative to Microsoft Windows Server that implements Microsoft's domain
 concept. Over the time it developed to an enterprise Linux distribution with
 maintenance cycles that better suited the needs of organizations.
+
+.. _positioning-packages:
 
 Packages
 --------
@@ -63,6 +69,8 @@ Nevertheless, UCS doesn't include packages from the Debian games section,
 because it would require a content rating for video games. Univention does not
 see added value in the distribution of video games with UCS for the product
 audience.
+
+.. _positioning-identity-management:
 
 Identity management
 ===================
@@ -104,6 +112,8 @@ administrators.
 UCS is a product for central identity management for user accounts, their
 permissions and the collection of user accounts in groups.
 
+.. _positioning-infrastructure-management:
+
 Infrastructure management
 =========================
 
@@ -123,6 +133,8 @@ printers.
 .. TODO  Enable, once the services section is written.
    """For more information about the different infrastructure services in UCS, see
    :ref:`services`."""
+
+.. _positioning-connection:
 
 Connection to the world around
 ==============================
