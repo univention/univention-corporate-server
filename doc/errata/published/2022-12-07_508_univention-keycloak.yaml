@@ -10,3 +10,5 @@ desc: |
    page have been modified to match those of the simpleSAMLphp
    login page
 bug: [55478]
+erratum: 508
+announced: 2022-12-07
