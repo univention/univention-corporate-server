@@ -13,3 +13,5 @@ desc: |
 bug: [55476]
 cve:
 - CVE-2022-41325
+erratum: 1350
+announced: 2022-12-07
