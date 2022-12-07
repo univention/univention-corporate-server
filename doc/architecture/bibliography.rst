@@ -1,4 +1,8 @@
-Bibliography
-============
+.. _biblio:
+
+.. only:: html
+
+   Bibliography
+   ============
 
 .. bibliography::
