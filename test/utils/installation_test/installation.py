@@ -100,8 +100,10 @@ class UCSInstallation(object):
 		# language
 		for i in range(3):
 			self.client.waitForText('Select a language', timeout=self.timeout + 120, prevent_screen_saver=True)
+			self.client.mouseMove(250, 250)
+			self.client.mousePress(1)
 			self.client.enterText(self._['english_language_name'])
-			self.click('Continue')
+			self.client.keyPress('enter')
 			try:
 				self.client.waitForText(self._['select_location'], timeout=self.timeout)
 				break
