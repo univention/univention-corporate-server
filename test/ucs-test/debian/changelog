@@ -1,3 +1,9 @@
+ucs-test (10.0.7-28) unstable; urgency=medium
+
+  * Bug #55269: adjust for "groups" availability in "users/user"
+
+ -- Florian Best <best@univention.de>  Wed, 07 Dec 2022 12:06:34 +0100
+
 ucs-test (10.0.7-27) unstable; urgency=medium
 
   * Bug #20235: add

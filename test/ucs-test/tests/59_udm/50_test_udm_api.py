@@ -377,7 +377,7 @@ class TestUdmAutoOpen(TestCase):
 		user_mod = self.udm.get('users/user')
 		assert user_mod.meta.auto_open is True
 		obj = user_mod.get(dn)
-		assert 'cn=Domain Users,cn=groups,{}'.format(self.ucr_test['ldap/base']) in obj.props.groups
+		assert 'cn=Domain Users,cn=groups,{}'.format(self.ucr_test['ldap/base']) == obj.props.primaryGroup
 
 	def test_auto_open_false(self):
 		print('Opening user with module.meta.auto_open == False...')
@@ -385,7 +385,7 @@ class TestUdmAutoOpen(TestCase):
 		user_mod = self.udm.get('users/user')
 		user_mod.meta.auto_open = False
 		obj = user_mod.get(dn)
-		assert obj.props.groups == []
+		assert not obj.props.primaryGroup
 
 
 class TestUdmLDAPConnection(TestCase):
