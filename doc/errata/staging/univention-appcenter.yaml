@@ -3,14 +3,13 @@ release: "5.0"
 version: [2]
 scope: ucs_5.0-0-errata5.0-2
 src: univention-appcenter
-fix: 9.0.3-6A~5.0.0.202212011119
+fix: 9.0.3-7A~5.0.0.202212071136
 desc: |
  This update addresses the following issues:
  * The Repository Setting module got now additional logic to support the
    merging of the following UCR variables which got an deprecated state:
    repository/online/(prefix, port)
-   repository/online/component/*/(prefix, port, username, password,
-     unmaintained)
+   repository/online/component/*/(prefix, port, username, password)
  * When entering the Repository Settings module and these variables exist,
    they will be merged into the corresponding 'server' variables. The inputs
    fields for the deprecated variables where deleted as their contents is
