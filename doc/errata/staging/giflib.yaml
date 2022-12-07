@@ -6,9 +6,13 @@ src: giflib
 fix: 5.1.4-0.4+deb9u1
 desc: |
  This update addresses the following issues:
- 5.1.4-0.4+deb9u1 (Fri, 02 Dec 2022 21:09:11 +0100)
- * Non-maintainer upload by the ELTS Team.
- * Fix CVE-2016-3977, CVE-2018-11490, CVE-2019-15133
+ * Heap-based buffer overflow in `util/gif2rgb.c` in `gif2rgb` 5.1.2 allows
+   remote attackers to cause a denial of service (application crash) via the
+   background color index in a GIF file (CVE-2016-3977)
+ * Heap-based buffer overflow in function `DGifDecompressLine` in `dgif_lib.c`
+   (CVE-2018-11490)
+ * Divide-by-zero exception in the decoder function `DGifSlurp` in
+   `dgif_lib.c` (CVE-2019-15133)
 bug: [55475]
 cve:
 - CVE-2016-3977
