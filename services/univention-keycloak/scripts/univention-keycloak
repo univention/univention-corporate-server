@@ -1148,13 +1148,13 @@ def init_keycloak_ucs(opt):
 		}
 	}
 	kc_admin.update_realm(DEFAULT_REALM, payload=realm_payload)
-	configure_login_page(kc_admin)
 
 	# create ucs realm
 	realm_payload["id"] = opt.realm
 	realm_payload["realm"] = opt.realm
 	kc_admin.create_realm(payload=realm_payload, skip_exists=True)
 
+	configure_login_page(kc_admin)
 	# create portal saml client
 	opt.metadata_url = SERVER_URL + "/univention/saml/metadata"
 	opt.umc_uid_mapper = True
