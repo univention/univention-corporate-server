@@ -8,8 +8,8 @@ desc: |
  This update addresses the following issues:
  * Heap-based buffer overflow in function `DGifDecompressLine` in `dgif_lib.c`
    (CVE-2018-11490)
- * Divide-by-zero exception in the decoder function `DGifSlurp` in `dgif_lib.c`
-   (CVE-2019-15133)
+ * Divide-by-zero exception in the decoder function `DGifSlurp` in
+   `dgif_lib.c` (CVE-2019-15133)
 bug: [55473]
 cve:
 - CVE-2018-11490
