@@ -6,9 +6,9 @@ src: giflib
 fix: 5.1.4-3+deb10u1
 desc: |
  This update addresses the following issues:
- * heap-based buffer overflow in DGifDecompressLine function in dgif_lib.c
+ * Heap-based buffer overflow in function `DGifDecompressLine` in `dgif_lib.c`
    (CVE-2018-11490)
- * divide-by-zero exception in the decoder function DGifSlurp in dgif_lib.c
+ * Divide-by-zero exception in the decoder function `DGifSlurp` in `dgif_lib.c`
    (CVE-2019-15133)
 bug: [55473]
 cve:
