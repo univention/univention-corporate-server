@@ -134,6 +134,7 @@ install_all_attributes_primary () {
 install_bsb_m2 () {
 	# install the bsb milestone 2 metapackage
 	enable_bsb_repos
+	/usr/sbin/univention-config-registry set dataport/umgebung='DEV'
 
 	univention-install -y bsb-release-m2
 	systemctl restart univention-directory-manager-rest.service
