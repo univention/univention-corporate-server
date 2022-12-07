@@ -6,20 +6,10 @@ src: vlc
 fix: 3.0.17.4-0+deb9u2
 desc: |
  This update addresses the following issue:
- 3.0.17.4-0+deb9u1 (Fri, 19 Aug 2022 13:12:02 +0200)
- * Non-maintainer upload by the ELTS Team.
- * New upstream version 3.0.17.4 - Fix remote code execution through crafted
-   playlist (VideoLAN-SB-VLC-3013) - Fix an infinite loop in MP4 - Fix crashes
-   with VP9 streams
- * dvdnav-provide-a-compatibility-macro.patch,
-   revert-minimum-dvdnav-version.patch: - cherry-pick patch from upstream,
-   allow building with dvdnav 5.0.3.
- * Revert-vaapi-add-support-for-DRM-modifiers.patch: - Revert DRM modifier
-   support, which requires EGL_EXT_image_dma_buf_import_modifiers not
-   available in stretch.
- 3.0.17.4-0+deb9u2 (Sat, 03 Dec 2022 04:07:06 +0530)
- * Non-maintainer upload by the ELTS team.
- * Add patch to fix possible buffer overflow. (Fixes: CVE-2022-41325)
+ * Fix remote code execution through crafted playlist (VideoLAN-SB-VLC-3013)
+ * Fix an infinite loop in MP4.
+ * Fix crashes with VP9 streams
+ * To fix possible buffer overflow. (CVE-2022-41325)
 bug: [55476]
 cve:
 - CVE-2022-41325
