@@ -28,7 +28,11 @@
 .. _lets-encrypt: https://letsencrypt.org
 .. _mdn-csp: https://developer.mozilla.org/en-US/docs/Web/HTTP/CSP
 .. _python-notifier: https://github.com/univention/python-notifier
+.. _tornado: https://www.tornadoweb.org/en/stable/
+.. _typescript: https://www.typescriptlang.org/
+.. _ucs-demo-portal-json: https://demo.univention.de/univention/portal/portal.json
 .. _univention-ucs-manual: https://docs.software-univention.de/manual-5.0.html
+.. _vuejs: https://vuejs.org
 .. _w-archimate: https://en.wikipedia.org/wiki/ArchiMate
 .. _w-c4-model: https://en.wikipedia.org/w/index.php?title=C4_model&oldid=1115745383
 .. _w-certificate-authority: https://en.wikipedia.org/wiki/Certificate_authority
@@ -38,3 +42,4 @@
 .. _w-dns: https://en.wikipedia.org/wiki/Domain_Name_System
 .. _w-openldap: https://en.wikipedia.org/wiki/OpenLDAP
 .. _w-samba: https://en.wikipedia.org/wiki/Samba_(software)
+.. _w-spa: https://en.wikipedia.org/wiki/Single-page_application
