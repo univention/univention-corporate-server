@@ -5,13 +5,8 @@ scope: ucs_4.4-0-errata4.4-9
 src: libraw
 fix: 0.17.2-6+deb9u4
 desc: |
- This update addresses the following issues:
- 0.17.2-6+deb9u4 (Thu, 01 Dec 2022 15:51:29 +0100)
- * Non-maintainer upload by the ELTS Team.
- * deb9u2 fixed CVE-2017-16910 rather than CVE-2017-16909
- * Fix CVE-2017-16909 and CVE-2020-15503
+ This update addresses the following issue:
+ * LibRaw lacks a thumbnail size range check. (CVE-2020-15503)
 bug: [55477]
 cve:
-- CVE-2017-16910
-- CVE-2017-16909
 - CVE-2020-15503
