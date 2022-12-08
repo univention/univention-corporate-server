@@ -48,9 +48,9 @@ import univention.admin.uexceptions
 import univention.admin.uldap
 import univention.config_registry
 import univention.debug as ud
+import univention.logging
 
 
-ud.init('/var/log/univention/ip-phone-tool.log', ud.FLUSH, ud.NO_FUNCTION)
 locale.setlocale(locale.LC_ALL, '')
 translation = univention.admin.localization.translation('univention.admin.handlers.test')
 _ = translation.translate
@@ -223,9 +223,7 @@ if __name__ == '__main__':
 
     options = parser.parse_args()
 
-    if options.debuglevel:
-        ud.set_level(ud.LDAP, options.debuglevel)
-        ud.set_level(ud.ADMIN, options.debuglevel)
+    univention.logging.basicConfig(filename='/var/log/univention/ip-phone-tool.log', univention_debug_level=options.debuglevel)
 
     ucr = univention.config_registry.ConfigRegistry()
     ucr.load()

@@ -44,10 +44,11 @@ import univention.admin.objects
 import univention.admin.uldap
 import univention.config_registry
 import univention.debug as ud
+import univention.logging
 
 
 def doit(arglist):
-    ud.init('/var/log/univention/directory-manager-cmd.log', ud.FLUSH, ud.FUNCTION)
+    univention.logging.basicConfig(filename='/var/log/univention/directory-manager-cmd.log', univention_debug_level=ud.ALL)
     out = []
     opts, args = getopt.getopt(arglist[1:], '', ['binddn=', 'pwdfile=', 'user=', 'pwd='])
 
@@ -65,9 +66,6 @@ def doit(arglist):
             user = val
         elif opt == '--pwd':
             pwd = val
-
-    ud.set_level(ud.LDAP, ud.ALL)
-    ud.set_level(ud.ADMIN, ud.ALL)
 
     configRegistry = univention.config_registry.ConfigRegistry()
     configRegistry.load()

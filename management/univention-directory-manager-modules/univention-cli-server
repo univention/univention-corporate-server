@@ -54,10 +54,12 @@ import univention.admincli.admin
 import univention.admincli.license_check
 import univention.admincli.passwd
 import univention.debug as ud
+import univention.logging
 from univention.config_registry import ConfigRegistry
 
 
 logfile = ''
+loglevel = 1
 
 
 def recv_fds(sock, msglen, maxfds):
@@ -103,9 +105,10 @@ def server_main(args):
     socket_path = args.socket
     socket_dir = os.path.dirname(socket_path)
 
-    global logfile
+    global logfile, loglevel
     logfile = args.logfile
-    ud.init(logfile, ud.FLUSH, ud.NO_FUNCTION)
+    loglevel = args.debug_level
+    univention.logging.basicConfig(filename=logfile, univention_debug_level=args.debug_level)
 
     runfilename = '%s.run' % socket_path
     if os.path.isfile(runfilename):
@@ -124,7 +127,6 @@ def server_main(args):
             print('E: Server already running [Pid: %s]' % pid, file=sys.stderr)
             sys.exit(1)
 
-    ud.set_level(ud.ADMIN, args.debug_level)
     ud.debug(ud.ADMIN, ud.INFO, 'server is running as process %d' % os.getpid())
 
     try:
@@ -222,7 +224,7 @@ def doit(sarglist, conn, stdout=None, stderr=None):
 
     if logfile != oldlogfile:
         ud.exit()
-        ud.init(logfile, ud.FLUSH, ud.NO_FUNCTION)
+        univention.logging.basicConfig(filename=logfile, univention_debug_level=loglevel)
 
     if not stdout:
         stdout = StringIO()

@@ -51,6 +51,7 @@ import univention.admin.modules as udm_modules
 import univention.admin.uldap
 import univention.config_registry
 import univention.debug as ud
+import univention.logging
 import univention.uldap
 
 
@@ -79,9 +80,7 @@ def main():
         sys.exit(1)
 
     print_msg('Initializing... (%s)' % (time.ctime()))
-    ud.init('/var/log/univention/lock_expired_accounts.log', ud.FLUSH, ud.NO_FUNCTION)
-    ud.set_level(ud.MAIN, ud.ALL)
-    ud.set_level(ud.LDAP, ud.ALL)
+    univention.logging.basicConfig(filename='/var/log/univention/lock_expired_accounts.log', univention_debug_level=ud.ALL)
     if options.last_week:
         print_msg('Checking only accounts that expired in the last 7 days')
 

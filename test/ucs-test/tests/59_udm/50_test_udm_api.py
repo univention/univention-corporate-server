@@ -18,6 +18,7 @@ from unittest import TestCase, main
 
 import univention.admin.modules
 import univention.debug as ud
+import univention.logging
 import univention.testing.strings as uts
 from univention.testing import utils
 from univention.testing.strings import random_string, random_username
@@ -33,8 +34,7 @@ from univention.udm.exceptions import (
 )
 
 
-ud.init('/var/log/univention/directory-manager-cmd.log', ud.FLUSH, 0)
-ud.set_level(ud.ADMIN, ud.ALL)
+univention.logging.basicConfig(filename='/var/log/univention/directory-manager-cmd.log', univention_debug_level=ud.ALL)
 
 PostalAddress = namedtuple('PostalAddress', ['street', 'zipcode', 'city'])
 

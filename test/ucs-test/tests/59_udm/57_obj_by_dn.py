@@ -10,12 +10,12 @@ import pytest
 from unittest import TestCase, main
 
 import univention.debug as ud
+import univention.logging
 from univention.testing.ucr import UCSTestConfigRegistry
 from univention.udm import UDM, NoObject
 
 
-ud.init('/var/log/univention/directory-manager-cmd.log', ud.FLUSH, 0)
-ud.set_level(ud.ADMIN, ud.ALL)
+univention.logging.basicConfig(filename='/var/log/univention/directory-manager-cmd.log', univention_debug_level=ud.ALL)
 
 
 class TestUdmAutoOpen(TestCase):

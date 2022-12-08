@@ -43,6 +43,7 @@ import univention.admin.objects
 import univention.admin.uexceptions
 import univention.config_registry
 import univention.debug as ud
+import univention.logging
 
 
 lo = None
@@ -93,7 +94,7 @@ def main():
 
     global lo, position
 
-    ud.init('/var/log/univention/check_group_recursion.log', ud.FLUSH, ud.NO_FUNCTION)
+    univention.logging.basicConfig(filename='/var/log/univention/check_group_recursion.log', univention_debug_level=1)
 
     configRegistry = univention.config_registry.ConfigRegistry()
     configRegistry.load()

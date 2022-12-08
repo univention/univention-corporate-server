@@ -56,6 +56,7 @@ from tornado.netutil import bind_sockets, bind_unix_socket
 
 import univention.debug as ud
 import univention.lib.i18n
+import univention.logging
 from univention.admin.rest.shared_memory import shared_memory
 from univention.management.console.config import ucr
 
@@ -170,8 +171,7 @@ class Gateway(tornado.web.RequestHandler):
         args = parser.parse_args()
 
         setproctitle(proctitle + '   # gateway main')
-        ud.init('stdout', ud.FLUSH, ud.NO_FUNCTION)
-        ud.set_level(ud.MAIN, args.debug)
+        univention.logging.basicConfig(filename='stdout', univention_debug_level=args.debug)
 
         tornado.httpclient.AsyncHTTPClient.configure('tornado.curl_httpclient.CurlAsyncHTTPClient')
         tornado.locale.load_gettext_translations('/usr/share/locale', 'univention-directory-manager-rest')

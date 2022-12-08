@@ -41,9 +41,10 @@ import time
 from argparse import REMAINDER, ArgumentParser, RawTextHelpFormatter
 
 import univention.debug as ud
+import univention.logging
 
 
-ud.init('/var/log/univention/directory-manager-cmd.log', ud.FLUSH, ud.FUNCTION)
+univention.logging.basicConfig(filename='/var/log/univention/directory-manager-cmd.log', univention_debug_level=1)
 
 import univention.admin.config  # noqa: E402
 import univention.admin.filter  # noqa: E402

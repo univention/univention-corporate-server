@@ -12,12 +12,12 @@ from collections import namedtuple
 from unittest import TestCase, main
 
 import univention.debug as ud
+import univention.logging
 from univention.testing.strings import random_string, random_username
 from univention.udm import UDM
 
 
-ud.init('/var/log/univention/directory-manager-cmd.log', ud.FLUSH, 0)
-ud.set_level(ud.ADMIN, ud.ALL)
+univention.logging.basicConfig(filename='/var/log/univention/directory-manager-cmd.log', univention_debug_level=ud.ALL)
 
 CWD = os.path.dirname(os.path.abspath(__file__))
 

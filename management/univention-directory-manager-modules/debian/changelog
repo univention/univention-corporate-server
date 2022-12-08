@@ -1,3 +1,9 @@
+univention-directory-manager-modules (15.0.25-2) unstable; urgency=medium
+
+  * Bug #55324: use univention.logging
+
+ -- Florian Best <best@univention.de>  Tue, 09 Jan 2024 17:43:37 +0100
+
 univention-directory-manager-modules (15.0.25-1) unstable; urgency=medium
 
   * Bug #56832: UCS 5.0-6 version bump

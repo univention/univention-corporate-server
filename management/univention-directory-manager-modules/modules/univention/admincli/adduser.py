@@ -49,6 +49,7 @@ import univention.admin.objects
 import univention.admin.uldap
 import univention.config_registry
 import univention.debug as ud
+import univention.logging
 
 
 def status(msg):
@@ -94,7 +95,7 @@ def _decode(args):
 
 
 def doit(arglist):
-    ud.init('/var/log/univention/directory-manager-cmd.log', ud.FLUSH, ud.FUNCTION)
+    univention.logging.basicConfig(filename='/var/log/univention/directory-manager-cmd.log', univention_debug_level=1)
     out = []
     configRegistry = univention.config_registry.ConfigRegistry()
     configRegistry.load()

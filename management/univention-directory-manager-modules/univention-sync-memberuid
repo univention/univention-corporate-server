@@ -70,8 +70,7 @@ def main():
 
     options = parser.parse_args()
 
-    ud.init('/var/log/univention/sync-memberuid.log', ud.FLUSH, ud.NO_FUNCTION)
-    ud.set_level(ud.ADMIN, options.debug)
+    univention.logging.basicConfig(filename='/var/log/univention/sync-memberuid.log', univention_debug_level=options.debug)
 
     base_dn = configRegistry['ldap/base']
 

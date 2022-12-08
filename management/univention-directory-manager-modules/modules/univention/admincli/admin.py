@@ -51,6 +51,7 @@ import univention.admin.uexceptions
 import univention.admin.uldap
 import univention.config_registry
 import univention.debug as ud
+import univention.logging
 from univention.admin.layout import Group
 from univention.admin.syntax import ldapFilter
 
@@ -472,11 +473,6 @@ def _doit(arglist, stdout=sys.stdout, stderr=sys.stderr):
         elif opt == '--policy-dereference':
             policy_dereference.append(val)
 
-    if logfile:
-        ud.init(logfile, ud.FLUSH, ud.NO_FUNCTION)
-    else:
-        print("WARNING: no logfile specified", file=stderr)
-
     configRegistry = univention.config_registry.ConfigRegistry()
     configRegistry.load()
 
@@ -484,8 +480,10 @@ def _doit(arglist, stdout=sys.stdout, stderr=sys.stderr):
 
     debug_level = int(configRegistry.get('directory/manager/cmd/debug/level', 0))
 
-    ud.set_level(ud.LDAP, debug_level)
-    ud.set_level(ud.ADMIN, debug_level)
+    if logfile:
+        univention.logging.basicConfig(filename=logfile, univention_debug_level=debug_level)
+    else:
+        print("WARNING: no logfile specified", file=stderr)
 
     if not binddn or not bindpwd:
         for _binddn, secret_filename in (
