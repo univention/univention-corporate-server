@@ -283,38 +283,46 @@ class MyHook(UserPyHook):
 
     def pre_create(self, user):
         user.password = "univention"
+        mapping = {
+            "staff": "generic_user",
+        }
+        custome_roles = []
+        for role in user.ucsschool_roles:
+            role, context, school = role.split(":")
+            custome_roles.append(f"{mapping.get(role, role)}:bsb:{school}")
+        user.ucsschool_roles += custome_roles
 
 EOF
 	# create schools
-	school_count=350
+	school_count=400
 	schools_big=()
 	schools_normal=()
 	for i in $(seq 1 "$school_count"); do
 		/usr/share/ucs-school-import/scripts/create_ou "--verbose" "school$i" "replica$i" >/tmp/import.log 2>&1 || return 1
-		if [ "$i" -le 50 ]; then
+		if [ "$i" -le 60 ]; then
 			schools_big+=("school$i")
 		else
 			schools_normal+=("school$i")
 		fi
 	done
-	# 50 big schools with 3000 students and 50 classes
+	# 60 big schools with 3000 students and 50 classes
 	/usr/share/ucs-school-import/scripts/ucs-school-testuser-import \
-		--classes 2500 \
-		--students 150000 \
+		--classes 3000 \
+		--students 180000 \
 		--teachers 15000 \
 		--staff 1500 \
 		"${schools_big[@]}" >/tmp/import.log 2>&1 || return 1
-	# 300 normal schools with 250 students and 10 classes
+	# 340 normal schools with 250 students and 10 classes
 	/usr/share/ucs-school-import/scripts/ucs-school-testuser-import \
-		--classes 3000 \
-		--students 75000 \
+		--classes 3400 \
+		--students 85000 \
 		--teachers 15000 \
-		--staff 750 \
+		--staff 1500 \
 		"${schools_normal[@]}" >/tmp/import.log 2>&1 || return 1
 	rm -f /tmp/import.log
 	# add some more
 	# * workgroups, 10 work groups per school with 60 members each
-	# * class groups, 550 empty classes to the 50 big schools
+	# * class groups, 1500 empty classes to the 60 big schools
 	python3 - <<"EOF" || return 1
 from ucsschool.lib.models import School, User
 from ucsschool.lib.models.group import SchoolClass, WorkGroup
@@ -340,7 +348,7 @@ for school in schools:
         wg.create(lo)
     # add empty classes in big schools
     if len(users) > 2000:
-        for i in range(1, 551):
+        for i in range(1, 1501):
             sc_data = {"name": f"{school.name}-empty-class{i}", "school": school.name}
             sc = SchoolClass(**sc_data)
             sc.create(lo)
@@ -363,7 +371,7 @@ CACHE_PATH = "/var/lib/test-data"
 
 lo, po = getAdminConnection()
 db = Index(str(CACHE_PATH))
-db["schools"] = [ f"school{i}" for i in range(1, 51) ]
+db["schools"] = [ f"school{i}" for i in range(1, 61) ]
 
 for i in range(1, 51):
     school = School(f"school{i}")
