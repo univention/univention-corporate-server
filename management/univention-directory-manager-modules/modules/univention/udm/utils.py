@@ -32,57 +32,22 @@
 
 from __future__ import absolute_import, print_function, unicode_literals
 
+import logging
 import sys
 
-import univention.debug as ud
+import univention.logging
 
+
+UDebug = univention.logging.getLogger('ADMIN')
+UDebug.warn = UDebug.warning
+UDebug.all = UDebug.debug
+UDebug.process = UDebug.info
 
 is_interactive = bool(getattr(sys, 'ps1', sys.flags.interactive))
-
-
-class UDebug(object):
-    """:py:mod:`univention.debug` convenience wrapper"""
-
-    target = ud.ADMIN
-    level2str = {
-        ud.ALL: 'DEBUG',
-        ud.ERROR: 'ERROR',
-        ud.INFO: 'INFO',
-        ud.PROCESS: 'INFO',
-        ud.WARN: 'WARN',
-    }
-
-    @classmethod
-    def all(cls, msg):
-        """Write a debug message with level ALL (as in DEBUG)"""
-        cls._log(ud.ALL, msg)
-
-    debug = all
-
-    @classmethod
-    def error(cls, msg):
-        """Write a debug message with level ERROR"""
-        cls._log(ud.ERROR, msg)
-
-    @classmethod
-    def info(cls, msg):
-        """Write a debug message with level INFO"""
-        cls._log(ud.INFO, msg)
-
-    @classmethod
-    def process(cls, msg):
-        """Write a debug message with level PROCESS"""
-        cls._log(ud.PROCESS, msg)
-
-    @classmethod
-    def warn(cls, msg):
-        """Write a debug message with level WARN"""
-        cls._log(ud.WARN, msg)
-
-    warning = warn
-
-    @classmethod
-    def _log(cls, level, msg):
-        ud.debug(cls.target, level, msg)
-        if is_interactive and level <= ud.INFO:
-            print('{}: {}'.format(cls.level2str[level], msg))
+if is_interactive:
+    class InteractiveStreamHandler(logging.Handler):
+        def emit(self, record):
+            msg = self.format(record)
+            if record.level >= logging.INFO:
+                print('%s: %s' % (record.levelname, msg))
+    UDebug.addHandler(InteractiveStreamHandler())

@@ -40,6 +40,7 @@ from __future__ import absolute_import, unicode_literals
 import copy
 import functools
 import inspect
+import logging
 import sys
 
 import ldap
@@ -58,7 +59,6 @@ from ..exceptions import (
     CreateError, DeletedError, DeleteError, ModifyError, MoveError, NoObject, NoSuperordinate, NotYetSavedError,
     SearchLimitReached, UdmError, UnknownModuleType, UnknownProperty, WrongObjectType,
 )
-from ..utils import UDebug as ud
 
 
 getfullargspec = getattr(inspect, 'getfullargspec', getattr(inspect, 'getargspec', None))
@@ -158,7 +158,7 @@ class GenericObject(BaseObject):
             raise NotYetSavedError(module_name=self._udm_module.name)
         self._orig_udm_object = self._udm_module._get_orig_udm_object(self.dn)
         self._copy_from_udm_obj()
-        ud.debug('{!r} object (dn: {!r}) reloaded'.format(self._udm_module.name, self.dn))
+        logging.getLogger('ADMIN').debug('%r object (dn: %r) reloaded', self._udm_module.name, self.dn)
         return self
 
     def save(self):
@@ -172,14 +172,14 @@ class GenericObject(BaseObject):
         if self._deleted:
             raise DeletedError('{} has been deleted.'.format(self), dn=self.dn, module_name=self._udm_module.name)
         if not self._fresh:
-            ud.warn('Saving stale UDM object instance')
+            logging.getLogger('ADMIN').warning('Saving stale UDM object instance')
         self._copy_to_udm_obj()
         if self.dn:
             if self._old_position and self._old_position != self.position:
                 new_dn_li = [str2dn(self._orig_udm_object.dn)[0]]
                 new_dn_li.extend(str2dn(self.position))
                 new_dn = dn2str(new_dn_li)
-                ud.process('Moving {!r} object {!r} to {!r}'.format(self._udm_module.name, self.dn, new_dn))
+                logging.getLogger('ADMIN').info('Moving %r object %r to %r', self._udm_module.name, self.dn, new_dn)
                 try:
                     self.dn = self._orig_udm_object.move(new_dn)
                 except univention.admin.uexceptions.invalidOperation as exc:
@@ -205,7 +205,7 @@ class GenericObject(BaseObject):
                             self._udm_module.name, self.dn, exc,
                         ), dn=self.dn, module_name=self._udm_module.name,
                         ), sys.exc_info()[2])
-            ud.process('Modified {!r} object {!r}'.format(self._udm_module.name, self.dn))
+            logging.getLogger('ADMIN').info('Modified %r object %r', self._udm_module.name, self.dn)
         else:
             try:
                 self.dn = self._orig_udm_object.create()
@@ -221,7 +221,7 @@ class GenericObject(BaseObject):
                             self._udm_module.name, exc,
                         ), module_name=self._udm_module.name,
                         ), sys.exc_info()[2])
-            ud.process('Created {!r} object {!r}'.format(self._udm_module.name, self.dn))
+            logging.getLogger('ADMIN').info('Created %r object %r', self._udm_module.name, self.dn)
 
         assert self.dn == self._orig_udm_object.dn
         assert self.position == self._lo.parentDn(self.dn)
@@ -241,7 +241,7 @@ class GenericObject(BaseObject):
         :raises univention.udm.exceptions.DeletedError: if the operation fails
         """
         if self._deleted:
-            ud.warn('{} has already been deleted'.format(self))
+            logging.getLogger('ADMIN').warning('{} has already been deleted'.format(self))
             return
         if not self.dn or not self._orig_udm_object:
             raise NotYetSavedError()
@@ -257,7 +257,7 @@ class GenericObject(BaseObject):
             univention.admin.objects.performCleanup(self._orig_udm_object)
         self._orig_udm_object = None
         self._deleted = True
-        ud.process('Deleted {!r} object {!r}'.format(self._udm_module.name, self.dn))
+        logging.getLogger('ADMIN').info('Deleted %r object %r', self._udm_module.name, self.dn)
 
     def _copy_from_udm_obj(self):
         """
@@ -328,7 +328,7 @@ class GenericObject(BaseObject):
                 self.position = self._orig_udm_object.superordinate.dn
             else:
                 self.position = self._udm_module._get_default_object_positions()[0]
-            ud.debug('Set position to {!r}'.format(self.position))
+            logging.getLogger('ADMIN').debug('Set position to %r', self.position)
         self._fresh = True
 
     def _copy_to_udm_obj(self):
@@ -380,7 +380,7 @@ class GenericObject(BaseObject):
                 self._orig_udm_object.superordinate = self.superordinate.obj._orig_udm_object
             else:
                 msg = 'Unkown type {!r} in "superordinate" of {!r}.'.format(type(self.superordinate), self)
-                ud.error(msg)
+                logging.getLogger('ADMIN').error('%s', msg)
                 raise ValueError(msg)
 
     def _init_new_object_props(self):
@@ -746,7 +746,7 @@ class GenericModule(with_metaclass(GenericModuleMeta, BaseModule)):
         else:
             obj._orig_udm_object = self._get_orig_udm_object(dn, superordinate)
         obj._copy_from_udm_obj()
-        ud.debug('{!r} object (dn: {!r}) loaded'.format(self.name, obj.dn))
+        logging.getLogger('ADMIN').debug('%r object (dn: %r) loaded', self.name, obj.dn)
         return obj
 
     def _verify_univention_object_type(self, orig_udm_obj):

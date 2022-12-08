@@ -35,6 +35,7 @@
 from __future__ import absolute_import, unicode_literals
 
 import datetime
+import logging
 import sys
 import time
 
@@ -48,7 +49,6 @@ from univention.admin.uexceptions import valueInvalidSyntax
 from .binary_props import Base64BinaryProperty, Base64Bzip2BinaryProperty
 from .exceptions import NoObject, UnknownModuleType
 from .udm import UDM
-from .utils import UDebug
 
 
 __dn_list_property_encoder_class_cache = {}
@@ -356,9 +356,9 @@ class DnListPropertyEncoder(BaseEncoder):
                         udm_module = self.udm.get(self.udm_module_name)
                     obj = udm_module.get(dn)
             except UnknownModuleType as exc:
-                UDebug.warn(str(exc))
+                logging.getLogger('ADMIN').warning('%s', exc)
             except NoObject as exc:
-                UDebug.warn(str(exc))
+                logging.getLogger('ADMIN').warning('%s', exc)
             else:
                 res.append(obj)
         return res
@@ -550,9 +550,9 @@ class DnPropertyEncoder(BaseEncoder):
                 udm_module = self.udm.get(self.udm_module_name)
                 return udm_module.get(value)
         except UnknownModuleType as exc:
-            UDebug.error(str(exc))
+            logging.getLogger('ADMIN').error('%s', exc)
         except NoObject as exc:
-            UDebug.warn(str(exc))
+            logging.getLogger('ADMIN').warning('%s', exc)
         return None
 
     def decode(self, value=None):
