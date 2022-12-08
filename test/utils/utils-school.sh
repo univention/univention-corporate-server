@@ -320,6 +320,9 @@ EOF
 		--staff 1500 \
 		"${schools_normal[@]}" >/tmp/import.log 2>&1 || return 1
 	rm -f /tmp/import.log
+	# clean up
+	rm -f /usr/share/ucs-school-import/pyhooks/testimport.py
+	rm -f /var/lib/ucs-school-import/configs/user_import.json
 	# add some more
 	# * workgroups, 10 work groups per school with 60 members each
 	# * class groups, 1500 empty classes to the 60 big schools
@@ -357,7 +360,7 @@ EOF
 
 }
 
-# get first 50 schools as python diskcache
+# get first 60 schools as python diskcache
 create_and_copy_test_data_cache () {
 	local root_password="${1:?missing root password}"
 	univention-install -y python3-pip sshpass
@@ -373,7 +376,7 @@ lo, po = getAdminConnection()
 db = Index(str(CACHE_PATH))
 db["schools"] = [ f"school{i}" for i in range(1, 61) ]
 
-for i in range(1, 51):
+for i in range(1, 61):
     school = School(f"school{i}")
     print(school)
     data = {
