@@ -13,8 +13,8 @@ account = utils.UCSTestDomainAdminCredentials()
 
 WAIT_MIN = 1
 WAIT_MAX = 1
-#hosts = ["https://master.ucs.test", "https://backup.ucs.test"]
-hosts = ["https://master.ucs.test"]
+hosts = ["https://master.ucs.test", "https://backup.ucs.test"]
+#hosts = ["https://master.ucs.test"]
 login_user = ["testuser" + str(i) for i in range(10000)]
 
 
@@ -27,11 +27,14 @@ def logout_at_idp(client, host):
 
 
 def login_at_idp_with_credentials(client, login_link):
-	username = login_user.pop()
-	data = {'username': username, 'password': "univention"}
+	data = {'username': 'Administrator', 'password': "univention"}
 	with client.post(login_link, name="/realms/ucs/login-actions/authenticate", allow_redirects=True, timeout=30, catch_response=True, data=data) as req2:
 		soup = BeautifulSoup(req2.content, features="lxml")
-		saml_response = soup.find("input", {"name": "SAMLResponse"}).get("value")
+		try:
+			saml_response = soup.find("input", {"name": "SAMLResponse"}).get("value")
+		except AttributeError:
+			print(soup)
+			return None
 		if not saml_response:
 			return None
 		if not (200 <= req2.status_code <= 399):
