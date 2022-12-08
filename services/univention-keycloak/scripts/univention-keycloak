@@ -567,7 +567,7 @@ def import_realm(opt):
 		realm_data = json.load(inputfile)
 	realm_data["ifResourceExists"] = opt.resource_exists
 
-	data_raw = kc_admin.raw_post("admin/realms/ucs/partialImport", data=json.dumps(realm_data))
+	data_raw = kc_admin.raw_post("admin/realms/{}/partialImport".format(urllib.parse.quote(opt.realm, '')), data=json.dumps(realm_data))
 	if data_raw.status_code == 200:
 		response = json.loads(data_raw.content)
 		print(f'Overwritten: {response["overwritten"]}, Skipped: {response["skipped"]}, Added: {response["added"]}')
