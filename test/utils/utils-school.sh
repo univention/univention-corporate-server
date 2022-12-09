@@ -351,7 +351,7 @@ for school in schools:
         wg.create(lo)
     # add empty classes in big schools
     if len(users) > 2000:
-        for i in range(1, 1501):
+        for i in range(1, 1001):
             sc_data = {"name": f"{school.name}-empty-class{i}", "school": school.name}
             sc = SchoolClass(**sc_data)
             sc.create(lo)
