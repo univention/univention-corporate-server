@@ -3,3 +3,5 @@
 .. |IT| replace:: :abbr:`IT (information technology)`
 .. |TLS| replace:: :abbr:`TLS (Transport Layer Security)`
 .. |UCS| replace:: :abbr:`UCS (Univention Corporate Server)`
+.. |UDM| replace:: :abbr:`UDM (Univention Directory Manager)`
+.. |UMC| replace:: :abbr:`UMC (Univention Management Console)`
