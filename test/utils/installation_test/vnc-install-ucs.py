@@ -49,8 +49,7 @@ class UCSInstallation(VNCInstallation):
         # language
         for _ in range(3):
             self.client.waitForText('Select a language', timeout=self.timeout + 120, prevent_screen_saver=True)
-            self.client.mouseMove(250, 250)
-            self.client.mousePress(1)
+            self.click_at(250, 250)
             self.client.enterText(self._['english_language_name'])
             self.client.keyPress('enter')
             try:
@@ -59,17 +58,15 @@ class UCSInstallation(VNCInstallation):
             except VNCDoException:
                 self.connect()
                 self.click_on('Go Back')
-        self.client.mouseMove(250, 250)
-        self.client.mousePress(1)
+
+        self.click_at(250, 250)
         self.client.enterText(self._['location'] + "\n")
         self.client.waitForText(self._['select_keyboard'], timeout=self.timeout)
-        self.client.mouseMove(250, 250)
-        self.client.mousePress(1)
+        self.click_at(250, 250)
         self.client.enterText(self._['us_keyboard_layout'] + "\n")
 
         if not self.network_setup():
-            self.client.mouseMove(100, 320)
-            self.client.mousePress(1)
+            self.click_at(100, 320)
             sleep(1)
 
         # root
@@ -373,10 +370,7 @@ class UCSInstallation(VNCInstallation):
 
     @verbose("NEXT")
     def go_next(self):  # type: () -> None
-        sleep(1)
-        self.client.mouseMove(910, 700)
-        sleep(1)
-        self.client.mousePress(1)
+        self.click_at(910, 700)
 
 
 def main():  # type: () -> None

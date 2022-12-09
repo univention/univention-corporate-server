@@ -162,6 +162,11 @@ class VNCInstallation(object):
     def click_on(self, text):  # type: (str) -> None
         self.client.mouseClickOnText(text, timeout=self.timeout)
 
+    @verbose("click_at", "{1},{2} {3}")
+    def click_at(self, x, y, button=1):  # type: (int, int, int) -> None
+        self.client.mouseMove(x, y)
+        self.client.mousePress(button)
+
     def text_is_visible(self, text, timeout=120):  # type: (str, int) -> bool
         try:
             self.client.waitForText(text, timeout=timeout)
