@@ -1,0 +1,16 @@
+product: ucs
+release: "4.4"
+version: [9]
+scope: ucs_4.4-0-errata4.4-9
+src: krb5
+fix: 1.15-1+deb9u4
+desc: |+
+ This update addresses the following issue:
+ 1.15-1+deb9u4 (Wed, 07 Dec 2022 16:58:51 +0100)
+ * Non-maintainer upload by the ELTS Team.
+ * CVE-2022-42898: Prevent integer overflows in PAC parsing; potentially
+   critical for 32-bit KDCs or when cross-realm acts maliciously.
+
+bug: [55483]
+cve:
+- CVE-2022-42898
