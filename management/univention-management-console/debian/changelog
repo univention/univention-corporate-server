@@ -1,3 +1,9 @@
+univention-management-console (12.0.13-5) unstable; urgency=medium
+
+  * Bug #55395: Register UMC as a Keycloak client, but ignore failure
+
+ -- Nikola Radovanovic <radovanovic.extern@univention.de>  Thu, 24 Nov 2022 12:59:14 +0100
+
 univention-management-console (12.0.13-4) unstable; urgency=medium
 
   * Bug #54623: add function to get a free-parametrized cached LDAP

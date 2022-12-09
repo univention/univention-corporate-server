@@ -77,7 +77,6 @@ if [ "$1" = "configure" ] && dpkg --compare-versions "$2" lt-nl 12.0.13-3; then
 	fi
 fi
 
-
 # provide new settings
 univention-config-registry set \
 	umc/http/session/timeout?28800 \

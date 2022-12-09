@@ -1,0 +1,10 @@
+product: ucs
+release: "5.0"
+version: [2]
+scope: ucs_5.0-0-errata5.0-2
+src: univention-management-console
+fix:
+desc: |
+ This update addresses the following issue:
+ * A SAML client for the local UMC is created during join.
+bug: [55395]
