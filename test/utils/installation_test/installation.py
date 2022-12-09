@@ -110,9 +110,13 @@ class UCSInstallation(object):
 			except VNCDoException:
 				self.connect()
 				self.click('Go Back')
+		self.client.mouseMove(250, 250)
+		self.client.mousePress(1)
 		self.client.enterText(self._['location'])
 		self.client.keyPress('enter')
 		self.client.waitForText(self._['select_keyboard'], timeout=self.timeout)
+		self.client.mouseMove(250, 250)
+		self.client.mousePress(1)
 		self.client.enterText(self._['us_keyboard_layout'])
 		self.client.keyPress('enter')
 
