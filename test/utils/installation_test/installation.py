@@ -160,8 +160,7 @@ class VNCInstallation(object):
 
     @verbose("click_on", "{1!r}")
     def click_on(self, text):  # type: (str) -> None
-        self.client.waitForText(text, timeout=self.timeout)
-        self.client.mouseClickOnText(text)
+        self.client.mouseClickOnText(text, timeout=self.timeout)
 
     def text_is_visible(self, text, timeout=120):  # type: (str, int) -> bool
         try:

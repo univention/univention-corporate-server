@@ -176,10 +176,8 @@ class UCSInstallation(VNCInstallation):
 
         if self.args.ip:
             if self.text_is_visible(self._['not_using_dhcp'], timeout=self.timeout):
-                self.client.waitForText(self._['not_using_dhcp'], timeout=self.timeout)
                 self.client.keyPress('enter')
-                self.client.waitForText(self._['manual_network_config'], timeout=self.timeout)
-                self.client.mouseClickOnText(self._['manual_network_config'])
+                self.click_on(self._['manual_network_config'])
                 self.client.keyPress('enter')
 
             self.client.waitForText(self._['ip_address'], timeout=self.timeout)

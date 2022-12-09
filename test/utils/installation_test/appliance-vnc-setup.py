@@ -27,7 +27,7 @@ class UCSSetup(VNCInstallation):
     def language(self, language):  # type: (str) -> None
         if self.text_is_visible('Notification', timeout=self.timeout):
             self.screenshot('notification.png')
-            self.client.mouseClickOnText('OK')
+            self.click_on('OK')
 
         try:
             self.client.waitForText('English', timeout=self.timeout, prevent_screen_saver=True)
@@ -85,16 +85,14 @@ class UCSSetup(VNCInstallation):
         else:
             text = 'Manage users and permissions'
 
-        self.client.waitForText(text, timeout=self.timeout)
-        self.client.mouseClickOnText(text, timeout=self.timeout)
+        self.click_on(text)
         self.screenshot('domain-setup.png')
         self.go_next(tabs=2)
 
         sleep(10, "ucs.role")
         if role == 'slave':
             # self.client.keyPress('down')
-            self.client.waitForText('Replica Directory Node', timeout=self.timeout)
-            self.client.mouseClickOnText('Replica Directory Node', timeout=self.timeout)
+            self.click_on('Replica Directory Node')
             self.go_next(tabs=2)
             self.click_on('Username')
             self.client.enterText(self.args.join_user)
@@ -131,10 +129,10 @@ class UCSSetup(VNCInstallation):
         for _ in range(3):
             self.client.keyPress('down')
         try:
-            self.client.mouseClickOnText('configuresystem')
+            self.click_on('configuresystem')
         except VNCDoException:
             self.connect()
-            self.client.mouseClickOnText('configure system')
+            self.click_on('configure system')
 
     @verbose("FINISH")
     def finish(self):  # type: () -> None
@@ -152,8 +150,7 @@ class UCSSetup(VNCInstallation):
         self.screenshot('welcome-screen.png')
 
     def _go_next_search(self):  # type: () -> None
-        self.client.waitForText('NEXT', timeout=self.timeout)
-        self.client.mouseClickOnText('NEXT')
+        self.click_on('NEXT')
 
     def _go_next_tab(self, tabs):  # type: (int) -> None
         for _ in range(tabs):
