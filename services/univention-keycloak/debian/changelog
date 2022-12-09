@@ -1,3 +1,9 @@
+univention-keycloak (1.0.4) unstable; urgency=medium
+
+  * Bug #55488:  Use start TLS as default for LDAP federation.
+
+ -- Nikola Radovanovic <radovanovic.extern@univention.de>  Fri, 09 Dec 2022 13:32:10 +0100
+
 univention-keycloak (1.0.3) unstable; urgency=medium
 
   * Bug #55478: Set login page title and tabname
