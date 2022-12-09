@@ -99,15 +99,17 @@ class UCSSetup(UCSInstallation):
         time.sleep(120)
 
     def domain(self, role):  # type: (str) -> None
-        text = 'Manage users and permissions'
-        if self.args.ucs is True:
-            text = 'Create a new UCS domain'
         if role == 'admember':
             text = 'Join into an existing Microsoft Active'
         elif role in ['join', 'slave']:
             text = 'Join into an existing UCS domain'
         elif role == 'fast':
             text = 'Fast demo'
+        elif self.args.ucs:
+            text = 'Create a new UCS domain'
+        else:
+            text = 'Manage users and permissions'
+
         self.client.waitForText(text, timeout=self.timeout)
         self.client.mouseClickOnText(text, timeout=self.timeout)
         self.screenshot('domain-setup.png')
