@@ -244,18 +244,8 @@ class UCSInstallation(object):
         return True
 
     def configure_kvm_network(self, iface):  # type: (str) -> None
-        if 'all' in self.args.components or 'kde' in self.args.components:
-            sleep(10)
-            self.client.keyDown('alt')
-            self.client.keyDown('ctrl')
-            self.client.keyPress('f1')
-            self.client.keyUp('alt')
-            self.client.keyUp('ctrl')
-        elif self.args.role == 'basesystem':
-            sleep(3)
-        else:
-            self.client.waitForText('corporate server')
-            self.client.keyPress('enter')
+        self.client.waitForText('corporate server')
+        self.client.keyPress('enter')
         sleep(3)
         self.client.enterText('root')
         self.client.keyPress('enter')
@@ -329,11 +319,6 @@ class UCSInstallation(object):
                 sleep(60)
             self.move_to_next_and_click()
             self.move_to_next_and_click()
-        elif self.args.role == 'basesystem':
-            self.click(self._['no_domain'])
-            self.click(self._['next'])
-            self.client.waitForText(self._['warning_no_domain'], timeout=self.timeout)
-            self.click(self._['next'])
         elif self.args.role == 'applianceEC2' or self.args.role == 'applianceLVM':
             self.client.keyDown('ctrl')
             self.client.keyPress('q')

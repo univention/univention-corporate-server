@@ -55,20 +55,5 @@ strings = {
     'error': 'An error occurred',
     'change_settings': 'Adjust settings',
 
-    'samba4': 'Active Directory-compatible Domain',
-    'samba': 'Memberserver',
-    'adconnector': 'Active Directory Connection',
-    'kde': 'Desktop Environment',
-    'dhcpserver': 'DHCP server',
-    'cups': 'Print server (CUPS)',
-    'printquota': 'Print server Quota',
-    'kvm': 'KVM virtualization server',
-    'mailserver': 'Mail server',
-    'nagios': 'Network monitoring',
-    'squid': 'Proxy server',
-    'radius': 'RADIUS',
-    'pkgdb': 'Software installation monitor',
-    'takeover': 'Active Directory Takeover',
-
     'appliance_modus': 'appliance mode',
 }

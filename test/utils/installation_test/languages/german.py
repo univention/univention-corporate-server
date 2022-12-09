@@ -67,20 +67,5 @@ strings = {
     'school_adm': 'Verwaltungsnetz',
     'school_central': 'Zentraler Schulserver',
 
-    'samba4': 'Active Directory-kompatibler',
-    'samba': 'Memberserver',
-    'adconnector': 'Active Directory-Verbindung',
-    'kde': 'Desktop-Umgebung',
-    'dhcpserver': 'DHCP-Server',
-    'cups': 'CUPS',
-    'printquota': 'Druckserver Quota',
-    'kvm': 'KVM Virtualisierungsserver',
-    'mailserver': 'Mailserver',
-    'nagios': 'Netzwerküberwachung',
-    'squid': 'Proxyserver',
-    'radius': 'RADIUS',
-    'pkgdb': 'Software-Installationsmonitor',
-    'takeover': 'Active Directory Takeover',
-
     'appliance_modus': 'Appliance-Modus',
 }

@@ -55,20 +55,5 @@ strings = {
     'setup_successful': "Installation d'UCS réussie",
     'finish': 'TERMINER',
 
-    'samba4': '',
-    'samba': '',
-    'adconnector': '',
-    'kde': '',
-    'dhcpserver': '',
-    'cups': '',
-    'printquota': '',
-    'kvm': '',
-    'mailserver': 'Standard mail',
-    'nagios': '',
-    'squid': '',
-    'radius': '',
-    'pkgdb': '',
-    'takeover': 'Active Directory Takeover',
-
     'appliance_modus': '',
 }

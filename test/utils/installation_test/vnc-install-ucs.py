@@ -5,7 +5,6 @@
 
 from argparse import ArgumentParser
 
-from components.components import components_with_steps as components
 from installation import UCSInstallation
 
 
@@ -19,8 +18,7 @@ def main():  # type: () -> None
     group.add_argument('--fqdn', default='master.ucs.test', help="Fully qualified host name to use")
     group.add_argument('--password', default='univention', help="Password to setup for user 'root' and/or 'Administrator'")
     group.add_argument('--organisation', default='ucs', help="Oranisation name to setup")
-    group.add_argument('--role', default='master', choices=['master', 'slave', 'member', 'backup', 'admember', 'basesystem', 'applianceEC2', 'applianceLVM'], help="UCS system role")
-    group.add_argument('--components', default=[], choices=list(components) + ['all'], action='append', help="UCS components to install")
+    group.add_argument('--role', default='master', choices=['master', 'slave', 'member', 'backup', 'admember', 'applianceEC2', 'applianceLVM'], help="UCS system role")
     group.add_argument('--school-dep', default=[], choices=['central', 'edu', 'adm'], help="Select UCS@school role")
     group = parser.add_argument_group("Network settings")
     group.add_argument('--ip', help="IPv4 address if DHCP is unavailable")
