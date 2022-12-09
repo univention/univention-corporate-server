@@ -1169,7 +1169,7 @@ def init_keycloak_ucs(opt):
 		"config": {
 			"pagination": ["true"],
 			"fullSyncPeriod": ["-1"],
-			"startTls": ["false"],
+			"startTls": ["true"],
 			"connectionPooling": ["true"],
 			"usersDn": [LDAP_BASE],
 			"cachePolicy": ["MAX_LIFESPAN"],
