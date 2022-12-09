@@ -1,0 +1,22 @@
+product: ucs
+release: "5.0"
+version: [2]
+scope: ucs_5.0-0-errata5.0-2
+src: grub2
+fix: 2.06-3~deb10u3
+desc: |
+ This update addresses the following issues:
+ 2.06-3~deb10u3 (Thu, 08 Dec 2022 00:19:43 +0000)
+ [ Steve McIntyre ]
+ * Actually ensure the patches are applied for CVE-2022-2601 and
+   CVE-2022-3775.
+ * Include fonts in the memdisk build for EFI images.
+ * Fix bug in core file code so errors are handled better. This makes the
+   fallback font-handling patch work properly.
+ * Bump Debian SBAT level to 4 - Due to a mistake in the buster upload
+   (2.06-3~deb10u2) that left the CVE-2022-2601 bugs in place, we need to bump
+   SBAT for all of the Debian GRUB binaries. :-(
+bug: [55482]
+cve:
+- CVE-2022-2601
+- CVE-2022-3775
