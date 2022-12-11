@@ -3,8 +3,9 @@ release: "5.0"
 version: [2]
 scope: ucs_5.0-0-errata5.0-2
 src: univention-management-console
-fix: 12.0.13-5A~5.0.0.202212091245
+fix: 12.0.13-5A~5.0.0.202212112207
 desc: |
  This update addresses the following issue:
- * A SAML client for the local UMC is created during join.
+ * A Keycloak SAML client for the local UMC is created during the join
+   of a new server if the Keycloak App is installed in the domain.
 bug: [55395]
