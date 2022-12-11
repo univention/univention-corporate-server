@@ -260,6 +260,10 @@ run_setup_join () {
 	systemctl try-reload-or-restart univention-management-console-server univention-management-console-web-server apache2
 	ucr unset --forced update/available
 
+	# workaround because a repository/online/server value without scheme is invalid. But still baked into the current
+	# kvm_templates. Revert with 5.0-3
+	ucr set repository/online/server="${FTP_SCHEME}://updates.${FTP_DOM}/"
+
 	# No this breaks univention-check-templates -> 00_checks.81_diagnostic_checks.test _fix_ssh47233  # temp. remove me
 	return $rv
 }
