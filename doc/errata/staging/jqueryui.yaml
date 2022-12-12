@@ -6,14 +6,10 @@ src: jqueryui
 fix: 1.12.1+dfsg-4+deb9u1
 desc: |
  This update addresses the following issues:
- 1.12.1+dfsg-4+deb9u1 (Sat, 03 Dec 2022 18:07:56 +0530)
- * Non-maintainer upload by the ELTS team.
- * Make sure altField is treated as a CSS selector. (Fixes: CVE-2021-41182)
- * Make sure text option are text, shorten HTML strings. (Fixes:
-   CVE-2021-41183)
- * Make sure `of` is treated as a CSS selector. (Fixes: CVE-2021-41184)
- * Add patch to not re-evaluate text labels as HTML. (Fixes: CVE-2022-31160)
- * Drop diff tests as they forbid patches. Sigh. Thanks, Yadd.
+ * Make sure `altField` is treated as a CSS selector (CVE-2021-41182)
+ * Make sure text option are text, shorten HTML strings ( CVE-2021-41183)
+ * Make sure `of` is treated as a CSS selector (CVE-2021-41184)
+ * Add patch to not re-evaluate text labels as HTML (CVE-2022-31160)
 bug: [55484]
 cve:
 - CVE-2021-41182
