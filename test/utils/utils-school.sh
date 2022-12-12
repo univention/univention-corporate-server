@@ -235,7 +235,7 @@ add_pre_join_hook_to_install_from_test_repository () {
 	# activate test repository for school-replica join
 	cat <<-'EOF' >"/tmp/repo-test.sh"
 #!/bin/sh
-ucr set repository/online/server='updates-test.knut.univention.de'
+ucr set repository/online/server='http://updates-test.knut.univention.de'
 exit 0
 EOF
 	# shellcheck source=/dev/null

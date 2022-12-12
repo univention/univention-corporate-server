@@ -10,7 +10,7 @@ import tempfile
 from univention.testing import utils
 from univention.testing.umc import Client
 
-# One would neeed a strong argument to skip any tests here, as it masks reals problems (See bug #50021)
+# One would need a strong argument to skip any tests here, as it masks reals problems (See bug #50021)
 SKIPPED_TESTS = []
 
 
