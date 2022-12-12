@@ -260,7 +260,23 @@ create_virtual_schools () {
 }
 
 
-# used in scenarios/kvm-templates/schoolprimary-with-100000-users-kvm-template.cfg
+# used in RAM performance job
+# * 50 (big) schools (each 1600 user, 53 classes with ~30 members)
+# * 325 (normal) schools (each 640 users, 30 classes with ~20 members)
+# * + 300 classes (5 members) in each big school
+# * + 150 classes (0 members) in each normal school
+# * + 10 workgroups (30 members) in each school
+# * total for big schools (the rest is just filler)
+#   -> 80000 students, 15000 teachers, 1500 staff
+#   -> 50 schools
+#   -> 2650 classes with ~30 members
+#   -> 15000 classes with 5 members
+#   -> 500 workgroups with 30 members
+# * total
+#   -> 375 schools
+#   -> 321000 users (288000 students, 30000 teachers, 3000 staff)
+#   -> 81750 classes
+#   -> 3750 workgroups
 create_users_in_template_job () {
 	# don't delete users
 	cat <<EOF > /var/lib/ucs-school-import/configs/user_import.json
@@ -294,28 +310,28 @@ class MyHook(UserPyHook):
 
 EOF
 	# create schools
-	school_count=400
+	school_count=375
 	schools_big=()
 	schools_normal=()
 	for i in $(seq 1 "$school_count"); do
 		/usr/share/ucs-school-import/scripts/create_ou "--verbose" "school$i" "replica$i" >/tmp/import.log 2>&1 || return 1
-		if [ "$i" -le 60 ]; then
+		if [ "$i" -le 50 ]; then
 			schools_big+=("school$i")
 		else
 			schools_normal+=("school$i")
 		fi
 	done
-	# 60 big schools with 3000 students and 50 classes
+	# 50 big schools with 1600 students and 53 classes (~30 members)
 	/usr/share/ucs-school-import/scripts/ucs-school-testuser-import \
-		--classes 3000 \
-		--students 180000 \
+		--classes 2650 \
+		--students 80000 \
 		--teachers 15000 \
 		--staff 1500 \
 		"${schools_big[@]}" >/tmp/import.log 2>&1 || return 1
-	# 340 normal schools with 250 students and 10 classes
+	# 325 normal schools with 640 students and 30 classes (~20 members)
 	/usr/share/ucs-school-import/scripts/ucs-school-testuser-import \
-		--classes 3400 \
-		--students 85000 \
+		--classes 10000 \
+		--students 208000 \
 		--teachers 15000 \
 		--staff 1500 \
 		"${schools_normal[@]}" >/tmp/import.log 2>&1 || return 1
@@ -324,8 +340,9 @@ EOF
 	rm -f /usr/share/ucs-school-import/pyhooks/testimport.py
 	rm -f /var/lib/ucs-school-import/configs/user_import.json
 	# add some more
-	# * workgroups, 10 work groups per school with 60 members each
-	# * class groups, 1500 empty classes to the 60 big schools
+	# * workgroups, 10 work groups per school with 30 members each
+	# * 300 classes to each of the 50 big schools (5 members)
+	# * 150 class to each of the 325 normal schools (0 members)
 	python3 - <<"EOF" || return 1
 from ucsschool.lib.models import School, User
 from ucsschool.lib.models.group import SchoolClass, WorkGroup
@@ -345,14 +362,27 @@ for school in schools:
         wg_data = {
             "name": f"{school.name}-workgroup{i}",
             "school": school.name,
-            "users": random.sample(users, 60),
+            "users": random.sample(users, 30),
         }
         wg = WorkGroup(**wg_data)
         wg.create(lo)
-    # add empty classes in big schools
-    if len(users) > 2000:
-        for i in range(1, 1001):
-            sc_data = {"name": f"{school.name}-empty-class{i}", "school": school.name}
+    # add some more classes in big schools
+    if len(users) > 1000:
+        for i in range(1, 301):
+            sc_data = {
+                "name": f"{school.name}-extra-class{i}",
+                "school": school.name,
+                "users": random.sample(users, 5),
+            }
+            sc = SchoolClass(**sc_data)
+            sc.create(lo)
+    # add empty classes in normal schools
+    else:
+        for i in range(1, 153):
+            sc_data = {
+                "name": f"{school.name}-empty-class{i}",
+                "school": school.name,
+            }
             sc = SchoolClass(**sc_data)
             sc.create(lo)
 EOF
@@ -360,7 +390,7 @@ EOF
 
 }
 
-# get first 60 schools as python diskcache
+# get first 50 schools as python diskcache
 create_and_copy_test_data_cache () {
 	local root_password="${1:?missing root password}"
 	univention-install -y python3-pip sshpass
@@ -376,7 +406,7 @@ lo, po = getAdminConnection()
 db = Index(str(CACHE_PATH))
 db["schools"] = [ f"school{i}" for i in range(1, 61) ]
 
-for i in range(1, 61):
+for i in range(1, 51):
     school = School(f"school{i}")
     print(school)
     data = {
@@ -400,9 +430,6 @@ for i in range(1, 61):
         elif user.is_administrator(lo):
             data["admins"][user.name] = user.dn
     for group in Group.get_all(lo, school.name):
-        # only non-empty groups
-        if len(group.users) == 0:
-            continue
         data["groups"][group.name] = group.to_dict()
         if group.self_is_workgroup():
             data["workgroups"].append(group.name)
