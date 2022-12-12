@@ -175,6 +175,12 @@ class VNCInstallation(object):
             self.connect()
             return False
 
+    @verbose("type", "{1!r} clear={2}")
+    def type(self, text, clear=False):  # type: (str, bool) -> None
+        if clear:
+            self.clear_input()
+        self.client.enterKeys(text)
+
     def clear_input(self):  # type: () -> None
         self.client.keyPress('end')
         for _ in range(100):
@@ -185,7 +191,7 @@ class VNCInstallation(object):
         """Check automatic private address if no DHCP answer."""
         try:
             self.client.waitForText('APIPA', timeout=self.timeout)
-            self.client.keyPress('enter')
+            self.type("\n")
             sleep(60, "net.apipa")
         except VNCDoException:
             self.connect()

@@ -50,23 +50,23 @@ class UCSSetup(VNCInstallation):
         self.screenshot('network-setup.png')
         if self.args.role in {'admember', 'slave'}:
             self.click_on('Preferred')
-            self.client.enterText(self.args.dns)
+            self.type(self.args.dns)
             time.sleep(0.5)
 
-        self.client.keyPress('enter')
+        self.type('\n')
 
         sleep(60, "net.apipa")
         self.check_apipa()
         try:
             self.client.waitForText('No gateway has been', timeout=self.timeout)
-            self.client.keyPress('enter')
+            self.type('\n')
             sleep(60, "net.gateway")
         except VNCDoException:
             self.connect()
 
         try:
             self.client.waitForText('continue without access', timeout=self.timeout)
-            self.client.keyPress('enter')
+            self.type('\n')
             sleep(60, "net.unconnected")
         except VNCDoException:
             self.connect()
@@ -95,31 +95,30 @@ class UCSSetup(VNCInstallation):
             self.click_on('Replica Directory Node')
             self.go_next(tabs=2)
             self.click_on('Username')
-            self.client.enterText(self.args.join_user)
+            self.type(self.args.join_user)
             self.click_on('Password')
-            self.client.enterText(self.args.join_password)
+            self.type(self.args.join_password)
             self.go_next(tabs=2)
         elif role == 'admember':
             self.client.waitForText('Active Directory join', timeout=self.timeout)
             self.click_on('Username')
-            self.client.enterText(self.args.join_user)
+            self.type(self.args.join_user)
             self.click_on('Password')
-            self.client.enterText(self.args.join_password)
+            self.type(self.args.join_password)
             self.go_next(tabs=2)
 
     def orga(self, orga, password):  # type: (str, str) -> None
         self.client.waitForText('Account information', timeout=self.timeout)
         self.screenshot('organisation-setup.png')
-        self.client.enterText('home\t\t\t%s\t%s' % (password, password))
+        self.type('home\t\t\t%s\t%s' % (password, password))
         self.go_next(tabs=2)
 
     def hostname(self):  # type: () -> None
         self.client.waitForText('Host settings', timeout=self.timeout)
         self.screenshot('hostname-setup.png')
-        self.clear_input()
-        self.client.enterText(self.args.fqdn + "\t")
+        self.type(self.args.fqdn + "\t", clear=True)
         if self.args.role in {'admember', 'slave'}:
-            self.client.enterText("%s\t%s" % (self.args.password, self.args.password))
+            self.type("%s\t%s" % (self.args.password, self.args.password))
 
         self.go_next(tabs=2)
 
@@ -139,8 +138,7 @@ class UCSSetup(VNCInstallation):
         sleep(600, "install")
         self.client.waitForText('Setup successful', timeout=3000, prevent_screen_saver=True)
         self.screenshot('finished-setup.png')
-        self.client.keyPress('tab')
-        self.client.keyPress('enter')
+        self.type('\t\n')
         # except welcome screen
         try:
             self.client.waitForText('www', timeout=self.timeout)
@@ -153,10 +151,7 @@ class UCSSetup(VNCInstallation):
         self.click_on('NEXT')
 
     def _go_next_tab(self, tabs):  # type: (int) -> None
-        for _ in range(tabs):
-            self.client.keyPress('tab')
-            time.sleep(0.5)
-        self.client.keyPress('enter')
+        self.type("\t" * tabs + "\n")
 
     def go_next(self, tabs=0):  # type: (int) -> None
         self._go_next_tab(tabs)

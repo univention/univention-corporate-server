@@ -42,7 +42,7 @@ class UCSInstallation(VNCInstallation):
         if self.text_is_visible('Univention Corporate Server Installer', timeout=120):
             if self.args.ip:
                 self.client.keyPress('down')
-            self.client.keyPress('enter')
+            self.type('\n')
 
     @verbose("INSTALLER")
     def installer(self):  # type: () -> None
@@ -50,8 +50,7 @@ class UCSInstallation(VNCInstallation):
         for _ in range(3):
             self.client.waitForText('Select a language', timeout=self.timeout + 120, prevent_screen_saver=True)
             self.click_at(250, 250)
-            self.client.enterText(self._['english_language_name'])
-            self.client.keyPress('enter')
+            self.type(self._['english_language_name'] + "\n")
             try:
                 self.client.waitForText(self._['select_location'], timeout=self.timeout)
                 break
@@ -60,10 +59,10 @@ class UCSInstallation(VNCInstallation):
                 self.click_on('Go Back')
 
         self.click_at(250, 250)
-        self.client.enterText(self._['location'] + "\n")
+        self.type(self._['location'] + "\n")
         self.client.waitForText(self._['select_keyboard'], timeout=self.timeout)
         self.click_at(250, 250)
-        self.client.enterText(self._['us_keyboard_layout'] + "\n")
+        self.type(self._['us_keyboard_layout'] + "\n")
 
         if not self.network_setup():
             self.click_at(100, 320)
@@ -71,12 +70,12 @@ class UCSInstallation(VNCInstallation):
 
         # root
         self.client.waitForText(self._['user_and_password'], timeout=self.timeout)
-        self.client.enterText("%s\t\t%s\n" % (self.args.password, self.args.password))
+        self.type("%s\t\t%s\n" % (self.args.password, self.args.password))
         if self.args.language == 'eng':
             self.client.waitForText(self._['configure_clock'], timeout=self.timeout)
-            #self.client.enterText(self._['clock'])
+            # self.type(self._['clock'])
             sleep(1)
-            self.client.keyPress('enter')
+            self.type('\n')
 
         # hd
         sleep(60, "disk.detect")
@@ -84,21 +83,21 @@ class UCSInstallation(VNCInstallation):
         if self.args.role == 'applianceLVM':
             #self.click_on(self._['entire_disk_with_lvm'])
             # LVM is the default so just press enter
-            self.client.keyPress('enter')
+            self.type('\n')
             sleep(3)
-            self.client.keyPress('enter')
+            self.type('\n')
             self.click_on(self._['all_files_on_partition'])
-            self.client.keyPress('enter')
+            self.type('\n')
             sleep(3)
             self.client.keyPress('down')
-            self.client.keyPress('enter')
+            self.type('\n')
             self.client.waitForText(self._['continue_partition'], timeout=self.timeout)
             self.client.keyPress('down')
-            self.client.keyPress('enter')
+            self.type('\n')
         elif self.args.role == 'applianceEC2':
             # Manuel
             self.click_on(self._['manual'])
-            self.client.keyPress('enter')
+            self.type('\n')
             sleep(3)
             # Virtuelle Festplatte 1
             self.client.keyPress('down')
@@ -108,53 +107,52 @@ class UCSInstallation(VNCInstallation):
             sleep(3)
             self.client.keyPress('down')
             sleep(3)
-            self.client.keyPress('enter')
+            self.type('\n')
             sleep(3)
             self.click_on(self._['free_space'])
-            self.client.keyPress('enter')
+            self.type('\n')
             sleep(3)
             # neue partition erstellen
-            self.client.keyPress('enter')
+            self.type('\n')
             sleep(3)
             # enter: ganze festplattengröße ist eingetragen
-            self.client.keyPress('enter')
+            self.type('\n')
             sleep(3)
             # enter: primär
-            self.client.keyPress('enter')
+            self.type('\n')
             sleep(3)
             self.click_on(self._['boot_flag'])
             # enter: boot-flag aktivieren
-            self.client.keyPress('enter')
+            self.type('\n')
             sleep(3)
             self.click_on(self._['finish_create_partition'])
-            self.client.keyPress('enter')
+            self.type('\n')
             sleep(3)
             self.click_on(self._['finish_partition'])
-            self.client.keyPress('enter')
+            self.type('\n')
             sleep(3)
             # Nein (kein swap speicher)
             self.click_on(self._['no'])
-            self.client.keyPress('enter')
+            self.type('\n')
             self.client.waitForText(self._['continue_partition'], timeout=self.timeout)
             self.client.keyPress('down')
-            self.client.keyPress('enter')
-            self.client.keyPress('enter')
+            self.type('\n\n')
         else:
             self.click_on(self._['entire_disk'])
-            self.client.keyPress('enter')
+            self.type('\n')
             sleep(3)
-            self.client.keyPress('enter')
+            self.type('\n')
             sleep(3)
-            self.client.keyPress('enter')
+            self.type('\n')
             self.click_on(self._['finish_partition'])
-            self.client.keyPress('enter')
+            self.type('\n')
             self.client.waitForText(self._['continue_partition'], timeout=self.timeout)
             self.client.keyPress('down')
-            self.client.keyPress('enter')
+            self.type('\n')
 
         sleep(600, "disk.partition install")
         self.client.waitForText(self._['finish_installation'], timeout=1300)
-        self.client.keyPress('enter')
+        self.type('\n')
         sleep(30, "reboot")
 
     @verbose("NETWORK")
@@ -173,34 +171,34 @@ class UCSInstallation(VNCInstallation):
 
         if self.args.ip:
             if self.text_is_visible(self._['not_using_dhcp'], timeout=self.timeout):
-                self.client.keyPress('enter')
+                self.type('\n')
                 self.click_on(self._['manual_network_config'])
-                self.client.keyPress('enter')
+                self.type('\n')
 
             self.client.waitForText(self._['ip_address'], timeout=self.timeout)
-            self.client.enterText(self.args.ip + "\n")
+            self.type(self.args.ip + "\n")
             self.client.waitForText(self._['netmask'], timeout=self.timeout)
             if self.args.netmask:
-                self.client.enterText(self.args.netmask)
+                self.type(self.args.netmask)
 
-            self.client.keyPress('enter')
+            self.type('\n')
             self.client.waitForText(self._['gateway'], timeout=self.timeout)
             if self.args.gateway:
-                self.client.enterText(self.args.gateway)
+                self.type(self.args.gateway)
 
-            self.client.keyPress('enter')
+            self.type('\n')
             self.client.waitForText(self._['name_server'], timeout=self.timeout)
             if self.args.dns:
-                self.client.enterText(self.args.dns)
+                self.type(self.args.dns)
 
-            self.client.keyPress('enter')
+            self.type('\n')
 
         return True
 
     def _network_repo(self):
         sleep(120, "net.dns")
         if self.text_is_visible(self._['repositories_not_reachable']):
-            self.client.keyPress('enter')
+            self.type('\n')
             sleep(30, "net.dns2")
 
     @verbose("SETUP")
@@ -213,7 +211,7 @@ class UCSInstallation(VNCInstallation):
         self.click_on(self._['new_domain'])
         self.go_next()
         self.client.waitForText(self._['account_information'], timeout=self.timeout)
-        self.client.enterText('home')
+        self.type('home')
         self.go_next()
 
     def _setup_joined(self, role_text):  # type: (str) -> None
@@ -222,7 +220,7 @@ class UCSInstallation(VNCInstallation):
         if self.text_is_visible(self._['no_dc_dns']):
             self.click_on(self._['change_settings'])
             self.click_on(self._['preferred_dns'])
-            self.client.enterText(self.args.dns + "\n")
+            self.type(self.args.dns + "\n")
             self._network_repo()
             self.click_on(self._['join_domain'])
             self.go_next()
@@ -244,10 +242,10 @@ class UCSInstallation(VNCInstallation):
         self.click_on(self._['ad_domain'])
         self.go_next()
         self.client.waitForText(self._['no_dc_dns'], timeout=self.timeout)
-        self.client.keyPress('enter')
+        self.type('\n')
         self.click_on(self._['preferred_dns'])
         sleep(1)
-        self.client.enterText(self.args.dns + "\n")
+        self.type(self.args.dns + "\n")
         self._network_repo()
         self.check_apipa()
         self.go_next()
@@ -277,15 +275,13 @@ class UCSInstallation(VNCInstallation):
         self.client.waitForText(self._['ad_account_information'], timeout=self.timeout)
         for _ in range(2):
             self.click_on(self._['address_ad'])
-            self.client.keyPress('tab')
-            self.clear_input()
-            self.client.enterText(self.args.join_user + "\t")
-            self.clear_input()
-            self.client.enterText(self.args.join_password)
+            self.type("\t")
+            self.type(self.args.join_user + "\t", clear=True)
+            self.type(self.args.join_password, clear=True)
             self.go_next()
             try:
                 self.client.waitForText(self._['error'], timeout=self.timeout)
-                self.client.keyPress('enter')
+                self.type('\n')
                 self.client.keyPress('caplk')
             except VNCDoException:
                 self.connect()
@@ -299,15 +295,13 @@ class UCSInstallation(VNCInstallation):
         for _ in range(2):
             self.click_on(self._['hostname_primary'])
             sleep(5)
-            self.client.keyPress('tab')
-            self.clear_input()
-            self.client.enterText(self.args.join_user + "\t")
-            self.clear_input()
-            self.client.enterText(self.args.join_password)
+            self.type('\t')
+            self.type(self.args.join_user + "\t", clear=True)
+            self.type(self.args.join_password, clear=True)
             self.go_next()
             try:
                 self.client.waitForText(self._['error'], timeout=self.timeout)
-                self.client.keyPress('enter')
+                self.type('\n')
                 self.client.keyPress('caplk')
             except VNCDoException:
                 self.connect()
@@ -320,10 +314,9 @@ class UCSInstallation(VNCInstallation):
         else:
             self.client.waitForText(self._['system_name'])
 
-        self.clear_input()
-        self.client.enterText(self.args.fqdn)
+        self.type(self.args.fqdn, clear=True)
         if self.args.role == 'master':
-            self.client.keyPress('tab')
+            self.type('\t')
 
         self.go_next()
 
@@ -339,34 +332,33 @@ class UCSInstallation(VNCInstallation):
     @verbose("FINISH")
     def finish(self):  # type: () -> None
         self.client.waitForText(self._['confirm_config'], timeout=self.timeout)
-        self.client.keyPress('enter')
+        self.type('\n')
         sleep(self.setup_finish_sleep, "FINISH")
         self.client.waitForText(self._['setup_successful'], timeout=2100)
-        self.client.keyPress('tab')
-        self.client.keyPress('enter')
+        self.type('\t\n')
         sleep(10, "reboot")
         self.client.waitForText('univention', timeout=self.timeout)
 
     @verbose("KVM")
     def configure_kvm_network(self, iface):  # type: (str) -> None
         self.client.waitForText('corporate server')
-        self.client.keyPress('enter')
+        self.type('\n')
         sleep(3)
-        self.client.enterText('root\n')
+        self.type('root\n')
         sleep(5)
-        self.client.enterText(self.args.password + "\n")
-        self.client.enterText('ucr set interfaces-%s-tzpe`manual\n' % iface)
+        self.type(self.args.password + "\n")
+        self.type('ucr set interfaces-%s-tzpe`manual\n' % iface)
         sleep(30, "kvm.ucr")
-        self.client.enterText('ip link set %s up\n' % iface)
-        self.client.enterText('echo ')
+        self.type('ip link set %s up\n' % iface)
+        self.type('echo ')
         self.client.keyDown('shift')
-        self.client.enterText('2')  # @
+        self.type('2')  # @
         self.client.keyUp('shift')
-        self.client.enterText('reboot -sbin-ip link set %s up ' % iface)
+        self.type('reboot -sbin-ip link set %s up ' % iface)
         self.client.keyDown('shift')
-        self.client.enterText("'")  # |
+        self.type("'")  # |
         self.client.keyUp('shift')
-        self.client.enterText(' crontab\n')
+        self.type(' crontab\n')
 
     @verbose("NEXT")
     def go_next(self):  # type: () -> None
