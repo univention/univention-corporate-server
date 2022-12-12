@@ -56,6 +56,6 @@ repos:
     hooks:
       - id: debian-control
   - repo: https://git.knut.univention.de/univention/dist/pre-commit-ucs.git
-    rev: v1.0.0
+    rev: v1.1.2
     hooks:
       - id: ucs-erratum
