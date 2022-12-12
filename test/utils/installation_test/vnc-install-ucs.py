@@ -39,7 +39,7 @@ class UCSInstallation(VNCInstallation):
 
     @verbose("GRUB")
     def bootmenu(self):  # type: () -> None
-        if self.text_is_visible('Univention Corporate Server Installer', timeout=120):
+        if self.text_is_visible('Univention Corporate Server Installer'):
             if self.args.ip:
                 self.client.keyPress('down')
             self.type('\n')
@@ -160,17 +160,17 @@ class UCSInstallation(VNCInstallation):
         sleep(60, "scan ISO and network")
 
         # we may not see this because the only interface is configured via dhcp
-        if not self.text_is_visible(self._['configure_network'], timeout=120):
+        if not self.text_is_visible(self._['configure_network']):
             return False
 
         self.client.waitForText(self._['configure_network'], timeout=self.timeout)
-        if not self.text_is_visible(self._['ip_address'], timeout=self.timeout):
+        if not self.text_is_visible(self._['ip_address']):
             # always use first interface
             self.click_on(self._['continue'])
             sleep(60, "net.detect")
 
         if self.args.ip:
-            if self.text_is_visible(self._['not_using_dhcp'], timeout=self.timeout):
+            if self.text_is_visible(self._['not_using_dhcp']):
                 self.type('\n')
                 self.click_on(self._['manual_network_config'])
                 self.type('\n')

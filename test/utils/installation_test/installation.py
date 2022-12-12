@@ -167,9 +167,9 @@ class VNCInstallation(object):
         self.client.mouseMove(x, y)
         self.client.mousePress(button)
 
-    def text_is_visible(self, text, timeout=120):  # type: (str, int) -> bool
+    def text_is_visible(self, text, timeout=0):  # type: (str, int) -> bool
         try:
-            self.client.waitForText(text, timeout=timeout)
+            self.client.waitForText(text, timeout=self.timeout * (timeout >= 0) + abs(timeout))
             return True
         except VNCDoException:
             self.connect()

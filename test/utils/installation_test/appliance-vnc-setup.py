@@ -25,7 +25,7 @@ class UCSSetup(VNCInstallation):
         self.finish()
 
     def language(self, language):  # type: (str) -> None
-        if self.text_is_visible('Notification', timeout=self.timeout):
+        if self.text_is_visible('Notification'):
             self.screenshot('notification.png')
             self.click_on('OK')
 
