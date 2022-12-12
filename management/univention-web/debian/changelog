@@ -1,3 +1,9 @@
+univention-web (4.0.2-54) unstable; urgency=medium
+
+  * Bug #55378: improve cookie banner usability
+
+ -- Christian Castens <castens@univention.de>  Mon, 12 Dec 2022 16:06:34 +0100
+
 univention-web (4.0.2-53) unstable; urgency=medium
 
   * Bug #54451: fix checkboxes in Grid not being rendered correctly when
