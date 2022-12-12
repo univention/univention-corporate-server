@@ -6,5 +6,6 @@ src: univention-management-console-module-udm
 fix: 15.0.4-4A~5.0.0.202211281358
 desc: |
  This update addresses the following issues:
- * A typo in the name of the UMC Operation Set `udm-policies` has been adjusted.
+ * A typo in the name of the UMC Operation Set `udm-policies` has been
+   adjusted.
 bug: [55460]
