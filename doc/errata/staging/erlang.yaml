@@ -1,0 +1,240 @@
+product: ucs
+release: "4.4"
+version: [9]
+scope: ucs_4.4-0-errata4.4-9
+src: erlang
+fix: 1:19.2.1+dfsg-2+really23.3.4.18-0+deb9u2
+desc: |
+ This update addresses the following issues:
+ 1:19.2.1+dfsg-2+really23.3.4.18-0+deb9u2 (Mon, 12 Dec 2022 13:56:52 +0100)
+ * Non-maintainer upload by the ELTS team.
+ * No change rebuild.
+ 1:19.2.1+dfsg-2+really23.3.4.18-0+deb9u1 (Mon, 12 Dec 2022 12:31:20 +0100)
+ * New upstream version 23.3.4.18: - Fix CVE-2022-37026: A Client
+   Authentication Bypass vulnerability has been discovered in the concurrent,
+   real-time, distributed functional language Erlang. Impacted are those who
+   are running an ssl/tls/dtls server using the ssl application either
+   directly or indirectly via other applications. Note that the vulnerability
+   only affects servers that request client certification, that is sets the
+   option {verify, verify_peer}.
+ 1:23.2.6+dfsg-1 (Thu, 25 Feb 2021 12:34:59 +0300)
+ * New upstream release.
+ 1:23.2.5+dfsg-1 (Fri, 19 Feb 2021 11:27:52 +0300)
+ * Refresh patches.
+ 1:23.2.4+dfsg-1 (Fri, 05 Feb 2021 09:36:40 +0300)
+ 1:23.2.3+dfsg-1 (Thu, 21 Jan 2021 11:43:21 +0300)
+ 1:23.2.2+dfsg-1 (Sat, 16 Jan 2021 08:50:49 +0300)
+ * New upstream release, which includes a fix for CVE-2020-35733 (the ssl
+   application 10.2 accepts and trusts an invalid X.509 certificate chain to a
+   trusted root Certification Authority,.
+ 1:23.2.1+dfsg-1 (Mon, 21 Dec 2020 13:16:47 +0300)
+ 1:23.2+dfsg-1 (Wed, 16 Dec 2020 15:07:09 +0300)
+ * Bump standards version to 4.5.1.
+ 1:23.1.5+dfsg-1 (Mon, 07 Dec 2020 12:01:49 +0300)
+ 1:23.1.4+dfsg-1 (Sat, 21 Nov 2020 17:03:12 +0300)
+ 1:23.1.2+dfsg-1 (Wed, 11 Nov 2020 11:30:20 +0300)
+ 1:23.1.1+dfsg-1 (Sun, 04 Oct 2020 08:52:49 +0300)
+ 1:23.1+dfsg-1 (Wed, 23 Sep 2020 22:22:49 +0300)
+ 1:23.0.4+dfsg-1 (Fri, 11 Sep 2020 10:37:31 +0300)
+ 1:23.0.3+dfsg-1 (Tue, 21 Jul 2020 18:46:49 +0300)
+ * Document IPAddressDeny and IPAddressAllow options for epmd.socket in
+   README.Debian.
+ * Remove the obsolete TODO.Debian.
+ * Override some lintian warnings about link breakouts.
+ 1:23.0.2+dfsg-3 (Tue, 23 Jun 2020 15:35:09 +0300)
+ * Add a patch which fixes FTBFS for GNU/Hurd.
+ 1:23.0.2+dfsg-2 (Sun, 21 Jun 2020 19:12:02 +0300)
+ * Upload of the new major upstream release to unstable.
+ 1:23.0.2+dfsg-1 (Fri, 29 May 2020 10:21:23 +0300)
+ * New upstream release. Upload to experimental.
+ 1:23.0.1+dfsg-1 (Fri, 22 May 2020 10:57:08 +0300)
+ 1:23.0+dfsg-1 (Wed, 20 May 2020 12:03:52 +0300)
+ * Remove symlinks to no longer shipped erl_interface include files and
+   libraries.
+ 1:22.3.3+dfsg-1 (Tue, 28 Apr 2020 10:22:10 +0300)
+ * Switch to versioned virtual packages erlang-abi and erlang-pcre, retain
+   providing the old ones for backward compatibility.
+ * Bump the erlang-pcre version since some changes incompatible for the
+   current build of elixir-lang were introduced.
+ 1:22.3.2+dfsg-1 (Fri, 10 Apr 2020 16:37:16 +0300)
+ 1:22.3+dfsg-1 (Wed, 18 Mar 2020 12:46:36 +0300)
+ 1:22.2.8+dfsg-1 (Sat, 29 Feb 2020 11:08:45 +0300)
+ * Move the epmd user home directory to /run/epmd from /var/run/epmd.
+ 1:22.2.7+dfsg-1 (Tue, 18 Feb 2020 14:10:08 +0300)
+ 1:22.2.4+dfsg-1 (Mon, 03 Feb 2020 00:11:55 +0300)
+ 1:22.2.3+dfsg-2 (Sun, 26 Jan 2020 22:54:24 +0300)
+ * Disable the builtin socket (as a nif) support for the hurd-i386
+   architecture because it cannot be built there.
+ 1:22.2.3+dfsg-1 (Mon, 20 Jan 2020 16:22:23 +0300)
+ 1:22.2.2+dfsg-1 (Tue, 14 Jan 2020 08:14:08 +0300)
+ 1:22.2.1+dfsg-1 (Sat, 04 Jan 2020 14:01:08 +0300)
+ * Explicitly add libx11-dev to build dependencies to fix building of the
+   erlang-wx package.
+ 1:22.2+dfsg-1 (Tue, 10 Dec 2019 13:46:49 +0300)
+ * Remove upwards-stack.patch since it has been applied upstream.
+ 1:22.1.8+dfsg-1 (Sun, 24 Nov 2019 17:20:36 +0300)
+ 1:22.1.7+dfsg-1 (Mon, 11 Nov 2019 14:47:26 +0300)
+ 1:22.1.6+dfsg-1 (Wed, 06 Nov 2019 14:18:03 +0300)
+ 1:22.1.5+dfsg-1 (Tue, 29 Oct 2019 09:25:34 +0300)
+ 1:22.1.1+dfsg-3 (Thu, 03 Oct 2019 10:48:07 +0300)
+ * Fix a typo in the clean target of debian/rules.
+ 1:22.1.1+dfsg-2 (Thu, 03 Oct 2019 07:55:19 +0300)
+ * Make erlang-base and erlang-base-hipe provide the erlang-pcre-<version>
+   virtual package to help tracking if elixir-lang or any other package that
+   uses precompiled regexs needs rebuild.
+ * Use the version of upwards-stack.patch which has been approved upstream.
+ 1:22.1.1+dfsg-1 (Fri, 27 Sep 2019 22:49:39 +0300)
+ 1:22.1+dfsg-1 (Fri, 20 Sep 2019 13:45:18 +0300)
+ * Document the upwards-stack.patch patch.
+ 1:22.0.7+dfsg-3 (Sun, 15 Sep 2019 13:41:43 +0300)
+ * Add a patch which determines correctly if stack goes upwards to make the re
+   module working on hppa.
+ * Bump standards version to 4.4.0.
+ 1:22.0.7+dfsg-2 (Sun, 08 Sep 2019 20:50:38 +0300)
+ * Switch to the GTK-3 based implementation of wxWidgets.
+ * Document usage of GDK_BACKEND=x11 for wxGLCanvas in README.Debian.
+ 1:22.0.7+dfsg-1 (Mon, 15 Jul 2019 13:57:16 +0300)
+ * New upstream bugfix release.
+ * Override lintian error on EPMD systemd service file without init.d script
+   since it isn't required for EPMD to run.
+ * Force using system-wide zlib.
+ 1:22.0.5+dfsg-2 (Mon, 08 Jul 2019 12:26:55 +0300)
+ * Reupload as a source package to promote to testing.
+ 1:22.0.5+dfsg-1 (Sun, 07 Jul 2019 09:20:44 +0300)
+ 1:22.0.4+dfsg-1 (Wed, 19 Jun 2019 10:40:35 +0300)
+ * New upstream bugfix release. Upload to experimental.
+ 1:22.0.3+dfsg-1 (Thu, 13 Jun 2019 13:32:42 +0300)
+ 1:22.0.2+dfsg-1 (Sun, 09 Jun 2019 09:24:36 +0300)
+ 1:22.0.1+dfsg-1 (Thu, 23 May 2019 17:44:11 +0300)
+ 1:22.0+dfsg-1 (Wed, 15 May 2019 13:11:33 +0300)
+ 1:22.0~rc3+dfsg-1 (Wed, 24 Apr 2019 14:04:00 +0300)
+ * New upstream release candidate. Upload to experimental.
+ * Make all architecture-dependent binary packages multi-arch allowed
+ .
+ 1:22.0~rc2+dfsg-1 (Wed, 27 Mar 2019 09:29:21 +0300)
+ 1:22.0~rc1+dfsg-2 (Thu, 28 Feb 2019 14:45:49 +0300)
+ * Fix finding the target triplet for building manpages. This fixes FTBFS on
+   kfreebsd-amd64 and kfreebsd-i386.
+ 1:22.0~rc1+dfsg-1 (Wed, 27 Feb 2019 16:57:01 +0300)
+ * Remove patch which disabled vfork() on the hppa architecture.
+ 1:21.2.6+dfsg-1 (Mon, 18 Feb 2019 16:09:27 +0300)
+ 1:21.2.5+dfsg-1 (Mon, 04 Feb 2019 17:43:49 +0300)
+ 1:21.2.4+dfsg-1 (Fri, 25 Jan 2019 16:24:41 +0300)
+ 1:21.2.3+dfsg-1 (Wed, 16 Jan 2019 14:07:16 +0300)
+ * Bump standards version to 4.3.0.
+ 1:21.2.2+dfsg-1 (Sat, 29 Dec 2018 00:41:13 +0300)
+ * Reconfigure the epmd.socket unit to listen on all network interfaces.
+   Listening on loopback only breaks RabbitMQ and other applications which
+   depend on Erlang clustering abilities.
+ * Fix crashes of erlang-depends on empty substvar files.
+ * Add erlang-base:native to the build dependencies for cross-building
+ 1:21.2.1+dfsg-1 (Tue, 25 Dec 2018 10:58:50 +0300)
+ 1:21.2+dfsg-2 (Thu, 20 Dec 2018 11:01:02 +0300)
+ * Do not install Erlang mode for XEmacs since it isn't supposed to work with
+   it.
+ 1:21.2+dfsg-1 (Tue, 11 Dec 2018 17:45:08 +0300)
+ 1:21.1.4+dfsg-1 (Mon, 10 Dec 2018 10:03:50 +0300)
+ 1:21.1.1+dfsg-2 (Fri, 19 Oct 2018 15:08:13 +0300)
+ * Enable the epmd.socket and epmd.service units by default. Make the socket
+   listen on the loopback interface only. Expand the section on how to
+   configure the socket options in README.Debian.
+ 1:21.1.1+dfsg-1 (Tue, 16 Oct 2018 09:22:26 +0300)
+ * Add aupport for stopping/starting native systemd services in erlang-base
+   and erlang-base-hipe prerm and postinst maintainer scripts.
+ 1:21.1+dfsg-2 (Mon, 08 Oct 2018 08:04:00 +0300)
+ * Add 'Breaks: rabbitmq-server (<< 3.7.7)' to the debian/control file because
+   rabbitmq-server older than version 3.7.7 doesn't support Erlang/OTP 21.
+ 1:21.1+dfsg-1 (Thu, 27 Sep 2018 11:52:05 +0300)
+ * Changes from the experimental branch: - Update debian/copyright. - Refresh
+   patches, remove a SPARC related one. - Remove the erlang-corba, erlang-ic
+   and erlang-ic-java packages since they are no longer distributed upstream.
+   - Add the erlang-ftp and erlang-tftp packages since they are sptit out from
+   the inets upstream package and a treated as separate applications from now
+   on. - Fix the binary packages interdependencies which have to be changes
+   because of adding and removing packages.
+ * Remove custom compression settings from the binary package creation
+   commands in debian/rules.
+ 1:20.3.8.8+dfsg-1 (Tue, 04 Sep 2018 14:08:49 +0300)
+ 1:20.3.8.5+dfsg-1 (Mon, 13 Aug 2018 17:56:38 +0300)
+ * Bump standards version to 4.2.0.
+ 1:20.3.8.4+dfsg-1 (Mon, 06 Aug 2018 12:31:42 +0300)
+ 1:20.3.8.3+dfsg-1 (Tue, 24 Jul 2018 11:10:48 +0300)
+ 1:20.3.8.1+dfsg-1 (Mon, 25 Jun 2018 16:41:56 +0300)
+ 1:20.3.8+dfsg-1 (Thu, 14 Jun 2018 10:54:34 +0300)
+ 1:20.3.7+dfsg-1 (Tue, 05 Jun 2018 17:33:27 +0300)
+ 1:20.3.6+dfsg-1 (Tue, 08 May 2018 13:02:24 +0300)
+ 1:20.3.5+dfsg-1 (Thu, 03 May 2018 09:56:42 +0300)
+ 1:20.3.4+dfsg-1 (Wed, 25 Apr 2018 09:20:15 +0300)
+ * Disable erlang-edoc and erldoc for XEmacs.
+ * Change font face for atoms enclosed into single quotes to the default one
+   to mek them less confusing with strings.
+ 1:20.3.3+dfsg-1 (Thu, 19 Apr 2018 14:00:06 +0300)
+ * Point debian/watch to the Github Erlang/OTP releases.
+ * Bump the minimum Java compatibility level to 1.8 (openjdk 8).
+ * Demote erlang-wx from recommended to suggested for erlang-examples.
+ * The two last changes in conjunction that EPMD6 is defined automatically
+   allow Ubuntu maintainers to drop Ubuntu specific changes.
+ * Update standards version to 4.1.4.
+ * Replace the get-orig-source target in debian/rules by an imroved
+   debian/watch uscan control file which downloads and repacks the tarball.
+ * Convert debian/copyright into machine readable form and specify the
+   excluded files there in a way usable by mk-origtargz repacker.
+ 1:20.3.2+dfsg-1 (Thu, 22 Mar 2018 14:39:57 +0300)
+ * Remove patch introduced in the previous upload since it has been applied
+   upstream.
+ 1:20.3+dfsg-2 (Fri, 16 Mar 2018 10:56:05 +0300)
+ * Add a patch from upstream which fixes two bugs spotted in the
+   erlang-questions mailing list.
+ 1:20.3+dfsg-1 (Wed, 14 Mar 2018 21:22:09 +0300)
+ * Replace the old Alioth VCS links in debian/control by new Salsa ones.
+ 1:20.2.4+dfsg-1 (Thu, 22 Feb 2018 15:06:40 +0300)
+ 1:20.2.3+dfsg-1 (Thu, 15 Feb 2018 16:00:15 +0300)
+ * Bumped standards version to 4.1.3.
+ 1:20.2.2+dfsg-1 (Sun, 24 Dec 2017 10:58:12 +0300)
+ 1:20.2.1+dfsg-1 (Sun, 17 Dec 2017 21:43:24 +0300)
+ * Refreshed patches.
+ * Removed a patch which fixed crash in OpenGL applications since it's already
+   applied upstream.
+ * Bumped standards version to 4.1.2.
+ 1:20.1.7+dfsg-1 (Mon, 27 Nov 2017 08:45:16 +0300)
+ * Applied a patch from upstream to fix crash in OpenGL applications like
+   wings3d.
+ 1:20.1.6+dfsg-1 (Tue, 21 Nov 2017 22:42:48 +0300)
+ 1:20.1.5+dfsg-1 (Wed, 15 Nov 2017 18:57:56 +0300)
+ * Switched to OpenSSL 1.1 for the crypto application.
+ 1:20.1.4+dfsg-1 (Fri, 03 Nov 2017 08:48:33 +0300)
+ * Fix assignment of predefined dpkg-architecture variables.
+ 1:20.1.3+dfsg-1 (Sun, 29 Oct 2017 09:33:19 +0300)
+ * Switched to the optional priority for erlang-base-hipe since the extra
+   priority is obsolete now.
+ 1:20.1.2+dfsg-1 (Sat, 21 Oct 2017 16:46:44 +0300)
+ * Bumped standards version to 4.1.1.
+ 1:20.1.1+dfsg-1 (Wed, 04 Oct 2017 22:43:22 +0300)
+ * Removed the obsolete build dependency on dh-systemd.
+ 1:20.0.4+dfsg-1 (Mon, 28 Aug 2017 09:45:39 +0300)
+ * Bumped debhelper compatibility version to 10.
+ * Removed autotools-dev from the build dependencies because it's useless with
+   debhelper compatibility version 10.
+ * Bumped standards version to 4.0.0.
+ 1:20.0.1+dfsg-2 (Sat, 08 Jul 2017 10:22:43 +0300)
+ * Fixed erlang-depends to run on Erlang R20 (removed the -smp disable option
+   which isn't supported anymore).
+ 1:20.0.1+dfsg-1 (Sat, 08 Jul 2017 09:24:38 +0300)
+ 1:20.0+dfsg-2 (Mon, 03 Jul 2017 14:19:40 +0300)
+ * Fixed patch for x32 architecture which led to FTBFS for *-i386
+   architectures due to undefined __x86_64__.
+ 1:20.0+dfsg-1 (Mon, 03 Jul 2017 10:46:07 +0300)
+ * Removed the erlang-gs, erlang-percept and erlang-typer packages because the
+   corresponding Erlang gs, percept and typer applications are dropped
+   upstream.
+ * Since the typer binary is still built (and some tools like reltool relies
+   on its existence) move it to the erlang-base(-hipe) package.
+ * Added erlang-typer to the replaces field for erlang-base(-hipe).
+ * Removed provision of erlang-abi-15.b by erlang-base(-hipe) packages
+ * Dropped the erlang-dbg package because now the debugging symbols are
+   collected automatically into *-dbgsym packages which go to a separate
+   repository.
+bug: [55493]
+cve:
+- CVE-2022-37026
+- CVE-2020-35733
