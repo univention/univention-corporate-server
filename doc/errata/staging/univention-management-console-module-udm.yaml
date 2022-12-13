@@ -3,7 +3,7 @@ release: "5.0"
 version: [2]
 scope: ucs_5.0-0-errata5.0-2
 src: univention-management-console-module-udm
-fix: 15.0.4-4A~5.0.0.202211281358
+fix: 10.0.2-4A~5.0.0.202212081519
 desc: |
  This update addresses the following issues:
  * A typo in the name of the UMC Operation Set `udm-policies` has been
