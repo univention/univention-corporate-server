@@ -63,6 +63,7 @@ univention.admin.modules.update()
 usersmod = univention.admin.modules.get("users/user")
 check_sasl_username = ucr.is_true("mail/postfix/policy/listfilter/use_sasl_username", True)
 _do_debug = ucr.is_true("mail/postfix/policy/listfilter/debug", False)
+use_dovecot_sasl = ucr.is_true("mail/postfix/dovecot_sasl", False)
 
 
 def debug(msg, *args):
@@ -78,7 +79,7 @@ def listfilter(attrib: Dict[str, str]) -> str:
 	sender = attrib.get("sasl_username") if check_sasl_username else attrib.get("sender")
 	recipient = attrib.get("recipient")
 
-	debug("sender=%r recipient=%r check_sasl_username=%r", sender, recipient, check_sasl_username)
+	debug("sender=%r recipient=%r check_sasl_username=%r use_dovecot_sasl=%r", sender, recipient, check_sasl_username, use_dovecot_sasl)
 	debug("attrib=%r", attrib)
 
 	if not options.ldap_base:
@@ -126,7 +127,10 @@ def check_ldap_users_and_groups(sender: str, recipient: str) -> str:
 
 	# get dn and groups of sender
 	if check_sasl_username:
-		user_filter = filter_format("(uid=%s)", (sender,))
+		if use_dovecot_sasl:
+			user_filter = filter_format("(uid=%s)", (sender,))
+		else:
+			user_filter = filter_format("(|(uid=%s)(mailPrimaryAddress=%s))", (sender, sender))
 	else:
 		user_filter = filter_format(
 			"(|(mailPrimaryAddress=%s)(mailAlternativeAddress=%s)(mail=%s))",
