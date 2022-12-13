@@ -1,3 +1,9 @@
+univention-mail-postfix (14.0.3-1) unstable; urgency=low
+
+  * Bug #55385: handle auth using email address when not using dovecot sasl
+
+ -- Daniel Troeder <troeder@univention.de>  Wed, 21 Dec 2022 10:21:02 +0100
+
 univention-mail-postfix (14.0.2-1) unstable; urgency=medium
 
   * Bug #54273: Include debug script in server_password_change.d/50univention-mail-server subscript
