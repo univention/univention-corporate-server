@@ -137,24 +137,7 @@ class TestPortal:
             "category_dns": ["cn=domain-admin,cn=category,cn=portals,cn=univention,dc=intranet,dc=example,dc=de"],
             "entry_dns": ["cn=server-overview,cn=entry,cn=portals,cn=univention,dc=intranet,dc=example,dc=de", "cn=umc-domain,cn=entry,cn=portals,cn=univention,dc=intranet,dc=example,dc=de", "cn=univentionblog,cn=entry,cn=portals,cn=univention,dc=intranet,dc=example,dc=de"],
             "folder_dns": [],
-            "announcements": [{
-                "allowedGroups": [],
-                "dn": "cn=Testannouncment,cn=announcement,cn=portals,cn=univention,dc=some-testenv,dc=intranet",
-                "endTime": None,
-                "isSticky": False,
-                "message": {
-                    "de_DE": "Dies ist ein Testannouncement das f\u00fcr jeden User, d.h. auch ohne Login sichtbar sein sollte.",
-                    "en_US": "This is a test announcement that should be visible for all users, as no group restriction is set."
-                },
-                "name": "Testannouncment",
-                "needsConfirmation": False,
-                "severity": "info",
-                "startTime": None,
-                "title": {
-                    "de_DE": "\u00d6ffentliches Announcement",
-                    "en_US": "Public Announcement"
-                }
-            }]
+            "announcement_dns": ["cn=Testannouncment,cn=announcement,cn=portals,cn=univention,dc=some-testenv,dc=intranet"]
         }
         assert content == expected_content
 
@@ -319,7 +302,7 @@ class TestPortal:
         }
         visible_announcement_2 = {
             "allowedGroups": ["public_society"],
-            "dn": "cn=Testannouncment1,cn=announcement,cn=portals,cn=univention,dc=some-testenv,dc=intranet",
+            "dn": "cn=Testannouncment2,cn=announcement,cn=portals,cn=univention,dc=some-testenv,dc=intranet",
             "isSticky": False,
             "message": {
                 "de_DE": "Testannouncement",
@@ -335,7 +318,7 @@ class TestPortal:
         }
         invisible_announcement = {
             "allowedGroups": ["secret_society"],
-            "dn": "cn=Testannouncment2,cn=announcement,cn=portals,cn=univention,dc=some-testenv,dc=intranet",
+            "dn": "cn=Testannouncment3,cn=announcement,cn=portals,cn=univention,dc=some-testenv,dc=intranet",
             "isSticky": False,
             "message": {
                 "de_DE": "Testannouncement",
@@ -349,17 +332,24 @@ class TestPortal:
                 "de_DE": "Öffentliches Announcement",
             }
         }
-        input_announcements = [
-            visible_announcement_1,
-            visible_announcement_2,
-            invisible_announcement,
-           ]
+        input_announcements = {
+            visible_announcement_1["dn"]: visible_announcement_1,
+            visible_announcement_2["dn"]: visible_announcement_2,
+            invisible_announcement["dn"]: invisible_announcement,
+           }
         modifiable_data = portal_data.get_portal_cache_json()
         modifiable_data['announcements'] = input_announcements
 
         portal_data.update_portal_cache(modifiable_data)
         content = standard_portal.get_visible_content(test_user, False)
+        result_announcements = standard_portal.get_announcements(content)
 
-        assert visible_announcement_1 in content['announcements']
-        assert visible_announcement_2 in content['announcements']
-        assert invisible_announcement not in content['announcements']
+        assert visible_announcement_1["dn"] in content['announcement_dns']
+        assert visible_announcement_2["dn"] in content['announcement_dns']
+        assert invisible_announcement["dn"] not in content['announcement_dns']
+        assert len(content["announcement_dns"]) == 2
+
+        assert visible_announcement_1 in result_announcements
+        assert visible_announcement_2 in result_announcements
+        assert invisible_announcement not in result_announcements
+        assert len(result_announcements) == 2

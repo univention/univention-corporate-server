@@ -354,6 +354,7 @@ fi
 
 univention-portal add-default
 univention-portal update
+systemctl restart univention-directory-manager-rest
 systemctl restart univention-portal-server
 
 # One time action: Copy example custom css file

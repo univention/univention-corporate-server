@@ -1,6 +1,6 @@
 {
-    "announcements": [
-        {
+    "announcements": {
+        "cn=Testannouncment,cn=announcement,cn=portals,cn=univention,dc=some-testenv,dc=intranet": {
             "allowedGroups": [],
             "dn": "cn=Testannouncment,cn=announcement,cn=portals,cn=univention,dc=some-testenv,dc=intranet",
             "endTime": null,
@@ -18,7 +18,7 @@
                 "en_US": "Public Announcement"
             }
         }
-    ],
+    },
     "categories": {
         "cn=domain-admin,cn=category,cn=portals,cn=univention,dc=intranet,dc=example,dc=de": {
             "display_name": {
