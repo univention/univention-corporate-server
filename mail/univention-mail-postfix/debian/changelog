@@ -1,6 +1,12 @@
+univention-mail-postfix (13.0.5-1) unstable; urgency=low
+
+  * Bug #55385: handle auth using email address when not using dovecot sasl
+
+ -- Daniel Troeder <troeder@univention.de>  Wed, 21 Dec 2022 10:21:02 +0100
+
 univention-mail-postfix (13.0.4-5) unstable; urgency=medium
 
-  * Bug #54019: Added timestamp to logger output of server password change 
+  * Bug #54019: Added timestamp to logger output of server password change
 
  -- Esteban Martinena <martinena@univention.de>  Thu, 04 Nov 2021 08:24:39 +0100
 

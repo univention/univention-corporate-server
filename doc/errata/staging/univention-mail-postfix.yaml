@@ -1,0 +1,12 @@
+product: ucs
+release: "5.0"
+version: [2]
+scope: ucs_4.4-0-errata4.4-9
+src: univention-mail-postfix
+fix:
+desc: |
+ This update addresses the following issue:
+ * The filter checking access to restricted mailing lists now accepts
+   emails sent by users authenticating with their email address, when
+   the system is configured to not use Dovecot SASL.
+bug: [55385]
