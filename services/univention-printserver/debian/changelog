@@ -1,3 +1,11 @@
+univention-printserver (13.0.5-1) unstable; urgency=medium
+
+  * Bug #55264: Adjust reloading samba config after adding, modifying
+    or deleting printers to make the new samba-bgqd and smbd processes
+    aware of the change.
+
+ -- Arvid <requate@univention.de>  Tue, 13 Dec 2022 09:56:55 +0100
+
 univention-printserver (13.0.4-1) unstable; urgency=medium
 
   * Bug #54748: add dependencies to monitoring packages
