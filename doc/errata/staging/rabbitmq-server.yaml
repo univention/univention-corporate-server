@@ -1,0 +1,104 @@
+product: ucs
+release: "4.4"
+version: [9]
+scope: ucs_4.4-0-errata4.4-9
+src: rabbitmq-server
+fix: 3.6.6+really3.8.9-0+deb9u1
+desc: |
+ This update addresses the following issues:
+ 3.6.6+really3.8.9-0+deb9u1 (Sat, 26 Nov 2022 00:03:01 +0100)
+ * Non-maintainer upload by the ELTS team.
+ * New upstream version which is compatible with Erlang 23.3.4.18.
+ 3.8.9-3 (Sat, 10 Apr 2021 22:59:57 +0200)
+ [ Adam Cecile ]
+ * Merge upstream PR #2965 fixing rabbitmqctl parsing bug.
+ 3.8.9-2 (Fri, 26 Mar 2021 14:24:52 +0100)
+ * Do not use the /usr/sbin/rabbitmq-server wrapper in systemd service file
+ .
+ * Use logrotate daily instead of weekly, and do not override the number of
+   logs, so we don't keep too much of them.
+ * Do not use a sharedscripts, as rabbitmq-server detects the log rotation by
+   itself (LP: #1921425).
+ 3.8.9-1 (Thu, 01 Oct 2020 09:30:46 +0200)
+ * New upstream release.
+ * Rebased lets-use-python3-not-python-binary.patch.
+ 3.8.5-1 (Fri, 10 Jul 2020 12:57:57 +0200)
+ * New upstream release: - Ships new version of the Prometheus plugin that
+   works with Erlang version 23.
+ * Re-add debian/gbp.conf as the package is using pristine-tar.
+ * Add rabbitmq-dist.mk.patch to fix build with make 4.3.
+ 3.8.3-1 (Thu, 14 May 2020 12:02:04 +0100)
+ [ Ondřej Nový ]
+ * Remove gbp.conf, not used anymore or should be specified in the developers
+   dotfiles.
+ [ Thomas Goirand ]
+ * Resolve issues with startup of RabbitMQ with erlang provided epmd daemon.
+   See Ubuntu bug:
+   https://bugs.launchpad.net/ubuntu/+source/rabbitmq-server/+bug/1808766
+ [ James Page ]
+ * Merge changes from Ubuntu.
+ * New upstream release (3.8.2): - d/rules: Install new scripts.
+ * d/rules: Drop --parallel usage, no longer needed.
+ * d/control: Bump minimum erlang version inline with upstream requirements.
+ [ Nicolas Bock ]
+ * New upstream release (3.8.3).
+ * d/watch: Fix watch file to download from GitHub
+ * Fix timeout discrepancy between SysV and systemd (LP: #1874075) upstream,
+   rabbitmq-server-release - 694540270c8 - d/rabbitmq-server.init: Add
+   RABBITMQ_STARTUP_TIMEOUT and default to 600. - d/rabbitmq-server.service:
+   Default TimeoutStartSec to 600
+ * d/rules: Drop use of --with=systemd as its no longer needed.
+ * d/rabbitmq-server.postinst,rabbitmq-server.postrm: Drop execute permission
+   - debhelper deals with this as part of package build.
+ * d/missing-sources: Add missing un-minified sources files for JS assets.
+ 3.7.18-1 (Mon, 23 Sep 2019 10:05:48 +0200)
+ * New upstream release. - Can be built with Elixir 1.9.x.
+ * Re-add debian/gbp.conf, as this package must use pristine-tar.
+ * Fix display of version when doing rabbitmqadmin --version. Used a different
+   way from proposed patch which isn't invasive.
+ * Using python3 as binary, not python.
+ 3.7.8-5 (Mon, 17 Jun 2019 22:59:25 +0200)
+ * Removing gbp.conf, not used anymore or should be specified in the
+   developers dotfiles.
+ * Use debhelper-compat instead of debian/compat.
+ * Also package rabbitmq-diagnostics.
+ 3.7.8-4 (Tue, 30 Oct 2018 08:28:31 +0000)
+ * Remove Elixir version patch.
+ * Build-depends on Elixir 1.6.6.
+ 3.7.8-3 (Mon, 29 Oct 2018 10:25:25 +0100)
+ * Remove $LANG wrapper hack.
+ 3.7.8-2 (Mon, 29 Oct 2018 10:13:27 +0100)
+ * Wrap rabbitmqctl to set $LANG and avoid warning.
+ 3.7.8-1 (Wed, 24 Oct 2018 18:39:10 +0200)
+ [ Daniel Baumann ]
+ * Updating vcs fields.
+ * Updating copyright format url.
+ * Updating maintainer field.
+ * Running wrap-and-sort -bast.
+ * Updating standards version to 4.0.0.
+ * Correcting permissions in debian packaging files.
+ * Updating standards version to 4.0.1.
+ * Deprecating priority extra as per policy 4.0.1.
+ * Updating standards version to 4.1.0.
+ * d/control: Set Vcs-* to salsa.debian.org
+ * d/changelog: Remove trailing whitespaces
+ * d/control: Use team+openstack@tracker.debian.org as maintainer
+ * New upstream release: - Fix FTBFS with newer Erlang.
+ * Fix the way to calculate upstream VERSION in debian/rules.
+ * Switched rabbitmq-server.service to type notify, and other minor changes in
+   this file, do not wait for timeout on shutdown either
+ * Updated debian/control for this release.
+ * Bumped debhelper to 10.
+ * Standards-Version is now 4.2.1.
+ * Add patch to accept Elixir 1.6.5.
+ * Also package manpages.
+ 3.6.10-1 (Wed, 28 Jun 2017 15:00:41 +0200)
+ * New upstream release, fixing multiple issues: - CVE-2017-4965: XSS
+   vulnerabilities in management UI - CVE-2017-4966: authentication details
+   are stored in browser-local storage without expiration - CVE-2017-4967: XSS
+   vulnerabilities in management UI
+bug: [55494]
+cve:
+- CVE-2017-4965
+- CVE-2017-4966
+- CVE-2017-4967
