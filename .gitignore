@@ -26,3 +26,5 @@ doc/manual/_build/
 generated-config-*.yml
 .idea/
 .mypy_cache/
+.ucs-started-vms
+COMMAND_SUCCESS
