@@ -81,7 +81,7 @@ install_frontend_apps () {
 	docker ps -a
 }
 
-install_frontend_packages () {
+enabled_internal_school_repo () {
 	# also add internal school repo for up-to-date frontend packages
 	local version
 	if [ "$UCSSCHOOL_RELEASE" != "public" ]; then
@@ -91,12 +91,23 @@ deb [trusted=yes] http://192.168.0.10/build2/ ucs_$version-0-ucs-school-$version
 deb [trusted=yes] http://192.168.0.10/build2/ ucs_$version-0-ucs-school-$version/\$(ARCH)/
 EOF
 	fi
+}
 
+disable_internal_school_repo () {
+	rm -f /etc/apt/sources.list.d/99_internal_school.list
+}
+
+install_ui_common () {
+	enabled_internal_school_repo
+	univention-install -y ucs-school-ui-common
+	disable_internal_school_repo
+}
+
+install_frontend_packages () {
+	enabled_internal_school_repo
 	univention-install -y ucs-school-ui-users-frontend
 	univention-install -y ucs-school-ui-groups-frontend
-
-	rm -f /etc/apt/sources.list.d/99_internal_school.list
-
+	disable_internal_school_repo
 	# create dev clients for easier testing
 	/usr/share/ucs-school-ui-common/scripts/univention-create-keycloak-clients --admin-password univention --client-id school-ui-users-dev --direct-access
 	/usr/share/ucs-school-ui-common/scripts/univention-create-keycloak-clients --admin-password univention --client-id school-ui-groups-dev --direct-access
