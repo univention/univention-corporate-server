@@ -8,3 +8,5 @@ desc: |
  This update addresses the following issue:
  * StartTLS is now used as default for LDAP federation in Keycloak.
 bug: [55488]
+erratum: 511
+announced: 2022-12-14
