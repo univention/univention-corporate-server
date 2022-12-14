@@ -17,3 +17,5 @@ desc: |
    `directory/manager/user/group-memberships-via-memberof` can be used to
    restore the old behavior. The variable is going to be removed in UCS 5.1.
 bug: [55269]
+erratum: 509
+announced: 2022-12-14
