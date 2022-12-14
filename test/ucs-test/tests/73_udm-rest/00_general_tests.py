@@ -1,4 +1,4 @@
-#!/usr/share/ucs-test/runner pytest-3 -s
+#!/usr/share/ucs-test/runner pytest-3 -s -l -vv
 ## desc: Test various functions in the UDM REST API
 ## tags: [udm,apptest]
 ## roles: [domaincontroller_master]
