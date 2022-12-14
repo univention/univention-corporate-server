@@ -2561,7 +2561,7 @@ class simpleComputer(simpleLdap):
 					('relativeDomainName', [name.encode('UTF-8')])
 				])
 			except univention.admin.uexceptions.objectExists as ex:
-				raise univention.admin.uexceptions.dnsAliasRecordExists(ex)
+				raise univention.admin.uexceptions.dnsAliasRecordExists(ex.dn)
 			# TODO: check if zoneDn really a forwardZone, maybe it is a container under a zone
 			zone = univention.admin.handlers.dns.forward_zone.object(self.co, self.lo, self.position, zoneDn)
 			zone.open()
@@ -2589,7 +2589,7 @@ class simpleComputer(simpleLdap):
 					('relativeDomainName', [name.encode('UTF-8')])
 				])
 			except univention.admin.uexceptions.objectExists as ex:
-				raise univention.admin.uexceptions.dnsAliasRecordExists(ex)
+				raise univention.admin.uexceptions.dnsAliasRecordExists(ex.dn)
 			# TODO: check if zoneDn really a forwardZone, maybe it is a container under a zone
 			zone = univention.admin.handlers.dns.forward_zone.object(self.co, self.lo, self.position, zoneDn)
 			zone.open()

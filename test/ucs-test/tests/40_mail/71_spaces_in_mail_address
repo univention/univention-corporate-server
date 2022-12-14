@@ -4,20 +4,20 @@
 ## exposure: dangerous
 ## packages: [univention-mail-server]
 
+import pytest
+
 import univention.testing.strings as uts
 import univention.testing.ucr as ucr_test
 import univention.testing.udm as udm_test
-import univention.testing.utils as utils
 
-EXPECTED_ERROR_MSG = 'Invalid Syntax: Primary e-mail address (mailbox): Not a valid email address!'
+EXPECTED_ERROR_MSG = 'Invalid syntax: Primary e-mail address (mailbox): Not a valid email address!'
 
 
 def main():
 	with ucr_test.UCSTestConfigRegistry() as ucr, udm_test.UCSTestUDM() as udm:
 		fqdn = '%s.%s' % (ucr.get('hostname'), ucr.get('domainname'))
-		is_test_failed = True
-		try:
-			mail_address = '%s @%s' % (uts.random_name(), ucr.get('domainname'))
+		mail_address = '%s @%s' % (uts.random_name(), ucr.get('domainname'))
+		with pytest.raises(udm_test.UCSTestUDM_CreateUDMObjectFailed) as exc:
 			userdn, username = udm.create_user(
 				set={
 					'password': 'univention',
@@ -25,11 +25,7 @@ def main():
 					'mailPrimaryAddress': mail_address
 				}
 			)
-		except udm_test.UCSTestUDM_CreateUDMObjectFailed as exc:
-			if (EXPECTED_ERROR_MSG in str(exc)):
-				is_test_failed = False
-		if is_test_failed:
-			utils.fail('Mail address %s contains spaces but was accepted by UDM' % (mail_address))
+		assert EXPECTED_ERROR_MSG in str(exc.value), str(exc.value)
 
 
 if __name__ == '__main__':

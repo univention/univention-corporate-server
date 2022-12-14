@@ -444,7 +444,7 @@ def main():
 				parser.error('Unknown type "%s"' % (typ,))
 	except univention.admin.uexceptions.objectExists as ex:
 		if not options.ignore_exists:
-			print('E: Object "%s" exists' % (ex,), file=sys.stderr)
+			print('E: Object "%s" exists' % (ex.dn,), file=sys.stderr)
 			raise
 	except (ValueError, TypeError, univention.admin.uexceptions.valueInvalidSyntax, univention.admin.uexceptions.valueRequired) as ex:
 		print('E: failed %s' % (ex,), file=sys.stderr)

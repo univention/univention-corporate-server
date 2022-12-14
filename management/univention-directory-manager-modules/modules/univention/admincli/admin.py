@@ -274,7 +274,7 @@ def object_input(module, object, input, append=None, remove=None, stderr=None):
 				try:
 					object[key] = current_values
 				except univention.admin.uexceptions.valueInvalidSyntax as errmsg:
-					raise OperationFailed('E: Invalid Syntax: %s' % (errmsg,))
+					raise OperationFailed('E: %s' % (errmsg,))
 
 	if remove:
 		for key, values in remove.items():
@@ -338,9 +338,9 @@ def object_input(module, object, input, append=None, remove=None, stderr=None):
 				try:
 					object[key] = value
 				except univention.admin.uexceptions.ipOverridesNetwork as exc:
-					print('WARNING: %s' % exc.message, file=stderr)
-				except univention.admin.uexceptions.valueMayNotChange as exc:
-					raise univention.admin.uexceptions.valueMayNotChange("%s: %s" % (exc.message, key))
+					print('WARNING: %s' % (exc,), file=stderr)
+				except univention.admin.uexceptions.valueMayNotChange:
+					raise univention.admin.uexceptions.valueMayNotChange(key)  # upstream exception is formatted bad
 
 
 def list_available_modules(stream):
@@ -649,7 +649,7 @@ class CLI(object):
 		try:
 			object = module.object(None, lo, position=position, superordinate=superordinate)
 		except univention.admin.uexceptions.insufficientInformation as exc:
-			raise OperationFailed('E: Insufficient information: %s' % (exc,))
+			raise OperationFailed('E: %s' % (exc,))
 
 		if parsed_options:
 			object.options = parsed_options
@@ -668,7 +668,7 @@ class CLI(object):
 			if not ignore_exists:
 				raise OperationFailed('E: No free IP address found')
 		except univention.admin.uexceptions.valueInvalidSyntax as err:
-			raise OperationFailed('E: Invalid Syntax: %s' % err)
+			raise OperationFailed('E: %s' % (err,))
 
 		default_containers = object.get_default_containers(lo)
 		if default_containers and position.isBase() and not any(lo.compare_dn(default_container, position.getDn()) for default_container in default_containers):
@@ -683,45 +683,26 @@ class CLI(object):
 			created = True
 		except univention.admin.uexceptions.objectExists as exc:
 			exists_msg = '%s' % (exc,)
-			dn = exc.args[0]
-			if not ignore_exists:
-				raise OperationFailed('E: Object exists: %s' % exists_msg)
 		except univention.admin.uexceptions.uidAlreadyUsed as user:
 			exists_msg = '(uid) %s' % user
-			if not ignore_exists:
-				raise OperationFailed('E: Object exists: %s' % exists_msg)
 		except univention.admin.uexceptions.groupNameAlreadyUsed as group:
 			exists_msg = '(group) %s' % group
-			if not ignore_exists:
-				raise OperationFailed('E: Object exists: %s' % exists_msg)
 		except univention.admin.uexceptions.dhcpServerAlreadyUsed as name:
 			exists_msg = '(dhcpserver) %s' % name
-			if not ignore_exists:
-				raise OperationFailed('E: Object exists: %s' % exists_msg)
 		except univention.admin.uexceptions.macAlreadyUsed as mac:
 			exists_msg = '(mac) %s' % mac
-			if not ignore_exists:
-				raise OperationFailed('E: Object exists: %s' % exists_msg)
 		except univention.admin.uexceptions.noLock as e:
 			exists_msg = '(nolock) %s' % (e,)
-			if not ignore_exists:
-				raise OperationFailed('E: Object exists: %s' % exists_msg)
-		except univention.admin.uexceptions.invalidDhcpEntry:
-			raise OperationFailed('E: The DHCP entry for this host should contain the zone dn, the ip address and the mac address.')
 		except univention.admin.uexceptions.invalidOptions as e:
 			print('E: invalid Options: %s' % e, file=self.stderr)
 			if not ignore_exists:
 				raise OperationFailed()
-		except univention.admin.uexceptions.insufficientInformation as exc:
-			raise OperationFailed('E: Insufficient information: %s' % (exc,))
-		except univention.admin.uexceptions.noObject as e:
-			raise OperationFailed('E: object not found: %s' % e)
-		except univention.admin.uexceptions.circularGroupDependency as e:
-			raise OperationFailed('E: circular group dependency detected: %s' % e)
-		except univention.admin.uexceptions.invalidChild as e:
-			raise OperationFailed('E: %s' % e)
+		except (univention.admin.uexceptions.invalidDhcpEntry, univention.admin.uexceptions.insufficientInformation, univention.admin.uexceptions.noObject, univention.admin.uexceptions.circularGroupDependency, univention.admin.uexceptions.invalidChild) as exc:
+			raise OperationFailed('E: %s' % (exc,))
 
-		if exists_msg:
+		if exists_msg and not ignore_exists:
+			raise OperationFailed('E: Object exists: %s' % exists_msg)
+		elif exists_msg:
 			print('Object exists: %s' % exists_msg, file=self.stdout)
 		elif created:
 			print('Object created: %s' % dn, file=self.stdout)
@@ -757,16 +738,8 @@ class CLI(object):
 			try:
 				object.move(newdn)
 				object_modified += 1
-			except univention.admin.uexceptions.noObject:
-				raise OperationFailed('E: object not found')
-			except univention.admin.uexceptions.ldapError as msg:
-				raise OperationFailed("ldap Error: %s" % msg)
-			except univention.admin.uexceptions.nextFreeIp:
-				raise OperationFailed('E: No free IP address found')
-			except univention.admin.uexceptions.valueInvalidSyntax as err:
-				raise OperationFailed('E: Invalid Syntax: %s' % err)
-			except univention.admin.uexceptions.invalidOperation as msg:
-				raise OperationFailed(str(msg))
+			except (univention.admin.uexceptions.noObject, univention.admin.uexceptions.ldapError, univention.admin.uexceptions.nextFreeIp, univention.admin.uexceptions.valueInvalidSyntax, univention.admin.uexceptions.invalidOperation) as exc:
+				raise OperationFailed('E: %s' % (exc,))
 
 		if object_modified > 0:
 			print('Object modified: %s' % dn, file=self.stdout)
@@ -816,14 +789,8 @@ class CLI(object):
 				try:
 					dn = object.modify()
 					object_modified += 1
-				except univention.admin.uexceptions.noObject:
-					raise OperationFailed('E: object not found')
-				except univention.admin.uexceptions.invalidDhcpEntry:
-					raise OperationFailed('E: The DHCP entry for this host should contain the zone dn, the ip address and the mac address.')
-				except univention.admin.uexceptions.circularGroupDependency as e:
-					raise OperationFailed('E: circular group dependency detected: %s' % e)
-				except univention.admin.uexceptions.valueInvalidSyntax as e:
-					raise OperationFailed('E: Invalid Syntax: %s' % e)
+				except (univention.admin.uexceptions.noObject, univention.admin.uexceptions.invalidDhcpEntry, univention.admin.uexceptions.circularGroupDependency, univention.admin.uexceptions.valueInvalidSyntax) as exc:
+					raise OperationFailed('E: %s' % (exc,))
 
 		if object_modified > 0:
 			print('Object modified: %s' % dn, file=self.stdout)
@@ -862,8 +829,8 @@ class CLI(object):
 		else:
 			try:
 				object.remove()
-			except univention.admin.uexceptions.primaryGroupUsed:
-				raise OperationFailed('E: object in use')
+			except univention.admin.uexceptions.primaryGroupUsed as msg:
+				raise OperationFailed('E: object in use: %s' % (msg,))
 		print('Object removed: %s' % (dn or object.dn,), file=self.stdout)
 
 	def _list(self, module_name, module, dn, lo, position, superordinate, list_policies, filter, superordinate_dn, policyOptions, policies_with_DN):
@@ -935,10 +902,8 @@ class CLI(object):
 									print('', file=self.stdout)
 
 				print('', file=self.stdout)
-		except univention.admin.uexceptions.ldapError as errmsg:
+		except (univention.admin.uexceptions.ldapError, univention.admin.uexceptions.valueInvalidSyntax) as errmsg:
 			raise OperationFailed('%s' % (errmsg,))
-		except univention.admin.uexceptions.valueInvalidSyntax as errmsg:
-			raise OperationFailed('%s' % (errmsg.message,))
 
 
 def get_policy(dn, stream=sys.stdout, policyOptions=None, policies_with_DN=False):

@@ -195,8 +195,8 @@ class GenericObject(BaseObject):
 				self.dn = self._orig_udm_object.modify()
 			except univention.admin.uexceptions.base as exc:
 				reraise(ModifyError, ModifyError(
-					'Error saving {!r} object at {!r}: {} ({})'.format(
-						self._udm_module.name, self.dn, exc.message, exc
+					'Error saving {!r} object at {!r}: {}'.format(
+						self._udm_module.name, self.dn, exc
 					), dn=self.dn, module_name=self._udm_module.name
 				), sys.exc_info()[2])
 			ud.process('Modified {!r} object {!r}'.format(self._udm_module.name, self.dn))
@@ -205,14 +205,14 @@ class GenericObject(BaseObject):
 				self.dn = self._orig_udm_object.create()
 			except ldap.INVALID_DN_SYNTAX as exc:
 				reraise(CreateError, CreateError(
-					'Error creating {!r} object: {} ({})'.format(
-						self._udm_module.name, exc.message, exc
+					'Error creating {!r} object: {}'.format(
+						self._udm_module.name, exc
 					), module_name=self._udm_module.name
 				), sys.exc_info()[2])
 			except univention.admin.uexceptions.base as exc:
 				reraise(CreateError, CreateError(
-					'Error creating {!r} object: {} ({})'.format(
-						self._udm_module.name, exc.message, exc
+					'Error creating {!r} object: {}'.format(
+						self._udm_module.name, exc
 					), module_name=self._udm_module.name
 				), sys.exc_info()[2])
 			ud.process('Created {!r} object {!r}'.format(self._udm_module.name, self.dn))

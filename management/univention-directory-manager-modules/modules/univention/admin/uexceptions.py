@@ -86,9 +86,17 @@ class base(Exception):
 class objectExists(base):
 	message = _('Object exists.')
 
+	def __init__(self, *args, **kwargs):
+		super(objectExists, self).__init__(*args, **kwargs)
+		self.dn = self.args[0] if self.args else None
+
 
 class noObject(base):
 	message = _('No such object.')
+
+	def __init__(self, *args, **kwargs):
+		super(noObject, self).__init__(*args, **kwargs)
+		self.dn = self.args[0] if self.args else None
 
 
 class permissionDenied(base):

@@ -40,7 +40,7 @@ from __future__ import print_function
 import sys
 from argparse import ArgumentParser, Namespace
 from random import choice
-from typing import Iterator, List, Optional, Tuple  # noqa: F401
+from typing import Iterator, List, Tuple  # noqa: F401
 
 import ldap
 from ldap.dn import escape_dn_chars
@@ -102,7 +102,7 @@ class MassCreate(object):
 			print('Group "%s" exists: %s' % (dn, ex), file=sys.stderr)
 		except univention.admin.uexceptions.objectExists as ex:
 			dn = 'cn=%s,%s' % (escape_dn_chars(name), self.gp.getDn())
-			print('Object "%s" exists: %s' % (dn, ex), file=sys.stderr)
+			print('Object "%s" exists: %s' % (dn, ex.dn), file=sys.stderr)
 
 		return dn
 
@@ -131,7 +131,7 @@ class MassCreate(object):
 			print('User "%s" exists: %s' % (dn, ex), file=sys.stderr)
 		except univention.admin.uexceptions.objectExists as ex:
 			dn = 'uid=%s,%s' % (escape_dn_chars(name), self.up.getDn())
-			print('Object "%s" exists: %s' % (dn, ex), file=sys.stderr)
+			print('Object "%s" exists: %s' % (dn, ex.dn), file=sys.stderr)
 
 		return dn
 
