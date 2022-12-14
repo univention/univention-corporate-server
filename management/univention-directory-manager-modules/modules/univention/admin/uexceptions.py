@@ -34,6 +34,8 @@
 |UDM| exceptions.
 """
 
+import six
+
 from univention.admin import localization
 from univention.admin._ucr import configRegistry
 
@@ -41,8 +43,44 @@ translation = localization.translation('univention/admin')
 _ = translation.translate
 
 
+def _str(string):
+	if six.PY2 and not isinstance(string, bytes):
+		string = string.encode('utf-8')
+	return str(string)
+
+
+def _strip(string):
+	return string.strip().strip('.:').strip()
+
+
+def _strip_and_append(string, char='.'):
+	string = _strip(string)
+	return '%s%s' % (string, char) if not string.endswith('!') else string
+
+
 class base(Exception):
 	message = ''
+
+	def __str__(self):
+		args = []
+		if self.message:
+			args = [_(self.message)]  # re-translate because it was done on import-time where the locale is not necessarily set
+		for msg in self.args:
+			if msg is None:
+				continue
+			msg = _str(msg)
+			# avoid duplicate messages
+			if all(_strip(msg) not in arg for arg in args + [self.message]):
+				args.append(msg)
+
+		# make sure that a ':' is printed if further information follows
+		if len(args) == 1:
+			args[0] = _strip_and_append(args[0])
+		elif len(args) > 1:
+			args[0] = _strip_and_append(args[0], ':')
+			args[1:] = [_strip_and_append(a) for a in args[1:]]
+
+		return ' '.join(args)
 
 
 class objectExists(base):

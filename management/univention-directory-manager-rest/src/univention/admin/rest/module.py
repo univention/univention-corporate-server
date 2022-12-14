@@ -339,6 +339,7 @@ class PropertySanitizer(Sanitizer):
 		try:
 			return codec.encode_json(value)
 		except udm_errors.valueError as exc:
+			exc.message = ''
 			self.raise_validation_error(_('The property %(name)s has an invalid value: %(details)s'), details=str(exc))
 
 
@@ -358,6 +359,7 @@ class LDAPFilterSanitizer(StringSanitizer):
 		try:
 			return udm_syntax.ldapFilter.parse(value)
 		except udm_errors.valueError as exc:
+			exc.message = ''
 			self.raise_validation_error(str(exc))
 
 

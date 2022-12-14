@@ -1,3 +1,10 @@
+univention-directory-manager-modules (15.0.13-27) unstable; urgency=medium
+
+  * Bug #55446: translate error messages again during exception
+    evaluation
+
+ -- Florian Best <best@univention.de>  Fri, 16 Dec 2022 14:37:32 +0100
+
 univention-directory-manager-modules (15.0.13-26) unstable; urgency=medium
 
   * Bug #55269: use "memberOf" instead of searching for group

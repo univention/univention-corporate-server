@@ -1,3 +1,9 @@
+univention-management-console-module-udm (10.0.2-5) unstable; urgency=medium
+
+  * Bug #55446: fix translation of error messages
+
+ -- Florian Best <best@univention.de>  Fri, 16 Dec 2022 14:39:35 +0100
+
 univention-management-console-module-udm (10.0.2-4) unstable; urgency=medium
 
   * Bug #55460: fix "polcies" typo in join script

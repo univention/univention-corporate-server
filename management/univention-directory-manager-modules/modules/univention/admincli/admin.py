@@ -354,27 +354,10 @@ def main(arglist, stdout=sys.stdout, stderr=sys.stderr):
 		_doit(arglist, stdout=stdout, stderr=stderr)
 	except ldap.SERVER_DOWN:
 		raise OperationFailed("E: The LDAP Server is currently not available.")
-	except univention.admin.uexceptions.base as e:
-		ud.debug(ud.ADMIN, ud.WARN, str(e))
-
-		# collect error information
-		msg = []
-		if getattr(e, 'message', None):
-			msg.append(e.message)
-		if getattr(e, 'args', None):
-			# avoid duplicate messages
-			if not len(msg) or len(e.args) > 1 or e.args[0] != msg[0]:
-				msg.extend(e.args)
-
-		# strip elements and make sure that a ':' is printed if further information follows
-		msg = [i.strip() for i in msg]
-		if len(msg) == 1:
-			msg[0] = '%s.' % msg[0].strip(':.')
-		elif len(msg) > 1:
-			msg[0] = '%s:' % msg[0].strip(':.')
-
-		# append to the output
-		raise OperationFailed(' '.join(msg))
+	except univention.admin.uexceptions.base as exc:
+		msg = str(exc)
+		ud.debug(ud.ADMIN, ud.WARN, msg)
+		raise OperationFailed(msg)
 
 
 def _doit(arglist, stdout=sys.stdout, stderr=sys.stderr):

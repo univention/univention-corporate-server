@@ -366,15 +366,6 @@ class UDM_Error(Exception):
 			six.reraise(self.__class__, self, self.exc_info[2])
 		raise self
 
-	def __str__(self):
-		msg = getattr(self.exc, 'message', '')
-		for arg in self.exc.args:
-			if six.PY2 and isinstance(arg, unicode):  # noqa: F821
-				arg = arg.encode('utf-8')
-			if str(arg) not in msg:
-				msg = '%s %s' % (msg, arg)
-		return msg
-
 
 class UDM_ModuleCache(dict):
 	lock = threading.Lock()
