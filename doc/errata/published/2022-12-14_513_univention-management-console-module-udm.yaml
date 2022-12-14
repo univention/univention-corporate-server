@@ -9,3 +9,5 @@ desc: |
  * A typo in the name of the UMC Operation Set `udm-policies` has been
    adjusted.
 bug: [55460]
+erratum: 513
+announced: 2022-12-14
