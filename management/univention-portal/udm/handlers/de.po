@@ -378,7 +378,7 @@ msgstr "Gefahr"
 
 
 msgid "End time"
-msgstr "Endzeit"
+msgstr "Endzeitpunkt"
 
 
 msgid "If one or more groups are selected then the portal announcement will only be visible to logged in users that are in any of the selected groups. If no groups are selected then the portal entry is always visible."
@@ -429,13 +429,13 @@ msgid "The message of the announcement, usually written in normal text below the
 msgstr "Die Nachricht der Ansage. Erscheint üblicherweise unter dem Titel."
 
 msgid "The time when the announcement will first appear. If no time is set, it will always appear."
-msgstr "Die Zeit zu der die Ansage initial erscheinen wird. Wenn keine Zeit gesetzt ist wird sie immer erscheinen."
+msgstr "Der Zeitpunkt ab welchem das Announcement angezeigt wird. Wenn kein Zeitpunkt gesetzt wird, erscheint das Announcement unmittelbar."
 
 msgid "The time when the announcement will stop appearing. If no time is set, it will appear forever."
-msgstr "Die Zeit zu der die Ansage verschwinden wird. Wenn keine Zeit gesetzt ist, wird sie niemals verschwinden."
+msgstr "Der Zeitpunkt ab dem das Announcement nicht mehr angezeigt wird. Wenn kein Zeitpunkt gesetzt ist, wird das Announcement immer angezeigt."
 
 msgid "The title of the announcement, usually written in bold above the message."
-msgstr "Der Titel der Ansage, üblicherweise fett über der Nachricht geschrieben."
+msgstr "Der Titel des Announcements. Er wird über der Nachricht hervorgehoben dargestellt."
 
 msgid "Time"
 msgstr "Zeit"
@@ -447,7 +447,7 @@ msgid "Warning"
 msgstr "Warnung"
 
 msgid "If enabled, the announcement can't be closed and will persist until the time ends (or never)."
-msgstr "When aktiv kann die Ansage nicht geschlossen werden und wird erst nach der Endzeit verschwinden (oder niemals)."
+msgstr "Wenn diese Option aktiviert ist kann das Announcement nicht durch den User geschlossen werden. Es wird immer angezeigt oder bis zu einem gesetzten Endzeitpunkt."
 
 msgid "If enabled, the user will see a \"Confirm\" button and the announcement will persist until it is clicked."
 msgstr "Wenn aktiv wird der User die Ansage mit einem \"Bestätigen\"-Knopf bestätigen müssen bevor die Nachricht verschwindet."
