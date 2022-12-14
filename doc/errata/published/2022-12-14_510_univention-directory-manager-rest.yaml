@@ -9,3 +9,5 @@ desc: |
  * The error response format has been improved (while being backwards
    compatible). It is now described in the OpenAPI schema.
 bug: [50249]
+erratum: 510
+announced: 2022-12-14
