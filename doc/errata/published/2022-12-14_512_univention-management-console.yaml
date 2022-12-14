@@ -9,3 +9,5 @@ desc: |
  * A Keycloak SAML client for the local UMC is created during the join
    of a new server if the Keycloak App is installed in the domain.
 bug: [55395]
+erratum: 512
+announced: 2022-12-14
