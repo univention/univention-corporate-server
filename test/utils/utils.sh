@@ -1231,7 +1231,7 @@ create_version_file_tmp_ucsver () {
 basic_setup_ucs_joined () {
 	local masterip="${1:?missing master ip}"
 	local admin_password="${2:-univention}"
-	local rv=0 server_role ldap_base domain
+	local rv=0 server_role ldap_base domain old_ip
 
 	server_role="$(ucr get server/role)"
 	ldap_base="$(ucr get ldap/base)"
@@ -1253,14 +1253,19 @@ basic_setup_ucs_joined () {
 		service nscd restart || rv=1
 	fi
 
+	# get old ip TODO how to do it correctly?
+	old_ip="$(grep "set interfaces/eth0/address=" /var/log/univention/config-registry.replog | tail -1 | awk -F 'old:' '{print $2}')"
+	if [ -z "$old_ip" ]; then
+		old_ip="$(zgrep "set interfaces/eth0/address=" /var/log/univention/config-registry.replog.1.gz | tail -1 | awk -F 'old:' '{print $2}')"
+	fi
+
 	# fix ucs-sso
 	if [ "$server_role" = "domaincontroller_master" ] || [ "$server_role" = "domaincontroller_backup" ]; then
-		my_old_ip="$(grep "set interfaces/eth0/address=" /var/log/univention/config-registry.replog | tail -1 | awk -F 'old:' '{print $2}')"
 		sso_fqdn="$(ucr get ucs/server/sso/fqdn)"
 		sso_hostname="${sso_fqdn%%.*}"
-		udm dns/host_record modify --binddn "$binddn" --bindpwd "$admin_password" \
+		test -n "$old_ip" && udm dns/host_record modify \
 			--dn "relativeDomainName=$sso_hostname,zoneName=$domain,cn=dns,$ldap_base" \
-			--remove a="$my_old_ip"
+			--remove a="$old_ip"
 	fi
 
 	# fix samba/dns settings on samba DC's
