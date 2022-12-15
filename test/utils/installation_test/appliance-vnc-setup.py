@@ -32,7 +32,7 @@ class UCSSetup(VNCInstallation):
         try:
             self.client.waitForText('English', timeout=self.timeout, prevent_screen_saver=True)
         except VNCDoException:
-            self.connect()
+            pass
 
         self.screenshot('language-setup.png')
         self.go_next(tabs=2)
@@ -44,7 +44,6 @@ class UCSSetup(VNCInstallation):
         try:
             self.client.waitForText('IP address', timeout=self.timeout)
         except VNCDoException:
-            self.connect()
             self.client.waitForText('Domain and network', timeout=self.timeout)
 
         self.screenshot('network-setup.png')
@@ -62,14 +61,14 @@ class UCSSetup(VNCInstallation):
             self.type('\n')
             sleep(60, "net.gateway")
         except VNCDoException:
-            self.connect()
+            pass
 
         try:
             self.client.waitForText('continue without access', timeout=self.timeout)
             self.type('\n')
             sleep(60, "net.unconnected")
         except VNCDoException:
-            self.connect()
+            pass
 
         sleep(120, "net.finish")
 
@@ -130,7 +129,6 @@ class UCSSetup(VNCInstallation):
         try:
             self.click_on('configuresystem')
         except VNCDoException:
-            self.connect()
             self.click_on('configure system')
 
     @verbose("FINISH")
@@ -143,7 +141,6 @@ class UCSSetup(VNCInstallation):
         try:
             self.client.waitForText('www', timeout=self.timeout)
         except VNCDoException:
-            self.connect()
             self.client.waitForText('press any key', timeout=self.timeout)
         self.screenshot('welcome-screen.png')
 

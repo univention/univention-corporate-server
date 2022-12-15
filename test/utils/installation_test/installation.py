@@ -7,11 +7,12 @@ import os
 import sys
 import time
 from argparse import ArgumentParser, Namespace  # noqa: F401
+from typing import Dict  # noqa: F401
 
 from helper import trace_calls, verbose
-from vncautomate import VNCConnection, init_logger
+from vncautomate import VNCAutomateFactory, init_logger
 from vncautomate.config import OCRConfig
-from vncdotool.api import VNCDoException
+from vncdotool.api import VNCDoException, connect, shutdown
 
 
 @verbose("sleep", "{0:.1f} {1}")
@@ -124,8 +125,9 @@ class VNCInstallation(object):
         )
         self.timeout = 120
         self.setup_finish_sleep = 900
-        self.connect()
         self._ = self.load_translation(self.args.language)
+        self.client = connect(self.args.vnc, factory_class=VNCAutomateFactory)
+        self.client.updateOCRConfig(self.config)
 
     def load_translation(self, language: str) -> Dict[str, str]:
         return {}
@@ -137,20 +139,15 @@ class VNCInstallation(object):
                 sys.settrace(trace_calls)
             self.main()
         except Exception:
-            self.connect()
             self.screenshot('error.png')
             raise
         finally:
             if tracing:
                 sys.settrace(None)
+            shutdown()
 
     def main(self):  # type: () -> None
         raise NotImplementedError()
-
-    def connect(self):  # type: () -> None
-        self.conn = VNCConnection(self.args.vnc)
-        self.client = self.conn.__enter__()
-        self.client.updateOCRConfig(self.config)
 
     def screenshot(self, filename):  # type: (str) -> None
         if not os.path.isdir(self.args.screenshot_dir):
@@ -172,7 +169,6 @@ class VNCInstallation(object):
             self.client.waitForText(text, timeout=self.timeout * (timeout >= 0) + abs(timeout))
             return True
         except VNCDoException:
-            self.connect()
             return False
 
     @verbose("type", "{1!r} clear={2}")
@@ -194,4 +190,4 @@ class VNCInstallation(object):
             self.type("\n")
             sleep(60, "net.apipa")
         except VNCDoException:
-            self.connect()
+            pass

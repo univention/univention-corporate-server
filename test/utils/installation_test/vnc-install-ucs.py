@@ -55,7 +55,6 @@ class UCSInstallation(VNCInstallation):
                 self.client.waitForText(self._['select_location'], timeout=self.timeout)
                 break
             except VNCDoException:
-                self.connect()
                 self.click_on('Go Back')
 
         self.click_at(250, 250)
@@ -284,7 +283,6 @@ class UCSInstallation(VNCInstallation):
                 self.type('\n')
                 self.client.keyPress('caplk')
             except VNCDoException:
-                self.connect()
                 break
 
     @verbose("JOIN")
@@ -304,7 +302,6 @@ class UCSInstallation(VNCInstallation):
                 self.type('\n')
                 self.client.keyPress('caplk')
             except VNCDoException:
-                self.connect()
                 break
 
     def hostname(self):  # type: () -> None
