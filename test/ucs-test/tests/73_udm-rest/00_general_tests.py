@@ -153,7 +153,7 @@ def test_error_handling(udm, ldap_base):
 	assert sorted(exc.value.error_details['error'], key=itemgetter('location')) == sorted([
 		{'location': ['query', 'scope'], 'message': "Value has to be one of ['sub', 'one', 'base', 'base+one']", 'type': 'value_error'},
 		{'location': ['query', 'filter'], 'message': 'Not a valid LDAP search filter', 'type': 'value_error'},
-		{'location': ['query', 'position'], 'message': f'The ldap base is invalid. Use {ldap_base}.', 'type': 'value_error'},
+		{'location': ['query', 'position'], 'message': f'The ldap base is invalid. Use {ldap_base.lower()}.', 'type': 'value_error'},
 	], key=itemgetter('location'))
 
 	# not existing search base underneath of the real LDAP base
