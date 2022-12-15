@@ -57,6 +57,9 @@ set_udm_properties_for_kelvin () {
                 "idi_schoolyear",
                 "purgeDate",
                 "serviceprovidergroup"
+        ],
+        "school": [
+                "description"
         ]
 }
 
