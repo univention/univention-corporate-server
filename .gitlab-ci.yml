@@ -23,6 +23,10 @@ variables:
     description: "Skip or force jobs: '(skip|force)-(doc|ucslint|build)'"
   BUILD: docker-registry.knut.univention.de/knut/deb-builder
 
+pre-commit:
+  stage: test
+  extends: .pre-commit
+
 generate-config:
   stage: prepare
   image:
