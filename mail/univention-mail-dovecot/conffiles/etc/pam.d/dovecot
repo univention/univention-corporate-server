@@ -1,5 +1,3 @@
-@%@UCRWARNING=# @%@
-
 @!@
 from univention.lib.misc import getLDAPServersCommaList
 auth  = "auth optional pam_univentionmailcyrus.so"

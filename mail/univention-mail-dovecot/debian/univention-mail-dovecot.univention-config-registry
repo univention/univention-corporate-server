@@ -154,8 +154,16 @@ File: etc/logrotate.d/dovecot
 Variables: mail/dovecot/logging/log_path
 Variables: mail/dovecot/logging/syslog_facility
 
-Type: file
-File: etc/pam.d/dovecot
+Type: multifile
+Multifile: etc/pam.d/dovecot
+
+Type: subfile
+Multifile: etc/pam.d/dovecot
+Subfile: etc/pam.d/00-dovecot-warning
+
+Type: subfile
+Multifile: etc/pam.d/dovecot
+Subfile: etc/pam.d/dovecot
 Variables: ldap/base
 Variables: ldap/hostdn
 Variables: ldap/server/port
