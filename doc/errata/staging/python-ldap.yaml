@@ -1,0 +1,11 @@
+product: ucs
+release: "5.0"
+version: [2]
+scope: ucs_5.0-0-errata5.0-2
+src: python-ldap
+fix: 3.1.0-2A~5.0.0.202212160954
+desc: |
+ This update addresses the following issues:
+ * Python 3 compatibility for the SSS (Server Side Search control) has been
+   added.
+bug: [49666]
