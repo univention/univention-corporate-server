@@ -68,6 +68,7 @@ install_frontend_app () {
 			univention-app dev-set "$app" "DockerImage=$main_image"
 		fi
 	fi
+	univention-app configure "$app" --set log_level=DEBUG
 	univention-app install --noninteractive --username Administrator --pwdfile /tmp/univention "$app"
 }
 
