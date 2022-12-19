@@ -9,8 +9,7 @@ desc: |
  * Arbitrary file read from a compromised content process (CVE-2022-46872)
  * Drag and Dropped Filenames could have been truncated to malicious
    extensions (CVE-2022-46874)
- * Memory safety bugs fixed in Firefox ESR 102.6 and Thunderbird 102.6
-   (CVE-2022-46878)
+ * Memory safety bugs fixed (CVE-2022-46878)
  * Use-after-free in WebGL (CVE-2022-46880)
  * Memory corruption in WebGL (CVE-2022-46881)
  * Use-after-free in WebGL (CVE-2022-46882)
