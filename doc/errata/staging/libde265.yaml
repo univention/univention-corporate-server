@@ -1,0 +1,19 @@
+product: ucs
+release: "4.4"
+version: [9]
+scope: ucs_4.4-0-errata4.4-9
+src: libde265
+fix: 1.0.2-2+deb9u1
+desc: |
+ This update addresses the following issues:
+ 1.0.2-2+deb9u1 (Fri, 16 Dec 2022 11:56:17 +0100)
+ * Non-maintainer upload by the LTS Security Team.
+ * Cherry-pick/Adapt upstream patches for: - CVE-2020-21599 (See #1014999) -
+   CVE-2021-35452, CVE-2021-36409, CVE-2021-36410 and CVE-2021-36411
+bug: [55505]
+cve:
+- CVE-2020-21599
+- CVE-2021-35452
+- CVE-2021-36409
+- CVE-2021-36410
+- CVE-2021-36411
