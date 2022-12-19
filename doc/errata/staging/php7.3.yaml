@@ -6,14 +6,15 @@ src: php7.3
 fix: 7.3.31-1~deb10u2
 desc: |
  This update addresses the following issues:
- * Special character breaks path in xml parsing (CVE-2021-21707)
- * Uninitialized array in pg_query_params() leading to RCE (CVE-2022-31625)
- * password of excessive length triggers buffer overflow leading to RCE
+ * Special character breaks path in XML parsing (CVE-2021-21707)
+ * Uninitialized array in `pg_query_params()` leading to RCE (CVE-2022-31625)
+ * Password of excessive length triggers buffer overflow leading to RCE
    (CVE-2022-31626)
- * phar wrapper can occur dos when using quine gzip file (CVE-2022-31628)
- * standard insecure cookie could be treated as a `__Host-` or `__Secure-`
+ * phar wrapper can occur denial-of-service when using quine gzip file
+   (CVE-2022-31628)
+ * Standard insecure cookie could be treated as a `__Host-` or `__Secure-`
    cookie by PHP applications (CVE-2022-31629)
- * buffer overflow in the SHA-3 reference implementation (CVE-2022-37454)
+ * Buffer overflow in the SHA-3 reference implementation (CVE-2022-37454)
 bug: [55503]
 cve:
 - CVE-2021-21707
