@@ -1,6 +1,6 @@
-[diagnostic/check/disable/59_ldap_server_name]
-Description[de]=Diese Variable deaktiviert den Test 59_ldap_server_name im Diagnosemodul wenn sie auf true gesetzt wird.
-Description[en]=This variable disables the diagnostic-check 59_ldap_server_name when set to true.
+[diagnostic/check/disable/.*]
+Description[de]=Diese Variable deaktiviert den angegebenen Test im Diagnosemodul wenn sie auf true gesetzt wird.
+Description[en]=This variable disables the specified diagnostic-check when set to true.
 Type=bool
 Categories=management-module-diagnostic
 

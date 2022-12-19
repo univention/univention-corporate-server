@@ -36,6 +36,7 @@ from collections import OrderedDict
 from os import listdir
 from typing import Any, Callable, Dict, Iterator, List, Optional, Pattern, Match
 
+from univention.config_registry import ucr
 from univention.lib.i18n import Translation
 from univention.management.console.log import MODULE
 from univention.management.console.modules import Base
@@ -115,7 +116,11 @@ class Instance(Base, ProgressMixin):
 	@property
 	def plugins(self) -> Iterator[str]:
 		for plugin in listdir(self.PLUGIN_DIR):
-			if plugin.endswith('.py') and plugin != '__init__.py':
+			if (
+				plugin.endswith('.py')
+				and plugin != '__init__.py'
+				and not ucr.is_true(f'diagnostic/check/disable/{plugin[:-3]}')
+			):
 				yield plugin[:-3]
 
 	def load(self) -> None:

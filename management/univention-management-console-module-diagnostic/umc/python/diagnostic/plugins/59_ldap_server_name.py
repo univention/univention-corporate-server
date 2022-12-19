@@ -59,7 +59,7 @@ actions = {
 
 
 def run(_umc_instance: Instance) -> None:
-	if ucr.is_true('diagnostic/check/disable/59_ldap_server_name') or ucr.get('server/role') != 'memberserver':
+	if ucr.get('server/role') != 'memberserver':
 		return
 
 	ldap_server_name = ucr.get('ldap/server/name')

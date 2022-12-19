@@ -1,0 +1,11 @@
+product: ucs
+release: "5.0"
+version: [2]
+scope: ucs_5.0-0-errata5.0-2
+src: univention-management-console-module-diagnostic
+fix:
+desc: |
+ This update addresses the following issues:
+ * It is now possible to disable any diagnostic check by setting the UCR
+   variable `diagnostic/check/disable/TEST_NAME` to `true`.
+bug: [55468]

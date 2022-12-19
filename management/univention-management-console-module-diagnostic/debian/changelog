@@ -1,3 +1,9 @@
+univention-management-console-module-diagnostic (6.0.2-9) unstable; urgency=medium
+
+  * Bug #55468: make it possible to deactivate diagnostic checks via UCR
+
+ -- Maximilian Janßen <janssen@univention.de>  Tue, 19 Dec 2022 15:14:30 +0200
+
 univention-management-console-module-diagnostic (6.0.2-8) unstable; urgency=medium
 
   * Bug #55044: Simplify repository UCRVs - still use unmaintained
