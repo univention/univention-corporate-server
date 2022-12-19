@@ -6,24 +6,22 @@ src: libde265
 fix: 1.0.3-1+deb10u1
 desc: |
  This update addresses the following issues:
- * libde265 v1.0.4 contains a heap buffer overflow in the
-   de265_image::available_zscan function, which can be exploited via a crafted
-   a file. (CVE-2020-21599)
- * An Incorrect Access Control vulnerability exists in libde265 v1.0.8 due to
-   a SEGV in slice.cc. (CVE-2021-35452)
- * An issue was discovered in libde265 v1.0.8.There is a Heap-use-after-free
-   in intrapred.h when decoding file using dec265. (CVE-2021-36408)
- * There is an Assertion `scaling_list_pred_matrix_id_delta==1' failed at
-   sps.cc:925 in libde265 v1.0.8 when decoding file, which allows attackers to
-   cause a Denial of Service (DoS) by running the application with a crafted
-   file or possibly have unspecified other impact. (CVE-2021-36409)
- * A stack-buffer-overflow exists in libde265 v1.0.8 via fallback-motion.cc in
-   function put_epel_hv_fallback when running program dec265. (CVE-2021-36410)
- * An issue has been found in libde265 v1.0.8 due to incorrect access control.
-   A SEGV caused by a READ memory access in function derive_boundaryStrength
-   of deblock.cc has occurred. The vulnerability causes a segmentation fault
-   and application crash, which leads to remote denial of service.
-   (CVE-2021-36411)
+ * Heap buffer overflow in the function `de265_image::available_zscan`, which
+   can be exploited via a crafted a file. (CVE-2020-21599)
+ * An Incorrect Access Control vulnerability exists due to a SEGV in
+   `slice.cc`. (CVE-2021-35452)
+ * Heap-use-after-free in `intrapred.h` when decoding file using `dec265`.
+   (CVE-2021-36408)
+ * Assertion `scaling_list_pred_matrix_id_delta==1' failed at `sps.cc:925`
+   when decoding file, which allows attackers to cause a Denial of Service
+   (DoS) by running the application with a crafted file or possibly have
+   unspecified other impact. (CVE-2021-36409)
+ * A stack-buffer-overflow exists via `fallback-motion.cc` in function
+   `put_epel_hv_fallback` when running program `dec265`. (CVE-2021-36410)
+ * Incorrect access control by a READ memory access in function
+   `derive_boundaryStrength` of `deblock.cc`. The vulnerability causes a
+   segmentation fault and application crash, which leads to remote denial of
+   service. (CVE-2021-36411)
 bug: [55504]
 cve:
 - CVE-2020-21599
