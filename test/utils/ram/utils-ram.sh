@@ -154,6 +154,7 @@ install_bsb_m2 () {
 
 create_test_admin_account () {
 	local username password fqdn token
+	local technical_admin_pw="${1:-univention}"
 	test -z "$(which jq)" && univention-install -y jq
 	test -z "$(which curl)" && univention-install -y curl
 	username="Administrator"
@@ -179,6 +180,6 @@ create_test_admin_account () {
 		}'
 	udm users/user modify \
 		--dn "uid=admin,cn=lehrer,cn=users,ou=school1,$(ucr get ldap/base)" \
-		--set password=univention  \
+		--set password="$technical_admin_pw" \
 		--append groups="cn=Domain Users,cn=groups,$(ucr get ldap/base)"
 }
