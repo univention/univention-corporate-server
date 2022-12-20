@@ -10,6 +10,7 @@ export REPLACE=true
 export UCS_TEST_RUN=false
 
 # user specific instances "username_..."
-export KVM_OWNER="$BUILD_USER_ID"
+export KVM_OWNER="${BUILD_USER_ID:=$USER}"
+export JOB_BASE_NAME="${JOB_BASE_NAME:=ram-perf-env}"
 
 exec ./utils/start-test.sh scenarios/autotest-248-ram-rankine-performance.cfg

@@ -942,6 +942,7 @@ install_apps_via_umc () {
 }
 
 install_apps_via_cmdline () {
+	univention-app update || return $?
 	local username=${1:?missing username} password=${2:?missing password} rv=0 app password_file
 	shift 2 || return $?
 	password_file="$(mktemp)"
@@ -1231,6 +1232,89 @@ create_version_file_tmp_ucsver () {
 	else
 		return 1
 	fi
+}
+
+# individualize KVM template
+#  create computer account with same position/services/ucsschoolRoles as in template
+#  configure new name
+#  basic setup
+#  restart some services/run some join scripts
+change_template_hostname () {
+	local hostname="${1:?missing hostname}"
+	local primary_ip="${2:?missing primary ip}"
+	local admin_password="${3:?missing admin password}"
+	local new_fqdn rv=0 server_role old_hostdn old_hostname hostdn admin_user admin_userdn
+	new_fqdn="$hostname.$(ucr get domainname)"
+	server_role="$(ucr get server/role)"
+	old_hostdn="$(ucr get ldap/hostdn)"
+	old_hostname="$(ucr get hostname)"
+	hostdn="$(ucr get ldap/hostdn | sed "s/^cn=[^,]*/cn=$hostname/")"
+	admin_user="Administrator"
+	admin_userdn="uid=$admin_user,cn=users,$(ucr get ldap/base)"
+
+	# new name
+	ucr set \
+		"hostname"="$hostname" \
+		"ldap/hostdn"="$hostdn" \
+		"ldap/server/name"="$new_fqdn" \
+		"hosts/static/${primary_ip}"="$(ucr get ldap/master)"
+
+	# create new computer account, with the same position
+	# password, services and ucsschool_roles
+	udm "computers/$server_role" create \
+		--binddn "$admin_userdn" \
+		--bindpwd "$admin_password" \
+		--position="${old_hostdn#*,}" \
+		--set name="$hostname" \
+		--set password="$(cat /etc/machine.secret)" \
+		--set domain="$(ucr get domainname)" || rv=1
+	while read -r service; do
+		udm "computers/$server_role" modify --binddn "$admin_userdn" --bindpwd "$admin_password" --dn "$hostdn" --append service="$service"
+	done < <(udm computers/domaincontroller_backup list --filter name="$old_hostname" |  sed -n 's/^  service: //p')
+	while read -r school_role; do
+		udm "computers/$server_role" modify --binddn "$admin_userdn" --bindpwd "$admin_password" --dn "$hostdn" --append ucsschoolRole="$school_role"
+	done < <(udm computers/domaincontroller_backup list --filter name="$old_hostname" |  sed -n 's/^  ucsschoolRole: //p')
+
+	# get new cert
+	univention-fetch-certificate "$hostname" "$primary_ip" || rv=1
+
+	# fix some templates
+	test -e /etc/bind/named.conf.samba4 && ucr commit /etc/bind/named.conf.samba4
+	test -e /etc/postgresql/pam_ldap.conf && ucr commit /etc/postgresql/pam_ldap.conf
+
+	service slapd restart || rv=1
+	service univention-directory-listener restart || rv=1
+	service univention-management-console-server restart || rv=1
+	service univention-management-console-web-server restart || rv=1
+	service apache2  restart || rv=1
+	service postgresql restart || rv=1
+
+	# register ip and basic setup
+	basic_setup_ucs_joined "$primary_ip" "$admin_password" || rv=1
+	wait_for_replication 100 5
+
+	echo -n "$admin_password" > /tmp/join_pwd
+	univention-run-join-scripts -dcaccount "$admin_user" -dcpwd /tmp/join_pwd --force --run-scripts 05univention-bind || rv=1
+
+	if [ "$server_role" = "domaincontroller_backup" ]; then
+		nscd -i hosts
+		univention-run-join-scripts -dcaccount "$admin_user" -dcpwd /tmp/join_pwd --force --run-scripts 91univention-saml || rv=1
+		univention-run-join-scripts -dcaccount "$admin_user" -dcpwd /tmp/join_pwd --force --run-scripts 92univention-management-console-web-server || rv=1
+	fi
+
+	if [ -e "/usr/lib/univention-install/40ucs-school-import-http-api.inst" ]; then
+		univention-run-join-scripts -dcaccount "$admin_user" -dcpwd /tmp/join_pwd --force --run-scripts  40ucs-school-import-http-api
+	fi
+
+	for handler in bind univention-saml-servers univention-saml-simplesamlphp-configuration umc-service-providers; do
+		if grep -r "^[[:space:]]*name[[:space:]]*=[[:space:]'\"]*${handler}[[:space:]'\"]*" /usr/lib/univention-directory-listener/system/*.py; then
+			univention-directory-listener-ctrl resync "$handler" || rv=1
+		fi
+	done
+
+	rm -f /tmp/join_pwd
+
+	return $rv
 }
 
 basic_setup_ucs_joined () {

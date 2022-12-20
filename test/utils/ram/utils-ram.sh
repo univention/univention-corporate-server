@@ -2,6 +2,15 @@
 set -e
 set -x
 
+udm_rest_setup () {
+	ucr set directory/manager/rest/processes=0
+	systemctl restart univention-directory-manager-rest
+}
+
+kelvin_setup () {
+	univention-app configure ucsschool-kelvin-rest-api --set ucsschool/kelvin/processes=0 && univention-app restart ucsschool-kelvin-rest-api
+}
+
 set_udm_properties_for_kelvin () {
     cat <<EOT > /etc/ucsschool/kelvin/mapped_udm_properties.json
 {
@@ -109,6 +118,9 @@ install_frontend_packages () {
 	univention-install -y ucs-school-ui-users-frontend
 	univention-install -y ucs-school-ui-groups-frontend
 	disable_internal_school_repo
+}
+
+create_test_oidc_clients () {
 	# create dev clients for easier testing
 	/usr/share/ucs-school-ui-common/scripts/univention-create-keycloak-clients --admin-password univention --client-id school-ui-users-dev --direct-access
 	/usr/share/ucs-school-ui-common/scripts/univention-create-keycloak-clients --admin-password univention --client-id school-ui-groups-dev --direct-access
@@ -182,4 +194,22 @@ create_test_admin_account () {
 		--dn "uid=admin,cn=lehrer,cn=users,ou=school1,$(ucr get ldap/base)" \
 		--set password="$technical_admin_pw" \
 		--append groups="cn=Domain Users,cn=groups,$(ucr get ldap/base)"
+}
+
+load_balancer_setup () {
+	local extra_config="/var/loadbalance.conf"
+	a2enmod lbmethod_byrequests || return 1
+	cat <<EOF > "$extra_config"
+<Proxy "balancer://bff">
+$(
+	for ip in "$@"; do
+		echo "BalancerMember \"http://$ip/ucsschool\""
+	done
+)
+</Proxy>
+ProxyPass        "/ucsschool" "balancer://bff"
+ProxyPassReverse "/ucsschool" "balancer://bff"
+EOF
+	univention-add-vhost --conffile "$extra_config" "loadbalancer.$(ucr get hostname).$(ucr get domainname)" 443 || return 1
+	systemctl start apache2 || return 1
 }
