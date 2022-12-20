@@ -12,4 +12,15 @@ for name in ('smbd', 'nmbd'):
 	print("\t\t/usr/bin/killall -HUP /usr/sbin/%s" % name)
 	print("\tendscript")
 	print("}")
+
+for name in ('log.samba-dcerpcd', 'log.rpcd_*'):
+	print("/var/log/samba/%s " % name, end="")
+print("{")
+for setting in sorted(settings):
+	print("\t%s" % settings[setting])
+print("\tsharedscripts")
+print("\tpostrotate")
+print("\t\t{ pidof samba-dcerpcd && pkill --signal HUP samba-dcerpcd; } > /dev/null")
+print("\tendscript")
+print("}")
 @!@

@@ -1,3 +1,9 @@
+univention-samba4 (9.0.8-10) unstable; urgency=medium
+
+  * Bug #55435: rotate new logfiles
+
+ -- Arvid <requate@univention.de>  Mon, 16 Jan 2023 16:56:50 +0100
+
 univention-samba4 (9.0.8-9) unstable; urgency=medium
 
   * Bug #54156: Grant SePrintOperatorPrivilege to Administrator
