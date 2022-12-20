@@ -213,3 +213,10 @@ EOF
 	univention-add-vhost --conffile "$extra_config" "loadbalancer.$(ucr get hostname).$(ucr get domainname)" 443 || return 1
 	systemctl start apache2 || return 1
 }
+
+performance_test_settings () {
+	ucr set \
+		nss/group/cachefile/invalidate_on_changes=no \
+		listener/module/portal_groups/deactivate=yes
+	service univention-directory-listener restart
+}
