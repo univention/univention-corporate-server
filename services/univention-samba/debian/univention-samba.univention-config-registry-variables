@@ -287,8 +287,8 @@ Type=str
 Categories=service-samba
 
 [samba/auth/methods]
-Description[de]=Diese Variable konfiguriert die Authentifizierungsmethoden auf einem Managed Node während der Benutzeranmeldung. Mögliche Werte sind in 'man smb.conf' unter 'auth methods' dokumentiert. Ist die Variable nicht gesetzt, gilt 'guest sam winbind'.
-Description[en]=This variable configures what authentication methods Samba will use when authenticating a user on a Managed Node. Possible values are documented in 'man smb.conf' under 'auth methods'. If the variable is unset, 'guest sam winbind' applies.
+Description[de]=Diese Variable konfiguriert die Authentifizierungsmethoden auf einem Managed Node während der Benutzeranmeldung. Mögliche Werte sind in 'man smb.conf' unter 'auth methods' dokumentiert. Ist die Variable nicht gesetzt, gilt 'anonymous sam winbind'.
+Description[en]=This variable configures what authentication methods Samba will use when authenticating a user on a Managed Node. Possible values are documented in 'man smb.conf' under 'auth methods'. If the variable is unset, 'anonymous sam winbind' applies.
 Type=str
 Categories=service-samba
 

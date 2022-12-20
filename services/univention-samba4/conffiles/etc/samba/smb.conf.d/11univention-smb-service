@@ -25,7 +25,7 @@ elif configRegistry.get('samba4/service/smb', 'smbd') == 'smbd':
 	print '\tdcerpc endpoint servers\t=', ' '.join(dcerpc_endpoints)
 
 	passdb backend = samba4
-	auth methods = guest samba4
+	auth methods = anonymous samba4
 	server signing = on
 
 	np:proxy = epmapper browser protected_storage lsass lsarpc netlogon samr

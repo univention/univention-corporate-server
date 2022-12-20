@@ -9,7 +9,7 @@ if configRegistry.get('samba/role') not in ['memberserver', None]:
 	port = configRegistry.get('ldap/server/port', '7389')
 	ldapserver = ['%s:%s' % (s, port) for s in ldapserver]
 	print('\tpassdb backend = ldapsam:"ldap://%s"' % ' ldap://'.join(ldapserver))
-	print('\tauth methods = %s' % configRegistry.get('samba/auth/methods', 'guest sam winbind'))
+	print('\tauth methods = %s' % configRegistry.get('samba/auth/methods', 'anonymous sam winbind'))
 
 if configRegistry.get('server/role') == 'memberserver' and configRegistry.get('samba/memberserver/passdb/ldap', '').lower() in ('yes', 'true'):
 	import sys
