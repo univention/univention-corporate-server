@@ -14,7 +14,7 @@
 
 set -ex
 
-python3 -m venv ucs-test-udm-rest-api
+[ -e ucs-test-udm-rest-api/bin/activate ] || python3 -m venv ucs-test-udm-rest-api
 . ucs-test-udm-rest-api/bin/activate
 
 DIR="$PWD/ucs-test-udm-rest-api"
@@ -27,7 +27,7 @@ trap cleanup INT TERM EXIT
 
 cd ucs-test-udm-rest-api
 
-git clone https://github.com/univention/python-udm-rest-api-client
+[ -e python-udm-rest-api-client ] || git clone https://github.com/univention/python-udm-rest-api-client
 cd python-udm-rest-api-client/
 python3 -m pip install -U pip
 python3 -m pip install udm-rest-client
@@ -43,4 +43,4 @@ password: ${tests_domainadmin_pwd}
 EOF
 
 python3 -m pip install -r requirements_test.txt
-python3 -m pytest -s -l -vv --junit-xml=/tmp/04_python_udm_api_client_compatibility.xml --junit-prefix=73_udm-rest tests
+python3 -m pytest --tb=native -s -l -vv --junit-xml=/tmp/04_python_udm_api_client_compatibility.xml --junit-prefix=73_udm-rest tests
