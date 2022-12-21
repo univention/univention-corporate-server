@@ -1,6 +1,6 @@
 product: ucs
-release: "5.0"
-version: [2]
+release: "4.4"
+version: [9]
 scope: ucs_4.4-0-errata4.4-9
 src: univention-mail-postfix
 fix: 13.0.5-1A~4.4.0.202212211051
