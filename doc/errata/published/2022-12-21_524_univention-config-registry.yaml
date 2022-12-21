@@ -9,3 +9,5 @@ desc: |
  * A new variable type 'url_http' was added in order to support
    validation of http/https URL strings.
 bug: [55044]
+erratum: 524
+announced: 2022-12-21
