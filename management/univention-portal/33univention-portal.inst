@@ -357,6 +357,18 @@ univention-portal update
 systemctl restart univention-directory-manager-rest
 systemctl restart univention-portal-server
 
+THEME_DIR="/usr/share/univention-portal/data"
+THEME_SRC="$THEME_DIR/$(basename "$(ucr get ucs/web/theme)").css"
+THEME_DST="/var/www/univention/theme.css"
+
+if [ ! -e "$THEME_SRC" ]; then
+	echo "$THEME_SRC does not exist"
+	exit 1
+fi
+
+[ -L "$THEME_DST" ] && rm "$THEME_DST"
+ln -s "$THEME_SRC" "$THEME_DST"
+
 # One time action: Copy example custom css file
 if [ $JS_LAST_EXECUTED_VERSION -lt 8 ]; then
 	# older custom.css are most definitely broken now
