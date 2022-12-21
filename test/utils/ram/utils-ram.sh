@@ -8,7 +8,7 @@ udm_rest_setup () {
 }
 
 kelvin_setup () {
-	univention-app configure ucsschool-kelvin-rest-api --set ucsschool/kelvin/processes=0 && univention-app restart ucsschool-kelvin-rest-api
+	univention-app configure ucsschool-kelvin-rest-api --set ucsschool/kelvin/processes=0 --set ucsschool/kelvin/log_level=DEBUG && univention-app restart ucsschool-kelvin-rest-api
 }
 
 set_udm_properties_for_kelvin () {

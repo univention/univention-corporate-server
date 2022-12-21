@@ -55,7 +55,7 @@ install_kelvin_api () {
     fi
     univention-app dev-set ucsschool-kelvin-rest-api "DockerImage=$UCS_ENV_KELVIN_IMAGE"
   fi
-  univention-app install --noninteractive --username Administrator --pwdfile /tmp/univention ucsschool-kelvin-rest-api
+  univention-app install --noninteractive --username Administrator --pwdfile /tmp/univention --set ucsschool/kelvin/processes=0 ucsschool/kelvin/log_level=DEBUG ucsschool-kelvin-rest-api
   docker images
   docker ps -a
   univention-app shell ucsschool-kelvin-rest-api ps aux
