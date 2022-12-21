@@ -682,7 +682,7 @@ class CLI(object):
 			dn = object.create()
 			created = True
 		except univention.admin.uexceptions.objectExists as exc:
-			exists_msg = '%s' % (exc,)
+			exists_msg = '%s' % (exc.dn,)
 		except univention.admin.uexceptions.uidAlreadyUsed as user:
 			exists_msg = '(uid) %s' % user
 		except univention.admin.uexceptions.groupNameAlreadyUsed as group:
