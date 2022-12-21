@@ -9,3 +9,5 @@ desc: |
  * Python 3 compatibility for the SSS (Server Side Search control) has been
    added.
 bug: [49666]
+erratum: 520
+announced: 2022-12-21
