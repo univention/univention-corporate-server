@@ -162,7 +162,7 @@ COMMON_EXCEPTIONS = (
 	E('^%s.*logo' % re.escape("IOError: [Errno 2] No such file or directory: u'/var/cache/univention-appcenter/"), [re.compile('%s.*shutil' % re.escape('<stdin>'), re.M | re.S)]),
 	E("INSUFFICIENT_ACCESS: {'desc': 'Insufficient access'}$", ['uldap.py.* in modify'], 53721),
 	E("INSUFFICIENT_ACCESS: {'desc': 'Insufficient access', 'info': 'no write access to parent'}", ['uldap.py.* in add', 'uldap.py.* in delete'], 53721),
-	E('permissionDenied$', ['_create', 'in sync_to_ucs', 'locking.py.*in lock', 'in __primary_group']),
+	E('permissionDenied: Permission denied.$', ['_create', 'in sync_to_ucs', 'locking.py.*in lock', 'in __primary_group']),
 	E('univention.admin.uexceptions.permissionDenied: Can not modify lock time of .*', ['in sync_to_ucs']),
 	E(r'^(univention\.admin\.uexceptions\.)?noObject:.*', ['__update_membership', 'sync_to_ucs', 'get_ucs_object']),
 	E('^ldapError: No such object', ['in _create']),
@@ -179,7 +179,7 @@ COMMON_EXCEPTIONS = (
 	E(re.escape('NoSuperordinate: No superordinate was supplied, but one of type settings/cn is required to create/save a settings/portal object.'), ['univention-portal-server']),  # 4.4-8 before upgrade to 5.0-0
 	E(r"ldap.NO_SUCH_OBJECT: .*matched\'\: \'dc\=.*", ['^  File "/usr/lib/python3/dist-packages/univention/admin/uldap.py", line .*, in add']),
 	E(r"ldap.NO_SUCH_OBJECT: .*matched\'\: \'cn\=users,dc\=.*", ['^  File "/usr/lib/python3/dist-packages/univention/admin/uldap.py", line .*, in search']),  # s4c
-	E(r'^univention.admin.uexceptions.noObject: No such object$', ['^  File "/usr/lib/python3/dist-packages/univention/admin/objects.py", line .*, in get']),  # s4c
+	E(r'^univention.admin.uexceptions.noObject: No such object', ['sync_from_ucs']),  # s4c
 	# during upgrade to UCS 5.0-2
 	E("^AttributeError: 'PortalsPortalEntryObjectProperties' object has no attribute 'keywords'", ['reloader.py.*in refresh'], (54295,)),
 	E("ImportError: cannot import name '_ldap_cache' from 'univention.admin'", ['in update'], (54853,)),
@@ -268,7 +268,7 @@ COMMON_EXCEPTIONS = (
 	E(r"error: \[Errno 104\] Connection reset by peer", ['celery'], (53671, 53564)),
 	E(r"ConnectionResetError: \[Errno 104\] Connection reset by peer", ['celery'], (53671, 53564)),
 	E("gunicorn.errors.HaltServer:.*Worker failed to boot", ['gunicorn'], 53564),
-	E("univention.admin.uexceptions.noLock: The attribute 'uid' could not get locked.", ['users/user.py.*in _ldap_pre_ready'], 53749),
+	E("univention.admin.uexceptions.noLock: .*The attribute 'uid' could not get locked.", ['users/user.py.*in _ldap_pre_ready'], 53749),
 	E("univention.admin.uexceptions.uidAlreadyUsed: .*", ['in sync_to_ucs'], 53749),
 	E(r"IOError: \[Errno 2\] No such file or directory: u'/etc/ucsschool-import/(postgres|django_key).secret'", ['gunicorn'], 53750),
 	E("ImportError: Error accessing LDAP via machine account: {'desc': 'Invalid credentials'}", ['univention-directory-listener/system/ucsschool-s4-branch-site.py']),
@@ -295,7 +295,7 @@ COMMON_EXCEPTIONS = (
 	E(r'^(univention\.admin\.uexceptions\.)?primaryGroupWithoutSamba: .*', ['primary_group_sync_to_ucs', 'sync_to_ucs'], 49881),
 	E(r"^(OS|IO)Error: \[Errno 2\] .*: '/usr/lib/pymodules/python2.7/univention/admin/syntax.d/.*", ['import_syntax_files']),  # package upgrade before dh-python  # Bug #52958
 	E(r"^(OS|IO)Error: \[Errno 2\] .*: '/usr/lib/pymodules/python2.7/univention/admin/hooks.d/.*", ['import_hook_files']),  # package upgrade before dh-python  # Bug #52958
-	E(r'^(univention\.admin\.uexceptions\.)?(insufficientInformation|noSuperordinate): No superordinate object given', ['sync_to_ucs'], 49880),
+	E(r'^(univention\.admin\.uexceptions\.)?(insufficientInformation|noSuperordinate):.*No superordinate object given.?', ['sync_to_ucs'], 49880),
 	E("^AttributeError: type object 'object' has no attribute 'identify'", [r'faillog\.py']),
 	E(r"FileNotFoundError: \[Errno 2\] No such file or directory: '/var/cache/univention-appcenter/.*\.logo'", ['File "<stdin>"']),  # 55_app_modproxy
 	E('^IndexError: list index out of range', ['_read_from_ldap', 'get_user_groups'], (46932, 48943)),
@@ -307,7 +307,7 @@ COMMON_EXCEPTIONS = (
 	E('^NoObject: No object found at DN .*', ['univention-portal-server.*in refresh']),
 	E(r"^OSError\: \[Errno 2\].*\/var\/run\/univention-management-console\/.*\.socket"),
 	E(r'ldapError\:\ Type\ or\ value\ exists\:\ univentionPortalEntryLink\:\ value\ \#0\ provided\ more\ than\ once', None, 51808),
-	E(r"noLock\: The attribute \'sid\' could not get locked\.", ['getMachineSid', '__generate_group_sid'], 44294),
+	E(r"noLock\: .*The attribute \'sid\' could not get locked\.", ['getMachineSid', '__generate_group_sid'], 44294),
 	E(r'^ImportError\: No module named debhelper', [r'univention\/config_registry\/handler\.py'], 51815),
 	E(r'^NO\_SUCH\_OBJECT\:.*users.*', ['password_sync_s4_to_ucs'], 50279),
 	E(re.escape("Exception: Modifying blog entry failed: 1: E: Daemon died."), [], 45787),
@@ -336,7 +336,7 @@ COMMON_EXCEPTIONS = (
 	E("AttributeError: module 'univention.admin.syntax' has no attribute 'UMCMessageCatalogFilename_and_GNUMessageCatalog'", ['_unregister_app', 'import_hook_files', 'pupilgroups.py'], 53754),
 	E('univention.admin.uexceptions.noObject: uid=.*', ['connector/ad/.*set_userPrincipalName_from_ucr'], 53769),
 	E('ldap.TYPE_OR_VALUE_EXISTS:.*SINGLE-VALUE attribute description.*specified more than once', ['sync_from_ucs'], 52801),
-	E('univention.admin.uexceptions.wrongObjectType: relativeDomainName=.* is not recognized as dns/txt_record.', ['ucs_txt_record_create'], 53425),
+	E('univention.admin.uexceptions.wrongObjectType: .*relativeDomainName=.* is not recognized as dns/txt_record.', ['ucs_txt_record_create'], 53425),
 	E(r"ldap.TYPE_OR_VALUE_EXISTS: \{'desc': 'Type or value exists', 'info': 'modify\/add: uniqueMember: value \#\d already exists'\}", ['object_memberships_sync_to_ucs'], 54590),
 	# Tracebacks caused by specific UCS@school bugs:
 	E(r"_ldb.LdbError: \(1, 'LDAP client internal error: NT_STATUS_INVALID_PARAMETER'\)", ['univention-samba4-site-tool.py'], 54592),
