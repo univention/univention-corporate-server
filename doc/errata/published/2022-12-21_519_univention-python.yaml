@@ -8,3 +8,5 @@ desc: |
  This update addresses the following issue:
  * LDAP search requests now evaluate the response of server controls.
 bug: [49666]
+erratum: 519
+announced: 2022-12-21
