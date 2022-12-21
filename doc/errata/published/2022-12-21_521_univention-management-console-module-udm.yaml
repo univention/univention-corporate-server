@@ -8,3 +8,5 @@ desc: |
  This update addresses the following issues:
  * The translation of error messages in the UDM REST API has been corrected.
 bug: [55446]
+erratum: 521
+announced: 2022-12-21
