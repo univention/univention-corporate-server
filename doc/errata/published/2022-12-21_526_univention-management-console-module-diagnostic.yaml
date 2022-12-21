@@ -21,3 +21,5 @@ desc: |
       an UCR variable 'diagnostic/check/65_check_repository_config/ignore'
       to any non empty value.
 bug: [55044]
+erratum: 526
+announced: 2022-12-21
