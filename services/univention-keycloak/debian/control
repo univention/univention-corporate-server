@@ -12,12 +12,10 @@ Depends:
  python3-defusedxml,
  python3-keycloak,
  python3-ldap,
- python3-univention-config-registry,
- univention-config,
  ${misc:Depends},
  ${shlib:Depends},
 Description: UCS keycloak
- This package installs the univention-keycloak scripts
+ This package installs the univention-keycloak-client scripts
  .
  This package is part of Univention Corporate Server (UCS),
  an integrated, directory driven solution for managing

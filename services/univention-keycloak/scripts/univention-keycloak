@@ -46,14 +46,12 @@ from keycloak import KeycloakAdmin
 from keycloak.exceptions import KeycloakError, KeycloakGetError, raise_error_from_response
 from ldap.dn import explode_rdn
 
-from univention.config_registry import ucr
+try:
+	from univention.config_registry import ucr
+except ModuleNotFoundError:
+	ucr = {}
 
 DEFAULT_REALM = "master"
-LDAP_BASE = ucr.get("ldap/base")
-HOSTNAME = ucr.get("hostname")
-DOMAINNAME = ucr.get("domainname")
-KEYCLOAK_FQDN = ucr.get("keycloak/server/sso/fqdn", f"ucs-sso-ng.{DOMAINNAME}")
-SERVER_URL = f"https://{HOSTNAME}.{DOMAINNAME}"
 
 
 def check_and_create_component(kc_client, name, prov_id, payload_):
@@ -231,7 +229,8 @@ def create_oidc_client(opt):
 	print("CREATING KEYCLOAK OIDC CLIENT.....")
 
 	# build urls
-	valid_redirect_urls = [opt.app_url, SERVER_URL]
+	server_url = f"https://{opt.host_fqdn}"
+	valid_redirect_urls = [opt.app_url, server_url]
 
 	client_payload_oidc = {
 		"clientId": opt.client_id,
@@ -389,7 +388,7 @@ def download_cert_oidc(opt):
 	if opt.oidc_url:
 		oidc_conf_url = opt.oidc_url
 	else:
-		oidc_conf_url = "https://{}/realms/ucs/.well-known/openid-configuration".format(ucr.get("keycloak/server/sso/fqdn"))
+		oidc_conf_url = "https://{}/realms/ucs/.well-known/openid-configuration".format(opt.keycloak_sso_fqdn)
 
 	oidc_conf = requests.get(oidc_conf_url)
 	certs_oidc = oidc_conf.json()["jwks_uri"]
@@ -412,7 +411,7 @@ def download_cert_saml(opt):
 	if opt.saml_url:
 		saml_descriptor_url = opt.saml_url
 	else:
-		saml_descriptor_url = "https://{}/realms/ucs/protocol/saml/descriptor".format(ucr.get("keycloak/server/sso/fqdn"))
+		saml_descriptor_url = "https://{}/realms/ucs/protocol/saml/descriptor".format(opt.keycloak_sso_fqdn)
 
 	saml_descriptor = requests.get(saml_descriptor_url)
 	saml_descriptor_xml = ElementTree.fromstring(saml_descriptor.content)
@@ -446,6 +445,12 @@ def parse_args(args=None):
 	:returns: a Namespace instance.
 	"""
 
+	ldap_base = ucr.get("ldap/base")
+	domainname = ucr.get("domainname")
+	host_fqdn = "%s.%s" % (ucr.get("hostname"), ucr.get("domainname"))
+	keycloak_fqdn = ucr.get("keycloak/server/sso/fqdn", f"ucs-sso-ng.{domainname}")
+	no_ucr_available = not (ucr and ldap_base)
+
 	parser = ArgumentParser(description=__doc__)
 	parser.add_argument("--binddn", default="")
 	parser.add_argument("--binduser", default="admin")
@@ -453,7 +458,7 @@ def parse_args(args=None):
 	parser.add_argument("--bindpwdfile", default="/etc/keycloak.secret")
 	parser.add_argument("--realm", default="ucs")
 	parser.add_argument("--keycloak-pwd", default="")
-	parser.add_argument("--keycloak-url", default=f"https://{KEYCLOAK_FQDN}:443")
+	parser.add_argument("--keycloak-url", required=no_ucr_available, default=f"https://{keycloak_fqdn}:443")
 	parser.add_argument("--no-ssl-verify", action='store_false')
 	subparsers = parser.add_subparsers(title="subcommands", description="valid subcommands", required=True, dest="command")
 
@@ -472,6 +477,7 @@ def parse_args(args=None):
 	create_oidc_parser.add_argument("client_id", metavar='CLIENT_ID')
 	create_oidc_parser.add_argument("--client-secret", default="")
 	create_oidc_parser.add_argument("--app-url", required=True)
+	create_oidc_parser.add_argument("--host-fqdn", required=no_ucr_available, default=host_fqdn)
 	create_oidc_parser.set_defaults(func=create_oidc_client)
 
 	create_saml_parser = operation_subparsers.add_parser("secret", help="get client secret from Keycloak")
@@ -484,6 +490,7 @@ def parse_args(args=None):
 	get_cert_saml_parser.add_argument("--as-pem", action='store_true')
 	get_cert_saml_parser.add_argument("--saml-url", default="")
 	get_cert_saml_parser.add_argument("--output", required=True)
+	get_cert_saml_parser.add_argument("--keycloak-sso-fqdn", required=no_ucr_available, default=ucr.get("keycloak/server/sso/fqdn"))
 	get_cert_saml_parser.set_defaults(func=download_cert_saml)
 
 	parser_oidc_op_cert = subparsers.add_parser("oidc/op/cert", help="OIDC provider certificate")
@@ -492,13 +499,19 @@ def parse_args(args=None):
 	get_cert_oidc_parser.add_argument("--as-pem", action='store_true')
 	get_cert_oidc_parser.add_argument("--oidc-url", default="")
 	get_cert_oidc_parser.add_argument("--output", required=True)
+	get_cert_oidc_parser.add_argument("--keycloak-sso-fqdn", required=no_ucr_available, default=ucr.get("keycloak/server/sso/fqdn"))
 	get_cert_oidc_parser.set_defaults(func=download_cert_oidc)
 
 	init_parser = subparsers.add_parser("init", help="configure a Keycloak app")
 	init_parser.add_argument("--reverse-proxy-url", default="")
 	init_parser.add_argument("--ldap", default="")
-	init_parser.add_argument("--ldap-system-user-dn", default=f"uid=sys-idp-user,cn=users,{LDAP_BASE}")
+	init_parser.add_argument("--ldap-base", required=no_ucr_available, default=ldap_base)
+	init_parser.add_argument("--ldap-system-user-dn", required=no_ucr_available, default=f"uid=sys-idp-user,cn=users,{ldap_base}")
 	init_parser.add_argument("--ldap-system-user-pwdfile", default="/etc/idp-ldap-user.secret")
+	init_parser.add_argument("--host-fqdn", required=no_ucr_available, default=host_fqdn)
+	init_parser.add_argument("--domainname", required=no_ucr_available, default=domainname)
+	init_parser.add_argument("--locales", required=no_ucr_available, default=ucr.get("locale"))
+	init_parser.add_argument("--default-locale", required=no_ucr_available, default=ucr.get("locale/default"))
 	init_parser.set_defaults(func=init_keycloak_ucs)
 
 	adhoc_parser = subparsers.add_parser("ad-hoc", help="configure the ad-hoc federation login flow")
@@ -506,16 +519,20 @@ def parse_args(args=None):
 	adhoc_parser_opp = operation_subparsers.add_parser("enable", help="create a login flow that uses ad-hoc federation")
 	adhoc_parser_opp.add_argument("--udm-user", required=True)
 	adhoc_parser_opp.add_argument("--udm-pwd", required=True)
+	adhoc_parser_opp.add_argument("--host-fqdn", required=no_ucr_available, default=host_fqdn)
 	adhoc_parser_opp.set_defaults(func=create_adhoc_flow)
 	adhoc_parser_opp = operation_subparsers.add_parser("create", help="create and configure an Identity Provider")
 	adhoc_parser_opp.add_argument("--alias", default="ADFS", required=True)
 	adhoc_parser_opp.add_argument("--metadata-url", required=True)
+	adhoc_parser_opp.add_argument("--keycloak-federation-remote-identifier", required=no_ucr_available, default=ucr.get("keycloak/federation/remote/identifier"))
+	adhoc_parser_opp.add_argument("--keycloak-federation-source-identifier", required=no_ucr_available, default=ucr.get("keycloak/federation/source/identifier"))
 	adhoc_parser_opp.set_defaults(func=create_adhoc_idp)
 
 	fa_parser = subparsers.add_parser("2fa", help="configure 2FA on a group given by --group-2fa (default: \"2FA group\")")
 	operation_subparsers = fa_parser.add_subparsers(title="operation", description="valid subcommands", required=True, dest="operation")
 	adhoc_parser_opp = operation_subparsers.add_parser("enable", help="create a login flow that uses 2FA and activate it")
 	adhoc_parser_opp.add_argument("--group-2fa", default="2FA group")
+	adhoc_parser_opp.add_argument("--ldap-base", required=no_ucr_available, default=ldap_base)
 	adhoc_parser_opp.set_defaults(func=enable_2fa)
 
 	opt = parser.parse_args(args)
@@ -625,7 +642,7 @@ def create_adhoc_idp(opt):
 			"attribute.name": "objectGuid",
 			"attributes": "[]",
 			"syncMode": "IMPORT",
-			"user.attribute": ucr.get("keycloak/federation/remote/identifier")
+			"user.attribute": opt.keycloak_federation_remote_identifier
 		},
 		"identityProviderAlias": opt.alias,
 		"identityProviderMapper": "saml-user-attribute-idp-mapper",
@@ -656,7 +673,7 @@ def create_adhoc_idp(opt):
 		},
 		"identityProviderAlias": opt.alias,
 		"identityProviderMapper": "hardcoded-attribute-idp-mapper",
-		"name": ucr.get("keycloak/federation/source/identifier")
+		"name": opt.keycloak_federation_source_identifier
 	}
 	kc_admin.add_mapper_to_idp(opt.alias, mapper_payload)
 
@@ -699,7 +716,7 @@ def enable_2fa(opt):
 	ldap_component_list = kc_admin.get_components(ldap_component_filter)
 	provider = ldap_component_list.pop()
 	provider_id = provider["id"]
-	mapper_id = add_or_replace_ldap_group_mapper(kc_admin, provider, "univention-groups", ldap_2fa_group, LDAP_BASE)
+	mapper_id = add_or_replace_ldap_group_mapper(opt, kc_admin, provider, "univention-groups", ldap_2fa_group, opt.ldap_base)
 
 	# Synchronize LDAP groups to Keycloak
 	kc_admin.raw_post(f"/admin/realms/ucs/user-storage/{provider_id}/mappers/{mapper_id}/sync?direction=fedToKeycloak")
@@ -838,7 +855,7 @@ def assign_group_realm_role_by_group_name(kc_admin, realm, group_name, role):
 	return raise_error_from_response(data_raw, KeycloakGetError, expected_codes=[204])
 
 
-def add_or_replace_ldap_group_mapper(kc_admin, ldap_sp, name, ldap_group):
+def add_or_replace_ldap_group_mapper(opt, kc_admin, ldap_sp, name, ldap_group):
 	"""
 	Add or replace if exists component mapper of type ldap-attribute-mapper
 	:param kc_admin: Keycloak client
@@ -899,7 +916,7 @@ def add_or_replace_ldap_group_mapper(kc_admin, ldap_sp, name, ldap_group):
 	payload = LDAP_GROUP_MAPPER
 	payload["parentId"] = ldap_sp["id"]
 	payload["name"] = name
-	payload["config"]["groups.dn"] = [f"cn=groups,{LDAP_BASE}"]
+	payload["config"]["groups.dn"] = [f"cn=groups,{opt.ldap_base}"]
 
 	add_or_replace_mapper(kc_admin, component=payload)
 
@@ -1019,12 +1036,12 @@ def create_config_for_execution(kc_admin, config, execution_id):
 def configure_login_page(kc_admin):
 	# english
 	url = f"admin/realms/{kc_admin.realm_name}/localization/en"
-	data = {"loginTitleHtml": f"Login at {DOMAINNAME}", "loginTitle": "Univention Corporate Server Single-Sign On"}
+	data = {"loginTitleHtml": f"Login at {opt.domainname}", "loginTitle": "Univention Corporate Server Single-Sign On"}
 	data_raw = kc_admin.raw_post(url, data=json.dumps(data))
 	raise_error_from_response(data_raw, KeycloakGetError, expected_codes=[204, 201])
 	# german
 	url = f"admin/realms/{kc_admin.realm_name}/localization/de"
-	data = {"loginTitleHtml": f"Anmelden bei {DOMAINNAME}", "loginTitle": "Univention Corporate Server Single-Sign On"}
+	data = {"loginTitleHtml": f"Anmelden bei {opt.domainname}", "loginTitle": "Univention Corporate Server Single-Sign On"}
 	data_raw = kc_admin.raw_post(url, data=json.dumps(data))
 	raise_error_from_response(data_raw, KeycloakGetError, expected_codes=[204, 201])
 
@@ -1095,7 +1112,7 @@ def create_adhoc_flow(opt):
 	# config_id from 'authenticationConfig' in get_authentication_flow_executions
 	config_ua = {
 		"config": {
-			"udm_endpoint": f"http://{HOSTNAME}.{DOMAINNAME}/univention/udm",
+			"udm_endpoint": f"http://{opt.host_fqdn}/univention/udm",
 			"udm_user": opt.UDM_user,
 			"udm_password": opt.UDM_pwd
 		},
@@ -1108,10 +1125,9 @@ def create_adhoc_flow(opt):
 
 
 def init_keycloak_ucs(opt):
-	locales_ucr = ucr.get("locale").split()
-	locales_format = [locale[:locale.index("_")] for locale in locales_ucr]
-	default_locale_ucr = ucr.get("locale/default")
-	default_locale = default_locale_ucr[:default_locale_ucr.index("_")]
+	locales = opt.locales.split()
+	locales_format = [locale[:locale.index("_")] for locale in locales]
+	default_locale = opt.default_locale[:opt.default_locale.index("_")]
 	if opt.reverse_proxy_url:
 		opt.keycloak_url = opt.reverse_proxy_url
 
@@ -1119,12 +1135,14 @@ def init_keycloak_ucs(opt):
 	if opt.ldap:
 		ucs_ldap_url = opt.ldap
 	else:
-		ucs_ldap_url = f"ldap://{HOSTNAME}.{DOMAINNAME}:7389"  # "ldap://{FQDN}:{port}"
+		ucs_ldap_url = f"ldap://{opt.host_fqdn}:7389"  # "ldap://{FQDN}:{port}"
 
 	print(f"Using bind-dn: {opt.binddn}")
 
 	# log into default realm in case UCS realm doesn't exist yet
 	kc_admin = KeycloakAdmin(server_url=opt.keycloak_url, username=opt.binduser, password=opt.bindpwd, realm_name=opt.realm, user_realm_name=DEFAULT_REALM, verify=opt.no_ssl_verify)
+
+	server_url = f"https://{opt.host_fqdn}"
 
 	# set locale languages
 	realm_payload = {
@@ -1143,7 +1161,7 @@ def init_keycloak_ucs(opt):
 			"xContentTypeOptions": "nosniff",
 			"xRobotsTag": "none",
 			"xFrameOptions": "",
-			"contentSecurityPolicy": f"frame-src 'self'; frame-ancestors 'self' {SERVER_URL}/univention; object-src 'none';",
+			"contentSecurityPolicy": f"frame-src 'self'; frame-ancestors 'self' {server_url}/univention; object-src 'none';",
 			"xXSSProtection": "1; mode=block",
 			"strictTransportSecurity": "max-age=31536000; includeSubDomains"
 		}
@@ -1155,9 +1173,9 @@ def init_keycloak_ucs(opt):
 	realm_payload["realm"] = opt.realm
 	kc_admin.create_realm(payload=realm_payload, skip_exists=True)
 
-	configure_login_page(kc_admin)
+	configure_login_page(opt, kc_admin)
 	# create portal saml client
-	opt.metadata_url = SERVER_URL + "/univention/saml/metadata"
+	opt.metadata_url = server_url + "/univention/saml/metadata"
 	opt.umc_uid_mapper = True
 	create_SAML_client(opt)
 
@@ -1172,7 +1190,7 @@ def init_keycloak_ucs(opt):
 			"fullSyncPeriod": ["-1"],
 			"startTls": ["true"],
 			"connectionPooling": ["true"],
-			"usersDn": [LDAP_BASE],
+			"usersDn": [opt.ldap_base],
 			"cachePolicy": ["MAX_LIFESPAN"],
 			"maxLifespan": ["300000"],
 			"useKerberosForPasswordAuthentication": ["false"],
@@ -1303,7 +1321,7 @@ def init_keycloak_ucs(opt):
 	# Admins federation ldap provider payload
 	ldap_federation_payload["name"] = "ldap-master-admin"
 	ldap_federation_payload["parentId"] = get_realm_id(kc_admin, DEFAULT_REALM)
-	ldap_federation_payload["config"]["customUserSearchFilter"] = [f"(memberOf=cn=Domain Admins,cn=groups,{LDAP_BASE})"]
+	ldap_federation_payload["config"]["customUserSearchFilter"] = [f"(memberOf=cn=Domain Admins,cn=groups,{opt.ldap_base})"]
 
 	# find existing ldap provider or just create if none exists
 	ldap_component_id = check_and_create_component(kc_admin, ldap_federation_payload["name"], ldap_federation_payload["providerId"], ldap_federation_payload)
