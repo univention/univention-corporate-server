@@ -153,8 +153,11 @@ EOF
 
 install_all_attributes_primary () {
 	enable_bsb_repos
-
-	univention-install -y ucsschool-divis-custom-ldap-extension ucsschool-iserv-custom-ldap-extension ucsschool-moodle-custom-ldap-extension univention-saml
+	univention-install -y \
+		ucsschool-iserv-custom-ldap-extension \
+		ucsschool-divis-custom-ldap-extension \
+		ucsschool-moodle-custom-ldap-extension \
+		univention-saml
 	systemctl restart univention-directory-manager-rest.service
 }
 
@@ -215,6 +218,29 @@ ProxyPassReverse "/ucsschool" "balancer://bff"
 EOF
 	univention-add-vhost --conffile "$extra_config" "loadbalancer.$(ucr get hostname).$(ucr get domainname)" 443 || return 1
 	systemctl start apache2 || return 1
+}
+
+load_balancer_setup_haproxy () {
+	# ha proxy seems to be much faster and more reliable
+	ucr set security/packetfilter/package/univention-apache/tcp/9443/all='ACCEPT'
+	service univention-firewall restart
+	# ha proxy needs the privat key
+	cat "/etc/univention/ssl/primary.$(ucr get domainname)/private.key" >> "/etc/univention/ssl/primary.$(ucr get domainname)/cert.pem"
+	univention-install -y haproxy
+	cat <<EOF >> "/etc/haproxy/haproxy.cfg"
+frontend sample_httpd
+	bind :9443 ssl crt /etc/univention/ssl/primary.school.test/cert.pem
+	default_backend bffs
+
+backend bffs
+	balance roundrobin
+$(
+	for host in "$@"; do
+		echo -e "\tserver $host $host.$(ucr get domainname):443 ssl ca-file /etc/ssl/certs/ca-certificates.crt"
+	done
+)
+EOF
+	service haproxy restart
 }
 
 performance_test_settings () {
