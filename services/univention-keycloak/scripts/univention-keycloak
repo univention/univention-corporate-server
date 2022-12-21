@@ -490,7 +490,7 @@ def parse_args(args=None):
 	get_cert_saml_parser.add_argument("--as-pem", action='store_true')
 	get_cert_saml_parser.add_argument("--saml-url", default="")
 	get_cert_saml_parser.add_argument("--output", required=True)
-	get_cert_saml_parser.add_argument("--keycloak-sso-fqdn", required=no_ucr_available, default=ucr.get("keycloak/server/sso/fqdn"))
+	get_cert_saml_parser.add_argument("--keycloak-sso-fqdn", required=no_ucr_available, default=keycloak_fqdn)
 	get_cert_saml_parser.set_defaults(func=download_cert_saml)
 
 	parser_oidc_op_cert = subparsers.add_parser("oidc/op/cert", help="OIDC provider certificate")
@@ -499,7 +499,7 @@ def parse_args(args=None):
 	get_cert_oidc_parser.add_argument("--as-pem", action='store_true')
 	get_cert_oidc_parser.add_argument("--oidc-url", default="")
 	get_cert_oidc_parser.add_argument("--output", required=True)
-	get_cert_oidc_parser.add_argument("--keycloak-sso-fqdn", required=no_ucr_available, default=ucr.get("keycloak/server/sso/fqdn"))
+	get_cert_oidc_parser.add_argument("--keycloak-sso-fqdn", required=no_ucr_available, default=keycloak_fqdn)
 	get_cert_oidc_parser.set_defaults(func=download_cert_oidc)
 
 	init_parser = subparsers.add_parser("init", help="configure a Keycloak app")
