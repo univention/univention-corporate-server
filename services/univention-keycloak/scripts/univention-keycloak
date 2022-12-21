@@ -1112,7 +1112,7 @@ def create_adhoc_flow(opt):
 	# config_id from 'authenticationConfig' in get_authentication_flow_executions
 	config_ua = {
 		"config": {
-			"udm_endpoint": f"http://{opt.host_fqdn}/univention/udm",
+			"udm_endpoint": f"https://{opt.host_fqdn}/univention/udm",
 			"udm_user": opt.UDM_user,
 			"udm_password": opt.UDM_pwd
 		},
