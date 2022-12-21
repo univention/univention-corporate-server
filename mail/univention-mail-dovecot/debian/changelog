@@ -1,3 +1,10 @@
+univention-mail-dovecot (6.0.4-3) unstable; urgency=medium
+
+  * Bug #55510: convert /etc/pam.d/dovecot template to multifile to support
+    extending the configuration.
+
+ -- Juan Carlos García García <garcia-garcia.extern@univention.de>  Wed, 21 Dec 2022 08:11:53 +0100
+
 univention-mail-dovecot (6.0.4-2) unstable; urgency=medium
 
   * Bug #54273: Include debug script in server_password_change.d/univention-mail-dovecot subscript
