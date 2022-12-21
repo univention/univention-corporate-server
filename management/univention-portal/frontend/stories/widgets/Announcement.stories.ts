@@ -9,10 +9,10 @@ export default {
     layout: 'centered',
   },
   argTypes: {
-    type: {
+    severity: {
       control: {
         type: 'select',
-        options: ['success', 'warning', 'error'],
+        options: ['info', 'danger', 'success', 'warn'],
       },
     },
   },
@@ -32,8 +32,7 @@ const Template: StoryFn<typeof Announcement> = (args) => ({
 
 export const Basic = Template.bind({});
 Basic.args = {
-  type: 'success',
-  severity: 'info',
+  severity: 'success',
   title:{
     'en': 'My Title',
   },

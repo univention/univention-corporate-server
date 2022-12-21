@@ -115,15 +115,15 @@ export default defineComponent({
     margin-left: .5rem
 
   &--info
-    background-color: var(--color-accent)
+    background-color: var(--bgc-announcements-info)
 
   &--danger
-    background-color: var(--bgc-error)
+    background-color: var(--bgc-announcements-danger)
 
   &--success
-    background-color: var(--bgc-success)
+    background-color: var(--bgc-announcements-success)
 
   &--warn
-    background-color: var(--bgc-warning)
+    background-color: var(--bgc-announcements-warn)
 
 </style>
