@@ -12,3 +12,5 @@ desc: |
    repository/online/component/*/(prefix, port, username, password,
       unmaintained)
 bug: [55044]
+erratum: 528
+announced: 2022-12-21
