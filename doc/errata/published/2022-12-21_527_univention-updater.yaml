@@ -13,3 +13,5 @@ desc: |
    ending with 'server' or 'port' have been updated to ucr type 'url_http'
    and respectively 'portnumer' in order to allow a better type checking.
 bug: [55044]
+erratum: 527
+announced: 2022-12-21
