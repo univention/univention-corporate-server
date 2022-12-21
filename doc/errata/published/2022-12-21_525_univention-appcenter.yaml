@@ -25,3 +25,5 @@ desc: |
  * The help text of `univention-app configure` has been fixed so that the
    usage prints the allowed arguments in the correct positional order.
 bug: [55044, 52514]
+erratum: 525
+announced: 2022-12-21
