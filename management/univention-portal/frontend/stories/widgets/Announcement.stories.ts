@@ -41,4 +41,5 @@ Basic.args = {
     'en': 'My Message',
   },
   name: 'unique_announcement',
+  sticky: false
 };

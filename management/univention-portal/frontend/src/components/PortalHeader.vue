@@ -132,6 +132,7 @@ License with the Debian GNU/Linux or Univention distribution in file
       :message="announcement.message"
       :severity="announcement.severity"
       :name="announcement.name"
+      :sticky="announcement.isSticky"
     />
   </div>
 </template>

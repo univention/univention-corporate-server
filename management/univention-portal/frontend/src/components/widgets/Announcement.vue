@@ -17,6 +17,7 @@
       <slot />
     </div>
     <a
+      v-if="!sticky"
       href="#"
       class="close-link"
       @click.prevent="onCloseClick"
@@ -48,6 +49,10 @@ export default defineComponent({
     severity: {
       type: String as PropType<PortalAnnouncementSeverity>,
       default: 'success',
+    },
+    sticky: {
+      type: Boolean,
+      default: false,
     },
   },
   data() {
