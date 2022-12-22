@@ -3,16 +3,21 @@
 
 """UCS installation via VNC"""
 
+import logging
 import os
 import sys
 import time
 from argparse import ArgumentParser, Namespace  # noqa: F401
-from typing import Dict  # noqa: F401
+from contextlib import suppress
+from typing import Dict, Optional  # noqa: F401
 
 from helper import trace_calls, verbose
+from twisted.internet import reactor
 from vncautomate import VNCAutomateFactory, init_logger
+from vncautomate.client import VNCAutomateException
 from vncautomate.config import OCRConfig
-from vncdotool.api import VNCDoException, connect, shutdown
+from vncdotool.api import ThreadedVNCClientProxy, connect
+from vncdotool.client import VNCDoException
 
 
 @verbose("sleep", "{0:.1f} {1}")
@@ -126,25 +131,58 @@ class VNCInstallation(object):
         self.timeout = 120
         self.setup_finish_sleep = 900
         self._ = self.load_translation(self.args.language)
-        self.client = connect(self.args.vnc, factory_class=VNCAutomateFactory)
-        self.client.updateOCRConfig(self.config)
+        self._client = None  # type: Optional[ThreadedVNCClientProxy]
+        self._stopping = False
 
     def load_translation(self, language: str) -> Dict[str, str]:
         return {}
 
+    @property
+    def client(self) -> ThreadedVNCClientProxy:
+        if self._client is None:
+            self._client = connect(
+                self.args.vnc,
+                factory_class=VNCAutomateFactory,
+                timeout=self.timeout,
+            )
+            self._client.updateOCRConfig(self.config)
+        return self._client
+
     def run(self):  # type: () -> None
+        # https://docs.twisted.org/en/stable/core/howto/threading.html#running-code-in-threads
+        reactor.addSystemEventTrigger("before", "shutdown", self._onShutdown)
+        reactor.callInThread(self.runner)
+        reactor.run()
+
+    def _onShutdown(self) -> None:
+        self._stopping = True
+
+    def runner(self):  # type: () -> None
+        ret = 0
         try:
             tracing = not sys.gettrace()
             if tracing:
                 sys.settrace(trace_calls)
             self.main()
-        except Exception:
-            self.screenshot('error.png')
-            raise
+        except SystemExit as ex:
+            if isinstance(ex.code, int):
+                ret = ex.code
+            elif ex.code is None:
+                ret = 0
+            else:
+                ret = 1
+        except Exception as ex:
+            log = logging.getLogger(__name__)
+            log.fatal(ex, exc_info=True)
+            with suppress(VNCDoException):
+                self.screenshot('error.png')
+            os._exit(1)
         finally:
             if tracing:
                 sys.settrace(None)
-            shutdown()
+            if not self._stopping:
+                reactor.callWhenRunning(reactor.stop)
+        os._exit(ret)
 
     def main(self):  # type: () -> None
         raise NotImplementedError()
@@ -168,7 +206,7 @@ class VNCInstallation(object):
         try:
             self.client.waitForText(text, timeout=self.timeout * (timeout >= 0) + abs(timeout))
             return True
-        except VNCDoException:
+        except (VNCDoException, VNCAutomateException):
             return False
 
     @verbose("type", "{1!r} clear={2}")
