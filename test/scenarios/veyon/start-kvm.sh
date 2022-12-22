@@ -8,7 +8,7 @@ export UCS_ENV_VEYON_WINDOWS_HOST="${UCS_ENV_VEYON_WINDOWS_HOST:=3}"
 export KVM_BUILD_SERVER="${KVM_BUILD_SERVER:=ranarp.knut.univention.de}"
 export HALT=false
 export UCS_TEST_RUN=false
-export SCHOOL_INSTALLER_PYTHON="python3"
+export PYTHON_VERSION="python3"
 
 # 4.4 support
 ucs44="${UCS44:=false}"
@@ -17,7 +17,7 @@ if $ucs44; then
 	export KVM_TEMPLATE="generic-unsafe"
 	export KVM_UCSVERSION="4.4-9"
 	export TARGET_VERSION="4.4-9"
-	export SCHOOL_INSTALLER_PYTHON="python2.7"
+	export PYTHON_VERSION="python2.7"
 fi
 
 # user specific instances "username_..."

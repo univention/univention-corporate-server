@@ -6,7 +6,7 @@ cfg_file="$(mktemp)"
 export UCS_ENV_VEYON_WINDOWS_HOST="${UCS_ENV_VEYON_WINDOWS_HOST:=3}"
 export KVM_BUILD_SERVER="EC2"
 export HALT=false
-export SCHOOL_INSTALLER_PYTHON="python3"
+export PYTHON_VERSION="python3"
 
 # shellcheck disable=SC1091
 . scenarios/veyon/utils-veyon.sh
