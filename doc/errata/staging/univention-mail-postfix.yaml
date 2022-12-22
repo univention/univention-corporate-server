@@ -9,4 +9,4 @@ desc: |
  * The filter checking access to restricted mailing lists now accepts
    emails sent by users authenticating with their email address, when
    the system is configured to not use Dovecot SASL.
-bug: [55385]
+bug: [55514]
