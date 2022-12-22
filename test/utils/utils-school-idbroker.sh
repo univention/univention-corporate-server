@@ -52,7 +52,7 @@ ansible_preperation () {
 	cp /root/id-broker-TESTING.key id-broker.key
 	# shellcheck disable=SC1091
 	. /root/id-broker-secrets.sh
-	sed -i "s/broker.test/$(hostname -d)/g" environments/jenkins/hosts
+	sed -i "s/broker.test/$(hostname -d)/g" inventories/jenkins/hosts
 	sed -i "s/CLIENT_SECRET=CLIENT_SECRET/CLIENT_SECRET=$UTA_CLIENT_SECRET/g" /etc/univention-test-app.conf
 	sed -i "s/ID_BROKER_KEYCLOAK_FQDN=ID_BROKER_KEYCLOAK_FQDN/ID_BROKER_KEYCLOAK_FQDN=kc.$(hostname -d)/g" /etc/univention-test-app.conf
 	sed -i "s/ID_BROKER_SDAPI_FQDN=ID_BROKER_SDAPI_FQDN/ID_BROKER_SDAPI_FQDN=self-disclosure1.$(hostname -d)/g" /etc/univention-test-app.conf
