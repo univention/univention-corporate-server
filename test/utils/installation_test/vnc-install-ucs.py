@@ -15,7 +15,6 @@ def main():  # type: () -> None
     parser.add_argument('--language', default='deu', choices=['deu', 'eng', 'fra'], help="Select text language")
     group = parser.add_argument_group("Virtual machine settings")
     group.add_argument('--vnc', required=True, help="VNC screen to connect to")
-    group.add_argument('--no-second-interface', help='no not set configure second interface', action='store_true')
     group = parser.add_argument_group("Host settings")
     group.add_argument('--fqdn', default='master.ucs.test', help="Fully qualified host name to use")
     group.add_argument('--password', default='univention', help="Password to setup for user 'root' and/or 'Administrator'")
@@ -31,6 +30,11 @@ def main():  # type: () -> None
     group.add_argument('--dns', help="DNS server of UCS domain")
     group.add_argument('--join-user', help="User name for UCS domain join")
     group.add_argument('--join-password', help="Password for UCS domain join")
+    parser.add_argument(
+        "--second-interface",
+        help="configure second interface",
+        metavar="IFACE",
+    )
     args = parser.parse_args()
 
     if args.role in ['slave', 'backup', 'member', 'admember']:

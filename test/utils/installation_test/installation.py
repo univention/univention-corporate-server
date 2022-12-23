@@ -16,9 +16,6 @@ from vncautomate.config import OCRConfig
 from vncdotool.api import VNCDoException
 
 
-KVM_INTERFACE = 'ens8'
-
-
 def verbose(msg, fmt="", skip=1):  # type (str, str, int) -> Callabble[[T], T]
     def decorator(f):  # type (Callable) -> Callable
         @wraps(f)
@@ -246,7 +243,7 @@ class UCSInstallation(object):
             self.client.keyPress('enter')
         return True
 
-    def configure_kvm_network(self):  # type: () -> None
+    def configure_kvm_network(self, iface):  # type: (str) -> None
         if 'all' in self.args.components or 'kde' in self.args.components:
             sleep(10)
             self.client.keyDown('alt')
@@ -265,16 +262,16 @@ class UCSInstallation(object):
         sleep(5)
         self.client.enterText(self.args.password)
         self.client.keyPress('enter')
-        self.client.enterText('ucr set interfaces-%s-tzpe`manual' % KVM_INTERFACE)
+        self.client.enterText('ucr set interfaces-%s-tzpe`manual' % iface)
         self.client.keyPress('enter')
         sleep(30)
-        self.client.enterText('ip link set %s up' % KVM_INTERFACE)
+        self.client.enterText('ip link set %s up' % iface)
         self.client.keyPress('enter')
         self.client.enterText('echo ')
         self.client.keyDown('shift')
         self.client.enterText('2')  # @
         self.client.keyUp('shift')
-        self.client.enterText('reboot -sbin-ip link set %s up ' % KVM_INTERFACE)
+        self.client.enterText('reboot -sbin-ip link set %s up ' % iface)
         self.client.keyDown('shift')
         self.client.enterText("'")  # |
         self.client.keyUp('shift')
@@ -457,10 +454,10 @@ class UCSInstallation(object):
             self.hostname()
             self.ucsschool()
             self.finish()
-            if not self.args.no_second_interface:
-                # TODO activate `KVM_INTERFACE` so that ucs-kvm-create can connect to instance
+            if self.args.second_interface:
+                # TODO activate 2nd interface so that ucs-kvm-create can connect to instance
                 # this is done via login and setting interfaces/eth0/type, is there a better way?
-                self.configure_kvm_network()
+                self.configure_kvm_network(self.args.second_interface)
         except Exception:
             self.connect()
             self.screenshot('error.png')
