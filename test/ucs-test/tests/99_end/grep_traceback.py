@@ -179,7 +179,8 @@ COMMON_EXCEPTIONS = (
 	E(re.escape('NoSuperordinate: No superordinate was supplied, but one of type settings/cn is required to create/save a settings/portal object.'), ['univention-portal-server']),  # 4.4-8 before upgrade to 5.0-0
 	E(r"ldap.NO_SUCH_OBJECT: .*matched\'\: \'dc\=.*", ['^  File "/usr/lib/python3/dist-packages/univention/admin/uldap.py", line .*, in add']),
 	E(r"ldap.NO_SUCH_OBJECT: .*matched\'\: \'cn\=users,dc\=.*", ['^  File "/usr/lib/python3/dist-packages/univention/admin/uldap.py", line .*, in search']),  # s4c
-	E(r'^univention.admin.uexceptions.noObject: No such object', ['sync_from_ucs']),  # s4c
+	E(r'^univention.admin.uexceptions.noObject: No such object.*', ['^  File "/usr/lib/python3/dist-packages/univention/admin/objects.py", line .*, in get', 'sync_from_ucs']),  # s4c
+	E(r'univention.admin.uexceptions.valueError: Invalid password.', ['add_in_ucs'], (53838,)),
 	# during upgrade to UCS 5.0-2
 	E("^AttributeError: 'PortalsPortalEntryObjectProperties' object has no attribute 'keywords'", ['reloader.py.*in refresh'], (54295,)),
 	E("ImportError: cannot import name '_ldap_cache' from 'univention.admin'", ['in update'], (54853,)),

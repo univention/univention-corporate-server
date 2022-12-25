@@ -110,7 +110,7 @@ def test_no_leftovers_after_delete_in_ucs():
     add        <modify / add object does not exist
                 delete>             delete
                 <delete (dont delete, different entryUUID)
-    object left iver
+    object left over
     '''
     with connector_setup("sync"), UCSTestConfigRegistry():
         # do not update domain users, this changes to timing
