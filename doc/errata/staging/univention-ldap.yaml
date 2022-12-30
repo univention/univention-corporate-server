@@ -3,7 +3,7 @@ release: "5.0"
 version: [2]
 scope: ucs_5.0-0-errata5.0-2
 src: univention-ldap
-fix:
+fix: 16.0.7-25A~5.0.0.202212301255
 desc: |
  This update addresses the following issues:
  * On UCS Replica Directory Nodes the OpenLDAP ppolicy overlay
