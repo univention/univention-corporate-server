@@ -1,3 +1,9 @@
+univention-ldap (16.0.7-25) unstable; urgency=medium
+
+  * Bug #55501: Allow replicas to lockout user accounts
+
+ -- Arvid <requate@univention.de>  Fri, 30 Dec 2022 12:53:33 +0100
+
 univention-ldap (16.0.7-24) unstable; urgency=medium
 
   * Bug #54140: Do not use access control entry if ldap/hostdn is not set
