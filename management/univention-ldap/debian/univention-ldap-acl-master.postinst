@@ -52,8 +52,12 @@ restart_slapd ()
 	/etc/init.d/slapd start
 }
 
-if [ "$1" = "configure" ] && dpkg --compare-versions "$2" lt-nl 13.0.7-18 && [ "$server_role" = "domaincontroller_master" ] && test -x /etc/init.d/slapd; then
-	restart_slapd
+if [ "$1" = "configure" ]; then
+	if [ "$server_role" = "domaincontroller_master" ]; then
+		if dpkg --compare-versions "$2" lt-nl 16.0.7-25; then
+			restart_slapd
+		fi
+	fi
 fi
 
 exit 0
