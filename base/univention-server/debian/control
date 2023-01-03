@@ -217,6 +217,7 @@ Recommends:
  memtest86+,
  nmap,
  univention-network-common,
+ univention-support-info,
  univention-welcome-screen,
  unzip,
  vim,
