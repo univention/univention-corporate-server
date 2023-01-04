@@ -59,11 +59,124 @@ set_udm_properties_for_kelvin () {
                 "serviceprovidergroup"
         ],
         "school": [
-                "description"
+                "description",
+                "dwh_ShortName"
         ]
 }
 
 EOT
+    echo "{}" > /var/lib/ucs-school-import/configs/kelvin.json
+    cat /var/lib/ucs-school-import/configs/kelvin.json
+    univention-install -y jq moreutils # we need `jq` and `sponge`
+    jq '. += {
+        "scheme":
+            {
+                "username":
+                    {
+                        "default": "<lastname:umlauts>[0:4]<firstname:umlauts>[0:4]<:lower>[COUNTER2]"
+                    },
+                "email": "<firstname:umlauts>.<lastname:umlauts><:lower>[COUNTER2]@<school>.<maildomain>"
+            },
+        "maildomain": "hamburg.de"
+    }' /var/lib/ucs-school-import/configs/kelvin.json | sponge /var/lib/ucs-school-import/configs/kelvin.json
+    udm mail/domain create --set name=dwh-shortname-testschool.hamburg.de --position cn=domain,cn=mail,dc=school,dc=test
+    udm mail/domain create --set name=dwh-shortname-testschool2.hamburg.de --position cn=domain,cn=mail,dc=school,dc=test
+
+    cat <<EOT > /var/lib/ucs-school-import/kelvin-hooks/bsb_school_dwh_short_name.py
+from typing import Any, Dict
+
+from ldap.filter import escape_filter_chars
+from ucsschool.importer.exceptions import InitialisationError, UnknownSchoolName
+from ucsschool.importer.utils.format_pyhook import FormatPyHook
+
+
+UDM_PROPERTY_NAME = "dwh_ShortName"
+
+
+def escape_filter_chars_exc_asterisk(value: str) -> str:
+    value = escape_filter_chars(value)
+    value = value.replace(r"\2a", "*")
+    return value
+
+
+class BsbSchoolDwhShortName(FormatPyHook):
+    """
+    Format hook that will modify the 'school' attribute of a user during the creation of an 'email'
+    address from a schema.
+    The value that will replace the original 'school' value is taken from the extended attribute
+    'dwh_ShortName' (constant 'UDM_PROPERTY_NAME') of the users primary school.
+    Use this hook in combination with a configuration like this:
+    {
+      "maildomain": "hamburg.de",
+      "scheme": {
+        "email": "<firstname:umlauts>.<lastname:umlauts><:lower>[COUNTER2]@<school>.<maildomain>"
+      }
+    }
+    """
+    priority = {
+        "patch_fields_staff": 10,
+        "patch_fields_student": 10,
+        "patch_fields_teacher": 10,
+        "patch_fields_teacher_and_staff": 10,
+    }
+    properties = ("email",)
+    _dwh_short_name: Dict[str, str] = {}
+
+    def __init__(self, *args, **kwargs):
+        """Retrieve all OU names in one query. Much more efficient than in hundreds of queries."""
+        super().__init__(*args, **kwargs)
+        self.logger.info("Looking for extended attribute %r...", UDM_PROPERTY_NAME)
+        self.ldap_attr = self.ldap_attribute_of_extended_udm_property(UDM_PROPERTY_NAME)
+        self.logger.info("LDAP attribute is %r.", self.ldap_attr)
+        self.logger.info("Caching %r values of all schools...", self.ldap_attr)
+        all_dwh_short_names = self.retrieve_school_dwh_short_names("*")
+        for ou, dwh_short_name in all_dwh_short_names.items():
+            self._dwh_short_name[ou.lower()] = dwh_short_name
+        self.logger.info("Retrieved %r names from LDAP.", len(self._dwh_short_name))
+
+    def ldap_attribute_of_extended_udm_property(self, udm_property_name: str) -> str:
+        filter_s = f"(&(univentionObjectType=settings/extended_attribute)(cn={udm_property_name}))"
+        query_res = self.lo.search(filter_s, attr=["univentionUDMPropertyLdapMapping"])
+        if not query_res:
+            raise InitialisationError(f"Unknown extended attribute {udm_property_name!r}.")
+        _, attrs = query_res[0]
+        return attrs["univentionUDMPropertyLdapMapping"][0].decode("UTF-8")
+
+    def retrieve_school_dwh_short_names(self, ou_filter: str) -> Dict[str, str]:
+        ou_filter_escaped = escape_filter_chars_exc_asterisk(ou_filter)
+        filter_s = f"(&(objectClass=ucsschoolOrganizationalUnit)(ou={ou_filter_escaped}))"
+        query_res = self.lo.search(filter_s, attr=[self.ldap_attr, "ou"])
+        if not query_res:
+            raise UnknownSchoolName(f"Unknown school {ou_filter!r} (filter: {filter_s!r}).")
+        res = {}
+        for dn, attrs in query_res:
+            ou = attrs["ou"][0].decode("UTF-8")
+            dwh_short_name = attrs.get(self.ldap_attr, [])
+            if dwh_short_name:
+                res[ou] = dwh_short_name[0].decode("UTF-8")
+            else:
+                self.logger.warning("Empty 'dwh_ShortName' value for school %r. Using %r.", ou, ou)
+                res[ou] = ou
+        return res
+
+    def school_dwh_short_name(self, school: str) -> str:
+        ou = school.lower()
+        if ou not in self._dwh_short_name:
+            self._dwh_short_name[ou] = self.retrieve_school_dwh_short_names(school)[0]
+        return self._dwh_short_name[ou]
+
+    def patch_school_field(self, property_name: str, fields: Dict[str, Any]) -> Dict[str, Any]:
+        if property_name == "email":
+            fields["school"] = self.school_dwh_short_name(fields["school"])
+        return fields
+
+    patch_fields_staff = patch_school_field
+    patch_fields_student = patch_school_field
+    patch_fields_teacher = patch_school_field
+    patch_fields_teacher_and_staff = patch_school_field
+
+EOT
+
     univention-app shell ucsschool-kelvin-rest-api /var/lib/univention-appcenter/apps/ucsschool-kelvin-rest-api/data/update_openapi_client
     univention-app shell ucsschool-kelvin-rest-api /etc/init.d/ucsschool-kelvin-rest-api restart
 }
@@ -184,7 +297,14 @@ create_test_admin_account () {
 		-H "Content-Type:application/x-www-form-urlencoded" \
 		-d "username=$username" \
 		-d "password=$password" | jq -r '.access_token')"
-	curl -X POST "https://$fqdn/ucsschool/kelvin/v1/users/" \
+	udm mail/domain create --set name=school1.hamburg.de --position cn=domain,cn=mail,dc=school,dc=test
+	univention-app shell ucsschool-kelvin-rest-api /etc/init.d/ucsschool-kelvin-rest-api restart
+	echo "Waiting for Kelvin to restart"
+	until $(curl --output /dev/null --silent --head --fail "https://$fqdn/ucsschool/kelvin/v1/openapi.json"); do
+		printf '.'
+		sleep 2
+	done
+	curl --fail -X POST "https://$fqdn/ucsschool/kelvin/v1/users/" \
 		-H "Authorization: Bearer $token" \
 		-H "accept: application/json" \
 		-H "Content-Type: application/json" \
