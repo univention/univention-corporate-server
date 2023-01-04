@@ -1,3 +1,9 @@
+univention-saml (7.0.5-6) unstable; urgency=medium
+
+  * Bug #47244: update Apache ACL syntax
+
+ -- Mika Westphal <westphal@univention.de>  Wed, 04 Jan 2023 09:25:29 +0100
+
 univention-saml (7.0.5-5) unstable; urgency=medium
 
   * Bug #55348: make sure unmapping of saml LDAPAttributes always unmap

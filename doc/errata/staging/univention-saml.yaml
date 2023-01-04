@@ -1,0 +1,10 @@
+product: ucs
+release: "5.0"
+version: [2]
+scope: ucs_5.0-0-errata5.0-2
+src: univention-saml
+fix:
+desc: |
+ This update addresses the following issues:
+ * The webserver SAML config has been updated to the newest syntax standard.
+bug: [47244]
