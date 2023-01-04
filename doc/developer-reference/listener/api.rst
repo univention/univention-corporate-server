@@ -63,7 +63,7 @@ overwritten if values should be computed once on module load.
    :py:data:`attributes <your_module.attributes>`.
 
 .. py:data:: attributes
-   :type: str
+   :type: List[str]
 
    The list of attributes, for when they are changed, the module is called; see
    :py:data:`attributes <your_module.attributes>`.

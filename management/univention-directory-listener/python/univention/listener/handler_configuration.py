@@ -145,6 +145,10 @@ class ListenerModuleConfiguration(object):
 	def get_attributes(self):
 		# type: () -> List[str]
 		"""
+		FIXME: add at least logging to make it more explicit that if the wrong data type is provided,
+		the listener won't crash but just disregard the configuration and notify about all changes.
+		-> can hinder performance or even lead to infinite loops. See Bug #55217
+
 		:return: attributes of matching LDAP objects the module will be notified about if changed
 		:rtype: list(str)
 		"""
