@@ -3,7 +3,7 @@ release: "5.0"
 version: [2]
 scope: ucs_5.0-0-errata5.0-2
 src: univention-management-console-module-diagnostic
-fix:
+fix: 6.0.2-9A~5.0.0.202301041753
 desc: |
  This update addresses the following issues:
  * It is now possible to disable any diagnostic check by setting the UCR
