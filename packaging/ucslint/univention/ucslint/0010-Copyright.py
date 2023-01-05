@@ -3,7 +3,7 @@
 # Like what you see? Join us!
 # https://www.univention.com/about-us/careers/vacancies/
 #
-# Copyright (C) 2008-2022 Univention GmbH
+# Copyright (C) 2008-2023 Univention GmbH
 #
 # https://www.univention.de/
 #
@@ -45,19 +45,10 @@ RE_SKIP = re.compile(
 	)))
 RE_HASHBANG = re.compile(r'^#!')
 DEP5 = "Format: https://www.debian.org/doc/packaging-manuals/copyright-format/1.0/"
-# Like what you see? Join us!
-# https://www.univention.com/about-us/careers/vacancies/
-#
-# Copyright (C) 2004-2022 Univention GmbH
-# Like what you see? Join us!
-# https://www.univention.com/about-us/careers/vacancies/
-#
-# Copyright (C) 2004-2022 Univention GmbH
+# Copyright (C) 2004-2023 Univention GmbH
+# Copyright (C) 2004-2023 Univention GmbH
 # Copyright 2008 by
-# Like what you see? Join us!
-# https://www.univention.com/about-us/careers/vacancies/
-#
-# Copyright: 2004-2022 Univention GmbH
+# Copyright: 2004-2023 Univention GmbH
 RE_COPYRIGHT_VERSION = re.compile(r'Copyright(?:\s+\(C\)|:)?\s+([0-9, -]+)\s+(?:by|Univention\s+GmbH)')
 
 

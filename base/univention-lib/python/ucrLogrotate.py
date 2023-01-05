@@ -6,7 +6,7 @@ Univention common Python library for :command:`logrotate` configuration files.
 # Like what you see? Join us!
 # https://www.univention.com/about-us/careers/vacancies/
 #
-# Copyright 2010-2022 Univention GmbH
+# Copyright 2010-2023 Univention GmbH
 #
 # https://www.univention.de/
 #

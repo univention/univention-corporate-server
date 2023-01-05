@@ -24,7 +24,7 @@ Source code:
 
    # -*- coding: utf-8 -*-
    #
-   # Copyright 2017-2022 Univention GmbH
+   # Copyright 2017-2023 Univention GmbH
    #
    # https://www.univention.de/
    #

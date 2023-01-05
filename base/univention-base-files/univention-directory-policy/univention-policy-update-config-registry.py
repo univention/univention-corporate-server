@@ -4,7 +4,7 @@
 # Like what you see? Join us!
 # https://www.univention.com/about-us/careers/vacancies/
 #
-# Copyright 2007-2022 Univention GmbH
+# Copyright 2007-2023 Univention GmbH
 """Get UCR settings from LDAP policy."""
 #
 # https://www.univention.de/

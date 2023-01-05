@@ -7,7 +7,7 @@ package management (info/install/progress...)
 # Like what you see? Join us!
 # https://www.univention.com/about-us/careers/vacancies/
 #
-# Copyright 2012-2022 Univention GmbH
+# Copyright 2012-2023 Univention GmbH
 #
 # https://www.univention.de/
 #

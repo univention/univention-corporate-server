@@ -503,7 +503,7 @@ described in `Machine-readable debian/copyright file
    Source: https://docs.software-univention.de/
 
    Files: *
-   Copyright: 2013-2022 Univention GmbH
+   Copyright: 2013-2023 Univention GmbH
    License: AGPL
 
 

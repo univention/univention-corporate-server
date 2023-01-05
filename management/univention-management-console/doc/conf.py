@@ -17,6 +17,7 @@
 # documentation root, use os.path.abspath to make it absolute, like shown here.
 import os.path
 import sys
+from datetime import date
 sys.path.insert(0, os.path.abspath('../src'))
 
 # -- General configuration -----------------------------------------------------
@@ -42,7 +43,7 @@ master_doc = 'index'
 
 # General information about the project.
 project = u'Univention Management Console'
-copyright = u'2012-2021, Univention GmbH'
+copyright = u'2012-{}, Univention GmbH'.format(date.today().year)
 
 # The version info for the project you're documenting, acts as replacement for
 # |version| and |release|, also used in various other places throughout the

@@ -6,7 +6,7 @@
 # Like what you see? Join us!
 # https://www.univention.com/about-us/careers/vacancies/
 #
-# Copyright 2017-2022 Univention GmbH
+# Copyright 2017-2023 Univention GmbH
 #
 # https://www.univention.de/
 #
