@@ -43,6 +43,7 @@ from argparse import ArgumentParser
 from glob import glob
 import json
 import shutil
+from typing import Union
 
 from univention.listener.handler_logging import get_logger
 
@@ -52,7 +53,7 @@ from univention.appcenter.udm import search_objects, get_machine_connection, get
 from univention.appcenter.ucr import ucr_get
 from univention.appcenter.listener import LISTENER_DUMP_DIR
 
-from univention.admin.types import TypeHint
+from univention.admin.rest.client import UDM, HTTPError, Object
 
 
 logger = None
@@ -71,7 +72,13 @@ def get_app_connection(app):
 		else:
 			return None, None
 		logger.info('Using App account connection')
-		return get_read_connection(machine_account, machine_password)
+		try:
+			lo, pos = get_read_connection(machine_account, machine_password)
+		except Exception as exc:
+			logger.error("Error getting connection: %s", exc)
+			return None, None
+		else:
+			return lo, pos
 	else:
 		logger.info('Using machine connection')
 		return get_machine_connection()
@@ -110,6 +117,17 @@ def run_trigger(app):
 				pass
 
 
+def retrieve_object(udm_type: str, dn: str) -> Union[Object, None]:
+	try:
+		with open('/etc/machine.secret') as sfile:
+			secret = sfile.read()
+		udm = UDM.http(f'https://{ucr_get("ldap/master")}/univention/udm/', f'{ucr_get("hostname")}$', secret)
+		return udm.get_object(udm_type, dn)
+	except HTTPError as herror:
+		logger.info('%s - dn %s not found for udm type %s', herror, dn, udm_type)
+		return None
+
+
 def convert(app, dumped, filename, lo, pos):
 	udm_type = dumped['object_type']
 	command = dumped['command']
@@ -117,20 +135,25 @@ def convert(app, dumped, filename, lo, pos):
 	dn = dumped['dn']
 	if command == 'delete':
 		attrs = None
-		props = None
 		options = None
 	else:
-		objs = search_objects(udm_type, lo, pos, entryUUID=entry_uuid)
-		if objs:
-			attrs = objs[0].info
-			props = {
-				key: TypeHint.detect(objs[0].descriptions[key], key).decode_json(value)
-				for key, value in attrs.items()
-			}
-			options = objs[0].options
+		if app.listener_udm_version < 2:
+			objs = search_objects(udm_type, lo, pos, entryUUID=entry_uuid)
+			if objs:
+				attrs = objs[0].info
+				options = objs[0].options
+			else:
+				logger.info('EntryUUID %s not found' % entry_uuid)
+				return False
 		else:
-			logger.info('EntryUUID %s not found' % entry_uuid)
-			return False
+			obj = retrieve_object(udm_type, dn)
+			if obj:
+				attrs = obj.properties
+				opts = obj.options
+				options = [val[0] for val in opts.items() if val[1]]
+			else:
+				logger.info('dn %s not found' % dn)
+				return False
 	dst_dir = os.path.join(app.get_data_dir(), 'listener')
 	mkdir(dst_dir)
 	base = os.path.basename(filename)
@@ -140,15 +163,10 @@ def convert(app, dumped, filename, lo, pos):
 		attrs = {
 			'id': entry_uuid,
 			'object': attrs,
-			'properties': props,
 			'options': options,
 			'dn': dn,
 			'udm_object_type': udm_type,
 		}
-		if app.listener_udm_version < 2:
-			attrs.pop('properties')
-		else:
-			attrs.pop('object')
 		json.dump(attrs, fd, sort_keys=True, indent=4)
 	shutil.move(tmp, dst)
 	logger.info('%s of %s (id: %s, file: %s)' % ('conversion', dn, entry_uuid, dst))

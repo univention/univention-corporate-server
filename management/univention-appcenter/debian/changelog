@@ -1,3 +1,9 @@
+univention-appcenter (9.0.3-8) unstable; urgency=medium
+
+  * Bug #54773: write UDM type information into app JSON listener files
+
+ -- Peter Stoll <stoll.extern@univention.de>  Thu, 05 Jan 2023 16:19:31 +0100
+
 univention-appcenter (9.0.3-7) unstable; urgency=medium
 
   * Bug #55044: Simplify repository UCRVs still use unmaintained

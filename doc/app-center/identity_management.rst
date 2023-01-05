@@ -129,22 +129,16 @@ All files are JSON with one dictionary and the following content:
 ``dn``
    The distinguished name of the LDAP object.
 
-``type``
+``udm_object_type``
    The type of the object, i.e., "users/user", or "groups/group".
 
 ``object``
    A dictionary of the attributes of this object.
-   This is only set with versions lower than ``2`` in the ``ListenerUDMVersion`` app definition.
-   The content is defined by the UDM (Univention Directory Manager)
-   representation of the object. If it is null instead, the object has
-   been deleted.
+   For versions lower than ``2`` in the ``ListenerUDMVersion`` app definition the content is
+   defined by the UDM (Univention Directory Manager) representation of the object. For all other
+   versions the UDM REST API representation of the object is used.
+   If it is null instead, the object has been deleted.
 
-``properties``
-   A dictionary of the attributes of this object.
-   This is only set starting with Version ``2`` of the ``ListenerUDMVersion`` app definition.
-   The content is defined by the UDM (Univention Directory Manager) REST API
-   representation of the object. If it is null instead, the object has
-   been deleted.
 
 Logging information about the listener can found in
 :file:`/var/log/univention/listener_modules/$appid.log`.
@@ -186,6 +180,8 @@ JSON example
 
 This is an example of a JSON file for a user change. It is not complete,
 but should clarify the idea.
+
+For versions lower than ``2``:
 
 .. code:: js
 
@@ -238,6 +234,16 @@ but should clarify the idea.
            "username": "Administrator",
            "webweaverActivated": "TRUE"
        },
+       "udm_object_type": "users/user"
+   }
+
+For all other versions:
+
+.. code:: js
+
+   {
+       "dn": "uid=Administrator,cn=users,dc=sparka-43,dc=intranet",
+       "id": "b2f13544-e3cb-1037-810e-23ad4765aade",
        "properties": {
            "accountActivationDate": {
                "activation-date": null,
@@ -322,6 +328,7 @@ but should clarify the idea.
        },
        "udm_object_type": "users/user"
    }
+
 
 .. _authentication:
 

@@ -94,6 +94,7 @@ Depends:
  python3-univention-admin-diary,
  python3-univention-config-registry,
  python3-univention-directory-manager,
+ python3-univention-directory-manager-rest,
  univention-directory-manager-tools,
  univention-join,
  univention-ssh,
