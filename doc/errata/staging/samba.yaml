@@ -1,0 +1,14 @@
+product: ucs
+release: "5.0"
+version: [2]
+scope: ucs_5.0-0-errata5.0-2
+src: samba
+fix: 2:4.16.8-1A~5.0.0.202301062105
+desc: |
+ This update addresses the following issues:
+ * TODO
+bug: [55511]
+cve:
+ - CVE-2022-37966
+ - CVE-2022-37967
+ - CVE-2022-38023
