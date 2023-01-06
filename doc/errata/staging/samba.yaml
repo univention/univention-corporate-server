@@ -6,8 +6,21 @@ src: samba
 fix: 2:4.16.8-1A~5.0.0.202301062105
 desc: |
  This update addresses the following issues:
- * TODO
-bug: [55511]
+ * Samba has been updated to version 4.16.8, which fixes vulnerabilities
+   caused by the use of the rc4-hmac cipher for session keys. Please note
+   the detailed explanation in https://help.univention.com/t/20961 as well
+   as the original advisories. In cases where trust relationships between
+   UCS Samba/AD and external AD domains have been configured, these may
+   need adjustment. Please also check if the AD Domain function level of
+   your UCS domains are at 2008R2. If they are still on level 2003 then
+   the function level needs to be raised before installing the update
+   to avoid problems with Kerberos based authentication, as described
+   in the help article.
+ * Samba 5.16 has a new daemon "samba-dcerpcd" that is started automatically
+   on demand by the smbd process. Now the smbd init script also terminates
+   this service when the smbd is terminated. This avoids situations, where
+   the new daemon would not recognize changes in smb.conf of similar.
+bug: [55511, 55486]
 cve:
  - CVE-2022-37966
  - CVE-2022-37967
