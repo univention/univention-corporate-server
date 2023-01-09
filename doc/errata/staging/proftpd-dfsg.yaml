@@ -6,9 +6,7 @@ src: proftpd-dfsg
 fix: 1.3.5e+r1.3.5b-4+deb9u3
 desc: |
  This update addresses the following issue:
- 1.3.5e+r1.3.5b-4+deb9u3 (Sun, 25 Dec 2022 23:09:10 +0100)
- * Non-maintainer upload by the LTS team.
- * Fix CVE-2021-46854: It was discovered that mod_radius in ProFTPD allows
+ * CVE-2021-46854: It was discovered that `mod_radius` in ProFTPD allows
    memory disclosure to RADIUS servers because it copies blocks of 16
    characters.
 bug: [55544]
