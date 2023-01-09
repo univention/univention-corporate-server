@@ -6,8 +6,6 @@ src: grub2
 fix: 2.02~beta3-5+deb9u3A~4.4.9.202301090859
 desc: |
  This update addresses the following issues:
- 2.02~beta3-5+deb9u3 (Fri, 30 Dec 2022 12:03:03 +0100)
- * Non-maintainer upload by the ELTS team.
  * Fix CVE-2022-2601 and CVE-2022-3775: Several issues were found in GRUB2's
    font handling code, which could result in crashes and potentially execution
    of arbitrary code. These could lead to by-pass of UEFI Secure Boot on
