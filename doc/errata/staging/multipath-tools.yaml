@@ -9,7 +9,7 @@ desc: |
  * Symlink attack multipathd operates insecurely, as root, in /dev/shm (a
    sticky, world-writable directory similar to /tmp) (CVE-2022-41973)
  * Authorization bypass, multipathd daemon listens for client connections on
-   an abstract Unix socket (CVE-2022-41974)
+   an abstract UNIX socket (CVE-2022-41974)
 bug: [55539]
 cve:
 - CVE-2022-41973
