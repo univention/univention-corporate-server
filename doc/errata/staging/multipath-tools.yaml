@@ -1,0 +1,16 @@
+product: ucs
+release: "5.0"
+version: [2]
+scope: ucs_5.0-0-errata5.0-2
+src: multipath-tools
+fix: 0.7.9-3+deb10u2
+desc: |
+ This update addresses the following issues:
+ * Symlink attack multipathd operates insecurely, as root, in /dev/shm (a
+   sticky, world-writable directory similar to /tmp) (CVE-2022-41973)
+ * Authorization bypass, multipathd daemon listens for client connections on
+   an abstract Unix socket (CVE-2022-41974)
+bug: [55539]
+cve:
+- CVE-2022-41973
+- CVE-2022-41974
