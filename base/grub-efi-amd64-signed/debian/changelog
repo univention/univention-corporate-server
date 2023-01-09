@@ -1,3 +1,9 @@
+grub-efi-amd64-signed (3.0.0-3) unstable; urgency=low
+
+  * Bug #55536: Security update 2.02~beta3-5+deb9u3A
+
+ -- Philipp Hahn <hahn@univention.de>  Mon, 09 Jan 2023 14:54:47 +0100
+
 grub-efi-amd64-signed (3.0.0-2) unstable; urgency=low
 
   * Bug #53117: Bump version number for UCS 4.4-8
