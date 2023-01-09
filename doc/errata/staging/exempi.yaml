@@ -6,26 +6,97 @@ src: exempi
 fix: 2.4.1-1+deb9u1
 desc: |
  This update addresses the following issues:
- 2.4.1-1+deb9u1 (Thu, 29 Dec 2022 07:48:31 +0100)
- [ Tobias Frost ]
- * Non-maintainer upload by the Security Team.
- * Add patches to address: (Thanks to Marc Deslauriers for the backporting in
-   Ubuntu) - NULL pointer dereference in WEBP CVE-2018-12648 Thanks for Marc
-   Deslauriers from Ubuntu for preparing those patches. - 2021.07 code drop
-   fixes: (Bulletin APSB21-65) CVE-2021-36045, CVE-2021-36046, CVE-2021-36047,
-   CVE-2021-36048, CVE-2021-36050, CVE-2021-36051, CVE-2021-36052,
-   CVE-2021-36053, CVE-2021-36054, CVE-2021-36055, CVE-2021-36056,
-   CVE-2021-36057, CVE-2021-36058, CVE-2021-36064, CVE-2021-39847 - 2021.08
-   code drop fixes: - Bulletin APSB21-85: CVE-2021-40716, CVE-2021-40732 -
-   Bulletin APSB21-108: CVE-2021-42528, CVE-2021-42529, CVE-2021-42530,
-   CVE-2021-42531, CVE-2021-42532
- * Cherry-pick upstream patches for: - CVE-2018-7728, CVE-2018-7729,
-   CVE-2018-7730, CVE-2018-7731 - CVE-2017-18233, CVE-2017-18234,
-   CVE-2017-18235, CVE-2017-18236,
- CVE-2017-18237, CVE-2017-18238
+ * CVE-2017-18233: Infinite Loop in Chunk class in
+   XMPFiles/source/FormatSupport/RIFF.cpp
+ * CVE-2017-18234: Use after free via a PDF file containing JPEG data
+ * CVE-2017-18235: Assertion failure in VPXChunk class in
+   XMPFiles/source/FormatSupport/WEBP_Support.cpp
+ * CVE-2017-18236: Infinite loop in ASF_Support::ReadHeaderObject function in
+   XMPFiles/source/FormatSupport/ASF_Support.cpp
+ * CVE-2017-18237: NULL pointer dereference in
+   PostScript_Support::ConvertToDate function in
+   XMPFiles/source/FormatSupport/PostScript_Support.cpp
+ * CVE-2017-18238: Infinite loop in TradQT_Manager::ParseCachedBoxes function
+   in XMPFiles/source/FormatSupport/QuickTime_Support.cpp
+ * CVE-2018-7728: Heap-based buffer overflow in
+   third-party/zuid/interfaces/MD5.cpp:MD5Update() allows for denial of
+   service via crafted TIFF image
+ * CVE-2018-7729: Stack-based buffer overflow in
+   XMPFiles/source/FileHandlers/PostScript_Handler.cpp:PostScript_MetaHandler::ParsePSFile()
+   allows for denial of service
+ * CVE-2018-7730: Heap-based buffer overflow in PSD_MetaHandler::CacheFileData
+   function in XMPFiles/source/FormatSupport/PSIR_FileWriter.cpp allows for
+   denial of service via crafted XLS file
+ * CVE-2018-7731: NULL pointer dereference in
+   XMPFiles/source/FormatSupport/WEBP_Support.cpp:WEBP::VP8XChunk allows for
+   denial of service via crafted file
+ * CVE-2018-12648: NULL pointer dereference in
+   WEBP_Support.hpp:WEBP::GetLE32() allows for denial of service
+ * CVE-2021-36045: Out-of-bounds read vulnerability that could lead to
+   disclosure of arbitrary memory. An attacker could leverage this
+   vulnerability to bypass mitigations such as ASLR.
+ * CVE-2021-36046: Memory corruption vulnerability, potentially resulting in
+   arbitrary code execution in the context of the current user.
+ * CVE-2021-36047: Improper Input Validation vulnerability potentially
+   resulting in arbitrary code execution in the context of the current user.
+ * CVE-2021-36048: Improper Input Validation vulnerability potentially
+   resulting in arbitrary code execution in the context of the current user.
+ * CVE-2021-36050: Buffer overflow vulnerability potentially resulting in
+   arbitrary code execution in the context of the current user.
+ * CVE-2021-36051: Buffer overflow vulnerability potentially resulting in
+   arbitrary code execution in the context of the current user.
+ * CVE-2021-36052: Memory corruption vulnerability, potentially resulting in
+   arbitrary code execution in the context of the current user.
+ * CVE-2021-36053: Out-of-bounds read vulnerability that could lead to
+   disclosure of arbitrary memory. An attacker could leverage this
+   vulnerability to bypass mitigations such as ASLR.
+ * CVE-2021-36054: Buffer overflow vulnerability potentially resulting in
+   local application denial of service in the context of the current user.
+ * CVE-2021-36055: Use-after-free vulnerability that could result in arbitrary
+   code execution in the context of the current user.
+ * CVE-2021-36056: Buffer overflow vulnerability potentially resulting in
+   arbitrary code execution in the context of the current user.
+ * CVE-2021-36057: Write-what-where condition vulnerability caused during the
+   application's memory allocation process. This may cause the memory
+   management functions to become mismatched resulting in local application
+   denial of service in the context of the current user.
+ * CVE-2021-36058: Integer Overflow vulnerability potentially resulting in
+   application-level denial of service in the context of the current user.
+ * CVE-2021-36064: Buffer Underflow vulnerability which could result in
+   arbitrary code execution in the context of the current user.
+ * CVE-2021-39847: Stack-based buffer overflow vulnerability potentially
+   resulting in arbitrary code execution in the context of the current user.
+ * CVE-2021-40716: Out-of-bounds read vulnerability that could lead to
+   disclosure of sensitive memory. An attacker could leverage this
+   vulnerability to bypass mitigations such as ASLR.
+ * CVE-2021-40732: NULl pointer dereference vulnerability that could result in
+   leaking data from certain memory locations and causing a local denial of
+   service in the context of the current user.
+ * CVE-2021-42528: NULL pointer dereference vulnerability when parsing a
+   specially crafted file. An unauthenticated attacker could leverage this
+   vulnerability to achieve an application denial-of-service in the context of
+   the current user.
+ * CVE-2021-42529: Stack-based buffer overflow vulnerability potentially
+   resulting in arbitrary code execution in the context of the current user.
+ * CVE-2021-42530: Stack-based buffer overflow vulnerability potentially
+   resulting in arbitrary code execution in the context of the current user.
+ * CVE-2021-42531: Stack-based buffer overflow vulnerability potentially
+   resulting in arbitrary code execution in the context of the current user.
+ * CVE-2021-42532: Stack-based buffer overflow vulnerability potentially
+   resulting in arbitrary code execution in the context of the current user.
 bug: [55543]
 cve:
+- CVE-2017-18233
+- CVE-2017-18234
+- CVE-2017-18235
+- CVE-2017-18236
+- CVE-2017-18237
+- CVE-2017-18238
 - CVE-2018-12648
+- CVE-2018-7728
+- CVE-2018-7729
+- CVE-2018-7730
+- CVE-2018-7731
 - CVE-2021-36045
 - CVE-2021-36046
 - CVE-2021-36047
@@ -48,13 +119,3 @@ cve:
 - CVE-2021-42530
 - CVE-2021-42531
 - CVE-2021-42532
-- CVE-2018-7728
-- CVE-2018-7729
-- CVE-2018-7730
-- CVE-2018-7731
-- CVE-2017-18233
-- CVE-2017-18234
-- CVE-2017-18235
-- CVE-2017-18236
-- CVE-2017-18237
-- CVE-2017-18238
