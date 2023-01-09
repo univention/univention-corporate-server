@@ -489,9 +489,10 @@ call_joinscript 96univention-samba4.inst
 call_joinscript 98univention-samba4-saml-kerberos.inst
 ## cannot call joinscript 98univention-samba4-dns.inst here, maybe the s4-connector did not run yet
 
-# Run a samba-tool ntacl sysvolreset, this is required for the rc6 upgrade
-if [ "$1" = "configure" ] && [ -n "$2" ] && dpkg --compare-versions "$2" lt-nl 9.0.5-2; then
-	univention-config-registry commit /etc/samba/smb.conf
+if [ "$1" = "configure" ] && [ -n "$2" ]; then
+	if dpkg --compare-versions "$2" lt-nl 9.0.8-9; then
+		give_print_admin_rights
+	fi
 fi
 
 exit 0

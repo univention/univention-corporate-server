@@ -477,3 +477,43 @@ samba4_ldb_sam_module_prepend()
 		fi
 	fi
 }
+
+grant_SePrintOperatorPrivilege(){
+	local sid
+	local dn
+
+	sid="$1"
+	dn=$(ldbsearch -H /var/lib/samba/private/privilege.ldb "(&(objectSid=$sid)(privilege=SePrintOperatorPrivilege))" | sed -n 's/^dn: //p')
+
+	if [ -z "$dn" ]; then
+		dn=$(ldbsearch -H /var/lib/samba/private/privilege.ldb "(objectSid=$sid)" | sed -n 's/^dn: //p')
+		if [ -z "$dn" ]; then
+			ldbadd -H /var/lib/samba/private/privilege.ldb <<-%EOR
+			dn: sid=$sid
+			comment: added via ldbadd
+			objectSid: $sid
+			privilege: SePrintOperatorPrivilege
+			%EOR
+		else
+			ldbmodify -H /var/lib/samba/private/privilege.ldb <<-%EOR
+			dn: $dn
+			changetype: modify
+			add: privilege
+			privilege: SePrintOperatorPrivilege
+			%EOR
+		fi
+	fi
+}
+
+give_print_admin_rights(){
+	local administrator_sid
+	local domain_sid
+	local printer_admins_sid
+
+	domain_sid=$(ldbsearch -H /var/lib/samba/private/sam.ldb -s base | sed -n 's/^objectSid: //p')
+	administrator_sid="${domain_sid}-500"
+	grant_SePrintOperatorPrivilege "$administrator_sid"
+
+	printer_admins_sid="S-1-5-32-550"
+	grant_SePrintOperatorPrivilege "$printer_admins_sid"
+}

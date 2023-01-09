@@ -1,3 +1,10 @@
+univention-samba4 (9.0.8-9) unstable; urgency=medium
+
+  * Bug #54156: Grant SePrintOperatorPrivilege to Administrator
+    and Printer-Admins by default.
+
+ -- Arvid <requate@univention.de>  Mon, 09 Jan 2023 19:38:27 +0100
+
 univention-samba4 (9.0.8-8) unstable; urgency=medium
 
   * Bug #55218: Adjust joinscripts in case of schools with multiple s4 connectors
