@@ -1,3 +1,10 @@
+univention-printserver (13.0.4-2) unstable; urgency=medium
+
+  * Bug #55264: Make sure that samba-bgqd gets reloaded when
+    printers change
+
+ -- Arvid <requate@univention.de>  Mon, 09 Jan 2023 16:06:44 +0100
+
 univention-printserver (13.0.4-1) unstable; urgency=medium
 
   * Bug #54748: add dependencies to monitoring packages
