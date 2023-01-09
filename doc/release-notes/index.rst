@@ -2,6 +2,8 @@
 Release notes for the installation and update of Univention Corporate Server (UCS) |release|
 ############################################################################################
 
+Publication date of UCS |release|: 30. June 2022
+
 .. _relnotes-highlights:
 
 ******************
