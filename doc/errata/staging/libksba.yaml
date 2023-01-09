@@ -1,0 +1,13 @@
+product: ucs
+release: "5.0"
+version: [2]
+scope: ucs_5.0-0-errata5.0-2
+src: libksba
+fix: 1.3.5-2+deb10u2
+desc: |
+ This update addresses the following issue:
+ * Libksba before 1.6.3 is prone to an integer overflow vulnerability in the
+   CRL signature parser. (CVE-2022-47629)
+bug: [55542]
+cve:
+- CVE-2022-47629
