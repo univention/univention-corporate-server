@@ -425,6 +425,8 @@ def reload_smbd():
 			subprocess.call(('/usr/bin/pkill', 'samba-dcerpcd'))
 		else:
 			ud.debug(ud.LISTENER, ud.ERROR, "cups-printers: Cannot reload smbd: Both /etc/init.d/samba and pkill are missing")
+		if os.path.exists('/usr/bin/rpcclient'):
+			subprocess.call(('/usr/bin/rpcclient', 'localhost', '-P', '-c', 'enumprinters'))
 	finally:
 		listener.unsetuid()
 	reload_samba_in_postrun = False  # flag that this has been done.
