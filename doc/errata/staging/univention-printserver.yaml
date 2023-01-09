@@ -10,4 +10,6 @@ desc: |
    configuration. In Samba 4.16 there is a new service `samba-bgqd`, which
    required adjusting the way that the `cups-printers.py` listener initiates
    the reload to make Samba recognize the changes immediately.
-bug: [55264]
+ * When removing printer share definitions from samba also remove the
+   corresponding entries from the samba registry and the tdb cache file.
+bug: [55264, 55492]

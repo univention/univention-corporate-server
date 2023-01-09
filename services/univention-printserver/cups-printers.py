@@ -214,25 +214,17 @@ def handler(dn, new, old):
 
 			# Deletions done via lpadmin
 			lpadmin(['-x', old['cn'][0].decode('UTF-8')])
-			need_to_reload_samba = True
 
-		# Deletions done via editing the Samba config
-		if old.get('univentionPrinterSambaName'):
-			filename = _join_basedir_filename('/etc/samba/printers.conf.d/', old['univentionPrinterSambaName'][0].decode('UTF-8'))
-			listener.setuid(0)
-			try:
-				if os.path.exists(filename):
-					os.unlink(filename)
-			finally:
-				listener.unsetuid()
+			# Deletions done via Samba
+			if not old.get('univentionPrinterSambaName'):
+				remove_printer_from_samba(printer_name)
+				need_to_reload_samba = True
 
-		filename = _join_basedir_filename('/etc/samba/printers.conf.d/', old['cn'][0].decode('UTF-8'))
-		listener.setuid(0)
-		try:
-			if os.path.exists(filename):
-				os.unlink(filename)
-		finally:
-			listener.unsetuid()
+		if 'univentionPrinterSambaName' in changes or not filter_match(new):
+			if old.get('univentionPrinterSambaName'):
+				samba_printer_name = old['univentionPrinterSambaName'][0].decode('UTF-8')
+				remove_printer_from_samba(samba_printer_name)
+				need_to_reload_samba = True
 
 	if filter_match(new):
 		# Modifications done via UCR-Variables
@@ -399,6 +391,23 @@ def reload_cups_daemon():
 		listener.run(script, [daemon, 'reload'], uid=0)
 	else:
 		ud.debug(ud.LISTENER, ud.PROCESS, "cups-printers: no %s to init script found")
+
+
+@listener.SetUID(0)
+def remove_printer_from_samba(printername):
+	# type: () -> None
+	filename = _join_basedir_filename('/etc/samba/printers.conf.d/', printername)
+	if os.path.exists(filename):
+		os.unlink(filename)
+
+	if os.path.exists('/usr/bin/net'):
+		registry_key = 'HKLM\\Software\\Microsoft\\Windows NT\\CurrentVersion\\Print\\Printers\\%s' % (printername,)
+		subprocess.call(['/usr/bin/net', 'registry', 'deletekey_recursive', registry_key])
+
+	try:
+		os.unlink('/var/cache/samba/printing/%s.tdb' % (printername,))
+	except FileNotFoundError:
+		pass
 
 
 def reload_printer_restrictions():

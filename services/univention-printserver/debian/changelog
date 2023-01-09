@@ -1,3 +1,10 @@
+univention-printserver (13.0.5-2) unstable; urgency=medium
+
+  * Bug #55492: When removing or renaming a printer remove the
+    samba registry keys as well as the corresponding tdb cache file.
+
+ -- Arvid <requate@univention.de>  Mon, 09 Jan 2023 16:44:51 +0100
+
 univention-printserver (13.0.5-1) unstable; urgency=medium
 
   * Bug #55264: Adjust reloading samba config after adding, modifying
