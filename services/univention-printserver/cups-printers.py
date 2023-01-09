@@ -147,7 +147,6 @@ def testparm_is_true(smbconf, sectionname, varname):
 
 def handler(dn, new, old):
 	# type: (str, dict, dict) -> None
-	change_affects_this_host = False
 	need_to_reload_samba = False
 	need_to_reload_cups = False
 	printer_is_group = False
@@ -192,9 +191,10 @@ def handler(dn, new, old):
 		'univentionPrinterModel': '-m'
 	}
 
-	if (filter_match(new) or filter_match(old)):
-		change_affects_this_host = True
-		reload_samba_in_postrun = True  # default, if it isn't done earlier
+	if not (filter_match(new) or filter_match(old)):
+		return
+
+	reload_samba_in_postrun = True  # default, if it isn't done earlier
 
 	if filter_match(old):
 		if 'cn' in changes or not filter_match(new):
@@ -360,26 +360,16 @@ def handler(dn, new, old):
 			finally:
 				listener.unsetuid()
 
-	if change_affects_this_host:
-		listener.setuid(0)
-		try:
-			with open('/etc/samba/printers.conf.temp', 'w') as fp:
-				for f in os.listdir('/etc/samba/printers.conf.d'):
-					fp.write('include = %s\n' % os.path.join('/etc/samba/printers.conf.d', f))
-			os.rename('/etc/samba/printers.conf.temp', '/etc/samba/printers.conf')
+	update_samba_printers_conf()
+	reload_printer_restrictions()
 
-		finally:
-			listener.unsetuid()
+	if need_to_reload_cups:
+		reload_cups_daemon()
 
-		reload_printer_restrictions()
-
-		if need_to_reload_cups:
-			reload_cups_daemon()
-
-		if need_to_reload_samba:
-			reload_smbd()
-			time.sleep(3)
-			reload_smbd()
+	if need_to_reload_samba:
+		reload_smbd()
+		time.sleep(3)
+		reload_smbd()
 
 
 def reload_cups_daemon():
@@ -410,27 +400,28 @@ def remove_printer_from_samba(printername):
 		pass
 
 
+@listener.SetUID(0)
+def update_samba_printers_conf():
+	with open('/etc/samba/printers.conf.temp', 'w') as fp:
+		for f in os.listdir('/etc/samba/printers.conf.d'):
+			fp.write('include = %s\n' % os.path.join('/etc/samba/printers.conf.d', f))
+	os.rename('/etc/samba/printers.conf.temp', '/etc/samba/printers.conf')
+
+@listener.SetUID(0)
 def reload_printer_restrictions():
 	# type: () -> None
-	listener.setuid(0)
-	try:
-		subprocess.call(['python3', '-m', 'univention.lib.share_restrictions'])
-	finally:
-		listener.unsetuid()
+	subprocess.call(['python3', '-m', 'univention.lib.share_restrictions'])
 
 
+@listener.SetUID(0)
 def reload_smbd():
 	# type: () -> None
 	global reload_samba_in_postrun
-	listener.setuid(0)
-	try:
-		ucr_handlers.commit(listener.configRegistry, ['/etc/samba/smb.conf'])
-		if os.path.exists('/usr/bin/smbcontrol'):
-			subprocess.call(('/usr/bin/smbcontrol', 'all', 'reload-config'))
-		if os.path.exists('/usr/bin/rpcclient'):
-			subprocess.call(('/usr/bin/rpcclient', 'localhost', '-c', 'enumprinters', '-P'), stdout=subprocess.DEVNULL)
-	finally:
-		listener.unsetuid()
+	ucr_handlers.commit(listener.configRegistry, ['/etc/samba/smb.conf'])
+	if os.path.exists('/usr/bin/smbcontrol'):
+		subprocess.call(('/usr/bin/smbcontrol', 'all', 'reload-config'))
+	if os.path.exists('/usr/bin/rpcclient'):
+		subprocess.call(('/usr/bin/rpcclient', 'localhost', '-c', 'enumprinters', '-P'), stdout=subprocess.DEVNULL)
 	reload_samba_in_postrun = False  # flag that this has been done.
 
 
@@ -445,20 +436,17 @@ def initialize():
 			listener.unsetuid()
 
 
+@listener.SetUID(0)
 def clean():
 	# type: () -> None
 	global ucr_handlers
-	listener.setuid(0)
-	try:
-		for f in os.listdir('/etc/samba/printers.conf.d'):
-			if os.path.exists(os.path.join('/etc/samba/printers.conf.d', f)):
-				os.unlink(os.path.join('/etc/samba/printers.conf.d', f))
-		if os.path.exists('/etc/samba/printers.conf'):
-			os.unlink('/etc/samba/printers.conf')
-			ucr_handlers.commit(listener.configRegistry, ['/etc/samba/smb.conf'])
-		os.rmdir('/etc/samba/printers.conf.d')
-	finally:
-		listener.unsetuid()
+	for f in os.listdir('/etc/samba/printers.conf.d'):
+		if os.path.exists(os.path.join('/etc/samba/printers.conf.d', f)):
+			os.unlink(os.path.join('/etc/samba/printers.conf.d', f))
+	if os.path.exists('/etc/samba/printers.conf'):
+		os.unlink('/etc/samba/printers.conf')
+		ucr_handlers.commit(listener.configRegistry, ['/etc/samba/smb.conf'])
+	os.rmdir('/etc/samba/printers.conf.d')
 
 
 def postrun():
