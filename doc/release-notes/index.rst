@@ -142,6 +142,13 @@ Manually crafted Python code needs to be checked for compatibility with Python
 containing Python code. Customized AD-Connector mapping templates are an example
 for this. See also the :cite:t:`developer-reference` for advice.
 
+When multiple instances of the :program:`AD Connector` are operated as described
+in `Synchronization of several Active Directory domains with one UCS directory
+service
+<https://docs.software-univention.de/windows-4.4.html#ad:multiple>`_, an
+adjustment of the mapping configuration is needed and Python 3.7 compatibility
+must be ensured before the update. :uv:kb:`17754` describes the steps.
+
 It must be checked whether sufficient disk space is available. A standard
 installation requires a minimum of 6-10 GB of disk space. The update requires
 approximately 1-2 GB additional disk space to download and install the packages,
