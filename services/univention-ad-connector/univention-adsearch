@@ -129,7 +129,7 @@ if ! [ "$credentials_given" = 'true' ]; then
 		fi
 		kdestroy
 		kinit --no-addresses --password-file="${!bindpw_env}" "${!binddn_env}"
-		options+=("--kerberos=yes")
+		options+=("--use-kerberos=required")
 	fi
 fi
 
