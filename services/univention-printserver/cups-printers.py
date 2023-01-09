@@ -407,6 +407,7 @@ def update_samba_printers_conf():
 			fp.write('include = %s\n' % os.path.join('/etc/samba/printers.conf.d', f))
 	os.rename('/etc/samba/printers.conf.temp', '/etc/samba/printers.conf')
 
+
 @listener.SetUID(0)
 def reload_printer_restrictions():
 	# type: () -> None
