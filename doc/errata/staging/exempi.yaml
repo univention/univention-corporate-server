@@ -1,0 +1,60 @@
+product: ucs
+release: "4.4"
+version: [9]
+scope: ucs_4.4-0-errata4.4-9
+src: exempi
+fix: 2.4.1-1+deb9u1
+desc: |
+ This update addresses the following issues:
+ 2.4.1-1+deb9u1 (Thu, 29 Dec 2022 07:48:31 +0100)
+ [ Tobias Frost ]
+ * Non-maintainer upload by the Security Team.
+ * Add patches to address: (Thanks to Marc Deslauriers for the backporting in
+   Ubuntu) - NULL pointer dereference in WEBP CVE-2018-12648 Thanks for Marc
+   Deslauriers from Ubuntu for preparing those patches. - 2021.07 code drop
+   fixes: (Bulletin APSB21-65) CVE-2021-36045, CVE-2021-36046, CVE-2021-36047,
+   CVE-2021-36048, CVE-2021-36050, CVE-2021-36051, CVE-2021-36052,
+   CVE-2021-36053, CVE-2021-36054, CVE-2021-36055, CVE-2021-36056,
+   CVE-2021-36057, CVE-2021-36058, CVE-2021-36064, CVE-2021-39847 - 2021.08
+   code drop fixes: - Bulletin APSB21-85: CVE-2021-40716, CVE-2021-40732 -
+   Bulletin APSB21-108: CVE-2021-42528, CVE-2021-42529, CVE-2021-42530,
+   CVE-2021-42531, CVE-2021-42532
+ * Cherry-pick upstream patches for: - CVE-2018-7728, CVE-2018-7729,
+   CVE-2018-7730, CVE-2018-7731 - CVE-2017-18233, CVE-2017-18234,
+   CVE-2017-18235, CVE-2017-18236,
+ CVE-2017-18237, CVE-2017-18238
+bug: [55543]
+cve:
+- CVE-2018-12648
+- CVE-2021-36045
+- CVE-2021-36046
+- CVE-2021-36047
+- CVE-2021-36048
+- CVE-2021-36050
+- CVE-2021-36051
+- CVE-2021-36052
+- CVE-2021-36053
+- CVE-2021-36054
+- CVE-2021-36055
+- CVE-2021-36056
+- CVE-2021-36057
+- CVE-2021-36058
+- CVE-2021-36064
+- CVE-2021-39847
+- CVE-2021-40716
+- CVE-2021-40732
+- CVE-2021-42528
+- CVE-2021-42529
+- CVE-2021-42530
+- CVE-2021-42531
+- CVE-2021-42532
+- CVE-2018-7728
+- CVE-2018-7729
+- CVE-2018-7730
+- CVE-2018-7731
+- CVE-2017-18233
+- CVE-2017-18234
+- CVE-2017-18235
+- CVE-2017-18236
+- CVE-2017-18237
+- CVE-2017-18238
