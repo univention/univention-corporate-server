@@ -2,8 +2,8 @@ product: ucs
 release: "5.0"
 version: [2]
 scope: ucs_5.0-0-errata5.0-2
-src: linux
-fix: 4.19.269-1
+src: linux-latest
+fix: 105+deb10u18
 desc: |
  This updates the Linux kernel to version 4.19.269, which addresses (among
  others) the following security issues:
@@ -57,7 +57,7 @@ desc: |
  * Use-after-free in `l2cap_connect` and `l2cap_le_connect_req` in
    `net/bluetooth/l2cap_core.c` (CVE-2022-42896)
  * Memory corruption in usbmon driver (CVE-2022-43750)
-note: This is the 1sr of three parts.
+note: This is the 3rd of three parts.
 bug: [55540]
 cve:
 - CVE-2022-2978
