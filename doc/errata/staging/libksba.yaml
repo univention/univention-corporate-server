@@ -6,9 +6,7 @@ src: libksba
 fix: 1.3.5-2+deb9u2
 desc: |
  This update addresses the following issue:
- 1.3.5-2+deb9u2 (Sat, 24 Dec 2022 15:50:17 +0100)
- * Non-maintainer upload by the ELTS team.
- * Fix CVE-2022-47629: An integer overflow flaw was discovered in the CRL
+ * CVE-2022-47629: An integer overflow flaw was discovered in the CRL
    signature parser in libksba, an X.509 and CMS support library, which could
    result in denial of service or the execution of arbitrary code.
 bug: [55545]
