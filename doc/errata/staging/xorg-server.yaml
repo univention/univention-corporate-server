@@ -1,0 +1,22 @@
+product: ucs
+release: "5.0"
+version: [2]
+scope: ucs_5.0-0-errata5.0-2
+src: xorg-server
+fix: 2:1.20.4-1+deb10u7
+desc: |
+ This update addresses the following issues:
+ * X.Org Server XkbGetKbdByName use-after-free (CVE-2022-4283)
+ * X.Org Server XTestSwapFakeInput stack overflow (CVE-2022-46340)
+ * X.Org Server XIPassiveUngrab out-of-bounds access (CVE-2022-46341)
+ * X.Org Server XvdiSelectVideoNotify use-after-free (CVE-2022-46342)
+ * X.Org Server ScreenSaverSetAttributes use-after-free (CVE-2022-46343)
+ * X.Org Server XIChangeProperty out-of-bounds access (CVE-2022-46344)
+bug: [55537]
+cve:
+- CVE-2022-4283
+- CVE-2022-46340
+- CVE-2022-46341
+- CVE-2022-46342
+- CVE-2022-46343
+- CVE-2022-46344
