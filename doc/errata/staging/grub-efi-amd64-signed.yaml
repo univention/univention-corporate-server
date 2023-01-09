@@ -2,8 +2,8 @@ product: ucs
 release: "4.4"
 version: [9]
 scope: ucs_4.4-0-errata4.4-9
-src: grub2
-fix: 2.02~beta3-5+deb9u3A~4.4.9.202301090859
+src: grub-efi-amd64-signed
+fix: 3.0.0-3A~4.4.0.202301091538
 desc: |
  This update addresses the following issues:
  * Fix CVE-2022-2601 and CVE-2022-3775: Several issues were found in GRUB2's
@@ -11,7 +11,7 @@ desc: |
    of arbitrary code. These could lead to by-pass of UEFI Secure Boot on
    affected systems. Further, issues were found in image loading that could
    potentially lead to memory overflows.
-note: This is the 1st of two parts.
+note: This is the 2nd of two parts.
 bug: [55536]
 cve:
 - CVE-2022-2601
