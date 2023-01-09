@@ -3,8 +3,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: UCS 5.0 Release Notes 5.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-09-19 10:42+0200\n"
-"PO-Revision-Date: 2022-09-19 10:51+0200\n"
+"POT-Creation-Date: 2023-01-09 16:37+0100\n"
+"PO-Revision-Date: 2023-01-09 16:37+0100\n"
 "Last-Translator: Univention GmbH <packages@univention.de>\n"
 "Language-Team: Univention GmbH <packages@univention.de>\n"
 "MIME-Version: 1.0\n"
@@ -20,11 +20,15 @@ msgstr ""
 "Release Notes für die Inbetriebnahme und Aktualisierung von Univention "
 "Corporate Server (UCS) |release|"
 
-#: ../../index.rst:9
+#: ../../index.rst:5
+msgid "Publication date of UCS |release|: 30. June 2022"
+msgstr "Veröffentlichungsdatum von UCS |release|: 30. Juni 2022"
+
+#: ../../index.rst:11
 msgid "Release Highlights"
 msgstr "Release-Highlights"
 
-#: ../../index.rst:11
+#: ../../index.rst:13
 msgid ""
 "With |UCSUCS| 5.0-2, the second point release for |UCSUCS| (UCS) 5.0 is "
 "now available. It provides several feature improvements and extensions, "
@@ -36,7 +40,7 @@ msgstr ""
 " Eigenschaften sowie diverse Detailverbesserungen und Fehlerkorrekturen. "
 "Die wichtigsten Änderungen im Überblick:"
 
-#: ../../index.rst:16
+#: ../../index.rst:18
 msgid ""
 "The User Self Service was integrated into the UCS portal. Furthermore, "
 "the support for additional placeholders was extended among others, such "
@@ -47,7 +51,7 @@ msgstr ""
 "Vorname und Nachname in der E-Mail-Vorlage zum Zurücksetzen des Passworts"
 " erweitert."
 
-#: ../../index.rst:20
+#: ../../index.rst:22
 msgid ""
 "For RADIUS, users can assign a so-called service specific password. And "
 "administrators can assign dedicated VLANs to user groups to increase "
@@ -57,15 +61,15 @@ msgstr ""
 "vergeben. Und Administratoren können Benutzergruppen dedizierte VLANs "
 "zuweisen und damit die Netzwerksicherheit erhöhen."
 
-#: ../../index.rst:24
+#: ../../index.rst:26
 msgid "``SameSite`` Cookies can now be configured for UMC and SAML."
 msgstr "``SameSite`` Cookies können jetzt für UMC und SAML konfiguriert werden. "
 
-#: ../../index.rst:26
+#: ../../index.rst:28
 msgid "The AD Takeover has been made more robust."
 msgstr "Die AD-Übernahme wurde robuster gestaltet."
 
-#: ../../index.rst:28
+#: ../../index.rst:30
 msgid ""
 "Numerous performance improvements have been implemented regarding DNS, "
 "LDAP and during the sign in to UMC."
@@ -73,13 +77,13 @@ msgstr ""
 "Zahlreiche Leistungsverbesserungen bezüglich DNS, LDAP und bei der "
 "Anmeldung an der UMC wurden vorgenommen."
 
-#: ../../index.rst:31
+#: ../../index.rst:33
 msgid "The French translation for the UCS management system was updated."
 msgstr ""
 "Die französischen Übersetzung für das UCS-Managementsystem wurde "
 "aktualisiert."
 
-#: ../../index.rst:33
+#: ../../index.rst:35
 msgid ""
 "The UMC system diagnostics has been extended: Several new checks have "
 "been added and some older have been improved."
@@ -87,7 +91,7 @@ msgstr ""
 "Die UMC System-Diagnose wurde ausgebaut: Mehrere neue Checks wurden "
 "hinzugefügt und einige ältere verbessert. "
 
-#: ../../index.rst:36
+#: ../../index.rst:38
 msgid ""
 "Most packages have been migrated to Python 3. Their Python 2 counterparts"
 " are no longer installed by default and will be removed."
@@ -95,11 +99,11 @@ msgstr ""
 "Die meisten Pakete wurden auf Python 3 migriert. Deren Python 2 Varianten"
 " werden nicht länger standardmäßig installiert und werden entfernt."
 
-#: ../../index.rst:39
+#: ../../index.rst:41
 msgid "This |UCSUCS| release is based on Debian 10.12 Buster."
 msgstr "Dieses |UCSUCS| Release basiert auf Debian 10.12 *Buster*."
 
-#: ../../index.rst:41
+#: ../../index.rst:43
 msgid ""
 "Various security updates have been integrated into UCS 5.0-2, for example"
 " for :program:`Samba4`, OpenLDAP, OpenSSL, and the Linux kernel."
@@ -107,11 +111,11 @@ msgstr ""
 "Diverse Security Updates wurden in UCS 5.0-2 integriert, bspw. für "
 ":program:`Samba4`, OpenLDAP, OpenSSL, und den Linux Kernel."
 
-#: ../../index.rst:48
+#: ../../index.rst:50
 msgid "Notes about the update"
 msgstr "Hinweise zum Update"
 
-#: ../../index.rst:50
+#: ../../index.rst:52
 msgid ""
 "During the update some services in the domain may not be available "
 "temporarily, that is why the update should occur in a maintenance window."
@@ -132,11 +136,11 @@ msgstr ""
 "Umgebungen kann es sinnvoll sein, den :cite:t:`ucs-performance-guide` zu "
 "berücksichtigen."
 
-#: ../../index.rst:61
+#: ../../index.rst:63
 msgid "Recommended update order for environments with more than one UCS server"
 msgstr "Empfohlene Update-Reihenfolge für Umgebungen mit mehr als einem UCS System"
 
-#: ../../index.rst:63
+#: ../../index.rst:65
 msgid ""
 "In environments with more than one UCS system, the update order of the "
 "UCS systems must be borne in mind:"
@@ -144,7 +148,7 @@ msgstr ""
 "In Umgebungen mit mehr als einem UCS-System muss die Update-Reihenfolge "
 "der UCS-Systeme beachtet werden:"
 
-#: ../../index.rst:66
+#: ../../index.rst:68
 msgid ""
 "The authoritative version of the LDAP directory service is maintained on "
 "the |UCSPRIMARYDN| (formerly referred to as master domain controller) and"
@@ -160,11 +164,11 @@ msgstr ""
 " können, muss der |UCSPRIMARYDN| bei einem Release-Update immer als "
 "erstes System aktualisiert werden."
 
-#: ../../index.rst:75
+#: ../../index.rst:77
 msgid "UCS only available for 64 bit"
 msgstr "UCS nur noch als 64-Bit-Variante"
 
-#: ../../index.rst:77
+#: ../../index.rst:79
 msgid ""
 "UCS 5 is only provided for the x86 64 bit architecture (*amd64*). "
 "Existing 32 bit UCS systems cannot be updated to UCS 5."
@@ -172,11 +176,11 @@ msgstr ""
 "UCS 5 wird nur noch für 64-Bit-Architekturen bereitgestellt. Vorhandene "
 "32-Bit UCS Systeme können nicht auf UCS 5 aktualisiert werden."
 
-#: ../../index.rst:84
+#: ../../index.rst:86
 msgid "Simultaneous operation of UCS and Debian on UEFI systems"
 msgstr "Gleichzeitiger Betrieb von UCS und Debian auf UEFI Systemen"
 
-#: ../../index.rst:86
+#: ../../index.rst:88
 msgid ""
 "Please note that simultaneous operation of UCS and Debian on a UEFI "
 "system starting with UCS 5.0 is not supported."
@@ -184,7 +188,7 @@ msgstr ""
 "Beginnend mit UCS 5.0 wird ein gleichzeitiger Betrieb von UCS und Debian "
 "auf einem UEFI System nicht unterstützt."
 
-#: ../../index.rst:89
+#: ../../index.rst:91
 msgid ""
 "The reason for this is the GRUB boot loader of |UCSUCS|, which partly "
 "uses the same configuration files as Debian. An already installed Debian "
@@ -199,7 +203,7 @@ msgstr ""
 "nachträgliche Installation von Debian wird ebenfalls dazu führen, dass "
 "UCS 5.0 nicht mehr gebootet werden kann."
 
-#: ../../index.rst:95
+#: ../../index.rst:97
 msgid ""
 "At the following help article further hints to this topic are collected: "
 ":uv:kb:`17768`."
@@ -207,11 +211,11 @@ msgstr ""
 "An folgendem Artikel werden weitere Hinweise zu diesem Thema gesammelt: "
 ":uv:kb:`17768`."
 
-#: ../../index.rst:102
+#: ../../index.rst:104
 msgid "Local package repository"
 msgstr "Lokales Paket Repository"
 
-#: ../../index.rst:104
+#: ../../index.rst:106
 msgid ""
 "This section is relevant for environments where a :external+uv-"
 "manual:ref:`local repository <software-create-repo>` is set up. The "
@@ -234,7 +238,7 @@ msgstr ""
 " Möglichkeiten. Zunächst muss ein lokaler UCS 5 Repository Server "
 "aufgesetzt werden."
 
-#: ../../index.rst:113
+#: ../../index.rst:115
 msgid ""
 "A new UCS 5 system is installed as a |UCSPRIMARYDN| from the DVD or from "
 "a virtualized base image. Then :external+uv-manual:ref:`a local "
@@ -246,7 +250,7 @@ msgstr ""
 "manual:ref:`auf diesem System ein lokales Repository <software-create-"
 "repo>` wie in :cite:t:`ucs-manual` beschrieben eingerichtet."
 
-#: ../../index.rst:118
+#: ../../index.rst:120
 msgid ""
 "A new UCS 5 system is installed with the system role |UCSBACKUPDN|, "
 "|UCSREPLICADN| or |UCSMANAGEDNODE| from the DVD or from a virtualized "
@@ -265,7 +269,7 @@ msgstr ""
 "verwendet |UCSPRIMARYDN| auf UCS 5 aktualisiert wurde, kann der UCS 5 "
 "Repository Server der Domäne über :command:`univention-join` beitreten."
 
-#: ../../index.rst:126
+#: ../../index.rst:128
 msgid ""
 "To upgrade a system in the domain to UCS 5, the server should first be "
 "upgraded to the latest package level available for UCS 4.x. Then the "
@@ -282,11 +286,11 @@ msgstr ""
 "gesetzt. Das System kann nun über die |UCSUMC| oder über die "
 "Kommandozeile auf UCS 5 aktualisiert werden."
 
-#: ../../index.rst:136
+#: ../../index.rst:138
 msgid "Preparation of update"
 msgstr "Vorbereitung des Updates"
 
-#: ../../index.rst:138
+#: ../../index.rst:140
 msgid ""
 "Manually crafted Python code needs to be checked for compatibility with "
 "Python 3.7 before the Update and adjusted accordingly. This includes "
@@ -300,7 +304,7 @@ msgstr ""
 "Angepasste |UCSADC| Mapping Templates sind ein Beispiel. In der :cite:t"
 ":`developer-reference` finden sich weitere Hinweise."
 
-#: ../../index.rst:143
+#: ../../index.rst:145
 msgid ""
 "It must be checked whether sufficient disk space is available. A standard"
 " installation requires a minimum of 6-10 GB of disk space. The update "
@@ -313,7 +317,7 @@ msgstr ""
 "GB zusätzlichen Speicherplatz zum Herunterladen und Installieren der "
 "Pakete."
 
-#: ../../index.rst:148
+#: ../../index.rst:150
 msgid ""
 "For the update, a login should be performed on the system's local console"
 " as user ``root``, and the update should be initiated there. "
@@ -323,7 +327,7 @@ msgstr ""
 "mit dem Benutzer ``root`` durchgeführt und das Update dort gestartet "
 "werden. Alternativ kann das Update über |UCSUMC| durchgeführt werden."
 
-#: ../../index.rst:152
+#: ../../index.rst:154
 msgid ""
 "Remote updating via SSH is not recommended as this may result in the "
 "update procedure being canceled, e.g., if the network connection is "
@@ -343,7 +347,7 @@ msgstr ""
 "Tools :command:`tmux`, :command:`screen` oder :command:`at` eingesetzt "
 "werden, die auf allen UCS Systemrollen installiert sind."
 
-#: ../../index.rst:160
+#: ../../index.rst:162
 msgid ""
 "Univention provides a script that checks for problems which would prevent"
 " the successful update of the system. Prior to the update, this script "
@@ -354,7 +358,7 @@ msgstr ""
 "Dieses Skript kann vor dem Update manuell auf das System geladen und "
 "ausgeführt werden:"
 
-#: ../../index.rst:164
+#: ../../index.rst:166
 msgid ""
 "# download\n"
 "$ curl -OOf https://updates.software-univention.de/download/univention-"
@@ -398,11 +402,11 @@ msgstr ""
 "Checking ldap_schema ...                          OK\n"
 "..."
 
-#: ../../index.rst:190
+#: ../../index.rst:192
 msgid "Post processing of the update"
 msgstr "Nachbereitung des Updates"
 
-#: ../../index.rst:192
+#: ../../index.rst:194
 msgid ""
 "Following the update, new or updated join scripts need to be executed. "
 "This can be done in two ways: Either using the UMC module *Domain join* "
@@ -414,19 +418,19 @@ msgstr ""
 "UMC-Modul *Domänenbeitritt* oder durch Aufruf des Befehls :command"
 ":`univention-run-join-scripts` als Benutzer ``root``."
 
-#: ../../index.rst:196
+#: ../../index.rst:198
 msgid "Subsequently the UCS system needs to be restarted."
 msgstr "Anschließend muss das UCS-System neu gestartet werden."
 
-#: ../../index.rst:202
+#: ../../index.rst:204
 msgid "Notes on selected packages"
 msgstr "Hinweise zum Einsatz einzelner Pakete"
 
-#: ../../index.rst:207
+#: ../../index.rst:209
 msgid "Collection of usage statistics"
 msgstr "Erfassung von Nutzungsstatistiken"
 
-#: ../../index.rst:209
+#: ../../index.rst:211
 msgid ""
 "Anonymous usage statistics on the use of |UCSUMC| are collected when "
 "using the *UCS Core Edition*. The modules opened get logged to an "
@@ -440,7 +444,7 @@ msgstr ""
 "Dies ermöglicht es Univention die Entwicklung von |UCSUMC| besser auf das"
 " Kundeninteresse zuzuschneiden und Usability-Verbesserungen vorzunehmen."
 
-#: ../../index.rst:215
+#: ../../index.rst:217
 msgid ""
 "This logging is only performed when the *UCS Core Edition* license is "
 "used. The license status can be verified via the menu entry "
@@ -457,7 +461,7 @@ msgstr ""
 "Einsatz einer regulären UCS-Lizenz erfolgt keine Teilnahme an der "
 "Nutzungsstatistik."
 
-#: ../../index.rst:221
+#: ../../index.rst:223
 msgid ""
 "Independent of the license used, the statistics generation can be "
 "deactivated by setting the |UCSUCRV| :envvar:`umc/web/piwik` to *false*."
@@ -466,11 +470,11 @@ msgstr ""
 "Setzen der |UCSUCRV| :envvar:`umc/web/piwik` auf ``false`` deaktiviert "
 "werden."
 
-#: ../../index.rst:227
+#: ../../index.rst:229
 msgid "Recommended browsers for the access to |UCSUMC|"
 msgstr "Empfohlene Browser für den Zugriff auf |UCSUMC|"
 
-#: ../../index.rst:229
+#: ../../index.rst:231
 msgid ""
 "|UCSUMC| uses numerous JavaScript and CSS functions to display the web "
 "interface. Cookies need to be permitted in the browser. The following "
@@ -480,33 +484,33 @@ msgstr ""
 "JavaScript- und CSS-Funktionen. Cookies müssen im Browser zugelassen "
 "sein. Die folgenden Browser werden empfohlen:"
 
-#: ../../index.rst:233
+#: ../../index.rst:235
 msgid "Chrome as of version 85"
 msgstr "Chrome ab Version 85"
 
-#: ../../index.rst:235
+#: ../../index.rst:237
 msgid "Firefox as of version 78"
 msgstr "Firefox ab Version 78"
 
-#: ../../index.rst:237
+#: ../../index.rst:239
 msgid "Safari and Safari Mobile as of version 13"
 msgstr "Safari und Safari Mobile ab Version 13"
 
-#: ../../index.rst:239
+#: ../../index.rst:241
 msgid "Microsoft Edge as of version 88"
 msgstr "Microsoft Edge ab Version 88"
 
-#: ../../index.rst:241
+#: ../../index.rst:243
 msgid "Users running older browsers may experience display or performance issues."
 msgstr ""
 "Mit älteren Browsern können Darstellungs- oder Performanceprobleme "
 "auftreten."
 
-#: ../../index.rst:247
+#: ../../index.rst:249
 msgid "Changelog"
 msgstr "Changelog"
 
-#: ../../index.rst:249
+#: ../../index.rst:251
 msgid ""
 "You find the changes since UCS 5.0-1 in :external+uv-"
 "changelog:doc:`index`."
@@ -514,7 +518,7 @@ msgstr ""
 "Die Änderungen seit UCS 5.0-1 finden Sie in :external+uv-"
 "changelog:doc:`index`."
 
-#: ../../index.rst:257
+#: ../../index.rst:259
 msgid "Bibliography"
 msgstr "Literaturverzeichnis"
 
