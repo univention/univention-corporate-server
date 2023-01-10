@@ -99,7 +99,10 @@ def migrate_objects(_umc_instance: Instance) -> None:
 		new_object_classes = object_classes[:]
 		if b'univentionObject' not in object_classes:
 			new_object_classes.append(b'univentionObject')
-		changes = [('objectClass', object_classes, new_object_classes), ('univentionObjectType', [], [module.module for module in modules])]
+		changes = [
+			('objectClass', object_classes, new_object_classes),
+			('univentionObjectType', [], [module.module.encode('UTF-8') for module in modules]),
+		]
 		lo.modify(dn, changes)
 	raise ProblemFixed(buttons=[])
 

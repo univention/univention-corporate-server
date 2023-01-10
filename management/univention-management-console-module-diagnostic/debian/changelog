@@ -1,3 +1,9 @@
+univention-management-console-module-diagnostic (6.0.2-10) unstable; urgency=medium
+
+  * Bug #55548: encode data in modlist in 56_univention_types.py to be Python 3 compatible.
+
+ -- Maximilian Janßen <janssen@univention.de>  Tue, 10 Jan 2023 10:30:35 +0200
+
 univention-management-console-module-diagnostic (6.0.2-9) unstable; urgency=medium
 
   * Bug #55468: make it possible to deactivate diagnostic checks via UCR
