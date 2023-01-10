@@ -66,7 +66,7 @@ create_certificate_kc_vhost () {
 }
 
 wait_for_certificate_replication () {
-	local end=$(($(date +%s)+300))
+	local end=$(($(date +%s)+1500))
 	while [ "$(date +%s)" -lt "$end" ]
 	do
 		[ -d "/etc/univention/ssl/kc.broker.test/" ] &&
@@ -116,7 +116,7 @@ register_idbroker_as_sp_in_ucs () {
 		--set simplesamlNameIDAttribute=entryUUID \
 		--set simplesamlAttributes=TRUE \
 		--set attributesNameFormat="urn:oasis:names:tc:SAML:2.0:attrname-format:uri" \
-		--set LDAPattributes='entryUUID entryUUID' || rv=$?
+		--set LDAPattributes='entryUUID entryUUID' || return 1
 }
 
 add_bettermarks_app_portal_link () {
@@ -434,6 +434,38 @@ performance_optimizations_broker () {
 performance_optimizations_traeger () {
 	# just for our tests
 	ucr set ldap/database/mdb/envflags=nosync
+}
+
+setup_kelvin_udm_rest () {
+	ucr set directory/manager/rest/processes=0
+	univention-app configure ucsschool-kelvin-rest-api --set ucsschool/kelvin/processes=0 --set ucsschool/kelvin/log_level=DEBUG
+	systemctl restart univention-directory-manager-rest
+	univention-app restart ucsschool-kelvin-rest-api
+}
+
+add_broker_ca_to_host_and_idconnector () {
+	local primary_ip="${1:?missing primary ip}"
+	curl -k "https://$primary_ip/ucs-root-ca.crt" > /usr/local/share/ca-certificates/idbroker.crt
+	update-ca-certificates
+	docker cp /usr/local/share/ca-certificates/idbroker.crt "$(ucr get appcenter/apps/ucsschool-id-connector/container)":/usr/local/share/ca-certificates/idbroker.crt
+	univention-app shell ucsschool-id-connector update-ca-certificates
+}
+
+add_dns_for_provisioning_server () {
+	local broker_domain="${1:?missing broker domain}"
+	local provisioning_ip="${2:?missing provisioning ip}"
+	udm dns/forward_zone create \
+		--set zone="$broker_domain" \
+		--set nameserver="$(hostname -f)." \
+		--position="cn=dns,$(ucr get ldap/base)" || return 1
+	udm dns/host_record create \
+		--set a="$provisioning_ip" \
+		--set name=provisioning1 \
+		--position "zoneName=$broker_domain,cn=dns,$(ucr get ldap/base)" || return 1
+	while ! nslookup "provisioning1.$broker_domain" | grep -q "$provisioning_ip"; do
+		echo "Waiting for DNS..."
+		sleep 1
+	done
 }
 
 # vim:set filetype=sh ts=4:
