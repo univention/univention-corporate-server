@@ -19,6 +19,7 @@ doc_job () { # <extends> [<suffix> [<language>]]
     if [ "${pkg}" = "release-notes" ] && [ ${2} = "html" ]
     then
         echo '    GIT_DEPTH: 0'
+        echo '    GIT_STRATEGY: clone'
     fi
 	[ -n "${3+empty}" ] && echo "    language: $3"
 	echo "  extends: ${1:?extends}"
