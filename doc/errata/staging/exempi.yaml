@@ -21,9 +21,10 @@ desc: |
  * CVE-2018-7728: Heap-based buffer overflow in
    third-party/zuid/interfaces/MD5.cpp:MD5Update() allows for denial of
    service via crafted TIFF image
- * CVE-2018-7729: Stack-based buffer overflow in
-   XMPFiles/source/FileHandlers/PostScript_Handler.cpp:PostScript_MetaHandler::ParsePSFile()
-   allows for denial of service
+ * CVE-2018-7729: Stack-based buffer overflow in function
+   `PostScript_MetaHandler::ParsePSFile()` in file
+   `XMPFiles/source/FileHandlers/PostScript_Handler.cpp` allows for denial of
+   service
  * CVE-2018-7730: Heap-based buffer overflow in PSD_MetaHandler::CacheFileData
    function in XMPFiles/source/FormatSupport/PSIR_FileWriter.cpp allows for
    denial of service via crafted XLS file
