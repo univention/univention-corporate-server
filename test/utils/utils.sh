@@ -1296,9 +1296,11 @@ change_template_hostname () {
 	echo -n "$admin_password" > /tmp/join_pwd
 	univention-run-join-scripts -dcaccount "$admin_user" -dcpwd /tmp/join_pwd --force --run-scripts 05univention-bind || rv=1
 
+	# update ucs-sso
 	if [ "$server_role" = "domaincontroller_backup" ]; then
 		nscd -i hosts
 		univention-run-join-scripts -dcaccount "$admin_user" -dcpwd /tmp/join_pwd --force --run-scripts 91univention-saml || rv=1
+		nscd -i hosts
 		univention-run-join-scripts -dcaccount "$admin_user" -dcpwd /tmp/join_pwd --force --run-scripts 92univention-management-console-web-server || rv=1
 	fi
 
