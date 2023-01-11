@@ -1298,10 +1298,10 @@ change_template_hostname () {
 
 	# update ucs-sso
 	if [ "$server_role" = "domaincontroller_backup" ]; then
-		nscd -i hosts
+		service nscd stop
 		univention-run-join-scripts -dcaccount "$admin_user" -dcpwd /tmp/join_pwd --force --run-scripts 91univention-saml || rv=1
-		nscd -i hosts
 		univention-run-join-scripts -dcaccount "$admin_user" -dcpwd /tmp/join_pwd --force --run-scripts 92univention-management-console-web-server || rv=1
+		service nscd start
 	fi
 
 	if [ -e "/usr/lib/univention-install/40ucs-school-import-http-api.inst" ]; then
