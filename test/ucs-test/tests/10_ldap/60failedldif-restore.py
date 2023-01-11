@@ -35,7 +35,7 @@ def activate_quick_ldif_mode():
     subprocess.check_call(['systemctl', 'restart', 'univention-directory-listener'])
 
 
-@pytest.fixture
+@pytest.fixture()
 def udm():
     with UCSTestUDM() as udm:
         yield udm

@@ -681,7 +681,7 @@ class Test_ContainerCN:
 
 class Test_StandardContainer:
 
-    @pytest.mark.dangerous
+    @pytest.mark.dangerous()
     def test_object_move_and_standard_container_modify(self, udm):
         """move the object and modify the standard container flag at the same time"""
         # bugs: [41694]

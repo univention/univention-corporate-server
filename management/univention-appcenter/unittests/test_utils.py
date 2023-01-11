@@ -36,7 +36,7 @@
 import pytest
 
 
-@pytest.fixture
+@pytest.fixture()
 def ldap_database_file():
     return 'unittests/dependencies.ldif'
 

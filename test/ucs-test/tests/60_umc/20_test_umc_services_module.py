@@ -92,7 +92,7 @@ class Test_UMCServiceProcessHandling:
                     print("Skipped due to: %s/autostart=%s" % (SERVICE_NAME, result['autostart']))
                     self.service.return_code_result_skip()
 
-    @pytest.fixture
+    @pytest.fixture()
     def save_initial_state(self, service_module):
         self.initial_service_state_running = self.query_service_is_running(SERVICE_NAME)
 

@@ -148,12 +148,10 @@ class TestADCustomMappings(unittest.TestCase):
         )
 
         # verify that the user exists on the 'ad-side'...
-        self.assertTrue(self.adc.exists(ad_user_dn))
+        assert self.adc.exists(ad_user_dn) is True
 
         # check the value from the mapping
-        self.assertEqual(
-            self.adc.get_attribute(ad_user_dn, self.target_attribute), [test_string.encode('UTF-8')]
-        )
+        assert self.adc.get_attribute(ad_user_dn, self.target_attribute) == [test_string.encode("UTF-8")]
 
 
 if __name__ == "__main__":

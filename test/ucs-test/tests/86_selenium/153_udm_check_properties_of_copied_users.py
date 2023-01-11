@@ -34,7 +34,7 @@ ABS2TLuBeTPmcaTaUW/LCB2NYOy8GMdzR1mx8iBIu2H6/E2tiY3RIevV2OW61qY2/XRQg7YPxx3ffeUu
 nu1zAxxyBy2VguKv4SWjRFoRkIfIlHX0qVviMhSlNy2ioFLy7JcPZb+v3ftDGywUqcBiVDoea0Hn+GmxZACg=='''.strip().replace('\n', '')
 
 
-@pytest.fixture
+@pytest.fixture()
 def user_info(udm):
     """The created user will have all properties set that were removed from being copyable (Bug 49823)"""
     dn, username = udm.create_user(

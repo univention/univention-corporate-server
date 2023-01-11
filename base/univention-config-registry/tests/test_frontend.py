@@ -13,13 +13,13 @@ if sys.version_info >= (3,):
     from importlib import reload
 
 
-@pytest.fixture
+@pytest.fixture()
 def defaults(mocker):
     """Mock default value registration."""
     return mocker.patch("univention.config_registry.frontend._register_variable_default_values")
 
 
-@pytest.fixture
+@pytest.fixture()
 def gopt():
     """Set global options for frontend handler functions."""
     old = {}
@@ -37,7 +37,7 @@ def gopt():
         ucrfe.OPT_FILTERS[key][2] = value
 
 
-@pytest.fixture
+@pytest.fixture()
 def vinfo():
     """Fake variable info."""
     return {
@@ -48,7 +48,7 @@ def vinfo():
     }
 
 
-@pytest.fixture
+@pytest.fixture()
 def vcinfo():
     """Fake variable info."""
     return {
@@ -59,7 +59,7 @@ def vcinfo():
     }
 
 
-@pytest.fixture
+@pytest.fixture()
 def vrinfo():
     """Fake variable info."""
     return {
@@ -72,7 +72,7 @@ def vrinfo():
     }
 
 
-@pytest.fixture
+@pytest.fixture()
 def rinfo(request, mocker, vinfo, vcinfo, vrinfo):
     """Fake registry info."""
     info = mocker.patch("univention.config_registry.frontend._get_config_registry_info")
@@ -93,7 +93,7 @@ def rinfo(request, mocker, vinfo, vcinfo, vrinfo):
     return info
 
 
-@pytest.fixture
+@pytest.fixture()
 def run(mocker):
     """Mock frontend._run_changed."""
     return mocker.patch("univention.config_registry.frontend._run_changed")
@@ -105,14 +105,14 @@ def test_UnknownKeyException():
 
 class TestReplog(object):
 
-    @pytest.fixture
+    @pytest.fixture()
     def replog(self, monkeypatch, tmpdir, ucr0):
         """Empty UCR for replog testing."""
         log = tmpdir / "replog"
         monkeypatch.setattr(ucrfe, "REPLOG_FILE", str(log))
         return log
 
-    @pytest.fixture
+    @pytest.fixture()
     def ucrr(self, ucr0):
         ucr0["ucr/replog/enabled"] = "true"
         return ucr0
@@ -173,7 +173,7 @@ class TestHandler(object):
         mocker.patch("univention.config_registry.frontend._ucr_from_opts", return_value=ucrf)
         return ucrf
 
-    @pytest.fixture
+    @pytest.fixture()
     def handlers(self, mocker):
         h = mocker.patch("univention.config_registry.frontend.ConfigHandlers")
         h.return_value.update.return_value = set()
@@ -497,7 +497,7 @@ class TestMain(object):
         """Reset frontend global state."""
         reload(ucrfe)
 
-    @pytest.fixture
+    @pytest.fixture()
     def handlers(self, mocker, reset):
         """Mock frontend handlers."""
         h = {

@@ -41,25 +41,25 @@ from univentionunittests import import_module
 # 	mock = mocker.patch("lmdb").return_value = mocker.Mock()
 # 	return mock
 
-@pytest.fixture
+@pytest.fixture()
 def db_module(mocker):
     sys.modules['gdbm'] = mocker.Mock()
     return sys.modules['gdbm']
 
 
-@pytest.fixture
+@pytest.fixture()
 def ldap_cache():
     module = import_module("univention.ldap_cache.cache", "src/", "univention.ldap_cache.cache", use_installed=False)
     return module
 
 
-@pytest.fixture
+@pytest.fixture()
 def mocked_os(mocker):
     mocked_os = mocker.patch('univention.ldap_cache.cache.os.chown')
     return mocked_os
 
 
-@pytest.fixture
+@pytest.fixture()
 def lmdb_caches(ldap_cache, mocked_os):
     lmdb_caches = ldap_cache.LmdbCaches()
     return lmdb_caches

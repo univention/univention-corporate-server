@@ -41,13 +41,13 @@ def activate_self_registration():
         yield ucr
 
 
-@pytest.fixture
+@pytest.fixture()
 def mails():
     with capture_mails(timeout=MAILS_TIMEOUT) as mails:
         yield mails
 
 
-@pytest.fixture
+@pytest.fixture()
 def get_registration_info(ucr):
     class local:
         dns = []

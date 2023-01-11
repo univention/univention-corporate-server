@@ -51,7 +51,7 @@ def test_autoload(autoload, before, after, ucr0):
     assert ucr["baz"] == after
 
 
-@pytest.mark.slow
+@pytest.mark.slow()
 @pytest.mark.parametrize("autoload", [
     pytest.param(lambda ucr: ucr.load(), id="Default"),
     pytest.param(lambda ucr: ucr.load(autoload=UCR.Load.ALWAYS), id="Always"),

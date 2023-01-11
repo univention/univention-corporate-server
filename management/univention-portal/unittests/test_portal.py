@@ -43,7 +43,7 @@ def test_imports(dynamic_class):
 
 
 class TestPortal:
-    @pytest.fixture
+    @pytest.fixture()
     def mocked_user(self, mocker):
         user = mocker.Mock()
         user.username = "hindenkampp"
@@ -52,7 +52,7 @@ class TestPortal:
         user.headers = {}
         return user
 
-    @pytest.fixture
+    @pytest.fixture()
     def mocked_anonymous_user(self, mocker):
         user = mocker.Mock()
         user.username = None
@@ -61,7 +61,7 @@ class TestPortal:
         user.headers = {}
         return user
 
-    @pytest.fixture
+    @pytest.fixture()
     def standard_portal(self, dynamic_class, mocker, get_file_path):
         Portal = dynamic_class("Portal")
         cache_file_path = get_file_path("portal_cache.json")
@@ -70,7 +70,7 @@ class TestPortal:
         authenticator = dynamic_class("UMCAuthenticator")("ucs", "session_url", "group_cache")
         return Portal(scorer, portal_cache, authenticator)
 
-    @pytest.fixture
+    @pytest.fixture()
     def mocked_portal(self, dynamic_class, mocker):
         async def async_magic():
             return

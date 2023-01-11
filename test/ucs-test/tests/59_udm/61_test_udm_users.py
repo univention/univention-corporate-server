@@ -28,7 +28,7 @@ from univention.testing.umc import Client
 CWD = os.path.dirname(os.path.abspath(__file__))
 
 
-@pytest.fixture
+@pytest.fixture()
 def stopped_s4_connector():
     # Since the S4 connector uses a object based synchronization,
     # it is a problem to change the same object in short intervals,
@@ -40,7 +40,7 @@ def stopped_s4_connector():
         utils.start_s4connector()
 
 
-@pytest.fixture
+@pytest.fixture()
 def restart_slapd_after_test():
     yield
     utils.restart_slapd()

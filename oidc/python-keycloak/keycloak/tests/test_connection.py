@@ -44,8 +44,8 @@ class TestConnection(unittest.TestCase):
     def test_raw_get(self):
         with HTTMock(self.response_content_success):
             resp = self._conn.raw_get("/known_path")
-        self.assertEqual(resp.content, b'response_ok')
-        self.assertEqual(resp.status_code, 200)
+        assert resp.content == b"response_ok"
+        assert resp.status_code == 200
 
     def test_raw_post(self):
         @urlmatch(path="/known_path", method="post")
@@ -57,8 +57,8 @@ class TestConnection(unittest.TestCase):
         with HTTMock(response_post_success):
             resp = self._conn.raw_post("/known_path",
                                        {'field': 'value'})
-        self.assertEqual(resp.content, b'response')
-        self.assertEqual(resp.status_code, 201)
+        assert resp.content == b"response"
+        assert resp.status_code == 201
 
     def test_raw_put(self):
         @urlmatch(netloc="localhost", path="/known_path", method="put")
@@ -70,8 +70,8 @@ class TestConnection(unittest.TestCase):
         with HTTMock(response_put_success):
             resp = self._conn.raw_put("/known_path",
                                       {'field': 'value'})
-        self.assertEqual(resp.content, b'response')
-        self.assertEqual(resp.status_code, 200)
+        assert resp.content == b"response"
+        assert resp.status_code == 200
 
     def test_raw_get_fail(self):
         @urlmatch(netloc="localhost", path="/known_path", method="get")
@@ -83,8 +83,8 @@ class TestConnection(unittest.TestCase):
         with HTTMock(response_get_fail):
             resp = self._conn.raw_get("/known_path")
 
-        self.assertEqual(resp.content, b"404 page not found")
-        self.assertEqual(resp.status_code, 404)
+        assert resp.content == b"404 page not found"
+        assert resp.status_code == 404
 
     def test_raw_post_fail(self):
         @urlmatch(netloc="localhost", path="/known_path", method="post")
@@ -96,8 +96,8 @@ class TestConnection(unittest.TestCase):
         with HTTMock(response_post_fail):
             resp = self._conn.raw_post("/known_path",
                                        {'field': 'value'})
-        self.assertEqual(resp.content, str(["Start can't be blank"]).encode("utf-8"))
-        self.assertEqual(resp.status_code, 404)
+        assert resp.content == str(["Start can't be blank"]).encode("utf-8")
+        assert resp.status_code == 404
 
     def test_raw_put_fail(self):
         @urlmatch(netloc="localhost", path="/known_path", method="put")
@@ -109,40 +109,37 @@ class TestConnection(unittest.TestCase):
         with HTTMock(response_put_fail):
             resp = self._conn.raw_put("/known_path",
                                       {'field': 'value'})
-        self.assertEqual(resp.content, str(["Start can't be blank"]).encode("utf-8"))
-        self.assertEqual(resp.status_code, 404)
+        assert resp.content == str(["Start can't be blank"]).encode("utf-8")
+        assert resp.status_code == 404
 
     def test_add_param_headers(self):
         self._conn.add_param_headers("test", "value")
-        self.assertEqual(self._conn.headers,
-                         {"test": "value"})
+        assert self._conn.headers == {'test': 'value'}
 
     def test_del_param_headers(self):
         self._conn.add_param_headers("test", "value")
         self._conn.del_param_headers("test")
-        self.assertEqual(self._conn.headers, {})
+        assert self._conn.headers == {}
 
     def test_clean_param_headers(self):
         self._conn.add_param_headers("test", "value")
-        self.assertEqual(self._conn.headers,
-                         {"test": "value"})
+        assert self._conn.headers == {'test': 'value'}
         self._conn.clean_headers()
-        self.assertEqual(self._conn.headers, {})
+        assert self._conn.headers == {}
 
     def test_exist_param_headers(self):
         self._conn.add_param_headers("test", "value")
-        self.assertTrue(self._conn.exist_param_headers("test"))
-        self.assertFalse(self._conn.exist_param_headers("test_no"))
+        assert self._conn.exist_param_headers("test") is True
+        assert self._conn.exist_param_headers("test_no") is False
 
     def test_get_param_headers(self):
         self._conn.add_param_headers("test", "value")
-        self.assertTrue(self._conn.exist_param_headers("test"))
-        self.assertFalse(self._conn.exist_param_headers("test_no"))
+        assert self._conn.exist_param_headers("test") is True
+        assert self._conn.exist_param_headers("test_no") is False
 
     def test_get_headers(self):
         self._conn.add_param_headers("test", "value")
-        self.assertEqual(self._conn.headers,
-                         {"test": "value"})
+        assert self._conn.headers == {'test': 'value'}
 
     def test_KeycloakAdmin_custom_header(self):
 

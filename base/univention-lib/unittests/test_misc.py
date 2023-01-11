@@ -38,14 +38,14 @@ from .conftest import import_lib_module
 misc = import_lib_module('misc')
 
 
-@pytest.fixture
+@pytest.fixture()
 def lib_ucr(mocker, mock_ucr):
     mock_config_registry = mocker.Mock(return_value=mock_ucr)
     mocker.patch.object(misc, 'ConfigRegistry', mock_config_registry)
     return mock_ucr
 
 
-@pytest.fixture
+@pytest.fixture()
 def ucr0():
     """Non-empty fake UCR."""
     return {"key": "value"}

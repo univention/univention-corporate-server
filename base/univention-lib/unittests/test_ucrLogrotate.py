@@ -38,7 +38,7 @@ from .conftest import import_lib_module
 ucrLogrotate = import_lib_module("ucrLogrotate")
 
 
-@pytest.fixture
+@pytest.fixture()
 def logrotate_ucr(mock_ucr):
     mock_ucr["logrotate/rotate"] = "weekly"
     mock_ucr["logrotate/rotate/count"] = "12"

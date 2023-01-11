@@ -10,7 +10,7 @@ import pytest
 import univention.config_registry.misc as ucrm
 
 
-@pytest.fixture
+@pytest.fixture()
 def out():
     return StringIO()
 

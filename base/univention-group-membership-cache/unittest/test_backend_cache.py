@@ -36,19 +36,19 @@ import pytest
 from univentionunittests import import_module
 
 
-@pytest.fixture
+@pytest.fixture()
 def db_module(mocker):
     sys.modules['gdbm'] = mocker.Mock()
     return sys.modules['gdbm']
 
 
-@pytest.fixture
+@pytest.fixture()
 def backend(db_module):
     module = import_module("univention.ldap_cache.cache.backend", "src/", "univention.ldap_cache.cache.backend", use_installed=False)
     return module
 
 
-@pytest.fixture
+@pytest.fixture()
 def mocked_getMachineConnection(mocker):
     mocked_getMachineConnection = mocker.patch('univention.ldap_cache.cache.backend.getMachineConnection')
     return mocked_getMachineConnection
@@ -60,7 +60,7 @@ def caches(backend):
     return caches
 
 
-@pytest.fixture
+@pytest.fixture()
 def cache(mocker):
     cache = mocker.Mock()
     cache.ldap_filter = "ldap_filter"

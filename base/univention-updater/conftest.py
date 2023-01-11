@@ -68,7 +68,7 @@ def ucr(monkeypatch, tmpdir):
     return extra
 
 
-@pytest.fixture
+@pytest.fixture()
 def http(mocker):
     """Mock HTTP requests via py2:urllib2 / py3:urllib.requests"""
     ressources = {}
@@ -160,7 +160,7 @@ class MockPopen(object):
         cls.mock_stdout = cls.mock_stderr = b''
 
 
-@pytest.fixture
+@pytest.fixture()
 def mockpopen(monkeypatch):
     """Mock :py:meth:`subprocess.Popen()` usage"""
     monkeypatch.setattr(subprocess, 'Popen', MockPopen)
@@ -240,7 +240,7 @@ class MockFileManager(object):
         self.files[name] = ex
 
 
-@pytest.fixture
+@pytest.fixture()
 def mockopen(monkeypatch, tmpdir):
     """Mock :py:func:`open()` usage"""
     manager = MockFileManager(tmpdir)

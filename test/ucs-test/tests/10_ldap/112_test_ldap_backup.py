@@ -24,7 +24,7 @@ ldap_backup_path = Path(f"/var/univention-backup/ldap-backup_{current_date}.ldif
 ldap_backup_log_path = Path(f"/var/univention-backup/ldap-backup_{current_date}.log.gz")
 
 
-@pytest.fixture
+@pytest.fixture()
 def cleanup():
     """Remove backup files"""
     yield

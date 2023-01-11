@@ -145,7 +145,7 @@ def udm():
 @pytest.fixture(scope="module")
 def existing_username(udm):
     dn, username = udm.create_user()
-    yield username
+    return username
     # No explicit teardown required
 
 
@@ -160,7 +160,7 @@ def ucr():
 def pwc_default(ucr, existing_username):
     pwc = Check(None, username=existing_username)
     pwc.enableQualityCheck = True  # may have been overridden by univentionPolicyPWHistory
-    yield pwc
+    return pwc
 
 
 @pytest.fixture(scope="class")
@@ -175,7 +175,7 @@ def pwc_with_mspolicy(ucr, existing_username):
     pwc = Check(None, username=existing_username)
     pwc.enableQualityCheck = True  # may have been overridden by univentionPolicyPWHistory
     pwc.min_length = 8  # may have been overridden by univentionPolicyPWHistory
-    yield pwc
+    return pwc
 
 
 @pytest.fixture(scope="class")
@@ -189,7 +189,7 @@ def pwc_with_mspolicy_only(ucr, existing_username):
     pwc = Check(None, username=existing_username)
     pwc.enableQualityCheck = True  # may have been overridden by univentionPolicyPWHistory
     pwc.min_length = 8  # may have been overridden by univentionPolicyPWHistory
-    yield pwc
+    return pwc
 
 
 @pytest.fixture(scope="class")
@@ -203,7 +203,7 @@ def pwc_with_cracklib_mandatory_character_classes(ucr, existing_username):
     pwc = Check(None, username=existing_username)
     pwc.enableQualityCheck = True  # may have been overridden by univentionPolicyPWHistory
     pwc.min_length = 8  # may have been overridden by univentionPolicyPWHistory
-    yield pwc
+    return pwc
 
 
 # Ugly, each parameter has to have a fixture of the same name

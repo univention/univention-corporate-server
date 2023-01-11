@@ -9,7 +9,7 @@ import pytest
 import univention.ldif as ul
 
 
-@pytest.fixture
+@pytest.fixture()
 def dst():
     return BytesIO()
 

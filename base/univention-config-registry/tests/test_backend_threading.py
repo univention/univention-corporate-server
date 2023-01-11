@@ -17,7 +17,7 @@ class DummyLock(object):
         pass
 
 
-@pytest.mark.slow
+@pytest.mark.slow()
 class TestConfigRegistry(object):
     """Unit test for univention.config_registry.backend.ConfigRegistry"""
 

@@ -21,7 +21,7 @@ from univention.testing.umc import Client
 HOOKSPATH = '/usr/lib/python3/dist-packages/univention/admin/hooks.d/'
 
 
-@pytest.fixture
+@pytest.fixture()
 def properties():
     return {
         'name': uts.random_name(),
@@ -33,12 +33,12 @@ def properties():
     }
 
 
-@pytest.fixture
+@pytest.fixture()
 def hook_name():
     return uts.random_name()
 
 
-@pytest.fixture
+@pytest.fixture()
 def cleanup(hook_name):
     yield
     try:
@@ -51,7 +51,7 @@ def cleanup(hook_name):
         pass
 
 
-@pytest.fixture
+@pytest.fixture()
 def fn_hook():
     return '%s%s.py' % (HOOKSPATH, hook_name)
 

@@ -51,23 +51,23 @@ class TestSelect(unittest.TestCase):
     def test_select(self):
         """Select licence by LDAP search `(univentionLicenseModule=admin)`"""
         ret = ul.select('admin')
-        self.assertEqual(ret, 0)
+        assert ret == 0
         ul.free()
         ul.free()
 
     def test_getValues(self):
         """Return value from globally selected licence."""
         ret = ul.select('admin')
-        self.assertEqual(ret, 0)
+        assert ret == 0
         val = ul.getValue('univentionLicenseBaseDN')
-        self.assertIsNotNone(val)
+        assert val is not None
         ul.free()
 
     @unittest.skip('WIP')
     def test_selectDN(self):
         """Select licence by LDAP DN."""
         ret = ul.selectDN('cn=admin,cn=license,cn=univention,%s')
-        self.assertEqual(ret, 0)
+        assert ret == 0
         ul.free()
 
     @unittest.skip('WIP')
@@ -81,7 +81,7 @@ class TestSelect(unittest.TestCase):
         0b1000: Invalid search path
         """
         ret = ul.check('cn=admin,cn=license,cn=univention,%s')
-        self.assertEqual(ret, 0)
+        assert ret == 0
         ul.free()
 
 

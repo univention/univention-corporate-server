@@ -38,7 +38,7 @@ from imp import reload
 import pytest
 
 
-@pytest.fixture
+@pytest.fixture()
 def mocked_portal_config(portal_config, get_file_path):
     reload(portal_config)
     portal_config._CONF = get_file_path("config*.json")

@@ -64,7 +64,7 @@ def save_result_on_request(request_id, result, *args, **kwargs):
     umc_request.save_result(result)
 
 
-@pytest.fixture
+@pytest.fixture()
 def umc_request(request):
     if hasattr(request, "param"):
         return UMCTestRequest(request.param)
@@ -72,7 +72,7 @@ def umc_request(request):
         return UMCTestRequest({})
 
 
-@pytest.fixture
+@pytest.fixture()
 def instance(umc_module_class, mocker):
     mocker.patch.object(umc_module_class, 'finished', side_effect=save_result_on_request)
     mod = umc_module_class()

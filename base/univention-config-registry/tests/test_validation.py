@@ -52,7 +52,7 @@ def test_string(value):
 
 
 @pytest.mark.parametrize(
-    ('regex', 'expected'),
+    "regex,expected",
     [
         ('^(19|20)\\d\\d[- /.](0[1-9]|1[012])[- /.](0[1-9]|[12][0-9]|3[01])$', True),
         ('/foo\\1/', False),
@@ -70,7 +70,7 @@ def test_string_set_regex(regex, expected):
 
 
 @pytest.mark.parametrize(
-    ('value', 'regex', 'expected'),
+    "value,regex,expected",
     [
         ('http://univention.de', '^(https?)://(www)?.?(\\w+).(\\w+)/?(\\w+)?', True),
         ('2021-12-31', '^(19|20)\\d\\d[- /.](0[1-9]|1[012])[- /.](0[1-9]|[12][0-9]|3[01])$', True),
@@ -83,7 +83,7 @@ def test_string_regex(value, regex, expected):
 
 
 @pytest.mark.parametrize(
-    ("value", "expected"),
+    "value,expected",
     [
         ('http://1.2.3.4', True),
         ('https://1.2.3.4', True),
@@ -125,26 +125,26 @@ IPV6_ONLY = [
 ]
 
 
-@pytest.mark.parametrize(('value', 'expected'), IPV4)
+@pytest.mark.parametrize("value,expected", IPV4)
 def test_ipv4address(value, expected):
     ipa = ttyp.IPv4Address({})
     assert ipa.is_valid(value) == expected
 
 
-@pytest.mark.parametrize(('value', 'expected'), IPV6 + IPV6_ONLY)
+@pytest.mark.parametrize("value,expected", IPV6 + IPV6_ONLY)
 def test_ipv6address(value, expected):
     ipa = ttyp.IPv6Address({})
     assert ipa.is_valid(value) == expected
 
 
-@pytest.mark.parametrize(('value', 'expected'), IPV4 + IPV6)
+@pytest.mark.parametrize("value,expected", IPV4 + IPV6)
 def test_ipaddress(value, expected):
     ipa = ttyp.IPAddress({})
     assert ipa.is_valid(value) == expected
 
 
 @pytest.mark.parametrize(
-    ('value', 'expected'),
+    "value,expected",
     [
         ('42', True),
         ('', False),
@@ -161,7 +161,7 @@ def test_integer(value, expected):
 
 
 @pytest.mark.parametrize(
-    ('value', 'min', 'max', 'expected'),
+    "value,min,max,expected",
     [
         ('50', None, None, True),
         ('42', '10', None, True),
@@ -183,7 +183,7 @@ def test_integer_range(value, min, max, expected):
 
 
 @pytest.mark.parametrize(
-    ('min', 'max', 'expected'),
+    "min,max,expected",
     [
         (None, None, True),
         ('10', '10', True),
@@ -209,7 +209,7 @@ def test_integer_set_range(min, max, expected):
 
 
 @pytest.mark.parametrize(
-    ('value', 'expected'),
+    "value,expected",
     [
         ('-1', False),
         ('0', True),
@@ -222,7 +222,7 @@ def test_uinteger(value, expected):
 
 
 @pytest.mark.parametrize(
-    ('value', 'expected'),
+    "value,expected",
     [
         ('-1', False),
         ('0', False),
@@ -235,7 +235,7 @@ def test_pinteger(value, expected):
 
 
 @pytest.mark.parametrize(
-    ('port', 'expected'),
+    "port,expected",
     [
         ('42', True),
         ('', False),
@@ -253,7 +253,7 @@ def test_portnumber(port, expected):
 
 
 @pytest.mark.parametrize(
-    ('value', 'expected'),
+    "value,expected",
     [
         ('Yes', True),
         ('yes', True),
@@ -290,7 +290,7 @@ def test_bool(value, expected):
 
 
 @pytest.mark.parametrize(
-    ('value', 'expected'),
+    "value,expected",
     [
         ('{"name": "Egon Testmann", "salary": 9000, "email": "egon@testmail.com",}', False),
         ('{"name": "Egon Testmann", "salary": 9000, "email": "egon@testmail.com"}', True),
@@ -312,7 +312,7 @@ def var():
 
 
 @pytest.mark.parametrize(
-    ('value', 'element_type', 'separator', 'expected'),
+    "value,element_type,separator,expected",
     [
         ('abc,12,cde', 'str', None, True),
         ('"abc", "fgh" ,"cde"', 'str', None, True),
@@ -345,7 +345,7 @@ def test_list(value, element_type, separator, expected, var):
 
 
 @pytest.mark.parametrize(
-    ('value', 'error'),
+    "value,error",
     [
         ("", "not enough values to unpack (expected 5, got 0)|need more than 0 values to unpack"),
         ("#disabled", None),
@@ -386,7 +386,7 @@ def test_cron(value, error):
 
 
 @pytest.mark.parametrize(
-    ('name', 'typ'),
+    "name,typ",
     [
         ('int', ttyp.Integer),
         ('uint', ttyp.UnsignedNumber),

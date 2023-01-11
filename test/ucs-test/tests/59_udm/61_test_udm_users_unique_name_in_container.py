@@ -14,7 +14,7 @@ import univention.uldap
 from univention.config_registry import ucr
 
 
-@pytest.fixture
+@pytest.fixture()
 def username():
     return uts.random_username()
 

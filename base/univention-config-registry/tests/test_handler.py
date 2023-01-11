@@ -92,7 +92,7 @@ def test_ConfigHandler():
 
 class TestConfigHandlerDiverting(object):
 
-    @pytest.fixture
+    @pytest.fixture()
     def hdivert(self):
         return ucrh.ConfigHandlerDiverting("/divert")
 
@@ -269,13 +269,13 @@ def test_grep_variables(tmpl, vars):
     assert ucrh.grep_variables(tmpl) == vars
 
 
-@pytest.fixture
+@pytest.fixture()
 def handler0(mocker):
     """Return empty dummy handler."""
     return mocker.MagicMock(preinst=None, postinst=None, user=None, group=None, mode=None)
 
 
-@pytest.fixture
+@pytest.fixture()
 def handlers(tmpcache):
     """Return :py:class:`ConfigHandlers` instance with private cache directory."""
     handlers = ucrh.ConfigHandlers()
@@ -408,30 +408,30 @@ class TestConfigHandlers():
         assert h2._subfiles == handlers._subfiles
         assert h2._multifiles == handlers._multifiles
 
-    @pytest.mark.skip
+    @pytest.mark.skip()
     def test_update(self, handlers):
         pass
 
-    @pytest.mark.skip
+    @pytest.mark.skip()
     def test_update_divert(self, handlers):
         pass
 
-    @pytest.mark.skip
+    @pytest.mark.skip()
     def test_register(self, handlers):
         pass
 
-    @pytest.mark.skip
+    @pytest.mark.skip()
     def test_unregister(self, handlers):
         pass
 
-    @pytest.mark.skip
+    @pytest.mark.skip()
     def test_call(self, handlers):
         pass
 
-    @pytest.mark.skip
+    @pytest.mark.skip()
     def test_commit(self, handlers):
         pass
 
-    @pytest.mark.skip
+    @pytest.mark.skip()
     def test_call_handler(self, handlers):
         pass

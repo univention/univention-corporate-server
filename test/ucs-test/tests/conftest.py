@@ -84,7 +84,7 @@ def udm_session():
         yield udm
 
 
-@pytest.fixture
+@pytest.fixture()
 def selenium():
     # type: () -> Iterator[_sel.UMCSeleniumTest]
     """Browser based testing for UMC using Selenium."""

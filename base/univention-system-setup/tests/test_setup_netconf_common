@@ -20,9 +20,7 @@ from univention.management.console.modules.setup.netconf.common import \
 class TestIpv4Subnet(unittest.TestCase):
 
     def _test(self, expected, actual):
-        self.assertEqual(
-            IPv4Network(u'%s' % (expected,), False),
-            convert_udm_subnet_to_ipv4_network(actual))
+        assert IPv4Network(u"%s" % (expected,), False) == convert_udm_subnet_to_ipv4_network(actual)
 
     def test_class_a(self):
         self._test("10.0.0.0/8", "10")
@@ -37,9 +35,7 @@ class TestIpv4Subnet(unittest.TestCase):
 class TestIpv6Subnet(unittest.TestCase):
 
     def _test(self, expected, actual):
-        self.assertEqual(
-            IPv6Network(u'%s' % (expected,), False),
-            convert_udm_subnet_to_ipv6_network(actual))
+        assert IPv6Network(u"%s" % (expected,), False) == convert_udm_subnet_to_ipv6_network(actual)
 
     def test_prefix_16(self):
         self._test("1111::/20", "1111:2")
@@ -75,9 +71,7 @@ class TestIpv6Subnet(unittest.TestCase):
 class TestGenericSubnet(TestIpv4Subnet, TestIpv6Subnet):
 
     def _test(self, expected, actual):
-        self.assertEqual(
-            ip_network(u'%s' % (expected,), False),
-            convert_udm_subnet_to_network(actual))
+        assert ip_network(u"%s" % (expected,), False) == convert_udm_subnet_to_network(actual)
 
 
 if __name__ == '__main__':

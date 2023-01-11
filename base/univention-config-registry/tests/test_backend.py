@@ -328,7 +328,7 @@ class TestConfigRegistry(object):
         assert ucr0.get('baz') == 'bar'
         assert ucr0.get('bam') is None
 
-    @pytest.mark.slow
+    @pytest.mark.slow()
     def test_locking(self, ucr0):
         """Test inter-process-locking."""
         delay = 1.0

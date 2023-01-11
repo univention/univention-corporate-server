@@ -37,7 +37,7 @@ import pytest
 ANYTHING = object()
 
 
-@pytest.fixture
+@pytest.fixture()
 def custom_apps_umc(custom_apps):
     custom_apps.load('unittests/inis/umc/')
     return custom_apps

@@ -44,7 +44,7 @@ from .conftest import import_lib_module
 ucs = import_lib_module('ucs')
 
 
-@pytest.fixture
+@pytest.fixture()
 def v():
     return ucs.UCS_Version("2.3-4")
 

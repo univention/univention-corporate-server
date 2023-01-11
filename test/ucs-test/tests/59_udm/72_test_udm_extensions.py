@@ -38,14 +38,14 @@ from univention.testing.utils import (
 CWD = os.path.dirname(os.path.abspath(__file__))
 
 
-@pytest.fixture
+@pytest.fixture()
 def extension_type(request):
     result = request.param
     assert isinstance(result, str)
     return result
 
 
-@pytest.fixture
+@pytest.fixture()
 def wait_before(wait_for_replication):
     yield
     # wait for replicate before test starts

@@ -39,7 +39,7 @@ from univention.management.console.modules.appcenter.util import create_url
 
 
 @pytest.mark.parametrize(
-    ('server', 'prefix', 'username', 'password', 'port', 'expected'),
+    'server,prefix,username,password,port,expected',
     [
         ('updates.knut.univention.de', 'the/prefix', 'the_user', 'the_password', '80', 'http://the_user:the_password@updates.knut.univention.de/the/prefix'),
         ('updates.knut.univention.de', 'the/prefix', 'the_user', 'the_password', '443', 'https://the_user:the_password@updates.knut.univention.de/the/prefix'),

@@ -10,7 +10,7 @@ import pytest
 import univention.admin
 
 
-@pytest.fixture
+@pytest.fixture()
 def credentials(user_type, rad_user, ucr):
     if user_type == 'user':
         return (rad_user[0], rad_user[2])

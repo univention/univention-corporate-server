@@ -33,7 +33,7 @@ def user1(udm_session, ucr_session):
     return user_dn, username
 
 
-@pytest.fixture
+@pytest.fixture()
 def lo(ucr):
     ldap_server = ucr.get('ldap/master')
     port = ucr.get('ldap/server/port')
@@ -43,7 +43,7 @@ def lo(ucr):
     return lo
 
 
-@pytest.fixture
+@pytest.fixture()
 def ldif(ucr):
     def_admin = 'cn=Administrator,cn=users,%s' % (ucr.get('ldap/base'),)
     attribute = 'description'

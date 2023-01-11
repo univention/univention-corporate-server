@@ -68,41 +68,41 @@ def remove_old_sshkeys():
         remove_old_sshkey(master_ip)
 
 
-@pytest.fixture
+@pytest.fixture()
 def language():
     return config.get('General', 'language')
 
 
-@pytest.fixture
+@pytest.fixture()
 def server():
     return config.get('General', 'server')
 
 
-@pytest.fixture
+@pytest.fixture()
 def iso_image():
     return config.get('General', 'isoimage')
 
 
-@pytest.fixture
+@pytest.fixture()
 def environment():
     return config.get('General', 'environment')
 
 
-@pytest.fixture
+@pytest.fixture()
 def role():
     return config.get('General', 'role')
 
 
-@pytest.fixture
+@pytest.fixture()
 def master_ip():
     return config.get('General', 'master_ip')
 
 
-@pytest.fixture
+@pytest.fixture()
 def ip_address():
     return config.get('General', 'ip_address')
 
 
-@pytest.fixture
+@pytest.fixture()
 def password():
     return config.get('General', 'password')

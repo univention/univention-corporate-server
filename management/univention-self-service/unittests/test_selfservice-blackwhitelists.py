@@ -39,12 +39,12 @@ import pytest
 selfservice = import_umc_module('passwordreset')
 
 
-@pytest.fixture
+@pytest.fixture()
 def ldap_database_file():
     return 'unittests/selfservice.ldif'
 
 
-@pytest.fixture
+@pytest.fixture()
 def blacklist_ucr(selfservice_ucr):
     selfservice_ucr['umc/self-service/account-deregistration/blacklist/groups'] = 'Administrators,Domain Admins'
     selfservice_ucr['umc/self-service/account-deregistration/blacklist/users'] = ''

@@ -89,9 +89,9 @@ class TestRefcount(unittest.TestCase):
         del context
         after = sys.gettotalrefcount()
 
-        self.assertGreater(middle, before)
-        self.assertLess(after, middle)
-        self.assertEqual(before, after)
+        assert middle > before
+        assert after < middle
+        assert before == after
 
     def test_principal(self):
         context = heimdal.context()
@@ -103,9 +103,9 @@ class TestRefcount(unittest.TestCase):
         del principal
         after = sys.gettotalrefcount()
 
-        self.assertGreater(middle, before)
-        self.assertLess(after, middle)
-        self.assertEqual(before, after)
+        assert middle > before
+        assert after < middle
+        assert before == after
 
     @unittest.skip('Requires working kerberos services')
     def test_creds(self):
@@ -120,9 +120,9 @@ class TestRefcount(unittest.TestCase):
         del creds
         after = sys.gettotalrefcount()
 
-        self.assertGreater(middle, before)
-        self.assertLess(after, middle)
-        self.assertEqual(before, after)
+        assert middle > before
+        assert after < middle
+        assert before == after
 
     def test_keytab(self):
         context = heimdal.context()
@@ -135,9 +135,9 @@ class TestRefcount(unittest.TestCase):
             del keytab
             after = sys.gettotalrefcount()
 
-        self.assertGreater(middle, before)
-        self.assertLess(after, middle)
-        self.assertEqual(before, after)
+        assert middle > before
+        assert after < middle
+        assert before == after
 
     def test_salt(self):
         context = heimdal.context()
@@ -150,9 +150,9 @@ class TestRefcount(unittest.TestCase):
         del salt
         after = sys.gettotalrefcount()
 
-        self.assertGreater(middle, before)
-        self.assertLess(after, middle)
-        self.assertEqual(before, after)
+        assert middle > before
+        assert after < middle
+        assert before == after
 
     def test_enctype(self):
         context = heimdal.context()
@@ -164,9 +164,9 @@ class TestRefcount(unittest.TestCase):
         del enctype
         after = sys.gettotalrefcount()
 
-        self.assertGreater(middle, before)
-        self.assertLess(after, middle)
-        self.assertEqual(before, after)
+        assert middle > before
+        assert after < middle
+        assert before == after
 
     def test_keyblock(self):
         context = heimdal.context()
@@ -178,9 +178,9 @@ class TestRefcount(unittest.TestCase):
         del keyblock
         after = sys.gettotalrefcount()
 
-        self.assertGreater(middle, before)
-        self.assertLess(after, middle)
-        self.assertEqual(before, after)
+        assert middle > before
+        assert after < middle
+        assert before == after
 
     def test_exception(self):
         before = middle = after = 0
@@ -203,9 +203,9 @@ class TestRefcount(unittest.TestCase):
         middle = inner()
         after = sys.gettotalrefcount()
 
-        self.assertGreater(middle, before)
-        self.assertLess(after, middle)
-        self.assertEqual(before, after)
+        assert middle > before
+        assert after < middle
+        assert before == after
 
 
 class TestContext(unittest.TestCase):
@@ -214,10 +214,10 @@ class TestContext(unittest.TestCase):
 
     def test_get_permitted_enctypes(self):
         for typ in self.context.get_permitted_enctypes():
-            self.assertEqual(typ.toint(), TYPES[str(typ)])
+            assert typ.toint() == TYPES[str(typ)]
 
     def test_dir(self):
-        self.assertLessEqual({'get_permitted_enctypes'}, set(dir(self.context)))
+        assert {'get_permitted_enctypes'} <= set(dir(self.context))
 
 
 class TestPrincipal(unittest.TestCase):
@@ -234,13 +234,13 @@ class TestPrincipal(unittest.TestCase):
             heimdal.principal(object(), USER)
 
     def test_principal(self):
-        self.assertEqual(USER, str(self.principal))
+        assert USER == str(self.principal)
 
     def test_realm(self):
-        self.assertEqual(REALM, self.principal.realm())
+        assert REALM == self.principal.realm()
 
     def test_dir(self):
-        self.assertLessEqual({'realm'}, set(dir(self.principal)))
+        assert {'realm'} <= set(dir(self.principal))
 
 
 @unittest.skip('Requires working kerberos services')
@@ -253,16 +253,16 @@ class TestCreds(unittest.TestCase):
 
     def test_parse(self):
         (enctype, kvno, name) = self.creds.parse()
-        self.assertIn(enctype, TYPES)
+        assert enctype in TYPES
         self.assertInstance(kvno, int)
-        self.assertEqual(name, 'krbtgt/{0}@{0}'.format(REALM))
+        assert name == 'krbtgt/{0}@{0}'.format(REALM)
 
     @unittest.skip('WIP')
     def test_change_password(self):
         self.creds.change_password(PASSWORD)
 
     def test_dir(self):
-        self.assertEqual({'parse', 'change_password'}, set(dir(self.creds)))
+        assert {'parse', 'change_password'} == set(dir(self.creds))
 
 
 class TestKeytab(unittest.TestCase):
@@ -288,11 +288,11 @@ class TestKeytab(unittest.TestCase):
             random_flag = 0
             keytab.add(USER, KVNO, ENCSTR, PASSWORD, salt_flag, random_flag)
             ((kvno, enctype, principal, timestamp, keyblock),) = keytab.list()
-            self.assertEqual(KVNO, kvno)
-            self.assertEqual(ENCSTR, enctype)
-            self.assertEqual(USER, principal)
-            self.assertGreater(timestamp, 0)
-            self.assertNotEqual(keyblock, "")
+            assert KVNO == kvno
+            assert ENCSTR == enctype
+            assert USER == principal
+            assert timestamp > 0
+            assert keyblock != ''
 
     def test_keytab_remove_missing(self):
         with NamedTemporaryFile() as tmpfile:
@@ -300,7 +300,7 @@ class TestKeytab(unittest.TestCase):
             with self.assertRaises(heimdal.Krb5Error) as ex:
                 keytab.remove(USER, KVNO, ENCSTR)
 
-            self.assertEqual(-1765328203, ex.exception.code)  # #define KRB5_KT_NOTFOUND
+            assert -1765328203 == ex.exception.code  # #define KRB5_KT_NOTFOUND
 
     def test_keytab_remove_existing(self):
         with NamedTemporaryFile() as tmpfile:
@@ -313,7 +313,7 @@ class TestKeytab(unittest.TestCase):
     def test_dir(self):
         with NamedTemporaryFile() as tmpfile:
             keytab = heimdal.keytab(self.context, tmpfile.name)
-            self.assertLessEqual({'add', 'list', 'remove'}, set(dir(keytab)))
+            assert {'add', 'list', 'remove'} <= set(dir(keytab))
 
 
 class TestSalt(unittest.TestCase):
@@ -325,15 +325,15 @@ class TestSalt(unittest.TestCase):
     def test_salt(self):
         principal = heimdal.principal(self.context, USER)
         salt = heimdal.salt(self.context, principal)
-        self.assertEqual(self.VALUE, salt.saltvalue())
+        assert self.VALUE == salt.saltvalue()
 
     def test_salt_raw(self):
         salt = heimdal.salt_raw(self.context, self.VALUE)
-        self.assertEqual(self.VALUE, salt.saltvalue())
+        assert self.VALUE == salt.saltvalue()
 
     def test_dir(self):
         salt = heimdal.salt_raw(self.context, self.VALUE)
-        self.assertLessEqual({'saltvalue'}, set(dir(salt)))
+        assert {'saltvalue'} <= set(dir(salt))
 
 
 class TestEnctype(unittest.TestCase):
@@ -350,10 +350,10 @@ class TestEnctype(unittest.TestCase):
             heimdal.enctype(object(), ENCSTR)
 
     def test_enctype(self):
-        self.assertEqual(ENCINT, self.enctype.toint())
+        assert ENCINT == self.enctype.toint()
 
     def test_dir(self):
-        self.assertLessEqual({'toint'}, set(dir(self.enctype)))
+        assert {'toint'} <= set(dir(self.enctype))
 
 
 class TestKeyblock(unittest.TestCase):
@@ -366,23 +366,23 @@ class TestKeyblock(unittest.TestCase):
 
     def test_keyblock_principal(self):
         keyblock = heimdal.keyblock(self.context, self.enctype, PASSWORD, self.principal)
-        self.assertEqual(ENCSTR, str(keyblock.keytype()))
-        self.assertEqual(self.VALUE, keyblock.keyvalue())
+        assert ENCSTR == str(keyblock.keytype())
+        assert self.VALUE == keyblock.keyvalue()
 
     def test_keyblock_salt(self):
         salt = heimdal.salt(self.context, self.principal)
         keyblock = heimdal.keyblock(self.context, self.enctype, PASSWORD, salt)
-        self.assertEqual(ENCSTR, str(keyblock.keytype()))
-        self.assertEqual(self.VALUE, keyblock.keyvalue())
+        assert ENCSTR == str(keyblock.keytype())
+        assert self.VALUE == keyblock.keyvalue()
 
     def test_keyblock_raw(self):
         keyblock = heimdal.keyblock_raw(self.context, ENCINT, self.VALUE)
-        self.assertEqual(ENCSTR, str(keyblock.keytype()))
-        self.assertEqual(self.VALUE, keyblock.keyvalue())
+        assert ENCSTR == str(keyblock.keytype())
+        assert self.VALUE == keyblock.keyvalue()
 
     def test_dir(self):
         keyblock = heimdal.keyblock_raw(self.context, ENCINT, self.VALUE)
-        self.assertLessEqual({'keytype', 'keyvalue'}, set(dir(keyblock)))
+        assert {'keytype', 'keyvalue'} <= set(dir(keyblock))
 
 
 class TestCcache(unittest.TestCase):
@@ -397,7 +397,7 @@ class TestCcache(unittest.TestCase):
 
     def test_init(self):
         self.ccache.initialize(self.principal)
-        self.assertEqual(self.ccache.list(), [])
+        assert self.ccache.list() == []
         self.ccache.destroy()
         self.ccache.destroy()
 
@@ -423,31 +423,31 @@ class TestASN1(unittest.TestCase):
 
     def test_asn1_decode_key(self):
         (keyblock, salt, kvno) = heimdal.asn1_decode_key(self.ASN1)
-        self.assertEqual(ENCSTR, str(keyblock.keytype()))
-        self.assertEqual(self.VALUE, keyblock.keyvalue())
-        self.assertEqual(self.SALT, salt.saltvalue())
-        self.assertEqual(KVNO, kvno)
+        assert ENCSTR == str(keyblock.keytype())
+        assert self.VALUE == keyblock.keyvalue()
+        assert self.SALT == salt.saltvalue()
+        assert KVNO == kvno
 
     def test_asn1_decode_key_with_context(self):
         context = heimdal.context()
         (keyblock, salt, kvno) = heimdal.asn1_decode_key(self.ASN1, context)
-        self.assertEqual(ENCSTR, str(keyblock.keytype()))
-        self.assertEqual(self.VALUE, keyblock.keyvalue())
-        self.assertEqual(self.SALT, salt.saltvalue())
-        self.assertEqual(KVNO, kvno)
+        assert ENCSTR == str(keyblock.keytype())
+        assert self.VALUE == keyblock.keyvalue()
+        assert self.SALT == salt.saltvalue()
+        assert KVNO == kvno
 
     def test_asn1_encode_key(self):
         context = heimdal.context()
         keyblock = heimdal.keyblock_raw(context, ENCINT, self.VALUE)
         salt = heimdal.salt_raw(context, self.SALT)
         asn1 = heimdal.asn1_encode_key(keyblock, salt, KVNO)
-        self.assertEqual(self.ASN1, asn1)
+        assert self.ASN1 == asn1
 
     def test_asn1_encode_key_without_salt(self):
         context = heimdal.context()
         keyblock = heimdal.keyblock_raw(context, ENCINT, self.VALUE)
         asn1 = heimdal.asn1_encode_key(keyblock, None, KVNO)
-        self.assertIsNotNone(asn1)
+        assert asn1 is not None
 
     def test_asn1_encode_key_invalid_salt(self):
         context = heimdal.context()
@@ -462,12 +462,12 @@ class TestException(unittest.TestCase):
     def test_KRB5KDC_ERR_NONE(self):
         with self.assertRaises(heimdal.KRB5KDC_ERR_NONE) as cm:
             raise heimdal.KRB5KDC_ERR_NONE()
-        self.assertEqual(cm.exception.code, self.KRB5KDC_ERR_NONE)
+        assert cm.exception.code == self.KRB5KDC_ERR_NONE
 
     def test_exception(self):
         with self.assertRaises(heimdal.Krb5Error) as cm:
             heimdal.asn1_decode_key("")
-        self.assertIsNone(cm.exception.code)
+        assert cm.exception.code is None
 
 
 if __name__ == '__main__':

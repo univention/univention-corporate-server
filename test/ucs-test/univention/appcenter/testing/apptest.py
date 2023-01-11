@@ -401,7 +401,7 @@ else:
         client = Client(hostname=hostname, username=admin_username, password=admin_password, useragent='UCS/ucs-test')
         return client
 
-    @pytest.fixture
+    @pytest.fixture()
     def ucs_call(fqdn):
         def _run(args):
             logger.info(f'Running: {args!r}')
@@ -413,7 +413,7 @@ else:
                 subprocess.run(['ssh', fqdn] + [quote(arg) for arg in args], check=True)
         return _run
 
-    @pytest.fixture
+    @pytest.fixture()
     def ucr(umc):
         class UCR:
             def __init__(self, client):
@@ -584,7 +584,7 @@ else:
             for user in users.values():
                 user.delete()
 
-    @pytest.fixture
+    @pytest.fixture()
     def new_user(users):
         """Creates a new user and cleans up"""
         user = users()
@@ -622,12 +622,12 @@ else:
             logger.warning(f'  using {ret}')
         return os.path.abspath(ret)
 
-    @pytest.fixture
+    @pytest.fixture()
     def test_logger():
         """Our logger instance so you can print some info for pytest"""
         return logger
 
-    @pytest.fixture
+    @pytest.fixture()
     def chrome(selenium_base_url, selenium_screenshot_path):
         """A running chrome instance, controllable by selenium"""
         with Session.running_chrome(selenium_base_url, selenium_screenshot_path) as c:

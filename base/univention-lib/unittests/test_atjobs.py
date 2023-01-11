@@ -93,7 +93,7 @@ def test_remove():
     assert j is None
 
 
-@pytest.mark.skip
+@pytest.mark.skip()
 def test_running():
     j = atjobs.add('sleep 10')
     j = atjobs.load(j.nr, extended=True)

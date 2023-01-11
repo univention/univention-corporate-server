@@ -27,7 +27,7 @@ IP6 = '2001:0db8:0001:0002:0000:0000:0000:000f'
 MAC = '00:11:22:33:44:55'
 
 
-@pytest.fixture
+@pytest.fixture()
 def stopped_s4connector():
     if utils.s4connector_present():
         utils.stop_s4connector()

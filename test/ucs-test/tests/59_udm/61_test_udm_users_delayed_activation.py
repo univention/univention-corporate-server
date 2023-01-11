@@ -28,7 +28,7 @@ def run_activation_script():
     subprocess.check_call(["/usr/share/univention-directory-manager-tools/univention-delayed-account-activation"])
 
 
-@pytest.fixture
+@pytest.fixture()
 def disabled_cronjob():
     """Disable cron to avoid race"""
     handler_set(['%s=%s' % (ucrv, "# disabled")])

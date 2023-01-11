@@ -29,7 +29,7 @@ class TestModulesUnconfigured(unittest.TestCase):
 
     def test_modules(self):
         self.phase.pre()
-        self.assertFalse(self.cs.ucr_changes.get("kernel/modules"))
+        assert self.cs.ucr_changes.get("kernel/modules") is None
 
 
 class TestModulesChanged(unittest.TestCase):
@@ -57,7 +57,7 @@ class TestModulesChanged(unittest.TestCase):
 
     def test_modules(self):
         self.phase.pre()
-        self.assertEqual("bridge;dummy", self.cs.ucr_changes.get("kernel/modules"))
+        assert "bridge;dummy" == self.cs.ucr_changes.get("kernel/modules")
 
 
 if __name__ == '__main__':

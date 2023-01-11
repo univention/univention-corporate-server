@@ -50,25 +50,25 @@ def import_udm_module(udm_path):
     return import_module(udm_path, umc_src_path, python_module_name, use_installed)
 
 
-@pytest.fixture
+@pytest.fixture()
 def ldap_database_file():
     return None
 
 
-@pytest.fixture
+@pytest.fixture()
 def ldap_database(ldap_database_file, empty_ldap_database):
     if ldap_database_file:
         empty_ldap_database.fill(ldap_database_file)
     return empty_ldap_database
 
 
-@pytest.fixture
+@pytest.fixture()
 def empty_ldap_database():
     database = Database()
     return database
 
 
-@pytest.fixture
+@pytest.fixture()
 def lo(ldap_database):
     from univention.admin.uldap import access
     lo = MockedAccess()
@@ -78,6 +78,6 @@ def lo(ldap_database):
     return lo
 
 
-@pytest.fixture
+@pytest.fixture()
 def pos():
     return MockedPosition()

@@ -48,7 +48,7 @@ CATEGORY = [
 ]
 
 
-@pytest.fixture
+@pytest.fixture()
 def parse():
     # type: () -> Iterator[Callable[[str], Iterator[Tuple[str, Dict[str, str]]]]]
     """Setup parser."""
@@ -90,17 +90,17 @@ def parse():
             else:
                 raise AssertionError(groups)
 
-    yield f
+    return f
 
 
-@pytest.fixture
+@pytest.fixture()
 def tmplog(tmpdir):
     """Setup temporary logging."""
     tmp = tmpdir.ensure('log')
     fd = ud.init(str(tmp), ud.NO_FLUSH, ud.FUNCTION)
     assert hasattr(fd, 'write')
 
-    yield tmp
+    return tmp
 
 
 @pytest.mark.parametrize('stream,idx', [('stdout', 0), ('stderr', 1)])

@@ -28,7 +28,7 @@ def udm_session():
         yield udm
 
 
-@pytest.fixture
+@pytest.fixture()
 def ssp():
     password = uts.random_string().encode('utf-8')
     nt = passlib.hash.nthash.hash(password).upper().encode('utf-8')

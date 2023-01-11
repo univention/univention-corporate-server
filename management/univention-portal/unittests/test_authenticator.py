@@ -40,7 +40,7 @@ import tornado
 from univentionunittests import import_module
 
 
-@pytest.fixture
+@pytest.fixture()
 def user_module(request):
     use_installed = request.config.getoption("--installed-portal")
     return import_module("univention.portal.user", "python/", "univention.portal.user", use_installed=use_installed)
@@ -58,7 +58,7 @@ class TestUMCAuthenticator:
     _username = "TestUser"
     _groups = ["TestGroup"]
 
-    @pytest.fixture
+    @pytest.fixture()
     def mocked_authenticator(self, dynamic_class, patch_object_module, mocker):
         Authenticator = dynamic_class("UMCAuthenticator")
         mocked_group_cache = mocker.Mock()

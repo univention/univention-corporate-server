@@ -30,33 +30,33 @@ class TestProfile(unittest.TestCase):
 
     def test_same(self):
         """Test reading unmodified."""
-        self.assertEqual(self.ucr.get('foo'), self.wrap.get('foo'))
+        assert self.ucr.get("foo") == self.wrap.get("foo")
 
     def test_uncommited(self):
         """Test reading uncommitted."""
         self.wrap.set('foo', 'bar')
-        self.assertNotEqual(self.ucr.get('foo'), self.wrap.get('foo'))
+        assert self.ucr.get("foo") != self.wrap.get("foo")
 
     def test_committed(self):
         """Test reading committed."""
         self.wrap.set('foo', 'bar')
         self.wrap.commit()
         self.ucr.load()
-        self.assertEqual(self.ucr.get('foo'), self.wrap.get('foo'))
+        assert self.ucr.get("foo") == self.wrap.get("foo")
 
     def test_revert(self):
         """Test reading revert."""
         self.wrap.set('foo', 'bar')
         self.wrap.set('foo', None)
         self.wrap.commit()
-        self.assertEqual(self.ucr.get('foo'), self.wrap.get('foo'))
+        assert self.ucr.get("foo") == self.wrap.get("foo")
 
     def test_transaction(self):
         """Test transaction commit."""
         with self.wrap:
             self.wrap.set('foo', 'bar')
         self.ucr.load()
-        self.assertEqual(self.ucr.get('foo'), 'bar')
+        assert self.ucr.get("foo") == "bar"
 
     def test_transaction_fail(self):
         """Test transaction aborted."""
@@ -69,7 +69,7 @@ class TestProfile(unittest.TestCase):
         else:
             self.fail('Failed to propagate exception')
         self.ucr.load()
-        self.assertNotEqual(self.ucr.get('foo'), 'bar')
+        assert self.ucr.get("foo") != "bar"
 
 
 if __name__ == '__main__':

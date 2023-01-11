@@ -17,7 +17,7 @@ from univention.lib.ucs import UCS_Version
 UM = M.UniventionMirror
 
 
-@pytest.fixture
+@pytest.fixture()
 def m(tmpdir, ucr, http):
     """Mock UCS repository mirror."""
     ucr({

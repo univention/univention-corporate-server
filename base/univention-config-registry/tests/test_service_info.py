@@ -9,13 +9,13 @@ import pytest
 import univention.service_info as usi
 
 
-@pytest.fixture
+@pytest.fixture()
 def service():
     """Empty service info."""
     return usi.Service()
 
 
-@pytest.fixture
+@pytest.fixture()
 def mins(service):
     """Minimum service info."""
     for key in service.REQUIRED:
@@ -23,7 +23,7 @@ def mins(service):
     return service
 
 
-@pytest.fixture
+@pytest.fixture()
 def maxs(mins):
     """Maximum service info."""
     for key in mins.OPTIONAL:
@@ -33,7 +33,7 @@ def maxs(mins):
 
 class TestService(object):
 
-    @pytest.fixture
+    @pytest.fixture()
     def popen(self, mocker):
         """Fake subprocess.Popen() call."""
         mock = mocker.patch("subprocess.Popen")
@@ -131,7 +131,7 @@ class TestServiceInfo(object):
         services = base.join(usi.ServiceInfo.SERVICES)
         return Namespace(base=base, services=services)
 
-    @pytest.fixture
+    @pytest.fixture()
     def setup(self, setup0):
         """Fake populated service info files."""
         setup0.services.mkdir()
@@ -143,12 +143,12 @@ class TestServiceInfo(object):
         setup0.services.join(usi.ServiceInfo.CUSTOMIZED).write("[b]\ndescription=B\nprograms=B\n")
         return setup0
 
-    @pytest.fixture
+    @pytest.fixture()
     def services0(self, setup0):
         """Empty service info instance."""
         return usi.ServiceInfo(install_mode=True)
 
-    @pytest.fixture
+    @pytest.fixture()
     def services(self, setup):
         """Service info instance."""
         return usi.ServiceInfo()

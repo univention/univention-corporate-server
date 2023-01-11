@@ -9,7 +9,7 @@ import pytest
 import univention.config_registry_info as ucri
 
 
-@pytest.fixture
+@pytest.fixture()
 def variable():
     """Complete UCR variable description."""
     v = ucri.Variable()
@@ -19,7 +19,7 @@ def variable():
     return v
 
 
-@pytest.fixture
+@pytest.fixture()
 def category():
     """Complete UCR category description."""
     c = ucri.Category()
@@ -75,7 +75,7 @@ class TestConfigRegistryInfo(object):
         variables = base.join(ucri.ConfigRegistryInfo.VARIABLES)
         return Namespace(base=base, categories=categories, variables=variables)
 
-    @pytest.fixture
+    @pytest.fixture()
     def setup(self, setup0):
         """Fake populated UCR info files."""
         setup0.categories.mkdir()
@@ -88,12 +88,12 @@ class TestConfigRegistryInfo(object):
         setup0.variables.join("d.cfg").write("[key/.*/abc]\nDescription=description\nType=int\nCategories=category\n\n")
         return setup0
 
-    @pytest.fixture
+    @pytest.fixture()
     def info0(self, setup0):
         """Empty registry info instance."""
         return ucri.ConfigRegistryInfo(install_mode=True)
 
-    @pytest.fixture
+    @pytest.fixture()
     def info(self, setup):
         """Registry info instance."""
         return ucri.ConfigRegistryInfo()

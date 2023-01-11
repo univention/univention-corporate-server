@@ -135,7 +135,7 @@ UCSOverviewCategory = False'''
     return Apps().find('apache')
 
 
-@pytest.yield_fixture
+@pytest.yield_fixture()
 def installed_apache_docker_app(apache_docker_app):
     with install_app(apache_docker_app) as app:
         yield app

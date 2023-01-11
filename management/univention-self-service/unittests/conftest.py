@@ -37,7 +37,7 @@ import pytest
 from six import get_method_self
 
 
-@pytest.fixture
+@pytest.fixture()
 def mocked_conn(mocker, lo, pos):
     from univentionunittests.umc import import_umc_module
     selfservice = import_umc_module('passwordreset')
@@ -50,7 +50,7 @@ def mocked_conn(mocker, lo, pos):
     get_method_self(umc_ldap.machine_connection).__dict__['_LDAP__ldap_connections'].clear()
 
 
-@pytest.fixture
+@pytest.fixture()
 def selfservice_ucr(mocker, mock_ucr):
     from univentionunittests.umc import import_umc_module
     from univention.config_registry import ConfigRegistry
@@ -77,7 +77,7 @@ def selfservice_ucr(mocker, mock_ucr):
     return mock_ucr
 
 
-@pytest.fixture
+@pytest.fixture()
 def selfservice_instance(umc_module_class, mocker):
     from univentionunittests.umc import import_umc_module, save_result_on_request
     selfservice = import_umc_module('passwordreset')
