@@ -84,8 +84,6 @@ case "$1" in
 		repository_protocol="${repository_online_server%://*}"
 		# use HTTP if no protocol is specified
 		[ "$repository_protocol" = "$repository_online_server" ] && repository_protocol="http"
-		# use proxy/http as fallback if proxy/https is not specified
-		[ -z "${proxy_https:-}" ] && [ -n "${proxy_http:-}" ] && proxy_https="$proxy_http"
 
 		msg_prefix="proxy"
 		if [ -n "$proxy_http" ] && [ "$repository_protocol" = "http" ] ; then

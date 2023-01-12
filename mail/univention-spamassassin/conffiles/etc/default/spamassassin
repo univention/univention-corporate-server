@@ -41,8 +41,6 @@ else:
 @!@
 if configRegistry.get('proxy/http'):
 	print('http_proxy="%s"' % configRegistry['proxy/http'])
-	if not configRegistry.get('proxy/https'):
-		print('https_proxy="%s"' % configRegistry['proxy/http'])
 
 if configRegistry.get('proxy/https'):
 	print('https_proxy="%s"' % configRegistry['proxy/https'])

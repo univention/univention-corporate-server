@@ -9,6 +9,7 @@ Description[de]=Der zu verwendende Proxyserver für HTTPS-Verbindungen, z.B. <ht
 Description[en]=The proxy server for HTTPS connections, e.g. <http://192.168.1.100:3128>. If the proxy requires authentication, the username and the password can be provided in the format <http://username:password@192.168.1.100:3128>.
 Type=url_proxy
 Categories=system-network
+Default=@%@proxy/http@%@
 
 [proxy/no_proxy]
 Description[de]=Eine Komma-separierte Liste von Domänennamen, für die der Proxy nicht verwendet werden soll. Eine Ausnahme für eine Domäne wie univention.de wirkt sich auch auf eine Unterdomäne wie apt.univention.de aus.

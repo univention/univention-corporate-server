@@ -17,8 +17,6 @@ if proxy:
     if '://' not in proxy:
         proxy = 'http://%s' % proxy
     print_proxy(proxy, 'http')
-    if not configRegistry.get('proxy/https', None):
-        print_proxy(proxy, 'https')
 
 proxy = configRegistry.get('proxy/https', None)
 if proxy:
