@@ -1,0 +1,12 @@
+product: ucs
+release: "5.0"
+version: [2]
+scope: ucs_5.0-0-errata5.0-2
+src: libtasn1-6
+fix: 4.13-3+deb10u1
+desc: |
+ This update addresses the following issue:
+ * Out-of-bound access in ETYPE_OK (CVE-2021-46848)
+bug: [55566]
+cve:
+- CVE-2021-46848
