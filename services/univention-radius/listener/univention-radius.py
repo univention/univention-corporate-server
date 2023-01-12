@@ -63,11 +63,11 @@ class AppListener(ListenerModuleHandler):
             self.run_update = True
             self.logger.info('config update triggered (move)')
         elif (b'univentionRadiusClient' in old.get('objectClass', []) or b'univentionRadiusClient' in new.get('objectClass', [])) and (
-                set(old.get('univentionRadiusClientSharedSecret', [])) != set(new.get('univentionRadiusClientSharedSecret', [])) or
-                set(old.get('univentionRadiusClientType', [])) != set(new.get('univentionRadiusClientType', [])) or
-                set(old.get('univentionRadiusClientVirtualServer', [])) != set(new.get('univentionRadiusClientVirtualServer', [])) or
-                set(old.get('aRecord', [])) != set(new.get('aRecord', [])) or
-                set(old.get('aAAARecord', [])) != set(new.get('aAAARecord', []))
+            set(old.get('univentionRadiusClientSharedSecret', [])) != set(new.get('univentionRadiusClientSharedSecret', []))
+            or set(old.get('univentionRadiusClientType', [])) != set(new.get('univentionRadiusClientType', []))
+            or set(old.get('univentionRadiusClientVirtualServer', [])) != set(new.get('univentionRadiusClientVirtualServer', []))
+            or set(old.get('aRecord', [])) != set(new.get('aRecord', []))
+            or set(old.get('aAAARecord', [])) != set(new.get('aAAARecord', []))
         ):
             self.run_update = True
             self.logger.info('config update triggered')
