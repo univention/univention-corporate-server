@@ -420,17 +420,16 @@ Proxy access configuration
 
 The majority of the command line tools which access web servers (e.g.,
 :command:`wget`, :command:`elinks` or :command:`curl`) check whether the
-environment variable ``http_proxy`` is set. If this is the case, the proxy
-server set in this variable is used automatically.
+environment variables :envvar:`http_proxy` or :envvar:`https_proxy` are set. If this is the case, the proxy
+server set in these variables is used automatically.
 
-The |UCSUCRV| :envvar:`proxy/http` can also be used to activate the setting of
-this environment variable via an entry in :file:`/etc/profile`.
+The |UCSUCRV| :envvar:`proxy/http` and :envvar:`proxy/https` can also be used to activate the setting of
+these environment variables through an entry in :file:`/etc/profile`.
 
-The proxy URL must be specified for this, e.g., ``http://192.0.2.100``. The
-proxy port can be specified in the proxy URL using a colon, e.g.,
-``http://192.0.2.100:3128``. If the proxy requires authentication for the
-accessing user, this can be provided in the form
-:samp:`http://{username}:{password}@192.0.2.100`.
+The proxy URL must be specified for this, for example :samp:`http://192.0.2.100`. The
+proxy port can be specified in the proxy URL using a colon, for example
+:samp:`http://192.0.2.100:3128`. If the proxy requires authentication,
+this can be provided in the form :samp:`http://{username}:{password}@192.0.2.100`.
 
 The environment variable is not adopted for sessions currently opened. A new login
 is required for the change to be activated.

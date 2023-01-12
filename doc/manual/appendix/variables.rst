@@ -1114,6 +1114,12 @@ This appendix lists the |UCSUCRV|\ s mentioned in the document.
    see :ref:`computers-configuring-proxy-access`.
 
 
+.. envvar:: proxy/https
+
+   Defines the HTTPS proxy server on the UCS host system. For more information,
+   see :ref:`computers-configuring-proxy-access`.
+
+
 .. envvar:: proxy/no_proxy
 
    Defines a list of domains that are not used over a HTTP proxy. Entries are
