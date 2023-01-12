@@ -45,7 +45,7 @@ def get_code_position(depth=1, line_length=80, fill_char='.', prefix="# ", color
 	if hasattr(sys, '_getframe'):
 		# not every Python version has a _getframe function. We will only
 		# return a separator, if we cannot determine the position.
-		return((color_start + prefix + "%-*s" + color_stop) % (
+		return ((color_start + prefix + "%-*s" + color_stop) % (
 			line_length - len(prefix),
 			sys._getframe(depth).f_code.co_filename + ":" + str(sys._getframe(depth).f_lineno) + ' [' + sys._getframe(depth).f_code.co_name + ']')).replace('  ', fill_char + fill_char)
 	else:
@@ -157,7 +157,7 @@ def verify_test_results_and_exit():
 		for action in actions:
 			f.seek(0)  # rewind before every new search
 			if not (action in f.read()):
-				raise(AssertionFailed(
+				raise (AssertionFailed(
 					"Expected to find '%s' in file '%s',"
 					" but it was not there." % (action, file_result)), 2)
 
