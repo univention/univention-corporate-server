@@ -1133,10 +1133,10 @@ def get_country_data():
 def get_random_nameserver(country):
     ipv4_servers = country.get('ipv4') or country.get('ipv4_erroneous') or [None]
     ipv6_servers = country.get('ipv6') or country.get('ipv6_erroneous') or [None]
-    return dict(
-        ipv4_nameserver=random.choice(ipv4_servers),
-        ipv6_nameserver=random.choice(ipv6_servers),
-    )
+    return {
+        "ipv4_nameserver": random.choice(ipv4_servers),
+        "ipv6_nameserver": random.choice(ipv6_servers),
+    }
 
 
 def check_credentials_ad(nameserver, address, username, password):

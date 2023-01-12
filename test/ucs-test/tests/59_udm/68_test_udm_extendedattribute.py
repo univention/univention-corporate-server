@@ -987,7 +987,7 @@ class %s(univention.admin.hook.simpleHook):
     @pytest.mark.exposure('careful')
     def test_extended_attribute_set_user_required_field_without_default(self, udm, ucr):
         """settings/extented_attribute"""
-        kwargs = dict(name='test', ldapMapping='foo', objectClass='bar', shortDescription='test', valueRequired='1', CLIName='test', module=['users/user'])
+        kwargs = {"name": 'test', "ldapMapping": 'foo', "objectClass": 'bar', "shortDescription": 'test', "valueRequired": '1', "CLIName": 'test', "module": ['users/user']}
         with pytest.raises(udm_test.UCSTestUDM_CreateUDMObjectFailed):
             udm.create_object('settings/extended_attribute', position='cn=custom attributes, cn=univention, %s' % ucr['ldap/base'], **kwargs)
         kwargs['default'] = 'foo'

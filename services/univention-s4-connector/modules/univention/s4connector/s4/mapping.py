@@ -139,7 +139,7 @@ if configRegistry.is_false('connector/s4/mapping/wmifilter', True):
 if configRegistry.is_false('connector/s4/mapping/group/grouptype', False):
     global_ignore_subtree.append('cn=Builtin,%(connector/s4/ldap/base)s' % configRegistry)
 
-user_ignore_list = set(x.strip(' ') for x in configRegistry.get('connector/s4/mapping/user/attributes/ignorelist', '').split(','))
+user_ignore_list = {x.strip(' ') for x in configRegistry.get('connector/s4/mapping/user/attributes/ignorelist', '').split(',')}
 group_ignore_filter = ignore_filter_from_attr('cn', 'connector/s4/mapping/group/ignorelist')
 if configRegistry.is_false('connector/s4/mapping/group/grouptype', False):
     group_ignore_filter = '(|{}{})'.format('(sambaGroupType=5)(groupType=5)', group_ignore_filter)
@@ -214,7 +214,7 @@ s4_mapping = {
         ignore_subtree=global_ignore_subtree,
         con_create_objectclass=['top', 'user', 'person', 'organizationalPerson'],
         dn_mapping_function=[univention.s4connector.s4.user_dn_mapping],
-        attributes=dict((key, value) for key, value in {
+        attributes={key: value for key, value in {
             'samAccountName': univention.s4connector.attribute(
                 ucs_attribute='username',
                 ldap_attribute='uid',
@@ -242,7 +242,7 @@ s4_mapping = {
                 single_value=True,
             ),
             'sid': get_sid_mapping(),
-        }.items() if key not in user_ignore_list),
+        }.items() if key not in user_ignore_list},
         # These functions can extend the addlist while
         # creating an object in S4. Parameters are
         #	s4connector, property_type, object, addlist, serverctrls
@@ -272,7 +272,7 @@ s4_mapping = {
             univention.s4connector.s4.object_memberships_sync_to_ucs if configRegistry.get('connector/s4/mapping/group/syncmode') != 'write' else None,
             univention.s4connector.s4.disable_user_to_ucs,
         ])),
-        post_attributes=dict((key, value) for key, value in {
+        post_attributes={key: value for key, value in {
             'organisation': univention.s4connector.attribute(
                 ucs_attribute='organisation',
                 ldap_attribute='o',
@@ -486,7 +486,7 @@ s4_mapping = {
                 con_attribute='preferredLanguage',
                 single_value=True,
             ),
-        }.items() if key not in user_ignore_list),
+        }.items() if key not in user_ignore_list},
     ),
     'group': univention.s4connector.property(
         ucs_default_dn='cn=groups,%(ldap/base)s' % configRegistry,

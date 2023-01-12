@@ -57,7 +57,7 @@ class KeycloakOpenID:
         self._client_id = client_id
         self._client_secret_key = client_secret_key
         self._realm_name = realm_name
-        headers = dict()
+        headers = {}
         if custom_headers is not None:
             # merge custom headers to main headers
             headers.update(custom_headers)

@@ -59,7 +59,7 @@ class CheckSambaDrsRepl(object):
         self.server = netcmd_dnsname(self.lp)
 
     def check(self):
-        consecutive_sync_failures = dict()
+        consecutive_sync_failures = {}
         failures = False
         msg = None
         drsuapi_connect(self)

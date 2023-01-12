@@ -447,7 +447,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
                                 self.addmsg('0004-59', 'file contains multifile entry with %d "Postinst:" lines' % (len(post),), fn)
                             all_postinst |= set(post)
 
-                            for key in set(entry) - set(('Type', 'Multifile', 'Variables', 'User', 'Group', 'Mode', 'Preinst', 'Postinst')):
+                            for key in set(entry) - {'Type', 'Multifile', 'Variables', 'User', 'Group', 'Mode', 'Preinst', 'Postinst'}:
                                 self.addmsg('0004-42', 'UCR .info-file contains entry with unexpected key "%s"' % (key,), fn)
 
                         elif typ == 'subfile':
@@ -488,7 +488,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
                                 self.addmsg('0004-20', 'file contains subfile entry with %d "Postinst:" lines' % (len(post),), fn)
                             all_postinst |= set(post)
 
-                            for key in set(entry) - set(('Type', 'Subfile', 'Multifile', 'Variables')):
+                            for key in set(entry) - {'Type', 'Subfile', 'Multifile', 'Variables'}:
                                 self.addmsg('0004-42', 'UCR .info-file contains entry with unexpected key "%s"' % (key,), fn)
 
                         elif typ == 'file':
@@ -536,7 +536,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
                                 self.addmsg('0004-22', 'file contains file entry with %d "Postinst:" lines' % (len(post),), fn)
                             all_postinst |= set(post)
 
-                            for key in set(entry) - set(('Type', 'File', 'Variables', 'User', 'Group', 'Mode', 'Preinst', 'Postinst')):
+                            for key in set(entry) - {'Type', 'File', 'Variables', 'User', 'Group', 'Mode', 'Preinst', 'Postinst'}:
                                 self.addmsg('0004-42', 'UCR .info-file contains entry with unexpected key "%s"' % (key,), fn)
 
                         elif typ == 'module':
@@ -551,7 +551,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
                                     unique.add(conffn)
                             all_module |= set(module)
 
-                            for key in set(entry) - set(('Type', 'Module', 'Variables')):
+                            for key in set(entry) - {'Type', 'Module', 'Variables'}:
                                 self.addmsg('0004-42', 'UCR .info-file contains entry with unexpected key "%s"' % (key,), fn)
 
                         elif typ == 'script':
@@ -566,7 +566,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
                                     unique.add(conffn)
                             all_script |= set(script)
 
-                            for key in set(entry) - set(('Type', 'Script', 'Variables')):
+                            for key in set(entry) - {'Type', 'Script', 'Variables'}:
                                 self.addmsg('0004-42', 'UCR .info-file contains entry with unexpected key "%s"' % (key,), fn)
 
                         else:
@@ -637,11 +637,11 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
                 if mfn and mfn in all_multifiles:
                     # "Multifile" entry exists ==> obj is a subfile
                     # add known variables from ALL multifile entry - there may me multiple due to multiple packages
-                    knownvars = set(
+                    knownvars = {
                         var
                         for mf in all_multifiles[mfn]
                         for var in mf.get('Variables', [])
-                    )
+                    }
                     # iterate over all subfile entries for this multifile
                     for sf in all_subfiles[mfn]:
                         # if subfile matches current subtemplate...

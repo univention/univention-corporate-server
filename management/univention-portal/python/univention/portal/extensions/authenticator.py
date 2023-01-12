@@ -111,7 +111,7 @@ class UMCAuthenticator(Authenticator):
         return self.group_cache.refresh(reason=reason)
 
     async def get_user(self, request):
-        cookies = dict((key, morsel.value) for key, morsel in request.cookies.items())
+        cookies = {key: morsel.value for key, morsel in request.cookies.items()}
         username, display_name = await self._get_username(cookies)
         groups = self.group_cache.get().get(username, [])
         return User(username, display_name=display_name, groups=groups, headers=dict(request.request.headers))

@@ -124,11 +124,11 @@ def get_city_data():
     with open(_get_path('cities15000.txt')) as infile:
         for line in infile:
             parts = line.split('\t')
-            cities[parts[0]] = dict(
-                country=parts[8].strip(),
-                timezone=parts[17].strip(),
-                population=int(parts[14]),
-            )
+            cities[parts[0]] = {
+                "country": parts[8].strip(),
+                "timezone": parts[17].strip(),
+                "population": int(parts[14]),
+            }
     return cities
 
 
@@ -171,7 +171,7 @@ def get_timezones():
         countries = {}
         for line in infile:
             parts = line.split('\t')
-            countries[parts[0]] = dict(id=parts[1], offset=parts[4])
+            countries[parts[0]] = {"id": parts[1], "offset": parts[4]}
         return countries
 
 
@@ -184,7 +184,7 @@ def get_country_code_to_nameserver_map():
             if not country:
                 continue
 
-            imapEntry = mapping.setdefault(country, dict(ipv4=[], ipv4_erroneous=[], ipv6=[], ipv6_erroneous=[]))
+            imapEntry = mapping.setdefault(country, {"ipv4": [], "ipv4_erroneous": [], "ipv6": [], "ipv6_erroneous": []})
             ip = ientry['ip']
             has_error = ientry['error']
             idx = ''

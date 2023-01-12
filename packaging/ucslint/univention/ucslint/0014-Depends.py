@@ -48,10 +48,10 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
     RE_INIT = re.compile(r"^(?:File|Subfile): (etc/init.d/.+)$")
     RE_TRANSITIONAL = re.compile(r'\b[Tt]ransition(?:al)?(?: dummy)? [Pp]ackage\b')  # re.IGNORECASE
     DEPS = {
-        'uicr': (re.compile(r"(?:/usr/bin/)?univention-install-(?:config-registry(?:-info)?|service-info)|\bdh\b.*--with\b.*\bucr\b"), set(('univention-config-dev',))),
-        'umcb': (re.compile(r"(?:/usr/bin/)?dh-umc-module-build|\bdh\b.*--with\b.*\bumc\b"), set(('univention-management-console-dev',))),
-        'ucr': (re.compile(r"""(?:^|(?<=['";& \t]))(?:/usr/sbin/)?(?:univention-config-registry|ucr)(?:(?=['";& \t])|$)"""), set(('univention-config', '${misc:Depends}'))),
-        'ial': (re.compile(r"/usr/share/univention-config-registry/init-autostart\.lib"), set(('univention-base-files',))),
+        'uicr': (re.compile(r"(?:/usr/bin/)?univention-install-(?:config-registry(?:-info)?|service-info)|\bdh\b.*--with\b.*\bucr\b"), {'univention-config-dev', }),
+        'umcb': (re.compile(r"(?:/usr/bin/)?dh-umc-module-build|\bdh\b.*--with\b.*\bumc\b"), {'univention-management-console-dev', }),
+        'ucr': (re.compile(r"""(?:^|(?<=['";& \t]))(?:/usr/sbin/)?(?:univention-config-registry|ucr)(?:(?=['";& \t])|$)"""), {'univention-config', '${misc:Depends}'}),
+        'ial': (re.compile(r"/usr/share/univention-config-registry/init-autostart\.lib"), {'univention-base-files', }),
     }
     PRIORITIES = frozenset({'required', 'important'})
 
@@ -209,16 +209,16 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
             '.univention-config-registry-categories',
             '.univention-service',
         )
-        exists = set(
+        exists = {
             filename
             for filename in listdir(join(path, 'debian'))
             if splitext(filename)[1] in SUFFIXES
-        )
-        known = set(
+        }
+        known = {
             section['Package'] + suffix
             for section in parser.binary_sections
             for suffix in SUFFIXES
-        )
+        }
         for unowned in exists - known:
             self.addmsg('0014-8', 'unexpected UCR file', join(path, 'debian', unowned))
 

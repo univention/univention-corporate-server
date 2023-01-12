@@ -86,7 +86,7 @@ def get_installed_packages() -> Tuple[Set[str], Set[str]]:
 
 
 def get_maintained_packages(maintained: IO[str]) -> Set[str]:
-    return set(line.strip() for line in maintained)
+    return {line.strip() for line in maintained}
 
 
 def print_packages(packages: Set[str]) -> None:

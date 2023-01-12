@@ -155,7 +155,7 @@ class UMCModuleTranslation(umc.UMC_Module):
             def_file = fd.read()
 
         attributes = Deb822(def_file)
-        attributes = dict((k, [v]) for k, v in attributes.items())  # simulate dh_ucs.parseRfc822 behaviour
+        attributes = {k: [v] for k, v in attributes.items()}  # simulate dh_ucs.parseRfc822 behaviour
         attributes.update(module)
         return attributes
 
@@ -478,14 +478,14 @@ def create_new_package(new_package_dir, target_language, target_locale, language
         print("creating directory: %s" % new_package_dir_debian)
         os.makedirs(new_package_dir_debian)
 
-    translation = dict(
-        name=language_name,
-        package_name=os.path.basename(new_package_dir),
-        creator=getpass.getuser(),
-        host=socket.getfqdn(),
-        date=formatdate(),
-        years=date.today().year,
-    )
+    translation = {
+        "name": language_name,
+        "package_name": os.path.basename(new_package_dir),
+        "creator": getpass.getuser(),
+        "host": socket.getfqdn(),
+        "date": formatdate(),
+        "years": date.today().year,
+    }
 
     template_file(new_package_dir, "Makefile", translation)
     for fn in ("copyright", "changelog", "control", "compat", "rules"):

@@ -95,7 +95,7 @@ def correct_cleanup(group_dn, groupname2, udm_test_instance, return_new_dn=False
 def verify_users(group_dn, users):
     print(" Checking Ldap Objects")
     utils.verify_ldap_object(group_dn, {
-        'uniqueMember': [user for user in users],
+        'uniqueMember': list(users),
         'memberUid': [ldap.dn.str2dn(user)[0][0][1] for user in users]
     })
 

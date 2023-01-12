@@ -223,9 +223,9 @@ class AppCenterOperations:
 class DebianPackage(debian_package.DebianPackage):
 
     def __init__(self, name="testdeb", version="1.0", depends=None, breaks=None, conflicts=None):
-        self._depends = depends or list()
-        self._breaks = breaks or list()
-        self._conflicts = conflicts or list()
+        self._depends = depends or []
+        self._breaks = breaks or []
+        self._conflicts = conflicts or []
 
         # because `DebianPackage` is an old-style class
         debian_package.DebianPackage.__init__(self, name, version)
@@ -386,10 +386,10 @@ class CheckOperations:
         return False
 
     def _packages(self):
-        yield from self.info.get("default_packages", list())
+        yield from self.info.get("default_packages", [])
         master = ("domaincontroller_master", "domaincontroller_backup")
         if self.ucr.get("server/role") in master:
-            yield from self.info.get("default_packages_master", list())
+            yield from self.info.get("default_packages_master", [])
 
     def _dpkg_status(self, package):
         cmd = ["dpkg-query", "-f='${db:Status-Abbrev}xx'", "--show", package]

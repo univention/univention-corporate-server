@@ -127,7 +127,7 @@ end with two character language code, e.g. univention-l10n-fr. Exiting.""")
     dh_umc.LANGUAGES = (lang_code, )
     modules_upstream = tlh.find_base_translation_modules(args.upstream)
     output_dir = os.path.join(args.translation, '{}_merge'.format(lang_code))
-    modules = list()
+    modules = []
     for module_attrs in modules_upstream:
         module = tlh.UMCModuleTranslation.from_source_package(module_attrs, lang_code)
         modules.append(module)

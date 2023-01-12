@@ -420,7 +420,7 @@ class Instance(Base, ProgressMixin):
 
         # final info dict that is returned... replace spaces in the keys with '_'
         MODULE.info('Preparing info dict...')
-        info = dict([(key.replace(' ', '_'), value) for key, value in ad_domain_info.items()])
+        info = {key.replace(' ', '_'): value for key, value in ad_domain_info.items()}
         info['ssl_supported'] = admember.server_supports_ssl(ad_server_ip)
         # try to get binddn
         info['LDAP_BindDN'] = get_ad_binddn_from_name(info['LDAP_Base'], ad_server_ip, username, password)

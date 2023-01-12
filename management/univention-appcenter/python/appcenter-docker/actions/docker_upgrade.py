@@ -85,7 +85,7 @@ class Upgrade(Upgrade, Install, DockerActionMixin):
         # update proxy settings
         if app.docker:
             aucr = get_action('configure')()
-            pvars = dict()
+            pvars = {}
             for psetting in ['proxy/http', 'proxy/https', 'proxy/no_proxy']:
                 pvars[psetting] = ucr_get(psetting)
             aucr._set_config_via_tool(app, pvars)

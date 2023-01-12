@@ -212,7 +212,7 @@ def test_filename_validation(udm, lo, modify, prefix, path, position, attr, ocs,
         attr.replace('Filename', 'Data'): [bz2.compress(b'\n' if modify else b'root:$6$5cAInBgG$7rdZuEujGK1QFoprcNspXsXHsymW3Txp0kDyHFsE.omI.3T0xek3KIneFPZ99Z8dwZnZ2I2O/Tk8x4mNNGSE4.:16965:0:99999:7:::')],
         attr.replace('Filename', 'Active'): [b'TRUE'],
     }
-    al = [(key, [v for v in val]) for key, val in attrs.items()]
+    al = [(key, list(val)) for key, val in attrs.items()]
     print(('Creating', dn))
     dn = lo.add(dn, al) or dn
     try:
@@ -312,19 +312,19 @@ def test_create_portal_entry(udm, ucr):
 def test_create_data(udm, ucr):
     """Create a settings/data object"""
     data = uts.random_name(500)
-    kwargs = dict(
-        position='cn=data,cn=univention,{}'.format(ucr['ldap/base']),
-        name=uts.random_name(),
-        filename=uts.random_name(),
-        description=uts.random_name(),
-        data_type=uts.random_name(),
-        data=base64.b64encode(bz2.compress(data.encode('UTF-8'))).decode('ASCII'),
-        ucsversionstart=uts.random_ucs_version(),
-        ucsversionend=uts.random_ucs_version(),
-        meta=[uts.random_name(), uts.random_name()],
-        package=uts.random_name(),
-        packageversion=uts.random_version(),
-    )
+    kwargs = {
+        "position": 'cn=data,cn=univention,{}'.format(ucr['ldap/base']),
+        "name": uts.random_name(),
+        "filename": uts.random_name(),
+        "description": uts.random_name(),
+        "data_type": uts.random_name(),
+        "data": base64.b64encode(bz2.compress(data.encode('UTF-8'))).decode('ASCII'),
+        "ucsversionstart": uts.random_ucs_version(),
+        "ucsversionend": uts.random_ucs_version(),
+        "meta": [uts.random_name(), uts.random_name()],
+        "package": uts.random_name(),
+        "packageversion": uts.random_version(),
+    }
 
     dn = udm.create_object('settings/data', **kwargs)
 
@@ -359,14 +359,14 @@ def remove_tmp_file():
 
 
 shutil.copy('/etc/hosts', file_path)
-kwargs = dict(
-    data_type=uts.random_name(),
-    ucsversionstart=uts.random_ucs_version(),
-    ucsversionend=uts.random_ucs_version(),
-    meta=[uts.random_name(), uts.random_name()],
-    package=uts.random_name(),
-    packageversion=uts.random_version(),
-)
+kwargs = {
+    "data_type": uts.random_name(),
+    "ucsversionstart": uts.random_ucs_version(),
+    "ucsversionend": uts.random_ucs_version(),
+    "meta": [uts.random_name(), uts.random_name()],
+    "package": uts.random_name(),
+    "packageversion": uts.random_version(),
+}
 
 
 def run_cmd(cmd):

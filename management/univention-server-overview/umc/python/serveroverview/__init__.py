@@ -48,12 +48,12 @@ class Instance(Base):
         lo, po = get_machine_connection()
         servers = udm_modules.lookup('computers/computer', None, lo, filter='(&(|(objectClass=univentionDomainController)(objectClass=univentionMemberServer))(!(univentionObjectFlag=docker)))', base=ucr['ldap/base'], scope='sub')
 
-        result = [dict(
-            dn=i.dn,
-            hostname=i.info.get('name'),
-            domain=i.info.get('domain'),
-            ip=i.info.get('ip'),
-            version=i.info.get('operatingSystemVersion'),
-            serverRole=i.info.get('serverRole'),
-        ) for i in servers]
+        result = [{
+            "dn": i.dn,
+            "hostname": i.info.get('name'),
+            "domain": i.info.get('domain'),
+            "ip": i.info.get('ip'),
+            "version": i.info.get('operatingSystemVersion'),
+            "serverRole": i.info.get('serverRole'),
+        } for i in servers]
         return result

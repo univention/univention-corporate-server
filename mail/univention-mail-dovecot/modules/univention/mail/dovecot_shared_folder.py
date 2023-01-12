@@ -104,7 +104,7 @@ class DovecotGlobalAclFile(object):
 
     def __init__(self, listener):  # type: (Any) -> None
         self.listener = listener
-        self._acls = list()  # type: List[DovecotFolderAclEntry]
+        self._acls = []  # type: List[DovecotFolderAclEntry]
         self._fix_permissions()
 
     def add_acls(self, acl_list):  # type: (List[DovecotFolderAclEntry]) -> None
@@ -136,7 +136,7 @@ class DovecotGlobalAclFile(object):
             self.listener.unsetuid()
 
     def _read(self):  # type: () -> None
-        self._acls = list()
+        self._acls = []
         try:
             self.listener.setuid(0)
             for line in open(global_acl_path, 'r'):
@@ -460,7 +460,7 @@ class DovecotSharedFolderListener(DovecotListener):
             finally:
                 self.listener.unsetuid()
         else:
-            public_folders = list()  # type: List[Any]
+            public_folders = []  # type: List[Any]
             for module in self.modules:
                 try:
                     public_folders.extend(self.get_udm_infos(module, "(!(mailPrimaryAddress=*))"))
@@ -510,7 +510,7 @@ class DovecotSharedFolderListener(DovecotListener):
 
     def _diff_acls(self, old, new):
         # type: (Dict[str, List[bytes]], Dict[str, List[bytes]]) -> List[str]
-        acl_diff = dict()
+        acl_diff = {}
         # find new ACLs
         for acl in new.get(self.acl_key, []):
             acl = acl.decode('UTF-8')
@@ -550,7 +550,7 @@ class DovecotSharedFolderListener(DovecotListener):
     def add_global_acls(self, new):  # type: (Dict[str, List[bytes]]) -> None
         new_mailbox = 'shared/{}'.format(new["mailPrimaryAddress"][0].decode('ASCII'))
         acls = new.get(self.acl_key, [])
-        folder_acls = list()
+        folder_acls = []
         for acl in acls:
             acl = acl.decode('UTF-8')
             identifier, right = self._split_udm_imap_acl_doveadm(acl)

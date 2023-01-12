@@ -405,7 +405,7 @@ def _eval_simple_decorated_function(function, with_flavor, single_values=False, 
     else:
         defaults = {}
 
-    @sanitize(DictSanitizer(dict((arg, Sanitizer(required=arg not in defaults and arg != with_flavor, default=defaults.get(arg))) for arg in arguments), _copy_value=False) if not single_values else None)
+    @sanitize(DictSanitizer({arg: Sanitizer(required=arg not in defaults and arg != with_flavor, default=defaults.get(arg)) for arg in arguments}, _copy_value=False) if not single_values else None)
     def _response(self, request):
         # single_values: request.options is, e.g., ["id1", "id2", "id3"], no need for complicated dicts
         if not single_values:
@@ -627,7 +627,7 @@ def file_upload(function):
 
 class reloading_ucr(object):
 
-    _last_reload = dict()
+    _last_reload = {}
 
     def __init__(self, ucr, timeout=0.2):
         self._ucr = ucr

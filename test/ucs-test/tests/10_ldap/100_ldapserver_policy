@@ -50,7 +50,7 @@ def check_all_servers_in_policies(ldap_servers, udm_backups):
     registry_policies = udm_modules.lookup("policies/registry", None, lo, base=basedn, scope="sub", filter="(cn=default-ldap-servers)")
     registry_policy = registry_policies[0]
 
-    ucr_backups = list()
+    ucr_backups = []
     for ucr in registry_policy["registry"]:
         if ucr[0] == "ldap/server/addition":
             ucr_backups = ucr[1].split()
@@ -62,7 +62,7 @@ def check_all_servers_in_policies(ldap_servers, udm_backups):
 def situation_before_test():
     dc_masters = udm_modules.lookup("computers/domaincontroller_master", None, lo, base=basedn, scope="sub")
     dc_backups = udm_modules.lookup("computers/domaincontroller_backup", None, lo, base=basedn, scope="sub")
-    ldap_servers = list()
+    ldap_servers = []
     for master in dc_masters:
         master.open()
         if master["fqdn"]:
@@ -97,11 +97,11 @@ def add_dc_backup(udm):
 
     udm.create_object(
         'computers/domaincontroller_backup',
-        set=dict(
-            position=f"cn=dc,cn=computers,{basedn}",
-            name=name,
-            domain=domain
-        )
+        set={
+            "position": f"cn=dc,cn=computers,{basedn}",
+            "name": name,
+            "domain": domain
+        }
     )
     run_join_script()
 

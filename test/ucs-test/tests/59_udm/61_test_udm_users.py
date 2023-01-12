@@ -643,7 +643,7 @@ def test_udm_users_user_bcrypt_password(restart_slapd_after_test, udm, ucr):
     for module in ['users/user', 'users/ldap']:
         lo = utils.get_ldap_connection()
         name = uts.random_username()
-        attr = dict(password='univention', username=name, lastname='test')
+        attr = {"password": 'univention', "username": name, "lastname": 'test'}
         dn = udm.create_object(module, wait_for_replication=True, check_for_drs_replication=True, wait_for=True, **attr)
 
         ldap_o = lo.search(f'uid={name}', attr=['userPassword', 'pwhistory'])[0]

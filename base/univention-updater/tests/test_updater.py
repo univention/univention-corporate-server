@@ -74,7 +74,7 @@ class TestUniventionUpdater(object):
         http({
             RJSON: gen_releases([(MAJOR, minor, patch) for minor in range(3) for patch in range(3)]),
         })
-        expected = [(U.UCS_Version((MAJOR, 1, patch)), dict(major=MAJOR, minor=1, patchlevel=patch, status="maintained")) for patch in range(3)]
+        expected = [(U.UCS_Version((MAJOR, 1, patch)), {"major": MAJOR, "minor": 1, "patchlevel": patch, "status": "maintained"}) for patch in range(3)]
         found = list(u.get_releases(start=expected[0][0], end=expected[-1][0]))
         assert expected == found
 

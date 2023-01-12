@@ -7,11 +7,11 @@ from univention.management.console.log import MODULE
 UCR = univention.config_registry.ConfigRegistry()
 UCR.load()
 
-PROXY_MAP = dict(
-    http_proxy='proxy/http',
-    https_proxy='proxy/https',
-    no_proxy='proxy/no_proxy',
-)
+PROXY_MAP = {
+    "http_proxy": 'proxy/http',
+    "https_proxy": 'proxy/https',
+    "no_proxy": 'proxy/no_proxy',
+}
 
 
 def get_unreachable_repository_servers():

@@ -137,10 +137,10 @@ class ObjectPropertySanitizer(StringSanitizer):
 
         TODO: in theory we should only allow existing attributes for the request object(/object type)
         """
-        args = dict(
-            minimum=1,
-            regex_pattern=r'^[\w\d\-;]+$'
-        )
+        args = {
+            "minimum": 1,
+            "regex_pattern": r'^[\w\d\-;]+$'
+        }
         args.update(kwargs)
         StringSanitizer.__init__(self, **args)
 
@@ -386,12 +386,12 @@ class Instance(Base, ProgressMixin):
                 except UDM_Error as e:
                     yield {'$dn$': object, 'success': False, 'details': str(e)}
 
-    @sanitize(DictSanitizer(dict(
-        object=DictSanitizer(dict(), required=True),
-        options=DictSanitizer(dict(
-            objectType=StringSanitizer(required=True)
-        ), required=True)
-    ), required=True))
+    @sanitize(DictSanitizer({
+        "object": DictSanitizer({}, required=True),
+        "options": DictSanitizer({
+            "objectType": StringSanitizer(required=True)
+        }, required=True)
+    }, required=True))
     def add(self, request):
         """
         Creates LDAP objects.
@@ -421,11 +421,11 @@ class Instance(Base, ProgressMixin):
         thread = notifier.threads.Simple('Get', notifier.Callback(_thread, request), notifier.Callback(self.thread_finished_callback, request))
         thread.run()
 
-    @sanitize(DictSanitizer(dict(
-        object=DictSanitizer({
+    @sanitize(DictSanitizer({
+        "object": DictSanitizer({
             '$dn$': StringSanitizer(required=True)
         }, required=True),
-    )), required=True)
+    }), required=True)
     def put(self, request):
         """
         Modifies the given list of LDAP objects.
@@ -615,7 +615,7 @@ class Instance(Base, ProgressMixin):
             objectPropertyValue = request.options['objectPropertyValue']
             scope = request.options.get('scope', 'sub')
             hidden = request.options.get('hidden')
-            fields = (set(request.options.get('fields', []) or []) | set([objectProperty])) - set(['name', 'None'])
+            fields = (set(request.options.get('fields', []) or []) | {objectProperty}) - {'name', 'None'}
             result = module.search(container, objectProperty, objectPropertyValue, superordinate, scope=scope, hidden=hidden, allow_asterisks=USE_ASTERISKS)
             if result is None:
                 return []
@@ -659,10 +659,10 @@ class Instance(Base, ProgressMixin):
 
     def sanitize_reports_create(self, request):
         choices = self.reports_cfg.get_report_names(request.flavor)
-        return dict(
-            report=ChoicesSanitizer(choices=choices, required=True),
-            objects=ListSanitizer(DNSanitizer(minimum=1), required=True, min_elements=1)
-        )
+        return {
+            "report": ChoicesSanitizer(choices=choices, required=True),
+            "objects": ListSanitizer(DNSanitizer(minimum=1), required=True, min_elements=1)
+        }
 
     @sanitize_func(sanitize_reports_create)
     def reports_create(self, request):
@@ -819,7 +819,7 @@ class Instance(Base, ProgressMixin):
 
         # create a list of modules that can be created
         # ... all container types except container/dc
-        allowed_modules = set([m for m in udm_modules.containers if udm_modules.name(m) != 'container/dc'])
+        allowed_modules = {m for m in udm_modules.containers if udm_modules.name(m) != 'container/dc'}
 
         # the container may be a superordinate or have one as its parent
         # (or grandparent, ....)
@@ -1167,15 +1167,15 @@ class Instance(Base, ProgressMixin):
         thread = notifier.threads.Simple('NavObjectQuery', notifier.Callback(_thread, request.options['container']), notifier.Callback(self.thread_finished_callback, request))
         thread.run()
 
-    @sanitize(DictSanitizer(dict(
-        objectType=StringSanitizer(required=True),
-        policies=ListSanitizer(),
-        policyType=StringSanitizer(required=True),
-        objectDN=Sanitizer(default=None),
-        container=Sanitizer(default=None)
+    @sanitize(DictSanitizer({
+        "objectType": StringSanitizer(required=True),
+        "policies": ListSanitizer(),
+        "policyType": StringSanitizer(required=True),
+        "objectDN": Sanitizer(default=None),
+        "container": Sanitizer(default=None)
         # objectDN=StringSanitizer(default=None, allow_none=True),
         # container=StringSanitizer(default=None, allow_none=True)
-    )))
+    }))
     def object_policies(self, request):
         """
         Returns a virtual policy object containing the values that

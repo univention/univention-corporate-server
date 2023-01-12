@@ -363,7 +363,7 @@ def add_nameservers(nameservers: DictAddr2Str, domain: str) -> None:
     log.debug('header=%r', r.header)
 
     if r.header['status'] == 'NOERROR' and r.header['aa']:
-        names = set(rr['data'] for rr in r.answers)
+        names = {rr['data'] for rr in r.answers}
         log.debug('servers=%r', names)
         for rr in r.additional:
             log.debug('rr=%r', rr)

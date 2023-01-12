@@ -15,7 +15,7 @@ import univention.admin.uldap
 disabled_states = ('1', '0')
 locked_states = ['0', '1']
 
-transitions_log = list()
+transitions_log = []
 
 
 def test_user_modification_set_deactivation_and_locked(udm, ldap_base):

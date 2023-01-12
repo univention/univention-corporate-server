@@ -897,7 +897,7 @@ class UDM_Module(object):
     def get_properties(self, ldap_dn=None):
         # scan the layout to only find elements which are displayed
         # special case: options and the dn: They are not explicitly specified in the module layout
-        inLayout = set(('$options$', '$dn$'))
+        inLayout = {'$options$', '$dn$'}
 
         def _scanLayout(_layout):
             if isinstance(_layout, list):

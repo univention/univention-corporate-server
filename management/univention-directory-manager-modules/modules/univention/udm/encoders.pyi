@@ -136,7 +136,7 @@ class MultiLanguageTextAppcenterPropertyEncoder(BaseEncoder):
 class SambaGroupTypePropertyEncoder(BaseEncoder):
     static = True
     choices = dict(sambaGroupType.choices)
-    choices_reverted = dict((v, k) for k, v in sambaGroupType.choices)
+    choices_reverted = {v: k for k, v in sambaGroupType.choices}
 
     @classmethod
     def decode(cls, value=None):  # type: (Optional[List[Text]]) -> Optional[Text]

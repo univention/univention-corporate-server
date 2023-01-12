@@ -12,24 +12,24 @@ from univention.lib.ucs import UCS_Version
 
 def gen_releases(path, releases):  # type: (str, List[Tuple[int, int, int]]) -> None
     """Generate a `ucs-releases.json` string from a list of given releases"""
-    data = dict(
-        releases=[
-            dict(
-                major=major,
-                minors=[
-                    dict(
-                        minor=minor,
-                        patchlevels=[
-                            dict(
-                                patchlevel=patchlevel,
-                                status="maintained",
-                            ) for major, minor, patchlevel in patchlevels
+    data = {
+        "releases": [
+            {
+                "major": major,
+                "minors": [
+                    {
+                        "minor": minor,
+                        "patchlevels": [
+                            {
+                                "patchlevel": patchlevel,
+                                "status": "maintained",
+                            } for major, minor, patchlevel in patchlevels
                         ]
-                    ) for minor, patchlevels in groupby(minors, key=itemgetter(1))
+                    } for minor, patchlevels in groupby(minors, key=itemgetter(1))
                 ]
-            ) for major, minors in groupby(releases, key=itemgetter(0))
+            } for major, minors in groupby(releases, key=itemgetter(0))
         ]
-    )
+    }
     with open(os.path.join(path, 'ucs-releases.json'), 'w') as releases_json:
         json.dump(data, releases_json)
 

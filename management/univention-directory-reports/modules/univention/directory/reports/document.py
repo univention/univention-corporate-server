@@ -81,7 +81,7 @@ class Document(object):
         elif self._type == Document.TYPE_CSV:
             files = (self._template, )
         else:
-            files = tuple()
+            files = ()
 
         for filename in files:
             if not os.path.isfile(filename):

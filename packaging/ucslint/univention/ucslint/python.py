@@ -50,7 +50,7 @@ LITERALS = _or(
     r"'(?:[^'\\\n]|%(esc)s)*?'",
     r'"(?:[^"\\\n]|%(esc)s)*?"',
 )
-MATCHED_LENIENT = r"(?:\b[BbFfRrUu]{1,2})?%s" % (LITERALS % dict(esc=ESCAPE_LENIENT),)
+MATCHED_LENIENT = r"(?:\b[BbFfRrUu]{1,2})?%s" % (LITERALS % {"esc": ESCAPE_LENIENT},)
 COMMENT = _or(r"#[^\n]*$", name="cmt")
 RE_LENIENT = re.compile(_or(COMMENT, _or(MATCHED_LENIENT, name="str")), re.MULTILINE)
 
@@ -59,11 +59,11 @@ class Base:
     VER = (0, 0)
     MATCHED_RAW = r"\b%s%s" % (
         _or("[Rr]", "[BbFfUu][Rr]", "[Rr][BbFf]"),  # (ur|ru) only in 2, (rb) since 3.3
-        LITERALS % dict(esc=ESCAPE_RAW),
+        LITERALS % {"esc": ESCAPE_RAW},
     )
-    MATCHED_BYTES = r"\b[Bb]%s" % (LITERALS % dict(esc=ESCAPE_BYTES),)
+    MATCHED_BYTES = r"\b[Bb]%s" % (LITERALS % {"esc": ESCAPE_BYTES},)
     MATCHED_UNICODE = r"(?:\b[FfUu])?%s" % (  # [u] not in 3.0-3.2, [f] since 3.6
-        LITERALS % dict(esc=ESCAPE_UNIICODE),
+        LITERALS % {"esc": ESCAPE_UNIICODE},
     )
 
     @classmethod
@@ -79,33 +79,33 @@ class Python27(Base):
     VER = (2, 7)
     MATCHED_RAW = r"\b%s%s" % (
         _or("[Rr]", "[BbUu][Rr]", "[Rr][Uu]"),  # (ur|ru) only in 2, (rb) since 3.3
-        LITERALS % dict(esc=ESCAPE_RAW),
+        LITERALS % {"esc": ESCAPE_RAW},
     )
 
 
 class Python30(Base):
     VER = (3, 0)
-    MATCHED_RAW = r"\b%s%s" % (_or("[Rr]", "[Bb][Rr]"), LITERALS % dict(esc=ESCAPE_RAW))
-    MATCHED_UNICODE = LITERALS % dict(esc=ESCAPE_UNIICODE)  # [u] not in 3.0-3.2
+    MATCHED_RAW = r"\b%s%s" % (_or("[Rr]", "[Bb][Rr]"), LITERALS % {"esc": ESCAPE_RAW})
+    MATCHED_UNICODE = LITERALS % {"esc": ESCAPE_UNIICODE}  # [u] not in 3.0-3.2
 
 
 class Python33(Base):
     VER = (3, 3)
     MATCHED_RAW = r"\b%s%s" % (
         _or("[Rr]", "[Bb][Rr]", "[Rr][Bb]"),  # 2, (rb) since 3.3
-        LITERALS % dict(esc=ESCAPE_RAW),
+        LITERALS % {"esc": ESCAPE_RAW},
     )
-    MATCHED_UNICODE = r"(?:\b[Uu])?%s" % (LITERALS % dict(esc=ESCAPE_UNIICODE),)
+    MATCHED_UNICODE = r"(?:\b[Uu])?%s" % (LITERALS % {"esc": ESCAPE_UNIICODE},)
 
 
 class Python36(Base):
     VER = (3, 6)
     MATCHED_RAW = r"\b%s%s" % (
         _or("[Rr]", "[BbFf][Rr]", "[Rr][BbFf]"),  # (f) since 3.6
-        LITERALS % dict(esc=ESCAPE_RAW),
+        LITERALS % {"esc": ESCAPE_RAW},
     )
     MATCHED_UNICODE = r"(?:\b[FfUu])?%s" % (  # [f] since 3.6
-        LITERALS % dict(esc=ESCAPE_UNIICODE),
+        LITERALS % {"esc": ESCAPE_UNIICODE},
     )
 
 

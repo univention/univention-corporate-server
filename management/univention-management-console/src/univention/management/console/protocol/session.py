@@ -409,11 +409,11 @@ class ProcessorBase(Base):
                 CORE.error(traceback.format_exc())
 
     @allow_get_request
-    @sanitize(DictSanitizer(dict(
-        tmpfile=StringSanitizer(required=True),
-        filename=StringSanitizer(required=True),
-        name=StringSanitizer(required=True),
-    )))
+    @sanitize(DictSanitizer({
+        "tmpfile": StringSanitizer(required=True),
+        "filename": StringSanitizer(required=True),
+        "name": StringSanitizer(required=True),
+    }))
     def handle_request_upload(self, msg):
         """
         Handles an UPLOAD request. The command is used for the HTTP
@@ -758,7 +758,7 @@ class Processor(ProcessorBase):
         for value in request.options:
             if value.endswith('*'):
                 value = value[:-1]
-                result.update(dict((x, ucr.get(x)) for x in ucr.keys() if x.startswith(value)))
+                result.update({x: ucr.get(x) for x in ucr.keys() if x.startswith(value)})
             else:
                 result[value] = ucr.get(value)
         return result
@@ -800,15 +800,15 @@ class Processor(ProcessorBase):
         meta_data = super(Processor, self).handle_request_get_meta(request)
 
         ucr.load()
-        meta_data.update(dict(
-            ucsVersion=_get_ucs_version(),
-            ucs_version=_get_ucs_version(),
-            has_system_uuid=_has_system_uuid(),
-            has_free_license=_has_free_license(),
-            hasFreeLicense=_has_free_license(),
-            has_license_base=bool(ucr.get('license/base')),
-            appliance_name=ucr.get('umc/web/appliance/name'),
-        ))
+        meta_data.update({
+            "ucsVersion": _get_ucs_version(),
+            "ucs_version": _get_ucs_version(),
+            "has_system_uuid": _has_system_uuid(),
+            "has_free_license": _has_free_license(),
+            "hasFreeLicense": _has_free_license(),
+            "has_license_base": bool(ucr.get('license/base')),
+            "appliance_name": ucr.get('umc/web/appliance/name'),
+        })
         meta_data.update([(i, ucr.get(i)) for i in self.META_UCR_VARS])
         return meta_data
 
@@ -844,10 +844,10 @@ class Processor(ProcessorBase):
             result = sorted([(b'%s.%s' % (computer['cn'][0], computer['associatedDomain'][0])).decode('utf-8', 'replace') for dn, computer in domaincontrollers if computer.get('associatedDomain')])
         return result
 
-    @sanitize(password=DictSanitizer(dict(
-        password=StringSanitizer(required=True),
-        new_password=StringSanitizer(required=True),
-    )))
+    @sanitize(password=DictSanitizer({
+        "password": StringSanitizer(required=True),
+        "new_password": StringSanitizer(required=True),
+    }))
     def handle_request_set_password(self, request):
         username = self._username
         password = request.options['password']['password']
@@ -879,9 +879,9 @@ class Processor(ProcessorBase):
         res.body['preferences'] = self._get_user_preferences(self.get_user_ldap_connection())
         return res
 
-    @sanitize(user=DictSanitizer(dict(
-        preferences=DictSanitizer(dict(), required=True),
-    )))
+    @sanitize(user=DictSanitizer({
+        "preferences": DictSanitizer({}, required=True),
+    }))
     @simple_response
     def handle_request_set_user(self, user):
         lo = self.get_user_ldap_connection()
@@ -908,7 +908,7 @@ class Processor(ProcessorBase):
 
         user = lo.get(self._user_dn, ['univentionUMCProperty', 'objectClass'])
         old_preferences = user.get('univentionUMCProperty')
-        object_classes = list(set(user.get('objectClass', [])) | set([b'univentionPerson']))
+        object_classes = list(set(user.get('objectClass', [])) | {b'univentionPerson'})
 
         # validity / sanitizing
         new_preferences = []
@@ -1009,12 +1009,12 @@ class SessionHandler(ProcessorBase):
             self.processor.request(request)
 
     def _handle_auth(self, request):
-        request.body = sanitize_args(DictSanitizer(dict(
-            username=StringSanitizer(required=True),
-            password=StringSanitizer(required=True),
-            auth_type=StringSanitizer(allow_none=True),
-            new_password=StringSanitizer(required=False, allow_none=True),
-        )), 'request', {'request': request.body})
+        request.body = sanitize_args(DictSanitizer({
+            "username": StringSanitizer(required=True),
+            "password": StringSanitizer(required=True),
+            "auth_type": StringSanitizer(allow_none=True),
+            "new_password": StringSanitizer(required=False, allow_none=True),
+        }), 'request', {'request': request.body})
         from univention.management.console.protocol.server import Server
         Server.reload()
         request.body['locale'] = str(self.i18n.locale)

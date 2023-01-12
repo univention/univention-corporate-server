@@ -83,7 +83,7 @@ def _handler(ucr, changes):
         match = re.match('ucs/web/overview/entries/(admin|service)/([^/]+)/.*', key)
         if match:
             changed_entries.add(match.group(2))
-    changed_entries -= set(['umc', 'invalid-certificate-list', 'root-certificate', 'ldap-master'])
+    changed_entries -= {'umc', 'invalid-certificate-list', 'root-certificate', 'ldap-master'}
     portal_logger.debug('Changed: %r' % changed_entries)
     if not changed_entries:
         return

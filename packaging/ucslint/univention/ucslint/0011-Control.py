@@ -135,15 +135,15 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
         if parser.source_section.get('XS-Python-Version', ''):
             self.addmsg('0011-11', 'XS-Python-Version is not required any longer', fn_control)
 
-        build_depends = dict(
-            (m.group(1), m.groupdict()) for m in (
+        build_depends = {
+            m.group(1): m.groupdict() for m in (
                 RE_DEP.match(dep) for dep in (
                     alt.strip()
                     for dep in parser.source_section.get('Build-Depends', '').split(',')
                     for alt in dep.split('|')
                 ) if dep
             ) if m
-        )
+        }
 
         if 'python-central' in build_depends:
             self.addmsg('0011-12', 'please use python-support instead of python-central in Build-Depends', fn_control)

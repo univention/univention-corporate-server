@@ -107,7 +107,7 @@ def get_lockout_duration():
 
 
 def parse_ldbsearch_entry(entry):
-    user = dict()
+    user = {}
     for line in entry.splitlines():
         for (key, pattern) in list(_LDBSEARCH_PATTERNS.items()):
             match = pattern.search(line)
@@ -144,7 +144,7 @@ def get_users(search_command, lockout_duration):
     except (OSError, subprocess.CalledProcessError) as error:
         sys.exit("Error calling univention-s4search: " + str(error))
 
-    users = list()
+    users = []
     for entry in output.split("\n\n"):
         user = parse_ldbsearch_entry(entry)
         if "dn" in user and "name" in user and "lockout" in user:

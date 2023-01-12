@@ -254,7 +254,7 @@ class ShortNameFormatter(logging.Formatter):
 
 def get_logfile_logger(name):
     mylogger = logging.getLogger(name)
-    mylogger.handlers = list()
+    mylogger.handlers = []
     log_format = '%(process)6d %(short_name)-32s %(asctime)s [%(levelname)8s]: %(message)s'
     log_format_time = '%y-%m-%d %H:%M:%S'
     formatter = ShortNameFormatter(log_format, log_format_time)

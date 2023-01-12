@@ -46,7 +46,7 @@ def handle(name, cfg, cloud, log, args):
         return
 
     # read config options and write them to a profile
-    p = dict((k, v) for k, v in cfg["ucs_setup"].items() if v is not None)
+    p = {k: v for k, v in cfg["ucs_setup"].items() if v is not None}
     hostname = p.get('hostname', 'ucs')
     domainname = p.get('domainname', 'ucs.test')
     windowsdomain = p.get('windowsdomain', 'UCS')

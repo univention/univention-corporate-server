@@ -152,7 +152,7 @@ CODED_VALUES = {
 }
 
 # We introduce a 'reverse index' of the CODED_VALUES here.
-DECODED_VALUES = dict((f, dict((CODED_VALUES[f][key], key) for key in CODED_VALUES[f])) for f in CODED_VALUES)
+DECODED_VALUES = {f: {CODED_VALUES[f][key]: key for key in CODED_VALUES[f]} for f in CODED_VALUES}
 
 # This helps translating labels. We don't make separate functions
 # or such things as we don't have any name clashes.
@@ -337,7 +337,7 @@ class Instance(Base):
 
 def _combobox_data(data):
     """returns a (id, label) dict with translated values"""
-    return [dict(id=identifier, label=_id_to_label(identifier)) for identifier in data]
+    return [{"id": identifier, "label": _id_to_label(identifier)} for identifier in data]
 
 
 def _make_query(key, operator, pattern):
@@ -421,7 +421,7 @@ def _convert_to_grid(data, names):
     #	(1)	assigns the field name to a value
     #	(2)	converts database representation into keyed values (_decoded_value)
     #	(3)	translates keyed values for display (_id_to_label)
-    return dict((names[i], _id_to_label(_decoded_value(names[i], data[i]))) for i in range(length))
+    return {names[i]: _id_to_label(_decoded_value(names[i], data[i])) for i in range(length)}
 
 
 def _id_to_label(identifier):

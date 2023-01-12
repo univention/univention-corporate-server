@@ -79,7 +79,7 @@ class Migration(object):
             self.s4connector_present = True
         else:
             searchResult = lo.search('(&(|(objectClass=univentionDomainController)(objectClass=univentionMemberServer))(univentionService=S4 Connector))', attr=['aRecord', 'aAAARecord'])
-            self.s4connector_present = any(ddn for (ddn, attr) in searchResult if set(['aAAARecord', 'aRecord']) & set(attr))
+            self.s4connector_present = any(ddn for (ddn, attr) in searchResult if {'aAAARecord', 'aRecord'} & set(attr))
 
         self.migrate_users()
         self.migrate_templates()
@@ -122,7 +122,7 @@ class Migration(object):
         default_user_filter = u'(&(|(&(objectClass=posixAccount)(objectClass=shadowAccount))(objectClass=univentionMail)(objectClass=sambaSamAccount)(objectClass=simpleSecurityObject)(objectClass=inetOrgPerson))(!(uidNumber=0))(!(uid=*$)))'
         user_filter = ucr.get('update43/udm/migration/user/filter', default_user_filter)
         for dn, user in lo.search(user_filter):
-            ocs = set(x.decode('UTF-8') for x in user['objectClass'])
+            ocs = {x.decode('UTF-8') for x in user['objectClass']}
             has_posix = ocs & {'posixAccount', }
             has_shadow = ocs & {'shadowAccount', }
             has_samba = ocs & {'sambaSamAccount', }

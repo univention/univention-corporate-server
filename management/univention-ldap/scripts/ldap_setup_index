@@ -120,20 +120,20 @@ class LdapIndex(object):
             LOG.debug('Automatically updating indexes is enabled')
         if self.args.force_defaults:
             LOG.debug('Forcing default values')
-            self.index = dict((typ, set()) for typ in RECOMMENDED_LDAP_INDEX)
+            self.index = {typ: set() for typ in RECOMMENDED_LDAP_INDEX}
         else:
             LOG.debug('Loading values from UCR')
-            self.index = dict(
-                (typ, self.split_ucr(ucr, typ))
+            self.index = {
+                typ: self.split_ucr(ucr, typ)
                 for typ in RECOMMENDED_LDAP_INDEX
-            )
+            }
 
     def split_ucr(self, ucr, typ):
         ucrv = self.ucrv(typ)
         value = ucr.get(ucrv, '')
         values = value.split(',')
         stripped = (_.strip() for _ in values)
-        return set(_ for _ in stripped if _)
+        return {_ for _ in stripped if _}
 
     @staticmethod
     def ucrv(typ):
@@ -226,7 +226,7 @@ class LdapIndex(object):
             sys.exit(4)
 
 
-UDM_PROP_ATTRS = set((
+UDM_PROP_ATTRS = {
     'univentionUDMPropertyCLIName',
     'univentionUDMPropertyDefault',
     'univentionUDMPropertyDeleteObjectClass',
@@ -251,10 +251,10 @@ UDM_PROP_ATTRS = set((
     'univentionUDMPropertyValueMayChange',
     'univentionUDMPropertyValueRequired',
     'univentionUDMPropertyVersion',
-))
+}
 
 RECOMMENDED_LDAP_INDEX = {
-    'eq': UDM_PROP_ATTRS | set((
+    'eq': UDM_PROP_ATTRS | {
         'aRecord',
         'automountInformation',
         'cn',
@@ -307,8 +307,8 @@ RECOMMENDED_LDAP_INDEX = {
         'univentionShareWriteable',
         'univentionUDMOptionModule',
         'zoneName',
-    )),
-    'pres': UDM_PROP_ATTRS | set((
+    },
+    'pres': UDM_PROP_ATTRS | {
         'aRecord',
         'aAAARecord',
         'automountInformation',
@@ -344,8 +344,8 @@ RECOMMENDED_LDAP_INDEX = {
         'univentionObjectFlag',
         'univentionPolicyReference',
         'zoneName',
-    )),
-    'sub': set((
+    },
+    'sub': {
         'aRecord',
         'associatedDomain',
         'automountInformation',
@@ -373,14 +373,14 @@ RECOMMENDED_LDAP_INDEX = {
         'univentionUDMPropertyLongDescription',
         'univentionUDMPropertyShortDescription',
         'zoneName',
-    )),
-    'approx': set((
+    },
+    'approx': {
         'cn',
         'givenName',
         'mail',
         'sn',
         'uid',
-    )),
+    },
 }
 
 

@@ -40,9 +40,9 @@ def main():
         syslog.openlog(facility=syslog.LOG_MAIL)  # get markers in mail.log in case of error
 
         smtp_args = {
-            25: dict(port=25, tls=True, ssl=False, recipients=mail2, sender=mail1, msg=uts.random_name()),
-            465: dict(port=465, tls=False, ssl=True, recipients=mail2, sender=mail1, msg=uts.random_name()),
-            587: dict(port=587, tls=True, ssl=False, recipients=mail2, sender=mail1, msg=uts.random_name()),
+            25: {"port": 25, "tls": True, "ssl": False, "recipients": mail2, "sender": mail1, "msg": uts.random_name()},
+            465: {"port": 465, "tls": False, "ssl": True, "recipients": mail2, "sender": mail1, "msg": uts.random_name()},
+            587: {"port": 587, "tls": True, "ssl": False, "recipients": mail2, "sender": mail1, "msg": uts.random_name()},
         }
 
         for _port, kwargs in smtp_args.items():

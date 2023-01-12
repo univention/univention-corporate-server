@@ -88,20 +88,20 @@ class ListenerModuleAdapter(object):
         prerun = self._lazy_pre_run
         postrun = self._lazy_post_run
         setdata = self._setdata
-        return dict(
-            name=name,
-            description=description,
-            filter=filter_s,
-            attributes=attributes,
-            priority=priority,
-            modrdn=modrdn,
-            handler=handler,
-            initialize=initialize,
-            clean=clean,
-            prerun=prerun,
-            postrun=postrun,
-            setdata=setdata,
-        )
+        return {
+            "name": name,
+            "description": description,
+            "filter": filter_s,
+            "attributes": attributes,
+            "priority": priority,
+            "modrdn": modrdn,
+            "handler": handler,
+            "initialize": initialize,
+            "clean": clean,
+            "prerun": prerun,
+            "postrun": postrun,
+            "setdata": setdata,
+        }
 
     def _setdata(self, key, value):
         # type: (str, str) -> None

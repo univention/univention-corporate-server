@@ -129,14 +129,14 @@ def set_handler_message(name, dn, msg):
             lo, position = udm_uldap.getAdminConnection()
             _verify_handler_message_container(lo, position)
             data_obj = _get_handler_message_object(lo, position, name)
-            data = dict()
+            data = {}
             try:
                 data = json.loads(bz2.decompress(base64.b64decode(data_obj.get('data', ''))))
             except ValueError:
                 pass
             hostname = listener.configRegistry.get('hostname')
             if not data.get(hostname):
-                data[hostname] = dict()
+                data[hostname] = {}
             data[hostname][dn] = msg
             json_data = json.dumps(data).encode('ASCII')
             data_obj['data'] = base64.b64encode(bz2.compress(json_data))
@@ -150,7 +150,7 @@ def set_handler_message(name, dn, msg):
 
 def get_handler_message(name, binddn, bindpw):
     # type: (str, str, str) -> dict
-    msg = dict()
+    msg = {}
     try:
         lo = udm_uldap.access(
             host=listener.configRegistry.get('ldap/master'),
@@ -168,9 +168,9 @@ def get_handler_message(name, binddn, bindpw):
             if data_object.get('data', False):
                 msg = json.loads(bz2.decompress(base64.b64decode(data_object['data'])))
         except udm_errors.noObject:
-            msg = dict(err='No object {} found'.format(data_object_dn))
+            msg = {"err": 'No object {} found'.format(data_object_dn)}
     except Exception as err:
-        msg = dict(err='Error get_handler_message for handler {}: {}'.format(name, err))
+        msg = {"err": 'Error get_handler_message for handler {}: {}'.format(name, err)}
     return msg
 
 

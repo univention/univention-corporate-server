@@ -1225,7 +1225,7 @@ class ad(univention.connector.ucs):
             return
 
         ldap_object_ucs_gidNumber = ldap_object_ucs['gidNumber'][0].decode('UTF-8')
-        ucs_members = set(x.decode('UTF-8') for x in ldap_object_ucs.get('uniqueMember', []))
+        ucs_members = {x.decode('UTF-8') for x in ldap_object_ucs.get('uniqueMember', [])}
         ud.debug(ud.LDAP, ud.INFO, "ucs_members: %s" % ucs_members)
 
         # remove members which have this group as primary group (set same gidNumber)
@@ -1496,7 +1496,7 @@ class ad(univention.connector.ucs):
 
         # lookup all current members of UCS group
         ldap_object_ucs = self.get_ucs_ldap_object(object['dn'])
-        ucs_members = set(x.decode('UTF-8') for x in ldap_object_ucs.get('uniqueMember', []))
+        ucs_members = {x.decode('UTF-8') for x in ldap_object_ucs.get('uniqueMember', [])}
         ud.debug(ud.LDAP, ud.INFO, "group_members_sync_to_ucs: ucs_members: %s" % ucs_members)
 
         # map members from AD to UCS and check if they exist
@@ -2186,10 +2186,10 @@ class ad(univention.connector.ucs):
 
                             if not old_values:
                                 to_add = new_values
-                                to_remove = set([])
+                                to_remove = set()
                             elif not new_values:
                                 to_remove = old_values
-                                to_add = set([])
+                                to_add = set()
                             else:
                                 to_add = new_values - old_values
                                 to_remove = old_values - new_values
@@ -2211,20 +2211,20 @@ class ad(univention.connector.ucs):
                                 try:
                                     current_ad_values = set([v for k, v in ad_object.items() if ad_attribute.lower() == k.lower()][0])
                                 except IndexError:
-                                    current_ad_values = set([])
+                                    current_ad_values = set()
                                 ud.debug(ud.LDAP, ud.INFO, "sync_from_ucs: The current AD values: %s" % current_ad_values)
 
                                 try:
                                     current_ad_other_values = set([v for k, v in ad_object.items() if ad_other_attribute.lower() == k.lower()][0])
                                 except IndexError:
-                                    current_ad_other_values = set([])
+                                    current_ad_other_values = set()
                                 ud.debug(ud.LDAP, ud.INFO, "sync_from_ucs: The current AD other values: %s" % current_ad_other_values)
 
                                 new_ad_values = current_ad_values - to_remove
                                 if not new_ad_values and to_add:
                                     for n_value in new_values:
                                         if n_value in to_add:
-                                            to_add = to_add - set([n_value])
+                                            to_add = to_add - {n_value}
                                             new_ad_values = [n_value]
                                             break
 
@@ -2241,7 +2241,7 @@ class ad(univention.connector.ucs):
                                 try:
                                     current_ad_values = set([v for k, v in ad_object.items() if ad_attribute.lower() == k.lower()][0])
                                 except IndexError:
-                                    current_ad_values = set([])
+                                    current_ad_values = set()
 
                                 ud.debug(ud.LDAP, ud.INFO, "sync_from_ucs: The current AD values: %s" % current_ad_values)
 

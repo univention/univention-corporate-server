@@ -52,7 +52,7 @@ class ChangeSet(object):
 
     @staticmethod
     def only_network_config(profile):
-        config = dict()
+        config = {}
         for key, value in profile.items():
             if key.startswith("interfaces/"):
                 config[key] = value or None

@@ -56,7 +56,7 @@ from univention.udm.base import BaseModule, BaseObject  # noqa: F401
 _forward_zones = None
 
 
-@click.command(context_settings=dict(help_option_names=['-h', '--help']))
+@click.command(context_settings={"help_option_names": ['-h', '--help']})
 @click.argument("fqdn")
 @click.argument("port")
 @click.option("--aliases", multiple=True, help="Additional FQDNs for this vhost entry.")

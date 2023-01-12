@@ -139,7 +139,7 @@ class Instance(Base):
     def add(self, request) -> None:
         # does the same as put
         ucr.load()
-        already_set = set(ucr.keys()) & set(v['object']['key'] for v in request.options)
+        already_set = set(ucr.keys()) & {v['object']['key'] for v in request.options}
         if already_set:
             raise UMC_Error(_('The UCR variable %s is already set.') % ('", "'.join(already_set)))
 

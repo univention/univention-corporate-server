@@ -87,7 +87,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
             package, suffix = self.split_pkg(script_path)
 
             other_scripts = self.SCRIPTS - {suffix}
-            other_actions = set(action for actions in self.ACTIONS.values() for action in actions) - self.ACTIONS[suffix]
+            other_actions = {action for actions in self.ACTIONS.values() for action in actions} - self.ACTIONS[suffix]
             self.debug('script=%s' % suffix)
             self.debug('actions=%s' % ' '.join(sorted(self.ACTIONS[suffix])))
             self.debug('other_script=%s' % ' '.join(sorted(other_scripts)))
@@ -142,7 +142,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
                 for cases in match.group('cases').split(';;'):
                     cases = cases.lstrip('\t\n\r (')
                     cases = cases.split(')', 1)[0]
-                    actions = set(action for case in cases.split('|') for action in split(case)) & other_actions
+                    actions = {action for case in cases.split('|') for action in split(case)} & other_actions
                     if actions:
                         self.addmsg(
                             '0018-3',

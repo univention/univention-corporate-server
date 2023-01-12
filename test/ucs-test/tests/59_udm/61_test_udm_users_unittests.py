@@ -374,7 +374,7 @@ class TestUsers:
     ])
     def test_modlist_shadow_max_and_last_change(self, expiry_interval, udm):
         today = int(time.time()) // 3600 // 24
-        kw = dict(expiryInterval=expiry_interval) if expiry_interval is not None else {}
+        kw = {"expiryInterval": expiry_interval} if expiry_interval is not None else {}
         pwhistory = udm.create_object('policies/pwhistory', name='pw-test', **kw)
         cn = udm.create_object('container/cn', name='testusers', policy_reference=pwhistory)
         shadow_max_expiry = [str(expiry_interval)] if expiry_interval is not None else []

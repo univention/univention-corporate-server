@@ -513,7 +513,7 @@ class Manager(dict):
 
                 if apply_function(cmd.allow_anonymous or acls.is_command_allowed(cmd.name, hostname, flavor=flavor.id) for cmd in required_commands):
                     modules.setdefault(module_id, mod)
-                    all_commands = set(module_xml.get_command(command) for module_xml in self[module_id] for command in module_xml.commands())
+                    all_commands = {module_xml.get_command(command) for module_xml in self[module_id] for command in module_xml.commands()}
                     modules[module_id].commands = JSON_List(set(modules[module_id].commands) | all_commands)
                 elif mod.flavors:
                     # if there is not one command allowed with this flavor

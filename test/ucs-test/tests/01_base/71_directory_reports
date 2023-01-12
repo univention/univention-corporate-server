@@ -12,11 +12,11 @@ from univention.testing.umc import Client
 
 
 def create_umc_report(client, report_type, obj, module):
-    r = client.umc_command('udm/reports/create', dict(report=report_type, objects=obj), module)
+    r = client.umc_command('udm/reports/create', {"report": report_type, "objects": obj}, module)
     assert r.status == 200
     report = splitvalue(splitquery(r.result.get('URL'))[1])[1]
     assert os.path.isfile(os.path.join('/usr/share/univention-management-console-module-udm', report))
-    r = client.umc_command('udm/reports/get', dict(report=report), print_response=False)
+    r = client.umc_command('udm/reports/get', {"report": report}, print_response=False)
     assert r.status == 200
     assert r.data
     if report_type == 'PDF Document':
@@ -28,7 +28,7 @@ def create_umc_report(client, report_type, obj, module):
 
 def test_umc(ucr):
     client = Client.get_test_connection()
-    r = client.umc_command('udm/reports/query', dict(), 'users/user')
+    r = client.umc_command('udm/reports/query', {}, 'users/user')
     assert r.status == 200
     for report_type in ['CSV Report', 'PDF Document']:
         create_umc_report(client, report_type, [ucr.get('tests/domainadmin/account')], 'users/user')

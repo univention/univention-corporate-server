@@ -132,7 +132,7 @@ def migrate_content(udm, old_obj, new_obj):
         new_obj.save()
 
 
-@click.command(context_settings=dict(help_option_names=['-h', '--help']))
+@click.command(context_settings={"help_option_names": ['-h', '--help']})
 @click.option('--binddn', help="DN of account to use to write to LDAP (e.g. uid=Administrator,cn=users,..).")
 @click.option('--bindpwdfile', help="File containing password of user provided by --binddn.")
 def main(binddn, bindpwdfile):

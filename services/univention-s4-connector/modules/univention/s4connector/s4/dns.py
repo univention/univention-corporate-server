@@ -305,7 +305,7 @@ def dns_dn_mapping(s4connector, given_object, dn_mapping_stored, isUCSobject):
                         time.sleep(1)  # S4 may need some time...
                     else:
                         (_search_result_dn, search_result_attributes) = search_result[0]
-                        search_result_attributes = dict((k.lower(), v) for k, v in search_result_attributes)
+                        search_result_attributes = {k.lower(): v for k, v in search_result_attributes}
                         s4_RR_val = search_result_attributes[s4_RR_attr.lower()][0].decode('UTF-8')
                         ud.debug(ud.LDAP, ud.INFO, "dns_dn_mapping: got %s from S4" % s4_RR_attr)
 
@@ -1518,7 +1518,7 @@ def _identify_dns_con_object(s4connector, object):
                     return 'alias'
                 elif dnsp.DNS_TYPE_SRV in dns_types:
                     return 'srv_record'
-                elif set((dnsp.DNS_TYPE_A, dnsp.DNS_TYPE_AAAA)) & dns_types:
+                elif {dnsp.DNS_TYPE_A, dnsp.DNS_TYPE_AAAA} & dns_types:
                     return 'host_record'
                 elif dnsp.DNS_TYPE_TXT in dns_types:
                     return 'txt_record'

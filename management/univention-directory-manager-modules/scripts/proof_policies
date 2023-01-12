@@ -83,7 +83,7 @@ def main():
     count_policies = 0
     count_deleted_policies = 0
 
-    policy_object = dict((x[0], 0) for x in lo.search_s(baseDN, ldap.SCOPE_SUBTREE, 'objectClass=univentionPolicy'))  # set all Policies as unused
+    policy_object = {x[0]: 0 for x in lo.search_s(baseDN, ldap.SCOPE_SUBTREE, 'objectClass=univentionPolicy')}  # set all Policies as unused
 
     for policy_reference_dn, policy_reference_attr in lo.search_s(baseDN, ldap.SCOPE_SUBTREE, 'objectClass=univentionPolicyReference'):
         if "univentionPolicyReference" in policy_reference_attr:

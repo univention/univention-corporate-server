@@ -130,7 +130,7 @@ class UpdateCheck(UniventionAppAction):
             next_apps = next_cache.get_every_single_app()
 
         # check apps
-        blocking_apps = dict()
+        blocking_apps = {}
         for app in current_cache.get_all_locally_installed_apps():
             if not cls.app_can_update(app, next_version, next_apps):
                 cls.debug('app %s is not available for %s' % (app.id, next_version))

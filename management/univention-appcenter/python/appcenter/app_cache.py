@@ -267,7 +267,7 @@ class AppCache(_AppCache):
                 cache_logger.debug('Cannot load cache: Getting cached attributes failed')
                 return None
             else:
-                code_attributes = set(attr.name for attr in self.get_app_class()._attrs)
+                code_attributes = {attr.name for attr in self.get_app_class()._attrs}
                 if cache_attributes != code_attributes:
                     cache_logger.debug('Cannot load cache: Attributes in cache file differ from attribute in code')
                     return None

@@ -6,10 +6,10 @@ from univention.management.console.modules.passwordreset.send_plugin import Univ
 
 
 def get_plugins(log):
-    plugins = dict()
+    plugins = {}
 
     def find_plugins():
-        _plugins = list()
+        _plugins = []
         _dir = os.path.dirname(__file__)
         for _file in os.listdir(_dir):
             if _file.endswith(".py") and _file != "__init__.py" and os.path.isfile(os.path.join(_dir, _file)):

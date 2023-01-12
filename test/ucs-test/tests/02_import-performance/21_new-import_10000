@@ -31,15 +31,15 @@ if __name__ == '__main__':
     MAX_SECONDS_USER_AUTH = 20
     MAX_SECONDS_PASSWORD_RESET = 335 + CONNECTOR_WAIT_TIME
 
-    test_user_kwargs = dict(
-        CSV_IMPORT_FILE='/tmp/import10000.csv',
-        ous=20,
-        teachers=800,
-        staff=500,
-        staffteachers=200,
-        students=8500,
-        classes=400,
-    )
+    test_user_kwargs = {
+        "CSV_IMPORT_FILE": '/tmp/import10000.csv',
+        "ous": 20,
+        "teachers": 800,
+        "staff": 500,
+        "staffteachers": 200,
+        "students": 8500,
+        "classes": 400,
+    }
     school_names = [f'School{num:0>2}{uts.random_name(5)}' for num in range(test_user_kwargs['ous'])]
     cmd_args = '-v --teachers {teachers} --staff {staff} --staffteachers {staffteachers} --students {students} ' \
         '--classes {classes} --csvfile {CSV_IMPORT_FILE} {school_names}'.format(school_names=' '.join(school_names), **test_user_kwargs)

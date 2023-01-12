@@ -1728,8 +1728,8 @@ class AD_Takeover_Finalize(object):
             log.info('got primary interface %s from ucr interfaces/primary' % primary_interface)
             return primary_interface
         # from ucr interfaces
-        ipv4_interfaces = list()
-        ipv6_interfaces = list()
+        ipv4_interfaces = []
+        ipv6_interfaces = []
         for k in list(self.ucr.keys()):
             m = re.match('interfaces/([^/]+)/address', k)
             if m:

@@ -312,12 +312,12 @@ class ListenerModuleHandler(with_metaclass(HandlerMetaClass)):
         :param str host: LDAP server
         """
         old_credentials = self._ldap_credentials
-        self._ldap_credentials = dict(
-            host=host,
-            base=base,
-            binddn=binddn,
-            bindpw=bindpw
-        )
+        self._ldap_credentials = {
+            "host": host,
+            "base": base,
+            "binddn": binddn,
+            "bindpw": bindpw
+        }
         if old_credentials != self._ldap_credentials:
             # force creation of new LDAP connection
             self._lo = self._po = None
@@ -351,7 +351,7 @@ class ListenerModuleHandler(with_metaclass(HandlerMetaClass)):
             conf_class.name = name
             conf_obj = conf_class()
             attrs = cls._configuration_class.get_configuration_keys()
-            kwargs = dict(listener_module_class=cls)
+            kwargs = {"listener_module_class": cls}
             for attr in attrs:
                 try:
                     get_method = getattr(conf_obj, 'get_{}'.format(attr))

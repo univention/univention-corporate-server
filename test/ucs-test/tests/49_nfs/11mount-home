@@ -22,25 +22,25 @@ if __name__ == '__main__':
     with UCSTestUDM() as udm:
         share_name = random_name()
         share_path = join('/mnt', share_name)
-        share_prop = dict(
-            name=share_name,
-            host='%(ldap/master)s' % ucr,
-            path=share_path,
-            nfs_hosts=['%(hostname)s' % ucr],  # FQHN not supported
-            root_squash='0',
-            options=['nfs'],
-        )
+        share_prop = {
+            "name": share_name,
+            "host": '%(ldap/master)s' % ucr,
+            "path": share_path,
+            "nfs_hosts": ['%(hostname)s' % ucr],  # FQHN not supported
+            "root_squash": '0',
+            "options": ['nfs'],
+        }
         share = udm.create_object('shares/share', **share_prop)
 
         user_name = random_username()
         user_home = join('/home', user_name)
-        user_prop = dict(
-            username=user_name,
-            unixhome=user_home,
-            primaryGroup='cn=%s,cn=groups,%s' % (ucr.get('groups/default/domainadmins', 'Domain Admins'), ucr['ldap/base']),
-            homeShare=share,
-            homeSharePath=user_name,
-        )
+        user_prop = {
+            "username": user_name,
+            "unixhome": user_home,
+            "primaryGroup": 'cn=%s,cn=groups,%s' % (ucr.get('groups/default/domainadmins', 'Domain Admins'), ucr['ldap/base']),
+            "homeShare": share,
+            "homeSharePath": user_name,
+        }
         user, _user_name = udm.create_user(**user_prop)
 
         print('Waiting 30s for UDL.postrun() on master to export share...')

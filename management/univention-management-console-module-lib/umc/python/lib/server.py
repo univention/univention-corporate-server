@@ -92,7 +92,7 @@ class Server(object):
 
     @simple_response
     def ping(self):
-        return dict(success=True)
+        return {"success": True}
 
     @sanitize(message=MessageSanitizer(default=''))
     def reboot(self, request):

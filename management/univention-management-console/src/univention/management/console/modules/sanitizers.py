@@ -146,7 +146,7 @@ class MultiValidationError(ValidationError):
         Returns a errors in a similar way like the arguments were passed
         to the sanitizers.
         """
-        return dict([(name, e.result()) for name, e in self.validation_errors.items()])
+        return {name: e.result() for name, e in self.validation_errors.items()}
 
 
 class Sanitizer(object):
@@ -200,7 +200,7 @@ class Sanitizer(object):
         if value is None and self.allow_none:
             return value
         if self.further_arguments:
-            further_arguments = dict([(field, options.get(field)) for field in self.further_arguments])
+            further_arguments = {field: options.get(field) for field in self.further_arguments}
         else:
             further_arguments = {}
         try:

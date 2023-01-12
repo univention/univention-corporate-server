@@ -154,7 +154,7 @@ class TestUMCAuthenticator:
             async_response_mock.return_value.set_result(response_mock)
             test_cookie = req.headers.get('Cookie', '').split(',')
             test_cookie = [c.strip().split('=') for c in test_cookie]
-            test_cookie = dict((k.strip(), v.strip()) for k, v in test_cookie).get(self._umc_cookie_name, "")
+            test_cookie = {k.strip(): v.strip() for k, v in test_cookie}.get(self._umc_cookie_name, "")
             if test_cookie:
                 response_mock.body = json.dumps({"result": {"username": self._username}}).encode()
             else:

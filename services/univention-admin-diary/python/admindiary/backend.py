@@ -358,7 +358,7 @@ class Client(object):
                 event_name = event.name
             else:
                 event_name = 'COMMENT'
-            args = dict((arg.key, arg.value) for arg in entry.args)
+            args = {arg.key: arg.value for arg in entry.args}
             comments = sum(1 for e in entry.comments if e.message and e.context_id == entry.context_id)
             res.append({
                 'id': entry.id,
@@ -386,7 +386,7 @@ class Client(object):
             order_by(Entry.id)
 
         for entry in query.all():
-            args = dict((arg.key, arg.value) for arg in entry.args)
+            args = {arg.key: arg.value for arg in entry.args}
             tags = [tag.name for tag in entry.tags]
             event = entry.event
             if event:

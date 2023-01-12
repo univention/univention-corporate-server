@@ -402,7 +402,7 @@ def get_current_ram_available():
     # implement here. see http://code.google.com/p/psutil/source/diff?spec=svn550&r=550&format=side&path=/trunk/psutil/_pslinux.py
     with open('/proc/meminfo', 'r') as f:
         splitlines = map(lambda line: line.split(), f.readlines())
-        meminfo = dict([(line[0], int(line[1]) * 1024) for line in splitlines])  # bytes
+        meminfo = {line[0]: int(line[1]) * 1024 for line in splitlines}  # bytes
     avail_phymem = meminfo['MemFree:']  # at least MemFree is required
 
     # see also http://code.google.com/p/psutil/issues/detail?id=313

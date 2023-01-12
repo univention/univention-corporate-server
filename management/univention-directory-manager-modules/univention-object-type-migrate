@@ -43,11 +43,11 @@ import univention.uldap
 def buildModuleIdentifyMapping():
     import univention.admin.modules
     univention.admin.modules.update()
-    return dict(
-        (name, module.identify)
+    return {
+        name: module.identify
         for (name, module) in univention.admin.modules.modules.items()
         if hasattr(module, 'identify')
-    )
+    }
 
 
 def parseOptions():

@@ -312,11 +312,11 @@ class Instance(Base):
             if pkg.marked_delete:
                 remove.append((pkg.name, pkg.installed.version))
 
-        return dict(
-            update=sorted(update),
-            install=sorted(install),
-            remove=sorted(remove),
-        )
+        return {
+            "update": sorted(update),
+            "install": sorted(install),
+            "remove": sorted(remove),
+        }
 
     @simple_response
     def updates_available(self) -> bool:
@@ -536,7 +536,7 @@ class Instance(Base):
 %s
 %s < /dev/null
 %s''' % (spec["prejob"], command, spec["postjob"])
-        atjobs.add(command, comments=dict(lines=self._logfile_start_line))
+        atjobs.add(command, comments={"lines": self._logfile_start_line})
 
         return {'status': 0}
 

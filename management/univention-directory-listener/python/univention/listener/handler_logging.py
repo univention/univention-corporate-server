@@ -96,15 +96,15 @@ class ModuleHandler(logging.Handler):
     :file:`/var/log/univention/listener.log`
     """
 
-    LOGGING_TO_UDEBUG = dict(
-        CRITICAL=ud.ERROR,
-        ERROR=ud.ERROR,
-        WARN=ud.WARN,
-        WARNING=ud.WARN,
-        INFO=ud.PROCESS,
-        DEBUG=ud.INFO,
-        NOTSET=ud.INFO
-    )
+    LOGGING_TO_UDEBUG = {
+        "CRITICAL": ud.ERROR,
+        "ERROR": ud.ERROR,
+        "WARN": ud.WARN,
+        "WARNING": ud.WARN,
+        "INFO": ud.PROCESS,
+        "DEBUG": ud.INFO,
+        "NOTSET": ud.INFO
+    }
 
     def __init__(self, level=logging.NOTSET, udebug_facility=ud.LISTENER):
         # type: (int, int) -> None
@@ -123,28 +123,28 @@ class ModuleHandler(logging.Handler):
 
 __LF_D = '%(asctime)s %(levelname)-7s %(module)s.%(funcName)s:%(lineno)d  %(message)s'
 __LF_I = '%(asctime)s %(levelname)-7s %(message)s'
-FILE_LOG_FORMATS = dict(
-    NOTSET=__LF_D,
-    DEBUG=__LF_D,
-    INFO=__LF_I,
-    WARNING=__LF_I,
-    WARN=__LF_I,
-    ERROR=__LF_I,
-    CRITICAL=__LF_I,
-)
+FILE_LOG_FORMATS = {
+    "NOTSET": __LF_D,
+    "DEBUG": __LF_D,
+    "INFO": __LF_I,
+    "WARNING": __LF_I,
+    "WARN": __LF_I,
+    "ERROR": __LF_I,
+    "CRITICAL": __LF_I,
+}
 
 __LC_D = '%(asctime)s %(levelname)-7s %(module)s.%(funcName)s:%(lineno)d  %(message)s'
 __LC_I = '%(message)s'
 __LC_W = '%(levelname)-7s  %(message)s'
-CMDLINE_LOG_FORMATS = dict(
-    NOTSET=__LC_D,
-    DEBUG=__LC_D,
-    INFO=__LC_I,
-    WARNING=__LC_W,
-    WARN=__LC_W,
-    ERROR=__LC_W,
-    CRITICAL=__LC_W,
-)
+CMDLINE_LOG_FORMATS = {
+    "NOTSET": __LC_D,
+    "DEBUG": __LC_D,
+    "INFO": __LC_I,
+    "WARNING": __LC_W,
+    "WARN": __LC_W,
+    "ERROR": __LC_W,
+    "CRITICAL": __LC_W,
+}
 
 UCR_DEBUG_LEVEL_TO_LOGGING_LEVEL = {
     0: 'ERROR',
@@ -294,7 +294,7 @@ def get_listener_logger(name, filename, level=None, handler_kwargs=None, formatt
         _logger.setLevel(level)
 
     fmt = FILE_LOG_FORMATS[level]
-    fmt_kwargs = dict(cls=logging.Formatter, fmt=fmt, datefmt=LOG_DATETIME_FORMAT)  # type: Dict[str, Any]
+    fmt_kwargs = {"cls": logging.Formatter, "fmt": fmt, "datefmt": LOG_DATETIME_FORMAT}  # type: Dict[str, Any]
     fmt_kwargs.update(formatter_kwargs)
 
     if cache_key in _handler_cache:

@@ -64,7 +64,7 @@ NAMED_CACHE_DIR = "/var/cache/bind"
 PROXY_CACHE_DIR = "/var/cache/univention-bind-proxy"
 RNDC_BIN = "/usr/sbin/rndc"
 
-SIGNAL = dict([(getattr(signal, _), _) for _ in dir(signal) if _.startswith('SIG') and not _.startswith('SIG_')])
+SIGNAL = {getattr(signal, _): _ for _ in dir(signal) if _.startswith('SIG') and not _.startswith('SIG_')}
 
 __zone_created_or_removed = False
 

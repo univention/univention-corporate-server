@@ -64,7 +64,7 @@ class EntryDiff(object):
         return self.set_old - self.intersect
 
     def changed(self):
-        return set(o for o in self.intersect if set(self.old[o]) != set(self.new[o]))
+        return {o for o in self.intersect if set(self.old[o]) != set(self.new[o])}
 
 
 class S4Cache(object):
@@ -320,7 +320,7 @@ if __name__ == '__main__':
     entry['attr2'] = [b'val1', b'val3']
 
     diff_entry = s4cache.diff_entry(entry_old, entry)
-    if diff_entry.get('changed') != set(['attr2']) or diff_entry.get('removed') or diff_entry.get('added') != set(['attr3']):
+    if diff_entry.get('changed') != {'attr2'} or diff_entry.get('removed') or diff_entry.get('added') != {'attr3'}:
         raise Exception('Test 2 failed: %s' % diff_entry)
     print('.', end=' ')
 

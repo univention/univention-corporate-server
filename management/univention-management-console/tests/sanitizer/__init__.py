@@ -81,7 +81,7 @@ class Instance(Base):
     @simple_response
     @log
     def dict_a(self, value):
-        assert set(value) == set(['foo', 'bar']), 'There are invalid keys: %r' % (list(value))
+        assert set(value) == {'foo', 'bar'}, 'There are invalid keys: %r' % (list(value))
         return '%r' % (value,)
 
     @sanitize(value=s.EmailSanitizer(required=True))

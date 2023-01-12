@@ -575,7 +575,7 @@ class MultiDocker(Docker):
                 else:
                     used_ports[self.app.docker_main_service][container_port] = host_port
         for service_name, ports in used_ports.items():
-            content['services'][service_name]['ports'] = list()
+            content['services'][service_name]['ports'] = []
             for container_port, host_port in ports.items():
                 if prots.get(container_port):
                     container_port = '{}/{}'.format(container_port, prots[container_port])
@@ -588,7 +588,7 @@ class MultiDocker(Docker):
                         if self.env_file_created not in service['env_file']:
                             service['env_file'].append(self.env_file_created)
                     else:
-                        service['env_file'] = list()
+                        service['env_file'] = []
                         service['env_file'].append(self.env_file_created)
         with open(yml_file, 'w') as fd:
             yaml.dump(content, fd, Dumper=yaml.RoundTripDumper, encoding='utf-8', allow_unicode=True)

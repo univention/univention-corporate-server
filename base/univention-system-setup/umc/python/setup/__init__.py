@@ -760,11 +760,11 @@ class Instance(Base, ProgressMixin):
             match_country = country_data.get(imatch.get('country'))
             if match_country:
                 imatch.update(util.get_random_nameserver(match_country))
-                imatch.update(dict(
-                    default_lang=match_country.get('default_lang'),
-                    country_label=self._get_localized_label(match_country.get('label', {})),
-                    label=self._get_localized_label(imatch.get('label')) or imatch.get('match'),
-                ))
+                imatch.update({
+                    "default_lang": match_country.get('default_lang'),
+                    "country_label": self._get_localized_label(match_country.get('label', {})),
+                    "label": self._get_localized_label(imatch.get('label')) or imatch.get('match'),
+                })
 
         return matches
 

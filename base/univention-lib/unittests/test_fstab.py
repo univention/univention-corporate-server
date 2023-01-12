@@ -102,7 +102,7 @@ def test_entry_repr():
     (("/dev/vda3", "/", "ext3"), {'comment': "#one final comment"}, "/dev/vda3\t/\text3\tdefaults\t0\t0\t#one final comment"),
     (("/dev/vda3", "/", "ext3", "defaults", None, None), {}, "/dev/vda3\t/\text3\tdefaults"),
     (("/dev/vda3", "/", "ext3", "defaults", None, 1), {}, "/dev/vda3\t/\text3\tdefaults\t0\t1"),
-    (("/dev/vda3", "/", "ext3"), dict(dump=1, passno=None), "/dev/vda3\t/\text3\tdefaults\t1"),
+    (("/dev/vda3", "/", "ext3"), {"dump": 1, "passno": None}, "/dev/vda3\t/\text3\tdefaults\t1"),
     (("/dev/vda3", "/", "ext3"), {'comment': ''}, "/dev/vda3\t/\text3\t"),
 ])
 def test_entry_composing(args, kwargs, string):

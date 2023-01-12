@@ -372,9 +372,9 @@ def test_group_different_case(udm):
             variants.append(result)
         return variants
 
-    for members in changed_cases(dict(hosts=computer, users=user, nestedGroup=nested_group)):
+    for members in changed_cases({"hosts": computer, "users": user, "nestedGroup": nested_group}):
         print('Modifying group with changed members: %r' % (members,))
-        udm.modify_object('groups/group', dn=group, remove=dict(hosts=[computer], users=[user], nestedGroup=[nested_group]), wait_for=True)
+        udm.modify_object('groups/group', dn=group, remove={"hosts": [computer], "users": [user], "nestedGroup": [nested_group]}, wait_for=True)
         # FIXME: Bug #43286: udm.modify_object('groups/group', dn=group, remove=members)
         utils.verify_ldap_object(group, {'uniqueMember': []})
 

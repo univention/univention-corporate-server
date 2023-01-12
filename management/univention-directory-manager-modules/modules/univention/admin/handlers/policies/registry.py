@@ -136,7 +136,7 @@ class object(univention.admin.handlers.simplePolicy):
         for key, old, new in diff:
             if key == 'registry':
                 keys = [x[0] for x in new]
-                duplicated = set(x for x in keys if keys.count(x) > 1)
+                duplicated = {x for x in keys if keys.count(x) > 1}
                 if duplicated:
                     raise univention.admin.uexceptions.valueInvalidSyntax(_('Duplicated variables not allowed: %s') % (', '.join(map(repr, duplicated))), property='registry')
 

@@ -426,7 +426,7 @@ def create_extended_attribute(attribute, app, layout_position, lo, pos):
     attrs['copyable'] = attribute.copyable
     attrs['options'] = attribute.options
     attrs['CLIName'] = attribute.cli_name
-    attrs = dict((key, value) for key, value in attrs.items() if value is not None)
+    attrs = {key: value for key, value in attrs.items() if value is not None}
     attribute_logger.debug('Creating DN: %s' % attribute.dn)
     if not create_object_if_not_exists('settings/extended_attribute', lo, pos, **attrs):
         attribute_logger.debug('... already exists. Overwriting!')

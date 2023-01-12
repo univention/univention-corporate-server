@@ -119,14 +119,14 @@ class Progress(object):
         self.critical = False
 
     def poll(self) -> Dict:
-        return dict(
-            finished=self.finished,
-            steps=100 * float(self.steps) / self.max_steps,
-            component=self.component,
-            info=self.info,
-            errors=self.errors,
-            critical=self.critical,
-        )
+        return {
+            "finished": self.finished,
+            "steps": 100 * float(self.steps) / self.max_steps,
+            "component": self.component,
+            "info": self.info,
+            "errors": self.errors,
+            "critical": self.critical,
+        }
 
     def finish(self) -> None:
         self.finished = True

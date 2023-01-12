@@ -165,7 +165,7 @@ class Entry(object):
     :ivar str uuid: The file system |UUID| if the file system is mounted by it. Otherwise `None`.
     """
 
-    _quote_dict = dict([(c, r'\%s' % oct(ord(c))) for c in ' \t\n\r\\'])
+    _quote_dict = {c: r'\%s' % oct(ord(c)) for c in ' \t\n\r\\'}
     _quote_re = re.compile(r'\\0([0-7]+)')
 
     def __init__(self, spec, mount_point, fs_type, options='', dump=None, passno=None, comment=None):

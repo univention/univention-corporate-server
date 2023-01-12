@@ -59,40 +59,40 @@ def test_use_usertemplate(udm):
     path = '/%s' % (random_name(),)
     dn_share = udm.create_object('shares/share', wait_for_replication=False, name=random_name(), path=path, host=host)
 
-    properties = dict(
-        name=template_name,
-        _options=['pki'],
-        title=random_name(),
-        description=random_name(),
-        mailPrimaryAddress='<firstname>.<lastname>@%s' % (MAIL_DOMAIN,),
-        mailAlternativeAddress=['<username>@%s' % (MAIL_DOMAIN,), '<lastname>@%s' % (MAIL_DOMAIN,)],
-        displayName='<lastname>, <firstname>',
-        organisation=random_name(),
-        employeeNumber=random_int(),
-        employeeType=random_name(),
-        secretary=dn_secretary,
-        primaryGroup=dn_group,
-        groups=[dn_group1, dn_group2],
-        disabled='1',
-        pwdChangeNextLogin='1',
-        homedrive='H:',
-        sambahome='//%s/<username>' % (host,),
-        scriptpath='//%s/scripts/<username>' % (host,),
-        profilepath='//%s/profile/<username>' % (host,),
-        unixhome='/home/<username>[0]/<username>',
-        shell='/bin/false',
-        homeShare=dn_share,
-        homeSharePath='<username>[0]/<username>',
+    properties = {
+        "name": template_name,
+        "_options": ['pki'],
+        "title": random_name(),
+        "description": random_name(),
+        "mailPrimaryAddress": '<firstname>.<lastname>@%s' % (MAIL_DOMAIN,),
+        "mailAlternativeAddress": ['<username>@%s' % (MAIL_DOMAIN,), '<lastname>@%s' % (MAIL_DOMAIN,)],
+        "displayName": '<lastname>, <firstname>',
+        "organisation": random_name(),
+        "employeeNumber": random_int(),
+        "employeeType": random_name(),
+        "secretary": dn_secretary,
+        "primaryGroup": dn_group,
+        "groups": [dn_group1, dn_group2],
+        "disabled": '1',
+        "pwdChangeNextLogin": '1',
+        "homedrive": 'H:',
+        "sambahome": '//%s/<username>' % (host,),
+        "scriptpath": '//%s/scripts/<username>' % (host,),
+        "profilepath": '//%s/profile/<username>' % (host,),
+        "unixhome": '/home/<username>[0]/<username>',
+        "shell": '/bin/false',
+        "homeShare": dn_share,
+        "homeSharePath": '<username>[0]/<username>',
         # serviceprovider=FIXME,
-        phone='+49-421-22232-0',
-        roomNumber=random_int(),
-        departmentNumber=random_int(),
-        street=random_name(),
-        postcode=random_int(),
-        city=random_name(),
-        country='DE',
+        "phone": '+49-421-22232-0',
+        "roomNumber": random_int(),
+        "departmentNumber": random_int(),
+        "street": random_name(),
+        "postcode": random_int(),
+        "city": random_name(),
+        "country": 'DE',
         # FIXME: CTX...
-    )
+    }
     properties['e-mail'] = email()
     dn_template = udm.create_object(MOD_TMPL, wait_for_replication=False, **properties)
     utils.verify_ldap_object(dn_template, {
@@ -274,20 +274,20 @@ def create_template(udm, host, path):
     template_name = random_name()
     udm.create_object('mail/domain', wait_for_replication=False, name=MAIL_DOMAIN)
     dn_share = udm.create_object('shares/share', wait_for_replication=False, name=random_name(), path=path, host=host)
-    properties = dict(
-        name=template_name,
-        mailPrimaryAddress='<:umlauts><firstname>.<lastname><:lower>@%s' % (MAIL_DOMAIN,),
-        mailAlternativeAddress=['<:umlauts><username><:lower>@%s' % (MAIL_DOMAIN,), '<:umlauts><lastname><:lower>@%s' % (MAIL_DOMAIN,)],
-        displayName='<:umlauts><lastname>, <:umlauts><firstname>',
-        organisation=random_name(),
-        sambahome='//%s/<:umlauts><username>' % (host,),
-        scriptpath='//%s/scripts/<:umlauts><username>' % (host,),
-        profilepath='//%s/profile/<:umlauts><username>' % (host,),
-        unixhome='/home/<username>[0]/<:umlauts><username>',
-        homeShare=dn_share,
-        homeSharePath='<:umlauts><username>[0]/<username>',
-        departmentNumber=random_int(),
-    )
+    properties = {
+        "name": template_name,
+        "mailPrimaryAddress": '<:umlauts><firstname>.<lastname><:lower>@%s' % (MAIL_DOMAIN,),
+        "mailAlternativeAddress": ['<:umlauts><username><:lower>@%s' % (MAIL_DOMAIN,), '<:umlauts><lastname><:lower>@%s' % (MAIL_DOMAIN,)],
+        "displayName": '<:umlauts><lastname>, <:umlauts><firstname>',
+        "organisation": random_name(),
+        "sambahome": '//%s/<:umlauts><username>' % (host,),
+        "scriptpath": '//%s/scripts/<:umlauts><username>' % (host,),
+        "profilepath": '//%s/profile/<:umlauts><username>' % (host,),
+        "unixhome": '/home/<username>[0]/<:umlauts><username>',
+        "homeShare": dn_share,
+        "homeSharePath": '<:umlauts><username>[0]/<username>',
+        "departmentNumber": random_int(),
+    }
     dn_template = udm.create_object(MOD_TMPL, wait_for_replication=False, **properties)
     print("verify that template was created as expected.")
     utils.verify_ldap_object(dn_template, {

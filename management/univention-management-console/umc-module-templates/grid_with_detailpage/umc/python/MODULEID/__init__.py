@@ -75,7 +75,7 @@ class Instance(Base):
     def colors(self, request):
         """Returns a list of all existing colors."""
         MODULE.info('MODULEID.colors: options: %r' % (request.options,))
-        allColors = set(x['color'] for x in Instance.entries)
+        allColors = {x['color'] for x in Instance.entries}
         allColors = [{'id': x, 'label': x} for x in allColors]
         allColors.append({'id': 'None', 'label': _('All colors')})
         MODULE.info('MODULEID.colors: result: %r' % (allColors,))

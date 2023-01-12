@@ -30,7 +30,7 @@ if __name__ == '__main__':
         users = [udm.create_user()[0], udm.create_user()[0]]
         s4connector.wait_for_sync()
         user_sids = [(s4connector.get_object_sid(user)) for user in users]
-        udm.modify_object('groups/group', dn=group_dn, append={'users': [user for user in users]})
+        udm.modify_object('groups/group', dn=group_dn, append={'users': list(users)})
         s4connector.wait_for_sync()
 
         # check users (ldap objects and if synced )

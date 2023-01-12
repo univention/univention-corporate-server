@@ -91,7 +91,7 @@ def run(action, verbose=False):
             log(idn, 'jpegPhoto: base64 format -> CAN BE CONVERTED')
         else:
             log(idn, 'jpegPhoto: CONVERTING from base64 to binary format', force=True)
-            ldiff = ldap.modlist.modifyModlist(dict(jpegPhoto=[b64]), dict(jpegPhoto=[bin]))
+            ldiff = ldap.modlist.modifyModlist({"jpegPhoto": [b64]}, {"jpegPhoto": [bin]})
             lo.modify_s(idn, ldiff)
 
 

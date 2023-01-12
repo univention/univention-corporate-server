@@ -81,7 +81,7 @@ ROOTPW_FILE = '/etc/ldap/rootpw.conf'
 CURRENT_MODRDN = os.path.join(STATE_DIR, 'current_modrdn')
 MAX_LDAP_RETRIES = int(listener.configRegistry.get('replication/ldap/retries', '30'))
 
-EXCLUDE_ATTRIBUTES = set(attr.lower() for attr in {
+EXCLUDE_ATTRIBUTES = {attr.lower() for attr in {
     'subschemaSubentry',
     'hasSubordinates',
     'entryDN',
@@ -93,7 +93,7 @@ EXCLUDE_ATTRIBUTES = set(attr.lower() for attr in {
     'pwdGraceUseTime',
     'pwdReset',
     'pwdPolicySubentry',
-} | (set() if listener.configRegistry.is_true('ldap/overlay/memberof') else {'memberOf'}))
+} | (set() if listener.configRegistry.is_true('ldap/overlay/memberof') else {'memberOf'})}
 ud.debug(ud.LISTENER, ud.ALL, 'replication: EXCLUDE_ATTRIBUTES=%r' % (EXCLUDE_ATTRIBUTES,))
 
 # don't use built-in OIDs from slapd

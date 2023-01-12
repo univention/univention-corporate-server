@@ -362,22 +362,22 @@ class App:
         client = umc.Client.get_test_connection()
         client.umc_get('session-info')
 
-        options = dict(
-            function='install',
-            application=self.app_name,
-            app=self.app_name,
-            force=True)
+        options = {
+            "function": 'install',
+            "application": self.app_name,
+            "app": self.app_name,
+            "force": True}
         resp = client.umc_command('appcenter/docker/invoke', options).result
         progress_id = resp.get('id')
         if not resp:
             raise UCTTest_DockerApp_UMCInstallFailed(resp, None)
-        errors = list()
+        errors = []
         finished = False
         progress = None
         event = threading.Event()
         threading.Thread(target=_thread, args=(event, options)).start()
         while not (event.wait(3) and finished):
-            options = dict(progress_id=progress_id)
+            options = {"progress_id": progress_id}
             progress = client.umc_command('appcenter/docker/progress', options, print_request_data=False, print_response=False).result
             progress.get('info', None)
             for i in progress.get('intermediate', []):
@@ -548,7 +548,7 @@ class Appcenter:
         self.univention_repository_created = False
         self.ucr = UCSTestConfigRegistry()
         self.ucr.load()
-        self.apps = list()
+        self.apps = []
 
         if os.path.exists('/var/www/meta-inf'):
             print('ERROR: /var/www/meta-inf already exists')

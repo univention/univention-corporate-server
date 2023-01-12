@@ -1253,7 +1253,7 @@ class Instance(Base):
         return res
 
     def dns_to_groupname(self, dns):
-        names = list()
+        names = []
         for groupdn in dns:
             group = self.get_udm_group(groupdn)
             names.append(group["name"])

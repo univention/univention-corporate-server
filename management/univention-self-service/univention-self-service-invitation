@@ -54,7 +54,7 @@ class Invitation(object):
 
         # options
         usage = '%(prog)s'
-        description = '%(prog)s sends passwordreset tokens to all users found in %(dir)s.' % dict(dir=TRIGGER_DIR, prog='%(prog)s')
+        description = '%(prog)s sends passwordreset tokens to all users found in %(dir)s.' % {"dir": TRIGGER_DIR, "prog": '%(prog)s'}
         description += '%(prog)s is triggered by the selfservice-invitation listener and started via systemd'
         parser = argparse.ArgumentParser(usage=usage, description=description)
         parser.add_argument('-n', '--dry-run', action='store_true', help='Just check, do not send invitation')
@@ -112,7 +112,7 @@ class Invitation(object):
                     if self.is_valid_user(user):
                         self.logger.info('Sending token to {}'.format(user))
                         if not self.args.dry_run:
-                            self.umc_client.umc_command(self.umc_path, dict(username=user, method='email'))
+                            self.umc_client.umc_command(self.umc_path, {"username": user, "method": 'email'})
                             os.remove(filename)
                     else:
                         self.logger.info('ignore request and delete trigger file for user {} (not a valid invitation account)'.format(user))

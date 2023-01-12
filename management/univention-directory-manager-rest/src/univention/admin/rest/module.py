@@ -293,10 +293,10 @@ class ObjectPropertySanitizer(StringSanitizer):
 
         TODO: in theory we should only allow existing searchable properties for the requested object type
         """
-        args = dict(
-            minimum=0,
-            regex_pattern=r'^[\w\d\-;]*$',
-        )
+        args = {
+            "minimum": 0,
+            "regex_pattern": r'^[\w\d\-;]*$',
+        }
         args.update(kwargs)
         StringSanitizer.__init__(self, **args)
 

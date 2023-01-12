@@ -770,14 +770,14 @@ class CPgeneric(Ressource):
     def add_request_headers(self, request):
         request.http_method = cherrypy.request.method
         if six.PY2:
-            request.headers = dict((name.decode('ISO8859-1').title(), value.decode('ISO8859-1')) for name, value in cherrypy.request.headers.items())
+            request.headers = {name.decode('ISO8859-1').title(): value.decode('ISO8859-1') for name, value in cherrypy.request.headers.items()}
         else:
             request.headers = dict(cherrypy.request.headers.items())
         request.headers.pop('Cookie', None)
         if six.PY2:
-            request.cookies = dict((x.key.decode('ISO8859-1'), x.value.decode('ISO8859-1')) for x in cherrypy.request.cookie.values())
+            request.cookies = {x.key.decode('ISO8859-1'): x.value.decode('ISO8859-1') for x in cherrypy.request.cookie.values()}
         else:
-            request.cookies = dict((x.key, x.value) for x in cherrypy.request.cookie.values())
+            request.cookies = {x.key: x.value for x in cherrypy.request.cookie.values()}
         for name, value in list(request.cookies.items()):
             if name == self.suffixed_cookie_name('UMCSessionId'):
                 request.cookies['UMCSessionId'] = value
@@ -942,7 +942,7 @@ class CPGet(CPgeneric):
     @property
     def addresses(self):
         addresses = cherrypy.request.headers.get('X-FORWARDED-FOR', cherrypy.request.remote.ip).split(',') + [cherrypy.request.remote.ip]
-        addresses = set(ip_address(x.decode('ASCII', 'ignore').strip() if isinstance(x, bytes) else x.strip()) for x in addresses)
+        addresses = {ip_address(x.decode('ASCII', 'ignore').strip() if isinstance(x, bytes) else x.strip()) for x in addresses}
         addresses.discard(ip_address(u'::1'))
         addresses.discard(ip_address(u'127.0.0.1'))
         return tuple(address.exploded for address in addresses)

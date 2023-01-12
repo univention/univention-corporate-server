@@ -89,7 +89,7 @@ def generate_strong_password(length=24):
     charset = random.choice(password_charsets)
     while len(pwd) < length:
         pwd.append(random.choice(charset))
-        charset = random.choice(list(set(password_charsets) - set([charset])))
+        charset = random.choice(list(set(password_charsets) - {charset}))
     return "".join(pwd)
 
 
@@ -690,7 +690,7 @@ class ucs(object):
             return True
 
         def recode_attribs(attribs):
-            return dict((key.decode('UTF-8') if isinstance(key, bytes) else key, value) for key, value in attribs.items())
+            return {key.decode('UTF-8') if isinstance(key, bytes) else key: value for key, value in attribs.items()}
 
         new = recode_attribs(new)
         old = recode_attribs(old)

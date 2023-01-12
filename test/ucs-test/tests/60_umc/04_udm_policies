@@ -81,10 +81,10 @@ def main():
 
         # create empty policies
         policies = {
-            'root': dict(registry='foo 1'),
-            'container': dict(registry='baz 2'),
-            'computer': dict(append=dict(registry=['baz 3', 'bar 4'])),
-            'various': dict(append=dict(registry=['foo 0', 'bar 5'])),
+            'root': {"registry": 'foo 1'},
+            'container': {"registry": 'baz 2'},
+            'computer': {"append": {"registry": ['baz 3', 'bar 4']}},
+            'various': {"append": {"registry": ['foo 0', 'bar 5']}},
         }
         for name, kwargs in policies.items():
             policies[name] = udm.create_object(

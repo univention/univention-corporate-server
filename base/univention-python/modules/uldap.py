@@ -585,7 +585,7 @@ class access(object):
         elif not policies and not attrs:
             policies = [x.decode('utf-8') for x in oattrs.get('univentionPolicyReference', [])]
 
-        object_classes = set(oc.lower() for oc in oattrs.get('objectClass', []))
+        object_classes = {oc.lower() for oc in oattrs.get('objectClass', [])}
 
         merged = {}  # type: Dict[str, Dict[str, Any]]
         if dn:
@@ -638,8 +638,8 @@ class access(object):
         if any(oc.lower() in object_classes for oc in pattrs.get('prohibitedObjectClasses', [])):
             return
 
-        fixed = set(x.decode('utf-8') for x in pattrs.get('fixedAttributes', ()))
-        empty = set(x.decode('utf-8') for x in pattrs.get('emptyAttributes', ()))
+        fixed = {x.decode('utf-8') for x in pattrs.get('fixedAttributes', ())}
+        empty = {x.decode('utf-8') for x in pattrs.get('emptyAttributes', ())}
         values = result.setdefault(ptype, {})
         SKIP = {'requiredObjectClasses', 'prohibitedObjectClasses', 'fixedAttributes', 'emptyAttributes', 'objectClass', 'cn', 'univentionObjectType', 'ldapFilter'}
         for key in (empty | set(pattrs) | fixed) - SKIP:
@@ -777,8 +777,8 @@ class access(object):
         'univentionAppID=bar,dc=bar'
         """
         rdn = ldap.dn.str2dn(dn)[0]
-        dn_vals = dict((x[0].lower(), x[1]) for x in rdn)
-        new_vals = dict((key.lower(), val if isinstance(val, (bytes, six.text_type)) else val[0]) for op, key, val in ml if val and op not in (ldap.MOD_DELETE,))
+        dn_vals = {x[0].lower(): x[1] for x in rdn}
+        new_vals = {key.lower(): val if isinstance(val, (bytes, six.text_type)) else val[0] for op, key, val in ml if val and op not in (ldap.MOD_DELETE,)}
         new_rdn_ava = [(x, new_vals.get(x.lower(), dn_vals[x.lower()]), ldap.AVA_STRING) for x in [y[0] for y in rdn]]
         new_rdn_unicode = [(key, val.decode('UTF-8'), ava_type) if isinstance(val, bytes) else (key, val, ava_type) for key, val, ava_type in new_rdn_ava]
         new_rdn = ldap.dn.dn2str([new_rdn_unicode])

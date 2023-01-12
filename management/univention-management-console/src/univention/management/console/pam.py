@@ -207,11 +207,11 @@ class PamAuth(object):
             'Password contains parts of the full user name.',
         ]
     }  # type: Dict[str, List[Union[str, Pattern[str]]]]
-    known_errors = dict(
-        (response_message, user_friendly_response)
+    known_errors = {
+        response_message: user_friendly_response
         for user_friendly_response, possible_responses in _known_errors.items()
         for response_message in possible_responses
-    )  # type: Dict[Union[str, Pattern[str]], str]
+    }  # type: Dict[Union[str, Pattern[str]], str]
 
     custom_prompts = ('OTP',)  # type: Tuple[str, ...]
 

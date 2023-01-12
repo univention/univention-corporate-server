@@ -75,7 +75,7 @@ def search_s4(s4):
     will only be set on containers, OUs and DCs, therefore
     is a mapping not necessary.
     """
-    return dict((x[0], x[1]['gPLink'][0]) for x in s4.lo_s4.search('gPLink=*', attr=['gPLink']) if x[0] is not None)
+    return {x[0]: x[1]['gPLink'][0] for x in s4.lo_s4.search('gPLink=*', attr=['gPLink']) if x[0] is not None}
 
 
 def search_ucs(s4):
@@ -83,7 +83,7 @@ def search_ucs(s4):
     Search all UCS objects with msGPOLink attribute and return a
     dictonary with dn as key and msGPOLink as result
     """
-    return dict((x[0], x[1]['msGPOLink'][0]) for x in s4.lo.search('msGPOLink=*', attr=['msGPOLink']))
+    return {x[0]: x[1]['msGPOLink'][0] for x in s4.lo.search('msGPOLink=*', attr=['msGPOLink'])}
 
 
 def write_to_s4(lo_s4, configRegistry, ucs_result):

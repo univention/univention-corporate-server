@@ -37,9 +37,9 @@ import re
 from subprocess import call
 
 RE_IFACE = re.compile(r'^interfaces/([^/]+)/((?:ipv6/([^/]+)/)?.*)$')
-SKIP = set(('interfaces/restart/auto',))
+SKIP = {'interfaces/restart/auto'}
 PRIMARY = 'interfaces/primary'
-GATEWAYS = set(('gateway', 'ipv6/gateway'))
+GATEWAYS = {'gateway', 'ipv6/gateway'}
 
 
 def _common(ucr, changes, command):
@@ -53,7 +53,7 @@ def _common(ucr, changes, command):
     else:
         # Restart both old and new primary interfaces
         if PRIMARY in changes:
-            interfaces |= set(_ for _ in changes[PRIMARY] if _)
+            interfaces |= {_ for _ in changes[PRIMARY] if _}
         # Collect changed interfaces
         for key, _old_new in changes.items():
             if key in SKIP:

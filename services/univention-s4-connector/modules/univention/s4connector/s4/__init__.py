@@ -1230,7 +1230,7 @@ class s4(univention.s4connector.ucs):
             return
 
         ldap_object_ucs_gidNumber = ldap_object_ucs['gidNumber'][0].decode('UTF-8')
-        ucs_members = set(x.decode('UTF-8') for x in ldap_object_ucs.get('uniqueMember', []))
+        ucs_members = {x.decode('UTF-8') for x in ldap_object_ucs.get('uniqueMember', [])}
         ud.debug(ud.LDAP, ud.INFO, "ucs_members: %s" % ucs_members)
         if ucs_members:
             # skip members which have this group as primary group (set same gidNumber)
@@ -1499,7 +1499,7 @@ class s4(univention.s4connector.ucs):
 
         # lookup all current members of UCS group
         ldap_object_ucs = self.get_ucs_ldap_object(object['dn'])
-        ucs_members = set(x.decode('UTF-8') for x in ldap_object_ucs.get('uniqueMember', []))
+        ucs_members = {x.decode('UTF-8') for x in ldap_object_ucs.get('uniqueMember', [])}
         ud.debug(ud.LDAP, ud.INFO, "group_members_sync_to_ucs: ucs_members: %s" % ucs_members)
 
         # map members from AD to UCS and check if they exist
@@ -2171,10 +2171,10 @@ class s4(univention.s4connector.ucs):
 
                                 if not old_values:
                                     to_add = new_values
-                                    to_remove = set([])
+                                    to_remove = set()
                                 elif not new_values:
                                     to_remove = old_values
-                                    to_add = set([])
+                                    to_add = set()
                                 else:
                                     to_add = new_values - old_values
                                     to_remove = old_values - new_values
@@ -2196,20 +2196,20 @@ class s4(univention.s4connector.ucs):
                                     try:
                                         current_s4_values = set([v for k, v in ad_object.items() if s4_attribute.lower() == k.lower()][0])
                                     except IndexError:
-                                        current_s4_values = set([])
+                                        current_s4_values = set()
                                     ud.debug(ud.LDAP, ud.INFO, "sync_from_ucs: The current S4 values: %s" % current_s4_values)
 
                                     try:
                                         current_s4_other_values = set([v for k, v in ad_object.items() if s4_other_attribute.lower() == k.lower()][0])
                                     except IndexError:
-                                        current_s4_other_values = set([])
+                                        current_s4_other_values = set()
                                     ud.debug(ud.LDAP, ud.INFO, "sync_from_ucs: The current S4 other values: %s" % current_s4_other_values)
 
                                     new_s4_values = current_s4_values - to_remove
                                     if not new_s4_values and to_add:
                                         for n_value in new_ucs_object.get(attr, []):
                                             if n_value in to_add:
-                                                to_add = to_add - set([n_value])
+                                                to_add = to_add - {n_value}
                                                 new_s4_values = [n_value]
                                                 break
 
@@ -2226,7 +2226,7 @@ class s4(univention.s4connector.ucs):
                                     try:
                                         current_s4_values = set([v for k, v in ad_object.items() if s4_attribute.lower() == k.lower()][0])
                                     except IndexError:
-                                        current_s4_values = set([])
+                                        current_s4_values = set()
 
                                     ud.debug(ud.LDAP, ud.INFO, "sync_from_ucs: The current S4 values: %s" % current_s4_values)
 
