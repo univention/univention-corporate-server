@@ -253,25 +253,8 @@ performance_test_settings () {
 }
 
 performance_test_setup () {
-	local primary_ip=${1:?missing primary ip}
-	local domainname=${2:?missing domain name}
-	local root_password=${3:?missing root password}
-
-	hostname locust
-	ucr set repository/online=true
-	# it is a unjoined system, set role for ucs-test
-	ucr set server/role=memberserver
-	ucr set domainname="$domainname"
-	ucr set "hosts/static/$primary_ip"="primary.$domainname ucs-sso-ng.$domainname"
-
 	ucr set security/limits/user/root/soft/nofile=10240
 	ucr set security/limits/user/root/hard/nofile=10240
 	echo "fs.file-max=1048576" > /etc/sysctl.d/99-file-max.conf
 	sysctl -p
-
-	univention-install -y sshpass
-	sshpass -p "$root_password" scp -r -o StrictHostKeyChecking=no -o UpdateHostKeys=no root@"$primary_ip":/var/lib/test-data /var/lib/ || return 1
-
-	curl http://"$primary_ip"/ucs-root-ca.crt > /usr/local/share/ca-certificates/primary.crt
-	update-ca-certificates
 }
