@@ -255,7 +255,7 @@ performance_test_settings () {
 performance_test_setup () {
 	local primary_ip=${1:?missing primary ip}
 	local domainname=${2:?missing domain name}
-	local root_password=${2:?missing root password}
+	local root_password=${3:?missing root password}
 
 	hostname locust
 	ucr set repository/online=true
