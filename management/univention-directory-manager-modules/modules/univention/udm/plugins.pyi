@@ -43,6 +43,7 @@ class Plugin(type):
         Plugins.add_plugin(new_cls)
         return new_cls
 
+
 class Plugins(object):
     """Register `Plugin` subclasses and iterate over them."""
 

@@ -42,6 +42,7 @@ FileType = namedtuple('namedtuple', ['mime_type', 'encoding', 'text'])
 def get_file_type(filename_or_file):  # type: (Union[str, BinaryIO]) -> FileType
     ...
 
+
 class BaseBinaryProperty(object):
     def __init__(self, name, encoded_value=None, raw_value=None):
         # type: (Text, Optional[Text], Optional[Text]) -> None

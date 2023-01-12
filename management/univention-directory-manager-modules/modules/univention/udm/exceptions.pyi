@@ -38,11 +38,14 @@ class UdmError(Exception):
         # type: (Optional[Text], Optional[Text], Optional[Text]) -> None
         ...
 
+
 class ApiVersionMustNotChange(UdmError):
     ...
 
+
 class ConnectionError(UdmError):
     ...
+
 
 class ApiVersionNotSupported(UdmError):
     def __init__(
@@ -60,34 +63,42 @@ class ApiVersionNotSupported(UdmError):
 class CreateError(UdmError):
     ...
 
+
 class DeletedError(UdmError):
     def __init__(self, msg=None, dn=None, module_name=None):
         # type: (Optional[Text], Optional[Text], Optional[Text]) -> None
         ...
+
 
 class DeleteError(UdmError):
     def __init__(self, msg=None, dn=None, module_name=None):
         # type: (Optional[Text], Optional[Text], Optional[Text]) -> None
         ...
 
+
 class NotYetSavedError(UdmError):
     def __init__(self, msg=None, dn=None, module_name=None):
         # type: (Optional[Text], Optional[Text], Optional[Text]) -> None
         ...
 
+
 class ModifyError(UdmError):
     ...
+
 
 class MoveError(UdmError):
     ...
 
+
 class NoApiVersionSet(UdmError):
     ...
+
 
 class NoObject(UdmError):
     def __init__(self, msg=None, dn=None, module_name=None):
         # type: (Optional[Text], Optional[Text], Optional[Text]) -> None
         ...
+
 
 class NoSuperordinate(UdmError):
     def __init__(self, msg=None, dn=None, module_name=None, superordinate_types=None):
@@ -96,6 +107,7 @@ class NoSuperordinate(UdmError):
 
 class SearchLimitReached(UdmError):
     """Raised when the search results in more objects than specified by the sizelimit."""
+
     def __init__(self, msg=None, dn=None, module_name=None, search_filter=None, sizelimit=None):
         # type: (Optional[Text], Optional[Text], Optional[Text], Optional[Text], Optional[int]) -> None
         ...
@@ -104,13 +116,16 @@ class SearchLimitReached(UdmError):
 class MultipleObjects(UdmError):
     ...
 
+
 class UnknownModuleType(UdmError):
     def __init__(self, msg=None, dn=None, module_name=None):
         # type: (Optional[Text], Optional[Text], Optional[Text]) -> None
         ...
 
+
 class UnknownProperty(UdmError):
     ...
+
 
 class WrongObjectType(UdmError):
     def __init__(self, msg=None, dn=None, module_name=None, univention_object_type=None):

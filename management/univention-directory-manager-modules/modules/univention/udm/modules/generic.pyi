@@ -62,8 +62,10 @@ class GenericObjectProperties(BaseObjectProperties):
 
     def __init__(self, udm_obj):  # type: (BaseObjectTV) -> None
         ...
+
     def __setattr__(self, key, value):  # type: (Text, Any) -> None
         ...
+
 
 class GenericObject(BaseObjectTV):
     def __init__(self):  # type: () -> None
@@ -130,6 +132,7 @@ class GenericModule(BaseModuleTV):
 
     def search(self, filter_s='', base='', scope='sub', sizelimit=0):  # type: (Text, Text, Text, int) -> Iterator[GenericObjectTV]
         ...
+
     def _dn_exists(self, dn):  # type: (Text) -> bool
         ...
 
@@ -141,6 +144,7 @@ class GenericModule(BaseModuleTV):
 
     def _get_default_object_positions(self):  # type: () -> List[Text]
         ...
+
     def _get_orig_udm_module(self):  # type: () -> OriUdmHandlerTV
         ...
 
