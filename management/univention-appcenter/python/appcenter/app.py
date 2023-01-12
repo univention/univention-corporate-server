@@ -483,370 +483,369 @@ class App(with_metaclass(AppMetaClass, object)):
 
     The attributes are described below. Technically they are added to the
     class by the metaclass UniventionMetaClass. The magical parsing stuff
-    happens in from_ini(). In __init__ you can pass any value you want and
-    the App will just accept it.
+    happens in :py:meth:`from_ini()`. In :py:meth:`__init__` you can pass
+    any value you want and the App will just accept it.
 
     Real work with the App class is done in the actions, not this class
     itself.
 
-    Attributes
-            id: A unique ID for the App. Different versions of the same
-                    App have the same ID, though.
-            code: An internal ID like 2-char value that has no meaning
-                    other than some internal reporting processing.
-                    Univention handles this, not the App Provider.
-            component_id: The internal name of the repository on the App
-                    Center server. Not necessarily (but often) named after
-                    the *id*. Not part of the ini file.
-            ucs_version: Not part of the ini file.
-            name: The displayed name of the App.
-            version: Version of the App. Needs to be unique together with
-                    with the *id*. Versions are compared against each other
-                    using a very loose version comparison.
-            install_permissions: Whether a license needs to be bought in order
-                    to install the App.
-            install_permissions_message: A message displayed to the user
-                    when the App needs *install_permissions*, but the user
-                    has not yet bought the App.
-            logo: The file name of the logo of the App. It is used in the
-                    App Center overview when all Apps are shown in a
-                    gallery. As the gallery items are squared, the logo
-                    should be squared, too. Not part of the App class.
-            logo_detail_page: The file name of a "bigger" logo. It is shown
-                    in the detail page of the App Center. Useful when there
-                    is a stretched version with the logo, the name, maybe a
-                    claim. If not given, the *logo* is used on the detail
-                    page, too. Not part of the App class.
-            description: A short description of the App. Should not exceed
-                    90 chars, otherwise it gets unreadable in the App
-                    Center.
-            long_description: A more complete description of the App. HTML
-                    allowed and required! Shown before installation, so it
-                    should contain product highlights, use cases, etc.
-            thumbnails: A list of screenshots and / or YouTube video URLs.
-            categories: Categories this App shall be filed under.
-            app_categories: Categories this App is filed under in
-                    the App catalog of univention.de.
-            website: Website for more information about the product (e.g.
-                    landing page).
-            support_url: Website for getting support (or information about
-                    how to buy a license).
-            contact: Contact email address for the customer.
-            vendor: Display name of the vendor. The actual creator of the
-                    Software. See also *maintainer*.
-            website_vendor: Website of the vendor itself for more
-                    information.
-            maintainer: Display name of the maintainer, who actually put
-                    the App into the App Center. Often, but not necessarily
-                    the *vendor*. If vendor and maintainer are the same,
-                    maintainer does not need to be specified again.
-            website_maintainer: Website of the maintainer itself for more
-                    information.
-            license: An abbreviation of a license category. See also
-                    *license_agreement*.
-            license_agreement: A file containing the license text the end
-                    user has to agree to. The file is shipped along with
-                    the ini file. Not part of the ini file.
-            readme: A file containing information about first steps for
-                    the end user. E.g., which UCS users have access to the
-                    App. Shown in the App Center if the App is installed.
-                    The file is shipped along with the ini file. Not part
-                    of the ini file.
-            readme_install: A file containing important information for
-                    the end user which is shown *just before* the
-                    installation starts. The file is shipped along with
-                    the ini file. Not part of the ini file.
-            readme_post_install: A file containing important information
-                    for the end user which is shown *just after* the
-                    installation is completed. The file is shipped along
-                    with the ini file. Not part of the ini file.
-            readme_update: A file containing important information for the
-                    end user which is shown *just before* the update
-                    starts. Use case: Changelog. The file is shipped along
-                    with the ini file. Not part of the ini file.
-            readme_post_update: A file containing important information
-                    for the end user which is shown *just after* the update
-                    is completed. The file is shipped along with the ini
-                    file. Not part of the ini file.
-            readme_uninstall: A file containing important information for
-                    the end user which is shown *just before* the
-                    uninstallation starts. Use case: Warning about broken
-                    services. The file is shipped along with the ini
-                    file. Not part of the ini file.
-            readme_post_uninstall: A file containing important information
-                    for the end user which is shown *just after* the
-                    uninstallation is completed. Use case: Instructions how
-                    to clean up if the App was unable to do it
-                    automatically. The file is shipped along with the ini
-                    file. Not part of the ini file.
-            notify_vendor: Whether the App provider shall be informed
-                    about (un)installation of the App by Univention via
-                    email.
-            notification_email: Email address that should be used to send
-                    notifications. If none is provided the address from
-                    *contact* will be used. Note: An empty email
-                    (NotificationEmail=) is not valid! Remove the line (or
-                    put in comments) in this case.
-            web_interface: The path of the App's web interface.
-            web_interface_name: A name for the App's web interface. If not
-                    given, *name* is used.
-            web_interface_port_http: The port to the web interface (HTTP).
-            web_interface_port_https: The port to the web interface (HTTPS).
-            web_interface_proxy_scheme: Docker Apps only. Whether the web
-                    interface in the container only supports HTTP, HTTPS
-                    or both.
-            auto_mod_proxy: Docker Apps only. Whether the web interface
-                    should be included in the host's apache configuration.
-                    If yes, the web interface ports of the container are
-                    used for a proxy configuration, so that the web
-                    interface is again available on 80/443. In this case
-                    the *web_interface* itself needs to have a distinct
-                    path even inside the container (like "/myapp" instead
-                    of "/" inside).
-                    If *web_interface_proxy_scheme* is set to http, both
-                    http and https are proxied to http in the container. If
-                    set to https, proxy points always to https. If set to
-                    both, http will go to http, https to https.
-            ucs_overview_category: Whether and if where on the start site
-                    the *web_interface* should be registered automatically.
-            background_color: Which background color to use on tiles in
-                    the App Center overview and the portal.
-            web_interface_link_target: Which link_target to add to a portal
-                    entry. Currently supported:
-                    useportaldefault: let the portal decide
-                    embedded: in an iframe within the portal
-                    newwindow: new browser tab (default)
-                    samewindow: replaces portal (not recommended)
-            database: Which (if any) database an App wants to use. The App
-                    Center will setup the database for the App. Useful for
-                    Docker Apps running against the Host's database.
-                    Supported: "mysql", "postgresql".
-            database_name: Name of the database to be created. Defaults to
-                    *id*.
-            database_user: Name of the database user to be created.
-                    Defaults to *id*. May not be "root" or "postgres".
-            database_password_file: Path to the file in which the password
-                    will be stored. If not set, a default file will be
-                    created.
-            docker_env_database_host: Environment variable name for the DB
-                    host inside the Docker Container.
-            docker_env_database_port: Environment variable name for the DB
-                    port.
-            docker_env_database_name: Environment variable name for the DB
-                    name.
-            docker_env_database_user: Environment variable name for the DB
-                    user.
-            docker_env_database_password: Environment variable name for the
-                    DB password (of "docker_env_database_user").
-            docker_env_database_password_file: Environment variable name
-                    for a file that holds the password for the DB. If set,
-                    this file is created in the Docker Container;
-                    *docker_env_database_password* will not be used.
-            plugin_of: App ID of the App the "base App" of this App. For
-                    Docker Apps, the plugin is installed into the container
-                    of *plugin_of*. For Non-Docker Apps this is just like
-                    *required_apps*, but important for later migrations.
-            conflicted_apps: List of App IDs that may not be installed
-                    together with this App. Works in both ways, one only
-                    needs to specify it on one App.
-            required_apps: List of App IDs that need to be installed along
-                    with this App.
-            required_apps_in_domain: Like *required_apps*, but the Apps may
-                    be installed anywhere in the domain, not necessarily
-                    on this very server.
-            conflicted_system_packages: List of debian package names that
-                    cannot be installed along with the App.
-            required_ucs_version: The UCS version that is required for the
-                    App to work (because a specific feature was added or
-                    a bug was fixed after the initial release of this UCS
-                    version). Examples: 4.1-1, 4.1-1 errata200.
-            supported_ucs_versions: List of UCS versions that may install
-                    this App. Only makes sense for Docker Apps. Example:
-                    4.1-4 errata370, 4.2-0
-            required_app_version_upgrade: The App version that has to be
-                    installed before an upgrade to this version is allowed.
-                    Does nothing when installing (not upgrading) the App.
-            end_of_life: If specified, this App does no longer show up in
-                    the App Center when not installed. For old
-                    installations, a warning is shown that the user needs
-                    to find an alternative for the App. Should be
-                    supported by an exhaustive *readme* file how to
-                    migrate the App data.
-            without_repository: Whether this App can be installed without
-                    adding a dedicated repository on the App Center server.
-            default_packages: List of debian package names that shall be
-                    installed (probably living in the App Center server's
-                    repository).
-            default_packages_master: List of package names that shall be
-                    installed on Primary and Backup Directory Node
-                    systems while this App is installed. Deprecated. Not
-                    supported for Docker Apps.
-            additional_packages_master: List of package names that shall be
-                    installed along with *default_packages* when installed
-                    on a Primary Directory Node. Not supported for Docker Apps.
-            additional_packages_backup: List of package names that shall be
-                    installed along with *default_packages* when installed
-                    on a Backup Directory Node. Not supported for Docker Apps.
-            additional_packages_slave: List of package names that shall be
-                    installed along with *default_packages* when installed
-                    on a Replica Directory Node. Not supported for Docker Apps.
-            additional_packages_member: List of package names that shall be
-                    installed along with *default_packages* when installed
-                    on a Managed Node. Not supported for Docker Apps.
-            rating: Positive rating on specific categories regarding the
-                    App. Controlled by Univention. Not part of the ini
-                    file.
-            umc_module_name: If the App installs a UMC module, the ID can
-                    specified so that a link may be generated by the App
-                    Center.
-            umc_module_flavor: If the App installs a UMC module with
-                    flavors, it can be specified so that a link may be
-                    generated by the App Center.
-            user_activation_required: If domain users have to be somehow
-                    modified ("activated") to use the application, the App
-                    Center may generate a link to point the Users
-                    module of UMC.
-            generic_user_activation: Automatically registers an LDAP schema
-                    and adds a flag to the UCS user management that should
-                    then be used to identify a user as "activated for the
-                    App". If set to True, the name of the attribute is
-                    *id*Activated. If set to anything else, the value is
-                    used for the name of the attribute. If a schema file is
-                    shipped along with the App, this file is used instead
-                    of the auto generated one.
-            ports_exclusive: A list of ports the App requires to acquire
-                    exclusively. Implicitly adds *conflicted_apps*. Docker
-                    Apps will have these exact ports forwarded. The App
-                    Center will also change the firewall rules.
-            ports_redirection: Docker Apps only. A list of ports the App
-                    wants to get forwarded from the host to the container.
-                    Example: 2222:22 will enable an SSH connection to the
-                    container when the user is doing "ssh docker-host -p
-                    2222".
-            ports_redirection_udp: Just like *ports_redirection*, but opens
-                    UDP ports. Can be combined with the same
-                    *ports_redirection* if needed.
-            server_role: List of UCS roles the App may be installed on.
-            supported_architectures: Non-Docker Apps only. List of
-                    architectures the App supports. Docker Apps always
-                    require amd64.
-            min_physical_ram: The minimal amount of memory in MB. This
-                    value is compared with the currently available memory
-                    (without Swap) when trying to install the application.
-                    When the test fails, the user may still override it
-                    and install it.
-            min_free_disk_space: The minimal amount of free disk space in MB.
-                    This value is compared with the current free disk space
-                    at the installation destination when trying to install the
-                    application. When the test fails, the user may still override it
-                    and install it.
-            shop_url: If given, a button is added to the App Center which
-                    users can click to buy a license.
-            ad_member_issue_hide: When UCS is not managing the domain but
-                    instead is only part of a Windows controlled Active
-                    Directory domain, the environment in which the App runs
-                    is different and certain services that this App relies
-                    on may not not be running. Thus, the App should not be
-                    shown at all in the App Center.
-            ad_member_issue_password: Like *ad_member_issue_hide* but only
-                    shows a warning: The App needs a password service
-                    running on the Windows domain controller, e.g. because
-                    it needs the samba hashes to authenticate users. This
-                    can be set up, but not automatically. A link to the
-                    documentation how to set up that service in such
-                    environments is shown.
-            app_report_object_type: In some environments, App reports are
-                    automatically generated by a metering tool. This tool
-                    counts a specific amount of LDAP objects.
-                    *app_report_object_type* is the object type of these
-                    objects. Example: users/user.
-            app_report_object_filter: Part of the App reporting. The
-                    filter for *app_report_object_type*. Example:
-                    (myAppActivated=1).
-            app_report_object_attribute: Part of the App reporting. If
-                    specified, not 1 is counted per object, but the number
-                    of values in this *app_report_object_attribute*.
-                    Useful for *app_report_attribute_type = groups/group*
-                    and *app_report_object_attribute = uniqueMember*.
-            app_report_attribute_type: Same as *app_report_object_type*
-                    but regarding the list of DNs in
-                    *app_report_object_attribute*.
-            app_report_attribute_filter: Same as
-                    *app_report_object_filter* but regarding
-                    *app_report_object_type*.
-            docker_image: Docker Image for the container. If specified the
-                    App implicitly becomes a Docker App.
-            docker_inject_env_file: For Multi-Container Docker Apps, this
-                    attribute specifies whether the (optional) environment file
-                    shall be injected into the main, all or no services in the
-                    docker compose file.
-            docker_main_service: For Multi-Container Docker Apps, this
-                    attribute specifies the main service in the compose
-                    file. This service's container will be used to run
-                    scripts like *docker_script_setup*, etc.
-            docker_migration_works: Whether it is safe to install this
-                    version while a non Docker version is or was installed.
-            docker_migration_link: A link to document where the necessary
-                    steps to migrate the App from a Non-Docker version to a
-                    Docker version are described. Only useful when
-                    *docker_migration_works = False*.
-            docker_allowed_images: List of other Docker Images. Used for
-                    updates. If the new version has a new *docker_image*
-                    but the old App runs on an older image specified in
-                    this list, the image is not exchanged.
-            docker_shell_command: Default command when running
-                    "univention-app APP shell".
-            docker_volumes: List of volumes that shall be mounted from
-                    the host to the container. Example:
-                    /var/lib/host/MYAPP/:/var/lib/container/MYAPP/ mounts
-                    the first directory in the container under the name
-                    of the second directory.
-            docker_server_role: Which computer object type shall be
-                    created in LDAP as the docker container.
-            docker_script_init: The CMD for the Docker App. An
-                    empty value will use the container's entrypoint / CMD.
-            docker_script_setup: Path to the setup script in the container
-                    run after the start of the container. If the App comes
-                    with a setup script living on the App Center server,
-                    this script is copied to this very path before being
-                    executed.
-            docker_script_store_data: Like *docker_script_setup*, but for a
-                    script that is run to backup the data just before
-                    destroying the old container.
-            docker_script_restore_data_before_setup: Like
-                    *docker_script_setup*, but for a script that is run to
-                    restore backuped data just before running the setup
-                    script.
-            docker_script_restore_data_after_setup: Like
-                    *docker_script_setup*, but for a script that is run to
-                    restore backuped data just after running the setup
-                    script.
-            docker_script_update_available: Like *docker_script_setup*, but
-                    for a script that is run to check whether an update is
-                    available (packag or distribution upgrade).
-            docker_script_update_packages: Like *docker_script_setup*, but
-                    for a script that is run to install package updates
-                    (like security updates) in the container without
-                    destroying it.
-            docker_script_update_release: Like *docker_script_setup*, but
-                    for a script that is run to install distribution
-                    updates (like new major releases of the OS) in
-                    the container without destroying it.
-            docker_script_update_app_version: Like *docker_script_setup*,
-                    but for a script that is run to specifically install
-                    App package updates in the container without destroying
-                    it.
-            docker_script_configure: Like *docker_script_setup*,
-                    but for a script that is run after settings inside the
-                    container were applied.
-            docker_ucr_style_env: Disable the passing of ucr style ("foo/bar")
-                    environment variables into the container.
-            host_certificate_access: Docker Apps only. The App gets access
-                    to the host certificate.
-            listener_udm_modules: List of UDM modules that a listener
-                    integration shall watch.
-            listener_udm_version: Version number for behavior of the listener integration.
-                    With version 2 UDM REST API type information are saved.
+    :ivar id: A unique ID for the App. Different versions of the same
+        App have the same ID, though.
+    :ivar code: An internal ID like 2-char value that has no meaning
+        other than some internal reporting processing.
+        Univention handles this, not the App Provider.
+    :ivar component_id: The internal name of the repository on the App
+        Center server. Not necessarily (but often) named after
+        the *id*. Not part of the ini file.
+    :ivar ucs_version: Not part of the ini file.
+    :ivar name: The displayed name of the App.
+    :ivar version: Version of the App. Needs to be unique together with
+        with the *id*. Versions are compared against each other
+        using a very loose version comparison.
+    :ivar install_permissions: Whether a license needs to be bought in order
+        to install the App.
+    :ivar install_permissions_message: A message displayed to the user
+        when the App needs *install_permissions*, but the user
+        has not yet bought the App.
+    :ivar logo: The file name of the logo of the App. It is used in the
+        App Center overview when all Apps are shown in a
+        gallery. As the gallery items are squared, the logo
+        should be squared, too. Not part of the App class.
+    :ivar logo_detail_page: The file name of a "bigger" logo. It is shown
+        in the detail page of the App Center. Useful when there
+        is a stretched version with the logo, the name, maybe a
+        claim. If not given, the *logo* is used on the detail
+        page, too. Not part of the App class.
+    :ivar description: A short description of the App. Should not exceed
+        90 chars, otherwise it gets unreadable in the App
+        Center.
+    :ivar long_description: A more complete description of the App. HTML
+        allowed and required! Shown before installation, so it
+        should contain product highlights, use cases, etc.
+    :ivar thumbnails: A list of screenshots and / or YouTube video URLs.
+    :ivar categories: Categories this App shall be filed under.
+    :ivar app_categories: Categories this App is filed under in
+        the App catalog of univention.de.
+    :ivar website: Website for more information about the product (e.g.
+        landing page).
+    :ivar support_url: Website for getting support (or information about
+        how to buy a license).
+    :ivar contact: Contact email address for the customer.
+    :ivar vendor: Display name of the vendor. The actual creator of the
+        Software. See also *maintainer*.
+    :ivar website_vendor: Website of the vendor itself for more
+        information.
+    :ivar maintainer: Display name of the maintainer, who actually put
+        the App into the App Center. Often, but not necessarily
+        the *vendor*. If vendor and maintainer are the same,
+        maintainer does not need to be specified again.
+    :ivar website_maintainer: Website of the maintainer itself for more
+        information.
+    :ivar license: An abbreviation of a license category. See also
+        *license_agreement*.
+    :ivar license_agreement: A file containing the license text the end
+        user has to agree to. The file is shipped along with
+        the ini file. Not part of the ini file.
+    :ivar readme: A file containing information about first steps for
+        the end user. E.g., which UCS users have access to the
+        App. Shown in the App Center if the App is installed.
+        The file is shipped along with the ini file. Not part
+        of the ini file.
+    :ivar readme_install: A file containing important information for
+        the end user which is shown *just before* the
+        installation starts. The file is shipped along with
+        the ini file. Not part of the ini file.
+    :ivar readme_post_install: A file containing important information
+        for the end user which is shown *just after* the
+        installation is completed. The file is shipped along
+        with the ini file. Not part of the ini file.
+    :ivar readme_update: A file containing important information for the
+        end user which is shown *just before* the update
+        starts. Use case: Changelog. The file is shipped along
+        with the ini file. Not part of the ini file.
+    :ivar readme_post_update: A file containing important information
+        for the end user which is shown *just after* the update
+        is completed. The file is shipped along with the ini
+        file. Not part of the ini file.
+    :ivar readme_uninstall: A file containing important information for
+        the end user which is shown *just before* the
+        uninstallation starts. Use case: Warning about broken
+        services. The file is shipped along with the ini
+        file. Not part of the ini file.
+    :ivar readme_post_uninstall: A file containing important information
+        for the end user which is shown *just after* the
+        uninstallation is completed. Use case: Instructions how
+        to clean up if the App was unable to do it
+        automatically. The file is shipped along with the ini
+        file. Not part of the ini file.
+    :ivar notify_vendor: Whether the App provider shall be informed
+        about (un)installation of the App by Univention via
+        email.
+    :ivar notification_email: Email address that should be used to send
+        notifications. If none is provided the address from
+        *contact* will be used. Note: An empty email
+        (NotificationEmail=) is not valid! Remove the line (or
+        put in comments) in this case.
+    :ivar web_interface: The path of the App's web interface.
+    :ivar web_interface_name: A name for the App's web interface. If not
+        given, *name* is used.
+    :ivar web_interface_port_http: The port to the web interface (HTTP).
+    :ivar web_interface_port_https: The port to the web interface (HTTPS).
+    :ivar web_interface_proxy_scheme: Docker Apps only. Whether the web
+        interface in the container only supports HTTP, HTTPS
+        or both.
+    :ivar auto_mod_proxy: Docker Apps only. Whether the web interface
+        should be included in the host's apache configuration.
+        If yes, the web interface ports of the container are
+        used for a proxy configuration, so that the web
+        interface is again available on 80/443. In this case
+        the *web_interface* itself needs to have a distinct
+        path even inside the container (like "/myapp" instead
+        of "/" inside).
+        If *web_interface_proxy_scheme* is set to http, both
+        http and https are proxied to http in the container. If
+        set to https, proxy points always to https. If set to
+        both, http will go to http, https to https.
+    :ivar ucs_overview_category: Whether and if where on the start site
+        the *web_interface* should be registered automatically.
+    :ivar background_color: Which background color to use on tiles in
+        the App Center overview and the portal.
+    :ivar web_interface_link_target: Which link_target to add to a portal
+        entry. Currently supported:
+        useportaldefault: let the portal decide
+        embedded: in an iframe within the portal
+        newwindow: new browser tab (default)
+        samewindow: replaces portal (not recommended)
+    :ivar database: Which (if any) database an App wants to use. The App
+        Center will setup the database for the App. Useful for
+        Docker Apps running against the Host's database.
+        Supported: "mysql", "postgresql".
+    :ivar database_name: Name of the database to be created. Defaults to
+        *id*.
+    :ivar database_user: Name of the database user to be created.
+        Defaults to *id*. May not be "root" or "postgres".
+    :ivar database_password_file: Path to the file in which the password
+        will be stored. If not set, a default file will be
+        created.
+    :ivar docker_env_database_host: Environment variable name for the DB
+        host inside the Docker Container.
+    :ivar docker_env_database_port: Environment variable name for the DB
+        port.
+    :ivar docker_env_database_name: Environment variable name for the DB
+        name.
+    :ivar docker_env_database_user: Environment variable name for the DB
+        user.
+    :ivar docker_env_database_password: Environment variable name for the
+        DB password (of "docker_env_database_user").
+    :ivar docker_env_database_password_file: Environment variable name
+        for a file that holds the password for the DB. If set,
+        this file is created in the Docker Container;
+        *docker_env_database_password* will not be used.
+    :ivar plugin_of: App ID of the App the "base App" of this App. For
+        Docker Apps, the plugin is installed into the container
+        of *plugin_of*. For Non-Docker Apps this is just like
+        *required_apps*, but important for later migrations.
+    :ivar conflicted_apps: List of App IDs that may not be installed
+        together with this App. Works in both ways, one only
+        needs to specify it on one App.
+    :ivar required_apps: List of App IDs that need to be installed along
+        with this App.
+    :ivar required_apps_in_domain: Like *required_apps*, but the Apps may
+        be installed anywhere in the domain, not necessarily
+        on this very server.
+    :ivar conflicted_system_packages: List of debian package names that
+        cannot be installed along with the App.
+    :ivar required_ucs_version: The UCS version that is required for the
+        App to work (because a specific feature was added or
+        a bug was fixed after the initial release of this UCS
+        version). Examples: 4.1-1, 4.1-1 errata200.
+    :ivar supported_ucs_versions: List of UCS versions that may install
+        this App. Only makes sense for Docker Apps. Example:
+        4.1-4 errata370, 4.2-0
+    :ivar required_app_version_upgrade: The App version that has to be
+        installed before an upgrade to this version is allowed.
+        Does nothing when installing (not upgrading) the App.
+    :ivar end_of_life: If specified, this App does no longer show up in
+        the App Center when not installed. For old
+        installations, a warning is shown that the user needs
+        to find an alternative for the App. Should be
+        supported by an exhaustive *readme* file how to
+        migrate the App data.
+    :ivar without_repository: Whether this App can be installed without
+        adding a dedicated repository on the App Center server.
+    :ivar default_packages: List of debian package names that shall be
+        installed (probably living in the App Center server's
+        repository).
+    :ivar default_packages_master: List of package names that shall be
+        installed on Primary and Backup Directory Node
+        systems while this App is installed. Deprecated. Not
+        supported for Docker Apps.
+    :ivar additional_packages_master: List of package names that shall be
+        installed along with *default_packages* when installed
+        on a Primary Directory Node. Not supported for Docker Apps.
+    :ivar additional_packages_backup: List of package names that shall be
+        installed along with *default_packages* when installed
+        on a Backup Directory Node. Not supported for Docker Apps.
+    :ivar additional_packages_slave: List of package names that shall be
+        installed along with *default_packages* when installed
+        on a Replica Directory Node. Not supported for Docker Apps.
+    :ivar additional_packages_member: List of package names that shall be
+        installed along with *default_packages* when installed
+        on a Managed Node. Not supported for Docker Apps.
+    :ivar rating: Positive rating on specific categories regarding the
+        App. Controlled by Univention. Not part of the ini
+        file.
+    :ivar umc_module_name: If the App installs a UMC module, the ID can
+        specified so that a link may be generated by the App
+        Center.
+    :ivar umc_module_flavor: If the App installs a UMC module with
+        flavors, it can be specified so that a link may be
+        generated by the App Center.
+    :ivar user_activation_required: If domain users have to be somehow
+        modified ("activated") to use the application, the App
+        Center may generate a link to point the Users
+        module of UMC.
+    :ivar generic_user_activation: Automatically registers an LDAP schema
+        and adds a flag to the UCS user management that should
+        then be used to identify a user as "activated for the
+        App". If set to True, the name of the attribute is
+        *id*Activated. If set to anything else, the value is
+        used for the name of the attribute. If a schema file is
+        shipped along with the App, this file is used instead
+        of the auto generated one.
+    :ivar ports_exclusive: A list of ports the App requires to acquire
+        exclusively. Implicitly adds *conflicted_apps*. Docker
+        Apps will have these exact ports forwarded. The App
+        Center will also change the firewall rules.
+    :ivar ports_redirection: Docker Apps only. A list of ports the App
+        wants to get forwarded from the host to the container.
+        Example: 2222:22 will enable an SSH connection to the
+        container when the user is doing "ssh docker-host -p
+        2222".
+    :ivar ports_redirection_udp: Just like *ports_redirection*, but opens
+        UDP ports. Can be combined with the same
+        *ports_redirection* if needed.
+    :ivar server_role: List of UCS roles the App may be installed on.
+    :ivar supported_architectures: Non-Docker Apps only. List of
+        architectures the App supports. Docker Apps always
+        require amd64.
+    :ivar min_physical_ram: The minimal amount of memory in MB. This
+        value is compared with the currently available memory
+        (without Swap) when trying to install the application.
+        When the test fails, the user may still override it
+        and install it.
+    :ivar min_free_disk_space: The minimal amount of free disk space in MB.
+        This value is compared with the current free disk space
+        at the installation destination when trying to install the
+        application. When the test fails, the user may still override it
+        and install it.
+    :ivar shop_url: If given, a button is added to the App Center which
+        users can click to buy a license.
+    :ivar ad_member_issue_hide: When UCS is not managing the domain but
+        instead is only part of a Windows controlled Active
+        Directory domain, the environment in which the App runs
+        is different and certain services that this App relies
+        on may not not be running. Thus, the App should not be
+        shown at all in the App Center.
+    :ivar ad_member_issue_password: Like *ad_member_issue_hide* but only
+        shows a warning: The App needs a password service
+        running on the Windows domain controller, e.g. because
+        it needs the samba hashes to authenticate users. This
+        can be set up, but not automatically. A link to the
+        documentation how to set up that service in such
+        environments is shown.
+    :ivar app_report_object_type: In some environments, App reports are
+        automatically generated by a metering tool. This tool
+        counts a specific amount of LDAP objects.
+        *app_report_object_type* is the object type of these
+        objects. Example: users/user.
+    :ivar app_report_object_filter: Part of the App reporting. The
+        filter for *app_report_object_type*. Example:
+        (myAppActivated=1).
+    :ivar app_report_object_attribute: Part of the App reporting. If
+        specified, not 1 is counted per object, but the number
+        of values in this *app_report_object_attribute*.
+        Useful for *app_report_attribute_type = groups/group*
+        and *app_report_object_attribute = uniqueMember*.
+    :ivar app_report_attribute_type: Same as *app_report_object_type*
+        but regarding the list of DNs in
+        *app_report_object_attribute*.
+    :ivar app_report_attribute_filter: Same as
+        *app_report_object_filter* but regarding
+        *app_report_object_type*.
+    :ivar docker_image: Docker Image for the container. If specified the
+        App implicitly becomes a Docker App.
+    :ivar docker_inject_env_file: For Multi-Container Docker Apps, this
+        attribute specifies whether the (optional) environment file
+        shall be injected into the main, all or no services in the
+        docker compose file.
+    :ivar docker_main_service: For Multi-Container Docker Apps, this
+        attribute specifies the main service in the compose
+        file. This service's container will be used to run
+        scripts like *docker_script_setup*, etc.
+    :ivar docker_migration_works: Whether it is safe to install this
+        version while a non Docker version is or was installed.
+    :ivar docker_migration_link: A link to document where the necessary
+        steps to migrate the App from a Non-Docker version to a
+        Docker version are described. Only useful when
+        *docker_migration_works = False*.
+    :ivar docker_allowed_images: List of other Docker Images. Used for
+        updates. If the new version has a new *docker_image*
+        but the old App runs on an older image specified in
+        this list, the image is not exchanged.
+    :ivar docker_shell_command: Default command when running
+        "univention-app APP shell".
+    :ivar docker_volumes: List of volumes that shall be mounted from
+        the host to the container. Example:
+        /var/lib/host/MYAPP/:/var/lib/container/MYAPP/ mounts
+        the first directory in the container under the name
+        of the second directory.
+    :ivar docker_server_role: Which computer object type shall be
+        created in LDAP as the docker container.
+    :ivar docker_script_init: The CMD for the Docker App. An
+        empty value will use the container's entrypoint / CMD.
+    :ivar docker_script_setup: Path to the setup script in the container
+        run after the start of the container. If the App comes
+        with a setup script living on the App Center server,
+        this script is copied to this very path before being
+        executed.
+    :ivar docker_script_store_data: Like *docker_script_setup*, but for a
+        script that is run to backup the data just before
+        destroying the old container.
+    :ivar docker_script_restore_data_before_setup: Like
+        *docker_script_setup*, but for a script that is run to
+        restore backuped data just before running the setup
+        script.
+    :ivar docker_script_restore_data_after_setup: Like
+        *docker_script_setup*, but for a script that is run to
+        restore backuped data just after running the setup
+        script.
+    :ivar docker_script_update_available: Like *docker_script_setup*, but
+        for a script that is run to check whether an update is
+        available (packag or distribution upgrade).
+    :ivar docker_script_update_packages: Like *docker_script_setup*, but
+        for a script that is run to install package updates
+        (like security updates) in the container without
+        destroying it.
+    :ivar docker_script_update_release: Like *docker_script_setup*, but
+        for a script that is run to install distribution
+        updates (like new major releases of the OS) in
+        the container without destroying it.
+    :ivar docker_script_update_app_version: Like *docker_script_setup*,
+        but for a script that is run to specifically install
+        App package updates in the container without destroying
+        it.
+    :ivar docker_script_configure: Like *docker_script_setup*,
+        but for a script that is run after settings inside the
+        container were applied.
+    :ivar docker_ucr_style_env: Disable the passing of ucr style ("foo/bar")
+        environment variables into the container.
+    :ivar host_certificate_access: Docker Apps only. The App gets access
+        to the host certificate.
+    :ivar listener_udm_modules: List of UDM modules that a listener
+        integration shall watch.
+    :ivar listener_udm_version: Version number for behavior of the listener integration.
+        With version 2 UDM REST API type information are saved.
     """
 
     id = AppAttribute(regex='^[a-zA-Z0-9]+(([a-zA-Z0-9-_]+)?[a-zA-Z0-9])?$', required=True)
