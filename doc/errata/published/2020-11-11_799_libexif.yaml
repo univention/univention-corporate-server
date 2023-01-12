@@ -7,7 +7,7 @@ fix: 0.6.21-2+deb9u5
 desc: |
  This update addresses the following issue:
  * libexif overflow check could be optimized away (CVE-2020-16125)
-bug: [52329]
+bug: [52330]
 cve:
 - CVE-2020-16125
 erratum: 799
