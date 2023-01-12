@@ -77,19 +77,19 @@ def own_schema():
         with udm_test.UCSTestUDM() as udm:
             with build_app(app_name, generic_user_activation, activation_name) as app:
                 schema_content = """attributetype ( 1.3.6.1.4.1.10176.5000.7.7.7.1.1
-	NAME '%s-active'
-	DESC 'Attribute created MANUALLY'
-	SYNTAX 1.3.6.1.4.1.1466.115.121.1.7 EQUALITY booleanMatch
-	SINGLE-VALUE
-	)
+    NAME '%s-active'
+    DESC 'Attribute created MANUALLY'
+    SYNTAX 1.3.6.1.4.1.1466.115.121.1.7 EQUALITY booleanMatch
+    SINGLE-VALUE
+    )
 
 objectclass ( 1.3.6.1.4.1.10176.5000.7.7.7.2.1
-	NAME '%s-user'
-	DESC 'Class created MANUALLY'
-	AUXILIARY
-	MAY ( %s-active )
-	SUP top
-	)""" % (app.app_name, app.app_name, app.app_name)
+    NAME '%s-user'
+    DESC 'Class created MANUALLY'
+    AUXILIARY
+    MAY ( %s-active )
+    SUP top
+    )""" % (app.app_name, app.app_name, app.app_name)
                 app.add_script(schema=schema_content)
                 attributes_content = """[%s]
 Type=ExtendedAttribute

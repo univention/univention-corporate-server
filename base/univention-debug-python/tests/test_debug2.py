@@ -14,13 +14,13 @@ except ImportError:
 
 
 RE = re.compile(
-        r'''
-	(?P<datetime>[0-3]\d\.[01]\d\.\d{4}\s[0-2]\d:[0-5]\d:[0-5]\d)\.(?P<msec>\d{3})\s(?P<category>\S+)\s+\((?P<level>\S+)\s*\):\s(?P<text>
-	  (?:UNIVENTION_DEBUG_BEGIN\s:\s(?P<begin>.*)
-	    |UNIVENTION_DEBUG_END\s{3}:\s(?P<end>.*)
-	    |(?P<msg>.*)
-	))$
-	''', re.VERBOSE)
+    r'''
+    (?P<datetime>[0-3]\d\.[01]\d\.\d{4}\s[0-2]\d:[0-5]\d:[0-5]\d)\.(?P<msec>\d{3})\s(?P<category>\S+)\s+\((?P<level>\S+)\s*\):\s(?P<text>
+      (?:UNIVENTION_DEBUG_BEGIN\s:\s(?P<begin>.*)
+        |UNIVENTION_DEBUG_END\s{3}:\s(?P<end>.*)
+        |(?P<msg>.*)
+    ))$
+    ''', re.VERBOSE)
 LEVEL = ['ERROR', 'WARNING', 'PROCESS', 'INFO', 'ALL']
 CATEGORY = [
     'MAIN',

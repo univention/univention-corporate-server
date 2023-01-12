@@ -216,11 +216,11 @@ def copy_package_to_appcenter(ucs_version, app_directory, package_name):
         os.makedirs(target)
     shutil.copy(package_name, target)
     command = '''
-		set -x -e;
-		cd /var/www/univention-repository/%(version)s/maintained/component;
-		apt-ftparchive packages %(app)s/all >%(app)s/all/Packages;
-		gzip -c %(app)s/all/Packages >%(app)s/all/Packages.gz
-	''' % {'version': ucs_version, 'app': app_directory}
+        set -x -e;
+        cd /var/www/univention-repository/%(version)s/maintained/component;
+        apt-ftparchive packages %(app)s/all >%(app)s/all/Packages;
+        gzip -c %(app)s/all/Packages >%(app)s/all/Packages.gz
+    ''' % {'version': ucs_version, 'app': app_directory}
     print('Creating packages in local repository:')
     print(command)
     print(subprocess.check_output(command, shell=True, text=True))
@@ -494,7 +494,7 @@ class App:
 set -x -e
 eval "$(ucr shell)"
 if [ "$version_version" = 4.0 ]; then
-	ucr set repository/online/server="$(echo $repository_online_server | sed -e 's|.*//\(.*\)|\\1|')"
+    ucr set repository/online/server="$(echo $repository_online_server | sed -e 's|.*//\(.*\)|\\1|')"
 fi
 univention-install --yes univention-apache
 mkdir /var/www/%(app_name)s
@@ -686,90 +686,90 @@ import univention.config_registry
 import traceback
 
 BLACKLIST_UCR_VARIABLES = [
-	'version/version',
-	'version/erratalevel',
-	'version/patchlevel',
+    'version/version',
+    'version/erratalevel',
+    'version/patchlevel',
 ]
 
 
 # Helper function to copy all meta data of a file or directory
 def copy_permissions(src, dest):
-	s_stat = os.stat(src)
-	os.chown(dest, s_stat.st_uid, s_stat.st_gid)
-	shutil.copymode(src, dest)
-	shutil.copystat(src, dest)
-	d_stat = os.stat(dest)
+    s_stat = os.stat(src)
+    os.chown(dest, s_stat.st_uid, s_stat.st_gid)
+    shutil.copymode(src, dest)
+    shutil.copystat(src, dest)
+    d_stat = os.stat(dest)
 
 
 def restore_files(source_dir):
-	if not os.path.exists(source_dir):
-		return
-	for (path, dirs, files) in os.walk(source_dir):
-		for d in dirs:
-			r_path = path.replace(source_dir, '/', 1)
-			dest = os.path.join(r_path, d)
-			if not os.path.exists(dest):
-				os.makedirs(dest)
-			src = os.path.join(path, d)
-			copy_permissions(src, dest)
-		for i in files:
-			src = os.path.join(path, i)
-			dest = src.replace(source_dir, '', 1)
-			if os.path.islink(src):
-				linkto = os.readlink(src)
-				if os.path.exists(dest) or os.path.islink(dest):
-					print 'rm %s' % dest
-					os.remove(dest)
-				print 'ln -sf %s %s' % (linkto, dest)
-				os.symlink(linkto, dest)
-			else:
-				print 'cp %s %s' % (src, dest)
-				shutil.copy(src, dest)
-				copy_permissions(src, dest)
+    if not os.path.exists(source_dir):
+        return
+    for (path, dirs, files) in os.walk(source_dir):
+        for d in dirs:
+            r_path = path.replace(source_dir, '/', 1)
+            dest = os.path.join(r_path, d)
+            if not os.path.exists(dest):
+                os.makedirs(dest)
+            src = os.path.join(path, d)
+            copy_permissions(src, dest)
+        for i in files:
+            src = os.path.join(path, i)
+            dest = src.replace(source_dir, '', 1)
+            if os.path.islink(src):
+                linkto = os.readlink(src)
+                if os.path.exists(dest) or os.path.islink(dest):
+                    print 'rm %s' % dest
+                    os.remove(dest)
+                print 'ln -sf %s %s' % (linkto, dest)
+                os.symlink(linkto, dest)
+            else:
+                print 'cp %s %s' % (src, dest)
+                shutil.copy(src, dest)
+                copy_permissions(src, dest)
 
 
 def restore_ucr_layer(ucr_file, options):
-	if not os.path.exists(ucr_file):
-		return
-	f = open(ucr_file, "r")
-	vv = []
-	for v in f.readlines():
-		v = v.strip()
-		if not v or v.startswith('#'):
-			continue
-		key, value = v.split(':', 1)
-		if key not in BLACKLIST_UCR_VARIABLES:
-			vv.append('%s=%s' % (key, value))
-	if vv:
-		print vv
-		univention.config_registry.handler_set(vv, opts=options)
+    if not os.path.exists(ucr_file):
+        return
+    f = open(ucr_file, "r")
+    vv = []
+    for v in f.readlines():
+        v = v.strip()
+        if not v or v.startswith('#'):
+            continue
+        key, value = v.split(':', 1)
+        if key not in BLACKLIST_UCR_VARIABLES:
+            vv.append('%s=%s' % (key, value))
+    if vv:
+        print vv
+        univention.config_registry.handler_set(vv, opts=options)
 
 if __name__ == '__main__':
-	parser = OptionParser('%prog [options]')
-	parser.add_option('--app', dest='app', help='App ID')
-	parser.add_option('--app-version', dest='app_version', help='Version of App')
-	parser.add_option('--error-file', dest='error_file', help='Name of Error File')
-	opts, args = parser.parse_args()
+    parser = OptionParser('%prog [options]')
+    parser.add_option('--app', dest='app', help='App ID')
+    parser.add_option('--app-version', dest='app_version', help='Version of App')
+    parser.add_option('--error-file', dest='error_file', help='Name of Error File')
+    opts, args = parser.parse_args()
 
-	conf_dir = '/var/lib/univention-appcenter/apps/%s/conf/' % opts.app
-	source_dir = '/var/lib/univention-appcenter/apps/%s/conf/files' % opts.app
+    conf_dir = '/var/lib/univention-appcenter/apps/%s/conf/' % opts.app
+    source_dir = '/var/lib/univention-appcenter/apps/%s/conf/files' % opts.app
 
-	try:
-		restore_files(source_dir)
+    try:
+        restore_files(source_dir)
 
-		print '** Restore forced UCR layer:'
-		restore_ucr_layer(os.path.join(conf_dir, 'base-forced.conf'), {'force': True})
-		print '** Restore ldap UCR layer'
-		restore_ucr_layer(os.path.join(conf_dir, 'base-ldap.conf'), {'ldap-policy': True})
-		print '** Restore normal UCR layer:'
-		restore_ucr_layer(os.path.join(conf_dir, 'base.conf'), {})
-	except:
-		traceback.print_exc()
-		if opts.error_file:
-			error_file = open(opts.error_file, 'a+')
-			traceback.print_exc(file=error_file)
-			error_file.close()
-		raise
+        print '** Restore forced UCR layer:'
+        restore_ucr_layer(os.path.join(conf_dir, 'base-forced.conf'), {'force': True})
+        print '** Restore ldap UCR layer'
+        restore_ucr_layer(os.path.join(conf_dir, 'base-ldap.conf'), {'ldap-policy': True})
+        print '** Restore normal UCR layer:'
+        restore_ucr_layer(os.path.join(conf_dir, 'base.conf'), {})
+    except:
+        traceback.print_exc()
+        if opts.error_file:
+            error_file = open(opts.error_file, 'a+')
+            traceback.print_exc(file=error_file)
+            error_file.close()
+        raise
 '''
 
 
@@ -784,83 +784,83 @@ import traceback
 
 # Helper function to copy all meta data of a file or directory
 def copy_permissions(src, dest):
-	s_stat = os.stat(src)
-	os.chown(dest, s_stat.st_uid, s_stat.st_gid)
-	shutil.copymode(src, dest)
-	shutil.copystat(src, dest)
-	d_stat = os.stat(dest)
+    s_stat = os.stat(src)
+    os.chown(dest, s_stat.st_uid, s_stat.st_gid)
+    shutil.copymode(src, dest)
+    shutil.copystat(src, dest)
+    d_stat = os.stat(dest)
 
 
 # Helper function to copy the files and directory
 def copy_to_persistent_storage(src, dest):
-	l_src = src.split('/')
-	# Ignore first empty entry
-	if l_src[0] == '':
-		l_src = l_src[1:]
-	for j in range(0, len(l_src)):
-		s = os.path.join('/', '/'.join(l_src[0:j + 1]))
-		d = os.path.join(dest, '/'.join(l_src[0:j + 1]))
-		if os.path.isdir(s):
-			if not os.path.exists(d):
-				os.makedirs(d)
-				copy_permissions(s, d)
-		elif os.path.islink(s):
-			linkto = os.readlink(s)
-			if os.path.exists(d) or os.path.islink(d):
-				print 'rm %s' % d
-				os.remove(d)
-			print 'ln -sf %s %s' % (linkto, d)
-			os.symlink(linkto, d)
-		else:
-			print 'cp %s %s' % (s, d)
-			shutil.copy(s, d)
-			copy_permissions(s, d)
+    l_src = src.split('/')
+    # Ignore first empty entry
+    if l_src[0] == '':
+        l_src = l_src[1:]
+    for j in range(0, len(l_src)):
+        s = os.path.join('/', '/'.join(l_src[0:j + 1]))
+        d = os.path.join(dest, '/'.join(l_src[0:j + 1]))
+        if os.path.isdir(s):
+            if not os.path.exists(d):
+                os.makedirs(d)
+                copy_permissions(s, d)
+        elif os.path.islink(s):
+            linkto = os.readlink(s)
+            if os.path.exists(d) or os.path.islink(d):
+                print 'rm %s' % d
+                os.remove(d)
+            print 'ln -sf %s %s' % (linkto, d)
+            os.symlink(linkto, d)
+        else:
+            print 'cp %s %s' % (s, d)
+            shutil.copy(s, d)
+            copy_permissions(s, d)
 
 
 def copy_files(src, dest):
-	for f in glob.glob(src):
-		copy_to_persistent_storage(f, dest)
+    for f in glob.glob(src):
+        copy_to_persistent_storage(f, dest)
 
 
 def copy_recursive(src, dest):
-	if not os.path.exists(src):
-		return
-	copy_to_persistent_storage(src, dest)
-	for root, dirs, files in os.walk(src):
-		for f in files:
-			fullpath = os.path.join(root, f)
-			copy_to_persistent_storage(fullpath, dest)
+    if not os.path.exists(src):
+        return
+    copy_to_persistent_storage(src, dest)
+    for root, dirs, files in os.walk(src):
+        for f in files:
+            fullpath = os.path.join(root, f)
+            copy_to_persistent_storage(fullpath, dest)
 
 if __name__ == '__main__':
-	parser = OptionParser('%prog [options]')
-	parser.add_option('--app', dest='app', help='App ID')
-	parser.add_option('--app-version', dest='app_version', help='Version of App')
-	parser.add_option('--error-file', dest='error_file', help='Name of Error File')
-	opts, args = parser.parse_args()
+    parser = OptionParser('%prog [options]')
+    parser.add_option('--app', dest='app', help='App ID')
+    parser.add_option('--app-version', dest='app_version', help='Version of App')
+    parser.add_option('--error-file', dest='error_file', help='Name of Error File')
+    opts, args = parser.parse_args()
 
-	dest = '/var/lib/univention-appcenter/apps/%s/conf/' % opts.app
+    dest = '/var/lib/univention-appcenter/apps/%s/conf/' % opts.app
 
-	# The files and directories below the files directory are restored
-	# automatically after the new container has been started
-	store = '/var/lib/univention-appcenter/apps/%s/conf/files' % opts.app
+    # The files and directories below the files directory are restored
+    # automatically after the new container has been started
+    store = '/var/lib/univention-appcenter/apps/%s/conf/files' % opts.app
 
-	try:
-		for f in glob.glob('/etc/univention/base*conf'):
-			print 'cp %s %s' % (f, dest)
-			shutil.copy(f, dest)
-		copy_files('/etc/*.secret', store)
-		copy_recursive('/etc/univention/ssl', store)
-		copy_recursive('/var/univention-join', store)
-		copy_recursive('/var/lib/univention-ldap/', store)
-		copy_recursive('/var/lib/univention-directory-listener/', store)
-		copy_recursive('/etc/univention/connector', store)
-	except:
-		traceback.print_exc()
-		if opts.error_file:
-			error_file = open(opts.error_file, 'a+')
-			traceback.print_exc(file=error_file)
-			error_file.close()
-		raise
+    try:
+        for f in glob.glob('/etc/univention/base*conf'):
+            print 'cp %s %s' % (f, dest)
+            shutil.copy(f, dest)
+        copy_files('/etc/*.secret', store)
+        copy_recursive('/etc/univention/ssl', store)
+        copy_recursive('/var/univention-join', store)
+        copy_recursive('/var/lib/univention-ldap/', store)
+        copy_recursive('/var/lib/univention-directory-listener/', store)
+        copy_recursive('/etc/univention/connector', store)
+    except:
+        traceback.print_exc()
+        if opts.error_file:
+            error_file = open(opts.error_file, 'a+')
+            traceback.print_exc(file=error_file)
+            error_file.close()
+        raise
 '''
 
 

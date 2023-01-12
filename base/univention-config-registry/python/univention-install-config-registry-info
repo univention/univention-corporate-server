@@ -103,7 +103,7 @@ The variable descriptions debian/*.univention-config-registry-info go to
 /etc/univention/registry.info/variables/*.cfg.
 The category descriptions debian/*.univention-config-registry-categories got to
 /etc/univention/registry.info/categories/*.cfg.
-	'''
+    '''
     parser = ArgumentParser(epilog=epilog)
     parser.add_argument(
         '-v', '--verbose', action='store_true',

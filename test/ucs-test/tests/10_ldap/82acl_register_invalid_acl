@@ -62,7 +62,7 @@ exit 0
 
     acl_buffer = '''
 access to ="%(container)s" attrs="description"
-	by * +0 break
+    by * +0 break
 ''' % {'container': container}
 
     package = DebianPackage(name=package_name)

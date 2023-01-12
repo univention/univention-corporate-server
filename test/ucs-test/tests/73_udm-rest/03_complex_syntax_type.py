@@ -46,17 +46,17 @@ def get_syntax_buffers():
     return {
         "UCSTESTComplexMultiValueKeyValueDict": '''
 class UCSTESTComplexMultiValueKeyValueDict(complex):
-	subsyntaxes = ((_('User'), UserMailAddress), (_('Access right'), IMAP_Right))
-	subsyntax_key_value = True
+    subsyntaxes = ((_('User'), UserMailAddress), (_('Access right'), IMAP_Right))
+    subsyntax_key_value = True
 ''',
         "UCSTESTComplexMultiValueDict": '''
 class UCSTESTComplexMultiValueDict(complex):
-	subsyntaxes = [(_('Priority'), integer), (_('Mail server'), dnsHostname)]
-	subsyntax_names = ('priority', 'mailserver',)
+    subsyntaxes = [(_('Priority'), integer), (_('Mail server'), dnsHostname)]
+    subsyntax_names = ('priority', 'mailserver',)
 ''',
         "UCSTESTComplexList": '''
 class UCSTESTComplexList(complex):
-	subsyntaxes = [('Type-string', string), ('Type-integer', integer)]
+    subsyntaxes = [('Type-string', string), ('Type-integer', integer)]
 ''',
     }
 

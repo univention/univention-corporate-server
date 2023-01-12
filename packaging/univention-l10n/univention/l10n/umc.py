@@ -16,12 +16,12 @@ The entries Module and Definition are required.
 
 Example::
 
-	Module: ucr
-	Python: umc/module
-	Definition: umc/ucr.xml
-	Javascript: umc/js
-	Category: umc/categories/ucr.xml
-	Icons: umc/icons
+    Module: ucr
+    Python: umc/module
+    Definition: umc/ucr.xml
+    Javascript: umc/js
+    Category: umc/categories/ucr.xml
+    Icons: umc/icons
 """
 #
 # Like what you see? Join us!

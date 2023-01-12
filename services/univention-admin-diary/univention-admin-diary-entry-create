@@ -62,10 +62,10 @@ def main():
     usage = '%(prog)s --event EVENT [options]'
     description = '%(prog)s is a program to add an entry to the Admin Diary'
     epilog = '''Examples:
-	context_id=$(%(prog)s --event UDM_USERS_USER_CREATED --arg "username=john.doe")
-	%(prog)s --event COMMENT -m "I added this user because..." --context-id="$context_id"
-	%(prog)s --event MY_NEW_EVENT -m "[en]This is the English message for: {a1} {a2}" "[de]Any other locale needs the same amount of place holders ({a1}, {a2})" --arg "a1=Arg1" --arg "a2=Arg2" --tag my-tag
-	'''
+    context_id=$(%(prog)s --event UDM_USERS_USER_CREATED --arg "username=john.doe")
+    %(prog)s --event COMMENT -m "I added this user because..." --context-id="$context_id"
+    %(prog)s --event MY_NEW_EVENT -m "[en]This is the English message for: {a1} {a2}" "[de]Any other locale needs the same amount of place holders ({a1}, {a2})" --arg "a1=Arg1" --arg "a2=Arg2" --tag my-tag
+    '''
     parser = ArgumentParser(usage=usage, description=description, epilog=epilog, formatter_class=RawTextHelpFormatter)
     parser.add_argument('-u', '--username', help='Username that issues the diary entry')
     parser.add_argument('-t', '--tag', action='append', help='Tags added to the diary entry')

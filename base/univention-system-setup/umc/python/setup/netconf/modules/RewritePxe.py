@@ -15,10 +15,10 @@ class Mapping(object):
         }
         assert self.mapping
         pattern = '''\
-		(?:^|(?<![0-9]))
-		(%s)
-		(?:$|(?![0-9]))
-		''' % (
+        (?:^|(?<![0-9]))
+        (%s)
+        (?:$|(?![0-9]))
+        ''' % (
             '|'.join(re.escape(_) for _ in self.mapping.keys()),
         )
         self.regexp = re.compile(pattern, re.VERBOSE)

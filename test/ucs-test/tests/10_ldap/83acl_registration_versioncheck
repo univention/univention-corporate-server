@@ -75,14 +75,14 @@ exit 0
 
     acl_buffer_current = '''
 access to dn.base="%(container)s" attrs="description"
-	by dn.base="%(user_dn)s" write
-	by * +0 break
+    by dn.base="%(user_dn)s" write
+    by * +0 break
 ''' % {'container': container_current, 'user_dn': user_dn}
 
     acl_buffer_new = '''
 access to dn.base="%(container)s" attrs="description"
-	by dn.base="%(user_dn)s" write
-	by * +0 break
+    by dn.base="%(user_dn)s" write
+    by * +0 break
 ''' % {'container': container_new, 'user_dn': user_dn}
 
     package = DebianPackage(name=package_name)

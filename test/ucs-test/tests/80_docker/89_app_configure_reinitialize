@@ -32,8 +32,8 @@ Show = Install, Settings
             app.add_script(configure_host='''#!/bin/sh
 set -x
 if [ "$1" = "settings" ]; then
-	echo "Recreating the App from outside"
-	univention-app reinitialize %s
+    echo "Recreating the App from outside"
+    univention-app reinitialize %s
 fi
 exit 0
 ''' % app.app_name)

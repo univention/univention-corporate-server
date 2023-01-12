@@ -498,8 +498,8 @@ def create_new_package(new_package_dir, target_language, target_locale, language
 eval \"$(ucr shell locale)\"
 new_locale="%s"
 case "${locale}" in
-	*"${new_locale}"*) echo "Locale ${new_locale} already known" ;;
-	*)	ucr set locale="${locale} ${new_locale}" ;;
+    *"${new_locale}"*) echo "Locale ${new_locale} already known" ;;
+    *)	ucr set locale="${locale} ${new_locale}" ;;
 esac
 
 ucr set ucs/server/languages/%s?"%s"

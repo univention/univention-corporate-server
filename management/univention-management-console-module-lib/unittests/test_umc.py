@@ -59,9 +59,9 @@ class TestUMCModule(object):
     def test_restart(self, instance, mocker, umc_request):
         mocked_subprocess = mocker.patch.object(umc_lib.server, 'subprocess')
         out = b'''[ ok ] Restarting univention-management-console-server (via systemctl): univention-management-console-server.service.
-		[ ok ] Restarting univention-management-console-web-server (via systemctl): univention-management-console-web-server.service.
-		[ ok ] Restarting apache2 (via systemctl): apache2.service.
-		'''
+        [ ok ] Restarting univention-management-console-web-server (via systemctl): univention-management-console-web-server.service.
+        [ ok ] Restarting apache2 (via systemctl): apache2.service.
+        '''
         popen_mock = mocker.Mock(**{'communicate.return_value': (out, '')})
         mocked_subprocess.PIPE = -1
         mocked_subprocess.STDOUT = 1

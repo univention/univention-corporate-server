@@ -192,7 +192,7 @@ The scripts from conffiles/* go to /etc/univention/templates/scripts/.
 The modules from conffiles/* go to /etc/univention/templates/modules/.
 
 The mapping files debian/*.univention-config-registry-mapping go to /etc/univention/templates/mapping/.
-	'''
+    '''
     parser = ArgumentParser(epilog=epilog)
     parser.add_argument(
         '--verbose', '-v',

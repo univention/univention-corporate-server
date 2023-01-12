@@ -49,7 +49,7 @@ An *UMC operation set* consists of a list of UMC command patterns like
 
 .. code-block:: none
 
-	udm/* objectType=nagios/*
+    udm/* objectType=nagios/*
 
 This specifies that all commands hat match the pattern `udm/\*` can be
 called if the option *objectType* is given and the value matches the
@@ -62,7 +62,7 @@ used
 
 .. code-block:: none
 
-	udm/* !objectType
+    udm/* !objectType
 """
 
 from __future__ import absolute_import

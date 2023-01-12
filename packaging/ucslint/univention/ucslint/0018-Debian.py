@@ -326,61 +326,61 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 
     RE_TEST = re.compile(
         r'''
-		(?:(?P<test>\[{1,2}) | \b test)
-		\s+
-		(?P<cond>.+?)
-		(?(test)\s+\]{1,2} | (?:\s*(?:; | && | \|\| | $)))
-		''', re.VERBOSE)
+        (?:(?P<test>\[{1,2}) | \b test)
+        \s+
+        (?P<cond>.+?)
+        (?(test)\s+\]{1,2} | (?:\s*(?:; | && | \|\| | $)))
+        ''', re.VERBOSE)
     RE_CASE = re.compile(
         r'''
-		\b
-		case
-		\s+
-		(?P<quot>"?)
-		(?:\$(?:1|\{1[#%:?+=/-[^}]*\}))
-		(?P=quot)
-		\s+
-		in
-		\s+
-		(?P<cases>.+?)
-		\b
-		esac
-		\b
-		''', re.VERBOSE | re.DOTALL)
+        \b
+        case
+        \s+
+        (?P<quot>"?)
+        (?:\$(?:1|\{1[#%:?+=/-[^}]*\}))
+        (?P=quot)
+        \s+
+        in
+        \s+
+        (?P<cases>.+?)
+        \b
+        esac
+        \b
+        ''', re.VERBOSE | re.DOTALL)
     RE_ARG1 = re.compile(r'\$(?:1|\{1[#%:?+=/-[^}]*\})')
     # /usr/share/dh-python/dhpython/version.py # VERSION_RE
     RE_VERSION_RANGE = re.compile(
-            r'''^
-		\d+\.\d+
-		(?:- (?:\d+\.\d+)? )?
-		(?:,
-		   \d+\.\d+
-		   (?:- (?:\d+\.\d+)? )?
-		)*
-		$''', re.VERBOSE)
+        r'''^
+        \d+\.\d+
+        (?:- (?:\d+\.\d+)? )?
+        (?:,
+           \d+\.\d+
+           (?:- (?:\d+\.\d+)? )?
+        )*
+        $''', re.VERBOSE)
     # /usr/share/dh-python/dhpython/tools.py # INSTALL_RE
     RE_NAMESPACE = re.compile(
         r'''^
-		(?![0-9])\w+
-		(?:\. (?![0-9])\w+ )*
-		$''', re.VERBOSE)
+        (?![0-9])\w+
+        (?:\. (?![0-9])\w+ )*
+        $''', re.VERBOSE)
     RE_PYTHONPATHS = re.compile(
-            r'''^/?
-		(?:usr/lib/pymodules/python[0-9.]+/
-		  |usr/lib/python[0-9.]+/
-		  |usr/share/pyshared/
-		)''', re.VERBOSE)
+        r'''^/?
+        (?:usr/lib/pymodules/python[0-9.]+/
+          |usr/lib/python[0-9.]+/
+          |usr/share/pyshared/
+        )''', re.VERBOSE)
     RE_COMPARE_VERSIONS = re.compile(
-            r'''
-		\b dpkg \s+ --compare-versions
-		\s+
-		( (?: '[^']*' | "[^"]*" | \S )+ )
-		\s+
-		([lg][et](?:-nl)?|eq|ne|<[<=]?|=|>[>=]?)
-		\s+
-		( (?: '[^']*' | "[^"]*" | \S )+ )
-		\s*(?: $ | ; | && | \|\| | \))
-		''', re.VERBOSE)
+        r'''
+        \b dpkg \s+ --compare-versions
+        \s+
+        ( (?: '[^']*' | "[^"]*" | \S )+ )
+        \s+
+        ([lg][et](?:-nl)?|eq|ne|<[<=]?|=|>[>=]?)
+        \s+
+        ( (?: '[^']*' | "[^"]*" | \S )+ )
+        \s*(?: $ | ; | && | \|\| | \))
+        ''', re.VERBOSE)
     RE_ARG2 = re.compile(r'^("?)\$(?:2|\{2[#%:?+=/-[^}]*\})(\1)$')
 
 

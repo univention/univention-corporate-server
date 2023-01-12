@@ -60,10 +60,10 @@ def main():
         modified |= check_md5(opt.verbose)
     if modified:
         print(dedent("""\
-			WARNING: The following UCR files are modified locally.
-			Updated versions will be named FILENAME.dpkg-*.
-			The files should be checked for differences.
-			"""), file=sys.stderr)
+            WARNING: The following UCR files are modified locally.
+            Updated versions will be named FILENAME.dpkg-*.
+            The files should be checked for differences.
+            """), file=sys.stderr)
         print('\n'.join(sorted(modified)))
         return 1
     return 0

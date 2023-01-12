@@ -121,8 +121,8 @@ def get_syntax_buffer(name=None, identifier=None):
         identifier = name
     return '''# UCS-TEST SYNTAX %(syntax_identifier)s
 class %(syntax_name)s(simple):
-		regex = re.compile('^ucstest-[0-9A-Za-z]+$')
-		error_message = 'Wrong value given for ucs-test-syntax!'
+        regex = re.compile('^ucstest-[0-9A-Za-z]+$')
+        error_message = 'Wrong value given for ucs-test-syntax!'
 ''' % {'syntax_name': name, 'syntax_identifier': identifier}
 
 
@@ -140,11 +140,11 @@ def get_hook_buffer(name=None, identifier=None):
 from univention.admin.hook import simpleHook
 
 class %(hook_name)s(simpleHook):
-	type = 'SetDescriptionValue'
+    type = 'SetDescriptionValue'
 
-	def hook_ldap_pre_modify(self, obj):
-		""" Set description consisting of username, lastname """
-		obj['description'] = 'USERNAME=%%(username)s  LASTNAME=%%(lastname)s' %% obj.info
+    def hook_ldap_pre_modify(self, obj):
+        """ Set description consisting of username, lastname """
+        obj['description'] = 'USERNAME=%%(username)s  LASTNAME=%%(lastname)s' %% obj.info
 ''' % {'hook_name': name, 'hook_identifier': identifier}
 
 
@@ -175,35 +175,35 @@ short_description = _('UCS-TEST MODULE %(module_identifier)s')
 long_description = ''
 
 options = {
-	'default': univention.admin.option(
-		short_description=short_description,
-		default=True,
-		objectClasses=['top', 'automountMap'],
-	)
+    'default': univention.admin.option(
+        short_description=short_description,
+        default=True,
+        objectClasses=['top', 'automountMap'],
+    )
 }
 
 property_descriptions = {
-	'name': univention.admin.property(
-		short_description=_('Name'),
-		long_description='',
-		syntax=univention.admin.syntax.string,
-		include_in_default_search=True,
-		required=True,
-		may_change=False,
-		identifies=True
-	),
+    'name': univention.admin.property(
+        short_description=_('Name'),
+        long_description='',
+        syntax=univention.admin.syntax.string,
+        include_in_default_search=True,
+        required=True,
+        may_change=False,
+        identifies=True
+    ),
 }
 layout = [
-	Tab( _( 'General' ), _( 'Basic settings' ), layout = [
-		Group( _( 'General' ), layout = [[ "name" ]] ),
-	] )
+    Tab( _( 'General' ), _( 'Basic settings' ), layout = [
+        Group( _( 'General' ), layout = [[ "name" ]] ),
+    ] )
 ]
 mapping = univention.admin.mapping.mapping()
 mapping.register('name', 'ou', None, univention.admin.mapping.ListToString)
 
 
 class object(univention.admin.handlers.simpleLdap):
-	module = module
+    module = module
 
 lookup = object.lookup
 identify = object.identify

@@ -192,7 +192,7 @@ Description: UCS - Test package
         # type: () -> None
         rules = '''#!/usr/bin/make -f
 %:
-	dh $@
+    dh $@
 override_dh_strip_nondeterminism: ; # Bug #46002
 '''
         self.create_debian_file_from_buffer('rules', rules)

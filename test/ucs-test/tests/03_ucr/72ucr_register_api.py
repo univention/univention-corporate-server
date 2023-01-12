@@ -16,7 +16,7 @@ from univention.testing.ucr import UCSTestConfigRegistry
 UCR_MODULE = '''
 import json
 def handler(configRegistry, changes):
-	print('####' + json.dumps(changes) + '####')
+    print('####' + json.dumps(changes) + '####')
 '''
 
 UCR_INFO = '''

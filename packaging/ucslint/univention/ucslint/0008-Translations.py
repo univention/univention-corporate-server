@@ -117,12 +117,12 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
         tester.addTest(
             re.compile(
                 r'''
-				(?<!custom_groupname[( ])
-				(?<!custom_username[( ])
-				(['"]) \b
-				(?:Domain\ Users|Domain\ Admins|Administrator|Windows\ Hosts)
-				\b \1
-				''', re.VERBOSE),
+                (?<!custom_groupname[( ])
+                (?<!custom_username[( ])
+                (['"]) \b
+                (?:Domain\ Users|Domain\ Admins|Administrator|Windows\ Hosts)
+                \b \1
+                ''', re.VERBOSE),
             '0008-7', 'found well-known LDAP object but no custom_*name()', cntmax=0)
 
         for fn in files:

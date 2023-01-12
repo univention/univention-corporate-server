@@ -113,20 +113,20 @@ def gen_pxe(new: Dict[str, List[bytes]]) -> Optional[str]:
     append = ' '.join(arg for arg in args if arg)
 
     return dedent('''\
-			# Perform a profile installation by default
-			PROMPT 0
-			TIMEOUT 100
-			DEFAULT linux
+            # Perform a profile installation by default
+            PROMPT 0
+            TIMEOUT 100
+            DEFAULT linux
 
-			LABEL linux
-				LINUX %(kernel)s
-				INITRD %(initrd)s
-				APPEND %(append)s
-				IPAPPEND %(ipappend)s
+            LABEL linux
+                LINUX %(kernel)s
+                INITRD %(initrd)s
+                APPEND %(append)s
+                IPAPPEND %(ipappend)s
 
-			LABEL local
-				LOCALBOOT 0
-			''') % {
+            LABEL local
+                LOCALBOOT 0
+            ''') % {
         'kernel': listener.configRegistry.get('pxe/installer/kernel', 'linux'),
         'initrd': listener.configRegistry.get('pxe/installer/initrd', 'initrd.gz'),
         'append': append,

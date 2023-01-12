@@ -72,23 +72,23 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
         tester.addTest(re.compile(r"""\b(?:if|while)\b.*(?:(?:!=|<>|==)\s*None\b|\bNone\s*(?:!=|<>|==)).*:"""), '0009-7', 'fragile comparison with None', cntmax=0)
         tester.addTest(re.compile(
             r'''(?:baseConfig|configRegistry|ucr)(?:\[.+\]|\.get\(.+\)).*\bin\s*
-			[\[\(]
-			(?:\s*(['"])(?:yes|no|1|0|true|false|on|off|enabled?|disabled?)\1\s*,?\s*){3,}
-			[\]\)]''', re.VERBOSE | re.IGNORECASE),
+            [\[\(]
+            (?:\s*(['"])(?:yes|no|1|0|true|false|on|off|enabled?|disabled?)\1\s*,?\s*){3,}
+            [\]\)]''', re.VERBOSE | re.IGNORECASE),
             '0009-8', 'use ucr.is_true() or .is_false()', cntmax=0)
         tester.addTest(re.compile(
             r'''\.search\s*\(
-			.*?\b
-			attr
-			\s*=\s*
-			(?:(?P<list>\[)|(?P<tuple>\())
-			\s*
-			(?P<str>["'])
-			dn
-			(?P=str)
-			\s*
-			(?(list)\])(?(tuple)\))
-			''', re.VERBOSE),
+            .*?\b
+            attr
+            \s*=\s*
+            (?:(?P<list>\[)|(?P<tuple>\())
+            \s*
+            (?P<str>["'])
+            dn
+            (?P=str)
+            \s*
+            (?(list)\])(?(tuple)\))
+            ''', re.VERBOSE),
             '0009-11', 'Use uldap.searchDn() instead of uldap.search(attr=["dn"])', cntmax=0)
 
         for fn in python_files(path):

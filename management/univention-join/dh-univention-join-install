@@ -54,29 +54,29 @@ VER = "12.0.0-7"
 POSTINST_UNJOIN = '''
 # remove left-over previous unjoin script
 if [ "$1" = "configure" ]; then
-	rm -f /usr/lib/univention-install/{script}
+    rm -f /usr/lib/univention-install/{script}
 fi
 '''
 POSTINST_JOIN = '''
 # run join script on Primary Directory Node and Backup Directory Node
 if [ "$1" = "configure" ]; then
-	. /usr/share/univention-lib/join.sh &&
-		call_joinscript {script} ||
-		:
+    . /usr/share/univention-lib/join.sh &&
+        call_joinscript {script} ||
+        :
 fi
 '''
 PRERM_UNJOIN = '''
 # arm unjoin script on package removal
 if [ "$1" = "remove" ]; then
-	cp /usr/lib/univention-uninstall/{script} /usr/lib/univention-install/
+    cp /usr/lib/univention-uninstall/{script} /usr/lib/univention-install/
 fi
 '''
 POSTRM_UNJOIN = '''
 # run unjoin script
 if [ "$1" = "remove" ]; then
-	. /usr/share/univention-lib/join.sh &&
-		call_unjoinscript {script} ||
-		:
+    . /usr/share/univention-lib/join.sh &&
+        call_unjoinscript {script} ||
+        :
 fi
 '''
 

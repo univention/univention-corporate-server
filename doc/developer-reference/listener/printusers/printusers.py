@@ -13,19 +13,19 @@ from listener import SetUID
 description = 'print all names/users/uidNumbers into a file'
 filter = ''.join("""\
 (&
-	(|
-		(&
-			(objectClass=posixAccount)
-			(objectClass=shadowAccount)
-		)
-		(objectClass=univentionMail)
-		(objectClass=sambaSamAccount)
-		(objectClass=simpleSecurityObject)
-		(objectClass=inetOrgPerson)
-	)
-	(!(objectClass=univentionHost))
-	(!(uidNumber=0))
-	(!(uid=*$))
+    (|
+        (&
+            (objectClass=posixAccount)
+            (objectClass=shadowAccount)
+        )
+        (objectClass=univentionMail)
+        (objectClass=sambaSamAccount)
+        (objectClass=simpleSecurityObject)
+        (objectClass=inetOrgPerson)
+    )
+    (!(objectClass=univentionHost))
+    (!(uidNumber=0))
+    (!(uid=*$))
 )""".split())
 attributes = ['uid', 'uidNumber', 'cn']
 _Rec = namedtuple('_Rec', 'uid uidNumber cn')

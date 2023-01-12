@@ -58,13 +58,13 @@ _SKIP = {
     'interfaces/restart/auto',
 }
 RE_IFACE = re.compile(r'''^
-		(?!(?:%s)$) # _SKIP
-		interfaces/ # prefix
-		([^/]+)/    # iface name
-		(
-			(?:ipv6/([0-9A-Za-z]+)/)? # IPv6 name
-			.*)        # suffix
-		$''' % ('|'.join(_SKIP)), re.VERBOSE)
+        (?!(?:%s)$) # _SKIP
+        interfaces/ # prefix
+        ([^/]+)/    # iface name
+        (
+            (?:ipv6/([0-9A-Za-z]+)/)? # IPv6 name
+            .*)        # suffix
+        $''' % ('|'.join(_SKIP)), re.VERBOSE)
 
 
 def forgiving(translation=None):

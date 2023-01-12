@@ -241,7 +241,7 @@ def sql_put_sys_in_systems(cursor, sysname, sysversion, sysrole, ldaphostdn, arc
     cursor.execute('SELECT true FROM systems WHERE sysname = %(sysname)s', parameters)
     if cursor.rowcount == 0:
         sql_command = '''
-		INSERT INTO systems (sysname,
+        INSERT INTO systems (sysname,
                              sysversion,
                              sysrole,
                              ldaphostdn,
@@ -253,16 +253,16 @@ def sql_put_sys_in_systems(cursor, sysname, sysversion, sysrole, ldaphostdn, arc
                       %(ldaphostdn)s,
                       %(architecture)s,
                       CURRENT_TIMESTAMP)
-		'''
+        '''
     else:
         sql_command = '''
-		UPDATE systems SET sysversion   = %(sysversion)s,
+        UPDATE systems SET sysversion   = %(sysversion)s,
                            sysrole      = %(sysrole)s,
                            ldaphostdn   = %(ldaphostdn)s,
                            architecture = %(architecture)s,
                            scandate     = CURRENT_TIMESTAMP
                        WHERE sysname = %(sysname)s
-		'''
+        '''
     try:
         cursor.execute(sql_command, parameters)
     except pgdb.Error as error:
@@ -281,7 +281,7 @@ def sql_put_sys_in_systems_no_architecture(cursor, sysname, sysversion, sysrole,
     cursor.execute('SELECT true FROM systems WHERE sysname = %(sysname)s', parameters)
     if cursor.rowcount == 0:
         sql_command = '''
-		INSERT INTO systems (sysname,
+        INSERT INTO systems (sysname,
                              sysversion,
                              sysrole,
                              ldaphostdn,
@@ -291,15 +291,15 @@ def sql_put_sys_in_systems_no_architecture(cursor, sysname, sysversion, sysrole,
                       %(sysrole)s,
                       %(ldaphostdn)s,
                       CURRENT_TIMESTAMP)
-		'''
+        '''
     else:
         sql_command = '''
-		UPDATE systems SET sysversion   = %(sysversion)s,
+        UPDATE systems SET sysversion   = %(sysversion)s,
                            sysrole      = %(sysrole)s,
                            ldaphostdn   = %(ldaphostdn)s,
                            scandate     = CURRENT_TIMESTAMP
                        WHERE sysname = %(sysname)s
-		'''
+        '''
     try:
         cursor.execute(sql_command, parameters)
     except pgdb.Error as error:
@@ -366,10 +366,10 @@ def dump_systems(cursor):
     """writes CSV with all systems and their system-specific information to stdout"""
     cursor.execute("SET datestyle = 'ISO'")
     query = '''
-	SELECT sysname, sysversion, sysrole, scandate, ldaphostdn
+    SELECT sysname, sysversion, sysrole, scandate, ldaphostdn
            FROM systems
            ORDER BY sysname
-	'''
+    '''
     cursor.execute(query)
     writer = csv.writer(sys.stdout, delimiter=' ')
     writer.writerow(('hostname', 'UCS version', 'server role', 'last scan', 'LDAP host DN', ))
@@ -392,10 +392,10 @@ def dump_packages(cursor):
 def dump_systems_packages(cursor):
     cursor.execute("SET datestyle = 'ISO'")
     query = '''
-	SELECT sysname, pkgname, vername, scandate, inststatus, selectedstate, inststate, currentstate
+    SELECT sysname, pkgname, vername, scandate, inststatus, selectedstate, inststate, currentstate
            FROM packages_on_systems
            ORDER BY sysname, pkgname, vername
-	'''
+    '''
     cursor.execute(query)
     writer = csv.writer(sys.stdout, delimiter=' ')
     writer.writerow(('system', 'package', 'version', 'last scan', 'installed', 'selected state', 'installation state', 'current state'))
@@ -408,13 +408,13 @@ def action_remove_system(connection, cursor, sysname):
     """removes system <sysname> from the database"""
     connection.rollback()
     delete_packages = '''
-	DELETE FROM packages_on_systems
+    DELETE FROM packages_on_systems
            WHERE sysname = %(sysname)s
-	'''
+    '''
     delete_system = '''
-	DELETE FROM systems
+    DELETE FROM systems
            WHERE sysname = %(sysname)s
-	'''
+    '''
     cursor.execute(delete_packages, {'sysname': sysname, })
     cursor.execute(delete_system, {'sysname': sysname, })
     connection.commit()
@@ -426,11 +426,11 @@ def scan_and_store_packages(cursor, sysname, fake_null=False, architecture=None)
     if <fake_null> is True put '' instead of None in the vername field
     """
     delete_packages = '''
-	DELETE FROM packages_on_systems
+    DELETE FROM packages_on_systems
            WHERE sysname = %(sysname)s
-	'''
+    '''
     insert_statement = '''
-	INSERT INTO packages_on_systems (scandate,
+    INSERT INTO packages_on_systems (scandate,
                                      sysname,
                                      currentstate,
                                      inststate,
@@ -439,17 +439,17 @@ def scan_and_store_packages(cursor, sysname, fake_null=False, architecture=None)
                                      selectedstate,
                                      vername)
            VALUES
-	'''
+    '''
     insert_value = '''(
-	CURRENT_TIMESTAMP,
-	%(sysname)s,
-	%(currentstate)s,
-	%(inststate)s,
-	%(inststatus)s,
-	%(pkgname)s,
-	%(selectedstate)s,
-	%(vername)s)
-	'''
+    CURRENT_TIMESTAMP,
+    %(sysname)s,
+    %(currentstate)s,
+    %(inststate)s,
+    %(inststatus)s,
+    %(pkgname)s,
+    %(selectedstate)s,
+    %(vername)s)
+    '''
     if scan_and_store_packages.cache is None:
         apt_pkg.init()
         scan_and_store_packages.cache = apt_pkg.Cache()

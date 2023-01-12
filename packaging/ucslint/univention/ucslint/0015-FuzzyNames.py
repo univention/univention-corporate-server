@@ -149,28 +149,28 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
         }
 
     RE_WHITEWORD = re.compile(r'|'.join(r"""
-		[0-9][0-9]univention
-		punivention
-		fBunivention
-		invention
-		[Kk]uhnivention
-		onvention
-		unintention
-		univention
-		Univention
-		UNIVENTION
-		_univention
-		univention_
-	""".split()))
+        [0-9][0-9]univention
+        punivention
+        fBunivention
+        invention
+        [Kk]uhnivention
+        onvention
+        unintention
+        univention
+        Univention
+        UNIVENTION
+        _univention
+        univention_
+    """.split()))
 
     RE_WHITELINE = re.compile(r'|'.join(r"""
-		\\[tnr]univention
-		-.univention
-		[SK]?[0-9][0-9]univention
-		univention[0-9]
-		univentionr\._baseconfig
-		/var/lib/univentions-client-boot/
-	""".split()))
+        \\[tnr]univention
+        -.univention
+        [SK]?[0-9][0-9]univention
+        univention[0-9]
+        univentionr\._baseconfig
+        /var/lib/univentions-client-boot/
+    """.split()))
 
     def check(self, path: str) -> None:
         """the real check"""

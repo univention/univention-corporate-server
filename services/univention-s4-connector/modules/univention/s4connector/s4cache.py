@@ -115,7 +115,7 @@ class S4Cache(object):
         # to the tuple ? syntax
         sql_commands = [
             ("SELECT ATTRIBUTES.attribute,data.value from data \
-				inner join ATTRIBUTES ON data.attribute_id=attributes.id where guid_id = ?;", (str(guid_id),))
+                inner join ATTRIBUTES ON data.attribute_id=attributes.id where guid_id = ?;", (str(guid_id),))
         ]
 
         rows = self.__execute_sql_commands(sql_commands, fetch_result=True)
@@ -262,9 +262,9 @@ class S4Cache(object):
             sql_commands.append(
                 (
                     "DELETE FROM data WHERE data.id IN (\
-				SELECT data.id FROM DATA INNER JOIN ATTRIBUTES ON data.attribute_id=attributes.id \
-					where attributes.attribute=? and guid_id=? \
-				);", (str(attribute), str(guid_id))
+                SELECT data.id FROM DATA INNER JOIN ATTRIBUTES ON data.attribute_id=attributes.id \
+                    where attributes.attribute=? and guid_id=? \
+                );", (str(attribute), str(guid_id))
                 )
             )
         for attribute in diff['added']:
@@ -281,9 +281,9 @@ class S4Cache(object):
                 sql_commands.append(
                     (
                         "DELETE FROM data WHERE data.id IN (\
-							SELECT data.id FROM DATA INNER JOIN ATTRIBUTES ON data.attribute_id=attributes.id \
-							where attributes.id=? and guid_id = ? and value = ? \
-						);", (str(attr_id), str(guid_id), _encode_base64(value))
+                            SELECT data.id FROM DATA INNER JOIN ATTRIBUTES ON data.attribute_id=attributes.id \
+                            where attributes.id=? and guid_id = ? and value = ? \
+                        );", (str(attr_id), str(guid_id), _encode_base64(value))
                     )
                 )
             for value in set(entry.get(attribute)) - set(old_entry.get(attribute)):

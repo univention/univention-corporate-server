@@ -1,6 +1,6 @@
 """
 .. module:: randomdomain
-	:platform: Unix
+    :platform: Unix
 
 .. moduleauthor:: Ammar Najjar <najjar@univention.de>
 """

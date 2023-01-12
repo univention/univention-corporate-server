@@ -588,11 +588,11 @@ import univention.admin.hook
 import univention.admin.handlers.users.user
 
 class %s(univention.admin.hook.simpleHook):
-	def hook_ldap_addlist(self, obj, al=[]):
-		with open('/tmp/%s_executed', 'w') as fp:
-			if not isinstance(obj, univention.admin.handlers.users.user.object):
-				fp.write('LDAP addlist hook called with wrong object parameter (Type: %%s)' %% type(obj))
-		return al + [('description', b'%s')]
+    def hook_ldap_addlist(self, obj, al=[]):
+        with open('/tmp/%s_executed', 'w') as fp:
+            if not isinstance(obj, univention.admin.handlers.users.user.object):
+                fp.write('LDAP addlist hook called with wrong object parameter (Type: %%s)' %% type(obj))
+        return al + [('description', b'%s')]
 """ % (hook_name, hook_name, hook_name))
 
         udm.stop_cli_server()
@@ -630,16 +630,16 @@ import univention.admin.handlers.users.user
 import univention.testing.utils
 
 class %s(univention.admin.hook.simpleHook):
-	def hook_ldap_pre_create(self, module):
-		with open('/tmp/%s_executed', 'w') as fp:
-			if not isinstance(module, univention.admin.handlers.users.user.object):
-				fp.write('LDAP pre create Hook called with wrong object parameter (Type: %%s)' %% type(module))
+    def hook_ldap_pre_create(self, module):
+        with open('/tmp/%s_executed', 'w') as fp:
+            if not isinstance(module, univention.admin.handlers.users.user.object):
+                fp.write('LDAP pre create Hook called with wrong object parameter (Type: %%s)' %% type(module))
 
-			univention.testing.utils.wait_for_replication()
-			try:
-				univention.testing.utils.verify_ldap_object('uid=%s,cn=users,%s', should_exist = False)
-			except univention.testing.utils.LDAPUnexpectedObjectFound:
-				fp.write('\\nObject had already been created when LDAP pre create hook was called')
+            univention.testing.utils.wait_for_replication()
+            try:
+                univention.testing.utils.verify_ldap_object('uid=%s,cn=users,%s', should_exist = False)
+            except univention.testing.utils.LDAPUnexpectedObjectFound:
+                fp.write('\\nObject had already been created when LDAP pre create hook was called')
 """ % (hook_name, hook_name, hook_name, ucr['ldap/base']))
 
         udm.stop_cli_server()
@@ -675,10 +675,10 @@ import univention.admin.hook
 import univention.admin.handlers.users.user
 
 class %s(univention.admin.hook.simpleHook):
-	def hook_open(self, obj):
-		with open('/tmp/%s_executed', 'a+') as fp:
-			if not isinstance(obj, univention.admin.handlers.users.user.object):
-				fp.write('Hook called with wrong object parameter (Type: %%s)' %% type(module))
+    def hook_open(self, obj):
+        with open('/tmp/%s_executed', 'a+') as fp:
+            if not isinstance(obj, univention.admin.handlers.users.user.object):
+                fp.write('Hook called with wrong object parameter (Type: %%s)' %% type(module))
 """ % (hook_name, hook_name))
 
         udm.stop_cli_server()
@@ -716,16 +716,16 @@ import univention.admin.handlers.users.user
 import univention.testing.utils
 
 class %s(univention.admin.hook.simpleHook):
-	def hook_ldap_post_create(self, module):
-		with open('/tmp/%s_executed', 'w') as fp:
-			if not isinstance(module, univention.admin.handlers.users.user.object):
-				fp.write('Hook called with wrong object parameter (Type: %%s)' %% type(module))
+    def hook_ldap_post_create(self, module):
+        with open('/tmp/%s_executed', 'w') as fp:
+            if not isinstance(module, univention.admin.handlers.users.user.object):
+                fp.write('Hook called with wrong object parameter (Type: %%s)' %% type(module))
 
-			univention.testing.utils.wait_for_replication()
-			try:
-				univention.testing.utils.verify_ldap_object('uid=%s,cn=users,%s')
-			except univention.testing.utils.LDAPObjectNotFound:
-				fp.write('\\nObject had not yet been created when LDAP post create hook was called')
+            univention.testing.utils.wait_for_replication()
+            try:
+                univention.testing.utils.verify_ldap_object('uid=%s,cn=users,%s')
+            except univention.testing.utils.LDAPObjectNotFound:
+                fp.write('\\nObject had not yet been created when LDAP post create hook was called')
 """ % (hook_name, hook_name, hook_name, ucr['ldap/base']))
 
         udm.stop_cli_server()
@@ -762,16 +762,16 @@ import univention.admin.handlers.users.user
 import univention.testing.utils
 
 class %s(univention.admin.hook.simpleHook):
-	def hook_ldap_post_modify(self, module):
-		with open('/tmp/%s_executed', 'w') as fp:
-			if not isinstance(module, univention.admin.handlers.users.user.object):
-				fp.write('LDAP post modify hook called with wrong object parameter (Type: %%s)' %% type(module))
+    def hook_ldap_post_modify(self, module):
+        with open('/tmp/%s_executed', 'w') as fp:
+            if not isinstance(module, univention.admin.handlers.users.user.object):
+                fp.write('LDAP post modify hook called with wrong object parameter (Type: %%s)' %% type(module))
 
-			univention.testing.utils.wait_for_replication()
-			try:
-				univention.testing.utils.verify_ldap_object('uid=%s,cn=users,%s', {'description': [b'%s']}, retry_count=0)
-			except univention.testing.utils.LDAPObjectValueMissing:
-				fp.write('\\nObject was not yet modified when LDAP post modify hook was called')
+            univention.testing.utils.wait_for_replication()
+            try:
+                univention.testing.utils.verify_ldap_object('uid=%s,cn=users,%s', {'description': [b'%s']}, retry_count=0)
+            except univention.testing.utils.LDAPObjectValueMissing:
+                fp.write('\\nObject was not yet modified when LDAP post modify hook was called')
 """ % (hook_name, hook_name, hook_name, ucr['ldap/base'], hook_name))
 
         udm.stop_cli_server()
@@ -809,11 +809,11 @@ import univention.admin.handlers.users.user
 import univention.testing.utils
 
 class %s(univention.admin.hook.simpleHook):
-	def hook_ldap_modlist(self, module, ml=[]):
-		with open('/tmp/%s_executed', 'w') as fp:
-			if not isinstance(module, univention.admin.handlers.users.user.object):
-				fp.write('LDAP modlist hook called with wrong object parameter (Type: %%s)' %% type(module))
-		return ml + [('description', module.get('description', b''), b'%s')]
+    def hook_ldap_modlist(self, module, ml=[]):
+        with open('/tmp/%s_executed', 'w') as fp:
+            if not isinstance(module, univention.admin.handlers.users.user.object):
+                fp.write('LDAP modlist hook called with wrong object parameter (Type: %%s)' %% type(module))
+        return ml + [('description', module.get('description', b''), b'%s')]
 """ % (hook_name, hook_name, hook_name))
 
         udm.stop_cli_server()
@@ -855,16 +855,16 @@ import univention.admin.handlers.users.user
 import univention.testing.utils
 
 class %s(univention.admin.hook.simpleHook):
-	def hook_ldap_pre_modify(self, module):
-		with open('/tmp/%s_executed', 'w') as fp:
-			if not isinstance(module, univention.admin.handlers.users.user.object):
-				fp.write('LDAP pre modify hook called with wrong object parameter (Type: %%s)' %% type(module))
+    def hook_ldap_pre_modify(self, module):
+        with open('/tmp/%s_executed', 'w') as fp:
+            if not isinstance(module, univention.admin.handlers.users.user.object):
+                fp.write('LDAP pre modify hook called with wrong object parameter (Type: %%s)' %% type(module))
 
-			univention.testing.utils.wait_for_replication()
-			try:
-				univention.testing.utils.verify_ldap_object('uid=%s,cn=users,%s', {'description': []}, retry_count=0)
-			except univention.testing.utils.LDAPObjectUnexpectedValue:
-				fp.write('\\nObject had already been modified when LDAP pre modify hook was called')
+            univention.testing.utils.wait_for_replication()
+            try:
+                univention.testing.utils.verify_ldap_object('uid=%s,cn=users,%s', {'description': []}, retry_count=0)
+            except univention.testing.utils.LDAPObjectUnexpectedValue:
+                fp.write('\\nObject had already been modified when LDAP pre modify hook was called')
 """ % (hook_name, hook_name, hook_name, ucr['ldap/base']))
 
         udm.stop_cli_server()
@@ -902,16 +902,16 @@ import univention.admin.handlers.users.user
 import univention.testing.utils
 
 class %s(univention.admin.hook.simpleHook):
-	def hook_ldap_pre_remove(self, module):
-		with open('/tmp/%s_executed', 'w') as fp:
-			if not isinstance(module, univention.admin.handlers.users.user.object):
-				fp.write('LDAP pre remove hook called with wrong object parameter (Type: %%s)' %% type(module))
+    def hook_ldap_pre_remove(self, module):
+        with open('/tmp/%s_executed', 'w') as fp:
+            if not isinstance(module, univention.admin.handlers.users.user.object):
+                fp.write('LDAP pre remove hook called with wrong object parameter (Type: %%s)' %% type(module))
 
-			univention.testing.utils.wait_for_replication()
-			try:
-				univention.testing.utils.verify_ldap_object('uid=%s,cn=users,%s')
-			except univention.testing.utils.LDAPObjectNotFound:
-				fp.write('\\nObject had already been removed when LDAP pre remove hook was called')
+            univention.testing.utils.wait_for_replication()
+            try:
+                univention.testing.utils.verify_ldap_object('uid=%s,cn=users,%s')
+            except univention.testing.utils.LDAPObjectNotFound:
+                fp.write('\\nObject had already been removed when LDAP pre remove hook was called')
 """ % (hook_name, hook_name, hook_name, ucr['ldap/base']))
 
         udm.stop_cli_server()
@@ -949,16 +949,16 @@ import univention.admin.handlers.users.user
 import univention.testing.utils
 
 class %s(univention.admin.hook.simpleHook):
-	def hook_ldap_post_remove(self, module):
-		with open('/tmp/%s_executed', 'w') as fp:
-			if not isinstance(module, univention.admin.handlers.users.user.object):
-				fp.write('LDAP post remove hook call with wrong object parameter (Type: %%s)' %% type(module))
+    def hook_ldap_post_remove(self, module):
+        with open('/tmp/%s_executed', 'w') as fp:
+            if not isinstance(module, univention.admin.handlers.users.user.object):
+                fp.write('LDAP post remove hook call with wrong object parameter (Type: %%s)' %% type(module))
 
-			univention.testing.utils.wait_for_replication()
-			try:
-				univention.testing.utils.verify_ldap_object('uid=%s,cn=users,%s', should_exist=False)
-			except univention.testing.utils.LDAPUnexpectedObjectFound:
-				fp.write('\\nObject had not yet been removed when LDAP post remove hook was called')
+            univention.testing.utils.wait_for_replication()
+            try:
+                univention.testing.utils.verify_ldap_object('uid=%s,cn=users,%s', should_exist=False)
+            except univention.testing.utils.LDAPUnexpectedObjectFound:
+                fp.write('\\nObject had not yet been removed when LDAP post remove hook was called')
 """ % (hook_name, hook_name, hook_name, ucr['ldap/base']))
 
         udm.stop_cli_server()
@@ -1116,39 +1116,39 @@ import univention.admin.handlers.users.user
 import univention.testing.utils
 
 def mydebug(msg):
-	univention.debug.debug(univention.debug.ADMIN, univention.debug.ERROR, '40_extended_attribute_attributehook_value_mapping: {hook_name}: %s' % (msg,))
+    univention.debug.debug(univention.debug.ADMIN, univention.debug.ERROR, '40_extended_attribute_attributehook_value_mapping: {hook_name}: %s' % (msg,))
 
 mydebug('TEST MODULE LOADED')
 
 class {hook_name}(univention.admin.hook.AttributeHook):
-	ldap_attribute_name = '{attr_name}'
-	udm_attribute_name = '{cli_name}'
+    ldap_attribute_name = '{attr_name}'
+    udm_attribute_name = '{cli_name}'
 
-	def map_attribute_value_to_ldap(self, value):
-		mydebug('map_attribute_value_to_ldap(%r)' % (value,))
-		if value in (b'FALSE', b'yes'):
-			return b'no'
-		elif value in (b'TRUE', b'yes'):
-			return b'yes'
-		elif value in (b'', None):
-			return b''
-		else:
-			# this is not great, but works reasonably well
-			mydebug('map_attribute_value_to_ldap(%r) ==> found invalid value' % (value,))
-			raise univention.admin.uexceptions.valueError('%s: LDAP Value may not be %r' % (self.ldap_attribute_name, value))
+    def map_attribute_value_to_ldap(self, value):
+        mydebug('map_attribute_value_to_ldap(%r)' % (value,))
+        if value in (b'FALSE', b'yes'):
+            return b'no'
+        elif value in (b'TRUE', b'yes'):
+            return b'yes'
+        elif value in (b'', None):
+            return b''
+        else:
+            # this is not great, but works reasonably well
+            mydebug('map_attribute_value_to_ldap(%r) ==> found invalid value' % (value,))
+            raise univention.admin.uexceptions.valueError('%s: LDAP Value may not be %r' % (self.ldap_attribute_name, value))
 
-	def map_attribute_value_to_udm(self, value):
-		mydebug('map_attribute_value_to_udm(%r)' % (value,))
-		if value == 'yes':
-			return 'TRUE'
-		elif value == 'no':
-			return 'FALSE'
-		elif value in ('', None):
-			return ''
-		else:
-			# this is not great, but works reasonably well
-			mydebug('map_attribute_value_to_udm(%r) ==> found invalid value' % (value,))
-			raise univention.admin.uexceptions.valueError('%s: UDM Value may not be %r' % (self.udm_attribute_name, value))
+    def map_attribute_value_to_udm(self, value):
+        mydebug('map_attribute_value_to_udm(%r)' % (value,))
+        if value == 'yes':
+            return 'TRUE'
+        elif value == 'no':
+            return 'FALSE'
+        elif value in ('', None):
+            return ''
+        else:
+            # this is not great, but works reasonably well
+            mydebug('map_attribute_value_to_udm(%r) ==> found invalid value' % (value,))
+            raise univention.admin.uexceptions.valueError('%s: UDM Value may not be %r' % (self.udm_attribute_name, value))
 """.format(hook_name=hook_name, cli_name=cli_name, attr_name=attr_name))
 
             udm.create_object(

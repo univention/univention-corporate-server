@@ -55,14 +55,14 @@ except ImportError:
 
 RE_OVERRIDE = re.compile(
     r'''^
-	(?P<module> \d+-[BEFNW]?\d+)
-	(?: [:]
-	    (?: \s* (?P<pattern> .+?) \s*
-	        (?: [:] \s* (?P<linenumber> \d+)
-	        )?
-	    )?
-	)?
-	$''', re.VERBOSE)
+    (?P<module> \d+-[BEFNW]?\d+)
+    (?: [:]
+        (?: \s* (?P<pattern> .+?) \s*
+            (?: [:] \s* (?P<linenumber> \d+)
+            )?
+        )?
+    )?
+    $''', re.VERBOSE)
 
 
 class DebianPackageCheck(object):

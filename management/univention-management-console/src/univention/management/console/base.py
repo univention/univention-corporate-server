@@ -52,22 +52,22 @@ methods of a class named *Instance* that inherits :class:`.Base`.
 
 The following Python code example matches the definition in the previous section::
 
-	from univention.management.console import Translation
-	from univention.management.console.config import ucr
-	from univention.management.console.modules import Base
-	from univention.management.console.modules.decorators import sanitize
-	from univention.management.console.modules.sanitizers import IntegerSanitizer
-	from univention.management.console.log import MODULE
+    from univention.management.console import Translation
+    from univention.management.console.config import ucr
+    from univention.management.console.modules import Base
+    from univention.management.console.modules.decorators import sanitize
+    from univention.management.console.modules.sanitizers import IntegerSanitizer
+    from univention.management.console.log import MODULE
 
-	_ = Translation('univention-management-console-modules-udm').translate
+    _ = Translation('univention-management-console-modules-udm').translate
 
-	class Instance(Base):
+    class Instance(Base):
 
-		@sanitize(end=IntegerSanitizer(minimum=0),)
-		def query(self, request):
-			end = request.options['end']
-			result = list(range(end))
-			self.finished(request.id, result)
+        @sanitize(end=IntegerSanitizer(minimum=0),)
+        def query(self, request):
+            end = request.options['end']
+            result = list(range(end))
+            self.finished(request.id, result)
 
 Each command methods has one parameter that contains the UMCP request of
 type
@@ -75,15 +75,15 @@ type
 an object has the following properties:
 
 *id*
-	is the unique identifier of the request
+    is the unique identifier of the request
 
 *options*
-	contains the arguments for the command. For most commands it is a
-	dictionary.
+    contains the arguments for the command. For most commands it is a
+    dictionary.
 
 *flavor*
-	is the name of the flavor that was used to invoke the command. This
-	might be *None*
+    is the name of the flavor that was used to invoke the command. This
+    might be *None*
 
 The *query* method in the example above shows how to retrieve the
 command parameters and what to do to send the result back to the

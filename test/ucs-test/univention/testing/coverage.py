@@ -90,8 +90,8 @@ source = {source}
 ignore_errors = True
 show_missing = {show_missing}
 omit = handlers/ucstest
-	syntax.d/*
-	hooks.d/*
+    syntax.d/*
+    hooks.d/*
 [html]
 directory = {directory}
 '''.format(

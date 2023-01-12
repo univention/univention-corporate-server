@@ -59,13 +59,13 @@ class FakeThread:
 def joinscript():
     process = subprocess.Popen(['/bin/sh'], stdin=subprocess.PIPE)
     process.communicate(b'''
-	. /usr/share/univention-lib/umc.sh
+    . /usr/share/univention-lib/umc.sh
 
-	umc_init
-	umc_operation_create "ucstest-all" "UCS Test" "" "ucstest/*"
-	umc_policy_append "default-umc-all" "ucstest-all"
-	exit 0
-	''')
+    umc_init
+    umc_operation_create "ucstest-all" "UCS Test" "" "ucstest/*"
+    umc_policy_append "default-umc-all" "ucstest-all"
+    exit 0
+    ''')
 
 
 def unjoinscript():

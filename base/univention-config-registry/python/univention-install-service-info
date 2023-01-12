@@ -74,7 +74,7 @@ to install service related description files into the package build directories.
 
 The service descriptions debian/*.univention-service go to
 /etc/univention/service.info/*.cfg.
-	'''
+    '''
     parser = ArgumentParser(epilog=epilog)
     parser.add_argument(
         '-v', '--verbose', action='store_true',

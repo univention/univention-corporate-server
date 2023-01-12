@@ -30,14 +30,14 @@ class DummyInterface:
 def get_wpa_config(username, password):
     wpa_config = '''
 network={{
-	ssid="DoesNotMatterForThisTest"
-	key_mgmt=WPA-EAP
-	eap=PEAP
-	identity="{username}"
-	password="{password}"
-	eapol_flags=3
+    ssid="DoesNotMatterForThisTest"
+    key_mgmt=WPA-EAP
+    eap=PEAP
+    identity="{username}"
+    password="{password}"
+    eapol_flags=3
 }}
-	'''.format(username=username, password=password)
+    '''.format(username=username, password=password)
     return wpa_config
 
 

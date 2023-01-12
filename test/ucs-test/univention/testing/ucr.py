@@ -37,8 +37,8 @@ the UCR status after usage. For usage examples look at the end of this
 file.
 
 .. warning::
-	changes to the ConfigRegistry object will also trigger the evaluation of templates
-	and therefore changes in configuration files created by UCR!
+    changes to the ConfigRegistry object will also trigger the evaluation of templates
+    and therefore changes in configuration files created by UCR!
 
 .. warning:: The API is currently under development and may change before next UCS release!
 """

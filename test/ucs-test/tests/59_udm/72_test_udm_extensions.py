@@ -359,15 +359,15 @@ class Test_UDMExtensionsJoinscript:
         data = {'package': package_name}
         data.update(extension_filename)
         joinscript_buffer = '''#!/bin/sh
-	VERSION=1
-	set -e
-	. /usr/share/univention-join/joinscripthelper.lib
-	joinscript_init
-	. /usr/share/univention-lib/ldap.sh
-	ucs_registerLDAPExtension "$@" --ucsversionstart 5.0-0 --udm_hook /usr/share/%(package)s/%(hook)s --udm_syntax /usr/share/%(package)s/%(syntax)s --udm_module /usr/share/%(package)s/%(module)s
-	joinscript_save_current_version
-	exit 0
-	''' % data
+    VERSION=1
+    set -e
+    . /usr/share/univention-join/joinscripthelper.lib
+    joinscript_init
+    . /usr/share/univention-lib/ldap.sh
+    ucs_registerLDAPExtension "$@" --ucsversionstart 5.0-0 --udm_hook /usr/share/%(package)s/%(hook)s --udm_syntax /usr/share/%(package)s/%(syntax)s --udm_module /usr/share/%(package)s/%(module)s
+    joinscript_save_current_version
+    exit 0
+    ''' % data
 
         package = DebianPackage(name=package_name, version=package_version)
         try:
@@ -429,15 +429,15 @@ class Test_UDMExtensionsJoinscript:
         data = {'package': package_name, 'objectname': objectname}
         data.update(extension_filename)
         joinscript_buffer = '''#!/bin/sh
-	VERSION=1
-	set -e
-	. /usr/share/univention-join/joinscripthelper.lib
-	joinscript_init
-	. /usr/share/univention-lib/ldap.sh
-	ucs_registerLDAPExtension "$@" --name "%(objectname)s" --ucsversionstart 5.0-0 --udm_hook /usr/share/%(package)s/%(hook)s --udm_syntax /usr/share/%(package)s/%(syntax)s --udm_module /usr/share/%(package)s/%(module)s
-	joinscript_save_current_version
-	exit 0
-	''' % data
+    VERSION=1
+    set -e
+    . /usr/share/univention-join/joinscripthelper.lib
+    joinscript_init
+    . /usr/share/univention-lib/ldap.sh
+    ucs_registerLDAPExtension "$@" --name "%(objectname)s" --ucsversionstart 5.0-0 --udm_hook /usr/share/%(package)s/%(hook)s --udm_syntax /usr/share/%(package)s/%(syntax)s --udm_module /usr/share/%(package)s/%(module)s
+    joinscript_save_current_version
+    exit 0
+    ''' % data
 
         package = DebianPackage(name=package_name, version=package_version)
         try:
@@ -770,17 +770,17 @@ class Test_UDMExtensionsJoinscript:
             package.remove()
 
     mo_file = base64.b64decode('''
-	3hIElQAAAAAFAAAAHAAAAEQAAAAHAAAAbAAAAAAAAACIAAAADwAAAIkAAAAaAAAAmQAAAB0AAAC0AAAARQAAANIAAA
-	A7AQAAGAEAAA8AAABUAgAAGAAAAGQCAAAfAAAAfQIAAEUAAACdAgAAAQAAAAAAAAAEAAAAAwAAAAAAAAACAAAABQAA
-	AABLb3Bhbm8gQ29udGFjdHMAS29wYW5vIE5vbi1BY3RpdmUgQWNjb3VudHMATWFuYWdlbWVudCBvZiBLb3Bhbm8gQ2
-	9udGFjdHMATWFuYWdlbWVudCBvZiBLb3Bhbm8gbm9uLWFjdGl2ZSBhY2NvdW50cywgcmVzb3VyY2VzIGFuZCBzaGFy
-	ZWQgc3RvcmVzAFByb2plY3QtSWQtVmVyc2lvbjoga29wYW5vNHVjcwpSZXBvcnQtTXNnaWQtQnVncy1UbzogClBPVC
-	1DcmVhdGlvbi1EYXRlOiAyMDE0LTAzLTI4IDE0OjExKzAxMDAKUE8tUmV2aXNpb24tRGF0ZTogMjAxMi0wMy0yOSAx
-	MTo1MSswMjAwCkxhc3QtVHJhbnNsYXRvcjogcGFja2FnZXNAdW5pdmVudGlvbi5kZQpMYW5ndWFnZS1UZWFtOiBHZX
-	JtYW4gPGRlQGxpLm9yZz4KTGFuZ3VhZ2U6IGRlCk1JTUUtVmVyc2lvbjogMS4wCkNvbnRlbnQtVHlwZTogdGV4dC9w
-	bGFpbjsgY2hhcnNldD1VVEYtOApDb250ZW50LVRyYW5zZmVyLUVuY29kaW5nOiB1bmljb2RlCgBLb3Bhbm8gS29udG
-	FrdGUAS29wYW5vIE5vbi1BY3RpdmUgS29udGVuAFZlcndhbHR1bmcgdm9uIEtvcGFubyBLb250YWt0ZW4AVmVyd2Fs
-	dHVuZyB2b24gS29wYW5vIG5vbi1hY3RpdmUgS29udGVuLCBSZXNzb3VyY2VuIHVuZCBTaGFyZWQgU3RvcmVzAA==''')
+    3hIElQAAAAAFAAAAHAAAAEQAAAAHAAAAbAAAAAAAAACIAAAADwAAAIkAAAAaAAAAmQAAAB0AAAC0AAAARQAAANIAAA
+    A7AQAAGAEAAA8AAABUAgAAGAAAAGQCAAAfAAAAfQIAAEUAAACdAgAAAQAAAAAAAAAEAAAAAwAAAAAAAAACAAAABQAA
+    AABLb3Bhbm8gQ29udGFjdHMAS29wYW5vIE5vbi1BY3RpdmUgQWNjb3VudHMATWFuYWdlbWVudCBvZiBLb3Bhbm8gQ2
+    9udGFjdHMATWFuYWdlbWVudCBvZiBLb3Bhbm8gbm9uLWFjdGl2ZSBhY2NvdW50cywgcmVzb3VyY2VzIGFuZCBzaGFy
+    ZWQgc3RvcmVzAFByb2plY3QtSWQtVmVyc2lvbjoga29wYW5vNHVjcwpSZXBvcnQtTXNnaWQtQnVncy1UbzogClBPVC
+    1DcmVhdGlvbi1EYXRlOiAyMDE0LTAzLTI4IDE0OjExKzAxMDAKUE8tUmV2aXNpb24tRGF0ZTogMjAxMi0wMy0yOSAx
+    MTo1MSswMjAwCkxhc3QtVHJhbnNsYXRvcjogcGFja2FnZXNAdW5pdmVudGlvbi5kZQpMYW5ndWFnZS1UZWFtOiBHZX
+    JtYW4gPGRlQGxpLm9yZz4KTGFuZ3VhZ2U6IGRlCk1JTUUtVmVyc2lvbjogMS4wCkNvbnRlbnQtVHlwZTogdGV4dC9w
+    bGFpbjsgY2hhcnNldD1VVEYtOApDb250ZW50LVRyYW5zZmVyLUVuY29kaW5nOiB1bmljb2RlCgBLb3Bhbm8gS29udG
+    FrdGUAS29wYW5vIE5vbi1BY3RpdmUgS29udGVuAFZlcndhbHR1bmcgdm9uIEtvcGFubyBLb250YWt0ZW4AVmVyd2Fs
+    dHVuZyB2b24gS29wYW5vIG5vbi1hY3RpdmUgS29udGVuLCBSZXNzb3VyY2VuIHVuZCBTaGFyZWQgU3RvcmVzAA==''')
 
     TEST_DATA_2 = (
         ('umcregistration', '72_file_integrity_udm_module.xml', '/usr/share/univention-management-console/modules/udm-%s.xml'),

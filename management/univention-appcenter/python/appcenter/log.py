@@ -36,7 +36,7 @@
 #
 """
 Univention App Center library:
-	Logging module
+    Logging module
 
 The library logs various messages to logger objects (python stdlib logging)
 univention.appcenter.log defines the appcenter base logger, as well as

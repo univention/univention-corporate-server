@@ -491,7 +491,7 @@ def __create_s4_dns_node(s4connector, dnsNodeDn, relativeDomainNames, dnsRecords
 
 
 ''' Pack and unpack DNS records by using the
-	Samba NDR functions
+    Samba NDR functions
 '''
 
 

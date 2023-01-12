@@ -1,6 +1,6 @@
 """
 .. module:: simplesquid
-	:platform: Unix
+    :platform: Unix
 
 .. moduleauthor:: Ammar Najjar <najjar@univention.de>
 """

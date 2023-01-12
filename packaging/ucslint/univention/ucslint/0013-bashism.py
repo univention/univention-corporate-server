@@ -39,16 +39,16 @@ from univention.ucslint.common import RE_HASHBANG_SHELL
 RE_BASHISM = re.compile(r'^.*?\s+line\s+(\d+)\s+[(](.*?)[)][:]\n([^\n]+)$')
 RE_LOCAL = re.compile(
     r'''
-	\blocal\b
-	\s+
-	\w+
-	=
-	(?:\$(?![?$!#\s'"]
-		|\{[?$!#]\}
-		|$)
-	|`
-	)
-	''',
+    \blocal\b
+    \s+
+    \w+
+    =
+    (?:\$(?![?$!#\s'"]
+        |\{[?$!#]\}
+        |$)
+    |`
+    )
+    ''',
     re.VERBOSE
 )
 

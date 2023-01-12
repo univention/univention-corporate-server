@@ -299,13 +299,13 @@ from __future__ import absolute_import
 from univention.appcenter.listener import AppListener
 
 class AppListener(AppListener):
-	class Configuration(AppListener.Configuration):
-		# the following attributes do nothing and are here solely for
-		# documentation / transparency purposes
-		# logic is in the AppListener class itself
-		ldap_filter = %(ldap_filter)r
-		dump_dir = %(dump_dir)r
-		output_dir = %(output_dir)r
+    class Configuration(AppListener.Configuration):
+        # the following attributes do nothing and are here solely for
+        # documentation / transparency purposes
+        # logic is in the AppListener class itself
+        ldap_filter = %(ldap_filter)r
+        dump_dir = %(dump_dir)r
+        output_dir = %(output_dir)r
 ''' % {'ldap_filter': ldap_filter, 'dump_dir': dump_dir, 'output_dir': output_dir})
             self._update_converter_service(app)
             self.log('Added Listener for %s' % app)

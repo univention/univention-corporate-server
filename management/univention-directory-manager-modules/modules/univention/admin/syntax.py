@@ -506,11 +506,11 @@ class complex(ISyntax):
 
     delimiter = ' '  # type: str
     """
-	Delimiter to separate the sub-items. Two possibilities:
+    Delimiter to separate the sub-items. Two possibilities:
 
-	1.  Either a single string like `=`, which is used to concatenate all subitems.
-	2.  A sequence of `n+1` strings like `['', ': ', '=', '']` to concatenate `n` sub-items. The first and last value is used as a prefix/suffix.
-	"""
+    1.  Either a single string like `=`, which is used to concatenate all subitems.
+    2.  A sequence of `n+1` strings like `['', ': ', '=', '']` to concatenate `n` sub-items. The first and last value is used as a prefix/suffix.
+    """
     min_elements = None  # type: Optional[int]
     """Minimum number of required values."""
     all_required = True
@@ -2684,18 +2684,18 @@ class emailAddress(simple):
     """
 
     """
-	This does not work, although it should:
-	# >>> emailAddress.parse('" "@example.org')
-	# '" "@example.org'
-	# >>> emailAddress.parse('"john..doe"@example.org')
-	# '"john..doe"@example.org'
-	# >>> emailAddress.parse('"very.(),:;<>[]\".VERY.\"very@\\ \"very\".unusual"@strange.example.com')
-	# '"very.(),:;<>[]\".VERY.\"very@\\ \"very\".unusual"@strange.example.com'
-	# >>> emailAddress.parse('postmaster@[123.123.123.123]')
-	# 'postmaster@[123.123.123.123]'
-	# >>> emailAddress.parse('postmaster@[IPv6:2001:0db8:85a3:0000:0000:8a2e:0370:7334]')
-	# 'postmaster@[IPv6:2001:0db8:85a3:0000:0000:8a2e:0370:7334]'
-	"""
+    This does not work, although it should:
+    # >>> emailAddress.parse('" "@example.org')
+    # '" "@example.org'
+    # >>> emailAddress.parse('"john..doe"@example.org')
+    # '"john..doe"@example.org'
+    # >>> emailAddress.parse('"very.(),:;<>[]\".VERY.\"very@\\ \"very\".unusual"@strange.example.com')
+    # '"very.(),:;<>[]\".VERY.\"very@\\ \"very\".unusual"@strange.example.com'
+    # >>> emailAddress.parse('postmaster@[123.123.123.123]')
+    # 'postmaster@[123.123.123.123]'
+    # >>> emailAddress.parse('postmaster@[IPv6:2001:0db8:85a3:0000:0000:8a2e:0370:7334]')
+    # 'postmaster@[IPv6:2001:0db8:85a3:0000:0000:8a2e:0370:7334]'
+    """
 
     min_length = 3
     max_length = 0
@@ -3249,11 +3249,11 @@ class dnsPTR(simple):
 
     regexp = re.compile(
         r'''
-		^    (?:[0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])
-		(?:\.(?:[0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])){0,2}$
-		|^    [0-9a-f]
-		(?:\.[0-9a-f]){0,30}$
-		''', re.VERBOSE
+        ^    (?:[0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])
+        (?:\.(?:[0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])){0,2}$
+        |^    [0-9a-f]
+        (?:\.[0-9a-f]){0,30}$
+        ''', re.VERBOSE
     )
     error_message = _("The reversed host name for IPv4 consists of the reversed host address (example: \"4.3\") or for IPv6 in nibble format (example: \"8.0.0.0.7.0.0.0.0.6.0.0.0.0.5.0\").")
 

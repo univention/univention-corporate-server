@@ -38,14 +38,14 @@ from univention.ucslint.common import RE_DEBIAN_CHANGELOG
 
 RE_DEP = re.compile(
     r'''
-	(?P<name>[0-9a-z][+.0-9a-z-]+)
-	(?:\s*
-		(?:
-			\((?P<version>\s*(?P<vcomp><<|<=|=|>=|>>)\s*(?P<vstr>[^)]*))\)|
-			\[(?P<arch>[^]]*)\]|
-			<(?P<spec>[^>]*)>
-		)
-	)*''', re.VERBOSE
+    (?P<name>[0-9a-z][+.0-9a-z-]+)
+    (?:\s*
+        (?:
+            \((?P<version>\s*(?P<vcomp><<|<=|=|>=|>>)\s*(?P<vstr>[^)]*))\)|
+            \[(?P<arch>[^]]*)\]|
+            <(?P<spec>[^>]*)>
+        )
+    )*''', re.VERBOSE
 )
 
 

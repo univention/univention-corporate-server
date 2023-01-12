@@ -160,34 +160,34 @@ DATA_DIR = '/var/lib/univention-appcenter/apps/{name}/data/listener'
 DB = '/var/lib/univention-appcenter/apps/{name}/data/db.json'
 
 if not os.path.isfile(DB):
-	with open(DB, 'w') as fd:
-		json.dump({{'users/user': {{}}, 'groups/group': {{}}}}, fd, sort_keys=True, indent=4)
+    with open(DB, 'w') as fd:
+        json.dump({{'users/user': {{}}, 'groups/group': {{}}}}, fd, sort_keys=True, indent=4)
 
 for i in sorted(glob.glob(os.path.join(DATA_DIR, '*.json'))):
 
-	with open(DB) as fd:
-		db = json.load(fd)
+    with open(DB) as fd:
+        db = json.load(fd)
 
-	with open(i) as fd:
-		dumped = json.load(fd)
-		action = 'add/modify'
-		if dumped.get('object') is None:
-			action = 'delete'
+    with open(i) as fd:
+        dumped = json.load(fd)
+        action = 'add/modify'
+        if dumped.get('object') is None:
+            action = 'delete'
 
-		if action == 'delete':
-			if dumped.get('id') in db[dumped.get('udm_object_type')]:
-				del db[dumped.get('udm_object_type')][dumped.get('id')]
-		else:
-			db[dumped.get('udm_object_type')][dumped.get('id')] = dict(
-				id=dumped.get('id'),
-				dn=dumped.get('dn'),
-				obj=dumped.get('object'),
-			)
+        if action == 'delete':
+            if dumped.get('id') in db[dumped.get('udm_object_type')]:
+                del db[dumped.get('udm_object_type')][dumped.get('id')]
+        else:
+            db[dumped.get('udm_object_type')][dumped.get('id')] = dict(
+                id=dumped.get('id'),
+                dn=dumped.get('dn'),
+                obj=dumped.get('object'),
+            )
 
-	with open(DB, 'w') as fd:
-		json.dump(db, fd, sort_keys=True, indent=4)
+    with open(DB, 'w') as fd:
+        json.dump(db, fd, sort_keys=True, indent=4)
 
-	os.remove(i)
+    os.remove(i)
 '''
 
     with Appcenter() as appcenter:

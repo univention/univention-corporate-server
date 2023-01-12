@@ -35,14 +35,14 @@ if __name__ == '__main__':
                 DefaultPackages=','.join(packages),
                 DockerScriptSetup='/usr/sbin/%s-setup' % app_name)
             app.add_script(setup=dedent('''\
-				#!/bin/bash
-				set -x -e
-				ucr set repository/online/unmaintained='yes'
-				univention-app update
-				univention-app register "%(app_name)s" --component
-				app_packages="$(univention-app get "%(app_name)s" default_packages --values-only --shell)"
-				univention-install -y $app_packages
-				''') % {'app_name': app_name})
+                #!/bin/bash
+                set -x -e
+                ucr set repository/online/unmaintained='yes'
+                univention-app update
+                univention-app register "%(app_name)s" --component
+                app_packages="$(univention-app get "%(app_name)s" default_packages --values-only --shell)"
+                univention-install -y $app_packages
+                ''') % {'app_name': app_name})
             app.add_to_local_appcenter()
             appcenter.update()
             app.install()

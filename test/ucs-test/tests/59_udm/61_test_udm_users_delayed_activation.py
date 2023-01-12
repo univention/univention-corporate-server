@@ -126,18 +126,18 @@ def test_disabled_and_expired_user_creation(disabled_cronjob, udm):
 
     date_today_in_utc = datetime.utcnow().strftime("%Y-%m-%d")
     """
-	Note: If you ask date to show the "now" in localtime (default, without --utc), and you are in Europe/Berlin,
-	for example, then at time "2021-08-17 23:30 UTC" it will output "2021-08-18", because it's already 0:30 (or 1:30 in summertime) in the local (Europe/Berlin) timezone.
-	UDM userexpiry (at least with Bug #46349 open) will be interpreted as UTC and mapped to krb5ValidEnd YYYYmmdd000000Z.
-	Thus, in the Europe/Berlin example it would write 20210818000000Z to krb5ValidEnd instead of 20210817000000Z.
+    Note: If you ask date to show the "now" in localtime (default, without --utc), and you are in Europe/Berlin,
+    for example, then at time "2021-08-17 23:30 UTC" it will output "2021-08-18", because it's already 0:30 (or 1:30 in summertime) in the local (Europe/Berlin) timezone.
+    UDM userexpiry (at least with Bug #46349 open) will be interpreted as UTC and mapped to krb5ValidEnd YYYYmmdd000000Z.
+    Thus, in the Europe/Berlin example it would write 20210818000000Z to krb5ValidEnd instead of 20210817000000Z.
 
-	The univention-delayed-account-activation takes care not to activate accounts that are already expired at runtime (UTC), and the purpose of following test case is to verify that.
+    The univention-delayed-account-activation takes care not to activate accounts that are already expired at runtime (UTC), and the purpose of following test case is to verify that.
 
-	Thus, the value of userexpiry needs to be given as UTC, to have:
-		accountActivationDate="2021-08-17 23:00 UTC" and userexpiry="2021-08-17"
-	instead of
-		accountActivationDate="2021-08-17 23:00 UTC" and userexpiry="2021-08-18"
-	"""
+    Thus, the value of userexpiry needs to be given as UTC, to have:
+        accountActivationDate="2021-08-17 23:00 UTC" and userexpiry="2021-08-17"
+    instead of
+        accountActivationDate="2021-08-17 23:00 UTC" and userexpiry="2021-08-18"
+    """
 
     userdn, username = udm.create_user(accountActivationDate=ts_later, userexpiry=date_today_in_utc)
     try:

@@ -59,12 +59,12 @@ class TestProfile(unittest.TestCase):
         """Multiple settings."""
         self.load(
             '''
-			# start
-			foo="bar"
-			bar='baz'
-			baz=foo
-			# end
-			'''
+            # start
+            foo="bar"
+            bar='baz'
+            baz=foo
+            # end
+            '''
         )
         self.assertEqual({
             'foo': 'bar',

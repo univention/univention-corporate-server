@@ -46,17 +46,17 @@ the following example
 
 .. code-block:: xml
 
-	<?xml version="1.0" encoding="UTF-8"?>
-	<umc version="2.0">
-		<categories>
-			<category id="id1">
-				<name>Category 1</name>
-			</category>
-			<category id="id2">
-				<name>Category 2 on {hostname}.{domainname}</name>
-			</category>
-		</categories>
-	</umc>
+    <?xml version="1.0" encoding="UTF-8"?>
+    <umc version="2.0">
+        <categories>
+            <category id="id1">
+                <name>Category 1</name>
+            </category>
+            <category id="id2">
+                <name>Category 2 on {hostname}.{domainname}</name>
+            </category>
+        </categories>
+    </umc>
 
 Each file can define several categories. For each of these
 categories an unique identifier and the english description must be

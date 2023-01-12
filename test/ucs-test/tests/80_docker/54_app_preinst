@@ -23,7 +23,7 @@ def create_app(fail_in_preinst):
 set -x -e
 echo "Test preinst script"
 if [ "%(exit_code)d" = "0" ]; then
-	ucr set appcenter/apps/%(app_name)s/docker/params="-e FOO=bar -e repository_app_center_server=my.server"
+    ucr set appcenter/apps/%(app_name)s/docker/params="-e FOO=bar -e repository_app_center_server=my.server"
 fi
 exit %(exit_code)d
 ''' % {'exit_code': (1 if fail_in_preinst else 0), 'app_name': app_name})

@@ -158,15 +158,15 @@ HEADER = """\
 #!/bin/sh
 eval "$(ucr shell)"
 udm container/ou create --ignore_exists \
-	--set name=People --set description="Employees of this company" --set groupPath="1"
+    --set name=People --set description="Employees of this company" --set groupPath="1"
 udm container/ou create --ignore_exists \
-	--set name=Departments --set description="Resources of this company organized by department"
+    --set name=Departments --set description="Resources of this company organized by department"
 udm mail/domain create --ignore_exists \
-	--position="cn=domain,cn=mail,%(LDAPBASE)s" --set name="%(DOMAIN)s"
+    --position="cn=domain,cn=mail,%(LDAPBASE)s" --set name="%(DOMAIN)s"
 udm computers/domaincontroller_backup create --ignore_exist \
-	--position "cn=dc,cn=computers,%(LDAPBASE)s" \
-	--set name="dcbackup" \
-	--set network="cn=default,cn=networks,%(LDAPBASE)s" %(DC_OPTIONS)s %(NAGIOS_OPTIONS)s
+    --position "cn=dc,cn=computers,%(LDAPBASE)s" \
+    --set name="dcbackup" \
+    --set network="cn=default,cn=networks,%(LDAPBASE)s" %(DC_OPTIONS)s %(NAGIOS_OPTIONS)s
 """
 
 

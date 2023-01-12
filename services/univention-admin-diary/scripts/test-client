@@ -108,8 +108,8 @@ def main():
     usage = '%(prog)s [options]'
     description = 'Test the client library'
     epilog = '''Examples:
-	%(prog)s --updates=10+5 --join=1+25 --join=10+0
-	'''
+    %(prog)s --updates=10+5 --join=1+25 --join=10+0
+    '''
     parser = ArgumentParser(usage=usage, description=description, epilog=epilog, formatter_class=RawTextHelpFormatter)
     parser.add_argument('-u', '--username', help='Username that issues all diary entries')
     parser.add_argument('--join', action='append', help='JOIN_STARTED + JOIN_FINISHED_SUCCESS/JOIN_FINISHED_FAILURE')

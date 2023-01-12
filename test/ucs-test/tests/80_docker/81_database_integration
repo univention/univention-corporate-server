@@ -23,14 +23,14 @@ if __name__ == '__main__':
                 app = tiny_app(app_name, app_version)
                 app.set_ini_parameter(Database=database)
                 app.add_script(uinst=dedent('''\
-					#!/bin/bash
-					VERSION=1
-					. /usr/share/univention-join/joinscripthelper.lib
-					joinscript_init
-					mysql -u root -p$(cat /etc/mysql.secret) %s -e "DROP DATABASE IF EXISTS %s"
-					su postgres -c "psql -c 'DROP DATABASE IF EXISTS %s'"
-					joinscript_remove_script_from_status_file %s
-					exit 0''' % (app_name, app_name, app_name, app_name)))
+                    #!/bin/bash
+                    VERSION=1
+                    . /usr/share/univention-join/joinscripthelper.lib
+                    joinscript_init
+                    mysql -u root -p$(cat /etc/mysql.secret) %s -e "DROP DATABASE IF EXISTS %s"
+                    su postgres -c "psql -c 'DROP DATABASE IF EXISTS %s'"
+                    joinscript_remove_script_from_status_file %s
+                    exit 0''' % (app_name, app_name, app_name, app_name)))
                 app.add_to_local_appcenter()
                 appcenter.update()
                 for i in [1, 2]:
