@@ -87,7 +87,7 @@ Warnung: Diese Datei wurde automatisch generiert und kann durch
          univention-config-registry ueberschrieben werden.
          Bitte bearbeiten Sie an Stelle dessen die folgende(n) Datei(en):
 
-'''  # noqa: E101
+'''
 assert asciify(WARNING_TEXT) == WARNING_TEXT, "Only ASCII allowed in WARNING_TEXT"
 
 

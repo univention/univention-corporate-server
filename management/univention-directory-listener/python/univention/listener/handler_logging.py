@@ -262,7 +262,7 @@ def get_listener_logger(name, filename, level=None, handler_kwargs=None, formatt
 		:py:class`logging.Formatter`.
 	:return: a Python logging object
 	:rtype: logging.Logger
-	"""  # noqa: E101
+	"""
 	assert isinstance(filename, string_types)
 	assert isinstance(name, string_types)
 	if not name:

@@ -1154,7 +1154,7 @@ class {hook_name}(univention.admin.hook.AttributeHook):
 			# this is not great, but works reasonably well
 			mydebug('map_attribute_value_to_udm(%r) ==> found invalid value' % (value,))
 			raise univention.admin.uexceptions.valueError('%s: UDM Value may not be %r' % (self.udm_attribute_name, value))
-""".format(hook_name=hook_name, cli_name=cli_name, attr_name=attr_name))  # noqa: E101
+""".format(hook_name=hook_name, cli_name=cli_name, attr_name=attr_name))
 
 			udm.create_object(
 				'settings/extended_attribute',

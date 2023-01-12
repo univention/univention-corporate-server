@@ -98,7 +98,7 @@ class BaseObject(object):
 	disabled if the object is not used afterwards and performance is an issue::
 
 	    user_mod.meta.auto_reload = False
-	"""  # noqa: E101
+	"""
 	udm_prop_class = BaseObjectProperties
 
 	def __init__(self):
@@ -209,7 +209,7 @@ class BaseModuleMetadata(object):
 		:param str filter_s: optional LDAP filter expression
 		:return: an LDAP filter string
 		:rtype: str
-		"""  # noqa: E101
+		"""
 		raise NotImplementedError()
 
 	@property
@@ -265,7 +265,7 @@ class BaseModule(with_metaclass(ModuleMeta)):
 	        user_mod.meta.auto_open = False
 	        user = user_mod.get(dn)
 	        user.props.groups == []
-	"""  # noqa: E101
+	"""
 	_udm_object_class = BaseObject
 	_udm_module_meta_class = BaseModuleMetadata
 

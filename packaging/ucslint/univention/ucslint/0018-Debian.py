@@ -358,7 +358,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 		   \d+\.\d+
 		   (?:- (?:\d+\.\d+)? )?
 		)*
-		$''', re.VERBOSE)  # noqa: E101
+		$''', re.VERBOSE)
 	# /usr/share/dh-python/dhpython/tools.py # INSTALL_RE
 	RE_NAMESPACE = re.compile(
 		r'''^
@@ -370,7 +370,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 		(?:usr/lib/pymodules/python[0-9.]+/
 		  |usr/lib/python[0-9.]+/
 		  |usr/share/pyshared/
-		)''', re.VERBOSE)  # noqa: E101
+		)''', re.VERBOSE)
 	RE_COMPARE_VERSIONS = re.compile(
 		r'''
 		\b dpkg \s+ --compare-versions
@@ -381,7 +381,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 		\s+
 		( (?: '[^']*' | "[^"]*" | \S )+ )
 		\s*(?: $ | ; | && | \|\| | \))
-		''', re.VERBOSE)  # noqa: E101
+		''', re.VERBOSE)
 	RE_ARG2 = re.compile(r'^("?)\$(?:2|\{2[#%:?+=/-[^}]*\})(\1)$')
 
 

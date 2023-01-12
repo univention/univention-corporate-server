@@ -270,7 +270,7 @@ Description: UCS - Test package
  integrated, directory driven solution for managing
  corporate environments. For more information about UCS,
  refer to: https://www.univention.de/
-"""  # noqa: E101
+"""
 
 		depends = [p.name_version for p in self._depends]
 		breaks = [p.name_version for p in self._breaks]

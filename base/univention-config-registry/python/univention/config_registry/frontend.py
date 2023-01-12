@@ -657,8 +657,8 @@ Actions:
 Description:
   univention-config-registry is a tool to handle the basic configuration for
   Univention Corporate Server (UCS)
-''', file=out)  # noqa: E101
-	sys.exit(0)  # noqa: E101
+''', file=out)
+	sys.exit(0)
 
 
 def missing_parameter(action):

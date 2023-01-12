@@ -166,7 +166,7 @@ class DebianPackage():
   * Test package
 
  -- Univention GmbH <packages@univention.de>  Fri, 20 Sep 2013 01:01:01 +0200
-''' % {'package_name': self._package_name, 'package_version': self._package_version}  # noqa: E101
+''' % {'package_name': self._package_name, 'package_version': self._package_version}
 
 		self.create_debian_file_from_buffer('changelog', changelog)
 
@@ -187,7 +187,7 @@ Description: UCS - Test package
  integrated, directory driven solution for managing
  corporate environments. For more information about UCS,
  refer to: https://www.univention.de/
-''' % {'package_name': self._package_name}  # noqa: E101
+''' % {'package_name': self._package_name}
 
 		self.create_debian_file_from_buffer('control', control)
 

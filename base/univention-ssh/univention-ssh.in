@@ -75,7 +75,7 @@ def display_help(out=sys.stdout):
 		  %(cmd)s is an internal command to use SSH with plain text password
 		  authentication, which is used to execute commands on remote computer systems,
 		  e.g. %(cmd)s /tmp/pwd root@192.168.0.31 ls -la /
-		'''  # noqa: E101
+		'''
 	elif cmd == 'univention-scp':
 		text = '''
 		%(cmd)s: internal managing tool for UCS clients
@@ -104,7 +104,7 @@ def display_help(out=sys.stdout):
 		  %(cmd)s is an internal command to use SCP with plain text password
 		  authentication, which is used to copy files from/to remote computer systems,
 		  e.g. %(cmd)s /tmp/pwd file.txt root@192.168.0.31:
-		'''  # noqa: E101
+		'''
 	else:
 		text = '''
 		%(cmd)s: internal managing tool for UCS clients
@@ -133,7 +133,7 @@ def display_help(out=sys.stdout):
 		  %(cmd)s is an internal command to use RSYNC with plain text password
 		  authentication, which is used to copy files from/to remote computer systems,
 		  e.g. %(cmd)s /tmp/pwd file.txt root@192.168.0.31:
-		'''  # noqa: E101
+		'''
 	print(dedent(text % {'cmd': cmd}).strip("\n"), file=out)
 
 

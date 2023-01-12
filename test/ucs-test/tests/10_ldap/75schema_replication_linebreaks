@@ -115,7 +115,7 @@ objectclass ( 1.3.6.1.4.1.10176.200.10999.1.%(attribute_id)s
             )
     )
 
-''' % {'attribute_id': attribute_id}  # noqa: E101
+''' % {'attribute_id': attribute_id}
 
 udm = udm_test.UCSTestUDM()
 properties = {

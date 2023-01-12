@@ -120,7 +120,7 @@ class GenericObject(BaseObject):
 	disabled if the object is not used afterwards and performance is an issue::
 
 	    user_mod.meta.auto_reload = False
-	"""  # noqa: E101
+	"""
 	udm_prop_class = GenericObjectProperties
 	_policies_encoder = None
 
@@ -464,7 +464,7 @@ class GenericModuleMetadata(BaseModuleMetadata):
 		:param str filter_s: optional LDAP filter expression
 		:return: an LDAP filter string
 		:rtype: str
-		"""  # noqa: E101
+		"""
 		return str(self._udm_module._orig_udm_module.lookup_filter(filter_s, self._udm_module.connection))
 
 	@property
@@ -508,7 +508,7 @@ class GenericModule(with_metaclass(GenericModuleMeta, BaseModule)):
 
 	        dc_slaves = dc_slave_mod.search(filter_s='cn=s10*')
 	        campus_groups = group_mod.search(base='ou=campus,dc=example,dc=com')
-	"""  # noqa: E101
+	"""
 	_udm_object_class = GenericObject
 	_udm_module_meta_class = GenericModuleMetadata
 	_udm_module_cache = {}

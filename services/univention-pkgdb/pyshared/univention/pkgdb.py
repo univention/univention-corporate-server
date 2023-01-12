@@ -251,7 +251,7 @@ def sql_put_sys_in_systems(cursor, sysname, sysversion, sysrole, ldaphostdn, arc
                       %(ldaphostdn)s,
                       %(architecture)s,
                       CURRENT_TIMESTAMP)
-		'''  # noqa: E101
+		'''
 	else:
 		sql_command = '''
 		UPDATE systems SET sysversion   = %(sysversion)s,
@@ -260,7 +260,7 @@ def sql_put_sys_in_systems(cursor, sysname, sysversion, sysrole, ldaphostdn, arc
                            architecture = %(architecture)s,
                            scandate     = CURRENT_TIMESTAMP
                        WHERE sysname = %(sysname)s
-		'''  # noqa: E101
+		'''
 	try:
 		cursor.execute(sql_command, parameters)
 	except pgdb.Error as error:
@@ -289,7 +289,7 @@ def sql_put_sys_in_systems_no_architecture(cursor, sysname, sysversion, sysrole,
                       %(sysrole)s,
                       %(ldaphostdn)s,
                       CURRENT_TIMESTAMP)
-		'''  # noqa: E101
+		'''
 	else:
 		sql_command = '''
 		UPDATE systems SET sysversion   = %(sysversion)s,
@@ -297,7 +297,7 @@ def sql_put_sys_in_systems_no_architecture(cursor, sysname, sysversion, sysrole,
                            ldaphostdn   = %(ldaphostdn)s,
                            scandate     = CURRENT_TIMESTAMP
                        WHERE sysname = %(sysname)s
-		'''  # noqa: E101
+		'''
 	try:
 		cursor.execute(sql_command, parameters)
 	except pgdb.Error as error:
@@ -367,7 +367,7 @@ def dump_systems(cursor):
 	SELECT sysname, sysversion, sysrole, scandate, ldaphostdn
            FROM systems
            ORDER BY sysname
-	'''  # noqa: E101
+	'''
 	cursor.execute(query)
 	writer = csv.writer(sys.stdout, delimiter=' ')
 	writer.writerow(('hostname', 'UCS version', 'server role', 'last scan', 'LDAP host DN', ))
@@ -393,7 +393,7 @@ def dump_systems_packages(cursor):
 	SELECT sysname, pkgname, vername, scandate, inststatus, selectedstate, inststate, currentstate
            FROM packages_on_systems
            ORDER BY sysname, pkgname, vername
-	'''  # noqa: E101
+	'''
 	cursor.execute(query)
 	writer = csv.writer(sys.stdout, delimiter=' ')
 	writer.writerow(('system', 'package', 'version', 'last scan', 'installed', 'selected state', 'installation state', 'current state'))
@@ -408,11 +408,11 @@ def action_remove_system(connection, cursor, sysname):
 	delete_packages = '''
 	DELETE FROM packages_on_systems
            WHERE sysname = %(sysname)s
-	'''  # noqa: E101
+	'''
 	delete_system = '''
 	DELETE FROM systems
            WHERE sysname = %(sysname)s
-	'''  # noqa: E101
+	'''
 	cursor.execute(delete_packages, {'sysname': sysname, })
 	cursor.execute(delete_system, {'sysname': sysname, })
 	connection.commit()
@@ -424,7 +424,7 @@ def scan_and_store_packages(cursor, sysname, fake_null=False, architecture=None)
 	delete_packages = '''
 	DELETE FROM packages_on_systems
            WHERE sysname = %(sysname)s
-	'''  # noqa: E101
+	'''
 	insert_statement = '''
 	INSERT INTO packages_on_systems (scandate,
                                      sysname,
@@ -435,7 +435,7 @@ def scan_and_store_packages(cursor, sysname, fake_null=False, architecture=None)
                                      selectedstate,
                                      vername)
            VALUES
-	'''  # noqa: E101
+	'''
 	insert_value = '''(
 	CURRENT_TIMESTAMP,
 	%(sysname)s,

@@ -355,7 +355,7 @@ def test_appcenter():
  17954 packages                         21-02-14 04:25:09 [ WARNING]:   File "/usr/lib/python2.7/dist-packages/pgdb.py", line 1619, in connect
  17954 packages                         21-02-14 04:25:09 [ WARNING]:     cnx = _connect(dbname, dbhost, dbport, dbopt, dbuser, dbpasswd)
  17954 packages                         21-02-14 04:25:09 [ WARNING]: Exception: foo
-""")  # noqa: E101
+""")
 	fd.name = '/var/log/univention/appcenter.log'
 	out = io.StringIO('w')
 	assert not main([fd], out=out)
@@ -364,7 +364,7 @@ def test_appcenter():
     univention.pkgdb.main()
   File "/usr/lib/python2.7/dist-packages/pgdb.py", line 1619, in connect
     cnx = _connect(dbname, dbhost, dbport, dbopt, dbuser, dbpasswd)
-Exception: foo''' in out.getvalue(), out.getvalue()  # noqa: E101
+Exception: foo''' in out.getvalue(), out.getvalue()
 
 
 def test_broken_setup():
@@ -381,7 +381,7 @@ bar""")
   File "<stdin>", line 8, in <module>
   File "xyz", line 8, in bar
     foo = bar
-Exception: foo""" in out.getvalue(), out.getvalue()  # noqa: E101
+Exception: foo""" in out.getvalue(), out.getvalue()
 
 
 def test_journald_indented():
@@ -391,14 +391,14 @@ def test_journald_indented():
       File "xyz", line 8, in bar
         foo = bar
     Exception: foo
-bar""")  # noqa: E101
+bar""")
 	out = io.StringIO('w')
 	assert not main([fd], out=out)
 	assert """Traceback (most recent call last):
   File "<stdin>", line 8, in <module>
   File "xyz", line 8, in bar
     foo = bar
-Exception: foo""" in out.getvalue(), out.getvalue()  # noqa: E101
+Exception: foo""" in out.getvalue(), out.getvalue()
 
 
 if __name__ == '__main__':

@@ -23,7 +23,7 @@ RE = re.compile(
 	))$
 	|UNIVENTION_DEBUG_BEGIN\s{2}:\s(?P<begin>.*)$
 	|UNIVENTION_DEBUG_END\s{4}:\s(?P<end>.*)$
-	''', re.VERBOSE)  # noqa: E101
+	''', re.VERBOSE)
 LEVEL = ['ERROR', 'WARN', 'PROCESS', 'INFO', 'ALL']
 CATEGORY = [
 	'MAIN',
