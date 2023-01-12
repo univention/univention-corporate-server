@@ -441,12 +441,13 @@ the device ``eth0`` in the profile, in addition to the IP address, the
        a locally installed DNS service. It is possible to specify up to three
        forwarders.
 
-   * - ``proxy/http``
+   * - ``proxy/http``,
+       ``proxy/https``
      - The URL of a proxy server to be used when accessing the internet. The
        specified URL is adopted in the |UCSUCR| variables :envvar:`proxy/http`
-       and :envvar:`proxy/ftp`. This setting is only required if packages are to
+       and :envvar:`proxy/https`. This setting is only required if packages are to
        be installed which download additional packages from external web
-       servers; e.g., the installation program for the Flash plugin. Example:
+       servers. Example:
        ``proxy/http="http://proxy.example.com:8080"``
 
 .. _variables-software:

@@ -41,24 +41,29 @@ if [ "$check_ldap_access" = "1" ]; then
 	exit 0
 fi
 
-is_variable_set "proxy/http"
-if [ $? = 0 ]; then
-	exit 0
+if ! is_variable_set "proxy/http"
+then
+	old_proxy="$(univention-config-registry get proxy/http)"
+	var="$(get_profile_var proxy/http)"
+	if [ -z "$var" ]; then
+		univention-config-registry unset proxy/http proxy/https
+	else
+		univention-config-registry set proxy/http="$var" proxy/https="$var"
+	fi
 fi
-
-old_proxy="$(univention-config-registry get proxy/http)"
-var="$(get_profile_var proxy/http)"
-
-if [ -z "$var" ]; then
-	univention-config-registry unset proxy/http proxy/https
-else
-	univention-config-registry set proxy/http="$var" proxy/https="$var"
+if ! is_variable_set "proxy/https"
+then
+	old_proxy="$(univention-config-registry get proxy/https)"
+	var="$(get_profile_var proxy/https)"
+	if [ -z "$var" ]; then
+		univention-config-registry unset proxy/https
+	else
+		univention-config-registry set proxy/https="$var"
+	fi
 fi
 
 if [ -d "/var/lib/univention-system-setup/httpproxy.post" ]; then
 	run-parts /var/lib/univention-system-setup/httpproxy.post --arg="$old_proxy" --arg="$var"
 fi
 
-
 exit 0
-

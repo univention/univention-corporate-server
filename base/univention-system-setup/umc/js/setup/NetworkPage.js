@@ -128,6 +128,10 @@ define([
 				type: TextBox,
 				name: 'proxy/http',
 				label: _('HTTP proxy')
+			}, {
+				type: TextBox,
+				name: 'proxy/https',
+				label: _('HTTPS proxy')
 			}];
 
 			var layout = [{
@@ -135,7 +139,7 @@ define([
 				layout: ['interfaces']
 			}, {
 				label: _('Global network settings'),
-				layout: [ 'interfaces/primary', ['gateway', 'ipv6/gateway'], 'nameserver', 'dns/forwarder', 'proxy/http']
+				layout: [ 'interfaces/primary', ['gateway', 'ipv6/gateway'], 'nameserver', 'dns/forwarder', 'proxy/http', 'proxy/https']
 			}];
 
 			this._form = new Form({
@@ -194,7 +198,7 @@ define([
 
 			// copy values that do not change in their name
 			var vals = {};
-			array.forEach(['interfaces', 'gateway', 'ipv6/gateway', 'proxy/http', 'interfaces/primary'], function(ikey) {
+			array.forEach(['interfaces', 'gateway', 'ipv6/gateway', 'proxy/http', 'proxy/https', 'interfaces/primary'], function(ikey) {
 				vals[ikey] = _vals[ikey];
 			});
 
@@ -247,7 +251,7 @@ define([
 			var vals = {};
 
 			// copy values that do not change in their name
-			array.forEach(['gateway', 'ipv6/gateway', 'proxy/http', 'interfaces/primary'], function(ikey) {
+			array.forEach(['gateway', 'ipv6/gateway', 'proxy/http', 'proxy/https', 'interfaces/primary'], function(ikey) {
 				vals[ikey] = _vals[ikey];
 			});
 
@@ -299,6 +303,10 @@ define([
 				variables: ['proxy/http'],
 				description: _('HTTP proxy'),
 				values: vals['proxy/http']
+			}, {
+				variables: ['proxy/https'],
+				description: _('HTTPS proxy'),
+				values: vals['proxy/https']
 			}, {
 				variables: ['interfaces'],
 				description: _('Network interfaces'),

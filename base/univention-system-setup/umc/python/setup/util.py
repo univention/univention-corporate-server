@@ -118,7 +118,7 @@ UCR_VARIABLES = [
 	'gateway',
 	'nameserver1', 'nameserver2', 'nameserver3',
 	'dns/forwarder1', 'dns/forwarder2', 'dns/forwarder3',
-	'proxy/http',
+	'proxy/http', 'proxy/https',
 	# net: ipv6
 	'ipv6/gateway',
 	'interfaces/primary',

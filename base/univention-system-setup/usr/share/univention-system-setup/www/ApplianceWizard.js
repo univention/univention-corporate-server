@@ -458,7 +458,7 @@ define([
 					['_ip3', '_netmask3'],
 					'gateway',
 					['nameserver1', 'nameserver2'],
-					'proxy/http',
+					['proxy/http', 'proxy/https'],
 					'configureProxySettings'
 				],
 				widgets: [{
@@ -580,6 +580,14 @@ define([
 					type: TextBox,
 					name: 'proxy/http',
 					label: _('HTTP proxy') +
+						' (<a href="javascript:void(0);" onclick="require(\'dijit/registry\').byId(\'{id}\').showTooltip(event, \'proxy\');">' +
+						_('more information') +
+						'</a>)',
+					visible: false
+				}, {
+					type: TextBox,
+					name: 'proxy/https',
+					label: _('HTTPS proxy') +
 						' (<a href="javascript:void(0);" onclick="require(\'dijit/registry\').byId(\'{id}\').showTooltip(event, \'proxy\');">' +
 						_('more information') +
 						'</a>)',
@@ -993,6 +1001,7 @@ define([
 					disable.push(['network', 'nameserver2']);
 				} else if (field == 'proxy') {
 					disable.push(['network', 'proxy/http']);
+					disable.push(['network', 'proxy/https']);
 					disable.push(['network', 'configureProxySettings']);
 				} else if (field == 'hostname') {
 					this.getWidget('fqdn-nonmaster-all', 'hostname').set('disabled', true);
@@ -1124,6 +1133,7 @@ define([
 
 		configureProxySettings: function() {
 			this.getWidget('network', 'proxy/http').set('visible', true);
+			this.getWidget('network', 'proxy/https').set('visible', true);
 			this.getWidget('network', 'configureProxySettings').set('visible', false);
 		},
 
@@ -1204,7 +1214,7 @@ define([
 					['network', '_renewLease'],
 					['credentials-master', 'email_address'],
 					['fqdn-nonmaster-all', 'hostname'],
-					['network', 'proxy/http'],
+					['network', 'proxy/http', 'proxy/https'],
 					['summary', 'update/system/after/setup']
 				], function(iitem) {
 				var iwidget = this.getWidget(iitem[0], iitem[1]);
@@ -1865,6 +1875,7 @@ define([
 
 			if (isFieldShown('proxy')) {
 				_append(_('HTTP proxy'), vals['proxy/http']);
+				_append(_('HTTPS proxy'), vals['proxy/https']);
 			}
 			msg += '</ul>';
 

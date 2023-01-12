@@ -540,6 +540,7 @@ class Instance(Base, ProgressMixin):
 
 		# proxy
 		_check('proxy/http', util.is_proxy, _('The specified proxy address is not valid (e.g., http://10.201.1.1:8080): %s') % allValues.get('proxy/http', ''))
+		_check('proxy/https', util.is_proxy, _('The specified proxy address is not valid (e.g., http://10.201.1.1:8080): %s') % allValues.get('proxy/https', ''))
 
 		# software checks
 		if 'univention-samba' in packages and 'univention-samba4' in packages:
