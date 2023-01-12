@@ -48,5 +48,3 @@ if __name__ == '__main__':
         print(('E: UCR is running in strict mode and thus cannot accept the given input:'), file=sys.stderr)
         print(ex2, file=sys.stderr)
         sys.exit(1)
-
-# vim:set sw=4 ts=4 noet:

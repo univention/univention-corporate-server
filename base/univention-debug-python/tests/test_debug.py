@@ -1,5 +1,4 @@
 #!/usr/bin/python3
-# vim: set fileencoding=utf-8 backupcopy=auto sw=4 ts=4:
 
 from __future__ import print_function
 import sys

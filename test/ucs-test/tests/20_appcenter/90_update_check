@@ -103,5 +103,3 @@ def test_update_check(a, b, c):
 
 if __name__ == '__main__':
     test_update_check()
-
-# vim: set fileencoding=utf-8 ft=python sw=4 ts=4 :

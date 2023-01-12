@@ -387,5 +387,3 @@ class Interfaces(object):
                     return addr
 
         return None
-
-# vim:set sw=4 ts=4 noet:

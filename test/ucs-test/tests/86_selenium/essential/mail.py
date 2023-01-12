@@ -777,4 +777,3 @@ def check_sending_mail(
 if __name__ == '__main__':
     import doctest
     doctest.testmod()
-# vim: ft=python:ts=4:sw=4:noet:

@@ -168,5 +168,3 @@ def directory_files(directory):
             if os.path.isfile(filename):
                 result.append(filename)
     return result
-
-# vim:set sw=4 ts=4 noet:

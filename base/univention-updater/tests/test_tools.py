@@ -1,5 +1,4 @@
 #!/usr/bin/python3
-# vim:set fileencoding=utf-8 filetype=python tabstop=4 shiftwidth=4 expandtab:
 # pylint: disable-msg=C0301,W0212,C0103,R0904
 
 """Unit test for univention.updater.tools"""

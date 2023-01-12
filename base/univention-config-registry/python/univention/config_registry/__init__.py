@@ -59,5 +59,3 @@ def ucr_factory():  # type: () -> ConfigRegistry
     :returns: A private UCR instance.
     """
     return ConfigRegistry().load()
-
-# vim:set sw=4 ts=4 noet:

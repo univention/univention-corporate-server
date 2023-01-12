@@ -767,6 +767,3 @@ class _ConfigRegistry(dict):
         if isinstance(data, bytes):
             data = data.decode('UTF-8')
         return data
-
-
-# vim:set sw=4 ts=4 noet:

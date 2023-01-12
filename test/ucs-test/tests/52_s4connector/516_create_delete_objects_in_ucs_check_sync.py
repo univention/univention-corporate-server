@@ -196,5 +196,3 @@ def test_do_not_delete_objects_with_different_id():
         finally:
             # cleanup
             user_objects.delete_users()
-
-# vim: filetype=python expandtab tabstop=4

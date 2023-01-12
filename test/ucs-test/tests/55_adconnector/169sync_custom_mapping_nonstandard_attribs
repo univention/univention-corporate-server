@@ -160,5 +160,3 @@ class TestADCustomMappings(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
-
-# vim: filetype=python expandtab tabstop=4 shiftwidth=4 softtabstop=4

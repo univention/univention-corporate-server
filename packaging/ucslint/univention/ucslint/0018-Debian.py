@@ -1,4 +1,3 @@
-# vim:set ts=4 sw=4 noet fileencoding=UTF-8 :
 """Find maintainer scripts using wrong header."""
 #
 # Like what you see? Join us!

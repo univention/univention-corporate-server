@@ -29,7 +29,6 @@
 # License with the Debian GNU/Linux or Univention distribution in file
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
-# vim: set fileencoding=utf-8 et sw=4 ts=4 :
 
 """
 |UDM| module for |DNS| records

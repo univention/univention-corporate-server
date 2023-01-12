@@ -406,5 +406,3 @@ class ADConnection(LDAPConnection):
 if __name__ == '__main__':
     import doctest
     doctest.testmod()
-
-# vim: set filetype=python ts=4:

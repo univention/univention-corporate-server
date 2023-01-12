@@ -252,6 +252,3 @@ for i in sorted(glob.glob(os.path.join(DATA_DIR, '*.json'))):
         assert not systemd_service_enabled(systemd_service)
         assert not os.path.isfile('/var/lib/univention-directory-listener/handlers/%s' % name)
         assert not li_pid == new_li_pid
-
-
-# vim: set ft=python ts=4 sw=4 et ai :

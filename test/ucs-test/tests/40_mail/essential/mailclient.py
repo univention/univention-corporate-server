@@ -298,6 +298,3 @@ class MailClient(imaplib.IMAP4, BaseMailClient):
 
     def __init__(self, host, port=143):
         imaplib.IMAP4.__init__(self, host, port)
-
-
-# vim: set ft=python ts=4 sw=4 noet ai :

@@ -882,5 +882,3 @@ def main(args):
             raise
         exception_occured()
     return cmd_opts['exit_code']
-
-# vim:set sw=4 ts=4 noet:

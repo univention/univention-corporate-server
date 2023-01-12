@@ -67,5 +67,3 @@ def setTimeout(timeout=DEFAULT_TIMEOUT):
                 func(*args, **kwargs)
         return cast(F, wrapper)
     return decorator
-
-# vim: set ft=python ts=4 sw=4 et ai :

@@ -76,5 +76,3 @@ def preinst(ucr, changes):
 def postinst(ucr, changes):
     """Post run handler to start changed interfaces."""
     _common(ucr, changes, 'ifup')
-
-# vim:set sw=4 ts=4 noet:

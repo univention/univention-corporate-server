@@ -693,5 +693,3 @@ def is_port_open(port, hosts=None, timeout=60):
 if __name__ == '__main__':
     import doctest
     doctest.testmod()
-
-# vim: set fileencoding=utf-8 ft=python sw=4 ts=4 :

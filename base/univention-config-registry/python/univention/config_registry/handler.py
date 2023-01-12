@@ -1167,5 +1167,3 @@ class ConfigHandlers:
                     val = ucr.get(variable)
                     values[variable] = (val, val)
         handler((ucr, values))
-
-# vim:set sw=4 ts=4 noet:

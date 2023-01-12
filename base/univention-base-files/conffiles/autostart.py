@@ -83,6 +83,3 @@ def handler(configRegistry, changes):
             log.info('Enabling %s...', unit)
             ctl('unmask', unit)
             ctl('enable', unit)
-
-
-# vim:set sw=4 ts=4 noet:

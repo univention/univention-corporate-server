@@ -1,5 +1,4 @@
 #!/usr/bin/python3
-# vim: set fileencoding=utf-8 filetype=python foldmethod=expr expandtab shiftwidth=4 tabstop=4 :
 """
 Univention Directory Notifier Transaction log admin commmand
 """

@@ -53,5 +53,3 @@ def main():
 
 if __name__ == '__main__':
     main()
-
-# vim: set fileencoding=utf-8 ft=python sw=4 ts=4

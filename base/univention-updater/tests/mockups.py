@@ -1,5 +1,4 @@
 #!/usr/bin/python3
-# vim:set fileencoding=utf-8 filetype=python tabstop=4 shiftwidth=4 expandtab:
 from __future__ import print_function
 
 import json

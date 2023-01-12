@@ -87,6 +87,3 @@ def filter_sort(args, text):  # pylint: disable-msg=W0613
     :returns: Filteres list of lines.
     """
     return sorted(text)
-
-
-# vim:set sw=4 ts=4 noet:

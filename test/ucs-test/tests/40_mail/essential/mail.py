@@ -805,4 +805,3 @@ def set_mail_forward_copy_to_self_ucrv(value):
 if __name__ == '__main__':
     import doctest
     doctest.testmod()
-# vim: ft=python:ts=4:sw=4:noet:

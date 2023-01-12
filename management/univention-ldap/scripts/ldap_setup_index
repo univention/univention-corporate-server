@@ -1,5 +1,4 @@
 #!/usr/bin/python3
-# vim: set ts=4 sw=4 et fileencoding=UTF-8:
 """
 Add and remove LDAP attributes to index.
 """
