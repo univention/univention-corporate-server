@@ -82,7 +82,7 @@ install_frontend_app () {
 	fi
 	univention-app configure "$app" --set log_level=DEBUG
 	univention-app install --noninteractive --username Administrator --pwdfile /tmp/univention "$app"
-	commit=$(docker inspect --format='{{.Config.Labels.commit}}' "$(ucr get appcenter/apps/$app/container)")
+	commit=$(docker inspect --format='{{.Config.Labels.commit}}' "$(ucr get "appcenter/apps/$app/container")")
 	echo "Docker image built from commit: $commit"
 }
 
@@ -250,4 +250,28 @@ performance_test_settings () {
 		nss/group/cachefile/invalidate_on_changes=no \
 		listener/module/portal_groups/deactivate=yes
 	service univention-directory-listener restart
+}
+
+performance_test_setup () {
+	local primary_ip=${1:?missing primary ip}
+	local domainname=${2:?missing domain name}
+	local root_password=${2:?missing root password}
+
+	hostname locust
+	ucr set repository/online=true
+	# it is a unjoined system, set role for ucs-test
+	ucr set server/role=memberserver
+	ucr set domainname="$domainname"
+	ucr set "hosts/static/$primary_ip"="primary.$domainname ucs-sso-ng.$domainname"
+
+	ucr set security/limits/user/root/soft/nofile=10240
+	ucr set security/limits/user/root/hard/nofile=10240
+	echo "fs.file-max=1048576" > /etc/sysctl.d/99-file-max.conf
+	sysctl -p
+
+	univention-install -y sshpass
+	sshpass -p "$root_password" scp -r -o StrictHostKeyChecking=no -o UpdateHostKeys=no root@"$primary_ip":/var/lib/test-data /var/lib/ || return 1
+
+	curl http://"$primary_ip"/ucs-root-ca.crt > /usr/local/share/ca-certificates/primary.crt
+	update-ca-certificates
 }
