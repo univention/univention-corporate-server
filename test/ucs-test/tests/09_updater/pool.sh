@@ -446,8 +446,7 @@ mkpdir () { # Create package directory ${dir}
 				DIR="${REPODIR}/${version%%-*}/${part}/${version#*--}/${arch}"
 				DIRS+=("${DIR}")
 				mkdir -p "${DIR}"
-				touch "${DIR}/Packages"
-				compress "${DIR}/Packages"
+				mkpkg "${DIR}" "${DIR}"
 			done
 		done
 	done
