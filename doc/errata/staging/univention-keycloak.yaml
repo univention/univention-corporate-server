@@ -1,0 +1,13 @@
+product: ucs
+release: "5.0"
+version: [2]
+scope: ucs_5.0-0-errata5.0-2
+src: univention-keycloak
+fix: 1.0.5A~5.0.0.202301131531
+desc: |
+ This update addresses the following issues:
+ * The `univention-keycloak` script didn't evaluate the
+   app setting `keycloak/server/sso/fqdn`. Due to this,
+   the joinscript of the Keycloak app failed if this
+   setting is set.
+bug: [55569]
