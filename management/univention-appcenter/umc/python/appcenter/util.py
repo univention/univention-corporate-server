@@ -180,10 +180,13 @@ class HTTPSHandler(urllib_request.HTTPSHandler):
 
 
 def install_opener(ucr):
-	handler = []
-	proxy_http = ucr.get('proxy/http')
-	if proxy_http:
-		handler.append(urllib_request.ProxyHandler({'http': proxy_http, 'https': proxy_http}))
+	proxies = {
+		schema: proxy
+		for schema, proxy in (
+			(schema, ucr.get(f"proxy/{schema}")) for schema in ('http', 'https')
+		) if proxy
+	}
+	handler = [urllib_request.ProxyHandler(proxies)] if proxies else []
 	handler.append(HTTPSHandler())
 	opener = urllib_request.build_opener(*handler)
 	urllib_request.install_opener(opener)
