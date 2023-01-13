@@ -298,14 +298,14 @@ create_test_admin_account () {
 		-d "username=$username" \
 		-d "password=$password" | jq -r '.access_token')"
 	udm mail/domain create --set name=school1.hamburg.de --position cn=domain,cn=mail,dc=school,dc=test
-    sleep 5 # wait for replication
+    sleep 10 # wait for replication
 	univention-app shell ucsschool-kelvin-rest-api /etc/init.d/ucsschool-kelvin-rest-api restart
 	echo "Waiting for Kelvin to restart"
 	until $(curl --output /dev/null --silent --head --fail "https://$fqdn/ucsschool/kelvin/v1/openapi.json"); do
 		printf '.'
 		sleep 1
 	done
-    sleep 3 #just in case
+    sleep 10 #just in case
 	curl --fail -X POST "https://$fqdn/ucsschool/kelvin/v1/users/" \
 		-H "Authorization: Bearer $token" \
 		-H "accept: application/json" \
