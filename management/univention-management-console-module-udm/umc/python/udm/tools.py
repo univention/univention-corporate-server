@@ -182,9 +182,14 @@ def _check_license(ldap_connection):
 # i.e. it should be unnecessary to import them directly
 # in a module
 def install_opener(ucr):
-	proxy_http = ucr.get('proxy/http')
-	if proxy_http:
-		proxy = ProxyHandler({'http': proxy_http, 'https': proxy_http})
+	proxies = {
+		schema: proxy
+		for schema, proxy in (
+			(schema, ucr.get(f"proxy/{schema}")) for schema in ('http', 'https')
+		) if proxy
+	}
+	if proxies:
+		proxy = ProxyHandler(proxies)
 		opener = build_opener(proxy)
 		urllib_request.install_opener(opener)
 
