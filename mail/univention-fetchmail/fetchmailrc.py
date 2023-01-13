@@ -1,4 +1,5 @@
 #!/usr/bin/python3
+# -*- coding: utf-8 -*-
 #
 # Like what you see? Join us!
 # https://www.univention.com/about-us/careers/vacancies/
@@ -17,7 +18,7 @@
 # well as other copyrighted, protected or trademarked materials like
 # Logos, graphics, fonts, specific documentations and configurations,
 # cryptographic keys etc. are subject to a license agreement between
-# you and Univention.
+# you and Univention and not subject to the GNU AGPL V3.
 #
 # In the case you use this program under the terms of the GNU AGPL V3,
 # the program is provided in the hope that it will be useful,
@@ -34,13 +35,12 @@ from __future__ import absolute_import, annotations
 
 import os
 import re
+from functools import reduce
 from typing import Dict, Iterable, List
 
 from six.moves import cPickle as pickle
 
-import univention.config_registry
 import univention.debug as ud
-import univention.uldap
 
 import listener
 
@@ -54,8 +54,18 @@ fn_fetchmailrc = '/etc/fetchmailrc'
 __initscript = '/etc/init.d/fetchmail'
 FETCHMAIL_OLD_PICKLE = "/var/spool/univention-fetchmail/fetchmail_old_dn"
 
+UID_REGEX = re.compile("#UID='(([a-zA-Z0-9])[a-zA-Z0-9._-]*([a-zA-Z0-9]))'")
 
-REpassword = re.compile("^poll .*? there with password '(.*?)' is '[^']+' here")
+
+def _split_file(fetch_list, new_line):
+    if new_line.startswith('set') or new_line.startswith('#'):
+        fetch_list.append(new_line)
+    elif fetch_list:
+        if UID_REGEX.search(fetch_list[-1]) or fetch_list[-1].startswith('set'):
+            fetch_list.append(new_line)
+        else:
+            fetch_list[-1] += (new_line)
+    return fetch_list
 
 
 def load_rc(ofile: str) -> List[str] | None:
@@ -64,7 +74,7 @@ def load_rc(ofile: str) -> List[str] | None:
     listener.setuid(0)
     try:
         with open(ofile) as fd:
-            rc = fd.readlines()
+            rc = reduce(_split_file, fd, [])
     except EnvironmentError as exc:
         ud.debug(ud.LISTENER, ud.ERROR, 'Failed to open "%s": %s' % (ofile, exc))
     listener.unsetuid()
@@ -82,20 +92,7 @@ def write_rc(flist: Iterable[str], wfile: str) -> None:
     listener.unsetuid()
 
 
-def get_pw_from_rc(lines: Iterable[str], uid: int) -> str | None:
-    """get current password of a user from fetchmailrc"""
-    if not uid:
-        return None
-    for line in lines:
-        line = line.rstrip()
-        if line.endswith("#UID='%s'" % uid):
-            match = REpassword.match(line)
-            if match:
-                return match.group(1)
-    return None
-
-
-def objdelete(dlist: Iterable[str], old: Dict[str, List[bytes]]) -> List[str] | None:
+def objdelete(dlist: Iterable[str], old: Dict[str, List[bytes]]) -> List[str]:
     """delete an object in filerepresenting-list if old settings are found"""
     if old.get('uid'):
         return [line for line in dlist if not re.search("#UID='%s'[ \t]*$" % re.escape(old['uid'][0].decode('UTF-8')), line)]
@@ -103,53 +100,36 @@ def objdelete(dlist: Iterable[str], old: Dict[str, List[bytes]]) -> List[str] | 
         ud.debug(ud.LISTENER, ud.INFO, 'Removal of user in fetchmailrc failed: %r' % old.get('uid'))
 
 
-def objappend(flist: List[str], new: Dict[str, List[bytes]], password: str | None = None) -> None:
-    """add new entry"""
-    passwd = password or ''
-    if details_complete(new):
-        passwd = new.get('univentionFetchmailPasswd', [passwd.encode('UTF-8')])[0].decode('UTF-8')
-        flag_ssl = 'ssl' if new.get('univentionFetchmailUseSSL', [b''])[0] == b'1' else ''
-        flag_keep = 'keep' if new.get('univentionFetchmailKeepMailOnServer', [b''])[0] == b'1' else 'nokeep'
-
-        flist.append("poll %s with proto %s auth password user '%s' there with password '%s' is '%s' here %s %s #UID='%s'\n" % (
-            new['univentionFetchmailServer'][0].decode('UTF-8'),
-            new['univentionFetchmailProtocol'][0].decode('UTF-8'),
-            new['univentionFetchmailAddress'][0].decode('ASCII'),
-            passwd,
-            new['mailPrimaryAddress'][0].decode('UTF-8'),
-            flag_keep,
-            flag_ssl,
-            new['uid'][0].decode('UTF-8'),
-        ))
-    else:
-        ud.debug(ud.LISTENER, ud.INFO, 'Adding user to "fetchmailrc" failed')
+def objappend_single(flist: List[str], new: Dict[str, List[bytes]], password: str | None = None) -> None:
+    """add user's single fetchmail entries to flist"""
+    entries = [[w.strip('\"') for w in v.decode('UTF-8').split(';')] for v in new.get('univentionFetchmailSingle', [])]
+    for entry in entries:
+        server, protocol, username, passwd, ssl, keep = entry
+        flag_ssl = 'ssl' if ssl == '1' else ''
+        flag_keep = 'keep' if keep == '1' else 'nokeep'
+        mail_address = new['mailPrimaryAddress'][0].decode('UTF-8')
+        uid = new['uid'][0].decode('UTF-8')
+        flist.append(f"poll '{server}' with proto {protocol} auth password user '{username}' there with password '{passwd}' is '{mail_address}' here {flag_keep} {flag_ssl} #UID='{uid}'\n")
 
 
-def details_complete(obj: Dict[str, List[bytes]], incl_password: bool = False) -> bool:
-    if not obj:
-        return False
-    attrlist = ['mailPrimaryAddress', 'univentionFetchmailServer', 'univentionFetchmailProtocol', 'univentionFetchmailAddress']
-    if incl_password:
-        attrlist.append('univentionFetchmailPasswd')
-    return all(obj.get(attr, [b''])[0] for attr in attrlist)
+def objappend_multi(flist: List[str], new: Dict[str, List[bytes]], password: str | None = None) -> None:
+    """add user's multi fetchmail entries to flist"""
+    entries = [[w.strip('\"') for w in v.decode('UTF-8').split(';')] for v in new.get('univentionFetchmailMulti', [])]
+    for entry in entries:
+        server, protocol, username, passwd, localdomains, qmailprefix, envelope_header, ssl, keep = entry
+        flag_ssl = 'ssl' if ssl == '1' else ''
+        flag_keep = 'keep' if keep == '1' else 'nokeep'
+        uid = new['uid'][0].decode('UTF-8')
 
+        if not localdomains:
+            localdomains = listener.configRegistry['mail/hosteddomains']
 
-def only_password_reset(old: Dict[str, List[bytes]], new: Dict[str, List[bytes]]) -> bool:
-    # if one or both objects are missing ==> false
-    if (old and not new) or (not old and new) or (not old and not new):
-        return False
-    else:
-        # if one of the following attributes changed ==> false
-        attrlist = ['mailPrimaryAddress', 'univentionFetchmailServer', 'univentionFetchmailProtocol', 'univentionFetchmailAddress']
-        for attr in attrlist:
-            if old.get(attr) != new.get(attr):
-                return False
+        if qmailprefix:
+            qmailprefix = f'qvirtual {qmailprefix}'
 
-        # if password hasn't been reset (reset == "old.pw and not new.pw") ==> false
-        if not old.get('univentionFetchmailPasswd') or new.get('univentionFetchmailPasswd'):
-            return False
-
-    return True
+        flist.append(f"""poll '{server}' with proto {protocol} envelope {envelope_header} {qmailprefix} no dns
+    localdomains {localdomains}:
+    user '{username}' there with password '{passwd}' is * here {flag_keep} {flag_ssl} #UID='{uid}'\n""")
 
 
 def handler(dn: str, new: Dict[str, List[bytes]], old: Dict[str, List[bytes]], command: str) -> None:
@@ -166,58 +146,21 @@ def handler(dn: str, new: Dict[str, List[bytes]], old: Dict[str, List[bytes]], c
             p.clear_memo()
 
     flist = load_rc(fn_fetchmailrc)
-    if old and not new and command != 'r':
-        # object has been deleted ==> remove entry from rc file
-        flist = objdelete(flist, old)
-        write_rc(flist, fn_fetchmailrc)
+    if new:
+        old_single = old.get('univentionFetchmailSingle', [])
+        new_single = new.get('univentionFetchmailSingle', [])
+        old_multi = old.get('univentionFetchmailMulti', [])
+        new_multi = new.get('univentionFetchmailMulti', [])
 
-    elif old and new and details_complete(old) and not details_complete(new):
-        # data is now incomplete ==> remove entry from rc file
-        flist = objdelete(flist, old)
-        write_rc(flist, fn_fetchmailrc)
-
-    elif new and details_complete(new):
-        # obj has been created or modified
-        passwd = None
-        if old:
-            # old exists ==> object has been modified ==> get old password and remove object entry from rc file
-            passwd = get_pw_from_rc(flist, old['uid'][0].decode('UTF-8'))
+        if old_single != new_single or old_multi != new_multi:
             flist = objdelete(flist, old)
-
-        if not details_complete(new, incl_password=True):
-            if only_password_reset(old, new):
-                ud.debug(ud.LISTENER, ud.INFO, 'fetchmail: password has been reset - nothing to do')
-                # only password has been reset ==> nothing to do
-                return
-
-            # new obj does not contain password
-            if passwd:
-                # passwd has been set in old ==> use old password
-                ud.debug(ud.LISTENER, ud.INFO, 'fetchmail: using old password')
-                objappend(flist, new, passwd)
-                write_rc(flist, fn_fetchmailrc)
-            else:
-                ud.debug(ud.LISTENER, ud.ERROR, 'fetchmail: user "%s": no password set in old and new' % new['uid'][0])
-        else:
-            # new obj contains password ==> use new password
-            objappend(flist, new)
+            objappend_single(flist, new)
+            objappend_multi(flist, new)
             write_rc(flist, fn_fetchmailrc)
-
-            ud.debug(ud.LISTENER, ud.INFO, 'fetchmail: using new password')
-
-            configRegistry = univention.config_registry.ConfigRegistry()
-            configRegistry.load()
-
-            listener.setuid(0)
-            try:
-                lo = univention.uldap.getMachineConnection()
-                modlist = [('univentionFetchmailPasswd', new['univentionFetchmailPasswd'][0], b"")]
-                lo.modify(dn, modlist)
-                ud.debug(ud.LISTENER, ud.INFO, 'fetchmail: reset password successfully')
-            except Exception as exc:
-                ud.debug(ud.LISTENER, ud.ERROR, 'fetchmail: cannot reset password in LDAP (%s): %s' % (dn, exc))
-            finally:
-                listener.unsetuid()
+    elif old and command != 'r':
+        ud.debug(ud.LISTENER, ud.INFO, 'fetchmail: User deleted. Removing from fetchmailrc.')
+        flist = objdelete(flist, old)
+        write_rc(flist, fn_fetchmailrc)
 
 
 def postrun() -> None:
