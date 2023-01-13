@@ -10,3 +10,5 @@ desc: |
    emails sent by users authenticating with their email address, when
    the system is configured to not use Dovecot SASL.
 bug: [55385]
+erratum: 1360
+announced: 2023-01-13
