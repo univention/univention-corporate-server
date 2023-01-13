@@ -9,3 +9,5 @@ desc: |
  * Cookie banners have been improved for mobile devices. The
    accept button is now permanently visible for easier use.
 bug: [55378]
+erratum: 537
+announced: 2023-01-13
