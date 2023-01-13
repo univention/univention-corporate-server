@@ -27,11 +27,13 @@ print('DOCKER_OPTS="%s"' % docker_opts)
 
 # If you need Docker to use an HTTP proxy, it can also be specified here.
 @!@
-pr = configRegistry.get("proxy/http")
-if pr:
-	print('export http_proxy="%s"' % pr)
-else:
-	print('#export http_proxy="http://127.0.0.1:3128/" set UCR variable proxy/http to change this')
+from pipes import quote
+for schema in ("http", "hhtps"):
+	proxy = configRegistry.get("proxy/%s" % (schema,))
+	if proxy:
+		print('export %s_proxy=%s' % (schema, quote(proxy)))
+	else:
+		print('#export %s_proxy="http://127.0.0.1:3128" set UCR variable "proxy/%s" to change this' % (schema, schema))
 @!@
 # This is also a handy place to tweak where Docker's temporary files go.
 #export TMPDIR="/mnt/bigdrive/docker-tmp"
