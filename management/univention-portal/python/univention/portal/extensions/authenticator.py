@@ -117,18 +117,19 @@ class UMCAuthenticator(Authenticator):
         return User(username, display_name=display_name, groups=groups, headers=dict(request.request.headers))
 
     async def _get_username(self, cookies):
+        headers = {}
         for cookie in cookies:
             if cookie.startswith("UMCSessionId"):
                 # UMCSessionId-1234 -> Host: localhost:1234
                 host_port = cookie[13:]
                 if host_port:
-                    host_port = f":{host_port}"
+                    headers = {"Host": f"localhost:{host_port}"}
                 break
         else:
             get_logger("user").debug("no user given")
             return None, None
-        headers = {"Host": "localhost" + host_port}
         get_logger("user").debug("searching user for cookies=%r" % cookies)
+
         username = await self._ask_umc(cookies, headers)
         if username is None:
             get_logger("user").debug("no user found")
