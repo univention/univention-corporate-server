@@ -8,6 +8,6 @@ desc: |
  This update addresses the following issues:
  * It is now possible to disable any diagnostic check by setting the UCR
    variable `diagnostic/check/disable/TEST_NAME` to `true`.
- * An error regarding comaptibility with Python 3 has been repaired in the
-   "migrate objects" action of `56_univention_types`.
+ * An error regarding compatibility with Python 3 has been repaired in the
+   action "migrate objects" of `56_univention_types`.
 bug: [55468, 55548]
