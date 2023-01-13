@@ -35,7 +35,7 @@
 
 ## joinscript api: bindpwdfile
 
-VERSION=6
+VERSION=7
 
 . /usr/share/univention-lib/base.sh
 . /usr/share/univention-lib/ldap.sh
@@ -45,181 +45,139 @@ joinscript_init
 eval "$(univention-config-registry shell)"
 
 ucs_registerLDAPExtension "$@" \
-	--ucsversionstart "4.4-0" --ucsversionend "5.99-0" \
-	--schema /usr/share/univention-fetchmail-schema/univention-fetchmail.schema \
-	--acl /usr/share/univention-fetchmail-schema/58univention-fetchmail-schema.acl || die
+    --ucsversionstart "4.4-0" --ucsversionend "5.99-0" \
+    --schema /usr/share/univention-fetchmail-schema/univention-fetchmail.schema \
+    --acl /usr/share/univention-fetchmail-schema/58univention-fetchmail-schema.acl || die
 
+ucs_registerLDAPExtension "$@" --ucsversionstart "4.4-0" --ucsversionend "5.99-0" \
+    --udm_syntax /usr/share/univention-fetchmail/syntax.d/fetchmail.py  || die
+
+ucs_registerLDAPExtension "$@" --ucsversionstart "4.4-0" --ucsversionend "5.99-0" \
+    --udm_hook /usr/share/univention-fetchmail/hooks.d/fetchmail.py || die
 
 univention-directory-manager container/cn create "$@" --ignore_exists \
-		--position "cn=custom attributes,cn=univention,$ldap_base" \
-		--set name=mail || die
+        --position "cn=custom attributes,cn=univention,$ldap_base" \
+        --set name=mail || die
+
 
 univention-directory-manager settings/extended_attribute create "$@" --ignore_exists \
-	--position "cn=mail,cn=custom attributes,cn=univention,$ldap_base" --set module="users/user" \
-	--set ldapMapping='univentionFetchmailServer' \
-	--set objectClass='univentionFetchmail' \
-	--set name='UniventionFetchmail-User-Server' \
-	--set shortDescription='Remote mail server' \
-	--set longDescription='Mails will be fetched from this external server' \
-	--append translationShortDescription='"de_DE" "Externer Mailserver"' \
-	--append translationShortDescription='"fr_FR" "Serveur de courrier externe"' \
-	--append translationLongDescription='"de_DE" "Mails werden von dem hier angegebenen (externen) Mailserver abgeholt."' \
-	--append translationLongDescription='"fr_FR" "Les e-mails seront récupérés depuis ce serveur externe."' \
-	--set tabName='Remote mail retrieval' \
-	--append translationTabName='"de_DE" "Mailabruf von externen Servern"' \
-	--append translationTabName='"fr_FR" "Récupération du courrier externe"' \
-	--set overwriteTab='0' \
-	--set valueRequired='0' \
-	--set CLIName='fetchmailServer' \
-	--set syntax='string' \
-	--set tabAdvanced='1' \
-	--set mayChange='1' \
-	--set multivalue='0' \
-	--set deleteObjectClass='1' \
-	--set tabPosition='6' \
-	--set overwritePosition='0' \
-	--set doNotSearch='0' \
-	--set hook='None' || die
+    --position "cn=mail,cn=custom attributes,cn=univention,$ldap_base" --set module="users/user" \
+    --set ldapMapping='univentionFetchmailSingle' \
+    --set objectClass='univentionFetchmail' \
+    --set name='FetchmailConfigSingle' \
+    --set shortDescription='Fetchmail Single drop configuration' \
+    --set longDescription='Fetchmail Single drop configuration.<br>
+- Remote Server: Mails will be fetched from this external server.<br>
+- Protocol: Protocol to be used for mail retrieval.<br>
+- Remote Username: Username for remote mail server.<br>
+- Password: Password for remote mail server.<br>
+- Use SSL: If enabled, an encrypted connection (SSL/TLS) will be used to fetch mails.<br>
+- Keep on remote server: If enabled, fetched mails will be kept on mail server. Otherwise mails on server will be deleted after fetching them.
+' \
+    --set tabName='Remote mail retrieval (Single drop)' \
+    --append translationShortDescription='"de_DE" "Fetchmail Single-Drop-Konfiguration"' \
+    --append translationShortDescription='"fr_FR" "Configuration de Fetchmail Singledrop"' \
+    --append translationLongDescription='"de_DE" "Fetchmail Single-Drop-Konfiguration<br>
+- Remote Server: Die Emails werden von diesem Server abgerufen.<br>
+- Protokoll: Das Protokoll, welches zur Abfrage der Emails verwendet wird.<br>
+- Remote Username: Der Benutzername für den Remote-Email-Server.<br>
+- Passwort: Das Passwort für den Remote-Email-Server.<br>
+- SSL verwenden: Wenn aktiviert, wird eine verschlüsselte Verbindung (SSL/TLS) verwendet, um Emails abzurufen.<br>
+- Emails auf Server behalten: Wenn aktiviert, werden abgerufene Emails auf dem Email-Server weiterhin aufbewahrt. Andernfalls werden Emails gelöscht, nachdem sie abgerufen wurden."' \
+    --append translationLongDescription='"fr_FR" "Configuration de Fetchmail Singledrop:<br>
+- Serveur: Les e-mails seront récupérés depuis ce serveur externe.<br>
+- Protocole: Protocole à utiliser pour la récupération du courrier.<br>
+- Nom d'"'"'utilisateur: Identifiant pour le serveur de courrier externe.<br>
+- Mot de passe: Mot de passe pour le serveur de messagerie distant.<br>
+- Utiliser SSL: Active une connexion sécurisée (SSL/TLS) pour la récupération du courrier.<br>
+- Conserver sur le serveur distant: Si cette option est activée, les e-mails récupérés ne sont pas supprimés du serveur."' \
+    --append translationTabName='"de_DE" "Mailabruf von externen Servern (Single-drop)"' \
+    --append translationTabName='"fr_FR" "Récupération du courrier externe (Singledrop)"' \
+    --set overwriteTab='0' \
+    --set valueRequired='0' \
+    --set CLIName='FetchMailSingle' \
+    --set syntax='FetchMailSingle' \
+    --set tabAdvanced='1' \
+    --set mayChange='1' \
+    --set multivalue='1' \
+    --set deleteObjectClass='1' \
+    --set tabPosition='1' \
+    --set overwritePosition='0' \
+    --set doNotSearch='1' \
+    --set hook='FetchMailSingleHook' || die
 
+echo "Create extended attribute univentionFetchmailSingle univentionFetchmailMulti"
 univention-directory-manager settings/extended_attribute create "$@" --ignore_exists \
-	--position "cn=mail,cn=custom attributes,cn=univention,$ldap_base" --set module="users/user" \
-	--set ldapMapping='univentionFetchmailProtocol' \
-	--set objectClass='univentionFetchmail' \
-	--set name='UniventionFetchmail-User-Protocol' \
-	--set shortDescription='Protocol' \
-	--set longDescription='Protocol to be used for mail retrieval' \
-	--append translationShortDescription='"de_DE" "Protokoll"' \
-	--append translationShortDescription='"fr_FR" "Protocole"' \
-	--append translationLongDescription='"de_DE" "Für den Mailabruf zu verwendendes Protokoll"' \
-	--append translationLongDescription='"fr_FR" "Protocole à utiliser pour la récupération du courrier"' \
-	--set tabName='Remote mail retrieval' \
-	--append translationTabName='"de_DE" "Mailabruf von externen Servern"' \
-	--append translationTabName='"fr_FR" "Récupération du courrier externe"' \
-	--set overwriteTab='0' \
-	--set valueRequired='0' \
-	--set CLIName='fetchmailProtocol' \
-	--set syntax='IMAP_POP3' \
-	--set tabAdvanced='1' \
-	--set mayChange='1' \
-	--set multivalue='0' \
-	--set deleteObjectClass='1' \
-	--set tabPosition='5' \
-	--set overwritePosition='0' \
-	--set doNotSearch='0' \
-	--set hook='None' || die
-
-univention-directory-manager settings/extended_attribute create "$@" --ignore_exists \
-	--position "cn=mail,cn=custom attributes,cn=univention,$ldap_base" --set module="users/user" \
-	--set ldapMapping='univentionFetchmailAddress' \
-	--set objectClass='univentionFetchmail' \
-	--set name='UniventionFetchmail-User-Username' \
-	--set shortDescription='Username' \
-	--set longDescription='Username for remote mail server' \
-	--append translationShortDescription='"de_DE" "Benutzername"' \
-	--append translationShortDescription='"fr_FR" "Identifiant"' \
-	--append translationLongDescription='"de_DE" "Benutzername für den externen Mailserver"' \
-	--append translationLongDescription='"fr_FR" "Identifiant pour le serveur de courrier externe"' \
-	--set tabName='Remote mail retrieval' \
-	--append translationTabName='"de_DE" "Mailabruf von externen Servern"' \
-	--append translationTabName='"fr_FR" "Récupération du courrier externe"' \
-	--set overwriteTab='0' \
-	--set valueRequired='0' \
-	--set CLIName='fetchmailUsername' \
-	--set syntax='string' \
-	--set tabAdvanced='1' \
-	--set mayChange='1' \
-	--set multivalue='0' \
-	--set deleteObjectClass='1' \
-	--set tabPosition='1' \
-	--set overwritePosition='0' \
-	--set doNotSearch='0' \
-	--set hook='None' || die
-
-univention-directory-manager settings/extended_attribute create "$@" --ignore_exists \
-	--position "cn=mail,cn=custom attributes,cn=univention,$ldap_base" --set module="users/user" \
-	--set ldapMapping='univentionFetchmailPasswd' \
-	--set objectClass='univentionFetchmail' \
-	--set name='UniventionFetchmail-User-Password' \
-	--set shortDescription='Password' \
-	--set longDescription='Password for remote mail server' \
-	--append translationShortDescription='"de_DE" "Passwort"' \
-	--append translationShortDescription='"fr_FR" "Mot de passe"' \
-	--append translationLongDescription='"de_DE" "Passwort für den externen Mailserver"' \
-	--append translationLongDescription='"fr_FR" "Mot de passe pour le serveur de courrier externe"' \
-	--set tabName='Remote mail retrieval' \
-	--append translationTabName='"de_DE" "Mailabruf von externen Servern"' \
-	--append translationTabName='"fr_FR" "Récupération du courrier externe"' \
-	--set overwriteTab='0' \
-	--set valueRequired='0' \
-	--set CLIName='fetchmailPassword' \
-	--set syntax='userPasswd' \
-	--set tabAdvanced='1' \
-	--set mayChange='1' \
-	--set multivalue='0' \
-	--set deleteObjectClass='1' \
-	--set tabPosition='3' \
-	--set overwritePosition='0' \
-	--set doNotSearch='1' \
-	--set hook='None' || die
-
-univention-directory-manager settings/extended_attribute create "$@" --ignore_exists \
-	--position "cn=mail,cn=custom attributes,cn=univention,$ldap_base" --set module="users/user" \
-	--set ldapMapping='univentionFetchmailUseSSL' \
-	--set objectClass='univentionFetchmail' \
-	--set name='UniventionFetchmail-User-UseSSL' \
-	--set shortDescription='Encrypt connection (SSL/TLS)' \
-	--set longDescription='If enabled, an encrypted connection (SSL/TLS) will be used to fetch mails.' \
-	--append translationShortDescription='"de_DE" "Verbindung verschlüsseln (SSL/TLS)"' \
-	--append translationShortDescription='"fr_FR" "Chiffrer la connexion (SSL/TLS)"' \
-	--append translationLongDescription='"de_DE" "Falls aktiviert, wird die Verbindung zum Mailabruf mit SSL/TLS verschlüsselt."' \
-	--append translationLongDescription='"fr_FR" "Active une connexion sécurisée (SSL/TLS) pour la récupération du courrier."' \
-	--set tabName='Remote mail retrieval' \
-	--append translationTabName='"de_DE" "Mailabruf von externen Servern"' \
-	--append translationTabName='"fr_FR" "Récupération du courrier externe"' \
-	--set overwriteTab='0' \
-	--set valueRequired='0' \
-	--set CLIName='fetchmailUseSSL' \
-	--set syntax='boolean' \
-	--set tabAdvanced='1' \
-	--set mayChange='1' \
-	--set multivalue='0' \
-	--set deleteObjectClass='1' \
-	--set tabPosition='7' \
-	--set overwritePosition='0' \
-	--set doNotSearch='0' \
-	--set hook='None' || die
-
-univention-directory-manager settings/extended_attribute create "$@" --ignore_exists \
-	--position "cn=mail,cn=custom attributes,cn=univention,$ldap_base" --set module="users/user" \
-	--set ldapMapping='univentionFetchmailKeepMailOnServer' \
-	--set objectClass='univentionFetchmail' \
-	--set name='UniventionFetchmail-User-KeepMailOnServer' \
-	--set shortDescription='Keep mails on server' \
-	--set longDescription='If enabled, fetched mails will be kept on mail server. Otherwise mails on server will be deleted after fetching them.' \
-	--append translationShortDescription='"de_DE" "Mails auf dem Server nicht löschen"' \
-	--append translationShortDescription='"fr_FR" "Conserver les e-mails sur le serveur"' \
-	--append translationLongDescription='"de_DE" "Falls aktiviert, werden abgerufene Mails auf dem Server nicht gelöscht."' \
-	--append translationLongDescription='"fr_FR" "Si cette option est activée, les e-mails récupérés ne sont pas supprimés du serveur."' \
-	--set tabName='Remote mail retrieval' \
-	--append translationTabName='"de_DE" "Mailabruf von externen Servern"' \
-	--append translationTabName='"fr_FR" "Récupération du courrier externe"' \
-	--set overwriteTab='0' \
-	--set valueRequired='0' \
-	--set CLIName='fetchmailKeep' \
-	--set syntax='boolean' \
-	--set tabAdvanced='1' \
-	--set mayChange='1' \
-	--set multivalue='0' \
-	--set deleteObjectClass='1' \
-	--set tabPosition='8' \
-	--set overwritePosition='0' \
-	--set doNotSearch='0' \
-	--set hook='None' || die
+    --position "cn=mail,cn=custom attributes,cn=univention,$ldap_base" --set module="users/user" \
+    --set ldapMapping='univentionFetchmailMulti' \
+    --set objectClass='univentionFetchmail' \
+    --set name='FetchmailConfigMulti' \
+    --set shortDescription='Fetchmail Multi drop configuration' \
+    --set longDescription="Fetchmail Multi drop configuration.<br>
+- Remote Server: Mails will be fetched from this external server.<br>
+- Protocol: Protocol to be used for mail retrieval.<br>
+- Remote Username: Username for remote mail server.<br>
+- Password: Password for remote mail server.<br>
+- Local Domain Names: A space-separated list of local domain names. Leave it empty to use all local domains.<br>
+- Virtual qmail prefix: The string prefix assigned to this field will be removed from the address found in the header which is specified with the envelope header option. E.g. if the value is set to 'example-prefix-' and fetchmail retrieves an email whose header matches with an address like 'example-prefix-info@remotedomain.com' the mail will be forwarded as 'info@localdomain.com.'<br>
+- Envelope Header: The value of this field sets the header that fetchmail expects to appear as a copy of the mail envelope address. It is used for mail rerouting.<br>
+- Use SSL: If enabled, an encrypted connection (SSL/TLS) will be used to fetch mails.<br>
+- Keep on remote server: If enabled, fetched mails will be kept on mail server. Otherwise mails on server will be deleted after fetching them.
+" \
+    --set tabName='Remote mail retrieval (Multi drop)' \
+    --append translationShortDescription='"de_DE" "Fetchmail Multi-Drop-Konfiguration"' \
+    --append translationShortDescription='"fr_FR" "Configuration de Fetchmail Multidrop"' \
+    --append translationLongDescription='"de_DE" "Fetchmail Multi-Drop-Konfiguration<br>
+- Remote Server: Die Emails werden von diesem Server abgerufen.<br>
+- Protokoll: Das Protokoll, welches zur Abfrage der Emails verwendet wird.<br>
+- Remote Username: Der Benutzername für den Remote-Email-Server.<br>
+- Passwort: Das Passwort für den Remote-Email-Server.<br>
+- Lokale Domänennamen: Eine leerzeichenseparierte Liste lokaler Domänennamen. Feld leer lassen, um alle lokalen Domänen zu verwenden.<br>
+- Virtual-QMail-Präfix: Dieser String-Präfix wird von der Adresse, die sich im Header befindet und über das '"'"'Envelope Header'"'"' Feld gesetzt werden kann, entfernt. Wenn der Wert beispielsweise auf '"'"'example-prefix-'"'"' gesetzt wird und Fetchmail eine Email abruft, in deren Header '"'"'example-prefix-info@remotedomain.com'"'"' angegeben ist, wird die Mail an '"'"'info@localdomain.com'"'"' weitergeleitet.<br>
+- Envelope-Header: Ändert den Wert des Headers, in welchem Fetchmail eine Kopie der Envelope-Adresse erwartet. Wird zur Email-Umleitung verwendet.<br>
+- SSL verwenden: Wenn aktiviert, wird eine verschlüsselte Verbindung (SSL/TLS) verwendet, um Emails abzurufen.<br>
+- Emails auf Server behalten: Wenn aktiviert, werden abgerufene Emails auf dem Email-Server weiterhin aufbewahrt. Andernfalls werden Emails gelöscht, nachdem sie abgerufen wurden."' \
+    --append translationLongDescription='"fr_FR" "Configuration de Fetchmail Multidrop:<br>
+- Serveur: Les e-mails seront récupérés depuis ce serveur externe.<br>
+- Protocole: Protocole à utiliser pour la récupération du courrier.<br>
+- Nom d'"'"'utilisateur: Identifiant pour le serveur de courrier externe.<br>
+- Mot de passe : Mot de passe pour le serveur de messagerie distant.<br>
+- Noms de domaine locaux: Une liste de noms de domaines locaux séparés par des espaces. Laissez-la vide pour utiliser tous les domaines locaux.<br>
+- Préfixe de courrier virtuel: Le préfixe de chaîne attribué à ce champ sera supprimé de l'"'"'adresse trouvée dans l'"'"'en-tête qui est spécifié avec l'"'"'option d'"'"'en-tête d'"'"'enveloppe. Par exemple, si la valeur est fixée à '"'"'example-prefix-'"'"' et que fetchmail récupère un email dont l'"'"'en-tête correspond à une adresse comme '"'"'example-prefix-info@remotedomain.com'"'"', l'"'"'email sera transféré sous le nom de '"'"'info@localdomain.com.<br>
+- En-tête de l'"'"'enveloppe: La valeur de ce champ définit l'"'"'en-tête que fetchmail s'"'"'attend à voir apparaître comme une copie de l'"'"'adresse de l'"'"'enveloppe du courrier. Il est utilisé pour le reroutage du courrier.<br>
+- Utiliser SSL: Active une connexion sécurisée (SSL/TLS) pour la récupération du courrier.<br>
+- Conserver sur le serveur distant: Si cette option est activée, les e-mails récupérés ne sont pas supprimés du serveur."' \
+    --append translationTabName='"de_DE" "Mailabruf von externen Servern (Multi-Drop)"' \
+    --append translationTabName='"fr_FR" "Récupération du courrier externe (Multidrop)"' \
+    --set overwriteTab='0' \
+    --set valueRequired='0' \
+    --set CLIName='FetchMailMulti' \
+    --set syntax='FetchMailMulti' \
+    --set tabAdvanced='1' \
+    --set mayChange='1' \
+    --set multivalue='1' \
+    --set deleteObjectClass='1' \
+    --set tabPosition='1' \
+    --set overwritePosition='0' \
+    --set doNotSearch='1' \
+    --set hook='FetchMailMultiHook' || die
 
 
-if [ "$JS_LAST_EXECUTED_VERSION" = "2" ]; then
-	# extended attributes have been modified in UCS 4.2
-	univention-directory-manager settings/extended_attribute modify "$@" --dn "cn=UniventionFetchmail-User-Password,cn=mail,cn=custom attributes,cn=univention,$ldap_base" --set doNotSearch='1'
+if [ $JS_LAST_EXECUTED_VERSION -le 6 ]; then
+
+    systemctl try-restart univention-directory-listener
+
+    # MIGRATE CURRENT CONFIGURATION
+    python3 /usr/share/univention-fetchmail/migrate-fetchmail.py || die
+
+    # REMOVE OLD ATTRIBUTES
+    univention-directory-manager settings/extended_attribute remove "$@" --dn "cn=UniventionFetchmail-User-Password,cn=mail,cn=custom attributes,cn=univention,$ldap_base"
+    univention-directory-manager settings/extended_attribute remove "$@" --dn "cn=UniventionFetchmail-User-Server,cn=mail,cn=custom attributes,cn=univention,$ldap_base"
+    univention-directory-manager settings/extended_attribute remove "$@" --dn "cn=UniventionFetchmail-User-Protocol,cn=mail,cn=custom attributes,cn=univention,$ldap_base"
+    univention-directory-manager settings/extended_attribute remove "$@" --dn "cn=UniventionFetchmail-User-Username,cn=mail,cn=custom attributes,cn=univention,$ldap_base"
+    univention-directory-manager settings/extended_attribute remove "$@" --dn "cn=UniventionFetchmail-User-Password,cn=mail,cn=custom attributes,cn=univention,$ldap_base"
+    univention-directory-manager settings/extended_attribute remove "$@" --dn "cn=UniventionFetchmail-User-UseSSL,cn=mail,cn=custom attributes,cn=univention,$ldap_base"
+    univention-directory-manager settings/extended_attribute remove "$@" --dn "cn=UniventionFetchmail-User-KeepMailOnServer,cn=mail,cn=custom attributes,cn=univention,$ldap_base"
 fi
 
 stop_udm_cli_server

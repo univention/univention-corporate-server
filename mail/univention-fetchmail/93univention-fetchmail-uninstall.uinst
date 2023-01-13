@@ -50,14 +50,17 @@ eval "$(univention-config-registry shell)"
 ucs_removeServiceFromLocalhost "${SERVICE}" "$@" || die
 
 if ucs_isServiceUnused "${SERVICE}" "$@"; then
-	univention-directory-manager settings/extended_attribute remove "$@" --dn "cn=UniventionFetchmail-User-Server,cn=mail,cn=custom attributes,cn=univention,$ldap_base"
-	univention-directory-manager settings/extended_attribute remove "$@" --dn "cn=UniventionFetchmail-User-Protocol,cn=mail,cn=custom attributes,cn=univention,$ldap_base"
-	univention-directory-manager settings/extended_attribute remove "$@" --dn "cn=UniventionFetchmail-User-Username,cn=mail,cn=custom attributes,cn=univention,$ldap_base"
-	univention-directory-manager settings/extended_attribute remove "$@" --dn "cn=UniventionFetchmail-User-Password,cn=mail,cn=custom attributes,cn=univention,$ldap_base"
-	univention-directory-manager settings/extended_attribute remove "$@" --dn "cn=UniventionFetchmail-User-UseSSL,cn=mail,cn=custom attributes,cn=univention,$ldap_base"
-	univention-directory-manager settings/extended_attribute remove "$@" --dn "cn=UniventionFetchmail-User-KeepMailOnServer,cn=mail,cn=custom attributes,cn=univention,$ldap_base"
+    univention-directory-manager settings/extended_attribute remove "$@" --dn "cn=UniventionFetchmail-User-Server,cn=mail,cn=custom attributes,cn=univention,$ldap_base"
+    univention-directory-manager settings/extended_attribute remove "$@" --dn "cn=UniventionFetchmail-User-Protocol,cn=mail,cn=custom attributes,cn=univention,$ldap_base"
+    univention-directory-manager settings/extended_attribute remove "$@" --dn "cn=UniventionFetchmail-User-Username,cn=mail,cn=custom attributes,cn=univention,$ldap_base"
+    univention-directory-manager settings/extended_attribute remove "$@" --dn "cn=UniventionFetchmail-User-Password,cn=mail,cn=custom attributes,cn=univention,$ldap_base"
+    univention-directory-manager settings/extended_attribute remove "$@" --dn "cn=UniventionFetchmail-User-UseSSL,cn=mail,cn=custom attributes,cn=univention,$ldap_base"
+    univention-directory-manager settings/extended_attribute remove "$@" --dn "cn=UniventionFetchmail-User-KeepMailOnServer,cn=mail,cn=custom attributes,cn=univention,$ldap_base"
 
-	stop_udm_cli_server
+    univention-directory-manager settings/extended_attribute remove "$@" --dn "cn=FetchmailConfigSingle,cn=mail,cn=custom attributes,cn=univention,$ldap_base"
+    univention-directory-manager settings/extended_attribute remove "$@" --dn "cn=FetchmailConfigMulti,cn=mail,cn=custom attributes,cn=univention,$ldap_base"
+
+    stop_udm_cli_server
 fi
 
 # Remove old join script from index file otherwise the re-installation will not work
