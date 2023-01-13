@@ -9,3 +9,5 @@ desc: |
  * The package `univention-support-info` is now by default installed
    on every system role.
 bug: [55485]
+erratum: 535
+announced: 2023-01-13
