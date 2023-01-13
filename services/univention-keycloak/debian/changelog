@@ -1,3 +1,9 @@
+univention-keycloak (1.0.5) unstable; urgency=medium
+
+  * Bug #55569: univention-keycloak should evaluate keycloak/sso/server/fqdn
+
+ -- Julia Bremer <bremer@univention.de>  Fri, 13 Jan 2023 15:28:34 +0100
+
 univention-keycloak (1.0.4) unstable; urgency=medium
 
   * Bug #55488:  Use start TLS as default for LDAP federation.

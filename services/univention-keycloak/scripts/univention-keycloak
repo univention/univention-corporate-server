@@ -52,6 +52,7 @@ DEFAULT_REALM = "master"
 LDAP_BASE = ucr.get("ldap/base")
 HOSTNAME = ucr.get("hostname")
 DOMAINNAME = ucr.get("domainname")
+KEYCLOAK_FQDN = ucr.get("keycloak/server/sso/fqdn", f"ucs-sso-ng.{DOMAINNAME}")
 SERVER_URL = f"https://{HOSTNAME}.{DOMAINNAME}"
 
 
@@ -452,7 +453,7 @@ def parse_args(args=None):
 	parser.add_argument("--bindpwdfile", default="/etc/keycloak.secret")
 	parser.add_argument("--realm", default="ucs")
 	parser.add_argument("--keycloak-pwd", default="")
-	parser.add_argument("--keycloak-url", default=f"https://ucs-sso-ng.{DOMAINNAME}:443")
+	parser.add_argument("--keycloak-url", default=f"https://{KEYCLOAK_FQDN}:443")
 	parser.add_argument("--no-ssl-verify", action='store_false')
 	subparsers = parser.add_subparsers(title="subcommands", description="valid subcommands", required=True, dest="command")
 
