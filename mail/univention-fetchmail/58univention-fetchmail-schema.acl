@@ -10,4 +10,14 @@ print('access to attrs=univentionFetchmailPasswd')
 print('    by group/univentionGroup/uniqueMember="cn=%s,cn=groups,%s" %s' % (escape_dn_chars(custom_groupname('Domain Admins')), ldap_base, access_type))
 print('    by set="user/univentionService & [Fetchmail]" %s' % access_type)
 print('    by * +0 stop')
+
+print('access to attrs=univentionFetchmailSingle')
+print('    by group/univentionGroup/uniqueMember="cn=%s,cn=groups,%s" %s' % (escape_dn_chars(custom_groupname('Domain Admins')), ldap_base, access_type))
+print('    by set="user/univentionService & [Fetchmail]" %s' % access_type)
+print('    by * +0 stop')
+
+print('access to attrs=univentionFetchmailMulti')
+print('    by group/univentionGroup/uniqueMember="cn=%s,cn=groups,%s" %s' % (escape_dn_chars(custom_groupname('Domain Admins')), ldap_base, access_type))
+print('    by set="user/univentionService & [Fetchmail]" %s' % access_type)
+print('    by * +0 stop')
 @!@
