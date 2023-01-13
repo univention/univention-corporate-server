@@ -10,3 +10,5 @@ desc: |
    was not allowed to lock user accounts. The server ACLs have
    been adjusted to allow this.
 bug: [55501]
+erratum: 533
+announced: 2023-01-13
