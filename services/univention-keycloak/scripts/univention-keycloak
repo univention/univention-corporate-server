@@ -1033,7 +1033,7 @@ def create_config_for_execution(kc_admin, config, execution_id):
 	return raise_error_from_response(data_raw, KeycloakGetError, expected_codes=[204, 201])
 
 
-def configure_login_page(kc_admin):
+def configure_login_page(opt, kc_admin):
 	# english
 	url = f"admin/realms/{kc_admin.realm_name}/localization/en"
 	data = {"loginTitleHtml": f"Login at {opt.domainname}", "loginTitle": "Univention Corporate Server Single-Sign On"}
