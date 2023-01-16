@@ -79,8 +79,8 @@ EOT
             },
         "maildomain": "hamburg.de"
     }' /var/lib/ucs-school-import/configs/kelvin.json | sponge /var/lib/ucs-school-import/configs/kelvin.json
-    udm mail/domain create --set name=dwh-shortname-testschool.hamburg.de --position cn=domain,cn=mail,dc=school,dc=test
-    udm mail/domain create --set name=dwh-shortname-testschool2.hamburg.de --position cn=domain,cn=mail,dc=school,dc=test
+    udm mail/domain create --ignore_exists --set name=dwh-shortname-testschool.hamburg.de --position "cn=domain,$(ucr get ldap/base)"
+    udm mail/domain create --ignore_exists --set name=dwh-shortname-testschool2.hamburg.de --position "cn=domain,cn=mail,$(ucr get ldap/base)"
 
     cat <<EOT > /var/lib/ucs-school-import/kelvin-hooks/bsb_school_dwh_short_name.py
 from typing import Any, Dict
@@ -297,7 +297,7 @@ create_test_admin_account () {
 		-H "Content-Type:application/x-www-form-urlencoded" \
 		-d "username=$username" \
 		-d "password=$password" | jq -r '.access_token')"
-	udm mail/domain create --set name=school1.hamburg.de --position cn=domain,cn=mail,dc=school,dc=test
+	udm mail/domain create --ignore_exists --set name=school1.hamburg.de --position "cn=domain,cn=mail,$(ucr get ldap/base)"
     univention-app restart ucsschool-kelvin-rest-api
 	echo "Waiting for Kelvin to restart"
 	until $(curl --output /dev/null --silent --head --fail "https://$fqdn/ucsschool/kelvin/v1/openapi.json"); do
