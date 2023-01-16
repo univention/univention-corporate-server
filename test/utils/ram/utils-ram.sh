@@ -298,7 +298,8 @@ create_test_admin_account () {
 		-d "username=$username" \
 		-d "password=$password" | jq -r '.access_token')"
 	udm mail/domain create --ignore_exists --set name=school1.hamburg.de --position "cn=domain,cn=mail,$(ucr get ldap/base)"
-    univention-app restart ucsschool-kelvin-rest-api
+	sleep 10 # wait for replication?
+	univention-app restart ucsschool-kelvin-rest-api
 	echo "Waiting for Kelvin to restart"
 	until $(curl --output /dev/null --silent --head --fail "https://$fqdn/ucsschool/kelvin/v1/openapi.json"); do
 		printf '.'
