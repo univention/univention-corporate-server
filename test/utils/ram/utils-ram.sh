@@ -193,8 +193,7 @@ install_frontend_app () {
 			univention-app dev-set "$app" "DockerImage=$main_image"
 		fi
 	fi
-	univention-app configure "$app" --set log_level=DEBUG
-	univention-app install --noninteractive --username Administrator --pwdfile /tmp/univention "$app"
+	univention-app install "$app" --noninteractive --username Administrator --pwdfile /tmp/univention --set log_level=DEBUG
 	commit=$(docker inspect --format='{{.Config.Labels.commit}}' "$(ucr get "appcenter/apps/$app/container")")
 	echo "Docker image built from commit: $commit"
 }
