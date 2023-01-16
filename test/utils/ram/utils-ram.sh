@@ -153,10 +153,10 @@ class BsbSchoolDwhShortName(FormatPyHook):
             ou = attrs["ou"][0].decode("UTF-8")
             dwh_short_name = attrs.get(self.ldap_attr, [])
             if dwh_short_name:
-                res[ou] = dwh_short_name[0].decode("UTF-8")
+                res[ou.lower()] = dwh_short_name[0].decode("UTF-8")
             else:
                 self.logger.warning("Empty 'dwh_ShortName' value for school %r. Using %r.", ou, ou)
-                res[ou] = ou
+                res[ou.lower()] = ou
         return res
 
     def school_dwh_short_name(self, school: str) -> str:
