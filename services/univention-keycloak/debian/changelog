@@ -1,3 +1,9 @@
+univention-keycloak (1.0.6) unstable; urgency=medium
+
+  * Bug #55513: univention-keycloak now works without UCR
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Mon, 16 Jan 2023 16:22:01 +0100
+
 univention-keycloak (1.0.5) unstable; urgency=medium
 
   * Bug #55569: univention-keycloak should evaluate keycloak/sso/server/fqdn
