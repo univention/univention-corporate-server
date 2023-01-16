@@ -1,0 +1,14 @@
+product: ucs
+release: "5.0"
+version: [2]
+scope: ucs_5.0-0-errata5.0-2
+src: net-snmp
+fix: 5.7.3+dfsg-5+deb10u4
+desc: |
+ This update addresses the following issues:
+ * NULL Pointer Exception when handling ipDefaultTTL (CVE-2022-44792)
+ * NULL Pointer Exception when handling pv6IpForwarding (CVE-2022-44793)
+bug: [55572]
+cve:
+- CVE-2022-44792
+- CVE-2022-44793
