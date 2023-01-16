@@ -3,11 +3,13 @@ release: "5.0"
 version: [2]
 scope: ucs_5.0-0-errata5.0-2
 src: univention-keycloak
-fix: 1.0.5A~5.0.0.202301131531
+fix: 1.0.6A~5.0.0.202301161624
 desc: |
  This update addresses the following issues:
- * The `univention-keycloak` script didn't evaluate the
-   app setting `keycloak/server/sso/fqdn`. Due to this,
-   the joinscript of the Keycloak app failed if this
-   setting is set.
-bug: [55569]
+ * The `univention-keycloak` script didn't evaluate the app setting
+   `keycloak/server/sso/fqdn`. Due to this, the joinscript of the Keycloak app
+   failed if this setting is set.
+ * Many options of the `univention-keycloak` script can now be passed on the
+   command line. `univention-config-registry` is not required anymore, but
+   only gives sane defaults.
+bug: [55569, 55513]
