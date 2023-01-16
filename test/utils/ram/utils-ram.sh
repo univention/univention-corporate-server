@@ -178,7 +178,7 @@ class BsbSchoolDwhShortName(FormatPyHook):
 EOT
 
     univention-app shell ucsschool-kelvin-rest-api /var/lib/univention-appcenter/apps/ucsschool-kelvin-rest-api/data/update_openapi_client
-    univention-app shell ucsschool-kelvin-rest-api /etc/init.d/ucsschool-kelvin-rest-api restart
+    univention-app restart ucsschool-kelvin-rest-api
 }
 
 install_frontend_app () {
@@ -298,8 +298,7 @@ create_test_admin_account () {
 		-d "username=$username" \
 		-d "password=$password" | jq -r '.access_token')"
 	udm mail/domain create --set name=school1.hamburg.de --position cn=domain,cn=mail,dc=school,dc=test
-    sleep 10 # wait for replication
-	univention-app shell ucsschool-kelvin-rest-api /etc/init.d/ucsschool-kelvin-rest-api restart
+    univention-app restart ucsschool-kelvin-rest-api
 	echo "Waiting for Kelvin to restart"
 	until $(curl --output /dev/null --silent --head --fail "https://$fqdn/ucsschool/kelvin/v1/openapi.json"); do
 		printf '.'
