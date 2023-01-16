@@ -162,7 +162,7 @@ class BsbSchoolDwhShortName(FormatPyHook):
     def school_dwh_short_name(self, school: str) -> str:
         ou = school.lower()
         if ou not in self._dwh_short_name:
-            self._dwh_short_name[ou] = self.retrieve_school_dwh_short_names(school)[0]
+            self._dwh_short_name[ou] = self.retrieve_school_dwh_short_names(school)[ou]
         return self._dwh_short_name[ou]
 
     def patch_school_field(self, property_name: str, fields: Dict[str, Any]) -> Dict[str, Any]:
