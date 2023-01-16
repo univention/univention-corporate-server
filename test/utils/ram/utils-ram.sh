@@ -79,7 +79,7 @@ EOT
             },
         "maildomain": "hamburg.de"
     }' /var/lib/ucs-school-import/configs/kelvin.json | sponge /var/lib/ucs-school-import/configs/kelvin.json
-    udm mail/domain create --ignore_exists --set name=dwh-shortname-testschool.hamburg.de --position "cn=domain,$(ucr get ldap/base)"
+    udm mail/domain create --ignore_exists --set name=dwh-shortname-testschool.hamburg.de --position "cn=domain,cn=mail,$(ucr get ldap/base)"
     udm mail/domain create --ignore_exists --set name=dwh-shortname-testschool2.hamburg.de --position "cn=domain,cn=mail,$(ucr get ldap/base)"
 
     cat <<EOT > /var/lib/ucs-school-import/kelvin-hooks/bsb_school_dwh_short_name.py
