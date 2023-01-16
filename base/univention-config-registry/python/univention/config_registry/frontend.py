@@ -183,6 +183,7 @@ def handler_set(args, opts={}, quiet=False):
 						else:
 							print('E: Invalid UCR type definition for type %r of %r, value %r not set' % (vinfo.get('type'), key, value), file=sys.stderr)
 							opts['exit_code'] = 1
+							opts.setdefault('type_def_error', []).append((key, vinfo.get('type'), value))
 							continue  # do not set value and continue with next element of for loop to be set
 					else:
 						if not validator.check(value):
@@ -190,7 +191,8 @@ def handler_set(args, opts={}, quiet=False):
 								print('W: Value %r incompatible for %r, but setting anyway' % (value, key), file=sys.stderr)
 							else:
 								print('E: Value %r incompatible for %r' % (value, key), file=sys.stderr)
-								opts['exit_code'] = 1
+								opts['exit_code'] = 2
+								opts.setdefault('type_errors', []).append((key, value))
 								continue  # do not set value and continue with next element of for loop to be set
 				changes[key] = value
 			else:

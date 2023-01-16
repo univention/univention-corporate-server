@@ -159,7 +159,15 @@ class Instance(Base):
 			if self.is_readonly(key):
 				raise UMC_Error(_('The UCR variable %s is read-only and can not be changed!') % (key,))
 			arg = [f'{key}={value}']
-			handler_set(arg)
+			opts = {}
+			handler_set(arg, opts)
+			if 'exit_code' in opts and opts['exit_code'] != 0:
+				if 'type_errors' in opts and len(opts['type_errors']) > 0:
+					key, value = opts['type_errors'][0]
+					raise UMC_Error(_('The value %s is not valid for the UCR variable %s!') % (value, key))
+				if 'type_def_error' in opts and len(opts['type_def_errors']) > 0:
+					type_, key, value = opts['type_def_errors'][0]
+					raise UMC_Error(_('Invalid UCR type definition for type %r of %r, value %r not set') % (type_, key, value))
 
 			# handle descriptions, type, and categories
 			if 'descriptions' in var or 'type' in var or 'categories' in var:

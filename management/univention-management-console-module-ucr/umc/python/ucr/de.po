@@ -54,3 +54,13 @@ msgstr "Die UCR-variable %s ist nur lesbar und kann nicht entfernt werden"
 
 #~ msgid "The UCR variable %r has an invalid name."
 #~ msgstr "Der Name der UCR-Variable %r ist nicht gültig."
+
+#: umc/python/ucr/__init__.py:167
+#, python-format
+msgid "The value %s is not valid for the UCR variable %s!"
+msgstr "Der Wert %s ist für die UCR-Variable %s nicht gültig!"
+
+#: umc/python/ucr/__init__.py:170
+#, python-format
+msgid "Invalid UCR type definition for type %r of %r, value %r not set"
+msgstr "Ungültige UCR-Typdefinition für Typ %r von %r, Wert %r nicht gesetzt"
