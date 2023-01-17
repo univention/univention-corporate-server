@@ -1,0 +1,10 @@
+product: ucs
+release: "5.0"
+version: [2]
+scope: ucs_5.0-0-errata5.0-2
+src: univention-management-console-module-ucr
+fix:
+desc: |
+ This update addresses the following issues:
+ * The UCR module now displays errors regarding the type constraints.
+bug: [55573]

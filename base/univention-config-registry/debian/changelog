@@ -1,3 +1,10 @@
+univention-config-registry (15.0.7-23) unstable; urgency=low
+
+  * Bug #55573: Update handler_set to return more specific info regarding
+    type check and update ucr info to show UCR type
+
+ -- Ivan Barbecho Delgado <delgado.extern@univention.de>  Mon, 16 Jan 2023 13:41:38 +0100
+
 univention-config-registry (15.0.7-22) unstable; urgency=low
 
   *  Bug #55044: Adding validation for http/https URLs
@@ -3083,7 +3090,7 @@ univention-baseconfig (2.1.10-3) unstable; urgency=low
 
  -- Bastian Neumann <neumann@univention.de>  Thu,  5 Jul 2007 14:06:00 +0200
 
-univention-baseconfig (2.1.10-2)  unstable; urgency=low
+univention-baseconfig (2.1.10-2) unstable; urgency=low
 
   * check for /usr/bin/sv in the logrotate.conf
 

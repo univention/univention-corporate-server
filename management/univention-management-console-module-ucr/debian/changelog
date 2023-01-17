@@ -1,3 +1,9 @@
+univention-management-console-module-ucr (9.0.0-9) unstable; urgency=medium
+
+  * Bug #55573: Adding type checking for UMC module
+
+ -- Ivan Barbecho Delgado <delgado.extern@univention.de>  Mon, 16 Jan 2023 13:41:38 +0100
+
 univention-management-console-module-ucr (9.0.0-8) unstable; urgency=medium
 
   * Bug #55044: Simplify repository UCRVs
