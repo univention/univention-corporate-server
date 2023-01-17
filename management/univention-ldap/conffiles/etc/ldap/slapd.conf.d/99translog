@@ -19,7 +19,9 @@ checkpoint	0 1
 """
 print((B64 if IS_64BITS else B32) % configRegistry)
 @!@
-limits dn.children=cn=peercred,cn=external,cn=auth size.prtotal=unlimited
+limits dn.children=cn=peercred,cn=external,cn=auth time=unlimited size=unlimited size.prtotal=unlimited size.pr=unlimited
+limits group/univentionGroup/uniqueMember="cn=DC Backup Hosts,cn=groups,@%@ldap/base@%@" time=unlimited size=unlimited size.prtotal=unlimited size.pr=unlimited
+limits group/univentionGroup/uniqueMember="cn=DC Slave Hosts,cn=groups,@%@ldap/base@%@" time=unlimited size=unlimited size.prtotal=unlimited size.pr=unlimited
 # access via LDAPI (simple or SASL EXTERNAL bind):
 access to *
     by sockname="PATH=/var/run/slapd/ldapi" write

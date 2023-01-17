@@ -1,3 +1,9 @@
+univention-ldap (16.0.7-26) unstable; urgency=low
+
+  * Bug #34877: Unlimited search for DC Backup and Replica
+
+ -- Philipp Hahn <hahn@univention.de>  Tue, 17 Jan 2023 12:20:56 +0100
+
 univention-ldap (16.0.7-25) unstable; urgency=medium
 
   * Bug #55501: Allow replicas to lockout user accounts

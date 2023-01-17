@@ -104,8 +104,11 @@ for indexcombination in indexcombinations:
 				line = line + ',' + attrib if line else attrib
 		if line:
 			print(out % line)
+@!@
 
-print('')
+limits group/univentionGroup/uniqueMember="cn=DC Backup Hosts,cn=groups,@%@ldap/base@%@" time=unlimited size=unlimited size.prtotal=unlimited size.pr=unlimited
+limits group/univentionGroup/uniqueMember="cn=DC Slave Hosts,cn=groups,@%@ldap/base@%@" time=unlimited size=unlimited size.prtotal=unlimited size.pr=unlimited
+@!@
 for key in configRegistry.get('ldap/limits', '').split(';'):
 	if key:
 		print("limits %s" % key)
