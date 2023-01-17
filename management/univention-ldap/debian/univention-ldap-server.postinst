@@ -42,23 +42,19 @@ if [ -n "$(pidof slapd)" ]; then
 fi
 
 # { # function definitions
-start_slapd()
-{
+start_slapd () {
 	if test -x /etc/init.d/slapd; then
 		/etc/init.d/slapd start
 		sleep 1
 	fi
 }
-stop_slapd ()
-{
+stop_slapd () {
 	if test -x /etc/init.d/slapd; then
 		/etc/init.d/slapd stop
 		sleep 1
 	fi
 }
-
-restart_slapd ()
-{
+restart_slapd () {
 	/etc/init.d/slapd stop
 	sleep 1
 	if [ -n "$(pidof slapd)" ]; then
@@ -104,9 +100,6 @@ if [ "$server_role" = "domaincontroller_master" ]; then
 	univention-config-registry set ldap/translog-ignore-temporary?"yes"
 fi
 
-# configure lastbind
-univention-config-registry set ldap/overlay/lastbind/precision?"3600"
-
 # configure firewall
 ucr set \
 	security/packetfilter/package/univention-ldap-server/tcp/389/all="ACCEPT" \
@@ -126,13 +119,8 @@ fi
 
 [ "$1" = configure ] && dpkg --compare-versions "$2" lt-nl 15.0.0-33 && systemctl daemon-reload
 
-mdb_max=4295000000 # 4 GB
-if [ "i686" = "$(uname -m)" ]; then
-	mdb_max=1992294400 # 1.9 GB
-fi
-
 # set ldap/shadowbind to false for updates (4.1 -> 4.2)
-if [ "$1" = configure -a -n "$2" ] && dpkg --compare-versions "$2" lt 13.0.3-5; then
+if [ "$1" = configure ] && dpkg --compare-versions "$2" lt-nl 13.0.3-5; then
 	ucr set ldap/shadowbind=false
 fi
 
@@ -143,40 +131,10 @@ fi
 
 ucr set \
 	ldap/debug/level?none \
-	slapd/port?"7389,389" \
-	slapd/port/ldaps?"7636,636" \
-	ldap/database/type?mdb \
-	ldap/database/mdb/maxsize?"$mdb_max" \
-	ldap/sizelimit?400000 \
-	ldap/cachesize?20000 \
-	ldap/attributeoptions?"entry-,lang-" \
-	ldap/idlcachesize?20000 \
-	ldap/idletimeout?360 \
-	ldap/index/autorebuild?yes \
-	ldap/index/quickmode?false \
-	ldap/threads?16 \
-	ldap/tool-threads?1 \
 	ldap/acl/user/password/change?no \
 	ldap/acl/slavepdc?yes \
 	ldap/acl/nestedgroups?yes \
-	ldap/database/bdb/db_config_options?"set_flags" \
-	ldap/database/bdb/set_flags?"DB_LOG_AUTOREMOVE" \
-	ldap/autostart?yes \
-	ldap/tls/dh/paramfile?/etc/ldap/dh_2048.pem \
-	ldap/limits?"users time.soft=-1 time.hard=-1" \
-	slapd/backup/cron?"0 0 * * *" \
-	slapd/backup?true \
-	ldap/shadowbind?true \
-	ldap/shadowbind/ignorefilter?"(|(objectClass=univentionDomainController)(userPassword={KINIT}))" \
-	ldap/refint?true \
-	ldap/maxopenfiles?8192 # Bug #17705
-
-if [ "$1" = "configure" -a -z "$2" ]; then
-	# disable anonymous bind by default
-	univention-config-registry set ldap/acl/read/anonymous?no
-else
-	univention-config-registry set ldap/acl/read/anonymous?yes
-fi
+	ldap/database/bdb/set_flags?"DB_LOG_AUTOREMOVE"
 
 eval "$(univention-config-registry shell)"
 

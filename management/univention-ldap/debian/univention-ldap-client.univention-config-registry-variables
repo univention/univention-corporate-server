@@ -1,13 +1,15 @@
 [ldap/master/port]
 Description[de]=Der Port, unter dem der Primary Directory Node erreichbar ist (siehe 'ldap/master').  Ist die Variable nicht gesetzt, gilt 7389.
 Description[en]=The port of the Primary Directory Node (see 'ldap/master'). If the variable is unset, 7389 applies.
-Type=int
+Default=7389
+Type=portnumber
 Categories=service-ldap
 
 [ldap/server/port]
 Description[de]=Der Port, unter dem der primäre LDAP-Server (siehe 'ldap/server/name') erreichbar ist.
 Description[en]=The port of the primary LDAP server (see 'ldap/server/name').
-Type=int
+Default=7389
+Type=portnumber
 Categories=service-ldap
 
 [ldap/sasl/secprops/maxssf]

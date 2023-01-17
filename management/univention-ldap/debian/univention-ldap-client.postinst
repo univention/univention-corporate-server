@@ -33,15 +33,12 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-if [ "$1" = configure -a -n "$2" ] && dpkg --compare-versions "$2" lt 1.6; then
+if [ "$1" = configure ] && dpkg --compare-versions "$2" lt-nl 1.6; then
 	univention-config-registry set nsswitch/ldap=yes
 
 	test -x /etc/init.d/nscd && /etc/init.d/nscd restart
 fi
 
 #DEBHELPER#
-
-univention-config-registry set ldap/master/port?"7389" \
-			ldap/server/port?7389
 
 exit 0

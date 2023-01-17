@@ -21,36 +21,46 @@ Categories=service-ldap
 [slapd/port]
 Description[de]=Diese Variable konfiguriert die Ports, unter denen der LDAP-Server auf unverschlüsselte und TLS-gesicherte LDAP-Anfragen antwortet. Mehrere Ports müssen mit Komma getrennt werden. Ist die Variable nicht gesetzt, gilt 7389.
 Description[en]=This variable configures the ports used by the LDAP server for unencrypted and TLS-secured LDAP requests. Multiple ports need to be separated by commas. If the variable is unset, 7389 applies.
-Type=str
+Default=7389,389
+Type=list
+Separator=,
+Elementtype=portnumber
 Categories=service-ldap
 
 [slapd/port/ldaps]
 Description[de]=Diese Variable konfiguriert die Ports, unter denen der LDAP-Server auf SSL-gesicherte LDAP-Anfragen antwortet. Mehrere Ports müssen mit Komma getrennt werden. Ist die Variable nicht gesetzt, gilt 7636.
 Description[en]=This variable configures the ports used by the LDAP server for SSL-secured LDAP requests. Multiple ports need to be separated by commas. If the variable is unset, 7636 applies.
-Type=str
+Default=7636,636
+Type=list
+Separator=,
+Elementtype=portnumber
 Categories=service-ldap
 
 [ldap/sizelimit]
 Description[de]=Die maximale Anzahl von Einträgen, die von einer LDAP-Suchoperation zurückgegeben werden.
 Description[en]=The maximum number of entries returned by an LDAP search operation.
+Default=400000
 Type=int
 Categories=service-ldap
 
 [ldap/threads]
 Description[de]=Die Anzahl der verwendeten Server-Threads im LDAP-Server.
 Description[en]=The number of server threads used by the LDAP server.
+Default=16
 Type=int
 Categories=service-ldap
 
 [ldap/tool-threads]
 Description[de]=Die Anzahl der verwendeten Tool-Threads (slapadd, slapindex).
 Description[en]=The maximum number of threads to use in tool mode (slapadd, slapindex).
+Default=1
 Type=int
 Categories=service-ldap
 
 [ldap/maxopenfiles]
 Description[de]=Die maximale Anzahl an Dateien, die der LDAP-Server öffnen kann. Wenn der Wert angepasst wird, müssen ggf. auch Unix-Prozesslimits angepasst werden.
 Description[en]=The maximum of files the LDAP server can open. If the value is adapted, Unix process limits might need to be expanded as well.
+Default=8192
 Type=int
 Categories=service-ldap
 
@@ -76,6 +86,7 @@ Categories=service-ldap
 [ldap/database/bdb/checkpoint]
 Description[de]=Diese Variable konfiguriert die Häufigkeit mit der die Daten aus dem 'Transaction Log' in die Datenbank geschrieben werden. Änderungen sind nur in Ausnahmefällen nötig und sollten sorgfältig getestet werden. Die Syntax ist unter <http://www.openldap.org/faq/data/cache/1072.html> beschrieben.
 Description[en]=This variable configures the frequency for checkpointing the database transaction log upon updating the database. Changes are only needed in exceptional cases and should be tested carefully. The syntax is documented at <http://www.openldap.org/faq/data/cache/1072.html>.
+Default=1024 30
 Type=str
 Categories=service-ldap
 
@@ -100,6 +111,7 @@ Categories=service-ldap
 [ldap/database/bdb/db_config_options]
 Description[de]=Mit dieser Variable kann eine Liste von zusätzlichen BDB-Optionen konfiguriert werden. Mehrere Einträge müssen durch Komma getrennt werden. Änderungen sind nur in Ausnahmefällen nötig und sollten sorgfältig getestet werden. Die Syntax ist unter <http://www.openldap.org/faq/data/cache/1072.html> beschrieben.
 Description[en]=This variable allows the configuration of a list of additional BDB options. Multiple entries are separated by commas. Changes are only needed in exceptional cases and should be tested carefully. The syntax is documented at <http://www.openldap.org/faq/data/cache/1072.html>.
+Default=set_flags
 Type=str
 Categories=service-ldap
 
@@ -130,12 +142,14 @@ Categories=service-ldap
 [ldap/index/autorebuild]
 Description[de]=Ist diese Option aktiviert, werden LDAP-Indizes bei UCS-Updates automatisch ergänzt und aktualisiert.
 Description[en]=If this option is activated, LDAP indices are automatically amended and updated during UCS updates.
+Default=yes
 Type=bool
 Categories=service-ldap
 
 [ldap/index/quickmode]
 Description[de]=Ist diese Option aktiviert, wird das LDAP Reindex-Tool slapindex im "quick" Modus gestartet (weniger Integritätsprüfungen, schnellere Indizierung). Standardmäßig deaktiviert.
 Description[en]=If this option is activated, the LDAP reindex tool slapindex is started in "quick" mode (fewer integrity checks, improved indexing time). Disabled by default.
+Default=false
 Type=bool
 Categories=service-ldap
 
@@ -148,42 +162,50 @@ Categories=service-ldap
 [ldap/acl/read/anonymous]
 Description[de]=Ist diese Option aktiviert, erlaubt der LDAP-Server den anonymen Zugriff auf das LDAP-Verzeichnis ohne Authentifizierung. Ist die Variable nicht gesetzt, wird ein anonymer Zugriff verboten.
 Description[en]=If this option is activated, the LDAP server does allow anonymous access to the LDAP directory without authentication. If the variable is unset, anonymous access is denied.
+Default=no
 Type=bool
 Categories=service-ldap
 
 [ldap/acl/read/ips]
 Description[de]=Wenn die LDAP-Suche nur authentifiziert möglich ist (siehe 'ldap/acl/read/anonymous'), können einzelne IP-Adressen über diese Variable für den anonymen Lesezugriff freigeschaltet werden. Mehrere Werte werden durch Komma getrennt (z.B. ldap/acl/read/ips='127.0.0.1,192.168.0.0%255.255.255.0').
 Description[en]=If only authenticated LDAP searches are allowed (see 'ldap/acl/read/anonymous'), individual IP addresses can be granted anonymous read permissions via this variable. Multiple values are separated by commas (e.g. ldap/acl/read/ips='127.0.0.1,192.168.0.0%255.255.255.0').
-Type=str
+Type=list
+Separator=,
+Elementtype=str
 Categories=service-ldap
 
 [ldap/autostart]
 Description[de]=Die Variable konfiguriert den Startmodus des LDAP-Servers. Wird sie auf 'no' oder 'disabled' gesetzt, kann der Dienst nicht gestartet werden. Wird die auf 'manually' gesetzt, erfolgt kein automatischer Start zum Systemstart, der Dienst kann aber später gezielt gestartet werden.
 Description[en]=This variable configures the start mode of the LDAP server. If set to 'no' or 'disabled', the service cannot be started. If the variable is set to 'manually', the service isn't started during system boot, but can be enabled manually at a later point.
+Default=yes
 Type=str
 Categories=service-ldap
 
 [ldap/cachesize]
 Description[de]=Die Variable konfiguriert die Anzahl der Einträge, die der LDAP-Server in seinem internen Cache vorhält.
 Description[en]=This variable configures the number of entries the LDAP server holds in the internal cache.
+Default=20000
 Type=int
 Categories=service-ldap
 
 [ldap/idlcachesize]
 Description[de]=Die Variable konfiguriert die Anzahl der Suchergebnisse, die der LDAP-Server in seinem internen Cache vorhält.
 Description[en]=This variable configures the number of search results the LDAP server holds in the internal cache.
+Default=20000
 Type=int
 Categories=service-ldap
 
 [ldap/idletimeout]
 Description[de]=Mit dieser Variable kann ein Zeitraum in Sekunden konfiguriert werden, nach dessen Ablauf eine LDAP-Verbindung serverseitig geschlossen wird. Wenn der Wert auf 0 gesetzt wird, wird kein Ablaufzeitraum angewendet.
 Description[en]=This variable is used to configure a time period in seconds after which the LDAP connection is closed on the server side. When the value is set to 0, no expiry period is in use.
+Default=360
 Type=int
 Categories=service-ldap
 
 [ldap/database/mdb/maxsize]
 Description[de]=Die maximale Größe der Datenbank in Bytes.
 Description[en]=The maximum size of the database in bytes.
+Default=4295000000
 Type=int
 Categories=service-ldap
 
@@ -218,20 +240,23 @@ Type=str
 Categories=service-ldap
 
 [ldap/tls/ciphersuite]
-Description[de]=Dies konfiguriert die kryptografischen Verfahren, die ein Client in der SSL-Handshake-Phase angeboten bekommt. Das Format ist unter <http://www.openldap.org/software/man.cgi?query=slapd.conf> beschrieben. Ist die Variable nicht gesetzt, wird 'HIGH:MEDIUM:!aNULL:!MD5:!RC4' verwendet.
-Description[en]=This configures the cryptopgraphic algorithms which are offered to clients during a SSL handshake. The format is described at <http://www.openldap.org/software/man.cgi?query=slapd.conf>. If the variable is unset, 'HIGH:MEDIUM:!aNULL:!MD5:!RC4' is used.
+Description[de]=Dies konfiguriert die kryptografischen Verfahren, die ein Client in der SSL-Handshake-Phase angeboten bekommt. Das Format ist unter <http://www.openldap.org/software/man.cgi?query=slapd.conf> beschrieben.
+Description[en]=This configures the cryptopgraphic algorithms which are offered to clients during a SSL handshake. The format is described at <http://www.openldap.org/software/man.cgi?query=slapd.conf>.
+Default=HIGH:MEDIUM:!aNULL:!MD5:!RC4
 Type=str
 Categories=service-ldap
 
 [ldap/tls/minprotocol]
-Description[de]=Dies konfiguriert die Mindestversion für das SSL/TLS Protokoll. Für TLS 1.0/1.1/1.2 ist respektive 3.1/3.2/3.3 anzugeben. Standard ist 3.1 für TLSv1.0.
-Description[en]=This configures the minimum version for the SSL/TLS protocol. For TLS 1.0/1.1/1.2 the value 3.1/3.2/3.3 must be specified. Default is 3.1 for TLSv1.0.
+Description[de]=Dies konfiguriert die Mindestversion für das SSL/TLS Protokoll. Für TLS 1.0/1.1/1.2 ist respektive 3.1/3.2/3.3 anzugeben.
+Description[en]=This configures the minimum version for the SSL/TLS protocol. For TLS 1.0/1.1/1.2 the value 3.1/3.2/3.3 must be specified.
+Default=3.1
 Type=str
 Categories=service-ldap
 
 [ldap/tls/dh/paramfile]
-Description[de]=Dies konfiguriert den Namen für die Datei mit den kurzlebigen Diffie-Hellman Schlüsselaustausch. Standard ist '/etc/ldap/dh_2048.pem'.
-Description[en]=This configures the name of the file containing the parameters for Diffie-Hellman ephemeral key exchange. Default is '/etc/ldap/dh_2048.pem'.
+Description[de]=Dies konfiguriert den Namen für die Datei mit den kurzlebigen Diffie-Hellman Schlüsselaustausch.
+Description[en]=This configures the name of the file containing the parameters for Diffie-Hellman ephemeral key exchange.
+Default=/etc/ldap/dh_2048.pem
 Type=str
 Categories=service-ldap
 
@@ -250,18 +275,21 @@ Categories=service-ldap
 [ldap/limits]
 Description[de]=Zeit- oder Größenlimits anhand des Initiators oder der DN definieren.
 Description[en]=Specify time and size limits based on the operation's initiator or base DN.
+Default=users time.soft=-1 time.hard=-1
 Type=str
 Categories=service-ldap
 
 [slapd/backup]
-Description[de]=Aktiviert/Deaktiviert das Backup der slapd Datenbank. Standardmäßig aktiviert.
-Description[en]=Activates/deactivates the slapd database backup. Enabled by default.
+Description[de]=Aktiviert/Deaktiviert das Backup der slapd Datenbank.
+Description[en]=Activates/deactivates the slapd database backup.
+Default=true
 Type=bool
 Categories=service-ldap
 
 [slapd/backup/cron]
 Description[de]=Cron-Intervall für das Backup der slapd Datenbank. Standard ist '0 0 * * *' (jede Tag um 00:00 Uhr).
 Description[en]=Cron interval for the slapd database backup. Default is '0 0 * * *' (midnight, every day).
+Default=0 0 * * *
 Type=str
 Categories=service-ldap
 
@@ -289,12 +317,14 @@ Categories=service-ldap
 [ldap/shadowbind]
 Description[de]=Aktiviert/Deaktiviert das Overlay-Modul shadowbind (diese Overlay prüft shadowExpire und shadowMax/shadowLastChange am Objekt der Bind-DN und verbietet den Login ggf.)
 Description[en]=To enable/disable the shadowbind overlay module (shadowbind checks shadowExpire and shadowMax/shadowLastChange of the bind DN object during bind and denies the login possibly)
-Type=str
+Default=true
+Type=bool
 Categories=service-ldap
 
 [ldap/shadowbind/ignorefilter]
 Description[de]=Dieser LDAP-Filter wird auf das Objekt der Bind-DN angewendet. Trifft er zu, prüft das shadowbind Overlay-Modul die shadow-Attribute nicht.
 Description[en]=This LDAP filter is applied to the bind DN object during bind. If it matches, the shadowbind overlay does not check the shadow attributes for this object.
+Default=(|(objectClass=univentionDomainController)(userPassword={KINIT}))
 Type=str
 Categories=service-ldap
 
@@ -307,18 +337,21 @@ Categories=service-ldap
 [ldap/overlay/lastbind/precision]
 Description[de]=Die Genauigkeit in Sekunden gibt an, ob das 'lastbind'-Overlay (siehe ldap/overlay/lastbind) das 'authTimestamp'-Attribut nach einer erfolgreichen Anmeldung aktualisiert. Wenn das 'authTimestamp'-Attribut nicht älter als der angegebene Wert ist, dann wird es nicht aktualisiert. Wenn die Variable nicht gesetzt ist, wird das 'authTimestamp'-Attribut bei jeder erfolgreichen Anmeldung aktualisiert. Nach dem Setzen dieser UCR-Variablen muss der "slapd"-Dienst neu gestartet werden, damit die Änderungen wirksam werden.
 Description[en]=The precision in seconds defines whether the 'lastbind' overlay (see ldap/overlay/lastbind) should update the 'authTimestamp' attribute after a successful bind. If the 'authTimestamp' attribute is not older than the given value, then it is not updated. If the variable is not set then the 'authTimestamp' attribute is updated on every successful bind. After setting this UCR variable the "slapd" service has to be restarted for the changes to take effect.
-Type=str
+Default=3600
+Type=int
 Categories=service-ldap
 
 [ldap/refint]
 Description[de]=Bestimmt, ob das Modul refint geladen werden soll. Es erzwingt referentielle Integrität im Attribut uniqueMember. Wird nur auf dem DC Master ausgewertet.
 Description[en]=Whether or not the refint overlay should be enabled. It enforces referential integrity for the attribute uniqueMember. Only applies to the DC Master.
+Default=true
 Type=bool
 Categories=service-ldap
 
 [ldap/attributeoptions]
 Description[de]=Definiert Tagging-Attributoptionen oder Options-Tags/Range-Präfixe (siehe man slapd.conf).
 Description[en]=Define tagging attribute options or option tag/range prefixes (see man slapd.conf).
+Default=entry-,lang-
 Type=str
 Categories=service-ldap
 

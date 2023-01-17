@@ -7,14 +7,14 @@ print('suffix\t\t"%(ldap/base)s"' % configRegistry)
 print('')
 if configRegistry.get('ldap/translogfile'):
 	print("overlay\t\ttranslog")
-	print("translog\t%s" % configRegistry['ldap/translogfile'])
+	print("translog\t%(ldap/translogfile)s" % configRegistry)
 if configRegistry.is_true('ldap/translog-ignore-temporary'):
 	print("translog-ignore-temporary\ttrue")
 if configRegistry.is_true('ldap/k5pwd', True):
 	print("overlay\t\tk5pwd")
 if configRegistry.is_true('ldap/pwd_scheme_kinit', True):
 	print("overlay\t\tpwd_scheme_kinit")
-if configRegistry.get('ldap/database/type') == "mdb" and configRegistry.is_true('ldap/ppolicy', False):
+if configRegistry.get('ldap/database/type') == "mdb" and configRegistry.is_true('ldap/ppolicy'):
 	print("overlay\t\tppolicy")
 	if configRegistry.is_true('ldap/ppolicy/enabled', False):
 		ppolicy_default = 'cn=default,cn=ppolicy,cn=univention,%(ldap/base)s' % configRegistry
@@ -24,11 +24,13 @@ if configRegistry.is_true('ldap/refint', True) and configRegistry.get('server/ro
 	print('refint_attributes\t\tuniqueMember')
 if configRegistry.is_true('ldap/shadowbind', True):
 	print('overlay\t\tshadowbind')
-	if 'ldap/shadowbind/ignorefilter' in configRegistry:
-		print('shadowbind-ignore-filter "%s"' % configRegistry['ldap/shadowbind/ignorefilter'])
-if configRegistry.is_true('ldap/overlay/lastbind', False):
+	ignorefilter = configRegistry.get("ldap/shadowbind/ignorefilter")
+	if ignorefilter:
+		print('shadowbind-ignore-filter "%s"' % (ignorefilter,))
+
+if configRegistry.is_true('ldap/overlay/lastbind'):
 	print('overlay lastbind')
-	lastbind_precision = configRegistry.get('ldap/overlay/lastbind/precision', None)
+	lastbind_precision = configRegistry.get('ldap/overlay/lastbind/precision')
 	if lastbind_precision:
 		print('lastbind-precision %s' % (lastbind_precision,))
 else:
@@ -36,10 +38,10 @@ else:
 
 print('\n')
 if configRegistry['ldap/database/type'] == "mdb":
-	print("maxsize\t%s" % configRegistry.get("ldap/database/mdb/maxsize", "4295000000")) # 4GB default (sparse!)
+	print("maxsize\t%(ldap/database/mdb/maxsize)s" % configRegistry)
 else:
-	print("cachesize\t%s" % configRegistry.get("ldap/cachesize"))
-	print("idlcachesize\t%s" % configRegistry.get("ldap/idlcachesize"))
+	print("cachesize\t%(ldap/cachesize)s" % configRegistry)
+	print("idlcachesize\t%(ldap/idlcachesize)s" % configRegistry)
 
 print('')
 print("threads\t\t%(ldap/threads)s" % configRegistry)
@@ -47,16 +49,13 @@ print("tool-threads\t%(ldap/tool-threads)s" % configRegistry)
 print('')
 
 if configRegistry['ldap/database/type'] == "bdb":
-	if configRegistry.get('ldap/database/bdb/checkpoint'):
-		print('checkpoint %s'%configRegistry['ldap/database/bdb/checkpoint'])
-	else:
-		print('checkpoint 1024 30')
+	print('checkpoint %(ldap/database/bdb/checkpoint)s' % configRegistry)
 
 if configRegistry['ldap/database/type'] == "mdb":
 	if configRegistry.get('ldap/database/mdb/checkpoint'):
-		print('checkpoint %s'%configRegistry['ldap/database/mdb/checkpoint'])
-	if configRegistry.get('ldap/database/mdb/envflags', None):
-		print('envflags %s'%configRegistry['ldap/database/mdb/envflags'])
+		print('checkpoint %(ldap/database/mdb/checkpoint)s' % configRegistry)
+	if configRegistry.get('ldap/database/mdb/envflags'):
+		print('envflags %(ldap/database/mdb/envflags)s' % configRegistry)
 
 index_attrs={}
 indextypes=['pres','eq','sub','approx']
@@ -117,11 +116,11 @@ print('')
 if configRegistry['ldap/server/type'] == "master":
 	print('rootdn\t\t"cn=admin,%(ldap/base)s"' % configRegistry)
 elif configRegistry['ldap/server/type'] == "slave":
-	print('rootdn\t\t"cn=update,%s"'%configRegistry['ldap/base'])
+	print('rootdn\t\t"cn=update,%(ldap/base)s"' % configRegistry)
 	print('include\t\t/etc/ldap/rootpw.conf')
-	print('updatedn\t"cn=update,%s"'%configRegistry["ldap/base"])
+	print('updatedn\t"cn=update,%(ldap/base)s"' % configRegistry)
 	if configRegistry.is_true("ldap/online/master", True):
-		print('updateref\tldap://%s:%s'% (configRegistry["ldap/master"], configRegistry.get("ldap/master/port", 7389)))
+		print('updateref\tldap://%(ldap/master)s:%(ldap/master/port)s'% configRegistry)
 @!@
 
 directory	"/var/lib/univention-ldap/ldap"

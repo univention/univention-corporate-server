@@ -8,20 +8,24 @@ TLSCertificateFile	/etc/univention/ssl/@%@hostname@%@.@%@domainname@%@/cert.pem
 TLSCertificateKeyFile	/etc/univention/ssl/@%@hostname@%@.@%@domainname@%@/private.key
 TLSCACertificateFile	/etc/univention/ssl/ucsCA/CAcert.pem
 @!@
-ciphers = configRegistry.get("ldap/tls/ciphersuite", "HIGH:MEDIUM:!aNULL:!MD5:!RC4")
+ciphers = configRegistry.get("ldap/tls/ciphersuite")
 if ciphers:
 	print('TLSCipherSuite	%s' % (ciphers,))
-protocol = configRegistry.get("ldap/tls/minprotocol", "3.1")
+protocol = configRegistry.get("ldap/tls/minprotocol")
 if protocol:
 	print('TLSProtocolMin	%s' % (protocol,))
 from os.path import exists
-filename = configRegistry.get("ldap/tls/dh/paramfile", "/etc/ldap/dh_2048.pem")
+filename = configRegistry.get("ldap/tls/dh/paramfile")
 if filename and exists(filename):
 	print('TLSDHParamFile	%s' % (filename,))
+@!@
 
-print('')
-print('sizelimit %s' % configRegistry.get("ldap/sizelimit"))
-print('idletimeout %s' % configRegistry.get("ldap/idletimeout"))
-if 'ldap/attributeoptions' in configRegistry:
-    print('attributeoptions %s' % ' '.join(['"' + x.strip() + '"' for x in configRegistry.get('ldap/attributeoptions').split(',')]))
+sizelimit @%@ldap/sizelimit@%@
+idletimeout @%@ldap/idletimeout@%@
+
+@!@
+opts = configRegistry.get('ldap/attributeoptions')
+if opts:
+    text = ' '.join('"%s"' % (x.strip(),) for x in opts.split(','))
+    print('attributeoptions %s' % (text,))
 @!@
