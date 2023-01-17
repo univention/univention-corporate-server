@@ -1,6 +1,7 @@
 univention-ldap (16.0.7-26) unstable; urgency=low
 
   * Bug #34877: Unlimited search for DC Backup and Replica
+  * Bug #55558: UCRV "ldap/translog-ignore-temporary" depends on translog
 
  -- Philipp Hahn <hahn@univention.de>  Tue, 17 Jan 2023 12:20:56 +0100
 

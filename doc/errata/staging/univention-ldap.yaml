@@ -5,8 +5,10 @@ scope: ucs_5.0-0-errata5.0-2
 src: univention-ldap
 fix: 16.0.7-25
 desc: |
- This update addresses the following issue:
+ This update addresses the following issues:
  * Allow Directory Node Backup and Replica servers to do an unlimited LDAP
    search, which is required for join in large domains with more than 400k
    entries.
-bug: [34877]
+ * Change code to emit UCRV `ldap/translog-ignore-temporary` only when LDAP
+   overlay module `translog` is enabled.
+bug: [34877, 55558]
