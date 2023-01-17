@@ -78,7 +78,7 @@ __all__ = [
 
 REPLOG_FILE = '/var/log/univention/config-registry.replog'
 
-_SHOW_EMPTY, _SHOW_DESCRIPTION, _SHOW_SCOPE, _SHOW_CATEGORIES, _SHOW_DEFAULT = (1 << _ for _ in range(5))
+_SHOW_EMPTY, _SHOW_DESCRIPTION, _SHOW_SCOPE, _SHOW_CATEGORIES, _SHOW_DEFAULT, _SHOW_TYPE = (1 << _ for _ in range(6))
 
 
 class UnknownKeyException(Exception):
@@ -531,6 +531,13 @@ def variable_info_string(key, value, variable_info, scope=None, details=_SHOW_DE
 	if variable_info and _SHOW_DEFAULT & details:
 		info.append(' Default: ' + variable_info.get('default', '(not set)'))
 
+	if variable_info and _SHOW_TYPE & details:
+		try:
+			validator = Type(variable_info)
+			info.append(' Type: %s' % (validator,))
+		except ValueError as exc:
+			info.append(' Type: %s' % exc)
+
 	if (_SHOW_CATEGORIES | _SHOW_DESCRIPTION) & details:
 		info.append('')
 
@@ -554,7 +561,7 @@ def handler_info(args, opts={}):
 			yield variable_info_string(
 				arg, ucr.get(arg, None),
 				info.get_variable(arg),
-				details=_SHOW_EMPTY | _SHOW_DESCRIPTION | _SHOW_CATEGORIES | _SHOW_DEFAULT)
+				details=_SHOW_EMPTY | _SHOW_DESCRIPTION | _SHOW_CATEGORIES | _SHOW_DEFAULT | _SHOW_TYPE)
 		except UnknownKeyException as ex:
 			print(ex, file=sys.stderr)
 

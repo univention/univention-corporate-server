@@ -75,6 +75,10 @@ class BaseValidator(object):
 		"""
 		raise NotImplementedError()
 
+	def __str__(self):
+		# type: () -> str
+		return self.NAME
+
 	@classmethod
 	def _recurse_subclasses(cls):
 		# type: () -> Iterator[_Type[BaseValidator]]
@@ -122,6 +126,10 @@ class String(BaseValidator):
 			return self._rxc.match(value)
 		else:
 			return isinstance(value, str)
+
+	def __str__(self):
+		# type: () -> str
+		return "%s(regex=%r)" % (self.NAME, self.regex) if self.regex else self.NAME
 
 
 class URLHttp(BaseValidator):
@@ -252,6 +260,10 @@ class Integer(BaseValidator):
 			return False
 		return True
 
+	def __str__(self):
+		# type: () -> str
+		return '%s(min=%r, max=%r)' % (self.NAME, self._min, self._max) if self._min or self._max else self.NAME
+
 
 class UnsignedNumber(Integer):
 	"""
@@ -260,6 +272,10 @@ class UnsignedNumber(Integer):
 
 	NAME = "uint"
 	MIN = 0
+
+	def __str__(self):
+		# type: () -> str
+		return '%s(max=%r)' % (self.NAME, self._max) if self._max else self.NAME
 
 
 class PositiveNumber(Integer):
@@ -270,6 +286,10 @@ class PositiveNumber(Integer):
 	NAME = "pint"
 	MIN = 1
 
+	def __str__(self):
+		# type: () -> str
+		return '%s(max=%r)' % (self.NAME, self._max) if self._max else self.NAME
+
 
 class PortNumber(Integer):
 	"""
@@ -279,6 +299,10 @@ class PortNumber(Integer):
 	NAME = "portnumber"
 	MIN = 0
 	MAX = 65535
+
+	def __str__(self):
+		# type: () -> str
+		return self.NAME
 
 
 class Bool(BaseValidator):
@@ -316,7 +340,7 @@ class List(BaseValidator):
 
 	def __init__(self, attrs):
 		# type: (Dict[str, str]) -> None
-		self.element_type = attrs.get('elementtype')
+		self.element_type = attrs.get('elementtype', "str")
 		regex = attrs.get('separator', self.DEFAULT_SEPARATOR)
 		try:
 			self.separator = re.compile(regex)
@@ -333,6 +357,10 @@ class List(BaseValidator):
 		vinfo['type'] = self.element_type
 		val = Type(vinfo)
 		return all(val.check(element.strip()) for element in self.separator.split(value))
+
+	def __str__(self):
+		# type: () -> str
+		return '%s[%s%s]' % (self.NAME, self.element_type, self.separator.pattern)
 
 
 class Type(object):
@@ -366,3 +394,7 @@ class Type(object):
 	def check(self, value):
 		# type: (str) -> bool
 		return self.checker.is_valid(value)
+
+	def __str__(self):
+		# type: () -> str
+		return str(self.checker)

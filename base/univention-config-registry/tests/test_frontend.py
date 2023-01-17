@@ -403,7 +403,7 @@ class TestHandler(object):
 		assert list(ucrfe.handler_get(["baz"])) == ["baz: NORMAL"]
 
 	def test_handler_info(self, rinfo):
-		assert list(ucrfe.handler_info(["key"])) == ['key: <empty>\n description\n Categories: category\n Default: default\n']
+		assert list(ucrfe.handler_info(["key"])) == ['key: <empty>\n description\n Categories: category\n Default: default\n Type: str\n']
 
 	def test_handler_info_inknown(self, rinfo, capsys):
 		rinfo.return_value.get_variable.return_value = None
