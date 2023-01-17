@@ -379,3 +379,10 @@ performance_test_setup () {
 	echo "fs.file-max=1048576" > /etc/sysctl.d/99-file-max.conf
 	sysctl -p
 }
+
+create_mail_domains () {
+  DOM="$(jq -r .maildomain /var/lib/ucs-school-import/configs/kelvin.json)"
+  for OU in $(udm container/ou list | grep name: | cut -d ' ' -f 4); do
+    udm mail/domain create --position "cn=domain,cn=mail,$(ucr get ldap/base)" --set name="$OU.$DOM"
+  done
+}
