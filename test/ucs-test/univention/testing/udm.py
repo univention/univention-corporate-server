@@ -479,9 +479,8 @@ class UCSTestUDM:
         def default_container(prop):
             # Bug #53827
             class DefaultContainer(univention.admin.syntax.UDM_Objects):
-                """
-                Syntax to select a |UCS| default container from |LDAP|
-                """
+                """Syntax to select a |UCS| default container from |LDAP|"""
+
                 udm_modules = ('container/cn', 'container/ou', 'container/dc')
                 regex = None
                 key = '%(name)s'
@@ -936,7 +935,6 @@ class UCSTestUDM:
         :param str username: <random string> If username is missing, a random user name will be used.
         :return: (dn, username)
         """
-
         attr = self._set_module_default_attr(kwargs, (
             ('position', 'cn=users,%s' % self.LDAP_BASE),
             ('password', 'univention'),
@@ -1056,9 +1054,7 @@ class UCSTestUDM:
 
     def cleanup(self):
         # type: () -> None
-        """
-        Automatically removes LDAP objects via UDM CLI that have been created before.
-        """
+        """Automatically removes LDAP objects via UDM CLI that have been created before."""
         if not self._cleanup and not self._cleanupLocks:
             return
 
@@ -1118,7 +1114,7 @@ class UCSTestUDM:
 
     def stop_cli_server(self):
         # type: () -> None
-        """ restart UDM CLI server """
+        """restart UDM CLI server"""
         print('trying to restart UDM CLI server')
         procs = []
         for proc in psutil.process_iter():

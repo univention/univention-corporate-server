@@ -59,9 +59,7 @@ class PackageEntry:
 
 
 def perform_cleanup():
-    """
-    Removes all the folders/files located in the 'cleanup_folders' list.
-    """
+    """Removes all the folders/files located in the 'cleanup_folders' list."""
     print("\nPerforming cleanup after the test:")
 
     for folder in cleanup_folders:
@@ -215,9 +213,7 @@ def compare(old, new):
 
 
 def read_url(url):
-    """
-    Returns the 'url' in an easy to parse format for finding links.
-    """
+    """Returns the 'url' in an easy to parse format for finding links."""
     try:
         connection = urlopen(url)
         result = fromstring(connection.read())
@@ -229,9 +225,7 @@ def read_url(url):
 
 
 def select_errata_levels(repo_component_url):
-    """
-    Returns list of .*-errata levels found in the given 'repo_component_url'.
-    """
+    """Returns list of .*-errata levels found in the given 'repo_component_url'."""
     check_erratalevels = []
 
     for link in read_url(repo_component_url).xpath('//a/@href'):

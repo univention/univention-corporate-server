@@ -17,9 +17,7 @@ errors = 0
 
 
 def increase_errors_counter():
-    """
-    Increments the global 'errors' counter.
-    """
+    """Increments the global 'errors' counter."""
     global errors
     errors += 1
 
@@ -53,9 +51,7 @@ def check_user_groups_sids():
 
 
 def check_user_in_groups():
-    """
-    Checks if 'test_username' user is a member of test_groups.
-    """
+    """Checks if 'test_username' user is a member of test_groups."""
     print("\nChecking group members:")
 
     for group in test_groups:
@@ -120,9 +116,7 @@ def get_sid_for_user_group(name):
 
 
 def get_members_in_group(group_name):
-    """
-    Returns a list of members as found via 'getent' for a given 'group_name'.
-    """
+    """Returns a list of members as found via 'getent' for a given 'group_name'."""
     cmd = ('getent', 'group', group_name)
     stdout, stderr = create_and_run_process(cmd)
 

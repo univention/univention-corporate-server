@@ -25,9 +25,7 @@ UCR.load()
 
 
 def restore_retry_count():
-    """
-    Sets UCR 'ldap/client/retry/count' to 'ucr_retry_count'.
-    """
+    """Sets UCR 'ldap/client/retry/count' to 'ucr_retry_count'."""
     stop_slapd()
     print("Restoring initial UCR 'ldap/client/retry/count' to", ucr_retry_count)
     set_ucr_retry_count(ucr_retry_count)
@@ -35,17 +33,13 @@ def restore_retry_count():
 
 
 def set_ucr_retry_count(count):
-    """
-    Sets the 'ldap/client/retry/count' in the UCR.
-    """
+    """Sets the 'ldap/client/retry/count' in the UCR."""
     ucr_var = "ldap/client/retry/count=%s" % count
     handler_set((ucr_var,))
 
 
 def univention_ldapsearch(fail_on_success):
-    """
-    A wrapper for 'univention-ldapsearch'
-    """
+    """A wrapper for 'univention-ldapsearch'"""
     proc = Popen(('univention-ldapsearch', '-s', 'base', 'dn', '-LLL'), stdout=PIPE, stderr=PIPE, shell=False)
 
     stdout, stderr = proc.communicate()
@@ -112,9 +106,7 @@ def stop_slapd():
 
 
 def start_slapd():
-    """
-    Starts the slapd and wait for it to be started.
-    """
+    """Starts the slapd and wait for it to be started."""
     ret_code = Popen(('invoke-rc.d', 'slapd', 'start')).wait()
     if ret_code not in (0, 2):
         fail("Expecting the return code to be 0 or 2, while it is: %s"
@@ -122,16 +114,12 @@ def start_slapd():
 
 
 def start_with_delay(delay):
-    """
-    Sleeps the given 'delay' and starts slapd.
-    """
+    """Sleeps the given 'delay' and starts slapd."""
     Popen('sleep %s; invoke-rc.d slapd start' % delay, shell=True)
 
 
 def wait_for_slapd_to_be_started():
-    """
-    Looks for slapd process and sleeos few seconds if not found.
-    """
+    """Looks for slapd process and sleeos few seconds if not found."""
     for proc in psutil.process_iter():
         if 'slapd' in proc.name() and proc.ppid() == 1:
             # 'slapd' process found

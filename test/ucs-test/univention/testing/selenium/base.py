@@ -286,9 +286,7 @@ class UMCSeleniumTest(ChecksAndWaits, Interactions):
 
     def end_umc_session(self):
         # type: () -> None
-        """
-        Log out the logged in user.
-        """
+        """Log out the logged in user."""
         self.driver.get(self.base_url + 'univention/logout')
 
     def open_module(self, name, wait_for_standby=True, do_reload=True):

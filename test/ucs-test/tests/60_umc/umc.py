@@ -12,9 +12,7 @@ from univention.testing.umc import Client
 
 
 class UMCBase:
-    """
-    A base class for testing UMC-system
-    """
+    """A base class for testing UMC-system"""
 
     def __init__(self):
         """Test Class constructor"""
@@ -111,7 +109,7 @@ class UMCBase:
         assert request_result[0].get('success')
 
     def return_code_result_skip(self):
-        """Method to stop the test with the code 77, RESULT_SKIP """
+        """Method to stop the test with the code 77, RESULT_SKIP"""
         sys.exit(TestCodes.RESULT_SKIP)
 
 
@@ -163,9 +161,7 @@ class JoinModule(UMCBase):
         utils.fail("Failed to wait for join script(-s) to finish")
 
     def copy_file(self, src, dst):
-        """
-        Makes a copy of the 'src' file to 'dst' file if 'src' exists
-        """
+        """Makes a copy of the 'src' file to 'dst' file if 'src' exists"""
         try:
             if os.path.exists(src):
                 shutil.copy2(src, dst)
@@ -177,9 +173,7 @@ class JoinModule(UMCBase):
             utils.fail("An exception while coping the file from '%s', to '%s', error '%s'" % (src, dst, exc))
 
     def delete_file(self, path):
-        """
-        Checks if 'path' file exists and deletes it
-        """
+        """Checks if 'path' file exists and deletes it"""
         try:
             if os.path.exists(path):
                 os.remove(path)

@@ -36,9 +36,7 @@ def file_contain(file: str, text: str, no_exist_ignore: bool = True):
 @pytest.fixture()
 def myucr():
     # type: () -> Iterator[ConfigRegistry]
-    """
-    Per `function` auto-reverting UCR instance.
-    """
+    """Per `function` auto-reverting UCR instance."""
     with ConfigRegistry() as ucr:
         yield ucr
 

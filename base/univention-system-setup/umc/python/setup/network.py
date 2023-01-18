@@ -85,7 +85,6 @@ class IP6Set(set):
 
 
 class Interfaces(dict):
-
     """All network interfaces"""
 
     def __init__(self, *args, **kwargs):
@@ -132,7 +131,6 @@ class Interfaces(dict):
 
     def check_consistency(self):
         """Checks and partly enforces the consistency of all network interfaces"""
-
         for device in self.values():
             device.prepare_consistency()
             device.validate()
@@ -192,7 +190,6 @@ class Interfaces(dict):
 
 
 class Device(object):
-
     """Abstract base class for network interfaces"""
 
     def __new__(cls, name, interfaces):
@@ -221,12 +218,11 @@ class Device(object):
 
     def __init__(self, name, interfaces):
         """
-                :param name: the interface name, e.g. wlan0, eth0, br0, eth0.2, bond0
+        :param name: the interface name, e.g. wlan0, eth0, br0, eth0.2, bond0
 
-                :param interfaces: a Interfaces instance
-                :type  interfaces: Interfaces
+        :param interfaces: a Interfaces instance
+        :type  interfaces: Interfaces
         """
-
         self.name = name
         self.interfaces = interfaces
 
@@ -443,8 +439,9 @@ class Device(object):
         self._leftover.sort()
 
     def to_ucr(self):
-        """Returns a dict of UCR variables to set or unset.
-                Values which are None should be unset.
+        """
+        Returns a dict of UCR variables to set or unset.
+        Values which are None should be unset.
         """
         name = self.name
 
@@ -540,7 +537,6 @@ class Device(object):
 
 
 class _RemovedDevice(Device):
-
     """Internal class representing that a device have to be removed from UCR"""
 
     def to_ucr(self):
@@ -559,12 +555,10 @@ class _RemovedDevice(Device):
 
 
 class Ethernet(Device):
-
     """A physical network interface"""
 
 
 class VLAN(Device):
-
     """A virtual network interface (VLAN)"""
 
     @property
@@ -641,7 +635,6 @@ class VLAN(Device):
 
 
 class Bond(Device):
-
     """A network bonding interface"""
 
     MODES = {
@@ -763,7 +756,6 @@ class Bond(Device):
 
 
 class Bridge(Device):
-
     """A network bridge interface"""
 
     def clear(self):

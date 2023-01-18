@@ -1,8 +1,6 @@
 #!/usr/bin/python3
 # -*- coding: utf-8 -*-
-"""
-Python function to register |UDM| extensions in |LDAP|.
-"""
+"""Python function to register |UDM| extensions in |LDAP|."""
 # Like what you see? Join us!
 # https://www.univention.com/about-us/careers/vacancies/
 #
@@ -771,7 +769,6 @@ class UniventionLDAPACL(UniventionLDAPExtensionWithListenerHandler):
     def _handler(self, dn, new, old, name=None):
         # type: (str, Optional[Dict[str, List[bytes]]], Optional[Dict[str, List[bytes]]], str) -> None
         """Handle LDAP ACL extensions on Primary, Backup and Replica Directory Nodes"""
-
         if not listener.configRegistry.get('ldap/server/type'):
             return
 

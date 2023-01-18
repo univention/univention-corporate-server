@@ -64,8 +64,7 @@ client = Client(options.host, options.username, options.password, language='en-U
 
 
 def join_sync_mode() -> None:
-    """ Join in bi-directional sync mode via UMC requests """
-
+    """Join in bi-directional sync mode via UMC requests"""
     # check domain / get configuration:
     print('=== AD-JOIN STARTED ===')
     request_options = {
@@ -112,8 +111,7 @@ def join_sync_mode() -> None:
 
 
 def join_read_mode() -> None:
-    """ Join in read mode via UMC requests """
-
+    """Join in read mode via UMC requests"""
     send_data = {
         'ad_server_address': options.domain_host,
         'password': options.domain_password,
@@ -147,8 +145,7 @@ def join_read_mode() -> None:
 
 
 def join_ad() -> None:
-    """ Function for joining an AD domain, mimicking a join from umc"""
-
+    """Function for joining an AD domain, mimicking a join from umc"""
     if options.sync_mode:
         # join in sync mode:
         print('=== AD-JOIN SYNC MODE SELECTED ===')
@@ -160,9 +157,10 @@ def join_ad() -> None:
 
 
 def check_correct_passwords() -> None:
-    """Check domain password saved for ucs-test and
-    correct if needed"""
-
+    """
+    Check domain password saved for ucs-test and
+    correct if needed
+    """
     print('=== Checking / Correcting ucs-test passwords ===')
 
     with ucr_factory() as ucr:
@@ -178,9 +176,10 @@ def check_correct_passwords() -> None:
 
 
 def check_correct_domain_admin() -> None:
-    """Check domain administrator saved for ucs-test and
-    correct if needed"""
-
+    """
+    Check domain administrator saved for ucs-test and
+    correct if needed
+    """
     print('=== Checking / Correcting ucs-test domain administrator ===')
 
     with ucr_factory() as ucr:

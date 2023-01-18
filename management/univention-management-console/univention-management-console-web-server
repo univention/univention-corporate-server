@@ -232,8 +232,8 @@ class SessionClient(object):
 
 
 class UMCP_Dispatcher(object):
-
     """Dispatcher used to exchange the requests between CherryPy and UMC"""
+
     # sessionid ==> SessionClient
     sessions = {}
     _queue_send = Queue.Queue()
@@ -354,8 +354,8 @@ _upload_manager = UploadManager()
 
 
 class QueueRequest(object):
-
-    """Element for the request queue containing the assoziated session
+    """
+    Element for the request queue containing the assoziated session
     ID, the request object, a response queue and the request ip address.
 
     :param sessionid: str
@@ -503,7 +503,7 @@ def default_error_page_html(status, message, traceback, version, result=None):
 
 
 def default_error_page_json(status, message, traceback, version, result=None):
-    """ The default error page for UMCP responses """
+    """The default error page for UMCP responses"""
     status, _, description = valid_status(status)
     if status == 401 and message == description:
         message = ''
@@ -523,8 +523,7 @@ def default_error_page_json(status, message, traceback, version, result=None):
 
 
 class UMC_HTTPError(HTTPError):
-
-    """ HTTPError which sets a error result """
+    """HTTPError which sets a error result"""
 
     def __init__(self, status=500, message=None, body=None, error=None, reason=None):
         HTTPError.__init__(self, status if not reason else '%s %s' % (status, reason), message)
@@ -861,7 +860,6 @@ class CPgeneric(Ressource):
 
     def make_queue_request(self, sessionid, request):
         """Appends a UMCP request to the queue and waits/blocks until the response is available"""
-
         self.add_request_headers(request)
         self.set_accept_language(request)
 
@@ -1182,9 +1180,7 @@ class Root(Ressource):
 
     @cherrypy.expose
     def index(self, **kw):
-        """
-        http://localhost:<ucr:umc/http/port>/
-        """
+        """http://localhost:<ucr:umc/http/port>/"""
         raise HTTPRedirect('/univention/', status=305)
 
     @cherrypy.expose
@@ -1411,9 +1407,10 @@ class SAML(Ressource):
         return self.http_response(binding, http_args)
 
     def create_authn_request(self, **kwargs):
-        """Creates the SAML <AuthnRequest> request and returns the SAML binding and HTTP response.
+        """
+        Creates the SAML <AuthnRequest> request and returns the SAML binding and HTTP response.
 
-                Returns (binding, http-arguments)
+        Returns (binding, http-arguments)
         """
         identity_provider_entity_id = self.select_identity_provider()
         binding, destination = self.get_identity_provider_destination(identity_provider_entity_id)
@@ -1428,11 +1425,12 @@ class SAML(Ressource):
         return binding, http_args
 
     def select_identity_provider(self):
-        """Select an identity provider based on the available identity providers.
-                If multiple IDP's are set up the client might have specified one in the query string.
-                Otherwise an error is raised where the user can choose one.
+        """
+        Select an identity provider based on the available identity providers.
+        If multiple IDP's are set up the client might have specified one in the query string.
+        Otherwise an error is raised where the user can choose one.
 
-                Returns the EntityID of the IDP.
+        Returns the EntityID of the IDP.
         """
         idps = self.sp.metadata.with_descriptor("idpsso")
         if not idps and self.reload():
@@ -1446,17 +1444,19 @@ class SAML(Ressource):
         raise SamlError().multiple_identity_provider(list(idps.keys()), self.idp_query_param)
 
     def get_identity_provider_destination(self, entity_id):
-        """Get the destination (with SAML binding) of the specified entity_id.
+        """
+        Get the destination (with SAML binding) of the specified entity_id.
 
-                Returns (binding, destination-URI)
+        Returns (binding, destination-URI)
         """
         return self.sp.pick_binding("single_sign_on_service", self.bindings, "idpsso", entity_id=entity_id)
 
     def select_service_provider(self):
-        """Select the ACS-URI and binding of this service provider based on the request uri.
-                Tries to preserve the current scheme (HTTP/HTTPS) and netloc (host/IP) but falls back to FQDN if it is not set up.
+        """
+        Select the ACS-URI and binding of this service provider based on the request uri.
+        Tries to preserve the current scheme (HTTP/HTTPS) and netloc (host/IP) but falls back to FQDN if it is not set up.
 
-                Returns (binding, service-provider-URI)
+        Returns (binding, service-provider-URI)
         """
         acs = self.sp.config.getattr("endpoints", "sp")["assertion_consumer_service"]
         service_url, reply_binding = acs[0]

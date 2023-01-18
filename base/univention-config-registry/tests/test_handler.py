@@ -271,17 +271,13 @@ def test_grep_variables(tmpl, vars):
 
 @pytest.fixture
 def handler0(mocker):
-    """
-    Return empty dummy handler.
-    """
+    """Return empty dummy handler."""
     return mocker.MagicMock(preinst=None, postinst=None, user=None, group=None, mode=None)
 
 
 @pytest.fixture
 def handlers(tmpcache):
-    """
-    Return :py:class:`ConfigHandlers` instance with private cache directory.
-    """
+    """Return :py:class:`ConfigHandlers` instance with private cache directory."""
     handlers = ucrh.ConfigHandlers()
     return handlers
 

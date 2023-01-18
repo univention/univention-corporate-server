@@ -30,9 +30,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-"""
-|UDM| module for |DNS| reverse zones
-"""
+"""|UDM| module for |DNS| reverse zones"""
 
 import ldap.dn
 

@@ -752,15 +752,11 @@ class ad(univention.connector.ucs):
         return self._list_rejected()
 
     def save_rejected(self, object):
-        """
-        save object as rejected
-        """
+        """save object as rejected"""
         self._save_rejected(self.__get_change_usn(object), object['dn'])
 
     def remove_rejected(self, object):
-        """
-        remove object from rejected
-        """
+        """remove object from rejected"""
         self._remove_rejected(self.__get_change_usn(object), object['dn'])
 
     def addToCreationList(self, dn):
@@ -835,9 +831,7 @@ class ad(univention.connector.ucs):
             self._debug_traceback(ud.ERROR, 'Could not get object')  # TODO: remove except block?
 
     def __get_change_usn(self, ad_object):
-        """
-        get change USN as max(uSNCreated, uSNChanged)
-        """
+        """get change USN as max(uSNCreated, uSNChanged)"""
         if not ad_object:
             return 0
         usncreated = int(ad_object['attributes'].get('uSNCreated', [b'0'])[0])
@@ -845,9 +839,7 @@ class ad(univention.connector.ucs):
         return max(usnchanged, usncreated)
 
     def __search_ad_partitions(self, scope=ldap.SCOPE_SUBTREE, filter='', attrlist=[], show_deleted=False):
-        """
-        search ad across all partitions listed in self.ad_ldap_partitions
-        """
+        """search ad across all partitions listed in self.ad_ldap_partitions"""
         res = []
         for base in self.ad_ldap_partitions:
             res += self.__search_ad(base, scope, filter, attrlist, show_deleted)
@@ -858,10 +850,7 @@ class ad(univention.connector.ucs):
         return self.__search_ad(dn, scope=ldap.SCOPE_BASE, filter='(objectClass=*)', show_deleted=True)[0]
 
     def __search_ad(self, base=None, scope=ldap.SCOPE_SUBTREE, filter='', attrlist=[], show_deleted=False):
-        """
-        search ad
-        """
-
+        """search ad"""
         if not base:
             base = self.lo_ad.base
 
@@ -904,9 +893,7 @@ class ad(univention.connector.ucs):
         return fix_dn_in_search(res)
 
     def __search_ad_changes(self, show_deleted=False, filter=''):
-        """
-        search ad for changes since last update (changes greater lastUSN)
-        """
+        """search ad for changes since last update (changes greater lastUSN)"""
         lastUSN = self._get_lastUSN()
         # filter erweitern um "(|(uSNChanged>=lastUSN+1)(uSNCreated>=lastUSN+1))"
         # +1 da suche nur nach '>=', nicht nach '>' möglich
@@ -973,10 +960,7 @@ class ad(univention.connector.ucs):
             return sort_ad_changes(returnObjects, lastUSN)
 
     def __search_ad_changeUSN(self, changeUSN, show_deleted=True, filter=''):
-        """
-        search ad for change with id
-        """
-
+        """search ad for change with id"""
         usn_filter = format_escaped('(|(uSNChanged={0!e})(uSNCreated={0!e}))', changeUSN)
         if filter != '':
             usn_filter = '(&({}){})'.format(filter, usn_filter)
@@ -984,10 +968,7 @@ class ad(univention.connector.ucs):
         return self.__search_ad_partitions(filter=usn_filter, show_deleted=show_deleted)
 
     def __dn_from_deleted_object(self, object):
-        """
-        gets dn for deleted object (original dn before the object was moved into the deleted objects container)
-        """
-
+        """gets dn for deleted object (original dn before the object was moved into the deleted objects container)"""
         rdn = object['dn'].split('\\0ADEL:')[0]
         last_known_parent = object['attributes'].get('lastKnownParent', [b''])[0].decode('UTF-8')
         if last_known_parent and '\\0ADEL:' in last_known_parent:
@@ -1053,16 +1034,12 @@ class ad(univention.connector.ucs):
                 return key
 
     def __update_lastUSN(self, object):
-        """
-        Update der lastUSN
-        """
+        """Update der lastUSN"""
         if self.__get_change_usn(object) > self._get_lastUSN():
             self._set_lastUSN(self.__get_change_usn(object))
 
     def __get_highestCommittedUSN(self):
-        """
-        get highestCommittedUSN stored in AD
-        """
+        """get highestCommittedUSN stored in AD"""
         try:
             return int(self.ad_search_ext_s(
                 '',  # base
@@ -1076,10 +1053,7 @@ class ad(univention.connector.ucs):
             return 0
 
     def set_primary_group_to_ucs_user(self, object_key, object_ucs):
-        """
-        check if correct primary group is set to a fresh UCS-User
-        """
-
+        """check if correct primary group is set to a fresh UCS-User"""
         rid_filter = format_escaped("(samaccountname={0!e})", object_ucs['username'])
         ad_group_rid_resultlist = self.__search_ad(base=self.lo_ad.base, scope=ldap.SCOPE_SUBTREE, filter=rid_filter, attrlist=['dn', 'primaryGroupID'])
 
@@ -1098,10 +1072,7 @@ class ad(univention.connector.ucs):
             object_ucs['primaryGroup'] = ucs_group['dn']
 
     def primary_group_sync_from_ucs(self, key, object):  # object mit ad-dn
-        """
-        sync primary group of an ucs-object to ad
-        """
-
+        """sync primary group of an ucs-object to ad"""
         object_key = key
         object_ucs = self._object_mapping(object_key, object)
 
@@ -1172,10 +1143,7 @@ class ad(univention.connector.ucs):
             return True
 
     def primary_group_sync_to_ucs(self, key, object):  # object mit ucs-dn
-        """
-        sync primary group of an ad-object to ucs
-        """
-
+        """sync primary group of an ad-object to ucs"""
         object_key = key
 
         ad_object = self._object_mapping(object_key, object, 'ucs')
@@ -1204,9 +1172,7 @@ class ad(univention.connector.ucs):
             ud.debug(ud.LDAP, ud.INFO, "primary_group_sync_to_ucs: change of primary Group in ucs not needed")
 
     def object_memberships_sync_from_ucs(self, key, object):
-        """
-        sync group membership in AD if object was changend in UCS
-        """
+        """sync group membership in AD if object was changend in UCS"""
         ud.debug(ud.LDAP, ud.INFO, "object_memberships_sync_from_ucs: object: %s" % object)
 
         # search groups in UCS which have this object as member
@@ -1244,10 +1210,7 @@ class ad(univention.connector.ucs):
             member_cache.add(member.lower())
 
     def group_members_sync_from_ucs(self, key, object):  # object mit ad-dn
-        """
-        sync groupmembers in AD if changend in UCS
-        """
-
+        """sync groupmembers in AD if changend in UCS"""
         ud.debug(ud.LDAP, ud.INFO, "group_members_sync_from_ucs: %s" % object)
 
         object_key = key
@@ -1415,9 +1378,7 @@ class ad(univention.connector.ucs):
         return True
 
     def object_memberships_sync_to_ucs(self, key, object):
-        """
-        sync group membership in UCS if object was changend in AD
-        """
+        """sync group membership in UCS if object was changend in AD"""
         # disable this debug line, see Bug #12031
         # ud.debug(ud.LDAP, ud.INFO, "object_memberships_sync_to_ucs: object: %s" % object)
 
@@ -1449,15 +1410,11 @@ class ad(univention.connector.ucs):
                     ud.debug(ud.LDAP, ud.INFO, "object_memberships_sync_to_ucs: Failed to append user %s to AD group member cache of %s" % (object['dn'].lower(), groupDN.lower()))
 
     def __compare_lowercase(self, dn, dn_list):
-        """
-        Checks if dn is in dn_list
-        """
+        """Checks if dn is in dn_list"""
         return any(dn.lower() == d.lower() for d in dn_list)
 
     def one_group_member_sync_to_ucs(self, ucs_group_object, object):
-        """
-        sync groupmembers in UCS if changend one member in AD
-        """
+        """sync groupmembers in UCS if changend one member in AD"""
         # In AD the object['dn'] is member of the group sync_object
 
         ml = []
@@ -1480,9 +1437,7 @@ class ad(univention.connector.ucs):
                 ud.debug(ud.LDAP, ud.INFO, "one_group_member_sync_to_ucs: User is already member of the group: %s modlist: %s" % (ucs_group_object['dn'], ml))
 
     def one_group_member_sync_from_ucs(self, ad_group_object, object):
-        """
-        sync groupmembers in AD if changend one member in AD
-        """
+        """sync groupmembers in AD if changend one member in AD"""
         ml = []
         if not self.__compare_lowercase(object['dn'].encode('UTF-8'), ad_group_object['attributes'].get('member', [])):
             ml.append((ldap.MOD_ADD, 'member', [object['dn'].encode('UTF-8')]))
@@ -1510,9 +1465,7 @@ class ad(univention.connector.ucs):
             member_cache.add(member_lower)
 
     def group_members_sync_to_ucs(self, key, object):
-        """
-        sync groupmembers in UCS if changend in AD
-        """
+        """sync groupmembers in UCS if changend in AD"""
         ud.debug(ud.LDAP, ud.INFO, "group_members_sync_to_ucs: object: %s" % object)
 
         object_key = key
@@ -1825,9 +1778,7 @@ class ad(univention.connector.ucs):
         print("--------------------------------------")
 
     def resync_rejected(self):
-        """
-        tries to resync rejected dn
-        """
+        """tries to resync rejected dn"""
         print("--------------------------------------")
 
         change_count = 0
@@ -1881,9 +1832,7 @@ class ad(univention.connector.ucs):
         sys.stdout.flush()
 
     def poll(self, show_deleted=True):
-        """
-        poll for changes in AD
-        """
+        """poll for changes in AD"""
         # search from last_usn for changes
         change_count = 0
         changes = []

@@ -107,9 +107,7 @@ class TestReplog(object):
 
     @pytest.fixture
     def replog(self, monkeypatch, tmpdir, ucr0):
-        """
-        Empty UCR for replog testing.
-        """
+        """Empty UCR for replog testing."""
         log = tmpdir / "replog"
         monkeypatch.setattr(ucrfe, "REPLOG_FILE", str(log))
         return log

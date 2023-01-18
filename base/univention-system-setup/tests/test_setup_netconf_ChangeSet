@@ -33,10 +33,7 @@ class DummyOption(object):
 
 
 class TestChangeSetEmpty(unittest.TestCase):
-
-    """
-    No old and no new addresses.
-    """
+    """No old and no new addresses."""
 
     def setUp(self):
         ucr = {}
@@ -58,10 +55,7 @@ class TestChangeSetEmpty(unittest.TestCase):
 
 
 class TestChangeSetRemoved(unittest.TestCase):
-
-    """
-    Old address removed.
-    """
+    """Old address removed."""
 
     def setUp(self):
         ucr = {
@@ -97,10 +91,7 @@ class TestChangeSetRemoved(unittest.TestCase):
 
 
 class TestChangeSetAdded(unittest.TestCase):
-
-    """
-    New address added.
-    """
+    """New address added."""
 
     def setUp(self):
         ucr = {}
@@ -131,10 +122,7 @@ class TestChangeSetAdded(unittest.TestCase):
 
 
 class TestChangeSetChanged(unittest.TestCase):
-
-    """
-    Old address changed to new address.
-    """
+    """Old address changed to new address."""
 
     def setUp(self):
         ucr = {
@@ -182,10 +170,7 @@ class TestChangeSetChanged(unittest.TestCase):
 
 
 class TestChangeSetMoved(unittest.TestCase):
-
-    """
-    Old address moved to new interface.
-    """
+    """Old address moved to new interface."""
 
     def setUp(self):
         ucr = {
@@ -226,10 +211,7 @@ class TestChangeSetMoved(unittest.TestCase):
 
 
 class TestChangeSetMultipleSameSubnet(unittest.TestCase):
-
-    """
-    Test multiple addresses in the same subnet.
-    """
+    """Test multiple addresses in the same subnet."""
 
     def setUp(self):
         ucr = {}

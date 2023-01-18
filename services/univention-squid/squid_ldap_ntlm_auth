@@ -253,10 +253,7 @@ def verifyNtlm(password_hash: bytes, challenge: bytes) -> bytes:
 
 
 def verifyNtlm2(ResponseKeyNT: bytes, ServerChallenge: bytes, ClientChallenge: bytes) -> bytes:
-    """
-    http://davenport.sourceforge.net/ntlm.html#theNtlm2SessionResponse
-    """
-
+    """http://davenport.sourceforge.net/ntlm.html#theNtlm2SessionResponse"""
     nonce = ServerChallenge + ClientChallenge
     sess = hashlib.md5(nonce).digest()[0:8]
     nt_challenge_response = verifyNtlm(ResponseKeyNT, sess)
@@ -265,10 +262,7 @@ def verifyNtlm2(ResponseKeyNT: bytes, ServerChallenge: bytes, ClientChallenge: b
 
 
 def verifyNtlmV2(ntResp: bytes, challenge: bytes, user: str, domain: str, ntHashV1: bytes) -> bytes:
-    """
-    http://davenport.sourceforge.net/ntlm.html#theType3Message
-    """
-
+    """http://davenport.sourceforge.net/ntlm.html#theType3Message"""
     # nt v2 hash
     inf = (user.upper() + domain).encode("utf-16le")
     nt_hash_v2 = hmac.new(ntHashV1, inf, digestmod=hashlib.md5).digest()

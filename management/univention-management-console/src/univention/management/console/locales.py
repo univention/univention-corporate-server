@@ -67,13 +67,13 @@ _ = obj.translate
 
 
 class I18N(object):
-
     """
     Provides a translation function for a given language and translation domain.
 
     :param str locale: the locale to provide
     :param str domain: the translation domain to use
     """
+
     LOCALE_DIR = '/usr/share/univention-management-console/i18n/'
 
     def __init__(self, locale=None, domain=None):
@@ -147,7 +147,6 @@ class I18N(object):
 
 
 class I18N_Manager(dict):
-
     """
     This class handles the :class:`.I18N` instances within an UMC
     session.

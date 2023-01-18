@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-"""Generate gettext Portable Objects and message catalogs (gettext MO and a
+"""
+Generate gettext Portable Objects and message catalogs (gettext MO and a
 Univention specific JSON-based format) from multiple source files by file type.
 """
 #
@@ -111,8 +112,10 @@ class SourceFilesJavaScript(SourceFilesXgettext):
 
     def _compile(self, po_path, json_output_path):
         # type: (str, str) -> None
-        """With UMC and univention-web based applications a custom, JSON-based
-        message format is used."""
+        """
+        With UMC and univention-web based applications a custom, JSON-based
+        message format is used.
+        """
         umc.po_to_json(po_path, json_output_path)
 
 

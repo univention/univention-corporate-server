@@ -56,7 +56,6 @@ _ = Translation('univention-management-console').translate
 
 
 class Progress(object):
-
     """
     Class to keep track of the progress during execution of a function.
     Used internally.
@@ -124,7 +123,6 @@ class Progress(object):
 
 
 class ProgressMixin(object):
-
     """
     Mixin to provide two new functions:
 

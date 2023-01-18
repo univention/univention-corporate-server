@@ -29,9 +29,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-"""
-Classes for holding binary UDM  object properties.
-"""
+"""Classes for holding binary UDM  object properties."""
 
 from __future__ import absolute_import, unicode_literals
 from collections import namedtuple

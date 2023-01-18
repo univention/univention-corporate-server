@@ -129,12 +129,13 @@ def bundled(func):
 class ObjectPropertySanitizer(StringSanitizer):
 
     def __init__(self, **kwargs):
-        """A LDAP attribute name.
-                must at least be 1 character long.
+        """
+        A LDAP attribute name.
+        must at least be 1 character long.
 
-                This sanitizer prevents LDAP search filter injections in the attribute name.
+        This sanitizer prevents LDAP search filter injections in the attribute name.
 
-                TODO: in theory we should only allow existing attributes for the request object(/object type)
+        TODO: in theory we should only allow existing attributes for the request object(/object type)
         """
         args = dict(
             minimum=1,
@@ -230,12 +231,14 @@ class Instance(Base, ProgressMixin):
         return get_obj_module(flavor, ldap_dn, self.get_ldap_connection()[0])
 
     def _get_module_by_request(self, request, object_type=None):
-        """Tries to determine the UDM module to use. If no specific
+        """
+        Tries to determine the UDM module to use. If no specific
         object type is given the request option 'objectType' is used. In
         case none if this leads to a valid object type the request
         flavor is chosen. Failing all this will raise in
         UMC_Error exception. On success a UMC_Module object is
-        returned."""
+        returned.
+        """
         if object_type is None:
             object_type = request.options.get('objectType')
 
@@ -390,7 +393,8 @@ class Instance(Base, ProgressMixin):
         ), required=True)
     ), required=True))
     def add(self, request):
-        """Creates LDAP objects.
+        """
+        Creates LDAP objects.
 
         requests.options = [ { 'options' : {}, 'object' : {} }, ... ]
 
@@ -423,7 +427,8 @@ class Instance(Base, ProgressMixin):
         }, required=True),
     )), required=True)
     def put(self, request):
-        """Modifies the given list of LDAP objects.
+        """
+        Modifies the given list of LDAP objects.
 
         requests.options = [ { 'options' : {}, 'object' : {} }, ... ]
 
@@ -455,7 +460,8 @@ class Instance(Base, ProgressMixin):
         thread.run()
 
     def remove(self, request):
-        """Removes the given list of LDAP objects.
+        """
+        Removes the given list of LDAP objects.
 
         requests.options = [ { 'object' : <LDAP DN>, 'options' { 'cleanup' : (True|False), 'recursive' : (True|False) } }, ... ]
 
@@ -494,13 +500,13 @@ class Instance(Base, ProgressMixin):
             }
 
     def get(self, request):
-        """Retrieves the given list of LDAP objects. Password property will be removed.
+        """
+        Retrieves the given list of LDAP objects. Password property will be removed.
 
         requests.options = [ <LDAP DN>, ... ]
 
         return: [ { '$dn$' : <LDAP DN>, <object properties> }, ... ]
         """
-
         MODULE.info('Starting thread for udm/get request')
         thread = notifier.threads.Simple('Get', notifier.Callback(self._get, request), notifier.Callback(self.thread_finished_callback, request))
         thread.run()
@@ -571,7 +577,8 @@ class Instance(Base, ProgressMixin):
         fields=ListSanitizer(),
     )
     def query(self, request):
-        """Searches for LDAP objects and returns a few properties of the found objects
+        """
+        Searches for LDAP objects and returns a few properties of the found objects
 
         requests.options = {}
                 'objectType' -- the object type to search for (default: if not given the flavor is used)
@@ -693,7 +700,8 @@ class Instance(Base, ProgressMixin):
             raise UMC_Error(_('The report does not exists. Please create a new one.'), status=404)
 
     def values(self, request):
-        """Returns the default search pattern/value for the given object property
+        """
+        Returns the default search pattern/value for the given object property
 
         requests.options = {}
                 'objectProperty' -- the object property that should be scanned
@@ -713,7 +721,8 @@ class Instance(Base, ProgressMixin):
         increaseCounter=BooleanSanitizer(default=False)
     )
     def network(self, request):
-        """Returns the next IP configuration based on the given network object
+        """
+        Returns the next IP configuration based on the given network object
 
         requests.options = {}
                 'networkDN' -- the LDAP DN of the network object
@@ -742,7 +751,8 @@ class Instance(Base, ProgressMixin):
     @module_from_request
     @simple_response()
     def containers(self, module):
-        """Returns the list of default containers for the given object
+        """
+        Returns the list of default containers for the given object
         type. Therefore the Python module and the default object in the
         LDAP directory are searched.
 
@@ -757,7 +767,8 @@ class Instance(Base, ProgressMixin):
     @module_from_request
     @simple_response
     def templates(self, module):
-        """Returns the list of template objects for the given object
+        """
+        Returns the list of template objects for the given object
         type.
 
         requests.options = {}
@@ -765,7 +776,6 @@ class Instance(Base, ProgressMixin):
 
         return: [ { 'id' : <LDAP DN of container or None>, 'label' : <name> }, ... ]
         """
-
         result = []
         if module.template:
             template = UDM_Module(module.template)
@@ -778,7 +788,8 @@ class Instance(Base, ProgressMixin):
 
     @LDAP_Connection
     def types(self, request, ldap_connection=None, ldap_position=None):
-        """Returns the list of object types matching the given flavor or container.
+        """
+        Returns the list of object types matching the given flavor or container.
 
         requests.options = {}
                 'superordinate' -- if available only types for the given superordinate are returned (not for the navigation)
@@ -832,7 +843,8 @@ class Instance(Base, ProgressMixin):
     @bundled
     @sanitize(objectType=StringSanitizer())  # objectDN=StringSanitizer(allow_none=True),
     def layout(self, request):
-        """Returns the layout information for the given object type.
+        """
+        Returns the layout information for the given object type.
 
         requests.options = {}
                 'objectType' -- The UDM module name. If not available the flavor is used
@@ -854,7 +866,8 @@ class Instance(Base, ProgressMixin):
         searchable=BooleanSanitizer(default=False)
     )
     def properties(self, request):
-        """Returns the properties of the given object type.
+        """
+        Returns the properties of the given object type.
 
         requests.options = {}
                 'searchable' -- If given only properties that might be used for search filters are returned
@@ -872,7 +885,8 @@ class Instance(Base, ProgressMixin):
     @module_from_request
     @simple_response
     def options(self, module):
-        """Returns the options specified for the given object type
+        """
+        Returns the options specified for the given object type
 
         requests.options = {}
                 'objectType' -- The UDM module name. If not available the flavor is used
@@ -891,7 +905,8 @@ class Instance(Base, ProgressMixin):
         return module.policies
 
     def validate(self, request):
-        """Validates the correctness of values for properties of the
+        """
+        Validates the correctness of values for properties of the
         given object type. Therefore the syntax definition of the properties is used.
 
         requests.options = {}
@@ -945,7 +960,8 @@ class Instance(Base, ProgressMixin):
     )
     @simple_response
     def syntax_choices_key(self, syntax, key):
-        """If size limit is reached search only for the current value
+        """
+        If size limit is reached search only for the current value
         (so that the selected value is valid).
 
         Bug #26556: git:ce2b2842b7c6728047c4d4e1cd2d7d399c401e4a
@@ -961,7 +977,8 @@ class Instance(Base, ProgressMixin):
     @sanitize(syntax=StringSanitizer(required=True))
     @simple_response
     def syntax_choices_info(self, syntax):
-        """Fetch meta information about syntax choices.
+        """
+        Fetch meta information about syntax choices.
         By doing a search query the number of results is returned.
         Check if the size limit would be reached.
         If reached, ComboBoxes add a entry with a search bar.
@@ -981,7 +998,8 @@ class Instance(Base, ProgressMixin):
         syntax=StringSanitizer(required=True)
     )
     def syntax_choices(self, request):
-        """Dynamically determine valid values for a given syntax class
+        """
+        Dynamically determine valid values for a given syntax class
 
         requests.options = {}
                 'syntax' -- The UDM syntax class
@@ -1024,10 +1042,11 @@ class Instance(Base, ProgressMixin):
         container=StringSanitizer(allow_none=True)
     )
     def nav_container_query(self, request):
-        """Returns a list of LDAP containers located under the given
+        """
+        Returns a list of LDAP containers located under the given
         LDAP base (option 'container'). If no base container is
-        specified the LDAP base object is returned."""
-
+        specified the LDAP base object is returned.
+        """
         ldap_base = ucr['ldap/base']
         container = request.options.get('container')
 
@@ -1047,7 +1066,6 @@ class Instance(Base, ProgressMixin):
     @LDAP_Connection
     def _container_query(self, request, container, modules, scope, ldap_connection=None, ldap_position=None):
         """Get a list of containers or child objects of the specified container."""
-
         if not container:
             container = ucr['ldap/base']
             defaults = {}
@@ -1098,7 +1116,8 @@ class Instance(Base, ProgressMixin):
     )
     @LDAP_Connection
     def nav_object_query(self, request, ldap_connection=None, ldap_position=None):
-        """Returns a list of objects in a LDAP container (scope: one)
+        """
+        Returns a list of objects in a LDAP container (scope: one)
 
         requests.options = {}
                 'container' -- the base container where the search should be started (default: LDAP base)
@@ -1158,8 +1177,10 @@ class Instance(Base, ProgressMixin):
         # container=StringSanitizer(default=None, allow_none=True)
     )))
     def object_policies(self, request):
-        """Returns a virtual policy object containing the values that
-        the given object or container inherits"""
+        """
+        Returns a virtual policy object containing the values that
+        the given object or container inherits
+        """
         def _thread(request):
 
             object_dn = None
@@ -1177,7 +1198,6 @@ class Instance(Base, ProgressMixin):
 
             def _get_object_parts(_options):
                 """Get object related information and corresponding UDM object/module. Verify user input."""
-
                 _object_type = _options['objectType']
                 _object_dn = _options['objectDN']
                 _container_dn = _options['container']
@@ -1259,10 +1279,12 @@ class Instance(Base, ProgressMixin):
         thread.run()
 
     def object_options(self, request):
-        """Returns the options known by the given objectType. If an LDAP
+        """
+        Returns the options known by the given objectType. If an LDAP
         DN is passed the current values for the options of this object
         are returned, otherwise the default values for the options are
-        returned."""
+        returned.
+        """
         object_type = request.options.get('objectType')
         if not object_type:
             raise UMC_Error('The object type is missing')

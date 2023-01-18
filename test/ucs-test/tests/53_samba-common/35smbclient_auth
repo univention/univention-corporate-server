@@ -103,9 +103,7 @@ class Test:
 
     @staticmethod
     def _calculateInnerDelay(roundTime, amountPerRound):
-        """
-        Return array of <amountPerRound> floats which sum-up to <roundTime>.
-        """
+        """Return array of <amountPerRound> floats which sum-up to <roundTime>."""
         delayArray = [random.randrange(1, 1000, 1) for _ in range(amountPerRound)]
         total = sum(delayArray)
         delayArray = [float(_) / total * roundTime for _ in delayArray]

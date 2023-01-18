@@ -6,8 +6,8 @@ __all__ = ['TestCodes']
 
 
 class TestCodes:
-
     """Public interface for test resultes."""
+
     RESULT_OKAY = 0
     RESULT_FAIL = 1
     RESULT_SKIP = 77

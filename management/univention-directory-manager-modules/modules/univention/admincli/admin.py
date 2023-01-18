@@ -31,9 +31,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-"""
-command line frontend to univention-directory-manager (module)
-"""
+"""command line frontend to univention-directory-manager (module)"""
 
 from __future__ import print_function
 import getopt

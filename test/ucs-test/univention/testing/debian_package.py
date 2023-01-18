@@ -51,10 +51,7 @@ class UninstallRuntimeError(RuntimeError):
 
 
 class DebianPackage():
-
-    """
-    Class to build simple debian packages
-    """
+    """Class to build simple debian packages"""
 
     def __init__(self, name='testdeb', version='1.0'):
         # type: (str, str) -> None

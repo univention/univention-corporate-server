@@ -449,7 +449,6 @@ def parse_args(args=None):
     :param args: the list of arguments to process (default: `sys.argv[1:]`)
     :returns: a Namespace instance.
     """
-
     ldap_base = ucr.get("ldap/base")
     domainname = ucr.get("domainname")
     host_fqdn = "%s.%s" % (ucr.get("hostname"), ucr.get("domainname"))
@@ -800,7 +799,6 @@ def create_realm_group(kc_admin, realm, group):
     :param group: String
     :return: Keycloak server response (RealmRepresentation)
     """
-
     REALM_GROUP_BASE = {
         "name": None
     }
@@ -829,7 +827,6 @@ def assign_group_realm_role_by_group_name(kc_admin, realm, group_name, role):
     :param role: String
     :return: Keycloak server response (RealmRepresentation)
     """
-
     groups = kc_admin.get_groups()  # query={"name": group_name}
     groups = [group for group in groups if group["name"] == group_name]
 
@@ -870,7 +867,6 @@ def add_or_replace_ldap_group_mapper(opt, kc_admin, ldap_sp, name, ldap_group):
     :param ldap_group: String
     :return: Keycloak server response (RealmRepresentation)
     """
-
     LDAP_GROUP_MAPPER = {
         "name": None,
         "parentId": None,
@@ -938,7 +934,6 @@ def add_or_replace_mapper(kc_admin, component):
     :param component: KeycloakREST_ComponentRepresentation
     :return:  Keycloak server response (RealmRepresentation)
     """
-
     mapper_component_filter = {'name': component["name"], 'parentId': component['parentId']}
     component_list = kc_admin.get_components(mapper_component_filter)
     for mapper in component_list:
@@ -956,7 +951,6 @@ def create_conditional_2fa_flow(kc_admin, realm, conditional_role, flow_name):
     :param flow_name: String
     :return: None
     """
-
     # delete old flow/subflows
     flows = kc_admin.get_authentication_flows()
     for flow in flows:
@@ -1033,7 +1027,6 @@ def create_config_for_execution(kc_admin, config, execution_id):
     :param execution_id: String
     :return: Keycloak server response (RealmRepresentation)
     """
-
     url = f"admin/realms/{kc_admin.realm_name}/authentication/executions/{execution_id}/config"
     data_raw = kc_admin.raw_post(url, data=json.dumps(config))
     return raise_error_from_response(data_raw, KeycloakGetError, expected_codes=[204, 201])
@@ -1065,7 +1058,6 @@ def execution_raise_priority(kc_admin, execution_id):
     :param execution_id: String
     :return: Keycloak server response (RealmRepresentation)
     """
-
     payload = {"realm": kc_admin.realm_name, "execution": execution_id}
 
     url = f"admin/realms/{kc_admin.realm_name}/authentication/executions/{execution_id}/raise-priority"
@@ -1352,9 +1344,7 @@ def init_keycloak_ucs(opt):
 
 def main():
     # type: () -> int
-    """
-    CLI tool to interact with Keycloak.
-    """
+    """CLI tool to interact with Keycloak."""
     opt = parse_args()
     return opt.func(opt) or 0
 

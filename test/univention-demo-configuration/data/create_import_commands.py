@@ -30,9 +30,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-"""
-Import example user data including profile images to UCS
-"""
+"""Import example user data including profile images to UCS"""
 
 from __future__ import print_function
 
@@ -76,8 +74,7 @@ NAGIOS_OPTIONS = ' '.join(
 
 
 def importRow(row: Dict[str, str]) -> None:
-    """ Import one row containing a user definition """
-
+    """Import one row containing a user definition"""
     row["LDAPBASE"] = LDAPBASE
     row["DOMAIN"] = DOMAIN
     row["DC_OPTIONS"] = DC_OPTIONS

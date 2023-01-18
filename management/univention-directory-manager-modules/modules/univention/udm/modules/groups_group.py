@@ -29,9 +29,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-"""
-Module and object specific for "groups/group" UDM module.
-"""
+"""Module and object specific for "groups/group" UDM module."""
 
 from __future__ import absolute_import, unicode_literals
 from ..encoders import (
@@ -60,11 +58,13 @@ class GroupsGroupObjectProperties(GenericObjectProperties):
 
 class GroupsGroupObject(GenericObject):
     """Better representation of groups/group properties."""
+
     udm_prop_class = GroupsGroupObjectProperties
 
 
 class GroupsGroupModule(GenericModule):
     """GroupsGroupObject factory"""
+
     _udm_object_class = GroupsGroupObject
 
     class Meta:

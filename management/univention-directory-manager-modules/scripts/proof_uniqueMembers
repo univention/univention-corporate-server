@@ -32,9 +32,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-"""
-Check if users are member of their primary group.
-"""
+"""Check if users are member of their primary group."""
 
 from __future__ import print_function
 

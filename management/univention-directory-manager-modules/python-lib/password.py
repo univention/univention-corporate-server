@@ -33,9 +33,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-"""
-|UDM| library for changing user pasword
-"""
+"""|UDM| library for changing user pasword"""
 
 import six
 from ldap.filter import filter_format

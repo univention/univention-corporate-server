@@ -25,9 +25,7 @@ class TestUMCQuotasManagement(UMCBase):
         self.partition_dev = ''
 
     def check_quotas_query(self, quotas_query):
-        """
-        Checks if 'quotas_query' has all default fields
-        """
+        """Checks if 'quotas_query' has all default fields"""
         for quota in quotas_query:
             if 'partitionSize' not in quota:
                 utils.fail("The field 'partitionSize' was not found in "
@@ -112,9 +110,7 @@ class TestUMCQuotasManagement(UMCBase):
         self.client.umc_command('quota/users/' + command, options).result
 
     def main(self):
-        """
-        A method to test the filesystem quota management through UMC
-        """
+        """A method to test the filesystem quota management through UMC"""
         self.create_connection_authenticate()
 
         test_username = 'umc_test_user_' + random_username(6)

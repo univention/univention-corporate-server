@@ -31,9 +31,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-"""
-|UDM| access to handler modules.
-"""
+"""|UDM| access to handler modules."""
 
 from __future__ import absolute_import
 
@@ -121,9 +119,7 @@ def _ldap_operational_attribute_names(lo):  # type: (univention.admin.uldap.acce
 
 def update():
     # type: () -> None
-    """
-    Scan file system and update internal list of |UDM| handler modules.
-    """
+    """Scan file system and update internal list of |UDM| handler modules."""
     global modules, _superordinates
     _modules = {}  # type: Dict[str, UdmModule]
     superordinates = set()  # type: Set[str]
@@ -266,10 +262,7 @@ def init(lo, position, module, template_object=None, force_reload=False):
 
 def update_extended_options(lo, module, position):
     # type: (univention.admin.uldap.access, UdmModule, univention.admin.uldap.position) -> None
-    """
-    Overwrite options defined via |LDAP|.
-    """
-
+    """Overwrite options defined via |LDAP|."""
     # get current language
     lang = locale.getlocale(locale.LC_MESSAGES)[0]
     ud.debug(ud.ADMIN, ud.INFO, 'modules update_extended_options: LANG=%s' % lang)
@@ -300,9 +293,7 @@ def update_extended_options(lo, module, position):
 
 
 class EA_Layout(dict):
-    """
-    Extended attribute layout.
-    """
+    """Extended attribute layout."""
 
     def __init__(self, **kwargs):
         dict.__init__(self, kwargs)
@@ -371,9 +362,7 @@ class EA_Layout(dict):
 
 def update_extended_attributes(lo, module, position):
     # type: (univention.admin.uldap.access, UdmModule, univention.admin.uldap.position) -> None
-    """
-    Load extended attribute from |LDAP| and modify |UDM| handler.
-    """
+    """Load extended attribute from |LDAP| and modify |UDM| handler."""
     # add list of tabnames created by extended attributes
     if not hasattr(module, 'extended_attribute_tabnames'):
         module.extended_attribute_tabnames = []
@@ -715,9 +704,7 @@ def recognize(module_name, dn, attr):
 
 def name(module):
     # type: (UdmName) -> str
-    """
-    Return name of module.
-    """
+    """Return name of module."""
     if not module:
         return ''
     return get(module).module
@@ -725,9 +712,7 @@ def name(module):
 
 def superordinate_names(module_name):
     # type: (UdmName) -> List[str]
-    """
-    Return name of superordinate module.
-    """
+    """Return name of superordinate module."""
     module = get(module_name)
     names = getattr(module, 'superordinate', [])
     if isinstance(names, six.string_types):
@@ -758,9 +743,7 @@ def superordinate(module):
 
 def superordinates(module):
     # type: (UdmName) -> List[Optional[UdmModule]]
-    """
-    Return instance of superordinate module.
-    """
+    """Return instance of superordinate module."""
     return [get(x) for x in superordinate_names(module)]
 
 

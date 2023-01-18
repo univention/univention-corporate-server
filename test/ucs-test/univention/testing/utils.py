@@ -28,9 +28,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-"""
-Common functions used by tests.
-"""
+"""Common functions used by tests."""
 
 
 import functools
@@ -383,7 +381,6 @@ class AutomaticListenerRestart:
 
 
 class AutoCallCommand:
-
     """
     Automatically call the given commands when entering/leaving the "with" block.
     The keyword arguments enter_cmd and exit_cmd are optional::
@@ -429,7 +426,6 @@ class AutoCallCommand:
 
 
 class FollowLogfile:
-
     """
     Prints the contents of the listed files on exit of the with block if
     an exception occurred.
@@ -569,9 +565,7 @@ def wait_for_listener_replication(verbose=True):
 
 def get_lid():
     # type: () -> int
-    """
-    get_lid() returns the last processed notifier ID of univention-directory-listener.
-    """
+    """get_lid() returns the last processed notifier ID of univention-directory-listener."""
     with open("/var/lib/univention-directory-listener/notifier_id") as notifier_id:
         return int(notifier_id.readline())
 

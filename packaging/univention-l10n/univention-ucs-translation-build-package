@@ -1,8 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-"""
-Build UCS package containing translations for a new language.
-"""
+"""Build UCS package containing translations for a new language."""
 #
 # Like what you see? Join us!
 # https://www.univention.com/about-us/careers/vacancies/

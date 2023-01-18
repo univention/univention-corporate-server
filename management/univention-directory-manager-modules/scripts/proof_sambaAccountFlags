@@ -31,9 +31,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-"""
-Check the samba account flags
-"""
+"""Check the samba account flags"""
 
 from __future__ import print_function
 

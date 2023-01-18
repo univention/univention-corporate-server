@@ -73,7 +73,8 @@ TEX_ESCAPE = {
 
 
 def texClean(str):
-    u"""Escape string for use in LaTeX.
+    u"""
+    Escape string for use in LaTeX.
 
     >>> texClean('Test')
     'Test'

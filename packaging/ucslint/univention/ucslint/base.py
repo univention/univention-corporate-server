@@ -158,9 +158,7 @@ class UPCMessage(object):
         return '%s: %s' % (self.id, self.msg)
 
     def getId(self) -> str:
-        """
-        Return unique message identifier.
-        """
+        """Return unique message identifier."""
         return self.id
 
     def junit(self) -> TestCase:
@@ -174,9 +172,7 @@ class UPCMessage(object):
 
 
 class UniventionPackageCheckBase(object):
-    """
-    Abstract base class for checks.
-    """
+    """Abstract base class for checks."""
 
     def __init__(self) -> None:
         self.name = self.__class__.__module__  # type: str
@@ -200,9 +196,7 @@ class UniventionPackageCheckBase(object):
         self.msg.append(message)
 
     def getMsgIds(self) -> MsgIds:
-        """
-        Return mapping from message-identifiert to 2-tuple (severity, message-text).
-        """
+        """Return mapping from message-identifiert to 2-tuple (severity, message-text)."""
         return {}
 
     def setdebug(self, level: int) -> None:
@@ -246,41 +240,29 @@ class UniventionPackageCheckBase(object):
 
 
 class UniventionPackageCheckDebian(UniventionPackageCheckBase):
-    """
-    Check for :file:`debian/` directory.
-    """
+    """Check for :file:`debian/` directory."""
 
     def check(self, path: str) -> None:
-        """
-        the real check.
-        """
+        """the real check."""
         super(UniventionPackageCheckDebian, self).check(path)
         if not os.path.isdir(os.path.join(path, 'debian')):
             raise UCSLintException("directory '%s' does not exist!" % (path,))
 
 
 class UCSLintException(Exception):
-    """
-    Top level exception.
-    """
+    """Top level exception."""
 
 
 class DebianControlNotEnoughSections(UCSLintException):
-    """
-    Content exception.
-    """
+    """Content exception."""
 
 
 class DebianControlParsingError(UCSLintException):
-    """
-    Parsing exception.
-    """
+    """Parsing exception."""
 
 
 class FailedToReadFile(UCSLintException):
-    """
-    File reading exception.
-    """
+    """File reading exception."""
 
     def __init__(self, fn: str) -> None:
         super(FailedToReadFile, self).__init__()
@@ -321,16 +303,13 @@ class DebianControlEntry(Dict[str, str]):
                     yield pkg
 
     def _pkgs(self, key: str) -> Set[str]:
-        """
-        Return package list.
-        """
+        """Return package list."""
         return set(self._split_field(self.get(key, "")))
 
 
 class DebianControlSource(DebianControlEntry):
-    """
-    Source package entry from :file:`debian/control`.
-    """
+    """Source package entry from :file:`debian/control`."""
+
     dep = property(lambda self: self._pkgs('Build-Depends'))
     dep_indep = property(lambda self: self._pkgs('Build-Depends-Indep'))
     dep_arch = property(lambda self: self._pkgs('Build-Depends-Arch'))
@@ -342,9 +321,8 @@ class DebianControlSource(DebianControlEntry):
 
 
 class DebianControlBinary(DebianControlEntry):
-    """
-    Binary package entry from :file:`debian/control`.
-    """
+    """Binary package entry from :file:`debian/control`."""
+
     pre = property(lambda self: self._pkgs('Pre-Depends'))
     dep = property(lambda self: self._pkgs('Depends'))
     rec = property(lambda self: self._pkgs('Recommends'))

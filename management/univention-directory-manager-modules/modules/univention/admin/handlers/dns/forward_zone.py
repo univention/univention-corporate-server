@@ -30,9 +30,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-"""
-|UDM| module for |DNS| forward zones
-"""
+"""|UDM| module for |DNS| forward zones"""
 
 import ipaddress
 

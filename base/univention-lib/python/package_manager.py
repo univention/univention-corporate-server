@@ -90,17 +90,13 @@ class ProgressState(object):
 
     def reset(self):
         # type: () -> None
-        """
-        Reset minimal progress state.
-        """
+        """Reset minimal progress state."""
         self._info = None
         self._percentage = None  # type: Optional[float]
 
     def hard_reset(self):
         # type: () -> None
-        """
-        Reset full progress state.
-        """
+        """Reset full progress state."""
         self.reset()
         self._start_steps = 0
         self._errors = []  # type: List[str]
@@ -109,9 +105,7 @@ class ProgressState(object):
 
     def set_finished(self):
         # type: () -> None
-        """
-        Mark installation as finished.
-        """
+        """Mark installation as finished."""
         self._finished = True
 
     def get_logger(self, logger_name=None):
@@ -219,9 +213,7 @@ class MessageWriter(object):
 
     def flush(self):
         # type: () -> None
-        """
-        Dummy function to flush all pending writes.
-        """
+        """Dummy function to flush all pending writes."""
 
     def write(self, msg):
         # type: (Any) -> None
@@ -251,9 +243,7 @@ class FetchProgress(apt.progress.text.AcquireProgress):
     # don't use _winch
     def start(self):
         # type: () -> None
-        """
-        Start collection progress information.
-        """
+        """Start collection progress information."""
         super(apt.progress.text.AcquireProgress, self).start()
         self._signal = signal.SIG_IGN
 
@@ -601,9 +591,7 @@ class PackageManager(object):
 
     def add_hundred_percent(self):
         # type: () -> None
-        """
-        Add another 100 steps.
-        """
+        """Add another 100 steps."""
         self.progress_state.add_start_steps(100)
         self.progress_state.percentage(0)
 
@@ -616,9 +604,7 @@ class PackageManager(object):
         self.progress_state._max_steps = steps
 
     def set_finished(self):  # type () -> None
-        """
-        Signal all steps done.
-        """
+        """Signal all steps done."""
         self.progress_state.set_finished()
 
     def poll(self, timeout):
@@ -634,17 +620,13 @@ class PackageManager(object):
 
     def reset_status(self):
         # type: () -> None
-        """
-        Reset progress indicator back to start.
-        """
+        """Reset progress indicator back to start."""
         self.progress_state.hard_reset()
 
     @contextmanager
     def brutal_noninteractive(self):
         # type: () -> Iterator
-        """
-        Configure package manager to never ask for user input and to overwrite changed files
-        """
+        """Configure package manager to never ask for user input and to overwrite changed files"""
         with self.noninteractive():
             options = [
                 ('DPkg::Options::', '--force-overwrite'),
@@ -662,9 +644,7 @@ class PackageManager(object):
     @contextmanager
     def noninteractive(self):
         # type: () -> Iterator[None]
-        """
-        Configure package manager to never ask for user input.
-        """
+        """Configure package manager to never ask for user input."""
         old_debian_frontend = os.environ.get('DEBIAN_FRONTEND')
         os.environ['DEBIAN_FRONTEND'] = 'noninteractive'
         options = [
@@ -985,9 +965,7 @@ class PackageManager(object):
 
     def _open_cache(self):
         # type: () -> None
-        """
-        Internal function to (re-)open the |APT| cache.
-        """
+        """Internal function to (re-)open the |APT| cache."""
         def _open():
             if self.cache is None:
                 self.cache = apt.Cache()

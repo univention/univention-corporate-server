@@ -24,20 +24,20 @@ from univention.testing.utils import wait_for_connector_replication
 
 class TestUsers:
     """
-            # TODO: test open() method:
+    # TODO: test open() method:
 
-            2.
-            if self.exists():
-                    self._unmap_mail_forward()
+    2.
+    if self.exists():
+    self._unmap_mail_forward()
 
-            # TODO: test pre_create() / pre_modify() / pre_ready() method:
-            primaryGroupWithoutSamba
+    # TODO: test pre_create() / pre_modify() / pre_ready() method:
+    primaryGroupWithoutSamba
 
-            different password expiry interval values!
+    different password expiry interval values!
 
-            is the locking of uidNumber still okay, what if limits are reached?
+    is the locking of uidNumber still okay, what if limits are reached?
 
-            what if pwdChangeNextLogin = 1 and password=foo at the same time?
+    what if pwdChangeNextLogin = 1 and password=foo at the same time?
     """
 
     def utc_days_since_epoch():

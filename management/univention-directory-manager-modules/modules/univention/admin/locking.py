@@ -30,9 +30,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-"""
-|LDAP| locking methods for |UDM|.
-"""
+"""|LDAP| locking methods for |UDM|."""
 
 import ldap
 import time

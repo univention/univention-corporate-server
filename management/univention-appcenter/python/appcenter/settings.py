@@ -53,8 +53,10 @@ class SettingValueError(Exception):
 
 
 class Setting(TypedIniSectionObject):
-    """Based on the .settings file, models additional settings for Apps
-    that can be configured before installation, during run-time, etc."""
+    """
+    Based on the .settings file, models additional settings for Apps
+    that can be configured before installation, during run-time, etc.
+    """
 
     type = IniSectionAttribute(default='String', choices=['String', 'Int', 'Bool', 'List', 'Password', 'File', 'PasswordFile', 'Status'])
     description = IniSectionAttribute(localisable=True, required=True)

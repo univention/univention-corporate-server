@@ -1,8 +1,6 @@
 #!/usr/bin/python3
 # -*- coding: utf-8 -*-
-"""
-Univention Helper functions for creating or renaming share directories
-"""
+"""Univention Helper functions for creating or renaming share directories"""
 # Like what you see? Join us!
 # https://www.univention.com/about-us/careers/vacancies/
 #

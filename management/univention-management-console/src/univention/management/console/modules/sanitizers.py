@@ -64,7 +64,6 @@ except ImportError:
 
 
 class UnformattedValidationError(Exception):
-
     """
     Unformatted error raised when the sanitizer finds a value he
     cannot use at all (e.g. letters when an int is expected).
@@ -82,7 +81,6 @@ class UnformattedValidationError(Exception):
 
 
 class ValidationError(Exception):
-
     """
     Error raised when the sanitizer finds a value he cannot use at all
     (e.g. letters when an int is expected).
@@ -111,7 +109,6 @@ class ValidationError(Exception):
 
 
 class MultiValidationError(ValidationError):
-
     """
     Error used for validation of an arbitrary number of sanitizers.
     Used by :class:`~DictSanitizer` and :class:`~ListSanitizer`.
@@ -145,13 +142,14 @@ class MultiValidationError(ValidationError):
 
     def result(self):
         # type: () -> Dict[Union[int, str], str]
-        """Returns a errors in a similar way like the arguments were passed
-        to the sanitizers."""
+        """
+        Returns a errors in a similar way like the arguments were passed
+        to the sanitizers.
+        """
         return dict([(name, e.result()) for name, e in self.validation_errors.items()])
 
 
 class Sanitizer(object):
-
     r"""
     Base class of all sanitizers.
 
@@ -183,7 +181,8 @@ class Sanitizer(object):
 
     def sanitize(self, name, options):
         # type: (str, Mapping[str, object]) -> Any
-        """Sanitize function. Internally calls _sanitize with the
+        """
+        Sanitize function. Internally calls _sanitize with the
         correct values and returns the new value (together with a flag
         indicating whether the value was found at all).
         If you write your own Sanitize class, you probably want to
@@ -215,7 +214,8 @@ class Sanitizer(object):
 
     def _sanitize(self, value, name, further_arguments):
         # type: (Any, str, Mapping[str, object]) -> object
-        """The method where the actual sanitizing takes place.
+        """
+        The method where the actual sanitizing takes place.
 
         The standard method just returns *value* so be sure to
         override this method in your Sanitize class.
@@ -235,7 +235,8 @@ class Sanitizer(object):
 
     def raise_validation_error(self, msg, **kwargs):
         # type: (str, **Any) -> NoReturn
-        r"""Used to more or less uniformly raise a
+        r"""
+        Used to more or less uniformly raise a
         :class:`~ValidationError`. This will actually raise an
         :class:`~UnformattedValidationError` for your convenience.
         If used in :meth:`~Sanitizer._sanitize`, it will be
@@ -248,7 +249,8 @@ class Sanitizer(object):
 
     def raise_formatted_validation_error(self, msg, name, value, **kwargs):
         # type: (str, str, Any, **Any) -> NoReturn
-        r"""Used to more or less uniformly raise a
+        r"""
+        Used to more or less uniformly raise a
         :class:`~ValidationError`. *name* and *value* need to passed
         because the sanitizer should be thread safe.
 
@@ -265,8 +267,8 @@ class Sanitizer(object):
 
 
 class DictSanitizer(Sanitizer):
-
-    """ DictSanitizer makes sure that the value is a dict and sanitizes its fields.
+    """
+    DictSanitizer makes sure that the value is a dict and sanitizes its fields.
 
     You can give the same parameters as the base class.
     Plus:
@@ -319,8 +321,8 @@ class DictSanitizer(Sanitizer):
 
 
 class ListSanitizer(Sanitizer):
-
-    """ ListSanitizer makes sure that the value is a list and sanitizes its elements.
+    """
+    ListSanitizer makes sure that the value is a list and sanitizes its elements.
 
     You can give the same parameters as the base class.
     Plus:
@@ -368,8 +370,8 @@ class ListSanitizer(Sanitizer):
 
 
 class BooleanSanitizer(Sanitizer):
-
-    """BooleanSanitizer makes sure that the value is a bool.
+    """
+    BooleanSanitizer makes sure that the value is a bool.
     It converts other data types if possible.
     """
 
@@ -382,8 +384,8 @@ class BooleanSanitizer(Sanitizer):
 
 
 class IntegerSanitizer(Sanitizer):
-
-    """IntegerSanitizer makes sure that the value is an int.
+    """
+    IntegerSanitizer makes sure that the value is an int.
     It converts other data types if possible and is able
     to validate boundaries.
 
@@ -434,8 +436,8 @@ class IntegerSanitizer(Sanitizer):
 
 
 class SearchSanitizer(Sanitizer):
-
-    r''' Baseclass for other Sanitizers that are used for a simple search.
+    r'''
+    Baseclass for other Sanitizers that are used for a simple search.
     That means that everything is escaped except for asterisks that are
     considered as wildcards for any number of characters. (If
     :attr:`~SearchSanitizer.use_asterisks` is True, which is default)
@@ -508,8 +510,8 @@ class SearchSanitizer(Sanitizer):
 
 
 class LDAPSearchSanitizer(SearchSanitizer):
-
-    r"""Sanitizer for LDAP-Searches. Everything that
+    r"""
+    Sanitizer for LDAP-Searches. Everything that
     could possibly confuse an LDAP-Search is escaped
     except for \*.
     """
@@ -525,8 +527,8 @@ class LDAPSearchSanitizer(SearchSanitizer):
 
 
 class PatternSanitizer(SearchSanitizer):
-
-    """PatternSanitizer converts the input into a regular expression.
+    """
+    PatternSanitizer converts the input into a regular expression.
     It can handle anything (through the inputs __str__ method), but
     only strings seem to make sense.
 
@@ -590,8 +592,8 @@ class PatternSanitizer(SearchSanitizer):
 
 
 class StringSanitizer(Sanitizer):
-
-    """ StringSanitizer makes sure that the input is a string.
+    """
+    StringSanitizer makes sure that the input is a string.
     The input can be validated by a regular expression and by string length
 
     :param regex_pattern: a regex pattern or a string which will be
@@ -646,9 +648,10 @@ class StringSanitizer(Sanitizer):
 
 
 class DNSanitizer(StringSanitizer):
-
-    """ DNSanitizer is a sanitizer that checks if the value has correct LDAP
-    Distinguished Name syntax """
+    """
+    DNSanitizer is a sanitizer that checks if the value has correct LDAP
+    Distinguished Name syntax
+    """
 
     def _sanitize(self, value, name, further_args):
         # type: (Any, str, Mapping[str, object]) -> object
@@ -661,10 +664,11 @@ class DNSanitizer(StringSanitizer):
 
 
 class EmailSanitizer(StringSanitizer):
-
-    """ EmailSanitizer is a very simple sanitizer that checks
+    """
+    EmailSanitizer is a very simple sanitizer that checks
     the very basics of an email address: At least 3 characters and
-    somewhere in the middle has to be an @-sign """
+    somewhere in the middle has to be an @-sign
+    """
 
     def __init__(self, **kwargs):
         # type: (**Any) -> None
@@ -672,8 +676,8 @@ class EmailSanitizer(StringSanitizer):
 
 
 class ChoicesSanitizer(Sanitizer):
-
-    """ ChoicesSanitizer makes sure that the input is in a given set of
+    """
+    ChoicesSanitizer makes sure that the input is in a given set of
     choices.
 
     :param object choices: the allowed choices used.
@@ -698,8 +702,8 @@ class ChoicesSanitizer(Sanitizer):
 
 
 class MappingSanitizer(ChoicesSanitizer):
-
-    """ MappingSanitizer makes sure that the input is in a key in a
+    """
+    MappingSanitizer makes sure that the input is in a key in a
     dictionary and returns the corresponding value.
 
     :param mapping: the dictionary that is used for sanitizing

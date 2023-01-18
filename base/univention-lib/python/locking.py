@@ -1,7 +1,5 @@
 #!/usr/bin/python3
-"""
-Univention Common Python Library for file locking
-"""
+"""Univention Common Python Library for file locking"""
 # Like what you see? Join us!
 # https://www.univention.com/about-us/careers/vacancies/
 #

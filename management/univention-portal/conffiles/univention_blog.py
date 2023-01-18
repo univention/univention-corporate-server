@@ -32,9 +32,7 @@
 # License with the Debian GNU/Linux or Univention distribution in file
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
-"""
-Create a portal entry for the Univention Blog for all Core Edition users.
-"""
+"""Create a portal entry for the Univention Blog for all Core Edition users."""
 
 import sys
 import subprocess

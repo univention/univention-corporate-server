@@ -90,9 +90,10 @@ import univention.admin.uexceptions as udm_errors
 
 
 class Rule(dict):
-
-    """A simple class representing one ACL rule in a form that can be
-    simply serialized."""
+    """
+    A simple class representing one ACL rule in a form that can be
+    simply serialized.
+    """
 
     @property
     def fromUser(self):
@@ -124,8 +125,8 @@ class Rule(dict):
 
 
 class ACLs(object):
-
-    """Provides methods to determine the access rights of users to
+    """
+    Provides methods to determine the access rights of users to
     specific UMC commands. It defines a cache for ACLs, a parser for
     command definitions of ACLs and functions for comparison.
     """
@@ -197,7 +198,6 @@ class ACLs(object):
 
     def __compare_rules(self, rule1, rule2):
         """Hacky version of rule comparison"""
-
         if not rule1:
             return rule2
         if not rule2:
@@ -280,7 +280,8 @@ class ACLs(object):
         return False
 
     def is_command_allowed(self, command, hostname=None, options={}, flavor=None):
-        """This method verifies if the given command (with options and
+        """
+        This method verifies if the given command (with options and
         flavor) is on the named host allowed.
 
         :param str command: the command to check access for
@@ -352,11 +353,12 @@ class ACLs(object):
 
 
 class LDAP_ACLs(ACLs):
-
-    """Reads ACLs from LDAP directory for the given username. By
+    """
+    Reads ACLs from LDAP directory for the given username. By
     inheriting the class :class:`ACLs` the ACL definitions can be cached
     on the local system. If the LDAP server can not be reached the cache
-    is used if available."""
+    is used if available.
+    """
 
     FROM_USER = True
     FROM_GROUP = False

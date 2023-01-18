@@ -79,9 +79,7 @@ class TestUMCGroupsCreation(UMCBase):
             utils.fail("Exception while making 'udm/get' request: %s" % exc)
 
     def main(self):
-        """
-        Method to test the UMC group creation, modification and deletion
-        """
+        """Method to test the UMC group creation, modification and deletion"""
         self.create_connection_authenticate()
         self.ldap_base = self.ucr.get('ldap/base')
 

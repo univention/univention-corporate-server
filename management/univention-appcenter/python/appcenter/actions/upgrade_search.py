@@ -41,8 +41,8 @@ from univention.appcenter.ucr import ucr_save, ucr_is_true
 
 
 class UpgradeSearch(UniventionAppAction):
-
     """Searches for available upgrades of apps."""
+
     help = 'Searches for upgrades'
 
     def setup_parser(self, parser):

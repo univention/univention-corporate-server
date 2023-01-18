@@ -30,9 +30,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-"""
-|UDM| module for the client maintenance policies
-"""
+"""|UDM| module for the client maintenance policies"""
 
 from univention.admin.layout import Tab, Group
 import univention.admin.syntax

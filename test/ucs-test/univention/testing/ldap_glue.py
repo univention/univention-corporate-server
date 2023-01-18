@@ -138,7 +138,6 @@ class LDAPConnection:
 
     def get(self, dn, attr=[], required=False):
         """returns ldap object"""
-
         if dn:
             try:
                 result = self.lo.search_ext_s(dn, ldap.SCOPE_BASE, '(objectClass=*)', attr, timeout=10)
@@ -242,7 +241,6 @@ class ADConnection(LDAPConnection):
 
     def get(self, dn, attr=[], required=False):
         """returns ldap object"""
-
         if dn:
             try:
                 result = self.lo.search_ext_s(dn, ldap.SCOPE_BASE, '(objectClass=*)', attr, timeout=10)

@@ -51,9 +51,7 @@ CATEGORY = [
 @pytest.fixture
 def parse():
     # type: () -> Iterator[Callable[[str], Iterator[Tuple[str, Dict[str, str]]]]]
-    """
-    Setup parser.
-    """
+    """Setup parser."""
     now = datetime.now()
     start = now.replace(microsecond=now.microsecond - now.microsecond % 1000)
 
@@ -97,9 +95,7 @@ def parse():
 
 @pytest.fixture
 def tmplog(tmpdir):
-    """
-    Setup temporary logging.
-    """
+    """Setup temporary logging."""
     tmp = tmpdir.ensure('log')
     fd = ud.init(str(tmp), ud.NO_FLUSH, ud.FUNCTION)
     assert hasattr(fd, 'write')

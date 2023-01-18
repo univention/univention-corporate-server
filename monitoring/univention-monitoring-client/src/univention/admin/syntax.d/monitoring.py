@@ -31,9 +31,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-"""
-|UDM| syntax classes for monitoring alerts
-"""
+"""|UDM| syntax classes for monitoring alerts"""
 
 import univention.admin.syntax
 

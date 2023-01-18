@@ -1,7 +1,5 @@
 #!/usr/bin/python3
-"""
-Add and remove LDAP attributes to index.
-"""
+"""Add and remove LDAP attributes to index."""
 # Like what you see? Join us!
 # https://www.univention.com/about-us/careers/vacancies/
 #

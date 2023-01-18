@@ -45,8 +45,8 @@ from univention.appcenter.packages import install_packages, dist_upgrade
 
 
 class Upgrade(Install):
-
     """Upgrades an installed application from the Univention App Center."""
+
     help = 'Upgrade an app'
 
     pre_readme = 'readme_update'

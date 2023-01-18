@@ -15,10 +15,8 @@ from univention.management.console.modules.setup.netconf.conditions import Execu
 
 
 class PhaseLdapSelf(AddressMap, LdapChange, Executable):
+    """Rewrite IP configuration in self LDAP object."""
 
-    """
-    Rewrite IP configuration in self LDAP object.
-    """
     priority = 40
     executable = "/usr/share/univention-directory-manager-tools/univention-dnsedit"
 

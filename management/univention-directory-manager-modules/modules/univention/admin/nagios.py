@@ -30,9 +30,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-"""
-|UDM| methods and defines for Nagios related attributes.
-"""
+"""|UDM| methods and defines for Nagios related attributes."""
 
 import re
 import copy
@@ -101,9 +99,7 @@ nagios_options = {
 
 
 def addPropertiesMappingOptionsAndLayout(new_property, new_mapping, new_options, new_layout):
-    """
-    Add Nagios properties.
-    """
+    """Add Nagios properties."""
     for key, value in nagios_properties.items():
         new_property[key] = value
 

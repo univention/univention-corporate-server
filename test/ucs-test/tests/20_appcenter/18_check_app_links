@@ -82,9 +82,7 @@ class MyHTMLParser(HTMLParser):
 
 
 def findall_urls_from_readme(app):
-    """
-    Readme files are html snippets, check with html parser
-    """
+    """Readme files are html snippets, check with html parser"""
     files_to_check = []
     all_urls = dict()
     for readme_file in README_FILES:

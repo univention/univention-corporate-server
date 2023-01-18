@@ -29,9 +29,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-"""
-Module and object specific for "policies/umc" UDM module.
-"""
+"""Module and object specific for "policies/umc" UDM module."""
 
 from __future__ import absolute_import, unicode_literals
 from ..encoders import dn_list_property_encoder_for
@@ -48,11 +46,13 @@ class PoliciesUmcObjectProperties(GenericObjectProperties):
 
 class PoliciesUmcObject(GenericObject):
     """Better representation of policies/umc properties."""
+
     udm_prop_class = PoliciesUmcObjectProperties
 
 
 class PoliciesUmcModule(GenericModule):
     """PoliciesUmcObject factory"""
+
     _udm_object_class = PoliciesUmcObject
 
     class Meta:

@@ -11,7 +11,6 @@ __all__ = ['TAP']
 
 
 class TAP(TestFormatInterface):
-
     """
     Create simple Test-Anything-Protocol report.
     <http://testanything.org/wiki/index.php/Main_Page>

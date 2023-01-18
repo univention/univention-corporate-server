@@ -79,9 +79,7 @@ def _update_schema(fp, attr):
 
 def update_schema(lo):
     # type: (uldap.access) -> None
-    """
-    update the ldap schema file
-    """
+    """update the ldap schema file"""
     logging.info('Fetching Schema ...')
     res = lo.search(base="cn=Subschema", scope=ldap.SCOPE_BASE, filter='(objectclass=*)', attr=['+', '*'])
     tmp = SCHEMA + '.new'
@@ -97,9 +95,7 @@ def update_schema(lo):
 
 def create_ldif_from_master(lo, ldif_file, base, page_size):
     # type: (uldap.access, str, str, int) -> None
-    """
-    create ldif file from everything from lo
-    """
+    """create ldif file from everything from lo"""
     logging.info('Fetching LDIF ...')
     if ldif_file == '-':
         output = sys.stdout

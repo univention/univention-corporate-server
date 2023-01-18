@@ -46,9 +46,7 @@ DELAY = 10
 
 
 class AutoStartStopListener:
-    """
-    Stops and starts listener automatically
-    """
+    """Stops and starts listener automatically"""
 
     def __init__(self, dry_run):  # type: (bool) -> None
         """

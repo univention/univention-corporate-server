@@ -55,9 +55,9 @@ LDAP_SERVER_SD_FLAGS_OID = '1.2.840.113556.1.4.801'
 
 
 class AD_DSACL_modifier():
-
-    """ Provides methods for modifying the nTSecurityDescriptor of CN=Deleted Objects
-            NOTE: copied from univention-management-console-module-adtakeover
+    """
+    Provides methods for modifying the nTSecurityDescriptor of CN=Deleted Objects
+    NOTE: copied from univention-management-console-module-adtakeover
     """
 
     def __init__(self, ucr, binddn, bindpwd):
@@ -67,10 +67,10 @@ class AD_DSACL_modifier():
         self.ad_connect()
 
     def ad_connect(self):
-        ''' stripped down univention.connector.ad.main
-                difference: pass "bindpwd" directly instead of "bindpw" filename
         '''
-
+        stripped down univention.connector.ad.main
+        difference: pass "bindpwd" directly instead of "bindpw" filename
+        '''
         poll_sleep = int(self.ucr['%s/ad/poll/sleep' % CONFIGBASENAME])
         while True:
             try:

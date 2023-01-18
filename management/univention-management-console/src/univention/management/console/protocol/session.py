@@ -34,8 +34,10 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-"""Implements several helper classes to handle the state of a session
-and the communication with the module processes"""
+"""
+Implements several helper classes to handle the state of a session
+and the communication with the module processes
+"""
 
 import base64
 import ldap
@@ -84,8 +86,8 @@ TEMPUPLOADDIR = '/var/tmp/univention-management-console-frontend'
 
 
 class ModuleProcess(Client):
-
-    """handles the communication with a UMC module process
+    """
+    handles the communication with a UMC module process
 
     :param str module: name of the module to start
     :param str debug: debug level as a string
@@ -156,8 +158,8 @@ class ModuleProcess(Client):
 
 
 class ProcessorBase(Base):
-
-    """Implements a proxy and command handler. It handles all internal
+    """
+    Implements a proxy and command handler. It handles all internal
     UMCP commands and passes the commands for a module to the
     subprocess.
 
@@ -226,7 +228,8 @@ class ProcessorBase(Base):
             exc.args = (status_description(exc.status),)
 
     def request(self, msg):
-        """Handles an incoming UMCP request and passes the requests to
+        """
+        Handles an incoming UMCP request and passes the requests to
         specific handler functions.
 
         :param Request msg: UMCP request
@@ -270,7 +273,6 @@ class ProcessorBase(Base):
     @allow_get_request
     def handle_request_get(self, msg):
         """Handles a GET request"""
-
         for arg in msg.arguments:
             method = {
                 'ucr': self.handle_request_get_ucr,
@@ -413,7 +415,8 @@ class ProcessorBase(Base):
         name=StringSanitizer(required=True),
     )))
     def handle_request_upload(self, msg):
-        """Handles an UPLOAD request. The command is used for the HTTP
+        """
+        Handles an UPLOAD request. The command is used for the HTTP
         access to the UMC server. Incoming HTTP requests that send a
         list of files are passed on to the UMC server by storing the
         files in temporary files and passing the information about the
@@ -427,7 +430,6 @@ class ProcessorBase(Base):
 
         :param Request msg: UMCP request
         """
-
         direct_response = not msg.arguments or msg.arguments[0] in ('', '/')
         result = []
         for file_obj in msg.options:
@@ -460,7 +462,8 @@ class ProcessorBase(Base):
 
     @allow_get_request
     def handle_request_command(self, msg):
-        """Handles a COMMAND request. The request must contain a valid
+        """
+        Handles a COMMAND request. The request must contain a valid
         and known command that can be accessed by the current user. If
         access to the command is prohibited the request is answered as a
         forbidden command.
@@ -474,7 +477,6 @@ class ProcessorBase(Base):
 
         :param Request msg: UMCP request
         """
-
         # only one command?
         command = None
         if msg.arguments:
@@ -661,7 +663,8 @@ class ProcessorBase(Base):
             self.__processes.pop(module_name).stop()
 
     def reset_inactivity_timer(self, module):
-        """Resets the inactivity timer. This timer watches the
+        """
+        Resets the inactivity timer. This timer watches the
         inactivity of the module process. If the module did not receive
         a request for MODULE_INACTIVITY_TIMER seconds the module process
         is shut down to save resources. The timer ticks each seconds to
@@ -688,7 +691,8 @@ class ProcessorBase(Base):
         return False
 
     def handle_request_exit(self, msg):
-        """Handles an EXIT request. If the request does not have an
+        """
+        Handles an EXIT request. If the request does not have an
         argument that contains a valid name of a running UMC module
         instance the request is returned as a bad request.
 
@@ -923,7 +927,8 @@ class Processor(ProcessorBase):
         lo.modify(self._user_dn, [['univentionUMCProperty', old_preferences, new_preferences], ['objectClass', user.get('objectClass', []), object_classes]])
 
     def handle_request_version(self, msg):
-        """Handles a VERSION request by returning the version of the UMC
+        """
+        Handles a VERSION request by returning the version of the UMC
         server's protocol version.
 
         :param Request msg: UMCP request
@@ -984,8 +989,10 @@ class SessionHandler(ProcessorBase):
 
     @allow_get_request
     def handle(self, request):
-        """Ensures that commands are only passed to the processor if a
-                successful authentication has been completed."""
+        """
+        Ensures that commands are only passed to the processor if a
+        successful authentication has been completed.
+        """
         CORE.info('Incoming request of type %s' % (request.command,))
         if not self.authenticated and request.command != 'AUTH':
             self.request(request)

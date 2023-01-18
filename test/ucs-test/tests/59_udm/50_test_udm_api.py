@@ -40,6 +40,7 @@ PostalAddress = namedtuple('PostalAddress', ['street', 'zipcode', 'city'])
 
 class TestUdmUsersBasic(TestCase):
     """Test UDM API for users/user module"""
+
     user_objects = []
     mail_domain = ''
     ucr_test = None
@@ -280,6 +281,7 @@ class TestUdmUsersBasic(TestCase):
 
 class TestUdmGenericVariousModules(TestCase):
     """Test UDM API for users/user module"""
+
     ox_modules = ['oxmail/oxdomain', 'oxmail/oxfolder', 'oxmail/oxlists', 'oxmail/oxmail']
     mail_modules = ['mail/domain', 'mail/folder', 'mail/lists', 'mail/mail']
 
@@ -355,6 +357,7 @@ class TestUdmGenericVariousModules(TestCase):
 
 class TestUdmAutoOpen(TestCase):
     """Test UDM APIs module.meta.auto_open feature"""
+
     ucr_test = None
     udm_test = None
 
@@ -390,6 +393,7 @@ class TestUdmAutoOpen(TestCase):
 
 class TestUdmLDAPConnection(TestCase):
     """Test UDM APIs LDAP connection initialization feature"""
+
     ucr_test = None
     udm_test = None
 
@@ -498,6 +502,7 @@ class TestUdmModuleCaching(TestCase):
 
 class TestUdmDNSBasic(TestCase):
     """Test UDM API for dns/* module"""
+
     @classmethod
     def setUpClass(cls):
         cls.udm = UDM.admin().version(1)
@@ -541,6 +546,7 @@ class TestUdmDNSBasic(TestCase):
 
 class TestUdmComputersBasic(TestCase):
     """Test UDM API for computers/* module"""
+
     @classmethod
     def setUpClass(cls):
         cls.udm = UDM.admin().version(1)
@@ -600,6 +606,7 @@ class TestUdmComputersBasic(TestCase):
 
 class TestEncoders(TestCase):
     """Test UDM API encoders"""
+
     # bugs: [51184]
     user_objects = []
 

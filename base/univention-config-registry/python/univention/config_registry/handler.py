@@ -249,6 +249,7 @@ def warning_string(prefix='# ', srcfiles=set()):
 
 class ConfigHandler(object):
     """Base class of all config handlers."""
+
     variables = set()  # type: Set[str]
 
     def __call__(self, args):
@@ -473,8 +474,10 @@ class ConfigHandlerMultifile(ConfigHandlerDiverting):
 
     def need_divert(self):
         # type: () -> bool
-        """Diversion is needed when at least one multifile and one subfile
-        definition exists."""
+        """
+        Diversion is needed when at least one multifile and one subfile
+        definition exists.
+        """
         return self.def_count >= 1 and bool(self.from_files)
 
     def install_divert(self):

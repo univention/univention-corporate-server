@@ -30,9 +30,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-"""
-|UDM| module for the configuration registry policies
-"""
+"""|UDM| module for the configuration registry policies"""
 
 import copy
 import codecs

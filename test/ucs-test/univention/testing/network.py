@@ -84,7 +84,6 @@ class UCSTestNetworkOnlyOneLoopSupported(UCSTestNetwork):
 
 
 class NetworkRedirector:
-
     """
     The NetworkRedirector is able to establish port/connection redirections via
     iptables. It has to be used via the with-statement.
@@ -199,9 +198,7 @@ class NetworkRedirector:
 
     def remove_loop(self, addr1, addr2, ignore_errors=False):
         # type: (str, str, bool) -> None
-        """
-        Remove previously defined connection loop.
-        """
+        """Remove previously defined connection loop."""
         try:
             self.cleanup_rules.remove(('loop', addr1, addr2))
         except ValueError:
@@ -241,9 +238,7 @@ class NetworkRedirector:
 
     def remove_redirection(self, remote_addr, remote_port, local_port, family='tcp', ignore_errors=False):
         # type: (str, int, int, bool) -> None
-        """
-        Remove previously defined connection redirection.
-        """
+        """Remove previously defined connection redirection."""
         try:
             self.cleanup_rules.remove(('redirection', remote_addr, remote_port, local_port, family))
         except ValueError:

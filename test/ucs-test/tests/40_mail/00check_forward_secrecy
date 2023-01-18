@@ -38,9 +38,7 @@ PFS_CIPHERS = (
 
 
 def check_pfs_cipher():
-    """
-    Makes a localhost connection with openssl client and looks for cipher used.
-    """
+    """Makes a localhost connection with openssl client and looks for cipher used."""
     print("\nExpecting one of the following ciphers to be used:", PFS_CIPHERS)
     openssl_out = run_openssl().decode('UTF-8')
     print('-----------CUTCUTCUT----------------')
@@ -55,9 +53,7 @@ def check_pfs_cipher():
 
 
 def run_openssl():
-    """
-    Runs the openssl s_client (TLS) and returns the output grep'ed for cipher.
-    """
+    """Runs the openssl s_client (TLS) and returns the output grep'ed for cipher."""
     # reconnect used to avoid waiting for a timeout:
     cmd = ('openssl', 's_client', '-starttls', 'smtp', '-crlf', '-connect', '127.0.0.1:25', '-reconnect')
 

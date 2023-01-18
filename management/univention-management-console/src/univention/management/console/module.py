@@ -135,8 +135,8 @@ KEYWORD_PATTERN = re.compile(r'\s*,\s*')
 
 
 class Command(JSON_Object):
-
     """Represents a UMCP command handled by a module"""
+
     SEPARATOR = '/'
 
     def __init__(self, name='', method=None, allow_anonymous=False):
@@ -154,9 +154,10 @@ class Command(JSON_Object):
 
 
 class Flavor(JSON_Object):
-
-    """Defines a flavor of a module. This provides another name and icon
-    in the overview and may influence the behavior of the module."""
+    """
+    Defines a flavor of a module. This provides another name and icon
+    in the overview and may influence the behavior of the module.
+    """
 
     def __init__(self, id='', icon='', name='', description='', overwrites=None, deactivated=False, priority=-1, translationId=None, keywords=None, categories=None, required_commands=None, version=None, hidden=False):
         self.id = id
@@ -193,7 +194,6 @@ class Flavor(JSON_Object):
 
 
 class Module(JSON_Object):
-
     """Represents a command attribute"""
 
     def __init__(self, id='', name='', url='', description='', icon='', categories=None, flavors=None, commands=None, priority=-1, keywords=None, translationId=None, required_commands=None, version=None):
@@ -250,7 +250,7 @@ class Module(JSON_Object):
                 self.flavors.append(other_flavor)
 
     def merge(self, other):
-        """ merge another Module object into current one """
+        """merge another Module object into current one"""
         if not self.name:
             self.name = other.name
 
@@ -276,7 +276,6 @@ class Link(Module):
 
 
 class XML_Definition(ET.ElementTree):
-
     """container for the interface description of a module"""
 
     def __init__(self, root=None, filename=None):
@@ -415,7 +414,6 @@ _manager = None
 
 
 class Manager(dict):
-
     """Manager of all available modules"""
 
     DIRECTORY = os.path.join(sys.prefix, 'share/univention-management-console/modules')
@@ -428,8 +426,10 @@ class Manager(dict):
         return list(self.keys())
 
     def load(self):
-        """Loads the list of available modules. As the list is cleared
-        before, the method can also be used for reloading"""
+        """
+        Loads the list of available modules. As the list is cleared
+        before, the method can also be used for reloading
+        """
         RESOURCES.info('Loading modules ...')
         self.clear()
         for filename in os.listdir(Manager.DIRECTORY):
@@ -458,7 +458,8 @@ class Manager(dict):
         return acls.is_command_allowed(command, hostname, options, flavor)
 
     def permitted_commands(self, hostname, acls):
-        """Retrieves a list of all modules and commands available
+        """
+        Retrieves a list of all modules and commands available
         according to the ACLs (instance of LDAP_ACLs)
 
         { id : Module, ... }
@@ -530,9 +531,11 @@ class Manager(dict):
         return modules
 
     def module_providing(self, modules, command):
-        """Searches a dictionary of modules (as returned by
+        """
+        Searches a dictionary of modules (as returned by
         permitted_commands) for the given command. If found, the id of
-        the module is returned, otherwise None"""
+        the module is returned, otherwise None
+        """
         RESOURCES.info('Searching for module providing command %s' % command)
         for module_id in modules:
             for cmd in modules[module_id].commands:

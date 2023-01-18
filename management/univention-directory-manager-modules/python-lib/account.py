@@ -77,7 +77,6 @@ def lock(userdn, lock_timestamp):
     >>> from univention.lib.account import lock  # doctest: +SKIP
     >>> lock('uid=user1,dc=example,dc=com', '20141006192950Z')  # doctest: +SKIP
     """
-
     if not lock_timestamp:  # timed unlocking via ppolicy not implemented yet, so block it.
         return
 

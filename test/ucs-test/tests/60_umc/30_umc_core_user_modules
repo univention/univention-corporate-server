@@ -14,9 +14,7 @@ from umc import UMCBase
 class TestUMCUserModules(UMCBase):
 
     def main(self):
-        """
-        Method to test the UMC modules access restrictions for regular users
-        """
+        """Method to test the UMC modules access restrictions for regular users"""
         ldap_base = self.ucr.get('ldap/base')
 
         test_username = 'umc_test_user_' + random_username(6)

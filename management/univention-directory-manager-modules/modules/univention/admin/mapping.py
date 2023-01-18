@@ -30,9 +30,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-"""
-Functions to map between |UDM| properties and |LDAP| attributes.
-"""
+"""Functions to map between |UDM| properties and |LDAP| attributes."""
 
 from __future__ import absolute_import
 
@@ -222,9 +220,7 @@ def ListToLowerListUniq(list):
 
 
 def nothing(a):
-    """
-    'Do nothing' mapping returning `None`.
-    """
+    """'Do nothing' mapping returning `None`."""
 
 
 def IgnoreNone(value, encoding=()):
@@ -428,15 +424,11 @@ def BooleanUnMap(value, encoding=()):
 
 
 class dontMap(object):
-    """
-    'Do nothing' mapping.
-    """
+    """'Do nothing' mapping."""
 
 
 class mapping(object):
-    """
-    Map |LDAP| attribute names and values to |UDM| property names and values and back.
-    """
+    """Map |LDAP| attribute names and values to |UDM| property names and values and back."""
 
     def __init__(self):
         self._map = {}
@@ -599,9 +591,7 @@ class mapping(object):
             raise univention.admin.uexceptions.valueInvalidSyntax(_('Invalid encoding for %s') % (unmap_name,))
 
     def unmapValues(self, oldattr):
-        """
-        Unmaps |LDAP| attribute values to |UDM| property values.
-        """
+        """Unmaps |LDAP| attribute values to |UDM| property values."""
         info = mapDict(self, oldattr)
         for key, func in self._unmap_func.items():
             kwargs = {}

@@ -5,10 +5,8 @@ from univention.management.console.modules.setup.netconf.common import AddressMa
 
 
 class PhaseRewriteWins(AddressMap):
+    """Rewrite IP configuration stored in wins.dat."""
 
-    """
-    Rewrite IP configuration stored in wins.dat.
-    """
     priority = 95
     filename = "/var/lib/samba/wins.dat"
 

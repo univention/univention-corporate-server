@@ -30,9 +30,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-"""
-|UDM| for |UDM| syntax extensions
-"""
+"""|UDM| for |UDM| syntax extensions"""
 
 from univention.admin.layout import Tab, Group
 import univention.admin.filter

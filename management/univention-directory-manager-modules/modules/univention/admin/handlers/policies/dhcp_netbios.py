@@ -30,9 +30,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-"""
-|UDM| module for |DHCP| netbios setting policies
-"""
+"""|UDM| module for |DHCP| netbios setting policies"""
 
 from univention.admin.layout import Tab, Group
 import univention.admin.syntax

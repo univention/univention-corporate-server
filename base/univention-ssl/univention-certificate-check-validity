@@ -46,7 +46,7 @@ _bc.load()
 
 
 def get_validity_date(certFile):
-    """ returns the validity date fo the locale SSL certificate or None on failure"""
+    """returns the validity date fo the locale SSL certificate or None on failure"""
     try:
         x509 = X509.load_cert(certFile)
         return str(x509.get_not_after())
@@ -55,8 +55,10 @@ def get_validity_date(certFile):
 
 
 def get_validity_days(certFile):
-    """returns the validity of the local SSL certificate in days. If the
-    validity could not be determined 0 is returned"""
+    """
+    returns the validity of the local SSL certificate in days. If the
+    validity could not be determined 0 is returned
+    """
     after = get_validity_date(certFile)
     if after:
         time_after = time.strptime(after, "%b %d %H:%M:%S %Y %Z")

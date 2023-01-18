@@ -201,9 +201,7 @@ def init(logfile, force_flush=0, enable_function=0, enable_syslog=0):
 
 
 def exit():
-    """
-    Close debug logfile.
-    """
+    """Close debug logfile."""
     global _handler_console, _handler_file
     logging.getLogger('MAIN').log(100, 'DEBUG_EXIT')
     if _handler_console:
@@ -216,9 +214,7 @@ def exit():
 
 
 def reopen():
-    """
-    Close and re-open the debug logfile.
-    """
+    """Close and re-open the debug logfile."""
     logging.getLogger('MAIN').log(100, 'DEBUG_REINIT')
     init(_logfilename, _do_flush, _enable_function, _enable_syslog)
 
@@ -304,9 +300,7 @@ class function(object):
             _flush()
 
     def __del__(self):
-        """
-        Log the end of function.
-        """
+        """Log the end of function."""
         if _enable_function:
             logging.getLogger('MAIN').log(100, 'UNIVENTION_DEBUG_END   : ' + self.fname)
             _flush()
@@ -372,9 +366,7 @@ def trace(with_args=True, with_return=False, repr=object.__repr__):
 
 
 def _flush():
-    """
-    Flushing all messages.
-    """
+    """Flushing all messages."""
     if _do_flush:
         for handler in [_handler_console, _handler_file, _handler_syslog]:
             if handler:

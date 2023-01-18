@@ -29,9 +29,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-"""
-Module and object specific for "settings/portal_category" UDM module.
-"""
+"""Module and object specific for "settings/portal_category" UDM module."""
 
 from __future__ import absolute_import, unicode_literals
 from ..encoders import ListOfListOflTextToDictPropertyEncoder
@@ -48,11 +46,13 @@ class SettingsPortalCategoryObjectProperties(GenericObjectProperties):
 
 class SettingsPortalCategoryObject(GenericObject):
     """Better representation of settings/portal_category properties."""
+
     udm_prop_class = SettingsPortalCategoryObjectProperties
 
 
 class SettingsPortalCategoryModule(GenericModule):
     """SettingsPortalCategoryObject factory"""
+
     _udm_object_class = SettingsPortalCategoryObject
 
     class Meta:

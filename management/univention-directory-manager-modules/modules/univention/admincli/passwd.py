@@ -30,9 +30,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-"""
-passwd part for the command line interface
-"""
+"""passwd part for the command line interface"""
 
 import os
 import getopt

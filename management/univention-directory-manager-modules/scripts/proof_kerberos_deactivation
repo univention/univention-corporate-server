@@ -31,9 +31,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-"""
-sync posix flags to kerberos flags
-"""
+"""sync posix flags to kerberos flags"""
 
 # set activation state of kerberos account to same state as posix account
 # set password and account exiration date to the same value as shadowExpiry and shadowLastChange

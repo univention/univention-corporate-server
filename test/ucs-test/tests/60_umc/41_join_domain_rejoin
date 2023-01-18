@@ -36,9 +36,7 @@ class TestUMCDomainRejoin(JoinModule):
                 File.close()
 
     def main(self):
-        """
-        A method to test the UMC domain complete rejoin
-        """
+        """A method to test the UMC domain complete rejoin"""
         self.create_connection_authenticate()
         join_status_file = '/var/univention-join/status'
 

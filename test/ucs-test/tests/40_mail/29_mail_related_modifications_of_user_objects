@@ -15,7 +15,8 @@ from essential.mailclient import MailClient_SSL
 
 
 def check_login_lookup(host, mail, password, expected_result):
-    """This function checks if it is possible to login via a mail address
+    """
+    This function checks if it is possible to login via a mail address
     and a given password, also checks if it is possible to lookup
     the standard set of mailboxes: INBOX, Ham, Spam.
     An exception is thrown if the result of either the login or the lookup

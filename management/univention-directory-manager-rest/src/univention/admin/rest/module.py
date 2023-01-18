@@ -285,12 +285,13 @@ class QueryStringSanitizer(DictSanitizer):
 class ObjectPropertySanitizer(StringSanitizer):
 
     def __init__(self, **kwargs):
-        """A LDAP attribute name.
-                must at least be 1 character long.
+        """
+        A LDAP attribute name.
+        must at least be 1 character long.
 
-                This sanitizer prevents LDAP search filter injections in the attribute name.
+        This sanitizer prevents LDAP search filter injections in the attribute name.
 
-                TODO: in theory we should only allow existing searchable properties for the requested object type
+        TODO: in theory we should only allow existing searchable properties for the requested object type
         """
         args = dict(
             minimum=0,
@@ -2222,7 +2223,8 @@ class SubObjectTypes(Resource):
     """A list of possible sub-object-types which can be created underneath of the specified container or superordinate."""
 
     def get(self, object_type=None, position=None):
-        """Returns the list of object types matching the given flavor or container.
+        """
+        Returns the list of object types matching the given flavor or container.
 
         requests.options = {}
                 'superordinate' -- if available only types for the given superordinate are returned (not for the navigation)
@@ -2323,7 +2325,6 @@ class ContainerQueryBase(Resource):
 
     async def _container_query(self, object_type, container, modules, scope):
         """Get a list of containers or child objects of the specified container."""
-
         if not container:
             container = ucr['ldap/base']
             defaults = {}
@@ -2580,7 +2581,8 @@ class NextFreeIpAddress(Resource):
     """GET udm/networks/network/$DN/next-free-ip-address (get the next free IP in this network)"""
 
     def get(self, object_type, dn):  # TODO: threaded?! (might have caused something in the past in system setup?!)
-        """Returns the next IP configuration based on the given network object
+        """
+        Returns the next IP configuration based on the given network object
 
         requests.options = {}
                 'networkDN' -- the LDAP DN of the network object
@@ -3051,7 +3053,8 @@ class ObjectsMove(Resource):
 class Object(FormBase, _OpenAPIBase, Resource):
 
     async def get(self, object_type, dn):
-        """Get a representation of the {module.object_name} object with all its properties, policies, options, metadata and references.
+        """
+        Get a representation of the {module.object_name} object with all its properties, policies, options, metadata and references.
         Includes also instructions how to modify, remove or move the object.
         """
         dn = unquote_dn(dn)
@@ -3943,9 +3946,10 @@ class PolicyResultBase(Resource):
 
     @run_on_executor(executor='pool')
     def _get(self, object_type, policy_type, dn, is_container=False):
-        """Returns a virtual policy object containing the values that
-        the given object or container inherits"""
-
+        """
+        Returns a virtual policy object containing the values that
+        the given object or container inherits
+        """
         policy_dn = self.request.decoded_query_arguments['policy']
 
         if is_container:
@@ -4006,7 +4010,8 @@ class PolicyResultBase(Resource):
 
 
 class PolicyResult(PolicyResultBase):
-    """get the possible policies of the policy-type for user objects located at the containter
+    """
+    get the possible policies of the policy-type for user objects located at the containter
     GET udm/users/user/$userdn/policies/$policy_type/?policy=$dn (for a existing object)
     """
 
@@ -4025,7 +4030,8 @@ class PolicyResult(PolicyResultBase):
 
 
 class PolicyResultContainer(PolicyResultBase):
-    """get the possible policies of the policy-type for user objects located at the containter
+    """
+    get the possible policies of the policy-type for user objects located at the containter
     GET udm/users/user/policies/$policy_type/?policy=$dn&position=$dn (for a container, where a object should be created in)
     """
 

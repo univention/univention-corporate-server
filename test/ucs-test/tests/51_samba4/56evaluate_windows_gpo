@@ -34,9 +34,7 @@ def run_cmd(cmd, stdout=PIPE, stdin=None, std_in=None, encoding='UTF-8'):
 
 
 def remove_samba_warnings(input_str):
-    """
-    Removes the Samba Warning/Note from the given input_str.
-    """
+    """Removes the Samba Warning/Note from the given input_str."""
     # ignoring following messages (Bug #37362):
     input_str = input_str.replace('WARNING: No path in service IPC$ - making it unavailable!', '')
     return input_str.replace('NOTE: Service IPC$ is flagged unavailable.', '').strip()
@@ -59,9 +57,7 @@ def run_samba_tool(cmd, stdout=PIPE):
 
 
 def samba_create_test_user():
-    """
-    Creates a 'test_username' via samba-tool.
-    """
+    """Creates a 'test_username' via samba-tool."""
     print("\nCreating a '%s' user for the test." % test_username)
     cmd = ("samba-tool", "user", "create", test_username, "Univention@99", "--given-name=" + test_username)
 
@@ -142,9 +138,7 @@ def windows_set_gpo_security_filter(gpo_name, permission_level, target_name, tar
 
 
 def samba_check_gpo_exists(gpo_name):
-    """
-    Checks that GPO with 'gpo_name' exists via samba-tool.
-    """
+    """Checks that GPO with 'gpo_name' exists via samba-tool."""
     print("\nChecking that GPO '%s' exists." % gpo_name)
     cmd = ("samba-tool", "gpo", "listall")
 
@@ -177,9 +171,7 @@ def windows_set_gpo_registry_value(gpo_name, reg_key, value_name, value, value_t
 
 
 def samba_get_gpo_uid_by_name(gpo_name):
-    """
-    Returns the {GPO UID} for the given gpo_name using samba-tool.
-    """
+    """Returns the {GPO UID} for the given gpo_name using samba-tool."""
     stdout, stderr = run_samba_tool(("samba-tool", "gpo", "listall"))
     if not stdout:
         utils.fail("The samba-tool did not produce any output when list of all GPOs is expected.")
@@ -313,9 +305,7 @@ def samba_check_gpo_application_listed(gpo_name, username):
 
 
 def dns_get_host_ip(host_name, all=False):
-    """
-    Lookup host_name;
-    """
+    """Lookup host_name;"""
     print("\nLooking for '%s' host ip address:" % host_name)
 
     ips = []
@@ -367,9 +357,7 @@ def udm_get_windows_computer():
 
 
 def windows_check_domain():
-    """
-    Runs powershell script via Winexe to check Windows Host domain is correct.
-    """
+    """Runs powershell script via Winexe to check Windows Host domain is correct."""
     print("Trying to check Windows host '%s' domain" % Win.client)
     try:
         Win.winexec("check-domain", domainname)
@@ -378,9 +366,7 @@ def windows_check_domain():
 
 
 def samba_remove_test_user():
-    """
-    Removes 'the test_username' via samba-tool.
-    """
+    """Removes 'the test_username' via samba-tool."""
     print("\nRemoving '%s' user:" % test_username)
     stdout, stderr = run_samba_tool(("samba-tool", "user", "delete", test_username))
     if stdout:

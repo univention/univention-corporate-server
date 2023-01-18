@@ -2,7 +2,8 @@
 # -*- coding: utf-8 -*-
 #
 # Univention Management Console
-"""Each module definition contains the following entries:
+"""
+Each module definition contains the following entries:
 
 * Module: The internal name of the module
 * Python: A directory containing the Python module. There must be a subdirectory named like the internal name of the module.
@@ -310,8 +311,10 @@ def module_xml2po(module, po_file, language, template=False):
     po.metadata['Language'] = language
 
     def _append_po_entry(xml_entry):
-        """Helper function to access text property of XML elements and to find the
-        corresponding po-entry."""
+        """
+        Helper function to access text property of XML elements and to find the
+        corresponding po-entry.
+        """
         if xml_entry is not None and xml_entry.text is not None:  # important to use "xml_entry is not None"!
             entry = polib.POEntry(msgid=xml_entry.text, msgstr='')
             try:

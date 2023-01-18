@@ -45,7 +45,6 @@ _ = translation.translate
 
 # <Syntax definitions>
 class SynVoIP_Protocols(univention.admin.syntax.select):
-
     """This class defines a new syntax for a selection list of VoIP protocols"""
 
     # The text to be written in front of the selection list in the Web frontend.
@@ -56,10 +55,11 @@ class SynVoIP_Protocols(univention.admin.syntax.select):
 
 
 class SynVoIP_Address(univention.admin.syntax.simple):
-
-    """This class serves as syntax for a VoIP address. The structure is similar to an e-mail address,
+    """
+    This class serves as syntax for a VoIP address. The structure is similar to an e-mail address,
     but may contain a scheme followed by a ":" as a prefix.
-    Valid schemes are: sip, h323 and skype"""
+    Valid schemes are: sip, h323 and skype
+    """
 
     name = _('VoIP_Address')
     min_length = 4
@@ -203,20 +203,20 @@ mapping.register('redirect_user', 'testPhoneRedirectUser', None, univention.admi
 
 
 class object(univention.admin.handlers.simpleLdap):
-
-    """This object assists the Univention Directory Manager in LDAP operations that relate to this module.
+    """
+    This object assists the Univention Directory Manager in LDAP operations that relate to this module.
     The base class univention.admin.handlers.simpleLdap implements the complete communication via LDAP,
     so that only the adjustments for this special LDAP object have to be implemented here.
     For this purpose, the base class offers one function each to make adjustments before and after an LDAP
     operation. In this example class the prototypes of all these functions are defined to give an overview
-    of the possibilities."""
+    of the possibilities.
+    """
 
     # take the module name as attributes of the class (defined above as module='test/ip-phone')
     module = module
 
     def open(self):
         """Open the LDAP object"""
-
         super(object, self).open()
         # In this method, the properties of the object in self.info can be pre-initialized dynamically.
         # The dictionary self.info can be addressed indirectly, that is, for example, using self['active'] = 1
@@ -252,9 +252,10 @@ class object(univention.admin.handlers.simpleLdap):
         return super(object, self)._ldap_post_remove()
 
     def _ldap_modlist(self):
-        """This function can be defined. The inherited method with the same name from 'simpleLdap'
-        creates an LDAP modlist from the difference between self.oldinfo and self.info."""
-
+        """
+        This function can be defined. The inherited method with the same name from 'simpleLdap'
+        creates an LDAP modlist from the difference between self.oldinfo and self.info.
+        """
         ml = super(object, self)._ldap_modlist()
         # here further adjustments of the modlist are possible
         return ml

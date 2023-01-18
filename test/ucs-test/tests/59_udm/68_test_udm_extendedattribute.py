@@ -79,7 +79,6 @@ class Test_UDMExtension:
     @pytest.mark.exposure('careful')
     def test_extended_attribute_creation(self, udm, properties):
         """Create settings/extended_attribute"""
-
         extended_attribute = udm.create_object('settings/extended_attribute', position=udm.UNIVENTION_CONTAINER, **properties)
 
         utils.verify_ldap_object(extended_attribute, {
@@ -95,7 +94,6 @@ class Test_UDMExtension:
     @pytest.mark.exposure('careful')
     def test_extended_attribute_removal(self, udm, properties):
         """Remove settings/extended_attribute"""
-
         extended_attribute = udm.create_object('settings/extended_attribute', position=udm.UNIVENTION_CONTAINER, **properties)
 
         udm.remove_object('settings/extended_attribute', dn=extended_attribute)
@@ -106,7 +104,6 @@ class Test_UDMExtension:
     @pytest.mark.exposure('careful')
     def test_extended_attribute_singlevalue_set_during_object_creation(self, udm, properties):
         """Set settings/extended_attribute value during object creation"""
-
         udm.create_object('settings/extended_attribute', position=udm.UNIVENTION_CONTAINER, **properties)
 
         # create user object with extended attribute set
@@ -119,7 +116,6 @@ class Test_UDMExtension:
     @pytest.mark.exposure('careful')
     def test_extended_attribute_singlevalue_set_during_object_creation_after_removal(self, udm, properties):
         """After an singlevalue settings/extended_attribute has been removed, try to still set value for it during object creation"""
-
         extended_attribute = udm.create_object('settings/extended_attribute', position=udm.UNIVENTION_CONTAINER, **properties)
         udm.remove_object('settings/extended_attribute', dn=extended_attribute)
 
@@ -244,7 +240,6 @@ class Test_UDMExtension:
     @pytest.mark.exposure('careful')
     def test_extented_attribute_set_during_object_modification(self, udm, properties):
         """Set settings/extended_attribute value during object creation"""
-
         udm.create_object('settings/extended_attribute', position=udm.UNIVENTION_CONTAINER, **properties)
 
         user = udm.create_user()[0]

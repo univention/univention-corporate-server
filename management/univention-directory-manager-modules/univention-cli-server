@@ -31,9 +31,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-"""
-|UDM| command line server
-"""
+"""|UDM| command line server"""
 
 from __future__ import print_function
 
@@ -72,7 +70,6 @@ def recv_fds(sock, msglen, maxfds):
 
 
 class MyRequestHandler(socketserver.BaseRequestHandler):
-
     """Handle request on listening socket to open new connection."""
 
     def handle(self):
@@ -102,7 +99,6 @@ class ForkingServer(socketserver.ForkingMixIn, socketserver.UnixStreamServer):
 
 def server_main(args):
     """UDM command line server."""
-
     socket_path = args.socket
     socket_dir = os.path.dirname(socket_path)
 

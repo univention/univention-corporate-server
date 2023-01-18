@@ -30,9 +30,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-"""
-|UDM| hook definitions for modifying |LDAP| calls when objects are created, modifier or deleted.
-"""
+"""|UDM| hook definitions for modifying |LDAP| calls when objects are created, modifier or deleted."""
 
 import sys
 import io
@@ -56,9 +54,7 @@ _ = translation.translate
 
 def import_hook_files():
     # type: () -> None
-    """
-    Load all additional hook files from :file:`.../univention/admin/hooks.d/*.py`
-    """
+    """Load all additional hook files from :file:`.../univention/admin/hooks.d/*.py`"""
     for dir_ in sys.path:
         hooks_d = os.path.join(dir_, 'univention/admin/hooks.d/')
         if os.path.isdir(hooks_d):
@@ -74,9 +70,8 @@ def import_hook_files():
 
 
 class simpleHook(object):
-    """
-    Base class for a |UDM| hook performing logging.
-    """
+    """Base class for a |UDM| hook performing logging."""
+
     type = 'simpleHook'
 
     #
@@ -191,6 +186,7 @@ class AttributeHook(simpleHook):
             Otherwise you will get errors when you are distributing your new
             hook via `ucs_registerLDAPExtension --udm_hook`
     """
+
     udm_attribute_name = None
     ldap_attribute_name = None
 

@@ -66,27 +66,20 @@ def lmdb_caches(ldap_cache, mocked_os):
 
 
 def test__init__and_permissions(db_module, lmdb_caches, mocked_os):
-    """
-    Test the __init__ method of the ldap_cache.cache.LmdbCaches class.
-    """
-
+    """Test the __init__ method of the ldap_cache.cache.LmdbCaches class."""
     assert lmdb_caches._caches == {}
     db_module.open.assert_called_once_with('/usr/share/univention-group-membership-cache', 4294967295, max_dbs=128)
     assert mocked_os.call_count == 2
 
 
 def test_add_cache(db_module, ldap_cache, lmdb_caches):
-    """
-    Test the add_cache_class method of the ldap_cache.cache.LmdbCaches class.
-    """
+    """Test the add_cache_class method of the ldap_cache.cache.LmdbCaches class."""
     new_cache = lmdb_caches.add_cache_class(ldap_cache.EntryUUID)
     assert lmdb_caches._caches == {ldap_cache.EntryUUID.__name__: new_cache}
 
 
 def test_add_full_shard(db_module, ldap_cache, lmdb_caches):
-    """
-    Test the add_full_shard method of the ldap_cache.cache.LmdbCaches class.
-    """
+    """Test the add_full_shard method of the ldap_cache.cache.LmdbCaches class."""
     cache0 = lmdb_caches.add_full_shard(ldap_cache.UsersInGroup)
     assert lmdb_caches._caches == {'UsersInGroup': cache0}
     assert len(cache0.shards) == 1
@@ -98,9 +91,7 @@ def test_add_full_shard(db_module, ldap_cache, lmdb_caches):
 
 
 def test_recreate(ldap_cache, lmdb_caches, db_module, mocker):
-    """
-    Test the recreate method of the ldap_cache.cache.LmdbCaches class.
-    """
+    """Test the recreate method of the ldap_cache.cache.LmdbCaches class."""
     the_env = mocker.Mock()
     the_env.__enter__.return_value = mocker.Mock()
     context_object = mocker.Mock()

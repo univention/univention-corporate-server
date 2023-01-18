@@ -4,10 +4,8 @@ from univention.management.console.modules.setup.netconf.conditions import Dhcp
 
 
 class PhaseResolvConv(Dhcp):
+    """Commit /etc/resolv.conf if no more DHCP is used."""
 
-    """
-    Commit /etc/resolv.conf if no more DHCP is used.
-    """
     priority = 75
 
     def check(self):

@@ -34,9 +34,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-"""
-Defines the basic class for an UMC server.
-"""
+"""Defines the basic class for an UMC server."""
 
 import os
 import errno
@@ -69,11 +67,12 @@ _ = Translation('univention.management.console').translate
 
 
 class MagicBucket(object):
-
-    """Manages a connection (session) to the UMC server. Therefore it
+    """
+    Manages a connection (session) to the UMC server. Therefore it
     ensures that without successful authentication no other command is
     accepted. All commands are passed to the :class:`~SessionHandler`. After the user
-    has authenticated the commands are passed on to the Processor."""
+    has authenticated the commands are passed on to the Processor.
+    """
 
     def __init__(self):
         # type: () -> None
@@ -81,7 +80,8 @@ class MagicBucket(object):
 
     def new(self, client, sock):
         # type: (str, socket.socket) -> None
-        """Is called by the Server object to announce a new incoming
+        """
+        Is called by the Server object to announce a new incoming
         connection.
 
         :param str client: IP address + port
@@ -121,7 +121,8 @@ class MagicBucket(object):
 
     def _receive(self, sock):
         # type: (socket.socket) -> bool
-        """Signal callback: Handles incoming data. Processes SSL events
+        """
+        Signal callback: Handles incoming data. Processes SSL events
         and parses the incoming data. If a valid UMCP was found it is
         passed to _handle.
 
@@ -215,9 +216,11 @@ class MagicBucket(object):
 
     def _response(self, msg, state):
         # type: (Message, State) -> None
-        """ Send UMCP response to client. If the status code is 250 the
+        """
+        Send UMCP response to client. If the status code is 250 the
         module process is asking for exit. This method forfills the
-        request."""
+        request.
+        """
         if msg.id not in state.requests and msg.id != -1:
             CORE.info('The given response is invalid or not known (%s)' % (msg.id,))
             return
@@ -271,8 +274,8 @@ class MagicBucket(object):
 
 
 class Server(signals.Provider):
-
-    """Creates an UMC server. It handles incoming connections on UNIX or
+    """
+    Creates an UMC server. It handles incoming connections on UNIX or
     TCP sockets and passes the control to an external session handler
     (e.g. :class:`.MagicBucket`)
 
@@ -534,8 +537,8 @@ class Server(signals.Provider):
 
 
 class State(object):
-
-    """Holds information about the state of an active session
+    """
+    Holds information about the state of an active session
 
     :param str client: IP address + port
     :param socket.socket sock: socket object

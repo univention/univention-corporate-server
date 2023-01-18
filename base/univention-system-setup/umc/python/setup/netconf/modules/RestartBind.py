@@ -3,10 +3,8 @@ from univention.management.console.modules.setup.netconf.conditions import NotNe
 
 
 class PhaseRestartBind(RestartService, NotNetworkOnly):
+    """Stop the DNS server, remove the cache, restart."""
 
-    """
-    Stop the DNS server, remove the cache, restart.
-    """
     service = "bind9"
     priority = 24
 

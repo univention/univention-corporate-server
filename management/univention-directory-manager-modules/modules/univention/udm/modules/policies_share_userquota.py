@@ -29,9 +29,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-"""
-Module and object specific for "policies/share_userquota" UDM module.
-"""
+"""Module and object specific for "policies/share_userquota" UDM module."""
 
 from __future__ import absolute_import, unicode_literals
 from ..encoders import StringCaseInsensitiveResultUpperBooleanPropertyEncoder
@@ -48,11 +46,13 @@ class PoliciesShareUserquotaObjectProperties(GenericObjectProperties):
 
 class PoliciesShareUserquotaObject(GenericObject):
     """Better representation of policies/share_userquota properties."""
+
     udm_prop_class = PoliciesShareUserquotaObjectProperties
 
 
 class PoliciesShareUserquotaModule(GenericModule):
     """PoliciesShareUserquotaObject factory"""
+
     _udm_object_class = PoliciesShareUserquotaObject
 
     class Meta:

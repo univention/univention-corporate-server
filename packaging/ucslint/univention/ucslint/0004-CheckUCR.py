@@ -322,7 +322,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
         return cfg
 
     def check(self, path: str) -> None:
-        """ the real check """
+        """the real check"""
         super(UniventionPackageCheck, self).check(path)
 
         conffiles = self.check_conffiles(path)
@@ -599,7 +599,8 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
         short2conffn = {}  # type: Dict[str, str] # relative name -> full path
 
         def find_conf(fn: str) -> str:
-            """Find file in conffiles/ directory.
+            """
+            Find file in conffiles/ directory.
             Mirror base/univention-config/python/univention-install-config-registry#srcPath
             """
             try:

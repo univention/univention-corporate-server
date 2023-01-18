@@ -1,7 +1,5 @@
 #!/usr/bin/python3
-"""
-Run (uninstalled) univention.config_registry to make sure all commands work
-"""
+"""Run (uninstalled) univention.config_registry to make sure all commands work"""
 from copy import deepcopy
 
 import pytest

@@ -476,7 +476,6 @@ class AppMetaClass(UniventionMetaClass):
 
 
 class App(with_metaclass(AppMetaClass, object)):
-
     """
     This is the main App class. It represents *one version* of the App in
     the Univention App Center. It is mainly a container for a parsed ini
@@ -490,7 +489,7 @@ class App(with_metaclass(AppMetaClass, object)):
     Real work with the App class is done in the actions, not this class
     itself.
 
-    Attributes:
+    Attributes
             id: A unique ID for the App. Different versions of the same
                     App have the same ID, though.
             code: An internal ID like 2-char value that has no meaning
@@ -1338,8 +1337,10 @@ class App(with_metaclass(AppMetaClass, object)):
 
     @hard_requirement('upgrade')
     def must_have_fitting_app_version(self):
-        """To upgrade, at least version %(required_version)s needs to
-        be installed."""
+        """
+        To upgrade, at least version %(required_version)s needs to
+        be installed.
+        """
         from univention.appcenter.app_cache import Apps
         if self.required_app_version_upgrade:
             required_version = LooseVersion(self.required_app_version_upgrade)
@@ -1387,28 +1388,36 @@ class App(with_metaclass(AppMetaClass, object)):
 
     @hard_requirement('install', 'upgrade')
     def must_not_be_vote_for_app(self):
-        """The application is not yet installable. Vote for this app
+        """
+        The application is not yet installable. Vote for this app
         now and bring your favorite faster to the Univention App
-        Center"""
+        Center
+        """
         return not self.vote_for_app
 
     @hard_requirement('install', 'upgrade')
     def must_not_be_docker_if_docker_is_disabled(self):
-        """The application uses a container technology while the App Center
-        is configured to not not support it"""
+        """
+        The application uses a container technology while the App Center
+        is configured to not not support it
+        """
         return not self.docker or ucr_is_true('appcenter/docker', True)
 
     @hard_requirement('install', 'upgrade')
     def must_not_be_docker_in_docker(self):
-        """The application uses a container technology while the system
+        """
+        The application uses a container technology while the system
         itself runs in a container. Using the application is not
-        supported on this host"""
+        supported on this host
+        """
         return not self.docker or not container_mode()
 
     @hard_requirement('install', 'upgrade')
     def must_have_valid_license(self):
-        """For the installation of this application, a UCS license key
-        with a key identification (Key ID) is required"""
+        """
+        For the installation of this application, a UCS license key
+        with a key identification (Key ID) is required
+        """
         if self.notify_vendor:
             license = ucr_get('uuid/license')
             if license is None:
@@ -1424,14 +1433,18 @@ class App(with_metaclass(AppMetaClass, object)):
 
     @hard_requirement('install')
     def must_not_be_end_of_life(self):
-        """This application was discontinued and may not be installed
-        anymore"""
+        """
+        This application was discontinued and may not be installed
+        anymore
+        """
         return not self.end_of_life
 
     @hard_requirement('install', 'upgrade')
     def must_have_supported_architecture(self):
-        """This application only supports %(supported)s as
-        architecture. %(msg)s"""
+        """
+        This application only supports %(supported)s as
+        architecture. %(msg)s
+        """
         supported_architectures = self.supported_architectures
         platform_bits = platform.architecture()[0]
         aliases = {'i386': '32bit', 'amd64': '64bit'}
@@ -1473,9 +1486,11 @@ class App(with_metaclass(AppMetaClass, object)):
 
     @hard_requirement('install', 'upgrade')
     def must_have_correct_server_role(self):
-        """The application cannot be installed on the current server
+        """
+        The application cannot be installed on the current server
         role (%(current_role)s). In order to install the application,
-        one of the following roles is necessary: %(allowed_roles)r"""
+        one of the following roles is necessary: %(allowed_roles)r
+        """
         server_role = ucr_get('server/role')
         if not self._allowed_on_local_server():
             return {
@@ -1497,8 +1512,10 @@ class App(with_metaclass(AppMetaClass, object)):
 
     @hard_requirement('install', 'upgrade')
     def must_have_no_conflicts_apps(self):
-        """The application conflicts with the following applications:
-                %r"""
+        """
+        The application conflicts with the following applications:
+        %r
+        """
         from univention.appcenter.app_cache import Apps
         conflictedapps = set()
         apps_cache = Apps()
@@ -1558,8 +1575,10 @@ class App(with_metaclass(AppMetaClass, object)):
 
     @hard_requirement('remove')
     def must_not_be_depended_on(self):
-        """The application is required for the following applications
-        to work: %r"""
+        """
+        The application is required for the following applications
+        to work: %r
+        """
         from univention.appcenter.app_cache import Apps
         depending_apps = []
 
@@ -1596,8 +1615,10 @@ class App(with_metaclass(AppMetaClass, object)):
 
     @hard_requirement('remove')
     def must_not_remove_plugin(self):
-        """It is currently impossible to remove a plugin once it is
-        installed. Remove %r instead."""
+        """
+        It is currently impossible to remove a plugin once it is
+        installed. Remove %r instead.
+        """
         from univention.appcenter.app_cache import Apps
 
         if self.docker and self.plugin_of:
@@ -1607,8 +1628,10 @@ class App(with_metaclass(AppMetaClass, object)):
 
     @soft_requirement('remove')
     def shall_not_have_plugins_in_docker(self):
-        """Uninstalling the App will also remove the following plugins:
-        %r"""
+        """
+        Uninstalling the App will also remove the following plugins:
+        %r
+        """
         from univention.appcenter.app_cache import Apps
         depending_apps = []
         if self.docker:
@@ -1621,8 +1644,10 @@ class App(with_metaclass(AppMetaClass, object)):
 
     @soft_requirement('install')
     def shall_have_enough_free_disk_space(self):
-        """The application requires %(minimum)d MB of free disk space but only
-        %(current)d MB are available."""
+        """
+        The application requires %(minimum)d MB of free disk space but only
+        %(current)d MB are available.
+        """
         required_free_disk_space = self.min_free_disk_space or 0
         if required_free_disk_space <= 0:
             return True
@@ -1633,8 +1658,10 @@ class App(with_metaclass(AppMetaClass, object)):
 
     @soft_requirement('install', 'upgrade')
     def shall_have_enough_ram(self, function):
-        """The application requires %(minimum)d MB of free RAM but only
-        %(current)d MB are available."""
+        """
+        The application requires %(minimum)d MB of free RAM but only
+        %(current)d MB are available.
+        """
         from univention.appcenter.app_cache import Apps
         current_ram = get_current_ram_available()
         required_ram = self.min_physical_ram
@@ -1651,15 +1678,19 @@ class App(with_metaclass(AppMetaClass, object)):
 
     @soft_requirement('install', 'upgrade')
     def shall_only_be_installed_in_ad_env_with_password_service(self):
-        """The application requires the password service to be set up
-        on the Active Directory domain controller server."""
+        """
+        The application requires the password service to be set up
+        on the Active Directory domain controller server.
+        """
         return not self._has_active_ad_member_issue('password')
 
     @hard_requirement('install', 'upgrade')
     def shall_not_be_docker_if_discouraged(self):
-        """The application has not been approved to migrate all
+        """
+        The application has not been approved to migrate all
         existing data. Maybe there is a migration guide:
-        %(migration_link)s"""
+        %(migration_link)s
+        """
         problem = self._docker_prudence_is_true() and not self.docker_migration_works
         if problem:
             return {'migration_link': self.docker_migration_link}

@@ -27,9 +27,7 @@ class TestUMCUserAuthentication(UMCBase):
         self.test_password = ''
 
     def create_user(self):
-        """
-        Creates a group and a user in it for the test.
-        """
+        """Creates a group and a user in it for the test."""
         print("\nCreating a user '%s'" % (self.test_username,))
 
         self.test_user_dn = self.UDM.create_user(
@@ -40,27 +38,19 @@ class TestUMCUserAuthentication(UMCBase):
         utils.verify_ldap_object(self.test_user_dn)
 
     def set_userexpiry_None(self):
-        """
-        Queries UDM's users/user from UMC
-        """
+        """Queries UDM's users/user from UMC"""
         return self.modify_object([{"object": {"userexpiry": None, "$dn$": self.test_user_dn}, "options": {"objectType": "users/user"}}], 'users/user')
 
     def set_userexpiry_testval(self):
-        """
-        Queries UDM's users/user from UMC
-        """
+        """Queries UDM's users/user from UMC"""
         return self.modify_object([{"object": {"userexpiry": "2015-02-02", "$dn$": self.test_user_dn}, "options": {"objectType": "users/user"}}], 'users/user')
 
     def set_userexpiry_empty(self):
-        """
-        Queries UDM's users/user from UMC
-        """
+        """Queries UDM's users/user from UMC"""
         return self.modify_object([{"object": {"userexpiry": "", "$dn$": self.test_user_dn}, "options": {"objectType": "users/user"}}], 'users/user')
 
     def main(self):
-        """
-        Tests the UMC user authentication and various password change cases.
-        """
+        """Tests the UMC user authentication and various password change cases."""
         self.test_username = 'umc_test_user_' + random_username(6)
         self.test_password = 'univention'
 

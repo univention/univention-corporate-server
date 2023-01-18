@@ -121,6 +121,7 @@ class GenericObject(BaseObject):
 
         user_mod.meta.auto_reload = False
     """
+
     udm_prop_class = GenericObjectProperties
     _policies_encoder = None
 
@@ -509,6 +510,7 @@ class GenericModule(with_metaclass(GenericModuleMeta, BaseModule)):
             dc_slaves = dc_slave_mod.search(filter_s='cn=s10*')
             campus_groups = group_mod.search(base='ou=campus,dc=example,dc=com')
     """
+
     _udm_object_class = GenericObject
     _udm_module_meta_class = GenericModuleMetadata
     _udm_module_cache = {}

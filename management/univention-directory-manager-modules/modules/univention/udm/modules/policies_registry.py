@@ -29,9 +29,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-"""
-Module and object specific for "policies/registry" UDM module.
-"""
+"""Module and object specific for "policies/registry" UDM module."""
 
 from __future__ import absolute_import, unicode_literals
 from ..encoders import ListOfListOflTextToDictPropertyEncoder
@@ -48,11 +46,13 @@ class PoliciesRegistryObjectProperties(GenericObjectProperties):
 
 class PoliciesRegistryObject(GenericObject):
     """Better representation of policies/registry properties."""
+
     udm_prop_class = PoliciesRegistryObjectProperties
 
 
 class PoliciesRegistryModule(GenericModule):
     """PoliciesRegistryObject factory"""
+
     _udm_object_class = PoliciesRegistryObject
 
     class Meta:

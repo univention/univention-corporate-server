@@ -3,10 +3,8 @@ from univention.management.console.modules.setup.netconf.common import AddressMa
 
 
 class PhaseRewriteUcr(AddressMap):
+    """Rewrite IP configuration stored in UCR."""
 
-    """
-    Rewrite IP configuration stored in UCR.
-    """
     variables = (
         'nameserver1',
         'nameserver2',

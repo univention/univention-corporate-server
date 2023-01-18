@@ -1,8 +1,10 @@
 #!/usr/bin/python3
 # -*- coding: utf-8 -*-
 #
-"""Univention Package Database
-Python module for the package database"""
+"""
+Univention Package Database
+Python module for the package database
+"""
 from __future__ import print_function
 #
 # Like what you see? Join us!
@@ -419,8 +421,10 @@ def action_remove_system(connection, cursor, sysname):
 
 
 def scan_and_store_packages(cursor, sysname, fake_null=False, architecture=None):
-    """updates the system <sysname> with the current package state
-    if <fake_null> is True put '' instead of None in the vername field"""
+    """
+    updates the system <sysname> with the current package state
+    if <fake_null> is True put '' instead of None in the vername field
+    """
     delete_packages = '''
 	DELETE FROM packages_on_systems
            WHERE sysname = %(sysname)s

@@ -52,9 +52,7 @@ class ServiceError(Exception):
 
 
 class Service(uit.LocalizedDictionary):
-    """
-    Description for a system service.
-    """
+    """Description for a system service."""
 
     REQUIRED = frozenset(('description', 'programs'))
     OPTIONAL = frozenset(('start_type', 'systemd', 'icon', 'name', 'init_script'))

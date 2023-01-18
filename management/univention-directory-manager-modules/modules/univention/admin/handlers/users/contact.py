@@ -30,9 +30,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-"""
-|UDM| module for the user contact objects
-"""
+"""|UDM| module for the user contact objects"""
 
 from __future__ import absolute_import
 

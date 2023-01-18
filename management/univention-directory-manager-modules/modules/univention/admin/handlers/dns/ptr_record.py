@@ -30,9 +30,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-"""
-|UDM| module for |DNS| reverse pointer records (PTR)
-"""
+"""|UDM| module for |DNS| reverse pointer records (PTR)"""
 
 from univention.admin.layout import Tab, Group
 import univention.admin
@@ -235,7 +233,8 @@ class object(univention.admin.handlers.simpleLdap):
 
 
 def rewrite_rev(filter, subnet):
-    """Rewrite LDAP filter expression and convert (ip) -> (zone,reversed)
+    """
+    Rewrite LDAP filter expression and convert (ip) -> (zone,reversed)
 
     >>> rewrite_rev(expression('ip', '1.2.3.4'), subnet='1.2')
     conjunction('&', [expression('zoneName', '2.1.in-addr.arpa', '='), expression('relativeDomainName', '4.3', '=')])

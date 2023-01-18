@@ -1,8 +1,6 @@
 #!/usr/bin/python3
 # -*- coding: utf-8 -*-
-"""
-Internationalization (i18n) utilities.
-"""
+"""Internationalization (i18n) utilities."""
 # Like what you see? Join us!
 # https://www.univention.com/about-us/careers/vacancies/
 #
@@ -43,9 +41,7 @@ import six
 
 
 class I18N_Error(Exception):
-    """
-    Error in Internationalization.
-    """
+    """Error in Internationalization."""
 
 
 class Locale(object):
@@ -205,9 +201,8 @@ class NullTranslation(object):
 
 
 class Translation(NullTranslation):
-    """
-    Translation.
-    """
+    """Translation."""
+
     _instances = []
     locale = Locale()  # type: Locale # type: ignore
 
@@ -250,8 +245,8 @@ class Translation(NullTranslation):
     def set_all_languages(cls, language):
         # type: (str) -> None
         """
-                Set the language of all existing :class:`Translation` instances.
-                This is required when instances are created during import time but later on the language should be changed.
+        Set the language of all existing :class:`Translation` instances.
+        This is required when instances are created during import time but later on the language should be changed.
         """
         for ref in cls._instances:
             instance = ref()

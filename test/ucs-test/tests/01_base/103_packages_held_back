@@ -10,7 +10,8 @@ import univention.testing.utils as utils
 
 
 def get_heldback_pkgs():
-    """Returns a list of apt_pkg.Package.name list\n
+    """
+    Returns a list of apt_pkg.Package.name list\n
     type = list of str
     """
     held_pkgs = []

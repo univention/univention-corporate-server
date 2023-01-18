@@ -144,9 +144,7 @@ def restart_s4connector():
 
 
 def s4_in_sync_mode(sync_mode, configbase='connector'):
-    """
-    Set the S4-Connector into the given `sync_mode` restart.
-    """
+    """Set the S4-Connector into the given `sync_mode` restart."""
     ucr_set([f'{configbase}/s4/mapping/syncmode={sync_mode}'])
     restart_s4connector()
 

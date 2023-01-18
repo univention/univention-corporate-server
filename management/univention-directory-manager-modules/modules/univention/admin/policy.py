@@ -30,9 +30,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-"""
-|UDM| policy utilities
-"""
+"""|UDM| policy utilities"""
 
 from typing import Any, Dict, Tuple  # noqa: F401
 

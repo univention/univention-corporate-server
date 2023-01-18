@@ -39,13 +39,15 @@ class SimpleSquid:
         return call([self.basename, "-k", "reconfigure"])
 
     def is_not_running(self):
-        """Check the current running status\n
+        """
+        Check the current running status\n
         :return boolean : True if not running, Flase if running
         """
         return call([self.basename, "-k", "check"])
 
     def is_running(self, tolerance=5):
-        """Check if it is running within the given tolerance of time\n
+        """
+        Check if it is running within the given tolerance of time\n
         Use when waiting for squid to be running.\n
         :param tolerance: time duration
         :type tolerance: int for seconds
@@ -63,7 +65,8 @@ class SimpleSquid:
         return result
 
     def redirector_is(self, expected_redirector):
-        """Check if the redirector is the same as the passed parameter\n
+        """
+        Check if the redirector is the same as the passed parameter\n
         :param expected_redirector: in the config file
         :type expected_redirector: string
         :return boolean:True if match, False if not match

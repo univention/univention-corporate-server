@@ -44,9 +44,7 @@ from univention.config_registry.backend import BooleanConfigRegistry
 
 
 class BaseValidator(object):
-    """
-    Base class for |UCR| type validators.
-    """
+    """Base class for |UCR| type validators."""
 
     NAME = ""
 
@@ -133,9 +131,7 @@ class String(BaseValidator):
 
 
 class URLHttp(BaseValidator):
-    """
-    Validator for |UCR| type "url_http".
-    """
+    """Validator for |UCR| type "url_http"."""
 
     NAME = "url_http"
 
@@ -147,9 +143,7 @@ class URLHttp(BaseValidator):
 
 
 class URLProxy(BaseValidator):
-    """
-    Validator for |UCR| type "url_proxy".
-    """
+    """Validator for |UCR| type "url_proxy"."""
 
     NAME = "url_proxy"
 
@@ -161,9 +155,7 @@ class URLProxy(BaseValidator):
 
 
 class IPv4Address(BaseValidator):
-    """
-    Validator for |UCR| type "ipv4address".
-    """
+    """Validator for |UCR| type "ipv4address"."""
 
     NAME = "ipv4address"
 
@@ -173,9 +165,7 @@ class IPv4Address(BaseValidator):
 
 
 class IPv6Address(BaseValidator):
-    """
-    Validator for |UCR| type "ipv6address".
-    """
+    """Validator for |UCR| type "ipv6address"."""
 
     NAME = "ipv6address"
 
@@ -185,9 +175,7 @@ class IPv6Address(BaseValidator):
 
 
 class IPAddress(BaseValidator):
-    """
-    Validator for |UCR| type "ipaddress".
-    """
+    """Validator for |UCR| type "ipaddress"."""
 
     NAME = "ipaddress"
 
@@ -266,9 +254,7 @@ class Integer(BaseValidator):
 
 
 class UnsignedNumber(Integer):
-    """
-    Validator for |UCR| type "uint".
-    """
+    """Validator for |UCR| type "uint"."""
 
     NAME = "uint"
     MIN = 0
@@ -279,9 +265,7 @@ class UnsignedNumber(Integer):
 
 
 class PositiveNumber(Integer):
-    """
-    Validator for |UCR| type "pint".
-    """
+    """Validator for |UCR| type "pint"."""
 
     NAME = "pint"
     MIN = 1
@@ -292,9 +276,7 @@ class PositiveNumber(Integer):
 
 
 class PortNumber(Integer):
-    """
-    Validator for |UCR| type "portnumber".
-    """
+    """Validator for |UCR| type "portnumber"."""
 
     NAME = "portnumber"
     MIN = 0
@@ -306,9 +288,7 @@ class PortNumber(Integer):
 
 
 class Bool(BaseValidator):
-    """
-    Validator for |UCR| type "bool".
-    """
+    """Validator for |UCR| type "bool"."""
 
     NAME = "bool"
     _BCR = BooleanConfigRegistry()
@@ -319,9 +299,7 @@ class Bool(BaseValidator):
 
 
 class Json(BaseValidator):
-    """
-    Validator for |UCR| type "json".
-    """
+    """Validator for |UCR| type "json"."""
 
     NAME = "json"
 
@@ -331,9 +309,7 @@ class Json(BaseValidator):
 
 
 class List(BaseValidator):
-    """
-    Validator for |UCR| type "list".
-    """
+    """Validator for |UCR| type "list"."""
 
     NAME = "list"
     DEFAULT_SEPARATOR = ','
@@ -364,9 +340,7 @@ class List(BaseValidator):
 
 
 class Cron(BaseValidator):
-    """
-    Validator for |UCR| type "cron".
-    """
+    """Validator for |UCR| type "cron"."""
 
     NAME = "cron"
     PREDEFINED = frozenset("@annually @yearly @monthly @weekly @daily @hourly @reboot".split())
@@ -440,6 +414,7 @@ class Type(object):
                     else:
                             # value is not compatible with type definition
     """
+
     TYPE_CLASSES = {
         clazz.NAME: clazz
         for clazz in BaseValidator._recurse_subclasses()

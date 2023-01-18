@@ -67,9 +67,7 @@ def random_string(length=10, alpha=True, numeric=True, charset="", encoding='utf
 
 def random_name(length=10):
     # type: (int) -> str
-    """
-    create random name (1 ALPHA, 8 ALPHANUM, 1 ALPHA)
-    """
+    """create random name (1 ALPHA, 8 ALPHANUM, 1 ALPHA)"""
     return ''.join((
         random_string(length=1, alpha=True, numeric=False),
         random_string(length=(length - 2), alpha=True, numeric=True),
@@ -79,9 +77,7 @@ def random_name(length=10):
 
 def random_name_special_characters(length=10):
     # type: (int) -> str
-    """
-    create random name (1 UMLAUT, 2 ALPHA, 6 SPECIAL_CHARACTERS + UMLAUT, 1 UMLAUTNUM)
-    """
+    """create random name (1 UMLAUT, 2 ALPHA, 6 SPECIAL_CHARACTERS + UMLAUT, 1 UMLAUTNUM)"""
     return ''.join((
         random_string(length=1, alpha=False, numeric=False, charset=STR_UMLAUT),
         random_string(length=2, alpha=True, numeric=False),
@@ -144,7 +140,7 @@ def random_subnet(ip_iter=iter(range(11, 121))):
 
 def random_ipv6_subnet():
     # type: () -> str
-    """Returns random six blocks of an ipv6 address """
+    """Returns random six blocks of an ipv6 address"""
     m = 16**4
     return ":".join("%04x" % randint(0, m) for i in range(6))
 

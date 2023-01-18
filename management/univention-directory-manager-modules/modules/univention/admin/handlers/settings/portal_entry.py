@@ -30,9 +30,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-"""
-|UDM| module for Portal entries
-"""
+"""|UDM| module for Portal entries"""
 
 import six
 from ldap.dn import escape_dn_chars

@@ -1,4 +1,5 @@
-"""Decorators for common ldap functionality.
+"""
+Decorators for common ldap functionality.
 Example usage::
 
 	@machine_connection(write=True)
@@ -118,7 +119,8 @@ class LDAP(object):
         return connection()
 
     def reset_cache(self, *connections):
-        """Remove cached LDAP connections.
+        """
+        Remove cached LDAP connections.
 
         :param connections: Either remove every connection or only the specified ones.
         """

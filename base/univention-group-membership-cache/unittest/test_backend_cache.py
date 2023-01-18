@@ -70,17 +70,13 @@ def cache(mocker):
 
 
 def test__init__(backend, caches):
-    """
-    Test __init__ method.
-    """
+    """Test __init__ method."""
     assert caches._directory == backend.DB_DIRECTORY
     assert caches._caches == {}
 
 
 def test_get_shards_for_query(caches, cache, mocker):
-    """
-    test get_shards_for_query method.
-    """
+    """test get_shards_for_query method."""
     # get unexisting query
     result = caches.get_shards_for_query("a")
     assert result == []
@@ -99,9 +95,7 @@ def test_get_shards_for_query(caches, cache, mocker):
 
 
 def test_get_queries(caches, cache, mocker):
-    """
-    Test if the queries are returned correctly.
-    """
+    """Test if the queries are returned correctly."""
     result = caches.get_queries("a")
     assert result == {}
 
@@ -130,9 +124,7 @@ def test_get_queries(caches, cache, mocker):
 
 
 def test_rebuild(caches, mocker):
-    """
-    Test if the rebuild method is called correctly.
-    """
+    """Test if the rebuild method is called correctly."""
     # Create a couple of mocked cache
     cache1 = mocker.Mock()
     cache1.db_name = "db_name1"
@@ -157,9 +149,7 @@ def test_rebuild(caches, mocker):
 
 
 def test__query_objects(caches, mocked_getMachineConnection):
-    """
-    Test _query_objects method.
-    """
+    """Test _query_objects method."""
     mocked_getMachineConnection.search.retun_value = "returned value"
     caches._query_objects("query", "attrs")
     assert mocked_getMachineConnection.search.call_count == 1
@@ -167,9 +157,7 @@ def test__query_objects(caches, mocked_getMachineConnection):
 
 
 def test_get_sub_cache(caches, cache):
-    """
-    Test if _get_sub_cache returns the correct cache.
-    """
+    """Test if _get_sub_cache returns the correct cache."""
     result = caches.get_sub_cache("a")
     assert result is None
     caches.add(cache)
@@ -178,10 +166,7 @@ def test_get_sub_cache(caches, cache):
 
 
 def test_add(caches, cache, mocker):
-    """
-    Test add method.
-    """
-
+    """Test add method."""
     caches.add(cache)
 
     assert cache.add_shard.call_count == 1

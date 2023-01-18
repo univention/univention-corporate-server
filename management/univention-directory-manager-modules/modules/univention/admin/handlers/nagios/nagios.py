@@ -31,9 +31,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-"""
-|UDM| module for all nagios settings
-"""
+"""|UDM| module for all nagios settings"""
 
 import univention.admin.filter
 import univention.admin.handlers

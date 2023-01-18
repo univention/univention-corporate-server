@@ -44,8 +44,8 @@ from univention.appcenter.ucr import ucr_get
 
 
 class Info(UniventionAppAction):
-
     """Shows information on the current state of the App Center itself."""
+
     help = 'Show general info'
 
     def setup_parser(self, parser):
@@ -81,7 +81,8 @@ class Info(UniventionAppAction):
 
     @classmethod
     def get_compatibility(cls):
-        """ Returns the version number of the App Center.
+        """
+        Returns the version number of the App Center.
         As App Center within a domain may talk to each other it is necessary
         to ask whether they are compatible.
         The version number will rise whenever a change was made that may break compatibility.

@@ -59,7 +59,6 @@ RE_PY3 = re.compile(r'\s*dh .*--with.*python3')
 
 
 class UniventionPackageCheck(uub.UniventionPackageCheckBase):
-
     """Python specific flake8 checks."""
 
     IGNORED_FILES = [

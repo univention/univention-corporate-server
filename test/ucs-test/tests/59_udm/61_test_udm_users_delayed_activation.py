@@ -39,7 +39,6 @@ def disabled_cronjob():
 @pytest.mark.roles('domaincontroller_master')
 def test_default_ucr_value(udm, ucr):
     """Check default cron value"""
-
     value = ucr.get(ucrv)
     assert value == expected_default_ucr_value
 
@@ -48,7 +47,6 @@ def test_default_ucr_value(udm, ucr):
 @pytest.mark.exposure('dangerous')
 def test_disabled_user_creation_activation(disabled_cronjob, udm, ucr):
     """Check cron based activation of users/user with accountActivationDate"""
-
     now = datetime.now()
     with open("/etc/timezone") as tzfile:
         timezone = tzfile.read().strip()

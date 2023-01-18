@@ -41,7 +41,6 @@ def get_code_position(depth=1, line_length=80, fill_char='.', prefix="# ", color
     @param color_start: Could be "\033[0;31m" for red or \033[0;32m for green
     @param color_stop: should reset the color to default, usually "\033[0;0m"
     """
-
     if hasattr(sys, '_getframe'):
         # not every Python version has a _getframe function. We will only
         # return a separator, if we cannot determine the position.
@@ -58,7 +57,6 @@ def setup(app_name):
     each of them with the filename being the action name. The script will
     append its own name to `file_result` when executed.
     """
-
     # try to create an empty result file...
     with open(file_result, "w") as f:
         f.close()
@@ -150,7 +148,6 @@ def verify_test_results_and_exit():
     function outputs all test results and checks if the result file contains
     the names of all actions (install/upgrade/remove).
     """
-
     with open(file_result) as f:
 
         # now check if all actions were executed and abort otherwise...

@@ -107,9 +107,7 @@ else:
 
 
 class BooleanConfigRegistry(object):
-    """
-    Mixin class for boolean operations.
-    """
+    """Mixin class for boolean operations."""
 
     TRUE = frozenset({'yes', 'true', '1', 'enable', 'enabled', 'on'})
     FALSE = frozenset({'no', 'false', '0', 'disable', 'disabled', 'off'})
@@ -170,9 +168,7 @@ class BooleanConfigRegistry(object):
 
 
 class ViewConfigRegistry(_M, BooleanConfigRegistry):
-    """
-    Immutable view of UCR.
-    """
+    """Immutable view of UCR."""
 
     def __init__(self, ucr):
         # type: (Mapping[str, str]) -> None
@@ -198,6 +194,7 @@ class ReadOnlyConfigRegistry(_M, BooleanConfigRegistry):
 
     :param filename: File name for custom layer text database file.
     """
+
     DEFAULTS, NORMAL, LDAP, SCHEDULE, FORCED, CUSTOM = range(6)
     LAYER_PRIORITIES = (CUSTOM, FORCED, SCHEDULE, LDAP, NORMAL, DEFAULTS)
     PREFIX = '/etc/univention'
@@ -271,9 +268,7 @@ class ReadOnlyConfigRegistry(_M, BooleanConfigRegistry):
 
     def __exit__(self, exc_type, exc_value, traceback):
         # type: (Optional[Type[BaseException]], Optional[BaseException], Optional[TracebackType]) -> None
-        """
-        Release registry view.
-        """
+        """Release registry view."""
 
     def __getitem__(self, key):  # type: ignore
         # type: (str) -> Optional[str]
@@ -466,9 +461,7 @@ class ConfigRegistry(ReadOnlyConfigRegistry, _MM):
     @property
     def _layer(self):
         # type: () -> _ConfigRegistry
-        """
-        Return selected layer.
-        """
+        """Return selected layer."""
         return self._registry[self.scope]
 
     def save(self):
@@ -502,18 +495,14 @@ class ConfigRegistry(ReadOnlyConfigRegistry, _MM):
 
     def __exit__(self, exc_type, exc_value, traceback):
         # type: (Optional[Type[BaseException]], Optional[BaseException], Optional[TracebackType]) -> None
-        """
-        Unlock registry.
-        """
+        """Unlock registry."""
         if exc_type is None:
             self.save()
         self.unlock()
 
     def clear(self):
         # type: () -> None
-        """
-        Clear all registry keys.
-        """
+        """Clear all registry keys."""
         self._layer.clear()
 
     def __delitem__(self, key):

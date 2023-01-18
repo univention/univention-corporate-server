@@ -54,6 +54,7 @@ class HandlerMetaClass(type):
     Read handler configuration, invoke adapter and set global variables in module to
     fulfill original API.
     """
+
     def __new__(mcs, clsname, bases, attrs):
         # type: (str, Tuple[type, ...], Dict[str, Any]) -> Type[ListenerModuleHandler]
         kls = cast(Type["ListenerModuleHandler"], super().__new__(mcs, clsname, bases, attrs))

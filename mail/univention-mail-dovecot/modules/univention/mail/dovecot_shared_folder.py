@@ -443,7 +443,6 @@ class DovecotSharedFolderListener(DovecotListener):
         :param delete_only: if True removes only entry 'delete_only', else recreates from scratch.
         :return: None
         """
-
         # TODO: create distinct configurations for each server (honor univentionMailHomeServer)
 
         # When deleting, remove only one entry, so in the case of multi-remove

@@ -22,9 +22,7 @@ from univention.testing.codes import TestCodes
 class CheckLogFiles:
 
     def __init__(self):
-        """
-        Test constructor
-        """
+        """Test constructor"""
         self.errors = Errors()
         self.warnings = Warnings()
         self.tracebacks = Tracebacks()

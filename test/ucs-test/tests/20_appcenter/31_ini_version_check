@@ -20,9 +20,7 @@ APP_ID = 'univention-demo-data'
 
 
 def get_app_dn(App):
-    """
-    Returns the given 'App' DN.
-    """
+    """Returns the given 'App' DN."""
     app_dn = ("univentionAppID=%s_%s,cn=%s,cn=apps,cn=univention,%s"
               % (App.id, App.version, App.id, ldap_base))
     return app_dn

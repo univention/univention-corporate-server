@@ -44,18 +44,14 @@ def ldap_membership_cache():
 
 
 def test_relevant_for_group(ldap_membership_cache):
-    """
-    Test if there's relevant element in cache
-    """
+    """Test if there's relevant element in cache"""
     cache = ldap_membership_cache.MembershipCache()
     cache.add("cn=test,dc=ucs,dc=test", "cn=test,dc=ucs,dc=test")
     assert cache.relevant_for_group("cn=test,dc=ucs,dc=test") == ["cn=test,dc=ucs,dc=test"]
 
 
 def test_update_user_cache():
-    """
-    Test if the cache is updated
-    """
+    """Test if the cache is updated"""
     cache = ldap_membership_cache.MembershipCache()
     cache.update_user_cache("cn=test,dc=ucs,dc=test", ["cn=test,dc=ucs,dc=test"])
     assert cache.relevant_for_group("cn=test,dc=ucs,dc=test") == ["cn=test,dc=ucs,dc=test"]

@@ -29,9 +29,7 @@
 # License with the Debian GNU/Linux or Univention distribution in file
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
-"""
-Univention Updater: UCR Repository Server URL
-"""
+"""Univention Updater: UCR Repository Server URL"""
 
 from copy import copy
 try:
@@ -45,9 +43,7 @@ from six.moves.urllib_parse import urlsplit, quote
 
 
 class UcsRepoUrl(object):
-    """
-    UCS repository server base URL.
-    """
+    """UCS repository server base URL."""
 
     DEFAULT = 'https://updates.software-univention.de/'
 

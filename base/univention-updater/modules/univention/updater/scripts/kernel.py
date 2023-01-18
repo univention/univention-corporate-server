@@ -29,9 +29,7 @@
 # License with the Debian GNU/Linux or Univention distribution in file
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
-"""
-Prune no longer required Linux kernel packages.
-"""
+"""Prune no longer required Linux kernel packages."""
 
 from argparse import ArgumentParser, Namespace
 from typing import List, Optional

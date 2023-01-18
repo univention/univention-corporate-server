@@ -42,7 +42,8 @@ from univention.appcenter.utils import unique, _
 
 
 class Abort(Exception):
-    '''The Abort class is the base class for a "controlled" abortion of an
+    '''
+    The Abort class is the base class for a "controlled" abortion of an
     action (meaning: univention-app <action>). This means that this
     situation was foreseen by the developers and is less critical. The
     "code" variable is sent to the App Center server for Univention to get
@@ -57,6 +58,7 @@ class Abort(Exception):
     non-positional). The last argument (or an argument named "message") can
     overwrite any "default_error_msg".
     '''
+
     code = 401
     default_error_msg = ''
 
@@ -320,7 +322,8 @@ class ReinitializeError(Abort):
 
 
 class AppCenterError(Exception):
-    '''A "real" exception that developers cannot handle very well.
+    '''
+    A "real" exception that developers cannot handle very well.
     The difference between AppCenterError and Abort is that Abort is a
     somewhat defined behavior, i.e. App installation has to fail if the
     setup script fails. AppCenterError happens where it was not supposed
@@ -330,7 +333,9 @@ class AppCenterError(Exception):
     scary traceback. You can even put custom information into the proposed
     feedback mail (raise AppCenterError(str(custom))).
     As with Abort, AppCenterError should be subclassed and get a different
-    code.'''
+    code.
+    '''
+
     code = 500
     title = _('An error occurred!')
     info = _('We are sorry for the inconvenience. Please help us to improve the App Center and the Apps by sending us the information below.')

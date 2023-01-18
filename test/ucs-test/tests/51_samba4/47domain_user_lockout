@@ -30,9 +30,7 @@ hostname = ''
 
 
 def remove_samba_warnings(input_str):
-    """
-    Removes the Samba Warning/Note from the given input_str.
-    """
+    """Removes the Samba Warning/Note from the given input_str."""
     # ignoring following messages (Bug #37362):
     input_str = input_str.replace(b'WARNING: No path in service IPC$ - making it unavailable!', b'')
     return input_str.replace(b'NOTE: Service IPC$ is flagged unavailable.', b'').strip()
@@ -73,9 +71,7 @@ def try_to_authenticate(password):
 
 
 def set_reset_lockout_settings(lock_duration, lock_threshold):
-    """
-    Sets the lockout settings to a given values.
-    """
+    """Sets the lockout settings to a given values."""
     print("\nSetting account lockout settings to the following values (lockout duration = %s min; attempts before lockout = %s):" % (lock_duration, lock_threshold))
 
     cmd = (

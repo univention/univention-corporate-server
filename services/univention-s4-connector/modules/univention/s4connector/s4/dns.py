@@ -670,9 +670,7 @@ def __unpack_ptrRecord(object):
 
 
 def __get_s4_msdcs_soa(s4connector, zoneName):
-    """ Required to keep the SOA serial numbers in sync
-    """
-
+    """Required to keep the SOA serial numbers in sync"""
     msdcs_obj = {}
     msdcs_zonename = '_msdcs.%s' % (zoneName,)
     s4_filter = format_escaped('(&(objectClass=dnsZone)(DC={0!e}))', msdcs_zonename)
@@ -810,8 +808,9 @@ def s4_zone_msdcs_sync(s4connector, object):
 
 
 def s4_zone_create_wrapper(s4connector, object):
-    """ Handle s4_zone_create to additionally sync to _msdcs.$domainname
-            Required to keep the SOA serial numbers in sync
+    """
+    Handle s4_zone_create to additionally sync to _msdcs.$domainname
+    Required to keep the SOA serial numbers in sync
     """
     result = s4_zone_create(s4connector, object)
 

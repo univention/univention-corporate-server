@@ -30,9 +30,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-"""
-Generate localized country labels.
-"""
+"""Generate localized country labels."""
 
 from __future__ import print_function
 

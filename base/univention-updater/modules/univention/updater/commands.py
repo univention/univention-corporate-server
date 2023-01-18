@@ -29,9 +29,7 @@
 # License with the Debian GNU/Linux or Univention distribution in file
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
-"""
-Common commands to manage Debian packages.
-"""
+"""Common commands to manage Debian packages."""
 
 from univention.config_registry import ConfigRegistry
 configRegistry = ConfigRegistry()

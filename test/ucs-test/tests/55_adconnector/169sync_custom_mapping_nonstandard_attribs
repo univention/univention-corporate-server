@@ -91,7 +91,6 @@ class TestADCustomMappings(unittest.TestCase):
         Creates an extended attribute with a default value under module (e.g.
         under 'user/user')
         """
-
         print(
             "Creating extended attribute '%s' under '%s' with default value '%s'\n"
             % (ldapMapping, self.ldap_base, defaultValue),
@@ -120,7 +119,6 @@ class TestADCustomMappings(unittest.TestCase):
         field of the user in the active directory, because that is hard coded
         in the custom mapping.
         """
-
         test_string = random_string()
         self.create_extended_attribute(self.udm, self.attribute, "users/user")
 

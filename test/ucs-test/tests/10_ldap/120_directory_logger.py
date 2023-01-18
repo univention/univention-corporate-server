@@ -17,7 +17,8 @@ class Test_DellogProcess:
     """Tests regarding the delete log files in ldap/logging/dellogdir"""
 
     def test_correct_files(self, udm, ucr):
-        """Create and remove a ldap user object.
+        """
+        Create and remove a ldap user object.
 
         The slapd-daemon will log this process in the 'dellogdir'.
         The directory-logger module should consume/remove
@@ -34,7 +35,8 @@ class Test_DellogProcess:
         assert len(os.listdir(dellog_directory)) == 0
 
     def test_corrupted_file(self, udm, ucr):
-        """Test effects of a corrupted file
+        """
+        Test effects of a corrupted file
 
         In Bug #51772 a corrupted file leads to an accumulation of files
         in the 'dellogdir'. This test verifies that the bug is fixed.

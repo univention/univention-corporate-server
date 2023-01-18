@@ -69,13 +69,13 @@ _reset_debug_loglevel()
 
 
 def log_init(filename, log_level=2, log_pid=None):
-    """Initializes Univention debug.
+    """
+    Initializes Univention debug.
 
     :param str filename: The filename just needs to be a relative name. The directory /var/log/univention/ is prepended and the suffix '.log' is appended.
     :param int log_level: log level to use (1-4)
     :param bool log_pid: Prefix log message with process ID
     """
-
     if not os.path.isabs(filename) and filename not in {'stdout', 'stderr'}:
         filename = '/var/log/univention/%s.log' % filename
     fd = ud.init(filename, ud.FLUSH, ud.NO_FUNCTION)
@@ -93,7 +93,8 @@ def log_init(filename, log_level=2, log_pid=None):
 
 
 def log_set_level(level=0):
-    """Sets the log level for all components.
+    """
+    Sets the log level for all components.
 
     :param int level: log level to set
     """
@@ -111,8 +112,8 @@ def log_reopen():
 
 
 class ILogger(object):
-
-    """This class provides a simple interface to access the univention
+    """
+    This class provides a simple interface to access the univention
     debug function for the given component.
 
     :param int id: id of the component to use

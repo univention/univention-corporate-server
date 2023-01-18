@@ -33,10 +33,10 @@
 # License with the Debian GNU/Linux or Univention distribution in file
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
-"""Univention debugging and logging library.
+"""
+Univention debugging and logging library.
 
 example:
-
 >>> f = init('stdout', NO_FLUSH, FUNCTION) #doctest: +ELLIPSIS
 ... ...  DEBUG_INIT
 >>> set_level(LISTENER, ERROR)
@@ -89,9 +89,7 @@ class function(object):
         _debug.begin(self.fname)
 
     def __del__(self):
-        """
-        Log the end of function.
-        """
+        """Log the end of function."""
         _debug.end(self.fname)
 
 

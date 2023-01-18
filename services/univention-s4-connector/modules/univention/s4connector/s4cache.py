@@ -68,12 +68,11 @@ class EntryDiff(object):
 
 
 class S4Cache(object):
-
     """
-                    Local cache for the current Samba 4 state of the s4connector.
-                    With this cache the connector has the possibility to create
-                    a diff between the new Samba 4 object and the old one from
-                    cache.
+    Local cache for the current Samba 4 state of the s4connector.
+    With this cache the connector has the possibility to create
+    a diff between the new Samba 4 object and the old one from
+    cache.
     """
 
     def __init__(self, filename):

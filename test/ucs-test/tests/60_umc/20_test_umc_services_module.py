@@ -171,9 +171,7 @@ class Test_UMCServiceProcessHandling:
             assert all(x in result for x in ('service', 'isRunning', 'description', 'autostart'))
 
     def test_directory_listener(self):
-        """
-        Check if the 'Univention Directory Listener' was listed in the response
-        """
+        """Check if the 'Univention Directory Listener' was listed in the response"""
         request_result = self.service.query()
         assert request_result
         assert any("univention-directory-listener" in x['service'] for x in request_result)

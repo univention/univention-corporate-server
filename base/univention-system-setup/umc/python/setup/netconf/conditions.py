@@ -1,6 +1,4 @@
-"""
-Univention Setup: network configuration conditions
-"""
+"""Univention Setup: network configuration conditions"""
 # Like what you see? Join us!
 # https://www.univention.com/about-us/careers/vacancies/
 #
@@ -43,10 +41,7 @@ from univention.uldap import getMachineConnection
 
 
 class AddressChange(with_metaclass(ABCMeta, Phase)):
-
-    """
-    Check for at least one removed or added address.
-    """
+    """Check for at least one removed or added address."""
 
     def check(self):
         super(AddressChange, self).check()
@@ -59,10 +54,7 @@ class AddressChange(with_metaclass(ABCMeta, Phase)):
 
 
 class Server(with_metaclass(ABCMeta, Phase)):
-
-    """
-    Check server role for being a UCS server.
-    """
+    """Check server role for being a UCS server."""
 
     def check(self):
         super(Server, self).check()
@@ -77,10 +69,8 @@ class Server(with_metaclass(ABCMeta, Phase)):
 
 
 class Executable(with_metaclass(ABCMeta, Phase)):
+    """Check executable exists."""
 
-    """
-    Check executable exists.
-    """
     executable = None
 
     def check(self):
@@ -90,10 +80,7 @@ class Executable(with_metaclass(ABCMeta, Phase)):
 
 
 class Dhcp(with_metaclass(ABCMeta, Phase)):
-
-    """
-    Check for interfaces using DHCP.
-    """
+    """Check for interfaces using DHCP."""
 
     @property
     def old_dhcps(self):
@@ -111,10 +98,7 @@ class Dhcp(with_metaclass(ABCMeta, Phase)):
 
 
 class NotNetworkOnly(with_metaclass(ABCMeta, Phase)):
-
-    """
-    Skip when not in network only mode.
-    """
+    """Skip when not in network only mode."""
 
     def check(self):
         super(NotNetworkOnly, self).check()
@@ -123,10 +107,8 @@ class NotNetworkOnly(with_metaclass(ABCMeta, Phase)):
 
 
 class Ldap(with_metaclass(ABCMeta, Phase)):
+    """Check LDAP server is available."""
 
-    """
-    Check LDAP server is available.
-    """
     binddn = None
     bindpwd = None
     available = None

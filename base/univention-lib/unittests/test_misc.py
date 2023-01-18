@@ -47,9 +47,7 @@ def lib_ucr(mocker, mock_ucr):
 
 @pytest.fixture
 def ucr0():
-    """
-    Non-empty fake UCR.
-    """
+    """Non-empty fake UCR."""
     return {"key": "value"}
 
 

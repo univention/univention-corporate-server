@@ -325,7 +325,6 @@ def test_script_lock_expired_passwords(udm, ucr, delta, disabled, expected):
 @pytest.mark.tags('apptest')
 def test_country_names_uptodate():  # TODO: move into package unit test
     """Test is list of country names in univention.admin.syntax.Country.choices is uptodate"""
-
     import pycountry
 
     import univention.admin.syntax as udm_syntax
@@ -494,7 +493,6 @@ def test_check_univentionDefaultGroup_membership_after_create(udm):
 @pytest.mark.xfail(reason='Bug #27160 git:6d60cb602d7')
 def test_from_primary_group_removal(udm):
     """Create users/user"""
-
     lo = utils.get_ldap_connection()
     groupdn = udm.create_object('groups/group', name=uts.random_string())
     groupdn2 = udm.create_object('groups/group', name=uts.random_string())
@@ -534,7 +532,6 @@ def test_pwdChangeNextLogin_and_password_set(udm):
 
 def test_user_univentionLastUsedValue(udm, ucr):
     """Create users/user and check univentionLastUsedValue"""
-
     # Please note: modification of uidNumber is not allowed according to users/user.py --> not tested here
     luv_dn = 'cn=uidNumber,cn=temporary,cn=univention,%s' % (ucr.get('ldap/base'),)
     lo = univention.uldap.getAdminConnection()

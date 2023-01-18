@@ -36,8 +36,7 @@ nu1zAxxyBy2VguKv4SWjRFoRkIfIlHX0qVviMhSlNy2ioFLy7JcPZb+v3ftDGywUqcBiVDoea0Hn+Gmx
 
 @pytest.fixture
 def user_info(udm):
-    """ The created user will have all properties set that were removed from being copyable (Bug 49823)"""
-
+    """The created user will have all properties set that were removed from being copyable (Bug 49823)"""
     dn, username = udm.create_user(
         gecos='',
         displayName='',

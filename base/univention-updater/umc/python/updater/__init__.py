@@ -149,9 +149,7 @@ class Watched_File(object):
 
 
 class Watched_Files(object):
-
-    """ Convenience class to monitor more than one file at a time.
-    """
+    """Convenience class to monitor more than one file at a time."""
 
     def __init__(self, files: Iterable[str], count: int = 2) -> None:
         self._count = count
@@ -247,7 +245,6 @@ class Instance(Base):
         Returns a list of system releases suitable for the
         corresponding ComboBox
         """
-
         # be as current as possible.
         self.uu.ucr_reinit()
         ucr.load()
@@ -274,9 +271,7 @@ class Instance(Base):
         hooks=ListSanitizer(StringSanitizer(minimum=1), required=True)
     )
     def call_hooks(self, request: Request) -> None:
-        """
-        Calls the specified hooks and returns data given back by each hook
-        """
+        """Calls the specified hooks and returns data given back by each hook"""
 
         def _thread(request: Request) -> Dict[str, Any]:
             result = {}
@@ -348,7 +343,6 @@ class Instance(Base):
 
     def status(self, request: Request) -> None:  # TODO: remove unneeded things
         """One call for all single-value variables."""
-
         result = {}  # type: Dict[str, Any]
         ucr.load()
 
@@ -522,7 +516,6 @@ class Instance(Base):
                 for 'release' .... the target release number,
                 for all other subjects: detail has no meaning.
         """
-
         MODULE.info("Starting function %r" % (job,))
         self._current_job = job
         spec = INSTALLERS[job]
@@ -580,7 +573,6 @@ class Instance(Base):
 
 
 class HookManager:
-
     """
     This class tries to provide a simple interface to load and call hooks within existing code.
     Python modules are loaded from specified `module_dir` and automatically registered.
@@ -641,9 +633,7 @@ class HookManager:
         self.__register_hooks()
 
     def __load_hooks(self) -> None:
-        """
-        loads all Python modules in specified module directory.
-        """
+        """loads all Python modules in specified module directory."""
         if os.path.exists(self.__module_dir) and os.path.isdir(self.__module_dir):
             for f in os.listdir(self.__module_dir):
                 if f.endswith('.py') and len(f) > 3:
@@ -682,9 +672,7 @@ class HookManager:
             raise ValueError('boolean value required')
 
     def get_hook_list(self) -> Iterable[str]:
-        """
-        returns a list of hook names that have been defined by loaded Python modules.
-        """
+        """returns a list of hook names that have been defined by loaded Python modules."""
         return self.__registered_hooks.keys()
 
     def call_hook(self, name: str, *args: Any, **kwargs: Any) -> List[Any]:

@@ -107,8 +107,10 @@ def adsearch(query):
 
 
 def guess_ad_domain_language():
-    '''AD Connector supports "en" and "de", this check detects a German AD
-    Domain and returns "en" as fallback.'''
+    '''
+    AD Connector supports "en" and "de", this check detects a German AD
+    Domain and returns "en" as fallback.
+    '''
     p1, stdout, stderr = adsearch('sAMAccountName=Domänen-Admins')
     if stderr:
         MODULE.warn('adsearch "sAMAccountName=Domänen-Admins" stderr: %s' % stderr)
@@ -158,13 +160,13 @@ class Instance(Base, ProgressMixin):
         self.__update_status()
 
     def state(self, request):
-        """Retrieve current status of the Active Directory connection configuration and the service
+        """
+        Retrieve current status of the Active Directory connection configuration and the service
 
         options: {}
 
         return: { 'configured' : (True|False), 'certificate' : (True|False), 'running' : (True|False) }
         """
-
         self.__update_status()
         self.finished(request.id, {
             'ssl_enabled': self.status_ssl,
@@ -178,13 +180,13 @@ class Instance(Base, ProgressMixin):
         })
 
     def load(self, request):
-        """Retrieve current status of the Active Directory connection configuration and the service
+        """
+        Retrieve current status of the Active Directory connection configuration and the service
 
         options: {}
 
         return: { <all AD connector UCR variables> }
         """
-
         result = {}
         for option, var, default in Instance.OPTION_MAPPING:
             result[option] = ucr.get(var, default)
@@ -202,7 +204,8 @@ class Instance(Base, ProgressMixin):
         KerberosDomain=StringSanitizer(required=True),
     )
     def adconnector_save(self, request):
-        """Saves the Active Directory connection configuration
+        """
+        Saves the Active Directory connection configuration
 
         options:
                 Host_IP: IP address of the AD server
@@ -217,7 +220,6 @@ class Instance(Base, ProgressMixin):
 
         return: { 'success' : (True|False), 'message' : <details> }
         """
-
         for umckey, ucrkey, default in Instance.OPTION_MAPPING:
             val = request.options.get(umckey, default)
             if val:

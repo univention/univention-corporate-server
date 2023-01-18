@@ -12,7 +12,6 @@ __all__ = ['Jenkins']
 
 
 class Jenkins(TestFormatInterface):
-
     """
     Create Jenkins report.
     <https://wiki.jenkins-ci.org/display/JENKINS/Monitoring+external+jobs>

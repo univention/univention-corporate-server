@@ -30,9 +30,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-"""
-|UDM| module for the |DHCP| subnet
-"""
+"""|UDM| module for the |DHCP| subnet"""
 
 from ipaddress import IPv4Address, IPv4Network
 from typing import List, Tuple, Sequence  # noqa: F401

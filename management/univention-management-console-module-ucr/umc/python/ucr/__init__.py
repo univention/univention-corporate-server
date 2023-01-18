@@ -221,13 +221,15 @@ class Instance(Base):
     @sanitize(pattern=PatternSanitizer(default='.*'), key=ChoicesSanitizer(['all', 'key', 'value', 'description'], required=True))
     @simple_response
     def query(self, pattern: str, key: str, category: Union[List[str], None] = None) -> Dict:
-        """Returns a dictionary of configuration registry variables
+        """
+        Returns a dictionary of configuration registry variables
         found by searching for the (wildcard) expression defined by the
         UMCP request. Additionally a list of configuration registry
         categories can be defined.
 
         The dictionary returned is compatible with the Dojo data store
-        format."""
+        format.
+        """
         variables = []
         if category == 'all':
             # load _all_ config registry variables

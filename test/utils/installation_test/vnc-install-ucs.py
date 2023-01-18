@@ -1,9 +1,7 @@
 #!/usr/bin/python2.7
 # -*- coding: utf-8 -*-
 
-"""
-UCS installation via vnc
-"""
+"""UCS installation via vnc"""
 
 from argparse import ArgumentParser
 

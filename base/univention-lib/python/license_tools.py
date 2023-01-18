@@ -63,7 +63,6 @@ def is_CSP_license(lo=None):
     :raises LicenseNotFound: if no license was found.
     :raises LicenseExpired: if the license has expired.
     """
-
     if not lo:
         lo = univention.uldap.getMachineConnection()
 

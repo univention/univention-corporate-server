@@ -30,9 +30,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-"""
-|UDM| module for |UDM| modules
-"""
+"""|UDM| module for |UDM| modules"""
 
 import apt
 

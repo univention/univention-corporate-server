@@ -29,9 +29,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-"""
-Module and object specific for "settings/data" UDM module.
-"""
+"""Module and object specific for "settings/data" UDM module."""
 
 from __future__ import absolute_import, unicode_literals
 from ..encoders import Base64Bzip2BinaryPropertyEncoder
@@ -48,11 +46,13 @@ class SettingsDataObjectProperties(GenericObjectProperties):
 
 class SettingsDataObject(GenericObject):
     """Better representation of settings/portal properties."""
+
     udm_prop_class = SettingsDataObjectProperties
 
 
 class SettingsDataModule(GenericModule):
     """SettingsDataObject factory"""
+
     _udm_object_class = SettingsDataObject
 
     class Meta:

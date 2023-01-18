@@ -15,9 +15,7 @@ from univention.testing.strings import random_name
 
 
 def test_cache_user_add_remove_from_group(udm, group1, user1, user2):
-    """
-    Create new users and groups and check if the cache is updated.
-    """
+    """Create new users and groups and check if the cache is updated."""
     udm.modify_object('groups/group', dn=group1, users=[user1], wait_for_replication=True)
     cache = get_cache()
     data_uids = cache.get_sub_cache('memberUids').load()

@@ -103,60 +103,61 @@ def disable_ad_restrictions(disable=True):  # type: (bool) -> None
 
 
 class simpleLdap(object):
-    """The base class for all UDM handler modules.
+    """
+    The base class for all UDM handler modules.
 
-            :param co:
-                    *deprecated* parameter for a config. Please pass `None`.
-            :type co: None
+    :param co:
+    *deprecated* parameter for a config. Please pass `None`.
+    :type co: None
 
-            :param lo:
-                    A required LDAP connection object which is used for all LDAP operations (search, create, modify).
-                    It should be bound to a user which has the LDAP permissions to do the required operations.
-            :type lo: :class:`univention.admin.uldap.access`
+    :param lo:
+    A required LDAP connection object which is used for all LDAP operations (search, create, modify).
+    It should be bound to a user which has the LDAP permissions to do the required operations.
+    :type lo: :class:`univention.admin.uldap.access`
 
-            :param position:
-                    The LDAP container where a new object should be created in, or `None` for existing objects.
-            :type position: :class:`univention.admin.uldap.position` or `None`
+    :param position:
+    The LDAP container where a new object should be created in, or `None` for existing objects.
+    :type position: :class:`univention.admin.uldap.position` or `None`
 
-            :param dn:
-                    The DN of an existing LDAP object. If a object should be created the DN must not be passed here!
-            :type dn: str or None
+    :param dn:
+    The DN of an existing LDAP object. If a object should be created the DN must not be passed here!
+    :type dn: str or None
 
-            :param superordinate:
-                    The superordinate object of this object. Can be omitted. It is automatically searched by the given DN or position.
-            :type superordinate: :class:`univention.admin.handlers.simpleLdap` or `None`.
+    :param superordinate:
+    The superordinate object of this object. Can be omitted. It is automatically searched by the given DN or position.
+    :type superordinate: :class:`univention.admin.handlers.simpleLdap` or `None`.
 
-            :param attributes:
-                    The LDAP attributes of the LDAP object as dict. This should by default be omitted. To save performance when an LDAP search is done this can be used, e.g. by the lookup() method.
-                    If given make sure the dict contains all attributes which are required by :meth:`_ldap_attributes`.
-            :type attributes: None or dict
+    :param attributes:
+    The LDAP attributes of the LDAP object as dict. This should by default be omitted. To save performance when an LDAP search is done this can be used, e.g. by the lookup() method.
+    If given make sure the dict contains all attributes which are required by :meth:`_ldap_attributes`.
+    :type attributes: None or dict
 
-            The following attributes hold information about the state of this object:
+    The following attributes hold information about the state of this object:
 
-            :ivar str dn:
-                    A LDAP distinguished name (DN) of this object (if exists, otherwise None)
-            :ivar str module: the UDM handlers name (e.g. users/user)
-            :ivar dict oldattr:
-                    The LDAP attributes of this object as dict. If the object does not exists the dict is empty.
-            :ivar dict info:
-                    A internal dictionary which holds the values for every property.
-            :ivar list options:
-                    A list of UDM options which are enabled on this object. Enabling options causes specific object classes and attributes to be added to the object.
-            :ivar list policies:
-                    A list of DNs containing references to assigned policies.
-            :ivar dict properties: a dict which maps all UDM properties to :class:`univention.admin.property` instances.
-            :ivar univention.admin.mapping.mapping mapping:
-                    A :class:`univention.admin.mapping.mapping` instance containing a mapping of UDM property names to LDAP attribute names.
-            :ivar dict oldinfo:
-                    A private copy of :attr:`info` containing the original properties which were set during object loading. This is only set by :func:`univention.admin.handlers.simpleLdap.save`.
-            :ivar list old_options:
-                    A private copy of :attr:`options` containing the original options which were set during object loading. This is only set by :func:`univention.admin.handlers.simpleLdap.save`.
-            :ivar list oldpolicies:
-                    A private copy of :attr:`policies` containing the original policies which were set during object loading. This is only set by :func:`univention.admin.handlers.simpleLdap.save`.
+    :ivar str dn:
+    A LDAP distinguished name (DN) of this object (if exists, otherwise None)
+    :ivar str module: the UDM handlers name (e.g. users/user)
+    :ivar dict oldattr:
+    The LDAP attributes of this object as dict. If the object does not exists the dict is empty.
+    :ivar dict info:
+    A internal dictionary which holds the values for every property.
+    :ivar list options:
+    A list of UDM options which are enabled on this object. Enabling options causes specific object classes and attributes to be added to the object.
+    :ivar list policies:
+    A list of DNs containing references to assigned policies.
+    :ivar dict properties: a dict which maps all UDM properties to :class:`univention.admin.property` instances.
+    :ivar univention.admin.mapping.mapping mapping:
+    A :class:`univention.admin.mapping.mapping` instance containing a mapping of UDM property names to LDAP attribute names.
+    :ivar dict oldinfo:
+    A private copy of :attr:`info` containing the original properties which were set during object loading. This is only set by :func:`univention.admin.handlers.simpleLdap.save`.
+    :ivar list old_options:
+    A private copy of :attr:`options` containing the original options which were set during object loading. This is only set by :func:`univention.admin.handlers.simpleLdap.save`.
+    :ivar list oldpolicies:
+    A private copy of :attr:`policies` containing the original policies which were set during object loading. This is only set by :func:`univention.admin.handlers.simpleLdap.save`.
 
-            .. caution::
-                    Do not operate on :attr:`info` directly because this would bypass syntax validations. This object should be used like a dict.
-                    Properties should be assigned in the following way: obj['name'] = 'value'
+    .. caution::
+    Do not operate on :attr:`info` directly because this would bypass syntax validations. This object should be used like a dict.
+    Properties should be assigned in the following way: obj['name'] = 'value'
     """
 
     module = ''  # the name of the module
@@ -249,13 +250,13 @@ class simpleLdap(object):
             return self.oldattr['entryUUID'][0].decode('ASCII')
 
     def save(self):  # type: () -> None
-        """Saves the current internal object state as old state for later comparison when e.g. modifying this object.
+        """
+        Saves the current internal object state as old state for later comparison when e.g. modifying this object.
 
         .. seealso:: This method should be called by :func:`univention.admin.handlers.simpleLdap.open` and after further modifications in modify() / create().
 
         .. note:: self.oldattr is not set and must be set manually
         """
-
         self.oldinfo = copy.deepcopy(self.info)
         self.old_dn = self.dn
         self.oldpolicies = copy.deepcopy(self.policies)
@@ -304,16 +305,16 @@ class simpleLdap(object):
         return not univention.admin.mapping.mapCmp(self.mapping, key, self.oldinfo.get(key, ''), self.info.get(key, ''))
 
     def ready(self):  # type: () -> bool
-        """Makes sure all preconditions are met before creating or modifying this object.
-
-                It checks if all properties marked required are set.
-                It checks if the superordinate is valid.
-
-                :returns: True
-                :rtype: bool
-                :raises: :class:`univention.admin.uexceptions.insufficientInformation`
         """
+        Makes sure all preconditions are met before creating or modifying this object.
 
+        It checks if all properties marked required are set.
+        It checks if the superordinate is valid.
+
+        :returns: True
+        :rtype: bool
+        :raises: :class:`univention.admin.uexceptions.insufficientInformation`
+        """
         missing = []
         for name, p in self.descriptions.items():
             # skip if this property is not present in the current option set
@@ -365,16 +366,17 @@ class simpleLdap(object):
         return True
 
     def __setitem__(self, key, value):  # type: (str, Any) -> None
-        """Sets or unsets the property to the given value.
+        """
+        Sets or unsets the property to the given value.
 
-                :param str key: The name of a property.
-                :param value: The value to set.
+        :param str key: The name of a property.
+        :param value: The value to set.
 
-                :raises KeyError: if the property belongs to an option, which is currently not enabled.
-                :raises: :class:`univention.admin.uexceptions.noProperty` or :class:`KeyError` if the property does not exists or is not enabled by the UDM options.
-                :raises: :class:`univention.admin.uexceptions.valueRequired` if the value is unset but required.
-                :raises: :class:`univention.admin.uexceptions.valueMayNotChange` if the values cannot be modified.
-                :raises: :class:`univention.admin.uexceptions.valueInvalidSyntax` if the value is invalid.
+        :raises KeyError: if the property belongs to an option, which is currently not enabled.
+        :raises: :class:`univention.admin.uexceptions.noProperty` or :class:`KeyError` if the property does not exists or is not enabled by the UDM options.
+        :raises: :class:`univention.admin.uexceptions.valueRequired` if the value is unset but required.
+        :raises: :class:`univention.admin.uexceptions.valueMayNotChange` if the values cannot be modified.
+        :raises: :class:`univention.admin.uexceptions.valueInvalidSyntax` if the value is invalid.
         """
         def _changeable():
             yield self.descriptions[key].editable
@@ -526,20 +528,19 @@ class simpleLdap(object):
 
     def create(self, serverctrls=None, response=None):  # type: (List[ldap.controls.LDAPControl], Dict[Text, Any]) -> Text
         """
-                Creates the LDAP object if it does not exists by building the list of attributes (addlist) and write it to LDAP.
-                If this call raises an exception it is necessary to instantiate a new object before trying to create it again.
+        Creates the LDAP object if it does not exists by building the list of attributes (addlist) and write it to LDAP.
+        If this call raises an exception it is necessary to instantiate a new object before trying to create it again.
 
-                :raises: :class:`univention.admin.uexceptions.invalidOperation` if objects of this type do not support to be created.
-                :raises: :class:`univention.admin.uexceptions.objectExists` if the object already exists.
-                :raises: :class:`univention.admin.uexceptions.insufficientInformation`
+        :raises: :class:`univention.admin.uexceptions.invalidOperation` if objects of this type do not support to be created.
+        :raises: :class:`univention.admin.uexceptions.objectExists` if the object already exists.
+        :raises: :class:`univention.admin.uexceptions.insufficientInformation`
 
-                :param serverctrls: a list of :py:class:`ldap.controls.LDAPControl` instances sent to the server along with the LDAP request.
-                :type serverctrls: list[ldap.controls.LDAPControl]
-                :param dict response: An optional dictionary to receive the server controls of the result.
-                :returns: The DN of the created object.
-                :rtype: str
+        :param serverctrls: a list of :py:class:`ldap.controls.LDAPControl` instances sent to the server along with the LDAP request.
+        :type serverctrls: list[ldap.controls.LDAPControl]
+        :param dict response: An optional dictionary to receive the server controls of the result.
+        :returns: The DN of the created object.
+        :rtype: str
         """
-
         if not univention.admin.modules.supports(self.module, 'add'):
             raise univention.admin.uexceptions.invalidOperation(_('Objects of the "%s" object type can not be created.') % (self.module,))
 
@@ -613,24 +614,24 @@ class simpleLdap(object):
         self._write_admin_diary_event('CREATED')
 
     def modify(self, modify_childs=True, ignore_license=False, serverctrls=None, response=None):  # type: (bool, bool, List[ldap.controls.LDAPControl], Dict[Text, Any]) -> Text
-        """Modifies the LDAP object by building the difference between the current state and the old state of this object and write this modlist to LDAP.
-
-                :param modify_childs: Specifies if child objects should be modified as well.
-                :type modify_childs: bool
-
-                :param ignore_license: If the license is exceeded the modification may fail. Setting this to True causes license checks to be disabled
-                :type ignore_license: bool
-
-                :raises: :class:`univention.admin.uexceptions.invalidOperation` if objects of this type do not support to be modified.
-
-                :raises: :class:`univention.admin.uexceptions.noObject` if the object does not exists.
-
-                :raises: :class:`univention.admin.uexceptions.insufficientInformation`
-
-                :returns: The DN of the modified object.
-                :rtype: str
         """
+        Modifies the LDAP object by building the difference between the current state and the old state of this object and write this modlist to LDAP.
 
+        :param modify_childs: Specifies if child objects should be modified as well.
+        :type modify_childs: bool
+
+        :param ignore_license: If the license is exceeded the modification may fail. Setting this to True causes license checks to be disabled
+        :type ignore_license: bool
+
+        :raises: :class:`univention.admin.uexceptions.invalidOperation` if objects of this type do not support to be modified.
+
+        :raises: :class:`univention.admin.uexceptions.noObject` if the object does not exists.
+
+        :raises: :class:`univention.admin.uexceptions.insufficientInformation`
+
+        :returns: The DN of the modified object.
+        :rtype: str
+        """
         if not univention.admin.modules.supports(self.module, 'edit'):
             # if the licence is exceeded 'edit' is removed from the modules operations. Nevertheless we need a way to make modifications then.
             if not ignore_license:
@@ -692,17 +693,18 @@ class simpleLdap(object):
             pass
 
     def move(self, newdn, ignore_license=False, temporary_ou=None):  # type: (str, bool, str) -> str
-        """Moves the LDAP object to the target position.
+        """
+        Moves the LDAP object to the target position.
 
-                :param str newdn: The DN of the target position.
-                :param bool ignore_license: If the license is exceeded the modification may fail. Setting this to True causes license checks to be disabled.
-                :param str temporary_ou: The distiguished name of a temporary container which is used to rename the object if only is letter casing changes.
+        :param str newdn: The DN of the target position.
+        :param bool ignore_license: If the license is exceeded the modification may fail. Setting this to True causes license checks to be disabled.
+        :param str temporary_ou: The distiguished name of a temporary container which is used to rename the object if only is letter casing changes.
 
-                :raises: :class:`univention.admin.uexceptions.invalidOperation` if objects of this type do not support to be moved.
-                :raises: :class:`univention.admin.uexceptions.noObject` if the object does not exists.
+        :raises: :class:`univention.admin.uexceptions.invalidOperation` if objects of this type do not support to be moved.
+        :raises: :class:`univention.admin.uexceptions.noObject` if the object does not exists.
 
-                :returns: The new DN of the moved object
-                :rtype: str
+        :returns: The new DN of the moved object
+        :rtype: str
         """
         ud.debug(ud.ADMIN, ud.INFO, 'move: called for %s to %s' % (self.dn, newdn))
 
@@ -1006,13 +1008,14 @@ class simpleLdap(object):
         return self._exists
 
     def _validate_superordinate(self, must_exists=True):  # type: (bool) -> None
-        """Checks if the superordinate is set to a valid :class:`univention.admin.handlers.simpleLdap` object if this module requires a superordinate.
-                It is ensured that the object type of the superordinate is correct.
-                It is ensured that the object lies underneath of the superordinate position.
+        """
+        Checks if the superordinate is set to a valid :class:`univention.admin.handlers.simpleLdap` object if this module requires a superordinate.
+        It is ensured that the object type of the superordinate is correct.
+        It is ensured that the object lies underneath of the superordinate position.
 
-                :raises: :class:`univention.admin.uexceptions.insufficientInformation`
+        :raises: :class:`univention.admin.uexceptions.insufficientInformation`
 
-                :raises: :class:`univention.admin.uexceptions.noSuperordinate`
+        :raises: :class:`univention.admin.uexceptions.noSuperordinate`
         """
         superordinate_names = set(univention.admin.modules.superordinate_names(self.module))
         if not superordinate_names:
@@ -1077,21 +1080,22 @@ class simpleLdap(object):
         return changes
 
     def open(self):  # type: () -> None
-        """Opens this object.
+        """
+        Opens this object.
 
-                During the initialization of this object the current set LDAP attributes are mapped into :py:attr:`info`.
-                This method makes it possible to e.g. resolve external references to other objects which are not represented in the raw LDAP attributes
-                of this object, for example the group memberships of a user.
+        During the initialization of this object the current set LDAP attributes are mapped into :py:attr:`info`.
+        This method makes it possible to e.g. resolve external references to other objects which are not represented in the raw LDAP attributes
+        of this object, for example the group memberships of a user.
 
-                By default only the `open` hook for extended attributes is called.
-                This method can be subclassed.
+        By default only the `open` hook for extended attributes is called.
+        This method can be subclassed.
 
-                .. warning::
-                        If this method changes anything in self.info it *must* call :py:meth:`save` afterwards.
+        .. warning::
+        If this method changes anything in self.info it *must* call :py:meth:`save` afterwards.
 
-                .. warning::
-                        If your are going to do any modifications (such as creating, modifying, moving, removing this object)
-                        this method must be called directly after the constructor and before modifying any property.
+        .. warning::
+        If your are going to do any modifications (such as creating, modifying, moving, removing this object)
+        this method must be called directly after the constructor and before modifying any property.
         """
         self._open = True
         self.call_udm_property_hook('hook_open', self)
@@ -1214,25 +1218,26 @@ class simpleLdap(object):
         return []
 
     def _ldap_modlist(self):
-        """Builds the list of modifications when creating and modifying this object.
+        """
+        Builds the list of modifications when creating and modifying this object.
 
-                It compares the old properties (:py:attr:`oldinfo`) with the new properties (:py:attr:`info`) and applies the LDAP mapping.
-                Differences are added to the modlist which consists of a tuple with three items:
+        It compares the old properties (:py:attr:`oldinfo`) with the new properties (:py:attr:`info`) and applies the LDAP mapping.
+        Differences are added to the modlist which consists of a tuple with three items:
 
-                ("LDAP attribute-name", [old, values], [new, values])
+        ("LDAP attribute-name", [old, values], [new, values])
 
-                ("LDAP attribute-name", old_value, new_value)
+        ("LDAP attribute-name", old_value, new_value)
 
-                ("LDAP attribute-name", None, added_value)
+        ("LDAP attribute-name", None, added_value)
 
-                .. seealso:: :mod:`univention.uldap` for further information about the format of the modlist.
+        .. seealso:: :mod:`univention.uldap` for further information about the format of the modlist.
 
-                This method can be overridden in a subclass to add special behavior, e.g. for properties which have no mapping defined.
+        This method can be overridden in a subclass to add special behavior, e.g. for properties which have no mapping defined.
 
-                .. caution:: The final modlist used for creation of objects is mixed with the :func:`univention.admin.handlers.simpleLdap._ldap_addlist`.
-                                Make sure this method don't add attributes which are already set.
+        .. caution:: The final modlist used for creation of objects is mixed with the :func:`univention.admin.handlers.simpleLdap._ldap_addlist`.
+        Make sure this method don't add attributes which are already set.
 
-                :rtype: list of tuples
+        :rtype: list of tuples
         """
         diff_ml = self.diff()
         ml = univention.admin.mapping.mapDiff(self.mapping, diff_ml)
@@ -1707,11 +1712,12 @@ class simpleLdap(object):
         return value
 
     def _call_checkLdap_on_all_property_syntaxes(self):  # type: () -> None
-        """Calls checkLdap() method on every property if present.
-                checkLdap() may raise an exception if the value does not match the constraints of the underlying syntax.
+        """
+        Calls checkLdap() method on every property if present.
+        checkLdap() may raise an exception if the value does not match the constraints of the underlying syntax.
 
-                .. deprecated:: 5.0-2
-                        Univention internal use only!
+        .. deprecated:: 5.0-2
+        Univention internal use only!
         """
         for pname, prop in self.descriptions.items():
             if hasattr(prop.syntax, 'checkLdap') and (not self.exists() or self.hasChanged(pname)):
@@ -2014,9 +2020,7 @@ class simpleComputer(simpleLdap):
             return False
 
     def open(self):
-        """
-        Load the computer object from LDAP.
-        """
+        """Load the computer object from LDAP."""
         simpleLdap.open(self)
 
         self.newPrimaryGroupDn = 0
@@ -3419,7 +3423,6 @@ class simplePolicy(simpleLdap):
 
     def copyIdentifier(self, from_object):
         """Activate the result mode and set the referring object"""
-
         self.resultmode = 1
         for key, property in from_object.descriptions.items():
             if property.identifies:
@@ -3432,9 +3435,10 @@ class simplePolicy(simpleLdap):
         self.referring_object_position_dn = from_object.position.getDn()
 
     def clone(self, referring_object):
-        """Marks the object as a not existing one containing values
-        retrieved by evaluating the policies for the given object"""
-
+        """
+        Marks the object as a not existing one containing values
+        retrieved by evaluating the policies for the given object
+        """
         self.cloned = self.dn
         self.dn = ''
         self.copyIdentifier(referring_object)
@@ -3475,15 +3479,16 @@ class simplePolicy(simpleLdap):
         return dn
 
     def policy_result(self, faked_policy_reference=None):
-        """This method retrieves the policy values currently effective
+        """
+        This method retrieves the policy values currently effective
         for this object. If the 'resultmode' is not active the evaluation
         is cancelled.
 
         If faked_policy_reference is given at the top object
         (referring_object_dn) this policy object temporarily referenced.
 
-        faked_policy_reference can be a string or a list of strings."""
-
+        faked_policy_reference can be a string or a list of strings.
+        """
         if not self.resultmode:
             return
 
@@ -3546,9 +3551,7 @@ class simplePolicy(simpleLdap):
 
     def fixedAttributes(self):
         # type: () -> Dict[str, bool]
-        """
-        Return effectively fixed attributes.
-        """
+        """Return effectively fixed attributes."""
         if not self.resultmode:
             return {}
 
@@ -3560,9 +3563,7 @@ class simplePolicy(simpleLdap):
 
     def emptyAttributes(self):
         # type: () -> Dict[str, bool]
-        """
-        return effectively empty attributes.
-        """
+        """return effectively empty attributes."""
         if not self.has_property('emptyAttributes'):
             return {}
 
@@ -3605,7 +3606,6 @@ class simplePolicy(simpleLdap):
 
 
 class _MergedAttributes(object):
-
     """Evaluates old attributes and the modlist to get a new representation of the object."""
 
     def __init__(self, obj, modlist):

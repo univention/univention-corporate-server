@@ -278,9 +278,7 @@ class Section:
 
 
 def exclude_ignored(names, remove):
-    """
-    Removes the given 'remove' from the given 'names' when it is in.
-    """
+    """Removes the given 'remove' from the given 'names' when it is in."""
     for name in remove:
         try:
             names.remove(name)

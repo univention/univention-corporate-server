@@ -68,12 +68,11 @@ class EntryDiff(object):
 
 
 class ADCache(object):
-
     """
-                    Local cache for the current AD state of the adconnector.
-                    With this cache the connector has the possibility to create
-                    a diff between the new AD object and the old one from
-                    cache.
+    Local cache for the current AD state of the adconnector.
+    With this cache the connector has the possibility to create
+    a diff between the new AD object and the old one from
+    cache.
     """
 
     def __init__(self, filename):

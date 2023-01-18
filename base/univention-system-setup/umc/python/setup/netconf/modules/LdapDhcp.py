@@ -6,10 +6,8 @@ from univention.management.console.modules.setup.netconf.common import LdapChang
 
 
 class PhaseLdapDhcp(LdapChange):
+    """Re-create DHCP subnet."""
 
-    """
-    Re-create DHCP subnet.
-    """
     priority = 48
 
     def post(self):

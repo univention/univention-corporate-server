@@ -113,7 +113,7 @@ def owncloud_logout(chrome):
 
 
 def owncloud_close_welcome_screen(chrome):
-    """ with the very first login the user will be shown a quick tutorial """
+    """with the very first login the user will be shown a quick tutorial"""
     try:
         # the wizard could have been disappeared in an upcoming owncloud
         # version But we do not want to test owncloud and only get rid of the
@@ -132,7 +132,6 @@ def portal_goto(chrome):
     tests the language switch, which takes multiple seconds and is here
     unnecessary. This function does one thing and does it as quick as possible
     """
-
     # how this version works:
     # visit the portal in a predictable language, because we need that to
     # locate elements via xpaths
@@ -214,7 +213,6 @@ def test_owncloud_with_portal_login(chrome, users):
     - the user loggs out of owncloud and is redirected back to the portal
     - a final check ensures, that the user is still logged in
     """
-
     test_name = "test_owncloud_with_portal_login"
     user = create_random_user(users)
     with chrome.capture(test_name):
@@ -253,7 +251,6 @@ def test_owncloud_with_openid_login(chrome, users):
     - uses the menu to log out again
     - a last check ensures, that this brings the user back to the portal page
     """
-
     test_name = "test_owncloud_with_openid_login"
     user = create_random_user(users)
     with chrome.capture(test_name):
@@ -290,7 +287,6 @@ def test_owncloud_with_owncloud_login(chrome, users):
     - loggs out again
     - a final check tests if the user gets back to the owncloud login page
     """
-
     test_name = "test_owncloud_with_owncloud_login"
     user = create_random_user(users)
     with chrome.capture(test_name):

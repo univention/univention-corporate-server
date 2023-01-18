@@ -15,7 +15,6 @@ from univention.management.console.modules.setup.setup_script import Transaction
 
 
 class TestProfile(unittest.TestCase):
-
     """Unit test for univention.management.console.modules.setup.setup_script"""
 
     def setUp(self):

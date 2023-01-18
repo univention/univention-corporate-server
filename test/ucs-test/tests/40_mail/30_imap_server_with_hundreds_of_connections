@@ -21,22 +21,22 @@ MAX_CONNECTIONS = 700
 
 
 def run_cmd(cmd):
-    """
-    Execute the given command
-    """
+    """Execute the given command"""
     print('Executing: %r' % (cmd,))
     return subprocess.call(cmd, stderr=open('/dev/null', 'w'))
 
 
 def set_openfiles_limit(new_limit):
-    """Set ulimit -n new_limit
+    """
+    Set ulimit -n new_limit
     for the current process only
     """
     resource.setrlimit(resource.RLIMIT_NOFILE, new_limit)
 
 
 def used_memory():
-    """Get System used memory
+    """
+    Get System used memory
 
     :returns: used memory in bytes
     """

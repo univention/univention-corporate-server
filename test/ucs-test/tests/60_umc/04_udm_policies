@@ -38,9 +38,7 @@ def logged_in(func):
 
 @logged_in
 def get_policy_result(objectDN, policyDN, container):
-    """Gets the policy result from UMC
-
-    """
+    """Gets the policy result from UMC"""
     data = [{
             'objectType': 'computers/domaincontroller_slave',
             'policies': [policyDN],

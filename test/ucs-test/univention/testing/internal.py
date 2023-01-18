@@ -1,6 +1,4 @@
-"""
-Internal functions for test finding and setup.
-"""
+"""Internal functions for test finding and setup."""
 # Like what you see? Join us!
 # https://www.univention.com/about-us/careers/vacancies/
 #
@@ -75,9 +73,7 @@ _TAB = {  # pylint: disable-msg=W0612
 
 
 def strip_indent(text):  # type: (str) -> str
-    """
-    Strip common indent.
-    """
+    """Strip common indent."""
     lines = text.splitlines()
     while lines and not lines[0].strip():
         del lines[0]
@@ -88,18 +84,14 @@ def strip_indent(text):  # type: (str) -> str
 
 
 def get_sections():  # type: () -> Dict[str, str]
-    """
-    Return dictionary section-name -> section-directory.
-    """
+    """Return dictionary section-name -> section-directory."""
     section_dirs = os.listdir(TEST_BASE)
     sections = {dirname[3:]: TEST_BASE + os.path.sep + dirname for dirname in section_dirs if RE_SECTION.match(dirname)}
     return sections
 
 
 def get_tests(sections):  # type: (Iterable[str]) -> Dict[str, List[str]]
-    """
-    Return dictionary of section -> [filenames].
-    """
+    """Return dictionary of section -> [filenames]."""
     result = {}
     logger = logging.getLogger('test.find')
 
@@ -128,7 +120,6 @@ def get_tests(sections):  # type: (Iterable[str]) -> Dict[str, List[str]]
 
 
 class UCSVersion:  # pylint: disable-msg=R0903
-
     """
     UCS version.
 
@@ -195,6 +186,7 @@ class UCSVersion:  # pylint: disable-msg=R0903
             ...
     TypeError: 1.5
     """
+
     RE_VERSION = re.compile(r"^(<|<<|<=|=|==|>=|>|>>)?([1-9][0-9]*)\.([0-9]+)(?:-([0-9]*)(?:-([0-9]+))?)?$")
 
     @classmethod

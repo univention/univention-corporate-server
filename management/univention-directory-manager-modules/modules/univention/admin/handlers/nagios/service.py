@@ -31,9 +31,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-"""
-|UDM| module for nagios services
-"""
+"""|UDM| module for nagios services"""
 
 import re
 import ldap

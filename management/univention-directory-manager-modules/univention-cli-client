@@ -186,7 +186,6 @@ def send_fds(sock, msg, fds):
 
 def main():
     """Forward request to udm-cli-server."""
-
     try:
         sock = _create_socket()
     except socket.error:

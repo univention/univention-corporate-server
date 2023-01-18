@@ -1,9 +1,7 @@
 #!/usr/bin/python3
 # -*- coding: utf-8 -*-
 
-"""
-install/remove/update apps via UMC
-"""
+"""install/remove/update apps via UMC"""
 
 import os
 from argparse import ArgumentParser

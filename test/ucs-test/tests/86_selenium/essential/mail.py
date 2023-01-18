@@ -311,9 +311,7 @@ def reload_amavis_postfix():
 
 
 def get_spam_folder_name():
-    """
-    Returns the name of the current spam folder
-    """
+    """Returns the name of the current spam folder"""
     if ucr.is_true('mail/dovecot'):
         folder = ucr.get('mail/dovecot/folder/spam', 'Spam')
         if folder and folder.lower() == 'none':
@@ -443,7 +441,6 @@ def imap_search_mail(token=None, messageid=None, server=None, imap_user=None, im
     :param use_ssl: boolean: use SSL encryption for IMAP connection
     :return: integer: returns the number of matching mails (if neither token nor messageid is specified, the number of mails in folder is returned)
     """
-
     assert token or messageid, "imap_search_mail: token or messageid have not been specified"
     server = server or '%(hostname)s.%(domainname)s' % ucr
     assert imap_user, "imap_search_mail: imap_user has not been specified"
@@ -493,26 +490,27 @@ def imap_search_mail(token=None, messageid=None, server=None, imap_user=None, im
 
 
 class UCSTest_Mail_Exception(Exception):
-    """ Generic ucstest mail error """
+    """Generic ucstest mail error"""
 
 
 class UCSTest_Mail_InvalidFolderName(UCSTest_Mail_Exception):
-    """ The given folder name is invalid """
+    """The given folder name is invalid"""
 
 
 class UCSTest_Mail_InvalidMailAddress(UCSTest_Mail_Exception):
-    """ The given mail address is invalid """
+    """The given mail address is invalid"""
 
 
 class UCSTest_Mail_InvalidRecipientList(UCSTest_Mail_Exception):
-    """ The given recipient list is invalid """
+    """The given recipient list is invalid"""
 
 
 class UCSTest_Mail_MissingMailbox(UCSTest_Mail_Exception):
-    """ At least one mailbox for the given mail addresses could not be found in given time range.
-            The exception contains two arguments:
-            - the list of checked mailboxes
-            - the list of missing mailboxes (a subset of the first list)
+    """
+    At least one mailbox for the given mail addresses could not be found in given time range.
+    The exception contains two arguments:
+    - the list of checked mailboxes
+    - the list of missing mailboxes (a subset of the first list)
     """
 
 
@@ -539,7 +537,6 @@ def get_dovecot_maildir(mail_address, folder=None):
     ...
     UCSTest_Mail_InvalidMailAddress
     """
-
     if not mail_address:
         raise UCSTest_Mail_InvalidMailAddress()
     if '@' not in mail_address:
@@ -612,7 +609,7 @@ def create_shared_mailfolder(udm, mailHomeServer, mailAddress=None, user_permiss
 
 
 def create_random_msgid():
-    """ returns a random and unique message ID """
+    """returns a random and unique message ID"""
     return '%s.%s' % (uuid.uuid1(), random_email())
 
 
@@ -640,7 +637,6 @@ def send_mail(
     debuglevel: [optional] SMTP client debug level (default: 1)
     messageid:  [optional] message id (defaults to a random value)
     """
-
     # default values
     m_sender = 'tarpit@example.com'
     m_subject = 'Testmessage %s' % time.ctime()

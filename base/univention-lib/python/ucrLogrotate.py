@@ -1,8 +1,6 @@
 #!/usr/bin/python3
 # -*- coding: utf-8 -*-
-"""
-Univention common Python library for :command:`logrotate` configuration files.
-"""
+"""Univention common Python library for :command:`logrotate` configuration files."""
 # Like what you see? Join us!
 # https://www.univention.com/about-us/careers/vacancies/
 #

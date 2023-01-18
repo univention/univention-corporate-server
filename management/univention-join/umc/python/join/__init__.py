@@ -325,7 +325,8 @@ class Instance(Base):
 
     @simple_response
     def dpkg_locked(self) -> bool:
-        """Do not execute join scripts when dpkg is running (e.g. via
+        """
+        Do not execute join scripts when dpkg is running (e.g. via
         App Center)
         """
         return self._dpkg_locked()
@@ -341,7 +342,6 @@ class Instance(Base):
     @simple_response
     def query(self) -> List[str]:
         """collects status about join scripts"""
-
         # unjoined system?
         if not self._joined:
             return []
@@ -391,12 +391,12 @@ class Instance(Base):
 
     @simple_response
     def running(self) -> bool:
-        """ returns true if a join script is running. """
+        """returns true if a join script is running."""
         return self._running
 
     @simple_response
     def master(self) -> str:
-        """ returns the hostname of the Primary Directory Node as fqdn """
+        """returns the hostname of the Primary Directory Node as fqdn"""
         return get_master_dns_lookup()
 
     @property
@@ -493,7 +493,6 @@ class Instance(Base):
     )
     def run(self, request) -> None:
         """runs the given join scripts"""
-
         # Check if already a join process is running
         if self._running:
             raise UMC_Error(_('A join process is already running.'))

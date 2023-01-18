@@ -1,9 +1,7 @@
 #!/usr/bin/python2.7
 # -*- coding: utf-8 -*-
 
-"""
-setup via umc
-"""
+"""setup via umc"""
 
 import os
 import time

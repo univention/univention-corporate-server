@@ -1,7 +1,5 @@
 #!/usr/bin/python3
-"""
-Example for creating UCS packages.
-"""
+"""Example for creating UCS packages."""
 
 from datetime import datetime
 

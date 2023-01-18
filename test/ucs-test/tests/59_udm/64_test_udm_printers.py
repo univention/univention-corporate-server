@@ -344,7 +344,6 @@ def rename_share_and_check(udm, printer, expected_value):
 @pytest.mark.parametrize('ucr_value', [None, "false"])
 def test_force_printername(ucr, udm, ucr_value):
     """Check state of "force printername" during UDM printer modify"""
-
     ucr_var = "samba/force_printername"
 
     ucr.load()

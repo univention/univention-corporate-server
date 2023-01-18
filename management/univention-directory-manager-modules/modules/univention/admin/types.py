@@ -30,9 +30,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-"""
-|UDM| type definitions.
-"""
+"""|UDM| type definitions."""
 
 from __future__ import absolute_import
 
@@ -122,7 +120,8 @@ class TypeHint(object):
         return self.decode_value(value)
 
     def encode(self, value):
-        """Encode a value of Python type into a string / list / None / etc. suitable for setting at the UDM object.
+        """
+        Encode a value of Python type into a string / list / None / etc. suitable for setting at the UDM object.
 
         .. note:: Do not overwrite in subclass!
 
@@ -142,9 +141,10 @@ class TypeHint(object):
         return self.encode(self.from_json_type(value))
 
     def to_json_type(self, value):
-        """Transform the value resulting from :func:`self.decode` into something suitable to transmit via JSON.
+        """
+        Transform the value resulting from :func:`self.decode` into something suitable to transmit via JSON.
 
-                For example, a Python :class:`datetime.date` object into the JSON string with a date format "2019-08-30".
+        For example, a Python :class:`datetime.date` object into the JSON string with a date format "2019-08-30".
         """
         if value is None:
             return
@@ -156,11 +156,12 @@ class TypeHint(object):
         return value
 
     def from_json_type(self, value):
-        """Transform a value from a JSON object into the internal Python type.
+        """
+        Transform a value from a JSON object into the internal Python type.
 
-                For example, converts a JSON string "2019-08-30" into a Python :class:`datetime.date` object.
+        For example, converts a JSON string "2019-08-30" into a Python :class:`datetime.date` object.
 
-                .. warning:: When overwriting the type must be checked!
+        .. warning:: When overwriting the type must be checked!
         """
         if value is None:
             return
@@ -169,7 +170,8 @@ class TypeHint(object):
         return value
 
     def decode_value(self, value):
-        """Decode the value into a Python object.
+        """
+        Decode the value into a Python object.
 
         .. note:: suitable for subclassing.
         """
@@ -180,7 +182,8 @@ class TypeHint(object):
             return value
 
     def encode_value(self, value):
-        """Encode the value into a UDM property value.
+        """
+        Encode the value into a UDM property value.
 
         .. note:: suitable for subclassing.
         """
@@ -247,7 +250,8 @@ class TypeHint(object):
 
     @classmethod
     def detect(cls, property, name):
-        """Detect the :class:`univention.admin.types.TypeHint` type of a property automatically.
+        """
+        Detect the :class:`univention.admin.types.TypeHint` type of a property automatically.
 
         We need this to be backwards compatible, with handlers, we don't influence.
 
@@ -378,6 +382,7 @@ class BinaryType(TypeHint):
     .. warning:: Using this type bloats up the JSON value with a high factor for non ascii data.
     .. seealso:: use `univention.admin.types.Base64Type` instead
     """
+
     _python_types = bytes
     _encoding = 'ISO8859-1'
 
@@ -406,6 +411,7 @@ class DateType(StringType):
     >>> x.to_json_type(now)  # doctest: +ALLOW_UNICODE
     '2020-01-01'
     """
+
     _python_types = datetime.date
     _json_type = unicode
     _openapi_format = 'date'
@@ -437,6 +443,7 @@ class TimeType(StringType):
     >>> x.to_json_type(now)  # doctest: +ALLOW_UNICODE
     '10:30:00'
     """
+
     _python_types = datetime.time
     _json_type = unicode
     _openapi_format = 'time'
@@ -461,7 +468,8 @@ class TimeType(StringType):
 
 
 class DateTimeType(StringType):
-    """A DateTime
+    """
+    A DateTime
             syntax classes using this type must support the method from_datetime(), which returns something valid for syntax.parse()
 
     >>> x = DateTimeType(univention.admin.property(syntax=univention.admin.syntax.string), 'a_date_time')
@@ -470,6 +478,7 @@ class DateTimeType(StringType):
     >>> x.to_json_type(now)  # doctest: +ALLOW_UNICODE
     '2020-01-01 00:00:00'
     """
+
     _python_types = datetime.datetime
     _json_type = unicode
     _openapi_format = 'date-time'

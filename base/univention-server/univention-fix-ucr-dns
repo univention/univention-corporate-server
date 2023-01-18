@@ -29,9 +29,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-"""
-Configure UCS-domain and forward DNS servers.
-"""
+"""Configure UCS-domain and forward DNS servers."""
 
 from __future__ import absolute_import
 
@@ -62,9 +60,7 @@ options = Namespace()
 
 
 def main() -> None:
-    """
-    Fix name server setting in Univention Configuration Registry
-    """
+    """Fix name server setting in Univention Configuration Registry"""
     global options
     options = parse_args()
     setup_logging()
@@ -171,9 +167,7 @@ def parse_args() -> Namespace:
 
 
 def setup_logging() -> None:
-    """
-    Setup logging output.
-    """
+    """Setup logging output."""
     FORMAT = '%(asctime)-15s %(levelname)-7s %(name)-17s %(message)s'
     LEVELS = [ERROR, WARNING, INFO, DEBUG]
     try:
@@ -559,9 +553,7 @@ def is_self(addr: Union[str, IPv4Address, IPv6Address]) -> bool:
 
 
 def run_tests() -> None:
-    """
-    Run internal test suite.
-    """
+    """Run internal test suite."""
     import doctest
     doctest.testmod()
 

@@ -154,15 +154,18 @@ class Instance(Base, ProgressMixin):
 
     @simple_response
     def load(self):
-        """Return a dict with all necessary values for system-setup read from the current
-        status of the system."""
+        """
+        Return a dict with all necessary values for system-setup read from the current
+        status of the system.
+        """
         return util.load_values(self.locale.language)
 
     @simple_response
     def save_keymap(self, layout=None):
-        """Set the systems x-keymap according to
-        request.options[keymap]"""
-
+        """
+        Set the systems x-keymap according to
+        request.options[keymap]
+        """
         # Don't set in debian installer mode
         if ucr.is_true('system/setup/boot/installer'):
             return True
@@ -172,9 +175,10 @@ class Instance(Base, ProgressMixin):
         return True
 
     def save(self, request):
-        '''Reconfigures the system according to the values specified in the dict given as
-        option named "values".'''
-
+        '''
+        Reconfigures the system according to the values specified in the dict given as
+        option named "values".
+        '''
         # get new values
         values = request.options.get('values', {})
         run_hooks = request.options.get('run_hooks', False)
@@ -261,9 +265,10 @@ class Instance(Base, ProgressMixin):
 
     @simple_response
     def join(self, values=None, dcname=None, username=None, password=None):
-        '''Join and reconfigure the system according to the values specified in the dict given as
-        option named "values".'''
-
+        '''
+        Join and reconfigure the system according to the values specified in the dict given as
+        option named "values".
+        '''
         # get old and new values
         orgValues = util.load_values()
         values = values or {}
@@ -324,10 +329,12 @@ class Instance(Base, ProgressMixin):
         return
 
     def check_finished(self, request):
-        """Check whether the join/setup scripts are finished. This method implements a long
+        """
+        Check whether the join/setup scripts are finished. This method implements a long
         polling request, i.e., the request is only finished at the moment when all scripts
         have been executed or due to a timeout. If it returns because of the timeout, a new
-        try can be started."""
+        try can be started.
+        """
         def _thread(request, obj):
             def progress_info(state, **kwargs):
                 info = {
@@ -364,10 +371,11 @@ class Instance(Base, ProgressMixin):
 
     @simple_response(with_flavor=True)
     def validate(self, values=None, flavor=None):
-        '''Validate the specified values given in the dict as option named "values".
+        '''
+        Validate the specified values given in the dict as option named "values".
         Return a dict (with variable names as key) of dicts with the structure:
-        { "valid": True/False, "message": "..." }'''
-
+        { "valid": True/False, "message": "..." }
+        '''
         # init variables
         messages = []
         values = values or {}
@@ -569,7 +577,6 @@ class Instance(Base, ProgressMixin):
     @simple_response
     def lang_keyboard_model(self):
         """Return a list of all available keyboard models."""
-
         tree = lxml.etree.parse(open('/usr/share/X11/xkb/rules/base.xml'))
         models = tree.xpath("//model")
 
@@ -583,7 +590,6 @@ class Instance(Base, ProgressMixin):
     @simple_response
     def lang_keyboard_layout(self):
         """Return a list of all available keyboard layouts."""
-
         tree = lxml.etree.parse(open('/usr/share/X11/xkb/rules/base.xml'))
         layouts = tree.xpath("//layout")
 
@@ -600,7 +606,6 @@ class Instance(Base, ProgressMixin):
     @simple_response
     def lang_keyboard_variante(self, keyboardlayout):
         """Return a list of all available keyboard variantes."""
-
         variante_result = []
         tree = lxml.etree.parse(open('/usr/share/X11/xkb/rules/base.xml'))
         layouts = tree.xpath("//layout")
@@ -677,8 +682,10 @@ class Instance(Base, ProgressMixin):
     # workaround: use with_progress to make the method threaded
     @simple_response(with_progress=True)
     def net_dhclient(self, interface, timeout=10):
-        '''Request a DHCP address. Expects as options a dict containing the key
-        "interface" and optionally the key "timeout" (in seconds).'''
+        '''
+        Request a DHCP address. Expects as options a dict containing the key
+        "interface" and optionally the key "timeout" (in seconds).
+        '''
         return util.dhclient(interface, timeout)
 
     @sanitize(locale=StringSanitizer(default='en_US'))

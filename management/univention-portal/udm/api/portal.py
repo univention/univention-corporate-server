@@ -29,9 +29,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-"""
-Module and object specific for "portals/portal" UDM module.
-"""
+"""Module and object specific for "portals/portal" UDM module."""
 
 from __future__ import absolute_import, unicode_literals
 from ..encoders import (
@@ -76,11 +74,13 @@ class PortalsPortalObjectProperties(GenericObjectProperties):
 
 class PortalsPortalObject(GenericObject):
     """Better representation of portals/portal properties."""
+
     udm_prop_class = PortalsPortalObjectProperties
 
 
 class PortalsPortalModule(GenericModule):
     """PortalsPortalObject factory"""
+
     _udm_object_class = PortalsPortalObject
 
     class Meta:
@@ -99,11 +99,13 @@ class PortalsCategoryObjectProperties(GenericObjectProperties):
 
 class PortalsCategoryObject(GenericObject):
     """Better representation of portals/category properties."""
+
     udm_prop_class = PortalsCategoryObjectProperties
 
 
 class PortalsCategoryModule(GenericModule):
     """PortalsCategoryObject factory"""
+
     _udm_object_class = PortalsCategoryObject
 
     class Meta:
@@ -129,11 +131,13 @@ class PortalsPortalEntryObjectProperties(GenericObjectProperties):
 
 class PortalsPortalEntryObject(GenericObject):
     """Better representation of portals/entry properties."""
+
     udm_prop_class = PortalsPortalEntryObjectProperties
 
 
 class PortalsPortalEntryModule(GenericModule):
     """PortalsPortalEntryObject factory"""
+
     _udm_object_class = PortalsPortalEntryObject
 
     class Meta:
@@ -152,11 +156,13 @@ class PortalsPortalFolderObjectProperties(GenericObjectProperties):
 
 class PortalsPortalFolderObject(GenericObject):
     """Better representation of portals/folder properties."""
+
     udm_prop_class = PortalsPortalFolderObjectProperties
 
 
 class PortalsPortalFolderModule(GenericModule):
     """PortalsPortalFolderObject factory"""
+
     _udm_object_class = PortalsPortalFolderObject
 
     class Meta:

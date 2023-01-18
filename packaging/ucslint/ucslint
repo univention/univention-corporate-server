@@ -89,9 +89,7 @@ class DebianPackageCheck(object):
         self.loadplugins()
 
     def loadplugins(self) -> None:
-        """
-        Load modules from plugin directory.
-        """
+        """Load modules from plugin directory."""
         for plugindir in self.plugindirs:
             if not os.path.exists(plugindir):
                 if self.debuglevel:
@@ -119,9 +117,7 @@ class DebianPackageCheck(object):
                                 print('Module %s is not enabled' % f, file=sys.stderr)
 
     def check(self) -> None:
-        """
-        Run plugin on files in path.
-        """
+        """Run plugin on files in path."""
         for plugin in self.pluginlist.values():
             obj = plugin.UniventionPackageCheck()  # type: ignore
             self.msgidlist.update(obj.getMsgIds())
@@ -134,9 +130,7 @@ class DebianPackageCheck(object):
             self.msglist.extend(obj.result())
 
     def loadOverrides(self) -> None:
-        """
-        Parse :file:`debian/ucslint.overrides` file.
-        """
+        """Parse :file:`debian/ucslint.overrides` file."""
         self.overrides = set()
         fn = os.path.join(self.path, 'debian', 'ucslint.overrides')
         try:
@@ -377,9 +371,7 @@ def debian_dir(pkgpath: str) -> str:
 
 
 def main() -> None:
-    """
-    Run checks.
-    """
+    """Run checks."""
     options = parse_args()
     if options.debug:
         print('Using univention.ucslint.base from %s' % (uub.__file__,))

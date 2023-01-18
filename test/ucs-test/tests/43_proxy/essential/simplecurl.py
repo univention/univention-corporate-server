@@ -15,8 +15,8 @@ import univention.testing.utils as utils
 
 
 class SimpleCurl:
-
-    """pycurl simple class implementation\n
+    """
+    pycurl simple class implementation\n
     :param proxy: proxy for the http requests
     :type proxy: str
     :param username: to use for http requests
@@ -80,7 +80,8 @@ class SimpleCurl:
         return self.curl.getinfo(pycurl.INFO_COOKIELIST)
 
     def getPage(self, url, bVerbose=False, postData=None):
-        """Gets a http page
+        """
+        Gets a http page
         this method keep trying to fetch the page for 60secs then stops
         raising and exception if not succeeded.\n
         :param url: url
@@ -114,13 +115,15 @@ class SimpleCurl:
         return page
 
     def httpCode(self):
-        """HTTP status code\n
+        """
+        HTTP status code\n
         :returns: int - http_status_code
         """
         return self.curl.getinfo(pycurl.HTTP_CODE)
 
     def response(self, url):
-        """HTTP status code\n
+        """
+        HTTP status code\n
         :param url: url
         :type url: str
         :returns: int - HTTP status code

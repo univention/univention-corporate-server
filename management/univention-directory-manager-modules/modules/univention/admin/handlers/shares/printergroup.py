@@ -30,9 +30,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-"""
-|UDM| module for printer groups
-"""
+"""|UDM| module for printer groups"""
 
 from ldap.filter import filter_format, escape_filter_chars
 

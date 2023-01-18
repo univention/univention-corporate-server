@@ -82,7 +82,8 @@ class Instance(Base):
         self.finished(request.id, allColors)
 
     def query(self, request):
-        """Searches for entries in a dummy list
+        """
+        Searches for entries in a dummy list
 
         request.options = {}
         'name' -- search pattern for name (default: '')
@@ -99,7 +100,8 @@ class Instance(Base):
 
     @sanitize(StringSanitizer())
     def get(self, request):
-        """Returns the objects for the given IDs
+        """
+        Returns the objects for the given IDs
 
         request.options = [ <ID>, ... ]
 

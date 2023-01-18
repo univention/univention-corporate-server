@@ -44,8 +44,7 @@ class TestServer:
 
 
 def startHttpServer(host='localhost', port=80):
-    """Start a simple Http server in the working directory
-    """
+    """Start a simple Http server in the working directory"""
     HandlerClass = SimpleHTTPRequestHandler
     ServerClass = HTTPServer
     Protocol = "HTTP/1.0"

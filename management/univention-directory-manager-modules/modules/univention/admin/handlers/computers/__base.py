@@ -30,9 +30,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-"""
-|UDM| module for generic computer objects
-"""
+"""|UDM| module for generic computer objects"""
 
 import time
 import functools
@@ -61,9 +59,8 @@ _ = translation.translate
 
 
 class ComputerObject(univention.admin.handlers.simpleComputer, nagios.Support, PKIIntegration):
-    """
-    |UDM| module for generic computer objects.
-    """
+    """|UDM| module for generic computer objects."""
+
     CONFIG_NAME = None  # type: str
     SERVER_ROLE = None  # type: str
     SAMBA_ACCOUNT_FLAG = None  # type: str

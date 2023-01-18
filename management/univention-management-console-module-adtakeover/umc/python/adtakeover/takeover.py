@@ -113,8 +113,8 @@ _ = Translation('univention-management-console-module-adtakeover').translate
 
 
 class Progress(object):
-
-    """Progress information. reset() and error() are set by the UMC module.
+    """
+    Progress information. reset() and error() are set by the UMC module.
     progress.warning can be used when something went wrong which is not
     raise-worthy
     """
@@ -184,7 +184,6 @@ class Progress(object):
 
 
 class TakeoverError(Exception):
-
     """AD Takeover Error"""
 
     def __init__(self, errormessage=None, detail=None):
@@ -247,7 +246,8 @@ class LicenseInsufficient(TakeoverError):
 
 
 def count_domain_objects_on_server(hostname_or_ip, username, password, progress):  # type: (str, str, str, Progress) -> dict
-    '''Connects to the hostname_or_ip with username/password credentials.
+    '''
+    Connects to the hostname_or_ip with username/password credentials.
 
     Expects to find a Windows Domain Controller.
 
@@ -264,7 +264,6 @@ def count_domain_objects_on_server(hostname_or_ip, username, password, progress)
     :raises ComputerUnreachable:
     :raises AuthenticationFailed:
     '''
-
     ucs_license = UCS_License_detection(ucr)
 
     progress.headline(_('Connecting to %s') % hostname_or_ip)
@@ -286,7 +285,8 @@ def count_domain_objects_on_server(hostname_or_ip, username, password, progress)
 
 
 def join_to_domain_and_copy_domain_data(hostname_or_ip, username, password, progress):
-    """Connects to the hostname_or_ip with username/password credentials
+    """
+    Connects to the hostname_or_ip with username/password credentials
     Expects to find a Windows Domain Controller.
     Gets str, str, str, Progress
     Raises ComputerUnreachable, AuthenticationFailed, DomainJoinFailed
@@ -341,7 +341,8 @@ def join_to_domain_and_copy_domain_data(hostname_or_ip, username, password, prog
 
 
 def take_over_domain(progress):
-    """Actually takes control of the domain, deletes old AD server, takes
+    """
+    Actually takes control of the domain, deletes old AD server, takes
     its IP, etc.
     Gets Progress
     Raises AuthenticationFailed, DomainJoinFailed, ADServerRunning
@@ -392,7 +393,8 @@ def take_over_domain(progress):
 
 
 def check_status():
-    """Where are we in the process of AD takeover?
+    """
+    Where are we in the process of AD takeover?
     Returns one of:
     'start' -> nothing happened yet
     'sysvol' -> we copied domain data, sysvol was not yet copied'
@@ -404,7 +406,8 @@ def check_status():
 
 
 def check_sysvol(progress):
-    """Whether the AD sysvol is already copied to the local system
+    """
+    Whether the AD sysvol is already copied to the local system
     Gets Progress
     Raises SysvolError
     """
@@ -418,7 +421,8 @@ def check_sysvol(progress):
 
 
 def set_status_done():
-    '''Set status to "done", indicating the module has been run once successfully
+    '''
+    Set status to "done", indicating the module has been run once successfully
     and may be started again.
     '''
     state = AD_Takeover_State()
@@ -526,8 +530,10 @@ def get_ad_hostname():
 
 
 def sysvol_info():
-    '''The info needed for the "Copy SYSVOL"-page, i.e.
-    "ad_hostname" and "ucs_hostname"'''
+    '''
+    The info needed for the "Copy SYSVOL"-page, i.e.
+    "ad_hostname" and "ucs_hostname"
+    '''
     return {
         'ucs_hostname': ucr.get('hostname'),
         'ad_hostname': get_ad_hostname(),
@@ -822,7 +828,6 @@ class AD_Takeover(object):
 
     def time_sync(self, tolerance=180, critical_difference=360):
         """Try to sync the local time with an AD server"""
-
         env = os.environ.copy()
         env["LC_ALL"] = "C"
         try:
@@ -1169,7 +1174,6 @@ class AD_Takeover(object):
 
     def remove_conflicting_msgpo_objects(self):
         """The S4 Connector prefers OpenLDAP objects, so we must remove conflicting ones"""
-
         sysvol_dir = "/var/lib/samba/sysvol"
         samdb_domain_dns_name = self.samdb.domain_dns_name()
         sam_sysvol_dom_dir = os.path.join(sysvol_dir, samdb_domain_dns_name)
@@ -2053,7 +2057,6 @@ def ping(hostname_or_ip):
 
 def lookup_adds_dc(hostname_or_ip=None, realm=None, ucr=None):
     """CLDAP lookup"""
-
     domain_info = {}
 
     if not hostname_or_ip and not realm:
@@ -2277,9 +2280,7 @@ def check_samba4_started():
 
 
 class UserRenameHandler(object):
-
-    """ Provides methods for renaming users in UDM
-    """
+    """Provides methods for renaming users in UDM"""
 
     def __init__(self, lo):
         self.lo = lo
@@ -2316,9 +2317,7 @@ class UserRenameHandler(object):
 
 
 class GroupRenameHandler(object):
-
-    """ Provides methods for renaming groups in UDM
-    """
+    """Provides methods for renaming groups in UDM"""
 
     _SETTINGS_DEFAULT_UDM_PROPERTIES = (
         "defaultGroup",
@@ -2396,8 +2395,7 @@ class GroupRenameHandler(object):
 
 
 def _connect_ucs(ucr, binddn=None, bindpwd=None):
-    """ Connect to OpenLDAP """
-
+    """Connect to OpenLDAP"""
     if binddn and bindpwd:
         bindpw = bindpwd
     else:

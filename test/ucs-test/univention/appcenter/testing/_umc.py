@@ -79,6 +79,7 @@ class _HTTPType(type):
     Metaclass for HTTP Error exceptions.
     Sub-classes of this meta class are automatically added to the :py:data:`HTTPError.codes` mapping.
     """
+
     def __init__(mcs, name, bases, dict):
         try:
             HTTPError.codes[mcs.code] = mcs
@@ -110,6 +111,7 @@ class HTTPError(Exception):
     :param http.client.HTTPResponse response: The |HTTP| response.
     :param str hostname: The host name of the failed server.
     """
+
     __metaclass__ = _HTTPType
     codes = {}  # type: Dict[int, Type[HTTPError]]
     """Specialized sub-classes for individual |HTTP| error codes."""
@@ -145,7 +147,6 @@ class HTTPError(Exception):
         :returns: the result data
         :rtype: str
         """
-
         return self.response.result
 
     def __new__(cls, request, response, hostname):
@@ -172,76 +173,91 @@ class HTTPError(Exception):
 
 class HTTPRedirect(HTTPError):
     """:py:data:`http.client.MULTIPLE_CHOICES` |HTTP|/1.1, :rfc:`2616`, Section 10.3.1"""
+
     code = 300
 
 
 class MovedPermanently(HTTPRedirect):
     """:py:data:`http.client.MOVED_PERMANENTLY` |HTTP|/1.1, :rfc:`2616`, Section 10.3.2"""
+
     code = 301
 
 
 class Found(HTTPRedirect):
     """:py:data:`http.client.FOUND` |HTTP|/1.1, :rfc:`2616`, Section 10.3.3"""
+
     code = 302
 
 
 class SeeOther(HTTPRedirect):
     """:py:data:`http.client.SEE_OTHER` |HTTP|/1.1, :rfc:`2616`, Section 10.3.4"""
+
     code = 303
 
 
 class NotModified(HTTPRedirect):
     """:py:data:`http.client.NOT_MODIFIED` |HTTP|/1.1, :rfc:`2616`, Section 10.3.5"""
+
     code = 304
 
 
 class BadRequest(HTTPError):
     """:py:data:`http.client.BAD_REQUEST` |HTTP|/1.1, :rfc:`2616`, Section 10.4.1"""
+
     code = 400
 
 
 class Unauthorized(HTTPError):
     """:py:data:`http.client.UNAUTHORIZED` |HTTP|/1.1, :rfc:`2616`, Section 10.4.2"""
+
     code = 401
 
 
 class Forbidden(HTTPError):
     """:py:data:`http.client.UNAUTHORIZED` |HTTP|/1.1, :rfc:`2616`, Section 10.4.4"""
+
     code = 403
 
 
 class NotFound(HTTPError):
     """:py:data:`http.client.NOT_FOUND` |HTTP|/1.1, :rfc:`2616`, Section 10.4.5"""
+
     code = 404
 
 
 class MethodNotAllowed(HTTPError):
     """:py:data:`http.client.METHOD_NOT_ALLOWED` |HTTP|/1.1, :rfc:`2616`, Section 10.4.6"""
+
     code = 405
 
 
 class NotAcceptable(HTTPError):
     """:py:data:`http.client.NOT_ACCEPTABLE` |HTTP|/1.1, :rfc:`2616`, Section 10.4.7"""
+
     code = 406
 
 
 class UnprocessableEntity(HTTPError):
     """:py:data:`http.client.UNPROCESSABLE_ENTITY` WEBDAV, :rfc:`22518`, Section 10.3"""
+
     code = 422
 
 
 class InternalServerError(HTTPError):
     """:py:data:`http.client.INTERNAL_SERVER_ERROR` |HTTP|/1.1, :rfc:`2616`, Section 10.5.1"""
+
     code = 500
 
 
 class BadGateway(HTTPError):
     """:py:data:`http.client.BAD_GATEWAY` |HTTP|/1.1, :rfc:`2616`, Section 10.5.3"""
+
     code = 502
 
 
 class ServiceUnavailable(HTTPError):
     """:py:data:`http.client.SERVICE_UNAVAILABLE` |HTTP|/1.1, :rfc:`2616`, Section 10.5.4"""
+
     code = 503
 
 
@@ -408,9 +424,7 @@ class Client:
 
     def reauthenticate(self):
         # type: () -> Response
-        """
-        Re-authenticate using the stored username and password.
-        """
+        """Re-authenticate using the stored username and password."""
         return self.authenticate(self.username, self.password)
 
     def set_basic_http_authentication(self, username, password):

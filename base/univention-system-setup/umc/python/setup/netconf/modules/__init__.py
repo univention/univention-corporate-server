@@ -1,6 +1,4 @@
-"""
-Univention Setup: network configuration abstract base classes
-"""
+"""Univention Setup: network configuration abstract base classes"""
 # Like what you see? Join us!
 # https://www.univention.com/about-us/careers/vacancies/
 #
@@ -40,7 +38,6 @@ from univention.management.console.modules.setup.netconf import Phase, SkipPhase
 
 
 class RunPhases(object):
-
     """
     Handle modules for network configuration.
     <http://lkubuntu.wordpress.com/2012/10/02/writing-a-python-plugin-api/>

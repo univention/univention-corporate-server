@@ -41,9 +41,7 @@ class TestBasic(unittest.TestCase):
         ul.free()
 
     def test_getValues(self):
-        """
-        Return value from globally selected licence.
-        """
+        """Return value from globally selected licence."""
         with self.assertRaises(KeyError):
             ul.getValue('doesNotExists')
 
@@ -51,18 +49,14 @@ class TestBasic(unittest.TestCase):
 @unittest.skipUnless(os.access('/etc/machine.secret', os.R_OK), 'Requires /etc/machine.secret')
 class TestSelect(unittest.TestCase):
     def test_select(self):
-        """
-        Select licence by LDAP search `(univentionLicenseModule=admin)`
-        """
+        """Select licence by LDAP search `(univentionLicenseModule=admin)`"""
         ret = ul.select('admin')
         self.assertEqual(ret, 0)
         ul.free()
         ul.free()
 
     def test_getValues(self):
-        """
-        Return value from globally selected licence.
-        """
+        """Return value from globally selected licence."""
         ret = ul.select('admin')
         self.assertEqual(ret, 0)
         val = ul.getValue('univentionLicenseBaseDN')
@@ -71,9 +65,7 @@ class TestSelect(unittest.TestCase):
 
     @unittest.skip('WIP')
     def test_selectDN(self):
-        """
-        Select licence by LDAP DN.
-        """
+        """Select licence by LDAP DN."""
         ret = ul.selectDN('cn=admin,cn=license,cn=univention,%s')
         self.assertEqual(ret, 0)
         ul.free()

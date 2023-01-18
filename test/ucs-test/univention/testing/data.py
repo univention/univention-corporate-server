@@ -51,8 +51,8 @@ def checked_set(values):  # type: (Optional[Iterable[T]]) -> Set[T]
 
 
 class TestEnvironment:
-
-    """Test environment for running test cases.
+    """
+    Test environment for running test cases.
 
     Handels system data, requirements checks, test output.
     """
@@ -149,10 +149,7 @@ class TestEnvironment:
 
 
 class _TestReader:  # pylint: disable-msg=R0903
-
-    """
-    Read test case header lines starting with ##.
-    """
+    """Read test case header lines starting with ##."""
 
     def __init__(self, stream):  # type: (IO[bytes]) -> None
         self.stream = stream
@@ -171,10 +168,7 @@ class _TestReader:  # pylint: disable-msg=R0903
 
 
 class Verdict:
-
-    """
-    Result of a test, either successful or failed.
-    """
+    """Result of a test, either successful or failed."""
 
     INFO = 0  # Successful check, continue
     WARNING = 1  # Non-critical condition, may continue
@@ -200,10 +194,7 @@ class Verdict:
 
 
 class Check:
-
-    """
-    Abstract check.
-    """
+    """Abstract check."""
 
     def check(self, environment):  # type: (TestEnvironment) -> Iterator[Verdict]
         """Check if precondition to run test is met."""
@@ -214,10 +205,7 @@ class Check:
 
 
 class CheckExecutable(Check):
-
-    """
-    Check language.
-    """
+    """Check language."""
 
     def __init__(self, filename):  # type: (str) -> None
         super().__init__()
@@ -243,10 +231,7 @@ class CheckExecutable(Check):
 
 
 class CheckVersion(Check):
-
-    """
-    Check expected result of test for version.
-    """
+    """Check expected result of test for version."""
 
     STATES = frozenset(('found', 'fixed', 'skip', 'run'))
 
@@ -273,10 +258,7 @@ class CheckVersion(Check):
 
 
 class CheckTags(Check):
-
-    """
-    Check for required / prohibited tags.
-    """
+    """Check for required / prohibited tags."""
 
     def __init__(self, tags):  # type: (Iterable[str]) -> None
         super().__init__()
@@ -313,10 +295,7 @@ class CheckTags(Check):
 
 
 class CheckRoles(Check):
-
-    """
-    Check server role.
-    """
+    """Check server role."""
 
     ROLES = frozenset((
         'domaincontroller_master',
@@ -351,10 +330,7 @@ class CheckRoles(Check):
 
 
 class CheckJoin(Check):
-
-    """
-    Check join status.
-    """
+    """Check join status."""
 
     def __init__(self, joined):  # type: (Optional[bool]) -> None
         super().__init__()
@@ -373,10 +349,7 @@ class CheckJoin(Check):
 
 
 class CheckComponents(Check):
-
-    """
-    Check for required / prohibited components.
-    """
+    """Check for required / prohibited components."""
 
     def __init__(self, components):  # type: (Dict[str, str]) -> None
         super().__init__()
@@ -400,10 +373,7 @@ class CheckComponents(Check):
 
 
 class CheckPackages(Check):
-
-    """
-    Check for required packages.
-    """
+    """Check for required packages."""
 
     def __init__(self, packages, packages_not):  # type: (Sequence[str], Sequence[str]) -> None
         super().__init__()
@@ -454,10 +424,7 @@ class CheckPackages(Check):
 
 
 class CheckExposure(Check):
-
-    """
-    Check for signed exposure.
-    """
+    """Check for signed exposure."""
 
     STATES = ['safe', 'careful', 'dangerous']
 
@@ -484,7 +451,6 @@ class CheckExposure(Check):
 
 
 class TestCase:
-
     """Test case."""
 
     logger = logging.getLogger('test.case')
@@ -505,9 +471,7 @@ class TestCase:
         self.external_junit = None  # type: Optional[str]
 
     def load(self):  # type: () -> TestCase
-        """
-        Load test case from stream.
-        """
+        """Load test case from stream."""
         try:
             header = self.load_meta()
         except OSError as ex:
@@ -576,9 +540,7 @@ class TestCase:
         self.is_pytest = PytestRunner.is_pytest(self)
 
     def check(self, environment):  # type: (TestEnvironment) -> List[Check]
-        """
-        Check if the test case should run.
-        """
+        """Check if the test case should run."""
         TestCase.logger.info(f'Checking test {self.filename}')
         if self.timeout is None:
             self.timeout = environment.timeout
@@ -820,7 +782,6 @@ class TestCase:
 
 
 class TestResult:
-
     """Test result from running a test case."""
 
     def __init__(self, case, environment=None):
@@ -890,7 +851,6 @@ class TestResult:
 
 
 class TestFormatInterface:  # pylint: disable-msg=R0921
-
     """Format UCS Test result."""
 
     def __init__(self, stream=sys.stdout):  # type: (IO[str]) -> None

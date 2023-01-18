@@ -32,9 +32,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-"""
-create virtual appliances for various virtualization systems from a single disk image
-"""
+"""create virtual appliances for various virtualization systems from a single disk image"""
 
 from __future__ import unicode_literals
 
@@ -98,9 +96,7 @@ F = TypeVar("F", bound=Callable[..., Any])
 
 
 class Lazy(object):
-    """
-    base class for delayed file/image actions
-    """
+    """base class for delayed file/image actions"""
 
     def __init__(self):
         # type: () -> None
@@ -124,9 +120,7 @@ class Lazy(object):
 
 
 class File(Lazy):
-    """
-    base class for delayed file/image actions
-    """
+    """base class for delayed file/image actions"""
 
     def __init__(self):
         # type: () -> None
@@ -164,9 +158,7 @@ class File(Lazy):
 
 
 class Raw(File):
-    """
-    represents a "RAW" disk image
-    """
+    """represents a "RAW" disk image"""
 
     def __init__(self, inputfile):
         # type: (IO[bytes]) -> None
@@ -335,9 +327,7 @@ class Pkzip(File):
 
 
 class Target(object):
-    """
-    represents the process for creating a complete image for a platform
-    """
+    """represents the process for creating a complete image for a platform"""
 
     default = True
 
@@ -467,9 +457,7 @@ def create_vmx(image_name, image_uuid, options):
 
 
 class VMware(Target):
-    """
-    Zipped VMware®-compatible (VMDK based)
-    """
+    """Zipped VMware®-compatible (VMDK based)"""
 
     def create(self, image, options):
         # type: (Raw, Namespace) -> None
@@ -685,9 +673,7 @@ def create_ovf_descriptor_virtualbox(machine_uuid, image_name, image_size, image
 
 
 class OVA_Virtualbox(Target):
-    """
-    VirtualBox OVA (VMDK based)
-    """
+    """VirtualBox OVA (VMDK based)"""
 
     def create(self, image, options):
         # type: (Raw, Namespace) -> None
@@ -1064,9 +1050,7 @@ def create_ovf_descriptor_esxi(image_name, image_size, image_packed_size, image_
 
 
 class OVA_ESXi(Target):
-    """
-    VMware ESXi OVA (VMDK based)
-    """
+    """VMware ESXi OVA (VMDK based)"""
 
     def create(self, image, options):
         # type: (Raw, Namespace) -> None
@@ -1195,9 +1179,7 @@ def chunks(imagefile, chunksize):
 
 
 class EC2_EBS(Target):
-    """
-    Amazon AWS EC2 AMI (EBS based) (HVM x64_64)
-    """
+    """Amazon AWS EC2 AMI (EBS based) (HVM x64_64)"""
 
     default = False
 

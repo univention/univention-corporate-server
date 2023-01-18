@@ -55,7 +55,7 @@ class Instance(Base):
     @sanitize(pattern=PatternSanitizer(default='.*'), key=ChoicesSanitizer(choices=['printer', 'description', 'location'], required=True))
     @simple_response
     def list_printers(self, key, pattern):
-        """ Lists the printers for the overview grid. """
+        """Lists the printers for the overview grid."""
         result = []
         plist = self._list_printers()
         for element in plist:
@@ -72,8 +72,7 @@ class Instance(Base):
     @simple_response
     @log
     def get_printer(self, printer=''):
-        """ gets detail data for one printer. """
-
+        """gets detail data for one printer."""
         result = self._printer_details(printer)
         result['printer'] = printer
         result['status'] = self._printer_status(printer)
@@ -81,16 +80,16 @@ class Instance(Base):
 
     @simple_response
     def list_users(self):
-        """ convenience function for the username entry. Lists
-                all user names. We don't return this as an array of {id, label}
-                tuples because:
-
-                (1) id and label are always the same here
-                (2) at the frontend, we must do some postprocessing, and an array
-                        is easier to handle.
-                (3)	the ComboBox is able to handle a plain array.
         """
+        convenience function for the username entry. Lists
+        all user names. We don't return this as an array of {id, label}
+        tuples because:
 
+        (1) id and label are always the same here
+        (2) at the frontend, we must do some postprocessing, and an array
+        is easier to handle.
+        (3)	the ComboBox is able to handle a plain array.
+        """
         ucr = ConfigRegistry()
         ucr.load()
         identity = ucr.get('ldap/hostdn')
@@ -103,8 +102,7 @@ class Instance(Base):
 
     @simple_response
     def list_jobs(self, printer=''):
-        """ lists jobs for a given printer, directly suitable for the grid """
-
+        """lists jobs for a given printer, directly suitable for the grid"""
         # *** NOTE *** we don't set language to 'neutral' since it is useful
         #				to get localized date/time strings.
 
@@ -125,8 +123,7 @@ class Instance(Base):
         return result
 
     def _list_printers(self):
-        """ returns a list of printers, along with their 'enabled' status. """
-
+        """returns a list of printers, along with their 'enabled' status."""
         result = []
         expr = re.compile(r'printer\s+(\S+)\s.*?(\S+abled)')
         (stdout, stderr, status) = self._shell_command(['/usr/bin/lpstat', '-p'], {'LANG': 'C'})
@@ -139,8 +136,7 @@ class Instance(Base):
         return result
 
     def _printer_status(self, printer):
-        """ returns the 'enabled' status of a printer """
-
+        """returns the 'enabled' status of a printer"""
         (stdout, stderr, status) = self._shell_command(['/usr/bin/lpstat', '-p', printer], {'LANG': 'C'})
         if status == 0:
             if ' enabled ' in stdout:
@@ -150,8 +146,7 @@ class Instance(Base):
         return 'unknown'
 
     def _printer_details(self, printer):
-        """ returns as much as possible details about a printer. """
-
+        """returns as much as possible details about a printer."""
         result = {}
         expr = re.compile(r'\s+([^\s\:]+)\:\s*(.*?)$')
         (stdout, stderr, status) = self._shell_command(['/usr/bin/lpstat', '-l', '-p', printer], {'LANG': 'C'})
@@ -166,7 +161,7 @@ class Instance(Base):
     @simple_response
     @log
     def enable_printer(self, printer='', on=False):
-        """ enable or disable a printer, depending on args. """
+        """enable or disable a printer, depending on args."""
         cmd = 'univention-cups-enable' if on else 'univention-cups-disable'
         (stdout, stderr, status) = self._shell_command([cmd, printer])
 
@@ -176,11 +171,11 @@ class Instance(Base):
     @simple_response
     @log
     def cancel_jobs(self, jobs, printer=''):
-        """ cancels one or more print jobs. Job IDs are passed
-                as an array that can be directly passed on to the
-                _shell_command() method
         """
-
+        cancels one or more print jobs. Job IDs are passed
+        as an array that can be directly passed on to the
+        _shell_command() method
+        """
         args = ['/usr/bin/cancel', '-U', '%s$' % ucr.get('hostname')]
         for job in jobs:
             args.append(job)

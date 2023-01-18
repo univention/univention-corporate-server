@@ -30,9 +30,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-"""
-|UDM| for all |DHCP| objects
-"""
+"""|UDM| for all |DHCP| objects"""
 
 from univention.admin.layout import Tab
 import univention.admin.filter

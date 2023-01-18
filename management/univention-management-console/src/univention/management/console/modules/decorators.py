@@ -201,7 +201,8 @@ def sanitize_args(sanitizer, name, args):
 
 
 def simple_response(function=None, with_flavor=None, with_progress=False):
-    '''If your function is as simple as: "Just return some variables"
+    '''
+    If your function is as simple as: "Just return some variables"
     this decorator is for you.
 
     Instead of defining the function
@@ -338,7 +339,8 @@ def simple_response(function=None, with_flavor=None, with_progress=False):
 
 
 def multi_response(function=None, with_flavor=None, single_values=False, progress=False):
-    """ This decorator acts similar to :func:`simple_response` but
+    """
+    This decorator acts similar to :func:`simple_response` but
     can handle a list of dicts instead of a single dict.
 
     Technically another object is passed to the function that you can
@@ -508,7 +510,8 @@ def copy_function_meta_data(original_function, new_function, copy_arg_inspect=Fa
 
 
 def log(function=None, sensitives=None, customs=None, single_values=False):
-    '''Log decorator to be used with
+    '''
+    Log decorator to be used with
     :func:`simple_response`::
 
             @simple_response
@@ -607,8 +610,10 @@ def log(function=None, sensitives=None, customs=None, single_values=False):
 
 
 def file_upload(function):
-    """ This decorator restricts requests to be
-    UPLOAD-commands. Simple, yet effective """
+    """
+    This decorator restricts requests to be
+    UPLOAD-commands. Simple, yet effective
+    """
 
     def _response(self, request):
         if request.command != 'UPLOAD':

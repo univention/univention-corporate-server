@@ -28,7 +28,6 @@ from univention.testing.ucs_samba import wait_for_s4connector
 @pytest.mark.exposure('careful')
 def test_group_creation(udm):
     """Create groups/group"""
-
     group = udm.create_group()[0]
     utils.verify_ldap_object(group)
 
@@ -68,7 +67,6 @@ def test_group_creation_with_umlaut_in_name(udm):
 @pytest.mark.exposure('careful')
 def test_group_creation_with_single_letter_name(udm):
     """Create groups/group with single letter name"""
-
     group = udm.create_group(name=uts.random_groupname(1))[0]
     utils.verify_ldap_object(group)
 
@@ -78,7 +76,6 @@ def test_group_creation_with_single_letter_name(udm):
 @pytest.mark.exposure('careful')
 def test_group_modification_append_users(udm):
     """Append user memberships during groups/group modification"""
-
     group = udm.create_group()[0]
 
     users = [udm.create_user(), udm.create_user()]
@@ -95,7 +92,6 @@ def test_group_modification_append_users(udm):
 @pytest.mark.exposure('careful')
 def test_group_creation_set_single_letter_name_user(udm):
     """Add user with single letter name to groups/group during creation"""
-
     user = udm.create_user(name=uts.random_username(1))
     group = udm.create_group(users=user[0])[0]
 
@@ -107,7 +103,6 @@ def test_group_creation_set_single_letter_name_user(udm):
 @pytest.mark.exposure('careful')
 def test_group_modification_append_nestedGroups(udm):
     """Append nestedGroups during groups/group modification"""
-
     group = udm.create_group()[0]
     nested_groups = [udm.create_group()[0], udm.create_group()[0]]
 
@@ -120,7 +115,6 @@ def test_group_modification_append_nestedGroups(udm):
 @pytest.mark.exposure('careful')
 def test_group_creation_set_single_letter_name_nestedGroup(udm):
     """Add nestedGroup with single letter name to groups/group during creation"""
-
     nestedGroup = udm.create_group(name=uts.random_groupname(1))[0]
     group = udm.create_group(nestedGroup=nestedGroup)[0]
 
@@ -132,7 +126,6 @@ def test_group_creation_set_single_letter_name_nestedGroup(udm):
 @pytest.mark.exposure('careful')
 def test_rename_a_group_which_contains_a_nestedGroup(udm):
     """Rename group/groups which contains a nested groups/group"""
-
     nested_group = udm.create_group()[0]
     group = udm.create_group(nestedGroup=nested_group)[0]
 
@@ -147,7 +140,6 @@ def test_rename_a_group_which_contains_a_nestedGroup(udm):
 @pytest.mark.exposure('careful')
 def test_rename_a_neasted_group(udm):
     """Rename a nested groups/group"""
-
     nested_group = udm.create_group()[0]
     group = udm.create_group(nestedGroup=nested_group)[0]
     wait_for_s4connector()
@@ -188,7 +180,6 @@ def test_group_modification_with_name_already_in_use(udm, ucr):
 @pytest.mark.exposure('careful')
 def test_group_creation_with_same_name_as_existing_user(udm):
     """Create groups/group with the same name as an existing user"""
-
     name = uts.random_name()
 
     udm.create_user(username=name)[0]
@@ -215,7 +206,6 @@ def test_remove_user_which_is_group_member(udm):
 @pytest.mark.exposure('careful')
 def test_indirect_group_user_memberships(udm):
     """Test indirect group memberships of users"""
-
     group = udm.create_group()
     nested_group = udm.create_group(memberOf=group[0])
     user = udm.create_user(groups=nested_group[0])
@@ -326,7 +316,6 @@ def self_group_modification_recursion_set_nestedGroup_to_group_containing_self(u
 @pytest.mark.exposure('careful')
 def test_group_modification_recursion_set_memberOf_to_group_which_is_member_of_self(udm):
     """groups/group recursion due setting self as memberOf in group which already is member of self during modification"""
-
     group = udm.create_group()[0]
     group2 = udm.create_group(memberOf=group)[0]
 
@@ -339,7 +328,6 @@ def test_group_modification_recursion_set_memberOf_to_group_which_is_member_of_s
 @pytest.mark.exposure('careful')
 def test_group_removal(udm):
     """Remove groups/group"""
-
     group = udm.create_group(wait_for=True)[0]
 
     udm.remove_object('groups/group', dn=group)
@@ -362,7 +350,6 @@ def test_group_posix_only(udm):
 @pytest.mark.exposure('careful')
 def test_group_different_case(udm):
     """Check different case in LDAP DN of group modifications"""
-
     user = udm.create_user()[0]
     nested_group = udm.create_group()[0]
     computer = udm.create_object('computers/windows', name=uts.random_string())
@@ -400,7 +387,6 @@ def test_group_different_case(udm):
 @pytest.mark.exposure('careful')
 def test_group_univention_last_used_value(ucr, udm):
     """Create groups/group and check univentionLastUsedValue"""
-
     luv_dn = 'cn=gidNumber,cn=temporary,cn=univention,%s' % (ucr.get('ldap/base'),)
     lo = univention.uldap.getAdminConnection()
 

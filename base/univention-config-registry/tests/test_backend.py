@@ -42,10 +42,7 @@ def test_scope_names(layer, name):
 
 
 class TestConfigRegistry(object):
-
-    """
-    Unit test for :py:class:`univention.config_registry.backend.ConfigRegistry`
-    """
+    """Unit test for :py:class:`univention.config_registry.backend.ConfigRegistry`"""
 
     def test_normal(self, tmpdir):
         """Create default registry."""
@@ -410,10 +407,7 @@ class TestConfigRegistry(object):
 
 
 class TestInternal(object):
-
-    """
-    Unit test for py:class:`univention.config_registry.backend._ConfigRegistry`
-    """
+    """Unit test for py:class:`univention.config_registry.backend._ConfigRegistry`"""
 
     def test_load_backup(self, tmpdir):
         tmp = tmpdir / "test.conf"

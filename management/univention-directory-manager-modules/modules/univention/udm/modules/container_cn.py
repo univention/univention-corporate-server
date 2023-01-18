@@ -29,9 +29,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-"""
-Module and object specific for "container/cn" UDM module.
-"""
+"""Module and object specific for "container/cn" UDM module."""
 
 from __future__ import absolute_import, unicode_literals
 from ..encoders import StringIntBooleanPropertyEncoder
@@ -58,11 +56,13 @@ class ContainerCnObjectProperties(GenericObjectProperties):
 
 class ContainerCnObject(GenericObject):
     """Better representation of container/cn properties."""
+
     udm_prop_class = ContainerCnObjectProperties
 
 
 class ContainerCnModule(GenericModule):
     """ContainerCnObject factory"""
+
     _udm_object_class = ContainerCnObject
 
     class Meta:

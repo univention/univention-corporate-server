@@ -30,9 +30,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-"""
-|UDM| wrapper around :py:mod:`univention.uldap` that replaces exceptions.
-"""
+"""|UDM| wrapper around :py:mod:`univention.uldap` that replaces exceptions."""
 
 from __future__ import absolute_import
 
@@ -53,9 +51,7 @@ explodeDn = univention.uldap.explodeDn
 
 
 class DN(object):
-    """
-    A |LDAP| Distinguished Name.
-    """
+    """A |LDAP| Distinguished Name."""
 
     def __init__(self, dn):
         # type: (str) -> None
@@ -205,9 +201,7 @@ def _err2str(err):
 
 
 class domain(object):
-    """
-    A |UDM| domain name.
-    """
+    """A |UDM| domain name."""
 
     def __init__(self, lo, position):
         # type: (univention.admin.uldap.access, univention.admin.uldap.position) -> None
@@ -391,9 +385,7 @@ class position(object):
 
 
 class access(object):
-    """
-    A |UDM| class to access a |LDAP| server.
-    """
+    """A |UDM| class to access a |LDAP| server."""
 
     @property
     def binddn(self):
@@ -557,9 +549,7 @@ class access(object):
 
     def unbind(self):
         # type: () -> None
-        """
-        Unauthenticate.
-        """
+        """Unauthenticate."""
         self.lo.unbind()
 
     def whoami(self):
@@ -583,9 +573,7 @@ class access(object):
 
     def _validateLicense(self):
         # type: () -> None
-        """
-        Check if the UCS licence is valid.
-        """
+        """Check if the UCS licence is valid."""
         if self.require_license:
             univention.admin.license.select('admin')
 

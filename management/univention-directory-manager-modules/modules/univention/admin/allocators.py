@@ -30,9 +30,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-"""
-|UDM| allocators to allocate and lock resources for |LDAP| object creation.
-"""
+"""|UDM| allocators to allocate and lock resources for |LDAP| object creation."""
 
 import ldap
 from ldap.filter import filter_format

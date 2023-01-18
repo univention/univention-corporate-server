@@ -30,9 +30,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-"""
-|UDM| module for samba domain configuration
-"""
+"""|UDM| module for samba domain configuration"""
 
 from univention.admin.layout import Tab, Group
 import univention.admin.filter
@@ -51,7 +49,6 @@ def logonToChangePWMap(val):
     'User must logon to change PW' behaves like an integer (at least
     to us), but must be stored as either 0 (allow) or 2 (disallow)
     """
-
     if (val == "1"):
         return b"2"
     else:

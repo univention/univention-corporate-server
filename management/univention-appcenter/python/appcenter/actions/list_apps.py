@@ -46,8 +46,8 @@ from univention.appcenter.ucr import ucr_get, ucr_is_true
 
 
 class List(UniventionAppAction):
-
     """Lists all available apps; shows installed version."""
+
     help = 'List all apps'
 
     def setup_parser(self, parser):

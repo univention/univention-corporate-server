@@ -30,9 +30,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-"""
-A tool to obtain licenses for the UCS test environments.
-"""
+"""A tool to obtain licenses for the UCS test environments."""
 import cgi
 import logging
 from argparse import ArgumentParser, ArgumentDefaultsHelpFormatter
@@ -47,10 +45,7 @@ from urllib.parse import urlencode
 
 
 class CredentialsMissing(Exception):
-
-    """
-    A custom exception to be raised when a 'license.secret' file is not found
-    """
+    """A custom exception to be raised when a 'license.secret' file is not found"""
 
 
 class ShopParser(HTMLParser):
@@ -89,9 +84,7 @@ class TestLicenseClient:
 
     def __init__(self, parser=None):
         # type: (Optional[ArgumentParser]) -> None
-        """
-        Class constructor for the test license client and HTMLParser
-        """
+        """Class constructor for the test license client and HTMLParser"""
         self.log = logging.getLogger("License_Client")
         self.setup_logging()
 
@@ -124,9 +117,7 @@ class TestLicenseClient:
 
     def setup_logging(self):
         # type: () -> None
-        """
-        Creates and configures the logger with an INFO level
-        """
+        """Creates and configures the logger with an INFO level"""
         self.log.setLevel(logging.INFO)
         ch = logging.StreamHandler()
         ch.setLevel(logging.DEBUG)
@@ -299,9 +290,7 @@ class TestLicenseClient:
 
     def check_date_format(self):
         # type: () -> None
-        """
-        Checks if the 'EndDate' format is correct.
-        """
+        """Checks if the 'EndDate' format is correct."""
         try:
             if self.license_params['EndDate'] != 'unlimited':
                 datetime.strptime(self.license_params['EndDate'], '%d.%m.%Y')

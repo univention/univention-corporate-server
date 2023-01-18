@@ -30,9 +30,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-"""
-|UDM| module for all computer objects
-"""
+"""|UDM| module for all computer objects"""
 
 import univention.admin.handlers
 import univention.admin.localization

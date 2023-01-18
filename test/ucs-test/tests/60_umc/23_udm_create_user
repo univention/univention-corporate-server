@@ -23,9 +23,7 @@ class TestUMCUserCreation(UDMModule):
         self.ldap_base = None
 
     def get_user_by_uid(self, uid):
-        """
-        Returns the 'uid' user data obtained by 'udm/get' UMC request.
-        """
+        """Returns the 'uid' user data obtained by 'udm/get' UMC request."""
         options = ["uid=" + uid + ",cn=users," + self.ldap_base]
         request_result = self.client.umc_command('udm/get', options, 'users/user').result
         if not request_result:
@@ -98,9 +96,7 @@ class TestUMCUserCreation(UDMModule):
                        exc)
 
     def main(self):
-        """
-        Method to test UMC users creation, modification and deletion
-        """
+        """Method to test UMC users creation, modification and deletion"""
         self.create_connection_authenticate()
         self.ldap_base = self.ucr.get('ldap/base')
 

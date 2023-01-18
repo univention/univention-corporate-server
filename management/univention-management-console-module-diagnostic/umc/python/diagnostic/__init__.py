@@ -140,8 +140,8 @@ class Instance(Base, ProgressMixin):
 
 
 class Plugin(object):
-
-    u"""A wrapper for a Python module underneath of "univention.management.console.modules.diagnostic.plugins".
+    u"""
+    A wrapper for a Python module underneath of "univention.management.console.modules.diagnostic.plugins".
 
     These Python modules (plugins) may have the following properties:
 
@@ -218,6 +218,7 @@ class Plugin(object):
             +-- Critical
             +-- ProblemFixed
     """
+
     @property
     def title(self) -> str:
         u"""A title for the problem"""
@@ -239,15 +240,17 @@ class Plugin(object):
 
     @property
     def umc_modules(self) -> List[Dict[str, Any]]:
-        u"""References to UMC modules which can help solving the problem.
-                (module, flavor, properties)
+        u"""
+        References to UMC modules which can help solving the problem.
+        (module, flavor, properties)
         """
         return getattr(self.module, 'umc_modules', [])
 
     @property
     def links(self) -> List[Dict[str, str]]:
-        u"""Links to e.g. related SDB articles
-                (url, link_name)
+        u"""
+        Links to e.g. related SDB articles
+        (url, link_name)
         """
         return getattr(self.module, 'links', [])
 

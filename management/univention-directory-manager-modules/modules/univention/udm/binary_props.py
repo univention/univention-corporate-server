@@ -29,9 +29,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-"""
-Classes for holding binary UDM  object properties.
-"""
+"""Classes for holding binary UDM  object properties."""
 
 from __future__ import absolute_import, unicode_literals
 import bz2
@@ -141,6 +139,7 @@ class Base64BinaryProperty(BaseBinaryProperty):
     >>> binprop.encoded == base64.b64encode(binprop.raw)
     True
     """
+
     @property
     def raw(self):
         return base64.b64decode(self._value)
@@ -163,6 +162,7 @@ class Base64Bzip2BinaryProperty(BaseBinaryProperty):
     >>> binprop.encoded == base64.b64encode(bz2.compress(binprop.raw))
     True
     """
+
     @property
     def raw(self):
         return bz2.decompress(base64.b64decode(self._value))

@@ -6,10 +6,8 @@ from univention.management.console.modules.setup.netconf.common import AddressMa
 
 
 class PhaseLdapReferences(AddressMap, LdapChange):
+    """Rewrite IP configuration in LDAP object."""
 
-    """
-    Rewrite IP configuration in LDAP object.
-    """
     priority = 42
     _replace_type = {1: "complete_match", 2: "link_replace"}
     referers = (

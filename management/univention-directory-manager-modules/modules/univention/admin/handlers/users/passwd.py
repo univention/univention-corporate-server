@@ -30,9 +30,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-"""
-|UDM| module for password part of the user
-"""
+"""|UDM| module for password part of the user"""
 
 import univention.admin
 from univention.admin.layout import Tab

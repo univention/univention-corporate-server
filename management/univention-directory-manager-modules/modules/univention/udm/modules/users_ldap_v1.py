@@ -50,11 +50,13 @@ class UsersLdapObjectProperties(GenericObjectProperties):
 
 class UsersLdapObject(GenericObject):
     """Better representation of users/ldap properties."""
+
     udm_prop_class = UsersLdapObjectProperties
 
 
 class UsersLdapModule(GenericModule):
     """UsersLdapObject factory"""
+
     _udm_object_class = UsersLdapObject
 
     class Meta:

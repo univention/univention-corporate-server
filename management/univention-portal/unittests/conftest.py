@@ -74,7 +74,7 @@ def dynamic_class(portal_lib):
 
 @pytest.fixture
 def patch_object_module(mocker):
-    """ Helper to patch module level library imports of an object or class """
+    """Helper to patch module level library imports of an object or class"""
 
     def _(obj, module_name):
         return mocker.patch("{}.{}".format(obj.__module__, module_name))
@@ -84,7 +84,7 @@ def patch_object_module(mocker):
 
 @pytest.fixture
 def get_file_path(request):
-    """ Helper to get the absolute path of test files in the unittests directory """
+    """Helper to get the absolute path of test files in the unittests directory"""
     unittest_path = request.fspath.dirname
     files_directory = "files"
 

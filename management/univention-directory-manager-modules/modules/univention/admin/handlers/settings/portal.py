@@ -30,9 +30,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-"""
-|UDM| module for Univention Portal
-"""
+"""|UDM| module for Univention Portal"""
 
 import json
 from ldap.filter import filter_format

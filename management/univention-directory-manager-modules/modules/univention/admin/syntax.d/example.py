@@ -1,16 +1,13 @@
 # -*- coding: utf-8 -*-
 
-"""
-Example for |UDM| syntax.
-"""
+"""Example for |UDM| syntax."""
 
 from univention.admin.syntax import select
 
 
 class ExampleSyntax(select):
-    """
-    This is an example for a syntax having 3 values.
-    """
+    """This is an example for a syntax having 3 values."""
+
     choices = [
         ('value1', 'This item selects value 1'),
         ('value2', 'This item selects value 2'),

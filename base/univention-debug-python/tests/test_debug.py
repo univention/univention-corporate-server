@@ -53,9 +53,7 @@ CATEGORY = [
 @pytest.fixture
 def parse():
     # type: () -> Iterator[Callable[[str], Iterator[Tuple[str, Dict[str, str]]]]]
-    """
-    Setup parser.
-    """
+    """Setup parser."""
     now = datetime.now()
     start = now.replace(microsecond=now.microsecond - now.microsecond % 1000)
 
@@ -97,9 +95,7 @@ def parse():
 
 @pytest.fixture
 def tmplog(tmpdir):
-    """
-    Setup temporary logging.
-    """
+    """Setup temporary logging."""
     tmp = tmpdir.ensure('log')
     fd = ud.init(str(tmp), ud.NO_FLUSH, ud.FUNCTION)
     assert hasattr(fd, 'write')
@@ -213,9 +209,7 @@ def test_unicode(parse, tmplog):
 
 
 def test_close(parse, tmpdir):
-    """
-    Closing the Python wrapped file should not close the underlying file descriptor.
-    """
+    """Closing the Python wrapped file should not close the underlying file descriptor."""
     tmp = tmpdir.ensure('log')
     fd = ud.init(str(tmp), ud.NO_FLUSH, ud.FUNCTION)
     fd.close()
@@ -227,9 +221,7 @@ def test_close(parse, tmpdir):
 
 
 def test_fifo(parse, tmpdir):
-    """
-    Using a non-seekable file should not crash Python.
-    """
+    """Using a non-seekable file should not crash Python."""
     tmp = tmpdir.join('log')
     os.mkfifo(str(tmp))
 

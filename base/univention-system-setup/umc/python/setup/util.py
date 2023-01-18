@@ -274,7 +274,6 @@ def auto_complete_values_for_join(newValues, current_locale=None):
 
 def pre_save(newValues):
     """Modify the final dict before saving it to the profile file."""
-
     # network interfaces
     from univention.management.console.modules.setup.network import Interfaces
     if 'interfaces' in newValues:
@@ -739,7 +738,7 @@ def dhclient(interface, timeout=None):
             'nameserver_3': '',
             'netmask': '255.255.255.0'
     }
-"""
+    """
     tempfilename = tempfile.mkstemp('.out', 'dhclient.', '/tmp')[1]
     pidfilename = tempfile.mkstemp('.pid', 'dhclient.', '/tmp')[1]
     cmd = (

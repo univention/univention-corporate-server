@@ -49,6 +49,7 @@ from univention.appcenter.exceptions import NetworkError
 
 class DevTest(UniventionAppAction):
     """Tests an App by downloading and running a test script. ATTENTION: No integrity checks! Scripts may be harmful to the environment, e.g., by creating users."""
+
     help = 'Tests an App'
 
     def setup_parser(self, parser):
@@ -89,6 +90,7 @@ class DevTest(UniventionAppAction):
 
 class DevTestSetup(UniventionAppAction):
     """Sets up a test environment for App Tests."""
+
     help = 'Test environment setup'
 
     def main(self, args):

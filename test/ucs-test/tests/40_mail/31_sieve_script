@@ -17,8 +17,7 @@ from essential.mail import check_delivery, send_mail
 
 
 def sieve_test(mail, expected_output):
-    """Calls sieve-test
-    """
+    """Calls sieve-test"""
     cmd = [
         "sieve-connect",
         "--user", mail,

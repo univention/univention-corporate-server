@@ -72,7 +72,6 @@ def add(cmd, execTime=None, comments={}):
     :returns: The created job or `None`.
     :rtype: AtJob or None
     """
-
     if isinstance(execTime, (int, float)):
         start = datetime.datetime.fromtimestamp(execTime)  # type: Optional[datetime.datetime]
     else:
@@ -287,9 +286,7 @@ class AtJob(object):
 
     def rm(self):
         # type: () -> int
-        """
-        Remove the job from the queue.
-        """
+        """Remove the job from the queue."""
         p = subprocess.Popen(['/usr/bin/atrm', str(self.nr)], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
         p.communicate()
         return p.returncode == 0

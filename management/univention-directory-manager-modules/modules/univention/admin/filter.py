@@ -29,9 +29,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-"""
-|UDM| functions to parse, modify and create |LDAP| style search filters
-"""
+"""|UDM| functions to parse, modify and create |LDAP| style search filters"""
 
 import re
 from typing import Callable, Iterator, List, Match, Optional, Sequence, TypeVar, Union  # noqa: F401
@@ -45,9 +43,7 @@ T = TypeVar("T")
 
 
 class conjunction(object):
-    """
-    LDAP filter conjunction (`&`) or disjunction (`|`).
-    """
+    """LDAP filter conjunction (`&`) or disjunction (`|`)."""
 
     OPS = frozenset({'&', '|', '!'})
 
@@ -129,9 +125,7 @@ class conjunction(object):
 
 
 class expression(object):
-    """
-    LDAP filter expression.
-    """
+    """LDAP filter expression."""
 
     OPS = frozenset({'=', '>=', '<=', '~=', '=*'} | {'>', '<', '!='})
     # LDAP RFC 4515 + UCS specific extensions

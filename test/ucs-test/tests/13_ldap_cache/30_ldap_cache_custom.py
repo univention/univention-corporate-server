@@ -13,9 +13,7 @@ from univention.udm import UDM
 
 
 def test_custom_cache(udm, get_cache, add_cache, user1, user2):
-    """
-    Test a simple cache dn => lastname
-    """
+    """Test a simple cache dn => lastname"""
     _udm = UDM.machine().version(1)
     user1 = _udm.get('users/user').get(user1)
     user2 = _udm.get('users/user').get(user2)
@@ -32,9 +30,7 @@ def test_custom_cache(udm, get_cache, add_cache, user1, user2):
 
 
 def test_reverse_cache(udm, get_cache, add_cache, user1, user2):
-    """
-    Test a reverse cache lastname => [dn]
-    """
+    """Test a reverse cache lastname => [dn]"""
     _udm = UDM.machine().version(1)
     user1 = _udm.get('users/user').get(user1)
     user2 = _udm.get('users/user').get(user2)
@@ -52,9 +48,7 @@ def test_reverse_cache(udm, get_cache, add_cache, user1, user2):
 
 
 def test_double_cache(udm, get_cache, add_cache, group1, user1):
-    """
-    Create two configs for same cache. users' dn => [uid] and groups' dn => [cn]
-    """
+    """Create two configs for same cache. users' dn => [uid] and groups' dn => [cn]"""
     _udm = UDM.machine().version(1)
     group1 = _udm.get('groups/group').get(group1)
     user1 = _udm.get('users/user').get(user1)

@@ -94,24 +94,18 @@ def generate_strong_password(length=24):
 
 
 def set_ucs_passwd_user(connector, key, ucs_object):
-    """
-    set random password to fulfill required values
-    """
+    """set random password to fulfill required values"""
     ucs_object['password'] = generate_strong_password()
 
 
 def check_ucs_lastname_user(connector, key, ucs_object):
-    """
-    check if required values for lastname are set
-    """
+    """check if required values for lastname are set"""
     if not ucs_object.has_property('lastname') or not ucs_object['lastname']:
         ucs_object['lastname'] = ucs_object.get('username')
 
 
 def set_primary_group_user(connector, key, ucs_object):
-    """
-    check if correct primary group is set
-    """
+    """check if correct primary group is set"""
     connector.set_primary_group_to_ucs_user(key, ucs_object)
 
 # compare functions
@@ -299,47 +293,48 @@ class Mapping(object):
 
 
 class attribute(object):
-    """A mapping attribute description
+    """
+    A mapping attribute description
 
-            :param ucs_attribute:
-                    The property name of the object in UDM
-            :type ucs_attribute: str
+    :param ucs_attribute:
+    The property name of the object in UDM
+    :type ucs_attribute: str
 
-            :param ldap_attribute:
-                    The LDAP attribute name of the object in UCS LDAP
-            :type ldap_attribute: str
+    :param ldap_attribute:
+    The LDAP attribute name of the object in UCS LDAP
+    :type ldap_attribute: str
 
-            :param con_attribute:
-                    The LDAP attribute name of the object in AD LDAP
-            :type con_attribute: str
+    :param con_attribute:
+    The LDAP attribute name of the object in AD LDAP
+    :type con_attribute: str
 
-            :param con_other_attribute:
-                    Further LDAP attribute name of the object in AD LDAP.
-            :type con_other_attribute: str
+    :param con_other_attribute:
+    Further LDAP attribute name of the object in AD LDAP.
+    :type con_other_attribute: str
 
-            :param required:
-                    unused
-            :type required: bool
+    :param required:
+    unused
+    :type required: bool
 
-            :param single_value:
-                    Whether the attribute is single_value in the AD LDAP.
-            :type single_value: bool
+    :param single_value:
+    Whether the attribute is single_value in the AD LDAP.
+    :type single_value: bool
 
-            :param compare_function:
-                    A comparision function which compares raw ldap attribute values.
-            :type compare_function: callable
+    :param compare_function:
+    A comparision function which compares raw ldap attribute values.
+    :type compare_function: callable
 
-            :param mapping:
-                    Mapping functions for (sync_to_ad, sync_to_ucs)
-            :ptype mapping: tuple
+    :param mapping:
+    Mapping functions for (sync_to_ad, sync_to_ucs)
+    :ptype mapping: tuple
 
-            :param reverse_attribute_check:
-                    Make a reverse check of this mapping, if the mapping is not 1:1.
-            :ptype reverse_attribute_check: bool
+    :param reverse_attribute_check:
+    Make a reverse check of this mapping, if the mapping is not 1:1.
+    :ptype reverse_attribute_check: bool
 
-            :param sync_mode:
-                    The syncronization direction (read, write, sync)
-            :ptype sync_mode: str
+    :param sync_mode:
+    The syncronization direction (read, write, sync)
+    :ptype sync_mode: str
     """
 
     def __init__(self, ucs_attribute='', ldap_attribute='', con_attribute='', con_other_attribute='', required=0, single_value=False, compare_function='', mapping=(), reverse_attribute_check=False, sync_mode='sync', con_depends='', con_attribute_encoding='UTF-8'):
@@ -668,17 +663,12 @@ class ucs(object):
             self._set_dn_mapping(dn_ucs.lower(), dn_con.lower())
 
     def _debug_traceback(self, level, text):
-        """
-        print traceback with ud.debug, level is i.e. ud.INFO
-        """
+        """print traceback with ud.debug, level is i.e. ud.INFO"""
         ud.debug(ud.LDAP, level, text)
         ud.debug(ud.LDAP, level, traceback.format_exc())
 
     def __sync_file_from_ucs(self, filename, append_error='', traceback_level=ud.WARN):
-        """
-        sync changes from UCS stored in given file
-        """
-
+        """sync changes from UCS stored in given file"""
         try:
             with open(filename, 'rb') as fob:
                 (dn, new, old, old_dn) = pickle.load(fob, encoding='bytes')
@@ -927,9 +917,7 @@ class ucs(object):
         pass
 
     def resync_rejected_ucs(self):
-        """
-        tries to resync rejected changes from UCS
-        """
+        """tries to resync rejected changes from UCS"""
         rejected = self._list_rejected_ucs()
         change_counter = 0
         print("--------------------------------------")
@@ -962,9 +950,7 @@ class ucs(object):
         pass
 
     def poll_ucs(self):
-        """
-        poll changes from UCS: iterates over files exported by directory-listener module
-        """
+        """poll changes from UCS: iterates over files exported by directory-listener module"""
         # check for changes from ucs ldap directory
 
         change_counter = 0
@@ -1246,7 +1232,6 @@ class ucs(object):
 
     def delete_in_ucs(self, property_type, object, module, position):
         """Removes an AD object in UCS-LDAP"""
-
         objectGUID = object['attributes'].get('objectGUID', [None])[0]
         if objectGUID:
             objectGUID = decode_guid(objectGUID)
@@ -1474,7 +1459,6 @@ class ucs(object):
         - nur * als Wildcard
         - geht "lachser" mit Verschachtelten Klammern um
         '''
-
         filter_connectors = ['!', '&', '|']
 
         def list_lower(elements):
@@ -1621,7 +1605,8 @@ class ucs(object):
         return False
 
     def _object_mapping(self, key, old_object, object_type='con'):
-        """Create a mapped object from AD or UCS object definition.
+        """
+        Create a mapped object from AD or UCS object definition.
 
         :param key:
                 the mapping key

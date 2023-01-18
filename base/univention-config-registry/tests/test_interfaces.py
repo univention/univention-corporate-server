@@ -13,9 +13,7 @@ from univention.config_registry.interfaces import _Iface, Interfaces, forgiving,
 
 @pytest.fixture(autouse=True)
 def tmpucr(monkeypatch):
-    """
-    Setup UCR instance using `dev/null` for all tests.
-    """
+    """Setup UCR instance using `dev/null` for all tests."""
     monkeypatch.setenv('UNIVENTION_BASECONF', devnull)
 
 
@@ -29,7 +27,6 @@ def test_VengefulConfigRegistry():
 
 
 class Test_Iface(object):
-
     """Test implementation."""
 
     def test_basic(self):
@@ -106,7 +103,6 @@ class Test_Iface(object):
 
 
 class TestInterfaces(object):
-
     """Test implementation."""
 
     def test_empty(self):
@@ -328,8 +324,8 @@ class TestInterfaces(object):
 
 
 class TestDecorator(object):
-
     """Test forgiving decorator."""
+
     @forgiving()
     def value_through(self):
         """Value through"""
@@ -388,7 +384,6 @@ class TestDecorator(object):
 
 
 class TestSort(object):
-
     """Rest alphanumeric sorting."""
 
     def test_all_num(self):

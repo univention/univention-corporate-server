@@ -8,9 +8,7 @@ import univention.updater.locking as L
 
 @pytest.fixture
 def lock(tmpdir, monkeypatch):
-    """
-    Mock locking file
-    """
+    """Mock locking file"""
     lock = tmpdir / "lock"
     monkeypatch.setattr(L, "FN_LOCK_UP", str(lock))
     return lock
@@ -163,9 +161,7 @@ def test_error_taken(lock):
 
 @pytest.fixture
 def apt_lock(tmpdir, monkeypatch):
-    """
-    Mock APT locking file
-    """
+    """Mock APT locking file"""
     lock = tmpdir / "lock"
     monkeypatch.setattr(L, "FN_LOCK_APT", str(lock))
     return lock

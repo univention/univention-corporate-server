@@ -31,9 +31,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-"""
-|UDM| module for monitoring alerts
-"""
+"""|UDM| module for monitoring alerts"""
 
 from univention.admin.layout import Tab, Group
 import univention.admin.filter
@@ -150,7 +148,8 @@ layout = [
 
 
 def mapKeyAndValue(old, encoding=()):
-    """Map (key, value) list to key=value list.
+    """
+    Map (key, value) list to key=value list.
 
     >>> mapKeyAndValue([("a", "b")])
     [b'a=b']
@@ -159,7 +158,8 @@ def mapKeyAndValue(old, encoding=()):
 
 
 def unmapKeyAndValue(old, encoding=()):
-    """Map (key=value) list to (key, value) list.
+    """
+    Map (key=value) list to (key, value) list.
 
     >>> unmapKeyAndValue([b"a=b"])
     [['a', 'b']]

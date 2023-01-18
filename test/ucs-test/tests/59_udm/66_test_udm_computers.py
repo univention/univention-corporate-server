@@ -97,7 +97,6 @@ class Test_ComputerAllRoles:
     @pytest.mark.tags('udm', 'udm-computers')
     def test_all_roles_check_nagios(self, udm, lo, verify_ldap_object, role):
         """Validate nagios for all computer roles"""
-
         forwardZone = udm.create_object('dns/forward_zone', zone='%s.%s' % (random_name(), random_name()), nameserver=random_string(numeric=False))
         nagiosService = udm.create_object('nagios/service', name=random_name(), checkCommand=random_string(), checkPeriod=random_string(), notificationPeriod=random_string())
 
@@ -381,9 +380,7 @@ class Test_ComputerAllRoles:
         ]
     )
     def test_all_roles_modification_ip_choosing(self, lo, verify_ldap_object, role, ip, manual_network, manual_dhcp, service_and_network):
-        """
-        Test creating DHCP entries for some computer roles
-        """
+        """Test creating DHCP entries for some computer roles"""
         udm, service, network, NET = service_and_network
         unique = next(self.UNIQUE)
 
@@ -454,7 +451,6 @@ class Test_ComputerAllRoles:
             Since UCS 4.3-2erratumX this is no longer the case and univentionLastUsedValue
             is never changed.
             """
-
             # bugs: [44937]
             computerName = random_name()
 
@@ -499,7 +495,6 @@ class Test_ComputerAllRoles:
     @pytest.mark.tags('udm', 'udm-computers', 'apptest')
     def test_all_roles_univentionLastUsedValue(self, udm, ucr, lo, verify_ldap_object, wait_for_replication_cleanup, role):
         """Create minimal object for all computer roles and check univentionLastUsedValue"""
-
         luv_dn = 'cn=uidNumber,cn=temporary,cn=univention,%s' % (ucr.get('ldap/base'),)
 
         lastUsedValue_old = lo.get(luv_dn).get('univentionLastUsedValue', [-1])[0]
@@ -542,7 +537,6 @@ class Test_ComputerRolesExceptMacos:
     )
     def test_all_roles_creation_with_all_attributes(self, ucr, udm, verify_ldap_object, lo, stopped_s4connector, role, rand_ip, rand_mac):
         """Create object with all attributes set for all computer roles"""
-
         dhcpZone = udm.create_object('dhcp/service', service=random_name())
 
         properties = {
@@ -702,7 +696,6 @@ class Test_ComputerRolesExceptIpmanagedclient:
 
     def test_all_roles_modification_append_and_remove_groups(self, udm, verify_ldap_object, role):
         """Test appending and removing groups for all computer roles (except computers/ipmanagedclient)"""
-
         groups = (udm.create_group()[0], udm.create_group()[0], udm.create_group()[0], udm.create_group()[0])
 
         computerName = random_name()

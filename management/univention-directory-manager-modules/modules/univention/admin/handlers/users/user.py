@@ -30,9 +30,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-"""
-|UDM| module for the user objects
-"""
+"""|UDM| module for the user objects"""
 
 from __future__ import absolute_import
 
@@ -718,7 +716,6 @@ def sambaWorkstationsUnmap(workstations, encoding=()):
 
 def logonHoursMap(logontimes):
     "converts the bitfield 001110010110...100 to the respective hex string"
-
     # convert list of bit numbers to bit-string
     # bitstring = '0' * 168
 
@@ -766,7 +763,6 @@ def logonHoursMap(logontimes):
 
 def logonHoursUnmap(logontimes):
     """Converts hex-string to an array of bits set."""
-
     times = logontimes[0][:42]
     while len(times) < 42:
         times = times
@@ -805,7 +801,8 @@ def GMTOffset():
 
 
 def mapHomePostalAddress(old, encoding=()):
-    """Map address to LDAP encoding.
+    """
+    Map address to LDAP encoding.
 
     >>> mapHomePostalAddress([["a", "b", "c"]])
     [b'a$b$c']
@@ -817,7 +814,8 @@ def mapHomePostalAddress(old, encoding=()):
 
 
 def unmapHomePostalAddress(old, encoding=()):
-    """Expand LDAP encoded address.
+    """
+    Expand LDAP encoded address.
     >>> unmapHomePostalAddress([b'foo'])
     [['foo', ' ', ' ']]
     >>> unmapHomePostalAddress([b'foo$bar$baz'])
@@ -976,7 +974,8 @@ def unmapSambaRid(oldattr):
 
 
 def mapKeyAndValue(old, encoding=()):
-    """Map (key, value) list to key=value list.
+    """
+    Map (key, value) list to key=value list.
 
     >>> mapKeyAndValue([("a", "b")])
     [b'a=b']
@@ -985,7 +984,8 @@ def mapKeyAndValue(old, encoding=()):
 
 
 def unmapKeyAndValue(old, encoding=()):
-    """Map (key=value) list to (key, value) list.
+    """
+    Map (key=value) list to (key, value) list.
 
     >>> unmapKeyAndValue([b"a=b"])
     [['a', 'b']]
@@ -1721,29 +1721,30 @@ class object(univention.admin.handlers.simpleLdap, PKIIntegration):
         return ml
 
     def _modlist_krb5kdc_flags(self, ml):
-        """Set the krb5KDCFlags.
-                default = 1 << 6 | 1 << 5 | 1 << 4 | 1 << 3 | 1 << 2 | 1 << 1 = 126
+        """
+        Set the krb5KDCFlags.
+        default = 1 << 6 | 1 << 5 | 1 << 4 | 1 << 3 | 1 << 2 | 1 << 1 = 126
 
-                initial(0), -- require as-req
-                forwardable(1), -- may issue forwardable
-                proxiable(2), -- may issue proxiable
-                renewable(3), -- may issue renewable
-                postdate(4),-- may issue postdatable
-                server(5),-- may be server
-                client(6),-- may be client
-                invalid(7), -- entry is invalid
-                require-preauth(8), -- must use preauth
-                change-pw(9), -- change password service
-                require-hwauth(10), -- must use hwauth
-                ok-as-delegate(11), -- as in TicketFlags
-                user-to-user(12), -- may use user-to-user auth
-                immutable(13),-- may not be deleted
-                trusted-for-delegation(14), -- Trusted to print forwardabled tickets
-                allow-kerberos4(15),-- Allow Kerberos 4 requests
-                allow-digest(16), -- Allow digest requests
-                locked-out(17), -- Account is locked out, authentication will be denied
-                require-pwchange(18), -- require a passwd change
-                do-not-store(31)-- Not to be modified and stored in HDB
+        initial(0), -- require as-req
+        forwardable(1), -- may issue forwardable
+        proxiable(2), -- may issue proxiable
+        renewable(3), -- may issue renewable
+        postdate(4),-- may issue postdatable
+        server(5),-- may be server
+        client(6),-- may be client
+        invalid(7), -- entry is invalid
+        require-preauth(8), -- must use preauth
+        change-pw(9), -- change password service
+        require-hwauth(10), -- must use hwauth
+        ok-as-delegate(11), -- as in TicketFlags
+        user-to-user(12), -- may use user-to-user auth
+        immutable(13),-- may not be deleted
+        trusted-for-delegation(14), -- Trusted to print forwardabled tickets
+        allow-kerberos4(15),-- Allow Kerberos 4 requests
+        allow-digest(16), -- Allow digest requests
+        locked-out(17), -- Account is locked out, authentication will be denied
+        require-pwchange(18), -- require a passwd change
+        do-not-store(31)-- Not to be modified and stored in HDB
         """
         if not self.exists() or self.hasChanged(['disabled', 'locked']):
             try:

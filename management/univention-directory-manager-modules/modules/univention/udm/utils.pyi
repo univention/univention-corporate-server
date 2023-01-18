@@ -42,6 +42,7 @@ is_interactive = bool()
 
 class UDebug(object):
     """univention.debug convenience wrapper"""
+
     target = 0x0A  # type: int
     level2str = {
         4: 'DEBUG',

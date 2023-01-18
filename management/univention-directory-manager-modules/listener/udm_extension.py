@@ -78,7 +78,6 @@ class moduleRemovalFailed(Exception):
 
 def handler(dn: str, new: Dict[str, List[bytes]], old: Dict[str, List[bytes]]) -> None:
     """Handle UDM extension modules"""
-
     if new:
         ocs = new.get('objectClass', [])
 
@@ -250,7 +249,6 @@ def remove_object(udm_module_name: str, object_dn: str) -> None:
 
 def install_python_file(objectclass: str, target_subdir: str, target_filename: str, data: bytes) -> bool:
     """Install a Python module file"""
-
     # input validation
     relative_filename = os.path.join(target_subdir, target_filename)
     if not relative_filename:

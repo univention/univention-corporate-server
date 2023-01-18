@@ -30,9 +30,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-"""
-|UDM| functions for creating crontab entries.
-"""
+"""|UDM| functions for creating crontab entries."""
 
 from __future__ import absolute_import
 

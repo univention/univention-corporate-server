@@ -30,9 +30,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-"""
-|UDM| basic functionality
-"""
+"""|UDM| basic functionality"""
 
 from __future__ import absolute_import, print_function
 
@@ -64,9 +62,7 @@ ucr_property_prefix = 'directory/manager/web/modules/%s/properties/'
 
 def ucr_overwrite_properties(module, lo):
     # type: (Any, univention.admin.uldap.access) -> None
-    """
-    Overwrite properties in property_descriptions by UCR variables
-    """
+    """Overwrite properties in property_descriptions by UCR variables"""
     ucr_prefix = ucr_property_prefix % module.module
     if not module:
         return
@@ -125,7 +121,6 @@ def pattern_replace(pattern, object):
     Replaces patterns like `<attribute:command,...>[range]` with values
     of the specified UDM attribute.
     """
-
     global_commands = []  # type: List[str]
 
     def modify_text(text, commands):
@@ -389,9 +384,7 @@ class property:
 
 
 class option(object):
-    """
-    |UDM| option to make properties conditional.
-    """
+    """|UDM| option to make properties conditional."""
 
     def __init__(self, short_description='', long_description='', default=0, editable=False, disabled=False, objectClasses=None, is_app_option=False):
         # type: (str, str, int, bool, bool, Iterable[str], bool) -> None
@@ -417,9 +410,7 @@ class option(object):
 
 def ucr_overwrite_layout(module, ucr_property, tab):
     # type: (Any, str, Tab) -> Optional[bool]
-    """
-    Overwrite the advanced setting in the layout
-    """
+    """Overwrite the advanced setting in the layout"""
     desc = tab['name']
     if hasattr(tab['name'], 'data'):
         desc = tab.tab['name'].data
@@ -430,9 +421,7 @@ def ucr_overwrite_layout(module, ucr_property, tab):
 
 def ucr_overwrite_module_layout(module):
     # type: (Any) -> None
-    """
-    Overwrite the tab layout through |UCR| variables.
-    """
+    """Overwrite the tab layout through |UCR| variables."""
     ud.debug(ud.ADMIN, ud.INFO, "layout overwrite")
     # there are modules without a layout definition
     if not hasattr(module, 'layout'):
@@ -506,9 +495,7 @@ def ucr_overwrite_module_layout(module):
 
 
 class extended_attribute(object):
-    """
-    Extended attributes extend |UDM| and |UMC| with additional properties defined in |LDAP|.
-    """
+    """Extended attributes extend |UDM| and |UMC| with additional properties defined in |LDAP|."""
 
     def __init__(self, name, objClass, ldapMapping, deleteObjClass=False, syntax='string', hook=None):
         # type: (str, str, Any, bool, str, Any) -> None
@@ -528,9 +515,8 @@ class extended_attribute(object):
 
 if six.PY2:  # deprecated, use layout.Tab instead
     class tab:
-        """
-        |UDM| tab to group related properties together in |UMC|.
-        """
+        """|UDM| tab to group related properties together in |UMC|."""
+
         is_app_tab = False
 
         def __init__(self, short_description='', long_description='', fields=[], advanced=False, help_text=None):

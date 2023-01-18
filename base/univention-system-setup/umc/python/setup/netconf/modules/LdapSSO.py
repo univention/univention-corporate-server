@@ -7,10 +7,8 @@ from univention.management.console.modules.setup.netconf.common import AddressMa
 
 
 class PhaseLdapSSO(AddressMap, LdapChange):
+    """Rewrite UCS SSO host address."""
 
-    """
-    Rewrite UCS SSO host address.
-    """
     priority = 49
 
     def __init__(self, changeset):

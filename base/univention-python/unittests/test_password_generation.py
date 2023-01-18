@@ -62,9 +62,7 @@ def password_radius_config():
 
 
 def password_stats(cfg, password):
-    """
-    Calculate password stats based on given configuration
-    """
+    """Calculate password stats based on given configuration"""
     special_characters = string.punctuation
     forbidden_characters = cfg.get('forbidden') or ''
     digits = 0
@@ -89,9 +87,7 @@ def password_stats(cfg, password):
 
 
 def match_password_complexity(cfg, password):
-    """
-    Test if given password matches complexity criteria.
-    """
+    """Test if given password matches complexity criteria."""
     stats = password_stats(cfg, password)
 
     for stat in ['digits', 'lower', 'other', 'upper']:
@@ -103,9 +99,7 @@ def match_password_complexity(cfg, password):
 
 
 class TestPasswordConfigDefaults(object):
-    """
-    Test all cases of no-scoped defaults
-    """
+    """Test all cases of no-scoped defaults"""
 
     def test_digit_count(self, password_config_default):
         assert password_config_default['digits'] == 6
@@ -127,9 +121,7 @@ class TestPasswordConfigDefaults(object):
 
 
 class TestScopedPasswordConfigDefaults(object):
-    """
-    Test all cases of radius 'scope' defaults
-    """
+    """Test all cases of radius 'scope' defaults"""
 
     def test_radius_digit_count(self, password_radius_config):
         assert password_radius_config['digits'] == 6
@@ -151,9 +143,8 @@ class TestScopedPasswordConfigDefaults(object):
 
 
 class TestScopedPasswordConfigFallback(object):
-    """
-    Set radius 'scoped' variables to None and check will they fallback to no-scoped defaults
-    """
+    """Set radius 'scoped' variables to None and check will they fallback to no-scoped defaults"""
+
     scope = 'radius'
 
     def test_digit_count(self, mocked_ucr):
@@ -182,9 +173,8 @@ class TestScopedPasswordConfigFallback(object):
 
 
 class TestScopedPasswordConfigCustomizing(object):
-    """
-    Set radius 'scoped' variables explicitely and checks value
-    """
+    """Set radius 'scoped' variables explicitely and checks value"""
+
     scope = 'radius'
 
     def test_digit_count(self, mocked_ucr):

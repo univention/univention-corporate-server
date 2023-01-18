@@ -69,9 +69,7 @@ class TestUMCUserAuthentication(UMCBase):
         return response[0].get('jpegPhoto')
 
     def main(self):
-        """
-        Tests the UMC user authentication and various password change cases.
-        """
+        """Tests the UMC user authentication and various password change cases."""
         self.test_username = 'umc_test_user_' + random_username(6)
         self.test_password = 'univention'
 

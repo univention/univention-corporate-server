@@ -45,8 +45,7 @@ import univention.s4connector.s4
 
 
 def _connect_ucs(configRegistry, binddn, bindpwdfile):
-    """ Connect to OpenLDAP """
-
+    """Connect to OpenLDAP"""
     if not (binddn or bindpwdfile):
         bindpwdfile = configRegistry.get('connector/ldap/bindpw', '/etc/ldap.secret')
         binddn = configRegistry.get('connector/ldap/binddn', 'cn=admin,' + configRegistry['ldap/base'])
@@ -70,25 +69,25 @@ def _connect_ucs(configRegistry, binddn, bindpwdfile):
 
 
 def search_s4(s4):
-    """ Search all S4 objects with gPLink attribute and return a
-                    dictonary with dn as key and gPLink as result. The gPLink
-                    will only be set on containers, OUs and DCs, therefore
-                    is a mapping not necessary.
     """
-
+    Search all S4 objects with gPLink attribute and return a
+    dictonary with dn as key and gPLink as result. The gPLink
+    will only be set on containers, OUs and DCs, therefore
+    is a mapping not necessary.
+    """
     return dict((x[0], x[1]['gPLink'][0]) for x in s4.lo_s4.search('gPLink=*', attr=['gPLink']) if x[0] is not None)
 
 
 def search_ucs(s4):
-    """ Search all UCS objects with msGPOLink attribute and return a
-                    dictonary with dn as key and msGPOLink as result
     """
-
+    Search all UCS objects with msGPOLink attribute and return a
+    dictonary with dn as key and msGPOLink as result
+    """
     return dict((x[0], x[1]['msGPOLink'][0]) for x in s4.lo.search('msGPOLink=*', attr=['msGPOLink']))
 
 
 def write_to_s4(lo_s4, configRegistry, ucs_result):
-    """ Write the result from search_ucs to Samba LDAP """
+    """Write the result from search_ucs to Samba LDAP"""
     s4_ldap_base = configRegistry.get('connector/s4/ldap/base').lower()
     ucs_ldap_base = configRegistry.get('ldap/base').lower()
     for ucs_dn in ucs_result.keys():
@@ -104,8 +103,7 @@ def write_to_s4(lo_s4, configRegistry, ucs_result):
 
 
 def write_to_ucs(lo, configRegistry, s4_result, only_override_empty=False, binddn=None, bindpwdfile=None):
-    """ Write the result from search_s4 to UCS LDAP """
-
+    """Write the result from search_s4 to UCS LDAP"""
     lo = _connect_ucs(configRegistry, binddn, bindpwdfile)
 
     s4_ldap_base = configRegistry.get('connector/s4/ldap/base').lower()

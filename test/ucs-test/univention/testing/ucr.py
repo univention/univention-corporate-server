@@ -54,13 +54,13 @@ from univention.config_registry import ConfigRegistry
 
 class UCSTestConfigRegistry(ConfigRegistry):
     """
-            Extension to ConfigRegistry to be able to clean up after
-            several changes to UCR variables have been done.
+    Extension to ConfigRegistry to be able to clean up after
+    several changes to UCR variables have been done.
     """
 
     def __init__(self, *args, **kwargs):
         # type: (*Any, **Any) -> None
-        """ initialise object """
+        """initialise object"""
         ConfigRegistry.__init__(self, *args, **kwargs)
         self.__original_registry = None  # type: Optional[Dict[int, Dict[str, str]]]
 
@@ -75,7 +75,7 @@ class UCSTestConfigRegistry(ConfigRegistry):
 
     def load(self):
         # type: () -> None
-        """ call load() of superclass and save original registry values """
+        """call load() of superclass and save original registry values"""
         ConfigRegistry.load(self)
         if self.__original_registry is None:
             self.__original_registry = {
@@ -85,7 +85,7 @@ class UCSTestConfigRegistry(ConfigRegistry):
 
     def revert_to_original_registry(self):
         # type: () -> None
-        """ revert UCR values back to original state """
+        """revert UCR values back to original state"""
         # load current values again to perform correct comparison
         self.load()
         assert self.__original_registry is not None

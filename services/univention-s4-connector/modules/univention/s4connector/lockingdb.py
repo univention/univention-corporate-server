@@ -40,12 +40,11 @@ import sqlite3
 
 
 class LockingDB(object):
-
     """
-                    A local database which includes the list of objects
-                    which are currently locked. That means the
-                    synchronisation of these objects has not been finished.
-                    https://forge.univention.org/bugzilla/show_bug.cgi?id=35391
+    A local database which includes the list of objects
+    which are currently locked. That means the
+    synchronisation of these objects has not been finished.
+    https://forge.univention.org/bugzilla/show_bug.cgi?id=35391
     """
 
     def __init__(self, filename):

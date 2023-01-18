@@ -78,7 +78,8 @@ class Password:
 
 
 class PasswordType:
-    """Just a namespace for PasswordType providers
+    """
+    Just a namespace for PasswordType providers
     to avoid collision with parameter fixture names.
     """
 

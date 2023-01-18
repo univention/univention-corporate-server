@@ -34,6 +34,7 @@ from __future__ import unicode_literals
 
 class UdmError(Exception):
     """Base class of Exceptions raised by (simplified) UDM modules."""
+
     msg = ''
 
     def __init__(self, msg=None, dn=None, module_name=None):
@@ -45,6 +46,7 @@ class UdmError(Exception):
 
 class ApiVersionMustNotChange(UdmError):
     """Raised when UDM.version() is called twice."""
+
     msg = 'The version of an UDM instance must not be changed.'
 
 
@@ -76,9 +78,7 @@ class DeletedError(UdmError):
 
 
 class DeleteError(UdmError):
-    """
-    Raised when a client tries to delete a UDM object but fails.
-    """
+    """Raised when a client tries to delete a UDM object but fails."""
 
     def __init__(self, msg=None, dn=None, module_name=None):
         msg = msg or 'Object{} could not be deleted.'.format(' {!r}'.format(dn) if dn else '')
@@ -90,6 +90,7 @@ class NotYetSavedError(UdmError):
     Raised when a client tries to delete or reload a UDM object that is not
     yet saved.
     """
+
     msg = 'Object has not been created/loaded yet.'
 
 
@@ -106,6 +107,7 @@ class NoApiVersionSet(UdmError):
     Raised when UDM.get() or UDM.obj_by_id() is used before setting an API
     version.
     """
+
     msg = 'No API version has been set.'
 
 
@@ -146,9 +148,7 @@ class MultipleObjects(UdmError):
 
 
 class UnknownModuleType(UdmError):
-    """
-    Raised when an LDAP object has no or empty attribute univentionObjectType.
-    """
+    """Raised when an LDAP object has no or empty attribute univentionObjectType."""
 
     def __init__(self, msg=None, dn=None, module_name=None):
         msg = msg or 'No or empty attribute "univentionObjectType" found at DN {!r}.'.format(dn)

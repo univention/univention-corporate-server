@@ -19,10 +19,7 @@ class DummyOption(object):
 
 
 class TestLdapChanged(unittest.TestCase):
-
-    """
-    Old address changed to new address.
-    """
+    """Old address changed to new address."""
 
     def setUp(self):
         ucr = {

@@ -97,8 +97,8 @@ else:
 
 
 class LocalizedDictionary(__LD):
-
     """Localized descriptions."""
+
     _LOCALE_REGEX = re.compile(r'(?P<key>[a-zA-Z]*)\[(?P<lang>[a-z]*)\]$')
 
     def __init__(self):

@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-"""This module collects utilities for installing and building message catalogs
+"""
+This module collects utilities for installing and building message catalogs
 while applying Univention specific options.
 """
 #

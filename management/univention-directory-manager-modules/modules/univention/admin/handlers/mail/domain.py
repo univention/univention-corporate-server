@@ -30,9 +30,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-"""
-|UDM| module for the mail domain objects
-"""
+"""|UDM| module for the mail domain objects"""
 
 import ldap
 

@@ -30,9 +30,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-"""
-|UDM| module for the simple authentication account objects
-"""
+"""|UDM| module for the simple authentication account objects"""
 
 from __future__ import absolute_import
 

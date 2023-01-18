@@ -19,9 +19,7 @@ UM = M.UniventionMirror
 
 @pytest.fixture
 def m(tmpdir, ucr, http):
-    """
-    Mock UCS repository mirror.
-    """
+    """Mock UCS repository mirror."""
     ucr({
         'repository/mirror/basepath': str(tmpdir / 'repo'),
         # 'repository/mirror/version/end': '%d.%d-%d' % (MAJOR, MINOR, PATCH),
@@ -39,14 +37,11 @@ def m(tmpdir, ucr, http):
 
 @pytest.fixture(autouse=True)
 def log(mockopen):
-    """
-    Mock log file for UCS repository mirror.
-    """
+    """Mock log file for UCS repository mirror."""
     mockopen.write("/var/log/univention/repository.log", b"")
 
 
 class TestUniventionMirror(object):
-
     """Unit test for univention.updater.mirror"""
 
     def test_config_repository(self, ucr, m):
@@ -170,7 +165,6 @@ class TestUniventionMirror(object):
 
 
 class TestFilter(object):
-
     """Unit test for univention.updater.mirror.filter_releases_json"""
 
     RELEASES = json.loads(gen_releases([(5, 0, 0), (5, 0, 1), (5, 0, 2)]))

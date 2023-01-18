@@ -1,6 +1,4 @@
-"""
-Univention Setup: network configuration abstract common classes
-"""
+"""Univention Setup: network configuration abstract common classes"""
 # Like what you see? Join us!
 # https://www.univention.com/about-us/careers/vacancies/
 #
@@ -46,10 +44,8 @@ from univention.management.console.modules.setup.netconf.conditions import (
 
 
 class RestartService(with_metaclass(ABCMeta, Executable)):
+    """Helper to restart a single service."""
 
-    """
-    Helper to restart a single service.
-    """
     service = None
     PREFIX = "/etc/init.d"
 
@@ -67,10 +63,7 @@ class RestartService(with_metaclass(ABCMeta, Executable)):
 
 
 class AddressMap(with_metaclass(ABCMeta, AddressChange)):
-
-    """
-    Helper to provide a mapping from old addresses to new addresses.
-    """
+    """Helper to provide a mapping from old addresses to new addresses."""
 
     def __init__(self, changeset):
         super(AddressMap, self).__init__(changeset)
@@ -129,10 +122,7 @@ class AddressMap(with_metaclass(ABCMeta, AddressChange)):
 
 
 class LdapChange(with_metaclass(ABCMeta, type('NewBase', (AddressChange, Ldap), {}))):
-
-    """
-    Helper to provide access to LDAP through UDM.
-    """
+    """Helper to provide access to LDAP through UDM."""
 
     def __init__(self, changeset):
         super(LdapChange, self).__init__(changeset)

@@ -50,7 +50,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
         }
 
     def check(self, path: str) -> None:
-        """ the real check """
+        """the real check"""
         super(UniventionPackageCheck, self).check(path)
 
         tester = uub.UPCFileTester()

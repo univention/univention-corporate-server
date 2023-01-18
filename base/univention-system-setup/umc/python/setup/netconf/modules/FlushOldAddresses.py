@@ -2,10 +2,8 @@ from univention.management.console.modules.setup.netconf import Phase
 
 
 class PhaseFlushOldAddresses(Phase):
+    """Flush old interfaces to remove old addresses."""
 
-    """
-    Flush old interfaces to remove old addresses.
-    """
     priority = 55
 
     def pre(self):

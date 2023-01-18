@@ -326,7 +326,8 @@ except ImportError:
 else:
     @pytest.fixture(scope='session')
     def config():
-        """Test wide Configuration aka UCR
+        """
+        Test wide Configuration aka UCR
         Used to get some defaults if not environment variables are
         given. But if UCR is not avaiable, returns an empty dict...
         """

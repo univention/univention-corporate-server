@@ -201,7 +201,7 @@ def restart_docker():
 
 
 def get_app_name():
-    """ returns a valid app name """
+    """returns a valid app name"""
     return random_name()
 
 

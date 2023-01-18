@@ -43,7 +43,7 @@ VALID_EXTENSION_TYPES = ('hook', 'syntax', 'module')
 
 def get_package_name():
     # type: () -> str
-    """ returns a valid package name """
+    """returns a valid package name"""
     return random_name()
 
 
@@ -78,9 +78,7 @@ def get_extension_filename(extension_type, extension_name):
 
 def call_cmd(cmd, fail_on_error=True):
     # type: (Sequence[str], bool) -> int
-    """
-    Calls the given cmd (list of strings).
-    """
+    """Calls the given cmd (list of strings)."""
     print('CMD: %r' % cmd)
     sys.stdout.flush()
     exitcode = subprocess.call(cmd)
@@ -359,9 +357,7 @@ exit 0
 
 def get_absolute_extension_filename(extension_type, filename):
     # type: (str, str) -> str
-    """
-    Returns the absolute path to an extentension of the given type and filename.
-    """
+    """Returns the absolute path to an extentension of the given type and filename."""
     assert extension_type in VALID_EXTENSION_TYPES
     if extension_type == 'module':
         assert '/' in filename
@@ -374,9 +370,7 @@ def get_absolute_extension_filename(extension_type, filename):
 
 def get_dn_of_extension_by_name(extension_type, name):
     # type: (str, str) -> str
-    """
-    Returns a list of DNs of UDM extension objects with given type an name, or [] if no object has been found.
-    """
+    """Returns a list of DNs of UDM extension objects with given type an name, or [] if no object has been found."""
     assert extension_type in VALID_EXTENSION_TYPES
     if extension_type == 'module':
         assert '/' in name
@@ -390,9 +384,7 @@ def get_dn_of_extension_by_name(extension_type, name):
 
 def remove_extension_by_name(extension_type, extension_name, fail_on_error=True):
     # type: (str, str, bool) -> None
-    """
-    Remove all extensions of given type and name from LDAP.
-    """
+    """Remove all extensions of given type and name from LDAP."""
     assert extension_type in VALID_EXTENSION_TYPES
     for dn in get_dn_of_extension_by_name(extension_type, extension_name):
         cmd = ['/usr/sbin/udm-test', 'settings/udm_%s' % extension_type, 'remove', '--dn', dn]

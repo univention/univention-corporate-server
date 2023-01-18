@@ -29,9 +29,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-r"""
-Module and object for all `computers/\*` UDM modules.
-"""
+r"""Module and object for all `computers/\*` UDM modules."""
 
 from __future__ import absolute_import, unicode_literals
 from ..encoders import (
@@ -63,11 +61,13 @@ class ComputersAllObjectProperties(GenericObjectProperties):
 
 class ComputersAllObject(GenericObject):
     r"""Better representation of `computers/\*` properties."""
+
     udm_prop_class = ComputersAllObjectProperties
 
 
 class ComputersAllModule(GenericModule):
     """ComputersAllObject factory"""
+
     _udm_object_class = ComputersAllObject
 
     class Meta:

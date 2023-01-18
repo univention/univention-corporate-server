@@ -29,9 +29,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-"""
-Module and object specific for "appcenter/app" UDM module.
-"""
+"""Module and object specific for "appcenter/app" UDM module."""
 
 from __future__ import absolute_import, unicode_literals
 from ..encoders import (
@@ -55,11 +53,13 @@ class AppcenterAppObjectProperties(GenericObjectProperties):
 
 class AppcenterAppObject(GenericObject):
     """Better representation of appcenter/app properties."""
+
     udm_prop_class = AppcenterAppObjectProperties
 
 
 class AppcenterAppModule(GenericModule):
     """AppcenterAppObject factory"""
+
     _udm_object_class = AppcenterAppObject
 
     class Meta:

@@ -158,7 +158,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
                     self.addmsg('0001-15', 'join script does not use joinscript_save_current_version', filename)
 
     def check(self, path: str) -> None:
-        """ the real check """
+        """the real check"""
         super(UniventionPackageCheck, self).check(path)
 
         fnlist_joinscripts = {}

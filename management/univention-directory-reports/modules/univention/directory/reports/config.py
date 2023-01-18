@@ -95,10 +95,12 @@ class Config(ConfigParser):
         return None
 
     def _guess_path(self, directory, fileName, alternativePath=''):
-        """Guess the correct path for a given template file. Possible paths:
+        """
+        Guess the correct path for a given template file. Possible paths:
         (1) directory/<language>/fileName
         (2) directory/fileName
-        (3) alternativePath"""
+        (3) alternativePath
+        """
         # guess the header/footer path in order to support the old format
         guessedPaths = []
 

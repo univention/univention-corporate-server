@@ -50,8 +50,10 @@ import univention.uldap
 
 
 def _sanitize_printer_manufacturer(manufacturer):
-    """in the past developers were unable to correctly escape shell commands.
-    Therefore we need to escape the manufacturer here to match object names with prior UCS versions."""
+    """
+    in the past developers were unable to correctly escape shell commands.
+    Therefore we need to escape the manufacturer here to match object names with prior UCS versions.
+    """
     return manufacturer.replace('(', '').replace(')', '').replace(' ', '')
 
 

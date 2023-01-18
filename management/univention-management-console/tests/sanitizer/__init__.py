@@ -52,9 +52,10 @@ class Instance(Base):
     @simple_response
     @log
     def bool(self, value):
-        """ bool is just an int with 1 bit, so:
-                True: 1 == True, 0 == False, isinstance(True, int)
-                False: 2 == True, isinstance(1, bool)
+        """
+        bool is just an int with 1 bit, so:
+        True: 1 == True, 0 == False, isinstance(True, int)
+        False: 2 == True, isinstance(1, bool)
         """
         assert repr(value) in ('True', 'False'), 'Value is not a bool'
         return '%r' % (value,)

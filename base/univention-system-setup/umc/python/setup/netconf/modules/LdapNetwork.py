@@ -13,12 +13,12 @@ from univention.management.console.modules.setup.netconf.common import (
 
 
 class PhaseLdapNetwork(LdapChange):
-
     """
     Rewrite default network.
     This must run after LdapDhcp[48], which might created the new DHCP subnet.
     This must run after LdapDns[44], which might created the new reverse DNS zone.
     """
+
     priority = 44
 
     def check(self):

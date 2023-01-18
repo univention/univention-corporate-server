@@ -38,7 +38,8 @@ from univention.ldap_cache.cache import Cache, get_cache  # noqa: F401
 
 def _extract_id_from_dn(dn):
     # type: (str) -> str
-    """We know that this is wrong in general. But to speed up things
+    """
+    We know that this is wrong in general. But to speed up things
     we do not use explode_dn from ldap.
     We use the knowledge about users/user, groups/group, computers/computer objects:
     Their uid / cn must not contain a "," or a "=".
@@ -106,7 +107,6 @@ def users_groups():
     if Group1 have Group2 as a subgroup, all users from Group2
     are also considered members of Group1.
     """
-
     cache = get_cache()
     member_uid_cache, unique_member_cache = (cache.get_sub_cache(name) for name in ['memberUids', 'uniqueMembers'])
 

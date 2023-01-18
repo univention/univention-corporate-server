@@ -81,8 +81,8 @@ MIMETYPE_HTML = 'text/html'
 
 
 class Message(object):
-
-    """Represents a protocol message of UMCP. It is able to parse
+    """
+    Represents a protocol message of UMCP. It is able to parse
     request as well as response messages.
 
     :param type: message type (RESPONSE or REQUEST)
@@ -226,7 +226,8 @@ class Message(object):
 
     def parse(self, msg):
         # type: (bytes) -> bytes
-        """Parses data and creates in case of a valid UMCP message the
+        """
+        Parses data and creates in case of a valid UMCP message the
         corresponding object. If the data contains more than the message
         the rest of the data is returned.
 
@@ -293,7 +294,6 @@ class Message(object):
 
 
 class Request(Message):
-
     """Represents an UMCP request message"""
 
     def __init__(self, command, arguments=None, options=None, mime_type=MIMETYPE_JSON):
@@ -303,9 +303,10 @@ class Request(Message):
 
 
 class Response(Message):
-
-    """This class describes a response to a request from the console
-    frontend to the console daemon"""
+    """
+    This class describes a response to a request from the console
+    frontend to the console daemon
+    """
 
     def __init__(self, request=None, data=None, mime_type=MIMETYPE_JSON):
         # type: (Request, Any, str) -> None
@@ -325,9 +326,11 @@ class Response(Message):
 
     def set_body(self, filename, mimetype=None):
         # type: (str, Optional[str]) -> None
-        """Set body of response by guessing the mime type of the given
+        """
+        Set body of response by guessing the mime type of the given
         file if not specified and adding the content of the file to the body. The mime
-        type is guessed using the extension of the filename."""
+        type is guessed using the extension of the filename.
+        """
         if mimetype is None:
             self.mimetype, encoding = mimetypes.guess_type(filename)
         else:

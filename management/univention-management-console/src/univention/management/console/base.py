@@ -136,7 +136,6 @@ _ = Translation('univention.management.console').translate
 
 
 class Base(signals.Provider, Translation):
-
     """The base class for UMC modules of version 2 or higher"""
 
     def __init__(self, domain='univention-management-console'):
@@ -225,12 +224,16 @@ class Base(signals.Provider, Translation):
         self.__auth_type = auth_type
 
     def init(self):
-        """this function is invoked after the initial UMCP SET command
-        that passes the base configuration to the module process"""
+        """
+        this function is invoked after the initial UMCP SET command
+        that passes the base configuration to the module process
+        """
 
     def destroy(self):
-        """this function is invoked before the module process is
-        exiting."""
+        """
+        this function is invoked before the module process is
+        exiting.
+        """
 
     def execute(self, method, request, *args, **kwargs):
         self.__requests[request.id] = (request, method)
@@ -437,7 +440,6 @@ class Base(signals.Provider, Translation):
 
     def finished(self, id, response, message=None, success=True, status=None, mimetype=None, headers=None, error=None, reason=None):
         """Should be invoked by module to finish the processing of a request. 'id' is the request command identifier"""
-
         if id not in self.__requests:
             return
         request, method = self.__requests[id]

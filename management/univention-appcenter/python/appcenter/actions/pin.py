@@ -40,7 +40,6 @@ from univention.appcenter.ucr import ucr_save
 
 
 class Pin(UniventionAppAction):
-
     """
     Disables upgrades for this app. Also does not allow
     to remove this app. Useful when a newer app version

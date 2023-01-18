@@ -86,7 +86,6 @@ def parse_options(sections: Iterable[str]) -> Tuple[argparse.Namespace, List[str
 
 
 class TestSet:
-
     """Container for tests."""
 
     def __init__(self, tests: Mapping[str, Iterable[str]]) -> None:

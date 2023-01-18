@@ -173,7 +173,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 	""".split()))
 
     def check(self, path: str) -> None:
-        """ the real check """
+        """the real check"""
         super(UniventionPackageCheck, self).check(path)
 
         for fn in uub.FilteredDirWalkGenerator(path, ignore_suffixes=uub.FilteredDirWalkGenerator.BINARY_SUFFIXES):

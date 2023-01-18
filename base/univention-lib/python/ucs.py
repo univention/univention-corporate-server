@@ -1,8 +1,6 @@
 #!/usr/bin/python3
 # -*- coding: utf-8 -*-
-"""
-|UCS| release version.
-"""
+"""|UCS| release version."""
 # Like what you see? Join us!
 # https://www.univention.com/about-us/careers/vacancies/
 #
@@ -40,9 +38,7 @@ from typing import List, Tuple, Union  # noqa: F401
 
 
 class UCS_Version(object):
-    """
-    Version object consisting of major-, minor-number and patch-level
-    """
+    """Version object consisting of major-, minor-number and patch-level"""
 
     FORMAT = '%(major)d.%(minor)d'
     FULLFORMAT = '%(major)d.%(minor)d-%(patchlevel)d'
@@ -77,17 +73,13 @@ class UCS_Version(object):
     @property
     def mm(self):
         # type: () -> Tuple[int, int]
-        """
-        2-tuple (major, minor) version
-        """
+        """2-tuple (major, minor) version"""
         return (self.major, self.minor)
 
     @property
     def mmp(self):
         # type: () -> Tuple[int, int, int]
-        """
-        3-tuple (major, minor, patch-level) version
-        """
+        """3-tuple (major, minor, patch-level) version"""
         return (self.major, self.minor, self.patchlevel)
 
     @mmp.setter
@@ -176,9 +168,7 @@ class UCS_Version(object):
 
     def __getitem__(self, k):
         # type: (str) -> int
-        """
-        Dual natured dictionary: retrieve value from attribute.
-        """
+        """Dual natured dictionary: retrieve value from attribute."""
         return self.__dict__[k]
 
     def __str__(self):

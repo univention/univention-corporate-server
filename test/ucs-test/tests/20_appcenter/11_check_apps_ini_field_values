@@ -19,9 +19,7 @@ failures_counter = 0
 
 
 def fail_the_test():
-    """
-    Simply increases the global failures counter.
-    """
+    """Simply increases the global failures counter."""
     global failures_counter
     failures_counter += 1
 

@@ -31,9 +31,7 @@
 # <https://www.gnu.org/licenses/>.
 
 
-"""
-|UDM| module for the Domain Component containers
-"""
+"""|UDM| module for the Domain Component containers"""
 
 from univention.admin.layout import Tab, Group
 from univention.admin import configRegistry

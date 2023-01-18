@@ -31,9 +31,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-"""
-|UDM| module for nagios time priod objects
-"""
+"""|UDM| module for nagios time priod objects"""
 
 import re
 from ldap.filter import filter_format

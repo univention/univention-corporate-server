@@ -59,11 +59,13 @@ class MailAllObjectProperties(GenericObjectProperties):
 
 class MailAllObject(GenericObject):
     """Better representation of mail/* properties."""
+
     udm_prop_class = MailAllObjectProperties
 
 
 class MailAllModule(GenericModule):
     """MailAllObject factory"""
+
     _udm_object_class = MailAllObject
     supported_api_versions = ()  # type: Iterable[int]
 

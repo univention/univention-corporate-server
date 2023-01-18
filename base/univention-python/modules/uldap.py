@@ -324,9 +324,7 @@ class access(object):
 
     def unbind(self):
         # type: () -> None
-        """
-        Unauthenticate.
-        """
+        """Unauthenticate."""
         self.lo.unbind_s()
 
     def whoami(self):
@@ -930,7 +928,8 @@ class access(object):
     @classmethod
     def compare_dn(cls, a, b):
         # type: (str, str) -> bool
-        r"""Test DNs are same
+        r"""
+        Test DNs are same
 
         :param str a: The first distinguished name.
         :param str b: A second distinguished name.
@@ -962,17 +961,13 @@ class access(object):
         return [sorted((x.lower(), y, z) for x, y, z in rdn) for rdn in ldap.dn.str2dn(a)] == [sorted((x.lower(), y, z) for x, y, z in rdn) for rdn in ldap.dn.str2dn(b)]
 
     def __getstate__(self):
-        """
-        Return state for pickling.
-        """
+        """Return state for pickling."""
         odict = self.__dict__.copy()
         del odict['lo']
         return odict
 
     def __setstate__(self, dict):
-        """
-        Set state for pickling.
-        """
+        """Set state for pickling."""
         self.__dict__.update(dict)
         self.__open(self.ca_certfile)
 

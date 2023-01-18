@@ -88,7 +88,8 @@ def get_bind_function():
 
 
 def LDAP_Connection(func):
-    """Get a cached ldap connection bound to the user connection.
+    """
+    Get a cached ldap connection bound to the user connection.
 
     .. deprecated :: UCS 4.4
             This must not be used in udm_ldap.py.
@@ -394,7 +395,6 @@ _module_cache = UDM_ModuleCache()
 
 
 class UDM_Module(object):
-
     """Wraps UDM modules to provide a simple access to the properties and functions"""
 
     def __init__(self, module, force_reload=False, ldap_connection=None, ldap_position=None):
@@ -417,11 +417,12 @@ class UDM_Module(object):
         return self.ldap_connection, udm.uldap.position(self.ldap_connection.base)
 
     def load(self, module=None, template_object=None, force_reload=False):
-        """Tries to load an UDM module with the given name. Optional a
+        """
+        Tries to load an UDM module with the given name. Optional a
         template object is passed to the init function of the module. As
         the initialisation of a module is expensive the function uses a
-        cache to ensure that each module is just initialized once."""
-
+        cache to ensure that each module is just initialized once.
+        """
         if module is None:
             module = self._initialized_with_module
         try:
@@ -445,8 +446,10 @@ class UDM_Module(object):
         return props[key]
 
     def get_default_values(self, property_name):
-        """Depending on the syntax of the given property a default
-        search pattern/value is returned"""
+        """
+        Depending on the syntax of the given property a default
+        search pattern/value is returned
+        """
         MODULE.info('Searching for property %s' % property_name)
         ldap_connection, ldap_position = self.get_ldap_connection()
         for key, prop in getattr(self.module, 'property_descriptions', {}).items():
@@ -995,8 +998,10 @@ class UDM_Module(object):
         return props
 
     def get_options(self, object_dn=None, udm_object=None):
-        """Returns the options of the module. If an LDAP DN or an UDM
-        object instance is given the values of the options are set"""
+        """
+        Returns the options of the module. If an LDAP DN or an UDM
+        object instance is given the values of the options are set
+        """
         if object_dn is None and udm_object is None:
             obj_options = None
         else:
@@ -1064,9 +1069,10 @@ class UDM_Module(object):
 
     @property
     def policies(self):
-        """Searches in all policy objects for the given object type and
-        returns a list of all matching policy types"""
-
+        """
+        Searches in all policy objects for the given object type and
+        returns a list of all matching policy types
+        """
         ldap_connection, ldap_position = self.get_ldap_connection()
         policyTypes = udm_modules.policyTypes(self.name)
         if not policyTypes and self.childs:
@@ -1177,7 +1183,6 @@ def container_modules():
 
 def split_module_name(module_name):
     """Splits a module name into category and internal name"""
-
     if '/' in module_name:
         parts = module_name.split('/', 1)
         if len(parts) == 2:
@@ -1187,10 +1192,11 @@ def split_module_name(module_name):
 
 
 def ldap_dn2path(ldap_dn, include_rdn=True):
-    """Returns a path representation of an LDAP DN. If include_rdn is
+    """
+    Returns a path representation of an LDAP DN. If include_rdn is
     false just the container of the given object is returned in a path
-    representation"""
-
+    representation
+    """
     ldap_base = ucr.get('ldap/base')
     if not ldap_base or not ldap_dn.lower().endswith(ldap_base.lower()):
         return ldap_dn

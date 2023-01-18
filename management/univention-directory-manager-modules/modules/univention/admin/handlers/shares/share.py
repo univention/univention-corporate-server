@@ -30,9 +30,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-"""
-|UDM| module for all share objects
-"""
+"""|UDM| module for all share objects"""
 
 import re
 from ldap.filter import filter_format
@@ -554,7 +552,6 @@ def unmapKeyAndValue(old):
 
 def insertQuotes(value):
     'Turns @group name, user name into @"group name", "user name"'
-
     new_entries = []
     for entry in value.split(u','):
         new_entry = entry.strip()

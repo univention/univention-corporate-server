@@ -31,9 +31,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-"""
-Debian Helper sequence to install UCS join and un-join scripts.
-"""
+"""Debian Helper sequence to install UCS join and un-join scripts."""
 
 from __future__ import print_function
 
@@ -92,9 +90,7 @@ class JoinDebhelper(object):
 
     def dh_install(self):
         # type: () -> None
-        """
-        Install existing join and unjoin scripts.
-        """
+        """Install existing join and unjoin scripts."""
         joinscript = self.install_joinscript()
         unjoin_script = self.install_unjoinscript()
         self.setup_scripts(joinscript, unjoin_script)
@@ -177,9 +173,7 @@ class JoinDebhelper(object):
 
     def setup_depends(self):
         # type: () -> None
-        """
-        Add inter package dependencies.
-        """
+        """Add inter package dependencies."""
         cmd = [
             'perl', '-e',
             'use Debian::Debhelper::Dh_Lib;addsubstvar("%s", "misc:Depends", "univention-join (>= %s)");' % (self.package, VER)
@@ -189,9 +183,7 @@ class JoinDebhelper(object):
 
 def main():
     # type: () -> None
-    """
-    Run Debian helper sequence.
-    """
+    """Run Debian helper sequence."""
     parser = ArgumentParser(description=__doc__)
     parser_dh_sequence(parser)
 

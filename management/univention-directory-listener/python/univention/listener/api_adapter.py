@@ -51,9 +51,7 @@ class ListenerModuleAdapter(object):
 
     def __init__(self, module_configuration, *args, **kwargs):
         # type: (ListenerModuleConfiguration, *Any, **Any) -> None
-        """
-        :param ListenerModuleConfiguration module_configuration: configuration object
-        """
+        """:param ListenerModuleConfiguration module_configuration: configuration object"""
         self.config = module_configuration
         self._ldap_cred = {}  # type: Dict[str, str]
         self._module_handler_obj = None  # type: Optional[ListenerModuleHandler]

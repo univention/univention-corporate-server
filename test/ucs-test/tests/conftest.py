@@ -13,9 +13,7 @@ pytest_plugins = ["univention.testing.conftest"]
 @pytest.fixture()
 def ucr():
     # type: () -> Iterator[_ucr.UCSTestConfigRegistry]
-    """
-    Per `function` auto-reverting UCR instance.
-    """
+    """Per `function` auto-reverting UCR instance."""
     with _ucr.UCSTestConfigRegistry() as ucr:
         yield ucr
 
@@ -23,9 +21,7 @@ def ucr():
 @pytest.fixture(scope='session')
 def ucr_session():
     # type: () -> Iterator[_ucr.UCSTestConfigRegistry]
-    """
-    Per `session` auto-reverting UCR instance.
-    """
+    """Per `session` auto-reverting UCR instance."""
     with _ucr.UCSTestConfigRegistry() as ucr:
         yield ucr
 
@@ -33,9 +29,7 @@ def ucr_session():
 @pytest.fixture(scope='session')
 def restart_s4connector_if_present():
     # type: () -> Callable[[], None]
-    """
-    Function to restart S4 connector if present.
-    """
+    """Function to restart S4 connector if present."""
     def restart():
         if utils.s4connector_present():
             print('restarting s4 connector')
@@ -46,9 +40,7 @@ def restart_s4connector_if_present():
 @pytest.fixture(scope='session')
 def restart_umc_server():
     # type: () -> Callable[[], None]
-    """
-    Function to restart UMC server.
-    """
+    """Function to restart UMC server."""
     def _restart_umc_server():
         subprocess.call(['systemctl', 'restart', 'univention-management-console-server.service'])
         time.sleep(2)
@@ -58,36 +50,28 @@ def restart_umc_server():
 @pytest.fixture(scope='session')
 def server_role(ucr_session):
     # type: (...) -> str
-    """
-    UCS server role string from UCR.
-    """
+    """UCS server role string from UCR."""
     return ucr_session.get('server/role')
 
 
 @pytest.fixture(scope='session')
 def ldap_base(ucr_session):
     # type: (...) -> str
-    """
-    LDAP base DN string from UCR.
-    """
+    """LDAP base DN string from UCR."""
     return ucr_session.get('ldap/base')
 
 
 @pytest.fixture(scope='session')
 def ldap_master(ucr_session):
     # type: (...) -> str
-    """
-    LDAP primary name from UCR.
-    """
+    """LDAP primary name from UCR."""
     return ucr_session.get('ldap/master')
 
 
 @pytest.fixture()
 def udm():
     # type: () -> Iterator[_udm.UCSTestUDM]
-    """
-    Auto-reverting UDM wrapper.
-    """
+    """Auto-reverting UDM wrapper."""
     with _udm.UCSTestUDM() as udm:
         yield udm
 
@@ -95,9 +79,7 @@ def udm():
 @pytest.fixture(scope='session')
 def udm_session():
     # type: () -> Iterator[_udm.UCSTestUDM]
-    """
-    Auto-reverting UDM wrapper.
-    """
+    """Auto-reverting UDM wrapper."""
     with _udm.UCSTestUDM() as udm:
         yield udm
 
@@ -105,9 +87,7 @@ def udm_session():
 @pytest.fixture
 def selenium():
     # type: () -> Iterator[_sel.UMCSeleniumTest]
-    """
-    Browser based testing for UMC using Selenium.
-    """
+    """Browser based testing for UMC using Selenium."""
     with _sel.UMCSeleniumTest() as s:
         yield s
 
@@ -115,70 +95,54 @@ def selenium():
 @pytest.fixture(scope='session')
 def Client():
     # type: () -> Type[umc.Client]
-    """
-    Session scoped client factory to access UMC.
-    """
+    """Session scoped client factory to access UMC."""
     return umc.Client
 
 
 @pytest.fixture(scope="module")
 def lo():
     # type: () -> univention.admin.uldap.access
-    """
-    Module scoped LDAP connection.
-    """
+    """Module scoped LDAP connection."""
     return utils.get_ldap_connection()
 
 
 @pytest.fixture(scope='session')
 def verify_ldap_object():
     # type: () -> Callable[..., None]
-    """
-    Function to verify LDAP entries.
-    """
+    """Function to verify LDAP entries."""
     return utils.verify_ldap_object
 
 
 @pytest.fixture(scope='session')
 def verify_udm_object():
     # type: () -> Callable[..., None]
-    """
-    Function to verify UDM objects.
-    """
+    """Function to verify UDM objects."""
     return _udm.verify_udm_object
 
 
 @pytest.fixture(scope='session')
 def random_string():
     # type: () -> Callable[..., str]
-    """
-    Function to generate random string.
-    """
+    """Function to generate random string."""
     return strings.random_string
 
 
 @pytest.fixture(scope='session')
 def random_name():
     # type: () -> Callable[..., str]
-    """
-    Function to generate random name.
-    """
+    """Function to generate random name."""
     return strings.random_name
 
 
 @pytest.fixture(scope='session')
 def random_username():
     # type: () -> Callable[..., str]
-    """
-    Function to generate random user name.
-    """
+    """Function to generate random user name."""
     return strings.random_username
 
 
 @pytest.fixture(scope='session')
 def wait_for_replication():
     # type: () -> Callable[..., None]
-    """
-    Function to wait for replication to finish.
-    """
+    """Function to wait for replication to finish."""
     return utils.wait_for_replication

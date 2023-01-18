@@ -30,9 +30,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-"""
-|UDM| module for |DHCP| subnets
-"""
+"""|UDM| module for |DHCP| subnets"""
 
 from univention.admin.layout import Tab, Group
 import univention.admin.filter

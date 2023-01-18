@@ -68,6 +68,7 @@ class UpdateCheck(UniventionAppAction):
     For package based apps check if there is an app version with the same
     component in the next UCS version
     """
+
     help = 'Check for all locally installed Apps if they are available in the next UCS version'
 
     def setup_parser(self, parser):
@@ -105,7 +106,7 @@ class UpdateCheck(UniventionAppAction):
 
     @classmethod
     def get_blocking_apps(cls, ucs_version):
-        """ checks if update is possible for this app """
+        """checks if update is possible for this app"""
         ucs_version = UCS_Version(ucs_version + '-0')
         next_minor = '%(major)d.%(minor)d' % ucs_version
         next_version = '%(major)d.%(minor)d-%(patchlevel)d' % ucs_version

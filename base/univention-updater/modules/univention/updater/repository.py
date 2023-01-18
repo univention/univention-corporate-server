@@ -29,9 +29,7 @@
 # License with the Debian GNU/Linux or Univention distribution in file
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
-"""
-Univention Updater helper functions for managing a local repository.
-"""
+"""Univention Updater helper functions for managing a local repository."""
 
 from __future__ import absolute_import
 from __future__ import print_function

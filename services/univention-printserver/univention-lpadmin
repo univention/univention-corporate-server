@@ -77,14 +77,14 @@ rc = 0
 
 
 def show_child_before_message(child):
-    """ Method shows only lpadmin error/info message that comes only with "lpadmin: """
+    """Method shows only lpadmin error/info message that comes only with "lpadmin:"""
     for stdout_line in child.before.splitlines():
         if b"lpadmin: " in stdout_line:
             print(stdout_line.decode('UTF-8', 'replace').strip())
 
 
 def enableaccept(command, groupname, timeout, machine_password):
-    """ Method for enabling and accept classes """
+    """Method for enabling and accept classes"""
     i = 0
     child = spawn(command, [groupname])
     # print child

@@ -29,9 +29,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-"""
-Module and object specific for "settings/directory" UDM module.
-"""
+"""Module and object specific for "settings/directory" UDM module."""
 
 from __future__ import absolute_import, unicode_literals
 from ..encoders import dn_list_property_encoder_for
@@ -58,11 +56,13 @@ class SettingsDirectoryObjectProperties(GenericObjectProperties):
 
 class SettingsDirectoryObject(GenericObject):
     """Better representation of settings/directory properties."""
+
     udm_prop_class = SettingsDirectoryObjectProperties
 
 
 class SettingsDirectoryModule(GenericModule):
     """SettingsDirectoryObject factory"""
+
     _udm_object_class = SettingsDirectoryObject
 
     class Meta:

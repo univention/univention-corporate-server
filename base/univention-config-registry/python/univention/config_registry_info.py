@@ -96,6 +96,7 @@ class Category(uit.LocalizedDictionary):
 
 class ConfigRegistryInfo(object):
     """UCR variable and category descriptions."""
+
     BASE_DIR = '/etc/univention/registry.info'
     CATEGORIES = 'categories'
     VARIABLES = 'variables'
@@ -187,9 +188,7 @@ class ConfigRegistryInfo(object):
 
     def check_patterns(self):
         # type: () -> None
-        """
-        Match descriptions agains currently defined UCR variables.
-        """
+        """Match descriptions agains currently defined UCR variables."""
         # in install mode
         if self._configRegistry is None:
             return

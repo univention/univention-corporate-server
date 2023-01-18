@@ -68,9 +68,10 @@ def get_base_logger():
 
 
 class RangeFilter(logging.Filter):
-
-    """A Filter object that filters messages in a certain
-    range of logging levels"""
+    """
+    A Filter object that filters messages in a certain
+    range of logging levels
+    """
 
     def __init__(self, min_level=None, max_level=None):
         super(RangeFilter, self).__init__()
@@ -86,7 +87,6 @@ class RangeFilter(logging.Filter):
 
 
 class UMCHandler(logging.Handler):
-
     """Handler to link a logger to the UMC logging mechanism"""
 
     def emit(self, record):
@@ -179,7 +179,8 @@ class LogCatcher(object):
 
 
 def _reverse_umc_module_logger(exclusive=True):
-    """Function to redirect UMC logs to the univention.appcenter logger.
+    """
+    Function to redirect UMC logs to the univention.appcenter logger.
     Useful when using legacy code when the App Center lib was part of the
     UMC module
     """
@@ -197,7 +198,8 @@ def _reverse_umc_module_logger(exclusive=True):
 
 @contextmanager
 def catch_stdout(logger=None):
-    """Helper function to redirect stdout output to a logger. Or, if not
+    """
+    Helper function to redirect stdout output to a logger. Or, if not
     given, suppress completely. Useful when calling other libs that do not
     use logging, instead just print statements.
     """
@@ -213,7 +215,8 @@ def catch_stdout(logger=None):
 
 
 def log_to_stream():
-    """Call this function to log to stdout/stderr
+    """
+    Call this function to log to stdout/stderr
     stdout: logging.INFO
     stderr: logging.WARN and upwards
     logging.DEBUG: suppressed
@@ -238,8 +241,8 @@ log_to_stream._already_set_up = False
 
 
 class ShortNameFormatter(logging.Formatter):
-
     """Simple formatter to cut out unneeded bits of the logger's name"""
+
     shorten = get_base_logger().name
 
     def format(self, record):
@@ -263,7 +266,8 @@ def get_logfile_logger(name):
 
 
 def log_to_logfile():
-    """Call this function to log to /var/log/univention/appcenter.log
+    """
+    Call this function to log to /var/log/univention/appcenter.log
     Needs rights to write to it (i.e. should be root)
     Formats the message so that it can be analyzed later (i.e. process id)
     Logs DEBUG as well

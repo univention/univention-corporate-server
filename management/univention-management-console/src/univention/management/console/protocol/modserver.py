@@ -34,7 +34,8 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-"""This module provides a class for an UMC module server. it is based on
+"""
+This module provides a class for an UMC module server. it is based on
 the UMC server class
 :class:`~univention.management.console.protocol.server.Server`.
 """
@@ -66,8 +67,8 @@ _ = Translation('univention.management.console').translate
 
 
 class ModuleServer(Server):
-
-    """Implements an UMC module server
+    """
+    Implements an UMC module server
 
     :param str socket: UNIX socket filename
     :param str module: name of the UMC module to serve
@@ -145,9 +146,11 @@ class ModuleServer(Server):
 
     def _timer(self):
         # type: () -> None
-        """In order to avoid problems when the system time is changed (e.g.,
+        """
+        In order to avoid problems when the system time is changed (e.g.,
         via rdate), we register a timer event that counts down the session
-        timeout second-wise."""
+        timeout second-wise.
+        """
         # count down the remaining time
         if not self.__active_requests:
             self.__time_remaining -= 1
@@ -241,7 +244,8 @@ class ModuleServer(Server):
 
     def handle(self, msg):
         # type: (Request) -> None
-        """Handles incoming UMCP requests. This function is called only
+        """
+        Handles incoming UMCP requests. This function is called only
         when it is a valid UMCP request.
 
         :param Request msg: the received UMCP request
@@ -343,7 +347,8 @@ class ModuleServer(Server):
 
     def command_is_known(self, command_name):
         # type: (str) -> bool
-        """Checks if a command with the given command name is known
+        """
+        Checks if a command with the given command name is known
 
         :rtype: bool
         """

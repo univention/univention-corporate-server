@@ -29,9 +29,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-"""
-Base classes for (simplified) UDM modules and objects.
-"""
+"""Base classes for (simplified) UDM modules and objects."""
 
 from __future__ import absolute_import, unicode_literals
 from collections import namedtuple

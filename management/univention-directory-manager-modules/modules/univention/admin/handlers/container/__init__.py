@@ -30,9 +30,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-"""
-help tools for the containers
-"""
+"""help tools for the containers"""
 
 from univention.admin import _ldap_cache
 

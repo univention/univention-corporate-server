@@ -34,9 +34,7 @@
 # <https://www.gnu.org/licenses/>.
 # vim: set fileencoding=utf-8 :
 # pylint: disable=R0903,R0201
-"""
-Create installer VM programmatically.
-"""
+"""Create installer VM programmatically."""
 
 from os.path import (join, split, splitext, exists, extsep)
 from sys import (exit, stderr)

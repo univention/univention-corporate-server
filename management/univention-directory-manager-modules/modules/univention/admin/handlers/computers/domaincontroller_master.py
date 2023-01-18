@@ -30,9 +30,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-"""
-|UDM| module for the Primary Directory Node hosts (DC Master)
-"""
+"""|UDM| module for the Primary Directory Node hosts (DC Master)"""
 
 from univention.admin.layout import Tab, Group
 import univention.admin.handlers

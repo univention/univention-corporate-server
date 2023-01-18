@@ -30,9 +30,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-"""
-|UDM| module for user template objects
-"""
+"""|UDM| module for user template objects"""
 
 from univention.admin.layout import Tab, Group
 import univention.admin.filter
@@ -374,7 +372,8 @@ class object(univention.admin.handlers.simpleLdap):
 
     @classmethod
     def filter_object_classes(cls, ml):
-        """Remove blacklisted object classes
+        """
+        Remove blacklisted object classes
 
         >>> object.filter_object_classes([('objectClass', b'bar', b'inetOrgPerson'), ('objectClass', b'foo', [b'inetOrgPerson', b'baz'])])
         [('objectClass', b'bar', None), ('objectClass', b'foo', [b'baz'])]

@@ -6,10 +6,8 @@ from univention.management.console.modules.setup.netconf.common import AddressMa
 
 
 class PhaseLdapSamba(AddressMap, LdapChange):
+    """Rewrite Samba gc._msdcs host address."""
 
-    """
-    Rewrite Samba gc._msdcs host address.
-    """
     priority = 44
 
     def __init__(self, changeset):

@@ -1,8 +1,6 @@
 #!/usr/bin/python3
 # -*- coding: utf-8 -*-
-"""
-Univention Common Python Library
-"""
+"""Univention Common Python Library"""
 # Like what you see? Join us!
 # https://www.univention.com/about-us/careers/vacancies/
 #

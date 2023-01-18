@@ -30,9 +30,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-"""
-Create DHCP subnet.
-"""
+"""Create DHCP subnet."""
 
 from __future__ import print_function
 

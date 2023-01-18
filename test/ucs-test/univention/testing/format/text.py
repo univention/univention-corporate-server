@@ -17,8 +17,8 @@ __all__ = ['Text', 'Raw']
 
 
 class _Term:  # pylint: disable-msg=R0903
-
     """Handle terminal formatting."""
+
     __ANSICOLORS = "BLACK RED GREEN YELLOW BLUE MAGENTA CYAN WHITE".split()
     # vt100.sgr0 contains a delay in the form of '$<2>'
     __RE_DELAY = re.compile(br'\$<\d+>[/*]?')
@@ -46,10 +46,8 @@ class _Term:  # pylint: disable-msg=R0903
 
 
 class Text(TestFormatInterface):
+    """Create simple text report."""
 
-    """
-    Create simple text report.
-    """
     __term = WeakValueDictionary()
 
     def __init__(self, stream=sys.stdout):  # type: (IO[str]) -> None
@@ -132,9 +130,7 @@ class Text(TestFormatInterface):
 
 
 class Raw(Text):
-    """
-    Create simple text report with raw file names.
-    """
+    """Create simple text report with raw file names."""
 
     def begin_test(self, case, prefix=''):  # type: (TestCase, str) -> None
         """Called before each test."""

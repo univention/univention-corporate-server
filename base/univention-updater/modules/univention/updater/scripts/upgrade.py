@@ -30,9 +30,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-"""
-Install UCS release and errata updates.
-"""
+"""Install UCS release and errata updates."""
 
 from __future__ import print_function
 

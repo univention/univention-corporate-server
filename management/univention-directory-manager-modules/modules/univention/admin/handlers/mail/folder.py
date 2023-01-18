@@ -30,9 +30,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-"""
-|UDM| module for mail IMAP folders
-"""
+"""|UDM| module for mail IMAP folders"""
 
 import ldap
 
@@ -167,8 +165,10 @@ class object(univention.admin.handlers.simpleLdap):
         return oldinfo
 
     def description(self):
-        """Returns a name that identifies the object. This may be used
-        to override the default value that is the property marked with identifies = True"""
+        """
+        Returns a name that identifies the object. This may be used
+        to override the default value that is the property marked with identifies = True
+        """
         return '%(name)s@%(mailDomain)s' % self
 
     def _ldap_dn(self):

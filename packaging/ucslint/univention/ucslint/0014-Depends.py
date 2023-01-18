@@ -178,7 +178,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
         return bin_deps | section.rec | section.sug
 
     def check(self, path: str) -> None:
-        """ the real check """
+        """the real check"""
         super(UniventionPackageCheck, self).check(path)
 
         fn_control = join(path, 'debian', 'control')

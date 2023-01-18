@@ -32,10 +32,8 @@ class Mapping(object):
 
 
 class PhaseRewritePxe(AddressMap):
+    """Rewrite IP configuration of PXE boot."""
 
-    """
-    Rewrite IP configuration of PXE boot.
-    """
     priority = 95
     dirname = "/var/lib/univention-client-boot/pxelinux.cfg"
 

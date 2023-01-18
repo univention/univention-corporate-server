@@ -73,8 +73,10 @@ class Commands(object):
         tools.repquota(request.options['partitionDevice'], callback)
 
     def _users_query(self, pid, status, callbackResult, partition, request):
-        """This function is invoked when a repquota process has died and
-        there is output to parse that is restructured as UMC Dialog"""
+        """
+        This function is invoked when a repquota process has died and
+        there is output to parse that is restructured as UMC Dialog
+        """
         if status != 0:
             MODULE.warn('repquota failed with exit code: %s' % (status,))
         # general information

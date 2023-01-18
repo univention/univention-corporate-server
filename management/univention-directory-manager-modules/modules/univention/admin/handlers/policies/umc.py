@@ -30,9 +30,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-"""
-admin module: policy defining access restriction for UMC
-"""
+"""admin module: policy defining access restriction for UMC"""
 
 from univention.admin.layout import Tab, Group
 import univention.admin.syntax as udm_syntax

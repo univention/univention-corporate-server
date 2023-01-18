@@ -29,9 +29,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-"""
-|UDM| samba related code
-"""
+"""|UDM| samba related code"""
 
 import string
 import six

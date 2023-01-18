@@ -40,7 +40,6 @@ from univention.ucslint.python import python_files
 
 
 class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
-
     """Python specific checks."""
 
     def getMsgIds(self) -> uub.MsgIds:
@@ -64,7 +63,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
     RE_STRING = PythonVer.matcher()
 
     def check(self, path: str) -> None:
-        """ the real check """
+        """the real check"""
         super(UniventionPackageCheck, self).check(path)
 
         tester = uub.UPCFileTester()

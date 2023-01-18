@@ -172,7 +172,6 @@ flavor
 --------
 Examples
 --------
-
 This section contains a few example messages of UMCP 2.0
 
 Authentication request

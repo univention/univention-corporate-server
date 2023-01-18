@@ -1,9 +1,7 @@
 #!/usr/bin/python2.7 -u
 # -*- coding: utf-8 -*-
 
-"""
-UCS installation via VNC
-"""
+"""UCS installation via VNC"""
 
 from vncautomate import init_logger, VNCConnection
 from vncautomate.config import OCRConfig

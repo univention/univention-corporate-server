@@ -1,6 +1,4 @@
-"""
-Univention Setup: network configuration abstract base classes
-"""
+"""Univention Setup: network configuration abstract base classes"""
 # Like what you see? Join us!
 # https://www.univention.com/about-us/careers/vacancies/
 #
@@ -100,10 +98,8 @@ class SkipPhase(Exception):
 
 
 class Phase(with_metaclass(ABCMeta, object)):
+    """Base-class for all phases."""
 
-    """
-    Base-class for all phases.
-    """
     priority = 0
 
     def __init__(self, changeset):
@@ -169,19 +165,13 @@ class Phase(with_metaclass(ABCMeta, object)):
         """
 
     def pre(self):
-        """
-        Called before the changes are applied to UCR.
-        """
+        """Called before the changes are applied to UCR."""
 
     def post(self):
-        """
-        Called after the changes have been applied to UCR.
-        """
+        """Called after the changes have been applied to UCR."""
 
     def call(self, command):
-        """
-        Call external command using subprocess.call(shell=False).
-        """
+        """Call external command using subprocess.call(shell=False)."""
         self.logger.debug("Running %r", command)
         if self.changeset.no_act:
             ret = 0

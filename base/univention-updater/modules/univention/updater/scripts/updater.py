@@ -30,9 +30,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-"""
-Tool for updating local system
-"""
+"""Tool for updating local system"""
 
 from __future__ import print_function
 
@@ -98,7 +96,8 @@ RE_APT = re.compile(
 
 
 class UpdateError(Exception):
-    """ Exception to signal errors on update.
+    """
+    Exception to signal errors on update.
 
     :param msg: Human readable message.
     :param errorsource: One of 'SETTINGS', 'PREPARATION', 'PREUP', 'UPDATE', 'POSTUP'
@@ -112,13 +111,13 @@ class UpdateError(Exception):
 
 def log(str):
     # type: (str) -> None
-    """ Log message to LOGNAME. """
+    """Log message to LOGNAME."""
     print(str, file=fd_log)
     fd_log.flush()
 
 
 def dprint(str):  # type: (object) -> None
-    """ Print message to stdout and LOGNAME. """
+    """Print message to stdout and LOGNAME."""
     for fd in (stdout_orig, fd_log)[nostdout:]:
         print(str, file=fd)
         fd.flush()
@@ -177,7 +176,7 @@ def get_status():
 
 def remove_temporary_sources_list():
     # type: () -> None
-    """ Add the temporary sources.list. """
+    """Add the temporary sources.list."""
     for fn in (TMPSOURCE, TMPSOURCE2):
         try:
             os.remove(fn)
@@ -188,7 +187,7 @@ def remove_temporary_sources_list():
 
 def add_temporary_sources_list(temporary_sources_list):
     # type: (Iterable[str]) -> None
-    """ Add line to a temporary sources.list. """
+    """Add line to a temporary sources.list."""
     remove_temporary_sources_list()
     with open(TMPSOURCE, 'w') as fp:
         for entry in temporary_sources_list:
@@ -197,9 +196,10 @@ def add_temporary_sources_list(temporary_sources_list):
 
 def update_available(opt, ucr):
     # type: (Namespace, ConfigRegistry) -> Tuple[UniventionUpdater, Optional[UCS_Version]]
-    """ Checks if there is an update available.
-    Returns the next version, or None if up-to-date, or throws an UpdateError if the next version can not be identified."""
-
+    """
+    Checks if there is an update available.
+    Returns the next version, or None if up-to-date, or throws an UpdateError if the next version can not be identified.
+    """
     log('--->DBG:update_available(mode={.mode})'.format(opt))
 
     if opt.mode == 'local':
@@ -267,9 +267,7 @@ def call_local(opt):
 
 
 def parse_args(args=None):  # type: (Optional[Sequence[str]]) -> Namespace
-    """
-    Parse command line arguments.
-    """
+    """Parse command line arguments."""
     parser = ArgumentParser(description=__doc__)
     parser.add_argument("--reboot", action="store_true", help=SUPPRESS)  # Deprecated
     parser.add_argument("--updateto", metavar="RELEAASE", type=UCS_Version, help="Upper limit for version")
@@ -309,9 +307,7 @@ def setup_logging(opt, ucr):
 
 def check(opt, ucr):
     # type: (Namespace, ConfigRegistry) -> bool
-    """
-    Return pending update status.
-    """
+    """Return pending update status."""
     try:
         _updater, nextversion = update_available(opt, ucr)
         if nextversion:

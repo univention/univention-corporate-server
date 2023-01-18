@@ -1060,7 +1060,8 @@ def initialize() -> Any:
 
 
 def randpw(length: int = 64) -> str:
-    """Create random password.
+    """
+    Create random password.
     >>> randpw().isalnum()
     True
     """

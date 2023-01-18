@@ -13,10 +13,7 @@ import appcentertest as app_test
 
 @app_test.test_case
 def test_already_installed_dry_run(app_center, application):
-    """
-    Try to dry-run install an app although it is already installed (must fail).
-    """
-
+    """Try to dry-run install an app although it is already installed (must fail)."""
     package = app_test.AppPackage.with_package(name=application)
     package.build_and_publish()
     package.remove_tempdir()
@@ -34,7 +31,6 @@ def test_already_installed(app_center, application):
     Try to install an app although it is already installed without prior
     dry-run (must fail).
     """
-
     package = app_test.AppPackage.with_package(name=application)
     package.build_and_publish()
     package.remove_tempdir()
@@ -48,10 +44,7 @@ def test_already_installed(app_center, application):
 
 @app_test.test_case
 def test_upgrade_without_dry_run(app_center, application):
-    """
-    Test a dry-run upgrade without having the app installed (must fail).
-    """
-
+    """Test a dry-run upgrade without having the app installed (must fail)."""
     package = app_test.AppPackage.with_package(name=application)
     package.build_and_publish()
     package.remove_tempdir()
@@ -64,10 +57,7 @@ def test_upgrade_without_dry_run(app_center, application):
 
 @app_test.test_case
 def test_upgrade_without(app_center, application):
-    """
-    Test an upgrade without having the app installed (must fail).
-    """
-
+    """Test an upgrade without having the app installed (must fail)."""
     package = app_test.AppPackage.with_package(name=application)
     package.build_and_publish()
     package.remove_tempdir()
@@ -80,10 +70,7 @@ def test_upgrade_without(app_center, application):
 
 @app_test.test_case
 def test_uninstall_without_dry_run(app_center, application):
-    """
-    Test a dry-run uninstall without having the app installed (must fail).
-    """
-
+    """Test a dry-run uninstall without having the app installed (must fail)."""
     package = app_test.AppPackage.with_package(name=application)
     package.build_and_publish()
     package.remove_tempdir()
@@ -96,10 +83,7 @@ def test_uninstall_without_dry_run(app_center, application):
 
 @app_test.test_case
 def test_uninstall_without(app_center, application):
-    """
-    Test an uninstall without having the app installed (must fail).
-    """
-
+    """Test an uninstall without having the app installed (must fail)."""
     package = app_test.AppPackage.with_package(name=application)
     package.build_and_publish()
     package.remove_tempdir()

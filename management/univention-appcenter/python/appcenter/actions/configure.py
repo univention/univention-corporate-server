@@ -47,8 +47,8 @@ from univention.appcenter.settings import SettingValueError, FileSetting
 
 
 class Configure(UniventionAppAction):
-
     """Configures an application."""
+
     help = 'Configure an app'
 
     def setup_parser(self, parser):

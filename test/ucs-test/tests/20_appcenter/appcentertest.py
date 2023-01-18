@@ -122,11 +122,13 @@ class AppCenterOperations:
         return self.client.umc_command("appcenter/resolve", data).result
 
     def run(self, args):
-        """Call the UMC command `appcenter/run` with the given options.
+        """
+        Call the UMC command `appcenter/run` with the given options.
 
         This will request a progress update every 3 seconds via
         `appcenter/progress` und call `callback(info, steps)` if a callback
-        function was given and `info` or `steps` changed"""
+        function was given and `info` or `steps` changed
+        """
         self._renew_connection()
         progress_id = self.client.umc_command("appcenter/run", args).result["id"]
 

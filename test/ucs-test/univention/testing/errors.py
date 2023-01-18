@@ -3,17 +3,11 @@ __all__ = ['TestError', 'TestConditionError']
 
 
 class TestError(Exception):
-
-    """
-    General test error.
-    """
+    """General test error."""
 
 
 class TestConditionError(Exception):
-
-    """
-    Error during prepaation for test.
-    """
+    """Error during prepaation for test."""
 
     def __iter__(self):
         return self.tests.__iter__()

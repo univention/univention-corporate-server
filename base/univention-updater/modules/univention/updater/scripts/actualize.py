@@ -75,7 +75,6 @@ ldap_hostdn = configRegistry.get('ldap/hostdn')
 
 
 class Tee(object):
-
     """
     Writes the given string to several files at once. Could by used
     with the print statement
@@ -107,10 +106,7 @@ class Tee(object):
 
 
 def getUpdate() -> None:
-    """
-    Small function waiting for apt lockfile to vanish then starts apt-get update
-    """
-
+    """Small function waiting for apt lockfile to vanish then starts apt-get update"""
     print("Running apt-get update")
     with apt_lock(), open(LOGNAME, 'a') as logfile:
         res = subprocess.call(shlex.split(cmd_update), stdout=logfile, stderr=logfile)

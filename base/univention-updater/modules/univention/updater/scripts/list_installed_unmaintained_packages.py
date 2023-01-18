@@ -30,9 +30,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-"""
-This script lists all currently installed packages that are not maintained by Univention.
-"""
+"""This script lists all currently installed packages that are not maintained by Univention."""
 
 from argparse import ArgumentParser, FileType, Namespace
 from os import get_terminal_size

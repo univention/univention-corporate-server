@@ -29,9 +29,7 @@
 # License with the Debian GNU/Linux or Univention distribution in file
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
-"""
-Univention Update tools.
-"""
+"""Univention Update tools."""
 
 from __future__ import absolute_import
 from __future__ import print_function
@@ -131,9 +129,7 @@ def verify_script(script, signature):
 
 
 class _UCSRepo(UCS_Version):
-    """
-    Super class to build URLs for APT repositories.
-    """
+    """Super class to build URLs for APT repositories."""
 
     ARCHS = {'all', 'amd64'}
 
@@ -161,9 +157,7 @@ class _UCSRepo(UCS_Version):
 
     def _format(self, format):
         # type: (str) -> str
-        """
-        Format longest path for directory/file access.
-        """
+        """Format longest path for directory/file access."""
         while True:
             try:
                 return format % self
@@ -245,9 +239,7 @@ class _UCSRepo(UCS_Version):
 
 
 class UCSRepoPool5(_UCSRepo):
-    """
-    APT repository using the debian pool structure (ucs5 and above).
-    """
+    """APT repository using the debian pool structure (ucs5 and above)."""
 
     def __init__(self, release=None, **kwargs):
         # type: (UCS_Version, **Any) -> None
@@ -312,9 +304,7 @@ class UCSRepoPool5(_UCSRepo):
 
 
 class UCSRepoPool(_UCSRepo):
-    """
-    Flat Debian APT repository.
-    """
+    """Flat Debian APT repository."""
 
     def __init__(self, **kw):
         # type: (**Any) -> None
@@ -374,9 +364,7 @@ class UCSRepoPool(_UCSRepo):
 
 
 class UCSRepoPoolNoArch(_UCSRepo):
-    """
-    Flat Debian APT repository without explicit architecture subdirectory.
-    """
+    """Flat Debian APT repository without explicit architecture subdirectory."""
 
     ARCHS = {''}
 
@@ -438,9 +426,7 @@ class UCSRepoPoolNoArch(_UCSRepo):
 
 
 class _UCSServer(object):
-    """
-    Abstrace base class to access UCS compatible update server.
-    """
+    """Abstrace base class to access UCS compatible update server."""
 
     @classmethod
     def load_credentials(self, ucr):
@@ -505,14 +491,10 @@ class _UCSServer(object):
 
 
 class UCSHttpServer(_UCSServer):
-    """
-    Access to UCS compatible remote update server.
-    """
+    """Access to UCS compatible remote update server."""
 
     class HTTPHeadHandler(urllib2.BaseHandler):
-        """
-        Handle fallback from HEAD to GET if unimplemented.
-        """
+        """Handle fallback from HEAD to GET if unimplemented."""
 
         def http_error_501(self, req, fp, code, msg, headers):  # httplib.NOT_IMPLEMENTED
             # type: (urllib2.Request, Any, int, str, Dict) -> Any
@@ -557,9 +539,7 @@ class UCSHttpServer(_UCSServer):
     @classmethod
     def reinit(self):
         # type: () -> None
-        """
-        Reload proxy settings and reset failed hosts.
-        """
+        """Reload proxy settings and reset failed hosts."""
         self.proxy_handler = urllib2.ProxyHandler()
         self.opener = urllib2.build_opener(self.head_handler, self.auth_handler, self.proxy_handler)
         self.failed_hosts.clear()
@@ -598,16 +578,12 @@ class UCSHttpServer(_UCSServer):
 
     def __str__(self):
         # type: () -> str
-        """
-        URI with credentials.
-        """
+        """URI with credentials."""
         return self.baseurl.private()
 
     def __repr__(self):
         # type: () -> str
-        """
-        Return canonical string representation.
-        """
+        """Return canonical string representation."""
         return '%s(%r, timeout=%r)' % (
             self.__class__.__name__,
             self.baseurl,
@@ -759,9 +735,7 @@ class UCSHttpServer(_UCSServer):
 
 
 class UCSLocalServer(_UCSServer):
-    """
-    Access to UCS compatible local update server.
-    """
+    """Access to UCS compatible local update server."""
 
     def __init__(self, prefix):
         # type: (str) -> None
@@ -782,16 +756,12 @@ class UCSLocalServer(_UCSServer):
 
     def __str__(self):
         # type: () -> str
-        """
-        Absolute file-URI.
-        """
+        """Absolute file-URI."""
         return 'file:///%s' % self.prefix
 
     def __repr__(self):
         # type: () -> str
-        """
-        Return canonical string representation.
-        """
+        """Return canonical string representation."""
         return 'UCSLocalServer(prefix=%r)' % (self.prefix,)
 
     def __add__(self, rel):
@@ -1030,7 +1000,6 @@ class Component(object):
 
         .. [1] if `repository/online/component/%s/localmirror` is unset, then the value of `repository/online/component/%s` will be used to achieve backward compatibility.
         """
-
         c_prefix = self.ucrv()
         if self.updater.is_repository_server:
             m_url = UcsRepoUrl(self.updater.configRegistry, 'repository/mirror')
@@ -1222,9 +1191,7 @@ class Component(object):
 
 
 class UniventionUpdater(object):
-    """
-    Handle UCS package repositories.
-    """
+    """Handle UCS package repositories."""
 
     def __init__(self, check_access=True):
         # type: (bool) -> None
@@ -1244,9 +1211,7 @@ class UniventionUpdater(object):
 
     def config_repository(self):
         # type: () -> None
-        """
-        Retrieve configuration to access repository. Overridden by :py:class:`univention.updater.UniventionMirror`.
-        """
+        """Retrieve configuration to access repository. Overridden by :py:class:`univention.updater.UniventionMirror`."""
         self.online_repository = self.configRegistry.is_true('repository/online', True)
         self.repourl = UcsRepoUrl(self.configRegistry, 'repository/online')
         self.sources = self.configRegistry.is_true('repository/online/sources', False)
@@ -1256,9 +1221,7 @@ class UniventionUpdater(object):
 
     def ucr_reinit(self):
         # type: () -> None
-        """
-        Re-initialize settings.
-        """
+        """Re-initialize settings."""
         self.configRegistry.load()
 
         self.is_repository_server = self.configRegistry.is_true('local/repository', False)
@@ -1303,9 +1266,7 @@ class UniventionUpdater(object):
 
     def _get_releases(self):
         # type: () -> None
-        """
-        Detect server prefix and download `ucs-releases.json` file.
-        """
+        """Detect server prefix and download `ucs-releases.json` file."""
         try:
             if not self.repourl.path:
                 try:
@@ -1783,9 +1744,7 @@ class UniventionUpdater(object):
 
 
 class LocalUpdater(UniventionUpdater):
-    """
-    Direct file access to local repository.
-    """
+    """Direct file access to local repository."""
 
     def __init__(self):
         # type: () -> None

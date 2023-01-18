@@ -30,9 +30,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-"""
-|UDM| module for Portal settings
-"""
+"""|UDM| module for Portal settings"""
 
 import univention.admin.handlers
 import univention.admin.handlers.settings.portal

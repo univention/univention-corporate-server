@@ -85,8 +85,8 @@ class StoreAttrActions(Action):
 
 
 class DevUseTestAppcenter(UniventionAppAction):
-
     """Use the Test App Center"""
+
     help = 'Uses the Apps in the Test App Center. Used for testing Apps not yet published.'
 
     def setup_parser(self, parser):
@@ -305,8 +305,8 @@ def check_ini_file(filename):
 
 
 class DevRegenerateMetaInf(LocalAppcenterAction):
-
     """Generate necessary cache files for the App Center server"""
+
     help = 'In order to work correctly as an App Center server, certain cache files need to be present for clients to download. These are (re)generated automatically by this function'
 
     def setup_parser(self, parser):
@@ -353,8 +353,8 @@ class DevRegenerateMetaInf(LocalAppcenterAction):
 
 
 class DevPopulateAppcenter(LocalAppcenterAction):
-
     """Add/update an app in the (local) App Center"""
+
     help = 'To be called after dev-setup-local-appcenter! Puts meta data (like ini file) and packages in the correct directories. Generates other meta files for the App Center to work'
 
     def setup_parser(self, parser):
@@ -658,6 +658,7 @@ class DevPopulateAppcenter(LocalAppcenterAction):
 
 class DevSetupLocalAppcenter(LocalAppcenterAction):
     """Use this host as an App Center server"""
+
     help = 'Sets up this host as an App Center server and configures the App Center module to use it. WARNING: the actual app server is overwritten'
 
     def setup_parser(self, parser):
@@ -703,6 +704,7 @@ class DevSetupLocalAppcenter(LocalAppcenterAction):
 
 class DevSet(UniventionAppAction):
     """Sets attributes for an App"""
+
     help = 'Sets attributes for an App and clears cache. Also works for files like README, store_data'
 
     def setup_parser(self, parser):

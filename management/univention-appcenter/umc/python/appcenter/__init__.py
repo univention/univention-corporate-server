@@ -80,7 +80,8 @@ _ = umc.Translation('univention-management-console-module-appcenter').translate
 
 
 class NoneCandidate(object):
-    """ Mock object if package has no candidate
+    """
+    Mock object if package has no candidate
     (may happen without network connection)
     """
 
@@ -724,11 +725,13 @@ class Instance(umcm.Base, ProgressMixin):
         return all_errors
 
     def keep_alive(self, request):
-        """ Fix for Bug #30611: UMC kills appcenter module
+        """
+        Fix for Bug #30611: UMC kills appcenter module
         if no request is sent for $(ucr get umc/module/timeout).
         this happens if a user logs out during a very long installation.
         this function will be run by the frontend to always have one connection open
-        to prevent killing the module. """
+        to prevent killing the module.
+        """
         def _thread():
             while self._working():
                 time.sleep(1)
@@ -770,8 +773,7 @@ class Instance(umcm.Base, ProgressMixin):
 
     @simple_response
     def packages_sections(self):
-        """ fills the 'sections' combobox in the search form """
-
+        """fills the 'sections' combobox in the search form"""
         sections = set()
         cache = apt.Cache()
         for package in cache:
@@ -782,7 +784,7 @@ class Instance(umcm.Base, ProgressMixin):
     @sanitize(pattern=PatternSanitizer(required=True))
     @simple_response
     def packages_query(self, pattern, section='all', key='package'):
-        """ Query to fill the grid. Structure is fixed here. """
+        """Query to fill the grid. Structure is fixed here."""
         result = []
         for package in self.package_manager.packages(reopen=True):
             if section == 'all' or package.section == section:
@@ -799,8 +801,7 @@ class Instance(umcm.Base, ProgressMixin):
 
     @simple_response
     def packages_get(self, package):
-        """ retrieves full properties of one package """
-
+        """retrieves full properties of one package"""
         package = self.package_manager.get_package(package)
         if package is not None:
             return self._package_to_dict(package, full=True)
@@ -838,7 +839,7 @@ class Instance(umcm.Base, ProgressMixin):
         packages=ListSanitizer(StringSanitizer(minimum=1), required=True)
     )
     def packages_invoke(self, request):
-        """ executes an installer action """
+        """executes an installer action"""
         packages = request.options.get('packages')
         function = request.options.get('function')
 
@@ -895,10 +896,11 @@ class Instance(umcm.Base, ProgressMixin):
         return ret
 
     def _package_to_dict(self, package, full):
-        """ Helper that extracts properties from a 'apt_pkg.Package' object
-                and stores them into a dictionary. Depending on the 'full'
-                switch, stores only limited (for grid display) or full
-                (for detail view) set of properties.
+        """
+        Helper that extracts properties from a 'apt_pkg.Package' object
+        and stores them into a dictionary. Depending on the 'full'
+        switch, stores only limited (for grid display) or full
+        (for detail view) set of properties.
         """
         installed = package.installed  # may be None
         found = True
@@ -963,8 +965,7 @@ class Instance(umcm.Base, ProgressMixin):
 
     @simple_response
     def components_query(self):
-        """	Returns components list for the grid in the ComponentsPage.
-        """
+        """Returns components list for the grid in the ComponentsPage."""
         # be as current as possible.
         self.get_updater().ucr_reinit()
         self.ucr.load()
@@ -990,8 +991,7 @@ class Instance(umcm.Base, ProgressMixin):
     @sanitize_list(DictSanitizer({'object': advanced_components_sanitizer}))
     @multi_response
     def components_put(self, iterator, object):
-        """Writes back one or more component definitions.
-        """
+        """Writes back one or more component definitions."""
         # umc.widgets.Form wraps the real data into an array:
         #
         #	[

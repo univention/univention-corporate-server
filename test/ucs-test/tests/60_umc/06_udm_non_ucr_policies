@@ -32,9 +32,7 @@ class TestUMCnonUCRpolicies(UMCBase):
         self.test_user_2_dn = ''
 
     def get_user_policy(self, user_dn, policy_dn=None, flavor="navigation"):
-        """
-        Makes a 'udm/object/policies' request and returns result
-        """
+        """Makes a 'udm/object/policies' request and returns result"""
         options = [{
             "objectType": "users/user",
             "policies": [policy_dn],
@@ -210,9 +208,7 @@ class TestUMCnonUCRpolicies(UMCBase):
         # self.check_policies('5', '5', self.test_user_dn)
 
     def assert_policies(self, should_be, in_fact):
-        """
-        Asserts that 'in_fact' equals 'should_be'.
-        """
+        """Asserts that 'in_fact' equals 'should_be'."""
         if in_fact != should_be:
             utils.fail(f"The user object policy was reported as '{in_fact}', while should be '{should_be}'")
 
@@ -234,9 +230,7 @@ class TestUMCnonUCRpolicies(UMCBase):
         self.assert_policies(should_be, in_fact)
 
     def main(self):
-        """
-        A test to check non-UCR policies handling by the UMC
-        """
+        """A test to check non-UCR policies handling by the UMC"""
         self.create_connection_authenticate()
 
         with UCSTestUDM() as self.UDM:

@@ -57,8 +57,7 @@ class LicenseServer:
         shutil.rmtree(self.cert_basedir)
 
     def startHttpServer(self):
-        """Start a simple Http server in the working directory
-        """
+        """Start a simple Http server in the working directory"""
         ServerClass = http.server.HTTPServer
         Protocol = 'HTTP/1.1'
         server_address = (self.host, self.port)

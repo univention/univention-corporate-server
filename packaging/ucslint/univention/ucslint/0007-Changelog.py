@@ -61,7 +61,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
         }
 
     def check(self, path: str) -> None:
-        """ the real check """
+        """the real check"""
         super(UniventionPackageCheck, self).check(path)
 
         fn = os.path.join(path, 'debian', 'changelog')

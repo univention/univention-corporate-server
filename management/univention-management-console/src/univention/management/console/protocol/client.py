@@ -78,8 +78,8 @@ request handling.
 
 
 class Client(signals.Provider, Translation):
-
-    """Implements an UMCP client
+    """
+    Implements an UMCP client
 
     :param str servername: hostname of the UMC server to connect to
     :param int port: port number of the UMC server
@@ -168,8 +168,10 @@ class Client(signals.Provider, Translation):
 
     def disconnect(self, force=True):
         # type: (bool) -> bool
-        """Shutdown the connection. If there are still open requests and
-        *force* is False the connection is kept."""
+        """
+        Shutdown the connection. If there are still open requests and
+        *force* is False the connection is kept.
+        """
         if not force and self.__unfinishedRequests:
             return False
         self.signal_emit('closed')
@@ -283,7 +285,8 @@ class Client(signals.Provider, Translation):
 
     def request(self, msg):
         # type: (Request) -> None
-        """Sends an UMCP request to the UMC server
+        """
+        Sends an UMCP request to the UMC server
 
         :param Request msg: the UMCP request to send
         """
@@ -304,9 +307,10 @@ class Client(signals.Provider, Translation):
 
     def invalidate_all_requests(self, status=500, message=None):
         # type: (int, Request) -> None
-        """Checks for open UMCP requests and invalidates these by faking
-        a response with the given status code"""
-
+        """
+        Checks for open UMCP requests and invalidates these by faking
+        a response with the given status code
+        """
         if self.__unfinishedRequests:
             CORE.warn('Invalidating all pending requests %s' % ', '.join(self.__unfinishedRequests.keys()))
         else:

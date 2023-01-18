@@ -30,9 +30,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-"""
-|UDM| module for |UDM| hooks
-"""
+"""|UDM| module for |UDM| hooks"""
 
 from univention.admin.layout import Tab, Group
 import univention.admin.filter

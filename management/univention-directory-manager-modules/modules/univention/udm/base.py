@@ -29,9 +29,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-"""
-Base classes for (simplified) UDM modules and objects.
-"""
+"""Base classes for (simplified) UDM modules and objects."""
 
 from __future__ import absolute_import, unicode_literals
 import copy
@@ -99,6 +97,7 @@ class BaseObject(object):
 
         user_mod.meta.auto_reload = False
     """
+
     udm_prop_class = BaseObjectProperties
 
     def __init__(self):
@@ -266,6 +265,7 @@ class BaseModule(with_metaclass(ModuleMeta)):
             user = user_mod.get(dn)
             user.props.groups == []
     """
+
     _udm_object_class = BaseObject
     _udm_module_meta_class = BaseModuleMetadata
 

@@ -158,8 +158,8 @@ class TransactionalUcr(object):
 
 
 class SetupScript(object):
-
-    """Baseclass for all Python-based Setup-Scripts.
+    """
+    Baseclass for all Python-based Setup-Scripts.
 
     Script lifecycle:
             __init__() -> up()
@@ -192,10 +192,12 @@ class SetupScript(object):
     self.steps(steps)
     self.step(step)
     """
+
     name = ''
 
     def __init__(self, *args, **kwargs):
-        """Initialise Script. Will call self.up() with same *args
+        """
+        Initialise Script. Will call self.up() with same *args
         and **kwargs as __init__() (which itself will leave them
         untouched)
 
@@ -232,7 +234,8 @@ class SetupScript(object):
         return profile
 
     def inform_progress_parser(self, progress_attribute, msg):
-        """Internal method to inform progress parser.
+        """
+        Internal method to inform progress parser.
 
         At the moment it writes info in a file which will be
         read by the parser. In a more advanced version, the script
@@ -243,7 +246,8 @@ class SetupScript(object):
         sys.stdout.flush()
 
     def header(self, msg):
-        """Write header info of this script (for log file and parser).
+        """
+        Write header info of this script (for log file and parser).
 
         Called automatically by run(). Probably unneeded for developers
         """
@@ -251,33 +255,36 @@ class SetupScript(object):
         self.inform_progress_parser('name', '%s %s' % (self.script_name, msg))
 
     def message(self, msg):
-        """Write a harmless __MSG__: for the parser
-        """
+        """Write a harmless __MSG__: for the parser"""
         self.inform_progress_parser('msg', msg)
 
     def error(self, msg):
-        """Write a non-critical __ERR__: for the parser
+        """
+        Write a non-critical __ERR__: for the parser
         The parser will save the error and inform the frontend
         that something went wrong
         """
         self.inform_progress_parser('err', msg)
 
     def join_error(self, msg):
-        """Write a critical __JOINERR__: for the parser.
+        """
+        Write a critical __JOINERR__: for the parser.
         The parser will save it and inform the frontend that something
         went terribly wrong leaving the system in an unjoined state
         """
         self.inform_progress_parser('joinerr', msg)
 
     def steps(self, steps):
-        """Total number of __STEPS__: to come throughout the whole
+        """
+        Total number of __STEPS__: to come throughout the whole
         script. Progress within the script should be done with
         step() which is relative to steps()
         """
         self.inform_progress_parser('steps', steps)
 
     def step(self, step=None):
-        """Inform parser that the next __STEP__: in this script
+        """
+        Inform parser that the next __STEP__: in this script
         was done. You can provide an exact number or None
         in which case an internal counter will be incremented
         """
@@ -293,7 +300,8 @@ class SetupScript(object):
         print('')
 
     def run(self):
-        """Run the SetupScript.
+        """
+        Run the SetupScript.
         Don't override this method, instead define your own
         inner_run()-method.
 
@@ -330,7 +338,8 @@ class SetupScript(object):
         return success is not False
 
     def inner_run(self):
-        """Main function, called by run().
+        """
+        Main function, called by run().
         Override this method in your SetupScriptClass.
         You may return True or False which will be propagated
         to run() itself. If you don't return False, True will be
@@ -339,13 +348,15 @@ class SetupScript(object):
         raise NotImplementedError('Define your own inner_run() method, please.')
 
     def up(self, *args, **kwargs):
-        """Override this method if needed.
+        """
+        Override this method if needed.
         It is called during __init__ with the very same parameters
         as __init__ was called.
         """
 
     def down(self):
-        """Override this method if needed.
+        """
+        Override this method if needed.
         It is called at the end of run() even when an error in up()
         or inner_run() occurred.
         """
@@ -360,11 +371,12 @@ class _PackageManagerLoggerHandlerWithoutProcess(_PackageManagerLoggerHandler):
 
 
 class AptScript(SetupScript):
-
-    """More or less just a wrapper around
+    """
+    More or less just a wrapper around
     univention.lib.package_manager.PackageManager
     with SetupScript capabilities.
     """
+
     brutal_apt_options = True
 
     def up(self, *args, **kwargs):
@@ -401,7 +413,8 @@ class AptScript(SetupScript):
         return self.package_manager.get_package(pkg_name)
 
     def finish_task(self, *log_msgs):
-        """Task is finished. Increment counter and inform
+        """
+        Task is finished. Increment counter and inform
         the progress parser. Reopen the cache (maybe unneeded
         but does not slow us down too much).
         """
@@ -428,7 +441,8 @@ class AptScript(SetupScript):
             return self.package_manager.uninstall(*pkg_names)
 
     def get_package_for_role(self, role_name):
-        """Searches for the meta-package that belongs
+        """
+        Searches for the meta-package that belongs
         to the given role_name
         """
         try:
@@ -448,7 +462,8 @@ class AptScript(SetupScript):
 
 
 def main(setup_script, exit=True):
-    '''Helper function to run the setup_script and evaluate its
+    '''
+    Helper function to run the setup_script and evaluate its
     return code as a "shell-compatible" one. You may sys.exit immediately
     '''
     success = setup_script.run()

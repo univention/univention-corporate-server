@@ -34,18 +34,14 @@ ERRAT = 3
 
 @pytest.fixture(autouse=True)
 def ucslog():
-    """
-    Enable :py:mod:`univention.debug` logging.
-    """
+    """Enable :py:mod:`univention.debug` logging."""
     U.ud.init("stderr", U.ud.NO_FLUSH, U.ud.NO_FUNCTION)
     U.ud.set_level(U.ud.NETWORK, U.ud.ALL)
 
 
 @pytest.fixture(autouse=True)
 def testdir(doctest_namespace):
-    """
-    Return path to directory :file:`test/`.
-    """
+    """Return path to directory :file:`test/`."""
     testdir = join(dirname(__file__), "tests", "data")
     doctest_namespace["TESTDIR"] = testdir
     return testdir
@@ -53,9 +49,7 @@ def testdir(doctest_namespace):
 
 @pytest.fixture(autouse=True)
 def ucr(monkeypatch, tmpdir):
-    """
-    Return mock Univention Config Registry
-    """
+    """Return mock Univention Config Registry"""
     db = tmpdir / "base.conf"
     monkeypatch.setenv("UNIVENTION_BASECONF", str(db))
     cr = ConfigRegistry()
@@ -76,9 +70,7 @@ def ucr(monkeypatch, tmpdir):
 
 @pytest.fixture
 def http(mocker):
-    """
-    Mock HTTP requests via py2:urllib2 / py3:urllib.requests
-    """
+    """Mock HTTP requests via py2:urllib2 / py3:urllib.requests"""
     ressources = {}
 
     def extra(uris={}, netloc=""):
@@ -113,9 +105,7 @@ def http(mocker):
 
 
 class MockPopen(object):
-    """
-    Mockup for :py:class:`subprocess.Popen`.
-    """
+    """Mockup for :py:class:`subprocess.Popen`."""
 
     mock_commands = []  # type: List[Sequence[str]]
     mock_stdout = b''
@@ -172,18 +162,14 @@ class MockPopen(object):
 
 @pytest.fixture
 def mockpopen(monkeypatch):
-    """
-    Mock :py:meth:`subprocess.Popen()` usage
-    """
+    """Mock :py:meth:`subprocess.Popen()` usage"""
     monkeypatch.setattr(subprocess, 'Popen', MockPopen)
     yield MockPopen
     MockPopen.mock_reset()
 
 
 class MockFileManager(object):
-    """
-    Mockup for :py:func:`open()`
-    """
+    """Mockup for :py:func:`open()`"""
 
     def __init__(self, tmpdir):
         # type: (Any) -> None
@@ -256,9 +242,7 @@ class MockFileManager(object):
 
 @pytest.fixture
 def mockopen(monkeypatch, tmpdir):
-    """
-    Mock :py:func:`open()` usage
-    """
+    """Mock :py:func:`open()` usage"""
     manager = MockFileManager(tmpdir)
     monkeypatch.setattr(builtins, "open", manager.open)
     return manager

@@ -31,9 +31,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-"""
-Create may users in groups.
-"""
+"""Create may users in groups."""
 
 from __future__ import print_function
 
@@ -57,7 +55,6 @@ def names(count):  # type: (int) -> Iterator[str]
 
 
 class MassCreate(object):
-
     """Mass create users and groups."""
 
     def __init__(self, count):

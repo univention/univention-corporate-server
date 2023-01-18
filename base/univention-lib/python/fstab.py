@@ -43,9 +43,7 @@ from typing import Container, List, Optional, Union  # noqa: F401
 
 
 class InvalidEntry(Exception):
-    """
-    Invalid entry in file system table
-    """
+    """Invalid entry in file system table"""
 
 
 class File(list):
@@ -54,6 +52,7 @@ class File(list):
 
     :param str file: The name of the file.
     """
+
     _is_comment = re.compile('[ \t]*#').search
     _filesystems = ('ext2', 'xfs', 'nfs', 'proc', 'auto', 'swap')
 
@@ -65,9 +64,7 @@ class File(list):
 
     def load(self):
         # type: () -> None
-        """
-        Load entries from file.
-        """
+        """Load entries from file."""
         with open(self.__file, 'r') as fd:
             for _line in fd:
                 line = self.__parse(_line)
@@ -117,9 +114,7 @@ class File(list):
 
     def save(self, filename=None):
         # type: (Optional[str]) -> None
-        """
-        Save entries to file.
-        """
+        """Save entries to file."""
         with open(filename or self.__file, 'w') as fd:
             for line in self:
                 fd.write('%s\n' % (line,))

@@ -34,9 +34,7 @@ def restart_adconnector():
 
 
 def ad_in_sync_mode(sync_mode, configbase='connector'):
-    """
-    Set the AD-Connector into the given `sync_mode` restart.
-    """
+    """Set the AD-Connector into the given `sync_mode` restart."""
     ucr_set([f'{configbase}/ad/mapping/syncmode={sync_mode}'])
     restart_adconnector()
 

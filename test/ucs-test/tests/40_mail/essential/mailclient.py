@@ -31,7 +31,8 @@ class WriteFail(Exception):
 
 
 class BaseMailClient:
-    """BaseMailClient is a Base (interface) for imaplib.IMAP4_SSL and imaplib.IMAP4
+    """
+    BaseMailClient is a Base (interface) for imaplib.IMAP4_SSL and imaplib.IMAP4
     Does not work alone, can be used only as a super class of other child class.
     """
 
@@ -44,7 +45,8 @@ class BaseMailClient:
         return self.authenticate('PLAIN', plain_callback)
 
     def log_in(self, usermail, password):  # type: (str, str) -> None
-        """wrap the super login method with try except
+        """
+        wrap the super login method with try except
 
         :usermail: string, user mail
         :password: string, user password
@@ -58,7 +60,8 @@ class BaseMailClient:
             raise
 
     def login_ok(self, usermail, password, expected_to_succeed=True):
-        """Check if login is OK
+        """
+        Check if login is OK
 
         :usermail: string, user mail
         :password: string, user password
@@ -81,7 +84,8 @@ class BaseMailClient:
         return response, quota
 
     def getMailBoxes(self):
-        """Get Mail boxes for the user logged in
+        """
+        Get Mail boxes for the user logged in
 
         :returns: list of strings, list of existing mailboxes
         """
@@ -96,7 +100,8 @@ class BaseMailClient:
         return result
 
     def get_acl(self, mailbox):  # type: (str) -> Dict[str, Dict[str, str]]
-        """get the exact acls from getacl
+        """
+        get the exact acls from getacl
 
         :mailbox: string, user mailbox name
         :returns: string, acl strign or permission denied
@@ -131,7 +136,8 @@ class BaseMailClient:
         return {mailbox: acl_result}
 
     def check_acls(self, expected_acls):  # type: (str) -> None
-        """Check if the the correct acls are set
+        """
+        Check if the the correct acls are set
 
         :expected_acls: string
         The expected acls are also mapped to the new set of
@@ -168,7 +174,8 @@ class BaseMailClient:
                         expected_acls.get(mailbox).get(who), current.get(mailbox).get(who)))
 
     def check_lookup(self, mailbox_owner, expected_result):
-        """Checks the lookup access of a certain mailbox
+        """
+        Checks the lookup access of a certain mailbox
 
         :expected_result: dict{mailbox : bool}
         """
@@ -182,7 +189,8 @@ class BaseMailClient:
                 raise LookupFail('Un-expected result for listing the mailbox %s' % mailbox)
 
     def check_read(self, mailbox_owner, expected_result):
-        """Checks the read access of a certain mailbox
+        """
+        Checks the read access of a certain mailbox
 
         :expected_result: dict{mailbox : bool}
         """
@@ -202,7 +210,8 @@ class BaseMailClient:
                 self.close()
 
     def check_append(self, mailbox_owner, expected_result):
-        """Checks the append access of a certain mailbox
+        """
+        Checks the append access of a certain mailbox
 
         :expected_result: dict{mailbox : bool}
         """
@@ -222,7 +231,8 @@ class BaseMailClient:
                 self.close()
 
     def check_write(self, mailbox_owner, expected_result):
-        """Checks the write access of a certain mailbox
+        """
+        Checks the write access of a certain mailbox
 
         :expected_result: dict{mailbox : bool}
         """
@@ -285,7 +295,6 @@ class BaseMailClient:
 
 
 class MailClient_SSL(imaplib.IMAP4_SSL, BaseMailClient):
-
     """MailClient_SSL is a wrapper for imaplib.IMAP4_SSL"""
 
     def __init__(self, host, port=993):  # type: (str, int) -> None
@@ -293,7 +302,6 @@ class MailClient_SSL(imaplib.IMAP4_SSL, BaseMailClient):
 
 
 class MailClient(imaplib.IMAP4, BaseMailClient):
-
     """MailClient is a wrapper for imaplib.IMAP4"""
 
     def __init__(self, host, port=143):

@@ -98,7 +98,6 @@ def windowed_query(q, column, windowsize, single_entity=True):
     simple and can likely work for most ordinary use cases for a primary key column on a database that does not support
     window functions.
     """
-
     # TODO: single_entity is implemented in SqlAlchemy 1.3.11 and above.
     # After updating SqlAlchemy, single_entity should be removed from
     # function arguments, and resolved locally, as in line below:

@@ -30,9 +30,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-"""
-|UDM| objects.
-"""
+"""|UDM| objects."""
 
 from __future__ import absolute_import
 
@@ -118,7 +116,6 @@ def open(object):
 
     :param object: |UDM| object.
     """
-
     if not object:
         return
 

@@ -9,16 +9,13 @@ import univention.info_tools as uit  # noqa: E402
 
 @pytest.fixture
 def lval0():
-    """
-    Return an empty localized value instance.
-    """
+    """Return an empty localized value instance."""
     obj = uit.LocalizedValue()
     uit.set_language('fr')
     return obj
 
 
 class TestLocalizedValue(object):
-
     """Unit test for univention.info_tools.LocalizedValue"""
 
     def test_basic(self, lval0):
@@ -59,16 +56,13 @@ class TestLocalizedValue(object):
 
 @pytest.fixture
 def ldict0():
-    """
-    Return an empty localized dictionary instance.
-    """
+    """Return an empty localized dictionary instance."""
     obj = uit.LocalizedDictionary()
     uit.set_language('fr')
     return obj
 
 
 class TestLocalizedDictionary(object):
-
     """Unit test for univention.info_tools.LocalizedDictionary"""
 
     def test_basic(self, ldict0):
@@ -166,9 +160,7 @@ class TestLocalizedDictionary(object):
 
 @pytest.fixture
 def lval():
-    """
-    Return a pre-initialized localized value instance.
-    """
+    """Return a pre-initialized localized value instance."""
     lval = uit.LocalizedValue()
     lval['de'] = 'foo'
     lval['en'] = 'bar'
@@ -178,9 +170,7 @@ def lval():
 
 @pytest.fixture
 def ldict():
-    """
-    Return a pre-initialized localized dictionary instance.
-    """
+    """Return a pre-initialized localized dictionary instance."""
     ldict = uit.LocalizedDictionary()
     ldict['val[de]'] = 'foo'
     ldict['val[en]'] = 'bar'
@@ -189,7 +179,6 @@ def ldict():
 
 
 class TestSetLanguage(object):
-
     """Unit test for univention.info_tools.set_language()."""
 
     def test_global(self, lval, ldict):

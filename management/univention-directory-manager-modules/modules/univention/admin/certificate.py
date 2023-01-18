@@ -27,9 +27,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-"""
-|UDM| pki X.509 DER certificate handling
-"""
+"""|UDM| pki X.509 DER certificate handling"""
 
 import base64
 

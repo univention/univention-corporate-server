@@ -1,7 +1,5 @@
 #!/usr/bin/python3
-"""
-Find errors in tests/
-"""
+"""Find errors in tests/"""
 
 import os
 import re

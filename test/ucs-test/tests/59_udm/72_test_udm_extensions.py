@@ -921,7 +921,6 @@ class Test_UDMExtensions:
     ])
     def test_listener_version_start_end(self, udm, ucr, extension_type, version_start, version_end, should_exist, wait_before):
         """Create extensions with different version ranges"""
-
         print('========================= TESTING EXTENSION %s =============================' % extension_type)
         package_name = get_package_name()
         package_version = get_package_version()
@@ -1306,7 +1305,6 @@ class Test_UDMExtensions:
     @pytest.mark.exposure('dangerous')
     def test_keep_but_dont_activate_py2_only_udm_hook(self, udm, ucr):
         """Create Py2-only UDM hook extension object, expect it to be present in LDAP but not committed locally"""
-
         extension_type = 'hook'
         extension_name = get_extension_name(extension_type)
         extension_filename = get_extension_filename(extension_type, extension_name)
@@ -1380,7 +1378,6 @@ class Test_UDMExtensions:
     @pytest.mark.exposure('dangerous')
     def test_remove_py2_only_udm_hook(self, udm, ucr):
         """Create Py2-only UDM hook extension object, expect it to get removed"""
-
         extension_type = 'hook'
         extension_name = get_extension_name(extension_type)
         extension_filename = get_extension_filename(extension_type, extension_name)
@@ -1822,7 +1819,6 @@ class Test_UDMExtensions:
     @pytest.mark.exposure('dangerous')
     def test_test_py2_and_3_udm_syntax(self, udm, ucr):
         """Create UDM syntax extension object and test it via CLI"""
-
         extension_type = 'syntax'
         extension_name = get_extension_name(extension_type)
         extension_filename = get_extension_filename(extension_type, extension_name)
@@ -2059,7 +2055,6 @@ class Test_UDMExtensions:
     @pytest.mark.exposure('dangerous')
     def test_remove_py2_only_udm_module(self, udm, ucr):
         """Create Py2-only UDM module extension object, expect it to get removed"""
-
         extension_type = 'module'
         extension_name = get_extension_name(extension_type)
         extension_filename = get_extension_filename(extension_type, extension_name)
@@ -2267,7 +2262,6 @@ class Test_UDMExtensionSpecial:
     @pytest.mark.exposure('dangerous')
     def test_filename_attack(self, udm, extension_type, wait_before):
         """Test liability to a simple filename attack"""
-
         filename = 'ucs_test_64_filename_attack'
         version_start = random_ucs_version(max_major=2)
         version_end = random_ucs_version(min_major=5)

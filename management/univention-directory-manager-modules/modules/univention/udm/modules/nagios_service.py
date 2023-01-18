@@ -29,9 +29,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-"""
-Module and object specific for "nagios/service" UDM module.
-"""
+"""Module and object specific for "nagios/service" UDM module."""
 
 from __future__ import absolute_import, unicode_literals
 from ..encoders import dn_list_property_encoder_for, DisabledPropertyEncoder, StringIntPropertyEncoder
@@ -57,11 +55,13 @@ class NagiosServiceObjectProperties(GenericObjectProperties):
 
 class NagiosServiceObject(GenericObject):
     """Better representation of nagios/service properties."""
+
     udm_prop_class = NagiosServiceObjectProperties
 
 
 class NagiosServiceModule(GenericModule):
     """NagiosServiceObject factory"""
+
     _udm_object_class = NagiosServiceObject
 
     class Meta:

@@ -30,9 +30,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-"""
-|UDM| classes to define layouts
-"""
+"""|UDM| classes to define layouts"""
 
 import copy
 
@@ -40,9 +38,7 @@ import six
 
 
 class ILayoutElement(dict):
-    """
-    Describes the layout information for a tab or a groupbox.
-    """
+    """Describes the layout information for a tab or a groupbox."""
 
     def __init__(self, label, description='', layout=[]):
         dict.__init__(self)

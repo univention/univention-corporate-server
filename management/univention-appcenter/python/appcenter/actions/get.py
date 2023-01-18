@@ -68,8 +68,8 @@ def _match(value, pattern):
 
 
 class Get(UniventionAppAction):
-
     """Fetches meta information about the app."""
+
     help = 'Query an app'
 
     def setup_parser(self, parser):

@@ -31,9 +31,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-"""
-Apply App Appliance specific configuration and branding to different parts of UCS.
-"""
+"""Apply App Appliance specific configuration and branding to different parts of UCS."""
 
 import base64
 import json

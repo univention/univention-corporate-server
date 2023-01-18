@@ -77,7 +77,6 @@ from .log import RESOURCES
 
 
 class XML_Definition(ET.ElementTree):
-
     """Represents a category definition."""
 
     def __init__(self, root=None, filename=None, domain=None):
@@ -104,7 +103,8 @@ class XML_Definition(ET.ElementTree):
 
     @property
     def priority(self):
-        """Returns the priority of the category. If no priority is
+        """
+        Returns the priority of the category. If no priority is
         defined the default priority of -1 is returned. None is returned
         if the specified priority is not a valid float
 
@@ -117,11 +117,11 @@ class XML_Definition(ET.ElementTree):
         return None
 
     def json(self):
-        """Returns a JSON compatible representation of the category
+        """
+        Returns a JSON compatible representation of the category
 
         :rtype: dict
         """
-
         return {
             'id': self.id,
             'name': self.name,
@@ -132,7 +132,6 @@ class XML_Definition(ET.ElementTree):
 
 
 class Manager(dict):
-
     """This class manages all available categories."""
 
     DIRECTORY = os.path.join(sys.prefix, 'share/univention-management-console/categories')

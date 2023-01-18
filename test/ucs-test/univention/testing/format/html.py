@@ -16,10 +16,7 @@ URI_OTRS = 'https://gorm.knut.univention.de/otrs/index.pl?' + \
 
 
 class HTML(TestFormatInterface):
-
-    """
-    Create simple HTML report.
-    """
+    """Create simple HTML report."""
 
     def __init__(self, stream=sys.stdout):  # type: (IO[str]) -> None
         super().__init__(stream)
@@ -75,7 +72,8 @@ class HTML(TestFormatInterface):
         super().end_run()
 
     def format(self, result):  # type: (TestResult) -> None
-        """Format single test.
+        """
+        Format single test.
 
         >>> from univention.testing.data import TestCase
         >>> te = TestEnvironment()

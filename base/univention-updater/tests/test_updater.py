@@ -18,9 +18,7 @@ UU = U.UniventionUpdater
 
 @pytest.fixture
 def u(http):
-    """
-    Mock UCS updater.
-    """
+    """Mock UCS updater."""
     http({
         '': b'',
         '/': b'',
@@ -31,14 +29,11 @@ def u(http):
 
 @pytest.fixture(autouse=True)
 def log(mockopen):
-    """
-    Mock log file for UCS updater.
-    """
+    """Mock log file for UCS updater."""
     mockopen.write("/var/log/univention/updater.log", b"")
 
 
 class TestUniventionUpdater(object):
-
     """Unit test for univention.updater.tools"""
 
     def test_config_repository(self, ucr, u):
@@ -629,9 +624,7 @@ class TestComponents(object):
         assert {ver} == set(comp_ver)
 
     def test_get_component_repositories_ARCH(self, ucr, http, u):
-        """
-        Test component repositories with architecture sub directories.
-        """
+        """Test component repositories with architecture sub directories."""
         ucr({
             'repository/online/component/a': 'yes',
         })

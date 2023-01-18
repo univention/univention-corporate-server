@@ -34,21 +34,16 @@ If LDIF2 is omitted, a local 'slapcat' is used.
 
 
 class LdifError(Exception):
-    """
-    Error in input processing.
-    """
+    """Error in input processing."""
 
 
 class SlapError(Exception):
-    """
-    Error in slapcat processing.
-    """
+    """Error in slapcat processing."""
 
 
 class Ldif:
-    """
-    Abstract class for LDIF source.
-    """
+    """Abstract class for LDIF source."""
+
     # RFC2849: LDAP Data Interchange Format
     RE = re.compile(r'''
 		^
@@ -85,9 +80,7 @@ class Ldif:
 
     def next_line(self):
         # type: () -> Iterator[str]
-        """
-        Return line iterator.
-        """
+        """Return line iterator."""
         lines = []
         for lno, chunk in enumerate(self.src, start=1):
             line = chunk.decode('utf-8', 'replace')
@@ -140,9 +133,7 @@ class Ldif:
 
     def __iter__(self):
         # type: () -> Iterator[Entry]
-        """
-        Return line iterator.
-        """
+        """Return line iterator."""
         obj = {}   # type: Entry
         for line in self.next_line():
             if line.startswith('#'):
@@ -159,9 +150,7 @@ class Ldif:
     @staticmethod
     def printable(value):
         # type: (Text) -> Text
-        """
-        Convert binary data to printable string.
-        """
+        """Convert binary data to printable string."""
         # Py2 has no str.isprintable()
         return ''.join(
             f'\\u{ord(c):04x}' if c != ' ' and unicodedata.category(c)[0] in 'CZ' else c
@@ -177,16 +166,12 @@ class LdifSource:
 
     def start_reading(self):
         # type: () -> Ldif
-        """
-        Start reading the LDIF data.
-        """
+        """Start reading the LDIF data."""
         raise NotImplementedError()
 
 
 class LdifFile:
-    """
-    LDIF source from local file.
-    """
+    """LDIF source from local file."""
 
     @classmethod
     def create(cls, arg, options):
@@ -200,9 +185,7 @@ class LdifFile:
 
     def start_reading(self):
         # type: () -> Ldif
-        """
-        Start reading the LDIF data.
-        """
+        """Start reading the LDIF data."""
         try:
             return Ldif(open(self.filename, 'rb'))
         except OSError as ex:
@@ -210,9 +193,7 @@ class LdifFile:
 
 
 class LdifSlapcat:
-    """
-    LDIF source from local LDAP.
-    """
+    """LDIF source from local LDAP."""
 
     @classmethod
     def create(cls, arg, options):
@@ -226,9 +207,7 @@ class LdifSlapcat:
 
     def start_reading(self):
         # type: () -> Ldif
-        """
-        Start reading the LDIF data.
-        """
+        """Start reading the LDIF data."""
         try:
             proc = subprocess.Popen(self.command, stdout=subprocess.PIPE)
             assert proc.stdout
@@ -267,9 +246,7 @@ class LdifSlapcat:
 
 
 class LdifSsh(LdifSlapcat):
-    """
-    LDIF source from remote LDAP.
-    """
+    """LDIF source from remote LDAP."""
 
     @classmethod
     def create(cls, hostname, options):
@@ -284,9 +261,7 @@ class LdifSsh(LdifSlapcat):
 
 def __test(_option, _opt_str, _value, _parser):
     # type: (Values, str, None, OptionParser) -> NoReturn
-    """
-    Run internal test suite.
-    """
+    """Run internal test suite."""
     import doctest
     res = doctest.testmod()
     sys.exit(int(bool(res[0])))
@@ -342,7 +317,6 @@ def compare_ldif(lldif, rldif, options):
     :param ldif2: second LDIF to compare.
     :param options: command line options.
     """
-
     lefts = stream2object(lldif)
     rights = stream2object(rldif)
 
@@ -465,9 +439,7 @@ def compare_values(attr, lvalues, rvalues):
 
 def parse_args():
     # type: () -> Tuple[LdifSource, LdifSource, Values]
-    """
-    Parse command line arguments.
-    """
+    """Parse command line arguments."""
     parser = OptionParser(usage=USAGE, description=DESCRIPTION)
     parser.disable_interspersed_args()
     parser.set_defaults(source=LdifFile, verbose=1)
@@ -531,9 +503,7 @@ def parse_args():
 
 def main():
     # type: () -> None
-    """
-    A main()-method with options.
-    """
+    """A main()-method with options."""
     src1, src2, options = parse_args()
 
     try:

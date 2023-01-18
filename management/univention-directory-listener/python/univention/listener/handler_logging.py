@@ -95,6 +95,7 @@ class ModuleHandler(logging.Handler):
     write log messages through :py:mod:`univention.debug` to
     :file:`/var/log/univention/listener.log`
     """
+
     LOGGING_TO_UDEBUG = dict(
         CRITICAL=ud.ERROR,
         ERROR=ud.ERROR,

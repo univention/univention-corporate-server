@@ -141,8 +141,10 @@ class SamlTest:
             raise SamlError("Problem while %s\nWrong status code: %s, expected: %s\nServer response was: %s" % (self.position, self.page.status_code, status_code, self.page.content.decode('UTF-8', 'replace')))
 
     def _request(self, method, url, status_code, data=None, expected_format='html'):
-        """does POST or GET requests and raises SamlError which encodes the login step
-        through position parameter."""
+        """
+        does POST or GET requests and raises SamlError which encodes the login step
+        through position parameter.
+        """
         headers = {'Accept-Language': 'en-US;q=0.6,en;q=0.4', 'Referer': ''}
         umc_session_id = self.session.cookies.get("UMCSessionId", domain=self.target_sp_hostname.lower())
         if umc_session_id:
@@ -277,9 +279,10 @@ class SamlTest:
             utils.fail("Session not closed at IdP after logout")
 
     def login_with_existing_session_at_IdP(self):
-        """Use Identity Provider to log in to a Service Provider.
-        If the IdP already knows the session and doesn't ask for username and password"""
-
+        """
+        Use Identity Provider to log in to a Service Provider.
+        If the IdP already knows the session and doesn't ask for username and password
+        """
         # Open login prompt. Redirects to IdP. IdP answers with SAML message
         url = "https://%s/univention/saml/" % self.target_sp_hostname
         print("GET SAML login form at: %s" % url)
@@ -292,9 +295,10 @@ class SamlTest:
         self._send_saml_response_to_sp(url, saml_msg, relay_state)
 
     def login_with_new_session_at_IdP(self):
-        """Use Identity Provider to log in to a Service Provider.
-        The IdP doesn't know the session and has to ask for username and password"""
-
+        """
+        Use Identity Provider to log in to a Service Provider.
+        The IdP doesn't know the session and has to ask for username and password
+        """
         # Open login prompt. Redirects to IdP. IdP answers with login prompt
         url = "https://%s/univention/saml/" % self.target_sp_hostname
         print("GET SAML login form at: %s" % url)

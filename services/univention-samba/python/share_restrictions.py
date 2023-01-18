@@ -148,7 +148,6 @@ class ShareConfiguration(object):
 
     def delete(self):
         """delete all conf's in SHARES_DIR and INCLUDE_CONF"""
-
         if not os.path.isdir(ShareConfiguration.SHARES_DIR):
             os.makedirs(ShareConfiguration.SHARES_DIR)
         if os.path.isfile(ShareConfiguration.INCLUDE_CONF):
@@ -163,7 +162,6 @@ class ShareConfiguration(object):
 
     def read_shares(self):
         """get invalid user from samba share conf"""
-
         if not os.path.isdir(ShareConfiguration.SHARES_UDM_DIR):
             return
 
@@ -185,7 +183,6 @@ class ShareConfiguration(object):
 
     def read_printers(self):
         """get invalid/valid users from cups and samba config"""
-
         # read CUPS configuration
         if os.path.isfile(ShareConfiguration.CUPS_CONF):
             reg_cups = re.compile(r'\s*<Printer\s+([^>]+)>')
@@ -270,8 +267,10 @@ class ShareConfiguration(object):
                 prt.hosts_allow = hosts
 
     def _set_othershares(self, value, group):
-        """append group to invalid users for all shares, except shares
-        group (the groupname) and marktplatz"""
+        """
+        append group to invalid users for all shares, except shares
+        group (the groupname) and marktplatz
+        """
         if not group or not value.lower() in ('true', 'yes', '1'):
             return
 

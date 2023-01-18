@@ -82,7 +82,6 @@ _SHOW_EMPTY, _SHOW_DESCRIPTION, _SHOW_SCOPE, _SHOW_CATEGORIES, _SHOW_DEFAULT, _S
 
 
 class UnknownKeyException(Exception):
-
     """Query for unknown key: no info file nor set."""
 
     def __init__(self, value):

@@ -30,9 +30,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-"""
-|UDM| password encryption methods.
-"""
+"""|UDM| password encryption methods."""
 
 from __future__ import absolute_import
 
@@ -319,9 +317,7 @@ def password_already_used(password, pwhistory):
 
 
 class PasswortHistoryPolicy(object):
-    """
-    Policy for handling history of password hashes.
-    """
+    """Policy for handling history of password hashes."""
 
     def __init__(self, pwhistoryPolicy):
         super(PasswortHistoryPolicy, self).__init__()

@@ -14,10 +14,7 @@ import appcentertest as app_test
 
 @app_test.test_case
 def test_install_remove(app_center, application):
-    """
-    Install and uninstall a simple app with correctness checks.
-    """
-
+    """Install and uninstall a simple app with correctness checks."""
     package = app_test.AppPackage.with_package(name=application)
     package.build_and_publish()
     package.remove_tempdir()
@@ -32,7 +29,6 @@ def test_install_remove_twice(app_center, application):
     Install and uninstall a simple app twice. This checks if the app is
     installable after being uninstalled once.
     """
-
     package = app_test.AppPackage.with_package(name=application)
     package.build_and_publish()
     package.remove_tempdir()
@@ -44,10 +40,7 @@ def test_install_remove_twice(app_center, application):
 
 @app_test.test_case
 def test_install_remove_dependencies(app_center, application):
-    """
-    Install and uninstall a simple app with one dependency.
-    """
-
+    """Install and uninstall a simple app with one dependency."""
     dependency = app_test.DebianPackage("my-dependency")
     dependency.build()
 
@@ -61,10 +54,7 @@ def test_install_remove_dependencies(app_center, application):
 
 @app_test.test_case
 def test_install_upgrade_remove(app_center, application):
-    """
-    Install, upgrade and uninstall a simple app.
-    """
-
+    """Install, upgrade and uninstall a simple app."""
     old = app_test.AppPackage.with_package(name=application, app_version="1.0")
 
     new = app_test.AppPackage.with_package(name=application, app_version="2.0", app_code=old.app_code)
@@ -86,7 +76,6 @@ def test_install_upgrade_remove_dependencies(app_center, application):
     Install, upgrade and uninstall a simple app with one dependency. Both the
     app version and the dependency version change.
     """
-
     dependency_old = app_test.DebianPackage(name="my-dependency-upgrade", version="1.0")
     dependency_old.build()
 

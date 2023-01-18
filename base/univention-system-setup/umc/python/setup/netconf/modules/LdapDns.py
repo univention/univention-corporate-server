@@ -4,10 +4,8 @@ from univention.management.console.modules.setup.netconf.conditions import Execu
 
 
 class PhaseLdapDns(AddressMap, Ldap, Executable):
+    """Create reverse DNS zones and add pointer records for host."""
 
-    """
-    Create reverse DNS zones and add pointer records for host.
-    """
     priority = 46
     executable = "/usr/share/univention-directory-manager-tools/univention-dnsedit"
 

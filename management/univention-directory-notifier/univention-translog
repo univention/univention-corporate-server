@@ -1,7 +1,5 @@
 #!/usr/bin/python3
-"""
-Univention Directory Notifier Transaction log admin commmand
-"""
+"""Univention Directory Notifier Transaction log admin commmand"""
 # Like what you see? Join us!
 # https://www.univention.com/about-us/careers/vacancies/
 #
@@ -84,6 +82,7 @@ class IndexHeader(Structure):
 
         The header is architecture dependant due to the use of `c_ulong`.
     """
+
     MAGIC = 0x3395e0d4
     _fields_ = [("magic", c_ulong)]
     _pack_ = 1
@@ -101,6 +100,7 @@ class IndexEntry(Structure):
 
         The source is compiled with `-D_FILE_OFFSET_BITS=64` which makes `off_t` 64 bit on i386, too, but `ulong` remains 32 bit.
     """
+
     _fields_ = [("valid", c_bool), ("offset", c_ulong)]
     _pack_ = 1
 
@@ -218,9 +218,7 @@ class Index(object):
 
     def remove(self):
         # type: () -> None
-        """
-        Remove `.index` file.
-        """
+        """Remove `.index` file."""
         self.log.info('Removing %s ...', self.filename)
         try:
             unlink(self.filename)
@@ -249,9 +247,7 @@ class Translog(object):
     @property
     def count(self):
         # type: () -> int
-        """
-        Return count of transactions.
-        """
+        """Return count of transactions."""
         if self.last == 0:
             return 0
         return self.last - self.first + 1
@@ -341,9 +337,7 @@ class Translog(object):
 
     def __iter__(self):
         # type: () -> Iterator[Transaction]
-        """
-        Iterate over all transactions.
-        """
+        """Iterate over all transactions."""
         assert self.translog
         for line in self.translog:
             self.log.debug("Read line %r", line)
@@ -402,22 +396,16 @@ class Translog(object):
 
 
 class Abort(Exception):
-    """
-    Fatal abort.
-    """
+    """Fatal abort."""
 
 
 class DryRun(Exception):
-    """
-    Abort dry-run mode.
-    """
+    """Abort dry-run mode."""
 
 
 def main():
     # type: () -> int
-    """
-    Work with transaction log in LDAP server.
-    """
+    """Work with transaction log in LDAP server."""
     opt = parse_args()
 
     basicConfig(stream=stderr, level=max(DEBUG, CRITICAL - DEBUG * opt.verbose), format=LOG_FORMAT)
@@ -767,9 +755,7 @@ def rewrite(filename):
 
 
 class CheckGeneric(object):
-    """
-    Check transaction file for consistency.
-    """
+    """Check transaction file for consistency."""
 
     def __init__(self, opt, filename):
         # type: (Namespace, str) -> None
@@ -788,9 +774,7 @@ class CheckGeneric(object):
 
     def reset(self):
         # type: () -> None
-        """
-        Reset internal state.
-        """
+        """Reset internal state."""
         self.needs_fixing = False
         self.needs_sort = False
         self.needs_fill = False
@@ -924,9 +908,7 @@ class CheckGeneric(object):
 
     def fixit(self):
         # type: () -> None
-        """
-        Fix transactions.
-        """
+        """Fix transactions."""
         raise NotImplementedError()
 
     def fix_syntax(self):
@@ -937,9 +919,7 @@ class CheckGeneric(object):
         # - optional: fake invalid DNs in 2nd column
         # - optional: fake transaction number
         # see commented out code in :py:meth:`loop`.
-        """
-        Handle syntax errors. TODO
-        """
+        """Handle syntax errors. TODO"""
         self.log.info('Syntax ...')
 
         print('- contains unparseable lines!')
@@ -949,9 +929,7 @@ class CheckGeneric(object):
 
     def fix_sort(self):
         # type: () -> None
-        """
-        Handle transactions not being sorted strong monotonically increasing.
-        """
+        """Handle transactions not being sorted strong monotonically increasing."""
         self.log.info('Sorting ...')
         print('- the transactions are not sorted uniquely')
 
@@ -995,9 +973,7 @@ class CheckGeneric(object):
 
     def fix_fill(self):
         # type: () -> None
-        """
-        Handle transactions not being consecutive.
-        """
+        """Handle transactions not being consecutive."""
         self.log.info('Filling holes ...')
         print('- missing transactions in sequence')
 
@@ -1035,9 +1011,7 @@ class CheckGeneric(object):
 
     def fix_renumber(self):
         # type: () -> None
-        """
-        Handle transactions being out-of-order.
-        """
+        """Handle transactions being out-of-order."""
         self.log.info('Renumbering ...')
         print('- pending transactions are not consecutive')
 
@@ -1080,9 +1054,7 @@ class CheckGeneric(object):
 
     def remove_index(self):
         # type: () -> None
-        """
-        Remove any associated index file.
-        """
+        """Remove any associated index file."""
         raise NotImplementedError()
 
 
@@ -1108,9 +1080,7 @@ class CheckTranslog(CheckGeneric):
 
     def fixit(self):
         # type: () -> None
-        """
-        Fix transactions.
-        """
+        """Fix transactions."""
         if self.needs_syntax:
             self.fix_syntax()
         if self.needs_sort:
@@ -1120,9 +1090,7 @@ class CheckTranslog(CheckGeneric):
 
     def remove_index(self):
         # type: () -> None
-        """
-        Remove `.index` file.
-        """
+        """Remove `.index` file."""
         Index(self.filename).remove()
 
 
@@ -1150,9 +1118,7 @@ class CheckListener(CheckGeneric):
 
     def fixit(self):
         # type: () -> None
-        """
-        Fix transactions.
-        """
+        """Fix transactions."""
         if self.needs_syntax:
             self.fix_syntax()
         if self.needs_renum:
@@ -1160,9 +1126,7 @@ class CheckListener(CheckGeneric):
 
     def remove_index(self):
         # type: () -> None
-        """
-        No associated `.index` file to remove.
-        """
+        """No associated `.index` file to remove."""
 
 
 def check_last(opt, filename, last_tid):

@@ -39,10 +39,7 @@ _ = Translation('univention-self-service-passwordreset-umc').translate
 
 
 class UniventionSelfServiceTokenEmitter(object):
-
-    """
-    base class
-    """
+    """base class"""
 
     def __init__(self, log):
         self.ucr = ConfigRegistry()

@@ -2,10 +2,8 @@ from univention.management.console.modules.setup.netconf import Phase
 
 
 class PhaseRestartAllInterfaces(Phase):
+    """Stop and restart all interfaces."""
 
-    """
-    Stop and restart all interfaces.
-    """
     priority = 50
 
     def pre(self):

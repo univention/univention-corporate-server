@@ -144,9 +144,11 @@ class IniSectionListAttribute(IniSectionAttribute):
         super(IniSectionListAttribute, self).__init__(required, default, localisable, choices)
 
     def parse(self, value):
-        '''Returns a list; splits on "," (stripped, whitespaces before
+        '''
+        Returns a list; splits on "," (stripped, whitespaces before
         and after are removed).  If a single value needs to contain a
-        ",", it can be escaped with backslash: "My \\, value".'''
+        ",", it can be escaped with backslash: "My \\, value".
+        '''
         if value is None:
             return []
         value = re.split(r'(?<=[^\\])\s*,\s*', value)

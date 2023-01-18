@@ -223,7 +223,7 @@ def urlopen(request):
 
 
 def get_current_ram_available():
-    """ Returns RAM currently available in MB, excluding Swap """
+    """Returns RAM currently available in MB, excluding Swap"""
     # return (psutil.avail_phymem() + psutil.phymem_buffers() + psutil.cached_phymem()) / (1024*1024) # psutil is outdated. re-enable when methods are supported
     # implement here. see http://code.google.com/p/psutil/source/diff?spec=svn550&r=550&format=side&path=/trunk/psutil/_pslinux.py
     with open('/proc/meminfo', 'r') as f:
@@ -238,16 +238,20 @@ def get_current_ram_available():
 
 
 def component_registered(component_id, ucr):
-    """ Checks if a component is registered (enabled or disabled).
+    """
+    Checks if a component is registered (enabled or disabled).
     Moved outside of ComponentManager to avoid dependencies for
-    UniventionUpdater when just using Application.all() """
+    UniventionUpdater when just using Application.all()
+    """
     return '%s/%s' % (COMPONENT_BASE, component_id) in ucr
 
 
 def component_current(component_id, ucr):
-    """ Checks if a component is enabled (not disabled!).
+    """
+    Checks if a component is enabled (not disabled!).
     Moved outside of ComponentManager to avoid dependencies for
-    UniventionUpdater"""
+    UniventionUpdater
+    """
     return ucr.get('%s/%s/version' % (COMPONENT_BASE, component_id)) == 'current'
 
 
@@ -261,17 +265,18 @@ class Changes(object):
         return bool(self._changes)
 
     def _bool_string(self, variable, value):
-        """Returns a boolean string representation for a boolean UCR variable. We need
-                this as long as we don't really know that all consumers of our variables
-                transparently use the ucr.is_true() method to process the values. So we
-                write the strings that we think are most suitable for the given variable.
+        """
+        Returns a boolean string representation for a boolean UCR variable. We need
+        this as long as we don't really know that all consumers of our variables
+        transparently use the ucr.is_true() method to process the values. So we
+        write the strings that we think are most suitable for the given variable.
 
-                *** NOTE *** I would like to see such function in the UCR base class
-                        so we could call
+        *** NOTE *** I would like to see such function in the UCR base class
+        so we could call
 
-                                ucr.set_bool(variable, boolvalue)
+        ucr.set_bool(variable, boolvalue)
 
-                        and the ucr itself would know which string representation to write.
+        and the ucr itself would know which string representation to write.
         """
         yesno = ['no', 'yes']
         # truefalse = ['False', 'True']
@@ -299,11 +304,12 @@ class Changes(object):
         return yesno[intval]
 
     def set_registry_var(self, name, value):
-        """ Sets a registry variable and tracks changedness in a private variable.
-                This enables the set_save_commit_load() method to commit the files being affected
-                by the changes we have made.
+        """
+        Sets a registry variable and tracks changedness in a private variable.
+        This enables the set_save_commit_load() method to commit the files being affected
+        by the changes we have made.
 
-                Function handles boolean values properly.
+        Function handles boolean values properly.
         """
         try:
             oldval = self.ucr.get(name)
@@ -346,8 +352,7 @@ class ComponentManager(object):
         self.uu = updater
 
     def component(self, component_id):
-        """Returns a dict of properties for the component with this id.
-        """
+        """Returns a dict of properties for the component with this id."""
         comp = self.uu.component(component_id)
         entry = {
             'name': component_id,
@@ -408,11 +413,12 @@ class ComponentManager(object):
         self._remove(app.component_id, super_ucr)
 
     def put(self, data, super_ucr):
-        """	Does the real work of writing one component definition back.
-                Will be called for each element in the request array of
-                a 'put' call, returns one element that has to go into
-                the result of the 'put' call.
-                Function does not throw exceptions or print log messages.
+        """
+        Does the real work of writing one component definition back.
+        Will be called for each element in the request array of
+        a 'put' call, returns one element that has to go into
+        the result of the 'put' call.
+        Function does not throw exceptions or print log messages.
         """
         result = {
             'status': PUT_SUCCESS,
@@ -440,9 +446,10 @@ class ComponentManager(object):
         return result
 
     def remove(self, component_id):
-        """ Removes one component. Note that this does not remove
-                entries below repository/online/component/<id> that
-                are not part of a regular component definition.
+        """
+        Removes one component. Note that this does not remove
+        entries below repository/online/component/<id> that
+        are not part of a regular component definition.
         """
         result = {}
         result['status'] = PUT_SUCCESS

@@ -29,9 +29,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-"""
-En/Decoders for object properties.
-"""
+"""En/Decoders for object properties."""
 
 from __future__ import absolute_import, unicode_literals
 
@@ -322,6 +320,7 @@ class DnListPropertyEncoder(BaseEncoder):
     :py:func:`dn_list_property_encoder_for()` will dynamically produce
     subclasses of this for every UDM module required.
     """
+
     static = False
     udm_module_name = ''
 
@@ -423,6 +422,7 @@ class CnameListPropertyEncoder(DnListPropertyEncoder):
     ``objs``. ``objs`` is a lazy object that will become the list of UDM
     objects the CNAMEs refer to, when accessed.
     """
+
     udm_module_name = 'dns/alias'
 
     def _list_of_dns_to_list_of_udm_objects(self, value):
@@ -437,6 +437,7 @@ class DnsEntryZoneAliasListPropertyEncoder(DnListPropertyEncoder):
     the list of UDM objects the dnsEntryZoneAlias entries refer to, when
     accessed.
     """
+
     udm_module_name = 'dns/alias'
 
     def _list_of_dns_to_list_of_udm_objects(self, value):
@@ -451,6 +452,7 @@ class DnsEntryZoneForwardListMultiplePropertyEncoder(DnListPropertyEncoder):
     the list of UDM objects the dnsEntryZoneForward entries refer to, when
     accessed.
     """
+
     udm_module_name = 'dns/forward_zone'
 
     @staticmethod
@@ -469,6 +471,7 @@ class DnsEntryZoneForwardListSinglePropertyEncoder(DnsEntryZoneForwardListMultip
     the list of UDM objects the dnsEntryZoneForward entries refer to, when
     accessed.
     """
+
     udm_module_name = 'dns/forward_zone'
 
     @staticmethod
@@ -483,6 +486,7 @@ class DnsEntryZoneReverseListMultiplePropertyEncoder(DnsEntryZoneForwardListMult
     the list of UDM objects the dnsEntryZoneReverse entries refer to, when
     accessed.
     """
+
     udm_module_name = 'dns/reverse_zone'
 
     @staticmethod
@@ -497,6 +501,7 @@ class DnsEntryZoneReverseListSinglePropertyEncoder(DnsEntryZoneReverseListMultip
     the list of UDM objects the dnsEntryZoneReverse entries refer to, when
     accessed.
     """
+
     udm_module_name = 'dns/reverse_zone'
 
     @staticmethod
@@ -513,6 +518,7 @@ class DnPropertyEncoder(BaseEncoder):
     :py:func:`dn_property_encoder_for()` will dynamically produce
     subclasses of this for every UDM module required.
     """
+
     static = False
     udm_module_name = ''
 

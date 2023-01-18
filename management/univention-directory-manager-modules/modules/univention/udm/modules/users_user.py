@@ -29,9 +29,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-"""
-Module and object specific for "users/user" UDM module.
-"""
+"""Module and object specific for "users/user" UDM module."""
 
 from __future__ import absolute_import, unicode_literals
 from ..encoders import (
@@ -65,11 +63,13 @@ class UsersUserObjectProperties(GenericObjectProperties):
 
 class UsersUserObject(GenericObject):
     """Better representation of users/user properties."""
+
     udm_prop_class = UsersUserObjectProperties
 
 
 class UsersUserModule(GenericModule):
     """UsersUserObject factory"""
+
     _udm_object_class = UsersUserObject
 
     class Meta:

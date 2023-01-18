@@ -17,7 +17,6 @@ __all__ = ['Junit']
 
 
 class Junit(TestFormatInterface):
-
     """
     Create Junit report.
     <http://windyroad.org/dl/Open%20Source/JUnit.xsd>

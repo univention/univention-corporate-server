@@ -46,8 +46,9 @@ from univention.management.console.log import MODULE
 
 
 def check_if_uid_is_available(uid, role, address, username, password):
-    """check if either the UID it not yet taken at all
-            or it is already taken (by our previous self) and still matches the server role
+    """
+    check if either the UID it not yet taken at all
+    or it is already taken (by our previous self) and still matches the server role
     """
     # type: (str, str, str, str, str) -> bool
     filter_s = filter_format("(&(objectClass=person)(uid=%s)(!(univentionServerRole=%s)))", [uid, role])

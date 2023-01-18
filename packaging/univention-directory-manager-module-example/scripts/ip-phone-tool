@@ -56,14 +56,13 @@ _ = translation.translate
 
 
 class ipphonetool(object):
-
-    """Simple example demonstrating how to implement and how to use custom Univention Directory Manager modules.
+    """
+    Simple example demonstrating how to implement and how to use custom Univention Directory Manager modules.
     This is an example tool to manage IP phones.
     """
 
     def __init__(self, options, ucr=None):
         """Initialize an authenticated LDAP connection"""
-
         if not ucr:
             ucr = univention.config_registry.ConfigRegistry()
             ucr.load()
@@ -99,7 +98,6 @@ class ipphonetool(object):
 
     def set(self, options, name, ip, priuser):
         """This uses the lookup function of the udm module, allowing filtering in terms of UDM properties"""
-
         filter = univention.admin.filter.expression('name', name, escape=True)
 
         objs = self.module.lookup(None, self.lo, filter, scope='domain', base=self.position.getDomain(), unique=True)
@@ -140,7 +138,6 @@ class ipphonetool(object):
 
     def remove(self, name):
         """remove the object, no safety belt in this example"""
-
         filter = univention.admin.filter.expression('name', name, escape=True)
 
         objs = self.module.lookup(None, self.lo, filter, scope='domain', base=self.position.getDomain(), unique=True)

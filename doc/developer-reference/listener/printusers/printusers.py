@@ -1,6 +1,4 @@
-"""
-Example for a listener module, which logs changes to users.
-"""
+"""Example for a listener module, which logs changes to users."""
 
 from __future__ import annotations, print_function
 
@@ -49,9 +47,7 @@ def handler(dn: str, new: Dict[str, List[bytes]], old: Dict[str, List[bytes]]) -
 
 
 def _handle_change(dn: str, new: Dict[str, List[bytes]], old: Dict[str, List[bytes]]) -> None:
-    """
-    Called when an object is modified.
-    """
+    """Called when an object is modified."""
     o_rec = _rec(old)
     n_rec = _rec(new)
     ud.debug(ud.LISTENER, ud.INFO, 'Edited user "%s"' % (o_rec.uid,))
@@ -60,34 +56,26 @@ def _handle_change(dn: str, new: Dict[str, List[bytes]], old: Dict[str, List[byt
 
 
 def _handle_add(dn: str, new: Dict[str, List[bytes]]) -> None:
-    """
-    Called when an object is newly created.
-    """
+    """Called when an object is newly created."""
     n_rec = _rec(new)
     ud.debug(ud.LISTENER, ud.INFO, 'Added user "%s"' % (n_rec.uid,))
     _writeit(n_rec, u'added')
 
 
 def _handle_remove(dn: str, old: Dict[str, List[bytes]]) -> None:
-    """
-    Called when an previously existing object is removed.
-    """
+    """Called when an previously existing object is removed."""
     o_rec = _rec(old)
     ud.debug(ud.LISTENER, ud.INFO, 'Removed user "%s"' % (o_rec.uid,))
     _writeit(o_rec, u'removed')
 
 
 def _rec(data: Dict[str, List[bytes]]) -> _Rec:
-    """
-    Retrieve symbolic, numeric ID and name from user data.
-    """
+    """Retrieve symbolic, numeric ID and name from user data."""
     return _Rec(*(data.get(attr, (None,))[0] for attr in attributes))
 
 
 def _writeit(rec: _Rec, comment: str) -> None:
-    """
-    Append CommonName, symbolic and numeric User-IDentifier, and comment to file.
-    """
+    """Append CommonName, symbolic and numeric User-IDentifier, and comment to file."""
     nuid = u'*****' if rec.uid in ('root', 'spam') else rec.uidNumber
     indent = '\t' if comment is None else ''
     try:

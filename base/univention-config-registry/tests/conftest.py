@@ -10,9 +10,7 @@ import univention.config_registry.handler as h  # noqa: E402
 
 @pytest.fixture(autouse=True)
 def ucr0(tmpdir, monkeypatch, request):
-    """
-    Return an empty UCR instance.
-    """
+    """Return an empty UCR instance."""
     monkeypatch.setattr(be.ReadOnlyConfigRegistry, "PREFIX", str(tmpdir))
     marker = request.node.get_closest_marker("ucr_layer")
     if marker is None:
@@ -24,9 +22,7 @@ def ucr0(tmpdir, monkeypatch, request):
 
 @pytest.fixture
 def ucrf(ucr0):
-    """
-    Return a pre-initialized UCR instance.
-    """
+    """Return a pre-initialized UCR instance."""
     ucr = be.ConfigRegistry(write_registry=be.ConfigRegistry.LDAP)
     ucr['foo'] = 'LDAP'
     ucr['bar'] = 'LDAP'

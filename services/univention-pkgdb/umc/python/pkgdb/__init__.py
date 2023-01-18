@@ -256,7 +256,7 @@ class Instance(Base):
         self._update_system_roles_and_versions()
 
     def _update_system_roles_and_versions(self):
-        """ refetchs the variable lists (system roles and system versions) """
+        """refetchs the variable lists (system roles and system versions)"""
         PROPOSALS['sysrole'] = self._get_system_roles()
 
         PROPOSALS['sysversion'] = self._get_system_versions()
@@ -279,10 +279,10 @@ class Instance(Base):
     @connection
     @simple_response
     def query(self, page, key, pattern=''):
-        """ Query to fill the grid. The structure of the corresponding grid
-                has already been fetched by the 'pkgdb/columns' command.
         """
-
+        Query to fill the grid. The structure of the corresponding grid
+        has already been fetched by the 'pkgdb/columns' command.
+        """
         desc = QUERIES[page]
         operator = CRITERIA_OPERATOR[key]
 
@@ -301,7 +301,7 @@ class Instance(Base):
     @simple_response
     @log
     def keys(self, page):
-        """ returns the set of search criteria suitable for the given page. """
+        """returns the set of search criteria suitable for the given page."""
         return _combobox_data(CRITERIA[page])
 
     @sanitize(page=ChoicesSanitizer(choices=PAGES, required=True))
@@ -309,13 +309,13 @@ class Instance(Base):
     @simple_response
     @log
     def proposals(self, page, key=''):
-        """	returns proposals for the query pattern that can be
-                presented in the frontend. This can be a single pattern
-                (the corresponding field will turn into a text entry)
-                or an array (the field will turn into a ComboBox,
-                with optionally translated labels)
         """
-
+        returns proposals for the query pattern that can be
+        presented in the frontend. This can be a single pattern
+        (the corresponding field will turn into a text entry)
+        or an array (the field will turn into a ComboBox,
+        with optionally translated labels)
+        """
         if key in PROPOSALS:
             return _combobox_data(PROPOSALS[key])
 
@@ -327,25 +327,27 @@ class Instance(Base):
     @simple_response
     @log
     def columns(self, page, key=''):
-        """	returns the structure of the results grid for a given
-                page+key combination. Note that design properties (width etc)
-                are added at the JS page (KeyTranslator.js)
+        """
+        returns the structure of the results grid for a given
+        page+key combination. Note that design properties (width etc)
+        are added at the JS page (KeyTranslator.js)
         """
         return QUERIES[page]['columns']
 
 
 def _combobox_data(data):
-    """	returns a (id, label) dict with translated values """
+    """returns a (id, label) dict with translated values"""
     return [dict(id=identifier, label=_id_to_label(identifier)) for identifier in data]
 
 
 def _make_query(key, operator, pattern):
-    """	consumes a tuple of 'key','operator','pattern' and converts it
-            into a valid Postgres WHERE clause. Features here:
+    """
+    consumes a tuple of 'key','operator','pattern' and converts it
+    into a valid Postgres WHERE clause. Features here:
 
-                    -	translates keyed values into their database representation
-                    -	tweaks this DOS-glob-style pattern notation into a correct
-                            regular expression
+    -	translates keyed values into their database representation
+    -	tweaks this DOS-glob-style pattern notation into a correct
+    regular expression
     """
 
     def __make_query(key, operator, pattern):
@@ -384,10 +386,10 @@ def _make_query(key, operator, pattern):
 
 
 def _decoded_value(field, key):
-    """	accepts a field name and the database value of this field
-            and translates this into the codeword that represents this value.
     """
-
+    accepts a field name and the database value of this field
+    and translates this into the codeword that represents this value.
+    """
     if field in CODED_VALUES:
         return CODED_VALUES[field].get(str(key), key)
     # unchanged if no match
@@ -395,11 +397,11 @@ def _decoded_value(field, key):
 
 
 def _coded_value(field, value):
-    """	this is the inverse of the above function: it accepts a field name
-            and a value and translates it back into the 'keyed' value to be
-            used when talking to the database.
     """
-
+    this is the inverse of the above function: it accepts a field name
+    and a value and translates it back into the 'keyed' value to be
+    used when talking to the database.
+    """
     if field in DECODED_VALUES:
         return DECODED_VALUES[field].get(str(value), value)
     # unchanged if no match
@@ -407,9 +409,10 @@ def _coded_value(field, value):
 
 
 def _convert_to_grid(data, names):
-    """	The queries here return arrays of values. But our grid
-            only accepts dicts where the values are prefixed by
-            the field names. This function converts one record.
+    """
+    The queries here return arrays of values. But our grid
+    only accepts dicts where the values are prefixed by
+    the field names. This function converts one record.
     """
     # find smaller length
     length = min(len(data), len(names))
@@ -422,7 +425,8 @@ def _convert_to_grid(data, names):
 
 
 def _id_to_label(identifier):
-    """	translates any id into the corresponding label.
-            if no translation found -> returns id unchanged.
+    """
+    translates any id into the corresponding label.
+    if no translation found -> returns id unchanged.
     """
     return LABELS.get(identifier, identifier)

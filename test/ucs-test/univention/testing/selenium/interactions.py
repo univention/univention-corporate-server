@@ -209,9 +209,7 @@ class Interactions:
 
     def enter_input(self, inputname, inputvalue):
         # type: (str, str) -> None
-        """
-        Enter inputvalue into an input-element with the tag inputname.
-        """
+        """Enter inputvalue into an input-element with the tag inputname."""
         logger.info('Entering %r into the input-field %r.', inputvalue, inputname)
         elem = self.get_input(inputname)
         # Retry up to 30 times if expected value does not match actual input field value.
@@ -252,9 +250,7 @@ class Interactions:
 
     def submit_input(self, inputname):
         # type: (str) -> None
-        """
-        Submit the input in an input-element with the tag inputname.
-        """
+        """Submit the input in an input-element with the tag inputname."""
         logger.info(f'Submitting input field {inputname!r}.')
         elem = self.get_input(inputname)
         # elem.submit() -> This doesn't work, when there is an html element
@@ -263,9 +259,7 @@ class Interactions:
 
     def get_input(self, inputname):
         # type: (str) -> None
-        """
-        Get an input-element with the tag inputname.
-        """
+        """Get an input-element with the tag inputname."""
         xpath = f'//input[@name= {json.dumps(inputname)} ]'
         elems = webdriver.support.ui.WebDriverWait(xpath, 60).until(
             self.get_all_enabled_elements
@@ -311,9 +305,7 @@ class Interactions:
 
     def drag_and_drop(self, source, target, find_by='xpath'):
         # type: (Union[Any, str], Union[Any, str], str) -> None
-        """
-        Wrapper for selenium.webdriver.common.action_chains.drag_and_drop
-        """
+        """Wrapper for selenium.webdriver.common.action_chains.drag_and_drop"""
         if isinstance(source, str):
             source = getattr(self.driver, 'find_element_by_%s' % find_by)(source)
         if isinstance(target, str):
@@ -322,9 +314,7 @@ class Interactions:
 
     def drag_and_drop_by_offset(self, source, xoffset, yoffset, find_by='xpath'):
         # type: (Union[Any, str], int, int, str) -> None
-        """
-        Wrapper for selenium.webdriver.common.action_chains.drag_and_drop_by_offset
-        """
+        """Wrapper for selenium.webdriver.common.action_chains.drag_and_drop_by_offset"""
         if isinstance(source, str):
             source = getattr(self.driver, 'find_element_by_%s' % find_by)(source)
         ActionChains(self.driver).drag_and_drop_by_offset(source, xoffset, yoffset).perform()

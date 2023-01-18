@@ -31,9 +31,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-"""
-Creates a local repository.
-"""
+"""Creates a local repository."""
 
 from __future__ import print_function
 
@@ -54,7 +52,7 @@ configRegistry.load()
 
 
 def check_preconditions(options: Namespace) -> None:
-    """ Check for already existing mirror and for debmirror package """
+    """Check for already existing mirror and for debmirror package"""
     # check directories
     if exists(join(options.base, 'mirror')):
         print('Warning: The path %s/mirror already exists.' % options.base, file=sys.stderr)
@@ -82,7 +80,7 @@ def check_preconditions(options: Namespace) -> None:
 
 
 def prepare(options: Namespace) -> None:
-    """ Set local/repository and create directory structure """
+    """Set local/repository and create directory structure"""
     if configRegistry.is_false('local/repository', True):
         handler_set(['local/repository=yes'])
         configRegistry.load()
