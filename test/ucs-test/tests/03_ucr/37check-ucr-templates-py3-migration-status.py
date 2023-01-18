@@ -38,7 +38,6 @@ ALLOWED_DIFFERENCES = [
 	'/etc/univention/templates/files/etc/mysql/mariadb.conf.d/60-ucr.cnf',  # not really different, but difference due to dict iteration
 ] + glob.glob('/etc/univention/templates/files/etc/security/*.conf')
 IGNORE = {
-	'/etc/univention/templates/files/etc/logrotate.d/samba',
 }  # type: Dict[str, Set[int]]
 
 SCRIPT = r'''#!/bin/sh

@@ -13,9 +13,8 @@ for name in ('smbd', 'nmbd'):
 	print("\tendscript")
 	print("}")
 
-for name in ('log.samba-dcerpcd', 'log.rpcd_*'):
-	print("/var/log/samba/%s " % name, end="")
-print("{")
+filelist = [ "/var/log/samba/%s" % name for name in ('log.samba-dcerpcd', 'log.rpcd_*')]
+print(" ".join(filelist) + " {")
 for setting in sorted(settings):
 	print("\t%s" % settings[setting])
 print("\tsharedscripts")
