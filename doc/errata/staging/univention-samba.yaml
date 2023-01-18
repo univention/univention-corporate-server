@@ -3,7 +3,7 @@ release: "5.0"
 version: [2]
 scope: ucs_5.0-0-errata5.0-2
 src: univention-samba
-fix: 14.0.5-8A~5.0.0.202301161735
+fix: 14.0.5-8A~5.0.0.202301181639
 desc: |
  This update addresses the following issues:
  * Rotate additional log files `log.dcerpcd` and `log.rpcd_*`
