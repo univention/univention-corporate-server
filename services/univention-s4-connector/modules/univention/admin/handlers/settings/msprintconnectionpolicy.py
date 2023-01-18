@@ -50,7 +50,7 @@ options = {
     'default': univention.admin.option(
         short_description=short_description,
         default=True,
-        objectClasses=['msPrintConnectionPolicy', 'top']
+        objectClasses=['msPrintConnectionPolicy', 'top'],
     ),
 }
 property_descriptions = {
@@ -59,7 +59,7 @@ property_descriptions = {
         long_description='',
         syntax=univention.admin.syntax.string,
         required=True,
-        identifies=True
+        identifies=True,
     ),
     'description': univention.admin.property(
         short_description=_('Description'),
@@ -104,7 +104,7 @@ layout = [
         ['msPrinterName'],
         ['msPrintServerName'],
         ['msPrintUNCName'],
-    ])
+    ]),
 ]
 
 mapping = univention.admin.mapping.mapping()

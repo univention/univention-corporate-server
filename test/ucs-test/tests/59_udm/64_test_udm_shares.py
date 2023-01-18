@@ -174,7 +174,7 @@ def test_create_fileshare(udm, ucr):
     utils.verify_ldap_object(
         file_share_dn,
         {'univentionShareSambaPostexec': [properties['sambaPostexec']]},
-        delay=1
+        delay=1,
     )
 
 

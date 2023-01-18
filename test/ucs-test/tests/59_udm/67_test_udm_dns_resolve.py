@@ -59,7 +59,7 @@ class Test_DNSResolve:
             'expire': '%s' % (uts.random_int(bottom_end=10, top_end=99)),
             'ttl': '%s' % (uts.random_int(bottom_end=10, top_end=99)),
             'retry': '%s' % (uts.random_int()),
-            'a': ['%s' % (uts.random_ip())]
+            'a': ['%s' % (uts.random_ip())],
         }
         udm.create_object('dns/forward_zone', position=pos, **forward_zone_properties)
         utils.wait_for_replication_and_postrun()
@@ -87,7 +87,7 @@ class Test_DNSResolve:
         }
         udm.create_object('dns/reverse_zone', position=pos, **reverse_zone_properties)
         zoneName = '.'.join(
-            list(reversed(subnet)) + ['in-addr', 'arpa', '']
+            list(reversed(subnet)) + ['in-addr', 'arpa', ''],
         )
         utils.wait_for_replication_and_postrun()
         answers = resolve_dns_entry(zoneName, 'SOA')
@@ -102,7 +102,7 @@ class Test_DNSResolve:
         })
         udm.create_object('dns/reverse_zone', position=pos, **reverse_zone_properties)
         zoneName = '.'.join(
-            list(reversed([nibble for block in subnet for nibble in block])) + ['ip6', 'arpa', '']
+            list(reversed([nibble for block in subnet for nibble in block])) + ['ip6', 'arpa', ''],
         )
         utils.wait_for_replication_and_postrun()
         answers = resolve_dns_entry(zoneName, 'SOA')
@@ -135,7 +135,7 @@ class Test_DNSResolve:
             'zonettl': '%s' % (uts.random_int(bottom_end=100, top_end=999)),
             'a': ip,
             'mx': '50 %s' % uts.random_string(),
-            'txt': uts.random_string()
+            'txt': uts.random_string(),
         }
         udm.create_object('dns/host_record', superordinate=forward_zone, **host_record_properties)
 
@@ -187,7 +187,7 @@ class Test_DNSResolve:
             'zonettl': '%s' % (uts.random_int(bottom_end=100, top_end=999)),
             'a': [ipv4, ipv6],
             'mx': '50 %s' % uts.random_string(),
-            'txt': uts.random_string()
+            'txt': uts.random_string(),
         }
         udm.create_object('dns/host_record', superordinate=forward_zone, **host_record_properties)
         utils.wait_for_replication_and_postrun()
@@ -229,7 +229,7 @@ class Test_DNSResolve:
             'zonettl': '%s' % (uts.random_int(bottom_end=100, top_end=999)),
             'a': [ipv4, ipv6],
             'mx': '50 %s' % uts.random_string(),
-            'txt': uts.random_string()
+            'txt': uts.random_string(),
         }
         udm.create_object('dns/host_record', superordinate=forward_zone, **host_record_properties)
         utils.wait_for_replication_and_postrun()
@@ -244,7 +244,7 @@ class Test_DNSResolve:
         srv_record_properties = {
             'name': f'{service} {protocol} {extension}',
             'location': '%d %d %s %s' % (priority, weight, port, fqhn),
-            'zonettl': '128'
+            'zonettl': '128',
         }
         udm.create_object('dns/srv_record', superordinate=forward_zone, **srv_record_properties)
         utils.wait_for_replication_and_postrun()
@@ -280,7 +280,7 @@ class Test_DNSResolve:
         utils.wait_for_replication_and_postrun()
 
         zoneName = '.'.join(
-            list(reversed(ipv4)) + ['in-addr', 'arpa', '']
+            list(reversed(ipv4)) + ['in-addr', 'arpa', ''],
         )
         answers = resolve_dns_entry(zoneName, 'PTR')
         answer = [rdata.to_text() for rdata in answers]
@@ -298,7 +298,7 @@ class Test_DNSResolve:
         udm.create_object('dns/ptr_record', address=addr, superordinate=reverse_zone, ptr_record=ptr_record)
 
         zoneName = '.'.join(
-            list(reversed([nibble for block in ipv6 for nibble in block])) + ['ip6', 'arpa', '']
+            list(reversed([nibble for block in ipv6 for nibble in block])) + ['ip6', 'arpa', ''],
         )
         utils.wait_for_replication_and_postrun()
         answers = resolve_dns_entry(zoneName, 'PTR')
@@ -347,7 +347,7 @@ class Test_DNSResolve:
         record_properties = {
             'zone': zonename,
             'zonettl': '%s' % (uts.random_int(bottom_end=100, top_end=999)),
-            'nameserver': nameservers
+            'nameserver': nameservers,
         }
         udm.create_object('dns/ns_record', superordinate=forward_zone, **record_properties)
         utils.wait_for_replication_and_postrun()

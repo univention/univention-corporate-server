@@ -17,7 +17,7 @@ from univention.testing.utils import get_ldap_connection
 import univention.testing.connector_common as tcommon
 from univention.testing.connector_common import delete_con_user
 from univention.testing.connector_common import (
-    create_udm_user, to_unicode, NormalUser
+    create_udm_user, to_unicode, NormalUser,
 )
 from univention.testing.udm import UCSTestUDM, UCSTestUDM_ModifyUDMObjectFailed
 

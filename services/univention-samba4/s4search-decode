@@ -235,7 +235,7 @@ objecttypes = {
     'accountExpires': decode_accountExpires,
     'badPasswordTime': decode_lastDate('badPasswordTime'),
     'lastLogoff': decode_lastDate('lastLogoff'),
-    'lastLogon': decode_lastDate('lastLogon')
+    'lastLogon': decode_lastDate('lastLogon'),
 }
 
 

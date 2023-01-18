@@ -82,7 +82,7 @@ def random_name_special_characters(length=10):
         random_string(length=1, alpha=False, numeric=False, charset=STR_UMLAUT),
         random_string(length=2, alpha=True, numeric=False),
         random_string(length=(length - 4), alpha=False, numeric=False, charset=STR_SPECIAL_CHARACTER + STR_UMLAUT),
-        random_string(length=1, alpha=False, numeric=False, charset=STR_UMLAUTNUM)
+        random_string(length=1, alpha=False, numeric=False, charset=STR_UMLAUTNUM),
     ))
 
 

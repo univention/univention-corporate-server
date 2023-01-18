@@ -298,7 +298,7 @@ def handler(dn: str, new: Dict[str, List[bytes]], old: Dict[str, List[bytes]], c
                         ['samba-tool', 'ntacl', 'set', sddl, share_path],
                         stdout=subprocess.PIPE,
                         stderr=subprocess.PIPE,
-                        close_fds=True
+                        close_fds=True,
                     )
                     _, err = proc.communicate()
                     stderr = err.decode('UTF-8')

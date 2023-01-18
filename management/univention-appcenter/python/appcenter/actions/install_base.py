@@ -249,8 +249,8 @@ class InstallRemoveUpgrade(Register):
                             data_dir=DATA_DIR,
                             app_id=app.id,
                             action=self.get_action_name(),
-                            when="post"
-                        )
+                            when="post",
+                        ),
                     )
                 else:
                     self._write_fail_event(app, context_id, status, args)

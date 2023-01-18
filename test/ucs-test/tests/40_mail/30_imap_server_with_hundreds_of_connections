@@ -54,8 +54,8 @@ def main():
                 set={
                     'password': password,
                     'mailHomeServer': host,
-                    'mailPrimaryAddress': usermail
-                }
+                    'mailPrimaryAddress': usermail,
+                },
             )
             handler_set([
                 'mail/dovecot/limits/default_process_limit=2000',

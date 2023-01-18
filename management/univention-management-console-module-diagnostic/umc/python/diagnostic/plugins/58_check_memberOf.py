@@ -42,7 +42,7 @@ warning_message = _('The "memberOf" group membership attribute is not available 
 links = [{
     'name': 'activateMemberOf',
     'href': _('https://help.univention.com/t/memberof-attribute-group-memberships-of-user-and-computer-objects/6439'),
-    'label': _('Activate the memberOf LDAP overlay')
+    'label': _('Activate the memberOf LDAP overlay'),
 }]
 
 

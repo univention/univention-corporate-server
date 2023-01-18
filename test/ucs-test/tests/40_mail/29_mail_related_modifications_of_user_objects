@@ -59,7 +59,7 @@ def main():
                 univention.config_registry.handler_set([
                     'mail/dovecot/mailbox/rename=yes',
                     'mail/dovecot/mailbox/delete=no',
-                    'mail/dovecot/auth/cache_size=0'
+                    'mail/dovecot/auth/cache_size=0',
                 ])
                 subprocess.call(['service', 'dovecot', 'restart'], stderr=open('/dev/null', 'w'))
                 host = '{}.{}'.format(ucr.get('hostname'), domain)
@@ -80,8 +80,8 @@ def main():
                     set={
                         'password': password,
                         'mailHomeServer': host,
-                        'mailPrimaryAddress': usermail
-                    }
+                        'mailPrimaryAddress': usermail,
+                    },
                 )
                 check_login_lookup(host, usermail, password, True)
                 new_usermail = f'{uts.random_name()}@{domain}'
@@ -105,8 +105,8 @@ def main():
                 userdn, username = udm.create_user(
                     set={
                         'password': password,
-                        'mailPrimaryAddress': usermail
-                    }
+                        'mailPrimaryAddress': usermail,
+                    },
                 )
                 check_login_lookup(host, usermail, password, True)
                 udm.modify_object(
@@ -128,8 +128,8 @@ def main():
                 userdn, username = udm.create_user(
                     set={
                         'password': password,
-                        'mailPrimaryAddress': usermail
-                    }
+                        'mailPrimaryAddress': usermail,
+                    },
                 )
                 check_login_lookup(host, usermail, password, True)
                 udm.modify_object(
@@ -151,8 +151,8 @@ def main():
                 userdn, username = udm.create_user(
                     set={
                         'password': password,
-                        'mailHomeServer': host
-                    }
+                        'mailHomeServer': host,
+                    },
                 )
                 check_login_lookup(host, '', password, False)
                 udm.modify_object(
@@ -178,17 +178,17 @@ def main():
                         'ip': ip,
                         'name': new_host,
                         'dnsEntryZoneForward': 'zoneName={},cn=dns,{} {}'.format(
-                            domain, basedn, ip)
+                            domain, basedn, ip),
                     },
-                    position='cn=computers,%s' % basedn
+                    position='cn=computers,%s' % basedn,
                 )
                 usermail = f'{uts.random_name()}@{domain}'
                 userdn, username = udm.create_user(
                     set={
                         'password': password,
                         'mailHomeServer': host,
-                        'mailPrimaryAddress': usermail
-                    }
+                        'mailPrimaryAddress': usermail,
+                    },
                 )
                 check_login_lookup(host, usermail, password, True)
                 udm.modify_object(
@@ -214,17 +214,17 @@ def main():
                         'ip': ip,
                         'name': new_host,
                         'dnsEntryZoneForward': 'zoneName={},cn=dns,{} {}'.format(
-                            domain, basedn, ip)
+                            domain, basedn, ip),
                     },
-                    position='cn=computers,%s' % basedn
+                    position='cn=computers,%s' % basedn,
                 )
                 usermail = f'{uts.random_name()}@{domain}'
                 userdn, username = udm.create_user(
                     set={
                         'password': password,
                         'mailHomeServer': host,
-                        'mailPrimaryAddress': usermail
-                    }
+                        'mailPrimaryAddress': usermail,
+                    },
                 )
                 check_login_lookup(host, usermail, password, True)
                 udm.modify_object(
@@ -250,17 +250,17 @@ def main():
                         'ip': ip,
                         'name': new_host,
                         'dnsEntryZoneForward': 'zoneName={},cn=dns,{} {}'.format(
-                            domain, basedn, ip)
+                            domain, basedn, ip),
                     },
-                    position='cn=computers,%s' % basedn
+                    position='cn=computers,%s' % basedn,
                 )
                 usermail = f'{uts.random_name()}@{domain}'
                 userdn, username = udm.create_user(
                     set={
                         'password': password,
                         'mailHomeServer': host,
-                        'mailPrimaryAddress': usermail
-                    }
+                        'mailPrimaryAddress': usermail,
+                    },
                 )
                 check_login_lookup(host, usermail, password, True)
                 udm.modify_object(

@@ -437,7 +437,7 @@ class ad(univention.connector.ucs):
             ad_ldap_certificate,
             listener_dir,
             max_retry_rejected,
-            **kwargs
+            **kwargs,
         )
 
     def __init__(self, CONFIGBASENAME, property, configRegistry, ad_ldap_host, ad_ldap_port, ad_ldap_base, ad_ldap_binddn, ad_ldap_bindpw, ad_ldap_certificate, listener_dir, max_retry_rejected, logfilename=None, debug_level=None):

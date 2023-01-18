@@ -41,7 +41,7 @@ import univention.admin.localization
 from univention.admin.policy import (
     register_policy_mapping, policy_object_tab,
     requiredObjectClassesProperty, prohibitedObjectClassesProperty,
-    fixedAttributesProperty, emptyAttributesProperty, ldapFilterProperty
+    fixedAttributesProperty, emptyAttributesProperty, ldapFilterProperty,
 )
 
 
@@ -56,7 +56,7 @@ class shareUserQuotaFixedAttributes(univention.admin.syntax.select):
         ('univentionQuotaHardLimitSpace', _('Hard limit')),
         ('univentionQuotaSoftLimitInodes', _('Soft limit (Files)')),
         ('univentionQuotaHardLimitInodes', _('Hard limit (Files)')),
-        ('univentionQuotaReapplyEveryLogin', _('Reapply settings on every login'))
+        ('univentionQuotaReapplyEveryLogin', _('Reapply settings on every login')),
     ]
 
 
@@ -114,7 +114,7 @@ property_descriptions = {
         short_description=_('Reapply settings on every login'),
         long_description=_('Reapply the mountpoint specific user quota policies on each user login. If not set, the initially configured quota settings will not be overwritten.'),
         syntax=univention.admin.syntax.TrueFalseUp,
-        default="FALSE"
+        default="FALSE",
     ),
 
 }
@@ -132,10 +132,10 @@ layout = [
             'name',
             ['softLimitSpace', 'hardLimitSpace'],
             ['softLimitInodes', 'hardLimitInodes'],
-            ['reapplyeverylogin']
+            ['reapplyeverylogin'],
         ]),
     ]),
-    policy_object_tab()
+    policy_object_tab(),
 ]
 
 mapping = univention.admin.mapping.mapping()

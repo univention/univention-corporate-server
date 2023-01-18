@@ -36,12 +36,12 @@ def main():
     cmd_disable = [
         '/usr/sbin/udm', 'saml/serviceprovider', 'modify',
         '--dn=SAMLServiceProviderIdentifier=https://%s/univention/saml/metadata,cn=saml-serviceprovider,cn=univention,%s' % (master_hostname, ucr.get('ldap/base')),
-        '--set', 'isActivated=FALSE'
+        '--set', 'isActivated=FALSE',
     ]
     cmd_enable = [
         '/usr/sbin/udm', 'saml/serviceprovider', 'modify',
         '--dn=SAMLServiceProviderIdentifier=https://%s/univention/saml/metadata,cn=saml-serviceprovider,cn=univention,%s' % (master_hostname, ucr.get('ldap/base')),
-        '--set', 'isActivated=TRUE'
+        '--set', 'isActivated=TRUE',
     ]
     # Force update of the sp config to avoid test failures due to old configs
     subprocess.check_call(cmd_disable)

@@ -98,7 +98,7 @@ def high_log_levels() -> bool:
         is_on('pdate/check/boot/debug'),
         is_on('update/check/cron/debug'),
         ucr.get('apache2/loglevel', 'warn') in ('notice', 'info', 'debug'),
-        ucr.get('ldap/debug/level', 'none') not in ('none', '0')
+        ucr.get('ldap/debug/level', 'none') not in ('none', '0'),
     ))
 
 

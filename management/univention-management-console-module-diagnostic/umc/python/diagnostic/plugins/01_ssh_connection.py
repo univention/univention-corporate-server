@@ -106,7 +106,7 @@ def run(_umc_instance: Instance) -> None:
     data = {
         "fqdn": FQDN,
         "uid": ucr['hostname'] + '$',
-        "hostname": ucr['hostname']
+        "hostname": ucr['hostname'],
     }
 
     for host in ucs_hosts:

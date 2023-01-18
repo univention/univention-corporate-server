@@ -67,7 +67,7 @@ property_descriptions = {
         include_in_default_search=True,
         required=True,
         may_change=False,
-        identifies=True
+        identifies=True,
     ),
     'shortDescription': univention.admin.property(
         short_description=_('Short description'),
@@ -261,7 +261,7 @@ layout = [
         ]),
         Group(_("Long Description"), layout=[
             ["longDescription"],
-            ["translationLongDescription"]
+            ["translationLongDescription"],
         ]),
     ]),
     Tab(_('Module'), _('Configuration of the modules to be extended'), layout=[
@@ -276,7 +276,7 @@ layout = [
     Tab(_('UMC'), _('Settings for UMC'), layout=[
         Group(_('General extended attribute settings'), layout=[
             "disableUDMWeb",
-            "doNotSearch"
+            "doNotSearch",
         ]),
         Group(_('Attribute layout'), layout=[
             ["tabPosition", "overwritePosition"],

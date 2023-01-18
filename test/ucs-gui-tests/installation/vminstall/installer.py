@@ -56,7 +56,7 @@ class Installer(object):
         self.vm_config = VmConfig(
             ip=self.args.ip,
             role=role,
-            language=language
+            language=language,
         )
 
         host = self.__get_host()

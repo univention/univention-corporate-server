@@ -33,7 +33,7 @@
 
 from __future__ import absolute_import, unicode_literals
 from ..encoders import (
-    Base64BinaryPropertyEncoder, MultiLanguageTextAppcenterPropertyEncoder
+    Base64BinaryPropertyEncoder, MultiLanguageTextAppcenterPropertyEncoder,
 )
 from .generic import GenericModule, GenericObject, GenericObjectProperties
 

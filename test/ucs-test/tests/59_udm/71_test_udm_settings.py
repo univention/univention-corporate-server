@@ -186,7 +186,7 @@ class Test_LDAPACL:
 @pytest.mark.parametrize('prefix', ['/', '../../../../../../../../../'])
 @pytest.mark.parametrize('path,position,attr,ocs', [
     ('/var/lib/univention-ldap/local-schema', 'cn=ldapschema,cn=univention', 'univentionLDAPSchemaFilename', 'univentionLDAPExtensionSchema'),
-    ('/etc/univention/templates/files/etc/ldap/slapd.conf.d/', 'cn=ldapacl,cn=univention', 'univentionLDAPACLFilename', 'univentionLDAPExtensionACL')
+    ('/etc/univention/templates/files/etc/ldap/slapd.conf.d/', 'cn=ldapacl,cn=univention', 'univentionLDAPACLFilename', 'univentionLDAPExtensionACL'),
 ])
 @pytest.mark.parametrize('name', ['etc/passwd3'])
 def test_filename_validation(udm, lo, modify, prefix, path, position, attr, ocs, name):
@@ -341,7 +341,7 @@ def test_create_data(udm, ucr):
             'univentionDataMeta': kwargs['meta'],
             'univentionOwnedByPackage': [kwargs['package']],
             'univentionOwnedByPackageVersion': [kwargs['packageversion']],
-        }
+        },
     )
 
 
@@ -424,7 +424,7 @@ def test_register_data(udm, ucr, remove_tmp_file):
             'univentionDataMeta': kwargs['meta'],
             'univentionOwnedByPackage': [kwargs['package']],
             'univentionOwnedByPackageVersion': [kwargs['packageversion']],
-        }
+        },
     )
 
     nums = kwargs['packageversion'].split('.')
@@ -461,6 +461,6 @@ def test_register_data(udm, ucr, remove_tmp_file):
             'univentionDataMeta': kwargs['meta'],
             'univentionOwnedByPackage': [kwargs['package']],
             'univentionOwnedByPackageVersion': [kwargs['packageversion']],
-        }
+        },
     )
     print('OK: object unchanged.')

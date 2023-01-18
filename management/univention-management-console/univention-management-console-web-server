@@ -212,7 +212,7 @@ class SessionClient(object):
             'If you have root permissions on the system you can restart UMC by executing the following commands:',
             ' * service univention-management-console-server restart',
             ' * service univention-management-console-web-server restart',
-            'Otherwise please contact an administrator or try again later.'
+            'Otherwise please contact an administrator or try again later.',
         ))
         for id, (queue, request) in list(self._requestid2response_queue.items()):
             self._requestid2response_queue.pop(id)
@@ -275,7 +275,7 @@ class UMCP_Dispatcher(object):
                     ' * service univention-management-console-server restart',
                     'The following logfile may contain information why the server is not running:',
                     ' * /var/log/univention/management-console-server.log',
-                    'Otherwise please contact an administrator or try again later.'
+                    'Otherwise please contact an administrator or try again later.',
                 ))
                 queuerequest.response_queue.put(response)
                 return
@@ -1046,7 +1046,7 @@ class CPCommand(CPgeneric):
         return {
             'filename': filename,
             'name': store.name,
-            'tmpfile': tmpfile
+            'tmpfile': tmpfile,
         }
 
 
@@ -1067,7 +1067,7 @@ class CPAuth(CPgeneric):
         req.body = {
             "auth_type": "SAML",
             "username": user.username,
-            "password": user.saml.message
+            "password": user.saml.message,
         }
 
         try:
@@ -1081,7 +1081,7 @@ class CPAuth(CPgeneric):
                     'The SAML authentication failed. This might be a temporary problem. Please login again.\n'
                     'Further information can be found in the following logfiles:\n'
                     '* /var/log/univention/management-console-web-server.log\n'
-                    '* /var/log/univention/management-console-server.log\n'
+                    '* /var/log/univention/management-console-server.log\n',
                 )
             raise
 
@@ -1163,7 +1163,7 @@ class CPAuth(CPgeneric):
         req = Request('AUTH')
         req.body = {
             "username": username,
-            "password": password
+            "password": password,
         }
         self._auth_request(req, sessionid)
 
@@ -1505,7 +1505,7 @@ def run_cherrypy(options):
         'engine.autoreload.on': False,
         'tools.response_headers.on': True,
         'tools.response_headers.headers': [
-            ('Content-Type', 'application/json')
+            ('Content-Type', 'application/json'),
         ],
         'tools.fix_uri.on': True,
         'tools.umcp_auth.on': True,
@@ -1529,11 +1529,11 @@ class UMC_HTTP_Daemon(object):
         self.parser = ArgumentParser()
         self.parser.add_argument(
             '-d', '--debug', type=int, default=ucr.get_int('umc/server/debug/level', 1),
-            help='if given than debugging is activated and set to the specified level [default: %(default)s]'
+            help='if given than debugging is activated and set to the specified level [default: %(default)s]',
         )
         self.parser.add_argument(
             '-L', '--log-file', default='management-console-web-server',
-            help='specifies an alternative log file [default: %(default)s]'
+            help='specifies an alternative log file [default: %(default)s]',
         )
         self.parser.add_argument(
             '-p', '--port', type=int,

@@ -61,7 +61,7 @@ class config(object):
         self.data = {
             'ldap/base': base,
             'ldap/base/dns': 'cn=dns,' + base,
-            'ldap/base/dhcp': 'cn=dhcp,' + base
+            'ldap/base/dhcp': 'cn=dhcp,' + base,
         }
 
     def __getitem__(self, key):

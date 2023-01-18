@@ -83,7 +83,7 @@ property_descriptions = {
         syntax=univention.admin.syntax.dnsName_umlauts,
         include_in_default_search=True,
         required=True,
-        identifies=True
+        identifies=True,
     ),
     'description': univention.admin.property(
         short_description=_('Description'),
@@ -179,7 +179,7 @@ property_descriptions = {
         long_description='',
         syntax=univention.admin.syntax.passwd,
         options=['kerberos', 'posix', 'samba'],
-        dontsearch=True
+        dontsearch=True,
     ),
     'unixhome': univention.admin.property(
         short_description=_('Unix home directory'),
@@ -187,14 +187,14 @@ property_descriptions = {
         syntax=univention.admin.syntax.absolutePath,
         options=['posix'],
         required=True,
-        default=('/dev/null', [])
+        default=('/dev/null', []),
     ),
     'shell': univention.admin.property(
         short_description=_('Login shell'),
         long_description='',
         syntax=univention.admin.syntax.string,
         options=['posix'],
-        default=('/bin/false', [])
+        default=('/bin/false', []),
     ),
     'primaryGroup': univention.admin.property(
         short_description=_('Primary group'),
@@ -224,7 +224,7 @@ property_descriptions = {
         long_description='',
         syntax=univention.admin.syntax.integer,
         dontsearch=True,
-        options=['samba']
+        options=['samba'],
     ),
 }
 
@@ -245,15 +245,15 @@ layout = [
             'dnsEntryZoneReverse',
         ]),
         Group(_('DHCP'), layout=[
-            'dhcpEntryZone'
+            'dhcpEntryZone',
         ]),
     ]),
     Tab(_('Account'), _('Account'), advanced=True, layout=[
         'password',
-        'primaryGroup'
+        'primaryGroup',
     ]),
     Tab(_('Unix account'), _('Unix account settings'), advanced=True, layout=[
-        ['unixhome', 'shell']
+        ['unixhome', 'shell'],
     ]),
     Tab(_('Services'), _('Services'), advanced=True, layout=[
         'service',
@@ -262,7 +262,7 @@ layout = [
         'groups',
     ]),
     Tab(_('DNS alias'), _('Alias DNS entry'), advanced=True, layout=[
-        'dnsEntryZoneAlias'
+        'dnsEntryZoneAlias',
     ]),
 ]
 

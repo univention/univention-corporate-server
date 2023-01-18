@@ -49,13 +49,13 @@ def main():
     parser.add_argument(
         '-p', '--package',
         required=True,
-        help='Specifies the package name which is needed for the creation of .po files. (Mandatory)'
+        help='Specifies the package name which is needed for the creation of .po files. (Mandatory)',
     )
     parser.add_argument(
         '-t', '--type',
         choices=['json', 'mo', 'po'],
         default='json',
-        help='Type of the final output file; note that "json" and "mo" will both also create .po files [%(default)s]'
+        help='Type of the final output file; note that "json" and "mo" will both also create .po files [%(default)s]',
     )
     parser.add_argument(
         '-o', '--outdir',

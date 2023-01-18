@@ -61,7 +61,7 @@ def main():
             if not mail_delivered("Subject: 41_dovecot_quota-status 1", mail_address=mail):
                 utils.fail(
                     "Fail: under quota message not delivered missing (quota was"
-                    " set to %d MB, len(message body): %d KB)." % (quota01, len(msg1) / 1024)
+                    " set to %d MB, len(message body): %d KB)." % (quota01, len(msg1) / 1024),
                 )
 
             #
@@ -86,7 +86,7 @@ def main():
             if not rejected or mail_delivered("Subject: 41_dovecot_quota-status 2", mail_address=mail):
                 utils.fail(
                     "Fail: over quota message was delivered (quota was set to %d MB, len(message body 1): "
-                    "%d KB, len(message body 2): %d KB). " % (quota01, len(msg1) / 1024, len(msg2) / 1024)
+                    "%d KB, len(message body 2): %d KB). " % (quota01, len(msg1) / 1024, len(msg2) / 1024),
                 )
 
 

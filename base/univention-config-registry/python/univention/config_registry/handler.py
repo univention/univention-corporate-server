@@ -241,7 +241,7 @@ def warning_string(prefix='# ', srcfiles=set()):
         '%s\t%s' % (prefix, srcfile)
         for srcfile in sorted(srcfiles)
     ] + [
-        prefix
+        prefix,
     ]
 
     return "\n".join(res)

@@ -47,7 +47,7 @@ if __name__ == '__main__':
         "action",
         help="Test for sambaPwdMustChange values, or remove them. The default action is test.",
         choices=ACTIONS,
-        nargs='?'
+        nargs='?',
     )
 
     options = parser.parse_args()

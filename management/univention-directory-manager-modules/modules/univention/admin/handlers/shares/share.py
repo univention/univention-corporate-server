@@ -85,7 +85,7 @@ property_descriptions = {
         syntax=univention.admin.syntax.string_numbers_letters_dots_spaces,
         include_in_default_search=True,
         required=True,
-        identifies=True
+        identifies=True,
     ),
     'printablename': univention.admin.property(
         short_description=_('Printable name'),
@@ -110,13 +110,13 @@ property_descriptions = {
         short_description=_("Directory owner of the share's root directory"),
         long_description=_('The owner of the exported root directory. If none is given root will be owner.'),
         syntax=univention.admin.syntax.UserID,
-        default="0"
+        default="0",
     ),
     'group': univention.admin.property(
         short_description=_("Directory owner group of the share's root directory"),
         long_description=_('The primary group of the exported root directory, if none is given group 0 will be used.'),
         syntax=univention.admin.syntax.GroupID,
-        default="0"
+        default="0",
     ),
     'directorymode': univention.admin.property(
         short_description=_("Permissions for the share's root directory"),
@@ -218,7 +218,7 @@ property_descriptions = {
         syntax=univention.admin.syntax.UNIX_AccessRight,
         options=['samba'],
         dontsearch=True,
-        default='0744'
+        default='0744',
     ),
     'sambaDirectoryMode': univention.admin.property(
         short_description=_('Directory mode'),
@@ -226,7 +226,7 @@ property_descriptions = {
         syntax=univention.admin.syntax.UNIX_AccessRight,
         options=['samba'],
         dontsearch=True,
-        default='0755'
+        default='0755',
     ),
     'sambaForceCreateMode': univention.admin.property(
         short_description=_('Force file mode'),
@@ -234,7 +234,7 @@ property_descriptions = {
         syntax=univention.admin.syntax.UNIX_AccessRight,
         options=['samba'],
         dontsearch=True,
-        default='0'
+        default='0',
     ),
     'sambaForceDirectoryMode': univention.admin.property(
         short_description=_('Force directory mode'),
@@ -242,7 +242,7 @@ property_descriptions = {
         syntax=univention.admin.syntax.UNIX_AccessRight,
         options=['samba'],
         dontsearch=True,
-        default='0'
+        default='0',
     ),
     'sambaSecurityMode': univention.admin.property(
         short_description=_('Security mode'),
@@ -250,7 +250,7 @@ property_descriptions = {
         syntax=univention.admin.syntax.UNIX_AccessRight,
         options=['samba'],
         dontsearch=True,
-        default='0777'
+        default='0777',
     ),
     'sambaDirectorySecurityMode': univention.admin.property(
         short_description=_('Directory security mode'),
@@ -258,7 +258,7 @@ property_descriptions = {
         syntax=univention.admin.syntax.UNIX_AccessRight,
         options=['samba'],
         dontsearch=True,
-        default='0777'
+        default='0777',
     ),
     'sambaForceSecurityMode': univention.admin.property(
         short_description=_('Force security mode'),
@@ -266,7 +266,7 @@ property_descriptions = {
         syntax=univention.admin.syntax.UNIX_AccessRight,
         options=['samba'],
         dontsearch=True,
-        default='0'
+        default='0',
     ),
     'sambaForceDirectorySecurityMode': univention.admin.property(
         short_description=_('Force directory security mode'),
@@ -274,7 +274,7 @@ property_descriptions = {
         syntax=univention.admin.syntax.UNIX_AccessRight,
         options=['samba'],
         dontsearch=True,
-        default='0'
+        default='0',
     ),
     'sambaLocking': univention.admin.property(
         short_description=_('Locking'),
@@ -297,7 +297,7 @@ property_descriptions = {
         long_description=_('This value controls the handling of file locking in the server. If strict locking is set to Auto (the default), the server performs file lock checks only on non-oplocked files. As most Windows redirectors perform file locking checks locally on oplocked files this is a good trade-off for improved performance. If set to yes, the server will check every read and write access for file locks, and deny access if locks exist. This can be slow on some systems. If strict locking is disabled, the server performs file lock checks only if the client explicitly asks for them.'),
         syntax=univention.admin.syntax.auto_one_zero,
         options=['samba'],
-        default='Auto'
+        default='Auto',
     ),
     'sambaOplocks': univention.admin.property(
         short_description=_('Oplocks'),
@@ -334,7 +334,7 @@ property_descriptions = {
         long_description=_('The way clients capable of offline caching will cache the files in the share.'),
         syntax=cscPolicy,
         options=['samba'],
-        default='manual'
+        default='manual',
     ),
     'sambaHostsAllow': univention.admin.property(
         short_description=_('Allowed host/network'),
@@ -473,7 +473,7 @@ layout = [
             'name',
             ['host', 'path'],
             ['owner', 'group'],
-            'directorymode'
+            'directorymode',
         ]),
     ]),
     Tab(_('NFS'), _('General NFS settings'), layout=[
@@ -520,10 +520,10 @@ layout = [
         ['sambaPostexec', 'sambaPreexec'],
     ]),
     Tab(_('Samba custom settings'), _('Custom settings for Samba shares'), advanced=True, layout=[
-        'sambaCustomSettings'
+        'sambaCustomSettings',
     ]),
     Tab(_('NFS custom settings'), _('Custom settings for NFS shares'), advanced=True, layout=[
-        'nfsCustomSettings'
+        'nfsCustomSettings',
     ]),
 ]
 

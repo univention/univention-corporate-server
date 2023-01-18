@@ -126,7 +126,7 @@ global_ignore_subtree = [
     'cn=Program Data,%(connector/s4/ldap/base)s' % configRegistry,
     'cn=Configuration,%(connector/s4/ldap/base)s' % configRegistry,
     'cn=opsi,%(ldap/base)s' % configRegistry,
-    'cn=Microsoft Exchange System Objects,%(connector/s4/ldap/base)s' % configRegistry
+    'cn=Microsoft Exchange System Objects,%(connector/s4/ldap/base)s' % configRegistry,
 ]
 
 for k, v in configRegistry.items():
@@ -150,7 +150,7 @@ group_mapping_table = {
         (key[len(key_prefix):], value)
         for key, value in configRegistry.items()
         if key.startswith(key_prefix)
-    ]
+    ],
 }
 if not group_mapping_table['cn']:
     group_mapping_table = {}
@@ -507,12 +507,12 @@ s4_mapping = {
         post_con_modify_functions=list(filter(None, [
             univention.s4connector.s4.sid_mapping.sid_to_s4 if configRegistry.is_true('connector/s4/mapping/sid_to_s4', False) and not configRegistry.is_true('connector/s4/mapping/sid', True) else None,
             univention.s4connector.s4.group_members_sync_from_ucs,
-            univention.s4connector.s4.object_memberships_sync_from_ucs
+            univention.s4connector.s4.object_memberships_sync_from_ucs,
         ])),
         post_ucs_modify_functions=list(filter(None, [
             univention.s4connector.s4.sid_mapping.sid_to_ucs if configRegistry.is_true('connector/s4/mapping/sid_to_ucs', True) and not configRegistry.is_true('connector/s4/mapping/sid', True) else None,
             univention.s4connector.s4.group_members_sync_to_ucs,
-            univention.s4connector.s4.object_memberships_sync_to_ucs
+            univention.s4connector.s4.object_memberships_sync_to_ucs,
         ])),
         dn_mapping_function=[univention.s4connector.s4.group_dn_mapping],
         attributes={
@@ -1952,7 +1952,7 @@ s4_mapping = {
         ignore_subtree=global_ignore_subtree,
         con_sync_function=univention.s4connector.s4.dc.ucs2con,
         ucs_sync_function=univention.s4connector.s4.dc.con2ucs,
-    )
+    ),
 }
 
 if not configRegistry.is_true('connector/s4/mapping/gpo', True):

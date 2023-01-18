@@ -62,7 +62,7 @@ class Instance(Base):
         self.finished(request.id, {
             'sender': self.username + '@example.com',
             'subject': 'Test mail from PACKAGENAME',
-            'recipient': 'test@example.com'
+            'recipient': 'test@example.com',
         })
 
     @sanitize(
@@ -94,7 +94,7 @@ class Instance(Base):
             request.options['sender'],
             request.options['recipient'],
             request.options['subject'],
-            request.options['message']
+            request.options['message'],
         )
         MODULE.info('sending mail: starting thread')
         cb = notifier.Callback(self.thread_finished_callback, request)

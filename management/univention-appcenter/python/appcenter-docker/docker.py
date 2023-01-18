@@ -526,9 +526,9 @@ class MultiDocker(Docker):
                     'appcenter_net': {
                         'ipam': {
                             'driver': 'default',
-                            'config': [{'subnet': network.compressed}]
-                        }
-                    }
+                            'config': [{'subnet': network.compressed}],
+                        },
+                    },
                 }
                 ucr_save({self.app.ucr_ip_key: str(network)})
                 ip_addresses = network.hosts()  # iterator!

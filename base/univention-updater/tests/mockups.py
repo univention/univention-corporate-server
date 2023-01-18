@@ -44,10 +44,10 @@ def gen_releases(releases=[], major=MAJOR, minor=MINOR, patches=range(0, PATCH +
                                 "patchlevel": patchlevel,
                                 "status": "maintained",
                             } for major, minor, patchlevel in patchelevels  # noqa: F812
-                        ]
+                        ],
                     } for minor, patchelevels in groupby(minors, key=itemgetter(1))  # noqa: F812
-                ]
+                ],
             } for major, minors in groupby(releases, key=itemgetter(0))  # noqa: F812
-        ]
+        ],
     }
     return json.dumps(data).encode('UTF-8')

@@ -594,12 +594,12 @@ def create_shared_mailfolder(udm, mailHomeServer, mailAddress=None, user_permiss
             'name': name,
             'mailHomeServer': mailHomeServer,
             'mailDomain': domain,
-            'mailPrimaryAddress': folder_mailaddress
+            'mailPrimaryAddress': folder_mailaddress,
         },
         append={
             'sharedFolderUserACL': user_permission or [],
             'sharedFolderGroupACL': group_permission or [],
-        }
+        },
     )
     if mailAddress:
         folder_name = 'shared/%s' % folder_mailaddress
@@ -748,7 +748,7 @@ def check_sending_mail(
         recipient_email=None,
         tls=True,
         allowed=True,
-        local=True
+        local=True,
 ):
     token = f'The token is {time.time()}.'
     try:
@@ -759,7 +759,7 @@ def check_sending_mail(
             server='4.3.2.1',
             tls=tls,
             username=username,
-            password=password
+            password=password,
         )
         if bool(ret_code) == allowed:
             utils.fail('Sending allowed = %r, but return code = %r\n {} means there are no refused recipient' % (allowed, ret_code))

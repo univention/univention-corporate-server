@@ -56,7 +56,7 @@ property_descriptions = {
         syntax=univention.admin.syntax.string_numbers_letters_dots,
         include_in_default_search=True,
         required=True,
-        identifies=True
+        identifies=True,
     ),
     'displayName': univention.admin.property(
         short_description=_('Display Name'),

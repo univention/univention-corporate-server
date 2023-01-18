@@ -41,7 +41,7 @@ title = _('Package status corrupt')
 description = '\n'.join([
     _('The package status of %s packages is corrupt.'),
     _('You may log in to the system as root via ssh and run the command "dpkg --configure -a" as an attempt to correct the packages status.'),
-    _('More information about the cause can be gained by executing "dpkg --audit".')
+    _('More information about the cause can be gained by executing "dpkg --audit".'),
 ])
 
 run_descr = ['This can be checked by running: dpkg --audit']

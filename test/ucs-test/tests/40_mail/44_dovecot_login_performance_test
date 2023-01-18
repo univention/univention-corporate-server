@@ -70,7 +70,7 @@ def main():
                 print('IMAP login for %d random users took %f seconds ==> %f per login' % (
                     i + 1,
                     end_time - start_time,
-                    (end_time - start_time) / float(i + 1)
+                    (end_time - start_time) / float(i + 1),
                 ))
 
 

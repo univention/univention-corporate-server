@@ -69,7 +69,7 @@ property_descriptions = {
 }
 
 layout = [
-    Tab(_('General'), _('Basic values'), ["name"])
+    Tab(_('General'), _('Basic values'), ["name"]),
 ]
 
 mapping = univention.admin.mapping.mapping()
@@ -83,7 +83,7 @@ class object(univention.admin.handlers.simpleLdap):
     def unmapped_lookup_filter(cls):
         return univention.admin.filter.conjunction('&', [
             univention.admin.filter.expression('objectClass', 'organizationalRole'),
-            univention.admin.filter.expression('cn', 'univention')
+            univention.admin.filter.expression('cn', 'univention'),
         ])
 
 

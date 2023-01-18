@@ -41,7 +41,7 @@ import univention.admin.localization
 from univention.admin.policy import (
     register_policy_mapping, policy_object_tab,
     requiredObjectClassesProperty, prohibitedObjectClassesProperty,
-    fixedAttributesProperty, emptyAttributesProperty, ldapFilterProperty
+    fixedAttributesProperty, emptyAttributesProperty, ldapFilterProperty,
 )
 
 
@@ -54,7 +54,7 @@ class dhcp_netbiosFixedAttributes(univention.admin.syntax.select):
     choices = [
         ('univentionDhcpNetbiosNameServers', _('NetBIOS name servers')),
         ('univentionDhcpNetbiosScope', _('NetBIOS scope')),
-        ('univentionDhcpNetbiosNodeType', _('NetBIOS node type'))
+        ('univentionDhcpNetbiosNodeType', _('NetBIOS node type')),
     ]
 
 
@@ -121,7 +121,7 @@ layout = [
             ['netbios_scope', 'netbios_node_type'],
         ]),
     ]),
-    policy_object_tab()
+    policy_object_tab(),
 ]
 
 mapping = univention.admin.mapping.mapping()

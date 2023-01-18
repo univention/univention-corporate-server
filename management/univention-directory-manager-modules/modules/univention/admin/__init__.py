@@ -202,7 +202,7 @@ class property:
         u'ü': u'ue',
         u'Þ': u'P',
         u'ð': u'o',
-        u'þ': u'p'
+        u'þ': u'p',
     }
 
     def __init__(

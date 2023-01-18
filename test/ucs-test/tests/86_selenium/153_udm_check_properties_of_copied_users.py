@@ -57,7 +57,7 @@ def user_info(udm):
     yield {
         'orig_dn': dn,
         'orig_username': username,
-        'copied_username': copied_username
+        'copied_username': copied_username,
     }
     for user in UDM.admin().version(1).get('users/user').search(f'username={copied_username}'):
         user.delete()
@@ -86,7 +86,7 @@ def test_copy_user(selenium, user_info):
         'userCertificate', 'certificateIssuerCountry', 'certificateIssuerState', 'certificateIssuerLocation', 'certificateIssuerOrganisation',
         'certificateIssuerMail', 'certificateSubjectCountry', 'certificateSubjectState', 'certificateSubjectLocation', 'certificateSubjectOrganisation',
         'certificateSubjectOrganisationalUnit', 'certificateSubjectCommonName', 'certificateSubjectMail', 'certificateDateNotBefore',
-        'certificateDateNotAfter', 'certificateVersion', 'certificateSerial'
+        'certificateDateNotAfter', 'certificateVersion', 'certificateSerial',
     ]
 
     users_module = UDM.admin().version(1).get('users/user')

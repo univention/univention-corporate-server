@@ -38,7 +38,7 @@ class TestUMCnonUCRpolicies(UMCBase):
             "policies": [policy_dn],
             "policyType": "policies/pwhistory",
             "objectDN": user_dn,
-            "container": None
+            "container": None,
         }]
         request_result = self.client.umc_command('udm/object/policies', options, flavor).result
         if not request_result:
@@ -77,8 +77,8 @@ class TestUMCnonUCRpolicies(UMCBase):
                 "length": "5",
                 "pwQualityCheck": False,
                 "pwLength": "5",
-                "$policies$": {}
-            }
+                "$policies$": {},
+            },
         )
 
         print("\nCreating a policy for the 'intermediate_test_container':\n")
@@ -90,8 +90,8 @@ class TestUMCnonUCRpolicies(UMCBase):
                 "length": "4",
                 "pwQualityCheck": False,
                 "pwLength": "4",
-                "$policies$": {}
-            }
+                "$policies$": {},
+            },
         )
 
         print("\nCreating a policy to be used by one of the 'umc_test_user's:\n")
@@ -103,8 +103,8 @@ class TestUMCnonUCRpolicies(UMCBase):
                 "length": "3",
                 "pwQualityCheck": False,
                 "pwLength": "3",
-                "$policies$": {}
-            }
+                "$policies$": {},
+            },
         )
 
     def create_test_users(self):
@@ -124,7 +124,7 @@ class TestUMCnonUCRpolicies(UMCBase):
         print("\nCreating a second test user with samba and without user policy applied inside the 'intermediate_test_container':\n")
         self.test_user_2_dn = self.UDM.create_user(
             position=self.intermediate_container_dn,
-            username='umc_test_user_' + random_username()
+            username='umc_test_user_' + random_username(),
         )[0]
 
     def check_single_and_multiple_policies(self):

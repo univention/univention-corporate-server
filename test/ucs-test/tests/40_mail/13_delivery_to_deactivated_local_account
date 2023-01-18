@@ -29,8 +29,8 @@ def main():
                     'password': password,
                     'mailHomeServer': host,
                     'mailPrimaryAddress': usermail1,
-                    'disabled': '1'
-                }
+                    'disabled': '1',
+                },
             )
             usermail = '%s@%s' % (uts.random_name(), domain)
             udm.create_user(
@@ -38,7 +38,7 @@ def main():
                     'password': password,
                     'mailHomeServer': host,
                     'mailPrimaryAddress': usermail,
-                }
+                },
             )
             token = str(time.time())
             send_mail(recipients=usermail1, msg=token, tls=True, username=usermail, password=password)

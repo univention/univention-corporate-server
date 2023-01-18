@@ -29,7 +29,7 @@ if __name__ == '__main__':
         try:
             app.set_ini_parameter(
                 DockerScriptSetup='/tmp/setup',
-                DockerScriptInit='/sbin/init --test=@%@ldap/base@%@'
+                DockerScriptInit='/sbin/init --test=@%@ldap/base@%@',
             )
             app.add_script(setup='#!/bin/sh')
             app.add_to_local_appcenter()

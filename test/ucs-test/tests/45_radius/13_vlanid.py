@@ -107,12 +107,12 @@ def test_host_auth(udm_session, ucr_session, credentials, vlg1, vlg2, ucr_vlan_i
     group1dn, group1name = udm_session.create_group(set={
         'networkAccess': 1,
         'hosts': hostdn,
-        'vlanId': vlg1
+        'vlanId': vlg1,
     })
     group2dn, group2name = udm_session.create_group(set={
         'networkAccess': 1,
         'hosts': hostdn,
-        'vlanId': vlg2
+        'vlanId': vlg2,
     })
     name, password = credentials
     vlanid = radius_auth(name, password, 'computer', None)

@@ -62,7 +62,7 @@ property_descriptions = {
         syntax=univention.admin.syntax.string,
         include_in_default_search=True,
         required=True,
-        identifies=True
+        identifies=True,
     ),
     'title': univention.admin.property(
         short_description=_('Title'),
@@ -106,7 +106,7 @@ property_descriptions = {
         short_description=_('Account deactivation'),
         long_description='',
         syntax=univention.admin.syntax.boolean,
-        show_in_lists=True
+        show_in_lists=True,
     ),
     'e-mail': univention.admin.property(
         short_description=_('E-mail address'),
@@ -136,7 +136,7 @@ property_descriptions = {
         short_description=_('Login shell'),
         long_description='',
         syntax=univention.admin.syntax.string,
-        default='/bin/bash'
+        default='/bin/bash',
     ),
     'sambahome': univention.admin.property(
         short_description=_('Windows home path'),
@@ -280,26 +280,26 @@ layout = [
         Group(_('Organisation'), layout=[
             'organisation',
             ['employeeNumber', 'employeeType'],
-            "secretary"
+            "secretary",
         ]),
     ]),
     Tab(_('Groups'), _('Group Memberships'), layout=[
         Group(_('Groups'), layout=[
             ["primaryGroup"],
-            ["groups"]
+            ["groups"],
         ]),
     ]),
     Tab(_('Account'), _('Account settings'), layout=[
         Group(_('Locking and deactivation'), layout=[
-            ["disabled", "pwdChangeNextLogin"]
+            ["disabled", "pwdChangeNextLogin"],
         ]),
         Group(_('Windows'), layout=[
             ['homedrive', 'sambahome'],
-            ["scriptpath", "profilepath"]
+            ["scriptpath", "profilepath"],
         ]),
         Group(_('POSIX (Linux/UNIX)'), layout=[
             ["unixhome", "shell"],
-            ["homeShare", "homeSharePath"]
+            ["homeShare", "homeSharePath"],
         ]),
     ]),
     Tab(_('Contact'), _('Contact Information'), layout=[

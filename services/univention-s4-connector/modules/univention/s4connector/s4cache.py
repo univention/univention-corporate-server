@@ -115,7 +115,7 @@ class S4Cache(object):
         # to the tuple ? syntax
         sql_commands = [
             ("SELECT ATTRIBUTES.attribute,data.value from data \
-                inner join ATTRIBUTES ON data.attribute_id=attributes.id where guid_id = ?;", (str(guid_id),))
+                inner join ATTRIBUTES ON data.attribute_id=attributes.id where guid_id = ?;", (str(guid_id),)),
         ]
 
         rows = self.__execute_sql_commands(sql_commands, fetch_result=True)
@@ -138,7 +138,7 @@ class S4Cache(object):
 
         sql_commands = [
             ("DELETE FROM data WHERE guid_id=?;", (str(guid_id),)),
-            ("DELETE FROM guids WHERE id=?;", (str(guid_id),))
+            ("DELETE FROM guids WHERE id=?;", (str(guid_id),)),
         ]
 
         self.__execute_sql_commands(sql_commands, fetch_result=False)
@@ -185,7 +185,7 @@ class S4Cache(object):
 
     def _get_guid_id(self, guid):
         sql_commands = [
-            ("SELECT id FROM GUIDS WHERE guid=?;", (str(guid),))
+            ("SELECT id FROM GUIDS WHERE guid=?;", (str(guid),)),
         ]
 
         rows = self.__execute_sql_commands(sql_commands, fetch_result=True)
@@ -197,14 +197,14 @@ class S4Cache(object):
 
     def _append_guid(self, guid):
         sql_commands = [
-            ("INSERT INTO GUIDS(guid) VALUES(?);", (str(guid),))
+            ("INSERT INTO GUIDS(guid) VALUES(?);", (str(guid),)),
         ]
 
         self.__execute_sql_commands(sql_commands, fetch_result=False)
 
     def _get_attr_id(self, attr):
         sql_commands = [
-            ("SELECT id FROM ATTRIBUTES WHERE attribute=?;", (str(attr),))
+            ("SELECT id FROM ATTRIBUTES WHERE attribute=?;", (str(attr),)),
         ]
 
         rows = self.__execute_sql_commands(sql_commands, fetch_result=True)
@@ -219,7 +219,7 @@ class S4Cache(object):
 
     def _create_attr(self, attr):
         sql_commands = [
-            ("INSERT INTO ATTRIBUTES(attribute) VALUES(?);", (str(attr),))
+            ("INSERT INTO ATTRIBUTES(attribute) VALUES(?);", (str(attr),)),
         ]
 
         self.__execute_sql_commands(sql_commands, fetch_result=False)
@@ -244,8 +244,8 @@ class S4Cache(object):
             for value in entry[attr]:
                 sql_commands.append(
                     (
-                        "INSERT INTO DATA(guid_id,attribute_id,value) VALUES(?,?,?);", (str(guid_id), str(attr_id), _encode_base64(value))
-                    )
+                        "INSERT INTO DATA(guid_id,attribute_id,value) VALUES(?,?,?);", (str(guid_id), str(attr_id), _encode_base64(value)),
+                    ),
                 )
 
         if sql_commands:
@@ -264,16 +264,16 @@ class S4Cache(object):
                     "DELETE FROM data WHERE data.id IN (\
                 SELECT data.id FROM DATA INNER JOIN ATTRIBUTES ON data.attribute_id=attributes.id \
                     where attributes.attribute=? and guid_id=? \
-                );", (str(attribute), str(guid_id))
-                )
+                );", (str(attribute), str(guid_id)),
+                ),
             )
         for attribute in diff['added']:
             attr_id = self._get_attr_id_and_create_if_not_exists(attribute)
             for value in entry[attribute]:
                 sql_commands.append(
                     (
-                        "INSERT INTO DATA(guid_id,attribute_id,value) VALUES(?,?,?);", (str(guid_id), str(attr_id), _encode_base64(value))
-                    )
+                        "INSERT INTO DATA(guid_id,attribute_id,value) VALUES(?,?,?);", (str(guid_id), str(attr_id), _encode_base64(value)),
+                    ),
                 )
         for attribute in diff['changed']:
             attr_id = self._get_attr_id_and_create_if_not_exists(attribute)
@@ -283,14 +283,14 @@ class S4Cache(object):
                         "DELETE FROM data WHERE data.id IN (\
                             SELECT data.id FROM DATA INNER JOIN ATTRIBUTES ON data.attribute_id=attributes.id \
                             where attributes.id=? and guid_id = ? and value = ? \
-                        );", (str(attr_id), str(guid_id), _encode_base64(value))
-                    )
+                        );", (str(attr_id), str(guid_id), _encode_base64(value)),
+                    ),
                 )
             for value in set(entry.get(attribute)) - set(old_entry.get(attribute)):
                 sql_commands.append(
                     (
-                        "INSERT INTO DATA(guid_id,attribute_id,value) VALUES(?,?,?);", (str(guid_id), str(attr_id), _encode_base64(value))
-                    )
+                        "INSERT INTO DATA(guid_id,attribute_id,value) VALUES(?,?,?);", (str(guid_id), str(attr_id), _encode_base64(value)),
+                    ),
                 )
 
         if sql_commands:
@@ -306,7 +306,7 @@ if __name__ == '__main__':
 
     entry = {
         'attr1': [b'foobar'],
-        'attr2': [b'val1', b'val2', b'val3']
+        'attr2': [b'val1', b'val2', b'val3'],
     }
 
     s4cache.add_entry(guid, entry)

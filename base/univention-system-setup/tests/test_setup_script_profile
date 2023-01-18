@@ -64,7 +64,7 @@ class TestProfile(unittest.TestCase):
             bar='baz'
             baz=foo
             # end
-            '''
+            ''',
         )
         assert {"foo": "bar", "bar": "baz", "baz": "foo"} == self.profile
 

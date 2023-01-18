@@ -345,7 +345,7 @@ def get_extended_attributes(app):
                 module='users/user',
                 object_class=option_name,
                 long_description='Activate user for %s' % app.name,
-                long_description_de='Nutzer für %s aktivieren' % app.name
+                long_description_de='Nutzer für %s aktivieren' % app.name,
             )
             extended_options.insert(0, option)
 

@@ -41,7 +41,7 @@ import univention.admin.localization
 from univention.admin.policy import (
     register_policy_mapping, policy_object_tab,
     requiredObjectClassesProperty, prohibitedObjectClassesProperty,
-    fixedAttributesProperty, emptyAttributesProperty, ldapFilterProperty
+    fixedAttributesProperty, emptyAttributesProperty, ldapFilterProperty,
 )
 
 
@@ -114,10 +114,10 @@ layout = [
         Group(_('General Managed Node packages settings'), layout=[
             'name',
             'memberPackages',
-            'memberPackagesRemove'
+            'memberPackagesRemove',
         ]),
     ]),
-    policy_object_tab()
+    policy_object_tab(),
 ]
 
 mapping = univention.admin.mapping.mapping()

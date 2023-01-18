@@ -64,7 +64,7 @@ property_descriptions = {
         syntax=univention.admin.syntax.string,
         include_in_default_search=True,
         required=True,
-        identifies=True
+        identifies=True,
     ),
 }
 layout = [Tab(_('General'), _('Basic settings'), ["name"])]

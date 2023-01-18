@@ -474,7 +474,7 @@ def main():
                     """\
                     This can and should only be disabled temporarily
                     using the UCR variable 'repository/online/verify'.
-                    """
+                    """,
                 )))
                 raise UpdateError(msg, errorsource='SETTINGS')
             except ConfigurationError as e:

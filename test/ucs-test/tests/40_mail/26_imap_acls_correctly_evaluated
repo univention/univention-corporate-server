@@ -51,8 +51,8 @@ def main():
                                     set={
                                         'password': password,
                                         'mailHomeServer': host,
-                                        'mailPrimaryAddress': usermail
-                                    }
+                                        'mailPrimaryAddress': usermail,
+                                    },
                                 )
                                 mails.append(usermail)
                                 users.append(userdn)

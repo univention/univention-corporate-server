@@ -51,7 +51,7 @@ options = {
     'default': univention.admin.option(
         short_description=short_description,
         default=True,
-        objectClasses=['ipsecISAKMPPolicy', 'top']
+        objectClasses=['ipsecISAKMPPolicy', 'top'],
     ),
 }
 property_descriptions = {

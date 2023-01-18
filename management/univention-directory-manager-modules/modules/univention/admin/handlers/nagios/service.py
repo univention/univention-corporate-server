@@ -84,7 +84,7 @@ property_descriptions = {
         include_in_default_search=True,
         required=True,
         may_change=False,
-        identifies=True
+        identifies=True,
     ),
     'description': univention.admin.property(
         short_description=_('Description'),
@@ -190,23 +190,23 @@ layout = [
         Group(_('General Nagios service settings'), layout=[
             ["name", "description"],
             ["checkCommand", "checkArgs"],
-            "useNRPE"
+            "useNRPE",
         ]),
     ]),
     Tab(_('Interval'), _('Check settings'), advanced=True, layout=[
         ["normalCheckInterval", "retryCheckInterval"],
-        ["maxCheckAttempts", "checkPeriod"]
+        ["maxCheckAttempts", "checkPeriod"],
     ]),
     Tab(_('Notification'), _('Notification settings'), advanced=True, layout=[
         ["notificationInterval", "notificationPeriod"],
         "notificationOptionWarning",
         "notificationOptionCritical",
         "notificationOptionUnreachable",
-        "notificationOptionRecovered"
+        "notificationOptionRecovered",
     ]),
     Tab(_('Hosts'), _('Assigned hosts'), layout=[
         Group(_('Assigned hosts'), layout=[
-            "assignedHosts"
+            "assignedHosts",
         ]),
     ]),
 ]

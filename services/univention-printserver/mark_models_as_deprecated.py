@@ -79,7 +79,7 @@ class UpdatePrinterModels(object):
             if ':' in ppd:
                 try:
                     return self._get_nickname_from_ppd(subprocess.check_output([
-                        '/usr/lib/cups/driver/foomatic-db-compressed-ppds', 'cat', ppd
+                        '/usr/lib/cups/driver/foomatic-db-compressed-ppds', 'cat', ppd,
                     ]).splitlines())
                 except subprocess.CalledProcessError:
                     pass

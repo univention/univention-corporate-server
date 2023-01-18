@@ -32,9 +32,9 @@ class TestUMCGroupsCreation(UMCBase):
                 "name": groupname,
                 "adGroupType": "-2147483646",
                 "$options$": {"samba": True, "posix": True},
-                "$policies$": policynames
+                "$policies$": policynames,
             },
-            "options": {"container": "cn=groups," + self.ldap_base, "objectType": "groups/group"}}
+            "options": {"container": "cn=groups," + self.ldap_base, "objectType": "groups/group"}},
         ]
 
         try:

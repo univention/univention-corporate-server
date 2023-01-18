@@ -29,7 +29,7 @@ def build_app(app_name, generic_user_activation, generic_user_activation_attribu
             GenericUserActivation=generic_user_activation,
             GenericUserActivationAttribute=generic_user_activation_attribute,
             GenericUserActivationOption=generic_user_activation_option,
-            DockerScriptSetup='/bin/true'
+            DockerScriptSetup='/bin/true',
         )
         yield app
     finally:
@@ -124,7 +124,7 @@ LongDescriptionDe=Das ist mein Attribut. Und es ist dufte!
                 verify_ldap_object('cn=%s,cn=%s,cn=custom attributes,cn=univention,%s' % (additional_name, app_name, ucr.get('ldap/base')), {
                     'univentionUDMPropertyShortDescription': ['This is my attribute'],
                     'univentionUDMPropertyLongDescription': ['This is my attribute. And it rocks!'],
-                    'univentionUDMPropertySyntax': ['string']
+                    'univentionUDMPropertySyntax': ['string'],
                 })
                 verify_ldap_object(user, {activation_name: ['TRUE'], additional_name: ['Hello']})
             verify_ldap_object('cn=%s,cn=%s,cn=custom attributes,cn=univention,%s' % (additional_name, app_name, ucr.get('ldap/base')), should_exist=False)

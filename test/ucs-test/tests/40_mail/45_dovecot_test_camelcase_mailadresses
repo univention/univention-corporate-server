@@ -55,7 +55,7 @@ def main():
                     port=int(ucr["ldap/master/port"]),
                     base=ucr["ldap/base"],
                     binddn=admin_account,
-                    bindpw=password
+                    bindpw=password,
                 )
 
                 fqdn = '%(hostname)s.%(domainname)s' % ucr

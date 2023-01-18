@@ -94,7 +94,7 @@ Possible exitcodes:
 
     parser = ArgumentParser(
         description=description,
-        formatter_class=RawDescriptionHelpFormatter
+        formatter_class=RawDescriptionHelpFormatter,
     )
     parser.parse_args()
 

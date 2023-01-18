@@ -44,7 +44,7 @@ description = _('No S4 Connector rejects were found.')
 links = [{
     'name': 'sdb',
     'href': 'https://help.univention.com/t/how-to-deal-with-s4-connector-rejects/33',
-    'label': _('Univention Support Database - How to deal with s4-connector rejects')
+    'label': _('Univention Support Database - How to deal with s4-connector rejects'),
 }]
 run_descr = ['Checking S4-Connector rejects. Similar to running: univention-s4connector-list-rejected']
 

@@ -489,7 +489,7 @@ class Instance(Base):
         username=StringSanitizer(required=False, minimum=1),
         password=StringSanitizer(required=False, minimum=1),
         scripts=ListSanitizer(required=True, min_elements=1),
-        force=BooleanSanitizer(default=False)
+        force=BooleanSanitizer(default=False),
     )
     def run(self, request) -> None:
         """runs the given join scripts"""

@@ -64,7 +64,7 @@ class LockingDB(object):
         # that we use the same SQL value as before switching
         # to the tuple ? syntax
         sql_commands = [
-            ("INSERT INTO UCS_LOCK(uuid) VALUES(?);", (str(uuid),))
+            ("INSERT INTO UCS_LOCK(uuid) VALUES(?);", (str(uuid),)),
         ]
 
         self.__execute_sql_commands(sql_commands, fetch_result=False)
@@ -74,7 +74,7 @@ class LockingDB(object):
             return
 
         sql_commands = [
-            ("DELETE FROM UCS_LOCK WHERE uuid = ?;", (str(uuid),))
+            ("DELETE FROM UCS_LOCK WHERE uuid = ?;", (str(uuid),)),
         ]
 
         self.__execute_sql_commands(sql_commands, fetch_result=False)
@@ -84,7 +84,7 @@ class LockingDB(object):
             return
 
         sql_commands = [
-            ("INSERT INTO S4_LOCK(guid) VALUES(?);", (str(guid),))
+            ("INSERT INTO S4_LOCK(guid) VALUES(?);", (str(guid),)),
         ]
 
         self.__execute_sql_commands(sql_commands, fetch_result=False)
@@ -94,7 +94,7 @@ class LockingDB(object):
             return
 
         sql_commands = [
-            ("DELETE FROM S4_LOCK WHERE guid = ?;", (str(guid),))
+            ("DELETE FROM S4_LOCK WHERE guid = ?;", (str(guid),)),
         ]
 
         self.__execute_sql_commands(sql_commands, fetch_result=False)
@@ -104,7 +104,7 @@ class LockingDB(object):
             return False
 
         sql_commands = [
-            ("SELECT id FROM UCS_LOCK WHERE uuid=?;", (str(uuid),))
+            ("SELECT id FROM UCS_LOCK WHERE uuid=?;", (str(uuid),)),
         ]
 
         rows = self.__execute_sql_commands(sql_commands, fetch_result=True)
@@ -119,7 +119,7 @@ class LockingDB(object):
             return False
 
         sql_commands = [
-            ("SELECT id FROM S4_LOCK WHERE guid=?;", (str(guid),))
+            ("SELECT id FROM S4_LOCK WHERE guid=?;", (str(guid),)),
         ]
 
         rows = self.__execute_sql_commands(sql_commands, fetch_result=True)

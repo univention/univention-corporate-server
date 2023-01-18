@@ -144,12 +144,12 @@ def application(environ, start_response):
     if request_body_size < 0:
         return _finish('411 Length Required', {
             'success': False,
-            'message': 'The content length was not specified.'
+            'message': 'The content length was not specified.',
         })
     if request_body_size > 1024 * 100:
         return _finish('413 Request Entity Too Large', {
             'success': False,
-            'message': 'The uploaded data is too large for a license file.'
+            'message': 'The uploaded data is too large for a license file.',
         })
 
     # make sure the 'license' field exists in the request
@@ -158,7 +158,7 @@ def application(environ, start_response):
         # no license has been uploaded :(
         return _finish('400 Bad Request', {
             'success': False,
-            'message': 'No license information specified in request'
+            'message': 'No license information specified in request',
         })
 
     # the program logic below is oriented at the import function of the

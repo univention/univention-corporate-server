@@ -41,7 +41,7 @@ import univention.admin.localization
 from univention.admin.policy import (
     register_policy_mapping, policy_object_tab,
     requiredObjectClassesProperty, prohibitedObjectClassesProperty,
-    fixedAttributesProperty, emptyAttributesProperty, ldapFilterProperty
+    fixedAttributesProperty, emptyAttributesProperty, ldapFilterProperty,
 )
 
 
@@ -136,10 +136,10 @@ layout = [
             'name',
             ['authoritative', 'boot-unknown-clients'],
             ['pingCheck', 'getLeaseHostnames'],
-            ['serverIdentifier', 'serverName']
+            ['serverIdentifier', 'serverName'],
         ]),
     ]),
-    policy_object_tab()
+    policy_object_tab(),
 ]
 
 mapping = univention.admin.mapping.mapping()

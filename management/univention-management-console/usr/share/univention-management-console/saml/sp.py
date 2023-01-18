@@ -41,7 +41,7 @@ def get_cert():
     if public_key_compare(public_cert_key, public_key):
         return cert.public_bytes(Encoding.PEM)
     raise CertDoesNotMatchPrivateKeyError(
-        'Cert: "{}" does not match private key: "{}"'.format(CONFIG['cert_file'], CONFIG['key_file'])
+        'Cert: "{}" does not match private key: "{}"'.format(CONFIG['cert_file'], CONFIG['key_file']),
     )
 
 
@@ -72,7 +72,7 @@ CONFIG = {
             },
             "name_id_format": [NAMEID_FORMAT_TRANSIENT, NAMEID_FORMAT_PERSISTENT],
             "required_attributes": [x.strip() for x in ucr.get('umc/saml/required_attributes', 'uid').split(',') if x.strip()],
-            "optional_attributes": [x.strip() for x in ucr.get('umc/saml/optional_attributes', '').split(',') if x.strip()]
+            "optional_attributes": [x.strip() for x in ucr.get('umc/saml/optional_attributes', '').split(',') if x.strip()],
         },
     },
     "attribute_map_dir": os.path.dirname(saml2.attributemaps.__file__),
@@ -118,6 +118,6 @@ OASIS_DEFAULT_NS_PREFIXES = {
     'xs': 'http://www.w3.org/2001/XMLSchema',
     'xsi': 'http://www.w3.org/2001/XMLSchema-instance',
     'alg': "urn:oasis:names:tc:SAML:metadata:algsupport",
-    'mdattr': "urn:oasis:names:tc:SAML:metadata:attribute"
+    'mdattr': "urn:oasis:names:tc:SAML:metadata:attribute",
 }
 SamlBase().register_prefix(OASIS_DEFAULT_NS_PREFIXES)

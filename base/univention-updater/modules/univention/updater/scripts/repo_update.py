@@ -185,7 +185,7 @@ def main() -> None:
                     """\
                     This can and should only be disabled temporarily using the UCR variable
                     'repository/mirror/verify'.
-                    """
+                    """,
                 ))))
                 sys.exit(1)
             except UpdaterException as e:

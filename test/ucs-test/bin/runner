@@ -40,7 +40,7 @@ def parse_args(args=None):  # type: (Optional[Sequence[str]]) -> Namespace
         "-i", "--interactive",
         action="store_true",
         help="Execute commands in an interactive shell",
-        default=(os.isatty(1) and os.isatty(2))
+        default=(os.isatty(1) and os.isatty(2)),
     )  # The new default is there to fix `Failed to open /dev/tty [...]` in tests
 
     parser = ArgumentParser(parents=[common])

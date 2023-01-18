@@ -1026,7 +1026,7 @@ class UDM_Module(object):
                 'label': opt.short_description,
                 'description': opt.long_description,
                 'value': value,
-                'editable': bool(opt.editable)
+                'editable': bool(opt.editable),
             })
         options.sort(key=lambda x: x['label'].lower())
         return options
@@ -1103,7 +1103,7 @@ class UDM_Module(object):
                     'objectType': module.name,
                     'id': dn,
                     'label': label,
-                    'icon': 'udm-%s' % module.name.replace('/', '-')
+                    'icon': 'udm-%s' % module.name.replace('/', '-'),
                 })
         return references
 

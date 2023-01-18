@@ -36,7 +36,7 @@ property_descriptions = {
         syntax=ipProtocol,
         include_in_default_search=True,
         required=True,
-        identifies=True
+        identifies=True,
     ),
     'port': property(
         short_description=_('Port'),
@@ -44,7 +44,7 @@ property_descriptions = {
         syntax=integer,
         include_in_default_search=True,
         required=True,
-        identifies=True
+        identifies=True,
     ),
     'description': property(
         short_description=_('Description'),

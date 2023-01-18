@@ -134,7 +134,7 @@ def check_ldap_users_and_groups(sender: str, recipient: str) -> str:
     else:
         user_filter = filter_format(
             "(|(mailPrimaryAddress=%s)(mailAlternativeAddress=%s)(mail=%s))",
-            (sender, sender, sender)
+            (sender, sender, sender),
         )
     ldap_filter = usersmod.lookup_filter(user_filter)
     user_result = ldap.search(base=options.ldap_base, filter=str(ldap_filter), attr=["dn"])
@@ -173,7 +173,7 @@ def mail2username(mail: str) -> str:
     try:
         ldap = getMachineConnection(ldap_master=False)
         user_filter = filter_format(
-            "(|(mailPrimaryAddress=%s)(mailAlternativeAddress=%s)(mail=%s))", (mail, mail, mail)
+            "(|(mailPrimaryAddress=%s)(mailAlternativeAddress=%s)(mail=%s))", (mail, mail, mail),
         )
         ldap_filter = usersmod.lookup_filter(user_filter)
         user_result = ldap.search(base=options.ldap_base, filter=str(ldap_filter), attr=["uid"])

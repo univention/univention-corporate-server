@@ -330,7 +330,7 @@ class ADConnection(LDAPConnection):
             self.adldapbase,
             ldap.SCOPE_SUBTREE,
             'objectClass=group',
-            timeout=10
+            timeout=10,
         )
 
         import re

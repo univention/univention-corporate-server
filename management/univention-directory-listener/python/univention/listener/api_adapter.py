@@ -119,7 +119,7 @@ class ListenerModuleAdapter(object):
                 self._ldap_cred['basedn'],
                 self._ldap_cred['binddn'],
                 self._ldap_cred['bindpw'],
-                self._ldap_cred['ldapserver']
+                self._ldap_cred['ldapserver'],
             )
             self._ldap_cred.clear()
 

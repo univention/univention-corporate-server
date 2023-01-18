@@ -144,9 +144,9 @@ def prevent_denial_of_service(func):
                 memcache.set_multi(
                     {
                         key: count,
-                        "{}:exp".format(key): datetime.datetime.utcnow() + datetime.timedelta(seconds=decay)
+                        "{}:exp".format(key): datetime.datetime.utcnow() + datetime.timedelta(seconds=decay),
                     },
-                    decay
+                    decay,
                 )
             if count > limit:
                 limit_reached = True
@@ -177,7 +177,7 @@ def prevent_denial_of_service(func):
         user_limits = [
             ("{}_minute".format(username), 60, self.limit_user_minute),
             ("{}_hour".format(username), 3600, self.limit_user_hour),
-            ("{}_day".format(username), 86400, self.limit_user_day)
+            ("{}_day".format(username), 86400, self.limit_user_day),
         ]
 
         user_limit_reached, user_max_wait = _check_limits(self.memcache, user_limits)
@@ -253,7 +253,7 @@ class Instance(Base):
         self.total_limits = [
             ("t:c_minute", 60, limit_total_minute),
             ("t:c_hour", 3600, limit_total_hour),
-            ("t:c_day", 86400, limit_total_day)
+            ("t:c_day", 86400, limit_total_day),
         ]
         if IS_SELFSERVICE_MASTER:
             self.db = TokenDB(MODULE)
@@ -359,7 +359,7 @@ class Instance(Base):
         return [{
                 "id": p.send_method(),
                 "label": p.send_method_label(),
-                "value": user[p.udm_property]
+                "value": user[p.udm_property],
                 } for p in self.password_reset_plugins.values() if p.udm_property in user]
 
     @forward_to_master
@@ -417,7 +417,7 @@ class Instance(Base):
 
         widget_descriptions = []
         label_overwrites = {
-            'jpegPhoto': _('Your picture')
+            'jpegPhoto': _('Your picture'),
         }
         for propname in user_attributes:
             if propname == 'password':
@@ -687,7 +687,7 @@ class Instance(Base):
                 'verify_email',
                 new_user['PasswordRecoveryEmail'],
                 user_info,
-                raise_on_success=False
+                raise_on_success=False,
             )
         except Exception:
             MODULE.error('could not send message: %s' % (traceback.format_exc(),))
@@ -700,7 +700,7 @@ class Instance(Base):
             'data': {
                 'username': new_user['username'],
                 'email': new_user['PasswordRecoveryEmail'],
-            }
+            },
         }
 
     def _extract_user_properties(self, user_obj):
@@ -713,7 +713,7 @@ class Instance(Base):
             'employeeNumber',
             'firstname',
             'lastname',
-            'mailPrimaryAddress'
+            'mailPrimaryAddress',
         ]
         info_out = {field: user_obj.info.get(field, '') for field in message_fields}
         return info_out
@@ -732,7 +732,7 @@ class Instance(Base):
             raise UMC_Error(msg)
         invalid_information = {
             'success': False,
-            'failType': 'INVALID_INFORMATION'
+            'failType': 'INVALID_INFORMATION',
         }
         users_mod = UDM.machine().version(2).get('users/user')
         try:
@@ -752,7 +752,7 @@ class Instance(Base):
             'success': True,
             'data': {
                 'username': username,
-            }
+            },
         }
 
     @forward_to_master
@@ -844,7 +844,7 @@ class Instance(Base):
                 'data': {
                     'username': username,
                     'nextSteps': next_steps,
-                }
+                },
             }
         self._check_token(username, token, token_application=plugin.message_application())
         setattr(user.props, plugin.udm_property, 'TRUE')
@@ -856,7 +856,7 @@ class Instance(Base):
             'data': {
                 'username': username,
                 'nextSteps': next_steps,
-            }
+            },
         }
 
     @forward_to_master
@@ -996,7 +996,7 @@ class Instance(Base):
         # return list of method names, for all LDAP attribs user has data
         reset_methods = [{
             "id": p.send_method(),
-            "label": p.send_method_label()
+            "label": p.send_method_label(),
         } for p in self.password_reset_plugins.values() if user[p.udm_property]]
         if not reset_methods:
             raise NoMethodsAvailable()

@@ -117,7 +117,7 @@ def handler(dn: str, new: Dict[str, List[bytes]], old: Dict[str, List[bytes]], c
             _exports_escape(path),
             _quote(','.join(options)),
             _quote(' '.join(nfs_allowed.decode('ASCII') for nfs_allowed in new.get('univentionShareNFSAllowed', [b'*']))),
-            _quote(dn)
+            _quote(dn),
         ))
 
         _write(lines)

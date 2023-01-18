@@ -83,7 +83,7 @@ def test_group_modification_append_users(udm):
     udm.modify_object('groups/group', dn=group, append={'users': [user[0] for user in users]})
     utils.verify_ldap_object(group, {
         'uniqueMember': [user[0] for user in users],
-        'memberUid': [user[1] for user in users]
+        'memberUid': [user[1] for user in users],
     })
 
 

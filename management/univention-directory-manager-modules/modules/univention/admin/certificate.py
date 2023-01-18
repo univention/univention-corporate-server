@@ -225,11 +225,11 @@ def register_pki_integration(property_descriptions, mapping, options, layout):
             ['certificateIssuerState', 'certificateIssuerCountry'],
         ]),
         Group(_('Validity'), '', [
-            ['certificateDateNotBefore', 'certificateDateNotAfter']
+            ['certificateDateNotBefore', 'certificateDateNotAfter'],
         ]),
         Group(_('Misc'), '', [
-            ['certificateVersion', 'certificateSerial']
-        ])
+            ['certificateVersion', 'certificateSerial'],
+        ]),
     ]))
 
 

@@ -103,7 +103,7 @@ class ModuleHandler(logging.Handler):
         "WARNING": ud.WARN,
         "INFO": ud.PROCESS,
         "DEBUG": ud.INFO,
-        "NOTSET": ud.INFO
+        "NOTSET": ud.INFO,
     }
 
     def __init__(self, level=logging.NOTSET, udebug_facility=ud.LISTENER):
@@ -205,7 +205,7 @@ def get_logger(name, path=None):
                 os.chown(log_dir, listener_uid, adm_grp)
                 os.chmod(
                     log_dir,
-                    stat.S_ISGID | stat.S_IRUSR | stat.S_IWUSR | stat.S_IXUSR | stat.S_IRGRP | stat.S_IXGRP
+                    stat.S_ISGID | stat.S_IRUSR | stat.S_IWUSR | stat.S_IXUSR | stat.S_IRGRP | stat.S_IXGRP,
                 )
             finally:
                 if old_uid != 0:

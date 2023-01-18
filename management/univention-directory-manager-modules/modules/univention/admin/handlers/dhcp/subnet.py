@@ -66,7 +66,7 @@ property_descriptions = {
         include_in_default_search=True,
         required=True,
         may_change=False,
-        identifies=True
+        identifies=True,
     ),
     'subnetmask': univention.admin.property(
         short_description=_('Address prefix length (or Netmask)'),
@@ -92,7 +92,7 @@ layout = [
         Group(_('General DHCP subnet settings'), layout=[
             ['subnet', 'subnetmask'],
             'broadcastaddress',
-            'range'
+            'range',
         ]),
     ]),
 ]
@@ -113,7 +113,7 @@ class object(DHCPBaseSubnet):
     def unmapped_lookup_filter():
         return univention.admin.filter.conjunction('&', [
             univention.admin.filter.expression('objectClass', 'univentionDhcpSubnet'),
-            univention.admin.filter.conjunction('!', [univention.admin.filter.expression('objectClass', 'univentionDhcpSharedSubnet')])
+            univention.admin.filter.conjunction('!', [univention.admin.filter.expression('objectClass', 'univentionDhcpSharedSubnet')]),
         ])
 
 

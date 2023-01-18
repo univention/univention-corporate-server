@@ -24,11 +24,11 @@ def gen_releases(path, releases):  # type: (str, List[Tuple[int, int, int]]) -> 
                                 "patchlevel": patchlevel,
                                 "status": "maintained",
                             } for major, minor, patchlevel in patchlevels
-                        ]
+                        ],
                     } for minor, patchlevels in groupby(minors, key=itemgetter(1))
-                ]
+                ],
             } for major, minors in groupby(releases, key=itemgetter(0))
-        ]
+        ],
     }
     with open(os.path.join(path, 'ucs-releases.json'), 'w') as releases_json:
         json.dump(data, releases_json)
@@ -36,7 +36,7 @@ def gen_releases(path, releases):  # type: (str, List[Tuple[int, int, int]]) -> 
 
 def main():  # type: () -> None
     parser = argparse.ArgumentParser(
-        description='Generates a valid ucs-releases.json.'
+        description='Generates a valid ucs-releases.json.',
     )
     parser.add_argument('repodir', help='path to repository, where ucs-releases.json is created/updated.')
     parser.add_argument('versions', nargs='*', help='a UCS version to be added to the ucs-releases.json. If omitted, the  automatic UCS version detection is activated!')

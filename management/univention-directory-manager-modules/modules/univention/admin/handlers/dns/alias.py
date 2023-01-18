@@ -69,7 +69,7 @@ property_descriptions = {
         syntax=univention.admin.syntax.dnsName,
         include_in_default_search=True,
         required=True,
-        identifies=True
+        identifies=True,
     ),
     'zonettl': univention.admin.property(
         short_description=_('Time to live'),
@@ -92,9 +92,9 @@ layout = [
         Group(_('General alias record settings'), layout=[
             'name',
             'zonettl',
-            'cname'
+            'cname',
         ]),
-    ])
+    ]),
 ]
 
 
@@ -144,7 +144,7 @@ class object(univention.admin.handlers.simpleLdap):
             univention.admin.filter.conjunction('!', [univention.admin.filter.expression('aRecord', '*', escape=False)]),
             univention.admin.filter.conjunction('!', [univention.admin.filter.expression('zoneName', '*.ip6.arpa', escape=False)]),
             univention.admin.filter.conjunction('!', [univention.admin.filter.expression('aAAARecord', '*', escape=False)]),
-            univention.admin.filter.expression('cNAMERecord', '*', escape=False)
+            univention.admin.filter.expression('cNAMERecord', '*', escape=False),
         ])
 
     @classmethod

@@ -385,7 +385,7 @@ class ProcessorBase(Base):
                 'icon': category.icon,
                 'color': category.color,
                 'name': self.i18n._(category.name, category.domain).format(**_ucr_dict),
-                'priority': category.priority
+                'priority': category.priority,
             })
         CORE.info('Categories: %s' % (categories,))
         res = Response(request)
@@ -513,7 +513,7 @@ class ProcessorBase(Base):
                         errno.ENOMEM: self._('There is not enough memory available on the server.'),
                         errno.EMFILE: self._('There are too many opened files on the server.'),
                         errno.ENFILE: self._('There are too many opened files on the server.'),
-                        errno.ENOSPC: self._('There is not enough free space on the server.')
+                        errno.ENOSPC: self._('There is not enough free space on the server.'),
                     }.get(exc.errno, self._('An unknown operating system error occurred (%s).' % (exc,)))
                     raise ServiceUnavailable(message)
                 mod_proc.signal_connect('result', self.result)
@@ -584,7 +584,7 @@ class ProcessorBase(Base):
                     'auth_type': self.auth_type,
                     'username': self._username,
                     'password': self._password,
-                    'user_dn': self._user_dn
+                    'user_dn': self._user_dn,
                 },
             }
             if str(self.i18n.locale):

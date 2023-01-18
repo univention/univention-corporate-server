@@ -517,7 +517,7 @@ class Device(object):
             'Ethernet': Ethernet,
             'VLAN': VLAN,
             'Bridge': Bridge,
-            'Bond': Bond
+            'Bond': Bond,
         }.get(device['interfaceType'], Device)
 
         interface = DeviceType(device['name'], interfaces)
@@ -607,7 +607,7 @@ class VLAN(Device):
         d = super(VLAN, self).dict
         d.update(dict(
             vlan_id=self.vlan_id,
-            parent_device=self.parent_device
+            parent_device=self.parent_device,
         ))
         return d
 
@@ -644,7 +644,7 @@ class Bond(Device):
         'broadcast': 3,
         '802.3ad': 4,
         'balance-tlb': 5,
-        'balance-alb': 6
+        'balance-alb': 6,
     }
     MODES_R = {v: k for k, v in MODES.items()}
 

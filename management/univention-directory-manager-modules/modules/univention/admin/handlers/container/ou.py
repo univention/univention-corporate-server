@@ -56,7 +56,7 @@ options = {
     'default': univention.admin.option(
         short_description=short_description,
         default=True,
-        objectClasses=['top', 'organizationalUnit']
+        objectClasses=['top', 'organizationalUnit'],
     ),
 }
 property_descriptions = {
@@ -276,7 +276,7 @@ class object(univention.admin.handlers.simpleLdap):
     def unmapped_lookup_filter(cls):
         return univention.admin.filter.conjunction('&', [
             univention.admin.filter.expression('objectClass', 'organizationalUnit'),
-            univention.admin.filter.conjunction('!', [univention.admin.filter.expression('objectClass', 'univentionBase')])
+            univention.admin.filter.conjunction('!', [univention.admin.filter.expression('objectClass', 'univentionBase')]),
         ])
 
 

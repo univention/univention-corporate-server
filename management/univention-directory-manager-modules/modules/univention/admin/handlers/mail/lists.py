@@ -63,7 +63,7 @@ property_descriptions = {
         syntax=univention.admin.syntax.mailinglist_name,
         include_in_default_search=True,
         required=True,
-        identifies=True
+        identifies=True,
     ),
     'description': univention.admin.property(
         short_description=_('Description'),
@@ -105,15 +105,15 @@ layout = [
         Group(_('General mailing list settings'), layout=[
             ["name", "description"],
             "mailAddress",
-            "members"
+            "members",
         ]),
     ]),
     Tab(_('Authorized users'), _('Users that are allowed to send e-mails to the list'), advanced=True, layout=[
-        "allowedEmailUsers"
+        "allowedEmailUsers",
     ]),
     Tab(_('Authorized groups'), _('Groups that are allowed to send e-mails to the list'), advanced=True, layout=[
-        "allowedEmailGroups"
-    ])
+        "allowedEmailGroups",
+    ]),
 ]
 
 mapping = univention.admin.mapping.mapping()

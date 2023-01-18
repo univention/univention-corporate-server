@@ -63,7 +63,7 @@ setup(
                 libraries=['krb5', 'hdb', 'asn1'],
                 library_dirs=d['library_dirs'],
                 include_dirs=d['include_dirs'],
-        )
+        ),
     ],
 
     test_suite='test',

@@ -51,7 +51,7 @@ description = _('Authentication with machine password against LDAP successful.')
 links = [{
     'name': 'sdb',
     'href': 'https://help.univention.com/t/manually-trigger-server-password-change/6376',
-    'label': _('Univention Support Database - Manually trigger server password change')
+    'label': _('Univention Support Database - Manually trigger server password change'),
 }]
 
 
@@ -84,7 +84,7 @@ def reset_password_interval(umc_instance: Instance) -> None:
 actions = {
     'fix_machine_password': fix_machine_password,
     'reset_password_change': reset_password_change,
-    'reset_password_interval': reset_password_interval
+    'reset_password_interval': reset_password_interval,
 }
 
 

@@ -136,8 +136,8 @@ def test_group_mail_equal_user_mail_alt():
         udm.create_group(
             set={
                 "mailAddress": group_mail,
-                "users": [user_b.dn]
-            }
+                "users": [user_b.dn],
+            },
         )
         token = make_token()
         send_mail(recipients=group_mail, msg=token, debuglevel=DEBUG_LEVEL)
@@ -158,7 +158,7 @@ def test_mail_list_equal_user_mail_alt():
                 "name": list_name,
                 "mailAddress": mailing_list_mail,
                 "members": [user_b.mailPrimaryAddress],
-            }
+            },
         )
         token = make_token()
         send_mail(recipients=mailing_list_mail, msg=token, debuglevel=DEBUG_LEVEL)
@@ -176,14 +176,14 @@ def test_user_mail_alt_equals_shared_folder_mail_address():
         msgid = uts.random_name()
         folder_dn, folder_name, folder_mailaddress = create_shared_mailfolder(
             udm, FQDN, mailAddress=shared_folder_mail,
-            user_permission=['"%s" "%s"' % ("anyone", "all")]
+            user_permission=['"%s" "%s"' % ("anyone", "all")],
         )
         send_mail(recipients=shared_folder_mail, msg=token, debuglevel=DEBUG_LEVEL, messageid=msgid)
         check_delivery(token, user.mailPrimaryAddress, True)
         found = imap_search_mail(
             messageid=msgid, server=FQDN,
             imap_user=user.mailPrimaryAddress,
-            imap_folder=folder_name, use_ssl=True
+            imap_folder=folder_name, use_ssl=True,
         )
         if not found:
             utils.fail(f"Mail sent with token = {token!r} to {folder_name} un-expectedly")
@@ -201,8 +201,8 @@ def test_group_mail_in_mailing_list():
         udm.create_group(
             set={
                 "mailAddress": group_mail,
-                "users": group_members
-            }
+                "users": group_members,
+            },
         )
         list_name = uts.random_name()
         list_mail = "%s@%s" % (list_name, DOMAIN)
@@ -211,9 +211,9 @@ def test_group_mail_in_mailing_list():
             set={
                 "name": list_name,
                 "mailAddress": list_mail,
-                "members": [group_mail]
+                "members": [group_mail],
             },
-            wait_for_drs_replication=True
+            wait_for_drs_replication=True,
         )
         token = make_token()
         send_mail(recipients=list_mail, msg=token, debuglevel=DEBUG_LEVEL)

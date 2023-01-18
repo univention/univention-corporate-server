@@ -147,7 +147,7 @@ try:
     properties = {
         'name': random_name(),
         'univentionTestAttributeLongDesc%(attribute_id)s' % {'attribute_id': attribute_id}: random_name(),
-        'position': 'cn=custom attributes,cn=univention,%s' % ucr.get('ldap/base')
+        'position': 'cn=custom attributes,cn=univention,%s' % ucr.get('ldap/base'),
     }
     container = udm.create_object('container/cn', **properties)
 

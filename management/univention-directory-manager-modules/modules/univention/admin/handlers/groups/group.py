@@ -91,14 +91,14 @@ property_descriptions = {
         long_description='',
         syntax=univention.admin.syntax.integer,
         may_change=False,
-        options=['posix', 'samba']
+        options=['posix', 'samba'],
     ),
     'sambaRID': univention.admin.property(
         short_description=_('Relative ID'),
         long_description='',
         syntax=univention.admin.syntax.integer,
         readonly_when_synced=True,
-        options=['samba']
+        options=['samba'],
     ),
     'sambaGroupType': univention.admin.property(
         short_description=_('Windows group type'),
@@ -225,7 +225,7 @@ layout = [
         ]),
         Group(_('Members of this group'), layout=[
             'users',
-            'nestedGroup'
+            'nestedGroup',
         ]),
     ]),
     Tab(_('Mail'), _('Mail settings of this group'), advanced=True, layout=[
@@ -234,10 +234,10 @@ layout = [
         'allowedEmailGroups',
     ]),
     Tab(_('Host members'), _('Host members of this group'), advanced=True, layout=[
-        'hosts'
+        'hosts',
     ]),
     Tab(_('Member of'), _('Membership in other groups'), advanced=True, layout=[
-        'memberOf'
+        'memberOf',
     ]),
     Tab(_('Group ID'), _('ID of this group'), advanced=True, layout=[
         'gidNumber',
@@ -246,7 +246,7 @@ layout = [
         'sambaRID',
         'sambaGroupType',
         'adGroupType',
-        'sambaPrivileges'
+        'sambaPrivileges',
     ]),
     Tab('Apps'),  # not translated!
 ]
@@ -928,8 +928,8 @@ class object(univention.admin.handlers.simpleLdap):
             univention.admin.filter.expression('cn', '*', escape=False),
             univention.admin.filter.conjunction('|', [
                 univention.admin.filter.conjunction('&', [univention.admin.filter.expression('objectClass', 'univentionGroup'), ]),
-                univention.admin.filter.conjunction('&', [univention.admin.filter.expression('objectClass', 'sambaGroupMapping'), ])
-            ])
+                univention.admin.filter.conjunction('&', [univention.admin.filter.expression('objectClass', 'sambaGroupMapping'), ]),
+            ]),
         ])
 
 

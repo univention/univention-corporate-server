@@ -32,8 +32,8 @@ def main():
                 set={
                     'password': 'univention',
                     'mailHomeServer': fqdn,
-                    'mailPrimaryAddress': mailAddress
-                }
+                    'mailPrimaryAddress': mailAddress,
+                },
             )
             for mail_name in ('postmaster', 'webmaster'):
                 recipient_email = '%s@%s' % (mail_name, fqdn)

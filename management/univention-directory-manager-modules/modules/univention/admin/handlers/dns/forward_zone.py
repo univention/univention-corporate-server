@@ -69,7 +69,7 @@ property_descriptions = {
         include_in_default_search=True,
         required=True,
         may_change=False,
-        identifies=True
+        identifies=True,
     ),
     'zonettl': univention.admin.property(
         short_description=_('Zone time to live'),
@@ -91,35 +91,35 @@ property_descriptions = {
         long_description=_('The sequence number for this zone. Updates automatically.'),
         syntax=univention.admin.syntax.integer,
         required=True,
-        default=('1', [])
+        default=('1', []),
     ),
     'refresh': univention.admin.property(
         short_description=_('Refresh interval'),
         long_description=_('The time interval secondary DNS servers use to check the zone for updates.'),
         syntax=univention.admin.syntax.UNIX_TimeInterval,
         required=True,
-        default=(('8', 'hours'), [])
+        default=(('8', 'hours'), []),
     ),
     'retry': univention.admin.property(
         short_description=_('Retry interval'),
         long_description=_('The time interval secondary DNS servers use to retry failed refresh updates.'),
         syntax=univention.admin.syntax.UNIX_TimeInterval,
         required=True,
-        default=(('2', 'hours'), [])
+        default=(('2', 'hours'), []),
     ),
     'expire': univention.admin.property(
         short_description=_('Expiry interval'),
         long_description=_('The time interval after which secondary DNS servers will expire failed zones.'),
         syntax=univention.admin.syntax.UNIX_TimeInterval,
         required=True,
-        default=(('7', 'days'), [])
+        default=(('7', 'days'), []),
     ),
     'ttl': univention.admin.property(
         short_description=_('Negative time to live'),
         long_description=_('The time interval "not found" answers are cached.'),
         syntax=univention.admin.syntax.UNIX_TimeInterval,
         required=True,
-        default=(('3', 'hours'), [])
+        default=(('3', 'hours'), []),
     ),
     'nameserver': univention.admin.property(
         short_description=_('Name server'),
@@ -153,7 +153,7 @@ layout = [
         Group(_('General forward lookup zone settings'), layout=[
             'zone',
             'nameserver',
-            'zonettl'
+            'zonettl',
         ]),
     ]),
     Tab(_('Start of authority'), _('Primary name server information'), layout=[
@@ -161,22 +161,22 @@ layout = [
             'contact',
             'serial',
             ['refresh', 'retry'],
-            ['expire', 'ttl']
+            ['expire', 'ttl'],
         ]),
     ]),
     Tab(_('IP addresses'), _('IP addresses of the zone'), layout=[
         Group(_('IP addresses of the zone'), layout=[
-            'a'
+            'a',
         ]),
     ]),
     Tab(_('MX records'), _('Mail exchanger records'), layout=[
         Group(_('MX records'), layout=[
-            'mx'
+            'mx',
         ]),
     ]),
     Tab(_('TXT records'), _('Text records'), layout=[
         Group(_('TXT records'), layout=[
-            'txt'
+            'txt',
         ]),
     ]),
 ]
@@ -230,7 +230,7 @@ class object(univention.admin.handlers.simpleLdap):
 
     def _ldap_addlist(self):
         return super(object, self)._ldap_addlist() + [
-            ('relativeDomainName', [b'@'])
+            ('relativeDomainName', [b'@']),
         ]
 
     def _ldap_modlist(self):

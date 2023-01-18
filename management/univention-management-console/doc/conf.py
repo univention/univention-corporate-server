@@ -213,7 +213,7 @@ latex_documents = [
 # (source start file, name, description, authors, manual section).
 man_pages = [
     ('index', 'univentionmanagementconsole', u'Univention Management Console Documentation',
-     [u'Univention GmbH'], 1)
+     [u'Univention GmbH'], 1),
 ]
 
 

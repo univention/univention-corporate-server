@@ -65,7 +65,7 @@ class QuotaCheck:
             self._activate_quota(tfs.loop_dev)
             print("Create Share")
             share = udm.create_object(
-                'shares/share', name=self.share_name, path=tfs.mount_point, host=self.my_fqdn, directorymode="0777"
+                'shares/share', name=self.share_name, path=tfs.mount_point, host=self.my_fqdn, directorymode="0777",
             )
             utils.wait_for_replication_and_postrun()
             qc.cache_must_exists(share)
@@ -82,7 +82,7 @@ class QuotaCheck:
                 quota_policy["inodeHardLimit"],
                 quota_policy["spaceSoftLimit"],
                 quota_policy["spaceHardLimit"],
-                quota_policy["reapplyQuota"]
+                quota_policy["reapplyQuota"],
             )
             self.touch_file(tfs.mount_point)
             self._check_quota_settings(tfs.loop_dev)
@@ -101,13 +101,13 @@ class QuotaCheck:
                 'bsoft': 1,
                 'bhard': 4,
                 'fsoft': 10,
-                'fhard': 15
+                'fhard': 15,
             }
 
             self._activate_quota(tfs.loop_dev)
             print("Create Share")
             share = udm.create_object(
-                'shares/share', name=self.share_name, path=tfs.mount_point, host=self.my_fqdn, directorymode="0777"
+                'shares/share', name=self.share_name, path=tfs.mount_point, host=self.my_fqdn, directorymode="0777",
             )
             utils.wait_for_replication_and_postrun()
             qc.cache_must_exists(share)
@@ -124,7 +124,7 @@ class QuotaCheck:
                 quota_policy["inodeHardLimit"],
                 quota_policy["spaceSoftLimit"],
                 quota_policy["spaceHardLimit"],
-                quota_policy["reapplyQuota"]
+                quota_policy["reapplyQuota"],
             )
             print("Simulate login")
             self.touch_file(tfs.mount_point)
@@ -146,10 +146,10 @@ class QuotaCheck:
             os.mkdir(share2_path)
 
             share1 = udm.create_object(
-                'shares/share', name=self.share_name, path=share1_path, host=self.my_fqdn, directorymode="0777"
+                'shares/share', name=self.share_name, path=share1_path, host=self.my_fqdn, directorymode="0777",
             )
             share2 = udm.create_object(
-                'shares/share', name=self.share_name2, path=share2_path, host=self.my_fqdn, directorymode="0777"
+                'shares/share', name=self.share_name2, path=share2_path, host=self.my_fqdn, directorymode="0777",
             )
             utils.wait_for_replication_and_postrun()
             qc.cache_must_exists(share1)
@@ -187,10 +187,10 @@ class QuotaCheck:
             os.mkdir(share2_path)
 
             share1 = udm.create_object(
-                'shares/share', name=self.share_name, path=share1_path, host=self.my_fqdn, directorymode="0777"
+                'shares/share', name=self.share_name, path=share1_path, host=self.my_fqdn, directorymode="0777",
             )
             share2 = udm.create_object(
-                'shares/share', name=self.share_name2, path=share2_path, host=self.my_fqdn, directorymode="0777"
+                'shares/share', name=self.share_name2, path=share2_path, host=self.my_fqdn, directorymode="0777",
             )
             utils.wait_for_replication_and_postrun()
             qc.cache_must_exists(share1)

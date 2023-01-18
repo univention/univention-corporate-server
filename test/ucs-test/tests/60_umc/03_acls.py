@@ -27,13 +27,13 @@ def test_acls(udm, ucr):
             name='join%s' % i,
             description='Join%s' % i,
             operation=["join/*", "lib/server/*"],
-            wait_for_replication=False
+            wait_for_replication=False,
         ))
     policy_dn = udm.create_object(
         'policies/umc',
         position="cn=UMC,cn=policies,%s" % udm.LDAP_BASE,
         name='test-umc-policy',
-        wait_for_replication=False
+        wait_for_replication=False,
     )
     udm.modify_object('users/user', dn=test_user, policy_reference=policy_dn, wait_for_replication=False)
 

@@ -186,7 +186,7 @@ class PortalReloaderUDM(MtimeBasedLazyFileReloader):
             ret["logo"] = None
         if portal.props.background:
             ret["background"] = self._write_image(
-                portal.props.name, portal.props.background.raw, "backgrounds"
+                portal.props.name, portal.props.background.raw, "backgrounds",
             )
         else:
             ret["background"] = None
@@ -280,7 +280,7 @@ class PortalReloaderUDM(MtimeBasedLazyFileReloader):
     def _write_image(self, name, img, dirname):
         try:
             name = name.replace(
-                "/", "-"
+                "/", "-",
             )  # name must not contain / and must be a path which can be accessed via the web!
             string_buffer = BytesIO(img)
             suffix = what(string_buffer) or "svg"

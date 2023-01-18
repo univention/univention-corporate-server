@@ -24,7 +24,7 @@ def sieve_test(mail, expected_output):
         "--server", "localhost",
         "--notlsverify", "--nosslverify",
         "--remotesieve", "default",
-        "--list"
+        "--list",
     ]
     print('**', cmd)
     pop = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, stdin=subprocess.PIPE)
@@ -46,8 +46,8 @@ def main():
                 set={
                     'password': password,
                     'mailHomeServer': host,
-                    'mailPrimaryAddress': usermail
-                }
+                    'mailPrimaryAddress': usermail,
+                },
             )
 
             sieve_test(usermail, '"default" ACTIVE')
@@ -62,8 +62,8 @@ def main():
                 set={
                     'password': password,
                     'mailHomeServer': host,
-                    'mailPrimaryAddress': usermail
-                }
+                    'mailPrimaryAddress': usermail,
+                },
             )
             sieve_test(usermail, '')
             token = str(time.time())

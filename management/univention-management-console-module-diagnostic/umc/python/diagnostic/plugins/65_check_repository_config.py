@@ -64,7 +64,7 @@ description = "\n".join((
     _("Use the {appcenter:components} to correct these values by once saving the General repository settings "),
     _("as well as saving the settings for all Additional repositories or press the Button ADJUST ALL COMPONENTS "),
     _("to correct these settings and delete the obsolete variables."),
-    _('Furthermore, it is checked if the scheme of the server variable is either http or https')
+    _('Furthermore, it is checked if the scheme of the server variable is either http or https'),
 ))
 
 ONLINE_BASE = 'repository/online'
@@ -141,7 +141,7 @@ def run(_umc_instance: Instance) -> None:
             if not scheme_is_http(value):
                 msg = "\n".join((
                     _('No http/https used as scheme in %(name)r: %(value)r.') % {'name': name, 'value': value},
-                    _('This can be fixed only manually using the Repository Settings module or the UCR module.')
+                    _('This can be fixed only manually using the Repository Settings module or the UCR module.'),
                 ))
                 MODULE.warn(msg)
                 error_descriptions.append(msg)

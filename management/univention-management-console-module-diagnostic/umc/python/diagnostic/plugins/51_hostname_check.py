@@ -44,7 +44,7 @@ description = _('No non-compliant hostnames found.')
 links = [{
     'name': 'rfc1123',
     'href': _('https://tools.ietf.org/html/rfc1123#section-2'),
-    'label': _('RFC 1123 - 2.1 Host Names and Numbers')
+    'label': _('RFC 1123 - 2.1 Host Names and Numbers'),
 }]
 
 VALID_HOSTNAME = re.compile(r"^(?!-)[A-Z0-9-]{1,63}(?<!-)$", re.IGNORECASE)

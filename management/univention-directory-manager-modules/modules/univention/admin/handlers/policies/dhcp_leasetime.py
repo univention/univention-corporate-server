@@ -41,7 +41,7 @@ import univention.admin.localization
 from univention.admin.policy import (
     register_policy_mapping, policy_object_tab,
     requiredObjectClassesProperty, prohibitedObjectClassesProperty,
-    fixedAttributesProperty, emptyAttributesProperty, ldapFilterProperty
+    fixedAttributesProperty, emptyAttributesProperty, ldapFilterProperty,
 )
 
 
@@ -54,7 +54,7 @@ class dhcp_leasetimeFixedAttributes(univention.admin.syntax.select):
     choices = [
         ('univentionDhcpLeaseTimeDefault', _('Default lease time')),
         ('univentionDhcpLeaseTimeMax', _('Maximum lease time')),
-        ('univentionDhcpLeaseTimeMin', _('Minimum lease time'))
+        ('univentionDhcpLeaseTimeMin', _('Minimum lease time')),
     ]
 
 
@@ -121,7 +121,7 @@ layout = [
             'lease_time_max',
         ]),
     ]),
-    policy_object_tab()
+    policy_object_tab(),
 ]
 
 

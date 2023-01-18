@@ -32,9 +32,9 @@ def main():
             udm.create_object(
                 'mail/domain',
                 set={
-                    'name': maildomain
+                    'name': maildomain,
                 },
-                position="cn=domain,cn=mail,{}".format(ucr.get("ldap/base"))
+                position="cn=domain,cn=mail,{}".format(ucr.get("ldap/base")),
             )
 
             password = 'univention'
@@ -45,7 +45,7 @@ def main():
                     'password': password,
                     'mailHomeServer': '%s.%s' % (ucr.get('hostname'), maildomain),
                     'mailPrimaryAddress': recipient_email,
-                }
+                },
             )
 
             check_sending_mail(recipient_email, password, recipient_email, True)

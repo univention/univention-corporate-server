@@ -44,7 +44,7 @@ description = _('No problems found with UDN replication.')
 links = [{
     'name': 'sdb',
     'href': 'https://help.univention.com/t/troubleshooting-listener-notifier/6430',
-    'label': _('Univention Support Database - Troubleshooting: Listener-/Notifier')
+    'label': _('Univention Support Database - Troubleshooting: Listener-/Notifier'),
 }]
 
 
@@ -74,7 +74,7 @@ def run(_umc_instance: Instance) -> None:
         if notifier_id != id_from_file:
             ed = [
                 _('Univention Directory Notifier ID and the locally stored version differ.'),
-                _('This might indicate an error or still processing transactions.')
+                _('This might indicate an error or still processing transactions.'),
             ]
             MODULE.error('\n'.join(ed))
             raise Warning('\n'.join(ed))

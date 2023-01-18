@@ -159,7 +159,7 @@ class TestConnection(unittest.TestCase):
                     realm_name = "master"
 
                     headers = {
-                        'Custom': 'test-custom-header'
+                        'Custom': 'test-custom-header',
                     }
                     KeycloakAdmin(server_url=server_url,
                                   username=username,
@@ -177,7 +177,7 @@ class TestConnection(unittest.TestCase):
 
                     expected_header = {'Authorization': 'Bearer faketoken',
                                        'Content-Type': 'application/json',
-                                       'Custom': 'test-custom-header'
+                                       'Custom': 'test-custom-header',
                                        }
 
                     mock_connection_manager.assert_called_with(base_url=server_url,

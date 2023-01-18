@@ -34,7 +34,7 @@
 from __future__ import absolute_import, unicode_literals
 from ..encoders import (
     dn_list_property_encoder_for, SambaGroupTypePropertyEncoder, StringIntBooleanPropertyEncoder,
-    StringIntPropertyEncoder
+    StringIntPropertyEncoder,
 )
 from .generic import GenericModule, GenericObject, GenericObjectProperties
 

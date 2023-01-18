@@ -51,7 +51,7 @@ options = {
     'default': univention.admin.option(
         short_description=short_description,
         default=True,
-        objectClasses=['ipsecNFA', 'top']
+        objectClasses=['ipsecNFA', 'top'],
     ),
 }
 property_descriptions = {

@@ -21,7 +21,7 @@ def get_idps(ucr, log_fd=sys.stderr):
         if urlparse(main_entityID).path.startswith('/{}/'.format(main_basepath)):
             return main_entityID.replace(
                 '/{}/'.format(main_basepath),
-                '/{}/{}/'.format(main_basepath, supplement)
+                '/{}/{}/'.format(main_basepath, supplement),
             )
         else:
             print('Unknown default entity ID format, using fallback for supplement entity IDs', file=log_fd)
@@ -37,11 +37,11 @@ def get_idps(ucr, log_fd=sys.stderr):
     main_basepath = 'simplesamlphp'
     sso_fqdn = ucr.get('ucs/server/sso/fqdn', '{}.{}'.format(
         'ucs-sso',
-        ucr.get('domainname')
+        ucr.get('domainname'),
     ))
     main_entityID = ucr.get('saml/idp/entityID', 'https://{}/{}/saml2/idp/metadata.php'.format(
         sso_fqdn,
-        main_basepath
+        main_basepath,
     ))
     idp_supplement_keybase = 'saml/idp/entityID/supplement/'
     idp_supplements = (__get_supplement(key) for key, value in ucr.items() if __is_enabled_supplement(key, value))

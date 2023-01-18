@@ -61,20 +61,20 @@ property_descriptions = {
         include_in_default_search=True,
         required=True,
         may_change=False,
-        identifies=True
+        identifies=True,
     ),
     'password': univention.admin.property(
         short_description=_('Password'),
         long_description='',
         syntax=univention.admin.syntax.userPasswd,
         required=True,
-        dontsearch=True
+        dontsearch=True,
     ),
 }
 
 layout = [
     Tab(_('Change password'), _('Change password'), [
-        'password'])
+        'password']),
 ]
 
 object = univention.admin.handlers.users.user.object

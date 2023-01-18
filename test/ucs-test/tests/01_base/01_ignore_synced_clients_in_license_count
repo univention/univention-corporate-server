@@ -39,7 +39,7 @@ if __name__ == '__main__':
             license_client_count_admember = get_current_v2license_client_count()
 
             attributes = {
-                'name': uts.random_name()
+                'name': uts.random_name(),
             }
             client_dn = udm.create_object('computers/windows', **attributes)
             utils.wait_for_replication()

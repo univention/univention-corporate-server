@@ -45,14 +45,14 @@ class Coverage:
             subprocess.check_call(
                 ["dpkg", "-l", "python-ucs-school"],
                 stderr=open("/dev/null", "a"),
-                stdout=open("/dev/null", "a")
+                stdout=open("/dev/null", "a"),
             )
             self.coverage_sources.append('ucsschool')
 
             subprocess.check_call(
                 ["dpkg", "-l", "ucs-school-import-http-api"],
                 stderr=open("/dev/null", "a"),
-                stdout=open("/dev/null", "a")
+                stdout=open("/dev/null", "a"),
             )
             self.services.extend([
                 'celery-worker-ucsschool-import',

@@ -86,7 +86,7 @@ def test_create_printer(ucr, udm):
     utils.verify_ldap_object(
         print_share_dn,
         {'univentionPrinterSambaName': [properties['sambaName']]},
-        delay=1
+        delay=1,
     )
 
 
@@ -147,7 +147,7 @@ def test_create_printer_and_check_printing_works(ucr, udm):
     utils.verify_ldap_object(
         print_share_dn,
         {'univentionPrinterSambaName': [properties['sambaName']]},
-        delay=1
+        delay=1,
     )
 
     delay = 15
@@ -252,7 +252,7 @@ def test_create_printergroup(ucr, udm):
     utils.verify_ldap_object(
         printergroup_share_dn,
         {'univentionPrinterSambaName': [printergroup_properties['sambaName']]},
-        delay=1
+        delay=1,
     )
 
 
@@ -368,14 +368,14 @@ def test_force_printername(ucr, udm, ucr_value):
         'model': 'foomatic-ppds/Apple/Apple-12_640ps-Postscript.ppd.gz',
         'uri': 'parallel /dev/lp0',
         'spoolHost': '%(hostname)s.%(domainname)s' % ucr,
-        'name': printer_name
+        'name': printer_name,
     }
 
     printer = udm.create_object('shares/printer', position='cn=printers,%s' % ucr['ldap/base'], **printer_properties)
     utils.verify_ldap_object(printer, {
         'univentionPrinterModel': [printer_properties['model']],
         'univentionPrinterURI': [printer_properties['uri'].replace(' ', '')],
-        'univentionPrinterSpoolHost': [printer_properties['spoolHost']]
+        'univentionPrinterSpoolHost': [printer_properties['spoolHost']],
     })
     utils.wait_for_replication()
 
@@ -439,8 +439,8 @@ def test_create_printer_for_every_printer_URI(ucr, udm):
             set={
                 'spoolHost': '%(hostname)s.%(domainname)s' % ucr,
                 'model': 'None',
-                'uri': '%s:// /tmp/%s' % (uri, printer_name)
-            }
+                'uri': '%s:// /tmp/%s' % (uri, printer_name),
+            },
         )
         if not printer_enabled(printer_name):
             print('Wait for 30 seconds and try again')
@@ -466,7 +466,7 @@ def test_modify_printer_and_check_cupsd(ucr, udm):
     utils.verify_ldap_object(printer, {
         'univentionPrinterModel': [printer_properties['model']],
         'univentionPrinterURI': [printer_properties['uri'].replace(' ', '')],
-        'univentionPrinterSpoolHost': [printer_properties['spoolHost']]
+        'univentionPrinterSpoolHost': [printer_properties['spoolHost']],
     })
     udm.modify_object('shares/printer', dn=printer, ACLUsers=['cn=test,cn=users'], ACLtype='allow')
     time.sleep(3)

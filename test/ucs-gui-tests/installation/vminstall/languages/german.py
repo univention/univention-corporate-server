@@ -78,5 +78,5 @@ strings = {
     'do_update': 'System nach der Einrichtung aktualisieren',
     'setup_successful': 'UCS-Einrichtung erfolgreich',
     'finish': 'Fertigstellen',
-    'welcome': 'Browser-Fenster'
+    'welcome': 'Browser-Fenster',
 }

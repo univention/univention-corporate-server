@@ -74,7 +74,7 @@ def run(_umc_instance: Instance, rerun: bool = False) -> None:
     if idp and not rerun:
         problems.append(_(
             "Re-execute the join-script <tt>92univention-management-console-web-server</tt> via {join} "
-            "or execute <tt>univention-run-join-scripts --force --run-scripts 92univention-management-console-web-server</tt> on the command line as user <i>root</i>."
+            "or execute <tt>univention-run-join-scripts --force --run-scripts 92univention-management-console-web-server</tt> on the command line as user <i>root</i>.",
         ))
         buttons.append({
             "action": "fix_idp",
@@ -98,7 +98,7 @@ def run(_umc_instance: Instance, rerun: bool = False) -> None:
     if sp:
         problems.append(_(
             "If you renewed your certificates please see {sdb-one} and {sdb-all} for more instructions. "
-            "In that case the new certificate must be re-uploaded into LDAP."
+            "In that case the new certificate must be re-uploaded into LDAP.",
         ))
         links += [
             {

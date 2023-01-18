@@ -42,7 +42,7 @@ def main():
                                 'mailHomeServer': '%s.%s' % (ucr.get('hostname'), domain),
                                 'mailPrimaryAddress': mail if i > 0 else '',
                             },
-                            check_for_drs_replication=True
+                            check_for_drs_replication=True,
                         )
                         mails_list.append(mail)
                         users_list.append(user_dn)
@@ -57,15 +57,15 @@ def main():
                             'users': users_list[0],
                         },
                         position='cn=groups,%s' % ucr.get('ldap/base'),
-                        check_for_drs_replication=True
+                        check_for_drs_replication=True,
                     )
                     udm.modify_object(
                         'groups/group',
                         dn=group_dn,
                         append={
-                            'users': users_list[1:3]
+                            'users': users_list[1:3],
                         },
-                        check_for_drs_replication=True
+                        check_for_drs_replication=True,
                     )
                     token = str(time.time())
                     send_mail(recipients=group_mail, msg=token, tls=True, username=mail, password=password)
@@ -80,9 +80,9 @@ def main():
                         'groups/group',
                         dn=group_dn,
                         append={
-                            'users': [users_list[3]]
+                            'users': [users_list[3]],
                         },
-                        check_for_drs_replication=True
+                        check_for_drs_replication=True,
                     )
                     send_mail(recipients=group_mail, msg=token, tls=True, username=mail, password=password)
                     for i, mail in enumerate(mails_list):
@@ -96,9 +96,9 @@ def main():
                         'users/user',
                         dn=users_list[0],
                         set={
-                            'mailPrimaryAddress': mails_list[0]
+                            'mailPrimaryAddress': mails_list[0],
                         },
-                        check_for_drs_replication=True
+                        check_for_drs_replication=True,
                     )
                     send_mail(recipients=group_mail, msg=token, tls=True, username=mail, password=password)
                     for i, mail in enumerate(mails_list):

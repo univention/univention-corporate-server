@@ -59,8 +59,8 @@ def main():
                 mailAddress=random_email() if with_email else None,
                 user_permission=[
                     '"{}" "{}"'.format(user_addr1, 'all'),
-                    '"{}" "{}"'.format(user_addr2, 'read')
-                ]
+                    '"{}" "{}"'.format(user_addr2, 'read'),
+                ],
             )
             utils.wait_for_replication()
 

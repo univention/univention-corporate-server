@@ -264,7 +264,7 @@ exit 0
         'app_id': app_id,
         'version_start': version_start,
         'version_end': version_end,
-        'other_options': other_options
+        'other_options': other_options,
     }
 
 
@@ -330,7 +330,7 @@ exit 0
         'app_id': app_id,
         'version_start': version_start,
         'version_end': version_end,
-        'other_options': other_options
+        'other_options': other_options,
     }
 
 

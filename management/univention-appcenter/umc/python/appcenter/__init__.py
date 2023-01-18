@@ -243,7 +243,7 @@ class Instance(umcm.Base, ProgressMixin):
 
     @sanitize(
         apps=ListSanitizer(AppSanitizer(), required=True),
-        action=ChoicesSanitizer(['install', 'upgrade', 'remove'], required=True)
+        action=ChoicesSanitizer(['install', 'upgrade', 'remove'], required=True),
     )
     @simple_response
     def resolve(self, apps, action):
@@ -816,7 +816,7 @@ class Instance(umcm.Base, ProgressMixin):
             'uninstall': 'remove',
         }, required=True),
         packages=ListSanitizer(StringSanitizer(minimum=1), required=True),
-        update=BooleanSanitizer()
+        update=BooleanSanitizer(),
     )
     @simple_response
     def packages_invoke_dry_run(self, packages, function, update):
@@ -836,7 +836,7 @@ class Instance(umcm.Base, ProgressMixin):
             'upgrade': 'install',
             'uninstall': 'remove',
         }, required=True),
-        packages=ListSanitizer(StringSanitizer(minimum=1), required=True)
+        packages=ListSanitizer(StringSanitizer(minimum=1), required=True),
     )
     def packages_invoke(self, request):
         """executes an installer action"""
@@ -1066,13 +1066,13 @@ class Instance(umcm.Base, ProgressMixin):
 
         for _ in iterator:
             yield {
-                'server': create_url(server, path, '', '', port)
+                'server': create_url(server, path, '', '', port),
             }
 
     @sanitize_list(
         DictSanitizer({'object': basic_components_sanitizer}),
         min_elements=1,
-        max_elements=1  # moduleStore with one element...
+        max_elements=1,  # moduleStore with one element...
     )
     @multi_response
     def settings_put(self, iterator, object):

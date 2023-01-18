@@ -112,7 +112,7 @@ def create_mapping(configbasename='connector'):
         connector('cn=Program Data,%%(%s/ad/ldap/base)s') % configRegistry,
         connector('cn=Configuration,%%(%s/ad/ldap/base)s') % configRegistry,
         'cn=opsi,%(ldap/base)s' % configRegistry,
-        connector('cn=Microsoft Exchange System Objects,%%(%s/ad/ldap/base)s') % configRegistry
+        connector('cn=Microsoft Exchange System Objects,%%(%s/ad/ldap/base)s') % configRegistry,
     ]
 
     for key in configRegistry:
@@ -167,7 +167,7 @@ def create_mapping(configbasename='connector'):
             ucs_create_functions=[
                 univention.connector.set_ucs_passwd_user,
                 univention.connector.check_ucs_lastname_user,
-                univention.connector.set_primary_group_user
+                univention.connector.set_primary_group_user,
             ],
             post_con_modify_functions=list(filter(None, [
                 univention.connector.ad.set_userPrincipalName_from_ucr,
@@ -211,7 +211,7 @@ def create_mapping(configbasename='connector'):
                     con_attribute='proxyAddresses',
                     mapping=(
                         proxyAddresses.to_proxyAddresses,
-                        proxyAddresses.to_mailPrimaryAddress
+                        proxyAddresses.to_mailPrimaryAddress,
                     ),
                     compare_function=proxyAddresses.equal,
                 ),
@@ -228,7 +228,7 @@ def create_mapping(configbasename='connector'):
                     con_attribute='proxyAddresses',
                     mapping=(
                         None,
-                        proxyAddresses.to_mailAlternativeAddress
+                        proxyAddresses.to_mailAlternativeAddress,
                     ),
                     compare_function=proxyAddresses.equal,
                 ),
@@ -315,12 +315,12 @@ def create_mapping(configbasename='connector'):
             con_create_objectclass=['top', 'group'],
             post_con_modify_functions=[
                 univention.connector.ad.group_members_sync_from_ucs,
-                univention.connector.ad.object_memberships_sync_from_ucs
+                univention.connector.ad.object_memberships_sync_from_ucs,
             ],
             post_ucs_modify_functions=[
                 univention.connector.ad.set_univentionObjectFlag_to_synced,
                 univention.connector.ad.group_members_sync_to_ucs,
-                univention.connector.ad.object_memberships_sync_to_ucs
+                univention.connector.ad.object_memberships_sync_to_ucs,
             ],
             dn_mapping_function=[univention.connector.ad.group_dn_mapping],
             attributes={
@@ -348,7 +348,7 @@ def create_mapping(configbasename='connector'):
                     con_attribute='proxyAddresses',
                     mapping=(
                         proxyAddresses.to_proxyAddresses,
-                        proxyAddresses.to_mailPrimaryAddress
+                        proxyAddresses.to_mailPrimaryAddress,
                     ),
                     compare_function=proxyAddresses.equal,
                 ),
@@ -365,7 +365,7 @@ def create_mapping(configbasename='connector'):
                     con_attribute='proxyAddresses',
                     mapping=(
                         None,
-                        proxyAddresses.to_mailAlternativeAddress
+                        proxyAddresses.to_mailAlternativeAddress,
                     ),
                     compare_function=proxyAddresses.equal,
                 ),
@@ -381,7 +381,7 @@ def create_mapping(configbasename='connector'):
                     (u'Domain Admins', u'Domänen-Admins'),
                     (u'Windows Hosts', u'Domänencomputer'),
                     (u'Domain Guests', u'Domänen-Gäste'),
-                ]
+                ],
             },
         ),
         'windowscomputer': univention.connector.property(

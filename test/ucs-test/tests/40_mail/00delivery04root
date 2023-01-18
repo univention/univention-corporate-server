@@ -48,7 +48,7 @@ def main():
                     set={
                         'mailHomeServer': f'{host}.{domain}',
                         'mailPrimaryAddress': mail,
-                    }
+                    },
                 )
                 token = str(time.time())
                 delivery_OK = False

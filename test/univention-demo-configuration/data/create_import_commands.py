@@ -88,7 +88,7 @@ def importRow(row: Dict[str, str]) -> None:
         '--position "ou=People,%(LDAPBASE)s" '
         '--set name="%(office)s" '
         '--set userPath="1" '
-        '--set groupPath="1"' % row
+        '--set groupPath="1"' % row,
     )
 
     # create user
@@ -120,12 +120,12 @@ def importRow(row: Dict[str, str]) -> None:
         print(
             'udm groups/group create --ignore_exist '
             '--position "ou=People,%(LDAPBASE)s" '
-            '--set name="%(GROUP)s"' % row
+            '--set name="%(GROUP)s"' % row,
         )
         print(
             'udm groups/group modify '
             '--dn "cn=%(GROUP)s,ou=People,%(LDAPBASE)s" '
-            '--append users="uid=%(uid)s,ou=%(office)s,ou=People,%(LDAPBASE)s"' % row
+            '--append users="uid=%(uid)s,ou=%(office)s,ou=People,%(LDAPBASE)s"' % row,
         )
 
     # container for computer in this department
@@ -133,7 +133,7 @@ def importRow(row: Dict[str, str]) -> None:
         'udm container/ou create --ignore_exist '
         '--position "ou=Departments,%(LDAPBASE)s" '
         '--set name="%(office)s" '
-        '--set computerPath="1"' % row
+        '--set computerPath="1"' % row,
     )
 
     # DC slave for this department
@@ -142,7 +142,7 @@ def importRow(row: Dict[str, str]) -> None:
         '--position "ou=Departments,%(LDAPBASE)s" '
         '--set name="server-%(office)s" '
         '--set network="cn=default,cn=networks,%(LDAPBASE)s" '
-        '%(DC_OPTIONS)s %(NAGIOS_OPTIONS)s' % row
+        '%(DC_OPTIONS)s %(NAGIOS_OPTIONS)s' % row,
     )
 
     # computer object per user
@@ -150,7 +150,7 @@ def importRow(row: Dict[str, str]) -> None:
         'udm %(computerType)s create  --ignore_exists '
         '--position "ou=%(office)s,ou=Departments,%(LDAPBASE)s" '
         '--set name="workstation%(roomNumber)s" '
-        '--set network="cn=default,cn=networks,%(LDAPBASE)s"' % row
+        '--set network="cn=default,cn=networks,%(LDAPBASE)s"' % row,
     )
 
 

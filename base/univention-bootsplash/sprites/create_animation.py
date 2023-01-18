@@ -46,15 +46,15 @@ def main():
     background_rect = root.find(
         './'
         '{http://www.w3.org/2000/svg}g[@{http://www.inkscape.org/namespaces/inkscape}label="Background"]/'
-        '{http://www.w3.org/2000/svg}rect[@id="rect-background"]'
+        '{http://www.w3.org/2000/svg}rect[@id="rect-background"]',
     )
     text = root.find(
         './'
-        '{http://www.w3.org/2000/svg}g[@{http://www.inkscape.org/namespaces/inkscape}label="Text"]'
+        '{http://www.w3.org/2000/svg}g[@{http://www.inkscape.org/namespaces/inkscape}label="Text"]',
     )
     logo = root.find(
         './'
-        '{http://www.w3.org/2000/svg}g[@{http://www.inkscape.org/namespaces/inkscape}label="Logo"]'
+        '{http://www.w3.org/2000/svg}g[@{http://www.inkscape.org/namespaces/inkscape}label="Logo"]',
     )
     background_style = background_rect.get('style')
     text.set('style', 'display:none')

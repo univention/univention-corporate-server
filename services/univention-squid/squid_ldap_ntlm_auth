@@ -582,7 +582,7 @@ if __name__ == '__main__':
     if options.gss_spnego:
         cmd = [
             '/usr/lib/squid/negotiate_kerberos_auth', '-k',
-            '/var/lib/samba/private/http-proxy-%(hostname)s.keytab' % cr
+            '/var/lib/samba/private/http-proxy-%(hostname)s.keytab' % cr,
         ]
         if options.gss_spnego_strip_realm:
             cmd.append('-r')

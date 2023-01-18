@@ -64,7 +64,7 @@ class Lint:
         self.regexp = re.compile(
             r'\b(?:%s)(?=$|\s)' % (
                 '|'.join(re.escape(func) for func in self.functions),
-            )
+            ),
         )
 
     def parse_tests(self):

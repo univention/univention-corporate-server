@@ -67,7 +67,7 @@ property_descriptions = {
         required=True,
         may_change=False,
         identifies=True,
-        default=('directory', [])
+        default=('directory', []),
     ),
     'policies': univention.admin.property(
         short_description=_('Policy Link'),
@@ -146,13 +146,13 @@ property_descriptions = {
 layout = [
     Tab(_('General'), _('Basic values'), layout=[
         Group(_('Default container description'), layout=[
-            "name"
+            "name",
         ]),
         Group(_('User Links'), layout=[
-            "users"
+            "users",
         ]),
         Group(_('Group Links'), layout=[
-            "groups"
+            "groups",
         ]),
         Group(_('Computer Links'), layout=[
             "computers",

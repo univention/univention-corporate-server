@@ -14,7 +14,7 @@ MINIMUM_CONFIG = [
     "CONFIG_MODULE_SIG_SHA512=y",
     "CONFIG_MODULE_SIG_HASH=\"sha512\"",
     "CONFIG_MODULE_SIG_ALL=y",
-    "# CONFIG_MODULE_SIG_FORCE is not set"
+    "# CONFIG_MODULE_SIG_FORCE is not set",
 ]
 
 
@@ -36,7 +36,7 @@ def main():
     if missing_config_lines:
         msg = "The following lines are missing in {}:\n {}".format(
             config_file,
-            '\n '.join(missing_config_lines)
+            '\n '.join(missing_config_lines),
         )
         utils.fail(msg)
 

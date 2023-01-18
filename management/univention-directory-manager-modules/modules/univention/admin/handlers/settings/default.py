@@ -64,7 +64,7 @@ property_descriptions = {
         required=True,
         may_change=False,
         identifies=True,
-        default=('univention', [])
+        default=('univention', []),
     ),
     'defaultGroup': univention.admin.property(
         short_description=_('Default Primary Group'),
@@ -119,7 +119,7 @@ property_descriptions = {
 layout = [
     Tab(_('General'), _('Basic values'), layout=[
         Group(_('Default settings description'), layout=[
-            "name"
+            "name",
         ]),
     ]),
     Tab(_('Primary Groups'), _('Primary Groups'), layout=[
@@ -129,7 +129,7 @@ layout = [
             "defaultDomainControllerMBGroup",
             "defaultDomainControllerGroup",
             "defaultMemberServerGroup",
-            "defaultClientGroup"
+            "defaultClientGroup",
         ]),
     ]),
     Tab(_('KDE Profiles'), _('KDE Profiles'), layout=[

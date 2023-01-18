@@ -64,7 +64,7 @@ def try_to_authenticate(password):
         "-U", test_username + "%" + password, "--kerberos",
         "-t", "20",  # 20 seconds timeout per operation.
         "-c", "ls",
-        "--debuglevel=1"
+        "--debuglevel=1",
     )
 
     return create_and_run_process(cmd)
@@ -79,7 +79,7 @@ def set_reset_lockout_settings(lock_duration, lock_threshold):
         "--account-lockout-duration=" + lock_duration,
         "--account-lockout-threshold=" + lock_threshold,
         "-U", admin_username + '%' + admin_password,
-        "--debuglevel=1"
+        "--debuglevel=1",
     )
 
     stdout, stderr = create_and_run_process(cmd)

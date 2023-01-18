@@ -120,7 +120,7 @@ class UcsRepoUrl(object):
         # type: () -> str
         return ':%d' % (self.port) if (self.scheme, self.port) not in (
             ('http', 80),
-            ('https', 443)
+            ('https', 443),
         ) else ''
 
     @property

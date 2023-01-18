@@ -65,7 +65,7 @@ property_descriptions = {
         syntax=univention.admin.syntax.dnsSRVName,
         include_in_default_search=True,
         required=True,
-        identifies=True
+        identifies=True,
     ),
     'location': univention.admin.property(
         short_description=_('Location'),
@@ -87,7 +87,7 @@ layout = [
         Group(_('General service record settings'), layout=[
             'name',
             'location',
-            'zonettl'
+            'zonettl',
         ]),
     ]),
 ]
@@ -184,5 +184,5 @@ def identify(dn, attr, canonical=False):
         b'@' not in attr.get('relativeDomainName', []),
         not attr.get('zoneName', [b'.in-addr.arpa'])[0].decode('ASCII').endswith(ARPA_IP4),
         not attr.get('zoneName', [b'.ip6.arpa'])[0].decode('ASCII').endswith(ARPA_IP6),
-        attr.get('sRVRecord', [])
+        attr.get('sRVRecord', []),
     ])

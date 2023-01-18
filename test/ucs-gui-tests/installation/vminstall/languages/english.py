@@ -78,5 +78,5 @@ strings = {
     'do_update': 'Update system after setup',
     'setup_successful': 'setup successful',
     'finish': 'Finish',
-    'welcome': 'Open a browser'
+    'welcome': 'Open a browser',
 }

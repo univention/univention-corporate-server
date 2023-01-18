@@ -30,7 +30,7 @@ class Test_DNSForwardZone:
             'refresh': '64',
             'expire': '32',
             'ttl': '16',
-            'retry': '8'
+            'retry': '8',
         }
 
         forward_zone = udm.create_object('dns/forward_zone', **forward_zone_properties)
@@ -42,7 +42,7 @@ class Test_DNSForwardZone:
             forward_zone_properties['refresh'],
             forward_zone_properties['retry'],
             forward_zone_properties['expire'],
-            forward_zone_properties['ttl'])]
+            forward_zone_properties['ttl'])],
         })
 
     def test_dns_forward_zone_removal(self, udm):
@@ -63,7 +63,7 @@ class Test_DNSForwardZone:
             'refresh': '64',
             'expire': '32',
             'ttl': '16',
-            'retry': '8'
+            'retry': '8',
         }
 
         forward_zone = udm.create_object('dns/forward_zone', wait_for=True, **forward_zone_properties)
@@ -77,7 +77,7 @@ class Test_DNSForwardZone:
             forward_zone_properties['refresh'],
             forward_zone_properties['retry'],
             forward_zone_properties['expire'],
-            new_ttl)]
+            new_ttl)],
         })
 
     def test_dns_forward_zone_creation_set_nameserver(self, udm):
@@ -214,7 +214,7 @@ class Test_DNSServiceRecord:
         srv_record_proprties = {
             'name': '%s tcp %s' % (uts.random_string(), uts.random_string()),
             'location': '0 1 2 %s.%s' % (uts.random_name(), uts.random_dns_record()),
-            'zonettl': '128'
+            'zonettl': '128',
         }
 
         srv_record = udm.create_object('dns/srv_record', superordinate=forward_zone, **srv_record_proprties)
@@ -241,7 +241,7 @@ class Test_DNSServiceRecord:
             superordinate=forward_zone,
             name='%s tcp %s' % (uts.random_string(), uts.random_string()),
             location='3 4 5 %s.%s' % (uts.random_string(), uts.random_string()),
-            wait_for=True
+            wait_for=True,
         )
 
         location = '0 1 2 %s.%s' % (uts.random_name(), uts.random_dns_record())
@@ -283,7 +283,7 @@ class Test_DNSServiceRecord:
             '0 1 2 %s.%s' % (uts.random_name(), uts.random_dns_record()),
             '3 5 6 %s.%s' % (uts.random_name(), uts.random_dns_record()),
             '1 4 9 %s.%s' % (uts.random_name(), uts.random_dns_record()),
-            '4 8 2 %s.%s' % (uts.random_name(), uts.random_dns_record())
+            '4 8 2 %s.%s' % (uts.random_name(), uts.random_dns_record()),
         ]
         srv_record = udm.create_object('dns/srv_record', superordinate=forward_zone, name='%s tcp %s' % (uts.random_string(), uts.random_string()), append={'location': locations}, wait_for=True)
 
@@ -313,14 +313,14 @@ class Test_DNSHostRecord:
             'zonettl': '128',
             'a': ip,
             'mx': '50 %s' % uts.random_string(),
-            'txt': uts.random_string()
+            'txt': uts.random_string(),
         }
         host_record = udm.create_object('dns/host_record', superordinate=forward_zone, **host_record_properties)
         utils.verify_ldap_object(host_record, {
             'dNSTTL': [host_record_properties['zonettl']],
             record_attr: [host_record_properties['a']],
             'tXTRecord': [host_record_properties['txt']],
-            'mXRecord': [host_record_properties['mx']]
+            'mXRecord': [host_record_properties['mx']],
         })
 
     def test_dns_host_record_removal(self, udm):
@@ -541,7 +541,7 @@ class Test_DNSReverseZone:
             'refresh': '64',
             'expire': '32',
             'ttl': '16',
-            'retry': '8'
+            'retry': '8',
         }
 
         reverse_zone = udm.create_object('dns/reverse_zone', **reverse_zone_properties)
@@ -552,7 +552,7 @@ class Test_DNSReverseZone:
             reverse_zone_properties['refresh'],
             reverse_zone_properties['retry'],
             reverse_zone_properties['expire'],
-            reverse_zone_properties['ttl']
+            reverse_zone_properties['ttl'],
         )]})
 
     @pytest.mark.parametrize('ip', [
@@ -572,7 +572,7 @@ class Test_DNSReverseZone:
             'refresh': '64',
             'expire': '32',
             'ttl': '16',
-            'retry': '8'
+            'retry': '8',
         }
         reverse_zone = udm.create_object('dns/reverse_zone', wait_for=True, **reverse_zone_properties)
 
@@ -586,7 +586,7 @@ class Test_DNSReverseZone:
             reverse_zone_properties['refresh'],
             reverse_zone_properties['retry'],
             reverse_zone_properties['expire'],
-            reverse_zone_properties['ttl']
+            reverse_zone_properties['ttl'],
         )]})
 
     @pytest.mark.parametrize('ip', [

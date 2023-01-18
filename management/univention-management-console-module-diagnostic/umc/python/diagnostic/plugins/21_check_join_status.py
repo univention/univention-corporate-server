@@ -42,7 +42,7 @@ description = _('The check for the join status was succsesful.')
 links = [{
     'name': 'erroranalysis',
     'href': _('https://docs.software-univention.de/manual-5.0.html#domain:listenernotifier:erroranalysis'),
-    'label': _('Manual: Analysis of listener/notifier problems')
+    'label': _('Manual: Analysis of listener/notifier problems'),
 }]
 umc_modules = [{'module': 'join'}]
 run_descr = ['This can be checked by running: univention-check-join-status']

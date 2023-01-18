@@ -538,7 +538,7 @@ echo "TEST-%(app_name)s" >>/var/www/%(app_name)s/index.txt
                 correct = html != test_string
             if not correct:
                 raise UCSTest_DockerApp_ModProxyFailed(
-                    f'Got: {html}\nTested against: {test_string}\nProtocol: {protocol}\nTested equality: {should_succeed}'
+                    f'Got: {html}\nTested against: {test_string}\nProtocol: {protocol}\nTested equality: {should_succeed}',
                 )
 
 
@@ -635,7 +635,7 @@ Virtualization=Virtualisierung''')
         handler_set([
             'update/secure_apt=no',
             'appcenter/index/verify=false',
-            'repository/app_center/server=http://%(hostname)s.%(domainname)s' % self.ucr
+            'repository/app_center/server=http://%(hostname)s.%(domainname)s' % self.ucr,
         ])
 
     def update(self):
@@ -647,12 +647,12 @@ Virtualization=Virtualisierung''')
             subprocess.check_call(
                 './create_appcenter_json.py -u %(version)s -d /var/www -o /var/www/meta-inf/%(version)s/index.json.gz -s http://%(fqdn)s -t /var/www/meta-inf/%(version)s/all.tar' % {
                     'version': vv,
-                    'fqdn': '%(hostname)s.%(domainname)s' % self.ucr
+                    'fqdn': '%(hostname)s.%(domainname)s' % self.ucr,
                 }, shell=True)
             subprocess.check_call(
                 'zsyncmake -u http://%(fqdn)s/meta-inf/%(version)s/all.tar.gz -z -o /var/www/meta-inf/%(version)s/all.tar.zsync /var/www/meta-inf/%(version)s/all.tar' % {
                     'version': vv,
-                    'fqdn': '%(hostname)s.%(domainname)s' % self.ucr
+                    'fqdn': '%(hostname)s.%(domainname)s' % self.ucr,
                 }, shell=True)
         subprocess.check_call('univention-app update', shell=True)
 

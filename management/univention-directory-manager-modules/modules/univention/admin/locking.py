@@ -111,7 +111,7 @@ def lock(lo, position, type, value, scope='domain', timeout=300):
     # lock is old, try again
     if oldlocktime > 0 and oldlocktime < now:
         ml = [
-            ('lockTime', str(oldlocktime).encode('ascii'), str(locktime).encode('ascii'))
+            ('lockTime', str(oldlocktime).encode('ascii'), str(locktime).encode('ascii')),
         ]
         try:
             lo.modify(dn, ml, exceptions=True)
@@ -144,7 +144,7 @@ def relock(lo, position, type, value, scope='domain', timeout=300):
     else:
         locktime = 0
     ml = [
-        ('lockTime', b'1', str(locktime).encode('ASCII'))
+        ('lockTime', b'1', str(locktime).encode('ASCII')),
     ]
     try:
         lo.modify(dn, ml, exceptions=True)

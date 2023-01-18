@@ -378,7 +378,7 @@ class XML_Definition(ET.ElementTree):
     def get_module(self):
         cls = {
             'link': Link,
-            'module': Module
+            'module': Module,
         }.get(self.root.tag, Module)
         return cls(
             self.id, self.name, self.url, self.description, self.icon, self.categories, self.flavors,

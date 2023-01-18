@@ -44,7 +44,7 @@ import univention.config_registry.validation as ttyp
         'String',
         '1234',
         '',
-    ]
+    ],
 )
 def test_string(value):
     sval = ttyp.String({})
@@ -57,7 +57,7 @@ def test_string(value):
         ('^(19|20)\\d\\d[- /.](0[1-9]|1[012])[- /.](0[1-9]|[12][0-9]|3[01])$', True),
         ('/foo\\1/', False),
         ('', True),
-    ]
+    ],
 )
 def test_string_set_regex(regex, expected):
     sval = ttyp.String({})
@@ -75,7 +75,7 @@ def test_string_set_regex(regex, expected):
         ('http://univention.de', '^(https?)://(www)?.?(\\w+).(\\w+)/?(\\w+)?', True),
         ('2021-12-31', '^(19|20)\\d\\d[- /.](0[1-9]|1[012])[- /.](0[1-9]|[12][0-9]|3[01])$', True),
         ('2021-13-31', '^(19|20)\\d\\d[- /.](0[1-9]|1[012])[- /.](0[1-9]|[12][0-9]|3[01])$', False),
-    ]
+    ],
 )
 def test_string_regex(value, regex, expected):
     sval = ttyp.String({"regex": regex})
@@ -99,7 +99,7 @@ def test_string_regex(value, regex, expected):
         ('http://localhost?query', False),
         ('http://localhost#fragment', False),
         ('ldap://', False),
-    ]
+    ],
 )
 def test_url_proxy(value, expected):
     up = ttyp.URLProxy({})
@@ -153,7 +153,7 @@ def test_ipaddress(value, expected):
         ('12345678', True),
         ('-500', True),
         ('0', True),
-    ]
+    ],
 )
 def test_integer(value, expected):
     ival = ttyp.Integer({})
@@ -175,7 +175,7 @@ def test_integer(value, expected):
         ('22', '0', '42', True),
         ('-1', '0', '42', False),
         ('43', '0', '42', False),
-    ]
+    ],
 )
 def test_integer_range(value, min, max, expected):
     ival = ttyp.Integer({"min": min, "max": max})
@@ -195,7 +195,7 @@ def test_integer_range(value, min, max, expected):
         ('text', '10', False),
         (None, 'text', False),
         ('100', 'text', False),
-    ]
+    ],
 )
 def test_integer_set_range(min, max, expected):
     ival = ttyp.Integer({})
@@ -214,7 +214,7 @@ def test_integer_set_range(min, max, expected):
         ('-1', False),
         ('0', True),
         ('1', True),
-    ]
+    ],
 )
 def test_uinteger(value, expected):
     uval = ttyp.UnsignedNumber({})
@@ -227,7 +227,7 @@ def test_uinteger(value, expected):
         ('-1', False),
         ('0', False),
         ('1', True),
-    ]
+    ],
 )
 def test_pinteger(value, expected):
     pval = ttyp.PositiveNumber({})
@@ -245,7 +245,7 @@ def test_pinteger(value, expected):
         ('0', True),
         ('65535', True),
         ('65536', False),
-    ]
+    ],
 )
 def test_portnumber(port, expected):
     pp = ttyp.PortNumber({})
@@ -282,7 +282,7 @@ def test_portnumber(port, expected):
         ('text', False),
         ('y', False),
         ('n', False),
-    ]
+    ],
 )
 def test_bool(value, expected):
     bb = ttyp.Bool({})
@@ -294,7 +294,7 @@ def test_bool(value, expected):
     [
         ('{"name": "Egon Testmann", "salary": 9000, "email": "egon@testmail.com",}', False),
         ('{"name": "Egon Testmann", "salary": 9000, "email": "egon@testmail.com"}', True),
-    ]
+    ],
 )
 def test_json(value, expected):
     jj = ttyp.Json({})
@@ -333,7 +333,7 @@ def var():
         ('true, false,0', 'bool', None, True),
         ('{"name": "Egon Testmann", "salary": 9000, "email": "egon@testmail.com"};{"name": "Hans Wurst", "car": "Audi"}', 'json', ';', True),
         ('{"name": "Egon Testmann", "salary": 9000, "email": "egon@testmail.com"};{42}', 'json', ';', False),
-    ]
+    ],
 )
 def test_list(value, element_type, separator, expected, var):
     var['type'] = 'list'
@@ -374,7 +374,7 @@ def test_list(value, element_type, separator, expected, var):
         ("@daily", None),
         ("@hourly", None),
         ("@reboot", None),
-    ]
+    ],
 )
 def test_cron(value, error):
     cron = ttyp.Cron({})
@@ -400,7 +400,7 @@ def test_cron(value, error):
         ('str', ttyp.String),
         ('json', ttyp.Json),
         ('list', ttyp.List),
-    ]
+    ],
 )
 def test_type(name, typ, var):
     var['type'] = name

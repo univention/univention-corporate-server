@@ -201,7 +201,7 @@ def add_or_modify_idmap_entry(sambaSID: str, xidNumber: str, type_string: str, i
         idmap_type = {
             'ID_TYPE_UID': idmap.TYPE_UID,
             'ID_TYPE_GID': idmap.TYPE_GID,
-            'ID_TYPE_BOTH': idmap.TYPE_BOTH
+            'ID_TYPE_BOTH': idmap.TYPE_BOTH,
         }
         idmap.setup_name_mapping(sambaSID, idmap_type[type_string], xidNumber)
         #
@@ -337,7 +337,7 @@ if __name__ == '__main__':
     parser = ArgumentParser()
     parser.add_argument(
         "--direct-resync", action="store_true", dest="direct_resync", default=False,
-        help="Filter the output of univention-ldapsearch through this module"
+        help="Filter the output of univention-ldapsearch through this module",
     )
     options = parser.parse_args()
 

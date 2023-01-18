@@ -55,7 +55,7 @@ options = {
     'default': univention.admin.option(
         short_description=short_description,
         default=True,
-        objectClasses=['top', 'univentionDhcpHost']
+        objectClasses=['top', 'univentionDhcpHost'],
     ),
 }
 property_descriptions = {
@@ -65,7 +65,7 @@ property_descriptions = {
         syntax=univention.admin.syntax.string,
         include_in_default_search=True,
         required=True,
-        identifies=True
+        identifies=True,
     ),
     'hwaddress': univention.admin.property(
         short_description=_('Hardware address'),
@@ -87,9 +87,9 @@ layout = [
         Group(_('General DHCP host settings'), layout=[
             'host',
             'hwaddress',
-            'fixedaddress'
+            'fixedaddress',
         ]),
-    ])
+    ]),
 ]
 
 

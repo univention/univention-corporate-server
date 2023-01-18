@@ -66,7 +66,7 @@ property_descriptions = {
         syntax=univention.admin.syntax.dnsName,
         include_in_default_search=True,
         required=True,
-        identifies=True
+        identifies=True,
     ),
     'zonettl': univention.admin.property(
         short_description=_('Time to live'),
@@ -101,15 +101,15 @@ layout = [
         Group(_('General host record settings'), layout=[
             'name',
             'a',
-            'zonettl'
+            'zonettl',
         ]),
     ]),
     Tab(_('Mail'), _('Mail exchangers for this host'), advanced=True, layout=[
-        'mx'
+        'mx',
     ]),
     Tab(_('Text'), _('Optional text'), advanced=True, layout=[
         'txt',
-    ])
+    ]),
 ]
 
 
@@ -250,5 +250,5 @@ def identify(dn, attr, canonical=False):
         not attr.get('cNAMERecord', []),
         not attr.get('sRVRecord', []),
         any(attr.get(a) for a in ('aRecord', 'aAAARecord', 'mXRecord')) or mod in attr.get('univentionObjectType', []),
-        mod in attr.get('univentionObjectType', [mod])
+        mod in attr.get('univentionObjectType', [mod]),
     ])

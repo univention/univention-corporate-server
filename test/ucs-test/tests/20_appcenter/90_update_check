@@ -41,14 +41,14 @@ def get_all_locally_installed_apps():
             name='docker_yes',
             component_id='docker_yes',
             docker=True,
-            supported_ucs_versions=['2.2-2', '5.0-0', '1.1-1']
+            supported_ucs_versions=['2.2-2', '5.0-0', '1.1-1'],
         ),
         mock.Mock(
             id='docker_no',
             name='docker_no',
             component_id='docker_no',
             docker=True,
-            supported_ucs_versions=['2.2-2', '1.1-1']
+            supported_ucs_versions=['2.2-2', '1.1-1'],
         ),
         mock.Mock(
             id='component_yes',

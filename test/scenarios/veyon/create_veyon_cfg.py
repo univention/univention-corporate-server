@@ -31,7 +31,7 @@ def main():
         max_windows_hosts = 5
     if args.windows_clients > max_windows_hosts:
         parser.error(
-            "{} windows clients, this seems excessive, aborting!".format(args.windows_clients)
+            "{} windows clients, this seems excessive, aborting!".format(args.windows_clients),
         )
     config = ConfigParser(interpolation=None)
     config.read(template_file)

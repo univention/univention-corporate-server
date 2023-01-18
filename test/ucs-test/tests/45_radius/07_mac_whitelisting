@@ -42,8 +42,8 @@ def main():
                 set={
                     'name': strings.random_name(),
                     'mac': client_mac,
-                    'networkAccess': 0
-                }
+                    'networkAccess': 0,
+                },
             )
             univention.config_registry.handler_set(['radius/mac/whitelisting=true'])
 
@@ -60,8 +60,8 @@ def main():
                 'computers/ipmanagedclient',
                 dn=clientdn,
                 set={
-                    'networkAccess': 1
-                }
+                    'networkAccess': 1,
+                },
             )
 
             try:

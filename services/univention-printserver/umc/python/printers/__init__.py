@@ -117,7 +117,7 @@ class Instance(Base):
                         'job': mobj.group(1),
                         'owner': mobj.group(2),
                         'size': int(mobj.group(3)),
-                        'date': mobj.group(4)
+                        'date': mobj.group(4),
                     }
                     result.append(entry)
         return result

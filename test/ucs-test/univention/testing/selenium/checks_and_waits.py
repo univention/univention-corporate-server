@@ -52,7 +52,7 @@ class ChecksAndWaits:
         logger.info("Waiting for text: %r", text)
         xpath = f'//*[contains(text(), "{text}")]'
         webdriver.support.ui.WebDriverWait([xpath], timeout).until(
-            self.get_all_visible_elements, f'waited {timeout} seconds for text {text!r}'
+            self.get_all_visible_elements, f'waited {timeout} seconds for text {text!r}',
         )
 
     def wait_for_any_text_in_list(self, texts, timeout=60):
@@ -60,14 +60,14 @@ class ChecksAndWaits:
         logger.info("Waiting until any of those texts is visible: %r", texts)
         xpaths = [f'//*[contains(text(), "{text}")]' for text in texts]
         webdriver.support.ui.WebDriverWait(xpaths, timeout).until(
-            self.get_all_visible_elements, f'waited {timeout} seconds for texts {texts!r}'
+            self.get_all_visible_elements, f'waited {timeout} seconds for texts {texts!r}',
         )
 
     def wait_for_text_to_disappear(self, text, timeout=60):
         # type: (object, int) -> None
         xpath = f'//*[contains(text(), "{text}")]'
         webdriver.support.ui.WebDriverWait(xpath, timeout).until(
-            self.elements_invisible, f'waited {timeout} seconds for text {text!r} to disappear'
+            self.elements_invisible, f'waited {timeout} seconds for text {text!r} to disappear',
         )
 
     def wait_for_button(self, button_text, **kwargs):
@@ -76,7 +76,7 @@ class ChecksAndWaits:
         self.click_element(
             expand_path('//*[@containsClass="dijitButtonText"][text() = "%s"]')
             % (button_text,),
-            **kwargs
+            **kwargs,
         )
 
     def wait_until_all_dialogues_closed(self):
@@ -84,7 +84,7 @@ class ChecksAndWaits:
         logger.info("Waiting for all dialogues to close.")
         xpath = '//*[contains(concat(" ", normalize-space(@class), " "), " dijitDialogUnderlay ")]'
         webdriver.support.ui.WebDriverWait(xpath, timeout=60).until(
-            self.elements_invisible, 'wait_until_all_dialogues_closed() timeout=60'
+            self.elements_invisible, 'wait_until_all_dialogues_closed() timeout=60',
         )
 
     def wait_until_all_standby_animations_disappeared(self, timeout=60):
@@ -92,7 +92,7 @@ class ChecksAndWaits:
         logger.info("Waiting for all standby animations to disappear.")
         xpath = expand_path('//*[contains(@id, "_Standby_")]//*[@containsClass="umcStandbySvgWrapper"]')
         webdriver.support.ui.WebDriverWait(xpath, timeout).until(
-            self.elements_invisible, f'wait_until_all_standby_animations_disappeared(timeout={timeout!r})'
+            self.elements_invisible, f'wait_until_all_standby_animations_disappeared(timeout={timeout!r})',
         )
 
     def wait_until_standby_animation_appears(self, timeout=5):
@@ -101,7 +101,7 @@ class ChecksAndWaits:
         xpath = expand_path('//*[contains(@id, "_Standby_")]//*[@containsClass="umcStandbySvgWrapper"]')
         try:
             webdriver.support.ui.WebDriverWait(xpath, timeout).until(
-                self.elements_visible, f'wait_until_standby_animation_appears(timeout={timeout!r})'
+                self.elements_visible, f'wait_until_standby_animation_appears(timeout={timeout!r})',
             )
         except selenium_exceptions.TimeoutException:
             logger.info("No standby animation appeared during timeout. Ignoring")
@@ -118,7 +118,7 @@ class ChecksAndWaits:
         logger.info("Waiting for all progress bars to disappear.")
         xpath = '//*[contains(concat(" ", normalize-space(@class), " "), " umcProgressBar ")]'
         webdriver.support.ui.WebDriverWait(xpath, timeout=timeout).until(
-            self.elements_invisible, f'waited {timeout} seconds for progress bar'
+            self.elements_invisible, f'waited {timeout} seconds for progress bar',
         )
 
     def wait_until_element_visible(self, xpath, timeout=60):
@@ -126,15 +126,15 @@ class ChecksAndWaits:
         logger.info(f'Waiting for the element with the xpath {xpath!r} to be visible.')
         self.wait_until(
             expected_conditions.visibility_of_element_located(
-                (webdriver.common.by.By.XPATH, xpath)
+                (webdriver.common.by.By.XPATH, xpath),
             ),
-            timeout=timeout
+            timeout=timeout,
         )
 
     def wait_until(self, check_function, timeout=60):
         # type: (Callable[..., Any], int) -> None
         webdriver.support.ui.WebDriverWait(self.driver, timeout).until(
-            check_function, f'wait_until({check_function!r}, timeout={timeout!r})'
+            check_function, f'wait_until({check_function!r}, timeout={timeout!r})',
         )
 
     def get_gallery_items(self):
@@ -177,5 +177,5 @@ class ChecksAndWaits:
         # type: (str, str, int) -> Any
         return webdriver.support.ui.WebDriverWait(self.driver, timeout).until(
             expected_conditions.presence_of_element_located((webdriver.common.by.By.CSS_SELECTOR, css_selector)),
-            message
+            message,
         )

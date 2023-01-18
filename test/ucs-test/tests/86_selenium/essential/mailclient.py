@@ -207,7 +207,7 @@ class BaseMailClient:
             typ, data = self.append(
                 mailbox, '',
                 imaplib.Time2Internaldate(time.time()),
-                str(email.message_from_string('TEST %s' % mailbox))
+                str(email.message_from_string('TEST %s' % mailbox)),
             )
             print('Append Retcode:', typ, data)
             if (typ == 'OK') != retcode:

@@ -163,26 +163,26 @@ class TestPortal:
                 "activated": True,
                 "allowedGroups": [
                     "cn=g1,cn=groups,dc=intranet,dc=example,dc=de",
-                    "cn=g2,cn=groups,dc=intranet,dc=example,dc=de"
+                    "cn=g2,cn=groups,dc=intranet,dc=example,dc=de",
                 ],
                 "anonymous": True,
                 "description": {
                     "de_DE": "News, Tipps und Best Practices",
                     "en_US": "News, tips and best practices",
-                    "fr_FR": "Nouvelles, conseils et bonne pratique"
+                    "fr_FR": "Nouvelles, conseils et bonne pratique",
                 },
                 "dn": "cn=univentionblog,cn=entry,cn=portals,cn=univention,dc=intranet,dc=example,dc=de",
                 "in_portal": True,
                 "linkTarget": "newwindow",
                 "links": [
-                    "https://www.univention.com/news/blog-en/"
+                    "https://www.univention.com/news/blog-en/",
                 ],
                 "logo_name": "/univention/portal/icons/entries/univentionblog.png",
                 "name": {
                     "de_DE": "Univention Blog",
                     "en_US": "Univention Blog",
-                    "fr_FR": "Univention Blog"
-                }
+                    "fr_FR": "Univention Blog",
+                },
             },
         ]
         assert content == expected_content
@@ -217,7 +217,7 @@ class TestPortal:
                 [
                     u"cn=domain-admin,cn=category,cn=portals,cn=univention,dc=intranet,dc=example,dc=de",
                     [u"cn=umc-domain,cn=entry,cn=portals,cn=univention,dc=intranet,dc=example,dc=de", u"cn=server-overview,cn=entry,cn=portals,cn=univention,dc=intranet,dc=example,dc=de", u"cn=univentionblog,cn=entry,cn=portals,cn=univention,dc=intranet,dc=example,dc=de"],
-                ]
+                ],
             ],
             "defaultLinkTarget": u"embedded",
             "dn": u"cn=domain,cn=portal,cn=portals,cn=univention,dc=intranet,dc=example,dc=de",

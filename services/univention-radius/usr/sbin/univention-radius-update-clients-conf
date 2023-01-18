@@ -88,7 +88,7 @@ def main():  # type: () -> None
                     shared_secret,
                     nas_type,
                     '' if virtual_server else '# ',
-                    virtual_server if virtual_server else '...not specified...')
+                    virtual_server if virtual_server else '...not specified...'),
                 )
 
     shutil.move(fd.name, os.path.join(BASE_DIR, BASE_NAME))

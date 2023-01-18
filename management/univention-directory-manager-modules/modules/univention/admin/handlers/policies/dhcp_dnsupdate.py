@@ -41,7 +41,7 @@ import univention.admin.localization
 from univention.admin.policy import (
     register_policy_mapping, policy_object_tab,
     requiredObjectClassesProperty, prohibitedObjectClassesProperty,
-    fixedAttributesProperty, emptyAttributesProperty, ldapFilterProperty
+    fixedAttributesProperty, emptyAttributesProperty, ldapFilterProperty,
 )
 
 
@@ -59,7 +59,7 @@ class dhcp_dnsupdateFixedAttributes(univention.admin.syntax.select):
         ('univentionDhcpDdnsDdnsUpdateStyle', _('DDNS update style')),
         ('univentionDhcpDdnsDoForwardUpdates', _('DDNS forward update')),
         ('univentionDhcpDdnsUpdateStaticLeases', _('Update static leases')),
-        ('univentionDhcpDdnsClientUpdates', _('Client updates'))
+        ('univentionDhcpDdnsClientUpdates', _('Client updates')),
     ]
 
 
@@ -150,10 +150,10 @@ layout = [
             ['ddnsDomainname', 'ddnsRevDomainname'],
             ['ddnsUpdates', 'ddnsUpdateStyle'],
             ['ddnsDoForwardUpdate', 'updateStaticLeases'],
-            'clientUpdates'
+            'clientUpdates',
         ]),
     ]),
-    policy_object_tab()
+    policy_object_tab(),
 ]
 
 mapping = univention.admin.mapping.mapping()

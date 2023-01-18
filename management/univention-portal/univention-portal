@@ -380,11 +380,11 @@ def ask_value(name: str, klass_default: Union[str, None] = None, value_default: 
             click.echo(
                 "A {} takes {} arguments ({})".format(
                     klass_name, len(spec.args) - 1, ", ".join(repr(arg) for arg in spec.args[1:]),
-                )
+                ),
             )
             if spec.defaults:
                 defaults = dict(
-                    zip(spec.args[len(spec.args) - len(spec.defaults):], spec.defaults)
+                    zip(spec.args[len(spec.args) - len(spec.defaults):], spec.defaults),
                 )
             else:
                 defaults = {}
@@ -397,7 +397,7 @@ def ask_value(name: str, klass_default: Union[str, None] = None, value_default: 
                     if camelcase(arg) in possible_classes:
                         klass_default = camelcase(arg) + "()"
                 kwargs[arg] = ask_value(
-                    arg, klass_default=klass_default, value_default=value_default
+                    arg, klass_default=klass_default, value_default=value_default,
                 )
         click.echo(click.style("Okay, {} initialized".format(klass_name), fg="green"))
         ret = {"type": "class", "class": klass.__name__}

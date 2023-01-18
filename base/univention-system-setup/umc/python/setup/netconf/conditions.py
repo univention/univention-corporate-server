@@ -165,7 +165,7 @@ class Ldap(with_metaclass(ABCMeta, Phase)):
             ldap = getMachineConnection(ldap_master=True)
             ldap_filter = filter_format(
                 "(&(objectClass=person)(uid=%s))",
-                (username,)
+                (username,),
             )
             result = ldap.searchDn(ldap_filter)
             self.binddn = result[0]

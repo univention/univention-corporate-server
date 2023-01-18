@@ -91,7 +91,7 @@ class Instance(Base, ProgressMixin):
 
     @sanitize(
         plugin=StringSanitizer(required=True),
-        args=DictSanitizer({})
+        args=DictSanitizer({}),
     )
     @simple_response(with_progress=True)
     def run(self, plugin: str, args: Any = None):
@@ -266,7 +266,7 @@ class Plugin(object):
         self.module = __import__(
             'univention.management.console.modules.diagnostic.plugins.%s' % (self.plugin,),
             fromlist=['univention.management.console.modules.diagnostic'],
-            level=0
+            level=0,
         )
 
     def execute(self, umc_module: Instance, action=None, **kwargs: Any) -> Dict[str, Any]:

@@ -9,7 +9,7 @@ import pytest
 if sys.version_info < (3,):
     pytest.skip(
         "unsupported Python version, upgrade.py package from scripts folder is not available for Python2 skipping test.",
-        allow_module_level=True
+        allow_module_level=True,
     )
 
 from univention.updater.scripts.upgrade import parse_args

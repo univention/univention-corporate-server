@@ -46,7 +46,7 @@ title = _('Proxy server failure')
 description = _('There was an error using the proxy server. The {setup:network} can be used to change the proxy configuration.\n')
 umc_modules = [{
     'module': 'setup',
-    'flavor': 'network'
+    'flavor': 'network',
 }]
 run_descr = ['Checks if the proxy server runs correctly']
 
@@ -113,7 +113,7 @@ def run(_umc_instance: Instance, url: str = 'http://www.univention.de/', connect
             warning = '\n'.join([
                 description,
                 _('The proxy server is reachable but the HTTP response status code (%d) does not indicate success.') % (http_status,),
-                _('This warning might be harmless. Nevertheless make sure the authentication credentials (if any) are correct and the proxy server ACLs do not forbid requests to %s.') % (url,)
+                _('This warning might be harmless. Nevertheless make sure the authentication credentials (if any) are correct and the proxy server ACLs do not forbid requests to %s.') % (url,),
             ])
             MODULE.warn(warning)
             raise Warning(warning)

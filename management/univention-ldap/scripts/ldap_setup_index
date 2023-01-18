@@ -40,7 +40,7 @@ import re
 LOG = getLogger(__name__)
 
 RE_UNDEFINED = re.compile(
-    r'/etc/ldap/slapd\.conf: line [0-9]+: index attribute "([^"]+)" undefined'
+    r'/etc/ldap/slapd\.conf: line [0-9]+: index attribute "([^"]+)" undefined',
 )
 
 

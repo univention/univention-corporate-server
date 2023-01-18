@@ -66,14 +66,14 @@ property_descriptions = {
         include_in_default_search=True,
         required=True,
         may_change=False,
-        identifies=True
+        identifies=True,
     ),
 }
 
 layout = [
     Tab(_('General'), _('Basic settings'), layout=[
         Group(_('DHCP shared network description'), layout=[
-            'name'
+            'name',
         ]),
     ]),
 ]

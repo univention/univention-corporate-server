@@ -59,7 +59,7 @@ if __name__ == '__main__':
         app = App(name=name, version='1', build_package=False, call_join_scripts=False)
         try:
             app.set_ini_parameter(
-                DockerMainService='test1'
+                DockerMainService='test1',
             )
             app.add_script(compose=DOCKER_COMPOSE.format(image='docker-test.software-univention.de/alpine:3.5'))
             app.add_script(settings=SETTINGS)

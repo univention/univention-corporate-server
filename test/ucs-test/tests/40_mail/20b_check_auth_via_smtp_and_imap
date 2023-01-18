@@ -32,7 +32,7 @@ class AuthTests:
                 'password': self.password,
                 'mailHomeServer': '%s.%s' % (self.ucr.get('hostname'), self.domain),
                 'mailPrimaryAddress': self.email,
-            }
+            },
         )
 
     def test_smtp_auth(self, user):

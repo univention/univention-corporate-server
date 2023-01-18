@@ -145,7 +145,7 @@ class AppCenter:
         self.select_search_category(category)
 
         search_field = self.selenium.driver.find_element_by_xpath(
-            '//*[contains(text(), "%s")]/../input' % ('Search applications...',)
+            '//*[contains(text(), "%s")]/../input' % ('Search applications...',),
         )
         search_field.send_keys(text)
         sleep(2)
@@ -156,11 +156,11 @@ class AppCenter:
         # type: (str) -> None
         self.selenium.show_notifications(False)
         self.selenium.click_element(
-            '//div[contains(concat(" ", normalize-space(@class), " "), " dropDownMenu ")]//input[contains(concat(" ", normalize-space(@class), " "), " dijitArrowButtonInner ")]'
+            '//div[contains(concat(" ", normalize-space(@class), " "), " dropDownMenu ")]//input[contains(concat(" ", normalize-space(@class), " "), " dijitArrowButtonInner ")]',
         )
         self.selenium.click_element(
             '//*[contains(concat(" ", normalize-space(@class), " "), " dijitMenuItem ")][@role="option"]//*[contains(text(), "%s")]'
-            % (category,)
+            % (category,),
         )
         sleep(2)
 

@@ -58,7 +58,7 @@ from univention.management.console.modules.decorators import simple_response, sa
 from univention.management.console.modules.sanitizers import (
     Sanitizer, SearchSanitizer, EmailSanitizer, ChoicesSanitizer,
     ListSanitizer, StringSanitizer, DictSanitizer, BooleanSanitizer,
-    DNSanitizer
+    DNSanitizer,
 )
 from univention.management.console.modules.mixins import ProgressMixin
 from univention.management.console.log import MODULE
@@ -81,7 +81,7 @@ from .udm_ldap import (
     LDAP_Connection, set_bind_function, container_modules,
     info_syntax_choices, search_syntax_choices_by_key,
     UserWithoutDN, ObjectDoesNotExist, SuperordinateDoesNotExist, NoIpLeft,
-    LDAP_AuthenticationFailed
+    LDAP_AuthenticationFailed,
 )
 from .tools import LicenseError, LicenseImport, install_opener, urlopen, dump_license, check_license
 
@@ -139,7 +139,7 @@ class ObjectPropertySanitizer(StringSanitizer):
         """
         args = {
             "minimum": 1,
-            "regex_pattern": r'^[\w\d\-;]+$'
+            "regex_pattern": r'^[\w\d\-;]+$',
         }
         args.update(kwargs)
         StringSanitizer.__init__(self, **args)
@@ -340,7 +340,7 @@ class Instance(Base, ProgressMixin):
 
         def _error(msg=None):
             self.finished(request.id, [{
-                'success': False, 'message': msg
+                'success': False, 'message': msg,
             }])
 
         try:
@@ -389,8 +389,8 @@ class Instance(Base, ProgressMixin):
     @sanitize(DictSanitizer({
         "object": DictSanitizer({}, required=True),
         "options": DictSanitizer({
-            "objectType": StringSanitizer(required=True)
-        }, required=True)
+            "objectType": StringSanitizer(required=True),
+        }, required=True),
     }, required=True))
     def add(self, request):
         """
@@ -423,7 +423,7 @@ class Instance(Base, ProgressMixin):
 
     @sanitize(DictSanitizer({
         "object": DictSanitizer({
-            '$dn$': StringSanitizer(required=True)
+            '$dn$': StringSanitizer(required=True),
         }, required=True),
     }), required=True)
     def put(self, request):
@@ -541,7 +541,7 @@ class Instance(Base, ProgressMixin):
                         if obj.hasChanged(key):
                             empty_props_with_default_set[key] = {
                                 'default_value': obj.info[key],
-                                'prevent_umc_default_popup': obj.descriptions[key].prevent_umc_default_popup
+                                'prevent_umc_default_popup': obj.descriptions[key].prevent_umc_default_popup,
                             }
                     props['$empty_props_with_default_set$'] = empty_props_with_default_set
 
@@ -639,7 +639,7 @@ class Instance(Base, ProgressMixin):
                     'objectType': module.name,
                     'labelObjectType': module.subtitle,
                     'name': module.obj_description(obj),
-                    'path': ldap_dn2path(obj.dn, include_rdn=False)
+                    'path': ldap_dn2path(obj.dn, include_rdn=False),
                 }
                 if '$value$' in fields:
                     entry['$value$'] = [module.property_description(obj, column['name']) for column in module.columns]
@@ -661,7 +661,7 @@ class Instance(Base, ProgressMixin):
         choices = self.reports_cfg.get_report_names(request.flavor)
         return {
             "report": ChoicesSanitizer(choices=choices, required=True),
-            "objects": ListSanitizer(DNSanitizer(minimum=1), required=True, min_elements=1)
+            "objects": ListSanitizer(DNSanitizer(minimum=1), required=True, min_elements=1),
         }
 
     @sanitize_func(sanitize_reports_create)
@@ -718,7 +718,7 @@ class Instance(Base, ProgressMixin):
 
     @sanitize(
         networkDN=StringSanitizer(required=True),
-        increaseCounter=BooleanSanitizer(default=False)
+        increaseCounter=BooleanSanitizer(default=False),
     )
     def network(self, request):
         """
@@ -863,7 +863,7 @@ class Instance(Base, ProgressMixin):
     @sanitize(
         objectType=StringSanitizer(),
         objectDn=StringSanitizer(),
-        searchable=BooleanSanitizer(default=False)
+        searchable=BooleanSanitizer(default=False),
     )
     def properties(self, request):
         """
@@ -897,7 +897,7 @@ class Instance(Base, ProgressMixin):
 
     @bundled
     @sanitize(
-        objectType=StringSanitizer()
+        objectType=StringSanitizer(),
     )
     def policies(self, request):
         """Returns a list of policy types that apply to the given object type"""
@@ -995,7 +995,7 @@ class Instance(Base, ProgressMixin):
     @sanitize(
         objectPropertyValue=SearchSanitizer(),
         objectProperty=ObjectPropertySanitizer(),
-        syntax=StringSanitizer(required=True)
+        syntax=StringSanitizer(required=True),
     )
     def syntax_choices(self, request):
         """
@@ -1026,7 +1026,7 @@ class Instance(Base, ProgressMixin):
         thread.run()
 
     @sanitize(
-        container=StringSanitizer(default='', allow_none=True)
+        container=StringSanitizer(default='', allow_none=True),
     )
     def move_container_query(self, request):
         scope = 'one'
@@ -1039,7 +1039,7 @@ class Instance(Base, ProgressMixin):
         thread.run()
 
     @sanitize(
-        container=StringSanitizer(allow_none=True)
+        container=StringSanitizer(allow_none=True),
     )
     def nav_container_query(self, request):
         """
@@ -1112,7 +1112,7 @@ class Instance(Base, ProgressMixin):
         return result
 
     @sanitize(
-        container=StringSanitizer(required=True)
+        container=StringSanitizer(required=True),
     )
     @LDAP_Connection
     def nav_object_query(self, request, ldap_connection=None, ldap_position=None):
@@ -1172,7 +1172,7 @@ class Instance(Base, ProgressMixin):
         "policies": ListSanitizer(),
         "policyType": StringSanitizer(required=True),
         "objectDN": Sanitizer(default=None),
-        "container": Sanitizer(default=None)
+        "container": Sanitizer(default=None),
         # objectDN=StringSanitizer(default=None, allow_none=True),
         # container=StringSanitizer(default=None, allow_none=True)
     }))

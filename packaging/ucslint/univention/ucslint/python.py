@@ -69,7 +69,7 @@ class Base:
     @classmethod
     def matcher(cls) -> Pattern[str]:
         MATCHED_STRING = _or(
-            cls.MATCHED_RAW, cls.MATCHED_BYTES, cls.MATCHED_UNICODE, name="str"
+            cls.MATCHED_RAW, cls.MATCHED_BYTES, cls.MATCHED_UNICODE, name="str",
         )
         RE_STRING = re.compile(_or(COMMENT, MATCHED_STRING), re.MULTILINE)
         return RE_STRING

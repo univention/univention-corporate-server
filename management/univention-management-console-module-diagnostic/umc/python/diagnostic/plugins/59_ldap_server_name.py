@@ -45,7 +45,7 @@ run_descr = ['This can be checked by running: ucr get ldap/server/name']
 links = [{
     'name': 'sdb',
     'href': 'https://help.univention.com/t/changing-the-primary-ldap-server-to-redistribute-the-server-load/14138',
-    'label': _('Univention Support Database - Change the primary LDAP Server to redistribute the server load')
+    'label': _('Univention Support Database - Change the primary LDAP Server to redistribute the server load'),
 }]
 
 

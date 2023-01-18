@@ -51,7 +51,7 @@ options = {
     'default': univention.admin.option(
         short_description=short_description,
         default=True,
-        objectClasses=['domainPolicy', 'leaf', 'top']
+        objectClasses=['domainPolicy', 'leaf', 'top'],
     ),
 }
 property_descriptions = {
@@ -208,7 +208,7 @@ layout = [
             'domainPolicyReference',
             'domainCAs',
             'defaultLocalPolicyObject',
-            'authenticationOptions'
+            'authenticationOptions',
         ]),
     ]),
 ]

@@ -69,7 +69,7 @@ nagios_properties = {
         syntax=univention.admin.syntax.nagiosServiceDn,
         multivalue=True,
         options=['nagios'],
-    )
+    ),
 }
 
 
@@ -94,7 +94,7 @@ nagios_options = {
         default=0,
         editable=True,
         objectClasses=['univentionNagiosHostClass'],
-    )
+    ),
 }
 
 

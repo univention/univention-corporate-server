@@ -547,7 +547,7 @@ def update_extended_attributes(lo, module, position):
                 ldapMapping=ldap_attribute_name,
                 deleteObjClass=deleteObjectClass,
                 syntax=propertySyntaxString,
-                hook=propertyHook
+                hook=propertyHook,
             ))
 
             if ldap_attribute_name.lower() in _ldap_operational_attribute_names(lo):

@@ -68,7 +68,7 @@ property_descriptions = {
         syntax=univention.admin.syntax.string,
         include_in_default_search=True,
         required=True,
-        identifies=True
+        identifies=True,
     ),
     'description': univention.admin.property(
         short_description=_('Description'),
@@ -80,41 +80,41 @@ property_descriptions = {
         short_description=_('Password'),
         long_description='',
         syntax=univention.admin.syntax.passwd,
-        dontsearch=True
+        dontsearch=True,
     ),
     'generateRandomPassword': univention.admin.property(
         short_description=_('Generate random password'),
         long_description='',
         syntax=univention.admin.syntax.boolean,
-        dontsearch=True
+        dontsearch=True,
     ),
     'keyVersionNumber': univention.admin.property(
         short_description=_('Key version'),
         long_description='',
         syntax=univention.admin.syntax.integer,
         dontsearch=True,
-        default='1'
+        default='1',
     ),
     'KDCFlags': univention.admin.property(
         short_description=_('KDC Flags'),
         long_description='',
         syntax=univention.admin.syntax.integer,
         dontsearch=True,
-        default='126'
+        default='126',
     ),
     'maxLife': univention.admin.property(
         short_description=_('Maximum life time'),
         long_description='',
         syntax=univention.admin.syntax.integer,
         dontsearch=True,
-        default='86400'
+        default='86400',
     ),
     'maxRenew': univention.admin.property(
         short_description=_('Maximum renew time'),
         long_description='',
         syntax=univention.admin.syntax.integer,
         dontsearch=True,
-        default='604800'
+        default='604800',
     ),
 }
 

@@ -44,7 +44,7 @@ def get_policy_result(objectDN, policyDN, container):
             'policies': [policyDN],
             'policyType': 'policies/registry',
             'objectDN': objectDN,
-            'container': container
+            'container': container,
             }]
 
     result = client.umc_command('udm/object/policies', data, 'navigation').result
@@ -60,7 +60,7 @@ def main():
             name='test-umc-opset',
             description="policy result test op set",
             operation=["udm/object/policies"],
-            flavor='navigation'
+            flavor='navigation',
         )
 
         # create a new UMC policy
@@ -69,14 +69,14 @@ def main():
             'policies/umc',
             position="cn=UMC,cn=policies,%s" % udm.LDAP_BASE,
             name='test-umc-policy',
-            allow=operation_set_dn
+            allow=operation_set_dn,
         )
 
         # create user to authenticate with at UMC
         # appending the created UMC policy
         global USERNAME
         userdn, USERNAME = udm.create_user(**{
-            'policy_reference': umc_policy_dn
+            'policy_reference': umc_policy_dn,
         })
 
         # create empty policies
@@ -91,26 +91,26 @@ def main():
                 'policies/registry',
                 position="cn=policies,%s" % udm.LDAP_BASE,
                 name='test-%s-ucr-policy' % name,
-                **kwargs
+                **kwargs,
             )
 
         # create container hierarchy
         root_dn = udm.create_object(
             'container/cn',
             name='root',
-            position=udm.LDAP_BASE
+            position=udm.LDAP_BASE,
         )
         container_dn = udm.create_object(
             'container/cn',
             name='computers2',
-            position=root_dn
+            position=root_dn,
         )
 
         # create computer object
         computer_dn = udm.create_object(
             'computers/domaincontroller_slave',
             name=random_name(),
-            position=container_dn
+            position=container_dn,
         )
 
         root_policy_dn = policies['root']
@@ -137,35 +137,35 @@ def main():
         # assign policy to root container
         udm.modify_object('container/cn', **{
             'dn': root_dn,
-            'policy_reference': root_policy_dn
+            'policy_reference': root_policy_dn,
         })
 
         _assert(
             ["foo=1"],
             get_policy_result_new(container_dn),
-            'new inherit w/o_pol'
+            'new inherit w/o_pol',
         )
         _assert(
             ["foo=1", "baz=3", "bar=4"],
             get_policy_result_new(container_dn, computer_policy_dn),
-            'new set_pol w/o_pol'
+            'new set_pol w/o_pol',
         )
 
         # assign policy to computer container
         udm.modify_object('container/cn', **{
             'dn': container_dn,
-            'policy_reference': container_policy_dn
+            'policy_reference': container_policy_dn,
         })
 
         _assert(
             ["foo=1", "baz=2"],
             get_policy_result_new(container_dn),
-            'new inherit w/pol'
+            'new inherit w/pol',
         )
         _assert(
             ["foo=1", "bar=4", "baz=3"],
             get_policy_result_new(container_dn, computer_policy_dn),
-            'new set_pol w/pol'
+            'new set_pol w/pol',
         )
 
         #
@@ -174,34 +174,34 @@ def main():
         _assert(
             ["foo=1", "baz=2"],
             get_policy_result_edit(computer_dn),
-            'edit inherit w/o_pol'
+            'edit inherit w/o_pol',
         )
         _assert(
             ["foo=1", "bar=4", "baz=3"],
             get_policy_result_edit(computer_dn, computer_policy_dn),
-            'edit set_pol w/o_pol'
+            'edit set_pol w/o_pol',
         )
 
         # assign policy to computer
         udm.modify_object('computers/domaincontroller_slave', **{
             'dn': computer_dn,
-            'policy_reference': computer_policy_dn
+            'policy_reference': computer_policy_dn,
         })
 
         _assert(
             ["foo=1", "baz=2"],
             get_policy_result_edit(computer_dn),
-            'edit inherit w/pol'
+            'edit inherit w/pol',
         )
         _assert(  # test with the same policy the object has assigned
             ["foo=1", "bar=4", "baz=3"],
             get_policy_result_edit(computer_dn, computer_policy_dn),
-            'edit set_pol w/pol'
+            'edit set_pol w/pol',
         )
         _assert(
             ["foo=0", "bar=5", "baz=2"],
             get_policy_result_edit(computer_dn, various_policy_dn),
-            'edit set_pol w/pol (2)'
+            'edit set_pol w/pol (2)',
         )
 
 

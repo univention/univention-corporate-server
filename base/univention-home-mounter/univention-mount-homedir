@@ -79,7 +79,7 @@ def get_homeattr(username):
     debug("searching automount info...")
     search_filter = ldap.filter.filter_format(
         "(&(objectClass=posixAccount)(objectClass=automount)(uid=%s))",
-        (username, )
+        (username, ),
     )
     for _, attributes in connection.search(filter=search_filter, attr=['automountInformation'], sizelimit=1):
         for info in attributes.get('automountInformation', []):

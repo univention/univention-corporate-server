@@ -759,7 +759,7 @@ SAMBA_TOOL_FIELDNAMES_TO_CLDAP_RES = {
     'DC name': 'pdc_dns_name',
     'DC netbios name': 'pdc_name',
     'Server site': 'server_site',
-    'Client site': 'client_site'
+    'Client site': 'client_site',
 }
 
 

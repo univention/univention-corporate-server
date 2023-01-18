@@ -42,7 +42,7 @@ def main():
                     set={
                         'mailHomeServer': '%s.%s' % (ucr.get('hostname'), domain),
                         'mailPrimaryAddress': mail,
-                    }
+                    },
                 )
 
                 activate_spam_detection()

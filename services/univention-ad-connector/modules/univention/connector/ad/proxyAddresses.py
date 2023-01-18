@@ -68,7 +68,7 @@ def equal(values1, values2):
         if not isinstance(values, (list, tuple)):
             values = [values]
         values_normalized.append(
-            [v for v in map(valid_mailaddress, values) if v]
+            [v for v in map(valid_mailaddress, values) if v],
         )
     return set(values_normalized[0]) == set(values_normalized[1])
 

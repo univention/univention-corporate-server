@@ -22,8 +22,8 @@ def main():
                 set={
                     'password': 'univention',
                     'mailHomeServer': fqdn,
-                    'mailPrimaryAddress': mail_address
-                }
+                    'mailPrimaryAddress': mail_address,
+                },
             )
         assert EXPECTED_ERROR_MSG in str(exc.value), str(exc.value)
 

@@ -128,7 +128,7 @@ def trace(with_args=True, with_return=False, repr=object.__repr__):
                     chain(
                         (repr(arg) for arg in args),
                         ('%s=%s' % (k, repr(v)) for (k, v) in kwargs.items()),
-                    )
+                    ),
             ) if with_args else '...'
 
             _debug.begin('%s(%s): ...' % (fname, _args))

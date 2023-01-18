@@ -342,7 +342,7 @@ class Instance(Base, ProgressMixin):
                     'info': state.message,
                     'errors': state.errors,
                     'critical': state.critical,
-                    'steps': state.percentage
+                    'steps': state.percentage,
                 }
                 info.update(kwargs)
                 MODULE.info('Progress state: %(steps).1f%% - %(component)s - %(info)s' % info)
@@ -402,7 +402,7 @@ class Instance(Base, ProgressMixin):
                 messages.append({
                     'message': message,
                     'valid': not critical,
-                    'key': key
+                    'key': key,
                 })
 
         def _append(key, message):
@@ -410,7 +410,7 @@ class Instance(Base, ProgressMixin):
             messages.append({
                 'key': key,
                 'valid': False,
-                'message': message
+                'message': message,
             })
 
         # host and domain name
@@ -582,7 +582,7 @@ class Instance(Base, ProgressMixin):
 
         model_result = [{
             'label': i18nXKeyboard.translate(model.xpath('./configItem/description')[0].text),
-            'id': model.xpath('./configItem/name')[0].text
+            'id': model.xpath('./configItem/name')[0].text,
         } for model in models]
 
         return model_result
@@ -617,7 +617,7 @@ class Instance(Base, ProgressMixin):
             variants = layout.xpath("./variantList/variant")
             variante_result += [{
                 'label': i18nXKeyboard.translate(variant.xpath('./configItem/description')[0].text),
-                'id': variant.xpath('./configItem/name')[0].text
+                'id': variant.xpath('./configItem/name')[0].text,
             } for variant in variants]
 
         variante_result.insert(0, {'label': '', 'id': ''})

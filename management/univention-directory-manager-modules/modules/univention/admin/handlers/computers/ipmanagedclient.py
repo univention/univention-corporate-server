@@ -65,7 +65,7 @@ property_descriptions = {
         syntax=univention.admin.syntax.hostName,
         include_in_default_search=True,
         required=True,
-        identifies=True
+        identifies=True,
     ),
     'description': univention.admin.property(
         short_description=_('Description'),
@@ -164,14 +164,14 @@ layout = [
             'dnsEntryZoneReverse',
         ]),
         Group(_('DHCP'), layout=[
-            'dhcpEntryZone'
+            'dhcpEntryZone',
         ]),
     ]),
     Tab(_('Groups'), _('Group memberships'), advanced=True, layout=[
         "groups",
     ]),
     Tab(_('DNS alias'), _('Alias DNS entry'), advanced=True, layout=[
-        'dnsEntryZoneAlias'
+        'dnsEntryZoneAlias',
     ]),
 ]
 

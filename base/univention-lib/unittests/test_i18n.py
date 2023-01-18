@@ -81,7 +81,7 @@ class TestLocale(object):
         ("be_BY.UTF-8@latin", "be_BY.UTF-8@latin"),
         ("C.UTF-8", "C.UTF-8"),
         ("ca_ES@valencia", "ca_ES.UTF-8@valencia"),
-        (None, "")
+        (None, ""),
     ])
     def test_str(self, spec, txt):
         locale = i18n.Locale(spec)

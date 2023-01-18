@@ -73,7 +73,7 @@ def get_registration_info(ucr):
             'username': username,
             'lastname': username,
             'password': 'univention',
-            'PasswordRecoveryEmail': 'root@localhost'
+            'PasswordRecoveryEmail': 'root@localhost',
         }
         if attributes:
             _attributes.update(attributes)
@@ -83,8 +83,8 @@ def get_registration_info(ucr):
             'dn': dn,
             'attributes': _attributes,
             'data': {
-                'attributes': _attributes
-            }
+                'attributes': _attributes,
+            },
         }
     yield _get_registration_info
     lo, po = getAdminConnection()
@@ -117,7 +117,7 @@ def _get_mail(mails, idx=-1):
             'username': verify_params.get('username', [''])[0],
             'token': verify_params.get('/selfservice/verifyaccount/?token', [''])[0],
             'method': verify_params.get('method', [''])[0],
-        }
+        },
     }
 
 
@@ -302,7 +302,7 @@ def test_deregistration_enabled(umc_client, ucr):
     with pytest.raises(HTTPError) as excinfo:
         umc_client.umc_command('passwordreset/deregister_account', {
             'username': 'xxx',
-            'password': 'xxx'
+            'password': 'xxx',
         })
     assert excinfo.value.message == 'The account deregistration was disabled via the Univention Configuration Registry.'
 
@@ -311,7 +311,7 @@ def test_deregistration_wrong_auth(umc_client, ucr):
     with pytest.raises(HTTPError) as excinfo:
         umc_client.umc_command('passwordreset/deregister_account', {
             'username': 'xxx',
-            'password': 'xxx'
+            'password': 'xxx',
         })
     assert excinfo.value.message == 'Either username or password is incorrect or you are not allowed to use this service.'
 
@@ -324,12 +324,12 @@ def test_deregistration(umc_client, mails, udm, readudm):
     })
     utils.verify_ldap_object(dn, {
         'univentionDeregisteredThroughSelfService': [],
-        'univentionDeregistrationTimestamp': []
+        'univentionDeregistrationTimestamp': [],
     })
     timestamp = datetime.datetime.strftime(datetime.datetime.utcnow(), '%Y%m%d%H%M%SZ')
     umc_client.umc_command('passwordreset/deregister_account', {
         'username': username,
-        'password': password
+        'password': password,
     })
     user = readudm.obj_by_dn(dn)
     assert user.props.disabled is True
@@ -353,7 +353,7 @@ def test_deregistration_text_file_ucr_var(umc_client, mails, ucr, udm, tmpdir):
     })
     umc_client.umc_command('passwordreset/deregister_account', {
         'username': username,
-        'password': password
+        'password': password,
     })
     assert _get_mail(mails)['body'] == mail_body
 
@@ -368,7 +368,7 @@ def test_deregistration_sender_address_ucr_var(umc_client, mails, ucr, udm):
     })
     umc_client.umc_command('passwordreset/deregister_account', {
         'username': username,
-        'password': password
+        'password': password,
     })
     mail = _get_mail(mails)['mail']
     assert mail.get('from') == sender_address

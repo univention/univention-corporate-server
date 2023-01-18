@@ -37,7 +37,7 @@ def main():
                     'mailHomeServer': '%s.%s' % (ucr.get('hostname'), domain),
                     'mailAlternativeAddress': group_mail,
                     'mailPrimaryAddress': usermail,
-                }
+                },
             )
             mails.append(usermail)
 

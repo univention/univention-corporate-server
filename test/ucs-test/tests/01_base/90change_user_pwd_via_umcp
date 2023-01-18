@@ -46,7 +46,7 @@ def main():
             'position': container,
             'lastname': user_name,
             'password': user_password,
-            'username': user_name
+            'username': user_name,
         }
 
         print("\nCreating a user for the test:")

@@ -62,7 +62,7 @@ options = {
     'default': univention.admin.option(
         short_description=short_description,
         default=True,
-        objectClasses=['top', 'person', 'inetOrgPerson', 'organizationalPerson']
+        objectClasses=['top', 'person', 'inetOrgPerson', 'organizationalPerson'],
     ),
 }
 property_descriptions = {
@@ -303,7 +303,7 @@ layout = [
             'homeTelephoneNumber',
             'mobileTelephoneNumber',
             'pagerTelephoneNumber',
-            'homePostalAddress'
+            'homePostalAddress',
         ]),
     ]),
 ]

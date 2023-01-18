@@ -65,7 +65,7 @@ class Restrictions(dict):
             Restrictions.INVALID_USERS: None,
             Restrictions.VALID_USERS: None,
             Restrictions.HOSTS_DENY: None,
-            Restrictions.HOSTS_ALLOW: None
+            Restrictions.HOSTS_ALLOW: None,
         })
         self.name = name
         self.ucr = False
@@ -316,7 +316,7 @@ class ShareConfiguration(object):
             "printmode_groups": (re.compile(r'samba/printmode/usergroup/(.*)'), self._set_printmode_group),
             "printmode_hosts": (re.compile('samba/printmode/hosts/(.*)'), self._set_printmode_hosts),
             "othershares": (re.compile(r'samba/othershares/usergroup/([^\/]+)/invalid'), self._set_othershares),
-            "othershares_hosts": (re.compile('samba/othershares/hosts/deny'), self._set_othershares_hosts)
+            "othershares_hosts": (re.compile('samba/othershares/hosts/deny'), self._set_othershares_hosts),
         }
 
         for key in ucr.keys():

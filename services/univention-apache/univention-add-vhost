@@ -94,7 +94,7 @@ def main(fqdn, port, aliases, conffile, binddn, bindpwdfile, ssl, cert, private_
             else:
                 click.echo(
                     click.style("Cannot find DN for username '{}'.".format(username), fg="red"),
-                    err=True
+                    err=True,
                 )
                 sys.exit(1)
         if bindpwdfile:
@@ -152,7 +152,7 @@ def main(fqdn, port, aliases, conffile, binddn, bindpwdfile, ssl, cert, private_
             if subprocess.call(['service', 'apache2', 'reload']) != 0:
                 click.echo(click.style(
                     "Reload failed",
-                    fg="red")
+                    fg="red"),
                 )
         if needs_dns_reload:
             click.echo('Reloading Bind ...')
@@ -171,7 +171,7 @@ def main(fqdn, port, aliases, conffile, binddn, bindpwdfile, ssl, cert, private_
             else:
                 click.echo(click.style(
                     "DNS reconfiguration not complete.",
-                    fg="red")
+                    fg="red"),
                 )
                 click.echo("`host {}` did not respond as expected after {} seconds.".format(fqdn, timeout))
                 click.echo(click.style("You may want to try", bold=True))
@@ -189,7 +189,7 @@ def resolve_host(hostname, timeout):
     except Exception as exc:
         click.echo(click.style(
             "DNS query resulted in {}.".format(exc),
-            fg="yellow")
+            fg="yellow"),
         )
         # should not happen, retry anyway
         return None
@@ -223,7 +223,7 @@ def forward_zones(udm):  # type: (UDM) -> List[BaseObject]
         _forward_zones = sorted(
             dns_forward_zone_mod.search(),
             key=lambda x: len(x.props.zone),
-            reverse=True
+            reverse=True,
         )
     return _forward_zones
 
@@ -291,7 +291,7 @@ def remove_dns_entry(udm, fqdn):  # type: (UDM, str) -> None
     else:
         click.echo(click.style(
             "Not deleting '{}': it is not an alias, but of type '{}'!".format(fqdn, udm_module),
-            fg="red")
+            fg="red"),
         )
         return False
 

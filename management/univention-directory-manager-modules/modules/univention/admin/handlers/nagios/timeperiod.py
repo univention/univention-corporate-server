@@ -96,7 +96,7 @@ property_descriptions = {
         include_in_default_search=True,
         required=True,
         may_change=False,
-        identifies=True
+        identifies=True,
     ),
     'description': univention.admin.property(
         short_description=_('Description'),
@@ -150,7 +150,7 @@ layout = [
             ["periodMonday", "periodTuesday"],
             ["periodWednesday", "periodThursday"],
             ["periodFriday", "periodSaturday"],
-            "periodSunday"
+            "periodSunday",
         ]),
     ]),
 ]

@@ -67,7 +67,7 @@ class SimpleCurl:
             self.curl.setopt(pycurl.PROXYUSERPWD, "%s:%s" % (
                 username or account.username,
                 password or account.bindpw,
-            )
+            ),
             )
         if user_agent:
             self.curl.setopt(pycurl.USERAGENT, user_agent)

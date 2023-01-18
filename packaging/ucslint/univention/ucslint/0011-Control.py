@@ -45,7 +45,7 @@ RE_DEP = re.compile(
             \[(?P<arch>[^]]*)\]|
             <(?P<spec>[^>]*)>
         )
-    )*''', re.VERBOSE
+    )*''', re.VERBOSE,
 )
 
 

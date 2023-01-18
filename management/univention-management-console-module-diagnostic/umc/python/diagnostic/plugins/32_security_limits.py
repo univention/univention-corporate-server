@@ -52,11 +52,11 @@ description = '\n'.join([
 links = [{
     'name': 'sdb',
     'href': _('https://help.univention.com/t/samba4-max-open-files/1758'),
-    'label': _('Samba4 max open files - Univention Help')
+    'label': _('Samba4 max open files - Univention Help'),
 }]
 buttons = [{
     'label': _('Adjust to suggested limits'),
-    'action': 'adjust'
+    'action': 'adjust',
 }]
 actions = {}  # filled at bottom
 run_descr = ['checks samba logfile /var/log/samba/log.smbd for "too many open files" messages', 'and checks if ucr get samba/max_open_files is set to the suggested value of 32808']
@@ -81,7 +81,7 @@ def run(_umc_instance: Instance) -> None:
 def adjust(_umc_instance: Instance) -> None:
     MODULE.process('Setting samba/max_open_files')
     handler_set([
-        'samba/max_open_files=%d' % (suggested_max_open_files,)
+        'samba/max_open_files=%d' % (suggested_max_open_files,),
     ])
     raise ProblemFixed(_('The limits have been adjusted to the suggested value.'), buttons=[])
 

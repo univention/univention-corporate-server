@@ -29,7 +29,7 @@ def close_all_processes():
     'login_with_mail, subject', [
         (False, False),
         (True, 'Passwort zurücksetzen'),
-    ]
+    ],
 )
 def test_reset_via_email(ucr, login_with_mail, subject):
     # don't explicitly set the default to test non-existant ucr variable

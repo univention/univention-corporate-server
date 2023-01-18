@@ -63,7 +63,7 @@ def get_registration_info(ucr):
             'username': username,
             'lastname': username,
             'password': 'univention',
-            'PasswordRecoveryEmail': 'root@localhost'
+            'PasswordRecoveryEmail': 'root@localhost',
         }
         if attributes:
             _attributes.update(attributes)
@@ -73,8 +73,8 @@ def get_registration_info(ucr):
             'dn': dn,
             'attributes': _attributes,
             'data': {
-                'attributes': _attributes
-            }
+                'attributes': _attributes,
+            },
         }
     yield _get_registration_info
     lo, po = getAdminConnection()
@@ -107,7 +107,7 @@ def _get_mail(mails, idx=-1):
             'username': verify_params.get('username', [''])[0],
             'token': verify_params.get('/selfservice/verifyaccount/?token', [''])[0],
             'method': verify_params.get('method', [''])[0],
-        }
+        },
     }
 
 
@@ -216,20 +216,20 @@ def test_account_verifyaccount_page_errors(selenium, udm, get_registration_info)
     _navigate_self_service(selenium, 'verifyaccount')
     _enter_attributes(selenium, {
         'username': 'not_existing',
-        'token': 'xxxx'
+        'token': 'xxxx',
     })
     time.sleep(2)
     selenium.wait_for_text('The account could not be verified. Please verify your input.')
     _navigate_self_service(selenium, 'verifyaccount')
     _enter_attributes(selenium, {
-        'username': 'not_existing'
+        'username': 'not_existing',
     })
     selenium.wait_for_text('The verification token could not be sent. Please verify your input.')
     _, username = udm.create_user(**{'PasswordRecoveryEmail': None})
     _navigate_self_service(selenium, 'verifyaccount')
     _enter_attributes(selenium, {
         'username': username,
-        'token': 'xxxx'
+        'token': 'xxxx',
     })
     selenium.wait_for_text('The token you supplied is either expired or invalid. Please request a new one.')
 

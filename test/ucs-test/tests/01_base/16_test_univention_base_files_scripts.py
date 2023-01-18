@@ -88,7 +88,7 @@ def test_nfsmount(udm, ucr, lo, backup_fstab):
         policy_name = "policy_" + uts.random_name()
         policy = udm.create_object(
             'policies/nfsmounts', name=policy_name, nfsMounts=['%s %s' % (share, shared_dest)],
-            position='cn=nfsmounts,cn=policies,%s' % (ucr['ldap/base'])
+            position='cn=nfsmounts,cn=policies,%s' % (ucr['ldap/base']),
         )
         utils.verify_ldap_object(policy, {'cn': [policy_name]})
 

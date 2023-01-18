@@ -88,7 +88,7 @@ class Test_DHCPSubnet:
             'subnet': SUBNET_IP4,
             'subnetmask': SUBNET_MASK_IP4,
             'broadcastaddress': '10.20.30.255',
-            'range': '10.20.30.1 10.20.30.254'
+            'range': '10.20.30.1 10.20.30.254',
         }
 
         dhcp_subnet = udm.create_object('dhcp/subnet', superordinate=udm.create_object('dhcp/service', service=uts.random_name()), **dhcp_subnet_properties)
@@ -97,7 +97,7 @@ class Test_DHCPSubnet:
             'cn': [dhcp_subnet_properties['subnet']],
             'dhcpNetMask': [dhcp_subnet_properties['subnetmask']],
             'univentionDhcpBroadcastAddress': [dhcp_subnet_properties['broadcastaddress']],
-            'dhcpRange': [dhcp_subnet_properties['range']]
+            'dhcpRange': [dhcp_subnet_properties['range']],
         })
 
     @pytest.mark.tags('udm')
@@ -224,7 +224,7 @@ class Test_DHCPPool:
             'known_clients': 'deny',
             'unknown_clients': 'allow',
             'dynamic_bootp_clients': 'deny',
-            'all_clients': 'allow'
+            'all_clients': 'allow',
         }
 
         dhcp_pool = udm.create_object('dhcp/pool', superordinate=dhcp_subnet, **dhcp_pool_properties)
@@ -232,7 +232,7 @@ class Test_DHCPPool:
         utils.verify_ldap_object(dhcp_pool, {
             'dhcpRange': [dhcp_pool_properties['range']],
             'univentionDhcpFailoverPeer': [dhcp_pool_properties['failover_peer']],
-            'dhcpPermitList': ['deny known clients', 'allow unknown clients', 'deny dynamic bootp clients', 'allow all clients']
+            'dhcpPermitList': ['deny known clients', 'allow unknown clients', 'deny dynamic bootp clients', 'allow all clients'],
         })
 
     @pytest.mark.tags('udm')
@@ -463,14 +463,14 @@ class Test_DHCPSharednetwork:
             'subnet': SUBNET_IP4,
             'subnetmask': SUBNET_MASK_IP4,
             'broadcastaddress': '10.20.30.255',
-            'range': '10.20.30.1 10.20.30.254'
+            'range': '10.20.30.1 10.20.30.254',
         }
 
         dhcp_shared_subnet = udm.create_object('dhcp/sharedsubnet', superordinate=dhcp_shared_network, **dhcp_shared_subnet_properties)
         utils.verify_ldap_object(dhcp_shared_subnet, {
             'dhcpNetMask': [dhcp_shared_subnet_properties['subnetmask']],
             'dhcpRange': [dhcp_shared_subnet_properties['range']],
-            'univentionDhcpBroadcastAddress': [dhcp_shared_subnet_properties['broadcastaddress']]
+            'univentionDhcpBroadcastAddress': [dhcp_shared_subnet_properties['broadcastaddress']],
         })
 
     @pytest.mark.tags('udm')

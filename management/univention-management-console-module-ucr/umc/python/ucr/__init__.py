@@ -134,7 +134,7 @@ class Instance(Base):
         'object': DictSanitizer({
             'key': UCRKeySanitizer(required=True),
             'value': StringSanitizer(default=''),
-        })
+        }),
     }))
     def add(self, request) -> None:
         # does the same as put
@@ -149,7 +149,7 @@ class Instance(Base):
         'object': DictSanitizer({
             'key': UCRKeySanitizer(required=True),
             'value': StringSanitizer(default=''),
-        })
+        }),
     }))
     def put(self, request) -> None:
         for _var in request.options:
@@ -214,7 +214,7 @@ class Instance(Base):
             if ucrInfo.get_variables(id):
                 categories.append({
                     'id': id,
-                    'label': name
+                    'label': name,
                 })
         self.finished(request.id, categories)
 

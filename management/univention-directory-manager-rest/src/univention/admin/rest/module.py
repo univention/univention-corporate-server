@@ -1327,11 +1327,11 @@ class _OpenAPIBase:
                                                 "href": {
                                                     "type": "string",
                                                     "description": "The URL.",
-                                                }
+                                                },
                                         },
                                     "additionalProperties": True,
-                                }
-                            }
+                                },
+                            },
                         },
                 "readOnly": True,
                 "additionalProperties": True,
@@ -1375,9 +1375,9 @@ class _OpenAPIBase:
                                                         'message': {'type': 'string'},
                                                         'type': {'type': 'string'},
                                                     },
-                                                }
-                                    }
-                                }
+                                                },
+                                    },
+                                },
                     },
                     'code': {'type': 'integer', 'minimum': 400, 'maximum': 599, 'description': 'HTTP status code equivalent.'},
                     'message': {'type': 'string', 'description': 'A human readable error message.'},
@@ -1393,7 +1393,7 @@ class _OpenAPIBase:
                 "name": "dn",
                         "required": True,
                         "schema": {
-                            '$ref': '#/components/schemas/dn'
+                            '$ref': '#/components/schemas/dn',
                         },
             },
             'template.get.query.position': {
@@ -1633,7 +1633,7 @@ class _OpenAPIBase:
             "ServiceUnavailable": {  # 503 (+502 +504 +599)
                 'description': '(LDAP) Server not available.',
                 'headers': global_response_headers({
-                    'Retry-After': {'$ref': '#/components/headers/Retry-After'}
+                    'Retry-After': {'$ref': '#/components/headers/Retry-After'},
                 }),
                 "content": content_schema({
                     "type": "object",
@@ -1692,7 +1692,7 @@ class _OpenAPIBase:
                     'externalDocs': {
                         'description': module.help_text,
                         'url': module.help_link,
-                    }
+                    },
                 })
             openapi_tags.append(tag_description)
             template_path = f'/{name}/add'
@@ -1702,18 +1702,18 @@ class _OpenAPIBase:
             openapi_paths[objects_path] = {}
             openapi_paths[template_path] = {}
             openapi_paths[object_path] = {
-                "parameters": [{"$ref": '#/components/parameters/dn-path'}]
+                "parameters": [{"$ref": '#/components/parameters/dn-path'}],
             }
 
             openapi_request_bodies[model_name] = {
                 'content': {
-                    'application/json': {'schema': {'$ref': schema_definition}}  # + _openapi_quote('.request')}}
+                    'application/json': {'schema': {'$ref': schema_definition}},  # + _openapi_quote('.request')}}
                 },
                 'required': True,
             }
             openapi_request_bodies[model_name + '.patch'] = {
                 'content': {
-                    'application/json': {'schema': {'$ref': schema_definition}}  # + _openapi_quote('.patch')}}
+                    'application/json': {'schema': {'$ref': schema_definition}},  # + _openapi_quote('.patch')}}
                 },
                 'required': True,
             }
@@ -1722,7 +1722,7 @@ class _OpenAPIBase:
                 _search_links = {
                     "search": {
                         "description": "Search for objects of this object type.",
-                        "operationId": f"udm:{name}/object/search"
+                        "operationId": f"udm:{name}/object/search",
                     },
                     "create-form": {
                         "description": "Get a template for creating an object.",
@@ -1756,7 +1756,7 @@ class _OpenAPIBase:
                     "responses": global_responses({
                         200: {
                             '$ref': '#/components/responses/objects.%s.get.response.success' % (_openapi_quote(model_name),),
-                        }
+                        },
                     }),
                     "tags": [tag],
                 }
@@ -1781,7 +1781,7 @@ class _OpenAPIBase:
                     "responses": global_responses({
                         200: {
                             '$ref': '#/components/responses/template.%s.get.response.success' % (_openapi_quote(model_name),),
-                        }
+                        },
                     }),
                     "tags": [tag],
                 }
@@ -1814,9 +1814,9 @@ class _OpenAPIBase:
                     },
                     "404": {
                         '$ref': '#/components/responses/object.get.response.notfound',
-                    }
+                    },
                 }),
-                "tags": [tag]
+                "tags": [tag],
             }
             openapi_responses['object.%s.get.response.success' % (model_name,)] = {
                 "description": "Success",
@@ -1858,7 +1858,7 @@ class _OpenAPIBase:
                     ] + global_parameters,
                     "callbacks": {
                         'move-progress': {
-                            '$ref': '#/components/callbacks/moveProgress'
+                            '$ref': '#/components/callbacks/moveProgress',
                         },
                     },
                     "responses": global_responses({
@@ -1873,7 +1873,7 @@ class _OpenAPIBase:
                         },
                         "404": {
                             '$ref': '#/components/responses/object.put.response.notfound',
-                        }
+                        },
                     }),
                     "tags": [tag],
                 }
@@ -1893,7 +1893,7 @@ class _OpenAPIBase:
                         },
                         "404": {
                             '$ref': '#/components/responses/object.patch.response.notfound',
-                        }
+                        },
                     }),
                     "tags": [tag],
                 }
@@ -1943,8 +1943,8 @@ class _OpenAPIBase:
                         "position": {
                             "$ref": '#/components/schemas/position',
                         },
-                    }
-                }]
+                    },
+                }],
             }
             openapi_schemas[f'{model_name}.response-mixin'] = {
                 "type": "object",
@@ -2013,7 +2013,7 @@ class _OpenAPIBase:
                     }, {
                         '$ref': f'#/components/schemas/{_openapi_quote(model_name)}.response-mixin',
                     },
-                ]
+                ],
             }
             openapi_schemas[f'{model_name}.list'] = {
                 "type": "object",
@@ -2026,11 +2026,11 @@ class _OpenAPIBase:
                                         "minItems": 0,
                                         "items": {
                                                 "$ref": schema_definition,
-                                        }
-                                    }
-                            }
+                                        },
+                                    },
+                            },
                         },
-                }
+                },
             }
 
         url = list(urlparse(self.abspath('')))
@@ -2049,7 +2049,7 @@ class _OpenAPIBase:
                 'version': '1.0.2',
             },
             'security': [{
-                "basic": []
+                "basic": [],
             }],
             'tags': openapi_tags,
             'components': {
@@ -2059,7 +2059,7 @@ class _OpenAPIBase:
                     'basic': {
                         'scheme': 'basic',
                         'type': 'http',
-                    }
+                    },
                 },
                 'parameters': openapi_parameters,  # Reusable path, query, header and cookie parameters
                 'responses': openapi_responses,
@@ -2076,9 +2076,9 @@ class _OpenAPIBase:
                                 'responses': {
                                     '301': {'$ref': '#/components/responses/MoveProgress'},
                                     '303': {'$ref': '#/components/responses/MoveSuccess'},
-                                }
-                            }
-                        }
+                                },
+                            },
+                        },
                     },
                 },
             },
@@ -2514,7 +2514,7 @@ class Layout(Resource):
             'description': _('Properties inherited from policies'),
             'label': _('Policies'),
             'is_app_tab': False,
-            'help': _('List of all object properties that are inherited by policies. The values cannot be edited directly. By clicking on "Create new policy", a new tab with a new policy will be opened. If an attribute is already set, the corresponding policy can be edited in a new tab by clicking on the "edit" link.')
+            'help': _('List of all object properties that are inherited by policies. The values cannot be edited directly. By clicking on "Create new policy", a new tab with a new policy will be opened. If an attribute is already set, the corresponding policy can be edited in a new tab by clicking on the "edit" link.'),
         })
 
         return layout
@@ -2554,7 +2554,7 @@ class Report(ReportingBase, Resource):
             self,
             object_type,
             report_type,
-            dn: List[str] = Query(ListSanitizer(DNSanitizer()))
+            dn: List[str] = Query(ListSanitizer(DNSanitizer())),
     ):
         await self.create_report(object_type, report_type, dn)
 
@@ -2601,7 +2601,7 @@ class NextFreeIpAddress(Resource):
             'ip': obj['nextIp'],
             'dnsEntryZoneForward': obj['dnsEntryZoneForward'],
             'dhcpEntryZone': obj['dhcpEntryZone'],
-            'dnsEntryZoneReverse': obj['dnsEntryZoneReverse']
+            'dnsEntryZoneReverse': obj['dnsEntryZoneReverse'],
         }
 
         self.add_caching(public=False, must_revalidate=True)
@@ -2732,7 +2732,7 @@ class Objects(FormBase, ReportingBase, _OpenAPIBase, Resource):
                 examples={
                     'no restrictions': {'value': None},
                             'only small subset': {'value': ['username', 'firstname', 'lastname']},
-                }
+                },
             ),
             superordinate: Optional[str] = Query(DNSanitizer(required=False, default=None, allow_none=True), description="The superordinate DN of the objects to find. `position` is sufficient."),  # example=f"cn=superordinate,{ldap_base}"
             dir: str = Query(
@@ -4295,7 +4295,7 @@ def last_modified(date):
         ('Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun')[date.tm_wday],
         date.tm_mday,
         ('Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec')[date.tm_mon - 1],
-        date.tm_year, date.tm_hour, date.tm_min, date.tm_sec
+        date.tm_year, date.tm_hour, date.tm_min, date.tm_sec,
     )
 
 

@@ -739,7 +739,7 @@ class UCSTestUDM:
             },
             'users/user': {
                 'userCertificate': lambda: base64.b64encode(subprocess.check_output(
-                    ('openssl', 'x509', '-inform', 'pem', '-in', '/etc/univention/ssl/%s/cert.pem' % (self.FQHN.rstrip('.'),), '-outform', 'der', '-out', '-')
+                    ('openssl', 'x509', '-inform', 'pem', '-in', '/etc/univention/ssl/%s/cert.pem' % (self.FQHN.rstrip('.'),), '-outform', 'der', '-out', '-'),
                 )).decode('ASCII'),  # expensive!
             },
         }
@@ -940,7 +940,7 @@ class UCSTestUDM:
             ('password', 'univention'),
             ('username', uts.random_username()),
             ('lastname', uts.random_name()),
-            ('firstname', uts.random_name())
+            ('firstname', uts.random_name()),
         ))
 
         return (self.create_object('users/user', wait_for_replication, check_for_drs_replication, wait_for=wait_for, **attr), attr['username'])
@@ -953,7 +953,7 @@ class UCSTestUDM:
             ('password', 'univention'),
             ('username', uts.random_username()),
             ('lastname', uts.random_name()),
-            ('name', uts.random_name())
+            ('name', uts.random_name()),
         ))
 
         return (self.create_object('users/ldap', wait_for_replication, check_for_drs_replication, **attr), attr['username'])
@@ -962,7 +962,7 @@ class UCSTestUDM:
         # type: (str, bool) -> None
         """Removes a user object from the ldap given it's username."""
         kwargs = {
-            'dn': f'uid={username},cn=users,{self.LDAP_BASE}'
+            'dn': f'uid={username},cn=users,{self.LDAP_BASE}',
         }
         self.remove_object('users/user', wait_for_replication, **kwargs)
 
@@ -980,7 +980,7 @@ class UCSTestUDM:
         """
         attr = self._set_module_default_attr(kwargs, (
             ('position', 'cn=groups,%s' % self.LDAP_BASE),
-            ('name', uts.random_groupname())
+            ('name', uts.random_groupname()),
         ))
 
         return (self.create_object('groups/group', wait_for_replication, check_for_drs_replication, **attr), attr['name'])

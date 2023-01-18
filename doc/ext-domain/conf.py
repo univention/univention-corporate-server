@@ -117,7 +117,7 @@ latex_engine = 'lualatex'
 latex_show_pagerefs = True
 latex_show_urls = "footnote"
 latex_documents = [
-    (root_doc, f'{pdf_doc_base}.tex', "", author, "manual", False)
+    (root_doc, f'{pdf_doc_base}.tex', "", author, "manual", False),
 ]
 latex_elements = {
     "papersize": "a4paper",
@@ -127,7 +127,7 @@ latex_elements = {
 univention_use_doc_base = True
 
 intersphinx_mapping = {
-    "uv-manual": ("https://docs.software-univention.de/manual/5.0/en", None)
+    "uv-manual": ("https://docs.software-univention.de/manual/5.0/en", None),
 }
 
 # See Univention Sphinx Extension for its options and information about the

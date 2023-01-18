@@ -90,7 +90,7 @@ def get_shares():
             'spaceSoftLimit': get_blocks(policy_result.get('univentionQuotaSoftLimitSpace', ['0'])[0]),
             'spaceHardLimit': get_blocks(policy_result.get('univentionQuotaHardLimitSpace', ['0'])[0]),
             'reapplyQuota': test_for_true(policy_result.get('univentionQuotaReapplyEveryLogin', ['FALSE'])[0]),
-            'mountpoint': get_mountpoint_from_share_path(sharepath)
+            'mountpoint': get_mountpoint_from_share_path(sharepath),
         }
 
     return shares
@@ -120,7 +120,7 @@ class Mountpoints(object):
                         'spaceHardLimit': quota['bhard'],
                         'inodeSoftLimit': quota['fsoft'],
                         'inodeHardLimit': quota['fhard'],
-                        'reapplyQuota': initialValue
+                        'reapplyQuota': initialValue,
                     }
 
         # add shares whose quotas have never been set before
@@ -185,7 +185,7 @@ class Mountpoints(object):
         return [{
                 'mountpoint': mt.mount_point,
                 'device': mt.spec,
-                'quotaenabled': mt.hasopt('usrquota') or (mt.hasopt('usrjquota=') and mt.hasopt('jqfmt=vfsv'))
+                'quotaenabled': mt.hasopt('usrquota') or (mt.hasopt('usrjquota=') and mt.hasopt('jqfmt=vfsv')),
                 } for mt in univention.lib.fstab.File('/etc/mtab')]
 
 

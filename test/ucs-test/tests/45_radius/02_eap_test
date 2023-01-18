@@ -52,7 +52,7 @@ def eap_test(username, password, ca_cert):
             '1812',
             '-s',
             'testing123',
-            '-r0'
+            '-r0',
         ])
 
 

@@ -96,7 +96,7 @@ client = Client(options.host, options.username, options.password, language='en-U
 request_options = {
     "ip": options.domain_host,
     "username": options.domain_admin,
-    "password": options.domain_password
+    "password": options.domain_password,
 }
 
 print('starting connect')

@@ -31,7 +31,7 @@ def main():
                             'password': password,
                             'mailHomeServer': '%s.%s' % (ucr.get('hostname'), domain),
                             'mailPrimaryAddress': recipient_email,
-                        }
+                        },
                     )
                     nethelper.add_loop('1.2.3.4', '4.3.2.1')
 

@@ -239,7 +239,7 @@ docker inspect:
                 app=app, container=docker.container,
                 clogs=clogs, dlogs=dlogs,
                 state=inspect.get('State'),
-                graphdriver=inspect.get('GraphDriver')
+                graphdriver=inspect.get('GraphDriver'),
             )
             raise AppCenterErrorContainerStart(msg)
         # copy password files

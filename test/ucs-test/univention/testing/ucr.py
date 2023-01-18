@@ -93,7 +93,7 @@ class UCSTestConfigRegistry(ConfigRegistry):
                 (ConfigRegistry.NORMAL, ''),
                 (ConfigRegistry.LDAP, 'ldap-policy'),
                 (ConfigRegistry.FORCED, 'force'),
-                (ConfigRegistry.SCHEDULE, 'schedule')
+                (ConfigRegistry.SCHEDULE, 'schedule'),
         ):
             # remove new variables
             keylist = set(self._registry[regtype]) - set(self.__original_registry[regtype])

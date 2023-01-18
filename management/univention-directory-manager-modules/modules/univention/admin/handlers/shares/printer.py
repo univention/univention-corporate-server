@@ -83,7 +83,7 @@ property_descriptions = {
         include_in_default_search=True,
         required=True,
         may_change=False,
-        identifies=True
+        identifies=True,
     ),
     'location': univention.admin.property(
         short_description=_('Location'),
@@ -127,13 +127,13 @@ property_descriptions = {
         short_description=_('Windows name'),
         long_description='',
         syntax=univention.admin.syntax.string_numbers_letters_dots_spaces,
-        unique=True
+        unique=True,
     ),
     'ACLtype': univention.admin.property(
         short_description=_('Access control'),
         long_description=_('Access list can allow or deny listed users and groups.'),
         syntax=printerACLTypes,
-        default="allow all"
+        default="allow all",
     ),
     'ACLUsers': univention.admin.property(
         short_description=_('Allowed/denied users'),

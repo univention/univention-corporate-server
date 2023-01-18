@@ -27,11 +27,11 @@ class SyncedAppcenter(Appcenter):
 
     def reset_local_cache(self):
         handler_set([
-            'repository/app_center/server=%s' % (self.upstream_appcenter)
+            'repository/app_center/server=%s' % (self.upstream_appcenter),
         ])
         call('univention-app update', shell=True)
         handler_set([
-            'repository/app_center/server=http://%(hostname)s.%(domainname)s' % self.ucr
+            'repository/app_center/server=http://%(hostname)s.%(domainname)s' % self.ucr,
         ])
 
     def download(self, f):

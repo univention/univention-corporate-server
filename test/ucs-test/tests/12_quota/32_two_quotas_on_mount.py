@@ -19,21 +19,21 @@ def test_nonzero():
             'spaceHardLimit': str(2048 ** 2),
             'inodeSoftLimit': '3',
             'inodeHardLimit': '4',
-            'reapplyQuota': 'TRUE'
+            'reapplyQuota': 'TRUE',
         }, {
             'name': 'quota_policy2',
             'spaceSoftLimit': str(1024 ** 2),
             'spaceHardLimit': str(4096 ** 2),
             'inodeSoftLimit': '5',
             'inodeHardLimit': '7',
-            'reapplyQuota': 'TRUE'
+            'reapplyQuota': 'TRUE',
         }]
 
         expected_result = {
             'bsoft': 1,
             'bhard': 4,
             'fsoft': 3,
-            'fhard': 4
+            'fhard': 4,
         }
 
         quotaCheck.test_two_shares_on_one_mount(quota_policies, expected_result)
@@ -50,21 +50,21 @@ def test_zero():
             'spaceHardLimit': str(2048 ** 2),
             'inodeSoftLimit': '0',
             'inodeHardLimit': '4',
-            'reapplyQuota': 'TRUE'
+            'reapplyQuota': 'TRUE',
         }, {
             'name': 'quota_policy2',
             'spaceSoftLimit': str(1024 ** 2),
             'spaceHardLimit': '0',
             'inodeSoftLimit': '0',
             'inodeHardLimit': '0',
-            'reapplyQuota': 'TRUE'
+            'reapplyQuota': 'TRUE',
         }]
 
         expected_result = {
             'bsoft': 1,
             'bhard': 4,
             'fsoft': 0,
-            'fhard': 4
+            'fhard': 4,
         }
 
         quotaCheck.test_two_shares_on_one_mount(quota_policies, expected_result)

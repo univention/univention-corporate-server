@@ -90,7 +90,7 @@ layout = [
         Group(_('General NS record settings'), layout=[
             'zone',
             'nameserver',
-            'zonettl'
+            'zonettl',
         ]),
     ]),
 ]
@@ -141,14 +141,14 @@ def lookup_filter(filter_s=None, superordinate=None):
                 univention.admin.filter.conjunction('|', [
                     univention.admin.filter.expression('relativeDomainName', '@'),
                     univention.admin.filter.expression('zoneName', '*.in-addr.arpa', escape=False),
-                ])
-            ])
+                ]),
+            ]),
         ])
 
     if superordinate:
         parent = superordinate.mapping.mapValueDecoded('zone', superordinate['zone'])
         lookup_filter_obj.expressions.append(
-            univention.admin.filter.expression('zoneName', parent, escape=True)
+            univention.admin.filter.expression('zoneName', parent, escape=True),
         )
 
     lookup_filter_obj.append_unmapped_filter_string(filter_s, univention.admin.mapping.mapRewrite, mapping)

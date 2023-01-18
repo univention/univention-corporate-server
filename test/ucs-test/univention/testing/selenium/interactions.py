@@ -61,7 +61,7 @@ class Interactions:
         self.click_element(
             '//*[contains(concat(" ", normalize-space(@class), " "), " dgrid-cell ")][@role="gridcell"]/descendant-or-self::node()[contains(text(), "%s")]/../..//input[@type="checkbox"]/..'
             % (name,),
-            **kwargs
+            **kwargs,
         )
 
     def click_checkbox_of_dojox_grid_entry(self, name, **kwargs):
@@ -70,7 +70,7 @@ class Interactions:
         self.click_element(
             expand_path('//*[@containsClass="dojoxGridCell"][@role="gridcell"][contains(text(), "%s")]/preceding-sibling::*[1]')
             % (name,),
-            **kwargs
+            **kwargs,
         )
 
     def click_grid_entry(self, name, **kwargs):
@@ -79,7 +79,7 @@ class Interactions:
         self.click_element(
             '//*[contains(concat(" ", normalize-space(@class), " "), " dgrid-cell ")][@role="gridcell"]/descendant-or-self::node()[contains(text(), "%s")]'
             % (name,),
-            **kwargs
+            **kwargs,
         )
 
     def click_tree_entry(self, name, **kwargs):
@@ -88,7 +88,7 @@ class Interactions:
         self.click_element(
             '//*[contains(concat(" ", normalize-space(@class), " "), " dgrid-column-label ")][contains(text(), "%s")]'
             % (name,),
-            **kwargs
+            **kwargs,
         )
 
     def click_button(self, button_text, xpath_prefix='', **kwargs):
@@ -98,7 +98,7 @@ class Interactions:
         xpath = expand_path(xpath_prefix + xpath)
         self.click_element(
             xpath,
-            **kwargs
+            **kwargs,
         )
 
     def click_buttons(self, button_name_list, xpath_prefix='', **kwargs):
@@ -123,13 +123,13 @@ class Interactions:
             self.click_element(
                 '//*[contains(concat(" ", normalize-space(@class), " "), " umcGalleryName ")][text() = "%s"]'
                 % (tilename,),
-                **kwargs
+                **kwargs,
             )
         except selenium_exceptions.TimeoutException:
             self.click_element(
                 '//*[contains(concat(" ", normalize-space(@class), " "), " umcGalleryName ")][@title = "%s"]'
                 % (tilename,),
-                **kwargs
+                **kwargs,
             )
 
     def click_tile_menu_icon(self, tilename, **kwargs):
@@ -138,7 +138,7 @@ class Interactions:
         self.click_element(
             '//*[contains(concat(" ", normalize-space(@class), " "), " umcGalleryName ")][text() = "%s"]/../*[contains(concat(" ", normalize-space(@class), " "), " umcGalleryContextIcon ")]'
             % (tilename,),
-            **kwargs
+            **kwargs,
         )
 
     def click_tab(self, tabname, **kwargs):
@@ -147,7 +147,7 @@ class Interactions:
         self.click_element(
             '//*[contains(concat(" ", normalize-space(@class), " "), " tabLabel ")][text() = "%s"]'
             % (tabname,),
-            **kwargs
+            **kwargs,
         )
 
     def open_side_menu(self):
@@ -179,13 +179,13 @@ class Interactions:
         Waits for the element to be clickable before attempting to click.
         """
         elems = webdriver.support.ui.WebDriverWait(xpath, timeout).until(
-            self.get_all_enabled_elements, f'click_element({xpath!r}, scroll_into_view={scroll_into_view!r}, timeout={timeout!r}, right_click={right_click!r})'
+            self.get_all_enabled_elements, f'click_element({xpath!r}, scroll_into_view={scroll_into_view!r}, timeout={timeout!r}, right_click={right_click!r})',
         )
 
         if len(elems) != 1:
             logger.warn(
                 "Found %d clickable elements instead of 1. Trying to click on "
-                "the first one." % (len(elems),)
+                "the first one." % (len(elems),),
             )
 
         if scroll_into_view:
@@ -227,7 +227,7 @@ class Interactions:
         # type: (str, str, bool) -> None
         xpath = f"//*[@role='combobox' and .//input[@name='{inputname}']]//input[@role='textbox']"
         elems = webdriver.support.ui.WebDriverWait(xpath, 60).until(
-            self.get_all_enabled_elements
+            self.get_all_enabled_elements,
         )
         if len(elems) != 1:
             logger.warn(f"Found {len(elems):d} input elements instead of one. Try using the first one")
@@ -241,7 +241,7 @@ class Interactions:
     def enter_input_date(self, inputname, inputvalue):  # type: (str, str) -> None
         xpath = f"//*[@role='combobox' and .//input[@name='{inputname}']]//input[@role='textbox']"
         elems = webdriver.support.ui.WebDriverWait(xpath, 60).until(
-            self.get_all_enabled_elements
+            self.get_all_enabled_elements,
         )
         if len(elems) != 1:
             logger.warn(f"Found {len(elems):d} input elements instead of one. Try using the first one")
@@ -262,13 +262,13 @@ class Interactions:
         """Get an input-element with the tag inputname."""
         xpath = f'//input[@name= {json.dumps(inputname)} ]'
         elems = webdriver.support.ui.WebDriverWait(xpath, 60).until(
-            self.get_all_enabled_elements
+            self.get_all_enabled_elements,
         )
 
         if len(elems) != 1:
             logger.warn(
                 "Found %d input elements instead of 1. Trying to use the first "
-                "one." % (len(elems),)
+                "one." % (len(elems),),
             )
         return elems[0]
 

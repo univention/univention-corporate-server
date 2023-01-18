@@ -148,7 +148,7 @@ class Meta(Base):
 entry_tags = Table(
     'entry_tags', Base.metadata,
     Column('entry_id', ForeignKey('entries.id'), primary_key=True),
-    Column('tag_id', ForeignKey('tags.id'), primary_key=True)
+    Column('tag_id', ForeignKey('tags.id'), primary_key=True),
 )
 
 
@@ -339,10 +339,10 @@ class Client(object):
                         Entry.message.ilike('%{}%'.format(pat)),
                         and_(
                             EventMessage.locale == locale,
-                            EventMessage.message.ilike('%{}%'.format(pat))
+                            EventMessage.message.ilike('%{}%'.format(pat)),
                         ),
                         Entry.args.any(Arg.value == pat),
-                    )
+                    ),
                 )
 
             # find all entries matching given message criterion

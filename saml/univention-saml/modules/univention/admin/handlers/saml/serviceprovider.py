@@ -88,7 +88,7 @@ property_descriptions = {
         short_description=_(u'Name of the attribute that is used as NameID'),
         long_description=_(u'The name of the attribute which should be used as the value of the NameID, e.g. uid'),
         syntax=univention.admin.syntax.FiveThirdsString,
-        default="uid"
+        default="uid",
     ),
     'simplesamlAttributes': univention.admin.property(
         short_description=_(u'Allow transmission of ldap attributes to the service provider'),

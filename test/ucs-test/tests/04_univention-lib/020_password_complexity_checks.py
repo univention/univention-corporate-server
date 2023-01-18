@@ -170,7 +170,7 @@ def pwc_with_mspolicy(ucr, existing_username):
     # Set the UCS defaults, just to be safe
     univention.config_registry.handler_unset([
         "password/quality/credit/digits", "password/quality/credit/upper", "password/quality/credit/lower", "password/quality/credit/other",
-        "password/quality/forbidden/chars", "password/quality/required/chars"
+        "password/quality/forbidden/chars", "password/quality/required/chars",
     ])
     pwc = Check(None, username=existing_username)
     pwc.enableQualityCheck = True  # may have been overridden by univentionPolicyPWHistory
@@ -184,7 +184,7 @@ def pwc_with_mspolicy_only(ucr, existing_username):
     univention.config_registry.handler_set(["password/quality/length/min=8"])
     # Set these variables, but they must get ingored
     univention.config_registry.handler_set([
-        "password/quality/credit/digits=1", "password/quality/credit/upper=1", "password/quality/credit/lower=1", "password/quality/credit/other=1"
+        "password/quality/credit/digits=1", "password/quality/credit/upper=1", "password/quality/credit/lower=1", "password/quality/credit/other=1",
     ])
     pwc = Check(None, username=existing_username)
     pwc.enableQualityCheck = True  # may have been overridden by univentionPolicyPWHistory
@@ -198,7 +198,7 @@ def pwc_with_cracklib_mandatory_character_classes(ucr, existing_username):
     # univention.config_registry.handler_unset(["password/quality/mspolicy"])
     univention.config_registry.handler_set(["password/quality/length/min=8"])
     univention.config_registry.handler_set([
-        "password/quality/credit/digits=1", "password/quality/credit/upper=1", "password/quality/credit/lower=1", "password/quality/credit/other=1"
+        "password/quality/credit/digits=1", "password/quality/credit/upper=1", "password/quality/credit/lower=1", "password/quality/credit/other=1",
     ])
     pwc = Check(None, username=existing_username)
     pwc.enableQualityCheck = True  # may have been overridden by univentionPolicyPWHistory

@@ -25,7 +25,7 @@ def test_write_event():
             'username': 'cn=admin',
             'message': None,
             'args': {'username': username, 'module': 'users/user'},
-            'comments': False
+            'comments': False,
         }
         entries = client.query(d, event='UDM_USERS_USER_CREATED')
         # It is not possible to filter by args in query so we use list comprehension

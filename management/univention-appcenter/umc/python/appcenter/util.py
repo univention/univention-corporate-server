@@ -291,7 +291,7 @@ class Changes(object):
 
         setup = [
             ['repository/online/component', enabled],
-            ['repository/online', onoff]
+            ['repository/online', onoff],
         ]
 
         intval = int(bool(value))  # speak C:  intval = value ? 1 : 0;

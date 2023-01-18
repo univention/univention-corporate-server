@@ -58,7 +58,7 @@ def check_if_uid_is_available(uid, role, address, username, password):
             "univention-ssh", "--no-split",
             password_file,
             '%s@%s' % (username, address),
-            rcmd
+            rcmd,
         ]
         MODULE.info("Running %s" % " ".join(quote(arg) for arg in cmd))
         process = Popen(cmd, stdin=PIPE, stdout=PIPE, stderr=PIPE)

@@ -43,7 +43,7 @@ class TestADCustomMappings(unittest.TestCase):
             "            con_attribute='{target_attribute}'\n"
             "        )\n"
             "    return ad_mapping\n".format(
-                attribute=self.attribute, target_attribute=self.target_attribute
+                attribute=self.attribute, target_attribute=self.target_attribute,
             )
         )
 
@@ -85,7 +85,7 @@ class TestADCustomMappings(unittest.TestCase):
             )
 
     def create_extended_attribute(
-        self, udm, ldapMapping, module, defaultValue="defaultValue-TestFailed"
+        self, udm, ldapMapping, module, defaultValue="defaultValue-TestFailed",
     ):
         """
         Creates an extended attribute with a default value under module (e.g.
@@ -109,7 +109,7 @@ class TestADCustomMappings(unittest.TestCase):
                 "valueRequired": "1",
                 "module": [module],
                 "default": defaultValue,
-            }
+            },
         )
 
     def test_ldap_to_ad_with_mapping(self):
@@ -138,7 +138,7 @@ class TestADCustomMappings(unittest.TestCase):
         udm_user.basic[self.attribute] = test_string
 
         (udm_user_dn, ad_user_dn) = create_udm_user(
-            self.udm, self.adc, udm_user, wait_for_sync
+            self.udm, self.adc, udm_user, wait_for_sync,
         )
 
         print(

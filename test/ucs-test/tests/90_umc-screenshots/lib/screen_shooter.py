@@ -30,7 +30,7 @@ class BaseScreenShooter:
         parser.add_argument(
             '-l', '--language', dest='language', default='en', help='Two digit'
             ' language code. Defines the language the screenshots will be made'
-            ' with. Default is "en".'
+            ' with. Default is "en".',
         )
         args = parser.parse_args()
         return args

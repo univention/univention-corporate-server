@@ -74,12 +74,12 @@ def setup(app_name):
 
         script_hook_path = '{hook_path}/post-{action}.d'.format(
             hook_path=path_hooks.format(appid=app_name),
-            action=action
+            action=action,
         )
 
         script_hook_file = "{pathname}/{filename}".format(
             pathname=script_hook_path,
-            filename=action
+            filename=action,
         )
 
         # create the hook directory only if it does not exist yet
@@ -104,7 +104,7 @@ def setup(app_name):
         except Exception as e:
             print("Error with file '{filename}': {error}".format(
                 error=e,
-                filename=script_hook_file)
+                filename=script_hook_file),
             )
 
 

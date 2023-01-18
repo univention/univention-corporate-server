@@ -93,7 +93,7 @@ if __name__ == '__main__':
         consecutive_user_creation,
         consecutive_group_creation,
         explicit_user_creation,
-        explicit_group_creation
+        explicit_group_creation,
     ]
 
     TESTS_UNIQUENESS = [explicit_user_creation, explicit_group_creation]

@@ -44,7 +44,7 @@ def check_all_servers_in_policies(ldap_servers, udm_backups):
     if not all(map(lambda x: x in ldapserver_policy["ldapServer"], ldap_servers)):
         utils.fail(
             "LDAP server policy does not contain all DC master and DC "
-            "backups. ldapserver_policy[ldapServer]: {} ldap_servers: {}".format(ldapserver_policy["ldapServer"], ldap_servers)
+            "backups. ldapserver_policy[ldapServer]: {} ldap_servers: {}".format(ldapserver_policy["ldapServer"], ldap_servers),
         )
 
     registry_policies = udm_modules.lookup("policies/registry", None, lo, base=basedn, scope="sub", filter="(cn=default-ldap-servers)")
@@ -87,7 +87,7 @@ def run_join_script():
         "-dcpwd", admin_pw_file,
         "--force",
         "--run-scripts",
-        "10univention-ldap-server.inst"]
+        "10univention-ldap-server.inst"],
     )
 
 
@@ -100,8 +100,8 @@ def add_dc_backup(udm):
         set={
             "position": f"cn=dc,cn=computers,{basedn}",
             "name": name,
-            "domain": domain
-        }
+            "domain": domain,
+        },
     )
     run_join_script()
 

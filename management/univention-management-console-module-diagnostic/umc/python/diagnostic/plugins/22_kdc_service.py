@@ -116,7 +116,7 @@ def _sequence_optional_component(name: str, tag_value: int, type: base.Asn1ItemB
 class PrincipalName(univ.Sequence):
     componentType = namedtype.NamedTypes(
         _sequence_component('name-type', 0, univ.Integer()),
-        _sequence_component('name-string', 1, univ.SequenceOf(componentType=char.GeneralString()))
+        _sequence_component('name-string', 1, univ.SequenceOf(componentType=char.GeneralString())),
     )
 
 
@@ -152,7 +152,7 @@ class AsRep(univ.Sequence):
     tagSet = univ.Sequence.tagSet + tag.Tag(tag.tagClassApplication, tag.tagFormatSimple, 11)
     componentType = namedtype.NamedTypes(
         _sequence_component('pvno', 0, univ.Integer()),
-        _sequence_component('msg-type', 1, univ.Integer())
+        _sequence_component('msg-type', 1, univ.Integer()),
         # some more omitted
     )
 
@@ -161,7 +161,7 @@ class KrbError(univ.Sequence):
     tagSet = univ.Sequence.tagSet + tag.Tag(tag.tagClassApplication, tag.tagFormatSimple, 30)
     componentType = namedtype.NamedTypes(
         _sequence_component('pvno', 0, univ.Integer()),
-        _sequence_component('msg-type', 1, univ.Integer())
+        _sequence_component('msg-type', 1, univ.Integer()),
         # some more omitted
     )
 

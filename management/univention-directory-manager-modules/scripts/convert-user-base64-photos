@@ -102,13 +102,13 @@ if __name__ == '__main__':
         "-v", "--verbose",
         help="print debug output",
         dest="verbose",
-        action="store_true"
+        action="store_true",
     )
     parser.add_argument(
         "action",
         help="Test for base64 images, or convert them. The default action is test.",
         choices=ACTIONS,
-        nargs='?'
+        nargs='?',
     )
     options = parser.parse_args()
 

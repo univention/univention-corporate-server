@@ -531,7 +531,7 @@ class s4(univention.s4connector.ucs):
             ad_ldap_bindpw,
             ad_ldap_certificate,
             listener_dir,
-            **kwargs
+            **kwargs,
         )
 
     def __init__(self, CONFIGBASENAME, property, configRegistry, s4_ldap_host, s4_ldap_port, s4_ldap_base, s4_ldap_binddn, s4_ldap_bindpw, s4_ldap_certificate, listener_dir, logfilename=None, debug_level=None):
@@ -676,7 +676,7 @@ class s4(univention.s4connector.ucs):
                 host=self.s4_ldap_host, port=int(self.s4_ldap_port),
                 base='', binddn=None, bindpw=None, start_tls=tls_mode,
                 ca_certfile=self.s4_ldap_certificate,
-                uri=ldapuri, reconnect=False
+                uri=ldapuri, reconnect=False,
             )
             self.s4_ldap_base = self.s4_search_ext_s('', ldap.SCOPE_BASE, 'objectclass=*', ['defaultNamingContext'])[0][1]['defaultNamingContext'][0].decode('UTF-8')
         except Exception:  # FIXME: which exception is to be caught
@@ -2081,7 +2081,7 @@ class s4(univention.s4connector.ucs):
                     ud.debug(ud.LDAP, ud.PROCESS, "sync_from_ucs: reanimating conflicting object: %s" % result[0][0])
                     reanimate_modlist = [
                         (ldap.MOD_DELETE, 'isDeleted', None),
-                        (ldap.MOD_REPLACE, 'distinguishedName', object['dn'].encode('UTF-8'))
+                        (ldap.MOD_REPLACE, 'distinguishedName', object['dn'].encode('UTF-8')),
                     ]
                     self.lo_s4.lo.modify_ext_s(result[0][0], reanimate_modlist, serverctrls=[LDAPControl(LDAP_SERVER_SHOW_DELETED_OID, criticality=1), ])
                     # and try the sync again

@@ -32,7 +32,7 @@ class ScreenShooter(BaseScreenShooter):
         self.selenium.enter_input("username", "anna")
         self.selenium.save_screenshot(
             "umc-users-add_dialog",
-            xpath='//*[contains(concat(" ", normalize-space(@class), " "), " umcUdmNewObjectDialog ")]'
+            xpath='//*[contains(concat(" ", normalize-space(@class), " "), " umcUdmNewObjectDialog ")]',
         )
         # self.selenium.click_button(_("Next"))
         # self.selenium.wait_for_text(_("Password *"))
@@ -44,12 +44,12 @@ class ScreenShooter(BaseScreenShooter):
     def take_template_screenshot_and_move_on(self):
         self.selenium.wait_for_text(_("User template"))
         template_selection_dropdown_button = self.selenium.driver.find_element_by_xpath(
-            '//input[@name="objectTemplate"]/../..//input[contains(concat(" ", normalize-space(@class), " "), " dijitArrowButtonInner ")]'
+            '//input[@name="objectTemplate"]/../..//input[contains(concat(" ", normalize-space(@class), " "), " dijitArrowButtonInner ")]',
         )
         template_selection_dropdown_button.click()
         self.selenium.save_screenshot(
             "umc-users-template",
-            xpath='//*[contains(concat(" ", normalize-space(@class), " "), " umcUdmNewObjectDialog ")]'
+            xpath='//*[contains(concat(" ", normalize-space(@class), " "), " umcUdmNewObjectDialog ")]',
         )
         template_selection_dropdown_button.click()
         self.selenium.click_button(_("Next"))
@@ -167,11 +167,11 @@ if __name__ == '__main__':
         screen_shooter.udm.create_user(username='anna', firstname='Anna', lastname='Alster', jpegPhoto=portraitPhoto)
         screen_shooter.udm.create_object(
             'settings/usertemplate', name=_('Developer'),
-            position=f"cn=templates,cn=univention,{screen_shooter.selenium.ldap_base}"
+            position=f"cn=templates,cn=univention,{screen_shooter.selenium.ldap_base}",
         )
         screen_shooter.udm.create_object(
             'settings/usertemplate', name=_('Guest'),
-            position=f"cn=templates,cn=univention,{screen_shooter.selenium.ldap_base}"
+            position=f"cn=templates,cn=univention,{screen_shooter.selenium.ldap_base}",
         )
 
         screen_shooter.take_screenshots()

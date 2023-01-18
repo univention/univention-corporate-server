@@ -29,7 +29,7 @@ def properties():
         'CLIName': uts.random_name(),
         'module': 'users/user',
         'objectClass': 'univentionFreeAttributes',
-        'ldapMapping': 'univentionFreeAttribute15'
+        'ldapMapping': 'univentionFreeAttribute15',
     }
 
 
@@ -86,7 +86,7 @@ class Test_UDMExtension:
             'univentionUDMPropertyModule': [properties['module']],
             'univentionUDMPropertyLdapMapping': [properties['ldapMapping']],
             'univentionUDMPropertyCLIName': [properties['CLIName']],
-            'univentionUDMPropertyObjectClass': [properties['objectClass']]
+            'univentionUDMPropertyObjectClass': [properties['objectClass']],
         })
 
     @pytest.mark.tags('udm')
@@ -136,7 +136,7 @@ class Test_UDMExtension:
             'module': 'users/user',
             'objectClass': 'univentionFreeAttributes',
             'ldapMapping': 'univentionFreeAttribute15',
-            'multivalue': '1'
+            'multivalue': '1',
         }
 
         udm.create_object('settings/extended_attribute', position=udm.UNIVENTION_CONTAINER, **properties)
@@ -158,7 +158,7 @@ class Test_UDMExtension:
             'module': 'users/user',
             'objectClass': 'univentionFreeAttributes',
             'ldapMapping': 'univentionFreeAttribute15',
-            'multivalue': '1'
+            'multivalue': '1',
         }
 
         extended_attribute = udm.create_object('settings/extended_attribute', position=udm.UNIVENTION_CONTAINER, **properties)
@@ -203,7 +203,7 @@ class Test_UDMExtension:
             'deleteObjectClass': '1',
             'version': uts.random_string(),
             'doNotSearch': '1',
-            'set': {'options': uts.random_string()}  # "options" property of settings/extended_attribute collides with already existing keyword argument "options"
+            'set': {'options': uts.random_string()},  # "options" property of settings/extended_attribute collides with already existing keyword argument "options"
         }
 
         extended_attribute = udm.create_object('settings/extended_attribute', position=udm.UNIVENTION_CONTAINER, **properties)
@@ -232,7 +232,7 @@ class Test_UDMExtension:
             'univentionUDMPropertyDeleteObjectClass': [properties['deleteObjectClass']],
             'univentionUDMPropertyVersion': [properties['version']],
             'univentionUDMPropertyOptions': [properties['set']['options']],
-            'univentionUDMPropertyDoNotSearch': [properties['doNotSearch']]
+            'univentionUDMPropertyDoNotSearch': [properties['doNotSearch']],
         })
 
     @pytest.mark.tags('udm')
@@ -259,7 +259,7 @@ class Test_UDMExtension:
             'module': 'users/user',
             'objectClass': 'univentionFreeAttributes',
             'ldapMapping': 'univentionFreeAttribute15',
-            'tabName': uts.random_name()
+            'tabName': uts.random_name(),
         }
 
         udm.create_object('settings/extended_attribute', position=udm.UNIVENTION_CONTAINER, **properties)
@@ -280,7 +280,7 @@ class Test_UDMExtension:
             'objectClass': 'univentionFreeAttributes',
             'ldapMapping': 'univentionFreeAttribute15',
             'tabName': 'Certificate',
-            'overwriteTab': '1'
+            'overwriteTab': '1',
         }
 
         udm.create_object('settings/extended_attribute', position=udm.UNIVENTION_CONTAINER, **properties)
@@ -315,7 +315,7 @@ class Test_UDMExtension:
                 'objectClass': 'univentionFreeAttributes',
                 'ldapMapping': 'univentionFreeAttribute%s' % i,
                 'tabPosition': str(i),
-                'tabName': tab
+                'tabName': tab,
             }
             udm.create_object('settings/extended_attribute', position=udm.UNIVENTION_CONTAINER, **properties)
             extended_attributes[properties['CLIName']] = i
@@ -346,7 +346,7 @@ class Test_UDMExtension:
             'module': 'users/user',
             'objectClass': 'univentionFreeAttributes',
             'ldapMapping': 'univentionFreeAttribute15',
-            'default': uts.random_string()
+            'default': uts.random_string(),
         }
 
         udm.create_object('settings/extended_attribute', position=udm.UNIVENTION_CONTAINER, **properties)
@@ -367,7 +367,7 @@ class Test_UDMExtension:
             'objectClass': 'univentionFreeAttributes',
             'ldapMapping': 'univentionFreeAttribute15',
             'multivalue': '1',
-            'default': uts.random_string()
+            'default': uts.random_string(),
         }
 
         udm.create_object('settings/extended_attribute', position=udm.UNIVENTION_CONTAINER, **properties)
@@ -387,7 +387,7 @@ class Test_UDMExtension:
             'module': 'users/user',
             'objectClass': 'univentionFreeAttributes',
             'ldapMapping': 'univentionFreeAttribute15',
-            'default': uts.random_string()
+            'default': uts.random_string(),
         }
 
         udm.create_object('settings/extended_attribute', position=udm.UNIVENTION_CONTAINER, **properties)
@@ -409,7 +409,7 @@ class Test_UDMExtension:
             'objectClass': 'univentionFreeAttributes',
             'ldapMapping': 'univentionFreeAttribute15',
             'multivalue': '1',
-            'default': uts.random_string()
+            'default': uts.random_string(),
         }
 
         udm.create_object('settings/extended_attribute', position=udm.UNIVENTION_CONTAINER, **properties)
@@ -430,7 +430,7 @@ class Test_UDMExtension:
             'module': 'users/user',
             'objectClass': 'univentionFreeAttributes',
             'ldapMapping': 'univentionFreeAttribute15',
-            'mayChange': '0'
+            'mayChange': '0',
         }
 
         udm.create_object('settings/extended_attribute', position=udm.UNIVENTION_CONTAINER, **properties)
@@ -453,7 +453,7 @@ class Test_UDMExtension:
             module='groups/group',
             objectClass='univentionFreeAttributes',
             ldapMapping='univentionFreeAttribute15',
-            valueRequired='1'
+            valueRequired='1',
         )
 
         # try creating an udm object without the just created extended attribute given (expected to fail)
@@ -472,7 +472,7 @@ class Test_UDMExtension:
             'module': 'groups/group',
             'objectClass': 'univentionFreeAttributes',
             'ldapMapping': 'univentionFreeAttribute15',
-            'valueRequired': '1'
+            'valueRequired': '1',
         }
 
         udm.create_object('settings/extended_attribute', position=udm.UNIVENTION_CONTAINER, **properties)
@@ -496,7 +496,7 @@ class Test_UDMExtension:
             'objectClass': 'univentionFreeAttributes',
             'ldapMapping': 'univentionFreeAttribute15',
             'valueRequired': '1',
-            'multivalue': '1'
+            'multivalue': '1',
         }
 
         udm.create_object('settings/extended_attribute', position=udm.UNIVENTION_CONTAINER, **properties)
@@ -521,7 +521,7 @@ class Test_UDMExtension:
             module='groups/group',
             objectClass='univentionFreeAttributes',
             ldapMapping='univentionFreeAttribute15',
-            valueRequired='1'
+            valueRequired='1',
         )
 
         # try creating an udm object without the just created extended attribute given (expected to fail)
@@ -547,7 +547,7 @@ class Test_UDMExtension:
             objectClass='univentionFreeAttributes',
             ldapMapping='univentionFreeAttribute15',
             valueRequired='1',
-            multivalue='1'
+            multivalue='1',
         )
 
         with pytest.raises(udm_test.UCSTestUDM_CreateUDMObjectFailed, message='UDM did not report an error while trying to create an object even though a required multivalue extended attribute was not given'):
@@ -572,7 +572,7 @@ class Test_UDMExtension:
                 objectClass='univentionFreeAttributes',
                 ldapMapping='univentionFreeAttribute15',
                 syntax='integer',
-                default='notaninteger'
+                default='notaninteger',
             )
 
     @pytest.mark.tags('udm', 'apptest')
@@ -606,7 +606,7 @@ class %s(univention.admin.hook.simpleHook):
             module='users/user',
             objectClass='univentionFreeAttributes',
             ldapMapping='univentionFreeAttribute15',
-            hook=hook_name
+            hook=hook_name,
         )
 
         user = udm.create_user(**{cli_name: uts.random_string()})[0]
@@ -653,7 +653,7 @@ class %s(univention.admin.hook.simpleHook):
             module='users/user',
             objectClass='univentionFreeAttributes',
             ldapMapping='univentionFreeAttribute15',
-            hook=hook_name
+            hook=hook_name,
         )
 
         udm.create_user(**{cli_name: uts.random_string(), 'username': hook_name})[0]
@@ -692,7 +692,7 @@ class %s(univention.admin.hook.simpleHook):
             module='users/user',
             objectClass='univentionFreeAttributes',
             ldapMapping='univentionFreeAttribute15',
-            hook=hook_name
+            hook=hook_name,
         )
 
         user = udm.create_user(**{cli_name: uts.random_string()})[0]
@@ -739,7 +739,7 @@ class %s(univention.admin.hook.simpleHook):
             module='users/user',
             objectClass='univentionFreeAttributes',
             ldapMapping='univentionFreeAttribute15',
-            hook=hook_name
+            hook=hook_name,
         )
 
         udm.create_user(**{cli_name: uts.random_string(), 'username': hook_name})[0]
@@ -785,7 +785,7 @@ class %s(univention.admin.hook.simpleHook):
             module='users/user',
             objectClass='univentionFreeAttributes',
             ldapMapping='univentionFreeAttribute15',
-            hook=hook_name
+            hook=hook_name,
         )
 
         user = udm.create_user(**{cli_name: uts.random_string(), 'username': hook_name})[0]
@@ -831,7 +831,7 @@ class %s(univention.admin.hook.simpleHook):
             module='users/user',
             objectClass='univentionFreeAttributes',
             ldapMapping='univentionFreeAttribute15',
-            hook=hook_name
+            hook=hook_name,
         )
 
         udm.modify_object('users/user', dn=user, displayName=uts.random_name())
@@ -878,7 +878,7 @@ class %s(univention.admin.hook.simpleHook):
             module='users/user',
             objectClass='univentionFreeAttributes',
             ldapMapping='univentionFreeAttribute15',
-            hook=hook_name
+            hook=hook_name,
         )
 
         user = udm.create_user(**{cli_name: uts.random_string(), 'username': hook_name})[0]
@@ -925,7 +925,7 @@ class %s(univention.admin.hook.simpleHook):
             module='users/user',
             objectClass='univentionFreeAttributes',
             ldapMapping='univentionFreeAttribute15',
-            hook=hook_name
+            hook=hook_name,
         )
 
         user = udm.create_user(**{cli_name: uts.random_string(), 'username': hook_name})[0]
@@ -972,7 +972,7 @@ class %s(univention.admin.hook.simpleHook):
             module='users/user',
             objectClass='univentionFreeAttributes',
             ldapMapping='univentionFreeAttribute15',
-            hook=hook_name
+            hook=hook_name,
         )
 
         user = udm.create_user(**{cli_name: uts.random_string(), 'username': hook_name})[0]
@@ -1062,7 +1062,7 @@ class %s(univention.admin.hook.simpleHook):
             'syntax': 'boolean',
             'mayChange': '1',
             'objectClass': 'univentionFreeAttributes',
-            'ldapMapping': 'univentionFreeAttribute15'
+            'ldapMapping': 'univentionFreeAttribute15',
         }
         udm.create_object('settings/extended_attribute', position=udm.UNIVENTION_CONTAINER, **properties)
 

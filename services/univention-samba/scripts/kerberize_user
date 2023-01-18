@@ -180,7 +180,7 @@ def main():
                     ('sambaPwdCanChange', oldsambaPwdCanChangeValue, sambaPwdCanChangeValue),
                     ('sambaPwdMustChange', oldsambaPwdMustChangeValue, sambaPwdMustChangeValue),
                     ('shadowMax', oldshadowMaxValue, shadowMaxValue),
-                    ('shadowLastChange', oldshadowLastChangeValue, shadowLastChangeValue)
+                    ('shadowLastChange', oldshadowLastChangeValue, shadowLastChangeValue),
                 ])
             else:
                 print('Could not find attribute "sambaPwdLastSet". Skipping generating of "krb5PasswordEnd".')
@@ -198,18 +198,18 @@ def main():
 
             ml.extend([
                 ('krb5Key', old_keys, nt_password_to_arcfour_hmac_md5(attrs['sambaNTPassword'][0])),
-                ('krb5KDCFlags', old_flag, flag)
+                ('krb5KDCFlags', old_flag, flag),
             ])
 
             if attrs.get('sambaLMPassword', [None])[0] not in [b"NO PASSWORDXXXXXXXXXXXXXXXXXXXXX", None]:
                 old_password = attrs.get('userPassword', [])
                 if disabled:
                     ml.extend([
-                        ('userPassword', old_password, [b'{LANMAN}!%s' % attrs['sambaLMPassword'][0]])
+                        ('userPassword', old_password, [b'{LANMAN}!%s' % attrs['sambaLMPassword'][0]]),
                     ])
                 else:
                     ml.extend([
-                        ('userPassword', old_password, [b'{LANMAN}%s' % attrs['sambaLMPassword'][0]])
+                        ('userPassword', old_password, [b'{LANMAN}%s' % attrs['sambaLMPassword'][0]]),
                     ])
 
             if ocs:

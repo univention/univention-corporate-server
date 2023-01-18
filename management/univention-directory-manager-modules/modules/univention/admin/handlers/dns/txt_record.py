@@ -89,7 +89,7 @@ layout = [
         Group(_('General TXT record settings'), layout=[
             'name',
             'txt',
-            'zonettl'
+            'zonettl',
         ]),
     ]),
 ]
@@ -141,7 +141,7 @@ class object(univention.admin.handlers.simpleLdap):
             univention.admin.filter.conjunction('!', [univention.admin.filter.expression('aRecord', '*', escape=False)]),
             univention.admin.filter.conjunction('!', [univention.admin.filter.expression('aAAARecord', '*', escape=False)]),
             univention.admin.filter.conjunction('!', [univention.admin.filter.expression('mXRecord', '*', escape=False)]),
-            univention.admin.filter.expression('tXTRecord', '*', escape=False)
+            univention.admin.filter.expression('tXTRecord', '*', escape=False),
         ])
 
     @classmethod

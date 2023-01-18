@@ -44,7 +44,7 @@ import univention.debug as ud
 from univention.admin.policy import (
     register_policy_mapping, policy_object_tab,
     requiredObjectClassesProperty, prohibitedObjectClassesProperty,
-    fixedAttributesProperty, emptyAttributesProperty, ldapFilterProperty
+    fixedAttributesProperty, emptyAttributesProperty, ldapFilterProperty,
 )
 
 
@@ -159,10 +159,10 @@ layout = [
             'reboot',
             ['month', 'weekday'],
             ['day', 'hour'],
-            'minute'
+            'minute',
         ]),
     ]),
-    policy_object_tab()
+    policy_object_tab(),
 ]
 
 mapping = univention.admin.mapping.mapping()

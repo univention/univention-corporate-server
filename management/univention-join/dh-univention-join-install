@@ -176,7 +176,7 @@ class JoinDebhelper(object):
         """Add inter package dependencies."""
         cmd = [
             'perl', '-e',
-            'use Debian::Debhelper::Dh_Lib;addsubstvar("%s", "misc:Depends", "univention-join (>= %s)");' % (self.package, VER)
+            'use Debian::Debhelper::Dh_Lib;addsubstvar("%s", "misc:Depends", "univention-join (>= %s)");' % (self.package, VER),
         ]
         doIt(*cmd)
 

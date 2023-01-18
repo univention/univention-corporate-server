@@ -75,7 +75,7 @@ property_descriptions = {
         include_in_default_search=True,
         required=True,
         may_change=False,
-        identifies=True
+        identifies=True,
     ),
     'mailDomain': univention.admin.property(
         short_description=_('Mail domain'),
@@ -84,7 +84,7 @@ property_descriptions = {
         include_in_default_search=True,
         required=True,
         may_change=False,
-        identifies=True
+        identifies=True,
     ),
     'sharedFolderUserACL': univention.admin.property(
         short_description=_('User ACL'),
@@ -132,7 +132,7 @@ layout = [
             "sharedFolderUserACL",
             "sharedFolderGroupACL",
         ]),
-    ])
+    ]),
 ]
 
 mapping = univention.admin.mapping.mapping()
@@ -207,7 +207,7 @@ class object(univention.admin.handlers.simpleLdap):
             ml.append((
                 'univentionMailSharedFolderDeliveryAddress',
                 self.oldattr.get('univentionMailSharedFolderDeliveryAddress', []),
-                [value.encode('UTF-8')]
+                [value.encode('UTF-8')],
             ))
 
             address = '%s@%s' % (self['name'], self['mailDomain'])

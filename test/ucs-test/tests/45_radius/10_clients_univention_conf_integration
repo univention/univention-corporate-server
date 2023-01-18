@@ -62,7 +62,7 @@ def eap_test(username, password, password_ap, addr_ap):
             password_ap,
             '-t',
             '10',
-            '-r0'
+            '-r0',
         ])
 
 
@@ -82,7 +82,7 @@ def main():
             options=['kerberos', 'samba', 'posix', 'radiusAuthenticator'],
             univentionRadiusClientSharedSecret=secret,
             univentionRadiusClientType=nas_type,
-            wait_for_replication=False
+            wait_for_replication=False,
         )
         utils.wait_for_replication_and_postrun()
         with DummyInterface(addr):

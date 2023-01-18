@@ -68,7 +68,7 @@ class TestUdmUsersBasic(TestCase):
                     'mail/domain',
                     position='cn=domain,cn=mail,{}'.format(cls.ucr_test['ldap/base']),
                     name=cls.mail_domain,
-                    wait_for_replication=True
+                    wait_for_replication=True,
                 )
             except UCSTestUDM_CreateUDMObjectFailed as exc:
                 print(f'Creating mail domain {cls.mail_domain!r} failed: {exc}')
@@ -117,7 +117,7 @@ class TestUdmUsersBasic(TestCase):
                 'displayName': ['{} {}'.format(attrs['firstname'], attrs['lastname'])],
             },
             strict=False,
-            should_exist=True
+            should_exist=True,
         )
         obj2 = user_mod.get_by_id(obj.props.username)
         assert obj2.dn == obj.dn
@@ -179,7 +179,7 @@ class TestUdmUsersBasic(TestCase):
                 'displayName': ['{} {}'.format(attrs['firstname'], attrs['lastname'])],
             },
             strict=False,
-            should_exist=True
+            should_exist=True,
         )
 
     def test_modify_user_homePostalAddress_udm1_generic(self):
@@ -244,7 +244,7 @@ class TestUdmUsersBasic(TestCase):
         if hasattr(obj.props, 'oxDisplayName'):
             expected_properties['oxDisplayName'] = expected_properties['displayName']
             expected_properties['oxTimeZone'] = self.udm.obj_by_dn(
-                'cn=oxTimeZone,cn=open-xchange,cn=custom attributes,cn=univention,{}'.format(self.ucr_test['ldap/base'])
+                'cn=oxTimeZone,cn=open-xchange,cn=custom attributes,cn=univention,{}'.format(self.ucr_test['ldap/base']),
             ).props.default
         if hasattr(obj.props, 'mailUserQuota'):
             expected_properties['mailUserQuota'] = 0
@@ -270,7 +270,7 @@ class TestUdmUsersBasic(TestCase):
         print('Verifying...')
         utils.verify_ldap_object(
             obj.dn,
-            should_exist=False
+            should_exist=False,
         )
         with self.assertRaises(DeletedError):
             obj.save()

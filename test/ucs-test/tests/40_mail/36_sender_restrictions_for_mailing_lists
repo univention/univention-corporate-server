@@ -51,8 +51,8 @@ def main():
                             'password': password,
                             'mailHomeServer': '%s.%s' % (ucr.get('hostname'), domain),
                             'mailPrimaryAddress': mail,
-                            'mailAlternativeAddress': alt
-                        }
+                            'mailAlternativeAddress': alt,
+                        },
                     )
                     mails.append(mail)
                     alts.append(alt)
@@ -62,7 +62,7 @@ def main():
                     set={
                         'mailAddress': group1_mail,
                         'users': users[0],
-                    }
+                    },
                 )
                 list1_name = uts.random_name()
                 list1_mail = '%s@%s' % (list1_name, domain)
@@ -72,7 +72,7 @@ def main():
                         'name': list1_name,
                         'mailAddress': list1_mail,
                         'members': mails[1],
-                    }
+                    },
                 )
                 list2_name = uts.random_name()
                 list2_mail = '%s@%s' % (list2_name, domain)
@@ -84,7 +84,7 @@ def main():
                         'members': mails[2],
                         'allowedEmailUsers': users[3],
                         'allowedEmailGroups': group1_dn,
-                    }
+                    },
                 )
 
                 print("")

@@ -51,7 +51,7 @@ class UMCBase:
             "objectType": obj_type,
             "objectProperty": "None",
             "objectPropertyValue": "",
-            "hidden": True
+            "hidden": True,
         }
         for result in self.request('udm/query', options, flavor or obj_type):
             if result['name'] == name:
@@ -101,8 +101,8 @@ class UMCBase:
             "object": obj_identifier,
             "options": {
                 "cleanup": True,
-                "recursive": True
-            }
+                "recursive": True,
+            },
         }]
         request_result = self.client.umc_command('udm/remove', options, flavor).result
         assert request_result
@@ -194,7 +194,7 @@ class UDMModule(UMCBase):
         'dcslavehosts': "DC Slave Hosts",
         'computers': "Computers",
         'printoperators': "Printer-Admins",
-        'administrator': "Administrator"
+        'administrator': "Administrator",
     }
 
     test_network_dn = ''
@@ -219,11 +219,11 @@ class UDMModule(UMCBase):
                             "samba": True,
                             "kerberos": True,
                             "posix": True,
-                            "nagios": False
+                            "nagios": False,
                 },
-                "$policies$": {}
+                "$policies$": {},
             },
-            "options": {"container": "cn=computers," + self.ldap_base, "objectType": "computers/windows"}
+            "options": {"container": "cn=computers," + self.ldap_base, "objectType": "computers/windows"},
         }]
         return self.request("udm/add", options, "computers/computer")
 

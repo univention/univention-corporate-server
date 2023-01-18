@@ -32,8 +32,8 @@ def main():
                     set={
                         'password': password,
                         'mailHomeServer': host,
-                        'mailPrimaryAddress': usermail
-                    }
+                        'mailPrimaryAddress': usermail,
+                    },
                 )
                 mails.append(usermail)
             list_name = uts.random_name()
@@ -44,10 +44,10 @@ def main():
                 set={
                     'name': list_name,
                     'mailAddress': list_mail,
-                    'members': mails[1]
+                    'members': mails[1],
                 },
                 wait_for_drs_replication=True,
-                position="cn=mailinglists,cn=mail,{}".format(ucr.get("ldap/base"))
+                position="cn=mailinglists,cn=mail,{}".format(ucr.get("ldap/base")),
             )
             token = str(time.time())
             send_mail(recipients=list_mail, msg=token, tls=True, username=usermail, password=password)

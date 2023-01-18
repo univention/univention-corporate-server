@@ -452,7 +452,7 @@ def handler_search(args, opts={}):
         if any((
                 search_keys and search(key),
                 search_values and value2 and search(value2),
-                search_all and vinfo and search(vinfo.get('description', ''))
+                search_all and vinfo and search(vinfo.get('description', '')),
         )):
             yield variable_info_string(key, value2, vinfo, details=details)
 
@@ -753,7 +753,7 @@ OPT_COMMANDS = {
     'filter': {
         'encode-utf8': [BOOL, False],
         'disallow-execution': [BOOL, False],
-    }
+    },
 }  # type: Dict[str, Dict[str, List]]
 
 

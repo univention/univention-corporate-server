@@ -1310,7 +1310,7 @@ class UniventionUpdater(object):
                     ver = UCS_Version((
                         major_release['major'],
                         minor_release['minor'],
-                        patchlevel_release['patchlevel']
+                        patchlevel_release['patchlevel'],
                     ))
                     if start and ver < start:
                         continue

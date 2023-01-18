@@ -44,7 +44,7 @@ def search_templates(old_group_name, new_group_name, server_role):
         '/etc/security/access-rlogin.conf', '/etc/security/access-ftp.conf',
         '/etc/security/access-screen.conf', '/etc/security/access-gdm.conf',
         '/etc/security/access-login.conf', '/etc/security/access-other.conf',
-        '/etc/security/access-kdm.conf', '/etc/security/access-sshd.conf'
+        '/etc/security/access-kdm.conf', '/etc/security/access-sshd.conf',
     ]
     ignore = ['/etc/security/access-ppp.conf', '/etc/sudoers.d/univention']
     if server_role == 'memberserver':

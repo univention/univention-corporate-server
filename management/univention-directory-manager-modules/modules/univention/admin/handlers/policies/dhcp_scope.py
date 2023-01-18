@@ -41,7 +41,7 @@ import univention.admin.localization
 from univention.admin.policy import (
     register_policy_mapping, policy_object_tab,
     requiredObjectClassesProperty, prohibitedObjectClassesProperty,
-    fixedAttributesProperty, emptyAttributesProperty, ldapFilterProperty
+    fixedAttributesProperty, emptyAttributesProperty, ldapFilterProperty,
 )
 
 
@@ -56,7 +56,7 @@ class dhcp_scopeFixedAttributes(univention.admin.syntax.select):
         ('univentionDhcpBootp', _('BOOTP')),
         ('univentionDhcpBooting', _('Booting')),
         ('univentionDhcpDuplicates', _('Duplicates')),
-        ('univentionDhcpDeclines', _('Declines'))
+        ('univentionDhcpDeclines', _('Declines')),
     ]
 
 
@@ -130,10 +130,10 @@ layout = [
             'name',
             ['scopeUnknownClients', 'bootp'],
             ['booting', 'duplicates'],
-            'declines'
+            'declines',
         ]),
     ]),
-    policy_object_tab()
+    policy_object_tab(),
 ]
 
 mapping = univention.admin.mapping.mapping()

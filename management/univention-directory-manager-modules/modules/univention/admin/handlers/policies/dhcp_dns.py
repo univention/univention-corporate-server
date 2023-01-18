@@ -41,7 +41,7 @@ import univention.admin.localization
 from univention.admin.policy import (
     register_policy_mapping, policy_object_tab,
     requiredObjectClassesProperty, prohibitedObjectClassesProperty,
-    fixedAttributesProperty, emptyAttributesProperty, ldapFilterProperty
+    fixedAttributesProperty, emptyAttributesProperty, ldapFilterProperty,
 )
 
 
@@ -53,7 +53,7 @@ class dhcp_dnsFixedAttributes(univention.admin.syntax.select):
     name = 'dhcp_dnsFixedAttributes'
     choices = [
         ('univentionDhcpDomainName', _('Domain name')),
-        ('univentionDhcpDomainNameServers', _('Domain name servers'))
+        ('univentionDhcpDomainNameServers', _('Domain name servers')),
     ]
 
 
@@ -112,10 +112,10 @@ layout = [
     Tab(_('General'), _('Basic DNS settings'), layout=[
         Group(_('General DHCP DNS settings'), layout=[
             'name',
-            ['domain_name', 'domain_name_servers']
+            ['domain_name', 'domain_name_servers'],
         ]),
     ]),
-    policy_object_tab()
+    policy_object_tab(),
 ]
 
 mapping = univention.admin.mapping.mapping()

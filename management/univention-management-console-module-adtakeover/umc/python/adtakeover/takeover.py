@@ -594,7 +594,7 @@ class UCS_License_detection(object):
                 port=int(self.ucr.get('ldap/master/port', '7389')),
                 base=self.ucr['ldap/base'],
                 binddn=binddn,
-                bindpw=bindpw
+                bindpw=bindpw,
             )
         except uexceptions.authFail:
             raise LicenseInsufficient(_("Internal Error: License check failed."))
@@ -689,7 +689,7 @@ class AD_Connection(object):
         msgs = self.samdb.search(
             base=self.domain_dn, scope=samba.ldb.SCOPE_BASE,
             expression="(objectClass=domain)",
-            attrs=["objectSid", "msDS-Behavior-Version"]
+            attrs=["objectSid", "msDS-Behavior-Version"],
         )
         if msgs:
             obj = msgs[0]
@@ -927,9 +927,9 @@ class AD_Takeover(object):
                     "nameserver1=%s" % self.ad_server_ip,
                     "directory/manager/web/modules/users/user/properties/username/syntax=string",
                     "directory/manager/web/modules/groups/group/properties/name/syntax=string",
-                    "dns/backend=ldap"
+                    "dns/backend=ldap",
                 ],
-                log.debug
+                log.debug,
             )
 
         self.ucr.load()
@@ -971,7 +971,7 @@ class AD_Takeover(object):
             "--authentication-file=%s" % auth_filename,
             "--machinepass-file=/etc/machine.secret",
             "--server=%s" % self.ad_server_fqdn,
-            "--site=%s" % self.AD.domain_info["ad_server_site"]
+            "--site=%s" % self.AD.domain_info["ad_server_site"],
         ], stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
 
         RE_SCHEMA = re.compile(r"^Schema-DN\[(?P<partition_dn>[^\]]+)\] objects\[([^\]]+)\] linked_values\[([^\]]+)\]$")
@@ -1776,7 +1776,7 @@ class AD_Takeover_Finalize(object):
                     "interfaces/%s/address" % (new_interface_ucr): self.ad_server_ip,
                     "interfaces/%s/network" % (new_interface_ucr): guess_network,
                     "interfaces/%s/netmask" % (new_interface_ucr): guess_netmask,
-                    "interfaces/%s/broadcast" % (new_interface_ucr): guess_broadcast
+                    "interfaces/%s/broadcast" % (new_interface_ucr): guess_broadcast,
                 }
                 log.info("Updating UCR with the following network data: %s" % (update))
                 ucr_update(self.ucr, update)
@@ -1805,7 +1805,7 @@ class AD_Takeover_Finalize(object):
                 update = {
                     "interfaces/%s/ipv6/default/address" % (new_interface_ucr): self.ad_server_ip,
                     "interfaces/%s/ipv6/default/prefix" % (new_interface_ucr): guess_broadcast,
-                    "interfaces/%s/ipv6/acceptRA": "false"
+                    "interfaces/%s/ipv6/acceptRA": "false",
                 }
                 log.info("Updating UCR with the following IPv6 network data: %s" % (update))
                 ucr_update(self.ucr, update)
@@ -2438,7 +2438,7 @@ def takeover_DC_Behavior_Version(ucr, remote_samdb, samdb, ad_server_name, siten
     msg = remote_samdb.search(
         base="CN=NTDS Settings,CN=%s,CN=Servers,CN=%s,CN=Sites,CN=Configuration,%s" % (escape_dn_chars(ad_server_name), escape_dn_chars(sitename), samdb.domain_dn()),
         scope=samba.ldb.SCOPE_BASE,
-        attrs=["msDS-HasMasterNCs", "msDS-HasInstantiatedNCs", "msDS-Behavior-Version"]
+        attrs=["msDS-HasMasterNCs", "msDS-HasInstantiatedNCs", "msDS-Behavior-Version"],
     )
     if msg:
         obj = msg[0]
@@ -2512,7 +2512,7 @@ def let_samba4_manage_etc_krb5_keytab(ucr, secretsdb):
         base="cn=Primary Domains",
         scope=samba.ldb.SCOPE_SUBTREE,
         expression=filter_format("(flatName=%s)", (ucr["windows/domain"],)),
-        attrs=["krb5Keytab"]
+        attrs=["krb5Keytab"],
     )
     if msg:
         obj = msg[0]
@@ -2528,7 +2528,7 @@ def add_servicePrincipals(ucr, secretsdb, spn_list):
         base="cn=Primary Domains",
         scope=samba.ldb.SCOPE_SUBTREE,
         expression=filter_format("(flatName=%s)", (ucr["windows/domain"],)),
-        attrs=["servicePrincipalName"]
+        attrs=["servicePrincipalName"],
     )
     if msg:
         obj = msg[0]

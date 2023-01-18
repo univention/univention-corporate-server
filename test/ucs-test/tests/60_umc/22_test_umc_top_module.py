@@ -74,7 +74,7 @@ class Test_UMCTopModule:
     @pytest.mark.parametrize('signame,ignore_signal', [
         ('SIGTERM', False),
         ('SIGKILL', False),
-        ('SIGTERM', True)
+        ('SIGTERM', True),
     ])
     def test_process_termination(self, signame, ignore_signal, Client):
         """
@@ -120,7 +120,7 @@ class Test_UMCTopModule:
         ('/sbin/init', 'all'),
         ('/sbin/init', 'command'),
         ('root', 'user'),
-        (1, 'pid')
+        (1, 'pid'),
     ])
     def test_process_query_single_process(self, pattern, category, Client):
         client = Client.get_test_connection()

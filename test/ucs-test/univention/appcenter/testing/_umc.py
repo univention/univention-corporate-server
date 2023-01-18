@@ -396,7 +396,7 @@ class Client:
             'Accept': 'application/json; q=1, text/html; q=0.5; */*; q=0.1',
             'Accept-Language': self._language.replace('_', '-'),
             'X-Requested-With': 'XMLHttpRequest',
-            'User-Agent': useragent or _get_useragent()
+            'User-Agent': useragent or _get_useragent(),
         }
         self._base_uri = '/univention/'
         self._timeout = timeout

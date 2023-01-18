@@ -96,7 +96,7 @@ def verify_users(group_dn, users):
     print(" Checking Ldap Objects")
     utils.verify_ldap_object(group_dn, {
         'uniqueMember': list(users),
-        'memberUid': [ldap.dn.str2dn(user)[0][0][1] for user in users]
+        'memberUid': [ldap.dn.str2dn(user)[0][0][1] for user in users],
     })
 
 

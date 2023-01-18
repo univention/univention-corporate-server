@@ -134,8 +134,8 @@ UNIVENTION = ('univention', 'Univention', 'UNIVENTION')
 RE_UNIVENTION = re.compile(
     r'\b(?<![%\\])(?!{})(?:{})\b'.format(
         '|'.join(UNIVENTION),
-        Trie(*chain(*[levenshtein(word, 2) for word in UNIVENTION])).pattern().replace('.', r'\w')
-    )
+        Trie(*chain(*[levenshtein(word, 2) for word in UNIVENTION])).pattern().replace('.', r'\w'),
+    ),
 )
 """Regular expression to find misspellings."""
 

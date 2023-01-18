@@ -142,7 +142,7 @@ class TestUMCExtendedAttributes(UDMModule):
             "objectProperty": "None",
             "objectPropertyValue": "",
             "container": "cn=custom attributes,cn=univention," + self.ldap_base,
-            "hidden": True
+            "hidden": True,
         }
         return self.request('udm/nav/object/query', options, "navigation")
 

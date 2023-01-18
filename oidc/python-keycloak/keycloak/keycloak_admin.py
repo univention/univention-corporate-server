@@ -1787,7 +1787,7 @@ class KeycloakAdmin:
 
         headers = {
             'Authorization': 'Bearer ' + self.token.get('access_token'),
-            'Content-Type': 'application/json'
+            'Content-Type': 'application/json',
         }
 
         if self.custom_headers is not None:

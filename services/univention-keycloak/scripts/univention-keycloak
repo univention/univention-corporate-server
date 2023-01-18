@@ -119,8 +119,8 @@ def create_SAML_client(opt):
                 "attribute.name": "urn:oid:0.9.2342.19200300.100.1.1",
                 "attribute.nameformat": "URI Reference",
                 "friendly.name": "uid",
-                "user.attribute": "uid"
-        }
+                "user.attribute": "uid",
+        },
     }]
 
     client_payload_saml = {
@@ -172,7 +172,7 @@ def create_SAML_client(opt):
                     "saml.assertion.lifespan": "300",
                     "token.response.type.bearer.lower-case": "false",
                     "saml.onetimeuse.condition": "false",
-                    "saml_signature_canonicalization_method": "http://www.w3.org/2001/10/xml-exc-c14n#"
+                    "saml_signature_canonicalization_method": "http://www.w3.org/2001/10/xml-exc-c14n#",
         },
         "authenticationFlowBindingOverrides": {},
         "fullScopeAllowed": True,
@@ -183,8 +183,8 @@ def create_SAML_client(opt):
         "access": {
             "view": True,
             "configure": True,
-            "manage": True
-        }
+            "manage": True,
+        },
     }
 
     default_uid_mapper = [
@@ -198,8 +198,8 @@ def create_SAML_client(opt):
                         "attribute.name": "uid",
                         "attribute.nameformat": "Basic",
                         "friendly.name": "uid",
-                        "user.attribute": "uid"
-                    }
+                        "user.attribute": "uid",
+                    },
         },
     ]
 
@@ -207,11 +207,11 @@ def create_SAML_client(opt):
         "attribute.name": "Role",
         "attribute.nameformat": "Basic",
         "friendly.name": "role list mapper",
-        "single": "true"
+        "single": "true",
     },
         "name": "role_list_mapper",
         "protocol": "saml",
-        "protocolMapper": "saml-role-list-mapper"
+        "protocolMapper": "saml-role-list-mapper",
     }
 
     if opt.umc_uid_mapper:
@@ -302,8 +302,8 @@ def create_oidc_client(opt):
                                 "id.token.claim": "true",
                                 "access.token.claim": "true",
                                 "claim.name": "uid",
-                                "jsonType.label": "String"
-                            }
+                                "jsonType.label": "String",
+                            },
             },
             {
                 "name": "username",
@@ -316,8 +316,8 @@ def create_oidc_client(opt):
                                 "id.token.claim": "true",
                                 "access.token.claim": "true",
                                 "claim.name": "preferred_username",
-                                "jsonType.label": "String"
-                            }
+                                "jsonType.label": "String",
+                            },
             },
             {
                 "name": "email",
@@ -330,29 +330,29 @@ def create_oidc_client(opt):
                                 "id.token.claim": "true",
                                 "access.token.claim": "true",
                                 "claim.name": "email",
-                                "jsonType.label": "String"
-                            }
-            }
+                                "jsonType.label": "String",
+                            },
+            },
         ],
         "defaultClientScopes": [
             "web-origins",
             "acr",
             "profile",
             "roles",
-            "email"
+            "email",
         ],
         "optionalClientScopes": [
             "address",
             "phone",
             "offline_access",
-            "microprofile-jwt"
+            "microprofile-jwt",
         ],
         "access": {
             "view": True,
             "configure": True,
-            "manage": True
+            "manage": True,
         },
-        "authorizationServicesEnabled": ""
+        "authorizationServicesEnabled": "",
     }
 
     if opt.client_secret:
@@ -372,7 +372,7 @@ def modify_client_scope_mapper(opt):
 
     scope_id = id_role_list
     data_raw = kc_admin.raw_get(
-        f"admin/realms/{opt.realm}/client-scopes/{scope_id}/protocol-mappers/models"
+        f"admin/realms/{opt.realm}/client-scopes/{scope_id}/protocol-mappers/models",
     )
     mappers = data_raw.json()
 
@@ -599,7 +599,7 @@ def create_adhoc_idp(opt):
             "wantAssertionsEncrypted": "false",
             "wantAssertionsSigned": "false",
             "wantAuthnRequestsSigned": "true",
-            "xmlSigKeyInfoKeyNameTransformer": "CERT_SUBJECT"
+            "xmlSigKeyInfoKeyNameTransformer": "CERT_SUBJECT",
         },
         "displayName": opt.alias,
         "enabled": True,
@@ -609,7 +609,7 @@ def create_adhoc_idp(opt):
         "providerId": "saml",
         "storeToken": False,
         "trustEmail": False,
-        "updateProfileFirstLoginMode": "on"
+        "updateProfileFirstLoginMode": "on",
     }
     kc_admin.create_idp(idp_payload)
 
@@ -619,11 +619,11 @@ def create_adhoc_idp(opt):
             "attribute.name": "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress",
             "attributes": "[]",
             "syncMode": "IMPORT",
-            "user.attribute": "email"
+            "user.attribute": "email",
         },
         "identityProviderAlias": opt.alias,
         "identityProviderMapper": "saml-user-attribute-idp-mapper",
-        "name": "email"
+        "name": "email",
     }
     kc_admin.add_mapper_to_idp(opt.alias, mapper_payload)
 
@@ -633,11 +633,11 @@ def create_adhoc_idp(opt):
             "attribute.name": "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/givenname",
             "attributes": "[]",
             "syncMode": "IMPORT",
-            "user.attribute": "firstName"
+            "user.attribute": "firstName",
         },
         "identityProviderAlias": opt.alias,
         "identityProviderMapper": "saml-user-attribute-idp-mapper",
-        "name": "firstName"
+        "name": "firstName",
     }
     kc_admin.add_mapper_to_idp(opt.alias, mapper_payload)
 
@@ -647,11 +647,11 @@ def create_adhoc_idp(opt):
             "attribute.name": "objectGuid",
             "attributes": "[]",
             "syncMode": "IMPORT",
-            "user.attribute": opt.keycloak_federation_remote_identifier
+            "user.attribute": opt.keycloak_federation_remote_identifier,
         },
         "identityProviderAlias": opt.alias,
         "identityProviderMapper": "saml-user-attribute-idp-mapper",
-        "name": "remoteIdentifier"
+        "name": "remoteIdentifier",
     }
     kc_admin.add_mapper_to_idp(opt.alias, mapper_payload)
 
@@ -661,11 +661,11 @@ def create_adhoc_idp(opt):
             "attribute.name": "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/surname",
             "attributes": "[]",
             "syncMode": "IMPORT",
-            "user.attribute": "lastName"
+            "user.attribute": "lastName",
         },
         "identityProviderAlias": opt.alias,
         "identityProviderMapper": "saml-user-attribute-idp-mapper",
-        "name": "lastName"
+        "name": "lastName",
     }
     kc_admin.add_mapper_to_idp(opt.alias, mapper_payload)
 
@@ -674,11 +674,11 @@ def create_adhoc_idp(opt):
             "attribute": "sourceID",
             "attribute.value": "ADFS",
             "attributes": "[]",
-            "syncMode": "INHERIT"
+            "syncMode": "INHERIT",
         },
         "identityProviderAlias": opt.alias,
         "identityProviderMapper": "hardcoded-attribute-idp-mapper",
-        "name": opt.keycloak_federation_source_identifier
+        "name": opt.keycloak_federation_source_identifier,
     }
     kc_admin.add_mapper_to_idp(opt.alias, mapper_payload)
 
@@ -687,11 +687,11 @@ def create_adhoc_idp(opt):
             "attributes": "[]",
             "syncMode": "IMPORT",
             "target": "LOCAL",
-            "template": "external-${ALIAS}-${ATTRIBUTE.sAMAccountName}"
+            "template": "external-${ALIAS}-${ATTRIBUTE.sAMAccountName}",
         },
         "identityProviderAlias": opt.alias,
         "identityProviderMapper": "saml-username-idp-mapper",
-        "name": "username mapper"
+        "name": "username mapper",
     }
     kc_admin.add_mapper_to_idp(opt.alias, mapper_payload)
 
@@ -747,7 +747,7 @@ def create_or_replace_realm_role(kc_admin, realm, role):
         "composite": False,
         "clientRole": False,
         # "containerId": None,
-        "attributes": {}
+        "attributes": {},
     }
 
     # check for existing role
@@ -772,7 +772,7 @@ def create_realm_role(kc_admin, realm, role):
         "composite": False,
         "clientRole": False,
         # "containerId": None,
-        "attributes": {}
+        "attributes": {},
     }
 
     # check for existing role
@@ -800,7 +800,7 @@ def create_realm_group(kc_admin, realm, group):
     :return: Keycloak server response (RealmRepresentation)
     """
     REALM_GROUP_BASE = {
-        "name": None
+        "name": None,
     }
 
     # check for existing group
@@ -850,8 +850,8 @@ def assign_group_realm_role_by_group_name(kc_admin, realm, group_name, role):
             "id": realm_role_id,
             "containerId": realm,
             "clientRole": False,
-            "name": role
-        }
+            "name": role,
+        },
     ]
 
     data_raw = kc_admin.raw_post(f"admin/realms/{realm}/groups/{group_id}/role-mappings/realm", data=json.dumps(payload))
@@ -874,45 +874,45 @@ def add_or_replace_ldap_group_mapper(opt, kc_admin, ldap_sp, name, ldap_group):
         "providerType": "org.keycloak.storage.ldap.mappers.LDAPStorageMapper",
         "config": {
             "membership.attribute.type": [
-                "UID"
+                "UID",
             ],
             "group.name.ldap.attribute": [
-                "cn"
+                "cn",
             ],
             "preserve.group.inheritance": [
-                "false"
+                "false",
             ],
             "membership.user.ldap.attribute": [
-                "uid"
+                "uid",
             ],
             "groups.dn": [
-                None
+                None,
             ],
             "mode": [
-                "READ_ONLY"
+                "READ_ONLY",
             ],
             "user.roles.retrieve.strategy": [
-                "LOAD_GROUPS_BY_MEMBER_ATTRIBUTE"
+                "LOAD_GROUPS_BY_MEMBER_ATTRIBUTE",
             ],
             "ignore.missing.groups": [
-                "false"
+                "false",
             ],
             "membership.ldap.attribute": [
-                "memberUid"
+                "memberUid",
             ],
             "memberof.ldap.attribute": [
-                "memberOf"
+                "memberOf",
             ],
             "group.object.classes": [
-                "univentionGroup"
+                "univentionGroup",
             ],
             "groups.path": [
-                "/"
+                "/",
             ],
             "drop.non.existing.groups.during.sync": [
-                "false"
-            ]
-        }
+                "false",
+            ],
+        },
     }
 
     payload = LDAP_GROUP_MAPPER
@@ -982,7 +982,7 @@ def create_conditional_2fa_flow(kc_admin, realm, conditional_role, flow_name):
     # if this bug is fixed the following lines may be deleted
     payload_update_required_state = {
         "id": condition_user_role_id,
-        "requirement": "REQUIRED"
+        "requirement": "REQUIRED",
     }
     try:
         kc_admin.update_authentication_flow_executions(payload=json.dumps(payload_update_required_state), flow_alias=flow_name)
@@ -996,8 +996,8 @@ def create_conditional_2fa_flow(kc_admin, realm, conditional_role, flow_name):
         "alias": "2fa-role-mapping",
         "config": {
             "condUserRole": conditional_role,
-            "negate": ""
-        }
+            "negate": "",
+        },
     }
     create_config_for_execution(kc_admin, config, condition_user_role_id)
 
@@ -1075,13 +1075,13 @@ def create_adhoc_flow(opt):
     kc_admin.realm_name = "ucs"
 
     payload_authflow = {
-        "newName": "Univention-Authenticator ad hoc federation flow"
+        "newName": "Univention-Authenticator ad hoc federation flow",
     }
 
     kc_admin.copy_authentication_flow(payload=json.dumps(payload_authflow), flow_alias='first broker login')
 
     payload_exec_flow = {
-        'provider': "univention-authenticator"
+        'provider': "univention-authenticator",
     }
     kc_admin.create_authentication_flow_execution(payload=json.dumps(payload_exec_flow), flow_alias='Univention-Authenticator ad hoc federation flow')
 
@@ -1093,12 +1093,12 @@ def create_adhoc_flow(opt):
         "displayName": "Univention Authenticator",
         "requirementChoices": [
             "REQUIRED",
-            "DISABLED"
+            "DISABLED",
         ],
         "configurable": "true",
         "providerId": "univention-authenticator",
         "level": 0,
-        "index": 2
+        "index": 2,
     }
     try:
         kc_admin.update_authentication_flow_executions(payload=json.dumps(payload_exec_flow), flow_alias='Univention-Authenticator ad hoc federation flow')
@@ -1112,9 +1112,9 @@ def create_adhoc_flow(opt):
         "config": {
             "udm_endpoint": f"https://{opt.host_fqdn}/univention/udm",
             "udm_user": opt.UDM_user,
-            "udm_password": opt.UDM_pwd
+            "udm_password": opt.UDM_pwd,
         },
-        "alias": "localhost config"
+        "alias": "localhost config",
     }
 
     #  check raise error
@@ -1161,8 +1161,8 @@ def init_keycloak_ucs(opt):
             "xFrameOptions": "",
             "contentSecurityPolicy": f"frame-src 'self'; frame-ancestors 'self' {server_url}/univention; object-src 'none';",
             "xXSSProtection": "1; mode=block",
-            "strictTransportSecurity": "max-age=31536000; includeSubDomains"
-        }
+            "strictTransportSecurity": "max-age=31536000; includeSubDomains",
+        },
     }
     kc_admin.update_realm(DEFAULT_REALM, payload=realm_payload)
 
@@ -1215,8 +1215,8 @@ def init_keycloak_ucs(opt):
             "rdnLDAPAttribute": ["uid"],
             "editMode": ["READ_ONLY"],
             "validatePasswordPolicy": ["false"],
-            "batchSizeForSync": ["1000"]
-        }
+            "batchSizeForSync": ["1000"],
+        },
     }
 
     # find existing ldap provider or just create if none exists
@@ -1231,18 +1231,18 @@ def init_keycloak_ucs(opt):
         "providerType": "org.keycloak.storage.ldap.mappers.LDAPStorageMapper",
         "config": {
             "ldap.attribute": [
-                "uid"
+                "uid",
             ],
             "is.mandatory.in.ldap": [
-                "false"
+                "false",
             ],
             "read.only": [
-                "true"
+                "true",
             ],
             "user.model.attribute": [
-                "uid"
-            ]
-        }
+                "uid",
+            ],
+        },
     }
 
     firstname_ldap_mapper = {
@@ -1252,18 +1252,18 @@ def init_keycloak_ucs(opt):
         "providerType": "org.keycloak.storage.ldap.mappers.LDAPStorageMapper",
         "config": {
             "ldap.attribute": [
-                "givenName"
+                "givenName",
             ],
             "is.mandatory.in.ldap": [
-                "false"
+                "false",
             ],
             "read.only": [
-                "true"
+                "true",
             ],
             "user.model.attribute": [
-                "firstName"
-            ]
-        }
+                "firstName",
+            ],
+        },
     }
     mail_ldap_mapper = {
         "name": "email",
@@ -1272,18 +1272,18 @@ def init_keycloak_ucs(opt):
         "providerType": "org.keycloak.storage.ldap.mappers.LDAPStorageMapper",
         "config": {
             "ldap.attribute": [
-                "mailPrimaryAddress"
+                "mailPrimaryAddress",
             ],
             "is.mandatory.in.ldap": [
-                "false"
+                "false",
             ],
             "read.only": [
-                "true"
+                "true",
             ],
             "user.model.attribute": [
-                "email"
-            ]
-        }
+                "email",
+            ],
+        },
     }
     lastname_ldap_mapper = {
         "name": "last name",
@@ -1292,18 +1292,18 @@ def init_keycloak_ucs(opt):
         "providerType": "org.keycloak.storage.ldap.mappers.LDAPStorageMapper",
         "config": {
             "ldap.attribute": [
-                "lastname"
+                "lastname",
             ],
             "is.mandatory.in.ldap": [
-                "false"
+                "false",
             ],
             "read.only": [
-                "true"
+                "true",
             ],
             "user.model.attribute": [
-                "lastName"
-            ]
-        }
+                "lastName",
+            ],
+        },
     }
     # find existing uid->uid mapper or create if none exits
     check_and_create_component(kc_admin, payload_ldap_mapper["name"], payload_ldap_mapper["providerId"], payload_ldap_mapper)

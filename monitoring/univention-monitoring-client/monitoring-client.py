@@ -129,9 +129,9 @@ class MonitoringClient(ListenerModuleHandler):
                         'for': for_,
                         'annotations': {'title': summary, 'description': description},
                         'labels': dict(labels),
-                    }
-                ]
-            }]
+                    },
+                ],
+            }],
         }
 
         filename = os.path.join(DIRECTORY, safe_path("alert_{}.yml".format(name)))

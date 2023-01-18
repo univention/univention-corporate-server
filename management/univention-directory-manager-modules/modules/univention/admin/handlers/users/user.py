@@ -94,7 +94,7 @@ options = {
     'default': univention.admin.option(
         short_description=_('POSIX, Samba, Kerberos and mail account'),
         default=True,
-        objectClasses=['top', 'person', 'univentionPWHistory', 'posixAccount', 'shadowAccount', 'sambaSamAccount', 'krb5Principal', 'krb5KDCEntry', 'univentionMail', 'organizationalPerson', 'inetOrgPerson']
+        objectClasses=['top', 'person', 'univentionPWHistory', 'posixAccount', 'shadowAccount', 'sambaSamAccount', 'krb5Principal', 'krb5KDCEntry', 'univentionMail', 'organizationalPerson', 'inetOrgPerson'],
     ),
 }
 property_descriptions = {
@@ -401,7 +401,7 @@ property_descriptions = {
         long_description='',
         syntax=univention.admin.syntax.absolutePath,
         required=True,
-        default='/home/<username>'
+        default='/home/<username>',
     ),
 
     'shell': univention.admin.property(
@@ -633,7 +633,7 @@ layout = [
             'sambaRID',
             'sambaPrivileges',
             'sambaLogonHours',
-            'sambaUserWorkstations'
+            'sambaUserWorkstations',
         ]),
         Group(_('POSIX (Linux/UNIX)'), layout=[
             ['unixhome', 'shell'],
@@ -657,13 +657,13 @@ layout = [
             'phone',
             ['roomNumber', 'departmentNumber'],
             ['street', 'postcode', 'city'],
-            ['country']
+            ['country'],
         ]),
         Group(_('Private'), layout=[
             'homeTelephoneNumber',
             'mobileTelephoneNumber',
             'pagerTelephoneNumber',
-            'homePostalAddress'
+            'homePostalAddress',
         ]),
     ]),
     Tab('Apps'),  # not translated!
@@ -1249,7 +1249,7 @@ class object(univention.admin.handlers.simpleLdap, PKIIntegration):
                 univention.admin.filter.conjunction('|', [
                     univention.admin.filter.expression('univentionSharePath', sharepath.rstrip(u'/'), escape=True),
                     univention.admin.filter.expression('univentionSharePath', u'%s/' % (sharepath.rstrip(u'/')), escape=True),
-                ])
+                ]),
             ])
             res = univention.admin.modules.lookup(univention.admin.modules.get('shares/share'), None, self.lo, filter=filter_, scope='domain')
             if len(res) == 1:

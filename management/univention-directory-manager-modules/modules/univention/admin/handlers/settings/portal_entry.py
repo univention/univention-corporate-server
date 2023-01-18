@@ -64,7 +64,7 @@ property_descriptions = {
         syntax=univention.admin.syntax.string_numbers_letters_dots,
         include_in_default_search=True,
         required=True,
-        identifies=True
+        identifies=True,
     ),
     'displayName': univention.admin.property(
         short_description=_('Display Name'),
@@ -275,12 +275,12 @@ class object(univention.admin.handlers.simpleLdap):
                 portal_category_obj['displayName'] = {
                     'admin': [
                         ('en_US', 'Administration'),
-                        ('de_DE', 'Verwaltung')
+                        ('de_DE', 'Verwaltung'),
                     ],
                     'service': [
                         ('en_US', 'Applications'),
-                        ('de_DE', 'Applikationen')
-                    ]
+                        ('de_DE', 'Applikationen'),
+                    ],
                 }.get(self['category'], [])
                 portal_category_obj.create()
             portal_obj['content'] = new_content

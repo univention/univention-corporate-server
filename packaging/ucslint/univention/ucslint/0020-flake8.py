@@ -315,28 +315,28 @@ class UniventionPackageCheck(uub.UniventionPackageCheckBase):
             '0020-B002': (
                 ERROR_BUT_WARN,
                 " Python does not support the unary prefix increment. Writing "
-                "++n is equivalent to +(+(n)), which equals n. You meant n += 1."
+                "++n is equivalent to +(+(n)), which equals n. You meant n += 1.",
             ),
             '0020-B003': (
                 ERROR_BUT_WARN,
                 " Assigning to `os.environ` doesn't clear the environment. "
                 "Subprocesses are going to see outdated variables, in disagreement "
                 "with the current process. Use `os.environ.clear()` or the `env=` "
-                "argument to Popen."
+                "argument to Popen.",
             ),
             '0020-B004': (
                 ERROR_BUT_WARN,
                 " Using `hasattr(x, '__call__')` to test if `x` is callable "
                 "is unreliable. If `x` implements custom `__getattr__` or its "
                 "`__call__` is itself not callable, you might get misleading "
-                "results. Use `callable(x)` for consistent results."
+                "results. Use `callable(x)` for consistent results.",
             ),
             '0020-B005': (
                 uub.RESULT_WARN,
                 "Using .strip() with multi-character strings is misleading "
                 "the reader. It looks like stripping a substring. Move your "
                 "character set to a constant if this is deliberate. Use "
-                ".replace() or regular expressions to remove string fragments."
+                ".replace() or regular expressions to remove string fragments.",
             ),
             '0020-B301': (
                 uub.RESULT_WARN,
@@ -344,7 +344,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckBase):
                 "Remove the `iter` prefix from the method name. For Python 2 "
                 "compatibility, prefer the Python 3 equivalent unless you expect "
                 "the size of the container to be large or unbounded. Then use "
-                "`six.iter*` or `future.utils.iter*`."
+                "`six.iter*` or `future.utils.iter*`.",
             ),
             '0020-B302': (
                 uub.RESULT_WARN,
@@ -352,32 +352,32 @@ class UniventionPackageCheck(uub.UniventionPackageCheckBase):
                 "Remove the `view` prefix from the method name. For Python 2 "
                 "compatibility, prefer the Python 3 equivalent unless you expect "
                 "the size of the container to be large or unbounded. Then use "
-                "`six.view*` or `future.utils.view*`."
+                "`six.view*` or `future.utils.view*`.",
             ),
             '0020-B303': (
                 uub.RESULT_WARN,
                 "`__metaclass__` does nothing on Python 3. Use "
                 "`class MyClass(BaseClass, metaclass=...)`. For Python 2 "
-                "compatibility, use `six.add_metaclass`."
+                "compatibility, use `six.add_metaclass`.",
             ),
             '0020-B304': (uub.RESULT_WARN, "`sys.maxint` is not a thing on Python 3. Use `sys.maxsize`."),
             '0020-B305': (
                 uub.RESULT_WARN,
                 "`.next()` is not a thing on Python 3. Use the `next()` "
-                "builtin. For Python 2 compatibility, use `six.next()`."
+                "builtin. For Python 2 compatibility, use `six.next()`.",
             ),
             '0020-B306': (
                 uub.RESULT_WARN,
                 "`BaseException.message` has been deprecated as of Python "
                 "2.6 and is removed in Python 3. Use `str(e)` to access the "
                 "user-readable message. Use `e.args` to access arguments passed "
-                "to the exception."
+                "to the exception.",
             ),
             '0020-B901': (
                 uub.RESULT_WARN,
                 "Using `yield` together with `return x`. Use native "
                 "`async def` coroutines or put a `# noqa: ???` comment on this "
-                "line if this was intentional."
+                "line if this was intentional.",
             ),
         }
 

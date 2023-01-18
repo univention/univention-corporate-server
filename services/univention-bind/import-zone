@@ -54,7 +54,7 @@ ldap_types = {
     'MX': 'mXRecord',
     'SRV': 'sRVRecord',
     'TXT': 'tXTRecord',
-    'PTR': 'pTRRecord'
+    'PTR': 'pTRRecord',
 }
 record_pattern = re.compile('^([^\t ]+)[\t ]+([0-9]+)[\t ]+([^\t ]+)[\t ]+([^\t ]+)[\t ]+(.+)$')
 

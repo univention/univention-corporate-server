@@ -45,7 +45,7 @@ import univention.admin.uexceptions
 from univention.admin.policy import (
     register_policy_mapping, policy_object_tab,
     requiredObjectClassesProperty, prohibitedObjectClassesProperty,
-    fixedAttributesProperty, emptyAttributesProperty, ldapFilterProperty
+    fixedAttributesProperty, emptyAttributesProperty, ldapFilterProperty,
 )
 
 
@@ -56,7 +56,7 @@ _ = translation.translate
 class registryFixedAttributes(univention.admin.syntax.select):
     name = 'registryFixedAttributes'
     choices = [
-        ('registry', _('UCR Variables'))
+        ('registry', _('UCR Variables')),
     ]
 
 
@@ -112,7 +112,7 @@ layout = [
             'registry',
         ]),
     ]),
-    policy_object_tab()
+    policy_object_tab(),
 ]
 
 mapping = univention.admin.mapping.mapping()

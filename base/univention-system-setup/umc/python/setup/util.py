@@ -748,7 +748,7 @@ def dhclient(interface, timeout=None):
         '-pf', pidfilename,
         '-sf', '/usr/share/univention-system-setup/dhclient-script-wrapper',
         '-e', 'dhclientscript_outputfile=%s' % (tempfilename,),
-        interface
+        interface,
     )
     MODULE.info('Launch dhclient query via command: %s' % (cmd, ))
     p = subprocess.Popen(cmd, stderr=subprocess.PIPE, stdout=subprocess.PIPE)
@@ -1086,7 +1086,7 @@ def get_available_locales(pattern, category='language_en'):
                     if code in supportedLocales:
                         locales.append({
                             'id': '%s.UTF-8:UTF-8' % code,
-                            'label': '%s (%s)' % (ilang[1], jcountry[2])
+                            'label': '%s (%s)' % (ilang[1], jcountry[2]),
                         })
                 continue
             except Exception:
@@ -1102,7 +1102,7 @@ def get_available_locales(pattern, category='language_en'):
         if code in supportedLocales:
             locales.append({
                 'id': '%s.UTF-8:UTF-8' % code,
-                'label': ilang[1]
+                'label': ilang[1],
             })
 
     return locales

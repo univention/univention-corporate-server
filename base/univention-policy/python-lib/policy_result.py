@@ -58,7 +58,7 @@ def policy_result(dn, binddn="", bindpw="", encoding='UTF-8', ldap_server=None):
     results, policies = _policy_result(dn, binddn, bindpw, encoding, ldap_server)
     return (
         {_replace_ucr_key(key, encoding): value for key, value in results.items()},
-        {_replace_ucr_key(key, encoding): value for key, value in policies.items()}
+        {_replace_ucr_key(key, encoding): value for key, value in policies.items()},
     )
 
 
@@ -70,7 +70,7 @@ def ucr_policy_result(dn, binddn="", bindpw="", encoding='UTF-8', ldap_server=No
     results, policies = _policy_result(dn, binddn, bindpw, encoding, ldap_server)
     return (
         {_replace_ucr_key(key, encoding): value for key, value in results.items() if key.startswith('univentionRegistry;entry-hex-')},
-        {_replace_ucr_key(key, encoding): value for key, value in policies.items() if key.startswith('univentionRegistry;entry-hex-')}
+        {_replace_ucr_key(key, encoding): value for key, value in policies.items() if key.startswith('univentionRegistry;entry-hex-')},
     )
 
 

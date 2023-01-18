@@ -141,7 +141,7 @@ class TestConfigRegistry(object):
         ("string", 10, 10),
         ("10", "20", 10),
         ("string", None, None),
-        ("string", "10", "10")
+        ("string", "10", "10"),
     ])
     def test_get_int_string(self, value, default, expected, ucr0):
         """Test set ucr.get_int(key, default)."""

@@ -63,7 +63,7 @@ def main():
                         'ip': dcslave_ip,
                         'name': dcslave,
                         'dnsEntryZoneForward': 'zoneName=%s,cn=dns,%s %s' % (
-                            domain, basedn, dcslave_ip)
+                            domain, basedn, dcslave_ip),
                     },
                     position='cn=computers,%s' % basedn,
                 )

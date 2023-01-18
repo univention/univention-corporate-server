@@ -61,7 +61,7 @@ def main():  # type: () -> None
                             fqdn,
                             mailAddress=False,
                             user_permission=user_acls,
-                            group_permission=[f'"{grpname}" "{right}"' for grpname, right in group_acls]
+                            group_permission=[f'"{grpname}" "{right}"' for grpname, right in group_acls],
                         )
                         utils.wait_for_replication()
                         print(f'*** Folder: {folder_name!r} --> {folder_dn!r}')

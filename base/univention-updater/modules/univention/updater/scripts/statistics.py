@@ -104,7 +104,7 @@ def main() -> None:
         configRegistry,
         {
             'updater/statistics': encode_additional_info(users=get_users(), role=get_role()),
-        }
+        },
     )
 
 

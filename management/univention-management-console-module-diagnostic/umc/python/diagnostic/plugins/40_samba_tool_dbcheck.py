@@ -56,7 +56,7 @@ def run_samba_tool_dbcheck_fix(umc_instance: Instance) -> None:
 
 
 actions = {
-    'run_samba_tool_dbcheck_fix': run_samba_tool_dbcheck_fix
+    'run_samba_tool_dbcheck_fix': run_samba_tool_dbcheck_fix,
 }
 
 

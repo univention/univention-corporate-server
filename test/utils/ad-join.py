@@ -71,7 +71,7 @@ def join_sync_mode() -> None:
         "ad_server_address": options.domain_host,
         "username": options.domain_admin,
         "password": options.domain_password,
-        "mode": "adconnector"
+        "mode": "adconnector",
     }
     result = client.umc_command("adconnector/check_domain", request_options).result
 
@@ -92,7 +92,7 @@ def join_sync_mode() -> None:
         'LDAP_BindDN': "cn=" + escape_dn_chars(options.domain_admin) + ",cn=users," + ad_ldap_base,
         'LDAP_Host': ad_dc_name,
         'LDAP_Password': options.domain_password,
-        'MappingSyncMode': "sync"
+        'MappingSyncMode': "sync",
     }
 
     conf_result = client.umc_command("adconnector/adconnector/save", request_options).result
@@ -115,7 +115,7 @@ def join_read_mode() -> None:
     send_data = {
         'ad_server_address': options.domain_host,
         'password': options.domain_password,
-        'username': options.domain_admin
+        'username': options.domain_admin,
     }
 
     result = client.umc_command("adconnector/admember/join", send_data).result

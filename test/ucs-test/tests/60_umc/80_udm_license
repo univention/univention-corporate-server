@@ -113,9 +113,9 @@ class TestUMCLicenseManagement(UDMModule):
                     "person": True,
                     "mail": True,
                     "pki": False,
-                }
+                },
             },
-            "options": {"container": "cn=users," + self.ldap_base, "objectType": "users/user"}
+            "options": {"container": "cn=users," + self.ldap_base, "objectType": "users/user"},
         }]
         return self.request("udm/add", options, "users/user")
 

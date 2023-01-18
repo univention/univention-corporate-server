@@ -65,7 +65,7 @@ property_descriptions = {
         include_in_default_search=True,
         required=True,
         may_change=False,
-        identifies=True
+        identifies=True,
     ),
 }
 
@@ -96,8 +96,8 @@ class object(DHCPBase):
         return univention.admin.filter.conjunction('&', [
             univention.admin.filter.conjunction('|', [
                 univention.admin.filter.expression('objectClass', 'dhcpService'),
-                univention.admin.filter.expression('objectClass', 'univentionDhcpService')
-            ])
+                univention.admin.filter.expression('objectClass', 'univentionDhcpService'),
+            ]),
         ])
 
 

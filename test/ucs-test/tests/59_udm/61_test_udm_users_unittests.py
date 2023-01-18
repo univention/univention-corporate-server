@@ -214,7 +214,7 @@ class TestUsers:
             'SePrintOperatorPrivilege',
             'SeAddUsersPrivilege',
             'SeDiskOperatorPrivilege',
-        ]
+        ],
     ])
     def test_modlist_samba_privileges(self, udm, privileges):
         self._test_modlist(udm, {'sambaPrivileges': privileges}, {'univentionSambaPrivilegeList': privileges, 'objectClass': ['univentionSambaPrivileges']})

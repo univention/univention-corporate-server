@@ -122,7 +122,7 @@ class Instance(Base):
     _mapping = {
         u'foo': 'bar',
         b'bar': 1,
-        'baz': []
+        'baz': [],
     }
 
     @sanitize(value=s.MappingSanitizer(_mapping, required=True))

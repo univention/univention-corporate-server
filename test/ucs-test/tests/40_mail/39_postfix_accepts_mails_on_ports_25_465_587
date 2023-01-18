@@ -25,7 +25,7 @@ def main():
             set={
                 'password': password,
                 'mailHomeServer': '%s.%s' % (ucr.get('hostname'), domain),
-                'mailPrimaryAddress': mail1
+                'mailPrimaryAddress': mail1,
             },
         )
         mail2 = '%s@%s' % (uts.random_name(), domain)
@@ -33,7 +33,7 @@ def main():
             set={
                 'password': password,
                 'mailHomeServer': '%s.%s' % (ucr.get('hostname'), domain),
-                'mailPrimaryAddress': mail2
+                'mailPrimaryAddress': mail2,
             },
         )
 

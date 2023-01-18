@@ -40,8 +40,8 @@ def main():
                     set={
                         "mailHomeServer": '%s.%s' % (ucr.get("hostname"), domain),
                         "mailPrimaryAddress": mail,
-                        "mailUserQuota": str(quota01)
-                    }
+                        "mailUserQuota": str(quota01),
+                    },
                 )
 
                 #

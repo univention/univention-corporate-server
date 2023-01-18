@@ -153,7 +153,7 @@ def init(logfile, force_flush=0, enable_function=0, enable_syslog=0):
         level=logging.DEBUG,
         filename='/dev/null',  # disabled
         format=_outfmt,
-        datefmt=_datefmt
+        datefmt=_datefmt,
     )
 
     formatter = logging.Formatter(_outfmt, _datefmt)
@@ -341,7 +341,7 @@ def trace(with_args=True, with_return=False, repr=object.__repr__):
                     chain(
                         (repr(arg) for arg in args),
                         ('%s=%s' % (k, repr(v)) for (k, v) in kwargs.items()),
-                    )
+                    ),
             ) if with_args else '...'
 
             logger = logging.getLogger('MAIN')

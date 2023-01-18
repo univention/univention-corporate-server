@@ -73,7 +73,7 @@ def send_and_check(user, sink_files, in_mail_sink, in_local):
     # send mails
     for addr, msg in (
             (user.mailPrimaryAddress, 'sending mail to mailPrimaryAddress'),
-            (user.mailAlternativeAddress, 'sending mail to mailAlternativeAddress')
+            (user.mailAlternativeAddress, 'sending mail to mailAlternativeAddress'),
     ):
         print('*** %s' % (msg,))
         token = f'token: {str(time.time())!r}'
@@ -154,7 +154,7 @@ def test_mail_forward(mail_copy_to_self):
             'users/user',
             dn=user.dn,
             set={
-                'mailForwardCopyToSelf': '0'
+                'mailForwardCopyToSelf': '0',
             })
         send_and_check(user, sink_files, in_mail_sink=True, in_local=False)
 

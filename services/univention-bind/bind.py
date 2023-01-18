@@ -203,7 +203,7 @@ def _new_zone(ucr: Dict[str, str], zonename: str, dn: str) -> None:
         ucr.get('bind/ldap/server/ip', '127.0.0.1'),
         ucr.get('ldap/server/port', '7389'),
         dn,
-        _ldap_auth_string(ucr)
+        _ldap_auth_string(ucr),
     )
     named_zone = open(zonefile, 'w+')
     named_zone.write('zone "%s" {\n' % (_quote_config_parameter(zonename),))

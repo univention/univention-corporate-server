@@ -84,7 +84,7 @@ class ListenerModuleHandler(with_metaclass(HandlerMetaClass)):
     _metadata_attributes = (
         'createTimestamp', 'creatorsName', 'entryCSN', 'entryDN', 'entryUUID',
         'hasSubordinates', 'modifiersName', 'modifyTimestamp',
-        'structuralObjectClass', 'subschemaSubentry'
+        'structuralObjectClass', 'subschemaSubentry',
     )
     _configuration_class = ListenerModuleConfiguration
     _adapter_class = ListenerModuleAdapter
@@ -118,7 +118,7 @@ class ListenerModuleHandler(with_metaclass(HandlerMetaClass)):
         if not self.config.get_active():
             self.logger.warn(
                 'Listener module %r deactivated by UCRV "listener/module/%s/deactivate".',
-                self.config.get_name(), self.config.get_name()
+                self.config.get_name(), self.config.get_name(),
             )
 
     def __repr__(self):
@@ -271,7 +271,7 @@ class ListenerModuleHandler(with_metaclass(HandlerMetaClass)):
             if not ldap_credentials:
                 assert self.config
                 raise ListenerModuleRuntimeError(
-                    'LDAP connection of listener module {!r} has not yet been initialized.'.format(self.config.get_name())
+                    'LDAP connection of listener module {!r} has not yet been initialized.'.format(self.config.get_name()),
                 )
             self._lo = access(**ldap_credentials)
         return self._lo
@@ -316,7 +316,7 @@ class ListenerModuleHandler(with_metaclass(HandlerMetaClass)):
             "host": host,
             "base": base,
             "binddn": binddn,
-            "bindpw": bindpw
+            "bindpw": bindpw,
         }
         if old_credentials != self._ldap_credentials:
             # force creation of new LDAP connection
@@ -358,7 +358,7 @@ class ListenerModuleHandler(with_metaclass(HandlerMetaClass)):
                     if not callable(get_method):
                         raise ListenerModuleConfigurationError(
                             'Attribute {!r} of configuration class {!r} is not callable.'.format(
-                                get_method, conf_obj.__class__)
+                                get_method, conf_obj.__class__),
                         )
                     kwargs[attr] = get_method()
                     continue

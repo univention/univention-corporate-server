@@ -51,7 +51,7 @@ options = {
     'default': univention.admin.option(
         short_description=short_description,
         default=True,
-        objectClasses=['classStore', 'top']
+        objectClasses=['classStore', 'top'],
     ),
 }
 property_descriptions = {

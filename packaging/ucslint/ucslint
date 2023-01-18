@@ -280,57 +280,57 @@ def parse_args() -> Namespace:
     parser.add_argument(
         '-d', '--debug', metavar='LEVEL',
         type=int, default=0,
-        help='if set, debugging is activated and set to the specified level'
+        help='if set, debugging is activated and set to the specified level',
     )
     parser.add_argument(
         '-m', '--modules', metavar='MODULES',
         dest='enabled_modules', action='append', default=[],
-        help='list of modules to be loaded (e.g. -m 0009,27)'
+        help='list of modules to be loaded (e.g. -m 0009,27)',
     )
     parser.add_argument(
         '-x', '--exclude-modules', metavar='MODULES',
         dest='disabled_modules', action='append', default=[],
-        help='list of modules to be disabled (e.g. -x 9,027)'
+        help='list of modules to be disabled (e.g. -x 9,027)',
     )
     parser.add_argument(
         '-o', '--display-only', metavar='MODULES',
         dest='display_only_IDs', action='append', default=[],
-        help='list of IDs to be displayed (e.g. -o 9-1,0027-12)'
+        help='list of IDs to be displayed (e.g. -o 9-1,0027-12)',
     )
     parser.add_argument(
         '-i', '--ignore', metavar='MODULES',
         dest='ignore_IDs', action='append', default=[],
-        help='list of IDs to be ignored (e.g. -i 0003-4,19-27)'
+        help='list of IDs to be ignored (e.g. -i 0003-4,19-27)',
     )
     parser.add_argument(
         '--skip-univention', '-U',
         action='append_const', dest='ignore_IDs', const='0007-2,0010-2,0010-3,0010-4,0011-3,0011-4,0011-5,0011-13',
-        help='Ignore Univention specific tests'
+        help='Ignore Univention specific tests',
     )
     parser.add_argument(
         '-p', '--plugindir', metavar='DIRECTORY', action='append',
         default=[],
-        help='override plugin directory with <plugindir>'
+        help='override plugin directory with <plugindir>',
     )
     parser.add_argument(
         '-c', '--display-categories', metavar='CATEGORIES',
         dest='display_only_categories', default='',
-        help='categories to be displayed (e.g. -c EWIS)'
+        help='categories to be displayed (e.g. -c EWIS)',
     )
     parser.add_argument(
         '-e', '--exitcode-categories', metavar='CATEGORIES',
         default='E',
-        help='categories that cause an exitcode != 0 (e.g. -e EWIS)'
+        help='categories that cause an exitcode != 0 (e.g. -e EWIS)',
     )
     parser.add_argument(
         '--junit-xml', '-j', metavar='FILE',
         type=FileType("w"),
-        help='generate JUnit-XML output'
+        help='generate JUnit-XML output',
     )
     parser.add_argument(
         'pkgpath',
         nargs='*', type=debian_dir,
-        help="Source package directory"
+        help="Source package directory",
     )
     args = parser.parse_args()
 

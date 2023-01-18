@@ -52,7 +52,7 @@ class BaseObjectProperties(object):
     def __repr__(self):
         return '{}({})'.format(
             self.__class__.__name__,
-            pprint.pformat({k: v for k, v in self.__dict__.items() if not str(k).startswith('_')}, indent=2)
+            pprint.pformat({k: v for k, v in self.__dict__.items() if not str(k).startswith('_')}, indent=2),
         )
 
     def __deepcopy__(self, memo):
@@ -118,7 +118,7 @@ class BaseObject(object):
         return '{}({!r}, {!r})'.format(
             self.__class__.__name__,
             self._udm_module.name if self._udm_module else '<not initialized>',
-            self.dn
+            self.dn,
         )
 
     def reload(self):
@@ -172,7 +172,7 @@ class BaseModuleMetadata(object):
     def __repr__(self):
         return '{}({})'.format(
             self.__class__.__name__,
-            ', '.join('{}={!r}'.format(k, v) for k, v in self.__dict__.items() if not str(k).startswith('_'))
+            ', '.join('{}={!r}'.format(k, v) for k, v in self.__dict__.items() if not str(k).startswith('_')),
         )
 
     def instance(self, udm_module, api_version):

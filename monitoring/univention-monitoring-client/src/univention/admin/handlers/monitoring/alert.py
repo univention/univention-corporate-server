@@ -71,7 +71,7 @@ property_descriptions = {
         include_in_default_search=True,
         required=True,
         may_change=False,
-        identifies=True
+        identifies=True,
     ),
     'description': univention.admin.property(
         short_description=_('Description template'),
@@ -141,7 +141,7 @@ layout = [
     ]),
     Tab(_('Hosts'), _('Assigned hosts'), layout=[
         Group(_('Assigned hosts'), layout=[
-            "assignedHosts"
+            "assignedHosts",
         ]),
     ]),
 ]

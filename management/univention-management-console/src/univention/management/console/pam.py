@@ -112,7 +112,7 @@ class PamAuth(object):
 
     _known_errors = {
         'Make sure the kerberos service is functioning or inform an Administrator.': [
-            'Unable to reach any changepw server  in realm %s'
+            'Unable to reach any changepw server  in realm %s',
         ],
         'The password is too short.': [
             re.compile(r'Password too short, password must be at least (?P<minlen>\d+) characters long.', re.I),
@@ -205,7 +205,7 @@ class PamAuth(object):
         ],
         'The password contains parts of the full user name.': [
             'Password contains parts of the full user name.',
-        ]
+        ],
     }  # type: Dict[str, List[Union[str, Pattern[str]]]]
     known_errors = {
         response_message: user_friendly_response
@@ -337,7 +337,7 @@ class PamAuth(object):
         return '%s. %s: %s' % (
             self._('The reason could not be determined'),
             self._('In case it helps, the raw error message will be displayed'),
-            ' '.join(messages)
+            ' '.join(messages),
         )
 
     def error_message(self, pam_err):  # type: (Tuple[Any, int]) -> str
@@ -369,7 +369,7 @@ class PamAuth(object):
                     try:
                         additional_message = {
                             'minlen': ' ' + self._('The password must consist of at least %s characters.'),
-                            'history': ' ' + self._('Choose a password which does not match any of your last %s passwords.')
+                            'history': ' ' + self._('Choose a password which does not match any of your last %s passwords.'),
                         }[x] % (y,)
                     except KeyError:
                         pass

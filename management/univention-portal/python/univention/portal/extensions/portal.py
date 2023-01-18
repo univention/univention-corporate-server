@@ -126,7 +126,7 @@ class Portal(metaclass=Plugin):
                     entry_dn
                     for entry_dn in self._get_all_entries_of_folder(folder_dn, folders, entries)
                     if entry_dn in visible_entry_dns
-                ]
+                ],
             ) > 0
         ]
         visible_category_dns = [
@@ -137,7 +137,7 @@ class Portal(metaclass=Plugin):
                     entry_dn
                     for entry_dn in categories[category_dn]["entries"]
                     if entry_dn in visible_entry_dns or entry_dn in visible_folder_dns
-                ]
+                ],
             ) > 0
         ]
         return {
@@ -323,7 +323,7 @@ class UMCPortal(Portal):
                 "backgroundColor": color,
                 "links": [{
                     "locale": locale,
-                    "value": "/univention/management/?header=try-hide&overview=false&menu=false#module={}:{}".format(module["id"], module.get("flavor", ""))
+                    "value": "/univention/management/?header=try-hide&overview=false&menu=false#module={}:{}".format(module["id"], module.get("flavor", "")),
                 }],
                 # TODO: missing: in_portal, anonymous, activated, allowedGroups
             })
@@ -365,7 +365,7 @@ class UMCPortal(Portal):
                     "en_US": fav_cat["name"],
                 },
                 "dn": "umc:category:favorites",
-                "entries": [self._entry_id(mod) for mod in modules if "_favorites_" in mod.get("categories", [])]
+                "entries": [self._entry_id(mod) for mod in modules if "_favorites_" in mod.get("categories", [])],
             })
         else:
             ret.append({
@@ -380,7 +380,7 @@ class UMCPortal(Portal):
                 "en_US": "Univention Management Console",
             },
             "dn": "umc:category:umc",
-            "entries": [cat["id"] for cat in categories if cat["id"] not in ["_favorites_", "apps"]]
+            "entries": [cat["id"] for cat in categories if cat["id"] not in ["_favorites_", "apps"]],
         })
         return ret
 
@@ -397,7 +397,7 @@ class UMCPortal(Portal):
             "defaultLinkTarget": "embedded",
             "ensureLogin": True,
             "categories": category_dns,
-            "content": content
+            "content": content,
         }
 
     def refresh(self, reason=None):

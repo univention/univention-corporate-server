@@ -60,7 +60,7 @@ property_descriptions = {
         include_in_default_search=True,
         required=True,
         may_change=False,
-        identifies=True
+        identifies=True,
     ),
     'spoolHost': univention.admin.property(
         short_description=_('Print server'),
@@ -74,7 +74,7 @@ property_descriptions = {
         long_description='',
         syntax=univention.admin.syntax.string,
         include_in_default_search=True,
-        unique=True
+        unique=True,
     ),
 }
 

@@ -34,7 +34,7 @@ def test_udm_syntax(udm, syntax, valid_values, invalid_values, verify_ldap_objec
         module='users/user',
         objectClass='univentionFreeAttributes',
         ldapMapping='univentionFreeAttribute15',
-        syntax=syntax
+        syntax=syntax,
     )
 
     # check valid values

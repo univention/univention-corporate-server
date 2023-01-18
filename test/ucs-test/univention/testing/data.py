@@ -729,7 +729,7 @@ class TestCase:
                         cmd, executable=self.exe.filename,
                         shell=False, stdout=PIPE, stderr=PIPE,
                         close_fds=True, cwd=dirname,
-                        preexec_fn=os.setsid
+                        preexec_fn=os.setsid,
                     )
                     to_stdout, to_stderr = sys.stdout, sys.stderr
                 else:
@@ -738,7 +738,7 @@ class TestCase:
                             cmd, executable=self.exe.filename,
                             shell=False, stdin=devnull,
                             stdout=PIPE, stderr=PIPE, close_fds=True,
-                            cwd=dirname, preexec_fn=prepare_child
+                            cwd=dirname, preexec_fn=prepare_child,
                         )
                     to_stdout = to_stderr = result.environment.log
 

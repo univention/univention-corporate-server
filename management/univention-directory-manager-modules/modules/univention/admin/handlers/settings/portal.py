@@ -66,7 +66,7 @@ property_descriptions = {
         include_in_default_search=True,
         required=True,
         may_change=False,
-        identifies=True
+        identifies=True,
     ),
     'displayName': univention.admin.property(
         short_description=_('Display Name'),

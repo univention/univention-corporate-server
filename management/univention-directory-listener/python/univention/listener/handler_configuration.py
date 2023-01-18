@@ -95,7 +95,7 @@ class ListenerModuleConfiguration(object):
                 raise ListenerModuleConfigurationError('Missing or empty {!r} attribute in configuration.'.format(attr))
         if set(self.get_name()) - set(allowed_name_chars):
             raise ListenerModuleConfigurationError(
-                'The "name" of a listener module may only contain the following characters: {!r}'.format(allowed_name_chars)
+                'The "name" of a listener module may only contain the following characters: {!r}'.format(allowed_name_chars),
             )
         if not inspect.isclass(self.get_listener_module_class()):
             raise ListenerModuleConfigurationError('Attribute "listener_module_class" must be a class.')

@@ -26,7 +26,7 @@ from univention.connector.ad.password import decrypt, decrypt_history, calculate
 import univention.testing.connector_common as tcommon
 from univention.testing.connector_common import delete_con_user
 from univention.testing.connector_common import (
-    create_udm_user, to_unicode, NormalUser
+    create_udm_user, to_unicode, NormalUser,
 )
 
 import univention.config_registry

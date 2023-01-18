@@ -216,9 +216,9 @@ def udm_mail_link(folder) -> Dict[str, Any]:
         'props': {
             'openObject': {
                 'objectDN': folder.dn,
-                'objectType': 'mail/folder'
-            }
-        }
+                'objectType': 'mail/folder',
+            },
+        },
     }
 
 
@@ -234,7 +234,7 @@ def run(_umc_instance: Instance) -> None:
     differences = list(all_differences(acl_class))
     ed = [
         _('Found differences in the ACLs for IMAP shared folders between UDM and IMAP.'),
-        _('This is not necessarily a problem, if the the ACL got changed via IMAP.')
+        _('This is not necessarily a problem, if the the ACL got changed via IMAP.'),
     ]
 
     modules = []

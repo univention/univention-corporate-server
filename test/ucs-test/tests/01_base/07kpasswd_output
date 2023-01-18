@@ -76,7 +76,7 @@ if __name__ == "__main__":
         (user_dn, username) = udm.create_user(
             password=password,
             primaryGroup='cn=%s,cn=groups,%s' % (ucr.get('groups/default/domainadmins', 'Domain Admins'), ucr['ldap/base']),
-            wait_for=True
+            wait_for=True,
         )
 
         try:

@@ -107,7 +107,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
             self.debug('testing %s' % fn)
             for regex, errid, errtxt in [
                     (RE_FUZZY, '0008-3', 'contains "fuzzy"'),
-                    (RE_EMPTY, '0008-4', 'contains empty msgstr')
+                    (RE_EMPTY, '0008-4', 'contains empty msgstr'),
             ]:
                 for row, col, match in uub.line_regexp(content, regex):
                     self.addmsg(errid, errtxt, fn, row, col)

@@ -62,7 +62,7 @@ property_descriptions = {
         include_in_default_search=True,
         required=True,
         may_change=False,
-        identifies=True
+        identifies=True,
     ),
     'displayName': univention.admin.property(
         short_description=_('Display name'),
@@ -130,7 +130,7 @@ property_descriptions = {
         short_description=_('Background color'),
         syntax=univention.admin.syntax.string,
         dontsearch=True,
-    )
+    ),
 }
 
 layout = [

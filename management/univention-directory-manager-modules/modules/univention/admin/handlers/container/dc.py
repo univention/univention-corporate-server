@@ -81,7 +81,7 @@ property_descriptions = {
         include_in_default_search=True,
         required=True,
         may_change=False,
-        identifies=True
+        identifies=True,
     ),
     'dnsForwardZone': univention.admin.property(
         short_description=_('DNS forward lookup zone'),
@@ -142,18 +142,18 @@ property_descriptions = {
 layout = [
     Tab(_('General'), _('Basic settings'), layout=[
         Group(_('Domain container description'), layout=[
-            "name"
+            "name",
         ]),
     ]),
     Tab(_('DNS'), _('DNS Zones'), advanced=True, layout=[
-        ["dnsForwardZone", "dnsReverseZone"]
+        ["dnsForwardZone", "dnsReverseZone"],
     ]),
     Tab(_('Samba'), _('Samba Settings'), advanced=True, layout=[
         ["sambaDomainName", "sambaSID"],
-        ["sambaNextUserRid", "sambaNextGroupRid"]
+        ["sambaNextUserRid", "sambaNextGroupRid"],
     ]),
     Tab(_('Kerberos'), _('Kerberos Settings'), advanced=True, layout=[
-        'kerberosRealm'
+        'kerberosRealm',
     ]),
 ]
 

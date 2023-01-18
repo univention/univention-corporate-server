@@ -38,11 +38,11 @@ class TestUMCUserCreation(UDMModule):
         options = [{
             "object": {
                 "groups": groupnames,
-                "$dn$": "uid=" + username + ",cn=users," + self.ldap_base
+                "$dn$": "uid=" + username + ",cn=users," + self.ldap_base,
             },
             "options": {
-                "objectType": "users/user"
-            }
+                "objectType": "users/user",
+            },
         }]
         request_result = self.client.umc_command('udm/put', options, 'users/user').result
         if not request_result:
@@ -76,12 +76,12 @@ class TestUMCUserCreation(UDMModule):
                     "person": True,
                     "mail": True,
                     "pki": False,
-                }
+                },
             },
             "options": {
                 "container": "cn=users," + self.ldap_base,
-                "objectType": "users/user"
-            }
+                "objectType": "users/user",
+            },
         }]
         try:
             request_result = self.client.umc_command('udm/add', options, 'users/user').result

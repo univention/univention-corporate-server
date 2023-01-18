@@ -51,7 +51,7 @@ options = {
     'default': univention.admin.option(
         short_description=short_description,
         default=True,
-        objectClasses=['packageRegistration', 'top']
+        objectClasses=['packageRegistration', 'top'],
     ),
 }
 property_descriptions = {

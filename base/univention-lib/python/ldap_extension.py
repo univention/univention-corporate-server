@@ -206,7 +206,7 @@ class UniventionLDAPExtension(six.with_metaclass(ABCMeta)):
         cmd = ["univention-directory-manager", "container/cn", "create"] + udm_passthrough_options + [
             "--ignore_exists",
             "--set", "name=%s" % cls.target_container_name,
-            "--position", "cn=univention,%s" % ucr['ldap/base']
+            "--position", "cn=univention,%s" % ucr['ldap/base'],
         ]
         return subprocess.call(cmd)
 

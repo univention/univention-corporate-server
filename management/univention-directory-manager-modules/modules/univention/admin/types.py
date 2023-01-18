@@ -591,7 +591,7 @@ class ListOfItems(ArrayType):
             definition['items'] = items[0]
         else:
             definition['items'] = {
-                'oneOf': items
+                'oneOf': items,
             }
         return definition
 

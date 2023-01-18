@@ -115,7 +115,7 @@ ldif_dict = {
     'branchsite_name': opts.site,
     'sitelink': opts.sitelink,
     'branchsite_subnet': opts.subnet,
-    'samba4_ldap_base': samba4_ldap_base
+    'samba4_ldap_base': samba4_ldap_base,
 }
 
 if opts.createsite:

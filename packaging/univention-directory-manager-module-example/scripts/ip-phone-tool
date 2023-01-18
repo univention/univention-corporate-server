@@ -84,7 +84,7 @@ class ipphonetool(object):
 
         try:
             self.lo = univention.admin.uldap.access(
-                host=ldap_master, base=self.ldap_base, binddn=binddn, bindpw=bindpw, start_tls=2
+                host=ldap_master, base=self.ldap_base, binddn=binddn, bindpw=bindpw, start_tls=2,
             )
         except Exception as e:
             ud.debug(ud.ADMIN, ud.WARN, 'authentication error: %s' % (e,))
@@ -190,7 +190,7 @@ if __name__ == '__main__':
         """e.g. ip-phone-tool set voip1 10.1.0.42 sip:user1@dom.example
     or   ip-phone-tool set voip1 10.1.0.42 sip:user1@dom.example --redirect sip:otheruser@dom.example
     or   ip-phone-tool clear_redirect voip1
-    or   ip-phone-tool remove voip1"""
+    or   ip-phone-tool remove voip1""",
     )
 
     parser = ArgumentParser(description=description)
@@ -200,7 +200,7 @@ if __name__ == '__main__':
     parser.add_argument('-y', '--password-file', help=_('Read password from file'))
     parser.add_argument('-v', '--verbose', action='count', help=_('Print additional information'))
     parser.add_argument(
-        '-d', type=int, dest='debuglevel', default=1, choices=[0, 1, 2, 3, 4], help=_('Set debug level')
+        '-d', type=int, dest='debuglevel', default=1, choices=[0, 1, 2, 3, 4], help=_('Set debug level'),
     )
     parser.add_argument('-U', '--user', dest='username', help=_('Username'))
     parser.add_argument('--redirect', help=_('Redirect address'))

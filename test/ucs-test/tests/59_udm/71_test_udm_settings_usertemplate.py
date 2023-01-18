@@ -262,7 +262,7 @@ def test_replacements():
         'ú': 'u',
         'û': 'u',
         'ý': 'y',
-        'ÿ': 'y'
+        'ÿ': 'y',
     }
     for umlaut, expected in previously_hard_coded_umlauts.items():
         if isinstance(umlaut, bytes):
@@ -381,7 +381,7 @@ def test_usertemplate_filter(udm, ucr):
         'tabAdvanced': '0',
         'tabName': 'General',
         'tabPosition': '11',
-        'valueRequired': '0'
+        'valueRequired': '0',
     }
     extended_attribute = udm.create_object('settings/extended_attribute', position='cn=custom attributes,cn=univention,%s' % (ucr.get('ldap/base')), **properties)
     utils.verify_ldap_object(extended_attribute, should_exist=True)

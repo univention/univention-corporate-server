@@ -31,7 +31,7 @@ def main():
         with udm_test.UCSTestUDM() as udm:
             udm.create_group(
                 networkAccess=1,
-                hosts=[ucr.get('ldap/hostdn')]
+                hosts=[ucr.get('ldap/hostdn')],
             )
             lo = uldap.getMachineConnection()
             krb5PrincipalName = lo.search(filter='(&(objectClass=univentionHost)(cn={}))'.format(ucr.get('hostname')))[0][1]['krb5PrincipalName'][0].decode('UTF-8')

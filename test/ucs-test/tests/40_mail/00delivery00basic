@@ -60,14 +60,14 @@ class Tester:
             'BIG%ssmall@%s' % (uts.random_string(), domain),
             '%s.t.o.c@%s' % (uts.random_string(), domain),
             'un_sc%s@%s' % (uts.random_string(), domain),
-            '1fo%so2bar3@%s' % (uts.random_string(), domain)
+            '1fo%so2bar3@%s' % (uts.random_string(), domain),
         ]
         for mail in mails:
             userdn, username = self.udm.create_user(
                 set={
                     'mailHomeServer': '%s.%s' % (self.ucr.get('hostname'), domain),
                     'mailPrimaryAddress': mail,
-                }
+                },
             )
 
             users.append(username)

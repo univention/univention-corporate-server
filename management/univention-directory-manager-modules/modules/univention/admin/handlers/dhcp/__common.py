@@ -103,7 +103,7 @@ def add_dhcp_options(module_name):
         _('Low-level DHCP configuration'),
         _('Custom DHCP options'),
         advanced=True,
-        layout=['option', 'statements']
+        layout=['option', 'statements'],
     ))
 
 

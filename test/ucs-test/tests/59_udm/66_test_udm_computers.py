@@ -103,7 +103,7 @@ class Test_ComputerAllRoles:
         nagiosParentProperties = {
             'options': ['nagios'],
             'name': random_name(),
-            'ip': '10.20.30.2'
+            'ip': '10.20.30.2',
         }
         # FIXME: workaround for remaining locks
         udm.addCleanupLock('aRecord', nagiosParentProperties['ip'])
@@ -115,7 +115,7 @@ class Test_ComputerAllRoles:
             'nagiosParents': udm.create_object('computers/domaincontroller_backup', dnsEntryZoneForward=forwardZone, **nagiosParentProperties),
             'name': random_name(),
             'ip': '10.20.30.3',
-            'options': ['posix', 'nagios']
+            'options': ['posix', 'nagios'],
         }
         # FIXME: workaround for remaining locks
         udm.addCleanupLock('aRecord', computerProperties['ip'])
@@ -126,7 +126,7 @@ class Test_ComputerAllRoles:
         verify_ldap_object(computer, {
             'univentionNagiosEmail': [computerProperties['nagiosContactEmail']],
             'univentionNagiosEnabled': ['1'],
-            'univentionNagiosParent': [b'%s.%s' % (nagiosParentProperties['name'].encode('UTF-8'), lo.getAttr(computerProperties['nagiosParents'], 'associatedDomain')[0])]
+            'univentionNagiosParent': [b'%s.%s' % (nagiosParentProperties['name'].encode('UTF-8'), lo.getAttr(computerProperties['nagiosParents'], 'associatedDomain')[0])],
         })
 
         # check if computer has been added to nagios service
@@ -144,7 +144,7 @@ class Test_ComputerAllRoles:
 
         computerProperties = {
             'mac': '01:23:45:67:89:ab',
-            'name': random_name()
+            'name': random_name(),
         }
 
         dNSCn = 'cn=dns,%s' % (ucr.get('ldap/base'),)
@@ -185,15 +185,15 @@ class Test_ComputerAllRoles:
 
             verify_ldap_object(
                 'relativeDomainName=%s,%s' % (computerProperties['name'], forwardZone),
-                {'aRecord': [aRecord]}
+                {'aRecord': [aRecord]},
             )
             verify_ldap_object(
                 'relativeDomainName=%s,%s' % (aRecord.split(".")[-1], reverseZone),
-                {'pTRRecord': ['%s.%s.' % (computerProperties['name'], forwardZoneName)]}
+                {'pTRRecord': ['%s.%s.' % (computerProperties['name'], forwardZoneName)]},
             )
             verify_ldap_object(
                 'cn=%s,%s' % (computerProperties['name'], dhcpService),
-                {'univentionDhcpFixedAddress': [aRecord]}
+                {'univentionDhcpFixedAddress': [aRecord]},
             )
 
         if aaaRecord:
@@ -201,15 +201,15 @@ class Test_ComputerAllRoles:
 
             verify_ldap_object(
                 'relativeDomainName=%s,%s' % (computerProperties['name'], forwardZone),
-                {'aAAARecord': [aaaRecord]}
+                {'aAAARecord': [aaaRecord]},
             )
             verify_ldap_object(
                 'relativeDomainName=%s,%s' % ('.'.join(reversed(''.join(aaaRecord.split(':')[4:]))), reverseZone),
-                {'pTRRecord': ['%s.%s.' % (computerProperties['name'], forwardZoneName)]}
+                {'pTRRecord': ['%s.%s.' % (computerProperties['name'], forwardZoneName)]},
             )
             verify_ldap_object(
                 'cn=%s,%s' % (computerProperties['name'], dhcpService),
-                {'univentionDhcpFixedAddress': [str(ipaddress.IPv6Address(aaaRecord))]}
+                {'univentionDhcpFixedAddress': [str(ipaddress.IPv6Address(aaaRecord))]},
             )
 
     @pytest.mark.tags('udm', 'udm-computers')
@@ -218,12 +218,12 @@ class Test_ComputerAllRoles:
         # bugs: [15743]
         properties = {
             'ip': '10.20.30.40',
-            'mac': '01:23:45:67:89:ab'
+            'mac': '01:23:45:67:89:ab',
         }
 
         newProperties = {
             'ip': '10.20.30.41',
-            'mac': '01:23:45:67:89:ac'
+            'mac': '01:23:45:67:89:ac',
         }
 
         lockContainer = 'cn=temporary,cn=univention,%s' % ucr['ldap/base']
@@ -283,7 +283,7 @@ class Test_ComputerAllRoles:
             ['%s' % udm.create_object('dhcp/service', service=random_name()), '10.20.30.40', '11:11:11:11:11:11'],
             ['%s' % udm.create_object('dhcp/service', service=random_name()), '10.20.30.41', '22:22:22:22:22:22'],
             ['%s' % udm.create_object('dhcp/service', service=random_name()), '10.20.30.42', '33:33:33:33:33:33'],
-            ['%s' % udm.create_object('dhcp/service', service=random_name()), '10.20.30.43', '44:44:44:44:44:44']
+            ['%s' % udm.create_object('dhcp/service', service=random_name()), '10.20.30.43', '44:44:44:44:44:44'],
         )
 
         computer = udm.create_object(role, name=computerName)
@@ -291,18 +291,18 @@ class Test_ComputerAllRoles:
         udm.modify_object(role, dn=computer, append={
             'ip': [zone[1] for zone in dhcpEntryZones],
             'mac': [zone[2] for zone in dhcpEntryZones],
-            'dhcpEntryZone': [' '.join(zone) for zone in dhcpEntryZones]
+            'dhcpEntryZone': [' '.join(zone) for zone in dhcpEntryZones],
         })
         for service, ip, mac in dhcpEntryZones:
             verify_ldap_object('cn=%s,%s' % (computerName, service), {
                 'univentionDhcpFixedAddress': [ip],
-                'dhcpHWAddress': ['ethernet %s' % mac]
+                'dhcpHWAddress': ['ethernet %s' % mac],
             })
 
         udm.modify_object(role, dn=computer, remove={
             'ip': [zone[1] for zone in dhcpEntryZones[:2]],
             'mac': [zone[2] for zone in dhcpEntryZones[:2]],
-            'dhcpEntryZone': [' '.join(zone) for zone in dhcpEntryZones[:2]]
+            'dhcpEntryZone': [' '.join(zone) for zone in dhcpEntryZones[:2]],
         })
         for service, ip, mac in dhcpEntryZones[:2]:
             verify_ldap_object('cn=%s,%s' % (ldap.dn.escape_dn_chars(computerName), service), should_exist=False)
@@ -310,7 +310,7 @@ class Test_ComputerAllRoles:
         for service, ip, mac in dhcpEntryZones[2:]:
             verify_ldap_object('cn=%s,%s' % (ldap.dn.escape_dn_chars(computerName), service), {
                 'univentionDhcpFixedAddress': [ip],
-                'dhcpHWAddress': ['ethernet %s' % mac]
+                'dhcpHWAddress': ['ethernet %s' % mac],
             })
 
     @pytest.mark.tags('udm', 'udm-computers', 'apptest')
@@ -329,7 +329,7 @@ class Test_ComputerAllRoles:
             udm.create_object('nagios/service', name=random_name(), checkCommand=random_string(), checkPeriod=random_string(), notificationPeriod=random_string()),
             udm.create_object('nagios/service', name=random_name(), checkCommand=random_string(), checkPeriod=random_string(), notificationPeriod=random_string()),
             udm.create_object('nagios/service', name=random_name(), checkCommand=random_string(), checkPeriod=random_string(), notificationPeriod=random_string()),
-            udm.create_object('nagios/service', name=random_name(), checkCommand=random_string(), checkPeriod=random_string(), notificationPeriod=random_string())
+            udm.create_object('nagios/service', name=random_name(), checkCommand=random_string(), checkPeriod=random_string(), notificationPeriod=random_string()),
         )
         computerIp = '10.20.30.2'
         computerName = random_name()
@@ -377,7 +377,7 @@ class Test_ComputerAllRoles:
             'Give explicit IP, but DHCP from Network',
             'Manual DHCP with dynamic IP from known-hosts-pool',
             'Manual DHCP with fixed IP',
-        ]
+        ],
     )
     def test_all_roles_modification_ip_choosing(self, lo, verify_ldap_object, role, ip, manual_network, manual_dhcp, service_and_network):
         """Test creating DHCP entries for some computer roles"""
@@ -459,7 +459,7 @@ class Test_ComputerAllRoles:
                 [service, '10.20.30.40', '11:11:11:11:11:11'],
                 [service, '10.20.30.41', '22:22:22:22:22:22'],
                 [service, '10.20.30.42', '33:33:33:33:33:33'],
-                [service, '10.20.30.43', '44:44:44:44:44:44']
+                [service, '10.20.30.43', '44:44:44:44:44:44'],
             )
 
             computer = udm.create_object(role, name=computerName)
@@ -467,19 +467,19 @@ class Test_ComputerAllRoles:
             udm.modify_object(role, dn=computer, append={
                 'ip': [zone[1] for zone in dhcpEntryZones],
                 'mac': [zone[2] for zone in dhcpEntryZones],
-                'dhcpEntryZone': [' '.join(zone) for zone in dhcpEntryZones]
+                'dhcpEntryZone': [' '.join(zone) for zone in dhcpEntryZones],
             })
             for i, (service, ip, mac) in enumerate(dhcpEntryZones, -1):
                 addon = '' if i < 0 else '_uv%d' % (i,)
                 verify_ldap_object('cn=%s%s,%s' % (computerName, addon, service), {
                     'univentionDhcpFixedAddress': [ip],
-                    'dhcpHWAddress': ['ethernet %s' % mac]
+                    'dhcpHWAddress': ['ethernet %s' % mac],
                 })
 
             udm.modify_object(role, dn=computer, remove={
                 'ip': [zone[1] for zone in dhcpEntryZones[:2]],
                 'mac': [zone[2] for zone in dhcpEntryZones[:2]],
-                'dhcpEntryZone': [' '.join(zone) for zone in dhcpEntryZones[:2]]
+                'dhcpEntryZone': [' '.join(zone) for zone in dhcpEntryZones[:2]],
             })
             for i, (service, ip, mac) in list(enumerate(dhcpEntryZones, -1))[:2]:
                 addon = '' if i < 0 else '_uv%d' % (i,)
@@ -489,7 +489,7 @@ class Test_ComputerAllRoles:
                 addon = '' if i < 0 else '_uv%d' % (i,)
                 verify_ldap_object('cn=%s%s,%s' % (ldap.dn.escape_dn_chars(computerName), addon, service), {
                     'univentionDhcpFixedAddress': [ip],
-                    'dhcpHWAddress': ['ethernet %s' % mac]
+                    'dhcpHWAddress': ['ethernet %s' % mac],
                 })
 
     @pytest.mark.tags('udm', 'udm-computers', 'apptest')
@@ -533,7 +533,7 @@ class Test_ComputerRolesExceptMacos:
             # get random, but unique IP and MAC endings Bug #38212:
             random.sample(range(5, 19), 9),  # will be used for IP endings
             random.sample(range(20, 99), 9),  # will be used for MAC endings
-        ))
+        )),
     )
     def test_all_roles_creation_with_all_attributes(self, ucr, udm, verify_ldap_object, lo, stopped_s4connector, role, rand_ip, rand_mac):
         """Create object with all attributes set for all computer roles"""
@@ -548,7 +548,7 @@ class Test_ComputerRolesExceptMacos:
             'dnsEntryZoneForward': udm.create_object('dns/forward_zone', zone='%s.%s' % (random_name(), random_name()), nameserver=random_string(numeric=False)),
             'dnsEntryZoneReverse': udm.create_object('dns/reverse_zone', subnet='10.20.30', nameserver=random_string(numeric=False)),
             'inventoryNumber': random_string(),
-            'domain': '%s.%s' % (random_name(), random_name())
+            'domain': '%s.%s' % (random_name(), random_name()),
         }
         properties['dhcpEntryZone'] = '%s %s %s' % (dhcpZone, properties['ip'], properties['mac'])
 
@@ -560,7 +560,7 @@ class Test_ComputerRolesExceptMacos:
             'univentionNetworkLink': [properties['network']],
             'aRecord': [properties['ip']],
             'univentionInventoryNumber': [properties['inventoryNumber']],
-            'associatedDomain': [properties['domain']]
+            'associatedDomain': [properties['domain']],
         }
 
         if role != 'computers/ipmanagedclient':
@@ -597,21 +597,21 @@ class Test_ComputerRolesExceptMacos:
         # validate related DHCP host object
         verify_ldap_object('cn=%s,%s' % (properties['name'], dhcpZone), {
             'dhcpHWAddress': ['ethernet %s' % properties['mac']],
-            'univentionDhcpFixedAddress': [properties['ip']]
+            'univentionDhcpFixedAddress': [properties['ip']],
         })
 
         # validate related A record
         verify_ldap_object('relativeDomainName=%s,%s' % (properties['name'], properties['dnsEntryZoneForward']), {
             'aRecord': [properties['ip']],
             'relativeDomainName': [properties['name']],
-            'zoneName': [properties['dnsEntryZoneForward'].split('zoneName=')[1].split(',')[0]]
+            'zoneName': [properties['dnsEntryZoneForward'].split('zoneName=')[1].split(',')[0]],
         })
 
         # validate related PTR record
         verify_args = ('relativeDomainName=%s,%s' % (rand_ip, properties['dnsEntryZoneReverse']), {
             'relativeDomainName': [str(rand_ip)],
             'pTRRecord': ['%s.%s.' % (properties['name'], properties['dnsEntryZoneForward'].split('zoneName=')[1].split(',')[0])],
-            'zoneName': [properties['dnsEntryZoneReverse'].split('zoneName=')[1].split(',')[0]]
+            'zoneName': [properties['dnsEntryZoneReverse'].split('zoneName=')[1].split(',')[0]],
         })
         print(f'\n\nverify_args: \n{verify_args}\n')
         verify_ldap_object(*verify_args)
@@ -639,7 +639,7 @@ class Test_ComputerRolesExceptMacos:
 
         computerProperties = {
             'mac': '01:23:45:67:89:ab',
-            'name': random_name()
+            'name': random_name(),
         }
 
         dNSCn = 'cn=dns,%s' % (ucr.get('ldap/base'),)
@@ -656,7 +656,7 @@ class Test_ComputerRolesExceptMacos:
             'dnsEntryZoneForward': forwardZone,
             'dnsEntryZoneReverse': reverseZone,
             'dhcpEntryZone': dhcpService,
-            'ipRange': '10.20.30.2 10.20.30.254'
+            'ipRange': '10.20.30.2 10.20.30.254',
         }
         network = udm.create_object('networks/network', **networkProperties)
 
@@ -674,17 +674,17 @@ class Test_ComputerRolesExceptMacos:
 
         verify_ldap_object(
             'relativeDomainName=%s,%s' % (computerProperties['name'], forwardZone),
-            {'aRecord': [aRecord]}
+            {'aRecord': [aRecord]},
         )
 
         verify_ldap_object(
             'relativeDomainName=%s,%s' % (aRecord.split(".")[-1], reverseZone),
-            {'pTRRecord': ['%s.%s.' % (computerProperties['name'], forwardZoneName)]}
+            {'pTRRecord': ['%s.%s.' % (computerProperties['name'], forwardZoneName)]},
         )
 
         verify_ldap_object(
             'cn=%s,%s' % (computerProperties['name'], dhcpService),
-            {'univentionDhcpFixedAddress': [aRecord]}
+            {'univentionDhcpFixedAddress': [aRecord]},
         )
 
 
@@ -876,7 +876,7 @@ def test_removal_of_leftover_ptr_record_with_multiple_ip_addresses(udm, verify_l
     verify_ldap_object('relativeDomainName=6,%s' % (rdnsZone,), {
         'pTRRecord': [
             ('%s.%s.%s.' % (computer_name, domainname, tld)).encode('UTF-8'),
-            ('%s.%s2.%s.' % (computer_name, domainname, tld)).encode('UTF-8')]
+            ('%s.%s2.%s.' % (computer_name, domainname, tld)).encode('UTF-8')],
     })
 
 

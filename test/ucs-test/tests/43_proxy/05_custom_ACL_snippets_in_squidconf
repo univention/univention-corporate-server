@@ -72,7 +72,7 @@ def perform_test(test_case):
             used_value2 = "http://proxy_test2.univention.de/"
         sub_case.extend([
             (permission, expected_response, acl_type, value_type, used_value, value),
-            (permission, opposite_response, acl_type, value_type, used_value2, value)
+            (permission, opposite_response, acl_type, value_type, used_value2, value),
         ])
 
     if value_type == 'substring':
@@ -80,14 +80,14 @@ def perform_test(test_case):
         if "dstdomain" in acl_type:
             used_value = "http://proxy_test1.univention.de"
         sub_case.append(
-            (permission, expected_response, acl_type, value_type, used_value, value)
+            (permission, expected_response, acl_type, value_type, used_value, value),
         )
 
         used_value = "%s%s%s" % (value[0:2], uts.random_string(3), value[2:5])
         if "dstdomain" in acl_type:
             used_value = "http://proxy_test2.univention.de/"
         sub_case.append(
-            (permission, opposite_response, acl_type, value_type, used_value, value)
+            (permission, opposite_response, acl_type, value_type, used_value, value),
         )
 
     if value_type == 'regex':
@@ -95,13 +95,13 @@ def perform_test(test_case):
         if "dstdomain" in acl_type:
             used_value = "http://proxy_test1.univention.de"
         sub_case.append(
-            (permission, expected_response, acl_type, value_type, used_value, value)
+            (permission, expected_response, acl_type, value_type, used_value, value),
         )
         used_value = "%s%s%s" % (uts.random_string(1), value[1:-3], uts.random_string(2))
         if "dstdomain" in acl_type:
             used_value = "http://proxy_test2.univention.de/"
         sub_case.append(
-            (permission, opposite_response, acl_type, value_type, used_value, value)
+            (permission, opposite_response, acl_type, value_type, used_value, value),
         )
 
     # Add the case sesitivity checks for all cases
@@ -112,12 +112,12 @@ def perform_test(test_case):
         if acl_type[-1] != 'i' and 'dstdomain' not in acl_type:
             new_cases.extend([
                 (permission, opposite_response, acl_type, value_type, used_value.upper(), value),
-                (permission, opposite_response, acl_type, value_type, used_value.lower(), value)
+                (permission, opposite_response, acl_type, value_type, used_value.lower(), value),
             ])
         else:
             new_cases.extend([
                 (permission, expected_response, acl_type, value_type, used_value.upper(), value),
-                (permission, expected_response, acl_type, value_type, used_value.lower(), value)
+                (permission, expected_response, acl_type, value_type, used_value.lower(), value),
             ])
 
     # The actual test
@@ -166,7 +166,7 @@ def set_ucr_variables(name, permission, acl_type, value_type, value):
     squid = SimpleSquid()
     handler_set([
         'squid/acl/%s/%s/%s/%s=%s' % (name, permission, acl_type, value_type, value),
-        'squid/basicauth=yes'
+        'squid/basicauth=yes',
     ])
 
     squid.reconfigure()
@@ -192,7 +192,7 @@ def main():
             "%s%s%s%s%s" % (
                 '^', uts.random_string(3),
                 uts.random_string(2, numeric=False).upper(),
-                uts.random_string(3), '.*$')
+                uts.random_string(3), '.*$'),
         ]
         itertion_length = len(permissions) * len(acl_types) * len(value_types)
         tests = itertools.product(zip(permissions, responses), acl_types, zip(value_types, values))
@@ -205,7 +205,7 @@ def main():
         values = [
             'proxy_test1.univention.de',
             'proxy_test1',
-            '^proxy_test1.univention.de.*$'
+            '^proxy_test1.univention.de.*$',
         ]
         tests = itertools.product(zip(permissions, responses), acl_types, zip(value_types, values))
         for _i in range(itertion_length):

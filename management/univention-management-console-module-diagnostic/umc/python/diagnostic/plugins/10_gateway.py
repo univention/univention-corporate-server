@@ -42,12 +42,12 @@ title = _('Gateway is not reachable')
 description = '\n'.join([
     _('The gateway %r could not be reached. Please make sure the gateway and related network settings are correctly configured by using the {setup:network}.'),
     _('If these settings are correct the problem relies in the gateway itself:'),
-    _('Make sure the hardware of the gateway device is working properly.')
+    _('Make sure the hardware of the gateway device is working properly.'),
 ])
 
 umc_modules = [{
     'module': 'setup',
-    'flavor': 'network'
+    'flavor': 'network',
 }]
 
 run_descr = ['This can be checked by running: ping "$(ucr get gateway)"']

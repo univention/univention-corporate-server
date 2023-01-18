@@ -83,7 +83,7 @@ def _samba_group_type(prop, key, value):
     types = {
         '2': str(_('Domain Group')),
         '3': str(_('Local Group')),
-        '5': str(_('Well-Known Group'))
+        '5': str(_('Well-Known Group')),
     }
     if value in types.keys():
         value = types[value]

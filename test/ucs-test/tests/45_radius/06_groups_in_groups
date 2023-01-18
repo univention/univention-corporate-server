@@ -30,11 +30,11 @@ def main():
         userdn, username = udm.create_user(set={'networkAccess': 0})
         innergroupdn, innergroupname = udm.create_group(set={
             'networkAccess': 1,
-            'users': userdn
+            'users': userdn,
         })
         outergroupdn, outergroupname = udm.create_group(set={
             'networkAccess': 1,
-            'nestedGroup': innergroupdn
+            'nestedGroup': innergroupdn,
         })
 
         # outer group net access = 1, inner group net access = 1
@@ -50,8 +50,8 @@ def main():
             'groups/group',
             dn=innergroupdn,
             set={
-                'networkAccess': 0
-            }
+                'networkAccess': 0,
+            },
         )
         try:
             radtest(username)
@@ -64,8 +64,8 @@ def main():
             'groups/group',
             dn=outergroupdn,
             set={
-                'networkAccess': 0
-            }
+                'networkAccess': 0,
+            },
         )
         try:
             radtest(username)
@@ -80,8 +80,8 @@ def main():
             'groups/group',
             dn=innergroupdn,
             set={
-                'networkAccess': 1
-            }
+                'networkAccess': 1,
+            },
         )
         try:
             radtest(username)

@@ -97,7 +97,7 @@ PO_METADATA = {
     'Language': '',
     'MIME-Version': '1.0',
     'Content-Type': 'text/plain; charset=UTF-8',
-    'Content-Transfer-Encoding': '8bit'
+    'Content-Transfer-Encoding': '8bit',
 }
 
 
@@ -429,7 +429,7 @@ def create_mo_file(po_file, mo_file=''):
 
     call(
         'msgfmt', '--check', '--output-file', mo_file, po_file,
-        errmsg='Failed to compile translation file from %s.' % (po_file,)
+        errmsg='Failed to compile translation file from %s.' % (po_file,),
     )
 
 

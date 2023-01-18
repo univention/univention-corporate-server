@@ -84,7 +84,7 @@ def check_primary(conn, basedn):
         group_result = conn.search_s(
             basedn, ldap.SCOPE_SUBTREE,
             filter_format('(&(objectClass=univentionGroup)(gidNumber=%s))', (user_gid,)),
-            ['uniqueMember', 'memberUid']
+            ['uniqueMember', 'memberUid'],
         )
 
         # there must be exactly one group with this gid

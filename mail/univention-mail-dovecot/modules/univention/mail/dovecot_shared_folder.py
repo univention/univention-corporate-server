@@ -77,7 +77,7 @@ class DovecotFolderAclEntry(object):
         return all((
             self.folder_name == other.folder_name,
             self.identifier == other.identifier,
-            self.acl == other.acl
+            self.acl == other.acl,
         ))
 
     def __repr__(self):  # type: () -> str
@@ -473,7 +473,7 @@ class DovecotSharedFolderListener(DovecotListener):
                 "%s@%s:%s" % (
                     pf["name"] or pf.dn.split("@")[0].split("=")[1],
                     pf["mailDomain"],
-                    pf.get("mailQuota", 0)
+                    pf.get("mailQuota", 0),
                 )
                 for pf in public_folders
             ]

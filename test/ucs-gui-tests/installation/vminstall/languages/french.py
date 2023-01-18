@@ -69,5 +69,5 @@ strings = {
     'do_update': "le système après l'installation",
     'setup_successful': "Installation d'UCS réussie",
     'finish': 'TERMINER',
-    'welcome': 'Open a browser'
+    'welcome': 'Open a browser',
 }

@@ -52,12 +52,12 @@ RECORD_LIMIT = 100000  # never return more than this many records
 
 CRITERIA = {
     'systems': [
-        'all_properties', 'sysname', 'sysrole', 'sysversion', 'sysversion_greater', 'sysversion_lower'
+        'all_properties', 'sysname', 'sysrole', 'sysversion', 'sysversion_greater', 'sysversion_lower',
     ],
     'packages': [
         'pkgname', 'currentstate',  # head fields
         'selectedstate', 'inststate',  # state fields
-    ]
+    ],
 }
 
 CRITERIA_OPERATOR = {
@@ -93,13 +93,13 @@ MAPPED_PATTERNS_TO_KEYS = {
 #       dynamically from the pkgdb object.
 PROPOSALS = {
     'selectedstate': [
-        'install', 'hold', 'deinstall', 'purge', 'unknown'
+        'install', 'hold', 'deinstall', 'purge', 'unknown',
     ],
     'inststate': [
-        'ok', 'reinst_req', 'hold', 'hold_reinst_req'
+        'ok', 'reinst_req', 'hold', 'hold_reinst_req',
     ],
     'currentstate': [
-        'installed', 'notinstalled', 'incomplete', 'configfiles'
+        'installed', 'notinstalled', 'incomplete', 'configfiles',
         # 'uninstalled', 'unpacked', 'halfconfigured', 'halfinstalled',
     ],
 }
@@ -118,7 +118,7 @@ QUERIES = {
     # 'select sysname,sysversion,sysrole,to_char(scandate,\'YYYY-MM-DD HH24:MI:SS\'),ldaphostdn from systems where '+query+' order by sysname
     'systems': {
         'columns': ['sysname', 'sysversion', 'sysrole', 'inventory_date'],
-        'function': updb.sql_get_systems_by_query
+        'function': updb.sql_get_systems_by_query,
     },
     # 'select sysname,pkgname,vername,to_char(packages_on_systems.scandate,\'YYYY-MM-DD HH24:MI:SS\'),inststatus,selectedstate,inststate,currentstate from packages_on_systems join systems using(sysname) where '+query+' order by sysname,pkgname,vername
     'packages': {
@@ -134,9 +134,9 @@ QUERIES = {
             'limit': RECORD_LIMIT,
             # 'orderby' ..avoids doing a sort that only consumes time and memory, and afterwards
             # the data is sorted again by the grid or its store
-            'orderby': ''
-        }
-    }
+            'orderby': '',
+        },
+    },
 
 }
 
@@ -274,7 +274,7 @@ class Instance(Base):
 
     @sanitize(
         page=ChoicesSanitizer(choices=PAGES, required=True),
-        key=ChoicesSanitizer(choices=CRITERIA_OPERATOR.keys())
+        key=ChoicesSanitizer(choices=CRITERIA_OPERATOR.keys()),
     )
     @connection
     @simple_response

@@ -182,7 +182,7 @@ def test_error_handling(udm, ldap_base):
     assert sorted(exc.value.error_details['error'], key=itemgetter('location')) == sorted([
         {'location': ['body', 'properties', 'gecos'], 'message': 'The property gecos has an invalid value: Field must only contain ASCII characters!', 'type': 'value_error'},
         {'location': ['body', 'properties', 'description'], 'message': 'The property description has an invalid value: Value must be of type string not list.', 'type': 'value_error'},  # should be type_error
-        {'location': ['body', 'properties', 'e-mail'], 'message': 'The property e-mail has an invalid value: Value must be of type array not str.', 'type': 'value_error'}  # should be type_error
+        {'location': ['body', 'properties', 'e-mail'], 'message': 'The property e-mail has an invalid value: Value must be of type array not str.', 'type': 'value_error'},  # should be type_error
     ], key=itemgetter('location'))
 
     # broken / incomplete representation
@@ -192,5 +192,5 @@ def test_error_handling(udm, ldap_base):
         user.save()
     assert sorted(exc.value.error_details['error'], key=itemgetter('location')) == sorted([
         {'location': ['body', 'position'], 'message': 'Argument required', 'type': 'value_error'},  # should be value_error.required
-        {'location': ['body', 'policies'], 'message': 'Not a "dict"', 'type': 'value_error'}  # should be type_error
+        {'location': ['body', 'policies'], 'message': 'Not a "dict"', 'type': 'value_error'},  # should be type_error
     ], key=itemgetter('location'))

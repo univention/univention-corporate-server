@@ -112,7 +112,7 @@ advanced_components_sanitizer = DictSanitizer({
     'enabled': BooleanSanitizer(required=True),
     'name': StringSanitizer(required=True, regex_pattern=r'^[A-Za-z0-9\-\_\.]+$'),
     'description': StringSanitizer(),
-    'version': StringSanitizer(regex_pattern='^((([0-9]+\\.[0-9]+|current),)*([0-9]+\\.[0-9]+|current))?$')
+    'version': StringSanitizer(regex_pattern='^((([0-9]+\\.[0-9]+|current),)*([0-9]+\\.[0-9]+|current))?$'),
 })
 
 

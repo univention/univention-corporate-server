@@ -2388,7 +2388,7 @@ class simpleComputer(simpleLdap):
                 ('univentionObjectType', [b'dns/ptr_record']),
                 ('zoneName', [explode_rdn(zoneDn, True)[0].encode('UTF-8')]),
                 ('relativeDomainName', [ipPart.encode('ASCII')]),
-                ('PTRRecord', [x.encode('UTF-8') for x in hostname_list])
+                ('PTRRecord', [x.encode('UTF-8') for x in hostname_list]),
             ])
 
             # update Serial
@@ -2555,7 +2555,7 @@ class simpleComputer(simpleLdap):
                     ('univentionObjectType', [b'dns/host_record']),
                     ('zoneName', explode_rdn(zoneDn, True)[0].encode('UTF-8')),
                     ('aAAARecord', [ip]),
-                    ('relativeDomainName', [name.encode('UTF-8')])
+                    ('relativeDomainName', [name.encode('UTF-8')]),
                 ])
             except univention.admin.uexceptions.objectExists as ex:
                 raise univention.admin.uexceptions.dnsAliasRecordExists(ex.dn)
@@ -2583,7 +2583,7 @@ class simpleComputer(simpleLdap):
                     ('univentionObjectType', [b'dns/host_record']),
                     ('zoneName', explode_rdn(zoneDn, True)[0].encode('UTF-8')),
                     ('ARecord', [ip]),
-                    ('relativeDomainName', [name.encode('UTF-8')])
+                    ('relativeDomainName', [name.encode('UTF-8')]),
                 ])
             except univention.admin.uexceptions.objectExists as ex:
                 raise univention.admin.uexceptions.dnsAliasRecordExists(ex.dn)
@@ -2612,7 +2612,7 @@ class simpleComputer(simpleLdap):
                     ('univentionObjectType', [b'dns/alias']),
                     ('zoneName', explode_rdn(dnsAliasZoneContainer, True)[0].encode('UTF-8')),
                     ('cNAMERecord', [b"%s.%s." % (name.encode('UTF-8'), dnsForwardZone.encode('UTF-8'))]),
-                    ('relativeDomainName', [alias.encode('UTF-8')])
+                    ('relativeDomainName', [alias.encode('UTF-8')]),
                 ])
 
                 # TODO: check if dnsAliasZoneContainer really is a forwardZone, maybe it is a container under a zone
@@ -2822,7 +2822,7 @@ class simpleComputer(simpleLdap):
             'dnsEntryZoneForward': {'remove': [], 'add': []},
             'dnsEntryZoneReverse': {'remove': [], 'add': []},
             'dnsEntryZoneAlias': {'remove': [], 'add': []},
-            'dhcpEntryZone': {'remove': [], 'add': []}
+            'dhcpEntryZone': {'remove': [], 'add': []},
         }
         ml = []
         if self.hasChanged('mac'):

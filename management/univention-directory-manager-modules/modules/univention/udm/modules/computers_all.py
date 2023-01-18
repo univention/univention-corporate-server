@@ -35,7 +35,7 @@ from __future__ import absolute_import, unicode_literals
 from ..encoders import (
     CnameListPropertyEncoder, DnsEntryZoneAliasListPropertyEncoder, DnsEntryZoneForwardListMultiplePropertyEncoder,
     DnsEntryZoneReverseListMultiplePropertyEncoder,
-    dn_list_property_encoder_for, dn_property_encoder_for, StringIntBooleanPropertyEncoder, StringIntPropertyEncoder
+    dn_list_property_encoder_for, dn_property_encoder_for, StringIntBooleanPropertyEncoder, StringIntPropertyEncoder,
 )
 from .generic import GenericModule, GenericObject, GenericObjectProperties
 

@@ -159,7 +159,7 @@ class TestDisk(TestVolume):
     def volume_xml(self):
         text = etree.tostring(
             self.volume_tree(), encoding=ENCODING, method='xml',
-            pretty_print=True
+            pretty_print=True,
         )
         return text
 
@@ -170,7 +170,7 @@ class TestDisk(TestVolume):
             E.target(dev="vd" + chr(self.boot_order_index + 96), bus="virtio"),
             E.boot(order=str(self.boot_order_index)),
             # E.transient(),
-            type="file", device="disk"
+            type="file", device="disk",
         )
         return dev
 
@@ -189,7 +189,7 @@ class TestIso(TestVolume):
             E.target(dev="hda", bus="ide"),
             E.readonly(),
             E.boot(order=str(self.boot_order_index)),
-            type="file", device="cdrom"
+            type="file", device="cdrom",
         )
         return dev
 
@@ -199,7 +199,7 @@ class TestInterface(TestXml):
         super(TestInterface, self).__init__()
         self.mac = "52:54:00:%02x:%02x:%02x" % (
             random.randint(0, 255), random.randint(0, 255),
-            random.randint(0, 255)
+            random.randint(0, 255),
         )
 
     def source_tree(self):
@@ -243,7 +243,7 @@ class TestDomain(TestXml):
             E.on_reboot("restart"),
             E.on_crash("destroy"),
             self.devices(),
-            type="kvm"
+            type="kvm",
         )
         return dom
 
@@ -284,7 +284,7 @@ class TestDomain(TestXml):
     def domain_xml(self):
         text = etree.tostring(
             self.domain_tree(), encoding=ENCODING, method='xml',
-            pretty_print=True
+            pretty_print=True,
         )
         return text
 
@@ -399,7 +399,7 @@ def main():
             results = [{
                 'vnchost': host,
                 'name': vm_name,
-                'vncport': (port - 5900)
+                'vncport': (port - 5900),
             }]
             with created_test_vm.args.resultfile as resultfile:
                 json.dump(results, resultfile)

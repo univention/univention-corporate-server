@@ -49,7 +49,7 @@ class LDAP(Alert):
             '-p', slapd_port,
             '-b', ucr['ldap/base'],
             '-D', ucr['ldap/hostdn'],
-            '-y', '/etc/machine.secret'
+            '-y', '/etc/machine.secret',
         ])
         self.write_metric('univention_ldap_reachable', 1 if rc == 0 else 0)
         self.log.debug(output)

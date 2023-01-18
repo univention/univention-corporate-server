@@ -162,9 +162,9 @@ if __name__ == "__main__":
                     ]),
                     univention.admin.filter.conjunction('&', [
                         univention.admin.filter.expression('objectClass', 'sambaGroupMapping'),
-                    ])
-                ])
-            ])
+                    ]),
+                ]),
+            ]),
         ),
         'dc': mapping['dc'].match_filter,
         'windowscomputer': mapping['windowscomputer'].match_filter,

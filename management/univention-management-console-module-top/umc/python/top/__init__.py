@@ -51,7 +51,7 @@ class Instance(Base):
 
     @sanitize(
         pattern=PatternSanitizer(default='.*'),
-        category=ChoicesSanitizer(choices=['user', 'pid', 'command', 'all'], default='all')
+        category=ChoicesSanitizer(choices=['user', 'pid', 'command', 'all'], default='all'),
     )
     @simple_response
     def query(self, pattern, category='all'):
@@ -94,7 +94,7 @@ class Instance(Base):
 
     @sanitize(
         signal=ChoicesSanitizer(choices=['SIGTERM', 'SIGKILL']),
-        pid=ListSanitizer(IntegerSanitizer())
+        pid=ListSanitizer(IntegerSanitizer()),
     )
     @simple_response
     def kill(self, signal, pid):

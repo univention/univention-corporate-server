@@ -42,11 +42,11 @@ from typing import Any, Dict, Iterable, Iterator, List, Optional, Text, Tuple, T
 
 
 GenericObjectPropertiesTV = TypeVar(
-    'GenericObjectPropertiesTV', bound='univention.udm.modules.generic.GenericObjectProperties'
+    'GenericObjectPropertiesTV', bound='univention.udm.modules.generic.GenericObjectProperties',
 )
 GenericObjectTV = TypeVar('GenericObjectTV', bound='univention.udm.modules.generic.GenericObject')
 GenericModuleMetadataTV = TypeVar(
-    'GenericModuleMetadataTV', bound='univention.udm.modules.generic.GenericModuleMetadata'
+    'GenericModuleMetadataTV', bound='univention.udm.modules.generic.GenericModuleMetadata',
 )
 GenericModuleTV = TypeVar('GenericModuleTV', bound='univention.udm.modules.generic.GenericModule')
 

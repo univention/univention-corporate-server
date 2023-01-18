@@ -45,7 +45,7 @@ def get_packets_list():
         'univention-ldapsearch',
         '-x',
         'univentionPackageDefinition=*',
-        'univentionPackageDefinition'
+        'univentionPackageDefinition',
     ]
     search_result = run_command(cmd)
     return re.findall(re.compile(r'univentionPackageDefinition: (\w*)\n'), search_result)

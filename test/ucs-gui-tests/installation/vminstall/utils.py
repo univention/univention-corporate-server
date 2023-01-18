@@ -62,12 +62,12 @@ def execute_through_ssh(password, command, ip):
         'ssh',
         '-o', 'StrictHostKeyChecking=no',
         'root@%s' % (ip,),
-        command
+        command,
     ), stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
     stdout, _ = p.communicate()
     if p.returncode:
         p = subprocess.Popen((
-            'ps', 'aux'
+            'ps', 'aux',
         ), stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
         stdout_ps, _ = p.communicate()
         raise Exception(p.returncode, stdout, stdout_ps)
@@ -80,7 +80,7 @@ def copy_through_ssh(password, source_file, target_file):
         'scp',
         '-r',
         '-o', 'StrictHostKeyChecking=no',
-        source_file, target_file
+        source_file, target_file,
     ))
 
 
@@ -88,5 +88,5 @@ def remove_old_sshkey(ip):
     subprocess.check_call((
         'ssh-keygen',
         '-R',
-        ip
+        ip,
     ))

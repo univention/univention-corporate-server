@@ -49,7 +49,7 @@ RE_LOCAL = re.compile(
     |`
     )
     ''',
-    re.VERBOSE
+    re.VERBOSE,
 )
 
 
@@ -70,7 +70,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
         for fn in uub.FilteredDirWalkGenerator(
                 path,
                 ignore_suffixes=['.po'],
-                reHashBang=RE_HASHBANG_SHELL
+                reHashBang=RE_HASHBANG_SHELL,
         ):
             self.debug('Testing file %s' % fn)
             try:

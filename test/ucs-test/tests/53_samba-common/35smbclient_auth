@@ -43,7 +43,7 @@ class Test:
         self.amountPerRound = Test._get_int_env('smbauth_amountPerRound', 8)
         self.roundTime = Test._get_int_env('smbauth_roundTime', 6)
         print("Configured for %d times %d processes in %ds." % (
-            self.totalRounds, self.amountPerRound, self.roundTime
+            self.totalRounds, self.amountPerRound, self.roundTime,
         ))
 
         self.innerDelay = Test._calculateInnerDelay(self.roundTime, self.amountPerRound)

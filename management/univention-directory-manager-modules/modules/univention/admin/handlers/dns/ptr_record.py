@@ -289,5 +289,5 @@ def identify(dn, attr):
     return all([
         b'dNSZone' in attr.get('objectClass', []),
         b'@' not in attr.get('relativeDomainName', []),
-        (attr.get('zoneName', [b''])[0].decode('ASCII').endswith(ARPA_IP4) or attr.get('zoneName', [b''])[0].decode('ASCII').endswith(ARPA_IP6))
+        (attr.get('zoneName', [b''])[0].decode('ASCII').endswith(ARPA_IP4) or attr.get('zoneName', [b''])[0].decode('ASCII').endswith(ARPA_IP6)),
     ])

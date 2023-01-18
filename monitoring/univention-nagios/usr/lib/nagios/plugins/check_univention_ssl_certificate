@@ -52,7 +52,7 @@ class SSLCertificateCheck:
             'OK': 0,
             'WARNING': 1,
             'CRITICAL': 2,
-            'UNKNOWN': 3
+            'UNKNOWN': 3,
         }
 
     def print_revision(self):

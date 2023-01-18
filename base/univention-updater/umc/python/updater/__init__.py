@@ -84,7 +84,7 @@ INSTALLERS = {
         'postjob': '/usr/share/univention-updater/enable-apache2-umc --no-restart',
         'logfile': '/var/log/univention/updater.log',
         'statusfile': '/var/lib/univention-updater/umc-dist-upgrade.status',
-    }
+    },
 }
 
 
@@ -268,7 +268,7 @@ class Instance(Base):
         return result
 
     @sanitize(
-        hooks=ListSanitizer(StringSanitizer(minimum=1), required=True)
+        hooks=ListSanitizer(StringSanitizer(minimum=1), required=True),
     )
     def call_hooks(self, request: Request) -> None:
         """Calls the specified hooks and returns data given back by each hook"""
@@ -556,7 +556,7 @@ class Instance(Base):
         commands = [
             ('/usr/share/univention-updater/univention-updater-umc-dist-upgrade', 'distupgrade'),
             ('/usr/share/univention-updater/univention-updater', 'release'),
-            ('/usr/sbin/univention-upgrade', 'distupgrade')  # we don't know if it is a dist-upgrade or a release upgrade
+            ('/usr/sbin/univention-upgrade', 'distupgrade'),  # we don't know if it is a dist-upgrade or a release upgrade
         ]
         for cmd, job in commands:
             for process in psutil.process_iter():

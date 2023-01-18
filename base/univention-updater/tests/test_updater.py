@@ -86,7 +86,7 @@ class TestUniventionUpdater(object):
     def test_get_next_version_PATCH(self, u, http):
         """Test next patch version."""
         http({
-            RJSON: gen_releases([(MAJOR, MINOR, PATCH), (MAJOR, MINOR, PATCH + 1)])
+            RJSON: gen_releases([(MAJOR, MINOR, PATCH), (MAJOR, MINOR, PATCH + 1)]),
         })
         ver = u.get_next_version(version=U.UCS_Version((MAJOR, MINOR, PATCH)))
         assert U.UCS_Version((MAJOR, MINOR, PATCH + 1)) == ver
@@ -94,7 +94,7 @@ class TestUniventionUpdater(object):
     def test_get_next_version_MINOR(self, u, http):
         """Test next minor version."""
         http({
-            RJSON: gen_releases([(MAJOR, MINOR, PATCH), (MAJOR, MINOR + 1, 0)])
+            RJSON: gen_releases([(MAJOR, MINOR, PATCH), (MAJOR, MINOR + 1, 0)]),
         })
         ver = u.get_next_version(version=U.UCS_Version((MAJOR, MINOR, PATCH)))
         assert U.UCS_Version((MAJOR, MINOR + 1, 0)) == ver
@@ -102,7 +102,7 @@ class TestUniventionUpdater(object):
     def test_get_next_version_MAJOR(self, u, http):
         """Test next major version."""
         http({
-            RJSON: gen_releases([(MAJOR, MINOR, PATCH), (MAJOR + 1, 0, 0)])
+            RJSON: gen_releases([(MAJOR, MINOR, PATCH), (MAJOR + 1, 0, 0)]),
         })
         ver = u.get_next_version(version=U.UCS_Version((MAJOR, MINOR, PATCH)))
         assert U.UCS_Version((MAJOR + 1, 0, 0)) == ver
@@ -125,7 +125,7 @@ class TestUniventionUpdater(object):
     def test_release_update_available_NO(self, u, http):
         """Test no update available."""
         http({
-            RJSON: gen_releases([(MAJOR, MINOR, PATCH), (MAJOR - 1, 0, 0)])
+            RJSON: gen_releases([(MAJOR, MINOR, PATCH), (MAJOR - 1, 0, 0)]),
         })
         next_u = u.release_update_available()
         assert next_u is None
@@ -134,7 +134,7 @@ class TestUniventionUpdater(object):
         """Test next patch-level update."""
         NEXT_u = U.UCS_Version((MAJOR, MINOR, PATCH + 1))
         http({
-            RJSON: gen_releases([(MAJOR, MINOR, PATCH), (MAJOR, MINOR, PATCH + 1)])
+            RJSON: gen_releases([(MAJOR, MINOR, PATCH), (MAJOR, MINOR, PATCH + 1)]),
         })
         next_u = u.release_update_available()
         assert NEXT_u == next_u
@@ -143,7 +143,7 @@ class TestUniventionUpdater(object):
         """Test next minor update."""
         NEXT_u = U.UCS_Version((MAJOR, MINOR + 1, 0))
         http({
-            RJSON: gen_releases([(MAJOR, MINOR, PATCH), (MAJOR, MINOR + 1, 0)])
+            RJSON: gen_releases([(MAJOR, MINOR, PATCH), (MAJOR, MINOR + 1, 0)]),
         })
         next_u = u.release_update_available()
         assert NEXT_u == next_u
@@ -152,7 +152,7 @@ class TestUniventionUpdater(object):
         """Test next major update."""
         NEXT_u = U.UCS_Version((MAJOR + 1, 0, 0))
         http({
-            RJSON: gen_releases([(MAJOR, MINOR, PATCH), (MAJOR + 1, 0, 0)])
+            RJSON: gen_releases([(MAJOR, MINOR, PATCH), (MAJOR + 1, 0, 0)]),
         })
         next_u = u.release_update_available()
         assert NEXT_u == next_u
@@ -164,7 +164,7 @@ class TestUniventionUpdater(object):
             'repository/online/component/a/version': 'current',
         })
         http({
-            RJSON: gen_releases([(MAJOR, MINOR, PATCH), (MAJOR, MINOR + 1, 0)])
+            RJSON: gen_releases([(MAJOR, MINOR, PATCH), (MAJOR, MINOR + 1, 0)]),
         })
         assert u.release_update_available() is None
 
@@ -179,7 +179,7 @@ class TestUniventionUpdater(object):
             '%d.%d/maintained/component/%s/%s/Packages.gz' % (MAJOR, MINOR + 1, 'a', ARCH): DATA,
             '%d.%d/maintained/component/%s/%s/Packages.gz' % (MAJOR, MINOR + 1, 'b', 'all'): DATA,
             '%d.%d/maintained/component/%s/%s/Packages.gz' % (MAJOR, MINOR + 1, 'b', ARCH): DATA,
-            RJSON: gen_releases([(MAJOR, MINOR, PATCH), (MAJOR, MINOR + 1, 0)])
+            RJSON: gen_releases([(MAJOR, MINOR, PATCH), (MAJOR, MINOR + 1, 0)]),
         })
         tmp = u.release_update_temporary_sources_list(U.UCS_Version((MAJOR, MINOR + 1, 0)))
         assert {

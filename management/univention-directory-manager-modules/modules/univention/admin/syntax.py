@@ -2144,7 +2144,7 @@ class gid(simple):
     # FIXME: The " -." in "[\w -.]" matches the ASCII character range(ord(' '),  ord('.')+1) == range(32, 47)
     error_message = _(
         "A group name must start and end with a letter, number or underscore. In between additionally spaces, dashes "
-        "and dots are allowed."
+        "and dots are allowed.",
     )
 
 
@@ -3129,7 +3129,7 @@ class dnsHostname(dnsName):
         if not all(self.LABEL.match(label) for label in labels):
             raise univention.admin.uexceptions.valueError(_(
                 "A hostname or any part of a FQDN, separated by dots, starts and ends with a letter or a digit. "
-                "In between letters, digits, dashes and underscores are allowed. Only numbers are not allowed."
+                "In between letters, digits, dashes and underscores are allowed. Only numbers are not allowed.",
             ))
         return text
 
@@ -3162,7 +3162,7 @@ class dnsName_umlauts(simple):
     regex = re.compile(r"^(?![0-9]+$|[_-])[\w_-]{1,63}(?<![_-])$", re.UNICODE)
     error_message = _(
         "A hostname or any part of a FQDN, separated by dots, starts and ends with a letter or a digit. "
-        "In between letters, digits, dashes and underscores are allowed. Only numbers are not allowed."
+        "In between letters, digits, dashes and underscores are allowed. Only numbers are not allowed.",
     )
 
 
@@ -3253,7 +3253,7 @@ class dnsPTR(simple):
         (?:\.(?:[0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])){0,2}$
         |^    [0-9a-f]
         (?:\.[0-9a-f]){0,30}$
-        ''', re.VERBOSE
+        ''', re.VERBOSE,
     )
     error_message = _("The reversed host name for IPv4 consists of the reversed host address (example: \"4.3\") or for IPv6 in nibble format (example: \"8.0.0.0.7.0.0.0.0.6.0.0.0.0.5.0\").")
 
@@ -3303,7 +3303,7 @@ class TimeUnits(select):
         ('seconds', _('seconds')),
         ('minutes', _('minutes')),
         ('hours', _('hours')),
-        ('days', _('days'))
+        ('days', _('days')),
     ]
 
 
@@ -3650,7 +3650,7 @@ class IMAP_Right(select):
         ('post', _('Post')),
         ('append', _('Append')),
         ('write', _('Write')),
-        ('all', _('All'))
+        ('all', _('All')),
     ]
 
 
@@ -3931,7 +3931,7 @@ class XModule(select):
         ('vesa', 'Vesa'),
         ('vga', 'VGA'),
         ('via', 'VIA'),
-        ('vmware', 'VMWare')
+        ('vmware', 'VMWare'),
     ]
 
 
@@ -3953,7 +3953,7 @@ class XMouseProtocol(select):
         ('GlidePoint', 'GlidePoint'),
         ('GlidePointPS/2', 'GlidePointPS/2'),
         ('MouseManPlusPS/2', 'MouseManPlusPS/2'),
-        ('ms', 'Serial')
+        ('ms', 'Serial'),
     ]
 
 
@@ -3965,7 +3965,7 @@ class XDisplayPosition(select):
         ('left', _('Left of primary display')),
         ('right', _('Right of primary display')),
         ('above', _('Above primary display')),
-        ('below', _('Below primary display'))
+        ('below', _('Below primary display')),
     ]
 
 
@@ -3976,7 +3976,7 @@ class XMouseDevice(select):
         ('', ''),
         ('/dev/psaux', 'PS/2'),
         ('/dev/input/mice', 'USB'),
-        ('/dev/ttyS0', 'Serial')
+        ('/dev/ttyS0', 'Serial'),
     ]
 
 
@@ -4069,7 +4069,7 @@ class XKeyboardLayout(select):
         ('us', 'USA'),
         ('uz', 'Uzbekistan'),
         ('vn', 'Vietnam'),
-        ('za', 'South Africa')
+        ('za', 'South Africa'),
     ]
 
 
@@ -4658,7 +4658,7 @@ class AllowDenyIgnore(select):
         ('', ''),
         ('allow', _('allow')),
         ('deny', _('deny')),
-        ('ignore', _('ignore'))
+        ('ignore', _('ignore')),
     ]
 
 
@@ -4726,7 +4726,7 @@ class AllowDeny(IStates):
     values = (
         (None, ('', '')),
         (True, ('allow', _('allow'))),
-        (False, ('deny', _('deny')))
+        (False, ('deny', _('deny'))),
     )
     type_class = univention.admin.types.TriBooleanType
 
@@ -4748,7 +4748,7 @@ class booleanNone(IStates):
     values = (
         (None, ('', '')),
         (True, ('yes', _('Yes'))),
-        (False, ('no', _('No')))
+        (False, ('no', _('No'))),
     )
     type_class = univention.admin.types.TriBooleanType
 
@@ -4759,7 +4759,7 @@ class auto_one_zero(select):
     choices = [
         ('Auto', _('Auto')),
         ('1', _('Yes')),
-        ('0', _('No'))
+        ('0', _('No')),
     ]
     # type_class = univention.admin.types.TriBooleanType
 
@@ -4777,7 +4777,7 @@ class TrueFalse(IStates):
     values = (
         (None, ('', '')),
         (True, ('true', _('True'))),
-        (False, ('false', _('False')))
+        (False, ('false', _('False'))),
     )
     type_class = univention.admin.types.TriBooleanType
 
@@ -4801,7 +4801,7 @@ class TrueFalseUpper(IStates):
     values = (
         (None, ('', '')),
         (True, ('TRUE', _('True'))),
-        (False, ('FALSE', _('False')))
+        (False, ('FALSE', _('False'))),
     )
     type_class = univention.admin.types.TriBooleanType
 
@@ -4820,7 +4820,7 @@ class TrueFalseUp(IStates):
 
     values = (
         (True, ('TRUE', _('True'))),
-        (False, ('FALSE', _('False')))
+        (False, ('FALSE', _('False'))),
     )
     type_class = univention.admin.types.BooleanType
     widget = 'CheckBox'
@@ -4837,7 +4837,7 @@ class OkOrNot(IStates):
 
     values = (
         (True, ('OK', _('OK'))),
-        (False, ('Not', _('Not OK')))
+        (False, ('Not', _('Not OK'))),
     )
     type_class = univention.admin.types.BooleanType
     widget = 'CheckBox'
@@ -4856,7 +4856,7 @@ class ddnsUpdateStyle(select):
         ('', ''),
         ('ad-hoc', _('ad-hoc')),
         ('interim', _('interim')),
-        ('none', _('none'))
+        ('none', _('none')),
     ]
 
 
@@ -4866,7 +4866,7 @@ class ddnsUpdates(IStates):
     values = (
         (None, ('', '')),
         (True, ('on', _('on'))),
-        (False, ('off', _('off')))
+        (False, ('off', _('off'))),
     )
     type_class = univention.admin.types.TriBooleanType
 
@@ -5394,7 +5394,7 @@ class sambaGroupType(select):
         ('', ''),
         ('2', _('Domain Group')),
         ('3', _('Local Group')),
-        ('5', _('Well-Known Group'))
+        ('5', _('Well-Known Group')),
     ]
 
 
@@ -5434,7 +5434,7 @@ class SambaLogonHours(MultiSelect):
             (3, _('Wed')),
             (4, _('Thu')),
             (5, _('Fri')),
-            (6, _('Sat'))
+            (6, _('Sat')),
         ) for hour in range(24)
     ]
 
@@ -5540,7 +5540,7 @@ class nfssync(select):
 
     choices = [
         ('sync', _('synchronous')),
-        ('async', _('asynchronous'))
+        ('async', _('asynchronous')),
     ]
 
 
@@ -5652,7 +5652,7 @@ class univentionAdminModules(select):
         ('users/ldap', 'Simple authentication account'),
         ('users/passwd', 'User: Password'),
         ('users/self', 'User: Self'),
-        ('users/user', 'User')
+        ('users/user', 'User'),
     ]
 
     @classmethod
@@ -6388,7 +6388,7 @@ class policyName(string):
         if self._re.match(text):
             return text
         raise univention.admin.uexceptions.valueError(_(
-            'May only contain letters (except umlauts), digits, space as well as the characters # ! $ % & | ^ . ~ _ -. Has to begin with a letter or digit and must not end with space.'
+            'May only contain letters (except umlauts), digits, space as well as the characters # ! $ % & | ^ . ~ _ -. Has to begin with a letter or digit and must not end with space.',
         ))
 
 
@@ -6596,7 +6596,7 @@ class mailHomeServer(LDAP_Search):
             filter='(&(!(univentionObjectFlag=docker))(objectClass=univentionHost)(univentionService=IMAP))',
             attribute=['computers/computer: fqdn'],
             value='computers/computer: fqdn',
-            appendEmptyValue=True
+            appendEmptyValue=True,
         )
 
 
@@ -6814,7 +6814,7 @@ class RadiusClientType(select):
 class mailinglist_name(gid):
     error_message = _(
         "A mailing list name must start and end with a letter, number or underscore. In between additionally spaces, "
-        "dashes and dots are allowed."
+        "dashes and dots are allowed.",
     )
 
 

@@ -51,7 +51,7 @@ options = {
     'default': univention.admin.option(
         short_description=short_description,
         default=True,
-        objectClasses=['ms-net-ieee-80211-GroupPolicy', 'top']
+        objectClasses=['ms-net-ieee-80211-GroupPolicy', 'top'],
     ),
 }
 property_descriptions = {

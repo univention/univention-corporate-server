@@ -237,7 +237,7 @@ def __verify_ldap_object(baseDn, expected_attr=None, strict=True, should_exist=T
             filter='(objectClass=*)',
             base=baseDn,
             scope=ldap.SCOPE_BASE,
-            attr=set(chain(expected_attr.keys(), not_expected_attr.keys()))
+            attr=set(chain(expected_attr.keys(), not_expected_attr.keys())),
         )[0]
     except (ldap.NO_SUCH_OBJECT, IndexError):
         if should_exist:
@@ -280,7 +280,7 @@ def __verify_ldap_object(baseDn, expected_attr=None, strict=True, should_exist=T
                 attr.get(attribute),
                 ('missing: %r;' % "', ".join(x.decode('UTF-8', 'replace') for x in difference_missing)) if difference_missing else '',
                 ('unexpected: %r' % "', ".join(x.decode('UTF-8', 'replace') for x in difference_unexpected)) if difference_unexpected else '',
-            ) for attribute, (difference_missing, difference_unexpected) in mixed.items())
+            ) for attribute, (difference_missing, difference_unexpected) in mixed.items()),
     )
 
     if values_missing:
@@ -301,7 +301,7 @@ def s4connector_present():
 
     for _dn, attr in get_ldap_connection().search(
             filter='(&(|(objectClass=univentionDomainController)(objectClass=univentionMemberServer))(univentionService=S4 Connector))',
-            attr=['aRecord']
+            attr=['aRecord'],
     ):
         if 'aRecord' in attr:
             return True

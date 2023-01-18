@@ -68,9 +68,9 @@ def main():
                         'ip': ip,
                         'name': host,
                         'dnsEntryZoneForward': 'zoneName=%s,cn=dns,%s %s' % (
-                            domain, basedn, ip)
+                            domain, basedn, ip),
                     },
-                    position='cn=computers,%s' % basedn
+                    position='cn=computers,%s' % basedn,
                 )
             mails_list = []
             for mailHomeServer, _ in hosts:
@@ -79,8 +79,8 @@ def main():
                     set={
                         'password': password,
                         'mailPrimaryAddress': mail,
-                        'mailHomeServer': mailHomeServer
-                    }
+                        'mailHomeServer': mailHomeServer,
+                    },
                 )
                 try:
                     univention.admin.uldap.access(binddn=user_dn, bindpw=password, host=ucr['ldap/master'])
@@ -110,7 +110,7 @@ def main():
                         msg=token,
                         tls=True,
                         username=mail,
-                        password=password
+                        password=password,
                     )
                     check_delivery(token, mail, False)
                     print('*** OK: mail was not delivered to systemmail/Dovecot.')

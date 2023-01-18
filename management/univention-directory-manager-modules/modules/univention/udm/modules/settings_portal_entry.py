@@ -34,7 +34,7 @@
 from __future__ import absolute_import, unicode_literals
 from ..encoders import (
     dn_list_property_encoder_for, dn_property_encoder_for, Base64BinaryPropertyEncoder,
-    StringCaseInsensitiveResultUpperBooleanPropertyEncoder, ListOfListOflTextToDictPropertyEncoder
+    StringCaseInsensitiveResultUpperBooleanPropertyEncoder, ListOfListOflTextToDictPropertyEncoder,
 )
 from .generic import GenericModule, GenericObject, GenericObjectProperties
 

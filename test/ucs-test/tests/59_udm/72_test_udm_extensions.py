@@ -197,7 +197,7 @@ class Test_UDMExtensionsJoinscript:
             extension_type,
             '/usr/share/%s/%s' % (package_name, extension_filename),
             app_id=app_id,
-            version_start='5.0-0'
+            version_start='5.0-0',
         )
         extension_buffer = get_extension_buffer(extension_type, extension_name)
 
@@ -252,7 +252,7 @@ class Test_UDMExtensionsJoinscript:
         joinscript_buffer = get_join_script_buffer(
             extension_type,
             '/usr/share/%s/%s' % (package_name, extension_filename),
-            app_id=app_id, version_start=version_start, version_end=version_end
+            app_id=app_id, version_start=version_start, version_end=version_end,
         )
         extension_buffer = get_extension_buffer(extension_type, extension_name)
         print(joinscript_buffer)
@@ -508,7 +508,7 @@ class Test_UDMExtensionsJoinscript:
                     app_id=app_id,
                     joinscript_version=joinscript_version,
                     version_start=version_start,
-                    version_end=version_end
+                    version_end=version_end,
                 )
                 joinscript_version += 1
 
@@ -575,7 +575,7 @@ class Test_UDMExtensionsJoinscript:
                     '/usr/share/%s/%s' % (package_name, extension_filename),
                     app_id=app_id,
                     joinscript_version=joinscript_version,
-                    version_start='5.0-0'
+                    version_start='5.0-0',
                 )
                 joinscript_version += 1
 
@@ -645,7 +645,7 @@ class Test_UDMExtensionsJoinscript:
                     app_id=app_id,
                     joinscript_version=joinscript_version,
                     version_start=version_start,
-                    version_end=version_end
+                    version_end=version_end,
                 )
                 joinscript_version += 1
 
@@ -810,7 +810,7 @@ class Test_UDMExtensionsJoinscript:
             options=options,
             joinscript_version=1,
             version_start=random_ucs_version(max_major=2),
-            version_end=random_ucs_version(min_major=5)
+            version_end=random_ucs_version(min_major=5),
         )
         unjoinscript_buffer = get_unjoin_script_buffer(extension_type, extension_name, package_name)
         extension_buffer = get_extension_buffer(extension_type, extension_name)
@@ -893,7 +893,7 @@ class Test_UDMExtensions:
                 ucsversionstart=version_start,
                 ucsversionend=version_end,
                 active=active,
-                position='cn=udm_%s,cn=univention,%s' % (extension_type, ucr['ldap/base'])
+                position='cn=udm_%s,cn=univention,%s' % (extension_type, ucr['ldap/base']),
             )
 
             verify_ldap_object(dn, {
@@ -942,7 +942,7 @@ class Test_UDMExtensions:
             ucsversionstart=version_start,
             ucsversionend=version_end,
             active='FALSE',
-            position='cn=custom attributes,cn=univention,%s' % ucr.get('ldap/base')
+            position='cn=custom attributes,cn=univention,%s' % ucr.get('ldap/base'),
         )
 
         # wait for replication before local filesystem is checked
@@ -985,7 +985,7 @@ class Test_UDMExtensions:
             active='TRUE',
             ucsversionstart=version_start,
             ucsversionend=version_end,
-            position='cn=udm_%s,cn=univention,%s' % (extension_type, ucr['ldap/base'])
+            position='cn=udm_%s,cn=univention,%s' % (extension_type, ucr['ldap/base']),
         )
 
         # check object
@@ -1056,7 +1056,7 @@ class Test_UDMExtensions:
             ucsversionstart=version_start,
             ucsversionend=version_end,
             active='FALSE',
-            position='cn=udm_%s,cn=univention,%s' % (extension_type, ucr['ldap/base'])
+            position='cn=udm_%s,cn=univention,%s' % (extension_type, ucr['ldap/base']),
         )
 
         wait_for_replication_and_postrun()
@@ -1081,7 +1081,7 @@ class Test_UDMExtensions:
     @pytest.mark.parametrize('version_start,version_end', [
         (random_ucs_version(max_major=2), random_name()),
         (random_name(), random_ucs_version(min_major=5)),
-        (random_name(), random_name())
+        (random_name(), random_name()),
     ])
     def test_create_with_invalid_ucsversions(self, udm, extension_type, version_start, version_end):
         """Create full UDM extension objects via CLI"""
@@ -1105,7 +1105,7 @@ class Test_UDMExtensions:
                 package=package_name,
                 ucsversionstart=version_start,
                 ucsversionend=version_end,
-                active='FALSE'
+                active='FALSE',
             )
 
     @pytest.mark.tags('udm', 'udm-ldapextensions', 'apptest')
@@ -1136,7 +1136,7 @@ class Test_UDMExtensions:
             ucsversionstart=version_start,
             ucsversionend=version_end,
             active='FALSE',
-            position='cn=custom attributes,cn=univention,%s' % ucr.get('ldap/base')
+            position='cn=custom attributes,cn=univention,%s' % ucr.get('ldap/base'),
         )
 
         # wait for replication before local filesystem is checked
@@ -1189,7 +1189,7 @@ class Test_UDMExtensions:
             'container/cn',
             name='udm_%s' % (extension_type,),
             position='cn=univention,%s' % (ucr['ldap/base'],),
-            ignore_exists=True
+            ignore_exists=True,
         )
 
         dn = udm.create_object(
@@ -1203,7 +1203,7 @@ class Test_UDMExtensions:
             ucsversionstart=version_start,
             ucsversionend=version_end,
             active='FALSE',
-            position='cn=udm_%s,cn=univention,%s' % (extension_type, ucr['ldap/base'])
+            position='cn=udm_%s,cn=univention,%s' % (extension_type, ucr['ldap/base']),
         )
 
         wait_for_replication()
@@ -1255,7 +1255,7 @@ class Test_UDMExtensions:
             'container/cn',
             name='udm_%s' % (extension_type,),
             position='cn=univention,%s' % (ucr['ldap/base'],),
-            ignore_exists=True
+            ignore_exists=True,
         )
 
         dn = udm.create_object(
@@ -1269,7 +1269,7 @@ class Test_UDMExtensions:
             ucsversionstart=version_start,
             ucsversionend=version_end,
             active='FALSE',
-            position='cn=udm_%s,cn=univention,%s' % (extension_type, ucr['ldap/base'])
+            position='cn=udm_%s,cn=univention,%s' % (extension_type, ucr['ldap/base']),
         )
 
         wait_for_replication()
@@ -1327,7 +1327,7 @@ class Test_UDMExtensions:
             ucsversionstart=version_start,
             ucsversionend=version_end,
             active='FALSE',
-            position='cn=udm_%s,cn=univention,%s' % (extension_type, ucr['ldap/base'])
+            position='cn=udm_%s,cn=univention,%s' % (extension_type, ucr['ldap/base']),
         )
 
         udm.create_object(
@@ -1352,7 +1352,7 @@ class Test_UDMExtensions:
             multivalue='0',
             ldapMapping='univentionFreeAttribute20',
             notEditable='0',
-            tabPosition='2'
+            tabPosition='2',
         )
 
         wait_for_replication_and_postrun()
@@ -1400,7 +1400,7 @@ class Test_UDMExtensions:
             ucsversionstart=version_start,
             ucsversionend=version_end,
             active='FALSE',
-            position='cn=udm_%s,cn=univention,%s' % (extension_type, ucr['ldap/base'])
+            position='cn=udm_%s,cn=univention,%s' % (extension_type, ucr['ldap/base']),
         )
 
         udm.create_object(
@@ -1425,7 +1425,7 @@ class Test_UDMExtensions:
             multivalue='0',
             ldapMapping='univentionFreeAttribute20',
             notEditable='0',
-            tabPosition='2'
+            tabPosition='2',
         )
 
         wait_for_replication_and_postrun()
@@ -1464,7 +1464,7 @@ class Test_UDMExtensions:
             'container/cn',
             name='udm_%s' % (extension_type,),
             position='cn=univention,%s' % (ucr['ldap/base'],),
-            ignore_exists=True
+            ignore_exists=True,
         )
 
         extension_dn = udm.create_object(
@@ -1478,7 +1478,7 @@ class Test_UDMExtensions:
             ucsversionstart=version_start,
             ucsversionend=version_end,
             active='FALSE',
-            position='cn=udm_%s,cn=univention,%s' % (extension_type, ucr['ldap/base'])
+            position='cn=udm_%s,cn=univention,%s' % (extension_type, ucr['ldap/base']),
         )
 
         udm.create_object(
@@ -1503,7 +1503,7 @@ class Test_UDMExtensions:
             multivalue='0',
             ldapMapping='univentionFreeAttribute20',
             notEditable='0',
-            tabPosition='2'
+            tabPosition='2',
         )
 
         wait_for_replication_and_postrun()
@@ -1579,7 +1579,7 @@ class Test_UDMExtensions:
             'container/cn',
             name='udm_%s' % (extension_type,),
             position='cn=univention,%s' % (ucr['ldap/base'],),
-            ignore_exists=True
+            ignore_exists=True,
         )
 
         extension_dn = udm.create_object(
@@ -1593,7 +1593,7 @@ class Test_UDMExtensions:
             ucsversionstart=version_start,
             ucsversionend=version_end,
             active='FALSE',
-            position='cn=udm_%s,cn=univention,%s' % (extension_type, ucr['ldap/base'])
+            position='cn=udm_%s,cn=univention,%s' % (extension_type, ucr['ldap/base']),
         )
 
         udm.create_object(
@@ -1618,7 +1618,7 @@ class Test_UDMExtensions:
             multivalue='0',
             ldapMapping='univentionFreeAttribute20',
             notEditable='0',
-            tabPosition='2'
+            tabPosition='2',
         )
 
         wait_for_replication_and_postrun()
@@ -1699,7 +1699,7 @@ class Test_UDMExtensions:
             ucsversionstart=version_start,
             ucsversionend=version_end,
             active='FALSE',
-            position='cn=udm_%s,cn=univention,%s' % (extension_type, ucr['ldap/base'])
+            position='cn=udm_%s,cn=univention,%s' % (extension_type, ucr['ldap/base']),
         )
 
         udm.create_object(
@@ -1723,7 +1723,7 @@ class Test_UDMExtensions:
             multivalue='0',
             ldapMapping='univentionFreeAttribute20',
             notEditable='0',
-            tabPosition='1'
+            tabPosition='1',
         )
 
         wait_for_replication_and_postrun()
@@ -1771,7 +1771,7 @@ class Test_UDMExtensions:
             ucsversionstart=version_start,
             ucsversionend=version_end,
             active='FALSE',
-            position='cn=udm_%s,cn=univention,%s' % (extension_type, ucr['ldap/base'])
+            position='cn=udm_%s,cn=univention,%s' % (extension_type, ucr['ldap/base']),
         )
 
         udm.create_object(
@@ -1795,7 +1795,7 @@ class Test_UDMExtensions:
             multivalue='0',
             ldapMapping='univentionFreeAttribute20',
             notEditable='0',
-            tabPosition='1'
+            tabPosition='1',
         )
 
         wait_for_replication_and_postrun()
@@ -1834,7 +1834,7 @@ class Test_UDMExtensions:
             'container/cn',
             name='udm_%s' % (extension_type,),
             position='cn=univention,%s' % (ucr['ldap/base'],),
-            ignore_exists=True
+            ignore_exists=True,
         )
 
         extension_dn = udm.create_object(
@@ -1848,7 +1848,7 @@ class Test_UDMExtensions:
             ucsversionstart=version_start,
             ucsversionend=version_end,
             active='FALSE',
-            position='cn=udm_%s,cn=univention,%s' % (extension_type, ucr['ldap/base'])
+            position='cn=udm_%s,cn=univention,%s' % (extension_type, ucr['ldap/base']),
         )
 
         udm.create_object(
@@ -1872,7 +1872,7 @@ class Test_UDMExtensions:
             multivalue='0',
             ldapMapping='univentionFreeAttribute20',
             notEditable='0',
-            tabPosition='1'
+            tabPosition='1',
         )
 
         wait_for_replication_and_postrun()
@@ -1928,7 +1928,7 @@ class Test_UDMExtensions:
             'container/cn',
             name='udm_%s' % (extension_type,),
             position='cn=univention,%s' % (ucr['ldap/base'],),
-            ignore_exists=True
+            ignore_exists=True,
         )
 
         extension_dn = udm.create_object(
@@ -1942,7 +1942,7 @@ class Test_UDMExtensions:
             ucsversionstart=version_start,
             ucsversionend=version_end,
             active='FALSE',
-            position='cn=udm_%s,cn=univention,%s' % (extension_type, ucr['ldap/base'])
+            position='cn=udm_%s,cn=univention,%s' % (extension_type, ucr['ldap/base']),
         )
 
         udm.create_object(
@@ -1966,7 +1966,7 @@ class Test_UDMExtensions:
             multivalue='0',
             ldapMapping='univentionFreeAttribute20',
             notEditable='0',
-            tabPosition='1'
+            tabPosition='1',
         )
 
         wait_for_replication_and_postrun()
@@ -2029,7 +2029,7 @@ class Test_UDMExtensions:
             ucsversionstart=version_start,
             ucsversionend=version_end,
             active='FALSE',
-            position='cn=udm_%s,cn=univention,%s' % (extension_type, ucr['ldap/base'])
+            position='cn=udm_%s,cn=univention,%s' % (extension_type, ucr['ldap/base']),
         )
 
         wait_for_replication()
@@ -2077,7 +2077,7 @@ class Test_UDMExtensions:
             ucsversionstart=version_start,
             ucsversionend=version_end,
             active='FALSE',
-            position='cn=udm_%s,cn=univention,%s' % (extension_type, ucr['ldap/base'])
+            position='cn=udm_%s,cn=univention,%s' % (extension_type, ucr['ldap/base']),
         )
 
         wait_for_replication()
@@ -2233,7 +2233,7 @@ class Test_UDMExtensionSpecial:
                 'package': package_name,
                 'ucsversionstart': version_start,
                 'ucsversionend': version_end,
-                'active': 'FALSE'
+                'active': 'FALSE',
             }
 
             if not dn:
@@ -2241,14 +2241,14 @@ class Test_UDMExtensionSpecial:
                     'settings/udm_%s' % extension_type,
                     name=extension_name,
                     position=udm.UNIVENTION_CONTAINER,
-                    **properties
+                    **properties,
                 )
             else:
                 try:
                     udm.modify_object(
                         'settings/udm_%s' % extension_type,
                         dn=dn,
-                        **properties
+                        **properties,
                     )
                 except UCSTestUDM_ModifyUDMObjectFailed as ex:
                     print('CAUGHT EXCEPTION: %s' % ex)
@@ -2282,7 +2282,7 @@ class Test_UDMExtensionSpecial:
                 package=package_name,
                 ucsversionstart=version_start,
                 ucsversionend=version_end,
-                active='FALSE'
+                active='FALSE',
             )
         except UCSTestUDM_CreateUDMObjectFailed:
             print('NOTICE: creating malicious UDM %s extension object failed' % extension_type)

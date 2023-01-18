@@ -26,9 +26,9 @@ def test_san():
                 'network': 'cn=default,cn=networks,%s' % ucr.get('ldap/base'),
                 'dnsEntryZoneAlias': '{0} zoneName={0},cn=dns,{1} www'.format(
                             domainname,
-                            ucr.get('ldap/base')
-                )
-            }
+                            ucr.get('ldap/base'),
+                ),
+            },
         )
 
         x509 = X509.load_cert('/etc/univention/ssl/%s/cert.pem' % membername)
@@ -47,8 +47,8 @@ def test_san_different_network():
             position='cn=dns,%s' % ucr.get('ldap/base'),
             set={
                 'nameserver': ucr.get('hostname'),
-                'zone': zonename
-            }
+                'zone': zonename,
+            },
         )
 
         membername = strings.random_string()
@@ -59,8 +59,8 @@ def test_san_different_network():
                 'name': membername,
                 'password': 'univention',
                 'network': 'cn=default,cn=networks,%s' % ucr.get('ldap/base'),
-                'dnsEntryZoneAlias': '%s %s www' % (ucr.get('domainname'), forwardzonedn)
-            }
+                'dnsEntryZoneAlias': '%s %s www' % (ucr.get('domainname'), forwardzonedn),
+            },
         )
 
         x509 = X509.load_cert('/etc/univention/ssl/%s/cert.pem' % membername)

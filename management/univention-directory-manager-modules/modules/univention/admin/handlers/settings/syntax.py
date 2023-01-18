@@ -63,7 +63,7 @@ property_descriptions = {
         syntax=univention.admin.syntax.string,
         include_in_default_search=True,
         required=True,
-        identifies=True
+        identifies=True,
     ),
     'description': univention.admin.property(
         short_description=_('Syntax Description'),
@@ -133,7 +133,7 @@ layout = [
             "ldapvalue"]),
         Group(_('Options'), layout=[
             "viewonly",
-            "addEmptyValue"])
+            "addEmptyValue"]),
     ]),
 ]
 

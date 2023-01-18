@@ -106,7 +106,7 @@ def test_mail_forward(mail_copy_to_self):
                         'univentionMailHomeServer': [user.mailHomeServer],
                         'mailPrimaryAddress': [user.mailPrimaryAddress],
                         'mailForwardAddress': user.mailForwardAddress,
-                        'mailForwardCopyToSelf': '1'
+                        'mailForwardCopyToSelf': '1',
                     },
                     strict=True)
             else:

@@ -113,7 +113,7 @@ class UDMBase:
         self.selenium.click_element(
             '//div[contains(concat(" ", normalize-space(@class), " "), " dijitDialog ")]'
             '//*[contains(concat(" ", normalize-space(@class), " "), " dijitButtonText ")]'
-            '[text() = "%s"]' % (_("Delete"),)
+            '[text() = "%s"]' % (_("Delete"),),
         )
         # FIXME: this waits forever and let's the test fail when no grid entries exists.
         # self.wait_for_main_grid_load()
@@ -124,7 +124,7 @@ class UDMBase:
         # This method will work with *most* UDM modules.
         xpath = '//input[@name="objectPropertyValue"]'
         elems = webdriver.support.ui.WebDriverWait(xpath, 60).until(
-            self.selenium.get_all_enabled_elements
+            self.selenium.get_all_enabled_elements,
         )
         elems[0].clear()
         elems[0].send_keys(objectname)
@@ -289,7 +289,7 @@ class Users(UDMBase):
         # type: () -> str
         xpath = '//input[@name="description"]'
         elems = webdriver.support.ui.WebDriverWait(xpath, 60).until(
-            self.selenium.get_all_enabled_elements
+            self.selenium.get_all_enabled_elements,
         )
         return elems[0].get_attribute('value')
 
@@ -297,7 +297,7 @@ class Users(UDMBase):
         # type: () -> str
         xpath = '//input[@name="mailPrimaryAddress"]'
         elems = webdriver.support.ui.WebDriverWait(xpath, 60).until(
-            self.selenium.get_all_enabled_elements
+            self.selenium.get_all_enabled_elements,
         )
         return elems[0].get_attribute('value')
 
@@ -307,7 +307,7 @@ class Users(UDMBase):
             firstname='',  # type: str
             lastname=None,  # type: Optional[str]
             username=None,  # type: Optional[str]
-            password='univention'  # type: str
+            password='univention',  # type: str
     ):  # type: (...) -> Dict[str, str]
         if username is None:
             username = uts.random_string()

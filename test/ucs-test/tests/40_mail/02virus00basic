@@ -36,7 +36,7 @@ def main():
                 host = ucr.get('hostname')
                 handler_set([
                     'mail/alias/root=systemmail@%s.%s' % (
-                            host, domain)
+                            host, domain),
                 ])
                 reload_amavis_postfix()
                 mail = 'virus%stest@%s' % (uts.random_string(), domain)
@@ -44,7 +44,7 @@ def main():
                     set={
                         'mailHomeServer': '%s.%s' % (host, domain),
                         'mailPrimaryAddress': mail,
-                    }
+                    },
                 )
 
                 token1 = str(time.time())

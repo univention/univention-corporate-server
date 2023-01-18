@@ -53,7 +53,7 @@ options = {
     'default': univention.admin.option(
         short_description=short_description,
         default=True,
-        objectClasses=['msWMISom', 'top']
+        objectClasses=['msWMISom', 'top'],
     ),
 }
 property_descriptions = {
@@ -77,7 +77,7 @@ property_descriptions = {
         short_description=_('MS WMI ID'),
         long_description='',
         syntax=univention.admin.syntax.string,
-        identifies=True
+        identifies=True,
     ),
     'author': univention.admin.property(
         short_description=_('MS WMI Author'),
@@ -164,7 +164,7 @@ layout = [
             #['flags4'],
             #['sourceOrganization'],
         ]),
-    ])
+    ]),
 ]
 
 mapping = univention.admin.mapping.mapping()

@@ -55,7 +55,7 @@ options = {
     'default': univention.admin.option(
         short_description=short_description,
         default=True,
-        objectClasses=['top', 'organizationalRole']
+        objectClasses=['top', 'organizationalRole'],
     ),
 }
 property_descriptions = {
@@ -270,7 +270,7 @@ class object(univention.admin.handlers.simpleLdap):
         return univention.admin.filter.conjunction('&', [
             univention.admin.filter.expression('objectClass', 'organizationalRole'),
             univention.admin.filter.conjunction('!', [univention.admin.filter.expression('cn', 'univention')]),
-            univention.admin.filter.conjunction('!', [univention.admin.filter.expression('objectClass', 'univentionBase')])
+            univention.admin.filter.conjunction('!', [univention.admin.filter.expression('objectClass', 'univentionBase')]),
         ])
 
 

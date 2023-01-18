@@ -64,7 +64,7 @@ def _branding_resources_base_url(app_id: str, ucs_version: str) -> str:
         protocol=protocol,
         server=server,
         version=ucs_version,
-        app=app_id
+        app=app_id,
     )
 
 
@@ -186,7 +186,7 @@ def configure_portal(app: App) -> None:
 ''')
 
         ucr_update(UCR, {
-            'ucs/web/theme': 'ucs-app-appliance'
+            'ucs/web/theme': 'ucs-app-appliance',
         })
 
     portal_font_color = app_props.get('portal_font_color')

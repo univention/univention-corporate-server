@@ -127,7 +127,7 @@ class XML_Definition(ET.ElementTree):
             'name': self.name,
             'icon': self.icon,
             'color': self.color,
-            'priority': self.priority
+            'priority': self.priority,
         }
 
 

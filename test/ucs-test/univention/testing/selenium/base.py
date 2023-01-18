@@ -98,7 +98,7 @@ class UMCSeleniumTest(ChecksAndWaits, Interactions):
             self.driver = webdriver.Remote(
                 command_executor=os.environ.get('SELENIUM_HUB', 'http://jenkins.knut.univention.de:4444/wd/hub'),
                 desired_capabilities={
-                    'browserName': self.browser
+                    'browserName': self.browser,
                 })
         else:
             if self.browser == 'chrome':
@@ -254,8 +254,8 @@ class UMCSeleniumTest(ChecksAndWaits, Interactions):
 
         self.wait_until(
             expected_conditions.presence_of_element_located(
-                (webdriver.common.by.By.ID, "umcLoginUsername")
-            )
+                (webdriver.common.by.By.ID, "umcLoginUsername"),
+            ),
         )
         self.enter_input('username', username)
         self.enter_input('password', password)
@@ -273,7 +273,7 @@ class UMCSeleniumTest(ChecksAndWaits, Interactions):
             _('System'),
             _('Software'),
             _('Installed Applications'),
-            _('no module available')
+            _('no module available'),
         ])
         try:
             self.wait_for_text(_('no module available'), timeout=1)

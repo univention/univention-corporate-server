@@ -138,13 +138,13 @@ def test_newline_nfs_hacking():
 
 def test_multiple_entries_hacking():
     [{
-        'univentionShareSambaCustomSetting': [' ', '[foo]', 'path = /etc']
+        'univentionShareSambaCustomSetting': [' ', '[foo]', 'path = /etc'],
     }, {
-        'univentionShareSambaCustomSetting': ['\n[foo]\npath = /etc']
+        'univentionShareSambaCustomSetting': ['\n[foo]\npath = /etc'],
     }]
 
 
 def test_code_execution_path():
     {
-        'univentionSharePath': ["/'; touch /tmp/hacked; true '"]
+        'univentionSharePath': ["/'; touch /tmp/hacked; true '"],
     }

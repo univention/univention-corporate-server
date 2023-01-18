@@ -52,7 +52,7 @@ mapping = {
     },
     'mail': {
         'objectClass': [b'univentionMail'],
-    }
+    },
 }
 
 constellations = [

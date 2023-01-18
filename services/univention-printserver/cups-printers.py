@@ -177,7 +177,7 @@ def handler(dn: str, new: Dict[str, List[bytes]], old: Dict[str, List[bytes]]) -
         'univentionPrinterURI': '-v',
         'univentionPrinterLocation': '-L',
         'description': '-D',
-        'univentionPrinterModel': '-m'
+        'univentionPrinterModel': '-m',
     }
 
     if not (filter_match(new) or filter_match(old)):

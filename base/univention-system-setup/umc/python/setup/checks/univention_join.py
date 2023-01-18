@@ -25,14 +25,14 @@ def set_role_and_check_if_join_will_work(role, master_fqdn, admin_username, admi
                 '-dcname', master_fqdn,
                 '-dcaccount', admin_username,
                 '-dcpwd', password_file,
-                '-checkPrerequisites'
+                '-checkPrerequisites',
             ], stdout=subprocess.PIPE, stderr=subprocess.STDOUT, close_fds=True)
             stdout, stderr = p1.communicate()
             if p1.returncode != 0:
                 messages = [line[11:] for line in stdout.decode("UTF-8", "replace").split('\n') if line.startswith("* Message: ")]
                 raise UMC_Error(_(
                     "univention-join -checkPrerequisites reported a problem. "
-                    "Output of check:\n\n"
+                    "Output of check:\n\n",
                 ) + "\n".join(messages))
     finally:
         if orig_role:
@@ -79,7 +79,7 @@ def check_domain_has_activated_license(address, username, password):
                 '%s@%s' % (username, address),
                 '/usr/sbin/ucr',
                 'get',
-                'uuid/license'
+                'uuid/license',
             ], stderr=subprocess.STDOUT).decode('UTF-8').rstrip()
         except subprocess.CalledProcessError as exc:
             valid_license = False
@@ -91,7 +91,7 @@ def check_domain_has_activated_license(address, username, password):
     if not valid_license:
         raise UMC_Error(' '.join(
             _('To install the {appliance_name} appliance it is necessary to have an activated UCS license on the Primary Directory Node.').format(appliance_name=appliance_name),
-            _('During the check of the license status the following error occurred:\n{error}').format(error=error)
+            _('During the check of the license status the following error occurred:\n{error}').format(error=error),
         ))
 
 
@@ -116,7 +116,7 @@ def check_memberof_overlay_is_installed(address, username, password):
                 '%s@%s' % (username, address),
                 '/usr/sbin/univention-config-registry',
                 'get',
-                'ldap/overlay/memberof'
+                'ldap/overlay/memberof',
             ]).strip().decode('UTF-8'))
         except subprocess.CalledProcessError as exc:
             MODULE.error('Could not query Primary Directory Node for memberof overlay: %s' % (exc,))
@@ -145,7 +145,7 @@ def check_is_school_multiserver_domain(address, username, password):
                 '%s@%s' % (username, address),
                 '/usr/sbin/univention-config-registry',
                 'get',
-                'ldap/hostdn'
+                'ldap/hostdn',
             ]).strip().decode('UTF-8')
             ldap_base = subprocess.check_output([
                 'univention-ssh',
@@ -153,7 +153,7 @@ def check_is_school_multiserver_domain(address, username, password):
                 '%s@%s' % (username, address),
                 '/usr/sbin/univention-config-registry',
                 'get',
-                'ldap/base'
+                'ldap/base',
             ]).strip().decode('UTF-8')
             remote_cmd = ' '.join(pipes.quote(x) for x in [
                 'univention-ldapsearch',
@@ -190,7 +190,7 @@ def get_server_school_roles(hostname, address, username, password):
                 '%s@%s' % (username, address),
                 '/usr/sbin/univention-config-registry',
                 'get',
-                'ldap/base'
+                'ldap/base',
             ]).strip().decode('UTF-8')
             remote_cmd = ' '.join(pipes.quote(x) for x in [
                 'univention-ldapsearch',

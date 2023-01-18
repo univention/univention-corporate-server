@@ -54,7 +54,7 @@ description = _('All SSL certificates valid.')
 links = [{
     'name': 'sdb',
     'href': _('http://sdb.univention.de/1183'),
-    'label': _('Univention Support Database - Renewing the TLS/SSL certificates')
+    'label': _('Univention Support Database - Renewing the TLS/SSL certificates'),
 }]
 
 

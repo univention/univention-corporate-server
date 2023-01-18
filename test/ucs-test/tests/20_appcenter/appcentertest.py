@@ -367,7 +367,7 @@ class CheckOperations:
             checks._check_ucr_variables_exist(),
             checks._check_files_exist(),
             checks._check_ldap_object_exists(),
-            checks._check_url_accessible()
+            checks._check_url_accessible(),
         ))
 
     @classmethod
@@ -377,7 +377,7 @@ class CheckOperations:
         return all((
             checks._check_dpkg_uninstalled_status(),
             checks._check_ucr_variables_dont_exist(),
-            checks._check_ldap_object_doesnt_exist()
+            checks._check_ldap_object_doesnt_exist(),
         ))
 
     def _fail(self, message):
@@ -467,7 +467,7 @@ class CheckOperations:
         web_entries_base = f"ucs/web/overview/entries/{scheme}/{self.application}"
         pairs = (
                 ("/link", interface), ("/port_http", str(port_http)),
-                ("/port_https", str(port_https))
+                ("/port_https", str(port_https)),
         )
 
         if interface and port_http and port_https:

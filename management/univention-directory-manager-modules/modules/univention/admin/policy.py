@@ -57,7 +57,7 @@ def policy_object_tab():
     return Tab(_('Object'), _('Object'), advanced=True, layout=[
         ['ldapFilter'],
         ['requiredObjectClasses', 'prohibitedObjectClasses'],
-        ['fixedAttributes', 'emptyAttributes']
+        ['fixedAttributes', 'emptyAttributes'],
     ])
 
 

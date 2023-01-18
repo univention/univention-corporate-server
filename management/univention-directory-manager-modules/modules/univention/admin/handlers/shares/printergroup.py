@@ -66,7 +66,7 @@ property_descriptions = {
         include_in_default_search=True,
         required=True,
         may_change=False,
-        identifies=True
+        identifies=True,
     ),
     'spoolHost': univention.admin.property(
         short_description=_('Print server'),
@@ -86,7 +86,7 @@ property_descriptions = {
         short_description=_('Windows name'),
         long_description='',
         syntax=univention.admin.syntax.string,
-        unique=True
+        unique=True,
     ),
 }
 

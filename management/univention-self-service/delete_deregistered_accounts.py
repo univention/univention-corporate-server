@@ -99,7 +99,7 @@ def main(args):
         days=args.timedelta_days,
         hours=args.timedelta_hours,
         minutes=args.timedelta_minutes,
-        seconds=args.timedelta_seconds
+        seconds=args.timedelta_seconds,
     )
     deregistration_timestamp_threshold = datetime.datetime.strftime(now - dt, DEREGISTRATION_TIMESTAMP_FORMATTING)
     logging.info('Deleting users with univentionDeregisteredThroughSelfService=TRUE whose univentionDeregistrationTimestamp is older than {}'.format(dt))

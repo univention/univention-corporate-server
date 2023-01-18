@@ -94,7 +94,7 @@ for dn, attrs in lo.search(filter='(&(objectClass=sambaSamAccount)(sambaNTPasswo
 
         ml.extend([
             ('krb5Key', old_keys, nt_password_to_arcfour_hmac_md5(attrs['sambaNTPassword'][0])),
-            ('krb5KDCFlags', old_flag, b'256' if disabled else b'126')
+            ('krb5KDCFlags', old_flag, b'256' if disabled else b'126'),
         ])
 
         if ocs:

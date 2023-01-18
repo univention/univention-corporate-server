@@ -138,7 +138,7 @@ class Value:
             'domaincontroller_master',
             'domaincontroller_backup',
             'domaincontroller_slave',
-            'memberserver'
+            'memberserver',
         }
 
         values = map(str.strip, self.value.split(','))

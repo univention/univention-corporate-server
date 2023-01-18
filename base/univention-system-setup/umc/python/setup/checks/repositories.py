@@ -20,7 +20,7 @@ def get_unreachable_repository_servers():
     servers = [
         UCR.get('repository/online/server'),
         UCR.get('repository/app_center/server'),
-        'docker.software-univention.de'
+        'docker.software-univention.de',
     ]
 
     processes = start_curl_processes(servers)
@@ -53,5 +53,5 @@ def log_warnings_about_unreachable_repository_servers(servers_with_curl_processe
             MODULE.warn(
                 # FIXME: When changing to Python 3 use process.args here.
                 "'curl --max-time 10 %s' exited with returncode %s." %
-                (server, process.returncode)
+                (server, process.returncode),
             )

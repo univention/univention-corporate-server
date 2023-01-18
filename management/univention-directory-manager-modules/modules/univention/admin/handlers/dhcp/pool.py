@@ -58,7 +58,7 @@ options = {
     'default': univention.admin.option(
         short_description=short_description,
         default=True,
-        objectClasses=['top', 'univentionDhcpPool']
+        objectClasses=['top', 'univentionDhcpPool'],
     ),
 }
 property_descriptions = {
@@ -69,7 +69,7 @@ property_descriptions = {
         include_in_default_search=True,
         required=True,
         may_change=False,
-        identifies=True
+        identifies=True,
     ),
     'range': univention.admin.property(
         short_description=_('IP range for dynamic assignment'),
@@ -109,14 +109,14 @@ layout = [
     Tab(_('General'), _('Basic settings'), layout=[
         Group(_('General DHCP pool settings'), layout=[
             'name',
-            'range'
+            'range',
         ]),
     ]),
     Tab(_('Advanced'), _('Advanced DHCP pool options'), advanced=True, layout=[
         'failover_peer',
         ['known_clients', 'unknown_clients'],
-        ['dynamic_bootp_clients', 'all_clients']
-    ])
+        ['dynamic_bootp_clients', 'all_clients'],
+    ]),
 ]
 
 

@@ -34,7 +34,7 @@ UDM_MODULE = 'computers/ipmanagedclient'
 name = random_name()
 dn = 'cn=%s,cn=memberserver,cn=computers,%s' % (name, ucr.get('ldap/base'))
 modlist = [
-    (ldap.MOD_REPLACE, 'entryUUID', b'76944348-ea2e-1032-95ad-000000000000')
+    (ldap.MOD_REPLACE, 'entryUUID', b'76944348-ea2e-1032-95ad-000000000000'),
 ]
 
 

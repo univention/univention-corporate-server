@@ -79,7 +79,7 @@ class ComplexHandler(ListenerModuleHandler):
         self.logger.info('ComplexHandler.modify() self.diff(old, new)=%r', self.diff(old, new))
         self.logger.info(
             'ComplexHandler.modify() self.diff(old, new, ignore_metadata=False)=%r',
-            self.diff(old, new, ignore_metadata=False)
+            self.diff(old, new, ignore_metadata=False),
         )
 
     def remove(self, dn: str, old: Mapping[str, Sequence[bytes]]) -> None:
@@ -119,5 +119,5 @@ class ComplexHandler(ListenerModuleHandler):
         # information about the exception.
         self.logger.exception(
             'An error occurred in listener module %r. dn=%r old={%d keys...} new={%d keys...} command=%r',
-            self.config.name, dn, len(old.keys()), len(new.keys()), command
+            self.config.name, dn, len(old.keys()), len(new.keys()), command,
         )

@@ -153,7 +153,7 @@ class Instance(Base, ProgressMixin):
         ('DebugLevel', 'connector/debug/level', 2),
         ('DebugFunction', 'connector/debug/function', False),
         ('MappingSyncMode', 'connector/ad/mapping/syncmode', 'sync'),
-        ('MappingGroupLanguage', 'connector/ad/mapping/group/language', 'de')
+        ('MappingGroupLanguage', 'connector/ad/mapping/group/language', 'de'),
     )
 
     def init(self):

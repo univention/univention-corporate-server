@@ -572,7 +572,7 @@ def create_ovf_descriptor_virtualbox(machine_uuid, image_name, image_size, image
                 E.Description('Logical network used by this appliance.'),
                 **{
                     OVF + 'name': 'Bridged',
-                }
+                },
             ),
         ),
         E.VirtualSystem(
@@ -600,11 +600,11 @@ def create_ovf_descriptor_virtualbox(machine_uuid, image_name, image_size, image
                     'Debian_64',
                     **{
                         OVF + 'required': 'false',
-                    }
+                    },
                 ),
                 **{
                     OVF + 'id': '96',
-                }
+                },
             ),
             E.VirtualHardwareSection(
                 E.Info('Virtual hardware requirements for a virtual machine'),
@@ -662,12 +662,12 @@ def create_ovf_descriptor_virtualbox(machine_uuid, image_name, image_size, image
             ),
             **{
                 OVF + 'id': machine_name,
-            }
+            },
         ),
         **{
             XML + 'lang': 'en-US',
             OVF + 'version': '1.0',
-        }
+        },
     )
     return cast(bytes, lxml.etree.tostring(envelope, encoding='UTF-8', xml_declaration=True, pretty_print=True))
 
@@ -783,7 +783,7 @@ def create_ovf_descriptor_esxi(image_name, image_size, image_packed_size, image_
                 E.Description('The VM Network network'),
                 **{
                     OVF + 'name': 'VM Network',
-                }
+                },
             ),
         ),
         E.VirtualSystem(
@@ -810,7 +810,7 @@ def create_ovf_descriptor_esxi(image_name, image_size, image_packed_size, image_
                 **{
                     OVF + 'id': '100',
                     VMW + 'osType': 'other26xLinux64Guest',
-                }
+                },
             ),
             E.VirtualHardwareSection(
                 E.Info('Virtual hardware requirements'),
@@ -873,7 +873,7 @@ def create_ovf_descriptor_esxi(image_name, image_size, image_packed_size, image_
                     }),
                     **{
                         OVF + 'required': 'false',
-                    }
+                    },
                 ),
                 E.Item(
                     Erasd.AutomaticAllocation('false'),
@@ -907,7 +907,7 @@ def create_ovf_descriptor_esxi(image_name, image_size, image_packed_size, image_
                     }),
                     **{
                         OVF + 'required': 'false',
-                    }
+                    },
                 ),
                 E.Item(
                     Erasd.AutomaticAllocation('false'),
@@ -922,7 +922,7 @@ def create_ovf_descriptor_esxi(image_name, image_size, image_packed_size, image_
                     }),
                     **{
                         OVF + 'required': 'false',
-                    }
+                    },
                 ),
                 E.Item(
                     Erasd.AddressOnParent('0'),
@@ -1040,11 +1040,11 @@ def create_ovf_descriptor_esxi(image_name, image_size, image_packed_size, image_
             ),
             **{
                 OVF + 'id': machine_name,
-            }
+            },
         ),
         **{
             VMW + 'buildId': 'build-1331820',
-        }
+        },
     )
     return cast(bytes, lxml.etree.tostring(envelope, encoding='UTF-8', xml_declaration=True, pretty_print=True))
 
@@ -1161,7 +1161,7 @@ def create_import_manifest(image, vmdk, bucket, folder_name, image_name, volume_
                 # Definition of a particular part. Any number of parts may be defined.
                 *parts,
                 # Total count of the parts.
-                count='%d' % (part_count,)
+                count='%d' % (part_count,),
             ),
         ),
     )
@@ -1225,7 +1225,7 @@ class EC2_EBS(Target):
             zone,
             description=machine_name,
             image_size=vmdk.size(),
-            manifest_url=manifest_url
+            manifest_url=manifest_url,
         )
         # wait for volume
         while True:

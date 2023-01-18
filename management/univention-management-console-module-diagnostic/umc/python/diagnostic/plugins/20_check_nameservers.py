@@ -52,7 +52,7 @@ description = ['All nameserver entries are ok.']
 links = [{
     'name': 'sdb',
     'href': _('http://sdb.univention.de/1273'),
-    'label': _('Univention Support Database - Bind: zone transfer failed')
+    'label': _('Univention Support Database - Bind: zone transfer failed'),
 }]
 run_descr = ['Checks nameserver entries on DNS zones']
 
@@ -115,8 +115,8 @@ class Zone(object):
                 'openObject': {
                     'objectDN': self.udm_zone.dn,
                     'objectType': self.kind,
-                }
-            }
+                },
+            },
         }
         return (text, link)
 
@@ -216,7 +216,7 @@ def find_all_zone_problems() -> Iterator[ZoneError]:
 def run(_umc_instance: Instance) -> None:
     ed = [' '.join([
         _('Found errors in the nameserver entries of the following zones.'),
-        _('Please refer to {sdb} for further information.')
+        _('Please refer to {sdb} for further information.'),
     ])]
     modules = []
     tmpl_forward = _('In forward zone {name} (see {{{link}}}):')

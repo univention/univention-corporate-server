@@ -29,7 +29,7 @@ def main():
                     'password': password,
                     'mailHomeServer': '%s.%s' % (ucr.get('hostname'), domain),
                     'mailPrimaryAddress': recipient_email,
-                }
+                },
             )
 
             # to local address
