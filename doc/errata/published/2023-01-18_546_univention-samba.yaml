@@ -8,3 +8,5 @@ desc: |
  This update addresses the following issues:
  * Rotate additional log files `log.dcerpcd` and `log.rpcd_*`
 bug: [55435]
+erratum: 546
+announced: 2023-01-18
