@@ -7,5 +7,5 @@ Categories=system-base
 [server/password/cron]
 Description[de]=Der Zeitpunkt für die Überprüfung des Maschinenkontos auf Erneuerung. Die Konfiguration erfolgt in Cron-Syntax, siehe 'man 5 crontab'
 Description[en]=The point in time for checking the machine account for renewal. The configuration is done in Cron syntax, see 'man 5 crontab'.
-Type=str
+Type=cron
 Categories=service-ldap
