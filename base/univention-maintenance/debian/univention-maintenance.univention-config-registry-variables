@@ -7,5 +7,5 @@ Categories=system-statistics
 [system/stats/cron]
 Description[de]=Definiert das Intervall, in die Systemstatistiken gesammelt werden. Die Konfiguration erfolgt in Cron-Syntax, siehe 'man 5 crontab'.
 Description[en]=Defines the interval for collecting system statistics. The configuration is done in Cron syntax, see 'man 5 crontab'.
-Type=str
+Type=cron
 Categories=system-statistics
