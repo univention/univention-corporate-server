@@ -153,7 +153,7 @@ def verify_test_results_and_exit():
         # now check if all actions were executed and abort otherwise...
         for action in actions:
             f.seek(0)  # rewind before every new search
-            if not (action in f.read()):
+            if action not in f.read():
                 raise (AssertionFailed(
                     "Expected to find '%s' in file '%s',"
                     " but it was not there." % (action, file_result)), 2)

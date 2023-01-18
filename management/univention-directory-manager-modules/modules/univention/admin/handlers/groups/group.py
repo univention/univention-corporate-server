@@ -789,7 +789,7 @@ class object(univention.admin.handlers.simpleLdap):
                 # get missing cn's if required
                 grpdn2cn = {self.dn.lower(): self.info.get('name', 'UNKNOWN')}
                 for x in dnCircle:
-                    if not x.lower() in grpdn2cn:
+                    if x.lower() not in grpdn2cn:
                         xobj = univention.admin.objects.get(grp_module, self.co, self.lo, position='', dn=x)
                         grpdn2cn[x.lower()] = xobj.info.get('name', 'UNKNOWN')
                     cnCircle.append(grpdn2cn[x.lower()])

@@ -101,7 +101,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
             match = RE_CHARSET.search(content)
             if not match:
                 self.addmsg('0008-5', 'cannot find charset definition', fn)
-            elif not match.group(1).lower() in ('utf-8'):
+            elif match.group(1).lower() not in 'utf-8':
                 self.addmsg('0008-6', 'invalid charset (%s) defined' % (match.group(1)), fn)
 
             self.debug('testing %s' % fn)

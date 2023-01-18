@@ -271,7 +271,7 @@ class ShareConfiguration(object):
         append group to invalid users for all shares, except shares
         group (the groupname) and marktplatz
         """
-        if not group or not value.lower() in ('true', 'yes', '1'):
+        if not group or value.lower() not in ('true', 'yes', '1'):
             return
 
         for share in self._shares.values():

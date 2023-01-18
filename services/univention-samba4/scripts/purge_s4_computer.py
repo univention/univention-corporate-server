@@ -208,7 +208,7 @@ def purge_computer_with_DC_objects(ucr, binddn, bindpw, computername):
         sys.exit(1)
 
     answer = input("Really remove %s from Samba 4? [y/N]: " % computername)
-    if not answer.lower() in ('y', 'yes'):
+    if answer.lower() not in ('y', 'yes'):
         print("Ok, stopping as requested.\n")
         sys.exit(2)
 
@@ -269,7 +269,7 @@ def purge_computer_with_DC_objects(ucr, binddn, bindpw, computername):
             print(traceback.format_exc(), file=sys.stderr)
 
     answer = input("Really remove %s from UDM as well? [y/N]: " % computername)
-    if not answer.lower() in ('y', 'yes'):
+    if answer.lower() not in ('y', 'yes'):
         print("Ok, stopping as requested.\n")
         sys.exit(2)
 

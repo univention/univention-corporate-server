@@ -103,7 +103,7 @@ class TestUMCGroupsCreation(UMCBase):
             group_policies = group_policies.get('policies/umc')
             if not group_policies:
                 utils.fail(f"The group 'policies/umc' field for '{test_groupname}' is empty or not present after '{policyname}' policy was applied to group")
-            if not ('cn=' + policyname + ',cn=UMC,cn=policies,' + self.ldap_base in group_policies):
+            if "cn=" + policyname + ",cn=UMC,cn=policies," + self.ldap_base not in group_policies:
                 utils.fail(f"The policy '{policyname}' is not in a group '{test_groupname}' policies '{group_policies}'")
         finally:
             print("Removing created test group if it exists")

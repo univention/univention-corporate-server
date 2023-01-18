@@ -760,7 +760,7 @@ class ad(univention.connector.ucs):
         self._remove_rejected(self.__get_change_usn(object), object['dn'])
 
     def addToCreationList(self, dn):
-        if not dn.lower() in self.creation_list:
+        if dn.lower() not in self.creation_list:
             self.creation_list.append(dn.lower())
 
     def removeFromCreationList(self, dn):
@@ -1057,7 +1057,7 @@ class ad(univention.connector.ucs):
         rid_filter = format_escaped("(samaccountname={0!e})", object_ucs['username'])
         ad_group_rid_resultlist = self.__search_ad(base=self.lo_ad.base, scope=ldap.SCOPE_SUBTREE, filter=rid_filter, attrlist=['dn', 'primaryGroupID'])
 
-        if not ad_group_rid_resultlist[0][0] in [b'None', b'', None]:
+        if ad_group_rid_resultlist[0][0] not in [b"None", b"", None]:
 
             ad_group_rid = ad_group_rid_resultlist[0][1]['primaryGroupID'][0].decode('UTF-8')
 
@@ -1296,7 +1296,7 @@ class ad(univention.connector.ucs):
 
         # check if members in AD don't exist in UCS, if true they need to be added in AD
         for member_dn in ad_members:
-            if not member_dn.lower() in ad_members_from_ucs:
+            if member_dn.lower() not in ad_members_from_ucs:
                 try:
                     ad_object = self.get_object(member_dn)
 
@@ -1682,7 +1682,7 @@ class ad(univention.connector.ucs):
         modlist = []
 
         ud.debug(ud.LDAP, ud.INFO, "Disabled state: %s" % ucs_admin_object['disabled'].lower())
-        if not (ucs_admin_object['disabled'].lower() in ['none', '0']):
+        if ucs_admin_object["disabled"].lower() not in ["none", "0"]:
             # user disabled in UCS
             if 'userAccountControl' in ldap_object_ad and (int(ldap_object_ad['userAccountControl'][0]) & 2) == 0:
                 # user enabled in AD -> change
@@ -1726,7 +1726,7 @@ class ad(univention.connector.ucs):
 
         if 'userAccountControl' in ldap_object_ad and (int(ldap_object_ad['userAccountControl'][0]) & 2) == 0:
             # user enabled in AD
-            if not ucs_admin_object['disabled'].lower() in ['none', '0']:
+            if ucs_admin_object["disabled"].lower() not in ["none", "0"]:
                 # user disabled in UCS -> change
                 ucs_admin_object['disabled'] = '0'
                 modified = 1

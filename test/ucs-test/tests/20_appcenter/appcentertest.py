@@ -206,7 +206,7 @@ class AppCenterOperations:
     def is_docker(self, application, info=None, msg=None):
         if info is None:
             info = self.get(application)
-        result = not info.get("docker_image") is None
+        result = info.get("docker_image") is not None
         if msg and not result:
             raise AppCenterOperationError(msg.format(application))
         return result

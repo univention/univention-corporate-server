@@ -99,7 +99,7 @@ class DebianPackageCheck(object):
                     if f.endswith('.py') and f[0:4].isdigit():
                         # self.modules == None ==> load all modules
                         # otherwise load only listed modules
-                        if (not self.enabled_modules or f[0:4] in self.enabled_modules) and not f[0:4] in self.disabled_modules:
+                        if (not self.enabled_modules or f[0:4] in self.enabled_modules) and f[0:4] not in self.disabled_modules:
                             modname = f[0:-3]
                             try:
                                 fn = os.path.join(plugindir, f)
@@ -195,7 +195,7 @@ class DebianPackageCheck(object):
             if msg.getId() in ignore_IDs:
                 tc.add_skipped_info('ignored')
                 continue
-            if display_only_IDs and not msg.getId() in display_only_IDs:
+            if display_only_IDs and msg.getId() not in display_only_IDs:
                 tc.add_skipped_info('hidden')
                 continue
             if self.in_overrides(msg):

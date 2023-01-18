@@ -925,7 +925,7 @@ def is_ldap_base(ldap_base):
     False
     """
     match = is_ldap_base.RE.match(ldap_base)
-    return match is not None and not any(part.upper().startswith('C=') and not part.upper()[2:] in is_ldap_base.CC for part in ldap.dn.explode_dn(ldap_base))
+    return match is not None and not any(part.upper().startswith('C=') and part.upper()[2:] not in is_ldap_base.CC for part in ldap.dn.explode_dn(ldap_base))
 
 
 is_ldap_base.RE = re.compile('^(c=[A-Za-z]{2}|(dc|cn|o|l)=[a-zA-Z0-9-]+)(,(c=[A-Za-z]{2}|((dc|cn|o|l)=[a-zA-Z0-9-]+)))+$')

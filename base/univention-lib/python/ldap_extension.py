@@ -576,7 +576,7 @@ class UniventionLDAPSchema(UniventionLDAPExtensionWithListenerHandler):
     def _handler(self, dn, new, old, name=None):
         # type: (str, Optional[Dict[str, List[bytes]]], Optional[Dict[str, List[bytes]]], str) -> None
         """Handle LDAP schema extensions on Primary and Backup Directory Nodes"""
-        if not listener.configRegistry.get('server/role') in ('domaincontroller_master', 'domaincontroller_backup'):
+        if listener.configRegistry.get("server/role") not in ("domaincontroller_master", "domaincontroller_backup"):
             return
 
         if new:  # create / modify
@@ -772,7 +772,7 @@ class UniventionLDAPACL(UniventionLDAPExtensionWithListenerHandler):
         if not listener.configRegistry.get('ldap/server/type'):
             return
 
-        if not listener.configRegistry.get('server/role') in ('domaincontroller_master',):
+        if listener.configRegistry.get("server/role") not in ("domaincontroller_master",):
             # new, ignore first *inactive* appearance, has to be activated on Primary Directory Node first
             if new and not old and new.get('univentionLDAPACLActive', [b'FALSE'])[0] != b'TRUE':
                 ud.debug(ud.LISTENER, ud.PROCESS, '%s: ignore first appearance of %s, not yet activated' % (name, dn))

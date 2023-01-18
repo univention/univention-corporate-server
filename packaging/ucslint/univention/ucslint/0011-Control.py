@@ -123,13 +123,13 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
             self.addmsg('0011-2', 'source package name differs in debian/changelog and debian/control', fn_changelog)
 
         # parse source section of debian/control
-        if not parser.source_section.get('Section', '') in ('univention'):
+        if parser.source_section.get('Section', '') not in 'univention':
             self.addmsg('0011-3', 'wrong Section entry - should be "univention"', fn_control)
 
-        if not parser.source_section.get('Priority', '') in ('optional'):
+        if parser.source_section.get('Priority', '') not in 'optional':
             self.addmsg('0011-4', 'wrong Priority entry - should be "optional"', fn_control)
 
-        if not parser.source_section.get('Maintainer', '') in ('Univention GmbH <packages@univention.de>'):
+        if parser.source_section.get('Maintainer', '') not in 'Univention GmbH <packages@univention.de>':
             self.addmsg('0011-5', 'wrong Maintainer entry - should be "Univention GmbH <packages@univention.de>"', fn_control)
 
         if parser.source_section.get('XS-Python-Version', ''):

@@ -236,7 +236,7 @@ class Instance(Base, ProgressMixin):
             MODULE.info('Setting ldap port to 389')
             univention.config_registry.handler_set([u'connector/ad/ldap/port=389'])
 
-        if not request.options.get('LDAP_Password') in (None, '', DO_NOT_CHANGE_PWD):
+        if request.options.get('LDAP_Password') not in (None, '', DO_NOT_CHANGE_PWD):
             fn = ucr.get('connector/ad/ldap/bindpw', FN_BINDPW)
             try:
                 with open(fn, 'w') as fd:

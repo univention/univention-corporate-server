@@ -1515,7 +1515,7 @@ class AD_Takeover_Finalize(object):
             log.error("Error: AD server IP not found in UCR. This indicates that phase I was not completed successfully yet.")
             raise TakeoverError(_("The Active Directory domain join was not completed successfully yet."))
 
-        if not "hosts/static/%s" % self.ad_server_ip in self.ucr:
+        if "hosts/static/%s" % self.ad_server_ip not in self.ucr:
             msg = []
             msg.append("")
             msg.append("Error: given IP %s was not mapped to a hostname in phase I." % (self.ad_server_ip,))
@@ -1763,7 +1763,7 @@ class AD_Takeover_Finalize(object):
         elif ip_version == 4:
             self.primary_interface = self._get_primary_interface(ipv4=True)
             for j in range(1, 6):
-                if not "interfaces/%s_%s/address" % (self.primary_interface, j) in self.ucr:
+                if "interfaces/%s_%s/address" % (self.primary_interface, j) not in self.ucr:
                     new_interface_ucr = "%s_%s" % (self.primary_interface, j)
                     new_interface = "%s:%s" % (self.primary_interface, j)
                     break
@@ -1793,7 +1793,7 @@ class AD_Takeover_Finalize(object):
         elif ip_version == 6:
             self.primary_interface = self._get_primary_interface(ipv4=False)
             for j in range(1, 6):
-                if not "interfaces/eth%s_%s/ipv6/default/address" % (self.primary_interface, j) in self.ucr:
+                if "interfaces/eth%s_%s/ipv6/default/address" % (self.primary_interface, j) not in self.ucr:
                     new_interface_ucr = "%s_%s" % (self.primary_interface, j)
                     new_interface = "%s:%s" % (self.primary_interface, j)
                     break
