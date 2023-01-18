@@ -357,6 +357,7 @@ frontend sample_httpd
 
 backend bffs
 	balance roundrobin
+	timeout server 100000
 $(
 	for host in "$@"; do
 		echo -e "\tserver $host $host.$(ucr get domainname):443 ssl ca-file /etc/ssl/certs/ca-certificates.crt"
