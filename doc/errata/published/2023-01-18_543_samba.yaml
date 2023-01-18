@@ -25,3 +25,5 @@ ignore:
   - cve.CVE-2022-37966
   - cve.CVE-2022-37967
   - cve.CVE-2022-38023
+erratum: 543
+announced: 2023-01-18
