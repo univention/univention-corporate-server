@@ -13,7 +13,7 @@ Categories=management-umc
 [directory/reports/cleanup/cron]
 Description[de]=Univention Directory Reports werden nach einiger Zeit (siehe 'directory/reports/cleanup/age') automatisch durch einen Cron-Job entfernt. Diese Variable konfiguriert den Zeitpunkt in Cron-Syntax, siehe 'man 5 crontab'.
 Description[en]=Univention Directory Reports are automatically removed through a Cron job after some retention time (see 'directory/reports/cleanup/age'). This variable configures the time in Cron syntax, see 'man 5 crontab'.
-Type=str
+Type=cron
 Categories=management-umc
 
 [directory/manager/web/modules/.*/.*/show/adnotification]
