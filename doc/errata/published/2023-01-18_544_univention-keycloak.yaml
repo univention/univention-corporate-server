@@ -15,3 +15,5 @@ desc: |
  * A traceback in `univention-keycloak` was thrown when trying to enable the
    two factor authentication. This has been fixed.
 bug: [55569, 55513, 55519]
+erratum: 544
+announced: 2023-01-18
