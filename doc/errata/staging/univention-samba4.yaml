@@ -6,7 +6,7 @@ src: univention-samba4
 fix: 9.0.8-10A~5.0.0.202301181637
 desc: |
  This update addresses the following issues:
- * Grant SePrintOperatorPrivilege to Administrator and Printer-Admins
-   by default.
+ * Grant permission `SePrintOperatorPrivilege` to user Administrator and group
+   Printer-Admins by default.
  * Rotate additional log files `log.dcerpcd` and `log.rpcd_*`
 bug: [54156, 55435]
