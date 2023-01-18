@@ -11,3 +11,5 @@ desc: |
  * An error regarding compatibility with Python 3 has been repaired in the
    action "migrate objects" of `56_univention_types`.
 bug: [55468, 55548]
+erratum: 545
+announced: 2023-01-18
