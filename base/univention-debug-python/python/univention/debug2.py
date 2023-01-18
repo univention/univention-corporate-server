@@ -176,16 +176,16 @@ def init(logfile, force_flush=0, enable_function=0, enable_syslog=0):
         except EnvironmentError as ex:
             print('opening %s failed: %s' % (logfile, ex))
 
-# 	if enable_syslog:
-# 		try:
+#     if enable_syslog:
+#         try:
 # add syslog handler
-# 			_handler_syslog = logging.handlers.SysLogHandler( ('localhost', 514), logging.handlers.SysLogHandler.LOG_ERR )
-# 			_handler_syslog.setLevel( _map_lvl_old2new[ERROR] )
-# 			_handler_syslog.setFormatter(formatter)
-# 			logging.getLogger('').addHandler(_handler_syslog)
-# 		except:
-# 			raise
-# 			print('opening syslog failed')
+#             _handler_syslog = logging.handlers.SysLogHandler( ('localhost', 514), logging.handlers.SysLogHandler.LOG_ERR )
+#             _handler_syslog.setLevel( _map_lvl_old2new[ERROR] )
+#             _handler_syslog.setFormatter(formatter)
+#             logging.getLogger('').addHandler(_handler_syslog)
+#         except:
+#             raise
+#             print('opening syslog failed')
 
     logging.addLevelName(25, 'PROCESS')
     logging.addLevelName(15, 'ALL')

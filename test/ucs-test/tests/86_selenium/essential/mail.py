@@ -621,21 +621,21 @@ def send_mail(
     Send a mail to mailserver.
     Arguments:
     recipients: single recipient as string or a list of recipients
-                            (e.g. 'foo@example.com' or ['foo@example.com', 'bar@example.com'])
-    sender:	    [optional] mail address of sender (default: tarpit@example.com)
-    subject:    [optional] mail subject (default: 'Testmessage %s' % time.ctime() )
-    msg:	    [optional] mail message; if msg is defined, idstring will be ignored!
-    idstring:   [optional] idstring that will be integrated into default mail
-    gtube:	    [optional] if True, gtube teststring will be added to mail (default: False)
-    virus:	    [optional] if True, an attachment with virus signature will be added to mail
-    attachments:[optional] list of filenames to be attached to mail
-    server:	    [optional] name or IP address of mailserver (default: localhost)
-    port:       [optional] port, the mailserver will listen on (default: 25)
-    tls:	    [optional] use TLS if true
-    username:   [optional] authenticate against mailserver if username and password are set
-    password:	[optional] authenticate against mailserver if username and password are set
+                (e.g. 'foo@example.com' or ['foo@example.com', 'bar@example.com'])
+    sender: [optional] mail address of sender (default: tarpit@example.com)
+    subject: [optional] mail subject (default: 'Testmessage %s' % time.ctime() )
+    msg: [optional] mail message; if msg is defined, idstring will be ignored!
+    idstring: [optional] idstring that will be integrated into default mail
+    gtube: [optional] if True, gtube teststring will be added to mail (default: False)
+    virus: [optional] if True, an attachment with virus signature will be added to mail
+    attachments: [optional] list of filenames to be attached to mail
+    server: [optional] name or IP address of mailserver (default: localhost)
+    port: [optional] port, the mailserver will listen on (default: 25)
+    tls: [optional] use TLS if true
+    username: [optional] authenticate against mailserver if username and password are set
+    password: [optional] authenticate against mailserver if username and password are set
     debuglevel: [optional] SMTP client debug level (default: 1)
-    messageid:  [optional] message id (defaults to a random value)
+    messageid: [optional] message id (defaults to a random value)
     """
     # default values
     m_sender = 'tarpit@example.com'

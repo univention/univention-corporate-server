@@ -115,10 +115,10 @@ class TestUMCnonUCRpolicies(UMCBase):
         """
         # print("\nCreating a test user with no samba inside the 'intermediate_test_container' with the 'umc_test_user_policy' applied:\n")
         # self.test_user_dn = self.UDM.create_user(**{
-        # 	'position': self.intermediate_container_dn,
-        # 	'username': 'umc_test_user_' + random_username(),
-        # 	'policy-reference': self.user_policy_dn,
-        # 	'options': ['kerberos', 'posix', 'person', 'mail'],  # no Samba
+        #     'position': self.intermediate_container_dn,
+        #     'username': 'umc_test_user_' + random_username(),
+        #     'policy-reference': self.user_policy_dn,
+        #     'options': ['kerberos', 'posix', 'person', 'mail'],  # no Samba
         # })[0]
 
         print("\nCreating a second test user with samba and without user policy applied inside the 'intermediate_test_container':\n")

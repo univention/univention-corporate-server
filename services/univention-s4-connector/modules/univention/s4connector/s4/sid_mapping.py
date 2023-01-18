@@ -100,8 +100,8 @@ def sid_to_s4(s4connector, key, object):
             return
 
         # change objectSID
-        #	http://serverfault.com/questions/53717/how-can-i-change-the-sid-of-a-user-account-in-the-active-directory
-        #	http://technet.microsoft.com/en-us/library/cc961998.aspx
+        # http://serverfault.com/questions/53717/how-can-i-change-the-sid-of-a-user-account-in-the-active-directory
+        # http://technet.microsoft.com/en-us/library/cc961998.aspx
 
         ud.debug(ud.LDAP, ud.INFO, 'sid_to_s4: changing objectSid from %r to %r' % (decoded_s4_sid, sambaSID))
         new_objectSid_ndr = ndr_pack(security.dom_sid(sambaSID))

@@ -1700,14 +1700,14 @@ class ucs(object):
         """
         ud.debug(ud.LDAP, ud.INFO, "_object_mapping: map with key %s and type %s" % (key, object_type))
         # ingoing object format:
-        #	'dn': dn
-        #	'modtype': 'add', 'delete', 'modify', 'move'
-        #	'attributes': { attr: [values] }
+        #    'dn': dn
+        #    'modtype': 'add', 'delete', 'modify', 'move'
+        #    'attributes': { attr: [values] }
         #       'olddn' : dn (only on move)
         # outgoing object format:
-        #	'dn': dn
-        #	'modtype':  'add', 'delete', 'modify', 'move'
-        #	'attributes': { attr: [values] }
+        #    'dn': dn
+        #    'modtype':  'add', 'delete', 'modify', 'move'
+        #    'attributes': { attr: [values] }
         #       'olddn' : dn (only on move)
 
         if object_type == 'ucs':

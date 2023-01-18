@@ -634,9 +634,9 @@ class ResourceBase:
         titleelement.text = 'FIXME: fallback title'  # FIXME: set title
         ET.SubElement(head, 'meta', content='text/html; charset=utf-8', **{'http-equiv': 'content-type'})
         #if not ajax:
-        #	ET.SubElement(head, 'script', type='text/javascript', src=self.abspath('../js/config.js'))
-        #	ET.SubElement(head, 'script', type='text/javascript', src=self.abspath('js/udm.js'))
-        #	ET.SubElement(head, 'script', type='text/javascript', async='', src=self.abspath('../js/dojo/dojo.js'))
+        #    ET.SubElement(head, 'script', type='text/javascript', src=self.abspath('../js/config.js'))
+        #    ET.SubElement(head, 'script', type='text/javascript', src=self.abspath('js/udm.js'))
+        #    ET.SubElement(head, 'script', type='text/javascript', async='', src=self.abspath('../js/dojo/dojo.js'))
 
         body = ET.SubElement(root, "body", dir='ltr')
         header = ET.SubElement(body, 'header')
@@ -670,9 +670,9 @@ class ResourceBase:
                 ET.SubElement(ET.SubElement(nav, 'form'), 'button', formaction=link, **params).text = params.get('title', link)
                 continue
             #if params.get('rel') in ('udm:tree',):
-            #	self.set_header('X-Frame-Options', 'SAMEORIGIN')
-            #	body.insert(1, ET.Element('iframe', src=link, name='tree'))
-            #	continue
+            #    self.set_header('X-Frame-Options', 'SAMEORIGIN')
+            #    body.insert(1, ET.Element('iframe', src=link, name='tree'))
+            #    continue
             li = ET.SubElement(links, "li")
             ET.SubElement(li, "a", href=link, **params).text = params.get('title', link) or link
 
@@ -1099,7 +1099,7 @@ def _param_to_openapi(param):
     else:
         raise TypeError(type(san))
     #if san.required is not None:
-    #	schema['required'] = san.required
+    #    schema['required'] = san.required
     if san.default or san.allow_none:
         schema['default'] = san.default
     if san.allow_none:
@@ -1293,9 +1293,9 @@ class _OpenAPIBase:
                         "readOnly": True,
             },
             #"id": {
-            #	"description": "The (not unique!) relative LDAP Distinguished Name (RDN).",
-            #	"type": "string",
-            #	"readOnly": True,
+            #    "description": "The (not unique!) relative LDAP Distinguished Name (RDN).",
+            #    "type": "string",
+            #    "readOnly": True,
             #},
             "uuid": {
                 "description": "The LDAP Entry-UUID.",
@@ -1969,10 +1969,10 @@ class _OpenAPIBase:
             }
             # we can't deploy this as it breaks older udm-rest-api-client
             #openapi_schemas[f"{model_name}.properties"] = {
-            #	"description": "Object type specific `UDM` properties.",
-            #	"type": "object",
-            #	"properties": {},
-            #	"additionalProperties": True,  # not yet installed extended attributes
+            #    "description": "Object type specific `UDM` properties.",
+            #    "type": "object",
+            #    "properties": {},
+            #    "additionalProperties": True,  # not yet installed extended attributes
             #}
             openapi_schemas[f"{model_name}.uri"] = {
                 "type": "string",
@@ -2991,7 +2991,7 @@ class Objects(FormBase, ReportingBase, _OpenAPIBase, Resource):
         self.add_link(result, 'icon', self.urljoin('favicon.ico'), type='image/x-icon')
         if module.has_tree:
             self.add_link(result, 'udm:tree', self.urljoin('tree'), title=_('Object type tree'))
-#		self.add_link(result, '', self.urljoin(''))
+#        self.add_link(result, '', self.urljoin(''))
         self.set_header('Allow', ', '.join(methods))
         return result
 
@@ -3068,7 +3068,7 @@ class Object(FormBase, _OpenAPIBase, Resource):
         except NotFound:
             # FIXME: return HTTP 410 Gone for removed objects
             # if self.ldap_connection.searchDn(filter_format('(&(reqDN=%s)(reqType=d))', [dn]), base='cn=translog'):
-            # 	raise Gone(object_type, dn)
+            #     raise Gone(object_type, dn)
             raise
         if object_type not in ('users/self', 'users/passwd') and not univention.admin.modules.recognize(object_type, obj.dn, obj.oldattr):
             raise NotFound(object_type, dn)
@@ -3119,10 +3119,10 @@ class Object(FormBase, _OpenAPIBase, Resource):
         self.add_link(props, 'udm:object/remove', self.urljoin(''), method='DELETE')
         self.add_link(props, 'udm:object/edit', self.urljoin(''), method='PUT')
         # self.add_link(props, '', self.urljoin('report/PDF Document?dn=%s' % (quote(obj.dn),))) # rel=alternate media=print?
-#		for mod in module.child_modules:
-#			mod = self.get_module(mod['id'])
-#			if mod and set(superordinate_names(mod)) & {module.name, }:
-#				self.add_link(props, 'udm:children-types', self.urljoin('../../%s/?superordinate=%s' % (quote(mod.name), quote(obj.dn))), name=mod.name, title=mod.object_name_plural)
+#        for mod in module.child_modules:
+#            mod = self.get_module(mod['id'])
+#            if mod and set(superordinate_names(mod)) & {module.name, }:
+#                self.add_link(props, 'udm:children-types', self.urljoin('../../%s/?superordinate=%s' % (quote(mod.name), quote(obj.dn))), name=mod.name, title=mod.object_name_plural)
 
         methods = ['GET', 'OPTIONS']
         if module.childs:

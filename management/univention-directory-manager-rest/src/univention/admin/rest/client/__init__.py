@@ -42,7 +42,7 @@ Sample Client for the UDM REST API.
 >>> print('Found {}'.format(module))
 >>> obj = next(module.search())
 >>> if obj:
->>> 	obj = obj.open()
+>>>     obj = obj.open()
 >>> print('Object {}'.format(obj))
 """
 

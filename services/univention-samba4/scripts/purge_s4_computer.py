@@ -159,13 +159,13 @@ def purge_s4_dns_records(ucr, binddn, bindpw, computername, NTDS_objectGUID, Dom
     # filter = filter_format("name=%s", [dns_record])
     # objs = module.lookup(None, uldap_access, filter, superordinate=zone_obj, scope="domain", base=zone_position.getDn(), unique=True)
     # if objs:
-    # 	print("Removing dns/host_record '%s' from Univention Directory Manager" % (dns_record,))
-    # 	obj = objs[0]
-    # 	try:
-    # 		obj.remove()
-    # 	except univention.admin.uexceptions.ldapError as exc:
-    # 		print("Removal of dns/host_record %s via UDM failed: %s" % (dns_record, exc), file=sys.stderr)
-    # 		sys.exit(1)
+    #     print("Removing dns/host_record '%s' from Univention Directory Manager" % (dns_record,))
+    #     obj = objs[0]
+    #     try:
+    #         obj.remove()
+    #     except univention.admin.uexceptions.ldapError as exc:
+    #         print("Removal of dns/host_record %s via UDM failed: %s" % (dns_record, exc), file=sys.stderr)
+    #         sys.exit(1)
 
 
 def purge_udm_computer(ucr, binddn, bindpw, computername):

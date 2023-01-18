@@ -73,7 +73,7 @@ def _get_samba_password_history(newpassword, smbpwhistory, smbpwhlen):
     pwd = codecs.decode(newpassword, 'hex')
     # calculating hash. stored as a 32byte hex in sambaPasswordHistory,
     # syntax like that: [Salt][MD5(Salt+Hash)]
-    #	First 16bytes ^		^ last 16bytes.
+    #    First 16bytes  ^     ^ last 16bytes.
     pwdhash = hashlib.md5(salt + pwd).hexdigest().upper()
     smbpwhash = hexsalt + pwdhash
 
@@ -151,13 +151,13 @@ def main():
                 usersPWExpireInterval = int(policy_result.get('univentionPWExpiryInterval', [0])['0'])
 
                 # if not 'krb5PasswordEnd' in attrs['objectClass']:
-                #	ocs.append('krb5PasswordEnd')
+                #    ocs.append('krb5PasswordEnd')
                 oldkrb5PasswordEndValue = attrs.get('krb5PasswordEnd', [None])[0]
                 # if not 'sambaPwdCanChange' in attrs['objectClass']:
-                #	ocs.append('sambaPwdCanChange')
+                #    ocs.append('sambaPwdCanChange')
                 oldsambaPwdCanChangeValue = attrs.get('sambaPwdCanChange', [None])[0]
                 # if not 'sambaPwdMustChange' in attrs['objectClass']:
-                #	ocs.append('sambaPwdMustChange')
+                #    ocs.append('sambaPwdMustChange')
                 oldsambaPwdMustChangeValue = attrs.get('sambaPwdMustChange', [None])[0]
                 oldshadowMaxValue = attrs.get('shadowMax', [None])[0]
                 oldshadowLastChangeValue = attrs.get('shadowLastChange', [None])[0]

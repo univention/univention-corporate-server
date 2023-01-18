@@ -106,7 +106,7 @@ class LicenseImport(ldif.LDIFParser):
         # create modification list
         self.addlist = ldap.modlist.addModlist(entry)
         # for atr in entry:
-        # 	self.mod_list.insert( 0, ( ldap.MOD_REPLACE, atr, entry[ atr ] ) )
+        #     self.mod_list.insert( 0, ( ldap.MOD_REPLACE, atr, entry[ atr ] ) )
 
     def write(self, ldap_connection):
         ldap_con = ldap_connection.lo.lo

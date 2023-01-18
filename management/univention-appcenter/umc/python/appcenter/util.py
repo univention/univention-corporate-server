@@ -272,11 +272,9 @@ class Changes(object):
         write the strings that we think are most suitable for the given variable.
 
         *** NOTE *** I would like to see such function in the UCR base class
-        so we could call
-
-        ucr.set_bool(variable, boolvalue)
-
-        and the ucr itself would know which string representation to write.
+                     so we could call
+                     `ucr.set_bool(variable, boolvalue)`
+                     and the ucr itself would know which string representation to write.
         """
         yesno = ['no', 'yes']
         # truefalse = ['False', 'True']
@@ -292,8 +290,8 @@ class Changes(object):
         # *** NOTE *** Currently these strings are matched as substrings, not regexp.
 
         setup = [
-                ['repository/online/component', enabled],
-                ['repository/online', onoff]
+            ['repository/online/component', enabled],
+            ['repository/online', onoff]
         ]
 
         intval = int(bool(value))  # speak C:  intval = value ? 1 : 0;
@@ -318,7 +316,7 @@ class Changes(object):
 
             # Possibly useful: if the value is the empty string -> try to unset this variable.
             # FIXME Someone please confirm that there are no UCR variables that need
-            #		to be set to an empty string!
+            #        to be set to an empty string!
             if value == '':
                 value = None
 

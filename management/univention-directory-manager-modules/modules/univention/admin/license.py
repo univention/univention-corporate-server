@@ -379,7 +379,7 @@ class License(object):
                 disable_add = 6
             # The license should be valid even if we have more servers than the license allowed
             # if lic_servers and self.__cmp_gt( real_servers, lic_servers ):
-            #	disable_add = 7
+            #    disable_add = 7
             if lic_managedclients and self.__cmp_gt(real_managedclients, lic_managedclients):
                 disable_add = 8
             if lic_corporateclients and self.__cmp_gt(real_corporateclients, lic_corporateclients):

@@ -245,7 +245,7 @@ s4_mapping = {
         }.items() if key not in user_ignore_list},
         # These functions can extend the addlist while
         # creating an object in S4. Parameters are
-        #	s4connector, property_type, object, addlist, serverctrls
+        #    s4connector, property_type, object, addlist, serverctrls
         con_create_extensions=[
             univention.s4connector.s4.add_primary_group_to_addlist,
         ],
@@ -317,9 +317,9 @@ s4_mapping = {
                 single_value=True,
             ),
             #'sambaLogonHours': univention.s4connector.attribute(
-            #	ucs_attribute='sambaLogonHours',
-            #	ldap_attribute='sambaLogonHours',
-            #	con_attribute='logonHours',
+            #    ucs_attribute='sambaLogonHours',
+            #    ldap_attribute='sambaLogonHours',
+            #    con_attribute='logonHours',
             #),
             'profilepath': univention.s4connector.attribute(
                 ucs_attribute='profilepath',
@@ -383,16 +383,16 @@ s4_mapping = {
                 single_value=True,
             ),
             #'state': univention.s4connector.attribute(
-            #	ucs_attribute='state',
-            #	ldap_attribute='st',
-            #	con_attribute='st',
-            #	single_value=True,
+            #    ucs_attribute='state',
+            #    ldap_attribute='st',
+            #    con_attribute='st',
+            #    single_value=True,
             #),
             #'country': univention.s4connector.attribute(
-            #	ucs_attribute='country',
-            #	ldap_attribute='c',
-            #	con_attribute='c',
-            #	single_value=True,
+            #    ucs_attribute='country',
+            #    ldap_attribute='c',
+            #    con_attribute='c',
+            #    single_value=True,
             #),
             'loginShell': univention.s4connector.attribute(
                 ucs_attribute='shell',
@@ -444,10 +444,10 @@ s4_mapping = {
             ),
             # Do not sync secretary, because we currently have no way to verify the existence of the DN which would cause rejects
             #'secretary': univention.s4connector.attribute(
-            #	mapping=(univention.s4connector.s4.user.secretary_sync_ucs_to_s4, univention.s4connector.s4.user.secretary_sync_s4_to_ucs),
-            #	ucs_attribute='secretary',
-            #	ldap_attribute='secretary',
-            #	con_attribute='secretary',
+            #    mapping=(univention.s4connector.s4.user.secretary_sync_ucs_to_s4, univention.s4connector.s4.user.secretary_sync_s4_to_ucs),
+            #    ucs_attribute='secretary',
+            #    ldap_attribute='secretary',
+            #    con_attribute='secretary',
             #),
             'jpegPhoto': univention.s4connector.attribute(
                 mapping=(univention.s4connector.s4.user.jpegPhoto_sync_ucs_to_s4, univention.s4connector.s4.user.jpegPhoto_sync_s4_to_ucs),
@@ -500,7 +500,7 @@ s4_mapping = {
         con_create_objectclass=['top', 'group'],
         # These functions can extend the addlist while
         # creating an object in S4. Parameters are
-        #	s4connector, property_type, object, addlist, serverctrls
+        #    s4connector, property_type, object, addlist, serverctrls
         con_create_extensions=[
             univention.s4connector.s4.check_for_local_group_and_extend_serverctrls_and_sid,
         ],

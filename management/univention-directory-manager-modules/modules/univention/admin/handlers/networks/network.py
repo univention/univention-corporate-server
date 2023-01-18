@@ -172,9 +172,9 @@ class object(univention.admin.handlers.simpleLdap):
 
         if self['nextIp']:
             # nextIP is already set:
-            #	- check range for actual ip
-            #	- inc ip
-            #	- check for range
+            # - check range for actual ip
+            # - inc ip
+            # - check for range
             currentIp = ipaddress.ip_address(u'%s' % self['nextIp'])
             newIp = ipaddress.ip_address(u'%s' % self['nextIp']) + 1
             for ipRange in self['ipRange']:
@@ -203,7 +203,7 @@ class object(univention.admin.handlers.simpleLdap):
                         self['nextIp'] = str(network.network_address + 1)  # first usable host address in network
         elif self['ipRange']:
             # nextIP is not set
-            # 	- use first ip range entry
+            # - use first ip range entry
             self['nextIp'] = self['ipRange'][0][0]
             if ipaddress.ip_address(u'%s' % self['nextIp']) == network.network_address:  # do not give out all hostbits zero
                 self['nextIp'] = str(ipaddress.ip_address(u'%s' % self['nextIp']) + 1)

@@ -521,7 +521,7 @@ def get_ip_and_hostname_of_ad():
         return AD_IP_HOSTNAME
 
 # def set_ip_and_hostname_of_ad(ip, hostname):
-#	AD_IP_HOSTNAME[:] = [ip, hostname]
+#    AD_IP_HOSTNAME[:] = [ip, hostname]
 
 
 def get_ad_hostname():
@@ -1418,7 +1418,7 @@ class AD_Takeover(object):
         if os.path.exists("/var/lib/univention-directory-listener/handlers/s4-connector"):
             os.unlink("/var/lib/univention-directory-listener/handlers/s4-connector")
         # if os.path.exists("/var/lib/univention-directory-listener/handlers/samba4-idmap"):
-        # 	os.unlink("/var/lib/univention-directory-listener/handlers/samba4-idmap")
+        #     os.unlink("/var/lib/univention-directory-listener/handlers/samba4-idmap")
         if os.path.exists("/etc/univention/connector/s4internal.sqlite"):
             os.unlink("/etc/univention/connector/s4internal.sqlite")
         for foldername in ("/var/lib/univention-connector/s4", "/var/lib/univention-connector/s4/tmp"):
@@ -1436,8 +1436,8 @@ class AD_Takeover(object):
 
         # print "Waiting for directory listener to start up (10 seconds)",
         # for i in xrange(10):
-        #	time.sleep(1)
-        #	print_progress()
+        #    time.sleep(1)
+        #    print_progress()
         # print
 
     def start_s4_connector(self, progress):

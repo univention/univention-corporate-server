@@ -900,10 +900,10 @@ def __run_test(filename):  # type: (str) -> None
     # test_env.dump()
     test_case = TestCase().load(filename)
     # try:
-    # 	test_case.check(te)
+    #     test_case.check(te)
     # except TestConditionError, ex:
-    # 	for msg in ex:
-    # 		print msg
+    #     for msg in ex:
+    #         print msg
     test_result = TestResult(test_case, test_env)
     test_result.dump()
 

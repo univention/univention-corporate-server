@@ -38,8 +38,8 @@ from univentionunittests import import_module
 
 # @pytest.fixture
 # def mock_lmbd(mocker):
-# 	mock = mocker.patch("lmdb").return_value = mocker.Mock()
-# 	return mock
+#     mock = mocker.patch("lmdb").return_value = mocker.Mock()
+#     return mock
 
 @pytest.fixture()
 def db_module(mocker):
@@ -108,24 +108,24 @@ def test_recreate(ldap_cache, lmdb_caches, db_module, mocker):
 
 #
 # def test_query_objects(ldap_cache):
-# 	"""
-# 	Test the query_objects method of the ldap_cache.cache.LmdbCaches class.
-# 	"""
-# 	lmbd_caches = ldap_cache.LmbdCaches()
+#     """
+#     Test the query_objects method of the ldap_cache.cache.LmdbCaches class.
+#     """
+#     lmbd_caches = ldap_cache.LmbdCaches()
 #
 #
 #
 # def test_get_cache(ldap_cache):
-# 	"""
-# 	Test the get_cache method of the ldap_cache.cache.LmdbCaches class.
-# 	"""
-# 	lmbd_caches = ldap_cache.LmbdCaches()
+#     """
+#     Test the get_cache method of the ldap_cache.cache.LmdbCaches class.
+#     """
+#     lmbd_caches = ldap_cache.LmbdCaches()
 #
 #
 #
 # def test_get_caches_for_query(ldap_cache):
-# 	"""
-# 	Test the get_caches_for_query method of the ldap_cache.cache.LmdbCaches class.
-# 	"""
-# 	lmbd_caches = ldap_cache.LmbdCaches()
+#     """
+#     Test the get_caches_for_query method of the ldap_cache.cache.LmdbCaches class.
+#     """
+#     lmbd_caches = ldap_cache.LmbdCaches()
 #

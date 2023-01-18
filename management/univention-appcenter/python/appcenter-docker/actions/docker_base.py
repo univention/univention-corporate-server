@@ -127,7 +127,7 @@ class DockerActionMixin(object):
                 cmd_kwargs['app_version'] = app.version
                 # locale = get_locale()
                 # if locale:
-                #	cmd_kwargs['locale'] = locale
+                #    cmd_kwargs['locale'] = locale
                 cmd_kwargs['_tty'] = False
                 if output:
                     logger = LogCatcher(self.logger)

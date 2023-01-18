@@ -3,7 +3,7 @@ def test_manual_screenshots():
 #language=${language}
 #case $language in
 #    de)
-#    	vm_name=installer_test_manual-screenshots_de
+#        vm_name=installer_test_manual-screenshots_de
 #        echo 10.200.13.80 > IP
 #        script_name=90_manual_screenshots-de.py
 #        ;;

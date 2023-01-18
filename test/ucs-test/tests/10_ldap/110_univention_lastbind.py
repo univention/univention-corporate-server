@@ -23,8 +23,8 @@ except ImportError:
 
 
 # def is_role(role):
-# 	with UCSTestConfigRegistry() as ucr:
-# 		return ucr.get('server/role') == role
+#     with UCSTestConfigRegistry() as ucr:
+#         return ucr.get('server/role') == role
 
 
 def get_other_servers():
@@ -113,10 +113,10 @@ def bind_for_timestamp(dn, host=None):
 # univention_lastbind.py is not longer installed on slaves
 # @pytest.mark.skipif(not is_role('domaincontroller_slave'), reason="Only domaincontroller_slave cannot create admin connection without binddn/bindpwdfile")
 # def test_setup_on_slave_without_bind(univention_lastbind):
-# 		args = univention_lastbind.parse_args(['--setup'])
-# 		with pytest.raises(univention_lastbind.ScriptError) as excinfo:
-# 			univention_lastbind.main(args)
-# 		assert 'Could not create a writable connection to UDM on this server. Try to provide "binddn" and "bindpwdfile"' in str(excinfo.value)
+#         args = univention_lastbind.parse_args(['--setup'])
+#         with pytest.raises(univention_lastbind.ScriptError) as excinfo:
+#             univention_lastbind.main(args)
+#         assert 'Could not create a writable connection to UDM on this server. Try to provide "binddn" and "bindpwdfile"' in str(excinfo.value)
 
 
 @pytest.mark.slow()

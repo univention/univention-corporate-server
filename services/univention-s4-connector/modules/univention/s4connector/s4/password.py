@@ -636,9 +636,9 @@ def password_sync_ucs_to_s4(s4connector, key, object):
                 else:
                     ud.debug(ud.LDAP, ud.INFO, "password_sync_ucs_to_s4: no supplementalCredentials_new")
                 # if supplementalCredentials:
-                #	modlist.append((ldap.MOD_REPLACE, 'msDS-KeyVersionNumber', krb5KeyVersionNumber))
+                #    modlist.append((ldap.MOD_REPLACE, 'msDS-KeyVersionNumber', krb5KeyVersionNumber))
                 # else:
-                #	modlist.append((ldap.MOD_ADD, 'msDS-KeyVersionNumber', krb5KeyVersionNumber))
+                #    modlist.append((ldap.MOD_ADD, 'msDS-KeyVersionNumber', krb5KeyVersionNumber))
 
         if sambaPwdLastSet is None:
             sambaPwdLastSet = int(time.time())
@@ -733,7 +733,7 @@ def password_sync_s4_to_ucs(s4connector, key, ucs_object, modifyUserPassword=Tru
         if 'krb5PrincipalName' in ucs_object_attributes:
             krb5Principal = ucs_object_attributes['krb5PrincipalName'][0]
         #if 'userPassword' in ucs_object_attributes:
-        #	userPassword = ucs_object_attributes['userPassword'][0]
+        #    userPassword = ucs_object_attributes['userPassword'][0]
         sambaPwdLastSet = None
         if 'sambaPwdLastSet' in ucs_object_attributes:
             sambaPwdLastSet = ucs_object_attributes['sambaPwdLastSet'][0]

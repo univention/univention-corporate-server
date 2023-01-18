@@ -452,19 +452,19 @@ def ucr_overwrite_module_layout(module):
         # for now the layout modification from UCS 2.4 is disabled (see Bug #26673)
         # (this piece of code does not respect the tab-group-hierarchie of UCS 3.0)
         # if tab_layout and tab_layout.lower() != 'none':
-        #	layout = []
-        #	for row in tab_layout.split( ';' ):
-        #		line = []
-        #		for col in row.split( ',' ):
-        #			col = col.strip()
-        #			if not col:
-        #				continue
-        #			if col in module.property_descriptions:
-        #				line.append( col )
-        #			else:
-        #				ud.debug( ud.ADMIN, ud.ERROR, "layout overwrite: unknown property: %s" % col )
-        #		layout.append( line )
-        #	tab[ 'layout' ] = { 'label' : _( 'General' ), 'layout' : layout }
+        #    layout = []
+        #    for row in tab_layout.split( ';' ):
+        #        line = []
+        #        for col in row.split( ',' ):
+        #            col = col.strip()
+        #            if not col:
+        #                continue
+        #            if col in module.property_descriptions:
+        #                line.append( col )
+        #            else:
+        #                ud.debug( ud.ADMIN, ud.ERROR, "layout overwrite: unknown property: %s" % col )
+        #        layout.append( line )
+        #    tab[ 'layout' ] = { 'label' : _( 'General' ), 'layout' : layout }
 
         if not tab_layout or tab_layout.lower() != 'none':
             # disable specified properties via UCR

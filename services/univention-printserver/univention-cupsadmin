@@ -62,7 +62,7 @@ if cmd[-len("univention-cupsadmin"):] == "univention-cupsadmin":
 #
 # cupsenable and -disable aren't located in /usr/bin anymore
 # if os.path.basename(cmd)=="univention-cups-enable" or os.path.basename(cmd)=="univention-cups-disable":
-#	cmd=os.path.basename(cmd).replace("univention-cups-", "/usr/bin/cups")
+#    cmd=os.path.basename(cmd).replace("univention-cups-", "/usr/bin/cups")
 # else:
 
 cmd = os.path.basename(cmd).replace("univention-cups-", "/usr/sbin/cups")

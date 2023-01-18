@@ -468,28 +468,28 @@ class Migration(object):
 
 
 #def get_all_must_attributes():
-#	from ldap.schema import SubSchema, ObjectClass
-#	import ldap
-#	all_object_classes = {'posixAccount', 'shadowAccount', 'sambaSamAccount', 'krb5Principal', 'krb5KDCEntry', 'univentionMail', 'organizationalPerson', 'inetOrgPerson', 'pkiUser', 'simpleSecurityObject', 'uidObject', 'person', 'univentionPWHistory'}
-#	entry = lo.lo.lo.search_ext_s(base='cn=Subschema', scope=ldap.SCOPE_BASE, attrlist=['attributeTypes', 'objectClasses'])[0][1]
-#	subschema = SubSchema(entry)
-#	ocs = [subschema.get_obj(ObjectClass, oid) for oid in subschema.listall(ObjectClass)]
-#	return dict([(o.names[0], o.must) for o in ocs if set(o.names) & all_object_classes])
-#	{
-#		'inetOrgPerson': (),
-#		'krb5KDCEntry': ('krb5KeyVersionNumber',),
-#		'krb5Principal': ('krb5PrincipalName',),
-#		'organizationalPerson': (),
-#		'person': ('sn', 'cn'),
-#		'pkiUser': (),
-#		'posixAccount': ('cn', 'uid', 'uidNumber', 'gidNumber', 'homeDirectory'),
-#		'sambaSamAccount': ('uid', 'sambaSID'),
-#		'shadowAccount': ('uid',),
-#		'simpleSecurityObject': ('userPassword',),
-#		'uidObject': ('uid',),
-#		'univentionMail': ('uid',),
-#		'univentionPWHistory': ()
-#	}
+#    from ldap.schema import SubSchema, ObjectClass
+#    import ldap
+#    all_object_classes = {'posixAccount', 'shadowAccount', 'sambaSamAccount', 'krb5Principal', 'krb5KDCEntry', 'univentionMail', 'organizationalPerson', 'inetOrgPerson', 'pkiUser', 'simpleSecurityObject', 'uidObject', 'person', 'univentionPWHistory'}
+#    entry = lo.lo.lo.search_ext_s(base='cn=Subschema', scope=ldap.SCOPE_BASE, attrlist=['attributeTypes', 'objectClasses'])[0][1]
+#    subschema = SubSchema(entry)
+#    ocs = [subschema.get_obj(ObjectClass, oid) for oid in subschema.listall(ObjectClass)]
+#    return dict([(o.names[0], o.must) for o in ocs if set(o.names) & all_object_classes])
+#    {
+#        'inetOrgPerson': (),
+#        'krb5KDCEntry': ('krb5KeyVersionNumber',),
+#        'krb5Principal': ('krb5PrincipalName',),
+#        'organizationalPerson': (),
+#        'person': ('sn', 'cn'),
+#        'pkiUser': (),
+#        'posixAccount': ('cn', 'uid', 'uidNumber', 'gidNumber', 'homeDirectory'),
+#        'sambaSamAccount': ('uid', 'sambaSID'),
+#        'shadowAccount': ('uid',),
+#        'simpleSecurityObject': ('userPassword',),
+#        'uidObject': ('uid',),
+#        'univentionMail': ('uid',),
+#        'univentionPWHistory': ()
+#    }
 
 
 if __name__ == '__main__':

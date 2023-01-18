@@ -258,9 +258,9 @@ def create_mapping(configbasename='connector'):
                     con_attribute='userWorkstations',
                 ),
                 #'sambaLogonHours': univention.connector.attribute(
-                #	ucs_attribute='sambaLogonHours',
-                #	ldap_attribute='sambaLogonHours',
-                #	con_attribute='logonHours',
+                #    ucs_attribute='sambaLogonHours',
+                #    ldap_attribute='sambaLogonHours',
+                #    con_attribute='logonHours',
                 #),
                 'profilepath': univention.connector.attribute(
                     ucs_attribute='profilepath',

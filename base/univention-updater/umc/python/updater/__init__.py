@@ -622,8 +622,8 @@ class HookManager:
 
     def __init__(self, module_dir: str, raise_exceptions: bool = True) -> None:
         """
-        :param module_dir:				path to directory that contains Python modules with hook functions
-        :param raise_exceptions:		if `False`, all exceptions while loading Python modules will be dropped and all exceptions while calling hooks will be caught and returned in result list
+        :param module_dir: path to directory that contains Python modules with hook functions
+        :param raise_exceptions: if `False`, all exceptions while loading Python modules will be dropped and all exceptions while calling hooks will be caught and returned in result list
         """
         self.__loaded_modules = {}  # type: Dict[str, ModuleType]
         self.__registered_hooks = {}  # type: Dict[str, List[Callable[..., Any]]]

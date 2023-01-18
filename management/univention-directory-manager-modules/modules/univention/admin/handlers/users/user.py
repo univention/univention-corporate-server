@@ -726,7 +726,7 @@ def logonHoursMap(logontimes):
     bitstring = ''.join(map(lambda x: x in logontimes and '1' or '0', range(168)))
 
     # for idx in logontimes:
-    # 	bitstring[ idx ] = '1'
+    #     bitstring[idx] = '1'
 
     logontimes = bitstring
 
@@ -1296,44 +1296,44 @@ class object(univention.admin.handlers.simpleLdap, PKIIntegration):
             return True
         return super(object, self).hasChanged(key)
 
-#		if key == 'disabled':
-#			acctFlags = univention.admin.samba.acctFlags(self.oldattr.get("sambaAcctFlags", [b''])[0].decode('ASCII')).decode()
-#			krb5Flags = self.oldattr.get('krb5KDCFlags', [])
-#			shadowExpire = self.oldattr.get('shadowExpire', [])
+#        if key == 'disabled':
+#            acctFlags = univention.admin.samba.acctFlags(self.oldattr.get("sambaAcctFlags", [b''])[0].decode('ASCII')).decode()
+#            krb5Flags = self.oldattr.get('krb5KDCFlags', [])
+#            shadowExpire = self.oldattr.get('shadowExpire', [])
 #
-#			if not acctFlags and not krb5Flags and not shadowExpire:
-#				return False
-#			if self['disabled'] == 'all':
-#				return 'D' not in acctFlags or b'126' in krb5Flags or b'1' not in shadowExpire
-#			elif self['disabled'] == 'windows':
-#				return 'D' not in acctFlags or b'254' in krb5Flags or b'1' in shadowExpire
-#			elif self['disabled'] == 'kerberos':
-#				return 'D' in acctFlags or b'126' in krb5Flags or b'1' in shadowExpire
-#			elif self['disabled'] == 'posix':
-#				return 'D' in acctFlags or b'254' in krb5Flags or b'1' not in shadowExpire
-#			elif self['disabled'] == 'windows_kerberos':
-#				return 'D' not in acctFlags or b'126' in krb5Flags or b'1' in shadowExpire
-#			elif self['disabled'] == 'windows_posix':
-#				return 'D' not in acctFlags or b'254' in krb5Flags or b'1' not in shadowExpire
-#			elif self['disabled'] == 'posix_kerberos':
-#				return 'D' in acctFlags or b'126' in krb5Flags or b'1' not in shadowExpire
-#			else:  # enabled
-#				return 'D' in acctFlags or b'254' in krb5Flags or b'1' in shadowExpire
-#		elif key == 'locked':
-#			password = self['password']
-#			acctFlags = univention.admin.samba.acctFlags(self.oldattr.get("sambaAcctFlags", [b''])[0].decode('ASCII')).decode()
-#			if not password and not acctFlags:
-#				return False
-#			if self['locked'] == 'all':
-#				return not univention.admin.password.is_locked(password) or 'L' not in acctFlags
-#			elif self['locked'] == 'windows':
-#				return univention.admin.password.is_locked(password) or 'L' not in acctFlags
-#			elif self['locked'] == 'posix':
-#				return not univention.admin.password.is_locked(password) or 'L' in acctFlags
-#			else:
-#				return univention.admin.password.is_locked(password) or 'L' in acctFlags
+#            if not acctFlags and not krb5Flags and not shadowExpire:
+#                return False
+#            if self['disabled'] == 'all':
+#                return 'D' not in acctFlags or b'126' in krb5Flags or b'1' not in shadowExpire
+#            elif self['disabled'] == 'windows':
+#                return 'D' not in acctFlags or b'254' in krb5Flags or b'1' in shadowExpire
+#            elif self['disabled'] == 'kerberos':
+#                return 'D' in acctFlags or b'126' in krb5Flags or b'1' in shadowExpire
+#            elif self['disabled'] == 'posix':
+#                return 'D' in acctFlags or b'254' in krb5Flags or b'1' not in shadowExpire
+#            elif self['disabled'] == 'windows_kerberos':
+#                return 'D' not in acctFlags or b'126' in krb5Flags or b'1' in shadowExpire
+#            elif self['disabled'] == 'windows_posix':
+#                return 'D' not in acctFlags or b'254' in krb5Flags or b'1' not in shadowExpire
+#            elif self['disabled'] == 'posix_kerberos':
+#                return 'D' in acctFlags or b'126' in krb5Flags or b'1' not in shadowExpire
+#            else:  # enabled
+#                return 'D' in acctFlags or b'254' in krb5Flags or b'1' in shadowExpire
+#        elif key == 'locked':
+#            password = self['password']
+#            acctFlags = univention.admin.samba.acctFlags(self.oldattr.get("sambaAcctFlags", [b''])[0].decode('ASCII')).decode()
+#            if not password and not acctFlags:
+#                return False
+#            if self['locked'] == 'all':
+#                return not univention.admin.password.is_locked(password) or 'L' not in acctFlags
+#            elif self['locked'] == 'windows':
+#                return univention.admin.password.is_locked(password) or 'L' not in acctFlags
+#            elif self['locked'] == 'posix':
+#                return not univention.admin.password.is_locked(password) or 'L' in acctFlags
+#            else:
+#                return univention.admin.password.is_locked(password) or 'L' in acctFlags
 #
-#		return super(object, self).hasChanged(key)
+#        return super(object, self).hasChanged(key)
 
     def __update_groups(self):
         if not self.__groups_loaded:
@@ -1761,8 +1761,8 @@ class object(univention.admin.handlers.simpleLdap, PKIIntegration):
 
             if self['locked'] == '0':  # unlock kerberos password
                 krb_kdcflags &= ~(1 << 17)
-#			elif self['locked'] == '1':  # lock kerberos password
-#				krb_kdcflags |= (1 << 17)
+#            elif self['locked'] == '1':  # lock kerberos password
+#                krb_kdcflags |= (1 << 17)
 
             ml.append(('krb5KDCFlags', self.oldattr.get('krb5KDCFlags', []), str(krb_kdcflags).encode('ASCII')))
         return ml
@@ -2115,8 +2115,8 @@ class object(univention.admin.handlers.simpleLdap, PKIIntegration):
                 elif filter.value == u'windows':
                     filter.transform_to_conjunction(univention.admin.filter.parse(u'(|(sambaAcctFlags=[UL       ])(sambaAcctFlags=[ULD       ]))'))
                 # elif filter.value == u'posix':
-                #	filter.variable = u'userPassword'
-                #	filter.value = u'{crypt}!*'
+                #    filter.variable = u'userPassword'
+                #    filter.value = u'{crypt}!*'
                 elif filter.value == u'none':
                     # filter.transform_to_conjunction(univention.admin.filter.parse(u'(&(!(sambaAcctFlags=[UL       ]))(!(sambaAcctFlags=[ULD       ]))(!(userPassword={crypt}!*)))'))
                     filter.transform_to_conjunction(univention.admin.filter.parse(u'(&(!(sambaAcctFlags=[UL       ]))(!(sambaAcctFlags=[ULD       ])))'))

@@ -436,15 +436,15 @@ Use "univention-directory-manager modules" for a list of available modules.''',
     parser.add_argument('object_type')
     known_args = parse_known_args(parser, client)
 
-#	if known_args and known_args.object_type in ('license', 'modules'):
-#		mods = object_type.add_parser(str('modules'), description='Show all available modules')
-#		mods.set_defaults(func=client.show_modules)
+#    if known_args and known_args.object_type in ('license', 'modules'):
+#        mods = object_type.add_parser(str('modules'), description='Show all available modules')
+#        mods.set_defaults(func=client.show_modules)
 #
-#		license = object_type.add_parser(str('license'), description='View or modify license information')
-#		license.set_defaults(func=client.license)
-#		license.add_argument('--request', action='store_true')
-#		license.add_argument('--check', action='store_true')
-#		license.add_argument('--import')
+#        license = object_type.add_parser(str('license'), description='View or modify license information')
+#        license.set_defaults(func=client.license)
+#        license.add_argument('--request', action='store_true')
+#        license.add_argument('--check', action='store_true')
+#        license.add_argument('--import')
 
     subparsers = add_object_action_arguments(parser, client)
     parser.formatter_class = argparse_module_help(client, parser, known_args, subparsers)

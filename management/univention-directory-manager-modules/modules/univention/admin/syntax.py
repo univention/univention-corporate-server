@@ -4647,8 +4647,8 @@ class WritableShare(UDM_Objects):
     use_objects = False
 
 # class share(ldapDnOrNone):
-# 	searchFilter='(objectClass=univentionShare)'
-# 	description=_('Share')
+#     searchFilter='(objectClass=univentionShare)'
+#     description=_('Share')
 
 
 class AllowDenyIgnore(select):

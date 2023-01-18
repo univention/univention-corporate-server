@@ -113,7 +113,7 @@ def import_appcenter_modules():
     use_installed = pytest.config.getoption('--installed-appcenter')
     local_python_path = 'python/appcenter/'
     # for pymod in glob(local_python_path + '*.py'):
-    # 	name = os.path.basename(pymod)[:-3]
+    #     name = os.path.basename(pymod)[:-3]
     import_module('listener', None, 'listener', use_installed=True)
     for name in ['log', 'ucr', 'utils', 'packages', 'meta', 'ini_parser', 'settings', 'app', 'app_cache', 'udm', 'actions', 'install_checks']:
         module = import_module(name, local_python_path, 'univention.appcenter.{}'.format(name), use_installed=use_installed)

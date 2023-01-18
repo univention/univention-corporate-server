@@ -183,10 +183,10 @@ class ComputerObject(univention.admin.handlers.simpleComputer, nagios.Support, P
         super(ComputerObject, self)._ldap_post_remove()
 
         #for group in univention.admin.handlers.groups.group.lookup(self.co, self.lo, filter_s=filter_format('uniqueMember=%s', [self.dn])):
-        #	group.open()
-        #	if self.dn in group['users']:
-        #		group['users'].remove(self.dn)
-        #		group.modify(ignore_license=True)
+        #    group.open()
+        #    if self.dn in group['users']:
+        #        group['users'].remove(self.dn)
+        #        group.modify(ignore_license=True)
 
         self.nagios_ldap_post_remove()
         # Need to clean up oldinfo. If remove was invoked, because the

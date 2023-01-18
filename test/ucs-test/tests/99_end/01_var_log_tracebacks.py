@@ -69,8 +69,8 @@ def test_journallog_tracebacks():
 @pytest.mark.roles_not('domaincontroller_master')
 @pytest.mark.exposure('dangerous')
 # @pytest.mark.parametrize('testcase', [
-# 	'test_var_log_tracebacks',
-# 	'test_var_log_tracebacks_gz',
+#     'test_var_log_tracebacks',
+#     'test_var_log_tracebacks_gz',
 # ])  # FIXME: skip test_ucs_test_logfile
 def test_fetch_logfiles_on_dc_master(ucr, testcase=None):
     """Find traceback on the DC Master"""

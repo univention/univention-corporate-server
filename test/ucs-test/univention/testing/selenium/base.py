@@ -247,8 +247,8 @@ class UMCSeleniumTest(ChecksAndWaits, Interactions):
 
         # FIXME: selenium.common.exceptions.InvalidCookieDomainException: Message: invalid cookie domain
         # for year in set([2020, datetime.date.today().year, datetime.date.today().year + 1, datetime.date.today().year - 1]):
-        # 	self.driver.add_cookie({'name': 'hideSummit%sDialog' % (year,), 'value': 'true'})
-        # 	self.driver.add_cookie({'name': 'hideSummit%sNotification' % (year,), 'value': 'true'})
+        #     self.driver.add_cookie({'name': 'hideSummit%sDialog' % (year,), 'value': 'true'})
+        #     self.driver.add_cookie({'name': 'hideSummit%sNotification' % (year,), 'value': 'true'})
         if not without_navigation:
             self.driver.get(self.base_url + f'univention/login/?lang={language if language else self.language}')
 
@@ -323,65 +323,65 @@ class UMCSeleniumTest(ChecksAndWaits, Interactions):
         self.wait_for_text(_('Search query'))
 
     # def check_checkbox_by_name(self, inputname, checked=True):
-    # 	"""
-    # 	This method finds html input tags by name attribute and selects and returns first element with location on screen (visible region).
-    # 	"""
-    # 	elems = self.driver.find_elements_by_name(inputname)
-    # 	elem = self.find_visible_element_from_list(elems)
-    # 	if not elem:
-    # 		elem = self.find_visible_checkbox_from_list(elems)
-    # 	# workaround for selenium grid firefox the 'disabled' checkbox needs to be clicked three times to be selected
-    # 	for i in range(0, 3):
-    # 		if elem.is_selected() is not checked:
-    # 			elem.click()
-    # 	return elem
+    #     """
+    #     This method finds html input tags by name attribute and selects and returns first element with location on screen (visible region).
+    #     """
+    #     elems = self.driver.find_elements_by_name(inputname)
+    #     elem = self.find_visible_element_from_list(elems)
+    #     if not elem:
+    #         elem = self.find_visible_checkbox_from_list(elems)
+    #     # workaround for selenium grid firefox the 'disabled' checkbox needs to be clicked three times to be selected
+    #     for i in range(0, 3):
+    #         if elem.is_selected() is not checked:
+    #             elem.click()
+    #     return elem
 
     # def check_wizard_checkbox_by_name(self, inputname, checked=True):
-    # 	elem = self.driver.find_element_by_xpath("//div[starts-with(@id,'umc_modules_udm_wizards_')]//input[@name= %s ]" % json.dumps(inputname))
-    # 	for i in range(0, 3):
-    # 		if elem.is_selected() is not checked:
-    # 			elem.click()
-    # 	return elem
+    #     elem = self.driver.find_element_by_xpath("//div[starts-with(@id,'umc_modules_udm_wizards_')]//input[@name= %s ]" % json.dumps(inputname))
+    #     for i in range(0, 3):
+    #         if elem.is_selected() is not checked:
+    #             elem.click()
+    #     return elem
 
     # def find_combobox_by_name(self, inputname):
-    # 	return self.driver.find_element_by_xpath("//input[@name = %s]/parent::div/input[starts-with(@id,'umc_widgets_ComboBox')]" % json.dumps(inputname))
+    #     return self.driver.find_element_by_xpath("//input[@name = %s]/parent::div/input[starts-with(@id,'umc_widgets_ComboBox')]" % json.dumps(inputname))
 
     # @staticmethod
     # def find_visible_element_from_list(elements):
-    # 	"""
-    # 	returns first visible element from list
-    # 	"""
-    # 	for elem in elements:
-    # 		if elem.is_displayed():
-    # 			return elem
-    # 	return None
+    #     """
+    #     returns first visible element from list
+    #     """
+    #     for elem in elements:
+    #         if elem.is_displayed():
+    #             return elem
+    #     return None
 
     # @staticmethod
     # def find_visible_checkbox_from_list(elements):
-    # 	for elem in elements:
-    # 		if elem.location['x'] > 0 or elem.location['y'] > 0 and elem.get_attribute("type") == "checkbox" and "dijitCheckBoxInput" in elem.get_attribute("class"):
-    # 			return elem
-    # 	return None
+    #     for elem in elements:
+    #         if elem.location['x'] > 0 or elem.location['y'] > 0 and elem.get_attribute("type") == "checkbox" and "dijitCheckBoxInput" in elem.get_attribute("class"):
+    #             return elem
+    #     return None
 
     # def find_error_symbol_for_inputfield(self, inputfield):
-    # 	logger.info('check error symbol', inputfield)
-    # 	elems = self.driver.find_elements_by_xpath("//input[@name= %s ]/parent::div/parent::div/div[contains(@class,'dijitValidationContainer')]" % json.dumps(inputfield))
-    # 	elem = self.find_visible_element_from_list(elems)
-    # 	if elem:
-    # 		return True
-    # 	return False
+    #     logger.info('check error symbol', inputfield)
+    #     elems = self.driver.find_elements_by_xpath("//input[@name= %s ]/parent::div/parent::div/div[contains(@class,'dijitValidationContainer')]" % json.dumps(inputfield))
+    #     elem = self.find_visible_element_from_list(elems)
+    #     if elem:
+    #         return True
+    #     return False
 
     # def error_symbol_displayed(self, inputfield, displayed=True):
-    # 	if displayed:
-    # 		if not self.find_error_symbol_for_inputfield(inputfield):
-    # 			logger.error('Missing error symbol', inputfield)
-    # 			raise ValueError()
-    # 	else:
-    # 		if self.find_error_symbol_for_inputfield(inputfield):
-    # 			logger.error('Error symbol %r should not be displayed.', inputfield)
-    # 			raise ValueError()
+    #     if displayed:
+    #         if not self.find_error_symbol_for_inputfield(inputfield):
+    #             logger.error('Missing error symbol', inputfield)
+    #             raise ValueError()
+    #     else:
+    #         if self.find_error_symbol_for_inputfield(inputfield):
+    #             logger.error('Error symbol %r should not be displayed.', inputfield)
+    #             raise ValueError()
 
     # def select_table_item_by_name(self, itemname):
-    # 	elem = self.driver.find_element_by_xpath("//div[contains(text(), %s )]/parent::td" % json.dumps(itemname))
-    # 	#TODO if not elem search itemname
-    # 	elem.click()
+    #     elem = self.driver.find_element_by_xpath("//div[contains(text(), %s )]/parent::td" % json.dumps(itemname))
+    #     #TODO if not elem search itemname
+    #     elem.click()

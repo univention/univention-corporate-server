@@ -86,11 +86,11 @@ MAPPED_PATTERNS_TO_KEYS = {
 
 # Search string proposals:
 #
-#	-	array: turns into a ComboBox
-#	-	string:	turns into a TextBox
+#    -    array: turns into a ComboBox
+#    -    string: turns into a TextBox
 #
-# *** NOTE ***	the 'system_roles' and 'ucs_version' lists are fetched
-#				dynamically from the pkgdb object.
+# NOTE: the 'system_roles' and 'ucs_version' lists are fetched
+#       dynamically from the pkgdb object.
 PROPOSALS = {
     'selectedstate': [
         'install', 'hold', 'deinstall', 'purge', 'unknown'
@@ -106,13 +106,13 @@ PROPOSALS = {
 
 # Describes our query types:
 #
-#	'columns'	the result set. Equally used as field list for the query as well
-#				as the column list for the results grid.
-#	'db_fields' (optional) define this if the list of database fields is different from the
-#				list of columns to display (as it is the case for the 'packages' query)
-#	'function'	the function of the pkgdb object to use.
-#	'args'		(optional) if the corresponding function of the pkgdb object needs more args,
-#				you can specify them here. Args are passed as 'named args' in the Python sense.
+#    'columns' the result set. Equally used as field list for the query as well
+#              as the column list for the results grid.
+#    'db_fields' (optional) define this if the list of database fields is different from the
+#                list of columns to display (as it is the case for the 'packages' query)
+#    'function' the function of the pkgdb object to use.
+#    'args' (optional) if the corresponding function of the pkgdb object needs more args,
+#           you can specify them here. Args are passed as 'named args' in the Python sense.
 #
 QUERIES = {
     # 'select sysname,sysversion,sysrole,to_char(scandate,\'YYYY-MM-DD HH24:MI:SS\'),ldaphostdn from systems where '+query+' order by sysname
@@ -133,7 +133,7 @@ QUERIES = {
             'join_systems': True,
             'limit': RECORD_LIMIT,
             # 'orderby' ..avoids doing a sort that only consumes time and memory, and afterwards
-            # 			the data is sorted again by the grid or its store
+            # the data is sorted again by the grid or its store
             'orderby': ''
         }
     }
@@ -158,12 +158,12 @@ DECODED_VALUES = {f: {CODED_VALUES[f][key]: key for key in CODED_VALUES[f]} for 
 # or such things as we don't have any name clashes.
 LABELS = {
     # ------------- search fields (keys) ---------
-    # 'incomplete_packages':		_("Find packages installed incompletely"),
+    # 'incomplete_packages': _("Find packages installed incompletely"),
     'inststate': _("Installation state"),
     'inventory_date': _("Inventory date"),
-    # 'compare_with_version':		_("Compared to version"),
+    # 'compare_with_version': _("Compared to version"),
     'pkgname': _("Package name"),
-    # 'vername':					_("Package version"),
+    # 'vername': _("Package version"),
     'currentstate': _("Package state"),
     'selectedstate': _("Selection state"),
     'sysname': _("Hostname"),
@@ -345,9 +345,9 @@ def _make_query(key, operator, pattern):
     consumes a tuple of 'key','operator','pattern' and converts it
     into a valid Postgres WHERE clause. Features here:
 
-    -	translates keyed values into their database representation
-    -	tweaks this DOS-glob-style pattern notation into a correct
-    regular expression
+    - translates keyed values into their database representation
+    - tweaks this DOS-glob-style pattern notation into a correct
+      regular expression
     """
 
     def __make_query(key, operator, pattern):
@@ -418,9 +418,9 @@ def _convert_to_grid(data, names):
     length = min(len(data), len(names))
 
     # This expression does the main work:
-    #	(1)	assigns the field name to a value
-    #	(2)	converts database representation into keyed values (_decoded_value)
-    #	(3)	translates keyed values for display (_id_to_label)
+    # (1) assigns the field name to a value
+    # (2) converts database representation into keyed values (_decoded_value)
+    # (3) translates keyed values for display (_id_to_label)
     return {names[i]: _id_to_label(_decoded_value(names[i], data[i])) for i in range(length)}
 
 

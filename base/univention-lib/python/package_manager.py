@@ -355,20 +355,20 @@ class DpkgProgress(apt.progress.base.InstallProgress):
         """
         self.progress_state.error('%s: %s' % (pkg, errormsg), logger_name='process')
 
-#	def start_update(self):
-#		self.log('SUPDATE')
+#    def start_update(self):
+#        self.log('SUPDATE')
 #
-#	def finish_update(self):
-#		self.log('FUPDATE')
+#    def finish_update(self):
+#        self.log('FUPDATE')
 #
-#	def conffile(self, current, new):
-#		self.log('CONFF', current, new)
+#    def conffile(self, current, new):
+#        self.log('CONFF', current, new)
 #
-#	def dpkg_status_change(self, pkg, status):
-#		self.log('DPKG', pkg, status)
+#    def dpkg_status_change(self, pkg, status):
+#        self.log('DPKG', pkg, status)
 #
-#	def processing(self, pkg, stage):
-#		self.log('PROCESS', pkg, stage)
+#    def processing(self, pkg, stage):
+#        self.log('PROCESS', pkg, stage)
 #
 
 

@@ -43,7 +43,7 @@ def preinst(ucr, changes):
         shutil.copy2(CUR, BAK)
 
     if 'local/repository' in changes:
-        """ Immediately resolve pending policy changes if local/repository is changed (Bug #16646) """
+        """Immediately resolve pending policy changes if local/repository is changed (Bug #16646)"""
         os.system('/usr/lib/univention-directory-policy/univention-policy-set-repository-server >>/var/log/univention/repository.log')
 
 

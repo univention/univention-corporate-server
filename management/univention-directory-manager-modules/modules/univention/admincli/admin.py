@@ -183,7 +183,7 @@ def _print_property(module, action, name, stream):
         flags.append('[]')
     flags = ' (%s)' % (','.join(flags),) if flags else ''
 
-    print('		%-40s %s' % (name + flags, property.short_description), file=stream)
+    print('        %-40s %s' % (name + flags, property.short_description), file=stream)
 
 
 def module_usage(information, action='', stream=sys.stdout):
@@ -204,7 +204,7 @@ def module_usage(information, action='', stream=sys.stdout):
 
             for row in moduletab.layout:
                 if isinstance(row, Group):
-                    print('	%s' % row.label, file=stream)
+                    print('    %s' % row.label, file=stream)
                     for row in row.layout:
                         if isinstance(row, six.string_types):
                             _print_property(module, action, row, stream)

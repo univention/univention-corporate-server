@@ -86,7 +86,7 @@ class MailSink:
     >>> ms.stop()
 
     >>> with MailSink('127.0.0.1', 12345, filename='/tmp/sinkfile.eml') as ms:
-    >>> 	<do some stuff>
+    >>>     <do some stuff>
     """
 
     def __init__(self, address, port, filename=None, target_dir=None, fqdn=None):

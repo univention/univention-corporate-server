@@ -643,7 +643,7 @@ class SamlError(UMC_HTTPError):
 class Ressource(object):
 
     # NOTE: only use CORE.process, _not_ CORE.error; since CORE.error writes as
-    #	   well to /var/log/syslog, this seems to cause problems with cherrypy.
+    #       well to /var/log/syslog, this seems to cause problems with cherrypy.
     # (Bug #22634)
     _logOptions = {
         'error': CORE.process,

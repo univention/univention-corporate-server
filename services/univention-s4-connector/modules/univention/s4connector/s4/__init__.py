@@ -225,8 +225,8 @@ def samaccountname_dn_mapping(connector, given_object, dn_mapping_stored, ucsobj
             # But in case the sAMAccountName has been changed we should search for
             # the sAMAccountName. That's not the best solution but it works for now:
             # See the following test cases:
-            #	125sync_recreate_user_at_different_position
-            #	272read_ad_change_username
+            #    125sync_recreate_user_at_different_position
+            #    272read_ad_change_username
             t_dn = object.get('dn')
             if t_dn:
                 (_rdn_attribute, rdn_value, _flags) = str2dn(t_dn)[0][0]

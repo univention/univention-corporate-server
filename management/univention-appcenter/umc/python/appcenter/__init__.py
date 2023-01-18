@@ -918,7 +918,7 @@ class Instance(umcm.Base, ProgressMixin):
 
         # add (and translate) a combined status field
         # *** NOTE *** we translate it here: if we would use the Custom Formatter
-        #		of the grid then clicking on the sort header would not work.
+        #        of the grid then clicking on the sort header would not work.
         if package.is_installed:
             if package.is_upgradable:
                 result['status'] = _('upgradable')
@@ -994,28 +994,28 @@ class Instance(umcm.Base, ProgressMixin):
         """Writes back one or more component definitions."""
         # umc.widgets.Form wraps the real data into an array:
         #
-        #	[
-        #		{
-        #			'object' : { ... a dict with the real data .. },
-        #			'options': None
-        #		},
-        #		... more such entries ...
-        #	]
+        #    [
+        #        {
+        #            'object' : { ... a dict with the real data .. },
+        #            'options': None
+        #        },
+        #        ... more such entries ...
+        #    ]
         #
         # Current approach is to return a similarly structured array,
         # filled with elements, each one corresponding to one array
         # element of the request:
         #
-        #	[
-        #		{
-        #			'status'	:	a number where 0 stands for success, anything else
-        #							is an error code
-        #			'message'	:	a result message
-        #			'object'	:	a dict of field -> error message mapping, allows
-        #							the form to show detailed error information
-        #		},
-        #		... more such entries ...
-        #	]
+        #    [
+        #        {
+        #            'status'    :    a number where 0 stands for success, anything else
+        #                            is an error code
+        #            'message'    :    a result message
+        #            'object'    :    a dict of field -> error message mapping, allows
+        #                            the form to show detailed error information
+        #        },
+        #        ... more such entries ...
+        #    ]
         # check if scheme of server is correct
         for repo, in iterator:
             name = repo['name']
@@ -1056,8 +1056,8 @@ class Instance(umcm.Base, ProgressMixin):
     @multi_response
     def settings_get(self, iterator):
         # *** IMPORTANT *** Our UCR copy must always be current. This is not only
-        #	to catch up changes made via other channels (ucr command line etc),
-        #	but also to reflect the changes we have made ourselves!
+        #    to catch up changes made via other channels (ucr command line etc),
+        #    but also to reflect the changes we have made ourselves!
         self.ucr.load()
 
         path = self.ucr.get(f'{ONLINE_BASE}/prefix', '')

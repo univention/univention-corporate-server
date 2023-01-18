@@ -87,8 +87,8 @@ class Instance(Base):
 
         (1) id and label are always the same here
         (2) at the frontend, we must do some postprocessing, and an array
-        is easier to handle.
-        (3)	the ComboBox is able to handle a plain array.
+            is easier to handle.
+        (3) the ComboBox is able to handle a plain array.
         """
         ucr = ConfigRegistry()
         ucr.load()
@@ -103,8 +103,8 @@ class Instance(Base):
     @simple_response
     def list_jobs(self, printer=''):
         """lists jobs for a given printer, directly suitable for the grid"""
-        # *** NOTE *** we don't set language to 'neutral' since it is useful
-        #				to get localized date/time strings.
+        # NOTE: we don't set language to 'neutral' since it is useful
+        #       to get localized date/time strings.
 
         result = []
         (stdout, stderr, status) = self._shell_command(['/usr/bin/lpstat', '-o', printer])

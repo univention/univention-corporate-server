@@ -383,7 +383,7 @@ class simpleLdap(object):
             if not self.descriptions[key].may_change:
                 yield key not in self.oldinfo or self.oldinfo[key] == value
             # if _prevent_to_change_ad_properties:  # FIXME: users.user.object.__init__ modifies firstname and lastname by hand
-            #	yield not (self.descriptions[key].readonly_when_synced and self._is_synced_object() and self.exists())
+            #    yield not (self.descriptions[key].readonly_when_synced and self._is_synced_object() and self.exists())
 
         # property does not exist
         if not self.has_property(key):

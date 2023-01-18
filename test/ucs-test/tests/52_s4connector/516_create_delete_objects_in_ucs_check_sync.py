@@ -65,7 +65,7 @@ class Users:
                 self = <univention.admin.handlers.users.user.object object at 0x7f0552046f60>
 
                     def _ldap_post_remove(self):
-                >   	self.alloc.append(('sid', self.oldattr['sambaSID'][0].decode('ASCII')))
+                >       self.alloc.append(('sid', self.oldattr['sambaSID'][0].decode('ASCII')))
                 E    KeyError
                 '''
             except noObject:

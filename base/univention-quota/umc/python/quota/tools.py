@@ -309,7 +309,7 @@ def _activate_quota_ext(fstab_entry, activate=True):
         # Note2: If the usrquota option is set in mtab but removed in fstab, then remount doesn't automatically pick it up.
         #
         # if subprocess.call(('/bin/mount', '-o', 'remount,noquota', fstab_entry.spec)):
-        # 	raise QuotaActivationError(_('Remounting the partition has failed'))
+        #     raise QuotaActivationError(_('Remounting the partition has failed'))
 
 
 _units = ('B', 'KB', 'MB', 'GB', 'TB')

@@ -178,21 +178,21 @@ class Check(object):
 
 
 # def test_case1():
-#	pwdCheck = univention.password.Check(univention.uldap.getMachineConnection(), 'stefan')
-#	pwdCheck.check('univention')
+#    pwdCheck = univention.password.Check(univention.uldap.getMachineConnection(), 'stefan')
+#    pwdCheck.check('univention')
 #
 # def test_case2():
-#	pwdCheck = univention.password.Check(univention.uldap.getMachineConnection(), None)
+#    pwdCheck = univention.password.Check(univention.uldap.getMachineConnection(), None)
 # self.enableQualityCheck = False #True
-#	self.pwhistory = ['xxxx yyyy']
-#	self.min_length = 8
-#	self.history_length = 3
-#	pwdCheck.check('univention')
+#    self.pwhistory = ['xxxx yyyy']
+#    self.min_length = 8
+#    self.history_length = 3
+#    pwdCheck.check('univention')
 #
 # def test_case3():
-#	pwdCheck = univention.password.Check(univention.uldap.getMachineConnection(), None)
-#	self.enableQualityCheck = True
-#	pwdCheck.check('univention')
+#    pwdCheck = univention.password.Check(univention.uldap.getMachineConnection(), None)
+#    self.enableQualityCheck = True
+#    pwdCheck.check('univention')
 
 
 def password_config(scope=None):

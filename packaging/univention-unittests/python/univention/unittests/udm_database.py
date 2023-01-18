@@ -111,11 +111,11 @@ class Database(object):
 
 
 # def make_univention_object(object_type, attrs, parent=None):
-# 	if parent is None:
-# 		parent = get_domain()
-# 	id_attr = 'cn'
-# 	id_value = attrs[id_attr][0]
-# 	attrs['univentionObjectType'] = [object_type]
-# 	attrs['objectClass'].append('univentionObject')
-# 	dn = '{}={},{}'.format(id_attr, id_value, parent)
-# 	return LDAPObject(dn, attrs)
+#     if parent is None:
+#         parent = get_domain()
+#     id_attr = 'cn'
+#     id_value = attrs[id_attr][0]
+#     attrs['univentionObjectType'] = [object_type]
+#     attrs['objectClass'].append('univentionObject')
+#     dn = '{}={},{}'.format(id_attr, id_value, parent)
+#     return LDAPObject(dn, attrs)

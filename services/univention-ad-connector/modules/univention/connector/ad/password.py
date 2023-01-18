@@ -151,11 +151,11 @@ def calculate_krb5keys(supplementalCredentialsblob):
     keytypes = []
     kvno = 0
     context = heimdal.context()
-#	for i in range(0, spl.sub.num_packages):
-#		pkg = spl.sub.packages[i]
-#		if pkg.name != "Primary:CLEARTEXT":
-#			continue
-#		cleartext_hex = pkg.data
+#    for i in range(0, spl.sub.num_packages):
+#        pkg = spl.sub.packages[i]
+#        if pkg.name != "Primary:CLEARTEXT":
+#            continue
+#        cleartext_hex = pkg.data
 
     krb5_old_hex = None
 
@@ -431,8 +431,8 @@ def password_sync_ucs(connector, key, object):
     newpwdlastset = "-1"  # if pwd was set in ad we need to set pwdlastset to -1 or it will be 0
     # if sambaPwdMustChange >= 0 and sambaPwdMustChange < time.time():
     # password expired, must be changed on next login
-    #	ud.debug(ud.LDAP, ud.INFO, "password_sync_ucs: samba pwd expired, set newpwdLastSet to 0")
-    #	newpwdlastset = "0"
+    #    ud.debug(ud.LDAP, ud.INFO, "password_sync_ucs: samba pwd expired, set newpwdLastSet to 0")
+    #    newpwdlastset = "0"
     if sambaPwdLastSet <= 1:
         newpwdlastset = "0"  # User must change his password
     elif pwdLastSet and int(pwdLastSet) > 0 and not pwd_set:

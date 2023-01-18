@@ -949,8 +949,8 @@ class UDM_Module(object):
             }
             # TODO: remove this from javascript and add here
             #if ucr.is_true('ad/member') and 'synced' in obj.oldattr.get('univentionObjectFlag', [])
-            #	if item['readonly_when_synced']:
-            #		item['disabled'] = True
+            #    if item['readonly_when_synced']:
+            #        item['disabled'] = True
             if key in AppAttributes.attributes_for_module(self.name):
                 AppAttributes.alter_item_for_prop(self.name, key, prop, item)
 

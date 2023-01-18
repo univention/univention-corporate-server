@@ -384,10 +384,10 @@ def file_search_mail(tokenlist=None, user=None, mail_address=None, folder=None, 
     user: string: if username is specified, a check of /var/mail/%s is performed
     mail_address: string: checks directly within the mail spool directory
     folder: string: if mail_address is specified and folder is not specified, file_search_mail
-                                    searches only in the INBOX, if folder is specified too, the given folder
-                                    is checked.
+                    searches only in the INBOX, if folder is specified too, the given folder
+                    is checked.
     timeout: integer: if the number of found mails is 0, the search is retried every second
-                                    up to <timeout> attempts.
+                      up to <timeout> attempts.
     :return: number of found mails
     """
     result = 0
@@ -637,21 +637,21 @@ def send_mail(
     Send a mail to mailserver.
     Arguments:
     recipients: single recipient as string or a list of recipients
-                            (e.g. 'foo@example.com' or ['foo@example.com', 'bar@example.com'])
-    sender:	    [optional] mail address of sender (default: tarpit@example.com)
-    subject:    [optional] mail subject (default: 'Testmessage %s' % time.ctime() )
-    msg:	    [optional] mail message; if msg is defined, idstring will be ignored!
-    idstring:   [optional] idstring that will be integrated into default mail
-    gtube:	    [optional] if True, gtube teststring will be added to mail (default: False)
-    virus:	    [optional] if True, an attachment with virus signature will be added to mail
-    attachments:[optional] list of filenames to be attached to mail
-    server:	    [optional] name or IP address of mailserver (default: localhost)
-    port:       [optional] port, the mailserver will listen on (default: 25)
-    tls:	    [optional] use TLS if true
-    username:   [optional] authenticate against mailserver if username and password are set
-    password:	[optional] authenticate against mailserver if username and password are set
+                (e.g. 'foo@example.com' or ['foo@example.com', 'bar@example.com'])
+    sender: [optional] mail address of sender (default: tarpit@example.com)
+    subject: [optional] mail subject (default: 'Testmessage %s' % time.ctime() )
+    msg: [optional] mail message; if msg is defined, idstring will be ignored!
+    idstring: [optional] idstring that will be integrated into default mail
+    gtube: [optional] if True, gtube teststring will be added to mail (default: False)
+    virus: [optional] if True, an attachment with virus signature will be added to mail
+    attachments: [optional] list of filenames to be attached to mail
+    server: [optional] name or IP address of mailserver (default: localhost)
+    port: [optional] port, the mailserver will listen on (default: 25)
+    tls: [optional] use TLS if true
+    username: [optional] authenticate against mailserver if username and password are set
+    password: [optional] authenticate against mailserver if username and password are set
     debuglevel: [optional] SMTP client debug level (default: 1)
-    messageid:  [optional] message id (defaults to a random value)
+    messageid: [optional] message id (defaults to a random value)
     """
     # default values
     m_sender = 'tarpit@example.com'
