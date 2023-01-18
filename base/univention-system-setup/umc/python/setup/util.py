@@ -643,7 +643,7 @@ def run_joinscript(progressParser, values, _username, password, dcname=None, lan
 
 		with _temporary_password_file(password) as password_file:
 			# sanitize username
-			reg = re.compile('[^ a-zA-Z_1-9-]')
+			reg = re.compile('[^ a-zA-Z_0-9-]')
 			username = reg.sub('_', _username)
 
 			# run join scripts without the cleanup scripts

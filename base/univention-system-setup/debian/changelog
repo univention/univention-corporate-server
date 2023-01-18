@@ -1,3 +1,9 @@
+univention-system-setup (13.0.3-38) unstable; urgency=medium
+
+  * Bug #45058: fix domain join with usernames that has 0 in it
+
+ -- Mika Westphal <westphal@univention.de>  Wed, 18 Jan 2023 15:28:12 +0100
+
 univention-system-setup (13.0.3-37) unstable; urgency=medium
 
   * Bug #55156: fix country search during system setup
