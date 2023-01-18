@@ -383,6 +383,6 @@ performance_test_setup () {
 create_mail_domains () {
   DOM="$(jq -r .maildomain /var/lib/ucs-school-import/configs/kelvin.json)"
   for OU in $(udm container/ou list | grep name: | cut -d ' ' -f 4); do
-    udm mail/domain create --position "cn=domain,cn=mail,$(ucr get ldap/base)" --set name="$OU.$DOM"
+    udm mail/domain create --position "cn=domain,cn=mail,$(ucr get ldap/base)" --ignore_exists --set name="$OU.$DOM"
   done
 }
