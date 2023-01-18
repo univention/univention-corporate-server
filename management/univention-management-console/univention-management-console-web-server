@@ -1494,8 +1494,6 @@ class SAML(Ressource):
 
 @log_exceptions
 def run_cherrypy(options):
-    # TODO FIXME Folgenden Configeintrag einbauen, wenn loglevel in (0,1,2)
-    # 'server.environment': 'production',
     root = Root()
     cherrypy.tools.umcp_auth = cherrypy.Tool('before_handler', root.auth.basic, priority=1)
     cherrypy.config.update({
@@ -1507,6 +1505,10 @@ def run_cherrypy(options):
         'server.max_request_body_size': get_int('umc/http/max_request_body_size', 104857600),
         'response.timeout': get_int('umc/http/response-timeout', 310),
         'engine.autoreload.on': False,
+        'checker.on': options.daemon_mode,
+        'tools.log_headers.on': options.daemon_mode,
+        'request.show_mismatched_params': options.daemon_mode,
+        'response.headers.server': 'CherryPy',
         'tools.response_headers.on': True,
         'tools.response_headers.headers': [
             ('Content-Type', 'application/json'),
@@ -1518,6 +1520,11 @@ def run_cherrypy(options):
 
     n = SystemdNotifier()
     n.notify("READY=1")
+
+    # increase performance by by-passing WSGI layer
+    # from cherrypy._cpnative_server import CPHTTPServer
+    # cherrypy.server.httpserver = CPHTTPServer(cherrypy.server)
+
     cherrypy.quickstart(root=root)
 
 
