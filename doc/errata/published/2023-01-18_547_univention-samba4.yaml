@@ -10,3 +10,5 @@ desc: |
    Printer-Admins by default.
  * Rotate additional log files `log.dcerpcd` and `log.rpcd_*`
 bug: [54156, 55435]
+erratum: 547
+announced: 2023-01-18
