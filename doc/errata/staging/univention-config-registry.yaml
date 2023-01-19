@@ -3,7 +3,7 @@ release: "5.0"
 version: [2]
 scope: ucs_5.0-0-errata5.0-2
 src: univention-config-registry
-fix:
+fix: 15.0.7-23A~5.0.0.202301191345
 desc: |
  This update addresses the following issues:
  * The UCR type checking is now displaying more specific information regarding
