@@ -70,11 +70,11 @@ def main():
                     _re = re.compile(r'^\{crypt\}!.*$')
                     disabled = _re.match(posix_account_attrs['userPassword'][0].decode('utf-8'))
                     if 'krb5KDCFlags' in posix_account_attrs:
-                        if disabled and not posix_account_attrs['krb5KDCFlags'][0] == b'254':
+                        if disabled and posix_account_attrs["krb5KDCFlags"][0] != b"254":
                             modlist = [(ldap.MOD_REPLACE, 'krb5KDCFlags', b'254')]
                             lo.modify_s(dn_pA, modlist)
                             print(" - kerberos disabled")
-                        elif not disabled and not posix_account_attrs['krb5KDCFlags'][0] == b'126':
+                        elif not disabled and posix_account_attrs["krb5KDCFlags"][0] != b"126":
                             modlist = [(ldap.MOD_REPLACE, 'krb5KDCFlags', b'126')]
                             lo.modify_s(dn_pA, modlist)
                             print(" - kerberos enabled")
@@ -104,7 +104,7 @@ def main():
                             modlist = [(ldap.MOD_ADD, 'krb5ValidEnd', krb5ValidEnd)]
                             lo.modify_s(dn_pA, modlist)
                             print(" - kerberos expiry initial set")
-                        elif not posix_account_attrs['krb5ValidEnd'][0] == krb5ValidEnd:
+                        elif posix_account_attrs["krb5ValidEnd"][0] != krb5ValidEnd:
                             modlist = [(ldap.MOD_REPLACE, 'krb5ValidEnd', krb5ValidEnd)]
                             lo.modify_s(dn_pA, modlist)
                             print(" - kerberos expiry set")
@@ -130,7 +130,7 @@ def main():
                         modlist = [(ldap.MOD_ADD, 'krb5PasswordEnd', krb5PasswordEnd)]
                         lo.modify_s(dn_pA, modlist)
                         print("kerberos password end initial set")
-                    elif not posix_account_attrs['krb5PasswordEnd'][0] == krb5PasswordEnd:
+                    elif posix_account_attrs["krb5PasswordEnd"][0] != krb5PasswordEnd:
                         modlist = [(ldap.MOD_REPLACE, 'krb5PasswordEnd', krb5PasswordEnd)]
                         lo.modify_s(dn_pA, modlist)
                         print(" - kerberos password end set")

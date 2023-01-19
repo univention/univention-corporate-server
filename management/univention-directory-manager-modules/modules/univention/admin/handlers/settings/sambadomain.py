@@ -280,7 +280,7 @@ class object(univention.admin.handlers.simpleLdap):
             else:
                 props = props & (~DOMAIN_PASSWORD_STORE_CLEARTEXT)
 
-        if not props == int(self.get('domainPwdProperties', 0)):
+        if props != int(self.get("domainPwdProperties", 0)):
             self['domainPwdProperties'] = str(props)
 
     @classmethod

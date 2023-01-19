@@ -69,7 +69,7 @@ def handler(dn: str, new: Dict[str, List[bytes]], old: Dict[str, List[bytes]]) -
 def postrun() -> None:
     """Restart LDAP server Primary and mark new extension objects active"""
     server_role = listener.configRegistry.get('server/role')
-    if not server_role == 'domaincontroller_master':
+    if server_role != "domaincontroller_master":
         if not acl_handler._todo_list:
             # In case of schema changes only restart slapd on Primary
             return

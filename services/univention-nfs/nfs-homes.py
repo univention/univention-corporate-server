@@ -64,13 +64,13 @@ def handler(dn: str, new: Dict[str, List[bytes]], old: Dict[str, List[bytes]]) -
         gidNumber = new.get("gidNumber")
         automountInformation = new.get("automountInformation")
 
-        if not uidNumber or not len(uidNumber) == 1:
+        if not uidNumber or len(uidNumber) != 1:
             return
-        if not gidNumber or not len(gidNumber) == 1:
+        if not gidNumber or len(gidNumber) != 1:
             return
-        if not uid or not len(uid) == 1:
+        if not uid or len(uid) != 1:
             return
-        if not automountInformation or not len(automountInformation) == 1:
+        if not automountInformation or len(automountInformation) != 1:
             return
 
         uid = uid[0].decode('UTF-8')

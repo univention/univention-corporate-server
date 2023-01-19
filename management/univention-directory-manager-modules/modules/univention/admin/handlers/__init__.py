@@ -3518,7 +3518,7 @@ class simplePolicy(simpleLdap):
     def __load_policies(self, policies=None):
         if not self.policy_attrs:
             # the referring object does not exist yet
-            if not self.referring_object_dn == self.referring_object_position_dn:
+            if self.referring_object_dn != self.referring_object_position_dn:
                 result = self.lo.getPolicies(self.lo.parentDn(self.referring_object_dn), policies=policies)
             else:
                 result = self.lo.getPolicies(self.referring_object_position_dn, policies=policies)

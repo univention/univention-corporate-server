@@ -244,11 +244,11 @@ for i in sorted(glob.glob(os.path.join(DATA_DIR, '*.json'))):
         li_pid = get_pid_for_name(' /usr/sbin/univention-directory-listener')
         con_pid = get_pid_for_name('univention-appcenter-listener-converter %s' % name)
         assert old_li_pid == li_pid  # app update does not require listener restart
-        assert not old_con_pid == con_pid
+        assert old_con_pid != con_pid
 
         # check handler file/listener restart during remove
         app.uninstall()
         new_li_pid = get_pid_for_name(' /usr/sbin/univention-directory-listener')
         assert not systemd_service_enabled(systemd_service)
         assert not os.path.isfile('/var/lib/univention-directory-listener/handlers/%s' % name)
-        assert not li_pid == new_li_pid
+        assert li_pid != new_li_pid

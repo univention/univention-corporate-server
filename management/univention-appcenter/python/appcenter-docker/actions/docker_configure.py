@@ -79,7 +79,7 @@ class Configure(Configure, DockerActionMixin):
             return
         logfile_logger = get_logfile_logger('docker.configure')
         docker = self._get_docker(app)
-        if not docker.execute('which', 'ucr', _logger=logfile_logger).returncode == 0:
+        if docker.execute('which', 'ucr', _logger=logfile_logger).returncode != 0:
             self.warn('ucr cannot be found, falling back to changing the database file directly')
             self._set_config_directly(app, set_vars)
             return

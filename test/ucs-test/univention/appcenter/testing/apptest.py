@@ -92,7 +92,7 @@ class Session:
         self.screenshot_path = screenshot_path
         self.driver = driver
         self.ucs_root_ca = '/etc/univention/ssl/ucsCA/CAcert.pem'
-        if os.path.isfile(self.ucs_root_ca) and not os.environ.get('UCS_TEST_APPS_ADD_CERT', 'yes') == 'no':
+        if os.path.isfile(self.ucs_root_ca) and os.environ.get('UCS_TEST_APPS_ADD_CERT', 'yes') != 'no':
             self.add_ucs_root_ca_to_chrome_cert_store()
 
     def add_ucs_root_ca_to_chrome_cert_store(self):

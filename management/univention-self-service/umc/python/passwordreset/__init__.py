@@ -970,7 +970,7 @@ class Instance(Base):
             self.db.delete_tokens(token=token, username=username)
             raise TokenNotFound()
 
-        if not self._get_send_plugin(token_from_db['method']).message_application() == token_application:
+        if self._get_send_plugin(token_from_db['method']).message_application() != token_application:
             # token is correct but should not be used for this application
             MODULE.info("Receive correct token for '{}' but it should be used for another application.".format(username))
             self.db.delete_tokens(token=token, username=username)

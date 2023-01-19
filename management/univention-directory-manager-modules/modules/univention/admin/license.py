@@ -408,7 +408,7 @@ class License(object):
         version = self.version
         if version not in self.licenses:
             version = '2'
-        if self.licenses[version][obj] and not self.licenses[version][obj] == 'unlimited':
+        if self.licenses[version][obj] and self.licenses[version][obj] != "unlimited":
             result = lo.searchDn(filter=self.filters[version][obj])
             if result is None:
                 self.real[version][obj] = 0

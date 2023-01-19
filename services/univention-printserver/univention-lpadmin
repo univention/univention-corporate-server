@@ -88,7 +88,7 @@ def enableaccept(command, groupname, timeout, machine_password):
     i = 0
     child = spawn(command, [groupname])
     # print child
-    while not i == 3:
+    while i != 3:
         i = child.expect([r'%s\.%s.*\?' % (ucr['hostname'], ucr['domainname']), r'%s.*\?' % ucr['hostname'], r'localhost.*\?', EOF], timeout=timeout)
         # print command, " %s" % i
         if i in [0, 1, 2]:

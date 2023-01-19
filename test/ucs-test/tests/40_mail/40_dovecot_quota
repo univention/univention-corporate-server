@@ -55,27 +55,27 @@ def main():
                 imap = ImapMail(timeout=timeout)
                 imap.login_OK(mail, pw)
                 quota, response = imap.get_imap_quota(mail, pw)
-                if not response == 'OK':
+                if response != 'OK':
                     utils.fail('Fail get imap quota')
-                if not quota == quota01 * 1024:
+                if quota != quota01 * 1024:
                     utils.fail('Wrong quota, expected: %d, got %r' % (quota01 * 1024, quota))
 
                 # modify quota
                 udm.modify_object(modulename='users/user', dn=userdn, mailUserQuota=str(quota02))
 
                 quota, response = imap.get_imap_quota(mail, pw)
-                if not response == 'OK':
+                if response != 'OK':
                     utils.fail('Fail get imap quota')
-                if not quota == quota02 * 1024:
+                if quota != quota02 * 1024:
                     utils.fail('Wrong quota, expected: %d, got %r' % (quota02 * 1024, quota))
 
                 # remove quota
                 udm.modify_object(modulename='users/user', dn=userdn, mailUserQuota=str(quota03))
 
                 quota, response = imap.get_imap_quota(mail, pw)
-                if not response == 'OK':
+                if response != 'OK':
                     utils.fail('Fail get imap quota')
-                if not quota == -1:
+                if quota != -1:
                     utils.fail('Wrong quota set = %r, although it should not be set' % quota)
 
                 #

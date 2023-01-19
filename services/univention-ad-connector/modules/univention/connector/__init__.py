@@ -734,7 +734,7 @@ class ucs(object):
             if old and new:
                 change_type = "modify"
                 ud.debug(ud.LDAP, ud.INFO, "__sync_file_from_ucs: object was modified")
-                if old_dn and not old_dn == dn:
+                if old_dn and old_dn != dn:
                     ud.debug(ud.LDAP, ud.INFO, "__sync_file_from_ucs: object was moved")
                     # object was moved
                     new_object = {'dn': dn, 'modtype': change_type, 'attributes': new}
@@ -759,7 +759,7 @@ class ucs(object):
                         ignore_subtree_match = True
                         return True
                     else:
-                        if old_dn and not old_dn == dn:
+                        if old_dn and old_dn != dn:
                             change_type = "modify"
                             ud.debug(ud.LDAP, ud.INFO, "__sync_file_from_ucs: object was moved")
                         else:
@@ -1037,7 +1037,7 @@ class ucs(object):
         pass
 
     def __set_values(self, property_type, object, ucs_object, modtype='modify'):
-        if not modtype == 'add':
+        if modtype != 'add':
             ucs_object.open()
         ud.debug(ud.LDAP, ud.INFO, '__set_values: object: %s' % object)
 

@@ -107,9 +107,9 @@ class ipphonetool(object):
             obj = self.module.object(None, self.lo, self.position)
             obj['name'] = name
 
-        if not ip == obj['ip']:
+        if ip != obj["ip"]:
             obj['ip'] = ip
-        if not priuser == obj['priuser']:
+        if priuser != obj["priuser"]:
             obj['priuser'] = priuser
 
         if options.redirect:

@@ -1007,13 +1007,13 @@ class s4(univention.s4connector.ucs):
             # check if is moved
             olddn = self._get_DN_for_GUID(element[1]['objectGUID'][0])
             ud.debug(ud.LDAP, ud.INFO, "object_from_element: olddn: %s" % olddn)
-            if olddn and not olddn.lower() == element[0].lower() and ldap.explode_rdn(olddn.lower()) == ldap.explode_rdn(element[0].lower()):
+            if olddn and olddn.lower() != element[0].lower() and ldap.explode_rdn(olddn.lower()) == ldap.explode_rdn(element[0].lower()):
                 object['modtype'] = 'move'
                 object['olddn'] = olddn
                 ud.debug(ud.LDAP, ud.INFO, "object_from_element: detected move of AD-Object")
             else:
                 object['modtype'] = 'modify'
-                if olddn and not olddn.lower() == element[0].lower():  # modrdn
+                if olddn and olddn.lower() != element[0].lower():  # modrdn
                     object['olddn'] = olddn
 
         if deleted_object:  # dn is in deleted-objects-container, need to parse to original dn
@@ -1162,7 +1162,7 @@ class s4(univention.s4connector.ucs):
         ucs_admin_object = univention.admin.objects.get(self.modules[object_key], co='', lo=self.lo, position='', dn=object['dn'])
         ucs_admin_object.open()
 
-        if not ucs_admin_object['primaryGroup'].lower() == ucs_group['dn'].lower():
+        if ucs_admin_object["primaryGroup"].lower() != ucs_group["dn"].lower():
             # need to set to dn with correct case or the ucs-module will fail
             new_group = ucs_group['dn'].lower()
             ucs_admin_object['primaryGroup'] = new_group
@@ -1909,7 +1909,7 @@ class s4(univention.s4connector.ucs):
         return change_count
 
     def __has_attribute_value_changed(self, attribute, old_ucs_object, new_ucs_object):
-        return not old_ucs_object.get(attribute) == new_ucs_object.get(attribute)
+        return old_ucs_object.get(attribute) != new_ucs_object.get(attribute)
 
     def _remove_dn_from_group_cache(self, con_dn=None, ucs_dn=None):
         if con_dn:

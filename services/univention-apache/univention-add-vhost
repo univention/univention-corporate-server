@@ -79,7 +79,7 @@ def main(fqdn, port, aliases, conffile, binddn, bindpwdfile, ssl, cert, private_
 
     PORT: Port, usually 80 or 443.
     """
-    if not os.geteuid() == 0:
+    if os.geteuid() != 0:
         click.echo(click.style("This script must be executed as root.", fg="red"), err=True)
         sys.exit(1)
     if ucr["server/role"] in ("domaincontroller_master", "domaincontroller_backup"):

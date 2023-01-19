@@ -52,7 +52,7 @@ def handler(dn: str, new: Dict[str, List[bytes]], old: Dict[str, List[bytes]], c
     if not listener.configRegistry.is_true('umc/self-service/invitation/enabled', True):
         return
 
-    if not listener.configRegistry.get('server/role', 'undefined') == 'domaincontroller_master':
+    if listener.configRegistry.get('server/role', 'undefined') != 'domaincontroller_master':
         return
 
     if new and not old and command == 'a':

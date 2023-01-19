@@ -209,7 +209,7 @@ class UCSSetup(UCSInstallation):
             self.domain(self.args.role)
             if self.args.role == 'master':
                 self.orga(self.args.organisation, self.args.password)
-            if not self.args.role == 'fast':
+            if self.args.role != "fast":
                 self.hostname()
             self.start()
             self.finish()

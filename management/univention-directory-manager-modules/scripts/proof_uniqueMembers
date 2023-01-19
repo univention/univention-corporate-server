@@ -90,7 +90,7 @@ def check_primary(conn, basedn):
         # there must be exactly one group with this gid
         if len(group_result) > 1:
             warn("found more than one univentionGroup for gidNumber=%s!", user_gid)
-        elif len(group_result) < 1 and not user_gid == "0":
+        elif len(group_result) < 1 and user_gid != "0":
             warn("found no univentionGroup for gidNumber=%s!", user_gid)
         # we change them all -- the user needs to delete all but one of them
         for group_dn, group in group_result:

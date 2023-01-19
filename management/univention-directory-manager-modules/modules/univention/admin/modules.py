@@ -1085,7 +1085,7 @@ def policies():
     for mod in modules.values():
         if not isPolicy(mod):
             continue
-        if not name(mod) == 'policies/policy':
+        if name(mod) != "policies/policy":
             res.setdefault(policiesGroup(mod), []).append(name(mod))
     return [
         univention.admin.policiesGroup(id=groupname, members=sorted(members))

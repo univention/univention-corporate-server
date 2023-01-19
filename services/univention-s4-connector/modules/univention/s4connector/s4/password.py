@@ -586,7 +586,7 @@ def password_sync_ucs_to_s4(s4connector, key, object):
             if userPrincipalName_attr:  # old and not new
                 modlist.append((ldap.MOD_DELETE, 'userPrincipalName', userPrincipalName_attr))
     unicodePwd_new = None
-    if not ucsNThash == s4NThash:
+    if ucsNThash != s4NThash:
         ud.debug(ud.LDAP, ud.INFO, "password_sync_ucs_to_s4: NT Hash S4: %r NT Hash UCS: %r" % (s4NThash, ucsNThash))
         # Now if ucsNThash is empty there should at least some timestamp in UCS,
         # otherwise it's probably not a good idea to remove the unicodePwd.

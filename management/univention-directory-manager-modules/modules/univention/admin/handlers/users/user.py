@@ -749,7 +749,7 @@ def logonHoursMap(logontimes):
         val = 0
         exp = 7
         for j in range((i * 8), (i * 8) + 8):
-            if not (logontimes[j] == "0"):
+            if logontimes[j] != "0":
                 val += 2 ** exp
             exp -= 1
         # we now have: 0<=val<=255
@@ -790,7 +790,7 @@ def intToBinary(val):
     # pad with leading 0s until length is n*8
     if ret == "":
         ret = "0"
-    while not (len(ret) % 8 == 0):
+    while len(ret) % 8 != 0:
         ret = "0" + ret
     return ret
 

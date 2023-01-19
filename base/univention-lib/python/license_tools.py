@@ -73,7 +73,7 @@ def is_CSP_license(lo=None):
 
     now = datetime.date.today()
     enddate = attrs.get('univentionLicenseEndDate', [b'01.01.1970'])[0].decode('ASCII', 'replace')
-    if not enddate == u'unlimited':
+    if enddate != u"unlimited":
         (day, month, year) = enddate.split(u'.', 2)
         then = datetime.date(int(year), int(month), int(day))
         if now > then:

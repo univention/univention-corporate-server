@@ -96,7 +96,7 @@ def handler(dn: str, new: Dict[str, List[bytes]], old: Dict[str, List[bytes]]) -
             addPrivileges(sid, newPrivs)
 
         # modified
-        if newPrivs and oldPrivs and not newPrivs == oldPrivs:
+        if newPrivs and oldPrivs and newPrivs != oldPrivs:
             ud.debug(where, level, "%s: modify samba privs (%s)" % (name, sid))
             removePrivileges(sid, oldPrivs)
             addPrivileges(sid, newPrivs)

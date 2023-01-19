@@ -68,7 +68,7 @@ class Config(ConfigParser):
             if len(tmpList) == 3:
                 # old format, insert empty string for 'directory'
                 tmpList.insert(2, '')
-            if not len(tmpList) == 4:
+            if len(tmpList) != 4:
                 # wrong format
                 continue
             module, name, dir, filename = tmpList

@@ -162,7 +162,7 @@ def handler(dn: str, new: Dict[str, List[bytes]], old: Dict[str, List[bytes]], c
             p.clear_memo()
 
     flist = load_rc(fn_fetchmailrc)
-    if old and not new and not command == 'r':
+    if old and not new and command != 'r':
         # object has been deleted ==> remove entry from rc file
         flist = objdelete(flist, old)
         write_rc(flist, fn_fetchmailrc)

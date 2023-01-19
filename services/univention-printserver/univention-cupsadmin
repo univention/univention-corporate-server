@@ -86,7 +86,7 @@ os.setuid(machine_uid)
 child = spawn('%s %s' % (cmd, ' '.join(args)))
 i = 0
 timeout = 60
-while not i == 2:
+while i != 2:
     i = child.expect([r'%s\.%s.*\?' % (ucr['hostname'], ucr['domainname']), r'localhost.*\?', EOF], timeout=timeout)
     if i in [0, 1]:
         child.sendline(machine_password)

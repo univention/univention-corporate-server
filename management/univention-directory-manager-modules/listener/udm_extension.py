@@ -198,7 +198,7 @@ def handler(dn: str, new: Dict[str, List[bytes]], old: Dict[str, List[bytes]]) -
     listener.setuid(0)
     try:
         if new:
-            if not listener.configRegistry.get('server/role') == 'domaincontroller_master':
+            if listener.configRegistry.get("server/role") != "domaincontroller_master":
                 # Only set active flag on Primary
                 return
 

@@ -144,7 +144,7 @@ def createOrRename(old, new, cr):
         if old.get("univentionShareHost") and new.get("univentionShareHost"):
             if new["univentionShareHost"][0] == old["univentionShareHost"][0]:
                 if old.get("univentionSharePath") and new.get("univentionSharePath"):
-                    if not new["univentionSharePath"][0] == old["univentionSharePath"][0]:
+                    if new["univentionSharePath"][0] != old["univentionSharePath"][0]:
                         rename = True
     # check new path
     if not new.get("univentionSharePath"):
@@ -211,7 +211,7 @@ def createOrRename(old, new, cr):
                 return ret
 
         # check if source and destination are on the same device
-        if not os.stat(oldPath).st_dev == os.stat(existingNewPathDir).st_dev:
+        if os.stat(oldPath).st_dev != os.stat(existingNewPathDir).st_dev:
             return "source %s and destination %s are not on the same device" % (oldPath, newPath)
 
         # create path to destination
