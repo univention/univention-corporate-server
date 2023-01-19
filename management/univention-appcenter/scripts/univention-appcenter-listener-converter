@@ -202,8 +202,12 @@ def main():
 		sys.exit(2)
 	logger.info('Started up with %s', app)
 	while True:
-		find_and_convert_files(app)
-		run_trigger(app)
+		try:
+			find_and_convert_files(app)
+			run_trigger(app)
+		except Exception:
+			logger.exception('Fatal error:')
+			raise
 		if args.once:
 			break
 		time.sleep(5)
