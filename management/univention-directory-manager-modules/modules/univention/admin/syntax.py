@@ -728,7 +728,7 @@ class UDM_Objects(ISyntax, _UDMObjectOrAttribute):
 	"""Either 'dn' or the |UDM| property name enclosed in %()s to use as the value for this syntax class."""
 	label = None  # type: Optional[str]
 	"""The |UDM| property name enclosed in %()s, which is used as the displayed value."""
-	regex = re.compile('^([^=,]+=[^=,]+,)*[^=,]+=[^=,]+$')  # type: Optional[Pattern]
+	regex = None  # type: Optional[Pattern]
 	"""Regular expression for validating the values."""
 	static_values = None  # type: Optional[Sequence[Tuple[str, str]]]
 	"""Sequence of additional static items."""
@@ -763,7 +763,12 @@ class UDM_Objects(ISyntax, _UDMObjectOrAttribute):
 			raise univention.admin.uexceptions.valueError(_('An empty value is not allowed'))
 		if isinstance(text, bytes):
 			text = text.decode('UTF-8')
-		if not text or not self.regex or self.regex.match(text) is not None:
+		if self.key == 'dn':
+			try:
+				return ldap.dn.dn2str(ldap.dn.str2dn(text))
+			except (ldap.DECODING_ERROR, TypeError):
+				raise univention.admin.uexceptions.valueError(self.error_message)
+		elif not text or not self.regex or self.regex.match(text) is not None:
 			return text
 		raise univention.admin.uexceptions.valueError(self.error_message)
 
@@ -3539,11 +3544,14 @@ class ldapDn(simple):
 
 	>>> ldapDn.parse('dc=foo,dc=bar,dc=test')
 	'dc=foo,dc=bar,dc=test'
+	>>> ldapDn.parse('') # doctest: +IGNORE_EXCEPTION_DETAIL
+	Traceback (most recent call last):
+	...
+	valueError:
 
 	.. deprecated:: 3.1-0
 		Use :py:class:`UDM_Objects`.
 	"""
-	regex = re.compile('^([^=,]+=[^=,]+,)*[^=,]+=[^=,]+$')
 	error_message = _("Not a valid LDAP DN")
 
 	type_class = univention.admin.types.DistinguishedNameType
@@ -3570,6 +3578,16 @@ class ldapDn(simple):
 			(dn, ldap.dn.explode_rdn(dn, True)[0])
 			for dn in result
 		])
+
+	@classmethod
+	def parse(self, text):
+		# type: (Any) -> str
+		if text == '':
+			raise univention.admin.uexceptions.valueError(self.error_message)
+		try:
+			return ldap.dn.dn2str(ldap.dn.str2dn(text))
+		except (ldap.DECODING_ERROR, TypeError):
+			raise univention.admin.uexceptions.valueError(self.error_message)
 
 	def get_widget_choices_options(self, udm_property):
 		return _default_widget_options(self)
@@ -3718,7 +3736,6 @@ class ldapDnOrNone(simple):
 	.. deprecated:: 3.1-0
 		Use :py:class:`UDM_Objects`.
 	"""
-	_re = re.compile('^([^=,]+=[^=,]+,)*[^=,]+=[^=,]+$')
 
 	@classmethod
 	def get_widget(cls, prop):
@@ -3732,9 +3749,10 @@ class ldapDnOrNone(simple):
 	def parse(self, text):
 		if not text or text == 'None':
 			return text
-		if self._re.match(text) is not None:
-			return text
-		raise univention.admin.uexceptions.valueError(_("Not a valid LDAP DN"))
+		try:
+			return ldap.dn.dn2str(ldap.dn.str2dn(text))
+		except (ldap.DECODING_ERROR, TypeError):
+			raise univention.admin.uexceptions.valueError(_("Not a valid LDAP DN"))
 
 	def get_widget_choices_options(self, udm_property):
 		return _default_widget_options(self)
