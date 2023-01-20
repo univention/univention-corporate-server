@@ -1,0 +1,14 @@
+product: ucs
+release: "4.4"
+version: [9]
+scope: ucs_4.4-0-errata4.4-9
+src: sudo
+fix: 1.8.19p1-2.1+deb9u5
+desc: |
+ This update addresses the following issue:
+ 1.8.19p1-2.1+deb9u5 (Mon, 16 Jan 2023 21:03:02 +0100)
+ * Non-maintainer upload by the ELTS Team.
+ * CVE-2023-22809 sudoedit: do not permit editor arguments to include "--"
+bug: [55588]
+cve:
+- CVE-2023-22809
