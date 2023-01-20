@@ -57,7 +57,7 @@ def parse_arguments():
 
     general = parser.add_argument_group("General options (as in ldbmodify)")
     ldap_server_name = get_ldap_server_name()
-    general.add_argument("-H", "--url", nargs="?", default=ldap_server_name, help="database URL (default: {})".format(ldap_server_name))
+    general.add_argument("-H", "--url", nargs="?", default=ldap_server_name, help=f"database URL (default: {ldap_server_name})")
 
     auth = parser.add_argument_group("Authentication options (as in ldbmodify)")
     auth.add_argument("-U", "--user", help="Set the network username")
@@ -81,12 +81,12 @@ def build_modify_command(parsed):
     for option in options:
         value = getattr(parsed, option.replace("-", "_"))
         if value:
-            arguments.append("--{}={}".format(option, value))
+            arguments.append(f"--{option}={value}")
 
     for option in ("no-pass", "machine-pass", "sign", "encrypt"):
         value = getattr(parsed, option.replace("-", "_"))
         if value:
-            arguments.append("--{}".format(option))
+            arguments.append(f"--{option}")
 
     # Hack to convince lbdmodify to read the ldif from stdin
     arguments.append("/dev/stdin")

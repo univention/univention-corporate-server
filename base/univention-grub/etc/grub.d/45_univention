@@ -61,7 +61,7 @@ def get_colors():
 def main():
     colors = get_colors()
     for position, color in colors.items():
-        print('set {}={}'.format(position, color))
+        print(f'set {position}={color}')
 
 
 if __name__ == '__main__':

@@ -61,38 +61,38 @@ def blacklist_ucr(selfservice_ucr):
 
 def test_blacklist_user_match(selfservice_instance, blacklist_ucr, mocked_conn):
     feature = 'passwordreset'
-    blacklist_ucr['umc/self-service/{}/blacklist/users'.format(feature)] = 'hinderkampp'
+    blacklist_ucr[f'umc/self-service/{feature}/blacklist/users'] = 'hinderkampp'
     assert selfservice_instance.is_blacklisted('hinderkampp', feature)
 
 
 def test_blacklist_user_nomatch(selfservice_instance, blacklist_ucr, mocked_conn):
     feature = 'passwordreset'
-    blacklist_ucr['umc/self-service/{}/blacklist/users'.format(feature)] = 'hinderkampf'
+    blacklist_ucr[f'umc/self-service/{feature}/blacklist/users'] = 'hinderkampf'
     assert not selfservice_instance.is_blacklisted('hinderkampp', feature)
 
 
 def test_blacklist_group_match(selfservice_instance, blacklist_ucr, mocked_conn):
     feature = 'passwordreset'
-    blacklist_ucr['umc/self-service/{}/blacklist/groups'.format(feature)] = 'selfservice-group1'
+    blacklist_ucr[f'umc/self-service/{feature}/blacklist/groups'] = 'selfservice-group1'
     assert selfservice_instance.is_blacklisted('hinderkampp', feature)
 
 
 def test_blacklist_group_nomatch(selfservice_instance, blacklist_ucr, mocked_conn):
     feature = 'passwordreset'
-    blacklist_ucr['umc/self-service/{}/blacklist/groups'.format(feature)] = 'selfservice-group0'
+    blacklist_ucr[f'umc/self-service/{feature}/blacklist/groups'] = 'selfservice-group0'
     assert not selfservice_instance.is_blacklisted('hinderkampp', feature)
 
 
 def test_blacklist_group_match_nested(selfservice_instance, blacklist_ucr, mocked_conn):
     feature = 'passwordreset'
-    blacklist_ucr['umc/self-service/{}/blacklist/groups'.format(feature)] = 'selfservice-group2'
+    blacklist_ucr[f'umc/self-service/{feature}/blacklist/groups'] = 'selfservice-group2'
     assert selfservice_instance.is_blacklisted('hinderkampp', feature)
 
 
 def test_blacklist_whitelist_precedence(selfservice_instance, blacklist_ucr, mocked_conn):
     feature = 'passwordreset'
-    blacklist_ucr['umc/self-service/{}/whitelist/groups'.format(feature)] = 'selfservice-group1'
-    blacklist_ucr['umc/self-service/{}/blacklist/groups'.format(feature)] = 'Administrators,Domain Admins,selfservice-group2'
+    blacklist_ucr[f'umc/self-service/{feature}/whitelist/groups'] = 'selfservice-group1'
+    blacklist_ucr[f'umc/self-service/{feature}/blacklist/groups'] = 'Administrators,Domain Admins,selfservice-group2'
     assert selfservice_instance.is_blacklisted('hinderkampp', feature)
 
 

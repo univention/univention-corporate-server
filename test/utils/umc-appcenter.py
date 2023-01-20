@@ -36,14 +36,14 @@ class Apps(object):
         print(self.options)
 
     def umc(self, path: str, data: Dict[str, Any]) -> Dict[str, Any]:
-        print('-> invoke {path} with options {data}'.format(path=path, data=data))
+        print(f'-> invoke {path} with options {data}')
         if self.client is None:
             self.client = univention.lib.umc.Client(username=self.options.username, password=self.options.password)
-        print('-> headers: {headers}'.format(headers=self.client._headers))
+        print(f'-> headers: {self.client._headers}')
         resp = self.client.umc_command(path, data)
         assert resp.status == 200
         result = resp.result
-        print('<- {res}'.format(res=result))
+        print(f'<- {result}')
         return result
 
     def wait(self, result: Dict[str, Any], app: str) -> None:

@@ -193,7 +193,7 @@ def get_logger(name, path=None):
         file_name = name.replace('/', '_')
         logger_name = name.replace('.', '_')
         log_dir = '/var/log/univention/listener_modules'
-        file_path = path or os.path.join(log_dir, '{}.log'.format(file_name))
+        file_path = path or os.path.join(log_dir, f'{file_name}.log')
         listener_uid = pwd.getpwnam('listener').pw_uid
         adm_grp = grp.getgrnam('adm').gr_gid
         if not os.path.isdir(log_dir):
@@ -224,7 +224,7 @@ def calculate_loglevel(name):
     :return: log level
     :rtype: int
     """
-    listener_module_debug_level = _get_ucr_int('listener/module/{}/debug/level'.format(name), 2)
+    listener_module_debug_level = _get_ucr_int(f'listener/module/{name}/debug/level', 2)
     # 0 <= ucr level <= 4
     return UCR_DEBUG_LEVEL_TO_LOGGING_LEVEL[min(4, max(0, _listener_debug_level, listener_module_debug_level))]
 
@@ -269,8 +269,8 @@ def get_listener_logger(name, filename, level=None, handler_kwargs=None, formatt
     if not name:
         name = 'noname'
     name = name.replace('.', '_')  # don't mess up logger hierarchy
-    cache_key = '{}-{}'.format(name, filename)
-    logger_name = '{}.{}'.format(listener_module_root_logger.name, name)
+    cache_key = f'{name}-{filename}'
+    logger_name = f'{listener_module_root_logger.name}.{name}'
     _logger = logging.getLogger(logger_name)
 
     if not level:

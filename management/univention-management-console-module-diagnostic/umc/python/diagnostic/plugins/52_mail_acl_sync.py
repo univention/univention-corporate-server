@@ -108,7 +108,7 @@ class MailFolder(object):
 
     @property
     def common_name(self) -> str:
-        return '{}@{}'.format(self.name, self.mail_domain)
+        return f'{self.name}@{self.mail_domain}'
 
     def acl(self) -> "ACL":
         return ACL.from_udm(self._user_acl, self._group_acl)

@@ -82,12 +82,12 @@ def build_search_command(parsed):
     for option in options:
         value = getattr(parsed, option.replace("-", "_"))
         if value:
-            arguments.append("--{}={}".format(option, value))
+            arguments.append(f"--{option}={value}")
 
     for option in ("no-pass", "machine-pass", "sign", "encrypt"):
         value = getattr(parsed, option.replace("-", "_"))
         if value:
-            arguments.append("--{}".format(option))
+            arguments.append(f"--{option}")
 
     arguments.extend([parsed.filter, "lockoutTime", "samAccountName"])
     return arguments

@@ -79,9 +79,9 @@ def main():
             ml.append(("mailForwardAddress", old_mail_forward_address, attr["mailForwardAddress"]))
 
         if ml:
-            print("user {}".format(dn))
+            print(f"user {dn}")
             for _attr, _old, _new in ml:
-                print("\t{} = {} -> {}".format(_attr, _old, _new))
+                print(f"\t{_attr} = {_old} -> {_new}")
             if modify:
                 lo.modify(dn, ml)
             else:

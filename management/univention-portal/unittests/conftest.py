@@ -77,7 +77,7 @@ def patch_object_module(mocker):
     """Helper to patch module level library imports of an object or class"""
 
     def _(obj, module_name):
-        return mocker.patch("{}.{}".format(obj.__module__, module_name))
+        return mocker.patch(f"{obj.__module__}.{module_name}")
 
     return _
 

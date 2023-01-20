@@ -92,7 +92,7 @@ class VerifyEmail(UniventionSelfServiceTokenEmitter):
 
         fqdn = ".".join([self.ucr["hostname"], self.ucr["domainname"]])
         frontend_server = self.ucr.get("umc/self-service/account-verification/email/webserver_address", fqdn)
-        link = "https://{fqdn}/univention/selfservice/#/selfservice/verifyaccount/".format(fqdn=frontend_server)
+        link = f"https://{frontend_server}/univention/selfservice/#/selfservice/verifyaccount/"
         tokenlink = "https://{fqdn}/univention/selfservice/#/selfservice/verifyaccount/?token={token}&username={username}&method={method}".format(
             fqdn=frontend_server,
             username=quote(self.data["username"]),
@@ -107,7 +107,7 @@ class VerifyEmail(UniventionSelfServiceTokenEmitter):
         cs.body_encoding = email.charset.QP
         msg["Subject"] = self.ucr.get("umc/self-service/account-verification/email/subject", "Account verification")
         msg["Date"] = formatdate(localtime=True)
-        msg["From"] = self.ucr.get("umc/self-service/account-verification/email/sender_address", "Account Verification Service <noreply@{}>".format(fqdn))
+        msg["From"] = self.ucr.get("umc/self-service/account-verification/email/sender_address", f"Account Verification Service <noreply@{fqdn}>")
         msg["To"] = self.data["address"]
         msg.set_payload(txt, charset=cs)
 

@@ -963,7 +963,7 @@ class ad(univention.connector.ucs):
         """search ad for change with id"""
         usn_filter = format_escaped('(|(uSNChanged={0!e})(uSNCreated={0!e}))', changeUSN)
         if filter != '':
-            usn_filter = '(&({}){})'.format(filter, usn_filter)
+            usn_filter = f'(&({filter}){usn_filter})'
 
         return self.__search_ad_partitions(filter=usn_filter, show_deleted=show_deleted)
 

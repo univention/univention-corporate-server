@@ -122,7 +122,7 @@ class UMCAuthenticator(Authenticator):
                 # UMCSessionId-1234 -> Host: localhost:1234
                 host_port = cookie[13:]
                 if host_port:
-                    host_port = ":{}".format(host_port)
+                    host_port = f":{host_port}"
                 break
         else:
             get_logger("user").debug("no user given")

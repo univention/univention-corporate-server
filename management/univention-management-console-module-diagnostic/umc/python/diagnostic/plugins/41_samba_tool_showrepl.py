@@ -122,7 +122,7 @@ class ReplicationProblem(Exception):
             (first, second, third, fourth, fifth) = exploded[:5]
             valid_ntds_dn = all((first[0][1] == 'NTDS Settings', third[0][1] == 'Servers', fifth[0][1] == 'Sites'))
             if valid_ntds_dn:
-                return '{}/{}'.format(fourth[0][1], second[0][1])
+                return f'{fourth[0][1]}/{second[0][1]}'
         return dn
 
 

@@ -84,18 +84,18 @@ class ListenerModuleConfiguration(object):
 
     def __repr__(self):
         # type: () -> str
-        return '{}(name={!r})'.format(self.__class__.__name__, self.get_name())
+        return f'{self.__class__.__name__}(name={self.get_name()!r})'
 
     def _run_checks(self):
         # type: () -> None
         allowed_name_chars = string.ascii_letters + string.digits + ',.-_'
 
         for attr in self._mandatory_attributes:
-            if not getattr(self, 'get_{}'.format(attr), lambda: '')() and not getattr(self, attr, ''):
-                raise ListenerModuleConfigurationError('Missing or empty {!r} attribute in configuration.'.format(attr))
+            if not getattr(self, f'get_{attr}', lambda: '')() and not getattr(self, attr, ''):
+                raise ListenerModuleConfigurationError(f'Missing or empty {attr!r} attribute in configuration.')
         if set(self.get_name()) - set(allowed_name_chars):
             raise ListenerModuleConfigurationError(
-                'The "name" of a listener module may only contain the following characters: {!r}'.format(allowed_name_chars),
+                f'The "name" of a listener module may only contain the following characters: {allowed_name_chars!r}',
             )
         if not inspect.isclass(self.get_listener_module_class()):
             raise ListenerModuleConfigurationError('Attribute "listener_module_class" must be a class.')
@@ -192,4 +192,4 @@ class ListenerModuleConfiguration(object):
         :return: whether the listener module should be activated
         :rtype: bool
         """
-        return not listener.configRegistry.is_true('listener/module/{}/deactivate'.format(self.get_name()), False)
+        return not listener.configRegistry.is_true(f'listener/module/{self.get_name()}/deactivate', False)

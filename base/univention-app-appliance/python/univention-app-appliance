@@ -298,7 +298,7 @@ def setup_app(app: App) -> None:
                 call(['/usr/sbin/ucr', 'filter'], stdin=file_in, stdout=file_out)
 
     def _svg_to_png(source: str, dest: str, params: str, res: str = '800x600') -> None:
-        css_background = 'url(file:///{source}) {params}'.format(source=source, params=params)
+        css_background = f'url(file:///{source}) {params}'
         call(['/usr/share/univention-app-appliance/render-css-background', res, css_background, dest])
 
     def download_logo_images() -> None:

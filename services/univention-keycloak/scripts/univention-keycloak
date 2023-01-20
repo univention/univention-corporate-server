@@ -393,7 +393,7 @@ def download_cert_oidc(opt):
     if opt.oidc_url:
         oidc_conf_url = opt.oidc_url
     else:
-        oidc_conf_url = "https://{}/realms/ucs/.well-known/openid-configuration".format(opt.keycloak_sso_fqdn)
+        oidc_conf_url = f"https://{opt.keycloak_sso_fqdn}/realms/ucs/.well-known/openid-configuration"
 
     oidc_conf = requests.get(oidc_conf_url)
     certs_oidc = oidc_conf.json()["jwks_uri"]
@@ -416,7 +416,7 @@ def download_cert_saml(opt):
     if opt.saml_url:
         saml_descriptor_url = opt.saml_url
     else:
-        saml_descriptor_url = "https://{}/realms/ucs/protocol/saml/descriptor".format(opt.keycloak_sso_fqdn)
+        saml_descriptor_url = f"https://{opt.keycloak_sso_fqdn}/realms/ucs/protocol/saml/descriptor"
 
     saml_descriptor = requests.get(saml_descriptor_url)
     saml_descriptor_xml = ElementTree.fromstring(saml_descriptor.content)

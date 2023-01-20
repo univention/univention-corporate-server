@@ -57,7 +57,7 @@ class PrimaryInterfaceSetup(SetupScript):
         except NoConfiguredInterfaceError:
             self.message("No configured interface found. No primary interface set.")
             return True
-        self.message("Setting primary interface to: {}".format(primary_interface))
+        self.message(f"Setting primary interface to: {primary_interface}")
         self.ucr.set("interfaces/primary", primary_interface)
         return True
 

@@ -49,7 +49,7 @@ BUTTON = {
 
 title = _('Check of the protocol version of the Univention Directory Notifier')
 description = _('Starting with UCS {ucs[0]}.{ucs[1]}-{ucs[2]} erratum {ucs[3]}, the minimum protocol version should be set to {udn}.').format(ucs=UCS, udn=UDN)
-run_descr = ['This can be checked by running: ucr get {}'.format(UCR)]
+run_descr = [f'This can be checked by running: ucr get {UCR}']
 umc_modules = [{'module': 'ucr'}]
 
 invalid_msg = _('The UCR variable <tt>{ucr}</tt> is not configured or invalid.')
@@ -95,7 +95,7 @@ def run(_umc_instance: Instance) -> None:
 
 
 def set_protocol_version(umc: Instance) -> None:
-    MODULE.process("Setting UDN protocol version {}".format(UDN))
+    MODULE.process(f"Setting UDN protocol version {UDN}")
     handler_set(["%s=%d" % (UCR, UDN)])
     call(["systemctl", "try-restart", "univention-directory-notifier.service"])
     return run(umc)

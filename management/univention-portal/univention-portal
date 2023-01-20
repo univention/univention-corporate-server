@@ -80,18 +80,18 @@ def add_default(update: bool):
     default_name = "default"
     if default_name in json_content:
         if update:
-            warn("Overwriting existing {}".format(default_name))
+            warn(f"Overwriting existing {default_name}")
             _add_default(default_name, json_content)
             changed = True
         else:
-            info("{} already exists".format(default_name))
+            info(f"{default_name} already exists")
     else:
         _add_default(default_name, json_content)
         changed = True
 
     if changed:
         write_portals_json(json_content)
-        success("{} written".format(portals_json))
+        success(f"{portals_json} written")
 
 
 @cli.command("add-umc-default")
@@ -104,18 +104,18 @@ def add_umc_default(update: bool):
     umc_name = "umc"
     if umc_name in json_content:
         if update:
-            warn("Overwriting existing {}".format(umc_name))
+            warn(f"Overwriting existing {umc_name}")
             _add_umc(umc_name, json_content)
             changed = True
         else:
-            info("{} already exists".format(umc_name))
+            info(f"{umc_name} already exists")
     else:
         _add_umc(umc_name, json_content)
         changed = True
 
     if changed:
         write_portals_json(json_content)
-        success("{} written".format(portals_json))
+        success(f"{portals_json} written")
 
 
 @cli.command("add-selfservice-default")
@@ -128,18 +128,18 @@ def add_selfservice_default(update: bool):
     selfservice_name = "selfservice"
     if selfservice_name in json_content:
         if update:
-            warn("Overwriting existing {}".format(selfservice_name))
+            warn(f"Overwriting existing {selfservice_name}")
             _add_selfservice(selfservice_name, json_content)
             changed = True
         else:
-            info("{} already exists".format(selfservice_name))
+            info(f"{selfservice_name} already exists")
     else:
         _add_selfservice(selfservice_name, json_content)
         changed = True
 
     if changed:
         write_portals_json(json_content)
-        success("{} written".format(portals_json))
+        success(f"{portals_json} written")
 
 
 def _add_default(name: str, json_content: Dict):
@@ -324,15 +324,15 @@ def add(name: str, update: bool):
     json_content = read_portals_json()
     if name in json_content:
         if update:
-            warn("Overwriting existing {}".format(name))
+            warn(f"Overwriting existing {name}")
         else:
-            info("{} already exists".format(name))
+            info(f"{name} already exists")
             return
     click.echo("We will now create a new portal object together")
     click.echo("Which class do you want it to be? Possible answers are:")
     possible_classes = [klass.__name__ for klass in get_all_dynamic_classes()]
     for klass in possible_classes:
-        click.echo("  {}()".format(klass))
+        click.echo(f"  {klass}()")
     click.echo("  value")
     click.echo("  config")
     klass_default = None
@@ -341,14 +341,14 @@ def add(name: str, update: bool):
     portal_def = ask_value(name, klass_default=klass_default)
     json_content[name] = portal_def
     write_portals_json(json_content)
-    success("{} written".format(portals_json))
-    info("You may want to 'push {}' now".format(name))
+    success(f"{portals_json} written")
+    info(f"You may want to 'push {name}' now")
 
 
 def ask_value(name: str, klass_default: Union[str, None] = None, value_default: Union[str, None] = None) -> Dict:
     possible_classes = [klass.__name__ for klass in get_all_dynamic_classes()]
     choice = click.prompt(
-        "Choose the value of {}".format(name),
+        f"Choose the value of {name}",
         default=klass_default,
         type=click.Choice([klass + "()" for klass in possible_classes] + ["value", "config"]),
     )
@@ -362,14 +362,14 @@ def ask_value(name: str, klass_default: Union[str, None] = None, value_default: 
             try:
                 return {"type": "static", "value": ast.literal_eval(value)}
             except SyntaxError:
-                click.echo(click.style("Cannot parse {}".format(value), fg="yellow"))
+                click.echo(click.style(f"Cannot parse {value}", fg="yellow"))
     elif choice == "config":
         value = click.prompt("Choose a config key from /usr/share/univention-portal/config.json")
         return {"type": "config", "key": value}
     else:
         klass_name = choice[:-2]
         klass = get_dynamic_classes(klass_name)
-        click.echo("Okay, got class {}".format(klass_name))
+        click.echo(f"Okay, got class {klass_name}")
         kwargs = {}
         try:
             spec = inspect.getargspec(klass.__init__)
@@ -399,7 +399,7 @@ def ask_value(name: str, klass_default: Union[str, None] = None, value_default: 
                 kwargs[arg] = ask_value(
                     arg, klass_default=klass_default, value_default=value_default,
                 )
-        click.echo(click.style("Okay, {} initialized".format(klass_name), fg="green"))
+        click.echo(click.style(f"Okay, {klass_name} initialized", fg="green"))
         ret = {"type": "class", "class": klass.__name__}
         if kwargs:
             ret["kwargs"] = kwargs
@@ -422,11 +422,11 @@ def camelcase(value: str) -> Union[str, None]:
 def remove(name: str, purge: bool):
     json_content = read_portals_json()
     if not json_content.pop(name, None):
-        warn("{} does not exist in config file".format(name))
+        warn(f"{name} does not exist in config file")
         return
     obj = get_obj(name)
     if not obj:
-        warn("{} does not exist in database".format(name))
+        warn(f"{name} does not exist in database")
     else:
         rm_localhost(obj)
         if purge and not any(meta.startswith("server:") for meta in obj.props.meta):
@@ -435,16 +435,16 @@ def remove(name: str, purge: bool):
         else:
             obj.save()
     write_portals_json(json_content)
-    success("{} removed".format(name))
+    success(f"{name} removed")
 
 
 @cli.command("list")
 def list_portals():
     json_content = read_portals_json()
     for name, portal_def in json_content.items():
-        click.echo("{}:".format(name))
+        click.echo(f"{name}:")
         portal = make_obj(portal_def)
-        click.echo("  {!r}".format(portal))
+        click.echo(f"  {portal!r}")
 
 
 @cli.command()
@@ -455,14 +455,14 @@ def push(name: str):
 
     json_content = read_portals_json()
     if name not in json_content:
-        warn("{} does not exist in config file".format(name))
+        warn(f"{name} does not exist in config file")
         return
     portal_def = json_content[name]
     udm = UDM.machine().version(1)
     data = udm.get("settings/data")
     base = "cn=config,cn=portals,cn=univention,{}".format(config.fetch("ldap_base"))
     try:
-        obj = data.get("cn={},{}".format(name, base))
+        obj = data.get(f"cn={name},{base}")
     except NoObject:
         obj = data.new(superordinate="cn=univention,{}".format(config.fetch("ldap_base")))
         obj.position = base
@@ -473,7 +473,7 @@ def push(name: str):
     obj.props.data = Base64Bzip2BinaryProperty("data", raw_value=json_data)
     add_localhost(obj)
     obj.save()
-    success("Saved {} in {}".format(name, obj.dn))
+    success(f"Saved {name} in {obj.dn}")
 
 
 @cli.command()
@@ -481,16 +481,16 @@ def push(name: str):
 def pull(name: str):
     obj = get_obj(name)
     if not obj:
-        warn("{} does not exist in database".format(name))
+        warn(f"{name} does not exist in database")
         return
     json_data = json.loads(obj.props.data.raw)
     json_content = read_portals_json()
     json_content[name] = json_data
     write_portals_json(json_content)
-    success("{} updated".format(portals_json))
+    success(f"{portals_json} updated")
     if add_localhost(obj):
         obj.save()
-        success("{} updated".format(obj.dn))
+        success(f"{obj.dn} updated")
 
 
 def get_obj(name: str) -> Union[str, None]:
@@ -503,7 +503,7 @@ def get_obj(name: str) -> Union[str, None]:
         return None
     data = udm.get("settings/data")
     base = "cn=config,cn=portals,cn=univention,{}".format(config.fetch("ldap_base"))
-    dn = "cn={},{}".format(name, base)
+    dn = f"cn={name},{base}"
     try:
         return data.get(dn)
     except NoObject:
@@ -512,7 +512,7 @@ def get_obj(name: str) -> Union[str, None]:
 
 def add_localhost(obj) -> Union[bool, None]:
     localhost = config.fetch("fqdn")
-    server_key = "server:{}".format(localhost)
+    server_key = f"server:{localhost}"
     if server_key not in obj.props.meta:
         obj.props.meta.append(server_key)
         return True
@@ -520,7 +520,7 @@ def add_localhost(obj) -> Union[bool, None]:
 
 def rm_localhost(obj) -> Union[bool, None]:
     localhost = config.fetch("fqdn")
-    server_key = "server:{}".format(localhost)
+    server_key = f"server:{localhost}"
     if server_key in obj.props.meta:
         obj.props.meta.remove(server_key)
         return True
@@ -534,17 +534,17 @@ def update(name: str, reason: str):
     if not name:
         name = json_content.keys()
     for _name in name:
-        info("Updating {}".format(_name))
+        info(f"Updating {_name}")
         try:
             portal_def = json_content[_name]
         except KeyError:
-            warn("{} does not exist in config file".format(name))
+            warn(f"{name} does not exist in config file")
         else:
             portal_obj = make_portal(portal_def)
             start = datetime.datetime.now()
             if portal_obj.refresh(reason=reason):
                 delta = datetime.datetime.now() - start
-                success("Portal data updated in {:.2f}s".format(delta.total_seconds()))
+                success(f"Portal data updated in {delta.total_seconds():.2f}s")
             else:
                 info("Portal data untouched")
 
@@ -573,11 +573,11 @@ class SomeObj(object):
         for arg in self.args:
             ret.append(repr(arg))
         for name, arg in self.kwargs.items():
-            ret.append("{}={!r}".format(name, arg))
+            ret.append(f"{name}={arg!r}")
         return ", ".join(ret)
 
     def __repr__(self) -> str:
-        return "{}({})".format(self.klass_name, self.all_args())
+        return f"{self.klass_name}({self.all_args()})"
 
 
 def make_obj(obj_def: Dict) -> Union[str, SomeObj]:
@@ -594,7 +594,7 @@ def make_obj(obj_def: Dict) -> Union[str, SomeObj]:
         for name, _arg_definition in obj_def.get("kwargs", {}).items():
             kwargs[name] = make_obj(_arg_definition)
         return SomeObj(obj_def["class"], args, kwargs)
-    raise TypeError("Unknown obj_def: {!r}".format(obj_def))
+    raise TypeError(f"Unknown obj_def: {obj_def!r}")
 
 
 def warn(msg: str):

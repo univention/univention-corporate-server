@@ -558,7 +558,7 @@ def show_stat(opt):
     tid = last
     with ldapi(opt) as ld:
         while tid >= first:
-            dn = "reqSession={},{}".format(tid, opt.translog_base)
+            dn = f"reqSession={tid},{opt.translog_base}"
             try:
                 ld.search_ext_s(dn, ldap.SCOPE_BASE)
                 break
@@ -609,7 +609,7 @@ def lookup_ldap(opt):
 
     with ldapi(opt) as ld:
         for tid in opt.trans:
-            dn = "reqSession={},{}".format(tid, opt.translog_base)
+            dn = f"reqSession={tid},{opt.translog_base}"
             try:
                 result = ld.search_ext_s(dn, ldap.SCOPE_BASE)
             except ldap.NO_SUCH_OBJECT as ex:
@@ -632,13 +632,13 @@ def add_transaction(opt, ld, rec):
     """
     log = getLogger(__name__).getChild("LDAP")
 
-    dn = "reqSession={.tid},{}".format(rec, opt.translog_base)
+    dn = f"reqSession={rec.tid},{opt.translog_base}"
     modlist = addModlist({
         "objectClass": [b"auditObject"],
         "reqStart": [opt.datetime.encode("utf-8")],
-        "reqType": ["{.command}".format(rec).encode("utf-8")],
-        "reqSession": ["{.tid}".format(rec).encode("utf-8")],
-        "reqDN": ["{.dn}".format(rec).encode("utf-8")],
+        "reqType": [f"{rec.command}".encode("utf-8")],
+        "reqSession": [f"{rec.tid}".encode("utf-8")],
+        "reqDN": [f"{rec.dn}".encode("utf-8")],
     })
     try:
         log.debug("ldap_add(%s)", dn)

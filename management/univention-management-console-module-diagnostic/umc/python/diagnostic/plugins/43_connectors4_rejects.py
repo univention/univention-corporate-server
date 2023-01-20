@@ -55,7 +55,7 @@ class MissingConfigurationKey(KeyError):
         return self.args[0]
 
     def __str__(self) -> str:
-        return '{}: {}'.format(self.__class__.__name__, super().__str__())
+        return f'{self.__class__.__name__}: {super().__str__()}'
 
 
 def get_s4_connector(configbasename: str = 'connector'):

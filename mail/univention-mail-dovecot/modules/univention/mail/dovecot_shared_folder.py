@@ -81,7 +81,7 @@ class DovecotFolderAclEntry(object):
         ))
 
     def __repr__(self):  # type: () -> str
-        return '{} "{}" {}'.format(self.folder_name, self.identifier, self.acl)
+        return f'{self.folder_name} "{self.identifier}" {self.acl}'
 
     @classmethod
     def from_str(cls, line):  # type (str) -> DovecotFolderAclEntry
@@ -96,7 +96,7 @@ class DovecotFolderAclEntry(object):
             val = m.groupdict()
             return cls(val['folder'], val['id'], val['acl'])
         else:
-            raise ValueError("Line {!r} doesn't match ACL pattern.".format(line))
+            raise ValueError(f"Line {line!r} doesn't match ACL pattern.")
 
 
 class DovecotGlobalAclFile(object):
@@ -147,7 +147,7 @@ class DovecotGlobalAclFile(object):
     def _write(self):  # type: () -> None
         fileno, filename = tempfile.mkstemp(prefix='.global-acls')
         for acl in self._acls:
-            os.write(fileno, '{}\n'.format(acl).encode('UTF-8'))
+            os.write(fileno, f'{acl}\n'.encode('UTF-8'))
         self._fix_permissions(fileno=fileno)
         os.close(fileno)
         try:
@@ -544,7 +544,7 @@ class DovecotSharedFolderListener(DovecotListener):
             pass
         else:
             # group
-            identifier = '${}'.format(identifier)
+            identifier = f'${identifier}'
         return identifier, right
 
     def add_global_acls(self, new):  # type: (Dict[str, List[bytes]]) -> None

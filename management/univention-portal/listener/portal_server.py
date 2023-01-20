@@ -55,7 +55,7 @@ def handler(dn: str, new: Dict[str, List[bytes]], old: Dict[str, List[bytes]]) -
             module = object_type[0].decode('utf-8').split('/')[-1]
         else:
             module = 'unknown'
-        reason = 'ldap:{}:{}'.format(module, dn)
+        reason = f'ldap:{module}:{dn}'
         ud.debug(ud.LISTENER, ud.PROCESS, "Updating portal. Reason: %s" % reason)
         subprocess.call(['/usr/sbin/univention-portal', 'update', '--reason', reason], stdout=subprocess.PIPE)
     finally:

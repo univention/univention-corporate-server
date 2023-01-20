@@ -119,7 +119,7 @@ for key in keys:
     elif key.startswith("e2u:") or key.endswith(":exp"):
         continue
     else:
-        raise ValueError("key '{}' not recognized".format(key))
+        raise ValueError(f"key '{key}' not recognized")
 
     expdiff = entries[key][1] - datetime.datetime.utcnow()
     exp = "in {:>5} seconds (at {})".format(expdiff.total_seconds(), entries[key][1].strftime("%d.%m.%Y %H:%M:%S"))

@@ -122,10 +122,10 @@ class NetworkAccess(object):
         self.logger.setLevel(debuglevel)
         if logfile is not None:
             log_handler = logging.FileHandler(logfile)  # type: logging.Handler
-            log_formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)10s: [pid={}; user={}; mac={}] %(message)s'.format(os.getpid(), self.username, self.mac_address))
+            log_formatter = logging.Formatter(f'%(asctime)s - %(name)s - %(levelname)10s: [pid={os.getpid()}; user={self.username}; mac={self.mac_address}] %(message)s')
         else:
             log_handler = logging.StreamHandler()
-            log_formatter = logging.Formatter('%(levelname)10s: [user={}; mac={}] %(message)s'.format(self.username, self.mac_address))
+            log_formatter = logging.Formatter(f'%(levelname)10s: [user={self.username}; mac={self.mac_address}] %(message)s')
         log_handler.setFormatter(log_formatter)
         self.logger.addHandler(log_handler)
         # self.logger.info("Loglevel set to: %s", ucs_debuglevel)

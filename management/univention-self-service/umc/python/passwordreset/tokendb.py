@@ -93,7 +93,7 @@ class TokenDB(object):
         if len(rows) == 1:
             return rows[0]
         elif len(rows) > 1:
-            raise MultipleTokensInDB("Found {} rows in DB for kwargs '{}'.".format(len(rows), kwargs))
+            raise MultipleTokensInDB(f"Found {len(rows)} rows in DB for kwargs '{kwargs}'.")
         else:
             return None
 
@@ -116,7 +116,7 @@ token VARCHAR(255) NOT NULL);""")
             with open(DB_SECRETS_FILE) as pw_file:
                 password = pw_file.readline().strip()
         except (OSError, IOError) as e:
-            self.logger.error("db_open(): Could not read {}: {}".format(DB_SECRETS_FILE, e))
+            self.logger.error(f"db_open(): Could not read {DB_SECRETS_FILE}: {e}")
             raise
         try:
             conn = psycopg2.connect("dbname={db_name} user={db_user} host='localhost' password='{db_pw}'".format(
@@ -125,7 +125,7 @@ token VARCHAR(255) NOT NULL);""")
                 DB_NAME, conn.server_version, conn.protocol_version))
             return conn
         except Exception:
-            self.logger.error("db_open(): Error connecting to database '{}': {}".format(DB_NAME, traceback.format_exc()))
+            self.logger.error(f"db_open(): Error connecting to database '{DB_NAME}': {traceback.format_exc()}")
             raise
 
     def close_db(self):

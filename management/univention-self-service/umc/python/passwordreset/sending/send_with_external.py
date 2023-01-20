@@ -111,16 +111,16 @@ class SendWithExternal(UniventionSelfServiceTokenEmitter):
         #
         #
 
-        self.log("Starting external program {}...".format(self.cmd))
+        self.log(f"Starting external program {self.cmd}...")
         cmd_proc = subprocess.Popen(self.cmd, env=env, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
         cmd_out, cmd_err = cmd_proc.communicate()
         cmd_out, cmd_err = cmd_out.decode('UTF-8', 'replace'), cmd_err.decode('UTF-8', 'replace')
         cmd_exit = cmd_proc.wait()
 
         if cmd_out:
-            self.log("STDOUT of {}: {}".format(self.cmd, cmd_out))
+            self.log(f"STDOUT of {self.cmd}: {cmd_out}")
         if cmd_err:
-            self.log("STDERR of {}: {}".format(self.cmd, cmd_err))
+            self.log(f"STDERR of {self.cmd}: {cmd_err}")
 
         if cmd_exit == 0:
             return True

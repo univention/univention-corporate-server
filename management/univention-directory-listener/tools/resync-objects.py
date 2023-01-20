@@ -63,7 +63,7 @@ def main():
         print('local LDAP is Primary server, nothing to do')
         return
     if server_role not in ['domaincontroller_backup', 'domaincontroller_slave']:
-        print('server role ("{}") has no LDAP, nothing to do'.format(server_role))
+        print(f'server role ("{server_role}") has no LDAP, nothing to do')
         return
 
     if not opts.filter:

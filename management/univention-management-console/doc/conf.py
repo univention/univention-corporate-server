@@ -43,7 +43,7 @@ master_doc = 'index'
 
 # General information about the project.
 project = u'Univention Management Console'
-copyright = u'2012-{}, Univention GmbH'.format(date.today().year)
+copyright = f'2012-{date.today().year}, Univention GmbH'
 
 # The version info for the project you're documenting, acts as replacement for
 # |version| and |release|, also used in various other places throughout the

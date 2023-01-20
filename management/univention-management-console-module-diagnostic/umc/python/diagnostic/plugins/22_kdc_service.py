@@ -302,7 +302,7 @@ def probe_kdc(kdc: str, port: int, protocol: str, target_realm: str, user_name: 
 
 
 def resolve_kdc_record(protocol: str, domainname: str) -> Iterator[Tuple[str, int, str]]:
-    kerberos_dns_fqdn = '_kerberos._{}.{}'.format(protocol, domainname)
+    kerberos_dns_fqdn = f'_kerberos._{protocol}.{domainname}'
     try:
         result = dns.resolver.query(kerberos_dns_fqdn, 'SRV')
     except dns.exception.DNSException:
@@ -338,7 +338,7 @@ def run(_umc_instance: Instance, retest: bool = False) -> None:
 
     if unreachable_kdc:
         error = _('The following KDCs were unreachable: {}')
-        unreach_string = ('{} {}:{}'.format(protocol, kdc, port) for (kdc, port, protocol) in unreachable_kdc)
+        unreach_string = (f'{protocol} {kdc}:{port}' for (kdc, port, protocol) in unreachable_kdc)
         error_descriptions.append(error.format(', '.join(unreach_string)))
 
     if not reachable_kdc:

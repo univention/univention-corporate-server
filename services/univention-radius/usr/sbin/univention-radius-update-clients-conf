@@ -51,7 +51,7 @@ def main():  # type: () -> None
     parser = ArgumentParser()
     parser.parse_args()
 
-    with tempfile.NamedTemporaryFile(mode='w', prefix='{}.tmp.'.format(BASE_NAME), dir=BASE_DIR, delete=False) as fd:
+    with tempfile.NamedTemporaryFile(mode='w', prefix=f'{BASE_NAME}.tmp.', dir=BASE_DIR, delete=False) as fd:
         print('Updating clients.univention.conf')
         fd.write('''# -*- text -*-
 #
@@ -74,7 +74,7 @@ def main():  # type: () -> None
             nas_type = attrs.get('univentionRadiusClientType', [b'other'])[0].decode('UTF-8')
             virtual_server = attrs.get('univentionRadiusClientVirtualServer', [b''])[0].decode('UTF-8')
             if hostname and ipaddr and shared_secret:
-                print('Adding client {} ({})'.format(hostname, ipaddr))
+                print(f'Adding client {hostname} ({ipaddr})')
                 fd.write('''client {} {{
 \tipaddr\t\t= {}
 \tsecret\t\t= {}

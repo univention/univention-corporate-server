@@ -127,7 +127,7 @@ def all_sids_and_names(domain_sid: str) -> Iterator[Tuple[str, str]]:
 
     for (rid, name) in s4.well_known_domain_rids.items():
         if name not in NON_EXISTENT_SIDS:
-            yield ('{}-{}'.format(domain_sid, rid), name)
+            yield (f'{domain_sid}-{rid}', name)
 
 
 def custom_name(name: str) -> str:

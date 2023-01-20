@@ -80,7 +80,7 @@ def ignore_filter_from_attr(attribute, ucr_key, default=''):
     ... 'one,two,three')
     '(|(cn=one)(cn=two)(cn=three))'
     """
-    template = '({}={{0!e}})'.format(attribute)
+    template = f'({attribute}={{0!e}})'
     return ignore_filter_from_tmpl(template, ucr_key, default)
 
 
@@ -122,14 +122,14 @@ def create_mapping(configbasename='connector'):
     user_ignore_list = ignore_filter_from_tmpl('(uid={0!e})(CN={0!e})', connector('%s/ad/mapping/user/ignorelist'))
     user_ignore_filter = configRegistry.get(connector('%s/ad/mapping/user/ignorefilter'), '')
     if user_ignore_filter and not user_ignore_filter.startswith('('):
-        user_ignore_filter = '({})'.format(user_ignore_filter)
+        user_ignore_filter = f'({user_ignore_filter})'
     user_ignore_filter = '(|{}{}{})'.format('(userAccountControl=2080)', user_ignore_filter, user_ignore_list)
 
     ignore_filter_parts = '(groupType=-2147483643)(groupType=4)(univentionGroupType=-2147483643)(univentionGroupType=4)'
     if configRegistry.is_false(connector('%s/ad/mapping/group/grouptype'), False):
         ignore_filter_parts += '(sambaGroupType=5)(groupType=5)'
     ignore_filter_parts += ignore_filter_from_attr('cn', connector('%s/ad/mapping/group/ignorelist'))
-    group_ignore_filter = '(|{})'.format(ignore_filter_parts)
+    group_ignore_filter = f'(|{ignore_filter_parts})'
 
     ad_mapping = {
         'user': univention.connector.property(

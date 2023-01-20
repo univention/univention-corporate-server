@@ -245,7 +245,7 @@ def get_portals():
     with open("/usr/share/univention-portal/portals.json") as fd:
         portal_definitions = json.load(fd)
     for name, portal_definition in portal_definitions.items():
-        get_logger("server").info("Building portal {}".format(name))
+        get_logger("server").info(f"Building portal {name}")
         ret[name] = make_portal(portal_definition)
     return ret
 

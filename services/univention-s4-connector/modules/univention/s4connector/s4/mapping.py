@@ -85,7 +85,7 @@ def ignore_filter_from_attr(attribute, ucr_key, default=''):
     ... 'one,two,three')
     '(|(cn=one)(cn=two)(cn=three))'
     """
-    template = '({}={{0!e}})'.format(attribute)
+    template = f'({attribute}={{0!e}})'
     return ignore_filter_from_tmpl(template, ucr_key, default)
 
 

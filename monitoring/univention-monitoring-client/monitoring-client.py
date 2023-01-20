@@ -89,7 +89,7 @@ class MonitoringClient(ListenerModuleHandler):
 
     def replace_template(self, string, template_values):
         for key, value in template_values:
-            string = string.replace('%{}%'.format(key), value)
+            string = string.replace(f'%{key}%', value)
         return string
 
     def _write_config(self, attrs):
@@ -134,13 +134,13 @@ class MonitoringClient(ListenerModuleHandler):
             }],
         }
 
-        filename = os.path.join(DIRECTORY, safe_path("alert_{}.yml".format(name)))
+        filename = os.path.join(DIRECTORY, safe_path(f"alert_{name}.yml"))
         with open(filename, "w") as fd:
             fd.write(yaml.dump(alert_config, default_style=None, default_flow_style=False))
 
     def _remove_config(self, attrs):
         name = attrs['cn'][0].decode('UTF-8')
-        filename = os.path.join(DIRECTORY, safe_path("alert_{}.yml".format(name)))
+        filename = os.path.join(DIRECTORY, safe_path(f"alert_{name}.yml"))
         try:
             os.remove(filename)
         except FileNotFoundError:

@@ -153,10 +153,10 @@ except Exception:
 for _i in range(90):
     sleep(10)
     response = client.umc_command("adtakeover/check/status", request_options)
-    print('waiting got finished - {}'.format(response.data))
+    print(f'waiting got finished - {response.data}')
     if response.result == 'finished':
         print('OK - finished')
         sys.exit(0)
 
-print("FAIL - not finished - {}".format(response.data))
+print(f"FAIL - not finished - {response.data}")
 sys.exit(1)

@@ -17,7 +17,7 @@ def get_plugins(log):
         return _plugins
 
     def load_plugin(_module):
-        res = importlib.import_module('univention.management.console.modules.passwordreset.sending.{}'.format(_module))
+        res = importlib.import_module(f'univention.management.console.modules.passwordreset.sending.{_module}')
         for possible_plugin_class in inspect.getmembers(res, lambda m: inspect.isclass(m) and m is not UniventionSelfServiceTokenEmitter and issubclass(m, UniventionSelfServiceTokenEmitter)):
             return possible_plugin_class[1]
         return None
@@ -26,10 +26,10 @@ def get_plugins(log):
         plugin_class = load_plugin(_plugin)
         if plugin_class:
             if plugin_class.is_enabled():
-                log("get_plugins(): Loaded sending plugin class '{}' for sending method '{}'.".format(plugin_class.__name__, plugin_class.send_method()))
+                log(f"get_plugins(): Loaded sending plugin class '{plugin_class.__name__}' for sending method '{plugin_class.send_method()}'.")
                 plugins[plugin_class.send_method()] = plugin_class(log)
             else:
-                log("get_plugins(): Plugin class '{}' for sending method '{}' is disabled.".format(plugin_class.__name__, plugin_class.send_method()))
+                log(f"get_plugins(): Plugin class '{plugin_class.__name__}' for sending method '{plugin_class.send_method()}' is disabled.")
     for _name, plugin in plugins.items():
-        log("get_plugins(): plugin class '{}' for sending method '{}': udm_property: '{}' token_length: '{}'".format(plugin.__class__.__name__, plugin.send_method(), plugin.udm_property, plugin.token_length))
+        log(f"get_plugins(): plugin class '{plugin.__class__.__name__}' for sending method '{plugin.send_method()}': udm_property: '{plugin.udm_property}' token_length: '{plugin.token_length}'")
     return plugins

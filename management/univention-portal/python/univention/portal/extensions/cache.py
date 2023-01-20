@@ -70,12 +70,12 @@ class Cache(metaclass=Plugin):
             return ""
 
     def _load(self):
-        get_logger("cache").info("loading cache file {}".format(self._cache_file))
+        get_logger("cache").info(f"loading cache file {self._cache_file}")
         try:
             with open(self._cache_file) as fd:
                 self._cache = json.load(fd)
         except (EnvironmentError, ValueError):
-            get_logger("cache").exception("Error loading {}".format(self._cache_file))
+            get_logger("cache").exception(f"Error loading {self._cache_file}")
         else:
             self._loaded = True
 

@@ -85,7 +85,7 @@ class MtimeBasedLazyFileReloader(Reloader):
         try:
             return os.stat(self._cache_file).st_mtime
         except (EnvironmentError, AttributeError) as exc:
-            get_logger("cache").warning("Unable to get mtime for {}".format(exc))
+            get_logger("cache").warning(f"Unable to get mtime for {exc}")
             return 0
 
     def _file_was_updated(self):

@@ -137,7 +137,7 @@ class CertificateVerifier(object):
         }.get(len(sans_difference))
 
         if date_format is None:
-            raise ValueError('Unparsable generalized_time {!r}'.format(generalized_time))
+            raise ValueError(f'Unparsable generalized_time {generalized_time!r}')
 
         date = datetime.datetime.strptime(sans_mircoseconds, date_format)
         utc_difference = re.search(r'([+-])(\d{2})(\d{2})', sans_mircoseconds)
@@ -149,7 +149,7 @@ class CertificateVerifier(object):
             try:
                 (hours, minutes) = (int(hours_str), int(minutes_str))
             except ValueError:
-                raise ValueError('Unparsable generalized_time {!r}'.format(generalized_time))
+                raise ValueError(f'Unparsable generalized_time {generalized_time!r}')
 
             if op == '+':
                 offset = datetime.timedelta(hours=hours, minutes=minutes)
@@ -212,7 +212,7 @@ class CertificateVerifier(object):
 
 def certificates() -> Iterator[str]:
     fqdn = "%(hostname)s.%(domainname)s" % configRegistry
-    default_certificate = '/etc/univention/ssl/{}/cert.pem'.format(fqdn)
+    default_certificate = f'/etc/univention/ssl/{fqdn}/cert.pem'
     yield configRegistry.get('apache2/ssl/certificate', default_certificate)
 
     saml_certificate = configRegistry.get('saml/idp/certificate/certificate')
@@ -232,7 +232,7 @@ def certificates() -> Iterator[str]:
                     pass
                 else:
                     if status.strip() == 'V':
-                        yield '/etc/univention/ssl/ucsCA/certs/{}.pem'.format(serial)
+                        yield f'/etc/univention/ssl/ucsCA/certs/{serial}.pem'
 
 
 @contextlib.contextmanager
@@ -263,8 +263,8 @@ def verify_local(all_certificates: Iterable[str]) -> Iterator[CertificateWarning
 
 
 def verify_from_master(master: str, all_certificates: Iterable[str]) -> Iterator[CertificateWarning]:
-    root_ca_uri = 'http://{}/ucs-root-ca.crt'.format(master)
-    crl_uri = 'http://{}/ucsCA.crl'.format(master)
+    root_ca_uri = f'http://{master}/ucs-root-ca.crt'
+    crl_uri = f'http://{master}/ucsCA.crl'
     with download_tempfile(root_ca_uri) as root_ca, download_tempfile(crl_uri) as crl:
         with convert_crl_to_pem(crl) as crl_pem:
             verifier = CertificateVerifier(root_ca, crl_pem)

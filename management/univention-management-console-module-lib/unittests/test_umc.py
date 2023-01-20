@@ -77,7 +77,7 @@ class TestUMCModule(object):
         mocked_subprocess.call.side_effect = [0, 0]
         if umc_request.options.get("message"):
             message = umc_request.options.get("message")
-            reason = 'The system will now be shut down ({})'.format(message)
+            reason = f'The system will now be shut down ({message})'
         else:
             reason = 'The system will now be shut down'
         instance.shutdown(umc_request)
@@ -101,7 +101,7 @@ class TestUMCModule(object):
         mocked_subprocess.call.side_effect = [0, 0]
         if umc_request.options.get("message"):
             message = umc_request.options.get("message")
-            reason = 'The system will now be restarted ({})'.format(message)
+            reason = f'The system will now be restarted ({message})'
         else:
             reason = 'The system will now be restarted'
         instance.reboot(umc_request)

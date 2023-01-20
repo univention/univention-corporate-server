@@ -292,7 +292,7 @@ def handler(dn: str, new: Dict[str, List[bytes]], old: Dict[str, List[bytes]], c
                     dacl_flags = ""
                     if new_aces:
                         dacl_flags = "PAI"
-                    sddl = "{}D:{}{}{}".format(owner, dacl_flags, deny_aces.strip(), allow_aces.strip())
+                    sddl = f"{owner}D:{dacl_flags}{deny_aces.strip()}{allow_aces.strip()}"
                     ud.debug(ud.LISTENER, ud.PROCESS, "Set new nt %s acl for dir %s" % (sddl, share_path))
                     proc = subprocess.Popen(
                         ['samba-tool', 'ntacl', 'set', sddl, share_path],

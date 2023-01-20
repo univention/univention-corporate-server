@@ -681,7 +681,7 @@ class ucs(object):
             return True  # file not found so there's nothing to sync
         except (pickle.UnpicklingError, EOFError) as e:
             message = 'file emtpy' if isinstance(e, EOFError) else e.message
-            ud.debug(ud.LDAP, ud.ERROR, '__sync_file_from_ucs: invalid pickle file {}: {}'.format(filename, message))
+            ud.debug(ud.LDAP, ud.ERROR, f'__sync_file_from_ucs: invalid pickle file {filename}: {message}')
             # ignore corrupted pickle file, but save as rejected to not try again
             self._save_rejected_ucs(filename, 'unknown', resync=False, reason='broken file')
             return False
@@ -988,7 +988,7 @@ class ucs(object):
                         continue  # file not found so there's nothing to sync
                     except (pickle.UnpicklingError, EOFError) as e:
                         message = 'file emtpy' if isinstance(e, EOFError) else e.message
-                        ud.debug(ud.LDAP, ud.ERROR, 'poll_ucs: invalid pickle file {}: {}'.format(filename, message))
+                        ud.debug(ud.LDAP, ud.ERROR, f'poll_ucs: invalid pickle file {filename}: {message}')
                         # ignore corrupted pickle file, but save as rejected to not try again
                         self._save_rejected_ucs(filename, 'unknown', resync=False, reason='broken file')
                         continue
@@ -1585,7 +1585,7 @@ class ucs(object):
         :param object: a mapped or unmapped AD or UCS object
         """
         if 'dn' not in object:
-            ud.debug(ud.LDAP, ud.INFO, "_ignore_object: ignore object without DN (key: {})".format(key))
+            ud.debug(ud.LDAP, ud.INFO, f"_ignore_object: ignore object without DN (key: {key})")
             return True  # ignore not existing object
         for subtree in self.property[key].ignore_subtree:
             if self._subtree_match(object['dn'], subtree):

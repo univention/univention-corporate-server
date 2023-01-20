@@ -91,11 +91,11 @@ def postrun() -> None:
                 out, err = p.communicate()
                 stdout, stderr = out.decode('UTF-8', 'replace'), err.decode('UTF-8', 'replace')
                 if p.returncode != 0:
-                    ud.debug(ud.LISTENER, ud.ERROR, '{}: LDAP server restart returned {} {} ({}).'.format(name, stderr, stdout, p.returncode))
+                    ud.debug(ud.LISTENER, ud.ERROR, f'{name}: LDAP server restart returned {stderr} {stdout} ({p.returncode}).')
                     for handler_object in (schema_handler, acl_handler,):
                         if handler_object._todo_list:
                             for object_dn in handler_object._todo_list:
-                                ldap_extension.set_handler_message(name, object_dn, 'LDAP server restart returned {} {} ({}).'.format(stderr, stdout, p.returncode))
+                                ldap_extension.set_handler_message(name, object_dn, f'LDAP server restart returned {stderr} {stdout} ({p.returncode}).')
                     return
 
             # Only set active flags on Primary

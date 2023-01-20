@@ -116,12 +116,12 @@ def get_dns_server(active_services: str) -> Optional[str]:
 
 
 def check_dns_machine_principal(server: str, hostname: str, domainname: str) -> None:
-    with kinit('{}$'.format(hostname), password_file='/etc/machine.secret'):
+    with kinit(f'{hostname}$', password_file='/etc/machine.secret'):
         nsupdate(server, domainname)
 
 
 def check_dns_server_principal(hostname: str, domainname: str) -> None:
-    with kinit('dns-{}'.format(hostname), keytab='/var/lib/samba/private/dns.keytab'):
+    with kinit(f'dns-{hostname}', keytab='/var/lib/samba/private/dns.keytab'):
         nsupdate(hostname, domainname)
 
 

@@ -65,8 +65,8 @@ def main():
     logo.attrib.pop('style')
     for i in range(STEPS):
         opacity = round((1 + math.cos(2 * math.pi * i / STEPS)) * 1 / 2, 2)
-        background_rect.set('style', background_style.replace('stroke-opacity:1', 'stroke-opacity:{}'.format(opacity)))
-        logo_fname = 'logo{}.svg'.format(i)
+        background_rect.set('style', background_style.replace('stroke-opacity:1', f'stroke-opacity:{opacity}'))
+        logo_fname = f'logo{i}.svg'
         tree.write(logo_fname)
         subprocess.check_call(['inkscape', '--export-type=png', logo_fname])
         os.remove(logo_fname)

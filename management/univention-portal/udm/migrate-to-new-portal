@@ -106,7 +106,7 @@ def migrate_content(udm, old_obj, new_obj):
             old_entry = udm.get("settings/portal_entry").get(entry_dn)
             new_entry = udm.get("portals/entry").get_by_id(old_entry.props.name)
             new_entry_dns.append(new_entry.dn)
-        new_category_name = "{}-{}".format(old_obj.props.name, old_category.props.name)
+        new_category_name = f"{old_obj.props.name}-{old_category.props.name}"
         try:
             existing_obj = udm.get("portals/category").get_by_id(new_category_name)
         except NoObject:

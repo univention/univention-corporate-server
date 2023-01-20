@@ -108,7 +108,7 @@ class ListenerModuleHandler(with_metaclass(HandlerMetaClass)):
         `self.config` will be set by the metaclass.
         """
         if not self.config:
-            raise ListenerModuleConfigurationError('{}.config was not set by meta class.'.format(self.__class__.__name__))
+            raise ListenerModuleConfigurationError(f'{self.__class__.__name__}.config was not set by meta class.')
         self.logger = get_logger(self.config.get_name())
         self.ucr.load()
         self._lo = None  # type: Optional[access]
@@ -124,7 +124,7 @@ class ListenerModuleHandler(with_metaclass(HandlerMetaClass)):
     def __repr__(self):
         # type: () -> str
         assert self.config
-        return '{}({})'.format(self.__class__.__name__, self.config.name)
+        return f'{self.__class__.__name__}({self.config.name})'
 
     def create(self, dn, new):
         # type: (str, Mapping[str, Sequence[bytes]]) -> None
@@ -271,7 +271,7 @@ class ListenerModuleHandler(with_metaclass(HandlerMetaClass)):
             if not ldap_credentials:
                 assert self.config
                 raise ListenerModuleRuntimeError(
-                    'LDAP connection of listener module {!r} has not yet been initialized.'.format(self.config.get_name()),
+                    f'LDAP connection of listener module {self.config.get_name()!r} has not yet been initialized.',
                 )
             self._lo = access(**ldap_credentials)
         return self._lo
@@ -338,11 +338,11 @@ class ListenerModuleHandler(with_metaclass(HandlerMetaClass)):
         try:
             conf_class = cls.Configuration
         except AttributeError:
-            raise ListenerModuleConfigurationError('Class {!r} missing inner "Configuration" class.'.format(cls.__name__))
+            raise ListenerModuleConfigurationError(f'Class {cls.__name__!r} missing inner "Configuration" class.')
         if not inspect.isclass(conf_class):
-            raise ListenerModuleConfigurationError('{!s}.Configuration must be a class.'.format(cls.__name__))
+            raise ListenerModuleConfigurationError(f'{cls.__name__!s}.Configuration must be a class.')
         if conf_class is ListenerModuleHandler.Configuration:
-            raise ListenerModuleConfigurationError('Missing {!s}.Configuration class.'.format(cls.__name__))
+            raise ListenerModuleConfigurationError(f'Missing {cls.__name__!s}.Configuration class.')
         if issubclass(conf_class, cls._configuration_class):
             conf_class.listener_module_class = cls
             conf_class.name = name
@@ -354,7 +354,7 @@ class ListenerModuleHandler(with_metaclass(HandlerMetaClass)):
             kwargs = {"listener_module_class": cls}
             for attr in attrs:
                 try:
-                    get_method = getattr(conf_obj, 'get_{}'.format(attr))
+                    get_method = getattr(conf_obj, f'get_{attr}')
                     if not callable(get_method):
                         raise ListenerModuleConfigurationError(
                             'Attribute {!r} of configuration class {!r} is not callable.'.format(

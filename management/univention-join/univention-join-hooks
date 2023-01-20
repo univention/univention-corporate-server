@@ -96,7 +96,7 @@ def main():
     ucr = ConfigRegistry()
     ucr.load()
 
-    print('univention-join-hooks: looking for hook type "{}" on {}'.format(args.hooktype, args.master))
+    print(f'univention-join-hooks: looking for hook type "{args.hooktype}" on {args.master}')
 
     bindpw = ""
     with open(args.bindpwdfile, 'r') as f:

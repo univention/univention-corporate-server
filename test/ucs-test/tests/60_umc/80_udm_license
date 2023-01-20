@@ -84,7 +84,7 @@ class TestUMCLicenseManagement(UDMModule):
                 elif obj_type == 'user':
                     self.users_to_delete.append(obj_name)
             else:
-                print("The creation of a {} (attempt {}) failed, request result: '{}', ".format(obj_type, (obj + 1), request_result[0]))
+                print(f"The creation of a {obj_type} (attempt {obj + 1}) failed, request result: '{request_result[0]}', ")
                 return obj
         return amount
 

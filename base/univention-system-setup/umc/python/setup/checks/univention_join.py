@@ -158,15 +158,15 @@ def check_is_school_multiserver_domain(address, username, password):
             remote_cmd = ' '.join(pipes.quote(x) for x in [
                 'univention-ldapsearch',
                 '-D',
-                'cn=admin,{}'.format(ldap_base),
+                f'cn=admin,{ldap_base}',
                 '-y',
                 '/etc/ldap.secret',
                 '-b',
-                '{}'.format(master_hostdn),
+                f'{master_hostdn}',
                 '(&(ucsschoolRole=dc_master:school:-)(!(ucsschoolRole=single_master:school:-))(univentionService=UCS@school))',
                 'dn',
             ])
-            is_school_multiserver_domain = 'dn: {}'.format(master_hostdn) in subprocess.check_output([
+            is_school_multiserver_domain = f'dn: {master_hostdn}' in subprocess.check_output([
                 'univention-ssh',
                 '--no-split',
                 password_file,
@@ -195,11 +195,11 @@ def get_server_school_roles(hostname, address, username, password):
             remote_cmd = ' '.join(pipes.quote(x) for x in [
                 'univention-ldapsearch',
                 '-D',
-                'cn=admin,{}'.format(ldap_base),
+                f'cn=admin,{ldap_base}',
                 '-y',
                 '/etc/ldap.secret',
                 '-LLL',
-                '(uid={}$)'.format(hostname),
+                f'(uid={hostname}$)',
                 'ucsschoolRole',
             ])
             school_roles = subprocess.check_output([

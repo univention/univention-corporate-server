@@ -162,11 +162,11 @@ class JoinStatusCheck(Alert):
                     if match:
                         version = match.group(1)
                         break
-                if "{} v{} successful".format(service, version) not in index_file_content:
+                if f"{service} v{version} successful" not in index_file_content:
                     join_error_count += 1
 
         if join_error_count > 0:
-            raise JoinStatusError("{} join scripts have to be called".format(join_error_count))
+            raise JoinStatusError(f"{join_error_count} join scripts have to be called")
 
 
 if __name__ == '__main__':

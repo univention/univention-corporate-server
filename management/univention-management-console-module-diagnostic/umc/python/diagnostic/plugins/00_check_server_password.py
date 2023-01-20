@@ -113,7 +113,7 @@ def change_server_password() -> None:
         MODULE.error(' '.join(error_descriptions))
         raise Critical(description=' '.join(error_descriptions))
     finally:
-        ucr_set('server/password/interval={}'.format(interval))
+        ucr_set(f'server/password/interval={interval}')
 
 
 def restore_machine_password(role: str, ldap_connection: univention.admin.uldap.access) -> None:
@@ -125,7 +125,7 @@ def restore_machine_password(role: str, ldap_connection: univention.admin.uldap.
         with open('/etc/machine.secret', 'w') as fob:
             fob.write(password)
 
-    computers = udm_modules.get('computers/{}'.format(role))
+    computers = udm_modules.get(f'computers/{role}')
     position = univention.admin.uldap.position(ldap_connection.base)
     udm_modules.init(ldap_connection, position, computers)
     filter_expr = ldap.filter.filter_format('(cn=%s)', (socket.gethostname(),))

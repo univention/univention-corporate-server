@@ -100,7 +100,7 @@ class Zone(object):
     def base(self) -> str:
         if self.kind == 'dns/forward_zone':
             return self.zone
-        return '{}.in-addr.arpa'.format(self.zone)
+        return f'{self.zone}.in-addr.arpa'
 
     def nameserver(self) -> Iterator:
         for nameserver in self.udm_zone.get('nameserver'):
@@ -135,7 +135,7 @@ class NameServer(object):
     def fqdn(self) -> str:
         if self.is_qualified():
             return self.nameserver()
-        return '{}.{}'.format(self.nameserver(), self.zone.base())
+        return f'{self.nameserver()}.{self.zone.base()}'
 
     def is_in_zone(self) -> bool:
         return not self.is_qualified() or \

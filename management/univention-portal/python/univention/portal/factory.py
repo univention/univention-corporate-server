@@ -53,7 +53,7 @@ def make_arg(arg_definition):
         for name, _arg_definition in arg_definition.get("kwargs", {}).items():
             kwargs[name] = make_arg(_arg_definition)
         return Klass(*args, **kwargs)
-    raise TypeError("Unknown arg_definition: {!r}".format(arg_definition))
+    raise TypeError(f"Unknown arg_definition: {arg_definition!r}")
 
 
 def make_portal(portal_definition):

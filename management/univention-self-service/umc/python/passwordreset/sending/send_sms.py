@@ -84,10 +84,10 @@ class SendSMS(UniventionSelfServiceTokenEmitter):
                 self.sms_username, self.sms_password = pw_file.readline().strip().split(":")
         except ValueError as ve:
             self.log("SendSMS: Format of sms secrets file ({}) is 'username:password'. Error: {}").format(self.password_file, ve)
-            self.log("SendSMS: Format error in sms secrets file ({}): {}".format(self.password_file, ve))
+            self.log(f"SendSMS: Format error in sms secrets file ({self.password_file}): {ve}")
             raise
         except (OSError, IOError) as e:
-            self.log("SendSMS: Error reading sms secrets file ({}): {}".format(self.password_file, e))
+            self.log(f"SendSMS: Error reading sms secrets file ({self.password_file}): {e}")
             raise
 
     @staticmethod
@@ -135,16 +135,16 @@ class SendSMS(UniventionSelfServiceTokenEmitter):
         #
         #
 
-        print("Starting external program {}...".format(self.cmd))
+        print(f"Starting external program {self.cmd}...")
         cmd_proc = subprocess.Popen(self.cmd, env=env, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
         cmd_out, cmd_err = cmd_proc.communicate()
         cmd_out, cmd_err = cmd_out.decode('UTF-8', 'replace'), cmd_err.decode('UTF-8', 'replace')
         cmd_exit = cmd_proc.wait()
 
         if cmd_out:
-            self.log("STDOUT of {}: {}".format(self.cmd, cmd_out))
+            self.log(f"STDOUT of {self.cmd}: {cmd_out}")
         if cmd_err:
-            self.log("STDERR of {}: {}".format(self.cmd, cmd_err))
+            self.log(f"STDERR of {self.cmd}: {cmd_err}")
 
         if cmd_exit == 0:
             return True

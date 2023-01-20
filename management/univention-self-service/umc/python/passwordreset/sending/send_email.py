@@ -108,7 +108,7 @@ class SendEmail(UniventionSelfServiceTokenEmitter):
         fqdn = ".".join([self.ucr["hostname"], self.ucr["domainname"]])
         frontend_server = self.ucr.get("umc/self-service/passwordreset/email/webserver_address", fqdn)
         links = {
-            'link': "https://{fqdn}/univention/selfservice/#/selfservice/newpassword/".format(fqdn=frontend_server),
+            'link': f"https://{frontend_server}/univention/selfservice/#/selfservice/newpassword/",
             'tokenlink': "https://{fqdn}/univention/selfservice/#/selfservice/newpassword/?token={token}&username={username}".format(fqdn=frontend_server, username=quote(self.data["username"]), token=quote(self.data["token"])),
         }
 
@@ -123,7 +123,7 @@ class SendEmail(UniventionSelfServiceTokenEmitter):
         cs.body_encoding = email.charset.QP
         msg["Subject"] = self.ucr.get("umc/self-service/passwordreset/email/subject", "Password reset")
         msg["Date"] = formatdate(localtime=True)
-        msg["From"] = self.ucr.get("umc/self-service/passwordreset/email/sender_address", "Password Reset Service <noreply@{}>".format(fqdn))
+        msg["From"] = self.ucr.get("umc/self-service/passwordreset/email/sender_address", f"Password Reset Service <noreply@{fqdn}>")
         msg["To"] = self.data["address"]
         msg.set_payload(txt, charset=cs)
 
