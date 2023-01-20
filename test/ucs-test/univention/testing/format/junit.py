@@ -9,6 +9,7 @@ from codecs import encode
 from datetime import datetime
 import os
 import errno
+import shutil
 
 __all__ = ['Junit']
 
@@ -57,6 +58,11 @@ class Junit(TestFormatInterface):
 		except OSError as ex:
 			if ex.errno != errno.EEXIST:
 				raise
+
+		if result.case.external_junit and os.path.exists(result.case.external_junit):
+			shutil.copyfile(result.case.external_junit, filename)
+			return
+
 		f_report = open(filename, 'w')
 		try:
 			xml = XMLGenerator(f_report, encoding='utf-8')

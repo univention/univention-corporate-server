@@ -526,6 +526,7 @@ class TestCase(object):
 		self.timeout = None
 		self.signaled = None
 		self.is_pytest = False  # type: bool
+		self.external_junit = None  # type: Optional[str]
 
 	def load(self, filename):
 		"""
@@ -584,6 +585,7 @@ class TestCase(object):
 			self.exposure = CheckExposure(
 				header.get('exposure', 'dangerous'),
 				digest)
+			self.external_junit = header.get('external-junit', '').strip()
 			try:
 				self.timeout = int(header['timeout'])
 			except LookupError:
