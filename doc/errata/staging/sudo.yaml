@@ -1,0 +1,12 @@
+product: ucs
+release: "5.0"
+version: [2]
+scope: ucs_5.0-0-errata5.0-2
+src: sudo
+fix: 1.8.27-1+deb10u5
+desc: |
+ This update addresses the following issue:
+ * arbitrary file write with privileges of the RunAs user (CVE-2023-22809)
+bug: [55586]
+cve:
+- CVE-2023-22809
