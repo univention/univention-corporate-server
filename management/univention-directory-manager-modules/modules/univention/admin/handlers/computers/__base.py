@@ -182,7 +182,7 @@ class ComputerObject(univention.admin.handlers.simpleComputer, nagios.Support, P
     def _ldap_post_remove(self):
         super(ComputerObject, self)._ldap_post_remove()
 
-        #for group in univention.admin.handlers.groups.group.lookup(self.co, self.lo, filter_s=filter_format('uniqueMember=%s', [self.dn])):
+        # for group in univention.admin.handlers.groups.group.lookup(self.co, self.lo, filter_s=filter_format('uniqueMember=%s', [self.dn])):
         #    group.open()
         #    if self.dn in group['users']:
         #        group['users'].remove(self.dn)

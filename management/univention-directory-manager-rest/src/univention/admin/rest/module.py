@@ -633,7 +633,7 @@ class ResourceBase:
         titleelement = ET.SubElement(head, "title")
         titleelement.text = 'FIXME: fallback title'  # FIXME: set title
         ET.SubElement(head, 'meta', content='text/html; charset=utf-8', **{'http-equiv': 'content-type'})
-        #if not ajax:
+        # if not ajax:
         #    ET.SubElement(head, 'script', type='text/javascript', src=self.abspath('../js/config.js'))
         #    ET.SubElement(head, 'script', type='text/javascript', src=self.abspath('js/udm.js'))
         #    ET.SubElement(head, 'script', type='text/javascript', async='', src=self.abspath('../js/dojo/dojo.js'))
@@ -669,7 +669,7 @@ class ResourceBase:
             elif params.get('rel') in ('create-form', 'edit-form'):
                 ET.SubElement(ET.SubElement(nav, 'form'), 'button', formaction=link, **params).text = params.get('title', link)
                 continue
-            #if params.get('rel') in ('udm:tree',):
+            # if params.get('rel') in ('udm:tree',):
             #    self.set_header('X-Frame-Options', 'SAMEORIGIN')
             #    body.insert(1, ET.Element('iframe', src=link, name='tree'))
             #    continue
@@ -1098,7 +1098,7 @@ def _param_to_openapi(param):
             schema['regex'] = san.regex_pattern.pattern
     else:
         raise TypeError(type(san))
-    #if san.required is not None:
+    # if san.required is not None:
     #    schema['required'] = san.required
     if san.default or san.allow_none:
         schema['default'] = san.default
@@ -1292,11 +1292,11 @@ class _OpenAPIBase:
                         "example": ldap_base,
                         "readOnly": True,
             },
-            #"id": {
+            # "id": {
             #    "description": "The (not unique!) relative LDAP Distinguished Name (RDN).",
             #    "type": "string",
             #    "readOnly": True,
-            #},
+            # },
             "uuid": {
                 "description": "The LDAP Entry-UUID.",
                 "type": "string",
@@ -1968,12 +1968,12 @@ class _OpenAPIBase:
                 },
             }
             # we can't deploy this as it breaks older udm-rest-api-client
-            #openapi_schemas[f"{model_name}.properties"] = {
+            # openapi_schemas[f"{model_name}.properties"] = {
             #    "description": "Object type specific `UDM` properties.",
             #    "type": "object",
             #    "properties": {},
             #    "additionalProperties": True,  # not yet installed extended attributes
-            #}
+            # }
             openapi_schemas[f"{model_name}.uri"] = {
                 "type": "string",
                 "format": "uri",
@@ -2209,10 +2209,10 @@ class ObjectTypes(Resource):
                 'label': _module.title,
                 'object_name': _module.object_name,
                 'object_name_plural': _module.object_name_plural,
-                #'help_link': _module.help_link,
-                #'help_text': _module.help_text,
+                # 'help_link': _module.help_link,
+                # 'help_text': _module.help_text,
                 'columns': _module.columns,  # FIXME: move to Objects?
-                #'has_tree': _module.has_tree,
+                # 'has_tree': _module.has_tree,
             })
 
         self.add_caching(public=True, must_revalidate=True)
@@ -2262,12 +2262,12 @@ class SubObjectTypes(Resource):
             result['entries'].append({
                 'id': _module.name,
                 'label': _module.title,
-                #'object_name': _module.object_name,
-                #'object_name_plural': _module.object_name_plural,
-                #'help_link': _module.help_link,
-                #'help_text': _module.help_text,
-                #'columns': _module.columns,
-                #'has_tree': _module.has_tree,
+                # 'object_name': _module.object_name,
+                # 'object_name_plural': _module.object_name_plural,
+                # 'help_link': _module.help_link,
+                # 'help_text': _module.help_text,
+                # 'columns': _module.columns,
+                # 'has_tree': _module.has_tree,
             })
             self.add_link(result, 'udm:object-types', self.abspath(_module.name) + '/', name=_module.name, title=_module.title)
         self.add_caching(public=True, must_revalidate=True)

@@ -33,7 +33,7 @@ with test:
     test.wait_for_text("Installation of Self Service")
     test.click_text("More information")
     test.wait_for_text("univention-self-service-passwordreset-umc", timeout=3)
-    #test.wait_for_text("univention-self-service-master", timeout=3)  # Bug https://forge.univention.org/bugzilla/show_bug.cgi?id=49183
+    # test.wait_for_text("univention-self-service-master", timeout=3)  # Bug https://forge.univention.org/bugzilla/show_bug.cgi?id=49183
     try:
         # Werden wichtige System-Pakete deinstalliert (z.B. univention-server-master)?
         test.wait_for_text("univention-server-", timeout=1)

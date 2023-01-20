@@ -222,13 +222,13 @@ class Upgrade(Upgrade, Install, DockerActionMixin):
     def _revert(self, app, args):
         if self._had_image_upgrade:
             pass
-            #try:
+            # try:
             #    remove = get_action('remove')
             #    install = get_action('install')
             #    password = self._get_password(args, ask=False)
             #    remove.call(app=app, noninteractive=args.noninteractive, username=args.username, password=password, send_info=False, skip_checks=[], backup=False)
             #    install.call(app=self.old_app, noninteractive=args.noninteractive, username=args.username, password=password, send_info=False, skip_checks=[])
-            #except Exception:
+            # except Exception:
             #    pass
         else:
             Start.call_safe(app=self.old_app)

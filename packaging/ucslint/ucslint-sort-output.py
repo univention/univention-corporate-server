@@ -19,9 +19,7 @@ def main() -> None:
     parser.add_argument('--summary', '-s', action='store_true', help='Print summary')
     args = parser.parse_args()
 
-    eventlist = parse_content(args.content)
-
-    eventlist.sort()
+    eventlist = sorted(parse_content(args.content))
 
     last = ''
     summary = defaultdict(int)  # type: Dict[str, int]

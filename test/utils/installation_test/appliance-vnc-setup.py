@@ -60,10 +60,10 @@ class UCSSetup(UCSInstallation):
         except VNCDoException:
             self.connect()
         self.screenshot('language-setup.png')
-        #self.next()
+        # self.next()
         self.tab_to_next_and_enter(2)
         self.client.waitForText('Localization', timeout=self.timeout)
-        #self.next()
+        # self.next()
         self.tab_to_next_and_enter(4)
 
     def network(self):  # type: () -> None
@@ -112,12 +112,12 @@ class UCSSetup(UCSInstallation):
         self.client.waitForText(text, timeout=self.timeout)
         self.client.mouseClickOnText(text, timeout=self.timeout)
         self.screenshot('domain-setup.png')
-        #self.next()
+        # self.next()
         self.tab_to_next_and_enter(2)
         time.sleep(10)
         if role == 'slave':
-            #self.client.keyPress('down')
-            #self.next()
+            # self.client.keyPress('down')
+            # self.next()
             self.client.waitForText('Replica Directory Node', timeout=self.timeout)
             self.client.mouseClickOnText('Replica Directory Node', timeout=self.timeout)
             self.tab_to_next_and_enter(2)
@@ -125,7 +125,7 @@ class UCSSetup(UCSInstallation):
             self.client.enterText(self.args.join_user)
             self.click('Password')
             self.client.enterText(self.args.join_password)
-            #self.next()
+            # self.next()
             self.tab_to_next_and_enter(2)
         if role == 'admember':
             self.client.waitForText('Active Directory join', timeout=self.timeout)
@@ -133,7 +133,7 @@ class UCSSetup(UCSInstallation):
             self.client.enterText(self.args.join_user)
             self.click('Password')
             self.client.enterText(self.args.join_password)
-            #self.next()
+            # self.next()
             self.tab_to_next_and_enter(2)
 
     def orga(self, orga, password):  # type: (str, str) -> None
@@ -146,7 +146,7 @@ class UCSSetup(UCSInstallation):
         self.client.enterText(password)
         self.client.keyPress('tab')
         self.client.enterText(password)
-        #self.next()
+        # self.next()
         self.tab_to_next_and_enter(2)
 
     def hostname(self):  # type: () -> None
@@ -163,7 +163,7 @@ class UCSSetup(UCSInstallation):
             self.client.enterText(self.args.password)
             self.client.keyPress('tab')
             self.client.enterText(self.args.password)
-        #self.next()
+        # self.next()
         self.tab_to_next_and_enter(2)
 
     def start(self):  # type: () -> None

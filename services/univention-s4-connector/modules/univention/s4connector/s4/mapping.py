@@ -316,11 +316,11 @@ s4_mapping = {
                 con_attribute='userWorkstations',
                 single_value=True,
             ),
-            #'sambaLogonHours': univention.s4connector.attribute(
+            # 'sambaLogonHours': univention.s4connector.attribute(
             #    ucs_attribute='sambaLogonHours',
             #    ldap_attribute='sambaLogonHours',
             #    con_attribute='logonHours',
-            #),
+            # ),
             'profilepath': univention.s4connector.attribute(
                 ucs_attribute='profilepath',
                 ldap_attribute='sambaProfilePath',
@@ -382,18 +382,18 @@ s4_mapping = {
                 con_attribute='employeeNumber',
                 single_value=True,
             ),
-            #'state': univention.s4connector.attribute(
+            # 'state': univention.s4connector.attribute(
             #    ucs_attribute='state',
             #    ldap_attribute='st',
             #    con_attribute='st',
             #    single_value=True,
-            #),
-            #'country': univention.s4connector.attribute(
+            # ),
+            # 'country': univention.s4connector.attribute(
             #    ucs_attribute='country',
             #    ldap_attribute='c',
             #    con_attribute='c',
             #    single_value=True,
-            #),
+            # ),
             'loginShell': univention.s4connector.attribute(
                 ucs_attribute='shell',
                 ldap_attribute='loginShell',
@@ -443,12 +443,12 @@ s4_mapping = {
                 single_value=True,
             ),
             # Do not sync secretary, because we currently have no way to verify the existence of the DN which would cause rejects
-            #'secretary': univention.s4connector.attribute(
+            # 'secretary': univention.s4connector.attribute(
             #    mapping=(univention.s4connector.s4.user.secretary_sync_ucs_to_s4, univention.s4connector.s4.user.secretary_sync_s4_to_ucs),
             #    ucs_attribute='secretary',
             #    ldap_attribute='secretary',
             #    con_attribute='secretary',
-            #),
+            # ),
             'jpegPhoto': univention.s4connector.attribute(
                 mapping=(univention.s4connector.s4.user.jpegPhoto_sync_ucs_to_s4, univention.s4connector.s4.user.jpegPhoto_sync_s4_to_ucs),
                 ucs_attribute='jpegPhoto',
@@ -637,7 +637,7 @@ s4_mapping = {
         ignore_filter=ignore_filter_from_attr('cn', 'connector/s4/mapping/windowscomputer/ignorelist'),
         con_create_objectclass=['top', 'computer'],
         con_create_attributes=[('userAccountControl', [b'4096'])],
-        #post_con_create_functions=[univention.s4connector.s4.computers.
+        # post_con_create_functions=[univention.s4connector.s4.computers.
         post_con_modify_functions=list(filter(None, [
             univention.s4connector.s4.sid_mapping.sid_to_s4 if configRegistry.is_true('connector/s4/mapping/sid_to_s4', False) and not configRegistry.is_true('connector/s4/mapping/sid', True) else None,
             univention.s4connector.s4.password.password_sync_ucs_to_s4,

@@ -76,7 +76,7 @@ if six.PY3:
     class LooseVersion(LooseVersion):
         def _cmp(self, other):
             for i, j in zip_longest(self.version, other.version, fillvalue=''):
-                if type(i) != type(j):
+                if not isinstance(i, type(j)):
                     i = str(i)
                     j = str(j)
                 if i == j:

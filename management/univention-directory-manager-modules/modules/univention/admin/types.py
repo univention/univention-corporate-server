@@ -237,7 +237,7 @@ class TypeHint(object):
         definition['readOnly'] = self._openapi_readonly
         definition['writeOnly'] = self._openapi_writeonly
         definition['nullable'] = self._openapi_nullable
-        #if self._openapi_type == 'string' and not self._openapi_example and isinstance(self.syntax, univention.admin.syntax.select) and getattr(self.syntax, 'choices', None):
+        # if self._openapi_type == 'string' and not self._openapi_example and isinstance(self.syntax, univention.admin.syntax.select) and getattr(self.syntax, 'choices', None):
         #    definition['example'] = self.syntax.choices[0][0]
         return definition
 
@@ -604,11 +604,11 @@ class DictionaryType(TypeHint):
 
     def decode_value(self, value):
         return self.syntax.todict(value)
-        #if not self.syntax.subsyntax_key_value and self.property.multivalue and isinstance(value, (list, tuple)):
+        # if not self.syntax.subsyntax_key_value and self.property.multivalue and isinstance(value, (list, tuple)):
         #    value = [self.syntax.todict(val) for val in value]
-        #else:
+        # else:
         #    value = self.syntax.todict(value)
-        #return value
+        # return value
 
     def encode_value(self, value):
         return self.syntax.fromdict(value)

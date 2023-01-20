@@ -370,7 +370,7 @@ class VmCreator(object):
 
     def __exit__(self, exc_type, exc_value, traceback):
         pass
-        #self.dom.destroyFlags()
+        # self.dom.destroyFlags()
 
     def get_vnc(self):
         host = urlparse(self.kvm_server).hostname or LOCAL

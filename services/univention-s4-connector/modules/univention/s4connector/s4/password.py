@@ -732,7 +732,7 @@ def password_sync_s4_to_ucs(s4connector, key, ucs_object, modifyUserPassword=Tru
             lmPwd_ucs = ucs_object_attributes['sambaLMPassword'][0]
         if 'krb5PrincipalName' in ucs_object_attributes:
             krb5Principal = ucs_object_attributes['krb5PrincipalName'][0]
-        #if 'userPassword' in ucs_object_attributes:
+        # if 'userPassword' in ucs_object_attributes:
         #    userPassword = ucs_object_attributes['userPassword'][0]
         sambaPwdLastSet = None
         if 'sambaPwdLastSet' in ucs_object_attributes:

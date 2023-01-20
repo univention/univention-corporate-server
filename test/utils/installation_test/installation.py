@@ -132,14 +132,14 @@ class UCSInstallation(object):
         self.client.keyPress('enter')
         if self.args.language == 'eng':
             self.client.waitForText(self._['configure_clock'], timeout=self.timeout)
-            #self.client.enterText(self._['clock'])
+            # self.client.enterText(self._['clock'])
             sleep(1)
             self.client.keyPress('enter')
         # hd
         sleep(60)
         self.client.waitForText(self._['partition_disks'], timeout=self.timeout)
         if self.args.role == 'applianceLVM':
-            #self.click(self._['entire_disk_with_lvm'])
+            # self.click(self._['entire_disk_with_lvm'])
             # LVM is the default so just press enter
             self.client.keyPress('enter')
             sleep(3)

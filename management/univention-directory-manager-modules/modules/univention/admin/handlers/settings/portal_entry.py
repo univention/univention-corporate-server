@@ -158,8 +158,8 @@ layout = [
         Group(_('Advanced'), layout=[
             ["activated"],
             ["allowedGroups"],
-            #["authRestriction"],
-            #["favorite"],
+            # ["authRestriction"],
+            # ["favorite"],
         ]),
     ]),
 ]

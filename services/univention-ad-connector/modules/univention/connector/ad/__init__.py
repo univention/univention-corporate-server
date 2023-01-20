@@ -689,7 +689,7 @@ class ad(univention.connector.ucs):
                 host=self.ad_ldap_host, port=int(self.ad_ldap_port),
                 base='', binddn=None, bindpw=None, start_tls=tls_mode,
                 use_ldaps=ldaps, ca_certfile=self.ad_ldap_certificate,
-                #uri=ldapuri,
+                # uri=ldapuri,
             )
             self.ad_ldap_base = self.ad_search_ext_s('', ldap.SCOPE_BASE, 'objectclass=*', ['defaultNamingContext'])[0][1]['defaultNamingContext'][0].decode('UTF-8')
         except Exception:  # FIXME: which exception is to be caught

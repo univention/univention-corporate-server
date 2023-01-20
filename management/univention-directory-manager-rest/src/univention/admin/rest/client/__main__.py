@@ -385,7 +385,7 @@ def parse_known_args(parser, client, known_args=None, subparsers=None):
 
 
 def argparse_module_help(client, parser, known_args, subparsers):
-    #class FormatModule(argparse.ArgumentDefaultsHelpFormatter):
+    # class FormatModule(argparse.ArgumentDefaultsHelpFormatter):
     class FormatModule(argparse.RawTextHelpFormatter):
 
         def format_help(self):
@@ -416,10 +416,10 @@ def main():
     description = '%(prog)s command line interface for managing UCS\ncopyright (c) 2001-2023 Univention GmbH, Germany\n\nUsage:\n %(prog)s module action [options]\n %(prog)s [--help] [--version]\n'
     parser = argparse.ArgumentParser(
         prog='univention-directory-manager',
-        #usage=argparse.SUPPRESS,
+        # usage=argparse.SUPPRESS,
         usage=description,
         #description='\n'.join(x.ljust(64, 'x') for x in description.splitlines()),
-        #add_help=False,
+        # add_help=False,
         epilog='''Description:
 univention-directory-manager is a tool to handle the configuration for UCS on command line level.
 Use "univention-directory-manager modules" for a list of available modules.''',

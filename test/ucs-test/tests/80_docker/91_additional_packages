@@ -106,5 +106,5 @@ def create_app():
 
 if __name__ == '__main__':
     with Appcenter() as appcenter:
-        ## Install via univention-app install
+        # Install via univention-app install
         create_app()

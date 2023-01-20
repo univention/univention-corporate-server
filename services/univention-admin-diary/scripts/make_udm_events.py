@@ -70,7 +70,7 @@ def print_events(m):
         icon = 'devices'
     if name.startswith('printers/'):
         icon = 'devices'
-    #if name.startswith('appcenter/'):
+    # if name.startswith('appcenter/'):
     #    icon = 'software'
     translation.domain = m._.__self__._domain
     translation.set_language('en_US.UTF-8')

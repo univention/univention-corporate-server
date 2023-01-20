@@ -478,7 +478,7 @@ if __name__ == '__main__':
 
         windows_set_gpo_security_filter(gpo_name, 'GpoRead', 'Authenticated Users', 'Group', 'True')
         if ucr.is_true("connector/s4/mapping/gpo/ntsd", False):
-            ## Workaround for Bug #35336
+            # Workaround for Bug #35336
             utils.wait_for_connector_replication()
             utils.wait_for_replication()
             utils.wait_for_connector_replication()
@@ -518,7 +518,7 @@ if __name__ == '__main__':
 
         windows_set_gpo_security_filter(gpo_name, 'GpoRead', 'Authenticated Users', 'Group', 'True')
         if ucr.is_true("connector/s4/mapping/gpo/ntsd", False):
-            ## Workaround for Bug #35336
+            # Workaround for Bug #35336
             utils.wait_for_connector_replication()
             utils.wait_for_replication()
             utils.wait_for_connector_replication()

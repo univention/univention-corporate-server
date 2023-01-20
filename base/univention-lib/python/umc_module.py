@@ -50,7 +50,7 @@ UMC_ICON_BASEDIR = "/usr/share/univention-management-console-frontend/js/dijit/t
 
 compression_mime_type_handlers = {
     "application/x-gzip": lambda x: zlib.decompress(x, 16 + zlib.MAX_WBITS),
-    #"application/gzip": lambda x: zlib.decompress(x, 16 + zlib.MAX_WBITS),  # TODO: enable Bug #51594
+    # "application/gzip": lambda x: zlib.decompress(x, 16 + zlib.MAX_WBITS),  # TODO: enable Bug #51594
     "application/x-bzip2": bz2.decompress,
     "application/bzip2": bz2.decompress,
 }
