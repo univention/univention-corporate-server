@@ -400,8 +400,8 @@ start_system_stats_collection () {
 }
 
 end_system_stats_collection () {
- pkill -f ram.sar -SIGINT
- pkill -f 'top -bci'
+ pkill -f ram.sar -SIGINT || true
+ pkill -f 'top -bci' || true
  # Exporting to svgz instead of svg reduces the size by 95% (!) but browsers won't display it.
  # Just change the filename in the next line to 'stats.sar.svgz'.
  sadf -g /var/log/ram.sar -- "${SAR_ARGS[@]}" | scour -o $DATA_DIR/stats.sar.svg
