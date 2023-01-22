@@ -387,3 +387,24 @@ create_mail_domains () {
 		udm mail/domain create --position "cn=domain,cn=mail,$(ucr get ldap/base)" --ignore_exists --set name="$OU.$DOM"
 	done
 }
+
+SAR_ARGS=( -b -n DEV,IP,TCP,UDP -P ALL -q -r ALL -S -u ALL )
+DATA_DIR=/var/lib/ram-performance-tests/results
+
+start_system_stats_collection () {
+ apt-get install scour sysstat
+ mkdir -pv /var/lib/ram-performance-tests/results
+ nohup sar "${SAR_ARGS[@]}" -o /var/log/ram.sar 1 >/dev/null &
+ # When not looked at every day anymore, reduce size with: ... | bzip2 -9c > $DATA_DIR/stats.top.txt.bz2 &
+ nohup top -bci -d 1 > $DATA_DIR/stats.top.txt &
+}
+
+end_system_stats_collection () {
+ pkill -f ram.sar -SIGINT
+ pkill -f 'top -bci'
+ # Exporting to svgz instead of svg reduces the size by 95% (!) but browsers won't display it.
+ # Just change the filename in the next line to 'stats.sar.svgz'.
+ sadf -g /var/log/ram.sar -- "${SAR_ARGS[@]}" | scour -o $DATA_DIR/stats.sar.svg
+ # stats.sar.txt (decompressed) can be uploaded to https://sarchart.dotsuresh.com/ for interactive graphs
+ sar "${SAR_ARGS[@]}" -f /var/log/ram.sar | bzip2 -9c > $DATA_DIR/stats.sar.txt.bz2
+}
