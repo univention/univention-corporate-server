@@ -392,19 +392,22 @@ SAR_ARGS=( -b -n DEV,IP,TCP,UDP -P ALL -q -r ALL -S -u ALL )
 DATA_DIR=/var/lib/ram-performance-tests/results
 
 start_system_stats_collection () {
+ local host="${1:?missing hostname}"
+
  apt-get install scour sysstat
- mkdir -pv /var/lib/ram-performance-tests/results
+ mkdir -pv "$DATA_DIR"
  nohup sar "${SAR_ARGS[@]}" -o /var/log/ram.sar 1 >/dev/null &
- # When not looked at every day anymore, reduce size with: ... | bzip2 -9c > $DATA_DIR/stats.top.txt.bz2 &
- nohup top -bci -d 1 > $DATA_DIR/stats.top.txt &
+ # When not looked at every day anymore, reduce size with: ... | bzip2 -9c > $DATA_DIR/stats-$host.top.txt.bz2 &
+ nohup top -bci -w512 -d 1 > "$DATA_DIR/stats-$host.top.txt" &
 }
 
 end_system_stats_collection () {
+ local host="${1:?missing hostname}"
+
+ ps ax | grep -E 'sar|top'
  pkill -f ram.sar -SIGINT || true
  pkill -f 'top -bci' || true
- # Exporting to svgz instead of svg reduces the size by 95% (!) but browsers won't display it.
- # Just change the filename in the next line to 'stats.sar.svgz'.
- sadf -g /var/log/ram.sar -- "${SAR_ARGS[@]}" | scour -o $DATA_DIR/stats.sar.svg
+ [ -e /var/log/ram.sar ] && sadf -g /var/log/ram.sar -- "${SAR_ARGS[@]}" | scour -o "$DATA_DIR/stats-$host.sar.svgz" || echo "Not found: /var/log/ram.sar"
  # stats.sar.txt (decompressed) can be uploaded to https://sarchart.dotsuresh.com/ for interactive graphs
- sar "${SAR_ARGS[@]}" -f /var/log/ram.sar | bzip2 -9c > $DATA_DIR/stats.sar.txt.bz2
+ [ -e /var/log/ram.sar ] && sar "${SAR_ARGS[@]}" -f /var/log/ram.sar | bzip2 -9c > "$DATA_DIR/stats-$host.sar.txt.bz2" || echo "Not found: /var/log/ram.sar"
 }
