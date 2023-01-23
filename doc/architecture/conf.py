@@ -101,7 +101,7 @@ numfig = True
 if "spelling" in sys.argv:
     spelling_lang = "en_US"
     spelling_show_suggestions = True
-    spelling_word_list_filename = []
+    spelling_word_list_filename = ["spelling-wordlist"]
     # Warnings may come up by sphinx-last-updated-by-git. Shall be suppressed in spelling job
     suppress_warnings = ['git.too_shallow']
 
