@@ -9,6 +9,7 @@ from os import uname
 
 from univention.testing import utils
 
+
 MINIMUM_CONFIG = [
     "CONFIG_MODULE_SIG=y",
     "CONFIG_MODULE_SIG_SHA512=y",

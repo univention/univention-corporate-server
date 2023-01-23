@@ -41,8 +41,10 @@ import pwd
 from subprocess import call
 from typing import Dict, List
 
-import listener
 import univention.debug as ud
+
+import listener
+
 
 server_role = listener.configRegistry['server/role']
 

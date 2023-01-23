@@ -37,25 +37,27 @@
 
 import os
 import os.path
+import platform
 import re
 from copy import copy
 from distutils.version import LooseVersion
-import platform
 from inspect import getargspec
 from weakref import ref
 
 import six
+from six import PY3, string_types, with_metaclass
+from six.moves.configparser import NoOptionError, NoSectionError, RawConfigParser
 from six.moves.urllib_parse import urlsplit
-from six.moves.configparser import RawConfigParser, NoOptionError, NoSectionError
 
-from univention.appcenter.log import get_base_logger
-from univention.appcenter.packages import get_package_manager, packages_are_installed
-from univention.appcenter.meta import UniventionMetaClass, UniventionMetaInfo
-from univention.appcenter.utils import app_ports, mkdir, get_free_disk_space, get_current_ram_available, get_locale, container_mode, _
-from univention.appcenter.ucr import ucr_get, ucr_includes, ucr_is_true, ucr_load, ucr_run_filter
-from univention.appcenter.settings import Setting
 from univention.appcenter.ini_parser import read_ini_file
-from six import with_metaclass, string_types, PY3
+from univention.appcenter.log import get_base_logger
+from univention.appcenter.meta import UniventionMetaClass, UniventionMetaInfo
+from univention.appcenter.packages import get_package_manager, packages_are_installed
+from univention.appcenter.settings import Setting
+from univention.appcenter.ucr import ucr_get, ucr_includes, ucr_is_true, ucr_load, ucr_run_filter
+from univention.appcenter.utils import (
+    _, app_ports, container_mode, get_current_ram_available, get_free_disk_space, get_locale, mkdir,
+)
 
 
 CACHE_DIR = '/var/cache/univention-appcenter'

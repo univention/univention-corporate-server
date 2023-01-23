@@ -8,6 +8,7 @@ from urllib.request import urlopen
 from univention.config_registry import ConfigRegistry
 from univention.testing.utils import fail
 
+
 if __name__ == '__main__':
     ucr = ConfigRegistry()
     ucr.load()

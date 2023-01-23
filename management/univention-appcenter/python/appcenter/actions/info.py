@@ -38,8 +38,8 @@
 from json import dumps
 
 from univention.appcenter.actions import UniventionAppAction, get_action
-from univention.appcenter.app_cache import Apps
 from univention.appcenter.app import LooseVersion
+from univention.appcenter.app_cache import Apps
 from univention.appcenter.ucr import ucr_get
 
 

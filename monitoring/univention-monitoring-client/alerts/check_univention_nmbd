@@ -37,8 +37,8 @@ import pipes
 import re
 import subprocess
 
-from univention.monitoring import Alert
 from univention.config_registry import ucr
+from univention.monitoring import Alert
 
 
 class NMBD(Alert):

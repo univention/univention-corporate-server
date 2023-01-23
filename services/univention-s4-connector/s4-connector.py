@@ -44,8 +44,10 @@ from typing import Dict, List, Tuple
 
 from six.moves import cPickle as pickle
 
-import listener
 import univention.debug as ud
+
+import listener
+
 
 description = 'S4 Connector replication'
 filter = '(objectClass=*)'

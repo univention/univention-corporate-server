@@ -4,6 +4,7 @@ from os import environ
 import univention.config_registry
 from univention.management.console.log import MODULE
 
+
 UCR = univention.config_registry.ConfigRegistry()
 UCR.load()
 

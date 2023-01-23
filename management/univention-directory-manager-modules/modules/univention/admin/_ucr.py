@@ -34,5 +34,6 @@
 
 import univention.config_registry
 
+
 configRegistry = univention.config_registry.ConfigRegistry()
 configRegistry.load()

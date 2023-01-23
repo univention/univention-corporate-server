@@ -31,6 +31,8 @@
 import pytest
 
 import univention.admin.modules
+
+
 univention.admin.modules.update()
 
 BASE_FILTERS = {

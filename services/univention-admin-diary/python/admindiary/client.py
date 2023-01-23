@@ -31,16 +31,17 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-import os
 import logging
-from logging.handlers import SysLogHandler
+import os
 import uuid
-from getpass import getuser
 from functools import partial, wraps
+from getpass import getuser
+from logging.handlers import SysLogHandler
 from typing import Any, Callable, Dict, List, Optional, TypeVar  # noqa: F401
 
-from univention.admindiary import DiaryEntry, get_logger, get_events_to_reject
+from univention.admindiary import DiaryEntry, get_events_to_reject, get_logger
 from univention.admindiary.events import DiaryEvent
+
 
 get_logger = partial(get_logger, 'client')
 

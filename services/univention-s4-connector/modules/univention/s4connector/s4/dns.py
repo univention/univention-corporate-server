@@ -35,52 +35,47 @@
 # <https://www.gnu.org/licenses/>.
 
 from __future__ import absolute_import
-import ldap
-import univention.debug2 as ud
-import univention.s4connector.s4
-import univention.admin.uldap
-from univention.s4connector.s4.dc import _unixTimeInverval2seconds
-from univention.s4connector.s4 import format_escaped, str2dn
-from univention.admin.mapping import unmapUNIX_TimeInterval
 
-from samba.dcerpc import dnsp
-from samba.ndr import ndr_pack, ndr_unpack
 import copy
 import time
 
+import ldap
+from dns import rdataclass, rdatatype
 from dns.rdtypes.ANY.TXT import TXT
-from dns import rdatatype
-from dns import rdataclass
 from dns.tokenizer import Tokenizer
-
-from samba.provision.sambadns import ARecord
-# def __init__(self, ip_addr, serial=1, ttl=900, rank=dnsp.DNS_RANK_ZONE):
-
-from samba.provision.sambadns import AAAARecord
-# def __init__(self, ip6_addr, serial=1, ttl=900, rank=dnsp.DNS_RANK_ZONE):
-
-from samba.provision.sambadns import NSRecord
-# def __init__(self, dns_server, serial=1, ttl=900, rank=dnsp.DNS_RANK_ZONE):
-
-from samba.provision.sambadns import SOARecord
-# def __init__(self, mname, rname, serial=1, refresh=900, retry=600, expire=86400, minimum=3600, ttl=3600, rank=dnsp.DNS_RANK_ZONE):
-
-from samba.provision.sambadns import SRVRecord
-# def __init__(self, target, port, priority=0, weight=100, serial=1, ttl=900, rank=dnsp.DNS_RANK_ZONE):
-
-from samba.provision.sambadns import CNAMERecord
-# def __init__(self, cname, serial=1, ttl=900, rank=dnsp.DNS_RANK_ZONE):
-
-from samba.provision.sambadns import TXTRecord
-# def __init__(self, slist, serial=1, ttl=900, rank=dnsp.DNS_RANK_ZONE):
+from samba.dcerpc import dnsp
+from samba.ndr import ndr_pack, ndr_unpack
+from samba.provision.sambadns import AAAARecord, ARecord, CNAMERecord, NSRecord, SOARecord, SRVRecord, TXTRecord
 
 import univention.admin.handlers
-import univention.admin.handlers.dns.forward_zone
 import univention.admin.handlers.dns.alias
+import univention.admin.handlers.dns.forward_zone
 import univention.admin.handlers.dns.host_record
-import univention.admin.handlers.dns.srv_record
-import univention.admin.handlers.dns.reverse_zone
 import univention.admin.handlers.dns.ptr_record
+import univention.admin.handlers.dns.reverse_zone
+import univention.admin.handlers.dns.srv_record
+import univention.admin.uldap
+import univention.debug2 as ud
+import univention.s4connector.s4
+from univention.admin.mapping import unmapUNIX_TimeInterval
+from univention.s4connector.s4 import format_escaped, str2dn
+from univention.s4connector.s4.dc import _unixTimeInverval2seconds
+
+
+# def __init__(self, ip_addr, serial=1, ttl=900, rank=dnsp.DNS_RANK_ZONE):
+
+# def __init__(self, ip6_addr, serial=1, ttl=900, rank=dnsp.DNS_RANK_ZONE):
+
+# def __init__(self, dns_server, serial=1, ttl=900, rank=dnsp.DNS_RANK_ZONE):
+
+# def __init__(self, mname, rname, serial=1, refresh=900, retry=600, expire=86400, minimum=3600, ttl=3600, rank=dnsp.DNS_RANK_ZONE):
+
+# def __init__(self, target, port, priority=0, weight=100, serial=1, ttl=900, rank=dnsp.DNS_RANK_ZONE):
+
+# def __init__(self, cname, serial=1, ttl=900, rank=dnsp.DNS_RANK_ZONE):
+
+# def __init__(self, slist, serial=1, ttl=900, rank=dnsp.DNS_RANK_ZONE):
+
 
 
 class PTRRecord(dnsp.DnssrvRpcRecord):

@@ -18,6 +18,7 @@ from univention.testing.udm import UCSTestUDM
 import s4connector
 from s4connector import connector_running_on_this_host, connector_setup
 
+
 TEST_USERS = [NormalUser, Utf8User, SpecialUser]
 
 

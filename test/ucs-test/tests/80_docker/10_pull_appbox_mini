@@ -7,6 +7,7 @@
 
 from dockertest import docker_login, docker_pull
 
+
 if __name__ == '__main__':
     docker_login()
     docker_pull('ucs-appbox-amd64:4.1-0')

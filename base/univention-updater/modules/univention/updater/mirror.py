@@ -32,21 +32,26 @@
 """Mirror Univention repository server."""
 
 from __future__ import absolute_import
-import os
-import errno
-import subprocess
-import logging
-import json
 
-from .tools import UniventionUpdater
-from .repo_url import UcsRepoUrl
+import errno
+import json
+import logging
+import os
+import subprocess
+
 from univention.lib.ucs import UCS_Version
+
+from .repo_url import UcsRepoUrl
+from .tools import UniventionUpdater
+
+
 try:
     import univention.debug as ud
 except ImportError:
     import univention.debug2 as ud  # type: ignore
 try:
     from typing import Any, Iterator, List, Optional, Tuple  # noqa: F401
+
     from typing_extensions import Literal  # noqa: F401
 except ImportError:
     pass

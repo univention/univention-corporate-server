@@ -11,8 +11,8 @@ import time
 
 import ldap
 from ldap_extension_utils import (
-    call_join_script, call_unjoin_script, get_acl_name, get_container_name, get_package_name,
-    set_container_description, wait_for_ldap,
+    call_join_script, call_unjoin_script, get_acl_name, get_container_name, get_package_name, set_container_description,
+    wait_for_ldap,
 )
 
 from univention.testing.debian_package import DebianPackage

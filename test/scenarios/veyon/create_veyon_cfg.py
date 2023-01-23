@@ -5,6 +5,7 @@ import argparse
 import sys
 from configparser import ConfigParser
 
+
 template_file = "scenarios/veyon/veyon.cfg"
 
 

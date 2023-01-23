@@ -36,15 +36,18 @@
 #
 
 import os
-import six
+from ipaddress import AddressValueError, IPv4Address, IPv4Network
 
 import MySQLdb as mysql
-from ipaddress import IPv4Network, IPv4Address, AddressValueError
+import six
 
-from univention.appcenter.utils import generate_password, call_process, call_process_as, container_mode
-from univention.appcenter.packages import packages_are_installed, install_packages, update_packages, mark_packages_as_manually_installed, wait_for_dpkg_lock
-from univention.appcenter.log import get_base_logger, LogCatcher
+from univention.appcenter.log import LogCatcher, get_base_logger
+from univention.appcenter.packages import (
+    install_packages, mark_packages_as_manually_installed, packages_are_installed, update_packages, wait_for_dpkg_lock,
+)
 from univention.appcenter.ucr import ucr_get
+from univention.appcenter.utils import call_process, call_process_as, container_mode, generate_password
+
 
 database_logger = get_base_logger().getChild('database')
 

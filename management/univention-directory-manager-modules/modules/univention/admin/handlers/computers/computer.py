@@ -33,11 +33,11 @@
 """|UDM| module for all computer objects"""
 
 import univention.admin.handlers
+import univention.admin.handlers.computers
 import univention.admin.localization
 import univention.admin.mapping
 import univention.admin.syntax
 
-import univention.admin.handlers.computers
 
 translation = univention.admin.localization.translation('univention.admin.handlers.computers')
 _ = translation.translate

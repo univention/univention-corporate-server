@@ -36,19 +36,20 @@
 
 from __future__ import absolute_import
 
-import subprocess
+import math
 import os
 import re
-import math
+import subprocess
 
 import notifier.popen
+
 import univention.management.console as umc
+from univention.config_registry import handler_set
+from univention.lib import fstab
+from univention.management.console.config import ucr
 from univention.management.console.error import UMC_Error
 from univention.management.console.log import MODULE
-from univention.management.console.config import ucr
-from univention.config_registry import handler_set
 
-from univention.lib import fstab
 
 _ = umc.Translation('univention-management-console-module-quota').translate
 

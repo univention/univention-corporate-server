@@ -11,6 +11,7 @@ from univention.testing.utils import is_port_open
 
 from dockertest import Appcenter, UCSTest_DockerApp_InstallationFailed, get_app_version, tiny_app
 
+
 if __name__ == '__main__':
     with Appcenter() as appcenter:
 

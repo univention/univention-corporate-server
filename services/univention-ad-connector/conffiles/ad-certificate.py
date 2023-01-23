@@ -36,6 +36,7 @@
 import os
 import pipes
 
+
 ad_var = 'connector/ad/ldap/host'
 ssl_path = '/etc/univention/ssl'
 

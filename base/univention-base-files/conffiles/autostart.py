@@ -32,9 +32,10 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-from subprocess import Popen, PIPE
-from univention.service_info import ServiceInfo
 from logging import getLogger
+from subprocess import PIPE, Popen
+
+from univention.service_info import ServiceInfo
 
 
 def ctl(cmd, service):

@@ -16,6 +16,7 @@ from univention.testing import utils
 from univention.testing.strings import random_int, random_name
 from univention.testing.umc import Client
 
+
 PASSWORD = 'Univention@99'
 MOD_TMPL = 'settings/usertemplate'
 MOD_USER = 'users/user'

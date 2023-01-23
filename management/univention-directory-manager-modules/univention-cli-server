@@ -35,26 +35,27 @@
 
 from __future__ import print_function
 
-from select import select
 import array
+import errno
+import json
 import os
+import signal
 import socket
 import sys
-import errno
 import traceback
-import signal
-import json
 from argparse import ArgumentParser
 from io import StringIO
+from select import select
 
 from six.moves import socketserver
 
-from univention.config_registry import ConfigRegistry
-import univention.debug as ud
 import univention.admincli.adduser
 import univention.admincli.admin
-import univention.admincli.passwd
 import univention.admincli.license_check
+import univention.admincli.passwd
+import univention.debug as ud
+from univention.config_registry import ConfigRegistry
+
 
 logfile = ''
 

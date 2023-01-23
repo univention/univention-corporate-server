@@ -14,6 +14,7 @@ import univention.lib.admember
 from univention.config_registry.interfaces import Interfaces
 from univention.testing.codes import TestCodes
 
+
 if not univention.lib.admember.is_localhost_in_admember_mode():
     sys.exit(TestCodes.RESULT_SKIP)
 

@@ -31,58 +31,56 @@
 # <https://www.gnu.org/licenses/>.
 """Univention Update tools."""
 
-from __future__ import absolute_import
-from __future__ import print_function
+from __future__ import absolute_import, print_function
+
+
 try:
     import univention.debug as ud
 except ImportError:
     import univention.debug2 as ud  # type: ignore
 
 # TODO: Convert to absolute imports only AFTER the unit test has been adopted
-from .commands import (
-    cmd_dist_upgrade,
-    cmd_dist_upgrade_sim,
-    cmd_update,
-)
-from .errors import (
-    UnmetDependencyError,
-    CannotResolveComponentServerError,
-    ConfigurationError,
-    DownloadError,
-    PreconditionError,
-    RequiredComponentError,
-    ProxyError,
-    VerificationError,
-)
-from .repo_url import UcsRepoUrl
+import base64
+import copy
+import errno
+import functools
+import json
+import logging
+import os
+import re
+import socket
+import subprocess
+import sys
+import tempfile
+
+import six
+from six.moves import http_client as httplib, urllib_error, urllib_request as urllib2
+
+from univention.config_registry import ConfigRegistry
 from univention.lib.ucs import UCS_Version
 
-import errno
-import sys
-import re
-import os
-import copy
-from six.moves import http_client as httplib
-import socket
-from univention.config_registry import ConfigRegistry
-from six.moves import urllib_request as urllib2, urllib_error
-import json
-import subprocess
-import tempfile
-import logging
-import functools
-import six
-import base64
+from .commands import cmd_dist_upgrade, cmd_dist_upgrade_sim, cmd_update
+from .errors import (
+    CannotResolveComponentServerError, ConfigurationError, DownloadError, PreconditionError, ProxyError,
+    RequiredComponentError, UnmetDependencyError, VerificationError,
+)
+from .repo_url import UcsRepoUrl
+
+
 try:
-    from typing import Any, AnyStr, Dict, Generator, Iterable, Iterator, List, Optional, Sequence, Set, Text, Tuple, Type, TypeVar, Union  # noqa: F401
+    from typing import (  # noqa: F401
+        Any, AnyStr, Dict, Generator, Iterable, Iterator, List, Optional, Sequence, Set, Text, Tuple, Type, TypeVar,
+        Union,
+    )
+
     from typing_extensions import Literal  # noqa: F401
     _TS = TypeVar("_TS", bound="_UCSServer")
 except ImportError:
     pass
 
 if six.PY2:
-    from new import instancemethod
     from backports.tempfile import TemporaryDirectory
+    from new import instancemethod
 else:
     from tempfile import TemporaryDirectory
 

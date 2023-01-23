@@ -21,6 +21,7 @@ from univention.testing import utils
 from univention.testing.strings import random_name
 from univention.testing.utils import start_listener, stop_listener, wait_for_replication
 
+
 if __name__ == '__main__':
     if utils.package_installed('univention-samba4'):
         sys.exit(138)

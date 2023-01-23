@@ -40,8 +40,9 @@ import ldap
 
 import univention.config_registry
 import univention.debug as ud
-import univention.uldap
 import univention.lib.policy_result
+import univention.uldap
+
 
 ud.init('/dev/null', ud.FLUSH, ud.FUNCTION)
 

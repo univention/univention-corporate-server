@@ -5,6 +5,7 @@ import os
 import re
 import sys
 
+
 RE_BASH = re.compile(r'''^#! */usr/share/ucs-test/runner +bash\b''')
 RE_FUNCTION = re.compile(r'''^ *(?:function +)?([-0-9A-Z_a-z]+) *\(\)''')
 RE_SOURCE = re.compile(r'''^ *(?:source|\.) +((?:"(?:[^"\\]|\\.)+"|'[^']+'|\S+)+)\b''')

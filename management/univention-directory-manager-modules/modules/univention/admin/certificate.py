@@ -34,11 +34,12 @@ import base64
 from M2Crypto import X509
 
 import univention.admin
-import univention.admin.syntax
-import univention.admin.mapping
 import univention.admin.localization
+import univention.admin.mapping
+import univention.admin.syntax
 import univention.debug as ud
 from univention.admin.layout import Group, Tab
+
 
 translation = univention.admin.localization.translation('univention.admin')
 _ = translation.translate

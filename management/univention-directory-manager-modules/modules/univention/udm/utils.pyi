@@ -30,6 +30,7 @@
 # <https://www.gnu.org/licenses/>.
 
 from __future__ import absolute_import, unicode_literals
+
 from collections import namedtuple
 from typing import Any, Text
 

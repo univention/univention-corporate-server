@@ -34,10 +34,13 @@
 # <https://www.gnu.org/licenses/>.
 
 import re
+
 import six
 from six.moves import configparser
+
+
 try:
-    from typing import overload, Dict, Optional, TypeVar, Union  # noqa: F401
+    from typing import Dict, Optional, TypeVar, Union, overload  # noqa: F401
     _VT = TypeVar('_VT')
 except ImportError:
     def overload(f):

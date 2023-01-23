@@ -41,8 +41,9 @@ from glob import glob
 from subprocess import call
 from time import sleep
 
-from six.moves.urllib_parse import urlparse
 from defusedxml import ElementTree
+from six.moves.urllib_parse import urlparse
+
 
 workaround = set()
 

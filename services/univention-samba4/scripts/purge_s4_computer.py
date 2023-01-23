@@ -35,26 +35,27 @@
 
 from __future__ import print_function
 
-from argparse import ArgumentParser
-import sys
 import os
+import sys
 import traceback
+from argparse import ArgumentParser
 
 import samba
-from samba.samdb import SamDB
+from ldap.filter import filter_format
 from samba.auth import system_session
-from samba.param import LoadParm
-from samba.ndr import ndr_unpack
 from samba.dcerpc import misc
-from univention import config_registry
-import univention.admin.uldap
-import univention.admin.uexceptions
+from samba.ndr import ndr_unpack
+from samba.param import LoadParm
+from samba.samdb import SamDB
+from six.moves import input
+
+import univention.admin.config
 import univention.admin.modules
 import univention.admin.objects
-import univention.admin.config
+import univention.admin.uexceptions
+import univention.admin.uldap
+from univention import config_registry
 
-from ldap.filter import filter_format
-from six.moves import input
 
 univention.admin.modules.update()
 

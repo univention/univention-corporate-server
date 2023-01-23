@@ -34,8 +34,8 @@
 
 from __future__ import print_function
 
-import os
 import errno
+import os
 import shutil
 import sys
 import time
@@ -48,6 +48,7 @@ from univention.lib.ucs import UCS_Version
 from univention.updater.errors import UpdaterException, VerificationError
 from univention.updater.locking import UpdaterLock
 from univention.updater.mirror import UniventionMirror, makedirs
+
 
 configRegistry = ConfigRegistry()
 configRegistry.load()

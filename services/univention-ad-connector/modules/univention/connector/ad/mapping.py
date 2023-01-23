@@ -40,9 +40,9 @@ import six
 
 import univention.connector.ad
 import univention.connector.ad.password
+from univention.config_registry import ConfigRegistry
 from univention.connector.ad import proxyAddresses
 
-from univention.config_registry import ConfigRegistry
 
 configRegistry = ConfigRegistry()
 configRegistry.load()

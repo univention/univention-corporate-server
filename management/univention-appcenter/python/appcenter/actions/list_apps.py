@@ -40,9 +40,9 @@ from fnmatch import fnmatch
 
 from univention.appcenter.actions import UniventionAppAction
 from univention.appcenter.app_cache import Apps
+from univention.appcenter.ucr import ucr_get, ucr_is_true
 from univention.appcenter.udm import get_app_ldap_object, get_machine_connection
 from univention.appcenter.utils import flatten
-from univention.appcenter.ucr import ucr_get, ucr_is_true
 
 
 class List(UniventionAppAction):

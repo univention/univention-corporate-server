@@ -36,6 +36,7 @@ from typing import Dict, Optional  # noqa: F401
 
 import univention.ucslint.base as uub
 
+
 CALLED, COPIED = (1 << bit for bit in range(2))
 
 

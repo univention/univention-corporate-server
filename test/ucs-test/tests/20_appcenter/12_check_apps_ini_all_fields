@@ -16,6 +16,7 @@ from sys import stderr
 from univention.appcenter.app_cache import Apps
 from univention.testing import utils
 
+
 failures = 0
 
 

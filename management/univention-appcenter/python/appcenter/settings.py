@@ -40,10 +40,13 @@ import os.path
 
 from six import string_types
 
-from univention.appcenter.utils import app_is_running, container_mode, mkdir, _
+from univention.appcenter.ini_parser import (
+    IniSectionAttribute, IniSectionBooleanAttribute, IniSectionListAttribute, TypedIniSectionObject,
+)
 from univention.appcenter.log import get_base_logger
 from univention.appcenter.ucr import ucr_get, ucr_is_true, ucr_run_filter
-from univention.appcenter.ini_parser import TypedIniSectionObject, IniSectionBooleanAttribute, IniSectionListAttribute, IniSectionAttribute
+from univention.appcenter.utils import _, app_is_running, container_mode, mkdir
+
 
 settings_logger = get_base_logger().getChild('settings')
 

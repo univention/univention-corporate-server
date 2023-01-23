@@ -35,9 +35,10 @@
 # <https://www.gnu.org/licenses/>.
 #
 
+import locale
 import sys
 from argparse import ArgumentParser
-import locale
+
 
 # do it immediately before univention.appcenter.utils loads Translation
 try:

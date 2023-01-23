@@ -35,23 +35,23 @@
 
 from __future__ import print_function
 
+import ast
+import locale
+import os
+import pprint
+import sys
 from argparse import ArgumentParser, FileType, Namespace  # noqa: F401
+from datetime import datetime
 from getpass import getpass
 
-from datetime import datetime
-import os
-import ast
-import pprint
-import locale
-import sys
-
+import notifier
 import six
 from six.moves import input
-import notifier
 
 import univention.management.console.protocol as umcp
-from univention.management.console.protocol.client import Client
 from univention.management.console.log import log_init
+from univention.management.console.protocol.client import Client
+
 
 try:
     from typing import NoReturn, Optional, Sequence  # noqa: F401

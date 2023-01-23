@@ -27,6 +27,7 @@ from univention.testing.ucr import UCSTestConfigRegistry
 from univention.testing.umc import Client
 from univention.udm import UDM
 
+
 MAILS_TIMEOUT = 5
 
 

@@ -38,12 +38,12 @@ from __future__ import print_function
 import sys
 from argparse import ArgumentParser
 
-import univention.config_registry
-import univention.debug as ud
-
 import univention.admin.modules
 import univention.admin.objects
 import univention.admin.uexceptions
+import univention.config_registry
+import univention.debug as ud
+
 
 lo = None
 position = None

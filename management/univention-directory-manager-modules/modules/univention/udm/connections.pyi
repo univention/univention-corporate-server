@@ -30,9 +30,12 @@
 # <https://www.gnu.org/licenses/>.
 
 from __future__ import absolute_import, unicode_literals
-import univention.config_registry
-from .modules.generic import OriUdmHandlerTV
+
 from typing import Any, Callable, Dict, Optional, Text, Tuple
+
+import univention.config_registry
+
+from .modules.generic import OriUdmHandlerTV
 
 
 class LDAP_connection(object):

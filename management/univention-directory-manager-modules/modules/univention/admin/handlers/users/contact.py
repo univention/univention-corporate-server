@@ -35,16 +35,15 @@
 from __future__ import absolute_import
 
 import univention.admin
-from univention.admin.layout import Tab, Group
+import univention.admin.allocators
 import univention.admin.filter
 import univention.admin.handlers
-import univention.admin.allocators
 import univention.admin.localization
 import univention.admin.uexceptions
-
 import univention.debug as ud
-
 from univention.admin.handlers.users.user import mapHomePostalAddress, unmapHomePostalAddress
+from univention.admin.layout import Group, Tab
+
 
 translation = univention.admin.localization.translation('univention.admin.handlers.users')
 _ = translation.translate

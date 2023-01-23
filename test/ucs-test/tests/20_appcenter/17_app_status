@@ -19,6 +19,7 @@ from univention.testing import utils
 
 from appcentertest import get_requested_apps
 
+
 # Suppress InsecureRequestWarning: Unverified HTTPS request
 urllib3.disable_warnings()
 

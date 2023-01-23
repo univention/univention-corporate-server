@@ -35,12 +35,12 @@
 # <https://www.gnu.org/licenses/>.
 #
 
-from univention.appcenter.actions import UniventionAppAction, StoreAppAction
-from univention.appcenter.app_cache import Apps
-from univention.appcenter.utils import get_locale
-from univention.appcenter.log import get_logfile_logger
-
 from tempfile import NamedTemporaryFile
+
+from univention.appcenter.actions import StoreAppAction, UniventionAppAction
+from univention.appcenter.app_cache import Apps
+from univention.appcenter.log import get_logfile_logger
+from univention.appcenter.utils import get_locale
 
 
 class UpdateCertificates(UniventionAppAction):

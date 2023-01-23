@@ -40,25 +40,26 @@
 
 from __future__ import print_function
 
-import sys
+import errno
 import os
+import pickle
 import random
 import re
 import subprocess
-import pickle
-import errno
+import sys
+from grp import getgrnam
+from pwd import getpwnam
 
 import six
 
-from pwd import getpwnam
-from grp import getgrnam
-
 from univention.config_registry.misc import asciify, directory_files
 from univention.debhelper import parseRfc822  # pylint: disable-msg=W0403
+
+
 if six.PY2:
     from io import open
 try:
-    from typing import Any, Dict, IO, Iterable, List, Mapping, Optional, Set, Tuple, Union  # noqa: F401
+    from typing import IO, Any, Dict, Iterable, List, Mapping, Optional, Set, Tuple, Union  # noqa: F401
     _OPT = Mapping[str, Any]
     _UCR = Mapping[str, str]
     _CHANGES = Mapping[str, Tuple[Optional[str], Optional[str]]]

@@ -11,6 +11,7 @@ from univention.lib.umc import ConnectionError, HTTPError
 
 import appcentertest as app_test
 
+
 HTTPException = (HTTPError, ConnectionError)
 
 

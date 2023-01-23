@@ -35,13 +35,16 @@
 # <https://www.gnu.org/licenses/>.
 
 from __future__ import print_function
-from univention.config_registry import ConfigRegistry
 
-from six.moves.configparser import ConfigParser
-from six.moves.urllib_parse import quote
 import os
 import re
 import shlex
+
+from six.moves.configparser import ConfigParser
+from six.moves.urllib_parse import quote
+
+from univention.config_registry import ConfigRegistry
+
 
 # defaults
 ucr = ConfigRegistry()

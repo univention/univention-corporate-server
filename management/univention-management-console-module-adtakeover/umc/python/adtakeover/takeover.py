@@ -34,55 +34,53 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-import chardet
 import codecs
+import configparser
+import ipaddress
+import locale
+import logging
 import os
 import re
+import shutil
+import sqlite3
+import subprocess
 import sys
 import time
-import locale
-import shutil
-import logging
 import traceback
-import subprocess
-import configparser
 from datetime import datetime, timedelta
 from tempfile import NamedTemporaryFile
 
+import chardet
+import ldap
 import ldb
 import samba
 import samba.getopt
-from samba import Ldb
-from samba.samdb import SamDB
-from samba.auth import system_session
-from samba.param import LoadParm
-from samba.ndr import ndr_unpack
-from samba.dcerpc import security
-# from samba.netcmd.common import netcmd_get_domain_infos_via_cldap
-from samba.dcerpc import nbt
-from samba.net import Net
-from samba.credentials import Credentials, DONT_USE_KERBEROS
-
-import ldap
-import sqlite3
-import ipaddress
+from ldap.dn import dn2str, escape_dn_chars, str2dn
 from ldap.filter import filter_format
-from ldap.dn import escape_dn_chars, str2dn, dn2str
+from samba import Ldb
+from samba.auth import system_session
+from samba.credentials import DONT_USE_KERBEROS, Credentials
+# from samba.netcmd.common import netcmd_get_domain_infos_via_cldap
+from samba.dcerpc import nbt, security
+from samba.ndr import ndr_unpack
+from samba.net import Net
+from samba.param import LoadParm
+from samba.samdb import SamDB
 
-import univention.admin.uldap
-from univention.admin import uexceptions
-import univention.admin.modules as udm_modules
 import univention.admin.filter as udm_filter
+import univention.admin.modules as udm_modules
 import univention.admin.objects
+import univention.admin.uldap
+import univention.config_registry
+import univention.lib
+import univention.lib.admember
+import univention.lib.s4
+from univention.admin import uexceptions
 from univention.admincli import license_check
 from univention.config_registry.frontend import ucr_update
-import univention.lib
-import univention.lib.s4
-import univention.config_registry
-import univention.lib.admember
 from univention.config_registry.interfaces import Interfaces
-from univention.management.console.log import MODULE
 from univention.management.console import Translation
+from univention.management.console.log import MODULE
 from univention.uldap import parentDn
 
 

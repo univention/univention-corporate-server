@@ -35,6 +35,7 @@
 from univention.config_registry import ConfigRegistry
 from univention.lib.i18n import Translation
 
+
 _ = Translation('univention-self-service-passwordreset-umc').translate
 
 

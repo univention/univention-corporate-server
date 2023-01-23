@@ -36,8 +36,8 @@
 
 from __future__ import print_function
 
-from argparse import ArgumentParser
 import sys
+from argparse import ArgumentParser
 
 import univention.l10n.umc as dh_umc
 

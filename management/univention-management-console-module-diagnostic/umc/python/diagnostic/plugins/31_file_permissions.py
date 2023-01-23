@@ -43,6 +43,7 @@ from univention.lib.i18n import Translation
 from univention.management.console.log import MODULE
 from univention.management.console.modules.diagnostic import Instance, Warning
 
+
 _ = Translation('univention-management-console-module-diagnostic').translate
 
 title = _('Check file permissions')

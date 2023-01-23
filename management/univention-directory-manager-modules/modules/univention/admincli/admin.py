@@ -34,8 +34,9 @@
 """command line frontend to univention-directory-manager (module)"""
 
 from __future__ import print_function
-import getopt
+
 import base64
+import getopt
 import os
 import subprocess
 import sys
@@ -44,15 +45,15 @@ from ipaddress import IPv4Address, IPv4Network
 import ldap
 import six
 
-import univention.debug as ud
-
-import univention.admin.uexceptions
-import univention.admin.uldap
 import univention.admin.modules
 import univention.admin.objects
+import univention.admin.uexceptions
+import univention.admin.uldap
+import univention.config_registry
+import univention.debug as ud
 from univention.admin.layout import Group
 from univention.admin.syntax import ldapFilter
-import univention.config_registry
+
 
 univention.admin.modules.update()
 

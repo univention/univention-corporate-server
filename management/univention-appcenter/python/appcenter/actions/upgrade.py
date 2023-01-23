@@ -36,12 +36,11 @@
 #
 
 from univention.admindiary.client import write_event
-from univention.admindiary.events import APP_UPGRADE_START, APP_UPGRADE_SUCCESS, APP_UPGRADE_FAILURE
-
-from univention.appcenter.app_cache import Apps
+from univention.admindiary.events import APP_UPGRADE_FAILURE, APP_UPGRADE_START, APP_UPGRADE_SUCCESS
 from univention.appcenter.actions.install import Install
+from univention.appcenter.app_cache import Apps
+from univention.appcenter.packages import dist_upgrade, install_packages
 from univention.appcenter.ucr import ucr_is_true
-from univention.appcenter.packages import install_packages, dist_upgrade
 
 
 class Upgrade(Install):

@@ -43,7 +43,8 @@ from ldap.dn import str2dn
 
 from univention.portal import config
 from univention.portal.factory import make_portal
-from univention.portal.log import setup_logger, get_logger
+from univention.portal.log import get_logger, setup_logger
+
 
 RE_FQDN = re.compile(r'(?=^.{4,253}$)(^((?!-)[a-zA-Z0-9-]{1,63}(?<!-)\.)+[a-zA-Z]{2,63}\.?$)')
 

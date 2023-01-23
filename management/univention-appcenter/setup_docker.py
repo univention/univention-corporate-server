@@ -37,6 +37,7 @@
 
 from packaging import setup
 
+
 setup(
     name='univention-appcenter-docker',
     packages=[

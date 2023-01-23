@@ -45,8 +45,10 @@ from univention.appcenter.app import CaseSensitiveConfigParser
 from univention.appcenter.log import get_base_logger
 from univention.appcenter.meta import UniventionMetaClass, UniventionMetaInfo
 from univention.appcenter.ucr import ucr_get, ucr_run_filter
-from univention.appcenter.udm import create_object_if_not_exists, create_recursive_container, remove_object_if_exists, modify_object
-from univention.appcenter.utils import underscore, get_md5, read_ini_file
+from univention.appcenter.udm import (
+    create_object_if_not_exists, create_recursive_container, modify_object, remove_object_if_exists,
+)
+from univention.appcenter.utils import get_md5, read_ini_file, underscore
 
 
 attribute_logger = get_base_logger().getChild('attributes')

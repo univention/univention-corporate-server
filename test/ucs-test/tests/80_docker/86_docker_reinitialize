@@ -10,6 +10,7 @@ import subprocess
 
 from dockertest import App, Appcenter, get_app_name
 
+
 DOCKER_COMPOSE = '''
 version: '2.0'
 

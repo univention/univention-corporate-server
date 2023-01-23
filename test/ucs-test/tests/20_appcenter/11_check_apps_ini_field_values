@@ -14,6 +14,7 @@ from os import path
 from univention.appcenter.app_cache import Apps
 from univention.testing import utils
 
+
 OPTIONS_TO_CHECK = ('Contact', 'NotificationEmail')
 failures_counter = 0
 

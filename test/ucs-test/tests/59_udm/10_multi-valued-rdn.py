@@ -5,12 +5,12 @@
 ## bugs: [40129]
 
 import pytest
-
 from ldap import AVA_STRING
 from ldap.dn import dn2str, str2dn
 
 from univention.testing.strings import random_name
 from univention.testing.utils import verify_ldap_object, wait_for_replication
+
 
 MODULE = 'tests/ipservice'
 

@@ -32,12 +32,13 @@
 
 """|UDM| module for container settings"""
 
-from univention.admin.layout import Tab
-import univention.admin.uldap
-import univention.admin.syntax
 import univention.admin.filter
 import univention.admin.handlers
 import univention.admin.localization
+import univention.admin.syntax
+import univention.admin.uldap
+from univention.admin.layout import Tab
+
 
 translation = univention.admin.localization.translation('univention.admin.handlers.settings')
 _ = translation.translate

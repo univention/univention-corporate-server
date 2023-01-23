@@ -51,12 +51,14 @@ import stat
 import syslog
 from collections import Mapping
 from logging.handlers import TimedRotatingFileHandler
-from six import string_types, text_type, PY2
-from typing import Any, Dict, IO, Optional, Type  # noqa: F401
+from typing import IO, Any, Dict, Optional, Type  # noqa: F401
 
-import listener
+from six import PY2, string_types, text_type
+
 import univention.debug as ud
 from univention.config_registry import ConfigRegistry
+
+import listener
 
 
 __syslog_opened = False

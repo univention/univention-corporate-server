@@ -1,6 +1,8 @@
 #!/usr/bin/python3
 import sys
+
 from setuptools import setup
+
 
 version = open("debian/changelog").readline().split()[1][1:-1]
 

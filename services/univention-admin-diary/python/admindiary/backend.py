@@ -37,15 +37,14 @@ from functools import partial
 from typing import Any, Callable, Dict, Iterable, Iterator, List, Optional, Set, Tuple  # noqa: F401
 
 import sqlalchemy
-from sqlalchemy import or_, and_
-from sqlalchemy.orm import sessionmaker, relationship, scoped_session, joinedload
-from sqlalchemy.pool import NullPool
+from sqlalchemy import Boolean, Column, DateTime, ForeignKey, Integer, Sequence, String, Table, Text, and_, func, or_
 from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy import Column, Integer, String, Boolean, ForeignKey, Sequence, Text, DateTime, func, Table
+from sqlalchemy.orm import joinedload, relationship, scoped_session, sessionmaker
+from sqlalchemy.pool import NullPool
 
+from univention.admindiary import DiaryEntry, get_logger  # noqa: F401
 from univention.config_registry import ConfigRegistry
 
-from univention.admindiary import get_logger, DiaryEntry  # noqa: F401
 
 get_logger = partial(get_logger, 'backend')
 

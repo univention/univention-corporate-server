@@ -36,14 +36,14 @@ from __future__ import print_function
 import argparse
 import datetime
 import logging
-from typing import Optional, NoReturn, Iterable, List  # noqa: F401
+from typing import Iterable, List, NoReturn, Optional  # noqa: F401
 
 from ldap.filter import filter_format
 
-from univention.udm import UDM
 import univention.udm.exceptions
 from univention.config_registry import ConfigRegistry
 from univention.management.console.modules.passwordreset import DEREGISTRATION_TIMESTAMP_FORMATTING
+from univention.udm import UDM
 
 
 class ScriptError(Exception):

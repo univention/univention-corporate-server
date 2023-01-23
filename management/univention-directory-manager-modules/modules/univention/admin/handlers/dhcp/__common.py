@@ -32,14 +32,15 @@
 
 """|UDM| module for the |DHCP| subnet"""
 
-from ipaddress import IPv4Address, IPv4Network
-from typing import List, Tuple, Sequence  # noqa: F401
 import sys
+from ipaddress import IPv4Address, IPv4Network
+from typing import List, Sequence, Tuple  # noqa: F401
 
 import univention.admin.localization
 import univention.admin.uexceptions as uex
-from univention.admin.layout import Tab
 from univention.admin.handlers import simpleLdap
+from univention.admin.layout import Tab
+
 
 Range = Tuple[IPv4Address, IPv4Address]
 

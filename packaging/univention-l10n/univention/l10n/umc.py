@@ -56,23 +56,25 @@ Example::
 
 from __future__ import print_function
 
+import copy
 import io
-import re
+import json
 import os
+import re
+import subprocess
 import sys
 import warnings
-import copy
-import json
-import subprocess
+import xml.etree.ElementTree as ET
 from email.utils import formatdate
 
-import six
 import polib
-import xml.etree.ElementTree as ET
-
+import six
 from debian.deb822 import Deb822, Packages
+
 from .helper import Error, call, make_parent_dir
 from .message_catalogs import merge_po
+
+
 try:
     from typing import Iterable, Iterator, List, Optional, Tuple, Union  # noqa: F401
 except ImportError:

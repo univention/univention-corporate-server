@@ -38,8 +38,8 @@ from typing import Any, Dict, List, Optional, Tuple, Union  # noqa: F401
 
 import ldap
 
-import univention.debug as ud
 import univention.admin.modules
+import univention.debug as ud
 
 
 def module(object):

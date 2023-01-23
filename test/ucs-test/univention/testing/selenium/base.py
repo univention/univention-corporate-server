@@ -55,6 +55,7 @@ from univention.testing.selenium.checks_and_waits import ChecksAndWaits
 from univention.testing.selenium.interactions import Interactions
 from univention.testing.selenium.utils import expand_path
 
+
 logger = logging.getLogger(__name__)
 
 translator = localization.translation('ucs-test-framework')

@@ -26,6 +26,7 @@ import univention.testing.strings as uts
 import univention.testing.ucr
 from univention.testing import utils
 
+
 printserver_installed = utils.package_installed('univention-printserver')
 samba_common_bin_installed = utils.package_installed('samba-common-bin')
 

@@ -34,12 +34,13 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-import univention.config_registry
-
-import ldap
-import heimdal
-from six.moves.urllib.parse import quote
 import sys
+
+import heimdal
+import ldap
+from six.moves.urllib.parse import quote
+
+import univention.config_registry
 
 
 def salt_krb5Keys(principal, keys):

@@ -36,15 +36,14 @@
 
 import pgdb
 
-from univention.management.console import Translation
-from univention.management.console.modules import Base, UMC_Error
 import univention.config_registry
 import univention.pkgdb as updb
-
+from univention.management.console import Translation
 from univention.management.console.log import MODULE
-
-from univention.management.console.modules.decorators import simple_response, log, sanitize
+from univention.management.console.modules import Base, UMC_Error
+from univention.management.console.modules.decorators import log, sanitize, simple_response
 from univention.management.console.modules.sanitizers import ChoicesSanitizer
+
 
 _ = Translation('univention-management-console-module-pkgdb').translate
 

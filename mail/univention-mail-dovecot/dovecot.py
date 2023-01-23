@@ -41,8 +41,10 @@ from typing import Dict, List
 
 from six.moves import cPickle as pickle
 
-import listener
 from univention.mail.dovecot import DovecotListener
+
+import listener
+
 
 name = 'dovecot'
 description = 'manage imap folders'

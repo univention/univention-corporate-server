@@ -40,8 +40,10 @@ import os
 import stat
 from typing import Dict, List
 
-import listener
 import univention.debug as ud
+
+import listener
+
 
 hostname = listener.configRegistry["hostname"]
 domainname = listener.configRegistry["domainname"]

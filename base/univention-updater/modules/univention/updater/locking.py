@@ -31,21 +31,25 @@
 # <https://www.gnu.org/licenses/>.
 """Univention Updater locking"""
 
-from __future__ import absolute_import
-from __future__ import print_function
+from __future__ import absolute_import, print_function
 
 import os
 import sys
 from contextlib import contextmanager
 from time import sleep
+
+
 try:
     from time import monotonic  # type: ignore
 except ImportError:
     from monotonic import monotonic  # type: ignore
-from errno import EEXIST, ESRCH, ENOENT
+
+from errno import EEXIST, ENOENT, ESRCH
+
+
 try:
-    from typing import Optional, Type  # noqa: F401
     from types import TracebackType  # noqa: F401
+    from typing import Optional, Type  # noqa: F401
 except ImportError:
     pass
 from .errors import UpdaterException

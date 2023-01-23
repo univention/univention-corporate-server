@@ -34,8 +34,8 @@
 
 import univention.admin.handlers
 import univention.admin.handlers.settings.portal
-import univention.admin.handlers.settings.portal_entry
 import univention.admin.handlers.settings.portal_category
+import univention.admin.handlers.settings.portal_entry
 from univention.admin.layout import Tab
 
 

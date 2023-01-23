@@ -70,8 +70,8 @@ must be given in curly braces {VARIABLE}.
 
 import os
 import sys
-import xml.parsers.expat
 import xml.etree.cElementTree as ET
+import xml.parsers.expat
 
 from .log import RESOURCES
 

@@ -38,6 +38,7 @@ from debian.changelog import Changelog, ChangelogParseError
 
 import univention.ucslint.base as uub
 
+
 REticket = re.compile(
     r'''
     (Bug:?[ ]\#[0-9]{1,6} # Bugzilla

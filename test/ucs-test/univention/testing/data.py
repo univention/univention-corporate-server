@@ -26,6 +26,7 @@ from univention.testing.errors import TestError
 from univention.testing.internal import UCSVersion
 from univention.testing.pytest import PytestRunner
 
+
 __all__ = ['TestEnvironment', 'TestCase', 'TestResult', 'TestFormatInterface']
 
 T = TypeVar("T")

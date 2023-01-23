@@ -35,13 +35,13 @@
 # <https://www.gnu.org/licenses/>.
 #
 
-import subprocess
 import shlex
+import subprocess
 from argparse import REMAINDER
 
-from univention.appcenter.actions import UniventionAppAction, StoreAppAction
-from univention.appcenter.exceptions import ShellNoCommandError, ShellAppNotRunning
+from univention.appcenter.actions import StoreAppAction, UniventionAppAction
 from univention.appcenter.actions.docker_base import DockerActionMixin
+from univention.appcenter.exceptions import ShellAppNotRunning, ShellNoCommandError
 from univention.appcenter.utils import app_is_running
 
 

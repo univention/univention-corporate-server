@@ -41,16 +41,17 @@ disabled.
 
 from __future__ import print_function
 
+import argparse
 import sys
 import time
-import argparse
+
 from ldap.filter import filter_format
 
-import univention.uldap
-import univention.admin.uldap
 import univention.admin.modules as udm_modules
+import univention.admin.uldap
 import univention.config_registry
 import univention.debug as ud
+import univention.uldap
 
 
 def main():

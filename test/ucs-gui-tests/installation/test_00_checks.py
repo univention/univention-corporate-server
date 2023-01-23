@@ -1,5 +1,6 @@
-from vminstall.utils import copy_through_ssh, execute_through_ssh
 import os
+
+from vminstall.utils import copy_through_ssh, execute_through_ssh
 
 
 class Test00Checks(object):

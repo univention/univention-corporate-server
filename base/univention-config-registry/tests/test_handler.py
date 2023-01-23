@@ -6,6 +6,8 @@ import sys
 from argparse import Namespace
 from os import stat_result
 from os.path import dirname
+
+
 try:
     from StringIO import StringIO
 except ImportError:

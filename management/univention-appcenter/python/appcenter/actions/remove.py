@@ -38,12 +38,11 @@
 import os.path
 
 from univention.admindiary.client import write_event
-from univention.admindiary.events import APP_REMOVE_START, APP_REMOVE_SUCCESS, APP_REMOVE_FAILURE
-
+from univention.admindiary.events import APP_REMOVE_FAILURE, APP_REMOVE_START, APP_REMOVE_SUCCESS
 from univention.appcenter.actions.install_base import InstallRemoveUpgrade
-from univention.appcenter.ucr import ucr_save
-from univention.appcenter.packages import remove_packages, remove_packages_dry_run, update_packages
 from univention.appcenter.exceptions import RemoveFailed
+from univention.appcenter.packages import remove_packages, remove_packages_dry_run, update_packages
+from univention.appcenter.ucr import ucr_save
 
 
 class Remove(InstallRemoveUpgrade):

@@ -39,9 +39,11 @@ from __future__ import absolute_import, annotations
 
 from typing import Dict, List
 
-import listener
 import univention.config_registry
 import univention.debug as ud
+
+import listener
+
 
 description = 'Update upstream LDAP server list'
 filter = '(&(objectClass=univentionDomainController)(|(univentionServerRole=master)(univentionServerRole=backup)))'

@@ -34,11 +34,11 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-from univention.appcenter.actions.update_certificates import UpdateCertificates
-from univention.appcenter.actions.docker_base import DockerActionMixin
-from univention.appcenter.ucr import ucr_get
-
 import os
+
+from univention.appcenter.actions.docker_base import DockerActionMixin
+from univention.appcenter.actions.update_certificates import UpdateCertificates
+from univention.appcenter.ucr import ucr_get
 
 
 class UpdateCertificates(UpdateCertificates, DockerActionMixin):

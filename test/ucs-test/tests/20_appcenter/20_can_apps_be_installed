@@ -18,6 +18,7 @@ from univention.testing.ucr import UCSTestConfigRegistry
 
 from appcentertest import get_requested_apps
 
+
 requested_apps = get_requested_apps()
 if requested_apps and all(app.docker for app in requested_apps):
     # test runs for an hour or so...

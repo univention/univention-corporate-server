@@ -39,22 +39,24 @@ from __future__ import absolute_import
 import traceback
 
 import ldap
-from ldap.filter import filter_format
-
 import notifier
-from notifier import signals
-from notifier import threads
+from ldap.filter import filter_format
+from notifier import signals, threads
 
 import univention.admin.uexceptions as udm_errors
 from univention.lib.i18n import Locale
-
-from univention.management.console.log import AUTH
 from univention.management.console.config import ucr
 from univention.management.console.ldap import get_machine_connection, reset_cache
-from univention.management.console.pam import PamAuth, AuthenticationError, AuthenticationFailed, AuthenticationInformationMissing, PasswordExpired, AccountExpired, PasswordChangeFailed
+from univention.management.console.log import AUTH
+from univention.management.console.pam import (
+    AccountExpired, AuthenticationError, AuthenticationFailed, AuthenticationInformationMissing, PamAuth,
+    PasswordChangeFailed, PasswordExpired,
+)
+
 
 try:
     from typing import Any, Dict, Optional, Tuple, Union  # noqa: F401
+
     from univention.management.console.protocol.meesage import Request  # noqa: F401
 except ImportError:
     pass
@@ -63,7 +65,7 @@ except ImportError:
 class AuthenticationResult(object):
 
     def __init__(self, result, locale):  # type: (Union[BaseException, Dict[str, str]], Optional[str]) -> None
-        from univention.management.console.protocol.definitions import SUCCESS, BAD_REQUEST_UNAUTH
+        from univention.management.console.protocol.definitions import BAD_REQUEST_UNAUTH, SUCCESS
         self.credentials = None
         self.status = SUCCESS
         self.authenticated = not isinstance(result, BaseException)

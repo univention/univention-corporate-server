@@ -36,23 +36,25 @@
 #
 
 
-import sys
 import os
 import os.path
+import sys
 from contextlib import contextmanager
-from time import sleep
 from glob import glob
 from json import dump, load
+from time import sleep
 from typing import Dict, Iterable, List, Optional, Tuple  # noqa: F401
 
 from six.moves.configparser import NoSectionError
 from six.moves.urllib_parse import urlsplit
 
 from univention.appcenter.app import App, LooseVersion
+from univention.appcenter.ini_parser import (
+    IniSectionAttribute, IniSectionListAttribute, IniSectionObject, read_ini_file,
+)
 from univention.appcenter.log import get_base_logger
-from univention.appcenter.utils import mkdir, get_locale
-from univention.appcenter.ini_parser import read_ini_file, IniSectionListAttribute, IniSectionAttribute, IniSectionObject
-from univention.appcenter.ucr import ucr_load, ucr_get, ucr_is_true
+from univention.appcenter.ucr import ucr_get, ucr_is_true, ucr_load
+from univention.appcenter.utils import get_locale, mkdir
 
 
 CACHE_DIR = '/var/cache/univention-appcenter'

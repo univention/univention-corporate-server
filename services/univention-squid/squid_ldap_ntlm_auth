@@ -77,6 +77,7 @@ from ldap.filter import filter_format
 import univention.config_registry
 import univention.uldap
 
+
 options = argparse.Namespace(debug=False, debug_file='')
 
 NTLM_NegotiateUnicode = 0x00000001

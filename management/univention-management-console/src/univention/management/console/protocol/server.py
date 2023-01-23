@@ -36,32 +36,32 @@
 
 """Defines the basic class for an UMC server."""
 
-import os
 import errno
 import fcntl
+import multiprocessing
+import os
+import resource
 import signal
 import socket
-import resource
 import traceback
-import multiprocessing
 from types import TracebackType  # noqa: F401
 from typing import Dict, List, Optional, Tuple, Type  # noqa: F401
 
-from tornado import process
 import notifier
 from notifier import signals
 from OpenSSL import SSL
 from OpenSSL.crypto import X509  # noqa: F401
+from tornado import process
 
 from univention.lib.i18n import Translation
 
-from .message import Message, IncompleteMessageError, ParseError
-from .session import SessionHandler
-from .definitions import RECV_BUFFER_SIZE
-
-from ..resources import moduleManager, categoryManager
+from ..config import SERVER_CONNECTION_TIMEOUT, SERVER_MAX_CONNECTIONS, ucr
 from ..log import CORE, CRYPT, RESOURCES
-from ..config import ucr, SERVER_MAX_CONNECTIONS, SERVER_CONNECTION_TIMEOUT
+from ..resources import categoryManager, moduleManager
+from .definitions import RECV_BUFFER_SIZE
+from .message import IncompleteMessageError, Message, ParseError
+from .session import SessionHandler
+
 
 _ = Translation('univention.management.console').translate
 

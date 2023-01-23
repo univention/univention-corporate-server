@@ -9,12 +9,13 @@ import contextlib
 from typing import Dict, List  # noqa: F401
 
 import pytest
+from samba import generate_random_machine_password
 
 from univention.admin.uldap import getAdminConnection
 from univention.config_registry import ConfigRegistry
 from univention.lib.umc import Unauthorized
 from univention.testing import utils
-from samba import generate_random_machine_password
+
 
 samba4_installed = utils.package_installed('univention-samba4')
 ucr = ConfigRegistry()

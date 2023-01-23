@@ -34,11 +34,13 @@
 """A Python pre-processor"""
 
 from __future__ import print_function
-import os
-import sys
+
 import getopt
-import re
+import os
 import py_compile
+import re
+import sys
+
 
 define = []
 opts, args = getopt.getopt(sys.argv[1:], 'D:')

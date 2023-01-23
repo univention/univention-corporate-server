@@ -6,10 +6,10 @@
 ## packages: [univention-management-console-module-udm]
 ## bugs: [49384]
 
+import http.server
 import shutil
 import ssl
 import subprocess
-import http.server
 from multiprocessing import Process
 from socket import gethostname
 

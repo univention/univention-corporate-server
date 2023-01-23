@@ -9,6 +9,7 @@ import univention.testing.ucr as ucr_test
 import univention.testing.udm as udm_test
 from univention.testing import utils
 
+
 # UCS syntax (primaryEmailAddressValidDomain) and OX app syntax checks
 EXPECTED_ERROR_MSGS = (
     "The domain part of the primary mail address is not in list of configured mail domains",

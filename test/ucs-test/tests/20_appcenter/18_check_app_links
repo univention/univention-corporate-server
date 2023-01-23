@@ -9,13 +9,14 @@
 import glob
 import re
 import time
+from html.parser import HTMLParser
 
 import requests
-from html.parser import HTMLParser
 
 from univention.testing import utils
 
 from appcentertest import get_requested_apps
+
 
 # taken from https://mail.python.org/pipermail/tutor/2002-September/017228.html
 urls = '(?: %s)' % '|'.join("http https telnet gopher file wais ftp".split())

@@ -24,6 +24,7 @@ from univention.testing.network import NetworkRedirector
 
 from essential.mail import check_delivery, send_mail, set_mail_forward_copy_to_self_ucrv
 
+
 TIMEOUT = 600  # in seconds
 
 

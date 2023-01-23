@@ -33,15 +33,13 @@
 #
 
 
+import logging
 import sys
 from glob import glob
-import logging
-
-from univentionunittests import import_module
-from univentionunittests.umc import import_umc_module, save_result_on_request
-
 
 import pytest
+from univentionunittests import import_module
+from univentionunittests.umc import import_umc_module, save_result_on_request
 
 
 @pytest.fixture()

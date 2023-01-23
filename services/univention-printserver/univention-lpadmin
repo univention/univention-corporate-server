@@ -36,13 +36,14 @@
 
 from __future__ import print_function
 
-import sys
-import pwd
 import os
+import pwd
+import sys
 
-from pexpect import spawn, EOF
+from pexpect import EOF, spawn
 
 import univention.config_registry
+
 
 args = sys.argv[1:]
 

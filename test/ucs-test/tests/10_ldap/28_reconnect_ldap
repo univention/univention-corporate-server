@@ -13,6 +13,7 @@ import ldap
 
 import univention.uldap
 
+
 lo = univention.uldap.getMachineConnection()
 dn = lo.lo.whoami_s()[3:]
 attrs = lo.get(dn)

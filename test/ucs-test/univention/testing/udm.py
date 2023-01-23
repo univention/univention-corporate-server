@@ -68,7 +68,8 @@ import univention.admin.uldap
 import univention.testing.strings as uts
 import univention.testing.ucr
 from univention.testing import utils
-from univention.testing.ucs_samba import wait_for_drs_replication, DRSReplicationFailed
+from univention.testing.ucs_samba import DRSReplicationFailed, wait_for_drs_replication
+
 
 try:
     from inspect import getfullargspec as getargspec

@@ -32,19 +32,16 @@
 
 """|UDM| module for the repository sync policies"""
 
-from univention.admin.layout import Tab, Group
-import univention.admin.syntax
+import univention.admin.cron
 import univention.admin.filter
 import univention.admin.handlers
 import univention.admin.localization
-import univention.admin.cron
-
+import univention.admin.syntax
 import univention.debug as ud
-
+from univention.admin.layout import Group, Tab
 from univention.admin.policy import (
-    register_policy_mapping, policy_object_tab,
-    requiredObjectClassesProperty, prohibitedObjectClassesProperty,
-    fixedAttributesProperty, emptyAttributesProperty, ldapFilterProperty,
+    emptyAttributesProperty, fixedAttributesProperty, ldapFilterProperty, policy_object_tab,
+    prohibitedObjectClassesProperty, register_policy_mapping, requiredObjectClassesProperty,
 )
 
 

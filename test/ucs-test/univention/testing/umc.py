@@ -35,10 +35,10 @@
 
 import pprint
 import sys
+from html.parser import HTMLParser
 from typing import Any, Iterable, Optional, Tuple  # noqa: F401
 
 import requests
-from html.parser import HTMLParser
 
 from univention.config_registry import ConfigRegistry
 from univention.lib.umc import Client as _Client

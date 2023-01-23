@@ -38,9 +38,11 @@ from __future__ import absolute_import, annotations
 
 from typing import Dict, List
 
-import listener
 import univention.debug as ud
 from univention.config_registry import ConfigRegistry
+
+import listener
+
 
 name = 'nscd_update'
 description = 'Invalidate the NSCD group cache whenever a group membership has been modified.'

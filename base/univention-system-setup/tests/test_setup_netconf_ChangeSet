@@ -8,6 +8,7 @@ import unittest
 
 import univention.management.console.modules
 
+
 try:
     univention.management.console.modules.__path__.insert(0, os.path.join(os.path.dirname(__file__), os.path.pardir, 'umc/python'))
 except AttributeError:

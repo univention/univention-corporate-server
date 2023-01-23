@@ -35,32 +35,32 @@
 # <https://www.gnu.org/licenses/>.
 #
 
+import gzip
 import os
 import re
-import subprocess
 import shutil
+import subprocess
+import tarfile
 from argparse import Action
-from tempfile import NamedTemporaryFile
+from datetime import date
 from glob import glob
 from json import dumps
-from datetime import date
-import gzip
-import tarfile
-from tempfile import mkdtemp
+from tempfile import NamedTemporaryFile, mkdtemp
 
-from six.moves.configparser import ConfigParser, NoOptionError, NoSectionError, DuplicateSectionError
+from six.moves.configparser import ConfigParser, DuplicateSectionError, NoOptionError, NoSectionError
 from six.moves.urllib_parse import urljoin
 
-from univention.config_registry.interfaces import Interfaces
-
+from univention.appcenter.actions import StoreAppAction, UniventionAppAction, get_action
 from univention.appcenter.app import App, AppFileAttribute, CaseSensitiveConfigParser, LooseVersion
 from univention.appcenter.app_cache import Apps, default_server
-from univention.appcenter.actions import UniventionAppAction, StoreAppAction, get_action
 from univention.appcenter.exceptions import LocalAppCenterError
-from univention.appcenter.utils import get_sha256_from_file, get_md5_from_file, mkdir, urlopen, rmdir, underscore, camelcase, call_process, container_mode
-from univention.appcenter.ucr import ucr_save, ucr_get, ucr_instance
-from univention.appcenter.log import get_logfile_logger
 from univention.appcenter.ini_parser import read_ini_file
+from univention.appcenter.log import get_logfile_logger
+from univention.appcenter.ucr import ucr_get, ucr_instance, ucr_save
+from univention.appcenter.utils import (
+    call_process, camelcase, container_mode, get_md5_from_file, get_sha256_from_file, mkdir, rmdir, underscore, urlopen,
+)
+from univention.config_registry.interfaces import Interfaces
 
 
 class StoreAttrActions(Action):

@@ -7,14 +7,13 @@ import time
 from typing import Any, Dict, Iterator, List, Optional, Union  # noqa: F401
 
 import ldap
+import ldb
+from samba.auth import system_session
+from samba.param import LoadParm
+from samba.samdb import SamDB
 
 from univention import config_registry
 from univention.testing.utils import package_installed
-
-import ldb
-from samba.auth import system_session
-from samba.samdb import SamDB
-from samba.param import LoadParm
 
 
 class DRSReplicationFailed(Exception):

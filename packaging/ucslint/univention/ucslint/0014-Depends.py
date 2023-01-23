@@ -38,9 +38,9 @@ from os.path import curdir, exists, join, splitext
 from typing import Iterable, Iterator, Set  # noqa: F401
 
 from apt import Cache  # type: ignore
+from apt_pkg import Version  # noqa: F401
 
 import univention.ucslint.base as uub
-from apt_pkg import Version  # noqa: F401
 
 
 class UniventionPackageCheck(uub.UniventionPackageCheckDebian):

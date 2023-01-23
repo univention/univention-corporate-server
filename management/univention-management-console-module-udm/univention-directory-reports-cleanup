@@ -38,6 +38,7 @@ import time
 
 import univention.config_registry as ucr
 
+
 configRegistry = ucr.ConfigRegistry()
 configRegistry.load()
 

@@ -30,9 +30,11 @@
 # <https://www.gnu.org/licenses/>.
 
 from __future__ import absolute_import, unicode_literals
-from .base import BaseModuleTV, BaseObjectTV
-from .utils import UDebug as ud, ConnectionConfig
+
 from typing import Any, Dict, List, Optional, Text, Tuple, Type
+
+from .base import BaseModuleTV, BaseObjectTV
+from .utils import ConnectionConfig, UDebug as ud
 
 
 class UDM(object):

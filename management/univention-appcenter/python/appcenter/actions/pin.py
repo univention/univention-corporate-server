@@ -35,7 +35,7 @@
 # <https://www.gnu.org/licenses/>.
 #
 
-from univention.appcenter.actions import UniventionAppAction, StoreAppAction
+from univention.appcenter.actions import StoreAppAction, UniventionAppAction
 from univention.appcenter.ucr import ucr_save
 
 

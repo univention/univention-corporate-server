@@ -35,23 +35,24 @@
 # <https://www.gnu.org/licenses/>.
 #
 
-import sys
-from glob import glob
-import os.path
-from argparse import ArgumentParser, Action, Namespace
 import logging
+import os.path
 import ssl
+import sys
+from argparse import Action, ArgumentParser, Namespace
 from functools import wraps
+from glob import glob
 from typing import TYPE_CHECKING, Any, Iterator, Mapping, Optional, Sequence, Tuple  # noqa: F401
 
-from six.moves import urllib_error, http_client
-from six import string_types
+from six import string_types, with_metaclass
+from six.moves import http_client, urllib_error
 
 from univention.appcenter.app_cache import Apps
-from univention.appcenter.log import get_base_logger
-from univention.appcenter.utils import underscore, call_process, verbose_http_error, send_information
 from univention.appcenter.exceptions import Abort, NetworkError
-from six import with_metaclass
+from univention.appcenter.log import get_base_logger
+from univention.appcenter.utils import call_process, send_information, underscore, verbose_http_error
+
+
 if TYPE_CHECKING:
     from univention.appcenter.app import App  # noqa: F401
 

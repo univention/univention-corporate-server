@@ -32,12 +32,14 @@
 
 """|UDM| for |UDM| syntax extensions"""
 
-from univention.admin.layout import Tab, Group
+import apt
+
 import univention.admin.filter
 import univention.admin.handlers
-import univention.admin.password
 import univention.admin.localization
-import apt
+import univention.admin.password
+from univention.admin.layout import Group, Tab
+
 
 translation = univention.admin.localization.translation('univention.admin.handlers.settings')
 _ = translation.translate

@@ -4,8 +4,8 @@ from copy import deepcopy
 
 import pytest
 
-from univention.config_registry import main  # noqa: E402
 import univention.config_registry.frontend as ucrfe
+from univention.config_registry import main  # noqa: E402
 
 
 @pytest.fixture(autouse=True)

@@ -34,11 +34,12 @@
 
 import ldap
 
-from univention.admin.layout import Tab, Group
 import univention.admin.filter
 import univention.admin.handlers
-import univention.admin.password
 import univention.admin.localization
+import univention.admin.password
+from univention.admin.layout import Group, Tab
+
 
 translation = univention.admin.localization.translation('univention.admin.handlers.settings')
 _ = translation.translate

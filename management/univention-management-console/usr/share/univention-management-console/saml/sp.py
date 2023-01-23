@@ -2,17 +2,18 @@
 import glob
 import os.path
 from tempfile import NamedTemporaryFile
-from cryptography import x509
-from cryptography.hazmat.primitives.serialization import load_pem_private_key
-from cryptography.hazmat.primitives.serialization import Encoding
-from cryptography.hazmat.backends import default_backend
 
-from saml2 import SamlBase, BINDING_HTTP_REDIRECT, BINDING_HTTP_POST
-from saml2.saml import NAME_FORMAT_URI, NAMEID_FORMAT_TRANSIENT, NAMEID_FORMAT_PERSISTENT
 import saml2.attributemaps
+from cryptography import x509
+from cryptography.hazmat.backends import default_backend
+from cryptography.hazmat.primitives.serialization import Encoding, load_pem_private_key
+from saml2 import BINDING_HTTP_POST, BINDING_HTTP_REDIRECT, SamlBase
+from saml2.saml import NAME_FORMAT_URI, NAMEID_FORMAT_PERSISTENT, NAMEID_FORMAT_TRANSIENT
 
-from univention.config_registry.interfaces import Interfaces
 from univention.config_registry import ConfigRegistry
+from univention.config_registry.interfaces import Interfaces
+
+
 ucr = ConfigRegistry()
 ucr.load()
 

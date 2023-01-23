@@ -16,6 +16,7 @@ from univention.config_registry import handler_set as ucr_set
 from univention.s4connector import s4
 from univention.testing import ldap_glue, utils
 
+
 configRegistry = univention.config_registry.ConfigRegistry()
 configRegistry.load()
 

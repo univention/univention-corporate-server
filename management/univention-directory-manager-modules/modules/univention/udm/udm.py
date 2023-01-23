@@ -104,8 +104,9 @@ The LDAP connection to use must be supplies as an argument to the UDM module fac
 """
 
 from __future__ import absolute_import, unicode_literals
-from operator import itemgetter
+
 from fnmatch import fnmatch
+from operator import itemgetter
 
 from .exceptions import ApiVersionMustNotChange, ApiVersionNotSupported, NoApiVersionSet, NoObject
 from .plugins import Plugins

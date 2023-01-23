@@ -8,42 +8,40 @@
 ## tags:
 ##  - skip_admember
 
-import ldap
-import pytest
-import subprocess
+import binascii
+import hashlib
 import os
 import struct
-import binascii
-import Crypto
-import hashlib
+import subprocess
 from tempfile import NamedTemporaryFile
+
+import Crypto
+import ldap
+import pytest
+from samba import drs_utils
+from samba.credentials import DONT_USE_KERBEROS, Credentials
+from samba.dcerpc import drsblobs, drsuapi, misc, nbt, security
+from samba.ndr import ndr_unpack
+from samba.net import Net
+from samba.param import LoadParm
+
+import univention.config_registry
+import univention.testing.connector_common as tcommon
+import univention.testing.strings as tstrings
+from univention.connector.ad import kerberosAuthenticationFailed, netbiosDomainnameNotFound
+from univention.connector.ad.password import calculate_krb5keys, decrypt, decrypt_history
+from univention.testing.connector_common import NormalUser, create_udm_user, delete_con_user, to_unicode
 
 import adconnector
 from adconnector import connector_running_on_this_host, connector_setup
-from univention.connector.ad import kerberosAuthenticationFailed, netbiosDomainnameNotFound
-from univention.connector.ad.password import decrypt, decrypt_history, calculate_krb5keys
 
-import univention.testing.connector_common as tcommon
-from univention.testing.connector_common import delete_con_user
-from univention.testing.connector_common import (
-    create_udm_user, to_unicode, NormalUser,
-)
-
-import univention.config_registry
-import univention.testing.strings as tstrings
-
-from samba.dcerpc import drsuapi, misc, security, drsblobs, nbt
-from samba.ndr import ndr_unpack
-from samba.param import LoadParm
-from samba.net import Net
-from samba.credentials import Credentials, DONT_USE_KERBEROS
-from samba import drs_utils
 
 # This is something weird. The `adconnector.ADConnection()` MUST be
 # instantiated, before `UCSTestUDM` is imported.
 AD = adconnector.ADConnection()
 
 from univention.testing.udm import UCSTestUDM, UCSTestUDM_ModifyUDMObjectFailed  # noqa: E402
+
 
 configRegistry = univention.config_registry.ConfigRegistry()
 configRegistry.load()

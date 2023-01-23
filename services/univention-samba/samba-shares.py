@@ -45,10 +45,12 @@ from six.moves.urllib_parse import quote
 
 import univention.debug as ud
 import univention.lib.listenerSharePath
-from listener import SetUID, configRegistry, run
 # for the ucr commit below in postrun we need ucr configHandlers
 from univention.config_registry import configHandlers
 from univention.config_registry.interfaces import Interfaces
+
+from listener import SetUID, configRegistry, run
+
 
 ucr_handlers = configHandlers()
 ucr_handlers.load()

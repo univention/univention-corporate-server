@@ -37,15 +37,16 @@ import re
 from base64 import b64encode
 from copy import copy
 
-from ldap.dn import escape_dn_chars
 from ldap import SERVER_DOWN
+from ldap.dn import escape_dn_chars
 from six.moves.urllib_parse import urlsplit
 
-from univention.config_registry.interfaces import Interfaces
 import univention.admin.uexceptions as udm_errors
-
-from univention.appcenter.log import log_to_logfile, get_base_logger
-from univention.appcenter.udm import create_object_if_not_exists, remove_object_if_exists, get_machine_connection, modify_object, init_object, position
+from univention.appcenter.log import get_base_logger, log_to_logfile
+from univention.appcenter.udm import (
+    create_object_if_not_exists, get_machine_connection, init_object, modify_object, position, remove_object_if_exists,
+)
+from univention.config_registry.interfaces import Interfaces
 
 
 log_to_logfile()

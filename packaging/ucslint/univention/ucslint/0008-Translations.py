@@ -34,8 +34,8 @@ import re
 from typing import Iterable
 
 import univention.ucslint.base as uub
-from univention.ucslint.python import MATCHED_LENIENT as MATCHED_STRING
-from univention.ucslint.python import _or, python_files
+from univention.ucslint.python import MATCHED_LENIENT as MATCHED_STRING, _or, python_files
+
 
 # 1) check if translation strings are correct; detect something like  _('foo %s bar' % var)  ==> _('foo %s bar') % var
 # 2) check if all translation strings are translated in de.po file

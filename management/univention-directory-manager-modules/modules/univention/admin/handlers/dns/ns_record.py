@@ -34,12 +34,13 @@
 
 import six
 
-from univention.admin.layout import Tab, Group
 import univention.admin.filter
 import univention.admin.handlers
 import univention.admin.handlers.dns.forward_zone
 import univention.admin.localization
 from univention.admin.handlers.dns import ARPA_IP4
+from univention.admin.layout import Group, Tab
+
 
 translation = univention.admin.localization.translation('univention.admin.handlers.dns')
 _ = translation.translate

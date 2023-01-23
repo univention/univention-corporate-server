@@ -34,7 +34,9 @@
 # <https://www.gnu.org/licenses/>.
 
 import subprocess
+
 import univention.debug as ud
+
 
 relevant_names = ('Administrator', 'Domain Admins', 'Windows Hosts')
 

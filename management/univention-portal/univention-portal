@@ -32,20 +32,19 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-import os
-import json
-import datetime
 import ast
+import datetime
 import inspect
+import json
+import os
 from textwrap import dedent
 from typing import Dict, Union
 
-from univention.portal import get_all_dynamic_classes, get_dynamic_classes
-from univention.portal.factory import make_portal
-from univention.portal.log import setup_logger, get_logger
-from univention.portal import config
-
 import click
+
+from univention.portal import config, get_all_dynamic_classes, get_dynamic_classes
+from univention.portal.factory import make_portal
+from univention.portal.log import get_logger, setup_logger
 
 
 portals_json = "/usr/share/univention-portal/portals.json"
@@ -494,7 +493,7 @@ def pull(name: str):
 
 
 def get_obj(name: str) -> Union[str, None]:
-    from univention.udm import UDM, NoObject, ConnectionError
+    from univention.udm import UDM, ConnectionError, NoObject
 
     try:
         udm = UDM.machine().version(1)

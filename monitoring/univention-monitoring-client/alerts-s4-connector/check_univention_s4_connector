@@ -39,6 +39,7 @@ import subprocess
 from univention.config_registry import ucr
 from univention.monitoring import Alert
 
+
 RE_REJECT = re.compile(r'^ *[1-9]+: *(S4|UCS) DN:.*')
 
 

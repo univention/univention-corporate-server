@@ -18,10 +18,12 @@ from univention.testing.connector_common import (
 import adconnector
 from adconnector import connector_setup
 
+
 # This is something weird. The `adconnector.ADConnection()` MUST be
 # instantiated, before `UCSTestUDM` is imported.
 AD = adconnector.ADConnection()
 from univention.testing.udm import UCSTestUDM  # noqa: E402
+
 
 MAPPINGS = (
     # ucs_attribute, con_attribute, con_other_attribute

@@ -31,10 +31,11 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-import xml.etree.ElementTree as ET
 import math
-import subprocess
 import os
+import subprocess
+import xml.etree.ElementTree as ET
+
 
 STEPS = 48
 THEME = 'light'

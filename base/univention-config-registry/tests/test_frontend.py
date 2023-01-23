@@ -9,6 +9,7 @@ import pytest
 
 import univention.config_registry.frontend as ucrfe
 
+
 if sys.version_info >= (3,):
     from importlib import reload
 

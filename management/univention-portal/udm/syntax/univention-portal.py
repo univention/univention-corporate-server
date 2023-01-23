@@ -31,7 +31,8 @@
 # <https://www.gnu.org/licenses/>.
 
 import univention.admin.localization
-from univention.admin.syntax import select, UDM_Objects, translationTuple, string, languageCode
+from univention.admin.syntax import UDM_Objects, languageCode, select, string, translationTuple
+
 
 translation = univention.admin.localization.translation('univention.admin.handlers.portals.portal')
 _ = translation.translate

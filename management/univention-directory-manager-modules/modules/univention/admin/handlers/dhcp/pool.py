@@ -35,13 +35,14 @@
 import copy
 import ipaddress
 
-from univention.admin.layout import Tab, Group
 import univention.admin.filter
 import univention.admin.handlers
 import univention.admin.localization
 import univention.admin.uexceptions
+from univention.admin.layout import Group, Tab
 
-from .__common import DHCPBase, rangeUnmap, rangeMap, add_dhcp_options
+from .__common import DHCPBase, add_dhcp_options, rangeMap, rangeUnmap
+
 
 translation = univention.admin.localization.translation('univention.admin.handlers.dhcp')
 _ = translation.translate

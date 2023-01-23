@@ -34,9 +34,12 @@
 # <https://www.gnu.org/licenses/>.
 
 from __future__ import print_function
+
 import sys
+
 import univention.config_registry
-from univention.lib.policy_result import policy_result, PolicyResultFailed
+from univention.lib.policy_result import PolicyResultFailed, policy_result
+
 
 configRegistry = univention.config_registry.ConfigRegistry()
 configRegistry.load()

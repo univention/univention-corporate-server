@@ -33,15 +33,17 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-import os
 import grp
+import imaplib
+import os
+import re
+import shutil
 import stat
 import subprocess
-import re
-import traceback
-import imaplib
-import shutil
 import tempfile
+import traceback
+
+
 try:
     from typing import Any, Dict, List, Optional, Tuple  # noqa: F401
 except ImportError:

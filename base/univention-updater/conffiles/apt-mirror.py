@@ -31,6 +31,7 @@
 import os
 import shutil
 
+
 CUR = '/etc/apt/mirror.list'
 BAK = CUR + '.old'
 

@@ -35,9 +35,10 @@ import uuid
 
 from univention.lib.i18n import Translation
 from univention.management.console.base import Base
+from univention.management.console.log import MODULE
 from univention.management.console.modules.decorators import sanitize
 from univention.management.console.modules.sanitizers import StringSanitizer
-from univention.management.console.log import MODULE
+
 
 _ = Translation('PACKAGENAME').translate
 

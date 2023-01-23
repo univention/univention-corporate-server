@@ -35,23 +35,24 @@
 
 from __future__ import print_function
 
-import os
-import sys
-import copy
 import codecs
-import tempfile
+import copy
+import os
 import subprocess
-
-from univention.directory.reports.error import ReportError
-from univention.directory.reports.parser import Parser
-from univention.directory.reports.output import Output
-from univention.directory.reports.interpreter import Interpreter
-from univention.directory.reports import admin
+import sys
+import tempfile
 
 import six
 import trml2pdf
 
+from univention.directory.reports import admin
+from univention.directory.reports.error import ReportError
+from univention.directory.reports.interpreter import Interpreter
+from univention.directory.reports.output import Output
+from univention.directory.reports.parser import Parser
 from univention.lib.i18n import Translation
+
+
 _ = Translation('univention-directory-reports').translate
 
 

@@ -33,8 +33,9 @@
 
 import re
 import sys
-import six
 from typing import List, Tuple, Union  # noqa: F401
+
+import six
 
 
 class UCS_Version(object):

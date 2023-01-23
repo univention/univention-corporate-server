@@ -18,6 +18,7 @@ import univention.testing.udm as udm_test
 from univention.testing import utils
 from univention.testing.udm_extensions import call_cmd
 
+
 with ucr_test.UCSTestConfigRegistry() as ucr:
     domain = ucr.get("domainname")
     basedn = ucr.get("ldap/base")

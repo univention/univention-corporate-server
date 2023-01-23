@@ -18,6 +18,7 @@ import univention.testing.ucr as ucr_test
 import univention.testing.udm as udm_test
 from univention.testing import utils
 
+
 UCR = ucr_test.UCSTestConfigRegistry()
 UCR.load()
 

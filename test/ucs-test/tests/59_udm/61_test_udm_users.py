@@ -25,6 +25,7 @@ from univention.admin.uldap import position
 from univention.testing import utils
 from univention.testing.umc import Client
 
+
 CWD = os.path.dirname(os.path.abspath(__file__))
 
 

@@ -36,8 +36,9 @@ from typing import Any, Dict, Tuple  # noqa: F401
 
 import univention.admin.localization
 import univention.admin.syntax
-from univention.admin.mapping import ListToString, mapping as MappingType  # noqa: F401
 from univention.admin.layout import Tab
+from univention.admin.mapping import ListToString, mapping as MappingType  # noqa: F401
+
 
 translation = univention.admin.localization.translation('univention.admin')
 _ = translation.translate

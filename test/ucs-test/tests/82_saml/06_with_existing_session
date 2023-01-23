@@ -12,6 +12,7 @@ from univention.testing import utils
 
 import samltest
 
+
 udm_modules.update()
 
 

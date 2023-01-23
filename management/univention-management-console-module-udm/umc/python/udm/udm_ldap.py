@@ -34,38 +34,36 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-import sys
 import copy
-import re
-import threading
-import traceback
-import gc
 import functools
+import gc
 import inspect
 import locale
+import re
+import sys
+import threading
+import traceback
+from functools import reduce
 from json import load
 
 import six
-
-from univention.management.console import Translation
-from univention.management.console.protocol.definitions import BAD_REQUEST_UNAUTH
-from univention.management.console.modules import UMC_Error
-from univention.management.console.ldap import user_connection, get_user_connection
-from univention.management.console.config import ucr
-from univention.management.console.log import MODULE
+from ldap import NO_SUCH_OBJECT, LDAPError
+from ldap.dn import explode_dn
+from ldap.filter import filter_format
 
 import univention.admin as udm
 import univention.admin.layout as udm_layout
+import univention.admin.mapping as udm_mapping
 import univention.admin.modules as udm_modules
 import univention.admin.objects as udm_objects
 import univention.admin.syntax as udm_syntax
 import univention.admin.uexceptions as udm_errors
-import univention.admin.mapping as udm_mapping
-
-from ldap import LDAPError, NO_SUCH_OBJECT
-from ldap.filter import filter_format
-from ldap.dn import explode_dn
-from functools import reduce
+from univention.management.console import Translation
+from univention.management.console.config import ucr
+from univention.management.console.ldap import get_user_connection, user_connection
+from univention.management.console.log import MODULE
+from univention.management.console.modules import UMC_Error
+from univention.management.console.protocol.definitions import BAD_REQUEST_UNAUTH
 
 
 _ = Translation('univention-management-console-module-udm').translate

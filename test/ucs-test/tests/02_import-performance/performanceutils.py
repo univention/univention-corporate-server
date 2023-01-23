@@ -11,6 +11,7 @@ import univention.testing.udm as udm_test
 import univention.uldap
 from ucsschool.importer.mass_import import user_import
 
+
 CONNECTOR_WAIT_INTERVAL = 12
 CONNECTOR_WAIT_SLEEP = 5
 CONNECTOR_WAIT_TIME = CONNECTOR_WAIT_SLEEP * CONNECTOR_WAIT_INTERVAL

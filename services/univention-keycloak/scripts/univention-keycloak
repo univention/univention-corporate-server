@@ -49,6 +49,7 @@ from keycloak import KeycloakAdmin
 from keycloak.exceptions import KeycloakError, KeycloakGetError, raise_error_from_response
 from ldap.dn import explode_rdn
 
+
 try:
     from univention.config_registry import ucr
 except ModuleNotFoundError:

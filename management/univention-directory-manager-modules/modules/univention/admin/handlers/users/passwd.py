@@ -33,13 +33,14 @@
 """|UDM| module for password part of the user"""
 
 import univention.admin
-from univention.admin.layout import Tab
 import univention.admin.filter
 import univention.admin.handlers
+import univention.admin.handlers.users.user
 import univention.admin.localization
 import univention.admin.uexceptions
 import univention.admin.uldap
-import univention.admin.handlers.users.user
+from univention.admin.layout import Tab
+
 
 translation = univention.admin.localization.translation('univention.admin.handlers.users')
 _ = translation.translate

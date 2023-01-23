@@ -7,10 +7,10 @@
 
 import itertools
 import time
+from http.server import HTTPServer, SimpleHTTPRequestHandler
 from multiprocessing import Process
 
 import pycurl
-from http.server import HTTPServer, SimpleHTTPRequestHandler
 
 import univention.testing.strings as uts
 import univention.testing.ucr as ucr_test

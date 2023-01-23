@@ -35,9 +35,11 @@
 # <https://www.gnu.org/licenses/>.
 
 from __future__ import print_function
-import univention.debug2 as ud
-import sqlite3
+
 import base64
+import sqlite3
+
+import univention.debug2 as ud
 
 
 def _encode_base64(val):

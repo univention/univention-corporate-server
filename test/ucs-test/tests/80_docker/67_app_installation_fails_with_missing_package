@@ -8,9 +8,9 @@
 import pytest
 
 from dockertest import (
-    App, Appcenter, UCSTest_DockerApp_InstallationFailed, get_app_name, get_app_version,
-    get_docker_appbox_ucs,
+    App, Appcenter, UCSTest_DockerApp_InstallationFailed, get_app_name, get_app_version, get_docker_appbox_ucs,
 )
+
 
 if __name__ == '__main__':
 

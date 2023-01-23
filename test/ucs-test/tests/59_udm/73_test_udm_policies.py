@@ -11,6 +11,7 @@ import pytest
 from univention.lib.policy_result import policy_result
 from univention.testing import strings as uts
 
+
 NET = '192.168.2.0'
 router = '192.168.2.1'
 router2 = '192.168.2.254'

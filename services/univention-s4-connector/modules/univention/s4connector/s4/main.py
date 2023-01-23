@@ -36,21 +36,21 @@
 
 
 from __future__ import print_function
+
+import contextlib
+import fcntl
 import os
 import signal
 import sys
 import time
-from argparse import ArgumentParser
-import fcntl
 import traceback
-import contextlib
+from argparse import ArgumentParser
 
 import ldap
 
 import univention
 import univention.s4connector
 import univention.s4connector.s4
-
 from univention.config_registry import ConfigRegistry
 
 

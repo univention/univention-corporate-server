@@ -33,14 +33,13 @@
 
 """|UDM| module for |UMC| operation set objects"""
 
-from univention.admin.layout import Tab, Group
-import univention.admin.syntax as udm_syntax
-import univention.admin.mapping as udm_mapping
-
-from univention.admin.localization import translation
-from univention.admin.handlers import simpleLdap
-
 import univention.admin
+import univention.admin.mapping as udm_mapping
+import univention.admin.syntax as udm_syntax
+from univention.admin.handlers import simpleLdap
+from univention.admin.layout import Group, Tab
+from univention.admin.localization import translation
+
 
 _ = translation('univention.admin.handlers.settings').translate
 

@@ -32,6 +32,7 @@
 # <https://www.gnu.org/licenses/>.
 from setuptools import setup
 
+
 VER = open('debian/changelog').readline().split()[1][1:-1]
 
 setup(

@@ -37,13 +37,13 @@
 
 import re
 
-from univention.appcenter.log import LogCatcher
-from univention.appcenter.utils import call_process, get_local_fqdn
-from univention.appcenter.udm import search_objects
-from univention.appcenter.app_cache import Apps
-from univention.appcenter.actions.credentials import CredentialsAction
 from univention.appcenter.actions import get_action
+from univention.appcenter.actions.credentials import CredentialsAction
+from univention.appcenter.app_cache import Apps
+from univention.appcenter.log import LogCatcher
 from univention.appcenter.ucr import ucr_get, ucr_is_false
+from univention.appcenter.udm import search_objects
+from univention.appcenter.utils import call_process, get_local_fqdn
 
 
 class Domain(CredentialsAction):

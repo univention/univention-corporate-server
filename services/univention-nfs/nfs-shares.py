@@ -42,10 +42,12 @@ from typing import Dict, List
 
 from six.moves import cPickle as pickle
 
-import listener
 import univention.debug as ud
 import univention.lib.listenerSharePath
 from univention.config_registry.interfaces import Interfaces
+
+import listener
+
 
 hostname = listener.configRegistry['hostname']
 domainname = listener.configRegistry['domainname']

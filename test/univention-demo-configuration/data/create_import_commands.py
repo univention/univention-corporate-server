@@ -38,6 +38,7 @@ import csv
 from os.path import dirname, join
 from typing import Dict
 
+
 CWD = dirname(__file__)
 
 LDAPBASE = '$ldap_base'

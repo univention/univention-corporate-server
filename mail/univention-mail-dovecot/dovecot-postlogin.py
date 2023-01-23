@@ -37,6 +37,7 @@ import grp
 import os
 import sys
 
+
 if "SYSTEM_GROUPS_USER" in os.environ:
     user = os.environ["SYSTEM_GROUPS_USER"]
     groups = (g.gr_name for g in grp.getgrall() if user in g.gr_mem)

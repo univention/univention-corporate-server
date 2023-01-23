@@ -34,6 +34,7 @@
 
 from cloudinit.settings import PER_INSTANCE
 
+
 frequency = PER_INSTANCE
 
 

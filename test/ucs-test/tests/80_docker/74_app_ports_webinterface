@@ -9,6 +9,7 @@ from univention.config_registry import ConfigRegistry
 
 from dockertest import Appcenter, get_app_name, get_app_version, tiny_app
 
+
 if __name__ == '__main__':
     with Appcenter() as appcenter:
         webinterface_port_http = '8080'

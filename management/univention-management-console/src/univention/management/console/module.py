@@ -122,14 +122,15 @@ UMC build tools.
 
 import copy
 import os
-import sys
 import re
-import xml.parsers.expat
+import sys
 import xml.etree.cElementTree as ET
+import xml.parsers.expat
 
-from .tools import JSON_Object, JSON_List
-from .log import RESOURCES
 from .config import ucr
+from .log import RESOURCES
+from .tools import JSON_List, JSON_Object
+
 
 KEYWORD_PATTERN = re.compile(r'\s*,\s*')
 

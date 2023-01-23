@@ -35,12 +35,14 @@
 # <https://www.gnu.org/licenses/>.
 #
 
+from copy import deepcopy
+
 import six
 
 from univention.config_registry import ConfigRegistry
 from univention.config_registry.frontend import ucr_update
 from univention.config_registry.handler import run_filter
-from copy import deepcopy
+
 
 _UCR = ConfigRegistry()
 _UCR.load()

@@ -15,6 +15,7 @@ from ldap import LDAPError
 
 from univention.uldap import getMachineConnection
 
+
 failed = False
 run_time = 10.0
 

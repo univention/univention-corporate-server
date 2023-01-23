@@ -36,13 +36,13 @@
 
 from __future__ import print_function
 
-import sys
-from argparse import ArgumentParser
 import multiprocessing
 import os
 import signal
 import socket
+import sys
 import threading
+from argparse import ArgumentParser
 
 import ldap.filter
 

@@ -39,8 +39,10 @@ import os.path
 import subprocess
 from typing import Dict, List
 
-import listener
 from univention.config_registry import ConfigRegistry, handler_set, handler_unset
+
+import listener
+
 
 description = 'Manage ucs/server/saml-idp-server/* variables'
 filter = '(|(objectClass=univentionDomainController)(objectClass=univentionMemberServer))'

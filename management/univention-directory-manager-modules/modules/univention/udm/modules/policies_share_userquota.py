@@ -32,6 +32,7 @@
 """Module and object specific for "policies/share_userquota" UDM module."""
 
 from __future__ import absolute_import, unicode_literals
+
 from ..encoders import StringCaseInsensitiveResultUpperBooleanPropertyEncoder
 from .generic import GenericModule, GenericObject, GenericObjectProperties
 

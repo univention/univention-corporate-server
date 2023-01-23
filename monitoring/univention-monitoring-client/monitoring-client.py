@@ -34,16 +34,17 @@
 # <https://www.gnu.org/licenses/>.
 
 import os
-import yaml
 from urllib.parse import quote
 
 import requests
+import yaml
+
+import univention.debug as ud
+from univention.config_registry import ucr
+from univention.listener.handler import ListenerModuleHandler
 
 from listener import SetUID
 
-import univention.debug as ud
-from univention.listener.handler import ListenerModuleHandler
-from univention.config_registry import ucr
 
 name = 'monitoring-client'
 

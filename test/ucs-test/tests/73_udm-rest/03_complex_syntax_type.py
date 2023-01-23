@@ -7,18 +7,19 @@
 ##   - univention-directory-manager-rest
 ## bugs: [53513, 50648]
 
-import pytest
 import base64
 import bz2
 import subprocess
 import time
+
+import pytest
 import requests
 from requests.auth import HTTPBasicAuth
 
-from univention.testing.udm_extensions import get_extension_filename, get_package_name, get_package_version
 from univention.testing.strings import random_name, random_ucs_version, random_version
-from univention.testing.utils import verify_ldap_object, wait_for_replication_and_postrun, UCSTestDomainAdminCredentials
 from univention.testing.udm import UCSTestUDM
+from univention.testing.udm_extensions import get_extension_filename, get_package_name, get_package_version
+from univention.testing.utils import UCSTestDomainAdminCredentials, verify_ldap_object, wait_for_replication_and_postrun
 
 
 def get_openapi_schema():

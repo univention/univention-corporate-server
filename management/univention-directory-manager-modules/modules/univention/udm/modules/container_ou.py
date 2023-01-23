@@ -32,6 +32,7 @@
 """Module and object specific for "container/ou" UDM module."""
 
 from __future__ import absolute_import, unicode_literals
+
 from ..encoders import dn_property_encoder_for
 from .container_cn import ContainerCnModule, ContainerCnObject, ContainerCnObjectProperties
 

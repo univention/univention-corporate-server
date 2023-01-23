@@ -34,9 +34,8 @@
 
 import time
 
-from univentionunittests import import_module
-
 import pytest
+from univentionunittests import import_module
 
 
 class UMCTestRequest(object):

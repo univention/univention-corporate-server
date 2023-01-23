@@ -33,17 +33,17 @@
 
 """passwd part for the command line interface"""
 
-import os
 import getopt
+import os
 
 from ldap.filter import filter_format
 
-import univention.debug as ud
-import univention.config_registry
-import univention.admin.uldap
+import univention.admin.handlers.users.user
 import univention.admin.modules
 import univention.admin.objects
-import univention.admin.handlers.users.user
+import univention.admin.uldap
+import univention.config_registry
+import univention.debug as ud
 
 
 def doit(arglist):

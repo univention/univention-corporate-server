@@ -29,6 +29,7 @@ import pexpect
 import univention.config_registry
 import univention.testing.udm as udm_test
 
+
 ucr = univention.config_registry.ConfigRegistry()
 ucr.load()
 

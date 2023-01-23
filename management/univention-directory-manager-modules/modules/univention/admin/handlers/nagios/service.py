@@ -34,20 +34,20 @@
 """|UDM| module for nagios services"""
 
 import re
+from typing import List  # noqa: F401
+
 import ldap
 from ldap.filter import filter_format
 
-from univention.admin.layout import Tab, Group
 import univention.admin.filter
 import univention.admin.handlers
-import univention.admin.syntax
 import univention.admin.localization
+import univention.admin.syntax
 import univention.admin.uexceptions
-from univention.admin import configRegistry
-
 import univention.debug as ud
+from univention.admin import configRegistry
+from univention.admin.layout import Group, Tab
 
-from typing import List  # noqa: F401
 
 translation = univention.admin.localization.translation('univention.admin.handlers.nagios')
 _ = translation.translate

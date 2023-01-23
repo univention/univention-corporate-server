@@ -57,11 +57,8 @@ from univention.management.console.log import MODULE
 from univention.management.console.modules import Base, UMC_Error
 from univention.management.console.modules.decorators import sanitize, simple_response
 from univention.management.console.modules.mixins import ProgressMixin
-from univention.management.console.modules.sanitizers import (
-    IntegerSanitizer,
-    PatternSanitizer,
-    StringSanitizer,
-)
+from univention.management.console.modules.sanitizers import IntegerSanitizer, PatternSanitizer, StringSanitizer
+
 
 # FIXME: this triggers imports from univention-lib during build time test execution.
 # This in effect imports univention-ldap which is not an explicit dependency for
@@ -76,14 +73,11 @@ except ImportError as exc:
 
 from univention.management.console.modules.setup import network, util
 from univention.management.console.modules.setup.checks.ldap import check_if_uid_is_available
-from univention.management.console.modules.setup.checks.repositories import (
-    get_unreachable_repository_servers,
-)
+from univention.management.console.modules.setup.checks.repositories import get_unreachable_repository_servers
 from univention.management.console.modules.setup.checks.univention_join import (
-    check_for_school_domain,
-    receive_domaincontroller_master_information,
-    set_role_and_check_if_join_will_work,
+    check_for_school_domain, receive_domaincontroller_master_information, set_role_and_check_if_join_will_work,
 )
+
 
 ucr = univention.config_registry.ConfigRegistry()
 ucr.load()

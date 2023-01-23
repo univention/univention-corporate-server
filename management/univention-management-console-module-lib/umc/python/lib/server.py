@@ -33,19 +33,19 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-from univention.management.console.log import MODULE
-from univention.management.console.modules.decorators import simple_response, sanitize
-from univention.management.console.modules.sanitizers import StringSanitizer
-from univention.management.console.error import ServerError
-
-from univention.lib.i18n import Translation
+import locale
+import subprocess
+import time
 
 import notifier.threads
-
 import six
-import time
-import subprocess
-import locale
+
+from univention.lib.i18n import Translation
+from univention.management.console.error import ServerError
+from univention.management.console.log import MODULE
+from univention.management.console.modules.decorators import sanitize, simple_response
+from univention.management.console.modules.sanitizers import StringSanitizer
+
 
 _ = Translation('univention-management-console-module-lib').translate
 

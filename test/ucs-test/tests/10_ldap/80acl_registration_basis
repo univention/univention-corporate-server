@@ -21,6 +21,7 @@ from univention.testing.debian_package import DebianPackage
 from univention.testing.udm import UCSTestUDM
 from univention.testing.utils import fail
 
+
 ucr = ConfigRegistry()
 ucr.load()
 

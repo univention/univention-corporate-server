@@ -35,19 +35,20 @@
 # <https://www.gnu.org/licenses/>.
 
 from __future__ import print_function
-import sys
-from argparse import ArgumentParser
-from univention.config_registry import ConfigRegistry
 
 import sqlite3
+import sys
+from argparse import ArgumentParser
 
 import ldb
-from samba.samdb import SamDB
-from samba.param import LoadParm
 from samba.auth import system_session
 from samba.credentials import Credentials
 from samba.dcerpc import misc
 from samba.ndr import ndr_unpack
+from samba.param import LoadParm
+from samba.samdb import SamDB
+
+from univention.config_registry import ConfigRegistry
 
 
 class GuidNotFound(BaseException):

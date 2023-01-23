@@ -37,10 +37,12 @@ from typing import Dict, Iterable, List
 
 from six.moves import cPickle as pickle
 
-import listener
 import univention.config_registry
 import univention.debug as ud
 import univention.uldap
+
+import listener
+
 
 description = 'write user-configuration to fetchmailrc'
 filter = '(objectClass=univentionFetchmail)'

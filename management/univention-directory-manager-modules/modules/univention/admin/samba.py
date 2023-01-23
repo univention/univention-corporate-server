@@ -32,8 +32,9 @@
 """|UDM| samba related code"""
 
 import string
-import six
 from collections import OrderedDict
+
+import six
 
 
 class acctFlags(object):

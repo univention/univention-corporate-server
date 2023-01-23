@@ -34,13 +34,13 @@
 
 import ldap
 
-from univention.admin.layout import Tab, Group
+import univention.admin.allocators
 import univention.admin.filter
 import univention.admin.handlers
-import univention.admin.allocators
 import univention.admin.localization
-
 import univention.debug as ud
+from univention.admin.layout import Group, Tab
+
 
 translation = univention.admin.localization.translation('univention.admin.handlers.mail')
 _ = translation.translate

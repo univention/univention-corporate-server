@@ -7,14 +7,15 @@ import socket
 import subprocess
 import time
 import xml.etree.ElementTree
+from html.parser import HTMLParser
 
 import defusedxml.ElementTree as ET
 import requests
 from requests_kerberos import OPTIONAL, HTTPKerberosAuth
-from html.parser import HTMLParser
 
 import univention.config_registry as configRegistry
 from univention.testing import utils
+
 
 html = HTMLParser()
 

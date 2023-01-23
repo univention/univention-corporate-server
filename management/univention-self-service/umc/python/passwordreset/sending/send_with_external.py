@@ -55,6 +55,7 @@ from univention.config_registry import ConfigRegistry
 from univention.lib.i18n import Translation
 from univention.management.console.modules.passwordreset.send_plugin import UniventionSelfServiceTokenEmitter
 
+
 _ = Translation('univention-self-service-passwordreset-umc').translate
 
 ucr = ConfigRegistry()

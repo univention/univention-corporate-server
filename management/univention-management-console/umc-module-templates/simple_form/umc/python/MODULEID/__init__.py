@@ -33,18 +33,19 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-import notifier
-import smtplib
 import email.charset
+import smtplib
 from email.mime.nonmultipart import MIMENonMultipart
 
+import notifier
+
+from univention.lib.i18n import Translation
 from univention.management.console.base import Base
 from univention.management.console.log import MODULE
 #from univention.management.console.config import ucr
 from univention.management.console.modules.decorators import sanitize
 from univention.management.console.modules.sanitizers import StringSanitizer
 
-from univention.lib.i18n import Translation
 
 _ = Translation('PACKAGENAME').translate
 

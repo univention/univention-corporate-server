@@ -45,6 +45,7 @@ from typing import Any, Dict, Iterable, List, Tuple  # noqa: F401
 import univention.ucslint.base as uub
 from univention.ucslint.python import python_files
 
+
 EXECUTE_TOKEN = re.compile('@!@(.+?)@!@', re.MULTILINE | re.DOTALL)
 UCR_HEADER = '''\
 # -*- coding: utf-8 -*-

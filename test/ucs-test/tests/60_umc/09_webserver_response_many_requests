@@ -24,6 +24,7 @@ from univention.management.console.modules.ucstest import joinscript, unjoinscri
 from univention.testing import utils
 from univention.testing.umc import Client
 
+
 NUMBER_OF_NOT_RESPONDING_REQUESTS = 100
 
 

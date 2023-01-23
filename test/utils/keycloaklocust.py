@@ -1,11 +1,13 @@
 #!/usr/bin/env python3
 
+import random
 from html.parser import HTMLParser
 
-import random
 from bs4 import BeautifulSoup
+from locust import HttpUser, constant_throughput, task
+
 from univention.testing import utils
-from locust import HttpUser, task, constant_throughput
+
 
 html = HTMLParser()
 

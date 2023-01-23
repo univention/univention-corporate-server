@@ -47,6 +47,7 @@ from typing import IO, Container, Dict, List, Optional, Sequence, Set, Tuple  # 
 
 import univention.ucslint.base as uub
 
+
 try:
     from junit_xml import TestSuite  # type: ignore
 except ImportError:

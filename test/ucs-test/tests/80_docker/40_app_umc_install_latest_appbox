@@ -12,6 +12,7 @@ import requests
 
 from dockertest import App, Appcenter, UCTTest_DockerApp_UMCInstallFailed, get_app_name
 
+
 if __name__ == '__main__':
     # get latest app box image
     url = 'https://docker.software-univention.de/v2/ucs-appbox-amd64/tags/list'

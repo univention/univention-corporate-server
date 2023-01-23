@@ -38,7 +38,9 @@ from __future__ import absolute_import, annotations
 from typing import Dict, List
 
 import univention.debug as ud
+
 from listener import configRegistry as ucr, run
+
 
 description = 'Restart the dhcp service if a dhcp subnet or a policy was changed'
 filter = (

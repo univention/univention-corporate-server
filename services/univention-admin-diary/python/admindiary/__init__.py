@@ -31,15 +31,16 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-import six
-
-from socket import gethostname
-from datetime import datetime
-import logging
 import json
+import logging
+from datetime import datetime
+from socket import gethostname
 from typing import Dict, List  # noqa: F401
 
+import six
+
 from univention.config_registry import ConfigRegistry
+
 
 ucr = ConfigRegistry()
 ucr.load()

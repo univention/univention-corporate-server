@@ -7,13 +7,14 @@
 ##   - univention-self-service
 ##   - univention-radius
 
+import importlib
 import os
+import subprocess
 import sys
 import time
-import pytest
-import importlib
-import subprocess
+
 import passlib.hash
+import pytest
 
 import univention.admin.uldap
 from univention.config_registry import handler_set as hs

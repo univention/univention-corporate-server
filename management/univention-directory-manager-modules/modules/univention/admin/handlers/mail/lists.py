@@ -32,11 +32,12 @@
 
 """|UDM| module for mailinglists"""
 
-from univention.admin.layout import Tab, Group
+import univention.admin.allocators
 import univention.admin.filter
 import univention.admin.handlers
-import univention.admin.allocators
 import univention.admin.localization
+from univention.admin.layout import Group, Tab
+
 
 translation = univention.admin.localization.translation('univention.admin.handlers.mail')
 _ = translation.translate

@@ -34,7 +34,7 @@ import os.path
 import traceback
 from collections import OrderedDict
 from os import listdir
-from typing import Any, Callable, Dict, Iterator, List, Optional, Pattern, Match
+from typing import Any, Callable, Dict, Iterator, List, Match, Optional, Pattern
 
 from univention.config_registry import ucr
 from univention.lib.i18n import Translation
@@ -43,9 +43,8 @@ from univention.management.console.modules import Base
 from univention.management.console.modules.decorators import sanitize, simple_response
 from univention.management.console.modules.diagnostic import plugins
 from univention.management.console.modules.mixins import ProgressMixin
-from univention.management.console.modules.sanitizers import (
-    DictSanitizer, PatternSanitizer, StringSanitizer,
-)
+from univention.management.console.modules.sanitizers import DictSanitizer, PatternSanitizer, StringSanitizer
+
 
 _ = Translation('univention-management-console-module-diagnostic').translate
 

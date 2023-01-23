@@ -34,8 +34,9 @@
 # <https://www.gnu.org/licenses/>.
 
 import os
-from datetime import datetime
 import subprocess
+from datetime import datetime
+
 
 ACL_TEMPLATE = '''
 access to filter="univentionObjectType=users/user" attrs=%(ldap_attributes)s

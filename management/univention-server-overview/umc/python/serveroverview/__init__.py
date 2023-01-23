@@ -34,10 +34,10 @@
 # <https://www.gnu.org/licenses/>.
 
 import univention.admin.modules as udm_modules
-from univention.management.console.config import ucr
 from univention.management.console.base import Base
-from univention.management.console.modules.decorators import simple_response
+from univention.management.console.config import ucr
 from univention.management.console.ldap import get_machine_connection
+from univention.management.console.modules.decorators import simple_response
 
 
 class Instance(Base):

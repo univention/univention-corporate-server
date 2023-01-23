@@ -35,11 +35,12 @@
 import os
 from argparse import ArgumentParser, Namespace
 from base64 import b64encode
-from typing import List, Dict, Optional
+from typing import Dict, List, Optional
 
 from univention.config_registry import ucr
 from univention.udm import UDM, NoObject
 from univention.udm.binary_props import Base64BinaryProperty
+
 
 udm = UDM.machine().version(3)
 

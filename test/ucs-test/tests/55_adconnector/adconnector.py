@@ -12,6 +12,7 @@ from univention.config_registry import handler_set as ucr_set
 from univention.connector import ad
 from univention.testing import ldap_glue
 
+
 configRegistry = univention.config_registry.ConfigRegistry()
 configRegistry.load()
 

@@ -45,6 +45,7 @@ from typing import Iterator, Optional, Set, Tuple  # noqa: F401
 
 from debian.deb822 import Deb822
 
+
 PREFIX = '/etc/univention'
 SUFFIX = ('.dpkg-new', '.dpkg-dist')
 K64 = 1 << 16

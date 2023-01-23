@@ -36,15 +36,16 @@
 #
 
 
-from six.moves.configparser import RawConfigParser, DuplicateSectionError, ParsingError, NoSectionError, NoOptionError
+import codecs
 import re
 from copy import deepcopy
-import codecs
 
-from univention.appcenter.utils import get_locale
-from univention.appcenter.meta import UniventionMetaClass, UniventionMetaInfo
-from univention.appcenter.log import get_base_logger
 from six import with_metaclass
+from six.moves.configparser import DuplicateSectionError, NoOptionError, NoSectionError, ParsingError, RawConfigParser
+
+from univention.appcenter.log import get_base_logger
+from univention.appcenter.meta import UniventionMetaClass, UniventionMetaInfo
+from univention.appcenter.utils import get_locale
 
 
 ini_logger = get_base_logger().getChild('ini')

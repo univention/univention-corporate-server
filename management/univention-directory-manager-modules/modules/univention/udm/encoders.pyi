@@ -32,12 +32,16 @@
 """En/Decoders for object properties."""
 
 from __future__ import absolute_import, unicode_literals
+
 import datetime
+from typing import Any, Dict, List, Optional, Text, Type, TypeVar
+
 import lazy_object_proxy
+
 from univention.admin.syntax import sambaGroupType
+
 from .binary_props import Base64BinaryProperty, Base64Bzip2BinaryProperty
 from .udm import UDM
-from typing import Any, Dict, List, Optional, Text, Type, TypeVar
 
 
 BaseEncoderTV = TypeVar('BaseEncoderTV', bound='univention.udm.encoders.BaseEncoder')

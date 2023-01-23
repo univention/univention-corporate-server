@@ -15,6 +15,7 @@ import univention.debug as ud
 from univention.testing.strings import random_string, random_username
 from univention.udm import UDM
 
+
 ud.init('/var/log/univention/directory-manager-cmd.log', ud.FLUSH, 0)
 ud.set_level(ud.ADMIN, ud.ALL)
 

@@ -5,6 +5,7 @@ import json
 from itertools import groupby
 from operator import itemgetter
 
+
 try:
     from typing import Dict, Iterable, List, Tuple  # noqa: F401
 except ImportError:

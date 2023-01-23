@@ -13,6 +13,7 @@ from univention.testing.utils import restart_firewall
 
 from dockertest import Appcenter, get_app_name, get_app_version, tiny_app
 
+
 if __name__ == '__main__':
     with Appcenter() as appcenter:
 

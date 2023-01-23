@@ -33,19 +33,20 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
+import random
 import re
 from functools import wraps
-import random
 
-import six
 import ldap
-import ldap.schema
 import ldap.sasl
-from ldapurl import LDAPUrl
-from ldapurl import isLDAPUrl
+import ldap.schema
+import six
+from ldapurl import LDAPUrl, isLDAPUrl
 
 import univention.debug
 from univention.config_registry import ConfigRegistry
+
+
 try:
     from typing import Any, Callable, Dict, List, Optional, Set, Tuple, Union  # noqa: F401
 except ImportError:

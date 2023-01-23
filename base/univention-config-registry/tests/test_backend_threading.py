@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 """Unit test for univention.config_registry.backend."""
 # pylint: disable-msg=C0103,E0611,R0904
-from threading import Thread, Lock
+from threading import Lock, Thread
 
 import pytest
 

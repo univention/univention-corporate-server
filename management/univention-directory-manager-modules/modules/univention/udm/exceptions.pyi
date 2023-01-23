@@ -30,6 +30,7 @@
 # <https://www.gnu.org/licenses/>.
 
 from __future__ import unicode_literals
+
 from typing import Iterable, Optional, Text
 
 

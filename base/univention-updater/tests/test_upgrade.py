@@ -4,7 +4,9 @@
 """Unit test for univention.updater.scripts.upgrade"""
 
 import sys
+
 import pytest
+
 
 if sys.version_info < (3,):
     pytest.skip(

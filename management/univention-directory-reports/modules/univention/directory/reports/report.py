@@ -34,12 +34,13 @@
 
 import os
 
-from univention.directory.reports.error import ReportError
-from univention.directory.reports.document import Document
-from univention.directory.reports.admin import connect, clear_cache
+from univention.directory.reports.admin import clear_cache, connect
 from univention.directory.reports.config import Config
-
+from univention.directory.reports.document import Document
+from univention.directory.reports.error import ReportError
 from univention.lib.i18n import Translation
+
+
 _ = Translation('univention-directory-reports').translate
 
 

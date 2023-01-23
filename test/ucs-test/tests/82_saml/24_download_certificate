@@ -6,7 +6,6 @@
 ## exposure: safe
 
 import re
-
 from urllib.request import urlopen
 
 from univention.config_registry import ConfigRegistry

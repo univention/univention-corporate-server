@@ -35,17 +35,18 @@
 # <https://www.gnu.org/licenses/>.
 
 from __future__ import print_function
-import pickle
-import os
-from argparse import ArgumentParser
-import sys
+
 import json
+import os
+import pickle
+import sys
+from argparse import ArgumentParser
 
 import six
 
+import univention.config_registry as ucr
 from univention.management.console.acl import Rule
 
-import univention.config_registry as ucr
 
 _cache_dir = '/var/cache/univention-management-console/acls'
 

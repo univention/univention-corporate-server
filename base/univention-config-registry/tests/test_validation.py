@@ -35,6 +35,7 @@
 from re import escape
 
 import pytest
+
 import univention.config_registry.validation as ttyp
 
 

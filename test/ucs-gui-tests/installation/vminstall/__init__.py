@@ -1,8 +1,9 @@
 import contextlib
+import logging
 
 from vminstall.installer import Installer
 from vminstall.virtual_machine import VirtualMachine
-import logging
+
 
 logging.basicConfig()
 

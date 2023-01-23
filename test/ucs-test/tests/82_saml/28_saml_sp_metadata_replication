@@ -18,6 +18,7 @@ from univention.testing import utils
 
 import samltest
 
+
 ucr = configRegistry.ConfigRegistry()
 ucr.load()
 udm_modules.update()

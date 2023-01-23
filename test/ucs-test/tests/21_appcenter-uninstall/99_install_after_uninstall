@@ -19,6 +19,7 @@ from univention.testing import utils
 
 from appcenteruninstalltest import get_requested_apps
 
+
 log_to_stream()
 ucr = univention.config_registry.ConfigRegistry()
 ucr.load()

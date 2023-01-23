@@ -34,9 +34,10 @@
 import re
 
 import univention.admin.handlers  # Contains 'simpleLdap', the base class for 'object' below
-import univention.admin.syntax  # Returns standard syntax definitions for the UDM 'property_descriptions' below
 import univention.admin.localization
+import univention.admin.syntax  # Returns standard syntax definitions for the UDM 'property_descriptions' below
 from univention.admin.layout import Tab
+
 
 # For the integration of translation catalogs for different languages
 translation = univention.admin.localization.translation('univention.admin.handlers.test')

@@ -15,6 +15,7 @@ from univention.testing.ucr import UCSTestConfigRegistry
 from univention.testing.udm import UCSTestUDM
 from univention.testing.utils import fail, wait_for_replication
 
+
 if __name__ == '__main__':
     ucr = UCSTestConfigRegistry()
     ucr.load()

@@ -36,11 +36,11 @@
 
 from __future__ import print_function
 
-import os
 import codecs
-import sys
 import getopt
 import hashlib
+import os
+import sys
 from datetime import datetime
 
 import ldap
@@ -48,8 +48,9 @@ from ldap.filter import filter_format
 
 import univention.config_registry
 import univention.debug as ud
-import univention.uldap
 import univention.lib.policy_result
+import univention.uldap
+
 
 ud.init('/dev/null', ud.FLUSH, ud.FUNCTION)
 

@@ -35,18 +35,18 @@
 # <https://www.gnu.org/licenses/>.
 #
 
-from pipes import quote
 import re
 from argparse import Action
 from fnmatch import translate
+from pipes import quote
 
 from six.moves.configparser import NoOptionError, NoSectionError
 
+from univention.appcenter.actions import StoreAppAction, UniventionAppAction
 from univention.appcenter.app import CaseSensitiveConfigParser
 from univention.appcenter.app_cache import Apps
-from univention.appcenter.utils import shell_safe
-from univention.appcenter.actions import UniventionAppAction, StoreAppAction
 from univention.appcenter.ucr import ucr_get
+from univention.appcenter.utils import shell_safe
 
 
 class StoreKeysAction(Action):

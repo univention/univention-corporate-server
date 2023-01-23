@@ -56,9 +56,8 @@ from univention.management.console.config import ucr
 from univention.management.console.log import MODULE
 from univention.management.console.modules import Base, UMC_Error
 from univention.management.console.modules.decorators import sanitize, simple_response
-from univention.management.console.modules.sanitizers import (
-    BooleanSanitizer, ListSanitizer, StringSanitizer,
-)
+from univention.management.console.modules.sanitizers import BooleanSanitizer, ListSanitizer, StringSanitizer
+
 
 _ = umc.Translation('univention-management-console-module-join').translate
 

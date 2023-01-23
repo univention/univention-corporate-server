@@ -9,10 +9,11 @@ from os.path import join
 
 import pytest
 from lazy_object_proxy import Proxy
+from mockups import ARCH, DATA, MAJOR, MINOR, RJSON, gen_releases
 
 import univention.updater.mirror as M
-from mockups import ARCH, DATA, MAJOR, MINOR, RJSON, gen_releases
 from univention.lib.ucs import UCS_Version
+
 
 UM = M.UniventionMirror
 

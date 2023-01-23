@@ -36,8 +36,8 @@
 # <https://www.gnu.org/licenses/>.
 #
 
-from univention.appcenter.actions.upgrade_search import UpgradeSearch
 from univention.appcenter.actions.docker_base import DockerActionMixin
+from univention.appcenter.actions.upgrade_search import UpgradeSearch
 
 
 class UpgradeSearch(UpgradeSearch, DockerActionMixin):

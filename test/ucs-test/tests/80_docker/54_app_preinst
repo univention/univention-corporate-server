@@ -8,8 +8,8 @@
 import subprocess
 
 from dockertest import (
-    Appcenter, UCSTest_DockerApp_InstallationFailed, UCSTest_DockerApp_VerifyFailed, get_app_name,
-    get_app_version, tiny_app,
+    Appcenter, UCSTest_DockerApp_InstallationFailed, UCSTest_DockerApp_VerifyFailed, get_app_name, get_app_version,
+    tiny_app,
 )
 
 

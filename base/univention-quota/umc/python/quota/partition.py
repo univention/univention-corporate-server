@@ -35,15 +35,15 @@
 # <https://www.gnu.org/licenses/>.
 
 from __future__ import absolute_import
+
 import notifier
 
 import univention.management.console as umc
-from univention.management.console.log import MODULE
+from univention.lib import fstab
 from univention.management.console.error import UMC_Error
-
+from univention.management.console.log import MODULE
 from univention.management.console.modules.quota import df, tools
 
-from univention.lib import fstab
 
 _ = umc.Translation('univention-management-console-module-quota').translate
 

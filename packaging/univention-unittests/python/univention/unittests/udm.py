@@ -33,10 +33,9 @@
 #
 
 import pytest
-
 from univentionunittests import import_module
-from univentionunittests.udm_database import Database
 from univentionunittests.udm_connection import MockedAccess, MockedPosition, get_domain  # noqa: F401
+from univentionunittests.udm_database import Database
 
 
 def pytest_addoption(parser):

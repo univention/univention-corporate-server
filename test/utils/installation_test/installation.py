@@ -3,20 +3,18 @@
 
 """UCS installation via VNC"""
 
-from vncautomate import init_logger, VNCConnection
+import logging
+import os
+import sys
+import time
+from argparse import Namespace  # noqa: F401
+from functools import wraps
+
+from languages import english, french, german
+from vncautomate import VNCConnection, init_logger
 from vncautomate.config import OCRConfig
 from vncdotool.api import VNCDoException
 
-from languages import english
-from languages import french
-from languages import german
-
-import time
-import sys
-import os
-import logging
-from argparse import Namespace  # noqa: F401
-from functools import wraps
 
 KVM_INTERFACE = 'ens8'
 

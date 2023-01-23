@@ -41,6 +41,7 @@ from tempfile import mkdtemp
 
 from univention.management.console.modules.setup import util
 
+
 PATH_CLEANUP_PRE_SCRIPTS = '/usr/lib/univention-system-setup/cleanup-pre.d/'
 PATH_CLEANUP_POST_SCRIPTS = '/usr/lib/univention-system-setup/cleanup-post.d/'
 

@@ -34,24 +34,24 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-import ldap
-import univention.debug2 as ud
-import univention.connector.ad
-
-import hashlib
 import binascii
-import time
-
-from Crypto.Cipher import DES, ARC4
-import Crypto
-from samba.dcerpc import drsuapi, lsa, misc, security, drsblobs
-from samba.ndr import ndr_unpack
-from samba import NTSTATUSError
-from struct import pack
+import hashlib
 import struct
+import time
 import traceback
-import samba.dcerpc.samr
+from struct import pack
+
+import Crypto
 import heimdal
+import ldap
+import samba.dcerpc.samr
+from Crypto.Cipher import ARC4, DES
+from samba import NTSTATUSError
+from samba.dcerpc import drsblobs, drsuapi, lsa, misc, security
+from samba.ndr import ndr_unpack
+
+import univention.connector.ad
+import univention.debug2 as ud
 
 
 def nt_password_to_arcfour_hmac_md5(nt_password):

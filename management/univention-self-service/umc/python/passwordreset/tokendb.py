@@ -34,11 +34,12 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-import traceback
 import datetime
+import traceback
 
 import psycopg2
 import psycopg2.extras
+
 
 DB_USER = "selfservice"
 DB_NAME = "selfservice"

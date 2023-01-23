@@ -1,19 +1,21 @@
 #!/usr/bin/python3
-from contextlib import contextmanager
+import datetime
+import importlib
+import logging
 import os
 import os.path
-import datetime
-import logging
-import time
+import shutil
 import subprocess
 import sys
-import importlib
 import tempfile
-from shlex import quote
-import shutil
-import requests
+import time
+from contextlib import contextmanager
 from http.client import HTTPConnection
+from shlex import quote
 from urllib.parse import urlparse
+
+import requests
+
 
 logger = logging.getLogger(__name__)
 PROVIDER_PORTAL_JSON = 'https://provider-portal.software-univention.de/appcenter-selfservice/univention-appcenter-catalog.json'
@@ -126,8 +128,8 @@ class Session:
 
     def wait_until_clickable(self, css):
         from selenium.webdriver.common.by import By
-        from selenium.webdriver.support.ui import WebDriverWait
         from selenium.webdriver.support import expected_conditions as EC
+        from selenium.webdriver.support.ui import WebDriverWait
         WebDriverWait(self.driver, 10).until(EC.element_to_be_clickable((By.CSS_SELECTOR, css)))
 
     def wait_until_clickable_and_click(self, css):
@@ -136,8 +138,8 @@ class Session:
 
     def wait_until_gone(self, css):
         from selenium.webdriver.common.by import By
-        from selenium.webdriver.support.ui import WebDriverWait
         from selenium.webdriver.support import expected_conditions as EC
+        from selenium.webdriver.support.ui import WebDriverWait
         WebDriverWait(self.driver, 10).until(EC.invisibility_of_element_located((By.CSS_SELECTOR, css)))
 
     def goto_portal(self):
@@ -268,8 +270,8 @@ class Session:
             self.send_keys(Keys.RETURN)
 
     def enter_shift_tab(self):
-        from selenium.webdriver.common.keys import Keys
         from selenium.webdriver import ActionChains
+        from selenium.webdriver.common.keys import Keys
         action = ActionChains(self.driver)
         action.key_down(Keys.SHIFT).send_keys(Keys.TAB).key_up(Keys.SHIFT)
         action.perform()

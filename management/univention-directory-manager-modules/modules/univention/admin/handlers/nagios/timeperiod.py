@@ -34,14 +34,16 @@
 """|UDM| module for nagios time priod objects"""
 
 import re
+
 from ldap.filter import filter_format
 
-from univention.admin.layout import Tab, Group
 import univention.admin.filter
 import univention.admin.handlers
-import univention.admin.syntax
 import univention.admin.localization
+import univention.admin.syntax
 import univention.admin.uexceptions
+from univention.admin.layout import Group, Tab
+
 
 translation = univention.admin.localization.translation('univention.admin.handlers.nagios')
 _ = translation.translate

@@ -32,9 +32,10 @@
 
 from ldap.filter import filter_format
 
-from univention.admin.layout import Tab, Group
-import univention.admin.localization
 import univention.admin.handlers
+import univention.admin.localization
+from univention.admin.layout import Group, Tab
+
 
 translation = univention.admin.localization.translation('univention.admin.handlers.portals-portal')
 _ = translation.translate

@@ -12,13 +12,13 @@
 ## exposure: dangerous
 
 
-import time
 import email
+import time
+from urllib.parse import parse_qs, urlparse
 
 import pytest
 import selenium.common.exceptions as selenium_exceptions
 from selenium.common.exceptions import TimeoutException
-from urllib.parse import parse_qs, urlparse
 from test_self_service import capture_mails
 
 import univention.testing.strings as uts
@@ -27,6 +27,7 @@ from univention.admin.uldap import getAdminConnection
 from univention.config_registry import handler_set as hs
 from univention.testing import utils
 from univention.testing.ucr import UCSTestConfigRegistry
+
 
 MAILS_TIMEOUT = 5
 

@@ -38,8 +38,10 @@ from __future__ import absolute_import, annotations
 import subprocess
 from typing import Dict, List
 
-import listener
 from univention.config_registry import ConfigRegistry, handler_set
+
+import listener
+
 
 description = 'Manage admin/diary/backend variable'
 filter = '(|(objectClass=univentionDomainController)(objectClass=univentionMemberServer))'

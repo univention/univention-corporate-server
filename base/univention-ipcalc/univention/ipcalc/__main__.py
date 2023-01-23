@@ -36,7 +36,7 @@ from __future__ import print_function
 import ipaddress
 import sys
 from argparse import ArgumentParser, Namespace  # noqa: F401
-from typing import Optional, List  # noqa: F401
+from typing import List, Optional  # noqa: F401
 
 from univention import ipcalc
 

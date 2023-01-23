@@ -43,9 +43,10 @@ from os import makedirs, symlink
 from os.path import devnull, exists, join
 from textwrap import dedent
 
-from univention.config_registry import ConfigRegistry, handler_set, handler_commit
+from univention.config_registry import ConfigRegistry, handler_commit, handler_set
 from univention.lib.ucs import UCS_Version
 from univention.updater.locking import UpdaterLock
+
 
 configRegistry = ConfigRegistry()
 configRegistry.load()

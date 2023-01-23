@@ -32,13 +32,14 @@
 
 """|UDM| module for |DHCP| hosts"""
 
-from univention.admin.layout import Tab, Group
 import univention.admin.filter
 import univention.admin.handlers
 import univention.admin.localization
 import univention.debug as ud
+from univention.admin.layout import Group, Tab
 
 from .__common import DHCPBase, add_dhcp_options
+
 
 translation = univention.admin.localization.translation('univention.admin.handlers.dhcp')
 _ = translation.translate

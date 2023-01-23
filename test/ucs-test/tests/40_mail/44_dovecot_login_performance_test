@@ -18,6 +18,7 @@ from univention.testing.ucs_samba import wait_for_drs_replication
 
 from essential.mail import random_email
 
+
 timeout = 10
 MAX_USER = 100
 MAX_GRP = 8000

@@ -33,6 +33,7 @@
 
 
 import sys
+
 import pytest
 from six import get_method_self
 
@@ -53,6 +54,7 @@ def mocked_conn(mocker, lo, pos):
 @pytest.fixture()
 def selfservice_ucr(mocker, mock_ucr):
     from univentionunittests.umc import import_umc_module
+
     from univention.config_registry import ConfigRegistry
     selfservice = import_umc_module('passwordreset')
     mocker.patch.object(selfservice, 'ucr', mock_ucr)

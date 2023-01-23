@@ -32,17 +32,18 @@
 
 """|UDM| module for the trust accounts"""
 
-from univention.admin.layout import Tab, Group
 import univention.admin.filter
 import univention.admin.handlers
-import univention.admin.password
-import univention.admin.localization
-import univention.admin.syntax
-import univention.admin.mapping
-import univention.admin.uexceptions
 import univention.admin.handlers.dns.forward_zone
 import univention.admin.handlers.dns.reverse_zone
-from univention.admin.certificate import register_pki_integration, PKIIntegration
+import univention.admin.localization
+import univention.admin.mapping
+import univention.admin.password
+import univention.admin.syntax
+import univention.admin.uexceptions
+from univention.admin.certificate import PKIIntegration, register_pki_integration
+from univention.admin.layout import Group, Tab
+
 
 translation = univention.admin.localization.translation('univention.admin.handlers.computers')
 _ = translation.translate

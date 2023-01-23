@@ -35,12 +35,13 @@
 
 from __future__ import print_function
 
-import socket
 import datetime
 import re
+import socket
 import sys
 
 from univention.management.console.config import ucr
+
 
 socket_file = "/var/lib/univention-self-service-passwordreset-umc/memcached.socket"
 

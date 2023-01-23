@@ -17,6 +17,7 @@ from univention.testing import utils
 from essential.mail import create_shared_mailfolder, random_email
 from essential.mailclient import MailClient_SSL
 
+
 TIMEOUT_MAIL = 10
 
 

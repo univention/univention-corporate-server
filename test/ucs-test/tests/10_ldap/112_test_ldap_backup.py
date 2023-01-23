@@ -18,6 +18,7 @@ import pytest
 
 from univention.testing.strings import random_username
 
+
 current_date = datetime.now().strftime("%Y%m%d")
 
 ldap_backup_path = Path(f"/var/univention-backup/ldap-backup_{current_date}.ldif.gz")

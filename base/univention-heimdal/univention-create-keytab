@@ -34,12 +34,14 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-import heimdal
-from subprocess import call
 import binascii
-from argparse import ArgumentParser
-import tempfile
 import os
+import tempfile
+from argparse import ArgumentParser
+from subprocess import call
+
+import heimdal
+
 
 parser = ArgumentParser()
 parser.add_argument("-k", "--keytab", help="write keytab to FILE", metavar="FILE")

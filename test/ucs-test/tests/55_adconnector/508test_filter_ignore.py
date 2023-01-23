@@ -12,17 +12,16 @@ from ldap.filter import filter_format
 import adconnector
 from adconnector import connector_running_on_this_host, connector_setup
 
+
 # This is something weird. The `adconnector.ADConnection()` MUST be
 # instantiated, before `UCSTestUDM` is imported.
 AD = adconnector.ADConnection()
 
 import univention.testing.connector_common as tcommon  # noqa: E402
-from univention.testing.connector_common import delete_con_user  # noqa: E402
-from univention.testing.connector_common import (  # noqa: E402
-    NormalUser, SpecialUser, Utf8User, create_con_user,
-)
-from univention.config_registry import handler_set as ucr_set  # noqa: E402
 import univention.testing.ucr as testing_ucr  # noqa: E402
+from univention.config_registry import handler_set as ucr_set  # noqa: E402
+from univention.testing.connector_common import delete_con_user  # noqa: E402
+from univention.testing.connector_common import NormalUser, SpecialUser, Utf8User, create_con_user  # noqa: E402
 
 
 TEST_USERS = [NormalUser, Utf8User, SpecialUser]

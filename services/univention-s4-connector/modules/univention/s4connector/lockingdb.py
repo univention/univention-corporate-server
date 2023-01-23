@@ -35,8 +35,10 @@
 # <https://www.gnu.org/licenses/>.
 
 from __future__ import print_function
-import univention.debug2 as ud
+
 import sqlite3
+
+import univention.debug2 as ud
 
 
 class LockingDB(object):

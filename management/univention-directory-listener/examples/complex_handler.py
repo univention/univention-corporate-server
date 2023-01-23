@@ -35,7 +35,7 @@ from __future__ import absolute_import
 from types import TracebackType
 from typing import Any, List, Mapping, Optional, Sequence, Type
 
-from univention.listener import ListenerModuleHandler, ListenerModuleConfiguration
+from univention.listener import ListenerModuleConfiguration, ListenerModuleHandler
 
 
 class ComplexHandler(ListenerModuleHandler):

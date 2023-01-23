@@ -15,6 +15,7 @@ import univention.s4connector.s4
 from univention.config_registry import ConfigRegistry, handler_set as ucr_set
 from univention.testing.utils import LDAPReplicationFailed, fail, wait_for_replication_and_postrun
 
+
 ucr = ConfigRegistry()
 ucr.load()
 

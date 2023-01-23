@@ -11,6 +11,7 @@ import sys
 
 from univention.debhelper import parseRfc822
 
+
 BASE = '/etc/univention/templates/info'
 SKIPLIST = {
     '/etc/default/capi4hylafax',

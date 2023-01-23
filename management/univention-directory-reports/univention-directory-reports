@@ -36,18 +36,18 @@
 
 from __future__ import print_function
 
+import locale
 import os.path
 import shutil
 import sys
-import locale
 from optparse import OptionParser
 
-import univention.debug as ud
 import univention.admin.uldap
-
+import univention.debug as ud
 from univention.config_registry import ConfigRegistry
-
 from univention.lib.i18n import Translation
+
+
 translation = Translation('univention-directory-reports')
 _ = translation.translate
 
@@ -71,7 +71,7 @@ def main():
     # important! set locale before importing
     locale.setlocale(locale.LC_ALL, "")
     translation.set_language()
-    from univention.directory.reports import Report, ReportError, Config
+    from univention.directory.reports import Config, Report, ReportError
 
     cfg = Config()
 

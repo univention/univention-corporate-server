@@ -34,9 +34,11 @@
 # <https://www.gnu.org/licenses/>.
 
 from time import sleep
-from vminstall.utils import copy_through_ssh, execute_through_ssh, remove_old_sshkey
+
 import ConfigParser
 import pytest
+from vminstall.utils import copy_through_ssh, execute_through_ssh, remove_old_sshkey
+
 
 config = ConfigParser.SafeConfigParser()
 config.read('tests.cfg')

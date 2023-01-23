@@ -35,13 +35,15 @@ implementation.
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-from __future__ import print_function
-from __future__ import absolute_import
+from __future__ import absolute_import, print_function
+
+import logging
 import sys
 from functools import wraps
 from itertools import chain
 from warnings import warn
-import logging
+
+
 # import logging.handlers
 
 ERROR = 0

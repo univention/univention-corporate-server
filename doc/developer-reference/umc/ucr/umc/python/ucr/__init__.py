@@ -1,9 +1,10 @@
 from univention.management.console import Translation
 from univention.management.console.base import Base, UMC_Error
-from univention.management.console.log import MODULE
 from univention.management.console.config import ucr
-from univention.management.console.modules.sanitizers import IntegerSanitizer
+from univention.management.console.log import MODULE
 from univention.management.console.modules.decorators import sanitize
+from univention.management.console.modules.sanitizers import IntegerSanitizer
+
 
 _ = Translation('univention-management-console-modules-udm').translate
 

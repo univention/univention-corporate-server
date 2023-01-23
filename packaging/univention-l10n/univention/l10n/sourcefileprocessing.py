@@ -35,12 +35,15 @@ Univention specific JSON-based format) from multiple source files by file type.
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 from __future__ import absolute_import
-from lxml import etree
-import os
-from . import message_catalogs
-import polib
 
-from . import umc
+import os
+
+import polib
+from lxml import etree
+
+from . import message_catalogs, umc
+
+
 try:
     from typing import Iterable, List  # noqa: F401
 except ImportError:

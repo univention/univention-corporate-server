@@ -34,7 +34,7 @@
 # <https://www.gnu.org/licenses/>.
 
 import codecs
-from subprocess import Popen, PIPE
+from subprocess import PIPE, Popen
 
 
 class PolicyResultFailed(Exception):

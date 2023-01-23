@@ -19,6 +19,7 @@ from univention.testing import utils
 
 from essential.mail import file_search_mail, get_dovecot_maildir, random_email, send_mail
 
+
 timeout = 10
 
 

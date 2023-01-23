@@ -34,15 +34,17 @@
 
 from __future__ import absolute_import
 
-import ldap
 import time
 from typing import Any, Callable, Dict, List, Optional, Tuple  # noqa: F401
 
+import ldap
+
+import univention.admin.license
 import univention.debug as ud
 import univention.uldap
 from univention.admin import localization
-import univention.admin.license
 from univention.admin._ucr import configRegistry
+
 
 translation = localization.translation('univention/admin')
 _ = translation.translate

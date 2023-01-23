@@ -33,11 +33,11 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
+from univention.lib.i18n import Translation
 from univention.management.console.modules import Base
 
-from univention.lib.i18n import Translation
-
 from .server import Server
+
 
 _ = Translation('univention-management-console-module-lib').translate
 

@@ -22,6 +22,7 @@ from essential.mail import (
     set_mail_forward_copy_to_self_ucrv,
 )
 
+
 with ucr_test.UCSTestConfigRegistry() as ucr:
     DOMAIN = ucr.get("domainname").lower()
     HOSTNAME = ucr.get("hostname")

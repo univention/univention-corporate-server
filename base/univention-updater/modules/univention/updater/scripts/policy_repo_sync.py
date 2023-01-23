@@ -40,6 +40,7 @@ from typing import Dict, List
 from univention.config_registry import ConfigRegistry
 from univention.lib.policy_result import PolicyResultFailed, policy_result
 
+
 # Name of the cron.d file
 CRON_D = '/etc/cron.d/univention-repository-sync'
 

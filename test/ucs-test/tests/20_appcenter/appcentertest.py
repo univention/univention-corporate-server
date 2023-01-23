@@ -52,6 +52,7 @@ from univention.config_registry import ConfigRegistry
 from univention.testing import debian_package, utils
 from univention.testing.umc import Client
 
+
 APPCENTER_FILE = "/var/cache/appcenter-installed.txt"  # installed apps
 
 

@@ -32,6 +32,7 @@
 # <https://www.gnu.org/licenses/>.
 
 import sys
+
 import univention.password
 
 

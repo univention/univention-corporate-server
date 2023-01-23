@@ -36,6 +36,7 @@ from univention.config_registry import ucr_live as configRegistry
 from univention.lib.i18n import Translation
 from univention.management.console.modules.diagnostic import MODULE, Critical, Instance, util
 
+
 _ = Translation('univention-management-console-module-diagnostic').translate
 
 title = _('Check Heimdal KDC on Samba 4 DC')

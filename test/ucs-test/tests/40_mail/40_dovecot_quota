@@ -21,6 +21,7 @@ from univention.testing import utils
 from essential.mail import ImapMail, mail_delivered
 from essential.mailclient import MailClient
 
+
 timeout = 1
 
 

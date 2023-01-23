@@ -48,17 +48,19 @@ The main job of sanitizers is to alter values if needed so that they
 cannot do something harmful in the exposed UMC-functions. But they are also
 very helpful when one needs to just validate input.
 """
-import re
-import six
 import copy
+import re
 
 import ldap.filter
+import six
 
 from univention.lib.i18n import Translation
+
+
 _ = Translation('univention.management.console').translate
 
 try:
-    from typing import Any, Dict, Iterable, Mapping, NoReturn, Optional, Pattern, Union, TypeVar  # noqa: F401
+    from typing import Any, Dict, Iterable, Mapping, NoReturn, Optional, Pattern, TypeVar, Union  # noqa: F401
 except ImportError:
     pass
 

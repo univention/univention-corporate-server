@@ -40,6 +40,7 @@ import os
 import re
 import sys
 
+
 RE_BROKEN = re.compile(r'^File "[^"]+", line \d+, in .*')  # Bug #51834
 RE_APPCENTER = re.compile(r'^(\s+\d+ .*[\d \-:]+ \[(    INFO| WARNING|   DEBUG|   ERROR)\]:)')
 

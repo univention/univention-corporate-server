@@ -1,12 +1,17 @@
 #!/usr/bin/python3
 
 from __future__ import print_function
-import sys
+
 import re
+import sys
 from datetime import datetime
 from logging import DEBUG
+
 import pytest
+
 import univention.debug2 as ud
+
+
 try:
     from typing import Callable, Dict, Iterator, Tuple  # noqa: F401
 except ImportError:

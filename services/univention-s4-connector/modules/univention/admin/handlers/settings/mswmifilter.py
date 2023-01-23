@@ -33,13 +33,13 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-from univention.admin.layout import Tab, Group
-
 import ldap
 
-import univention.admin.syntax
 import univention.admin.handlers
 import univention.admin.localization
+import univention.admin.syntax
+from univention.admin.layout import Group, Tab
+
 
 translation = univention.admin.localization.translation('univention.admin.handlers.settings.mswmifilter')
 _ = translation.translate

@@ -38,6 +38,7 @@ from typing import Any, Iterator, List, Type  # noqa: F401
 from univention.ldap_cache.cache import Shard
 from univention.ldap_cache.log import log
 
+
 CONFIG_FILE = '/usr/share/univention-group-membership-cache/shards.json'
 
 

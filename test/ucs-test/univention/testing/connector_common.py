@@ -7,6 +7,7 @@ import univention.config_registry
 import univention.testing.strings as tstrings
 from univention.testing.udm import verify_udm_object
 
+
 configRegistry = univention.config_registry.ConfigRegistry()
 configRegistry.load()
 

@@ -41,6 +41,7 @@ usage::
 
 from univention.lib.i18n import Translation
 
+
 translation = Translation
 
 __all__ = ('translation',)

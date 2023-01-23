@@ -35,20 +35,24 @@
 # <https://www.gnu.org/licenses/>.
 #
 
+import time
 from argparse import SUPPRESS
-from getpass import getpass, getuser
-from tempfile import NamedTemporaryFile
 from contextlib import contextmanager
 from copy import deepcopy
-import time
+from getpass import getpass, getuser
+from tempfile import NamedTemporaryFile
 
 import ldap
 from six.moves import input
 
 from univention.appcenter.actions import UniventionAppAction
-from univention.appcenter.exceptions import CredentialsNoUsernameError, CredentialsNoPasswordError, ConnectionFailed, ConnectionFailedSecretFile, ConnectionFailedInvalidUserCredentials, ConnectionFailedInvalidMachineCredentials, ConnectionFailedServerDown, ConnectionFailedInvalidAdminCredentials, ConnectionFailedConnectError
-from univention.appcenter.udm import search_objects, get_machine_connection, get_admin_connection, get_connection
+from univention.appcenter.exceptions import (
+    ConnectionFailed, ConnectionFailedConnectError, ConnectionFailedInvalidAdminCredentials,
+    ConnectionFailedInvalidMachineCredentials, ConnectionFailedInvalidUserCredentials, ConnectionFailedSecretFile,
+    ConnectionFailedServerDown, CredentialsNoPasswordError, CredentialsNoUsernameError,
+)
 from univention.appcenter.ucr import ucr_get
+from univention.appcenter.udm import get_admin_connection, get_connection, get_machine_connection, search_objects
 
 
 class CredentialsAction(UniventionAppAction):

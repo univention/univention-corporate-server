@@ -49,6 +49,7 @@ from .exceptions import ListenerModuleConfigurationError, ListenerModuleRuntimeE
 from .handler import ListenerModuleHandler
 from .handler_configuration import ListenerModuleConfiguration
 
+
 __all__ = [
     'ListenerModuleAdapter', 'ListenerModuleConfigurationError', 'ListenerModuleRuntimeError',
     'ListenerModuleConfiguration', 'ListenerModuleHandler',

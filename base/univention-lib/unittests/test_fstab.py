@@ -35,6 +35,7 @@ import pytest
 
 from .conftest import import_lib_module
 
+
 fstab = import_lib_module('fstab')
 
 

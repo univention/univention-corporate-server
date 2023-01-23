@@ -32,13 +32,17 @@
 """Base classes for (simplified) UDM modules and objects."""
 
 from __future__ import absolute_import, unicode_literals
+
 import copy
 import pprint
 from collections import namedtuple
+
 from ldap.filter import filter_format
 from six import with_metaclass
+
+from .exceptions import MultipleObjects, NoObject
 from .plugins import Plugin
-from .exceptions import NoObject, MultipleObjects
+
 
 LdapMapping = namedtuple('LdapMapping', ('ldap2udm', 'udm2ldap'))
 

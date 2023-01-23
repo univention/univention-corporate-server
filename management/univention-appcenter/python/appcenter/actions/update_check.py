@@ -38,11 +38,12 @@ from argparse import Action
 
 import six
 
-from univention.lib.ucs import UCS_Version
-from univention.appcenter.log import get_logfile_logger
-from univention.appcenter.app_cache import Apps, AppCenterCache, default_server
 from univention.appcenter.actions import UniventionAppAction, get_action
+from univention.appcenter.app_cache import AppCenterCache, Apps, default_server
+from univention.appcenter.log import get_logfile_logger
 from univention.appcenter.ucr import ucr_get
+from univention.lib.ucs import UCS_Version
+
 
 if six.PY2:
     from backports.tempfile import TemporaryDirectory

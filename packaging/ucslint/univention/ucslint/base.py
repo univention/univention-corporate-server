@@ -32,7 +32,10 @@
 
 import os
 import re
-from typing import Any, Callable, Dict, Iterable, Iterator, List, Mapping, Match, Optional, Pattern, Set, Tuple  # noqa: F401
+from typing import (  # noqa: F401
+    Any, Callable, Dict, Iterable, Iterator, List, Mapping, Match, Optional, Pattern, Set, Tuple,
+)
+
 
 try:
     from junit_xml import TestCase  # type: ignore

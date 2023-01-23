@@ -45,17 +45,11 @@ from typing import Any, Container, List, NoReturn, Optional, Sequence  # noqa: F
 from univention.config_registry import ConfigRegistry, handler_set, handler_unset
 from univention.lib.policy_result import PolicyResultFailed, policy_result
 from univention.updater.commands import (
-    cmd_config,
-    cmd_dist_upgrade,
-    cmd_dist_upgrade_sim,
-    cmd_install,
-    cmd_remove,
-    cmd_show,
-    cmd_update,
-    cmd_upgrade,
+    cmd_config, cmd_dist_upgrade, cmd_dist_upgrade_sim, cmd_install, cmd_remove, cmd_show, cmd_update, cmd_upgrade,
     cmd_upgrade_sim,
 )
 from univention.updater.locking import UpdaterLock, apt_lock
+
 
 try:
     from typing_extensions import Literal  # noqa: F401

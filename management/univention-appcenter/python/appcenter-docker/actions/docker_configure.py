@@ -39,13 +39,12 @@
 import os.path
 from contextlib import contextmanager
 
-from univention.config_registry.backend import _ConfigRegistry
-
-from univention.appcenter.actions.docker_base import DockerActionMixin
 from univention.appcenter.actions.configure import Configure
-from univention.appcenter.utils import mkdir, app_is_running
-from univention.appcenter.ucr import ucr_save, ucr_load
+from univention.appcenter.actions.docker_base import DockerActionMixin
 from univention.appcenter.log import get_logfile_logger
+from univention.appcenter.ucr import ucr_load, ucr_save
+from univention.appcenter.utils import app_is_running, mkdir
+from univention.config_registry.backend import _ConfigRegistry
 
 
 class NoDatabaseFound(Exception):

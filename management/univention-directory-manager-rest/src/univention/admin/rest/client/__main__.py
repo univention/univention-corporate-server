@@ -34,17 +34,19 @@
 # <https://www.gnu.org/licenses/>.
 
 
+import argparse
 import io
-import os
-import sys
 import json
 import locale
-import argparse
+import os
+import sys
 
 import ldap
 import ldap.dn
 
-from univention.admin.rest.client import UDM, ConnectionError, HTTPError, Unauthorized, NotFound, UnprocessableEntity, ServerError, ServiceUnavailable
+from univention.admin.rest.client import (
+    UDM, ConnectionError, HTTPError, NotFound, ServerError, ServiceUnavailable, Unauthorized, UnprocessableEntity,
+)
 from univention.config_registry import ucr
 
 

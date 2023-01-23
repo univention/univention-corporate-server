@@ -44,6 +44,7 @@ import univention.testing.strings as uts
 import univention.testing.ucr as ucr_test
 from univention.admin import localization
 
+
 translator = localization.translation('ucs-test-framework')
 _ = translator.translate
 

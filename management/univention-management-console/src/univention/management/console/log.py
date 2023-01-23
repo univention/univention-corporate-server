@@ -40,11 +40,13 @@ Logging
 This module provides a wrapper for univention.debug
 """
 
-import univention.debug as ud
-import logging
 import grp
+import logging
 import os
+
+import univention.debug as ud
 from univention.config_registry import ConfigRegistry
+
 
 # no exceptions from logging
 # otherwise shutdown the server will raise an exception that the logging stream could not be closed

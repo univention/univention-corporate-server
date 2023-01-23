@@ -36,19 +36,18 @@
 # <https://www.gnu.org/licenses/>.
 
 from __future__ import print_function
-import ldb
+
 import base64
 from argparse import ArgumentParser
 
+import ldb
 from ldap.filter import filter_format
-
-from samba.samdb import SamDB
-from samba.param import LoadParm
 from samba.auth import system_session
 from samba.credentials import Credentials
-
-from samba.ndr import ndr_unpack
 from samba.dcerpc import misc
+from samba.ndr import ndr_unpack
+from samba.param import LoadParm
+from samba.samdb import SamDB
 
 
 if __name__ == '__main__':

@@ -32,15 +32,15 @@
 
 """|UDM| module for Organizational Unit containers"""
 
-from univention.admin.layout import Tab, Group
-from univention.admin import configRegistry
-import univention.admin.uldap
-import univention.admin.syntax
 import univention.admin.filter
 import univention.admin.handlers
 import univention.admin.localization
-
+import univention.admin.syntax
+import univention.admin.uldap
+from univention.admin import configRegistry
 from univention.admin.handlers.container import default_container_for_objects
+from univention.admin.layout import Group, Tab
+
 
 translation = univention.admin.localization.translation('univention.admin.handlers.container')
 _ = translation.translate

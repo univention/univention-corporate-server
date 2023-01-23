@@ -32,13 +32,14 @@
 """Classes for holding binary UDM  object properties."""
 
 from __future__ import absolute_import, unicode_literals
-import bz2
+
 import base64
+import bz2
 import codecs
 from collections import namedtuple
 
 import magic
-from six import string_types, BytesIO
+from six import BytesIO, string_types
 
 
 FileType = namedtuple('namedtuple', ['mime_type', 'encoding', 'text'])

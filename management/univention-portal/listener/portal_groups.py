@@ -35,7 +35,8 @@ from __future__ import absolute_import
 
 import subprocess
 
-from univention.listener import ListenerModuleHandler, ListenerModuleConfiguration
+from univention.listener import ListenerModuleConfiguration, ListenerModuleHandler
+
 
 GROUP_CACHE = '/var/cache/univention-portal/groups.json'
 

@@ -31,11 +31,13 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-import pytest
 import bz2
 import tempfile
 
+import pytest
+
 from .conftest import import_lib_module
+
 
 umc_module = import_lib_module('umc_module')
 
@@ -49,9 +51,10 @@ JPG = b'\xff\xd8\xff\xe0\x00\x10JFIF\x00\x01\x01\x01\x01,\x01,\x00\x00\xff\xdb\x
 try:
     import univention.admin.uexceptions
 except ImportError:
-    import univention  # noqa: E402
     import argparse  # noqa: E402
     import sys  # noqa: E402
+
+    import univention  # noqa: E402
     univention.admin = argparse.Namespace()
     univention.admin.uexceptions = argparse.Namespace()
     univention.admin.uexceptions.valueError = ValueError

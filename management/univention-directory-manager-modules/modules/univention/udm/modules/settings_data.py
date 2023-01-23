@@ -32,6 +32,7 @@
 """Module and object specific for "settings/data" UDM module."""
 
 from __future__ import absolute_import, unicode_literals
+
 from ..encoders import Base64Bzip2BinaryPropertyEncoder
 from .generic import GenericModule, GenericObject, GenericObjectProperties
 

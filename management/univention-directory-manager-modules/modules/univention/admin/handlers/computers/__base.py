@@ -32,27 +32,28 @@
 
 """|UDM| module for generic computer objects"""
 
-import time
 import functools
+import time
+
 from ldap.filter import filter_format
 
 import univention.admin.config
 import univention.admin.filter
 import univention.admin.handlers
+import univention.admin.handlers.dns.forward_zone
+import univention.admin.handlers.dns.reverse_zone
+import univention.admin.handlers.groups.group
+import univention.admin.handlers.networks.network
 import univention.admin.localization
 import univention.admin.modules
 import univention.admin.password
+import univention.admin.samba
 import univention.admin.uexceptions
 import univention.admin.uldap
-import univention.admin.samba
+import univention.debug as ud
 from univention.admin import nagios
-import univention.admin.handlers.groups.group
-import univention.admin.handlers.dns.forward_zone
-import univention.admin.handlers.dns.reverse_zone
-import univention.admin.handlers.networks.network
 from univention.admin.certificate import PKIIntegration
 
-import univention.debug as ud
 
 translation = univention.admin.localization.translation('univention.admin.handlers.computers')
 _ = translation.translate

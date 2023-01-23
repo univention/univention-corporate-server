@@ -35,16 +35,17 @@
 # <https://www.gnu.org/licenses/>.
 
 from __future__ import print_function
+
 import os
 import subprocess
-
-from distutils.core import setup
-from distutils.command.build import build
 from distutils import cmd
-
+from distutils.command.build import build
+from distutils.core import setup
 from email.utils import parseaddr
+
 from debian.changelog import Changelog
 from debian.deb822 import Deb822
+
 
 dch = Changelog(open('debian/changelog'))
 dsc = Deb822(open('debian/control'))

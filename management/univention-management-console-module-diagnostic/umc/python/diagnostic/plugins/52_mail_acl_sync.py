@@ -32,7 +32,7 @@
 
 import itertools as it
 import subprocess
-from typing import Any, Dict, Iterator, List, Set, Tuple, TypeVar, Type
+from typing import Any, Dict, Iterator, List, Set, Tuple, Type, TypeVar
 
 import univention.admin.modules as udm_modules
 import univention.admin.uldap
@@ -42,6 +42,7 @@ from univention.config_registry import ucr_live as configRegistry
 from univention.lib.i18n import Translation
 from univention.lib.misc import custom_username
 from univention.management.console.modules.diagnostic import MODULE, Instance, Warning, util
+
 
 _ = Translation('univention-management-console-module-diagnostic').translate
 

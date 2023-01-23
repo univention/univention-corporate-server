@@ -52,8 +52,9 @@
 
 from __future__ import print_function
 
-from univention.lib import fstab
 import subprocess
+
+from univention.lib import fstab
 
 
 def _do_modify_extfs_option(fstab_partition, options=[], activate=True):

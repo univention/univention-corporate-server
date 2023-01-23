@@ -32,16 +32,17 @@
 
 """|UDM| module for the Ubuntu clients"""
 
-from univention.admin.layout import Tab, Group
 import univention.admin.filter
 import univention.admin.handlers
-import univention.admin.syntax
-import univention.admin.mapping
-import univention.admin.uexceptions
 import univention.admin.localization
+import univention.admin.mapping
+import univention.admin.syntax
+import univention.admin.uexceptions
 from univention.admin import nagios
-from univention.admin.handlers.computers.__base import ComputerObject
 from univention.admin.certificate import register_pki_integration
+from univention.admin.handlers.computers.__base import ComputerObject
+from univention.admin.layout import Group, Tab
+
 
 translation = univention.admin.localization.translation('univention.admin.handlers.computers')
 _ = translation.translate

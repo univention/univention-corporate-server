@@ -40,42 +40,40 @@ and the communication with the module processes
 """
 
 import base64
-import ldap
-import os
-import time
-import json
-import traceback
-import gzip
-import re
 import errno
+import gzip
+import json
+import os
 import pipes
+import re
+import time
+import traceback
 
-import six
+import ldap
 import ldap.filter
-
 import notifier
-from notifier import popen
-from notifier import threads
+import six
+from notifier import popen, threads
 
 import univention.admin.uexceptions as udm_errors
 
-from .message import Response, Request, MIMETYPE_JSON
-from .client import Client, NoSocketError
-from .version import VERSION
-from .definitions import status_description, SERVER_ERR_MODULE_FAILED, SERVER_ERR_MODULE_DIED
-
-from ..resources import moduleManager, categoryManager
+from ..acl import ACLs, LDAP_ACLs
 from ..auth import AuthHandler
-from ..pam import PamAuth, PasswordChangeFailed
-from ..acl import LDAP_ACLs, ACLs
-from ..log import CORE
-from ..config import MODULE_INACTIVITY_TIMER, MODULE_DEBUG_LEVEL, MODULE_COMMAND, ucr
-from ..locales import I18N, I18N_Manager
 from ..base import Base
-from ..error import UMC_Error, Unauthorized, BadRequest, NotFound, Forbidden, ServiceUnavailable
+from ..config import MODULE_COMMAND, MODULE_DEBUG_LEVEL, MODULE_INACTIVITY_TIMER, ucr
+from ..error import BadRequest, Forbidden, NotFound, ServiceUnavailable, UMC_Error, Unauthorized
 from ..ldap import get_machine_connection, reset_cache as reset_ldap_connection_cache
-from ..modules.sanitizers import StringSanitizer, DictSanitizer
-from ..modules.decorators import sanitize, sanitize_args, simple_response, allow_get_request
+from ..locales import I18N, I18N_Manager
+from ..log import CORE
+from ..modules.decorators import allow_get_request, sanitize, sanitize_args, simple_response
+from ..modules.sanitizers import DictSanitizer, StringSanitizer
+from ..pam import PamAuth, PasswordChangeFailed
+from ..resources import categoryManager, moduleManager
+from .client import Client, NoSocketError
+from .definitions import SERVER_ERR_MODULE_DIED, SERVER_ERR_MODULE_FAILED, status_description
+from .message import MIMETYPE_JSON, Request, Response
+from .version import VERSION
+
 
 try:
     from typing import Any, Dict, Iterable, List, Optional  # noqa: F401

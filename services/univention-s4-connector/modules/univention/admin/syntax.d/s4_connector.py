@@ -33,8 +33,8 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-from univention.admin.syntax import integer, _
 import univention.admin.uexceptions
+from univention.admin.syntax import _, integer
 
 
 class SignedInteger(integer):  # Workaround for Bug #50591

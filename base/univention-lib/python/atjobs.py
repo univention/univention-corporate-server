@@ -41,10 +41,11 @@ uses time stamps in seconds for scheduling jobs.
 """
 
 import datetime
-import subprocess
-import re
 import locale
+import re
+import subprocess
 from typing import Dict, List, Mapping, Optional, Union  # noqa: F401
+
 
 __all__ = ['add', 'list', 'load', 'remove', 'reschedule', 'AtJob']
 

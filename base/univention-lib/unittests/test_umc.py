@@ -31,10 +31,12 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-import pytest
 from argparse import Namespace
 
+import pytest
+
 from .conftest import import_lib_module
+
 
 umc = import_lib_module('umc')
 

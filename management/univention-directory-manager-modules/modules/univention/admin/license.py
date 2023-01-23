@@ -33,16 +33,19 @@
 """|UDM| wrapper around :py:mod:`univention.license` that translates error codes to exceptions"""
 
 import collections
+
 from ldap.filter import filter_format
-import univention.license
-import univention.debug as ud
-import univention.admin.modules
+
 import univention.admin.filter
-import univention.admin.uexceptions
-import univention.admin.localization
 import univention.admin.license_data as licenses
+import univention.admin.localization
+import univention.admin.modules
+import univention.admin.uexceptions
+import univention.debug as ud
+import univention.license
 from univention.admin._ucr import configRegistry
 from univention.lib.misc import custom_username
+
 
 translation = univention.admin.localization.translation('univention/admin')
 _ = translation.translate

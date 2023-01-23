@@ -3,6 +3,7 @@ from os.path import dirname, join, pardir
 
 import pytest
 
+
 sys.path.insert(0, join(dirname(__file__), pardir, 'python'))
 import univention.config_registry.backend as be  # noqa: E402
 import univention.config_registry.handler as h  # noqa: E402

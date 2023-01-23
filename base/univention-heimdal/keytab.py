@@ -43,8 +43,10 @@ from typing import Any, Dict, List
 
 import ldap.dn
 
-import listener
 import univention.debug as ud
+
+import listener
+
 
 hostname = listener.configRegistry['hostname']
 domainname = listener.configRegistry['domainname']

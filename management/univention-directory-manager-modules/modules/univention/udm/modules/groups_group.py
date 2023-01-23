@@ -32,9 +32,10 @@
 """Module and object specific for "groups/group" UDM module."""
 
 from __future__ import absolute_import, unicode_literals
+
 from ..encoders import (
-    dn_list_property_encoder_for, SambaGroupTypePropertyEncoder, StringIntBooleanPropertyEncoder,
-    StringIntPropertyEncoder,
+    SambaGroupTypePropertyEncoder, StringIntBooleanPropertyEncoder, StringIntPropertyEncoder,
+    dn_list_property_encoder_for,
 )
 from .generic import GenericModule, GenericObject, GenericObjectProperties
 

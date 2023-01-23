@@ -3,10 +3,11 @@
 
 import subprocess
 
-from univention.testing.selenium import UMCSeleniumTest
 from selenium.common.exceptions import TimeoutException
-from univention.appcenter.ucr import ucr_load, ucr_get
-from univention.appcenter.udm import search_objects, get_machine_connection
+
+from univention.appcenter.ucr import ucr_get, ucr_load
+from univention.appcenter.udm import get_machine_connection, search_objects
+from univention.testing.selenium import UMCSeleniumTest
 
 
 test = UMCSeleniumTest()

@@ -37,6 +37,7 @@ import re
 import sys
 from typing import Any, Callable, Dict, Iterable, List, Tuple, Union  # noqa: F401
 
+
 __all__ = [
     'TEST_BASE', 'LOG_BASE', 'setup_environment', 'setup_debug',
     'strip_indent', 'get_sections', 'get_tests', 'UCSVersion',

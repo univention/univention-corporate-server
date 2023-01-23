@@ -29,8 +29,9 @@
 # License with the Debian GNU/Linux or Univention distribution in file
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
-import unittest
 import os
+
+import unittest
 
 import univention.license as ul
 

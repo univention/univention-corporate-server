@@ -43,8 +43,9 @@ from subprocess import PIPE, Popen
 from tempfile import NamedTemporaryFile
 from typing import Dict, List, Text, Tuple
 
-import listener
 import univention.debug as ud
+
+import listener
 
 
 description = 'Manage simpleSAMLphp service providers'

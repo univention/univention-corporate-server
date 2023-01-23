@@ -18,6 +18,7 @@ from essential.mail import (
     create_shared_mailfolder, get_dovecot_maildir, get_dovecot_shared_folder_maildir, random_email,
 )
 
+
 TIMEOUT_MAIL = 10
 
 

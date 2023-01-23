@@ -41,8 +41,10 @@ from typing import Dict, List
 
 from six.moves.urllib_parse import urljoin
 
-import listener
 import univention.debug as ud
+
+import listener
+
 
 description = 'PXE configuration for the Server installer'
 filter = '(|(objectClass=univentionDomainController)(objectClass=univentionMemberServer)(objectClass=univentionClient))'

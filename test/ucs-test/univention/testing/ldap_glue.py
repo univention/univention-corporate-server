@@ -1,14 +1,15 @@
 import os
-import sys
 import subprocess
+import sys
 
 import ldap
 import ldap.dn
 from ldap import modlist
 from ldap.controls import LDAPControl
 
-from univention.config_registry import ConfigRegistry
 import univention.testing.connector_common as tcommon
+from univention.config_registry import ConfigRegistry
+
 
 ucr = ConfigRegistry()
 ucr.load()

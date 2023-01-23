@@ -30,15 +30,17 @@
 # <https://www.gnu.org/licenses/>.
 
 from __future__ import absolute_import, unicode_literals
+
 import sys
-import six
+
 import ldap
+import six
 from ldap.filter import filter_format
-import univention.admin.uldap
-import univention.config_registry
-import univention.admin.uldap
+
 import univention.admin.uexceptions
+import univention.admin.uldap
 import univention.config_registry
+
 from .exceptions import ConnectionError
 
 

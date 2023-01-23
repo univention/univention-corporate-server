@@ -48,6 +48,7 @@ from univention.config_registry import ConfigRegistry
 from univention.config_registry.frontend import ucr_update
 from univention.config_registry.interfaces import Interfaces
 
+
 IPAddress = Union[IPv4Address, IPv6Address]
 DictAddr2Str = Dict[IPAddress, Optional[str]]
 

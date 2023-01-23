@@ -35,6 +35,8 @@
 # <https://www.gnu.org/licenses/>.
 
 from univention.lib.i18n import NullTranslation
+
+
 _ = NullTranslation('univention.management.console').translate
 
 #: buffer size for reading commands from socket

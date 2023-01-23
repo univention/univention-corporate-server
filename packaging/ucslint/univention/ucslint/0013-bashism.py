@@ -36,6 +36,7 @@ import subprocess
 import univention.ucslint.base as uub
 from univention.ucslint.common import RE_HASHBANG_SHELL
 
+
 RE_BASHISM = re.compile(r'^.*?\s+line\s+(\d+)\s+[(](.*?)[)][:]\n([^\n]+)$')
 RE_LOCAL = re.compile(
     r'''

@@ -32,14 +32,13 @@
 
 """|UDM| module for all mail objects"""
 
-from univention.admin.layout import Tab
 import univention.admin.filter
-import univention.admin.localization
-
 import univention.admin.handlers
 import univention.admin.handlers.mail.domain
 import univention.admin.handlers.mail.folder
 import univention.admin.handlers.mail.lists
+import univention.admin.localization
+from univention.admin.layout import Tab
 
 
 translation = univention.admin.localization.translation('univention.admin.handlers.mail')

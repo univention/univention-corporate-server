@@ -37,20 +37,21 @@
 from __future__ import print_function
 
 import errno
+import fcntl
 import os
 import socket
-import fcntl
-
-from univention.lib.i18n import Translation
-
-from .message import Request, Response, IncompleteMessageError, ParseError
-from .definitions import RECV_BUFFER_SIZE, BAD_REQUEST_AUTH_FAILED, SUCCESS, status_description
-from ..log import CORE, PROTOCOL
-from ..config import ucr
-from OpenSSL import SSL
 
 import notifier
 from notifier import signals
+from OpenSSL import SSL
+
+from univention.lib.i18n import Translation
+
+from ..config import ucr
+from ..log import CORE, PROTOCOL
+from .definitions import BAD_REQUEST_AUTH_FAILED, RECV_BUFFER_SIZE, SUCCESS, status_description
+from .message import IncompleteMessageError, ParseError, Request, Response
+
 
 try:
     from typing import Any, Dict, Iterable, List, Optional  # noqa: F401
@@ -411,6 +412,7 @@ class Client(signals.Provider, Translation):
 
 if __name__ == '__main__':
     from getpass import getpass
+
     from six.moves import input
 
     notifier.init(notifier.GENERIC)

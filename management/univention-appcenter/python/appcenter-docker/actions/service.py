@@ -37,10 +37,11 @@
 
 import os.path
 
+from univention.appcenter.actions import StoreAppAction, UniventionAppAction
 from univention.appcenter.app_cache import Apps
 from univention.appcenter.docker import MultiDocker
-from univention.appcenter.actions import UniventionAppAction, StoreAppAction
 from univention.appcenter.utils import call_process2
+
 
 ORIGINAL_INIT_SCRIPT = '/usr/share/docker-app-container-init-script'
 

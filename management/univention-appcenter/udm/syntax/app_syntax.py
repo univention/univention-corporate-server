@@ -33,7 +33,8 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-from univention.admin.syntax import boolean, TrueFalseUp, OkOrNot
+from univention.admin.syntax import OkOrNot, TrueFalseUp, boolean
+
 
 # For UCS systems < UCS 4.4 in the domain we define these syntax classes and distribute them
 

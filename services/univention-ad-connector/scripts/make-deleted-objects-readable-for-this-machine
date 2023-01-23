@@ -36,19 +36,22 @@
 
 
 from __future__ import print_function
+
 import sys
 import time
 from argparse import ArgumentParser
 
 import ldap
-import univention
-import univention.connector
-import univention.connector.ad
-import univention.config_registry
-from samba.dcerpc import security
-from samba.ndr import ndr_unpack, ndr_pack
 import ldap.controls
 from ldap.filter import filter_format
+from samba.dcerpc import security
+from samba.ndr import ndr_pack, ndr_unpack
+
+import univention
+import univention.config_registry
+import univention.connector
+import univention.connector.ad
+
 
 LDAP_SERVER_SHOW_DELETED_OID = '1.2.840.113556.1.4.417'
 LDAP_SERVER_SD_FLAGS_OID = '1.2.840.113556.1.4.801'

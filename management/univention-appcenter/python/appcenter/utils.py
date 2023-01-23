@@ -35,34 +35,37 @@
 # <https://www.gnu.org/licenses/>.
 #
 
+import ipaddress
 import os
 import os.path
+import pipes
 import re
 import shutil
-from subprocess import Popen, PIPE, STDOUT, list2cmdline
-import pipes
-from threading import Thread
-from uuid import uuid4
-import time
-import ipaddress
-import ssl
-from hashlib import md5, sha256
 import socket
+import ssl
+import time
+from hashlib import md5, sha256
 from locale import getlocale
 from logging import Logger  # noqa: F401
-from typing import TYPE_CHECKING, Any, Container, Dict, Iterable, List, Mapping, Optional, Sequence, Text, Tuple, Type, TypeVar, Union  # noqa: F401
+from subprocess import PIPE, STDOUT, Popen, list2cmdline
+from threading import Thread
+from typing import (  # noqa: F401
+    TYPE_CHECKING, Any, Container, Dict, Iterable, List, Mapping, Optional, Sequence, Text, Tuple, Type, TypeVar, Union,
+)
+from uuid import uuid4
 
-from six.moves.configparser import RawConfigParser, ParsingError
-from six.moves import urllib_request, http_client
-from six.moves.urllib_parse import urlencode
-from six import string_types
 from ldap.filter import filter_format
+from six import string_types
+from six.moves import http_client, urllib_request
+from six.moves.configparser import ParsingError, RawConfigParser
+from six.moves.urllib_parse import urlencode
 
-from univention.lib.i18n import Translation
-from univention.config_registry.misc import key_shell_escape
-from univention.config_registry import interfaces
 from univention.appcenter.log import get_base_logger
 from univention.appcenter.ucr import ucr_get, ucr_keys
+from univention.config_registry import interfaces
+from univention.config_registry.misc import key_shell_escape
+from univention.lib.i18n import Translation
+
 
 if TYPE_CHECKING:
     from univention.appcenter.app import App  # noqa: F401

@@ -33,6 +33,7 @@
 
 from distutils.core import setup
 
+
 setup(
     py_modules=[
         'univention.debhelper',

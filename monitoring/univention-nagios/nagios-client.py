@@ -41,7 +41,9 @@ import stat
 from typing import Dict, List
 
 import univention.debug as ud
+
 from listener import SetUID, configRegistry, run
+
 
 description = 'Create configuration for Nagios nrpe server'
 filter = '(objectClass=univentionNagiosServiceClass)'

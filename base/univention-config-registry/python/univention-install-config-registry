@@ -37,12 +37,14 @@
 from __future__ import print_function
 
 import os
-import sys
 import subprocess
+import sys
 from argparse import ArgumentParser
 
 import univention.config_registry
-from univention.debhelper import doIt, binary_packages
+from univention.debhelper import binary_packages, doIt
+
+
 try:
     from shlex import quote
 except ImportError:

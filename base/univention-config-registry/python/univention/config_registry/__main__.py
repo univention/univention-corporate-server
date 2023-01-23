@@ -41,6 +41,7 @@ import sys
 from univention.config_registry.backend import StrictModeException
 from univention.config_registry.frontend import main
 
+
 if __name__ == '__main__':
     try:
         sys.exit(main(sys.argv[1:]))

@@ -31,11 +31,13 @@
 # <https://www.gnu.org/licenses/>.
 
 import os
-import sys
-import pytest
 import subprocess
+import sys
+
+import pytest
 
 from .conftest import import_lib_module
+
 
 locking = import_lib_module('locking')
 

@@ -34,10 +34,10 @@
 
 import univention.admin.filter
 import univention.admin.handlers
-import univention.admin.localization
-
 import univention.admin.handlers.shares.printer
 import univention.admin.handlers.shares.printergroup
+import univention.admin.localization
+
 
 translation = univention.admin.localization.translation('univention.admin.handlers.shares')
 _ = translation.translate

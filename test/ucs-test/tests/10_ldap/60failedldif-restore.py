@@ -21,6 +21,7 @@ from univention.testing.strings import random_name
 from univention.testing.ucr import UCSTestConfigRegistry
 from univention.testing.udm import UCSTestUDM
 
+
 LDIF_TIMEOUT = 5
 ldif_folder = '/var/lib/univention-directory-replication'
 failed_ldif = os.path.join(ldif_folder, 'failed.ldif')

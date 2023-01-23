@@ -37,25 +37,25 @@
 
 import os.path
 import shutil
-from glob import glob
-from getpass import getuser
 import subprocess
-from argparse import SUPPRESS, Action
-from tempfile import NamedTemporaryFile
 import traceback
+from argparse import SUPPRESS, Action
+from getpass import getuser
+from glob import glob
+from tempfile import NamedTemporaryFile
 
 from six import string_types
 from six.moves import input
 
-from univention.appcenter.app import App, DATA_DIR
 from univention.appcenter.actions import StoreAppAction, get_action
-from univention.appcenter.exceptions import Abort, NetworkError, AppCenterError, ParallelOperationInProgress
 from univention.appcenter.actions.register import Register
-from univention.appcenter.utils import get_locale, resolve_dependencies, call_process2
-from univention.appcenter.ucr import ucr_get
+from univention.appcenter.app import DATA_DIR, App
+from univention.appcenter.exceptions import Abort, AppCenterError, NetworkError, ParallelOperationInProgress
+from univention.appcenter.install_checks import check, get_requirement
+from univention.appcenter.packages import LockError, package_lock
 from univention.appcenter.settings import SettingValueError
-from univention.appcenter.packages import package_lock, LockError
-from univention.appcenter.install_checks import get_requirement, check
+from univention.appcenter.ucr import ucr_get
+from univention.appcenter.utils import call_process2, get_locale, resolve_dependencies
 
 
 class StoreConfigAction(Action):

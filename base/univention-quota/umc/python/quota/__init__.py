@@ -39,8 +39,8 @@ from __future__ import absolute_import
 import univention.management.console as umc
 import univention.management.console.modules as umcm
 
-from . import partition
-from . import user
+from . import partition, user
+
 
 _ = umc.Translation('univention-management-console-module-quota').translate
 

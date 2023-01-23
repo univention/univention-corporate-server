@@ -36,15 +36,17 @@
 # <https://www.gnu.org/licenses/>.
 #
 
-from univention.appcenter.app_cache import Apps
 from univention.appcenter.actions import get_action
-from univention.appcenter.exceptions import UpgradeStartContainerFailed, UpgradePackagesFailed, UpgradeReleaseFailed, UpgradeAppFailed, UpgradeBackupFailed
-from univention.appcenter.actions.upgrade import Upgrade
 from univention.appcenter.actions.docker_base import DockerActionMixin
 from univention.appcenter.actions.docker_install import Install
 from univention.appcenter.actions.service import Start
-from univention.appcenter.ucr import ucr_save, ucr_get
+from univention.appcenter.actions.upgrade import Upgrade
+from univention.appcenter.app_cache import Apps
+from univention.appcenter.exceptions import (
+    UpgradeAppFailed, UpgradeBackupFailed, UpgradePackagesFailed, UpgradeReleaseFailed, UpgradeStartContainerFailed,
+)
 from univention.appcenter.packages import update_packages
+from univention.appcenter.ucr import ucr_get, ucr_save
 
 
 class Upgrade(Upgrade, Install, DockerActionMixin):

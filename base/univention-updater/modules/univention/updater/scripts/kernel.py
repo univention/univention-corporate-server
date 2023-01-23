@@ -32,10 +32,11 @@
 """Prune no longer required Linux kernel packages."""
 
 from argparse import ArgumentParser, Namespace
-from typing import List, Optional
 from os import uname
+from typing import List, Optional
 
 from apt import Cache
+
 
 PREFIX = "linux-image-"
 

@@ -8,6 +8,7 @@ import unittest
 
 import univention.management.console.modules
 
+
 univention.management.console.modules.__path__.insert(0, os.path.join(os.path.dirname(__file__), os.path.pardir, 'umc/python'))
 from univention.management.console.modules.setup.setup_script import Profile  # noqa: E402
 

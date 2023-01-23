@@ -30,12 +30,14 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-import psutil
 from typing import Dict, Iterator
+
+import psutil
 
 from univention.config_registry import ucr_live as ucr
 from univention.lib.i18n import Translation
 from univention.management.console.modules.diagnostic import MODULE, Critical, Instance, Warning
+
 
 _ = Translation('univention-management-console-module-diagnostic').translate
 

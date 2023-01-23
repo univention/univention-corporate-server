@@ -32,15 +32,18 @@
 
 """|UDM| hook definitions for modifying |LDAP| calls when objects are created, modifier or deleted."""
 
-import sys
 import io
 import os
+import sys
 import traceback
-import six
 from typing import TYPE_CHECKING, List, Tuple, Union  # noqa: F401
+
+import six
 
 import univention.debug as ud
 from univention.admin import localization
+
+
 if TYPE_CHECKING:
     import univention.admin.handlers  # noqa: F401
     AddList = List[Tuple[str, List[str]]]

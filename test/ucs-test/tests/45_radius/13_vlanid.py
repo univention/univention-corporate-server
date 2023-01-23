@@ -6,12 +6,12 @@
 ## join: true
 ## exposure: dangerous
 
-import pytest
-import subprocess
 import re
+import subprocess
 
-from univention.config_registry import handler_set as ucr_set
-from univention.config_registry import handler_unset as ucr_unset
+import pytest
+
+from univention.config_registry import handler_set as ucr_set, handler_unset as ucr_unset
 
 
 @pytest.fixture()

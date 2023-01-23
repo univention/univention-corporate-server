@@ -35,20 +35,20 @@
 # <https://www.gnu.org/licenses/>.
 
 import base64
+
 import six
 
+import univention.config_registry as ucr
 import univention.s4connector.s4
+import univention.s4connector.s4.computer
+import univention.s4connector.s4.dc
+import univention.s4connector.s4.dns
+import univention.s4connector.s4.ntsecurity_descriptor
 import univention.s4connector.s4.password
 import univention.s4connector.s4.sid_mapping
-import univention.s4connector.s4.ntsecurity_descriptor
-import univention.s4connector.s4.dns
-import univention.s4connector.s4.dc
-import univention.s4connector.s4.computer
 import univention.s4connector.s4.user
-
-import univention.config_registry as ucr
-
 from univention.s4connector.s4 import format_escaped
+
 
 configRegistry = ucr.ConfigRegistry()
 configRegistry.load()

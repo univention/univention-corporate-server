@@ -37,12 +37,12 @@
 
 from __future__ import print_function
 
-import os
-import sys
 import gzip
+import os
 import pipes
 import shlex
 import subprocess
+import sys
 
 import ldap.dn
 

@@ -37,15 +37,16 @@
 """
 from __future__ import print_function
 
+import json
 import sys
 from datetime import datetime
 from functools import partial
-import json
 
-from pyparsing import Word, alphas, Suppress, Combine, nums, string, Regex, ParseException
+from pyparsing import Combine, ParseException, Regex, Suppress, Word, alphas, nums, string
 
-from univention.admindiary import DiaryEntry, get_logger, get_events_to_reject
+from univention.admindiary import DiaryEntry, get_events_to_reject, get_logger
 from univention.admindiary.backend import get_client
+
 
 get_logger = partial(get_logger, 'backend')
 

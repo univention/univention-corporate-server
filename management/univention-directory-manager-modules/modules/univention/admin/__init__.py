@@ -35,18 +35,22 @@
 from __future__ import absolute_import, print_function
 
 import copy
-import sys
 import re
+import sys
 import time
-from typing import TYPE_CHECKING, Any, Callable, Container, Iterable, List, Match, Optional, Tuple, Type, Union  # noqa: F401
+from typing import (  # noqa: F401
+    TYPE_CHECKING, Any, Callable, Container, Iterable, List, Match, Optional, Tuple, Type, Union,
+)
 
 import six
-from ldap.filter import filter_format
 import unidecode
+from ldap.filter import filter_format
 
 import univention.config_registry
 import univention.debug as ud
 from univention.admin._ucr import configRegistry
+
+
 if TYPE_CHECKING:
     from univention.admin.layout import Tab  # noqa: F401
 
@@ -636,7 +640,9 @@ def _ldap_cache(ttl=10, cache_none=True):
 
 
 univention.admin = sys.modules[__name__]
-from univention.admin import modules, objects, syntax, hook, mapping  # noqa: F401,E402
+from univention.admin import hook, mapping, modules, objects, syntax  # noqa: F401,E402
+
+
 syntax.import_syntax_files()
 hook.import_hook_files()
 

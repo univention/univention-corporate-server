@@ -34,11 +34,11 @@
 
 import crypt
 
+import pytest
 from univentionunittests.umc import import_umc_module
 
 from univention.management.console.modules import UMC_Error
 
-import pytest
 
 selfservice = import_umc_module('passwordreset')
 

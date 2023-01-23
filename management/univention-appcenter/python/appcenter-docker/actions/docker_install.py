@@ -36,11 +36,11 @@
 # <https://www.gnu.org/licenses/>.
 #
 
-from univention.appcenter.actions.install import Install
 from univention.appcenter.actions.docker_base import DockerActionMixin
-from univention.appcenter.ucr import ucr_save, ucr_get
+from univention.appcenter.actions.install import Install
 from univention.appcenter.exceptions import InstallSetupFailed, ReinitializeError
 from univention.appcenter.log import LogCatcher
+from univention.appcenter.ucr import ucr_get, ucr_save
 
 
 class Install(Install, DockerActionMixin):

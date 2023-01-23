@@ -8,6 +8,7 @@ from xml.sax.saxutils import escape as escape_xml
 from univention.testing.codes import TestCodes
 from univention.testing.data import TestEnvironment, TestFormatInterface, TestResult  # noqa: F401
 
+
 __all__ = ['HTML']
 
 URI_BUG = 'https://forge.univention.org/bugzilla/show_bug.cgi?id=%s'

@@ -36,29 +36,32 @@
 
 # standard library
 import os.path
-from contextlib import contextmanager
 import socket
 import ssl
+from contextlib import contextmanager
 from hashlib import md5
-from urllib.parse import urlparse, ParseResult
+from urllib.parse import ParseResult, urlparse
 
 # related third party
-from six.moves import urllib_request, http_client
-# import psutil # our psutil is outdated. re-enable when methods are supported
+from six.moves import http_client, urllib_request
 
-# univention
-from univention.management.console.log import MODULE
-import univention.management.console as umc
 import univention.config_registry
+import univention.management.console as umc
+from univention.admin.handlers.computers import (
+    domaincontroller_backup, domaincontroller_master, domaincontroller_slave, memberserver,
+)
 from univention.config_registry.frontend import ucr_update
-from univention.admin.handlers.computers import domaincontroller_master
-from univention.admin.handlers.computers import domaincontroller_backup
-from univention.admin.handlers.computers import domaincontroller_slave
-from univention.admin.handlers.computers import memberserver
-
 # local application
 from univention.management.console.ldap import get_machine_connection
-from .constants import COMPONENT_BASE, COMP_PARAMS, STATUS_ICONS, DEFAULT_ICON, PUT_SUCCESS, PUT_PROCESSING_ERROR
+# univention
+from univention.management.console.log import MODULE
+
+from .constants import COMP_PARAMS, COMPONENT_BASE, DEFAULT_ICON, PUT_PROCESSING_ERROR, PUT_SUCCESS, STATUS_ICONS
+
+
+# import psutil # our psutil is outdated. re-enable when methods are supported
+
+
 
 _ = umc.Translation('univention-management-console-module-appcenter').translate
 

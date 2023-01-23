@@ -37,6 +37,7 @@ from typing import List  # noqa: F401
 
 import univention.ucslint.base as uub
 
+
 RE_SKIP = re.compile(
     '|'.join((
         'temporary wrapper script for',

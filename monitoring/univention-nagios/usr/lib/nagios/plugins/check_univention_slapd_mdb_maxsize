@@ -33,12 +33,13 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-import os
-import sys
 import argparse
+import os
 import subprocess
+import sys
 
 from univention.config_registry import ConfigRegistry
+
 
 STATE_OK = 0
 STATE_WARNING = 1

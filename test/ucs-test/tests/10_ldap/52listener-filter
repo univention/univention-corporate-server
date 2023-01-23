@@ -25,6 +25,7 @@ from univention.testing.ucr import UCSTestConfigRegistry
 from univention.testing.udm import UCSTestUDM
 from univention.testing.utils import verify_ldap_object
 
+
 MODULE = 'container/ou'
 UNIQUE = 'ucs-test38823'
 TMPDIR = '/tmp'

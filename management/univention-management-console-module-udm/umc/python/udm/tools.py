@@ -34,19 +34,19 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
+import binascii
+
 import ldap
 import ldap.modlist
 import ldif
-import binascii
-
-from six.moves.urllib_request import build_opener, ProxyHandler
 from six.moves import urllib_request
+from six.moves.urllib_request import ProxyHandler, build_opener
 
-import univention.admin.uldap
 import univention.admin.uexceptions as udm_errors
+import univention.admin.uldap
 from univention.lib.i18n import Translation
-
 from univention.management.console.log import MODULE
+
 
 _ = Translation('univention-management-console-module-udm').translate
 

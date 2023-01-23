@@ -31,14 +31,15 @@
 # <https://www.gnu.org/licenses/>.
 """Univention Updater helper functions for managing a local repository."""
 
-from __future__ import absolute_import
-from __future__ import print_function
+from __future__ import absolute_import, print_function
 
+import gzip
 import os
 import shutil
 import subprocess
 import sys
-import gzip
+
+
 try:
     from typing import IO, List, Optional, Tuple  # noqa: F401
 except ImportError:
@@ -46,6 +47,7 @@ except ImportError:
 
 from univention.config_registry import ConfigRegistry
 from univention.lib.ucs import UCS_Version  # noqa: F401
+
 
 configRegistry = ConfigRegistry()
 configRegistry.load()

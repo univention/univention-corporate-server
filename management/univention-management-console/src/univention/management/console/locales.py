@@ -48,16 +48,17 @@ translations. Components that provide their own translation files:
 * module definitions
 """
 
-from locale import getdefaultlocale
-from struct import error as StructError
 import os
 import traceback
+from locale import getdefaultlocale
+from struct import error as StructError
 
 import polib
 
+from univention.lib.i18n import Locale
+
 from .log import LOCALE
 
-from univention.lib.i18n import Locale
 
 '''
 usage:

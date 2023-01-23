@@ -16,6 +16,7 @@ from urllib.error import HTTPError
 from urllib.parse import quote, unquote, urlsplit, urlunsplit
 from urllib.request import Request, urlopen
 
+
 FuncT = TypeVar("FuncT", bound=Callable[..., None])
 
 PORT = 3128

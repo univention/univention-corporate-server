@@ -48,8 +48,10 @@ from samba.ndr import ndr_pack
 from samba.param import LoadParm
 from samba.provision import setup_idmapdb
 
-import listener
 import univention.debug as ud
+
+import listener
+
 
 name = 'samba4-idmap'
 description = 'Update local IDmap entries'

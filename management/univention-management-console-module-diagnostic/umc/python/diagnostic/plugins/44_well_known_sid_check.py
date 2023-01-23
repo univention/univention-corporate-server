@@ -41,6 +41,7 @@ from univention.lib import s4
 from univention.lib.i18n import Translation
 from univention.management.console.modules.diagnostic import MODULE, Instance, Warning, util
 
+
 _ = Translation('univention-management-console-module-diagnostic').translate
 
 title = _('Check well known SIDs')

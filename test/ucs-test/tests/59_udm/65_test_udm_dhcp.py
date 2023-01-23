@@ -15,6 +15,7 @@ import univention.testing.strings as uts
 import univention.testing.udm as udm_test
 from univention.testing import utils
 
+
 SUBNET_IP4 = '10.20.30.0'
 SUBNET_MASK_IP4 = '24'
 

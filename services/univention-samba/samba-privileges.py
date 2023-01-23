@@ -40,7 +40,9 @@ from typing import Dict, Iterable, List
 import tdb
 
 import univention.debug as ud
+
 from listener import SetUID
+
 
 SAMBA_PRIVILEGES = {
     b"SeMachineAccountPrivilege": {"number": 16, "index": 0},

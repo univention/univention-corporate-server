@@ -12,11 +12,14 @@ from operator import itemgetter
 
 import pytest
 
-from univention.admin.rest.client import UDM as UDMClient, Forbidden, PreconditionFailed, Unauthorized, UnprocessableEntity
+from univention.admin.rest.client import (
+    UDM as UDMClient, Forbidden, PreconditionFailed, Unauthorized, UnprocessableEntity,
+)
 from univention.config_registry import ConfigRegistry, handler_set
 from univention.lib.misc import custom_groupname
 from univention.testing.udm import UDM, UCSTestUDM_CreateUDMObjectFailed
 from univention.testing.utils import UCSTestDomainAdminCredentials
+
 
 ucr = ConfigRegistry()
 ucr.load()

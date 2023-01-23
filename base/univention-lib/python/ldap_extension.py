@@ -31,40 +31,38 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-from __future__ import absolute_import
-from __future__ import print_function
+from __future__ import absolute_import, print_function
 
+import base64
+import bz2
+import datetime
 import inspect
 import json
 import os
-import shutil
 import re
-import sys
+import shutil
 import subprocess
-import bz2
-import base64
-import time
+import sys
 import tempfile
-import datetime
-from optparse import OptionParser, OptionGroup, Option, OptionValueError, Values  # noqa: F401
+import time
+from abc import ABCMeta, abstractmethod, abstractproperty
 from copy import copy
-from abc import ABCMeta, abstractproperty, abstractmethod
+from optparse import Option, OptionGroup, OptionParser, OptionValueError, Values  # noqa: F401
 from typing import Dict, List, Optional, Tuple  # noqa: F401
 
-import six
 import apt
-import listener
-from ldap.filter import filter_format
+import six
 from ldap.dn import escape_dn_chars
+from ldap.filter import filter_format
 
-import univention.debug as ud
-from univention.config_registry import configHandlers, ConfigRegistry
-from univention.admin import uldap as udm_uldap
-from univention.admin import modules as udm_modules
-from univention.admin import uexceptions as udm_errors
 import univention.admin as udm
+import univention.debug as ud
+from univention.admin import modules as udm_modules, uexceptions as udm_errors, uldap as udm_uldap
+from univention.config_registry import ConfigRegistry, configHandlers
 from univention.lib.ucs import UCS_Version
 from univention.lib.umc_module import MIME_DESCRIPTION
+
+import listener
 
 
 class BaseDirRestriction(Exception):

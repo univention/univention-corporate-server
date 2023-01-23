@@ -34,12 +34,13 @@
 
 from __future__ import absolute_import
 
-import inspect
 import base64
+import inspect
 
-import univention.debug as ud
 import univention.admin.uexceptions
+import univention.debug as ud
 from univention.admin import localization
+
 
 translation = localization.translation('univention/admin')
 

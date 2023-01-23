@@ -34,6 +34,7 @@
 
 import pytest
 
+
 ANYTHING = object()
 
 

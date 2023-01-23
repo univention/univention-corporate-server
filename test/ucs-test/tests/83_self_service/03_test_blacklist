@@ -12,6 +12,7 @@ from test_self_service import SelfServiceUser
 from univention.lib.umc import HTTPError
 from univention.testing import utils
 
+
 error_get_contact = 'Either username or password is incorrect or you are not allowed to use this service.'
 error_set_contact = 'Either username or password is incorrect or you are not allowed to use this service.'
 error_get_reset_methods = 'No contact information is stored for this user. Resetting the password is not possible.'

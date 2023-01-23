@@ -31,12 +31,13 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-import time
 import datetime
+import time
 
 import pytest
 
 from .conftest import import_lib_module
+
 
 atjobs = import_lib_module("atjobs")
 

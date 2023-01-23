@@ -36,16 +36,18 @@
 # pylint: disable=R0903,R0201
 """Create installer VM programmatically."""
 
-from os.path import (join, split, splitext, exists, extsep)
-from sys import (exit, stderr)
 import argparse
 import json
-import libvirt
 import random
+from logging import DEBUG, basicConfig, getLogger
+from os.path import exists, extsep, join, split, splitext
+from sys import exit, stderr
+
+import libvirt
 from lxml import etree
 from lxml.builder import E
-from logging import (getLogger, basicConfig, DEBUG)
 from urlparse import urlparse
+
 
 __all__ = ('VirtualMachine',)
 

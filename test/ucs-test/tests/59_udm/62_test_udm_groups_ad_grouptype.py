@@ -13,6 +13,7 @@ import univention.testing.strings as uts
 import univention.testing.udm as udm_test
 from univention.testing import utils
 
+
 GROUP_TYPE_LOCAL = "-2147483643"
 GROUP_TYPE_DOMAIN_LOCAL = "-2147483644"
 GROUP_TYPE_GLOBAL = "-2147483646"

@@ -32,30 +32,32 @@
 
 from __future__ import print_function
 
-from os import SEEK_SET, fstat, rename, unlink, environ
-from os.path import exists
-from sys import exit, stderr
 from argparse import ArgumentParser, ArgumentTypeError
 from collections import namedtuple
-from logging import basicConfig, getLogger, CRITICAL, DEBUG
-from time import strftime, time
-from ctypes import c_bool, c_ulong, sizeof, Structure
-from errno import ENOENT
 from contextlib import contextmanager
+from ctypes import Structure, c_bool, c_ulong, sizeof
+from errno import ENOENT
 from itertools import chain
+from logging import CRITICAL, DEBUG, basicConfig, getLogger
+from os import SEEK_SET, environ, fstat, rename, unlink
+from os.path import exists
 from subprocess import call
+from sys import exit, stderr
+from time import strftime, time
 
 import ldap
+from ldap.controls import SimplePagedResultsControl
 from ldap.dn import is_dn, str2dn
 from ldap.ldapobject import ReconnectLDAPObject
-from ldap.controls import SimplePagedResultsControl
 from ldap.modlist import addModlist
+
 from univention.config_registry import ConfigRegistry
 
+
 try:
-    from typing import Any, IO, Dict, Iterator, List, Optional, Tuple, Type, NamedTuple  # noqa: F401
-    from types import TracebackType  # noqa: F401
     from argparse import Namespace  # noqa: F401
+    from types import TracebackType  # noqa: F401
+    from typing import IO, Any, Dict, Iterator, List, NamedTuple, Optional, Tuple, Type  # noqa: F401
     Transaction = NamedTuple("Transaction", [("tid", int), ("dn", str), ("command", str)])
 except ImportError:
     Transaction = namedtuple("Transaction", ["tid", "dn", "command"])  # type: ignore

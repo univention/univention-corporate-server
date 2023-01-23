@@ -36,14 +36,16 @@
 
 from __future__ import print_function
 
-import sys
-import os
-import fcntl
-import re
 import errno
+import fcntl
+import os
+import re
+import sys
 import time
 from enum import IntEnum
 from stat import S_ISREG
+
+
 try:
     from collections.abc import Mapping, MutableMapping  # Python 3.3+
 except ImportError:
@@ -53,15 +55,19 @@ import six
 
 from univention.config_registry.handler import run_filter
 
+
 if six.PY2:
     from io import open
 
     def overload(f):  # type ignore
         pass
 try:
-    from typing import overload  # noqa: F811
-    from typing import Any, Dict, IO, Iterator, List, ItemsView, NoReturn, Optional, Set, Tuple, Type, TypeVar, Union  # noqa: F401
     from types import TracebackType  # noqa: F401
+    from typing import overload  # noqa: F811
+    from typing import (  # noqa: F401
+        IO, Any, Dict, ItemsView, Iterator, List, NoReturn, Optional, Set, Tuple, Type, TypeVar, Union,
+    )
+
     from typing_extension import Literal  # noqa: F401
     _T = TypeVar('_T', bound='ReadOnlyConfigRegistry')
     _VT = TypeVar('_VT')

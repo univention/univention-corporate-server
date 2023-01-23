@@ -38,7 +38,7 @@ import os
 
 import six
 
-from .tokens import TextToken, ResolveToken, QueryToken, AttributeToken, PolicyToken, DateToken
+from .tokens import AttributeToken, DateToken, PolicyToken, QueryToken, ResolveToken, TextToken
 
 
 class Output(object):

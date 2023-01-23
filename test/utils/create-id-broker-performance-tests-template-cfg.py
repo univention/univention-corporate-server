@@ -4,6 +4,7 @@
 import sys
 from configparser import ConfigParser
 
+
 template_file = "scenarios/autotest-247-ucsschool-id-broker.cfg"
 
 config = ConfigParser(interpolation=None)

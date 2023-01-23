@@ -59,6 +59,7 @@ import logging
 import sys
 from contextlib import contextmanager
 
+
 LOG_FILE = '/var/log/univention/appcenter.log'
 
 

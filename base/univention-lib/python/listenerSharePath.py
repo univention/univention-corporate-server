@@ -31,13 +31,14 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
+import fnmatch
 import os
 import pipes
-import sys
-import fnmatch
 import shutil
+import sys
 from functools import reduce
 from typing import Dict, List, Optional  # noqa: F401
+
 
 if sys.version_info >= (3,):
     from subprocess import getstatusoutput

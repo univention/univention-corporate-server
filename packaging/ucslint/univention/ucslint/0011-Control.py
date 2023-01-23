@@ -36,6 +36,7 @@ import re
 import univention.ucslint.base as uub
 from univention.ucslint.common import RE_DEBIAN_CHANGELOG
 
+
 RE_DEP = re.compile(
     r'''
     (?P<name>[0-9a-z][+.0-9a-z-]+)

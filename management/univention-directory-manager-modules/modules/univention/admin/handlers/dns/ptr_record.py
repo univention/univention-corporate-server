@@ -32,15 +32,16 @@
 
 """|UDM| module for |DNS| reverse pointer records (PTR)"""
 
-from univention.admin.layout import Tab, Group
+import ipaddress
+
 import univention.admin
 import univention.admin.handlers
 import univention.admin.localization
-from univention.admin.filter import (expression, conjunction)
-from univention.admin.handlers.dns import ARPA_IP4, ARPA_IP6
-
 import univention.debug as ud
-import ipaddress
+from univention.admin.filter import conjunction, expression
+from univention.admin.handlers.dns import ARPA_IP4, ARPA_IP6
+from univention.admin.layout import Group, Tab
+
 
 translation = univention.admin.localization.translation('univention.admin.handlers.dns')
 _ = translation.translate

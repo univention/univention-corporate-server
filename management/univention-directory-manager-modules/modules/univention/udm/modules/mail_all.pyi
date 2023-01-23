@@ -45,10 +45,11 @@ mail/* and oxmail/* in univentionObjectType.
 """
 
 from __future__ import absolute_import, unicode_literals
-from ..encoders import BaseEncoderTV
-from .generic import GenericModule, GenericObject, GenericObjectProperties, OriUdmHandlerTV
 
 from typing import Dict, Text
+
+from ..encoders import BaseEncoderTV
+from .generic import GenericModule, GenericObject, GenericObjectProperties, OriUdmHandlerTV
 
 
 class MailAllObjectProperties(GenericObjectProperties):

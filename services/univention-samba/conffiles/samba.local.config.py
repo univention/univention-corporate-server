@@ -36,6 +36,7 @@
 
 import sys
 
+
 try:
     from univention.lib.share_restrictions import ShareConfiguration
 except ImportError as exc:

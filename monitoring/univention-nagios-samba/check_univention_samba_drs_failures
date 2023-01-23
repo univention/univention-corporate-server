@@ -33,14 +33,16 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-from samba.param import LoadParm
-from samba.credentials import Credentials
-from samba.netcmd.drs import drsuapi_connect, drs_parse_ntds_dn
-from samba.netcmd.common import netcmd_dnsname
-from samba.dcerpc import drsuapi
-
 import sys
+
+from samba.credentials import Credentials
+from samba.dcerpc import drsuapi
+from samba.netcmd.common import netcmd_dnsname
+from samba.netcmd.drs import drs_parse_ntds_dn, drsuapi_connect
+from samba.param import LoadParm
+
 import univention.config_registry
+
 
 NAGIOS_STATE_OK = 0
 NAGIOS_STATE_WARNING = 1

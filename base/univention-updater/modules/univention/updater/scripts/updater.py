@@ -43,24 +43,29 @@ from errno import ENOENT
 from subprocess import DEVNULL, call
 from textwrap import dedent, wrap
 
+
 try:
     import univention.debug as ud
 except ImportError:
     import univention.debug2 as ud  # type: ignore
 
+from univention.admindiary.client import write_event
+from univention.admindiary.events import UPDATE_FINISHED_FAILURE, UPDATE_FINISHED_SUCCESS, UPDATE_STARTED
 from univention.config_registry import ConfigRegistry
 from univention.lib.ucs import UCS_Version
-
-from univention.admindiary.client import write_event
-from univention.admindiary.events import UPDATE_STARTED, UPDATE_FINISHED_SUCCESS, UPDATE_FINISHED_FAILURE
-
-from univention.updater.errors import PreconditionError, ConfigurationError, RequiredComponentError, VerificationError, DownloadError
-from univention.updater.tools import Component, UniventionUpdater, LocalUpdater  # noqa: F401
+from univention.updater.commands import cmd_dist_upgrade, cmd_update
+from univention.updater.errors import (
+    ConfigurationError, DownloadError, PreconditionError, RequiredComponentError, VerificationError,
+)
 from univention.updater.locking import UpdaterLock, apt_lock
-from univention.updater.commands import cmd_update, cmd_dist_upgrade
+from univention.updater.tools import Component, LocalUpdater, UniventionUpdater  # noqa: F401
+
 
 try:
-    from typing import Container, Dict, IO, Iterable, Iterator, List, NoReturn, Optional, Set, Sequence, Tuple  # noqa: F401
+    from typing import (  # noqa: F401
+        IO, Container, Dict, Iterable, Iterator, List, NoReturn, Optional, Sequence, Set, Tuple,
+    )
+
     from typing_extensions import Literal  # noqa: F401
     _ESRC = Literal["SETTINGS", "PREPARATION", "PREUP", "UPDATE", "POSTUP"]
     _CMDS = Literal["local", "net"]

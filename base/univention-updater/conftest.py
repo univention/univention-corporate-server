@@ -14,8 +14,9 @@ from six.moves import urllib_parse, urllib_response
 import univention.updater.tools as U  # noqa: E402
 from univention.config_registry import ConfigRegistry
 
+
 try:
-    from typing import Any, Dict, IO, List, Sequence, Text, Union  # noqa: F401
+    from typing import IO, Any, Dict, List, Sequence, Text, Union  # noqa: F401
 except ImportError:
     pass
 

@@ -42,6 +42,7 @@ from univention.testing import utils
 from univention.testing.strings import random_name
 from univention.testing.utils import start_listener, stop_listener, wait_for_replication
 
+
 RETRY_COUNT = 20
 DELAY = 10
 

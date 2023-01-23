@@ -35,8 +35,8 @@
 """pytest runner for ucs-test"""
 
 
-import os
 import argparse
+import os
 
 
 class PytestRunner:

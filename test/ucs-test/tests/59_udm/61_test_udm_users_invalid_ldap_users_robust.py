@@ -10,6 +10,7 @@ import traceback
 
 import univention.admin.uexceptions
 
+
 mapping = {
     'default': {
         'sn': 'foo',

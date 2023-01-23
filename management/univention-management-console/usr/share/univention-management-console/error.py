@@ -34,8 +34,10 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-import json
 import cgitb
+import json
+
+
 cgitb.enable()
 
 

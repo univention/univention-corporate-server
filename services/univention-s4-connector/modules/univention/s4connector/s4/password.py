@@ -35,18 +35,19 @@
 # <https://www.gnu.org/licenses/>.
 
 
+import binascii
 import time
+import traceback
+
+import heimdal
 import ldap
+from ldap.controls import LDAPControl
+from samba.dcerpc import drsblobs
+from samba.ndr import ndr_pack, ndr_print, ndr_unpack
+
 import univention.debug2 as ud
 import univention.s4connector.s4
 from univention.s4connector.s4 import format_escaped
-import binascii
-
-from samba.ndr import ndr_unpack, ndr_pack, ndr_print
-from samba.dcerpc import drsblobs
-import heimdal
-from ldap.controls import LDAPControl
-import traceback
 
 
 class Krb5Context(object):

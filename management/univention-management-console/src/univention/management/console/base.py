@@ -110,27 +110,28 @@ Methods
 
 from __future__ import absolute_import
 
+import locale
 import re
 import sys
-import locale
 import traceback
 
-import six
 import ldap
 import ldap.sasl
+import six
 from notifier import signals
 from six.moves.urllib_parse import urlparse
 
-from univention.lib.i18n import Locale, Translation, I18N_Error
-
 import univention.admin.uexceptions as udm_errors
-
-from univention.management.console.protocol.message import Response, MIMETYPE_JSON
-from univention.management.console.protocol.definitions import MODULE_ERR, MODULE_ERR_COMMAND_FAILED, SUCCESS
-from univention.management.console.ldap import get_user_connection, reset_cache as reset_ldap_connection_cache
+from univention.lib.i18n import I18N_Error, Locale, Translation
 from univention.management.console.config import ucr
-from univention.management.console.log import MODULE, CORE
-from univention.management.console.error import UMC_Error, NotAcceptable, PasswordRequired, LDAP_ServerDown, LDAP_ConnectionFailed, Unauthorized
+from univention.management.console.error import (
+    LDAP_ConnectionFailed, LDAP_ServerDown, NotAcceptable, PasswordRequired, UMC_Error, Unauthorized,
+)
+from univention.management.console.ldap import get_user_connection, reset_cache as reset_ldap_connection_cache
+from univention.management.console.log import CORE, MODULE
+from univention.management.console.protocol.definitions import MODULE_ERR, MODULE_ERR_COMMAND_FAILED, SUCCESS
+from univention.management.console.protocol.message import MIMETYPE_JSON, Response
+
 
 _ = Translation('univention.management.console').translate
 

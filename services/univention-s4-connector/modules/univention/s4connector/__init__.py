@@ -36,32 +36,32 @@
 
 from __future__ import print_function
 
-from six.moves import cPickle as pickle
+import collections
 import copy
 import os
-import re
+import pprint
 import random
+import re
+import sqlite3 as lite
 import sys
 import traceback
-import pprint
-import collections
 from types import FunctionType
 
 import ldap
 from ldap.controls.readentry import PostReadControl
-from samba.ndr import ndr_unpack
 from samba.dcerpc import misc
-import sqlite3 as lite
+from samba.ndr import ndr_unpack
+from six.moves import cPickle as pickle
 
-import univention.uldap
-import univention.admin.uldap
 import univention.admin.modules
 import univention.admin.objects
+import univention.admin.uldap
 import univention.debug as ud_c
 import univention.debug2 as ud
-
-from univention.s4connector.s4cache import S4Cache
+import univention.uldap
 from univention.s4connector.lockingdb import LockingDB
+from univention.s4connector.s4cache import S4Cache
+
 
 term_signal_caught = False
 

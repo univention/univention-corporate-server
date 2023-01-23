@@ -36,18 +36,18 @@
 
 from __future__ import absolute_import
 
+import json
 import os
 import os.path
-import json
 import shutil
 
 from ldap.dn import dn2str, str2dn
 
 import univention.debug
-
-from univention.listener.handler import ListenerModuleHandler
 from univention.appcenter.app_cache import AllApps
 from univention.appcenter.udm import search_objects
+from univention.listener.handler import ListenerModuleHandler
+
 
 FNAME = '/var/lib/univention-appcenter/attributes/mapping.json'
 

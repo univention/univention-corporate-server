@@ -55,21 +55,23 @@ UMC module development. You are not bound to use them if you need more
 flexibility.
 """
 
-import sys
+import functools
 import inspect
+import sys
 import time
 import types
-import notifier
-import notifier.threads
-import functools
 from threading import Thread
 
-from univention.lib.i18n import Translation
+import notifier
+import notifier.threads
 
+from univention.lib.i18n import Translation
 from univention.management.console.error import UMC_Error, UnprocessableEntity
 from univention.management.console.log import MODULE
+from univention.management.console.modules.sanitizers import (
+    DictSanitizer, ListSanitizer, MultiValidationError, Sanitizer, ValidationError,
+)
 
-from univention.management.console.modules.sanitizers import MultiValidationError, ValidationError, Sanitizer, DictSanitizer, ListSanitizer
 
 _ = Translation('univention.management.console').translate
 

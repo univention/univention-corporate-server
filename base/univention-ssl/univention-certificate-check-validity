@@ -34,12 +34,13 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-import time
 import calendar
+import time
 
 from M2Crypto import X509
 
 from univention.config_registry import ConfigRegistry
+
 
 _bc = ConfigRegistry()
 _bc.load()

@@ -5,10 +5,7 @@ import univention.admin.objects
 from univention.admin import modules, uldap
 from univention.admin.uexceptions import base as UniventionBaseException, noObject
 from univention.management.console.modules.setup.netconf import SkipPhase
-from univention.management.console.modules.setup.netconf.common import (
-    LdapChange,
-    convert_udm_subnet_to_network,
-)
+from univention.management.console.modules.setup.netconf.common import LdapChange, convert_udm_subnet_to_network
 
 
 class PhaseLdapNetwork(LdapChange):

@@ -35,11 +35,15 @@ import inspect
 import os
 import types  # noqa: F401
 from contextlib import contextmanager
+from typing import (  # noqa: F401
+    TYPE_CHECKING, Any, Dict, Iterable, Iterator, List, Mapping, Optional, Sequence, Tuple, Type, Union, cast,
+)
+
 from six import reraise, with_metaclass
-from typing import TYPE_CHECKING, Any, Dict, Iterable, Iterator, List, Mapping, Optional, Sequence, Tuple, Type, Union, cast  # noqa: F401
+
+from univention.admin.uldap import access, position
 
 import listener
-from univention.admin.uldap import access, position
 from .api_adapter import ListenerModuleAdapter
 from .exceptions import ListenerModuleConfigurationError, ListenerModuleRuntimeError
 from .handler_configuration import ListenerModuleConfiguration

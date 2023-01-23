@@ -41,8 +41,9 @@ from argparse import ArgumentParser
 
 import ldap
 from ldap.filter import filter_format
-from univention.config_registry import ConfigRegistry
+
 import univention.uldap
+from univention.config_registry import ConfigRegistry
 
 
 def info(msg, *args, **kwargs):

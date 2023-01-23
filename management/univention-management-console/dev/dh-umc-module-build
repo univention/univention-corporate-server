@@ -40,8 +40,8 @@ into the correct directories.
 
 from __future__ import print_function
 
-import sys
 import os.path
+import sys
 from argparse import ArgumentParser
 
 import univention.debhelper as dh_ucs

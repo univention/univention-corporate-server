@@ -35,26 +35,27 @@
 
 from __future__ import absolute_import
 
-import os
 import copy
-import locale
 import importlib
+import locale
+import os
 from typing import Any, Dict, List, Optional, Set, Text, Union  # noqa: F401
 
-import six
 import ldap
-from six.moves import reload_module
+import six
 from ldap.filter import filter_format
+from six.moves import reload_module
 
-import univention.debug as ud
 import univention.admin
-import univention.admin.uldap
-import univention.admin.syntax
 import univention.admin.handlers
 import univention.admin.hook
+import univention.admin.syntax
+import univention.admin.uldap
+import univention.debug as ud
 from univention.admin import localization
-from univention.admin.layout import Tab, Group, ILayoutElement
 from univention.admin._ucr import configRegistry
+from univention.admin.layout import Group, ILayoutElement, Tab
+
 
 try:
     from typing_extensions import Protocol

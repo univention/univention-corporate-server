@@ -59,17 +59,13 @@ import psutil
 import univention.config_registry
 from univention.lib import atjobs
 from univention.lib.admember import (
-    check_ad_account,
-    check_connection,
-    connectionFailed,
-    do_time_sync,
-    failedADConnect,
-    lookup_adds_dc,
+    check_ad_account, check_connection, connectionFailed, do_time_sync, failedADConnect, lookup_adds_dc,
     notDomainAdminInAD,
 )
 from univention.lib.i18n import Locale, Translation
 from univention.management.console.log import MODULE
 from univention.management.console.modules import UMC_Error
+
 
 # FIXME: this triggers imports from univention-lib during build time test execution.
 # This in effect imports univention-ldap which is not an explicit dependency for

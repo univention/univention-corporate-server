@@ -47,6 +47,7 @@ from univention.ldap_cache.cache import Caches, get_cache  # noqa: F401
 from univention.ldap_cache.cache.shard_config import add_shard_to_config, rm_shard_from_config
 from univention.uldap import getMachineConnection
 
+
 listener_template = '''#!/usr/bin/python3
 from __future__ import absolute_import
 

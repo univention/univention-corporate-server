@@ -35,24 +35,22 @@
 # <https://www.gnu.org/licenses/>.
 #
 
-import sys
-import time
+import json
 import os
 import os.path
+import shutil
+import sys
+import time
 from argparse import ArgumentParser
 from glob import glob
-import json
-import shutil
-
-from univention.listener.handler_logging import get_logger
-
-from univention.appcenter.app_cache import Apps
-from univention.appcenter.utils import mkdir, call_process
-from univention.appcenter.udm import search_objects, get_machine_connection, get_read_connection
-from univention.appcenter.ucr import ucr_get
-from univention.appcenter.listener import LISTENER_DUMP_DIR
 
 from univention.admin.types import TypeHint
+from univention.appcenter.app_cache import Apps
+from univention.appcenter.listener import LISTENER_DUMP_DIR
+from univention.appcenter.ucr import ucr_get
+from univention.appcenter.udm import get_machine_connection, get_read_connection, search_objects
+from univention.appcenter.utils import call_process, mkdir
+from univention.listener.handler_logging import get_logger
 
 
 logger = None

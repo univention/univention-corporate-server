@@ -34,14 +34,14 @@
 
 from __future__ import absolute_import
 
-from univention.admin.layout import Tab
+from ldap.filter import filter_format
+
 import univention.admin.filter
 import univention.admin.handlers
-import univention.admin.localization
-
 import univention.admin.handlers.users.user as udm_user
+import univention.admin.localization
+from univention.admin.layout import Tab
 
-from ldap.filter import filter_format
 
 translation = univention.admin.localization.translation('univention.admin.handlers.users')
 _ = translation.translate

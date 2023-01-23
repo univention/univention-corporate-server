@@ -42,16 +42,16 @@ Univention common Python library to manage connections to remote |UMC| servers.
 from __future__ import annotations
 
 import base64
+import http.client
 import json
 import locale
 import ssl
-import http.client
+from http.client import HTTPException, HTTPSConnection
 from http.cookies import SimpleCookie
-from http.client import HTTPSConnection, HTTPException
 from typing import Any, Dict, List, Optional, Tuple, Type, TypeVar, Union  # noqa: F401
 
-
 from univention.config_registry import ConfigRegistry
+
 
 _T = TypeVar("_T")
 

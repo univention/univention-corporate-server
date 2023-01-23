@@ -41,7 +41,9 @@ import univention.config_registry as ucr
 import univention.debug as ud
 import univention.pkgdb
 import univention.uldap
+
 from listener import SetUID
+
 
 description = 'watches the availability of the software monitor service'
 filter = '(|(objectClass=univentionDomainController)(objectClass=univentionMemberServer))'

@@ -23,6 +23,7 @@ from univention.management.console.modules import diagnostic
 from univention.testing.strings import random_int
 from univention.testing.utils import fail
 
+
 attribute_id = random_int() + random_int() + random_int() + random_int() + random_int()
 schema_name = 'univention-corporate-client.schema'
 filename = os.path.join('/tmp/', schema_name)

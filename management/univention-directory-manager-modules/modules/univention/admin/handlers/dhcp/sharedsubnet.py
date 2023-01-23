@@ -32,12 +32,13 @@
 
 """|UDM| module for |DHCP| shared subnets"""
 
-from univention.admin.layout import Tab, Group
 import univention.admin.filter
 import univention.admin.handlers
 import univention.admin.localization
+from univention.admin.layout import Group, Tab
 
-from .__common import DHCPBaseSubnet, add_dhcp_options, rangeUnmap, rangeMap
+from .__common import DHCPBaseSubnet, add_dhcp_options, rangeMap, rangeUnmap
+
 
 translation = univention.admin.localization.translation('univention.admin.handlers.dhcp')
 _ = translation.translate

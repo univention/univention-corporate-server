@@ -35,21 +35,23 @@
 # <https://www.gnu.org/licenses/>.
 #
 
-import shutil
 import os.path
 import re
+import shutil
 import time
 
 from ldap.dn import explode_dn
 
-from univention.appcenter.docker import Docker, MultiDocker
-from univention.appcenter.database import DatabaseConnector, DatabaseError
 from univention.appcenter.actions import get_action
-from univention.appcenter.exceptions import DockerCouldNotStartContainer, DatabaseConnectorError, AppCenterErrorContainerStart
-from univention.appcenter.actions.service import Start, Stop, Status
-from univention.appcenter.utils import mkdir  # get_locale
-from univention.appcenter.ucr import ucr_keys, ucr_get, ucr_is_true
+from univention.appcenter.actions.service import Start, Status, Stop
+from univention.appcenter.database import DatabaseConnector, DatabaseError
+from univention.appcenter.docker import Docker, MultiDocker
+from univention.appcenter.exceptions import (
+    AppCenterErrorContainerStart, DatabaseConnectorError, DockerCouldNotStartContainer,
+)
 from univention.appcenter.log import LogCatcher, get_logfile_logger
+from univention.appcenter.ucr import ucr_get, ucr_is_true, ucr_keys
+from univention.appcenter.utils import mkdir  # get_locale
 
 
 BACKUP_DIR = '/var/lib/univention-appcenter/backups'

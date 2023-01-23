@@ -39,11 +39,12 @@ python3 -m univention.lib.account lock --dn "$user_dn" --lock-time "$(date --utc
 
 import argparse
 
-import univention.admin.uldap
-import univention.admin.objects
-import univention.admin.modules
 import univention.admin.handlers.users.user
+import univention.admin.modules
+import univention.admin.objects
+import univention.admin.uldap
 import univention.debug as ud1
+
 
 univention.admin.modules.update()
 

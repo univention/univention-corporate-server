@@ -39,6 +39,7 @@ import listener
 from .exceptions import ListenerModuleConfigurationError
 from .handler_logging import get_logger
 
+
 if TYPE_CHECKING:
     from .handler import ListenerModuleHandler  # noqa: F401
 

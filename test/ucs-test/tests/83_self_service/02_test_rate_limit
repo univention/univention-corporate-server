@@ -17,6 +17,7 @@ from univention.config_registry import handler_set, handler_unset
 from univention.lib.umc import ServiceUnavailable
 from univention.testing.ucr import UCSTestConfigRegistry as UCR
 
+
 LIMIT_TOTAL_MINUTE = 'umc/self-service/passwordreset/limit/total/minute'
 LIMIT_TOTAL_HOUR = 'umc/self-service/passwordreset/limit/total/hour'
 LIMIT_TOTAL_DAY = 'umc/self-service/passwordreset/limit/total/day'

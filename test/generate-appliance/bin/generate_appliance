@@ -48,10 +48,11 @@ import tarfile
 import tempfile
 import time
 import uuid
-from zipfile import ZipFile
 from argparse import ArgumentDefaultsHelpFormatter, ArgumentParser, FileType, Namespace  # noqa: F401
 from io import BytesIO
 from typing import IO, Any, Callable, Dict, Iterator, List, Optional, Tuple, TypeVar, Union, cast  # noqa: F401
+from zipfile import ZipFile
+
 
 try:
     from argparse import BooleanOptionalAction
@@ -89,6 +90,7 @@ import boto
 import boto.ec2
 import lxml.builder
 import lxml.etree
+
 
 WORKDIR = TEMPDIR = STOREDIR = ""
 RE_INVALID = re.compile(r"""[][\t !"#$%&'()*./:;<=>?\\`{|}~]+-""")

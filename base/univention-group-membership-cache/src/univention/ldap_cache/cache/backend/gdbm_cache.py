@@ -42,6 +42,7 @@ from six.moves import dbm_gnu as gdbm
 from univention.ldap_cache.cache.backend import Caches, LdapCache, Shard, _s
 from univention.ldap_cache.log import debug, log
 
+
 MAX_FAIL_COUNT = 5
 
 

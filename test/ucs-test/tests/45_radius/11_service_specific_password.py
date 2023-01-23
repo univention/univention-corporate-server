@@ -7,13 +7,13 @@
 ## join: true
 ## exposure: dangerous
 
-import ldap
-import pytest
 import subprocess
 
+import ldap
+import pytest
+
+from univention.admin.rest.client import UDM, BadRequest
 from univention.config_registry import handler_set as ucr_set
-from univention.admin.rest.client import UDM
-from univention.admin.rest.client import BadRequest
 
 
 def radius_auth(username, password):

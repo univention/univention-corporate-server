@@ -40,9 +40,11 @@ import os
 import subprocess
 from typing import Dict, List
 
-import listener
 import univention.debug as ud
 from univention.lib.ldap_extension import ldap_extension
+
+import listener
+
 
 name = 'ldap_extension'
 description = 'Configure LDAP schema and ACL extensions'

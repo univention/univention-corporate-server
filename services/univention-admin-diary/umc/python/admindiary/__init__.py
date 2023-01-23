@@ -39,17 +39,15 @@ from datetime import datetime, timedelta
 
 from sqlalchemy.exc import OperationalError
 
-from univention.config_registry import ConfigRegistry
-
-from univention.management.console.base import Base
-from univention.management.console.modules.decorators import simple_response
-import univention.management.console.modules as umcm
 import univention.management.console as umc
-from univention.management.console.log import MODULE
-
+import univention.management.console.modules as umcm
+from univention.admindiary.backend import NoDBConnection, get_client, get_engine, get_query_limit
 from univention.admindiary.client import add_comment
-from univention.admindiary.backend import get_client, get_engine, get_query_limit, NoDBConnection
 from univention.admindiary.events import DiaryEvent
+from univention.config_registry import ConfigRegistry
+from univention.management.console.base import Base
+from univention.management.console.log import MODULE
+from univention.management.console.modules.decorators import simple_response
 
 
 _ = umc.Translation('univention-management-console-module-admindiary').translate

@@ -14,6 +14,7 @@ from univention.testing import utils
 
 import samltest
 
+
 ucr = univention.config_registry.ConfigRegistry()
 ucr.load()
 

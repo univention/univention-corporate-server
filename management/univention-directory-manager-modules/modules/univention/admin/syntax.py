@@ -51,7 +51,9 @@ import time
 import traceback
 import zlib
 from io import BytesIO
-from typing import TYPE_CHECKING, Any, Callable, List, Optional, Pattern, Sequence, Set, Tuple, Type, Union  # noqa: F401
+from typing import (  # noqa: F401
+    TYPE_CHECKING, Any, Callable, List, Optional, Pattern, Sequence, Set, Tuple, Type, Union,
+)
 
 import dateutil
 import ldap
@@ -59,24 +61,25 @@ import ldap.dn
 import PIL
 import pytz
 import six
-from ldap.filter import filter_format, escape_filter_chars
-from ldap.schema import ObjectClass, AttributeType
+from ldap.filter import escape_filter_chars, filter_format
+from ldap.schema import AttributeType, ObjectClass
 from ldap.schema.subentry import SubSchema  # noqa: F401
 
 import univention.admin.modules
 import univention.admin.types
 import univention.admin.uexceptions
 import univention.debug as ud
-from univention.admin import localization, configRegistry
+from univention.admin import configRegistry, localization
 from univention.lib.ucs import UCS_Version
-from univention.lib.umc_module import get_mime_type, get_mime_description, image_mime_type_of_buffer
+from univention.lib.umc_module import get_mime_description, get_mime_type, image_mime_type_of_buffer
 from univention.uldap import getMachineConnection
+
 
 if TYPE_CHECKING:
     from univention.admin.uldap import access  # noqa: F401
 
 try:
-    from email_validator import validate_email, EmailNotValidError, SPECIAL_USE_DOMAIN_NAMES
+    from email_validator import SPECIAL_USE_DOMAIN_NAMES, EmailNotValidError, validate_email
     SPECIAL_USE_DOMAIN_NAMES[:] = []
 except ImportError:  # Python 2.7
     validate_email = EmailNotValidError = None

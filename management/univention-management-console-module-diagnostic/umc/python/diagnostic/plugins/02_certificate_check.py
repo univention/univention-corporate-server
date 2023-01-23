@@ -37,7 +37,7 @@ import re
 import shutil
 import subprocess
 import tempfile
-from typing import Iterator, Iterable
+from typing import Iterable, Iterator
 
 import dateutil.tz
 import requests
@@ -46,6 +46,7 @@ from OpenSSL import crypto
 from univention.config_registry import ucr_live as configRegistry
 from univention.lib.i18n import Translation
 from univention.management.console.modules.diagnostic import MODULE, Critical, Instance, Warning
+
 
 _ = Translation('univention-management-console-module-diagnostic').translate
 run_descr = ['This can be checked by running: ucr get server/role and ucr get ldap/master']

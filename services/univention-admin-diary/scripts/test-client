@@ -36,11 +36,12 @@
 #
 
 from __future__ import print_function
-from random import randint
-from argparse import ArgumentParser, RawTextHelpFormatter
 
+from argparse import ArgumentParser, RawTextHelpFormatter
+from random import randint
+
+from univention.admindiary.client import add_comment, write_event
 from univention.admindiary.events import DiaryEvent
-from univention.admindiary.client import write_event, add_comment
 
 
 def flip():

@@ -16,6 +16,7 @@ from univention.appcenter.udm import ApplicationLDAPObject, get_machine_connecti
 from univention.testing import utils
 from univention.testing.codes import TestCodes
 
+
 APP_ID = 'univention-demo-data'
 
 

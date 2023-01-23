@@ -13,6 +13,7 @@ from dockertest import (
     Appcenter, UCSTest_DockerApp_InstallationFailed, get_app_version, get_docker_appbox_image, tiny_app,
 )
 
+
 if __name__ == '__main__':
     with Appcenter() as appcenter:
 

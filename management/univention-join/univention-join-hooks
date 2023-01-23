@@ -34,19 +34,20 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-import os
-import sys
 import argparse
-from univention.config_registry import ConfigRegistry
-import univention.admin.uldap
-from univention.admin import modules as udm_modules
-from univention.admin import uexceptions
-from univention.lib.ucs import UCS_Version
-import subprocess
-import bz2
 import base64
-import tempfile
+import bz2
+import os
 import shutil
+import subprocess
+import sys
+import tempfile
+
+import univention.admin.uldap
+from univention.admin import modules as udm_modules, uexceptions
+from univention.config_registry import ConfigRegistry
+from univention.lib.ucs import UCS_Version
+
 
 server_roles = (
     "domaincontroller_master",

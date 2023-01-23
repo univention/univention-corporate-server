@@ -34,13 +34,13 @@
 
 import ipaddress
 
-from univention.admin.layout import Tab, Group
-from univention.admin import configRegistry
-
 import univention.admin.filter
 import univention.admin.handlers
 import univention.admin.localization
-from univention.admin.handlers.dns import ARPA_IP4, ARPA_IP6, escapeSOAemail, unescapeSOAemail, stripDot
+from univention.admin import configRegistry
+from univention.admin.handlers.dns import ARPA_IP4, ARPA_IP6, escapeSOAemail, stripDot, unescapeSOAemail
+from univention.admin.layout import Group, Tab
+
 
 translation = univention.admin.localization.translation('univention.admin.handlers.dns')
 _ = translation.translate

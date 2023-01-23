@@ -33,15 +33,17 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
+import email.charset
 import os.path
 import smtplib
-from six.moves.urllib_parse import quote
 from email.mime.nonmultipart import MIMENonMultipart
 from email.utils import formatdate
-import email.charset
+
+from six.moves.urllib_parse import quote
 
 from univention.lib.i18n import Translation
 from univention.management.console.modules.passwordreset.send_plugin import UniventionSelfServiceTokenEmitter
+
 
 _ = Translation('univention-self-service-passwordreset-umc').translate
 

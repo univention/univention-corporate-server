@@ -34,11 +34,13 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 from __future__ import print_function
+
 import os
 import sys
-import univention.service_info as us_info
-from univention.debhelper import doIt, binary_packages
 from argparse import ArgumentParser
+
+import univention.service_info as us_info
+from univention.debhelper import binary_packages, doIt
 
 
 def install_services(info, package):

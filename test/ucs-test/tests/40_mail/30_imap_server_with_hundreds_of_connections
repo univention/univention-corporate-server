@@ -17,6 +17,7 @@ from univention.config_registry import handler_set
 
 from essential.mailclient import MailClient_SSL
 
+
 MAX_CONNECTIONS = 700
 
 

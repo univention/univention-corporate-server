@@ -38,7 +38,7 @@
 
 import re
 
-from univention.appcenter.utils import unique, _
+from univention.appcenter.utils import _, unique
 
 
 class Abort(Exception):

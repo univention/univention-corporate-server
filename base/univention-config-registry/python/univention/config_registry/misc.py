@@ -35,13 +35,15 @@
 
 from __future__ import print_function
 
-import sys
 import os
 import re
 import string  # pylint: disable-msg=W0402
+import sys
 from pipes import quote as escape_value
+
+
 try:
-    from typing import Dict, IO, List, Text  # noqa: F401
+    from typing import IO, Dict, List, Text  # noqa: F401
 except ImportError:  # pragma: no cover
     pass
 

@@ -32,17 +32,14 @@
 
 """admin module: policy defining access restriction for UMC"""
 
-from univention.admin.layout import Tab, Group
-import univention.admin.syntax as udm_syntax
-import univention.admin.mapping as udm_mapping
-
-from univention.admin.handlers import simplePolicy
 import univention.admin.localization
-
+import univention.admin.mapping as udm_mapping
+import univention.admin.syntax as udm_syntax
+from univention.admin.handlers import simplePolicy
+from univention.admin.layout import Group, Tab
 from univention.admin.policy import (
-    register_policy_mapping, policy_object_tab,
-    requiredObjectClassesProperty, prohibitedObjectClassesProperty,
-    fixedAttributesProperty, emptyAttributesProperty, ldapFilterProperty,
+    emptyAttributesProperty, fixedAttributesProperty, ldapFilterProperty, policy_object_tab,
+    prohibitedObjectClassesProperty, register_policy_mapping, requiredObjectClassesProperty,
 )
 
 

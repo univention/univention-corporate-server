@@ -36,18 +36,19 @@
 
 from __future__ import print_function
 
-from argparse import ArgumentParser
-import sys
-from univention import config_registry
-import univention.s4connector.s4
-import univention.admin.filter
 import copy
-from samba.param import LoadParm
-from samba.auth import system_session
-from samba.samdb import SamDB
-import ldb
+import sys
+from argparse import ArgumentParser
 
+import ldb
+from samba.auth import system_session
+from samba.param import LoadParm
+from samba.samdb import SamDB
 from six.moves import input
+
+import univention.admin.filter
+import univention.s4connector.s4
+from univention import config_registry
 
 
 def log(level, string):

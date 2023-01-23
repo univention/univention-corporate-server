@@ -34,10 +34,11 @@
 # <https://www.gnu.org/licenses/>.
 
 
+from univention.directory.reports.admin import cache_object, connect, connected, get_object, identify, set_format
+from univention.directory.reports.config import Config
+from univention.directory.reports.document import Document
 from univention.directory.reports.error import ReportError
 from univention.directory.reports.report import Report
-from univention.directory.reports.document import Document
-from univention.directory.reports.admin import connect, get_object, cache_object, connected, identify, set_format
-from univention.directory.reports.config import Config
+
 
 __all__ = ['Report', 'ReportError', 'Document', 'connect', 'get_object', 'cache_object', 'connected', 'identify', 'set_format', 'Config']

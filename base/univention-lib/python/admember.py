@@ -33,40 +33,38 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-from __future__ import print_function
-from __future__ import absolute_import
+from __future__ import absolute_import, print_function
 
-import ldap
-import ldap.sasl
-from ldap.filter import filter_format
-
-import os
-import sys
-import subprocess
-import locale
-import socket
-import tempfile
 import ipaddress
+import locale
+import os
+import pipes
+import socket
+import subprocess
+import sys
+import tempfile
 import time
 from datetime import datetime, timedelta
-import pipes
 from typing import Optional  # noqa: F401
 
-import six
-
-from univention.config_registry import ConfigRegistry
-import univention.uldap
-import univention.lib.package_manager
-from univention.lib.misc import custom_groupname
-import univention.debug as ud
-from univention.config_registry.interfaces import Interfaces
-
 import dns.resolver
+import ldap
+import ldap.sasl
+import six
+from ldap.filter import filter_format
+
+import univention.debug as ud
+import univention.lib.package_manager
+import univention.uldap
+from univention.config_registry import ConfigRegistry
+from univention.config_registry.interfaces import Interfaces
+from univention.lib.misc import custom_groupname
+
 
 if not six.PY2:
     import ldb
     from samba.dcerpc import nbt, security
-    from samba.dcerpc.security import DOMAIN_RID_ADMINS, DOMAIN_RID_ADMINISTRATOR
+    from samba.dcerpc.security import DOMAIN_RID_ADMINISTRATOR, DOMAIN_RID_ADMINS
     from samba.ndr import ndr_unpack
     from samba.net import Net
     from samba.param import LoadParm

@@ -44,6 +44,7 @@ from univention.config_registry import handler_set as ucr_set, handler_unset as 
 from univention.lib.i18n import Translation
 from univention.management.console.modules.diagnostic import MODULE, Critical, Instance, ProblemFixed
 
+
 _ = Translation('univention-management-console-module-diagnostic').translate
 run_descr = ["Trying to authenticate with machine password against LDAP  Similar to running: univention-ldapsearch -LLLs base dn"]
 title = _('Check machine password')

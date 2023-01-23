@@ -10,8 +10,8 @@ from typing import IO  # noqa: F401
 from weakref import WeakValueDictionary
 
 import univention.config_registry
-
 from univention.testing.data import TestCase, TestCodes, TestEnvironment, TestFormatInterface, TestResult  # noqa: F401
+
 
 __all__ = ['Text', 'Raw']
 

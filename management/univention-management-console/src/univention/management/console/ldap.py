@@ -17,14 +17,19 @@ Example usage::
 from __future__ import absolute_import
 
 import functools
-import ldap
 from errno import ENOENT
 
-from univention.admin.uldap import getMachineConnection as _getMachineConnection, getAdminConnection as _getAdminConnection, position as _position, access as _access
-from univention.uldap import getBackupConnection as _getBackupConnection
-import univention.admin.uexceptions as udm_errors
+import ldap
 
+import univention.admin.uexceptions as udm_errors
+from univention.admin.uldap import (
+    access as _access, getAdminConnection as _getAdminConnection, getMachineConnection as _getMachineConnection,
+    position as _position,
+)
 from univention.config_registry import ConfigRegistry
+from univention.uldap import getBackupConnection as _getBackupConnection
+
+
 _ucr = ConfigRegistry()
 _ucr.load()
 

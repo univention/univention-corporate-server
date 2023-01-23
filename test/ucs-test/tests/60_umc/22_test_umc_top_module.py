@@ -3,15 +3,16 @@
 ## bugs: [34593, 38174]
 ## exposure: dangerous
 
+import contextlib
 import signal
 import sys
 from os import WNOHANG, WTERMSIG, fork, wait4
-from time import sleep
 from random import randint
-import contextlib
+from time import sleep
 
 import pytest
 from psutil import Process, TimeoutExpired, pid_exists
+
 from univention.lib.umc import BadRequest
 
 

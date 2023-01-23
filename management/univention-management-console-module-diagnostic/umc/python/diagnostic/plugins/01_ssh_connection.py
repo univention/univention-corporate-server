@@ -42,6 +42,7 @@ from univention.management.console.config import ucr
 from univention.management.console.log import MODULE
 from univention.management.console.modules.diagnostic import Critical, Instance, Warning
 
+
 _ = Translation('univention-management-console-module-diagnostic').translate
 
 title = _('SSH connection to UCS server failed!')

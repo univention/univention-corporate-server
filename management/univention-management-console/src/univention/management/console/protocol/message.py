@@ -41,18 +41,19 @@ messages are based on the class :class:`.Message`.
 """
 from __future__ import print_function
 
-import mimetypes
-import time
-import re
 import copy
 import json
+import mimetypes
+import re
+import time
 
 import six
 
-from .definitions import UMCP_ERR_UNPARSABLE_BODY, UMCP_ERR_UNPARSABLE_HEADER
+from univention.lib.i18n import Translation
 from univention.management.console.log import PARSER, PROTOCOL
 
-from univention.lib.i18n import Translation
+from .definitions import UMCP_ERR_UNPARSABLE_BODY, UMCP_ERR_UNPARSABLE_HEADER
+
 
 try:
     from typing import Any, Dict, List, Optional, Text, Union  # noqa: F401

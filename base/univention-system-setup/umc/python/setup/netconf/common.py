@@ -36,11 +36,7 @@ from ipaddress import IPv4Network, IPv6Network
 from six import with_metaclass
 
 from univention.admin import uldap
-from univention.management.console.modules.setup.netconf.conditions import (
-    AddressChange,
-    Executable,
-    Ldap,
-)
+from univention.management.console.modules.setup.netconf.conditions import AddressChange, Executable, Ldap
 
 
 class RestartService(with_metaclass(ABCMeta, Executable)):

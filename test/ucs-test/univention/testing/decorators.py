@@ -2,6 +2,7 @@ import time
 from functools import wraps
 from typing import Any, Callable, TypeVar, cast  # noqa: F401
 
+
 DEFAULT_TIMEOUT = 90  # seconds
 
 F = TypeVar('F', bound=Callable[..., None])

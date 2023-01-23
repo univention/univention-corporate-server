@@ -42,7 +42,6 @@ from typing import Dict, List, Optional
 
 import apt
 
-import listener
 import univention.admin.modules as udm_modules
 import univention.admin.uexceptions as udm_errors
 import univention.admin.uldap as udm_uldap
@@ -50,6 +49,9 @@ import univention.debug as ud
 from univention.lib.ldap_extension import safe_path_join
 from univention.lib.ucs import UCS_Version
 from univention.lib.umc_module import UMC_ICON_BASEDIR, default_filename_suffix_for_mime_type, imagecategory_of_buffer
+
+import listener
+
 
 name = 'udm_extension'
 description = 'Handle UDM module, hook and syntax extensions'

@@ -34,38 +34,40 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-import traceback
 import datetime
-import random
-import string
-import atexit
+import email.charset
 import os.path
+import random
 import smtplib
-from functools import wraps
-from subprocess import Popen, PIPE, STDOUT
+import string
+import traceback
 from email.mime.nonmultipart import MIMENonMultipart
 from email.utils import formatdate
-import email.charset
+from functools import wraps
+from subprocess import PIPE, STDOUT, Popen
 
-from ldap.filter import filter_format
+import atexit
 import pylibmc
+from ldap.filter import filter_format
 
-from univention.lib.i18n import Translation
-from univention.lib.umc import Client, HTTPError, ConnectionError, Unauthorized
 import univention.admin.objects
 import univention.admin.syntax
 import univention.admin.uexceptions as udm_errors
 from univention.admin.uldap import getMachineConnection
-from univention.management.console.modules import Base
-from univention.management.console.log import MODULE
+from univention.lib.i18n import Translation
+from univention.lib.umc import Client, ConnectionError, HTTPError, Unauthorized
 from univention.management.console.config import ucr
+from univention.management.console.ldap import (
+    get_admin_connection, get_machine_connection, get_user_connection, machine_connection,
+)
+from univention.management.console.log import MODULE
+from univention.management.console.modules import Base, UMC_Error
 from univention.management.console.modules.decorators import sanitize, simple_response
 from univention.management.console.modules.sanitizers import StringSanitizer
-from univention.management.console.modules import UMC_Error
-from univention.management.console.ldap import get_user_connection, get_machine_connection, get_admin_connection, machine_connection
 
-from .tokendb import TokenDB, MultipleTokensInDB
 from .sending import get_plugins as get_sending_plugins
+from .tokendb import MultipleTokensInDB, TokenDB
+
 
 _ = Translation('univention-self-service-passwordreset-umc').translate
 
@@ -81,9 +83,9 @@ DEREGISTRATION_TIMESTAMP_FORMATTING = '%Y%m%d%H%M%SZ'
 
 if IS_SELFSERVICE_MASTER:
     try:
+        from univention.admin.rest.client import UDM as UDMRest
         from univention.management.console.modules.udm.udm_ldap import UDM_Error, UDM_Module
         from univention.udm import UDM, NoObject
-        from univention.admin.rest.client import UDM as UDMRest
     except ImportError as exc:
         MODULE.error('Could not load udm module: %s' % (exc,))
 

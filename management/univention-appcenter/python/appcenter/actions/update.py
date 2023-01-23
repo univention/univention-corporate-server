@@ -37,24 +37,23 @@
 
 import os
 import os.path
+import zlib
 from argparse import SUPPRESS, ArgumentParser, Namespace  # noqa: F401
 from glob import glob
 from gzip import open as gzip_open
-import zlib
 from typing import Dict, Iterable, Iterator, List, Mapping, Optional  # noqa: F401
 
-from six.moves.urllib_request import Request
 from six.moves.urllib_error import HTTPError
+from six.moves.urllib_request import Request
 
-from univention.config_registry import handler_commit
-
-from univention.appcenter.log import catch_stdout
-from univention.appcenter.app import LOCAL_ARCHIVE_DIR
-from univention.appcenter.app_cache import Apps, AppCenterCache
 from univention.appcenter.actions import UniventionAppAction, possible_network_error
-from univention.appcenter.exceptions import UpdateUnpackArchiveFailed, UpdateSignatureVerificationFailed
-from univention.appcenter.utils import urlopen, gpg_verify, mkdir
-from univention.appcenter.ucr import ucr_save, ucr_is_false
+from univention.appcenter.app import LOCAL_ARCHIVE_DIR
+from univention.appcenter.app_cache import AppCenterCache, Apps
+from univention.appcenter.exceptions import UpdateSignatureVerificationFailed, UpdateUnpackArchiveFailed
+from univention.appcenter.log import catch_stdout
+from univention.appcenter.ucr import ucr_is_false, ucr_save
+from univention.appcenter.utils import gpg_verify, mkdir, urlopen
+from univention.config_registry import handler_commit
 
 
 class Update(UniventionAppAction):

@@ -34,47 +34,58 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
+import json
+import locale
+import logging
 # standard library
 import os
-import locale
 import time
-from contextlib import contextmanager
-import logging
-from threading import Thread
-from json import load
 from base64 import b64decode, b64encode
+from contextlib import contextmanager
+from json import load
+from threading import Thread
 
+import apt  # for independent apt.Cache
 # related third party
 import notifier
 import notifier.threads
-import apt  # for independent apt.Cache
-import json
 
-# univention
-from univention.lib.package_manager import PackageManager, LockError
-from univention.lib.umc import Client, ConnectionError, HTTPError, Forbidden
-from univention.management.console.log import MODULE
-from univention.management.console.modules.decorators import simple_response, sanitize, sanitize_list, multi_response, require_password
-from univention.management.console.modules.mixins import ProgressMixin
-from univention.management.console.modules.sanitizers import PatternSanitizer, MappingSanitizer, DictSanitizer, StringSanitizer, ChoicesSanitizer, ListSanitizer, BooleanSanitizer
-from univention.updater.tools import UniventionUpdater
 import univention.management.console as umc
 import univention.management.console.modules as umcm
 from univention.appcenter.actions import get_action
-from univention.appcenter.exceptions import Abort, NetworkError, AppCenterError
-from univention.appcenter.packages import reload_package_manager, get_package_manager, package_lock, LOCK_FILE
-from univention.appcenter.app_cache import Apps, AppCenterCache, default_server
-from univention.appcenter.udm import _update_modules
-from univention.appcenter.utils import docker_is_running, call_process, docker_bridge_network_conflict, send_information, app_is_running, find_hosts_for_master_packages, get_local_fqdn, resolve_dependencies
+from univention.appcenter.app_cache import AppCenterCache, Apps, default_server
+from univention.appcenter.exceptions import Abort, AppCenterError, NetworkError
 from univention.appcenter.install_checks import check
 from univention.appcenter.log import get_base_logger, log_to_logfile
-from univention.appcenter.ucr import ucr_instance, ucr_save
+from univention.appcenter.packages import LOCK_FILE, get_package_manager, package_lock, reload_package_manager
 from univention.appcenter.settings import FileSetting, PasswordFileSetting
+from univention.appcenter.ucr import ucr_instance, ucr_save
+from univention.appcenter.udm import _update_modules
+from univention.appcenter.utils import (
+    app_is_running, call_process, docker_bridge_network_conflict, docker_is_running, find_hosts_for_master_packages,
+    get_local_fqdn, resolve_dependencies, send_information,
+)
+# univention
+from univention.lib.package_manager import LockError, PackageManager
+from univention.lib.umc import Client, ConnectionError, Forbidden, HTTPError
+from univention.management.console.log import MODULE
+from univention.management.console.modules.decorators import (
+    multi_response, require_password, sanitize, sanitize_list, simple_response,
+)
+from univention.management.console.modules.mixins import ProgressMixin
+from univention.management.console.modules.sanitizers import (
+    BooleanSanitizer, ChoicesSanitizer, DictSanitizer, ListSanitizer, MappingSanitizer, PatternSanitizer,
+    StringSanitizer,
+)
+from univention.updater.tools import UniventionUpdater
 
+from .constants import COMPONENT_BASE, DEPRECATED_PARAMS, ONLINE_BASE, PUT_PARAMETER_ERROR, PUT_SUCCESS, PUT_WRITE_ERROR
 # local application
-from .sanitizers import error_handling, AppSanitizer, basic_components_sanitizer, advanced_components_sanitizer, add_components_sanitizer
-from .util import install_opener, ComponentManager, set_save_commit_load, create_url, scheme_is_http
-from .constants import ONLINE_BASE, COMPONENT_BASE, DEPRECATED_PARAMS, PUT_WRITE_ERROR, PUT_SUCCESS, PUT_PARAMETER_ERROR
+from .sanitizers import (
+    AppSanitizer, add_components_sanitizer, advanced_components_sanitizer, basic_components_sanitizer, error_handling,
+)
+from .util import ComponentManager, create_url, install_opener, scheme_is_http, set_save_commit_load
+
 
 _ = umc.Translation('univention-management-console-module-appcenter').translate
 

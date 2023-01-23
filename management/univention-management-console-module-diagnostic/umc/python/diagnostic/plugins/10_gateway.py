@@ -36,6 +36,7 @@ from univention.config_registry import ucr_live as ucr
 from univention.lib.i18n import Translation
 from univention.management.console.modules.diagnostic import MODULE, Critical, Instance
 
+
 _ = Translation('univention-management-console-module-diagnostic').translate
 
 title = _('Gateway is not reachable')

@@ -34,29 +34,29 @@
 # <https://www.gnu.org/licenses/>.
 
 
-import os
-import atexit
-import time
-import locale
-import signal
-from functools import partial
 import argparse
-import traceback
+import locale
 import logging
+import os
+import signal
+import time
+import traceback
+from functools import partial
 
-from setproctitle import getproctitle, setproctitle
-
-import tornado.log
+import atexit
 import tornado.ioloop
+import tornado.log
+from setproctitle import getproctitle, setproctitle
 from tornado.httpserver import HTTPServer
 from tornado.netutil import bind_sockets, bind_unix_socket
 
+from univention.admin.rest.shared_memory import shared_memory
+from univention.lib.i18n import Locale, Translation
 # IMPORTANT NOTICE: we must import as few modules as possible, so that univention.admin is not yet imported
 # because importing the UDM handlers would cause that the gettext translation gets applied before we set a locale
 from univention.management.console.config import ucr
-from univention.management.console.log import log_init, log_reopen, CORE
-from univention.lib.i18n import Locale, Translation
-from univention.admin.rest.shared_memory import shared_memory
+from univention.management.console.log import CORE, log_init, log_reopen
+
 
 try:
     from multiprocessing.util import _exit_function

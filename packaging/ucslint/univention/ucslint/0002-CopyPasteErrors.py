@@ -36,6 +36,7 @@ from os.path import join
 
 import univention.ucslint.base as uub
 
+
 # 1) check if strings like "dc=univention,dc=qa" appear in debian/* and conffiles/*
 # 2) check if strings like "univention.qa" appear in debian/* and conffiles/*
 

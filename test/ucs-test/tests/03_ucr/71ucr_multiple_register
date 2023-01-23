@@ -12,6 +12,7 @@ import univention.config_registry.handler as ucrh
 from univention.config_registry.frontend import handler_register
 from univention.testing import utils
 
+
 UCR_CACHE = '/var/cache/univention-config/cache'
 
 print('Re-registering package univention-base-files...')

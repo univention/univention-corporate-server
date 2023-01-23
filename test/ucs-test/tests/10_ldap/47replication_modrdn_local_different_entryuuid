@@ -24,6 +24,7 @@ from univention.testing import utils
 from univention.testing.strings import random_name
 from univention.testing.utils import wait_for_replication
 
+
 success = True
 
 ucr = ConfigRegistry()

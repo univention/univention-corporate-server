@@ -30,8 +30,8 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-from subprocess import call
 from os import unlink
+from subprocess import call
 
 
 COND = '/var/lib/univention-bind/ldap'

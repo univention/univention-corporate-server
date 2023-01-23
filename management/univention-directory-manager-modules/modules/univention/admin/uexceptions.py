@@ -37,6 +37,7 @@ import six
 from univention.admin import localization
 from univention.admin._ucr import configRegistry
 
+
 translation = localization.translation('univention/admin')
 _ = translation.translate
 

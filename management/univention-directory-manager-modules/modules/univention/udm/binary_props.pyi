@@ -32,6 +32,7 @@
 """Classes for holding binary UDM  object properties."""
 
 from __future__ import absolute_import, unicode_literals
+
 from collections import namedtuple
 from typing import BinaryIO, Optional, Text, Union
 

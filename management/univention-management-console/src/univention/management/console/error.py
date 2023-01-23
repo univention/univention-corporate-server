@@ -39,6 +39,7 @@ from __future__ import absolute_import
 from univention.lib.i18n import Translation
 from univention.management.console.config import ucr
 
+
 _ = Translation('univention.management.console').translate
 
 

@@ -36,8 +36,10 @@
 
 
 from __future__ import print_function
-import os
+
 import base64
+import os
+
 from six.moves import configparser
 
 

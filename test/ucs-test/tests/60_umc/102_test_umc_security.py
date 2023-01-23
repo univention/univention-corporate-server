@@ -5,9 +5,9 @@
 
 import copy
 from collections import defaultdict
+from http.client import HTTPConnection
 
 import pytest
-from http.client import HTTPConnection
 
 from univention.lib.umc import Unauthorized
 from univention.testing import network, utils

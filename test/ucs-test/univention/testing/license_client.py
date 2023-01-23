@@ -33,14 +33,13 @@
 """A tool to obtain licenses for the UCS test environments."""
 import cgi
 import logging
-from argparse import ArgumentParser, ArgumentDefaultsHelpFormatter
+from argparse import ArgumentDefaultsHelpFormatter, ArgumentParser
 from datetime import datetime
+from html.parser import HTMLParser
+from http.client import HTTPException, HTTPResponse, HTTPSConnection  # noqa: F401
 from os import path
 from sys import exit
 from typing import Any, Dict, Iterable, Optional, Tuple  # noqa: F401
-
-from html.parser import HTMLParser
-from http.client import HTTPSConnection, HTTPException, HTTPResponse  # noqa: F401
 from urllib.parse import urlencode
 
 

@@ -12,6 +12,7 @@ import subprocess
 
 import pytest
 
+
 TRANSLOG_CMD = '/usr/share/univention-directory-notifier/univention-translog'
 
 

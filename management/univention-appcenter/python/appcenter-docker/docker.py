@@ -35,28 +35,31 @@
 # <https://www.gnu.org/licenses/>.
 #
 
-import sys
-from subprocess import check_output, call, CalledProcessError
 import os
 import os.path
 import shlex
 import shutil
-from json import loads
-from tempfile import NamedTemporaryFile
-from contextlib import contextmanager
 import ssl
-from base64 import b64encode
-from ipaddress import IPv4Network, IPv4Address
+import sys
 import time
+from base64 import b64encode
+from contextlib import contextmanager
+from ipaddress import IPv4Address, IPv4Network
+from json import loads
+from subprocess import CalledProcessError, call, check_output
+from tempfile import NamedTemporaryFile
 
-from six.moves import urllib_request, http_client, urllib_error
 from ruamel import yaml
+from six.moves import http_client, urllib_error, urllib_request
 
-from univention.appcenter.utils import app_ports_with_protocol, app_ports, call_process, call_process2, shell_safe, mkdir, unique, urlopen
 from univention.appcenter.app_cache import Apps
+from univention.appcenter.exceptions import DockerCouldNotStartContainer, DockerImagePullFailed
 from univention.appcenter.log import get_base_logger
-from univention.appcenter.exceptions import DockerImagePullFailed, DockerCouldNotStartContainer
-from univention.appcenter.ucr import ucr_save, ucr_get, ucr_run_filter, ucr_is_true
+from univention.appcenter.ucr import ucr_get, ucr_is_true, ucr_run_filter, ucr_save
+from univention.appcenter.utils import (
+    app_ports, app_ports_with_protocol, call_process, call_process2, mkdir, shell_safe, unique, urlopen,
+)
+
 
 _logger = get_base_logger().getChild('docker')
 

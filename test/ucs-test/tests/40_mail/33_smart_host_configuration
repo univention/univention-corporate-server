@@ -19,6 +19,7 @@ from univention.testing.network import NetworkRedirector
 
 from essential.mail import check_delivery, restart_postfix, send_mail
 
+
 TIMEOUT = 90  # sec
 
 

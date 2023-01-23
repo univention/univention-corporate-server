@@ -35,14 +35,17 @@
 # <https://www.gnu.org/licenses/>.
 
 import time
+
 import psutil
 
 from univention.lib.i18n import Translation
-from univention.management.console.modules import Base, UMC_Error
 from univention.management.console.log import MODULE
-
+from univention.management.console.modules import Base, UMC_Error
 from univention.management.console.modules.decorators import sanitize, simple_response
-from univention.management.console.modules.sanitizers import PatternSanitizer, ChoicesSanitizer, ListSanitizer, IntegerSanitizer
+from univention.management.console.modules.sanitizers import (
+    ChoicesSanitizer, IntegerSanitizer, ListSanitizer, PatternSanitizer,
+)
+
 
 _ = Translation('univention-management-console-module-top').translate
 

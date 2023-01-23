@@ -37,15 +37,15 @@
 import notifier
 import notifier.threads
 
+import univention.config_registry
 from univention.management.console import Translation
 from univention.management.console.base import Base, UMC_Error
 from univention.management.console.config import ucr
 from univention.management.console.log import MODULE
-from univention.management.console.modules.decorators import simple_response, sanitize
+from univention.management.console.modules.decorators import sanitize, simple_response
 from univention.management.console.modules.sanitizers import PatternSanitizer, StringSanitizer
+from univention.service_info import ServiceError, ServiceInfo
 
-from univention.service_info import ServiceInfo, ServiceError
-import univention.config_registry
 
 _ = Translation('univention-management-console-module-services').translate
 

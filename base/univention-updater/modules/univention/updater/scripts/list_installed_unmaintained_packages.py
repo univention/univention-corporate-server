@@ -40,6 +40,7 @@ from typing import IO, Set, Tuple
 
 import apt
 
+
 MAINTAINED_PACKAGES = '/usr/share/univention-errata-level/maintained-packages.txt'
 
 

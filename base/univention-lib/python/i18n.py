@@ -32,9 +32,9 @@
 # <https://www.gnu.org/licenses/>.
 
 import gettext
-from locale import getlocale, Error, LC_MESSAGES
 import re
 import weakref
+from locale import LC_MESSAGES, Error, getlocale
 from typing import Optional, Text  # noqa: F401
 
 import six

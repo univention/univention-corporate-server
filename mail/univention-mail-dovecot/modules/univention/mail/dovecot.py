@@ -33,21 +33,24 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
+import grp
 import os
 import os.path
-import subprocess
-import re
-import traceback
 import pwd
-import grp
+import re
 import shutil
 import stat
+import subprocess
+import traceback
+
+
 try:
     from typing import Any, Optional, Sequence, Tuple  # noqa: F401
 except ImportError:
     pass
 
 import univention.debug as ud
+
 
 default_sieve_script = "/var/lib/dovecot/sieve/default.sieve"
 

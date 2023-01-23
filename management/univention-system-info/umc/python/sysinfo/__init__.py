@@ -41,14 +41,15 @@ import subprocess
 import requests
 from six.moves.urllib_parse import urlencode, urlunparse
 
+import univention.config_registry
 import univention.management.console as umc
 import univention.management.console.modules as umcm
 from univention.management.console.log import MODULE
 from univention.management.console.modules import UMC_Error
-from univention.management.console.modules.decorators import simple_response, sanitize
+from univention.management.console.modules.decorators import sanitize, simple_response
 from univention.management.console.modules.sanitizers import StringSanitizer
 
-import univention.config_registry
+
 ucr = univention.config_registry.ConfigRegistry()
 
 _ = umc.Translation('univention-management-console-module-sysinfo').translate

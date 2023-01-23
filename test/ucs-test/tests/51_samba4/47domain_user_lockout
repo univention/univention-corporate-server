@@ -17,6 +17,7 @@ from univention.testing import utils
 from univention.testing.codes import TestCodes
 from univention.testing.strings import random_username
 
+
 LOCKOUT_DURATION = 1  # duration of lockout in minutes
 LOCKOUT_THRESHOLD = 3  # amount of auth. attempts allowed before the lock out
 TEST_USER_PASS = 'Univention1'

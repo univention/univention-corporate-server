@@ -38,15 +38,16 @@
 from __future__ import absolute_import
 
 import re
-from sys import maxsize
 from functools import wraps
+from ipaddress import IPv4Address, IPv4Interface, IPv6Address, IPv6Interface
+from sys import maxsize
+
 from univention.config_registry.backend import ConfigRegistry
 
-from ipaddress import IPv4Address, IPv6Address, IPv4Interface, IPv6Interface
 
 try:
-    from typing import Any, Callable, Dict, Iterator, Optional, Union, Tuple, Type  # noqa: F401
     from ipaddress import _IPAddressBase  # noqa: F401
+    from typing import Any, Callable, Dict, Iterator, Optional, Tuple, Type, Union  # noqa: F401
 except ImportError:  # pragma: no cover
     pass
 

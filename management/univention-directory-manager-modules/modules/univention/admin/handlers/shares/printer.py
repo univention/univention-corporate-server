@@ -33,17 +33,18 @@
 """|UDM| module for printers"""
 
 import re
+
 from ldap.filter import filter_format
 
-from univention.admin.layout import Tab, Group
-import univention.admin.uldap
-import univention.admin.syntax
 import univention.admin.filter
 import univention.admin.handlers
 import univention.admin.localization
-
-import univention.debug as ud
+import univention.admin.syntax
 import univention.admin.uexceptions
+import univention.admin.uldap
+import univention.debug as ud
+from univention.admin.layout import Group, Tab
+
 
 translation = univention.admin.localization.translation('univention.admin.handlers.shares')
 _ = translation.translate

@@ -33,13 +33,13 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-import os
-import sys
-import contextlib
 import argparse
+import contextlib
+import os
 import subprocess
-import ConfigParser
+import sys
 
+import ConfigParser
 from vminstall import create_virtual_machine
 
 

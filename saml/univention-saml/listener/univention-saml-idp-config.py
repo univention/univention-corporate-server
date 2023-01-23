@@ -35,9 +35,11 @@ from __future__ import absolute_import, annotations
 
 from typing import Dict, List
 
-import listener
 import univention.debug as ud
 from univention.config_registry import ConfigRegistry, handler_set, handler_unset
+
+import listener
+
 
 description = 'Replication of identity provider settings'
 filter = '(objectClass=univentionSAMLIdpConfig)'

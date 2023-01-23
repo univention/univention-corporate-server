@@ -36,12 +36,12 @@
 from __future__ import print_function
 
 import array
+import json
+import os
 import socket
 import stat
-import time
-import os
 import sys
-import json
+import time
 
 import six
 from six.moves import input

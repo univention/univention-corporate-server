@@ -38,9 +38,11 @@ from __future__ import absolute_import, annotations
 
 from typing import Dict, List
 
-import listener
 import univention.debug as ud
 from univention.admin.handlers.users.user import unmapLocked
+
+import listener
+
 
 description = 'The listener module resets the faillog count'
 filter = '(objectClass=shadowAccount)'

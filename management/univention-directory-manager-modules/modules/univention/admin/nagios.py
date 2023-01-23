@@ -32,17 +32,18 @@
 
 """|UDM| methods and defines for Nagios related attributes."""
 
-import re
 import copy
+import re
+
 from ldap.filter import filter_format
 
-from univention.admin.layout import Tab
 import univention.admin
 import univention.admin.localization
 import univention.admin.syntax
-from univention.admin import configRegistry
-
 import univention.debug as ud
+from univention.admin import configRegistry
+from univention.admin.layout import Tab
+
 
 translation = univention.admin.localization.translation('univention.admin')
 _ = translation.translate

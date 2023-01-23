@@ -34,16 +34,17 @@
 
 from __future__ import absolute_import
 
-import re
-import bcrypt
 import hashlib
+import re
 from typing import List, Optional, Tuple  # noqa: F401
 
+import bcrypt
 import heimdal
 import passlib.hash
 
 import univention.debug as ud
 from univention.admin._ucr import configRegistry
+
 
 RE_PASSWORD_SCHEME = re.compile(r'^{(\w+)}(!?)(.*)', re.I)
 

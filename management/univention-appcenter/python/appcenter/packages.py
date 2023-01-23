@@ -35,19 +35,18 @@
 # <https://www.gnu.org/licenses/>.
 #
 
-import os
 import fcntl
-import time
+import os
 import re
-from logging import Handler
+import time
 from contextlib import contextmanager
+from logging import Handler
 
 from six import string_types
 
-from univention.lib.package_manager import PackageManager, LockError  # LockError is actually imported from other files!
-
-from univention.appcenter.log import get_base_logger, LogCatcher
+from univention.appcenter.log import LogCatcher, get_base_logger
 from univention.appcenter.utils import call_process
+from univention.lib.package_manager import LockError, PackageManager  # LockError is actually imported from other files!
 
 
 package_logger = get_base_logger().getChild('packages')

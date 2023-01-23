@@ -36,14 +36,16 @@
 
 
 from __future__ import print_function
+
 import sys
 
 import ldap
+
 import univention
+import univention.config_registry
 import univention.connector
 import univention.connector.ad
 
-import univention.config_registry
 
 CONFIGBASENAME = "connector"
 

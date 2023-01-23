@@ -34,13 +34,15 @@
 # <https://www.gnu.org/licenses/>.
 
 
-from six.moves import cPickle as pickle
-import sys
 import os
+import pwd
 import re
 import subprocess
-import pwd
+import sys
 import time
+
+from six.moves import cPickle as pickle
+
 import univention.config_registry
 import univention.lib.fstab
 

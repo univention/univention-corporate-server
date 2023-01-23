@@ -7,6 +7,7 @@ prepeding it with the character sequence '!TR!'.
 It is useful for visual quick testing of translation coverage and po file
 generation.
 """
+import argparse
 #
 # Like what you see? Join us!
 # https://www.univention.com/about-us/careers/vacancies/
@@ -38,8 +39,8 @@ generation.
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 import os
+
 import polib
-import argparse
 
 
 def parse_args():

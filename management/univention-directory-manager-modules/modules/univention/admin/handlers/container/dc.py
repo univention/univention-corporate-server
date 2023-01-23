@@ -33,16 +33,15 @@
 
 """|UDM| module for the Domain Component containers"""
 
-from univention.admin.layout import Tab, Group
-from univention.admin import configRegistry
-
 import univention.admin.filter
 import univention.admin.handlers
-import univention.admin.localization
-
+import univention.admin.handlers.groups.group
 import univention.admin.handlers.settings.directory
 import univention.admin.handlers.users.user
-import univention.admin.handlers.groups.group
+import univention.admin.localization
+from univention.admin import configRegistry
+from univention.admin.layout import Group, Tab
+
 
 translation = univention.admin.localization.translation('univention.admin.handlers.container')
 _ = translation.translate

@@ -13,7 +13,9 @@ import types
 from subprocess import Popen
 
 import pytest
+
 from univention.management.console.modules.diagnostic import Warning
+
 
 loader = importlib.machinery.SourceFileLoader('62_check_slapschema', '/usr/lib/python3/dist-packages/univention/management/console/modules/diagnostic/plugins/62_check_slapschema.py')
 check_slap = types.ModuleType(loader.name)

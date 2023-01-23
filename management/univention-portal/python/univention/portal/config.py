@@ -36,6 +36,7 @@
 import json
 from glob import glob
 
+
 _CONF = "/usr/lib/univention-portal/config/*.json"
 _DB = {}
 

@@ -42,6 +42,7 @@ import sys
 
 from univention.config_registry import ucr
 
+
 NODE_EXPORTER_DIR = '/var/lib/prometheus/node-exporter/'
 RE_INVALID_LABEL = re.compile('[{"=}]')
 

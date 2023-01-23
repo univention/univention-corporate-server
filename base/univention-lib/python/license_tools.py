@@ -33,8 +33,8 @@
 
 from __future__ import print_function
 
-import sys
 import datetime
+import sys
 from argparse import ArgumentParser, RawDescriptionHelpFormatter
 from typing import Optional  # noqa: F401
 

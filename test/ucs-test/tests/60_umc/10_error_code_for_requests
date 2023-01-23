@@ -20,6 +20,7 @@ from univention.management.console.modules.ucstest import joinscript, unjoinscri
 from univention.testing import utils
 from univention.testing.umc import Client
 
+
 NUMBER_OF_CONNECTIONS = 8
 RESPONSE_STATUS_CODES = (510, 511)
 

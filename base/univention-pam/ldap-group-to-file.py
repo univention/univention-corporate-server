@@ -35,15 +35,16 @@
 # <https://www.gnu.org/licenses/>.
 
 import argparse
-import shutil
-import sys
 import os
-import tempfile
+import shutil
 import subprocess
+import sys
+import tempfile
 
 import ldap.dn
-import univention.uldap
+
 import univention.lib.locking
+import univention.uldap
 
 
 def _get_members(lo, groupdn, gattr, recursion_list, check_member=False):

@@ -35,11 +35,13 @@
 # <https://www.gnu.org/licenses/>.
 
 import io
-from setuptools import setup, Extension
+from email.utils import parseaddr
+
 import pkgconfig
 from debian.changelog import Changelog
 from debian.deb822 import Deb822
-from email.utils import parseaddr
+from setuptools import Extension, setup
+
 
 d = pkgconfig.parse('heimdal-krb5')
 dch = Changelog(io.open('debian/changelog', 'r', encoding='utf-8'))

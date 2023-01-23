@@ -35,11 +35,12 @@
 
 from __future__ import print_function
 
+import json
 import os
 import time
-import json
 
 from univention.updater import UniventionUpdater
+
 
 uu = UniventionUpdater(False)
 available_updates = uu.get_all_available_release_updates()[0]

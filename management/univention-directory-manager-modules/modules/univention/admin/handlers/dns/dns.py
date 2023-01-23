@@ -35,18 +35,17 @@
 import six
 
 import univention.admin.filter
+import univention.admin.handlers
+import univention.admin.handlers.dns.alias
+import univention.admin.handlers.dns.forward_zone
+import univention.admin.handlers.dns.host_record
+import univention.admin.handlers.dns.ns_record
+import univention.admin.handlers.dns.ptr_record
+import univention.admin.handlers.dns.reverse_zone
+import univention.admin.handlers.dns.srv_record
+import univention.admin.handlers.dns.txt_record
 import univention.admin.localization
 from univention.admin.layout import Tab
-
-import univention.admin.handlers
-import univention.admin.handlers.dns.forward_zone
-import univention.admin.handlers.dns.reverse_zone
-import univention.admin.handlers.dns.alias
-import univention.admin.handlers.dns.host_record
-import univention.admin.handlers.dns.srv_record
-import univention.admin.handlers.dns.ptr_record
-import univention.admin.handlers.dns.txt_record
-import univention.admin.handlers.dns.ns_record
 
 
 translation = univention.admin.localization.translation('univention.admin.handlers.dns')

@@ -34,31 +34,31 @@
 # <https://www.gnu.org/licenses/>.
 
 
-import os
-import sys
-import json
-import signal
-import atexit
-import logging
 import argparse
+import json
+import logging
+import os
+import signal
 import subprocess
+import sys
 
+import atexit
 import pycurl
-from setproctitle import getproctitle, setproctitle
-
+import tornado.httpclient
 import tornado.httpserver
+import tornado.httputil
 import tornado.ioloop
 import tornado.iostream
-import tornado.web
-import tornado.httpclient
-import tornado.httputil
 import tornado.process
+import tornado.web
+from setproctitle import getproctitle, setproctitle
 from tornado.netutil import bind_sockets, bind_unix_socket
 
-from univention.management.console.config import ucr
-import univention.lib.i18n
 import univention.debug as ud
+import univention.lib.i18n
 from univention.admin.rest.shared_memory import shared_memory
+from univention.management.console.config import ucr
+
 
 try:
     from multiprocessing.util import _exit_function

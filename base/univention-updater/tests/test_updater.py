@@ -9,9 +9,10 @@ from tempfile import NamedTemporaryFile
 
 import pytest
 from lazy_object_proxy import Proxy
+from mockups import ARCH, DATA, ERRAT, MAJOR, MINOR, PATCH, RJSON, gen_releases
 
 import univention.updater.tools as U
-from mockups import ARCH, DATA, ERRAT, MAJOR, MINOR, PATCH, RJSON, gen_releases
+
 
 UU = U.UniventionUpdater
 

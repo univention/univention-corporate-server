@@ -32,7 +32,7 @@
 
 from __future__ import absolute_import
 
-from typing import Dict, Optional, List
+from typing import Dict, List, Optional
 
 from univention.listener import ListenerModuleHandler
 

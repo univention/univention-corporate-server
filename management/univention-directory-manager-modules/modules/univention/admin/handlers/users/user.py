@@ -42,13 +42,14 @@ import re
 import time
 import warnings
 from datetime import datetime
+from typing import List  # noqa: F401
 
 import ldap
+import passlib.hash
 import pytz
 import six
-from ldap.filter import filter_format
 import tzlocal
-import passlib.hash
+from ldap.filter import filter_format
 
 import univention.admin
 import univention.admin.allocators
@@ -66,11 +67,9 @@ import univention.admin.uldap
 import univention.debug as ud
 import univention.password
 from univention.admin import configRegistry
+from univention.admin.certificate import PKIIntegration, register_pki_integration
 from univention.admin.layout import Group, Tab
 from univention.lib.s4 import rids_for_well_known_security_identifiers
-from univention.admin.certificate import PKIIntegration, register_pki_integration
-
-from typing import List  # noqa: F401
 
 
 if not six.PY2:

@@ -33,8 +33,8 @@
 
 """license check"""
 
-import getopt
 import datetime
+import getopt
 import traceback
 
 from ldap.filter import filter_format
@@ -44,6 +44,7 @@ import univention.admin.uldap
 import univention.config_registry
 import univention.license
 from univention.admin import uexceptions
+
 
 License = univention.admin.license.License
 _license = univention.admin.license._license

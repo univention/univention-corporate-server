@@ -45,34 +45,34 @@ A UDM handler represents an abstraction of an LDAP object.
 from __future__ import absolute_import
 
 import copy
-import re
-import time
-import sys
 import inspect
+import re
+import sys
+import time
 import traceback
+from ipaddress import IPv4Address, IPv6Address, ip_address, ip_network
 from typing import Any, Dict, Iterable, List, Optional, Set, Text, Tuple, Union  # noqa: F401
 
-import six
-from ipaddress import ip_address, ip_network, IPv4Address, IPv6Address
 import ldap
-from ldap.filter import filter_format
-from ldap.dn import explode_rdn, escape_dn_chars, str2dn, dn2str
+import six
 from ldap.controls.readentry import PostReadControl
+from ldap.dn import dn2str, escape_dn_chars, explode_rdn, str2dn
+from ldap.filter import filter_format
 
+import univention.admin.filter
+import univention.admin.localization
+import univention.admin.mapping
+import univention.admin.modules
+import univention.admin.syntax
+import univention.admin.uexceptions
+import univention.admin.uldap
 import univention.debug as ud
-
+from univention.admin import configRegistry
+from univention.admin.uldap import DN
 from univention.admindiary.client import write_event
 from univention.admindiary.events import DiaryEvent
 
-import univention.admin.filter
-import univention.admin.uldap
-import univention.admin.mapping
-import univention.admin.modules
-import univention.admin.uexceptions
-import univention.admin.localization
-import univention.admin.syntax
-from univention.admin import configRegistry
-from univention.admin.uldap import DN
+
 try:
     import univention.lib.admember
     _prevent_to_change_ad_properties = univention.lib.admember.is_localhost_in_admember_mode()

@@ -32,6 +32,8 @@
 """Common commands to manage Debian packages."""
 
 from univention.config_registry import ConfigRegistry
+
+
 configRegistry = ConfigRegistry()
 configRegistry.load()
 

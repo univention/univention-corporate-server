@@ -26,6 +26,7 @@ from univention.testing.codes import TestCodes
 from univention.testing.decorators import SetTimeout
 from univention.testing.ucs_samba import wait_for_drs_replication, wait_for_s4connector
 
+
 lm_name = f'test-{uts.random_name()}'
 lm_file = os.path.join('/usr/lib/univention-directory-listener/system', f'{lm_name}.py')
 log_file = os.path.join('/tmp', f'{uts.random_name()}.log')

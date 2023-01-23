@@ -37,12 +37,15 @@
 import univention.config_registry
 import univention.management.console as umc
 import univention.management.console.modules as umcm
-from univention.management.console.log import MODULE
-from univention.management.console.base import LDAP_ServerDown
-from univention.management.console.modules.sanitizers import Sanitizer, StringSanitizer, DictSanitizer, BooleanSanitizer
-from univention.appcenter.actions.credentials import ConnectionFailedServerDown, ConnectionFailedInvalidMachineCredentials, ConnectionFailedInvalidUserCredentials, ConnectionFailedSecretFile
-from univention.appcenter.exceptions import Abort
+from univention.appcenter.actions.credentials import (
+    ConnectionFailedInvalidMachineCredentials, ConnectionFailedInvalidUserCredentials, ConnectionFailedSecretFile,
+    ConnectionFailedServerDown,
+)
 from univention.appcenter.app_cache import Apps
+from univention.appcenter.exceptions import Abort
+from univention.management.console.base import LDAP_ServerDown
+from univention.management.console.log import MODULE
+from univention.management.console.modules.sanitizers import BooleanSanitizer, DictSanitizer, Sanitizer, StringSanitizer
 
 
 _ = umc.Translation('univention-management-console-module-appcenter').translate

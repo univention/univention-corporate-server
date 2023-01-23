@@ -59,8 +59,10 @@ import ldap.schema
 import ldif as ldifparser
 from six.moves.email_mime_text import MIMEText
 
-import listener
 import univention.debug as ud
+
+import listener
+
 
 description = 'LDAP Replica Node replication'
 filter = '(objectClass=*)'  # default filter - may be overwritten later

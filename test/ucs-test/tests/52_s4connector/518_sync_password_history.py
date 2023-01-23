@@ -7,25 +7,23 @@
 ##  - 52230
 
 
+import binascii
+import subprocess
+
 import ldap
 import pytest
-import subprocess
-import binascii
-
-from univention.admin import modules
-from univention.testing.utils import get_ldap_connection
-import univention.testing.connector_common as tcommon
-from univention.testing.connector_common import delete_con_user
-from univention.testing.connector_common import (
-    create_udm_user, to_unicode, NormalUser,
-)
-from univention.testing.udm import UCSTestUDM, UCSTestUDM_ModifyUDMObjectFailed
 
 import univention.config_registry
+import univention.testing.connector_common as tcommon
 import univention.testing.strings as tstrings
+from univention.admin import modules
+from univention.testing.connector_common import NormalUser, create_udm_user, delete_con_user, to_unicode
+from univention.testing.udm import UCSTestUDM, UCSTestUDM_ModifyUDMObjectFailed
+from univention.testing.utils import get_ldap_connection
 
 import s4connector
 from s4connector import connector_running_on_this_host, connector_setup
+
 
 configRegistry = univention.config_registry.ConfigRegistry()
 configRegistry.load()

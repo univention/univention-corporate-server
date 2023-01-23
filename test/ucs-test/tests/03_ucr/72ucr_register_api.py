@@ -13,6 +13,7 @@ from univention.testing.debian_package import DebianPackage
 from univention.testing.strings import random_string, random_version
 from univention.testing.ucr import UCSTestConfigRegistry
 
+
 UCR_MODULE = '''
 import json
 def handler(configRegistry, changes):

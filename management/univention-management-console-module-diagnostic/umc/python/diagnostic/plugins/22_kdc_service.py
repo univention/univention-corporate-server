@@ -45,9 +45,8 @@ from pyasn1.type import base, char, namedtype, tag, univ, useful
 
 from univention.config_registry import handler_set as ucr_set, ucr_live as configRegistry
 from univention.lib.i18n import Translation
-from univention.management.console.modules.diagnostic import (
-    MODULE, Critical, Instance, ProblemFixed, Warning, util,
-)
+from univention.management.console.modules.diagnostic import MODULE, Critical, Instance, ProblemFixed, Warning, util
+
 
 _ = Translation('univention-management-console-module-diagnostic').translate
 

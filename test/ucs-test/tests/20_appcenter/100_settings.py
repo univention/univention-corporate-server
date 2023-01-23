@@ -23,6 +23,7 @@ from univention.appcenter.log import log_to_logfile, log_to_stream
 from univention.appcenter.settings import SettingValueError
 from univention.appcenter.ucr import ucr_get, ucr_save
 
+
 log_to_logfile()
 log_to_stream()
 

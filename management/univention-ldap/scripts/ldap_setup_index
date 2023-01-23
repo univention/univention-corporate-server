@@ -30,12 +30,14 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
+import re
 import sys
 from argparse import ArgumentParser
-from subprocess import (PIPE, Popen)
-from univention.config_registry.frontend import (ConfigRegistry, ucr_update)
-from logging import (ERROR, WARNING, INFO, DEBUG, basicConfig, getLogger)
-import re
+from logging import DEBUG, ERROR, INFO, WARNING, basicConfig, getLogger
+from subprocess import PIPE, Popen
+
+from univention.config_registry.frontend import ConfigRegistry, ucr_update
+
 
 LOG = getLogger(__name__)
 

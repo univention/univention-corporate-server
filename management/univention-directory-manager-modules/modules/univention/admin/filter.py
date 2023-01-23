@@ -39,6 +39,7 @@ from ldap.filter import filter_format
 
 import univention.admin.uexceptions
 
+
 T = TypeVar("T")
 
 

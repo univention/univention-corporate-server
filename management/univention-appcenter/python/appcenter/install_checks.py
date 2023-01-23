@@ -36,19 +36,21 @@
 #
 
 
-import re
 import os
 import platform
+import re
 
 from six import with_metaclass
 
-from univention.appcenter.app import LooseVersion
-from univention.appcenter.meta import UniventionMetaClass
-from univention.appcenter.ucr import ucr_get, ucr_load, ucr_is_true
-from univention.appcenter.app_cache import Apps
-from univention.appcenter.utils import get_current_ram_available, get_free_disk_space, underscore, container_mode, app_ports, _
 from univention.appcenter.actions import get_action
-from univention.appcenter.packages import packages_are_installed, get_package_manager
+from univention.appcenter.app import LooseVersion
+from univention.appcenter.app_cache import Apps
+from univention.appcenter.meta import UniventionMetaClass
+from univention.appcenter.packages import get_package_manager, packages_are_installed
+from univention.appcenter.ucr import ucr_get, ucr_is_true, ucr_load
+from univention.appcenter.utils import (
+    _, app_ports, container_mode, get_current_ram_available, get_free_disk_space, underscore,
+)
 
 
 _REQUIREMENTS = {}

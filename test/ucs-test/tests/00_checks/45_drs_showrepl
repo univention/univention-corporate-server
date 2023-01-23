@@ -11,6 +11,7 @@ from subprocess import PIPE, Popen
 
 from univention.testing import utils
 
+
 proc = Popen(['samba-tool', 'drs', 'showrepl'], stdout=PIPE, stderr=PIPE)
 
 stdout, stderr = proc.communicate()

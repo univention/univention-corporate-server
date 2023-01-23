@@ -33,10 +33,10 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
+import univention.admin.localization
 import univention.admin.modules
 import univention.admin.syntax
 
-import univention.admin.localization
 
 translation = univention.admin.localization.translation('univention.admin.handlers.saml-serviceprovider')
 _ = translation.translate

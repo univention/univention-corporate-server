@@ -35,10 +35,10 @@
 
 import univention.admin.filter
 import univention.admin.handlers
-import univention.admin.localization
-
 import univention.admin.handlers.nagios.service
 import univention.admin.handlers.nagios.timeperiod
+import univention.admin.localization
+
 
 translation = univention.admin.localization.translation('univention.admin.handlers.nagios')
 _ = translation.translate

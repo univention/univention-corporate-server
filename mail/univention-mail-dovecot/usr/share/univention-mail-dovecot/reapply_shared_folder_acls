@@ -33,15 +33,15 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-import copy
 import argparse
+import copy
 
 import ldap.filter
 
 import univention.debug as ud
 from univention.config_registry import ConfigRegistry
-from univention.uldap import getMachineConnection
 from univention.mail.dovecot_shared_folder import DovecotSharedFolderListener
+from univention.uldap import getMachineConnection
 
 
 class ListenerMockup(object):

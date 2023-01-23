@@ -37,6 +37,7 @@ import os
 import os.path
 from errno import EEXIST
 
+
 portal_path = "/usr/share/univention-portal"
 
 

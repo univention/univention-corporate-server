@@ -29,10 +29,10 @@
 # License with the Debian GNU/Linux or Univention distribution in file
 # /usr/share/common-licenses/AGPL-3; if not, see
 
+import click
+
 from univention.config_registry import ConfigRegistry
 from univention.udm import UDM, NoObject
-
-import click
 
 
 def clear_objects(udm, module):

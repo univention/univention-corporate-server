@@ -38,8 +38,10 @@ from __future__ import absolute_import, annotations
 import os
 from typing import Dict, List
 
-import listener
 import univention.debug as ud
+
+import listener
+
 
 # pwdChangeNextLogin=1 should be set, this is either shadowMax=1 or shadowLastChange=0
 name = 'selfservice-invitation'

@@ -48,6 +48,7 @@ from optparse import OptionParser
 
 import requests
 
+
 DOCKER_READ_USER_CRED = {
     'username': 'ucs',
     'password': 'readonly',

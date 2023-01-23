@@ -38,9 +38,10 @@
 
 import os
 import os.path
-from glob import glob
 import shutil
 import stat
+from glob import glob
+
 
 try:
     # try to derive from docker's update
@@ -48,8 +49,10 @@ try:
 except ImportError:
     # otherwise take the normal one
     from univention.appcenter.actions.update import Update
-from univention.appcenter.app_cache import Apps, AllApps
+
+from univention.appcenter.app_cache import AllApps, Apps
 from univention.appcenter.extended_attributes import create_option_icon
+
 
 FRONTEND_ICONS_DIR = '/usr/share/univention-management-console-frontend/js/dijit/themes/umc/icons/scalable'
 

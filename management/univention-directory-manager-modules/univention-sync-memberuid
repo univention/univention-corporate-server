@@ -39,12 +39,12 @@ referenced by uniqueMember.
 
 from __future__ import print_function
 
-import ldap
 import sys
 from argparse import ArgumentParser
 
-import univention.config_registry
+import ldap
 
+import univention.config_registry
 import univention.debug as ud
 
 

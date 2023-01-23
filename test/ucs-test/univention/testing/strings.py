@@ -32,7 +32,8 @@
 # <https://www.gnu.org/licenses/>.
 
 from random import choice, randint
-from typing import Iterator, Text, Optional, Tuple  # noqa: F401
+from typing import Iterator, Optional, Text, Tuple  # noqa: F401
+
 
 STR_NUMERIC = '0123456789'
 STR_ALPHA = 'abcdefghijklmnopqrstuvwxyz'

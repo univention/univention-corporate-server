@@ -36,6 +36,7 @@ from univention.config_registry import handler_set, ucr_live as ucr
 from univention.lib.i18n import Translation
 from univention.management.console.modules.diagnostic import MODULE, Critical, Instance, ProblemFixed
 
+
 _ = Translation('univention-management-console-module-diagnostic').translate
 
 suggested_max_open_files = 32808

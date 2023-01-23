@@ -41,10 +41,11 @@ from typing import Dict, List, Optional, Tuple  # noqa: F401
 from ldap import SERVER_DOWN
 from ldap.filter import filter_format
 
-import univention.uldap
 import univention.config_registry
+import univention.uldap
 
 from .utils import decode_stationId, parse_username
+
 
 SAMBA_ACCOUNT_FLAG_DISABLED = 'D'
 SAMBA_ACCOUNT_FLAG_LOCKED = 'L'

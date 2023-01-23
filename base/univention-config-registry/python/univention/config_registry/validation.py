@@ -36,8 +36,9 @@ Checks validity of type definitions and type compatibility of values to be set.
 import ipaddress
 import json
 import re
-from six.moves.urllib.parse import urlsplit
 from typing import Container, Dict, Iterator, Optional, Pattern, Type as _Type, Union, cast  # noqa: F401
+
+from six.moves.urllib.parse import urlsplit
 
 import univention.config_registry_info as cri
 from univention.config_registry.backend import BooleanConfigRegistry

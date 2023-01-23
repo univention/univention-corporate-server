@@ -16,6 +16,7 @@ import stat
 import univention.testing.ucr as ucr_test
 from univention.testing import utils
 
+
 UNIVENTION_DIR = '/etc/univention'
 SSLDIR = '/etc/univention/ssl'
 SKIP = '/etc/univention/ssl/unassigned-hostname.unassigned-domain'

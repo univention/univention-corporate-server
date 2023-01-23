@@ -34,34 +34,34 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
+import os.path
+import pipes
+import re
+import subprocess
+import time
+import traceback
+from contextlib import contextmanager
+
+import ldap.dn
+import ldap.filter
+import ldb
+import notifier.popen
+import psutil
+from ldap import explode_rdn
+from samba.auth import system_session
+from samba.credentials import Credentials
+from samba.param import LoadParm
+from samba.samdb import SamDB
+
 import univention.config_registry
 from univention.lib import Translation, admember
 from univention.management.console.base import Base, UMC_Error
-from univention.management.console.log import MODULE
 from univention.management.console.config import ucr
+from univention.management.console.log import MODULE
 from univention.management.console.modules.decorators import file_upload, sanitize, simple_response
 from univention.management.console.modules.mixins import ProgressMixin
-from univention.management.console.modules.sanitizers import StringSanitizer, ChoicesSanitizer
+from univention.management.console.modules.sanitizers import ChoicesSanitizer, StringSanitizer
 
-from contextlib import contextmanager
-import os.path
-import re
-import subprocess
-import traceback
-import time
-import pipes
-
-import psutil
-import notifier.popen
-from ldap import explode_rdn
-import ldb
-import ldap.dn
-import ldap.filter
-
-from samba.param import LoadParm
-from samba.samdb import SamDB
-from samba.auth import system_session
-from samba.credentials import Credentials
 
 _ = Translation('univention-management-console-module-adconnector').translate
 

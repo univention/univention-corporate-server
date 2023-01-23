@@ -36,6 +36,7 @@ import subprocess
 from univention.lib.i18n import Translation
 from univention.management.console.modules.diagnostic import MODULE, Instance, Warning
 
+
 _ = Translation('univention-management-console-module-diagnostic').translate
 
 title = _('Check for modified UCR templates')

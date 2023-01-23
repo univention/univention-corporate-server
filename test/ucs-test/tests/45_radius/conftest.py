@@ -1,11 +1,9 @@
 import passlib.hash
-
-import univention.testing.udm as udm_test
-import univention.testing.strings as uts
-from univention.config_registry import handler_set as ucr_set
-from univention.config_registry import handler_unset as ucr_unset
-
 import pytest
+
+import univention.testing.strings as uts
+import univention.testing.udm as udm_test
+from univention.config_registry import handler_set as ucr_set, handler_unset as ucr_unset
 
 
 @pytest.fixture(scope="session")

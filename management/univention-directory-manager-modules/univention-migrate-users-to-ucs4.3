@@ -33,25 +33,26 @@
 
 from __future__ import print_function
 
-import sys
-import time
-import pprint
 import argparse
 import binascii
 import calendar
+import pprint
+import sys
+import time
 
+import heimdal
 import ldap
 import ldap.controls.simple
 from ldap.filter import filter_format
-import heimdal
 
-import univention.admin.uldap
 import univention.admin.allocators
-import univention.admin.uexceptions
 import univention.admin.password
 import univention.admin.samba
-from univention.lib.s4 import rids_for_well_known_security_identifiers
+import univention.admin.uexceptions
+import univention.admin.uldap
 from univention.config_registry import ConfigRegistry
+from univention.lib.s4 import rids_for_well_known_security_identifiers
+
 
 ucr = ConfigRegistry()
 ucr.load()

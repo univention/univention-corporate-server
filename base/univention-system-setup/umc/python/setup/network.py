@@ -44,6 +44,7 @@ from univention.lib.i18n import Translation
 from univention.management.console.log import MODULE
 from univention.management.console.modules.setup.util import detect_interfaces
 
+
 ucr = ConfigRegistry()
 ucr.load()
 

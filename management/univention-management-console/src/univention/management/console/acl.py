@@ -67,26 +67,26 @@ used
 
 from __future__ import absolute_import
 
-import os
-import ldap
-import json
-import pickle
 import itertools
+import json
 import operator
+import os
+import pickle
 import traceback
 from fnmatch import fnmatch
-from ldap.filter import filter_format
+
+import ldap
 import six
+from ldap.filter import filter_format
+
+import univention.admin.handlers.computers.domaincontroller_backup as dc_backup
+import univention.admin.handlers.computers.domaincontroller_master as dc_master
+import univention.admin.handlers.computers.domaincontroller_slave as dc_slave
+import univention.admin.uexceptions as udm_errors
+from univention.admin.handlers.computers import memberserver
 
 from .config import ucr
 from .log import ACL
-
-import univention.admin.handlers.computers.domaincontroller_master as dc_master
-import univention.admin.handlers.computers.domaincontroller_backup as dc_backup
-import univention.admin.handlers.computers.domaincontroller_slave as dc_slave
-from univention.admin.handlers.computers import memberserver
-
-import univention.admin.uexceptions as udm_errors
 
 
 class Rule(dict):

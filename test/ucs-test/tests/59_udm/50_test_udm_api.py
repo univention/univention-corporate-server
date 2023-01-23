@@ -28,9 +28,10 @@ from univention.udm import (
 )
 from univention.udm.connections import LDAP_connection
 from univention.udm.exceptions import (
-    CreateError, DeletedError, DeleteError, ModifyError, MoveError, NoObject, NoSuperordinate,
-    NotYetSavedError, UnknownProperty,
+    CreateError, DeletedError, DeleteError, ModifyError, MoveError, NoObject, NoSuperordinate, NotYetSavedError,
+    UnknownProperty,
 )
+
 
 ud.init('/var/log/univention/directory-manager-cmd.log', ud.FLUSH, 0)
 ud.set_level(ud.ADMIN, ud.ALL)

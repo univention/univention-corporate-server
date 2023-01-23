@@ -36,11 +36,12 @@
 
 from __future__ import absolute_import, annotations
 
-
 from typing import Dict, List
 
-import listener
 import univention.config_registry
+
+import listener
+
 
 description = 'Set umc/self-service/passwordreset/email/webserver_address.'
 filter = '(univentionService=univention-self-service)'

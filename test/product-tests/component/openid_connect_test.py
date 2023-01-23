@@ -32,13 +32,20 @@
 # <https://www.gnu.org/licenses/>.
 #
 
+import importlib
 import os
 import os.path
-import importlib
-import time
-import sys
 import random
 import string
+import sys
+import time
+
+from selenium.common.exceptions import NoSuchElementException
+from selenium.webdriver import ActionChains
+from selenium.webdriver.common.by import By
+from selenium.webdriver.common.keys import Keys
+from selenium.webdriver.support import expected_conditions as EC
+from selenium.webdriver.support.wait import WebDriverWait
 
 
 # Good to know when further developing these tests
@@ -56,12 +63,6 @@ import string
 #
 # https://selenium-python.readthedocs.io/locating-elements.html
 
-from selenium.webdriver import ActionChains
-from selenium.webdriver.support.wait import WebDriverWait
-from selenium.webdriver.support import expected_conditions as EC
-from selenium.webdriver.common.by import By
-from selenium.common.exceptions import NoSuchElementException
-from selenium.webdriver.common.keys import Keys
 
 
 # helper functions -------------------------------------------------------------

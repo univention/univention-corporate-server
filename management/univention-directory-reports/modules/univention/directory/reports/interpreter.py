@@ -33,17 +33,19 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-import re
 import copy
-import fnmatch
 import datetime
-
-import univention.admin.objects as ua_objects
-
-from univention.directory.reports.tokens import QueryToken, ResolveToken, TextToken, AttributeToken, PolicyToken, DateToken
-from univention.directory.reports import admin
+import fnmatch
+import re
 
 import univention.admin.localization
+import univention.admin.objects as ua_objects
+from univention.directory.reports import admin
+from univention.directory.reports.tokens import (
+    AttributeToken, DateToken, PolicyToken, QueryToken, ResolveToken, TextToken,
+)
+
+
 translation = univention.admin.localization.translation('univention-directory-reports')
 _ = translation.translate
 

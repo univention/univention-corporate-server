@@ -44,6 +44,7 @@ from typing import Dict, List
 
 import listener
 
+
 description = 'Write SAML enabled groups to json file, to be read by the services metadata.php'
 filter = '(objectClass=univentionSAMLEnabledGroup)'
 attributes = ['enabledServiceProviderIdentifierGroup']

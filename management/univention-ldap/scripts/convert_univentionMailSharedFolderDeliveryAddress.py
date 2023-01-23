@@ -35,11 +35,11 @@
 
 from __future__ import print_function
 
-import sys
 import argparse
+import sys
 
-import univention.uldap
 import univention.config_registry
+import univention.uldap
 
 
 def run():

@@ -12,8 +12,8 @@ import time
 from email import header
 
 import pytest
-
 from test_self_service import capture_mails, self_service_user
+
 from univention.testing.strings import random_string, random_username
 
 

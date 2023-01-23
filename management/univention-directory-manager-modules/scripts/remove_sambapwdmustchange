@@ -35,9 +35,11 @@
 from __future__ import print_function
 
 import sys
+from argparse import ArgumentParser
+
 import univention.admin
 import univention.admin.uldap
-from argparse import ArgumentParser
+
 
 if __name__ == '__main__':
     ACTIONS = ('test', 'remove')

@@ -48,15 +48,15 @@
 #
 from __future__ import print_function
 
-import sys
 import optparse
+import sys
 
-from ldap.filter import filter_format
-
-from samba.samdb import SamDB
 import ldb
 import samba.getopt
+from ldap.filter import filter_format
 from samba.auth import system_session
+from samba.samdb import SamDB
+
 from univention import config_registry
 
 

@@ -15,6 +15,7 @@ from univention.testing import utils
 import dnstests
 import s4connector
 
+
 if __name__ == '__main__':
     s4connector.exit_if_connector_not_running()
 

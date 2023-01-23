@@ -22,6 +22,7 @@ from univention.testing.strings import random_string
 
 from adconnector import ADConnection, restart_adconnector, wait_for_sync
 
+
 sys.path.append("$TESTLIBPATH")
 
 

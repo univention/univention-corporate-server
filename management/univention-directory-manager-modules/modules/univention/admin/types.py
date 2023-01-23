@@ -34,17 +34,18 @@
 
 from __future__ import absolute_import
 
+import datetime
 import inspect
 import time
-import datetime
 from typing import Optional, Sequence, Type, Union  # noqa: F401
 
-import six
 import ldap.dn
+import six
 
 import univention.admin.uexceptions
-from univention.admin import localization
 import univention.debug as ud
+from univention.admin import localization
+
 
 translation = localization.translation('univention/admin')
 _ = translation.translate

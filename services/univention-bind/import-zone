@@ -39,8 +39,10 @@
 # dig axfr +nocomment +nostats +nocmd office.univention.de @localhost | ./import-zone dc=mkgbank,dc=de office.univention.de 604800
 
 from __future__ import print_function
-import sys
+
 import re
+import sys
+
 
 ldapbase = sys.argv[1]
 zone = sys.argv[2]

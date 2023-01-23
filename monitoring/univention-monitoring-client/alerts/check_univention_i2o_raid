@@ -34,6 +34,7 @@
 # <https://www.gnu.org/licenses/>.
 
 import re
+
 from univention.config_registry import ucr
 from univention.monitoring import Alert
 

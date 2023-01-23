@@ -41,8 +41,8 @@ from subprocess import PIPE, Popen
 
 from ldap.filter import filter_format
 
-from univention.management.console.modules.setup.util import _temporary_password_file
 from univention.management.console.log import MODULE
+from univention.management.console.modules.setup.util import _temporary_password_file
 
 
 def check_if_uid_is_available(uid, role, address, username, password):

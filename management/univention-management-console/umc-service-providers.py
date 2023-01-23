@@ -39,9 +39,11 @@ import os
 import subprocess
 from typing import Dict, List
 
-import listener
 import univention.debug as ud
 from univention.config_registry import handler_set, handler_unset
+
+import listener
+
 
 name = 'umc-service-providers'
 description = 'Manage umc/saml/trusted/sp/* variable'

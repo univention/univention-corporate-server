@@ -36,6 +36,7 @@ from copy import deepcopy
 
 from univentionunittests.udm_filter import make_filter
 
+
 try:
     from mock import MagicMock
 except ImportError:

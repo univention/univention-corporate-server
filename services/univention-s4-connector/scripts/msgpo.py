@@ -35,12 +35,15 @@
 # <https://www.gnu.org/licenses/>.
 
 from __future__ import print_function
+
 import sys
-import ldap
 from argparse import ArgumentParser
-import univention.config_registry
-import univention.admin.uldap
+
+import ldap
+
 import univention.admin.uexceptions
+import univention.admin.uldap
+import univention.config_registry
 import univention.s4connector.s4
 
 

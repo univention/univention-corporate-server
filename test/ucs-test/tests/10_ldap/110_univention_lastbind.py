@@ -16,6 +16,7 @@ from univention.config_registry import handler_set
 from univention.testing.ucr import UCSTestConfigRegistry
 from univention.udm import UDM
 
+
 try:
     import univention_lastbind
 except ImportError:

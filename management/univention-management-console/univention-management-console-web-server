@@ -36,50 +36,51 @@
 
 from __future__ import division
 
-import os
-import re
-import sys
-import time
-import uuid
-import json
-import zlib
 import base64
-import hashlib
-import resource
-import tempfile
 import binascii
 import datetime
-import traceback
 import functools
+import hashlib
+import json
+import os
+import re
+import resource
+import sys
+import tempfile
 import threading
+import time
+import traceback
+import uuid
+import zlib
 from argparse import ArgumentParser
-from six.moves.urllib_parse import urlparse, urlunsplit
-from six.moves.http_client import REQUEST_ENTITY_TOO_LARGE, LENGTH_REQUIRED, NOT_FOUND, BAD_REQUEST, UNAUTHORIZED, SERVICE_UNAVAILABLE
-
-from defusedxml.common import DefusedXmlException
-import six
-from six.moves import queue as Queue
-import notifier
-import cherrypy
 from ipaddress import ip_address
+
+import cherrypy
+import notifier
+import six
 from cherrypy import HTTPError, HTTPRedirect, NotFound
 from cherrypy.lib.httputil import valid_status
-
-import univention.debug as ud
-from univention.management.console.protocol import Request, Response, Client, NoSocketError, TEMPUPLOADDIR
-from univention.management.console.log import CORE, log_init, log_reopen
-from univention.management.console.config import ucr, get_int
-
-from saml2 import BINDING_HTTP_POST, BINDING_HTTP_ARTIFACT, BINDING_HTTP_REDIRECT
+from defusedxml.common import DefusedXmlException
+from saml2 import BINDING_HTTP_ARTIFACT, BINDING_HTTP_POST, BINDING_HTTP_REDIRECT
 from saml2.client import Saml2Client
+from saml2.ident import code as encode_name_id, decode as decode_name_id
 from saml2.metadata import create_metadata_string
-from saml2.response import VerificationError, UnsolicitedResponse, StatusError
+from saml2.response import StatusError, UnsolicitedResponse, VerificationError
 from saml2.s_utils import UnknownPrincipal, UnsupportedBinding, rndstr
 from saml2.sigver import MissingKey, SignatureError
-from saml2.ident import code as encode_name_id, decode as decode_name_id
 from saml2.validate import ResponseLifetimeExceed
+from six.moves import queue as Queue
+from six.moves.http_client import (
+    BAD_REQUEST, LENGTH_REQUIRED, NOT_FOUND, REQUEST_ENTITY_TOO_LARGE, SERVICE_UNAVAILABLE, UNAUTHORIZED,
+)
+from six.moves.urllib_parse import urlparse, urlunsplit
 
+import univention.debug as ud
 from univention.lib.i18n import NullTranslation
+from univention.management.console.config import get_int, ucr
+from univention.management.console.log import CORE, log_init, log_reopen
+from univention.management.console.protocol import TEMPUPLOADDIR, Client, NoSocketError, Request, Response
+
 
 try:
     from html import escape, unescape
@@ -96,6 +97,8 @@ except ImportError:
 
 # the SameSite cookie attribute is only available from Python 3.8
 from six.moves.http_cookies import Morsel
+
+
 Morsel._reserved['samesite'] = 'SameSite'
 
 _ = NullTranslation('univention-management-console-frontend').translate

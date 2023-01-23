@@ -36,7 +36,10 @@
 import re
 import shlex
 
-from .tokens import Token, TextToken, AttributeToken, PolicyToken, QueryToken, HeaderToken, FooterToken, IContextToken, ResolveToken, DateToken
+from .tokens import (
+    AttributeToken, DateToken, FooterToken, HeaderToken, IContextToken, PolicyToken, QueryToken, ResolveToken,
+    TextToken, Token,
+)
 
 
 class Parser(object):

@@ -32,10 +32,11 @@
 r"""Module and object for all `computers/\*` UDM modules."""
 
 from __future__ import absolute_import, unicode_literals
+
 from ..encoders import (
     CnameListPropertyEncoder, DnsEntryZoneAliasListPropertyEncoder, DnsEntryZoneForwardListMultiplePropertyEncoder,
-    DnsEntryZoneReverseListMultiplePropertyEncoder,
-    dn_list_property_encoder_for, dn_property_encoder_for, StringIntBooleanPropertyEncoder, StringIntPropertyEncoder,
+    DnsEntryZoneReverseListMultiplePropertyEncoder, StringIntBooleanPropertyEncoder, StringIntPropertyEncoder,
+    dn_list_property_encoder_for, dn_property_encoder_for,
 )
 from .generic import GenericModule, GenericObject, GenericObjectProperties
 

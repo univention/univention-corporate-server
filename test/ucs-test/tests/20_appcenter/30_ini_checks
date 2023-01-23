@@ -11,6 +11,7 @@ from configparser import NoOptionError, NoSectionError
 from univention.appcenter.app_cache import Apps
 from univention.appcenter.ini_parser import read_ini_file
 
+
 returncode = 100
 
 codes = {}

@@ -9,6 +9,7 @@ from univention.management.console.log import MODULE
 from univention.management.console.modules import UMC_Error
 from univention.management.console.modules.setup.util import _temporary_password_file, get_ucs_domain
 
+
 UCR = univention.config_registry.ConfigRegistry()
 UCR.load()
 _ = Translation('univention-management-console-module-setup').translate

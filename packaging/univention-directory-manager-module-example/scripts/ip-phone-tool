@@ -34,20 +34,21 @@
 """Univention IP-Phone Example UDM Client."""
 from __future__ import print_function
 
-import sys
 import locale
+import sys
 from argparse import ArgumentParser
 
 from ldap.filter import filter_format
 
-import univention.debug as ud
-import univention.config_registry
-import univention.admin.uldap
+import univention.admin.filter
+import univention.admin.localization
 import univention.admin.modules
 import univention.admin.objects
-import univention.admin.filter
 import univention.admin.uexceptions
-import univention.admin.localization
+import univention.admin.uldap
+import univention.config_registry
+import univention.debug as ud
+
 
 ud.init('/var/log/univention/ip-phone-tool.log', ud.FLUSH, ud.NO_FUNCTION)
 locale.setlocale(locale.LC_ALL, '')

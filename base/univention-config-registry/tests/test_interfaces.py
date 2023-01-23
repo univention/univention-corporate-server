@@ -2,13 +2,13 @@
 """Unit test for univention.config_registry.interfaces."""
 # pylint: disable-msg=C0103,E0611,R0904
 
+from ipaddress import IPv4Address, IPv4Interface, IPv6Address, IPv6Interface
 from os.path import devnull
 
 import pytest
-from ipaddress import IPv4Address, IPv6Address, IPv4Interface, IPv6Interface
 
 import univention.config_registry.interfaces as ucri
-from univention.config_registry.interfaces import _Iface, Interfaces, forgiving, cmp_alnum  # noqa: E402
+from univention.config_registry.interfaces import Interfaces, _Iface, cmp_alnum, forgiving  # noqa: E402
 
 
 @pytest.fixture(autouse=True)

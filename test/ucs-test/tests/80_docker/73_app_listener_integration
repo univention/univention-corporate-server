@@ -15,6 +15,7 @@ import univention.testing.udm as udm_test
 
 from dockertest import App, Appcenter
 
+
 APP_NAME = 'my-listener-test-app'
 DB_FILE = f'/var/lib/univention-appcenter/apps/{APP_NAME}/data/db.json'
 LISTENER_DIR = f'/var/lib/univention-appcenter/apps/{APP_NAME}/data/listener/'

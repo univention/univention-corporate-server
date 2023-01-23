@@ -37,6 +37,7 @@ from univention.config_registry import handler_set, ucr_live as ucr
 from univention.lib.i18n import Translation
 from univention.management.console.modules.diagnostic import MODULE, Critical, Instance, Warning
 
+
 _ = Translation('univention-management-console-module-diagnostic').translate
 
 UCS = (4, 3, 3, 428)

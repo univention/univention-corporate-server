@@ -34,14 +34,16 @@
 
 from __future__ import print_function
 
-import binascii
 import argparse
-import sys
 import base64
+import binascii
+import sys
 
-import univention.uldap
 import ldap
 import ldap.modlist
+
+import univention.uldap
+
 
 ACTIONS = ('test', 'convert')
 JPEG_HEADER = b'\xff\xd8\xff\xe0'

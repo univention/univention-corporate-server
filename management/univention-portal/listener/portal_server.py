@@ -36,8 +36,10 @@ from __future__ import absolute_import, annotations
 import subprocess
 from typing import Dict, List
 
-import listener
 import univention.debug as ud
+
+import listener
+
 
 description = 'Tell portal server to refresh when something important changed'
 filter = '(|(univentionObjectType=portals/portal)(univentionObjectType=portals/category)(univentionObjectType=portals/entry)(univentionObjectType=portals/folder))'

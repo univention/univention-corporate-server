@@ -47,6 +47,7 @@ True
 """
 import re
 
+
 # /usr/share/perl5/Dpkg/Changelog/Entry/Debian.pm
 WORD_CHARS = '[0-9a-z]'
 NAME_CHARS = '[+.0-9a-z-]'

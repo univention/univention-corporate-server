@@ -35,15 +35,17 @@
 # <https://www.gnu.org/licenses/>.
 
 from __future__ import print_function
-import sys
-import ldb
+
 import base64
+import sys
 from argparse import ArgumentParser
 
-from samba.samdb import SamDB
-from samba.param import LoadParm
+import ldb
 from samba.auth import system_session
 from samba.credentials import Credentials
+from samba.param import LoadParm
+from samba.samdb import SamDB
+
 
 if __name__ == '__main__':
     parser = ArgumentParser()

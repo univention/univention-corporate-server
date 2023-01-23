@@ -34,19 +34,21 @@
 
 import copy
 import time
+
 import ldap
 from ldap.filter import filter_format
 
 import univention.admin
-from univention.admin.layout import Tab, Group
-import univention.admin.uldap
+import univention.admin.allocators
 import univention.admin.filter
 import univention.admin.handlers
-import univention.admin.allocators
 import univention.admin.localization
+import univention.admin.uldap
 import univention.debug as ud
 from univention.admin import configRegistry
+from univention.admin.layout import Group, Tab
 from univention.admin.uldap import DN
+
 
 translation = univention.admin.localization.translation('univention.admin.handlers.groups')
 _ = translation.translate

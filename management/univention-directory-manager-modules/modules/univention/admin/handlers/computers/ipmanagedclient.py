@@ -32,18 +32,19 @@
 
 """|UDM| module for the IP clients"""
 
-from univention.admin.layout import Tab, Group
 import univention.admin.filter
 import univention.admin.handlers
+import univention.admin.handlers.dns.forward_zone
+import univention.admin.handlers.dns.reverse_zone
+import univention.admin.handlers.networks.network
 import univention.admin.localization
 import univention.admin.mapping
 import univention.admin.syntax
 import univention.admin.uldap
 from univention.admin import nagios
-import univention.admin.handlers.dns.forward_zone
-import univention.admin.handlers.dns.reverse_zone
-import univention.admin.handlers.networks.network
-from univention.admin.certificate import register_pki_integration, PKIIntegration
+from univention.admin.certificate import PKIIntegration, register_pki_integration
+from univention.admin.layout import Group, Tab
+
 
 translation = univention.admin.localization.translation('univention.admin.handlers.computers')
 _ = translation.translate

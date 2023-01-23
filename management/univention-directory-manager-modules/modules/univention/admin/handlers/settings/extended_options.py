@@ -32,11 +32,12 @@
 
 """|UDM| module for extended options"""
 
-from univention.admin.layout import Tab, Group
 import univention.admin.filter
 import univention.admin.handlers
 import univention.admin.localization
-from univention.debug import debug, ADMIN, INFO
+from univention.admin.layout import Group, Tab
+from univention.debug import ADMIN, INFO, debug
+
 
 translation = univention.admin.localization.translation('univention.admin.handlers.settings')
 _ = translation.translate

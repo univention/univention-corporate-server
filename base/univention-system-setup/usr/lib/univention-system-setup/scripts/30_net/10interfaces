@@ -44,6 +44,7 @@ from univention.management.console.modules.setup.netconf import ChangeSet
 from univention.management.console.modules.setup.netconf.modules import RunPhases
 from univention.management.console.modules.setup.setup_script import SetupScript, _, main
 
+
 UCR_IFACE_RESTART = "interfaces/restart/auto"
 
 

@@ -47,7 +47,7 @@ from ldap.filter import filter_format
 import univention.config_registry
 import univention.uldap
 from univention.lib import fstab
-from univention.lib.policy_result import policy_result, PolicyResultFailed
+from univention.lib.policy_result import PolicyResultFailed, policy_result
 
 
 configRegistry = univention.config_registry.ConfigRegistry()

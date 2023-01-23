@@ -36,12 +36,11 @@
 
 import six
 
-from univention.management.console.modules import Base
-
-from univention.lib.i18n import Translation
-
-from univention.management.console.modules.decorators import simple_response, log, file_upload, multi_response, sanitize
 import univention.management.console.modules.sanitizers as s
+from univention.lib.i18n import Translation
+from univention.management.console.modules import Base
+from univention.management.console.modules.decorators import file_upload, log, multi_response, sanitize, simple_response
+
 
 _ = Translation('univention.management.console').translate
 

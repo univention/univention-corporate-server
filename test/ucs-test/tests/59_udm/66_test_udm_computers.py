@@ -21,6 +21,7 @@ from univention.testing.decorators import SetTimeout
 from univention.testing.strings import random_name, random_string
 from univention.testing.udm import UCSTestUDM
 
+
 COMPUTER_MODULES = UCSTestUDM.COMPUTER_MODULES
 IP4 = '10.20.40.40'
 IP6 = '2001:0db8:0001:0002:0000:0000:0000:000f'

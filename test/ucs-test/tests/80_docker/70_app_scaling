@@ -8,6 +8,7 @@
 
 from dockertest import Appcenter, get_app_name, get_app_version, tiny_app
 
+
 DOCKER_APP_COUNT = 20
 
 

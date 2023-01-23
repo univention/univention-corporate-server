@@ -49,11 +49,13 @@ import ldap
 import ldif
 from ldap.controls import SimplePagedResultsControl
 
-from univention import uldap
 import univention.config_registry
+from univention import uldap
+
 
 sys.path.append("/usr/lib/univention-directory-listener/system/")
 import replication  # noqa: E402
+
 
 LDIF = '/var/lib/univention-directory-listener/master.ldif.gz'
 SCHEMA = '/var/lib/univention-ldap/schema.conf'

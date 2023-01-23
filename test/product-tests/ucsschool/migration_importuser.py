@@ -1,8 +1,10 @@
 #!/usr/bin/env python3
 
+import sys
+
 from ucsschool.lib.models.user import Student
 from univention.admin.uldap import getAdminConnection
-import sys
+
 
 lo, po = getAdminConnection()
 

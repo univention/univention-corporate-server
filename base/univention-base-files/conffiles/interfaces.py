@@ -36,6 +36,7 @@
 import re
 from subprocess import call
 
+
 RE_IFACE = re.compile(r'^interfaces/([^/]+)/((?:ipv6/([^/]+)/)?.*)$')
 SKIP = {'interfaces/restart/auto'}
 PRIMARY = 'interfaces/primary'

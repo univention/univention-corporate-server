@@ -34,12 +34,13 @@
 
 from ldap.filter import filter_format
 
-from univention.admin.layout import Tab, Group
 import univention.admin.filter
 import univention.admin.handlers
 import univention.admin.localization
+from univention.admin.layout import Group, Tab
 
 from .__common import DHCPBase
+
 
 translation = univention.admin.localization.translation('univention.admin.handlers.dhcp')
 _ = translation.translate

@@ -41,6 +41,7 @@ import pytest
 
 from .conftest import import_lib_module
 
+
 ucs = import_lib_module('ucs')
 
 

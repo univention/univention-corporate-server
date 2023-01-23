@@ -41,6 +41,7 @@ import univention.uldap
 from univention.config_registry import ConfigRegistry
 from univention.testing.strings import random_int, random_name
 
+
 WAIT_FOR_LDAP_TIME = 30  # seconds
 
 

@@ -36,15 +36,19 @@
 #
 
 from univention.admindiary.client import write_event
-from univention.admindiary.events import APP_INSTALL_START, APP_INSTALL_SUCCESS, APP_INSTALL_FAILURE
-
-from univention.appcenter.app_cache import Apps
+from univention.admindiary.events import APP_INSTALL_FAILURE, APP_INSTALL_START, APP_INSTALL_SUCCESS
 from univention.appcenter.actions import get_action
-from univention.appcenter.exceptions import Abort, InstallMasterPackagesPasswordError, InstallMasterPackagesNoninteractiveError, InstallFailed, InstallNonDockerVersionError, InstallWithoutPermissionError
 from univention.appcenter.actions.install_base import InstallRemoveUpgrade
+from univention.appcenter.app_cache import Apps
+from univention.appcenter.exceptions import (
+    Abort, InstallFailed, InstallMasterPackagesNoninteractiveError, InstallMasterPackagesPasswordError,
+    InstallNonDockerVersionError, InstallWithoutPermissionError,
+)
+from univention.appcenter.packages import (
+    dist_upgrade_dry_run, install_packages, install_packages_dry_run, update_packages,
+)
 from univention.appcenter.ucr import ucr_get, ucr_save
 from univention.appcenter.utils import find_hosts_for_master_packages
-from univention.appcenter.packages import update_packages, install_packages_dry_run, install_packages, dist_upgrade_dry_run
 
 
 class ControlScriptException(Exception):

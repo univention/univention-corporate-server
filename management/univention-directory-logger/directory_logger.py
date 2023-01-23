@@ -47,7 +47,9 @@ import time
 from typing import Dict, List, Tuple
 
 import univention.debug as ud
+
 from listener import SetUID, configRegistry
+
 
 name = 'directory_logger'
 description = 'Log directory transactions'

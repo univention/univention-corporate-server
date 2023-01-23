@@ -3,12 +3,14 @@
 ## bugs: [34506]
 ## exposure: dangerous
 
-import pytest
 import subprocess
+
+import pytest
 
 from univention.config_registry.frontend import ucr_update
 
 from umc import UMCBase
+
 
 SERVICE_NAME = "nscd"
 AUTOSTART_VAR = f'{SERVICE_NAME}/autostart'

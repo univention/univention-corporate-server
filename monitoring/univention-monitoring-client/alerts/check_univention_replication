@@ -33,10 +33,11 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-import subprocess
 import os
+import subprocess
 
 from univention.monitoring import Alert
+
 
 FAILED_LDIF_FN = '/var/lib/univention-directory-replication/failed.ldif'
 

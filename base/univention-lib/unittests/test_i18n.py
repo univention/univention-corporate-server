@@ -37,6 +37,7 @@ import pytest
 
 from .conftest import import_lib_module
 
+
 i18n = import_lib_module('i18n')
 
 

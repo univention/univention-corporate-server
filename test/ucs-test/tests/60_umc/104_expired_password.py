@@ -14,6 +14,7 @@ from univention.lib.umc import Unauthorized
 from univention.testing import utils
 from univention.testing.ucs_samba import wait_for_drs_replication
 
+
 # TODO: test detection of expired password + account disabled + both
 # TODO: test password history, complexity, length
 

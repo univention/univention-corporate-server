@@ -31,13 +31,17 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 from __future__ import print_function
+
 import argparse
 import os
 import re
-import sys
 import shutil
+import sys
+
 import univention.l10n as tlh
 import univention.l10n.umc as dh_umc
+
+
 try:
     from typing import List, Set, Tuple  # noqa: F401
 except ImportError:

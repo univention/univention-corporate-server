@@ -45,10 +45,12 @@ The overwritten method :py:meth:`_verify_univention_object_type()` allows both
 """
 
 from __future__ import absolute_import, unicode_literals
+
 import copy
+
 from ..encoders import ListOfListOflTextToDictPropertyEncoder, StringIntPropertyEncoder
-from .generic import GenericModule, GenericObject, GenericObjectProperties
 from ..exceptions import WrongObjectType
+from .generic import GenericModule, GenericObject, GenericObjectProperties
 
 
 class MailAllObjectProperties(GenericObjectProperties):

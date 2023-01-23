@@ -35,16 +35,16 @@
 
 import six
 
-import univention.admin.uldap as ua_ldap
-import univention.admin.objects as ua_objects
-import univention.admin.modules as ua_modules
 import univention.admin.mapping as ua_mapping
+import univention.admin.modules as ua_modules
+import univention.admin.objects as ua_objects
 import univention.admin.uexceptions as ua_exceptions
-from univention.config_registry import ConfigRegistry
-
+import univention.admin.uldap as ua_ldap
 import univention.debug as ud
-
+from univention.config_registry import ConfigRegistry
 from univention.directory.reports.filter import filter_get
+
+
 try:
     from html import escape
 except ImportError:

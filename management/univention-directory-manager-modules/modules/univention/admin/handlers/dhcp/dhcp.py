@@ -32,10 +32,7 @@
 
 """|UDM| for all |DHCP| objects"""
 
-from univention.admin.layout import Tab
 import univention.admin.filter
-import univention.admin.localization
-
 import univention.admin.handlers
 import univention.admin.handlers.dhcp.host
 import univention.admin.handlers.dhcp.pool
@@ -44,6 +41,8 @@ import univention.admin.handlers.dhcp.service
 import univention.admin.handlers.dhcp.shared
 import univention.admin.handlers.dhcp.sharedsubnet
 import univention.admin.handlers.dhcp.subnet
+import univention.admin.localization
+from univention.admin.layout import Tab
 
 
 translation = univention.admin.localization.translation('univention.admin.handlers.dhcp')

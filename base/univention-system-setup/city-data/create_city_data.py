@@ -39,6 +39,7 @@ from argparse import ArgumentParser, FileType
 
 import _util
 
+
 if __name__ == '__main__':
     parser = ArgumentParser(description=__doc__)
     parser.add_argument("outfile", type=FileType("w"))

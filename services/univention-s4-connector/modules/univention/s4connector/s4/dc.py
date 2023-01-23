@@ -35,14 +35,14 @@
 # <https://www.gnu.org/licenses/>.
 
 import ldap
-import univention.debug2 as ud
-import univention.s4connector.s4
-import univention.admin.uldap
-from univention.s4connector.s4 import format_escaped, decode_sid
 
 import univention.admin.handlers
-import univention.admin.handlers.settings.sambadomain
 import univention.admin.handlers.container.dc
+import univention.admin.handlers.settings.sambadomain
+import univention.admin.uldap
+import univention.debug2 as ud
+import univention.s4connector.s4
+from univention.s4connector.s4 import decode_sid, format_escaped
 
 
 def _unixTimeInverval2seconds(unixTime):

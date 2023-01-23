@@ -35,8 +35,9 @@ import sys
 from argparse import ArgumentParser
 
 import univention.config_registry
-from univention.lib.umc import Client
 from ucsschool.lib.schoolldap import SchoolSearchBase
+from univention.lib.umc import Client
+
 
 ucr = univention.config_registry.ConfigRegistry()
 ucr.load()

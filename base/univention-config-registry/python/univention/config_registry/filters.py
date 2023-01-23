@@ -33,7 +33,9 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-from univention.config_registry.misc import key_shell_escape, escape_value
+from univention.config_registry.misc import escape_value, key_shell_escape
+
+
 try:
     from typing import Any, Iterable  # noqa: F401
 except ImportError:  # pragma: no cover

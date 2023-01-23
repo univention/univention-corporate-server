@@ -30,12 +30,12 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-from univention.management.console.error import ServerError
-
-from univention.unittests.umc import import_umc_module, umc_requests
-
 import pytest
 import six
+
+from univention.management.console.error import ServerError
+from univention.unittests.umc import import_umc_module, umc_requests
+
 
 umc_lib = import_umc_module('lib')
 

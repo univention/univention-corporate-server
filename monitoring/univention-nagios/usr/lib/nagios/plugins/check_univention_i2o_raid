@@ -34,9 +34,9 @@
 # <https://www.gnu.org/licenses/>.
 
 import getopt
-import sys
 import os
 import re
+import sys
 
 
 class I2O_RAIDCheck:

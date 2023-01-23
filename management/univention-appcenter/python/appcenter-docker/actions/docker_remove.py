@@ -36,10 +36,10 @@
 # <https://www.gnu.org/licenses/>.
 #
 
-from univention.appcenter.exceptions import RemovePluginUnsupported, RemoveBackupFailed
-from univention.appcenter.actions.remove import Remove
 from univention.appcenter.actions.docker_base import DockerActionMixin
+from univention.appcenter.actions.remove import Remove
 from univention.appcenter.actions.service import Stop
+from univention.appcenter.exceptions import RemoveBackupFailed, RemovePluginUnsupported
 
 
 class Remove(Remove, DockerActionMixin):

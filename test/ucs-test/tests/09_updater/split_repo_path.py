@@ -4,6 +4,7 @@
 from os.path import relpath
 from sys import argv, exit
 
+
 repodir, path = argv[1:]
 args = relpath(path, repodir).split("/")
 if args[0] == "dists":  # dists/$suite/$section

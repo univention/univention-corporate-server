@@ -47,13 +47,14 @@ Sample Client for the UDM REST API.
 """
 
 
+import copy
 import sys
 import time
-import copy
-import requests
 from typing import Any, Callable, Dict, Iterator, List, Mapping, Optional, Text, Type, Union  # noqa: F401
 
+import requests
 import uritemplate
+
 
 if sys.version_info.major > 2:
     import http.client

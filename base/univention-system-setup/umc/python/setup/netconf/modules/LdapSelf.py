@@ -7,9 +7,7 @@ import univention.admin.objects
 from univention.admin import modules
 from univention.admin.uexceptions import base as UniventionBaseException
 from univention.management.console.modules.setup.netconf.common import (
-    AddressMap,
-    LdapChange,
-    convert_udm_subnet_to_network,
+    AddressMap, LdapChange, convert_udm_subnet_to_network,
 )
 from univention.management.console.modules.setup.netconf.conditions import Executable
 

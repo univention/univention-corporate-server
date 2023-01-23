@@ -5,8 +5,11 @@ from pwd import getpwnam
 from typing import Dict, List, Optional, Tuple
 
 import ldap
+
 import univention.debug as ud
+
 from listener import SetUID
+
 
 description = "Check referential integrity of uniqueMember relations"
 filter = "(uniqueMember=*)"

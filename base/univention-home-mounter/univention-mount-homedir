@@ -51,6 +51,7 @@ import ldap.filter
 
 import univention.uldap
 
+
 MOUNTS_FILE = '/var/lib/univention-home-mounter/mounts'
 
 NEW_HOME_DIR_MODE = stat.S_IRWXU | stat.S_IXGRP | stat.S_IXOTH

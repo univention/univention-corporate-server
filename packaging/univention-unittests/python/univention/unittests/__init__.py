@@ -32,9 +32,9 @@
 # <https://www.gnu.org/licenses/>.
 #
 
-import sys
-import os
 import importlib
+import os
+import sys
 
 
 def import_module(name, local_src_path, python_module_name, use_installed):

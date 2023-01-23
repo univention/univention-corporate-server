@@ -11,6 +11,7 @@ import univention.config_registry
 import univention.testing.strings as uts
 from univention.testing import utils
 
+
 ucr = univention.config_registry.ConfigRegistry()
 ucr.load()
 

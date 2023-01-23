@@ -14,6 +14,7 @@ from univention.appcenter.actions import get_action
 from univention.appcenter.app import App
 from univention.testing import utils
 
+
 failures_counter = 0
 apps = []
 

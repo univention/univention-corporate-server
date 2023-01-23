@@ -15,6 +15,7 @@ from dockertest import (
     App, Appcenter, copy_package_to_appcenter, get_app_name, get_docker_appbox_image, get_docker_appbox_ucs,
 )
 
+
 if __name__ == '__main__':
 
     with Appcenter() as appcenter:

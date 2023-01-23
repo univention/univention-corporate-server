@@ -37,29 +37,31 @@
 import importlib.util
 import os
 import pipes
-import psutil
 from datetime import datetime
 from hashlib import md5
-from os import stat, getpid
+from os import getpid, stat
 from time import time
 from traceback import format_exc
 from types import ModuleType  # noqa: F401
 from typing import Any, Callable, Dict, Iterable, List, Tuple, Union  # noqa: F401
 
 import notifier.threads
+import psutil
 from apt import Cache
 
-from univention.lib.i18n import Translation
 from univention.lib import atjobs
-from univention.management.console.log import MODULE
+from univention.lib.i18n import Translation
 from univention.management.console.config import ucr
+from univention.management.console.log import MODULE
 from univention.management.console.modules import Base, UMC_Error
-from univention.management.console.modules.decorators import simple_response, sanitize
-from univention.management.console.modules.sanitizers import ChoicesSanitizer, StringSanitizer, IntegerSanitizer, ListSanitizer
+from univention.management.console.modules.decorators import sanitize, simple_response
+from univention.management.console.modules.sanitizers import (
+    ChoicesSanitizer, IntegerSanitizer, ListSanitizer, StringSanitizer,
+)
 from univention.management.console.protocol.message import Request
-
-from univention.updater.tools import UniventionUpdater
 from univention.updater.errors import RequiredComponentError
+from univention.updater.tools import UniventionUpdater
+
 
 _ = Translation('univention-management-console-module-updater').translate
 

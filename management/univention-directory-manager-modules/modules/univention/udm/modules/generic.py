@@ -35,26 +35,29 @@ Will work for all kinds of UDM modules.
 """
 
 from __future__ import absolute_import, unicode_literals
-import sys
+
 import copy
 import inspect
-from six import string_types, reraise, with_metaclass
-from ldap.dn import dn2str, str2dn
-import ldap
+import sys
 
-import univention.admin.objects
+import ldap
+from ldap.dn import dn2str, str2dn
+from six import reraise, string_types, with_metaclass
+
 import univention.admin.modules
+import univention.admin.objects
 import univention.admin.uexceptions
 import univention.admin.uldap
 import univention.config_registry
 
-from ..encoders import dn_list_property_encoder_for, dn_property_encoder_for, DnPropertyEncoder, PoliciesEncoder
 from ..base import BaseModule, BaseModuleMetadata, BaseObject, BaseObjectProperties, LdapMapping, ModuleMeta
+from ..encoders import DnPropertyEncoder, PoliciesEncoder, dn_list_property_encoder_for, dn_property_encoder_for
 from ..exceptions import (
-    CreateError, DeleteError, DeletedError, NotYetSavedError, ModifyError, MoveError, NoObject, NoSuperordinate,
-    UdmError, UnknownProperty, UnknownModuleType, WrongObjectType, SearchLimitReached,
+    CreateError, DeletedError, DeleteError, ModifyError, MoveError, NoObject, NoSuperordinate, NotYetSavedError,
+    SearchLimitReached, UdmError, UnknownModuleType, UnknownProperty, WrongObjectType,
 )
 from ..utils import UDebug as ud
+
 
 getfullargspec = getattr(inspect, 'getfullargspec', inspect.getargspec)
 

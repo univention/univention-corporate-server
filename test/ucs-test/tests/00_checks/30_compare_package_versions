@@ -20,6 +20,7 @@ from lxml.html import fromstring
 
 from univention.testing import utils
 
+
 cleanup_folders = []  # list of the folders to be removed after the test
 total_errors = 0
 

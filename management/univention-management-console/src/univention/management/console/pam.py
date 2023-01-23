@@ -33,29 +33,18 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-import traceback
 import re
+import traceback
 
 from PAM import (
-    pam as PAM,
-    error as PAMError,
-    PAM_CONV,
-    PAM_USER,
-    PAM_PROMPT_ECHO_OFF,
-    PAM_PROMPT_ECHO_ON,
-    PAM_ERROR_MSG,
-    PAM_TEXT_INFO,
-    PAM_NEW_AUTHTOK_REQD,
-    PAM_AUTHTOK_ERR,
-    PAM_AUTHTOK_RECOVER_ERR,
-    PAM_USER_UNKNOWN,
-    PAM_ACCT_EXPIRED,
-    PAM_AUTH_ERR,
+    PAM_ACCT_EXPIRED, PAM_AUTH_ERR, PAM_AUTHTOK_ERR, PAM_AUTHTOK_RECOVER_ERR, PAM_CONV, PAM_ERROR_MSG,
+    PAM_NEW_AUTHTOK_REQD, PAM_PROMPT_ECHO_OFF, PAM_PROMPT_ECHO_ON, PAM_TEXT_INFO, PAM_USER, PAM_USER_UNKNOWN,
+    error as PAMError, pam as PAM,
 )
 
+from univention.lib.i18n import I18N_Error, Translation
 from univention.management.console.log import AUTH
 
-from univention.lib.i18n import Translation, I18N_Error
 
 try:
     from typing import Any, Dict, Iterator, List, Optional, Pattern, Sequence, Text, Tuple, Union  # noqa: F401

@@ -18,9 +18,8 @@ import univention.testing.udm as udm_test
 from univention.config_registry import handler_set
 from univention.testing import utils
 
-from essential.mail import (
-    create_shared_mailfolder, get_dovecot_maildir, imap_search_mail, random_email, send_mail,
-)
+from essential.mail import create_shared_mailfolder, get_dovecot_maildir, imap_search_mail, random_email, send_mail
+
 
 TIMEOUT_MAIL = 120
 

@@ -8,6 +8,7 @@ from xml.sax.saxutils import escape as escape_xml
 
 from univention.testing.data import TestFormatInterface, TestResult  # noqa: F401
 
+
 __all__ = ['Jenkins']
 
 

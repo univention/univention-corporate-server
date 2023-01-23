@@ -33,9 +33,10 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
+import univention.admin.localization
 import univention.admin.syntax as ua_syntax
 
-import univention.admin.localization
+
 translation = univention.admin.localization.translation('univention-directory-reports')
 _ = translation.translate
 

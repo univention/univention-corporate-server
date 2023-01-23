@@ -12,6 +12,7 @@ import time
 
 import univention.admin.uldap
 
+
 disabled_states = ('1', '0')
 locked_states = ['0', '1']
 

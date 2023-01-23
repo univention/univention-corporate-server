@@ -33,10 +33,11 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-from six.moves.configparser import ConfigParser
-import shlex
 import locale
 import os.path
+import shlex
+
+from six.moves.configparser import ConfigParser
 
 
 class Config(ConfigParser):

@@ -18,6 +18,7 @@ import sys
 
 from univention.config_registry import ConfigRegistry
 
+
 RETURN_PASS_CODE = 100
 RETURN_FAIL_CODE = 110
 

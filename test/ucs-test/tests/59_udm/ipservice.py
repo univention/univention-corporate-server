@@ -6,6 +6,7 @@ from univention.admin.localization import translation
 from univention.admin.mapping import ListToString, mapping as Mapping, mapRewrite
 from univention.admin.syntax import integer, ipProtocol, string
 
+
 _ = translation('univention.admin.handlers.tests').translate
 
 module = 'tests/ipservice'

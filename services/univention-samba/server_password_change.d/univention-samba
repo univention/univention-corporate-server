@@ -34,18 +34,18 @@
 
 from __future__ import print_function
 
-import struct
-import sys
 import os
+import struct
+import subprocess
+import sys
 import time
 import traceback
-import subprocess
 from datetime import datetime, timedelta
 
 import tdb
 
-from univention.config_registry import ConfigRegistry
 import univention.lib.admember
+from univention.config_registry import ConfigRegistry
 
 
 def write_machine_secret_to_secrets_tdb(machine_password, windows_domain):

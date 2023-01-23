@@ -36,14 +36,15 @@
 from __future__ import annotations, print_function
 
 import argparse
-import ldap
 import sys
-from typing import List, Iterable, NoReturn
+from typing import Iterable, List, NoReturn
 
-from univention.udm import UDM
+import ldap
+
+import univention.admin.uldap
 import univention.udm.exceptions
 from univention.config_registry import ConfigRegistry
-import univention.admin.uldap
+from univention.udm import UDM
 
 
 class ScriptError(Exception):

@@ -32,9 +32,8 @@
 # <https://www.gnu.org/licenses/>.
 
 
-from univentionunittests import import_module
-
 import pytest
+from univentionunittests import import_module
 
 
 def pytest_addoption(parser):

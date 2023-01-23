@@ -33,10 +33,11 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-from univention.admin.layout import Tab
-import univention.admin.syntax
 import univention.admin.handlers
 import univention.admin.localization
+import univention.admin.syntax
+from univention.admin.layout import Tab
+
 
 translation = univention.admin.localization.translation('univention.admin.handlers.settings.msprintconnectionpolicy')
 _ = translation.translate

@@ -18,6 +18,7 @@ import pytest
 from univention.config_registry import ConfigRegistry
 from univention.config_registry.handler import EXECUTE_TOKEN, run_filter
 
+
 ucr = ConfigRegistry()
 ucr.load()
 

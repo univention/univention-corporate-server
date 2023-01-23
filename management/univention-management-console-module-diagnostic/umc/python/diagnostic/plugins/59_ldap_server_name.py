@@ -35,6 +35,7 @@ from univention.config_registry import handler_set as ucr_set, ucr_live as ucr
 from univention.lib.i18n import Translation
 from univention.management.console.modules.diagnostic import Critical, Instance, Warning
 
+
 _ = Translation('univention-management-console-module-diagnostic').translate
 
 title = _('Check primary LDAP server')

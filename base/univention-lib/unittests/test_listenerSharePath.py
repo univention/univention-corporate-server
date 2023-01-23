@@ -35,6 +35,7 @@ import doctest
 
 from .conftest import import_lib_module
 
+
 listenerSharePath = import_lib_module('listenerSharePath')
 
 

@@ -104,12 +104,14 @@ The LDAP connection to use must be supplies as an argument to the UDM module fac
 """
 
 from __future__ import absolute_import
-from .udm import UDM
+
 from .exceptions import (
-    CreateError, DeleteError, DeletedError, NotYetSavedError, ModifyError, MoveError, MultipleObjects, NoObject,
-    UdmError, UnknownProperty, UnknownModuleType, WrongObjectType, ConnectionError, NoSuperordinate,
-    NoApiVersionSet, ApiVersionNotSupported, ApiVersionMustNotChange,
+    ApiVersionMustNotChange, ApiVersionNotSupported, ConnectionError, CreateError, DeletedError, DeleteError,
+    ModifyError, MoveError, MultipleObjects, NoApiVersionSet, NoObject, NoSuperordinate, NotYetSavedError, UdmError,
+    UnknownModuleType, UnknownProperty, WrongObjectType,
 )
+from .udm import UDM
+
 
 __all__ = [
     'UDM',

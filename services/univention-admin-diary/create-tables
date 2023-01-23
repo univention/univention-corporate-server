@@ -31,8 +31,9 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
+from univention.admindiary.backend import Base, Meta, get_client, get_engine
 from univention.admindiary.client import DiaryEvent
-from univention.admindiary.backend import Base, get_engine, Meta, get_client
+
 
 Base.metadata.create_all(get_engine())
 

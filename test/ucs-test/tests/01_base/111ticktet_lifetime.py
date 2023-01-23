@@ -19,6 +19,7 @@ from univention.config_registry import ConfigRegistry
 from univention.config_registry.frontend import ucr_update
 from univention.testing.utils import package_installed
 
+
 KRB5_PATH = "/etc/krb5.conf"
 SMB_PATH = "/etc/samba/smb.conf"
 VALUE = "50"

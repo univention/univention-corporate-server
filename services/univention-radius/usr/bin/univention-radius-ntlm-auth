@@ -37,13 +37,12 @@
 
 from __future__ import print_function
 
-import codecs
 import argparse
+import codecs
 import sys
 
-from univention.radius import get_NetworkAccess
+from univention.radius import get_NetworkAccess, pyMsChapV2
 from univention.radius.networkaccess import NetworkAccessError
-from univention.radius import pyMsChapV2
 
 
 LOGFIILE = '/var/log/univention/radius_ntlm_auth.log'

@@ -41,6 +41,7 @@ from tempfile import mkdtemp
 
 from univention.management.console.modules.setup import util
 
+
 PATH_APPLIANCE_HOOKS = '/usr/lib/univention-system-setup/appliance-hooks.d/'
 
 

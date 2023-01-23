@@ -3,14 +3,15 @@
 # pylint: disable-msg=C0103,E0611,R0904
 
 import os
-import six
 import time
 from io import StringIO
 
 import pytest
+import six
 
 from univention.config_registry import backend
 from univention.config_registry.backend import ConfigRegistry
+
 
 py2_only = pytest.mark.skipif(six.PY3, reason="Python 2 only")
 

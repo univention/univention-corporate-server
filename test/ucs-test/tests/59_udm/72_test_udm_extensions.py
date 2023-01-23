@@ -27,13 +27,13 @@ from univention.testing.udm import UCSTestUDM_CreateUDMObjectFailed, UCSTestUDM_
 from univention.testing.udm_extensions import (
     VALID_EXTENSION_TYPES, call_cmd, call_join_script, call_unjoin_script, get_absolute_extension_filename,
     get_dn_of_extension_by_name, get_extension_buffer, get_extension_filename, get_extension_name,
-    get_join_script_buffer, get_package_name, get_package_version, get_postinst_script_buffer,
-    get_postrm_script_buffer, get_unjoin_script_buffer, remove_extension_by_name,
+    get_join_script_buffer, get_package_name, get_package_version, get_postinst_script_buffer, get_postrm_script_buffer,
+    get_unjoin_script_buffer, remove_extension_by_name,
 )
 from univention.testing.utils import (
-    verify_ldap_object, wait_for_replication, wait_for_replication_and_postrun,
-    wait_for_s4connector_replication,
+    verify_ldap_object, wait_for_replication, wait_for_replication_and_postrun, wait_for_s4connector_replication,
 )
+
 
 CWD = os.path.dirname(os.path.abspath(__file__))
 

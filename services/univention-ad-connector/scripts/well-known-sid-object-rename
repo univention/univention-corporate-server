@@ -36,23 +36,24 @@
 
 from __future__ import print_function
 
+import subprocess
 import sys
 import time
-import subprocess
 from argparse import ArgumentParser
 
 import ldap
 from ldap.filter import filter_format
 
 import univention
+import univention.admin.filter as udm_filter
+import univention.admin.modules as udm_modules
+import univention.config_registry
 import univention.connector
 import univention.connector.ad
-import univention.config_registry
 import univention.debug2 as ud
 import univention.lib.s4
-import univention.admin.modules as udm_modules
-import univention.admin.filter as udm_filter
 from univention.admin import uexceptions
+
 
 # load UDM modules
 udm_modules.update()

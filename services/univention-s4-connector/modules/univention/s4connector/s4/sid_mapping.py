@@ -36,11 +36,13 @@
 """Helper function to create the SID mapping definition."""
 
 from __future__ import print_function
+
 import ldap
-import univention.debug2 as ud
 from ldap.controls import LDAPControl
 from samba.dcerpc import security
 from samba.ndr import ndr_pack
+
+import univention.debug2 as ud
 from univention.s4connector.s4 import decode_sid
 
 

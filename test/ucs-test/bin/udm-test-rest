@@ -5,6 +5,7 @@ import sys
 import univention.config_registry
 from univention.admin.rest.client.__main__ import main
 
+
 ucr = univention.config_registry.ConfigRegistry()
 ucr.load()
 

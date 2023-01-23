@@ -34,17 +34,14 @@
 # <https://www.gnu.org/licenses/>.
 
 import argparse
+import os
 import time
 
-from vncautomate import init_logger, VNCConnection
-from vncautomate.cli import add_config_options_to_parser, get_config_from_args
-
-import os
 from vminstall import utils
-from vminstall.languages import german
-from vminstall.languages import english
-from vminstall.languages import french
+from vminstall.languages import english, french, german
 from vminstall.vmconfig import Config as VmConfig
+from vncautomate import VNCConnection, init_logger
+from vncautomate.cli import add_config_options_to_parser, get_config_from_args
 
 
 class Installer(object):

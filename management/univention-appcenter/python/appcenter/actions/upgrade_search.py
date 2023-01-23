@@ -35,9 +35,9 @@
 # <https://www.gnu.org/licenses/>.
 #
 
+from univention.appcenter.actions import StoreAppAction, UniventionAppAction
 from univention.appcenter.app_cache import Apps
-from univention.appcenter.actions import UniventionAppAction, StoreAppAction
-from univention.appcenter.ucr import ucr_save, ucr_is_true
+from univention.appcenter.ucr import ucr_is_true, ucr_save
 
 
 class UpgradeSearch(UniventionAppAction):

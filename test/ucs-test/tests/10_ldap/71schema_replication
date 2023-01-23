@@ -25,6 +25,7 @@ from univention.testing.debian_package import DebianPackage
 from univention.testing.strings import random_name, random_string
 from univention.testing.utils import fail, wait_for_replication
 
+
 ucr = ConfigRegistry()
 ucr.load()
 

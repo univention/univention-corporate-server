@@ -35,15 +35,15 @@
 # <https://www.gnu.org/licenses/>.
 #
 
-from tempfile import NamedTemporaryFile
 from argparse import SUPPRESS, HelpFormatter
+from tempfile import NamedTemporaryFile
 
-from univention.appcenter.actions import UniventionAppAction, StoreAppAction
-from univention.appcenter.exceptions import ConfigureFailed
+from univention.appcenter.actions import StoreAppAction, UniventionAppAction
 from univention.appcenter.actions.install_base import StoreConfigAction
-from univention.appcenter.utils import get_locale
+from univention.appcenter.exceptions import ConfigureFailed
+from univention.appcenter.settings import FileSetting, SettingValueError
 from univention.appcenter.ucr import ucr_save
-from univention.appcenter.settings import SettingValueError, FileSetting
+from univention.appcenter.utils import get_locale
 
 
 class Configure(UniventionAppAction):

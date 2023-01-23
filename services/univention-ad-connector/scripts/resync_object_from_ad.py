@@ -35,13 +35,14 @@
 # <https://www.gnu.org/licenses/>.
 
 from __future__ import print_function
+
 import os
-import time
+import sqlite3
 import sys
+import time
 from argparse import ArgumentParser
 
 import ldap
-import sqlite3
 from samba.dcerpc import misc
 from samba.ndr import ndr_unpack
 

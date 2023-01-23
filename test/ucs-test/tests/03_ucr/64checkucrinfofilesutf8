@@ -9,6 +9,7 @@
 import os
 import sys
 
+
 D_INFO = '/etc/univention/registry.info'
 exit_code = 100
 

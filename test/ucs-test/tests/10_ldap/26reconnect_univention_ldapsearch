@@ -10,15 +10,16 @@
 ##  4.0-1: fixed
 
 from multiprocessing import Process
+from queue import Empty, Full
 from subprocess import PIPE, Popen
 from time import sleep
 
 import psutil
-from queue import Empty, Full
 
 from univention.config_registry import ConfigRegistry, handler_set
 from univention.testing.codes import TestCodes
 from univention.testing.utils import fail
+
 
 UCR = ConfigRegistry()
 UCR.load()

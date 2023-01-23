@@ -20,6 +20,7 @@ from univention.testing.network import NetworkRedirector
 
 from essential.mail import check_delivery, send_mail
 
+
 TIMEOUT = 60  # sec
 
 

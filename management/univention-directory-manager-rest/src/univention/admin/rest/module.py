@@ -34,69 +34,75 @@
 # <https://www.gnu.org/licenses/>.
 
 
-import os
-import re
-import io
-import json
-import time
-import copy
-import uuid
-import zlib
 import base64
+import binascii
+import copy
+import datetime
+import functools
 import hashlib
 import inspect
-import binascii
-import datetime
+import io
+import json
+import os
+import re
+import time
 import traceback
-import functools
+import uuid
+import xml.dom.minidom
+import xml.etree.ElementTree as ET
+import zlib
 from email.utils import parsedate
 from http.client import responses
 from typing import Dict, List, Optional
-from urllib.parse import urljoin, urlparse, urlencode, urlunparse, parse_qs, quote, unquote
-
-import tornado.web
-import tornado.gen
-import tornado.log
-import tornado.ioloop
-import tornado.httpclient
-import tornado.httputil
-from tornado.web import RequestHandler, HTTPError, Finish
-from tornado.concurrent import run_on_executor
-from concurrent.futures import ThreadPoolExecutor
+from urllib.parse import parse_qs, quote, unquote, urlencode, urljoin, urlparse, urlunparse
 
 import ldap
-from ldap.filter import filter_format
-from ldap.dn import explode_rdn
+import tornado.gen
+import tornado.httpclient
+import tornado.httputil
+import tornado.ioloop
+import tornado.log
+import tornado.web
+from concurrent.futures import ThreadPoolExecutor
+from genshi import XML
+from genshi.output import HTMLSerializer
 from ldap.controls import SimplePagedResultsControl
 from ldap.controls.readentry import PostReadControl
 from ldap.controls.sss import SSSRequestControl
-import xml.etree.ElementTree as ET
-import xml.dom.minidom
-from genshi import XML
-from genshi.output import HTMLSerializer
+from ldap.dn import explode_rdn
+from ldap.filter import filter_format
+from tornado.concurrent import run_on_executor
+from tornado.web import Finish, HTTPError, RequestHandler
 
-from univention.management.console.config import ucr
-from univention.management.console.log import MODULE
-from univention.management.console.ldap import get_connection, reset_cache
-from univention.management.console.modules.udm.udm_ldap import get_module, UDM_Module, ldap_dn2path, container_modules, UDM_Error
-from univention.management.console.modules.udm.udm_ldap import SuperordinateDoesNotExist, ObjectDoesNotExist, NoIpLeft
-from univention.management.console.modules.udm.tools import check_license, LicenseError, LicenseImport as LicenseImporter, dump_license
-from univention.management.console.modules.sanitizers import MultiValidationError, ValidationError, DictSanitizer, StringSanitizer, ListSanitizer, IntegerSanitizer, ChoicesSanitizer, DNSanitizer, EmailSanitizer, LDAPSearchSanitizer, SearchSanitizer, Sanitizer, BooleanSanitizer
-from univention.management.console.error import UMC_Error, LDAP_ServerDown, LDAP_ConnectionFailed, UnprocessableEntity
-
-import univention.directory.reports as udr
-import univention.admin.objects as udm_objects
-import univention.admin.uexceptions as udm_errors
 import univention.admin.modules as udm_modules
+import univention.admin.objects as udm_objects
 import univention.admin.syntax as udm_syntax
 import univention.admin.types as udm_types
-from univention.config_registry import handler_set
-from univention.admin.rest.shared_memory import shared_memory, JsonEncoder
-from univention.password import password_config, generate_password
-
+import univention.admin.uexceptions as udm_errors
+import univention.directory.reports as udr
 import univention.udm
-
+from univention.admin.rest.shared_memory import JsonEncoder, shared_memory
+from univention.config_registry import handler_set
 from univention.lib.i18n import Translation
+from univention.management.console.config import ucr
+from univention.management.console.error import LDAP_ConnectionFailed, LDAP_ServerDown, UMC_Error, UnprocessableEntity
+from univention.management.console.ldap import get_connection, reset_cache
+from univention.management.console.log import MODULE
+from univention.management.console.modules.sanitizers import (
+    BooleanSanitizer, ChoicesSanitizer, DictSanitizer, DNSanitizer, EmailSanitizer, IntegerSanitizer,
+    LDAPSearchSanitizer, ListSanitizer, MultiValidationError, Sanitizer, SearchSanitizer, StringSanitizer,
+    ValidationError,
+)
+from univention.management.console.modules.udm.tools import (
+    LicenseError, LicenseImport as LicenseImporter, check_license, dump_license,
+)
+from univention.management.console.modules.udm.udm_ldap import (
+    NoIpLeft, ObjectDoesNotExist, SuperordinateDoesNotExist, UDM_Error, UDM_Module, container_modules, get_module,
+    ldap_dn2path,
+)
+from univention.password import generate_password, password_config
+
+
 # FIXME: prevent in the javascript UMC module that navigation container query is called with container=='None'
 # FIXME: it seems request.path contains the un-urlencoded path, could be security issue!
 # TODO: 0f77c317e03844e8a16c484dde69abbcd2d2c7e3 is not integrated

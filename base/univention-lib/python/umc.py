@@ -43,19 +43,20 @@ connections to remote |UMC| servers
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-import six
-import ssl
+import base64
 import json
 import locale
-import base64
+import ssl
+from typing import Any, Dict, List, Optional, Tuple, Type, TypeVar, Union  # noqa: F401
 
-from six.moves.http_cookies import SimpleCookie
-from six.moves.http_client import HTTPSConnection, HTTPException
+import six
 from six.moves import http_client as httplib  # noqa: F401
+from six.moves.http_client import HTTPException, HTTPSConnection
+from six.moves.http_cookies import SimpleCookie
 
 from univention.config_registry import ConfigRegistry
 
-from typing import Any, Dict, List, Optional, Tuple, Type, TypeVar, Union  # noqa: F401
+
 _T = TypeVar("_T")
 
 ucr = ConfigRegistry()

@@ -38,22 +38,23 @@ import re
 from io import StringIO
 from typing import Pattern
 
+import univention.info_tools as uit
+from univention.config_registry import ConfigRegistry, handler_set, handler_unset, validate_key
+from univention.config_registry_info import ConfigRegistryInfo, Variable
 from univention.lib.i18n import Translation
 from univention.management.console.base import Base, UMC_Error
 from univention.management.console.config import ucr
+from univention.management.console.modules.decorators import sanitize, simple_response
+from univention.management.console.modules.sanitizers import (
+    ChoicesSanitizer, DictSanitizer, PatternSanitizer, StringSanitizer,
+)
 
-from univention.management.console.modules.decorators import simple_response, sanitize
-from univention.management.console.modules.sanitizers import PatternSanitizer, ChoicesSanitizer, DictSanitizer, StringSanitizer
-
-from univention.config_registry import handler_set, handler_unset, ConfigRegistry, validate_key
-from univention.config_registry_info import ConfigRegistryInfo, Variable
-
-import univention.info_tools as uit
 
 _ = Translation('univention-management-console-module-ucr').translate
 
 
 from typing import Any, Dict, List, Union  # noqa: E402
+
 
 ONLINE_BASE = 'repository/online'
 COMPONENT_BASE = f'{ONLINE_BASE}/component'

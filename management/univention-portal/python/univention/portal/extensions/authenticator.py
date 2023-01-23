@@ -39,7 +39,7 @@ import json
 
 from tornado.httpclient import AsyncHTTPClient, HTTPError, HTTPRequest
 
-from univention.portal import config, Plugin
+from univention.portal import Plugin, config
 from univention.portal.log import get_logger
 from univention.portal.user import User
 

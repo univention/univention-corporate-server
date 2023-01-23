@@ -13,10 +13,10 @@ from typing import Any, Dict
 from requests import get
 
 import univention.lib.umc
-from univention.config_registry import ucr
 from univention.appcenter.actions import get_action
 from univention.appcenter.app_cache import Apps as FindApps
 from univention.appcenter.utils import call_process, get_local_fqdn
+from univention.config_registry import ucr
 
 
 class Apps(object):

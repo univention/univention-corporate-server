@@ -35,11 +35,11 @@
 import ldap
 from ldap.filter import filter_format
 
-import univention.debug as ud
 import univention.admin.locking
 import univention.admin.uexceptions
-from univention.admin import localization
-from univention.admin import configRegistry
+import univention.debug as ud
+from univention.admin import configRegistry, localization
+
 
 translation = localization.translation('univention/admin')
 _ = translation.translate

@@ -35,55 +35,51 @@
 # <https://www.gnu.org/licenses/>.
 
 import copy
-import re
+import inspect
+import locale
 import os
+import re
 import shutil
 import tempfile
-import locale
 import traceback
-import inspect
 
-import six
-from six.moves.urllib_request import Request
-from six.moves.urllib_error import HTTPError, URLError
-from six.moves.urllib_parse import quote, urlencode
 import notifier
 import notifier.threads
+import six
+from ldap import INVALID_CREDENTIALS, LDAPError
+from six.moves.urllib_error import HTTPError, URLError
+from six.moves.urllib_parse import quote, urlencode
+from six.moves.urllib_request import Request
 
-from ldap import LDAPError, INVALID_CREDENTIALS
-from univention.lib.i18n import Translation
-from univention.management.console.config import ucr
-from univention.management.console.modules import Base, UMC_Error
-from univention.management.console.modules.decorators import simple_response, sanitize, multi_response, prevent_xsrf_check, allow_get_request
-from univention.management.console.modules.sanitizers import (
-    Sanitizer, SearchSanitizer, EmailSanitizer, ChoicesSanitizer,
-    ListSanitizer, StringSanitizer, DictSanitizer, BooleanSanitizer,
-    DNSanitizer,
-)
-from univention.management.console.modules.mixins import ProgressMixin
-from univention.management.console.log import MODULE
-from univention.management.console.ldap import get_user_connection
-from univention.management.console.protocol.session import TEMPUPLOADDIR
-
-import univention.admin.syntax as udm_syntax
 import univention.admin.modules as udm_modules
 import univention.admin.objects as udm_objects
+import univention.admin.syntax as udm_syntax
 import univention.admin.uexceptions as udm_errors
 import univention.admin.uldap as udm_uldap
-
-from univention.config_registry import handler_set
-
 import univention.directory.reports as udr
-
-from .udm_ldap import (
-    UDM_Error, UDM_Module,
-    ldap_dn2path, get_module, get_obj_module, read_syntax_choices, list_objects, _get_syntax,
-    LDAP_Connection, set_bind_function, container_modules,
-    info_syntax_choices, search_syntax_choices_by_key,
-    UserWithoutDN, ObjectDoesNotExist, SuperordinateDoesNotExist, NoIpLeft,
-    LDAP_AuthenticationFailed,
+from univention.config_registry import handler_set
+from univention.lib.i18n import Translation
+from univention.management.console.config import ucr
+from univention.management.console.ldap import get_user_connection
+from univention.management.console.log import MODULE
+from univention.management.console.modules import Base, UMC_Error
+from univention.management.console.modules.decorators import (
+    allow_get_request, multi_response, prevent_xsrf_check, sanitize, simple_response,
 )
-from .tools import LicenseError, LicenseImport, install_opener, urlopen, dump_license, check_license
+from univention.management.console.modules.mixins import ProgressMixin
+from univention.management.console.modules.sanitizers import (
+    BooleanSanitizer, ChoicesSanitizer, DictSanitizer, DNSanitizer, EmailSanitizer, ListSanitizer, Sanitizer,
+    SearchSanitizer, StringSanitizer,
+)
+from univention.management.console.protocol.session import TEMPUPLOADDIR
+
+from .tools import LicenseError, LicenseImport, check_license, dump_license, install_opener, urlopen
+from .udm_ldap import (
+    LDAP_AuthenticationFailed, LDAP_Connection, NoIpLeft, ObjectDoesNotExist, SuperordinateDoesNotExist, UDM_Error,
+    UDM_Module, UserWithoutDN, _get_syntax, container_modules, get_module, get_obj_module, info_syntax_choices,
+    ldap_dn2path, list_objects, read_syntax_choices, search_syntax_choices_by_key, set_bind_function,
+)
+
 
 USE_ASTERISKS = ucr.is_true('directory/manager/web/allow_wildcard_search', True)
 ADD_ASTERISKS = USE_ASTERISKS and ucr.is_true('directory/manager/web/auto_substring_search', True)

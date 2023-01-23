@@ -37,10 +37,10 @@
 
 import sys
 
-import univention.debug as ud
-import univention.admin.uldap
 import univention.admin.modules
 import univention.admin.objects
+import univention.admin.uldap
+import univention.debug as ud
 
 
 try:

@@ -39,10 +39,10 @@ from __future__ import print_function
 import argparse
 import sys
 
-from samba.param import LoadParm
-from samba.auth import system_session
-from samba import Ldb
 import ldb
+from samba import Ldb
+from samba.auth import system_session
+from samba.param import LoadParm
 
 
 if __name__ == "__main__":

@@ -4,6 +4,18 @@
 # Univention Configuration Registry
 """Decode LDAP base64 encoded "key:: value" pairs read from standard input to standard output."""
 from __future__ import print_function
+
+import binascii
+import re
+import sys
+import traceback
+from datetime import datetime
+
+import heimdal
+from samba.dcerpc import dnsp, drsblobs
+from samba.ndr import ndr_print, ndr_unpack
+
+
 #
 # Like what you see? Join us!
 # https://www.univention.com/about-us/careers/vacancies/
@@ -40,16 +52,6 @@ from __future__ import print_function
 # ldbsearch -H /var/lib/samba/private/sam.ldb cn=<dc> supplementalCredentials | s4search-decode
 #
 
-import sys
-import re
-import binascii
-import heimdal
-import traceback
-from samba.dcerpc import dnsp
-from samba.dcerpc import drsblobs
-from samba.ndr import ndr_unpack
-from samba.ndr import ndr_print
-from datetime import datetime
 
 krb5_context = None
 

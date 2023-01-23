@@ -47,6 +47,7 @@ from univention.lib.i18n import Translation
 from univention.udm import UDM
 from univention.udm.helpers import get_all_udm_module_names
 
+
 udm = UDM.admin().version(2)
 
 translation = Translation(None)

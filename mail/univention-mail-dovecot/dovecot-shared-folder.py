@@ -120,8 +120,10 @@ from __future__ import absolute_import, annotations
 
 from typing import Dict, List
 
-import listener
 from univention.mail.dovecot_shared_folder import DovecotSharedFolderListener
+
+import listener
+
 
 listener.configRegistry.load()
 fqdn = '{}.{}'.format(listener.configRegistry['hostname'].lower(), listener.configRegistry['domainname'].lower())

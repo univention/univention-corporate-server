@@ -41,22 +41,22 @@ the UMC server class
 """
 
 import errno
+import socket
 import sys
 import traceback
-import socket
 
 import notifier
 import six
 
-from .server import Server
-from .message import Request, Response, Message, IncompleteMessageError, ParseError  # noqa: F401
-from .definitions import MODULE_ERR_INIT_FAILED, SUCCESS, RECV_BUFFER_SIZE
-
-from univention.management.console.acl import ACLs
-from univention.management.console.module import Module
-from univention.management.console.log import MODULE, PROTOCOL
-
 from univention.lib.i18n import Translation
+from univention.management.console.acl import ACLs
+from univention.management.console.log import MODULE, PROTOCOL
+from univention.management.console.module import Module
+
+from .definitions import MODULE_ERR_INIT_FAILED, RECV_BUFFER_SIZE, SUCCESS
+from .message import IncompleteMessageError, Message, ParseError, Request, Response  # noqa: F401
+from .server import Server
+
 
 try:
     from typing import Any, NoReturn, Optional  # noqa: F401
@@ -256,7 +256,7 @@ class ModuleServer(Server):
         * SET (acls|username|credentials)
         * EXIT
         """
-        from ..error import UMC_Error, NotAcceptable
+        from ..error import NotAcceptable, UMC_Error
         self.__time_remaining = self.__timeout
         PROTOCOL.info('Received UMCP %s REQUEST %s' % (msg.command, msg.id))
 

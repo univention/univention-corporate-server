@@ -34,9 +34,10 @@
 
 from __future__ import print_function
 
-from argparse import ArgumentParser, Namespace  # noqa: F401
 import os
 import subprocess
+from argparse import ArgumentParser, Namespace  # noqa: F401
+
 
 try:
     from typing import Dict, List, Optional, Sequence, Text  # noqa: F401

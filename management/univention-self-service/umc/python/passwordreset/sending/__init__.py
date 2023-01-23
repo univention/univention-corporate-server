@@ -1,6 +1,6 @@
-import os
 import importlib
 import inspect
+import os
 
 from univention.management.console.modules.passwordreset.send_plugin import UniventionSelfServiceTokenEmitter
 

@@ -4,6 +4,8 @@
 This module collects utilities for installing and building message catalogs
 while applying Univention specific options.
 """
+import os
+
 #
 # Like what you see? Join us!
 # https://www.univention.com/about-us/careers/vacancies/
@@ -35,9 +37,10 @@ while applying Univention specific options.
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 import polib
-import os
 
 from .helper import Error, call, make_parent_dir
+
+
 try:
     from typing import Any, List, Union  # noqa: F401
 except ImportError:

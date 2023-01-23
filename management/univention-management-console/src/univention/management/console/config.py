@@ -45,6 +45,7 @@ some constants that are used internally.
 """
 import univention.config_registry
 
+
 ucr = univention.config_registry.ConfigRegistry()
 ucr.load()
 

@@ -32,12 +32,12 @@
 
 """|UDM| module for all policies"""
 
-from univention.admin.layout import Tab
 import univention.admin.filter
-import univention.admin.localization
-
 import univention.admin.handlers
 import univention.admin.handlers.policies
+import univention.admin.localization
+from univention.admin.layout import Tab
+
 
 translation = univention.admin.localization.translation('univention.admin.handlers.policies')
 _ = translation.translate

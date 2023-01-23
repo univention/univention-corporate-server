@@ -35,16 +35,17 @@
 # <https://www.gnu.org/licenses/>.
 #
 
+import json
 import os
 import os.path
 import shutil
-import json
 from datetime import datetime
 
 from ldap.filter import filter_format
 
 from univention.appcenter.app_cache import Apps
 from univention.listener.handler import ListenerModuleHandler
+
 
 LISTENER_DUMP_DIR = '/var/lib/univention-appcenter/listener/'
 

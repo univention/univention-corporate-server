@@ -35,28 +35,28 @@ package management (info/install/progress...)
 # <https://www.gnu.org/licenses/>.
 
 import logging  # noqa: F401
-import sys
 import os
 import re
 import signal
-from errno import ENOSPC, ENOENT
 import subprocess
-from contextlib import contextmanager
+import sys
 import threading
-from logging import getLogger, DEBUG, Handler
+from contextlib import contextmanager
+from errno import ENOENT, ENOSPC
+from logging import DEBUG, Handler, getLogger
 from time import sleep
 from types import TracebackType  # noqa: F401
 from typing import IO, Any, Callable, Dict, Iterator, List, Optional, Sequence, Set, Tuple, Type, Union  # noqa: F401
 
-import six
-
-import apt_pkg
 import apt
 import apt.progress
+import apt_pkg
+import six
 from apt.cache import FetchFailedException, LockFailedException, ProblemResolver
 
-from univention.lib.locking import get_lock, release_lock
 from univention.lib.i18n import Translation
+from univention.lib.locking import get_lock, release_lock
+
 
 apt_pkg.init()
 

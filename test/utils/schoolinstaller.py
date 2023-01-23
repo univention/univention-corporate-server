@@ -37,6 +37,8 @@ import sys
 import time
 import traceback
 from argparse import ArgumentParser, Namespace  # noqa: F401
+
+
 try:
     from typing import Any, Dict  # noqa: F401
 except ImportError:
@@ -50,6 +52,7 @@ except ImportError:
     ucr.load()
 
 from univention.lib.umc import Client, ConnectionError, HTTPError
+
 
 # we need python2.7 compatibility as this is also
 # used to setup school in UCS 4 (update tests, ...)

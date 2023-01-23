@@ -35,6 +35,7 @@ from typing import Iterator, Tuple
 
 import ldap
 
+
 try:
     import samba.credentials
     import samba.param
@@ -47,6 +48,7 @@ else:
 
 from univention.lib.i18n import Translation
 from univention.management.console.modules.diagnostic import Instance, Warning, util
+
 
 _ = Translation('univention-management-console-module-diagnostic').translate
 

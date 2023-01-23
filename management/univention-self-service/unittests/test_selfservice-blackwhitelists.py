@@ -32,9 +32,9 @@
 # <https://www.gnu.org/licenses/>.
 
 
+import pytest
 from univentionunittests.umc import import_umc_module
 
-import pytest
 
 selfservice = import_umc_module('passwordreset')
 

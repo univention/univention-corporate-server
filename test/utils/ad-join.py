@@ -38,7 +38,7 @@ from sys import exit
 from time import sleep
 from typing import Any, Dict
 
-from ldap.dn import escape_dn_chars, dn2str, str2dn
+from ldap.dn import dn2str, escape_dn_chars, str2dn
 
 from univention.config_registry import ucr_factory
 from univention.lib.umc import Client

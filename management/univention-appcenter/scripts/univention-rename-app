@@ -38,10 +38,11 @@
 import sys
 from argparse import ArgumentParser
 
-from univention.lib.package_manager import PackageManager
-from univention.updater.tools import UniventionUpdater
 from univention.config_registry import ConfigRegistry
+from univention.lib.package_manager import PackageManager
 from univention.management.console.modules.appcenter.util import ComponentManager, install_opener, rename_app
+from univention.updater.tools import UniventionUpdater
+
 
 ucr = ConfigRegistry()
 ucr.load()

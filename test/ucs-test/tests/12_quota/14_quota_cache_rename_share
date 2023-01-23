@@ -16,6 +16,7 @@ from univention.testing import utils
 
 import quota_cache as qc
 
+
 SHARE_CACHE_DIR = '/var/cache/univention-quota/'
 
 

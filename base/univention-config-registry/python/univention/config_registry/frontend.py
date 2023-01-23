@@ -38,22 +38,24 @@
 from __future__ import print_function
 
 import os
-import sys
 import re
+import sys
 import time
 
 import six
 
 import univention.config_registry_info as cri
-from univention.config_registry.backend import exception_occured, SCOPE, ConfigRegistry
-from univention.config_registry.handler import run_filter, ConfigHandlers
-from univention.config_registry.misc import validate_key, escape_value
-from univention.config_registry.filters import filter_shell, filter_keys_only, filter_sort
+from univention.config_registry.backend import SCOPE, ConfigRegistry, exception_occured
+from univention.config_registry.filters import filter_keys_only, filter_shell, filter_sort
+from univention.config_registry.handler import ConfigHandlers, run_filter
+from univention.config_registry.misc import escape_value, validate_key
 from univention.config_registry.validation import Type
+
+
 if six.PY2:
     from io import open
 try:
-    from typing import Any, Callable, Dict, IO, Iterator, List, NoReturn, Optional, Tuple  # noqa: F401
+    from typing import IO, Any, Callable, Dict, Iterator, List, NoReturn, Optional, Tuple  # noqa: F401
 except ImportError:  # pragma: no cover
     pass
 

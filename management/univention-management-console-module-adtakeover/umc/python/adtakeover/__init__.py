@@ -37,15 +37,17 @@
 import traceback
 from threading import Thread
 
-from univention.config_registry import ConfigRegistry
 import univention.management.console as umc
 import univention.management.console.modules as umcm
-from univention.management.console.protocol.definitions import SUCCESS, BAD_REQUEST, MODULE_ERR_COMMAND_FAILED
+from univention.config_registry import ConfigRegistry
 from univention.management.console.log import MODULE
+from univention.management.console.modules.adtakeover import takeover
 from univention.management.console.modules.decorators import simple_response
+from univention.management.console.protocol.definitions import BAD_REQUEST, MODULE_ERR_COMMAND_FAILED, SUCCESS
+
+
 # from univention.lib.package_manager import CMD_DISABLE_EXEC, CMD_ENABLE_EXEC
 
-from univention.management.console.modules.adtakeover import takeover
 
 ucr = ConfigRegistry()
 ucr.load()

@@ -33,20 +33,22 @@
 
 from __future__ import absolute_import, unicode_literals
 
-import sys
-import six
 import datetime
+import sys
 import time
-import lazy_object_proxy
 
-from .binary_props import Base64BinaryProperty, Base64Bzip2BinaryProperty
-from .udm import UDM
-from .utils import UDebug
-from .exceptions import NoObject, UnknownModuleType
+import lazy_object_proxy
+import six
 
 import univention.admin.modules
-from univention.admin.uexceptions import valueInvalidSyntax
 from univention.admin.syntax import sambaGroupType
+from univention.admin.uexceptions import valueInvalidSyntax
+
+from .binary_props import Base64BinaryProperty, Base64Bzip2BinaryProperty
+from .exceptions import NoObject, UnknownModuleType
+from .udm import UDM
+from .utils import UDebug
+
 
 __dn_list_property_encoder_class_cache = {}
 __dn_property_encoder_class_cache = {}

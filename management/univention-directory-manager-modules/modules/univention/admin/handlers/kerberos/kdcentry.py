@@ -32,17 +32,19 @@
 
 """|UDM| module for kerberos KDC entries"""
 
-from univention.admin.layout import Tab, Group
-import univention.admin.filter
-import univention.admin.handlers
-import univention.admin.password
-import univention.admin.allocators
-import univention.admin.localization
-import univention.admin.uldap
-
-import ldap
 import random
 import string
+
+import ldap
+
+import univention.admin.allocators
+import univention.admin.filter
+import univention.admin.handlers
+import univention.admin.localization
+import univention.admin.password
+import univention.admin.uldap
+from univention.admin.layout import Group, Tab
+
 
 translation = univention.admin.localization.translation('univention.admin.handlers.kerberos')
 _ = translation.translate

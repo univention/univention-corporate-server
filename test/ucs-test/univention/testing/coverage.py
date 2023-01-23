@@ -1,7 +1,6 @@
 """Code coverage measurement for ucs-test"""
 
 
-import atexit
 import distutils.spawn
 import os
 import signal
@@ -9,6 +8,8 @@ import subprocess
 import time
 from argparse import ArgumentParser, Namespace, _ArgumentGroup  # noqa: F401
 from typing import Any, Callable, List  # noqa: F401
+
+import atexit
 
 
 class MissingCoverage(Exception):

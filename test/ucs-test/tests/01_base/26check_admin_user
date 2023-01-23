@@ -10,6 +10,7 @@ from subprocess import PIPE, Popen
 from univention.config_registry import ConfigRegistry
 from univention.testing import utils
 
+
 UCR = ConfigRegistry()
 UCR.load()
 

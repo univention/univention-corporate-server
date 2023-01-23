@@ -34,12 +34,12 @@
 
 import univention.admin.filter
 import univention.admin.handlers
+import univention.admin.handlers.settings.default
+import univention.admin.handlers.settings.directory
+import univention.admin.handlers.settings.license
+import univention.admin.handlers.settings.usertemplate
 import univention.admin.localization
 
-import univention.admin.handlers.settings.directory
-import univention.admin.handlers.settings.default
-import univention.admin.handlers.settings.usertemplate
-import univention.admin.handlers.settings.license
 
 translation = univention.admin.localization.translation('univention.admin.handlers.settings')
 _ = translation.translate

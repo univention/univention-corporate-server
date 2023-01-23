@@ -35,11 +35,13 @@ helper functions for MIME type handling.
 # <https://www.gnu.org/licenses/>.
 
 import bz2
-import zlib
-from PIL import Image
 import io
-import magic
+import zlib
 from typing import Any, Callable, Optional, Tuple  # noqa: F401
+
+import magic
+from PIL import Image
+
 
 MIME_TYPE = magic.open(magic.MAGIC_MIME_TYPE)
 MIME_TYPE.load()

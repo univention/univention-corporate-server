@@ -43,10 +43,12 @@ from typing import Dict, List
 import six
 from six.moves import cPickle as pickle
 
-import listener
 import univention.config_registry
 import univention.debug as ud
 import univention.lib.s4
+
+import listener
+
 
 name = "well-known-sid-name-mapping"
 description = "map user and group names for well known sids"

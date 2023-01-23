@@ -37,15 +37,15 @@
 import re
 import subprocess
 
-from univention.lib.i18n import Translation
-
-from univention.udm import UDM
 from univention.config_registry import ConfigRegistry
-from univention.management.console.error import UMC_Error
+from univention.lib.i18n import Translation
 from univention.management.console.base import Base
 from univention.management.console.config import ucr
-from univention.management.console.modules.decorators import simple_response, log, sanitize
-from univention.management.console.modules.sanitizers import PatternSanitizer, ChoicesSanitizer
+from univention.management.console.error import UMC_Error
+from univention.management.console.modules.decorators import log, sanitize, simple_response
+from univention.management.console.modules.sanitizers import ChoicesSanitizer, PatternSanitizer
+from univention.udm import UDM
+
 
 _ = Translation('univention-management-console-module-printers').translate
 

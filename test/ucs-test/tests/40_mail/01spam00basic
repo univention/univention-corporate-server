@@ -26,8 +26,8 @@ from univention.testing import utils
 from univention.testing.decorators import WaitForNonzeroResultOrTimeout
 
 from essential.mail import (
-    activate_spam_detection, deactivate_spam_detection, file_search_mail, get_spam_folder_name,
-    reload_amavis_postfix, send_mail,
+    activate_spam_detection, deactivate_spam_detection, file_search_mail, get_spam_folder_name, reload_amavis_postfix,
+    send_mail,
 )
 
 

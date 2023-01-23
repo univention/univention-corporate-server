@@ -33,16 +33,17 @@
 
 from __future__ import print_function
 
-import os
-import gzip
-import shlex
 import argparse
+import gzip
+import os
+import shlex
 import subprocess
+
 import ldap.filter
 
-import univention.config_registry
 import univention.admin.modules
 import univention.admin.uldap
+import univention.config_registry
 
 
 class UpdatePrinterModels(object):

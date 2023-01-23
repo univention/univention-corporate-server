@@ -33,11 +33,12 @@
 """This tool changes the priority from some SRV records from 0 to 100"""
 
 import univention.admin
-import univention.admin.uldap
-import univention.admin.modules
 import univention.admin.handlers.dns.forward_zone
 import univention.admin.handlers.dns.srv_record
+import univention.admin.modules
+import univention.admin.uldap
 import univention.config_registry
+
 
 PRIORITY_NEW = '100'
 PRIORITY_OLD = '0'

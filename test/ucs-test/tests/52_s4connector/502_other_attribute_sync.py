@@ -24,6 +24,7 @@ from univention.testing.udm import UCSTestUDM
 import s4connector
 from s4connector import connector_running_on_this_host, connector_setup
 
+
 MAPPINGS = (
     # ucs_attribute, con_attribute, con_other_attribute
     ('phone', 'telephoneNumber', 'otherTelephone'),

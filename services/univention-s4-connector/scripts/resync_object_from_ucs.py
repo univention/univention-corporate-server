@@ -36,13 +36,15 @@
 
 from __future__ import print_function
 
-from six.moves import cPickle as pickle
-import time
 import os
-import ldap
 import sys
-import univention.uldap
+import time
 from argparse import ArgumentParser
+
+import ldap
+from six.moves import cPickle as pickle
+
+import univention.uldap
 from univention.config_registry import ConfigRegistry
 
 

@@ -9,7 +9,6 @@ from argparse import ArgumentParser, Namespace  # noqa: F401
 
 from components.components import components_with_steps as components
 from installation import UCSInstallation
-
 from vncautomate import VNCConnection, init_logger
 from vncautomate.config import OCRConfig
 from vncdotool.api import VNCDoException

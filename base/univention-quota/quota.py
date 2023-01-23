@@ -43,10 +43,12 @@ import ldap
 from ldap.filter import filter_format
 from six.moves import cPickle as pickle
 
-import listener
 import univention.debug as ud
 import univention.lib.policy_result
 import univention.uldap
+
+import listener
+
 
 description = 'Dump quota settings into a cache directory'
 filter = '(|(objectClass=univentionPolicyShareUserQuota)(objectClass=organizationalRole)(objectClass=organizationalUnit)(objectClass=univentionBase)(objectClass=univentionShare))'

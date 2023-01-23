@@ -41,12 +41,12 @@ import notifier.threads
 
 from univention.lib import fstab
 from univention.management.console import Translation
-from univention.management.console.log import MODULE
 from univention.management.console.error import UMC_Error
+from univention.management.console.log import MODULE
 from univention.management.console.modules.decorators import sanitize
-from univention.management.console.modules.sanitizers import StringSanitizer, IntegerSanitizer, PatternSanitizer
-
 from univention.management.console.modules.quota import tools
+from univention.management.console.modules.sanitizers import IntegerSanitizer, PatternSanitizer, StringSanitizer
+
 
 _ = Translation('univention-management-console-module-quota').translate
 

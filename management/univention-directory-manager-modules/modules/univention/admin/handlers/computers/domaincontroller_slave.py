@@ -32,14 +32,15 @@
 
 """|UDM| module for the Replica Directory Node (DC Slave)"""
 
-from univention.admin.layout import Tab, Group
 import univention.admin.handlers
 import univention.admin.localization
 import univention.admin.mapping
 import univention.admin.syntax
 from univention.admin import nagios
-from univention.admin.handlers.computers.__base import ComputerObject
 from univention.admin.certificate import register_pki_integration
+from univention.admin.handlers.computers.__base import ComputerObject
+from univention.admin.layout import Group, Tab
+
 
 translation = univention.admin.localization.translation('univention.admin.handlers.computers')
 _ = translation.translate

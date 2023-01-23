@@ -36,28 +36,34 @@
 #
 
 import os.path
+import re
 import shutil
 import time
-import re
 from optparse import Values
 
-from ldap.dn import str2dn, dn2str
+from ldap.dn import dn2str, str2dn
 from ldap.filter import filter_format
 
-from univention.lib.ldap_extension import UniventionLDAPSchema, get_handler_message
-
+from univention.appcenter.actions import StoreAppAction, get_action
+from univention.appcenter.actions.credentials import CredentialsAction
 from univention.appcenter.app import LooseVersion
 from univention.appcenter.app_cache import Apps
-from univention.appcenter.packages import reload_package_manager
-from univention.appcenter.udm import create_object_if_not_exists, get_app_ldap_object, remove_object_if_exists, create_recursive_container
 from univention.appcenter.database import DatabaseConnector, DatabaseError
-from univention.appcenter.extended_attributes import get_schema, get_extended_attributes, create_extended_attribute, remove_extended_attribute, create_extended_option, remove_extended_option
-from univention.appcenter.actions import StoreAppAction, get_action
 from univention.appcenter.exceptions import DatabaseConnectorError, RegisterSchemaFailed, RegisterSchemaFileFailed
-from univention.appcenter.actions.credentials import CredentialsAction
-from univention.appcenter.utils import mkdir, app_ports, app_ports_with_protocol, currently_free_port_in_range, generate_password, container_mode
-from univention.appcenter.log import catch_stdout, LogCatcher
-from univention.appcenter.ucr import ucr_save, ucr_get, ucr_keys, ucr_instance
+from univention.appcenter.extended_attributes import (
+    create_extended_attribute, create_extended_option, get_extended_attributes, get_schema, remove_extended_attribute,
+    remove_extended_option,
+)
+from univention.appcenter.log import LogCatcher, catch_stdout
+from univention.appcenter.packages import reload_package_manager
+from univention.appcenter.ucr import ucr_get, ucr_instance, ucr_keys, ucr_save
+from univention.appcenter.udm import (
+    create_object_if_not_exists, create_recursive_container, get_app_ldap_object, remove_object_if_exists,
+)
+from univention.appcenter.utils import (
+    app_ports, app_ports_with_protocol, container_mode, currently_free_port_in_range, generate_password, mkdir,
+)
+from univention.lib.ldap_extension import UniventionLDAPSchema, get_handler_message
 
 
 class Register(CredentialsAction):
@@ -463,7 +469,7 @@ class AppListener(AppListener):
         updates = {}
         if app.docker and not app.plugin_of:
             try:
-                from univention.appcenter.actions.service import Service, ORIGINAL_INIT_SCRIPT
+                from univention.appcenter.actions.service import ORIGINAL_INIT_SCRIPT, Service
             except ImportError:
                 # univention-appcenter-docker is not installed
                 pass

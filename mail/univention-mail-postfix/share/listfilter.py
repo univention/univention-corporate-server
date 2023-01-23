@@ -34,18 +34,19 @@
 # <https://www.gnu.org/licenses/>.
 
 
-import sys
-import re
-import traceback
 import argparse
+import re
+import sys
 import syslog
+import traceback
 from typing import Dict
 
 from ldap.filter import filter_format
 
+import univention.admin.modules
 from univention.config_registry import ConfigRegistry
 from univention.uldap import getMachineConnection
-import univention.admin.modules
+
 
 LIST_FILTER_PW_FILE = "/etc/listfilter.secret"
 

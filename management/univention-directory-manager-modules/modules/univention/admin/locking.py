@@ -32,11 +32,13 @@
 
 """|LDAP| locking methods for |UDM|."""
 
-import ldap
 import time
+
+import ldap
 
 import univention.admin.uexceptions
 from univention.admin import localization
+
 
 translation = localization.translation('univention/admin')
 _ = translation.translate

@@ -36,9 +36,10 @@
 #
 
 from __future__ import print_function
-import sys
+
 import re
-from argparse import ArgumentParser, Action, RawTextHelpFormatter
+import sys
+from argparse import Action, ArgumentParser, RawTextHelpFormatter
 
 from univention.admindiary.client import write_event
 from univention.admindiary.events import DiaryEvent

@@ -36,14 +36,14 @@
 
 from __future__ import print_function
 
-from univention import config_registry
-from argparse import ArgumentParser
-
 import os
 import shutil
-import sys
 import subprocess
+import sys
 import time
+from argparse import ArgumentParser
+
+from univention import config_registry
 
 
 def _sysvol_directory(ucr):
