@@ -397,18 +397,20 @@ start_system_stats_collection () {
  apt-get install -y scour sysstat
  mkdir -pv "$DATA_DIR"
  touch "$DATA_DIR/empty-$host"
- nohup sar "${SAR_ARGS[@]}" -o "$DATA_DIR/ram.sar" 1 >/dev/null &
+ # Starting the next two commands in the background has proven to be unreliable. Retrying in a loop.
+ count=0; while ! pgrep -f 'ram.sar' > /dev/null && test $count -lt 100; do (nohup sar "${SAR_ARGS[@]}" -o "$DATA_DIR/ram.sar" 1 >/dev/null &); count=$(( count + 1 )); sleep 1; done
  # When not looked at every day anymore, reduce size with: ... | bzip2 -9c > $DATA_DIR/stats-$host.top.txt.bz2 &
- nohup top -bci -w512 -d 1 > "$DATA_DIR/stats-$host.top.txt" &
+ count=0; while ! pgrep -f 'top -bci' > /dev/null && test $count -lt 100; do (nohup top -bci -w512 -d 1 > "$DATA_DIR/stats-$host.top.txt" &); count=$(( count + 1 )); sleep 1; done
+ pgrep -af 'top|sar'
 }
 
 end_system_stats_collection () {
  local host="${1:?missing hostname}"
 
- ps ax | grep -E 'sar|top'
- ls -la "$DATA_DIR"
+ pgrep -af 'top|sar'
  pkill -f ram.sar -SIGINT || true
  pkill -f 'top -bci' || true
+ ls -la "$DATA_DIR"
  [ -e "$DATA_DIR/ram.sar" ] && sadf -g "$DATA_DIR/ram.sar" -- "${SAR_ARGS[@]}" | scour -o "$DATA_DIR/stats-$host.sar.svgz" || echo "Not found: $DATA_DIR/ram.sar"
  # stats.sar.txt (decompressed) can be uploaded to https://sarchart.dotsuresh.com/ for interactive graphs
  [ -e "$DATA_DIR/ram.sar" ] && sar "${SAR_ARGS[@]}" -f "$DATA_DIR/ram.sar" | bzip2 -9c > "$DATA_DIR/stats-$host.sar.txt.bz2" || echo "Not found: $DATA_DIR/ram.sar"
