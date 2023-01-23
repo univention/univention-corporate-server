@@ -6,7 +6,7 @@
 ##  3. check if --updateto is honored
 ## bugs: [21127, 22567]
 ## roles-not: [basesystem]
-## tags: [basic]
+## tags: [basic, proxy]
 ## packages:
 ##  - apache2 | apache2-mpm-prefork
 ## versions:
@@ -60,7 +60,7 @@ EOF
 comp="repository/online/component/${compname}"
 config_repo version/patchlevel=0 version/erratalevel=0
 
-eval "$(python proxy.py -f -p 0 -a -u "${username}" -w "${password}" 3>&-)"
+config_proxy -a -u "${username}" -w "${password}"
 invoke-rc.d univention-firewall stop
 
 run_tests () { # execute all updater programs
@@ -161,7 +161,6 @@ run_tests () { # execute all updater programs
 [ $? -eq 0 ] && RETVAL=100 # Test bestanden (Keine Fehler)
 dpkg -P --force-all "${pkgname}" >&3 2>&3
 iptables -D INPUT   -p tcp --dport discard -j DROP >&3 2>&3 || true
-kill ${proxy_pid} 2>&3
 invoke-rc.d univention-firewall start
 
 exit ${RETVAL}

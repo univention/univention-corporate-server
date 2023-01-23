@@ -3,7 +3,7 @@
 ##  Update localhost repository via proxy
 ##  1. Use minimal proxy implemented in Python
 ## roles-not: [basesystem]
-## tags: [basic]
+## tags: [basic, proxy]
 ## packages:
 ##  - apache2 | apache2-mpm-prefork
 ## exposure: dangerous
@@ -18,7 +18,7 @@ mkpdir $(allpatchlevels "${_version_version}-${_version_patchlevel}") maintained
 mkdeb "${pkgname}" 1 "${ARCH}" "${DIR}"
 mkpkg "${DIR}"
 
-eval "$(python proxy.py -f -p 0 3>&-)"
+config_proxy
 config_repo proxy/http="http://localhost:${proxy_port}"
 
 (
@@ -32,7 +32,6 @@ config_repo proxy/http="http://localhost:${proxy_port}"
 )
 [ $? -eq 0 ] && RETVAL=100 # Test bestanden (Keine Fehler)
 dpkg -P --force-all "${pkgname}" >&3 2>&3
-kill ${proxy_pid} 2>&3
 
 exit ${RETVAL}
 # vim:set ft=sh:

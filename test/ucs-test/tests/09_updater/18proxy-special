@@ -6,7 +6,7 @@
 ##  3. optionally check if the package is installable
 ## bugs: [17691, 18393]
 ## roles-not: [basesystem]
-## tags: [basic]
+## tags: [basic, proxy]
 ## packages:
 ##  - apache2 | apache2-mpm-prefork
 ## exposure: dangerous
@@ -29,9 +29,8 @@ quote () { # url-escape text
 }
 
 run_test () {
-	local username="$1"
-	local password="$2"
-	eval "$(python proxy.py -f -p 0 -a -u "${username}" -w "${password}" 3>&-)"
+	local username="$1" password="$2"
+	config_proxy -a -u "${username}" -w "${password}"
 	local http_proxy="http://$(quote "${username}"):$(quote "${password}")@localhost:${proxy_port}"
 	ucr set proxy/http="${http_proxy}"
 	(
@@ -54,7 +53,6 @@ run_test () {
 	then
 		dpkg -P --force-all "${pkgname}" >&3 2>&3
 	fi
-	kill ${proxy_pid} 2>&3
 }
 
 # There is a maximum length for userinfo. Apache simply returns error 400 if the string is too long

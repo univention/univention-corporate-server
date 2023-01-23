@@ -81,6 +81,8 @@ cleanup () { # Undo all changes
 	set +e
 	trap - EXIT
 
+	kill_proxy
+
 	[ -f "${BASEDIR}/reenable_mirror" ] && a2ensite univention-repository >&3 2>&3
 	find -P /etc/apache2 -lname "${BASEDIR}/*" -exec rm -f {} +
 	apache2ctl restart >&3 2>&3
@@ -165,6 +167,16 @@ setup_apache () { # Setup apache for repository [--port ${port}] [${prefix}]
 	fi
 	truncate -s 0 "${BASEDIR}/apache2.log"
 	apache2ctl restart >&3 2>&3
+}
+
+config_proxy () { # Run HTTP proxy: ...
+	kill_proxy
+	eval "$(python3 proxy.py -f -p 0 "$@" 3>&-)"
+}
+kill_proxy () { # Kill HTTP proxy
+	[ -n "${proxy_pid:-}" ] || return 0
+	kill "${proxy_pid:?}" 2>&3
+	unset proxy_pid
 }
 
 config_repo () { # Configure use of repository from local apache
