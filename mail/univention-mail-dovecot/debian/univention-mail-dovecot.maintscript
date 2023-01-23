@@ -1,0 +1,1 @@
+mv_conffile /etc/univention/templates/files/etc/pam.d/dovecot /etc/univention/templates/files/etc/pam.d/50_dovecot 6.0.4-5~
