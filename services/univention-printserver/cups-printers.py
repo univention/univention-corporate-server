@@ -416,8 +416,10 @@ def reload_smbd():
 	listener.setuid(0)
 	try:
 		ucr_handlers.commit(listener.configRegistry, ['/etc/samba/smb.conf'])
-		subprocess.call(('/usr/bin/smbcontrol', 'all', 'reload-config'))
-		subprocess.call(('/usr/bin/rpcclient', 'localhost', '-c', 'enumprinters', '-P'), stdout=subprocess.DEVNULL)
+		if os.path.exists('/usr/bin/smbcontrol'):
+			subprocess.call(('/usr/bin/smbcontrol', 'all', 'reload-config'))
+		if os.path.exists('/usr/bin/rpcclient'):
+			subprocess.call(('/usr/bin/rpcclient', 'localhost', '-c', 'enumprinters', '-P'), stdout=subprocess.DEVNULL)
 	finally:
 		listener.unsetuid()
 	reload_samba_in_postrun = False  # flag that this has been done.
