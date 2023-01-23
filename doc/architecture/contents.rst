@@ -14,7 +14,8 @@ Welcome to Univention Corporate Server architecture!
    components/index
    services/index
 
-   bibliography
+   appendix/index
+
 
 .. only:: html
 
