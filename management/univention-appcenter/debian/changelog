@@ -1,3 +1,9 @@
+univention-appcenter (9.0.3-8) unstable; urgency=medium
+
+  * Bug 55467: Allow to pin and unpin apps
+
+ -- Peter Stoll <stoll.extern@univention.de>  Mon, 23 Jan 2023 17:50:29 +0100
+
 univention-appcenter (9.0.3-7) unstable; urgency=medium
 
   * Bug #55044: Simplify repository UCRVs still use unmaintained

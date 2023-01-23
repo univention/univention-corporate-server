@@ -485,6 +485,15 @@ class MustNotHaveConcurrentOperation(SingleRequirement, HardRequirement):
 	test_remove = test_install
 
 
+class MustNotBePinned(SingleRequirement, HardRequirement):
+	'''This application is pinned'''
+
+	def test_upgrade(self, app):
+		return not ucr_is_true("appcenter/apps/%s/pinned" % app.id, False)
+
+	test_remove = test_upgrade
+
+
 class ShallHaveEnoughFreeDiskSpace(MultiRequirement, SoftRequirement):
 	'''The system needs %(minimum)d MB of free disk space but only
 		%(current)d MB are available.'''
