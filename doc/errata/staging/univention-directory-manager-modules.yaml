@@ -1,0 +1,11 @@
+product: ucs
+release: '5.0'
+version: [2]
+scope: ucs_5.0-0-errata5.0-2
+src: univention-directory-manager-modules
+fix:
+desc: |-
+ This update addresses the following issue:
+ * The syntax classes `UDM_Objects`, `ldapDn`, `ldapDnOrNone` now accepts
+ all valid LDAP DN charaters as input.
+bug: [55563]

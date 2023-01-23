@@ -1,3 +1,9 @@
+univention-directory-manager-modules (15.0.13-28) unstable; urgency=medium
+
+  * Bug #55563: Fix UMC_Objects syntax to allow comma in DN's
+
+ -- Ivan Barbecho Delgado <delgado.extern@univention.de>  Fri, 20 Jan 2023 12:35:57 +0100
+
 univention-directory-manager-modules (15.0.13-27) unstable; urgency=medium
 
   * Bug #55446: translate error messages again during exception
