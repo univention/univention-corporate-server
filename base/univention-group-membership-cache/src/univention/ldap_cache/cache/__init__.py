@@ -44,7 +44,6 @@ from univention.ldap_cache.log import debug
 # from univention.ldap_cache.cache.backend.lmdb_cache import LmdbCaches as Caches, LmdbCache as Cache, LmdbShard as Shard
 
 
-
 # Singleton pattern
 def get_cache():
     # type: () -> Caches

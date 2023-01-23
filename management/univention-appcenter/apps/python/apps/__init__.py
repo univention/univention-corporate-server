@@ -34,7 +34,6 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-# standard library
 import locale
 
 import univention.management.console as umc
@@ -43,7 +42,6 @@ from univention.appcenter.actions import get_action
 from univention.appcenter.app_cache import Apps
 from univention.appcenter.log import log_to_logfile
 from univention.management.console.modules.appcenter.sanitizers import error_handling
-# univention
 from univention.management.console.modules.decorators import simple_response
 
 

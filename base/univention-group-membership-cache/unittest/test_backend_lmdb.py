@@ -41,6 +41,7 @@ from univentionunittests import import_module
 #     mock = mocker.patch("lmdb").return_value = mocker.Mock()
 #     return mock
 
+
 @pytest.fixture()
 def db_module(mocker):
     sys.modules['gdbm'] = mocker.Mock()

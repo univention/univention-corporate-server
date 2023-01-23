@@ -64,7 +64,6 @@ from selenium.webdriver.support.wait import WebDriverWait
 # https://selenium-python.readthedocs.io/locating-elements.html
 
 
-
 # helper functions -------------------------------------------------------------
 
 def wait_for_page_fully_loaded(driver):

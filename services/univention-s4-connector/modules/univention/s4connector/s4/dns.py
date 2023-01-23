@@ -62,22 +62,6 @@ from univention.s4connector.s4 import format_escaped, str2dn
 from univention.s4connector.s4.dc import _unixTimeInverval2seconds
 
 
-# def __init__(self, ip_addr, serial=1, ttl=900, rank=dnsp.DNS_RANK_ZONE):
-
-# def __init__(self, ip6_addr, serial=1, ttl=900, rank=dnsp.DNS_RANK_ZONE):
-
-# def __init__(self, dns_server, serial=1, ttl=900, rank=dnsp.DNS_RANK_ZONE):
-
-# def __init__(self, mname, rname, serial=1, refresh=900, retry=600, expire=86400, minimum=3600, ttl=3600, rank=dnsp.DNS_RANK_ZONE):
-
-# def __init__(self, target, port, priority=0, weight=100, serial=1, ttl=900, rank=dnsp.DNS_RANK_ZONE):
-
-# def __init__(self, cname, serial=1, ttl=900, rank=dnsp.DNS_RANK_ZONE):
-
-# def __init__(self, slist, serial=1, ttl=900, rank=dnsp.DNS_RANK_ZONE):
-
-
-
 class PTRRecord(dnsp.DnssrvRpcRecord):
 
     def __init__(self, ptr, serial=1, ttl=900, rank=dnsp.DNS_RANK_ZONE):

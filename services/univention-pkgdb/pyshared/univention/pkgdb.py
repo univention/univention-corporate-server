@@ -1,28 +1,6 @@
 #!/usr/bin/python3
 # -*- coding: utf-8 -*-
 #
-"""
-Univention Package Database
-Python module for the package database
-"""
-from __future__ import print_function
-
-import argparse
-import csv
-import os
-import os.path
-import sys
-import time
-
-import apt_pkg
-import DNS
-import pgdb
-
-import univention.config_registry
-import univention.uldap
-
-
-#
 # Like what you see? Join us!
 # https://www.univention.com/about-us/careers/vacancies/
 #
@@ -53,7 +31,25 @@ import univention.uldap
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
+"""
+Univention Package Database
+Python module for the package database
+"""
+from __future__ import print_function
 
+import argparse
+import csv
+import os
+import os.path
+import sys
+import time
+
+import apt_pkg
+import DNS
+import pgdb
+
+import univention.config_registry
+import univention.uldap
 
 
 assert pgdb.paramstyle == 'pyformat'

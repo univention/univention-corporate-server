@@ -34,7 +34,6 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-# standard library
 import os.path
 import socket
 import ssl
@@ -42,7 +41,7 @@ from contextlib import contextmanager
 from hashlib import md5
 from urllib.parse import ParseResult, urlparse
 
-# related third party
+# import psutil # our psutil is outdated. re-enable when methods are supported
 from six.moves import http_client, urllib_request
 
 import univention.config_registry
@@ -51,16 +50,10 @@ from univention.admin.handlers.computers import (
     domaincontroller_backup, domaincontroller_master, domaincontroller_slave, memberserver,
 )
 from univention.config_registry.frontend import ucr_update
-# local application
 from univention.management.console.ldap import get_machine_connection
-# univention
 from univention.management.console.log import MODULE
 
 from .constants import COMP_PARAMS, COMPONENT_BASE, DEFAULT_ICON, PUT_PROCESSING_ERROR, PUT_SUCCESS, STATUS_ICONS
-
-
-# import psutil # our psutil is outdated. re-enable when methods are supported
-
 
 
 _ = umc.Translation('univention-management-console-module-appcenter').translate

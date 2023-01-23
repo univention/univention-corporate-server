@@ -35,7 +35,6 @@
 # <https://www.gnu.org/licenses/>.
 #
 
-
 import os
 import platform
 import re

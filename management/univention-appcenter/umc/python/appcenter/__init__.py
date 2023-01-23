@@ -37,7 +37,6 @@
 import json
 import locale
 import logging
-# standard library
 import os
 import time
 from base64 import b64decode, b64encode
@@ -46,7 +45,6 @@ from json import load
 from threading import Thread
 
 import apt  # for independent apt.Cache
-# related third party
 import notifier
 import notifier.threads
 
@@ -65,7 +63,6 @@ from univention.appcenter.utils import (
     app_is_running, call_process, docker_bridge_network_conflict, docker_is_running, find_hosts_for_master_packages,
     get_local_fqdn, resolve_dependencies, send_information,
 )
-# univention
 from univention.lib.package_manager import LockError, PackageManager
 from univention.lib.umc import Client, ConnectionError, Forbidden, HTTPError
 from univention.management.console.log import MODULE
@@ -80,7 +77,6 @@ from univention.management.console.modules.sanitizers import (
 from univention.updater.tools import UniventionUpdater
 
 from .constants import COMPONENT_BASE, DEPRECATED_PARAMS, ONLINE_BASE, PUT_PARAMETER_ERROR, PUT_SUCCESS, PUT_WRITE_ERROR
-# local application
 from .sanitizers import (
     AppSanitizer, add_components_sanitizer, advanced_components_sanitizer, basic_components_sanitizer, error_handling,
 )
