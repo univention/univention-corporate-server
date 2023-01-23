@@ -1,4 +1,5 @@
 [tool.isort]
+# ruff 0.0.240
 py_version = "37"
 combine_as_imports = true
 filter_files = true
@@ -12,3 +13,161 @@ include_trailing_comma = true
 lines_after_imports = 2
 skip = "doc/doc-common/,base/univention-system-setup/tests,services/univention-ldb-modules,packaging/ucslint/testframework"
 skip_glob = "venv/*"
+
+[tool.ruff]
+external = ["W601", "F812", "E403", "E704"]
+line-length = 180
+update-check = false
+ignore-init-module-imports = true
+
+select = ["ALL"]
+ignore = [
+ "E501",  # ignore line length
+ "T20",  # allow use of print()
+ "I",  # isort, the original isort is still more acurate
+ "N",  # ignore non PEP-8 conform names
+ "ANN",  # missing type annotation
+ "ERA",  # don't remove commented out code
+ "ARG",  # ignore unused arguments
+ "EM",  # ignore strings instead of variable preference in exception raising
+ "FBT",  # ignore boolean trap in function arguments
+ "DTZ",  # ignore use of datetime without explicit timezone given
+ "PTH",  # don't use pathlib for everything
+ "RSE102",  # we want parentheses when raising exceptions
+ "D100", "D101", "D102", "D103", "D104", "D105", "D106", "D107", # ignore missing docstring
+ "D203",  # ignore 1 blank line required before class docstring, conflicts with D211
+ "D212",  # multiline docstring should not start at first line!
+ "D214", "D215", "D405", "D406", "D407", "D408", "D409", "D410", "D411", "D412", "D413", "D414", "D416", # we don't have sections
+ "D400",  # first line should end with period
+ "D415",  # first line should end with period, question, exclamation: maybe somewhen?!
+ "UP031",  # allow %-interpolation
+ "PD011",  # we don't use pandas
+ "INP001",  # implicit namespace package
+ "EXE001",  # Shebang is present but file is not executable
+ "S101",  # allow to use assert (must be used in pytest)
+ "S105", "S106", "S107",  # allow hardcoded password
+ "SLF001",  # allow private member access
+ "Q000",  # allow single quotes
+ "Q001",  # allow single quote multiline strings
+ "RET502",  # allow implicit return None
+ "RET503",  # allow missing explicit return None
+ "B905",  # allow zip() without an explicit strict= parameter
+ "RUF001",  # allow ambiguous-unicode-character-string
+ "PLR2004",  # allow magic-value-comparison
+ "A001", "A002", "A003",  # allow builtin-variable-shadowing
+ "B006",  # allow mutable-argument-default
+ "B008",  # allow function-call-argument-default
+ "B020",  # allow loop-variable-overrides-iterator
+ "BLE001",  # allow catching Exception (blind-except)
+ "PLR0913",  # too-many-args
+ "PLR0915",  # too-many-statements
+
+ # not py2 compatible
+ "UP004", "UP008", "UP009", "UP010", "UP025", "UP029",  # be Python 2 compatible
+ "YTT202",  # six-py3-referenced
+ "RUF005",  # unpack-instead-of-concatenating-to-collection-literal
+ "TCH",  # type checking
+ "S324",  # hashlib-insecure-hash-function
+ "S113",  # request-without-timeout
+ "S108",  # hardcoded-temp-file
+ "S103",  # bad-file-permissions
+ "S110",  # try-except-pass
+ "UP006",  # use-pep585-annotation
+ "UP003",  # type-of-primitive
+ "UP012",  # unnecessary-encode-utf8
+ #"UP016",  # remove-six-compat
+ "UP018",  # native-literals
+ "UP019",  # typing-text-str-alias
+ "UP020",  # open-alias
+ "UP023",  # rewrite-c-element-tree
+ "UP024",  # os-error-alias
+ "UP026",  # rewrite-mock-import
+ "UP028",  # rewrite-yield-from
+ "UP032",  # f-string
+ "UP035",  # import-replacements
+ "UP036",  # outdated-version-block
+# F401: not py2 compat because of "typing" type hint comments
+
+ # would be nice but no autofix available
+ "TID252",  # relative-imports
+ "B904",  # allow raise-without-from-inside-except → too many violations
+ "C417",  # unnecessary-map
+ "RET505",  # superfluous-else-return
+ "RET506",  # superfluous-else-raise
+ "RET507",  # superfluous-else-continue
+ "RET508",  # superfluous-else-break
+ "SIM115",  # open-file-with-context-handler
+ "SIM102",  # nested-if-statements
+ "SIM105",  # use-contextlib-suppress
+ "G",  # logging
+ "TRY",  # tryceratops
+ "PT004", "PT007", "PT011", "PT012", "PT017", "PT018",  # pytest
+ "PGH003",  # blanket-type-ignore
+ "UP014",  # convert-named-tuple-functional-to-class
+ "RET504",  # unnecessary-assign, https://github.com/charliermarsh/ruff/issues/2263
+ "SIM117",  # multiple-with-statements
+ "SIM108",  # use-ternary-operator: hm, sometimes great, sometimes not
+ "D205",  # 1 blank line required between summary line and description
+ "D300",  # Use """triple double quotes"""
+ "D301",  # Use r""" if any backslashes in a docstring
+ "D401",  # First line of docstring should be in imperative mood
+ "D402",  # First line should not be the function's signature
+ "D403",  # First word of the first line should be properly capitalized
+ "D404",  # First word of the docstring should not be "This"
+
+ "SIM118",  # unsure if everything is a dict, let's select each individually somewhen
+
+ # issues in ruff:
+ "B007",  # https://github.com/charliermarsh/ruff/issues/2207
+ "PIE804",  # no-unnecessary-dict-kwargs https://github.com/charliermarsh/ruff/issues/2387
+ "RUF100",  # https://github.com/charliermarsh/ruff/issues/2406, https://github.com/charliermarsh/ruff/issues/2407
+]
+
+unfixable = ["RUF100", "T20"]
+
+# Allow unused variables when underscore-prefixed.
+dummy-variable-rgx = "^(_+|(_+[a-zA-Z0-9_]*[a-zA-Z0-9]+?))$"
+
+allowed-confusables = ["’", "`", "´"]
+
+target-version = "py37"
+
+extend-exclude = [
+    "services/univention-ldb-modules/buildtools/wafsamba/",
+    "doc/developer-reference/",
+    "oidc/python-keycloak",
+    "packaging/ucslint/testframework/",
+]
+
+task-tags = ["TODO", "FIXME"]
+
+[tool.ruff.flake8-builtins]
+builtins-ignorelist = ["copyright", "license", "object", "exit", "quit", "credits"]
+
+[tool.ruff.mccabe]
+max-complexity = 134
+
+[tool.ruff.flake8-quotes]
+docstring-quotes = "double"
+multiline-quotes = "double"
+inline-quotes = "single"
+
+[tool.ruff.flake8-unused-arguments]
+ignore-variadic-names = true
+
+[tool.ruff.flake8-pytest-style]
+parametrize-names-type = "csv"
+
+[tool.ruff.isort]
+combine-as-imports = true
+#filter-files = true
+#force-grid-wrap = false
+known-first-party = ["ucsschool", "univention"]
+known-third-party = ["apt", "apt_pkg", "atexit", "bzrlib", "cherrypy", "concurrent", "Crypto", "cryptography", "daemon", "debian", "defusedxml", "genshi", "M2Crypto", "OpenSSL", "PAM", "pexpect", "PIL", "pyasn1", "PyQt4", "saml2", "StringIO", "sqlalchemy", "StringIO", "tornado", "unittest", "yattag", "colorlog", "commands", "cups", "dateutil", "dns", "DNS", "ipaddr", "lazy_object_proxy", "ldap", "ldb", "ldif", "listener", "magic", "mock", "netifaces", "notifier", "psutil", "pycurl", "pytest", "pytz", "requests", "samba", "six", "smbpasswd", "tdb", "urllib3", "urlparse", "utils"]
+# known-local-folder = ["listener", "adconnector", "appcentertest", "appcenteruninstalltest", "dockertest", "s4connector", "dnstests", "grep_traceback", "essential", "samltest", "ldap_glue", "ldap_glue_s4", "quota_test", "quota_cache", "umc"]
+#line-length = 105
+#multi-line-output = 5
+#include-trailing-comma = true
+#indent = "    "
+#skip = "doc/doc-common/,base/univention-system-setup/tests,services/univention-ldb-modules,packaging/ucslint/testframework"
+#skip-glob = "venv/*"
