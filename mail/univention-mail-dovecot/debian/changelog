@@ -1,3 +1,10 @@
+univention-mail-dovecot (6.0.4-4) unstable; urgency=medium
+
+  * Bug #55510: Add prefix to every /etc/pam.d/dovecot files to avoid
+   the need for further changes to the filenames in the future.
+
+ -- Juan Carlos García García <garcia-garcia.extern@univention.de>  Wed, 23 Jan 2023 08:02:00 +0100
+
 univention-mail-dovecot (6.0.4-3) unstable; urgency=medium
 
   * Bug #55510: convert /etc/pam.d/dovecot template to multifile to support
