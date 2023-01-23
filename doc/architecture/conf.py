@@ -46,7 +46,7 @@ intersphinx_mapping = {
     "uv-ucs-python-api": ("https://docs.software-univention.de/ucs-python-api/", None),
 }
 
-bibtex_bibfiles = ["../bibliography.bib"]
+bibtex_bibfiles = ["../bibliography.bib", "bibliography.bib"]
 bibtex_encoding = "utf-8"
 bibtex_default_style = "unsrt"
 bibtex_reference_style = "label"
