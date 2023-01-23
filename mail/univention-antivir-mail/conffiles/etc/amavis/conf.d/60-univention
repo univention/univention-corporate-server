@@ -1289,7 +1289,7 @@ if 'mail/antivir/scanner' in configRegistry and configRegistry['mail/antivir/sca
         print("### http://www.f-prot.com/")
         print("['FRISK F-Prot Daemon',")
         print("  \\&ask_daemon,")
-        print("  [\"GET {}/*?-dumb%20-archive%20-packed HTTP/1.0\r\n\r\n\",")
+        print('  ["GET {}/*?-dumb%20-archive%20-packed HTTP/1.0\r\n\r\n",')
         print("    ['127.0.0.1:10200','127.0.0.1:10201','127.0.0.1:10202',")
         print("     '127.0.0.1:10203','127.0.0.1:10204'] ],")
         print("  qr/(?i)<summary[^>]*>clean<\\/summary>/,")
@@ -1320,7 +1320,7 @@ if 'mail/antivir/scanner' in configRegistry and configRegistry['mail/antivir/sca
         print("     '/opt/AVP/AvpDaemonClient', 'AvpDaemonClient',")
         print("     '/opt/AVP/AvpTeamDream',    'AvpTeamDream',")
         print("     '/opt/AVP/avpdc', 'avpdc' ],")
-        print("   \"-f=$TEMPBASE {}\", [0,8], [3,4,5,6], qr/infected: ([^\\r\\n]+)/ ],")
+        print('   "-f=$TEMPBASE {}", [0,8], [3,4,5,6], qr/infected: ([^\\r\\n]+)/ ],')
     # change the startup-script in /etc/init.d/kavd to:
     #   DPARMS="-* -Y -dl -f=/var/amavis /var/amavis"
     #   (or perhaps:   DPARMS="-I0 -Y -* /var/amavis" )
@@ -1374,7 +1374,7 @@ if 'mail/antivir/scanner' in configRegistry and configRegistry['mail/antivir/sca
         print("  [pack('N',1).  # DRWEBD_SCAN_CMD - 1")
         print("   pack('N',1).  # DRWEBD_RETURN_VIRUSES")
         print("   pack('N',     # path length")
-        print("     length(\"$TEMPBASE/amavis-yyyymmddTHHMMSS-xxxxx/parts/part-xxxxx\")).")
+        print('     length("$TEMPBASE/amavis-yyyymmddTHHMMSS-xxxxx/parts/part-xxxxx")).')
         print("   '{}/*'.       # path")
         print("   pack('N',0) . pack('N',0),")
         print("   '/usr/local/drweb/run/drwebd.sock'],")

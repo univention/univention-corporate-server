@@ -75,7 +75,7 @@ print("	'search.username'	=> '%s'," % ldap_user)
 
 password = ''
 try:
-    with open('/etc/idp-ldap-user.secret', 'r') as fd:
+    with open('/etc/idp-ldap-user.secret') as fd:
         password = fd.read().strip()
 except EnvironmentError:
     import sys

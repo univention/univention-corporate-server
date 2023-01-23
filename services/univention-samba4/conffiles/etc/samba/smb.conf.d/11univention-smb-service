@@ -52,9 +52,8 @@ elif configRegistry.get('samba4/service/smb', 'smbd') == 'smbd':
 
 	rpc_server:tcpip = no''')
 
-elif configRegistry.get('samba4/service/smb', 'smbd') == 's4':
-    if configRegistry.get('samba4/ntacl/backend', 'native') == 'tdb':
-        print('\tposix:eadb = /var/lib/samba/private/samba4_eadb.tdb')
+elif configRegistry.get('samba4/service/smb', 'smbd') == 's4' and configRegistry.get('samba4/ntacl/backend', 'native') == 'tdb':
+    print('\tposix:eadb = /var/lib/samba/private/samba4_eadb.tdb')
 
 print('; ---------------------</smb service configuration>----------------------')
 @!@

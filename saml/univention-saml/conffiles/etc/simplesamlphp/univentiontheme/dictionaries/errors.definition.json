@@ -24,7 +24,7 @@ def get_selfservice_definitions():
     return selfservice_definitions
 
 
-with open('/usr/share/simplesamlphp/modules/univentiontheme/dictionaries/errors_static.definition.json', 'r') as errors_static:
+with open('/usr/share/simplesamlphp/modules/univentiontheme/dictionaries/errors_static.definition.json') as errors_static:
     errors_definition = json.loads(errors_static.read())
     errors_definition.update(get_selfservice_definitions())
 

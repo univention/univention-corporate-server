@@ -1,6 +1,6 @@
 @!@
 if configRegistry.is_true('cups/access/limit', True):
-    policies = dict()
+    policies = {}
 
     # get policies
     #
@@ -9,23 +9,23 @@ if configRegistry.is_true('cups/access/limit', True):
     # cups/policy/default/limit/1/Order="Deny,Allow"
     # cups/policy/default/limit/1/Require="user @OWNER @SYSTEM"
 
-    for key, value in configRegistry.items():
+    for key, _value in configRegistry.items():
         if not key.startswith('cups/policy'):
             continue
         keys = key.split('/')
         if len(keys) > 3:
             policy = keys[2]
             if policy not in policies:
-                policies[policy] = dict()
+                policies[policy] = {}
             # cups/policy/default/limit/1="Create-Job Print-Job Print-URI Validate-Job"
             # cups/policy/default/limit/1/Order="Deny,Allow"
             if keys[3].lower() == 'limit':
                 if len(keys) > 4:
                     if 'limits' not in policies[policy]:
-                        policies[policy]['limits'] = dict()
+                        policies[policy]['limits'] = {}
                     counter = keys[4]
                     if counter not in policies[policy]['limits']:
-                        policies[policy]['limits'][counter] = dict()
+                        policies[policy]['limits'][counter] = {}
                     if len(keys) > 5:
                         mode = keys[5]
                         policies[policy]['limits'][counter][mode] = configRegistry[key]
@@ -34,7 +34,7 @@ if configRegistry.is_true('cups/access/limit', True):
             # cups/policy/default/JobPrivateAccess=default
             else:
                 if 'settings' not in policies[policy]:
-                    policies[policy]['settings'] = dict()
+                    policies[policy]['settings'] = {}
                 policies[policy]['settings'][keys[3]] = configRegistry[key]
 
     # print policies

@@ -1,8 +1,7 @@
 @%@UCRWARNING=# @%@
 
 @!@
-import re
-for key in configRegistry.keys():
+for key in configRegistry:
     if key.startswith('mail/maps/transport/'):
         val = configRegistry[key].strip()
         if ' ' in val:

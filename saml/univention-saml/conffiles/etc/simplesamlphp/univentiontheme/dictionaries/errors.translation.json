@@ -8,7 +8,7 @@ def get_selfservice_translations():
         translations = {
             'de': configRegistry.get(variable[:-1], 'Konto nicht verifiziert'),
         }
-        for key in configRegistry.keys():
+        for key in configRegistry:
             if key.startswith(variable):
                 translations[key[len(variable):]] = configRegistry[key]
         # the translation breaks if the same locale is in errors.definition.json and errors.translation.json
@@ -23,7 +23,7 @@ def get_selfservice_translations():
         translations = {
             'de': configRegistry.get(variable[:-1], '<span>Sie müssen Ihr <a href="/univention/selfservice/#/selfservice/verifyaccount">Konto verifizieren</a>, bevor Sie sich einloggen können.</span>'),
         }
-        for key in configRegistry.keys():
+        for key in configRegistry:
             if key.startswith(variable):
                 translations[key[len(variable):]] = configRegistry[key]
         # the translation breaks if the same locale is in errors.definition.json and errors.translation.json
@@ -40,7 +40,7 @@ def get_selfservice_translations():
     return selfservice_translations
 
 
-with open('/usr/share/simplesamlphp/modules/univentiontheme/dictionaries/errors_static.translation.json', 'r') as errors_static:
+with open('/usr/share/simplesamlphp/modules/univentiontheme/dictionaries/errors_static.translation.json') as errors_static:
     errors_translation = json.loads(errors_static.read())
     errors_translation.update(get_selfservice_translations())
 

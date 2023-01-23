@@ -38,7 +38,7 @@ for (cat, (paths, settings)) in list(FILES.items()):
 
 FILES[None] = (other_logfiles, other_settings)
 
-for (cat, (paths, settings)) in sorted(FILES.items(), key=lambda x: str(x[0])):
+for (_cat, (paths, settings)) in sorted(FILES.items(), key=lambda x: str(x[0])):
     for path in sorted(paths):
         print(path)
     print('{')

@@ -10,10 +10,7 @@ ldap_server_port = configRegistry.get('ldap/server/port', '7389')
 ldap_base = configRegistry['ldap/base']
 admindn = configRegistry.get('samba/user')
 if not admindn:
-    if configRegistry['server/role'] == 'domaincontroller_master':
-        admindn = 'cn=admin,%s' % (ldap_base)
-    else:
-        admindn = 'cn=backup,%s' % (ldap_base)
+    admindn = 'cn=admin,%s' % ldap_base if configRegistry['server/role'] == 'domaincontroller_master' else 'cn=backup,%s' % ldap_base
 
 ldapserver = configRegistry['ldap/server/name'].split(' ')
 if configRegistry.get('ldap/server/addition', ''):

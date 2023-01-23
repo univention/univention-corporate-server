@@ -3,13 +3,13 @@ import json
 import re
 
 # prepare dict with all necessary values
-data = dict(
-    license_uuid=configRegistry['uuid/license'],
-    license_requested=configRegistry['ucs/web/license/requested'],
-    role=configRegistry['server/role'],
-    appcenter_server=configRegistry.get('repository/app_center/server', 'appcenter.software-univention.de'),
-    appliance_name=configRegistry.get('umc/web/appliance/name', ''),
-)
+data = {
+    "license_uuid": configRegistry['uuid/license'],
+    "license_requested": configRegistry['ucs/web/license/requested'],
+    "role": configRegistry['server/role'],
+    "appcenter_server": configRegistry.get('repository/app_center/server', 'appcenter.software-univention.de'),
+    "appliance_name": configRegistry.get('umc/web/appliance/name', ''),
+}
 
 # read given email address from system setup profile file
 reg_exp_email_line = re.compile(r'^email_address="(?P<email>[^"]*)"\s*$')

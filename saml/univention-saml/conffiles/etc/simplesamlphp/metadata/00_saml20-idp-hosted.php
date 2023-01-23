@@ -44,6 +44,6 @@ idps = get_idps(configRegistry)
 for idp in idps:
     print("$metadata['{}'] = array_replace($idp_config, array('host' => '{}'));".format(
         idp['entityID'],
-        idp['baseurl']
+        idp['baseurl'],
     ))
 @!@

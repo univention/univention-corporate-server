@@ -2,7 +2,7 @@ modulepath	/usr/lib/ldap
 @!@
 import sys
 IS_64BITS = sys.maxsize > 2**32
-for typ in set((configRegistry.get('ldap/database/type'), "mdb" if IS_64BITS else "bdb")):
+for typ in {configRegistry.get('ldap/database/type'), "mdb" if IS_64BITS else "bdb"}:
     print("moduleload\tback_%s.so" % (typ,))
 
 if configRegistry.get('ldap/translogfile'):

@@ -107,7 +107,7 @@ def print_packetfilter(key, value):
 
 def print_descriptions(var):
     print('')
-    for key in sorted(x for x in configRegistry.keys() if x.startswith('%s/' % var)):
+    for key in sorted(x for x in configRegistry if x.startswith('%s/' % var)):
         items = key.split('/')
         pkg = 'user'
         if key.startswith('security/packetfilter/package/'):
@@ -121,14 +121,14 @@ rePort = re.compile('^\\d+(:\\d+)?$')
 
 # get package settings
 if configRegistry.is_true('security/packetfilter/use_packages', True):
-    for key in sorted(x for x in configRegistry.keys() if x.startswith('security/packetfilter/package/')):
+    for key in sorted(x for x in configRegistry if x.startswith('security/packetfilter/package/')):
         items = key.split('/')
         # check if UCR variable is valid: security/packetfilter/package/univention-samba/tcp/139/all=ACCEPT
         if items[-3] in ['tcp', 'udp'] and rePort.search(items[-2]) is not None:
             filterlist['/'.join(items[-3:])] = key
 
 # get user settings
-for key in sorted(x for x in configRegistry.keys() if x.startswith('security/packetfilter/') and not x.startswith('security/packetfilter/package/')):
+for key in sorted(x for x in configRegistry if x.startswith('security/packetfilter/') and not x.startswith('security/packetfilter/package/')):
     items = key.split('/')
     # check if UCR variable is valid: security/packetfilter/package/univention-samba/tcp/139/all=ACCEPT
     if items[-3] in ['tcp', 'udp'] and rePort.search(items[-2]) is not None:

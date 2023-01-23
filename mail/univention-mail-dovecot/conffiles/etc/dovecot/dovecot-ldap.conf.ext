@@ -35,7 +35,7 @@ print('dn = %s' % configRegistry.get('ldap/hostdn'))
 
 # Password for LDAP server, if dn is specified.
 if os.path.exists('/etc/machine.secret'):
-    print('dnpass = %s' % (open('/etc/machine.secret', 'r').read()))
+    print('dnpass = %s' % (open('/etc/machine.secret').read()))
 else:
     print('dnpass = MACHINE.SECRET_IS_MISSING')
 @!@

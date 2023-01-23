@@ -8,7 +8,7 @@ def get_login_translations():
         translations = {
             'de': configRegistry.get(variable[:-1], 'Anmelden bei {}'.format(configRegistry.get('domainname', ''))),
         }
-        for key in configRegistry.keys():
+        for key in configRegistry:
             if key.startswith(variable):
                 translations[key[len(variable):]] = configRegistry[key]
         # the translation breaks if the same locale is in login.definition.json and login.translation.json

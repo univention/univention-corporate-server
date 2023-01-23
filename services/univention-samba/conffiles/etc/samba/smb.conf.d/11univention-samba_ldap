@@ -34,9 +34,8 @@ else:
 
 print('\tldap ssl = start tls')
 
-if configRegistry.get('samba/role') not in ['memberserver', None]:
-    if configRegistry.get('samba/ldap/replication/sleep'):
-        print('\tldap replication sleep = %s' % configRegistry['samba/ldap/replication/sleep'])
+if configRegistry.get('samba/role') not in ['memberserver', None] and configRegistry.get('samba/ldap/replication/sleep'):
+    print('\tldap replication sleep = %s' % configRegistry['samba/ldap/replication/sleep'])
 
 print('\tpassdb expand explicit = %s' % configRegistry.get('samba/passdb/expand/explicit', 'no'))
 @!@

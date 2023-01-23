@@ -62,10 +62,7 @@ else:
 base_folder = "/var/spool/dovecot/private/"
 user_folder = "\\*/\\*/Maildir/."
 # find RFC 6154 flagged \Junk folders, add them if they are not there anyway
-if spamFolder.lower() == "none":
-    junk = ""
-else:
-    junk = "-wholename %s%s" % (user_folder, spamFolder)
+junk = "" if spamFolder.lower() == "none" else "-wholename %s%s" % (user_folder, spamFolder)
 for key, value in configRegistry.items():
     if key.startswith("mail/dovecot/mailboxes/special/") and value == "\\Junk":
         _folder = key.split("/")[-1]

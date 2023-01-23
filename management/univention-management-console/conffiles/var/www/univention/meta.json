@@ -17,7 +17,7 @@ logging.basicConfig(
     filemode='a',
     format='%(asctime)s.%(msecs)03d %(levelname)s [UCR template:meta.json:%(funcName)s]: %(message)s',
     datefmt='%Y-%m-%d %H:%M:%S',
-    level=logging.DEBUG
+    level=logging.DEBUG,
 )
 
 
@@ -41,8 +41,8 @@ def get_ip_address(ifname):
                 fcntl.ioctl(
                     sock.fileno(),
                     SIOCGIFADDR,
-                    struct.pack('256s', ifname[:15].encode('ASCII'))
-                )[20:24]
+                    struct.pack('256s', ifname[:15].encode('ASCII')),
+                )[20:24],
             )
         finally:
             sock.close()
@@ -79,7 +79,7 @@ def get_ec2_address():
             return '[%s]' % (addr.ip,)
 
     # runtime data
-    for ifname, iface in interfaces.all_interfaces:
+    for ifname, _iface in interfaces.all_interfaces:
         addr = get_ip_address(ifname)
         if addr:
             return '%s' % (addr,)
@@ -143,17 +143,17 @@ def get_cookie_banner():
     return banner
 
 
-data = dict(
-    serveraddress=get_ec2_address(),
-    piwikDisabled=is_piwik_disabled(),
-    sessionTimeout=get_session_timeout(),
-    fqdn=get_fqdn(),
-    has_certificates=has_certificates(),
-    administrator=custom_username('Administrator'),
-    login_links=get_login_links(),
-    login_texts=get_login_texts(),
-    cookieBanner=get_cookie_banner(),
-)
+data = {
+    "serveraddress": get_ec2_address(),
+    "piwikDisabled": is_piwik_disabled(),
+    "sessionTimeout": get_session_timeout(),
+    "fqdn": get_fqdn(),
+    "has_certificates": has_certificates(),
+    "administrator": custom_username('Administrator'),
+    "login_links": get_login_links(),
+    "login_texts": get_login_texts(),
+    "cookieBanner": get_cookie_banner(),
+}
 
 
 def get_ucr_entry(ucrKey, key=None, defaultValue=None):
@@ -173,20 +173,20 @@ ucr_vars = [
     ('domainname', ),
     ('hostname', ),
     ('system/setup/showloginmessage', ),
-    ('umc/web/feedback/description', 'feedbackSubject', '[UMC-Feedback] Traceback', ),
-    ('umc/web/feedback/mail', 'feedbackAddress', 'feedback@univention.de', ),
+    ('umc/web/feedback/description', 'feedbackSubject', '[UMC-Feedback] Traceback'),
+    ('umc/web/feedback/mail', 'feedbackAddress', 'feedback@univention.de'),
     ('umc/server/upload/max', ),
     ('umc/web/sso/enabled', ),
     ('umc/self-service/.*/title/.*', ),
     ('umc/self-service/profiledata/enabled', ),
-    ('umc/self-service/account-registration/frontend/enabled', None, False, ),
-    ('umc/self-service/account-verification/frontend/enabled', None, False, ),
-    ('umc/self-service/passwordchange/frontend/enabled', None, True, ),
-    ('umc/self-service/passwordreset/frontend/enabled', None, True, ),
-    ('umc/self-service/protect-account/frontend/enabled', None, True, ),
-    ('umc/self-service/account-deregistration/enabled', None, False, ),
-    ('umc/self-service/allow-authenticated-use', None, False, ),
-    ('portal/show-outdated-browser-warning', None, False, ),
+    ('umc/self-service/account-registration/frontend/enabled', None, False),
+    ('umc/self-service/account-verification/frontend/enabled', None, False),
+    ('umc/self-service/passwordchange/frontend/enabled', None, True),
+    ('umc/self-service/passwordreset/frontend/enabled', None, True),
+    ('umc/self-service/protect-account/frontend/enabled', None, True),
+    ('umc/self-service/account-deregistration/enabled', None, False),
+    ('umc/self-service/allow-authenticated-use', None, False),
+    ('portal/show-outdated-browser-warning', None, False),
 ]
 
 for i in ucr_vars:

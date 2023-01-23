@@ -17,7 +17,7 @@ po.metadata = {
 }
 entry = POEntry(
     msgid='Installed Applications',
-    msgstr='Installierte Applikationen'
+    msgstr='Installierte Applikationen',
 )
 po.append(entry)
 try:
@@ -42,7 +42,7 @@ for app in apps:
             continue
         entry = POEntry(
             msgid=msgid,
-            msgstr=msgstr or ''
+            msgstr=msgstr or '',
         )
         po.append(entry)
 

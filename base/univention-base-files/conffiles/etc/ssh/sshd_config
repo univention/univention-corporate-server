@@ -28,10 +28,7 @@ else:
     print('#ListenAddress ::')
 print('')
 for key in configRegistry.get('sshd/HostKey', 'rsa,ecdsa,ed25519').split(','):
-    if '/' in key:
-        filename = key
-    else:
-        filename = '/etc/ssh/ssh_host_%s_key' % (key,)
+    filename = key if '/' in key else '/etc/ssh/ssh_host_%s_key' % (key,)
     if exists(filename):
         print("HostKey %s" % (filename,))
 print('')
@@ -102,13 +99,13 @@ if configRegistry.get('sshd/HostbasedAuthentication'):
     print('HostbasedAuthentication %(sshd/HostbasedAuthentication)s' % configRegistry)
 else:
     print('#HostbasedAuthentication no')
-print('# Change to yes if you don\'t trust ~/.ssh/known_hosts for')
+print("# Change to yes if you don't trust ~/.ssh/known_hosts for")
 print('# HostbasedAuthentication')
 if configRegistry.get('sshd/IgnoreUserKnownHosts'):
     print('IgnoreUserKnownHosts %(sshd/IgnoreUserKnownHosts)s' % configRegistry)
 else:
     print('#IgnoreUserKnownHosts no')
-print('# Don\'t read the user\'s ~/.rhosts and ~/.shosts files')
+print("# Don't read the user's ~/.rhosts and ~/.shosts files")
 if configRegistry.get('sshd/IgnoreRhosts'):
     print('IgnoreRhosts %(sshd/IgnoreRhosts)s' % configRegistry)
 else:

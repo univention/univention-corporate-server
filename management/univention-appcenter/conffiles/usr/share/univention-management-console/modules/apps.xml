@@ -35,7 +35,6 @@ for app in apps:
 		</flavor>'''.format(
         id=escape(app.id or '', True),
         name=escape(app.name or ''),
-        version=escape(app.version or ''),
         description=escape(app.description or ''),
         icon=escape(app.logo_name or '', True),
     )

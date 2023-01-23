@@ -2,7 +2,7 @@
 # search for UMC auth addons
 auth_umc_addons = any(
     configRegistry.is_true(k, True)
-    for k in configRegistry.keys()
+    for k in configRegistry
     if k.startswith('auth/umc/addon/') and k.count('/') == 3
 )
 

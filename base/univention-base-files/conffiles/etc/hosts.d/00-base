@@ -36,8 +36,8 @@ for key, value in configRegistry.items():
                 primary_entries.append((iface, 6, name, '%s\t%s' % (value, hosts)))
             else:
                 entries.append((iface, 6, name, '%s\t%s' % (value, hosts)))
-for (iface, ip_version, name, line) in sorted(primary_entries):  # IPv4 < IPv6.default < IPv6.*
+for (_iface, _ip_version, _name, line) in sorted(primary_entries):  # IPv4 < IPv6.default < IPv6.*
     print(line)
-for (iface, ip_version, name, line) in sorted(entries):  # IPv4 < IPv6.default < IPv6.*
+for (_iface, _ip_version, _name, line) in sorted(entries):  # IPv4 < IPv6.default < IPv6.*
     print(line)
 @!@
