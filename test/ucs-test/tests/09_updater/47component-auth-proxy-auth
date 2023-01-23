@@ -6,7 +6,7 @@
 ##  2. Use minimal proxy implemented in Python
 ##  3. check if the package is installable
 ## roles-not: [basesystem]
-## tags: [basic]
+## tags: [basic, proxy]
 ## packages:
 ##  - apache2 | apache2-mpm-prefork
 ## exposure: dangerous
@@ -37,7 +37,7 @@ AuthName "${compname}"
 Require user ${username}
 EOF
 
-eval "$(python3 proxy.py -f -p 0 -a -u "${proxyuser}" -w "${proxypass}" 3>&-)"
+config_proxy -a -u "${proxyuser}" -w "${proxypass}"
 comp="repository/online/component/${compname}"
 config_repo "${comp}=yes" "${comp}/parts=maintained" "${comp}/username=${username}" "${comp}/password=${password}" proxy/http="http://${proxyuser}:${proxypass}@localhost:${proxy_port:?}"
 
@@ -53,7 +53,6 @@ config_repo "${comp}=yes" "${comp}/parts=maintained" "${comp}/username=${usernam
 # shellcheck disable=SC2181
 [ $? -eq 0 ] && RETVAL=100 # Test bestanden (Keine Fehler)
 dpkg -P --force-all "${pkgname}" >&3 2>&3
-kill "${proxy_pid:?}" 2>&3
 
 exit ${RETVAL}
 # vim:set ft=sh:
