@@ -141,10 +141,17 @@ def custom_name(name: str) -> str:
 
 
 def check_existence_and_consistency() -> Iterator[CheckError]:
+	s4c_ignore = {
+		user.strip().casefold()
+		for user in ucr.get("connector/s4/mapping/user/ignorelist", "").split(",")
+	}
 	ldap_connection = LDAPConnection()
 	domain_sid = ldap_connection.get_domain_sid()
 	for (sid, expected_name) in all_sids_and_names(domain_sid):
 		mapped_name = custom_name(expected_name)
+		if mapped_name.casefold() in s4c_ignore:
+			continue
+
 		try:
 			# The user/group retrieved by SID should have the name as specified
 			# in the well-known-sid-mapping (or mapped as per
