@@ -1,0 +1,50 @@
+product: ucs
+release: "5.0"
+version: [2]
+scope: ucs_5.0-0-errata5.0-2
+src: tiff
+fix: 4.1.0+git191117-2~deb10u5
+desc: |
+ This update addresses the following issues:
+ * heap-buffer-overflow in TIFFReadRawDataStriped() in tiffinfo.c
+   (CVE-2022-1354)
+ * stack-buffer-overflow in tiffcp.c in main() (CVE-2022-1355)
+ * LibTiff: DoS from Divide By Zero Error (CVE-2022-2056)
+ * LibTiff: DoS from Divide By Zero Error (CVE-2022-2057)
+ * LibTiff: DoS from Divide By Zero Error (CVE-2022-2058)
+ * uint32_t underflow leads to out of bounds read and write in tiffcrop.c
+   (CVE-2022-2867)
+ * Invalid crop_width and/or crop_length could cause an out-of-bounds read in
+   reverseSamples16bits() (CVE-2022-2868)
+ * tiffcrop.c has uint32_t underflow which leads to out of bounds read and
+   write in extractContigSamples8bits() (CVE-2022-2869)
+ * heap Buffer overflows in tiffcrop.c (CVE-2022-3570)
+ * out-of-bounds write in _TIFFmemcpy in libtiff/tif_unix (CVE-2022-3597)
+ * out-of-bounds write in extractContigSamplesShifted24bits in
+   tools/tiffcrop.c (CVE-2022-3598)
+ * out-of-bounds read in writeSingleSection in tools/tiffcrop.c
+   (CVE-2022-3599)
+ * out-of-bounds write in _TIFFmemset in libtiff/tif_unix.c (CVE-2022-3626)
+ * out-of-bounds write in _TIFFmemcpy in libtiff/tif_unix.c (CVE-2022-3627)
+ * integer overflow in function TIFFReadRGBATileExt of the file
+   (CVE-2022-3970)
+ * A stack overflow was discovered in the _TIFFVGetField function of Tiffsplit
+   (CVE-2022-34526)
+bug: [55589]
+cve:
+- CVE-2022-1354
+- CVE-2022-1355
+- CVE-2022-2056
+- CVE-2022-2057
+- CVE-2022-2058
+- CVE-2022-2867
+- CVE-2022-2868
+- CVE-2022-2869
+- CVE-2022-3570
+- CVE-2022-3597
+- CVE-2022-3598
+- CVE-2022-3599
+- CVE-2022-3626
+- CVE-2022-3627
+- CVE-2022-3970
+- CVE-2022-34526
