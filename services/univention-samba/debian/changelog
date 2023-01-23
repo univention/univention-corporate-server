@@ -1,3 +1,9 @@
+univention-samba (14.0.5-9) unstable; urgency=medium
+
+  * Bug #55591: Fix UCR template for logrotate
+
+ -- Arvid <requate@univention.de>  Mon, 23 Jan 2023 18:38:24 +0100
+
 univention-samba (14.0.5-8) unstable; urgency=medium
 
   * Bug #55435: rotate new logfiles
