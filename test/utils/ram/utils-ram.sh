@@ -389,14 +389,15 @@ create_mail_domains () {
 }
 
 SAR_ARGS=( -b -n DEV,IP,TCP,UDP -P ALL -q -r ALL -S -u ALL )
-DATA_DIR=/var/lib/ram-performance-tests/results
+DATA_DIR=/var/log/perfstats
 
 start_system_stats_collection () {
  local host="${1:?missing hostname}"
 
- apt-get install scour sysstat
+ apt-get install -y scour sysstat
  mkdir -pv "$DATA_DIR"
- nohup sar "${SAR_ARGS[@]}" -o /var/log/ram.sar 1 >/dev/null &
+ touch "$DATA_DIR/empty-$host"
+ nohup sar "${SAR_ARGS[@]}" -o "$DATA_DIR/ram.sar" 1 >/dev/null &
  # When not looked at every day anymore, reduce size with: ... | bzip2 -9c > $DATA_DIR/stats-$host.top.txt.bz2 &
  nohup top -bci -w512 -d 1 > "$DATA_DIR/stats-$host.top.txt" &
 }
@@ -405,9 +406,10 @@ end_system_stats_collection () {
  local host="${1:?missing hostname}"
 
  ps ax | grep -E 'sar|top'
+ ls -la "$DATA_DIR"
  pkill -f ram.sar -SIGINT || true
  pkill -f 'top -bci' || true
- [ -e /var/log/ram.sar ] && sadf -g /var/log/ram.sar -- "${SAR_ARGS[@]}" | scour -o "$DATA_DIR/stats-$host.sar.svgz" || echo "Not found: /var/log/ram.sar"
+ [ -e "$DATA_DIR/ram.sar" ] && sadf -g "$DATA_DIR/ram.sar" -- "${SAR_ARGS[@]}" | scour -o "$DATA_DIR/stats-$host.sar.svgz" || echo "Not found: $DATA_DIR/ram.sar"
  # stats.sar.txt (decompressed) can be uploaded to https://sarchart.dotsuresh.com/ for interactive graphs
- [ -e /var/log/ram.sar ] && sar "${SAR_ARGS[@]}" -f /var/log/ram.sar | bzip2 -9c > "$DATA_DIR/stats-$host.sar.txt.bz2" || echo "Not found: /var/log/ram.sar"
+ [ -e "$DATA_DIR/ram.sar" ] && sar "${SAR_ARGS[@]}" -f "$DATA_DIR/ram.sar" | bzip2 -9c > "$DATA_DIR/stats-$host.sar.txt.bz2" || echo "Not found: $DATA_DIR/ram.sar"
 }
