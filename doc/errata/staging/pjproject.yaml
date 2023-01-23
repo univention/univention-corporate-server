@@ -6,13 +6,10 @@ src: pjproject
 fix: 2.5.5~dfsg-6+deb9u8
 desc: |
  This update addresses the following issues:
-
- Debian update 2.5.5~dfsg-6+deb9u8
- 2.5.5~dfsg-6+deb9u8 (Wed, 18 Jan 2023 16:43:30 +0100)
- * Non-maintainer upload by the LTS Security Team.
- * Backport fixes for - CVE-2022-23537 Buffer overread is possible when
-   parsing a specially crafted STUN message. - CVE-2022-23547 Possible buffer
-   overread when parsing a certain STUN message.
+ * CVE-2022-23537: Buffer over-read is possible when parsing a specially
+   crafted STUN message.
+ * CVE-2022-23547: Possible buffer over-read when parsing a certain STUN
+   message.
 bug: [55587]
 cve:
 - CVE-2022-23537
