@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   width="19.118063mm"
+   height="3.4835546mm"
+   viewBox="0 0 19.118063 3.4835546"
+   version="1.1"
+   id="svg412">
+  <defs
+     id="defs406">
+    <clipPath
+       clipPathUnits="userSpaceOnUse"
+       id="clipPath17">
+      <path
+         d="m 141,20 h 95 v 35 h -95 z"
+         id="path51" />
+    </clipPath>
+    <clipPath
+       clipPathUnits="userSpaceOnUse"
+       id="clipPath18">
+      <path
+         d="m 151,30 h 23 v 15 h -23 z"
+         id="path54" />
+    </clipPath>
+    <clipPath
+       clipPathUnits="userSpaceOnUse"
+       id="clipPath398">
+      <path
+         d="m 151,30 h 23 v 15 h -23 z"
+         id="path396" />
+    </clipPath>
+  </defs>
+  <metadata
+     id="metadata409">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title></dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     id="layer1"
+     transform="translate(-41.956141,-22.784083)">
+    <g
+       id="g382"
+       transform="matrix(0.26458333,0,0,0.26458333,1.8075379,14.736277)">
+      <path
+         fill="none"
+         d="m 152,37 h 72"
+         clip-path="url(#clipPath17)"
+         stroke="#000000"
+         id="path173"
+         style="font-size:15px;stroke-linecap:butt;text-rendering:optimizeLegibility" />
+      <path
+         fill="#000000"
+         d="m 152,37 10,-6 10,6 -10,6 -10,-6"
+         clip-path="url(#clipPath18)"
+         fill-rule="evenodd"
+         stroke="none"
+         id="path175"
+         style="font-size:15px;stroke-linecap:butt;text-rendering:optimizeLegibility" />
+      <path
+         fill="none"
+         d="m 152,37 10,-6 10,6 -10,6 -10,-6"
+         clip-path="url(#clipPath18)"
+         fill-rule="evenodd"
+         stroke="#000000"
+         id="path177"
+         style="font-size:15px;stroke-linecap:butt;text-rendering:optimizeLegibility" />
+    </g>
+  </g>
+</svg>

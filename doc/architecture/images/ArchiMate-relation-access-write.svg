@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   width="19.385834mm"
+   height="1.8306904mm"
+   viewBox="0 0 19.385834 1.8306904"
+   version="1.1"
+   id="svg715">
+  <defs
+     id="defs709">
+    <clipPath
+       clipPathUnits="userSpaceOnUse"
+       id="clipPath42">
+      <path
+         d="m 141,380 h 95 v 29 h -95 z"
+         id="path126" />
+    </clipPath>
+    <clipPath
+       clipPathUnits="userSpaceOnUse"
+       id="clipPath43">
+      <path
+         d="m 151,390 h 10 v 9 h -10 z"
+         id="path129" />
+    </clipPath>
+    <clipPath
+       clipPathUnits="userSpaceOnUse"
+       id="clipPath40">
+      <path
+         d="m 141,395 h 95 v 29 h -95 z"
+         id="path120" />
+    </clipPath>
+    <clipPath
+       clipPathUnits="userSpaceOnUse"
+       id="clipPath41">
+      <path
+         d="m 216,405 h 10 v 9 h -10 z"
+         id="path123" />
+    </clipPath>
+  </defs>
+  <metadata
+     id="metadata712">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title></dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     id="layer1"
+     transform="translate(-53.977172,-43.526454)">
+    <g
+       id="g797"
+       transform="matrix(0.26458333,0,0,0.26458333,13.760506,-63.772783)">
+      <path
+         fill="none"
+         stroke-dasharray="2"
+         d="m 152,409 h 72"
+         clip-path="url(#clipPath40)"
+         stroke="#000000"
+         id="path340"
+         style="font-size:15px;stroke-linecap:butt;text-rendering:optimizeLegibility" />
+      <path
+         fill="none"
+         d="m 217,412 7,-3 -7,-3"
+         clip-path="url(#clipPath41)"
+         stroke="#000000"
+         id="path342"
+         style="font-size:15px;stroke-linecap:butt;text-rendering:optimizeLegibility" />
+    </g>
+  </g>
+</svg>
