@@ -5,7 +5,7 @@ UCS management system
 
 The UCS management system is the central administration interface for users with
 administrative tasks to operate a UCS domain and maintain the UCS systems. It
-provides different interfaces, for example for web browsers, command-line and
+provides different interfaces, for example for web browsers, command line and
 programming, although the term *UCS management system* generally refers to the
 web interface. Administrators usually open the management system in their web
 browser through the :ref:`component-portal` after they sign in.
@@ -33,10 +33,10 @@ It consists of the following parts as shown in
 
    Parts of the UCS management system
 
-* :ref:`component-domain-management` to centrally administer the domain
+* :ref:`component-domain-management` to centrally manage the domain
   settings and objects in the domain database.
 
-* :ref:`component-system-management` to administer UCS systems, services and
+* :ref:`component-system-management` for managing UCS systems, services and
   apps.
 
 * :ref:`component-configuration-registry` to store configuration settings for
@@ -52,9 +52,8 @@ Domain management
 -----------------
 
 .. index::
-   pair: domain management; udm
-   pair: domain management; univention directory manager
-   pair: udm; univention directory manager
+   pair: udm; domain management
+   see: univention directory manager; udm
    single: udm; identities
    single: udm; devices
    single: udm; services
@@ -88,13 +87,13 @@ Data aggregation
    Return multiple objects from the domain database as one object in |UDM|.
 
 Data consistency
-   Ensure data consistency between different objects in the domain database, for
-   example references between different objects and make sure the references
-   always are valid.
+   Ensure data consistency between different objects in the domain database,
+   such as references between different objects and ensure that the references
+   are always valid.
 
 Data presentation
    Enhance the data from the domain database for appropriate presentation to
-   the user on the command-line and in the web interface.
+   the user on the command line and in the web interface.
 
 Atomic operations
    Provide a locking mechanism so that operations with multiple actions run as
@@ -109,9 +108,13 @@ Input value validation
    database.
 
 Process logic
-   The process logic ensures that |UDM| automatically applies default values on
-   properties when users don't set values for properties. Furthermore, process
-   logic prevents inconsistent state of data.
+   Process logic ensures that |UDM| automatically applies default values to
+   properties when users don't set values for properties. In addition, the
+   process logic prevents inconsistent state of data.
+
+.. index::
+   single: extended attributes
+   single: extended options
 
 User interface enhancements
    |UDM| provides an interface for enhancement with additional properties in
@@ -129,39 +132,55 @@ Usability
 
 .. seealso::
 
-   :ref:`users-general`
-      for identity management of users in :cite:t:`ucs-manual`
+   Administrators refer to :cite:t:`ucs-manual`:
 
-   :ref:`groups`
-      for identity management of user groups in :cite:t:`ucs-manual`
+   * :ref:`users-general` for identity management of users
+
+   * :ref:`groups` for identity management of user groups
+
+.. seealso::
+
+   Software developers refer to :cite:t:`developer-reference`:
+
+   * :ref:`udm-ea`
+   * :ref:`udm-ea-option`
 
 .. _component-system-management:
 
 System management
 -----------------
 
-System management covers all administrative tasks related to the underlying UCS
-system. The tasks are for example UCS system updates, management of apps like
-lifecycle and configuration and certificate handling. The purpose of system
-management is to simplify the administrators' daily jobs regarding the
-management of multiple UCS systems.
+.. index::
+   pair: system management; umc
+   see: univention management console; umc
+   single: umc; administration
+   pair: umc; software updates
+   pair: umc; system updates
+   pair: umc; web interface
+   single: umc modules
+   single: umc; technology stack
+
+System management includes all administrative tasks related to the underlying
+UCS system. These tasks include, for example, UCS system updates, management of
+apps such as lifecycle and configuration and certificate handling. The purpose
+of system management is to simplify the daily tasks of administrators when
+managing multiple UCS systems.
 
 The component *Univention Management Console (UMC)* provides the capabilities
 for system management on UCS and is part of the UCS management system. It offers
 the technology stack for the web interface of the UCS management system. |UMC|
-consists of modules for the different administration tasks. Apps and software
-packages can deploy their own custom UMC modules and extend the UCS management
-system.
+consists of modules for various management tasks. Apps and software packages can
+deploy their own custom UMC modules and extend the UCS management system.
 
 |UMC| is a central component in UCS for the following reasons:
 
-* Provides the technology stack for the web interface of the UCS management
-  system
+* UMC provides the technology stack for the web interface of the UCS management
+  system.
 
-* Provides user authentication interface to the UCS management system and
-  :ref:`services-ucs-portal`
+* UMC provides user authentication interface to the UCS management system and
+  :ref:`services-ucs-portal`.
 
-* Allows extension of the UCS management system with custom UMC modules
+* UMC allows extension of the UCS management system with custom UMC modules.
 
 As component serving the web interface for the UCS management system, |UMC|
 involves a web front end and a back end as shown in
@@ -180,41 +199,53 @@ involves a web front end and a back end as shown in
 
 .. seealso::
 
-   :ref:`central-user-interface`
-      for details about |UMC| modules in :cite:t:`ucs-manual`
+   System administrators refer to :cite:t:`ucs-manual`:
 
-   :ref:`central-extended-attrs`
-      for details about how to enhance with *extended attributes* in
-      :cite:t:`ucs-manual`
+   * :ref:`central-user-interface` for details about |UMC| modules
 
-   :ref:`chap-umc`
-      for technical details about |UMC| for software developers in
-      :cite:t:`developer-reference`
+   * :ref:`central-extended-attrs` for details about how to enhance with
+     *extended attributes*
+
+   Software developers and system engineers refer to
+   :cite:t:`developer-reference`:
+
+   * :ref:`chap-umc` for technical details about |UMC| for software developers
 
 .. _component-configuration-registry:
 
 Configuration management
 ------------------------
 
-Configuration management is a collection of tasks to configure software systems.
-For example, changing the system's email relay server involves updates in
-various configuration text files. With configuration management an administrator
-changes the configuration setting in one place. The change then triggers the
-update of the related configuration files.
+.. index::
+   pair: ucr; configuration management
+   see: univention configuration variable; ucr
+   single: ucr; configuration setting
+   single: ucr; write configuration files
+   single: ucr; trigger write
+   single: ucr; services
+   single: ucr; scripts
+   single: ucr; apps
+   single: ucr; plain text
 
-The component *Univention Configuration Registry (UCR)* covers local
+Configuration management is a collection of tasks used to configure software
+systems. For example, changing the system's mail relay server requires updates
+to several configuration text files. With configuration management, an
+administrator changes the configuration setting in one place. The change then
+triggers updates to the associated configuration files.
+
+The component *Univention Configuration Registry (UCR)* covers the local
 configuration management on all Univention Corporate Server systems. Services,
-scripts, and apps use UCR as their central configuration store. And
-administrators use UCR to customize their UCS system to their needs.
+scripts, and apps use UCR as a central configuration store. And administrators
+use UCR to adapt their UCS system to their needs.
 
 UCR consists of a non-hierarchical key-value store called *UCR variables*. It
-provides a common interface for system settings. UCR decouples configuration
-settings from specific file formats like for example plain text, XML, or JSON.
-Furthermore, UCR consists of a template system and mechanisms to generate
-configuration files from templates and UCR variables.
+provides a common interface to system settings. UCR decouples configuration
+settings from specific file formats such as plain text, XML, or JSON. UCR also
+consists of a template system and mechanisms to generate configuration files
+from templates and UCR variables.
 
 UCS uses UCR variables for all configuration settings on a system. And UCS
-provides numerous templates for service configuration files.
+provides many templates for service configuration files.
 
 .. admonition:: Continue reading
 
