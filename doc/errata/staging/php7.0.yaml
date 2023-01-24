@@ -1,0 +1,24 @@
+product: ucs
+release: "4.4"
+version: [9]
+scope: ucs_4.4-0-errata4.4-9
+src: php7.0
+fix: 7.0.33-0+deb9u13
+desc: |
+ This update addresses the following issues:
+
+ Debian update 7.0.33-0+deb9u13
+ 7.0.33-0+deb9u13 (Mon, 23 Jan 2023 18:36:50 +0100)
+ * Non-maintainer upload.
+ * CVE-2021-21707: invalid parsing of encoded null character.
+ * CVE-2022-31625: invalid free in posgresql extension.
+ * CVE-2022-31626: buffer overflow in mysqlnd driver.
+ * CVE-2022-31628: infinite loop in the phar uncompressor.
+ * CVE-2022-31629: secure cookie poisoning.
+bug: [55592]
+cve:
+- CVE-2021-21707
+- CVE-2022-31625
+- CVE-2022-31626
+- CVE-2022-31628
+- CVE-2022-31629
