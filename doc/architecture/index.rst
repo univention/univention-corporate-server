@@ -48,6 +48,9 @@ Software developers and system engineers get an overview of the technical parts.
 A general understanding of Linux operating systems for servers and IT
 administration are beneficial for understanding.
 
+For notation, the document uses the *C4 model* notation and the *ArchiMate*
+notation. For more information, refer to :ref:`architecture-notation`.
+
 .. TODO : Enable the references, once the sections are written:
    """The third, low level is about the :ref:`libraries <libraries>`, :ref:`internal
    systems and storage <systems-storage>`. It describes the pieces a software"""
