@@ -138,3 +138,6 @@ Variables: slapd/backup/cron
 Variables: slapd/backup/owner
 Variables: slapd/backup/group
 Variables: slapd/backup/permissions
+
+Type: file
+File: etc/default/slapd
