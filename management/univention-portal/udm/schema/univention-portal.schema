@@ -326,15 +326,15 @@ attributetype ( univentionNewPortalAnnouncementAttributeType:6 NAME 'univentionN
 	SUBSTR caseIgnoreSubstringsMatch
 	SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 )
 
-attributetype ( univentionNewPortalAnnouncementAttributeType:7 NAME 'univentionNewPortalAnnouncementStartTime'
-	DESC 'Portal announcement start time'
+attributetype ( univentionNewPortalAnnouncementAttributeType:7 NAME 'univentionNewPortalAnnouncementVisibleFrom'
+	DESC 'Portal announcement visible from'
 	SINGLE-VALUE
 	EQUALITY caseIgnoreMatch
 	SUBSTR caseIgnoreSubstringsMatch
 	SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 )
 
-attributetype ( univentionNewPortalAnnouncementAttributeType:8 NAME 'univentionNewPortalAnnouncementEndTime'
-	DESC 'Portal announcement end time'
+attributetype ( univentionNewPortalAnnouncementAttributeType:8 NAME 'univentionNewPortalAnnouncementVisibleUntil'
+	DESC 'Portal announcement visible until'
 	SINGLE-VALUE
 	EQUALITY caseIgnoreMatch
 	SUBSTR caseIgnoreSubstringsMatch
@@ -351,7 +351,7 @@ objectclass ( univentionNewPortalAnnouncementObjectClass:1 NAME 'univentionNewPo
 			$ univentionNewPortalAnnouncementSeverity
 			$ univentionNewPortalAnnouncementTitle
 			$ univentionNewPortalAnnouncementMessage
-			$ univentionNewPortalAnnouncementStartTime
-			$ univentionNewPortalAnnouncementEndTime
+			$ univentionNewPortalAnnouncementVisibleFrom
+			$ univentionNewPortalAnnouncementVisibleUntil
 		)
 	)

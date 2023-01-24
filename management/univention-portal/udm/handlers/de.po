@@ -377,8 +377,8 @@ msgid "Danger"
 msgstr "Gefahr"
 
 
-msgid "End time"
-msgstr "Endzeitpunkt"
+msgid "End date"
+msgstr "Enddatum"
 
 
 msgid "If one or more groups are selected then the portal announcement will only be visible to logged in users that are in any of the selected groups. If no groups are selected then the portal entry is always visible."
@@ -416,8 +416,8 @@ msgstr "Portal: Ansage"
 msgid "Severity"
 msgstr "Schweregrad"
 
-msgid "Start time"
-msgstr "Startzeit"
+msgid "Start date"
+msgstr "Startdatum"
 
 msgid "Sticky"
 msgstr "Feststehend"
@@ -425,14 +425,14 @@ msgstr "Feststehend"
 msgid "Success"
 msgstr "Erfolg"
 
+msgid "The date when the announcement will first appear."
+msgstr "Das Datum, ab welchem das Announcement angezeigt wird."
+
+msgid "The date when the announcement will last appear."
+msgstr "Das Datum, bis zu welchem das Announcement angezeigt wird."
+
 msgid "The message of the announcement, usually written in normal text below the title."
-msgstr "Die Nachricht der Ansage. Erscheint üblicherweise unter dem Titel."
-
-msgid "The time when the announcement will first appear. If no time is set, it will always appear."
-msgstr "Der Zeitpunkt ab welchem das Announcement angezeigt wird. Wenn kein Zeitpunkt gesetzt wird, erscheint das Announcement unmittelbar."
-
-msgid "The time when the announcement will stop appearing. If no time is set, it will appear forever."
-msgstr "Der Zeitpunkt ab dem das Announcement nicht mehr angezeigt wird. Wenn kein Zeitpunkt gesetzt ist, wird das Announcement immer angezeigt."
+msgstr "Die Nachricht des Announcements. Sie erscheint üblicherweise unter dem Titel."
 
 msgid "The title of the announcement, usually written in bold above the message."
 msgstr "Der Titel des Announcements. Er wird über der Nachricht hervorgehoben dargestellt."

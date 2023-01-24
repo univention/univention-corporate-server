@@ -182,8 +182,8 @@ class PortalsPortalAnnouncementObjectProperties(GenericObjectProperties):
         'isSticky': StringCaseInsensitiveResultUpperBooleanPropertyEncoder,
         'title': ListOfListOflTextToDictPropertyEncoder,
         'message': ListOfListOflTextToDictPropertyEncoder,
-        'startTime': DatePropertyEncoder,
-        'endTime': DatePropertyEncoder,
+        'visibleFrom': DatePropertyEncoder,
+        'visibleUntil': DatePropertyEncoder,
     }
 
 

@@ -295,7 +295,8 @@ class TestPortal:
             "needsConfirmation": False,
             "severity": "info",
             "startTime": None,
-            "endTime": None,
+            "visibleFrom": None,
+            "visibleUntil": None,
             "title": {
                 "de_DE": "Öffentliches Announcement",
             }
@@ -311,7 +312,8 @@ class TestPortal:
             "needsConfirmation": False,
             "severity": "info",
             "startTime": None,
-            "endTime": None,
+            "visibleFrom": None,
+            "visibleUntil": None,
             "title": {
                 "de_DE": "Öffentliches Announcement",
             }
@@ -326,8 +328,8 @@ class TestPortal:
             "name": "Testannouncment",
             "needsConfirmation": False,
             "severity": "info",
-            "startTime": None,
-            "endTime": None,
+            "visibleFrom": None,
+            "visibleUntil": None,
             "title": {
                 "de_DE": "Öffentliches Announcement",
             }

@@ -1,28 +1,36 @@
-from datetime import datetime
+from datetime import datetime, MINYEAR, MAXYEAR
 import dateutil.parser
 
+from univention.portal.log import get_logger
 
-def _parse_date_str(iso_datetime: str):
+
+def _sanitize_and_parse_iso_datetime_str(iso_datetime: str, default: datetime):
     try:
-        time = dateutil.parser.isoparse(iso_datetime)
+        datetime_obj = dateutil.parser.isoparse(iso_datetime)
     except (ValueError, TypeError):
-        time = None
-    return time
+        datetime_obj = default
+    return datetime_obj
 
 
-def in_range(iso_start_time: str, iso_end_time: str) -> bool:
-    start = _parse_date_str(iso_start_time)
-    end = _parse_date_str(iso_end_time)
+def is_current_time_between(start_iso_datetime_str: str, end_iso_datetime_str: str) -> bool:
+    """Return if the current system time (datetime.now()) lies within the given range.
+    In case, start is later than end, ignore both.
+
+    start_iso_datetime_str : str
+        the first point in time that is in range
+    end_iso_datetime_str : str
+        the last point in time that is in range
+
+    return: bool
+        is datetime.now() between start_iso_datetime_str and end_iso_datetime_str,
+        including boundaries
+    """
     now = datetime.now()
-    if start:
-        if end:
-            if start <= end:
-                return start <= now <= end
-            else:
-                return start <= now  # to be discussed
-        else:
-            return start <= now
-    elif end:
-        return now <= end
+    range_start = _sanitize_and_parse_iso_datetime_str(start_iso_datetime_str, datetime(MINYEAR, 1, 1))
+    range_end = _sanitize_and_parse_iso_datetime_str(end_iso_datetime_str, datetime(MAXYEAR, 1, 1))
+
+    if range_start <= range_end:
+        return range_start <= now <= range_end
     else:
+        get_logger("util").warning("given time boundaries not in chronological order")
         return True

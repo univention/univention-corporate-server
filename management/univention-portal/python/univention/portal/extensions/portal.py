@@ -41,7 +41,7 @@ import requests.exceptions
 
 from univention.portal import Plugin, config
 from univention.portal.log import get_logger
-from univention.portal.util import in_range
+from univention.portal.util import is_current_time_between as is_announcement_visible_now
 
 
 class Portal(metaclass=Plugin):
@@ -214,25 +214,20 @@ class Portal(metaclass=Plugin):
         return self._announcement_matches_time(announcement) and self._announcement_matches_group(user, announcement)
 
     def _announcement_matches_time(self, announcement: dict):
-        start_time = None
-        end_time = None
-        if 'startTime' in announcement and announcement['startTime'] is not None:
-            start_time = announcement['startTime']
-        if 'endTime' in announcement and announcement['endTime'] is not None:
-            end_time = announcement['endTime']
-        return in_range(start_time, end_time)
+        return is_announcement_visible_now(
+            announcement.get('visibleFrom'),
+            announcement.get('visibleUntil')
+        )
 
     def _announcement_matches_group(self, user, announcement: dict):
         visible = False
-        if "allowedGroups" in announcement:
-            if announcement["allowedGroups"] is None or announcement["allowedGroups"] == []:
-                visible = True
-            else:
-                for group in announcement["allowedGroups"]:
-                    if user.is_member_of(group):
-                        visible = True
-        else:
+        allowed_groups = announcement.get("allowedGroups")
+        if not allowed_groups or allowed_groups == []:
             visible = True
+        else:
+            for group in allowed_groups:
+                if user.is_member_of(group):
+                    visible = True
         return visible
 
     def get_announcements(self, content):

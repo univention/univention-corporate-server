@@ -1,21 +1,21 @@
-from univention.portal.util import in_range
+from univention.portal.util import is_current_time_between
 from datetime import datetime
 from datetime import timedelta
 import pytest
 
 
 @pytest.mark.parametrize(
-    "start_time,end_time,expected",
+    "start,end,expected",
     [
         pytest.param(
-            (datetime.now() + timedelta(minutes=1)).isoformat(), None,  # start_time, end_time
-            False,  # expected result
+            (datetime.now() + timedelta(minutes=1)).isoformat(), None,
+            False,
             id="before start"
         ),
         pytest.param(
-            (datetime.now() + timedelta(minutes=1)).isoformat(), "invalid time string",
+            (datetime.now() + timedelta(minutes=1)).isoformat(), "invalid datetime string",
             False,
-            id="before start, invalid end time string"
+            id="before start, invalid end datetime string"
         ),
         pytest.param(
             (datetime.now() - timedelta(minutes=1)).isoformat(), None,
@@ -57,7 +57,12 @@ import pytest
             True,
             id="only date"
         ),
+        pytest.param(
+            (datetime.now() + timedelta(days=1)).date().isoformat(), datetime.now().date().isoformat(),
+            True,
+            id="start after end"
+        ),
     ]
 )
-def test_time_in_range(start_time, end_time, expected):
-    assert in_range(start_time, end_time) == expected
+def test_is_current_time_between(start, end, expected):
+    assert is_current_time_between(start, end) == expected

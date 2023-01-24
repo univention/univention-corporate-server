@@ -107,16 +107,16 @@ property_descriptions = {
         multivalue=True,
         required=False,
     ),
-    'startTime': univention.admin.property(
-        short_description=_('Start time'),
-        long_description=_('The time when the announcement will first appear. If no time is set, it will always appear.'),
+    'visibleFrom': univention.admin.property(
+        short_description=_('Start date'),
+        long_description=_('The date when the announcement will first appear.'),
         syntax=univention.admin.syntax.iso8601Date,
         dontsearch=True,
         required=False,
     ),
-    'endTime': univention.admin.property(
-        short_description=_('End time'),
-        long_description=_('The time when the announcement will stop appearing. If no time is set, it will appear forever.'),
+    'visibleUntil': univention.admin.property(
+        short_description=_('End date'),
+        long_description=_('The date when the announcement will last appear.'),
         syntax=univention.admin.syntax.iso8601Date,
         dontsearch=True,
         required=False,
@@ -133,7 +133,7 @@ layout = [
             ["message"],
         ]),
         Group(_('Time'), layout=[
-            ["startTime", "endTime"],
+            ["visibleFrom", "visibleUntil"],
         ]),
         Group(_('Options'), layout=[
             ["needsConfirmation", "isSticky"],
@@ -160,8 +160,8 @@ mapping.register('isSticky', 'univentionNewPortalAnnouncementIsSticky', None, un
 mapping.register('severity', 'univentionNewPortalAnnouncementSeverity', None, univention.admin.mapping.ListToString)
 mapping.register('title', 'univentionNewPortalAnnouncementTitle', mapTranslationValue, unmapTranslationValue)
 mapping.register('message', 'univentionNewPortalAnnouncementMessage', mapTranslationValue, unmapTranslationValue)
-mapping.register('startTime', 'univentionNewPortalAnnouncementStartTime', None, univention.admin.mapping.ListToString)
-mapping.register('endTime', 'univentionNewPortalAnnouncementEndTime', None, univention.admin.mapping.ListToString)
+mapping.register('visibleFrom', 'univentionNewPortalAnnouncementVisibleFrom', None, univention.admin.mapping.ListToString)
+mapping.register('visibleUntil', 'univentionNewPortalAnnouncementVisibleUntil', None, univention.admin.mapping.ListToString)
 
 
 class object(univention.admin.handlers.simpleLdap):
