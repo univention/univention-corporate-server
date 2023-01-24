@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-management-console-module-appcenter\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-11-25 11:34+0100\n"
+"POT-Creation-Date: 2023-01-24 14:55+0100\n"
 "PO-Revision-Date: 2020-09-05 16:13+0200\n"
 "Last-Translator: Univention GmbH <packages@univention.de>\n"
 "Language-Team: German <packages@univention.de>\n"
@@ -575,7 +575,7 @@ msgstr "Ein Modul zur Administration dieser App steht zur Verfügung: %s."
 msgid "The app provides a web interface: %s."
 msgstr "Die App bietet ein Webinterface: %s."
 
-#: umc/js/appcenter/AppDetailsPage.js:753 umc/js/appcenter/requirements.js:305
+#: umc/js/appcenter/AppDetailsPage.js:753 umc/js/appcenter/requirements.js:313
 msgid ""
 "%(name)s uses a container technology for enhanced security and compatibility."
 msgstr ""
@@ -875,45 +875,49 @@ msgstr "Beschreibung"
 msgid "Repository server"
 msgstr "Repository-Server"
 
-#: umc/js/appcenter/DetailsPage.js:116
+#: umc/js/appcenter/DetailsPage.js:114
+msgid "Use unmaintained repositories"
+msgstr "'Unmaintained' Repositories benutzen"
+
+#: umc/js/appcenter/DetailsPage.js:121
 msgid "Basic settings"
 msgstr "Allgemeine Einstellungen"
 
-#: umc/js/appcenter/DetailsPage.js:125
+#: umc/js/appcenter/DetailsPage.js:130
 msgid "Advanced settings"
 msgstr "Weitere Einstellungen"
 
-#: umc/js/appcenter/DetailsPage.js:158
+#: umc/js/appcenter/DetailsPage.js:163
 msgid "Add a new component"
 msgstr "Neue Komponente hinzufügen"
 
-#: umc/js/appcenter/DetailsPage.js:159
+#: umc/js/appcenter/DetailsPage.js:164
 msgid "Please enter the details for the new component."
 msgstr "Bitte geben Sie die Details für die neue Komponente ein."
 
-#: umc/js/appcenter/DetailsPage.js:171
+#: umc/js/appcenter/DetailsPage.js:176
 msgid "Edit component details [{component}]"
 msgstr "Komponenten-Details [{component}] bearbeiten"
 
-#: umc/js/appcenter/DetailsPage.js:172
+#: umc/js/appcenter/DetailsPage.js:177
 msgid "You're editing the details of the component definition."
 msgstr "Sie bearbeiten die Details der Komponenten-Definition."
 
-#: umc/js/appcenter/DetailsPage.js:201 umc/js/appcenter/SettingsPage.js:338
+#: umc/js/appcenter/DetailsPage.js:206 umc/js/appcenter/SettingsPage.js:338
 #, javascript-format
 msgid "An unknown error with code %d occurred."
 msgstr "Es ist ein unbekannter Fehler mit Code %d aufgetreten."
 
-#: umc/js/appcenter/DetailsPage.js:203 umc/js/appcenter/SettingsPage.js:340
+#: umc/js/appcenter/DetailsPage.js:208 umc/js/appcenter/SettingsPage.js:340
 msgid "Please correct the corresponding input fields."
 msgstr "Bitte korrigieren Sie die betreffenden Eingabefelder."
 
-#: umc/js/appcenter/DetailsPage.js:206 umc/js/appcenter/SettingsPage.js:343
+#: umc/js/appcenter/DetailsPage.js:211 umc/js/appcenter/SettingsPage.js:343
 msgid "The data you entered could not be saved correctly."
 msgstr ""
 "Die von Ihnen eingegebenen Daten konnten nicht korrekt gespeichert werden."
 
-#: umc/js/appcenter/DetailsPage.js:208 umc/js/appcenter/SettingsPage.js:345
+#: umc/js/appcenter/DetailsPage.js:213 umc/js/appcenter/SettingsPage.js:345
 msgid ""
 "Using the data you entered, no valid repository could be found.<br/>Since "
 "this may be a temporary server problem as well, your data was saved though."
@@ -923,7 +927,7 @@ msgstr ""
 "werden<br/>Da es auch ein temporäres Problem des betreffenden Servers sein "
 "kann, wurden Ihre Eingaben trotzdem gespeichert.<br/>Das Problem ist:"
 
-#: umc/js/appcenter/DetailsPage.js:210 umc/js/appcenter/SettingsPage.js:347
+#: umc/js/appcenter/DetailsPage.js:215 umc/js/appcenter/SettingsPage.js:347
 msgid ""
 "With the current (already changed) settings, the following problem was "
 "encountered:"
@@ -1256,7 +1260,15 @@ msgstr ""
 msgid "%s is required for the following Apps to work."
 msgstr "%s wird benötigt, damit die folgenden Apps funktionieren."
 
-#: umc/js/appcenter/requirements.js:291
+#: umc/js/appcenter/requirements.js:290
+msgid "The App is frozen to the currently installed version."
+msgstr "Diese App ist zur Zeit auf die aktuell installierte Version eingefroren."
+
+#: umc/js/appcenter/requirements.js:293
+msgid "Please unpin the App before updating or uninstalling."
+msgstr "Vor dem Update oder der Deinstallation muß die App unpinned werden."
+
+#: umc/js/appcenter/requirements.js:299
 msgid ""
 "The App requires the password service to be set up on the Active Directory "
 "domain controller server."
@@ -1264,7 +1276,7 @@ msgstr ""
 "Die App setzt voraus, dass der Passwort-Dienst auf dem Active Directory "
 "Domänencontroller eingerichtet wurde."
 
-#: umc/js/appcenter/requirements.js:294
+#: umc/js/appcenter/requirements.js:302
 msgid ""
 "The steps how to install the service on that machine are described in the "
 "online documentation."
@@ -1272,11 +1284,11 @@ msgstr ""
 "Die notwendigen Schritte, um den Dienst auf jener Maschine zu installieren, "
 "sind in der Online-Dokumentation beschrieben."
 
-#: umc/js/appcenter/requirements.js:297
+#: umc/js/appcenter/requirements.js:305
 msgid "Open the documentation"
 msgstr "Dokumentation öffnen"
 
-#: umc/js/appcenter/requirements.js:300
+#: umc/js/appcenter/requirements.js:308
 #, javascript-format
 msgid ""
 "https://docs.software-univention.de/manual-%s.html#ad-connector:password-"
@@ -1285,11 +1297,11 @@ msgstr ""
 "https://docs.software-univention.de/handbuch-%s.html#ad-connector:password-"
 "dienst"
 
-#: umc/js/appcenter/requirements.js:305
+#: umc/js/appcenter/requirements.js:313
 msgid "A version without a container technology is or was installed."
 msgstr "Eine Version ohne Container-Technologie ist oder war installiert."
 
-#: umc/js/appcenter/requirements.js:309
+#: umc/js/appcenter/requirements.js:317
 msgid ""
 "Automatically migrating the App and data (where required) is not supported; "
 "however, a document exists, which guides through the manual steps to do so."
@@ -1298,16 +1310,16 @@ msgstr ""
 "unterstützt. Allerdings existiert ein Dokument, das die händisch "
 "auszuführenden Schritte beschreibt."
 
-#: umc/js/appcenter/requirements.js:314
+#: umc/js/appcenter/requirements.js:322
 msgid "Open the migration guide"
 msgstr "Migrationsleitfaden öffnen"
 
-#: umc/js/appcenter/requirements.js:323
+#: umc/js/appcenter/requirements.js:331
 #, javascript-format
 msgid "Uninstalling %s will also remove the following plugins:"
 msgstr "Die Deinstallation von %s entfernt auch die folgenden Plugins:"
 
-#: umc/js/appcenter/requirements.js:330
+#: umc/js/appcenter/requirements.js:338
 msgid ""
 "%(minimum)d MB of free RAM are required but only %(current)d MB are "
 "available."
@@ -1315,7 +1327,7 @@ msgstr ""
 "%(minimum)d MB freier Arbeitsspeicher sind erfolderlich, es sind aber nur "
 "%(current)d MB verfügbar."
 
-#: umc/js/appcenter/requirements.js:335
+#: umc/js/appcenter/requirements.js:343
 msgid ""
 "%(minimum)d MB of free disk space are required but only %(current)d MB are "
 "available."
@@ -1487,9 +1499,6 @@ msgstr "Jetzt abstimmen"
 
 #~ msgid "Repository prefix"
 #~ msgstr "Repository-Präfix"
-
-#~ msgid "Use unmaintained repositories"
-#~ msgstr "'Unmaintained' Repositories benutzen"
 
 #~ msgid "Username"
 #~ msgstr "Benutzername"

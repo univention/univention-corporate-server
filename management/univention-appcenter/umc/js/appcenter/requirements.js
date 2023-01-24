@@ -285,6 +285,14 @@ define([
 				topic.publish('/appcenter/open', details[0]);
 			}
 		}),
+		must_not_be_pinned: new Requirement({
+			reasonDescription: function() {
+				return _('The App is frozen to the currently installed version.');
+			},
+			solutionDescription: function() {
+				return _('Please unpin the App before updating or uninstalling.');
+			},
+		}),
 		shall_only_be_installed_in_ad_env_with_password_service: new Requirement({
 			stayAfterSolution: true,
 			reasonDescription: function() {
