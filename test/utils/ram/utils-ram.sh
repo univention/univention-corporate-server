@@ -411,7 +411,7 @@ end_system_stats_collection () {
  pkill -f ram.sar -SIGINT || true
  pkill -f 'top -bci' || true
  ls -la "$DATA_DIR"
- [ -e "$DATA_DIR/ram.sar" ] && sadf -g "$DATA_DIR/ram.sar" -- "${SAR_ARGS[@]}" | scour -o "$DATA_DIR/stats-$host.sar.svgz" || echo "Not found: $DATA_DIR/ram.sar"
+ [ -e "$DATA_DIR/ram.sar" ] && sadf -g "$DATA_DIR/ram.sar" -- "${SAR_ARGS[@]}" | scour -o "$DATA_DIR/stats-$host.sar.svg" || echo "Not found: $DATA_DIR/ram.sar"
  # stats.sar.txt (decompressed) can be uploaded to https://sarchart.dotsuresh.com/ for interactive graphs
  [ -e "$DATA_DIR/ram.sar" ] && sar "${SAR_ARGS[@]}" -f "$DATA_DIR/ram.sar" | bzip2 -9c > "$DATA_DIR/stats-$host.sar.txt.bz2" || echo "Not found: $DATA_DIR/ram.sar"
 }
