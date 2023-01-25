@@ -10,3 +10,5 @@ desc: |
    support extending the configuration. For example, OX requires the PAM
    configuration to be extensible to add functional account support.
 bug: [55510]
+erratum: 552
+announced: 2023-01-25
