@@ -9,3 +9,5 @@ desc: |
  * The UCR type checking is now displaying more specific information regarding
    the type constraints.
 bug: [55573]
+erratum: 556
+announced: 2023-01-25
