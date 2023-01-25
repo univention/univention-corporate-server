@@ -8,3 +8,5 @@ desc: |
  This update addresses the following issue:
  * The UCR template for the Samba `logrotate` configuration has been fixed.
 bug: [55591]
+erratum: 553
+announced: 2023-01-25
