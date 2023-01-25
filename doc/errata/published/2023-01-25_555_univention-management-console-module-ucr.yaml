@@ -8,3 +8,5 @@ desc: |
  This update addresses the following issues:
  * The UCR module now displays errors regarding the type constraints.
 bug: [55573]
+erratum: 555
+announced: 2023-01-25
