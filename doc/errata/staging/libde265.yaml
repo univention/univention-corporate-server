@@ -6,79 +6,46 @@ src: libde265
 fix: 1.0.3-1+deb10u3
 desc: |
  This update addresses the following issues:
- * libde265 v1.0.4 contains a global buffer overflow in the decode_CABAC_bit
-   function, which can be exploited via a crafted a file. (CVE-2020-21596)
- * libde265 v1.0.4 contains a heap buffer overflow in the mc_chroma function,
-   which can be exploited via a crafted a file. (CVE-2020-21597)
- * libde265 v1.0.4 contains a heap buffer overflow in the
-   ff_hevc_put_unweighted_pred_8_sse function, which can be exploited via a
-   crafted a file. (CVE-2020-21598)
- * Libde265 v1.0.8 was discovered to contain a heap-buffer-overflow
-   vulnerability via ff_hevc_put_hevc_epel_pixels_8_sse in sse-motion.cc. This
-   vulnerability allows attackers to cause a Denial of Service (DoS) via a
-   crafted video file. (CVE-2022-43235)
- * Libde265 v1.0.8 was discovered to contain a stack-buffer-overflow
-   vulnerability via put_qpel_fallback<unsigned short> in fallback-motion.cc.
-   This vulnerability allows attackers to cause a Denial of Service (DoS) via
-   a crafted video file. (CVE-2022-43236)
- * Libde265 v1.0.8 was discovered to contain a stack-buffer-overflow
-   vulnerability via void put_epel_hv_fallback<unsigned short> in
-   fallback-motion.cc. This vulnerability allows attackers to cause a Denial
-   of Service (DoS) via a crafted video file. (CVE-2022-43237)
- * Libde265 v1.0.8 was discovered to contain an unknown crash via
-   ff_hevc_put_hevc_qpel_h_3_v_3_sse in sse-motion.cc. This vulnerability
-   allows attackers to cause a Denial of Service (DoS) via a crafted video
-   file. (CVE-2022-43238)
- * Libde265 v1.0.8 was discovered to contain a heap-buffer-overflow
-   vulnerability via mc_chroma<unsigned short> in motion.cc. This
-   vulnerability allows attackers to cause a Denial of Service (DoS) via a
-   crafted video file. (CVE-2022-43239)
- * Libde265 v1.0.8 was discovered to contain a heap-buffer-overflow
-   vulnerability via ff_hevc_put_hevc_qpel_h_2_v_1_sse in sse-motion.cc. This
-   vulnerability allows attackers to cause a Denial of Service (DoS) via a
-   crafted video file. (CVE-2022-43240)
- * Libde265 v1.0.8 was discovered to contain an unknown crash via
-   ff_hevc_put_hevc_qpel_v_3_8_sse in sse-motion.cc. This vulnerability allows
-   attackers to cause a Denial of Service (DoS) via a crafted video file.
+ * Global buffer overflow in the function `decode_CABAC_bit`, which can be
+   exploited via a crafted a file. (CVE-2020-21596)
+ * Heap buffer overflow in the function `mc_chroma`, which can be exploited
+   via a crafted a file. (CVE-2020-21597)
+ * Heap buffer overflow in the function `ff_hevc_put_unweighted_pred_8_sse`,
+   which can be exploited via a crafted a file. (CVE-2020-21598)
+ * Heap-buffer-overflow vulnerability via `ff_hevc_put_hevc_epel_pixels_8_sse`
+   in `sse-motion.cc`. (CVE-2022-43235)
+ * Stack-buffer-overflow vulnerability via `put_qpel_fallback<unsigned` short>
+   in `fallback-motion.cc`. (CVE-2022-43236)
+ * Stack-buffer-overflow vulnerability via `void`
+   put_epel_hv_fallback<unsigned short> in `fallback-motion.cc`.
+   (CVE-2022-43237)
+ * Unknown crash via `ff_hevc_put_hevc_qpel_h_3_v_3_sse` in `sse-motion.cc`.
+   (CVE-2022-43238)
+ * Heap-buffer-overflow vulnerability via `mc_chroma<unsigned` short> in
+   `motion.cc`. (CVE-2022-43239)
+ * Heap-buffer-overflow vulnerability via `ff_hevc_put_hevc_qpel_h_2_v_1_sse`
+   in `sse-motion.cc`. (CVE-2022-43240)
+ * Unknown crash via `ff_hevc_put_hevc_qpel_v_3_8_sse` in `sse-motion.cc`.
    (CVE-2022-43241)
- * Libde265 v1.0.8 was discovered to contain a heap-buffer-overflow
-   vulnerability via mc_luma<unsigned char> in motion.cc. This vulnerability
-   allows attackers to cause a Denial of Service (DoS) via a crafted video
-   file. (CVE-2022-43242)
- * Libde265 v1.0.8 was discovered to contain a heap-buffer-overflow
-   vulnerability via ff_hevc_put_weighted_pred_avg_8_sse in sse-motion.cc.
-   This vulnerability allows attackers to cause a Denial of Service (DoS) via
-   a crafted video file. (CVE-2022-43243)
- * Libde265 v1.0.8 was discovered to contain a heap-buffer-overflow
-   vulnerability via put_qpel_fallback<unsigned short> in fallback-motion.cc.
-   This vulnerability allows attackers to cause a Denial of Service (DoS) via
-   a crafted video file. (CVE-2022-43244)
- * Libde265 v1.0.8 was discovered to contain a segmentation violation via
-   apply_sao_internal<unsigned short> in sao.cc. This vulnerability allows
-   attackers to cause a Denial of Service (DoS) via a crafted video file.
-   (CVE-2022-43245)
- * Libde265 v1.0.8 was discovered to contain a heap-buffer-overflow
-   vulnerability via put_weighted_pred_avg_16_fallback in fallback-motion.cc.
-   This vulnerability allows attackers to cause a Denial of Service (DoS) via
-   a crafted video file. (CVE-2022-43248)
- * Libde265 v1.0.8 was discovered to contain a heap-buffer-overflow
-   vulnerability via put_epel_hv_fallback<unsigned short> in
-   fallback-motion.cc. This vulnerability allows attackers to cause a Denial
-   of Service (DoS) via a crafted video file. (CVE-2022-43249)
- * Libde265 v1.0.8 was discovered to contain a heap-buffer-overflow
-   vulnerability via put_qpel_0_0_fallback_16 in fallback-motion.cc. This
-   vulnerability allows attackers to cause a Denial of Service (DoS) via a
-   crafted video file. (CVE-2022-43250)
- * Libde265 v1.0.8 was discovered to contain a heap-buffer-overflow
-   vulnerability via put_epel_16_fallback in fallback-motion.cc. This
-   vulnerability allows attackers to cause a Denial of Service (DoS) via a
-   crafted video file. (CVE-2022-43252)
- * Libde265 v1.0.8 was discovered to contain a heap-buffer-overflow
-   vulnerability via put_unweighted_pred_16_fallback in fallback-motion.cc.
-   This vulnerability allows attackers to cause a Denial of Service (DoS) via
-   a crafted video file. (CVE-2022-43253)
- * Libde265 1.0.9 is vulnerable to Buffer Overflow in function void
-   put_qpel_fallback<unsigned short> (CVE-2022-47655)
+ * Heap-buffer-overflow vulnerability via `mc_luma<unsigned` char> in
+   `motion.cc`. (CVE-2022-43242)
+ * Heap-buffer-overflow vulnerability via
+   `ff_hevc_put_weighted_pred_avg_8_sse` in `sse-motion.cc`. (CVE-2022-43243)
+ * Heap-buffer-overflow vulnerability via `put_qpel_fallback<unsigned` short>
+   in `fallback-motion.cc`. (CVE-2022-43244)
+ * Segmentation violation via `apply_sao_internal<unsigned` short> in
+   `sao.cc`. (CVE-2022-43245)
+ * Heap-buffer-overflow vulnerability via `put_weighted_pred_avg_16_fallback`
+   in `fallback-motion.cc`. (CVE-2022-43248)
+ * Heap-buffer-overflow vulnerability via `put_epel_hv_fallback<unsigned`
+   short> in `fallback-motion.cc`. (CVE-2022-43249)
+ * Heap-buffer-overflow vulnerability via `put_qpel_0_0_fallback_16` in
+   `fallback-motion.cc`. (CVE-2022-43250)
+ * Heap-buffer-overflow vulnerability via `put_epel_16_fallback` in
+   `fallback-motion.cc`. (CVE-2022-43252)
+ * Heap-buffer-overflow vulnerability via `put_unweighted_pred_16_fallback` in
+   `fallback-motion.cc`. (CVE-2022-43253)
+ * Buffer Overflow in function `put_qpel_fallback` (CVE-2022-47655)
 bug: [55594]
 cve:
 - CVE-2020-21596
