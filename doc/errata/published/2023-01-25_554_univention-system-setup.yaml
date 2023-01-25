@@ -9,3 +9,5 @@ desc: |
  * Joining into the domain is now also possible for users containing a zero in
    their usernames.
 bug: [45058]
+erratum: 554
+announced: 2023-01-25
