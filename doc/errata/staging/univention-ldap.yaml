@@ -1,15 +1,16 @@
 product: ucs
-release: '5.0'
+release: "5.0"
 version: [2]
 scope: ucs_5.0-0-errata5.0-2
 src: univention-ldap
 fix: 16.0.7-27A~5.0.0.202301241251
 desc: |
-  This update addresses the following issues:
-  * Allow Directory Node Backup and Replica servers to do an unlimited LDAP
-    search, which is required for join in large domains with more than 400k
-    entries.
-  * Change code to emit UCRV `ldap/translog-ignore-temporary` only when LDAP
-    overlay module `translog` is enabled.
-  * In case /etc/ldap/slapd.d/config exists, slapd would not start
+ This update addresses the following issues:
+ * Allow Directory Node Backup and Replica servers to do an unlimited LDAP
+   search, which is required for join in large domains with more than 400k
+   entries.
+ * Change code to emit UCRV `ldap/translog-ignore-temporary` only when LDAP
+   overlay module `translog` is enabled.
+ * Fix starting `slapd` in the case even when `/etc/ldap/slapd.d/config`
+   exists,
 bug: [34877, 55558, 54986]
