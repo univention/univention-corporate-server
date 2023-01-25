@@ -5,7 +5,7 @@ scope: ucs_5.0-0-errata5.0-2
 src: univention-system-setup
 fix: 13.0.3-38A~5.0.0.202301191421
 desc: |
- This update addresses the following issues:
- * The domain join is now also possible with users which contain a zero in
-   its username.
+ This update addresses the following issue:
+ * Joining into the domain is now also possible for users containing a zero in
+   their usernames.
 bug: [45058]
