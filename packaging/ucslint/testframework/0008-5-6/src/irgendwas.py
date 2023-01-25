@@ -1,6 +1,6 @@
 import foo  # noqa
 import bar  # noqa
-_ = lambda s: s  # noqa: E731
+def _(s): return s  # noqa: E731
 
 
 def main():

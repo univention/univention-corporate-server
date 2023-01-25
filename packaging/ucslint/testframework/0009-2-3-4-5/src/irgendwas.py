@@ -1,7 +1,7 @@
 #!/usr/bin/python
 import foo  # noqa: F401
 import bar  # noqa: F401
-_ = lambda s: s  # noqa: E731
+def _(s): return s  # noqa: E731
 
 
 def main():

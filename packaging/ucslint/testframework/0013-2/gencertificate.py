@@ -112,7 +112,7 @@ def create_certificate(name, serverUidNumber, domainname):
         gidNumber = 0
 
     if len("%s.%s" % (name, domainname)) > 64:
-        univention.debug.debug(univention.debug.LISTENER, univention.debug.ERROR, 'CERTIFICATE: can\'t create certificate, Common Name too long: %s.%s' % (name, domainname))
+        univention.debug.debug(univention.debug.LISTENER, univention.debug.ERROR, "CERTIFICATE: can't create certificate, Common Name too long: %s.%s" % (name, domainname))
         return
 
     p = os.popen('source /usr/share/univention-ssl/make-certificates.sh; gencert %s.%s %s.%s' % (name, domainname, name, domainname))

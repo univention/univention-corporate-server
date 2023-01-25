@@ -5,8 +5,8 @@ import bar
 
 def main():
     x = {}
-    if y.has_key ( 'foo ' ):
-        y=x
+    if y.has_key('foo '):
+        y = x
     if x.has_key('foo'):
         print 'FOUND'
     print 'Boing'

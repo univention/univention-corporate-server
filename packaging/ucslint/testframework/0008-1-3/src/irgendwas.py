@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-_ = lambda s: s  # noqa
+def _(s): return s  # noqa
 
 
 def main():
