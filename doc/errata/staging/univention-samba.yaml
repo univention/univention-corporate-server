@@ -1,10 +1,10 @@
 product: ucs
-release: '5.0'
+release: "5.0"
 version: [2]
 scope: ucs_5.0-0-errata5.0-2
 src: univention-samba
 fix: 14.0.5-9A~5.0.0.202301241158
 desc: |
-  This update addresses the following issues:
-  * The UCR template for the samba logrotate configuration was broken.
+ This update addresses the following issue:
+ * The UCR template for the Samba `logrotate` configuration has been fixed.
 bug: [55591]
