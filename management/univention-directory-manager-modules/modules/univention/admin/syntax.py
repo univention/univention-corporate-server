@@ -6071,7 +6071,7 @@ class languageCode(combobox):
     """
 
     _re = re.compile(r'^[a-z][a-z]_[A-Z][A-Z]$')
-    choices = (lambda m: [kv for kv in language.choices if m(kv[0])])(_re.match)
+    choices = (lambda m: [kv for kv in language.choices if m(kv[0])])(_re.match)  # noqa: PLC3002
 
     @classmethod
     def parse(self, text):
