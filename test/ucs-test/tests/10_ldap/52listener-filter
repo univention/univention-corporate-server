@@ -210,7 +210,7 @@ def unexpected_transactions(env, ucr):
 			elif line == repr((dn, True, False, 'm')):
 				print('I: Found modify: %s' % (line,))
 				found_modify = True
-			elif eval(line)[0].endswith(dn):
+			elif eval(line)[0].endswith(dn):  # noqa: PGH001
 				found_other = True
 				print('E: Found other: %s' % (line,))
 

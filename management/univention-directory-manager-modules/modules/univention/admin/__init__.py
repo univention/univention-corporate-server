@@ -181,7 +181,7 @@ def pattern_replace(pattern, object):
 			# try to apply the indexing instructions, indicated through '[...]'
 			if ext:
 				try:
-					return eval('val%s' % (ext))
+					return eval('val%s' % (ext))  # noqa: PGH001
 				except SyntaxError:
 					return val
 			return val
