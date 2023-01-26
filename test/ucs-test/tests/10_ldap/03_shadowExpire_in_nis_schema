@@ -54,7 +54,7 @@ def run():
 			exclude_list = [(x[0], x[2]) for x in test_list]
 			exclude_list.remove((username, date))
 			if ldap_found:
-				print(f'Should be found: [(username, expirydate)] = [(\'{username}\', \'{date}\')]')
+				print(f"Should be found: [(username, expirydate)] = [('{username}', '{date}')]")
 				print('Found in LDAP:   [(username, expirydate)] = %r' % ldap_found)
 				if ((username, str(date)) not in ldap_found or set(exclude_list).issubset(ldap_found)):
 					utils.fail(f"LDAP is not able to sort Objects with filter: (shadowExpire>={date - 1!r})(shadowExpire<={date + 1!r})")

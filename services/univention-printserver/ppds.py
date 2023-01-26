@@ -111,7 +111,7 @@ def check_obsolete():
 	# check old models
 	lo = univention.uldap.getMachineConnection()
 	res = lo.search(filter='(objectClass=univentionPrinterModels)', attr=['printerModel', 'cn'])
-	print('\n# mark old ppd\'s as obsolete\n')
+	print("\n# mark old ppd's as obsolete\n")
 	compressed_ppds = [driver[0] for driver in get_compressed_driver()]
 	for dn, attr in res:
 		cn = attr['cn'][0].decode('UTF-8')

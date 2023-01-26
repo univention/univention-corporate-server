@@ -1155,10 +1155,10 @@ class Relations(Resource):
 
 	def get(self, relation):
 		iana_relations = {
-			'search': 'Refers to a resource that can be used to search through the link\'s context and related resources.',
+			'search': "Refers to a resource that can be used to search through the link's context and related resources.",
 			'create-form': 'The target IRI points to a resource where a submission form can be obtained.',
 			'describedby': "Refers to a resource providing information about the link's context.",
-			'edit': 'Refers to a resource that can be used to edit the link\'s context.',
+			'edit': "Refers to a resource that can be used to edit the link's context.",
 			'edit-form': 'The target IRI points to a resource where a submission form for editing associated resource can be obtained.',
 			'first': 'An IRI that refers to the furthest preceding resource in a series of resources.',
 			'help': 'Refers to context-sensitive help.',
@@ -1166,16 +1166,16 @@ class Relations(Resource):
 			'item': 'The target IRI points to a resource that is a member of the collection represented by the context IRI.',
 			'last': 'An IRI that refers to the furthest following resource in a series of resources.',
 			'latest-version': 'Points to a resource containing the latest (e.g., current) version of the context.',
-			'next': 'Indicates that the link\'s context is a part of a series, and that the next in the series is the link target. ',
+			'next': "Indicates that the link's context is a part of a series, and that the next in the series is the link target. ",
 			'original': 'The Target IRI points to an Original Resource.',
-			'prev': 'Indicates that the link\'s context is a part of a series, and that the previous in the series is the link target. ',
-			'preview': 'Refers to a resource that provides a preview of the link\'s context.',
+			'prev': "Indicates that the link's context is a part of a series, and that the previous in the series is the link target. ",
+			'preview': "Refers to a resource that provides a preview of the link's context.",
 			'previous': 'Refers to the previous resource in an ordered series of resources. Synonym for "prev".',
-			'self': 'Conveys an identifier for the link\'s context. ',
+			'self': "Conveys an identifier for the link's context. ",
 			'start': 'Refers to the first resource in a collection of resources.',
-			'type': 'Refers to a resource identifying the abstract semantic type of which the link\'s context is considered to be an instance.',
+			'type': "Refers to a resource identifying the abstract semantic type of which the link's context is considered to be an instance.",
 			'up': 'Refers to a parent document in a hierarchy of documents.',
-			'icon': 'Refers to an icon representing the link\'s context.',
+			'icon': "Refers to an icon representing the link's context.",
 		}
 		univention_relations = {
 			'relations': 'description of all relations',

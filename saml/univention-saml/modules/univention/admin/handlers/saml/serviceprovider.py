@@ -114,8 +114,8 @@ property_descriptions = {
 		syntax=univention.admin.syntax.FiveThirdsString,
 	),
 	'privacypolicyURL': univention.admin.property(
-		short_description=_(u'URL to the service provider\'s privacy policy'),
-		long_description=_(u'An absolute URL for the service provider\'s privacy policy, which will be shown on the consent page'),
+		short_description=_(u"URL to the service provider's privacy policy"),
+		long_description=_(u"An absolute URL for the service provider's privacy policy, which will be shown on the consent page"),
 		syntax=univention.admin.syntax.FiveThirdsString,
 	),
 	'attributesNameFormat': univention.admin.property(

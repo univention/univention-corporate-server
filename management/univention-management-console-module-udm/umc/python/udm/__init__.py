@@ -804,7 +804,7 @@ class Instance(Base, ProgressMixin):
 		if 'None' == container:
 			# if 'None' is given, use the LDAP base
 			container = ucr.get('ldap/base')
-			MODULE.info('no container == \'None\', set LDAP base as container')
+			MODULE.info("no container == 'None', set LDAP base as container")
 
 		# create a list of modules that can be created
 		# ... all container types except container/dc

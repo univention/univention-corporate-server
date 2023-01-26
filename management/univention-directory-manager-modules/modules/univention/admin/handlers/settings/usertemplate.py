@@ -124,7 +124,7 @@ property_descriptions = {
 	),
 	'homeShare': univention.admin.property(
 		short_description=_('Home share'),
-		long_description=_('Share, the user\'s home directory resides on'),
+		long_description=_("Share, the user's home directory resides on"),
 		syntax=univention.admin.syntax.WritableShare,
 		dontsearch=True,
 	),

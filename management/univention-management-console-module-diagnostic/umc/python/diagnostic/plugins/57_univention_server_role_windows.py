@@ -88,7 +88,7 @@ def run(_umc_instance: Instance) -> None:
 				fixable_objs += num_objs
 				details += '\n· ' + _('Number of objects that should be marked as "%s": %d') % (server_role, num_objs,)
 			else:
-				details += '\n· ' + _('Number of unspecific Windows computer objects with inconsistent univentionObjectType: %d (Can\'t fix this automatically)') % (num_objs,)
+				details += '\n· ' + _("Number of unspecific Windows computer objects with inconsistent univentionObjectType: %d (Can't fix this automatically)") % (num_objs,)
 	if total_objs:
 		if fixable_objs:
 			raise Warning(description + details, buttons=[{

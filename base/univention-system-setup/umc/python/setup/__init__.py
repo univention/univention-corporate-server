@@ -527,7 +527,7 @@ class Instance(Base, ProgressMixin):
 					break
 			if not guessed_domain:
 				if not values.get('domainname'):
-					_append('domainname', _('Cannot automatically determine the domain. Please specify the server\'s fully qualified domain name.'))
+					_append('domainname', _("Cannot automatically determine the domain. Please specify the server's fully qualified domain name."))
 
 				if values.get('nameserver1') and values.get('start/join'):
 					_append('nameserver1', _('The specified nameserver %s is not part of a valid UCS domain.') % (values['nameserver1'],))

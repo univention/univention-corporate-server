@@ -314,7 +314,7 @@ def check_failed() -> None:
     failure = '/var/lib/univention-updater/update-failed'
     if os.path.exists(failure):
         print('univention-actualise: univention-updater failed, stopping...')
-        print('	   remove `%s\' to proceed' % failure)
+        print("	   remove `%s' to proceed" % failure)
         sys.exit(2)
 
 

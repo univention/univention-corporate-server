@@ -211,7 +211,7 @@ if __name__ == '__main__':
 	log.write('-------------------------------------------------------- start\n')
 	log.write('%s\n' % time.strftime(TIMEFORMAT))
 	if uid < 1000:
-		log.write('Won\'t set quota for system-users (%s has UID %i)\n' % (user, uid))
+		log.write("Won't set quota for system-users (%s has UID %i)\n" % (user, uid))
 		sys.exit(1)
 	log.write('Set quota for user %s\n' % user)
 

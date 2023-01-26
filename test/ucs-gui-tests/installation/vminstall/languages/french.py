@@ -42,7 +42,7 @@ strings = {
 	'cancel': 'Annuler',
 	'not_using_dhcp': 'Le protocole DHCP',
 	'manual_network_config': 'Configurer vous-même le réseau',
-	'ip_address': 'L\'adresse IP est propre',
+	'ip_address': "L'adresse IP est propre",
 	'netmask': 'Le masque-réseau',
 	'gateway': 'La passerelle',
 	'name_server': 'Les serveurs de noms',
@@ -60,14 +60,14 @@ strings = {
 	'setup_master': 'Créer un nouveau',
 	'account_info': 'Informations du compte',
 	'company': 'Univention',
-	'host_settings': 'Réglages de l\'hôte',
+	'host_settings': "Réglages de l'hôte",
 	'ldap_base': 'Base LDAP',
 
 	'software_config': 'Configuration logicielle',
 	'next': 'suivant',
 	'confirm_config': 'Composants logiciels',
-	'do_update': 'le système après l\'installation',
-	'setup_successful': 'Installation d\'UCS réussie',
+	'do_update': "le système après l'installation",
+	'setup_successful': "Installation d'UCS réussie",
 	'finish': 'TERMINER',
 	'welcome': 'Open a browser'
 }

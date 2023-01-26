@@ -4216,7 +4216,7 @@ class soundModule(select):
 		('snd-trident', 'Trident 4D-WaveDX/NX & SiS SI7018'),
 		('trident', 'Trident 4DWave/SiS 7018/ALi 5451 and Tvia/IGST CyberPro5050 PCI Audio Driver'),
 		('snd-wavefront', 'Turtle Beach Wavefront'),
-		('snd-ac97-codec', 'Universal interface for Audio Codec \'97'),
+		('snd-ac97-codec', "Universal interface for Audio Codec '97"),
 		('snd-ak4531-codec', 'Universal routines for AK4531 codec'),
 		('snd-usb-audio', 'USB Audio'),
 		('snd-usb-lib', 'USB Audio/MIDI helper module'),

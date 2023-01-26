@@ -109,19 +109,19 @@ property_descriptions = {
 		required=True,
 	),
 	'owner': univention.admin.property(
-		short_description=_('Directory owner of the share\'s root directory'),
+		short_description=_("Directory owner of the share's root directory"),
 		long_description=_('The owner of the exported root directory. If none is given root will be owner.'),
 		syntax=univention.admin.syntax.UserID,
 		default="0"
 	),
 	'group': univention.admin.property(
-		short_description=_('Directory owner group of the share\'s root directory'),
+		short_description=_("Directory owner group of the share's root directory"),
 		long_description=_('The primary group of the exported root directory, if none is given group 0 will be used.'),
 		syntax=univention.admin.syntax.GroupID,
 		default="0"
 	),
 	'directorymode': univention.admin.property(
-		short_description=_('Permissions for the share\'s root directory'),
+		short_description=_("Permissions for the share's root directory"),
 		long_description=_('Access rights to the exported root directory'),
 		syntax=univention.admin.syntax.UNIX_AccessRight_extended,
 		dontsearch=True,
@@ -216,7 +216,7 @@ property_descriptions = {
 	),
 	'sambaCreateMode': univention.admin.property(
 		short_description=_('File mode'),
-		long_description=_('When a file is created, the necessary permissions are calculated according to the mapping from DOS modes to UNIX permissions, and the resulting UNIX mode is then bit-wise \'AND\'ed with this parameter. This parameter may be thought of as a bit-wise MASK for the UNIX modes of a file. Any bit not set here will be removed from the modes set on a file when it is created.'),
+		long_description=_("When a file is created, the necessary permissions are calculated according to the mapping from DOS modes to UNIX permissions, and the resulting UNIX mode is then bit-wise 'AND'ed with this parameter. This parameter may be thought of as a bit-wise MASK for the UNIX modes of a file. Any bit not set here will be removed from the modes set on a file when it is created."),
 		syntax=univention.admin.syntax.UNIX_AccessRight,
 		options=['samba'],
 		dontsearch=True,
@@ -224,7 +224,7 @@ property_descriptions = {
 	),
 	'sambaDirectoryMode': univention.admin.property(
 		short_description=_('Directory mode'),
-		long_description=_('When a directory is created, the necessary permissions are calculated  according to the mapping from DOS modes to UNIX permissions, and the resulting UNIX mode is then bit-wise \'AND\'ed with this parameter. This parameter may be thought of as a bit-wise MASK for the UNIX modes of a directory. Any bit not set here will be removed from the modes set on a directory when it is created.'),
+		long_description=_("When a directory is created, the necessary permissions are calculated  according to the mapping from DOS modes to UNIX permissions, and the resulting UNIX mode is then bit-wise 'AND'ed with this parameter. This parameter may be thought of as a bit-wise MASK for the UNIX modes of a directory. Any bit not set here will be removed from the modes set on a directory when it is created."),
 		syntax=univention.admin.syntax.UNIX_AccessRight,
 		options=['samba'],
 		dontsearch=True,
@@ -232,7 +232,7 @@ property_descriptions = {
 	),
 	'sambaForceCreateMode': univention.admin.property(
 		short_description=_('Force file mode'),
-		long_description=_('This parameter specifies a set of UNIX mode bit permissions that will always be set on a file created by Samba. This is done by bitwise \'OR\'ing these bits onto the mode bits of a file that is being created or having its permissions changed. The modes in this parameter are bitwise \'OR\'ed onto the file mode after the mask set in the create mask parameter is applied.'),
+		long_description=_("This parameter specifies a set of UNIX mode bit permissions that will always be set on a file created by Samba. This is done by bitwise 'OR'ing these bits onto the mode bits of a file that is being created or having its permissions changed. The modes in this parameter are bitwise 'OR'ed onto the file mode after the mask set in the create mask parameter is applied."),
 		syntax=univention.admin.syntax.UNIX_AccessRight,
 		options=['samba'],
 		dontsearch=True,
@@ -240,7 +240,7 @@ property_descriptions = {
 	),
 	'sambaForceDirectoryMode': univention.admin.property(
 		short_description=_('Force directory mode'),
-		long_description=_('This parameter specifies a set of UNIX mode bit permissions that will always be set on a directory created by Samba. This is done by bitwise \'OR\'ing these bits onto the mode bits of a directory that is being created or having its permissions changed. The modes in this parameter are bitwise \'OR\'ed onto the directory mode after the mask set in the create mask parameter is applied.'),
+		long_description=_("This parameter specifies a set of UNIX mode bit permissions that will always be set on a directory created by Samba. This is done by bitwise 'OR'ing these bits onto the mode bits of a directory that is being created or having its permissions changed. The modes in this parameter are bitwise 'OR'ed onto the directory mode after the mask set in the create mask parameter is applied."),
 		syntax=univention.admin.syntax.UNIX_AccessRight,
 		options=['samba'],
 		dontsearch=True,
@@ -248,7 +248,7 @@ property_descriptions = {
 	),
 	'sambaSecurityMode': univention.admin.property(
 		short_description=_('Security mode'),
-		long_description=_('This parameter controls what UNIX permission bits can be modified when an SMB client is manipulating the UNIX permission on a file using the native Windows security dialog box. This parameter is applied as a mask (AND\'ed with) to the changed permission bits, thus preventing any bits not in this mask from being modified. Essentially, zero bits in this mask may be treated as a set of bits the user is not allowed to change.'),
+		long_description=_("This parameter controls what UNIX permission bits can be modified when an SMB client is manipulating the UNIX permission on a file using the native Windows security dialog box. This parameter is applied as a mask (AND'ed with) to the changed permission bits, thus preventing any bits not in this mask from being modified. Essentially, zero bits in this mask may be treated as a set of bits the user is not allowed to change."),
 		syntax=univention.admin.syntax.UNIX_AccessRight,
 		options=['samba'],
 		dontsearch=True,
@@ -256,7 +256,7 @@ property_descriptions = {
 	),
 	'sambaDirectorySecurityMode': univention.admin.property(
 		short_description=_('Directory security mode'),
-		long_description=_('This parameter controls what UNIX permission bits can be modified when an SMB client is manipulating the UNIX permission on a directory using the native Windows security dialog box. This parameter is applied as a mask (AND\'ed with) to the changed permission bits, thus preventing any bits not in this mask from being modified. Essentially, zero bits in this mask may be treated as a set of bits the user is not allowed to change.'),
+		long_description=_("This parameter controls what UNIX permission bits can be modified when an SMB client is manipulating the UNIX permission on a directory using the native Windows security dialog box. This parameter is applied as a mask (AND'ed with) to the changed permission bits, thus preventing any bits not in this mask from being modified. Essentially, zero bits in this mask may be treated as a set of bits the user is not allowed to change."),
 		syntax=univention.admin.syntax.UNIX_AccessRight,
 		options=['samba'],
 		dontsearch=True,
@@ -264,7 +264,7 @@ property_descriptions = {
 	),
 	'sambaForceSecurityMode': univention.admin.property(
 		short_description=_('Force security mode'),
-		long_description=_('This parameter controls what UNIX permission bits can be modified when an SMB client is manipulating the UNIX permission on a file using the native Windows security dialog box. This parameter is applied as a mask (OR\'ed with) to the changed permission bits, thus forcing any bits in this mask that the user may have modified to be on. Essentially, one bits in this mask may be treated as a set of bits that, when modifying security on a file, the user has always set to be \'on\'.'),
+		long_description=_("This parameter controls what UNIX permission bits can be modified when an SMB client is manipulating the UNIX permission on a file using the native Windows security dialog box. This parameter is applied as a mask (OR'ed with) to the changed permission bits, thus forcing any bits in this mask that the user may have modified to be on. Essentially, one bits in this mask may be treated as a set of bits that, when modifying security on a file, the user has always set to be 'on'."),
 		syntax=univention.admin.syntax.UNIX_AccessRight,
 		options=['samba'],
 		dontsearch=True,
@@ -272,7 +272,7 @@ property_descriptions = {
 	),
 	'sambaForceDirectorySecurityMode': univention.admin.property(
 		short_description=_('Force directory security mode'),
-		long_description=_('This parameter controls what UNIX permission bits can be modified when an SMB client is manipulating the UNIX permission on a directory using the native Windows security dialog box. This parameter is applied as a mask (OR\'ed with) to the changed permission bits, thus forcing any bits in this mask that the user may have modified to be on. Essentially, one bits in this mask may be treated as a set of bits that, when modifying security on a directory, the user has always set to be \'on\'.'),
+		long_description=_("This parameter controls what UNIX permission bits can be modified when an SMB client is manipulating the UNIX permission on a directory using the native Windows security dialog box. This parameter is applied as a mask (OR'ed with) to the changed permission bits, thus forcing any bits in this mask that the user may have modified to be on. Essentially, one bits in this mask may be treated as a set of bits that, when modifying security on a directory, the user has always set to be 'on'."),
 		syntax=univention.admin.syntax.UNIX_AccessRight,
 		options=['samba'],
 		dontsearch=True,

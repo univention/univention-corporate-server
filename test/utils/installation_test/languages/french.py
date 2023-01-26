@@ -15,7 +15,7 @@ strings = {
 	'configure_network': 'Configurer le réseau',  # Is this right?
 	'not_using_dhcp': 'Le protocole DHCP',
 	'manual_network_config': 'Configurer vous-même le réseau',
-	'ip_address': 'L\'adresse IP est propre',
+	'ip_address': "L'adresse IP est propre",
 	'netmask': 'Le masque-réseau',
 	'gateway': 'La passerelle',
 	'name_server': 'Les serveurs de noms',
@@ -32,7 +32,7 @@ strings = {
 	'boot_flag': '',
 	'finish_create_partition': 'Terminer le partitionnement',
 	'no': '',
-	'finish_installation': 'Terminer l\'installation',
+	'finish_installation': "Terminer l'installation",
 
 	'domain_setup': 'Veuillez sélectionner les réglages',
 	'new_domain': 'Créer un nouveau',
@@ -48,12 +48,12 @@ strings = {
 	'system_name': '',
 	'account_information': 'Informations du compte',
 	'ad_account_information': '',
-	'host_settings': 'Réglages de l\'hôte',
+	'host_settings': "Réglages de l'hôte",
 	'software_configuration': 'Configuration logicielle',
 	'software_configuration_non_master': '',
 	'confirm_config': 'Composants logiciels',
 	'confirm_config_non_maste': '',
-	'setup_successful': 'Installation d\'UCS réussie',
+	'setup_successful': "Installation d'UCS réussie",
 	'finish': 'TERMINER',
 
 	'samba4': '',

@@ -178,7 +178,7 @@ def _handler(ucr, changes):
 			elif key == 'background-color':
 				entry['backgroundColor'] = value
 			else:
-				portal_logger.info('Don\'t know how to handle UCR key %s' % ucr_key)
+				portal_logger.info("Don't know how to handle UCR key %s" % ucr_key)
 	for cn, attrs in attr_entries.items():
 		dn = 'cn=%s,%s' % (escape_dn_chars(cn), pos.getDn())
 		unprocessed_links = attrs.pop('_links', [])

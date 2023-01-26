@@ -192,7 +192,7 @@ def auto_complete_values_for_join(newValues, current_locale=None):
 				break
 			newValues['domainname'] = get_ucs_domain(newValues.get(nameserver, ucr.get(nameserver)))
 		if not newValues['domainname']:
-			raise Exception(_('Cannot automatically determine the domain. Please specify the server\'s fully qualified domain name.'))
+			raise Exception(_("Cannot automatically determine the domain. Please specify the server's fully qualified domain name."))
 
 	isAdMember = 'ad/member' in newValues and 'ad/address' in newValues
 	if 'windows/domain' not in newValues:

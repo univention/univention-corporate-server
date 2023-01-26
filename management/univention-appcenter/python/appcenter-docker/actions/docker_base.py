@@ -105,7 +105,7 @@ class DockerActionMixin(object):
 		remote_interface_script = app.get_cache_file(interface)
 		container_interface_script = docker.path(interface_file)
 		if os.path.exists(remote_interface_script):
-			self.log('Copying App Center\'s %s to container\'s %s' % (interface, interface_file))
+			self.log("Copying App Center's %s to container's %s" % (interface, interface_file))
 			mkdir(os.path.dirname(container_interface_script))
 			shutil.copy2(remote_interface_script, container_interface_script)
 			os.chmod(container_interface_script, 0o755)  # -rwxr-xr-x

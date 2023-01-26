@@ -415,7 +415,7 @@ property_descriptions = {
 	),
 	'sambahome': univention.admin.property(
 		short_description=_('Windows home path'),
-		long_description=_('The directory path which is used as the user\'s Windows home directory, e.g. \\\\ucs-file-server\\smith.'),
+		long_description=_("The directory path which is used as the user's Windows home directory, e.g. \\\\ucs-file-server\\smith."),
 		syntax=univention.admin.syntax.string,
 		readonly_when_synced=True,
 		copyable=True,
@@ -520,7 +520,7 @@ property_descriptions = {
 	),
 	'homeShare': univention.admin.property(
 		short_description=_('Home share'),
-		long_description=_('Share, the user\'s home directory resides on'),
+		long_description=_("Share, the user's home directory resides on"),
 		syntax=univention.admin.syntax.WritableShare,
 		dontsearch=True,
 		copyable=True,
