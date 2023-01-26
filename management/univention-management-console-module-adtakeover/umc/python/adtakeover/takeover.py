@@ -570,11 +570,10 @@ class UCS_License_detection(object):
 				if n < 0:
 					n = 0
 			li = self._license.names[v][i]
-			if m:
-				if i == self.License.USERS or i == self.License.ACCOUNT:
-					log.debug("determine_license for current UCS %s: %s of %s" % (li, n, m))
-					log.debug("  %s Systemaccounts are ignored." % self._license.sysAccountsFound)
-					result.append((li, n, m))
+			if m and (i == self.License.USERS or i == self.License.ACCOUNT):
+				log.debug("determine_license for current UCS %s: %s of %s" % (li, n, m))
+				log.debug("  %s Systemaccounts are ignored." % self._license.sysAccountsFound)
+				result.append((li, n, m))
 		return result
 
 	def check_license(self, domain_info):
@@ -1175,9 +1174,8 @@ class AD_Takeover(object):
 		samdb_domain_dns_name = self.samdb.domain_dns_name()
 		sam_sysvol_dom_dir = os.path.join(sysvol_dir, samdb_domain_dns_name)
 		ucs_sysvol_dom_dir = os.path.join(sysvol_dir, ucr["domainname"])
-		if samdb_domain_dns_name != ucr["domainname"]:
-			if os.path.isdir(ucs_sysvol_dom_dir) and not os.path.isdir(sam_sysvol_dom_dir):
-				os.rename(ucs_sysvol_dom_dir, sam_sysvol_dom_dir)
+		if samdb_domain_dns_name != ucr["domainname"] and os.path.isdir(ucs_sysvol_dom_dir) and not os.path.isdir(sam_sysvol_dom_dir):
+			os.rename(ucs_sysvol_dom_dir, sam_sysvol_dom_dir)
 
 		msgs = self.samdb.search(
 			base=self.samdb.domain_dn(), scope=samba.ldb.SCOPE_SUBTREE,
@@ -2093,14 +2091,13 @@ def lookup_adds_dc(hostname_or_ip=None, realm=None, ucr=None):
 		except RuntimeError:
 			raise TakeoverError(_("The automatic search for an Active Directory server for realm %s did not yield any results.") % (realm,))
 
-	if not ip_address:
-		if cldap_res.pdc_dns_name:
-			try:
-				p1 = subprocess.Popen(['net', 'lookup', cldap_res.pdc_dns_name], close_fds=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-				stdout, stderr = p1.communicate()
-				ip_address = stdout.decode('UTF-8').strip()
-			except OSError as ex:
-				log.warn("WARNING: net lookup %s failed: %s" % (cldap_res.pdc_dns_name, ex.args[1]))
+	if not ip_address and cldap_res.pdc_dns_name:
+	    try:
+	        p1 = subprocess.Popen(['net', 'lookup', cldap_res.pdc_dns_name], close_fds=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+	        stdout, stderr = p1.communicate()
+	        ip_address = stdout.decode('UTF-8').strip()
+	    except OSError as ex:
+	        log.warn("WARNING: net lookup %s failed: %s" % (cldap_res.pdc_dns_name, ex.args[1]))
 
 	domain_info = {
 		"ad_forrest": cldap_res.forest,
@@ -2173,10 +2170,9 @@ def wait_for_listener_replication(progress=None, max_time=None):
 
 		delta_t = time.time() - t_1
 		t_1 = t_1 + delta_t
-		if max_time:
-			if t_1 - t_0 > max_time:
-				log.debug("Warning: Listener ID not yet up to date (last_id=%s, listener ID=%s). Waited for about %s seconds." % (last_id, notifier_id, int(round(t_1 - t_0))))
-				return False
+		if max_time and t_1 - t_0 > max_time:
+			log.debug("Warning: Listener ID not yet up to date (last_id=%s, listener ID=%s). Waited for about %s seconds." % (last_id, notifier_id, int(round(t_1 - t_0))))
+			return False
 		delta_t_last_feedback = t_1 - t_last_feedback
 		if progress and delta_t_last_feedback >= 1:
 			t_last_feedback = t_last_feedback + delta_t_last_feedback
@@ -2228,11 +2224,10 @@ def wait_for_s4_connector_replication(ucr, lp, progress=None, max_time=None):
 
 		delta_t = time.time() - t_1
 		t_1 = t_1 + delta_t
-		if max_time:
-			if t_1 - t_0 > max_time:
-				log.debug("Warning: S4 Connector synchronization did not finish yet. Waited for about %s seconds." % (int(round(t_1 - t_0),)))
-				conn.close()
-				return False
+		if max_time and t_1 - t_0 > max_time:
+			log.debug("Warning: S4 Connector synchronization did not finish yet. Waited for about %s seconds." % (int(round(t_1 - t_0),)))
+			conn.close()
+			return False
 		delta_t_last_feedback = t_1 - t_last_feedback
 		if progress and delta_t_last_feedback >= 1:
 			t_last_feedback = t_last_feedback + delta_t_last_feedback

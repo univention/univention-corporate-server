@@ -1459,9 +1459,8 @@ class ucs(object):
 						if old_s4_object.get(attr) != original_object['attributes'].get(attr):
 							object['changed_attributes'].append(attr)
 					for attr in old_s4_object:
-						if old_s4_object.get(attr) != original_object['attributes'].get(attr):
-							if attr not in object['changed_attributes']:
-								object['changed_attributes'].append(attr)
+						if old_s4_object.get(attr) != original_object['attributes'].get(attr) and attr not in object['changed_attributes']:
+							object['changed_attributes'].append(attr)
 				else:
 					object['changed_attributes'] = list(original_object['attributes'].keys())
 			ud.debug(ud.LDAP, ud.INFO, "The following attributes have been changed: %s" % object['changed_attributes'])
@@ -1751,11 +1750,10 @@ class ucs(object):
 		# DN mapping
 		dn_mapping_stored = []
 		for dntype in ['dn', 'olddn']:  # check if all available dn's are already mapped
-			if dntype in object:
-				if self._get_dn_by_ucs(object[dntype]):
-					object[dntype] = self._get_dn_by_ucs(object[dntype])
-					object[dntype] = self.dn_mapped_to_base(object[dntype], self.lo_s4.base)
-					dn_mapping_stored.append(dntype)
+			if dntype in object and self._get_dn_by_ucs(object[dntype]):
+				object[dntype] = self._get_dn_by_ucs(object[dntype])
+				object[dntype] = self.dn_mapped_to_base(object[dntype], self.lo_s4.base)
+				dn_mapping_stored.append(dntype)
 
 		try:
 			MAPPING = self.property[key]
@@ -1826,11 +1824,10 @@ class ucs(object):
 		# DN mapping
 		dn_mapping_stored = []
 		for dntype in ['dn', 'olddn']:  # check if all available dn's are already mapped
-			if dntype in object:
-				if self._get_dn_by_con(object[dntype]):
-					object[dntype] = self._get_dn_by_con(object[dntype])
-					object[dntype] = self.dn_mapped_to_base(object[dntype], self.lo.base)
-					dn_mapping_stored.append(dntype)
+			if dntype in object and self._get_dn_by_con(object[dntype]):
+				object[dntype] = self._get_dn_by_con(object[dntype])
+				object[dntype] = self.dn_mapped_to_base(object[dntype], self.lo.base)
+				dn_mapping_stored.append(dntype)
 
 		try:
 			MAPPING = self.property[key]

@@ -372,9 +372,8 @@ def verifyNtlmTypeThree(data: bytes, challenge: bytes) -> str:
 		debug("  nt response: %r" % (binascii.hexlify(nt_resp),))
 
 	# test domain if specified
-	if options.domain:
-		if options.domain != domain:
-			return "BH wrong domain"
+	if options.domain and options.domain != domain:
+	    return "BH wrong domain"
 	my_resp = b""
 	mode = "NTLM"
 	# indicates that the NTLM2/NTLMv2 signing and sealing scheme should be used

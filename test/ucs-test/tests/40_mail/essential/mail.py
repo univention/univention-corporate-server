@@ -493,10 +493,9 @@ def imap_search_mail(token=None, messageid=None, server=None, imap_user=None, im
 			for msgid in msgids:
 				typ, msg_data = conn.fetch(msgid, '(BODY.PEEK[TEXT])')
 				for response_part in msg_data:
-					if isinstance(response_part, tuple):
-						if token in response_part[1]:
-							print('Found token %r in msg %r' % (token, msgid))
-							foundcnt += 1
+					if isinstance(response_part, tuple) and token in response_part[1]:
+						print('Found token %r in msg %r' % (token, msgid))
+						foundcnt += 1
 
 	if not token and not messageid:
 		status, result = conn.search(None, 'ALL')

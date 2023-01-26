@@ -31,10 +31,9 @@ def check_status(app):
 				pass
 			else:
 				for line in output.splitlines():
-					if line.startswith('Status: '):
-						if line != 'Status: deinstall ok config-files':
-							print(output)
-							utils.fail('ERROR: A package is not uninstalled!')
+					if line.startswith('Status: ') and line != 'Status: deinstall ok config-files':
+						print(output)
+						utils.fail('ERROR: A package is not uninstalled!')
 		if ucr_get('server/role') in ['domaincontroller_master', 'domaincontroller_backup']:
 			packages = app.default_packages_master
 			if packages:
@@ -44,10 +43,9 @@ def check_status(app):
 					utils.fail('ERROR: MasterPackages are not installed!')
 				else:
 					for line in output.splitlines():
-						if line.startswith('Status: '):
-							if line != 'Status: install ok installed':
-								print(output)
-								utils.fail('ERROR: A package is not installed!')
+						if line.startswith('Status: ') and line != 'Status: install ok installed':
+							print(output)
+							utils.fail('ERROR: A package is not installed!')
 		print('    Checking component')
 		if ucr_is_true('repository/online/component/%s' % app.component_id):
 			utils.fail('FAIL: component %s still active' % app.component)

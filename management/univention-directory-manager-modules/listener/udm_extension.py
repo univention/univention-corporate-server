@@ -316,10 +316,8 @@ def remove_python_files(python_basedir: str, target_subdir: str, target_filename
 					return
 
 			python_init_filename = os.path.join(target_path, '__init__.py')
-			if os.path.exists(python_init_filename):
-				if os.path.getsize(python_init_filename) != 0:
-					if open(python_init_filename, 'rb').read() != EXTEND_PATH:
-						return
+			if os.path.exists(python_init_filename) and os.path.getsize(python_init_filename) != 0 and open(python_init_filename, 'rb').read() != EXTEND_PATH:
+				return
 
 			# Only remove the file if it was not shipped as part of a debian package.
 			p = subprocess.Popen(['dpkg', '-S', python_init_filename], stdout=subprocess.PIPE, stderr=subprocess.STDOUT)

@@ -325,9 +325,8 @@ class MustHaveNoUnmetDependencies(SingleRequirement, HardRequirement):
 		apps_cache = Apps()
 		# RequiredApps
 		for _app in apps_cache.get_all_apps():
-			if _app.id in app.required_apps:
-				if not _app.is_installed():
-					unmet_apps.append({'id': _app.id, 'name': _app.name, 'in_domain': False})
+			if _app.id in app.required_apps and not _app.is_installed():
+				unmet_apps.append({'id': _app.id, 'name': _app.name, 'in_domain': False})
 
 		# RequiredAppsInDomain
 		domain = get_action('domain')

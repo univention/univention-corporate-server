@@ -303,10 +303,9 @@ def verbose_http_error(exc):
 			strerror = _('%s could not be downloaded. This seems to be a problem with the App Center server. Please try again later.') % exc.url
 		elif code >= 500:
 			strerror = _('This is a problem with the App Center server. Please try again later.')
-	if hasattr(exc, 'reason'):
-		if isinstance(exc.reason, ssl.SSLError):
-			strerror = _('There is a problem with the certificate of the App Center server %s.') % get_server()
-			strerror += ' (' + str(exc.reason) + ')'
+	if hasattr(exc, 'reason') and isinstance(exc.reason, ssl.SSLError):
+	    strerror = _('There is a problem with the certificate of the App Center server %s.') % get_server()
+	    strerror += ' (' + str(exc.reason) + ')'
 	while hasattr(exc, 'reason'):
 		exc = exc.reason
 	if hasattr(exc, 'errno'):

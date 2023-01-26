@@ -220,15 +220,13 @@ def get_ad_password(computer_guid, dn, drs, drsuapi_handle):
 				if i.value_ctr.values:
 					for j in i.value_ctr.values:
 						unicode_blob = j.blob
-			if i.attid == drsuapi.DRSUAPI_ATTID_ntPwdHistory:
-				if i.value_ctr.values:
-					for j in i.value_ctr.values:
-						history_blob = j.blob
-			if i.attid == drsuapi.DRSUAPI_ATTID_supplementalCredentials and configRegistry.is_true('connector/ad/mapping/user/password/kerberos/enabled', False):
-				if i.value_ctr.values:
-					for j in i.value_ctr.values:
-						spl = _decrypt_supplementalCredentials(drs.user_session_key, j.blob)
-						keys = calculate_krb5keys(spl)
+			if i.attid == drsuapi.DRSUAPI_ATTID_ntPwdHistory and i.value_ctr.values:
+				for j in i.value_ctr.values:
+					history_blob = j.blob
+			if i.attid == drsuapi.DRSUAPI_ATTID_supplementalCredentials and configRegistry.is_true('connector/ad/mapping/user/password/kerberos/enabled', False) and i.value_ctr.values:
+				for j in i.value_ctr.values:
+					spl = _decrypt_supplementalCredentials(drs.user_session_key, j.blob)
+					keys = calculate_krb5keys(spl)
 
 		if rid and unicode_blob:
 			nt_hash = decrypt(drs.user_session_key, unicode_blob, rid).upper()

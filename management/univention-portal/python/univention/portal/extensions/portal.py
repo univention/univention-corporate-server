@@ -231,10 +231,9 @@ class Portal(metaclass=Plugin):
 				if entry_dn in entries:
 					if entry_dn not in ret:
 						ret.append(entry_dn)
-				elif entry_dn in folders:
-					if entry_dn not in already_unpacked_folder_dns:
-						already_unpacked_folder_dns.append(entry_dn)
-						_flatten(entry_dn, folders, entries, ret, already_unpacked_folder_dns)
+				elif entry_dn in folders and entry_dn not in already_unpacked_folder_dns:
+					already_unpacked_folder_dns.append(entry_dn)
+					_flatten(entry_dn, folders, entries, ret, already_unpacked_folder_dns)
 
 		ret = []
 		_flatten(folder_dn, folders, entries, ret, [])

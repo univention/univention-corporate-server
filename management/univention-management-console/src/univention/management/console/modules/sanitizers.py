@@ -501,10 +501,9 @@ class SearchSanitizer(Sanitizer):
 				value = '*%s' % value
 			if not value.endswith('*'):
 				value = '%s*' % value
-		if self.max_number_of_asterisks is not None:
-			if value.count('*') > self.max_number_of_asterisks:
-				# show the possibly changed value
-				self.raise_formatted_validation_error(_('The maximum number of asterisks (*) in the search string is %(max_number_of_asterisks)d'), name, value)
+		if self.max_number_of_asterisks is not None and value.count('*') > self.max_number_of_asterisks:
+			# show the possibly changed value
+			self.raise_formatted_validation_error(_('The maximum number of asterisks (*) in the search string is %(max_number_of_asterisks)d'), name, value)
 		return self._escape_and_return(value)
 
 

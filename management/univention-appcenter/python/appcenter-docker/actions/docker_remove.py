@@ -64,9 +64,8 @@ class Remove(Remove, DockerActionMixin):
 
 	def _remove_docker_container(self, app, args):
 		self._configure(app, args)
-		if args.backup:
-			if self._backup_container(app, remove=True) is False:
-				raise RemoveBackupFailed()
+		if args.backup and self._backup_container(app, remove=True) is False:
+			raise RemoveBackupFailed()
 		docker = self._get_docker(app)
 		Stop.call(app=app)
 		docker.stop()

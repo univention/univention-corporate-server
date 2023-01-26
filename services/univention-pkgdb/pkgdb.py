@@ -91,9 +91,8 @@ def handler(dn: str, new: Dict[str, List[bytes]], old: Dict[str, List[bytes]]) -
 					with open(os.path.join(DELETE_DIR, uid), 'w') as fd:
 						fd.write(uid + '\n')
 
-		elif new and not old:
-			if 'uid' in new:
-				uid = new['uid'][0].decode('UTF-8')
-				if add_system(uid) != 0:
-					with open(os.path.join(ADD_DIR, uid), 'w') as fd:
-						fd.write(uid + '\n')
+		elif new and not old and 'uid' in new:
+			uid = new['uid'][0].decode('UTF-8')
+			if add_system(uid) != 0:
+				with open(os.path.join(ADD_DIR, uid), 'w') as fd:
+					fd.write(uid + '\n')

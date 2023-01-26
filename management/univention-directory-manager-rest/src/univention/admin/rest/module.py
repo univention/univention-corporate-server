@@ -415,9 +415,8 @@ class ResourceBase:
 		self.request.path_decoded = unquote(self.request.path)
 		self.request.decoded_query_arguments = self.request.query_arguments.copy()
 		authorization = self.request.headers.get('Authorization')
-		if not authorization:
-			if self.requires_authentication:
-				return self.force_authorization()
+		if not authorization and self.requires_authentication:
+			return self.force_authorization()
 
 		try:
 			if authorization:
@@ -4065,12 +4064,11 @@ class Operations(Resource):
 
 	def get_html(self, response):
 		root = super().get_html(response)
-		if isinstance(response, dict):
-			if 'value' in response and 'max' in response:
-				h1 = ET.Element('h1')
-				h1.text = response.get('description', '')
-				root.append(h1)
-				root.append(ET.Element('progress', value=str(response['value']), max=str(response['max'])))
+		if isinstance(response, dict) and 'value' in response and 'max' in response:
+			h1 = ET.Element('h1')
+			h1.text = response.get('description', '')
+			root.append(h1)
+			root.append(ET.Element('progress', value=str(response['value']), max=str(response['max'])))
 		return root
 
 

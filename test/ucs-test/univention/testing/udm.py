@@ -911,9 +911,8 @@ class UCSTestUDM:
 			if ad_ldap_search_args:
 				drs_replication = ad_ldap_search_args
 
-		if wait_for_s4connector and ad_ldap_search_args:
-			if self._ucr.get('samba4/ldap/base'):
-				conditions.append((utils.ReplicationType.S4C_FROM_UCS, ad_ldap_search_args))
+		if wait_for_s4connector and ad_ldap_search_args and self._ucr.get('samba4/ldap/base'):
+			conditions.append((utils.ReplicationType.S4C_FROM_UCS, ad_ldap_search_args))
 
 		if drs_replication:
 			if not wait_for_replication:

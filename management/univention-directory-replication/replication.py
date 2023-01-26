@@ -824,9 +824,8 @@ def handler(dn: str, new: Dict[str, List[bytes]], listener_old: Dict[str, List[b
 		else:
 			connected = 1
 
-	if 'pwdAttribute' in new:
-		if new['pwdAttribute'][0] == b'userPassword':
-			new['pwdAttribute'] = [b'2.5.4.35']
+	if 'pwdAttribute' in new and new['pwdAttribute'][0] == b'userPassword':
+	    new['pwdAttribute'] = [b'2.5.4.35']
 
 	try:
 		# Read old entry directly from LDAP server

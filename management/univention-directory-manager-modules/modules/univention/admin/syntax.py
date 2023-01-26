@@ -615,9 +615,8 @@ class complex(ISyntax):
 	@classmethod
 	def tostring(self, texts):
 		# type: (Any) -> str
-		if self.all_required:
-			if len(self.subsyntaxes) != len(texts) or not all(texts):
-				return ''
+		if self.all_required and (len(self.subsyntaxes) != len(texts) or not all(texts)):
+			return ''
 
 		return self.delimiter.join(texts)
 

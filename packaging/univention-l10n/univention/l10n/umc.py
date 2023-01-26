@@ -284,9 +284,8 @@ def read_modules(package, core=False):
 			item['package'] = package
 			item['provides'] = provides
 			module = UMC_Module(item)
-			if core:
-				if module.module_name != 'umc-core' or not module.xml_categories:
-					raise Error('Module definition does not match core module')
+			if core and (module.module_name != 'umc-core' or not module.xml_categories):
+				raise Error('Module definition does not match core module')
 			modules.append(module)
 
 	return modules

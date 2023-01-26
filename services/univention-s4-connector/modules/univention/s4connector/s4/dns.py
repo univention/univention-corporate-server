@@ -224,11 +224,10 @@ def dns_dn_mapping(s4connector, given_object, dn_mapping_stored, isUCSobject):
 				else:
 					# identify position by parent zone name
 					target_zone_dn = s4connector.lo.parentDn(dn)
-					if s4connector.configRegistry.get('connector/s4/mapping/dns/position') != 'legacy':
-						if relativeDomainName.endswith('._msdcs'):
-							target_zone_name = '_msdcs.' + ol_zone_name
-							target_RR_val = relativeDomainName[:-7]
-							target_zone_dn = ldap.dn.dn2str([[(s4_RR_attr.upper(), target_zone_name, ldap.AVA_STRING)]] + exploded_dn[2:])
+					if s4connector.configRegistry.get('connector/s4/mapping/dns/position') != 'legacy' and relativeDomainName.endswith('._msdcs'):
+						target_zone_name = '_msdcs.' + ol_zone_name
+						target_RR_val = relativeDomainName[:-7]
+						target_zone_dn = ldap.dn.dn2str([[(s4_RR_attr.upper(), target_zone_name, ldap.AVA_STRING)]] + exploded_dn[2:])
 
 					ud.debug(ud.LDAP, ud.INFO, "dns_dn_mapping: get dns_dn_mapping for target zone %s" % target_zone_dn)
 					fake_ol_zone_object = {
@@ -325,9 +324,8 @@ def dns_dn_mapping(s4connector, given_object, dn_mapping_stored, isUCSobject):
 				target_RR_val = s4_RR_val
 				ol_zone_dn = None
 				if b'dnsZone' in s4_ocs:
-					if s4connector.configRegistry.get('connector/s4/mapping/dns/position') != 'legacy':
-						if s4_RR_val.startswith('_msdcs.'):
-							target_RR_val = s4_RR_val[7:]
+					if s4connector.configRegistry.get('connector/s4/mapping/dns/position') != 'legacy' and s4_RR_val.startswith('_msdcs.'):
+						target_RR_val = s4_RR_val[7:]
 					target_zone_name = target_RR_val
 					base = s4connector.lo.base
 					ol_search_attr = 'zoneName'
@@ -340,11 +338,10 @@ def dns_dn_mapping(s4connector, given_object, dn_mapping_stored, isUCSobject):
 					target_zone_name = snd_rdn_value_utf8
 					target_zone_dn = s4connector.lo_s4.parentDn(dn)
 					ud.debug(ud.LDAP, ud.INFO, "dns_dn_mapping: get dns_dn_mapping for %s" % target_zone_dn)
-					if s4connector.configRegistry.get('connector/s4/mapping/dns/position') != 'legacy':
-						if target_zone_name.startswith('_msdcs.'):
-							target_zone_name = target_zone_name[7:]
-							target_RR_val += '._msdcs'
-							target_zone_dn = ldap.dn.dn2str([[(snd_rdn_attribute_utf8, target_zone_name, ldap.AVA_STRING)]] + exploded_dn[2:])
+					if s4connector.configRegistry.get('connector/s4/mapping/dns/position') != 'legacy' and target_zone_name.startswith('_msdcs.'):
+						target_zone_name = target_zone_name[7:]
+						target_RR_val += '._msdcs'
+						target_zone_dn = ldap.dn.dn2str([[(snd_rdn_attribute_utf8, target_zone_name, ldap.AVA_STRING)]] + exploded_dn[2:])
 
 					fake_s4_zone_object = {
 						'dn': target_zone_dn,
@@ -1401,10 +1398,9 @@ def ucs_zone_create(s4connector, object, dns_type):
 			# should be returned
 			aRecords = s4connector.configRegistry.get('connector/s4/mapping/dns/forward_zone/%s/static/ipv4' % zoneName.lower())
 			aAAARecords = s4connector.configRegistry.get('connector/s4/mapping/dns/forward_zone/%s/static/ipv6' % zoneName.lower())
-			if not aRecords and not aAAARecords:
-				if set(a) != set(zone['a']):
-					zone['a'] = a
-					modify = True
+			if not aRecords and not aAAARecords and set(a) != set(zone['a']):
+				zone['a'] = a
+				modify = True
 			if mx:
 				def mapMX(m):
 					return '%s %s' % (m[0], m[1])

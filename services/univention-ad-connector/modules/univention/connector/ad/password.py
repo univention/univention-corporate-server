@@ -317,11 +317,10 @@ def get_password_from_ad(connector, user_dn, reconnect=False):
 					for j in i.value_ctr.values:
 						unicode_blob = j.blob
 						ud.debug(ud.LDAP, ud.INFO, "get_password_from_ad: Found unicodePwd blob")
-			if i.attid == drsuapi.DRSUAPI_ATTID_ntPwdHistory:
-				if i.value_ctr.values:
-					for j in i.value_ctr.values:
-						ud.debug(ud.LDAP, ud.INFO, "get_password_from_ad: Found ntPwdHistory blob")
-						history_blob = j.blob
+			if i.attid == drsuapi.DRSUAPI_ATTID_ntPwdHistory and i.value_ctr.values:
+				for j in i.value_ctr.values:
+					ud.debug(ud.LDAP, ud.INFO, "get_password_from_ad: Found ntPwdHistory blob")
+					history_blob = j.blob
 			if i.attid == drsuapi.DRSUAPI_ATTID_supplementalCredentials and connector.configRegistry.is_true('%s/ad/mapping/user/password/kerberos/enabled' % connector.CONFIGBASENAME, False):
 				if i.value_ctr.values:
 					for j in i.value_ctr.values:
@@ -388,13 +387,12 @@ def password_sync_ucs(connector, key, object):
 		# synced in two ways: Bug #22653
 		if sambaPwdLastSet > 1 or (sambaPwdLastSet <= 2 and connector.configRegistry.is_false('%s/ad/password/timestamp/syncreset/ucs' % connector.CONFIGBASENAME, False)):
 			ad_password_last_set = univention.connector.ad.ad2samba_time(pwdLastSet)
-			if sambaPwdLastSet:
-				if int(ad_password_last_set) >= int(sambaPwdLastSet):
-					# skip
-					ud.debug(ud.LDAP, ud.PROCESS, "password_sync: Don't sync the password from UCS to AD because the AD password equal or is newer.")
-					ud.debug(ud.LDAP, ud.INFO, "password_sync:  AD pwdlastset: %s (original (%s))" % (ad_password_last_set, pwdLastSet))
-					ud.debug(ud.LDAP, ud.INFO, "password_sync: UCS pwdlastset: %s" % (sambaPwdLastSet))
-					return
+			if sambaPwdLastSet and int(ad_password_last_set) >= int(sambaPwdLastSet):
+				# skip
+				ud.debug(ud.LDAP, ud.PROCESS, "password_sync: Don't sync the password from UCS to AD because the AD password equal or is newer.")
+				ud.debug(ud.LDAP, ud.INFO, "password_sync:  AD pwdlastset: %s (original (%s))" % (ad_password_last_set, pwdLastSet))
+				ud.debug(ud.LDAP, ud.INFO, "password_sync: UCS pwdlastset: %s" % (sambaPwdLastSet))
+				return
 
 		ud.debug(ud.LDAP, ud.INFO, "password_sync: Sync the passwords from UCS to AD.")
 		ud.debug(ud.LDAP, ud.INFO, "password_sync:  AD pwdlastset: %s (original (%s))" % (ad_password_last_set, pwdLastSet))
@@ -504,13 +502,12 @@ def password_sync(connector, key, ucs_object):
 		# synced in two ways: Bug #22653
 		if (pwdLastSet > 1) or (pwdLastSet in [0, 1] and connector.configRegistry.is_false('%s/ad/password/timestamp/syncreset/ad' % connector.CONFIGBASENAME, False)):
 			ad_password_last_set = univention.connector.ad.ad2samba_time(pwdLastSet)
-			if sambaPwdLastSet:
-				if int(sambaPwdLastSet) >= int(ad_password_last_set) and int(sambaPwdLastSet) != 1:
-					# skip
-					ud.debug(ud.LDAP, ud.PROCESS, "password_sync: Don't sync the passwords from AD to UCS because the UCS password is equal or newer.")
-					ud.debug(ud.LDAP, ud.INFO, "password_sync:  AD pwdlastset: %s (original (%s))" % (ad_password_last_set, pwdLastSet))
-					ud.debug(ud.LDAP, ud.INFO, "password_sync: UCS pwdlastset: %s" % (sambaPwdLastSet))
-					return
+			if sambaPwdLastSet and int(sambaPwdLastSet) >= int(ad_password_last_set) and int(sambaPwdLastSet) != 1:
+				# skip
+				ud.debug(ud.LDAP, ud.PROCESS, "password_sync: Don't sync the passwords from AD to UCS because the UCS password is equal or newer.")
+				ud.debug(ud.LDAP, ud.INFO, "password_sync:  AD pwdlastset: %s (original (%s))" % (ad_password_last_set, pwdLastSet))
+				ud.debug(ud.LDAP, ud.INFO, "password_sync: UCS pwdlastset: %s" % (sambaPwdLastSet))
+				return
 
 		ud.debug(ud.LDAP, ud.INFO, "password_sync: Sync the passwords from AD to UCS.")
 		ud.debug(ud.LDAP, ud.INFO, "password_sync:  AD pwdlastset: %s (original (%s))" % (ad_password_last_set, pwdLastSet))

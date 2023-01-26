@@ -458,9 +458,8 @@ class App:
 		if not os.path.exists('/var/www/meta-inf/%s' % self.ucs_version):
 			os.makedirs('/var/www/meta-inf/%s' % self.ucs_version)
 
-		if self.ucs_version == '4.2':
-			if not os.path.exists('/var/www/meta-inf/4.1'):
-				os.makedirs('/var/www/meta-inf/4.1')
+		if self.ucs_version == '4.2' and not os.path.exists('/var/www/meta-inf/4.1'):
+			os.makedirs('/var/www/meta-inf/4.1')
 
 		target = os.path.join('/var/www/meta-inf/%s' % self.ucs_version, '%s.ini' % self.app_directory)
 		f = open(target, 'w')

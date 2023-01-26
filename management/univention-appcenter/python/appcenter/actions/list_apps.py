@@ -137,9 +137,8 @@ class List(UniventionAppAction):
 		for app in self.get_apps():
 			versions = []
 			installations = {}
-			if pattern:
-				if not fnmatch(app.id, pattern):
-					continue
+			if pattern and not fnmatch(app.id, pattern):
+				continue
 			app = Apps().find(app.id, latest=True)
 			for _app in Apps().get_all_apps_with_id(app.id):
 				ldap_obj = get_app_ldap_object(_app, lo, pos)

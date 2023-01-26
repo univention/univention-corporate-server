@@ -89,9 +89,8 @@ def forgiving(translation=None):
 			except Exception as ex:
 				best = None
 				for cls, _value in translation.items():
-					if isinstance(ex, cls):
-						if best is None or issubclass(cls, best):
-							best = cls
+					if isinstance(ex, cls) and (best is None or issubclass(cls, best)):
+						best = cls
 				if best:
 					return translation[best]
 				raise

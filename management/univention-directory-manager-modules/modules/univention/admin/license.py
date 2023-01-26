@@ -368,14 +368,12 @@ class License(object):
 					disable_add = 1
 				if lic_account and self.__cmp_gt(int(real_account) - max(License.SYSACCOUNTS, self.sysAccountsFound), lic_account):
 					disable_add = 2
-			if lic_desktop:
-				if real_desktop and self.__cmp_gt(real_desktop, lic_desktop):
-					ud.debug(ud.ADMIN, ud.INFO, 'LICENSE: 3')
-					disable_add = 3
-			if lic_groupware:
-				if real_groupware and self.__cmp_gt(real_groupware, lic_groupware):
-					ud.debug(ud.ADMIN, ud.INFO, 'LICENSE: 4')
-					disable_add = 4
+			if lic_desktop and real_desktop and self.__cmp_gt(real_desktop, lic_desktop):
+				ud.debug(ud.ADMIN, ud.INFO, 'LICENSE: 3')
+				disable_add = 3
+			if lic_groupware and real_groupware and self.__cmp_gt(real_groupware, lic_groupware):
+				ud.debug(ud.ADMIN, ud.INFO, 'LICENSE: 4')
+				disable_add = 4
 		elif self.version == '2':
 			lic_users, lic_servers, lic_managedclients, lic_corporateclients, = lic
 			real_users, real_servers, real_managedclients, real_corporateclients, = real

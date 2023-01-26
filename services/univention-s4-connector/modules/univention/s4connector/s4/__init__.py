@@ -1214,10 +1214,9 @@ class s4(univention.s4connector.ucs):
 		"""
 		ud.debug(ud.LDAP, ud.ALL, "object_memberships_sync_from_ucs: object: %s" % object)
 
-		if 'group' in self.property:
-			if getattr(self.property['group'], 'sync_mode', '') in ['read', 'none']:
-				ud.debug(ud.LDAP, ud.INFO, "group memberships sync to s4 ignored, group sync_mode is read")
-				return
+		if 'group' in self.property and getattr(self.property['group'], 'sync_mode', '') in ['read', 'none']:
+			ud.debug(ud.LDAP, ud.INFO, "group memberships sync to s4 ignored, group sync_mode is read")
+			return
 
 		# search groups in UCS which have this object as member
 
@@ -1427,10 +1426,9 @@ class s4(univention.s4connector.ucs):
 		# disable this debug line, see Bug #12031
 		# ud.debug(ud.LDAP, ud.INFO, "object_memberships_sync_to_ucs: object: %s" % object)
 
-		if 'group' in self.property:
-			if getattr(self.property['group'], 'sync_mode', '') in ['write', 'none']:
-				self.context_log(key, object, "ignored group memberships sync: group sync_mode is write", level=ud.INFO, to_ucs=True)
-				return
+		if 'group' in self.property and getattr(self.property['group'], 'sync_mode', '') in ['write', 'none']:
+			self.context_log(key, object, "ignored group memberships sync: group sync_mode is write", level=ud.INFO, to_ucs=True)
+			return
 
 		if 'memberOf' in object['attributes']:
 			for groupDN in object['attributes']['memberOf']:
@@ -2113,9 +2111,8 @@ class s4(univention.s4connector.ucs):
 					for attr, value in object['attributes'].items():
 						for attr_key in self.property[property_type].post_attributes.keys():
 							post_attribute = self.property[property_type].post_attributes[attr_key]
-							if post_attribute.reverse_attribute_check:
-								if not object['attributes'].get(post_attribute.ldap_attribute):
-									continue
+							if post_attribute.reverse_attribute_check and not object['attributes'].get(post_attribute.ldap_attribute):
+								continue
 							if attr not in (post_attribute.con_attribute, post_attribute.con_other_attribute):
 								continue
 

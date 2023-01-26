@@ -124,29 +124,28 @@ def import_appcenter_modules():
 				for filter in handler.filters:
 					if hasattr(filter, 'min_level'):
 						filter.min_level = logging.DEBUG
-		if name == 'actions':
-			if not use_installed:
-				import os.path
-				for pymodule in glob('python/appcenter/actions/*.py'):
-					name = os.path.basename(pymodule)[:-3]  # without .py
-					local_python_path = os.path.dirname(pymodule)
-					import_module(name, local_python_path, 'univention.appcenter.actions.{}'.format(name), use_installed=use_installed)
-				for pymodule in glob('python/appcenter-docker/actions/service.py'):
-					name = os.path.basename(pymodule)[:-3]  # without .py
-					local_python_path = os.path.dirname(pymodule)
-					import_module(name, local_python_path, 'univention.appcenter.actions.{}'.format(name), use_installed=use_installed)
-				for pymodule in glob('python/appcenter-docker/actions/docker_base.py'):
-					name = os.path.basename(pymodule)[:-3]  # without .py
-					local_python_path = os.path.dirname(pymodule)
-					import_module(name, local_python_path, 'univention.appcenter.actions.{}'.format(name), use_installed=use_installed)
-				for pymodule in glob('python/appcenter-docker/actions/docker_*.py'):
-					name = os.path.basename(pymodule)[:-3]  # without .py
-					local_python_path = os.path.dirname(pymodule)
-					import_module(name, local_python_path, 'univention.appcenter.actions.{}'.format(name), use_installed=use_installed)
-				for pymodule in glob('python/appcenter-docker/actions/*.py'):
-					name = os.path.basename(pymodule)[:-3]  # without .py
-					local_python_path = os.path.dirname(pymodule)
-					import_module(name, local_python_path, 'univention.appcenter.actions.{}'.format(name), use_installed=use_installed)
+		if name == 'actions' and not use_installed:
+			import os.path
+			for pymodule in glob('python/appcenter/actions/*.py'):
+				name = os.path.basename(pymodule)[:-3]  # without .py
+				local_python_path = os.path.dirname(pymodule)
+				import_module(name, local_python_path, 'univention.appcenter.actions.{}'.format(name), use_installed=use_installed)
+			for pymodule in glob('python/appcenter-docker/actions/service.py'):
+				name = os.path.basename(pymodule)[:-3]  # without .py
+				local_python_path = os.path.dirname(pymodule)
+				import_module(name, local_python_path, 'univention.appcenter.actions.{}'.format(name), use_installed=use_installed)
+			for pymodule in glob('python/appcenter-docker/actions/docker_base.py'):
+				name = os.path.basename(pymodule)[:-3]  # without .py
+				local_python_path = os.path.dirname(pymodule)
+				import_module(name, local_python_path, 'univention.appcenter.actions.{}'.format(name), use_installed=use_installed)
+			for pymodule in glob('python/appcenter-docker/actions/docker_*.py'):
+				name = os.path.basename(pymodule)[:-3]  # without .py
+				local_python_path = os.path.dirname(pymodule)
+				import_module(name, local_python_path, 'univention.appcenter.actions.{}'.format(name), use_installed=use_installed)
+			for pymodule in glob('python/appcenter-docker/actions/*.py'):
+				name = os.path.basename(pymodule)[:-3]  # without .py
+				local_python_path = os.path.dirname(pymodule)
+				import_module(name, local_python_path, 'univention.appcenter.actions.{}'.format(name), use_installed=use_installed)
 
 
 def _import(name):

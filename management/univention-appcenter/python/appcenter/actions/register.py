@@ -555,9 +555,8 @@ class AppListener(AppListener):
 					value = str(next_port)
 				updates[key] = value
 		for container_port, host_port in current_port_config.items():
-			if container_port in updates:
-				if updates[container_port] == host_port:
-					updates.pop(container_port)
+			if container_port in updates and updates[container_port] == host_port:
+				updates.pop(container_port)
 		if updates:
 			# save immediately, no delay: next call needs to know
 			# about the (to be) registered ports

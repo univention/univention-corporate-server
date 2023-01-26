@@ -134,25 +134,23 @@ def doit(arglist):
 
 	try:
 		# check for local ldap server connection
-		if configRegistry.is_true('ldap/replication/preferredpassword'):
-			if configRegistry.get('ldap/server/type') == 'slave':
-				if os.path.exists('/etc/ldap/rootpw.conf'):
-					lo = univention.admin.uldap.access(lo=univention.uldap.getRootDnConnection())
-					dn = lo.searchDn(filter=filter_format(u'(&(uid=%s)(|(objectClass=posixAccount)(objectClass=sambaSamAccount)(objectClass=person)))', [user]), base=baseDN, unique=True)
-					position = univention.admin.uldap.position(baseDN)
-					module = univention.admin.modules.get('users/user')
-					univention.admin.modules.init(lo, position, module)
+		if configRegistry.is_true('ldap/replication/preferredpassword') and configRegistry.get('ldap/server/type') == 'slave' and os.path.exists('/etc/ldap/rootpw.conf'):
+			lo = univention.admin.uldap.access(lo=univention.uldap.getRootDnConnection())
+			dn = lo.searchDn(filter=filter_format(u'(&(uid=%s)(|(objectClass=posixAccount)(objectClass=sambaSamAccount)(objectClass=person)))', [user]), base=baseDN, unique=True)
+			position = univention.admin.uldap.position(baseDN)
+			module = univention.admin.modules.get('users/user')
+			univention.admin.modules.init(lo, position, module)
 
-					object = univention.admin.objects.get(module, None, lo, position=position, dn=dn[0])
-					object.open()
-					object['password'] = pwd
+			object = univention.admin.objects.get(module, None, lo, position=position, dn=dn[0])
+			object.open()
+			object['password'] = pwd
 
-					ud.debug(ud.ADMIN, ud.INFO, 'univention-passwd: passwd set, modify object')
-					object['overridePWHistory'] = '1'
-					object['overridePWLength'] = '1'
-					dn = object.modify()
+			ud.debug(ud.ADMIN, ud.INFO, 'univention-passwd: passwd set, modify object')
+			object['overridePWHistory'] = '1'
+			object['overridePWLength'] = '1'
+			dn = object.modify()
 
-					ud.debug(ud.ADMIN, ud.INFO, 'univention-passwd: password changed')
+			ud.debug(ud.ADMIN, ud.INFO, 'univention-passwd: password changed')
 	except Exception as exc:
 		ud.debug(ud.ADMIN, ud.WARN, 'passwd error: %s' % (exc,))
 

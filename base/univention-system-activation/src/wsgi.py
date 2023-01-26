@@ -56,9 +56,8 @@ class LicenseLDIF(LDIFParser):
 		self.uuid = '00000000-0000-0000-0000-000000000000'
 
 	def handle(self, dn, entry):
-		if dn == 'cn=admin,cn=license,cn=univention,%s' % self.ucr.get('ldap/base'):
-			if 'univentionLicenseKeyID' in entry and len(entry['univentionLicenseKeyID']) > 0:
-				self.uuid = entry['univentionLicenseKeyID'][0].decode('utf-8')
+		if dn == 'cn=admin,cn=license,cn=univention,%s' % self.ucr.get('ldap/base') and 'univentionLicenseKeyID' in entry and len(entry['univentionLicenseKeyID']) > 0:
+			self.uuid = entry['univentionLicenseKeyID'][0].decode('utf-8')
 
 
 class LdapLicenseFetchError(Exception):

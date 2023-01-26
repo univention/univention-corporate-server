@@ -410,9 +410,8 @@ class _PackageManagerLoggerHandler(Handler):
 		elif record.levelname == 'ERROR':
 			if self.error_handler:
 				self.error_handler(record.msg)
-		elif record.levelname == 'INFO':
-			if self.info_handler:
-				self.info_handler(record.msg)
+		elif record.levelname == 'INFO' and self.info_handler:
+			self.info_handler(record.msg)
 
 
 class PackageManager(object):
@@ -489,9 +488,8 @@ class PackageManager(object):
 			if self.apt_lock_fd < 0:
 				return_value = False
 
-		if return_value is False:
-			if raise_on_fail:
-				raise LockError(_('Failed to lock'))
+		if return_value is False and raise_on_fail:
+			raise LockError(_('Failed to lock'))
 
 		return return_value
 

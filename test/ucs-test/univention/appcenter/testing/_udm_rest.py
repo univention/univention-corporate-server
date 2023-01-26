@@ -213,12 +213,11 @@ class Session:
 			except ValueError:
 				pass
 			else:
-				if isinstance(json, dict):
-					if 'error' in json:
-						server_message = json['error'].get('message')
-						# traceback = json['error'].get('traceback')
-						if server_message:
-							msg += f'\n{server_message}'
+				if isinstance(json, dict) and 'error' in json:
+					server_message = json['error'].get('message')
+					# traceback = json['error'].get('traceback')
+					if server_message:
+						msg += f'\n{server_message}'
 			errors = {400: BadRequest, 404: NotFound, 403: Forbidden, 401: Unauthorized, 412: PreconditionFailed, 422: UnprocessableEntity, 500: ServerError, 503: ServiceUnavailable}
 			cls = HTTPError
 			cls = errors.get(response.status_code, cls)

@@ -70,16 +70,14 @@ def handler(dn: str, new: Dict[str, List[bytes]], old: Dict[str, List[bytes]]) -
 	level = ud.INFO
 
 	# deleted -> remove all privileges
-	if old and not new:
-		if old.get("univentionSambaPrivilegeList") and old.get("sambaSID"):
-			ud.debug(where, level, "%s: remove all samba privs (%r)" % (name, old["sambaSID"][0]))
-			removePrivileges(old["sambaSID"][0], ALL_SAMBA_PRIVILEGES)
+	if old and not new and old.get("univentionSambaPrivilegeList") and old.get("sambaSID"):
+	    ud.debug(where, level, "%s: remove all samba privs (%r)" % (name, old["sambaSID"][0]))
+	    removePrivileges(old["sambaSID"][0], ALL_SAMBA_PRIVILEGES)
 
 	# created
-	if new and not old:
-		if new.get("univentionSambaPrivilegeList") and new.get("sambaSID"):
-			ud.debug(where, level, "%s: add new samba privs (%r)" % (name, new["sambaSID"][0]))
-			addPrivileges(new["sambaSID"][0], new["univentionSambaPrivilegeList"])
+	if new and not old and new.get("univentionSambaPrivilegeList") and new.get("sambaSID"):
+	    ud.debug(where, level, "%s: add new samba privs (%r)" % (name, new["sambaSID"][0]))
+	    addPrivileges(new["sambaSID"][0], new["univentionSambaPrivilegeList"])
 
 	# modified
 	if new and old:

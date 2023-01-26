@@ -83,15 +83,13 @@ if not opts.database_url:
 	print("Option -H or --url needed", file=sys.stderr)
 	sys.exit(1)
 
-if opts.createsitelink:
-	if not opts.sitelink:
-		print("Option --sitelink needed for sitelink creation", file=sys.stderr)
-		sys.exit(1)
+if opts.createsitelink and not opts.sitelink:
+    print("Option --sitelink needed for sitelink creation", file=sys.stderr)
+    sys.exit(1)
 
-if opts.createsite:
-	if not opts.site:
-		print("Option --site needed for site creation", file=sys.stderr)
-		sys.exit(1)
+if opts.createsite and not opts.site:
+    print("Option --site needed for site creation", file=sys.stderr)
+    sys.exit(1)
 
 if opts.createsubnet or opts.modifysubnet:
 	if not opts.subnet:

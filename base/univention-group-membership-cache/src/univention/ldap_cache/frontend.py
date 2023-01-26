@@ -62,10 +62,9 @@ def groups_for_user(user_dn, consider_nested_groups=True, cache=None):
 	while search_for_dns:
 		search_for = search_for_dns.pop().lower()
 		for member, dns in cache.items():
-			if search_for in dns:
-				if member not in found:
-					found.add(member)
-					search_for_dns.append(member)
+			if search_for in dns and member not in found:
+				found.add(member)
+				search_for_dns.append(member)
 		if not consider_nested_groups:
 			break
 	return sorted(found)

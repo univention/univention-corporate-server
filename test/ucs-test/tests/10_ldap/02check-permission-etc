@@ -38,11 +38,10 @@ def main():
 
 	try:
 		for filename, filegroup in filenames_groups:
-			if not os.path.exists(filename):
-				if filename == '/etc/slave-join.secret' and ucr.get('server/role') == 'domaincontroller_backup':
-					# see https://forge.univention.org/bugzilla/show_bug.cgi?id=27662
-					print('Ignore /etc/slave-join.secret on DC Backup')
-					continue
+			if not os.path.exists(filename) and filename == '/etc/slave-join.secret' and ucr.get('server/role') == 'domaincontroller_backup':
+				# see https://forge.univention.org/bugzilla/show_bug.cgi?id=27662
+				print('Ignore /etc/slave-join.secret on DC Backup')
+				continue
 			return_code = check_owner_groupname(filename, shouldowner, filegroup)
 			if not return_code:
 				exit_code = RETURN_FAIL_CODE

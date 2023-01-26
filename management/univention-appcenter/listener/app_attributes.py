@@ -87,9 +87,8 @@ class AppAttributes(ListenerModuleHandler):
 				app_id = app_obj['id'][:-len(app_version) - 1]
 				app = AllApps().find(app_id, app_version=app_version)
 				if app:
-					if app.id in apps:
-						if apps[app.id] > app:
-							continue
+					if app.id in apps and apps[app.id] > app:
+						continue
 					apps[app.id] = app
 			for app in apps.values():
 				for attribute in app.umc_options_attributes:

@@ -154,9 +154,8 @@ def handler(dn: str, new: Optional[Dict[str, List[bytes]]], old: Optional[Dict[s
 					_dump_changes_to_file_and_check_file(directory, old_dn, {}, old_object, None)
 					old_dn = None
 
-				if s4_init_mode:
-					if new and b'univentionGroup' in new.get('objectClass', []):
-						group_objects.append((dn, new, old, old_dn))
+				if s4_init_mode and new and b'univentionGroup' in new.get('objectClass', []):
+					group_objects.append((dn, new, old, old_dn))
 
 				_dump_changes_to_file_and_check_file(directory, dn, new, old, old_dn)
 

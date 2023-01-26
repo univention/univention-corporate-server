@@ -155,12 +155,10 @@ def sid_to_ucs(s4connector, key, s4_object):
 		ml.append((sidAttribute, sambaSID, s4_object['attributes'].get('objectSid')))
 		s4_ocs = s4_object['attributes'].get('objectClass', [])
 		ucs_ocs = ucs_attributes.get('objectClass')
-		if b'user' in s4_ocs:
-			if b'sambaSamAccount' not in ucs_ocs:
-				ml.append(('objectClass', ucs_ocs, ucs_ocs + [b'sambaSamAccount']))
-		if b'group' in s4_ocs:
-			if b'sambaGroupMapping' not in ucs_ocs:
-				ml.append(('objectClass', ucs_ocs, ucs_ocs + [b'sambaGroupMapping']))
+		if b'user' in s4_ocs and b'sambaSamAccount' not in ucs_ocs:
+			ml.append(('objectClass', ucs_ocs, ucs_ocs + [b'sambaSamAccount']))
+		if b'group' in s4_ocs and b'sambaGroupMapping' not in ucs_ocs:
+			ml.append(('objectClass', ucs_ocs, ucs_ocs + [b'sambaGroupMapping']))
 	if ml:
 		ud.debug(ud.LDAP, ud.INFO, 'sid_to_ucs: modlist = %r' % (ml,))
 		s4connector.lo.lo.modify(ucs_dn, ml)

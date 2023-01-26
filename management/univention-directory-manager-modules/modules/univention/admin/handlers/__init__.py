@@ -327,9 +327,8 @@ class simpleLdap(object):
 			raise univention.admin.uexceptions.insufficientInformation(_('The following properties are missing:\n%s') % ('\n'.join(missing),))
 
 		# when creating a object make sure that its position is underneath of its superordinate
-		if not self.exists() and self.position and self.superordinate:
-			if not self._ensure_dn_in_subtree(self.superordinate.dn, self.position.getDn()):
-				raise univention.admin.uexceptions.insufficientInformation(_('The position must be in the subtree of the superordinate.'))
+		if not self.exists() and self.position and self.superordinate and not self._ensure_dn_in_subtree(self.superordinate.dn, self.position.getDn()):
+			raise univention.admin.uexceptions.insufficientInformation(_('The position must be in the subtree of the superordinate.'))
 
 		self._validate_superordinate(True)
 
@@ -1715,12 +1714,11 @@ class simpleLdap(object):
 				Univention internal use only!
 		"""
 		for pname, prop in self.descriptions.items():
-			if hasattr(prop.syntax, 'checkLdap'):
-				if not self.exists() or self.hasChanged(pname):
-					if len(getfullargspec(prop.syntax.checkLdap).args) > 3:
-						prop.syntax.checkLdap(self.lo, self.info.get(pname), pname)
-					else:
-						prop.syntax.checkLdap(self.lo, self.info.get(pname))
+			if hasattr(prop.syntax, 'checkLdap') and (not self.exists() or self.hasChanged(pname)):
+				if len(getfullargspec(prop.syntax.checkLdap).args) > 3:
+					prop.syntax.checkLdap(self.lo, self.info.get(pname), pname)
+				else:
+					prop.syntax.checkLdap(self.lo, self.info.get(pname))
 
 	def __prevent_ad_property_change(self):  # type: () -> None
 		if not _prevent_to_change_ad_properties or not self._is_synced_object():
@@ -3048,17 +3046,16 @@ class simpleComputer(simpleLdap):
 			else:
 				self.__add_dns_reverse_object(self['name'], dn, ip)
 
-		if not self.__multiip:
-			if len(self.get('dhcpEntryZone', [])) > 0:
-				dn, ip, mac = self['dhcpEntryZone'][0]
-				for entry in self.__changes['mac']['add']:
-					if len(self['ip']) > 0:
-						self.__modify_dhcp_object(dn, entry, ip=self['ip'][0])
-					else:
-						self.__modify_dhcp_object(dn, entry)
-				for entry in self.__changes['ip']['add']:
-					if len(self['mac']) > 0:
-						self.__modify_dhcp_object(dn, self['mac'][0], ip=entry)
+		if not self.__multiip and len(self.get('dhcpEntryZone', [])) > 0:
+			dn, ip, mac = self['dhcpEntryZone'][0]
+			for entry in self.__changes['mac']['add']:
+				if len(self['ip']) > 0:
+					self.__modify_dhcp_object(dn, entry, ip=self['ip'][0])
+				else:
+					self.__modify_dhcp_object(dn, entry)
+			for entry in self.__changes['ip']['add']:
+				if len(self['mac']) > 0:
+					self.__modify_dhcp_object(dn, self['mac'][0], ip=entry)
 
 		for entry in self.__changes['dnsEntryZoneAlias']['remove']:
 			dnsForwardZone, dnsAliasZoneContainer, alias = entry
@@ -3257,16 +3254,15 @@ class simpleComputer(simpleLdap):
 			zoneObj.open()
 
 			# clean up nameserver records
-			if 'nameserver' in zoneObj:
-				if fqdnDot in zoneObj['nameserver']:
-					ud.debug(
-						ud.ADMIN,
-						ud.INFO,
-						'removing %s from dns zone %s' % (fqdnDot, zone[0]))
-					# nameserver is required in reverse zone
-					if len(zoneObj['nameserver']) > 1:
-						zoneObj['nameserver'].remove(fqdnDot)
-						zoneObj.modify()
+			if 'nameserver' in zoneObj and fqdnDot in zoneObj['nameserver']:
+				ud.debug(
+					ud.ADMIN,
+					ud.INFO,
+					'removing %s from dns zone %s' % (fqdnDot, zone[0]))
+				# nameserver is required in reverse zone
+				if len(zoneObj['nameserver']) > 1:
+					zoneObj['nameserver'].remove(fqdnDot)
+					zoneObj.modify()
 
 		# iterate over all forward zones
 		for zone in self['dnsEntryZoneForward'] or []:
@@ -3281,16 +3277,15 @@ class simpleComputer(simpleLdap):
 
 			zone_obj_modified = False
 			# clean up nameserver records
-			if 'nameserver' in zoneObj:
-				if fqdnDot in zoneObj['nameserver']:
-					ud.debug(
-						ud.ADMIN,
-						ud.INFO,
-						'removing %s from dns zone %s' % (fqdnDot, zone))
-					# nameserver is required in forward zone
-					if len(zoneObj['nameserver']) > 1:
-						zoneObj['nameserver'].remove(fqdnDot)
-						zone_obj_modified = True
+			if 'nameserver' in zoneObj and fqdnDot in zoneObj['nameserver']:
+				ud.debug(
+					ud.ADMIN,
+					ud.INFO,
+					'removing %s from dns zone %s' % (fqdnDot, zone))
+				# nameserver is required in forward zone
+				if len(zoneObj['nameserver']) > 1:
+					zoneObj['nameserver'].remove(fqdnDot)
+					zone_obj_modified = True
 
 			# clean up aRecords of zone itself
 			new_entries = list(set(zoneObj['a']) - ips)
@@ -3332,39 +3327,38 @@ class simpleComputer(simpleLdap):
 		mac1 = self['mac'][0] if len(macs) == 1 else ''
 
 		if key == 'network':
-			if self.old_network != value:
-				if value and value != 'None':
-					network_object = univention.admin.handlers.networks.network.object(self.co, self.lo, self.position, value)
-					network_object.open()
-					subnet = ip_network(u"%(network)s/%(netmask)s" % network_object, strict=False)
+			if self.old_network != value and value and value != 'None':
+				network_object = univention.admin.handlers.networks.network.object(self.co, self.lo, self.position, value)
+				network_object.open()
+				subnet = ip_network(u"%(network)s/%(netmask)s" % network_object, strict=False)
 
-					if not ips or ip_address(u'%s' % (ip1,)) not in subnet:
-						if self.ip_freshly_set:
-							raise_after = univention.admin.uexceptions.ipOverridesNetwork
-						else:
-							# get next IP
-							network_object.refreshNextIp()
-							self['ip'] = network_object['nextIp']
-							ips = [ip for ip in self['ip'] if ip] if self.has_property('ip') and self['ip'] else []
-							ip1 = self['ip'][0] if len(ips) == 1 else ''
-							try:
-								self.ip = self.request_lock('aRecord', self['ip'][0])
-								self.ip_alredy_requested = True
-							except univention.admin.uexceptions.noLock:
-								pass
+				if not ips or ip_address(u'%s' % (ip1,)) not in subnet:
+					if self.ip_freshly_set:
+						raise_after = univention.admin.uexceptions.ipOverridesNetwork
+					else:
+						# get next IP
+						network_object.refreshNextIp()
+						self['ip'] = network_object['nextIp']
+						ips = [ip for ip in self['ip'] if ip] if self.has_property('ip') and self['ip'] else []
+						ip1 = self['ip'][0] if len(ips) == 1 else ''
+						try:
+							self.ip = self.request_lock('aRecord', self['ip'][0])
+							self.ip_alredy_requested = True
+						except univention.admin.uexceptions.noLock:
+							pass
 
-						self.network_object = network_object
-					if network_object['dnsEntryZoneForward'] and ip1:
-						self['dnsEntryZoneForward'] = [[network_object['dnsEntryZoneForward'], ip1]]
-					if network_object['dnsEntryZoneReverse'] and ip1:
-						self['dnsEntryZoneReverse'] = [[network_object['dnsEntryZoneReverse'], ip1]]
-					if network_object['dhcpEntryZone']:
-						if ip1 and mac1:
-							self['dhcpEntryZone'] = [(network_object['dhcpEntryZone'], ip1, mac1)]
-						else:
-							self.__saved_dhcp_entry = network_object['dhcpEntryZone']
+					self.network_object = network_object
+				if network_object['dnsEntryZoneForward'] and ip1:
+					self['dnsEntryZoneForward'] = [[network_object['dnsEntryZoneForward'], ip1]]
+				if network_object['dnsEntryZoneReverse'] and ip1:
+					self['dnsEntryZoneReverse'] = [[network_object['dnsEntryZoneReverse'], ip1]]
+				if network_object['dhcpEntryZone']:
+					if ip1 and mac1:
+						self['dhcpEntryZone'] = [(network_object['dhcpEntryZone'], ip1, mac1)]
+					else:
+						self.__saved_dhcp_entry = network_object['dhcpEntryZone']
 
-					self.old_network = value
+				self.old_network = value
 
 		elif key == 'ip':
 			self.ip_freshly_set = True
@@ -3385,12 +3379,11 @@ class simpleComputer(simpleLdap):
 			if not self.ip:
 				self.ip_freshly_set = False
 
-		elif key == 'mac' and self.__saved_dhcp_entry:
-			if ip1 and macs:
-				if isinstance(value, list):
-					self['dhcpEntryZone'] = [(self.__saved_dhcp_entry, ip1, value[0])]
-				else:
-					self['dhcpEntryZone'] = [(self.__saved_dhcp_entry, ip1, value)]
+		elif key == 'mac' and self.__saved_dhcp_entry and ip1 and macs:
+			if isinstance(value, list):
+				self['dhcpEntryZone'] = [(self.__saved_dhcp_entry, ip1, value[0])]
+			else:
+				self['dhcpEntryZone'] = [(self.__saved_dhcp_entry, ip1, value)]
 
 		super(simpleComputer, self).__setitem__(key, value)
 		if raise_after:

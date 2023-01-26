@@ -88,10 +88,9 @@ class Test_UMCServiceProcessHandling:
             initial_state = self.service.query()
             self.service.check_service_presence(initial_state, SERVICE_NAME)
             for result in initial_state:
-                if result['service'] == SERVICE_NAME:
-                    if result['autostart'] in ('no', 'false'):
-                        print("Skipped due to: %s/autostart=%s" % (SERVICE_NAME, result['autostart']))
-                        self.service.return_code_result_skip()
+                if result['service'] == SERVICE_NAME and result['autostart'] in ('no', 'false'):
+                    print("Skipped due to: %s/autostart=%s" % (SERVICE_NAME, result['autostart']))
+                    self.service.return_code_result_skip()
 
     @pytest.fixture
     def save_initial_state(self, service_module):

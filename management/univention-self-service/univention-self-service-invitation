@@ -93,10 +93,9 @@ class Invitation(object):
 		l_filter = filter_format('uid=%s', (username,))
 		self.logger.debug('checking ldap with filter {}'.format(l_filter))
 		res = self.lo.search(l_filter)
-		if len(res) == 1:
-			if 'univentionPasswordSelfServiceEmail' in res[0][1]:
-				self.logger.debug('user {} is valid'.format(username))
-				return True
+		if len(res) == 1 and 'univentionPasswordSelfServiceEmail' in res[0][1]:
+			self.logger.debug('user {} is valid'.format(username))
+			return True
 		self.logger.debug('user {} is NOT valid'.format(username))
 		return False
 

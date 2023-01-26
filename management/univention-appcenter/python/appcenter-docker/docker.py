@@ -370,9 +370,8 @@ class Docker(object):
 			cert_volume = '%s:%s:ro' % (cert_dir, cert_dir)
 			volumes.add(cert_volume)
 		volumes.add('/sys/fs/cgroup:/sys/fs/cgroup:ro')                     # systemd
-		if ucr_is_true('appcenter/docker/container/proxy/settings', default=True):
-			if os.path.isfile('/etc/apt/apt.conf.d/80proxy'):
-				volumes.add('/etc/apt/apt.conf.d/80proxy:/etc/apt/apt.conf.d/81proxy:ro')  # apt proxy
+		if ucr_is_true('appcenter/docker/container/proxy/settings', default=True) and os.path.isfile('/etc/apt/apt.conf.d/80proxy'):
+			volumes.add('/etc/apt/apt.conf.d/80proxy:/etc/apt/apt.conf.d/81proxy:ro')  # apt proxy
 		env_file = self.ucr_filter_env_file(env)
 		command = None
 		if self.app.docker_script_init:

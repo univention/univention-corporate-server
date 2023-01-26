@@ -678,10 +678,9 @@ def password_sync_ucs_to_s4(s4connector, key, object):
 def password_sync_s4_to_ucs(s4connector, key, ucs_object, modifyUserPassword=True):
 	ud.debug(ud.LDAP, ud.INFO, "password_sync_s4_to_ucs called")
 
-	if ucs_object['modtype'] == 'modify':
-		if 'pwdLastSet' not in ucs_object.get('changed_attributes', []):
-			ud.debug(ud.LDAP, ud.INFO, 'password_sync_s4_to_ucs: the password for %s has not been changed. Skipping password sync.' % (ucs_object['dn']))
-			return
+	if ucs_object['modtype'] == 'modify' and 'pwdLastSet' not in ucs_object.get('changed_attributes', []):
+	    ud.debug(ud.LDAP, ud.INFO, 'password_sync_s4_to_ucs: the password for %s has not been changed. Skipping password sync.' % (ucs_object['dn']))
+	    return
 
 	object = s4connector._object_mapping(key, ucs_object, 'ucs')
 	s4_object_attributes = s4connector.lo_s4.get(object['dn'], ['objectSid', 'pwdLastSet'])

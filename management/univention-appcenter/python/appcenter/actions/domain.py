@@ -133,10 +133,9 @@ class Domain(CredentialsAction):
 			for app_obj in app_ldap_objects:
 				app_obj_version = app_obj.info.get('version')
 				app_obj_id = app_obj.info.get('id')[:-len(app_obj_version) - 1]
-				if app_obj_id == app.id:
-					if host.info.get('fqdn') in app_obj.info.get('server', []):
-						version = app_obj_version
-						break
+				if app_obj_id == app.id and host.info.get('fqdn') in app_obj.info.get('server', []):
+					version = app_obj_version
+					break
 			if local_ucs_version != remote_ucs_version:
 				# unable to compute directly... better treat as not available
 				update_available = False

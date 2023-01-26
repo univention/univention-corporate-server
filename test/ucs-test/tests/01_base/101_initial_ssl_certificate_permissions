@@ -134,9 +134,8 @@ def check_others_writability(ssl_files):
 
 def check_others_readability(ssl_files):
 	for _file in ssl_files:
-		if is_others_readable(_file):
-			if not is_exception(_file):
-				utils.fail('Others can read %s' % _file)
+		if is_others_readable(_file) and not is_exception(_file):
+			utils.fail('Others can read %s' % _file)
 
 
 def main():

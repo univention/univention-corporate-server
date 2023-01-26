@@ -208,13 +208,12 @@ class object(univention.admin.handlers.simpleLdap):
 
 	def _ldap_pre_create(self):
 		super(object, self)._ldap_pre_create()
-		if configRegistry.is_false('directory/manager/child/cn/ou', True):
-			if not self.lo.compare_dn(self.position.getDn(), configRegistry.get('ldap/base')):
-				# it is possible to have a basedn with cn=foo
-				# in this case it is allowed to create a ou
-				# under a cn.
-				if any(m and m.module == 'container/cn' for m in univention.admin.modules.identify(self.position.getDn(), self.lo.get(self.position.getDn()))):
-					raise univention.admin.uexceptions.invalidChild(_('It is not allowed to create a container/ou as child object of a container/cn.'))
+		if configRegistry.is_false('directory/manager/child/cn/ou', True) and not self.lo.compare_dn(self.position.getDn(), configRegistry.get('ldap/base')):
+			# it is possible to have a basedn with cn=foo
+			# in this case it is allowed to create a ou
+			# under a cn.
+			if any(m and m.module == 'container/cn' for m in univention.admin.modules.identify(self.position.getDn(), self.lo.get(self.position.getDn()))):
+				raise univention.admin.uexceptions.invalidChild(_('It is not allowed to create a container/ou as child object of a container/cn.'))
 
 	def _ldap_post_create(self):
 		super(object, self)._ldap_post_create()

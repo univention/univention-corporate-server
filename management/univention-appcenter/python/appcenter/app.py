@@ -1198,9 +1198,8 @@ class App(with_metaclass(AppMetaClass, object)):
 		if self.docker and not container_mode():
 			return ucr_get(self.ucr_status_key) in ['installed', 'stalled'] and ucr_get(self.ucr_version_key) == self.version and ucr_get(self.ucr_ucs_version_key, self.get_ucs_version()) == self.get_ucs_version()
 		else:
-			if not self.without_repository:
-				if not ucr_includes(self.ucr_component_key):
-					return False
+			if not self.without_repository and not ucr_includes(self.ucr_component_key):
+				return False
 			return packages_are_installed(self.default_packages, strict=False)
 
 	def is_ucs_component(self):
@@ -1508,9 +1507,8 @@ class App(with_metaclass(AppMetaClass, object)):
 			if not app._allowed_on_local_server():
 				# cannot be installed, continue
 				continue
-			if app.id in self.conflicted_apps or self.id in app.conflicted_apps:
-				if app.is_installed():
-					conflictedapps.add(app.id)
+			if (app.id in self.conflicted_apps or self.id in app.conflicted_apps) and app.is_installed():
+				conflictedapps.add(app.id)
 		# check port conflicts
 		ports = []
 		for i in self.ports_exclusive:
@@ -1534,9 +1532,8 @@ class App(with_metaclass(AppMetaClass, object)):
 		apps_cache = Apps()
 		# RequiredApps
 		for app in apps_cache.get_all_apps():
-			if app.id in self.required_apps:
-				if not app.is_installed():
-					unmet_apps.append({'id': app.id, 'name': app.name, 'in_domain': False})
+			if app.id in self.required_apps and not app.is_installed():
+				unmet_apps.append({'id': app.id, 'name': app.name, 'in_domain': False})
 
 		# Plugin
 		if self.plugin_of:

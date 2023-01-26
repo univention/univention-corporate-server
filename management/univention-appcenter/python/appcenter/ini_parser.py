@@ -126,9 +126,8 @@ class IniSectionAttribute(UniventionMetaInfo):
 		return self.default
 
 	def parse(self, value):
-		if self.choices:
-			if value not in self.choices:
-				raise ValueError('%r not in %r' % (value, self.choices))
+		if self.choices and value not in self.choices:
+			raise ValueError('%r not in %r' % (value, self.choices))
 		return value
 
 

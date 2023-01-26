@@ -161,9 +161,8 @@ def handler(dn: str, new: Dict[str, List[bytes]], old: Dict[str, List[bytes]]) -
 		if b'univentionPrinterGroup' in old.get('objectClass', ()):
 			printer_is_group = True
 
-	if new:
-		if b'univentionPrinterGroup' in new.get('objectClass', ()):
-			printer_is_group = True
+	if new and b'univentionPrinterGroup' in new.get('objectClass', ()):
+	    printer_is_group = True
 
 	modified_uri = ''
 	for n in new.keys():

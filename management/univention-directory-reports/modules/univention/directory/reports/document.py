@@ -149,9 +149,8 @@ class Document(object):
 		devnull = open(os.path.devnull, 'w')
 		try:
 			env_vars = {'PATH': '/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin', 'HOME': '/var/cache/univention-directory-reports'}
-			if not subprocess.call(cmd, stdout=devnull, stderr=devnull, env=env_vars):
-				if not subprocess.call(cmd, stdout=devnull, stderr=devnull, env=env_vars):
-					return '%s.pdf' % latex_file.rsplit('.', 1)[0]
+			if not subprocess.call(cmd, stdout=devnull, stderr=devnull, env=env_vars) and not subprocess.call(cmd, stdout=devnull, stderr=devnull, env=env_vars):
+				return '%s.pdf' % latex_file.rsplit('.', 1)[0]
 			raise ReportError(_('Failed creating PDF file.'))
 		finally:
 			devnull.close()

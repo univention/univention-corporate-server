@@ -497,9 +497,8 @@ class Instance(umcm.Base, ProgressMixin):
 		for setting in app.get_settings():
 			if phase in setting.show or phase in setting.show_read_only:
 				value = setting.get_value(app, phase)
-				if isinstance(setting, FileSetting) and not isinstance(setting, PasswordFileSetting):
-					if value:
-						value = b64encode(value.encode('utf-8')).decode('ascii')
+				if isinstance(setting, FileSetting) and not isinstance(setting, PasswordFileSetting) and value:
+					value = b64encode(value.encode('utf-8')).decode('ascii')
 				values[setting.name] = value
 		return {
 			'autostart': autostart,
@@ -511,9 +510,8 @@ class Instance(umcm.Base, ProgressMixin):
 	@simple_response(with_progress=True)
 	def configure(self, progress, app, values, autostart=None):
 		for setting in app.get_settings():
-			if isinstance(setting, FileSetting) and not isinstance(setting, PasswordFileSetting):
-				if values.get(setting.name):
-					values[setting.name] = b64decode(values[setting.name]).decode('utf-8')
+			if isinstance(setting, FileSetting) and not isinstance(setting, PasswordFileSetting) and values.get(setting.name):
+				values[setting.name] = b64decode(values[setting.name]).decode('utf-8')
 		configure = get_action('configure')
 		handler = UMCProgressHandler(progress)
 		handler.setLevel(logging.INFO)

@@ -90,6 +90,5 @@ while not i == 2:
 	i = child.expect([r'%s\.%s.*\?' % (ucr['hostname'], ucr['domainname']), r'localhost.*\?', EOF], timeout=timeout)
 	if i in [0, 1]:
 		child.sendline(machine_password)
-	elif i == 2:
-		if child.before:
-			print(child.before.decode('UTF-8', 'replace'))
+	elif i == 2 and child.before:
+	    print(child.before.decode('UTF-8', 'replace'))

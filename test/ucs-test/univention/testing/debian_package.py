@@ -152,9 +152,8 @@ class DebianPackage():
 		sys.stdout.flush()
 		if subprocess.call(['dpkg', '-r', self._package_name]):
 			raise UninstallRuntimeError()
-		if purge:
-			if subprocess.call(['dpkg', '--purge', self._package_name]):
-				raise UninstallRuntimeError()
+		if purge and subprocess.call(['dpkg', '--purge', self._package_name]):
+			raise UninstallRuntimeError()
 
 	def remove(self):
 		# type: () -> None

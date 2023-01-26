@@ -119,9 +119,8 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 		if not controlpkgname:
 			self.addmsg('0011-9', 'cannot determine source package name', fn_control)
 
-		if srcpkgname and controlpkgname:
-			if srcpkgname != controlpkgname:
-				self.addmsg('0011-2', 'source package name differs in debian/changelog and debian/control', fn_changelog)
+		if srcpkgname and controlpkgname and srcpkgname != controlpkgname:
+			self.addmsg('0011-2', 'source package name differs in debian/changelog and debian/control', fn_changelog)
 
 		# parse source section of debian/control
 		if not parser.source_section.get('Section', '') in ('univention'):

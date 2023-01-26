@@ -1264,10 +1264,9 @@ class ucs(object):
 			objectGUID = decode_guid(objectGUID)
 		entryUUID = self._get_entryUUID(object['dn'])
 
-		if property_type in ['ou', 'container']:
-			if objectGUID and self.was_objectGUID_deleted_by_ucs(objectGUID):
-				ud.debug(ud.LDAP, ud.PROCESS, "delete_in_ucs: object %s already deleted in UCS, ignoring delete" % object['dn'])
-				return True
+		if property_type in ['ou', 'container'] and objectGUID and self.was_objectGUID_deleted_by_ucs(objectGUID):
+			ud.debug(ud.LDAP, ud.PROCESS, "delete_in_ucs: object %s already deleted in UCS, ignoring delete" % object['dn'])
+			return True
 		try:
 			ucs_object = univention.admin.objects.get(module, None, self.lo, dn=object['dn'], position='')
 		except univention.admin.uexceptions.noObject:
@@ -1357,9 +1356,8 @@ class ucs(object):
 						if old_ad_object.get(attr) != original_attributes.get(attr):
 							object['changed_attributes'].append(attr)
 					for attr in old_ad_object:
-						if old_ad_object.get(attr) != original_attributes.get(attr):
-							if attr not in object['changed_attributes']:
-								object['changed_attributes'].append(attr)
+						if old_ad_object.get(attr) != original_attributes.get(attr) and attr not in object['changed_attributes']:
+							object['changed_attributes'].append(attr)
 					if not (set(object['changed_attributes']) - self.irrelevant_attributes):
 						if property_type == "user" \
 						   and self.configRegistry.is_false('connector/ad/mapping/user/password/disabled', True) \
@@ -1673,11 +1671,10 @@ class ucs(object):
 		# DN mapping
 		dn_mapping_stored = []
 		for dntype in ['dn', 'olddn']:  # check if all available dn's are already mapped
-			if dntype in object:
-				if self._get_dn_by_ucs(object[dntype]):
-					object[dntype] = self._get_dn_by_ucs(object[dntype])
-					object[dntype] = self.dn_mapped_to_base(object[dntype], self.lo_ad.base)
-					dn_mapping_stored.append(dntype)
+			if dntype in object and self._get_dn_by_ucs(object[dntype]):
+				object[dntype] = self._get_dn_by_ucs(object[dntype])
+				object[dntype] = self.dn_mapped_to_base(object[dntype], self.lo_ad.base)
+				dn_mapping_stored.append(dntype)
 
 		try:
 			MAPPING = self.property[key]
@@ -1751,11 +1748,10 @@ class ucs(object):
 		# DN mapping
 		dn_mapping_stored = []
 		for dntype in ['dn', 'olddn']:  # check if all available dn's are already mapped
-			if dntype in object:
-				if self._get_dn_by_con(object[dntype]):
-					object[dntype] = self._get_dn_by_con(object[dntype])
-					object[dntype] = self.dn_mapped_to_base(object[dntype], self.lo.base)
-					dn_mapping_stored.append(dntype)
+			if dntype in object and self._get_dn_by_con(object[dntype]):
+				object[dntype] = self._get_dn_by_con(object[dntype])
+				object[dntype] = self.dn_mapped_to_base(object[dntype], self.lo.base)
+				dn_mapping_stored.append(dntype)
 
 		try:
 			MAPPING = self.property[key]

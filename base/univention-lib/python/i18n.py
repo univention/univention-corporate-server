@@ -112,9 +112,8 @@ class Locale(object):
 	def __str__(self):
 		# type: () -> str
 		text = self.language or ''
-		if self.language not in ('C', 'POSIX'):
-			if self.territory:
-				text += '_%s' % self.territory
+		if self.language not in ('C', 'POSIX') and self.territory:
+			text += '_%s' % self.territory
 		if self.codeset:
 			text += '.%s' % self.codeset
 		if self.modifier:

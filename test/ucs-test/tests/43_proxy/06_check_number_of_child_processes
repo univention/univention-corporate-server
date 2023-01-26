@@ -59,9 +59,8 @@ def main():
 			time.sleep(2**attempt)  # wait 1, 2, 4, 8, 16, 32 seconds
 			ok = True
 			for process in psutil.process_iter():
-				if process.name() in result:
-					if not process.get_children():  # helper processes do not have child processes
-						result[process.name] += 1
+				if process.name() in result and not process.get_children():  # helper processes do not have child processes
+					result[process.name] += 1
 
 			for key, value in result.items():
 				if expected[key] != value:

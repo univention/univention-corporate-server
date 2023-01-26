@@ -119,9 +119,8 @@ class _AppCache(object):
 				continue
 			if _app <= app:
 				continue
-			if _app.required_app_version_upgrade:
-				if LooseVersion(_app.required_app_version_upgrade) > app_version:
-					continue
+			if _app.required_app_version_upgrade and LooseVersion(_app.required_app_version_upgrade) > app_version:
+				continue
 			if not _app.install_permissions_exist():
 				# do not consider app without permission...
 				# ... until it is the only one (and then fail eventually...)

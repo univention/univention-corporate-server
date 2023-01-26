@@ -821,10 +821,9 @@ def main(args):
 
 		# if a filter option is set: verify that a valid command is given
 		for name, (_prio, func, state, actions) in OPT_FILTERS.items():
-			if state:
-				if action not in actions:
-					print('E: invalid option --%s for command %s' % (name, action), file=sys.stderr)
-					sys.exit(1)
+			if state and action not in actions:
+				print('E: invalid option --%s for command %s' % (name, action), file=sys.stderr)
+				sys.exit(1)
 
 		# check command options
 		cmd_opts = OPT_COMMANDS.get(action, {})

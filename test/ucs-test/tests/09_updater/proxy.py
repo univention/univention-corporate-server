@@ -84,9 +84,8 @@ class Proxy(BaseHTTPRequestHandler):
 				self.headers["Authorization"] = "Basic %s" % (auth.rstrip(),)
 
 		# Fake DNS resolve of configured hostname to localhost
-		if options.translate:
-			if url.hostname == options.translate:
-				u[1] = u[1].replace(options.translate, 'localhost')
+		if options.translate and url.hostname == options.translate:
+			u[1] = u[1].replace(options.translate, 'localhost')
 
 		path = urlunsplit(u)
 		try:

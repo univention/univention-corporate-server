@@ -202,21 +202,20 @@ class object(univention.admin.handlers.simpleLdap):
 
 		ml = univention.admin.handlers.simpleLdap._ldap_modlist(self)
 
-		if self.hasChanged('mailPrimaryAddress') and self['mailPrimaryAddress']:
-			if not any(x[0] == 'mailPrimaryAddress' for x in self.alloc):
-				value = 'univentioninternalpostuser+shared/%s@%s' % (self['name'].lower(), self['mailDomain'].lower())
-				ml.append((
-					'univentionMailSharedFolderDeliveryAddress',
-					self.oldattr.get('univentionMailSharedFolderDeliveryAddress', []),
-					[value.encode('UTF-8')]
-				))
+		if self.hasChanged('mailPrimaryAddress') and self['mailPrimaryAddress'] and not any(x[0] == 'mailPrimaryAddress' for x in self.alloc):
+			value = 'univentioninternalpostuser+shared/%s@%s' % (self['name'].lower(), self['mailDomain'].lower())
+			ml.append((
+				'univentionMailSharedFolderDeliveryAddress',
+				self.oldattr.get('univentionMailSharedFolderDeliveryAddress', []),
+				[value.encode('UTF-8')]
+			))
 
-				address = '%s@%s' % (self['name'], self['mailDomain'])
-				if self['mailPrimaryAddress'] != address and self['mailPrimaryAddress'].lower() != self.oldinfo.get('mailPrimaryAddress', '').lower():
-					try:
-						self.request_lock('mailPrimaryAddress', self['mailPrimaryAddress'])
-					except univention.admin.uexceptions.noLock:
-						raise univention.admin.uexceptions.mailAddressUsed(self['mailPrimaryAddress'])
+			address = '%s@%s' % (self['name'], self['mailDomain'])
+			if self['mailPrimaryAddress'] != address and self['mailPrimaryAddress'].lower() != self.oldinfo.get('mailPrimaryAddress', '').lower():
+				try:
+					self.request_lock('mailPrimaryAddress', self['mailPrimaryAddress'])
+				except univention.admin.uexceptions.noLock:
+					raise univention.admin.uexceptions.mailAddressUsed(self['mailPrimaryAddress'])
 
 		if not self['mailPrimaryAddress']:
 			ml.append(('univentionMailSharedFolderDeliveryAddress', self.oldattr.get('univentionMailSharedFolderDeliveryAddress', []), []))

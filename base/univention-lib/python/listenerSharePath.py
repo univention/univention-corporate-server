@@ -200,9 +200,8 @@ def createOrRename(old, new, cr):
 		newPathDir = os.path.dirname(newPath)
 		existingNewPathDir = "/"
 		for path in newPathDir.split("/"):
-			if path and os.access(existingNewPathDir, os.F_OK):
-				if os.access(os.path.join(existingNewPathDir, path), os.F_OK):
-					existingNewPathDir = os.path.join(existingNewPathDir, path)
+			if path and os.access(existingNewPathDir, os.F_OK) and os.access(os.path.join(existingNewPathDir, path), os.F_OK):
+				existingNewPathDir = os.path.join(existingNewPathDir, path)
 
 		if newPathDir == "/" or existingNewPathDir == "/":
 			return "moving to directory level one is not allowed (%s)" % newPath

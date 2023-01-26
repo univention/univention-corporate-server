@@ -139,9 +139,8 @@ def secretary_sync_s4_to_ucs(s4connector, key, s4_object):
 			if hasattr(s4connector.property['user'], 'position_mapping'):
 				for mapping in s4connector.property['user'].position_mapping:
 					dn_mapped = s4connector._subtree_replace(dn_mapped, mapping[1], mapping[0])
-				if dn_mapped == s4_dn:
-					if not (s4connector.lo.base.lower() == dn_mapped[-len(s4connector.lo.base):].lower() and len(s4connector.lo.base) > len(s4connector.lo_s4.base)):
-						dn_mapped = s4connector._subtree_replace(dn_mapped, s4connector.lo_s4.base, s4connector.lo.base)
+				if dn_mapped == s4_dn and not (s4connector.lo.base.lower() == dn_mapped[-len(s4connector.lo.base):].lower() and len(s4connector.lo.base) > len(s4connector.lo_s4.base)):
+					dn_mapped = s4connector._subtree_replace(dn_mapped, s4connector.lo_s4.base, s4connector.lo.base)
 			ucs_secretary.append(dn_mapped)
 		# remove multiples
 		ucs_secretary = list(dict.fromkeys(ucs_secretary))
@@ -165,8 +164,7 @@ def secretary_sync_ucs_to_s4(s4connector, key, ucs_object):
 			if hasattr(s4connector.property['user'], 'position_mapping'):
 				for mapping in s4connector.property['user'].position_mapping:
 					dn_mapped = s4connector._subtree_replace(dn_mapped, mapping[0], mapping[1])
-				if dn_mapped == ucs_dn:
-					if not (s4connector.lo_s4.base.lower() == dn_mapped[-len(s4connector.lo_s4.base):].lower() and len(s4connector.lo_s4.base) > len(s4connector.lo.base)):
-						dn_mapped = s4connector._subtree_replace(dn_mapped, s4connector.lo.base, s4connector.lo_s4.base)
+				if dn_mapped == ucs_dn and not (s4connector.lo_s4.base.lower() == dn_mapped[-len(s4connector.lo_s4.base):].lower() and len(s4connector.lo_s4.base) > len(s4connector.lo.base)):
+					dn_mapped = s4connector._subtree_replace(dn_mapped, s4connector.lo.base, s4connector.lo_s4.base)
 			s4_secretary.append(dn_mapped.encode('UTF-8'))
 		return list(set(s4_secretary))

@@ -128,9 +128,8 @@ class ILayoutElement(dict):
 			elif isinstance(item, (tuple, list)):
 				if field in item:
 					return True
-			elif isinstance(item, ILayoutElement):
-				if item.exists(field):
-					return True
+			elif isinstance(item, ILayoutElement) and item.exists(field):
+				return True
 
 		return False
 

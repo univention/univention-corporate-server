@@ -116,16 +116,15 @@ def php_bool(bool_: str) -> str:
 def handler(dn: str, new: Dict[str, List[bytes]], old: Dict[str, List[bytes]]) -> None:
 	listener.setuid(0)
 	try:
-		if old:
-			if old.get('SAMLServiceProviderIdentifier'):
-				# delete old service provider config file
-				old_filename = os.path.join(sp_config_dir, '%s.php' % old.get('SAMLServiceProviderIdentifier')[0].decode('ASCII').replace('/', '_'))
-				if os.path.exists(old_filename):
-					ud.debug(ud.LISTENER, ud.INFO, 'Deleting old SAML SP Configuration file %s' % old_filename)
-					try:
-						os.unlink(old_filename)
-					except IOError as exc:
-						ud.debug(ud.LISTENER, ud.ERROR, 'Deleting failed: %s' % (exc,))
+		if old and old.get('SAMLServiceProviderIdentifier'):
+			# delete old service provider config file
+			old_filename = os.path.join(sp_config_dir, '%s.php' % old.get('SAMLServiceProviderIdentifier')[0].decode('ASCII').replace('/', '_'))
+			if os.path.exists(old_filename):
+				ud.debug(ud.LISTENER, ud.INFO, 'Deleting old SAML SP Configuration file %s' % old_filename)
+				try:
+					os.unlink(old_filename)
+				except IOError as exc:
+					ud.debug(ud.LISTENER, ud.ERROR, 'Deleting failed: %s' % (exc,))
 
 		if new and new.get('SAMLServiceProviderIdentifier') and new.get('isServiceProviderActivated')[0] == b"TRUE":
 			# write new service provider config file

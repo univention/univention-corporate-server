@@ -35,10 +35,9 @@ def check_status(app):
 			print('    Within container, checking packages', ', '.join(app.default_packages))
 			output = subprocess.check_output(['univention-app', 'shell', app.id, 'dpkg', '-s'] + app.default_packages, stderr=subprocess.STDOUT).decode('utf-8')
 			for line in output.splitlines():
-				if line.startswith('Status: '):
-					if line != 'Status: install ok installed':
-						print(output)
-						utils.fail('ERROR: A package is not installed!')
+				if line.startswith('Status: ') and line != 'Status: install ok installed':
+					print(output)
+					utils.fail('ERROR: A package is not installed!')
 		else:
 			print('    No appbox image, not checking packages')
 	else:
@@ -48,10 +47,9 @@ def check_status(app):
 		print('    Checking packages', ', '.join(packages))
 		output = subprocess.check_output(['dpkg', '-s'] + packages, stderr=subprocess.STDOUT).decode('utf-8')
 		for line in output.splitlines():
-			if line.startswith('Status: '):
-				if line != 'Status: install ok installed':
-					print(output)
-					utils.fail('ERROR: A package is not installed!')
+			if line.startswith('Status: ') and line != 'Status: install ok installed':
+				print(output)
+				utils.fail('ERROR: A package is not installed!')
 
 
 def check_ldap(app, apps):

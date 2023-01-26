@@ -90,12 +90,11 @@ def handler(dn: str, new: Dict[str, List[bytes]], old: Dict[str, List[bytes]], c
 			with open(tmpFile, "wb") as fp:
 				os.chmod(tmpFile, 0o600)
 				pickle.dump({"dn": dn, "old": old}, fp)
-		elif command == "a" and not old:
-			if os.path.isfile(tmpFile):
-				with open(tmpFile, "rb") as fp:
-					p = pickle.load(fp)
-				oldObject = p.get("old", {})
-				os.remove(tmpFile)
+		elif command == "a" and not old and os.path.isfile(tmpFile):
+			with open(tmpFile, "rb") as fp:
+				p = pickle.load(fp)
+			oldObject = p.get("old", {})
+			os.remove(tmpFile)
 	except Exception as exc:
 		if os.path.isfile(tmpFile):
 			os.remove(tmpFile)

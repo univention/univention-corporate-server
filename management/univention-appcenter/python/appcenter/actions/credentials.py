@@ -155,16 +155,15 @@ class CredentialsAction(UniventionAppAction):
 			raise ConnectionFailedServerDown()
 
 	def _get_ldap_connection(self, args, allow_machine_connection=False, allow_admin_connection=True):
-		if allow_admin_connection:
-			if ucr_get('server/role') == 'domaincontroller_master' and getuser() == 'root':
-				try:
-					return self._get_admin_connection()
-				except ConnectionFailed:
-					if allow_machine_connection or args is not None:
-						# try to get another connection
-						pass
-					else:
-						raise
+		if allow_admin_connection and ucr_get('server/role') == 'domaincontroller_master' and getuser() == 'root':
+			try:
+				return self._get_admin_connection()
+			except ConnectionFailed:
+				if allow_machine_connection or args is not None:
+					# try to get another connection
+					pass
+				else:
+					raise
 		if allow_machine_connection:
 			try:
 				return self._get_machine_connection()

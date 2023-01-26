@@ -183,25 +183,24 @@ def compare(old, new):
     src_package_list = set()
 
     for package in package_list:
-        if package in old:
-            if version_compare(old[package].version, new[package].version) > 0:
-                if errors == 0:
-                    print('\n---------------------------------------------------------')
-                    print('  The following packages use a smaller package version:')
-                    print('---------------------------------------------------------\n')
+        if package in old and version_compare(old[package].version, new[package].version) > 0:
+            if errors == 0:
+                print('\n---------------------------------------------------------')
+                print('  The following packages use a smaller package version:')
+                print('---------------------------------------------------------\n')
 
-                print(" Package: %s" % package)
-                print(f"   {old[package].ucs_version}: {old[package].version}")
-                print(f"   {new[package].ucs_version}: {new[package].version}")
+            print(" Package: %s" % package)
+            print(f"   {old[package].ucs_version}: {old[package].version}")
+            print(f"   {new[package].ucs_version}: {new[package].version}")
 
-                src_package = new[package].sourcepkg
-                if not src_package:
-                    src_package = package
+            src_package = new[package].sourcepkg
+            if not src_package:
+                src_package = package
 
-                src_package_list.add(src_package)
+            src_package_list.add(src_package)
 
-                print("  Source package: %s" % src_package)
-                errors += 1
+            print("  Source package: %s" % src_package)
+            errors += 1
 
     if errors:
         print("\nAffected source packages:")

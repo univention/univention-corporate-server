@@ -51,9 +51,8 @@ def _getBoolDefault(varGlobal, varLocal, settings, configRegistry):
 	configName = varGlobal.split("/")[-1]
 	if configRegistry.is_true(varGlobal, True):
 		settings[configName] = configName
-	if configRegistry.is_false(varLocal):
-		if settings.get(configName):
-			del settings[configName]
+	if configRegistry.is_false(varLocal) and settings.get(configName):
+	    del settings[configName]
 	if configRegistry.is_true(varLocal, False):
 		settings[configName] = configName
 

@@ -781,10 +781,9 @@ class UniventionLDAPACL(UniventionLDAPExtensionWithListenerHandler):
 				ud.debug(ud.LISTENER, ud.PROCESS, '%s: ignore first appearance of %s, not yet activated' % (name, dn))
 				return
 			# ignore change unless (re) activated
-			if new and old:
-				if not new.get('univentionLDAPACLActive', [b'FALSE'])[0] == b'TRUE':
-					ud.debug(ud.LISTENER, ud.PROCESS, '%s: ignore modify of %s, not yet activated' % (name, dn))
-					return
+			if new and old and not new.get('univentionLDAPACLActive', [b'FALSE'])[0] == b'TRUE':
+				ud.debug(ud.LISTENER, ud.PROCESS, '%s: ignore modify of %s, not yet activated' % (name, dn))
+				return
 
 		# Check UCS version requirements first and skip new if they are not met.
 		if new:

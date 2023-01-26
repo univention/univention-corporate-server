@@ -195,20 +195,19 @@ def auto_complete_values_for_join(newValues, current_locale=None):
 			raise Exception(_("Cannot automatically determine the domain. Please specify the server's fully qualified domain name."))
 
 	isAdMember = 'ad/member' in newValues and 'ad/address' in newValues
-	if 'windows/domain' not in newValues:
-		if isAdMember:
-			MODULE.process('Searching for NETBIOS domain in AD')
-			for nameserver in ('nameserver1', 'nameserver2', 'nameserver3'):
-				ns = newValues.get(nameserver, ucr.get(nameserver))
-				if ns:
-					try:
-						ad_domain_info = lookup_adds_dc(newValues.get('ad/address'), ucr={'nameserver1': ns})
-					except failedADConnect:
-						pass
-					else:
-						newValues['windows/domain'] = ad_domain_info['Netbios Domain']
-						MODULE.process('Setting NETBIOS domain to AD value: %s' % newValues['windows/domain'])
-						break
+	if 'windows/domain' not in newValues and isAdMember:
+	    MODULE.process('Searching for NETBIOS domain in AD')
+	    for nameserver in ('nameserver1', 'nameserver2', 'nameserver3'):
+	        ns = newValues.get(nameserver, ucr.get(nameserver))
+	        if ns:
+	            try:
+	                ad_domain_info = lookup_adds_dc(newValues.get('ad/address'), ucr={'nameserver1': ns})
+	            except failedADConnect:
+	                pass
+	            else:
+	                newValues['windows/domain'] = ad_domain_info['Netbios Domain']
+	                MODULE.process('Setting NETBIOS domain to AD value: %s' % newValues['windows/domain'])
+	                break
 
 	if 'windows/domain' not in newValues and 'domainname' in newValues:
 		newValues['windows/domain'] = domain2windowdomain(newValues.get('domainname'))
@@ -220,9 +219,8 @@ def auto_complete_values_for_join(newValues, current_locale=None):
 		selectedComponents.add('univention-ad-connector')
 
 	# make sure to install the memberof overlay if it is installed on the Primary Directory Node
-	if newValues['server/role'] not in ('domaincontroller_master', 'memberserver'):
-		if newValues.pop('install_memberof_overlay', None):
-			selectedComponents.add('univention-ldap-overlay-memberof')
+	if newValues['server/role'] not in ('domaincontroller_master', 'memberserver') and newValues.pop('install_memberof_overlay', None):
+	    selectedComponents.add('univention-ldap-overlay-memberof')
 
 	# add lists with all packages that should be removed/installed on the system
 	if selectedComponents:
@@ -802,9 +800,8 @@ def get_apps(no_cache=False):
 
 
 def is_proxy(proxy):
-	if proxy and proxy != 'http://' and proxy != 'https://':
-		if not proxy.startswith('http://') and not proxy.startswith('https://'):
-			return False
+	if proxy and proxy != 'http://' and proxy != 'https://' and not proxy.startswith('http://') and not proxy.startswith('https://'):
+	    return False
 	return True
 
 

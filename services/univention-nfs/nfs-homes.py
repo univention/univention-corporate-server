@@ -89,15 +89,14 @@ def handler(dn: str, new: Dict[str, List[bytes]], old: Dict[str, List[bytes]]) -
 			flags, unc = automountInformation.split(" ", 1)
 		if ":" in unc:
 			host, path = unc.split(':', 1)
-			if host and host == fqdn:
-				if not os.path.exists(path):
-					ud.debug(ud.LISTENER, ud.INFO, "%s: creating share path %s for user %s" % (name, path, uid))
-					listener.setuid(0)
-					try:
-						os.makedirs(path)
-						os.chmod(path, stat.S_IRWXU | stat.S_IXGRP | stat.S_IXOTH)
-						os.chown(path, uidNumber, gidNumber)
-					except Exception as exc:
-						ud.debug(ud.LISTENER, ud.ERROR, "%s: failed to create home path %s for user %s (%s)" % (name, path, uid, exc))
-					finally:
-						listener.unsetuid()
+			if host and host == fqdn and not os.path.exists(path):
+				ud.debug(ud.LISTENER, ud.INFO, "%s: creating share path %s for user %s" % (name, path, uid))
+				listener.setuid(0)
+				try:
+					os.makedirs(path)
+					os.chmod(path, stat.S_IRWXU | stat.S_IXGRP | stat.S_IXOTH)
+					os.chown(path, uidNumber, gidNumber)
+				except Exception as exc:
+					ud.debug(ud.LISTENER, ud.ERROR, "%s: failed to create home path %s for user %s (%s)" % (name, path, uid, exc))
+				finally:
+					listener.unsetuid()

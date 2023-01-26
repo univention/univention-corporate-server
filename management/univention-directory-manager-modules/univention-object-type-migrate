@@ -68,10 +68,9 @@ def parseOptions():
 def warningSupressed(dn, attributes):
 	# cn=admin,$ldap_base cn=backup,$ldap_base
 	ocs = set(attributes['objectClass'])
-	if set(attributes.keys()) == {'objectClass', 'userPassword', 'cn', 'sn'}:
-		if ocs == {b'top', b'person'}:
-			if attributes['sn'] == attributes['cn'] and len(attributes['cn']) == 1 and attributes['cn'][0] in (b'admin', b'backup', ):
-				return True
+	if set(attributes.keys()) == {'objectClass', 'userPassword', 'cn', 'sn'} and ocs == {b'top', b'person'}:
+	    if attributes['sn'] == attributes['cn'] and len(attributes['cn']) == 1 and attributes['cn'][0] in (b'admin', b'backup', ):
+	        return True
 	# Kerberos principal objects
 	if ocs == {b'top', b'account', b'krb5Principal', b'krb5KDCEntry'}:
 		return True

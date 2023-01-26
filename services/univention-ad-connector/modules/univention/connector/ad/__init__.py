@@ -1708,11 +1708,10 @@ class ad(univention.connector.ucs):
 				ucs_admin_object = univention.admin.objects.get(self.modules[object_key], co='', lo=self.lo, position='', dn=object_ucs['dn'])
 				ucs_admin_object.open()
 				ldap_user_principal_name = ldap_object_ad['userPrincipalName'][0].decode('UTF-8')
-				if ucs_admin_object['username'] + '@' not in ldap_user_principal_name:
-					if '@' in ldap_user_principal_name:
-						princ = ldap_user_principal_name.split('@', 1)[1]
-						princ = ucs_admin_object['username'] + '@' + princ
-						modlist = [(ldap.MOD_REPLACE, 'userPrincipalName', [princ.encode('UTF-8')])]
+				if ucs_admin_object['username'] + '@' not in ldap_user_principal_name and '@' in ldap_user_principal_name:
+					princ = ldap_user_principal_name.split('@', 1)[1]
+					princ = ucs_admin_object['username'] + '@' + princ
+					modlist = [(ldap.MOD_REPLACE, 'userPrincipalName', [princ.encode('UTF-8')])]
 		if modlist:
 			ud.debug(ud.LDAP, ud.INFO, "set_userPrincipalName_from_ucr: set kerberos principle for AD user %s with modlist %s " % (object['dn'], modlist))
 			self.lo_ad.lo.modify_s(object['dn'], modlist)
@@ -2143,9 +2142,8 @@ class ad(univention.connector.ucs):
 				for attr, value in object['attributes'].items():
 					for attr_key in self.property[property_type].post_attributes.keys():
 						post_attribute = self.property[property_type].post_attributes[attr_key]
-						if post_attribute.reverse_attribute_check:
-							if not object['attributes'].get(post_attribute.ldap_attribute):
-								continue
+						if post_attribute.reverse_attribute_check and not object['attributes'].get(post_attribute.ldap_attribute):
+							continue
 						if attr not in (post_attribute.con_attribute, post_attribute.con_other_attribute):
 							continue
 

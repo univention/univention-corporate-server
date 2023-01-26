@@ -418,16 +418,14 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 							user = entry.get('User', [])
 							if len(user) > 1:
 								self.addmsg('0004-44', 'UCR .info-file contains entry of "Type: file" with multiple "User: " line', fn)
-							elif len(user) == 1:
-								if user[0].isdigit():  # must be an symbolic name
-									self.addmsg('0004-43', 'UCR .info-file contains entry of "Type: file" with invalid "User: " line', fn)
+							elif len(user) == 1 and user[0].isdigit():  # must be an symbolic name
+								self.addmsg('0004-43', 'UCR .info-file contains entry of "Type: file" with invalid "User: " line', fn)
 
 							group = entry.get('Group', [])
 							if len(group) > 1:
 								self.addmsg('0004-46', 'UCR .info-file contains entry of "Type: file" with multiple "Group: " line', fn)
-							elif len(group) == 1:
-								if group[0].isdigit():  # must be an symbolic name
-									self.addmsg('0004-45', 'UCR .info-file contains entry of "Type: file" with invalid "Group: " line', fn)
+							elif len(group) == 1 and group[0].isdigit():  # must be an symbolic name
+								self.addmsg('0004-45', 'UCR .info-file contains entry of "Type: file" with invalid "Group: " line', fn)
 
 							mode = entry.get('Mode', [])
 							if len(mode) > 1:
@@ -509,16 +507,14 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 							user = entry.get('User', [])
 							if len(user) > 1:
 								self.addmsg('0004-50', 'UCR .info-file contains entry of "Type: multifile" with multiple "User: " line', fn)
-							elif len(user) == 1:
-								if user[0].isdigit():  # must be an symbolic name
-									self.addmsg('0004-49', 'UCR .info-file contains entry of "Type: multifile" with invalid "User: " line', fn)
+							elif len(user) == 1 and user[0].isdigit():  # must be an symbolic name
+								self.addmsg('0004-49', 'UCR .info-file contains entry of "Type: multifile" with invalid "User: " line', fn)
 
 							group = entry.get('Group', [])
 							if len(group) > 1:
 								self.addmsg('0004-52', 'UCR .info-file contains entry of "Type: multifile" with multiple "Group: " line', fn)
-							elif len(group) == 1:
-								if group[0].isdigit():  # must be an symbolic name
-									self.addmsg('0004-51', 'UCR .info-file contains entry of "Type: multifile" with invalid "Group: " line', fn)
+							elif len(group) == 1 and group[0].isdigit():  # must be an symbolic name
+								self.addmsg('0004-51', 'UCR .info-file contains entry of "Type: multifile" with invalid "Group: " line', fn)
 
 							mode = entry.get('Mode', [])
 							if len(mode) > 1:
@@ -660,10 +656,9 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 					if var not in knownvars:
 						# if not found check if regex matches
 						for rvar in knownvars:
-							if '.*' in rvar:
-								if re.match(rvar, var):
-									all_variables.add(rvar)
-									break
+							if '.*' in rvar and re.match(rvar, var):
+								all_variables.add(rvar)
+								break
 						else:
 							notregistered.append(var)
 							all_variables.add(var)
