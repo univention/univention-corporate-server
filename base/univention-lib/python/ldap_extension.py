@@ -124,7 +124,7 @@ def set_handler_message(name, dn, msg):
 	# currently only on Primary Directory Node
 	if listener.configRegistry.get('server/role') in ('domaincontroller_master',):
 		ud.debug(ud.LISTENER, ud.INFO, 'set_handler_message for {}'.format(name))
-		setuid = False if os.geteuid() == 0 else True
+		setuid = os.geteuid() != 0
 		if setuid:
 			listener.setuid(0)
 		try:
