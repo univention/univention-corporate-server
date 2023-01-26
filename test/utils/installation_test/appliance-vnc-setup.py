@@ -44,7 +44,7 @@ class UCSSetup(UCSInstallation):
 	next = __next__  # Python 2
 
 	def tab_to_next_and_enter(self, tabs):
-		for i in range(tabs):
+		for _i in range(tabs):
 			self.client.keyPress('tab')
 			time.sleep(0.5)
 		self.client.keyPress('enter')
@@ -156,7 +156,7 @@ class UCSSetup(UCSInstallation):
 		self.screenshot('hostname-setup.png')
 		# delete the pre-filled hostname
 		self.client.keyPress('end')
-		for i in range(1, 200):
+		for _i in range(1, 200):
 			self.client.keyPress('bsp')
 		time.sleep(3)
 		self.client.enterText(self.args.fqdn)
@@ -172,7 +172,7 @@ class UCSSetup(UCSInstallation):
 		self.client.waitForText('confirm configuration', timeout=self.timeout)
 		self.screenshot('start-setup.png')
 		found = False
-		for i in range(3):
+		for _i in range(3):
 			self.client.keyPress('down')
 		try:
 			self.client.mouseClickOnText('configuresystem')

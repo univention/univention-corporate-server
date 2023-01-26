@@ -98,7 +98,7 @@ class SimpleCurl:
 		buf = BytesIO()
 		self.curl.setopt(pycurl.WRITEFUNCTION, buf.write)
 		print('getting page:', url)
-		for i in range(60):
+		for _i in range(60):
 			try:
 				self.curl.perform()
 				break

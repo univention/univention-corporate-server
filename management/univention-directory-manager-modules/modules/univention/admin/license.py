@@ -243,7 +243,7 @@ class License(object):
 				deleted_mods.append(mod)
 
 		# remove child modules that were deleted because of an invalid license
-		for name, mod in univention.admin.modules.modules.items():
+		for _name, mod in univention.admin.modules.modules.items():
 			if hasattr(mod, 'childmodules'):
 				new = []
 				for child in mod.childmodules:
@@ -254,7 +254,7 @@ class License(object):
 
 		# remove operations for adding or modifying if license is expired
 		if self._expired:
-			for name, mod in univention.admin.modules.modules.items():
+			for _name, mod in univention.admin.modules.modules.items():
 				if hasattr(mod, 'operations'):
 					try:
 						mod.operations.remove('add')

@@ -80,7 +80,7 @@ def get_udm_command(manufacturer, models):
 
 
 def check_dir(commands):
-	for dirname, dirs, files in os.walk('/usr/share/ppd/'):
+	for dirname, _dirs, files in os.walk('/usr/share/ppd/'):
 		for filename in files:
 			filename = os.path.join(dirname, filename)
 			if os.path.isfile(filename) and (filename.endswith('.ppd') or filename.endswith('.ppd.gz')):
@@ -103,7 +103,7 @@ def get_compressed_driver():
 
 
 def check_compressed(commands):
-	for driver, lang, manufacturer, nickname, comments in get_compressed_driver():
+	for driver, _lang, manufacturer, nickname, _comments in get_compressed_driver():
 		commands.setdefault(manufacturer, []).append((driver, nickname))
 
 
@@ -113,7 +113,7 @@ def check_obsolete():
 	res = lo.search(filter='(objectClass=univentionPrinterModels)', attr=['printerModel', 'cn'])
 	print("\n# mark old ppd's as obsolete\n")
 	compressed_ppds = [driver[0] for driver in get_compressed_driver()]
-	for dn, attr in res:
+	for _dn, attr in res:
 		cn = attr['cn'][0].decode('UTF-8')
 		obsolete = {}
 		for i in attr.get('printerModel', []):

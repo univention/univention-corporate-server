@@ -590,7 +590,7 @@ class ad(univention.connector.ucs):
 				conn_attributes = getattr(mapping_property, attr_type)
 				if not conn_attributes:
 					continue
-				for attr_key, attr in conn_attributes.items():
+				for _attr_key, attr in conn_attributes.items():
 					if not attr.con_other_attribute and attr.con_attribute in self.single_valued_ad_attributes:
 						attr.single_value = True
 					elif attr.con_attribute == 'description' and mapping_key in ('user', 'group', 'windowscomputer'):
@@ -603,7 +603,7 @@ class ad(univention.connector.ucs):
 				con_attributes = getattr(mapping_property, attr_type)
 				if not con_attributes:
 					continue
-				for attr_key, attr in con_attributes.items():
+				for _attr_key, attr in con_attributes.items():
 					if attr.ldap_attribute == 'mailPrimaryAddress':
 						attr.con_depends = 'mail'
 
@@ -1536,7 +1536,7 @@ class ad(univention.connector.ucs):
 		group_rid = decode_sid(ldap_object_ad['objectSid'][0]).rsplit('-', 1)[-1]
 		prim_members_ad_filter = format_escaped('(primaryGroupID={0!e})', group_rid)
 		prim_members_ad = self.__search_ad(self.lo_ad.base, ldap.SCOPE_SUBTREE, prim_members_ad_filter)
-		for prim_dn, prim_object in prim_members_ad:
+		for prim_dn, _prim_object in prim_members_ad:
 			if prim_dn not in ['None', '', None]:  # filter referrals
 				ad_members.append(prim_dn)
 		ud.debug(ud.LDAP, ud.INFO, "group_members_sync_to_ucs: clean ad_members %s" % ad_members)

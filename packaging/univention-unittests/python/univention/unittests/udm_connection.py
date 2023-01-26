@@ -70,7 +70,7 @@ class MockedAccess(MagicMock):
 
 	def searchDn(self, filter=u'(objectClass=*)', base=u'', scope=u'sub', unique=False, required=False, timeout=-1, sizelimit=0, serverctrls=None, response=None):
 		res = []
-		for dn, attrs in self.search(filter, base):
+		for dn, _attrs in self.search(filter, base):
 			res.append(dn)
 		return res
 

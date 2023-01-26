@@ -174,7 +174,7 @@ class LogCatcher(object):
 				yield msg
 
 	def stdstream(self):
-		for level, msg in self.logs:
+		for _level, msg in self.logs:
 			yield msg
 
 

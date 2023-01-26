@@ -102,7 +102,7 @@ def main():
 
 	i = 1
 	print("\nAD rejected\n")
-	for id, dn, retry_count in ad.list_rejected():
+	for _id, dn, retry_count in ad.list_rejected():
 		found_rejected = True
 		print("%5d:    AD DN: %s" % (i, dn))
 		ucs_dn = ad.get_dn_by_con(dn)

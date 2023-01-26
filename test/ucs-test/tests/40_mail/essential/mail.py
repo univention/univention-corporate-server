@@ -242,7 +242,7 @@ def get_maildir_filenames(maildir):
 	"""
 	blacklist = ["maildirfolder", "maildirsize"]
 	result = []
-	for dirpath, dirnames, filenames in os.walk(maildir.rstrip("/")):
+	for dirpath, _dirnames, filenames in os.walk(maildir.rstrip("/")):
 		if basename(dirpath) == "Maildir":
 			continue
 		result.extend([os.path.join(dirpath, x) for x in filenames if not x.startswith("dovecot") and x not in blacklist])

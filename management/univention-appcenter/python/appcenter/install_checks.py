@@ -284,7 +284,7 @@ class MustHaveNoConflictsApps(SingleRequirement, HardRequirement):
 			ports.append(i)
 		for i in app.ports_redirection:
 			ports.append(i.split(':', 1)[0])
-		for app_id, container_port, host_port in app_ports():
+		for app_id, _container_port, host_port in app_ports():
 			if app_id != app.id and str(host_port) in ports:
 				conflictedapps.add(app_id)
 		for _app in self.other_apps(app):

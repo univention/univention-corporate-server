@@ -831,7 +831,7 @@ class CheckGeneric(object):
         self.reset()
         with open(filename or self.filename, 'r') as stream:
             self.log.info("Reading %s ...", filename or self.filename)
-            for lnr, line, rec in self.loop(stream):
+            for _lnr, _line, rec in self.loop(stream):
                 self.check_transaction(rec)
             self.log.info("Reading %s done", filename or self.filename)
 
@@ -1282,7 +1282,7 @@ def prune_ldap(opt):
                 log.fatal('Server ignores RFC 2696 control: %r', serverctrls)
                 raise Abort()
 
-            for (dn, attrs) in rdata:
+            for (dn, _attrs) in rdata:
                 ava = str2dn(dn)
                 for (attr, value, _flags) in ava[0]:
                     if attr == 'reqSession':

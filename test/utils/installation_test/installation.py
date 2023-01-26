@@ -59,7 +59,7 @@ class UCSInstallation(object):
 	def _clear_input(self):  # type: () -> None
 		self.client.keyPress('end')
 		time.sleep(0.1)
-		for i in range(100):
+		for _i in range(100):
 			self.client.keyPress('bsp')
 			time.sleep(0.1)
 
@@ -98,7 +98,7 @@ class UCSInstallation(object):
 	@verbose("INSTALLER")
 	def installer(self):  # type: () -> None
 		# language
-		for i in range(3):
+		for _i in range(3):
 			self.client.waitForText('Select a language', timeout=self.timeout + 120, prevent_screen_saver=True)
 			self.client.mouseMove(250, 250)
 			self.client.mousePress(1)
@@ -354,7 +354,7 @@ class UCSInstallation(object):
 		if self.args.role not in ['slave', 'backup', 'member']:
 			return
 		self.client.waitForText(self._['start_join'], timeout=self.timeout)
-		for i in range(2):
+		for _i in range(2):
 			self.click(self._['hostname_primary'])
 			sleep(5)
 			self.client.keyPress('tab')
@@ -377,7 +377,7 @@ class UCSInstallation(object):
 			return
 		# join/ad password and user
 		self.client.waitForText(self._['ad_account_information'], timeout=self.timeout)
-		for i in range(2):
+		for _i in range(2):
 			self.click(self._['address_ad'])
 			self.client.keyPress('tab')
 			self._clear_input()

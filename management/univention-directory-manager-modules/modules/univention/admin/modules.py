@@ -152,7 +152,7 @@ def update():
 			superordinates.update(superordinate_names(m))
 
 	for root in univention.admin.handlers.__path__:  # type: ignore
-		for w_root, w_dirs, w_files in os.walk(root):
+		for w_root, _w_dirs, w_files in os.walk(root):
 			_walk(root, w_root, w_files)
 	modules = _modules
 	_superordinates = superordinates
@@ -229,7 +229,7 @@ def init(lo, position, module, template_object=None, force_reload=False):
 			if prop.syntax.viewonly:
 				module.mapping.unregister(pname, False)
 		elif univention.admin.syntax.is_syntax(prop.syntax, univention.admin.syntax.complex) and hasattr(prop.syntax, 'subsyntaxes'):
-			for text, subsyn in prop.syntax.subsyntaxes:
+			for _text, subsyn in prop.syntax.subsyntaxes:
 				if subsyn.name == 'LDAP_Search':
 					subsyn._load(lo)
 
@@ -280,7 +280,7 @@ def update_extended_options(lo, module, position):
 
 	# append UDM extended options
 	new_options = copy.copy(module.options) if hasattr(module, 'options') else {}
-	for dn, attrs in lo.search(base=position.getDomainConfigBase(), filter='(&(objectClass=univentionUDMOption)%s)' % (module_filter,)):
+	for _dn, attrs in lo.search(base=position.getDomainConfigBase(), filter='(&(objectClass=univentionUDMOption)%s)' % (module_filter,)):
 		oname = attrs['cn'][0].decode('UTF-8', 'replace')
 		shortdesc = _get_translation(lang, attrs, 'univentionUDMOptionTranslationShortDescription;entry-%s', 'univentionUDMOptionShortDescription')
 		longdesc = _get_translation(lang, attrs, 'univentionUDMOptionTranslationLongDescription;entry-%s', 'univentionUDMOptionLongDescription')
@@ -388,7 +388,7 @@ def update_extended_attributes(lo, module, position):
 		module_filter = '(|(univentionUDMPropertyModule=users/user)%s)' % (module_filter,)
 
 	new_property_descriptions = copy.copy(module.property_descriptions)
-	for dn, attrs in lo.search(base=position.getDomainConfigBase(), filter='(&(objectClass=univentionUDMProperty)%s(univentionUDMPropertyVersion=2))' % (module_filter,)):
+	for _dn, attrs in lo.search(base=position.getDomainConfigBase(), filter='(&(objectClass=univentionUDMProperty)%s(univentionUDMPropertyVersion=2))' % (module_filter,)):
 		# get CLI name
 		pname = attrs['univentionUDMPropertyCLIName'][0].decode('UTF-8', 'replace')
 		object_class = attrs.get('univentionUDMPropertyObjectClass', [])[0].decode('UTF-8', 'replace')
@@ -651,7 +651,7 @@ def update_extended_attributes(lo, module, position):
 			if prop.syntax.viewonly:
 				module.mapping.unregister(pname, False)
 		elif univention.admin.syntax.is_syntax(prop.syntax, univention.admin.syntax.complex) and hasattr(prop.syntax, 'subsyntaxes'):
-			for text, subsyn in prop.syntax.subsyntaxes:
+			for _text, subsyn in prop.syntax.subsyntaxes:
 				if subsyn.name == 'LDAP_Search':
 					subsyn._load(lo)
 

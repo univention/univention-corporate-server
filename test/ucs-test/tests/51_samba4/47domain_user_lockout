@@ -180,7 +180,7 @@ if __name__ == '__main__':
 
 		# try to lock the test user out with a random password
 		print("\nTrying to lock the '%s' user out attempting to authenticate with a random password %d times:" % (test_username, LOCKOUT_THRESHOLD + 1))
-		for attempt in range(LOCKOUT_THRESHOLD + 1):
+		for _attempt in range(LOCKOUT_THRESHOLD + 1):
 			stdout, stderr = try_to_authenticate("Foo" + random_username() + "123")
 		check_error_present_in_output(stdout, stderr)
 

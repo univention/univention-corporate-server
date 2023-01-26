@@ -30,7 +30,7 @@ class Lint:
 			self.parse_tests()
 
 	def parse_libs(self):
-		for root, dirs, files in os.walk(self.D_LIB):
+		for root, _dirs, files in os.walk(self.D_LIB):
 			for name in files:
 				if not name.endswith('.sh'):
 					continue
@@ -70,7 +70,7 @@ class Lint:
 		)
 
 	def parse_tests(self):
-		for root, dirs, files in os.walk(self.D_TEST):
+		for root, _dirs, files in os.walk(self.D_TEST):
 			for name in files:
 				if '.' in name:
 					continue

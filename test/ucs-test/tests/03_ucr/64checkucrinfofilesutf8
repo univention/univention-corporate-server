@@ -12,7 +12,7 @@ import sys
 D_INFO = '/etc/univention/registry.info'
 exit_code = 100
 
-for dirname, dirnames, names in os.walk(D_INFO):
+for dirname, _dirnames, names in os.walk(D_INFO):
 	for name in names:
 		filename = os.path.join(dirname, name)
 		if os.path.isfile(filename):

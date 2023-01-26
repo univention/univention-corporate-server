@@ -409,7 +409,7 @@ class LDAP_ACLs(ACLs):
 		self.acls.sort(key=operator.itemgetter('fromUser', 'host', 'command', 'flavor'))
 
 		result = []
-		for k, g in itertools.groupby(self.acls, operator.itemgetter('fromUser', 'host', 'command', 'options', 'flavor')):
+		for _k, g in itertools.groupby(self.acls, operator.itemgetter('fromUser', 'host', 'command', 'options', 'flavor')):
 			result.append(next(g))
 
 		self.acls[:] = result

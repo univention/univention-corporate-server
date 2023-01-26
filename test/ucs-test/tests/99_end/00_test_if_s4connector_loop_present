@@ -22,9 +22,9 @@ ucr.load()
 def get_rejected():
 	s4 = univention.s4connector.s4.s4.main(ucr, 'connector')
 	rejected = []
-	for (filename, dn) in s4.list_rejected():
+	for (_filename, dn) in s4.list_rejected():
 		rejected.append(dn)
-	for (filename, dn) in s4.list_rejected_ucs():
+	for (_filename, dn) in s4.list_rejected_ucs():
 		rejected.append(dn)
 	return rejected
 

@@ -742,7 +742,7 @@ def mapDiffAl(mapping, diff):  # UNUSED
 	"""
 	ml = []
 	if diff:
-		for key, oldvalue, newvalue in diff:
+		for key, _oldvalue, newvalue in diff:
 			try:
 				if not mapping.shouldMap(key):
 					continue

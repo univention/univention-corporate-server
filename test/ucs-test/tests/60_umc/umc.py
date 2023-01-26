@@ -152,7 +152,7 @@ class JoinModule(UMCBase):
 		attempt, fails in case process still going after the given
 		'poll_attempts'. Returns when process is not reported as running.
 		"""
-		for attempt in range(poll_attempts):
+		for _attempt in range(poll_attempts):
 			request_result = self.client.umc_command('join/running').result
 			if request_result is None:
 				utils.fail("No response on UMC 'join/running' request")

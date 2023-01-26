@@ -162,7 +162,7 @@ class configdb(object):
 		self._dbcon = lite.connect(self.filename)
 
 	def get_by_value(self, section, option):
-		for i in [1, 2]:
+		for _i in [1, 2]:
 			try:
 				cur = self._dbcon.cursor()
 				cur.execute("SELECT key FROM '%s' WHERE value=?" % section, (option,))
@@ -177,7 +177,7 @@ class configdb(object):
 				self._dbcon = lite.connect(self.filename)
 
 	def get(self, section, option):
-		for i in [1, 2]:
+		for _i in [1, 2]:
 			try:
 				cur = self._dbcon.cursor()
 				cur.execute("SELECT value FROM '%s' WHERE key=?" % section, (option,))
@@ -198,7 +198,7 @@ class configdb(object):
 			# update retry_count
 			cmd = "INSERT OR REPLACE INTO '%s' (key, value, retry_count) VALUES (?, ?, COALESCE((SELECT retry_count FROM '%s' WHERE key = ? )+1 ,0));" % (section, section)
 			val = [option, value, option]
-		for i in [1, 2]:
+		for _i in [1, 2]:
 			try:
 				cur = self._dbcon.cursor()
 				cur.execute(cmd, val)
@@ -212,7 +212,7 @@ class configdb(object):
 				self._dbcon = lite.connect(self.filename)
 
 	def items(self, section):
-		for i in [1, 2]:
+		for _i in [1, 2]:
 			try:
 				cur = self._dbcon.cursor()
 				cur.execute("SELECT * FROM '%s'" % (section))
@@ -226,7 +226,7 @@ class configdb(object):
 				self._dbcon = lite.connect(self.filename)
 
 	def remove_option(self, section, option):
-		for i in [1, 2]:
+		for _i in [1, 2]:
 			try:
 				cur = self._dbcon.cursor()
 				cur.execute("DELETE FROM '%s' WHERE key=?" % section, (option,))
@@ -240,7 +240,7 @@ class configdb(object):
 				self._dbcon = lite.connect(self.filename)
 
 	def has_section(self, section):
-		for i in [1, 2]:
+		for _i in [1, 2]:
 			try:
 				cur = self._dbcon.cursor()
 				cur.execute("SELECT name FROM sqlite_master WHERE type='table' AND name=?;", (section,))
@@ -257,7 +257,7 @@ class configdb(object):
 				self._dbcon = lite.connect(self.filename)
 
 	def add_section(self, section):
-		for i in [1, 2]:
+		for _i in [1, 2]:
 			try:
 				cur = self._dbcon.cursor()
 				if section in ["AD rejected"]:
@@ -274,7 +274,7 @@ class configdb(object):
 				self._dbcon = lite.connect(self.filename)
 
 	def has_option(self, section, option):
-		for i in [1, 2]:
+		for _i in [1, 2]:
 			try:
 				cur = self._dbcon.cursor()
 				cur.execute("SELECT value FROM '%s' WHERE key=?" % section, (option,))

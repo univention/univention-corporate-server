@@ -79,7 +79,7 @@ def run(_umc_instance: Instance) -> None:
 	if len(objects):
 		counted_objects: Dict[str, int] = {}
 		details = '\n\n' + _('These objects were found:')
-		for dn, modules, object_classes in objects:
+		for _dn, modules, _object_classes in objects:
 			for module in modules:
 				counted_objects.setdefault(module.short_description, 0)
 				counted_objects[module.short_description] += 1

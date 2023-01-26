@@ -39,7 +39,7 @@ def handler(configRegistry, changes):
 		return
 
 	udm = UDM.machine().version(3)
-	for key, (old, new) in changes.items():
+	for key, (_old, new) in changes.items():
 		activated = configRegistry.is_true(None, value=new)
 		name = {
 			'umc/self-service/profiledata/enabled': 'self-service-my-profile',

@@ -98,14 +98,14 @@ class LDAPConnection(object):
 				yield (dn, attrs)
 
 	def get_domain_sid(self) -> str:
-		for (dn, attr) in self.search('(objectClass=sambaDomain)', attr=['sambaSID']):
+		for (_dn, attr) in self.search('(objectClass=sambaDomain)', attr=['sambaSID']):
 			for sid in attr['sambaSID']:
 				return sid.decode('ASCII')
 		raise KeyError('domain sid not found')
 
 	def get_by_sid(self, sid: str) -> str:
 		expression = ldap.filter.filter_format('(sambaSID=%s)', (sid,))
-		for (dn, attr) in self.search(expression, attr=['cn', 'uid']):
+		for (_dn, attr) in self.search(expression, attr=['cn', 'uid']):
 			for uid in attr.get('uid', []):
 				return uid.decode('UTF-8')
 			for cn in attr.get('cn', []):
@@ -114,7 +114,7 @@ class LDAPConnection(object):
 
 	def get_by_name(self, name: str) -> str:
 		expression = ldap.filter.filter_format('(|(cn=%s)(uid=%s))', (name, name))
-		for (dn, attr) in self.search(expression, attr=['sambaSID']):
+		for (_dn, attr) in self.search(expression, attr=['sambaSID']):
 			for sid in attr.get('sambaSID', []):
 				return sid.decode('ASCII')
 		raise KeyError(name)

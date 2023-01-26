@@ -141,7 +141,7 @@ class LockingDB(object):
 		self.__execute_sql_commands(sql_commands, fetch_result=False)
 
 	def __execute_sql_commands(self, sql_commands, fetch_result=False):
-		for i in [1, 2]:
+		for _i in [1, 2]:
 			try:
 				cur = self._dbcon.cursor()
 				for sql_command in sql_commands:

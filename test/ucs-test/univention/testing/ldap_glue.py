@@ -267,7 +267,7 @@ class ADConnection(LDAPConnection):
 		self.remove_from_attribute(group_dn, 'member', member_dn)
 
 	def getdn(self, filter):
-		for dn, attr in self.lo.search_ext_s(self.adldapbase, ldap.SCOPE_SUBTREE, filter, timeout=10):
+		for dn, _attr in self.lo.search_ext_s(self.adldapbase, ldap.SCOPE_SUBTREE, filter, timeout=10):
 			if dn:
 				print(dn)
 

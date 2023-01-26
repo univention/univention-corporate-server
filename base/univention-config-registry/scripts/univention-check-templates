@@ -92,7 +92,7 @@ def parse_cmdline():
 def check_find(verbose=False):
 	# type: (bool) -> Set[str]
 	modified = set()
-	for dirpath, dirnames, filenames in os.walk(PREFIX):
+	for dirpath, _dirnames, filenames in os.walk(PREFIX):
 		for filename in filenames:
 			for suffix in SUFFIX:
 				if filename.endswith(suffix):

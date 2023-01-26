@@ -53,7 +53,7 @@ def main():
 				token = str(time.time())
 				delivery_OK = False
 				send_mail(recipients='root', msg=token, idstring=token, subject='Normal')
-				for i in range(TIMEOUT):
+				for _i in range(TIMEOUT):
 					if mail_delivered(token, check_root=True):
 						delivery_OK = True
 						break
@@ -69,7 +69,7 @@ def main():
 				token = str(time.time())
 				delivery_OK = False
 				send_mail(recipients='root', msg=token, idstring=token, subject='Alias')
-				for i in range(TIMEOUT):
+				for _i in range(TIMEOUT):
 					if mail_delivered(token, mail_address=mail, check_root=False):
 						delivery_OK = True
 						break

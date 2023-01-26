@@ -222,7 +222,7 @@ class Instance(Base, ProgressMixin):
 				restart = False
 				if not run_hooks:
 					MODULE.info('Check whether ip addresses have been changed')
-					for ikey, ival in values.items():
+					for ikey, _ival in values.items():
 						if RE_IPV4.match(ikey) or RE_IPV6_DEFAULT.match(ikey) or RE_SSL.match(ikey):
 							restart = True
 							break

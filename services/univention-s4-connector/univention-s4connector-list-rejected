@@ -101,7 +101,7 @@ def main():
 
 	i = 1
 	print("\nS4 rejected\n")
-	for id, dn in s4.list_rejected():
+	for _id, dn in s4.list_rejected():
 		found_rejected = True
 		print("%5d:    S4 DN: %s" % (i, dn))
 		ucs_dn = s4.get_dn_by_con(dn)

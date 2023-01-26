@@ -149,7 +149,7 @@ class UMC_Daemon(object):
 			children = list(self.server._children.items())
 		except EnvironmentError:
 			children = []
-		for child, pid in children:
+		for _child, pid in children:
 			try:
 				os.kill(pid, signal)
 			except EnvironmentError as exc:

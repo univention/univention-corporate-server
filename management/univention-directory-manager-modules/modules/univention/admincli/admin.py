@@ -189,7 +189,7 @@ def _print_property(module, action, name, stream):
 
 
 def module_usage(information, action='', stream=sys.stdout):
-	for module, (properties, options) in information.items():
+	for module, (_properties, options) in information.items():
 		if options:
 			print('', file=stream)
 			print('%s options:' % module.module, file=stream)
@@ -545,7 +545,7 @@ def _doit(arglist, stdout=sys.stdout, stderr=sys.stderr):
 		if opt == '--set':
 			name, delim, value = val.partition('=')
 
-			for mod, (properties, options) in information.items():
+			for _mod, (properties, _options) in information.items():
 				if name in properties:
 					if not properties[name].cli_enabled:
 						continue
@@ -560,7 +560,7 @@ def _doit(arglist, stdout=sys.stdout, stderr=sys.stderr):
 				print("WARNING: No attribute with name '%s' in this module, value not set." % name, file=stderr)
 		elif opt == '--append':
 			name, delim, value = val.partition('=')
-			for mod, (properties, options) in information.items():
+			for _mod, (properties, _options) in information.items():
 				if name in properties:
 					if not properties[name].cli_enabled:
 						continue
@@ -576,7 +576,7 @@ def _doit(arglist, stdout=sys.stdout, stderr=sys.stderr):
 		elif opt == '--remove':
 			name, delim, value = val.partition('=')
 			value = value or None
-			for mod, (properties, options) in information.items():
+			for _mod, (properties, _options) in information.items():
 				if name in properties:
 					if not properties[name].cli_enabled:
 						continue

@@ -52,7 +52,7 @@ def parse_args():
 
 def process(po_dir):
 	# type: (str) -> None
-	for _dir, dns, fns in os.walk(os.path.abspath(po_dir)):
+	for _dir, _dns, fns in os.walk(os.path.abspath(po_dir)):
 		for po_file in fns:
 			if not po_file.endswith('.po'):
 				continue

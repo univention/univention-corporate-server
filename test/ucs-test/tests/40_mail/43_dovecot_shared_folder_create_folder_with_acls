@@ -76,7 +76,7 @@ def main():  # type: () -> None
 						print(repr(acls))
 
 						# verify that acls for groups are set
-						for grpname, right in group_acls:
+						for grpname, _right in group_acls:
 							assert f'${grpname}' in acls, f"'${grpname}' not in ACL list"
 						assert user_address in acls, f'{user_address} not in ACL list'
 

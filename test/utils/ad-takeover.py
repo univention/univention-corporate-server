@@ -150,7 +150,7 @@ except Exception:
 	print(traceback.format_exc())
 
 # wait until finished
-for i in range(90):
+for _i in range(90):
 	sleep(10)
 	response = client.umc_command("adtakeover/check/status", request_options)
 	print('waiting got finished - {}'.format(response.data))

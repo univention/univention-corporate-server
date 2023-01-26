@@ -76,7 +76,7 @@ class ListenerModuleConfiguration(object):
 	def __init__(self, *args, **kwargs):
 		# type: (*Any, **Any) -> None
 		_keys = self.get_configuration_keys()
-		for k, v in list(kwargs.items()):
+		for k, _v in list(kwargs.items()):
 			if k in _keys:
 				setattr(self, k, kwargs.pop(k))
 		self.logger = get_logger(self.get_name())

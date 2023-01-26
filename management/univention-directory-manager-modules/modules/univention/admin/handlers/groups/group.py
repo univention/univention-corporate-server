@@ -825,7 +825,7 @@ class object(univention.admin.handlers.simpleLdap):
 
 	def _is_global_member(self):
 		searchResult = self.lo.search(base=self.position.getDomain(), filter=filter_format('(uniqueMember=%s)', [self.dn]), attr=['univentionGroupType'])
-		for (dn, attr) in searchResult:
+		for (_dn, attr) in searchResult:
 			groupType = attr.get('univentionGroupType', [None])[0]
 			if self.__is_groupType_global(groupType):
 				return True

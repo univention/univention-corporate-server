@@ -108,7 +108,7 @@ def rm_cache(args):
 
 def cleanup(args):
     # type: (Namespace) -> None
-    for name, db in get_cache():
+    for _name, db in get_cache():
         db.cleanup()
 
 

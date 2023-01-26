@@ -995,7 +995,7 @@ class PackageManager(object):
 				self.cache = apt.Cache()
 			else:
 				self.cache.open()
-		for i in range(10):
+		for _i in range(10):
 			try:
 				_open()
 			except SystemError:

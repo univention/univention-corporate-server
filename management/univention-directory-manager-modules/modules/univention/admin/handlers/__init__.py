@@ -2258,7 +2258,7 @@ class simpleComputer(simpleLdap):
 			ethernet = 'ethernet %s' % mac
 			ud.debug(ud.ADMIN, ud.INFO, 'we only remove the ip "%s" from the dhcp object' % ip)
 			results = self.lo.search(base=tmppos.getBase(), scope='domain', attr=['univentionDhcpFixedAddress'], filter=filter_format('(&(dhcpHWAddress=%s)(univentionDhcpFixedAddress=%s))', (ethernet, ip)), unique=False)
-			for dn, attr in results:
+			for dn, _attr in results:
 				object = univention.admin.objects.get(univention.admin.modules.get('dhcp/host'), self.co, self.lo, position=self.position, dn=dn)
 				object.open()
 				if ip in object['fixedaddress']:
@@ -2274,7 +2274,7 @@ class simpleComputer(simpleLdap):
 			ethernet = 'ethernet %s' % mac
 			ud.debug(ud.ADMIN, ud.INFO, 'Remove the following mac: ethernet: "%s"' % ethernet)
 			results = self.lo.search(base=tmppos.getBase(), scope='domain', attr=['univentionDhcpFixedAddress'], filter=filter_format('dhcpHWAddress=%s', [ethernet]), unique=False)
-			for dn, attr in results:
+			for dn, _attr in results:
 				ud.debug(ud.ADMIN, ud.INFO, '... done')
 				object = univention.admin.objects.get(univention.admin.modules.get('dhcp/host'), self.co, self.lo, position=self.position, dn=dn)
 				object.remove()
@@ -2283,7 +2283,7 @@ class simpleComputer(simpleLdap):
 		elif ip:
 			ud.debug(ud.ADMIN, ud.INFO, 'Remove the following ip: "%s"' % ip)
 			results = self.lo.search(base=tmppos.getBase(), scope='domain', attr=['univentionDhcpFixedAddress'], filter=filter_format('univentionDhcpFixedAddress=%s', [ip]), unique=False)
-			for dn, attr in results:
+			for dn, _attr in results:
 				ud.debug(ud.ADMIN, ud.INFO, '... done')
 				object = univention.admin.objects.get(univention.admin.modules.get('dhcp/host'), self.co, self.lo, position=self.position, dn=dn)
 				object.remove()
@@ -2345,7 +2345,7 @@ class simpleComputer(simpleLdap):
 		elif ip:
 			tmppos = univention.admin.uldap.position(self.position.getDomain())
 			results = self.lo.search(base=tmppos.getBase(), scope='domain', attr=['zoneDn'], filter=filter_format('(&(objectClass=dNSZone)(|(pTRRecord=%s)(pTRRecord=%s.*)))', (name, name)), unique=False)
-			for dn, attr in results:
+			for dn, _attr in results:
 				ud.debug(ud.ADMIN, ud.INFO, 'DEBUG: dn: "%s"' % dn)
 				zone = self.lo.parentDn(dn)
 				ud.debug(ud.ADMIN, ud.INFO, 'DEBUG: zone: "%s"' % zone)
@@ -2441,7 +2441,7 @@ class simpleComputer(simpleLdap):
 		ip_split.reverse()
 		search_filter = filter_format('(|(relativeDomainName=%s)(relativeDomainName=%s)(relativeDomainName=%s))', (ip_split[0], '.'.join(ip_split[:1]), '.'.join(ip_split[:2])))
 
-		for dn, attributes in self.lo.search(base=zoneDN, scope='domain', attr=['pTRRecord'], filter=search_filter):
+		for dn, _attributes in self.lo.search(base=zoneDN, scope='domain', attr=['pTRRecord'], filter=search_filter):
 			self.lo.modify(dn, [('pTRRecord', '', ptrrecord)])
 
 	def __remove_related_ptrrecords(self, zoneDN, ip):  # type: (str, str) -> None

@@ -59,7 +59,7 @@ def main() -> None:
 	lo = access(opt, ucr, mod)
 
 	ifaces = Interfaces(ucr)
-	for name, iface in ifaces.ipv4_interfaces:
+	for _name, iface in ifaces.ipv4_interfaces:
 		create(opt, ucr, iface, lo, mod)
 
 

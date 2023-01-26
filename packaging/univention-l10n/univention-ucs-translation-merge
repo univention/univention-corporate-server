@@ -47,7 +47,7 @@ except ImportError:
 def _get_po_files_from_dir(directory, return_relative_path=False):
 	# type: (str, bool) -> List[str]
 	po_files = []  # type: List[str]
-	for parent, dirs, files in os.walk(directory):
+	for parent, _dirs, files in os.walk(directory):
 		for po_file in files:
 			if not po_file.endswith('.po'):
 				continue

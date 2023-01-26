@@ -16,7 +16,7 @@ class WaitForNonzeroResultOrTimeout:
 
 	def __call__(self, *args, **kwargs):
 		# type: (*Any, **Any) -> Any
-		for i in range(self.timeout):
+		for _i in range(self.timeout):
 			result = self.func(*args, **kwargs)
 			if result:
 				break

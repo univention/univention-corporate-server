@@ -30,7 +30,7 @@ def get_openapi_schema():
 
 def restart_udmrest():
 	subprocess.check_call(["systemctl", "restart", "univention-directory-manager-rest.service"])
-	for i in range(10):
+	for _i in range(10):
 		try:
 			get_openapi_schema()
 		except requests.HTTPError as exc:

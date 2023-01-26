@@ -50,5 +50,5 @@ def __walk(root, dir, files):
 
 
 path = os.path.abspath(os.path.dirname(__file__))
-for w_root, w_dirs, w_files in os.walk(path):
+for w_root, _w_dirs, w_files in os.walk(path):
 	__walk(w_root, w_root, w_files)

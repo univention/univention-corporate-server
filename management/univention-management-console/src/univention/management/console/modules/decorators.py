@@ -287,7 +287,7 @@ def simple_response(function=None, with_flavor=None, with_progress=False):
 	# fake a generator function that yields whatever the original
 	# function returned
 	def _fake_func(self, iterator, *args):
-		for args in iterator:  # noqa: B007
+		for args in iterator:
 			break
 		yield function(self, *args)
 	copy_function_meta_data(function, _fake_func, copy_arg_inspect=True)

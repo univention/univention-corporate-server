@@ -106,17 +106,17 @@ class Tester:
 		for timeout in range(TIMEOUT, 0, -1):
 			print('Waiting up to %d seconds' % (timeout,))
 			all_found = True
-			for i, (token, mail, found) in enumerate(test_cases1):
+			for i, (token, mail, _found) in enumerate(test_cases1):
 				if file_search_mail(tokenlist=[token], mail_address=mail):
 					test_cases1[i][2] = True
 				else:
 					all_found = False
-			for i, (token, user, found) in enumerate(test_cases2):
+			for i, (token, user, _found) in enumerate(test_cases2):
 				if file_search_mail(tokenlist=[token], user=user):
 					test_cases2[i][2] = True
 				else:
 					all_found = False
-			for i, (token, user, found) in enumerate(test_cases3):
+			for i, (token, user, _found) in enumerate(test_cases3):
 				if file_search_mail(tokenlist=[token], user=user):
 					test_cases3[i][2] = True
 				else:

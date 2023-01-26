@@ -50,7 +50,7 @@ def check_if_looping():
 
 
 def create_and_delete_computer(rounds=20):
-	for i in range(rounds):
+	for _i in range(rounds):
 		computername = strings.random_string()
 		memberserver = udm.create_object(
 			'computers/memberserver', name=computername,

@@ -312,7 +312,7 @@ class Test_ContainerOU:
 		utils.verify_ldap_object(new_user, should_exist=True)
 
 		lo = utils.get_ldap_connection()
-		for dn, entry in lo.search(filter=ldap.filter.filter_format('ou=%s', [ou_name])):
+		for _dn, entry in lo.search(filter=ldap.filter.filter_format('ou=%s', [ou_name])):
 			assert entry.get('ou')[0] == ou_name.encode('UTF-8'), 'ou = %s; expected: %s' % (entry.get('ou')[0], ou_name)
 
 	def test_container_ou_rename_uppercase_rollback_with_special_characters(self, udm, ucr):
@@ -339,7 +339,7 @@ class Test_ContainerOU:
 		utils.verify_ldap_object(new_user, should_exist=True)
 
 		lo = utils.get_ldap_connection()
-		for dn, entry in lo.search(filter=ldap.filter.filter_format('ou=%s', (ou_name,))):
+		for _dn, entry in lo.search(filter=ldap.filter.filter_format('ou=%s', (ou_name,))):
 			assert entry.get('ou')[0] == ou_name.encode('UTF-8'), 'ou = %s; expected: %s' % (entry.get('ou')[0], ou_name)
 
 
@@ -649,7 +649,7 @@ class Test_ContainerCN:
 		utils.verify_ldap_object(new_user, should_exist=True)
 
 		lo = utils.get_ldap_connection()
-		for dn, entry in lo.search(filter=ldap.filter.filter_format('cn=%s', [cn_name])):
+		for _dn, entry in lo.search(filter=ldap.filter.filter_format('cn=%s', [cn_name])):
 			assert entry.get('cn')[0] == cn_name.encode('UTF-8'), 'cn = %s; expected: %s' % (entry.get('cn')[0], cn_name)
 
 	def test_container_cn_rename_uppercase_rollback_with_special_characters(self, udm, ucr):
@@ -675,7 +675,7 @@ class Test_ContainerCN:
 		utils.verify_ldap_object(new_user, should_exist=True)
 
 		lo = utils.get_ldap_connection()
-		for dn, entry in lo.search(filter=ldap.filter.filter_format('cn=%s', [cn_name])):
+		for _dn, entry in lo.search(filter=ldap.filter.filter_format('cn=%s', [cn_name])):
 			assert entry.get('cn')[0] == cn_name.encode('UTF-8'), 'cn = %s; expected: %s' % (entry.get('cn')[0], cn_name)
 
 

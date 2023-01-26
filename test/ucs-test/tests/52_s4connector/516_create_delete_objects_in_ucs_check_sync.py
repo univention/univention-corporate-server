@@ -57,7 +57,7 @@ class Users:
         self.users.append((userdn, user))
 
     def delete_users(self):
-        for dn, user in self.users:
+        for _dn, user in self.users:
             try:
                 user.remove()
             except KeyError:
@@ -72,7 +72,7 @@ class Users:
                 pass
 
     def check_every_user_is_deleted(self):
-        for dn, user in self.users:
+        for dn, _user in self.users:
             try:
                 verify_udm_object('users/user', dn, None)
             except AssertionError:
@@ -81,7 +81,7 @@ class Users:
         return True
 
     def check_every_user_is_exists(self):
-        for dn, user in self.users:
+        for dn, _user in self.users:
             try:
                 verify_udm_object('users/user', dn, {'username': str2dn(dn)[0][0][1]})
             except noObject:

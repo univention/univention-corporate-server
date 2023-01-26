@@ -699,7 +699,7 @@ class Test_UDMExtensionsJoinscript:
 
 		options = {}
 		buffers = {}
-		for option_type, filename, target_filename in self.TEST_DATA:
+		for option_type, filename, _target_filename in self.TEST_DATA:
 			buffers[filename] = open('%s/%s' % (CWD, filename), 'rb').read()
 			options.setdefault(option_type, []).append('/usr/share/%s/%s' % (package_name, filename))
 
@@ -801,7 +801,7 @@ class Test_UDMExtensionsJoinscript:
 
 		options = {}
 		buffers = {}
-		for option_type, filename, target_filename in self.TEST_DATA_2:
+		for option_type, filename, _target_filename in self.TEST_DATA_2:
 			buffers[filename] = open('%s/%s' % (CWD, filename), 'rb').read()
 			options.setdefault(option_type, []).append('/usr/share/%s/%s' % (package_name, filename))
 		joinscript_buffer = get_join_script_buffer(
@@ -839,7 +839,7 @@ class Test_UDMExtensionsJoinscript:
 			assert os.path.exists(target_fn), 'ERROR: target file %s does not exist' % target_fn
 			print('FILE REPLICATED: %r' % target_fn)
 
-			for option_type, src_fn, filename in self.TEST_DATA_2:
+			for option_type, _src_fn, filename in self.TEST_DATA_2:
 				assert not (option_type == 'umcmessagecatalog' and not os.path.exists(filename)), 'ERROR: file %r of type %r does not exist' % (filename, option_type)
 			dnlist = get_dn_of_extension_by_name(extension_type, extension_name)
 

@@ -301,7 +301,7 @@ def s4connector_present():
 	if ucr.is_false('directory/manager/samba3/legacy', False):
 		return True
 
-	for dn, attr in get_ldap_connection().search(
+	for _dn, attr in get_ldap_connection().search(
 		filter='(&(|(objectClass=univentionDomainController)(objectClass=univentionMemberServer))(univentionService=S4 Connector))',
 		attr=['aRecord']
 	):

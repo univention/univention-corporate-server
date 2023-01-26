@@ -130,7 +130,7 @@ class MultiValidationError(ValidationError):
 		# type: () -> int
 		'''Cumulative number of errors found'''
 		num = 0
-		for k, v in self.validation_errors.items():
+		for _k, v in self.validation_errors.items():
 			num += v.number_of_errors()
 		return num
 

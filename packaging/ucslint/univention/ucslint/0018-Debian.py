@@ -293,7 +293,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 		for src in args:
 			for fn in glob(src) if ('*' in src or '?' in src or '[' in src) else [src]:
 				if isdir(fn):
-					for root, dirs, files in walk(fn):
+					for root, _dirs, files in walk(fn):
 						for name in files:
 							src_path = join(root, name)
 							dst_path = join(dst, relpath(src_path, dirname(fn)))

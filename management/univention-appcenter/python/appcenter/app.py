@@ -1312,7 +1312,7 @@ class App(with_metaclass(AppMetaClass, object)):
 		from univention.appcenter.actions import get_action
 		get = get_action('get')()
 		keys = [(loc, key)]
-		for section, name, value in get.get_values(self, keys, warn=False):
+		for _section, _name, value in get.get_values(self, keys, warn=False):
 			return value
 
 	def get_localised_list(self, key, loc=None):
@@ -1321,7 +1321,7 @@ class App(with_metaclass(AppMetaClass, object)):
 		ret = []
 		key = key.replace('_', '').lower()
 		keys = [(None, key), ('de', key)]
-		for section, name, value in get.get_values(self, keys, warn=False):
+		for section, _name, value in get.get_values(self, keys, warn=False):
 			if value is None:
 				continue
 			if section is None:
@@ -1517,7 +1517,7 @@ class App(with_metaclass(AppMetaClass, object)):
 			ports.append(i)
 		for i in self.ports_redirection:
 			ports.append(i.split(':', 1)[0])
-		for app_id, container_port, host_port in app_ports():
+		for app_id, _container_port, host_port in app_ports():
 			if app_id != self.id and str(host_port) in ports:
 				conflictedapps.add(app_id)
 		if conflictedapps:

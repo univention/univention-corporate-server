@@ -85,7 +85,7 @@ class ReplicationCheck:
 			try:
 				with open(self.CACHEFN, "rb") as fd:
 					cnt = pickle.load(fd)
-					for i in range(cnt):
+					for _i in range(cnt):
 						nid = pickle.load(fd)
 						lid = pickle.load(fd)
 						self.history.append((nid, lid))

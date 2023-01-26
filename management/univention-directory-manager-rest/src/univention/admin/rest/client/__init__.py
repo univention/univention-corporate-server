@@ -190,7 +190,7 @@ class Session:
 			data = self.eval_response(response, expect_json=expect_json)
 			return Response(response, data, uri)
 
-		for i in range(5):
+		for _i in range(5):
 			try:
 				return doit()
 			except ServiceUnavailable as exc:  # TODO: same for ConnectionError? python-request does it itself.

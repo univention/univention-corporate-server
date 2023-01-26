@@ -158,7 +158,7 @@ class configdb(object):
 		self._dbcon = lite.connect(self.filename)
 
 	def get_by_value(self, section, option):
-		for i in [1, 2]:
+		for _i in [1, 2]:
 			try:
 				cur = self._dbcon.cursor()
 				cur.execute("SELECT key FROM '%s' WHERE value=?" % section, (option,))
@@ -173,7 +173,7 @@ class configdb(object):
 				self._dbcon = lite.connect(self.filename)
 
 	def get(self, section, option):
-		for i in [1, 2]:
+		for _i in [1, 2]:
 			try:
 				cur = self._dbcon.cursor()
 				cur.execute("SELECT value FROM '%s' WHERE key=?" % section, (option,))
@@ -188,7 +188,7 @@ class configdb(object):
 				self._dbcon = lite.connect(self.filename)
 
 	def set(self, section, option, value):
-		for i in [1, 2]:
+		for _i in [1, 2]:
 			try:
 				cur = self._dbcon.cursor()
 				cur.execute("INSERT OR REPLACE INTO '%s' (key, value) VALUES (?, ?);" % section, [option, value])
@@ -202,7 +202,7 @@ class configdb(object):
 				self._dbcon = lite.connect(self.filename)
 
 	def items(self, section):
-		for i in [1, 2]:
+		for _i in [1, 2]:
 			try:
 				cur = self._dbcon.cursor()
 				cur.execute("SELECT * FROM '%s'" % (section))
@@ -216,7 +216,7 @@ class configdb(object):
 				self._dbcon = lite.connect(self.filename)
 
 	def remove_option(self, section, option):
-		for i in [1, 2]:
+		for _i in [1, 2]:
 			try:
 				cur = self._dbcon.cursor()
 				cur.execute("DELETE FROM '%s' WHERE key=?" % section, (option,))
@@ -230,7 +230,7 @@ class configdb(object):
 				self._dbcon = lite.connect(self.filename)
 
 	def has_section(self, section):
-		for i in [1, 2]:
+		for _i in [1, 2]:
 			try:
 				cur = self._dbcon.cursor()
 				cur.execute("SELECT name FROM sqlite_master WHERE type='table' AND name=?;", (section,))
@@ -247,7 +247,7 @@ class configdb(object):
 				self._dbcon = lite.connect(self.filename)
 
 	def add_section(self, section):
-		for i in [1, 2]:
+		for _i in [1, 2]:
 			try:
 				cur = self._dbcon.cursor()
 				cur.execute("CREATE TABLE IF NOT EXISTS '%s' (Key TEXT PRIMARY KEY, Value TEXT)" % section)
@@ -261,7 +261,7 @@ class configdb(object):
 				self._dbcon = lite.connect(self.filename)
 
 	def has_option(self, section, option):
-		for i in [1, 2]:
+		for _i in [1, 2]:
 			try:
 				cur = self._dbcon.cursor()
 				cur.execute("SELECT value FROM '%s' WHERE key=?" % section, (option,))
@@ -852,7 +852,7 @@ class ucs(object):
 
 	def get_ucs_ldap_object_dn(self, dn):
 
-		for i in [0, 1]:  # do it twice if the LDAP connection was closed
+		for _i in [0, 1]:  # do it twice if the LDAP connection was closed
 			try:
 				return self.lo.lo.lo.search_s(dn, ldap.SCOPE_BASE, '(objectClass=*)', ('dn',))[0][0]
 			except ldap.NO_SUCH_OBJECT:
@@ -867,7 +867,7 @@ class ucs(object):
 
 	def get_ucs_ldap_object(self, dn):
 
-		for i in [0, 1]:  # do it twice if the LDAP connection was closed
+		for _i in [0, 1]:  # do it twice if the LDAP connection was closed
 			try:
 				return self.lo.get(dn, required=1)
 			except ldap.NO_SUCH_OBJECT:

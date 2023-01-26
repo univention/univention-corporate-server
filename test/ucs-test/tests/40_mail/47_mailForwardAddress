@@ -55,7 +55,7 @@ class Bunch:
 def check_delivery_mailsink(token, mailsink_files, should_be_delivered):
 	delivered = False
 	print("Waiting for an email delivery")
-	for i in range(TIMEOUT):
+	for _i in range(TIMEOUT):
 		for fn in mailsink_files:
 			if token in open(fn).read():
 				delivered = True

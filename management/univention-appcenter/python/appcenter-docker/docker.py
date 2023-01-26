@@ -87,7 +87,7 @@ def inspect(name):
 def inspect_with_retry(container, retries=3):
 	# container can be any value that docker inspect accepts
 	# e.g. container name or id
-	for i in range(retries):
+	for _i in range(retries):
 		exc = None
 		try:
 			return inspect(container)
@@ -624,7 +624,7 @@ class MultiDocker(Docker):
 		else:
 			# name from docker-compose ps
 			ps = str()
-			for i in range(3):
+			for _i in range(3):
 				try:
 					# docker-compose ps -q gives a list of container IDs, one in each line,
 					# the output is not line-wrapped

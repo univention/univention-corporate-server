@@ -164,7 +164,7 @@ def fix_permissions(certpath: str, dn: str, new: Dict[str, List[bytes]]) -> None
 		ud.debug(ud.LISTENER, ud.WARN, 'CERTIFICATE: Failed to get groupID for "%s"' % dn)
 		gidNumber = 0
 
-	for directory, dirnames, filenames in os.walk(certpath):
+	for directory, _dirnames, filenames in os.walk(certpath):
 		ud.debug(ud.LISTENER, ud.INFO, 'CERTIFICATE: Set permissions for = %s with owner/group %s/%s' % (directory, uidNumber, gidNumber))
 		os.chown(directory, uidNumber, gidNumber)
 		os.chmod(directory, 0o750)

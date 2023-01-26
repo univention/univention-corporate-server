@@ -319,7 +319,7 @@ class DevRegenerateMetaInf(LocalAppcenterAction):
 		with tarfile.open(archive_name, 'w') as archive:
 			with gzip.open(os.path.join(meta_inf_dir, 'index.json.gz'), 'wb') as index_json:
 				apps = {}
-				for root, dirs, files in os.walk(meta_inf_dir):
+				for root, _dirs, files in os.walk(meta_inf_dir):
 					for filename in files:
 						path = os.path.join(root, filename)
 						appname = check_ini_file(filename)
@@ -406,7 +406,7 @@ class DevPopulateAppcenter(LocalAppcenterAction):
 				if args.ini:
 					ini_file = args.ini
 				else:
-					for root, dirnames, filenames in os.walk(meta_inf_dir):
+					for root, _dirnames, filenames in os.walk(meta_inf_dir):
 						for filename in filenames:
 							if filename == '%s.ini' % component_id:
 								ini_file = os.path.join(root, filename)

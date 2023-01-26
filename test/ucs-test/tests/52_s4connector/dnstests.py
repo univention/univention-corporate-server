@@ -177,7 +177,7 @@ def make_random_ip():
 
 def make_random_ipv6():
 	ipv6 = random_hex()
-	for i in range(7):
+	for _i in range(7):
 		ipv6 += ':' + (random_hex())
 	return ipv6
 

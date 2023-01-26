@@ -94,7 +94,7 @@ def _handler(ucr, changes):
 	# iterate over all ipv4 and ipv6 addresses and append them to the link
 	local_hosts = [hostname]
 	interfaces = Interfaces(ucr)
-	for idev, iconf in interfaces.all_interfaces:
+	for _idev, iconf in interfaces.all_interfaces:
 		# get ipv4 address of device
 		if iconf.ipv4_address():
 			local_hosts.append(str(iconf.ipv4_address().ip))

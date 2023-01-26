@@ -72,7 +72,7 @@ def main():
 	log_to_stream()
 	_reverse_umc_module_logger()
 
-	for action_name, action in all_actions():
+	for _action_name, action in all_actions():
 		add_action(subparsers, action())
 
 	args = parser.parse_args()

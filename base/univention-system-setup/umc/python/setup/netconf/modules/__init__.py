@@ -53,7 +53,7 @@ class RunPhases(object):
 
 	def find(self):
 		for module_dir in sys.modules[__name__].__path__:
-			for dirpath, dirnames, filenames in os.walk(module_dir):
+			for dirpath, _dirnames, filenames in os.walk(module_dir):
 				self.logger.debug("Processing '%s'...", dirpath)
 				for filename in filenames:
 					name, ext = os.path.splitext(filename)

@@ -1346,7 +1346,7 @@ class SAML(Ressource):
 			user.saml = None
 			data = {}
 
-		for entity_id, logout_info in data.items():
+		for _entity_id, logout_info in data.items():
 			if not isinstance(logout_info, tuple):
 				continue  # result from logout, should be OK
 

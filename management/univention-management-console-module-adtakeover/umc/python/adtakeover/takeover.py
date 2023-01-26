@@ -1408,7 +1408,7 @@ class AD_Takeover(object):
 		# Reset S4 Connector and handler state
 		run_and_output_to_log(["systemctl", "stop", "univention-directory-listener"], log.debug)
 
-		for i in range(30):
+		for _i in range(30):
 			time.sleep(1)
 			# progress.percentage_increment_scaled(1.0/100)
 			progress.percentage_increment_scaled(1.0 / 32)
@@ -2244,7 +2244,7 @@ def wait_for_s4_connector_replication(ucr, lp, progress=None, max_time=None):
 
 def check_samba4_started():
 	attempt = 1
-	for i in range(5):
+	for _i in range(5):
 		time.sleep(1)
 		p = subprocess.Popen(["pgrep", "-cxf", "/usr/sbin/samba -D"], stdout=subprocess.PIPE)
 		(stdout, stderr) = p.communicate()

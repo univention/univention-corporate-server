@@ -41,13 +41,13 @@ def main():
 			#
 			# send email to each user
 			#
-			for dn, name, addr, msgid in userbase:
+			for _dn, _name, addr, msgid in userbase:
 				send_mail(recipients=[addr], messageid=msgid, server=fqdn)
 			loopcnt = 60
 			while loopcnt > 0:
 				loopcnt -= 1
 				found = 0
-				for dn, name, addr, msgid in userbase:
+				for _dn, _name, addr, msgid in userbase:
 					if imap_search_mail(messageid=msgid, server=fqdn, imap_user=addr, imap_folder='INBOX', use_ssl=True):
 						found += 1
 				print('Found %d of %d mails' % (found, len(userbase)))

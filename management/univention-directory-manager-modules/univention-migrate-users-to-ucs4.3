@@ -411,11 +411,11 @@ class Migration(object):
 		windows_domain = ucr.get('windows/domain')
 		if not windows_domain:
 			return
-		for dn, attr in lo.search(filter='(&(objectClass=sambaDomain)(sambaDomainName=%s))' % windows_domain, attr=['sambaMaxPwdAge']):
+		for _dn, attr in lo.search(filter='(&(objectClass=sambaDomain)(sambaDomainName=%s))' % windows_domain, attr=['sambaMaxPwdAge']):
 			return attr.get('sambaMaxPwdAge', [None])[0]  # pick the first match
 
 	def get_primary_gid_number(self):
-		for dn, attr in lo.search(filter='(objectClass=univentionDefault)', base='cn=univention,' + po.getDomain(), attr=['univentionDefaultGroup']):
+		for _dn, attr in lo.search(filter='(objectClass=univentionDefault)', base='cn=univention,' + po.getDomain(), attr=['univentionDefaultGroup']):
 			primary_group = attr['univentionDefaultGroup'][0].decode('UTF-8')
 			attr = lo.get(primary_group)
 			if b'posixGroup' in attr.get('objectClass', []) and attr.get('sambaSID'):

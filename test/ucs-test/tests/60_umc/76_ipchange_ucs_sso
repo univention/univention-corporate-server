@@ -48,7 +48,7 @@ if __name__ == '__main__':
 		ip = computer_object['aRecord']
 		utils.verify_ldap_object(computer, {'aRecord': ip})
 
-		for ucs_sso_dn, ucs_sso_object in lo.search('relativeDomainName=ucs-sso', unique=True, required=True):  # noqa: B007
+		for ucs_sso_dn, ucs_sso_object in lo.search('relativeDomainName=ucs-sso', unique=True, required=True):
 			ips = ucs_sso_object.get('aRecord')
 			break
 		else:

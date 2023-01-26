@@ -785,11 +785,11 @@ class UCSTestUDM:
 			hosts = iface.network.hosts()
 			next(hosts)
 			ranges = []
-			for i in range(len(kwargs['range']) if isinstance(kwargs['range'], list) else 1):
+			for _i in range(len(kwargs['range']) if isinstance(kwargs['range'], list) else 1):
 				first = last = None
 				try:
 					first = last = next(hosts)
-					for i in range(random.randrange(20)):
+					for _i in range(random.randrange(20)):
 						last = next(hosts)
 				except StopIteration:
 					pass

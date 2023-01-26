@@ -67,7 +67,7 @@ def main():  # type: () -> None
 ''')
 
 		lo = getMachineConnection(ldap_master=False)
-		for dn, attrs in lo.search(filter='(objectClass=univentionRadiusClient)'):
+		for _dn, attrs in lo.search(filter='(objectClass=univentionRadiusClient)'):
 			hostname = attrs.get('cn', [b'None'])[0].decode('UTF-8')
 			shared_secret = attrs.get('univentionRadiusClientSharedSecret', [b'None'])[0].decode('UTF-8')
 			ipaddr = attrs.get('aRecord', [b''])[0].decode('UTF-8') or attrs.get('aAAARecord', [b'None'])[0].decode('UTF-8')

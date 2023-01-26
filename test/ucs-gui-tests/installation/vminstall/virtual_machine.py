@@ -328,9 +328,9 @@ class VmCreator(object):
 
 	def create_domain(self):
 		self.domain_xml = TestDomain(self.args.vm_name)
-		for i in range(self.args.interface_count):
+		for _i in range(self.args.interface_count):
 			self.add_interface()
-		for i in range(self.args.disk_count):
+		for _i in range(self.args.disk_count):
 			self.add_disk()
 		self.add_cdrom()
 		xml = self.domain_xml.domain_xml()

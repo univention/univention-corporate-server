@@ -78,7 +78,7 @@ def do_package(package, core):
 	for module in modules:
 		if not module.icons:
 			continue
-		for path, directories, files in os.walk(os.path.join(module.icons, 'scalable')):
+		for path, _directories, files in os.walk(os.path.join(module.icons, 'scalable')):
 			for filename in files:
 				name, ext = os.path.splitext(filename)
 				if ext not in ('.svg', '.svgz'):

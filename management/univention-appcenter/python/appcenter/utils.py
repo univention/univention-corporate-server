@@ -100,7 +100,7 @@ def read_ini_file(filename, parser_class=RawConfigParser):
 def docker_bridge_network_conflict():
 	# type: () -> bool
 	docker0_net = ipaddress.IPv4Network(u'%s' % (ucr_get('docker/daemon/default/opts/bip', '172.17.42.1/16'),), False)
-	for name, iface in interfaces.Interfaces().ipv4_interfaces:
+	for _name, iface in interfaces.Interfaces().ipv4_interfaces:
 		if 'address' in iface and 'netmask' in iface:
 			my_net = ipaddress.IPv4Network(u'%s/%s' % (iface['address'], iface['netmask']), False)
 			if my_net.overlaps(docker0_net):

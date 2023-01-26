@@ -193,7 +193,7 @@ def test_group_mail_in_mailing_list():
 	with udm_test.UCSTestUDM() as udm:
 		group_members = []
 		group_mails = []
-		for i in range(2):
+		for _i in range(2):
 			user = random_mail_user(udm=udm)
 			group_members.append(user.dn)
 			group_mails.append(user.mailPrimaryAddress)

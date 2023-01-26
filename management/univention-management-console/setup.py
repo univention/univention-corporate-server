@@ -64,7 +64,7 @@ class BuildI18N(cmd.Command):
 		data_files = self.distribution.data_files
 
 		po_dir = os.path.join(os.path.dirname(os.curdir), 'src/')
-		for path, names, filenames in os.walk(po_dir):
+		for path, _names, filenames in os.walk(po_dir):
 			rel_path = path[len(po_dir):]
 			for f in filenames:
 				if not f.endswith('.po'):

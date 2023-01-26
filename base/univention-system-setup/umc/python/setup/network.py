@@ -150,7 +150,7 @@ class Interfaces(dict):
 		all_ip4s = IP4Set()
 		for device in self.values():
 			if not device.ip4dynamic:
-				for address, netmask in device.ip4:
+				for address, _netmask in device.ip4:
 					# check for duplicated IP's
 					if address in all_ip4s:
 						raise DeviceError(_('Duplicated IP address: %r') % (address), device.name)
@@ -160,7 +160,7 @@ class Interfaces(dict):
 		all_ip6s = IP6Set()
 		for device in self.values():
 			if not device.ip6dynamic:
-				for address, prefix, identifier in device.ip6:
+				for address, _prefix, _identifier in device.ip6:
 					# check for duplicated IP's
 					if address in all_ip6s:
 						raise DeviceError(_('Duplicated IP address: %r') % (address), device.name)

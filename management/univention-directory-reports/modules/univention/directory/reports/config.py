@@ -57,7 +57,7 @@ class Config(ConfigParser):
 		if not self._lang:
 			self._lang = "en_US"
 
-		for key, value in self.items('reports'):
+		for _key, value in self.items('reports'):
 			# Entries are expected to have the form (see also config.ini):
 			#   <module> <name> <directoryPath> <templateFile>
 			# For compatibility reasons, we need also to accept the deprecated format:

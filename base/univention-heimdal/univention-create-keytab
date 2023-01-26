@@ -73,7 +73,7 @@ for krb5_enctype in permitted_enctypes:
 	call(['ktutil', '-k', temp_keytab_filename, 'add', '-p', options.principal, '-V', str(options.kvno), '-e', enctype, '-w', options.password])
 
 keytab = heimdal.keytab(krb5_context, temp_keytab_filename)
-for (kvno, enctype, principal, timestamp, keyblock) in keytab.list():
+for (kvno, enctype, _principal, _timestamp, keyblock) in keytab.list():
 	keyblock_hex = binascii.b2a_hex(keyblock)
 	for spn in options.service_principal_names:
 		call(['ktutil', '-k', keytab_filename, 'add', '-p', spn, '-V', str(kvno), '-e', enctype, '-w', keyblock_hex, '--hex'])

@@ -1545,7 +1545,7 @@ class s4(univention.s4connector.ucs):
 		group_rid = decode_sid(ldap_object_s4['objectSid'][0]).rsplit('-', 1)[-1]
 		prim_members_s4_filter = format_escaped('(primaryGroupID={0!e})', group_rid)
 		prim_members_s4 = self.__search_s4(self.lo_s4.base, ldap.SCOPE_SUBTREE, prim_members_s4_filter)
-		for prim_dn, prim_object in prim_members_s4:
+		for prim_dn, _prim_object in prim_members_s4:
 			if prim_dn not in ['None', '', None]:  # filter referrals
 				s4_members.append(prim_dn)
 		ud.debug(ud.LDAP, ud.INFO, "group_members_sync_to_ucs: clean s4_members %s" % s4_members)

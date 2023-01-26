@@ -217,7 +217,7 @@ class Interactions:
 		# Retry up to 30 times if expected value does not match actual input field value.
 		# This problem may arise, if the focus changes suddenly during send_keys()
 		# (e.g. due to the autofocus feature of Dojo).
-		for i in range(30):
+		for _i in range(30):
 			elem.clear()
 			elem.send_keys(inputvalue)
 			if elem.get_property('value') == inputvalue:

@@ -300,7 +300,7 @@ class ProcessorBase(Base):
 			return {}
 
 	def handle_request_set(self, msg):
-		for key, value in msg.options.items():
+		for key, _value in msg.options.items():
 			method = {
 				'password': self.handle_request_set_password,
 				'locale': self.handle_request_set_locale,

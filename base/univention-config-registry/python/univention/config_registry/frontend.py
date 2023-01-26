@@ -448,7 +448,7 @@ def handler_search(args, opts={}):
 		except LookupError:
 			all_vars[key] = (value, None, scope)
 
-	for key, (value2, vinfo, scope2) in all_vars.items():
+	for key, (value2, vinfo, _scope2) in all_vars.items():
 		if any((
 			search_keys and search(key),
 			search_values and value2 and search(value2),

@@ -284,7 +284,7 @@ if __name__ == '__main__':
 	archive = None
 	if options.archive:
 		archive = tarfile.open(options.archive, 'w')
-	for root, dirs, files in os.walk(meta_inf_dir):
+	for root, _dirs, files in os.walk(meta_inf_dir):
 		for filename in files:
 			appname = check_ini_file(filename)
 			if not appname:

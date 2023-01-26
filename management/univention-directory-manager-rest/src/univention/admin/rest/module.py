@@ -1675,7 +1675,7 @@ class _OpenAPIBase:
 			obj = getattr(classes[key], method)
 			return '\n'.join(x.strip() for x in (obj.__doc__ or '').split('\n')).format(module=module)
 
-		for name, mod in sorted(udm_modules.modules.items()):
+		for name, _mod in sorted(udm_modules.modules.items()):
 			if object_type and name != object_type:
 				continue
 
@@ -2888,7 +2888,7 @@ class Objects(FormBase, ReportingBase, _OpenAPIBase, Resource):
 		# FIXME: we have to store the session across all processes
 		ucr['directory/manager/web/sizelimit'] = ucr.get('ldap/sizelimit', '400000')
 		last_page = page
-		for i in range(current_page, page or 1):
+		for _i in range(current_page, page or 1):
 			objects = await self.pool_submit(module.search, container, superordinate=superordinate, filter=ldap_filter, scope=scope, hidden=hidden, serverctrls=serverctrls, response=ctrls)
 			for control in ctrls.get('ctrls', []):
 				if control.controlType == SimplePagedResultsControl.controlType:
@@ -3996,7 +3996,7 @@ class PolicyResultBase(Resource):
 
 		policy_obj.policy_result(faked_policy_reference)
 		infos = copy.copy(policy_obj.polinfo_more)
-		for key, value in infos.items():
+		for key, _value in infos.items():
 			if key in policy_obj.polinfo:
 				if isinstance(infos[key], (tuple, list)):
 					continue

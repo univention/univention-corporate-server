@@ -91,7 +91,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 		try:
 			with open(fn, 'r') as fd:
 				for line in fd:
-					for (key, (regexp, pkgs)) in self.DEPS.items():
+					for (key, (regexp, _pkgs)) in self.DEPS.items():
 						if regexp.search(line):
 							self.debug('Found %s in %s' % (key.upper(), fn))
 							need.add(key)

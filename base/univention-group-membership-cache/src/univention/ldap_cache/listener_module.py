@@ -52,7 +52,7 @@ class LdapCacheHandler(ListenerModuleHandler):
 		# type: () -> None
 		self._counter += 1
 		if self._counter % 1000 == 0:
-			for name, db in get_cache():
+			for _name, db in get_cache():
 				db.cleanup()
 
 	def create(self, dn, new):

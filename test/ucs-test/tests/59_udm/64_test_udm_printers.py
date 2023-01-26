@@ -266,7 +266,7 @@ def test_check_ppd():
 	ldap_printer = []
 	printer_files = []
 	print('searching for printer models')
-	for dn, attr in utils.get_ldap_connection().search(filter='(objectClass=univentionPrinterModels)', attr=['printerModel']):
+	for _dn, attr in utils.get_ldap_connection().search(filter='(objectClass=univentionPrinterModels)', attr=['printerModel']):
 		for printerModel in attr.get('printerModel', ()):
 			printerModel = printerModel.decode('UTF-8')
 			model, desc = shlex.split(printerModel)
@@ -277,7 +277,7 @@ def test_check_ppd():
 				model = model.split('/')[-1]
 				ldap_printer.append(model)
 
-	for root, dirs, files in os.walk('/usr/share/ppd/'):
+	for _root, _dirs, files in os.walk('/usr/share/ppd/'):
 		for file_ in files:
 			if file_.endswith('.ppd') or file_.endswith('ppd.gz'):
 				printer_files.append(file_)

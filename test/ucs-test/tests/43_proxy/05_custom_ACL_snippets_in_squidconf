@@ -197,7 +197,7 @@ def main():
 		]
 		itertion_length = len(permissions) * len(acl_types) * len(value_types)
 		tests = itertools.product(zip(permissions, responses), acl_types, zip(value_types, values))
-		for i in range(itertion_length):
+		for _i in range(itertion_length):
 			with ucr_test.UCSTestConfigRegistry():
 				perform_test(next(tests))
 
@@ -209,7 +209,7 @@ def main():
 			'^proxy_test1.univention.de.*$'
 		]
 		tests = itertools.product(zip(permissions, responses), acl_types, zip(value_types, values))
-		for i in range(itertion_length):
+		for _i in range(itertion_length):
 			with ucr_test.UCSTestConfigRegistry():
 				perform_test(next(tests))
 
