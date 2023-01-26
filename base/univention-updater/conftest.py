@@ -20,7 +20,7 @@ except ImportError:
     pass
 
 if sys.version_info >= (3,):
-    import builtins as builtins
+    import builtins
 else:
     import __builtin__ as builtins
     FileNotFoundError = IOError

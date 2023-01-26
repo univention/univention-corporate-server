@@ -57,7 +57,7 @@ import ldap
 import psutil
 
 import univention.config_registry
-from univention.lib import atjobs as atjobs
+from univention.lib import atjobs
 from univention.lib.admember import (
     check_ad_account,
     check_connection,
