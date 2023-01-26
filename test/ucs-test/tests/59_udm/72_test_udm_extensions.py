@@ -952,7 +952,7 @@ class Test_UDMExtensions:
 		# check if registered file has been replicated to local system
 		target_fn = get_absolute_extension_filename(extension_type, extension_filename)
 		exists = os.path.exists(target_fn)
-		assert not exists != should_exist, 'ERROR: expected filesystem status mismatch (exists=%s should_exist=%s)' % (exists, should_exist)
+		assert exists == should_exist, 'ERROR: expected filesystem status mismatch (exists=%s should_exist=%s)' % (exists, should_exist)
 
 		# wait for replication before local filesystem is checked
 		udm.cleanup()
@@ -1150,12 +1150,12 @@ class Test_UDMExtensions:
 		# check if sha1(buffer) == sha1(file)
 		hash_buffer = hashlib.sha1(extension_buffer.encode('UTF-8')).hexdigest()
 		hash_file = hashlib.sha1(open(target_fn, 'rb').read()).hexdigest()
-		assert not hash_buffer != hash_file, 'ERROR: sha1 sums of file and buffer differ (fn=%s ; file=%s ; buffer=%s)' % (target_fn, hash_file, hash_buffer)
+		assert hash_buffer == hash_file, 'ERROR: sha1 sums of file and buffer differ (fn=%s ; file=%s ; buffer=%s)' % (target_fn, hash_file, hash_buffer)
 
 		# check replicated file has correct file mode
 		current_mode = oct(os.stat(target_fn).st_mode & (stat.S_IRWXU | stat.S_IRWXG | stat.S_IRWXO))
 		expected_mode = '0o644'
-		assert not current_mode != expected_mode, 'ERROR: permissions of target file %s are not ok (current=%s  expected=%s)' % (target_fn, current_mode, expected_mode)
+		assert current_mode == expected_mode, 'ERROR: permissions of target file %s are not ok (current=%s  expected=%s)' % (target_fn, current_mode, expected_mode)
 
 		# check replicated file is own by root:nobody
 		expected_groups = (0, grp.getgrnam('nogroup').gr_gid)
@@ -2203,7 +2203,7 @@ class Test_UDMExtensionSpecial:
 		# check if registered file has been replicated to local system
 		target_fn = get_absolute_extension_filename(extension_type, '%s.py' % extension_name)
 		exists = os.path.exists(target_fn)
-		assert not exists != should_exist, 'ERROR: expected filesystem status mismatch (exists=%s should_exist=%s)' % (exists, should_exist)
+		assert exists == should_exist, 'ERROR: expected filesystem status mismatch (exists=%s should_exist=%s)' % (exists, should_exist)
 
 		# wait for replication before local filesystem is checked
 		udm.cleanup()

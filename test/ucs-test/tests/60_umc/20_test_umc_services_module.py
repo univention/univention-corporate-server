@@ -48,32 +48,32 @@ class Test_UMCServiceAutostart:
     def test_autostart_yes_to_no(self):
         assert self.get_service_current_configuration(AUTOSTART_VAR) == 'yes'
         self.set_service_configuration([SERVICE_NAME], 'start_never')
-        assert not self.get_service_current_configuration(AUTOSTART_VAR) != 'no'
+        assert self.get_service_current_configuration(AUTOSTART_VAR) == "no"
 
     def test_autostart_no_to_manually(self):
         assert self.get_service_current_configuration(AUTOSTART_VAR) == 'no'
         self.set_service_configuration([SERVICE_NAME], 'start_manual')
-        assert not self.get_service_current_configuration(AUTOSTART_VAR) != 'manually'
+        assert self.get_service_current_configuration(AUTOSTART_VAR) == "manually"
 
     def test_autostart_manually_to_no(self):
         assert self.get_service_current_configuration(AUTOSTART_VAR) == 'manually'
         self.set_service_configuration([SERVICE_NAME], 'start_never')
-        assert not self.get_service_current_configuration(AUTOSTART_VAR) != 'no'
+        assert self.get_service_current_configuration(AUTOSTART_VAR) == "no"
 
     def test_autostart_no_to_yes(self):
         assert self.get_service_current_configuration(AUTOSTART_VAR) == 'no'
         self.set_service_configuration([SERVICE_NAME], 'start_auto')
-        assert not self.get_service_current_configuration(AUTOSTART_VAR) != 'yes'
+        assert self.get_service_current_configuration(AUTOSTART_VAR) == "yes"
 
     def test_autostart_yes_to_manually(self):
         assert self.get_service_current_configuration(AUTOSTART_VAR) == 'yes'
         self.set_service_configuration([SERVICE_NAME], 'start_manual')
-        assert not self.get_service_current_configuration(AUTOSTART_VAR) != 'manually'
+        assert self.get_service_current_configuration(AUTOSTART_VAR) == "manually"
 
     def test_autostart_manually_to_yes(self):
         assert self.get_service_current_configuration(AUTOSTART_VAR) == 'manually'
         self.set_service_configuration([SERVICE_NAME], 'start_auto')
-        assert not self.get_service_current_configuration(AUTOSTART_VAR) != 'yes'
+        assert self.get_service_current_configuration(AUTOSTART_VAR) == "yes"
 
 
 @pytest.mark.exposure('dangerous')
