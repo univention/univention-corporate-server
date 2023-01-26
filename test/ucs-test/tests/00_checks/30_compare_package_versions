@@ -206,7 +206,7 @@ def compare(old, new):
 
     if errors:
         print("\nAffected source packages:")
-        for package in sorted(list(src_package_list)):
+        for package in sorted(src_package_list):
             print("  %s" % package)
 
         print("\nNumber of affected binary packages: %d" % errors)
