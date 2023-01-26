@@ -21,10 +21,7 @@ from dockertest import (
 
 def deb_package_is_installed(pkgname):
 	cache = apt.Cache()
-	if cache[pkgname].is_installed:
-		return True
-	else:
-		return False
+	return bool(cache[pkgname].is_installed)
 
 
 def deb_install_package(pkgname):

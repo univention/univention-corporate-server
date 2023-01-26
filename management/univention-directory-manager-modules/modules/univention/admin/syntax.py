@@ -2359,10 +2359,7 @@ class hostOrIP(simple):
 
 	@classmethod
 	def hostName(self, text):
-		if text and hostName.regex.match(text) is not None:
-			return True
-		else:
-			return False
+		return bool(text and hostName.regex.match(text) is not None)
 
 	@classmethod
 	def parse(self, text):

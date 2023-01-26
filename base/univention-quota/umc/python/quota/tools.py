@@ -152,10 +152,7 @@ def quota_is_enabled(fstab_entry):
 		pattern = re.compile(r"user quota on %s \([^)]*\) is (on|off)" % fstab_entry.mount_point)
 		match = pattern.match(stdout)
 		if match:
-			if match.group(1) == "on":
-				return True
-			else:
-				return False
+			return match.group(1) == 'on'
 		else:
 			return None  # tertium datur
 

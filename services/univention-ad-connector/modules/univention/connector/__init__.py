@@ -145,10 +145,7 @@ def compare_normal(val1, val2):
 
 def compare_lowercase(val1, val2):
 	try:  # TODO: fails if conversion to ascii-str raises exception
-		if dictonary_lowercase(val1) == dictonary_lowercase(val2):
-			return True
-		else:
-			return False
+		return dictonary_lowercase(val1) == dictonary_lowercase(val2)
 	except Exception:  # FIXME: which exception is to be caught?
 		return False
 
@@ -246,10 +243,7 @@ class configdb(object):
 				cur.execute("SELECT name FROM sqlite_master WHERE type='table' AND name=?;", (section,))
 				rows = cur.fetchone()
 				cur.close()
-				if rows:
-					return True
-				else:
-					return False
+				return bool(rows)
 			except lite.Error as e:
 				ud.debug(ud.LDAP, ud.WARN, "sqlite: %s" % e)
 				if self._dbcon:
@@ -280,10 +274,7 @@ class configdb(object):
 				cur.execute("SELECT value FROM '%s' WHERE key=?" % section, (option,))
 				rows = cur.fetchall()
 				cur.close()
-				if rows:
-					return True
-				else:
-					return False
+				return bool(rows)
 			except lite.Error as e:
 				ud.debug(ud.LDAP, ud.WARN, "sqlite: %s" % e)
 				if self._dbcon:
@@ -1242,10 +1233,7 @@ class ucs(object):
 
 	def was_entryUUID_deleted(self, entryUUID):
 		objectGUID = self.config.get('UCS deleted', entryUUID)
-		if objectGUID:
-			return True
-		else:
-			return False
+		return bool(objectGUID)
 
 	def was_objectGUID_deleted_by_ucs(self, objectGUID):
 		try:
@@ -1527,10 +1515,7 @@ class ucs(object):
 						if isinstance(attribute_value, list):
 							attribute_value = int(attribute_value[0])
 						int_value = int(value)
-						if ((attribute_value & int_value) == int_value):
-							return True
-						else:
-							return False
+						return attribute_value & int_value == int_value
 					except ldap.SERVER_DOWN:
 						raise
 					except Exception:

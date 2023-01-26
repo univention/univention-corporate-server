@@ -427,10 +427,7 @@ def compare_sid_lists(sid_list1, sid_list2):
 
 	# RID comparison
 	if __is_int(sid_list1) or __is_int(sid_list2):
-		if sid_list1 == sid_list2:
-			return True
-		else:
-			return False
+		return sid_list1 == sid_list2
 
 	# SID comparison
 	len_sid_list1 = len(sid_list1)
