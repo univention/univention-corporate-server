@@ -57,7 +57,7 @@ class CheckError(Exception):
 
 class DoesNotExist(CheckError):
 	def __str__(self) -> str:
-		return _('File {path!r} does not exist.'.format(path=self.filename))
+		return _('File {path!r} does not exist.').format(path=self.filename)
 
 
 class OwnerMismatch(CheckError):
