@@ -893,7 +893,7 @@ class Component(object):
 
     def __str__(self):
         # type: () -> str
-        return "Component({0.name})".format(self)
+        return "Component({.name})".format(self)
 
     def ucrv(self, key=""):
         # type: (str) -> str

@@ -106,8 +106,8 @@ def mapName(old, encoding=()):
 	if len(old) == 1:
 		return old[0].encode(*encoding)
 	if len(old) == 3 and old[2]:
-		return u'_{0}._{1}.{2}'.format(*old).encode(*encoding)
-	return u'_{0}._{1}'.format(*old[:2]).encode(*encoding)
+		return u'_{}._{}.{}'.format(*old).encode(*encoding)
+	return u'_{}._{}'.format(*old[:2]).encode(*encoding)
 
 
 def unmapLocation(old, encoding=()):

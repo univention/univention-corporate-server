@@ -200,7 +200,7 @@ def update_available(opt, ucr):
     """ Checks if there is an update available.
     Returns the next version, or None if up-to-date, or throws an UpdateError if the next version can not be identified."""
 
-    log('--->DBG:update_available(mode={0.mode})'.format(opt))
+    log('--->DBG:update_available(mode={.mode})'.format(opt))
 
     if opt.mode == 'local':
         return update_local(opt, ucr)
@@ -420,7 +420,7 @@ def run(opt, ucr, updater, nextversion):
                 cmd = [
                     'univention-config-registry', 'set',
                     'version/version={}'.format(nextversion.FORMAT % nextversion),
-                    'version/patchlevel={0.patchlevel}'.format(nextversion),
+                    'version/patchlevel={.patchlevel}'.format(nextversion),
                 ]
                 call(cmd, stdout=fd_log, stderr=fd_log)
 

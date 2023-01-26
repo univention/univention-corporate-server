@@ -233,7 +233,7 @@ def call_process2(cmd, logger=None, env=None, cwd=None):
 	str_cmd = [str(x) for x in cmd]
 	if cwd:
 		logger.debug('Running in %s:' % cwd)
-	logger.info('Running command: {0}'.format(' '.join(str_cmd)))
+	logger.info('Running command: {}'.format(' '.join(str_cmd)))
 	out = ""
 	ret = 0
 	try:

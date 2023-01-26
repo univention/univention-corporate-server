@@ -266,7 +266,7 @@ def auto_complete_values_for_join(newValues, current_locale=None):
 		newValues['locale'] = newValues.get('locale/default', '')
 	forcedLocales = ['en_US.UTF-8:UTF-8', 'de_DE.UTF-8:UTF-8']  # we need en_US and de_DE locale as default language
 	if current_locale:
-		forcedLocales.append('{0}:{1}'.format(current_locale, current_locale.codeset))
+		forcedLocales.append('{}:{}'.format(current_locale, current_locale.codeset))
 	for ilocale in forcedLocales:
 		if ilocale not in newValues['locale']:
 			newValues['locale'] = '%s %s' % (newValues['locale'], ilocale)

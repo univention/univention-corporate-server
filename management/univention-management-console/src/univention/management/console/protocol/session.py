@@ -821,7 +821,7 @@ class Processor(ProcessorBase):
 				raise IOError
 			result['umc_version'] = match.groups()[0]
 			result['ucs_version'] = '%(version/version)s-%(version/patchlevel)s errata%(version/erratalevel)s' % ucr
-			result['server'] = '{0}.{1}'.format(ucr.get('hostname', ''), ucr.get('domainname', ''))
+			result['server'] = '{}.{}'.format(ucr.get('hostname', ''), ucr.get('domainname', ''))
 			result['ssl_validity_host'] = int(ucr.get('ssl/validity/host', '0')) * 24 * 60 * 60 * 1000
 			result['ssl_validity_root'] = int(ucr.get('ssl/validity/root', '0')) * 24 * 60 * 60 * 1000
 		except IOError:

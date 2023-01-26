@@ -70,7 +70,7 @@ def main():  # type: () -> int
 				ml = [
 					(MOD_REPLACE, member_ad, uniqueMember),
 				]
-				print('modify {0}'.format(dn))
+				print('modify {}'.format(dn))
 				lo.modify_s(dn, ml)
 			except Exception as e:
 				print("E: modifying %s failed error with %s" % (dn, e), file=stderr)
