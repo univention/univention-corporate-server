@@ -37,7 +37,7 @@ def handler(
 
 def handler_add(dn: str, new: Dict[str, List[bytes]]) -> None:
 	"""Handle creation of object."""
-	pass  # replace this
+	# replace this
 
 
 def handler_modify(
@@ -46,12 +46,12 @@ def handler_modify(
 	new: Dict[str, List[bytes]],
 ) -> None:
 	"""Handle modification of object."""
-	pass  # replace this
+	# replace this
 
 
 def handler_remove(dn: str, old: Dict[str, List[bytes]]) -> None:
 	"""Handle removal of object."""
-	pass  # replace this
+	# replace this
 
 
 def handler_move(
@@ -61,7 +61,7 @@ def handler_move(
 	new: Dict[str, List[bytes]],
 ) -> None:
 	"""Handle rename or move of object."""
-	pass  # replace this
+	# replace this
 
 
 def handler_schema(
@@ -69,4 +69,4 @@ def handler_schema(
 	new: Dict[str, List[bytes]],
 ) -> None:
 	"""Handle change in LDAP schema."""
-	pass  # replace this
+	# replace this

@@ -105,7 +105,6 @@ class InstallRemoveUpgrade(Register):
 		action. The implementation has to be done in each derived class if
 		needed.
 		"""
-		pass
 
 	def _run_parts(self, directory):
 		"""

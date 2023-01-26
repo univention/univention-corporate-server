@@ -46,7 +46,6 @@ class I18N_Error(Exception):
 	"""
 	Error in Internationalization.
 	"""
-	pass
 
 
 class Locale(object):
@@ -163,7 +162,6 @@ class NullTranslation(object):
 
 		:param str language: The language code.
 		"""
-		pass
 
 	def _get_locale(self):
 		# type: () -> Optional[Locale]

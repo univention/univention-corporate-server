@@ -50,7 +50,6 @@ class ApiVersionMustNotChange(UdmError):
 
 class ConnectionError(UdmError):
 	"""Raised when something goes wrong getting a connection."""
-	pass
 
 
 class ApiVersionNotSupported(UdmError):
@@ -68,7 +67,6 @@ class ApiVersionNotSupported(UdmError):
 
 class CreateError(UdmError):
 	"""Raised when an error occurred when creating an object."""
-	pass
 
 
 class DeletedError(UdmError):
@@ -97,12 +95,10 @@ class NotYetSavedError(UdmError):
 
 class ModifyError(UdmError):
 	"""Raised if an error occurred when modifying an object."""
-	pass
 
 
 class MoveError(UdmError):
 	"""Raised if an error occurred when moving an object."""
-	pass
 
 
 class NoApiVersionSet(UdmError):
@@ -147,7 +143,6 @@ class MultipleObjects(UdmError):
 	Raised when more than one UDM object was found when there should be at
 	most one.
 	"""
-	pass
 
 
 class UnknownModuleType(UdmError):
@@ -165,7 +160,6 @@ class UnknownProperty(UdmError):
 	Raised when a client tries to set a property on :py:attr:`BaseObject.props`,
 	that it does not support.
 	"""
-	pass
 
 
 class WrongObjectType(UdmError):

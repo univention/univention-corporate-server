@@ -95,7 +95,6 @@ class ListenerModuleHandler(with_metaclass(HandlerMetaClass)):
 		any Python class with just the required attributes (`name`, `description`,
 		`ldap_filter`) or a subclass of :py:class:`ListenerModuleConfiguration`.
 		"""
-		pass
 
 	def __init__(self, *args, **kwargs):
 		# type: (*str, **str) -> None
@@ -133,7 +132,6 @@ class ListenerModuleHandler(with_metaclass(HandlerMetaClass)):
 		:param str dn: current objects DN
 		:param dict new: new LDAP objects attributes
 		"""
-		pass
 
 	def modify(self, dn, old, new, old_dn):
 		# type: (str, Mapping[str, Sequence[bytes]], Mapping[str, Sequence[bytes]], Optional[str]) -> None
@@ -149,7 +147,6 @@ class ListenerModuleHandler(with_metaclass(HandlerMetaClass)):
 		:param old_dn: previous DN if object was moved/renamed, None otherwise
 		:type old_dn: str or None
 		"""
-		pass
 
 	def remove(self, dn, old):
 		# type: (str, Mapping[str, Sequence[bytes]]) -> None
@@ -159,7 +156,6 @@ class ListenerModuleHandler(with_metaclass(HandlerMetaClass)):
 		:param str dn: current objects DN
 		:param dict old: previous LDAP objects attributes
 		"""
-		pass
 
 	def initialize(self):
 		# type: () -> None
@@ -167,7 +163,6 @@ class ListenerModuleHandler(with_metaclass(HandlerMetaClass)):
 		Called once when the Univention Directory Listener loads the module
 		for the first time or when a resync it triggered.
 		"""
-		pass
 
 	def clean(self):
 		# type: () -> None
@@ -175,7 +170,6 @@ class ListenerModuleHandler(with_metaclass(HandlerMetaClass)):
 		Called once when the Univention Directory Listener loads the module
 		for the first time or when a resync it triggered.
 		"""
-		pass
 
 	def pre_run(self):
 		# type: () -> None
@@ -185,7 +179,6 @@ class ListenerModuleHandler(with_metaclass(HandlerMetaClass)):
 
 		Use for example to open an LDAP connection.
 		"""
-		pass
 
 	def post_run(self):
 		# type: () -> None
@@ -195,7 +188,6 @@ class ListenerModuleHandler(with_metaclass(HandlerMetaClass)):
 
 		Use for example to close an LDAP connection.
 		"""
-		pass
 
 	@staticmethod
 	@contextmanager

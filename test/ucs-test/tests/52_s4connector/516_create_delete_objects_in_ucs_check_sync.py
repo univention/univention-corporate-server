@@ -68,7 +68,6 @@ class Users:
                 >   	self.alloc.append(('sid', self.oldattr['sambaSID'][0].decode('ASCII')))
                 E    KeyError
                 '''
-                pass
             except noObject:
                 pass
 

@@ -914,7 +914,6 @@ class simpleLdap(object):
 
 	def _ldap_pre_ready(self):  # type: () -> None
 		"""Hook which is called before :func:`univention.admin.handlers.simpleLdap.ready`."""
-		pass
 
 	def _ldap_pre_create(self):  # type: () -> None
 		"""Hook which is called before the object creation."""
@@ -941,7 +940,6 @@ class simpleLdap(object):
 
 	def _ldap_pre_modify(self):  # type: () -> None
 		"""Hook which is called before the object modification."""
-		pass
 
 	def _ldap_post_modify(self):  # type: () -> None
 		"""Hook which is called after the object modification."""
@@ -961,7 +959,6 @@ class simpleLdap(object):
 
 		:param str olddn: The old distiguished name the object was renamed from.
 		"""
-		pass
 
 	def _ldap_pre_move(self, newdn):  # type: (str) -> None
 		"""
@@ -977,11 +974,9 @@ class simpleLdap(object):
 
 		:param str olddn: The old distiguished name the object was moved from.
 		"""
-		pass
 
 	def _ldap_pre_remove(self):  # type: () -> None
 		"""Hook which is called before the object removal."""
-		pass
 
 	def _ldap_post_remove(self):  # type: () -> None
 		"""Hook which is called after the object removal."""

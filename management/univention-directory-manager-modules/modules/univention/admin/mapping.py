@@ -225,7 +225,6 @@ def nothing(a):
 	"""
 	'Do nothing' mapping returning `None`.
 	"""
-	pass
 
 
 def IgnoreNone(value, encoding=()):
@@ -432,7 +431,6 @@ class dontMap(object):
 	"""
 	'Do nothing' mapping.
 	"""
-	pass
 
 
 class mapping(object):

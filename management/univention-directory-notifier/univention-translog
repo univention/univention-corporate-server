@@ -1164,7 +1164,6 @@ class CheckListener(CheckGeneric):
         """
         No associated `.index` file to remove.
         """
-        pass
 
 
 def check_last(opt, filename, last_tid):

@@ -450,7 +450,6 @@ class _UCSServer(object):
 
         :param ConfigRegistry ucr: An UCR instance.
         """
-        pass
 
     def join(self, rel):
         # type: (str) -> str

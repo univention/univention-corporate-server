@@ -154,7 +154,6 @@ class Progress(object):
 
 def _dummyFunc(*args: List) -> None:
 	"""dummy function that does nothing"""
-	pass
 
 
 def system_join(

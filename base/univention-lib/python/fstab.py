@@ -46,7 +46,6 @@ class InvalidEntry(Exception):
 	"""
 	Invalid entry in file system table
 	"""
-	pass
 
 
 class File(list):

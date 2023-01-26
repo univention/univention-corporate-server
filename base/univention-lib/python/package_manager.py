@@ -222,7 +222,6 @@ class MessageWriter(object):
 		"""
 		Dummy function to flush all pending writes.
 		"""
-		pass
 
 	def write(self, msg):
 		# type: (Any) -> None

@@ -18,7 +18,7 @@ def handler(
 
 def handler_add(dn: str, new: Dict[str, List[bytes]]) -> None:
 	"""Handle addition of object."""
-	pass  # replace this
+	# replace this
 
 
 def handler_modify(
@@ -27,9 +27,9 @@ def handler_modify(
 	new: Dict[str, List[bytes]],
 ) -> None:
 	"""Handle modification of object."""
-	pass  # replace this
+	# replace this
 
 
 def handler_remove(dn: str, old: Dict[str, List[bytes]]) -> None:
 	"""Handle removal of object."""
-	pass  # replace this
+	# replace this
