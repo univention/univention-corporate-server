@@ -130,6 +130,10 @@ latex_elements = {
     "babel": "\\usepackage{babel}",
 }
 
+linkcheck_ignore = [
+    r'https://ldapwiki\.com/.*'
+]
+
 univention_use_doc_base = True
 
 intersphinx_mapping = {
