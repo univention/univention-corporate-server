@@ -103,7 +103,7 @@ def import_syntax_files():
 			for fn in syntax_files:
 				try:
 					with io.open(fn, 'rb') as fd:
-						exec(fd.read(), sys.modules[__name__].__dict__)
+						exec(fd.read(), sys.modules[__name__].__dict__)  # noqa: S102
 					ud.debug(ud.ADMIN, ud.INFO, 'admin.syntax.import_syntax_files: importing %r' % (fn,))
 				except Exception:
 					ud.debug(ud.ADMIN, ud.ERROR, 'admin.syntax.import_syntax_files: loading %r failed' % (fn,))
