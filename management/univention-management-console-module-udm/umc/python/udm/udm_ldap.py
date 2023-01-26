@@ -217,7 +217,7 @@ class AppAttributes(object):
 				cls._filter_attrs(_layout, attrs_to_remove)
 		elif isinstance(layout, list):
 			for _layout in layout:
-				if isinstance(_layout, dict) or isinstance(_layout, list):
+				if isinstance(_layout, (dict, list)):
 					cls._filter_attrs(_layout, attrs_to_remove)
 			for attr in attrs_to_remove:
 				try:

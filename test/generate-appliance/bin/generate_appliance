@@ -250,7 +250,7 @@ class Tar(File):
 	def __init__(self, file_list, fileformat=tarfile.USTAR_FORMAT):
 		# type: (List[Tuple[str, Union[File, bytes]]], int) -> None
 		for _, source_file in file_list:
-			assert isinstance(source_file, File) or isinstance(source_file, bytes)
+			assert isinstance(source_file, (File, bytes))
 		self._file_list = file_list
 		self._format = fileformat
 		File.__init__(self)
@@ -301,7 +301,7 @@ class Pkzip(File):
 		# type: (List[Tuple[str, Union[File, bytes]]]) -> None
 		for _, source_file in file_list:
 			if source_file is not None:
-				assert isinstance(source_file, File) or isinstance(source_file, bytes)
+				assert isinstance(source_file, (File, bytes))
 		self._file_list = file_list
 		File.__init__(self)
 
