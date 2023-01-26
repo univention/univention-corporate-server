@@ -197,7 +197,7 @@ directory = {directory}
 
 		# FIXME: univention-cli-server calls os.fork() which causes the coverage measurement not to start in the forked process
 		# https://github.com/nedbat/coveragepy/issues/310  # Coverage fails with os.fork and os._exit
-		osfork = getattr(os, 'fork')
+		osfork = os.fork
 
 		def fork(*args, **kwargs):
 			# type: (*Any, **Any) -> int

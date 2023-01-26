@@ -90,17 +90,17 @@ def rangeUnmap(value, encoding=()):
 def add_dhcp_options(module_name):
 	module = sys.modules[module_name]
 
-	options = getattr(module, "options")
+	options = module.options
 	options.update(_options)
 
-	properties = getattr(module, "property_descriptions")
+	properties = module.property_descriptions
 	properties.update(_properties)
 
-	mapping = getattr(module, "mapping")
+	mapping = module.mapping
 	for item in _mappings:
 		mapping.register(*item)
 
-	layout = getattr(module, "layout")
+	layout = module.layout
 	layout.append(Tab(
 		_('Low-level DHCP configuration'),
 		_('Custom DHCP options'),

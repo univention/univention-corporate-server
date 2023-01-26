@@ -93,7 +93,7 @@ class UniventionAppActionMeta(type):
 
 	def __new__(mcs, name, bases, attrs):
 		new_cls = super(UniventionAppActionMeta, mcs).__new__(mcs, name, bases, attrs)
-		if hasattr(new_cls, 'main') and getattr(new_cls, 'main') is not None:
+		if hasattr(new_cls, 'main') and new_cls.main is not None:
 			_ACTIONS[new_cls.get_action_name()] = new_cls
 			new_cls.logger = new_cls.parent_logger.getChild(new_cls.get_action_name())
 			new_cls.progress = new_cls.logger.getChild('progress')

@@ -82,7 +82,7 @@ class UniventionMetaClass(type):
 		inheritance_info = set()
 		for base in bases:
 			if hasattr(base, '_univention_meta_inheritance'):
-				for inheritance_name in getattr(base, '_univention_meta_inheritance'):
+				for inheritance_name in base._univention_meta_inheritance:
 					inheritance_value = getattr(base, inheritance_name)
 					if isinstance(inheritance_value, dict):
 						attrs.setdefault(inheritance_name, {}).update(inheritance_value)

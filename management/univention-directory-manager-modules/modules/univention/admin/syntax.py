@@ -420,7 +420,7 @@ class select(ISyntax):
 		# type: (Any) -> Optional[str]
 		# for the UDM CLI
 		try:
-			choices = getattr(self, "choices")
+			choices = self.choices
 		except AttributeError:
 			return text
 		if not text and select.empty_value:

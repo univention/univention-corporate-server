@@ -435,7 +435,7 @@ class UDM_Module(object):
 		return hasattr(self.module, 'lookup_filter')
 
 	def lookup_filter(self, filter_s=None, lo=None):
-		return getattr(self.module, 'lookup_filter')(filter_s, lo)
+		return self.module.lookup_filter(filter_s, lo)
 
 	def __repr__(self):
 		return '<%s(%r) at 0x%x>' % (type(self).__name__, self.name, id(self))

@@ -34,7 +34,7 @@ class S4ConnectorWrapper(univention.s4connector.s4.s4):
 						continue
 
 					if self.is_single_value_in_s4(con_attribute):
-						if not mapping_attributes[attr_key].single_value and not getattr(mapping_attributes[attr_key], 'con_other_attribute'):
+						if not mapping_attributes[attr_key].single_value and not mapping_attributes[attr_key].con_other_attribute:
 							print(f'ERROR: "{con_attribute}": Mapping for Samba4 attribute should be adjusted to single_value=True!')
 							result = False
 					else:
