@@ -1,4 +1,4 @@
-#!/usr/bin/py.test
+#!/usr/bin/pytest-3
 # -*- coding: utf-8 -*-
 # Like what you see? Join us!
 # https://www.univention.com/about-us/careers/vacancies/
