@@ -124,9 +124,6 @@ def load_packages_file(filename, target_dict, ucs_version):
     except OSError:
         # otherwise open it as a usual file
         packages_file = open(filename)
-    except OSError as exc:
-        utils.fail("An %r Error occurred, while trying to open a Packages file "
-                   "'%s'" % (exc, filename))
 
     try:
         content = packages_file.read()

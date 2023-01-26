@@ -249,9 +249,6 @@ class MagicBucket(object):
 		except (SSL.SysCallError, SSL.Error, socket.error) as error:
 			CRYPT.warn('SSL error in _response: %s. Probably the socket was closed by the client.' % str(error))
 			self._cleanup(state.socket)
-		except socket.error as exc:
-			CORE.warn('socket error in _response: %s. Probably the socket was closed by the client.' % (exc,))
-			self._cleanup(state.socket)
 		except Exception:  # close the connection to the client. we can't do anything else
 			CORE.error('FATAL ERROR: %s' % (traceback.format_exc(),))
 			self._cleanup(state.socket)
