@@ -331,7 +331,7 @@ class Docker(object):
 		return os.path.join(self.root_dir, filename)
 
 	def ucr_filter_env_file(self, env):
-		env_file = os.path.join(self.app.get_data_dir().rstrip('data'), self.app.id + '.env')
+		env_file = os.path.join(self.app.get_data_dir(), '..', self.app.id + '.env')
 		# remove old env file
 		try:
 			os.remove(env_file)
