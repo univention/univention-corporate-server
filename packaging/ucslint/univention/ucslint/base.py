@@ -467,7 +467,7 @@ class UPCFileTester(object):
 		:param pos_in_line: Column number startin at 1.
 		:returns: 2-tuple (line-number, column-number).
 		"""
-		pos = sum((len(_) + 1 for _ in self.lines[:linenumber]))
+		pos = sum(len(_) + 1 for _ in self.lines[:linenumber])
 		pos += pos_in_line
 		raw = self.raw[:pos]
 		realpos = len(raw) - raw.rfind('\n')

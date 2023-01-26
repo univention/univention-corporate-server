@@ -53,7 +53,7 @@ def _common(ucr, changes, command):
 	else:
 		# Restart both old and new primary interfaces
 		if PRIMARY in changes:
-			interfaces |= set((_ for _ in changes[PRIMARY] if _))
+			interfaces |= set(_ for _ in changes[PRIMARY] if _)
 		# Collect changed interfaces
 		for key, old_new in changes.items():
 			if key in SKIP:

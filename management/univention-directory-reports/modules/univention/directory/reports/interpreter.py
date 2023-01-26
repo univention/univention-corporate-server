@@ -82,7 +82,7 @@ class Interpreter(object):
 				else:
 					self.run(token, token.objects)
 				if 'separator' in token.attrs:
-					cp = copy.deepcopy((list(token)))
+					cp = copy.deepcopy(list(token))
 					while len(token):
 						token.pop()
 					for item in cp:

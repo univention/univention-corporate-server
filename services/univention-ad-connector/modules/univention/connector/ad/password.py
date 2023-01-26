@@ -612,7 +612,7 @@ def password_sync(connector, key, ucs_object):
 				policy_value = policy.get('value', [None])[0]
 				if policy_value:
 					new_shadowMax = policy_value
-					new_krb5end = time.strftime("%Y%m%d000000Z", time.gmtime((int(time.time()) + (int(policy_value) * 3600 * 24)))).encode('ASCII')
+					new_krb5end = time.strftime("%Y%m%d000000Z", time.gmtime(int(time.time()) + (int(policy_value) * 3600 * 24))).encode('ASCII')
 
 			# update shadowMax (set to value of univentionPWExpiryInterval, otherwise delete) and
 			# krb5PasswordEnd (set to today + univentionPWExpiryInterval, otherwise delete)

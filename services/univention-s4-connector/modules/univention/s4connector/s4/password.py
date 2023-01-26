@@ -861,7 +861,7 @@ def password_sync_s4_to_ucs(s4connector, key, ucs_object, modifyUserPassword=Tru
 					new_krb5end = b''
 				else:
 					new_shadowMax = str(expiryInterval).encode('ASCII')
-					new_krb5end = time.strftime("%Y%m%d000000Z", time.gmtime((pwdLastSet_unix + (int(expiryInterval) * 3600 * 24)))).encode('ASCII')
+					new_krb5end = time.strftime("%Y%m%d000000Z", time.gmtime(pwdLastSet_unix + (int(expiryInterval) * 3600 * 24))).encode('ASCII')
 
 			if new_shadowLastChange != old_shadowLastChange:
 				ud.debug(ud.LDAP, ud.INFO, "password_sync_s4_to_ucs: update shadowLastChange to %s for %s" % (new_shadowLastChange, ucs_object['dn']))

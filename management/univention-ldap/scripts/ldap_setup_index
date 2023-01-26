@@ -136,7 +136,7 @@ class LdapIndex(object):
         value = ucr.get(ucrv, '')
         values = value.split(',')
         stripped = (_.strip() for _ in values)
-        return set((_ for _ in stripped if _))
+        return set(_ for _ in stripped if _)
 
     @staticmethod
     def ucrv(typ):

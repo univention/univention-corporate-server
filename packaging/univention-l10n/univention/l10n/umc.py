@@ -471,7 +471,7 @@ def create_json_file(po_file):
 		# javascript. To avoid malicious code injection a simple check is
 		# performed here.
 		if not re.match(r"^[\s\dn=?!&|%:()<>]+$", data["$plural$"]):
-			raise Error(('There are illegal characters in the "plural" expression in %s\'s header entry "Plural-Forms".' % (po_file)))
+			raise Error('There are illegal characters in the "plural" expression in %s\'s header entry "Plural-Forms".' % (po_file))
 
 	for entry in pofile:
 		if entry.msgstr:

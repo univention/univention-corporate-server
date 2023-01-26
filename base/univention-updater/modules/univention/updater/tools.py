@@ -934,11 +934,11 @@ class Component(object):
 
         :returns: a set of package names.
         """
-        return set((
+        return set(
             pkg
             for var in ('defaultpackages', 'defaultpackage')
             for pkg in RE_SPLIT_MULTI.split(self[var])
-        )) - {""}
+        ) - {""}
 
     def defaultpackage_installed(self, ignore_invalid_package_names=True):
         # type: (bool) -> Optional[bool]

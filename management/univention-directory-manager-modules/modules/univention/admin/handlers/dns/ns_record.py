@@ -161,7 +161,7 @@ def lookup(co, lo, filter_s, base='', superordinate=None, scope="sub", unique=Fa
 	filter = lookup_filter(filter_s, superordinate)
 	res = []
 	for dn, attrs in lo.search(six.text_type(filter), base, scope, [], unique, required, timeout, sizelimit, serverctrls, response):
-		res.append((object(co, lo, None, dn=dn, superordinate=superordinate, attributes=attrs)))
+		res.append(object(co, lo, None, dn=dn, superordinate=superordinate, attributes=attrs))
 	return res
 
 

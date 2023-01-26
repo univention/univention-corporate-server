@@ -44,10 +44,10 @@ title = _('Check errors in sources.list files')
 description = _('All files ok.')
 run_descr = ['Looking for Python exceptions in /etc/apt/sources.list.d/*']
 
-TRACEBACK_REGEX = re.compile((
+TRACEBACK_REGEX = re.compile(
 	r'(?P<start>#\s+)Traceback \(most recent call last\):\n'  # start of exception
 	'(?:(?P=start).*\n)+?'  # irrelevant lines of detail
-	r'(?P=start)(?P<exception>[^\s].*)\n'))  # extract exception
+	r'(?P=start)(?P<exception>[^\s].*)\n')  # extract exception
 
 
 def run_ucr_commit(umc_instance: Instance) -> None:

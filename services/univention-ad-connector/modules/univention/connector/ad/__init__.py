@@ -164,7 +164,7 @@ def ad2samba_time(ltime):
 	if ltime == 0:
 		return ltime
 	d = 116444736000000000  # difference between 1601 and 1970
-	return int(((ltime - d)) / 10000000)
+	return int((ltime - d) / 10000000)
 
 
 def samaccountname_dn_mapping(connector, given_object, dn_mapping_stored, ucsobject, propertyname, propertyattrib, ocucs, ucsattrib, ocad, dn_attr=None):

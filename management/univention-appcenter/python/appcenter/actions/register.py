@@ -379,7 +379,7 @@ class AppListener(AppListener):
 				self.warn('%s should be the host for %s. But it was not found in LDAP. Creating a new one' % (hostdn, app.id))
 		# quasi unique hostname; make sure it does not exceed 14 chars
 		# 5 chars of appid + '-' + 8 digits of Epoch
-		hostname = '%s-%s' % (app.id[:5], str(int((time.time() * 1000000)))[-10:-2])
+		hostname = '%s-%s' % (app.id[:5], str(int(time.time() * 1000000))[-10:-2])
 		password = generate_password()
 		self.log('Registering the container host %s for %s' % (hostname, app.id))
 		if app.docker_server_role == 'memberserver':

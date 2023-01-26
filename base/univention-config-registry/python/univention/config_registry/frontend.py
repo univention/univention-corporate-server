@@ -412,7 +412,7 @@ def handler_search(args, opts={}):
 
 	if args:
 		try:
-			search = re.compile('|'.join(('(?:%s)' % (_,) for _ in args))).search
+			search = re.compile('|'.join('(?:%s)' % (_,) for _ in args)).search
 		except re.error as ex:
 			print('E: invalid regular expression: %s' % (ex,), file=sys.stderr)
 			sys.exit(1)

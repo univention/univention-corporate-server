@@ -535,7 +535,7 @@ def update_extended_attributes(lo, module, position):
 					priority = -1
 
 				if priority == -1 and properties4tabs[tabname]:
-					priority = max([-1, min((ea_layout.position for ea_layout in properties4tabs[tabname])) - 1])
+					priority = max([-1, min(ea_layout.position for ea_layout in properties4tabs[tabname]) - 1])
 
 				properties4tabs[tabname].append(EA_Layout(
 					name=pname,

@@ -60,7 +60,7 @@ def replace_dict(line, dictionary):
 	>>> replace_dict('kernel', {'e': 'E', 'k': '', 'n': 'pp'})
 	'ErppEl'
 	"""
-	return ''.join((dictionary.get(_, _) for _ in line))
+	return ''.join(dictionary.get(_, _) for _ in line)
 
 
 def replace_umlaut(line):
