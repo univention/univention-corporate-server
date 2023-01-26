@@ -526,7 +526,7 @@ class ConfigHandlerFile(ConfigHandlerDiverting):
 			stat = os.stat(self.from_file)
 		except EnvironmentError:
 			print("The referenced template file does not exist", file=sys.stderr)
-			return None
+			return
 
 		tmp_to_file = self._temp_file_name()
 		try:

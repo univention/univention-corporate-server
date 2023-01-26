@@ -135,7 +135,7 @@ class ADCache(object):
 		guid_id = self._get_guid_id(guid)
 
 		if not guid_id:
-			return None
+			return
 
 		sql_commands = [
 			("DELETE FROM data WHERE guid_id=?;", (str(guid_id),)),

@@ -23,7 +23,7 @@ def logout_at_idp(client, host):
 	uri = host + logout
 	with client.get(uri, name="/univention/logout/", allow_redirects=True, timeout=30, catch_response=True) as req3:
 		if not (200 <= req3.status_code <= 399):
-			return None
+			return
 
 
 def login_at_idp_with_credentials(client, login_link):
@@ -34,11 +34,11 @@ def login_at_idp_with_credentials(client, login_link):
 			saml_response = soup.find("input", {"name": "SAMLResponse"}).get("value")
 		except AttributeError:
 			print(soup)
-			return None
+			return
 		if not saml_response:
-			return None
+			return
 		if not (200 <= req2.status_code <= 399):
-			return None
+			return
 
 
 def entry(client, host):
@@ -47,9 +47,9 @@ def entry(client, host):
 	try:
 		with client.get(uri, name="/univention/saml/", allow_redirects=True, timeout=30, catch_response=True) as req1:
 			if not (200 <= req1.status_code <= 399):
-				return None
+				return
 			if req1.content is None or len(req1.content) == 0:
-				return None
+				return
 		soup = BeautifulSoup(req1.content, features="lxml")
 		login_link = soup.find("form", {"id": "kc-form-login"}).get("action")
 		login_link = html.unescape(login_link)

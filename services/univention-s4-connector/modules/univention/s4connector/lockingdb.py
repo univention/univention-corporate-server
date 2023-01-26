@@ -57,7 +57,7 @@ class LockingDB(object):
 
 	def lock_ucs(self, uuid):
 		if not uuid:
-			return None
+			return
 
 		# The SQLite Python module should do the escaping, that's
 		# the reason why we use the tuple ? syntax.
@@ -72,7 +72,7 @@ class LockingDB(object):
 
 	def unlock_ucs(self, uuid):
 		if not uuid:
-			return None
+			return
 
 		sql_commands = [
 			("DELETE FROM UCS_LOCK WHERE uuid = ?;", (str(uuid),))
@@ -82,7 +82,7 @@ class LockingDB(object):
 
 	def lock_s4(self, guid):
 		if not guid:
-			return None
+			return
 
 		sql_commands = [
 			("INSERT INTO S4_LOCK(guid) VALUES(?);", (str(guid),))
@@ -92,7 +92,7 @@ class LockingDB(object):
 
 	def unlock_s4(self, guid):
 		if not guid:
-			return None
+			return
 
 		sql_commands = [
 			("DELETE FROM S4_LOCK WHERE guid = ?;", (str(guid),))
