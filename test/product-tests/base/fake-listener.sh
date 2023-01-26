@@ -14,7 +14,7 @@ prepare_on_master () {
 	# type 2 - provide ldif file
 	# shellcheck disable=SC2154
 	sshpass -p "univention" ssh "$backup_IP" "mkdir -p /opt/type2 && cat - > /opt/type2/notifier_id" </var/lib/univention-directory-listener/notifier_id
-	slapcat | gzip | sshpass -p "univention" ssh "$backup_IP" "cat - > /opt/type2/ldif.gz"
+	slapcat -f /etc/ldap/slapd.conf | gzip | sshpass -p "univention" ssh "$backup_IP" "cat - > /opt/type2/ldif.gz"
 
 	# type 3 - let the join handle the provisioning (ldapsearch)
 	# nothing todo here
@@ -62,7 +62,7 @@ type2_listener_fake () {
 	grep "faking listener initialization" /var/log/univention/join.log
 	grep "faking handler 'replication'" /var/log/univention/join.log
 	grep "faking handler 'nss'" /var/log/univention/join.log
-	grep "slapadd /opt/type2/ldif.gz" /var/log/univention/join.log
+	grep "slapadd -f /etc/ldap/slapd.conf /opt/type2/ldif.gz" /var/log/univention/join.log
 	# shellcheck disable=SC2154
 	grep "resync from Primary: cn=$backup_NAME," /var/log/univention/join.log
 }

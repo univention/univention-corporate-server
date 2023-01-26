@@ -270,7 +270,7 @@ run () {
 
 dump () {
 	echo === LDAP:
-	slapcat -d0 | egrep '10.0.0.|192.168.122.|2001:4dd0:f8fc:'
+	slapcat -f /etc/ldap/slapd.conf -d0 | egrep '10.0.0.|192.168.122.|2001:4dd0:f8fc:'
 	echo === UCR:
 	ucr search --brief --value '10.0.0.|192.168.122.|2001:4dd0:f8fc:'
 	echo === computer:

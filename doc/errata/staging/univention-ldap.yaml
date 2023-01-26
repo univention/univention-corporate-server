@@ -3,7 +3,7 @@ release: "5.0"
 version: [2]
 scope: ucs_5.0-0-errata5.0-2
 src: univention-ldap
-fix: 16.0.7-27A~5.0.0.202301241251
+fix:
 desc: |
  This update addresses the following issues:
  * Allow Directory Node Backup and Replica servers to do an unlimited LDAP
@@ -11,6 +11,8 @@ desc: |
    entries.
  * Change code to emit UCRV `ldap/translog-ignore-temporary` only when LDAP
    overlay module `translog` is enabled.
- * Fix starting `slapd` in the case even when `/etc/ldap/slapd.d/config`
-   exists,
+ * Calls to the openldap slap tools (slaptest etc.) fail when the
+   cn=config ldif exists in the filesystem. The package has been
+   adjusted to explicitly specify using the config file instead to avoid
+   this problem.
 bug: [34877, 55558, 54986]

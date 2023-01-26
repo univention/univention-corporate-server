@@ -667,7 +667,7 @@ class UniventionLDAPSchema(UniventionLDAPExtensionWithListenerHandler):
 
 				# validate
 				# Slapschema doesn't fail on schema errors, errors are printed to stdout (Bug #45571)
-				p = subprocess.Popen(['/usr/sbin/slaptest', '-u'], stdout=subprocess.PIPE, stderr=subprocess.STDOUT, close_fds=True)
+				p = subprocess.Popen(['/usr/sbin/slaptest', '-f', '/etc/ldap/slapd.conf', '-u'], stdout=subprocess.PIPE, stderr=subprocess.STDOUT, close_fds=True)
 				stdout = p.communicate()[0]
 				stdout = stdout.decode('UTF-8', 'replace')
 				if p.returncode != 0:
@@ -722,7 +722,7 @@ class UniventionLDAPSchema(UniventionLDAPExtensionWithListenerHandler):
 					ucr_handlers.commit(ucr, ['/etc/ldap/slapd.conf'])
 
 					# Slapschema doesn't fail on schema errors, errors are printed to stdout (Bug #45571)
-					p = subprocess.Popen(['/usr/sbin/slaptest', '-u'], stdout=subprocess.PIPE, stderr=subprocess.STDOUT, close_fds=True)
+					p = subprocess.Popen(['/usr/sbin/slaptest', '-f', '/etc/ldap/slapd.conf', '-u'], stdout=subprocess.PIPE, stderr=subprocess.STDOUT, close_fds=True)
 					stdout = p.communicate()[0]
 					stdout = stdout.decode('UTF-8', 'replace')
 					if p.returncode != 0:
@@ -940,7 +940,7 @@ class UniventionLDAPACL(UniventionLDAPExtensionWithListenerHandler):
 				ucr_handlers.commit(ucr, ['/etc/ldap/slapd.conf'])
 
 				# validate
-				p = subprocess.Popen(['/usr/sbin/slaptest', '-u'], stdout=subprocess.PIPE, stderr=subprocess.STDOUT, close_fds=True)
+				p = subprocess.Popen(['/usr/sbin/slaptest', '-f', '/etc/ldap/slapd.conf', '-u'], stdout=subprocess.PIPE, stderr=subprocess.STDOUT, close_fds=True)
 				stdout = p.communicate()[0]
 				stdout = stdout.decode('UTF-8', 'replace')
 				if p.returncode != 0:

@@ -1,3 +1,10 @@
+univention-lib (9.0.12-3) unstable; urgency=medium
+
+  * Bug #54986: slap tools must also work in case
+    /etc/ldap/slapd.d/cn=config.ldif exists (even if invalid)
+
+ -- Nikola Radovanovic <radovanovic.extern@univention.de>  Wed, 25 Jan 2023 18:03:46 +0100
+
 univention-lib (9.0.12-2) unstable; urgency=medium
 
   * Bug #55224: provide access to all l10n.Translation instances

@@ -44,7 +44,7 @@ if [ "$server_role" = "domaincontroller_master" -o "$server_role" = "domaincontr
 	touch "$ldapbackupname" "$ldapbackuplog"
 	chmod 600 "$ldapbackupname" "$ldapbackuplog"
 
-	slapcat -l "$ldapbackupname" 2>"$ldapbackuplog"
+	slapcat -f /etc/ldap/slapd.conf -l "$ldapbackupname" 2>"$ldapbackuplog"
 	rc=$?
 	gzip -9 "$ldapbackupname" "$ldapbackuplog" -f 2>/dev/null
 	chmod 600 "${ldapbackupname}.gz" "${ldapbackuplog}.gz"

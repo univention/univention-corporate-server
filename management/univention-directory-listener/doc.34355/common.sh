@@ -63,7 +63,7 @@ access to dn.sub="cn=restricted,$BASE"
 	by * none break
 __LDAP__
 	ucr commit /etc/ldap/slapd.conf
-	slaptest
+	slaptest -f /etc/ldap/slapd.conf
 	/etc/init.d/slapd restart
 }
 setup_ldap () {

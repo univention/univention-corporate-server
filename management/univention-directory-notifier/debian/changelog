@@ -1,3 +1,10 @@
+univention-directory-notifier (14.0.5-10) unstable; urgency=low
+
+  * Bug #54986: slap tools must also work in case
+    /etc/ldap/slapd.d/cn=config.ldif exists (even if invalid)
+
+ -- Nikola Radovanovic <radovanovic.extern@univention.de>  Wed, 25 Jan 2023 18:03:46 +0100
+
 univention-directory-notifier (14.0.5-9) unstable; urgency=low
 
   * Bug #54794: Heed univention-translog import --min <TID>

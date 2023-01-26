@@ -126,7 +126,7 @@ update_check_slapd_on_member () {
 update_check_ldap_schema () {
 	[ -x /usr/sbin/slapschema ] ||
 		return 0
-	/usr/sbin/slapschema 1>&2 &&
+	/usr/sbin/slapschema -f /etc/ldap/slapd.conf 1>&2 &&
 		return 0
 
 	echo "	There is a problem with the LDAP schema on this system."

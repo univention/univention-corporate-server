@@ -117,12 +117,12 @@ fake_replication () {
 	then
 		# slapadd local gzip ldif file
 		echo -n "slapadd $listener_init_fake_replication_ldif ... "
-		zcat "$listener_init_fake_replication_ldif" | slapadd -q ||
+		zcat "$listener_init_fake_replication_ldif" | slapadd -f /etc/ldap/slapd.conf -q ||
 			die "Failed slapadd from 'listener_init_fake_replication_ldif'"
 	else
 		# ldap search and slapadd
 		echo -n "searching LDAP on Primary Node and slapadd ... "
-		/usr/share/univention-directory-listener/univention-get-ldif-from-master.py -l -o - | slapadd -q ||
+		/usr/share/univention-directory-listener/univention-get-ldif-from-master.py -l -o - | slapadd -f /etc/ldap/slapd.conf -q ||
 			die "Failed slapadd with Primary Directory Node LDIF"
 	fi
 	time_end="$(date +%s)"
@@ -209,7 +209,7 @@ if [ -f "${listener_init_fake_cache:-}" ]; then
 		die "Failed to install '$listener_init_fake_cache'"
 fi
 
-if command -v slapd >/dev/null
+if command -v slapd -f /etc/ldap/slapd.conf >/dev/null
 then
 	service slapd restart
 fi
