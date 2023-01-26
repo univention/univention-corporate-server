@@ -89,7 +89,7 @@ def rinfo(request, mocker, vinfo, vcinfo, vrinfo):
 		info.return_value.get_variable.return_value = vrinfo
 		info.return_value.get_variables.return_value = {"key": vrinfo}
 	else:
-		assert False
+		raise AssertionError()
 	return info
 
 

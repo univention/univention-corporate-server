@@ -18,7 +18,7 @@ def credentials(user_type, rad_user, ucr):
 		return (ucr.get('ldap/hostdn'), open('/etc/machine.secret').read())
 	elif user_type == 'admin':
 		return (ucr.get('tests/domainadmin/account'), ucr.get('tests/domainadmin/pwd'))
-	assert False
+	raise AssertionError()
 
 
 @pytest.mark.parametrize('allowed,user_type', [

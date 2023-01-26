@@ -91,7 +91,7 @@ def test_invalid(data, lock):
     with pytest.raises(L.LockingError) as exc_info:
         lock = L.UpdaterLock(1)
         lock.updater_lock_acquire()
-        assert False
+        raise AssertionError()
 
     assert "Invalid PID" in str(exc_info.value)
 
@@ -104,7 +104,7 @@ def test_timeout(mocker, lock):
     with pytest.raises(L.LockingError) as exc_info:
         lock = L.UpdaterLock(1)
         lock.updater_lock_acquire()
-        assert False
+        raise AssertionError()
 
     assert "Another updater process 1 is currently running according to " in str(exc_info.value)
 
@@ -137,7 +137,7 @@ def test_error_enter(lock, capsys):
     lock.write("INVALID")
     with pytest.raises(SystemExit) as exc_info:
         with L.UpdaterLock(1):
-            assert False
+            raise AssertionError()
 
     assert exc_info.value.code == 5
     out, err = capsys.readouterr()

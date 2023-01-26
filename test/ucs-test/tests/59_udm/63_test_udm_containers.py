@@ -533,7 +533,7 @@ class Test_ContainerCN:
 			for dn, entry in lo.search(filter='ou=temporary_move_container_*'):
 				to_be_removed = udm._cleanup.setdefault('container/ou', [])
 				to_be_removed.append(dn)
-				assert False, 'ou = %s remained' % dn
+				raise AssertionError("ou = %s remained" % dn)
 
 			new_cn = 'cn=%s,%s' % (ldap.dn.escape_dn_chars(cn_name_new), parent)
 			new_user = 'uid=%s,%s' % (ldap.dn.escape_dn_chars(user_name), new_cn)
@@ -598,7 +598,7 @@ class Test_ContainerCN:
 			for dn, entry in lo.search(filter='ou=temporary_move_container_*'):
 				to_be_removed = udm._cleanup.setdefault('container/ou', [])
 				to_be_removed.append(dn)
-				assert False, 'ou = %s remained' % dn
+				raise AssertionError("ou = %s remained" % dn)
 
 			new_cn = 'cn=%s,%s' % (ldap.dn.escape_dn_chars(cn_name_new), parent)
 			new_user = 'uid=%s,%s' % (ldap.dn.escape_dn_chars(user_name), new_cn)

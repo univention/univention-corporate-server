@@ -150,7 +150,7 @@ class Instance(Base):
 			try:
 				value.decode('utf-8')
 			except BaseException:
-				assert False, 'no unicode'
+				raise AssertionError('no unicode')
 		return '%r' % (value,)
 
 	@simple_response

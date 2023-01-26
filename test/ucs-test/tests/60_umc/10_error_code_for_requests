@@ -37,7 +37,7 @@ def kill_ucstest():
 	time.sleep(0.5)
 	for process in psutil.process_iter():
 		if not (search_mask - set(process.cmdline())):
-			assert False, f'ERROR: ... module process {process.pid} {process.cmdline()!r} is still there, this should not happen!'
+			raise AssertionError(f'ERROR: ... module process {process.pid} {process.cmdline()!r} is still there, this should not happen!')
 
 
 def restart_web_server():

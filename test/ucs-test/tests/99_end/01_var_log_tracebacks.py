@@ -86,7 +86,7 @@ def test_fetch_logfiles_on_dc_master(ucr, testcase=None):
 			print(cmd_install)
 			if exc.output:
 				print(exc.output.decode('UTF-8', 'replace'))
-			assert False, (cmd_install, exc.output.decode('UTF-8', 'replace'))
+			raise AssertionError((cmd_install, exc.output.decode('UTF-8', 'replace')))
 
 		try:
 			cmd_test = """univention-ssh %s root@%s '%s -i -f'""" % (pipes.quote(fd.name), pipes.quote(ucr['ldap/master']), pipes.quote(pipes.quote(testpath)))

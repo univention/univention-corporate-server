@@ -83,7 +83,7 @@ def fail_after(user, x, retry_after):
 		assert str(exc)
 		print('Yippie, failed!')
 		return True
-	assert False, 'limit not evaluated'
+	raise AssertionError('limit not evaluated')
 
 
 def dont_fail(user):

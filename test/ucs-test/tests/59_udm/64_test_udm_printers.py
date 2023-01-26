@@ -179,7 +179,7 @@ def test_create_printer_and_check_printing_works(ucr, udm):
 			print('### testpam for that smb.conf section:')
 			p = subprocess.Popen(['testparm', '-s', '--section-name', properties['sambaName']], close_fds=True)
 			p.wait()
-			assert False, 'Samba printer share {} not accessible'.format(properties['sambaName'])
+			raise AssertionError('Samba printer share {} not accessible'.format(properties['sambaName']))
 
 	p = subprocess.Popen(['lprm', '-P', properties['name'], '-'], close_fds=True)
 	p.wait()

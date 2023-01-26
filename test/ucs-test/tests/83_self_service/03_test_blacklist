@@ -39,7 +39,7 @@ def assert_raises(exc_type, message, callback, *args, **kwargs):
 			print(str(exc))
 			# assert str(exc) and message in str(exc), 'Exception %r does not contain %r' % (str(exc), message)
 	else:
-		assert False, f'did not raise {exc_type!r}'
+		raise AssertionError(f'did not raise {exc_type!r}')
 
 
 if __name__ == '__main__':

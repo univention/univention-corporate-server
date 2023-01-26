@@ -91,7 +91,7 @@ def parse():
 			elif groups.get('text') is not None:
 				yield ('msg', groups)
 			else:
-				assert False, groups
+				raise AssertionError(groups)
 
 	yield f
 
