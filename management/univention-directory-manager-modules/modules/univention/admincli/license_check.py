@@ -218,7 +218,7 @@ def main(argv):
 		trace_out = traceback.format_exc().splitlines()
 		out.extend(trace_out)
 	finally:
-		return out
+		return out  # noqa: B012
 
 
 def doit(argv):
