@@ -150,7 +150,7 @@ class Command(JSON_Object):
 	def fromJSON(self, json):
 		for attr in ('name', 'method'):
 			setattr(self, attr, json[attr])
-		setattr(self, 'allow_anonymous', json.get('allow_anonymous', False))
+		self.allow_anonymous = json.get("allow_anonymous", False)
 
 
 class Flavor(JSON_Object):

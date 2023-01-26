@@ -227,9 +227,9 @@ class MockFileManager(object):
     def _new(self, name, data=b""):
         # type: (str, Union[bytes, Text]) -> Union[StringIO, BytesIO]
         buf = BytesIO(data) if isinstance(data, bytes) else StringIO(data)  # type: Union[StringIO, BytesIO]
-        setattr(buf, "name", name)
-        setattr(buf, "close", lambda: None)
-        setattr(buf, "fileno", lambda: -1)
+        buf.name = name
+        buf.close = lambda: None
+        buf.fileno = lambda: -1
         return buf
 
     def write(self, name, text):
