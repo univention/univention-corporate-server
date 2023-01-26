@@ -242,7 +242,7 @@ class Instance(Base):
 		def _hidden(name: str, reg: Pattern) -> bool:
 			if name in DEPRECATED_GEN:
 				return True
-			return True if reg.fullmatch(name) else False
+			return bool(reg.fullmatch(name))
 
 		def _match_value(name, var):
 			return var.value and pattern.match(var.value)

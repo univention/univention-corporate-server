@@ -112,7 +112,7 @@ def _get_config_registry_info() -> cri.ConfigRegistryInfo:
 def _repo_relevant(name: str, reg: Pattern) -> bool:
 	if name in DEPRECATED_GEN:
 		return True
-	return True if reg.fullmatch(name) else False
+	return bool(reg.fullmatch(name))
 
 
 def run(_umc_instance: Instance) -> None:
