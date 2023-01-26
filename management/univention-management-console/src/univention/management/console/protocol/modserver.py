@@ -347,10 +347,7 @@ class ModuleServer(Server):
 
 		:rtype: bool
 		"""
-		for cmd in self.__commands.commands:
-			if cmd.name == command_name:
-				return True
-		return False
+		return any(cmd.name == command_name for cmd in self.__commands.commands)
 
 	def _do_send(self, sock):
 		if len(self.__queue) > 0:

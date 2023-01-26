@@ -65,10 +65,7 @@ class Attributes:
 			return True
 
 		if isinstance(self.required_license, list):
-			for rl in self.required_license:
-				if rl in license_type:
-					return True
-			return False
+			return any(rl in license_type for rl in self.required_license)
 		else:
 			return self.required_license in license_type
 

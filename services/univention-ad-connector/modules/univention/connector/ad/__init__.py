@@ -1452,10 +1452,7 @@ class ad(univention.connector.ucs):
 		"""
 		Checks if dn is in dn_list
 		"""
-		for d in dn_list:
-			if dn.lower() == d.lower():
-				return True
-		return False
+		return any(dn.lower() == d.lower() for d in dn_list)
 
 	def one_group_member_sync_to_ucs(self, ucs_group_object, object):
 		"""

@@ -118,10 +118,7 @@ def lpadmin(args: List[str]) -> None:
 
 def filter_match(object: Dict[str, List[bytes]]) -> bool:
 	fqdn = ('%s.%s' % (hostname, domainname)).lower()
-	for host in object.get('univentionPrinterSpoolHost', ()):
-		if host.decode('ASCII').lower() in (ip.lower(), fqdn):
-			return True
-	return False
+	return any(host.decode('ASCII').lower() in (ip.lower(), fqdn) for host in object.get('univentionPrinterSpoolHost', ()))
 
 
 def get_testparm_var(smbconf: str, sectionname: str, varname: str) -> str:
