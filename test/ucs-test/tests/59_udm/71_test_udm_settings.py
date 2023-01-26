@@ -22,7 +22,7 @@ from univention.testing import strings, utils
 
 
 class Test_LDAPSchema:
-	"Test udm settings/ldapschema"""
+	"""Test udm settings/ldapschema"""
 
 	@pytest.mark.tags('udm-ldapextensions', 'apptest')
 	@pytest.mark.roles('domaincontroller_master')
@@ -76,7 +76,7 @@ class Test_LDAPSchema:
 
 
 class Test_LDAPACL:
-	"Test udm settings/ldapacl"""
+	"""Test udm settings/ldapacl"""
 
 	@pytest.mark.tags('udm-ldapextensions', 'apptest')
 	@pytest.mark.roles('domaincontroller_master')

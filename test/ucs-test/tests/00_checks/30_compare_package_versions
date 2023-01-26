@@ -240,7 +240,7 @@ def select_errata_levels(repo_component_url):
         if link.endswith('/'):
             link = link[:-1]  # remove the '/' from a link
         if ERRATA_VERSION_RE.match(link):
-            check_erratalevels.append('component' + '/' + link)
+            check_erratalevels.append('component/' + link)
 
     return check_erratalevels
 

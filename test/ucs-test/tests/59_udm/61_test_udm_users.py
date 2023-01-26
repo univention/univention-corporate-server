@@ -310,7 +310,7 @@ def test_script_lock_expired_passwords(udm, ucr, delta, disabled, expected):
 		['shadowLastChange', oldattr.get('shadowLastChange', []), [str(shadowLastChange).encode()]],
 	])
 	cmd = ['univention-ldapsearch', '-LLL', '-D', dn, '-x', '-w', 'univention', 'uid=dummy']
-	print("Running: " " ".join(cmd))
+	print("Running:", " ".join(cmd))
 	p = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, close_fds=True)
 	stdout, stderr = p.communicate()
 	print("expecting: %s" % ("failure" if expected else "success"))

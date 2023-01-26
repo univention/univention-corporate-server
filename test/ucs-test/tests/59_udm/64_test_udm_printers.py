@@ -299,7 +299,7 @@ def test_check_ppd():
 		if missing_files - {'CUPS-PDF.ppd', 'CUPS-PDF_opt.ppd', 'CUPS-PDF_noopt.ppd'}:
 			message += 'No PPD file found for LDAP printers:\n' + '\n\t'.join(missing_files)
 	if missing_printers:
-		message += '\n\n' + 'No LDAP printer found for PPD files:\n' + '\n\t'.join(missing_printers)
+		message += '\n\nNo LDAP printer found for PPD files:\n' + '\n\t'.join(missing_printers)
 	if message:
 		print(message, file=sys.stderr)
 		sys.exit(1)

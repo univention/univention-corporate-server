@@ -153,7 +153,7 @@ class Support(object):
 
 				res = self.lo.search(filter_format('(&(objectClass=dNSZone)(zoneName=%s)(relativeDomainName=%s)(aRecord=*))', (zoneName, relDomainName)))
 				if not res:
-					ud.debug(ud.ADMIN, ud.INFO, 'nagios.py: NGPH: couldn''t find dNSZone of %s' % parent)
+					ud.debug(ud.ADMIN, ud.INFO, "nagios.py: NGPH: couldn't find dNSZone of %s" % parent)
 				else:
 					# found dNSZone
 					filter = '(&(objectClass=univentionHost)'

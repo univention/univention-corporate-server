@@ -81,7 +81,7 @@ def windows_create_gpo(gpo_name, gpo_comment, server=""):
 	try:
 		ret_code, stdout, stderr = Win.create_gpo(gpo_name, gpo_comment, server)
 		if ret_code != 0:
-			utils.fail("The creation of the GPO on the Windows host returned code '%s' when 0 is expected. STDOUT: %s STDERR: " "%s" % (ret_code, stdout, stderr))
+			utils.fail("The creation of the GPO on the Windows host returned code '%s' when 0 is expected. STDOUT: %s STDERR: %s" % (ret_code, stdout, stderr))
 	except univention.winexe.WinExeFailed as exc:
 		utils.fail("An Error occurred while creating GPO remotely: %r" % exc)
 
@@ -285,7 +285,7 @@ def sysvol_check_gpo_registry_value(gpo_name, reg_key, value_name, value):
 
 	reg_key = reg_key[5:]  # the 'HKCU\' or 'HKLM\' are not included:
 	if reg_key not in reg_policy_text:
-		utils.fail("Could not find '%s' Registry key in '%s' GPO " "Registry.pol" % (reg_key, gpo_name))
+		utils.fail("Could not find '%s' Registry key in '%s' GPO Registry.pol" % (reg_key, gpo_name))
 
 	if value_name not in reg_policy_text:
 		utils.fail("Could not find '%s' ValueName in '%s' GPO Registry.pol" % (value_name, gpo_name))

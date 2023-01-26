@@ -270,8 +270,7 @@ def log_to_logfile():
 	'''
 	if not log_to_logfile._already_set_up:
 		log_to_logfile._already_set_up = True
-		log_format = '%(process)6d %(short_name)-32s %(asctime)s [%(levelname)8s]: ' \
-			'%(message)s'
+		log_format = '%(process)6d %(short_name)-32s %(asctime)s [%(levelname)8s]: %(message)s'
 		log_format_time = '%y-%m-%d %H:%M:%S'
 		formatter = ShortNameFormatter(log_format, log_format_time)
 		handler = logging.FileHandler(LOG_FILE)

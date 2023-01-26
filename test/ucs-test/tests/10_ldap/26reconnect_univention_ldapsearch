@@ -52,9 +52,9 @@ def univention_ldapsearch(fail_on_success):
     stderr = stderr.decode('UTF-8')
     stdout = stdout.decode('UTF-8')
     if stderr:
-        print("\n""univention-ldapsearch STDERR:\n", stderr.strip())
+        print("\nunivention-ldapsearch STDERR:\n", stderr.strip())
     if stdout:
-        print("\n""univention-ldapsearch STDOUT:\n", stdout.strip())
+        print("\nunivention-ldapsearch STDOUT:\n", stdout.strip())
 
     if ((base_dn in stdout) and fail_on_success):
         fail("\nThe 'univention-ldapsearch' worked when it is "

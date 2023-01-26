@@ -50,7 +50,7 @@ def get_ldap_server_name():
 
 
 def parse_arguments():
-	description = ("Unlock a Samba account by setting lockoutTime to 0. " "This requires authentication as in ldbmodify.")
+	description = ("Unlock a Samba account by setting lockoutTime to 0. This requires authentication as in ldbmodify.")
 	parser = argparse.ArgumentParser(description=description)
 	parser.add_argument("--is-dn", action="store_true", help="ACCOUNT is DN (no additional lookup needed)")
 	parser.add_argument("account", help="account to unlock (or DN)")

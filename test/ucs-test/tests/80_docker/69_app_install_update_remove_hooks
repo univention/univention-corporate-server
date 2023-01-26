@@ -66,10 +66,10 @@ def setup(app_name):
 	# the same script will be placed in all script hook folders, always named
 	# after the action it is for.  It prints its filename into $result_file-
 	# appends one line & that is the test condition.
-	test_script = '#!/bin/sh' \
-		'\n' '# This script prints the current date and its own name' \
-		'\n' 'date -Is' \
-		'\n' 'echo "$0" >> {file_result}'.format(file_result=file_result)
+	test_script = '#!/bin/sh\n' \
+		'# This script prints the current date and its own name\n' \
+		'date -Is\n' \
+		'echo "$0" >> {file_result}'.format(file_result=file_result)
 	#   ^ NOTE: ticks are intentional!
 
 	for action in actions:
