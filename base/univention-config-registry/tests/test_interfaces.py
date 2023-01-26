@@ -180,7 +180,7 @@ class TestInterfaces(object):
 			'interfaces/eth1/address': '2.3.4.5',
 			'interfaces/eth1/netmask': '255.255.255.0',
 		})
-		assert ['eth0' == 'eth1'], [s.name for _n, s in t.ipv4_interfaces]
+		assert ['eth0', 'eth1'] == [s.name for _n, s in t.ipv4_interfaces]
 		assert [] == [s.name for s, _n in t.ipv6_interfaces]
 		assert IPv4Interface(u'1.2.3.4/24') == t.get_default_ip_address()
 		assert IPv4Interface(u'1.2.3.4/24') == t.get_default_ipv4_address()
