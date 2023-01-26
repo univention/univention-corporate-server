@@ -160,8 +160,6 @@ def no_relevant_change(new: Dict[str, List[bytes]], old: Dict[str, List[bytes]])
 
 
 def handler(dn: str, new: Dict[str, List[bytes]], old: Dict[str, List[bytes]], command: str) -> None:
-	global modified_default_names
-
 	if ucr.is_false("listener/module/wellknownsidnamemapping", False):
 		ud.debug(ud.LISTENER, ud.INFO, '%s: deactivated by listener/module/wellknownsidnamemapping' % (name,))
 		return

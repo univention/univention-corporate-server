@@ -158,7 +158,6 @@ def load_version(url):
     target = {}
 
     temp = mkdtemp()  # a temp folder to store 'Packages.gz' for each version
-    global cleanup_folders
     cleanup_folders.append(temp)  # to remove a folder after
 
     for version in select_minor_levels(url):

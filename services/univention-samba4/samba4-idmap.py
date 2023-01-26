@@ -103,8 +103,6 @@ __SPECIAL_SIDS = set(__SPECIAL_ACCOUNT_SIDS.values())
 
 
 def open_idmap() -> IDmapDB:
-	global lp
-
 	if open_idmap.instance:
 		return open_idmap.instance
 

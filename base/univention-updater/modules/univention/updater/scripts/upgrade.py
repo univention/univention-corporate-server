@@ -98,7 +98,6 @@ def update_status(**kwargs: str) -> None:
     - status          ==> (RUNNING|FAILED|DONE)
     - errorsource     ==> (SETTINGS|PREPARATION|PREUP|UPDATE|POSTUP)
     '''
-    global updater_status
     updater_status.update(kwargs)
     # write temporary file
     fn = '%s.new' % FN_STATUS

@@ -428,7 +428,6 @@ def initialize() -> None:
 
 @listener.SetUID(0)
 def clean() -> None:
-	global ucr_handlers
 	for f in os.listdir('/etc/samba/printers.conf.d'):
 		if os.path.exists(os.path.join('/etc/samba/printers.conf.d', f)):
 			os.unlink(os.path.join('/etc/samba/printers.conf.d', f))
@@ -439,6 +438,5 @@ def clean() -> None:
 
 
 def postrun() -> None:
-	global reload_samba_in_postrun
 	if reload_samba_in_postrun:
 		reload_smbd()

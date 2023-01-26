@@ -53,8 +53,6 @@ acl_handler = ldap_extension.UniventionLDAPACL(listener.configRegistry)
 
 def handler(dn: str, new: Dict[str, List[bytes]], old: Dict[str, List[bytes]]) -> None:
 	"""Handle LDAP schema extensions on Primary and Backup"""
-	global schema_handler, acl_handler
-
 	if new:
 		ocs = new.get('objectClass', [])
 	elif old:
@@ -70,8 +68,6 @@ def handler(dn: str, new: Dict[str, List[bytes]], old: Dict[str, List[bytes]]) -
 
 def postrun() -> None:
 	"""Restart LDAP server Primary and mark new extension objects active"""
-	global schema_handler, acl_handler
-
 	server_role = listener.configRegistry.get('server/role')
 	if not server_role == 'domaincontroller_master':
 		if not acl_handler._todo_list:

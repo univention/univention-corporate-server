@@ -68,8 +68,6 @@ def get_ldap_connection(baseDN):
 
 
 def checkChilds(grp_module, dn, parents, verbose=False, exception=False):
-	global grp2childgrps, lo
-
 	if dn not in grp2childgrps:
 		grpobj = univention.admin.objects.get(grp_module, None, lo, position='', dn=dn, attr=None)
 		grpobj.open()

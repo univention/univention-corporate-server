@@ -1024,7 +1024,6 @@ def log_ldap(severity: int, msg: str, ex: ldap.LDAPError, dn: str = None) -> Non
 
 
 def clean() -> Any:
-	global slave
 	if not slave:
 		return 1
 	ud.debug(ud.LISTENER, ud.INFO, 'replication: removing cache')

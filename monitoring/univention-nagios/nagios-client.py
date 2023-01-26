@@ -189,7 +189,6 @@ def clean() -> None:
 
 
 def postrun() -> None:
-	global __initscript
 	initscript = __initscript
 	if configRegistry.is_true("nagios/client/autostart"):
 		ud.debug(ud.LISTENER, ud.INFO, 'NRPED: Restarting server')

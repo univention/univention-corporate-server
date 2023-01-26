@@ -217,7 +217,6 @@ def handler(dn: str, new: Dict[str, List[bytes]], old: Dict[str, List[bytes]], c
 
 
 def postrun() -> None:
-	global __initscript
 	initscript = __initscript
 	ud.debug(ud.LISTENER, ud.INFO, 'Restarting fetchmail-daemon')
 	listener.setuid(0)

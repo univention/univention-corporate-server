@@ -118,8 +118,6 @@ def _restart_connector() -> None:
 
 
 def handler(dn: str, new: Optional[Dict[str, List[bytes]]], old: Optional[Dict[str, List[bytes]]], command: str) -> None:
-	global group_objects
-	global s4_init_mode
 	global connector_needs_restart
 
 	if _is_module_disabled():

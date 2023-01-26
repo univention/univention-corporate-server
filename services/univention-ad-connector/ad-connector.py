@@ -117,8 +117,6 @@ def _restart_connector() -> None:
 
 
 def handler(dn: str, new: Optional[Dict[str, List[bytes]]], old: Optional[Dict[str, List[bytes]]], command: str) -> None:
-	global group_objects
-	global init_mode
 	global connector_needs_restart
 
 	# restart connector on extended attribute changes

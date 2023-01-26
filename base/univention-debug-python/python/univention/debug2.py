@@ -143,7 +143,7 @@ def init(logfile, force_flush=0, enable_function=0, enable_syslog=0):
 	:param bool enable_syslog: enable (True) or disable (False) logging to SysLog.
 	:returns: output file or None.
 	"""
-	global _logfilename, _handler_console, _handler_file, _handler_syslog, _do_flush, _enable_function, _enable_syslog
+	global _logfilename, _handler_console, _handler_file, _do_flush, _enable_function, _enable_syslog  # _handler_syslog
 
 	result = None
 	_logfilename = logfile
@@ -204,7 +204,7 @@ def exit():
 	"""
 	Close debug logfile.
 	"""
-	global _handler_console, _handler_file, _handler_syslog
+	global _handler_console, _handler_file
 	logging.getLogger('MAIN').log(100, 'DEBUG_EXIT')
 	if _handler_console:
 		logging.getLogger('').removeHandler(_handler_console)

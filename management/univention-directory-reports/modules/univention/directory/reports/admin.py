@@ -265,21 +265,18 @@ def connect(userdn=None, password=None, host='localhost', base=None, start_tls=2
 
 
 def cache_object(obj):
-	global _admin
 	if not _admin:
 		return None
 	return _admin.cache_object(obj)
 
 
 def clear_cache():
-	global _admin
 	if not _admin:
 		return
 	_admin.clear_cache()
 
 
 def get_object(module, dn):
-	global _admin
 	if not _admin:
 		return None
 	try:
@@ -289,18 +286,15 @@ def get_object(module, dn):
 
 
 def set_format(format):
-	global _admin
 	if _admin:
 		_admin._format = format
 
 
 def identify(dn):
-	global _admin
 	return _admin.identfy(dn)
 
 
 def connected():
-	global _admin
 	return _admin is not None
 
 
