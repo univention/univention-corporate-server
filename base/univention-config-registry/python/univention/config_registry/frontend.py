@@ -192,7 +192,7 @@ def handler_set(args, opts={}, quiet=False):
 							else:
 								print('E: Value %r incompatible for %r' % (value, key), file=sys.stderr)
 								opts['exit_code'] = 2
-								opts.setdefault('type_errors', []).append((key, value))
+								opts.setdefault('type_errors', []).append((key, value, validator))
 								continue  # do not set value and continue with next element of for loop to be set
 				changes[key] = value
 			else:
