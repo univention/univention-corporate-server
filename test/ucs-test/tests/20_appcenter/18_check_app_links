@@ -153,7 +153,7 @@ def check_files():
             headers = requests.utils.default_headers()
             headers.update({'User-Agent': 'Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:59.0) Gecko/20100101 Firefox/59.0'})
             try:
-                r = requests.get(link, timeout=requests_timeout, verify=False, headers=headers)
+                r = requests.get(link, timeout=requests_timeout, verify=False, headers=headers)  # noqa: S501
             except Exception as exc:
                 print("Response code indicates a problem. %s" % str(exc))
                 bad_links.append(f'Link: {link} App: {app} File: {links[app][link]}')

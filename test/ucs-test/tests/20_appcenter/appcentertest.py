@@ -406,7 +406,7 @@ class CheckOperations:
 	def _check_url(self, protocol, port, interface):
 		fqdn = '{}.{}'.format(self.ucr.get("hostname"), self.ucr.get("domainname"))
 		url = f"{protocol}://{fqdn}:{port}{interface}"
-		response = requests.get(url, timeout=30, verify=False)
+		response = requests.get(url, timeout=30, verify=False)  # noqa: S501
 
 		try:
 			response.raise_for_status()

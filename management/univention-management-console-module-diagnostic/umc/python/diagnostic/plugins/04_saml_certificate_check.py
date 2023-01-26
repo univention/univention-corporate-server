@@ -152,7 +152,7 @@ def test_identity_provider_certificate() -> Iterator[Problem]:
 			"label": url,
 		}
 		try:
-			res = requests.get(url, headers={'host': sso_fqdn}, verify=False)  # required for SNI since Python 2.7.9 / 3.4
+			res = requests.get(url, headers={'host': sso_fqdn}, verify=False)  # required for SNI since Python 2.7.9 / 3.4  # noqa: S501
 			data = res.content
 		except requests.exceptions.ConnectionError as exc:
 			yield Critical(

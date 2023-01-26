@@ -73,7 +73,7 @@ def _check_url(url):
 	import lxml
 	import requests
 	requests_timeout = 30
-	r = requests.get(url, timeout=requests_timeout, verify=False)
+	r = requests.get(url, timeout=requests_timeout, verify=False)  # noqa: S501
 	print('       ...', r.status_code)
 	assert not str(r.status_code).startswith(('4', '5'))
 
