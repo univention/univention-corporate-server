@@ -134,6 +134,7 @@ linkcheck_allowed_redirects = {
 
 linkcheck_ignore = [
     r"https://errata\.software-univention\.de/#/\?erratum=\d\.\dx\d{1,3}",
+    r'https://ldapwiki\.com/.*',
 ]
 
 univention_use_doc_base = True
