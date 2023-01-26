@@ -1113,8 +1113,7 @@ def get_password():
 				match = get_password.RE_ROOTDN.match(line)
 				if match:
 					return match.group(1).replace('\\"', '"').replace('\\\\', '\\')
-			else:
-				return ''
+			return ''
 	finally:
 		listener.unsetuid()
 

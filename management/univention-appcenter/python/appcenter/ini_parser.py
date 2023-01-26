@@ -120,10 +120,10 @@ class IniSectionAttribute(UniventionMetaInfo):
 					return self.parse(value)
 				except ValueError as exc:
 					raise ParseError(name, section, str(exc))
-		else:
-			if self.required:
-				raise NoValueError(self.name, section)
-			return self.default
+
+		if self.required:
+			raise NoValueError(self.name, section)
+		return self.default
 
 	def parse(self, value):
 		if self.choices:

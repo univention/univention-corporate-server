@@ -694,8 +694,8 @@ class ChoicesSanitizer(Sanitizer):
 				# return element from choices
 				# not value itself: 1 == True
 				return choice
-		else:
-			self.raise_validation_error(_('Value has to be one of %(choices)r'))
+
+		self.raise_validation_error(_('Value has to be one of %(choices)r'))
 
 
 class MappingSanitizer(ChoicesSanitizer):

@@ -175,7 +175,7 @@ def retry_on_error(func, exceptions=(Exception,), retry_count=20, delay=10):
 				time.sleep(delay)
 			else:
 				print('Exception occurred: %s (%s). This was the last retry (retry %d/%d).\n' % (exc_info[0], exc_info[1], i, retry_count))
-	else:
+	else:  # noqa: PLW0120
 		raise exc_info[1].with_traceback(exc_info[2])
 
 

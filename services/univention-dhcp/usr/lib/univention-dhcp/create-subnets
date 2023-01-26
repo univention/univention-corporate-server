@@ -102,8 +102,7 @@ def access(opt: Namespace, ucr: ConfigRegistry, mod) -> uldap.access:
 			return lo
 		except Exception as ex:
 			print(ex, file=stderr)
-	else:
-		exit(1)
+	exit(1)
 
 
 def create(opt: Namespace, ucr: ConfigRegistry, iface, lo: uldap.access, mod) -> None:

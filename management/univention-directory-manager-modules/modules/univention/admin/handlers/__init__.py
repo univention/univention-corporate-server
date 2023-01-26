@@ -2649,9 +2649,6 @@ class simpleComputer(simpleLdap):
 							zone = univention.admin.handlers.dns.forward_zone.object(self.co, self.lo, self.position, zoneDn)
 							zone.open()
 							zone.modify()
-					else:
-						# could throw some exception
-						pass
 			else:
 				if dnsForwardZone:
 					tmppos = univention.admin.uldap.position(self.position.getDomain())

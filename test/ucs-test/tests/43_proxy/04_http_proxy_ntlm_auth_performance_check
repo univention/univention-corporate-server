@@ -26,8 +26,7 @@ def max_duration():
 	for pkg in meta_packages:
 		if pkg in apt_cache and apt_cache[pkg].is_installed:
 			return 180
-	else:
-		return 150  # EC2 m3.medium PV
+	return 150  # EC2 m3.medium PV
 
 
 def doJobs(job, num):

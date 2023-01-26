@@ -127,9 +127,7 @@ class Test_UMCServiceProcessHandling:
         for result in request_result:
             if result['service'] == service_name:
                 return result['isRunning']
-        else:
-            assert False, "Couldn't find service %s: %s" % (
-                service_name, request_result)
+        assert False, "Couldn't find service %s: %s" % (service_name, request_result)
 
     def get_service_current_pid(self, service_name):
         """

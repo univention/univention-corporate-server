@@ -410,9 +410,9 @@ def check_ad_account(ad_domain_info, username, password, ucr=None):
 		group_sid = decode_sid(group_sid_ndr)
 		if group_sid == admins_sid:
 			return False
-	else:
-		ud.debug(ud.MODULE, ud.ERROR, "User is not member of Domain Admins")
-		raise notDomainAdminInAD()
+
+	ud.debug(ud.MODULE, ud.ERROR, "User is not member of Domain Admins")
+	raise notDomainAdminInAD()
 
 
 def _sid_of_ucs_sambadomain(lo=None, ucr=None):

@@ -233,8 +233,8 @@ class ACLs(object):
 						return ACLs.MATCH_NONE
 				elif not option.startswith(value[: -1]):
 					return ACLs.MATCH_NONE
-			else:
-				match = ACLs.MATCH_FULL
+
+			match = ACLs.MATCH_FULL
 
 		return match
 
