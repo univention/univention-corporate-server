@@ -4690,7 +4690,7 @@ class IStates(select):
 	@classmethod
 	def parse(cls, text):
 		for value, (choice, label) in cls.values:
-			if text == value or text == choice:
+			if text in (value, choice):
 				return choice
 		raise univention.admin.uexceptions.valueInvalidSyntax(_('Invalid choice.'))
 
