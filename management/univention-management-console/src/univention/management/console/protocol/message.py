@@ -117,7 +117,7 @@ class Message(object):
 	@staticmethod
 	def _formattedMessage(_id, _type, mimetype, command, body, arguments):
 		# type: (Text, RequestType, str, str, UmcpBody, List[str]) -> bytes
-		'''Returns formatted message.'''
+		"""Returns formatted message."""
 		type = b'RESPONSE'
 		if _type == Message.REQUEST:
 			type = b'REQUEST'
@@ -138,7 +138,7 @@ class Message(object):
 
 	def __bytes__(self):
 		# type: () -> bytes
-		'''Returns the formatted message'''
+		"""Returns the formatted message"""
 		return Message._formattedMessage(self._id, self._type, self.mimetype, self.command, self.body, self.arguments)
 
 	if six.PY2:
@@ -294,7 +294,7 @@ class Message(object):
 
 class Request(Message):
 
-	'''Represents an UMCP request message'''
+	"""Represents an UMCP request message"""
 
 	def __init__(self, command, arguments=None, options=None, mime_type=MIMETYPE_JSON):
 		# type: (str, Any, Any, str) -> None
@@ -325,9 +325,9 @@ class Response(Message):
 
 	def set_body(self, filename, mimetype=None):
 		# type: (str, Optional[str]) -> None
-		'''Set body of response by guessing the mime type of the given
+		"""Set body of response by guessing the mime type of the given
 		file if not specified and adding the content of the file to the body. The mime
-		type is guessed using the extension of the filename.'''
+		type is guessed using the extension of the filename."""
 		if mimetype is None:
 			self.mimetype, encoding = mimetypes.guess_type(filename)
 		else:
@@ -342,7 +342,7 @@ class Response(Message):
 			self.body = fd.read()
 
 	def __bytes__(self):
-		'''Returns the formatted message without request options'''
+		"""Returns the formatted message without request options"""
 		body = copy.copy(self.body)
 		if isinstance(body, dict) and 'options' in body:
 			del body['options']

@@ -100,7 +100,7 @@ class object(DHCPBase):
 		]
 
 	def _ldap_post_move(self, olddn):
-		'''edit dhcpServiceDN'''
+		"""edit dhcpServiceDN"""
 		super(object, self)._ldap_post_move(olddn)
 		oldServiceDN = self.lo.getAttr(self.dn, 'dhcpServiceDN')
 		module = univention.admin.modules.identifyOne(self.position.getDn(), self.lo.get(self.position.getDn()))

@@ -33,9 +33,9 @@
 # License with the Debian GNU/Linux or Univention distribution in file
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
-'''
+"""
 	Helper function to create the SID mapping definition.
-'''
+"""
 
 from __future__ import print_function
 import ldap

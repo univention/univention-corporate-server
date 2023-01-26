@@ -60,14 +60,14 @@ class CheckUcsVersion(Action):
 
 
 class UpdateCheck(UniventionAppAction):
-	'''
+	"""
 	Check if update to next ucs minor version is possible with the
 	locally installed apps
 
 	For docker apps check if is available in next UCS version.
 	For package based apps check if there is an app version with the same
 	component in the next UCS version
-	'''
+	"""
 	help = 'Check for all locally installed Apps if they are available in the next UCS version'
 
 	def setup_parser(self, parser):
@@ -80,12 +80,12 @@ class UpdateCheck(UniventionAppAction):
 
 	@classmethod
 	def app_can_update(cls, app, next_version, next_apps):
-		'''
+		"""
 		checks if update is possible for this app
 		docker apps have to support the next version
 		components must be available in the next version
 		component id of package based app must be available in the next version
-		'''
+		"""
 		if app.docker:
 			# current docker must support next version
 			if next_version in app.supported_ucs_versions:
@@ -105,7 +105,7 @@ class UpdateCheck(UniventionAppAction):
 
 	@classmethod
 	def get_blocking_apps(cls, ucs_version):
-		''' checks if update is possible for this app '''
+		""" checks if update is possible for this app """
 		ucs_version = UCS_Version(ucs_version + '-0')
 		next_minor = '%(major)d.%(minor)d' % ucs_version
 		next_version = '%(major)d.%(minor)d-%(patchlevel)d' % ucs_version

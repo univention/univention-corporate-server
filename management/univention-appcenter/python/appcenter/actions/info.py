@@ -45,7 +45,7 @@ from univention.appcenter.ucr import ucr_get
 
 class Info(UniventionAppAction):
 
-	'''Shows information on the current state of the App Center itself.'''
+	"""Shows information on the current state of the App Center itself."""
 	help = 'Show general info'
 
 	def setup_parser(self, parser):
@@ -81,7 +81,7 @@ class Info(UniventionAppAction):
 
 	@classmethod
 	def get_compatibility(cls):
-		''' Returns the version number of the App Center.
+		""" Returns the version number of the App Center.
 		As App Center within a domain may talk to each other it is necessary
 		to ask whether they are compatible.
 		The version number will rise whenever a change was made that may break compatibility.
@@ -91,7 +91,7 @@ class Info(UniventionAppAction):
 		3: app center with version and only_dry_run 03/13
 		4: app center with docker support and new App class 11/15
 		Starting with UCS 4.3 (03/18): The full UCS version
-		'''
+		"""
 		return cls.get_ucs_version()
 
 	def get_installed_apps(self):

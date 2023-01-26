@@ -96,10 +96,10 @@ class Profile(dict):
 		return ucr.is_true(value=value)
 
 	def get_list(self, key, split_by=' '):
-		'''
+		"""
 		Retrieve the value of var_name from the profile file.
 		Return the string as a list split by split_by.
-		'''
+		"""
 		value = self.get(key)
 		return value.split(split_by) if value else []
 
@@ -112,12 +112,12 @@ class TransactionalUcr(object):
 		self.changes = {}
 
 	def set(self, key, value):
-		'''
+		"""
 		Set the value of key of UCR.
 		Does not save immediately.
 		commit() is called at the end of inner_run(). If you need to commit
 		changes immediately, you can call commit() at any time.
-		'''
+		"""
 		orig_val = self.ucr.get(key)
 		if orig_val == value:
 			# in case it was overwritten previously
@@ -126,22 +126,22 @@ class TransactionalUcr(object):
 			self.changes[key] = value
 
 	def commit(self):
-		'''
+		"""
 		Saves UCR variables previously set by set_ucr_var(). Also commits
 		changes (if done any). Is called automatically *if inner_run() did not
 		raise an exception*. You can call it manually if you need to
 		do it (e.g. in down()).
-		'''
+		"""
 		if self.changes:
 			ucr_update(self.ucr, self.changes)
 			# reset (in case it is called multiple) times in a script
 			self.changes.clear()
 
 	def get(self, key, search_in_changes=True):
-		'''
+		"""
 		Retrieve the value of key from ucr.
 		If search_in_changes, it first looks in (not yet committed) values.
-		'''
+		"""
 		if search_in_changes:
 			try:
 				return self.changes[key]
@@ -159,7 +159,7 @@ class TransactionalUcr(object):
 
 class SetupScript(object):
 
-	'''Baseclass for all Python-based Setup-Scripts.
+	"""Baseclass for all Python-based Setup-Scripts.
 
 	Script lifecycle:
 		__init__() -> up()
@@ -191,11 +191,11 @@ class SetupScript(object):
 	self.join_error(msg)
 	self.steps(steps)
 	self.step(step)
-	'''
+	"""
 	name = ''
 
 	def __init__(self, *args, **kwargs):
-		'''Initialise Script. Will call self.up() with same *args
+		"""Initialise Script. Will call self.up() with same *args
 		and **kwargs as __init__() (which itself will leave them
 		untouched)
 
@@ -206,7 +206,7 @@ class SetupScript(object):
 		was raised by up(), it will be saved and raised as soon as
 		run() is called. You should make sure that this does not
 		happen.
-		'''
+		"""
 		self.ucr = TransactionalUcr()
 		self._step = 1
 
@@ -232,68 +232,68 @@ class SetupScript(object):
 		return profile
 
 	def inform_progress_parser(self, progress_attribute, msg):
-		'''Internal method to inform progress parser.
+		"""Internal method to inform progress parser.
 
 		At the moment it writes info in a file which will be
 		read by the parser. In a more advanced version, the script
 		could change the state of the progress directly.
-		'''
+		"""
 		msg = '\n'.join('__%s__:%s' % (progress_attribute.upper(), message) for message in str(msg).splitlines())
 		sys.stdout.write('%s\n' % (msg,))
 		sys.stdout.flush()
 
 	def header(self, msg):
-		'''Write header info of this script (for log file and parser).
+		"""Write header info of this script (for log file and parser).
 
 		Called automatically by run(). Probably unneeded for developers
-		'''
+		"""
 		print('===', self.script_name, datetime.now().strftime('(%Y-%m-%d %H:%M:%S)'), '===')
 		self.inform_progress_parser('name', '%s %s' % (self.script_name, msg))
 
 	def message(self, msg):
-		'''Write a harmless __MSG__: for the parser
-		'''
+		"""Write a harmless __MSG__: for the parser
+		"""
 		self.inform_progress_parser('msg', msg)
 
 	def error(self, msg):
-		'''Write a non-critical __ERR__: for the parser
+		"""Write a non-critical __ERR__: for the parser
 		The parser will save the error and inform the frontend
 		that something went wrong
-		'''
+		"""
 		self.inform_progress_parser('err', msg)
 
 	def join_error(self, msg):
-		'''Write a critical __JOINERR__: for the parser.
+		"""Write a critical __JOINERR__: for the parser.
 		The parser will save it and inform the frontend that something
 		went terribly wrong leaving the system in an unjoined state
-		'''
+		"""
 		self.inform_progress_parser('joinerr', msg)
 
 	def steps(self, steps):
-		'''Total number of __STEPS__: to come throughout the whole
+		"""Total number of __STEPS__: to come throughout the whole
 		script. Progress within the script should be done with
 		step() which is relative to steps()
-		'''
+		"""
 		self.inform_progress_parser('steps', steps)
 
 	def step(self, step=None):
-		'''Inform parser that the next __STEP__: in this script
+		"""Inform parser that the next __STEP__: in this script
 		was done. You can provide an exact number or None
 		in which case an internal counter will be incremented
-		'''
+		"""
 		if step is not None:
 			self._step = step
 		self.inform_progress_parser('step', self._step)
 		self._step += 1
 
 	def log(self, *msgs):
-		'''Log messages in a log file'''
+		"""Log messages in a log file"""
 		for msg in msgs:
 			print(msg, end=' ')
 		print('')
 
 	def run(self):
-		'''Run the SetupScript.
+		"""Run the SetupScript.
 		Don't override this method, instead define your own
 		inner_run()-method.
 
@@ -305,7 +305,7 @@ class SetupScript(object):
 		return code of inner_run itself.
 		*In any case*, run self.down() in a try-except-block
 		afterwards. If this should fail, return False.
-		'''
+		"""
 		if self.name:
 			self.header(self.name)
 		try:
@@ -330,25 +330,25 @@ class SetupScript(object):
 		return success is not False
 
 	def inner_run(self):
-		'''Main function, called by run().
+		"""Main function, called by run().
 		Override this method in your SetupScriptClass.
 		You may return True or False which will be propagated
 		to run() itself. If you don't return False, True will be
 		used implicitly.
-		'''
+		"""
 		raise NotImplementedError('Define your own inner_run() method, please.')
 
 	def up(self, *args, **kwargs):
-		'''Override this method if needed.
+		"""Override this method if needed.
 		It is called during __init__ with the very same parameters
 		as __init__ was called.
-		'''
+		"""
 
 	def down(self):
-		'''Override this method if needed.
+		"""Override this method if needed.
 		It is called at the end of run() even when an error in up()
 		or inner_run() occurred.
-		'''
+		"""
 
 
 class _PackageManagerLoggerHandlerWithoutProcess(_PackageManagerLoggerHandler):
@@ -361,10 +361,10 @@ class _PackageManagerLoggerHandlerWithoutProcess(_PackageManagerLoggerHandler):
 
 class AptScript(SetupScript):
 
-	'''More or less just a wrapper around
+	"""More or less just a wrapper around
 	univention.lib.package_manager.PackageManager
 	with SetupScript capabilities.
-	'''
+	"""
 	brutal_apt_options = True
 
 	def up(self, *args, **kwargs):
@@ -401,10 +401,10 @@ class AptScript(SetupScript):
 		return self.package_manager.get_package(pkg_name)
 
 	def finish_task(self, *log_msgs):
-		'''Task is finished. Increment counter and inform
+		"""Task is finished. Increment counter and inform
 		the progress parser. Reopen the cache (maybe unneeded
 		but does not slow us down too much).
-		'''
+		"""
 		# don't log msgs for now
 		self.package_manager.add_hundred_percent()
 		self.reopen_cache()
@@ -428,9 +428,9 @@ class AptScript(SetupScript):
 			return self.package_manager.uninstall(*pkg_names)
 
 	def get_package_for_role(self, role_name):
-		'''Searches for the meta-package that belongs
+		"""Searches for the meta-package that belongs
 		to the given role_name
-		'''
+		"""
 		try:
 			# get "real" package for server/role
 			pkg_name = self.roles_package_map[role_name]

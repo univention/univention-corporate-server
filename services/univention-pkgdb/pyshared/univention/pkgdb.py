@@ -1,8 +1,8 @@
 #!/usr/bin/python3
 # -*- coding: utf-8 -*-
 #
-'''Univention Package Database
-Python module for the package database'''
+"""Univention Package Database
+Python module for the package database"""
 from __future__ import print_function
 #
 # Like what you see? Join us!
@@ -58,14 +58,14 @@ assert pgdb.paramstyle == 'pyformat'
 
 
 def parse_options():
-	'''
+	"""
 	parse options and return <options> with
 		<options.debug>
 		<options.action>
 		<options.system>
 		<options.db_server>
 		set
-	'''
+	"""
 	parser = argparse.ArgumentParser(add_help=False, description='Scan all packages in the local system and send this data to the database pkgdb.')
 	actions = parser.add_argument_group('Actions', 'Select an action, default is --scan')
 	actions.add_argument(
@@ -138,7 +138,7 @@ def parse_options():
 
 
 def log(message):
-	'''Log-Funktion'''
+	"""Log-Funktion"""
 	try:
 		with open("/var/log/univention/pkgdb.log", "a") as logfile:  # TODO: persistent handle?
 			logfile.write(time.strftime('%G-%m-%d %H:%M:%S') + ' ' + message + '\n')
@@ -157,7 +157,7 @@ def build_sysversion(config_registry):
 
 
 def sql_check_privileges(cursor):
-	'''DB-Privs testen (leerer Zugriff)'''
+	"""DB-Privs testen (leerer Zugriff)"""
 	log('check privileges ')
 	try:
 		cursor.execute('SELECT COUNT(*) FROM systems WHERE 1=0')
@@ -169,7 +169,7 @@ def sql_check_privileges(cursor):
 
 
 def get_dbservername(domainname):
-	'''Datenbankserver ermitteln'''
+	"""Datenbankserver ermitteln"""
 	log('get dbservername for ' + domainname)
 	DNS.DiscoverNameServers()
 	dbsrvname = None
@@ -182,7 +182,7 @@ def get_dbservername(domainname):
 
 
 def sql_test_superuser(cursor):
-	'Prüfe auf Superuser'
+	"Prüfe auf Superuser"
 	log('test for pkgdbu')
 	if not sql_check_privileges(cursor):
 		log('pkgdbu not OK')
@@ -192,7 +192,7 @@ def sql_test_superuser(cursor):
 
 
 def sql_grant_system(connection, cursor, sysname):
-	'''Datenbankbenutzer hinzufügen'''
+	"""Datenbankbenutzer hinzufügen"""
 	log('add (grant) user ' + sysname + ' to database')
 	# manual "quoted identifier" (no pgdb support)
 	sqlcmd = 'CREATE USER "%s" IN GROUP pkgdbg' % (sysname.replace('"', '""'), )
@@ -218,7 +218,7 @@ def sql_grant_system(connection, cursor, sysname):
 
 
 def sql_revoke_system(connection, cursor, sysname):
-	'''Datenbankbenutzer entfernen'''
+	"""Datenbankbenutzer entfernen"""
 	log('del (revoke) user ' + sysname + ' from database')
 	# manual "quoted identifier" (no pgdb support)
 	sql_command = 'DROP USER IF EXISTS "%s"' % (sysname.replace('"', '""'), )
@@ -228,7 +228,7 @@ def sql_revoke_system(connection, cursor, sysname):
 
 
 def sql_put_sys_in_systems(cursor, sysname, sysversion, sysrole, ldaphostdn, architecture):
-	'''insert a system name into the system-table (or update its data)'''
+	"""insert a system name into the system-table (or update its data)"""
 	parameters = {
 		'sysname': sysname,
 		'sysversion': sysversion,
@@ -269,7 +269,7 @@ def sql_put_sys_in_systems(cursor, sysname, sysversion, sysrole, ldaphostdn, arc
 
 
 def sql_put_sys_in_systems_no_architecture(cursor, sysname, sysversion, sysrole, ldaphostdn):
-	'''insert a system name into the old system-table (or update its data)'''
+	"""insert a system name into the old system-table (or update its data)"""
 	parameters = {
 		'sysname': sysname,
 		'sysversion': sysversion,
@@ -306,7 +306,7 @@ def sql_put_sys_in_systems_no_architecture(cursor, sysname, sysversion, sysrole,
 
 
 def sql_select(cursor, sqlcmd):
-	'''SQL Selects'''
+	"""SQL Selects"""
 	log('SQL: ' + sqlcmd)  # TODO: why?
 	try:
 		cursor.execute(sqlcmd)
@@ -361,7 +361,7 @@ def sql_get_packages_in_systems_by_query(cursor, query, join_systems, limit=None
 
 
 def dump_systems(cursor):
-	'''writes CSV with all systems and their system-specific information to stdout'''
+	"""writes CSV with all systems and their system-specific information to stdout"""
 	cursor.execute("SET datestyle = 'ISO'")
 	query = '''
 	SELECT sysname, sysversion, sysrole, scandate, ldaphostdn
@@ -403,7 +403,7 @@ def dump_systems_packages(cursor):
 
 
 def action_remove_system(connection, cursor, sysname):
-	'''removes system <sysname> from the database'''
+	"""removes system <sysname> from the database"""
 	connection.rollback()
 	delete_packages = '''
 	DELETE FROM packages_on_systems
@@ -419,8 +419,8 @@ def action_remove_system(connection, cursor, sysname):
 
 
 def scan_and_store_packages(cursor, sysname, fake_null=False, architecture=None):
-	'''updates the system <sysname> with the current package state
-	if <fake_null> is True put '' instead of None in the vername field'''
+	"""updates the system <sysname> with the current package state
+	if <fake_null> is True put '' instead of None in the vername field"""
 	delete_packages = '''
 	DELETE FROM packages_on_systems
            WHERE sysname = %(sysname)s
@@ -480,7 +480,7 @@ scan_and_store_packages.cache = None
 
 
 def action_fill_testdb(connection, cursor, config_registry):
-	'''Fülle Testdatenbank'''
+	"""Fülle Testdatenbank"""
 	connection.rollback()
 	sysversion = build_sysversion(config_registry)
 	sysrole = config_registry['server/role']
@@ -505,7 +505,7 @@ def action_fill_testdb(connection, cursor, config_registry):
 
 
 def action_scan(connection, cursor, config_registry):
-	'''put systems <sysname> in the database and updates it with the current package state'''
+	"""put systems <sysname> in the database and updates it with the current package state"""
 	connection.rollback()
 	sysname = config_registry['hostname']
 	sysversion = build_sysversion(config_registry)
@@ -565,7 +565,7 @@ def open_database_connection(config_registry, pkgdbu=False, db_server=None):
 
 
 def main():
-	'''main function for univention-pkgdb-scan'''
+	"""main function for univention-pkgdb-scan"""
 	options = parse_options()
 	if options.action == 'version':
 		print('%s %s' % (os.path.basename(sys.argv[0]), '@%@package_version@%@', ))

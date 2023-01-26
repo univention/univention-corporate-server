@@ -47,7 +47,7 @@ from univention.appcenter.utils import app_is_running
 
 class Shell(UniventionAppAction, DockerActionMixin):
 
-	'''Run commands within a docker app.'''
+	"""Run commands within a docker app."""
 	help = 'Run in app env'
 
 	def setup_parser(self, parser):

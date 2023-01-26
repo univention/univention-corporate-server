@@ -53,7 +53,7 @@ class ControlScriptException(Exception):
 
 class Install(InstallRemoveUpgrade):
 
-	'''Installs an application from the Univention App Center.'''
+	"""Installs an application from the Univention App Center."""
 	help = 'Install an app'
 
 	prescript_ext = 'preinst'

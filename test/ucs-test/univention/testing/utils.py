@@ -667,7 +667,7 @@ def is_udp_port_open(port, ip=None):
 
 def is_port_open(port, hosts=None, timeout=60):
 	# type: (int, Optional[Iterable[str]], float) -> bool
-	'''
+	"""
 	check if port is open, if host == None check
 	hostname and 127.0.0.1
 
@@ -676,7 +676,7 @@ def is_port_open(port, hosts=None, timeout=60):
 	:type hosts: list[str] or None
 	:return: True if at least on host is reachable, False otherwise.
 	:rtype: boolean
-	'''
+	"""
 	if hosts is None:
 		hosts = (socket.gethostname(), '127.0.0.1', '::1')
 	for host in hosts:

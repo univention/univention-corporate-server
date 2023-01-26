@@ -195,10 +195,10 @@ def s42samba_time(ltime):
 
 # mapping functions
 def samaccountname_dn_mapping(connector, given_object, dn_mapping_stored, ucsobject, propertyname, propertyattrib, ocucs, ucsattrib, ocad, dn_attr=None):
-	'''
+	"""
 	map dn of given object (which must have an samaccountname in S4)
 	ocucs and ocad are objectclasses in UCS and S4
-	'''
+	"""
 	object = copy.deepcopy(given_object)
 
 	samaccountname = u''
@@ -368,38 +368,38 @@ def samaccountname_dn_mapping(connector, given_object, dn_mapping_stored, ucsobj
 
 
 def user_dn_mapping(connector, given_object, dn_mapping_stored, isUCSobject):
-	'''
+	"""
 	map dn of given user using the samaccountname/uid
 	connector is an instance of univention.s4connector.s4, given_object an object-dict,
 	dn_mapping_stored a list of dn-types which are already mapped because they were stored in the config-file
-	'''
+	"""
 	return samaccountname_dn_mapping(connector, given_object, dn_mapping_stored, isUCSobject, 'user', u'samAccountName', u'posixAccount', 'uid', u'user')
 
 
 def group_dn_mapping(connector, given_object, dn_mapping_stored, isUCSobject):
-	'''
+	"""
 	map dn of given group using the samaccountname/cn
 	connector is an instance of univention.s4connector.s4, given_object an object-dict,
 	dn_mapping_stored a list of dn-types which are already mapped because they were stored in the config-file
-	'''
+	"""
 	return samaccountname_dn_mapping(connector, given_object, dn_mapping_stored, isUCSobject, 'group', u'cn', u'posixGroup', 'cn', u'group')
 
 
 def windowscomputer_dn_mapping(connector, given_object, dn_mapping_stored, isUCSobject):
-	'''
+	"""
 	map dn of given windows computer using the samaccountname/uid
 	s4connector is an instance of univention.s4connector.s4, given_object an object-dict,
 	dn_mapping_stored a list of dn-types which are already mapped because they were stored in the config-file
-	'''
+	"""
 	return samaccountname_dn_mapping(connector, given_object, dn_mapping_stored, isUCSobject, 'windowscomputer', u'samAccountName', u'posixAccount', 'uid', u'computer', 'cn')
 
 
 def dc_dn_mapping(s4connector, given_object, dn_mapping_stored, isUCSobject):
-	'''
+	"""
 	map dn of given dc computer using the samaccountname/uid
 	s4connector is an instance of univention.s4connector.s4, given_object an object-dict,
 	dn_mapping_stored a list of dn-types which are already mapped because they were stored in the config-file
-	'''
+	"""
 	return samaccountname_dn_mapping(s4connector, given_object, dn_mapping_stored, isUCSobject, 'dc', u'samAccountName', u'posixAccount', 'uid', u'computer', 'cn')
 
 
@@ -840,9 +840,9 @@ class s4(univention.s4connector.ucs):
 				self._debug_traceback(ud.ERROR, 'Could not get object')  # TODO: remove except block?
 
 	def __get_change_usn(self, ad_object):
-		'''
+		"""
 		get change USN as max(uSNCreated, uSNChanged)
-		'''
+		"""
 		if not ad_object:
 			return 0
 		usncreated = int(ad_object['attributes'].get('uSNCreated', [b'0'])[0])
@@ -850,9 +850,9 @@ class s4(univention.s4connector.ucs):
 		return max(usnchanged, usncreated)
 
 	def __search_ad_partitions(self, scope=ldap.SCOPE_SUBTREE, filter='', attrlist=[], show_deleted=False):
-		'''
+		"""
 		search s4 across all partitions listed in self.s4_ldap_partitions
-		'''
+		"""
 		res = []
 		for base in self.s4_ldap_partitions:
 			res += self.__search_s4(base, scope, filter, attrlist, show_deleted)
@@ -863,9 +863,9 @@ class s4(univention.s4connector.ucs):
 		return self.__search_s4(dn, scope=ldap.SCOPE_BASE, filter='(objectClass=*)', show_deleted=True)[0]
 
 	def __search_s4(self, base=None, scope=ldap.SCOPE_SUBTREE, filter='', attrlist=[], show_deleted=False):
-		'''
+		"""
 		search s4
-		'''
+		"""
 
 		if not base:
 			base = self.lo_s4.base
@@ -909,9 +909,9 @@ class s4(univention.s4connector.ucs):
 		return fix_dn_in_search(res)
 
 	def __search_ad_changes(self, show_deleted=False, filter=''):
-		'''
+		"""
 		search AD for changes since last update (changes greater lastUSN)
-		'''
+		"""
 		lastUSN = self._get_lastUSN()
 		# filter erweitern um "(|(uSNChanged>=lastUSN+1)(uSNCreated>=lastUSN+1))"
 		# +1 da suche nur nach '>=', nicht nach '>' möglich
@@ -978,9 +978,9 @@ class s4(univention.s4connector.ucs):
 			return sort_ad_changes(returnObjects, lastUSN)
 
 	def __search_ad_changeUSN(self, changeUSN, show_deleted=True, filter=''):
-		'''
+		"""
 		search ad for change with id
-		'''
+		"""
 
 		usn_filter = format_escaped('(|(uSNChanged={0!e})(uSNCreated={0!e}))', changeUSN)
 		if filter != '':
@@ -989,9 +989,9 @@ class s4(univention.s4connector.ucs):
 		return self.__search_ad_partitions(filter=usn_filter, show_deleted=show_deleted)
 
 	def __dn_from_deleted_object(self, object):
-		'''
+		"""
 		gets dn for deleted object (original dn before the object was moved into the deleted objects container)
-		'''
+		"""
 
 		rdn = object['dn'].split('\\0ADEL:')[0]
 		last_known_parent = object['attributes'].get('lastKnownParent', [b''])[0].decode('UTF-8')
@@ -1065,9 +1065,9 @@ class s4(univention.s4connector.ucs):
 			self._set_lastUSN(self.__get_change_usn(object))
 
 	def __get_highestCommittedUSN(self):
-		'''
+		"""
 		get highestCommittedUSN stored in AD
-		'''
+		"""
 		try:
 			return int(self.s4_search_ext_s(
 				'',  # base
@@ -1081,9 +1081,9 @@ class s4(univention.s4connector.ucs):
 			return 0
 
 	def set_primary_group_to_ucs_user(self, object_key, object_ucs):
-		'''
+		"""
 		check if correct primary group is set to a fresh UCS-User
-		'''
+		"""
 
 		rid_filter = format_escaped("(samaccountname={0!e})", object_ucs['username'])
 		s4_group_rid_resultlist = self.__search_s4(base=self.lo_s4.base, scope=ldap.SCOPE_SUBTREE, filter=rid_filter, attrlist=['dn', 'primaryGroupID'])
@@ -1103,9 +1103,9 @@ class s4(univention.s4connector.ucs):
 			object_ucs['primaryGroup'] = ucs_group['dn']
 
 	def primary_group_sync_from_ucs(self, key, object):  # object mit ad-dn
-		'''
+		"""
 		sync primary group of an ucs-object to ad
-		'''
+		"""
 
 		object_key = key
 		object_ucs = self._object_mapping(object_key, object)
@@ -1177,9 +1177,9 @@ class s4(univention.s4connector.ucs):
 			return True
 
 	def primary_group_sync_to_ucs(self, key, object):  # object mit ucs-dn
-		'''
+		"""
 		sync primary group of an ad-object to ucs
-		'''
+		"""
 
 		object_key = key
 
@@ -1802,9 +1802,9 @@ class s4(univention.s4connector.ucs):
 		print("--------------------------------------")
 
 	def resync_rejected(self):
-		'''
+		"""
 		tries to resync rejected dn
-		'''
+		"""
 		print("--------------------------------------")
 
 		change_count = 0
@@ -1849,9 +1849,9 @@ class s4(univention.s4connector.ucs):
 		sys.stdout.flush()
 
 	def poll(self, show_deleted=True):
-		'''
+		"""
 		poll for changes in AD
-		'''
+		"""
 		# search from last_usn for changes
 		ud.debug(ud.LDAP, ud.INFO, "sync AD > UCS: polling")
 		change_count = 0

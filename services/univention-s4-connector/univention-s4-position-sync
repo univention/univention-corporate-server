@@ -61,38 +61,38 @@ def log(level, string):
 
 
 def user_dn_mapping(s4connector, given_object, dn_mapping_stored, isUCSobject):
-	'''
+	"""
 	map dn of given user using the samaccountname/uid
 	s4connector is an instance of univention.s4connector.s4, given_object an object-dict,
 	dn_mapping_stored a list of dn-types which are already mapped because they were stored in the config-file
-	'''
+	"""
 	return univention.s4connector.s4.samaccountname_dn_mapping(s4connector, given_object, dn_mapping_stored, isUCSobject, 'user', u'samAccountName', u'posixAccount', 'uid', None)
 
 
 def group_dn_mapping(s4connector, given_object, dn_mapping_stored, isUCSobject):
-	'''
+	"""
 	map dn of given group using the samaccountname/cn
 	s4connector is an instance of univention.s4connector.s4, given_object an object-dict,
 	dn_mapping_stored a list of dn-types which are already mapped because they were stored in the config-file
-	'''
+	"""
 	return univention.s4connector.s4.samaccountname_dn_mapping(s4connector, given_object, dn_mapping_stored, isUCSobject, 'group', u'cn', u'posixGroup', 'cn', None)
 
 
 def windowscomputer_dn_mapping(s4connector, given_object, dn_mapping_stored, isUCSobject):
-	'''
+	"""
 	map dn of given windows computer using the samaccountname/uid
 	s4connector is an instance of univention.s4connector.s4, given_object an object-dict,
 	dn_mapping_stored a list of dn-types which are already mapped because they were stored in the config-file
-	'''
+	"""
 	return univention.s4connector.s4.samaccountname_dn_mapping(s4connector, given_object, dn_mapping_stored, isUCSobject, 'windowscomputer', u'samAccountName', u'posixAccount', 'uid', None)
 
 
 def dc_dn_mapping(s4connector, given_object, dn_mapping_stored, isUCSobject):
-	'''
+	"""
 	map dn of given dc computer using the samaccountname/uid
 	s4connector is an instance of univention.s4connector.s4, given_object an object-dict,
 	dn_mapping_stored a list of dn-types which are already mapped because they were stored in the config-file
-	'''
+	"""
 	return univention.s4connector.s4.samaccountname_dn_mapping(s4connector, given_object, dn_mapping_stored, isUCSobject, 'dc', u'samAccountName', u'posixAccount', 'uid', None)
 
 

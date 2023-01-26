@@ -102,7 +102,7 @@ class Client(signals.Provider, Translation):
 
 	def __init__(self, servername='localhost', port=6670, unix=None, ssl=True):
 		# type: (str, int, Optional[str], bool) -> None
-		'''Initialize a socket-connection to the server.'''
+		"""Initialize a socket-connection to the server."""
 		signals.Provider.__init__(self)
 		self.__authenticated = False
 		self.__auth_ids = []  # type: List[Any]

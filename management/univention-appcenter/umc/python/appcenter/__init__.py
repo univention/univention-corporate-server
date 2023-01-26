@@ -80,9 +80,9 @@ _ = umc.Translation('univention-management-console-module-appcenter').translate
 
 
 class NoneCandidate(object):
-	''' Mock object if package has no candidate
+	""" Mock object if package has no candidate
 	(may happen without network connection)
-	'''
+	"""
 
 	def __init__(self):
 		self.summary = self.version = self.description = self.priority = self.section = _('Package not found in repository')
@@ -726,11 +726,11 @@ class Instance(umcm.Base, ProgressMixin):
 		return all_errors
 
 	def keep_alive(self, request):
-		''' Fix for Bug #30611: UMC kills appcenter module
+		""" Fix for Bug #30611: UMC kills appcenter module
 		if no request is sent for $(ucr get umc/module/timeout).
 		this happens if a user logs out during a very long installation.
 		this function will be run by the frontend to always have one connection open
-		to prevent killing the module. '''
+		to prevent killing the module. """
 		def _thread():
 			while self._working():
 				time.sleep(1)

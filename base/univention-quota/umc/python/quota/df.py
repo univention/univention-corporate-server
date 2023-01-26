@@ -34,7 +34,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-'''This module provides a similar functionality as the UNIX tool df'''
+"""This module provides a similar functionality as the UNIX tool df"""
 
 import os
 

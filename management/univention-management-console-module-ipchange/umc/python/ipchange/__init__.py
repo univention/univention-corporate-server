@@ -56,8 +56,8 @@ class Instance(Base):
 
 	@simple_response
 	def change(self, role: str, ip: str, netmask: str, oldip: Union[str, None] = None) -> Dict:
-		'''Return a dict with all necessary values for ipchange read from the current
-		status of the system.'''
+		"""Return a dict with all necessary values for ipchange read from the current
+		status of the system."""
 
 		# ignore link local addresses (no DHCP address received)
 		network = ipaddress.IPv4Network(f'{ip}/{netmask}', False)

@@ -1128,7 +1128,7 @@ class object(univention.admin.handlers.simpleLdap, PKIIntegration):
 		univention.admin.handlers.simpleLdap.__init__(self, co, lo, position, dn, superordinate, attributes=attributes)
 
 	def _simulate_legacy_options(self):
-		'''simulate old options behavior to provide backward compatibility for udm extensions'''
+		"""simulate old options behavior to provide backward compatibility for udm extensions"""
 		options = dict(
 			posix=b'posixAccount',
 			samba=b'sambaSamAccount',

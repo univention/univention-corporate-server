@@ -88,7 +88,7 @@ updater_status = {}
 
 
 def update_status(**kwargs: str) -> None:
-    '''
+    """
     update updater_status and write status to disk
 
     Keys:
@@ -97,7 +97,7 @@ def update_status(**kwargs: str) -> None:
     - updatetype      ==> (LOCAL|NET)
     - status          ==> (RUNNING|FAILED|DONE)
     - errorsource     ==> (SETTINGS|PREPARATION|PREUP|UPDATE|POSTUP)
-    '''
+    """
     updater_status.update(kwargs)
     # write temporary file
     fn = '%s.new' % FN_STATUS

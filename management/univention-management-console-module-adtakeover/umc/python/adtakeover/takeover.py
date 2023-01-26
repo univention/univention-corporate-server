@@ -114,10 +114,10 @@ _ = Translation('univention-management-console-module-adtakeover').translate
 
 class Progress(object):
 
-	'''Progress information. reset() and error() are set by the UMC module.
+	"""Progress information. reset() and error() are set by the UMC module.
 	progress.warning can be used when something went wrong which is not
 	raise-worthy
-	'''
+	"""
 
 	def __init__(self):
 		self._headline = ''
@@ -185,7 +185,7 @@ class Progress(object):
 
 class TakeoverError(Exception):
 
-	'''AD Takeover Error'''
+	"""AD Takeover Error"""
 
 	def __init__(self, errormessage=None, detail=None):
 		if errormessage:
@@ -286,11 +286,11 @@ def count_domain_objects_on_server(hostname_or_ip, username, password, progress)
 
 
 def join_to_domain_and_copy_domain_data(hostname_or_ip, username, password, progress):
-	'''Connects to the hostname_or_ip with username/password credentials
+	"""Connects to the hostname_or_ip with username/password credentials
 	Expects to find a Windows Domain Controller.
 	Gets str, str, str, Progress
 	Raises ComputerUnreachable, AuthenticationFailed, DomainJoinFailed
-	'''
+	"""
 	state = AD_Takeover_State()
 	state.set_start()
 
@@ -341,11 +341,11 @@ def join_to_domain_and_copy_domain_data(hostname_or_ip, username, password, prog
 
 
 def take_over_domain(progress):
-	'''Actually takes control of the domain, deletes old AD server, takes
+	"""Actually takes control of the domain, deletes old AD server, takes
 	its IP, etc.
 	Gets Progress
 	Raises AuthenticationFailed, DomainJoinFailed, ADServerRunning
-	'''
+	"""
 	state = AD_Takeover_State()
 	state.check_takeover()
 
@@ -392,22 +392,22 @@ def take_over_domain(progress):
 
 
 def check_status():
-	'''Where are we in the process of AD takeover?
+	"""Where are we in the process of AD takeover?
 	Returns one of:
 	'start' -> nothing happened yet
 	'sysvol' -> we copied domain data, sysvol was not yet copied'
 	'takeover' -> sysvol was copied. we can now take over the domain
 	'finished' -> already finished
-	'''
+	"""
 	state = AD_Takeover_State()
 	return state.current()
 
 
 def check_sysvol(progress):
-	'''Whether the AD sysvol is already copied to the local system
+	"""Whether the AD sysvol is already copied to the local system
 	Gets Progress
 	Raises SysvolError
-	'''
+	"""
 	state = AD_Takeover_State()
 	state.check_sysvol()
 
@@ -521,7 +521,7 @@ def get_ip_and_hostname_of_ad():
 
 
 def get_ad_hostname():
-	'''The hostname of the AD to be specified in robocopy'''
+	"""The hostname of the AD to be specified in robocopy"""
 	return get_ip_and_hostname_of_ad()[1]
 
 
@@ -822,7 +822,7 @@ class AD_Takeover(object):
 		self.local_fqdn = '.'.join((self.ucr["hostname"], self.ucr["domainname"]))
 
 	def time_sync(self, tolerance=180, critical_difference=360):
-		'''Try to sync the local time with an AD server'''
+		"""Try to sync the local time with an AD server"""
 
 		env = os.environ.copy()
 		env["LC_ALL"] = "C"
@@ -1169,7 +1169,7 @@ class AD_Takeover(object):
 		check_samba4_started()
 
 	def remove_conflicting_msgpo_objects(self):
-		'''The S4 Connector prefers OpenLDAP objects, so we must remove conflicting ones'''
+		"""The S4 Connector prefers OpenLDAP objects, so we must remove conflicting ones"""
 
 		sysvol_dir = "/var/lib/samba/sysvol"
 		samdb_domain_dns_name = self.samdb.domain_dns_name()
@@ -2054,7 +2054,7 @@ def ping(hostname_or_ip):
 
 
 def lookup_adds_dc(hostname_or_ip=None, realm=None, ucr=None):
-	'''CLDAP lookup'''
+	"""CLDAP lookup"""
 
 	domain_info = {}
 
@@ -2283,8 +2283,8 @@ def check_samba4_started():
 
 class UserRenameHandler(object):
 
-	''' Provides methods for renaming users in UDM
-	'''
+	""" Provides methods for renaming users in UDM
+	"""
 
 	def __init__(self, lo):
 		self.lo = lo
@@ -2322,8 +2322,8 @@ class UserRenameHandler(object):
 
 class GroupRenameHandler(object):
 
-	''' Provides methods for renaming groups in UDM
-	'''
+	""" Provides methods for renaming groups in UDM
+	"""
 
 	_SETTINGS_DEFAULT_UDM_PROPERTIES = (
 		"defaultGroup",
@@ -2401,7 +2401,7 @@ class GroupRenameHandler(object):
 
 
 def _connect_ucs(ucr, binddn=None, bindpwd=None):
-	''' Connect to OpenLDAP '''
+	""" Connect to OpenLDAP """
 
 	if binddn and bindpwd:
 		bindpw = bindpwd
@@ -2556,7 +2556,7 @@ def sync_position_s4_to_ucs(ucr, udm_type, ucs_object_dn, s4_object_dn):
 
 
 def parse_unc(unc):  # fixed function from samba/netcmd/gpo.py
-	'''Parse UNC string into a hostname, a service, and a filepath'''
+	"""Parse UNC string into a hostname, a service, and a filepath"""
 	if not (unc.startswith('\\\\') or unc.startswith('//')):
 		raise ValueError(_("UNC doesn't start with \\\\ or //"))
 	tmp = unc[2:].split('/', 2)

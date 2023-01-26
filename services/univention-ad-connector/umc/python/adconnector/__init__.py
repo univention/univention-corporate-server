@@ -87,7 +87,7 @@ def ucr_rollback(ucr, variables):
 
 
 def test_connection():
-	'''Search a query that should never fail: RDN of connector/ad/ldap/base'''
+	"""Search a query that should never fail: RDN of connector/ad/ldap/base"""
 	base = ucr.get('connector/ad/ldap/base')
 	rdn = explode_rdn(base)[0]
 	p1, stdout, stderr = adsearch(rdn)

@@ -171,9 +171,9 @@ class SoftRequirement(object):
 
 
 class MustHaveCorrectServerRole(SingleRequirement, HardRequirement):
-	'''The application cannot be installed on the current server
+	"""The application cannot be installed on the current server
 		role (%(current_role)s). In order to install the application,
-		one of the following roles is necessary: %(allowed_roles)r'''
+		one of the following roles is necessary: %(allowed_roles)r"""
 
 	def test_install(self, app):
 		server_role = ucr_get('server/role')
@@ -187,8 +187,8 @@ class MustHaveCorrectServerRole(SingleRequirement, HardRequirement):
 
 
 class MustHaveFittingAppVersion(SingleRequirement, HardRequirement):
-	'''To upgrade, at least version %(required_version)s needs to
-		be installed.'''
+	"""To upgrade, at least version %(required_version)s needs to
+		be installed."""
 
 	def test_upgrade(self, app):
 		if app.required_app_version_upgrade:
@@ -200,7 +200,7 @@ class MustHaveFittingAppVersion(SingleRequirement, HardRequirement):
 
 
 class MustHaveFittingKernelVersion(MultiRequirement, HardRequirement):
-	'''The Kernel version has to be upgraded and the system rebootet.'''
+	"""The Kernel version has to be upgraded and the system rebootet."""
 
 	def test_install(self, apps):
 		if any(app.docker for app in apps):
@@ -212,7 +212,7 @@ class MustHaveFittingKernelVersion(MultiRequirement, HardRequirement):
 
 
 class MustHaveCandidate(SingleRequirement, HardRequirement):
-	'''The application is either not installed or no newer version is available'''
+	"""The application is either not installed or no newer version is available"""
 
 	def test_upgrade(self, app):
 		_app = Apps().find(app.id)
@@ -221,7 +221,7 @@ class MustHaveCandidate(SingleRequirement, HardRequirement):
 
 
 class MustHaveFittingUcsVersion(SingleRequirement, HardRequirement):
-	'''The application requires UCS version %(required_version)s.'''
+	"""The application requires UCS version %(required_version)s."""
 
 	def test_install(self, app):
 		required_ucs_version = None
@@ -252,7 +252,7 @@ class MustHaveFittingUcsVersion(SingleRequirement, HardRequirement):
 
 
 class MustHaveInstallPermissions(SingleRequirement, HardRequirement):
-	'''You need to buy the App to install this version.'''
+	"""You need to buy the App to install this version."""
 
 	def test_install(self, app):
 		if not app.install_permissions_exist():
@@ -262,8 +262,8 @@ class MustHaveInstallPermissions(SingleRequirement, HardRequirement):
 
 
 class MustHaveNoConflictsApps(SingleRequirement, HardRequirement):
-	'''The application conflicts with the following applications:
-			%r'''
+	"""The application conflicts with the following applications:
+			%r"""
 
 	def test_install(self, app):
 		conflictedapps = set()
@@ -303,7 +303,7 @@ class MustHaveNoConflictsApps(SingleRequirement, HardRequirement):
 
 
 class MustHaveNoConflictsPackages(SingleRequirement, HardRequirement):
-	'''The application conflicts with the following packages: %r'''
+	"""The application conflicts with the following packages: %r"""
 
 	def test_install(self, app):
 		conflict_packages = []
@@ -317,7 +317,7 @@ class MustHaveNoConflictsPackages(SingleRequirement, HardRequirement):
 
 
 class MustHaveNoUnmetDependencies(SingleRequirement, HardRequirement):
-	'''The application requires the following applications: %r'''
+	"""The application requires the following applications: %r"""
 
 	def test_install(self, app):
 		unmet_apps = []
@@ -347,8 +347,8 @@ class MustHaveNoUnmetDependencies(SingleRequirement, HardRequirement):
 
 
 class MustHaveSupportedArchitecture(SingleRequirement, HardRequirement):
-	'''This application only supports %(supported)s as
-		architecture. %(msg)s'''
+	"""This application only supports %(supported)s as
+		architecture. %(msg)s"""
 
 	def test_install(self, app):
 		supported_architectures = app.supported_architectures
@@ -379,8 +379,8 @@ class MustHaveSupportedArchitecture(SingleRequirement, HardRequirement):
 
 
 class MustHaveValidLicense(MultiRequirement, HardRequirement):
-	'''For the installation, a UCS license key
-		with a key identification (Key ID) is required'''
+	"""For the installation, a UCS license key
+		with a key identification (Key ID) is required"""
 
 	def test_install(self, apps):
 		if any(app.notify_vendor for app in apps):
@@ -394,8 +394,8 @@ class MustHaveValidLicense(MultiRequirement, HardRequirement):
 
 
 class MustNotBeDependedOn(SingleRequirement, HardRequirement):
-	'''The application is required for the following applications
-		to work: %r'''
+	"""The application is required for the following applications
+		to work: %r"""
 
 	def test_remove(self, app):
 		depending_apps = []
@@ -425,8 +425,8 @@ class MustNotBeDependedOn(SingleRequirement, HardRequirement):
 
 
 class MustNotBeDockerIfDockerIsDisabled(SingleRequirement, HardRequirement):
-	'''The application uses a container technology while the App Center
-		is configured to not not support it'''
+	"""The application uses a container technology while the App Center
+		is configured to not not support it"""
 
 	def test_install(self, app):
 		return not app.docker or ucr_is_true('appcenter/docker', True)
@@ -435,9 +435,9 @@ class MustNotBeDockerIfDockerIsDisabled(SingleRequirement, HardRequirement):
 
 
 class MustNotBeDockerInDocker(SingleRequirement, HardRequirement):
-	'''The application uses a container technology while the system
+	"""The application uses a container technology while the system
 		itself runs in a container. Using the application is not
-		supported on this host'''
+		supported on this host"""
 
 	def test_install(self, app):
 		return not app.docker or not container_mode()
@@ -446,24 +446,24 @@ class MustNotBeDockerInDocker(SingleRequirement, HardRequirement):
 
 
 class MustNotBeEndOfLife(SingleRequirement, HardRequirement):
-	'''This application was discontinued and may not be installed
-		anymore'''
+	"""This application was discontinued and may not be installed
+		anymore"""
 
 	def test_install(self, app):
 		return not app.end_of_life
 
 
 class MustNotBeInstalled(SingleRequirement, HardRequirement):
-	'''This application is already installed'''
+	"""This application is already installed"""
 
 	def test_install(self, app):
 		return not app.is_installed()
 
 
 class MustNotBeVoteForApp(SingleRequirement, HardRequirement):
-	'''The application is not yet installable. Vote for this app
+	"""The application is not yet installable. Vote for this app
 		now and bring your favorite faster to the Univention App
-		Center'''
+		Center"""
 
 	def test_install(self, app):
 		return not app.vote_for_app
@@ -472,7 +472,7 @@ class MustNotBeVoteForApp(SingleRequirement, HardRequirement):
 
 
 class MustNotHaveConcurrentOperation(SingleRequirement, HardRequirement):
-	'''Another package operation is in progress'''
+	"""Another package operation is in progress"""
 
 	def test_install(self, app):
 		if app.docker:
@@ -486,7 +486,7 @@ class MustNotHaveConcurrentOperation(SingleRequirement, HardRequirement):
 
 
 class MustNotBePinned(SingleRequirement, HardRequirement):
-	'''This application is pinned'''
+	"""This application is pinned"""
 
 	def test_upgrade(self, app):
 		if ucr_is_true(app.ucr_pinned_key, False):
@@ -498,8 +498,8 @@ class MustNotBePinned(SingleRequirement, HardRequirement):
 
 
 class ShallHaveEnoughFreeDiskSpace(MultiRequirement, SoftRequirement):
-	'''The system needs %(minimum)d MB of free disk space but only
-		%(current)d MB are available.'''
+	"""The system needs %(minimum)d MB of free disk space but only
+		%(current)d MB are available."""
 
 	def test_install(self, apps):
 		required_free_disk_space = 0
@@ -513,8 +513,8 @@ class ShallHaveEnoughFreeDiskSpace(MultiRequirement, SoftRequirement):
 
 
 class ShallHaveEnoughRam(MultiRequirement, SoftRequirement):
-	'''The system need at least %(minimum)d MB of free RAM but only
-		%(current)d MB are available.'''
+	"""The system need at least %(minimum)d MB of free RAM but only
+		%(current)d MB are available."""
 
 	def test_install(self, apps):
 		current_ram = get_current_ram_available()
@@ -539,9 +539,9 @@ class ShallHaveEnoughRam(MultiRequirement, SoftRequirement):
 
 
 class ShallNotBeDockerIfDiscouraged(SingleRequirement, HardRequirement):
-	'''The application has not been approved to migrate all
+	"""The application has not been approved to migrate all
 		existing data. Maybe there is a migration guide:
-		%(migration_link)s'''
+		%(migration_link)s"""
 
 	def test_install(self, app):
 		problem = app._docker_prudence_is_true() and not app.docker_migration_works
@@ -552,8 +552,8 @@ class ShallNotBeDockerIfDiscouraged(SingleRequirement, HardRequirement):
 
 
 class ShallOnlyBeInstalledInAdEnvWithPasswordService(SingleRequirement, SoftRequirement):
-	'''The application requires the password service to be set up
-		on the Active Directory domain controller server.'''
+	"""The application requires the password service to be set up
+		on the Active Directory domain controller server."""
 
 	def test_install(self, app):
 		return not app._has_active_ad_member_issue('password')

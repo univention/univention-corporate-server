@@ -338,7 +338,7 @@ def simple_response(function=None, with_flavor=None, with_progress=False):
 
 
 def multi_response(function=None, with_flavor=None, single_values=False, progress=False):
-	''' This decorator acts similar to :func:`simple_response` but
+	""" This decorator acts similar to :func:`simple_response` but
 	can handle a list of dicts instead of a single dict.
 
 	Technically another object is passed to the function that you can
@@ -376,7 +376,7 @@ def multi_response(function=None, with_flavor=None, single_values=False, progres
 		for var, in iterator:
 			# now var is set correctly
 			pass
-	'''
+	"""
 	if function is None:
 		return lambda f: multi_response(f, with_flavor, single_values, progress)
 	response_func = _eval_simple_decorated_function(function, with_flavor, single_values, progress)
@@ -607,8 +607,8 @@ def log(function=None, sensitives=None, customs=None, single_values=False):
 
 
 def file_upload(function):
-	''' This decorator restricts requests to be
-	UPLOAD-commands. Simple, yet effective '''
+	""" This decorator restricts requests to be
+	UPLOAD-commands. Simple, yet effective """
 
 	def _response(self, request):
 		if request.command != 'UPLOAD':

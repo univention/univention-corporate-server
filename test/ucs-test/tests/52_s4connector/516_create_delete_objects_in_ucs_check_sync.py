@@ -100,7 +100,7 @@ class Users:
 
 @pytest.mark.skipif(not connector_running_on_this_host(), reason="Univention S4 Connector not configured.")
 def test_no_leftovers_after_delete_in_ucs():
-    '''
+    """
     check that all objects are deleted if the (UCS) delete happens during
     the sync_to_ucs modify (as reaction to the add)
 
@@ -110,7 +110,7 @@ def test_no_leftovers_after_delete_in_ucs():
                 delete>             delete
                 <delete (dont delete, different entryUUID)
     object left over
-    '''
+    """
     with connector_setup("sync"), UCSTestConfigRegistry():
         # do not update domain users, this changes to timing
         handler_set(['directory/manager/user/primarygroup/update=false'])

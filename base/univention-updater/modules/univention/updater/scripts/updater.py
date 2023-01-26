@@ -125,7 +125,7 @@ def dprint(str):  # type: (object) -> None
 
 
 def update_status(**kwargs):  # type: (**str) -> None
-    '''
+    """
     update updater_status and write status to disk
 
     Keys:
@@ -136,7 +136,7 @@ def update_status(**kwargs):  # type: (**str) -> None
     - status          ==> (RUNNING|FAILED|DONE)
     - phase           ==> (PREPARATION|PREUP|UPDATE|POSTUP)     ==> only valid if status=RUNNING
     - errorsource     ==> (SETTINGS|PREPARATION|PREUP|UPDATE|POSTUP)
-    '''
+    """
     updater_status.update(kwargs)
     if updater_status.get('status') != 'RUNNING':
         updater_status.pop('phase', None)

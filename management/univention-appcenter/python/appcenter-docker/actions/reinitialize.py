@@ -40,9 +40,9 @@ from univention.appcenter.actions.docker_upgrade import Upgrade
 
 
 class Reinitialize(Upgrade):
-	'''Reinitilizes a Docker App. Essentially removes the container and
+	"""Reinitilizes a Docker App. Essentially removes the container and
 	re-creates it with the current settings. Useful for starting the
-	container with changed environment variables.'''
+	container with changed environment variables."""
 	help = 'Reinitilize Docker App. Mainly used internally.'
 
 	def setup_parser(self, parser):

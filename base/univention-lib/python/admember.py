@@ -97,87 +97,87 @@ def initialize_debug():
 
 class failedToSetService(Exception):
 
-	'''ucs_addServiceToLocalhost failed'''
+	"""ucs_addServiceToLocalhost failed"""
 
 
 class invalidUCSServerRole(Exception):
 
-	'''Invalid UCS Server Role'''
+	"""Invalid UCS Server Role"""
 
 
 class failedADConnect(Exception):
 
-	'''Connection to AD Server failed'''
+	"""Connection to AD Server failed"""
 
 
 class failedToSetAdministratorPassword(Exception):
 
-	'''Failed to set the password of the UCS Administrator to the AD password'''
+	"""Failed to set the password of the UCS Administrator to the AD password"""
 
 
 class failedToCreateAdministratorAccount(Exception):
 
-	'''Failed to create the administrator account in UCS'''
+	"""Failed to create the administrator account in UCS"""
 
 
 class sambaSidNotSetForAdministratorAccount(Exception):
 
-	'''sambaSID is not set for Administrator account in UCS'''
+	"""sambaSID is not set for Administrator account in UCS"""
 
 
 class failedToSearchForWellKnownSid(Exception):
 
-	'''failed to search for well known SID'''
+	"""failed to search for well known SID"""
 
 
 class failedToAddAdministratorAccountToDomainAdmins(Exception):
 
-	'''failed to add Administrator account to Domain Admins'''
+	"""failed to add Administrator account to Domain Admins"""
 
 
 class domainnameMismatch(Exception):
 
-	'''Domain Names don't match'''
+	"""Domain Names don't match"""
 
 
 class connectionFailed(Exception):
 
-	'''Connection to AD failed'''
+	"""Connection to AD failed"""
 
 
 class notDomainAdminInAD(Exception):
 
-	'''User is not member of Domain Admins group in AD'''
+	"""User is not member of Domain Admins group in AD"""
 
 
 class univentionSambaWrongVersion(Exception):
 
-	'''univention-samba candidate has wrong version'''
+	"""univention-samba candidate has wrong version"""
 
 
 class timeSyncronizationFailed(Exception):
 
-	'''Time synchronization failed.'''
+	"""Time synchronization failed."""
 
 
 class manualTimeSyncronizationRequired(timeSyncronizationFailed):
 
-	'''Time difference critical for Kerberos but synchronization aborted.'''
+	"""Time difference critical for Kerberos but synchronization aborted."""
 
 
 class sambaJoinScriptFailed(Exception):
 
-	'''26univention-samba.inst failed'''
+	"""26univention-samba.inst failed"""
 
 
 class failedToAddServiceRecordToAD(Exception):
 
-	'''failed to add SRV record in AD'''
+	"""failed to add SRV record in AD"""
 
 
 class failedToGetUcrVariable(Exception):
 
-	'''failed to get ucr variable'''
+	"""failed to get ucr variable"""
 
 
 def is_localhost_in_admember_mode(ucr=None):
@@ -291,11 +291,11 @@ def decode_sid(value):
 
 
 def check_ad_account(ad_domain_info, username, password, ucr=None):
-	'''
+	"""
 	returns True if account is Administrator in AD
 	returns False if account is just a member of Domain Admins
 	raises exception notDomainAdminInAD if neither criterion is met.
-	'''
+	"""
 
 	ud.debug(ud.MODULE, ud.INFO, "running check_account")
 	ad_server_ip = ad_domain_info["DC IP"]
@@ -837,7 +837,7 @@ def get_defaultNamingContext(ad_server_ip, use_samba_lib=six.PY3):
 
 
 def lookup_adds_dc(ad_server=None, ucr=None, check_dns=True):
-	'''CLDAP lookup'''
+	"""CLDAP lookup"""
 
 	ud.debug(ud.MODULE, ud.PROCESS, "Lookup ADDS DC")
 
@@ -982,7 +982,7 @@ def do_time_sync(ad_ip):
 
 
 def time_sync(ad_ip, tolerance=180, critical_difference=360):
-	'''Try to sync the local time with an AD server'''
+	"""Try to sync the local time with an AD server"""
 
 	stdout = b""
 	env = os.environ.copy()

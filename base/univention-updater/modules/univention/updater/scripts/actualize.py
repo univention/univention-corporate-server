@@ -76,10 +76,10 @@ ldap_hostdn = configRegistry.get('ldap/hostdn')
 
 class Tee(object):
 
-    '''
+    """
     Writes the given string to several files at once. Could by used
     with the print statement
-    '''
+    """
 
     def __init__(self, files: Sequence[str] = [], stdout: bool = True, filter: Optional[str] = None) -> None:
         self.stdout = stdout

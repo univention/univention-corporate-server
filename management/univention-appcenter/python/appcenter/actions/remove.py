@@ -48,7 +48,7 @@ from univention.appcenter.exceptions import RemoveFailed
 
 class Remove(InstallRemoveUpgrade):
 
-	'''Removes an application from the Univention App Center.'''
+	"""Removes an application from the Univention App Center."""
 	help = 'Uninstall an app'
 
 	prescript_ext = 'prerm'

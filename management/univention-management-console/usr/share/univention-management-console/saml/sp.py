@@ -28,10 +28,10 @@ def public_key_compare(key1, key2):
 
 
 def get_cert():
-	'''
+	"""
 	The cert file can contain multiple certs (e.g. with lets encrypt)
 	saml expects only the one certificate that matches the private key
-	'''
+	"""
 	with open(CONFIG['cert_file'], 'rb') as cert_file:
 		cert = x509.load_pem_x509_certificate(cert_file.read(), default_backend())
 		public_cert_key = cert.public_key()

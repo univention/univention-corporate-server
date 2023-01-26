@@ -45,7 +45,7 @@ from tempfile import NamedTemporaryFile
 
 class UpdateCertificates(UniventionAppAction):
 
-	'''Update certificates for an application.'''
+	"""Update certificates for an application."""
 	help = 'Update certificates for an app'
 
 	def setup_parser(self, parser):

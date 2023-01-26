@@ -275,7 +275,7 @@ def auto_complete_values_for_join(newValues, current_locale=None):
 
 
 def pre_save(newValues):
-	'''Modify the final dict before saving it to the profile file.'''
+	"""Modify the final dict before saving it to the profile file."""
 
 	# network interfaces
 	from univention.management.console.modules.setup.network import Interfaces
@@ -1043,7 +1043,7 @@ def get_fqdn(nameserver):
 
 
 def get_available_locales(pattern, category='language_en'):
-	'''Return a list of all available locales.'''
+	"""Return a list of all available locales."""
 	try:
 		fsupported = open('/usr/share/i18n/SUPPORTED')
 		flanguages = open('/usr/share/univention-system-setup/locale/languagelist')

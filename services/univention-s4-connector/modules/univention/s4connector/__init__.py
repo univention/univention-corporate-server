@@ -90,24 +90,24 @@ def generate_strong_password(length=24):
 
 
 def set_ucs_passwd_user(connector, key, ucs_object):
-	'''
+	"""
 	set random password to fulfill required values
-	'''
+	"""
 	ucs_object['password'] = generate_strong_password()
 
 
 def check_ucs_lastname_user(connector, key, ucs_object):
-	'''
+	"""
 	check if required values for lastname are set
-	'''
+	"""
 	if not ucs_object.has_property('lastname') or not ucs_object['lastname']:
 		ucs_object['lastname'] = 'none'
 
 
 def set_primary_group_user(connector, key, ucs_object):
-	'''
+	"""
 	check if correct primary group is set
-	'''
+	"""
 	connector.set_primary_group_to_ucs_user(key, ucs_object)
 
 # compare functions
@@ -682,9 +682,9 @@ class ucs(object):
 			self._set_dn_mapping(dn_ucs.lower(), dn_con.lower())
 
 	def _debug_traceback(self, level, text):
-		'''
+		"""
 		print traceback with ud.debug, level is i.e. ud.INFO
-		'''
+		"""
 		ud.debug(ud.LDAP, level, text)
 		ud.debug(ud.LDAP, level, traceback.format_exc())
 
@@ -694,9 +694,9 @@ class ucs(object):
 		ud.debug(ud.LDAP, level, '%s: %s%s' % (direction, prefix, ': %s' % message if message else ''))
 
 	def __sync_file_from_ucs(self, filename, append_error='', traceback_level=ud.WARN):
-		'''
+		"""
 		sync changes from UCS stored in given file
-		'''
+		"""
 
 		try:
 			with open(filename, 'rb') as fob:
@@ -947,9 +947,9 @@ class ucs(object):
 		pass
 
 	def resync_rejected_ucs(self):
-		'''
+		"""
 		tries to resync rejected changes from UCS
-		'''
+		"""
 		rejected = self._list_rejected_ucs()
 		change_counter = 0
 		print("--------------------------------------")
@@ -982,9 +982,9 @@ class ucs(object):
 		pass
 
 	def poll_ucs(self):
-		'''
+		"""
 		poll changes from UCS: iterates over files exported by directory-listener module
-		'''
+		"""
 		# check for changes from ucs ldap directory
 
 		ud.debug(ud.LDAP, ud.INFO, "sync UCS > AD: polling")
@@ -1688,12 +1688,12 @@ class ucs(object):
 		return subfilter(filter, attributes)
 
 	def _ignore_object(self, key, object):
-		'''
+		"""
 		parse if object should be ignored because of ignore_subtree or ignore_filter
 
 		:param key: the property_type from the mapping
 		:param object: a mapped or unmapped AD or UCS object
-		'''
+		"""
 		if 'dn' not in object:
 			ud.debug(ud.LDAP, ud.INFO, "_ignore_object: ignore object without DN (key: {})".format(key))
 			return True  # ignore not existing object

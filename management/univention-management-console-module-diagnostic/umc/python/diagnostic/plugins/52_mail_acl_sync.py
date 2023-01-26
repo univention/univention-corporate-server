@@ -132,10 +132,10 @@ class ACL(object):
 
 	@classmethod
 	def from_udm(cls, user_acl: List[Tuple[str, str]], group_acl: List[Tuple[str, str]]) -> "ACL":
-		'''
+		"""
 		Transform the udm acls from [[id, right], [id, right], ..] to a dict
 		from identifier to right, where right is the highest right in the acl.
-		'''
+		"""
 		def simplify(acl_list: List[Tuple[str, str]]) -> Iterator[Tuple[str, str]]:
 			merged: Dict[str, Set[str]] = {}
 			for (identifier, right) in acl_list:

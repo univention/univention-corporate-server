@@ -41,10 +41,10 @@ import locale
 
 class JSON_Object(object):
 
-	'''Converts Python object into JSON compatible data
+	"""Converts Python object into JSON compatible data
 	structures. Types like lists, tuples and dictionary are converted
 	directly. If none of these types matches the method tries to convert
-	the attributes of the object and generate a dict to represent it.'''
+	the attributes of the object and generate a dict to represent it."""
 
 	def _json_list(self, obj):
 		result = []
@@ -83,8 +83,8 @@ class JSON_Dict(dict, JSON_Object):
 
 
 def locale_get():
-	'''Get locale name for messages. If no specific locale is set for
-	process the default setting is returned.'''
+	"""Get locale name for messages. If no specific locale is set for
+	process the default setting is returned."""
 	lang, encoding = locale.getlocale(locale.LC_MESSAGES)
 	if not lang:
 		lang, encoding = locale.getdefaultlocale(locale.LC_MESSAGES)

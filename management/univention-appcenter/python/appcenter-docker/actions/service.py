@@ -64,7 +64,7 @@ class Service(UniventionAppAction):
 
 class Start(Service):
 
-	'''Starts an application previously installed.'''
+	"""Starts an application previously installed."""
 	help = 'Start an app'
 
 	def main(self, args):
@@ -76,7 +76,7 @@ class Start(Service):
 
 class Stop(Service):
 
-	'''Stops a running application.'''
+	"""Stops a running application."""
 	help = 'Stop an app'
 
 	def main(self, args):
@@ -88,7 +88,7 @@ class Stop(Service):
 
 class Restart(Service):
 
-	'''Restarts an app. Stops and Starts. Does not have to be running'''
+	"""Restarts an app. Stops and Starts. Does not have to be running"""
 	help = 'Restart an app'
 
 	def main(self, args):
@@ -100,7 +100,7 @@ class Restart(Service):
 
 class CRestart(Service):
 
-	'''CRestarts an app. Stops and Starts. Has to be running'''
+	"""CRestarts an app. Stops and Starts. Has to be running"""
 	help = 'CRestart an app'
 
 	def main(self, args):
@@ -112,7 +112,7 @@ class CRestart(Service):
 
 class Status(Service):
 
-	'''Ask service about status. Possible answers: running stopped'''
+	"""Ask service about status. Possible answers: running stopped"""
 	help = 'Retrieve status of an app'
 
 	@classmethod

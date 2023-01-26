@@ -12,7 +12,7 @@ from univention.testing import ucr as _ucr, udm as _udm
 
 
 class Password:
-	'''Just a namespace for password providers'''
+	"""Just a namespace for password providers"""
 
 	@staticmethod
 	def upperLower10(username=None):
@@ -78,9 +78,9 @@ class Password:
 
 
 class PasswordType:
-	'''Just a namespace for PasswordType providers
+	"""Just a namespace for PasswordType providers
 	to avoid collision with parameter fixture names.
-	'''
+	"""
 
 	@staticmethod
 	def password_conforming_to_mspolicy():

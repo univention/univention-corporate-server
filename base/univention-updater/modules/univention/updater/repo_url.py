@@ -53,7 +53,7 @@ class UcsRepoUrl(object):
 
     def __init__(self, ucr, prefix, default=None):
         # type: (ConfigRegistry, str, Union[None, str, UcsRepoUrl]) -> None
-        '''
+        """
         >>> UcsRepoUrl({'_/server': 'hostname'}, '_').path
         ''
         >>> UcsRepoUrl({'_/server': 'hostname', '_/prefix': '/p'}, '_').path
@@ -68,7 +68,7 @@ class UcsRepoUrl(object):
         'http://other/'
         >>> UcsRepoUrl({}, '').private() == UcsRepoUrl.DEFAULT
         True
-        '''
+        """
         def ucrv(key, default=None):
             # type: (str, _T) -> _T
             return ucr.get('%s/%s' % (prefix, key), default)

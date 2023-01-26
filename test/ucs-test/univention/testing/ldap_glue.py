@@ -50,7 +50,7 @@ def get_first(value):
 
 
 class LDAPConnection:
-	'''helper functions to modify LDAP-objects intended as glue for shell-scripts'''
+	"""helper functions to modify LDAP-objects intended as glue for shell-scripts"""
 
 	def __init__(self, no_starttls=False):
 		self.ldapbase = ucr['ldap/base']
@@ -137,7 +137,7 @@ class LDAPConnection:
 			return []
 
 	def get(self, dn, attr=[], required=False):
-		'''returns ldap object'''
+		"""returns ldap object"""
 
 		if dn:
 			try:
@@ -216,7 +216,7 @@ class LDAPConnection:
 
 
 class ADConnection(LDAPConnection):
-	'''helper functions to modify AD-objects'''
+	"""helper functions to modify AD-objects"""
 
 	def __init__(self, configbase='connector'):
 		self.configbase = configbase
@@ -241,7 +241,7 @@ class ADConnection(LDAPConnection):
 		self.connect(no_starttls)
 
 	def get(self, dn, attr=[], required=False):
-		'''returns ldap object'''
+		"""returns ldap object"""
 
 		if dn:
 			try:

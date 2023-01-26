@@ -56,10 +56,10 @@ def valid_mailaddress(val):
 
 
 def equal(values1, values2):
-	''' This is called in these two ways:
+	""" This is called in these two ways:
 		1. in sync_from_ucs: values1 are mapped ucs and values2 are        con
 		2. in __set_values:  values1 are        ucs and values2 are mapped con
-	'''
+	"""
 	ud.debug(ud.LDAP, ud.ALL, "proxyAddesses: values1: %r" % (values1,))
 	ud.debug(ud.LDAP, ud.ALL, "proxyAddesses: values2: %r" % (values2,))
 	values_normalized = []

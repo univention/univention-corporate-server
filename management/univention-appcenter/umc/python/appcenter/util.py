@@ -223,7 +223,7 @@ def urlopen(request):
 
 
 def get_current_ram_available():
-	''' Returns RAM currently available in MB, excluding Swap '''
+	""" Returns RAM currently available in MB, excluding Swap """
 	# return (psutil.avail_phymem() + psutil.phymem_buffers() + psutil.cached_phymem()) / (1024*1024) # psutil is outdated. re-enable when methods are supported
 	# implement here. see http://code.google.com/p/psutil/source/diff?spec=svn550&r=550&format=side&path=/trunk/psutil/_pslinux.py
 	with open('/proc/meminfo', 'r') as f:
@@ -238,16 +238,16 @@ def get_current_ram_available():
 
 
 def component_registered(component_id, ucr):
-	''' Checks if a component is registered (enabled or disabled).
+	""" Checks if a component is registered (enabled or disabled).
 	Moved outside of ComponentManager to avoid dependencies for
-	UniventionUpdater when just using Application.all() '''
+	UniventionUpdater when just using Application.all() """
 	return '%s/%s' % (COMPONENT_BASE, component_id) in ucr
 
 
 def component_current(component_id, ucr):
-	''' Checks if a component is enabled (not disabled!).
+	""" Checks if a component is enabled (not disabled!).
 	Moved outside of ComponentManager to avoid dependencies for
-	UniventionUpdater'''
+	UniventionUpdater"""
 	return ucr.get('%s/%s/version' % (COMPONENT_BASE, component_id)) == 'current'
 
 

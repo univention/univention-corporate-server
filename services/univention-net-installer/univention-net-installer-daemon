@@ -51,7 +51,7 @@ import univention.uldap
 
 
 def createDaemon(options):
-	'''daemonize via double fork, close all file handles, open /dev/null for stdin/out/err'''
+	"""daemonize via double fork, close all file handles, open /dev/null for stdin/out/err"""
 	try:
 		pid = os.fork()
 	except OSError as e:

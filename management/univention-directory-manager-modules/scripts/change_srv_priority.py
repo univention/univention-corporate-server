@@ -30,9 +30,9 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-'''
+"""
 This tool changes the priority from some SRV records from 0 to 100
-'''
+"""
 
 import univention.admin
 import univention.admin.uldap

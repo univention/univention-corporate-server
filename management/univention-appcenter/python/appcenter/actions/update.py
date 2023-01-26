@@ -59,7 +59,7 @@ from univention.appcenter.ucr import ucr_save, ucr_is_false
 
 class Update(UniventionAppAction):
 
-	'''Updates the list of all available applications by asking the App Center server'''
+	"""Updates the list of all available applications by asking the App Center server"""
 	help = 'Updates the list of apps'
 
 	def setup_parser(self, parser):

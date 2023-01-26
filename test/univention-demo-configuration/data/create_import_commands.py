@@ -76,7 +76,7 @@ NAGIOS_OPTIONS = ' '.join(
 
 
 def importRow(row: Dict[str, str]) -> None:
-	''' Import one row containing a user definition '''
+	""" Import one row containing a user definition """
 
 	row["LDAPBASE"] = LDAPBASE
 	row["DOMAIN"] = DOMAIN

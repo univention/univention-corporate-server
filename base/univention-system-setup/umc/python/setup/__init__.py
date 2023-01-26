@@ -154,14 +154,14 @@ class Instance(Base, ProgressMixin):
 
 	@simple_response
 	def load(self):
-		'''Return a dict with all necessary values for system-setup read from the current
-		status of the system.'''
+		"""Return a dict with all necessary values for system-setup read from the current
+		status of the system."""
 		return util.load_values(self.locale.language)
 
 	@simple_response
 	def save_keymap(self, layout=None):
-		'''Set the systems x-keymap according to
-		request.options[keymap]'''
+		"""Set the systems x-keymap according to
+		request.options[keymap]"""
 
 		# Don't set in debian installer mode
 		if ucr.is_true('system/setup/boot/installer'):
@@ -324,10 +324,10 @@ class Instance(Base, ProgressMixin):
 		return
 
 	def check_finished(self, request):
-		'''Check whether the join/setup scripts are finished. This method implements a long
+		"""Check whether the join/setup scripts are finished. This method implements a long
 		polling request, i.e., the request is only finished at the moment when all scripts
 		have been executed or due to a timeout. If it returns because of the timeout, a new
-		try can be started.'''
+		try can be started."""
 		def _thread(request, obj):
 			def progress_info(state, **kwargs):
 				info = {
@@ -550,11 +550,11 @@ class Instance(Base, ProgressMixin):
 	@sanitize(pattern=PatternSanitizer(default='.*', required=True, add_asterisks=True))
 	@simple_response
 	def lang_locales(self, pattern, category='language_en'):
-		'''Return a list of all available locales.'''
+		"""Return a list of all available locales."""
 		return util.get_available_locales(pattern, category)
 
 	def lang_timezones(self, request):
-		'''Return a list of all available time zones.'''
+		"""Return a list of all available time zones."""
 		try:
 			fd = open('/usr/share/univention-system-setup/locale/timezone')
 		except EnvironmentError:
@@ -568,7 +568,7 @@ class Instance(Base, ProgressMixin):
 
 	@simple_response
 	def lang_keyboard_model(self):
-		'''Return a list of all available keyboard models.'''
+		"""Return a list of all available keyboard models."""
 
 		tree = lxml.etree.parse(open('/usr/share/X11/xkb/rules/base.xml'))
 		models = tree.xpath("//model")
@@ -582,7 +582,7 @@ class Instance(Base, ProgressMixin):
 
 	@simple_response
 	def lang_keyboard_layout(self):
-		'''Return a list of all available keyboard layouts.'''
+		"""Return a list of all available keyboard layouts."""
 
 		tree = lxml.etree.parse(open('/usr/share/X11/xkb/rules/base.xml'))
 		layouts = tree.xpath("//layout")
@@ -599,7 +599,7 @@ class Instance(Base, ProgressMixin):
 	@sanitize(keyboardlayout=StringSanitizer(default='us'))
 	@simple_response
 	def lang_keyboard_variante(self, keyboardlayout):
-		'''Return a list of all available keyboard variantes.'''
+		"""Return a list of all available keyboard variantes."""
 
 		variante_result = []
 		tree = lxml.etree.parse(open('/usr/share/X11/xkb/rules/base.xml'))
@@ -620,7 +620,7 @@ class Instance(Base, ProgressMixin):
 		return variante_result
 
 	def lang_countrycodes(self, request):
-		'''Return a list of all countries with their two letter chcountry codes.'''
+		"""Return a list of all countries with their two letter chcountry codes."""
 		country_data = util.get_country_data()
 		countries = [{
 			'id': icountry,
@@ -671,7 +671,7 @@ class Instance(Base, ProgressMixin):
 
 	@simple_response
 	def net_interfaces(self):
-		'''Return a list of all available network interfaces.'''
+		"""Return a list of all available network interfaces."""
 		return [idev['name'] for idev in util.detect_interfaces()]
 
 	# workaround: use with_progress to make the method threaded

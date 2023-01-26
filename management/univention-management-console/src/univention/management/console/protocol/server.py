@@ -70,10 +70,10 @@ _ = Translation('univention.management.console').translate
 
 class MagicBucket(object):
 
-	'''Manages a connection (session) to the UMC server. Therefore it
+	"""Manages a connection (session) to the UMC server. Therefore it
 	ensures that without successful authentication no other command is
 	accepted. All commands are passed to the :class:`~SessionHandler`. After the user
-	has authenticated the commands are passed on to the Processor.'''
+	has authenticated the commands are passed on to the Processor."""
 
 	def __init__(self):
 		# type: () -> None
@@ -113,7 +113,7 @@ class MagicBucket(object):
 
 	def exit(self):
 		# type: () -> None
-		'''Closes all open connections.'''
+		"""Closes all open connections."""
 		# remove all sockets
 		for sock in list(self.__states):
 			CORE.info('Shutting down connection %s' % sock)
@@ -215,9 +215,9 @@ class MagicBucket(object):
 
 	def _response(self, msg, state):
 		# type: (Message, State) -> None
-		''' Send UMCP response to client. If the status code is 250 the
+		""" Send UMCP response to client. If the status code is 250 the
 		module process is asking for exit. This method forfills the
-		request.'''
+		request."""
 		if msg.id not in state.requests and msg.id != -1:
 			CORE.info('The given response is invalid or not known (%s)' % (msg.id,))
 			return
@@ -287,7 +287,7 @@ class Server(signals.Provider):
 
 	def __init__(self, port=6670, ssl=True, unix=None, magic=True, magicClass=MagicBucket, load_ressources=True, processes=1):
 		# type: (int, bool, Optional[str], bool, Type[MagicBucket], bool, int) -> None
-		'''Initializes the socket to listen for requests'''
+		"""Initializes the socket to listen for requests"""
 		signals.Provider.__init__(self)
 
 		# loading resources
@@ -417,7 +417,7 @@ class Server(signals.Provider):
 
 	def _connection(self, sock):
 		# type: (socket.socket) -> bool
-		'''Signal callback: Invoked on incoming connections.'''
+		"""Signal callback: Invoked on incoming connections."""
 		try:
 			sock, addr = sock.accept()
 		except EnvironmentError as exc:
@@ -462,7 +462,7 @@ class Server(signals.Provider):
 
 	def exit(self):
 		# type: () -> None
-		'''Shuts down all open connections.'''
+		"""Shuts down all open connections."""
 		CORE.warn('Shutting down all open connections')
 
 		if self.__bucket:

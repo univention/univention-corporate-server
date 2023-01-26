@@ -109,12 +109,12 @@ class MXRecord(dnsp.DnssrvRpcRecord):
 
 
 def dns_dn_mapping(s4connector, given_object, dn_mapping_stored, isUCSobject):
-	'''
+	"""
 	map dn of given object (which must have an s4_RR_attr in S4)
 	ol_oc_filter and s4_RR_filter are objectclass filters in UCS and S4
 
 	Code is based on univention.s4connector.s4.samaccountname_dn_mapping
-	'''
+	"""
 	obj = copy.deepcopy(given_object)
 
 	propertyname = 'dns'
@@ -673,8 +673,8 @@ def __unpack_ptrRecord(object):
 
 
 def __get_s4_msdcs_soa(s4connector, zoneName):
-	''' Required to keep the SOA serial numbers in sync
-	'''
+	""" Required to keep the SOA serial numbers in sync
+	"""
 
 	msdcs_obj = {}
 	msdcs_zonename = '_msdcs.%s' % (zoneName,)
@@ -813,9 +813,9 @@ def s4_zone_msdcs_sync(s4connector, object):
 
 
 def s4_zone_create_wrapper(s4connector, object):
-	''' Handle s4_zone_create to additionally sync to _msdcs.$domainname
+	""" Handle s4_zone_create to additionally sync to _msdcs.$domainname
 		Required to keep the SOA serial numbers in sync
-	'''
+	"""
 	result = s4_zone_create(s4connector, object)
 
 	zoneName = object['attributes']['zoneName'][0].decode('UTF-8')

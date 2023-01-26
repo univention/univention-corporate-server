@@ -100,12 +100,12 @@ class ValidationError(Exception):
 
 	def number_of_errors(self):
 		# type: () -> int
-		'''1...'''
+		"""1..."""
 		return 1
 
 	def result(self):
 		# type: () -> Any
-		'''Returns the message'''
+		"""Returns the message"""
 		# return {'name' : self.name, 'value' : self.value, 'msg' : self.msg}
 		return self.msg
 
@@ -123,12 +123,12 @@ class MultiValidationError(ValidationError):
 
 	def add_error(self, e, name):
 		# type: (ValidationError, Union[int, str]) -> None
-		'''Adds a :class:`ValidationError`'''
+		"""Adds a :class:`ValidationError`"""
 		self.validation_errors[name] = e
 
 	def number_of_errors(self):
 		# type: () -> int
-		'''Cumulative number of errors found'''
+		"""Cumulative number of errors found"""
 		num = 0
 		for _k, v in self.validation_errors.items():
 			num += v.number_of_errors()
@@ -140,19 +140,19 @@ class MultiValidationError(ValidationError):
 
 	def has_errors(self):
 		# type: () -> bool
-		'''Found any errors'''
+		"""Found any errors"""
 		return bool(self.validation_errors)
 
 	def result(self):
 		# type: () -> Dict[Union[int, str], str]
-		'''Returns a errors in a similar way like the arguments were passed
-		to the sanitizers.'''
+		"""Returns a errors in a similar way like the arguments were passed
+		to the sanitizers."""
 		return dict([(name, e.result()) for name, e in self.validation_errors.items()])
 
 
 class Sanitizer(object):
 
-	r'''
+	r"""
 	Base class of all sanitizers.
 
 	For reasons of extensibility and for ease of subclassing, the
@@ -172,7 +172,7 @@ class Sanitizer(object):
 		for validation. Default: *True*
 	:param bool allow_none: if None is allowed and not further validated.
 		Default: *False*
-	'''
+	"""
 
 	def __init__(self, **kwargs):
 		self.further_arguments = kwargs.get('further_arguments', None)
@@ -183,7 +183,7 @@ class Sanitizer(object):
 
 	def sanitize(self, name, options):
 		# type: (str, Mapping[str, object]) -> Any
-		'''Sanitize function. Internally calls _sanitize with the
+		"""Sanitize function. Internally calls _sanitize with the
 		correct values and returns the new value (together with a flag
 		indicating whether the value was found at all).
 		If you write your own Sanitize class, you probably want to
@@ -191,7 +191,7 @@ class Sanitizer(object):
 
 		.. document private functions
 		.. automethod:: _sanitize
-		'''
+		"""
 		if name not in options:
 			if self.required:
 				self.raise_formatted_validation_error(_('Argument required'), name, None)
@@ -215,7 +215,7 @@ class Sanitizer(object):
 
 	def _sanitize(self, value, name, further_arguments):
 		# type: (Any, str, Mapping[str, object]) -> object
-		'''The method where the actual sanitizing takes place.
+		"""The method where the actual sanitizing takes place.
 
 		The standard method just returns *value* so be sure to
 		override this method in your Sanitize class.
@@ -230,12 +230,12 @@ class Sanitizer(object):
 			options dict (i.e. before potentially changing
 			sanitizing happened).
 		:type further_arguments: dict[str, object]
-		'''
+		"""
 		return value
 
 	def raise_validation_error(self, msg, **kwargs):
 		# type: (str, **Any) -> NoReturn
-		r'''Used to more or less uniformly raise a
+		r"""Used to more or less uniformly raise a
 		:class:`~ValidationError`. This will actually raise an
 		:class:`~UnformattedValidationError` for your convenience.
 		If used in :meth:`~Sanitizer._sanitize`, it will be
@@ -243,12 +243,12 @@ class Sanitizer(object):
 		:meth:`~Sanitizer.sanitize`.
 
 		:param dict \**kwargs: additional arguments for formatting
-		'''
+		"""
 		raise UnformattedValidationError(msg, kwargs)
 
 	def raise_formatted_validation_error(self, msg, name, value, **kwargs):
 		# type: (str, str, Any, **Any) -> NoReturn
-		r'''Used to more or less uniformly raise a
+		r"""Used to more or less uniformly raise a
 		:class:`~ValidationError`. *name* and *value* need to passed
 		because the sanitizer should be thread safe.
 
@@ -256,7 +256,7 @@ class Sanitizer(object):
 		:param str name: name of the argument
 		:param object value: the argument which caused the error
 		:param dict \**kwargs: additional arguments for formatting
-		'''
+		"""
 		format_dict = {'value': value, 'name': name}
 		format_dict.update(kwargs)
 		format_dict.update(self.__dict__)
@@ -266,7 +266,7 @@ class Sanitizer(object):
 
 class DictSanitizer(Sanitizer):
 
-	''' DictSanitizer makes sure that the value is a dict and sanitizes its fields.
+	""" DictSanitizer makes sure that the value is a dict and sanitizes its fields.
 
 	You can give the same parameters as the base class.
 	Plus:
@@ -277,7 +277,7 @@ class DictSanitizer(Sanitizer):
 	:param default_sanitizer: will be applied to the content if no sanitizer is defined
 	:type sanitizers: dict[str, Sanitizer]
 	:type default_sanitizer: Sanitizer
-	'''
+	"""
 
 	def __init__(self, sanitizers, allow_other_keys=True, default_sanitizer=None, **kwargs):
 		# type: (Dict[str, Sanitizer], bool, Sanitizer, **Any) -> None
@@ -320,7 +320,7 @@ class DictSanitizer(Sanitizer):
 
 class ListSanitizer(Sanitizer):
 
-	''' ListSanitizer makes sure that the value is a list and sanitizes its elements.
+	""" ListSanitizer makes sure that the value is a list and sanitizes its elements.
 
 	You can give the same parameters as the base class.
 	Plus:
@@ -330,7 +330,7 @@ class ListSanitizer(Sanitizer):
 	:param int min_elements: must have at least this number of elements
 	:param int max_elements: must have at most this number of elements
 	:type sanitizer: Sanitizer
-	'''
+	"""
 
 	def __init__(self, sanitizer=None, min_elements=None, max_elements=None, **kwargs):
 		# type: (Optional[Sanitizer], Optional[int], Optional[int], **Any) -> None
@@ -369,9 +369,9 @@ class ListSanitizer(Sanitizer):
 
 class BooleanSanitizer(Sanitizer):
 
-	'''BooleanSanitizer makes sure that the value is a bool.
+	"""BooleanSanitizer makes sure that the value is a bool.
 	It converts other data types if possible.
-	'''
+	"""
 
 	def _sanitize(self, value, name, further_arguments):
 		# type: (Any, str, Mapping[str, object]) -> bool
@@ -383,7 +383,7 @@ class BooleanSanitizer(Sanitizer):
 
 class IntegerSanitizer(Sanitizer):
 
-	'''IntegerSanitizer makes sure that the value is an int.
+	"""IntegerSanitizer makes sure that the value is an int.
 	It converts other data types if possible and is able
 	to validate boundaries.
 
@@ -396,7 +396,7 @@ class IntegerSanitizer(Sanitizer):
 	:param int maximum: maximal value allowed
 	:param bool maximum_strict: if the value must be < maximum
 		(<= otherwise)
-	'''
+	"""
 
 	def __init__(self, minimum=None, maximum=None, minimum_strict=None, maximum_strict=None, **kwargs):
 		# type: (Optional[int], Optional[int], bool, bool, **Any) -> None
@@ -510,10 +510,10 @@ class SearchSanitizer(Sanitizer):
 
 class LDAPSearchSanitizer(SearchSanitizer):
 
-	r'''Sanitizer for LDAP-Searches. Everything that
+	r"""Sanitizer for LDAP-Searches. Everything that
 	could possibly confuse an LDAP-Search is escaped
 	except for \*.
-	'''
+	"""
 
 	ESCAPED_WILDCARD = ldap.filter.escape_filter_chars('*')
 
@@ -527,7 +527,7 @@ class LDAPSearchSanitizer(SearchSanitizer):
 
 class PatternSanitizer(SearchSanitizer):
 
-	'''PatternSanitizer converts the input into a regular expression.
+	"""PatternSanitizer converts the input into a regular expression.
 	It can handle anything (through the inputs __str__ method), but
 	only strings seem to make sense.
 
@@ -550,7 +550,7 @@ class PatternSanitizer(SearchSanitizer):
 		to search case insensitive.
 	:param bool multiline: pattern is compiled with re.MULTILINE flag
 		to search across multiple lines.
-	'''
+	"""
 
 	def __init__(self, ignore_case=True, multiline=True, **kwargs):
 		# type: (bool, bool, **Any) -> None
@@ -592,7 +592,7 @@ class PatternSanitizer(SearchSanitizer):
 
 class StringSanitizer(Sanitizer):
 
-	''' StringSanitizer makes sure that the input is a string.
+	""" StringSanitizer makes sure that the input is a string.
 	The input can be validated by a regular expression and by string length
 
 	:param regex_pattern: a regex pattern or a string which will be
@@ -604,7 +604,7 @@ class StringSanitizer(Sanitizer):
 	:param int minimum: the minimum length of the string
 	:param int maximum: the maximum length of the string
 	:type regex_pattern: six.string_types or re._pattern_type
-	'''
+	"""
 
 	def __init__(self, regex_pattern=None, re_flags=0, minimum=None, maximum=None, **kwargs):
 		# type: (Union[None, Pattern[str], str], int, Optional[int], Optional[int], **Any) -> None
@@ -648,8 +648,8 @@ class StringSanitizer(Sanitizer):
 
 class DNSanitizer(StringSanitizer):
 
-	''' DNSanitizer is a sanitizer that checks if the value has correct LDAP
-	Distinguished Name syntax '''
+	""" DNSanitizer is a sanitizer that checks if the value has correct LDAP
+	Distinguished Name syntax """
 
 	def _sanitize(self, value, name, further_args):
 		# type: (Any, str, Mapping[str, object]) -> object
@@ -663,9 +663,9 @@ class DNSanitizer(StringSanitizer):
 
 class EmailSanitizer(StringSanitizer):
 
-	''' EmailSanitizer is a very simple sanitizer that checks
+	""" EmailSanitizer is a very simple sanitizer that checks
 	the very basics of an email address: At least 3 characters and
-	somewhere in the middle has to be an @-sign '''
+	somewhere in the middle has to be an @-sign """
 
 	def __init__(self, **kwargs):
 		# type: (**Any) -> None
@@ -674,11 +674,11 @@ class EmailSanitizer(StringSanitizer):
 
 class ChoicesSanitizer(Sanitizer):
 
-	''' ChoicesSanitizer makes sure that the input is in a given set of
+	""" ChoicesSanitizer makes sure that the input is in a given set of
 	choices.
 
 	:param object choices: the allowed choices used.
-	'''
+	"""
 
 	def __init__(self, choices, **kwargs):
 		# type: (Iterable[str], **Any) -> None
@@ -700,12 +700,12 @@ class ChoicesSanitizer(Sanitizer):
 
 class MappingSanitizer(ChoicesSanitizer):
 
-	''' MappingSanitizer makes sure that the input is in a key in a
+	""" MappingSanitizer makes sure that the input is in a key in a
 	dictionary and returns the corresponding value.
 
 	:param mapping: the dictionary that is used for sanitizing
 	:type mapping: {object : object}
-	'''
+	"""
 
 	def __init__(self, mapping, **kwargs):
 		# type: (Mapping[str, object], Any) -> None

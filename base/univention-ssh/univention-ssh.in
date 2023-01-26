@@ -45,7 +45,7 @@ from textwrap import dedent
 
 
 def display_help(out=sys.stdout):
-	'''Display help text.'''
+	"""Display help text."""
 	if cmd == 'univention-ssh':
 		text = '''
 		%(cmd)s: internal managing tool for UCS clients
@@ -138,7 +138,7 @@ def display_help(out=sys.stdout):
 
 
 def display_version(out=sys.stdout):
-	'''Display program name and version string.'''
+	"""Display program name and version string."""
 	print('%s @@package_version@@' % (cmd,), file=out)
 
 

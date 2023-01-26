@@ -64,8 +64,8 @@ class DRSUAPI(object):
 
 	@staticmethod
 	def netcmd_dnsname(lp) -> str:
-		'''return the full DNS name of our own host. Used as a default
-		for hostname when running status queries'''
+		"""return the full DNS name of our own host. Used as a default
+		for hostname when running status queries"""
 		return lp.get('netbios name').lower() + "." + lp.get('realm').lower()
 
 	@staticmethod

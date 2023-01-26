@@ -136,8 +136,8 @@ def docker_is_running():
 
 def app_ports():
 	# type: () -> List[Tuple[ str, int, int]]
-	'''Returns a list for ports of an App:
-	[(app_id, container_port, host_port), ...]'''
+	"""Returns a list for ports of an App:
+	[(app_id, container_port, host_port), ...]"""
 	ret = []
 	for key in ucr_keys():
 		match = re.match(r'^appcenter/apps/(.*)/ports/(\d*)', key)
@@ -151,8 +151,8 @@ def app_ports():
 
 def app_ports_with_protocol():
 	# type: () -> List[Tuple[ str, int, int, str]]
-	'''Returns a list for ports of an App:
-	[(app_id, container_port, host_port, protocol), ...]'''
+	"""Returns a list for ports of an App:
+	[(app_id, container_port, host_port, protocol), ...]"""
 	ret = []
 	for app_id, container_port, host_port in app_ports():
 		protocol = ucr_get('appcenter/apps/%s/ports/%s/protocol' % (app_id, container_port), 'tcp')
@@ -394,7 +394,7 @@ def get_sha256_from_file(filename):
 
 def get_current_ram_available():
 	# type: () -> float
-	''' Returns RAM currently available in MB, excluding Swap '''
+	""" Returns RAM currently available in MB, excluding Swap """
 	# return (psutil.avail_phymem() + psutil.phymem_buffers() + psutil.cached_phymem()) / (1024*1024) # psutil is outdated. re-enable when methods are supported
 	# implement here. see http://code.google.com/p/psutil/source/diff?spec=svn550&r=550&format=side&path=/trunk/psutil/_pslinux.py
 	with open('/proc/meminfo', 'r') as f:
@@ -410,7 +410,7 @@ def get_current_ram_available():
 
 def get_free_disk_space():
 	# type: () -> Optional[float]
-	''' Returns disk space currently free in MB'''
+	""" Returns disk space currently free in MB"""
 	docker_path = '/var/lib/docker'
 	try:
 		fd = os.open(docker_path, os.O_RDONLY)
@@ -488,7 +488,7 @@ def get_server():
 
 def container_mode():
 	# type: () -> bool
-	'''returns True if this system is a container'''
+	"""returns True if this system is a container"""
 	return bool(ucr_get('docker/container/uuid'))
 
 

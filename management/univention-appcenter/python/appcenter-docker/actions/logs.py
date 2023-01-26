@@ -43,7 +43,7 @@ from univention.appcenter.actions.docker_base import DockerActionMixin
 
 class Logs(UniventionAppAction, DockerActionMixin):
 
-	'''Get log output of an app.'''
+	"""Get log output of an app."""
 	help = 'Get log output of an app.'
 
 	def setup_parser(self, parser):

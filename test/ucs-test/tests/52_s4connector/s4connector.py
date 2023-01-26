@@ -22,7 +22,7 @@ configRegistry.load()
 
 
 class S4Connection(ldap_glue.ADConnection):
-	'''helper functions to modify AD-objects'''
+	"""helper functions to modify AD-objects"""
 
 	@classmethod
 	def decode_sid(cls, sid):

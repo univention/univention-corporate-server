@@ -53,8 +53,8 @@ class SettingValueError(Exception):
 
 
 class Setting(TypedIniSectionObject):
-	'''Based on the .settings file, models additional settings for Apps
-	that can be configured before installation, during run-time, etc.'''
+	"""Based on the .settings file, models additional settings for Apps
+	that can be configured before installation, during run-time, etc."""
 
 	type = IniSectionAttribute(default='String', choices=['String', 'Int', 'Bool', 'List', 'Password', 'File', 'PasswordFile', 'Status'])
 	description = IniSectionAttribute(localisable=True, required=True)
@@ -90,7 +90,7 @@ class Setting(TypedIniSectionObject):
 		return self.initial_value
 
 	def get_value(self, app, phase='Settings'):
-		'''Get the current value for this Setting. Easy implementation'''
+		"""Get the current value for this Setting. Easy implementation"""
 		if self.is_outside(app):
 			value = ucr_get(self.name)
 		else:

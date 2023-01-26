@@ -133,7 +133,7 @@ class XML_Definition(ET.ElementTree):
 
 class Manager(dict):
 
-	'''This class manages all available categories.'''
+	"""This class manages all available categories."""
 
 	DIRECTORY = os.path.join(sys.prefix, 'share/univention-management-console/categories')
 

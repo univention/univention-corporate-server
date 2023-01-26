@@ -310,11 +310,11 @@ class Instance(Base):
 		password_type=StringSanitizer(required=True, minimum=1))
 	@simple_response
 	def set_service_specific_passwords(self, username, password, password_type):
-		'''
+		"""
 		Set a new service specific password.
 
 		:return: The password in cleartext
-		'''
+		"""
 		if ucr.is_false('umc/self-service/service-specific-passwords/backend/enabled'):
 			msg = _('Service specific passwords were disabled via the Univention Configuration Registry.')
 			MODULE.error('get_service_specific_passwords(): {}'.format(msg))
