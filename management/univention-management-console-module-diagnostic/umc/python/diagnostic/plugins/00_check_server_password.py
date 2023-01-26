@@ -65,7 +65,7 @@ def fix_machine_password(umc_instance: Instance) -> None:
 			change_server_password()
 		return run(umc_instance, retest=True)
 
-	error_description = _('Unable to fix machine password on {}'.format(role))
+	error_description = _('Unable to fix machine password on {}').format(role)
 	raise Critical(description=error_description)
 
 
