@@ -225,7 +225,7 @@ if configRegistry.get('ldap/maxopenfiles'):
 	log_action_end_msg $rvalue "$fail_msg"
 	if [ $rvalue != 0 ]; then
 		exit_if_start_is_running
-		[ -e /usr/sbin/slapschema ] && log_action_msg $(/usr/sbin/slapschema 2>&1)
+		[ -e /usr/sbin/slapschema ] && log_action_msg $(/usr/sbin/slapschema -f /etc/ldap/slapd.conf 2>&1)
 		exit $rvalue
 	fi
 

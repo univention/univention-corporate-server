@@ -46,7 +46,7 @@ backup_and_remove_ldap_objects
 
 stop_slapd
 
-slapadd -l "$ldif"
+slapadd -f /etc/ldap/slapd.conf -l "$ldif"
 
 start_slapd
 

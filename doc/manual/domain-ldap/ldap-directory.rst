@@ -176,7 +176,7 @@ in a text file in LDIF format, e.g.:
 
 .. code-block::
 
-   $ slapcat > ldapdata.txt
+   $ slapcat -f /etc/ldap/slapd.conf > ldapdata.txt
 
 
 .. _domain-ldap-acls:

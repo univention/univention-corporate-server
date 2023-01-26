@@ -175,7 +175,7 @@ class LdapIndex(object):
         ucr_update(ucr, changes)
 
     def validate_config(self, ucr):
-        cmd = ('slaptest',)
+        cmd = ('slaptest', '-f', '/etc/ldap/slapd.conf', )
         while True:
             proc = Popen(cmd, stderr=PIPE)
             _stdout, stderr = proc.communicate()
@@ -202,7 +202,7 @@ class LdapIndex(object):
             return
         LOG.info('Generating indexes...')
         self.check_slapd()
-        slapindex_cmd = ['/usr/sbin/slapindex']
+        slapindex_cmd = ['/usr/sbin/slapindex', '-f', '/etc/ldap/slapd.conf']
         if self.quick_mode:
             slapindex_cmd.append('-q')
         slapindex = Popen(slapindex_cmd, stderr=PIPE)

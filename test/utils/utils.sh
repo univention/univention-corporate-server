@@ -330,7 +330,7 @@ wait_for_process () {
 }
 
 wait_for_slapd () {
-	wait_for_process 600 1 /usr/sbin/slapd
+	wait_for_process 600 1 /usr/sbin/slapd -f /etc/ldap/slapd.conf
 }
 
 wait_for_setup_process () {

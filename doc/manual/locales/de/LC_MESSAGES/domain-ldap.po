@@ -1638,8 +1638,8 @@ msgstr ""
 "LDAP-Daten in einer Textdatei im LDIF-Format, z.B.:"
 
 #: ../../domain-ldap/ldap-directory.rst:177
-msgid "$ slapcat > ldapdata.txt"
-msgstr "$ slapcat > ldapdata.txt"
+msgid "$ slapcat -f /etc/ldap/slapd.conf > ldapdata.txt"
+msgstr "$ slapcat -f /etc/ldap/slapd.conf > ldapdata.txt"
 
 #: ../../domain-ldap/ldap-directory.rst:185
 msgid "Access control for the LDAP directory"

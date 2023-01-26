@@ -1,3 +1,10 @@
+univention-directory-listener (14.0.6-3) unstable; urgency=low
+
+  * Bug #54986: slap tools must also work in case
+    /etc/ldap/slapd.d/cn=config.ldif exists (even if invalid)
+
+ -- Nikola Radovanovic <radovanovic.extern@univention.de>  Wed, 25 Jan 2023 18:03:46 +0100
+
 univention-directory-listener (14.0.6-2) unstable; urgency=low
 
   * Bug #54501: cleanup listener module library

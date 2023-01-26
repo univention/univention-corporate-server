@@ -1,3 +1,10 @@
+univention-management-console-module-diagnostic (6.0.2-11) unstable; urgency=medium
+
+  * Bug #54986: slap tools must also work in case
+    /etc/ldap/slapd.d/cn=config.ldif exists (even if invalid)
+
+ -- Nikola Radovanovic <radovanovic.extern@univention.de>  Wed, 25 Jan 2023 18:03:46 +0100
+
 univention-management-console-module-diagnostic (6.0.2-10) unstable; urgency=medium
 
   * Bug #55548: encode data in modlist in 56_univention_types.py to be Python 3 compatible.

@@ -111,7 +111,7 @@ fi
 
 skip=''
 while read -r dn; do
-	if [ -n "$dn" ] && slapdn "$dn" > /dev/null 2>&1; then
+	if [ -n "$dn" ] && slapdn -f /etc/ldap/slapd.conf "$dn" > /dev/null 2>&1; then
 		echo "$nextid $dn m" >>/var/lib/univention-ldap/listener/listener
 		echo -n "$nextid" >/var/lib/univention-ldap/last_id
 		nextid=$((nextid+1))

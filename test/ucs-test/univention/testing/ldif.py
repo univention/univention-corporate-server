@@ -222,7 +222,7 @@ class LdifSlapcat:
 	def __init__(self):
 		# type: () -> None
 		super().__init__()
-		self.command = ['slapcat', '-d0']
+		self.command = ['slapcat', '-f', '/etc/ldap/slapd.conf', '-d0']
 
 	def start_reading(self):
 		# type: () -> Ldif

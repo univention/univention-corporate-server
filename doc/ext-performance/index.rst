@@ -126,11 +126,11 @@ be performed as follows:
 .. code-block:: console
 
    $ systemctl stop slapd
-   $ slapcat -l ldif
+   $ slapcat -f /etc/ldap/slapd.conf -l ldif
    $ mkdir /var/lib/univention-ldap/ldap.BACKUP
    $ mv /var/lib/univention-ldap/ldap/* /var/lib/univention-ldap/ldap.BACKUP
    $ ucr set ldap/database/type=mdb
-   $ slapadd -l ldif
+   $ slapadd -f /etc/ldap/slapd.conf -l ldif
    $ systemctl start slapd
 
 By default the memory mapped database needs more I/O operations than the

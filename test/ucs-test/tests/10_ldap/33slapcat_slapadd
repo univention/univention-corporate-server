@@ -20,15 +20,15 @@ ldif="$temp_dir/1"
 ldif2="$temp_dir/2"
 
 /etc/init.d/slapd stop
-slapcat > "$ldif"
+slapcat -f /etc/ldap/slapd.conf > "$ldif"
 
 mv /var/lib/univention-ldap/ldap/* "$temp_dir/bak/"
 
 ucr commit /var/lib/univention-ldap/ldap/DB_CONFIG
 
-slapadd < "$ldif"
+slapadd -f /etc/ldap/slapd.conf < "$ldif"
 
-slapcat > "$ldif2"
+slapcat -f /etc/ldap/slapd.conf > "$ldif2"
 
 /etc/init.d/slapd start
 

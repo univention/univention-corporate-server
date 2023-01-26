@@ -49,7 +49,7 @@ def run(_umc_instance: Instance) -> None:
 	if not os.path.exists('/usr/sbin/slapschema'):
 		return
 
-	process = Popen(['/usr/sbin/slapschema'], stdout=PIPE, stderr=PIPE, env={'LANG': 'C'}, shell=True)
+	process = Popen(['/usr/sbin/slapschema', '-f', '/etc/ldap/slapd.conf'], stdout=PIPE, stderr=PIPE, env={'LANG': 'C'}, shell=True)
 	stdout, stderr_ = process.communicate()
 	stderr = stderr_.decode('UTF-8', 'replace')
 

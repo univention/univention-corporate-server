@@ -83,7 +83,7 @@ copied onto the external system (:file:`slapd.conf`).
 
 .. code-block:: console
 
-   $ slapcat > data.ldif
+   $ slapcat -f /etc/ldap/slapd.conf > data.ldif
    $ cat remote_system/template-slapd.conf | ucr filter > remote_system/slapd.conf
    $ scp remote_system/slapd.conf data.ldif extldap.univention.test:
    $ rm data.ldif
