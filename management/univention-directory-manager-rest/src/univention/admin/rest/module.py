@@ -2560,8 +2560,8 @@ class Report(ReportingBase, Resource):
 
 	async def create_report(self, object_type, report_type, dns):
 		try:
-			report_type in self.reports_cfg.get_report_names(object_type)
-		except KeyError:
+			assert report_type in self.reports_cfg.get_report_names(object_type)
+		except (KeyError, AssertionError):
 			raise NotFound(report_type)
 
 		report = udr.Report(self.ldap_connection)
