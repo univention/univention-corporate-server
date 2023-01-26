@@ -7,6 +7,7 @@ scripts/remove_ucs_rejected.py	usr/share/univention-ad-connector/
 scripts/resync_object_from_ad.py	usr/share/univention-ad-connector/
 scripts/resync_object_from_ucs.py	usr/share/univention-ad-connector/
 scripts/well-known-sid-object-rename	usr/share/univention-ad-connector/scripts/
+server_password_change.d/univention-admember	usr/lib/univention-server/server_password_change.d/
 univention-ad-connector	usr/sbin/
 univention-adconnector-list-rejected	usr/sbin/
 univention-adsearch	usr/sbin/

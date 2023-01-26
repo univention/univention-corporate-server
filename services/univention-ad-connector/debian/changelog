@@ -1,3 +1,9 @@
+univention-ad-connector (14.0.13-3) unstable; urgency=medium
+
+  * Bug #55582: new univention-admember script to change the password on AD
+
+ -- Juan Pedro Torres <torres-munoz.extern@univention.de>  Thu, 16 Feb 2023 09:46:37 +0100
+
 univention-ad-connector (14.0.13-2) unstable; urgency=medium
 
   * Bug #42330: Remove old maintainer script package update code

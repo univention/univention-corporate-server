@@ -1,3 +1,9 @@
+univention-samba (14.0.8-4) unstable; urgency=medium
+
+  * Bug #54390: moved ad password change to univention-ad-connector package
+
+ -- Juan Pedro Torres <torres-munoz.extern@univention.de>  Thu, 16 Feb 2023 09:45:54 +0100
+
 univention-samba (14.0.8-3) unstable; urgency=medium
 
   * Bug #55597: move old logs during update

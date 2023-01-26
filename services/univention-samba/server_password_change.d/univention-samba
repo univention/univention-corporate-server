@@ -40,11 +40,9 @@ import subprocess
 import sys
 import time
 import traceback
-from datetime import datetime, timedelta
 
 import tdb
 
-import univention.lib.admember
 from univention.config_registry import ConfigRegistry
 
 
@@ -92,14 +90,6 @@ def run_postchange():
     if not windows_domain:
         sys.stdout.write("ERROR: windows/domain is not set!\n")
         return 1
-
-    # change password on ad in member mode
-    if samba_role == 'memberserver' and univention.lib.admember.is_localhost_in_admember_mode(ucr=ucr):
-        cmd = ['/usr/bin/net', 'ads', 'password', '-P']
-        cmd.append('%s$' % ucr.get('hostname', '').upper())
-        cmd.append(machine_password)
-        process = subprocess.Popen(cmd)
-        process.wait()
 
     # store machine.secret in secrets.tdb
     try:
@@ -161,38 +151,11 @@ def run_postchange():
 
 def run_prechange():
     windows_domain = ucr.get('windows/domain', '').upper()
-    samba_role = ucr.get('samba/role')
 
     if not windows_domain:
         sys.stdout.write("ERROR: windows/domain is not set!\n")
         return 1
 
-    # check time diff with ad server
-    if samba_role == 'memberserver' and univention.lib.admember.is_localhost_in_admember_mode(ucr=ucr):
-
-        TIME_FORMAT = "%a %b %d %H:%M:%S %Z %Y"
-        tolerance = 180
-        info = univention.lib.admember.lookup_adds_dc()
-        if 'DC IP' not in info:
-            sys.stderr.write('could not find DC IP\n')
-            return 1
-
-        env = os.environ.copy()
-        env["LC_ALL"] = "C"
-        p1 = subprocess.Popen(['rdate', '-p', '-n', info['DC IP']], close_fds=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE, env=env)
-        stdout, stderr = p1.communicate()
-
-        if p1.returncode:
-            sys.stderr.write('could not check time in AD DC (%s) - %s\n' % (info['DC IP'], stderr.decode('UTF-8', 'replace')))
-            return 1
-
-        local_datetime = datetime.today()
-        remote_datetime = datetime.strptime(stdout.decode('UTF-8', 'replace').strip(), TIME_FORMAT)
-        delta_t = local_datetime - remote_datetime
-
-        if abs(delta_t) > timedelta(0, tolerance):
-            sys.stderr.write('Time difference with AD server (%s) is too big. Can not change password via net ads.\n' % (info['DC IP'],))
-            return 1
     return 0
 
 
