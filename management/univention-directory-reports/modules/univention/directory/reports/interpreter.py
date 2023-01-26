@@ -170,10 +170,7 @@ class Interpreter(object):
 				value = base.info[token.attrs['name']]
 				if isinstance(value, (list, tuple)):
 					if not value or (isinstance(value, str) and value.lower() == 'none'):
-						if 'default' in token.attrs:
-							token.value = token.attrs['default']
-						else:
-							token.value = ''
+						token.value = token.attrs.get('default', '')
 					else:
 						sep = token.attrs.get('separator', ', ')
 						token.value = sep.join(value)
