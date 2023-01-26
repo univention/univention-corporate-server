@@ -50,8 +50,8 @@ exec echo "$?" >{1[ret]}
 @pytest.fixture(scope='session')
 def tmpfile(request):
 	tmpdir = py.path.local(tempfile.mkdtemp())
-	request.addfinalizer(lambda: tmpdir.remove(rec=1))
-	return lambda pyver, suffix: tmpdir.join(f"ucr{pyver}.{suffix}")
+	yield lambda pyver, suffix: tmpdir.join(f"ucr{pyver}.{suffix}")
+	tmpdir.remove(rec=1)
 
 
 @pytest.fixture(scope="module")
