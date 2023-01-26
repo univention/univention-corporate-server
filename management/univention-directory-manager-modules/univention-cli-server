@@ -89,7 +89,7 @@ class MyRequestHandler(socketserver.BaseRequestHandler):
 			else:
 				sarglist += buf
 		try:
-			stdout, stderr = [os.fdopen(fd, 'w') for fd in fds]
+			stdout, stderr = (os.fdopen(fd, 'w') for fd in fds)
 		except ValueError:
 			stdout, stderr = None, None
 		doit(sarglist, self.request, stdout, stderr)

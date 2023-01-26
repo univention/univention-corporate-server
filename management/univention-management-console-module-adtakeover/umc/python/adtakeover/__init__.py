@@ -104,12 +104,12 @@ class Instance(umcm.Base):
 
 	@background
 	def connect(self, request):
-		username, password, ip = [request.options[var] for var in ['username', 'password', 'ip']]
+		username, password, ip = (request.options[var] for var in ['username', 'password', 'ip'])
 		return takeover.count_domain_objects_on_server(ip, username, password, self.progress)
 
 	@background
 	def copy_domain_data(self, request):
-		username, password, ip = [request.options[var] for var in ['username', 'password', 'ip']]
+		username, password, ip = (request.options[var] for var in ['username', 'password', 'ip'])
 		takeover.join_to_domain_and_copy_domain_data(ip, username, password, self.progress)
 
 	@simple_response

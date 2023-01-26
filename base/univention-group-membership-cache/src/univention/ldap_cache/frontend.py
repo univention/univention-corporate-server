@@ -74,7 +74,7 @@ def users_in_group(group_dn, consider_nested_groups=True, readers=(None, None), 
 	# type: (str, bool, Tuple[Optional[Any], Optional[Any]], Dict[str, List[str]]) -> List[str]
 	group_dn = group_dn.lower()
 	cache = get_cache()
-	member_uid_cache, unique_member_cache = [cache.get_sub_cache(name) for name in ['memberUids', 'uniqueMembers']]
+	member_uid_cache, unique_member_cache = (cache.get_sub_cache(name) for name in ['memberUids', 'uniqueMembers'])
 	with member_uid_cache.reading(readers[0]) as member_uid_reader, unique_member_cache.reading(readers[1]) as unique_member_reader:
 		ret = set()  # type: Set[str]
 		members = unique_member_cache.get(group_dn, unique_member_reader)
@@ -108,7 +108,7 @@ def users_groups():
 	"""
 
 	cache = get_cache()
-	member_uid_cache, unique_member_cache = [cache.get_sub_cache(name) for name in ['memberUids', 'uniqueMembers']]
+	member_uid_cache, unique_member_cache = (cache.get_sub_cache(name) for name in ['memberUids', 'uniqueMembers'])
 
 	group_users = {}  # type: Dict[str, List[str]]
 	_group_cache = {}  # type: Dict[str, List[str]]

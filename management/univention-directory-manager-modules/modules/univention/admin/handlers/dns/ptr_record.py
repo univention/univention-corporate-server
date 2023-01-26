@@ -274,7 +274,7 @@ def rewrite_rev(filter, subnet):
 			assert 1 <= prefix < 4
 			addr = filter.value.split('.')
 			suffix = '.in-addr.arpa'
-		addr_net, addr_host = ['.'.join(reversed(_)) for _ in (addr[:prefix], addr[prefix:])]
+		addr_net, addr_host = ('.'.join(reversed(_)) for _ in (addr[:prefix], addr[prefix:]))
 		filter = conjunction('&', [
 			expression('zoneName', addr_net + suffix),
 			expression('relativeDomainName', addr_host or '*', escape=False),
