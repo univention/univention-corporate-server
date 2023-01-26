@@ -338,7 +338,7 @@ def spam_delivered(token, mail_address):
 		delivered = delivered or (token in content)
 		if delivered:
 			if 'X-Spam-Flag: YES' in content:
-				spam = spam or True
+				spam = True
 			break
 	return delivered and spam
 
