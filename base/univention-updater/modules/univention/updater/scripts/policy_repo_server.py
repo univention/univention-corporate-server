@@ -72,7 +72,7 @@ def main() -> None:
     hostdn = ucr.get('ldap/hostdn')
     if not hostdn:
         # can't query policy without host-dn
-        exit(0)
+        sys.exit(0)
 
     online_server = ucr.get('repository/online/server')
     mirror_server = ucr.get('repository/mirror/server')

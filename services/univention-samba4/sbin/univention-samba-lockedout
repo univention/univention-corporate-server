@@ -37,6 +37,7 @@ import re
 import datetime
 import argparse
 import subprocess
+import sys
 
 _LDBSEARCH_PATTERNS = {
 	"dn": re.compile("dn: (.*)"),
@@ -96,13 +97,13 @@ def get_lockout_duration():
 	try:
 		output = subprocess.check_output(["samba-tool", "domain", "passwordsettings", "show"]).decode('UTF-8', 'replace')
 	except (OSError, subprocess.CalledProcessError) as error:
-		exit("Error calling samba-tool: " + str(error))
+		sys.exit("Error calling samba-tool: " + str(error))
 
 	matches = re.findall(r"^Account lockout duration \(mins\): (\d+)$", output, re.MULTILINE)
 	try:
 		return int(matches[0]) or 30
 	except (IndexError, ValueError):
-		exit("Unable to retrieve lockout-duration via samba-tool")
+		sys.exit("Unable to retrieve lockout-duration via samba-tool")
 
 
 def parse_ldbsearch_entry(entry):
@@ -141,7 +142,7 @@ def get_users(search_command, lockout_duration):
 	try:
 		output = subprocess.check_output(search_command).decode('UTF-8', 'replace')
 	except (OSError, subprocess.CalledProcessError) as error:
-		exit("Error calling univention-s4search: " + str(error))
+		sys.exit("Error calling univention-s4search: " + str(error))
 
 	users = list()
 	for entry in output.split("\n\n"):
@@ -160,7 +161,7 @@ def main():
 
 	if arguments.debug:
 		print(" ".join(search_command))
-		exit(0)
+		sys.exit(0)
 
 	lockout_duration = get_lockout_duration()
 	users = get_users(search_command, lockout_duration)

@@ -37,7 +37,7 @@ Create DHCP subnet.
 from __future__ import print_function
 
 from argparse import ArgumentParser, FileType, Namespace
-from sys import stderr
+from sys import exit, stderr
 from typing import Iterator, Tuple
 
 from ldap.filter import filter_format

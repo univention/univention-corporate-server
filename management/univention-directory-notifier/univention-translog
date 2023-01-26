@@ -37,7 +37,7 @@ from __future__ import print_function
 
 from os import SEEK_SET, fstat, rename, unlink, environ
 from os.path import exists
-from sys import stderr
+from sys import exit, stderr
 from argparse import ArgumentParser, ArgumentTypeError
 from collections import namedtuple
 from logging import basicConfig, getLogger, CRITICAL, DEBUG

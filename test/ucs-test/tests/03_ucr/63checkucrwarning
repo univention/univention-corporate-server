@@ -7,6 +7,7 @@
 
 import os
 import re
+import sys
 
 from univention.debhelper import parseRfc822
 
@@ -96,9 +97,9 @@ for fn in files:
 			missing_header_files = True
 
 if missing_header_files:
-	exit(110)
+	sys.exit(110)
 else:
 	print("Info: All UCR files contain a warning.")
-	exit(100)
+	sys.exit(100)
 
 # vim: set filetype=python :

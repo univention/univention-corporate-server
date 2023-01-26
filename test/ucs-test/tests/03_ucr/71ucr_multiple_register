@@ -6,6 +6,7 @@
 ## exposure: dangerous
 
 import pickle
+import sys
 
 import univention.config_registry.handler as ucrh
 from univention.config_registry.frontend import handler_register
@@ -30,6 +31,6 @@ for val in value:
 
 if len(modules) > 1:
 	utils.fail('Error: module %s was registered more than once' % modules[0])
-	exit(1)
+	sys.exit(1)
 
 # vim: ft=python

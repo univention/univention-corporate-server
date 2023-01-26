@@ -36,6 +36,7 @@ from __future__ import print_function
 import re
 import argparse
 import subprocess
+import sys
 
 from ldap.filter import filter_format
 
@@ -96,12 +97,12 @@ def lookup_dn(user):
 	try:
 		output = subprocess.check_output(["univention-s4search", filter_format("samaccountname=", [user]), "dn"]).decode('UTF-8', 'replace')
 	except (OSError, subprocess.CalledProcessError) as error:
-		exit("Error calling univention-s4search: " + str(error))
+		sys.exit("Error calling univention-s4search: " + str(error))
 
 	match = re.search("^dn: (.*)$", output, re.MULTILINE)
 	if match and match.group(1):
 		return match.group(1)
-	exit("Unable to find DN for user " + user)
+	sys.exit("Unable to find DN for user " + user)
 
 
 def unlock_user(arguments, dn):
@@ -109,7 +110,7 @@ def unlock_user(arguments, dn):
 	modify = "dn: {}\nchangetype: modify\nreplace: lockoutTime\nlockoutTime: 0\n"
 	cmd.communicate(modify.format(dn).encode('UTF-8'))
 	if cmd.returncode != 0:
-		exit("Error unlocking user " + dn)
+		sys.exit("Error unlocking user " + dn)
 
 
 def main():

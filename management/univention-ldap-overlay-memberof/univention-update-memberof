@@ -34,7 +34,7 @@
 
 from __future__ import print_function
 
-from sys import stderr
+from sys import exit, stderr
 
 from ldap import MOD_REPLACE
 from ldap.filter import filter_format

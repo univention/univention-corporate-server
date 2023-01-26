@@ -34,6 +34,7 @@
 # <https://www.gnu.org/licenses/>.
 
 import re
+import sys
 import six
 from typing import List, Tuple, Union  # noqa: F401
 
@@ -238,4 +239,4 @@ class UCS_Version(object):
 
 if __name__ == '__main__':  # pragma: no cover
 	import doctest
-	exit(doctest.testmod()[0])
+	sys.exit(doctest.testmod()[0])

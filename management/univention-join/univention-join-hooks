@@ -108,16 +108,16 @@ def main():
 		ldap_position = univention.admin.uldap.position(lo.base)
 	except uexceptions.ldapError as exc:
 		print("Failed LDAP Connection to %s: %s" % (args.master, exc))
-		exit(1)
+		sys.exit(1)
 	except Exception as exc:
 		print("Exception occurred: %s" % (exc,))
-		exit(1)
+		sys.exit(1)
 
 	udm_modules.update()
 	udm_module = udm_modules.get("settings/data")
 	if not udm_module:
 		print("Required UDM module missing: settings/data")
-		exit(0)
+		sys.exit(0)
 	udm_modules.init(lo, ldap_position, udm_module)
 	tempdir = tempfile.mkdtemp()
 	hook_udm_objects = udm_module.lookup(None, lo, "data_type=%s" % args.hooktype)

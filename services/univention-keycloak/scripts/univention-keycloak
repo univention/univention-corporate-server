@@ -35,6 +35,7 @@
 """Manage Univention Keycloak app"""
 
 import json
+import sys
 from argparse import ArgumentParser, Namespace
 from base64 import b64decode
 from os.path import exists
@@ -1359,4 +1360,4 @@ def main():
 
 
 if __name__ == "__main__":
-	exit(main())
+	sys.exit(main())

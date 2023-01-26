@@ -174,7 +174,7 @@ def getPackageList(configRegistry: ConfigRegistry, job: _JOB) -> List[str]:
             }[job],
         )
     except LookupError:
-        exit("E: no valid job defined")
+        sys.exit("E: no valid job defined")
 
     try:
         results, _policies = policy_result(ldap_hostdn)
