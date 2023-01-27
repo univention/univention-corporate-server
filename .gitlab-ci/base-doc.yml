@@ -11,7 +11,7 @@ stages:
     DOC_TARGET_VERSION: "5.0"
     CHANGELOG_TARGET_VERSION: "5.0-2"
   tags:
-    - dockermachine-s
+    - dm-s
   artifacts:
     paths:
       - $base/_build
