@@ -10,6 +10,7 @@ Standards-Version: 3.5.2
 Package: univention-admingrp-user-passwordreset
 Architecture: all
 Depends:
+ python-typing,
  shell-univention-lib,
  univention-directory-manager-tools,
  univention-ldap-server,
