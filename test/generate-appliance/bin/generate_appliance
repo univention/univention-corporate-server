@@ -53,7 +53,7 @@ import uuid
 from zipfile import ZipFile
 from argparse import ArgumentDefaultsHelpFormatter, ArgumentParser, FileType, Namespace  # noqa: F401
 from io import BytesIO
-from typing import IO, Any, Callable, Dict, Iterator, List, Optional, Tuple, TypeVar, Union, cast
+from typing import IO, Any, Callable, Dict, Iterator, List, Optional, Tuple, TypeVar, Union, cast  # noqa: F401
 
 try:
 	from argparse import BooleanOptionalAction

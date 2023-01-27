@@ -36,9 +36,9 @@ from __future__ import print_function
 import sys
 import time
 import traceback
-from argparse import ArgumentParser, Namespace
+from argparse import ArgumentParser, Namespace  # noqa: F401
 try:
-	from typing import Any, Dict
+	from typing import Any, Dict  # noqa: F401
 except ImportError:
 	pass
 
