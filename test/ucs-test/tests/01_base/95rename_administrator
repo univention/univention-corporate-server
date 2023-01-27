@@ -11,93 +11,136 @@
 ##  - memberserver
 ## exposure: dangerous
 
-
-import re
-import os
 import glob
-import time
+import os
+import re
 import subprocess
+import time
+from datetime import datetime
 
 from ldap.dn import escape_dn_chars
 from ldap.filter import filter_format
 
-from univention.testing.udm import UCSTestUDM
-from univention.testing.ucr import UCSTestConfigRegistry
 import univention.config_registry
-from univention.testing.ucs_samba import wait_for_drs_replication
-import univention.testing.utils as utils
 import univention.testing.strings as uts
+import univention.testing.utils as utils
+from univention.testing.ucr import UCSTestConfigRegistry
+from univention.testing.ucs_samba import wait_for_drs_replication
+from univention.testing.udm import UCSTestUDM
 from univention.testing.utils import package_installed
 
 
-def search_templates(old_admin_name, new_admin_name, server_role):
-	templates = glob.glob('/etc/univention/templates/info/*.info')
-	file_content = []
-	file_pattern = re.compile('^(Multifile: |File: )')
+RE_FILE_PATTERN = re.compile('^(?:Multifile|File): +(.+)$')
+IGNORE = {
+	'/etc/bind/named.conf.samba4',
+	'/etc/cups/cups-files.conf',
+	'/etc/freeradius/3.0/mods-available/ldap',
+	'/etc/issue',
+	'/etc/samba/base.conf',
+	'/etc/simplesamlphp/config.php',
+	'/etc/welcome.msg',
+	'/var/www/univention/meta.json',
+}
+UCRV = "users/default/administrator"
 
+
+def find_all_template():
 	# find all template files by iterating over all referenced templates in the ucr *.info files
-	for template in templates:
-		with open(template, 'r') as content_file:
-			# find all lines that start with File or Multifile and strip it to get the paths of the template files
-			file_content += ['/' + file_pattern.sub('', l).strip() for l in content_file.readlines() if file_pattern.match(l)]
+	templates = glob.glob('/etc/univention/templates/info/*.info')
+	# find all lines that start with File or Multifile and strip it to get the paths of the template files
+	return {
+		os.path.join("/", fn)
+		for template in templates
+		for line in open(template, "r")
+		for fn in RE_FILE_PATTERN.findall(line)
+	}
+
+
+def search_templates(old_admin_name, new_admin_name, server_role):
+	files = find_all_template() - IGNORE
 
 	# A list of templates which are referencing the Administrator. The new name must be found in them
-	should_contain_admin = [
-		'/etc/ldap/slapd.conf']
-	ignore = [
-		'/etc/simplesamlphp/config.php', '/etc/freeradius/3.0/mods-available/ldap',
-		'/etc/bind/named.conf.samba4', '/var/www/univention/meta.json',
-		'/etc/issue', '/etc/welcome.msg', '/etc/samba/base.conf', '/etc/cups/cups-files.conf']
+	should_contain_admin = {
+		'/etc/ldap/slapd.conf',
+	}
 	if server_role != 'domaincontroller_master':
 		should_contain_admin.remove('/etc/ldap/slapd.conf')
 
-	# Check if the name was correctly updated in the templates
-	file_content = list(dict.fromkeys(file_content))
-
 	# Look for alle occurences of "Administrator", excluding "Administrators", which is a group name
-	for file in file_content:
-		if not os.path.isfile(file) or file in ignore:
+	for fn in files:
+		if not os.path.isfile(fn):
 			continue
 
-		print('Checking template %s' % (file,))
-		with open(file, 'rb') as content_file:
+		print('Checking template %s' % (fn,))
+		with open(fn, 'rb') as content_file:
 			content = content_file.read().decode('UTF-8', 'replace')
 
-		if file in should_contain_admin and new_admin_name not in content:
-			utils.fail('FAIL: New admin name %s not in %s' % (new_admin_name, file))
+		if fn in should_contain_admin and new_admin_name not in content:
+			utils.fail('New admin name %s not in %s' % (new_admin_name, fn))
 
 		if old_admin_name in content:
-			lines_containing = [l for l in content.splitlines() if old_admin_name in l and 'Administrators' not in l]
+			lines_containing = [
+				'%03d: %s' % (n, l) for n, l in enumerate(content.splitlines(), start=1)
+				if old_admin_name in l and 'Administrators' not in l
+			]
 			if lines_containing:
 				print('\n'.join(lines_containing))
-				utils.fail('FAIL: Old group name %s still in file %s' % (old_admin_name, file))
+				utils.fail('Old group name %s still in file %s' % (old_admin_name, fn))
 
 
-def wait_for_ucr(iterations, admin_name, ucr_test):
-	success = False
+def wait_for_ucr(iterations, expected, ucr_test):  # type: (int, str, UCSTestConfigRegistry) -> bool
 	for i in range(iterations):
-		ucr_test.load()
-		ucr_name = ucr_test.get('users/default/administrator', 'Administrator')
-		if admin_name != ucr_name:
-			if i == iterations - 1:
-				break
+		if i:
 			# ucr commit for the slapd.conf takes a long time in ucs4 bug #34003
-			time.sleep(100)
-		else:
-			print('UCR variable users/default/administrator is set correctly to %s' % (ucr_name,))
-			success = True
-			break
-	return success, ucr_name
+			time.sleep(1)
+
+		ucr_test.load()
+		current = ucr_test.get(UCRV, 'Administrator')
+		print('[%3d] UCRV %s is set to %r, expexting %r' % (i, UCRV, current, expected))
+		if expected == current:
+			return True
+	else:
+		utils.fail('UCRV %s is set to %r, expecting %r' % (UCRV, current, expected))
+		return False
+
+
+def uid2dn(uid, ldap_base):
+	return "uid=%s,cn=users,%s" % (escape_dn_chars(uid), ldap_base)
+
+
+def wait_to_settle(old_admin_name):  # type: (str) -> None
+	FN = "/etc/ldap/slapd.conf"
+	try:
+		old = ()
+		for i in range(100):
+			if i:
+				time.sleep(1)
+
+			lid = int(open("/var/lib/univention-directory-listener/notifier_id").read().strip())
+			nid = int(subprocess.check_output(["/usr/share/univention-directory-listener/get_notifier_id.py"]).strip())
+			stat1 = os.stat(FN)
+			found_old = old_admin_name in open(FN, "r").read()
+			stat2 = os.stat("/var/lib/extrausers/group")
+			new = (nid, lid, stat1.st_size, stat1.st_mtime, found_old, stat2.st_size, stat2.st_mtime)
+			if old != new:
+				print("%2d\t%7d\t%7d\t%7d\t%7d\t%s\t%7d\t%7d\t%s" % ((i,) + new + (datetime.now(),)))
+				old = new  # type: ignore
+
+			if not found_old:
+				return
+	except Exception as exc:
+		print(exc)
+
+	utils.wait_for_replication_and_postrun()
+	time.sleep(20)  # for slapd restart + ldap-groups-to-file
 
 
 def test_rename_domain_users():
 	with UCSTestConfigRegistry() as ucr_test, UCSTestUDM() as udm:
-		ucr_test.load()
-
 		server_role = ucr_test.get('server/role')
 		ldap_base = ucr_test.get('ldap/base')
-		old_admin_name = ucr_test.get('users/default/administrator', 'Administrator')
-		old_admin_dn = "uid=%s,cn=users,%s" % (escape_dn_chars(old_admin_name), ldap_base)
+		old_admin_name = ucr_test.get(UCRV, 'Administrator')
+		old_admin_dn = uid2dn(old_admin_name, ldap_base)
 		if os.path.exists('/etc/ldap.secret'):
 			credentials = ['--binddn', 'cn=admin,%s' % (ldap_base,), '--bindpwdfile', '/etc/ldap.secret']
 		else:
@@ -105,26 +148,27 @@ def test_rename_domain_users():
 			credentials = ['--binddn', second_admin, '--bindpwd', 'univention']
 
 		new_admin_name = uts.random_name()
-		new_admin_dn = "uid=%s,cn=users,%s" % (escape_dn_chars(new_admin_name), ldap_base)
+		new_admin_dn = uid2dn(new_admin_name, ldap_base)
 		try:
 			print('\n##################################################################')
 			print('Renaming default administrator %s to %s' % (old_admin_name, new_admin_name))
 			print('##################################################################\n')
-			print(old_admin_dn)
-			print(new_admin_name)
-			cmd = ['udm-test', 'users/user', 'modify', '--dn=%s' % (old_admin_dn), '--set', 'username=%s' % (new_admin_name)]
+			cmd = [
+				'udm-test', 'users/user', 'modify',
+				'--dn', old_admin_dn,
+				'--set', 'username=%s' % (new_admin_name,),
+			]
 			cmd.extend(credentials)
-			subprocess.call(cmd)
-			utils.wait_for_replication_and_postrun()
+			subprocess.check_call(cmd)
+
+			wait_to_settle(old_admin_name)
 
 			# Check UCR Variable
 			print('\n##################################################################')
-			print('Checking if UCR Variable users/default/administrator is set to %s' % (new_admin_name,))
+			print('Checking if UCR Variable %s is set to %s' % (UCRV, new_admin_name))
 			print('##################################################################\n')
-
-			success, ucr_name = wait_for_ucr(3, new_admin_name, ucr_test)
-			if not success:
-				utils.fail('UCR variable users/default/administrator was set to %s instead of %s' % (old_admin_name, new_admin_name))
+			if not wait_for_ucr(60, new_admin_name, ucr_test):
+				return
 
 			# Search templates
 			print('\n##################################################################')
@@ -137,21 +181,22 @@ def test_rename_domain_users():
 			except Exception:
 				# clean up even if the wait_for method fails and wait a bit if it terminated at the beginning
 				time.sleep(10)
-				pass
 
 			if not package_installed('univention-samba4'):
 				time.sleep(20)
 			print('\n##################################################################')
 			print('Cleanup')
 			print('##################################################################\n')
-			subprocess.call(['udm-test', 'users/user', 'modify', '--dn=%s' % (new_admin_dn), '--set', 'username=%s' % (old_admin_name), '--binddn=%s' % (new_admin_dn), '--bindpwd=univention'] + credentials)
+			subprocess.call([
+				'udm-test', 'users/user', 'modify',
+				'--dn', new_admin_dn,
+				'--set', 'username=%s' % (old_admin_name,),
+			] + credentials)
 
 			# wait until renaming and UCR Variable is set back again
 			utils.wait_for_replication_and_postrun()
-			success, ucr_name = wait_for_ucr(10, old_admin_name, ucr_test)
-			if not success:
-				univention.config_registry.handler_set(['users/default/administrator=Administrator'])
-				utils.fail('UCR variable users/default/administrator was set to %s instead of %s' % (ucr_name, old_admin_name))
+			if not wait_for_ucr(60, old_admin_name, ucr_test):
+				univention.config_registry.handler_set(['%s=%s' % (UCRV, old_admin_name)])
 
 
 if __name__ == '__main__':
