@@ -9,12 +9,10 @@ import unittest
 import univention.management.console.modules
 
 univention.management.console.modules.__path__.insert(0, os.path.join(os.path.dirname(__file__), os.path.pardir, 'umc/python'))
-from univention.management.console.modules.setup.netconf.common import \
-    convert_udm_subnet_to_ipv4_network  # noqa: E402
-from univention.management.console.modules.setup.netconf.common import \
-    convert_udm_subnet_to_ipv6_network  # noqa: E402
-from univention.management.console.modules.setup.netconf.common import \
-    convert_udm_subnet_to_network  # noqa: E402
+from univention.management.console.modules.setup.netconf.common import (  # noqa: E402
+    convert_udm_subnet_to_ipv4_network, convert_udm_subnet_to_ipv6_network,
+    convert_udm_subnet_to_network,
+)
 
 
 class TestIpv4Subnet(unittest.TestCase):
