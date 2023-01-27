@@ -44,13 +44,13 @@ PINNED_KEY = "appcenter/apps/%s/pinned"
 class Pin(UniventionAppAction):
 
 	"""
-	Disables updates for this app. Does also not allow
-	to uninstall this app. Useful when a newer app version
+	Disables upgrades for this app. Also does not allow
+	to remove this app. Useful when a newer app version
 	is available, but due to issues with the new version the
-	current version should not be updated or removed.
+	current version should not be upgraded or removed.
 	"""
 
-	help = 'Pins or unpins an app'
+	help = 'Pins or unpins an app version'
 
 	def setup_parser(self, parser):
 		parser.add_argument('app', action=StoreAppAction, help='The ID of the App that shall be pinned or unpinned')

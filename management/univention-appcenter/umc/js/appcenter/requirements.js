@@ -290,7 +290,7 @@ define([
 				return _('The App is frozen to the currently installed version.');
 			},
 			solutionDescription: function() {
-				return _('Please unpin the App before updating or uninstalling.');
+				return _('Please revert this state before upgrading or removing.');
 			},
 		}),
 		shall_only_be_installed_in_ad_env_with_password_service: new Requirement({

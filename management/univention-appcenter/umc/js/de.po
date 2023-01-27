@@ -1262,11 +1262,11 @@ msgstr "%s wird benötigt, damit die folgenden Apps funktionieren."
 
 #: umc/js/appcenter/requirements.js:290
 msgid "The App is frozen to the currently installed version."
-msgstr "Diese App ist zur Zeit auf die aktuell installierte Version eingefroren."
+msgstr "Diese App ist auf die zur Zeit installierte Version eingefroren."
 
 #: umc/js/appcenter/requirements.js:293
-msgid "Please unpin the App before updating or uninstalling."
-msgstr "Vor dem Update oder der Deinstallation muß die App unpinned werden."
+msgid "Please revert this state before upgrading or removing."
+msgstr "Vor der Aktualisierung oder der Deinstallation muss dieser Zustand rückgängig gemacht werden."
 
 #: umc/js/appcenter/requirements.js:299
 msgid ""
