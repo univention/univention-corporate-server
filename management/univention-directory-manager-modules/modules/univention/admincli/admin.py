@@ -189,9 +189,7 @@ def _print_property(module, action, name, stream):
 
 
 def module_usage(information, action='', stream=sys.stdout):
-	for module, l in information.items():
-		properties, options = l
-
+	for module, (properties, options) in information.items():
 		if options:
 			print('', file=stream)
 			print('%s options:' % module.module, file=stream)

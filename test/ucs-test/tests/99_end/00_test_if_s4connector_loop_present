@@ -36,9 +36,7 @@ def read_connector_log():
 
 def count_connector_log_lines():
 	with open('/var/log/univention/connector-s4.log') as f:
-		for i, l in enumerate(f):
-			pass
-	return i + 1
+		return len(f.readlines())
 
 
 def looping_objects(log):
