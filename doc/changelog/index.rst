@@ -35,6 +35,9 @@ General
 * Some source code has been refactored regarding binding of loop variables to function calls
   (:uv:bug:`55598`).
 
+* A UMC operation set was added, which allows users without admin privileges, to use the user templates
+  (:uv:bug:`37927`).
+
 .. _security:
 
 * All security updates issued for UCS 5.0-2 are included:

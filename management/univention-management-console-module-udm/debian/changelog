@@ -1,3 +1,9 @@
+univention-management-console-module-udm (10.0.4-1) unstable; urgency=medium
+
+  * Bug #37929: Added UMC operation set for using user templates
+
+ -- Mika Westphal <westphal@univention.de>  Thu, 02 Feb 2023 12:19:47 +0100
+
 univention-management-console-module-udm (10.0.3-1) unstable; urgency=low
 
   * Bug #55554: Fix UCR variable typing
