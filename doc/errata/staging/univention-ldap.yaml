@@ -3,7 +3,7 @@ release: "5.0"
 version: [2]
 scope: ucs_5.0-0-errata5.0-2
 src: univention-ldap
-fix:
+fix: 16.0.7-27A~5.0.0.202301271630
 desc: |
  This update addresses the following issues:
  * Allow Directory Node Backup and Replica servers to do an unlimited LDAP

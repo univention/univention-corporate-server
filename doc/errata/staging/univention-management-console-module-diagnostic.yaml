@@ -3,7 +3,7 @@ release: "5.0"
 version: [2]
 scope: ucs_5.0-0-errata5.0-2
 src: univention-management-console-module-diagnostic
-fix:
+fix: 6.0.2-11A~5.0.0.202301271636
 desc: |
  This update addresses the following issue:
  * Calls to the openldap slap tools (slaptest etc.) fail when the
