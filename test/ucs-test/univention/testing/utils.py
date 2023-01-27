@@ -182,7 +182,7 @@ def verify_ldap_object(
 	retry_count=20,  # type: Optional[int]
 	delay=10,  # type: Optional[float]
 	primary=False,  # type: Optional[bool]
-	pre_check=None,  # type: Optional[Callable[[...], ...]]
+	pre_check=None,  # type: Optional[Callable[..., Any]]
 	pre_check_kwargs=None,  # type: Optional[Dict[str, Any]]
 ):  # type: (...) -> None
 	"""
