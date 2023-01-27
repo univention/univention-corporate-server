@@ -415,3 +415,9 @@ end_system_stats_collection () {
  # stats.sar.txt (decompressed) can be uploaded to https://sarchart.dotsuresh.com/ for interactive graphs
  [ -e "$DATA_DIR/ram.sar" ] && sar "${SAR_ARGS[@]}" -f "$DATA_DIR/ram.sar" | bzip2 -9c > "$DATA_DIR/stats-$host.sar.txt.bz2" || echo "Not found: $DATA_DIR/ram.sar"
 }
+
+umc_saml_session_workaround () {
+	# see https://git.knut.univention.de/univention/ucsschool-components/ui-users/-/issues/248
+	ucr set umc/saml/assertion-lifetime="$((8 * 60 * 60))"ucr set umc/saml/assertion-lifetime="$((8 * 60 * 60))"
+	/usr/share/univention-management-console/saml/update_metadata
+}
