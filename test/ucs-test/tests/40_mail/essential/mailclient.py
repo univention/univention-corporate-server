@@ -2,6 +2,8 @@
 .. module:: mailclient
 .. moduleauthor:: Ammar Najjar <najjar@univention.de>
 """
+from __future__ import annotations
+
 import email
 import imaplib
 import time
@@ -44,7 +46,7 @@ class BaseMailClient:
                 return f"{user}\x00{authuser}\x00{password}"
         return self.authenticate('PLAIN', plain_callback)
 
-    def log_in(self, usermail, password):  # type: (str, str) -> None
+    def log_in(self, usermail: str, password: str) -> None:
         """
         wrap the super login method with try except
 
@@ -99,7 +101,7 @@ class BaseMailClient:
                     result[i] = item
         return result
 
-    def get_acl(self, mailbox):  # type: (str) -> Dict[str, Dict[str, str]]
+    def get_acl(self, mailbox: str) -> Dict[str, Dict[str, str]]:
         """
         get the exact acls from getacl
 
@@ -135,7 +137,7 @@ class BaseMailClient:
 
         return {mailbox: acl_result}
 
-    def check_acls(self, expected_acls):  # type: (str) -> None
+    def check_acls(self, expected_acls: str) -> None:
         """
         Check if the the correct acls are set
 
@@ -297,7 +299,7 @@ class BaseMailClient:
 class MailClient_SSL(imaplib.IMAP4_SSL, BaseMailClient):
     """MailClient_SSL is a wrapper for imaplib.IMAP4_SSL"""
 
-    def __init__(self, host, port=993):  # type: (str, int) -> None
+    def __init__(self, host: str, port: int = 993) -> None:
         imaplib.IMAP4_SSL.__init__(self, host, port)
 
 

@@ -33,7 +33,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-from __future__ import print_function
+from __future__ import annotations, print_function
 
 import argparse
 import ldap
@@ -50,18 +50,15 @@ class ScriptError(Exception):
     pass
 
 
-def error(msg):
-    # type: (str) -> NoReturn
+def error(msg: str) -> NoReturn:
     raise ScriptError(msg)
 
 
-def warning(msg):
-    # type: (str) -> None
+def warning(msg: str) -> None:
     print('Warning: %s' % (msg,), file=sys.stderr)
 
 
-def get_ldap_connections():
-    # type: () -> List[univention.admin.uldap.access]
+def get_ldap_connections() -> List[univention.admin.uldap.access]:
     udm = UDM.machine().version(2)
     connections = []
     modules = ['computers/domaincontroller_master', 'computers/domaincontroller_backup', 'computers/domaincontroller_slave']
@@ -76,8 +73,7 @@ def get_ldap_connections():
     return connections
 
 
-def get_users(binddn=None, bindpwdfile=None, only_this_user=None):
-    # type: (Optional[str], Optional[str], Optional[str]) -> Iterable[univention.udm.modules.users_user.UsersUserObject]
+def get_users(binddn: Optional[str] = None, bindpwdfile: Optional[str] = None, only_this_user: Optional[str] = None) -> Iterable[univention.udm.modules.users_user.UsersUserObject]:
     udm = get_writable_udm(binddn, bindpwdfile)
     if only_this_user:
         get_user = 'get' if '=' in only_this_user else 'get_by_id'
@@ -91,15 +87,13 @@ def get_users(binddn=None, bindpwdfile=None, only_this_user=None):
     return users
 
 
-def get_youngest_timestamp(user, connections):
-    # type: (univention.udm.modules.users_user.UsersUserObject, List[univention.admin.uldap.access]) -> Optional[str]
+def get_youngest_timestamp(user: univention.udm.modules.users_user.UsersUserObject, connections: List[univention.admin.uldap.access]) -> Optional[str]:
     timestamps = [timestamp.decode('ASCII') for lo in connections for timestamp in lo.getAttr(user.dn, 'authTimestamp')]
     timestamps = sorted(timestamps)
     return timestamps[-1] if len(timestamps) else None
 
 
-def save_timestamp(user, timestamp=None):
-    # type: (univention.udm.modules.users_user.UsersUserObject, Optional[str]) -> None
+def save_timestamp(user: univention.udm.modules.users_user.UsersUserObject, timestamp: Optional[str] = None) -> None:
     if not timestamp:
         return
     if user.props.lastbind == timestamp:
@@ -111,16 +105,14 @@ def save_timestamp(user, timestamp=None):
         warning('Could not save new timestamp "%s" to "lastbind" extended attribute of user "%s". Continuing: %s' % (timestamp, user.dn, err,))
 
 
-def update_users(binddn=None, bindpwdfile=None, only_this_user=None):
-    # type: (Optional[str], Optional[str], Optional[str]) -> None
+def update_users(binddn: Optional[str] = None, bindpwdfile: Optional[str] = None, only_this_user: Optional[str] = None) -> None:
     connections = get_ldap_connections()
     for user in get_users(binddn, bindpwdfile, only_this_user):
         timestamp = get_youngest_timestamp(user, connections)
         save_timestamp(user, timestamp)
 
 
-def get_writable_udm(binddn=None, bindpwdfile=None):
-    # type: (Optional[str], Optional[str]) -> univention.udm.udm.UDM
+def get_writable_udm(binddn: Optional[str] = None, bindpwdfile: Optional[str] = None) -> univention.udm.udm.UDM:
     if binddn:
         if not bindpwdfile:
             error('"binddn" provided but not "bindpwdfile".')
@@ -144,16 +136,14 @@ def get_writable_udm(binddn=None, bindpwdfile=None):
     return udm
 
 
-def main(args):
-    # type: (argparse.Namespace) -> None
+def main(args: argparse.Namespace) -> None:
     if not args.user and not args.allusers:
         # --allusers is used as a safety net to prevent accidental execution for all users.
         raise ScriptError('Provide either --user USER or --allusers.')
     update_users(args.binddn, args.bindpwdfile, args.user)
 
 
-def parse_args(args=None):
-    # type: (Optional[List[str]]) -> argparse.Namespace
+def parse_args(args: Optional[List[str]] = None) -> argparse.Namespace:
     parser = argparse.ArgumentParser(description='Save the youngest "authTimestamp" attribute of an user, from all reachable LDAP servers, into the "lastbind" extended attribute of the user. The "authTimestamp" attribute is set on a successful bind to an LDAP server when the "ldap/overlay/lastbind" UCR variable is set.')
     parser.add_argument("--user", help='Update the "lastbind" extended attribute of the given user. Can be either a DN or just the uid.')
     parser.add_argument("--allusers", action="store_true", help='Update the "lastbind" extended attribute of all users.')

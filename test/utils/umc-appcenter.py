@@ -1,7 +1,8 @@
 #!/usr/bin/python3
 # -*- coding: utf-8 -*-
-
 """install/remove/update apps via UMC"""
+
+from __future__ import annotations
 
 import os
 from argparse import ArgumentParser
@@ -32,7 +33,7 @@ class Apps(object):
             action="store_true",
             help="normally -u fails if no update is available, with this switch just return in that case")
         self.options = parser.parse_args()
-        self.client = None  # type: Optional[univention.lib.umc.Client]
+        self.client: Optional[univention.lib.umc.Client] = None
         print(self.options)
 
     def umc(self, path: str, data: Dict[str, Any]) -> Dict[str, Any]:
@@ -106,7 +107,7 @@ class Apps(object):
 
     def make_args(self, action: str, app: str) -> Dict[str, Any]:
         host = get_local_fqdn()
-        settings = {}  # type: Dict[str, Any]
+        settings: Dict[str, Any] = {}
         return {
             "action": action,
             "auto_installed": [],

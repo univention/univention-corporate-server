@@ -1,5 +1,7 @@
 #!/usr/bin/python3
 
+from __future__ import annotations
+
 import argparse
 import json
 import os
@@ -10,7 +12,7 @@ from typing import List, Tuple
 from univention.lib.ucs import UCS_Version
 
 
-def gen_releases(path, releases):  # type: (str, List[Tuple[int, int, int]]) -> None
+def gen_releases(path: str, releases: List[Tuple[int, int, int]]) -> None:
     """Generate a `ucs-releases.json` string from a list of given releases"""
     data = {
         "releases": [
@@ -34,7 +36,7 @@ def gen_releases(path, releases):  # type: (str, List[Tuple[int, int, int]]) -> 
         json.dump(data, releases_json)
 
 
-def main():  # type: () -> None
+def main() -> None:
     parser = argparse.ArgumentParser(
         description='Generates a valid ucs-releases.json.',
     )

@@ -55,6 +55,8 @@
 # squid/debug/level: ALL,1 29,9
 # /usr/lib/squid/squid_ldap_ntlm_auth --debug
 
+from __future__ import annotations
+
 import argparse
 import base64
 import binascii
@@ -574,7 +576,7 @@ if __name__ == '__main__':
 
     cr = univention.config_registry.ConfigRegistry()
     cr.load()
-    users = {}  # type: Dict[str, Tuple[bytes, float, bytes]]
+    users: Dict[str, Tuple[bytes, float, bytes]] = {}
     challenge = b""
 
     # open pipe to squid_kerb_auth for kerberos stuff

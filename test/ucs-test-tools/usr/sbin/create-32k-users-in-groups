@@ -33,7 +33,7 @@
 
 """Create may users in groups."""
 
-from __future__ import print_function
+from __future__ import annotations, print_function
 
 import sys
 from argparse import ArgumentParser, Namespace
@@ -50,15 +50,14 @@ import univention.admin.uldap
 import univention.debug
 
 
-def names(count):  # type: (int) -> Iterator[str]
+def names(count: int) -> Iterator[str]:
     yield from ('nscd%04x' % index for index in range(count))
 
 
 class MassCreate(object):
     """Mass create users and groups."""
 
-    def __init__(self, count):
-        # type: (int) -> None
+    def __init__(self, count: int) -> None:
         # create LDAP connection
         self.access, self.position = univention.admin.uldap.getAdminConnection()
 
@@ -81,8 +80,7 @@ class MassCreate(object):
         self.suffix = ''
         self.fast = True
 
-    def group(self, name, in_group=""):
-        # type: (str, str) -> str
+    def group(self, name: str, in_group: str = "") -> str:
         """Create group, which is itself member in_group."""
         g = self.gg.object(co=None, lo=self.access, position=self.gp)
         g.options = ['posix', 'samba']
@@ -92,7 +90,7 @@ class MassCreate(object):
         if in_group:
             g.info['memberOf'] = ["cn=%s,%s" % (escape_dn_chars(in_group), self.gp.getDn())]
         try:
-            dn = g.create()  # type: str
+            dn: str = g.create()
             print('Group "%s"' % (dn,))
         except univention.admin.uexceptions.groupNameAlreadyUsed as ex:
             dn = 'cn=%s,%s' % (escape_dn_chars(name), self.gp.getDn())
@@ -103,8 +101,7 @@ class MassCreate(object):
 
         return dn
 
-    def user(self, name, groups):
-        # type: (str, List[str]) -> str
+    def user(self, name: str, groups: List[str]) -> str:
         """Create user, which is itself member in groups."""
         gdn = ["cn=%s,%s" % (escape_dn_chars(group), self.gp.getDn()) for group in groups]
         u = self.uu.object(co=None, lo=self.access, position=self.up)
@@ -121,7 +118,7 @@ class MassCreate(object):
         u.info['primaryGroup'] = 'cn=Domain Users,%s' % self.gp.getDn()
         u.info['unixhome'] = '/home/%s' % name
         try:
-            dn = u.create()  # type: str
+            dn: str = u.create()
             print('User "%s"' % (dn,))
         except univention.admin.uexceptions.uidAlreadyUsed as ex:
             dn = 'uid=%s,%s' % (escape_dn_chars(name), self.up.getDn())
@@ -132,12 +129,11 @@ class MassCreate(object):
 
         return dn
 
-    def group_members(self, name, uniqueMember=[], memberUid=[]):
-        # type: (str, List[str], List[str]) -> str
+    def group_members(self, name: str, uniqueMember: List[str] = [], memberUid: List[str] = []) -> str:
         """Set members of group."""
         dn = "cn=%s,%s" % (escape_dn_chars(name), self.gp.getDn())
 
-        ml = []  # type: List[Tuple[object, str, object]]
+        ml: List[Tuple[object, str, object]] = []
         if uniqueMember:
             data = [_.encode('utf8') for _ in uniqueMember]
             ml.append((ldap.MOD_ADD, 'uniqueMember', data))
@@ -165,15 +161,14 @@ class MassCreate(object):
 
         return dn
 
-    def create(self, groups):
-        # type: (List[str]) -> None
+    def create(self, groups: List[str]) -> None:
         """Create hierarchy of groups and users."""
         for group in groups:
             self.group(group)
         self.group('nscd_all')
 
-        uniqueMember = []  # type: List[str]
-        memberUid = []  # type: List[str]
+        uniqueMember: List[str] = []
+        memberUid: List[str] = []
 
         for name in names(self.count):
             if name.endswith('000'):
@@ -200,8 +195,7 @@ class MassCreate(object):
             self.group_members(group, uniqueMember=uniqueMember, memberUid=memberUid)
 
 
-def main():
-    # type: () -> None
+def main() -> None:
     """Create users."""
     opt = parse_args()
     setup_logging()
@@ -209,8 +203,7 @@ def main():
     create_users_and_groups(opt)
 
 
-def parse_args():
-    # type: () -> Namespace
+def parse_args() -> Namespace:
     parser = ArgumentParser(description=__doc__)
     parser.add_argument(
         '-g', '--group-only',
@@ -232,18 +225,15 @@ def parse_args():
     return opt
 
 
-def setup_logging():
-    # type: () -> None
+def setup_logging() -> None:
     univention.debug.init('/dev/stderr', univention.debug.ADMIN, univention.debug.ALL)
 
 
-def load_udm_modules():
-    # type: () -> None
+def load_udm_modules() -> None:
     univention.admin.modules.update()
 
 
-def create_users_and_groups(options):
-    # type: (Namespace) -> None
+def create_users_and_groups(options: Namespace) -> None:
     generator = MassCreate(options.count)
     generator.suffix = options.suffix
     generator.fast = options.fast

@@ -8,6 +8,8 @@
 ##  - univention-config
 ## bugs: [52987]
 
+from __future__ import annotations
+
 import os
 from typing import Iterator
 
@@ -34,8 +36,7 @@ def file_contain(file: str, text: str, no_exist_ignore: bool = True):
 
 
 @pytest.fixture()
-def myucr():
-    # type: () -> Iterator[ConfigRegistry]
+def myucr() -> Iterator[ConfigRegistry]:
     """Per `function` auto-reverting UCR instance."""
     with ConfigRegistry() as ucr:
         yield ucr
