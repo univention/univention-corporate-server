@@ -136,15 +136,15 @@ def test_newline_nfs_hacking():
         # TODO: access /home and /etc
 
 
-def test_multiple_entries_hacking():
-    [{
-        'univentionShareSambaCustomSetting': [' ', '[foo]', 'path = /etc'],
-    }, {
-        'univentionShareSambaCustomSetting': ['\n[foo]\npath = /etc'],
-    }]
-
-
-def test_code_execution_path():
-    {
-        'univentionSharePath': ["/'; touch /tmp/hacked; true '"],
-    }
+# def test_multiple_entries_hacking():
+#     [{
+#         'univentionShareSambaCustomSetting': [' ', '[foo]', 'path = /etc'],
+#     }, {
+#         'univentionShareSambaCustomSetting': ['\n[foo]\npath = /etc'],
+#     }]
+#
+#
+# def test_code_execution_path():
+#     {
+#         'univentionSharePath': ["/'; touch /tmp/hacked; true '"],
+#     }
