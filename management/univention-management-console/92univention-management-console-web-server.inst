@@ -107,7 +107,10 @@ _cleanup_die () {
 if ! is_ucr_false 'umc/web/sso/enabled'; then
 	rm /usr/share/univention-management-console/saml/idp/*.xml
 	ucr set umc/saml/idp-server="https://${ucs_server_sso_fqdn}/simplesamlphp/saml2/idp/metadata.php" || _cleanup_die
+	# Execute UCR module to download metadata if umc/saml/idp-server has been set via LDAP layer (e.g. for keycloak)
+	[ "$(ls -A /usr/share/univention-management-console/saml/idp/*.xml)" ] || python3 /etc/univention/templates/modules/setup_saml_sp.py
 	[ "$(ls -A /usr/share/univention-management-console/saml/idp/*.xml)" ] || _cleanup_die
+
 fi
 
 systemctl restart univention-management-console-web-server

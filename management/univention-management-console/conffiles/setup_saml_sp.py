@@ -124,3 +124,8 @@ def reload_webserver():
 		call(['systemctl', 'reload', 'univention-management-console-web-server'])
 	except (IOError, OSError):
 		pass
+
+
+if __name__ == '__main__':
+	from univention.config_registry import ucr
+	handler(ucr, {'umc/saml/idp-server': []})
