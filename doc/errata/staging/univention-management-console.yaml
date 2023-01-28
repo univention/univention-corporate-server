@@ -1,0 +1,13 @@
+product: ucs
+release: "5.0"
+version: [2]
+scope: ucs_5.0-0-errata5.0-2
+src: univention-management-console
+fix: 12.0.13-6A~5.0.0.202301282150
+desc: |
+ This update addresses the following issues:
+ * The registration of a keycloak client during initial join
+   failed because of a missing restart of the service apache2,
+   which has been added to the univention-management-console
+   joinscript.
+bug: [55570]
