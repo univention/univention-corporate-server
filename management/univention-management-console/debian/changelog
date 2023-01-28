@@ -1,3 +1,9 @@
+univention-management-console (12.0.13-6) unstable; urgency=medium
+
+  * Bug #55570: Restart apache2 before trying to register keycloak client
+
+ -- Julia Bremer <bremer@univention.de>  Sat, 28 Jan 2023 21:47:01 +0100
+
 univention-management-console (12.0.13-5) unstable; urgency=medium
 
   * Bug #55395: Register UMC as a Keycloak client, but ignore failure

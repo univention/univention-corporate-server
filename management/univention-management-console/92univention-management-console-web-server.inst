@@ -92,12 +92,14 @@ udm saml/serviceprovider create "$@" --ignore_exists --position "cn=saml-service
 ucr set ucs/server/sso/fqdn?"ucs-sso.$domainname"
 eval "$(ucr shell ucs/server/sso/fqdn)"
 
+# make a apache restart for the next call:
+systemctl restart apache2
+
 if univention-ldapsearch -LLL univentionService=keycloak | grep -q "^dn:"; then
 	  # Register UMC as a Keycloak client, but ignore failure
 	  univention-keycloak "$@" saml/sp create --metadata-url="https://$hostname.$domainname/univention/saml/metadata" --umc-uid-mapper || true
 fi
 
-/etc/init.d/apache2 reload  # make a apache reload for the next call:
 
 _cleanup_die () {
 	ucr unset umc/saml/idp-server; exit 3
