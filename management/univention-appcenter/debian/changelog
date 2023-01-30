@@ -1,3 +1,9 @@
+univention-appcenter (9.0.3-9) unstable; urgency=medium
+
+  * Bug #55467: Added solution in App Center when App is pinned
+
+ -- Peter Stoll <stoll.extern@univention.de>  Mon, 30 Jan 2023 15:10:12 +0100
+
 univention-appcenter (9.0.3-8) unstable; urgency=medium
 
   * Bug #55467: Allow to pin and unpin apps

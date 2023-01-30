@@ -67,4 +67,4 @@ class Pin(UniventionAppAction):
 		ucr_save({app.ucr_pinned_key: None})
 
 	def _pin(self, app):
-		ucr_save({app.ucr_pinned_key: 'True'})
+		ucr_save({app.ucr_pinned_key: 'true'})
