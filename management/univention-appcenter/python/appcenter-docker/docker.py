@@ -622,7 +622,7 @@ class MultiDocker(Docker):
             name = content['services'][self.app.docker_main_service]['container_name']
         else:
             # name from docker-compose ps
-            ps = str()
+            ps = ''
             for _i in range(3):
                 try:
                     # docker-compose ps -q gives a list of container IDs, one in each line,
