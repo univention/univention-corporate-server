@@ -155,7 +155,7 @@ class TestLocalizedDictionary(object):
         assert obj == ldict0
 
     def test_eq_other(self, ldict0):
-        assert not ldict0 == ()
+        assert not ldict0.__eq__(())
 
 
 @pytest.fixture()
