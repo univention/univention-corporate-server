@@ -254,7 +254,7 @@ class AppCache(_AppCache):
                 if _cmp_mtimes(cache_modified, master_file_modified) == -1:
                     cache_logger.debug('Cannot load cache: %s is newer than cache' % master_file)
                     return None
-            with open(cache_file, 'r') as fd:
+            with open(cache_file) as fd:
                 cache = load(fd)
             self._cache_modified_mtime = cache_modified
         except (EnvironmentError, ValueError, TypeError):
@@ -415,7 +415,7 @@ class AppCenterCache(_AppCache):
             next_version = None
             status_file = '/var/lib/univention-updater/univention-updater.status'
             if os.path.exists(status_file):
-                with open(status_file, 'r') as status:
+                with open(status_file) as status:
                     for line in status:
                         line = line.strip()
                         key, value = line.split('=', 1)

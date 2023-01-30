@@ -88,7 +88,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
         need = set()
         self.debug('Reading %s' % (fn,))
         try:
-            with open(fn, 'r') as fd:
+            with open(fn) as fd:
                 for line in fd:
                     for (key, (regexp, _pkgs)) in self.DEPS.items():
                         if regexp.search(line):
@@ -159,7 +159,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
         try:
             fn = join(self.path, 'debian', '%s.univention-config-registry' % (pkg,))
             if exists(fn):
-                with open(fn, 'r') as fd:
+                with open(fn) as fd:
                     for line in fd:
                         m = self.RE_INIT.match(line)
                         if m:

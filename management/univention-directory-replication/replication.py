@@ -753,7 +753,7 @@ def _read_dn_from_file(filename: str) -> Optional[str]:
     old_dn = None
 
     try:
-        with open(filename, 'r') as fd:
+        with open(filename) as fd:
             old_dn = fd.read()
     except EnvironmentError as ex:
         ud.debug(ud.LISTENER, ud.ERROR, 'replication: failed to open/read modrdn file %s: %s' % (filename, ex))
@@ -1093,7 +1093,7 @@ def new_password() -> str:
 def get_password() -> str:
     listener.setuid(0)
     try:
-        with open(ROOTPW_FILE, 'r') as fd:
+        with open(ROOTPW_FILE) as fd:
             for line in fd:
                 match = get_password.RE_ROOTDN.match(line)
                 if match:

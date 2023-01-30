@@ -76,7 +76,7 @@ ucr = univention.config_registry.ConfigRegistry()
 ucr.load()
 
 # read machine password
-with open('/etc/machine.secret', 'r') as fd:
+with open('/etc/machine.secret') as fd:
     machine_password = fd.readline().strip()
 
 machine_uid = pwd.getpwnam('%s$' % (ucr['hostname']))[2]

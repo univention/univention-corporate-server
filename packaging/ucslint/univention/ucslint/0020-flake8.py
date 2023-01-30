@@ -81,7 +81,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckBase):
         self.show_statistics = kwargs.pop('show_statistics', False)
         self.python_versions = list(PYTHON_VERSIONS)
         try:
-            with open('debian/rules', 'r') as fd:
+            with open('debian/rules') as fd:
                 content = fd.read()
             if not RE_PY2.search(content):
                 self.python_versions.remove(PY2)
@@ -398,7 +398,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckBase):
         errors = []  # type: List[str]
         header_length = len(UCR_HEADER.splitlines()) + 1
         for conffile in uub.FilteredDirWalkGenerator('conffiles'):
-            with open(conffile, 'r') as fd:
+            with open(conffile) as fd:
                 text = fd.read()
 
             for match in EXECUTE_TOKEN.findall(text):

@@ -350,7 +350,7 @@ class Docker(object):
                 outfile.write('%s=%s\n' % (shell_safe(key).upper(), value))
             # appcenter env file
             if os.path.exists(self.app.get_cache_file('env')):
-                with open(self.app.get_cache_file('env'), 'r') as infile:
+                with open(self.app.get_cache_file('env')) as infile:
                     outfile.write(ucr_run_filter(infile.read(), env))
                     outfile.write('\n')
         return env_file
@@ -608,7 +608,7 @@ class MultiDocker(Docker):
             fd = os.open(env_file, os.O_RDWR | os.O_CREAT)
             os.chmod(env_file, 0o400)
             with os.fdopen(fd, 'w') as outfile:
-                with open(self.app.get_cache_file('env'), 'r') as infile:
+                with open(self.app.get_cache_file('env')) as infile:
                     outfile.write(ucr_run_filter(infile.read(), env))
                     outfile.write('\n')
             self.env_file_created = env_file_name

@@ -149,7 +149,7 @@ class JoinStatusCheck(Alert):
             for fd in listdir('/usr/lib/univention-install/')
             if os.path.splitext(fd)[1] == '.inst'
         ]
-        with open('/usr/lib/univention-install/.index.txt', 'r') as fd:
+        with open('/usr/lib/univention-install/.index.txt') as fd:
             index_file_content = fd.read()
 
         join_error_count = 0

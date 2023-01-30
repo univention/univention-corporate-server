@@ -49,7 +49,7 @@ class Parser(object):
     def __init__(self, filename=None, data=None):
         if filename:
             self._filename = filename
-            fd = open(self._filename, 'r')
+            fd = open(self._filename)
             self._data = fd.read()
             fd.close()
         elif data:

@@ -134,7 +134,7 @@ class DockerActionMixin(object):
                     cmd_kwargs['_logger'] = logger
                 process = docker.execute(interface_file, *cmd_args, **cmd_kwargs)
                 if process.returncode != 0:
-                    with open(error_file.name, 'r') as error_handle:
+                    with open(error_file.name) as error_handle:
                         for line in error_handle:
                             self.fatal(line)
                 if output:

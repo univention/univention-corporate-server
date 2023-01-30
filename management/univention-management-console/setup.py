@@ -46,8 +46,8 @@ from email.utils import parseaddr
 from debian.changelog import Changelog
 from debian.deb822 import Deb822
 
-dch = Changelog(open('debian/changelog', 'r'))
-dsc = Deb822(open('debian/control', 'r'))
+dch = Changelog(open('debian/changelog'))
+dsc = Deb822(open('debian/control'))
 realname, email_address = parseaddr(dsc['Maintainer'])
 
 

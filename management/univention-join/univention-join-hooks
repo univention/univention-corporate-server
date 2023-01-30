@@ -99,7 +99,7 @@ def main():
     print(f'univention-join-hooks: looking for hook type "{args.hooktype}" on {args.master}')
 
     bindpw = ""
-    with open(args.bindpwdfile, 'r') as f:
+    with open(args.bindpwdfile) as f:
         bindpw = f.read()
         bindpw = bindpw.strip()
 

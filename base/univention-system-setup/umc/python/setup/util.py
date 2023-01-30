@@ -705,7 +705,7 @@ def detect_interfaces():
         if not os.path.isdir(pathname):
             continue
         # filter out lo, etc. interfaces
-        if open(os.path.join(pathname, 'type'), 'r').read().strip() not in ('1', '2', '3', '4', '5', '6', '7', '8', '15', '19'):
+        if open(os.path.join(pathname, 'type')).read().strip() not in ('1', '2', '3', '4', '5', '6', '7', '8', '15', '19'):
             continue
         # filter out bridge, bond, tun/tap interfaces
         if any(os.path.exists(os.path.join(pathname, path)) for path in ('bridge', 'bonding', 'brport', 'tun_flags')):
@@ -716,7 +716,7 @@ def detect_interfaces():
         mac = None
         try:
             # try to read mac address
-            mac = open(os.path.join(pathname, 'address'), 'r').read().strip()
+            mac = open(os.path.join(pathname, 'address')).read().strip()
         except (OSError, IOError):
             pass
         interfaces.append({'name': dirname, 'mac': mac})
@@ -768,7 +768,7 @@ def dhclient(interface, timeout=None):
 
     # note: despite '-1' background dhclient never seems to terminate
     try:
-        dhclientpid = int(open(pidfilename, 'r').read().strip('\n\r\t '))
+        dhclientpid = int(open(pidfilename).read().strip('\n\r\t '))
         os.kill(dhclientpid, 15)
         time.sleep(1.0)  # sleep 1s
         os.kill(dhclientpid, 9)

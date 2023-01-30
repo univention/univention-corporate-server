@@ -80,7 +80,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
         """Check Python files."""
         for fn in py_files:
             try:
-                content = open(fn, 'r').read()
+                content = open(fn).read()
             except EnvironmentError:
                 self.addmsg('0008-2', 'failed to open and read file', fn)
                 continue
@@ -93,7 +93,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
         """Check Portable Object files."""
         for fn in po_files:
             try:
-                content = open(fn, 'r').read()
+                content = open(fn).read()
             except EnvironmentError:
                 self.addmsg('0008-2', 'failed to open and read file', fn)
                 continue

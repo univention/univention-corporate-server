@@ -173,7 +173,7 @@ udm computers/domaincontroller_backup create --ignore_exist \
 def main() -> None:
     print(HEADER % globals())
 
-    with open(IMPORTFILE, 'r', newline='') as importfile:
+    with open(IMPORTFILE, newline='') as importfile:
         importreader = csv.DictReader(importfile, delimiter=',', quotechar='"', fieldnames=FIELDS)
         for row in importreader:
             importRow(row)

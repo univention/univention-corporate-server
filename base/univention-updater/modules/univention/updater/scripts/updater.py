@@ -162,7 +162,7 @@ def get_status():
     """
     status = {}  # type: Dict[str, str]
     try:
-        with open(FN_STATUS, 'r') as fd:
+        with open(FN_STATUS) as fd:
             for line in fd:
                 try:
                     key, value = line.rstrip().split('=', 1)
@@ -358,7 +358,7 @@ def run(opt, ucr, updater, nextversion):
     if opt.noninteractive:
         opt.ignore_releasenotes = True
         os.environ['UCS_FRONTEND'] = 'noninteractive'
-        with open(os.path.devnull, 'r') as null:
+        with open(os.path.devnull) as null:
             os.dup2(null.fileno(), sys.stdin.fileno())
 
     dprint('Update to = %s' % nextversion)

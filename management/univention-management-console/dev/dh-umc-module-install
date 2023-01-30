@@ -86,7 +86,7 @@ class Module(object):
             dh_ucs.doIt('install', '-p', '-m', '644', self.module.xml_definition, target)
             # add package version to installed XML file
             version = subprocess.check_output(['dpkg-parsechangelog', '-S', 'Version']).strip().decode('ASCII', 'replace')
-            with open(destination, 'r') as fd:
+            with open(destination) as fd:
                 content = fd.read().replace('</module>', '\t<version>%s</version>\n\t</module>' % (escape(version),))
             with open(destination, 'w') as fd:
                 fd.write(content)

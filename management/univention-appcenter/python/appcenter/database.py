@@ -184,7 +184,7 @@ class DatabaseConnector(object):
 
     def _read_password(self):
         try:
-            with open(self.get_db_password_file(), 'r') as f:
+            with open(self.get_db_password_file()) as f:
                 return f.read().rstrip('\n')
         except (EnvironmentError, TypeError):
             return None

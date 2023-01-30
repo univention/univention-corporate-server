@@ -86,7 +86,7 @@ def run(_umc_instance: Instance) -> None:
             host.open()
             ucs_hosts.append(host['name'])
 
-    with open('/etc/machine.secret', 'r') as fd:
+    with open('/etc/machine.secret') as fd:
         password = fd.read().strip()
 
     gen_msg = _('The ssh connection to at least one other UCS server failed. ')

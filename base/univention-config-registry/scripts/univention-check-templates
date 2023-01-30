@@ -130,7 +130,7 @@ def check_md5(verbose=False):
 
 def iter_templates():
     # type: () -> Iterator[Tuple[str, str]]
-    with open('/var/lib/dpkg/status', 'r') as dpkg_status:
+    with open('/var/lib/dpkg/status') as dpkg_status:
         for pkg in Deb822.iter_paragraphs(dpkg_status, ["Conffiles"], use_apt_pkg=True):
             try:
                 conffiles = pkg["Conffiles"]

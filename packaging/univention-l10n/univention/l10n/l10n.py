@@ -151,7 +151,7 @@ class UMCModuleTranslation(umc.UMC_Module):
     def _read_module_attributes_from_source_package(module):
         # type: (BaseModule) -> umc.UMC_Module
         umc_module_definition_file = os.path.join(module['abs_path_to_src_pkg'], 'debian', '{}{}'.format(module['module_name'], UMC_MODULES))
-        with open(umc_module_definition_file, 'r') as fd:
+        with open(umc_module_definition_file) as fd:
             def_file = fd.read()
 
         attributes = Deb822(def_file)
@@ -464,7 +464,7 @@ def template_file(dst, fn, values):
     :param fn: File name for destination file and source template with `.tmpl` suffix.
     :param values: A dictionary with the values.
     """
-    with open(os.path.join(os.path.dirname(__file__), fn + ".tmpl"), "r") as f:
+    with open(os.path.join(os.path.dirname(__file__), fn + ".tmpl")) as f:
         tmpl = f.read()
 
     with open(os.path.join(dst, fn), 'w') as f:

@@ -73,7 +73,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
         # check if copyright file is missing
         fn = os.path.join(path, 'debian', 'copyright')
         try:
-            with open(fn, 'r') as stream:
+            with open(fn) as stream:
                 line = stream.readline().rstrip()
                 if line != DEP5:
                     self.addmsg('0010-6', 'not machine-readable DEP-5', fn)
@@ -94,7 +94,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
         # check files for copyright
         for fn in check_files:
             try:
-                content = open(fn, 'r').read()
+                content = open(fn).read()
             except (EnvironmentError, UnicodeDecodeError):
                 self.addmsg('0010-1', 'failed to open and read file', fn)
                 continue

@@ -585,7 +585,7 @@ class UCS_License_detection(object):
     def check_license(self, domain_info):
 
         binddn = self.ucr['ldap/hostdn']
-        with open('/etc/machine.secret', 'r') as pwfile:
+        with open('/etc/machine.secret') as pwfile:
             bindpw = pwfile.readline().strip()
 
         try:
@@ -955,7 +955,7 @@ class AD_Takeover(object):
     def __join_into_ad(self, progress, auth_filename):
         # Get machine credentials
         try:
-            with open('/etc/machine.secret', 'r'):
+            with open('/etc/machine.secret'):
                 pass
         except IOError as e:
             raise TakeoverError(_("Could not read local machine password: %s") % str(e))
@@ -1085,7 +1085,7 @@ class AD_Takeover(object):
 
             old_ucs_sambasid_backup_file = "%s/old_sambasid" % BACKUP_DIR
             if os.path.exists(old_ucs_sambasid_backup_file):
-                f = open(old_ucs_sambasid_backup_file, 'r')
+                f = open(old_ucs_sambasid_backup_file)
                 self.old_domainsid = f.read()
                 f.close()
             else:

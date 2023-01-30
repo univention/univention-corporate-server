@@ -129,7 +129,7 @@ class Update(UniventionAppAction):
         # type: (str) -> Dict[str, str]
         ret = {}
         try:
-            with open(etags_file, 'r') as f:
+            with open(etags_file) as f:
                 for line in f:
                     try:
                         fname, etag = line.split('\t')

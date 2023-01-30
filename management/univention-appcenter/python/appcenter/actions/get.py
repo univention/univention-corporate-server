@@ -145,7 +145,7 @@ class Get(UniventionAppAction):
     @classmethod
     def raw_value(cls, app, section, option):
         config_parser = CaseSensitiveConfigParser()
-        with open(app.get_ini_file(), 'r') as f:
+        with open(app.get_ini_file()) as f:
             config_parser.readfp(f)
         try:
             return config_parser.get(section, option)
@@ -154,7 +154,7 @@ class Get(UniventionAppAction):
 
     def get_values(self, app, keys, warn=True):
         config_parser = CaseSensitiveConfigParser()
-        with open(app.get_ini_file(), 'r') as f:
+        with open(app.get_ini_file()) as f:
             config_parser.readfp(f)
         for section, key in keys:
             search_section = section or 'Application'

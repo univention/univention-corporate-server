@@ -349,7 +349,7 @@ class ParserDebianControl(object):
         self.filename = filename
 
         try:
-            content = open(self.filename, 'r').read()
+            content = open(self.filename).read()
         except EnvironmentError:
             raise FailedToReadFile(self.filename)
 
@@ -674,7 +674,7 @@ class FilteredDirWalkGenerator(object):
                     pass
                 elif self.reHashBang:
                     try:
-                        content = open(fn, 'r').read(self.readSize)
+                        content = open(fn).read(self.readSize)
                     except (EnvironmentError, UnicodeDecodeError):
                         continue
                     if not self.reHashBang.search(content):

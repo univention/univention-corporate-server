@@ -130,7 +130,7 @@ def get_all_hosts(lo=None, ucr=None):
 def get_md5(filename):
     m = md5()
     if os.path.exists(filename):
-        with open(filename, 'r') as f:
+        with open(filename) as f:
             m.update(f.read())
             return m.hexdigest()
 
@@ -226,7 +226,7 @@ def get_current_ram_available():
     """Returns RAM currently available in MB, excluding Swap"""
     # return (psutil.avail_phymem() + psutil.phymem_buffers() + psutil.cached_phymem()) / (1024*1024) # psutil is outdated. re-enable when methods are supported
     # implement here. see http://code.google.com/p/psutil/source/diff?spec=svn550&r=550&format=side&path=/trunk/psutil/_pslinux.py
-    with open('/proc/meminfo', 'r') as f:
+    with open('/proc/meminfo') as f:
         splitlines = map(lambda line: line.split(), f.readlines())
         meminfo = {line[0]: int(line[1]) * 1024 for line in splitlines}  # bytes
     avail_phymem = meminfo['MemFree:']  # at least MemFree is required

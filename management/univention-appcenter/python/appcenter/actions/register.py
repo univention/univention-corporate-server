@@ -472,7 +472,7 @@ class AppListener(AppListener):
                     try:
                         init_script = Service.get_init(app)
                         self.log('Creating %s' % init_script)
-                        with open(ORIGINAL_INIT_SCRIPT, 'r') as source:
+                        with open(ORIGINAL_INIT_SCRIPT) as source:
                             lines = source.readlines()
                         with open(init_script, 'w') as target:
                             for line in lines:

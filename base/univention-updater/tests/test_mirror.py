@@ -171,9 +171,9 @@ class TestFilter(object):
     VER4, VER5, VER6 = (UCS_Version((major, 0, 0)) for major in [4, 5, 6])
 
     def test_filter_releases_json(self, testdir):
-        with open(join(testdir, 'mockup_upstream_releases.json'), 'r') as upstream_releases_fp:
+        with open(join(testdir, 'mockup_upstream_releases.json')) as upstream_releases_fp:
             upstream_releases = json.load(upstream_releases_fp)
-        with open(join(testdir, 'mockup_mirror_releases.json'), 'r') as mirror_releases_fp:
+        with open(join(testdir, 'mockup_mirror_releases.json')) as mirror_releases_fp:
             expected_mirror_releases = json.load(mirror_releases_fp)
 
         mirrored_releases = deepcopy(upstream_releases)

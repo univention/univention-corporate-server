@@ -273,7 +273,7 @@ class Translog(object):
 
     def __enter__(self):
         # type: () -> Translog
-        self.translog = translog = open(self.filename, 'r')
+        self.translog = translog = open(self.filename)
 
         stat = fstat(translog.fileno())
         self.size = size = stat.st_size
@@ -812,7 +812,7 @@ class CheckGeneric(object):
         :param filename: The name of the transaction file. Defaults to :py:attribute:`filename`.
         """
         self.reset()
-        with open(filename or self.filename, 'r') as stream:
+        with open(filename or self.filename) as stream:
             self.log.info("Reading %s ...", filename or self.filename)
             for _lnr, _line, rec in self.loop(stream):
                 self.check_transaction(rec)
@@ -984,7 +984,7 @@ class CheckGeneric(object):
             exit(1)
 
         with rewrite(self.filename) as tmp:
-            with open(self.filename, 'r') as old, open(tmp, 'w') as new:
+            with open(self.filename) as old, open(tmp, 'w') as new:
                 next_tid = 0
                 for line in old:
                     try:
@@ -1022,7 +1022,7 @@ class CheckGeneric(object):
             exit(1)
 
         with rewrite(self.filename) as tmp:
-            with open(self.filename, 'r') as old, open(tmp, 'w') as new:
+            with open(self.filename) as old, open(tmp, 'w') as new:
                 for self.last_tid, line in enumerate(old, start=self.first_tid + 1):
                     line = line.rstrip('\n')
                     self.log.debug('Renum %r to %d ...', line, self.last_tid)
@@ -1142,7 +1142,7 @@ def check_last(opt, filename, last_tid):
     log = getLogger(__name__).getChild("CHECK")
 
     try:
-        with open(filename, 'r') as last:
+        with open(filename) as last:
             line = last.read()
         if not line:
             raise ValueError('should be %d, but is empty' % (last_tid,))

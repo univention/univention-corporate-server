@@ -82,7 +82,7 @@ def parse_options(argv):
 
 
 def default_pw():
-    with open('/etc/ldap.secret', 'r') as secret:
+    with open('/etc/ldap.secret') as secret:
         return secret.readline().strip()
 
 

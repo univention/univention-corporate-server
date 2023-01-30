@@ -69,7 +69,7 @@ def binary_packages():
     """
     _prefix = 'Package: '
     packages = []
-    with open('debian/control', 'r') as f:
+    with open('debian/control') as f:
         for line in f:
             if not line.startswith(_prefix):
                 continue

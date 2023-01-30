@@ -77,7 +77,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
     def check_join_script(self, filename: str) -> None:
         """Check a single join script."""
         try:
-            content = open(filename, 'r').read()
+            content = open(filename).read()
         except EnvironmentError:
             self.addmsg('0001-9', 'failed to open and read file', filename)
             return
@@ -204,7 +204,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
             ctrl = None
 
         try:
-            c_rules = open(fn_rules, 'r').read()
+            c_rules = open(fn_rules).read()
         except EnvironmentError:
             self.addmsg('0001-9', 'failed to open and read file', fn_rules)
         else:
@@ -240,7 +240,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 
         for fn in fnlist:
             try:
-                content = open(fn, 'r').read()
+                content = open(fn).read()
             except EnvironmentError:
                 self.addmsg('0001-9', 'failed to open and read file', fn)
                 continue
@@ -275,7 +275,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
             fn = os.path.join(path, 'debian', f)
             self.debug('loading %s' % (fn))
             try:
-                content = open(fn, 'r').read()
+                content = open(fn).read()
             except EnvironmentError:
                 self.addmsg('0001-9', 'failed to open and read file', fn)
                 continue

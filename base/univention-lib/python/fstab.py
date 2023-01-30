@@ -65,7 +65,7 @@ class File(list):
     def load(self):
         # type: () -> None
         """Load entries from file."""
-        with open(self.__file, 'r') as fd:
+        with open(self.__file) as fd:
             for _line in fd:
                 line = self.__parse(_line)
                 if not isinstance(line, Entry) and _line.strip() and not _line.strip().startswith('#'):

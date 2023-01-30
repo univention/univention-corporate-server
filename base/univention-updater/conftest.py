@@ -122,7 +122,7 @@ class MockPopen(object):
             if isinstance(cmd, six.string_types):
                 cmd = (cmd,)
             try:
-                with open(cmd[0], 'r') as fd_script:
+                with open(cmd[0]) as fd_script:
                     content = fd_script.read(1024)
             except (EnvironmentError, UnicodeDecodeError) as ex:
                 content = ex

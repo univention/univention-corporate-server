@@ -192,7 +192,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
                 checks['pythonic'] = True
 
             try:
-                content = open(fn, 'r').read()
+                content = open(fn).read()
             except EnvironmentError:
                 self.addmsg('0004-27', 'cannot open/read file', fn)
                 continue
@@ -268,7 +268,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
         self.debug('Reading %s' % fn)
         try:
             entry = {}  # type: UcrInfo
-            with open(fn, 'r') as stream:
+            with open(fn) as stream:
                 for row, line in enumerate(stream, start=1):
                     line = line.strip()
                     if not line and entry:
@@ -345,7 +345,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
         # read debian/rules
         fn_rules = os.path.join(path, 'debian', 'rules')
         try:
-            rules_content = open(fn_rules, 'r').read()
+            rules_content = open(fn_rules).read()
         except EnvironmentError:
             self.addmsg('0004-2', 'file is missing', fn_rules)
             rules_content = ''
@@ -778,7 +778,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
         count_python = 0
         count_var = 0
         try:
-            with open(fn, 'r') as fd:
+            with open(fn) as fd:
                 for line in fd:
                     for _ in self.RE_PYTHON.finditer(line):
                         count_python += 1

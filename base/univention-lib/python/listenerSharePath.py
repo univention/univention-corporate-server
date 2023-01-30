@@ -85,7 +85,7 @@ def dirIsMountPoint(path):
 
     for tab in ["/etc/fstab", "/etc/mtab"]:
         if os.path.isfile(tab):
-            f = open(tab, "r")
+            f = open(tab)
             for line in f:
                 if line.startswith("#"):
                     continue

@@ -245,7 +245,7 @@ def object_input(module, object, input, append=None, remove=None, stderr=None):
 
             if module.property_descriptions[key].syntax.name == 'file':
                 if os.path.exists(values):
-                    with open(values, 'r') as fh:
+                    with open(values) as fh:
                         object[key] = fh.read()
                 else:
                     print('WARNING: file not found: %s' % values, file=stderr)
@@ -312,7 +312,7 @@ def object_input(module, object, input, append=None, remove=None, stderr=None):
                 if value == '':
                     object[key] = value
                 elif os.path.exists(value):
-                    with open(value, 'r') as fh:
+                    with open(value) as fh:
                         content = fh.read()
                         if "----BEGIN CERTIFICATE-----" in content:
                             content = content.replace('----BEGIN CERTIFICATE-----', '')
@@ -479,7 +479,7 @@ def _doit(arglist, stdout=sys.stdout, stderr=sys.stderr):
             if os.path.exists(secret_filename):
                 binddn = _binddn
                 try:
-                    with open(secret_filename, 'r') as secretFile:
+                    with open(secret_filename) as secretFile:
                         bindpwd = secretFile.read().strip('\n')
                 except IOError:
                     raise OperationFailed('E: Permission denied, try --binddn and --bindpwd')

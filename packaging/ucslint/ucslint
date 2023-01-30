@@ -134,7 +134,7 @@ class DebianPackageCheck(object):
         self.overrides = set()
         fn = os.path.join(self.path, 'debian', 'ucslint.overrides')
         try:
-            with open(fn, 'r') as overrides:
+            with open(fn) as overrides:
                 for row, line in enumerate(overrides, start=1):
                     line = line.strip()
                     if not line:

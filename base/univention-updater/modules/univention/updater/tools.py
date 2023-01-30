@@ -1149,7 +1149,7 @@ class Component(object):
             return self.DISABLED
 
         try:
-            comp_file = open(self.FN_APTSOURCES, 'r')
+            comp_file = open(self.FN_APTSOURCES)
         except IOError:
             return self.UNKNOWN
         rePath = re.compile('(un)?maintained/component/ ?%s/' % self.name)

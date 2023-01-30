@@ -81,7 +81,7 @@ def write_machine_secret_to_secrets_tdb(machine_password, windows_domain):
 
 def run_postchange():
     windows_domain = ucr.get('windows/domain', '').upper()
-    with open('/etc/machine.secret', 'r') as fd:
+    with open('/etc/machine.secret') as fd:
         machine_password = fd.read().strip()
     ldap_hostdn = ucr.get('ldap/hostdn')
     samba_user = ucr.get('samba/user')
@@ -119,7 +119,7 @@ def run_postchange():
 
     if (server_role == 'domaincontroller_slave') or (samba_role == 'memberserver'):  # this is the criterion used in 26univention-samba.inst
         if samba_user == ldap_hostdn:
-            with open('/etc/machine.secret', 'r') as fd:
+            with open('/etc/machine.secret') as fd:
                 samba_user_secret = fd.read().strip()
 
             # store new machine secret as ldap bind password for passdb LDAP

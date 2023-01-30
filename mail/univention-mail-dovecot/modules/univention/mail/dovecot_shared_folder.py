@@ -139,7 +139,7 @@ class DovecotGlobalAclFile(object):
         self._acls = []
         try:
             self.listener.setuid(0)
-            for line in open(global_acl_path, 'r'):
+            for line in open(global_acl_path):
                 self._acls.append(DovecotFolderAclEntry.from_str(line))
         finally:
             self.listener.unsetuid()

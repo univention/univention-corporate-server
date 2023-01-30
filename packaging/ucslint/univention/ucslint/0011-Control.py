@@ -81,7 +81,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 
         fn_changelog = os.path.join(path, 'debian', 'changelog')
         try:
-            content_changelog = open(fn_changelog, 'r').read(1024)
+            content_changelog = open(fn_changelog).read(1024)
         except EnvironmentError:
             self.addmsg('0011-1', 'failed to open and read file', fn_changelog)
             return
@@ -99,7 +99,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
         compat_version = 0
         fn_compat = os.path.join(path, 'debian', 'compat')
         try:
-            content_compat = open(fn_compat, 'r').read()
+            content_compat = open(fn_compat).read()
             compat_version = int(content_compat)
         except EnvironmentError:
             # self.addmsg('0011-1', 'failed to open and read file', fn_compat)
@@ -175,7 +175,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 
         try:
             fn_rules = os.path.join(path, 'debian', 'rules')
-            with open(fn_rules, 'r') as fd:
+            with open(fn_rules) as fd:
                 rules = fd.read()
                 if re.search('--with[ =]*["\']?python_support', rules):
                     self.addmsg('0011-18', 'please use --with python2,python3 instead of python_support', fn_rules)

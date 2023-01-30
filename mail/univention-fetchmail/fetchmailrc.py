@@ -60,7 +60,7 @@ def load_rc(ofile: str) -> Optional[List[str]]:
     rc = None
     listener.setuid(0)
     try:
-        with open(ofile, "r") as fd:
+        with open(ofile) as fd:
             rc = fd.readlines()
     except EnvironmentError as exc:
         ud.debug(ud.LISTENER, ud.ERROR, 'Failed to open "%s": %s' % (ofile, exc))
@@ -151,7 +151,7 @@ def only_password_reset(old: Dict[str, List[bytes]], new: Dict[str, List[bytes]]
 
 def handler(dn: str, new: Dict[str, List[bytes]], old: Dict[str, List[bytes]], command: str) -> None:
     if os.path.exists(FETCHMAIL_OLD_PICKLE):
-        with open(FETCHMAIL_OLD_PICKLE, 'r') as fd:
+        with open(FETCHMAIL_OLD_PICKLE) as fd:
             p = pickle.Unpickler(fd)
             old = p.load()
         os.unlink(FETCHMAIL_OLD_PICKLE)

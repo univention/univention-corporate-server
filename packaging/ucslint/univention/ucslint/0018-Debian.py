@@ -72,7 +72,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
     def get_debian_version(self, path: str) -> "Version":
         try:
             fn_changelog = join(path, 'debian', 'changelog')
-            with open(fn_changelog, 'r') as fd:
+            with open(fn_changelog) as fd:
                 changelog = Changelog(fd)
 
             return Version(changelog.version.full_version)
@@ -93,7 +93,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
             self.debug('other_script=%s' % ' '.join(sorted(other_scripts)))
             self.debug('other_actions=%s' % ' '.join(sorted(other_actions)))
 
-            with open(script_path, 'r') as script_file:
+            with open(script_path) as script_file:
                 content = script_file.read()
 
             for row, line in enumerate(content.splitlines(), start=1):
@@ -250,7 +250,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 
     @staticmethod
     def lines(name: str) -> Iterator[Tuple[int, str]]:
-        with open(name, 'r') as stream:
+        with open(name) as stream:
             for row, line in enumerate(stream, start=1):
                 line = line.strip()
                 if not line:

@@ -99,7 +99,7 @@ def do_package(package):
     if not os.path.exists(n_ucr):
         return
 
-    with open(n_ucr, 'r') as f_ucr:
+    with open(n_ucr) as f_ucr:
         for item in univention.config_registry.parseRfc822(f_ucr.read()):
             typ = item['Type'][0]
             if typ == 'file':

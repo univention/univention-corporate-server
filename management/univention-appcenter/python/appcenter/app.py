@@ -417,7 +417,7 @@ class AppFileAttribute(AppAttribute):
                 filenames.insert(0, '%s_%s' % (fname, locale.upper()))
         for filename in filenames:
             try:
-                with open(app.get_cache_file(filename), 'r') as fd:
+                with open(app.get_cache_file(filename)) as fd:
                     value = ''.join(fd.readlines()).strip()
             except EnvironmentError:
                 pass

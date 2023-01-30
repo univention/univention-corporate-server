@@ -51,7 +51,7 @@ def postinst(ucr, changes):
     if not os.path.exists(CUR):
         return
 
-    res = open(CUR, 'r').readlines()
+    res = open(CUR).readlines()
     if len(res) <= 1 and os.path.exists(BAK):
         os.rename(BAK, CUR)
 

@@ -149,7 +149,7 @@ class TestUMCLicenseManagement(UDMModule):
         if not path.exists(license_file):
             print("The '%s' license file cannot be found" % license_file)
             self.return_code_result_skip()
-        with open(license_file, 'r') as license:
+        with open(license_file) as license:
             license_text = license.read()
 
         options = {"license": license_text}

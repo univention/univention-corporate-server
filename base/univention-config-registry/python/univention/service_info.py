@@ -156,7 +156,7 @@ def pidof(name, docker='/var/run/docker.pid'):
     children = {}  # type: Dict[int, List[int]]
     if isinstance(docker, six.string_types):
         try:
-            with open(docker, 'r') as stream:
+            with open(docker) as stream:
                 docker = int(stream.read(), 10)
             log.info('Found docker.pid=%d', docker)
         except (EnvironmentError, ValueError) as ex:

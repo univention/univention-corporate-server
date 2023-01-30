@@ -102,7 +102,7 @@ class SendEmail(UniventionSelfServiceTokenEmitter):
             path = path_ucr
         else:
             path = "/usr/share/univention-self-service/email_bodies/email_body.txt"
-        with open(path, "r") as fp:
+        with open(path) as fp:
             txt = fp.read()
 
         fqdn = ".".join([self.ucr["hostname"], self.ucr["domainname"]])

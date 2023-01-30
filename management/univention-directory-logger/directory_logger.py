@@ -115,7 +115,7 @@ def filterOutUnchangedAttributes(old_copy: Dict[str, List[bytes]], new_copy: Dic
 
 def _parse_dellog_file(pathname: str) -> None:
     """Extract data from a dellog file."""
-    with open(pathname, 'r') as f:
+    with open(pathname) as f:
         lines = f.readlines()
         # A dellog file must have DELLOG_FILE_LINE_NUMBERS lines
         if len(lines) == DELLOG_FILE_LINE_NUMBERS:
@@ -203,7 +203,7 @@ def handler(dn: str, new_copy: Dict[str, List[bytes]], old_copy: Dict[str, List[
         previoushash = cachefile.read()
 
         # get ID
-        with open(notifier_id, 'r') as f:
+        with open(notifier_id) as f:
             nid = int(f.readline()) + 1
         # matches notifier transaction nid. Tested for UCS 1.3-2 and 2.0.
         # Note about 1.3-2:

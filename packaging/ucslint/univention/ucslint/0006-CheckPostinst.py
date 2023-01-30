@@ -79,7 +79,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
         #
         for fn, checks in fnlist_scripts.items():
             try:
-                content = open(fn, 'r').read()
+                content = open(fn).read()
             except EnvironmentError:
                 content = ''
 

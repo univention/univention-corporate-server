@@ -168,7 +168,7 @@ def check_correct_passwords() -> None:
         if ucr_domain_pw != options.domain_password:
             ucr['tests/domainadmin/pwd'] = options.domain_password
 
-    with open("/var/lib/ucs-test/pwdfile", "r") as pwfile:
+    with open("/var/lib/ucs-test/pwdfile") as pwfile:
         pwfile_pw = pwfile.read().replace('\n', '')
     if pwfile_pw != options.domain_password:
         with open("/var/lib/ucs-test/pwdfile", "w") as pwfile:

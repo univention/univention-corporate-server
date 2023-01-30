@@ -103,7 +103,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
                 self.addmsg('0013-2', 'possible bashism (%s):\n%s' % (msg, code), fn, row)
 
     def check_unquoted_local(self, fn: str) -> None:
-        with open(fn, 'r') as fd:
+        with open(fn) as fd:
             for row, line in enumerate(fd, start=1):
                 line = line.strip()
                 match = RE_LOCAL.search(line)

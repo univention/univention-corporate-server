@@ -66,7 +66,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 
         fn = os.path.join(path, 'debian', 'changelog')
         try:
-            with open(fn, 'r') as stream:
+            with open(fn) as stream:
                 changelog = Changelog(stream, strict=True)
         except EnvironmentError as ex:
             self.addmsg('0007-1', 'failed to open and read file: %s' % ex, fn)

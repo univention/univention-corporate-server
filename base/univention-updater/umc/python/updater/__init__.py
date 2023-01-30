@@ -488,7 +488,7 @@ class Instance(Base):
         """Returns the status of the current/last update even if the job is not running anymore."""
         result = {}  # type: Dict[str, Any]
         try:
-            with open(INSTALLERS[job]['statusfile'], 'r') as fd:
+            with open(INSTALLERS[job]['statusfile']) as fd:
                 for line in fd:
                     fields = line.strip().split('=')
                     if len(fields) == 2:

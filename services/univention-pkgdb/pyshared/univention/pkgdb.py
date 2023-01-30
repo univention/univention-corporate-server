@@ -557,7 +557,7 @@ def open_database_connection(config_registry, pkgdbu=False, db_server=None):
         connection_info['user'] = config_registry.get('pkgdb/user', '%s$' % (config_registry['hostname'], ))
         password_file = config_registry.get('pkgdb/pwdfile', '/etc/machine.secret')
 
-    with open(password_file, 'r') as fd:
+    with open(password_file) as fd:
         connection_info['password'] = fd.read().rstrip('\n')
     connectstring = ' '.join([
         "%s='%s'" % (key, value.replace('\\', '\\\\').replace("'", "\\'"),)

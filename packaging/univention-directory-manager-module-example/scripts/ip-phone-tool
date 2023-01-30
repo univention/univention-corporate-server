@@ -74,7 +74,7 @@ class ipphonetool(object):
             server_role = ucr.get('server/role', '')
             if server_role in ('domaincontroller_master', 'domaincontroller_backup'):
                 try:
-                    bindpw = open('/etc/ldap.secret', 'r').read().strip()
+                    bindpw = open('/etc/ldap.secret').read().strip()
                 except IOError:
                     print("Could not read credentials.", file=sys.stderr)
                     sys.exit(1)

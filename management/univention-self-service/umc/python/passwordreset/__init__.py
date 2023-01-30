@@ -906,7 +906,7 @@ class Instance(Base):
             path = path_ucr
         else:
             path = "/usr/share/univention-self-service/email_bodies/deregistration_notification_email_body.txt"
-        with open(path, "r") as fp:
+        with open(path) as fp:
             txt = fp.read()
         txt = txt.format(username=username)
         msg = MIMENonMultipart('text', 'plain', charset='utf-8')
@@ -1129,7 +1129,7 @@ class Instance(Base):
             path = path_ucr
         else:
             path = "/usr/share/univention-self-service/email_bodies/email_change_notification_email_body.txt"
-        with open(path, "r") as fp:
+        with open(path) as fp:
             txt = fp.read()
         txt = txt.format(username=username, old_email=old_email, new_email=new_email)
         msg = MIMENonMultipart('text', 'plain', charset='utf-8')

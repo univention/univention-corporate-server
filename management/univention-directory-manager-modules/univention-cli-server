@@ -109,7 +109,7 @@ def server_main(args):
     runfilename = '%s.run' % socket_path
     if os.path.isfile(runfilename):
         try:
-            with open(runfilename, 'r') as runfile:
+            with open(runfilename) as runfile:
                 line = runfile.readline().strip()
                 pid = int(line)
                 os.kill(pid, signal.SIGCONT)
@@ -209,7 +209,7 @@ def doit(sarglist, conn, stdout=None, stderr=None):
     if not secret:
         for filename in ('/etc/ldap.secret', '/etc/machine.secret'):
             try:
-                open(filename, 'r').close()
+                open(filename).close()
                 secret = True
                 break
             except IOError:

@@ -178,7 +178,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 
         for fn in uub.FilteredDirWalkGenerator(path, ignore_suffixes=uub.FilteredDirWalkGenerator.BINARY_SUFFIXES):
             try:
-                with open(fn, 'r') as fd:
+                with open(fn) as fd:
                     for row, line in enumerate(fd, start=1):
                         origline = line
                         if self.RE_WHITELINE.match(line):

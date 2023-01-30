@@ -117,7 +117,7 @@ def get_writable_udm(binddn: Optional[str] = None, bindpwdfile: Optional[str] = 
         if not bindpwdfile:
             error('"binddn" provided but not "bindpwdfile".')
         try:
-            with open(bindpwdfile, 'r') as f:
+            with open(bindpwdfile) as f:
                 bindpwd = f.read().strip()
         except IOError as err:
             error('Could not open "bindpwdfile" "%s": %s' % (bindpwdfile, err,))
