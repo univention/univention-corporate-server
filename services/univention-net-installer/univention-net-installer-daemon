@@ -118,7 +118,7 @@ def listener(options, data_queue):
     size = 1024  # max hostname length
     s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     s.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
-    s.bind(("0.0.0.0", options.port, ))
+    s.bind(("0.0.0.0", options.port, ))  # noqa: S104
     s.listen(1)
     while True:
         (client, _, ) = s.accept()

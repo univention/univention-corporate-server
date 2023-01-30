@@ -56,7 +56,7 @@ for potential_vm_bridge in ["virbr0", "br0"]:
     if exists(join("/sys/class/net", potential_vm_bridge, "bridge")):
         VM_BRIDGE = potential_vm_bridge
         break
-VM_VNC = "0.0.0.0"
+VM_VNC = "0.0.0.0"  # noqa: S104
 UID = 2260  # FIXME: phahn
 GID = 1009  # FIXME: Tech
 POOL = '/var/lib/libvirt/images'
@@ -384,7 +384,7 @@ class VmCreator(object):
                 if listen.attrib['type'] != 'address':
                     continue
                 addr = listen.attrib['address']
-                if addr == '0.0.0.0' or (addr == LOCAL and host == LOCAL):
+                if addr == '0.0.0.0' or (addr == LOCAL and host == LOCAL):  # noqa: S104
                     return (host, port)
 
 
