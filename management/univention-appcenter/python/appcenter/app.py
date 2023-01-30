@@ -986,7 +986,7 @@ class App(with_metaclass(AppMetaClass, object)):
 	host_certificate_access = AppBooleanAttribute()
 
 	listener_udm_modules = AppListAttribute()
-	listener_udm_version = AppIntAttribute(default=1)
+	listener_udm_version = AppIntAttribute(default=2)
 
 	vote_for_app = AppBooleanAttribute()
 
