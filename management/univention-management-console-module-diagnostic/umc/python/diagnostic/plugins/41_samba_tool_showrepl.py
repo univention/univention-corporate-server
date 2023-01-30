@@ -51,7 +51,7 @@ from univention.management.console.modules.diagnostic import Instance, Warning, 
 _ = Translation('univention-management-console-module-diagnostic').translate
 
 title = _('Check Samba replication status for errors')
-description = _('No errors found.'),
+description = _('No errors found.')
 run_descr = ['This can be checked by running: samba-tool drs showrepl']
 
 

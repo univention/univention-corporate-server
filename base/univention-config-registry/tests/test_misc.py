@@ -78,6 +78,6 @@ def test_directory_files(tmpdir):
         base.mkdir("sub").ensure("file"),
     ]
     broken = base.ensure("broken")
-    base.join("link").mksymlinkto(broken),
+    base.join("link").mksymlinkto(broken)
     broken.remove()
     assert set(ucrm.directory_files(str(base))) == {str(path) for path in files}

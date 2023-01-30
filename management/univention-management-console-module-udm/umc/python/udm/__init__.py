@@ -1070,7 +1070,7 @@ class Instance(Base, ProgressMixin):
             container = ucr['ldap/base']
             defaults = {}
             if request.flavor != 'navigation':
-                defaults['$operations$'] = ['search', ],  # disallow edit
+                defaults['$operations$'] = ['search', ]  # disallow edit
             if request.flavor in ('dns/dns', 'dhcp/dhcp'):
                 defaults.update({
                     'label': UDM_Module(request.flavor).title,

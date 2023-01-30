@@ -49,8 +49,8 @@ class Test_LDAPSchema:
         filename = '90%s' % uts.random_name()
         data = '# schema test'
         package_version = '99.%s-%s' % (uts.random_int(), uts.random_int())
-        package = uts.random_name(),
-        appidentifier = '%s' % uts.random_name(),
+        package = uts.random_name()
+        appidentifier = '%s' % uts.random_name()
 
         schema = udm.create_object(
             'settings/ldapschema',
@@ -126,8 +126,8 @@ class Test_LDAPACL:
         filename = '90%s' % uts.random_name()
         data = '# acl test'
         package_version = '99.%s-%s' % (uts.random_int(), uts.random_int())
-        package = uts.random_name(),
-        appidentifier = '%s' % uts.random_name(),
+        package = uts.random_name()
+        appidentifier = '%s' % uts.random_name()
         ucsversionstart = '1.2-0'
         ucsversionend = '1.3-99'
 

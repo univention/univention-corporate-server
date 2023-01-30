@@ -2329,7 +2329,7 @@ class ContainerQueryBase(Resource):
             container = ucr['ldap/base']
             defaults = {}
             if object_type != 'navigation':
-                defaults['$operations$'] = ['search', ],  # disallow edit
+                defaults['$operations$'] = ['search', ]  # disallow edit
             if object_type in ('dns/dns', 'dhcp/dhcp'):
                 defaults.update({
                     'label': UDM_Module(object_type, ldap_connection=self.ldap_connection, ldap_position=self.ldap_position).title,
