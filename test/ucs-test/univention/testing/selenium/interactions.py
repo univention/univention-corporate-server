@@ -295,7 +295,7 @@ class Interactions:
         uploader_button_xpath = f'//*[contains(@id, "_ImageUploader_")]//*[text()="{button_label}"]'
         self.wait_until_element_visible(xpath_prefix + uploader_button_xpath)
         uploader_xpath = '//*[contains(@id, "_ImageUploader_")]//input[@type="file"]'
-        logger.info("Getting the uploader with xpath: %s" % xpath_prefix + uploader_xpath)
+        logger.info("Getting the uploader with xpath: %s%s", xpath_prefix, uploader_xpath)
         uploader = self.driver.find_element_by_xpath(xpath_prefix + uploader_xpath)
         logger.info("Uploading the image: %s" % img_path)
         uploader.send_keys(img_path)
