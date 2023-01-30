@@ -1,3 +1,4 @@
+#!/usr/bin/python3
 #
 # Univention LDAP
 #  restart the slapd server after well-known-sid-name-mapping made UCR changes
