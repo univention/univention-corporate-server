@@ -35,6 +35,7 @@
 
 metadata=$(python -c "from saml2.metadata import create_metadata_string; import sys; sys.stdout.write(create_metadata_string('/usr/share/univention-management-console/saml/sp.py', None, valid=None, cert=None, keyfile=None, mid=None, name=None, sign=False))") || exit 1
 [ -z "$metadata" ] && exit 2
+echo "$metadata" > "/usr/share/univention-management-console/saml/sp/metadata.xml"
 
 eval "$(ucr shell hostname domainname umc/saml/sp-server ldap/base umc/saml/assertion-lifetime)"
 
