@@ -49,9 +49,7 @@ ucr.load()
 
 def main():
     # type: () -> None
-    description = '%(prog)s changes the internal ID of an application. This means:' \
-        '(1) unregister OLD_ID, remove from LDAP' \
-        '(2) register NEW_ID, add to LDAP'
+    description = '%(prog)s changes the internal ID of an application. This means:(1) unregister OLD_ID, remove from LDAP(2) register NEW_ID, add to LDAP'
     parser = ArgumentParser(description=description)
     parser.add_argument("old_id")
     parser.add_argument("new_id")
