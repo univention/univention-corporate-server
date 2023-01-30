@@ -104,7 +104,7 @@ def initialize() -> None:
             ud.LISTENER, ud.INFO,
             'Successfully deleted "%s"' % (USER_LIST,))
     except OSError as ex:
-        if errno.ENOENT == ex.errno:
+        if ex.errno == errno.ENOENT:
             ud.debug(
                 ud.LISTENER, ud.INFO,
                 'File "%s" does not exist, will be created' % (USER_LIST,))

@@ -955,7 +955,7 @@ class ConfigHandlers:
                     diversion = next(div_file).rstrip()
                     if path_from + '.debian' != path_to:
                         continue
-                    if ':' != diversion:  # local diversion
+                    if diversion != ':':  # local diversion
                         continue
                     assert path_from not in to_remove  # no duplicates
                     try:

@@ -21,37 +21,37 @@ class TestLocalizedValue(object):
     def test_basic(self, lval0):
         """set() and get() without locale."""
         lval0.set('foo')
-        assert 'foo' == lval0.get()
-        assert "LocalizedValue({'fr': 'foo'}, __default='')" == repr(lval0)
+        assert lval0.get() == 'foo'
+        assert repr(lval0) == "LocalizedValue({'fr': 'foo'}, __default='')"
 
     def test_explicit_language(self, lval0):
         """set() and get() with locale."""
         lval0.set('foo', locale='fr')
         lval0.set('bar', locale='en')
-        assert 'foo' == lval0.get(locale='fr')
+        assert lval0.get(locale='fr') == 'foo'
 
     def test_implicit_language_set(self, lval0):
         """set() without and get() with locale."""
         lval0.set('foo')
         lval0.set('bar', locale='en')
-        assert 'foo' == lval0.get(locale='fr')
+        assert lval0.get(locale='fr') == 'foo'
 
     def test_default_language_set(self, lval0):
         """set_default() and get() with locale."""
         lval0.set_default('foo')
         lval0.set('bar', locale='en')
-        assert 'foo' == lval0.get(locale='fr')
+        assert lval0.get(locale='fr') == 'foo'
 
     def test_default_language_get(self, lval0):
         """set_default() and get_default()."""
         lval0.set_default('foo')
         lval0.set('bar', locale='en')
-        assert 'foo' == lval0.get_default()
+        assert lval0.get_default() == 'foo'
 
     def test_missing_language(self, lval0):
         """set() and get() with different locale."""
         lval0.set('bar', locale='en')
-        assert '' == lval0.get(locale='fr')
+        assert lval0.get(locale='fr') == ''
 
 
 @pytest.fixture()
@@ -68,28 +68,28 @@ class TestLocalizedDictionary(object):
     def test_basic(self, ldict0):
         """__setitem__() and __getitem__()."""
         ldict0['foo'] = 'bar'
-        assert 'bar' == ldict0['foo']
+        assert ldict0['foo'] == 'bar'
 
     def test_setitem_getitem(self, ldict0):
         """__setitem__() and __getitem__()."""
         ldict0['foO'] = 'bar'
-        assert 'bar' == ldict0['Foo']
+        assert ldict0['Foo'] == 'bar'
 
     def test_default(self, ldict0):
         """__setitem__() and get(default)."""
-        assert 'default' == ldict0.get('foo', 'default')
+        assert ldict0.get('foo', 'default') == 'default'
 
     def test_set_locale(self, ldict0):
         """set() with and get() without locale."""
         ldict0['foo[fr]'] = 'bar'
-        assert 'bar' == ldict0.get('foo')
-        assert 'bar' == ldict0['foo']
+        assert ldict0.get('foo') == 'bar'
+        assert ldict0['foo'] == 'bar'
 
     def test_get_locale(self, ldict0):
         """set() without and get() with locale."""
         ldict0['foo'] = 'bar'
-        assert 'bar' == ldict0.get('foo[fr]')
-        assert 'bar' == ldict0['foo[fr]']
+        assert ldict0.get('foo[fr]') == 'bar'
+        assert ldict0['foo[fr]'] == 'bar'
 
     def test_in(self, ldict0):
         """in and has_key()."""
@@ -136,8 +136,8 @@ class TestLocalizedDictionary(object):
             ldict0[key] = value
         var = ldict0.get_dict('foo')
         assert isinstance(var, uit.LocalizedValue) is True
-        assert 'bar' == var['fr']
-        assert 'baz' == var['en']
+        assert var['fr'] == 'bar'
+        assert var['en'] == 'baz'
 
     def test_get_dict_unset(self, ldict0):
         assert ldict0.get_dict("key") == {}
@@ -184,17 +184,17 @@ class TestSetLanguage(object):
     def test_global(self, lval, ldict):
         """Test global set_language() setting."""
         uit.set_language('de')
-        assert 'foo' == lval.get()
-        assert 'foo' == ldict['val']
+        assert lval.get() == 'foo'
+        assert ldict['val'] == 'foo'
         uit.set_language('en')
-        assert 'bar' == lval.get()
-        assert 'bar' == ldict['val']
+        assert lval.get() == 'bar'
+        assert ldict['val'] == 'bar'
 
     def test_default(self, lval, ldict):
         """Test default set_language() setting."""
         uit.set_language('fr')
-        assert 'baz' == lval.get()
-        assert 'baz' == ldict['val']
+        assert lval.get() == 'baz'
+        assert ldict['val'] == 'baz'
 
 
 class TestUnicodeConfig(object):

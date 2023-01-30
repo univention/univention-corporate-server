@@ -56,7 +56,7 @@ def test_background(chrome, admin_username, admin_password, test_logger):
     chrome.portal_login(admin_username, admin_password)
     chrome.wait_until_clickable('#portalCategories')
     body_background = chrome.assert_one('.portal__background').value_of_css_property('background-image')
-    if 'none' != body_background:
+    if body_background != 'none':
         raise ValueError('Background already set')
 
     _change_background(chrome)
@@ -66,17 +66,17 @@ def test_background(chrome, admin_username, admin_password, test_logger):
 
     _save(chrome)
     body_background = chrome.assert_one('.portal__background').value_of_css_property('background-image')
-    if 'none' == body_background:
+    if body_background == 'none':
         raise ValueError('Background not set')
 
     _remove_background(chrome)
     body_background = chrome.assert_one('.portal__background').value_of_css_property('background-image')
-    if 'none' != body_background:
+    if body_background != 'none':
         raise ValueError('Background not set')
 
     _save(chrome)
     body_background = chrome.assert_one('.portal__background').value_of_css_property('background-image')
-    if 'none' != body_background:
+    if body_background != 'none':
         raise ValueError('Background still set')
 
 

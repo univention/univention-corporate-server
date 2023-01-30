@@ -95,7 +95,7 @@ def handler(dn: str, new: Dict[str, List[bytes]], old: Dict[str, List[bytes]], c
         global _delay
         if _delay:
             (old_dn, old) = _delay
-            if 'a' != command or old['entryUUID'] != new['entryUUID']:
+            if command != 'a' or old['entryUUID'] != new['entryUUID']:
                 ud.debug(ud.LISTENER, ud.WARN, 'CERTIFICATE: Non-consecutive move %s -> %s', old_dn, dn)
                 (old_dn, old) = (None, None)
         _delay = None
@@ -109,7 +109,7 @@ def handler(dn: str, new: Dict[str, List[bytes]], old: Dict[str, List[bytes]], c
                 create_certificate('*.%s' % new_cn, domain(new))
         elif old and not new:
             # changeType: delete
-            if 'r' == command:
+            if command == 'r':
                 _delay = (dn, old)
             else:
                 remove_certificate(old_cn, domainname=domain(old))

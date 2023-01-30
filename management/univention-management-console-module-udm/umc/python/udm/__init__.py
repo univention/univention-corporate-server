@@ -243,7 +243,7 @@ class Instance(Base, ProgressMixin):
             object_type = request.options.get('objectType')
 
         module_name = object_type
-        if not module_name or 'all' == module_name:
+        if not module_name or module_name == 'all':
             module_name = request.flavor
 
         if not module_name or module_name == 'navigation':
@@ -812,7 +812,7 @@ class Instance(Base, ProgressMixin):
             self.finished(request.id, [{'id': name, 'label': getattr(mod, 'short_description', name)} for name, mod in udm_modules.modules.items()])
             return
 
-        if 'None' == container:
+        if container == 'None':
             # if 'None' is given, use the LDAP base
             container = ucr.get('ldap/base')
             MODULE.info("no container == 'None', set LDAP base as container")

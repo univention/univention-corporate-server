@@ -59,7 +59,7 @@ class TestUniventionUpdater(object):
     def test_ucs_reinit(self, u):
         """Test reinitialization."""
         assert not u.is_repository_server
-        assert ERRAT == u.erratalevel
+        assert u.erratalevel == ERRAT
 
     def test_ucs_reinit_offline(self, ucr, u):
         ucr({
@@ -241,24 +241,24 @@ class TestUniventionUpdater(object):
         gen = u.call_sh_files(structs(), tmp.name, 'arg')
 
         # The Updater only yields the intent, the content is only available after the next step
-        assert ('update', 'pre') == next(gen)  # download
+        assert next(gen) == ('update', 'pre')  # download
         assert [] == mockpopen.mock_get()
-        assert ('preup', 'pre') == next(gen)  # pre
+        assert next(gen) == ('preup', 'pre')  # pre
         assert [] == mockpopen.mock_get()
-        assert ('preup', 'main') == next(gen)
-        assert ('pre', 'arg', 'c_pre') == mockpopen.mock_get()[0][1:]
-        assert ('preup', 'post') == next(gen)
-        assert ('arg', 'r_pre') == mockpopen.mock_get()[0][1:]
-        assert ('update', 'main') == next(gen)  # update
-        assert ('post', 'arg', 'c_pre') == mockpopen.mock_get()[0][1:]
-        assert ('postup', 'pre') == next(gen)  # post
+        assert next(gen) == ('preup', 'main')
+        assert mockpopen.mock_get()[0][1:] == ('pre', 'arg', 'c_pre')
+        assert next(gen) == ('preup', 'post')
+        assert mockpopen.mock_get()[0][1:] == ('arg', 'r_pre')
+        assert next(gen) == ('update', 'main')  # update
+        assert mockpopen.mock_get()[0][1:] == ('post', 'arg', 'c_pre')
+        assert next(gen) == ('postup', 'pre')  # post
         assert [] == mockpopen.mock_get()
-        assert ('postup', 'main') == next(gen)
-        assert ('pre', 'arg', 'c_post') == mockpopen.mock_get()[0][1:]
-        assert ('postup', 'post') == next(gen)
-        assert ('arg', 'r_post') == mockpopen.mock_get()[0][1:]
-        assert ('update', 'post') == next(gen)
-        assert ('post', 'arg', 'c_post') == mockpopen.mock_get()[0][1:]
+        assert next(gen) == ('postup', 'main')
+        assert mockpopen.mock_get()[0][1:] == ('pre', 'arg', 'c_post')
+        assert next(gen) == ('postup', 'post')
+        assert mockpopen.mock_get()[0][1:] == ('arg', 'r_post')
+        assert next(gen) == ('update', 'post')
+        assert mockpopen.mock_get()[0][1:] == ('post', 'arg', 'c_post')
         with pytest.raises(StopIteration):
             next(gen)
         assert [] == mockpopen.mock_get()
@@ -360,7 +360,7 @@ class TestComponents(object):
             'repository/online/component/a': 'no',
         })
         mockopen.write(U.Component.FN_APTSOURCES, b"")
-        assert U.Component.DISABLED == u.component('a').status()
+        assert u.component('a').status() == U.Component.DISABLED
 
     def test_get_current_component_status_PERMISSION(self, ucr, u, mockopen):
         """Test status of authenticated components."""
@@ -371,7 +371,7 @@ class TestComponents(object):
             U.Component.FN_APTSOURCES,
             b'deb http://host:port/prefix/0.0/maintained/component/ d/arch/\n'
             b'# credentials not accepted: d\n')
-        assert U.Component.PERMISSION_DENIED == u.component('d').status()
+        assert u.component('d').status() == U.Component.PERMISSION_DENIED
 
     def test_get_current_component_status_UNKNOWN(self, ucr, u, mockopen):
         """Test status of unknown components."""
@@ -379,7 +379,7 @@ class TestComponents(object):
             'repository/online/component/d': 'yes',
         })
         mockopen[U.Component.FN_APTSOURCES] = IOError()
-        assert U.Component.UNKNOWN == u.component('d').status()
+        assert u.component('d').status() == U.Component.UNKNOWN
 
     def test_get_current_component_status_MISSING(self, ucr, u, mockopen):
         """Test status of missing components."""
@@ -387,7 +387,7 @@ class TestComponents(object):
             'repository/online/component/b': 'yes',
         })
         mockopen.write(U.Component.FN_APTSOURCES, b"")
-        assert U.Component.NOT_FOUND == u.component('b').status()
+        assert u.component('b').status() == U.Component.NOT_FOUND
 
     def test_get_current_component_status_OK(self, ucr, u, mockopen):
         """Test status of components."""
@@ -401,8 +401,8 @@ class TestComponents(object):
             U.Component.FN_APTSOURCES,
             b'deb http://host:port/prefix/0.0/maintained/component/ c/arch/\n'
             b'deb http://host:port/prefix/0.0/unmaintained/component/ d/arch/\n')
-        assert U.Component.AVAILABLE == u.component('c').status()
-        assert U.Component.AVAILABLE == u.component('d').status()
+        assert u.component('c').status() == U.Component.AVAILABLE
+        assert u.component('d').status() == U.Component.AVAILABLE
 
     def test_get_component_defaultpackage_UNKNOWN(self, u):
         """Test default packages for unknown components."""
@@ -466,8 +466,8 @@ class TestComponents(object):
             'repository/online/component/a/port': '4711',
         })
         a_baseurl = u.component('a').baseurl()
-        assert 'a.example.net' == a_baseurl.hostname
-        assert 4711 == a_baseurl.port
+        assert a_baseurl.hostname == 'a.example.net'
+        assert a_baseurl.port == 4711
 
     def test__get_component_baseurl_local(self, ucr, u):
         """Test getting local component configuration."""
@@ -479,8 +479,8 @@ class TestComponents(object):
         })
         u.ucr_reinit()
         a_baseurl = u.component('a').baseurl()
-        assert 'a.example.net' == a_baseurl.hostname
-        assert 4711 == a_baseurl.port
+        assert a_baseurl.hostname == 'a.example.net'
+        assert a_baseurl.port == 4711
 
     def test__get_component_baseurl_nonlocal(self, ucr, u):
         """Test getting non local mirror component configuration."""
@@ -493,8 +493,8 @@ class TestComponents(object):
         })
         u.ucr_reinit()
         a_baseurl = u.component('a').baseurl()
-        assert 'a.example.net' == a_baseurl.hostname
-        assert 4711 == a_baseurl.port
+        assert a_baseurl.hostname == 'a.example.net'
+        assert a_baseurl.port == 4711
 
     def test__get_component_baseurl_mirror(self, ucr, u):
         """Test getting mirror component configuration."""
@@ -506,8 +506,8 @@ class TestComponents(object):
         })
         u.ucr_reinit()
         a_baseurl = u.component('a').baseurl(for_mirror_list=True)
-        assert 'a.example.net' == a_baseurl.hostname
-        assert 4711 == a_baseurl.port
+        assert a_baseurl.hostname == 'a.example.net'
+        assert a_baseurl.port == 4711
 
     def test__get_component_baseurl_url(self, ucr, u):
         """Test getting custom component configuration."""
@@ -515,9 +515,9 @@ class TestComponents(object):
             'repository/online/component/a/server': 'https://a.example.net/',
         })
         a_baseurl = u.component('a').baseurl()
-        assert 'a.example.net' == a_baseurl.hostname
-        assert 443 == a_baseurl.port
-        assert '/' == a_baseurl.path
+        assert a_baseurl.hostname == 'a.example.net'
+        assert a_baseurl.port == 443
+        assert a_baseurl.path == '/'
 
     def test__get_component_server_default(self, u):
         """Test getting default component configuration."""
@@ -531,8 +531,8 @@ class TestComponents(object):
             'repository/online/component/a/port': '4711',
         })
         a_server = u.component('a').server()
-        assert 'a.example.net' == a_server.baseurl.hostname
-        assert 4711 == a_server.baseurl.port
+        assert a_server.baseurl.hostname == 'a.example.net'
+        assert a_server.baseurl.port == 4711
 
     def test__get_component_server_local(self, ucr, u):
         """Test getting local component configuration."""
@@ -544,8 +544,8 @@ class TestComponents(object):
         })
         u.ucr_reinit()
         a_server = u.component('a').server()
-        assert 'a.example.net' == a_server.baseurl.hostname
-        assert 4711 == a_server.baseurl.port
+        assert a_server.baseurl.hostname == 'a.example.net'
+        assert a_server.baseurl.port == 4711
 
     def test__get_component_server_nonlocal(self, ucr, u):
         """Test getting non local mirror component configuration."""
@@ -558,8 +558,8 @@ class TestComponents(object):
         })
         u.ucr_reinit()
         a_server = u.component('a').server()
-        assert 'a.example.net' == a_server.baseurl.hostname
-        assert 4711 == a_server.baseurl.port
+        assert a_server.baseurl.hostname == 'a.example.net'
+        assert a_server.baseurl.port == 4711
 
     def test__get_component_server_mirror(self, ucr, u):
         """Test getting mirror component configuration."""
@@ -571,8 +571,8 @@ class TestComponents(object):
         })
         u.ucr_reinit()
         a_server = u.component('a').server(for_mirror_list=True)
-        assert 'a.example.net' == a_server.baseurl.hostname
-        assert 4711 == a_server.baseurl.port
+        assert a_server.baseurl.hostname == 'a.example.net'
+        assert a_server.baseurl.port == 4711
 
     def test__get_component_server_none(selfi, ucr, u):
         """Test getting custom component configuration."""
@@ -581,8 +581,8 @@ class TestComponents(object):
             'repository/online/component/a/prefix': 'none',
         })
         a_server = u.component('a').server()
-        assert 'a.example.net' == a_server.baseurl.hostname
-        assert '' == a_server.baseurl.path
+        assert a_server.baseurl.hostname == 'a.example.net'
+        assert a_server.baseurl.path == ''
 
     def test__get_component_version_short(self, ucr, u, http):
         """Test getting component versions in range from MAJOR.MINOR."""

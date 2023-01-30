@@ -43,7 +43,7 @@ from univention.config_registry.frontend import ucr_update
 
 def encode_number(number: int, significant_digits: int = 3) -> str:
     assert 0 <= number <= int('9' * 26)
-    assert 1 < significant_digits
+    assert significant_digits > 1
     string = str(number)
     return string[:significant_digits] + ' abcdefghijklmnopqrstuvwxyz'[len(string)]
 

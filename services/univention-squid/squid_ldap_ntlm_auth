@@ -528,7 +528,7 @@ assert binascii.hexlify(e) == b"41faf306ee22e050cfab257ba8feec0fc163d7f385c0eb87
 assert f == 2726855173
 
 # test NTML
-assert b"1cffa87d8b48ce73a71e3e6c9a9dd80f112d48dfeea8792c" == binascii.hexlify(verifyNtlm(binascii.unhexlify(b"CAA1239D44DA7EDF926BCE39F5C65D0F") + b'\x00' * 5, b"L)eNCnxD"))
+assert binascii.hexlify(verifyNtlm(binascii.unhexlify(b"CAA1239D44DA7EDF926BCE39F5C65D0F") + b'\x00' * 5, b"L)eNCnxD")) == b"1cffa87d8b48ce73a71e3e6c9a9dd80f112d48dfeea8792c"
 
 # test NTML2
 g = verifyNtlm2(

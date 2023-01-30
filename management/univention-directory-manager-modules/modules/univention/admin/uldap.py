@@ -267,7 +267,7 @@ class position(object):
     def __setPosition(self, pos):
         # type: (str) -> None
         self.__pos = pos
-        self.__indomain = any('dc' == y[0] for x in ldap.dn.str2dn(self.__pos) for y in x)
+        self.__indomain = any(y[0] == 'dc' for x in ldap.dn.str2dn(self.__pos) for y in x)
 
     def getDn(self):
         # type: () -> str
@@ -335,7 +335,7 @@ class position(object):
             return self.getBase()
         dn = []
         for part in ldap.dn.str2dn(self.getDn())[::-1]:
-            if not any('dc' == y[0] for y in part):
+            if not any(y[0] == 'dc' for y in part):
                 break
             dn.append(part)
         return ldap.dn.dn2str(dn[::-1])

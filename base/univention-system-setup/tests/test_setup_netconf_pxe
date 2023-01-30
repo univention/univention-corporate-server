@@ -36,22 +36,22 @@ class TestPxeRewrite(unittest.TestCase):
         self.mapping = RewritePxe.Mapping(self.phase.ipv4_changes())
 
     def test_plain(self):
-        assert "2.3.4.100" == self.mapping.apply("2.3.4.5")
+        assert self.mapping.apply("2.3.4.5") == "2.3.4.100"
 
     def test_other(self):
-        assert "2.3.4.6" == self.mapping.apply("2.3.4.6")
+        assert self.mapping.apply("2.3.4.6") == "2.3.4.6"
 
     def test_multiple(self):
-        assert "2.3.4.100 2.3.4.100" == self.mapping.apply("2.3.4.5 2.3.4.5")
+        assert self.mapping.apply("2.3.4.5 2.3.4.5") == "2.3.4.100 2.3.4.100"
 
     def test_prefix(self):
-        assert "2.3.4.55" == self.mapping.apply("2.3.4.55")
+        assert self.mapping.apply("2.3.4.55") == "2.3.4.55"
 
     def test_suffix(self):
-        assert "22.3.4.5" == self.mapping.apply("22.3.4.5")
+        assert self.mapping.apply("22.3.4.5") == "22.3.4.5"
 
     def test_embedded(self):
-        assert "foo=2.3.4.100:123" == self.mapping.apply("foo=2.3.4.5:123")
+        assert self.mapping.apply("foo=2.3.4.5:123") == "foo=2.3.4.100:123"
 
 
 class TestPxeRewriteMultiple(unittest.TestCase):
@@ -76,13 +76,13 @@ class TestPxeRewriteMultiple(unittest.TestCase):
         self.mapping = RewritePxe.Mapping(self.phase.ipv4_changes())
 
     def test_first(self):
-        assert "2.3.4.100" == self.mapping.apply("2.3.4.5")
+        assert self.mapping.apply("2.3.4.5") == "2.3.4.100"
 
     def test_second(self):
-        assert "9.8.7.100" == self.mapping.apply("9.8.7.6")
+        assert self.mapping.apply("9.8.7.6") == "9.8.7.100"
 
     def test_both(self):
-        assert "2.3.4.100 9.8.7.100" == self.mapping.apply("2.3.4.5 9.8.7.6")
+        assert self.mapping.apply("2.3.4.5 9.8.7.6") == "2.3.4.100 9.8.7.100"
 
 
 class TestPxeRewriteRemoved(unittest.TestCase):
@@ -106,13 +106,13 @@ class TestPxeRewriteRemoved(unittest.TestCase):
         self.mapping = RewritePxe.Mapping(self.phase.ipv4_changes())
 
     def test_first(self):
-        assert "9.8.7.100" == self.mapping.apply("2.3.4.5")
+        assert self.mapping.apply("2.3.4.5") == "9.8.7.100"
 
     def test_second(self):
-        assert "9.8.7.100" == self.mapping.apply("9.8.7.6")
+        assert self.mapping.apply("9.8.7.6") == "9.8.7.100"
 
     def test_both(self):
-        assert "9.8.7.100 9.8.7.100" == self.mapping.apply("2.3.4.5 9.8.7.6")
+        assert self.mapping.apply("2.3.4.5 9.8.7.6") == "9.8.7.100 9.8.7.100"
 
 
 if __name__ == '__main__':

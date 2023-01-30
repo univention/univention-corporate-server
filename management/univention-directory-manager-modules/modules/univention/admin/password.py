@@ -165,7 +165,7 @@ def is_locked(password):
     True
     """
     match = RE_PASSWORD_SCHEME.match(password or '')
-    return match is not None and '!' == match.group(2)
+    return match is not None and match.group(2) == '!'
 
 
 def unlock_password(password):

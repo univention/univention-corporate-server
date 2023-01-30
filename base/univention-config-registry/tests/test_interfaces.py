@@ -46,9 +46,9 @@ class Test_Iface(object):
             'route/2': 'host 192.168.0.240',
             'route/1': 'net 192.168.0.0 netmask 255.255.255.128',
         })
-        assert 'NAME' == i.name
-        assert 42 == i.order
-        assert 'static' == i.type
+        assert i.name == 'NAME'
+        assert i.order == 42
+        assert i.type == 'static'
         assert i.start
         assert IPv4Address(u'1.2.3.0') == i.network
         assert IPv4Address(u'1.2.3.255') == i.broadcast
@@ -95,7 +95,7 @@ class Test_Iface(object):
             'ipv6/other/address': '2:3:4:5:6:7:8:9',
             'ipv6/other/prefix': '80',
         })
-        assert 'NAME' == i.name
+        assert i.name == 'NAME'
         assert i.ipv4_address() is None
         assert IPv6Interface(u'1:2:3:4:5:6:7:8/64') == i.ipv6_address()
         assert IPv6Interface(u'1:2:3:4:5:6:7:8/64') == i.ipv6_address('default')
@@ -108,7 +108,7 @@ class TestInterfaces(object):
     def test_empty(self):
         """Test no interface."""
         t = Interfaces()
-        assert 'eth0' == t.primary
+        assert t.primary == 'eth0'
         assert t.ipv4_gateway is None
         assert t.ipv6_gateway is None
         assert t.ipv6_gateway_zone_index is None
@@ -302,7 +302,7 @@ class TestInterfaces(object):
             'ipv6/gateway': '1:2:3:4:5:6:7:8',
             'interfaces/primary': 'br0',
         })
-        assert 'br0' == t.primary
+        assert t.primary == 'br0'
         assert IPv4Address(u'1.2.3.4') == t.ipv4_gateway
         assert IPv6Address(u'1:2:3:4:5:6:7:8') == t.ipv6_gateway
         assert t.ipv6_gateway_zone_index is None
@@ -313,7 +313,7 @@ class TestInterfaces(object):
             'ipv6/gateway': 'fe80::1%eth0',
         })
         assert IPv6Address(u'fe80::1') == t.ipv6_gateway
-        assert 'eth0' == t.ipv6_gateway_zone_index
+        assert t.ipv6_gateway_zone_index == 'eth0'
 
     def test_non_vengeful(self):
         """Test ConfigRegistry not raining KeyError."""
@@ -333,9 +333,9 @@ class TestDecorator(object):
 
     def test_value_through(self):
         """Test pass through decorator."""
-        assert 'value_through' == self.value_through.__name__
-        assert 'Value through' == self.value_through.__doc__
-        assert 42 == self.value_through()
+        assert self.value_through.__name__ == 'value_through'
+        assert self.value_through.__doc__ == 'Value through'
+        assert self.value_through() == 42
 
     @forgiving()
     def error_through(self):
@@ -344,8 +344,8 @@ class TestDecorator(object):
 
     def test_error_through(self):
         """Test exception decorator."""
-        assert 'error_through' == self.error_through.__name__
-        assert 'Error through' == self.error_through.__doc__
+        assert self.error_through.__name__ == 'error_through'
+        assert self.error_through.__doc__ == 'Error through'
         with pytest.raises(KeyError):
             self.error_through()
 
@@ -356,9 +356,9 @@ class TestDecorator(object):
 
     def test_error_translate(self):
         """Test translation decorator."""
-        assert 'error_translate' == self.error_translate.__name__
-        assert 'Error translate' == self.error_translate.__doc__
-        assert 42 == self.error_translate()
+        assert self.error_translate.__name__ == 'error_translate'
+        assert self.error_translate.__doc__ == 'Error translate'
+        assert self.error_translate() == 42
 
     @forgiving({LookupError: 42})
     def error_super(self):
@@ -367,9 +367,9 @@ class TestDecorator(object):
 
     def test_error_super(self):
         """Test translation super-class decorator."""
-        assert 'error_super' == self.error_super.__name__
-        assert 'Error super' == self.error_super.__doc__
-        assert 42 == self.error_super()
+        assert self.error_super.__name__ == 'error_super'
+        assert self.error_super.__doc__ == 'Error super'
+        assert self.error_super() == 42
 
     @forgiving({LookupError: 0, KeyError: 42})
     def error_multi(self):
@@ -378,9 +378,9 @@ class TestDecorator(object):
 
     def test_error_multi(self):
         """Test translation multi-class decorator."""
-        assert 'error_multi' == self.error_multi.__name__
-        assert 'Error multi' == self.error_multi.__doc__
-        assert 42 == self.error_multi()
+        assert self.error_multi.__name__ == 'error_multi'
+        assert self.error_multi.__doc__ == 'Error multi'
+        assert self.error_multi() == 42
 
 
 class TestSort(object):

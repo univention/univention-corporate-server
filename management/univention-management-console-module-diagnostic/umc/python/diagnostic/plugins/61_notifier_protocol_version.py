@@ -89,7 +89,7 @@ def run(_umc_instance: Instance) -> None:
         MODULE.error(text)
         raise Critical(text)
 
-    if (4, 3, 3, 428) <= (major, minor, ucs_patchlevel, ucs_erratalevel) and np_version < UDN:
+    if (major, minor, ucs_patchlevel, ucs_erratalevel) >= (4, 3, 3, 428) and np_version < UDN:
         MODULE.error(description)
         raise Warning(description, buttons=[BUTTON])
 

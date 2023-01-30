@@ -57,7 +57,7 @@ class TestModulesChanged(unittest.TestCase):
 
     def test_modules(self):
         self.phase.pre()
-        assert "bridge;dummy" == self.cs.ucr_changes.get("kernel/modules")
+        assert self.cs.ucr_changes.get("kernel/modules") == "bridge;dummy"
 
 
 if __name__ == '__main__':

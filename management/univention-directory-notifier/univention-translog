@@ -281,7 +281,7 @@ class Translog(object):
         if size:
             line = translog.readline()
             rec = self.parse_line(line)
-            assert 1 <= rec.tid, rec.tid
+            assert rec.tid >= 1, rec.tid
             self.first = rec.tid
 
             last = self.index.count
@@ -875,7 +875,7 @@ class CheckGeneric(object):
 
                     rec = Transaction(tid, dn, command)
 
-                if not 0 < rec.tid:
+                if not rec.tid > 0:
                     self.error("Invalid transaction id", renum=True)
                     continue
 
@@ -1353,7 +1353,7 @@ def parse_int_pos(string):
     """
     try:
         val = int(string)
-        if 0 < val:
+        if val > 0:
             return val
     except ValueError:
         pass
@@ -1397,7 +1397,7 @@ def parse_size(string):
     prefix = string[:-len(suffix)] if suffix else string
     try:
         value = float(prefix)
-        if not 0.0 <= value:
+        if not value >= 0.0:
             raise ValueError()
     except ValueError:
         raise ArgumentTypeError("Invalid value")

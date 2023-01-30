@@ -89,19 +89,19 @@ class ReferentialIntegrityCheck(LocalLdap, LocalFile):
         if self._delay:
             old_dn, old = self._delay
             self._delay = None
-            if "a" == command and old['entryUUID'] == new['entryUUID']:
+            if command == "a" and old['entryUUID'] == new['entryUUID']:
                 self.handler_move(old_dn, old, dn, new)
                 return
             self.handler_remove(old_dn, old)
 
-        if "n" == command and "cn=Subschema" == dn:
+        if command == "n" and dn == "cn=Subschema":
             self.handler_schema(old, new)
         elif new and not old:
             self.handler_add(dn, new)
         elif new and old:
             self.handler_modify(dn, old, new)
         elif not new and old:
-            if "r" == command:
+            if command == "r":
                 self._delay = (dn, old)
             else:
                 self.handler_remove(dn, old)

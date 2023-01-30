@@ -180,7 +180,7 @@ def dns_dn_mapping(s4connector, given_object, dn_mapping_stored, isUCSobject):
                         relativeDomainName = obj['attributes'][ol_RR_attr][0].decode('UTF-8')
                     except (KeyError, IndexError):
                         # Safety fallback for the unexpected case, where relativeDomainName would not be set
-                        if 'zoneName' == fst_rdn_attribute_utf8:
+                        if fst_rdn_attribute_utf8 == 'zoneName':
                             relativeDomainName = '@'
                         else:
                             raise  # can't determine relativeDomainName
@@ -197,7 +197,7 @@ def dns_dn_mapping(s4connector, given_object, dn_mapping_stored, isUCSobject):
                     # Safety fallback for the unexpected case, where zoneName would not be set
                     if ol_RR_attr == fst_rdn_attribute_utf8:
                         (snd_rdn_attribute_utf8, snd_rdn_value_utf8, _flags) = exploded_dn[1][0]
-                        if 'zoneName' == snd_rdn_attribute_utf8:
+                        if snd_rdn_attribute_utf8 == 'zoneName':
                             ol_zone_name = snd_rdn_value_utf8
                         else:
                             raise  # can't determine zoneName for this relativeDomainName
@@ -206,7 +206,7 @@ def dns_dn_mapping(s4connector, given_object, dn_mapping_stored, isUCSobject):
                 target_zone_name = ol_zone_name
                 s4dn_utf16_le = None
                 s4_zone_dn = None
-                if '@' == relativeDomainName:  # or dn starts with 'zoneName='
+                if relativeDomainName == '@':  # or dn starts with 'zoneName='
                     s4_filter = format_escaped('(&(objectClass=dnsZone)({0}={1!e}))', s4_RR_attr, ol_zone_name)
                     ud.debug(ud.LDAP, ud.INFO, "dns_dn_mapping: search in S4")
                     for base in s4connector.s4_ldap_partitions:
@@ -386,7 +386,7 @@ def dns_dn_mapping(s4connector, given_object, dn_mapping_stored, isUCSobject):
                     else:
                         # Fallback, e.g. for new zones
                         zone_dn = __get_zone_dn(s4connector, target_zone_name)
-                    if '@' == s4_RR_val:
+                    if s4_RR_val == '@':
                         newdn = zone_dn
                     elif b'dnsZone' in s4_ocs:
                         # Hmm, is it ok to map it to the same as '@'?

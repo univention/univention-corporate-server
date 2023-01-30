@@ -25,4 +25,4 @@ def test_run_diagnostic_checks():
         args = ['/usr/bin/univention-run-diagnostic-checks', '--username', account.username, '--bindpwdfile', fd.name, '-t'] + plugins
         print(args)
         returncode = subprocess.call(args)
-        assert 0 == returncode, 'Exit code != 0: %d' % (returncode,)
+        assert returncode == 0, 'Exit code != 0: %d' % (returncode,)

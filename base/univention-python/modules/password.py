@@ -260,9 +260,9 @@ def generate_password(digits=6, lower=6, other=0, upper=6, forbidden='', min_len
     forbidden_chars = forbidden or ''
     exclude_characters = set(forbidden_chars) | set(string.whitespace)
 
-    if 0 > digits or 0 > lower or 0 > other or 0 > upper:
+    if digits < 0 or lower < 0 or other < 0 or upper < 0:
         raise ValueError('Number of digits, lower, upper or other characters can not be negative')
-    elif 0 >= digits + lower + other + upper:
+    elif digits + lower + other + upper <= 0:
         raise ValueError('At least one from the: digits, lower, upper or other characters must be positive number')
 
     available_chars = set(string.printable) - exclude_characters

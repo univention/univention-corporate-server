@@ -53,7 +53,7 @@ def test_load_config_success(mocked_portal_config):
     assert mocked_portal_config.load.never_loaded is True
     mocked_portal_config.load()
     assert mocked_portal_config.load.never_loaded is False
-    assert mocked_portal_config._DB == expected_config
+    assert expected_config == mocked_portal_config._DB
 
 
 def test_load_config_error(mocker, mocked_portal_config):
@@ -63,9 +63,9 @@ def test_load_config_error(mocker, mocked_portal_config):
     # Execute
     assert mocked_portal_config.load.never_loaded is True
     mocked_portal_config.load()
-    assert mocked_portal_config._DB == {}
+    assert {} == mocked_portal_config._DB
     assert mocked_portal_config.load.never_loaded is True
-    assert mocked_portal_config._DB == {}
+    assert {} == mocked_portal_config._DB
 
 
 def test_fetch_key(mocker, mocked_portal_config):

@@ -1284,7 +1284,7 @@ class object(univention.admin.handlers.simpleLdap, PKIIntegration):
             return super(object, self).modify(*args, **kwargs)
         except univention.admin.uexceptions.licenseDisableModify:
             # it has to be possible to deactivate an user account when the license is exceeded
-            if '1' != self['disabled'] or not self.hasChanged('disabled'):
+            if self['disabled'] != '1' or not self.hasChanged('disabled'):
                 raise
             kwargs['ignore_license'] = True
             return super(object, self).modify(*args, **kwargs)

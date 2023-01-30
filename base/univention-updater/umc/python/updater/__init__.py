@@ -496,7 +496,7 @@ class Instance(Base):
         except EnvironmentError:
             pass
 
-        result['running'] = '' != self.__which_job_is_running()
+        result['running'] = self.__which_job_is_running() != ''
         return result
 
     @sanitize(

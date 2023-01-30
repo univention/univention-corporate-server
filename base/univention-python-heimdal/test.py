@@ -234,10 +234,10 @@ class TestPrincipal(unittest.TestCase):
             heimdal.principal(object(), USER)
 
     def test_principal(self):
-        assert USER == str(self.principal)
+        assert str(self.principal) == USER
 
     def test_realm(self):
-        assert REALM == self.principal.realm()
+        assert self.principal.realm() == REALM
 
     def test_dir(self):
         assert {'realm'} <= set(dir(self.principal))
@@ -288,9 +288,9 @@ class TestKeytab(unittest.TestCase):
             random_flag = 0
             keytab.add(USER, KVNO, ENCSTR, PASSWORD, salt_flag, random_flag)
             ((kvno, enctype, principal, timestamp, keyblock),) = keytab.list()
-            assert KVNO == kvno
-            assert ENCSTR == enctype
-            assert USER == principal
+            assert kvno == KVNO
+            assert enctype == ENCSTR
+            assert principal == USER
             assert timestamp > 0
             assert keyblock != ''
 
@@ -325,11 +325,11 @@ class TestSalt(unittest.TestCase):
     def test_salt(self):
         principal = heimdal.principal(self.context, USER)
         salt = heimdal.salt(self.context, principal)
-        assert self.VALUE == salt.saltvalue()
+        assert salt.saltvalue() == self.VALUE
 
     def test_salt_raw(self):
         salt = heimdal.salt_raw(self.context, self.VALUE)
-        assert self.VALUE == salt.saltvalue()
+        assert salt.saltvalue() == self.VALUE
 
     def test_dir(self):
         salt = heimdal.salt_raw(self.context, self.VALUE)
@@ -350,7 +350,7 @@ class TestEnctype(unittest.TestCase):
             heimdal.enctype(object(), ENCSTR)
 
     def test_enctype(self):
-        assert ENCINT == self.enctype.toint()
+        assert self.enctype.toint() == ENCINT
 
     def test_dir(self):
         assert {'toint'} <= set(dir(self.enctype))
@@ -366,19 +366,19 @@ class TestKeyblock(unittest.TestCase):
 
     def test_keyblock_principal(self):
         keyblock = heimdal.keyblock(self.context, self.enctype, PASSWORD, self.principal)
-        assert ENCSTR == str(keyblock.keytype())
-        assert self.VALUE == keyblock.keyvalue()
+        assert str(keyblock.keytype()) == ENCSTR
+        assert keyblock.keyvalue() == self.VALUE
 
     def test_keyblock_salt(self):
         salt = heimdal.salt(self.context, self.principal)
         keyblock = heimdal.keyblock(self.context, self.enctype, PASSWORD, salt)
-        assert ENCSTR == str(keyblock.keytype())
-        assert self.VALUE == keyblock.keyvalue()
+        assert str(keyblock.keytype()) == ENCSTR
+        assert keyblock.keyvalue() == self.VALUE
 
     def test_keyblock_raw(self):
         keyblock = heimdal.keyblock_raw(self.context, ENCINT, self.VALUE)
-        assert ENCSTR == str(keyblock.keytype())
-        assert self.VALUE == keyblock.keyvalue()
+        assert str(keyblock.keytype()) == ENCSTR
+        assert keyblock.keyvalue() == self.VALUE
 
     def test_dir(self):
         keyblock = heimdal.keyblock_raw(self.context, ENCINT, self.VALUE)
@@ -423,25 +423,25 @@ class TestASN1(unittest.TestCase):
 
     def test_asn1_decode_key(self):
         (keyblock, salt, kvno) = heimdal.asn1_decode_key(self.ASN1)
-        assert ENCSTR == str(keyblock.keytype())
-        assert self.VALUE == keyblock.keyvalue()
-        assert self.SALT == salt.saltvalue()
-        assert KVNO == kvno
+        assert str(keyblock.keytype()) == ENCSTR
+        assert keyblock.keyvalue() == self.VALUE
+        assert salt.saltvalue() == self.SALT
+        assert kvno == KVNO
 
     def test_asn1_decode_key_with_context(self):
         context = heimdal.context()
         (keyblock, salt, kvno) = heimdal.asn1_decode_key(self.ASN1, context)
-        assert ENCSTR == str(keyblock.keytype())
-        assert self.VALUE == keyblock.keyvalue()
-        assert self.SALT == salt.saltvalue()
-        assert KVNO == kvno
+        assert str(keyblock.keytype()) == ENCSTR
+        assert keyblock.keyvalue() == self.VALUE
+        assert salt.saltvalue() == self.SALT
+        assert kvno == KVNO
 
     def test_asn1_encode_key(self):
         context = heimdal.context()
         keyblock = heimdal.keyblock_raw(context, ENCINT, self.VALUE)
         salt = heimdal.salt_raw(context, self.SALT)
         asn1 = heimdal.asn1_encode_key(keyblock, salt, KVNO)
-        assert self.ASN1 == asn1
+        assert asn1 == self.ASN1
 
     def test_asn1_encode_key_without_salt(self):
         context = heimdal.context()

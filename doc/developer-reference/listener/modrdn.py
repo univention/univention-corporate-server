@@ -15,19 +15,19 @@ def handler(
     if _delay:
         old_dn, old = _delay
         _delay = None
-        if "a" == command and old['entryUUID'] == new['entryUUID']:
+        if command == "a" and old['entryUUID'] == new['entryUUID']:
             handler_move(old_dn, old, dn, new)
             return
         handler_remove(old_dn, old)
 
-    if "n" == command and "cn=Subschema" == dn:
+    if command == "n" and dn == "cn=Subschema":
         handler_schema(old, new)
     elif new and not old:
         handler_add(dn, new)
     elif new and old:
         handler_modify(dn, old, new)
     elif not new and old:
-        if "r" == command:
+        if command == "r":
             _delay = (dn, old)
         else:
             handler_remove(dn, old)
