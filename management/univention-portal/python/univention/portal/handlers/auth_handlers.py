@@ -1,5 +1,3 @@
-#!/usr/bin/python3
-#
 # Univention Portal
 #
 # Like what you see? Join us!
@@ -32,27 +30,21 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-import json
-
-import tornado.ioloop
-
-from univention.portal import config
-from univention.portal.log import get_logger, setup_logger
-from univention.portal.main import make_app
+from univention.portal.handlers.portal_resource import PortalResource
 
 
-def _load_portal_definitions(portal_definitions_file):
-    with open(portal_definitions_file) as fd:
-        return json.load(fd)
+class LoginHandler(PortalResource):
+    async def post(self, portal_name):
+        portal = self.find_portal()
+        await portal.login_user(self)
+
+    async def get(self, portal_name):
+        portal = self.find_portal()
+        await portal.login_request(self)
 
 
-if __name__ == "__main__":
-    setup_logger()
-    portal_definitions = _load_portal_definitions(
-        "/usr/share/univention-portal/portals.json",
-    )
-    app = make_app(portal_definitions)
-    port = config.fetch("port")
-    get_logger("server").info("firing up portal server at port %s" % port)
-    app.listen(port)
-    tornado.ioloop.IOLoop.current().start()
+class LogoutHandler(PortalResource):
+
+    async def get(self, portal_name):
+        portal = self.find_portal()
+        await portal.logout_user(self)

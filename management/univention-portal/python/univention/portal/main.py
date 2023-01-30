@@ -1,5 +1,3 @@
-#!/usr/bin/python3
-#
 # Univention Portal
 #
 # Like what you see? Join us!
@@ -32,27 +30,30 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-import json
+import tornado.web
 
-import tornado.ioloop
-
-from univention.portal import config
-from univention.portal.log import get_logger, setup_logger
-from univention.portal.main import make_app
+from univention.portal.factory import make_portal
+from univention.portal.handlers import LoginHandler, LogoutHandler, NavigationHandler, PortalEntriesHandler
+from univention.portal.log import get_logger
 
 
-def _load_portal_definitions(portal_definitions_file):
-    with open(portal_definitions_file) as fd:
-        return json.load(fd)
+def make_app(portal_definitions):
+    portals = {}
+    for name, portal_definition in portal_definitions.items():
+        get_logger("server").info("Building portal {}".format(name))
+        portals[name] = make_portal(portal_definition)
+
+    routes = build_routes(portals)
+
+    return tornado.web.Application(routes)
 
 
-if __name__ == "__main__":
-    setup_logger()
-    portal_definitions = _load_portal_definitions(
-        "/usr/share/univention-portal/portals.json",
-    )
-    app = make_app(portal_definitions)
-    port = config.fetch("port")
-    get_logger("server").info("firing up portal server at port %s" % port)
-    app.listen(port)
-    tornado.ioloop.IOLoop.current().start()
+def build_routes(portals):
+    return [
+        tornado.web.url(r"/(.+)/login/?", LoginHandler, {"portals": portals}, name='login'),
+        tornado.web.url(r"/(.+)/portal.json", PortalEntriesHandler, {"portals": portals}, name='portal'),
+        tornado.web.url(r"/(.+)/navigation.json", NavigationHandler, {"portals": portals}, name='navigation'),
+        tornado.web.url(r"/(.+)/logout/?", LogoutHandler, {"portals": portals}, name='logout'),
+        tornado.web.url(r"/(.+)/", tornado.web.RequestHandler, name='index'),
+        tornado.web.url(r"/", tornado.web.RequestHandler, name='root'),
+    ]

@@ -1,11 +1,9 @@
-#!/usr/bin/python3
-#
 # Univention Portal
 #
 # Like what you see? Join us!
 # https://www.univention.com/about-us/careers/vacancies/
 #
-# Copyright 2019-2023 Univention GmbH
+# Copyright 2020-2023 Univention GmbH
 #
 # https://www.univention.de/
 #
@@ -31,28 +29,9 @@
 # License with the Debian GNU/Linux or Univention distribution in file
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
+#
 
-import json
-
-import tornado.ioloop
-
-from univention.portal import config
-from univention.portal.log import get_logger, setup_logger
-from univention.portal.main import make_app
-
-
-def _load_portal_definitions(portal_definitions_file):
-    with open(portal_definitions_file) as fd:
-        return json.load(fd)
-
-
-if __name__ == "__main__":
-    setup_logger()
-    portal_definitions = _load_portal_definitions(
-        "/usr/share/univention-portal/portals.json",
-    )
-    app = make_app(portal_definitions)
-    port = config.fetch("port")
-    get_logger("server").info("firing up portal server at port %s" % port)
-    app.listen(port)
-    tornado.ioloop.IOLoop.current().start()
+from .auth_handlers import LoginHandler, LogoutHandler  # noqa: F401
+from .navigation_handler import NavigationHandler  # noqa: F401
+from .portal_entries_handler import PortalEntriesHandler  # noqa: F401
+from .portal_resource import PortalResource  # noqa: F401

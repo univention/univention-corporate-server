@@ -1,5 +1,3 @@
-#!/usr/bin/python3
-#
 # Univention Portal
 #
 # Like what you see? Join us!
@@ -32,27 +30,31 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-import json
+import tornado.web
 
-import tornado.ioloop
-
-from univention.portal import config
-from univention.portal.log import get_logger, setup_logger
-from univention.portal.main import make_app
+from univention.portal.log import get_logger
 
 
-def _load_portal_definitions(portal_definitions_file):
-    with open(portal_definitions_file) as fd:
-        return json.load(fd)
+class PortalResource(tornado.web.RequestHandler):
+    def initialize(self, portals):
+        self.portals = portals
 
+    def write_error(self, status_code, **kwargs):
+        if "exc_info" in kwargs:
+            get_logger("server").exception("Error during service")
+        return super(PortalResource, self).write_error(status_code, **kwargs)
 
-if __name__ == "__main__":
-    setup_logger()
-    portal_definitions = _load_portal_definitions(
-        "/usr/share/univention-portal/portals.json",
-    )
-    app = make_app(portal_definitions)
-    port = config.fetch("port")
-    get_logger("server").info("firing up portal server at port %s" % port)
-    app.listen(port)
-    tornado.ioloop.IOLoop.current().start()
+    def find_portal(self):
+        best_score = 0
+        best_portal = None
+        for _name, portal in self.portals.items():
+            score = portal.score(self.request)
+            if score > best_score:
+                best_score = score
+                best_portal = portal
+        return best_portal
+
+    def reverse_abs_url(self, name, args=None):
+        if args is None:
+            args = self.path_args
+        return self.request.protocol + "://" + self.request.host + self.reverse_url(name, *args)
