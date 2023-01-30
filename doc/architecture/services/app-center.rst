@@ -530,10 +530,12 @@ As complex component in UCS, the service *App Center* has the following dependen
 * :ref:`services-ucr`
 * :ref:`services-udm`
 * :ref:`services-umc`
-* :ref:`services-listener`
+* Univention Directory Listener
 * :ref:`services-ucs-portal`
 * Univention updater
 * *Docker.io* with the *Docker Engine* and *Docker compose*
+
+.. TODO : Add references, once ready: Univention Directory Listener, Updater
 
 :numref:`services-app-center-dependency-model` shows the direct dependencies in
 the model.

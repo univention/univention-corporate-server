@@ -53,8 +53,13 @@ Single sign-on for the UCS portal
 ---------------------------------
 
 To use single sign-on with a service, the service needs to support and integrate
-single sign-on in the UCS domain. UCS supports the standards :ref:`SAML
-<services-authentication-saml>` and :ref:`OpenID Connect
-<services-authentication-openid-connect>`. For information about single sign-on,
-see :ref:`services-authentication`.
+single sign-on in the UCS domain. UCS supports the standards SAML and OpenID
+Connect.
 
+.. TODO : Add references when ready to SAML, OpenID Connect and authentication.
+
+   To use single sign-on with a service, the service needs to support and
+   integrate single sign-on in the UCS domain. UCS supports the standards
+   :ref:`SAML <services-authentication-saml>` and :ref:`OpenID Connect
+   <services-authentication-openid-connect>`. For information about single
+   sign-on, see :ref:`services-authentication`.

@@ -150,11 +150,14 @@ server*.
 
 .. seealso::
 
+   Software developers and system engineers, refer to
+   :cite:t:`developer-reference`:
+
    :ref:`umc-umcp2`
-      for technical details about UMCP 2.0 in :cite:t:`developer-reference`
+      for technical details about UMCP 2.0
 
    :ref:`umc-http`
-      for examples about HTTP for UMC in :cite:t:`developer-reference`
+      for examples about HTTP for UMC
 
 .. _services-umc-terminal:
 
@@ -183,10 +186,14 @@ Authentication
 
 .. index::
    pair: umc; authentication
-   pair: umc; saml
+   single: umc; saml
    single: authentication; basic http
+   single: authentication; form-based login
+   single: authentication; saml
    single: umc; server
    single: umc; web server
+   single: saml; service provider role
+   single: saml; umc authentication
 
 |UMC| provides the web and authentication interface of the UCS management
 system. Users authenticate through a regular form-based login, basic HTTP
@@ -194,8 +201,10 @@ authentication or |SAML|.
 
 In UMC, the *UMC web server* implements |SAML| in the *SAML service provider*
 role. The *UMC web server* considers SAML authenticated users as authenticated
-and forwards the SAML message also to the *UMC server*. For details about |SAML|
-in UCS, refer to :ref:`services-authentication-saml`.
+and forwards the SAML message also to the *UMC server*.
+
+.. TODO : Activate section, once SAML is ready:
+   For details about |SAML| in UCS, refer to :ref:`services-authentication-saml`.
 
 The *UMC server* handles user authentication as shown in
 :numref:`services-umc-authentication-chain`. The *UMC web server* validates user
@@ -231,7 +240,7 @@ Unsuccessful authentication
 The *UMC server* uses the |PAM| stack on UCS to validate and authenticate users
 for usual login and for |SAML| authentication. *UMC server* evaluates |ACL|\ s
 to grant or deny the usage of UMC modules. To find the user object for the
-authenticating user, *UMC server* runs a LDAP search for the username. It also
+authenticating user, *UMC server* runs an LDAP search for the username. It also
 allows to authenticate users with their email address. Furthermore, |PAM|
 recognizes deactivated user accounts, expired passwords, and allows to change an
 expired password during sign-in.
@@ -239,30 +248,25 @@ expired password during sign-in.
 
 .. seealso::
 
+   Administrators, refer to :cite:t:`ucs-manual`:
+
    :ref:`users-management-table-account`
-      for information about deactivated and expired user accounts in
-      :cite:t:`ucs-manual`
+      for information about deactivated and expired user accounts
 
    :ref:`users-faillog`
       for information about failed login attempts and how UCS handles them in
-      Samba, PAM and OpenLDAP in :cite:t:`ucs-manual`
+      Samba, PAM and OpenLDAP
 
 .. _services-umc-back-end:
 
 UMC back end
 ------------
 
-.. index:: ! umc; back end, ! umc; static http server, ! umc; reverse proxy, ! umc; web server, ! umc; server
-   single: cherrypy
-   single: technology; apache http server
-   single: technology; cherrypy
+.. index:: ! umc; back end
    single: umc; back end architecture
    single: umc; module processes
    single: IPC socket
    single: umcp; umc back end
-   single: umcp; umc server
-   single: umcp; umc web server
-   single: python; notifier
 
 The *UMC back end* consists of the following items as shown in
 :numref:`services-umc-architecture-simplified-model`:
@@ -286,6 +290,9 @@ server offering the *Reverse proxy* consists of more parts.
 
    Parts of the *UMC back end*
 
+.. index:: ! umc; static http server
+   single: technology; apache http server
+
 Static HTTP server
    First is the web server realized by :program:`Apache HTTP server`. The web
    server provides the *Static HTTP server* that delivers the static files for
@@ -293,7 +300,9 @@ Static HTTP server
    HTTP headers for caching rules of the static files and security related
    headers like for example `content security policy <mdn-csp_>`_.
 
-.. index:: apache; mod_proxy, apache; http server
+.. index:: ! umc; reverse proxy
+   single: apache; mod_proxy
+   single: apache; http server
 
 Reverse proxy
    Second is the reverse proxy capability from the :program:`Apache HTTP server`
@@ -309,6 +318,11 @@ Reverse proxy
    * ``/univention/upload/.*`` as regular expression
    * ``/univention/get/.*`` as regular expression
 
+.. index:: ! umc; web server
+   single: cherrypy
+   single: technology; cherrypy
+   single: umcp; umc web server
+
 UMC web server
    Further down the chain is the *UMC web server* realized by
    :program:`CherryPy`, that only allows connections from the *Reverse proxy*.
@@ -322,6 +336,11 @@ UMC web server
 
    The *UMC web server* transforms HTTP requests to |UMCP| requests and forwards
    them through an |IPC| socket to the *UMC server*.
+
+.. index:: ! umc; server
+   single: python; notifier
+   single: technology; python notifier
+   single: umcp; umc server
 
 UMC server
    The *UMC server* accepts requests with |UMCP|. For example, the *UMC client*
@@ -343,6 +362,8 @@ UMC module processes
 
    :ref:`umc-umcp2`
       for information about UMCP in :cite:t:`developer-reference`
+
+.. seealso::
 
    `Apache HTTP server project <apache-httpd_>`_
       for the website of the Apache HTTP server project

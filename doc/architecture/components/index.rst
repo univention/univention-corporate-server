@@ -4,12 +4,6 @@
 Product components
 ******************
 
-.. How is "product component" defined in the scope of this document?
-   Who is your target audience?
-   What is your target audience's goal? Why are they reading this document?
-   What do your readers already know before they read your document?
-   What should your readers know or be able to do after they read your document?
-
 In this part of the document, you learn about the second, medium, detail level of
 the architecture of |UCS|. You learn about UCS product components that you face
 directly when you use UCS. The product components typically act as entry points
@@ -33,8 +27,10 @@ with UCS:
 #. :ref:`component-portal`
 #. :ref:`component-management-system`
 #. :ref:`component-app-center`
-#. :ref:`component-file-print`
-#. :ref:`component-command-line`
+
+..
+   #. :ref:`component-file-print`
+   #. :ref:`component-command-line`
 
 .. _product-components-model:
 
@@ -60,5 +56,3 @@ with UCS:
    portal
    management-system
    app-center
-   file-print
-   command-line

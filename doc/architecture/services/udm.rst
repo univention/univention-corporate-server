@@ -16,7 +16,9 @@ their UDM modules. For example, the following packages also provide UDM modules:
 
 * :ref:`services-ucs-portal` at :uv:src:`management/univention-portal/`
 
-* :ref:`services-samba-s4-connector` at :uv:src:`services/univention-s4-connector/`
+* S4 Connector at :uv:src:`services/univention-s4-connector/`
+
+.. * :ref:`services-samba-s4-connector` at :uv:src:`services/univention-s4-connector/`
 
 .. _services-udm-architecture:
 
@@ -91,7 +93,9 @@ UDM modules
 UDM hooks
    UDM hooks are Python classes with methods that can integrate into existing
    UDM modules together with *extended attributes*. They offer an alternative to
-   customize |UDM|. For more information, refer to :ref:`services-hooks`.
+   customize |UDM|.
+
+   .. TODO Add when hooks are ready: For more information, refer to :ref:`services-hooks`.
 
 The second abstraction layer in :numref:`architecture-model-udm` uses the *UDM
 Python library* and offers *UDM in UMC*, *UDM HTTP REST API*, the *UDM CLI daemon*, the
@@ -105,8 +109,9 @@ UDM in UMC
 UDM HTTP REST API
    Provides the HTTP REST API interface to |UDM| as a separate service. |UDM|
    offers HTTP through the UDM HTTP REST API to use |UDM| through a remote
-   interface. For more information about the architecture, refer to
-   :ref:`services-rest-api`.
+   interface.
+
+   .. TODO Add when rest api is ready: For more information about the architecture, refer to :ref:`services-rest-api`.
 
 UDM CLI Daemon
    Provides the command-line interface to |UDM| through one system wide process
@@ -152,16 +157,25 @@ Dependencies for UDM
    single: udm dependency; udm modules
    single: udm dependency; udm hooks
 
-|UDM| depends on :ref:`services-ldap`. You can resolve the other detailed
-dependencies with the package manager.
+|UDM| depends on LDAP. You can resolve the other detailed dependencies with the
+package manager.
+
+.. TODO : Add reference when LDAP is ready:
+   |UDM| depends on :ref:`services-ldap`. You can resolve the other detailed
+   dependencies with the package manager.
 
 The following services in UCS need UDM:
 
 * UCS\@school library
 
-* :ref:`services-samba-ad-connector`
+* Active Directory Connector
 
-* :ref:`services-samba-s4-connector`
+* S4 Connector
+
+.. TODO : Readd the cross references:
+   * :ref:`services-samba-ad-connector`
+
+   * :ref:`services-samba-s4-connector`
 
 * :ref:`services-ucs-portal`
 
@@ -204,11 +218,14 @@ different password hash types.
 .. index::
    pair: listener; udm modules
 
+.. TODO : Add cross reference to listener in the section below, once ready.
+
 Python is the programming language for UDM modules. During installation UDM
 modules register themselves in the LDAP directory. The UCS domain replicates the
-UDM modules to UCS systems across the domain. On the UCS systems, the
-:ref:`services-listener` writes the UDM modules to the systems' file system. The
+UDM modules to UCS systems across the domain. On the UCS systems, the Univention
+Directory Listener writes the UDM modules to the systems' file system. The
 replication ensures the availability of all UDM modules in the UCS domain alike.
+
 
 Domain administrators can grant permission to use particular UDM modules in UMC
 to other users. UDM modules access the LDAP directory with the permissions of

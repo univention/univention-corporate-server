@@ -17,7 +17,7 @@ format. The UCS portal needs information about the tiles on the portal and about
 user memberships in user groups. Portal front end and back end use HTTP for
 communication.
 
-You find the source code at :uv:src:`management/univention-portal`.
+You find the source code at :uv:src:`management/univention-portal/`.
 
 :numref:`services-ucs-portal-architecture-model` shows the architecture of the
 UCS Portal and the description below.
@@ -103,7 +103,10 @@ for the user.
 
 The portal back end delegates the user authentication to the UMC server. It
 maintains internal caches for the portal content and the user group memberships.
-It doesn't request :ref:`services-ldap` or :ref:`services-udm` directly.
+It doesn't request LDAP or :ref:`services-udm` directly.
+
+.. TODO : Add reference, once LDAP is ready.
+   It doesn't request :ref:`services-ldap` or :ref:`services-udm` directly.
 
 :numref:`services-ucs-portal-back-end-architecture-model` shows the architecture
 of the portal back end. A description about the elements and their responsibility
@@ -127,6 +130,11 @@ UMC server
    Validates user authentication for a given user.
 
 Univention Directory Listener
+   In the context of the UCS Portal, the Univention Directory Listener triggers
+   the update of the :ref:`services-ucs-portal-back-end-portal-tile-cache` and
+   the :ref:`services-ucs-portal-back-end-group-cache`.
+
+.. TODO : Add reference, once Univention Directory Listener is ready.
    In the context of the UCS Portal, the :ref:`services-listener` triggers the
    update of the :ref:`services-ucs-portal-back-end-portal-tile-cache` and the
    :ref:`services-ucs-portal-back-end-group-cache`.
@@ -199,9 +207,15 @@ description, logo, and category. Furthermore, it knows the group assignment for
 every tile.
 
 When administrators create or modify a portal in the |UMC| module *LDAP
-directory* the :ref:`services-listener` reacts on this change and triggers the
-listener module responsible for the portal tile cache. The module then uses
+directory* the Univention Directory Listener reacts on this change and triggers
+the listener module responsible for the portal tile cache. The module then uses
 |UDM| and recreates the portal tile cache.
+
+.. TODO : Add reference, once Univention Directory Listener is ready.
+   When administrators create or modify a portal in the |UMC| module *LDAP
+   directory* the :ref:`services-listener` reacts on this change and triggers
+   the listener module responsible for the portal tile cache. The module then
+   uses |UDM| and recreates the portal tile cache.
 
 The portal tile cache uses structured data, as well. The listener module saves it
 in a JSON file in the file system of the UCS system.
@@ -223,10 +237,16 @@ to their groups.
 Running the user's group resolution on the fly is an expensive operation
 especially for large environments.
 
-To mitigate the expensive operation, the :ref:`services-listener` triggers the
-respective listener module in the *post-run* when no more changes happen to user
-groups for 15 seconds. The group cache retrieves the necessary information from
-the key-value store of the UCS group membership cache.
+To mitigate the expensive operation, the Univention Directory Listener triggers
+the respective listener module in the *post-run* when no more changes happen to
+user groups for 15 seconds. The group cache retrieves the necessary information
+from the key-value store of the UCS group membership cache.
+
+.. TODO : Add reference, once Univention Directory Listener is ready.
+   To mitigate the expensive operation, the :ref:`services-listener` triggers
+   the respective listener module in the *post-run* when no more changes happen
+   to user groups for 15 seconds. The group cache retrieves the necessary
+   information from the key-value store of the UCS group membership cache.
 
 .. _services-ucs-portal-dependencies:
 
@@ -236,10 +256,16 @@ Dependencies for UCS portal
 .. index::
    pair: ucs portal; dependencies
 
-The UCS portal depends on the :ref:`services-listener`, :ref:`services-udm`, the
-*UCS group membership cache*, and the *UCS Portal tile cache*.
-:numref:`services-ucs-portal-dependencies-table` lists the depending services
-and their packages:
+The UCS portal depends on the Univention Directory Listener,
+:ref:`services-udm`, the *UCS group membership cache*, and the *UCS Portal tile
+cache*. :numref:`services-ucs-portal-dependencies-table` lists the depending
+services and their packages:
+
+.. TODO : Add reference, once Univention Directory Listener is ready.
+   The UCS portal depends on the :ref:`services-listener`, :ref:`services-udm`,
+   the *UCS group membership cache*, and the *UCS Portal tile cache*.
+   :numref:`services-ucs-portal-dependencies-table` lists the depending services
+   and their packages:
 
 .. _services-ucs-portal-dependencies-table:
 
@@ -253,7 +279,7 @@ and their packages:
    * - UCS configuration manager
      - :program:`univention-config`
 
-   * - :ref:`services-listener`
+   * - Univention Directory Listener
      - :program:`univention-directory-listener`
 
    * - UCS command-line based administration tools
@@ -264,4 +290,3 @@ and their packages:
 
    * - :ref:`UCS management console server <services-umc>`
      - :program:`univention-management-console-server`
-

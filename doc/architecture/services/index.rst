@@ -16,20 +16,8 @@ refer to :ref:`architecture-notation`.
    :maxdepth: 2
 
    portal
-   ldap
-   listener
-   authentication
-   networking
    udm
    umc
    ucr
    app-center
-   samba
-   file
-   print
-   email
-   docker
-   hooks
-   rest-api
-   monitoring
 
