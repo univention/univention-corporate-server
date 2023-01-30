@@ -143,7 +143,7 @@ class DatabaseConnector(object):
         value = app.database
         if value:
             if app.docker and container_mode():
-                database_logger.warn('No database integration within container')
+                database_logger.warning('No database integration within container')
                 return None
             if value.lower() == 'postgresql':
                 database_logger.debug('%s uses PostgreSQL' % app)
@@ -248,7 +248,7 @@ class PostgreSQL(DatabaseConnector):
                 if level == 'OUT':
                     database_logger.info(msg)
                 elif level == 'ERR':
-                    database_logger.warn(msg)
+                    database_logger.warning(msg)
             raise DatabaseError('Returncode %s for query' % process.returncode)
         return list(logger.stdout())
 

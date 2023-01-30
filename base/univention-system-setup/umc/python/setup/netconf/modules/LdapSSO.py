@@ -21,7 +21,7 @@ class PhaseLdapSSO(AddressMap, LdapChange):
                 self.open_ldap()
                 self._update_sso()
         except (LDAPError, UniventionBaseException) as ex:
-            self.logger.warn("Failed LDAP: %s", ex)
+            self.logger.warning("Failed LDAP: %s", ex)
 
     def _update_sso(self):
         forward_module = modules.get("dns/forward_zone")

@@ -125,7 +125,7 @@ class UMCSeleniumTest(ChecksAndWaits, Interactions):
         try:
             self.driver.execute_script(f'document.cookie = "UMCLang={self.language}; path=/univention/"')
         except selenium_exceptions.WebDriverException as exc:
-            logger.warn(f'Setting language cookie failed: {exc}')
+            logger.warning(f'Setting language cookie failed: {exc}')
 
         self.set_viewport_size(1200, 800)
         return self

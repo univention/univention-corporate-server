@@ -60,7 +60,7 @@ class RunPhases(object):
                     try:
                         info = imp.find_module(name, [dirpath])
                     except ImportError:
-                        self.logger.warn("Failed to open '%s'", filename)
+                        self.logger.warning("Failed to open '%s'", filename)
                     yield name, info
 
     def load(self):
@@ -68,7 +68,7 @@ class RunPhases(object):
             try:
                 module = imp.load_module(name, pfile, filename, desc)
             except SyntaxError as ex:
-                self.logger.warn("Failed to import '%s': %s", name, ex)
+                self.logger.warning("Failed to import '%s': %s", name, ex)
             finally:
                 if pfile:
                     pfile.close()
@@ -95,7 +95,7 @@ class RunPhases(object):
                 self.logger.info("Adding phase %s as %02d", phase, phase.priority)
                 self.phases.append(phase)
             except SkipPhase as ex:
-                self.logger.warn("Phase skipped: %s", ex)
+                self.logger.warning("Phase skipped: %s", ex)
 
     def pre(self):
         for phase in sorted(self.phases):
@@ -103,7 +103,7 @@ class RunPhases(object):
             try:
                 phase.pre()
             except Exception as ex:
-                self.logger.warn("Failed %s.pre(): %s", phase, ex, exc_info=True)
+                self.logger.warning("Failed %s.pre(): %s", phase, ex, exc_info=True)
 
     def post(self):
         for phase in sorted(self.phases, reverse=True):
@@ -111,4 +111,4 @@ class RunPhases(object):
             try:
                 phase.post()
             except Exception as ex:
-                self.logger.warn("Failed %s.post(): %s", phase, ex, exc_info=True)
+                self.logger.warning("Failed %s.post(): %s", phase, ex, exc_info=True)

@@ -63,7 +63,7 @@ class ComplexHandler(ListenerModuleHandler):
         self.logger.info('ComplexHandler.__init__()')
         self.logger.debug('DEBUG level message')
         self.logger.info('INFO level message')
-        self.logger.warn('WARN level message')
+        self.logger.warning('WARN level message')
         self.logger.error('ERROR level message')
 
     def create(self, dn: str, new: Mapping[str, Sequence[bytes]]) -> None:

@@ -170,5 +170,5 @@ class Ldap(with_metaclass(ABCMeta, Phase)):
             result = ldap.searchDn(ldap_filter)
             self.binddn = result[0]
         except LDAPError as ex:
-            self.logger.warn("Failed LDAP search for '%s': %s", username, ex)
+            self.logger.warning("Failed LDAP search for '%s': %s", username, ex)
             self.available = False

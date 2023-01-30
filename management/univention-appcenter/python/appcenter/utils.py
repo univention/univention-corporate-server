@@ -89,8 +89,8 @@ def read_ini_file(filename, parser_class=RawConfigParser):
     except EnvironmentError:
         pass
     except ParsingError as exc:
-        utils_logger.warn('Could not parse %s' % filename)
-        utils_logger.warn(str(exc))
+        utils_logger.warning('Could not parse %s' % filename)
+        utils_logger.warning(str(exc))
     else:
         return parser
     # in case of error return empty parser
@@ -591,7 +591,7 @@ def resolve_dependencies(apps, action):
         for app_id in app.required_apps:
             required_app = Apps().find(app_id)
             if required_app is None:
-                utils_logger.warn('Could not find required App %s' % app_id)
+                utils_logger.warning('Could not find required App %s' % app_id)
                 continue
             if not required_app.is_installed():
                 utils_logger.info('Adding %s to the list of Apps' % required_app.id)
@@ -600,7 +600,7 @@ def resolve_dependencies(apps, action):
         for app_id in app.required_apps_in_domain:
             required_app = Apps().find(app_id)
             if required_app is None:
-                utils_logger.warn('Could not find required App %s' % app_id)
+                utils_logger.warning('Could not find required App %s' % app_id)
                 continue
             if required_app.is_installed():
                 continue

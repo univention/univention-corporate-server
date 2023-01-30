@@ -626,7 +626,7 @@ class UCS_License_detection(object):
                     'sum': sum_objs,
                     'max': max_objs,
                 }
-                log.warn(error_msg)
+                log.warning(error_msg)
 
         if not license_sufficient:
             raise LicenseInsufficient(error_msg)
@@ -1036,7 +1036,7 @@ class AD_Takeover(object):
             msg = []
             msg.append("Warning: Weird, unable to determine previous nameserver1...")
             msg.append("         Using localhost as fallback, probably that's the right thing to do.")
-            log.warn("\n".join(msg))
+            log.warning("\n".join(msg))
             run_and_output_to_log(["univention-config-registry", "set", "nameserver1=127.0.0.1"], log.debug)
 
         # Use Samba4 as DNS backend
@@ -1230,7 +1230,7 @@ class AD_Takeover(object):
             elif ou_type.upper() == "CN":
                 udm_type = "container/cn"
             else:
-                log.warn("Warning: Unmapped container type %s" % container_dn)
+                log.warning("Warning: Unmapped container type %s" % container_dn)
 
             if udm_type:
                 run_and_output_to_log(["/usr/sbin/univention-directory-manager", udm_type, "create", "--ignore_exists", "--position", position, "--set", "name=%s" % ou_name], log.debug)
@@ -1402,7 +1402,7 @@ class AD_Takeover(object):
     def resync_s4connector_listener(self, progress):
         log.info("Waiting for listener to finish (max. 30 minutes)")
         if not wait_for_listener_replication(progress, 1800):
-            log.warn("Warning: Stopping Listener now anyway.")
+            log.warning("Warning: Stopping Listener now anyway.")
 
         # Restart Univention Directory Listener for S4 Connector
         log.info("Restarting Univention Directory Listener")
@@ -1487,7 +1487,7 @@ class AD_Takeover(object):
         else:
             msg = []
             msg.append("Warning: get_default_ip_address failed, using 127.0.0.1 as fallback")
-            log.warn("\n".join(msg))
+            log.warning("\n".join(msg))
             run_and_output_to_log(["univention-config-registry", "set", "nameserver1=127.0.0.1"], log.debug)
 
     def reset_sysvol_ntacls(self):
@@ -1633,7 +1633,7 @@ class AD_Takeover_Finalize(object):
             msg = []
             msg.append("Warning: Continuing anyway. Please fix later by running:")
             msg.append("         setfacl -R -P -m 'g:Authenticated Users:r-x,d:g:Authenticated Users:r-x' %s" % SYSVOL_PATH)
-            log.warn("\n".join(msg))
+            log.warning("\n".join(msg))
 
     def create_DNS_alias_for_AD_hostname(self):
         # Add DNS records to UDM:
@@ -1789,7 +1789,7 @@ class AD_Takeover_Finalize(object):
                 msg = []
                 msg.append("Warning: Could not determine primary IPv4 network interface.")
                 msg.append("         Failed to setup a virtual IPv4 network interface with the AD IP address.")
-                log.warn("\n".join(msg))
+                log.warning("\n".join(msg))
         elif ip_version == 6:
             self.primary_interface = self._get_primary_interface(ipv4=False)
             for j in range(1, 6):
@@ -1818,7 +1818,7 @@ class AD_Takeover_Finalize(object):
                 msg = []
                 msg.append("Warning: Could not determine primary IPv6 network interface.")
                 msg.append("         Failed to setup a virtual IPv6 network interface with the AD IP address.")
-                log.warn("\n".join(msg))
+                log.warning("\n".join(msg))
 
     def create_reverse_DNS_records(self):
         # Add record in reverse zone as well, to make nslookup $domainname on XP clients happy..
@@ -1845,14 +1845,14 @@ class AD_Takeover_Finalize(object):
                 # modify existing record.
                 returncode = run_and_output_to_log(["univention-directory-manager", "dns/ptr_record", "modify", "--superordinate", "zoneName=%s,cn=dns,%s" % (escape_dn_chars(ptr_zone), self.ucr["ldap/base"]), "--dn", "relativeDomainName=%s,zoneName=%s,cn=dns,%s" % (escape_dn_chars(ptr_address), escape_dn_chars(ptr_zone), self.ucr["ldap/base"]), "--set", "ptr_record=%s." % self.local_fqdn], log.debug)
                 if returncode != 0:
-                    log.warn("Warning: Update of reverse DNS record %s for %s failed. See %s for details." % (self.ad_server_ip, self.local_fqdn, LOGFILE_NAME,))
+                    log.warning("Warning: Update of reverse DNS record %s for %s failed. See %s for details." % (self.ad_server_ip, self.local_fqdn, LOGFILE_NAME,))
             else:
                 # add new record.
                 returncode = run_and_output_to_log(["univention-directory-manager", "dns/ptr_record", "create", "--superordinate", "zoneName=%s,cn=dns,%s" % (escape_dn_chars(ptr_zone), self.ucr["ldap/base"]), "--set", "address=%s" % ptr_address, "--set", "ptr_record=%s." % self.local_fqdn], log.debug)
                 if returncode != 0:
-                    log.warn("Warning: Creation of reverse DNS record %s for %s failed. See %s for details." % (self.ad_server_ip, self.local_fqdn, LOGFILE_NAME,))
+                    log.warning("Warning: Creation of reverse DNS record %s for %s failed. See %s for details." % (self.ad_server_ip, self.local_fqdn, LOGFILE_NAME,))
         else:
-            log.warn("Warning: Calculation of reverse DNS record %s for %s failed. See %s for details." % (self.ad_server_ip, self.local_fqdn, LOGFILE_NAME,))
+            log.warning("Warning: Calculation of reverse DNS record %s for %s failed. See %s for details." % (self.ad_server_ip, self.local_fqdn, LOGFILE_NAME,))
 
     def reconfigure_nameserver_for_samba_backend(self):
         # Resolve against local Bind9
@@ -1865,7 +1865,7 @@ class AD_Takeover_Finalize(object):
             msg = []
             msg.append("Warning: Weird, unable to determine previous nameserver1...")
             msg.append("         Using localhost as fallback, probably that's the right thing to do.")
-            log.warn("\n".join(msg))
+            log.warning("\n".join(msg))
             run_and_output_to_log(["univention-config-registry", "set", "nameserver1=127.0.0.1"], log.debug)
 
         # Use Samba4 as DNS backend
@@ -2100,7 +2100,7 @@ def lookup_adds_dc(hostname_or_ip=None, realm=None, ucr=None):
             stdout, stderr = p1.communicate()
             ip_address = stdout.decode('UTF-8').strip()
         except OSError as ex:
-            log.warn("WARNING: net lookup %s failed: %s" % (cldap_res.pdc_dns_name, ex.args[1]))
+            log.warning("WARNING: net lookup %s failed: %s" % (cldap_res.pdc_dns_name, ex.args[1]))
 
     domain_info = {
         "ad_forrest": cldap_res.forest,
@@ -2310,7 +2310,7 @@ class UserRenameHandler(object):
             base=self.lo.base)
 
         if len(userdns) > 1:
-            log.warn("Warning: Found more than one Samba user with name '%s' in UCS LDAP." % (ucsldap_object_name,))
+            log.warning("Warning: Found more than one Samba user with name '%s' in UCS LDAP." % (ucsldap_object_name,))
 
         for userdn in userdns:
             self.udm_rename_ucs_user(userdn, ad_object_name)
@@ -2387,7 +2387,7 @@ class GroupRenameHandler(object):
             base=self.lo.base)
 
         if len(groupdns) > 1:
-            log.warn("Warning: Found more than one Samba group with name '%s' in UCS LDAP." % (ucsldap_object_name,))
+            log.warning("Warning: Found more than one Samba group with name '%s' in UCS LDAP." % (ucsldap_object_name,))
 
         for groupdn in groupdns:
             new_groupdn = self.udm_rename_ucs_group(groupdn, ad_object_name)

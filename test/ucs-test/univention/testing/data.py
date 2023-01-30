@@ -655,7 +655,7 @@ class TestCase:
             os.killpg(proc.pid, signal.SIGKILL)
         except OSError as ex:
             if ex.errno != errno.ESRCH:
-                TestCase.logger.warn(
+                TestCase.logger.warning(
                     'Failed to kill process %d: %s', proc.pid, ex,
                     exc_info=True)
 

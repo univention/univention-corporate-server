@@ -183,7 +183,7 @@ class Interactions:
         )
 
         if len(elems) != 1:
-            logger.warn(
+            logger.warning(
                 "Found %d clickable elements instead of 1. Trying to click on "
                 "the first one." % (len(elems),),
             )
@@ -230,7 +230,7 @@ class Interactions:
             self.get_all_enabled_elements,
         )
         if len(elems) != 1:
-            logger.warn(f"Found {len(elems):d} input elements instead of one. Try using the first one")
+            logger.warning(f"Found {len(elems):d} input elements instead of one. Try using the first one")
         elems[0].clear()
         elems[0].send_keys(inputvalue)
         if with_click:
@@ -244,7 +244,7 @@ class Interactions:
             self.get_all_enabled_elements,
         )
         if len(elems) != 1:
-            logger.warn(f"Found {len(elems):d} input elements instead of one. Try using the first one")
+            logger.warning(f"Found {len(elems):d} input elements instead of one. Try using the first one")
         elems[0].clear()
         elems[0].send_keys(inputvalue)
 
@@ -266,7 +266,7 @@ class Interactions:
         )
 
         if len(elems) != 1:
-            logger.warn(
+            logger.warning(
                 "Found %d input elements instead of 1. Trying to use the first "
                 "one." % (len(elems),),
             )

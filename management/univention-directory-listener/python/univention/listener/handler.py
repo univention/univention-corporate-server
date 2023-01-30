@@ -116,7 +116,7 @@ class ListenerModuleHandler(with_metaclass(HandlerMetaClass)):
         self._ldap_credentials = None  # type: Optional[Dict[str, str]]
         self.logger.debug('Starting with configuration: %r', self.config)
         if not self.config.get_active():
-            self.logger.warn(
+            self.logger.warning(
                 'Listener module %r deactivated by UCRV "listener/module/%s/deactivate".',
                 self.config.get_name(), self.config.get_name(),
             )

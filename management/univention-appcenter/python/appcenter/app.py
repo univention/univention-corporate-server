@@ -173,7 +173,7 @@ class AppAttribute(UniventionMetaInfo):
             if self.strict:
                 raise
             else:
-                app_logger.warn(str(e))
+                app_logger.warning(str(e))
 
     def parse(self, value):
         return value
@@ -1205,7 +1205,7 @@ class App(with_metaclass(AppMetaClass, object)):
         app = english_cache.find_by_component_id(self.component_id)
         if app is None:
             # somehow the localized cache and the english cache split brains!
-            app_logger.warn('Could not find %r in %r' % (self, english_cache))
+            app_logger.warning('Could not find %r in %r' % (self, english_cache))
             english_cache.clear_cache()
             app = english_cache.find_by_component_id(self.component_id)
             if app is None:

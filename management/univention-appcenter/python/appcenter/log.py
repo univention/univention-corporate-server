@@ -52,7 +52,7 @@ functions to link the logger objects to the application using the library.
 
 >>> base_logger = get_base_logger()
 >>> base_logger.info('This is an info message')
->>> base_logger.warn('And this is a warning')
+>>> base_logger.warning('And this is a warning')
 """
 
 import logging
@@ -147,14 +147,16 @@ class LogCatcher(object):
             self.logger.info(msg)
         self.logs.append(('OUT', msg))
 
-    def warn(self, msg):
+    def warning(self, msg):
         if self.logger:
-            self.logger.warn(msg)
+            self.logger.warning(msg)
         self.logs.append(('ERR', msg))
+
+    warn = warning
 
     def fatal(self, msg):
         if self.logger:
-            self.logger.warn(msg)
+            self.logger.warning(msg)
         self.logs.append(('ERR', msg))
 
     def has_stdout(self):

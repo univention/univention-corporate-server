@@ -226,7 +226,7 @@ class ExtendedAttribute(SchemaObject):
             if not self.udm_syntax:
                 self.udm_syntax = 'string'
         else:
-            attribute_logger.warn('Ignoring unknown syntax %r' % (self.syntax,))
+            attribute_logger.warning('Ignoring unknown syntax %r' % (self.syntax,))
 
 
 class ExtendedOption(SchemaObject):
@@ -311,7 +311,7 @@ def get_extended_attributes(app):
                 attribute_suffix += 1
             attributes.append(attribute)
         else:  # ignore, so that it is extensible for the future :-)
-            attribute_logger.warn('Unknown attribute type for section %s: %r' % (section, kwargs['type']))
+            attribute_logger.warning('Unknown attribute type for section %s: %r' % (section, kwargs['type']))
 
     if app.generic_user_activation:
         attribute_name = app.generic_user_activation_attribute

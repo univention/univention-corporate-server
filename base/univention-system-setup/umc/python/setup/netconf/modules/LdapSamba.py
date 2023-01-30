@@ -19,7 +19,7 @@ class PhaseLdapSamba(AddressMap, LdapChange):
             self.open_ldap()
             self._update_samba()
         except (LDAPError, UniventionBaseException) as ex:
-            self.logger.warn("Failed LDAP: %s", ex)
+            self.logger.warning("Failed LDAP: %s", ex)
 
     def _update_samba(self):
         forward_module = modules.get("dns/forward_zone")

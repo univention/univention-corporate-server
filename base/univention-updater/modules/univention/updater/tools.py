@@ -571,7 +571,7 @@ class UCSHttpServer(_UCSServer):
             username = cfg.pop('username', uuid)
             password = cfg.pop('password', uuid)
             if cfg:
-                self.log.warn('Extra credentials for realm "%s": %r', realm, cfg)
+                self.log.warning('Extra credentials for realm "%s": %r', realm, cfg)
 
             self.password_manager.add_password(realm, uris, username, password)
             self.log.info('Loaded credentials for realm "%s"', realm)

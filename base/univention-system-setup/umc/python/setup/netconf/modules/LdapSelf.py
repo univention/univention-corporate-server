@@ -35,11 +35,11 @@ class PhaseLdapSelf(AddressMap, LdapChange, Executable):
                 except KeyError:
                     continue
             else:
-                self.logger.warn("Failed to find self in LDAP")
+                self.logger.warning("Failed to find self in LDAP")
                 return
             self._update(computer)
         except (LDAPError, UniventionBaseException) as ex:
-            self.logger.warn("Failed LDAP: %s", ex, exc_info=True)
+            self.logger.warning("Failed LDAP: %s", ex, exc_info=True)
 
     def _get_module(self):
         modules.update()
@@ -120,5 +120,5 @@ class PhaseLdapSelf(AddressMap, LdapChange, Executable):
                     mac = address_file.read().strip()
                     macs.add(mac)
             except IOError as ex:
-                self.logger.warn("Could not read '%s': %s", filename, ex)
+                self.logger.warning("Could not read '%s': %s", filename, ex)
         computer["mac"] = list(macs)

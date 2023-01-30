@@ -38,7 +38,7 @@ class PhaseLdapReferences(AddressMap, LdapChange):
                 for obj in objects:
                     self._rewrite_object(obj, udm_property, replace_type)
         except (LDAPError, UniventionBaseException) as ex:
-            self.logger.warn("Failed LDAP: %s", ex, exc_info=True)
+            self.logger.warning("Failed LDAP: %s", ex, exc_info=True)
 
     def _iterate_objects(self):
         for module_name, udm_property, replace_type in self.referers:

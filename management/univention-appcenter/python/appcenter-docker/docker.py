@@ -92,7 +92,7 @@ def inspect_with_retry(container, retries=3):
         try:
             return inspect(container)
         except Exception as e:
-            _logger.warn('Inspect for container {} failed: {}'.format(container, e))
+            _logger.warning('Inspect for container {} failed: {}'.format(container, e))
             exc = e
             time.sleep(5)
     raise DockerInspectCallFailed('Inspect for container {} failed after {} retries: {}'.format(container, retries, exc))
@@ -281,7 +281,7 @@ class Docker(object):
             if '.' in hub:
                 retcode = login(hub, with_license=self.app.install_permissions)
                 if retcode != 0:
-                    _logger.warn('Could not login to %s. You may not be able to pull the image from the repository!' % hub)
+                    _logger.warning('Could not login to %s. You may not be able to pull the image from the repository!' % hub)
         ret, out = call_process2(['docker', 'pull', self.image], logger=_logger)
         if ret != 0:
             raise DockerImagePullFailed(image=self.image, out=out, code=ret)
@@ -430,7 +430,7 @@ class Docker(object):
             try:
                 network = IPv4Network(u'%s' % (network,), False)
             except ValueError as exc:
-                _logger.warn('Error using the network %s: %s' % (network, exc))
+                _logger.warning('Error using the network %s: %s' % (network, exc))
                 return None
             else:
                 return network
@@ -449,7 +449,7 @@ class Docker(object):
                 used_docker_networks.append(app_network)
         prefixlen_diff = 24 - int(netmask)
         if prefixlen_diff <= 0:
-            _logger.warn('Cannot get a subnet big enough')  # maybe I could... but currently, I only work with 24-netmasks
+            _logger.warning('Cannot get a subnet big enough')  # maybe I could... but currently, I only work with 24-netmasks
             return None
         for network in docker0_net.subnets(prefixlen_diff):  # 172.16.1.1/24, 172.16.2.1/24, ..., 172.16.255.1/24
             _logger.debug('Testing %s' % network)
@@ -460,7 +460,7 @@ class Docker(object):
                 _logger.debug('Refusing due to range already used')
                 continue
             return network
-        _logger.warn('Cannot find any viable subnet')
+        _logger.warning('Cannot find any viable subnet')
 
     def backup_run_file(self):
         pass
@@ -630,14 +630,14 @@ class MultiDocker(Docker):
                     ps = check_output(['docker-compose', '-p', self.app.id, 'ps', '-q'], cwd=self.app.get_compose_dir())
                     break
                 except Exception as e:
-                    _logger.warn('docker-compose ps for app {} failed: {}'.format(self.app.id, e))
+                    _logger.warning('docker-compose ps for app {} failed: {}'.format(self.app.id, e))
                     time.sleep(5)
             for container_id in ps.splitlines():
                 container_id = container_id.decode('utf-8')
                 try:
                     container_inspect = inspect_with_retry(container_id)
                 except DockerInspectCallFailed as e:
-                    _logger.warn('Fail: {}'.format(e))
+                    _logger.warning('Fail: {}'.format(e))
                     break
                 container_name = container_inspect['Name']
                 if '_{}_'.format(self.app.docker_main_service) in container_name:
@@ -650,7 +650,7 @@ class MultiDocker(Docker):
             insp = inspect_with_retry(name)
             return insp['Id']
         except DockerInspectCallFailed as e:
-            _logger.warn('Fail: {}'.format(e))
+            _logger.warning('Fail: {}'.format(e))
         return None
 
     def create(self, hostname, env):
@@ -710,4 +710,4 @@ class MultiDocker(Docker):
             yml_bak_file = '%s.bak' % yml_file
             shutil.copy2(yml_file, yml_bak_file)
         except EnvironmentError as exc:
-            _logger.warn('Could not backup docker-compose.yml: %s' % exc)
+            _logger.warning('Could not backup docker-compose.yml: %s' % exc)

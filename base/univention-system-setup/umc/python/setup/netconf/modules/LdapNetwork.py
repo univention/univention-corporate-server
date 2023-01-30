@@ -48,7 +48,7 @@ class PhaseLdapNetwork(LdapChange):
             # self._update_network()
             self._recreate_network()
         except (LDAPError, UniventionBaseException) as ex:
-            self.logger.warn("Failed LDAP: %s", ex)
+            self.logger.warning("Failed LDAP: %s", ex)
 
     def _update_network(self):
         network_dn = "cn=default,cn=networks,%(ldap/base)s" % self.changeset.ucr
@@ -59,7 +59,7 @@ class PhaseLdapNetwork(LdapChange):
             try:
                 self.ldap.modify(network_dn, changes)
             except (LDAPError, UniventionBaseException) as ex:
-                self.logger.warn("Failed to update default network '%s': %s", network_dn, ex)
+                self.logger.warning("Failed to update default network '%s': %s", network_dn, ex)
 
     def _recreate_network(self):
         self._remove_old_network()

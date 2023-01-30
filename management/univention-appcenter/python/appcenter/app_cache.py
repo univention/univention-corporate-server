@@ -375,7 +375,7 @@ class AppCache(_AppCache):
                     if self._save_cache():
                         cache_logger.debug('Saved %d apps into cache' % len(self._cache))
                     else:
-                        cache_logger.warn('Unable to cache apps')
+                        cache_logger.warning('Unable to cache apps')
         return self._cache
 
     def get_app_class(self):
@@ -427,7 +427,7 @@ class AppCenterCache(_AppCache):
                         cache_logger.debug('Using UCS %s. Apparently an updater is running' % next_version)
                         return next_version
         except (EnvironmentError, ValueError) as exc:
-            cache_logger.warn('Could not parse univention-updater.status: %s' % exc)
+            cache_logger.warning('Could not parse univention-updater.status: %s' % exc)
         return ucr_get('version/version')
 
     def get_app_cache_class(self):
