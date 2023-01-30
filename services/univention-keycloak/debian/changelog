@@ -1,3 +1,9 @@
+univention-keycloak (1.0.8) unstable; urgency=medium
+
+  * Bug #55570: Make it possible to get metadata from file instead of url
+
+ -- Julia Bremer <bremer@univention.de>  Mon, 30 Jan 2023 10:42:45 +0100
+
 univention-keycloak (1.0.7) unstable; urgency=medium
 
   * Bug #55519: Solved error while trying to activate 2FA

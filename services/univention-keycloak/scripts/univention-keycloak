@@ -85,8 +85,12 @@ def get_realm_id(kc_client, name):
 	return realm_info[0]["id"]
 
 
-def extract_endpoints_xml(metadata_url, no_ssl_verify):
-	xml_content = requests.get(metadata_url, verify=no_ssl_verify).content
+def extract_endpoints_xml(metadata_url, metadata_file, no_ssl_verify):
+	if not metadata_file:
+		xml_content = requests.get(metadata_url, verify=no_ssl_verify).content
+	else:
+		with open(metadata_file, 'r') as fd:
+			xml_content = fd.read().strip()
 	saml_descriptor_xml = ElementTree.fromstring(xml_content)
 	logout_endpoint = saml_descriptor_xml.find('.//{urn:oasis:names:tc:SAML:2.0:metadata}SingleLogoutService').attrib["Location"]
 	acs_endpoint = saml_descriptor_xml.find('.//{urn:oasis:names:tc:SAML:2.0:metadata}AssertionConsumerService').attrib["Location"]
@@ -99,7 +103,7 @@ def create_SAML_client(opt):
 	print("CREATING KEYCLOAK SAML CLIENT.....")
 	client_id = opt.metadata_url
 	valid_redirect_urls = [client_id[:client_id.rfind("/") + 1:] + "*"]
-	endpoints = extract_endpoints_xml(client_id, opt.no_ssl_verify)
+	endpoints = extract_endpoints_xml(client_id, opt.metadata_file, opt.no_ssl_verify)
 	# build urls
 	single_logout_service_url_post = endpoints["logout"]
 	single_logout_service_url_redirect = endpoints["logout"]
@@ -466,6 +470,7 @@ def parse_args(args=None):
 	operation_subparsers = parser_saml.add_subparsers(title="operation", description="valid subcommands", required=True, dest="operation")
 	create_saml_parser = operation_subparsers.add_parser("create", help="create a new SAML SP in Keycloak")
 	create_saml_parser.add_argument("--client-signature-required", action="store_true")
+	create_saml_parser.add_argument("--metadata-file")
 	create_saml_parser.add_argument("--metadata-url", required=True)
 	create_saml_parser.add_argument("--umc-uid-mapper", action="store_true")
 	create_saml_parser.add_argument("--role-mapping-single-value", action="store_true")
@@ -1176,6 +1181,7 @@ def init_keycloak_ucs(opt):
 	configure_login_page(opt, kc_admin)
 	# create portal saml client
 	opt.metadata_url = server_url + "/univention/saml/metadata"
+	opt.metadata_file = None
 	opt.umc_uid_mapper = True
 	create_SAML_client(opt)
 

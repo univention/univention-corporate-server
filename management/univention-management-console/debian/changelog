@@ -1,6 +1,7 @@
 univention-management-console (12.0.13-6) unstable; urgency=medium
 
-  * Bug #55570: Restart apache2 before trying to register keycloak client
+  * Bug #55570: Restart apache2 before trying to register keycloak client.
+    Save metadata as file for univention-keycloak
 
  -- Julia Bremer <bremer@univention.de>  Sat, 28 Jan 2023 21:47:01 +0100
 
