@@ -1,4 +1,0 @@
-.. _services-docker:
-
-Docker
-======
