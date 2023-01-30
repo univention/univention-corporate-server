@@ -18,8 +18,7 @@ from os import path
 
 # -- Project information -----------------------------------------------------
 
-project = 'Univention Corporate Server - ' + \
-    'Extended domain services documentation'
+project = 'Univention Corporate Server - Extended domain services documentation'
 copyright = f'2021-{date.today().year}, Univention GmbH'
 author = ''
 

@@ -15,7 +15,7 @@ UTF8_CHARSET = tstrings.STR_UMLAUT + "КирилицаКириллицаĆirilic
 SPECIAL_CHARSET = "".join(set(tstrings.STR_SPECIAL_CHARACTER) - set('\\#"?'))
 # We exclude '$' as it has special meaning . A '.' (dot) may not be the last
 # character in a samAccountName, so we forbid it as well.
-FORBIDDEN_SAMACCOUNTNAME = "\\/[]:;|=,+*?<>@ " + '$.'
+FORBIDDEN_SAMACCOUNTNAME = "\\/[]:;|=,+*?<>@ $."
 SPECIAL_CHARSET_USERNAME = "".join(set(SPECIAL_CHARSET) - set(FORBIDDEN_SAMACCOUNTNAME))
 
 

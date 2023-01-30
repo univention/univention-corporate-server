@@ -18,8 +18,7 @@ from datetime import date
 
 # -- Project information -----------------------------------------------------
 
-project = 'Univention Corporate Server - ' + \
-    'Extended IP and network management documentation'
+project = 'Univention Corporate Server - Extended IP and network management documentation'
 copyright = f'2021-{date.today().year}, Univention GmbH'
 author = ''
 

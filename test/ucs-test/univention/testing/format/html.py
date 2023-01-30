@@ -11,8 +11,7 @@ from univention.testing.data import TestEnvironment, TestFormatInterface, TestRe
 __all__ = ['HTML']
 
 URI_BUG = 'https://forge.univention.org/bugzilla/show_bug.cgi?id=%s'
-URI_OTRS = 'https://gorm.knut.univention.de/otrs/index.pl?' + \
-    'Action=AgentTicketSearch&Subaction=Search&TicketNumber=%s'
+URI_OTRS = 'https://gorm.knut.univention.de/otrs/index.pl?Action=AgentTicketSearch&Subaction=Search&TicketNumber=%s'
 
 
 class HTML(TestFormatInterface):
