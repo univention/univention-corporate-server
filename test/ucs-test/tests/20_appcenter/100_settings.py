@@ -75,7 +75,7 @@ def install_app(app, set_vars=None):
     remove.call(app=[app], username=username, password=ucr_get('tests/domainadmin/pwd'), noninteractive=True)
 
 
-@pytest.yield_fixture(scope='module')
+@pytest.fixture(scope='module')
 def local_appcenter():
     setup_appcenter = get_action('dev-setup-local-appcenter')
     setup_appcenter.call()
@@ -86,7 +86,7 @@ def local_appcenter():
     rmtree('/var/www/univention-repository')
 
 
-@pytest.yield_fixture(scope='module')
+@pytest.fixture(scope='module')
 def installed_component_app(local_appcenter):
     ini_file = '''[Application]
 ID = ucs-test
@@ -135,7 +135,7 @@ UCSOverviewCategory = False'''
     return Apps().find('apache')
 
 
-@pytest.yield_fixture()
+@pytest.fixture()
 def installed_apache_docker_app(apache_docker_app):
     with install_app(apache_docker_app) as app:
         yield app

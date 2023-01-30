@@ -21,7 +21,7 @@ def s4_domainname():
     return check_output("samba-tool domain info 127.0.0.1 | sed -n 's/^Domain *: //p'", shell=True).decode('UTF-8').strip()  # Samba's idea of spelling
 
 
-@pytest.yield_fixture(scope='module')
+@pytest.fixture(scope='module')
 def user():
     with _udm.UCSTestUDM() as udm:
         userdn, username = udm.create_user(password='univention', firstname='Max', lastname='Muster', organisation='firma.de_GmbH')  # mailPrimaryAddress='...@...'

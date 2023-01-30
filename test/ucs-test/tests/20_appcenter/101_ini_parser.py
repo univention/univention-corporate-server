@@ -17,7 +17,7 @@ log_to_logfile()
 log_to_stream()
 
 
-@pytest.yield_fixture()
+@pytest.fixture()
 def valid_ini_file():
     content = '''[A section]
 AKey = A Value
