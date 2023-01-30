@@ -94,7 +94,8 @@ doc-pipeline:
     - if: "$CI_COMMIT_MESSAGE =~ /skip-doc/ || $pipeline =~ /skip-doc/"
       when: never
     - if: "$CI_COMMIT_MESSAGE =~ /force-doc/ || $pipeline =~ /force-doc/"
-    - changes:
+    - if: "$CI_COMMIT_MESSAGE !~ /skip-doc/ || $pipeline !~ /skip-doc/"
+      changes:
       - "doc/[^e]*/**/*"
       - "doc/e[^r]*/**/*"
       - "doc/er[^r]*/**/*"
