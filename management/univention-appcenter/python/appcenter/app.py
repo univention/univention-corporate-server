@@ -1155,6 +1155,10 @@ class App(with_metaclass(AppMetaClass, object)):
 	def ucr_component_key(self):
 		return 'repository/online/component/%s' % self.component_id
 
+	@property
+	def ucr_pinned_key(self):
+		return 'appcenter/apps/%s/pinned' % self.id
+
 	@classmethod
 	def get_attr(cls, attr_name):
 		for attr in cls._attrs:

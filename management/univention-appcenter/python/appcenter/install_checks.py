@@ -489,7 +489,10 @@ class MustNotBePinned(SingleRequirement, HardRequirement):
 	'''This application is pinned'''
 
 	def test_upgrade(self, app):
-		return not ucr_is_true("appcenter/apps/%s/pinned" % app.id, False)
+		if ucr_is_true(app.ucr_pinned_key, False):
+			return {'appid': app.id}
+		else:
+			return True
 
 	test_remove = test_upgrade
 

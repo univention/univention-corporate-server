@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-management-console-module-appcenter\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-01-24 14:55+0100\n"
+"POT-Creation-Date: 2023-01-27 17:36+0100\n"
 "PO-Revision-Date: 2020-09-05 16:13+0200\n"
 "Last-Translator: Univention GmbH <packages@univention.de>\n"
 "Language-Team: German <packages@univention.de>\n"
@@ -575,7 +575,7 @@ msgstr "Ein Modul zur Administration dieser App steht zur Verfügung: %s."
 msgid "The app provides a web interface: %s."
 msgstr "Die App bietet ein Webinterface: %s."
 
-#: umc/js/appcenter/AppDetailsPage.js:753 umc/js/appcenter/requirements.js:313
+#: umc/js/appcenter/AppDetailsPage.js:753 umc/js/appcenter/requirements.js:318
 msgid ""
 "%(name)s uses a container technology for enhanced security and compatibility."
 msgstr ""
@@ -1266,9 +1266,15 @@ msgstr "Diese App ist auf die zur Zeit installierte Version eingefroren."
 
 #: umc/js/appcenter/requirements.js:293
 msgid "Please revert this state before upgrading or removing."
-msgstr "Vor der Aktualisierung oder der Deinstallation muss dieser Zustand rückgängig gemacht werden."
+msgstr ""
+"Vor der Aktualisierung oder der Deinstallation muss dieser Zustand "
+"rückgängig gemacht werden."
 
-#: umc/js/appcenter/requirements.js:299
+#: umc/js/appcenter/requirements.js:296
+msgid "Revert the App state now."
+msgstr "Eingefrorenen Zustand der App sofort rückgängig machen."
+
+#: umc/js/appcenter/requirements.js:304
 msgid ""
 "The App requires the password service to be set up on the Active Directory "
 "domain controller server."
@@ -1276,7 +1282,7 @@ msgstr ""
 "Die App setzt voraus, dass der Passwort-Dienst auf dem Active Directory "
 "Domänencontroller eingerichtet wurde."
 
-#: umc/js/appcenter/requirements.js:302
+#: umc/js/appcenter/requirements.js:307
 msgid ""
 "The steps how to install the service on that machine are described in the "
 "online documentation."
@@ -1284,11 +1290,11 @@ msgstr ""
 "Die notwendigen Schritte, um den Dienst auf jener Maschine zu installieren, "
 "sind in der Online-Dokumentation beschrieben."
 
-#: umc/js/appcenter/requirements.js:305
+#: umc/js/appcenter/requirements.js:310
 msgid "Open the documentation"
 msgstr "Dokumentation öffnen"
 
-#: umc/js/appcenter/requirements.js:308
+#: umc/js/appcenter/requirements.js:313
 #, javascript-format
 msgid ""
 "https://docs.software-univention.de/manual-%s.html#ad-connector:password-"
@@ -1297,11 +1303,11 @@ msgstr ""
 "https://docs.software-univention.de/handbuch-%s.html#ad-connector:password-"
 "dienst"
 
-#: umc/js/appcenter/requirements.js:313
+#: umc/js/appcenter/requirements.js:318
 msgid "A version without a container technology is or was installed."
 msgstr "Eine Version ohne Container-Technologie ist oder war installiert."
 
-#: umc/js/appcenter/requirements.js:317
+#: umc/js/appcenter/requirements.js:322
 msgid ""
 "Automatically migrating the App and data (where required) is not supported; "
 "however, a document exists, which guides through the manual steps to do so."
@@ -1310,16 +1316,16 @@ msgstr ""
 "unterstützt. Allerdings existiert ein Dokument, das die händisch "
 "auszuführenden Schritte beschreibt."
 
-#: umc/js/appcenter/requirements.js:322
+#: umc/js/appcenter/requirements.js:327
 msgid "Open the migration guide"
 msgstr "Migrationsleitfaden öffnen"
 
-#: umc/js/appcenter/requirements.js:331
+#: umc/js/appcenter/requirements.js:336
 #, javascript-format
 msgid "Uninstalling %s will also remove the following plugins:"
 msgstr "Die Deinstallation von %s entfernt auch die folgenden Plugins:"
 
-#: umc/js/appcenter/requirements.js:338
+#: umc/js/appcenter/requirements.js:343
 msgid ""
 "%(minimum)d MB of free RAM are required but only %(current)d MB are "
 "available."
@@ -1327,7 +1333,7 @@ msgstr ""
 "%(minimum)d MB freier Arbeitsspeicher sind erfolderlich, es sind aber nur "
 "%(current)d MB verfügbar."
 
-#: umc/js/appcenter/requirements.js:343
+#: umc/js/appcenter/requirements.js:348
 msgid ""
 "%(minimum)d MB of free disk space are required but only %(current)d MB are "
 "available."

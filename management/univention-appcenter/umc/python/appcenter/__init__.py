@@ -523,6 +523,13 @@ class Instance(umcm.Base, ProgressMixin):
 		finally:
 			configure.logger.removeHandler(handler)
 
+	@simple_response
+	def unpin_app(self, app):
+		app = Apps().find(app)
+		if app:
+			pin = get_action('pin')
+			pin.call(app=app, revert=True)
+
 	@sanitize(app=AppSanitizer(required=True), mode=ChoicesSanitizer(['start', 'stop']))
 	@simple_response
 	def app_service(self, app, mode):

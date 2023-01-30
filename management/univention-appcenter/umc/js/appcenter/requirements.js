@@ -292,6 +292,12 @@ define([
 			solutionDescription: function() {
 				return _('Please revert this state before upgrading or removing.');
 			},
+			solutionLabel: function() {
+				return _('Revert the App state now.');
+			},
+			solution: function(opts, details) {
+				tools.umcpCommand('appcenter/unpin_app', {app: details.appid});
+			}
 		}),
 		shall_only_be_installed_in_ad_env_with_password_service: new Requirement({
 			stayAfterSolution: true,

@@ -38,8 +38,6 @@
 from univention.appcenter.actions import UniventionAppAction, StoreAppAction
 from univention.appcenter.ucr import ucr_save
 
-PINNED_KEY = "appcenter/apps/%s/pinned"
-
 
 class Pin(UniventionAppAction):
 
@@ -54,19 +52,19 @@ class Pin(UniventionAppAction):
 
 	def setup_parser(self, parser):
 		parser.add_argument('app', action=StoreAppAction, help='The ID of the App that shall be pinned or unpinned')
-		parser.add_argument('--unpin', action='store_true', help='Unpin previously pinned app')
+		parser.add_argument('--revert', action='store_true', help='Unpin previously pinned app')
 
 	def main(self, args):
 		if not args.app.is_installed():
 			self.fatal('%s is not installed!' % args.app.id)
 			return
-		if args.unpin:
+		if args.revert:
 			self._unpin(args.app)
 		else:
 			self._pin(args.app)
 
 	def _unpin(self, app):
-		ucr_save({PINNED_KEY % app.id: 'false'})
+		ucr_save({app.ucr_pinned_key: None})
 
 	def _pin(self, app):
-		ucr_save({PINNED_KEY % app.id: 'true'})
+		ucr_save({app.ucr_pinned_key: 'True'})
