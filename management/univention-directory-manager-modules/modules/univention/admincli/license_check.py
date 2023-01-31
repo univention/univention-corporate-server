@@ -161,7 +161,7 @@ def check_license(lo, dn, list_dns, expired):
                 out.append(format(ln, n, m, 0, _license.compare, ignored))
                 if list_dns and maximum != 'unlimited':
                     for dnout in odn:
-                        out.extend(["  %s" % dnout, ])
+                        out.extend(["  %s" % dnout])
                 if list_dns and (i == License.USERS or i == License.ACCOUNT):
                     out.append("  %s Systemaccounts are ignored." % _license.sysAccountsFound)
 

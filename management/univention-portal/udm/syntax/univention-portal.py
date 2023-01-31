@@ -49,7 +49,7 @@ class NewPortalCategories(UDM_Objects):
 class NewPortalCategoryEntries(UDM_Objects):
     """Syntax to select a portal entries or folders from |LDAP|."""
 
-    udm_modules = ('portals/entry', 'portals/folder', )
+    udm_modules = ('portals/entry', 'portals/folder')
     label = '%(name)s'
     empty_value = False
     simple = True

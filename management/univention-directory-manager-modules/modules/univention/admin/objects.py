@@ -104,7 +104,7 @@ def get(module, co, lo, position, dn='', attr=None, superordinate=None, attribut
             if not lo.get(dn, attr=['objectClass']):
                 raise univention.admin.uexceptions.noObject(dn)
             if not univention.admin.modules.virtual(module.module):
-                raise univention.admin.uexceptions.wrongObjectType('The object %s is not a %s.' % (dn, module.module,))
+                raise univention.admin.uexceptions.wrongObjectType('The object %s is not a %s.' % (dn, module.module))
 
     return module.object(co, lo, position, dn, superordinate=superordinate, attributes=attributes)
 

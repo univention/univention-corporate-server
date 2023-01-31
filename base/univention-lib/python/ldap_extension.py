@@ -142,7 +142,7 @@ def set_handler_message(name, dn, msg):
             data_obj['data'] = base64.b64encode(bz2.compress(json_data))
             data_obj.modify()
         except Exception as err:
-            ud.debug(ud.LISTENER, ud.ERROR, 'Error set_handler_message for handler %s: %s' % (name, err,))
+            ud.debug(ud.LISTENER, ud.ERROR, 'Error set_handler_message for handler %s: %s' % (name, err))
         finally:
             if setuid:
                 listener.unsetuid()
@@ -198,7 +198,7 @@ class UniventionLDAPExtension(six.with_metaclass(ABCMeta)):
 
     def __init__(self, ucr):
         # type: (ConfigRegistry) -> None
-        self.target_container_dn = "cn=%s,cn=univention,%s" % (escape_dn_chars(self.target_container_name), ucr["ldap/base"],)
+        self.target_container_dn = "cn=%s,cn=univention,%s" % (escape_dn_chars(self.target_container_name), ucr["ldap/base"])
 
     @classmethod
     def create_base_container(cls, ucr, udm_passthrough_options):
@@ -310,29 +310,29 @@ class UniventionLDAPExtension(six.with_metaclass(ABCMeta)):
         ]
 
         if self.udm_module_name == "settings/data":
-            common_udm_options.extend(["--set", "data_type={}".format(options.data_type), ])
+            common_udm_options.extend(["--set", "data_type={}".format(options.data_type)])
             for meta in options.data_meta:
-                common_udm_options.extend(["--set", "meta={}".format(meta), ])
+                common_udm_options.extend(["--set", "meta={}".format(meta)])
 
         if self.udm_module_name != "settings/ldapschema":
             if options.ucsversionstart:
-                common_udm_options.extend(["--set", "ucsversionstart=%s" % (options.ucsversionstart,), ])
+                common_udm_options.extend(["--set", "ucsversionstart=%s" % (options.ucsversionstart,)])
             if options.ucsversionend:
-                common_udm_options.extend(["--set", "ucsversionend=%s" % (options.ucsversionend,), ])
+                common_udm_options.extend(["--set", "ucsversionend=%s" % (options.ucsversionend,)])
 
         if self.udm_module_name == "settings/udm_module":
             for udm_module_messagecatalog in options.udm_module_messagecatalog:
                 filename_parts = os.path.splitext(os.path.basename(udm_module_messagecatalog))
                 language = filename_parts[0]
                 with open(udm_module_messagecatalog, 'rb') as f:
-                    common_udm_options.extend(["--append", "messagecatalog=%s %s" % (language, base64.b64encode(f.read()).decode('ASCII'),), ])
+                    common_udm_options.extend(["--append", "messagecatalog=%s %s" % (language, base64.b64encode(f.read()).decode('ASCII'))])
 
             for umcmessagecatalog in options.umcmessagecatalog:
                 filename_parts = os.path.splitext(os.path.basename(umcmessagecatalog))
                 if not ('-' in filename_parts[0] and len(filename_parts[0].split('-', 1)) == 2):
                     raise OptionValueError("%s: Is not a valid umcmessagecatalog filename. Must be the locale and the UMCModuleID seperated by '-'" % (filename_parts[0],))
                 with open(umcmessagecatalog, 'rb') as f:
-                    common_udm_options.extend(["--append", "umcmessagecatalog=%s %s" % (filename_parts[0], base64.b64encode(f.read()).decode('ASCII'),), ])
+                    common_udm_options.extend(["--append", "umcmessagecatalog=%s %s" % (filename_parts[0], base64.b64encode(f.read()).decode('ASCII'))])
 
             if options.umcregistration:
                 try:
@@ -341,24 +341,24 @@ class UniventionLDAPExtension(six.with_metaclass(ABCMeta)):
                 except Exception as e:
                     print("Compression of file %s failed: %s" % (options.umcregistration, e), file=sys.stderr)
                     sys.exit(1)
-                common_udm_options.extend(["--set", "umcregistration=%s" % (base64.b64encode(compressed_data).decode('ASCII'),), ])
+                common_udm_options.extend(["--set", "umcregistration=%s" % (base64.b64encode(compressed_data).decode('ASCII'),)])
             for icon in options.icon:
                 with open(icon, 'rb') as f:
-                    common_udm_options.extend(["--append", "icon=%s" % (base64.b64encode(f.read()).decode('ASCII'),), ])
+                    common_udm_options.extend(["--append", "icon=%s" % (base64.b64encode(f.read()).decode('ASCII'),)])
 
         if self.udm_module_name == "settings/udm_syntax":
             for udm_syntax_messagecatalog in options.udm_syntax_messagecatalog:
                 filename_parts = os.path.splitext(os.path.basename(udm_syntax_messagecatalog))
                 language = filename_parts[0]
                 with open(udm_syntax_messagecatalog, 'rb') as f:
-                    common_udm_options.extend(["--append", "messagecatalog=%s %s" % (language, base64.b64encode(f.read()).decode('ASCII'),), ])
+                    common_udm_options.extend(["--append", "messagecatalog=%s %s" % (language, base64.b64encode(f.read()).decode('ASCII'))])
 
         if self.udm_module_name == "settings/udm_hook":
             for udm_hook_messagecatalog in options.udm_hook_messagecatalog:
                 filename_parts = os.path.splitext(os.path.basename(udm_hook_messagecatalog))
                 language = filename_parts[0]
                 with open(udm_hook_messagecatalog, 'rb') as f:
-                    common_udm_options.extend(["--append", "messagecatalog=%s %s" % (language, base64.b64encode(f.read()).decode('ASCII'),), ])
+                    common_udm_options.extend(["--append", "messagecatalog=%s %s" % (language, base64.b64encode(f.read()).decode('ASCII'))])
 
         rc, self.object_dn, stdout = self.udm_find_object_dn()
         if not self.object_dn:
@@ -420,7 +420,7 @@ class UniventionLDAPExtension(six.with_metaclass(ABCMeta)):
                     print("WARNING: Registered package version %s is newer, refusing registration." % (registered_package_version,), file=sys.stderr)
                     sys.exit(4)
             else:
-                print("WARNING: Object %s was registered by package %s version %s, changing ownership." % (self.objectname, registered_package, registered_package_version,), file=sys.stderr)
+                print("WARNING: Object %s was registered by package %s version %s, changing ownership." % (self.objectname, registered_package, registered_package_version), file=sys.stderr)
 
             regex = re.compile('^ *data: (.*)$', re.M)
             m = regex.search(stdout)
@@ -496,7 +496,7 @@ class UniventionLDAPExtension(six.with_metaclass(ABCMeta)):
             if stdout:
                 regex = re.compile('^cn: (.*)$', re.M)
                 apps = ",".join(regex.findall(stdout))
-                print("INFO: The object %s is still registered by the following apps: %s" % (objectname, apps,), file=sys.stderr)
+                print("INFO: The object %s is still registered by the following apps: %s" % (objectname, apps), file=sys.stderr)
                 sys.exit(2)
 
         cmd = ["univention-directory-manager", self.udm_module_name, "delete"] + self.udm_passthrough_options + [
@@ -1175,7 +1175,7 @@ def option_validate_gnu_message_catalogfile(option, opt, value):
 
 
 class UCSOption(Option):
-    TYPES = Option.TYPES + ("existing_filename", "ucs_version", )
+    TYPES = Option.TYPES + ("existing_filename", "ucs_version")
     TYPE_CHECKER = copy(Option.TYPE_CHECKER)
     TYPE_CHECKER["existing_filename"] = option_validate_existing_filename
     TYPE_CHECKER["ucs_version"] = option_validate_ucs_version

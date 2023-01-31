@@ -17,7 +17,7 @@ from univention.testing import utils
 def test_join_preexisting_acc_with_multiple_macs(udm):
     memberserver1 = {
         "name": uts.random_string(),
-        "mac": (uts.random_mac(), uts.random_mac(), ),
+        "mac": (uts.random_mac(), uts.random_mac()),
         "ip": "127.0.0.121",
     }
     memberserver2 = {

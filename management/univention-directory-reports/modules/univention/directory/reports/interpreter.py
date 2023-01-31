@@ -58,9 +58,9 @@ class Interpreter(object):
         if not tokens:
             tokens = self._tokens
         if not base_objects:
-            base_objects = [self._base_object, ]
+            base_objects = [self._base_object]
         if not isinstance(base_objects, (list, tuple)):
-            base_objects = [base_objects, ]
+            base_objects = [base_objects]
         for token in tokens:
             if isinstance(token, (QueryToken, ResolveToken)):
                 if isinstance(token, QueryToken):
@@ -112,7 +112,7 @@ class Interpreter(object):
             if attr and base.has_property(attr) and base[attr]:
                 values = base[attr]
                 if not isinstance(values, (list, tuple)):
-                    values = [values, ]
+                    values = [values]
                 for value in values:
                     new_base = admin.get_object(token.attrs['module'], value)
                     if new_base:
@@ -124,7 +124,7 @@ class Interpreter(object):
             if attr and base.has_property(attr) and base[attr]:
                 admin.get_object(token.attrs['module'], base[attr][0])
                 if not isinstance(base[attr], (list, tuple)):
-                    base[attr] = [base[attr], ]
+                    base[attr] = [base[attr]]
                 filter = token.attrs.get('pattern', None)
                 if filter:
                     filter = filter.split('=', 1)

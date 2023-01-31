@@ -93,7 +93,7 @@ for mdb_dir in files:
     try:
         in_use = int((int(stat['number of pages used']) - int(stat['free pages'])) * 100 / int(stat['max pages']))
     except KeyError:  # API change in the future
-        nagios_exit(STATE_CRITICAL, 'output of "mdb_stat -e %s" could not be parsed: %s' % (mdb_dir, output,))
+        nagios_exit(STATE_CRITICAL, 'output of "mdb_stat -e %s" could not be parsed: %s' % (mdb_dir, output))
 
     if in_use >= args.critical:
         errors.append("More than %s%% (in fact %s%%) of mdb database %s is use, please increase %s (and restart %s)" % (args.critical, in_use, mdb_dir, ucr_variable, service))

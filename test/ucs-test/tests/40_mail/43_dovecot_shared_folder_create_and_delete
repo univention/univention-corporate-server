@@ -55,7 +55,7 @@ def main():
                                 (0, False, 'no'),
                                 (1, False, 'yes'),
                                 (2, True, 'no'),
-                                (3, True, 'yes'), ]:
+                                (3, True, 'yes')]:
 
                             #
                             # reconfigure system

@@ -48,7 +48,7 @@ def test_create_printer(ucr, udm):
         'location': uts.random_string(),
         'description': uts.random_name(),
         'spoolHost': random_fqdn(ucr),
-        'uri': '%s %s' % (random.choice(PRINTER_PROTOCOLS), uts.random_ip(),),
+        'uri': '%s %s' % (random.choice(PRINTER_PROTOCOLS), uts.random_ip()),
         'model': 'foomatic-rip/Generic-PCL_4_Printer-gutenprint-ijs-simplified.5.2.ppd',
         'producer': 'cn=Generic,cn=cups,cn=univention,%s' % (ucr.get('ldap/base'),),
         'sambaName': uts.random_name(),
@@ -109,7 +109,7 @@ def test_create_printer_and_check_printing_works(ucr, udm):
         'location': uts.random_string(),
         'description': uts.random_name(),
         'spoolHost': spoolhost,
-        'uri': '%s %s' % (random.choice(PRINTER_PROTOCOLS), uts.random_ip(),),
+        'uri': '%s %s' % (random.choice(PRINTER_PROTOCOLS), uts.random_ip()),
         'model': 'hp-ppd/HP/HP_Business_Inkjet_2500C_Series.ppd',
         'producer': 'cn=Generic,cn=cups,cn=univention,%s' % (ucr.get('ldap/base'),),
         'sambaName': uts.random_name(),
@@ -197,7 +197,7 @@ def test_create_printergroup(ucr, udm):
     printer_properties1 = {
         'name': uts.random_name(),
         'spoolHost': spoolHost,
-        'uri': '%s %s' % (random.choice(PRINTER_PROTOCOLS), uts.random_ip(),),
+        'uri': '%s %s' % (random.choice(PRINTER_PROTOCOLS), uts.random_ip()),
         'model': 'foomatic-rip/Generic-PCL_4_Printer-gutenprint-ijs-simplified.5.2.ppd',
         'producer': 'cn=Generic,cn=cups,cn=univention,%s' % (ucr.get('ldap/base'),),
     }
@@ -211,7 +211,7 @@ def test_create_printergroup(ucr, udm):
     printer_properties2 = {
         'name': uts.random_name(),
         'spoolHost': spoolHost,
-        'uri': '%s %s' % (random.choice(PRINTER_PROTOCOLS), uts.random_ip(),),
+        'uri': '%s %s' % (random.choice(PRINTER_PROTOCOLS), uts.random_ip()),
         'model': 'foomatic-rip/Generic-PCL_4_Printer-gutenprint-ijs-simplified.5.2.ppd',
         'producer': 'cn=Generic,cn=cups,cn=univention,%s' % (ucr.get('ldap/base'),),
     }

@@ -126,7 +126,7 @@ def test_save_timestamp(udm, readudm, binddn, bindpwdfile, capsys):
     timestamp = '2020010101Z'
     capsys.readouterr()  # flush
     univention_lastbind.save_timestamp(o, timestamp)
-    assert 'Warning: Could not save new timestamp "%s" to "lastbind" extended attribute of user "%s". Continuing' % (timestamp, o.dn,) in capsys.readouterr()[1]
+    assert 'Warning: Could not save new timestamp "%s" to "lastbind" extended attribute of user "%s". Continuing' % (timestamp, o.dn) in capsys.readouterr()[1]
     writeudm = univention_lastbind.get_writable_udm(binddn, bindpwdfile)
     o = writeudm.obj_by_dn(dn)
     univention_lastbind.save_timestamp(o, timestamp)
@@ -185,7 +185,7 @@ def test_main_not_enough_arguments():
 @pytest.mark.slow()
 def test_server_down(ucr, udm, readudm, capsys):
     mod = readudm.get('computers/%s' % (ucr.get('server/role'),))
-    comp = mod.get_by_id(ucr.get('hostname'),)
+    comp = mod.get_by_id(ucr.get('hostname'))
     slave = udm.create_object('computers/domaincontroller_slave', name=uts.random_name(), dnsEntryZoneForward=comp.props.dnsEntryZoneForward[0][0])
     slave = readudm.obj_by_dn(slave)
     capsys.readouterr()  # flush

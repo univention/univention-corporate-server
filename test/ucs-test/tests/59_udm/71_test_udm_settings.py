@@ -195,7 +195,7 @@ def test_filename_validation(udm, lo, modify, prefix, path, position, attr, ocs,
     def err(filename):
         return '%r exists (content=%r)' % (filename, open(filename).read())
 
-    pos = '%s,%s' % (position, udm.LDAP_BASE,)
+    pos = '%s,%s' % (position, udm.LDAP_BASE)
     filename = filename_modify = '%s%s%s' % (prefix, name, strings.random_string())
     if modify:
         dn_modify = '%s=%s,%s' % (attr, ldap.dn.escape_dn_chars(filename), pos)

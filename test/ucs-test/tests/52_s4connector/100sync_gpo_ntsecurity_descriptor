@@ -120,7 +120,7 @@ class Testclass_GPO_Security_Descriptor:
             utils.fail("Error restarting S4 Connector: %s\nCommand was: %s" % (stdout.decode('UTF-8', 'replace'), cmd))
 
     def activate_ntsd_sync(self):
-        ucr_set = ["connector/s4/mapping/gpo/ntsd=true", ]
+        ucr_set = ["connector/s4/mapping/gpo/ntsd=true"]
         self.previous_ucr_set, self.previous_ucr_unset = set_ucr(ucr_set, ucr=self.ucr)
         if self.previous_ucr_unset or self.previous_ucr_set:
             self.restart_s4_connector()

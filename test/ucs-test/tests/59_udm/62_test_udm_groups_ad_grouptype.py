@@ -168,7 +168,7 @@ def test_umd_memberUid(udm, ucr, lo):
     # validate memberuid after update users in group
     username = uts.random_name()
     for i in range(5):
-        user = 'uid=%s,cn=temp_%s,%s' % (username, i, ucr.get('ldap/base'),)
+        user = 'uid=%s,cn=temp_%s,%s' % (username, i, ucr.get('ldap/base'))
         group1 = udm.modify_object('groups/group', dn=group1, users=user)
         res = lo.get(group1).get('memberUid')
         res1 = lo.get(group1).get('uniqueMember')

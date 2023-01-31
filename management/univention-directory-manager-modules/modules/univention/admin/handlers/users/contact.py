@@ -364,18 +364,18 @@ class object(univention.admin.handlers.simpleLdap):
 
     def acquire_unique_dn(self):
         nonce = 1
-        cn = u'%s %s %d' % (self['firstname'] or '', self['lastname'], nonce,)
+        cn = u'%s %s %d' % (self['firstname'] or '', self['lastname'], nonce)
         self['cn'] = cn.strip()
         while not self.unique_dn():
             nonce += 1
-            cn = u'%s %s %d' % (self['firstname'] or '', self['lastname'], nonce,)
+            cn = u'%s %s %d' % (self['firstname'] or '', self['lastname'], nonce)
             self['cn'] = cn.strip()
         return self.get_candidate_dn()
 
     def _ldap_pre_ready(self):
         super(object, self)._ldap_pre_ready()
 
-        if not self.exists() or self.hasChanged(('firstname', 'lastname',)):
+        if not self.exists() or self.hasChanged(('firstname', 'lastname')):
             self.acquire_unique_dn()
 
     def _ldap_modlist(self):
@@ -456,7 +456,7 @@ def identify(dn, attr, canonical=False):
     if b'0' in attr.get('uidNumber', []) or b'$' in attr.get('uid', [b''])[0] or b'univentionHost' in attr.get('objectClass', []) or b'functional' in attr.get('univentionObjectFlag', []):
         return False
 
-    required_ocs = {b'person', b'inetOrgPerson', b'organizationalPerson', }
-    forbidden_ocs = {b'posixAccount', b'shadowAccount', b'sambaSamAccount', b'krb5Principal', b'krb5KDCEntry', b'univentionMail', b'simpleSecurityObject', b'uidObject', b'pkiUser', }
+    required_ocs = {b'person', b'inetOrgPerson', b'organizationalPerson'}
+    forbidden_ocs = {b'posixAccount', b'shadowAccount', b'sambaSamAccount', b'krb5Principal', b'krb5KDCEntry', b'univentionMail', b'simpleSecurityObject', b'uidObject', b'pkiUser'}
     ocs = set(attr.get('objectClass', []))
     return (ocs & required_ocs == required_ocs) and not (ocs & forbidden_ocs)

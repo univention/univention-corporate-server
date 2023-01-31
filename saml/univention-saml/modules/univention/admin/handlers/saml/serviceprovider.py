@@ -157,23 +157,23 @@ property_descriptions = {
 layout = [
     Tab(_(u'General'), _(u'Basic Settings'), layout=[
         Group(_('SAML service provider basic settings'), layout=[
-            ["isActivated", ],
-            ["Identifier", ],
-            ["AssertionConsumerService", ],
-            ["singleLogoutService", ],
-            ["NameIDFormat", ],
-            ["simplesamlNameIDAttribute", ],
-            ["serviceProviderOrganizationName", ],
-            ["serviceproviderdescription", ],
-            ["signLogouts", ],
+            ["isActivated"],
+            ["Identifier"],
+            ["AssertionConsumerService"],
+            ["singleLogoutService"],
+            ["NameIDFormat"],
+            ["simplesamlNameIDAttribute"],
+            ["serviceProviderOrganizationName"],
+            ["serviceproviderdescription"],
+            ["signLogouts"],
         ]),
     ]),
     Tab(_(u'Extended Settings'), _(u'Additional configuration options'), layout=[
         Group(_('Extended Settings'), layout=[
             ["privacypolicyURL"],
-            ["simplesamlAttributes", ],
-            ["attributesNameFormat", ],
-            ["LDAPattributes", ],
+            ["simplesamlAttributes"],
+            ["attributesNameFormat"],
+            ["LDAPattributes"],
         ]),
     ]),
 ]

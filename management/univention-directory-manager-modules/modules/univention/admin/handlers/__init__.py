@@ -1270,8 +1270,8 @@ class simpleLdap(object):
         al = self.call_udm_property_hook('hook_ldap_addlist', self, al)
 
         # ensure univentionObject is set
-        al.append(('objectClass', [b'univentionObject', ]))
-        al.append(('univentionObjectType', [self.module.encode('utf-8'), ]))
+        al.append(('objectClass', [b'univentionObject']))
+        al.append(('univentionObjectType', [self.module.encode('utf-8')]))
 
         ud.debug(ud.ADMIN, ud.INFO, "create object with dn: %s" % (self.dn,))
         ud.debug(ud.ADMIN, 99, 'Create dn=%r;\naddlist=%r;' % (self.dn, al))
@@ -1419,7 +1419,7 @@ class simpleLdap(object):
         available_options = set(module_options)
         options = set(self.options)
         if 'default' in available_options:
-            options |= {'default', }
+            options |= {'default'}
         old_options = set(self.old_options)
         if options != old_options:
             ud.debug(ud.ADMIN, ud.INFO, 'options=%r; old_options=%r' % (options, old_options))
@@ -1509,7 +1509,7 @@ class simpleLdap(object):
                 newmembers = [
                     member
                     for member in members
-                    if dn2str(str2dn(member)).lower() not in (dn2str(str2dn(olddn)).lower(), dn2str(str2dn(self.dn)).lower(), )
+                    if dn2str(str2dn(member)).lower() not in (dn2str(str2dn(olddn)).lower(), dn2str(str2dn(self.dn)).lower())
                 ]
                 newmembers.append(self.dn.encode('UTF-8'))
                 self.lo.modify(group, [('uniqueMember', members, newmembers)])
@@ -2415,12 +2415,12 @@ class simpleComputer(simpleLdap):
                 ud.debug(ud.ADMIN, ud.INFO, 'search base="%s"' % base)
                 if ':' in ip:
                     ip = IPv6Address(u'%s' % (ip,)).exploded
-                    (attrEdit, attrOther, ) = ('aAAARecord', 'aRecord', )
+                    (attrEdit, attrOther) = ('aAAARecord', 'aRecord')
                 else:
-                    (attrEdit, attrOther, ) = ('aRecord', 'aAAARecord', )
-                results = self.lo.search(base=base, scope='domain', attr=['aRecord', 'aAAARecord', ], filter=filter_format('(&(relativeDomainName=%s)(%s=%s))', (name, attrEdit, ip)), unique=False, required=False)
+                    (attrEdit, attrOther) = ('aRecord', 'aAAARecord')
+                results = self.lo.search(base=base, scope='domain', attr=['aRecord', 'aAAARecord'], filter=filter_format('(&(relativeDomainName=%s)(%s=%s))', (name, attrEdit, ip)), unique=False, required=False)
                 for dn, attr in results:
-                    if [x.decode('ASCII') for x in attr[attrEdit]] == [ip, ] and not attr.get(attrOther):  # the <ip> to be removed is the last on the object
+                    if [x.decode('ASCII') for x in attr[attrEdit]] == [ip] and not attr.get(attrOther):  # the <ip> to be removed is the last on the object
                         # remove the object
                         self.lo.delete(dn)
                     else:
@@ -2428,7 +2428,7 @@ class simpleComputer(simpleLdap):
                         new_ip_list = copy.deepcopy(attr[attrEdit])
                         new_ip_list.remove(ip.encode('ASCII'))
 
-                        self.lo.modify(dn, [(attrEdit, attr[attrEdit], new_ip_list, ), ])
+                        self.lo.modify(dn, [(attrEdit, attr[attrEdit], new_ip_list)])
 
                     zone = zoneDn or self.lo.parentDn(dn)
                     zone = univention.admin.handlers.dns.forward_zone.object(self.co, self.lo, self.position, zone)
@@ -2457,7 +2457,7 @@ class simpleComputer(simpleLdap):
                 self.lo.modify(dn, [('pTRRecord', ptrrecord, '')])
 
     def check_common_name_length(self):  # type: () -> None
-        ud.debug(ud.ADMIN, ud.INFO, 'check_common_name_length with self["ip"] = %r and self["dnsEntryZoneForward"] = %r' % (self['ip'], self['dnsEntryZoneForward'], ))
+        ud.debug(ud.ADMIN, ud.INFO, 'check_common_name_length with self["ip"] = %r and self["dnsEntryZoneForward"] = %r' % (self['ip'], self['dnsEntryZoneForward']))
         if len(self['ip']) > 0 and len(self['dnsEntryZoneForward']) > 0:
             for zone in self['dnsEntryZoneForward']:
                 if zone == '':
@@ -2518,9 +2518,9 @@ class simpleComputer(simpleLdap):
 
                 modlist = []
                 if old_aAAARecord != new_aAAARecord:
-                    modlist.append(('aAAARecord', old_aAAARecord, new_aAAARecord, ))
+                    modlist.append(('aAAARecord', old_aAAARecord, new_aAAARecord))
                 if old_aRecord != new_aRecord:
-                    modlist.append(('aRecord', old_aRecord, new_aRecord, ))
+                    modlist.append(('aRecord', old_aRecord, new_aRecord))
                 self.lo.modify(dn, modlist)
                 if not zoneDn:
                     zone = self.lo.parentDn(dn)

@@ -177,7 +177,7 @@ def write_configuration_file(dn: str, new: Dict[str, List[bytes]], filename: str
                 process = Popen(['/usr/bin/php', temp.name, entityid], stdout=fd, stderr=PIPE, stdin=PIPE)
                 stdout, stderr = process.communicate(metadata)
                 if process.returncode != 0:
-                    ud.debug(ud.LISTENER, ud.ERROR, 'Failed to create %s: %s' % (filename, stderr.decode('UTF-8', 'replace'),))
+                    ud.debug(ud.LISTENER, ud.ERROR, 'Failed to create %s: %s' % (filename, stderr.decode('UTF-8', 'replace')))
             fd.write("$further = array(\n")
         else:
             fd.write('$metadata[%s] = array(\n' % php_string(entityid))

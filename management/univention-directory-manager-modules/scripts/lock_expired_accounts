@@ -93,7 +93,7 @@ def main():
     today = int(time.time() / 24 / 3600)  # time.time() returns the local time
     ldap_filter = filter_format('(shadowExpire<=%s)', (str(today),))
     if options.last_week:
-        ldap_filter = filter_format('(&(shadowExpire>=%s)(shadowExpire<=%s))', (str(today - 6), str(today),))
+        ldap_filter = filter_format('(&(shadowExpire>=%s)(shadowExpire<=%s))', (str(today - 6), str(today)))
     results = udm_modules.lookup('users/user', None, lo, scope='sub', filter=ldap_filter)
 
     for entry in results:
@@ -107,7 +107,7 @@ def main():
             continue
 
         if options.dry_run:
-            print_msg('uid=%s expired at %s ... skipped due to dry run (expected modification: locked=%r)' % (entry['username'], entry['userexpiry'], entry['locked'],))
+            print_msg('uid=%s expired at %s ... skipped due to dry run (expected modification: locked=%r)' % (entry['username'], entry['userexpiry'], entry['locked']))
         else:
             print_msg('uid=%s expired at %s ...' % (entry['username'], entry['userexpiry']), newline=False)
             entry.modify()

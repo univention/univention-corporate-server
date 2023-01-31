@@ -324,7 +324,7 @@ class ACLs(object):
             else:
                 acls = [Rule(x) for x in acls]
         except EnvironmentError as exc:
-            ACL.process('Could not load ACLs of %r: %s' % (username, exc,))
+            ACL.process('Could not load ACLs of %r: %s' % (username, exc))
             return False
 
         self.acls = []
@@ -389,7 +389,7 @@ class LDAP_ACLs(ACLs):
             policy = self._get_policy_for_dn(userdn)
         except (udm_errors.base, ldap.LDAPError, IndexError) as exc:
             if not isinstance(exc, IndexError):
-                ACL.warn('Error reading credentials from LDAP for user %s: %s' % (self.username, traceback.format_exc(),))
+                ACL.warn('Error reading credentials from LDAP for user %s: %s' % (self.username, traceback.format_exc()))
             # read ACLs from file
             self._read_from_file(self.username)
             return

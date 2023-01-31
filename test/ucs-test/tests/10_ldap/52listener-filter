@@ -99,7 +99,7 @@ class Listener:
             '-i',
         ]
         proc = Popen(cmd, close_fds=True)
-        print('I: %d = %r' % (proc.pid, cmd,))
+        print('I: %d = %r' % (proc.pid, cmd))
         ret = proc.wait()
         print('I: ret=%r' % (ret,))
         if ret:
@@ -111,7 +111,7 @@ class Listener:
             '-F',
         ]
         self.proc = Popen(cmd, close_fds=True)
-        print('I: %d = %r' % (self.proc.pid, cmd,))
+        print('I: %d = %r' % (self.proc.pid, cmd))
         return self
 
     def __exit__(self, exc_type: Type[Exception] | None, exc_value: BaseException | None, traceback: TracebackType | None) -> None:
@@ -168,7 +168,7 @@ class Listener:
         self.proc.terminate()
         for i in range(6):
             ret = self.proc.poll()
-            print('I: ret=%s %d...' % (ret, i,))
+            print('I: ret=%s %d...' % (ret, i))
             if ret is not None:
                 break
             sleep((1 << i) / 10.0)
@@ -233,7 +233,7 @@ def is_not_in_cache(env: Environment, ucr: Dict[str, str]) -> bool:
         '-O', dump,
     ]
     proc = Popen(cmd, close_fds=True)
-    print('I: %d = %r' % (proc.pid, cmd,))
+    print('I: %d = %r' % (proc.pid, cmd))
     proc.wait()
 
     with open(dump) as cache:

@@ -68,7 +68,7 @@ class DN(object):
         return unicode(str(self))  # noqa: F821
 
     def __repr__(self):
-        return '<%s %r>' % (type(self).__name__, str(self),)
+        return '<%s %r>' % (type(self).__name__, str(self))
 
     def __eq__(self, other):
         """

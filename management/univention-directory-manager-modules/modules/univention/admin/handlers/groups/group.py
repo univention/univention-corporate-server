@@ -927,8 +927,8 @@ class object(univention.admin.handlers.simpleLdap):
         return univention.admin.filter.conjunction('&', [
             univention.admin.filter.expression('cn', '*', escape=False),
             univention.admin.filter.conjunction('|', [
-                univention.admin.filter.conjunction('&', [univention.admin.filter.expression('objectClass', 'univentionGroup'), ]),
-                univention.admin.filter.conjunction('&', [univention.admin.filter.expression('objectClass', 'sambaGroupMapping'), ]),
+                univention.admin.filter.conjunction('&', [univention.admin.filter.expression('objectClass', 'univentionGroup')]),
+                univention.admin.filter.conjunction('&', [univention.admin.filter.expression('objectClass', 'sambaGroupMapping')]),
             ]),
         ])
 

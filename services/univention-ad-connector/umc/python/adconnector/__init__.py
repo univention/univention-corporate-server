@@ -133,7 +133,7 @@ def get_ad_binddn_from_name(base, server, username, password):
         res = samdb.search(
             base,
             scope=ldb.SCOPE_SUBTREE,
-            expression=ldap.filter.filter_format('(samAccountName=%s)', [username, ]),
+            expression=ldap.filter.filter_format('(samAccountName=%s)', [username]),
             attrs=['samaccountname'])
         if res.count == 1:
             binddn = res.msgs[0].get('dn', idx=0).extended_str()

@@ -35,7 +35,7 @@ with UCSTestUDM() as udm:
     old = values[ATTR]
     new = list(reversed(old))
     change = (ATTR, old, new)
-    changes = [change, ]
+    changes = [change]
     access.modify(dn, changes)
 
 # vim: set ft=python :

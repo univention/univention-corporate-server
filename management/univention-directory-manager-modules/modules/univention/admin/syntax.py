@@ -306,7 +306,7 @@ class ISyntax(object):
         # for select, MultiSelect and SambaLogonHours
         empty_value = [{'id': '', 'label': ''}] if getattr(self, 'empty_value', False) else []
         return {
-            'staticValues': empty_value + [{'id': _[0], 'label': _[1], } for _ in getattr(self, 'choices', [])],
+            'staticValues': empty_value + [{'id': _[0], 'label': _[1]} for _ in getattr(self, 'choices', [])],
         }
 
     @classmethod
@@ -544,7 +544,7 @@ class complex(ISyntax):
         for i, (text, (desc, syn)) in enumerate(zip(texts, self.subsyntaxes)):
             ud.debug(ud.ADMIN, ud.INFO, 'syntax.py: subsyntax[%s]=%s, texts=%s' % (i, syn, text))
             if text is None and i + 1 < minn:
-                raise univention.admin.uexceptions.valueInvalidSyntax(_("Missing argument: %s > %s") % (self.name, desc,))
+                raise univention.admin.uexceptions.valueInvalidSyntax(_("Missing argument: %s > %s") % (self.name, desc))
             s = syn() if inspect.isclass(syn) else syn  # type: simple # type: ignore
             p = s.parse(text)
             parsed.append(p)
@@ -3017,7 +3017,7 @@ class reverseLookupSubnet(simple):
     regex_IPv4 = r'((([1-9]?[0-9])|(1[0-9]{0,2})|(2([0-4][0-9]|5[0-5])))\.){1,2}(([1-9]?[0-9])|(1[0-9]{0,2})|(2([0-4][0-9]|5[0-5])))'
     # normal IPv6 address without "::" substitution, leading zeroes must be preserved, at most 31 nibbles
     regex_IPv6 = r'(([0-9a-f]{4}:){0,7}[0-9a-f]{1,3})|(([0-9a-f]{4}:){0,6}[0-9a-f]{1,4})'
-    regex = re.compile(r'^((%s)|(%s))$' % (regex_IPv4, regex_IPv6, ))
+    regex = re.compile(r'^((%s)|(%s))$' % (regex_IPv4, regex_IPv6))
     error_message = _('A subnet for reverse lookup consists of the first 1-3 octets of an IPv4 address (example: "192.168.0") or of the first 1 to 31 nibbles of an expanded (with leading zeroes and without ::-substitution) IPv6 address (example: "2001:0db8:010" for "2001:db8:100::/24")')
 
 
@@ -3205,7 +3205,7 @@ class dnsMX(complex):
     """
 
     subsyntaxes = [(_('Priority'), integer), (_('Mail server'), dnsHostname)]
-    subsyntax_names = ('priority', 'mailserver',)
+    subsyntax_names = ('priority', 'mailserver')
     all_required = True
 
 
@@ -3281,7 +3281,7 @@ class dnsSRVLocation(complex):
     """
 
     subsyntaxes = [(_('Priority'), integer), (_('Weighting'), integer), (_('Port'), integer), (_('Server'), dnsHostname)]
-    subsyntax_names = ('priority', 'weigtht', 'port', 'server',)
+    subsyntax_names = ('priority', 'weigtht', 'port', 'server')
     size = ('OneThird', 'OneThird', 'OneThird', 'One')
     all_required = True
 
@@ -6361,7 +6361,7 @@ class PrinterURI(complex):
         for i, (text, (desc, syn)) in enumerate(zip(texts, self.subsyntaxes)):
             ud.debug(ud.ADMIN, ud.INFO, 'syntax.py: subsyntax[%s]=%s, text=%s' % (i, syn, text))
             if text is None and (self.min_elements is None or (i + 1) < count):
-                raise univention.admin.uexceptions.valueInvalidSyntax(_("Invalid syntax: %s > %s") % (self.name, desc,))
+                raise univention.admin.uexceptions.valueInvalidSyntax(_("Invalid syntax: %s > %s") % (self.name, desc))
             s = syn() if inspect.isclass(syn) else syn
             p = s.parse(text)
             if p is not None:
@@ -6491,7 +6491,7 @@ class PortalCategorySelection(simple):
     """
 
     subsyntaxes = [(_('Portal Category'), PortalCategoryV2), (_('Portal Entry'), PortalEntrySelection)]
-    subsyntax_names = ('portal-category', 'portal-entry',)
+    subsyntax_names = ('portal-category', 'portal-entry')
 
     widget = 'umc/modules/udm/PortalContent'
     widget_default_search_pattern = None

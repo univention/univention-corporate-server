@@ -876,7 +876,7 @@ class AD_Takeover(object):
             univention.lib.admember.remove_admember_service_from_localhost()
             univention.lib.admember.revert_ucr_settings()
             univention.lib.admember.revert_connector_settings()
-            run_and_output_to_log(["univention-config-registry", "unset", "connector/s4/listener/disabled", ], log.debug)
+            run_and_output_to_log(["univention-config-registry", "unset", "connector/s4/listener/disabled"], log.debug)
             run_and_output_to_log([
                 "univention-config-registry", "set",
                 "connector/ad/autostart=no",
@@ -1118,14 +1118,14 @@ class AD_Takeover(object):
                         sambadomain_object = module_settings_sambadomain.object(None, self.lo, position, sambadomain_object_dn)
                         sambadomain_object.open()
                     except uexceptions.ldapError as exc:
-                        log.debug("Opening '%s' failed: %s." % (sambadomain_object_dn, exc,))
+                        log.debug("Opening '%s' failed: %s." % (sambadomain_object_dn, exc))
 
                     try:
                         log.debug("Renaming '%s' to '%s' in UCS LDAP." % (sambadomain_object_dn, self.ad_netbios_domain))
                         sambadomain_object['name'] = self.ad_netbios_domain
                         sambadomain_object.modify()
                     except uexceptions.ldapError as exc:
-                        log.debug("Renaming of '%s' failed: %s." % (sambadomain_object_dn, exc,))
+                        log.debug("Renaming of '%s' failed: %s." % (sambadomain_object_dn, exc))
                     else:
                         x = str2dn(sambadomain_object_dn)
                         x[0] = [(x[0][0][0], self.ad_netbios_domain, ldap.AVA_STRING)]
@@ -1134,7 +1134,7 @@ class AD_Takeover(object):
                     # FIXME: in this peculiar case we should create one.
                     pass
 
-            run_and_output_to_log(["univention-config-registry", "set", "windows/domain=%s" % self.ad_netbios_domain, ], log.debug)
+            run_and_output_to_log(["univention-config-registry", "set", "windows/domain=%s" % self.ad_netbios_domain], log.debug)
 
         if sambadomain_object_dn:
             log.debug("Replacing old UCS sambaSID (%s) by AD domain SID (%s)." % (self.old_domainsid, self.ad_domainsid))
@@ -1189,7 +1189,7 @@ class AD_Takeover(object):
         for obj in msgs:
             name = obj["cn"][0].decode('UTF-8')
             run_and_output_to_log(["/usr/sbin/univention-directory-manager", "container/msgpo", "delete", "--filter", filter_format("name=%s", [name])], log.debug)
-            gpo_path = '%s/Policies/%s' % (sam_sysvol_dom_dir, name,)
+            gpo_path = '%s/Policies/%s' % (sam_sysvol_dom_dir, name)
             if os.path.exists(gpo_path):
                 log.info("Removing associated conflicting GPO directory %s." % (gpo_path,))
                 shutil.rmtree(gpo_path, ignore_errors=True)
@@ -1198,7 +1198,7 @@ class AD_Takeover(object):
                 continue
 
             run_and_output_to_log(["/usr/sbin/univention-directory-manager", "container/msgpo", "delete", "--filter", filter_format("name=%s", [name.upper()])], log.debug)
-            gpo_path = '%s/Policies/%s' % (sam_sysvol_dom_dir, name.upper(),)
+            gpo_path = '%s/Policies/%s' % (sam_sysvol_dom_dir, name.upper())
             if os.path.exists(gpo_path):
                 log.info("Removing associated conflicting GPO directory %s." % (gpo_path,))
                 shutil.rmtree(gpo_path, ignore_errors=True)
@@ -1374,7 +1374,7 @@ class AD_Takeover(object):
         for maildomain in maildomains:
             returncode = run_and_output_to_log(["univention-directory-manager", "mail/domain", "create", "--ignore_exists", "--position", "cn=domain,cn=mail,%s" % self.ucr["ldap/base"], "--set", "name=%s" % maildomain], log.debug)
             if returncode != 0:
-                log.error("Creation of UCS mail/domain %s failed. See %s for details." % (maildomain, LOGFILE_NAME,))
+                log.error("Creation of UCS mail/domain %s failed. See %s for details." % (maildomain, LOGFILE_NAME))
 
         # re-create DNS SPN account
         log.debug("Attempting removal of DNS SPN account in UCS-LDAP, will be recreated later with new password.")
@@ -1652,7 +1652,7 @@ class AD_Takeover_Finalize(object):
 
         returncode = run_and_output_to_log(["univention-directory-manager", "dns/alias", "create", "--superordinate", "zoneName=%s,cn=dns,%s" % (escape_dn_chars(self.ucr["domainname"]), self.ucr["ldap/base"]), "--set", "name=%s" % self.ad_server_name, "--set", "cname=%s" % self.local_fqdn], log.debug)
         if returncode != 0:
-            log.error("Creation of dns/alias %s for %s failed. See %s for details." % (self.ad_server_name, self.local_fqdn, LOGFILE_NAME,))
+            log.error("Creation of dns/alias %s for %s failed. See %s for details." % (self.ad_server_name, self.local_fqdn, LOGFILE_NAME))
 
     def remove_AD_server_account_from_samdb(self):
         # Cleanup necessary to use NETBIOS Alias
@@ -1670,7 +1670,7 @@ class AD_Takeover_Finalize(object):
                         log.info("Removing %s from SAM database." % (backlink_object,))
                         self.samdb.delete(backlink_object, ["tree_delete:0"])
                     except Exception:
-                        log.debug("Removal of AD %s objects %s from Samba4 SAM database failed. See %s for details." % (backlink_attribute, backlink_object, LOGFILE_NAME,))
+                        log.debug("Removal of AD %s objects %s from Samba4 SAM database failed. See %s for details." % (backlink_attribute, backlink_object, LOGFILE_NAME))
                         log.debug(traceback.format_exc())
 
             # Now delete the AD DC account and sub-objects
@@ -1684,7 +1684,7 @@ class AD_Takeover_Finalize(object):
                     log.info("Removing %s from SAM database." % (obj_dn,))
                     self.samdb.delete(obj_dn)
                 except Exception:
-                    log.error("Removal of AD DC account object %s from Samba4 SAM database failed. See %s for details." % (obj_dn, LOGFILE_NAME,))
+                    log.error("Removal of AD DC account object %s from Samba4 SAM database failed. See %s for details." % (obj_dn, LOGFILE_NAME))
                     log.debug(traceback.format_exc())
 
     def remove_AD_server_account_from_UDM(self):
@@ -1692,7 +1692,7 @@ class AD_Takeover_Finalize(object):
         log.debug("Removing AD DC account from local Univention Directory Manager")
         returncode = run_and_output_to_log(["univention-directory-manager", "computers/windows_domaincontroller", "delete", "--dn", "cn=%s,cn=dc,cn=computers,%s" % (escape_dn_chars(self.ad_server_name), self.ucr["ldap/base"])], log.debug)
         if returncode != 0:
-            log.error("Removal of DC account %s via UDM failed. See %s for details." % (self.ad_server_name, LOGFILE_NAME,))
+            log.error("Removal of DC account %s via UDM failed. See %s for details." % (self.ad_server_name, LOGFILE_NAME))
 
     def create_NETBIOS_alias_for_AD_hostname(self):
         # Create NETBIOS Alias
@@ -1845,14 +1845,14 @@ class AD_Takeover_Finalize(object):
                 # modify existing record.
                 returncode = run_and_output_to_log(["univention-directory-manager", "dns/ptr_record", "modify", "--superordinate", "zoneName=%s,cn=dns,%s" % (escape_dn_chars(ptr_zone), self.ucr["ldap/base"]), "--dn", "relativeDomainName=%s,zoneName=%s,cn=dns,%s" % (escape_dn_chars(ptr_address), escape_dn_chars(ptr_zone), self.ucr["ldap/base"]), "--set", "ptr_record=%s." % self.local_fqdn], log.debug)
                 if returncode != 0:
-                    log.warning("Warning: Update of reverse DNS record %s for %s failed. See %s for details." % (self.ad_server_ip, self.local_fqdn, LOGFILE_NAME,))
+                    log.warning("Warning: Update of reverse DNS record %s for %s failed. See %s for details." % (self.ad_server_ip, self.local_fqdn, LOGFILE_NAME))
             else:
                 # add new record.
                 returncode = run_and_output_to_log(["univention-directory-manager", "dns/ptr_record", "create", "--superordinate", "zoneName=%s,cn=dns,%s" % (escape_dn_chars(ptr_zone), self.ucr["ldap/base"]), "--set", "address=%s" % ptr_address, "--set", "ptr_record=%s." % self.local_fqdn], log.debug)
                 if returncode != 0:
-                    log.warning("Warning: Creation of reverse DNS record %s for %s failed. See %s for details." % (self.ad_server_ip, self.local_fqdn, LOGFILE_NAME,))
+                    log.warning("Warning: Creation of reverse DNS record %s for %s failed. See %s for details." % (self.ad_server_ip, self.local_fqdn, LOGFILE_NAME))
         else:
-            log.warning("Warning: Calculation of reverse DNS record %s for %s failed. See %s for details." % (self.ad_server_ip, self.local_fqdn, LOGFILE_NAME,))
+            log.warning("Warning: Calculation of reverse DNS record %s for %s failed. See %s for details." % (self.ad_server_ip, self.local_fqdn, LOGFILE_NAME))
 
     def reconfigure_nameserver_for_samba_backend(self):
         # Resolve against local Bind9
@@ -1990,7 +1990,7 @@ class Timer(object):
         self.timetable = []
 
     def start(self, label):
-        self.timetable = [(label, time.time()), ]
+        self.timetable = [(label, time.time())]
 
     def timestamp(self, label):
         self.timetable.append((label, time.time()))
@@ -2228,7 +2228,7 @@ def wait_for_s4_connector_replication(ucr, lp, progress=None, max_time=None):
         delta_t = time.time() - t_1
         t_1 = t_1 + delta_t
         if max_time and t_1 - t_0 > max_time:
-            log.debug("Warning: S4 Connector synchronization did not finish yet. Waited for about %s seconds." % (int(round(t_1 - t_0),)))
+            log.debug("Warning: S4 Connector synchronization did not finish yet. Waited for about %s seconds." % (int(round(t_1 - t_0))))
             conn.close()
             return False
         delta_t_last_feedback = t_1 - t_last_feedback
@@ -2294,14 +2294,14 @@ class UserRenameHandler(object):
             user = self.module_users_user.object(None, self.lo, self.position, userdn)
             user.open()
         except uexceptions.ldapError as exc:
-            log.debug("Opening user '%s' failed: %s." % (userdn, exc,))
+            log.debug("Opening user '%s' failed: %s." % (userdn, exc))
 
         try:
             log.debug("Renaming '%s' to '%s' in UCS LDAP." % (user.dn, new_name))
             user['username'] = new_name
             return user.modify()
         except uexceptions.ldapError as exc:
-            log.debug("Renaming of user '%s' failed: %s." % (userdn, exc,))
+            log.debug("Renaming of user '%s' failed: %s." % (userdn, exc))
             return
 
     def rename_ucs_user(self, ucsldap_object_name, ad_object_name):
@@ -2343,7 +2343,7 @@ class GroupRenameHandler(object):
             group = self.module_groups_group.object(None, self.lo, self.position, groupdn)
             group.open()
         except uexceptions.ldapError as exc:
-            log.debug("Opening group '%s' failed: %s." % (groupdn, exc,))
+            log.debug("Opening group '%s' failed: %s." % (groupdn, exc))
 
         try:
             log.debug("Renaming '%s' to '%s' in UCS LDAP." % (group.dn, new_name))
@@ -2355,7 +2355,7 @@ class GroupRenameHandler(object):
                 dn = ldap.dn.dn2str(dn2)
             return dn
         except uexceptions.ldapError as exc:
-            log.debug("Renaming of group '%s' failed: %s." % (groupdn, exc,))
+            log.debug("Renaming of group '%s' failed: %s." % (groupdn, exc))
             return
 
     def udm_rename_ucs_defaultGroup(self, groupdn, new_groupdn):

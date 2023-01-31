@@ -63,20 +63,20 @@ class Instance(umcm.Base):
     def _call(self, command):
         try:
             process = subprocess.Popen(command, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-            (stdoutdata, stderrdata, ) = process.communicate()
-            return (process.returncode, stdoutdata.decode('UTF-8'), stderrdata.decode('UTF-8'), )
+            (stdoutdata, stderrdata) = process.communicate()
+            return (process.returncode, stdoutdata.decode('UTF-8'), stderrdata.decode('UTF-8'))
         except OSError:
-            return (True, None, None, )
+            return (True, None, None)
 
     @simple_response
     def get_general_info(self):
         DMIDECODE = '/usr/sbin/dmidecode'
-        MANUFACTURER_CMD = (DMIDECODE, '-s', 'system-manufacturer', )
-        MODEL_CMD = (DMIDECODE, '-s', 'system-product-name', )
+        MANUFACTURER_CMD = (DMIDECODE, '-s', 'system-manufacturer')
+        MODEL_CMD = (DMIDECODE, '-s', 'system-product-name')
 
         stdout_list = []
-        for command in (MANUFACTURER_CMD, MODEL_CMD, ):
-            (exitcode, stdout, stderr, ) = self._call(command)
+        for command in (MANUFACTURER_CMD, MODEL_CMD):
+            (exitcode, stdout, stderr) = self._call(command)
             if exitcode:
                 MODULE.error('Command %r failed: %s %r %r' % (command, exitcode, stdout, stderr))
                 raise UMC_Error(_('Failed to execute command'))
@@ -102,9 +102,9 @@ class Instance(umcm.Base):
             '-t', model,
             '-c', comment,
             '-s', ticket,
-            '-u', )
+            '-u')
 
-        (exitcode, stdout, stderr, ) = self._call(SYSTEM_INFO_CMD)
+        (exitcode, stdout, stderr) = self._call(SYSTEM_INFO_CMD)
         if exitcode:
             MODULE.error('Execution of univention-system-info failed: %s' % (stdout,))
             raise UMC_Error('Execution of univention-system-info failed')
@@ -134,7 +134,7 @@ class Instance(umcm.Base):
         ADDRESS_VALUE = ucr.get('umc/sysinfo/mail/address', 'feedback@univention.de')
         SUBJECT_VALUE = ucr.get('umc/sysinfo/mail/subject', 'Univention System Info')
 
-        url = urlunparse(('mailto', '', ADDRESS_VALUE, '', urlencode({'subject': SUBJECT_VALUE, }), ''))
+        url = urlunparse(('mailto', '', ADDRESS_VALUE, '', urlencode({'subject': SUBJECT_VALUE}), ''))
         result = {}
         result['url'] = url.replace('+', '%20')
         return result
@@ -152,7 +152,7 @@ class Instance(umcm.Base):
 
         with open(os.path.join(SYSINFO_PATH, archive), 'rb') as fd:
             try:
-                response = requests.post(url, files={'filename': fd, })
+                response = requests.post(url, files={'filename': fd})
                 response.raise_for_status()
             except requests.exceptions.RequestException as exc:
                 raise UMC_Error('Archive upload failed: %s' % (exc,))

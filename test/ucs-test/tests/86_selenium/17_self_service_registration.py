@@ -54,7 +54,7 @@ def get_registration_info(ucr):
 
     def _get_registration_info(attributes=None, container_without_base=None):
         if container_without_base:
-            container_dn = '%s,%s' % (container_without_base, ucr.get('ldap/base'),)
+            container_dn = '%s,%s' % (container_without_base, ucr.get('ldap/base'))
             ucr.handler_set(['umc/self-service/account-registration/usercontainer=%s' % (container_dn,)])
             ucr.load()
         container_dn = ucr.get('umc/self-service/account-registration/usercontainer')

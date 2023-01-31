@@ -172,7 +172,7 @@ class LdapIndex(object):
         ucr_update(ucr, changes)
 
     def validate_config(self, ucr):
-        cmd = ('slaptest', '-f', '/etc/ldap/slapd.conf', )
+        cmd = ('slaptest', '-f', '/etc/ldap/slapd.conf')
         while True:
             proc = Popen(cmd, stderr=PIPE)
             _stdout, stderr = proc.communicate()
@@ -218,7 +218,7 @@ class LdapIndex(object):
 
     @staticmethod
     def check_slapd():
-        cmd = ('pidof', 'slapd',)
+        cmd = ('pidof', 'slapd')
         proc = Popen(cmd, stdout=PIPE, stderr=PIPE)
         proc.communicate()
         if proc.wait() == 0:

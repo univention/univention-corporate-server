@@ -103,7 +103,7 @@ def main():
                     break
                 time.sleep(1)
             else:
-                utils.fail('Test %d: Could not deliver test mail with msgid %r to shared folder' % (i, msgid,))
+                utils.fail('Test %d: Could not deliver test mail with msgid %r to shared folder' % (i, msgid))
 
             old_dir = get_dovecot_maildir(old_address)
             if not os.path.exists(old_dir):

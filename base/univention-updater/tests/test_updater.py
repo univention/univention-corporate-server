@@ -183,7 +183,7 @@ class TestUniventionUpdater(object):
         })
         tmp = u.release_update_temporary_sources_list(U.UCS_Version((MAJOR, MINOR + 1, 0)))
         assert {
-            'deb https://updates.software-univention.de/ ucs%d%d%d main' % (MAJOR, MINOR + 1, 0, ),
+            'deb https://updates.software-univention.de/ ucs%d%d%d main' % (MAJOR, MINOR + 1, 0),
             'deb https://updates.software-univention.de/%d.%d/maintained/component/ %s/%s/' % (MAJOR, MINOR + 1, 'a', 'all'),
             'deb https://updates.software-univention.de/%d.%d/maintained/component/ %s/%s/' % (MAJOR, MINOR + 1, 'a', ARCH),
         } == set(tmp)

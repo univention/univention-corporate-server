@@ -189,7 +189,7 @@ def purge_udm_computer(ucr, binddn, bindpw, computername):
             try:
                 obj.remove()
             except univention.admin.uexceptions.ldapError:
-                print("Removal of UDM computer account %s via UDM failed (univentionObjectType: %s)." % (computername, univentionObjectType,), file=sys.stderr)
+                print("Removal of UDM computer account %s via UDM failed (univentionObjectType: %s)." % (computername, univentionObjectType), file=sys.stderr)
                 sys.exit(1)
             if univention.admin.objects.wantsCleanup(obj):
                 univention.admin.objects.performCleanup(obj)
@@ -251,7 +251,7 @@ def purge_computer_with_DC_objects(ucr, binddn, bindpw, computername):
                 print("Removing %s from SAM database." % (backlink_object,))
                 samdb.delete(backlink_object, ["tree_delete:0"])
             except Exception:
-                print("Removal of Samba 4 %s objects %s from Samba 4 SAM database failed." % (backlink_attribute, backlink_object,), file=sys.stderr)
+                print("Removal of Samba 4 %s objects %s from Samba 4 SAM database failed." % (backlink_attribute, backlink_object), file=sys.stderr)
                 print(traceback.format_exc())
 
     # Now delete the Samba 4 computer account and sub-objects

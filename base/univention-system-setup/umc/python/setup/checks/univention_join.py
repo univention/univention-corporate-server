@@ -124,7 +124,7 @@ def check_memberof_overlay_is_installed(address, username, password):
 
 
 def check_for_school_domain(hostname, address, username, password):
-    MODULE.process('univention-join:school: check_for_school_domain(%r, %r, %r, %r)' % (hostname, address, username, '$PASSWORD', ))
+    MODULE.process('univention-join:school: check_for_school_domain(%r, %r, %r, %r)' % (hostname, address, username, '$PASSWORD'))
     is_school_multiserver_domain = check_is_school_multiserver_domain(address, username, password)
     if is_school_multiserver_domain:
         server_school_roles = get_server_school_roles(hostname, address, username, password)
@@ -135,7 +135,7 @@ def check_for_school_domain(hostname, address, username, password):
 
 
 def check_is_school_multiserver_domain(address, username, password):
-    MODULE.process('univention-join:school: check_is_school_multiserver_domain(%r, %r, %r)' % (address, username, '$PASSWORD', ))
+    MODULE.process('univention-join:school: check_is_school_multiserver_domain(%r, %r, %r)' % (address, username, '$PASSWORD'))
     is_school_multiserver_domain = False
     with _temporary_password_file(password) as password_file:
         try:
@@ -180,7 +180,7 @@ def check_is_school_multiserver_domain(address, username, password):
 
 
 def get_server_school_roles(hostname, address, username, password):
-    MODULE.process('univention-join:school: get_server_school_roles(%r, %r, %r, %r)' % (hostname, address, username, '$PASSWORD', ))
+    MODULE.process('univention-join:school: get_server_school_roles(%r, %r, %r, %r)' % (hostname, address, username, '$PASSWORD'))
     school_roles = []
     with _temporary_password_file(password) as password_file:
         try:

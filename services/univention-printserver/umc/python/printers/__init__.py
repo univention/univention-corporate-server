@@ -166,7 +166,7 @@ class Instance(Base):
         (stdout, stderr, status) = self._shell_command([cmd, printer])
 
         if status:
-            raise UMC_Error(_('Could not %s printer: %s') % (_('activate') if on else _('deactivate'), stderr,))
+            raise UMC_Error(_('Could not %s printer: %s') % (_('activate') if on else _('deactivate'), stderr))
 
     @simple_response
     @log

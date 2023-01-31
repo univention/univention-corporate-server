@@ -304,7 +304,7 @@ class BooleanType(TypeHint):
                 return None
         except univention.admin.uexceptions.valueError:
             pass
-        ud.debug(ud.ADMIN, ud.WARN, '%s: %s: not a boolean: %r' % (self.property_name, self.syntax.name, value,))
+        ud.debug(ud.ADMIN, ud.WARN, '%s: %s: not a boolean: %r' % (self.property_name, self.syntax.name, value))
         return value
 
 
@@ -323,7 +323,7 @@ class IntegerType(TypeHint):
         try:
             value = int(value)
         except ValueError:
-            ud.debug(ud.ADMIN, ud.WARN, '%s: %s: not a integer: %r' % (self.property_name, self.syntax.name, value,))
+            ud.debug(ud.ADMIN, ud.WARN, '%s: %s: not a integer: %r' % (self.property_name, self.syntax.name, value))
         return value
 
 
@@ -621,7 +621,7 @@ class DictionaryType(TypeHint):
 
         if self.properties:
             definition['properties'] = {
-                name: prop(self.property, self.property_name).get_openapi_definition() if prop else {'description': '%s:%s has no definition' % (self.property_name, name,)}
+                name: prop(self.property, self.property_name).get_openapi_definition() if prop else {'description': '%s:%s has no definition' % (self.property_name, name)}
                 for name, prop in self.properties.items()
             }
             definition['additionalProperties'] = False

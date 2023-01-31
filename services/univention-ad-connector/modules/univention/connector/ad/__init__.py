@@ -665,7 +665,7 @@ class ad(univention.connector.ucs):
         self.dom_handle = self.samr.OpenDomain(handle, security.SEC_FLAG_MAXIMUM_ALLOWED, sid)
 
     def get_kerberos_ticket(self):
-        p1 = subprocess.Popen(['kdestroy', ], close_fds=True)
+        p1 = subprocess.Popen(['kdestroy'], close_fds=True)
         p1.wait()
         with NamedTemporaryFile('w') as fd:
             fd.write(self.ad_ldap_bindpw)
@@ -1572,7 +1572,7 @@ class ad(univention.connector.ucs):
 
         ud.debug(ud.LDAP, ud.INFO, "group_members_sync_to_ucs: dn_mapping_ucs_member_to_ad=%s" % (dn_mapping_ucs_member_to_ad))
         add_members = copy.deepcopy(ucs_members_from_ad)
-        del_members = {'user': [], 'group': [], 'windowscomputer': [], }
+        del_members = {'user': [], 'group': [], 'windowscomputer': []}
 
         ud.debug(ud.LDAP, ud.INFO, "group_members_sync_to_ucs: members to add initialized: %s" % add_members)
 

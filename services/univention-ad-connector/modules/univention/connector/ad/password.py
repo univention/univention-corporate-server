@@ -231,7 +231,7 @@ def set_password_in_ad(connector, samaccountname, pwd, reconnect=False):
     try:
         sam_accountname = lsa.String()
         sam_accountname.string = samaccountname
-        (rids, types) = connector.samr.LookupNames(connector.dom_handle, [sam_accountname, ])
+        (rids, types) = connector.samr.LookupNames(connector.dom_handle, [sam_accountname])
 
         rid = rids.ids[0]
         user_handle = connector.samr.OpenUser(connector.dom_handle, security.SEC_FLAG_MAXIMUM_ALLOWED, rid)

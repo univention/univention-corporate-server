@@ -273,7 +273,7 @@ def samaccountname_dn_mapping(connector, given_object, dn_mapping_stored, ucsobj
             if ucsobject:
                 # lookup the cn as sAMAccountName in AD to get corresponding DN, if not found create new
                 ud.debug(ud.LDAP, ud.ALL, "samaccount_dn_mapping: got an UCS-Object")
-                filter_parts_ad = [format_escaped('(objectclass={0!e})', ocad), ]
+                filter_parts_ad = [format_escaped('(objectclass={0!e})', ocad)]
 
                 alternative_samaccountnames = []
                 for ucsval, conval in connector.property[propertyname].mapping_table.get(propertyattrib, []):
@@ -2083,7 +2083,7 @@ class s4(univention.s4connector.ucs):
                         (ldap.MOD_DELETE, 'isDeleted', None),
                         (ldap.MOD_REPLACE, 'distinguishedName', object['dn'].encode('UTF-8')),
                     ]
-                    self.lo_s4.lo.modify_ext_s(result[0][0], reanimate_modlist, serverctrls=[LDAPControl(LDAP_SERVER_SHOW_DELETED_OID, criticality=1), ])
+                    self.lo_s4.lo.modify_ext_s(result[0][0], reanimate_modlist, serverctrls=[LDAPControl(LDAP_SERVER_SHOW_DELETED_OID, criticality=1)])
                     # and try the sync again
                     return self.sync_from_ucs(property_type, object, pre_mapped_ucs_dn, old_dn, old_ucs_object, new_ucs_object)
                 except Exception:

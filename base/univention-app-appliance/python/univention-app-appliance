@@ -256,7 +256,7 @@ def setup_app(app: App) -> None:
                     os.remove(target)
                 except OSError as exc:
                     print_status('WARNING: An error occurred when removing the file %s: %s' % (target, exc))
-            print_status("Symlink first steps from %s to %s" % (source, target,))
+            print_status("Symlink first steps from %s to %s" % (source, target))
             if os.path.exists(source):
                 os.symlink(source, target)
 

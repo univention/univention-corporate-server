@@ -123,16 +123,16 @@ class Migration(object):
         user_filter = ucr.get('update43/udm/migration/user/filter', default_user_filter)
         for dn, user in lo.search(user_filter):
             ocs = {x.decode('UTF-8') for x in user['objectClass']}
-            has_posix = ocs & {'posixAccount', }
-            has_shadow = ocs & {'shadowAccount', }
-            has_samba = ocs & {'sambaSamAccount', }
-            has_kerberos = ocs & {'krb5Principal', 'krb5KDCEntry', }
-            has_kerberos_principal = ocs & {'krb5Principal', }
-            has_kerberos_kdcentry = ocs & {'krb5KDCEntry', }
-            has_mail = ocs & {'univentionMail', }
-            has_org_person = ocs & {'organizationalPerson', }
-            has_inet_org_person = ocs & {'inetOrgPerson', }
-            has_pki = ocs & {'pkiUser', }
+            has_posix = ocs & {'posixAccount'}
+            has_shadow = ocs & {'shadowAccount'}
+            has_samba = ocs & {'sambaSamAccount'}
+            has_kerberos = ocs & {'krb5Principal', 'krb5KDCEntry'}
+            has_kerberos_principal = ocs & {'krb5Principal'}
+            has_kerberos_kdcentry = ocs & {'krb5KDCEntry'}
+            has_mail = ocs & {'univentionMail'}
+            has_org_person = ocs & {'organizationalPerson'}
+            has_inet_org_person = ocs & {'inetOrgPerson'}
+            has_pki = ocs & {'pkiUser'}
             has_ldap = ocs & {'simpleSecurityObject', 'uidObject'}
 
             is_ldap_only = has_ldap and not any([has_posix, has_shadow, has_samba, has_kerberos, has_mail, has_org_person, has_inet_org_person, has_pki])

@@ -106,9 +106,9 @@ def processor(options, data_queue):
         if not result:
             ud.debug(ud.LDAP, ud.ERROR, 'The computer object %r was not found. Please remove the reinstall flag manually.' % (data, ))
         else:
-            for (dn, _, ) in result:
+            for (dn, _) in result:
                 lo.modify(dn, [('univentionServerReinstall', b'1', b'0')])
-                ud.debug(ud.LDAP, ud.PROCESS, 'The computer object %r (%r) was successfully modified. ' % (data, dn, ))
+                ud.debug(ud.LDAP, ud.PROCESS, 'The computer object %r (%r) was successfully modified. ' % (data, dn))
     while True:
         data = data_queue.get()
         process(data.decode('UTF-8'))
@@ -118,10 +118,10 @@ def listener(options, data_queue):
     size = 1024  # max hostname length
     s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     s.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
-    s.bind(("0.0.0.0", options.port, ))  # noqa: S104
+    s.bind(("0.0.0.0", options.port))  # noqa: S104
     s.listen(1)
     while True:
-        (client, _, ) = s.accept()
+        (client, _) = s.accept()
 
         def reader(client):
             client.settimeout(10)
@@ -158,7 +158,7 @@ def main():
     if options.daemonize:
         createDaemon(options)
     data_queue = multiprocessing.Queue()
-    subthread = threading.Thread(target=processor, args=(options, data_queue, ))
+    subthread = threading.Thread(target=processor, args=(options, data_queue))
     subthread.daemon = True
     subthread.start()
     listener(options, data_queue)

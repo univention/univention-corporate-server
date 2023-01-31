@@ -231,7 +231,7 @@ def auto_complete_values_for_join(newValues, current_locale=None):
                     currentComponents = currentComponents.union(ipackages)
 
         # set of all available software packages
-        allComponents = {'univention-ldap-overlay-memberof', }
+        allComponents = {'univention-ldap-overlay-memberof'}
         for iapp in get_apps():
             for ipackages in (iapp['default_packages'], iapp['default_packages_master']):
                 allComponents = allComponents.union(ipackages)
@@ -319,7 +319,7 @@ def run_networkscrips(demo_mode=False):
             try:
                 # appliance-mode for temporary saving the old ip address
                 # network-only for not restarting all those services (time consuming!)
-                p = subprocess.Popen([scriptpath, ] + script_parameters, stdout=f, stderr=subprocess.STDOUT)
+                p = subprocess.Popen([scriptpath] + script_parameters, stdout=f, stderr=subprocess.STDOUT)
                 MODULE.info("Running script '%s': pid=%d" % (scriptpath, p.pid))
                 p.wait()
             except OSError as ex:

@@ -871,7 +871,7 @@ class CPgeneric(Ressource):
         if user:
             user.reset_timeout()
 
-        self._log(99, 'queue(0x%x): sessionid=%r' % (id(response_queue), sessionid,))
+        self._log(99, 'queue(0x%x): sessionid=%r' % (id(response_queue), sessionid))
         self._log('info', 'pushed request(0x%x) to queue(0x%x) - waiting for response' % (id(queue_request), id(response_queue)))
         response = response_queue.get()
         self._log('info', 'got response(0x%x) from queue(0x%x): status=%s' % (id(response), id(response_queue), response.status))

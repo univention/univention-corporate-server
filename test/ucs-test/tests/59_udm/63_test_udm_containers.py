@@ -540,7 +540,7 @@ class Test_ContainerCN:
 
             utils.verify_ldap_object(new_cn, should_exist=True)
             if add_user:
-                for dn, entry in lo.search(filter=ldap.filter.filter_format('uid=%s', [user_name, ])):
+                for dn, entry in lo.search(filter=ldap.filter.filter_format('uid=%s', [user_name])):
                     assert entry.get('uid')[0] == user_name.encode('UTF-8'), 'CASE SENSITIVITY: uid = %s; expected: %s' % (entry.get('uid')[0], user_name)
                 utils.verify_ldap_object(new_user, should_exist=True)
 

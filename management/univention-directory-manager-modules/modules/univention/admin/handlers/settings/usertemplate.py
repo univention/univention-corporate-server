@@ -397,12 +397,12 @@ class object(univention.admin.handlers.simpleLdap):
     def _ldap_pre_modify(self):
         super(object, self)._ldap_pre_modify()
         self['_options'].extend(self.options)
-        self['_options'] = list(set(self['_options']) - {'default', })
+        self['_options'] = list(set(self['_options']) - {'default'})
 
     def _ldap_pre_create(self):
         super(object, self)._ldap_pre_create()
         self['_options'].extend(self.options)
-        self['_options'] = list(set(self['_options']) - {'default', })
+        self['_options'] = list(set(self['_options']) - {'default'})
 
 
 lookup = object.lookup

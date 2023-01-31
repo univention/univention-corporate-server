@@ -85,8 +85,8 @@ class TestUniventionMirror(object):
             'repository/mirror/version/end': '%d.%d-%d' % (MAJOR, 0, 0),
         })
         uris = {
-            '/dists/ucs%d%d%d/preup.sh' % (MAJOR, MINOR, 0, ): b'#!r_pre',
-            '/dists/ucs%d%d%d/postup.sh' % (MAJOR, MINOR, 0, ): b'#!r_post',
+            '/dists/ucs%d%d%d/preup.sh' % (MAJOR, MINOR, 0): b'#!r_pre',
+            '/dists/ucs%d%d%d/postup.sh' % (MAJOR, MINOR, 0): b'#!r_post',
             '/dists/ucs%d%d%d/main/binary-%s/Packages.gz' % (MAJOR, MINOR, 0, ARCH): DATA,
             '/%d.%d/maintained/component/%s/%s/Packages.gz' % (MAJOR, 0, 'a', 'all'): DATA,
             '/%d.%d/maintained/component/%s/%s/preup.sh' % (MAJOR, 0, 'a', 'all'): b'#!a_pre',
@@ -95,7 +95,7 @@ class TestUniventionMirror(object):
             '/%d.%d/maintained/component/%s/Packages.gz' % (MAJOR, 0, 'b'): DATA,
             '/%d.%d/maintained/component/%s/preup.sh' % (MAJOR, 0, 'b'): b'#!b_pre',
             '/%d.%d/maintained/component/%s/postup.sh' % (MAJOR, 0, 'b'): b'#!b_post',
-            RJSON: gen_releases([(MAJOR, MINOR, 0), ]),
+            RJSON: gen_releases([(MAJOR, MINOR, 0)]),
         }
         http(uris)
         m._get_releases()
@@ -120,10 +120,10 @@ class TestUniventionMirror(object):
             'repository/mirror/version/end': '%d.%d-%d' % (MAJOR, 0, 0),
         })
         uris = {
-            '/dists/ucs%d%d%d/preup.sh' % (MAJOR, MINOR, 0, ): b'#!r_pre',
-            '/dists/ucs%d%d%d/postup.sh' % (MAJOR, MINOR, 0, ): b'#!r_post',
+            '/dists/ucs%d%d%d/preup.sh' % (MAJOR, MINOR, 0): b'#!r_pre',
+            '/dists/ucs%d%d%d/postup.sh' % (MAJOR, MINOR, 0): b'#!r_post',
             '/dists/ucs%d%d%d/main/binary-%s/Packages.gz' % (MAJOR, MINOR, 0, ARCH): DATA,
-            RJSON: gen_releases([(MAJOR, MINOR, 0), ]),
+            RJSON: gen_releases([(MAJOR, MINOR, 0)]),
         }
         http(uris)
         uris2 = {

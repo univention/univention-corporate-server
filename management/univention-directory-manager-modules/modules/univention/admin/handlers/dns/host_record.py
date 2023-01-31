@@ -187,8 +187,8 @@ class object(univention.admin.handlers.simpleLdap):
             newAaaaRecord = {ipaddress.IPv6Address(u'%s' % (x,)).exploded for x in newAaaaRecord}
             newAaaaRecord = [x.encode('ASCII') for x in newAaaaRecord]
 
-            ml.append(('aRecord', oldARecord, newARecord, ))
-            ml.append(('aAAARecord', oldAaaaRecord, newAaaaRecord, ))
+            ml.append(('aRecord', oldARecord, newARecord))
+            ml.append(('aAAARecord', oldAaaaRecord, newAaaaRecord))
         return ml
 
     def _ldap_post_create(self):

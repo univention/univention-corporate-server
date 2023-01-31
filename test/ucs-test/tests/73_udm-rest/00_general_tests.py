@@ -52,7 +52,7 @@ def test_authentication(udm):
         udm_client = UDMClient.master_connection(user, 'univention')
         udm_client.get('users/user')
 
-    udm.modify_object('users/user', dn=userdn, groups='cn=%s,cn=groups,%s' % (custom_groupname('Domain Admins', ucr), ucr['ldap/base'],))
+    udm.modify_object('users/user', dn=userdn, groups='cn=%s,cn=groups,%s' % (custom_groupname('Domain Admins', ucr), ucr['ldap/base']))
     print('3. domain admin must be able to access the API')
     udm_client = UDMClient.master_connection(user, 'univention')
     udm_client.get('users/user')

@@ -534,7 +534,7 @@ class Test_UDMExtensionsJoinscript:
                 })
 
                 content = open(get_absolute_extension_filename(extension_type, extension_filename)).read()
-                assert not extension_identifier not in content, 'ERROR: UDM extension of package %d has not been written to disk (%s)' % (len(packages), extension_filename,)
+                assert not extension_identifier not in content, 'ERROR: UDM extension of package %d has not been written to disk (%s)' % (len(packages), extension_filename)
 
         finally:
             print('Removing UDM extension from LDAP')
@@ -598,7 +598,7 @@ class Test_UDMExtensionsJoinscript:
                 wait_for_replication()
 
                 content = open(get_absolute_extension_filename(extension_type, extension_filename)).read()
-                assert not (package_version == package_version_HIGH and extension_identifier not in content), 'ERROR: UDM extension of package %d has not been written to disk (%s)' % (len(packages), extension_filename,)
+                assert not (package_version == package_version_HIGH and extension_identifier not in content), 'ERROR: UDM extension of package %d has not been written to disk (%s)' % (len(packages), extension_filename)
                 assert not (package_version == package_version_LOW and extension_identifier in content), 'ERROR: the extension update has been performed but should not (old version=%s ; new version=%s)' % (package_version_HIGH, package_version_LOW)
 
         finally:
@@ -663,7 +663,7 @@ class Test_UDMExtensionsJoinscript:
                 wait_for_replication()
 
                 content = open(get_absolute_extension_filename(extension_type, extension_filename)).read()
-                assert not extension_identifier not in content, 'ERROR: UDM extension of package %d has not been written to disk (%s)' % (len(packages), extension_filename,)
+                assert not extension_identifier not in content, 'ERROR: UDM extension of package %d has not been written to disk (%s)' % (len(packages), extension_filename)
 
         finally:
             print('Removing UDM extension from LDAP')

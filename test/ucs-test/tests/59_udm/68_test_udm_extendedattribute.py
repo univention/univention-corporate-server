@@ -1096,7 +1096,7 @@ class %s(univention.admin.hook.simpleHook):
             client = Client.get_test_connection()
             layout = flatten(client.umc_command('udm/layout', [{"objectType": "users/user", "objectDN": None}], 'users/user').result)
 
-            assert prop not in layout, '%s is part of %r' % (prop, layout,)
+            assert prop not in layout, '%s is part of %r' % (prop, layout)
 
     @pytest.mark.tags('udm', 'apptest')
     @pytest.mark.roles('domaincontroller_master')

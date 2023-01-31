@@ -88,7 +88,7 @@ def open_drs_connection():
         ad_ldap_bindpw = fd.read().rstrip()
 
     def get_kerberos_ticket(ad_ldap_bindpw, ad_ldap_binddn):
-        p1 = subprocess.Popen(['kdestroy', ], close_fds=True)
+        p1 = subprocess.Popen(['kdestroy'], close_fds=True)
         p1.wait()
         with NamedTemporaryFile('w') as fd:
             fd.write(ad_ldap_bindpw)

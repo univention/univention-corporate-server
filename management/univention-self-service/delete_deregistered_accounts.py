@@ -64,13 +64,13 @@ def get_writable_udm(binddn=None, bindpwdfile=None):
             with open(bindpwdfile) as f:
                 bindpwd = f.read().strip()
         except IOError as err:
-            error('Could not open "bindpwdfile" "%s": %s' % (bindpwdfile, err,))
+            error('Could not open "bindpwdfile" "%s": %s' % (bindpwdfile, err))
         ucr = ConfigRegistry()
         ucr.load()
         try:
             udm = UDM.credentials(binddn, bindpwd, ucr.get('ldap/base'), ucr.get('ldap/master'), ucr.get('ldap/master/port'))
         except univention.udm.exceptions.ConnectionError as err:
-            error('Could not connect to server "%s" with provided "binddn" "%s" and "bindpwdfile" "%s": %s' % (ucr.get('ldap/master'), binddn, bindpwdfile, err,))
+            error('Could not connect to server "%s" with provided "binddn" "%s" and "bindpwdfile" "%s": %s' % (ucr.get('ldap/master'), binddn, bindpwdfile, err))
     else:
         try:
             udm = UDM.admin()

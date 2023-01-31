@@ -1120,7 +1120,7 @@ class UDM_Module(object):
                 if not isinstance(dns, (list, tuple)):
                     dns = [dns]
                 for dn in dns:
-                    references.append({'module': 'udm', 'property': key, 'flavor': 'navigation', 'objectType': object_type, 'id': dn, 'label': '%s: %s: %s' % (key, object_type, dn,), 'icon': 'udm-%s' % object_type.replace('/', '-')})
+                    references.append({'module': 'udm', 'property': key, 'flavor': 'navigation', 'objectType': object_type, 'id': dn, 'label': '%s: %s: %s' % (key, object_type, dn), 'icon': 'udm-%s' % object_type.replace('/', '-')})
         return references + [dict(ref, property='__policies') for ref in self.get_policy_references(obj.dn)]
 
     @property

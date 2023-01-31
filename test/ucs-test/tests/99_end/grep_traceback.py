@@ -133,7 +133,7 @@ def main(files, ignore_exceptions=[], out=sys.stdout):
     return not found
 
 
-class E(collections.namedtuple('Exception', ['re_exception', 're_traceback', 'bugs_'], defaults=(None, (),))):
+class E(collections.namedtuple('Exception', ['re_exception', 're_traceback', 'bugs_'], defaults=(None, ()))):
 
     @property
     def bugs(self):

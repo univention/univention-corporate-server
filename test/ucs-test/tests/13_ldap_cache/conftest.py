@@ -24,7 +24,7 @@ def dn_builtin_users(ldap_base):
 
 @pytest.fixture()
 def dn_domain_users(ucr, base_group):
-    return 'cn=%s,%s' % (custom_groupname('Domain Users', ucr), base_group,)
+    return 'cn=%s,%s' % (custom_groupname('Domain Users', ucr), base_group)
 
 
 def create_new_user(udm, base_user):

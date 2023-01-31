@@ -384,7 +384,7 @@ class NotFound(HTTPError):
 
 def superordinate_names(module):
     superordinates = module.superordinate_names
-    if set(superordinates) == {'settings/cn', }:
+    if set(superordinates) == {'settings/cn'}:
         return []
     return superordinates
 
@@ -2329,7 +2329,7 @@ class ContainerQueryBase(Resource):
             container = ucr['ldap/base']
             defaults = {}
             if object_type != 'navigation':
-                defaults['$operations$'] = ['search', ]  # disallow edit
+                defaults['$operations$'] = ['search']  # disallow edit
             if object_type in ('dns/dns', 'dhcp/dhcp'):
                 defaults.update({
                     'label': UDM_Module(object_type, ldap_connection=self.ldap_connection, ldap_position=self.ldap_position).title,
@@ -3008,8 +3008,8 @@ class ObjectsMove(Resource):
     async def post(
             self,
             object_type,
-            position: str = Body(DNSanitizer(required=True),),
-            dn: List[str] = Body(ListSanitizer(DNSanitizer(required=True), min_elements=1),),
+            position: str = Body(DNSanitizer(required=True)),
+            dn: List[str] = Body(ListSanitizer(DNSanitizer(required=True), min_elements=1)),
     ):
         # FIXME: this can only move objects of the same object_type but should move everything
         dns = dn  # TODO: validate: moveable, etc.
@@ -3234,11 +3234,11 @@ class Object(FormBase, _OpenAPIBase, Resource):
             self,
             object_type,
             dn,
-            position: str = Body(DNSanitizer(required=True),),
-            superordinate: str = Body(DNSanitizer(required=False, allow_none=True),),
-            options: Dict = Body(DictSanitizer({}, default_sanitizer=BooleanSanitizer()),),
-            policies: Dict = Body(DictSanitizer({}, default_sanitizer=ListSanitizer(DNSanitizer())),),
-            properties: Dict = Body(DictSanitizer({}, required=True),),
+            position: str = Body(DNSanitizer(required=True)),
+            superordinate: str = Body(DNSanitizer(required=False, allow_none=True)),
+            options: Dict = Body(DictSanitizer({}, default_sanitizer=BooleanSanitizer())),
+            policies: Dict = Body(DictSanitizer({}, default_sanitizer=ListSanitizer(DNSanitizer()))),
+            properties: Dict = Body(DictSanitizer({}, required=True)),
     ):
         """Modify or move an {module.object_name} object"""
         dn = unquote_dn(dn)
@@ -4243,7 +4243,7 @@ class ServiceSpecificPassword(Resource):
             self,
             object_type,
             dn,
-            service: str = Body(StringSanitizer(required=True),),
+            service: str = Body(StringSanitizer(required=True)),
     ):
         module = get_module(object_type, dn, self.ldap_write_connection)
         if module is None:
@@ -4332,7 +4332,7 @@ class Application(tornado.web.Application):
         module_type = '(%s)' % '|'.join(re.escape(mod) for mod in Modules.mapping)
         object_type = '([a-z_-]+/[a-z_-]+)'
         policies_object_type = '(policies/[a-z_-]+)'
-        dn = '((?:[^/]+%s.+%s)?%s)' % (self.multi_regex('='), self.multi_regex(','), self.multi_regex(ucr['ldap/base']),)
+        dn = '((?:[^/]+%s.+%s)?%s)' % (self.multi_regex('='), self.multi_regex(','), self.multi_regex(ucr['ldap/base']))
         # FIXME: with that dn regex, it is not possible to have urls like (/udm/$dn/foo/$dn/) because ldap-base at the end matches the last dn
         # Note: the ldap base is part of the url to support "/" as part of the DN. otherwise we can use: '([^/]+(?:=|%3d|%3D)[^/]+)'
         # Note: we cannot use .replace('/', '%2F') for the dn part as url-normalization could replace this and apache doesn't pass URLs with %2F to the ProxyPass without http://httpd.apache.org/docs/current/mod/core.html#allowencodedslashes

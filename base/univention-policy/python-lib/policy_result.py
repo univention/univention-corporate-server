@@ -88,7 +88,7 @@ def _policy_result(dn, binddn="", bindpw="", encoding='UTF-8', ldap_server=None)
         binddn = cr.get("ldap/hostdn")
         bindpw = "/etc/machine.secret"
 
-    command = ['univention-policy-result', '-D', binddn, '-y', bindpw, ]
+    command = ['univention-policy-result', '-D', binddn, '-y', bindpw]
     if ldap_server:
         command.extend(["-h", ldap_server])
     command.append(dn)

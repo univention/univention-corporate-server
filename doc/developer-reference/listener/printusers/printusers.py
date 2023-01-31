@@ -85,7 +85,7 @@ def _writeit(rec: _Rec, comment: str) -> None:
                 print(u'%sUser: "%s"' % (indent, rec.uid), file=out)
                 print(u'%sUID: "%s"' % (indent, nuid), file=out)
                 if comment:
-                    print(u'%s%s' % (indent, comment,), file=out)
+                    print(u'%s%s' % (indent, comment), file=out)
     except IOError as ex:
         ud.debug(
             ud.LISTENER, ud.ERROR,

@@ -270,8 +270,8 @@ class object(univention.admin.handlers.simpleLdap):
                         newAaaaRecord.append(ipaddress.IPv6Address(u'%s' % (address,)).exploded.encode('ASCII'))
                     else:
                         newARecord.append(address.encode('ASCII'))
-            ml.append(('aRecord', oldARecord, newARecord, ))
-            ml.append(('aAAARecord', oldAaaaRecord, newAaaaRecord, ))
+            ml.append(('aRecord', oldARecord, newARecord))
+            ml.append(('aAAARecord', oldAaaaRecord, newAaaaRecord))
         return ml
 
     def _ldap_pre_modify(self):

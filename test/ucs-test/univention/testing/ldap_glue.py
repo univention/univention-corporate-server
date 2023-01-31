@@ -113,7 +113,7 @@ class LDAPConnection:
             raise Exception(ex + traceback.format_exc())
 
     def get_kerberos_ticket(self):
-        p1 = subprocess.Popen(['kdestroy', ], close_fds=True)
+        p1 = subprocess.Popen(['kdestroy'], close_fds=True)
         p1.wait()
         cmd_block = ['kinit', '--no-addresses', '--password-file=%s' % self.pw_file, self.principal]
         p1 = subprocess.Popen(cmd_block, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, close_fds=True)

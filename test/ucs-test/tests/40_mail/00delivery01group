@@ -53,7 +53,7 @@ def main():
                     failed_addresses.append(mail)
             time.sleep(1)
         for address in failed_addresses:
-            utils.fail('mail sent to group address %r was not delivered to %r' % (group_mail, address,))
+            utils.fail('mail sent to group address %r was not delivered to %r' % (group_mail, address))
 
 
 if __name__ == '__main__':

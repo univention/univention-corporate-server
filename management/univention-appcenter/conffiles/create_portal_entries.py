@@ -221,7 +221,7 @@ def _handler(ucr, changes):
                 try:
                     category_pos = position(ucr.get('ldap/base'))
                     category_pos.setDn('cn=category,cn=portals,cn=univention')
-                    category_dn = 'cn=domain-%s,%s' % (escape_dn_chars(category), category_pos.getDn(),)
+                    category_dn = 'cn=domain-%s,%s' % (escape_dn_chars(category), category_pos.getDn())
                     portal_logger.debug('Adding entry to %s' % (category_dn,))
                     obj = init_object('portals/category', lo, category_pos, category_dn)
                     entries = obj['entries']

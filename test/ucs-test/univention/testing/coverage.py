@@ -247,7 +247,7 @@ directory = {directory}
             return
         try:
             with open(cls.COVERAGE_DEBUG_PATH, 'a') as fd:
-                fd.write('%s : %s: %s\n' % (os.getpid(), time.time(), ' '.join(repr(m) for m in messages),))
+                fd.write('%s : %s: %s\n' % (os.getpid(), time.time(), ' '.join(repr(m) for m in messages)))
         except OSError:
             pass
 

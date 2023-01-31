@@ -87,7 +87,7 @@ def crypt(password, method_id=None, salt=None):
         }.get(hashing_method, '6')
 
     from crypt import crypt as _crypt
-    return _crypt(password, '$%s$%s$' % (method_id, salt, ))
+    return _crypt(password, '$%s$%s$' % (method_id, salt))
 
 
 def bcrypt_hash(password):

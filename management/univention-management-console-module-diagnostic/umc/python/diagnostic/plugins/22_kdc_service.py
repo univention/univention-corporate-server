@@ -105,12 +105,12 @@ actions = {
 
 def _sequence_component(name: str, tag_value: int, type: base.Asn1ItemBase) -> namedtype.NamedType:
     return namedtype.NamedType(name, type.subtype(
-        explicitTag=tag.Tag(tag.tagClassContext, tag.tagFormatSimple, tag_value),))
+        explicitTag=tag.Tag(tag.tagClassContext, tag.tagFormatSimple, tag_value)))
 
 
 def _sequence_optional_component(name: str, tag_value: int, type: base.Asn1ItemBase) -> namedtype.OptionalNamedType:
     return namedtype.OptionalNamedType(name, type.subtype(
-        explicitTag=tag.Tag(tag.tagClassContext, tag.tagFormatSimple, tag_value),))
+        explicitTag=tag.Tag(tag.tagClassContext, tag.tagFormatSimple, tag_value)))
 
 
 class PrincipalName(univ.Sequence):

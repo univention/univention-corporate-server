@@ -257,7 +257,7 @@ class object(univention.admin.handlers.simpleLdap):
         if self.dn in [entry for category, entries in old_content for entry in entries]:
             return
         new_content = None
-        portal_category_dn = 'cn=%s,cn=categories,cn=portal,cn=univention,%s' % (escape_dn_chars(self['category']), self.lo.base,)
+        portal_category_dn = 'cn=%s,cn=categories,cn=portal,cn=univention,%s' % (escape_dn_chars(self['category']), self.lo.base)
         category_already_in_old_content = any(self.lo.compare_dn(portal_category_dn, category) for category, entries in old_content)
         if category_already_in_old_content:
             new_content = [[category, entries + ([self.dn] if self.lo.compare_dn(category, portal_category_dn) else [])] for category, entries in old_content]

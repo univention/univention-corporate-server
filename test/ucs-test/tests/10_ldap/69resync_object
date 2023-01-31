@@ -71,7 +71,7 @@ def test_resync_updating_object():
         local_lo = getRootDnConnection()
         user_sn = local_lo.search(user_filter, attr=('sn',))[0][1]['sn'][0]
         user_sn_new = uts.random_string().encode('UTF-8')
-        local_lo.modify(user_dn, [('sn', user_sn, user_sn_new, )])
+        local_lo.modify(user_dn, [('sn', user_sn, user_sn_new)])
         if local_lo.search(user_filter, attr=('sn',))[0][1]['sn'][0] != user_sn_new:
             utils.fail('Local object modification failed')
         fail_create = subprocess.check_output([
@@ -112,7 +112,7 @@ def test_resync_recreate_object():
         local_lo = getRootDnConnection()
         user_sn = local_lo.search(user_filter, attr=('sn',))[0][1]['sn'][0]
         user_sn_new = uts.random_string().encode('UTF-8')
-        local_lo.modify(user_dn, [('sn', user_sn, user_sn_new, )])
+        local_lo.modify(user_dn, [('sn', user_sn, user_sn_new)])
         if local_lo.search(user_filter, attr=('sn',))[0][1]['sn'][0] != user_sn_new:
             utils.fail('Local object modification failed')
         simulation = subprocess.check_output([

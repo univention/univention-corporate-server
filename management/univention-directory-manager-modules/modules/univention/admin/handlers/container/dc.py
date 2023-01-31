@@ -64,7 +64,7 @@ options = {
     ),
     'kerberos': univention.admin.option(
         short_description=_('Kerberos realm'),
-        objectClasses=['krb5Realm', ],
+        objectClasses=['krb5Realm'],
         default=True,
     ),
     'samba': univention.admin.option(

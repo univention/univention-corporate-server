@@ -75,8 +75,8 @@ property_descriptions = {
 layout = [
     Tab(_(u'General'), _(u'Settings'), layout=[
         Group(_('SAML identity provider settings'), layout=[
-            ["id", ],
-            ["LdapGetAttributes", ],
+            ["id"],
+            ["LdapGetAttributes"],
         ]),
     ]),
 ]

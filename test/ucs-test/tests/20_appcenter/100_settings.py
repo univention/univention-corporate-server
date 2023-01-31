@@ -548,7 +548,7 @@ def outside_test_app(request, local_appcenter, outside_test_preinst, outside_tes
     with open('/tmp/app.settings', 'w') as fd:
         fd.write(outside_test_settings)
     with open('/tmp/app.preinst', 'w') as fd:
-        fd.write(outside_test_preinst,)
+        fd.write(outside_test_preinst)
     populate = get_action('dev-populate-appcenter')
     populate.call(new=True, settings='/tmp/app.settings', preinst='/tmp/app.preinst', ini='/tmp/app.ini')
     return Apps().find(app_id)

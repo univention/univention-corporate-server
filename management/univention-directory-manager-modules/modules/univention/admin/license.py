@@ -443,7 +443,7 @@ class License(object):
                     value = value[0]
                 self.new_license = True
             else:
-                ud.debug(ud.ADMIN, ud.INFO, 'LICENSE: %r: %s' % (name, errormsg,))
+                ud.debug(ud.ADMIN, ud.INFO, 'LICENSE: %r: %s' % (name, errormsg))
                 value = default
 
         ud.debug(ud.ADMIN, ud.INFO, 'LICENSE: %r = %r' % (name, value))

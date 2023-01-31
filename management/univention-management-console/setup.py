@@ -103,7 +103,7 @@ setup(
     package_dir={'': 'src'},
     packages=['univention', 'univention.management', 'univention.management.console', 'univention.management.console.protocol', 'univention.management.console.modules'],
     scripts=['scripts/univention-management-console-server', 'scripts/univention-management-console-module', 'scripts/univention-management-console-client', 'scripts/univention-management-console-acls'],
-    data_files=[('share/univention-management-console/categories', all_xml_files_in('data/categories')), ],
+    data_files=[('share/univention-management-console/categories', all_xml_files_in('data/categories'))],
     cmdclass={'build': Build, 'build_i18n': BuildI18N},
 
     name=dch.package,

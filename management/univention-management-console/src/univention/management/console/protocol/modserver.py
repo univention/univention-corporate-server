@@ -228,7 +228,7 @@ class ModuleServer(Server):
             return
 
         trace = ''.join(traceback.format_exception(etype, exc, etraceback))
-        MODULE.error('The init function of the module failed\n%s: %s' % (exc, trace,))
+        MODULE.error('The init function of the module failed\n%s: %s' % (exc, trace))
         from ..error import UMC_Error
         if not isinstance(exc, UMC_Error):
             error = _('The initialization of the module failed: %s') % (trace,)

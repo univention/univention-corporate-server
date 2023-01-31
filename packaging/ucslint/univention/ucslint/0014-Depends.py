@@ -48,10 +48,10 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
     RE_INIT = re.compile(r"^(?:File|Subfile): (etc/init.d/.+)$")
     RE_TRANSITIONAL = re.compile(r'\b[Tt]ransition(?:al)?(?: dummy)? [Pp]ackage\b')  # re.IGNORECASE
     DEPS = {
-        'uicr': (re.compile(r"(?:/usr/bin/)?univention-install-(?:config-registry(?:-info)?|service-info)|\bdh\b.*--with\b.*\bucr\b"), {'univention-config-dev', }),
-        'umcb': (re.compile(r"(?:/usr/bin/)?dh-umc-module-build|\bdh\b.*--with\b.*\bumc\b"), {'univention-management-console-dev', }),
+        'uicr': (re.compile(r"(?:/usr/bin/)?univention-install-(?:config-registry(?:-info)?|service-info)|\bdh\b.*--with\b.*\bucr\b"), {'univention-config-dev'}),
+        'umcb': (re.compile(r"(?:/usr/bin/)?dh-umc-module-build|\bdh\b.*--with\b.*\bumc\b"), {'univention-management-console-dev'}),
         'ucr': (re.compile(r"""(?:^|(?<=['";& \t]))(?:/usr/sbin/)?(?:univention-config-registry|ucr)(?:(?=['";& \t])|$)"""), {'univention-config', '${misc:Depends}'}),
-        'ial': (re.compile(r"/usr/share/univention-config-registry/init-autostart\.lib"), {'univention-base-files', }),
+        'ial': (re.compile(r"/usr/share/univention-config-registry/init-autostart\.lib"), {'univention-base-files'}),
     }
     PRIORITIES = frozenset({'required', 'important'})
 

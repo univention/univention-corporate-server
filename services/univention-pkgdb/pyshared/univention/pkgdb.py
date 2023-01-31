@@ -150,11 +150,11 @@ def log(message):
 
 
 def build_sysversion(config_registry):
-    sysversion = '%s-%s' % (config_registry['version/version'], config_registry['version/patchlevel'], )
+    sysversion = '%s-%s' % (config_registry['version/version'], config_registry['version/patchlevel'])
     if config_registry.get('version/security-patchlevel'):
-        sysversion = "%s-%s" % (sysversion, config_registry['version/security-patchlevel'], )
+        sysversion = "%s-%s" % (sysversion, config_registry['version/security-patchlevel'])
     if config_registry.get('version/erratalevel'):
-        sysversion = "%s errata%s" % (sysversion, config_registry['version/erratalevel'], )
+        sysversion = "%s errata%s" % (sysversion, config_registry['version/erratalevel'])
     return sysversion
 
 
@@ -266,7 +266,7 @@ def sql_put_sys_in_systems(cursor, sysname, sysversion, sysrole, ldaphostdn, arc
     try:
         cursor.execute(sql_command, parameters)
     except pgdb.Error as error:
-        log('DB-Error in sql_put_sys_on_systems: %r %r %r' % (error, sql_command, parameters, ))
+        log('DB-Error in sql_put_sys_on_systems: %r %r %r' % (error, sql_command, parameters))
         raise
 
 
@@ -303,7 +303,7 @@ def sql_put_sys_in_systems_no_architecture(cursor, sysname, sysversion, sysrole,
     try:
         cursor.execute(sql_command, parameters)
     except pgdb.Error as error:
-        log('DB-Error in sql_put_sys_on_systems: %r %r %r' % (error, sql_command, parameters, ))
+        log('DB-Error in sql_put_sys_on_systems: %r %r %r' % (error, sql_command, parameters))
         raise
 
 
@@ -372,7 +372,7 @@ def dump_systems(cursor):
     '''
     cursor.execute(query)
     writer = csv.writer(sys.stdout, delimiter=' ')
-    writer.writerow(('hostname', 'UCS version', 'server role', 'last scan', 'LDAP host DN', ))
+    writer.writerow(('hostname', 'UCS version', 'server role', 'last scan', 'LDAP host DN'))
     for row in cursor:
         writer.writerow(row)
     return 0
@@ -383,7 +383,7 @@ def dump_packages(cursor):
     query = "SELECT DISTINCT ON (pkgname, vername) pkgname, vername, inststatus FROM packages_on_systems ORDER BY pkgname, vername, inststatus"
     cursor.execute(query)
     writer = csv.writer(sys.stdout, delimiter=' ')
-    writer.writerow(('package', 'version', 'installed', ))
+    writer.writerow(('package', 'version', 'installed'))
     for row in cursor:
         writer.writerow(row)
     return 0
@@ -415,8 +415,8 @@ def action_remove_system(connection, cursor, sysname):
     DELETE FROM systems
            WHERE sysname = %(sysname)s
     '''
-    cursor.execute(delete_packages, {'sysname': sysname, })
-    cursor.execute(delete_system, {'sysname': sysname, })
+    cursor.execute(delete_packages, {'sysname': sysname})
+    cursor.execute(delete_system, {'sysname': sysname})
     connection.commit()
 
 
@@ -453,7 +453,7 @@ def scan_and_store_packages(cursor, sysname, fake_null=False, architecture=None)
     if scan_and_store_packages.cache is None:
         apt_pkg.init()
         scan_and_store_packages.cache = apt_pkg.Cache()
-    cursor.execute(delete_packages, {'sysname': sysname, })
+    cursor.execute(delete_packages, {'sysname': sysname})
     insert_values = []
     for package in scan_and_store_packages.cache.packages:
         if not package.has_versions:
@@ -533,7 +533,7 @@ def action_scan(connection, cursor, config_registry):
     return 0
 
 
-PRIVILEGED_OPERATIONS = frozenset(('add-system', 'del-system', 'fill-testdb', 'test-superuser',))
+PRIVILEGED_OPERATIONS = frozenset(('add-system', 'del-system', 'fill-testdb', 'test-superuser'))
 
 
 def open_database_connection(config_registry, pkgdbu=False, db_server=None):
@@ -560,8 +560,8 @@ def open_database_connection(config_registry, pkgdbu=False, db_server=None):
     with open(password_file) as fd:
         connection_info['password'] = fd.read().rstrip('\n')
     connectstring = ' '.join([
-        "%s='%s'" % (key, value.replace('\\', '\\\\').replace("'", "\\'"),)
-        for (key, value, )
+        "%s='%s'" % (key, value.replace('\\', '\\\\').replace("'", "\\'"))
+        for (key, value)
         in connection_info.items()
     ])
     connection = pgdb.connect(database=connectstring)
@@ -572,7 +572,7 @@ def main():
     """main function for univention-pkgdb-scan"""
     options = parse_options()
     if options.action == 'version':
-        print('%s %s' % (os.path.basename(sys.argv[0]), '@%@package_version@%@', ))
+        print('%s %s' % (os.path.basename(sys.argv[0]), '@%@package_version@%@'))
         return 0
 
     config_registry = univention.config_registry.ConfigRegistry()

@@ -439,8 +439,8 @@ class Test_ComputerAllRoles:
             # delete computer and check new name in zones
             udm.remove_object(role, dn=computer, wait_for=True)
             utils.wait_for_connector_replication()
-            verify_ldap_object(forward, {'nSRecord': ['aaa.aa.', ]})
-            verify_ldap_object(reverse, {'nSRecord': ['aaa.aa.', ]})
+            verify_ldap_object(forward, {'nSRecord': ['aaa.aa.']})
+            verify_ldap_object(reverse, {'nSRecord': ['aaa.aa.']})
 
         @pytest.mark.tags('udm', 'udm-computers')
         def test_multiple_dhcp_entry_zones(self, udm, verify_ldap_object, role):
@@ -907,7 +907,7 @@ def test_remove_ipv4_ptr(udm, remove_ip, expected_ptr, verify_ldap_object):
     )
     udm.modify_object('computers/ipmanagedclient', dn=computer, remove={'ip': [remove_ip]})
 
-    ptr_record = 'relativeDomainName=%s,%s' % (expected_ptr, rdnsZone6,)
+    ptr_record = 'relativeDomainName=%s,%s' % (expected_ptr, rdnsZone6)
     verify_ldap_object(ptr_record, should_exist=False)
 
 

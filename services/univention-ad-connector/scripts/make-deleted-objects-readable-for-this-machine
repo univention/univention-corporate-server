@@ -86,7 +86,7 @@ class AD_DSACL_modifier():
         ctrls = []
         ctrls.append(ldap.controls.LDAPControl(LDAP_SERVER_SHOW_DELETED_OID, criticality=0))
 
-        result = self.ad.lo_ad.lo.search_ext_s("CN=Deleted Objects,%s" % (self.ad.ad_ldap_base,), ldap.SCOPE_BASE, "(objectClass=*)", attrlist=["nTSecurityDescriptor", ], serverctrls=ctrls)
+        result = self.ad.lo_ad.lo.search_ext_s("CN=Deleted Objects,%s" % (self.ad.ad_ldap_base,), ldap.SCOPE_BASE, "(objectClass=*)", attrlist=["nTSecurityDescriptor"], serverctrls=ctrls)
         if result and len(result) > 0 and result[0] and len(result[0]) > 0 and result[0][0]:  # no referral, so we've got a valid result
             self.deleted_objects_dn = result[0][0]
             obj = result[0][1]
@@ -116,7 +116,7 @@ class AD_DSACL_modifier():
 
     def grant_DSACL_LCRP_to_local_system(self):
         ldap_filter = filter_format("(sAMAccountName=%s$)", (self.ucr["hostname"],))
-        result = self.ad.lo_ad.lo.search_ext_s(self.ad.ad_ldap_base, ldap.SCOPE_SUBTREE, ldap_filter, attrlist=["objectSid", ])
+        result = self.ad.lo_ad.lo.search_ext_s(self.ad.ad_ldap_base, ldap.SCOPE_SUBTREE, ldap_filter, attrlist=["objectSid"])
         if result and len(result) > 0 and result[0] and len(result[0]) > 0 and result[0][0]:  # no referral, so we've got a valid result
             obj = result[0][1]
             objectSid_ndr = obj.get("objectSid", [None])[0]

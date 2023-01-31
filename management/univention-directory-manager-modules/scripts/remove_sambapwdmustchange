@@ -69,7 +69,7 @@ if __name__ == '__main__':
         print('No user with sambaPwdMustChange was found.')
     else:
         for ob in res:
-            print('Remove sambaPwdMustChange (%s) for %s' % (ob[1].get('sambaPwdMustChange', [])[0].decode('utf-8'), ob[0],), end=' ')
+            print('Remove sambaPwdMustChange (%s) for %s' % (ob[1].get('sambaPwdMustChange', [])[0].decode('utf-8'), ob[0]), end=' ')
             if options.action == 'remove':
                 lo.modify(ob[0], [('sambaPwdMustChange', ob[1].get('sambaPwdMustChange', []), b'')])
                 print('done')

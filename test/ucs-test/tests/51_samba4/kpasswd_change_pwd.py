@@ -34,7 +34,7 @@ if __name__ == "__main__":
     cmd += ' %s' % (opts.username,)
 
     kpasswd = pexpect.spawn(cmd, timeout=20)  # logfile=sys.stdout
-    status = kpasswd.expect([pexpect.TIMEOUT, b"%s@%s's Password: " % (authusername.encode('UTF-8'), ucr['kerberos/realm'].encode('ASCII')), ])
+    status = kpasswd.expect([pexpect.TIMEOUT, b"%s@%s's Password: " % (authusername.encode('UTF-8'), ucr['kerberos/realm'].encode('ASCII'))])
     if status == 0:  # timeout
         print('kpasswd behaved unexpectedly! Output:\n\t%r' % (kpasswd.before.decode('UTF-8', 'replace'),))
         sys.exit(120)
@@ -43,7 +43,7 @@ if __name__ == "__main__":
 
     kpasswd.sendline(authpassword.encode('UTF-8'))
 
-    status = kpasswd.expect([pexpect.TIMEOUT, b'New password for %s@%s:' % (opts.username.encode('UTF-8'), ucr['kerberos/realm'].encode('ASCII')), "kpasswd: krb5_get_init_creds: Preauthentication failed", ])
+    status = kpasswd.expect([pexpect.TIMEOUT, b'New password for %s@%s:' % (opts.username.encode('UTF-8'), ucr['kerberos/realm'].encode('ASCII')), "kpasswd: krb5_get_init_creds: Preauthentication failed"])
     if status == 0:  # timeout
         print('kpasswd behaved unexpectedly! Output:\n\t%r' % (kpasswd.before.decode('UTF-8', 'replace'),))
         sys.exit(120)
@@ -51,9 +51,9 @@ if __name__ == "__main__":
         print('Preauthentication failed!')
         sys.exit(120)
     kpasswd.sendline(opts.newpassword.encode('UTF-8'))
-    status = kpasswd.expect([pexpect.TIMEOUT, b'Verify password - New password for %s@%s:' % (opts.username.encode('UTF-8'), ucr['kerberos/realm'].encode('ASCII')), ])
+    status = kpasswd.expect([pexpect.TIMEOUT, b'Verify password - New password for %s@%s:' % (opts.username.encode('UTF-8'), ucr['kerberos/realm'].encode('ASCII'))])
     kpasswd.sendline(opts.newpassword.encode('UTF-8'))
-    status = kpasswd.expect([b'Success : Password changed', pexpect.TIMEOUT, ])
+    status = kpasswd.expect([b'Success : Password changed', pexpect.TIMEOUT])
     if status != 0:
         sys.exit(1)
     else:

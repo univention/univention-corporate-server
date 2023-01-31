@@ -67,7 +67,7 @@ def warningSupressed(dn, attributes):
     # cn=admin,$ldap_base cn=backup,$ldap_base
     ocs = set(attributes['objectClass'])
     if set(attributes.keys()) == {'objectClass', 'userPassword', 'cn', 'sn'} and ocs == {b'top', b'person'}:
-        if attributes['sn'] == attributes['cn'] and len(attributes['cn']) == 1 and attributes['cn'][0] in (b'admin', b'backup', ):
+        if attributes['sn'] == attributes['cn'] and len(attributes['cn']) == 1 and attributes['cn'][0] in (b'admin', b'backup'):
             return True
     # Kerberos principal objects
     if ocs == {b'top', b'account', b'krb5Principal', b'krb5KDCEntry'}:
@@ -124,7 +124,7 @@ def main(options):
         uldap.modify = lambda dn, changes: sys.stdout.write('Would modify %r\n' % (dn, ))
     warningHidden.verbose = options.verbose
 
-    for (dn, attributes, ) in uldap.search(filter=searchFilter, base=options.base):
+    for (dn, attributes) in uldap.search(filter=searchFilter, base=options.base):
         matches = [
             module
             for (module, identify) in moduleIdentify.items()
@@ -138,8 +138,8 @@ def main(options):
             if b'univentionObject' not in attributes['objectClass']:
                 try:
                     changes = [
-                        ('objectClass', attributes['objectClass'], attributes['objectClass'] + [b'univentionObject'], ),
-                        ('univentionObjectType', [], [matches[0].encode('UTF-8'), ], ),
+                        ('objectClass', attributes['objectClass'], attributes['objectClass'] + [b'univentionObject']),
+                        ('univentionObjectType', [], [matches[0].encode('UTF-8')]),
                     ]
                     uldap.modify(dn, changes)
                 except univention.uldap.ldap.INVALID_SYNTAX as e:
@@ -149,9 +149,9 @@ def main(options):
                     return False
             elif attributes['univentionObjectType'][0].decode('utf-8') != matches[0]:
                 errorsOccurred = True
-                print('Mismatch for %r: univentionObjectType is %r but should be %r!' % (dn, attributes['univentionObjectType'][0].decode('utf-8'), matches, ), file=sys.stderr)
+                print('Mismatch for %r: univentionObjectType is %r but should be %r!' % (dn, attributes['univentionObjectType'][0].decode('utf-8'), matches), file=sys.stderr)
         elif len(matches) > 1:
-            raise ValueError('Multiple matches for %r: %r!' % (dn, matches, ))
+            raise ValueError('Multiple matches for %r: %r!' % (dn, matches))
         else:
             if not warningSupressed(dn, attributes):
                 print('Warning: No match for %r' % (dn, ), file=sys.stderr)

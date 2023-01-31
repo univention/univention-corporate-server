@@ -942,11 +942,11 @@ def invoke_service(service, cmd):
         p1 = subprocess.Popen([init_script, cmd], close_fds=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
         stdout, stderr = p1.communicate()
     except OSError as ex:
-        ud.debug(ud.MODULE, ud.ERROR, "%s %s failed: %s" % (init_script, cmd, ex.args[1],))
+        ud.debug(ud.MODULE, ud.ERROR, "%s %s failed: %s" % (init_script, cmd, ex.args[1]))
         return
 
     if p1.returncode:
-        ud.debug(ud.MODULE, ud.ERROR, "%s %s failed (%d)" % (init_script, cmd, p1.returncode,))
+        ud.debug(ud.MODULE, ud.ERROR, "%s %s failed (%d)" % (init_script, cmd, p1.returncode))
         return
 
     ud.debug(ud.MODULE, ud.PROCESS, "%s %s: %s" % (init_script, cmd, stdout.decode('UTF-8', 'replace')))
@@ -1163,7 +1163,7 @@ def prepare_dns_reverse_settings(ad_domain_info, ucr=None):
     ad_server_name = ad_domain_info['DC DNS Name']
     ip = socket.gethostbyname(ad_server_name)
     ucr_key = u'hosts/static/%s' % (ip,)
-    ucr_set = [u'%s=%s' % (ucr_key, ad_server_name), ]
+    ucr_set = [u'%s=%s' % (ucr_key, ad_server_name)]
 
     for setting in ucr_set:
         var = setting.split("=", 1)[0]

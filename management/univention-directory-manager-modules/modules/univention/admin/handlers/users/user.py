@@ -645,11 +645,11 @@ layout = [
         Group(_('Advanced settings'), layout=[
             'mailAlternativeAddress',
             'mailHomeServer',
-        ], ),
+        ]),
         Group(_('Mail forwarding'), layout=[
             'mailForwardCopyToSelf',
             'mailForwardAddress',
-        ], ),
+        ]),
     ]),
     Tab(_('Contact'), _('Contact information'), layout=[
         Group(_('Business'), layout=[

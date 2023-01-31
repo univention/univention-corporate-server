@@ -85,7 +85,7 @@ def postrun() -> None:
         try:
             if schema_handler._do_reload or acl_handler._do_reload:
                 ud.debug(ud.LISTENER, ud.PROCESS, '%s: Reloading LDAP server.' % (name,))
-                for handler_object in (schema_handler, acl_handler,):
+                for handler_object in (schema_handler, acl_handler):
                     handler_object._do_reload = False
                 p = subprocess.Popen(
                     [initscript, 'graceful-restart'], close_fds=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
@@ -93,7 +93,7 @@ def postrun() -> None:
                 stdout, stderr = out.decode('UTF-8', 'replace'), err.decode('UTF-8', 'replace')
                 if p.returncode != 0:
                     ud.debug(ud.LISTENER, ud.ERROR, f'{name}: LDAP server restart returned {stderr} {stdout} ({p.returncode}).')
-                    for handler_object in (schema_handler, acl_handler,):
+                    for handler_object in (schema_handler, acl_handler):
                         if handler_object._todo_list:
                             for object_dn in handler_object._todo_list:
                                 ldap_extension.set_handler_message(name, object_dn, f'LDAP server restart returned {stderr} {stdout} ({p.returncode}).')
@@ -101,7 +101,7 @@ def postrun() -> None:
 
             # Only set active flags on Primary
             if server_role == 'domaincontroller_master':
-                for handler_object in (schema_handler, acl_handler,):
+                for handler_object in (schema_handler, acl_handler):
                     handler_object.mark_active(handler_name=name)
         finally:
             listener.unsetuid()

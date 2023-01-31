@@ -184,14 +184,14 @@ class UserRenameHandler:
             user = self.module_users_user.object(None, self.lo, self.position, userdn)
             user.open()
         except uexceptions.ldapError as exc:
-            log(ud.WARN, "Opening user '%s' failed: %s." % (userdn, exc,))
+            log(ud.WARN, "Opening user '%s' failed: %s." % (userdn, exc))
 
         try:
             log(ud.PROCESS, "Renaming '%s' to '%s' in UCS LDAP." % (user.dn, new_name))
             user['username'] = new_name
             return user.modify()
         except uexceptions.ldapError as exc:
-            log(ud.WARN, "Renaming of user '%s' failed: %s." % (userdn, exc,))
+            log(ud.WARN, "Renaming of user '%s' failed: %s." % (userdn, exc))
             return
 
     def rename_ucs_user(self, ucsldap_object_name, ad_object_name):
@@ -236,14 +236,14 @@ class GroupRenameHandler:
             group = self.module_groups_group.object(None, self.lo, self.position, groupdn)
             group.open()
         except uexceptions.ldapError as exc:
-            log(ud.WARN, "Opening group '%s' failed: %s." % (groupdn, exc,))
+            log(ud.WARN, "Opening group '%s' failed: %s." % (groupdn, exc))
 
         try:
             log(ud.PROCESS, "Renaming '%s' to '%s' in UCS LDAP." % (group.dn, new_name))
             group['name'] = new_name
             return group.modify()
         except uexceptions.ldapError as exc:
-            log(ud.WARN, "Renaming of group '%s' failed: %s." % (groupdn, exc,))
+            log(ud.WARN, "Renaming of group '%s' failed: %s." % (groupdn, exc))
             return
 
     def udm_rename_ucs_defaultGroup(self, groupdn, new_groupdn):

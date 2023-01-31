@@ -124,17 +124,17 @@ def parse_automount(information):
         unc = information
     if ':' in unc:
         host, path = unc.split(':', 1)
-        return (flags, host, path, )
-    return (None, None, None, )
+        return (flags, host, path)
+    return (None, None, None)
 
 
 def mount_nfs_home(host, path, mount_point):
     """mount NFS home share <path> from <host> on <mount_point>"""
-    command = ('mount', '-t', 'nfs', '%s:%s' % (host, path, ), mount_point, )
+    command = ('mount', '-t', 'nfs', '%s:%s' % (host, path), mount_point)
     debug("executing %s" % " ".join(pipes.quote(_arg) for _arg in command))
     if subprocess.call(command) == 0:
         with open(MOUNTS_FILE, 'a') as mounts:
-            mounts.write('%s %d\n' % (mount_point, time.time(), ))
+            mounts.write('%s %d\n' % (mount_point, time.time()))
         return True
     return False
 
@@ -167,11 +167,11 @@ def main():
     if not home_attr:
         sys.exit(0)
     else:
-        (_, host, path, ) = parse_automount(home_attr)
+        (_, host, path) = parse_automount(home_attr)
         if not host or not path:
             syslog.syslog("Bad information in LDAP. Not mounting home directory.")
             sys.exit(1)
-        if host in (hostname_fqdn(), hostname_short(), ) and os.path.realpath(path) == os.path.realpath(user.pw_dir):
+        if host in (hostname_fqdn(), hostname_short()) and os.path.realpath(path) == os.path.realpath(user.pw_dir):
             syslog.syslog("Home directory is local.")
             sys.exit(0)
         create_home(user)

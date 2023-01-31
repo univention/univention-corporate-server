@@ -184,7 +184,7 @@ while not status['finished']:
         failcount = 0
     except (HTTPError, ConnectionError):
         failcount += 1
-        print('TRACEBACK %d in client.umc_command("schoolinstaller/progress"):\n%s' % (failcount, traceback.format_exc(),))
+        print('TRACEBACK %d in client.umc_command("schoolinstaller/progress"):\n%s' % (failcount, traceback.format_exc()))
         time.sleep(1)
     message = '%(component)s - %(info)s' % status
     if last_message != message:

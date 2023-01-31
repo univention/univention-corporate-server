@@ -46,7 +46,7 @@ def create_extended_attr():
         'tabPosition': '9',
         'groupName': 'ID Sync',
         'groupPosition': '2',
-        'translationGroupName': [('de_DE', 'ID Sync', )],
+        'translationGroupName': [('de_DE', 'ID Sync')],
         'syntax': 'string',
         'default': '',
         'multivalue': '0',

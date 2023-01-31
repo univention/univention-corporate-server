@@ -703,7 +703,7 @@ class TestCase:
         print('\n*** BEGIN *** %r ***' % (
             cmd,), file=result.environment.log)
         print('*** %s *** %s ***' % (
-            self.uid, self.description,), file=result.environment.log)
+            self.uid, self.description), file=result.environment.log)
         print('*** START TIME: %s ***' % (
             time_start.strftime("%Y-%m-%d %H:%M:%S")), file=result.environment.log)
         result.environment.log.flush()

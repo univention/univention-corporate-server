@@ -194,7 +194,7 @@ def test_use_usertemplate(udm):
         'l': [properties['city']],
         # 'userDisabledPreset': [properties['disabled']],  # TODO
         # 'userPwdMustChangePreset': [properties['pwdChangeNextLogin']],  # TODO
-        'automountInformation': ['-rw %s:%s/%s/%s' % (host, path, user_properties['username'][0], user_properties['username']), ],
+        'automountInformation': ['-rw %s:%s/%s/%s' % (host, path, user_properties['username'][0], user_properties['username'])],
         # 'gidNumber': [properties['primaryGroup']],  # TODO
         # 'userGroupsPreset': properties['groups'],  # TODO
         'mailPrimaryAddress': ['%s.%s@%s' % (user_properties['firstname'], user_properties['lastname'], MAIL_DOMAIN)],

@@ -20,7 +20,7 @@ from essential.simplesquid import SimpleSquid
 def checkAuths(host, passwd, url, basic_ntlm, expect_wrong_password):
     basic, ntlm = basic_ntlm
     # in case all auth are disabled, all return 200
-    http_basic, http_ntlm = (200, 200, )
+    http_basic, http_ntlm = (200, 200)
     if basic or ntlm:
         http_basic = 200 if (basic and not expect_wrong_password) else 407
         http_ntlm = 200 if (ntlm and not expect_wrong_password) else 407

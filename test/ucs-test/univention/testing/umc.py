@@ -142,7 +142,7 @@ class ClientSaml(Client):
     def _login_at_idp_with_credentials(self, saml_login_page):
         # type: (Any) -> Any
         """Send login form to IdP"""
-        auth_state = get_html_tag_value(saml_login_page.text, 'input', ('name', 'AuthState', ), 'value')
+        auth_state = get_html_tag_value(saml_login_page.text, 'input', ('name', 'AuthState'), 'value')
         data = {'username': self.username, 'password': self.password, 'AuthState': auth_state}
         print('Post SAML login form to: %s' % saml_login_page.url)
         saml_idp_login_ans = self.__samlSession.post(saml_login_page.url, data=data)
@@ -153,8 +153,8 @@ class ClientSaml(Client):
 
     def _send_saml_response_to_sp(self, saml_idp_login_ans):
         # type: (Any) -> None
-        sp_login_url = get_html_tag_value(saml_idp_login_ans.text, 'form', ('method', 'post', ), 'action')
-        saml_msg = get_html_tag_value(saml_idp_login_ans.text, 'input', ('name', 'SAMLResponse', ), 'value')
-        relay_state = get_html_tag_value(saml_idp_login_ans.text, 'input', ('name', 'RelayState', ), 'value')
+        sp_login_url = get_html_tag_value(saml_idp_login_ans.text, 'form', ('method', 'post'), 'action')
+        saml_msg = get_html_tag_value(saml_idp_login_ans.text, 'input', ('name', 'SAMLResponse'), 'value')
+        relay_state = get_html_tag_value(saml_idp_login_ans.text, 'input', ('name', 'RelayState'), 'value')
         print('Post SAML msg to: %s' % sp_login_url)
         self.__samlSession.post(sp_login_url, data={'SAMLResponse': saml_msg, 'RelayState': relay_state}).raise_for_status()

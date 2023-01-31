@@ -81,7 +81,7 @@ def get_users(binddn: str | None = None, bindpwdfile: str | None = None, only_th
         try:
             users = [get_user(only_this_user)]
         except (univention.udm.exceptions.NoObject, univention.udm.exceptions.MultipleObjects) as err:
-            error('The provided user "%s" could not be found: %s' % (only_this_user, err,))
+            error('The provided user "%s" could not be found: %s' % (only_this_user, err))
     else:
         users = udm.get('users/user').search()
     return users
@@ -102,7 +102,7 @@ def save_timestamp(user: univention.udm.modules.users_user.UsersUserObject, time
     try:
         user.save()
     except univention.udm.exceptions.ModifyError as err:
-        warning('Could not save new timestamp "%s" to "lastbind" extended attribute of user "%s". Continuing: %s' % (timestamp, user.dn, err,))
+        warning('Could not save new timestamp "%s" to "lastbind" extended attribute of user "%s". Continuing: %s' % (timestamp, user.dn, err))
 
 
 def update_users(binddn: str | None = None, bindpwdfile: str | None = None, only_this_user: str | None = None) -> None:
@@ -120,13 +120,13 @@ def get_writable_udm(binddn: str | None = None, bindpwdfile: str | None = None) 
             with open(bindpwdfile) as f:
                 bindpwd = f.read().strip()
         except IOError as err:
-            error('Could not open "bindpwdfile" "%s": %s' % (bindpwdfile, err,))
+            error('Could not open "bindpwdfile" "%s": %s' % (bindpwdfile, err))
         ucr = ConfigRegistry()
         ucr.load()
         try:
             udm = UDM.credentials(binddn, bindpwd, ucr.get('ldap/base'), ucr.get('ldap/master'), ucr.get('ldap/master/port'))
         except univention.udm.exceptions.ConnectionError as err:
-            error('Could not connect to server "%s" with provided "binddn" "%s" and "bindpwdfile" "%s": %s' % (ucr.get('ldap/master'), binddn, bindpwdfile, err,))
+            error('Could not connect to server "%s" with provided "binddn" "%s" and "bindpwdfile" "%s": %s' % (ucr.get('ldap/master'), binddn, bindpwdfile, err))
     else:
         try:
             udm = UDM.admin()

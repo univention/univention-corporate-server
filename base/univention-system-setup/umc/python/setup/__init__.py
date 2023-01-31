@@ -421,7 +421,7 @@ class Instance(Base, ProgressMixin):
         appliance_str = _('the UCS system')
         if ucr['umc/web/appliance/name']:
             appliance_str = _('the %s appliance') % (ucr['umc/web/appliance/name'],)
-        hostname_length_message = _('A valid NetBIOS name can not be longer than 13 characters. If Samba is installed, the hostname should be shortened.') if hostname_length_critical else _('The hostname %s is longer than 13 characters. It will not be possible to install an Active Directory compatible Domaincontroller (Samba 4) or UCS@school. The hostname cannot be changed after the installation of %s. It is recommended to shorten the hostname to maximal 13 characters.') % (values.get('hostname', ''), appliance_str,)
+        hostname_length_message = _('A valid NetBIOS name can not be longer than 13 characters. If Samba is installed, the hostname should be shortened.') if hostname_length_critical else _('The hostname %s is longer than 13 characters. It will not be possible to install an Active Directory compatible Domaincontroller (Samba 4) or UCS@school. The hostname cannot be changed after the installation of %s. It is recommended to shorten the hostname to maximal 13 characters.') % (values.get('hostname', ''), appliance_str)
         _check('hostname', lambda x: len(x) <= 13, hostname_length_message, critical=hostname_length_critical)
 
         _check('domainname', util.is_domainname, _("Please enter a valid fully qualified domain name (e.g. host.example.com)."))
@@ -462,7 +462,7 @@ class Instance(Base, ProgressMixin):
             'email_address': _('Email address'),
             'ssl/common': _('Common name for the root SSL certificate'),
         }
-        for maxlenth, keys in [(2, ('ssl/country',)), (128, ('ssl/state', 'ssl/locality',)), (64, ('organization', 'ssl/organization', 'ssl/organizationalunit', 'ssl/email', 'email_address', 'ssl/common'))]:
+        for maxlenth, keys in [(2, ('ssl/country',)), (128, ('ssl/state', 'ssl/locality')), (64, ('organization', 'ssl/organization', 'ssl/organizationalunit', 'ssl/email', 'email_address', 'ssl/common'))]:
             for ikey in keys:
                 _check(ikey, lambda x, maxlenth=maxlenth: len(x) <= maxlenth, _('The following value is too long, only %(max)s characters allowed: %(name)s') % {'max': maxlenth, 'name': labels[ikey]})
 
@@ -522,7 +522,7 @@ class Instance(Base, ProgressMixin):
                         if guessed_domain:
                             differing_domain_name = values.get('domainname') and values['domainname'].lower() != guessed_domain.lower()
                             if differing_domain_name:
-                                _append('domainname', _('The specified domain name is different to the %s domain name found via the configured DNS server: %s') % (_('Active Directory') if ad_member else _('UCS'), guessed_domain,))
+                                _append('domainname', _('The specified domain name is different to the %s domain name found via the configured DNS server: %s') % (_('Active Directory') if ad_member else _('UCS'), guessed_domain))
                             else:
                                 # communicate guessed domainname to frontend
                                 messages.append({

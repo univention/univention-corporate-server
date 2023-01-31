@@ -466,7 +466,7 @@ def install_messagecatalog(dn: str, attrs: Dict[str, List[bytes]], objectclass: 
     module_name = attrs.get('cn')[0].decode('UTF-8')
     for language_tag, mo_data_binary in values.items():
         targetdir = os.path.join(LOCALE_BASEDIR, language_tag, 'LC_MESSAGES')
-        filename = os.path.join(targetdir, "%s-%s.mo" % (prefix, module_name.replace('/', '-'),))
+        filename = os.path.join(targetdir, "%s-%s.mo" % (prefix, module_name.replace('/', '-')))
         if not os.path.exists(targetdir):
             ud.debug(ud.LISTENER, ud.ERROR, '%s: Error writing %s. Parent directory does not exist.' % (name, filename))
             continue
@@ -495,7 +495,7 @@ def remove_messagecatalog(dn: str, attrs: Dict[str, List[bytes]], objectclass: s
     module_name = attrs.get('cn')[0].decode('UTF-8')
     for language_tag in language_tags:
         targetdir = os.path.join(LOCALE_BASEDIR, language_tag, 'LC_MESSAGES')
-        filename = os.path.join(targetdir, "%s-%s.mo" % (prefix, module_name.replace('/', '-'),))
+        filename = os.path.join(targetdir, "%s-%s.mo" % (prefix, module_name.replace('/', '-')))
         if not os.path.exists(targetdir):
             ud.debug(ud.LISTENER, ud.ERROR, '%s: Error writing %s. Parent directory does not exist.' % (name, filename))
             continue
