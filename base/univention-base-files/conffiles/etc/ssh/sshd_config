@@ -298,6 +298,8 @@ if configRegistry.get('sshd/Ciphers'):
 	print("Ciphers %(sshd/Ciphers)s" % configRegistry)
 if configRegistry.get('sshd/KexAlgorithms'):
 	print("KexAlgorithms %(sshd/KexAlgorithms)s" % configRegistry)
+if configRegistry.get('sshd/HostKeyAlgorithms'):
+	print("HostKeyAlgorithms %(sshd/HostKeyAlgorithms)s" % configRegistry)
 @!@
 
 # Start of additional configuration options defined via ucr 'sshd/config/.*'
