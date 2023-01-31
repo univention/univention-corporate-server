@@ -1,0 +1,44 @@
+product: ucs
+release: "4.4"
+version: [9]
+scope: ucs_4.4-0-errata4.4-9
+src: tiff
+fix: 4.0.8-2+deb9u9
+desc: |
+ This update addresses the following issues:
+ 4.0.8-2+deb9u9 (Mon, 30 Jan 2023 19:43:36 +0100)
+ * Non-maintainer upload by the ELTS team.
+ * Fix CVE-2022-0865, CVE-2022-0891, CVE-2022-0907, CVE-2022-0908,
+   CVE-2022-0909, CVE-2022-0924, CVE-2022-1355, CVE-2022-2056, CVE-2022-2057,
+   CVE-2022-2058, CVE-2022-2867, CVE-2022-2868, CVE-2022-2869, CVE-2022-3570,
+   CVE-2022-3597, CVE-2022-3598, CVE-2022-3599, CVE-2022-3626, CVE-2022-3627,
+   CVE-2022-3970, CVE-2022-34526 and CVE-2022-48281. Multiple vulnerabilities
+   were found in tiff, a library and tools providing support for the Tag Image
+   File Format (TIFF), leading to denial of service (DoS) and possibly local
+   code execution.
+ * Update libtiff5.symbols and add new symbol
+   _TIFFClampDoubleToUInt32@LIBTIFF_4.0.
+bug: [55629]
+cve:
+- CVE-2022-0865
+- CVE-2022-0891
+- CVE-2022-0907
+- CVE-2022-0908
+- CVE-2022-0909
+- CVE-2022-0924
+- CVE-2022-1355
+- CVE-2022-2056
+- CVE-2022-2057
+- CVE-2022-2058
+- CVE-2022-2867
+- CVE-2022-2868
+- CVE-2022-2869
+- CVE-2022-3570
+- CVE-2022-3597
+- CVE-2022-3598
+- CVE-2022-3599
+- CVE-2022-3626
+- CVE-2022-3627
+- CVE-2022-3970
+- CVE-2022-34526
+- CVE-2022-48281
