@@ -192,13 +192,13 @@ def pidof(name, docker='/var/run/docker.pid'):
 			except (EnvironmentError, ValueError) as ex:
 				log.error('Failed getting parent: %s: %r', ex, status)
 
-		def _running():
+		def _running(cmd, link, commandline):
 			# type: () -> Iterator[bool]
 			yield cmd == [link]
 			args = commandline.split('\x00') if '\x00' in commandline else shlex.split(commandline)
 			yield len(cmd) == 1 and cmd[0] in args  # FIXME: it detects "vim /usr/sbin/service" as running process!
 			yield len(cmd) > 1 and all(a == c for a, c in zip(args, cmd))
-		if any(_running()):
+		if any(_running(cmd, link, commandline)):
 			log.info('found %d: %r', pid, commandline)
 			result.add(pid)
 

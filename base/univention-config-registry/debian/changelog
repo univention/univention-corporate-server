@@ -1,3 +1,9 @@
+univention-config-registry (15.0.9-1) unstable; urgency=medium
+
+  * Bug #55598: Function definitions now does bind loop variables
+
+ -- Mika Westphal <westphal@univention.de>  Tue, 31 Jan 2023 11:03:17 +0100
+
 univention-config-registry (15.0.8-1) unstable; urgency=low
 
   * Bug #55554: Add Type=cron
