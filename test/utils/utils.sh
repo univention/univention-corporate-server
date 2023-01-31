@@ -349,9 +349,9 @@ wait_for_setup_process () {
 switch_app_center() {
 	if [ "$UCS_TEST_APPCENTER" = "true" ]; then
 		switch_to_test_app_center
-    elif [ "$(ucr get repository/app_center/server)" != "appcenter.software-univention.de" ]; then
-        univention-app dev-use-test-appcenter --revert
-    fi
+	elif [ "$(ucr get repository/app_center/server)" != "appcenter.software-univention.de" ]; then
+		univention-app dev-use-test-appcenter --revert
+	fi
 }
 
 switch_to_test_app_center () {

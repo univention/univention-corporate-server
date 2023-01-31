@@ -44,9 +44,6 @@ install_bb_api () {
 }
 
 install_kelvin_api () {
-  # do not rename function: used as install_[ENV:TEST_API]_api in autotest-241-ucsschool-HTTP-API.cfg
-  # shellcheck disable=SC2015
-  . utils.sh && switch_to_test_app_center || true
   echo -n univention > /tmp/univention
   # use brach image if given
   if [ -n "$UCS_ENV_KELVIN_IMAGE" ]; then
