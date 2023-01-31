@@ -1,0 +1,25 @@
+product: ucs
+release: "4.4"
+version: [9]
+scope: ucs_4.4-0-errata4.4-9
+src: git
+fix: 1:2.11.0-3+deb9u9
+desc: |
+ This update addresses the following issues:
+ 1:2.11.0-3+deb9u9 (Mon, 30 Jan 2023 13:48:13 +0100)
+ * Non-maintainer upload by the ELTS Team.
+ * CVE-2022-23521: integer overflows when parsing gitattributes.
+ * CVE-2022-24765: arbitrary command execution via shared .git/config.
+ * CVE-2022-29187: arbitrary command execution via shared .git/config.
+ * CVE-2022-39253: incorrect symlink handling on local clones.
+ * CVE-2022-39260: integer overflow leading to buffer overflow in git shell.
+ * CVE-2022-41903: integer overflow leading to heap buffer overwrites in git
+   log and git archive.
+bug: [55630]
+cve:
+- CVE-2022-23521
+- CVE-2022-24765
+- CVE-2022-29187
+- CVE-2022-39253
+- CVE-2022-39260
+- CVE-2022-41903
