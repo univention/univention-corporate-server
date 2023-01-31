@@ -1,0 +1,18 @@
+product: ucs
+release: "5.0"
+version: [2]
+scope: ucs_5.0-0-errata5.0-2
+src: curl
+fix: 7.64.0-4+deb10u4
+desc: |
+ This update addresses the following issues:
+ * credential leak on redirect (CVE-2022-27774)
+ * POST following PUT confusion (CVE-2022-32221)
+ * Incorrect handling of control code characters in cookies (CVE-2022-35252)
+ * Use-after-free triggered by an HTTP proxy deny response (CVE-2022-43552)
+bug: [55626]
+cve:
+- CVE-2022-27774
+- CVE-2022-32221
+- CVE-2022-35252
+- CVE-2022-43552
