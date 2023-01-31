@@ -47,7 +47,7 @@ from lxml.builder import E
 from logging import (getLogger, basicConfig, DEBUG)
 from urlparse import urlparse
 
-__all__ = ('VirtualMachine')
+__all__ = ('VirtualMachine',)
 
 ENCODING = 'UTF-8'
 
