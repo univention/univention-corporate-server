@@ -1,0 +1,27 @@
+product: ucs
+release: "4.4"
+version: [9]
+scope: ucs_4.4-0-errata4.4-9
+src: xorg-server
+fix: 2:1.19.2-1+deb9u12
+desc: |
+ This update addresses the following issues:
+ 2:1.19.2-1+deb9u12 (Sun, 29 Jan 2023 10:03:02 +0100)
+ * Non-maintainer upload by the ELTS Team.
+ * CVE-2022-46340 Xtest: disallow GenericEvents in XTestSwapFakeInput
+ * CVE-2022-46341 Xi: disallow passive grabs with a detail > 255
+ * CVE-2022-46342 Xext: free the XvRTVideoNotify when turning off from the
+   same client
+ * CVE-2022-46343 Xext: free the screen saver resource when replacing it
+ * CVE-2022-46344 Xi: avoid integer truncation in length check of
+   ProcXIChangeProperty
+ * CVE-2022-4283 xkb: reset the radio_groups pointer to NULL after freeing it
+ * Xi: return an error from XI property changes if verification failed
+bug: [55627]
+cve:
+- CVE-2022-46340
+- CVE-2022-46341
+- CVE-2022-46342
+- CVE-2022-46343
+- CVE-2022-46344
+- CVE-2022-4283
