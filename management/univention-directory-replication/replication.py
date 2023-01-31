@@ -51,7 +51,7 @@ import subprocess
 import sys
 import time
 from errno import ENOENT
-from typing import Any, Dict, List, Optional, Tuple
+from typing import Any, Dict, List, Tuple
 
 import ldap
 import ldap.schema
@@ -527,7 +527,7 @@ class LDIFObject(object):
         self.__print_attribute('changetype', b'delete')
         self.__end_entry()
 
-    def rename_s(self, dn: str, newrdn: str, newsuperior: Optional[str] = None, delold: int = 1, serverctrls=None, clientctrls=None) -> None:
+    def rename_s(self, dn: str, newrdn: str, newsuperior: str | None = None, delold: int = 1, serverctrls=None, clientctrls=None) -> None:
         self.__new_entry(dn)
         self.__print_attribute('changetype', b'modrdn')
         self.__print_attribute('newrdn', newrdn.encode('UTF-8'))
@@ -538,7 +538,7 @@ class LDIFObject(object):
 
 
 reconnect: bool = False
-connection: Optional[ldap.ldapobject] = None
+connection: ldap.ldapobject | None = None
 
 
 def connect(ldif: bool = False) -> ldap.ldapobject:
@@ -749,7 +749,7 @@ def _modify_object_from_old_and_new(lo: ldap.ldapobject, dn: str, old: Dict[str,
         lo.modify_s(dn, ml)
 
 
-def _read_dn_from_file(filename: str) -> Optional[str]:
+def _read_dn_from_file(filename: str) -> str | None:
     old_dn = None
 
     try:

@@ -38,7 +38,7 @@ from __future__ import absolute_import, annotations
 
 import os
 import os.path
-from typing import Dict, List, Optional
+from typing import Dict, List
 
 import six
 from six.moves import cPickle as pickle
@@ -60,7 +60,7 @@ ucr.load()
 modified_default_names = []
 
 
-def sidToName(sid: str) -> Optional[str]:
+def sidToName(sid: str) -> str | None:
     rid = sid.split("-")[-1]
     if univention.lib.s4.well_known_sids.get(sid):
         return univention.lib.s4.well_known_sids[sid]
@@ -69,7 +69,7 @@ def sidToName(sid: str) -> Optional[str]:
     return None
 
 
-def checkAndSet(new: Dict[str, List[bytes]], old: Dict[str, List[bytes]]) -> Optional[str]:
+def checkAndSet(new: Dict[str, List[bytes]], old: Dict[str, List[bytes]]) -> str | None:
     obj = new or old
     if not obj:
         return

@@ -40,7 +40,7 @@ import os
 import shutil
 import subprocess
 import time
-from typing import Dict, List, Optional, Tuple
+from typing import Dict, List, Tuple
 
 from six.moves import cPickle as pickle
 
@@ -69,7 +69,7 @@ if not dirs:
     raise ImportError('UCR variable connector/ad/listener/dir needs to be set!')
 
 
-def _save_old_object(directory: str, dn: str, old: Optional[Dict[str, List[bytes]]]) -> None:
+def _save_old_object(directory: str, dn: str, old: Dict[str, List[bytes]] | None) -> None:
     filename = os.path.join(directory, 'tmp', 'old_dn')
 
     with open(filename, 'wb+') as fd:
@@ -87,7 +87,7 @@ def _load_old_object(directory: str) -> Tuple[str, Dict[str, List[bytes]]]:
     return (old_dn, old_object)
 
 
-def _dump_changes_to_file_and_check_file(directory: str, dn: str, new: Optional[Dict[str, List[bytes]]], old: Optional[Dict[str, List[bytes]]], old_dn: Optional[str]) -> None:
+def _dump_changes_to_file_and_check_file(directory: str, dn: str, new: Dict[str, List[bytes]] | None, old: Dict[str, List[bytes]] | None, old_dn: str | None) -> None:
     ob = (dn, new, old, old_dn)
 
     tmpdir = os.path.join(directory, 'tmp')
@@ -116,7 +116,7 @@ def _restart_connector() -> None:
         listener.unsetuid()
 
 
-def handler(dn: str, new: Optional[Dict[str, List[bytes]]], old: Optional[Dict[str, List[bytes]]], command: str) -> None:
+def handler(dn: str, new: Dict[str, List[bytes]] | None, old: Dict[str, List[bytes]] | None, command: str) -> None:
     global connector_needs_restart
 
     # restart connector on extended attribute changes

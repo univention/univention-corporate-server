@@ -38,7 +38,7 @@ from __future__ import absolute_import, annotations
 
 import os
 import time
-from typing import IO, Dict, List, Optional
+from typing import IO, Dict, List
 
 import ldb
 from samba.auth import system_session
@@ -124,7 +124,7 @@ def open_idmap() -> IDmapDB:
 open_idmap.instance = None
 
 
-def rename_or_modify_idmap_entry(old_sambaSID: str, new_sambaSID: str, xidNumber: str, type_string: str, idmap: Optional[IDmapDB] = None) -> None:
+def rename_or_modify_idmap_entry(old_sambaSID: str, new_sambaSID: str, xidNumber: str, type_string: str, idmap: IDmapDB | None = None) -> None:
     if not idmap:
         # need to open idmap here in case it has been removed since the module  was loaded
         idmap = open_idmap()
@@ -162,7 +162,7 @@ def rename_or_modify_idmap_entry(old_sambaSID: str, new_sambaSID: str, xidNumber
         modify_idmap_entry(new_sambaSID, xidNumber, type_string, idmap)
 
 
-def modify_idmap_entry(sambaSID: str, xidNumber: str, type_string: str, idmap: Optional[IDmapDB] = None) -> None:
+def modify_idmap_entry(sambaSID: str, xidNumber: str, type_string: str, idmap: IDmapDB | None = None) -> None:
     if not idmap:
         # need to open idmap here in case it has been removed since the module  was loaded
         idmap = open_idmap()
@@ -192,7 +192,7 @@ def modify_idmap_entry(sambaSID: str, xidNumber: str, type_string: str, idmap: O
         ud.debug(ud.LISTENER, ud.ERROR, estr)
 
 
-def add_or_modify_idmap_entry(sambaSID: str, xidNumber: str, type_string: str, idmap: Optional[IDmapDB] = None) -> None:
+def add_or_modify_idmap_entry(sambaSID: str, xidNumber: str, type_string: str, idmap: IDmapDB | None = None) -> None:
     if not idmap:
         # need to open idmap here in case it has been removed since the module  was loaded
         idmap = open_idmap()
@@ -220,7 +220,7 @@ def add_or_modify_idmap_entry(sambaSID: str, xidNumber: str, type_string: str, i
         modify_idmap_entry(sambaSID, xidNumber, type_string, idmap)
 
 
-def remove_idmap_entry(sambaSID: str, xidNumber: str, type_string: str, idmap: Optional[IDmapDB] = None) -> None:
+def remove_idmap_entry(sambaSID: str, xidNumber: str, type_string: str, idmap: IDmapDB | None = None) -> None:
     if not idmap:
         # need to open idmap here in case it has been removed since the module  was loaded
         idmap = open_idmap()

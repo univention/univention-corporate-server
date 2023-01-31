@@ -264,13 +264,13 @@ class Request:
     :param dict headers: a mapping of HTTP headers
     """
 
-    def __init__(self, method: str, path: str, data: str = None, headers: Optional[Dict[str, str]] = None) -> None:
+    def __init__(self, method: str, path: str, data: str = None, headers: Dict[str, str] | None = None) -> None:
         self.method = method
         self.path = path
         self.data = data
         self.headers = headers or {}
 
-    def get_body(self) -> Optional[bytes]:
+    def get_body(self) -> bytes | None:
         """
         Return the request data.
 
@@ -332,7 +332,7 @@ class Response:
         """
         return self._response.getheader(name, default)
 
-    def decode_body(self) -> Union[bytes, dict]:
+    def decode_body(self) -> bytes | dict:
         """
         Decode |HTTP| response and return |JSON| data as dictionary.
 
@@ -372,7 +372,7 @@ class Client:
 
     ConnectionType = HTTPSConnection
 
-    def __init__(self, hostname: Optional[str] = None, username: Optional[str] = None, password: Optional[str] = None, language: Optional[str] = None, timeout: Optional[float] = None, automatic_reauthentication: bool = False, useragent: Optional[str] = None) -> None:
+    def __init__(self, hostname: str | None = None, username: str | None = None, password: str | None = None, language: str | None = None, timeout: float | None = None, automatic_reauthentication: bool = False, useragent: str | None = None) -> None:
         self.hostname = hostname or _get_fqdn()
         self._language = language or locale.getdefaultlocale()[0] or ''
         self._headers = {
@@ -444,7 +444,7 @@ class Client:
             raise ConnectionError('Could not read /etc/machine.secret', reason=exc)
         self.authenticate(username, password)
 
-    def umc_command(self, path: str, options: Optional[dict] = None, flavor: Optional[str] = None, headers: Optional[dict] = None) -> Response:
+    def umc_command(self, path: str, options: dict | None = None, flavor: str | None = None, headers: dict | None = None) -> Response:
         """
         Perform generic |UMC| command.
 
@@ -458,7 +458,7 @@ class Client:
         data = self.__build_data(options, flavor)
         return self.request('POST', f'command/{path}', data, headers)
 
-    def umc_set(self, options: Optional[dict], headers: Optional[dict] = None) -> Response:
+    def umc_set(self, options: dict | None, headers: dict | None = None) -> Response:
         """
         Perform |UMC| `set` command.
 
@@ -470,7 +470,7 @@ class Client:
         data = self.__build_data(options)
         return self.request('POST', 'set', data, headers)
 
-    def umc_get(self, path: str, options: Optional[dict] = None, headers: Optional[dict] = None) -> Response:
+    def umc_get(self, path: str, options: dict | None = None, headers: dict | None = None) -> Response:
         """
         Perform |UMC| `get` command.
 
@@ -516,7 +516,7 @@ class Client:
         except (SeeOther, Found, MovedPermanently) as exc:
             return exc.response
 
-    def request(self, method: str, path: str, data: Any = None, headers: Optional[dict] = None) -> Response:
+    def request(self, method: str, path: str, data: Any = None, headers: dict | None = None) -> Response:
         """
         Send request to |UMC| server handling re-authentication.
 
@@ -606,7 +606,7 @@ class Client:
         #   so create a new connection on every request
         return self.ConnectionType(self.hostname, timeout=self._timeout)
 
-    def __build_data(self, data: Optional[Dict[str, Any]], flavor: Optional[str] = None) -> Dict[str, Any]:
+    def __build_data(self, data: Dict[str, Any] | None, flavor: str | None = None) -> Dict[str, Any]:
         """
         Create a dictionary as expected by the |UMC| Server.
 

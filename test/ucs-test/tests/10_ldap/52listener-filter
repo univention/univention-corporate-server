@@ -18,7 +18,7 @@ from sys import exit
 from tempfile import mkdtemp
 from time import sleep
 from types import TracebackType
-from typing import Dict, List, Optional, Type
+from typing import Dict, List, Type
 
 from univention.config_registry.frontend import handler_set
 from univention.testing.ucr import UCSTestConfigRegistry
@@ -66,7 +66,7 @@ class Environment:
                         line = 'TMPDIR = %r\n' % (self.tmpdir,)
                     target.write(line)
 
-    def __exit__(self, exc_type: Optional[Type[BaseException]], exc_value: Optional[BaseException], traceback: Optional[TracebackType]) -> None:
+    def __exit__(self, exc_type: Type[BaseException] | None, exc_value: BaseException | None, traceback: TracebackType | None) -> None:
         rmtree(self.tmpdir, ignore_errors=True)
         self.tmpdir = None
 
@@ -114,7 +114,7 @@ class Listener:
         print('I: %d = %r' % (self.proc.pid, cmd,))
         return self
 
-    def __exit__(self, exc_type: Optional[Type[Exception]], exc_value: Optional[BaseException], traceback: Optional[TracebackType]) -> None:
+    def __exit__(self, exc_type: Type[Exception] | None, exc_value: BaseException | None, traceback: TracebackType | None) -> None:
         if not exc_type:
             self.wait_transactions()
         self.kill_listener()
@@ -136,7 +136,7 @@ class Listener:
             prev_master = master
             sleep(1)
 
-    def get_master_transaction(self) -> Optional[int]:
+    def get_master_transaction(self) -> int | None:
         hostname = self.ucr['ldap/master']
         try:
             sock = create_connection((hostname, 6669), 60.0)

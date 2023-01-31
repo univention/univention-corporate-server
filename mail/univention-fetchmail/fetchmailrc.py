@@ -33,7 +33,7 @@ from __future__ import absolute_import, annotations
 
 import os
 import re
-from typing import Dict, Iterable, List, Optional
+from typing import Dict, Iterable, List
 
 from six.moves import cPickle as pickle
 
@@ -55,7 +55,7 @@ FETCHMAIL_OLD_PICKLE = "/var/spool/univention-fetchmail/fetchmail_old_dn"
 REpassword = re.compile("^poll .*? there with password '(.*?)' is '[^']+' here")
 
 
-def load_rc(ofile: str) -> Optional[List[str]]:
+def load_rc(ofile: str) -> List[str] | None:
     """open an textfile with setuid(0) for root-action"""
     rc = None
     listener.setuid(0)
@@ -79,7 +79,7 @@ def write_rc(flist: Iterable[str], wfile: str) -> None:
     listener.unsetuid()
 
 
-def get_pw_from_rc(lines: Iterable[str], uid: int) -> Optional[str]:
+def get_pw_from_rc(lines: Iterable[str], uid: int) -> str | None:
     """get current password of a user from fetchmailrc"""
     if not uid:
         return None
@@ -92,7 +92,7 @@ def get_pw_from_rc(lines: Iterable[str], uid: int) -> Optional[str]:
     return None
 
 
-def objdelete(dlist: Iterable[str], old: Dict[str, List[bytes]]) -> Optional[List[str]]:
+def objdelete(dlist: Iterable[str], old: Dict[str, List[bytes]]) -> List[str] | None:
     """delete an object in filerepresenting-list if old settings are found"""
     if old.get('uid'):
         return [line for line in dlist if not re.search("#UID='%s'[ \t]*$" % re.escape(old['uid'][0].decode('UTF-8')), line)]
@@ -100,7 +100,7 @@ def objdelete(dlist: Iterable[str], old: Dict[str, List[bytes]]) -> Optional[Lis
         ud.debug(ud.LISTENER, ud.INFO, 'Removal of user in fetchmailrc failed: %r' % old.get('uid'))
 
 
-def objappend(flist: List[str], new: Dict[str, List[bytes]], password: Optional[str] = None) -> None:
+def objappend(flist: List[str], new: Dict[str, List[bytes]], password: str | None = None) -> None:
     """add new entry"""
     passwd = password or ''
     if details_complete(new):

@@ -37,7 +37,7 @@
 from __future__ import absolute_import, annotations
 
 import os
-from typing import Dict, List, Optional, Tuple
+from typing import Dict, List, Tuple
 
 import ldap
 from ldap.filter import filter_format
@@ -72,7 +72,7 @@ def _dump_share_and_policy_result(dn: str, share_object: Dict[str, List[bytes]],
         p.clear_memo()
 
 
-def _read_share_and_policy_result(dn: str) -> Tuple[Optional[Dict[str, List[bytes]]], Optional[Dict[str, List[bytes]]]]:
+def _read_share_and_policy_result(dn: str) -> Tuple[Dict[str, List[bytes]] | None, Dict[str, List[bytes]] | None]:
     filename = os.path.join(SHARE_CACHE_DIR, dn)
 
     if not os.path.exists(filename):

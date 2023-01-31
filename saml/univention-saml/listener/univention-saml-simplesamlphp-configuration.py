@@ -41,7 +41,7 @@ import os.path
 import xml.etree.ElementTree
 from subprocess import PIPE, Popen
 from tempfile import NamedTemporaryFile
-from typing import Dict, List, Text, Tuple, Union
+from typing import Dict, List, Text, Tuple
 
 import listener
 import univention.debug as ud
@@ -70,7 +70,7 @@ sp_config_dir = '/etc/simplesamlphp/metadata.d'
 include_file = '/etc/simplesamlphp/metadata/metadata_include.php'
 
 
-def _decode(x: Union[bytes, Text]) -> str:
+def _decode(x: bytes | Text) -> str:
     return x.decode('ASCII') if isinstance(x, bytes) else x
 
 
@@ -88,7 +88,7 @@ def php_array(list_: List[str]) -> str:
     return "array('%s')" % "', '".join(escape_php_string(_decode(x).strip()) for x in list_)
 
 
-def ldap_attribute_join(old: List[Union[str, List[str]]]) -> List[Tuple[str, str]]:
+def ldap_attribute_join(old: List[str | List[str]]) -> List[Tuple[str, str]]:
     result_keys: Dict[str, str] = {}
     for attr in old:
         if attr[0] not in result_keys.keys() and len(attr) > 1:
@@ -193,7 +193,7 @@ def write_configuration_file(dn: str, new: Dict[str, List[bytes]], filename: str
             fd.write("	'simplesaml.nameidattribute' => %s,\n" % php_string(new.get('simplesamlNameIDAttribute')[0]))
         if new.get('simplesamlAttributes'):
             fd.write("	'simplesaml.attributes' => %s,\n" % php_bool(new.get('simplesamlAttributes')[0]))
-        simplesamlLDAPattributes: List[Union[str, List[str]]] = []
+        simplesamlLDAPattributes: List[str | List[str]] = []
         if new.get('simplesamlAttributes') and new.get('simplesamlAttributes')[0] == b"TRUE":
             simplesamlLDAPattributes = list(dict.fromkeys(entry.decode('ASCII').split('=', 1)[0].strip() for entry in new.get('simplesamlLDAPattributes', [])))
             if new.get('simplesamlNameIDAttribute') and new.get('simplesamlNameIDAttribute')[0].decode('ASCII') not in simplesamlLDAPattributes:

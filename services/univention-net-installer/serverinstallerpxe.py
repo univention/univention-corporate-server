@@ -37,7 +37,7 @@ from __future__ import absolute_import, annotations
 
 import os
 from textwrap import dedent
-from typing import Dict, List, Optional
+from typing import Dict, List
 
 from six.moves.urllib_parse import urljoin
 
@@ -76,7 +76,7 @@ def handler(dn: str, new: Dict[str, List[bytes]], old: Dict[str, List[bytes]]) -
         create_pxe(new, pxeconfig)
 
 
-def gen_pxe(new: Dict[str, List[bytes]]) -> Optional[str]:
+def gen_pxe(new: Dict[str, List[bytes]]) -> str | None:
     args = [listener.configRegistry.get('pxe/installer/append')]
     if args[0] is None:
         profile = new.get('univentionServerInstallationProfile', EMPTY)[0].decode('UTF-8')

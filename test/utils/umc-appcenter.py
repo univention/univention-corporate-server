@@ -8,7 +8,7 @@ import os
 from argparse import ArgumentParser
 from tempfile import gettempdir
 from time import sleep
-from typing import Any, Dict, Optional
+from typing import Any, Dict
 
 from requests import get
 
@@ -33,7 +33,7 @@ class Apps(object):
             action="store_true",
             help="normally -u fails if no update is available, with this switch just return in that case")
         self.options = parser.parse_args()
-        self.client: Optional[univention.lib.umc.Client] = None
+        self.client: univention.lib.umc.Client | None = None
         print(self.options)
 
     def umc(self, path: str, data: Dict[str, Any]) -> Dict[str, Any]:
