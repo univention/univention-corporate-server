@@ -375,7 +375,7 @@ def create_po_file(po_file, package, files, language='python', template=False):
         '--language', language,
         '--output', pot_file,
         *files,
-        errmsg='xgettext failed for the files: %r' % (list(files),)
+        errmsg='xgettext failed for the files: %r' % (list(files),)  # noqa: COM812
     )
 
     po = polib.pofile(pot_file)
