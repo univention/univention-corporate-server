@@ -8,7 +8,7 @@ from typing import Any, Dict, Iterator, List, Optional, Union  # noqa: F401
 
 import ldap
 
-import univention.config_registry as config_registry
+from univention import config_registry
 from univention.testing.utils import package_installed
 
 import ldb

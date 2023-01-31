@@ -14,8 +14,8 @@ from sys import exit
 
 from check_log_files_definitions import Errors, Tracebacks, Warnings
 
-import univention.testing.utils as utils
 from univention.management.console.modules.setup.setup_script import Profile
+from univention.testing import utils
 from univention.testing.codes import TestCodes
 
 

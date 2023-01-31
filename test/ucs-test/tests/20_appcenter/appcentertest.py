@@ -45,12 +45,11 @@ import lxml.html
 import requests
 
 import univention.appcenter.log as app_logger
-import univention.testing.debian_package as debian_package
-import univention.testing.utils as utils
 from univention.appcenter.actions import get_action
 from univention.appcenter.app_cache import AppCenterCache, Apps
 from univention.appcenter.utils import get_local_fqdn
 from univention.config_registry import ConfigRegistry
+from univention.testing import debian_package, utils
 from univention.testing.umc import Client
 
 APPCENTER_FILE = "/var/cache/appcenter-installed.txt"  # installed apps

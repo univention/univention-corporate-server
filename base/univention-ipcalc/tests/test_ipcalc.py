@@ -7,7 +7,7 @@
 
 import pytest
 
-import univention.ipcalc as ipcalc
+from univention import ipcalc
 
 
 @pytest.mark.parametrize("ip,net,rev,ptr", [

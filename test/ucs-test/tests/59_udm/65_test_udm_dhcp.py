@@ -13,7 +13,7 @@ import pytest
 
 import univention.testing.strings as uts
 import univention.testing.udm as udm_test
-import univention.testing.utils as utils
+from univention.testing import utils
 
 SUBNET_IP4 = '10.20.30.0'
 SUBNET_MASK_IP4 = '24'

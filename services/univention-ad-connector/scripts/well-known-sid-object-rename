@@ -52,7 +52,7 @@ import univention.debug2 as ud
 import univention.lib.s4
 import univention.admin.modules as udm_modules
 import univention.admin.filter as udm_filter
-import univention.admin.uexceptions as uexceptions
+from univention.admin import uexceptions
 
 # load UDM modules
 udm_modules.update()

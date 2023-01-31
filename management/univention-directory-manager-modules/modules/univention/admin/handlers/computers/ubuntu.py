@@ -39,7 +39,7 @@ import univention.admin.syntax
 import univention.admin.mapping
 import univention.admin.uexceptions
 import univention.admin.localization
-import univention.admin.nagios as nagios
+from univention.admin import nagios
 from univention.admin.handlers.computers.__base import ComputerObject
 from univention.admin.certificate import register_pki_integration
 

@@ -39,7 +39,7 @@ import univention.admin.localization
 import univention.admin.mapping
 import univention.admin.syntax
 import univention.admin.uldap
-import univention.admin.nagios as nagios
+from univention.admin import nagios
 import univention.admin.handlers.dns.forward_zone
 import univention.admin.handlers.dns.reverse_zone
 import univention.admin.handlers.networks.network

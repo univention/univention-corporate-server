@@ -7,7 +7,7 @@ import os
 import subprocess
 import tempfile
 
-import univention.testing.utils as utils
+from univention.testing import utils
 
 
 def check_file(basename, snippet):  # type: (str, str) -> None

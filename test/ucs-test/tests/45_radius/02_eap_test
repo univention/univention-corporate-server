@@ -10,7 +10,7 @@ import subprocess
 from tempfile import NamedTemporaryFile
 
 import univention.testing.udm as udm_test
-import univention.testing.utils as utils
+from univention.testing import utils
 
 UNIVENTION_CACERT = "/etc/univention/ssl/ucsCA/CAcert.pem"
 DEFAULT_CACERT = "/etc/default/cacert"

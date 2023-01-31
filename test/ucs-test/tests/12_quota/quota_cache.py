@@ -3,7 +3,7 @@ import pickle
 import time
 
 
-import univention.testing.utils as utils
+from univention.testing import utils
 
 SHARE_CACHE_DIR = '/var/cache/univention-quota/'
 TIMEOUT = 5  # seconds

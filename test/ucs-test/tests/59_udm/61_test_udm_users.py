@@ -21,8 +21,8 @@ import univention.admin.modules as udm_modules
 import univention.admin.uldap
 import univention.testing.strings as uts
 import univention.testing.udm as udm_test
-import univention.testing.utils as utils
 from univention.admin.uldap import position
+from univention.testing import utils
 from univention.testing.umc import Client
 
 CWD = os.path.dirname(os.path.abspath(__file__))

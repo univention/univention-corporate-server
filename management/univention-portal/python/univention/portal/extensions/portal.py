@@ -39,8 +39,7 @@ import time
 import requests
 import requests.exceptions
 
-import univention.portal.config as config
-from univention.portal import Plugin
+from univention.portal import Plugin, config
 from univention.portal.log import get_logger
 
 

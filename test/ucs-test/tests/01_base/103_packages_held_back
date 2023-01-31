@@ -6,7 +6,7 @@
 
 import apt_pkg
 
-import univention.testing.utils as utils
+from univention.testing import utils
 
 
 def get_heldback_pkgs():

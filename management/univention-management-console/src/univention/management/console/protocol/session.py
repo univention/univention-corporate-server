@@ -54,7 +54,7 @@ import six
 import ldap.filter
 
 import notifier
-import notifier.popen as popen
+from notifier import popen
 from notifier import threads
 
 import univention.admin.uexceptions as udm_errors

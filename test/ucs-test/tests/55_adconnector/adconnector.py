@@ -6,10 +6,10 @@ import univention.admin.modules
 import univention.admin.objects
 import univention.admin.uldap
 import univention.config_registry
-import univention.connector.ad as ad
 import univention.testing.connector_common as tcommon
 import univention.testing.ucr as testing_ucr
 from univention.config_registry import handler_set as ucr_set
+from univention.connector import ad
 from univention.testing import ldap_glue
 
 configRegistry = univention.config_registry.ConfigRegistry()

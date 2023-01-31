@@ -20,7 +20,7 @@ import ldap.dn
 import pytest
 
 import univention.testing.strings as uts
-import univention.testing.utils as utils
+from univention.testing import utils
 
 
 def random_fqdn(ucr):  # type: (dict) -> str

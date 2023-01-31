@@ -84,7 +84,7 @@ from .log import ACL
 import univention.admin.handlers.computers.domaincontroller_master as dc_master
 import univention.admin.handlers.computers.domaincontroller_backup as dc_backup
 import univention.admin.handlers.computers.domaincontroller_slave as dc_slave
-import univention.admin.handlers.computers.memberserver as memberserver
+from univention.admin.handlers.computers import memberserver
 
 import univention.admin.uexceptions as udm_errors
 

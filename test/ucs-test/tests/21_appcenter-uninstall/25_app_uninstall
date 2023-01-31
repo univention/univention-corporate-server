@@ -11,8 +11,8 @@
 import re
 import subprocess
 
-import univention.testing.utils as utils
 from univention.appcenter.ucr import ucr_get, ucr_is_true, ucr_keys
+from univention.testing import utils
 
 from appcenteruninstalltest import get_requested_apps
 

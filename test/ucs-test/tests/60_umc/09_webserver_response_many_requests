@@ -20,8 +20,8 @@ import subprocess
 
 import httplib
 
-import univention.testing.utils as utils
 from univention.management.console.modules.ucstest import joinscript, unjoinscript
+from univention.testing import utils
 from univention.testing.umc import Client
 
 NUMBER_OF_NOT_RESPONDING_REQUESTS = 100

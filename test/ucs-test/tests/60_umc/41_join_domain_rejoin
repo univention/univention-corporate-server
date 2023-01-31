@@ -11,7 +11,7 @@
 import sys
 from os import path
 
-import univention.testing.utils as utils
+from univention.testing import utils
 
 from umc import JoinModule
 

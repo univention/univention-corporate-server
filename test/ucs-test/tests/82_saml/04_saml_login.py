@@ -6,7 +6,7 @@
 ## tags:
 ##  - skip_admember
 
-import univention.testing.utils as utils
+from univention.testing import utils
 
 import samltest
 

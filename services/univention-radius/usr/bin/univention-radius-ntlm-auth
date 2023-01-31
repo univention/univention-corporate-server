@@ -43,7 +43,7 @@ import sys
 
 from univention.radius import get_NetworkAccess
 from univention.radius.networkaccess import NetworkAccessError
-import univention.radius.pyMsChapV2 as pyMsChapV2
+from univention.radius import pyMsChapV2
 
 
 LOGFIILE = '/var/log/univention/radius_ntlm_auth.log'

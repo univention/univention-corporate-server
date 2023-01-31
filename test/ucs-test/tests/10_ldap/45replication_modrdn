@@ -17,7 +17,7 @@
 import sys
 
 import univention.testing.udm as udm_test
-import univention.testing.utils as utils
+from univention.testing import utils
 from univention.testing.strings import random_name
 from univention.testing.utils import start_listener, stop_listener, wait_for_replication
 

@@ -3,7 +3,7 @@ import shutil
 import sys
 from time import sleep
 
-import univention.testing.utils as utils
+from univention.testing import utils
 from univention.config_registry import ConfigRegistry
 from univention.lib.umc import ConnectionError, HTTPError
 from univention.lib.misc import custom_groupname

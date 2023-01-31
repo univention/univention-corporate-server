@@ -43,19 +43,19 @@ import univention.debug as ud
 ud.init('/var/log/univention/directory-manager-cmd.log', ud.FLUSH, ud.FUNCTION)
 
 from univention.config_registry import ucr  # noqa: E402
-import univention.admin.uldap as uldap  # noqa: E402
+from univention.admin import uldap  # noqa: E402
 import univention.admin.config  # noqa: E402
 import univention.admin.modules  # noqa: E402
 import univention.admin.objects  # noqa: E402
 import univention.admin.filter  # noqa: E402
-import univention.admin.handlers.dns.forward_zone as forward_zone  # noqa: E402
-import univention.admin.handlers.dns.reverse_zone as reverse_zone  # noqa: E402
-import univention.admin.handlers.dns.host_record as host_record  # noqa: E402
-import univention.admin.handlers.dns.txt_record as txt_record  # noqa: E402
-import univention.admin.handlers.dns.ns_record as ns_record  # noqa: E402
-import univention.admin.handlers.dns.ptr_record as ptr_record  # noqa: E402
-import univention.admin.handlers.dns.srv_record as srv_record  # noqa: E402
-import univention.admin.handlers.dns.alias as alias  # noqa: E402
+from univention.admin.handlers.dns import forward_zone  # noqa: E402
+from univention.admin.handlers.dns import reverse_zone  # noqa: E402
+from univention.admin.handlers.dns import host_record  # noqa: E402
+from univention.admin.handlers.dns import txt_record  # noqa: E402
+from univention.admin.handlers.dns import ns_record  # noqa: E402
+from univention.admin.handlers.dns import ptr_record  # noqa: E402
+from univention.admin.handlers.dns import srv_record  # noqa: E402
+from univention.admin.handlers.dns import alias  # noqa: E402
 import univention.admin.uexceptions  # noqa: E402
 
 

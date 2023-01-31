@@ -13,7 +13,7 @@ import time
 import requests
 from html.parser import HTMLParser
 
-import univention.testing.utils as utils
+from univention.testing import utils
 
 from appcentertest import get_requested_apps
 

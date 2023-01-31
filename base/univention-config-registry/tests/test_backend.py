@@ -9,7 +9,7 @@ from io import StringIO
 
 import pytest
 
-import univention.config_registry.backend as backend
+from univention.config_registry import backend
 from univention.config_registry.backend import ConfigRegistry
 
 py2_only = pytest.mark.skipif(six.PY3, reason="Python 2 only")

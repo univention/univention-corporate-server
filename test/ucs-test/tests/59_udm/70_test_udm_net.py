@@ -7,7 +7,7 @@
 ##   - univention-directory-manager-tools
 
 import univention.testing.strings as uts
-import univention.uldap as uldap
+from univention import uldap
 from univention.testing import utils
 
 

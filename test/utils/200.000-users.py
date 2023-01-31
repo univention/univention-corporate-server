@@ -2,8 +2,7 @@
 
 from typing import Dict, List
 
-import univention.admin.modules as modules
-import univention.admin.uldap as uldap
+from univention.admin import modules, uldap
 from univention.config_registry import ucr
 
 

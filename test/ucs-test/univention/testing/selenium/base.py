@@ -48,9 +48,9 @@ from selenium import webdriver
 from selenium.webdriver.support import expected_conditions
 
 import univention.testing.ucr as ucr_test
-import univention.testing.utils as utils
 from univention.admin import localization
 from univention.config_registry import handler_set
+from univention.testing import utils
 from univention.testing.selenium.checks_and_waits import ChecksAndWaits
 from univention.testing.selenium.interactions import Interactions
 from univention.testing.selenium.utils import expand_path

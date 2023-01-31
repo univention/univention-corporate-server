@@ -11,8 +11,8 @@ import unidecode
 
 import univention.admin.modules as udm_modules
 import univention.testing.strings as uts
-import univention.testing.utils as utils
 from univention.admin.uldap import getAdminConnection
+from univention.testing import utils
 from univention.testing.strings import random_int, random_name
 from univention.testing.umc import Client
 

@@ -35,7 +35,7 @@ from ipaddress import IPv4Network, IPv6Network
 
 from six import with_metaclass
 
-import univention.admin.uldap as uldap
+from univention.admin import uldap
 from univention.management.console.modules.setup.netconf.conditions import (
     AddressChange,
     Executable,

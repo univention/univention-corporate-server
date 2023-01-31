@@ -35,9 +35,9 @@ from typing import Dict, Iterator, List, Tuple
 import ldap
 
 import univention.lib.misc
-import univention.lib.s4 as s4
 import univention.uldap
 from univention.config_registry import ucr_live as ucr
+from univention.lib import s4
 from univention.lib.i18n import Translation
 from univention.management.console.modules.diagnostic import MODULE, Instance, Warning, util
 

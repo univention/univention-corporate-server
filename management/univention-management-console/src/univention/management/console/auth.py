@@ -42,8 +42,8 @@ import ldap
 from ldap.filter import filter_format
 
 import notifier
-import notifier.signals as signals
-import notifier.threads as threads
+from notifier import signals
+from notifier import threads
 
 import univention.admin.uexceptions as udm_errors
 from univention.lib.i18n import Locale

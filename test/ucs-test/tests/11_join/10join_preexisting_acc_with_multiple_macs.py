@@ -11,7 +11,7 @@ import subprocess
 import pytest
 
 import univention.testing.strings as uts
-import univention.testing.utils as utils
+from univention.testing import utils
 
 
 def test_join_preexisting_acc_with_multiple_macs(udm):

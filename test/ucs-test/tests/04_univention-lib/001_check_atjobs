@@ -9,9 +9,8 @@
 import datetime
 from subprocess import PIPE, Popen
 
-import univention.lib.atjobs as atjobs
-import univention.testing.strings as strings
-import univention.testing.utils as utils
+from univention.lib import atjobs
+from univention.testing import strings, utils
 
 
 def get_output(cmd):

@@ -14,7 +14,7 @@ from requests_kerberos import OPTIONAL, HTTPKerberosAuth
 from html.parser import HTMLParser
 
 import univention.config_registry as configRegistry
-import univention.testing.utils as utils
+from univention.testing import utils
 
 html = HTMLParser()
 

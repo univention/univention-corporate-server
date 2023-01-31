@@ -49,7 +49,7 @@ import ldap
 import ldif
 from ldap.controls import SimplePagedResultsControl
 
-import univention.uldap as uldap
+from univention import uldap
 import univention.config_registry
 
 sys.path.append("/usr/lib/univention-directory-listener/system/")

@@ -1034,7 +1034,7 @@ class App(with_metaclass(AppMetaClass, object)):
     def get_docker_image_name(self):
         if self.uses_docker_compose():
             try:
-                import ruamel.yaml as yaml
+                from ruamel import yaml
             except ImportError:
                 # appcenter-docker is not installed
                 return None

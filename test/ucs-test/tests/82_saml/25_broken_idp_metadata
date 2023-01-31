@@ -9,7 +9,7 @@ import os
 import subprocess
 import time
 
-import univention.testing.utils as utils
+from univention.testing import utils
 
 import samltest
 

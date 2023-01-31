@@ -11,8 +11,8 @@ from configparser import Error, RawConfigParser
 from glob import glob
 from os import path
 
-import univention.testing.utils as utils
 from univention.appcenter.app_cache import Apps
+from univention.testing import utils
 
 OPTIONS_TO_CHECK = ('Contact', 'NotificationEmail')
 failures_counter = 0

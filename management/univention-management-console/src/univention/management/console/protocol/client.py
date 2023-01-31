@@ -50,7 +50,7 @@ from ..config import ucr
 from OpenSSL import SSL
 
 import notifier
-import notifier.signals as signals
+from notifier import signals
 
 try:
     from typing import Any, Dict, Iterable, List, Optional  # noqa: F401

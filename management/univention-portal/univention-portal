@@ -43,7 +43,7 @@ from typing import Dict, Union
 from univention.portal import get_all_dynamic_classes, get_dynamic_classes
 from univention.portal.factory import make_portal
 from univention.portal.log import setup_logger, get_logger
-import univention.portal.config as config
+from univention.portal import config
 
 import click
 

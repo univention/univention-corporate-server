@@ -41,7 +41,7 @@ from typing import Iterator, Tuple
 from ldap.filter import filter_format
 
 import univention.admin.modules as umod
-import univention.admin.uldap as uldap
+from univention.admin import uldap
 from univention.config_registry.interfaces import ConfigRegistry, Interfaces
 
 

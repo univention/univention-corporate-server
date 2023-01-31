@@ -8,7 +8,7 @@
 
 import sys
 
-import univention.testing.utils as utils
+from univention.testing import utils
 from univention.testing.strings import random_username
 
 from umc import UMCBase

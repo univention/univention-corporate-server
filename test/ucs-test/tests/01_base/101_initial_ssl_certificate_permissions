@@ -14,7 +14,7 @@ import pwd
 import stat
 
 import univention.testing.ucr as ucr_test
-import univention.testing.utils as utils
+from univention.testing import utils
 
 UNIVENTION_DIR = '/etc/univention'
 SSLDIR = '/etc/univention/ssl'

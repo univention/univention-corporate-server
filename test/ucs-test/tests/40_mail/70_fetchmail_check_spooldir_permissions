@@ -9,7 +9,7 @@ import grp
 import os
 import pwd
 
-import univention.testing.utils as utils
+from univention.testing import utils
 
 DIR_SPOOL_DOVECOT = '/var/spool/univention-fetchmail'
 EXPECTED_USER = 'listener'

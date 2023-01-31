@@ -9,7 +9,7 @@ import ldap
 
 import univention.config_registry
 import univention.testing.strings as uts
-import univention.testing.utils as utils
+from univention.testing import utils
 
 ucr = univention.config_registry.ConfigRegistry()
 ucr.load()

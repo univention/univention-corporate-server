@@ -70,7 +70,7 @@ from ldap.filter import filter_format
 from ldap.dn import escape_dn_chars, str2dn, dn2str
 
 import univention.admin.uldap
-import univention.admin.uexceptions as uexceptions
+from univention.admin import uexceptions
 import univention.admin.modules as udm_modules
 import univention.admin.filter as udm_filter
 import univention.admin.objects

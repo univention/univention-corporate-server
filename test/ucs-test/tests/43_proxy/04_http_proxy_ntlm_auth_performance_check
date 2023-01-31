@@ -13,8 +13,8 @@ import pycurl
 from atexit import register
 
 import univention.testing.ucr as ucr_test
-import univention.testing.utils as utils
 from univention.config_registry import handler_set, handler_unset
+from univention.testing import utils
 
 from essential.simplesquid import SimpleSquid
 

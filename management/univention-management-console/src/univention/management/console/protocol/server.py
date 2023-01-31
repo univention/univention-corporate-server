@@ -49,7 +49,7 @@ from typing import Dict, List, Optional, Tuple, Type  # noqa: F401
 
 from tornado import process
 import notifier
-import notifier.signals as signals
+from notifier import signals
 from OpenSSL import SSL
 from OpenSSL.crypto import X509  # noqa: F401
 

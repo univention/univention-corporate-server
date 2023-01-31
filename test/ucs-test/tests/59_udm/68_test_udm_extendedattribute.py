@@ -14,8 +14,7 @@ import pytest
 
 import univention.testing.strings as uts
 import univention.testing.udm as udm_test
-import univention.testing.utils as utils
-from univention.testing import utils as testing_utils
+from univention.testing import utils, utils as testing_utils
 from univention.testing.umc import Client
 
 HOOKSPATH = '/usr/lib/python3/dist-packages/univention/admin/hooks.d/'

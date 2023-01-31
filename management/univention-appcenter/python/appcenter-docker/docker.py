@@ -50,7 +50,7 @@ from ipaddress import IPv4Network, IPv4Address
 import time
 
 from six.moves import urllib_request, http_client, urllib_error
-import ruamel.yaml as yaml
+from ruamel import yaml
 
 from univention.appcenter.utils import app_ports_with_protocol, app_ports, call_process, call_process2, shell_safe, mkdir, unique, urlopen
 from univention.appcenter.app_cache import Apps

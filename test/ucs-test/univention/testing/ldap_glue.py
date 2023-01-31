@@ -4,7 +4,7 @@ import subprocess
 
 import ldap
 import ldap.dn
-import ldap.modlist as modlist
+from ldap import modlist
 from ldap.controls import LDAPControl
 
 from univention.config_registry import ConfigRegistry

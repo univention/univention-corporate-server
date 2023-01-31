@@ -12,8 +12,8 @@ from subprocess import PIPE, Popen
 from sys import exit
 from time import sleep
 
-import univention.testing.utils as utils
 from univention.config_registry import ConfigRegistry
+from univention.testing import utils
 from univention.testing.codes import TestCodes
 from univention.testing.strings import random_username
 

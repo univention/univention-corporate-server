@@ -40,10 +40,10 @@ import traceback
 from ldap.filter import filter_format
 
 import univention.admin.license
-import univention.admin.uexceptions as uexceptions
 import univention.admin.uldap
 import univention.config_registry
 import univention.license
+from univention.admin import uexceptions
 
 License = univention.admin.license.License
 _license = univention.admin.license._license

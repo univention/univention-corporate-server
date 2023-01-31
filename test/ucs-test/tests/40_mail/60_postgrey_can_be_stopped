@@ -8,7 +8,7 @@ import time
 
 import psutil
 
-import univention.testing.utils as utils
+from univention.testing import utils
 
 
 def is_running(process_name):

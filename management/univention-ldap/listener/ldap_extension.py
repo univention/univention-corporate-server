@@ -42,7 +42,7 @@ from typing import Dict, List
 
 import listener
 import univention.debug as ud
-import univention.lib.ldap_extension as ldap_extension
+from univention.lib.ldap_extension import ldap_extension
 
 name = 'ldap_extension'
 description = 'Configure LDAP schema and ACL extensions'

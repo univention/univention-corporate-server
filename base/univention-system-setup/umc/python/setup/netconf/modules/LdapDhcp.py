@@ -1,6 +1,6 @@
 from ldap import LDAPError
 
-import univention.admin.modules as modules
+from univention.admin import modules
 from univention.admin.uexceptions import base as UniventionBaseException
 from univention.management.console.modules.setup.netconf.common import LdapChange
 

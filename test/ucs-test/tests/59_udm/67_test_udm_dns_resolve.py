@@ -14,13 +14,13 @@ import subprocess
 import time
 from ipaddress import ip_address
 
-import dns.resolver as resolver
 import pytest
+from dns import resolver
 from dns.exception import Timeout
 from dns.resolver import NXDOMAIN, NoNameservers
 
 import univention.testing.strings as uts
-import univention.testing.utils as utils
+from univention.testing import utils
 
 
 def resolve_dns_entry(zoneName, resourceRecord, timeout=120, tries=3):

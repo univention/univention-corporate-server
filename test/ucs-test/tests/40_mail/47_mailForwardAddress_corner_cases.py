@@ -15,7 +15,7 @@ import pytest
 import univention.testing.strings as uts
 import univention.testing.ucr as ucr_test
 import univention.testing.udm as udm_test
-import univention.testing.utils as utils
+from univention.testing import utils
 
 from essential.mail import (
     check_delivery, create_shared_mailfolder, imap_search_mail, make_token, random_email, send_mail,

@@ -10,9 +10,9 @@
 from glob import glob
 from os import path
 
-import univention.testing.utils as utils
 from univention.appcenter.actions import get_action
 from univention.appcenter.app import App
+from univention.testing import utils
 
 failures_counter = 0
 apps = []

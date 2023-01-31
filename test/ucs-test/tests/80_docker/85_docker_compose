@@ -7,7 +7,7 @@
 
 import subprocess
 
-import ruamel.yaml as yaml
+from ruamel import yaml
 
 from dockertest import App, Appcenter, get_app_name
 

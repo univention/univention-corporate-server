@@ -18,7 +18,7 @@ from urllib import ContentTooShortError, urlopen, urlretrieve
 from apt_pkg import init as apt_init, version_compare
 from lxml.html import fromstring
 
-import univention.testing.utils as utils
+from univention.testing import utils
 
 cleanup_folders = []  # list of the folders to be removed after the test
 total_errors = 0

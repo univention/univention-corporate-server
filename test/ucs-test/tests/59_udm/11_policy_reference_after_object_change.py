@@ -10,7 +10,7 @@
 
 import pytest
 
-import univention.testing.utils as utils
+from univention.testing import utils
 from univention.testing.strings import random_string
 
 

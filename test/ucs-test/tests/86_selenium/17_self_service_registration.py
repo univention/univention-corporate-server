@@ -22,10 +22,10 @@ from urllib.parse import parse_qs, urlparse
 from test_self_service import capture_mails
 
 import univention.testing.strings as uts
-import univention.testing.utils as utils
 from univention.admin.uexceptions import noObject
 from univention.admin.uldap import getAdminConnection
 from univention.config_registry import handler_set as hs
+from univention.testing import utils
 from univention.testing.ucr import UCSTestConfigRegistry
 
 MAILS_TIMEOUT = 5

@@ -11,7 +11,7 @@ from tempfile import NamedTemporaryFile
 
 import pycurl
 
-import univention.testing.utils as utils
+from univention.testing import utils
 
 
 class SimpleCurl:

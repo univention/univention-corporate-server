@@ -11,8 +11,8 @@ import sys
 
 import univention.testing.ucr as ucr_test
 import univention.testing.udm as udm_test
-import univention.testing.utils as utils
 from univention.config_registry import handler_set
+from univention.testing import utils
 
 from essential.mail import create_shared_mailfolder, random_email
 from essential.mailclient import MailClient_SSL

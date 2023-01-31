@@ -45,7 +45,7 @@ import univention.admin.password
 import univention.admin.uexceptions
 import univention.admin.uldap
 import univention.admin.samba
-import univention.admin.nagios as nagios
+from univention.admin import nagios
 import univention.admin.handlers.groups.group
 import univention.admin.handlers.dns.forward_zone
 import univention.admin.handlers.dns.reverse_zone

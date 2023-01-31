@@ -9,8 +9,8 @@ import atexit
 
 import univention.testing.strings as uts
 import univention.testing.udm as udm_test
-import univention.testing.utils as utils
 from univention.config_registry import ConfigRegistry
+from univention.testing import utils
 from univention.testing.umc import Client
 
 if __name__ == '__main__':

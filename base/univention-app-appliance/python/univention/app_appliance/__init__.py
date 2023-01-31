@@ -40,8 +40,7 @@ import os
 import struct
 from typing import Dict
 
-import univention.appcenter.app as app
-import univention.appcenter.app_cache as app_cache
+from univention.appcenter import app, app_cache
 
 
 class App(app.App):

@@ -43,7 +43,7 @@ import ldap
 import ldap.modlist
 
 import univention.config_registry
-import univention.uldap as uldap
+from univention import uldap
 
 
 def main():

@@ -13,9 +13,9 @@ import lxml.html
 import requests
 import urllib3
 
-import univention.testing.utils as utils
 from univention.appcenter.app_cache import Apps
 from univention.appcenter.ucr import ucr_get
+from univention.testing import utils
 
 from appcentertest import get_requested_apps
 

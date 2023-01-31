@@ -37,8 +37,8 @@ from typing import List, Optional
 
 import univention.testing.ucr as ucr_test
 import univention.testing.udm as udm_test
-import univention.testing.utils as utils
 from univention.lib.misc import custom_groupname
+from univention.testing import utils
 from univention.testing.strings import random_name
 from univention.testing.utils import start_listener, stop_listener, wait_for_replication
 

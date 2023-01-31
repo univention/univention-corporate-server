@@ -17,7 +17,7 @@ import sys
 
 import univention.config_registry
 import univention.testing.ucr as ucr_test
-import univention.testing.utils as utils
+from univention.testing import utils
 
 
 def get_testparm_var(sectionname, varname):

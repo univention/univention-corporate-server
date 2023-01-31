@@ -15,8 +15,8 @@ from pathlib import Path
 import pytest
 
 import univention.testing.strings as uts
-import univention.testing.utils as utils
 from univention.lib import fstab
+from univention.testing import utils
 
 
 def test_policy_update_config_registry(udm, ucr):

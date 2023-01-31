@@ -40,10 +40,10 @@ from vncautomate import init_logger, VNCConnection
 from vncautomate.cli import add_config_options_to_parser, get_config_from_args
 
 import os
-import vminstall.utils as utils
-import vminstall.languages.german as german
-import vminstall.languages.english as english
-import vminstall.languages.french as french
+from vminstall import utils
+from vminstall.languages import german
+from vminstall.languages import english
+from vminstall.languages import french
 from vminstall.vmconfig import Config as VmConfig
 
 

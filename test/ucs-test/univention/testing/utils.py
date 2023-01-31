@@ -45,7 +45,7 @@ from typing import IO, Any, Callable, Dict, Iterable, List, NoReturn, Optional, 
 
 import ldap
 
-import univention.uldap as uldap
+from univention import uldap
 from univention.config_registry import ConfigRegistry
 
 try:

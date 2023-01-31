@@ -7,7 +7,7 @@
 
 from os import uname
 
-import univention.testing.utils as utils
+from univention.testing import utils
 
 MINIMUM_CONFIG = [
     "CONFIG_MODULE_SIG=y",

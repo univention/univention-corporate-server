@@ -3,8 +3,8 @@ import os
 from ldap import LDAPError
 from ldap.filter import escape_filter_chars
 
-import univention.admin.modules as modules
 import univention.admin.objects
+from univention.admin import modules
 from univention.admin.uexceptions import base as UniventionBaseException
 from univention.management.console.modules.setup.netconf.common import (
     AddressMap,

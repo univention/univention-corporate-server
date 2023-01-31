@@ -4,7 +4,7 @@ from html.parser import HTMLParser
 
 import random
 from bs4 import BeautifulSoup
-import univention.testing.utils as utils
+from univention.testing import utils
 from locust import HttpUser, task, constant_throughput
 
 html = HTMLParser()

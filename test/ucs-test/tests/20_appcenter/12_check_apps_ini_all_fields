@@ -13,8 +13,8 @@ from optparse import OptionParser
 from re import compile as regex_compile
 from sys import stderr
 
-import univention.testing.utils as utils
 from univention.appcenter.app_cache import Apps
+from univention.testing import utils
 
 failures = 0
 

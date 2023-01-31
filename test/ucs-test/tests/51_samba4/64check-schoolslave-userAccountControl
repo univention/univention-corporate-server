@@ -11,7 +11,7 @@ from subprocess import PIPE, Popen
 
 from ldap.filter import filter_format
 
-import univention.testing.utils as utils
+from univention.testing import utils
 
 if __name__ == '__main__':
     print("\nChecking if the attribute userAccountControl is set correctly on all domaincontroller slaves")

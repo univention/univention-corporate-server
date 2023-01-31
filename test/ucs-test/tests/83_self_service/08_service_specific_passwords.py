@@ -16,8 +16,8 @@ import subprocess
 import passlib.hash
 
 import univention.admin.uldap
-import univention.testing.utils as utils
 from univention.config_registry import handler_set as hs
+from univention.testing import utils
 from univention.testing.ucr import UCSTestConfigRegistry
 
 

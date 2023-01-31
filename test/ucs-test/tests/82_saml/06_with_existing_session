@@ -8,7 +8,7 @@
 ##  - skip_admember
 
 import univention.admin.modules as udm_modules
-import univention.testing.utils as utils
+from univention.testing import utils
 
 import samltest
 

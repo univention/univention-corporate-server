@@ -10,8 +10,8 @@ import sys
 
 import pytest
 
-import univention.testing.utils as utils
 from univention.lib.umc import BadRequest
+from univention.testing import utils
 from univention.testing.strings import random_username
 
 from umc import UDMModule

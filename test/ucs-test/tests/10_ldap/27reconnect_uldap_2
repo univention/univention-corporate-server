@@ -21,8 +21,8 @@ import univention.testing.strings as uts
 import univention.testing.ucr
 import univention.testing.ucr as ucr_test
 import univention.testing.udm
-import univention.testing.utils as utils
 import univention.uldap
+from univention.testing import utils
 
 
 def delayed_slapd_restart():
