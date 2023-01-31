@@ -140,6 +140,14 @@ Separator=,
 Elementtype=str
 Categories=service-ssh
 
+[sshd/HostKeyAlgorithms]
+Description[de]=Komma-separierte Liste von verfügbaren Hostschlüssel-Signaturalgorithmen. Siehe `man sshd_config` für Details.
+Description[en]=Comma separated list of available host key signature algorithms. See `man sshd_config for details.
+Type=list
+Separator=,
+Elementtype=str
+Categories=service-ssh
+
 [sshd/TCPKeepAlive]
 Description[de]=Spezifiziert, ob TCP keepalive Nachrichten gesendet werden sollen. Standard: yes. Siehe `man sshd_config` für Details.
 Description[en]=Specifies whether to send TCP keepalive messages. Default: yes. See `man sshd_config for details.
