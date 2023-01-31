@@ -6,11 +6,6 @@ src: univention-appcenter
 fix: 9.0.3-9A~5.0.0.202301301532
 desc: |
  This update addresses the following issues:
- * Apps in the appcenter can now be pinned and unpinned.
-   A pinned app will no longer be updated even if a newer
-   version of this app is available. Pinned apps also
-   cannot be removed.
-   Commands:
-     univention-app pin $appid
-     univention-app pin --unpin $appid
+ * Apps can now be pinned. A pinned app will no longer be upgraded or removed.
+   They need to be unpinned first. `univention-app pin $appid [--revert]`.
 bug: [55467]
