@@ -1,3 +1,9 @@
+univention-directory-manager-modules (15.0.15-1) unstable; urgency=medium
+
+  * Bug #55598: binding loop variables to function over the signature
+
+ -- Mika Westphal <westphal@univention.de>  Thu, 02 Feb 2023 08:25:37 +0100
+
 univention-directory-manager-modules (15.0.14-1) unstable; urgency=medium
 
   * Bug #55554: Corrected UCR type definitions string -> str

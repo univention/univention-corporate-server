@@ -58,21 +58,21 @@ def run(action, verbose=False):
 
 	# iterate over user objects
 	for idn, iobj in result:
-		def log(msg, force=False):
+		def log(idn, msg, force=False):
 			if verbose or force:
 				print('DN: %s\n%s\n' % (idn, msg))
 
 		try:
 			b64 = iobj['jpegPhoto'][0]
 		except Exception as e:
-			log('ERROR: failed to open LDAP object: %s' % e)
+			log(idn, 'ERROR: failed to open LDAP object: %s' % e)
 			continue
 
 		if not b64:
-			log('jpegPhoto: empty value')
+			log(idn, 'jpegPhoto: empty value')
 			continue
 		if b64.startswith(JPEG_HEADER):
-			log('jpegPhoto: binary JPEG image format')
+			log(idn, 'jpegPhoto: binary JPEG image format')
 			continue
 
 		# try to decode + encode again
@@ -81,18 +81,18 @@ def run(action, verbose=False):
 			_b64 = base64.b64encode(bin)
 		except binascii.Error as e:
 			# no base64 encoded jpeg photo
-			log('jpegPhoto: an error occurred trying to decode the jpegPhoto attribute as base64: %s' % e)
+			log(idn, 'jpegPhoto: an error occurred trying to decode the jpegPhoto attribute as base64: %s' % e)
 			continue
 
 		# compare original and decoded + encoded string
 		if _b64 != b64:
-			log('jpegPhoto: unknown format')
+			log(idn, 'jpegPhoto: unknown format')
 			continue
 
 		if action == 'test':
-			log('jpegPhoto: base64 format -> CAN BE CONVERTED')
+			log(idn, 'jpegPhoto: base64 format -> CAN BE CONVERTED')
 		else:
-			log('jpegPhoto: CONVERTING from base64 to binary format', force=True)
+			log(idn, 'jpegPhoto: CONVERTING from base64 to binary format', force=True)
 			ldiff = ldap.modlist.modifyModlist(dict(jpegPhoto=[b64]), dict(jpegPhoto=[bin]))
 			lo.modify_s(idn, ldiff)
 

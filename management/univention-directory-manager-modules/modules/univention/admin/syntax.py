@@ -863,7 +863,7 @@ class UDM_Objects(ISyntax, _UDMObjectOrAttribute):
 					mapping = module.mapping
 					ldap_attr = [mapping.mapName(att) for att in attr]
 
-					def _search(ldap_attr=None):
+					def _search(module, filter_s, ldap_attr=None):
 						if hasattr(module, 'lookup_filter'):
 							lookup_filter = module.lookup_filter(filter_s, lo)
 							if lookup_filter is None:
@@ -876,7 +876,7 @@ class UDM_Objects(ISyntax, _UDMObjectOrAttribute):
 						return module.lookup(None, lo, filter_s, **module_search_options)
 
 					if ldap_attr:
-						result = _search(ldap_attr)
+						result = _search(module, filter_s, ldap_attr)
 						for dn, ldap_map in result:
 							info = univention.admin.mapping.mapDict(mapping, ldap_map)
 							key, label = extract_key_label(cls, dn, info)
@@ -886,7 +886,7 @@ class UDM_Objects(ISyntax, _UDMObjectOrAttribute):
 								label = ldap.dn.explode_rdn(dn, True)[0]
 							choices.append((key, label))
 					else:
-						keys = _search()
+						keys = _search(module, filter_s)
 						if cls.label == 'dn':
 							labels = keys
 						else:
