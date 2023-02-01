@@ -15,3 +15,5 @@ desc: |
    LDIF exists in the file-system. The package has been adjusted to explicitly
    specify using the configuration file instead to avoid this problem.
 bug: [34877, 55558, 54986]
+erratum: 568
+announced: 2023-02-01
