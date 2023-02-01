@@ -1,3 +1,9 @@
+ucs-test (10.0.7-34) unstable; urgency=medium
+
+  * Bug #54986: revert rename test configuration file
+
+ -- Tobias Wenzel <wenzel@univention.de>  Wed, 01 Feb 2023 11:53:08 +0100
+
 ucs-test (10.0.7-33) unstable; urgency=medium
 
   * Bug #54986: rename test configuration file
