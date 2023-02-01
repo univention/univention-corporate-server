@@ -735,6 +735,10 @@ Univention Management Console web interface
 * Cookie banners have been improved for mobile devices. The accept button is
   now permanently visible for easier use (:uv:bug:`55378`).
 
+* The services :program:`univention-management-console-server` and
+  :program:`univention-management-console-web-server` have been migrated to
+  :program:`systemd` (:uv:bug:`53885`).
+
 .. _changelog-umc-portal:
 
 Univention Portal
