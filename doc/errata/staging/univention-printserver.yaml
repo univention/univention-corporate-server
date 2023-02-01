@@ -5,11 +5,11 @@ scope: ucs_5.0-0-errata5.0-2
 src: univention-printserver
 fix: 13.0.5-2A~5.0.0.202301261714
 desc: |
- This update addresses the following issue:
+ This update addresses the following issues:
  * After adding or removing printers UCS tells Samba to reload the
    configuration. In Samba 4.16 there is a new service `samba-bgqd`, which
    required adjusting the way that the `cups-printers.py` listener initiates
    the reload to make Samba recognize the changes immediately.
- * When removing printer share definitions from samba also remove the
-   corresponding entries from the samba registry and the tdb cache file.
+ * When removing printer share definitions from Samba also remove the
+   corresponding entries from the Samba registry and the TDB cache file.
 bug: [55264, 55492]
