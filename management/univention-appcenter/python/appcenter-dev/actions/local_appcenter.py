@@ -639,14 +639,14 @@ class DevPopulateAppcenter(LocalAppcenterAction):
 			filename = os.path.join(repo_dir, arch, 'Packages')
 			for fname in glob('%s*' % filename):
 				os.unlink(fname)
-			with open(filename, 'w') as packages:
+			with open(filename, 'wb') as packages:
 				process = subprocess.Popen(['apt-ftparchive', mode, os.path.dirname(filename)], stdout=subprocess.PIPE)
 				stdout, stderr = process.communicate()
-				for line in stdout.decode('utf-8').splitlines():
-					if line.startswith(u'Filename:'):
-						path = line[len(os.path.dirname(repo_dir)) + 11:]  # -"Filename: /var/www/.../maintained/component/"
-						line = u'Filename: %s' % path
-					packages.write('%s\n' % line)
+				for line in stdout.splitlines():
+					if line.startswith(b'Filename:'):
+						path = line[len(os.path.dirname(repo_dir).encode('utf-8')) + 11:]  # -"Filename: /var/www/.../maintained/component/"
+						line = b'Filename: %s' % path
+					packages.write(b'%s\n' % line)
 			if compress:
 				with open('%s.gz' % filename, 'wb') as gz:
 					subprocess.Popen(['gzip', '--stdout', filename], stdout=gz)

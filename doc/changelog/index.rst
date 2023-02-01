@@ -809,6 +809,9 @@ Univention App Center
 * The listener converter script is now by default writing the UDM REST API representation
   into the JSON files (:uv:bug:`54773`).
 
+* Debian packages that contain non UTF-8 byte sequences do not crash the Provider Portal
+  anymore when creating new versions of apps (:uv:bug:`55634`).
+
 .. _changelog-umc-udmcli:
 
 |UCSUDM| and command line interface
