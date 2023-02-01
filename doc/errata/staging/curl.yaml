@@ -6,21 +6,17 @@ src: curl
 fix: 7.52.1-5+deb9u18
 desc: |
  This update addresses the following issues:
- 7.52.1-5+deb9u18 (Thu, 26 Jan 2023 08:51:51 -0500)
- * Non-maintainer upload by the ELTS team.
  * CVE-2022-27774: An insufficiently protected credentials vulnerability
    exists in curl that could allow an attacker to extract credentials when
    follows HTTP(S) redirects is used with authentication could leak
    credentials to other services that exist on different protocols or port
    numbers.
- * Follow up to CVE-2022-27782: The patch included to address this CVE in
-   7.52.1-5+deb9u17 contained a defect which resulted in the vulnerability
-   being completely addressed. The patch is corrected and the vulberability is
-   fully addressed in this version.
+ * CVE-2022-27782: The patch included to address this CVE contained a defect
+   which resulted in the vulnerability being completely addressed.
  * CVE-2022-32221: When doing HTTP(S) transfers, libcurl might erroneously use
-   the read callback (CURLOPT_READFUNCTION) to ask for data to send, even when
-   the CURLOPT_POSTFIELDS option has been set, if the same handle previously
-   was used to issue a PUT request which used that callback.
+   the read callback (`CURLOPT_READFUNCTION`) to ask for data to send, even
+   when the option `CURLOPT_POSTFIELDS` has been set, if the same handle
+   previously was used to issue a PUT request which used that callback.
  * CVE-2022-35252: When curl is used to retrieve and parse cookies from a
    HTTP(S) server, it accepts cookies using control codes that when later are
    sent back to a HTTP server might make the server return 400 responses.
