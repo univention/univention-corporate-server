@@ -6,9 +6,8 @@ src: libarchive
 fix: 3.2.2-2+deb9u4
 desc: |
  This update addresses the following issue:
- 3.2.2-2+deb9u4 (Sun, 29 Jan 2023 14:03:02 +0100)
- * Non-maintainer upload by the ELTS team.
- * CVE-2022-36227 null pointer dereference due to missing check after calloc
+ * CVE-2022-36227: NULL pointer dereference due to missing check after
+   `calloc`.
 bug: [55628]
 cve:
 - CVE-2022-36227
