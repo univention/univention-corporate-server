@@ -6,10 +6,8 @@ src: tiff
 fix: 4.1.0+git191117-2~deb10u6
 desc: |
  This update addresses the following issue:
- 4.1.0+git191117-2~deb10u6 (Sat, 28 Jan 2023 14:22:59 +0530)
- * Non-maintainer upload by the LTS Security Team.
- * Add patch to correct simple copy paste error in tiffcrop. (Fixes:
-   CVE-2022-48281)
+ * Heap-bases buffer overflow in function `processCropSelections` of
+   `tools/tiffcrop.c` (CVE-2022-48281)
 bug: [55624]
 cve:
 - CVE-2022-48281
