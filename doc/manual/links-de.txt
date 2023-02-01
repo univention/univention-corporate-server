@@ -2,6 +2,7 @@
 .. _dovecot-mail-storage-shared-disk: https://wiki2.dovecot.org/MailLocation/SharedDisk
 .. _dovecot-nfs: https://doc.dovecot.org/configuration_manual/nfs/
 .. _dovecot-services: https://wiki2.dovecot.org/Services
+.. _fetchmail-multidrop: https://www.fetchmail.info/fetchmail-man.html#the-use-and-abuse-of-multidrop-mailboxes
 .. _freeradius: https://freeradius.org/
 .. _github-univention-domain-join: https://github.com/univention/univention-domain-join
 .. _google-admin-console: https://admin.google.com/
