@@ -6,18 +6,36 @@ src: tiff
 fix: 4.0.8-2+deb9u9
 desc: |
  This update addresses the following issues:
- 4.0.8-2+deb9u9 (Mon, 30 Jan 2023 19:43:36 +0100)
- * Non-maintainer upload by the ELTS team.
- * Fix CVE-2022-0865, CVE-2022-0891, CVE-2022-0907, CVE-2022-0908,
-   CVE-2022-0909, CVE-2022-0924, CVE-2022-1355, CVE-2022-2056, CVE-2022-2057,
-   CVE-2022-2058, CVE-2022-2867, CVE-2022-2868, CVE-2022-2869, CVE-2022-3570,
-   CVE-2022-3597, CVE-2022-3598, CVE-2022-3599, CVE-2022-3626, CVE-2022-3627,
-   CVE-2022-3970, CVE-2022-34526 and CVE-2022-48281. Multiple vulnerabilities
-   were found in tiff, a library and tools providing support for the Tag Image
-   File Format (TIFF), leading to denial of service (DoS) and possibly local
-   code execution.
- * Update libtiff5.symbols and add new symbol
-   _TIFFClampDoubleToUInt32@LIBTIFF_4.0.
+ * CVE-2022-0865: Reachable assertion
+ * CVE-2022-0891: Heap buffer overflow in `extractImageSection`
+ * CVE-2022-0907: NULL pointer dereference in `tiffcrop`
+ * CVE-2022-0908: NULL source pointer passed as an argument to `memcpy` in
+   `TIFFFetchNormalTag`() in tif_dirread.c
+ * CVE-2022-0909: Divide-by-zero error in `tiffcrop`
+ * CVE-2022-0924: Out-of-bounds read error in `tiffcp`
+ * Stack-buffer-overflow in `tiffcp.c` in `main()` (CVE-2022-1355)
+ * LibTiff: DoS from divide-by-zero error (CVE-2022-2056)
+ * LibTiff: DoS from divide-by-zero error (CVE-2022-2057)
+ * LibTiff: DoS from divide-by-zero error (CVE-2022-2058)
+ * `uint32_t` underflow leads to out-of-bounds read and write in `tiffcrop.c`
+   (CVE-2022-2867)
+ * Invalid `crop_width` and/or `crop_length` could cause an out-of-bounds read
+   in `reverseSamples16bits()` (CVE-2022-2868)
+ * `tiffcrop.c` has `uint32_t` underflow which leads to out-of-bounds read and
+   write in `extractContigSamples8bits()` (CVE-2022-2869)
+ * Heap buffer overflows in `tiffcrop.c` (CVE-2022-3570)
+ * Out-of-bounds write in `_TIFFmemcpy` in `libtiff/tif_unix` (CVE-2022-3597)
+ * Out-of-bounds write in `extractContigSamplesShifted24bits` in
+   `tools/tiffcrop.c` (CVE-2022-3598)
+ * Out-of-bounds read in `writeSingleSection` in `tools/tiffcrop.c`
+   (CVE-2022-3599)
+ * Out-of-bounds write in `_TIFFmemset` in libtiff/tif_unix.c (CVE-2022-3626)
+ * Out-of-bounds write in `_TIFFmemcpy` in libtiff/tif_unix.c (CVE-2022-3627)
+ * Integer overflow in function `TIFFReadRGBATileExt` of the file
+   `libtiff/tif_getimage.c` (CVE-2022-3970)
+ * Stack overflow in function `_TIFFVGetField` of `Tiffsplit` (CVE-2022-34526)
+ * CVE-2022-48281: Heap-based buffer overflow in `processCropSelections()` in
+   `tools`/tiffcrop.c
 bug: [55629]
 cve:
 - CVE-2022-0865
