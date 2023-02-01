@@ -1256,10 +1256,10 @@ change_template_hostname () {
 
 	# new name
 	ucr set \
-		"hostname"="$hostname" \
-		"ldap/hostdn"="$hostdn" \
-		"ldap/server/name"="$new_fqdn" \
-		"hosts/static/${primary_ip}"="$(ucr get ldap/master)"
+		"hostname=$hostname" \
+		"ldap/hostdn=$hostdn" \
+		"ldap/server/name=$new_fqdn" \
+		"hosts/static/${primary_ip}=$(ucr get ldap/master)"
 
 	# create new computer account, with the same position
 	# password, services and ucsschool_roles
