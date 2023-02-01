@@ -1159,10 +1159,13 @@ sa_bug53751 () {
 		update-ca-certificates ||
 		true
 
-	[ -e /usr/bin/sa-update ] &&
-		sa-update -vv &&
-		sa-compile &&
-		systemctl restart spamassassin amavis ||
+	local base='/var/lib/spamassassin/compiled' user='debian-spamd'
+	[ -d "$base" ] &&
+		find "$base" -not -user "$user" -exec chown -v "$user:" {} +
+	[ -x /usr/bin/sa-update ] &&
+		su -c 'sa-update -vv' - "$user" &&
+		su -c 'sa-compile' - "$user" &&
+		systemctl try-restart spamassassin amavis &&
 		true
 }
 
