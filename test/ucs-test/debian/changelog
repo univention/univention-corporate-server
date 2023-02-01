@@ -1,3 +1,9 @@
+ucs-test (10.0.7-33) unstable; urgency=medium
+
+  * Bug #54986: rename test configuration file
+
+ -- Tobias Wenzel <wenzel@univention.de>  Wed, 01 Feb 2023 11:03:27 +0100
+
 ucs-test (10.0.7-32) unstable; urgency=medium
 
   * Bug #54986: slap tools must also work in case

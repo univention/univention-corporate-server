@@ -35,7 +35,7 @@ python3 -m pip install udm-rest-client
 
 python3 ./update_openapi_client --generator docker $(hostname -f) --username="$(ucs_convertDN2UID ${tests_domainadmin_account})" --password="${tests_domainadmin_pwd}" --insecure || fail_fast 1
 
-cat > tests/test_server.yaml <<EOF
+cat > tests/test_server_example.yaml <<EOF
 host: $(hostname -f)
 username: $(ucs_convertDN2UID ${tests_domainadmin_account})
 user_dn: ${tests_domainadmin_account}
