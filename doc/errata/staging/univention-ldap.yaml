@@ -11,8 +11,7 @@ desc: |
    entries.
  * Change code to emit UCRV `ldap/translog-ignore-temporary` only when LDAP
    overlay module `translog` is enabled.
- * Calls to the openldap slap tools (slaptest etc.) fail when the
-   cn=config ldif exists in the filesystem. The package has been
-   adjusted to explicitly specify using the config file instead to avoid
-   this problem.
+ * Calls to several OpenLDAP tools (`slaptest` etc.) fail when the `cn=config`
+   LDIF exists in the file-system. The package has been adjusted to explicitly
+   specify using the configuration file instead to avoid this problem.
 bug: [34877, 55558, 54986]
