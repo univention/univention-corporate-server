@@ -24,7 +24,7 @@ General
 * The scripts :file:`server_password_change/univention-admin-diary` has been updated to
   generate more useful debug information (:uv:bug:`54273`).
 
-* Instead of an exception now a clear error messsage is displayed in case the
+* Instead of an exception now a clear error message is displayed in case the
   admin diary frontend is installed on a different system than the admin diary
   server and the database connection is not correctly configured
   (:uv:bug:`49016`).
@@ -688,7 +688,7 @@ Univention Management Console web interface
 ===========================================
 
 * The UDM command line client now writes error messages and warnings to
-  stdandard error (:uv:bug:`4498`).
+  standard error (:uv:bug:`4498`).
 
 * The OpenAPI schema of the UDM REST API has been improved: Nested properties
   are now described more detailed while they previously were only described as
@@ -729,7 +729,7 @@ Univention Management Console web interface
   themes on another themes. This is required for :program:`univention-app-appliance`
   (:uv:bug:`55107`).
 
-* The ceckboxes in grids are now rendered in the correct state while scrolling
+* The checkboxes in grids are now rendered in the correct state while scrolling
   (:uv:bug:`54451`).
 
 * Cookie banners have been improved for mobile devices. The accept button is
@@ -894,7 +894,7 @@ Univention App Center
   increase performance. Using the group memberships via ``memberOf`` adds all
   groups to the user which he is assigned to, even if the reading user cannot
   read the specific groups of if the memberships are no objects ``groups/group``.
-  As there might be code which relies on this beehavior and don't do proper
+  As there might be code which relies on this behavior and don't do proper
   error handling when iterating over group memberships the new UCR variable
   :envvar:`directory/manager/user/group-memberships-via-memberof` can be used to
   restore the old behavior. The variable is going to be removed in UCS 5.1
@@ -1023,7 +1023,7 @@ Univention base libraries
 *************************
 
 * :py:mod:`univention.lib.i18n` now provides a method to set the language of all
-  already instanciated :py:class:`Translation` instances (:uv:bug:`55224`).
+  already instantiated :py:class:`Translation` instances (:uv:bug:`55224`).
 
 * Calls to several OpenLDAP tools (:command:`slaptest` etc.) fail when the :file:`cn=config`
   LDIF exists in the file-system. The package has been adjusted to explicitly
@@ -1084,7 +1084,7 @@ SAML
   (:uv:bug:`55331`).
 
 * The unmapping of the LDAP attribute ``simplesamlLDAPattributes`` in the UDM
-  module ``saml/serviceprovider`` now always unmaps the value in the new mappable
+  module ``saml/ckported/serviceprovider`` now always unmaps the value in the new mappable
   format to support a representation in the UDM REST API (:uv:bug:`55348`).
 
 * Add debug trace to the joinscript :file:`91univention-saml.inst` to improve error
@@ -1174,7 +1174,7 @@ Proxy services
 
 * Joining UCS@School replica servers into environments with many objects could
   fail due to timeouts in the join scripts :file:`97univention-s4-connector`, :file:`98univention-samba4-dn` and :file:`98univention-squid-samba4`. The
-  synchronisation of existing objects delayed the synchronisation of new
+  synchronization of existing objects delayed the synchronization of new
   objects which are created during the join and necessary for its completion.
   The S4-Connector and the join scripts have been modified to sync these vital
   objects first, which speeds up the join process considerably
@@ -1237,7 +1237,7 @@ Samba
 
 * Joining UCS@School replica servers into environments with many objects could
   fail due to timeouts in the join scripts :file:`97univention-s4-connector`, :file:`98univention-samba4-dn` and :file:`98univention-squid-samba4`. The
-  synchronisation of existing objects delayed the synchronisation of new
+  synchronization of existing objects delayed the synchronization of new
   objects which are created during the join and necessary for its completion.
   The S4-Connector and the join scripts have been modified to sync these vital
   objects first, which speeds up the join process considerably
@@ -1270,7 +1270,7 @@ Univention S4 Connector
 
 * Joining UCS@School replica servers into environments with many objects could
   fail due to timeouts in the join scripts :file:`97univention-s4-connector`, :file:`98univention-samba4-dn` and :file:`98univention-squid-samba4`. The
-  synchronisation of existing objects delayed the synchronisation of new
+  synchronization of existing objects delayed the synchronization of new
   objects which are created during the join and necessary for its completion.
   The S4-Connector and the join scripts have been modified to sync these vital
   objects first, which speeds up the join process considerably
@@ -1352,7 +1352,7 @@ Other changes
   modified to match those of the :program:`simpleSAMLphp` login page (:uv:bug:`55478`).
 
 * Users can now login with their ``mailPrimaryAddress`` as well as their username
-  at keycloak (:uv:bug:`55458`).
+  at Keycloak (:uv:bug:`55458`).
 
 * The script :command:`univention-keycloak` didn't evaluate the app setting
   ``keycloak/server/sso/fqdn``. Due to this, the joinscript of the Keycloak app
@@ -1365,8 +1365,8 @@ Other changes
 * A traceback in :program:`univention-keycloak` was thrown when trying to enable the two
   factor authentication. This has been fixed (:uv:bug:`55519`).
 
-* A new flag :option:`--umc-uid-mapper` has been added to the commandline tool :command:`univention-keycloak`.
-  This makes it easier to create SAML serviceprovider for the UMC
+* A new flag :option:`--umc-uid-mapper` has been added to the command line tool :command:`univention-keycloak`.
+  This makes it easier to create SAML service-provider for the UMC
   (:uv:bug:`55431`).
 
 * The :program:`univention-keycloak` package has been added. This package contains a CLI
@@ -1411,11 +1411,11 @@ Other changes
 * An additional ACL access directive for the machine account provides faster
   access to DNS zone objects (:uv:bug:`54140`).
 
-* On UCS Replica Directory Nodes the OpenLDAP ppolicy overlay was not allowed
+* On UCS Replica Directory Nodes the OpenLDAP ``ppolicy`` overlay was not allowed
   to lock user accounts. The server ACLs have been adjusted to allow this
   (:uv:bug:`55501`).
 
-* The Debian package :program:`python-email-validator` has been backported and updated
+* The Debian package :program:`python-email-validator` has been back ported and updated
   to be used in univention-directory-manager-modules (:uv:bug:`55413`).
 
 * An open file descriptor leak has been fixed, which was triggered by
@@ -1432,7 +1432,7 @@ Other changes
 
 * LDAP ACL's allowing DCs and Memberservers to change alerts have been added.
   The alert descriptions have been improved. The authentication when trying to
-  reload prometheus alerts has been fixed. Query expressions are now templated
+  reload Prometheus alerts has been fixed. Query expressions are now templated
   and restrict the metrics to the assigned hostnames (:uv:bug:`54947`).
 
 * The alert expressions for checking the SSL validity and the swap usage have
