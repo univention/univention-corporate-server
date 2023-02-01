@@ -9,3 +9,5 @@ desc: |
  * Apps can now be pinned. A pinned app will no longer be upgraded or removed.
    They need to be unpinned first. `univention-app pin $appid [--revert]`.
 bug: [55467]
+erratum: 561
+announced: 2023-02-01
