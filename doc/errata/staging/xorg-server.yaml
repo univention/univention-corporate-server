@@ -6,17 +6,15 @@ src: xorg-server
 fix: 2:1.19.2-1+deb9u12
 desc: |
  This update addresses the following issues:
- 2:1.19.2-1+deb9u12 (Sun, 29 Jan 2023 10:03:02 +0100)
- * Non-maintainer upload by the ELTS Team.
- * CVE-2022-46340 Xtest: disallow GenericEvents in XTestSwapFakeInput
+ * CVE-2022-4283 xkb: reset the pointer `radio_groups` to NULL after freeing
+   it
+ * CVE-2022-46340 Xtest: disallow `GenericEvents` in `XTestSwapFakeInput`
  * CVE-2022-46341 Xi: disallow passive grabs with a detail > 255
- * CVE-2022-46342 Xext: free the XvRTVideoNotify when turning off from the
+ * CVE-2022-46342 Xext: free the `XvRTVideoNotify` when turning off from the
    same client
  * CVE-2022-46343 Xext: free the screen saver resource when replacing it
  * CVE-2022-46344 Xi: avoid integer truncation in length check of
-   ProcXIChangeProperty
- * CVE-2022-4283 xkb: reset the radio_groups pointer to NULL after freeing it
- * Xi: return an error from XI property changes if verification failed
+   `ProcXIChangeProperty`
 bug: [55627]
 cve:
 - CVE-2022-46340
