@@ -6,7 +6,7 @@ src: curl
 fix: 7.64.0-4+deb10u4
 desc: |
  This update addresses the following issues:
- * credential leak on redirect (CVE-2022-27774)
+ * Credential leak on redirect (CVE-2022-27774)
  * POST following PUT confusion (CVE-2022-32221)
  * Incorrect handling of control code characters in cookies (CVE-2022-35252)
  * Use-after-free triggered by an HTTP proxy deny response (CVE-2022-43552)
