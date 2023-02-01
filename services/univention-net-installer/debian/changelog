@@ -1,3 +1,9 @@
+univention-net-installer (13.0.3-1) unstable; urgency=medium
+
+  * Bug: #55598: Function now binds loop variables
+
+ -- Mika Westphal <westphal@univention.de>  Thu, 02 Feb 2023 08:30:18 +0100
+
 univention-net-installer (13.0.2-5) unstable; urgency=medium
 
   * Bug #55639: Adapt to UCS-5.0-3

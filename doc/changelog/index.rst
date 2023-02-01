@@ -32,6 +32,9 @@ General
 * Reading records from database is optimized to use less RAM and CPU
   (:uv:bug:`51902`).
 
+* Some source code has been refactored regarding binding of loop variables to function calls
+  (:uv:bug:`55598`).
+
 .. _security:
 
 * All security updates issued for UCS 5.0-2 are included:

@@ -123,7 +123,7 @@ def listener(options, data_queue):
 	while True:
 		(client, _, ) = s.accept()
 
-		def reader():
+		def reader(client):
 			client.settimeout(10)
 			try:
 				data = client.recv(size)
@@ -134,7 +134,7 @@ def listener(options, data_queue):
 			if data:
 				data = data.strip()
 				data_queue.put(data)
-		threading.Thread(target=reader).start()
+		threading.Thread(target=reader, args=(client,)).start()
 
 
 def main():
