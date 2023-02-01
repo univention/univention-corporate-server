@@ -5,9 +5,8 @@ scope: ucs_5.0-0-errata5.0-2
 src: univention-management-console
 fix: 12.0.13-6A~5.0.0.202301301359
 desc: |
- This update addresses the following issues:
- * The registration of a keycloak client during initial join
-   failed because of a missing restart of the service apache2,
-   which has been added to the univention-management-console
-   joinscript.
+ This update addresses the following issue:
+ * Calls to several OpenLDAP tools (`slaptest` etc.) fail when the `cn=config`
+   LDIF exists in the file-system. The package has been adjusted to explicitly
+   specify using the configuration file instead to avoid this problem.
 bug: [55570]
