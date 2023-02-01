@@ -1,3 +1,9 @@
+univention-updater (15.0.4-6) unstable; urgency=medium
+
+  * Bug #55640: Adapt links and components for 5.0-3
+
+ -- Philipp Hahn <hahn@univention.de>  Wed, 01 Feb 2023 19:37:37 +0100
+
 univention-updater (15.0.4-5) unstable; urgency=medium
 
   * Bug #54986: slap tools must also work in case
