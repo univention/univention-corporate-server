@@ -802,6 +802,9 @@ Univention App Center
 * In case of a signature verification error, the App Center now shows the GPG
   error message (:uv:bug:`54123`).
 
+* The listener converter script is now by default writing the UDM REST API representation
+  into the JSON files (:uv:bug:`54773`).
+
 .. _changelog-umc-udmcli:
 
 |UCSUDM| and command line interface
