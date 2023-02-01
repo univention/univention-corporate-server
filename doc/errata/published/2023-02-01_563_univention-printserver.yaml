@@ -13,3 +13,5 @@ desc: |
  * When removing printer share definitions from Samba also remove the
    corresponding entries from the Samba registry and the TDB cache file.
 bug: [55264, 55492]
+erratum: 563
+announced: 2023-02-01
