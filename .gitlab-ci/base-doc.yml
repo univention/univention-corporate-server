@@ -9,7 +9,7 @@ stages:
   image: $SPHINX_BASE
   variables:
     DOC_TARGET_VERSION: "5.0"
-    CHANGELOG_TARGET_VERSION: "5.0-2"
+    CHANGELOG_TARGET_VERSION: "5.0-3"
   artifacts:
     paths:
       - $base/_build

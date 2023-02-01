@@ -19,7 +19,7 @@ from datetime import date
 # -- Project information -----------------------------------------------------
 
 # The full version, including alpha/beta/rc tags
-release = "5.0-2"
+release = "5.0-3"
 
 version = "5.0"
 
@@ -139,7 +139,7 @@ univention_use_doc_base = True
 
 # See README.md in this repository
 # https://git.knut.univention.de/univention/documentation/univention_sphinx_changelog#configuration-settings
-univention_changelog_previous_release = "5.0-1"
+univention_changelog_previous_release = "5.0-2"
 univention_changelog_builder = "ucs"
 
 # See Univention Sphinx Extension for its options and information about the

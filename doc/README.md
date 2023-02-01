@@ -37,7 +37,7 @@ patch level.
 
 For each new UCS patch level releases, you **must** update the
 `CHANGELOG_TARGET_VERSION` in [base-doc.yml](./../.gitlab-ci/base-doc.yml), for
-example `5.0-2`. The version string **must not** contain spaces. Keep in mind,
+example `5.0-3`. The version string **must not** contain spaces. Keep in mind,
 the version string is used for the deployment path of the document.
 
 To reference the correct changelog document in the release notes, use the following steps:

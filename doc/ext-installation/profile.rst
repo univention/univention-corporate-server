@@ -597,7 +597,7 @@ the correct location in :file:`/var/lib/univention-client-boot/installer/`.
 Instead of mounting the DVD a downloaded ISO image can also be mounted by using
 :command:`mount -o loop,ro /path/to/UCS.iso /media/cdrom0`. Alternatively the
 files can be downloaded from
-`<http://updates.software-univention.de/pxe/5.0-2/amd64/gtk/debian-installer/amd64/>`_:
+`<http://updates.software-univention.de/pxe/5.0-3/amd64/gtk/debian-installer/amd64/>`_:
 
 .. code-block:: console
 
@@ -688,7 +688,7 @@ benefit that ``HTTP`` is faster, more reliable and also works over the internet.
    .. code-block:: console
 
       $ PXE='http://updates.software-univention.de/pxe'
-      $ PXE="$PXE/5.0-2/amd64/gtk/debian-installer/amd64"
+      $ PXE="$PXE/5.0-3/amd64/gtk/debian-installer/amd64"
       $ ucr set \
         pxe/installer/kernel="$PXE/linux" \
         pxe/installer/initrd="$PXE/initrd.gz" \

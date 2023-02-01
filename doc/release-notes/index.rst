@@ -2,7 +2,7 @@
 Release notes for the installation and update of Univention Corporate Server (UCS) |release|
 ############################################################################################
 
-Publication date of UCS |release|: 30. June 2022
+Publication date of UCS |release|: 2023-02-07
 
 .. _relnotes-highlights:
 
@@ -10,37 +10,16 @@ Publication date of UCS |release|: 30. June 2022
 Release Highlights
 ******************
 
-With |UCSUCS| 5.0-2, the second point release for |UCSUCS| (UCS) 5.0 is now
+With |UCSUCS| 5.0-3, the third point release for |UCSUCS| (UCS) 5.0 is now
 available. It provides several feature improvements and extensions, new
 properties as well as various improvements and bug fixes. Here is an overview of
 the most important changes:
 
-* The User Self Service was integrated into the UCS portal. Furthermore, the
-  support for additional placeholders was extended among others, such as
-  first name and last name in the email template for password reset.
-
-* For RADIUS, users can assign a so-called service specific password. And
-  administrators can assign dedicated VLANs to user groups to increase network
-  security.
-
-* ``SameSite`` Cookies can now be configured for UMC and SAML.
-
-* The AD Takeover has been made more robust.
-
-* Numerous performance improvements have been implemented regarding DNS, LDAP
-  and during the sign in to UMC.
-
-* The French translation for the UCS management system was updated.
-
-* The UMC system diagnostics has been extended: Several new checks have been
-  added and some older have been improved.
-
-* Most packages have been migrated to Python 3. Their Python 2 counterparts are
-  no longer installed by default and will be removed.
+* XXX
 
 * This |UCSUCS| release is based on Debian 10.12 Buster.
 
-* Various security updates have been integrated into UCS 5.0-2, for example for
+* Various security updates have been integrated into UCS 5.0-3, for example for
   :program:`Samba4`, OpenLDAP, OpenSSL, and the Linux kernel.
 
 .. _relnotes-update:
@@ -145,7 +124,7 @@ for this. See also the :cite:t:`developer-reference` for advice.
 When multiple instances of the :program:`AD Connector` are operated as described
 in `Synchronization of several Active Directory domains with one UCS directory
 service
-<https://docs.software-univention.de/windows-4.4.html#ad:multiple>`_, an
+<https://docs.software-univention.de/windows-5.0.html#ad:multiple>`_, an
 adjustment of the mapping configuration is needed and Python 3.7 compatibility
 must be ensured before the update. :uv:kb:`17754` describes the steps.
 
@@ -173,10 +152,10 @@ downloaded and executed on the UCS system.
 .. code-block:: console
 
    # download
-   $ curl -OOf https://updates.software-univention.de/download/univention-update-checks/pre-update-checks-5.0-2{.gpg,}
+   $ curl -OOf https://updates.software-univention.de/download/univention-update-checks/pre-update-checks-5.0-3{.gpg,}
 
    # verify and run script
-   $ apt-key verify pre-update-checks-5.0-2{.gpg,} && bash pre-update-checks-5.0-2
+   $ apt-key verify pre-update-checks-5.0-3{.gpg,} && bash pre-update-checks-5.0-3
 
    ...
 
