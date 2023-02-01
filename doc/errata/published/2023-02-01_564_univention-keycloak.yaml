@@ -11,3 +11,5 @@ desc: |
    since the metadata information can not be fetched via https
    during the join.
 bug: [55570]
+erratum: 564
+announced: 2023-02-01
