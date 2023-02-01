@@ -6,13 +6,13 @@ src: univention-management-console
 fix: 12.0.13-3A~5.0.0.202211141813
 desc: |
  This update addresses the following issues:
- * The SAML identity cache has been changed to an in-memory cache. This
-   can be changed to the filesystem database by setting the UCR variable
+ * The SAML identity cache has been changed to an in-memory cache. This can be
+   changed to the filesystem database by setting the UCR variable
    `umc/saml/in-memory-identity-cache` to `false`. This is done automatically
    for servers with enabled multiprocessing.
  * The error handling of the `pysaml2` usage has been improved.
- * Exception stack traces are logged again when "umc/http/show_tracebacks" is
-   set to False.
+ * Exception stack traces are logged again when the UCR variable
+   `umc/http/show_tracebacks` is set to `False`.
 bug: [55424, 55248, 55423]
 erratum: 485
 announced: 2022-11-16
