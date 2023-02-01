@@ -15,11 +15,11 @@ doc_job () { # <extends> [<suffix> [<language>]]
 	if [ "${pkg}" = "changelog" ] || [ "${pkg}" = "release-notes" ]
 	then
 		echo '    DOC_TARGET_VERSION: $CHANGELOG_TARGET_VERSION'
-    fi
-    if [ "${pkg}" = "release-notes" ] && [ ${2} = "html" ]
-    then
-        echo '    GIT_DEPTH: 0'
-    fi
+	fi
+	if [ "${pkg}" = "release-notes" ] && [ "${2}" = "html" ]
+	then
+		echo '    GIT_DEPTH: 0'
+	fi
 	[ -n "${3+empty}" ] && echo "    language: $3"
 	echo "  extends: ${1:?extends}"
 	echo '  rules:'
