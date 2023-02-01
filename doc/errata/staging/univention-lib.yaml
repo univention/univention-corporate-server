@@ -6,8 +6,7 @@ src: univention-lib
 fix: 9.0.12-3A~5.0.0.202301271633
 desc: |
  This update addresses the following issue:
- * Calls to the openldap slap tools (slaptest etc.) fail when the
-   cn=config ldif exists in the filesystem. The package has been
-   adjusted to explicitly specify using the config file instead to avoid
-   this problem.
+ * Calls to several OpenLDAP tools (`slaptest` etc.) fail when the `cn=config`
+   LDIF exists in the file-system. The package has been adjusted to explicitly
+   specify using the configuration file instead to avoid this problem.
 bug: [54986]
