@@ -74,10 +74,9 @@ basic_setup_allow_uss () {
 		sed -re 's,^\s*([0-9]+)\s+(.+),nameserver\1=\2 dns/forwarder\1=\2,' |
 		xargs ucr set nameserver/external=false nameserver1= nameserver2= nameserver3= dns/forwarder1= dns/forwarder2= dns/forwarder3=
 	ucr set --force updater/identify="UCS (EC2 Test)"
-	ucr set update/check/cron/enabled=false update/check/boot/enabled=false
-	# only execute server password change on 29th of febuarys that are a monday. Happens in 2044. Our tests run server password change manually
-	ucr set server/password/cron="0 0 29 2 1"
+	ucr set update/check/cron/enabled=false update/check/boot/enabled=false mail/antispam/rules/autoupdate?yes server/password/cron='#0 1 * * *'
 	service cron reload || true
+	sa_bug53751
 }
 
 basic_setup () {
@@ -1151,11 +1150,19 @@ run_workarounds_before_starting_the_tests () {
 	#restart_umc_bug_48157 # Bug is verified for now. Code can be removed if bug is closed.
 }
 
-sa_bug47030 () {
-	sa-update -v --install /root/1854818.tar.gz || true
-	sa-compile || true
-	systemctl restart spamassassin || true
-	systemctl restart amavis || true
+sa_bug53751 () {
+	# https://forge.univention.org/bugzilla/show_bug.cgi?id=47030
+	# https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=922499
+	[ -f /etc/ca-certificates.conf/etc/ca-certificates.conf ] &&
+		sed -i -e 's=^mozilla/DST_Root_CA_X3.crt=!&=' /etc/ca-certificates.conf &&
+		update-ca-certificates ||
+		true
+
+	[ -e /usr/bin/sa-update ] &&
+		sa-update -vv &&
+		sa-compile &&
+		systemctl restart spamassassin amavis ||
+		true
 }
 
 sa_bug54194 () {
