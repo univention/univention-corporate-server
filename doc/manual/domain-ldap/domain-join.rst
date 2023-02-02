@@ -151,12 +151,12 @@ Windows domain joins
 --------------------
 
 The procedure for joining a Windows system to a UCS domain made available via
-Samba is now described as an example for Windows 10 and Windows 2012 / 2016 /
-2019. The process is similar for other Windows versions. In addition to the
-client versions, Windows server systems can also join the domain. Windows
+Samba is now described as an example for Windows 11, Windows 10 and Windows 2012
+/ 2016 / 2019. The process is similar for other Windows versions. In addition to
+the client versions, Windows server systems can also join the domain. Windows
 servers join the domain as member servers; joining a Windows systems as a domain
-controller is not supported. Further information can be found in
-:ref:`windows-services-for-windows`.
+controller is not supported. For more information about Windows in a UCS domain,
+refer to :ref:`windows-services-for-windows`.
 
 Only domain-compatible Windows versions can join the UCS domain, i.e.,
 it is not possible for the Home versions of Windows to join a domain.
@@ -183,6 +183,34 @@ configuration of the client must be set up in such a way that DNS entries from
 the DNS zone of the UCS domain can also be resolved. In addition, the time on
 the client system must also be synchronized with the time on the domain
 controller.
+
+.. _domain-ldap-windows-11:
+
+Windows 11
+~~~~~~~~~~
+
+Joining a domain requires one of the editions *Pro*, *Education*, or
+*Enterprise* of Windows 11.
+To join Windows 11 into a UCS domain, use the following steps:
+
+#. To open the Windows control panel, search for ``Control Panel`` in the field
+   *Search*.
+
+#. On the *Control Panel* navigate to :menuselection:`System and Security -->
+   System` scroll down and click :guilabel:`Domain or workgroup`. Select
+   :menuselection:`Change settings --> Change`.
+
+#. Enable the option :guilabel:`Domain`.
+
+#. Enter the name of the domain in the input field for the domain join. Use the
+   full domain name, for example ``mydomain.intranet``. Click the :guilabel:`OK`
+   button.
+
+#. Enter the *Username* and *Password* of a domain administrator account of the
+   UCS domain in the respective input fields. In a UCS domain the default domain
+   administrator username is ``Administrator``.
+
+#. Finally, to start the process for joining the domain, click :guilabel:`OK`.
 
 .. _domain-ldap-windows-10:
 

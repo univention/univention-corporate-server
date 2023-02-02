@@ -4,16 +4,16 @@ msgstr ""
 "Project-Id-Version: Univention Corporate Server - Manual for users and "
 "administrators\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-08-29 16:21+0200\n"
+"POT-Creation-Date: 2023-01-30 14:32+0000\n"
 "PO-Revision-Date: 2022-08-29 16:24+0200\n"
 "Last-Translator: Univention GmbH <packages@univention.de>\n"
 "Language: de\n"
 "Language-Team: Univention GmbH <packages@univention.de>\n"
-"Plural-Forms: nplurals=2; plural=(n != 1)\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Generated-By: Babel 2.9.1\n"
+"Generated-By: Babel 2.10.3\n"
 
 #: ../../domain-ldap/admin-diary.rst:4
 msgid "Protocol of activities in the domain"
@@ -747,21 +747,23 @@ msgstr "Windows-Domänenbeitritt"
 #: ../../domain-ldap/domain-join.rst:153
 msgid ""
 "The procedure for joining a Windows system to a UCS domain made available"
-" via Samba is now described as an example for Windows 10 and Windows 2012"
-" / 2016 / 2019. The process is similar for other Windows versions. In "
-"addition to the client versions, Windows server systems can also join the"
-" domain. Windows servers join the domain as member servers; joining a "
-"Windows systems as a domain controller is not supported. Further "
-"information can be found in :ref:`windows-services-for-windows`."
+" via Samba is now described as an example for Windows 11, Windows 10 and "
+"Windows 2012 / 2016 / 2019. The process is similar for other Windows "
+"versions. In addition to the client versions, Windows server systems can "
+"also join the domain. Windows servers join the domain as member servers; "
+"joining a Windows systems as a domain controller is not supported. For "
+"more information about Windows in a UCS domain, refer to :ref:`windows-"
+"services-for-windows`."
 msgstr ""
 "Der Domänenbeitritt von Microsoft Windows-Systemen zu einer durch Samba "
-"bereitgestellten UCS-Domäne wird nachfolgend für Windows 10 und Windows "
-"2012 / 2016 / 2019 beispielhaft beschrieben. Bei anderen Windows-"
-"Versionen funktioniert der Beitritt ähnlich. Neben den Client-Versionen "
-"können auch Windows Server-Systeme der Domäne beitreten. Windows-Server "
-"treten der Domäne als Memberserver bei, ein Beitritt eines Windows-"
-"Systems als Domänencontroller wird nicht unterstützt. Weitere Hinweise "
-"finden sich in :ref:`windows-services-for-windows`."
+"bereitgestellten UCS-Domäne wird nachfolgend für Windows 11, Windows 10 "
+"und Windows 2012 / 2016 / 2019 beispielhaft beschrieben. Bei anderen "
+"Windows-Versionen funktioniert der Beitritt ähnlich. Neben den Client-"
+"Versionen können auch Windows Server-Systeme der Domäne beitreten. "
+"Windows-Server treten der Domäne als Memberserver bei. Ein Beitritt eines"
+" Windows-Systems als Domänencontroller wird nicht unterstützt. Weitere "
+"Informationen zu Windows in einer UCS-Domäne finden Sie unter "
+":ref:`windows-services-for-windows`."
 
 #: ../../domain-ldap/domain-join.rst:161
 msgid ""
@@ -830,10 +832,75 @@ msgstr ""
 " Domänencontroller synchronisiert sein."
 
 #: ../../domain-ldap/domain-join.rst:190
+msgid "Windows 11"
+msgstr "Windows 11"
+
+#: ../../domain-ldap/domain-join.rst:192
+msgid ""
+"Joining a domain requires one of the editions *Pro*, *Education*, or "
+"*Enterprise* of Windows 11. To join Windows 11 into a UCS domain, use the"
+" following steps:"
+msgstr ""
+"Der Domänenbeitritt erfordert eine der Editionen *Pro*, *Education*, oder "
+"*Enterprise* von Windows 11. Um Windows 11 in eine UCS-Domäne zu joinen, "
+"führen sie die folgenden Schritte aus:"
+
+#: ../../domain-ldap/domain-join.rst:196
+msgid ""
+"To open the Windows control panel, search for ``Control Panel`` in the "
+"field *Search*."
+msgstr ""
+"Um die Windows Systemsteuerung zu öffnen, suchen Sie nach "
+"``Systemsteuerung`` im Feld *Suchen*."
+
+#: ../../domain-ldap/domain-join.rst:199
+msgid ""
+"On the *Control Panel* navigate to :menuselection:`System and Security "
+"--> System` scroll down and click :guilabel:`Domain or workgroup`. Select"
+" :menuselection:`Change settings --> Change`."
+msgstr ""
+"Navigieren Sie in der *Systemsteuerung* zu :menuselection:`System und Sicherheit "
+"--> System` und klicken Sie auf :guilabel:`Domäne oder Arbeitsgruppe`. Wählen Sie"
+" :menuselection:`Einstellungen ändern --> Ändern`."
+
+#: ../../domain-ldap/domain-join.rst:203
+msgid "Enable the option :guilabel:`Domain`."
+msgstr "Aktivieren Sie die Option :guilabel:`Domäne`."
+
+#: ../../domain-ldap/domain-join.rst:205
+msgid ""
+"Enter the name of the domain in the input field for the domain join. Use "
+"the full domain name, for example ``mydomain.intranet``. Click the "
+":guilabel:`OK` button."
+msgstr ""
+"Geben Sie den Namen der Domäne in das Eingabefeld für den Domain Join ein. Verwenden Sie "
+"den vollständigen Domänennamen, zum Beispiel ``mydomain.intranet``. Klicken Sie auf die "
+":guilabel:`OK` Schaltfläche."
+
+#: ../../domain-ldap/domain-join.rst:209
+msgid ""
+"Enter the *Username* and *Password* of a domain administrator account of "
+"the UCS domain in the respective input fields. In a UCS domain the "
+"default domain administrator username is ``Administrator``."
+msgstr ""
+"Geben Sie den *Benutzernamen* und das *Passwort* für das Konto eines "
+"Domänen Administrators der UCS-Domäne in die entsprechenden Eingabefelder "
+"ein. In einer UCS-Domäne ist der Standard-Benutzername des Domänen "
+"Administrators ``Administrator``."
+
+#: ../../domain-ldap/domain-join.rst:213
+msgid ""
+"Finally, to start the process for joining the domain, click "
+":guilabel:`OK`."
+msgstr ""
+"Um den Domänenbeitritt zu starten, klicken Sie auf "
+":guilabel:`OK`."
+
+#: ../../domain-ldap/domain-join.rst:218
 msgid "Windows 10"
 msgstr "Windows 10"
 
-#: ../../domain-ldap/domain-join.rst:192
+#: ../../domain-ldap/domain-join.rst:220
 msgid ""
 "The joining of domains is only possible with the Pro and Enterprise "
 "editions of Windows 10."
@@ -841,7 +908,7 @@ msgstr ""
 "Der Domänenbeitritt ist nur mit der Pro und Enterprise-Edition von "
 "Windows 10 möglich."
 
-#: ../../domain-ldap/domain-join.rst:195
+#: ../../domain-ldap/domain-join.rst:223
 msgid ""
 "The control panel can be reached via the search field :guilabel:`Search "
 "the web and Windows`, which can be found in the start bar. Under "
@@ -854,7 +921,7 @@ msgstr ""
 "muss auf :menuselection:`Einstellungen ändern --> Ändern` geklickt "
 "werden."
 
-#: ../../domain-ldap/domain-join.rst:200
+#: ../../domain-ldap/domain-join.rst:228
 msgid ""
 "The :guilabel:`Domain` option field must be ticked and the name of the "
 "domain must be entered in the input field for the domain join. The full "
@@ -875,11 +942,11 @@ msgstr ""
 "Passwort des Domänen Administrator eingetragen werden. Abschließend kann "
 "der Domänenbeitritt mit einem Klick auf :guilabel:`OK` gestartet werden."
 
-#: ../../domain-ldap/domain-join.rst:212
+#: ../../domain-ldap/domain-join.rst:240
 msgid "Windows Server 2012 / 2016 / 2019"
 msgstr "Windows Server 2012 / 2016 / 2019"
 
-#: ../../domain-ldap/domain-join.rst:214
+#: ../../domain-ldap/domain-join.rst:242
 msgid ""
 "The control panel can be reached by moving the cursor to the bottom "
 "right-hand corner of the screen. The *Control Panel* can then be searched"
@@ -893,7 +960,7 @@ msgstr ""
 "Unter :menuselection:`System und Sicherheit --> System` muss auf "
 ":guilabel:`Einstellungen ändern --> Netzwerk ID` geklickt werden."
 
-#: ../../domain-ldap/domain-join.rst:219
+#: ../../domain-ldap/domain-join.rst:247
 msgid ""
 "The *Domain* option field must be ticked and the name of the Samba domain"
 " entered in the input field for the domain join. After clicking on the "
@@ -911,11 +978,11 @@ msgstr ""
 "Abschließend kann der Domänenbeitritt mit einem Klick auf :guilabel:`OK` "
 "gestartet werden."
 
-#: ../../domain-ldap/domain-join.rst:229
+#: ../../domain-ldap/domain-join.rst:257
 msgid "Ubuntu domain joins"
 msgstr "Ubuntu-Domänenbeitritt"
 
-#: ../../domain-ldap/domain-join.rst:231
+#: ../../domain-ldap/domain-join.rst:259
 msgid ""
 "Univention provides the :program:`Univention Domain Join Assistant` to "
 "integrate Ubuntu clients into a UCS domain. Documentation and "
@@ -927,11 +994,11 @@ msgstr ""
 "Dokumentation und Installationshinweise sind auf `Github <github-"
 "univention-domain-join_>`_ zu finden."
 
-#: ../../domain-ldap/domain-join.rst:238
+#: ../../domain-ldap/domain-join.rst:266
 msgid "macOS domain joins"
 msgstr "macOS-Domänenbeitritt"
 
-#: ../../domain-ldap/domain-join.rst:240
+#: ../../domain-ldap/domain-join.rst:268
 msgid ""
 "UCS supports domain joins of macOS clients into a UCS environment using "
 "Samba/AD. This documentation refers to macOS 10.8.2."
@@ -939,7 +1006,7 @@ msgstr ""
 "UCS unterstützt den Domänenbeitritt von macOS-Clients in eine UCS-"
 "Umgebung mit Samba 4. Diese Anleitung bezieht sich auf macOS 10.8.2."
 
-#: ../../domain-ldap/domain-join.rst:243
+#: ../../domain-ldap/domain-join.rst:271
 msgid ""
 "The domain join can be performed using the system preferences menu or the"
 " :command:`dsconfigad` command line tool."
@@ -947,7 +1014,7 @@ msgstr ""
 "Der Domänenbeitritt kann über das Systemeinstellungsmenü oder den "
 "Kommandozeilenbefehl :command:`dsconfigad` erfolgen."
 
-#: ../../domain-ldap/domain-join.rst:246
+#: ../../domain-ldap/domain-join.rst:274
 msgid ""
 "After the domain join it is possible to automatically mount CIFS shares "
 "to subfolders in :file:`/Volumes` when logging in with a domain user. For"
@@ -960,11 +1027,11 @@ msgstr ""
 "muss die folgende Zeile in die Datei :file:`/etc/auto_master` eingefügt "
 "werden:"
 
-#: ../../domain-ldap/domain-join.rst:253
+#: ../../domain-ldap/domain-join.rst:281
 msgid "/Volumes     auto_custom"
 msgstr "/Volumes     auto_custom"
 
-#: ../../domain-ldap/domain-join.rst:256
+#: ../../domain-ldap/domain-join.rst:284
 msgid ""
 "In addition, the file :file:`/etc/auto_custom` needs to be created and "
 "the shares which should be mounted have to be listed in it in the "
@@ -973,11 +1040,11 @@ msgstr ""
 "Außerdem muss die Datei :file:`/etc/auto_custom` angelegt werden und die "
 "einzubindenden Freigaben dort in der folgenden Form aufgeführt werden:"
 
-#: ../../domain-ldap/domain-join.rst:261
+#: ../../domain-ldap/domain-join.rst:289
 msgid "<SUBFOLDER_NAME>    -fstype=smbfs    ://<FQDN>/<SHARE_NAME>"
 msgstr "<SUBFOLDER_NAME>    -fstype=smbfs    ://<FQDN>/<SHARE_NAME>"
 
-#: ../../domain-ldap/domain-join.rst:264
+#: ../../domain-ldap/domain-join.rst:292
 msgid ""
 "Note that the automatically mounted shares are not displayed in the "
 "finder's sidebar."
@@ -985,11 +1052,11 @@ msgstr ""
 "Die eingebundenen Freigaben werden nicht in der Seitenleiste des Finders "
 "angezeigt."
 
-#: ../../domain-ldap/domain-join.rst:269
+#: ../../domain-ldap/domain-join.rst:297
 msgid "Domain join using the system preferences GUI"
 msgstr "Domänenbeitritt über das Systemeinstellungen-Menü"
 
-#: ../../domain-ldap/domain-join.rst:271
+#: ../../domain-ldap/domain-join.rst:299
 msgid ""
 "In the System Preferences via the :guilabel:`Users & Groups` entry, the "
 ":guilabel:`Login menu` can be reached. After authenticating by clicking "
@@ -1004,11 +1071,11 @@ msgstr ""
 "das lokale Administrator-Konto und dessen Passwort angegeben und "
 ":guilabel:`Netzwerk-Account-Server: Verbinden` angeklickt werden."
 
-#: ../../domain-ldap/domain-join.rst:283
+#: ../../domain-ldap/domain-join.rst:311
 msgid "Domain join of a macOS system"
 msgstr "Domänenbeitritt eines macOS-Systems"
 
-#: ../../domain-ldap/domain-join.rst:285
+#: ../../domain-ldap/domain-join.rst:313
 msgid ""
 "In the advanced options section, the option *Create mobile account at "
 "login* should be activated. A mobile account has the advantage that, when"
@@ -1020,7 +1087,7 @@ msgstr ""
 "ohne Verbindung zur Domäne eine Anmeldung mit der Domänenbenutzerkennung "
 "erfolgen kann."
 
-#: ../../domain-ldap/domain-join.rst:290
+#: ../../domain-ldap/domain-join.rst:318
 msgid ""
 "After filling in the domain name in the field *Active Directory Domain* "
 "and the hostname of the macOS client in the field *Computer ID*, the join"
@@ -1034,11 +1101,11 @@ msgstr ""
 "  Für den Domänenbeitritt muss ein Konto aus der Gruppe ``Domain Admins``"
 " verwendet werden, z.B. ``Administrator``."
 
-#: ../../domain-ldap/domain-join.rst:299
+#: ../../domain-ldap/domain-join.rst:327
 msgid "Domain join on the command line"
 msgstr "Domänenbeitritt auf den Kommandozeile"
 
-#: ../../domain-ldap/domain-join.rst:301
+#: ../../domain-ldap/domain-join.rst:329
 msgid ""
 "The domain join can also be performed on the command line using "
 ":command:`dsconfigad`:"
@@ -1046,7 +1113,7 @@ msgstr ""
 "Der Domänenbeitritt kann auch auf der Kommandozeile mit dem Befehl "
 ":command:`dsconfigad` erfolgen:"
 
-#: ../../domain-ldap/domain-join.rst:304
+#: ../../domain-ldap/domain-join.rst:332
 msgid ""
 "$ dsconfigad -a <MAC HOSTNAME> \\\n"
 "  -domain <FQDN> \\\n"
@@ -1060,7 +1127,7 @@ msgstr ""
 "  -u <Domain Administrator> \\\n"
 "  -mobile enable"
 
-#: ../../domain-ldap/domain-join.rst:312
+#: ../../domain-ldap/domain-join.rst:340
 msgid ""
 "Additional configuration options are available through "
 ":command:`dsconfigad -help`."
@@ -3456,4 +3523,3 @@ msgid ""
 msgstr ""
 "Windows-Clients und Windows-Memberserver werden mit dieser Systemrolle "
 "verwaltet."
-
