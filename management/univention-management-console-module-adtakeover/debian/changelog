@@ -1,3 +1,9 @@
+univention-management-console-module-adtakeover (7.0.4-1) unstable; urgency=medium
+
+  * Bug #31771: migrate tabs to spaces
+
+ -- Florian Best <best@univention.de>  Fri, 03 Feb 2023 04:17:40 +0100
+
 univention-management-console-module-adtakeover (7.0.3-1) unstable; urgency=medium
 
   * Bug #54706: drop Python 3 package files

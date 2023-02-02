@@ -1,3 +1,9 @@
+univention-web (4.0.3-1) unstable; urgency=medium
+
+  * Bug #31771: migrate tabs to spaces
+
+ -- Florian Best <best@univention.de>  Fri, 03 Feb 2023 04:17:42 +0100
+
 univention-web (4.0.2-54) unstable; urgency=medium
 
   * Bug #55378: improve cookie banner usability

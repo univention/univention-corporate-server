@@ -1,3 +1,9 @@
+univention-join (12.0.5-1) unstable; urgency=medium
+
+  * Bug #31771: migrate tabs to spaces
+
+ -- Florian Best <best@univention.de>  Fri, 03 Feb 2023 04:17:40 +0100
+
 univention-join (12.0.4-3) unstable; urgency=medium
 
   * Bug #54967: filter out UDM warnings in univention-server-join

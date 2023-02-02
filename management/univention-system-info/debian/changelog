@@ -1,3 +1,9 @@
+univention-system-info (10.0.1-1) unstable; urgency=medium
+
+  * Bug #31771: migrate tabs to spaces
+
+ -- Florian Best <best@univention.de>  Fri, 03 Feb 2023 04:17:42 +0100
+
 univention-system-info (10.0.0-5) unstable; urgency=medium
 
   * Bug #51321: migrate univention-system-info to Python 3

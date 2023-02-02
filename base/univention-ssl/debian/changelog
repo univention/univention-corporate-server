@@ -1,3 +1,9 @@
+univention-ssl (14.0.4-1) unstable; urgency=medium
+
+  * Bug #31771: migrate tabs to spaces
+
+ -- Florian Best <best@univention.de>  Fri, 03 Feb 2023 04:17:36 +0100
+
 univention-ssl (14.0.3-1) unstable; urgency=medium
 
   * Bug #55554: Fix UCR variable typing
