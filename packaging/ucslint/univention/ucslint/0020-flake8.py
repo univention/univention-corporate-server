@@ -471,7 +471,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckBase):
 				fd.write(text)
 
 	def fix(self, path: str | List[str], *args: str, use_ruff: bool = False) -> None:
-		ignore_pathes = self._iter_pathes(path) if isinstance(path, str) else {self.DEFAULT_IGNORE: path}.items():
+		ignore_pathes = self._iter_pathes(path) if isinstance(path, str) else {self.DEFAULT_IGNORE: path}.items()
 		for ignore, pathes in ignore_pathes:
 			if ignore:
 				args.extend(['--ignore', ignore])
