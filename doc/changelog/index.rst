@@ -15,7 +15,7 @@ General
   (:uv:bug:`54273`).
 
 * The package :program:`univention-keycloak` has been added as a dependency to the
-  univention-server-common package. It contains a CLI tool used by the
+  :program:`univention-server-common` package. It contains a CLI tool used by the
   Univention Keycloak app (:uv:bug:`55383`).
 
 * The package :program:`univention-support-info` is now by default installed on every
@@ -1051,7 +1051,7 @@ Software deployment
   specify using the configuration file instead to avoid this problem
   (:uv:bug:`54986`).
 
-* The description of the UCR variables :envar:`repository/online/*` which is displayed
+* The description of the UCR variables :envvar:`repository/online/*` which is displayed
   by using the command :command:`ucr info` was updated to document which variables are
   defined as deprecated and should no longer be used (:uv:bug:`55044`).
 
@@ -1115,7 +1115,7 @@ Mail services
 =============
 
 * Several UCR variable type annotations have been fixed. Most importantly UCRV
-  :envar:`clamav/proxy/http` is now checked for validity as specifying a URL with a
+  :envvar:`clamav/proxy/http` is now checked for validity as specifying a URL with a
   path, query or fragment will break ClamAV (:uv:bug:`54495`).
 
 * An unnecessary LDAP ACL for the LDAP root DN has been removed, which caused a
@@ -1162,8 +1162,8 @@ Printing services
 Nagios
 ======
 
-* The arguments for calling :command:`nmblookup` have been fixed. The flag :option:`-R` has been
-  changed to :option:`--recursion` in prior Samba releases. This repairs the Nagios
+* The arguments for calling :command:`nmblookup` have been fixed. The flag ``-R`` has been
+  changed to ``--recursion`` in prior Samba releases. This repairs the Nagios
   check ``UNIVENTION_NMBD`` (:uv:bug:`54919`).
 
 .. _changelog-service-proxy:
@@ -1222,7 +1222,7 @@ Other services
 Samba
 =====
 
-* The script :command:`univention-samba4-site-tool.py` attempted to parse the option :option:`-A`
+* The script :command:`univention-samba4-site-tool.py` attempted to parse the option ``-A``
   (for providing an authentication file), which is now already handled by the
   samba package in UCS. This has been fixed (:uv:bug:`55082`).
 
@@ -1372,7 +1372,7 @@ Other changes
 * A traceback in :program:`univention-keycloak` was thrown when trying to enable the two
   factor authentication. This has been fixed (:uv:bug:`55519`).
 
-* A new flag :option:`--umc-uid-mapper` has been added to the command line tool :command:`univention-keycloak`.
+* A new flag ``--umc-uid-mapper`` has been added to the command line tool :command:`univention-keycloak`.
   This makes it easier to create SAML service-provider for the UMC
   (:uv:bug:`55431`).
 
@@ -1382,7 +1382,7 @@ Other changes
 * StartTLS is now used as default for LDAP federation in Keycloak
   (:uv:bug:`55488`).
 
-* The flag :option:`--metadata-file` has been added to :command:`univention-keycloak`. This is
+* The flag ``--metadata-file`` has been added to :command:`univention-keycloak`. This is
   necessary to create a UMC SAML client during the join since the metadata
   information can not be fetched via https during the join (:uv:bug:`55570`).
 
@@ -1423,7 +1423,7 @@ Other changes
   (:uv:bug:`55501`).
 
 * The Debian package :program:`python-email-validator` has been back ported and updated
-  to be used in :pkg:`univention-directory-manager-modules` (:uv:bug:`55413`).
+  to be used in :program:`univention-directory-manager-modules` (:uv:bug:`55413`).
 
 * An open file descriptor leak has been fixed, which was triggered by
   :py:func:`gdbm_reorganize()`. This affected :program:`univention-group-membership-cache` taking
