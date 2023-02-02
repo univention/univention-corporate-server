@@ -188,6 +188,7 @@ class Junit(TestFormatInterface):
 		>>> tr = TestResult(tc, te)
 		>>> tr.success()
 		>>> Junit().format(tr)
+
 		"""
 		self.begin_run(result.environment)
 		self.begin_section('')
