@@ -7,7 +7,7 @@ fix: 10.0.4-3A~5.0.0.202208111355
 desc: |
  This update addresses the following issues:
  * The UDM command line client now writes error messages and warnings to
-   stdandard error.
+   standard error.
 bug: [4498]
 erratum: 403
 announced: 2022-09-08
