@@ -466,7 +466,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckBase):
 
             delim = '@!!@'
             for part in parts:
-                text = EXECUTE_TOKEN.sub(lambda x, part=part: delim + part + delim, text, 1)
+                text = EXECUTE_TOKEN.sub(lambda x, part=part: delim + part + delim, text, 1)  # noqa: B023
             text = text.replace(delim, '@!@')
 
             with open(conffile, 'w') as fd:
