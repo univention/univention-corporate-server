@@ -5,10 +5,10 @@ scope: ucs_5.0-0-errata5.0-2
 src: univention-ldap
 fix: 16.0.7-25A~5.0.0.202301021816
 desc: |
- This update addresses the following issues:
- * On UCS Replica Directory Nodes the OpenLDAP ppolicy overlay
-   was not allowed to lock user accounts. The server ACLs have
-   been adjusted to allow this.
+ This update addresses the following issue:
+ * On UCS Replica Directory Nodes the OpenLDAP overlay `ppolicy` was not
+   allowed to lock user accounts. The server ACLs have been adjusted to allow
+   this.
 bug: [55501]
 erratum: 533
 announced: 2023-01-13
