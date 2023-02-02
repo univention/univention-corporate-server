@@ -794,7 +794,7 @@ Univention App Center
 =====================
 
 * Fixed an internal function for parsing the app argument in the CLI
-  univention-app (:uv:bug:`55020`).
+  :program:`univention-app` (:uv:bug:`55020`).
 
 * Apps can now be pinned. A pinned app will no longer be upgraded or removed.
   They need to be unpinned first. :command:`univention-app pin $appid [--revert]`
@@ -823,7 +823,7 @@ Univention App Center
 * The ``primaryGroup`` of ``users/user`` was unexpectedly reset to the default
   primary group when the primary group could not be read in LDAP. This was the
   case when the LDAP replication was not yet done or when the user had no
-  permission to read it. The behaior is now postponed to actual modifications
+  permission to read it. The behavior is now postponed to actual modifications
   of the object (:uv:bug:`42080`).
 
 * The Python backend code to evaluate and apply template defaults has been
@@ -1051,7 +1051,7 @@ Software deployment
   specify using the configuration file instead to avoid this problem
   (:uv:bug:`54986`).
 
-* The description of the UCR variables :enavr:`repository/online/*` which is displayed
+* The description of the UCR variables :envar:`repository/online/*` which is displayed
   by using the command :command:`ucr info` was updated to document which variables are
   defined as deprecated and should no longer be used (:uv:bug:`55044`).
 
@@ -1091,7 +1091,7 @@ SAML
   (:uv:bug:`55331`).
 
 * The unmapping of the LDAP attribute ``simplesamlLDAPattributes`` in the UDM
-  module ``saml/ckported/serviceprovider`` now always unmaps the value in the new mappable
+  module ``saml/serviceprovider`` now always unmaps the value in the new mappable
   format to support a representation in the UDM REST API (:uv:bug:`55348`).
 
 * Add debug trace to the joinscript :file:`91univention-saml.inst` to improve error
@@ -1115,7 +1115,7 @@ Mail services
 =============
 
 * Several UCR variable type annotations have been fixed. Most importantly UCRV
-  :enavr:`clamav/proxy/http` is now checked for validity as specifying a URL with a
+  :envar:`clamav/proxy/http` is now checked for validity as specifying a URL with a
   path, query or fragment will break ClamAV (:uv:bug:`54495`).
 
 * An unnecessary LDAP ACL for the LDAP root DN has been removed, which caused a
@@ -1286,7 +1286,7 @@ Univention S4 Connector
 * The script :file:`server_password_change.d/univention-s4-connector` has been updated
   to generate more useful debug information (:uv:bug:`54273`).
 
-* The function ;py:func:`group_members_sync_to_ucs` used a UCS DN to search in Samba,
+* The function :py:func:`group_members_sync_to_ucs` used a UCS DN to search in Samba,
   which usually doesn't cause issues, as long as the group object is located in
   the same position (:uv:bug:`55131`).
 
@@ -1423,7 +1423,7 @@ Other changes
   (:uv:bug:`55501`).
 
 * The Debian package :program:`python-email-validator` has been back ported and updated
-  to be used in univention-directory-manager-modules (:uv:bug:`55413`).
+  to be used in :pkg:`univention-directory-manager-modules` (:uv:bug:`55413`).
 
 * An open file descriptor leak has been fixed, which was triggered by
   :py:func:`gdbm_reorganize()`. This affected :program:`univention-group-membership-cache` taking
