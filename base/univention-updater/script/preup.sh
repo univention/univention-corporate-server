@@ -224,6 +224,11 @@ for pkg in $preups; do
 	fi
 done
 
+if [ -d "/var/lib/rabbitmq/mnesia/" ]; then
+    systemctl stop rabbitmq-server.service
+    mv /var/lib/rabbitmq/mnesia/ /var/lib/rabbitmq/mnesia-backup/
+fi
+
 echo "** Starting: apt-get -s -o Debug::pkgProblemResolver=yes dist-upgrade" >&3 2>&3
 apt-get -s -o Debug::pkgProblemResolver=yes dist-upgrade >&3 2>&3
 
