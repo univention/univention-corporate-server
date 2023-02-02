@@ -31,7 +31,7 @@
 
 from __future__ import unicode_literals
 
-from typing import Iterable, Optional, Text
+from typing import Iterable, Optional, Text  # noqa: F401
 
 
 class UdmError(Exception):

@@ -36,12 +36,12 @@ Will work for all kinds of UDM modules.
 
 from __future__ import absolute_import, unicode_literals
 
-from typing import Any, Dict, Iterable, Iterator, List, Optional, Text, Tuple, Type, TypeVar, Union
+from typing import Any, Dict, Iterable, Iterator, List, Optional, Text, Tuple, Type, TypeVar, Union  # noqa: F401
 
 import univention.config_registry
 
 from ..base import BaseModuleMetadataTV, BaseModuleTV, BaseObjectProperties, BaseObjectTV, ModuleMeta
-from ..encoders import BaseEncoder, DnPropertyEncoder
+from ..encoders import BaseEncoder, DnPropertyEncoder  # noqa: F401
 
 
 GenericObjectPropertiesTV = TypeVar(

@@ -31,11 +31,11 @@
 
 from __future__ import absolute_import, unicode_literals
 
-from typing import Any, Callable, Dict, Optional, Text, Tuple
+from typing import Any, Callable, Dict, Optional, Text, Tuple  # noqa: F401
 
-import univention.config_registry
+import univention.config_registry  # noqa: F401
 
-from .modules.generic import OriUdmHandlerTV
+from .modules.generic import OriUdmHandlerTV  # noqa: F401
 
 
 class LDAP_connection(object):

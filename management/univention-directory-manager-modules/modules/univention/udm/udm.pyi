@@ -31,10 +31,10 @@
 
 from __future__ import absolute_import, unicode_literals
 
-from typing import Any, Dict, List, Optional, Text, Tuple, Type
+from typing import Any, Dict, List, Optional, Text, Tuple, Type  # noqa: F401
 
-from .base import BaseModuleTV, BaseObjectTV
-from .utils import ConnectionConfig, UDebug as ud
+from .base import BaseModuleTV, BaseObjectTV  # noqa: F401
+from .utils import ConnectionConfig, UDebug as ud  # noqa: F401
 
 
 class UDM(object):

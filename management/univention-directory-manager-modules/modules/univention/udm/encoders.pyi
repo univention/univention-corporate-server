@@ -33,16 +33,16 @@
 
 from __future__ import absolute_import, unicode_literals
 
-import datetime
-from typing import Any, Dict, List, Optional, Text, Type, TypeVar
+import datetime  # noqa: F401
+from typing import Any, Dict, List, Optional, Text, Type, TypeVar  # noqa: F401
 
 import lazy_object_proxy
 
 import univention
 from univention.admin.syntax import sambaGroupType
 
-from .binary_props import Base64BinaryProperty, Base64Bzip2BinaryProperty
-from .udm import UDM
+from .binary_props import Base64BinaryProperty, Base64Bzip2BinaryProperty  # noqa: F401
+from .udm import UDM  # noqa: F401
 
 
 BaseEncoderTV = TypeVar('BaseEncoderTV', bound='univention.udm.encoders.BaseEncoder')

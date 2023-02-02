@@ -32,7 +32,7 @@
 from __future__ import absolute_import, unicode_literals
 
 from collections import namedtuple
-from typing import Any, Text
+from typing import Any, Text  # noqa: F401
 
 
 ConnectionConfig = namedtuple('ConnectionConfig', ['klass', 'method', 'args', 'kwargs'])

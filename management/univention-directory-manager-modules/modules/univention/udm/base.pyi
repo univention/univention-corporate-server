@@ -34,7 +34,7 @@
 from __future__ import absolute_import, unicode_literals
 
 from collections import namedtuple
-from typing import Any, Dict, Iterable, Iterator, List, Optional, Text, TypeVar, Union
+from typing import Any, Dict, Iterable, Iterator, List, Optional, Text, TypeVar, Union  # noqa: F401
 
 from six import with_metaclass
 

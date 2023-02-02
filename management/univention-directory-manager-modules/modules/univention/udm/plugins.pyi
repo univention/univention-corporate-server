@@ -29,8 +29,8 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-from collections import OrderedDict
-from typing import Any, Dict, Iterable, Text, TypeVar
+from collections import OrderedDict  # noqa: F401
+from typing import Any, Dict, Iterable, Text, TypeVar  # noqa: F401
 
 import univention
 

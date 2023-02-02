@@ -34,7 +34,7 @@
 from __future__ import absolute_import, unicode_literals
 
 from collections import namedtuple
-from typing import BinaryIO, Optional, Text, Union
+from typing import BinaryIO, Optional, Text, Union  # noqa: F401
 
 
 FileType = namedtuple('namedtuple', ['mime_type', 'encoding', 'text'])
