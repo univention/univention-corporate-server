@@ -7,7 +7,7 @@ fix: 1.0.2A~5.0.0.202211301053
 desc: |
  This update addresses the following issue:
  * Users can now login with their mailPrimaryAddress as well as their username
-   at keycloak.
+   at Keycloak.
 bug: [55458]
 erratum: 501
 announced: 2022-11-30
