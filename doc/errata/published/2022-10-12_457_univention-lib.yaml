@@ -7,7 +7,7 @@ fix: 9.0.12-2A~5.0.0.202210111745
 desc: |
  This update addresses the following issue:
  * `univention.lib.i18n` now provides a method to set the language of all
-   already instanciated `Translation` instances.
+   already instantiated `Translation` instances.
 bug: [55224]
 erratum: 457
 announced: 2022-10-12
