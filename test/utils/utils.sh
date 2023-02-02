@@ -50,7 +50,6 @@ qemu|kvm) FTP_DOM='knut.univention.de' FTP_SCHEME='http' ;;
 esac
 
 basic_setup_allow_uss () {
-	set_repository_to_testing  # temporarily before we have a UCS 5.0-3 KVM template
 	# force dpkg not to call "sync" during package installations/updates
 	echo force-unsafe-io > /etc/dpkg/dpkg.cfg.d/force-unsafe-io
 	case "$VIRTTECH" in
