@@ -38,6 +38,7 @@ from typing import Any, Dict, List, Optional, Text, Type, TypeVar
 
 import lazy_object_proxy
 
+import univention
 from univention.admin.syntax import sambaGroupType
 
 from .binary_props import Base64BinaryProperty, Base64Bzip2BinaryProperty

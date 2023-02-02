@@ -32,6 +32,8 @@
 from collections import OrderedDict
 from typing import Any, Dict, Iterable, Text, TypeVar
 
+import univention
+
 
 PluginTV = TypeVar('PluginTV', bound='univention.udm.plugins.Plugin')
 
