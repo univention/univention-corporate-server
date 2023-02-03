@@ -7,8 +7,6 @@ jobs = []
 
 
 def setup_cronjob(key):
-    global jobs
-
     if not key.startswith('cron/') or key in ('cron/autostart', 'cron/path', 'cron/ucrdisabled'):
         return
 

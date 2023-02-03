@@ -3,12 +3,12 @@ import json
 locale = configRegistry.get('locale', '')
 
 locales = []
-for l in locale.split(' '):
-    if '.' in l:
-        l = l.split('.')[0]
-    configured_locale = configRegistry.get('ucs/server/languages/%s' % l)
+for loc in locale.split(' '):
+    if '.' in loc:
+        loc = loc.split('.')[0]
+    configured_locale = configRegistry.get('ucs/server/languages/%s' % loc)
     if configured_locale:
-        locales.append((l.replace('_', '-'), configured_locale))
+        locales.append((loc.replace('_', '-'), configured_locale))
 
 print(json.dumps([{'id': id_, 'label': label} for id_, label in locales]))
 @!@
