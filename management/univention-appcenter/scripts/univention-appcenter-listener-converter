@@ -113,10 +113,9 @@ def convert(app, dumped, filename, lo, pos):
     command = dumped['command']
     entry_uuid = dumped['entry_uuid']
     dn = dumped['dn']
-    if command == 'delete':
-        attrs = None
-        options = None
-    else:
+    attrs = None
+    options = None
+    if command != 'delete':
         objs = search_objects(udm_type, lo, pos, entryUUID=entry_uuid)
         if objs:
             if app.listener_udm_version < 2:
