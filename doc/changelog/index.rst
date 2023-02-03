@@ -1131,6 +1131,8 @@ Univention self service
 * The email subject of the self-service password reset email is now
   configurable via the UCR variable :envvar:`umc/self-service/passwordreset/email/subject` (:uv:bug:`53227`).
 
+* It is no longer possible to enumerate Usernames using the password reset response (:uv:bug:`55346`).
+
 .. _changelog-service-mail:
 
 Mail services
@@ -1489,4 +1491,3 @@ Other changes
   added (:uv:bug:`49666`).
 
 * Code to handle old package updates has been removed from many packages (:uv:bug:`42330`).
-

@@ -1,3 +1,10 @@
+univention-self-service (5.0.6-1) unstable; urgency=medium
+
+  * Bug #55346: prevent password-reset based username enumeration by
+    always sending the same response to the frontend
+
+ -- Maximilian Janßen <janssen@univention.de>  Fri, 03 Feb 2023 12:00:00 +0100
+
 univention-self-service (5.0.5-1) unstable; urgency=medium
 
   * Bug #31771: migrate tabs to spaces

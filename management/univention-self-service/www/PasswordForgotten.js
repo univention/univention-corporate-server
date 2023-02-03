@@ -150,22 +150,15 @@ define([
 			this._username.set('disabled', true);
 			this._usernameButton.set('disabled', true);
 
-			if (this._username.isValid()) {
-				var data = {
-					'username': this._username.get('value')
-				};
-				tools.umcpCommand('passwordreset/get_reset_methods', data).then(lang.hitch(this, function(data) {
-					put(this._usernameButton.domNode, '.dijitDisplayNone');
-					this._createRenewOptions(data.result);
-				}), lang.hitch(this, function(){
-					this._usernameButton.set('disabled', false);
-					this._username.set('value', '');
-					this._username.set('disabled', false);
-				}));
-			} else {
+			var data = {};
+			tools.umcpCommand('passwordreset/get_reset_methods', data).then(lang.hitch(this, function(data) {
+				put(this._usernameButton.domNode, '.dijitDisplayNone');
+				this._createRenewOptions(data.result);
+			}), lang.hitch(this, function(){
 				this._usernameButton.set('disabled', false);
+				this._username.set('value', '');
 				this._username.set('disabled', false);
-			}
+			}));
 		},
 
 		/**
@@ -272,9 +265,9 @@ define([
 			var step = put('li.step');
 			var label = put('div.stepLabel', _('You have mail!'));
 			put(step, label);
-			var msg = put('div.soloLabelPane', _('We have send you an e-mail to your alternative e-mail address, that you have provided on the page "Protect Account Access". Please check your mails and follow the link to renew your password.'));
+			var msg = put('div.soloLabelPane', _('If you entered the right account details we have send you an e-mail to your alternative e-mail address, that you have provided on the page "Protect Account Access". Please check your mails and follow the link to renew your password.'));
 			put(step, msg);
-			var hint = put('div.soloLabelPane', _('If you did not received an e-mail please check your spam directory or use this link to go back to step 2.'));
+			var hint = put('div.soloLabelPane', _('If you did not received an e-mail please check if you entered the right username, check your spam directory or use this link to go back to step 2.'));
 			put(step, hint);
 			put(this.steps, step);
 		},

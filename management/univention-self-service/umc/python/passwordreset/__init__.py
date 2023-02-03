@@ -45,6 +45,7 @@ from email.mime.nonmultipart import MIMENonMultipart
 from email.utils import formatdate
 from functools import wraps
 from subprocess import PIPE, STDOUT, Popen
+from typing import Any, Dict, List
 
 import atexit
 import pylibmc
@@ -222,10 +223,11 @@ class NoMethodsAvailable(UMC_Error):
         super(NoMethodsAvailable, self).__init__(_('No contact information is stored for this user. Resetting the password is not possible.'))
 
 
-class MissingContactInformation(UMC_Error):
+class TokenSendMessage(UMC_Error):
+    status = 200
 
     def __init__(self):
-        super(MissingContactInformation, self).__init__(_("No address has been stored, where a password recovery token could be sent to."))
+        super().__init__(_("A message containing a token has been send to the user (if the user exists and is allowed to use this service)."))
 
 
 class Instance(Base):
@@ -689,7 +691,6 @@ class Instance(Base):
                 'verify_email',
                 new_user['PasswordRecoveryEmail'],
                 user_info,
-                raise_on_success=False,
             )
         except Exception:
             MODULE.error('could not send message: %s' % (traceback.format_exc(),))
@@ -749,7 +750,7 @@ class Instance(Base):
             if not email:
                 return invalid_information
         user_info = self._extract_user_properties(user._orig_udm_object)
-        self.send_message(username, 'verify_email', email, user_info, raise_on_success=False)
+        self.send_message(username, 'verify_email', email, user_info)
         return {
             'success': True,
             'data': {
@@ -798,7 +799,7 @@ class Instance(Base):
             raise UMC_Error(_("Unknown recovery method '{}'.").format(method))
 
         if self.is_blacklisted(username, 'passwordreset'):
-            raise MissingContactInformation()
+            raise TokenSendMessage()
 
         # check if the user has the required attribute set
         user = self.get_udm_user(username=username)
@@ -807,10 +808,9 @@ class Instance(Base):
         if len(user[plugin.udm_property]) > 0:
             # found contact info
             user_info = self._extract_user_properties(user)
-            self.send_message(username, method, user[plugin.udm_property], user_info, raise_on_success=True)
+            self.send_message(username, method, user[plugin.udm_property], user_info)
 
-        # no contact info
-        raise MissingContactInformation()
+        raise TokenSendMessage()
 
     @forward_to_master
     @prevent_denial_of_service
@@ -981,25 +981,17 @@ class Instance(Base):
 
     @forward_to_master
     @prevent_denial_of_service
-    @sanitize(username=StringSanitizer(required=True, minimum=1))
     @simple_response
-    def get_reset_methods(self, username):
+    def get_reset_methods(self) -> List[Dict[str, Any]]:
         if ucr.is_false('umc/self-service/passwordreset/backend/enabled'):
             msg = _('The password reset was disabled via the Univention Configuration Registry.')
             MODULE.error(f'get_reset_methods(): {msg}')
             raise UMC_Error(msg)
-        if self.is_blacklisted(username, 'passwordreset'):
-            raise NoMethodsAvailable()
 
-        user = self.get_udm_user(username=username)
-        if not self.password_reset_plugins:
-            raise NoMethodsAvailable()
-
-        # return list of method names, for all LDAP attribs user has data
         reset_methods = [{
             "id": p.send_method(),
             "label": p.send_method_label(),
-        } for p in self.password_reset_plugins.values() if user[p.udm_property]]
+        } for p in self.password_reset_plugins.values()]
         if not reset_methods:
             raise NoMethodsAvailable()
         return reset_methods
@@ -1011,7 +1003,7 @@ class Instance(Base):
         rand = random.SystemRandom()
         return ''.join(rand.choice(chars) for _ in range(length))
 
-    def send_message(self, username, method, address, user_properties, raise_on_success=True):
+    def send_message(self, username, method, address, user_properties):
         plugin = self._get_send_plugin(method)
         try:
             token_from_db = self.db.get_one(username=username)
@@ -1037,10 +1029,7 @@ class Instance(Base):
                 method=method, username=username))
             self.db.delete_tokens(username=username)
             raise
-        if raise_on_success:
-            raise UMC_Error(_("Successfully send token.").format(method), status=200)
-        else:
-            return True
+        return True
 
     def _get_send_plugin(self, method):
         try:
@@ -1111,7 +1100,7 @@ class Instance(Base):
                     self._notify_about_email_change(user['username'], old_email, email)
                 if email is not None and email.lower() != old_email.lower():
                     user_info = self._extract_user_properties(user)
-                    self.send_message(user['username'], 'verify_email', email, user_info, raise_on_success=False)
+                    self.send_message(user['username'], 'verify_email', email, user_info)
                     verification_email_send = True
             return {
                 'verificationEmailSend': verification_email_send,
