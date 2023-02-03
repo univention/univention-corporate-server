@@ -41,7 +41,7 @@ import subprocess
 from typing import Dict, List
 
 import univention.debug as ud
-from univention.lib.ldap_extension import ldap_extension
+from univention.lib import ldap_extension
 
 import listener
 
