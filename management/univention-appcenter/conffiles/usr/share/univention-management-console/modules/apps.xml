@@ -5,6 +5,7 @@
 	-->
 	<module id="apps" icon="apps-module" priority="-100" version="1.0" python="3">
 @!@
+# flake8: noqa
 # make sure locale is always original english
 from univention.appcenter.app_cache import Apps
 import locale
@@ -17,7 +18,7 @@ print('''
 			<name></name>
 			<description></description>
 		</flavor>
-''')
+''')  # noqa: E101
 try:
     from html import escape
 except ImportError:
@@ -32,7 +33,7 @@ for app in apps:
 			<categories>
 				<category name="apps"/>
 			</categories>
-		</flavor>'''.format(
+		</flavor>'''.format(  # noqa: E101
         id=escape(app.id or '', True),
         name=escape(app.name or ''),
         description=escape(app.description or ''),

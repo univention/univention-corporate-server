@@ -44,6 +44,7 @@ if [ ! -f /var/lib/amavis/.spamassassin/bayes_toks ]; then
 fi
 
 @!@
+# flake8: noqa
 spamFolder = configRegistry.get("mail/dovecot/folder/spam") or "Spam"
 hamFolder = configRegistry.get("mail/dovecot/folder/ham") or "Ham"
 

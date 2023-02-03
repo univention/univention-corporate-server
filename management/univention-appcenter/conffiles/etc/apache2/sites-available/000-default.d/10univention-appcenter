@@ -1,4 +1,5 @@
 @!@
+# flake8: noqa
 from univention.appcenter.app_cache import Apps
 from univention.appcenter.utils import app_ports
 
@@ -13,7 +14,7 @@ for app_id, container_port, host_port in app_ports():
             print('''
 	ProxyPass %(web_interface)s %(scheme)s://127.0.0.1:%(web_port)s%(web_interface)s retry=0
 	ProxyPassReverse %(web_interface)s %(scheme)s://127.0.0.1:%(web_port)s%(web_interface)s
-''' % {'web_interface': web_interface, 'web_port': host_port, 'scheme': scheme})
+''' % {'web_interface': web_interface, 'web_port': host_port, 'scheme': scheme})  # noqa: E101
         else:
             # not relevant for mod_proxy
             continue

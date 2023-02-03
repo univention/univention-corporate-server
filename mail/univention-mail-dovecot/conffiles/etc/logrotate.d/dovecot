@@ -1,6 +1,7 @@
 @%@UCRWARNING=# @%@
 
 @!@
+# flake8: noqa
 rotate_conf = """	daily
 	rotate 12
 	create 640 root adm
@@ -17,7 +18,7 @@ regfile_conf = """
 	postrotate
 		doveadm log reopen
 	endscript
-}"""
+}"""  # noqa: E101
 
 log_path = configRegistry.get("mail/dovecot/logging/log_path", "syslog")
 syslog_facility = configRegistry.get("mail/dovecot/logging/syslog_facility", "local5")

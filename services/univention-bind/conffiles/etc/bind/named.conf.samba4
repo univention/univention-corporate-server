@@ -69,8 +69,11 @@ else:
 include "/etc/bind/local-predlz.conf.samba4";
 
 @!@
+# flake8: noqa
 import platform
 import copy
+
+
 format_dict = copy.deepcopy(configRegistry)
 if '32bit' in platform.architecture()[0]:
     format_dict['dns/dlz/module'] = '/usr/lib/i386-linux-gnu/samba/bind9/dlz_bind9_11.so'
@@ -97,7 +100,7 @@ print('''dlz "samba4.zone" {
 			check-names ignore;
 		};
 	";
-};''' % format_dict)
+};''' % format_dict)  # noqa: E101
 @!@
 
 include "/etc/bind/local.conf.samba4";

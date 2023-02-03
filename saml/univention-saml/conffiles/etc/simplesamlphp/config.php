@@ -685,6 +685,7 @@ print("\t'store.type' => '%s'," % (configRegistry.get('saml/idp/session-type', '
 			array('hostname' => 'unix:///var/run/univention-saml/memcached.socket'),
 		),
 @!@
+# flake8: noqa
 fqdn = '%(hostname)s.%(domainname)s' % configRegistry
 for key, server in configRegistry.items():
     if not key.startswith('ucs/server/saml-idp-server/') or server == fqdn:
@@ -693,7 +694,7 @@ for key, server in configRegistry.items():
 		array(
 			array('hostname' => 'unix:///var/run/univention-saml/%s.socket'),
 		),
-''' % (server,))
+''' % (server,))  # noqa: E101
 @!@
 	),
 

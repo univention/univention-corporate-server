@@ -1,9 +1,10 @@
 @!@
+# flake8: noqa
 print('; ---------------------<smb service configuration>-----------------------')
 if configRegistry.get('samba4/service/smb', 's3fs') == 's3fs':
     print('''
 	debug hirestimestamp = yes
-	debug pid = yes''')
+	debug pid = yes''')  # noqa: E101
 
     dcerpc_endpoints = []
     if configRegistry.is_false('samba4/dcerpc/endpoint/drsuapi'):
@@ -50,7 +51,7 @@ elif configRegistry.get('samba4/service/smb', 'smbd') == 'smbd':
 	rpc_daemon:epmd = disabled
 	rpc_daemon:lsasd = disabled
 
-	rpc_server:tcpip = no''')
+	rpc_server:tcpip = no''')  # noqa: E101
 
 elif configRegistry.get('samba4/service/smb', 'smbd') == 's4' and configRegistry.get('samba4/ntacl/backend', 'native') == 'tdb':
     print('\tposix:eadb = /var/lib/samba/private/samba4_eadb.tdb')

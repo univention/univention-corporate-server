@@ -1,12 +1,13 @@
 
 @!@
+# flake8: noqa
 if configRegistry.is_true('saml/idp/negotiate'):
     print('''
 $config['univention-negotiate'] = array(
 		'negotiate:Negotiate',
 		'keytab' => '/etc/simplesamlphp.keytab',
 		'fallback' => 'univention-ldap',
-	''')
+	''')  # noqa: E101
     print("	'attributes' => array(%s)," % configRegistry.get('saml/idp/ldap/get_attributes', 'uid'))
     from univention.lib.misc import getLDAPURIs
     hostname = getLDAPURIs()

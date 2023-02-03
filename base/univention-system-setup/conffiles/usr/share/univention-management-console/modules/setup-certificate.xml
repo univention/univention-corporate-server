@@ -4,11 +4,12 @@
 @%@UCRWARNING=# @%@
 	-->
 @!@
+# flake8: noqa
 if configRegistry.get('server/role', '') != 'domaincontroller_master':
     print('''
 	<module id="setup">
 		<flavor id="certificate" deactivated="yes"/>
 	</module>
-	''')
+	''')  # noqa: E101
 @!@
 </umc>

@@ -1,6 +1,7 @@
 @%@UCRWARNING=# @%@
 
 @!@
+# flake8: noqa
 import time
 import math
 

@@ -1,6 +1,7 @@
 @%@UCRWARNING=# @%@
 
 @!@
+# flake8: noqa
 from univention.lib.ucrLogrotate import getLogrotateConfig
 from re import findall
 
@@ -50,5 +51,5 @@ for (_cat, (paths, settings)) in sorted(FILES.items(), key=lambda x: str(x[0])):
 	postrotate
 		/usr/lib/rsyslog/rsyslog-rotate
 	endscript
-}""")
+}""")  # noqa: E101
 @!@
