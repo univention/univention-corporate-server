@@ -62,7 +62,11 @@ repos:
   - repo: https://github.com/charliermarsh/ruff-pre-commit
     rev: 'v0.0.240'
     hooks:
-    - id: ruff
+      - id: ruff
+        exclude: "^oidc/python-keycloak/\
+                  |^services/univention-ldb-modules/buildtools/\
+                  |^packaging/ucslint/testframework/\
+                 "
   - repo: https://github.com/pycqa/isort
     rev: 5.11.5
     hooks:
