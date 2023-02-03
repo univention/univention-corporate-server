@@ -28,7 +28,7 @@ General
   generate more useful debug information (:uv:bug:`54273`).
 
 * Instead of an exception now a clear error message is displayed in case the
-  admin diary frontend is installed on a different system than the admin diary
+  admin diary front end is installed on a different system than the admin diary
   server and the database connection is not correctly configured
   (:uv:bug:`49016`).
 
@@ -659,7 +659,7 @@ Univention Configuration Registry
   invalid values to be set (:uv:bug:`54495`).
 
 * A new variable type ``url_http`` was added in order to support validation of
-  http/https URL strings (:uv:bug:`55044`).
+  HTTP/HTTPS URL strings (:uv:bug:`55044`).
 
 * Fixed printing wrong UCR layer name (:uv:bug:`55174`).
 
@@ -787,7 +787,7 @@ Univention Management Console server
   (:uv:bug:`55229`).
 
 * The SAML identity cache has been changed to an in-memory cache. This can be
-  changed to the filesystem database by setting the UCR variable
+  changed to the file system database by setting the UCR variable
   :envvar:`umc/saml/in-memory-identity-cache` to ``false``. This is done
   automatically for servers with enabled multiprocessing (:uv:bug:`55424`).
 
@@ -888,7 +888,7 @@ Univention App Center
 * The global uniqueness of ``mailAlternativeAdress`` with ``mailPrimaryAddress`` is
   now configurable via the UCR variable :envvar:`directory/manager/mail-address/uniqueness` (:uv:bug:`54596`).
 
-* The performance and debuggability of the UDM command line client has been
+* The performance and ability to debug the UDM command line client has been
   improved (:uv:bug:`33224`).
 
 * The UDM command line client now writes error messages and warnings to
@@ -1318,7 +1318,7 @@ Univention Active Directory Connection
 * The password history synchronization now works when the policy ``pwdhistory_length``
   is not defined (:uv:bug:`55232`).
 
-* The mapping now evaluates UCR variables with respect to the configbasename.
+* The mapping now evaluates UCR variables with respect to the *configbasename*.
   Therefore it is now possible again to create additional AD connector
   instances via :command:`prepare-new-instance`, which was broken since UCS 5.0-0
   (:uv:bug:`54780`).
@@ -1452,11 +1452,11 @@ Other changes
   leftover Nagios reference has been removed in in :command:`check_univention_nfsstatus`
   (:uv:bug:`54968`).
 
-* Unassigning alerts from computer objects has been fixed (:uv:bug:`54985`).
+* Removing alerts from computer objects has been fixed (:uv:bug:`54985`).
 
-* LDAP ACL's allowing DCs and Memberservers to change alerts have been added.
+* LDAP ACL's allowing DCs and member servers to change alerts have been added.
   The alert descriptions have been improved. The authentication when trying to
-  reload Prometheus alerts has been fixed. Query expressions are now templated
+  reload Prometheus alerts has been fixed. Query expressions now use templates
   and restrict the metrics to the assigned hostnames (:uv:bug:`54947`).
 
 * The alert expressions for checking the SSL validity and the swap usage have
