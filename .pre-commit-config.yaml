@@ -2,6 +2,22 @@
 # See https://pre-commit.com/hooks.html for more hooks
 exclude: "^packaging/ucslint/testframework/"
 repos:
+  - repo: https://git.knut.univention.de/univention/dist/pre-commit-ucr
+    rev: '0.0.1'
+    hooks:
+      - id: ucr-python-lint
+        alias: "ucr-flake8"
+        args: ["--tool", "flake8", "--select", "E1,E2"]
+      - id: ucr-python-lint
+        alias: "ucr-ruff"
+      - id: ucr-python-lint
+        alias: "ucr-autopep8"
+        stages: [ manual ]
+        args: ["--tool", "autopep8", "--fix", "--select", "E1,E2"]
+      - id: ucr-python-lint
+        alias: "ucr-ruff"
+        stages: [ manual ]
+        args: ["--fix"]
   - repo: https://github.com/pre-commit/pre-commit-hooks
     rev: v4.1.0
     hooks:
