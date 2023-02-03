@@ -650,6 +650,7 @@ def send_mail(
     password: [optional] authenticate against mailserver if username and password are set
     debuglevel: [optional] SMTP client debug level (default: 1)
     messageid: [optional] message id (defaults to a random value)
+    ssl: [optional] send message with SSL
     """
     # default values
     m_sender = 'tarpit@example.com'

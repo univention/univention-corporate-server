@@ -58,9 +58,6 @@ _Types = Union[Type[object], Sequence[Type[object]]]
 
 
 class TypeHint(object):
-    """
-
-    """
     _python_types = object  # type: _Types
 
     @property

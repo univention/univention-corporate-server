@@ -308,7 +308,7 @@ class Update(UniventionAppAction):
 
     def _extract_archive(self, app_cache):
         # type: (AppCenterCache) -> None
-        """`tar xf` in "Python" """
+        """`tar xf` in 'Python'"""
         cache_dir = app_cache.get_cache_dir()
         self.debug('Extracting archive in %s' % cache_dir)
         self._purge_old_cache(cache_dir)
