@@ -310,8 +310,8 @@ udm settings/extended_attribute create "$@" \
 	--position "cn=custom attributes,cn=univention,$ldap_base" \
 	--set name="serviceprovider" \
 	--set CLIName="serviceprovider" \
-	--set module="users/user" \
-	--set module="settings/usertemplate" \
+	--append module="users/user" \
+	--append module="settings/usertemplate" \
 	--set tabName="Account" \
 	--append translationTabName='"de_DE" "Konto"' \
 	--append translationTabName='"fr_FR" "Compte"' \
