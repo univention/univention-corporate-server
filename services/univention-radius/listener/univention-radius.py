@@ -44,47 +44,46 @@ from univention.listener.handler import ListenerModuleHandler
 
 
 class AppListener(ListenerModuleHandler):
-	run_update = False
+    run_update = False
 
-	class Configuration(ListenerModuleHandler.Configuration):
-		description = 'Listener module for univention-radius'
-		ldap_filter = '(objectClass=univentionHost)'
+    class Configuration(ListenerModuleHandler.Configuration):
+        description = 'Listener module for univention-radius'
+        ldap_filter = '(objectClass=univentionHost)'
 
-	def create(self, dn, new):
-		# type: (str, Dict[str, List[bytes]]) -> None
-		if b'univentionRadiusClient' in new.get('objectClass', []):
-			self.run_update = True
-			self.logger.info('config update triggered')
+    def create(self, dn, new):
+        # type: (str, Dict[str, List[bytes]]) -> None
+        if b'univentionRadiusClient' in new.get('objectClass', []):
+            self.run_update = True
+            self.logger.info('config update triggered')
 
-	def modify(self, dn, old, new, old_dn):
-		# type: (str, Dict[str, List[bytes]], Dict[str, List[bytes]], Optional[str]) -> None
-		# only update the file, if relevant
-		if old_dn:
-			self.run_update = True
-			self.logger.info('config update triggered (move)')
-		elif b'univentionRadiusClient' in old.get('objectClass', []) or b'univentionRadiusClient' in new.get('objectClass', []):
-			if (
-				set(old.get('univentionRadiusClientSharedSecret', [])) != set(new.get('univentionRadiusClientSharedSecret', [])) or
-				set(old.get('univentionRadiusClientType', [])) != set(new.get('univentionRadiusClientType', [])) or
-				set(old.get('univentionRadiusClientVirtualServer', [])) != set(new.get('univentionRadiusClientVirtualServer', [])) or
-				set(old.get('aRecord', [])) != set(new.get('aRecord', [])) or
-				set(old.get('aAAARecord', [])) != set(new.get('aAAARecord', []))
-			):
-				self.run_update = True
-				self.logger.info('config update triggered')
+    def modify(self, dn, old, new, old_dn):
+        # type: (str, Dict[str, List[bytes]], Dict[str, List[bytes]], Optional[str]) -> None
+        # only update the file, if relevant
+        if old_dn:
+            self.run_update = True
+            self.logger.info('config update triggered (move)')
+        elif (b'univentionRadiusClient' in old.get('objectClass', []) or b'univentionRadiusClient' in new.get('objectClass', [])) and (
+            set(old.get('univentionRadiusClientSharedSecret', [])) != set(new.get('univentionRadiusClientSharedSecret', []))
+            or set(old.get('univentionRadiusClientType', [])) != set(new.get('univentionRadiusClientType', []))
+            or set(old.get('univentionRadiusClientVirtualServer', [])) != set(new.get('univentionRadiusClientVirtualServer', []))
+            or set(old.get('aRecord', [])) != set(new.get('aRecord', []))
+            or set(old.get('aAAARecord', [])) != set(new.get('aAAARecord', []))
+        ):
+            self.run_update = True
+            self.logger.info('config update triggered')
 
-	def remove(self, dn, old):
-		# type: (str, Dict[str, List[bytes]]) -> None
-		if b'univentionRadiusClient' in old.get('objectClass', []):
-			self.run_update = True
-			self.logger.info('config update triggered')
+    def remove(self, dn, old):
+        # type: (str, Dict[str, List[bytes]]) -> None
+        if b'univentionRadiusClient' in old.get('objectClass', []):
+            self.run_update = True
+            self.logger.info('config update triggered')
 
-	def post_run(self):
-		# type: () -> None
-		if self.run_update:
-			self.run_update = False
-			with self.as_root():
-				self.logger.info('Updating clients.univention.conf')
-				subprocess.call(['/usr/sbin/univention-radius-update-clients-conf'])
-				self.logger.info('Restarting freeradius')
-				subprocess.call(['systemctl', 'try-restart', 'freeradius'])
+    def post_run(self):
+        # type: () -> None
+        if self.run_update:
+            self.run_update = False
+            with self.as_root():
+                self.logger.info('Updating clients.univention.conf')
+                subprocess.call(['/usr/sbin/univention-radius-update-clients-conf'])
+                self.logger.info('Restarting freeradius')
+                subprocess.call(['systemctl', 'try-restart', 'freeradius'])

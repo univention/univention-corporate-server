@@ -33,27 +33,25 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
+import univention.admin.localization
 import univention.admin.modules
 import univention.admin.syntax
 
-import univention.admin.localization
 
 translation = univention.admin.localization.translation('univention.admin.handlers.saml-serviceprovider')
 _ = translation.translate
 
 
 class samlserviceprovider(univention.admin.syntax.UDM_Objects):
-	udm_modules = ('saml/serviceprovider', )
-	regex = None
+    udm_modules = ('saml/serviceprovider', )
+    regex = None
 
 
 class attributeMapping(univention.admin.syntax.complex):
-	"""
-	Syntax for key-value-pairs separated by `=` where the value is optional.
+    """Syntax for key-value-pairs separated by `=` where the value is optional."""
 
-	"""
-	delimiter = ' = '
-	subsyntaxes = [(_('LDAP Attribute Name'), univention.admin.syntax.string), (_('Service Attribute Name'), univention.admin.syntax.string)]
-	subsyntax_key_value = True
-	all_required = 0
-	min_elements = 1
+    delimiter = ' = '
+    subsyntaxes = [(_('LDAP Attribute Name'), univention.admin.syntax.string), (_('Service Attribute Name'), univention.admin.syntax.string)]
+    subsyntax_key_value = True
+    all_required = 0
+    min_elements = 1

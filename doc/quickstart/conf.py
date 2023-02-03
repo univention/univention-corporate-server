@@ -13,12 +13,14 @@
 import os
 import sys
 from datetime import date
+
+
 sys.path.append(os.path.abspath("./_ext"))
 
 # -- Project information -----------------------------------------------------
 
 project = 'Quick start guide for Univention Corporate Server'
-copyright = '2021-{}, Univention GmbH'.format(date.today().year)
+copyright = f'2021-{date.today().year}, Univention GmbH'
 author = ''
 
 # The full version, including alpha/beta/rc tags
@@ -124,7 +126,7 @@ def fix_title_translation(app, config):
         config.html_title = config.project
         config.tokenizer_lang = "de_DE"
         config.intersphinx_mapping["uv-manual"] = (
-            "https://docs.software-univention.de/manual/5.0/de", None
+            "https://docs.software-univention.de/manual/5.0/de", None,
         )
 
 

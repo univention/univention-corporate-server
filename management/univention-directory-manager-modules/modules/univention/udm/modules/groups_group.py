@@ -29,45 +29,46 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-"""
-Module and object specific for "groups/group" UDM module.
-"""
+"""Module and object specific for "groups/group" UDM module."""
 
 from __future__ import absolute_import, unicode_literals
+
 from ..encoders import (
-	dn_list_property_encoder_for, SambaGroupTypePropertyEncoder, StringIntBooleanPropertyEncoder,
-	StringIntPropertyEncoder
+    SambaGroupTypePropertyEncoder, StringIntBooleanPropertyEncoder, StringIntPropertyEncoder,
+    dn_list_property_encoder_for,
 )
 from .generic import GenericModule, GenericObject, GenericObjectProperties
 
 
 class GroupsGroupObjectProperties(GenericObjectProperties):
-	"""groups/group UDM properties."""
+    """groups/group UDM properties."""
 
-	_encoders = {
-		'UVMMGroup': StringIntBooleanPropertyEncoder,
-		'allowedEmailGroups': dn_list_property_encoder_for('groups/group'),
-		'allowedEmailUsers': dn_list_property_encoder_for('users/user'),
-		'gidNumber': StringIntPropertyEncoder,
-		'hosts': dn_list_property_encoder_for('auto'),  # can be different types of computer/* objects
-		'memberOf': dn_list_property_encoder_for('groups/group'),
-		'nestedGroup': dn_list_property_encoder_for('groups/group'),
-		'sambaGroupType': SambaGroupTypePropertyEncoder,
-		'sambaRID': StringIntPropertyEncoder,
-		'users': dn_list_property_encoder_for('users/user'),
-	}
+    _encoders = {
+        'UVMMGroup': StringIntBooleanPropertyEncoder,
+        'allowedEmailGroups': dn_list_property_encoder_for('groups/group'),
+        'allowedEmailUsers': dn_list_property_encoder_for('users/user'),
+        'gidNumber': StringIntPropertyEncoder,
+        'hosts': dn_list_property_encoder_for('auto'),  # can be different types of computer/* objects
+        'memberOf': dn_list_property_encoder_for('groups/group'),
+        'nestedGroup': dn_list_property_encoder_for('groups/group'),
+        'sambaGroupType': SambaGroupTypePropertyEncoder,
+        'sambaRID': StringIntPropertyEncoder,
+        'users': dn_list_property_encoder_for('users/user'),
+    }
 
 
 class GroupsGroupObject(GenericObject):
-	"""Better representation of groups/group properties."""
-	udm_prop_class = GroupsGroupObjectProperties
+    """Better representation of groups/group properties."""
+
+    udm_prop_class = GroupsGroupObjectProperties
 
 
 class GroupsGroupModule(GenericModule):
-	"""GroupsGroupObject factory"""
-	_udm_object_class = GroupsGroupObject
+    """GroupsGroupObject factory"""
 
-	class Meta:
-		supported_api_versions = [1, 2, 3]
-		suitable_for = ['groups/group']
-		default_positions_property = 'groups'
+    _udm_object_class = GroupsGroupObject
+
+    class Meta:
+        supported_api_versions = [1, 2, 3]
+        suitable_for = ['groups/group']
+        default_positions_property = 'groups'

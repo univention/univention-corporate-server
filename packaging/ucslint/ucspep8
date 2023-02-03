@@ -38,6 +38,7 @@ from importlib import import_module
 
 import univention.ucslint.base as uub
 
+
 if __name__ == '__main__':
-	module = import_module('.0020-flake8', uub.__package__)
-	sys.exit(module.UniventionPackageCheck.main())  # type: ignore
+    module = import_module('.0020-flake8', uub.__package__)
+    sys.exit(module.UniventionPackageCheck.main())  # type: ignore

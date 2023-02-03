@@ -45,73 +45,73 @@ from univention.management.console.modules.setup.setup_script import AptScript, 
 
 
 class RoleScript(AptScript):
-	name = _('Configuring server role')
-	brutal_apt_options = True
+    name = _('Configuring server role')
+    brutal_apt_options = True
 
-	def inner_run(self):
-		# preparation install autoremove
-		self.steps(3 * 100)
-		self.message(_('Preparing package lists...'))
+    def inner_run(self):
+        # preparation install autoremove
+        self.steps(3 * 100)
+        self.message(_('Preparing package lists...'))
 
-		if not self.wanted_server_role or self.wanted_server_role == self.current_server_role:
-			# nothing to do
-			return True
+        if not self.wanted_server_role or self.wanted_server_role == self.current_server_role:
+            # nothing to do
+            return True
 
-		# Copy local files into the local cache
-		#  https://forge.univention.org/bugzilla/show_bug.cgi?id=27935
-		#  https://forge.univention.org/bugzilla/show_bug.cgi?id=38393
-		for filename in glob.glob('/var/cache/univention-system-setup/packages/*.deb'):
-			try:
-				basename = os.path.basename(filename)
-				os.link(filename, os.path.join('/var/cache/apt/archives/', basename))
-			except OSError as e:
-				try:
-					print('Error creating hardlink to %s: %s' % (filename, e))
-					shutil.copy(filename, '/var/cache/apt/archives/')
-				except (OSError, IOError, shutil.Error) as e:
-					print('Error copying %s: %s' % (filename, e))
-		self.reopen_cache()
+        # Copy local files into the local cache
+        #  https://forge.univention.org/bugzilla/show_bug.cgi?id=27935
+        #  https://forge.univention.org/bugzilla/show_bug.cgi?id=38393
+        for filename in glob.glob('/var/cache/univention-system-setup/packages/*.deb'):
+            try:
+                basename = os.path.basename(filename)
+                os.link(filename, os.path.join('/var/cache/apt/archives/', basename))
+            except OSError as e:
+                try:
+                    print('Error creating hardlink to %s: %s' % (filename, e))
+                    shutil.copy(filename, '/var/cache/apt/archives/')
+                except (OSError, IOError, shutil.Error) as e:
+                    print('Error copying %s: %s' % (filename, e))
+        self.reopen_cache()
 
-		current_server_role_package = self.get_package_for_role(self.current_server_role) if self.current_server_role else None
-		wanted_server_role_package = self.get_package_for_role(self.wanted_server_role)
-		if wanted_server_role_package is None:
-			return False
-		self.finish_task()
+        current_server_role_package = self.get_package_for_role(self.current_server_role) if self.current_server_role else None
+        wanted_server_role_package = self.get_package_for_role(self.wanted_server_role)
+        if wanted_server_role_package is None:
+            return False
+        self.finish_task()
 
-		if not self.update():
-			return False
+        if not self.update():
+            return False
 
-		self.ucr.set('server/role', self.wanted_server_role)
-		self.ucr.commit()
+        self.ucr.set('server/role', self.wanted_server_role)
+        self.ucr.commit()
 
-		if current_server_role_package:
-			self.uninstall(current_server_role_package)
-		success = self.install(wanted_server_role_package)
+        if current_server_role_package:
+            self.uninstall(current_server_role_package)
+        success = self.install(wanted_server_role_package)
 
-		self.finish_task()
+        self.finish_task()
 
-		# mark these packages as manually installed
-		self.mark_auto(False, 'univention-pam', 'univention-management-console')
-		self.reopen_cache()
+        # mark these packages as manually installed
+        self.mark_auto(False, 'univention-pam', 'univention-management-console')
+        self.reopen_cache()
 
-		# apt-get autoremove
-		self.autoremove()
+        # apt-get autoremove
+        self.autoremove()
 
-		if self.wanted_server_role == 'memberserver':
-			# reinstall listener on Managed Node because the ldap-server package
-			# will remove too much:
-			# https://forge.univention.org/bugzilla/show_bug.cgi?id=26269
-			self.install('univention-directory-listener')
+        if self.wanted_server_role == 'memberserver':
+            # reinstall listener on Managed Node because the ldap-server package
+            # will remove too much:
+            # https://forge.univention.org/bugzilla/show_bug.cgi?id=26269
+            self.install('univention-directory-listener')
 
-		self.finish_task()
+        self.finish_task()
 
-		# Cleanup
-		# rm -f /etc/apt/sources.list/05univention-system-setup.list
-		# rm -Rf /var/cache/univention-system-setup/packages
+        # Cleanup
+        # rm -f /etc/apt/sources.list/05univention-system-setup.list
+        # rm -Rf /var/cache/univention-system-setup/packages
 
-		return success
+        return success
 
 
 if __name__ == '__main__':
-	script = RoleScript()
-	sys.exit(int(not main(script)))
+    script = RoleScript()
+    sys.exit(int(not main(script)))

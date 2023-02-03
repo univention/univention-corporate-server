@@ -42,26 +42,26 @@ from univention.monitoring import Alert
 
 class NSCD(Alert):
 
-	def write_metrics(self):
-		rc, output = self.exec_command(['/usr/lib/nagios/plugins/check_procs', '-w', '1:1', '-c', '1:', '-C', 'nscd'])
-		self.write_metric('univention_nscd_running', 1 if rc == 0 else 0)
-		self.log.debug(output)
+    def write_metrics(self):
+        rc, output = self.exec_command(['/usr/lib/nagios/plugins/check_procs', '-w', '1:1', '-c', '1:', '-C', 'nscd'])
+        self.write_metric('univention_nscd_running', 1 if rc == 0 else 0)
+        self.log.debug(output)
 
-		message = None
-		try:
-			running = os.stat('/var/run/nscd/socket').st_mode & stat.S_IFSOCK == stat.S_IFSOCK
-		except FileNotFoundError:
-			running = False
-		if not running:
-			message = "no nscd socket found! nscd not running?"
-		else:
-			rc, output = self.exec_command(['/usr/bin/timeout', '3', 'nscd', '-g'], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
-			if rc:
-				running = False
-				message = "nscd not responding!"
-		self.write_metric('univention_nscd_responding', 1 if running else 0)
-		self.log.debug(message)
+        message = None
+        try:
+            running = os.stat('/var/run/nscd/socket').st_mode & stat.S_IFSOCK == stat.S_IFSOCK
+        except FileNotFoundError:
+            running = False
+        if not running:
+            message = "no nscd socket found! nscd not running?"
+        else:
+            rc, output = self.exec_command(['/usr/bin/timeout', '3', 'nscd', '-g'], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+            if rc:
+                running = False
+                message = "nscd not responding!"
+        self.write_metric('univention_nscd_responding', 1 if running else 0)
+        self.log.debug(message)
 
 
 if __name__ == '__main__':
-	NSCD.main()
+    NSCD.main()

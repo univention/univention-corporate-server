@@ -35,11 +35,12 @@
 
 usage::
 
-	translation = univention.admin.localization.translation()
-	_ = translation.translate
+    translation = univention.admin.localization.translation()
+    _ = translation.translate
 """
 
 from univention.lib.i18n import Translation
+
 
 translation = Translation
 

@@ -37,11 +37,11 @@ import univention.admin.modules
 
 
 def get_all_udm_module_names():  # type: () -> List[str]
-	"""
-	Get the names of all installed UDM modules.
+    """
+    Get the names of all installed UDM modules.
 
-	:return: list with UDM module names
-	:rtype: list(str)
-	"""
-	univention.admin.modules.update()
-	return sorted(mod for mod in univention.admin.modules.modules)
+    :return: list with UDM module names
+    :rtype: list(str)
+    """
+    univention.admin.modules.update()
+    return sorted(mod for mod in univention.admin.modules.modules)

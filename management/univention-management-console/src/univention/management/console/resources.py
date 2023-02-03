@@ -34,8 +34,9 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-from .module import Manager as ModuleManager
 from .category import Manager as CategoryManager
+from .module import Manager as ModuleManager
+
 
 moduleManager = ModuleManager()
 categoryManager = CategoryManager()

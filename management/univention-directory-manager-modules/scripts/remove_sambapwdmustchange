@@ -30,50 +30,50 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-'''
-This tool removes the sambaPwdMustChange value from all accounts
-'''
+"""This tool removes the sambaPwdMustChange value from all accounts"""
 
 from __future__ import print_function
 
 import sys
-import univention.admin
-import univention.admin.uldap
 from argparse import ArgumentParser
 
+import univention.admin
+import univention.admin.uldap
+
+
 if __name__ == '__main__':
-	ACTIONS = ('test', 'remove')
+    ACTIONS = ('test', 'remove')
 
-	parser = ArgumentParser(description=__doc__)
-	parser.add_argument(
-		"action",
-		help="Test for sambaPwdMustChange values, or remove them. The default action is test.",
-		choices=ACTIONS,
-		nargs='?'
-	)
+    parser = ArgumentParser(description=__doc__)
+    parser.add_argument(
+        "action",
+        help="Test for sambaPwdMustChange values, or remove them. The default action is test.",
+        choices=ACTIONS,
+        nargs='?',
+    )
 
-	options = parser.parse_args()
+    options = parser.parse_args()
 
-	# check argument (action)
-	if not options.action:
-		print('', file=sys.stderr)
-		print('warning: no action given. default is test', file=sys.stderr)
-		print('', file=sys.stderr)
-		options.action = 'test'
+    # check argument (action)
+    if not options.action:
+        print('', file=sys.stderr)
+        print('warning: no action given. default is test', file=sys.stderr)
+        print('', file=sys.stderr)
+        options.action = 'test'
 
-	configRegistry = univention.config_registry.ConfigRegistry()
-	configRegistry.load()
+    configRegistry = univention.config_registry.ConfigRegistry()
+    configRegistry.load()
 
-	lo, position = univention.admin.uldap.getAdminConnection()
+    lo, position = univention.admin.uldap.getAdminConnection()
 
-	res = lo.search('sambaPwdMustChange=*', attr=['sambaPwdMustChange'])
-	if not res:
-		print('No user with sambaPwdMustChange was found.')
-	else:
-		for ob in res:
-			print('Remove sambaPwdMustChange (%s) for %s' % (ob[1].get('sambaPwdMustChange', [])[0].decode('utf-8'), ob[0],), end=' ')
-			if options.action == 'remove':
-				lo.modify(ob[0], [('sambaPwdMustChange', ob[1].get('sambaPwdMustChange', []), b'')])
-				print('done')
-			else:
-				print('(testing mode)')
+    res = lo.search('sambaPwdMustChange=*', attr=['sambaPwdMustChange'])
+    if not res:
+        print('No user with sambaPwdMustChange was found.')
+    else:
+        for ob in res:
+            print('Remove sambaPwdMustChange (%s) for %s' % (ob[1].get('sambaPwdMustChange', [])[0].decode('utf-8'), ob[0]), end=' ')
+            if options.action == 'remove':
+                lo.modify(ob[0], [('sambaPwdMustChange', ob[1].get('sambaPwdMustChange', []), b'')])
+                print('done')
+            else:
+                print('(testing mode)')

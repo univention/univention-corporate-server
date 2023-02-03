@@ -1,0 +1,4 @@
+[tool.ruff]
+extend = "../../../pyproject.toml"
+# ucs-test headers is ##-prefixed YAML
+# extend-ignore = ["E266"]

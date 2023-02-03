@@ -1,3 +1,9 @@
+univention-portal (4.0.9-1) unstable; urgency=medium
+
+  * Bug #31771: migrate tabs to spaces
+
+ -- Florian Best <best@univention.de>  Fri, 03 Feb 2023 04:17:41 +0100
+
 univention-portal (4.0.8-1) unstable; urgency=medium
 
   * Bug #55554: Fix UCR variable typing

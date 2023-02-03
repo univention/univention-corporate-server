@@ -6,11 +6,9 @@ import pytest
 import univention.updater.locking as L
 
 
-@pytest.fixture
+@pytest.fixture()
 def lock(tmpdir, monkeypatch):
-    """
-    Mock locking file
-    """
+    """Mock locking file"""
     lock = tmpdir / "lock"
     monkeypatch.setattr(L, "FN_LOCK_UP", str(lock))
     return lock
@@ -91,7 +89,7 @@ def test_invalid(data, lock):
     with pytest.raises(L.LockingError) as exc_info:
         lock = L.UpdaterLock(1)
         lock.updater_lock_acquire()
-        assert False
+        raise AssertionError()
 
     assert "Invalid PID" in str(exc_info.value)
 
@@ -104,7 +102,7 @@ def test_timeout(mocker, lock):
     with pytest.raises(L.LockingError) as exc_info:
         lock = L.UpdaterLock(1)
         lock.updater_lock_acquire()
-        assert False
+        raise AssertionError()
 
     assert "Another updater process 1 is currently running according to " in str(exc_info.value)
 
@@ -135,9 +133,8 @@ def test_concurrent(lock, mocker):
 
 def test_error_enter(lock, capsys):
     lock.write("INVALID")
-    with pytest.raises(SystemExit) as exc_info:
-        with L.UpdaterLock(1):
-            assert False
+    with pytest.raises(SystemExit) as exc_info, L.UpdaterLock(1):
+        raise AssertionError()
 
     assert exc_info.value.code == 5
     out, err = capsys.readouterr()
@@ -154,18 +151,15 @@ def test_error_gone(lock, capsys):
 
 
 def test_error_taken(lock):
-    with pytest.raises(EnvironmentError):
-        with L.UpdaterLock():
-            assert lock.check(file=1)
-            lock.remove()
-            lock.mkdir()
+    with pytest.raises(EnvironmentError), L.UpdaterLock():
+        assert lock.check(file=1)
+        lock.remove()
+        lock.mkdir()
 
 
-@pytest.fixture
+@pytest.fixture()
 def apt_lock(tmpdir, monkeypatch):
-    """
-    Mock APT locking file
-    """
+    """Mock APT locking file"""
     lock = tmpdir / "lock"
     monkeypatch.setattr(L, "FN_LOCK_APT", str(lock))
     return lock

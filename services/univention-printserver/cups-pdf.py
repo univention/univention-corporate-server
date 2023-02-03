@@ -37,9 +37,11 @@ from __future__ import absolute_import, annotations
 
 from typing import Dict, List
 
-import listener
 import univention.config_registry
 import univention.debug as ud
+
+import listener
+
 
 description = 'Manage Samba share for CUPS pdf printer'
 filter = '(objectClass=univentionShareSamba)'
@@ -52,19 +54,18 @@ sharename = "pdfPrinterShare"
 
 
 def handler(dn: str, new: Dict[str, List[bytes]], old: Dict[str, List[bytes]]) -> None:
-	if new.get('cn', [b''])[0].decode('UTF-8') == sharename:
-		if new.get('univentionSharePath') and new.get('univentionShareHost'):
-			path = new['univentionSharePath'][0].decode('UTF-8')
-			server = new['univentionShareHost'][0].decode('ASCII')
-			me = listener.configRegistry.get('hostname') + "." + listener.configRegistry.get('domainname')
+    if new.get('cn', [b''])[0].decode('UTF-8') == sharename and new.get('univentionSharePath') and new.get('univentionShareHost'):
+        path = new['univentionSharePath'][0].decode('UTF-8')
+        server = new['univentionShareHost'][0].decode('ASCII')
+        me = listener.configRegistry.get('hostname') + "." + listener.configRegistry.get('domainname')
 
-			if me == server:
-				ud.debug(ud.LISTENER, ud.INFO, "cups-pdf: setting cups-pdf path to %s according to sharepath in %s on %s" % (path, sharename, server))
-				list_ = []
-				list_.append('cups/cups-pdf/directory=%s' % (path,))
-				list_.append('cups/cups-pdf/anonymous=%s' % (path,))
-				listener.setuid(0)
-				try:
-					univention.config_registry.handler_set(list_)
-				finally:
-					listener.unsetuid()
+        if me == server:
+            ud.debug(ud.LISTENER, ud.INFO, "cups-pdf: setting cups-pdf path to %s according to sharepath in %s on %s" % (path, sharename, server))
+            list_ = []
+            list_.append('cups/cups-pdf/directory=%s' % (path,))
+            list_.append('cups/cups-pdf/anonymous=%s' % (path,))
+            listener.setuid(0)
+            try:
+                univention.config_registry.handler_set(list_)
+            finally:
+                listener.unsetuid()

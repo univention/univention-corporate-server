@@ -34,25 +34,25 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-'''This module provides a similar functionality as the UNIX tool df'''
+"""This module provides a similar functionality as the UNIX tool df"""
 
 import os
 
 
 class DeviceInfo(object):
 
-	def __init__(self, path):
-		self.path = path
-		self._statvfs = os.statvfs(self.path)
+    def __init__(self, path):
+        self.path = path
+        self._statvfs = os.statvfs(self.path)
 
-	def free(self):
-		return (self._statvfs.f_bfree * self._statvfs.f_bsize)
+    def free(self):
+        return (self._statvfs.f_bfree * self._statvfs.f_bsize)
 
-	def available(self):
-		return (self._statvfs.f_bavail * self._statvfs.f_bsize)
+    def available(self):
+        return (self._statvfs.f_bavail * self._statvfs.f_bsize)
 
-	def size(self):
-		return (self._statvfs.f_blocks * self._statvfs.f_bsize)
+    def size(self):
+        return (self._statvfs.f_blocks * self._statvfs.f_bsize)
 
-	def block_size(self):
-		return self._statvfs.f_bsize
+    def block_size(self):
+        return self._statvfs.f_bsize

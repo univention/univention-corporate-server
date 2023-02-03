@@ -39,15 +39,15 @@ from __future__ import absolute_import
 import univention.management.console as umc
 import univention.management.console.modules as umcm
 
-from . import partition
-from . import user
+from . import partition, user
+
 
 _ = umc.Translation('univention-management-console-module-quota').translate
 
 
 class Instance(umcm.Base, partition.Commands, user.Commands):
 
-	def __init__(self):
-		umcm.Base.__init__(self)
-		partition.Commands.__init__(self)
-		user.Commands.__init__(self)
+    def __init__(self):
+        umcm.Base.__init__(self)
+        partition.Commands.__init__(self)
+        user.Commands.__init__(self)

@@ -30,100 +30,100 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-'''
-Replace base64 encoded jpegPhoto LDAP attributes for users accounts with their binary encoded version.
-'''
+"""Replace base64 encoded jpegPhoto LDAP attributes for users accounts with their binary encoded version."""
 
 from __future__ import print_function
 
-import binascii
 import argparse
-import sys
 import base64
+import binascii
+import sys
 
-import univention.uldap
 import ldap
 import ldap.modlist
+
+import univention.uldap
+
 
 ACTIONS = ('test', 'convert')
 JPEG_HEADER = b'\xff\xd8\xff\xe0'
 
 
 def run(action, verbose=False):
-	lo = univention.uldap.getAdminConnection()
+    lo = univention.uldap.getAdminConnection()
 
-	# find all users with a jpegPhoto attribute
-	print('Searching for user objects with base64 encoded jpegPhoto attribute...\n')
-	result = lo.search('jpegPhoto=*')
+    # find all users with a jpegPhoto attribute
+    print('Searching for user objects with base64 encoded jpegPhoto attribute...\n')
+    result = lo.search('jpegPhoto=*')
 
-	# iterate over user objects
-	for idn, iobj in result:
-		def log(idn, msg, force=False):
-			if verbose or force:
-				print('DN: %s\n%s\n' % (idn, msg))
+    # iterate over user objects
+    for idn, iobj in result:
+        def log(idn, msg, force=False):
+            if verbose or force:
+                print('DN: %s\n%s\n' % (idn, msg))
 
-		try:
-			b64 = iobj['jpegPhoto'][0]
-		except Exception as e:
-			log(idn, 'ERROR: failed to open LDAP object: %s' % e)
-			continue
+        try:
+            b64 = iobj['jpegPhoto'][0]
+        except Exception as e:
+            log(idn, 'ERROR: failed to open LDAP object: %s' % e)
+            continue
 
-		if not b64:
-			log(idn, 'jpegPhoto: empty value')
-			continue
-		if b64.startswith(JPEG_HEADER):
-			log(idn, 'jpegPhoto: binary JPEG image format')
-			continue
+        if not b64:
+            log(idn, 'jpegPhoto: empty value')
+            continue
+        if b64.startswith(JPEG_HEADER):
+            log(idn, 'jpegPhoto: binary JPEG image format')
+            continue
 
-		# try to decode + encode again
-		try:
-			bin = base64.decodebytes(b64)
-			_b64 = base64.b64encode(bin)
-		except binascii.Error as e:
-			# no base64 encoded jpeg photo
-			log(idn, 'jpegPhoto: an error occurred trying to decode the jpegPhoto attribute as base64: %s' % e)
-			continue
+        # try to decode + encode again
+        try:
+            bin = base64.decodebytes(b64)
+            _b64 = base64.b64encode(bin)
+        except binascii.Error as e:
+            # no base64 encoded jpeg photo
+            log(idn, 'jpegPhoto: an error occurred trying to decode the jpegPhoto attribute as base64: %s' % e)
+            continue
 
-		# compare original and decoded + encoded string
-		if _b64 != b64:
-			log(idn, 'jpegPhoto: unknown format')
-			continue
+        # compare original and decoded + encoded string
+        if _b64 != b64:
+            log(idn, 'jpegPhoto: unknown format')
+            continue
 
-		if action == 'test':
-			log(idn, 'jpegPhoto: base64 format -> CAN BE CONVERTED')
-		else:
-			log(idn, 'jpegPhoto: CONVERTING from base64 to binary format', force=True)
-			ldiff = ldap.modlist.modifyModlist(dict(jpegPhoto=[b64]), dict(jpegPhoto=[bin]))
-			lo.modify_s(idn, ldiff)
+        if action == 'test':
+            log(idn, 'jpegPhoto: base64 format -> CAN BE CONVERTED')
+        else:
+            log(idn, 'jpegPhoto: CONVERTING from base64 to binary format', force=True)
+            ldiff = ldap.modlist.modifyModlist({"jpegPhoto": [b64]}, {"jpegPhoto": [bin]})
+            lo.modify_s(idn, ldiff)
 
 
 if __name__ == '__main__':
-	# parse arguments and options
-	parser = argparse.ArgumentParser(description=__doc__)
-	parser.add_argument(
-		"-v", "--verbose",
-		help="print debug output",
-		dest="verbose",
-		action="store_true"
-	)
-	parser.add_argument(
-		"action",
-		help="Test for base64 images, or convert them. The default action is test.",
-		choices=ACTIONS,
-		nargs='?'
-	)
-	options = parser.parse_args()
+    # parse arguments and options
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument(
+        "-v", "--verbose",
+        help="print debug output",
+        dest="verbose",
+        action="store_true",
+    )
+    parser.add_argument(
+        "action",
+        help="Test for base64 images, or convert them. The default action is test.",
+        choices=ACTIONS,
+        nargs='?',
+    )
+    options = parser.parse_args()
 
-	# check argument (action)
-	if not options.action:
-		print('', file=sys.stderr)
-		print('warning: no action given. default is test', file=sys.stderr)
-		print('', file=sys.stderr)
-		options.action = ['test']
+    # check argument (action)
+    if not options.action:
+        print('', file=sys.stderr)
+        print('warning: no action given. default is test', file=sys.stderr)
+        print('', file=sys.stderr)
+        options.action = ['test']
 
-	# action!
-	try:
-		run(options.action, verbose=options.verbose)
-	except ldap.SERVER_DOWN as e:
-		print('ERROR: could not contact LDAP server: %s' % e, file=sys.stderr)
-		sys.exit(1)
+    # action!
+    try:
+        run(options.action, verbose=options.verbose)
+    except ldap.SERVER_DOWN as e:
+        print('ERROR: could not contact LDAP server: %s' % e, file=sys.stderr)
+        sys.exit(1)

@@ -33,13 +33,13 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-from univention.admin.layout import Tab, Group
-
 import ldap
 
-import univention.admin.syntax
 import univention.admin.handlers
 import univention.admin.localization
+import univention.admin.syntax
+from univention.admin.layout import Group, Tab
+
 
 translation = univention.admin.localization.translation('univention.admin.handlers.settings.mswmifilter')
 _ = translation.translate
@@ -50,121 +50,121 @@ childs = True
 short_description = _('Settings: MS WMI Filter')
 long_description = ''
 options = {
-	'default': univention.admin.option(
-		short_description=short_description,
-		default=True,
-		objectClasses=['msWMISom', 'top']
-	),
+    'default': univention.admin.option(
+        short_description=short_description,
+        default=True,
+        objectClasses=['msWMISom', 'top'],
+    ),
 }
 property_descriptions = {
-	'name': univention.admin.property(
-		short_description=_('Name'),
-		long_description='',
-		syntax=univention.admin.syntax.string,
-		required=True,
-	),
-	'description': univention.admin.property(
-		short_description=_('Description'),
-		long_description='',
-		syntax=univention.admin.syntax.string,
-	),
-	'displayName': univention.admin.property(
-		short_description=_('Display name'),
-		long_description='',
-		syntax=univention.admin.syntax.string,
-	),
-	'id': univention.admin.property(
-		short_description=_('MS WMI ID'),
-		long_description='',
-		syntax=univention.admin.syntax.string,
-		identifies=True
-	),
-	'author': univention.admin.property(
-		short_description=_('MS WMI Author'),
-		long_description='',
-		syntax=univention.admin.syntax.string,
-	),
-	'creationDate': univention.admin.property(
-		short_description=_('MS WMI Creation Date'),
-		long_description='',
-		syntax=univention.admin.syntax.string,
-	),
-	'changeDate': univention.admin.property(
-		short_description=_('MS WMI Change Date'),
-		long_description='',
-		syntax=univention.admin.syntax.string,
-	),
-	'parm1': univention.admin.property(
-		short_description=_('MS WMI Parameter1'),
-		long_description='',
-		syntax=univention.admin.syntax.string,
-	),
-	'parm2': univention.admin.property(
-		short_description=_('MS WMI Parameter2'),
-		long_description='',
-		syntax=univention.admin.syntax.string,
-	),
-	'parm3': univention.admin.property(
-		short_description=_('MS WMI Parameter3'),
-		long_description='',
-		syntax=univention.admin.syntax.string,
-	),
-	'parm4': univention.admin.property(
-		short_description=_('MS WMI Parameter4'),
-		long_description='',
-		syntax=univention.admin.syntax.string,
-	),
-	'flags1': univention.admin.property(
-		short_description=_('MS WMI Flags1'),
-		long_description='',
-		syntax=univention.admin.syntax.integer,
-	),
-	'flags2': univention.admin.property(
-		short_description=_('MS WMI Flags2'),
-		long_description='',
-		syntax=univention.admin.syntax.integer,
-	),
-	'flags3': univention.admin.property(
-		short_description=_('MS WMI Flags3'),
-		long_description='',
-		syntax=univention.admin.syntax.integer,
-	),
-	'flags4': univention.admin.property(
-		short_description=_('MS WMI Flags4'),
-		long_description='',
-		syntax=univention.admin.syntax.integer,
-	),
-	'sourceOrganization': univention.admin.property(
-		short_description=_('MS WMI Source Organization'),
-		long_description='',
-		syntax=univention.admin.syntax.string,
-	),
+    'name': univention.admin.property(
+        short_description=_('Name'),
+        long_description='',
+        syntax=univention.admin.syntax.string,
+        required=True,
+    ),
+    'description': univention.admin.property(
+        short_description=_('Description'),
+        long_description='',
+        syntax=univention.admin.syntax.string,
+    ),
+    'displayName': univention.admin.property(
+        short_description=_('Display name'),
+        long_description='',
+        syntax=univention.admin.syntax.string,
+    ),
+    'id': univention.admin.property(
+        short_description=_('MS WMI ID'),
+        long_description='',
+        syntax=univention.admin.syntax.string,
+        identifies=True,
+    ),
+    'author': univention.admin.property(
+        short_description=_('MS WMI Author'),
+        long_description='',
+        syntax=univention.admin.syntax.string,
+    ),
+    'creationDate': univention.admin.property(
+        short_description=_('MS WMI Creation Date'),
+        long_description='',
+        syntax=univention.admin.syntax.string,
+    ),
+    'changeDate': univention.admin.property(
+        short_description=_('MS WMI Change Date'),
+        long_description='',
+        syntax=univention.admin.syntax.string,
+    ),
+    'parm1': univention.admin.property(
+        short_description=_('MS WMI Parameter1'),
+        long_description='',
+        syntax=univention.admin.syntax.string,
+    ),
+    'parm2': univention.admin.property(
+        short_description=_('MS WMI Parameter2'),
+        long_description='',
+        syntax=univention.admin.syntax.string,
+    ),
+    'parm3': univention.admin.property(
+        short_description=_('MS WMI Parameter3'),
+        long_description='',
+        syntax=univention.admin.syntax.string,
+    ),
+    'parm4': univention.admin.property(
+        short_description=_('MS WMI Parameter4'),
+        long_description='',
+        syntax=univention.admin.syntax.string,
+    ),
+    'flags1': univention.admin.property(
+        short_description=_('MS WMI Flags1'),
+        long_description='',
+        syntax=univention.admin.syntax.integer,
+    ),
+    'flags2': univention.admin.property(
+        short_description=_('MS WMI Flags2'),
+        long_description='',
+        syntax=univention.admin.syntax.integer,
+    ),
+    'flags3': univention.admin.property(
+        short_description=_('MS WMI Flags3'),
+        long_description='',
+        syntax=univention.admin.syntax.integer,
+    ),
+    'flags4': univention.admin.property(
+        short_description=_('MS WMI Flags4'),
+        long_description='',
+        syntax=univention.admin.syntax.integer,
+    ),
+    'sourceOrganization': univention.admin.property(
+        short_description=_('MS WMI Source Organization'),
+        long_description='',
+        syntax=univention.admin.syntax.string,
+    ),
 }
 
 layout = [
-	Tab(_('General'), _('Basic settings'), layout=[
-		Group(_('General'), layout=[
-			["name", "description"],
-			["displayName"],
-		]),
-	]),
-	Tab(_('WMI filter'), _('MS WMI filter'), advanced=True, layout=[
-		Group(_('WMI filter'), layout=[
-			['id'],
-			['author'],
-			['creationDate'],
-			['changeDate'],
-			['parm1'],
-			['parm2'],
-			['parm3'],
-			['parm4'],
-			#['flags1'],
-			#['flags2'],
-			#['flags3'],
-			#['flags4'],
-			#['sourceOrganization'],
-		]),
-	])
+    Tab(_('General'), _('Basic settings'), layout=[
+        Group(_('General'), layout=[
+            ["name", "description"],
+            ["displayName"],
+        ]),
+    ]),
+    Tab(_('WMI filter'), _('MS WMI filter'), advanced=True, layout=[
+        Group(_('WMI filter'), layout=[
+            ['id'],
+            ['author'],
+            ['creationDate'],
+            ['changeDate'],
+            ['parm1'],
+            ['parm2'],
+            ['parm3'],
+            ['parm4'],
+            # ['flags1'],
+            # ['flags2'],
+            # ['flags3'],
+            # ['flags4'],
+            # ['sourceOrganization'],
+        ]),
+    ]),
 ]
 
 mapping = univention.admin.mapping.mapping()
@@ -187,16 +187,16 @@ mapping.register('sourceOrganization', 'msWMISourceOrganization', None, univenti
 
 
 class object(univention.admin.handlers.simpleLdap):
-	module = module
+    module = module
 
-	def _ldap_dn(self):
-		dn = ldap.dn.str2dn(super(object, self)._ldap_dn())
-		dn[0] = [('cn', dn[0][0][1], dn[0][0][2])]
-		return ldap.dn.dn2str(dn)
+    def _ldap_dn(self):
+        dn = ldap.dn.str2dn(super(object, self)._ldap_dn())
+        dn[0] = [('cn', dn[0][0][1], dn[0][0][2])]
+        return ldap.dn.dn2str(dn)
 
-	def _ldap_pre_modify(self):
-		if self.hasChanged('id'):
-			self.move(self._ldap_dn())
+    def _ldap_pre_modify(self):
+        if self.hasChanged('id'):
+            self.move(self._ldap_dn())
 
 
 identify = object.identify

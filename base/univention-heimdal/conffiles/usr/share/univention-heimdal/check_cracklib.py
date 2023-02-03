@@ -32,42 +32,43 @@
 # <https://www.gnu.org/licenses/>.
 
 import sys
+
 import univention.password
 
 
 def main():
-	params = {}
-	end = False
-	while not end:
-		line = sys.stdin.readline()
-		line = line[:-1]
-		if line == 'end':
-			end = True
-			continue
+    params = {}
+    end = False
+    while not end:
+        line = sys.stdin.readline()
+        line = line[:-1]
+        if line == 'end':
+            end = True
+            continue
 
-		try:
-			key, val = line.split(': ', 1)
-		except Exception:
-			print('key value pair is not correct: %s' % (line,))
-			sys.exit(1)
-		params[key] = val
+        try:
+            key, val = line.split(': ', 1)
+        except Exception:
+            print('key value pair is not correct: %s' % (line,))
+            sys.exit(1)
+        params[key] = val
 
-	if 'new-password' not in params:
-		print('missing password')
-		sys.exit(1)
+    if 'new-password' not in params:
+        print('missing password')
+        sys.exit(1)
 
-	if 'principal' in params:
-		pwdCheck = univention.password.Check(None, params['principal'])
-		try:
-			pwdCheck.check(params['new-password'])
-			print('APPROVED')
-		except univention.password.CheckFailed as exc:
-			print(str(exc))
+    if 'principal' in params:
+        pwdCheck = univention.password.Check(None, params['principal'])
+        try:
+            pwdCheck.check(params['new-password'])
+            print('APPROVED')
+        except univention.password.CheckFailed as exc:
+            print(str(exc))
 
 
 try:
-	main()
+    main()
 except Exception:
-	import traceback
-	print(traceback.format_exc().replace('\n', ' '))  # heimdal-kdc / kpasswd only displays the first line as error message.
-	sys.exit(1)
+    import traceback
+    print(traceback.format_exc().replace('\n', ' '))  # heimdal-kdc / kpasswd only displays the first line as error message.
+    sys.exit(1)

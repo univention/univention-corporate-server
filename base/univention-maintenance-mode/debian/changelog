@@ -1,3 +1,9 @@
+univention-maintenance-mode (3.0.1-1) unstable; urgency=medium
+
+  * Bug #31771: migrate tabs to spaces
+
+ -- Florian Best <best@univention.de>  Fri, 03 Feb 2023 04:17:35 +0100
+
 univention-maintenance-mode (3.0.0-2) unstable; urgency=medium
 
   * Bug #53346: Migrated univention-maintenance-mode to Python 3

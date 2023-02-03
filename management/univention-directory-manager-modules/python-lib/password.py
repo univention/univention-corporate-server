@@ -33,47 +33,46 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-"""
-|UDM| library for changing user pasword
-"""
+"""|UDM| library for changing user pasword"""
 
 import six
 from ldap.filter import filter_format
 
-import univention.admin.uldap
-import univention.admin.objects
-import univention.admin.modules
 import univention.admin.handlers.users.user
+import univention.admin.modules
+import univention.admin.objects
+import univention.admin.uldap
+
 
 univention.admin.modules.update()
 
 
 def change(username, password):
-	"""
-	Change the password of the given user
+    """
+    Change the password of the given user
 
-	>>> from univention.lib.password import change  # doctest: +SKIP
-	>>> change('Administrator', 'secret12345')  # doctest: +SKIP
-	>>> change('Administrator@DOMAIN.DE', 'secret12345')  # doctest: +SKIP
-	"""
-	try:
-		lo, pos = univention.admin.uldap.getAdminConnection()
-	except Exception:
-		lo, pos = univention.admin.uldap.getMachineConnection()
+    >>> from univention.lib.password import change  # doctest: +SKIP
+    >>> change('Administrator', 'secret12345')  # doctest: +SKIP
+    >>> change('Administrator@DOMAIN.DE', 'secret12345')  # doctest: +SKIP
+    """
+    try:
+        lo, pos = univention.admin.uldap.getAdminConnection()
+    except Exception:
+        lo, pos = univention.admin.uldap.getMachineConnection()
 
-	module = univention.admin.modules.get('users/user')
+    module = univention.admin.modules.get('users/user')
 
-	univention.admin.modules.init(lo, pos, module)
+    univention.admin.modules.init(lo, pos, module)
 
-	if '@' in username:  # krb5Principal
-		filter = filter_format('krb5PrincipalName=%s', [username])
-	else:
-		filter = filter_format('uid=%s', [username])
-	objects = module.lookup(None, lo, filter, superordinate=None, unique=True, required=True, timeout=-1, sizelimit=0)
+    if '@' in username:  # krb5Principal
+        filter = filter_format('krb5PrincipalName=%s', [username])
+    else:
+        filter = filter_format('uid=%s', [username])
+    objects = module.lookup(None, lo, filter, superordinate=None, unique=True, required=True, timeout=-1, sizelimit=0)
 
-	# search was unique and required
-	object = objects[0]
+    # search was unique and required
+    object = objects[0]
 
-	object.open()
-	object['password'] = six.text_type(password)
-	object.modify()
+    object.open()
+    object['password'] = six.text_type(password)
+    object.modify()

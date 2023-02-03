@@ -29,65 +29,65 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-"""
-Classes for holding binary UDM  object properties.
-"""
+"""Classes for holding binary UDM  object properties."""
 
 from __future__ import absolute_import, unicode_literals
+
 from collections import namedtuple
-from typing import BinaryIO, Optional, Text, Union
+from typing import BinaryIO, Optional, Text, Union  # noqa: F401
 
 
 FileType = namedtuple('namedtuple', ['mime_type', 'encoding', 'text'])
 
 
 def get_file_type(filename_or_file):  # type: (Union[str, BinaryIO]) -> FileType
-	...
+    ...
+
 
 class BaseBinaryProperty(object):
-	def __init__(self, name, encoded_value=None, raw_value=None):
-		# type: (Text, Optional[Text], Optional[Text]) -> None
-		...
+    def __init__(self, name, encoded_value=None, raw_value=None):
+        # type: (Text, Optional[Text], Optional[Text]) -> None
+        ...
 
-	def __repr__(self):  # type: () -> Text
-		...
+    def __repr__(self):  # type: () -> Text
+        ...
 
-	@property
-	def encoded(self):  # type: () -> Text
-		...
+    @property
+    def encoded(self):  # type: () -> Text
+        ...
 
-	@encoded.setter
-	def encoded(self, value):  # type: (Text) -> None
-		...
+    @encoded.setter
+    def encoded(self, value):  # type: (Text) -> None
+        ...
 
-	@property
-	def raw(self):  # type: () -> Text
-		...
+    @property
+    def raw(self):  # type: () -> Text
+        ...
 
-	@raw.setter
-	def raw(self, value):  # type: (Text) -> None
-		...
+    @raw.setter
+    def raw(self, value):  # type: (Text) -> None
+        ...
 
-	@property
-	def content_type(self):  # type: () -> FileType
-		...
+    @property
+    def content_type(self):  # type: () -> FileType
+        ...
 
 
 class Base64BinaryProperty(BaseBinaryProperty):
-	@property
-	def raw(self):  # type: () -> Text
-		...
+    @property
+    def raw(self):  # type: () -> Text
+        ...
 
-	@raw.setter
-	def raw(self, value):  # type: (Text) -> None
-		...
+    @raw.setter
+    def raw(self, value):  # type: (Text) -> None
+        ...
 
 
 class Base64Bzip2BinaryProperty(BaseBinaryProperty):
-	@property
-	def raw(self):  # type: () -> Text
-		...
+    @property
+    def raw(self):  # type: () -> Text
+        ...
 
-	@raw.setter
-	def raw(self, value):  # type: (Text) -> None
-		...
+    @raw.setter
+    def raw(self, value):  # type: (Text) -> None
+        ...

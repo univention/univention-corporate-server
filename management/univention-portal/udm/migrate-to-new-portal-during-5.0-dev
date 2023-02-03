@@ -30,6 +30,8 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 
 from univention.admin.uldap import getMachineConnection
+
+
 lo, pos = getMachineConnection()
 entries = lo.search('univentionObjectType=portals/entry')
 

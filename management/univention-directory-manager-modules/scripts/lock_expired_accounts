@@ -41,79 +41,80 @@ disabled.
 
 from __future__ import print_function
 
+import argparse
 import sys
 import time
-import argparse
+
 from ldap.filter import filter_format
 
-import univention.uldap
-import univention.admin.uldap
 import univention.admin.modules as udm_modules
+import univention.admin.uldap
 import univention.config_registry
 import univention.debug as ud
+import univention.uldap
 
 
 def main():
-	parser = argparse.ArgumentParser(description=__doc__)
-	parser.add_argument("-n", "--dry-run", dest="dry_run", default=False, action="store_true", help="perform only a dry run (disables --quiet)")
-	parser.add_argument("-w", "--only-last-week", dest="last_week", default=False, action="store_true", help="check only user accounts that expired within the last 7 days")
-	parser.add_argument("-q", "--quiet", dest="verbose", default=True, action="store_false", help="write process messages to logfile only")
-	options = parser.parse_args()
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("-n", "--dry-run", dest="dry_run", default=False, action="store_true", help="perform only a dry run (disables --quiet)")
+    parser.add_argument("-w", "--only-last-week", dest="last_week", default=False, action="store_true", help="check only user accounts that expired within the last 7 days")
+    parser.add_argument("-q", "--quiet", dest="verbose", default=True, action="store_false", help="write process messages to logfile only")
+    options = parser.parse_args()
 
-	if options.dry_run:
-		options.verbose = True
+    if options.dry_run:
+        options.verbose = True
 
-	def print_msg(msg, newline=True):
-		if options.verbose:
-			if newline:
-				print(msg)
-			else:
-				print(msg, end=' ')
+    def print_msg(msg, newline=True):
+        if options.verbose:
+            if newline:
+                print(msg)
+            else:
+                print(msg, end=' ')
 
-	ucr = univention.config_registry.ConfigRegistry()
-	ucr.load()
+    ucr = univention.config_registry.ConfigRegistry()
+    ucr.load()
 
-	if ucr.get('server/role') != 'domaincontroller_master':
-		print_msg('ERROR: this script may only be called on a Primary Directory Node')
-		sys.exit(1)
+    if ucr.get('server/role') != 'domaincontroller_master':
+        print_msg('ERROR: this script may only be called on a Primary Directory Node')
+        sys.exit(1)
 
-	print_msg('Initializing... (%s)' % (time.ctime()))
-	ud.init('/var/log/univention/lock_expired_accounts.log', ud.FLUSH, ud.NO_FUNCTION)
-	ud.set_level(ud.MAIN, ud.ALL)
-	ud.set_level(ud.LDAP, ud.ALL)
-	if options.last_week:
-		print_msg('Checking only accounts that expired in the last 7 days')
+    print_msg('Initializing... (%s)' % (time.ctime()))
+    ud.init('/var/log/univention/lock_expired_accounts.log', ud.FLUSH, ud.NO_FUNCTION)
+    ud.set_level(ud.MAIN, ud.ALL)
+    ud.set_level(ud.LDAP, ud.ALL)
+    if options.last_week:
+        print_msg('Checking only accounts that expired in the last 7 days')
 
-	udm_modules.update()
-	lo, position = univention.admin.uldap.getAdminConnection()
-	udm_modules.init(lo, position, udm_modules.get('users/user'))
+    udm_modules.update()
+    lo, position = univention.admin.uldap.getAdminConnection()
+    udm_modules.init(lo, position, udm_modules.get('users/user'))
 
-	print_msg('Searching for expired user accounts...')
+    print_msg('Searching for expired user accounts...')
 
-	today = int(time.time() / 24 / 3600)  # time.time() returns the local time
-	ldap_filter = filter_format('(shadowExpire<=%s)', (str(today),))
-	if options.last_week:
-		ldap_filter = filter_format('(&(shadowExpire>=%s)(shadowExpire<=%s))', (str(today - 6), str(today),))
-	results = udm_modules.lookup('users/user', None, lo, scope='sub', filter=ldap_filter)
+    today = int(time.time() / 24 / 3600)  # time.time() returns the local time
+    ldap_filter = filter_format('(shadowExpire<=%s)', (str(today),))
+    if options.last_week:
+        ldap_filter = filter_format('(&(shadowExpire>=%s)(shadowExpire<=%s))', (str(today - 6), str(today)))
+    results = udm_modules.lookup('users/user', None, lo, scope='sub', filter=ldap_filter)
 
-	for entry in results:
-		entry.open()
-		entry.descriptions['locked'].editable = True
-		entry.descriptions['locked'].may_change = True
-		if entry['locked'] == '0':
-			entry['locked'] = '1'
-		else:
-			# account is already locked
-			continue
+    for entry in results:
+        entry.open()
+        entry.descriptions['locked'].editable = True
+        entry.descriptions['locked'].may_change = True
+        if entry['locked'] == '0':
+            entry['locked'] = '1'
+        else:
+            # account is already locked
+            continue
 
-		if options.dry_run:
-			print_msg('uid=%s expired at %s ... skipped due to dry run (expected modification: locked=%r)' % (entry['username'], entry['userexpiry'], entry['locked'],))
-		else:
-			print_msg('uid=%s expired at %s ...' % (entry['username'], entry['userexpiry']), newline=False)
-			entry.modify()
-			ud.debug(ud.MAIN, ud.PROCESS, 'uid=%s expired at %s ... modified (locked=%r)' % (entry['username'], entry['userexpiry'], entry['locked']))
-			print_msg('modified (locked=%r)' % (entry['locked'],))
+        if options.dry_run:
+            print_msg('uid=%s expired at %s ... skipped due to dry run (expected modification: locked=%r)' % (entry['username'], entry['userexpiry'], entry['locked']))
+        else:
+            print_msg('uid=%s expired at %s ...' % (entry['username'], entry['userexpiry']), newline=False)
+            entry.modify()
+            ud.debug(ud.MAIN, ud.PROCESS, 'uid=%s expired at %s ... modified (locked=%r)' % (entry['username'], entry['userexpiry'], entry['locked']))
+            print_msg('modified (locked=%r)' % (entry['locked'],))
 
 
 if __name__ == '__main__':
-	main()
+    main()

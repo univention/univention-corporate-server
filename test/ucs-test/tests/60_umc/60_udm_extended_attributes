@@ -11,7 +11,7 @@ import sys
 import atexit
 
 import univention.testing.udm as udm_test
-import univention.testing.utils as utils
+from univention.testing import utils
 from univention.testing.strings import random_username
 
 from umc import UDMModule
@@ -142,7 +142,7 @@ class TestUMCExtendedAttributes(UDMModule):
             "objectProperty": "None",
             "objectPropertyValue": "",
             "container": "cn=custom attributes,cn=univention," + self.ldap_base,
-            "hidden": True
+            "hidden": True,
         }
         return self.request('udm/nav/object/query', options, "navigation")
 

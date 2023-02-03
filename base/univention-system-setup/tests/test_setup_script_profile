@@ -8,91 +8,87 @@ import unittest
 
 import univention.management.console.modules
 
+
 univention.management.console.modules.__path__.insert(0, os.path.join(os.path.dirname(__file__), os.path.pardir, 'umc/python'))
 from univention.management.console.modules.setup.setup_script import Profile  # noqa: E402
 
 
 class TestProfile(unittest.TestCase):
+    """Unit test for univention.management.console.modules.setup.setup_script"""
 
-	"""Unit test for univention.management.console.modules.setup.setup_script"""
+    def setUp(self):
+        """Create object."""
+        self.profile = Profile()
+        self.temp = NamedTemporaryFile("w+")
 
-	def setUp(self):
-		"""Create object."""
-		self.profile = Profile()
-		self.temp = NamedTemporaryFile("w+")
+    def load(self, content):
+        self.temp.write(content)
+        self.temp.flush()
+        self.profile.load(self.temp.name)
 
-	def load(self, content):
-		self.temp.write(content)
-		self.temp.flush()
-		self.profile.load(self.temp.name)
+    def test_empty(self):
+        """Empty profile."""
+        self.load('')
+        assert {} == self.profile
 
-	def test_empty(self):
-		"""Empty profile."""
-		self.load('')
-		self.assertEqual({}, self.profile)
+    def test_comment(self):
+        """Only one comment."""
+        self.load('#foo=bar')
+        assert {} == self.profile
 
-	def test_comment(self):
-		"""Only one comment."""
-		self.load('#foo=bar')
-		self.assertEqual({}, self.profile)
+    def test_comments(self):
+        """Indented comment."""
+        self.load('  # foo=bar')
+        assert {} == self.profile
 
-	def test_comments(self):
-		"""Indented comment."""
-		self.load('  # foo=bar')
-		self.assertEqual({}, self.profile)
+    def test_unquoted(self):
+        """Unquoted setting."""
+        self.load('foo=bar')
+        assert {"foo": "bar"} == self.profile
 
-	def test_unquoted(self):
-		"""Unquoted setting."""
-		self.load('foo=bar')
-		self.assertEqual({'foo': 'bar'}, self.profile)
+    def test_single_quoted(self):
+        """Single-quoted setting."""
+        self.load("foo='bar'")
+        assert {"foo": "bar"} == self.profile
 
-	def test_single_quoted(self):
-		"""Single-quoted setting."""
-		self.load("foo='bar'")
-		self.assertEqual({'foo': 'bar'}, self.profile)
+    def test_double_quoted(self):
+        """Double-quoted setting."""
+        self.load('foo="bar"')
+        assert {"foo": "bar"} == self.profile
 
-	def test_double_quoted(self):
-		"""Double-quoted setting."""
-		self.load('foo="bar"')
-		self.assertEqual({'foo': 'bar'}, self.profile)
+    def test_multiple(self):
+        """Multiple settings."""
+        self.load(
+            '''
+            # start
+            foo="bar"
+            bar='baz'
+            baz=foo
+            # end
+            ''',
+        )
+        assert {"foo": "bar", "bar": "baz", "baz": "foo"} == self.profile
 
-	def test_multiple(self):
-		"""Multiple settings."""
-		self.load(
-			'''
-			# start
-			foo="bar"
-			bar='baz'
-			baz=foo
-			# end
-			'''
-		)
-		self.assertEqual({
-			'foo': 'bar',
-			'bar': 'baz',
-			'baz': 'foo',
-		}, self.profile)
+    def test_special(self):
+        """Shell special setting."""
+        self.load('foo=" a$b\'c"d`e "')
+        assert {"foo": " a$b'c\"d`e "} == self.profile
 
-	def test_special(self):
-		"""Shell special setting."""
-		self.load('foo=" a$b\'c"d`e "')
-		self.assertEqual({'foo': ' a$b\'c"d`e '}, self.profile)
+    def test_empty_list(self):
+        """Empty list."""
+        self.load('foo=""')
+        assert [] == self.profile.get_list("foo")
 
-	def test_empty_list(self):
-		"""Empty list."""
-		self.load('foo=""')
-		self.assertEqual([], self.profile.get_list('foo'))
+    def test_one_list(self):
+        """List with one element."""
+        self.load('foo="bar"')
+        assert ["bar"] == self.profile.get_list("foo")
 
-	def test_one_list(self):
-		"""List with one element."""
-		self.load('foo="bar"')
-		self.assertEqual(['bar'], self.profile.get_list('foo'))
-
-	def test_two_list(self):
-		"""List with two elements."""
-		self.load('foo="bar baz"')
-		self.assertEqual(['bar', 'baz'], self.profile.get_list('foo'))
+    def test_two_list(self):
+        """List with two elements."""
+        self.load('foo="bar baz"')
+        assert ["bar", "baz"] == self.profile.get_list("foo")
 
 
 if __name__ == '__main__':
-	unittest.main()
+    unittest.main()

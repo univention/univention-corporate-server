@@ -36,24 +36,25 @@
 
 from __future__ import print_function
 
-import shutil
 import os
+import shutil
 import tempfile
 from argparse import ArgumentParser
 
 from univention.uldap import getMachineConnection
+
 
 BASE_DIR = '/etc/freeradius/3.0'
 BASE_NAME = 'clients.univention.conf'
 
 
 def main():  # type: () -> None
-	parser = ArgumentParser()
-	parser.parse_args()
+    parser = ArgumentParser()
+    parser.parse_args()
 
-	with tempfile.NamedTemporaryFile(mode='w', prefix='{}.tmp.'.format(BASE_NAME), dir=BASE_DIR, delete=False) as fd:
-		print('Updating clients.univention.conf')
-		fd.write('''# -*- text -*-
+    with tempfile.NamedTemporaryFile(mode='w', prefix=f'{BASE_NAME}.tmp.', dir=BASE_DIR, delete=False) as fd:
+        print('Updating clients.univention.conf')
+        fd.write('''# -*- text -*-
 #
 # clients.univention.conf -- client configuration directives
 #
@@ -66,16 +67,16 @@ def main():  # type: () -> None
 
 ''')
 
-		lo = getMachineConnection(ldap_master=False)
-		for dn, attrs in lo.search(filter='(objectClass=univentionRadiusClient)'):
-			hostname = attrs.get('cn', [b'None'])[0].decode('UTF-8')
-			shared_secret = attrs.get('univentionRadiusClientSharedSecret', [b'None'])[0].decode('UTF-8')
-			ipaddr = attrs.get('aRecord', [b''])[0].decode('UTF-8') or attrs.get('aAAARecord', [b'None'])[0].decode('UTF-8')
-			nas_type = attrs.get('univentionRadiusClientType', [b'other'])[0].decode('UTF-8')
-			virtual_server = attrs.get('univentionRadiusClientVirtualServer', [b''])[0].decode('UTF-8')
-			if hostname and ipaddr and shared_secret:
-				print('Adding client {} ({})'.format(hostname, ipaddr))
-				fd.write('''client {} {{
+        lo = getMachineConnection(ldap_master=False)
+        for _dn, attrs in lo.search(filter='(objectClass=univentionRadiusClient)'):
+            hostname = attrs.get('cn', [b'None'])[0].decode('UTF-8')
+            shared_secret = attrs.get('univentionRadiusClientSharedSecret', [b'None'])[0].decode('UTF-8')
+            ipaddr = attrs.get('aRecord', [b''])[0].decode('UTF-8') or attrs.get('aAAARecord', [b'None'])[0].decode('UTF-8')
+            nas_type = attrs.get('univentionRadiusClientType', [b'other'])[0].decode('UTF-8')
+            virtual_server = attrs.get('univentionRadiusClientVirtualServer', [b''])[0].decode('UTF-8')
+            if hostname and ipaddr and shared_secret:
+                print(f'Adding client {hostname} ({ipaddr})')
+                fd.write('''client {} {{
 \tipaddr\t\t= {}
 \tsecret\t\t= {}
 \tnas_type\t= {}
@@ -83,16 +84,16 @@ def main():  # type: () -> None
 }}
 
 '''.format(
-					hostname,
-					ipaddr,
-					shared_secret,
-					nas_type,
-					'' if virtual_server else '# ',
-					virtual_server if virtual_server else '...not specified...')
-				)
+                    hostname,
+                    ipaddr,
+                    shared_secret,
+                    nas_type,
+                    '' if virtual_server else '# ',
+                    virtual_server if virtual_server else '...not specified...'),
+                )
 
-	shutil.move(fd.name, os.path.join(BASE_DIR, BASE_NAME))
+    shutil.move(fd.name, os.path.join(BASE_DIR, BASE_NAME))
 
 
 if __name__ == '__main__':
-	main()
+    main()

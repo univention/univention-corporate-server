@@ -9,7 +9,7 @@ settings = univention.lib.ucrLogrotate.getLogrotateConfig(name, configRegistry)
 print("/var/log/samba/%s {" % name)
 
 for setting in sorted(settings):
-	print("\t%s" % settings[setting])
+    print("\t%s" % settings[setting])
 print("\tpostrotate")
 print("\t\t/etc/init.d/samba reload > /dev/null")
 print("\tendscript")
@@ -21,16 +21,16 @@ settings = univention.lib.ucrLogrotate.getLogrotateConfig(name, configRegistry)
 print("/var/log/samba/%s {" % name)
 
 for setting in sorted(settings):
-	print("\t%s" % settings[setting])
+    print("\t%s" % settings[setting])
 print("\tpostrotate")
 print("\t\t[ ! -f /var/run/samba/nmbd.pid ] || kill -HUP `cat /var/run/samba/nmbd.pid`")
 print("\tendscript")
 print("}")
 
-filelist = [ "/var/log/samba/%s" % name for name in ('log.samba-dcerpcd', 'log.rpcd_*')]
+filelist = ["/var/log/samba/%s" % name for name in ('log.samba-dcerpcd', 'log.rpcd_*')]
 print(" ".join(filelist) + " {")
 for setting in sorted(settings):
-	print("\t%s" % settings[setting])
+    print("\t%s" % settings[setting])
 print("\tsharedscripts")
 print("\tpostrotate")
 print("\t\t{ pidof samba-dcerpcd && pkill --signal HUP samba-dcerpcd; } > /dev/null")

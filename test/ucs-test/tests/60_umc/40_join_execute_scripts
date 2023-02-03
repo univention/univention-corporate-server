@@ -12,7 +12,7 @@
 import os
 import sys
 
-import univention.testing.utils as utils
+from univention.testing import utils
 
 from umc import JoinModule
 
@@ -72,9 +72,7 @@ class TestUMCDomainJoinModule(JoinModule):
         self.run(script_names=script_names)
 
     def main(self):
-        """
-        A method to test the UMC domain join module
-        """
+        """A method to test the UMC domain join module"""
         self.create_connection_authenticate()
 
         test_script = '99univention-test-join-script'

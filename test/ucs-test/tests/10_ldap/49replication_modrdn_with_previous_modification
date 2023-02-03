@@ -20,12 +20,11 @@ import sys
 import ldap
 
 import univention.testing.udm as udm_test
-import univention.uldap as uldap
+from univention import uldap
 from univention.config_registry import ConfigRegistry
 from univention.testing.strings import random_name
-from univention.testing.utils import (
-	restart_listener, start_listener, stop_listener, wait_for_replication,
-)
+from univention.testing.utils import restart_listener, start_listener, stop_listener, wait_for_replication
+
 
 success = True
 
@@ -34,15 +33,15 @@ ucr.load()
 
 
 def get_entryUUID(lo, dn):
-	result = lo.search(base=dn, scope=ldap.SCOPE_BASE, attr=['*', '+'])
-	print(f'DN: {dn}\n{result}')
-	return result[0][1].get('entryUUID')[0]
+    result = lo.search(base=dn, scope=ldap.SCOPE_BASE, attr=['*', '+'])
+    print(f'DN: {dn}\n{result}')
+    return result[0][1].get('entryUUID')[0]
 
 
 def create_listener_module_for_computer(computer_name):
-	filename = '/usr/lib/univention-directory-listener/system/%s-test.py' % (computer_name)
-	fd = open(filename, 'w')
-	fd.write('''
+    filename = '/usr/lib/univention-directory-listener/system/%s-test.py' % (computer_name)
+    fd = open(filename, 'w')
+    fd.write('''
 from __future__ import absolute_import
 
 from typing import Dict, List
@@ -55,22 +54,22 @@ description="%(computer_name)s"
 filter="(cn=%(computer_name)s)"
 
 def handler(dn: str, new: Dict[str, List[bytes]], old: Dict[str, List[bytes]], command: str) -> None:
-	if command == 'r':
-		return
-	ud.debug(ud.LISTENER, ud.PROCESS, "ucs-test debug: dn: %%s" %% dn)
-	ud.debug(ud.LISTENER, ud.PROCESS, "ucs-test debug: old: %%s" %% old)
-	ud.debug(ud.LISTENER, ud.PROCESS, "ucs-test debug: new: %%s" %% new)
-	if old and not new:
-		fd = open('/tmp/%(computer_name)s-test', 'w')
+    if command == 'r':
+        return
+    ud.debug(ud.LISTENER, ud.PROCESS, "ucs-test debug: dn: %%s" %% dn)
+    ud.debug(ud.LISTENER, ud.PROCESS, "ucs-test debug: old: %%s" %% old)
+    ud.debug(ud.LISTENER, ud.PROCESS, "ucs-test debug: new: %%s" %% new)
+    if old and not new:
+        fd = open('/tmp/%(computer_name)s-test', 'w')
 ''' % {'computer_name': computer_name})
-	restart_listener()
+    restart_listener()
 
 
 def remove_listener_module_for_computer(computer_name):
-	filename = '/usr/lib/univention-directory-listener/system/%s-test.py' % (computer_name)
-	if os.path.exists(filename):
-		os.remove(filename)
-	restart_listener()
+    filename = '/usr/lib/univention-directory-listener/system/%s-test.py' % (computer_name)
+    if os.path.exists(filename):
+        os.remove(filename)
+    restart_listener()
 
 # create computer
 
@@ -108,20 +107,20 @@ new_computer_UUID = get_entryUUID(lo, new_computer_dn)
 
 # The container should have be replaced by the computer object
 if computer_UUID != new_computer_UUID:
-	print('ERROR: entryUUID of moved object do not match')
-	success = False
+    print('ERROR: entryUUID of moved object do not match')
+    success = False
 
 delete_handler_file = '/tmp/%s-test' % computer_name
 if os.path.exists(delete_handler_file):
-	print('ERROR: the delete handler was called for the modified and moved object')
-	success = False
-	os.remove(delete_handler_file)
+    print('ERROR: the delete handler was called for the modified and moved object')
+    success = False
+    os.remove(delete_handler_file)
 
 remove_listener_module_for_computer(computer_name)
 udm.cleanup()
 wait_for_replication()
 
 if not success:
-	sys.exit(1)
+    sys.exit(1)
 
 # vim: set ft=python :

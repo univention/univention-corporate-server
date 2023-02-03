@@ -36,22 +36,25 @@ Module and object specific for "users/ldap" UDM module.
 """
 
 from __future__ import absolute_import, unicode_literals
+
 from .generic import GenericModule, GenericObject, GenericObjectProperties
 
 
 class UsersLdapObjectProperties(GenericObjectProperties):
-	"""users/ldap UDM properties."""
+    """users/ldap UDM properties."""
 
 
 class UsersLdapObject(GenericObject):
-	"""Better representation of users/ldap properties."""
-	udm_prop_class = UsersLdapObjectProperties
+    """Better representation of users/ldap properties."""
+
+    udm_prop_class = UsersLdapObjectProperties
 
 
 class UsersLdapModule(GenericModule):
-	"""UsersLdapObject factory"""
-	_udm_object_class = UsersLdapObject
+    """UsersLdapObject factory"""
 
-	class Meta:
-		supported_api_versions = [0]
-		suitable_for = ['users/ldap']
+    _udm_object_class = UsersLdapObject
+
+    class Meta:
+        supported_api_versions = [0]
+        suitable_for = ['users/ldap']

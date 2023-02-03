@@ -25,29 +25,29 @@ from univention.updater.tools import UCSRepoPool5
 
 
 try:
-	mirror = UniventionMirror()
-	if not mirror.online_repository:
-		print('# The mirror mode is disabled and can be enabled with:')
-		print('#   univention-config-registry set repository/mirror=true')
-		print('')
-	else:
-		for rel, _data in mirror.get_releases(mirror.version_start, mirror.version_end):
-			pool = UCSRepoPool5(rel)
-			for pool.errata in (False, True):
-				for typ in ["deb"] + ["deb-src"][:mirror.sources]:
-					print(pool.deb(mirror.server, typ, mirror=True))
+    mirror = UniventionMirror()
+    if not mirror.online_repository:
+        print('# The mirror mode is disabled and can be enabled with:')
+        print('#   univention-config-registry set repository/mirror=true')
+        print('')
+    else:
+        for rel, _data in mirror.get_releases(mirror.version_start, mirror.version_end):
+            pool = UCSRepoPool5(rel)
+            for pool.errata in (False, True):
+                for typ in ["deb"] + ["deb-src"][:mirror.sources]:
+                    print(pool.deb(mirror.server, typ, mirror=True))
 
-		print("clean %s" % (mirror.server.baseurl.public(),))
+        print("clean %s" % (mirror.server.baseurl.public(),))
 
-		print(mirror.print_component_repositories(clean=True, start=mirror.version_start, end=mirror.version_end, for_mirror_list=True))
+        print(mirror.print_component_repositories(clean=True, start=mirror.version_start, end=mirror.version_end, for_mirror_list=True))
 except Exception:
-	print('# An error occurred during the repository check. The error message:')
-	for line in traceback.format_exc().splitlines():
-		print('#   %s' % line)
-	print('#')
-	print('')
-	print('# After fixing this issue, you should rewrite this file with the following command:')
-	print('#   univention-config-registry commit /etc/apt/mirror.list')
-	print('#')
-	print('')
+    print('# An error occurred during the repository check. The error message:')
+    for line in traceback.format_exc().splitlines():
+        print('#   %s' % line)
+    print('#')
+    print('')
+    print('# After fixing this issue, you should rewrite this file with the following command:')
+    print('#   univention-config-registry commit /etc/apt/mirror.list')
+    print('#')
+    print('')
 @!@

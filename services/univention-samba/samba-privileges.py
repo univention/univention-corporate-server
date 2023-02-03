@@ -40,18 +40,20 @@ from typing import Dict, Iterable, List
 import tdb
 
 import univention.debug as ud
+
 from listener import SetUID
 
+
 SAMBA_PRIVILEGES = {
-	b"SeMachineAccountPrivilege": {"number": 16, "index": 0},
-	b"SeAddUsersPrivilege": {"number": 64, "index": 0},
-	b"SeTakeOwnershipPrivilege": {"number": 8, "index": 1},
-	b"SeBackupPrivilege": {"number": 2, "index": 1},
-	b"SeRestorePrivilege": {"number": 4, "index": 1},
-	b"SeRemoteShutdownPrivilege": {"number": 1, "index": 1},
-	b"SeSecurityPrivilege": {"number": 16, "index": 1},
-	b"SePrintOperatorPrivilege": {"number": 32, "index": 0},
-	b"SeDiskOperatorPrivilege": {"number": 128, "index": 0},
+    b"SeMachineAccountPrivilege": {"number": 16, "index": 0},
+    b"SeAddUsersPrivilege": {"number": 64, "index": 0},
+    b"SeTakeOwnershipPrivilege": {"number": 8, "index": 1},
+    b"SeBackupPrivilege": {"number": 2, "index": 1},
+    b"SeRestorePrivilege": {"number": 4, "index": 1},
+    b"SeRemoteShutdownPrivilege": {"number": 1, "index": 1},
+    b"SeSecurityPrivilege": {"number": 16, "index": 1},
+    b"SePrintOperatorPrivilege": {"number": 32, "index": 0},
+    b"SeDiskOperatorPrivilege": {"number": 128, "index": 0},
 }
 
 ALL_SAMBA_PRIVILEGES = SAMBA_PRIVILEGES.keys()
@@ -66,86 +68,84 @@ atributes = ['univentionSambaPrivilegeList', 'sambaSID']
 
 def handler(dn: str, new: Dict[str, List[bytes]], old: Dict[str, List[bytes]]) -> None:
 
-	where = ud.LISTENER
-	level = ud.INFO
+    where = ud.LISTENER
+    level = ud.INFO
 
-	# deleted -> remove all privileges
-	if old and not new:
-		if old.get("univentionSambaPrivilegeList") and old.get("sambaSID"):
-			ud.debug(where, level, "%s: remove all samba privs (%r)" % (name, old["sambaSID"][0]))
-			removePrivileges(old["sambaSID"][0], ALL_SAMBA_PRIVILEGES)
+    # deleted -> remove all privileges
+    if old and not new and old.get("univentionSambaPrivilegeList") and old.get("sambaSID"):
+        ud.debug(where, level, "%s: remove all samba privs (%r)" % (name, old["sambaSID"][0]))
+        removePrivileges(old["sambaSID"][0], ALL_SAMBA_PRIVILEGES)
 
-	# created
-	if new and not old:
-		if new.get("univentionSambaPrivilegeList") and new.get("sambaSID"):
-			ud.debug(where, level, "%s: add new samba privs (%r)" % (name, new["sambaSID"][0]))
-			addPrivileges(new["sambaSID"][0], new["univentionSambaPrivilegeList"])
+    # created
+    if new and not old and new.get("univentionSambaPrivilegeList") and new.get("sambaSID"):
+        ud.debug(where, level, "%s: add new samba privs (%r)" % (name, new["sambaSID"][0]))
+        addPrivileges(new["sambaSID"][0], new["univentionSambaPrivilegeList"])
 
-	# modified
-	if new and old:
+    # modified
+    if new and old:
 
-		newPrivs = new.get("univentionSambaPrivilegeList")
-		oldPrivs = old.get("univentionSambaPrivilegeList")
-		sid = new["sambaSID"][0]
+        newPrivs = new.get("univentionSambaPrivilegeList")
+        oldPrivs = old.get("univentionSambaPrivilegeList")
+        sid = new["sambaSID"][0]
 
-		# removed
-		if not newPrivs and oldPrivs:
-			ud.debug(where, level, "%s: remove all samba privs (%s)" % (name, sid))
-			removePrivileges(sid, oldPrivs)
-		# added
-		if newPrivs and not oldPrivs:
-			ud.debug(where, level, "%s: add new samba privs (%s)" % (name, sid))
-			addPrivileges(sid, newPrivs)
+        # removed
+        if not newPrivs and oldPrivs:
+            ud.debug(where, level, "%s: remove all samba privs (%s)" % (name, sid))
+            removePrivileges(sid, oldPrivs)
+        # added
+        if newPrivs and not oldPrivs:
+            ud.debug(where, level, "%s: add new samba privs (%s)" % (name, sid))
+            addPrivileges(sid, newPrivs)
 
-		# modified
-		if newPrivs and oldPrivs and not newPrivs == oldPrivs:
-			ud.debug(where, level, "%s: modify samba privs (%s)" % (name, sid))
-			removePrivileges(sid, oldPrivs)
-			addPrivileges(sid, newPrivs)
+        # modified
+        if newPrivs and oldPrivs and newPrivs != oldPrivs:
+            ud.debug(where, level, "%s: modify samba privs (%s)" % (name, sid))
+            removePrivileges(sid, oldPrivs)
+            addPrivileges(sid, newPrivs)
 
 
 def addPrivileges(sambaSID: bytes, privileges: Iterable[bytes]) -> None:
-	with SetUID(0):
-		tdbKey = b'PRIV_%s\x00' % (sambaSID,)
-		tdbFile = tdb.Tdb(SAMBA_POLICY_TDB)
-		tdbFile.lock_all()
-		privs = tdbFile.get(tdbKey)
-		if not privs:
-			privs = b'\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00'
+    with SetUID(0):
+        tdbKey = b'PRIV_%s\x00' % (sambaSID,)
+        tdbFile = tdb.Tdb(SAMBA_POLICY_TDB)
+        tdbFile.lock_all()
+        privs = tdbFile.get(tdbKey)
+        if not privs:
+            privs = b'\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00'
 
-		for privilege in privileges:
-			if SAMBA_PRIVILEGES.get(privilege):
-				index = SAMBA_PRIVILEGES[privilege]["index"]
-				number = SAMBA_PRIVILEGES[privilege]["number"]
-				if (privs[index] & number) == 0:
-					new = chr(privs[index] + number).encode('ISO8859-1')
-					privs = privs[0:index] + new + privs[(index + 1):len(privs)]
+        for privilege in privileges:
+            if SAMBA_PRIVILEGES.get(privilege):
+                index = SAMBA_PRIVILEGES[privilege]["index"]
+                number = SAMBA_PRIVILEGES[privilege]["number"]
+                if (privs[index] & number) == 0:
+                    new = chr(privs[index] + number).encode('ISO8859-1')
+                    privs = privs[0:index] + new + privs[(index + 1):len(privs)]
 
-		tdbFile[tdbKey] = privs
-		tdbFile.unlock_all()
-		tdbFile.close()
+        tdbFile[tdbKey] = privs
+        tdbFile.unlock_all()
+        tdbFile.close()
 
 
 def removePrivileges(sambaSID: bytes, privileges: Iterable[bytes]) -> None:
-	with SetUID(0):
-		tdbKey = b'PRIV_%s\x00' % (sambaSID,)
-		tdbFile = tdb.Tdb(SAMBA_POLICY_TDB)
-		tdbFile.lock_all()
-		privs = tdbFile.get(tdbKey)
+    with SetUID(0):
+        tdbKey = b'PRIV_%s\x00' % (sambaSID,)
+        tdbFile = tdb.Tdb(SAMBA_POLICY_TDB)
+        tdbFile.lock_all()
+        privs = tdbFile.get(tdbKey)
 
-		if privs:
-			for privilege in privileges:
-				if SAMBA_PRIVILEGES.get(privilege):
-					index = SAMBA_PRIVILEGES[privilege]["index"]
-					number = SAMBA_PRIVILEGES[privilege]["number"]
-					if privs[index] & number:
-						new = chr(privs[index] - number).encode('ISO8859-1')
-						privs = privs[0:index] + new + privs[(index + 1):len(privs)]
-						tdbFile[tdbKey] = privs
+        if privs:
+            for privilege in privileges:
+                if SAMBA_PRIVILEGES.get(privilege):
+                    index = SAMBA_PRIVILEGES[privilege]["index"]
+                    number = SAMBA_PRIVILEGES[privilege]["number"]
+                    if privs[index] & number:
+                        new = chr(privs[index] - number).encode('ISO8859-1')
+                        privs = privs[0:index] + new + privs[(index + 1):len(privs)]
+                        tdbFile[tdbKey] = privs
 
-			# delete key if no privileges are assigned
-			if privs == b'\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00':
-				tdbFile.delete(tdbKey)
+            # delete key if no privileges are assigned
+            if privs == b'\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00':
+                tdbFile.delete(tdbKey)
 
-		tdbFile.unlock_all()
-		tdbFile.close()
+        tdbFile.unlock_all()
+        tdbFile.close()

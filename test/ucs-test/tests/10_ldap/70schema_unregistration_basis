@@ -13,13 +13,14 @@
 from time import sleep
 
 from ldap_extension_utils import (
-	call_join_script, call_unjoin_script, fetch_schema_from_ldap_master, get_package_name,
-	get_schema_attribute_id, get_schema_name,
+    call_join_script, call_unjoin_script, fetch_schema_from_ldap_master, get_package_name, get_schema_attribute_id,
+    get_schema_name,
 )
 
 from univention.config_registry import ConfigRegistry
 from univention.testing.debian_package import DebianPackage
 from univention.testing.utils import fail, wait_for_replication_and_postrun
+
 
 ucr = ConfigRegistry()
 ucr.load()
@@ -83,7 +84,7 @@ try:
         call_unjoin_script(unjoin_script_name)
         wait_for_replication_and_postrun()
 
-    for i in range(20):
+    for _i in range(20):
         schema = fetch_schema_from_ldap_master()
         attribute_identifier = "( 1.3.6.1.4.1.10176.200.10999.%(attribute_id)s NAME 'univentionFreeAttribute%(attribute_id)s" % {'attribute_id': attribute_id}
 

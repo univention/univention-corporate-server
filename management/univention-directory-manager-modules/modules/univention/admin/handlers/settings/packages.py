@@ -30,15 +30,14 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-"""
-|UDM| module for package lists
-"""
+"""|UDM| module for package lists"""
 
-from univention.admin.layout import Tab, Group
-import univention.admin.syntax
 import univention.admin.filter
 import univention.admin.handlers
 import univention.admin.localization
+import univention.admin.syntax
+from univention.admin.layout import Group, Tab
+
 
 translation = univention.admin.localization.translation('univention.admin.handlers.settings')
 _ = translation.translate
@@ -53,37 +52,37 @@ object_name = _('Package List')
 object_name_plural = _('Package Lists')
 long_description = _('List of Packages for UCS Systems')
 options = {
-	'default': univention.admin.option(
-		short_description=short_description,
-		default=True,
-		objectClasses=['top', 'univentionPackageList'],
-	),
+    'default': univention.admin.option(
+        short_description=short_description,
+        default=True,
+        objectClasses=['top', 'univentionPackageList'],
+    ),
 }
 property_descriptions = {
-	'name': univention.admin.property(
-		short_description=_('Name'),
-		long_description=_('Name'),
-		syntax=univention.admin.syntax.string,
-		include_in_default_search=True,
-		required=True,
-		identifies=True,
-	),
-	'packageList': univention.admin.property(
-		short_description=_('Package List'),
-		long_description=_('Package List'),
-		syntax=univention.admin.syntax.string,
-		multivalue=True,
-		dontsearch=True,
-	),
+    'name': univention.admin.property(
+        short_description=_('Name'),
+        long_description=_('Name'),
+        syntax=univention.admin.syntax.string,
+        include_in_default_search=True,
+        required=True,
+        identifies=True,
+    ),
+    'packageList': univention.admin.property(
+        short_description=_('Package List'),
+        long_description=_('Package List'),
+        syntax=univention.admin.syntax.string,
+        multivalue=True,
+        dontsearch=True,
+    ),
 }
 
 layout = [
-	Tab(_('General'), _('Package List'), layout=[
-		Group(_('General package list settings'), layout=[
-			'name',
-			'packageList',
-		]),
-	]),
+    Tab(_('General'), _('Package List'), layout=[
+        Group(_('General package list settings'), layout=[
+            'name',
+            'packageList',
+        ]),
+    ]),
 ]
 
 mapping = univention.admin.mapping.mapping()
@@ -92,7 +91,7 @@ mapping.register('packageList', 'univentionPackageDefinition')
 
 
 class object(univention.admin.handlers.simpleLdap):
-	module = module
+    module = module
 
 
 lookup = object.lookup

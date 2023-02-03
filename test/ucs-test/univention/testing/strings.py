@@ -32,7 +32,8 @@
 # <https://www.gnu.org/licenses/>.
 
 from random import choice, randint
-from typing import Iterator, Text, Optional, Tuple  # noqa: F401
+from typing import Iterator, Optional, Text, Tuple  # noqa: F401
+
 
 STR_NUMERIC = '0123456789'
 STR_ALPHA = 'abcdefghijklmnopqrstuvwxyz'
@@ -45,49 +46,45 @@ STR_UMLAUTNUM = STR_UMLAUT + STR_NUMERIC
 
 
 def random_string(length=10, alpha=True, numeric=True, charset="", encoding='utf-8'):
-	# type: (int, bool, bool, Text, str) -> str
-	"""
-	Get specified number of random characters (ALPHA, NUMERIC or ALPHANUMERIC).
-	Default is an alphanumeric string of 10 characters length. A custom character set
-	may be defined via "charset" as string. The default encoding is UTF-8.
-	If length is 0 or negative, an empty string is returned.
-	"""
-	result = ''
-	for _ in range(length):
-		if charset:
-			result += choice(charset)
-		elif alpha and numeric:
-			result += choice(STR_ALPHANUM)
-		elif alpha:
-			result += choice(STR_ALPHA)
-		elif numeric:
-			result += choice(STR_NUMERIC)
-	return result
+    # type: (int, bool, bool, Text, str) -> str
+    """
+    Get specified number of random characters (ALPHA, NUMERIC or ALPHANUMERIC).
+    Default is an alphanumeric string of 10 characters length. A custom character set
+    may be defined via "charset" as string. The default encoding is UTF-8.
+    If length is 0 or negative, an empty string is returned.
+    """
+    result = ''
+    for _ in range(length):
+        if charset:
+            result += choice(charset)
+        elif alpha and numeric:
+            result += choice(STR_ALPHANUM)
+        elif alpha:
+            result += choice(STR_ALPHA)
+        elif numeric:
+            result += choice(STR_NUMERIC)
+    return result
 
 
 def random_name(length=10):
-	# type: (int) -> str
-	"""
-	create random name (1 ALPHA, 8 ALPHANUM, 1 ALPHA)
-	"""
-	return ''.join((
-		random_string(length=1, alpha=True, numeric=False),
-		random_string(length=(length - 2), alpha=True, numeric=True),
-		random_string(length=1, alpha=True, numeric=False),
-	))
+    # type: (int) -> str
+    """create random name (1 ALPHA, 8 ALPHANUM, 1 ALPHA)"""
+    return ''.join((
+        random_string(length=1, alpha=True, numeric=False),
+        random_string(length=(length - 2), alpha=True, numeric=True),
+        random_string(length=1, alpha=True, numeric=False),
+    ))
 
 
 def random_name_special_characters(length=10):
-	# type: (int) -> str
-	"""
-	create random name (1 UMLAUT, 2 ALPHA, 6 SPECIAL_CHARACTERS + UMLAUT, 1 UMLAUTNUM)
-	"""
-	return ''.join((
-		random_string(length=1, alpha=False, numeric=False, charset=STR_UMLAUT),
-		random_string(length=2, alpha=True, numeric=False),
-		random_string(length=(length - 4), alpha=False, numeric=False, charset=STR_SPECIAL_CHARACTER + STR_UMLAUT),
-		random_string(length=1, alpha=False, numeric=False, charset=STR_UMLAUTNUM)
-	))
+    # type: (int) -> str
+    """create random name (1 UMLAUT, 2 ALPHA, 6 SPECIAL_CHARACTERS + UMLAUT, 1 UMLAUTNUM)"""
+    return ''.join((
+        random_string(length=1, alpha=False, numeric=False, charset=STR_UMLAUT),
+        random_string(length=2, alpha=True, numeric=False),
+        random_string(length=(length - 4), alpha=False, numeric=False, charset=STR_SPECIAL_CHARACTER + STR_UMLAUT),
+        random_string(length=1, alpha=False, numeric=False, charset=STR_UMLAUTNUM),
+    ))
 
 
 random_username = random_name
@@ -95,81 +92,81 @@ random_groupname = random_name
 
 
 def random_int(bottom_end=0, top_end=9):
-	# type: (int, int) -> str
-	return str(randint(bottom_end, top_end))
+    # type: (int, int) -> str
+    return str(randint(bottom_end, top_end))
 
 
 def random_version(elements=3):
-	# type: (int) -> str
-	return '.'.join(random_int(0, 9) for _ in range(elements))
+    # type: (int) -> str
+    return '.'.join(random_int(0, 9) for _ in range(elements))
 
 
 def random_ucs_version(min_major=1, max_major=9, min_minor=0, max_minor=99, min_patchlevel=0, max_patchlevel=99):
-	# type: (int, int, int, int, int, int) -> str
-	return '%s.%s-%s' % (
-		randint(min_major, max_major),
-		randint(min_minor, max_minor),
-		randint(min_patchlevel, max_patchlevel),
-	)
+    # type: (int, int, int, int, int, int) -> str
+    return '%s.%s-%s' % (
+        randint(min_major, max_major),
+        randint(min_minor, max_minor),
+        randint(min_patchlevel, max_patchlevel),
+    )
 
 
 def random_mac():
-	# type: () -> str
-	return ':'.join(
-		f"{randint(0, 0x7f if i < 4 else 0xff):02x}"
-		for i in range(6)
-	)
+    # type: () -> str
+    return ':'.join(
+        f"{randint(0, 0x7f if i < 4 else 0xff):02x}"
+        for i in range(6)
+    )
 
 
 def random_ip(ip_iter=iter(range(11, 121))):
-	# type: (Iterator[int]) -> str
-	"""Returns 110 different ip addresses in the range 11.x.x.x-120.x.x.x"""
-	return '%d.%d.%d.%d' % (
-		next(ip_iter),
-		randint(1, 254),
-		randint(1, 254),
-		randint(1, 254),
-	)
+    # type: (Iterator[int]) -> str
+    """Returns 110 different ip addresses in the range 11.x.x.x-120.x.x.x"""
+    return '%d.%d.%d.%d' % (
+        next(ip_iter),
+        randint(1, 254),
+        randint(1, 254),
+        randint(1, 254),
+    )
 
 
 def random_subnet(ip_iter=iter(range(11, 121))):
-	# type: (Iterator[int]) -> str
-	"""Returns 110 different ip addresses in the range 11.x.x.x-120.x.x.x"""
-	return '%d.%d.%d' % (
-		next(ip_iter),
-		randint(1, 254),
-		randint(1, 254),
-	)
+    # type: (Iterator[int]) -> str
+    """Returns 110 different ip addresses in the range 11.x.x.x-120.x.x.x"""
+    return '%d.%d.%d' % (
+        next(ip_iter),
+        randint(1, 254),
+        randint(1, 254),
+    )
 
 
 def random_ipv6_subnet():
-	# type: () -> str
-	"""Returns random six blocks of an ipv6 address """
-	m = 16**4
-	return ":".join("%04x" % randint(0, m) for i in range(6))
+    # type: () -> str
+    """Returns random six blocks of an ipv6 address"""
+    m = 16**4
+    return ":".join("%04x" % randint(0, m) for i in range(6))
 
 
 def random_domain_name(length=10):
-	# type: (int) -> str
-	return '%s.%s' % (
-		random_string(length=length // 2, alpha=True, numeric=False),
-		random_string(length=length - length // 2, alpha=True, numeric=False),
-	)
+    # type: (int) -> str
+    return '%s.%s' % (
+        random_string(length=length // 2, alpha=True, numeric=False),
+        random_string(length=length - length // 2, alpha=True, numeric=False),
+    )
 
 
 def random_dns_record():
-	# type: () -> str
-	# Bug #49679: the S4-Connector always appends a dot to nSRecord and ptrRecords without dot
-	return f'{random_string()}.'
+    # type: () -> str
+    # Bug #49679: the S4-Connector always appends a dot to nSRecord and ptrRecords without dot
+    return f'{random_string()}.'
 
 
 def random_date():  # type: () -> str
-	return '20%02d-%02d-%02d' % (randint(0, 99), randint(1, 12), randint(1, 27))
+    return '20%02d-%02d-%02d' % (randint(0, 99), randint(1, 12), randint(1, 27))
 
 
 def random_time(range_hour=(0, 23)):  # type: (Tuple[int, int]) -> str
-	return '%02d:%02d:%02d' % (randint(*range_hour), randint(0, 60), randint(0, 60))
+    return '%02d:%02d:%02d' % (randint(*range_hour), randint(0, 60), randint(0, 60))
 
 
 def random_email():  # type: () -> str
-	return f'{random_name()}@{random_domain_name()}'
+    return f'{random_name()}@{random_domain_name()}'

@@ -14,12 +14,12 @@ import samltest
 
 
 def main():
-	SamlSession = samltest.SamlTest('NonExistent3.14', 'univention')
+    SamlSession = samltest.SamlTest('NonExistent3.14', 'univention')
 
-	with pytest.raises(samltest.SamlAuthenticationFailed):
-		SamlSession.login_with_new_session_at_IdP()
+    with pytest.raises(samltest.SamlAuthenticationFailed):
+        SamlSession.login_with_new_session_at_IdP()
 
 
 if __name__ == '__main__':
-	main()
-	print("Success: It is not possible to login with non existing account")
+    main()
+    print("Success: It is not possible to login with non existing account")

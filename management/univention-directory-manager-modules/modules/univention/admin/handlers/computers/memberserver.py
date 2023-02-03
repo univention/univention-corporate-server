@@ -30,18 +30,17 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-"""
-|UDM| module for the Managed Nodes
-"""
+"""|UDM| module for the Managed Nodes"""
 
-from univention.admin.layout import Tab, Group
 import univention.admin.handlers
 import univention.admin.localization
 import univention.admin.mapping
 import univention.admin.syntax
-import univention.admin.nagios as nagios
-from univention.admin.handlers.computers.__base import ComputerObject
+from univention.admin import nagios
 from univention.admin.certificate import register_pki_integration
+from univention.admin.handlers.computers.__base import ComputerObject
+from univention.admin.layout import Group, Tab
+
 
 translation = univention.admin.localization.translation('univention.admin.handlers.computers')
 _ = translation.translate
@@ -55,234 +54,234 @@ object_name = _('Managed Node')
 object_name_plural = _('Managed Nodes')
 long_description = ''
 options = {
-	'default': univention.admin.option(
-		short_description=short_description,
-		default=True,
-		objectClasses=('top', 'person', 'univentionHost', 'univentionMemberServer'),
-	),
-	'posix': univention.admin.option(
-		short_description=_('Posix account'),
-		default=1,
-		objectClasses=('posixAccount', 'shadowAccount'),
-	),
-	'kerberos': univention.admin.option(
-		short_description=_('Kerberos principal'),
-		default=1,
-		objectClasses=('krb5Principal', 'krb5KDCEntry'),
-	),
-	'samba': univention.admin.option(
-		short_description=_('Samba account'),
-		editable=True,
-		default=1,
-		objectClasses=('sambaSamAccount',),
-	),
+    'default': univention.admin.option(
+        short_description=short_description,
+        default=True,
+        objectClasses=('top', 'person', 'univentionHost', 'univentionMemberServer'),
+    ),
+    'posix': univention.admin.option(
+        short_description=_('Posix account'),
+        default=1,
+        objectClasses=('posixAccount', 'shadowAccount'),
+    ),
+    'kerberos': univention.admin.option(
+        short_description=_('Kerberos principal'),
+        default=1,
+        objectClasses=('krb5Principal', 'krb5KDCEntry'),
+    ),
+    'samba': univention.admin.option(
+        short_description=_('Samba account'),
+        editable=True,
+        default=1,
+        objectClasses=('sambaSamAccount',),
+    ),
 }
 property_descriptions = {
-	'name': univention.admin.property(
-		short_description=_('Managed Node name'),
-		long_description='',
-		syntax=univention.admin.syntax.hostName,
-		include_in_default_search=True,
-		required=True,
-		may_change=False,
-		identifies=True
-	),
-	'description': univention.admin.property(
-		short_description=_('Description'),
-		long_description='',
-		syntax=univention.admin.syntax.string,
-		include_in_default_search=True,
-	),
-	'operatingSystem': univention.admin.property(
-		short_description=_('Operating system'),
-		long_description='',
-		syntax=univention.admin.syntax.string,
-		include_in_default_search=True,
-	),
-	'operatingSystemVersion': univention.admin.property(
-		short_description=_('Operating system version'),
-		long_description='',
-		syntax=univention.admin.syntax.string,
-	),
-	'domain': univention.admin.property(
-		short_description=_('Domain'),
-		long_description='',
-		syntax=univention.admin.syntax.string,
-		include_in_default_search=True,
-	),
-	'mac': univention.admin.property(
-		short_description=_('MAC address'),
-		long_description='',
-		syntax=univention.admin.syntax.MAC_Address,
-		multivalue=True,
-		include_in_default_search=True,
-	),
-	'network': univention.admin.property(
-		short_description=_('Network'),
-		long_description='',
-		syntax=univention.admin.syntax.network,
-	),
-	'ip': univention.admin.property(
-		short_description=_('IP address'),
-		long_description='',
-		syntax=univention.admin.syntax.ipAddress,
-		multivalue=True,
-		include_in_default_search=True,
-	),
-	'serverRole': univention.admin.property(
-		short_description=_('System role'),
-		long_description='',
-		syntax=univention.admin.syntax.string,
-		multivalue=True,
-		include_in_default_search=True,
-	),
-	'service': univention.admin.property(
-		short_description=_('Service'),
-		long_description='',
-		syntax=univention.admin.syntax.Service,
-		multivalue=True,
-	),
-	'dnsEntryZoneForward': univention.admin.property(
-		short_description=_('Forward zone for DNS entry'),
-		long_description='',
-		syntax=univention.admin.syntax.dnsEntry,
-		multivalue=True,
-		dontsearch=True,
-	),
-	'dnsEntryZoneReverse': univention.admin.property(
-		short_description=_('Reverse zone for DNS entry'),
-		long_description='',
-		syntax=univention.admin.syntax.dnsEntryReverse,
-		multivalue=True,
-		dontsearch=True,
-	),
-	'dnsEntryZoneAlias': univention.admin.property(
-		short_description=_('Zone for DNS alias'),
-		long_description='',
-		syntax=univention.admin.syntax.dnsEntryAlias,
-		multivalue=True,
-		dontsearch=True,
-	),
-	'dnsAlias': univention.admin.property(
-		short_description=_('DNS alias'),
-		long_description='',
-		syntax=univention.admin.syntax.string,
-		multivalue=True,
-	),
-	'dhcpEntryZone': univention.admin.property(
-		short_description=_('DHCP service'),
-		long_description='',
-		syntax=univention.admin.syntax.dhcpEntry,
-		multivalue=True,
-		dontsearch=True,
-	),
-	'password': univention.admin.property(
-		short_description=_('Password'),
-		long_description='',
-		syntax=univention.admin.syntax.passwd,
-		options=['kerberos', 'posix', 'samba'],
-		dontsearch=True
-	),
-	'unixhome': univention.admin.property(
-		short_description=_('Unix home directory'),
-		long_description='',
-		syntax=univention.admin.syntax.absolutePath,
-		options=['posix'],
-		required=True,
-		default=('/dev/null', [])
-	),
-	'shell': univention.admin.property(
-		short_description=_('Login shell'),
-		long_description='',
-		syntax=univention.admin.syntax.string,
-		options=['posix'],
-		default=('/bin/bash', [])
-	),
-	'primaryGroup': univention.admin.property(
-		short_description=_('Primary group'),
-		long_description='',
-		syntax=univention.admin.syntax.GroupDN,
-		options=['posix'],
-		required=True,
-		dontsearch=True,
-	),
-	'reinstall': univention.admin.property(
-		short_description=_('(Re-)install on next boot'),
-		long_description='',
-		syntax=univention.admin.syntax.boolean,
-	),
-	'reinstalloption': univention.admin.property(
-		short_description=_('additional start options'),
-		long_description='',
-		syntax=univention.admin.syntax.string,
-	),
-	'instprofile': univention.admin.property(
-		short_description=_('Name of installation profile'),
-		long_description='',
-		syntax=univention.admin.syntax.string,
-	),
-	'inventoryNumber': univention.admin.property(
-		short_description=_('Inventory number'),
-		long_description='',
-		syntax=univention.admin.syntax.string,
-		multivalue=True,
-		include_in_default_search=True,
-	),
-	'groups': univention.admin.property(
-		short_description=_('Groups'),
-		long_description='',
-		syntax=univention.admin.syntax.GroupDN,
-		multivalue=True,
-		dontsearch=True,
-	),
-	'sambaRID': univention.admin.property(
-		short_description=_('Relative ID'),
-		long_description='',
-		syntax=univention.admin.syntax.integer,
-		dontsearch=True,
-		options=['samba']
-	),
+    'name': univention.admin.property(
+        short_description=_('Managed Node name'),
+        long_description='',
+        syntax=univention.admin.syntax.hostName,
+        include_in_default_search=True,
+        required=True,
+        may_change=False,
+        identifies=True,
+    ),
+    'description': univention.admin.property(
+        short_description=_('Description'),
+        long_description='',
+        syntax=univention.admin.syntax.string,
+        include_in_default_search=True,
+    ),
+    'operatingSystem': univention.admin.property(
+        short_description=_('Operating system'),
+        long_description='',
+        syntax=univention.admin.syntax.string,
+        include_in_default_search=True,
+    ),
+    'operatingSystemVersion': univention.admin.property(
+        short_description=_('Operating system version'),
+        long_description='',
+        syntax=univention.admin.syntax.string,
+    ),
+    'domain': univention.admin.property(
+        short_description=_('Domain'),
+        long_description='',
+        syntax=univention.admin.syntax.string,
+        include_in_default_search=True,
+    ),
+    'mac': univention.admin.property(
+        short_description=_('MAC address'),
+        long_description='',
+        syntax=univention.admin.syntax.MAC_Address,
+        multivalue=True,
+        include_in_default_search=True,
+    ),
+    'network': univention.admin.property(
+        short_description=_('Network'),
+        long_description='',
+        syntax=univention.admin.syntax.network,
+    ),
+    'ip': univention.admin.property(
+        short_description=_('IP address'),
+        long_description='',
+        syntax=univention.admin.syntax.ipAddress,
+        multivalue=True,
+        include_in_default_search=True,
+    ),
+    'serverRole': univention.admin.property(
+        short_description=_('System role'),
+        long_description='',
+        syntax=univention.admin.syntax.string,
+        multivalue=True,
+        include_in_default_search=True,
+    ),
+    'service': univention.admin.property(
+        short_description=_('Service'),
+        long_description='',
+        syntax=univention.admin.syntax.Service,
+        multivalue=True,
+    ),
+    'dnsEntryZoneForward': univention.admin.property(
+        short_description=_('Forward zone for DNS entry'),
+        long_description='',
+        syntax=univention.admin.syntax.dnsEntry,
+        multivalue=True,
+        dontsearch=True,
+    ),
+    'dnsEntryZoneReverse': univention.admin.property(
+        short_description=_('Reverse zone for DNS entry'),
+        long_description='',
+        syntax=univention.admin.syntax.dnsEntryReverse,
+        multivalue=True,
+        dontsearch=True,
+    ),
+    'dnsEntryZoneAlias': univention.admin.property(
+        short_description=_('Zone for DNS alias'),
+        long_description='',
+        syntax=univention.admin.syntax.dnsEntryAlias,
+        multivalue=True,
+        dontsearch=True,
+    ),
+    'dnsAlias': univention.admin.property(
+        short_description=_('DNS alias'),
+        long_description='',
+        syntax=univention.admin.syntax.string,
+        multivalue=True,
+    ),
+    'dhcpEntryZone': univention.admin.property(
+        short_description=_('DHCP service'),
+        long_description='',
+        syntax=univention.admin.syntax.dhcpEntry,
+        multivalue=True,
+        dontsearch=True,
+    ),
+    'password': univention.admin.property(
+        short_description=_('Password'),
+        long_description='',
+        syntax=univention.admin.syntax.passwd,
+        options=['kerberos', 'posix', 'samba'],
+        dontsearch=True,
+    ),
+    'unixhome': univention.admin.property(
+        short_description=_('Unix home directory'),
+        long_description='',
+        syntax=univention.admin.syntax.absolutePath,
+        options=['posix'],
+        required=True,
+        default=('/dev/null', []),
+    ),
+    'shell': univention.admin.property(
+        short_description=_('Login shell'),
+        long_description='',
+        syntax=univention.admin.syntax.string,
+        options=['posix'],
+        default=('/bin/bash', []),
+    ),
+    'primaryGroup': univention.admin.property(
+        short_description=_('Primary group'),
+        long_description='',
+        syntax=univention.admin.syntax.GroupDN,
+        options=['posix'],
+        required=True,
+        dontsearch=True,
+    ),
+    'reinstall': univention.admin.property(
+        short_description=_('(Re-)install on next boot'),
+        long_description='',
+        syntax=univention.admin.syntax.boolean,
+    ),
+    'reinstalloption': univention.admin.property(
+        short_description=_('additional start options'),
+        long_description='',
+        syntax=univention.admin.syntax.string,
+    ),
+    'instprofile': univention.admin.property(
+        short_description=_('Name of installation profile'),
+        long_description='',
+        syntax=univention.admin.syntax.string,
+    ),
+    'inventoryNumber': univention.admin.property(
+        short_description=_('Inventory number'),
+        long_description='',
+        syntax=univention.admin.syntax.string,
+        multivalue=True,
+        include_in_default_search=True,
+    ),
+    'groups': univention.admin.property(
+        short_description=_('Groups'),
+        long_description='',
+        syntax=univention.admin.syntax.GroupDN,
+        multivalue=True,
+        dontsearch=True,
+    ),
+    'sambaRID': univention.admin.property(
+        short_description=_('Relative ID'),
+        long_description='',
+        syntax=univention.admin.syntax.integer,
+        dontsearch=True,
+        options=['samba'],
+    ),
 }
 
 layout = [
-	Tab(_('General'), _('Basic settings'), layout=[
-		Group(_('Computer account'), layout=[
-			['name', 'description'],
-			'inventoryNumber',
-		]),
-		Group(_('Network settings '), layout=[
-			'network',
-			'mac',
-			'ip',
-		]),
-		Group(_('DNS Forward and Reverse Lookup Zone'), layout=[
-			'dnsEntryZoneForward',
-			'dnsEntryZoneReverse',
-		]),
-		Group(_('DHCP'), layout=[
-			'dhcpEntryZone'
-		]),
-	]),
-	Tab(_('Account'), _('Account'), advanced=True, layout=[
-		'password',
-		'primaryGroup'
-	]),
-	Tab(_('Unix account'), _('Unix account settings'), advanced=True, layout=[
-		['unixhome', 'shell']
-	]),
-	Tab(_('Services'), _('Services'), advanced=True, layout=[
-		'service',
-	]),
-	Tab(_('Deployment'), _('Deployment'), advanced=True, layout=[
-		['reinstall'],
-		['instprofile', 'reinstalloption']
-	]),
-	Tab(_('Groups'), _('Group memberships'), advanced=True, layout=[
-		'groups',
-	]),
-	Tab(_('DNS alias'), _('Alias DNS entry'), advanced=True, layout=[
-		'dnsEntryZoneAlias'
-	]),
+    Tab(_('General'), _('Basic settings'), layout=[
+        Group(_('Computer account'), layout=[
+            ['name', 'description'],
+            'inventoryNumber',
+        ]),
+        Group(_('Network settings '), layout=[
+            'network',
+            'mac',
+            'ip',
+        ]),
+        Group(_('DNS Forward and Reverse Lookup Zone'), layout=[
+            'dnsEntryZoneForward',
+            'dnsEntryZoneReverse',
+        ]),
+        Group(_('DHCP'), layout=[
+            'dhcpEntryZone',
+        ]),
+    ]),
+    Tab(_('Account'), _('Account'), advanced=True, layout=[
+        'password',
+        'primaryGroup',
+    ]),
+    Tab(_('Unix account'), _('Unix account settings'), advanced=True, layout=[
+        ['unixhome', 'shell'],
+    ]),
+    Tab(_('Services'), _('Services'), advanced=True, layout=[
+        'service',
+    ]),
+    Tab(_('Deployment'), _('Deployment'), advanced=True, layout=[
+        ['reinstall'],
+        ['instprofile', 'reinstalloption'],
+    ]),
+    Tab(_('Groups'), _('Group memberships'), advanced=True, layout=[
+        'groups',
+    ]),
+    Tab(_('DNS alias'), _('Alias DNS entry'), advanced=True, layout=[
+        'dnsEntryZoneAlias',
+    ]),
 ]
 
 mapping = univention.admin.mapping.mapping()
@@ -308,10 +307,10 @@ register_pki_integration(property_descriptions, mapping, options, layout)
 
 
 class object(ComputerObject):
-	module = module
-	CONFIG_NAME = 'univentionDefaultMemberserverGroup'
-	SAMBA_ACCOUNT_FLAG = 'W'
-	SERVER_ROLE = 'member'
+    module = module
+    CONFIG_NAME = 'univentionDefaultMemberserverGroup'
+    SAMBA_ACCOUNT_FLAG = 'W'
+    SERVER_ROLE = 'member'
 
 
 rewrite = object.rewrite_filter

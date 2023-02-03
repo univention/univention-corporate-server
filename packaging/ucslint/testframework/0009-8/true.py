@@ -6,7 +6,7 @@ from univention.config_registry import ConfigRegistry
 def main():
     ucr = ConfigRegistry()
     configRegistry = univention.config_registry.ConfigRegistry()
-    print ucr['repository/online']in('1','yes','true','enable','enabled')  # noqa
+    print ucr['repository/online'] in ('1', 'yes', 'true', 'enable', 'enabled')  # noqa
     print configRegistry.get('repository/online') not in ('0', 'no', 'false', 'disable', 'disabled', )
     return self.get(key).lower() in ('no', 'false', '0', 'disable', 'disabled', 'off')
 

@@ -6,28 +6,28 @@ from univention.updater.errors import UpdaterException
 from univention.updater.tools import UniventionUpdater
 
 try:
-	updater = UniventionUpdater()
+    updater = UniventionUpdater()
 
-	if updater.online_repository:
-		ver = updater.current_version
-		for comp in sorted(updater.get_components()):
-			try:
-				for repo in comp.repositories(ver, ver):
-					print(repo)
-			except UpdaterException as ex:
-				print("# Component %s: %s" % (comp.name, ex))
-	else:
-		print('# The online repository is disabled and can be enabled with:')
-		print('#   univention-config-registry set repository/online=true')
-		print('')
+    if updater.online_repository:
+        ver = updater.current_version
+        for comp in sorted(updater.get_components()):
+            try:
+                for repo in comp.repositories(ver, ver):
+                    print(repo)
+            except UpdaterException as ex:
+                print("# Component %s: %s" % (comp.name, ex))
+    else:
+        print('# The online repository is disabled and can be enabled with:')
+        print('#   univention-config-registry set repository/online=true')
+        print('')
 except Exception:
-	print('# An error occurred during the repository check. The error message:')
-	for line in traceback.format_exc().splitlines():
-		print('#   %s' % line)
-	print('#')
-	print('')
-	print('# After fixing this issue, you should rewrite this file with the following command:')
-	print('#   univention-config-registry commit /etc/apt/sources.list.d/20_ucs-online-component.list')
-	print('#')
-	print('')
+    print('# An error occurred during the repository check. The error message:')
+    for line in traceback.format_exc().splitlines():
+        print('#   %s' % line)
+    print('#')
+    print('')
+    print('# After fixing this issue, you should rewrite this file with the following command:')
+    print('#   univention-config-registry commit /etc/apt/sources.list.d/20_ucs-online-component.list')
+    print('#')
+    print('')
 @!@

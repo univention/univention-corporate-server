@@ -41,49 +41,51 @@ import pwd
 from subprocess import call
 from typing import Dict, List
 
-import listener
 import univention.debug as ud
+
+import listener
+
 
 server_role = listener.configRegistry['server/role']
 
 
 description = 'Kerberos 5 keytab maintenance for Managed Nodes'
 filter = (
-	'(&'
-	'(objectClass=krb5Principal)'
-	'(objectClass=krb5KDCEntry)'
-	'(krb5KeyVersionNumber=*)'
-	'(objectClass=univentionMemberServer)'
-	')'
+    '(&'
+    '(objectClass=krb5Principal)'
+    '(objectClass=krb5KDCEntry)'
+    '(krb5KeyVersionNumber=*)'
+    '(objectClass=univentionMemberServer)'
+    ')'
 )
 
 
 def handler(dn: str, new: Dict[str, List[bytes]], old: Dict[str, List[bytes]]) -> None:
-	if not new.get('krb5Key'):
-		return
+    if not new.get('krb5Key'):
+        return
 
-	if server_role == 'domaincontroller_master':
-		listener.setuid(0)
-		try:
-			if old:
-				cn = old['cn'][0].decode('UTF-8')
-				ud.debug(ud.LISTENER, ud.PROCESS, 'Purging krb5.keytab of %s' % (cn,))
-				ktab = '/var/lib/univention-heimdal/%s' % (cn,)
-				try:
-					os.unlink(ktab)
-				except EnvironmentError:
-					pass
-			if new:
-				cn = new['cn'][0].decode('UTF-8')
-				ud.debug(ud.LISTENER, ud.PROCESS, 'Generating krb5.keytab for %s' % (cn,))
-				ktab = '/var/lib/univention-heimdal/%s' % (cn,)
-				# FIXME: otherwise the keytab entry is duplicated
-				call(['kadmin', '-l', 'ext', '--keytab=%s' % (ktab,), new['krb5PrincipalName'][0].decode('UTF-8')])
-				try:
-					userID = pwd.getpwnam('%s$' % cn)[2]
-					os.chown(ktab, userID, 0)
-					os.chmod(ktab, 0o660)
-				except (KeyError, EnvironmentError):
-					pass
-		finally:
-			listener.unsetuid()
+    if server_role == 'domaincontroller_master':
+        listener.setuid(0)
+        try:
+            if old:
+                cn = old['cn'][0].decode('UTF-8')
+                ud.debug(ud.LISTENER, ud.PROCESS, 'Purging krb5.keytab of %s' % (cn,))
+                ktab = '/var/lib/univention-heimdal/%s' % (cn,)
+                try:
+                    os.unlink(ktab)
+                except EnvironmentError:
+                    pass
+            if new:
+                cn = new['cn'][0].decode('UTF-8')
+                ud.debug(ud.LISTENER, ud.PROCESS, 'Generating krb5.keytab for %s' % (cn,))
+                ktab = '/var/lib/univention-heimdal/%s' % (cn,)
+                # FIXME: otherwise the keytab entry is duplicated
+                call(['kadmin', '-l', 'ext', '--keytab=%s' % (ktab,), new['krb5PrincipalName'][0].decode('UTF-8')])
+                try:
+                    userID = pwd.getpwnam('%s$' % cn)[2]
+                    os.chown(ktab, userID, 0)
+                    os.chmod(ktab, 0o660)
+                except (KeyError, EnvironmentError):
+                    pass
+        finally:
+            listener.unsetuid()

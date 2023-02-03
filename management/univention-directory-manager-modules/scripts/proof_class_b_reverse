@@ -31,46 +31,45 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-"""
-Script for converting wrong class b network entries
-"""
+"""Script for converting wrong class b network entries"""
 
 from __future__ import print_function
 
+import sys
+
 import ldap
 from ldap.filter import filter_format
-import sys
 
 import univention.config_registry
 import univention.uldap
 
 
 def main():
-	# type: () -> None
-	ucr = univention.config_registry.ConfigRegistry()
-	ucr.load()
+    # type: () -> None
+    ucr = univention.config_registry.ConfigRegistry()
+    ucr.load()
 
-	baseDN = ucr['ldap/base']
+    baseDN = ucr['ldap/base']
 
-	if ucr.get('interfaces/eth0/netmask') != "255.255.0.0":
-		print('Only for Class B')
-		sys.exit(1)
+    if ucr.get('interfaces/eth0/netmask') != "255.255.0.0":
+        print('Only for Class B')
+        sys.exit(1)
 
-	lo = univention.uldap.getAdminConnection().lo
+    lo = univention.uldap.getAdminConnection().lo
 
-	computers = lo.search_s(baseDN, ldap.SCOPE_SUBTREE, 'objectClass=univentionHost', ['aRecord'])
+    computers = lo.search_s(baseDN, ldap.SCOPE_SUBTREE, 'objectClass=univentionHost', ['aRecord'])
 
-	for computerdn, attrs in computers:
-		print('DN: %s' % computerdn)
-		if 'aRecord' in attrs:
-			entry = attrs['aRecord'][0].decode('utf-8').split(u'.')[2:4]
-			for reverse in lo.search_s('cn=dns,%s' % baseDN, ldap.SCOPE_SUBTREE, filter_format('(&(relativeDomainName=%s)(pTRRecord=%s*))', (u'.'.join(entry), ldap.dn.str2dn(computerdn)[0][0][1]))):
-				print('Wrong DNS Reverse Entry for %s: %s' % (computerdn, reverse[0]))
-				entry.reverse()
-				entry = u'.'.join(entry)
-				lo.modrdn_s(reverse[0], u'relativeDomainName=%s' % entry)
-				break
+    for computerdn, attrs in computers:
+        print('DN: %s' % computerdn)
+        if 'aRecord' in attrs:
+            entry = attrs['aRecord'][0].decode('utf-8').split(u'.')[2:4]
+            for reverse in lo.search_s('cn=dns,%s' % baseDN, ldap.SCOPE_SUBTREE, filter_format('(&(relativeDomainName=%s)(pTRRecord=%s*))', (u'.'.join(entry), ldap.dn.str2dn(computerdn)[0][0][1]))):
+                print('Wrong DNS Reverse Entry for %s: %s' % (computerdn, reverse[0]))
+                entry.reverse()
+                entry = u'.'.join(entry)
+                lo.modrdn_s(reverse[0], u'relativeDomainName=%s' % entry)
+                break
 
 
 if __name__ == "__main__":
-	main()
+    main()

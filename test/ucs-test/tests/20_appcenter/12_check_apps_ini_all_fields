@@ -13,8 +13,9 @@ from optparse import OptionParser
 from re import compile as regex_compile
 from sys import stderr
 
-import univention.testing.utils as utils
 from univention.appcenter.app_cache import Apps
+from univention.testing import utils
+
 
 failures = 0
 
@@ -138,7 +139,7 @@ class Value:
             'domaincontroller_master',
             'domaincontroller_backup',
             'domaincontroller_slave',
-            'memberserver'
+            'memberserver',
         }
 
         values = map(str.strip, self.value.split(','))
@@ -176,45 +177,45 @@ class Section:
         'Code': ('required',),
         'ConflictedApps': ('optional',),
         'ConflictedSystemPackages': ('optional',),
-        'Contact': ('required', 'is_email',),
-        'DefaultPackagesMaster': ('optional', 'deprecated_master_packages',),
+        'Contact': ('required', 'is_email'),
+        'DefaultPackagesMaster': ('optional', 'deprecated_master_packages'),
         'DefaultPackages': ('optional',),
-        'Description': ('required', 'is_180c',),
+        'Description': ('required', 'is_180c'),
         'EmailRequired': ('optional',),
-        'EndOfLife': ('optional', 'is_bool',),
+        'EndOfLife': ('optional', 'is_bool'),
         'ID': ('required',),
         'LicenseFile': ('optional',),
         'LongDescription': ('required',),
         'Maintainer': ('optional',),
-        'MinPhysicalRAM': ('optional', 'is_capacity',),
+        'MinPhysicalRAM': ('optional', 'is_capacity'),
         'Name': ('required',),
-        'NotificationEmail': ('optional', 'is_email',),
-        'NotifyVendor': ('optional', 'is_bool',),
+        'NotificationEmail': ('optional', 'is_email'),
+        'NotifyVendor': ('optional', 'is_bool'),
         'RequiredApps': ('optional',),
         'Screenshot': ('optional',),
-        'ServerRole': ('optional', 'is_role',),
-        'ShopURL': ('optional', 'is_www',),
-        'SupportedArchitectures': ('optional', 'is_arch',),
-        'SupportURL': ('optional', 'is_www',),
-        'UCSOverviewCategory': ('optional', 'is_category',),
+        'ServerRole': ('optional', 'is_role'),
+        'ShopURL': ('optional', 'is_www'),
+        'SupportedArchitectures': ('optional', 'is_arch'),
+        'SupportURL': ('optional', 'is_www'),
+        'UCSOverviewCategory': ('optional', 'is_category'),
         'UMCModuleFlavor': ('optional',),
         'UMCModuleName': ('optional',),
-        'UserActivationRequired': ('optional', 'is_bool',),
-        'UseShop': ('optional', 'is_bool',),
+        'UserActivationRequired': ('optional', 'is_bool'),
+        'UseShop': ('optional', 'is_bool'),
         'Vendor': ('optional',),
         'Version': ('required',),
-        'VisibleInAppCatalogue': ('optional', 'is_bool',),
+        'VisibleInAppCatalogue': ('optional', 'is_bool'),
         'WebInterfaceName': ('optional',),
-        'WebInterface': ('optional', 'is_url',),
-        'WebsiteMaintainer': ('optional', 'is_www',),
-        'Website': ('optional', 'is_www',),
-        'Websitevendor': ('optional', 'is_www',),
-        'WithoutRepository': ('optional', 'is_bool',)}
+        'WebInterface': ('optional', 'is_url'),
+        'WebsiteMaintainer': ('optional', 'is_www'),
+        'Website': ('optional', 'is_www'),
+        'Websitevendor': ('optional', 'is_www'),
+        'WithoutRepository': ('optional', 'is_bool')}
 
     SIZING = {
         'CPU': ('optional',),
-        'RAM': ('optional', 'is_capacity',),
-        'Disk': ('optional', 'is_capacity',)}
+        'RAM': ('optional', 'is_capacity'),
+        'Disk': ('optional', 'is_capacity')}
 
     TRANSLATION = {
         'Name': ('optional',) + APPLICATION['Name'],
@@ -278,9 +279,7 @@ class Section:
 
 
 def exclude_ignored(names, remove):
-    """
-    Removes the given 'remove' from the given 'names' when it is in.
-    """
+    """Removes the given 'remove' from the given 'names' when it is in."""
     for name in remove:
         try:
             names.remove(name)

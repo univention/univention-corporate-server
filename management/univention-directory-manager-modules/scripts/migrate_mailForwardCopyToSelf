@@ -53,64 +53,64 @@ from univention.config_registry import ConfigRegistry
 
 
 def main():
-	# type: () -> None
-	args = parse_args()
+    # type: () -> None
+    args = parse_args()
 
-	ucr = ConfigRegistry()
-	ucr.load()
+    ucr = ConfigRegistry()
+    ucr.load()
 
-	if ucr.get("server/role") in ["domaincontroller_master", "domaincontroller_backup"]:
-		lo, po = univention.admin.uldap.getAdminConnection()
-	else:
-		print("ERROR: this script may only be called on a Primary Directory Node and Backup Directory Node ")
-		print("(previously DC master and DC backup).")
-		sys.exit(1)
+    if ucr.get("server/role") in ["domaincontroller_master", "domaincontroller_backup"]:
+        lo, po = univention.admin.uldap.getAdminConnection()
+    else:
+        print("ERROR: this script may only be called on a Primary Directory Node and Backup Directory Node ")
+        print("(previously DC master and DC backup).")
+        sys.exit(1)
 
-	modify = args.modify
+    modify = args.modify
 
-	for dn, attr in lo.search("mailForwardAddress=*", attr=["mailForwardAddress", "mailPrimaryAddress", "mailForwardCopyToSelf"]):
-		if not attr["mailPrimaryAddress"]:
-			continue
-		ml = []
-		if attr["mailPrimaryAddress"][0] in attr["mailForwardAddress"]:
-			old_mail_forward_address = attr["mailForwardAddress"][:]
-			attr["mailForwardAddress"].remove(attr["mailPrimaryAddress"][0])
-			ml.append(("mailForwardCopyToSelf", attr.get("mailForwardCopyToSelf", []), [b"1"]))
-			ml.append(("mailForwardAddress", old_mail_forward_address, attr["mailForwardAddress"]))
+    for dn, attr in lo.search("mailForwardAddress=*", attr=["mailForwardAddress", "mailPrimaryAddress", "mailForwardCopyToSelf"]):
+        if not attr["mailPrimaryAddress"]:
+            continue
+        ml = []
+        if attr["mailPrimaryAddress"][0] in attr["mailForwardAddress"]:
+            old_mail_forward_address = attr["mailForwardAddress"][:]
+            attr["mailForwardAddress"].remove(attr["mailPrimaryAddress"][0])
+            ml.append(("mailForwardCopyToSelf", attr.get("mailForwardCopyToSelf", []), [b"1"]))
+            ml.append(("mailForwardAddress", old_mail_forward_address, attr["mailForwardAddress"]))
 
-		if ml:
-			print("user {}".format(dn))
-			for _attr, _old, _new in ml:
-				print("\t{} = {} -> {}".format(_attr, _old, _new))
-			if modify:
-				lo.modify(dn, ml)
-			else:
-				print("\tskipping (dry-run).")
+        if ml:
+            print(f"user {dn}")
+            for _attr, _old, _new in ml:
+                print(f"\t{_attr} = {_old} -> {_new}")
+            if modify:
+                lo.modify(dn, ml)
+            else:
+                print("\tskipping (dry-run).")
 
-	values = [
-		"directory/manager/user/activate_ldap_attribute_mailForwardCopyToSelf",
-		"mail/postfix/activate_unionmap_in_virtual_alias_maps",
-		"mail/postfix/activate_ldap_attribute_mailForwardCopyToSelf_in_virtual_alias_maps",
-	]
-	if not all([ucr.is_true(value) for value in values]) and modify:
-		print("Please execute the following command lines on the DC master and all mail servers, to complete the migration:")
-		print("$ ucr set directory/manager/user/activate_ldap_attribute_mailForwardCopyToSelf=yes")
-		print("$ ucr set mail/postfix/activate_unionmap_in_virtual_alias_maps=yes")
-		print("$ ucr set mail/postfix/activate_ldap_attribute_mailForwardCopyToSelf_in_virtual_alias_maps=yes")
-		print("$ systemctl restart postfix.service")
+    values = [
+        "directory/manager/user/activate_ldap_attribute_mailForwardCopyToSelf",
+        "mail/postfix/activate_unionmap_in_virtual_alias_maps",
+        "mail/postfix/activate_ldap_attribute_mailForwardCopyToSelf_in_virtual_alias_maps",
+    ]
+    if not all([ucr.is_true(value) for value in values]) and modify:
+        print("Please execute the following command lines on the DC master and all mail servers, to complete the migration:")
+        print("$ ucr set directory/manager/user/activate_ldap_attribute_mailForwardCopyToSelf=yes")
+        print("$ ucr set mail/postfix/activate_unionmap_in_virtual_alias_maps=yes")
+        print("$ ucr set mail/postfix/activate_ldap_attribute_mailForwardCopyToSelf_in_virtual_alias_maps=yes")
+        print("$ systemctl restart postfix.service")
 
 
 def parse_args():
-	parser = ArgumentParser(description=__doc__)
-	parser.add_argument(
-		'-m',
-		'--modify',
-		dest='modify',
-		action='store_true',
-		help="Commit changes to LDAP [default: %(default)s (dry run)].")
-	args = parser.parse_args()
-	return args
+    parser = ArgumentParser(description=__doc__)
+    parser.add_argument(
+        '-m',
+        '--modify',
+        dest='modify',
+        action='store_true',
+        help="Commit changes to LDAP [default: %(default)s (dry run)].")
+    args = parser.parse_args()
+    return args
 
 
 if __name__ == "__main__":
-	main()
+    main()

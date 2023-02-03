@@ -12,9 +12,11 @@
 #
 import os
 import sys
+from datetime import date
+
+
 # sys.path.insert(0, os.path.abspath('.'))
 
-from datetime import date
 
 # -- Project information -----------------------------------------------------
 
@@ -24,7 +26,7 @@ release = "5.0-3"
 version = "5.0"
 
 project = f'UCS {release} Changelog'
-copyright = '2021-{}, Univention GmbH'.format(date.today().year)
+copyright = f'2021-{date.today().year}, Univention GmbH'
 author = ''
 
 html_show_copyright = True

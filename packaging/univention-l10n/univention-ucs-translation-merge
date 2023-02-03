@@ -31,131 +31,135 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 from __future__ import print_function
+
 import argparse
 import os
 import re
-import sys
 import shutil
+import sys
+
 import univention.l10n as tlh
 import univention.l10n.umc as dh_umc
+
+
 try:
-	from typing import List, Set, Tuple  # noqa: F401
+    from typing import List, Set, Tuple  # noqa: F401
 except ImportError:
-	pass
+    pass
 
 
 def _get_po_files_from_dir(directory, return_relative_path=False):
-	# type: (str, bool) -> List[str]
-	po_files = []  # type: List[str]
-	for parent, dirs, files in os.walk(directory):
-		for po_file in files:
-			if not po_file.endswith('.po'):
-				continue
-			po_file = os.path.join(parent, po_file)
-			if return_relative_path:
-				po_files.append(os.path.relpath(po_file, start=directory))
-			else:
-				po_files.append(po_file)
-	return po_files
+    # type: (str, bool) -> List[str]
+    po_files = []  # type: List[str]
+    for parent, _dirs, files in os.walk(directory):
+        for po_file in files:
+            if not po_file.endswith('.po'):
+                continue
+            po_file = os.path.join(parent, po_file)
+            if return_relative_path:
+                po_files.append(os.path.relpath(po_file, start=directory))
+            else:
+                po_files.append(po_file)
+    return po_files
 
 
 def merge_po_file_trees(source_tree, target_tree):
-	# type: (str, str) -> Tuple[Set[str], Set[str]]
-	upstream_pos = _get_po_files_from_dir(source_tree, return_relative_path=True)
-	translated_pos = _get_po_files_from_dir(target_tree, return_relative_path=True)
+    # type: (str, str) -> Tuple[Set[str], Set[str]]
+    upstream_pos = _get_po_files_from_dir(source_tree, return_relative_path=True)
+    translated_pos = _get_po_files_from_dir(target_tree, return_relative_path=True)
 
-	new_pos = set(upstream_pos) - set(translated_pos)
-	pos_delete_upstream = set(translated_pos) - set(upstream_pos)
-	# remove deleted
-	for obsolete_po in pos_delete_upstream:
-		obsolete_po = os.path.join(target_tree, obsolete_po)
-		os.rename(obsolete_po, '{}.obsolete'.format(obsolete_po))
-	# add new
-	for new_po in new_pos:
-		new_po_path = os.path.join(target_tree, new_po)
-		try:
-			os.makedirs(os.path.dirname(new_po_path))
-		except OSError as exc:
-			if not exc.errno == 17:
-				raise
-		os.rename(os.path.join(source_tree, new_po), new_po_path)
-		upstream_pos.remove(new_po)
-	# merge upstream changes...
-	for po_file in upstream_pos:
-		tlh.message_catalogs.merge_po(os.path.join(source_tree, po_file), os.path.join(target_tree, po_file))
+    new_pos = set(upstream_pos) - set(translated_pos)
+    pos_delete_upstream = set(translated_pos) - set(upstream_pos)
+    # remove deleted
+    for obsolete_po in pos_delete_upstream:
+        obsolete_po = os.path.join(target_tree, obsolete_po)
+        os.rename(obsolete_po, '{}.obsolete'.format(obsolete_po))
+    # add new
+    for new_po in new_pos:
+        new_po_path = os.path.join(target_tree, new_po)
+        try:
+            os.makedirs(os.path.dirname(new_po_path))
+        except OSError as exc:
+            if not exc.errno == 17:
+                raise
+        os.rename(os.path.join(source_tree, new_po), new_po_path)
+        upstream_pos.remove(new_po)
+    # merge upstream changes...
+    for po_file in upstream_pos:
+        tlh.message_catalogs.merge_po(os.path.join(source_tree, po_file), os.path.join(target_tree, po_file))
 
-	return pos_delete_upstream, new_pos
+    return pos_delete_upstream, new_pos
 
 
 def parse_args():
-	# type: () -> argparse.Namespace
-	parser = argparse.ArgumentParser(description="Merge upstream changes in translation files to existing translation source package.")
-	parser.add_argument('upstream', type=str, help="Source from upstream containing changes")
-	parser.add_argument('translation', type=str, help="Translation source package as merge target.")
-	args = parser.parse_args()
+    # type: () -> argparse.Namespace
+    parser = argparse.ArgumentParser(description="Merge upstream changes in translation files to existing translation source package.")
+    parser.add_argument('upstream', type=str, help="Source from upstream containing changes")
+    parser.add_argument('translation', type=str, help="Translation source package as merge target.")
+    args = parser.parse_args()
 
-	args.translation = os.path.abspath(args.translation)
-	args.upstream = os.path.abspath(args.upstream)
-	for dir in (args.translation, args.upstream):
-		if not os.path.isdir(dir):
-			sys.exit("Error: {} is not a directory or doesn't exist. Exiting.".format(dir))
+    args.translation = os.path.abspath(args.translation)
+    args.upstream = os.path.abspath(args.upstream)
+    for dir in (args.translation, args.upstream):
+        if not os.path.isdir(dir):
+            sys.exit("Error: {} is not a directory or doesn't exist. Exiting.".format(dir))
 
-	return args
+    return args
 
 
 def main():
-	# type: () -> None
-	args = parse_args()
+    # type: () -> None
+    args = parse_args()
 
-	match = re.match(r'.*-([a-zA-Z]{2})', os.path.basename(args.translation))
-	if not match:
-		sys.exit("""Error: Unexpected translation source package name. Name must
+    match = re.match(r'.*-([a-zA-Z]{2})', os.path.basename(args.translation))
+    if not match:
+        sys.exit("""Error: Unexpected translation source package name. Name must
 end with two character language code, e.g. univention-l10n-fr. Exiting.""")
-	lang_code = match.group(1)
+    lang_code = match.group(1)
 
-	# Handle old translation package format
-	if not os.path.isfile(os.path.join(args.translation, 'all_targets.mk')):
-		try:
-			deb_dir = os.path.join(args.translation, 'debian')
-			os.remove(os.path.join(deb_dir, 'univention-ucs-translation-{}.install'.format(lang_code)))
-			tlh.template_file(deb_dir, "rules")
-			tlh.template_file(args.translation, "Makefile")
-		except Exception:
-			sys.exit("Error during handling of legacy translation package. Exiting.")
+    # Handle old translation package format
+    if not os.path.isfile(os.path.join(args.translation, 'all_targets.mk')):
+        try:
+            deb_dir = os.path.join(args.translation, 'debian')
+            os.remove(os.path.join(deb_dir, 'univention-ucs-translation-{}.install'.format(lang_code)))
+            tlh.template_file(deb_dir, "rules")
+            tlh.template_file(args.translation, "Makefile")
+        except Exception:
+            sys.exit("Error during handling of legacy translation package. Exiting.")
 
-	# generate {lang}_tomerge
-	dh_umc.LANGUAGES = (lang_code, )
-	modules_upstream = tlh.find_base_translation_modules(args.upstream)
-	output_dir = os.path.join(args.translation, '{}_merge'.format(lang_code))
-	modules = list()
-	for module_attrs in modules_upstream:
-		module = tlh.UMCModuleTranslation.from_source_package(module_attrs, lang_code)
-		modules.append(module)
-		tlh.update_package_translation_files(module, output_dir)
+    # generate {lang}_tomerge
+    dh_umc.LANGUAGES = (lang_code, )
+    modules_upstream = tlh.find_base_translation_modules(args.upstream)
+    output_dir = os.path.join(args.translation, '{}_merge'.format(lang_code))
+    modules = []
+    for module_attrs in modules_upstream:
+        module = tlh.UMCModuleTranslation.from_source_package(module_attrs, lang_code)
+        modules.append(module)
+        tlh.update_package_translation_files(module, output_dir)
 
-	# special cases, e.g. univention-management-console-frontend
-	special_cases = []  # type: List[tlh.SpecialCase]
-	try:
-		special_cases = tlh.get_special_cases_from_checkout(args.upstream, lang_code)
-	except tlh.NoSpecialCaseDefintionsFound:
-		print('''WARNING: The given directory doesn't seem to be the checkout
+    # special cases, e.g. univention-management-console-frontend
+    special_cases = []  # type: List[tlh.SpecialCase]
+    try:
+        special_cases = tlh.get_special_cases_from_checkout(args.upstream, lang_code)
+    except tlh.NoSpecialCaseDefintionsFound:
+        print('''WARNING: The given directory doesn't seem to be the checkout
 of a Univention source repository or the provided checkout is to old. This tool
 works for source trees of UCS 4.1-3, UCS@school 4.1r2 and later releases.
 Exiting.''')
-	for scase in special_cases:
-		tlh.translate_special_case(scase, args.upstream, output_dir)
+    for scase in special_cases:
+        tlh.translate_special_case(scase, args.upstream, output_dir)
 
-	removed, new = merge_po_file_trees(output_dir, os.path.join(args.translation, lang_code))
-	print('Merge summary: ')
-	if removed:
-		print('Following files have been removed:')
-		print('\n'.join(removed))
-	if new:
-		print('Following files habe been added:')
-		print('\n'.join(new))
-	shutil.rmtree(output_dir)
-	tlh.write_makefile(modules, special_cases, args.translation, lang_code)
+    removed, new = merge_po_file_trees(output_dir, os.path.join(args.translation, lang_code))
+    print('Merge summary: ')
+    if removed:
+        print('Following files have been removed:')
+        print('\n'.join(removed))
+    if new:
+        print('Following files habe been added:')
+        print('\n'.join(new))
+    shutil.rmtree(output_dir)
+    tlh.write_makefile(modules, special_cases, args.translation, lang_code)
 
 
 if __name__ == '__main__':
-	main()
+    main()

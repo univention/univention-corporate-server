@@ -31,9 +31,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-"""
-Added objectClass shaowAccount to computer objects.
-"""
+"""Added objectClass shaowAccount to computer objects."""
 
 from __future__ import print_function
 
@@ -44,35 +42,35 @@ import univention.uldap
 
 
 def main():
-	# type: () -> None
-	ucr = univention.config_registry.ConfigRegistry()
-	ucr.load()
+    # type: () -> None
+    ucr = univention.config_registry.ConfigRegistry()
+    ucr.load()
 
-	baseDN = ucr['ldap/base']
+    baseDN = ucr['ldap/base']
 
-	lo = univention.uldap.getAdminConnection().lo
+    lo = univention.uldap.getAdminConnection().lo
 
-	count_changes = 0
-	warning = 0
+    count_changes = 0
+    warning = 0
 
-	print("\n  proof if computer-accounts have objectClass shadowAccount")
+    print("\n  proof if computer-accounts have objectClass shadowAccount")
 
-	res_pA = lo.search_s(baseDN, ldap.SCOPE_SUBTREE, '(&(objectClass=univentionHost)(objectClass=posixAccount)(!(objectClass=shadowAccount)))', ['objectClass'])
+    res_pA = lo.search_s(baseDN, ldap.SCOPE_SUBTREE, '(&(objectClass=univentionHost)(objectClass=posixAccount)(!(objectClass=shadowAccount)))', ['objectClass'])
 
-	print("found %s Hosts which need to be changed:\n" % len(res_pA))
+    print("found %s Hosts which need to be changed:\n" % len(res_pA))
 
-	for posix_account, _ in res_pA:
-		modlist = [(ldap.MOD_ADD, 'objectClass', b'shadowAccount')]
-		try:
-			lo.modify_s(posix_account, modlist)
-			count_changes += 1
-			print("Modified %s" % posix_account)
-		except Exception:
-			print("Warning: failed to modify Host %s: " % posix_account)
-			warning += 1
+    for posix_account, _ in res_pA:
+        modlist = [(ldap.MOD_ADD, 'objectClass', b'shadowAccount')]
+        try:
+            lo.modify_s(posix_account, modlist)
+            count_changes += 1
+            print("Modified %s" % posix_account)
+        except Exception:
+            print("Warning: failed to modify Host %s: " % posix_account)
+            warning += 1
 
-	print("changing of", len(res_pA), "Hosts finished, changed", count_changes, "of them (", warning, " warnings).\n")
+    print("changing of", len(res_pA), "Hosts finished, changed", count_changes, "of them (", warning, " warnings).\n")
 
 
 if __name__ == "__main__":
-	main()
+    main()

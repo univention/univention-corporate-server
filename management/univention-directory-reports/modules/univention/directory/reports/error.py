@@ -34,4 +34,4 @@
 
 
 class ReportError(Exception):
-	pass
+    pass

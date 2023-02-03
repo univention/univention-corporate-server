@@ -1,8 +1,10 @@
 #!/usr/bin/env python3
 
+import sys
+
 from ucsschool.lib.models.user import Student
 from univention.admin.uldap import getAdminConnection
-import sys
+
 
 lo, po = getAdminConnection()
 
@@ -26,7 +28,7 @@ if [b'School2'] != s2['ucsschoolSchool']:
     sys.exit(1)
 
 s3 = lo.get(student3.dn)
-if set([b'School1', b'School2']) != set(s3['ucsschoolSchool']):
+if {b'School1', b'School2'} != set(s3['ucsschoolSchool']):
     print('Error: Student should be in School1 and School2')
     sys.exit(1)
 

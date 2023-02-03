@@ -36,6 +36,7 @@ from univention.config_registry import ucr_live as configRegistry
 from univention.lib.i18n import Translation
 from univention.management.console.modules.diagnostic import MODULE, Critical, Instance, util
 
+
 _ = Translation('univention-management-console-module-diagnostic').translate
 
 title = _('Check Heimdal KDC on Samba 4 DC')
@@ -45,45 +46,45 @@ run_descr = ['This can be checked by running: samba-tool processes']
 
 
 def samba_kdc_running() -> bool:
-	try:
-		import samba.messaging
-	except ImportError:
-		return False
-	msg = samba.messaging.Messaging()
-	try:
-		ids = msg.irpc_servers_byname('kdc_server')
-	except KeyError:
-		return False
-	return bool(ids)
+    try:
+        import samba.messaging
+    except ImportError:
+        return False
+    msg = samba.messaging.Messaging()
+    try:
+        ids = msg.irpc_servers_byname('kdc_server')
+    except KeyError:
+        return False
+    return bool(ids)
 
 
 def is_heimdal_kdc_running() -> bool:
-	kdc_paths = ('/usr/lib/heimdal-servers/kdc', '/usr/lib/heimdal-servers/kpasswdd')
-	process_paths = (p.exe() for p in psutil.process_iter())
-	return any(path in kdc_paths for path in process_paths)
+    kdc_paths = ('/usr/lib/heimdal-servers/kdc', '/usr/lib/heimdal-servers/kpasswdd')
+    process_paths = (p.exe() for p in psutil.process_iter())
+    return any(path in kdc_paths for path in process_paths)
 
 
 def is_kerberos_autostart_disabled() -> bool:
-	return configRegistry.is_false('kerberos/autostart')
+    return configRegistry.is_false('kerberos/autostart')
 
 
 def run(_umc_instance: Instance) -> None:
-	error = _('This is a Samba 4 DC, but `samba-tool processes` reports no `kdc_server`.')
-	heimdal_error = _('This may be, because Heimdal KDC seems to be running.')
-	autostart_error = _('This may be, because `kerberos/autostart` is not disabled.')
-	solution = _('You may want to stop Heimdal KDC and restart Samba via {services}')
+    error = _('This is a Samba 4 DC, but `samba-tool processes` reports no `kdc_server`.')
+    heimdal_error = _('This may be, because Heimdal KDC seems to be running.')
+    autostart_error = _('This may be, because `kerberos/autostart` is not disabled.')
+    solution = _('You may want to stop Heimdal KDC and restart Samba via {services}')
 
-	if util.is_service_active('Samba 4') and not samba_kdc_running():
-		error_descriptions = [error]
-		if is_heimdal_kdc_running():
-			error_descriptions.append(heimdal_error)
-			if not is_kerberos_autostart_disabled():
-				error_descriptions.append(autostart_error)
-			error_descriptions.append(solution)
-		MODULE.error('n'.join(error_descriptions))
-		raise Critical('\n'.join(error_descriptions))
+    if util.is_service_active('Samba 4') and not samba_kdc_running():
+        error_descriptions = [error]
+        if is_heimdal_kdc_running():
+            error_descriptions.append(heimdal_error)
+            if not is_kerberos_autostart_disabled():
+                error_descriptions.append(autostart_error)
+            error_descriptions.append(solution)
+        MODULE.error('n'.join(error_descriptions))
+        raise Critical('\n'.join(error_descriptions))
 
 
 if __name__ == '__main__':
-	from univention.management.console.modules.diagnostic import main
-	main()
+    from univention.management.console.modules.diagnostic import main
+    main()

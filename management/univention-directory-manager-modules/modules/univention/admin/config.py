@@ -38,8 +38,8 @@
 
 from __future__ import absolute_import
 
-from typing import Optional, Union  # noqa: F401
 from types import ModuleType  # noqa: F401
+from typing import Optional, Union  # noqa: F401
 
 import six
 
@@ -48,82 +48,82 @@ import univention.admin.uldap
 
 
 class config(object):
-	"""
-	|UDM| configuration object.
+    """
+    |UDM| configuration object.
 
-	.. deprecated:: UCS 4.4
-		use `None` instead
-	"""
+    .. deprecated:: UCS 4.4
+            use `None` instead
+    """
 
-	def __init__(self, host=''):
-		# type: (str) -> None
-		base = univention.admin.uldap.getBaseDN(host)
-		self.data = {
-			'ldap/base': base,
-			'ldap/base/dns': 'cn=dns,' + base,
-			'ldap/base/dhcp': 'cn=dhcp,' + base
-		}
+    def __init__(self, host=''):
+        # type: (str) -> None
+        base = univention.admin.uldap.getBaseDN(host)
+        self.data = {
+            'ldap/base': base,
+            'ldap/base/dns': 'cn=dns,' + base,
+            'ldap/base/dhcp': 'cn=dhcp,' + base,
+        }
 
-	def __getitem__(self, key):
-		return self.data[key]
+    def __getitem__(self, key):
+        return self.data[key]
 
-	def __setitem__(self, key, value):
-		self.data[key] = value
+    def __setitem__(self, key, value):
+        self.data[key] = value
 
-	if six.PY2:
-		def has_key(self, key):
-			return key in self
+    if six.PY2:
+        def has_key(self, key):
+            return key in self
 
-	def __contains__(self, key):
-		return key in self.data
+    def __contains__(self, key):
+        return key in self.data
 
-	def items(self):
-		return self.data.items()
+    def items(self):
+        return self.data.items()
 
 
 def getDefaultContainer(lo, module):
-	# type: (univention.admin.uldap.access, Union[ModuleType, str]) -> Optional[str]
-	"""
-	Return any random default container for a UDM module.
+    # type: (univention.admin.uldap.access, Union[ModuleType, str]) -> Optional[str]
+    """
+    Return any random default container for a UDM module.
 
-	.. deprecated:: UCS 4.4
+    .. deprecated:: UCS 4.4
 
-	:param univention.admin.uldap.access lo: A LDAP connection object.
-	:param module: The name of a UDM module.
-	:type module: str or a :py:class:`univention.admin.handlers.simpleLdap` instance.
-	:returns: A distinguished name.
-	:rtype: str
-	"""
-	if module == 'dns/':
-		module = 'dns/dns'
-	try:
-		return univention.admin.modules.get(module).object.get_default_containers(lo)[0]
-	except IndexError:
-		return None
+    :param univention.admin.uldap.access lo: A LDAP connection object.
+    :param module: The name of a UDM module.
+    :type module: str or a :py:class:`univention.admin.handlers.simpleLdap` instance.
+    :returns: A distinguished name.
+    :rtype: str
+    """
+    if module == 'dns/':
+        module = 'dns/dns'
+    try:
+        return univention.admin.modules.get(module).object.get_default_containers(lo)[0]
+    except IndexError:
+        return None
 
 
 def getDefaultValue(lo, name, position=None):
-	# type: (univention.admin.uldap.access, str, univention.admin.uldap.position) -> Optional[str]
-	"""
-	Return the default value for a UDM module.
+    # type: (univention.admin.uldap.access, str, univention.admin.uldap.position) -> Optional[str]
+    """
+    Return the default value for a UDM module.
 
-	:param univention.admin.uldap.access lo: A LDAP connection object.
-	:param str name: The name of a property.
-	:param univention.admin.uldap.position position: A UDM position specifying the LDAP base container.
-	:returns: The default value.
-	:rtype: str
-	"""
-	if name == 'group':
-		att = 'univentionDefaultGroup'
-	elif name == 'computerGroup':
-		att = 'univentionDefaultComputerGroup'
-	else:
-		att = name
+    :param univention.admin.uldap.access lo: A LDAP connection object.
+    :param str name: The name of a property.
+    :param univention.admin.uldap.position position: A UDM position specifying the LDAP base container.
+    :returns: The default value.
+    :rtype: str
+    """
+    if name == 'group':
+        att = 'univentionDefaultGroup'
+    elif name == 'computerGroup':
+        att = 'univentionDefaultComputerGroup'
+    else:
+        att = name
 
-	if position:
-		dn, attrs = lo.search(filter='objectClass=univentionDefault', attr=[att], base=position.getDomain(), scope='domain', unique=True, required=True)[0]
-	else:
-		dn, attrs = lo.search(filter='objectClass=univentionDefault', attr=[att], scope='domain', unique=True, required=True)[0]
-	result = attrs.get(att, [None])[0]
-	if result is not None:
-		return result.decode('UTF-8')
+    if position:
+        dn, attrs = lo.search(filter='objectClass=univentionDefault', attr=[att], base=position.getDomain(), scope='domain', unique=True, required=True)[0]
+    else:
+        dn, attrs = lo.search(filter='objectClass=univentionDefault', attr=[att], scope='domain', unique=True, required=True)[0]
+    result = attrs.get(att, [None])[0]
+    if result is not None:
+        return result.decode('UTF-8')

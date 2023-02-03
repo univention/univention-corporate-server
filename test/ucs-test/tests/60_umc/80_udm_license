@@ -84,7 +84,7 @@ class TestUMCLicenseManagement(UDMModule):
                 elif obj_type == 'user':
                     self.users_to_delete.append(obj_name)
             else:
-                print("The creation of a {} (attempt {}) failed, request result: '{}', ".format(obj_type, (obj + 1), request_result[0]))
+                print(f"The creation of a {obj_type} (attempt {obj + 1}) failed, request result: '{request_result[0]}', ")
                 return obj
         return amount
 
@@ -113,9 +113,9 @@ class TestUMCLicenseManagement(UDMModule):
                     "person": True,
                     "mail": True,
                     "pki": False,
-                }
+                },
             },
-            "options": {"container": "cn=users," + self.ldap_base, "objectType": "users/user"}
+            "options": {"container": "cn=users," + self.ldap_base, "objectType": "users/user"},
         }]
         return self.request("udm/add", options, "users/user")
 
@@ -149,7 +149,7 @@ class TestUMCLicenseManagement(UDMModule):
         if not path.exists(license_file):
             print("The '%s' license file cannot be found" % license_file)
             self.return_code_result_skip()
-        with open(license_file, 'r') as license:
+        with open(license_file) as license:
             license_text = license.read()
 
         options = {"license": license_text}
@@ -171,9 +171,7 @@ class TestUMCLicenseManagement(UDMModule):
         self.license_dump_successful = True
 
     def modify_license_signature(self, new_signature):
-        """
-        Modifies the license signature to a given 'new_signature'
-        """
+        """Modifies the license signature to a given 'new_signature'"""
         # in changes "foo" stands as a dummy for 'old-values':
         changes = [('univentionLicenseSignature', b"foo", new_signature.encode("UTF-8"))]
         admin_ldap_conn = uldap.getAdminConnection()
@@ -200,9 +198,7 @@ class TestUMCLicenseManagement(UDMModule):
         self.users_to_delete = []
 
     def free_license_limits_check(self, obj_type):
-        """
-        Checks the free license user/computer creation limits
-        """
+        """Checks the free license user/computer creation limits"""
         amount_created = self.create_many_users_computers(obj_type, 10)
         # 6 since license won't lock with only 5 users/computers
         assert amount_created <= 6
@@ -231,9 +227,7 @@ class TestUMCLicenseManagement(UDMModule):
         self.delete_created_users()
 
     def expired_license_limits_check(self, obj_type):
-        """
-        Checks the expired license user/computer creation limits
-        """
+        """Checks the expired license user/computer creation limits"""
         amount_created = self.create_many_users_computers(obj_type, 10)
         assert amount_created == 0
 
@@ -252,16 +246,12 @@ class TestUMCLicenseManagement(UDMModule):
         self.expired_license_limits_check('user')
 
     def valid_license_limits_check(self, obj_type):
-        """
-        Checks the valid license user/computer creation
-        """
+        """Checks the valid license user/computer creation"""
         amount_created = self.create_many_users_computers(obj_type, 10)
         assert amount_created == 10
 
     def run_valid_license_checks(self):
-        """
-        Uploads a valid license, creates 10 computers and users with it
-        """
+        """Uploads a valid license, creates 10 computers and users with it"""
         print("\nUploading a valid license 'ValidTest.license' for the test")
         self.import_new_license(self.temp_license_folder + '/ValidTest.license')
 
@@ -278,9 +268,7 @@ class TestUMCLicenseManagement(UDMModule):
         self.delete_created_users()
 
     def modified_license_limits_check(self, obj_type):
-        """
-        Checks the modified license user/computer creation
-        """
+        """Checks the modified license user/computer creation"""
         amount_created = self.create_many_users_computers(obj_type, 10)
         assert amount_created == 0
 
@@ -301,9 +289,7 @@ class TestUMCLicenseManagement(UDMModule):
         self.modified_license_limits_check('user')
 
     def junk_license_limits_check(self, obj_type):
-        """
-        Checks the 'junk' license user/computer creation
-        """
+        """Checks the 'junk' license user/computer creation"""
         amount_created = self.create_many_users_computers(obj_type, 10)
         assert amount_created == 0
 
@@ -422,9 +408,7 @@ class TestUMCLicenseManagement(UDMModule):
         self.delete_created_users()
 
     def main(self):
-        """
-        A method to test the licenses management through the UMC
-        """
+        """A method to test the licenses management through the UMC"""
         self.create_connection_authenticate()
 
         self.ldap_base = self.ucr.get('ldap/base')

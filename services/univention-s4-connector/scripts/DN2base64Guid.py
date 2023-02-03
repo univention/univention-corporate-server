@@ -35,31 +35,33 @@
 # <https://www.gnu.org/licenses/>.
 
 from __future__ import print_function
-import sys
-import ldb
+
 import base64
+import sys
 from argparse import ArgumentParser
 
-from samba.samdb import SamDB
-from samba.param import LoadParm
+import ldb
 from samba.auth import system_session
 from samba.credentials import Credentials
+from samba.param import LoadParm
+from samba.samdb import SamDB
+
 
 if __name__ == '__main__':
-	parser = ArgumentParser()
-	parser.add_argument('dn')
-	args = parser.parse_args()
+    parser = ArgumentParser()
+    parser.add_argument('dn')
+    args = parser.parse_args()
 
-	lp = LoadParm()
-	creds = Credentials()
-	creds.guess(lp)
-	samdb = SamDB(url='/var/lib/samba/private/sam.ldb', session_info=system_session(), credentials=creds, lp=lp)
+    lp = LoadParm()
+    creds = Credentials()
+    creds.guess(lp)
+    samdb = SamDB(url='/var/lib/samba/private/sam.ldb', session_info=system_session(), credentials=creds, lp=lp)
 
-	domain_dn = samdb.domain_dn()
-	res = samdb.search(args.dn, scope=ldb.SCOPE_BASE, attrs=["objectGuid"])
+    domain_dn = samdb.domain_dn()
+    res = samdb.search(args.dn, scope=ldb.SCOPE_BASE, attrs=["objectGuid"])
 
-	for msg in res:
-		guid = msg.get("objectGuid", idx=0)
-		print(base64.b64encode(guid).decode('ASCII'))
+    for msg in res:
+        guid = msg.get("objectGuid", idx=0)
+        print(base64.b64encode(guid).decode('ASCII'))
 
-	sys.exit(0)
+    sys.exit(0)

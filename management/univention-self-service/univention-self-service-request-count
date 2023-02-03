@@ -35,12 +35,13 @@
 
 from __future__ import print_function
 
-import socket
 import datetime
 import re
+import socket
 import sys
 
 from univention.management.console.config import ucr
+
 
 socket_file = "/var/lib/univention-self-service-passwordreset-umc/memcached.socket"
 
@@ -57,70 +58,70 @@ so.sendall(b"stats items STAT items:0:number 0 END\r\n")
 
 text = b""
 while True:
-	data = so.recv(1024)
-	if not data:
-		break
-	else:
-		text += data
-		if b"END" in data:
-			break
+    data = so.recv(1024)
+    if not data:
+        break
+    else:
+        text += data
+        if b"END" in data:
+            break
 lines = text.split(b"\r\n")
 entries = {}
 reg = re.compile(b'^ITEM (.*) \\[.*; (.*) .*\\]$')
 for line in lines:
-	parts = line.split(b":")
-	if len(parts) >= 3:
-		slab = parts[1]
-	else:
-		continue
-	so.sendall(b"stats cachedump %s 200000 ITEM views.decorators.cache.cache_header..cc7d9 [6 b; 1256056128 s] END\r\n" % (slab,))
-	data = so.recv(1024)
-	cachelines = data.split(b"\r\n")
-	for line in cachelines:
-		regmatch = reg.match(line)
-		if regmatch:
-			key, tsstr = regmatch.groups()
-			key = key.decode('ASCII')
-			if key not in entries:
-				ts = int(tsstr)
-				expdate = datetime.datetime.utcfromtimestamp(ts)
-				so.sendall(b"get %s\r\n" % (key.encode('ASCII'),))
-				data = so.recv(1024)
-				text = data.split(b"\r\n")
-				entries[key] = (text[1].decode('ISO8859-1'), expdate)
+    parts = line.split(b":")
+    if len(parts) >= 3:
+        slab = parts[1]
+    else:
+        continue
+    so.sendall(b"stats cachedump %s 200000 ITEM views.decorators.cache.cache_header..cc7d9 [6 b; 1256056128 s] END\r\n" % (slab,))
+    data = so.recv(1024)
+    cachelines = data.split(b"\r\n")
+    for line in cachelines:
+        regmatch = reg.match(line)
+        if regmatch:
+            key, tsstr = regmatch.groups()
+            key = key.decode('ASCII')
+            if key not in entries:
+                ts = int(tsstr)
+                expdate = datetime.datetime.utcfromtimestamp(ts)
+                so.sendall(b"get %s\r\n" % (key.encode('ASCII'),))
+                data = so.recv(1024)
+                text = data.split(b"\r\n")
+                entries[key] = (text[1].decode('ISO8859-1'), expdate)
 so.sendall(b"quit\r\n")
 so.close()
 
 keys = sorted(entries.keys())
 if not keys:
-	sys.exit(0)
+    sys.exit(0)
 
 # move totals to end of (possibly long) list
 for k in ["t:c_day", "t:c_hour", "t:c_minute"]:
-	try:
-		keys.remove(k)
-		keys.append(k)
-	except ValueError:
-		continue
+    try:
+        keys.remove(k)
+        keys.append(k)
+    except ValueError:
+        continue
 
 for key in keys:
-	if key == "t:c_minute":
-		limit = limit_total_minute
-	elif key == "t:c_hour":
-		limit = limit_total_hour
-	elif key == "t:c_day":
-		limit = limit_total_day
-	elif key.endswith("_minute"):
-		limit = limit_user_minute
-	elif key.endswith("_hour"):
-		limit = limit_user_hour
-	elif key.endswith("_day"):
-		limit = limit_user_day
-	elif key.startswith("e2u:") or key.endswith(":exp"):
-		continue
-	else:
-		raise ValueError("key '{}' not recognized".format(key))
+    if key == "t:c_minute":
+        limit = limit_total_minute
+    elif key == "t:c_hour":
+        limit = limit_total_hour
+    elif key == "t:c_day":
+        limit = limit_total_day
+    elif key.endswith("_minute"):
+        limit = limit_user_minute
+    elif key.endswith("_hour"):
+        limit = limit_user_hour
+    elif key.endswith("_day"):
+        limit = limit_user_day
+    elif key.startswith("e2u:") or key.endswith(":exp"):
+        continue
+    else:
+        raise ValueError(f"key '{key}' not recognized")
 
-	expdiff = entries[key][1] - datetime.datetime.utcnow()
-	exp = "in {:>5} seconds (at {})".format(expdiff.total_seconds(), entries[key][1].strftime("%d.%m.%Y %H:%M:%S"))
-	print("{:<15} {:>5} /{:>5} \t expiration {}".format(key + ":", entries[key][0], limit, exp))
+    expdiff = entries[key][1] - datetime.datetime.utcnow()
+    exp = "in {:>5} seconds (at {})".format(expdiff.total_seconds(), entries[key][1].strftime("%d.%m.%Y %H:%M:%S"))
+    print("{:<15} {:>5} /{:>5} \t expiration {}".format(key + ":", entries[key][0], limit, exp))

@@ -41,25 +41,25 @@ from univention.monitoring import Alert
 
 class Printerqueue(Alert):
 
-	def write_metrics(self):
-		for printer in shlex.split(ucr.get('monitoring/printerqueue/printers', '')):
-			self.write_metric_for_printer(printer)
+    def write_metrics(self):
+        for printer in shlex.split(ucr.get('monitoring/printerqueue/printers', '')):
+            self.write_metric_for_printer(printer)
 
-	def write_metric_for_printer(self, printer):
-		rc, output = self.exec_command(['lpq', '-P', printer], env={'LANG': 'C'})
-		if rc != 0:
-			self.write_metric('univention_printerqueue_jobs', -1, printer=printer)
-			self.log.debug('error while executing lpq: %s' % (output,))
-			return
+    def write_metric_for_printer(self, printer):
+        rc, output = self.exec_command(['lpq', '-P', printer], env={'LANG': 'C'})
+        if rc != 0:
+            self.write_metric('univention_printerqueue_jobs', -1, printer=printer)
+            self.log.debug('error while executing lpq: %s' % (output,))
+            return
 
-		if 'is ready' not in output.splitlines()[0]:
-			self.write_metric('univention_printerqueue_jobs', -1, printer=printer)
-			self.log.debug('printer is not ready: %s' % (output.splitlines()[0],))
-			return
+        if 'is ready' not in output.splitlines()[0]:
+            self.write_metric('univention_printerqueue_jobs', -1, printer=printer)
+            self.log.debug('printer is not ready: %s' % (output.splitlines()[0],))
+            return
 
-		jobs = len(output.splitlines()[2:])
-		self.write_metric('univention_printerqueue_jobs', jobs, printer=printer)
+        jobs = len(output.splitlines()[2:])
+        self.write_metric('univention_printerqueue_jobs', jobs, printer=printer)
 
 
 if __name__ == '__main__':
-	Printerqueue.main()
+    Printerqueue.main()

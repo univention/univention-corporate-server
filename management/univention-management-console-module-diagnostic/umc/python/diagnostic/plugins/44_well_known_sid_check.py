@@ -35,11 +35,12 @@ from typing import Dict, Iterator, List, Tuple
 import ldap
 
 import univention.lib.misc
-import univention.lib.s4 as s4
 import univention.uldap
 from univention.config_registry import ucr_live as ucr
+from univention.lib import s4
 from univention.lib.i18n import Translation
 from univention.management.console.modules.diagnostic import MODULE, Instance, Warning, util
+
 
 _ = Translation('univention-management-console-module-diagnostic').translate
 
@@ -49,135 +50,135 @@ run_descr = ['Checks if all well known SIDs exist and if their names are consist
 
 
 NON_EXISTENT_SIDS = {
-	'Power Users', 'Creator Group Server',
-	'Creator Owner Server', 'Local', 'Console Logon', 'All Services',
-	'Creator Authority', 'Local Authority', 'NT Authority',
-	'Non-unique Authority', 'Cloneable Domain Controllers',
+    'Power Users', 'Creator Group Server',
+    'Creator Owner Server', 'Local', 'Console Logon', 'All Services',
+    'Creator Authority', 'Local Authority', 'NT Authority',
+    'Non-unique Authority', 'Cloneable Domain Controllers',
 }
 
 
 class CheckError(Exception):
-	def __init__(self, sid: str, expected_name: str) -> None:
-		self.sid = sid
-		self.expected_name = expected_name
+    def __init__(self, sid: str, expected_name: str) -> None:
+        self.sid = sid
+        self.expected_name = expected_name
 
 
 class SIDNotFound(CheckError):
-	def __str__(self) -> str:
-		msg = _('No user or group with SID {sid} found, expected {expected!r}.')
-		return msg.format(sid=self.sid, expected=self.expected_name)
+    def __str__(self) -> str:
+        msg = _('No user or group with SID {sid} found, expected {expected!r}.')
+        return msg.format(sid=self.sid, expected=self.expected_name)
 
 
 class SIDMismatch(CheckError):
-	def __init__(self, sid: str, actual_sid: str, expected_name: str) -> None:
-		super(SIDMismatch, self).__init__(sid, expected_name)
-		self.actual_sid = actual_sid
+    def __init__(self, sid: str, actual_sid: str, expected_name: str) -> None:
+        super(SIDMismatch, self).__init__(sid, expected_name)
+        self.actual_sid = actual_sid
 
-	def __str__(self) -> str:
-		msg = _('User or group with name {name!r} has sid {actual_sid}, but should be {sid}.')
-		return msg.format(name=self.expected_name, actual_sid=self.actual_sid, sid=self.sid)
+    def __str__(self) -> str:
+        msg = _('User or group with name {name!r} has sid {actual_sid}, but should be {sid}.')
+        return msg.format(name=self.expected_name, actual_sid=self.actual_sid, sid=self.sid)
 
 
 class NameMismatch(CheckError):
-	def __init__(self, sid: str, expected_name: str, actual_name: str) -> None:
-		super(NameMismatch, self).__init__(sid, expected_name)
-		self.actual_name = actual_name
+    def __init__(self, sid: str, expected_name: str, actual_name: str) -> None:
+        super(NameMismatch, self).__init__(sid, expected_name)
+        self.actual_name = actual_name
 
-	def __str__(self) -> str:
-		msg = _('User or group with SID {sid} has name {actual!r}, but should be {expected!r}.')
-		return msg.format(sid=self.sid, actual=self.actual_name, expected=self.expected_name)
+    def __str__(self) -> str:
+        msg = _('User or group with SID {sid} has name {actual!r}, but should be {expected!r}.')
+        return msg.format(sid=self.sid, actual=self.actual_name, expected=self.expected_name)
 
 
 class LDAPConnection(object):
-	def __init__(self) -> None:
-		self._connection = univention.uldap.getMachineConnection()
+    def __init__(self) -> None:
+        self._connection = univention.uldap.getMachineConnection()
 
-	def search(self, expression: str, attr: List[str] = []) -> Iterator[Tuple[str, Dict[str, List[bytes]]]]:
-		for (dn, attrs) in self._connection.search(expression, attr=attr):
-			if dn is not None:
-				yield (dn, attrs)
+    def search(self, expression: str, attr: List[str] = []) -> Iterator[Tuple[str, Dict[str, List[bytes]]]]:
+        for (dn, attrs) in self._connection.search(expression, attr=attr):
+            if dn is not None:
+                yield (dn, attrs)
 
-	def get_domain_sid(self) -> str:
-		for (dn, attr) in self.search('(objectClass=sambaDomain)', attr=['sambaSID']):
-			for sid in attr['sambaSID']:
-				return sid.decode('ASCII')
-		raise KeyError('domain sid not found')
+    def get_domain_sid(self) -> str:
+        for (_dn, attr) in self.search('(objectClass=sambaDomain)', attr=['sambaSID']):
+            for sid in attr['sambaSID']:
+                return sid.decode('ASCII')
+        raise KeyError('domain sid not found')
 
-	def get_by_sid(self, sid: str) -> str:
-		expression = ldap.filter.filter_format('(sambaSID=%s)', (sid,))
-		for (dn, attr) in self.search(expression, attr=['cn', 'uid']):
-			for uid in attr.get('uid', []):
-				return uid.decode('UTF-8')
-			for cn in attr.get('cn', []):
-				return cn.decode('UTF-8')
-		raise KeyError(sid)
+    def get_by_sid(self, sid: str) -> str:
+        expression = ldap.filter.filter_format('(sambaSID=%s)', (sid,))
+        for (_dn, attr) in self.search(expression, attr=['cn', 'uid']):
+            for uid in attr.get('uid', []):
+                return uid.decode('UTF-8')
+            for cn in attr.get('cn', []):
+                return cn.decode('UTF-8')
+        raise KeyError(sid)
 
-	def get_by_name(self, name: str) -> str:
-		expression = ldap.filter.filter_format('(|(cn=%s)(uid=%s))', (name, name))
-		for (dn, attr) in self.search(expression, attr=['sambaSID']):
-			for sid in attr.get('sambaSID', []):
-				return sid.decode('ASCII')
-		raise KeyError(name)
+    def get_by_name(self, name: str) -> str:
+        expression = ldap.filter.filter_format('(|(cn=%s)(uid=%s))', (name, name))
+        for (_dn, attr) in self.search(expression, attr=['sambaSID']):
+            for sid in attr.get('sambaSID', []):
+                return sid.decode('ASCII')
+        raise KeyError(name)
 
 
 def all_sids_and_names(domain_sid: str) -> Iterator[Tuple[str, str]]:
-	for (sid, name) in s4.well_known_sids.items():
-		if name not in NON_EXISTENT_SIDS:
-			yield (sid, name)
+    for (sid, name) in s4.well_known_sids.items():
+        if name not in NON_EXISTENT_SIDS:
+            yield (sid, name)
 
-	for (rid, name) in s4.well_known_domain_rids.items():
-		if name not in NON_EXISTENT_SIDS:
-			yield ('{}-{}'.format(domain_sid, rid), name)
+    for (rid, name) in s4.well_known_domain_rids.items():
+        if name not in NON_EXISTENT_SIDS:
+            yield (f'{domain_sid}-{rid}', name)
 
 
 def custom_name(name: str) -> str:
-	mapped_user = univention.lib.misc.custom_username(name, ucr)
-	if mapped_user != name:
-		return mapped_user
-	mapped_group = univention.lib.misc.custom_groupname(name, ucr)
-	if mapped_group != name:
-		return mapped_group
-	return name
+    mapped_user = univention.lib.misc.custom_username(name, ucr)
+    if mapped_user != name:
+        return mapped_user
+    mapped_group = univention.lib.misc.custom_groupname(name, ucr)
+    if mapped_group != name:
+        return mapped_group
+    return name
 
 
 def check_existence_and_consistency() -> Iterator[CheckError]:
-	ldap_connection = LDAPConnection()
-	domain_sid = ldap_connection.get_domain_sid()
-	for (sid, expected_name) in all_sids_and_names(domain_sid):
-		mapped_name = custom_name(expected_name)
-		try:
-			# The user/group retrieved by SID should have the name as specified
-			# in the well-known-sid-mapping (or mapped as per
-			# `custom_{user,group}name()`)
-			actual_name = ldap_connection.get_by_sid(sid)
-		except KeyError as error:
-			# If nothing is found, we search for an user/group with the
-			# (mapped) name and check if there is a SID mismatch.
-			yield SIDNotFound(str(error), mapped_name)
-			try:
-				actual_sid = ldap_connection.get_by_name(mapped_name)
-			except KeyError:
-				pass
-			else:
-				# We don't need an explicit `sid != actual_sid` here, as no
-				# object with `sid` exists and we therefore have a mismatch in
-				# every case.
-				yield SIDMismatch(sid, actual_sid, mapped_name)
-		else:
-			if actual_name.lower() != mapped_name.lower():
-				yield NameMismatch(sid, mapped_name, actual_name)
+    ldap_connection = LDAPConnection()
+    domain_sid = ldap_connection.get_domain_sid()
+    for (sid, expected_name) in all_sids_and_names(domain_sid):
+        mapped_name = custom_name(expected_name)
+        try:
+            # The user/group retrieved by SID should have the name as specified
+            # in the well-known-sid-mapping (or mapped as per
+            # `custom_{user,group}name()`)
+            actual_name = ldap_connection.get_by_sid(sid)
+        except KeyError as error:
+            # If nothing is found, we search for an user/group with the
+            # (mapped) name and check if there is a SID mismatch.
+            yield SIDNotFound(str(error), mapped_name)
+            try:
+                actual_sid = ldap_connection.get_by_name(mapped_name)
+            except KeyError:
+                pass
+            else:
+                # We don't need an explicit `sid != actual_sid` here, as no
+                # object with `sid` exists and we therefore have a mismatch in
+                # every case.
+                yield SIDMismatch(sid, actual_sid, mapped_name)
+        else:
+            if actual_name.lower() != mapped_name.lower():
+                yield NameMismatch(sid, mapped_name, actual_name)
 
 
 def run(_umc_instance: Instance) -> None:
-	if not util.is_service_active('S4 Connector'):
-		return
+    if not util.is_service_active('S4 Connector'):
+        return
 
-	check_errors = list(check_existence_and_consistency())
-	if check_errors:
-		MODULE.error('\n'.join(str(x) for x in check_errors))
-		raise Warning(description='\n'.join(str(x) for x in check_errors))
+    check_errors = list(check_existence_and_consistency())
+    if check_errors:
+        MODULE.error('\n'.join(str(x) for x in check_errors))
+        raise Warning(description='\n'.join(str(x) for x in check_errors))
 
 
 if __name__ == '__main__':
-	from univention.management.console.modules.diagnostic import main
-	main()
+    from univention.management.console.modules.diagnostic import main
+    main()

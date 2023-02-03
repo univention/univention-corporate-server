@@ -31,16 +31,14 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-"""
-|UDM| module for all nagios settings
-"""
+"""|UDM| module for all nagios settings"""
 
 import univention.admin.filter
 import univention.admin.handlers
-import univention.admin.localization
-
 import univention.admin.handlers.nagios.service
 import univention.admin.handlers.nagios.timeperiod
+import univention.admin.localization
+
 
 translation = univention.admin.localization.translation('univention.admin.handlers.nagios')
 _ = translation.translate
@@ -61,15 +59,15 @@ virtual = True
 options = {}
 
 property_descriptions = {
-	'name': univention.admin.property(
-		short_description=_('Name'),
-		long_description=_('Nagios object name'),
-		syntax=univention.admin.syntax.string_numbers_letters_dots,
-		include_in_default_search=True,
-		required=True,
-		may_change=False,
-		identifies=True
-	),
+    'name': univention.admin.property(
+        short_description=_('Name'),
+        long_description=_('Nagios object name'),
+        syntax=univention.admin.syntax.string_numbers_letters_dots,
+        include_in_default_search=True,
+        required=True,
+        may_change=False,
+        identifies=True,
+    ),
 }
 
 mapping = univention.admin.mapping.mapping()
@@ -77,12 +75,12 @@ mapping.register('name', 'cn', None, univention.admin.mapping.ListToString)
 
 
 class object(univention.admin.handlers.simpleLdap):
-	module = module
+    module = module
 
 
 def lookup(co, lo, filter_s, base='', superordinate=None, scope='sub', unique=False, required=False, timeout=-1, sizelimit=0):
-	return univention.admin.handlers.nagios.service.lookup(co, lo, filter_s, base, superordinate, scope, unique, required, timeout, sizelimit) + univention.admin.handlers.nagios.timeperiod.lookup(co, lo, filter_s, base, superordinate, scope, unique, required, timeout, sizelimit)
+    return univention.admin.handlers.nagios.service.lookup(co, lo, filter_s, base, superordinate, scope, unique, required, timeout, sizelimit) + univention.admin.handlers.nagios.timeperiod.lookup(co, lo, filter_s, base, superordinate, scope, unique, required, timeout, sizelimit)
 
 
 def identify(dn, attr, canonical=False):
-	pass
+    pass

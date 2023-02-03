@@ -31,9 +31,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-"""
-Creates a local repository.
-"""
+"""Creates a local repository."""
 
 from __future__ import print_function
 
@@ -45,16 +43,17 @@ from os import makedirs, symlink
 from os.path import devnull, exists, join
 from textwrap import dedent
 
-from univention.config_registry import ConfigRegistry, handler_set, handler_commit
+from univention.config_registry import ConfigRegistry, handler_commit, handler_set
 from univention.lib.ucs import UCS_Version
 from univention.updater.locking import UpdaterLock
+
 
 configRegistry = ConfigRegistry()
 configRegistry.load()
 
 
 def check_preconditions(options: Namespace) -> None:
-    """ Check for already existing mirror and for debmirror package """
+    """Check for already existing mirror and for debmirror package"""
     # check directories
     if exists(join(options.base, 'mirror')):
         print('Warning: The path %s/mirror already exists.' % options.base, file=sys.stderr)
@@ -82,7 +81,7 @@ def check_preconditions(options: Namespace) -> None:
 
 
 def prepare(options: Namespace) -> None:
-    """ Set local/repository and create directory structure """
+    """Set local/repository and create directory structure"""
     if configRegistry.is_false('local/repository', True):
         handler_set(['local/repository=yes'])
         configRegistry.load()

@@ -29,9 +29,10 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-from __future__ import absolute_import, unicode_literals
-from __future__ import print_function
+from __future__ import absolute_import, print_function, unicode_literals
+
 import sys
+
 import univention.debug as ud
 
 
@@ -39,47 +40,48 @@ is_interactive = bool(getattr(sys, 'ps1', sys.flags.interactive))
 
 
 class UDebug(object):
-	""":py:mod:`univention.debug` convenience wrapper"""
-	target = ud.ADMIN
-	level2str = {
-		ud.ALL: 'DEBUG',
-		ud.ERROR: 'ERROR',
-		ud.INFO: 'INFO',
-		ud.PROCESS: 'INFO',
-		ud.WARN: 'WARN',
-	}
+    """:py:mod:`univention.debug` convenience wrapper"""
 
-	@classmethod
-	def all(cls, msg):
-		"""Write a debug message with level ALL (as in DEBUG)"""
-		cls._log(ud.ALL, msg)
+    target = ud.ADMIN
+    level2str = {
+        ud.ALL: 'DEBUG',
+        ud.ERROR: 'ERROR',
+        ud.INFO: 'INFO',
+        ud.PROCESS: 'INFO',
+        ud.WARN: 'WARN',
+    }
 
-	debug = all
+    @classmethod
+    def all(cls, msg):
+        """Write a debug message with level ALL (as in DEBUG)"""
+        cls._log(ud.ALL, msg)
 
-	@classmethod
-	def error(cls, msg):
-		"""Write a debug message with level ERROR"""
-		cls._log(ud.ERROR, msg)
+    debug = all
 
-	@classmethod
-	def info(cls, msg):
-		"""Write a debug message with level INFO"""
-		cls._log(ud.INFO, msg)
+    @classmethod
+    def error(cls, msg):
+        """Write a debug message with level ERROR"""
+        cls._log(ud.ERROR, msg)
 
-	@classmethod
-	def process(cls, msg):
-		"""Write a debug message with level PROCESS"""
-		cls._log(ud.PROCESS, msg)
+    @classmethod
+    def info(cls, msg):
+        """Write a debug message with level INFO"""
+        cls._log(ud.INFO, msg)
 
-	@classmethod
-	def warn(cls, msg):
-		"""Write a debug message with level WARN"""
-		cls._log(ud.WARN, msg)
+    @classmethod
+    def process(cls, msg):
+        """Write a debug message with level PROCESS"""
+        cls._log(ud.PROCESS, msg)
 
-	warning = warn
+    @classmethod
+    def warn(cls, msg):
+        """Write a debug message with level WARN"""
+        cls._log(ud.WARN, msg)
 
-	@classmethod
-	def _log(cls, level, msg):
-		ud.debug(cls.target, level, msg)
-		if is_interactive and level <= ud.INFO:
-			print('{}: {}'.format(cls.level2str[level], msg))
+    warning = warn
+
+    @classmethod
+    def _log(cls, level, msg):
+        ud.debug(cls.target, level, msg)
+        if is_interactive and level <= ud.INFO:
+            print('{}: {}'.format(cls.level2str[level], msg))

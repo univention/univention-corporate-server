@@ -11,18 +11,19 @@ import subprocess
 
 import notifier
 
+
 fd = None
 
 
 def on_read(sock):
-	print('on_read')
-	return True
+    print('on_read')
+    return True
 
 
 def on_timer():
-	print('on_timer')
-	notifier.socket_remove(fd)
-	return True
+    print('on_timer')
+    notifier.socket_remove(fd)
+    return True
 
 
 notifier.init()

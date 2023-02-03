@@ -1,8 +1,5 @@
 #!/usr/bin/python3
-# vim: set ts=4 sw=4 et fileencoding=UTF-8:
-"""
-Add and remove LDAP attributes to index.
-"""
+"""Add and remove LDAP attributes to index."""
 # Like what you see? Join us!
 # https://www.univention.com/about-us/careers/vacancies/
 #
@@ -33,17 +30,19 @@ Add and remove LDAP attributes to index.
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
+import re
 import sys
 from argparse import ArgumentParser
-from subprocess import (PIPE, Popen)
-from univention.config_registry.frontend import (ConfigRegistry, ucr_update)
-from logging import (ERROR, WARNING, INFO, DEBUG, basicConfig, getLogger)
-import re
+from logging import DEBUG, ERROR, INFO, WARNING, basicConfig, getLogger
+from subprocess import PIPE, Popen
+
+from univention.config_registry.frontend import ConfigRegistry, ucr_update
+
 
 LOG = getLogger(__name__)
 
 RE_UNDEFINED = re.compile(
-    r'/etc/ldap/slapd\.conf: line [0-9]+: index attribute "([^"]+)" undefined'
+    r'/etc/ldap/slapd\.conf: line [0-9]+: index attribute "([^"]+)" undefined',
 )
 
 
@@ -123,20 +122,20 @@ class LdapIndex(object):
             LOG.debug('Automatically updating indexes is enabled')
         if self.args.force_defaults:
             LOG.debug('Forcing default values')
-            self.index = dict((typ, set()) for typ in RECOMMENDED_LDAP_INDEX)
+            self.index = {typ: set() for typ in RECOMMENDED_LDAP_INDEX}
         else:
             LOG.debug('Loading values from UCR')
-            self.index = dict(
-                (typ, self.split_ucr(ucr, typ))
+            self.index = {
+                typ: self.split_ucr(ucr, typ)
                 for typ in RECOMMENDED_LDAP_INDEX
-            )
+            }
 
     def split_ucr(self, ucr, typ):
         ucrv = self.ucrv(typ)
         value = ucr.get(ucrv, '')
         values = value.split(',')
         stripped = (_.strip() for _ in values)
-        return set(_ for _ in stripped if _)
+        return {_ for _ in stripped if _}
 
     @staticmethod
     def ucrv(typ):
@@ -175,7 +174,7 @@ class LdapIndex(object):
         ucr_update(ucr, changes)
 
     def validate_config(self, ucr):
-        cmd = ('slaptest', '-f', '/etc/ldap/slapd.conf', )
+        cmd = ('slaptest', '-f', '/etc/ldap/slapd.conf')
         while True:
             proc = Popen(cmd, stderr=PIPE)
             _stdout, stderr = proc.communicate()
@@ -221,7 +220,7 @@ class LdapIndex(object):
 
     @staticmethod
     def check_slapd():
-        cmd = ('pidof', 'slapd',)
+        cmd = ('pidof', 'slapd')
         proc = Popen(cmd, stdout=PIPE, stderr=PIPE)
         proc.communicate()
         if proc.wait() == 0:
@@ -229,7 +228,7 @@ class LdapIndex(object):
             sys.exit(4)
 
 
-UDM_PROP_ATTRS = set((
+UDM_PROP_ATTRS = {
     'univentionUDMPropertyCLIName',
     'univentionUDMPropertyDefault',
     'univentionUDMPropertyDeleteObjectClass',
@@ -254,10 +253,10 @@ UDM_PROP_ATTRS = set((
     'univentionUDMPropertyValueMayChange',
     'univentionUDMPropertyValueRequired',
     'univentionUDMPropertyVersion',
-))
+}
 
 RECOMMENDED_LDAP_INDEX = {
-    'eq': UDM_PROP_ATTRS | set((
+    'eq': UDM_PROP_ATTRS | {
         'aRecord',
         'automountInformation',
         'cn',
@@ -310,8 +309,8 @@ RECOMMENDED_LDAP_INDEX = {
         'univentionShareWriteable',
         'univentionUDMOptionModule',
         'zoneName',
-    )),
-    'pres': UDM_PROP_ATTRS | set((
+    },
+    'pres': UDM_PROP_ATTRS | {
         'aRecord',
         'aAAARecord',
         'automountInformation',
@@ -347,8 +346,8 @@ RECOMMENDED_LDAP_INDEX = {
         'univentionObjectFlag',
         'univentionPolicyReference',
         'zoneName',
-    )),
-    'sub': set((
+    },
+    'sub': {
         'aRecord',
         'associatedDomain',
         'automountInformation',
@@ -376,14 +375,14 @@ RECOMMENDED_LDAP_INDEX = {
         'univentionUDMPropertyLongDescription',
         'univentionUDMPropertyShortDescription',
         'zoneName',
-    )),
-    'approx': set((
+    },
+    'approx': {
         'cn',
         'givenName',
         'mail',
         'sn',
         'uid',
-    )),
+    },
 }
 
 

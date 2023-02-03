@@ -41,9 +41,7 @@ from univention.lib.policy_result import PolicyResultFailed, policy_result
 
 
 def query_policy(ldap_hostdn: str) -> Tuple[str, str]:
-    """
-    Retrieve updateServer and version from policy.
-    """
+    """Retrieve updateServer and version from policy."""
     try:
         results, _policies = policy_result(ldap_hostdn)
     except PolicyResultFailed as ex:
@@ -63,9 +61,7 @@ def one(results: Dict[str, List[str]], key: str) -> str:
 
 
 def main() -> None:
-    """
-    Set repository server.
-    """
+    """Set repository server."""
     ucr = ConfigRegistry()
     ucr.load()
 

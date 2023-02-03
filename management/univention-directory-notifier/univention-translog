@@ -1,8 +1,5 @@
 #!/usr/bin/python3
-# vim: set fileencoding=utf-8 filetype=python foldmethod=expr expandtab shiftwidth=4 tabstop=4 :
-"""
-Univention Directory Notifier Transaction log admin commmand
-"""
+"""Univention Directory Notifier Transaction log admin commmand"""
 # Like what you see? Join us!
 # https://www.univention.com/about-us/careers/vacancies/
 #
@@ -35,30 +32,32 @@ Univention Directory Notifier Transaction log admin commmand
 
 from __future__ import print_function
 
-from os import SEEK_SET, fstat, rename, unlink, environ
-from os.path import exists
-from sys import exit, stderr
 from argparse import ArgumentParser, ArgumentTypeError
 from collections import namedtuple
-from logging import basicConfig, getLogger, CRITICAL, DEBUG
-from time import strftime, time
-from ctypes import c_bool, c_ulong, sizeof, Structure
-from errno import ENOENT
 from contextlib import contextmanager
+from ctypes import Structure, c_bool, c_ulong, sizeof
+from errno import ENOENT
 from itertools import chain
+from logging import CRITICAL, DEBUG, basicConfig, getLogger
+from os import SEEK_SET, environ, fstat, rename, unlink
+from os.path import exists
 from subprocess import call
+from sys import exit, stderr
+from time import strftime, time
 
 import ldap
+from ldap.controls import SimplePagedResultsControl
 from ldap.dn import is_dn, str2dn
 from ldap.ldapobject import ReconnectLDAPObject
-from ldap.controls import SimplePagedResultsControl
 from ldap.modlist import addModlist
+
 from univention.config_registry import ConfigRegistry
 
+
 try:
-    from typing import Any, IO, Dict, Iterator, List, Optional, Tuple, Type, NamedTuple  # noqa: F401
-    from types import TracebackType  # noqa: F401
     from argparse import Namespace  # noqa: F401
+    from types import TracebackType  # noqa: F401
+    from typing import IO, Any, Dict, Iterator, List, NamedTuple, Optional, Tuple, Type  # noqa: F401
     Transaction = NamedTuple("Transaction", [("tid", int), ("dn", str), ("command", str)])
 except ImportError:
     Transaction = namedtuple("Transaction", ["tid", "dn", "command"])  # type: ignore
@@ -85,6 +84,7 @@ class IndexHeader(Structure):
 
         The header is architecture dependant due to the use of `c_ulong`.
     """
+
     MAGIC = 0x3395e0d4
     _fields_ = [("magic", c_ulong)]
     _pack_ = 1
@@ -102,6 +102,7 @@ class IndexEntry(Structure):
 
         The source is compiled with `-D_FILE_OFFSET_BITS=64` which makes `off_t` 64 bit on i386, too, but `ulong` remains 32 bit.
     """
+
     _fields_ = [("valid", c_bool), ("offset", c_ulong)]
     _pack_ = 1
 
@@ -219,9 +220,7 @@ class Index(object):
 
     def remove(self):
         # type: () -> None
-        """
-        Remove `.index` file.
-        """
+        """Remove `.index` file."""
         self.log.info('Removing %s ...', self.filename)
         try:
             unlink(self.filename)
@@ -250,9 +249,7 @@ class Translog(object):
     @property
     def count(self):
         # type: () -> int
-        """
-        Return count of transactions.
-        """
+        """Return count of transactions."""
         if self.last == 0:
             return 0
         return self.last - self.first + 1
@@ -278,7 +275,7 @@ class Translog(object):
 
     def __enter__(self):
         # type: () -> Translog
-        self.translog = translog = open(self.filename, 'r')
+        self.translog = translog = open(self.filename)
 
         stat = fstat(translog.fileno())
         self.size = size = stat.st_size
@@ -286,7 +283,7 @@ class Translog(object):
         if size:
             line = translog.readline()
             rec = self.parse_line(line)
-            assert 1 <= rec.tid, rec.tid
+            assert rec.tid >= 1, rec.tid
             self.first = rec.tid
 
             last = self.index.count
@@ -342,9 +339,7 @@ class Translog(object):
 
     def __iter__(self):
         # type: () -> Iterator[Transaction]
-        """
-        Iterate over all transactions.
-        """
+        """Iterate over all transactions."""
         assert self.translog
         for line in self.translog:
             self.log.debug("Read line %r", line)
@@ -403,22 +398,16 @@ class Translog(object):
 
 
 class Abort(Exception):
-    """
-    Fatal abort.
-    """
+    """Fatal abort."""
 
 
 class DryRun(Exception):
-    """
-    Abort dry-run mode.
-    """
+    """Abort dry-run mode."""
 
 
 def main():
     # type: () -> int
-    """
-    Work with transaction log in LDAP server.
-    """
+    """Work with transaction log in LDAP server."""
     opt = parse_args()
 
     basicConfig(stream=stderr, level=max(DEBUG, CRITICAL - DEBUG * opt.verbose), format=LOG_FORMAT)
@@ -571,7 +560,7 @@ def show_stat(opt):
     tid = last
     with ldapi(opt) as ld:
         while tid >= first:
-            dn = "reqSession={},{}".format(tid, opt.translog_base)
+            dn = f"reqSession={tid},{opt.translog_base}"
             try:
                 ld.search_ext_s(dn, ldap.SCOPE_BASE)
                 break
@@ -622,7 +611,7 @@ def lookup_ldap(opt):
 
     with ldapi(opt) as ld:
         for tid in opt.trans:
-            dn = "reqSession={},{}".format(tid, opt.translog_base)
+            dn = f"reqSession={tid},{opt.translog_base}"
             try:
                 result = ld.search_ext_s(dn, ldap.SCOPE_BASE)
             except ldap.NO_SUCH_OBJECT as ex:
@@ -645,13 +634,13 @@ def add_transaction(opt, ld, rec):
     """
     log = getLogger(__name__).getChild("LDAP")
 
-    dn = "reqSession={.tid},{}".format(rec, opt.translog_base)
+    dn = f"reqSession={rec.tid},{opt.translog_base}"
     modlist = addModlist({
         "objectClass": [b"auditObject"],
         "reqStart": [opt.datetime.encode("utf-8")],
-        "reqType": ["{.command}".format(rec).encode("utf-8")],
-        "reqSession": ["{.tid}".format(rec).encode("utf-8")],
-        "reqDN": ["{.dn}".format(rec).encode("utf-8")],
+        "reqType": [f"{rec.command}".encode("utf-8")],
+        "reqSession": [f"{rec.tid}".encode("utf-8")],
+        "reqDN": [f"{rec.dn}".encode("utf-8")],
     })
     try:
         log.debug("ldap_add(%s)", dn)
@@ -768,9 +757,7 @@ def rewrite(filename):
 
 
 class CheckGeneric(object):
-    """
-    Check transaction file for consistency.
-    """
+    """Check transaction file for consistency."""
 
     def __init__(self, opt, filename):
         # type: (Namespace, str) -> None
@@ -789,9 +776,7 @@ class CheckGeneric(object):
 
     def reset(self):
         # type: () -> None
-        """
-        Reset internal state.
-        """
+        """Reset internal state."""
         self.needs_fixing = False
         self.needs_sort = False
         self.needs_fill = False
@@ -829,9 +814,9 @@ class CheckGeneric(object):
         :param filename: The name of the transaction file. Defaults to :py:attribute:`filename`.
         """
         self.reset()
-        with open(filename or self.filename, 'r') as stream:
+        with open(filename or self.filename) as stream:
             self.log.info("Reading %s ...", filename or self.filename)
-            for lnr, line, rec in self.loop(stream):
+            for _lnr, _line, rec in self.loop(stream):
                 self.check_transaction(rec)
             self.log.info("Reading %s done", filename or self.filename)
 
@@ -892,7 +877,7 @@ class CheckGeneric(object):
 
                     rec = Transaction(tid, dn, command)
 
-                if not 0 < rec.tid:
+                if not rec.tid > 0:
                     self.error("Invalid transaction id", renum=True)
                     continue
 
@@ -925,9 +910,7 @@ class CheckGeneric(object):
 
     def fixit(self):
         # type: () -> None
-        """
-        Fix transactions.
-        """
+        """Fix transactions."""
         raise NotImplementedError()
 
     def fix_syntax(self):
@@ -938,9 +921,7 @@ class CheckGeneric(object):
         # - optional: fake invalid DNs in 2nd column
         # - optional: fake transaction number
         # see commented out code in :py:meth:`loop`.
-        """
-        Handle syntax errors. TODO
-        """
+        """Handle syntax errors. TODO"""
         self.log.info('Syntax ...')
 
         print('- contains unparseable lines!')
@@ -950,9 +931,7 @@ class CheckGeneric(object):
 
     def fix_sort(self):
         # type: () -> None
-        """
-        Handle transactions not being sorted strong monotonically increasing.
-        """
+        """Handle transactions not being sorted strong monotonically increasing."""
         self.log.info('Sorting ...')
         print('- the transactions are not sorted uniquely')
 
@@ -996,9 +975,7 @@ class CheckGeneric(object):
 
     def fix_fill(self):
         # type: () -> None
-        """
-        Handle transactions not being consecutive.
-        """
+        """Handle transactions not being consecutive."""
         self.log.info('Filling holes ...')
         print('- missing transactions in sequence')
 
@@ -1009,7 +986,7 @@ class CheckGeneric(object):
             exit(1)
 
         with rewrite(self.filename) as tmp:
-            with open(self.filename, 'r') as old, open(tmp, 'w') as new:
+            with open(self.filename) as old, open(tmp, 'w') as new:
                 next_tid = 0
                 for line in old:
                     try:
@@ -1036,9 +1013,7 @@ class CheckGeneric(object):
 
     def fix_renumber(self):
         # type: () -> None
-        """
-        Handle transactions being out-of-order.
-        """
+        """Handle transactions being out-of-order."""
         self.log.info('Renumbering ...')
         print('- pending transactions are not consecutive')
 
@@ -1049,7 +1024,7 @@ class CheckGeneric(object):
             exit(1)
 
         with rewrite(self.filename) as tmp:
-            with open(self.filename, 'r') as old, open(tmp, 'w') as new:
+            with open(self.filename) as old, open(tmp, 'w') as new:
                 for self.last_tid, line in enumerate(old, start=self.first_tid + 1):
                     line = line.rstrip('\n')
                     self.log.debug('Renum %r to %d ...', line, self.last_tid)
@@ -1081,9 +1056,7 @@ class CheckGeneric(object):
 
     def remove_index(self):
         # type: () -> None
-        """
-        Remove any associated index file.
-        """
+        """Remove any associated index file."""
         raise NotImplementedError()
 
 
@@ -1109,9 +1082,7 @@ class CheckTranslog(CheckGeneric):
 
     def fixit(self):
         # type: () -> None
-        """
-        Fix transactions.
-        """
+        """Fix transactions."""
         if self.needs_syntax:
             self.fix_syntax()
         if self.needs_sort:
@@ -1121,9 +1092,7 @@ class CheckTranslog(CheckGeneric):
 
     def remove_index(self):
         # type: () -> None
-        """
-        Remove `.index` file.
-        """
+        """Remove `.index` file."""
         Index(self.filename).remove()
 
 
@@ -1151,9 +1120,7 @@ class CheckListener(CheckGeneric):
 
     def fixit(self):
         # type: () -> None
-        """
-        Fix transactions.
-        """
+        """Fix transactions."""
         if self.needs_syntax:
             self.fix_syntax()
         if self.needs_renum:
@@ -1161,9 +1128,7 @@ class CheckListener(CheckGeneric):
 
     def remove_index(self):
         # type: () -> None
-        """
-        No associated `.index` file to remove.
-        """
+        """No associated `.index` file to remove."""
 
 
 def check_last(opt, filename, last_tid):
@@ -1179,7 +1144,7 @@ def check_last(opt, filename, last_tid):
     log = getLogger(__name__).getChild("CHECK")
 
     try:
-        with open(filename, 'r') as last:
+        with open(filename) as last:
             line = last.read()
         if not line:
             raise ValueError('should be %d, but is empty' % (last_tid,))
@@ -1282,7 +1247,7 @@ def prune_ldap(opt):
                 log.fatal('Server ignores RFC 2696 control: %r', serverctrls)
                 raise Abort()
 
-            for (dn, attrs) in rdata:
+            for (dn, _attrs) in rdata:
                 ava = str2dn(dn)
                 for (attr, value, _flags) in ava[0]:
                     if attr == 'reqSession':
@@ -1390,7 +1355,7 @@ def parse_int_pos(string):
     """
     try:
         val = int(string)
-        if 0 < val:
+        if val > 0:
             return val
     except ValueError:
         pass
@@ -1434,7 +1399,7 @@ def parse_size(string):
     prefix = string[:-len(suffix)] if suffix else string
     try:
         value = float(prefix)
-        if not 0.0 <= value:
+        if not value >= 0.0:
             raise ValueError()
     except ValueError:
         raise ArgumentTypeError("Invalid value")

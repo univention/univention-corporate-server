@@ -5,24 +5,24 @@ import traceback
 from univention.updater.tools import UniventionUpdater, UCSRepoPool5
 
 try:
-	updater = UniventionUpdater()
-	if not updater.online_repository:
-		print('# The online repository is disabled and can be enabled with:')
-		print('#   univention-config-registry set repository/online=true')
-		print('')
-	elif updater.current_version.major >= 5:
-		pool = UCSRepoPool5(updater.current_version)
-		for pool.errata in (False, True):
-			for typ in ["deb"] + ["deb-src"][:updater.sources]:
-				print(pool.deb(updater.server, typ))
+    updater = UniventionUpdater()
+    if not updater.online_repository:
+        print('# The online repository is disabled and can be enabled with:')
+        print('#   univention-config-registry set repository/online=true')
+        print('')
+    elif updater.current_version.major >= 5:
+        pool = UCSRepoPool5(updater.current_version)
+        for pool.errata in (False, True):
+            for typ in ["deb"] + ["deb-src"][:updater.sources]:
+                print(pool.deb(updater.server, typ))
 except Exception:
-	print('# An error occurred during the repository check. The error message:')
-	for line in traceback.format_exc().splitlines():
-		print('#   %s' % line)
-	print('#')
-	print('')
-	print('# After fixing this issue, you should rewrite this file with the following command:')
-	print('#   univention-config-registry commit /etc/apt/sources.list.d/15_ucs-online-version.list')
-	print('#')
-	print('')
+    print('# An error occurred during the repository check. The error message:')
+    for line in traceback.format_exc().splitlines():
+        print('#   %s' % line)
+    print('#')
+    print('')
+    print('# After fixing this issue, you should rewrite this file with the following command:')
+    print('#   univention-config-registry commit /etc/apt/sources.list.d/15_ucs-online-version.list')
+    print('#')
+    print('')
 @!@

@@ -31,18 +31,17 @@
 # License with the Debian GNU/Linux or Univention distribution in file
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
-"""
-Migrate Nagios services which are assigned to this host to corresponding monitoring alerts.
-"""
+"""Migrate Nagios services which are assigned to this host to corresponding monitoring alerts."""
 
 import argparse
 from typing import Dict, Tuple
 
 from ldap.filter import filter_format
 
+from univention.config_registry import ucr
 from univention.udm import UDM
 from univention.udm.exceptions import NoObject
-from univention.config_registry import ucr
+
 
 CHECKS: Dict[str, Tuple[str, ...]] = {
     "UNIVENTION_DISK_ROOT": ("UNIVENTION_DISK_ROOT", "UNIVENTION_DISK_ROOT_WARNING", "UNIVENTION_DISK_ROOT_METRIC_MISSING"),

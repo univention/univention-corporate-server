@@ -38,7 +38,7 @@ from .urls_patterns import (
     URL_LOGOUT,
     URL_CERTS,
     URL_ENTITLEMENT,
-    URL_INTROSPECT
+    URL_INTROSPECT,
 )
 
 
@@ -57,7 +57,7 @@ class KeycloakOpenID:
         self._client_id = client_id
         self._client_secret_key = client_secret_key
         self._realm_name = realm_name
-        headers = dict()
+        headers = {}
         if custom_headers is not None:
             # merge custom headers to main headers
             headers.update(custom_headers)
@@ -370,14 +370,14 @@ class KeycloakOpenID:
 
         if not self.authorization.policies:
             raise KeycloakAuthorizationConfigError(
-                "Keycloak settings not found. Load Authorization Keycloak settings."
+                "Keycloak settings not found. Load Authorization Keycloak settings.",
             )
 
         token_info = self._token_info(token, method_token_info, **kwargs)
 
         if method_token_info == 'introspect' and not token_info['active']:
             raise KeycloakInvalidTokenError(
-                "Token expired or invalid."
+                "Token expired or invalid.",
             )
 
         user_resources = token_info['resource_access'].get(self.client_id)
@@ -406,14 +406,14 @@ class KeycloakOpenID:
 
         if not self.authorization.policies:
             raise KeycloakAuthorizationConfigError(
-                "Keycloak settings not found. Load Authorization Keycloak settings."
+                "Keycloak settings not found. Load Authorization Keycloak settings.",
             )
 
         token_info = self._token_info(token, method_token_info, **kwargs)
 
         if method_token_info == 'introspect' and not token_info['active']:
             raise KeycloakInvalidTokenError(
-                "Token expired or invalid."
+                "Token expired or invalid.",
             )
 
         user_resources = token_info['resource_access'].get(self.client_id)

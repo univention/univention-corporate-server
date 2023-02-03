@@ -37,47 +37,48 @@
 
 from __future__ import print_function
 
-import sys
-import pwd
 import os
 import os.path
+import pwd
+import sys
 
-from pexpect import spawn, EOF
+from pexpect import EOF, spawn
 
 import univention.config_registry
+
 
 args = sys.argv[1:]
 cmd = sys.argv[0]
 
 # check if we are called directly
 if cmd[-len("univention-cupsadmin"):] == "univention-cupsadmin":
-	print("univention-cupsadmin is not to be called directly, but rather by")
-	print("links from one of univention-cups-{accept,reject,enable,disable}.")
-	print("See man accept, man reject, man enable, and man disable for")
-	print("calling conventions")
-	sys.exit(1)
+    print("univention-cupsadmin is not to be called directly, but rather by")
+    print("links from one of univention-cups-{accept,reject,enable,disable}.")
+    print("See man accept, man reject, man enable, and man disable for")
+    print("calling conventions")
+    sys.exit(1)
 
 # argv[0] should be something like .../univention-cups... Cut
 # univention-cups from it
 #
 # cupsenable and -disable aren't located in /usr/bin anymore
 # if os.path.basename(cmd)=="univention-cups-enable" or os.path.basename(cmd)=="univention-cups-disable":
-#	cmd=os.path.basename(cmd).replace("univention-cups-", "/usr/bin/cups")
+#    cmd=os.path.basename(cmd).replace("univention-cups-", "/usr/bin/cups")
 # else:
 
 cmd = os.path.basename(cmd).replace("univention-cups-", "/usr/sbin/cups")
 
 # check if target executable exists
 if not os.path.exists(cmd):
-	print("Target executable %s does not exist. Exiting." % cmd)
-	sys.exit(2)
+    print("Target executable %s does not exist. Exiting." % cmd)
+    sys.exit(2)
 
 ucr = univention.config_registry.ConfigRegistry()
 ucr.load()
 
 # read machine password
-with open('/etc/machine.secret', 'r') as fd:
-	machine_password = fd.readline().strip()
+with open('/etc/machine.secret') as fd:
+    machine_password = fd.readline().strip()
 
 machine_uid = pwd.getpwnam('%s$' % (ucr['hostname']))[2]
 old_uid = os.getuid()
@@ -86,10 +87,9 @@ os.setuid(machine_uid)
 child = spawn('%s %s' % (cmd, ' '.join(args)))
 i = 0
 timeout = 60
-while not i == 2:
-	i = child.expect([r'%s\.%s.*\?' % (ucr['hostname'], ucr['domainname']), r'localhost.*\?', EOF], timeout=timeout)
-	if i in [0, 1]:
-		child.sendline(machine_password)
-	elif i == 2:
-		if child.before:
-			print(child.before.decode('UTF-8', 'replace'))
+while i != 2:
+    i = child.expect([r'%s\.%s.*\?' % (ucr['hostname'], ucr['domainname']), r'localhost.*\?', EOF], timeout=timeout)
+    if i in [0, 1]:
+        child.sendline(machine_password)
+    elif i == 2 and child.before:
+        print(child.before.decode('UTF-8', 'replace'))

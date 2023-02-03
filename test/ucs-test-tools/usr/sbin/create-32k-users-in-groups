@@ -31,11 +31,9 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-"""
-Create may users in groups.
-"""
+"""Create may users in groups."""
 
-from __future__ import print_function
+from __future__ import annotations, print_function
 
 import sys
 from argparse import ArgumentParser, Namespace
@@ -52,206 +50,195 @@ import univention.admin.uldap
 import univention.debug
 
 
-def names(count):  # type: (int) -> Iterator[str]
-	yield from ('nscd%04x' % index for index in range(count))
+def names(count: int) -> Iterator[str]:
+    yield from ('nscd%04x' % index for index in range(count))
 
 
 class MassCreate(object):
+    """Mass create users and groups."""
 
-	"""Mass create users and groups."""
+    def __init__(self, count: int) -> None:
+        # create LDAP connection
+        self.access, self.position = univention.admin.uldap.getAdminConnection()
 
-	def __init__(self, count):
-		# type: (int) -> None
-		# create LDAP connection
-		self.access, self.position = univention.admin.uldap.getAdminConnection()
+        # position of groups and users in LDAP dit
+        self.gp = univention.admin.uldap.position(self.position.getDn())
+        self.gp.setDn("cn=groups,%s" % self.position.getBase())
 
-		# position of groups and users in LDAP dit
-		self.gp = univention.admin.uldap.position(self.position.getDn())
-		self.gp.setDn("cn=groups,%s" % self.position.getBase())
+        self.up = univention.admin.uldap.position(self.position.getDn())
+        self.up.setDn("cn=users,%s" % self.position.getBase())
 
-		self.up = univention.admin.uldap.position(self.position.getDn())
-		self.up.setDn("cn=users,%s" % self.position.getBase())
+        # dynamically get modules by name (univention.admin.handlers.$module.object)
+        self.gg = univention.admin.modules.get("groups/group")
+        univention.admin.modules.init(self.access, self.position, self.gg)
 
-		# dynamically get modules by name (univention.admin.handlers.$module.object)
-		self.gg = univention.admin.modules.get("groups/group")
-		univention.admin.modules.init(self.access, self.position, self.gg)
+        self.uu = univention.admin.modules.get("users/user")
+        univention.admin.modules.init(self.access, self.position, self.uu)
 
-		self.uu = univention.admin.modules.get("users/user")
-		univention.admin.modules.init(self.access, self.position, self.uu)
+        self.count = count
 
-		self.count = count
+        self.suffix = ''
+        self.fast = True
 
-		self.suffix = ''
-		self.fast = True
+    def group(self, name: str, in_group: str = "") -> str:
+        """Create group, which is itself member in_group."""
+        g = self.gg.object(co=None, lo=self.access, position=self.gp)
+        g.options = ['posix', 'samba']
+        g.open()
+        g.info['name'] = name
+        g.info['sambaGroupType'] = "2"
+        if in_group:
+            g.info['memberOf'] = ["cn=%s,%s" % (escape_dn_chars(in_group), self.gp.getDn())]
+        try:
+            dn: str = g.create()
+            print('Group "%s"' % (dn,))
+        except univention.admin.uexceptions.groupNameAlreadyUsed as ex:
+            dn = 'cn=%s,%s' % (escape_dn_chars(name), self.gp.getDn())
+            print('Group "%s" exists: %s' % (dn, ex), file=sys.stderr)
+        except univention.admin.uexceptions.objectExists as ex:
+            dn = 'cn=%s,%s' % (escape_dn_chars(name), self.gp.getDn())
+            print('Object "%s" exists: %s' % (dn, ex.dn), file=sys.stderr)
 
-	def group(self, name, in_group=""):
-		# type: (str, str) -> str
-		"""Create group, which is itself member in_group."""
-		g = self.gg.object(co=None, lo=self.access, position=self.gp)
-		g.options = ['posix', 'samba']
-		g.open()
-		g.info['name'] = name
-		g.info['sambaGroupType'] = "2"
-		if in_group:
-			g.info['memberOf'] = ["cn=%s,%s" % (escape_dn_chars(in_group), self.gp.getDn())]
-		try:
-			dn = g.create()  # type: str
-			print('Group "%s"' % (dn,))
-		except univention.admin.uexceptions.groupNameAlreadyUsed as ex:
-			dn = 'cn=%s,%s' % (escape_dn_chars(name), self.gp.getDn())
-			print('Group "%s" exists: %s' % (dn, ex), file=sys.stderr)
-		except univention.admin.uexceptions.objectExists as ex:
-			dn = 'cn=%s,%s' % (escape_dn_chars(name), self.gp.getDn())
-			print('Object "%s" exists: %s' % (dn, ex.dn), file=sys.stderr)
+        return dn
 
-		return dn
+    def user(self, name: str, groups: List[str]) -> str:
+        """Create user, which is itself member in groups."""
+        gdn = ["cn=%s,%s" % (escape_dn_chars(group), self.gp.getDn()) for group in groups]
+        u = self.uu.object(co=None, lo=self.access, position=self.up)
+        u.open()
+        u.info['username'] = name
+        u.info['password'] = 'univention'
+        u.info['firstname'] = name
+        u.info['lastname'] = name
+        u.info['groups'] = gdn
+        # Per default, every user gets added to the default group 'Domain Users',
+        # which gets very slow, since each time the group is loaded, than modified
+        # by removing all previous members before adding them all back plus adding
+        # the new user.
+        u.info['primaryGroup'] = 'cn=Domain Users,%s' % self.gp.getDn()
+        u.info['unixhome'] = '/home/%s' % name
+        try:
+            dn: str = u.create()
+            print('User "%s"' % (dn,))
+        except univention.admin.uexceptions.uidAlreadyUsed as ex:
+            dn = 'uid=%s,%s' % (escape_dn_chars(name), self.up.getDn())
+            print('User "%s" exists: %s' % (dn, ex), file=sys.stderr)
+        except univention.admin.uexceptions.objectExists as ex:
+            dn = 'uid=%s,%s' % (escape_dn_chars(name), self.up.getDn())
+            print('Object "%s" exists: %s' % (dn, ex.dn), file=sys.stderr)
 
-	def user(self, name, groups):
-		# type: (str, List[str]) -> str
-		"""Create user, which is itself member in groups."""
-		gdn = ["cn=%s,%s" % (escape_dn_chars(group), self.gp.getDn()) for group in groups]
-		u = self.uu.object(co=None, lo=self.access, position=self.up)
-		u.open()
-		u.info['username'] = name
-		u.info['password'] = 'univention'
-		u.info['firstname'] = name
-		u.info['lastname'] = name
-		u.info['groups'] = gdn
-		# Per default, every user gets added to the default group 'Domain Users',
-		# which gets very slow, since each time the group is loaded, than modified
-		# by removing all previous members before adding them all back plus adding
-		# the new user.
-		u.info['primaryGroup'] = 'cn=Domain Users,%s' % self.gp.getDn()
-		u.info['unixhome'] = '/home/%s' % name
-		try:
-			dn = u.create()  # type: str
-			print('User "%s"' % (dn,))
-		except univention.admin.uexceptions.uidAlreadyUsed as ex:
-			dn = 'uid=%s,%s' % (escape_dn_chars(name), self.up.getDn())
-			print('User "%s" exists: %s' % (dn, ex), file=sys.stderr)
-		except univention.admin.uexceptions.objectExists as ex:
-			dn = 'uid=%s,%s' % (escape_dn_chars(name), self.up.getDn())
-			print('Object "%s" exists: %s' % (dn, ex.dn), file=sys.stderr)
+        return dn
 
-		return dn
+    def group_members(self, name: str, uniqueMember: List[str] = [], memberUid: List[str] = []) -> str:
+        """Set members of group."""
+        dn = "cn=%s,%s" % (escape_dn_chars(name), self.gp.getDn())
 
-	def group_members(self, name, uniqueMember=[], memberUid=[]):
-		# type: (str, List[str], List[str]) -> str
-		"""Set members of group."""
-		dn = "cn=%s,%s" % (escape_dn_chars(name), self.gp.getDn())
+        ml: List[Tuple[object, str, object]] = []
+        if uniqueMember:
+            data = [_.encode('utf8') for _ in uniqueMember]
+            ml.append((ldap.MOD_ADD, 'uniqueMember', data))
+        else:
+            ml.append((ldap.MOD_DELETE, 'uniqueMember', None))
 
-		ml = []  # type: List[Tuple[object, str, object]]
-		if uniqueMember:
-			data = [_.encode('utf8') for _ in uniqueMember]
-			ml.append((ldap.MOD_ADD, 'uniqueMember', data))
-		else:
-			ml.append((ldap.MOD_DELETE, 'uniqueMember', None))
+        if memberUid:
+            data = [_.encode('utf8') for _ in memberUid]
+            ml.append((ldap.MOD_ADD, 'memberUid', data))
+        else:
+            ml.append((ldap.MOD_DELETE, 'memberUid', None))
 
-		if memberUid:
-			data = [_.encode('utf8') for _ in memberUid]
-			ml.append((ldap.MOD_ADD, 'memberUid', data))
-		else:
-			ml.append((ldap.MOD_DELETE, 'memberUid', None))
+        if ml:
+            try:
+                try:
+                    res = self.access.lo.lo.modify_s(dn, ml)
+                    assert res
+                except ldap.TYPE_OR_VALUE_EXISTS as ex:
+                    print('group %s: %s' % (name, ex), file=sys.stderr)
+                    ml = [(ldap.MOD_REPLACE, attr, val) for (_op, attr, val) in ml]
+                    res = self.access.lo.lo.modify_s(dn, ml)
+                    assert res
+            except ldap.NO_SUCH_ATTRIBUTE as ex:
+                print('Group "%s" error: %s' % (dn, ex), file=sys.stderr)
 
-		if ml:
-			try:
-				try:
-					res = self.access.lo.lo.modify_s(dn, ml)
-					assert res
-				except ldap.TYPE_OR_VALUE_EXISTS as ex:
-					print('group %s: %s' % (name, ex), file=sys.stderr)
-					ml = [(ldap.MOD_REPLACE, attr, val) for (_op, attr, val) in ml]
-					res = self.access.lo.lo.modify_s(dn, ml)
-					assert res
-			except ldap.NO_SUCH_ATTRIBUTE as ex:
-				print('Group "%s" error: %s' % (dn, ex), file=sys.stderr)
+        return dn
 
-		return dn
+    def create(self, groups: List[str]) -> None:
+        """Create hierarchy of groups and users."""
+        for group in groups:
+            self.group(group)
+        self.group('nscd_all')
 
-	def create(self, groups):
-		# type: (List[str]) -> None
-		"""Create hierarchy of groups and users."""
-		for group in groups:
-			self.group(group)
-		self.group('nscd_all')
+        uniqueMember: List[str] = []
+        memberUid: List[str] = []
 
-		uniqueMember = []  # type: List[str]
-		memberUid = []  # type: List[str]
+        for name in names(self.count):
+            if name.endswith('000'):
+                self.group(name[:-3], 'nscd_all')
+            if name.endswith('00'):
+                self.group(name[:-2], name[:-3])
+            if name.endswith('0'):
+                self.group(name[:-1], name[:-2])
 
-		for name in names(self.count):
-			if name.endswith('000'):
-				self.group(name[:-3], 'nscd_all')
-			if name.endswith('00'):
-				self.group(name[:-2], name[:-3])
-			if name.endswith('0'):
-				self.group(name[:-1], name[:-2])
+            user_name = name
+            if self.suffix:
+                user_name += choice(self.suffix)
+            dn = self.user(user_name, [name[:-2], name[:-1]] + groups)
+            uniqueMember.append(dn)
+            memberUid.append(name)
 
-			user_name = name
-			if self.suffix:
-				user_name += choice(self.suffix)
-			dn = self.user(user_name, [name[:-2], name[:-1]] + groups)
-			uniqueMember.append(dn)
-			memberUid.append(name)
+            if self.fast and name.endswith('00'):
+                # temporarily clear group
+                for group in groups:
+                    self.group_members(group)
 
-			if self.fast and name.endswith('00'):
-				# temporarily clear group
-				for group in groups:
-					self.group_members(group)
-
-		# finally refill group with all users
-		for group in groups:
-			self.group_members(group, uniqueMember=uniqueMember, memberUid=memberUid)
+        # finally refill group with all users
+        for group in groups:
+            self.group_members(group, uniqueMember=uniqueMember, memberUid=memberUid)
 
 
-def main():
-	# type: () -> None
-	"""Create users."""
-	opt = parse_args()
-	setup_logging()
-	load_udm_modules()
-	create_users_and_groups(opt)
+def main() -> None:
+    """Create users."""
+    opt = parse_args()
+    setup_logging()
+    load_udm_modules()
+    create_users_and_groups(opt)
 
 
-def parse_args():
-	# type: () -> Namespace
-	parser = ArgumentParser(description=__doc__)
-	parser.add_argument(
-		'-g', '--group-only',
-		dest='groups', action='append', default=['Domain Users'],
-		help='Add all users to these groups [%(default)s]')
-	parser.add_argument(
-		'-n', '--number',
-		dest='count', type=int, default=1 << 15,
-		help='Number of users to create [%(default)s]')
-	parser.add_argument(
-		'-s', '--suffix',
-		default='',
-		help='Specify character set for random suffix')
-	parser.add_argument(
-		'-f', '--fast',
-		action='store_false',
-		help='Disable intermediate clean groups to speed up user creation')
-	opt = parser.parse_args()
-	return opt
+def parse_args() -> Namespace:
+    parser = ArgumentParser(description=__doc__)
+    parser.add_argument(
+        '-g', '--group-only',
+        dest='groups', action='append', default=['Domain Users'],
+        help='Add all users to these groups [%(default)s]')
+    parser.add_argument(
+        '-n', '--number',
+        dest='count', type=int, default=1 << 15,
+        help='Number of users to create [%(default)s]')
+    parser.add_argument(
+        '-s', '--suffix',
+        default='',
+        help='Specify character set for random suffix')
+    parser.add_argument(
+        '-f', '--fast',
+        action='store_false',
+        help='Disable intermediate clean groups to speed up user creation')
+    opt = parser.parse_args()
+    return opt
 
 
-def setup_logging():
-	# type: () -> None
-	univention.debug.init('/dev/stderr', univention.debug.ADMIN, univention.debug.ALL)
+def setup_logging() -> None:
+    univention.debug.init('/dev/stderr', univention.debug.ADMIN, univention.debug.ALL)
 
 
-def load_udm_modules():
-	# type: () -> None
-	univention.admin.modules.update()
+def load_udm_modules() -> None:
+    univention.admin.modules.update()
 
 
-def create_users_and_groups(options):
-	# type: (Namespace) -> None
-	generator = MassCreate(options.count)
-	generator.suffix = options.suffix
-	generator.fast = options.fast
-	generator.create(options.groups)
+def create_users_and_groups(options: Namespace) -> None:
+    generator = MassCreate(options.count)
+    generator.suffix = options.suffix
+    generator.fast = options.fast
+    generator.create(options.groups)
 
 
 if __name__ == '__main__':
-	main()
+    main()

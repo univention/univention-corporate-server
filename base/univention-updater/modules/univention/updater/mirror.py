@@ -29,26 +29,29 @@
 # License with the Debian GNU/Linux or Univention distribution in file
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
-"""
-Mirror Univention repository server.
-"""
+"""Mirror Univention repository server."""
 
 from __future__ import absolute_import
-import os
-import errno
-import subprocess
-import logging
-import json
 
-from .tools import UniventionUpdater
-from .repo_url import UcsRepoUrl
+import errno
+import json
+import logging
+import os
+import subprocess
+
 from univention.lib.ucs import UCS_Version
+
+from .repo_url import UcsRepoUrl
+from .tools import UniventionUpdater
+
+
 try:
     import univention.debug as ud
 except ImportError:
     import univention.debug2 as ud  # type: ignore
 try:
     from typing import Any, Iterator, List, Optional, Tuple  # noqa: F401
+
     from typing_extensions import Literal  # noqa: F401
 except ImportError:
     pass
@@ -120,9 +123,7 @@ class UniventionMirror(UniventionUpdater):
 
     def config_repository(self):
         # type: () -> None
-        """
-        Retrieve configuration to access repository. Overrides :py:class:`univention.updater.UniventionUpdater`.
-        """
+        """Retrieve configuration to access repository. Overrides :py:class:`univention.updater.UniventionUpdater`."""
         self.online_repository = self.configRegistry.is_true('repository/mirror', True)
         self.repourl = UcsRepoUrl(self.configRegistry, 'repository/mirror')
         self.sources = self.configRegistry.is_true('repository/mirror/sources', False)
@@ -146,9 +147,7 @@ class UniventionMirror(UniventionUpdater):
 
     def mirror_repositories(self):
         # type: () -> int
-        """
-        Uses :command:`apt-mirror` to copy a repository.
-        """
+        """Uses :command:`apt-mirror` to copy a repository."""
         # check if the repository directory structure exists, otherwise create it
         makedirs(self.repository_path)
 
@@ -168,9 +167,7 @@ class UniventionMirror(UniventionUpdater):
 
     def mirror_update_scripts(self):
         # type: () -> None
-        """
-        Mirrors the :file:`preup.sh` and :file:`postup.sh` scripts.
-        """
+        """Mirrors the :file:`preup.sh` and :file:`postup.sh` scripts."""
         scripts = self.get_sh_files(self.version_start, self.version_end, mirror=True)
         for server, struct, phase, path, script in scripts:
             self.log.info('Mirroring %s:%r/%s to %s', server, struct, phase, path)
@@ -193,9 +190,7 @@ class UniventionMirror(UniventionUpdater):
                 ud.debug(ud.NETWORK, ud.INFO, "Successfully mirrored: %s" % filename)
 
     def write_releases_json(self):
-        """
-        Write a `ucs-releases.json` including only the mirrored releases.
-        """
+        """Write a `ucs-releases.json` including only the mirrored releases."""
         _code, _size, data = self.server.access(None, 'ucs-releases.json', get=True)
         try:
             releases = json.loads(data)
@@ -213,9 +208,7 @@ class UniventionMirror(UniventionUpdater):
             json.dump(releases, releases_json)
 
     def run(self):
-        """
-        starts the mirror process.
-        """
+        """starts the mirror process."""
         self.mirror_repositories()
         self.mirror_update_scripts()
         self.write_releases_json()

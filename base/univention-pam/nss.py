@@ -38,8 +38,10 @@ from __future__ import absolute_import, annotations
 
 from typing import Dict, List
 
-import listener
 import univention.config_registry
+
+import listener
+
 
 description = 'Invalidate the nss group cache whenever a group membership has been modified.'
 filter = '(objectClass=univentionGroup)'
@@ -47,19 +49,19 @@ attributes = ['uniqueMember', 'cn']
 
 
 def handler(dn: str, new: Dict[str, List[bytes]], old: Dict[str, List[bytes]]) -> None:
-	pass
+    pass
 
 
 def postrun() -> None:
-	ucr = univention.config_registry.ConfigRegistry()  # TODO: why not listener.configRegistry?
-	ucr.load()
+    ucr = univention.config_registry.ConfigRegistry()  # TODO: why not listener.configRegistry?
+    ucr.load()
 
-	if ucr.is_true('nss/group/cachefile', False) and ucr.is_true('nss/group/cachefile/invalidate_on_changes', True):
-		listener.setuid(0)
-		try:
-			param = ['ldap-group-to-file.py']
-			if ucr.is_true('nss/group/cachefile/check_member', False):
-				param.append('--check_member')
-			listener.run('/usr/lib/univention-pam/ldap-group-to-file.py', param, uid=0)
-		finally:
-			listener.unsetuid()
+    if ucr.is_true('nss/group/cachefile', False) and ucr.is_true('nss/group/cachefile/invalidate_on_changes', True):
+        listener.setuid(0)
+        try:
+            param = ['ldap-group-to-file.py']
+            if ucr.is_true('nss/group/cachefile/check_member', False):
+                param.append('--check_member')
+            listener.run('/usr/lib/univention-pam/ldap-group-to-file.py', param, uid=0)
+        finally:
+            listener.unsetuid()

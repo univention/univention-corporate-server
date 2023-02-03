@@ -36,13 +36,14 @@
 
 from __future__ import print_function
 
-import sys
-import pwd
 import os
+import pwd
+import sys
 
-from pexpect import spawn, EOF
+from pexpect import EOF, spawn
 
 import univention.config_registry
+
 
 args = sys.argv[1:]
 
@@ -51,18 +52,18 @@ ucr.load()
 
 lpadminexec = '/usr/sbin/lpadmin'
 for path in ['/usr/bin/enable', '/usr/sbin/cupsenable']:
-	if os.path.exists(path):
-		enableexec = path
+    if os.path.exists(path):
+        enableexec = path
 for path in ['/usr/sbin/accept', '/usr/sbin/cupsaccept']:
-	if os.path.exists(path):
-		acceptexec = path
+    if os.path.exists(path):
+        acceptexec = path
 
 if '-h' not in args:
-	args = args + ['-h', 'localhost']
+    args = args + ['-h', 'localhost']
 
 # read machine password
-with open('/etc/machine.secret', 'r') as fd:
-	machine_password = fd.readline().strip()
+with open('/etc/machine.secret') as fd:
+    machine_password = fd.readline().strip()
 
 machine_uid = pwd.getpwnam('%s$' % (ucr['hostname']))[2]
 old_uid = os.getuid()
@@ -77,62 +78,62 @@ rc = 0
 
 
 def show_child_before_message(child):
-	""" Method shows only lpadmin error/info message that comes only with "lpadmin: """
-	for stdout_line in child.before.splitlines():
-		if b"lpadmin: " in stdout_line:
-			print(stdout_line.decode('UTF-8', 'replace').strip())
+    """Method shows only lpadmin error/info message that comes only with "lpadmin:"""
+    for stdout_line in child.before.splitlines():
+        if b"lpadmin: " in stdout_line:
+            print(stdout_line.decode('UTF-8', 'replace').strip())
 
 
 def enableaccept(command, groupname, timeout, machine_password):
-	""" Method for enabling and accept classes """
-	i = 0
-	child = spawn(command, [groupname])
-	# print child
-	while not i == 3:
-		i = child.expect([r'%s\.%s.*\?' % (ucr['hostname'], ucr['domainname']), r'%s.*\?' % ucr['hostname'], r'localhost.*\?', EOF], timeout=timeout)
-		# print command, " %s" % i
-		if i in [0, 1, 2]:
-			child.sendline(machine_password)
+    """Method for enabling and accept classes"""
+    i = 0
+    child = spawn(command, [groupname])
+    # print child
+    while i != 3:
+        i = child.expect([r'%s\.%s.*\?' % (ucr['hostname'], ucr['domainname']), r'%s.*\?' % ucr['hostname'], r'localhost.*\?', EOF], timeout=timeout)
+        # print command, " %s" % i
+        if i in [0, 1, 2]:
+            child.sendline(machine_password)
 
-	if child.isalive():
-		child.close()
+    if child.isalive():
+        child.close()
 
-	if child.exitstatus and child.exitstatus != 0:
-		print('The command "%s %s" returned %d' % (command, groupname, child.exitstatus))
-		sys.exit(child.exitstatus)
+    if child.exitstatus and child.exitstatus != 0:
+        print('The command "%s %s" returned %d' % (command, groupname, child.exitstatus))
+        sys.exit(child.exitstatus)
 
 
 while i != 3:
-	i = child.expect([r'%s\.%s.*\?' % (ucr['hostname'], ucr['domainname']), r'%s.*\?' % ucr['hostname'], r'localhost.*\?', EOF], timeout=timeout)
-	if i in [0, 1, 2]:
-		show_child_before_message(child)
-		child.sendline(machine_password)
-		attempt += 1
+    i = child.expect([r'%s\.%s.*\?' % (ucr['hostname'], ucr['domainname']), r'%s.*\?' % ucr['hostname'], r'localhost.*\?', EOF], timeout=timeout)
+    if i in [0, 1, 2]:
+        show_child_before_message(child)
+        child.sendline(machine_password)
+        attempt += 1
 
-	if attempt > 3:
-		print('Failed to create the printer with the following command: ')
-		print('  %s %s' % (lpadminexec, ' '.join(args)))
-		print('Please check the machine account or the PAM configuration.')
-		sys.exit(1)
+    if attempt > 3:
+        print('Failed to create the printer with the following command: ')
+        print('  %s %s' % (lpadminexec, ' '.join(args)))
+        print('Please check the machine account or the PAM configuration.')
+        sys.exit(1)
 
 
 show_child_before_message(child)
 
 if child.isalive():
-	child.close()
+    child.close()
 
 if child.exitstatus and child.exitstatus != 0:
-	print('The command "%s %s" returned %d' % (lpadminexec, ' '.join(args), child.exitstatus))
-	sys.exit(child.exitstatus)
+    print('The command "%s %s" returned %d' % (lpadminexec, ' '.join(args), child.exitstatus))
+    sys.exit(child.exitstatus)
 
 # check for several classes
 if '-c' in args:
-	i = 0
-	for arg in args:
-		if arg == '-c':
-			# print("arg: ", args[i+1])
-			enableaccept(enableexec, args[i + 1], timeout, machine_password)
-			enableaccept(acceptexec, args[i + 1], timeout, machine_password)
-		i += 1
+    i = 0
+    for arg in args:
+        if arg == '-c':
+            # print("arg: ", args[i+1])
+            enableaccept(enableexec, args[i + 1], timeout, machine_password)
+            enableaccept(acceptexec, args[i + 1], timeout, machine_password)
+        i += 1
 
 sys.exit(0)

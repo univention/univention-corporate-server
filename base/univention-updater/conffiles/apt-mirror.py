@@ -31,6 +31,7 @@
 import os
 import shutil
 
+
 CUR = '/etc/apt/mirror.list'
 BAK = CUR + '.old'
 
@@ -43,7 +44,7 @@ def preinst(ucr, changes):
         shutil.copy2(CUR, BAK)
 
     if 'local/repository' in changes:
-        """ Immediately resolve pending policy changes if local/repository is changed (Bug #16646) """
+        """Immediately resolve pending policy changes if local/repository is changed (Bug #16646)"""
         os.system('/usr/lib/univention-directory-policy/univention-policy-set-repository-server >>/var/log/univention/repository.log')
 
 
@@ -51,10 +52,9 @@ def postinst(ucr, changes):
     if not os.path.exists(CUR):
         return
 
-    res = open(CUR, 'r').readlines()
-    if len(res) <= 1:
-        if os.path.exists(BAK):
-            os.rename(BAK, CUR)
+    res = open(CUR).readlines()
+    if len(res) <= 1 and os.path.exists(BAK):
+        os.rename(BAK, CUR)
 
     if os.path.exists(BAK):
         os.remove(BAK)

@@ -4,35 +4,35 @@ E:0009-3: src/nur24.py:1: file specifies wrong Python version in hashbang
 E:0009-3: src/nur25.py:1: file specifies wrong Python version in hashbang
 E:0009-3: src/py35.py:1: file specifies wrong Python version in hashbang
 E:0009-3: src/py37.py:1: file specifies wrong Python version in hashbang
-E:0009-5: src/haskey-without-hashbang.py:7:6: dict.has_key is deprecated in python3 - please use "if key in dict:"
-	        if y.has_key ( 'foo ' ):
-	            ^^^^^^^^^^
-E:0009-5: src/haskey-without-hashbang.py:9:6: dict.has_key is deprecated in python3 - please use "if key in dict:"
-	        if x.has_key('foo'):
-	            ^^^^^^^^^
-E:0009-5: src/haskey.py:10:6: dict.has_key is deprecated in python3 - please use "if key in dict:"
-	        if x.has_key('foo'):
-	            ^^^^^^^^^
-E:0009-5: src/haskey.py:8:6: dict.has_key is deprecated in python3 - please use "if key in dict:"
-	        if y.has_key ( 'foo ' ):
-	            ^^^^^^^^^^
-E:0009-6: src/haskey-without-hashbang.py:15:2: raise "text" is deprecated in python3
-	        raise "Error"
-	        ^^^^^^^^^^^^^
-E:0009-6: src/haskey.py:16:2: raise "text" is deprecated in python3
-	        raise "Error"
-	        ^^^^^^^^^^^^^
-E:0009-6: src/irgendwas.py:12:2: raise "text" is deprecated in python3
-	        raise "Error"
-	        ^^^^^^^^^^^^^
-E:0009-6: src/mitWhitespace.py:11:2: raise "text" is deprecated in python3
-	        raise "Error"
-	        ^^^^^^^^^^^^^
-E:0009-6: src/nur24.py:11:2: raise "text" is deprecated in python3
-	        raise "Error"
-	        ^^^^^^^^^^^^^
-E:0009-6: src/nur25.py:11:2: raise "text" is deprecated in python3
-	        raise "Error"
-	        ^^^^^^^^^^^^^
+E:0009-5: src/haskey-without-hashbang.py:7:9: dict.has_key is deprecated in python3 - please use "if key in dict:"
+	    if y.has_key('foo '):
+	        ^^^^^^^^^
+E:0009-5: src/haskey-without-hashbang.py:9:9: dict.has_key is deprecated in python3 - please use "if key in dict:"
+	    if x.has_key('foo'):
+	        ^^^^^^^^^
+E:0009-5: src/haskey.py:10:9: dict.has_key is deprecated in python3 - please use "if key in dict:"
+	    if x.has_key('foo'):
+	        ^^^^^^^^^
+E:0009-5: src/haskey.py:8:9: dict.has_key is deprecated in python3 - please use "if key in dict:"
+	    if y.has_key('foo '):
+	        ^^^^^^^^^
+E:0009-6: src/haskey-without-hashbang.py:15:5: raise "text" is deprecated in python3
+	    raise "Error"
+	    ^^^^^^^^^^^^^
+E:0009-6: src/haskey.py:16:5: raise "text" is deprecated in python3
+	    raise "Error"
+	    ^^^^^^^^^^^^^
+E:0009-6: src/irgendwas.py:12:5: raise "text" is deprecated in python3
+	    raise "Error"
+	    ^^^^^^^^^^^^^
+E:0009-6: src/mitWhitespace.py:11:5: raise "text" is deprecated in python3
+	    raise "Error"
+	    ^^^^^^^^^^^^^
+E:0009-6: src/nur24.py:11:5: raise "text" is deprecated in python3
+	    raise "Error"
+	    ^^^^^^^^^^^^^
+E:0009-6: src/nur25.py:11:5: raise "text" is deprecated in python3
+	    raise "Error"
+	    ^^^^^^^^^^^^^
 E:0009-9: src/extra.py:1: hashbang contains more than one option
 W:0009-4: src/mitWhitespace.py:1: file contains whitespace after Python command

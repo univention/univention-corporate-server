@@ -29,25 +29,27 @@
 # License with the Debian GNU/Linux or Univention distribution in file
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
-"""
-Univention Updater locking
-"""
+"""Univention Updater locking"""
 
-from __future__ import absolute_import
-from __future__ import print_function
+from __future__ import absolute_import, print_function
 
 import os
 import sys
 from contextlib import contextmanager
 from time import sleep
+
+
 try:
     from time import monotonic  # type: ignore
 except ImportError:
     from monotonic import monotonic  # type: ignore
-from errno import EEXIST, ESRCH, ENOENT
+
+from errno import EEXIST, ENOENT, ESRCH
+
+
 try:
-    from typing import Optional, Type  # noqa: F401
     from types import TracebackType  # noqa: F401
+    from typing import Optional, Type  # noqa: F401
 except ImportError:
     pass
 from .errors import UpdaterException
@@ -77,9 +79,7 @@ class LockingError(UpdaterException):
 
 
 class UpdaterLock(object):
-    """
-    Context wrapper for updater-lock :file:`/var/lock/univention-updater`.
-    """
+    """Context wrapper for updater-lock :file:`/var/lock/univention-updater`."""
 
     def __init__(self, timeout=0):
         # type: (int) -> None
@@ -102,14 +102,14 @@ class UpdaterLock(object):
 
     def updater_lock_acquire(self):
         # type: () -> int
-        '''
+        """
         Acquire the updater-lock.
 
         :returns: 0 if it could be acquired within <timeout> seconds, >= 1 if locked by parent.
         :rtype: int
         :raises EnvironmentError: on file system access errors.
         :raises LockingError: on invalid PID or timeout.
-        '''
+        """
         deadline = monotonic() + self.timeout
         lock_pid = 0
         while True:
@@ -171,12 +171,12 @@ class UpdaterLock(object):
 
     def updater_lock_release(self):
         # type: () -> bool
-        '''
+        """
         Release the updater-lock.
 
         :returns: True if it has been unlocked (or decremented when nested), False if it was already unlocked.
         :rtype: bool
-        '''
+        """
         if self.lock > 0:
             # parent process still owns the lock, do nothing and just return success
             return True

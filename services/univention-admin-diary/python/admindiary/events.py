@@ -35,26 +35,26 @@ from typing import Dict, List, Optional  # noqa: F401
 
 
 class DiaryEvent(object):
-	_all_events = {}  # type: Dict[str, DiaryEvent]
+    _all_events = {}  # type: Dict[str, DiaryEvent]
 
-	@classmethod
-	def get(cls, name):
-		# type: (str) -> Optional[DiaryEvent]
-		return cls._all_events.get(name)
+    @classmethod
+    def get(cls, name):
+        # type: (str) -> Optional[DiaryEvent]
+        return cls._all_events.get(name)
 
-	@classmethod
-	def names(cls):
-		# type: () -> List[str]
-		return sorted(cls._all_events.keys())
+    @classmethod
+    def names(cls):
+        # type: () -> List[str]
+        return sorted(cls._all_events.keys())
 
-	def __init__(self, name, message, args=None, tags=None, icon=None):
-		# type: (str, Dict[str, str], Optional[Dict[str, str]], Optional[List[str]], Optional[str]) -> None
-		self.name = name
-		self.message = message
-		self.args = args or {}
-		self.tags = tags or []
-		self.icon = icon
-		self._all_events[self.name] = self
+    def __init__(self, name, message, args=None, tags=None, icon=None):
+        # type: (str, Dict[str, str], Optional[Dict[str, str]], Optional[List[str]], Optional[str]) -> None
+        self.name = name
+        self.message = message
+        self.args = args or {}
+        self.tags = tags or []
+        self.icon = icon
+        self._all_events[self.name] = self
 
 
 APP_INSTALL_START = DiaryEvent(u'APP_INSTALL_START', {u'en': u'Installation of {name} {version} started', u'de': u'Installation von {name} {version} wurde gestartet'}, args=[u'name', u'version'], icon=u'software')

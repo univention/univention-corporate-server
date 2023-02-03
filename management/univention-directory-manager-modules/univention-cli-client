@@ -36,12 +36,12 @@
 from __future__ import print_function
 
 import array
+import json
+import os
 import socket
 import stat
-import time
-import os
 import sys
-import json
+import time
 
 import six
 from six.moves import input
@@ -53,162 +53,161 @@ default_socket_path = '/tmp/admincli_%d/sock' % os.getuid()
 
 
 def get_logfile():
-	"""Extract logfile from command line arguments."""
-	logfile = ''
-	for pos, arg in enumerate(sys.argv):
-		if arg.startswith('--logfile='):
-			logfile = arg[len('--logfile='):]
-		elif arg.startswith('--logfile'):
-			try:
-				logfile = sys.argv[pos + 1]
-			except IndexError:
-				print("E: Option --logfile requires an argument", file=sys.stderr)
-				sys.exit(1)
-	return logfile
+    """Extract logfile from command line arguments."""
+    logfile = ''
+    for pos, arg in enumerate(sys.argv):
+        if arg.startswith('--logfile='):
+            logfile = arg[len('--logfile='):]
+        elif arg.startswith('--logfile'):
+            try:
+                logfile = sys.argv[pos + 1]
+            except IndexError:
+                print("E: Option --logfile requires an argument", file=sys.stderr)
+                sys.exit(1)
+    return logfile
 
 
 def fork_server(sock, socket_path):
-	"""Fork UDM command line server."""
-	# start new server
-	pid = os.fork()
-	if pid == 0:  # child
-		null = os.open(os.path.devnull, os.O_RDWR)
-		if sys.stdin:
-			os.dup2(null, sys.stdin.fileno())
-		if sys.stdout:
-			os.dup2(null, sys.stdout.fileno())
-		if sys.stderr:
-			os.dup2(null, sys.stderr.fileno())
-		argv = ['univention-cli-server']
-		logfile = get_logfile()
-		if logfile:
-			argv.extend(['-L', logfile])
-		if socket_path != default_socket_path:
-			argv.extend(['-s', socket_path])
-		os.execv('/usr/share/univention-directory-manager-tools/univention-cli-server', argv)
-	else:  # parent
-		os.waitpid(pid, os.WNOHANG)
+    """Fork UDM command line server."""
+    # start new server
+    pid = os.fork()
+    if pid == 0:  # child
+        null = os.open(os.path.devnull, os.O_RDWR)
+        if sys.stdin:
+            os.dup2(null, sys.stdin.fileno())
+        if sys.stdout:
+            os.dup2(null, sys.stdout.fileno())
+        if sys.stderr:
+            os.dup2(null, sys.stderr.fileno())
+        argv = ['univention-cli-server']
+        logfile = get_logfile()
+        if logfile:
+            argv.extend(['-L', logfile])
+        if socket_path != default_socket_path:
+            argv.extend(['-s', socket_path])
+        os.execv('/usr/share/univention-directory-manager-tools/univention-cli-server', argv)
+    else:  # parent
+        os.waitpid(pid, os.WNOHANG)
 
-	ucr = ConfigRegistry()
-	ucr.load()
-	socket_timeout = float(ucr.get('directory/manager/cmd/sockettimeout', 50))
-	stime = time.time() + socket_timeout
-	while not os.path.exists(socket_path):
-		time.sleep(0.1)
-		if time.time() > stime:
-			print('E: Can`t find running daemon after %s seconds. (No socketfile)' % socket_timeout, file=sys.stderr)
-			sys.exit(1)
+    ucr = ConfigRegistry()
+    ucr.load()
+    socket_timeout = float(ucr.get('directory/manager/cmd/sockettimeout', 50))
+    stime = time.time() + socket_timeout
+    while not os.path.exists(socket_path):
+        time.sleep(0.1)
+        if time.time() > stime:
+            print('E: Can`t find running daemon after %s seconds. (No socketfile)' % socket_timeout, file=sys.stderr)
+            sys.exit(1)
 
-	# this takes a long time if getfqdn(host) is used in cli-server
-	connection_timeout = 30
-	stime = time.time() + connection_timeout
-	while True:
-		try:
-			sock.connect(socket_path)
-			break
-		except socket.error:
-			time.sleep(0.1)
-			if time.time() > stime:
-				print('W: Can`t connect to daemon after %s seconds.' % connection_timeout, file=sys.stderr)
-				raise
+    # this takes a long time if getfqdn(host) is used in cli-server
+    connection_timeout = 30
+    stime = time.time() + connection_timeout
+    while True:
+        try:
+            sock.connect(socket_path)
+            break
+        except socket.error:
+            time.sleep(0.1)
+            if time.time() > stime:
+                print('W: Can`t connect to daemon after %s seconds.' % connection_timeout, file=sys.stderr)
+                raise
 
 
 def get_password():
-	"""Query for interactive password."""
-	while True:
-		pwd1 = input('New password ')
-		pwd2 = input('Re-enter new password ')
-		if pwd1 == pwd2:
-			return pwd1
-		print('password mismatch', file=sys.stderr)
+    """Query for interactive password."""
+    while True:
+        pwd1 = input('New password ')
+        pwd2 = input('Re-enter new password ')
+        if pwd1 == pwd2:
+            return pwd1
+        print('password mismatch', file=sys.stderr)
 
 
 def receive_answer(sock):
-	"""Receive complete answer from server."""
-	data = b''
-	while True:
-		buf = sock.recv(1024)
-		if len(buf) == 0:
-			print('E: Daemon died.', file=sys.stderr)
-			sys.exit(1)
-		elif buf[-1:] == b'\0':
-			buf = buf[0:-1]
-			data += buf
-			break
-		else:
-			data += buf
-	return data
+    """Receive complete answer from server."""
+    data = b''
+    while True:
+        buf = sock.recv(1024)
+        if len(buf) == 0:
+            print('E: Daemon died.', file=sys.stderr)
+            sys.exit(1)
+        elif buf[-1:] == b'\0':
+            buf = buf[0:-1]
+            data += buf
+            break
+        else:
+            data += buf
+    return data
 
 
 def process_output(output, cmdfile):
-	"""Print output and check for errors."""
-	result = 0
-	if cmdfile == 'univention-passwd':
-		for line in output:
-			if line == 'passwd error: password already used':
-				result = 1
-			elif line.startswith('passwd error: The password is too short'):
-				result = 2
-			print(line)
-	else:
-		if output and output[-1] == "OPERATION FAILED":
-			result = 3
-			output = output[:-1]
-		for line in output:
-			print(line)
-	return result
+    """Print output and check for errors."""
+    result = 0
+    if cmdfile == 'univention-passwd':
+        for line in output:
+            if line == 'passwd error: password already used':
+                result = 1
+            elif line.startswith('passwd error: The password is too short'):
+                result = 2
+            print(line)
+    else:
+        if output and output[-1] == "OPERATION FAILED":
+            result = 3
+            output = output[:-1]
+        for line in output:
+            print(line)
+    return result
 
 
 def _create_socket(socket_path=default_socket_path):
-	sock = socket.socket(socket.AF_UNIX, socket.SOCK_STREAM)
-	try:
-		if os.path.exists(socket_path) and os.stat(socket_path)[stat.ST_UID] != os.getuid():
-			raise EnvironmentError('Hacking attempt')
-		# connect to already running server
-		sock.connect(socket_path)
-	except EnvironmentError:
-		fork_server(sock, socket_path)
-	return sock
+    sock = socket.socket(socket.AF_UNIX, socket.SOCK_STREAM)
+    try:
+        if os.path.exists(socket_path) and os.stat(socket_path)[stat.ST_UID] != os.getuid():
+            raise EnvironmentError('Hacking attempt')
+        # connect to already running server
+        sock.connect(socket_path)
+    except EnvironmentError:
+        fork_server(sock, socket_path)
+    return sock
 
 
 def _re_create_socket():
-	try:
-		socket_path = '/tmp/admincli-%s-%s-%s/socket' % (os.getpid(), os.getuid(), sum(six.iterbytes(os.urandom(12))))
-		return _create_socket(socket_path)
-	except EnvironmentError:
-		print('E: Can`t connect to daemon. Giving up.', file=sys.stderr)
-		sys.exit(1)
+    try:
+        socket_path = '/tmp/admincli-%s-%s-%s/socket' % (os.getpid(), os.getuid(), sum(six.iterbytes(os.urandom(12))))
+        return _create_socket(socket_path)
+    except EnvironmentError:
+        print('E: Can`t connect to daemon. Giving up.', file=sys.stderr)
+        sys.exit(1)
 
 
 def send_fds(sock, msg, fds):
-	return sock.sendmsg([msg], [(socket.SOL_SOCKET, socket.SCM_RIGHTS, array.array("i", fds))])
+    return sock.sendmsg([msg], [(socket.SOL_SOCKET, socket.SCM_RIGHTS, array.array("i", fds))])
 
 
 def main():
-	"""Forward request to udm-cli-server."""
+    """Forward request to udm-cli-server."""
+    try:
+        sock = _create_socket()
+    except socket.error:
+        # try once again
+        sock = _re_create_socket()
 
-	try:
-		sock = _create_socket()
-	except socket.error:
-		# try once again
-		sock = _re_create_socket()
+    cmdfile = os.path.basename(sys.argv[0])
+    if cmdfile == 'univention-passwd':
+        password = get_password()
+        sys.argv += ['--pwd', password]
 
-	cmdfile = os.path.basename(sys.argv[0])
-	if cmdfile == 'univention-passwd':
-		password = get_password()
-		sys.argv += ['--pwd', password]
+    data = json.dumps(sys.argv, ensure_ascii=True)
+    if not isinstance(data, bytes):
+        data = data.encode('ASCII')
+    send_fds(sock, data + b'\0', [sys.stdout.fileno(), sys.stderr.fileno()])
+    data = receive_answer(sock)
+    sock.close()
 
-	data = json.dumps(sys.argv, ensure_ascii=True)
-	if not isinstance(data, bytes):
-		data = data.encode('ASCII')
-	send_fds(sock, data + b'\0', [sys.stdout.fileno(), sys.stderr.fileno()])
-	data = receive_answer(sock)
-	sock.close()
-
-	output = json.loads(data.decode('ASCII'))
-	result = process_output(output, cmdfile)
-	sys.exit(result)
+    output = json.loads(data.decode('ASCII'))
+    result = process_output(output, cmdfile)
+    sys.exit(result)
 
 
 if __name__ == '__main__':
-	main()
+    main()

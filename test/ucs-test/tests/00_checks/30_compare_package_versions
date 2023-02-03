@@ -18,7 +18,8 @@ from urllib import ContentTooShortError, urlopen, urlretrieve
 from apt_pkg import init as apt_init, version_compare
 from lxml.html import fromstring
 
-import univention.testing.utils as utils
+from univention.testing import utils
+
 
 cleanup_folders = []  # list of the folders to be removed after the test
 total_errors = 0
@@ -59,9 +60,7 @@ class PackageEntry:
 
 
 def perform_cleanup():
-    """
-    Removes all the folders/files located in the 'cleanup_folders' list.
-    """
+    """Removes all the folders/files located in the 'cleanup_folders' list."""
     print("\nPerforming cleanup after the test:")
 
     for folder in cleanup_folders:
@@ -158,7 +157,6 @@ def load_version(url):
     target = {}
 
     temp = mkdtemp()  # a temp folder to store 'Packages.gz' for each version
-    global cleanup_folders
     cleanup_folders.append(temp)  # to remove a folder after
 
     for version in select_minor_levels(url):
@@ -184,25 +182,24 @@ def compare(old, new):
     src_package_list = set()
 
     for package in package_list:
-        if package in old:
-            if version_compare(old[package].version, new[package].version) > 0:
-                if errors == 0:
-                    print('\n---------------------------------------------------------')
-                    print('  The following packages use a smaller package version:')
-                    print('---------------------------------------------------------\n')
+        if package in old and version_compare(old[package].version, new[package].version) > 0:
+            if errors == 0:
+                print('\n---------------------------------------------------------')
+                print('  The following packages use a smaller package version:')
+                print('---------------------------------------------------------\n')
 
-                print(" Package: %s" % package)
-                print(f"   {old[package].ucs_version}: {old[package].version}")
-                print(f"   {new[package].ucs_version}: {new[package].version}")
+            print(" Package: %s" % package)
+            print(f"   {old[package].ucs_version}: {old[package].version}")
+            print(f"   {new[package].ucs_version}: {new[package].version}")
 
-                src_package = new[package].sourcepkg
-                if not src_package:
-                    src_package = package
+            src_package = new[package].sourcepkg
+            if not src_package:
+                src_package = package
 
-                src_package_list.add(src_package)
+            src_package_list.add(src_package)
 
-                print("  Source package: %s" % src_package)
-                errors += 1
+            print("  Source package: %s" % src_package)
+            errors += 1
 
     if errors:
         print("\nAffected source packages:")
@@ -217,9 +214,7 @@ def compare(old, new):
 
 
 def read_url(url):
-    """
-    Returns the 'url' in an easy to parse format for finding links.
-    """
+    """Returns the 'url' in an easy to parse format for finding links."""
     try:
         connection = urlopen(url)
         result = fromstring(connection.read())
@@ -231,9 +226,7 @@ def read_url(url):
 
 
 def select_errata_levels(repo_component_url):
-    """
-    Returns list of .*-errata levels found in the given 'repo_component_url'.
-    """
+    """Returns list of .*-errata levels found in the given 'repo_component_url'."""
     check_erratalevels = []
 
     for link in read_url(repo_component_url).xpath('//a/@href'):

@@ -6,6 +6,7 @@
 	<module id="apps" icon="apps-module" priority="-100" version="1.0" python="3">
 @!@
 # make sure locale is always original english
+from univention.appcenter.app_cache import Apps
 import locale
 locale.setlocale(locale.LC_ALL, 'C.UTF-8')
 
@@ -18,14 +19,13 @@ print('''
 		</flavor>
 ''')
 try:
-	from html import escape
+    from html import escape
 except ImportError:
-	from cgi import escape
-from univention.appcenter.app_cache import Apps
+    from cgi import escape
 apps = Apps().get_all_locally_installed_apps()
 
 for app in apps:
-	xml = '''
+    xml = '''
 		<flavor icon="{icon}" priority="-100" id="{id}">
 			<name>{name}</name>
 			<description>{description}</description>
@@ -33,13 +33,12 @@ for app in apps:
 				<category name="apps"/>
 			</categories>
 		</flavor>'''.format(
-			id=escape(app.id or '', True),
-			name=escape(app.name or ''),
-			version=escape(app.version or ''),
-			description=escape(app.description or ''),
-			icon=escape(app.logo_name or '', True),
-		)
-	print(xml)
+        id=escape(app.id or '', True),
+        name=escape(app.name or ''),
+        description=escape(app.description or ''),
+        icon=escape(app.logo_name or '', True),
+    )
+    print(xml)
 @!@
 
 		<command name="apps/get" function="get" />

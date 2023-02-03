@@ -57,7 +57,7 @@ class Users:
         self.users.append((userdn, user))
 
     def delete_users(self):
-        for dn, user in self.users:
+        for _dn, user in self.users:
             try:
                 user.remove()
             except KeyError:
@@ -65,14 +65,14 @@ class Users:
                 self = <univention.admin.handlers.users.user.object object at 0x7f0552046f60>
 
                     def _ldap_post_remove(self):
-                >   	self.alloc.append(('sid', self.oldattr['sambaSID'][0].decode('ASCII')))
+                >       self.alloc.append(('sid', self.oldattr['sambaSID'][0].decode('ASCII')))
                 E    KeyError
                 '''
             except noObject:
                 pass
 
     def check_every_user_is_deleted(self):
-        for dn, user in self.users:
+        for dn, _user in self.users:
             try:
                 verify_udm_object('users/user', dn, None)
             except AssertionError:
@@ -81,7 +81,7 @@ class Users:
         return True
 
     def check_every_user_is_exists(self):
-        for dn, user in self.users:
+        for dn, _user in self.users:
             try:
                 verify_udm_object('users/user', dn, {'username': str2dn(dn)[0][0][1]})
             except noObject:
@@ -100,7 +100,7 @@ class Users:
 
 @pytest.mark.skipif(not connector_running_on_this_host(), reason="Univention S4 Connector not configured.")
 def test_no_leftovers_after_delete_in_ucs():
-    '''
+    """
     check that all objects are deleted if the (UCS) delete happens during
     the sync_to_ucs modify (as reaction to the add)
 
@@ -110,7 +110,7 @@ def test_no_leftovers_after_delete_in_ucs():
                 delete>             delete
                 <delete (dont delete, different entryUUID)
     object left over
-    '''
+    """
     with connector_setup("sync"), UCSTestConfigRegistry():
         # do not update domain users, this changes to timing
         handler_set(['directory/manager/user/primarygroup/update=false'])
@@ -196,5 +196,3 @@ def test_do_not_delete_objects_with_different_id():
         finally:
             # cleanup
             user_objects.delete_users()
-
-# vim: filetype=python expandtab tabstop=4

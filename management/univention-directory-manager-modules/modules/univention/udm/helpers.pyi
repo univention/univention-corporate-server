@@ -30,7 +30,9 @@
 # <https://www.gnu.org/licenses/>.
 
 from __future__ import absolute_import, unicode_literals
-from typing import List, Text
+
+from typing import List, Text  # noqa: F401
+
 
 def get_all_udm_module_names():  # type: () -> List[Text]
-	...
+    ...

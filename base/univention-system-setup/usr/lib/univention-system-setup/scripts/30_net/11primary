@@ -38,37 +38,37 @@ from univention.management.console.modules.setup.setup_script import SetupScript
 
 
 class NoConfiguredInterfaceError(Exception):
-	pass
+    pass
 
 
 class PrimaryInterfaceSetup(SetupScript):
-	name = _("Setting primary network interface")
+    name = _("Setting primary network interface")
 
-	def up(self):
-		self.interfaces = Interfaces()
+    def up(self):
+        self.interfaces = Interfaces()
 
-	def inner_run(self):
-		primary_interface = self.ucr.get("interfaces/primary")
-		if primary_interface in [interface[0] for interface in self.interfaces.all_interfaces]:
-			self.message("Primary interface already set")
-			return True
-		try:
-			primary_interface = self._choose_primary_interface()
-		except NoConfiguredInterfaceError:
-			self.message("No configured interface found. No primary interface set.")
-			return True
-		self.message("Setting primary interface to: {}".format(primary_interface))
-		self.ucr.set("interfaces/primary", primary_interface)
-		return True
+    def inner_run(self):
+        primary_interface = self.ucr.get("interfaces/primary")
+        if primary_interface in [interface[0] for interface in self.interfaces.all_interfaces]:
+            self.message("Primary interface already set")
+            return True
+        try:
+            primary_interface = self._choose_primary_interface()
+        except NoConfiguredInterfaceError:
+            self.message("No configured interface found. No primary interface set.")
+            return True
+        self.message(f"Setting primary interface to: {primary_interface}")
+        self.ucr.set("interfaces/primary", primary_interface)
+        return True
 
-	def _choose_primary_interface(self):
-		for interface in self.interfaces.all_interfaces:
-			if "address" in interface[1] and interface[1]["address"]:
-				return interface[0]
-			if "ipv6/default/address" in interface[1] and interface[1]["ipv6/default/address"]:
-				return interface[0]
-		raise NoConfiguredInterfaceError
+    def _choose_primary_interface(self):
+        for interface in self.interfaces.all_interfaces:
+            if "address" in interface[1] and interface[1]["address"]:
+                return interface[0]
+            if "ipv6/default/address" in interface[1] and interface[1]["ipv6/default/address"]:
+                return interface[0]
+        raise NoConfiguredInterfaceError
 
 
 if __name__ == "__main__":
-	main(PrimaryInterfaceSetup())
+    main(PrimaryInterfaceSetup())

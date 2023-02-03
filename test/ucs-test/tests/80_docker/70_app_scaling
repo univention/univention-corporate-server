@@ -8,36 +8,37 @@
 
 from dockertest import Appcenter, get_app_name, get_app_version, tiny_app
 
+
 DOCKER_APP_COUNT = 20
 
 
 if __name__ == '__main__':
-	with Appcenter() as appcenter:
-		apps = []
+    with Appcenter() as appcenter:
+        apps = []
 
-		try:
-			for i in range(0, DOCKER_APP_COUNT):
-				app = tiny_app(get_app_name(), get_app_version())
-				app.set_ini_parameter(
-					WebInterface='/%s' % app.app_name,
-					WebInterfacePortHTTP='80',
-					WebInterfacePortHTTPS='443',
-					AutoModProxy='True',
-				)
-				app.create_basic_modproxy_settings()
-				app.add_to_local_appcenter()
+        try:
+            for i in range(0, DOCKER_APP_COUNT):
+                app = tiny_app(get_app_name(), get_app_version())
+                app.set_ini_parameter(
+                    WebInterface='/%s' % app.app_name,
+                    WebInterfacePortHTTP='80',
+                    WebInterfacePortHTTPS='443',
+                    AutoModProxy='True',
+                )
+                app.create_basic_modproxy_settings()
+                app.add_to_local_appcenter()
 
-				apps.append(app)
+                apps.append(app)
 
-			appcenter.update()
+            appcenter.update()
 
-			for i in range(0, DOCKER_APP_COUNT):
-				apps[i].install()
+            for i in range(0, DOCKER_APP_COUNT):
+                apps[i].install()
 
-			for i in range(0, DOCKER_APP_COUNT):
-				apps[i].verify(joined=False)
+            for i in range(0, DOCKER_APP_COUNT):
+                apps[i].verify(joined=False)
 
-		finally:
-			for i in range(0, len(apps)):
-				apps[i].uninstall()
-				apps[i].remove()
+        finally:
+            for i in range(0, len(apps)):
+                apps[i].uninstall()
+                apps[i].remove()

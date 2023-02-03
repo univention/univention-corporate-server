@@ -26,6 +26,6 @@ setup(
         'Operating System :: MacOS',
         'Operating System :: Unix',
         'Operating System :: Microsoft :: Windows',
-        'Topic :: Utilities'
-    ]
+        'Topic :: Utilities',
+    ],
 )

@@ -29,32 +29,33 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-"""
-Module and object specific for "policies/share_userquota" UDM module.
-"""
+"""Module and object specific for "policies/share_userquota" UDM module."""
 
 from __future__ import absolute_import, unicode_literals
+
 from ..encoders import StringCaseInsensitiveResultUpperBooleanPropertyEncoder
 from .generic import GenericModule, GenericObject, GenericObjectProperties
 
 
 class PoliciesShareUserquotaObjectProperties(GenericObjectProperties):
-	"""policies/share_userquota UDM properties."""
+    """policies/share_userquota UDM properties."""
 
-	_encoders = {
-		'reapplyeverylogin': StringCaseInsensitiveResultUpperBooleanPropertyEncoder,
-	}
+    _encoders = {
+        'reapplyeverylogin': StringCaseInsensitiveResultUpperBooleanPropertyEncoder,
+    }
 
 
 class PoliciesShareUserquotaObject(GenericObject):
-	"""Better representation of policies/share_userquota properties."""
-	udm_prop_class = PoliciesShareUserquotaObjectProperties
+    """Better representation of policies/share_userquota properties."""
+
+    udm_prop_class = PoliciesShareUserquotaObjectProperties
 
 
 class PoliciesShareUserquotaModule(GenericModule):
-	"""PoliciesShareUserquotaObject factory"""
-	_udm_object_class = PoliciesShareUserquotaObject
+    """PoliciesShareUserquotaObject factory"""
 
-	class Meta:
-		supported_api_versions = [1, 2, 3]
-		suitable_for = ['policies/share_userquota']
+    _udm_object_class = PoliciesShareUserquotaObject
+
+    class Meta:
+        supported_api_versions = [1, 2, 3]
+        suitable_for = ['policies/share_userquota']

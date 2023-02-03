@@ -38,7 +38,8 @@ import sys
 
 from univention.config_registry import ConfigRegistry
 from univention.config_registry.frontend import ucr_update
-from univention.lib.policy_result import policy_result, PolicyResultFailed
+from univention.lib.policy_result import PolicyResultFailed, policy_result
+
 
 configRegistry = ConfigRegistry(write_registry=ConfigRegistry.LDAP)
 configRegistry.load()
@@ -47,36 +48,36 @@ found = False
 
 ldap_hostdn = configRegistry.get('ldap/hostdn')
 if ldap_hostdn:
-	for key in ['ldap/server/name', 'ldap/server/addition']:
-		ldap_server_string = configRegistry.get(key)
-		if ldap_server_string:
-			for k in ldap_server_string.split(' '):
-				try:
-					results, _policies = policy_result(ldap_hostdn, ldap_server=k)
-				except PolicyResultFailed:
-					continue
+    for key in ['ldap/server/name', 'ldap/server/addition']:
+        ldap_server_string = configRegistry.get(key)
+        if ldap_server_string:
+            for k in ldap_server_string.split(' '):
+                try:
+                    results, _policies = policy_result(ldap_hostdn, ldap_server=k)
+                except PolicyResultFailed:
+                    continue
 
-				addition = []
-				updates = {}
+                addition = []
+                updates = {}
 
-				ldap_server_name = configRegistry.get('ldap/server/name')
-				results = results.get('univentionLDAPServer', [])
-				for new_ldap_server in results:
-					if not found:
-						if not ldap_server_name or new_ldap_server != ldap_server_name:
-							updates['ldap/server/name'] = new_ldap_server
-						found = True
-					else:
-						addition.append(new_ldap_server)
+                ldap_server_name = configRegistry.get('ldap/server/name')
+                results = results.get('univentionLDAPServer', [])
+                for new_ldap_server in results:
+                    if not found:
+                        if not ldap_server_name or new_ldap_server != ldap_server_name:
+                            updates['ldap/server/name'] = new_ldap_server
+                        found = True
+                    else:
+                        addition.append(new_ldap_server)
 
-				old = configRegistry.get('ldap/server/addition', '')
-				new = ' '.join(addition)
-				if new != old:
-					updates['ldap/server/addition'] = new
+                old = configRegistry.get('ldap/server/addition', '')
+                new = ' '.join(addition)
+                if new != old:
+                    updates['ldap/server/addition'] = new
 
-				if updates:
-					ucr_update(configRegistry, updates)
+                if updates:
+                    ucr_update(configRegistry, updates)
 
-				sys.exit(0)
+                sys.exit(0)
 
 sys.exit(1)

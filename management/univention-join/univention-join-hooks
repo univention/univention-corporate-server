@@ -34,142 +34,141 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-import os
-import sys
 import argparse
-from univention.config_registry import ConfigRegistry
-import univention.admin.uldap
-from univention.admin import modules as udm_modules
-from univention.admin import uexceptions
-from univention.lib.ucs import UCS_Version
-import subprocess
-import bz2
 import base64
-import tempfile
+import bz2
+import os
 import shutil
+import subprocess
+import sys
+import tempfile
+
+import univention.admin.uldap
+from univention.admin import modules as udm_modules, uexceptions
+from univention.config_registry import ConfigRegistry
+from univention.lib.ucs import UCS_Version
+
 
 server_roles = (
-	"domaincontroller_master",
-	"domaincontroller_backup",
-	"domaincontroller_slave",
-	"memberserver",
+    "domaincontroller_master",
+    "domaincontroller_backup",
+    "domaincontroller_slave",
+    "memberserver",
 )
 
 
 def main():
-	parser = argparse.ArgumentParser(description="Run join-hooks")
-	parser.add_argument("--server-role", choices=server_roles, help="Server Role")
-	parser.add_argument("--hooktype", choices=("join/pre-join", "join/pre-joinscripts", "join/post-joinscripts"), help="Type of hook")
-	parser.add_argument("--master", help="UCS Primary")
-	parser.add_argument("--binddn", help="Bind-DN")
-	parser.add_argument("--bindpwdfile", help="Password file")
-	parser.add_argument("-v", "--verbose", action='count', help="Verbose")
-	args = parser.parse_args()
+    parser = argparse.ArgumentParser(description="Run join-hooks")
+    parser.add_argument("--server-role", choices=server_roles, help="Server Role")
+    parser.add_argument("--hooktype", choices=("join/pre-join", "join/pre-joinscripts", "join/post-joinscripts"), help="Type of hook")
+    parser.add_argument("--master", help="UCS Primary")
+    parser.add_argument("--binddn", help="Bind-DN")
+    parser.add_argument("--bindpwdfile", help="Password file")
+    parser.add_argument("-v", "--verbose", action='count', help="Verbose")
+    args = parser.parse_args()
 
-	hook_options = []
-	if args.server_role:
-		hook_options.extend(["--server-role", args.server_role])
-	else:
-		args.error("Missing required option --server-role")
-		sys.exit(1)
-	if args.master:
-		hook_options.extend(["--master", args.master])
-	else:
-		args.error("Missing required option --master")
-		sys.exit(1)
-	if args.hooktype:
-		hook_options.extend(["--hooktype", args.hooktype])
-	else:
-		args.error("Missing required option --hooktype")
-		sys.exit(1)
-	if args.binddn:
-		hook_options.extend(["--binddn", args.binddn])
-	else:
-		args.error("Missing required option --binddn")
-		sys.exit(1)
-	if args.bindpwdfile:
-		hook_options.extend(["--bindpwdfile", args.bindpwdfile])
-	else:
-		args.error("Missing required option --bindpwdfile")
-		sys.exit(1)
+    hook_options = []
+    if args.server_role:
+        hook_options.extend(["--server-role", args.server_role])
+    else:
+        args.error("Missing required option --server-role")
+        sys.exit(1)
+    if args.master:
+        hook_options.extend(["--master", args.master])
+    else:
+        args.error("Missing required option --master")
+        sys.exit(1)
+    if args.hooktype:
+        hook_options.extend(["--hooktype", args.hooktype])
+    else:
+        args.error("Missing required option --hooktype")
+        sys.exit(1)
+    if args.binddn:
+        hook_options.extend(["--binddn", args.binddn])
+    else:
+        args.error("Missing required option --binddn")
+        sys.exit(1)
+    if args.bindpwdfile:
+        hook_options.extend(["--bindpwdfile", args.bindpwdfile])
+    else:
+        args.error("Missing required option --bindpwdfile")
+        sys.exit(1)
 
-	ucr = ConfigRegistry()
-	ucr.load()
+    ucr = ConfigRegistry()
+    ucr.load()
 
-	print('univention-join-hooks: looking for hook type "{}" on {}'.format(args.hooktype, args.master))
+    print(f'univention-join-hooks: looking for hook type "{args.hooktype}" on {args.master}')
 
-	bindpw = ""
-	with open(args.bindpwdfile, 'r') as f:
-		bindpw = f.read()
-		bindpw = bindpw.strip()
+    bindpw = ""
+    with open(args.bindpwdfile) as f:
+        bindpw = f.read()
+        bindpw = bindpw.strip()
 
-	try:
-		lo = univention.admin.uldap.access(host=args.master, port=7389, base=ucr["ldap/base"], binddn=args.binddn, bindpw=bindpw, start_tls=2)
-		ldap_position = univention.admin.uldap.position(lo.base)
-	except uexceptions.ldapError as exc:
-		print("Failed LDAP Connection to %s: %s" % (args.master, exc))
-		sys.exit(1)
-	except Exception as exc:
-		print("Exception occurred: %s" % (exc,))
-		sys.exit(1)
+    try:
+        lo = univention.admin.uldap.access(host=args.master, port=7389, base=ucr["ldap/base"], binddn=args.binddn, bindpw=bindpw, start_tls=2)
+        ldap_position = univention.admin.uldap.position(lo.base)
+    except uexceptions.ldapError as exc:
+        print("Failed LDAP Connection to %s: %s" % (args.master, exc))
+        sys.exit(1)
+    except Exception as exc:
+        print("Exception occurred: %s" % (exc,))
+        sys.exit(1)
 
-	udm_modules.update()
-	udm_module = udm_modules.get("settings/data")
-	if not udm_module:
-		print("Required UDM module missing: settings/data")
-		sys.exit(0)
-	udm_modules.init(lo, ldap_position, udm_module)
-	tempdir = tempfile.mkdtemp()
-	hook_udm_objects = udm_module.lookup(None, lo, "data_type=%s" % args.hooktype)
-	print('Found hooks:\n  {}'.format('\n  '.join([x.dn for x in hook_udm_objects])))
+    udm_modules.update()
+    udm_module = udm_modules.get("settings/data")
+    if not udm_module:
+        print("Required UDM module missing: settings/data")
+        sys.exit(0)
+    udm_modules.init(lo, ldap_position, udm_module)
+    tempdir = tempfile.mkdtemp()
+    hook_udm_objects = udm_module.lookup(None, lo, "data_type=%s" % args.hooktype)
+    print('Found hooks:\n  {}'.format('\n  '.join([x.dn for x in hook_udm_objects])))
 
-	for udm_object in hook_udm_objects:
-		udm_object.open()
+    for udm_object in hook_udm_objects:
+        udm_object.open()
 
-		base64_compressed_data = udm_object['data']
-		compressed_data = base64.b64decode(base64_compressed_data)
-		new_object_data = bz2.decompress(compressed_data)
+        base64_compressed_data = udm_object['data']
+        compressed_data = base64.b64decode(base64_compressed_data)
+        new_object_data = bz2.decompress(compressed_data)
 
-		hookname = udm_object['name']
-		(filepath_fd, filepath) = tempfile.mkstemp(dir=tempdir)
-		metadata = udm_object['meta']
-		if "disabled" in metadata:
-			print("Skipping disabled %s hook %s" % (args.hooktype, hookname))
-			continue
+        hookname = udm_object['name']
+        (filepath_fd, filepath) = tempfile.mkstemp(dir=tempdir)
+        metadata = udm_object['meta']
+        if "disabled" in metadata:
+            print("Skipping disabled %s hook %s" % (args.hooktype, hookname))
+            continue
 
-		ucsversionstart = udm_object["ucsversionstart"]
-		ucsversionend = udm_object["ucsversionend"]
-		current_UCS_version = "-".join([ucr.get('version/version'), ucr.get('version/patchlevel')])
-		if ucsversionstart and UCS_Version(current_UCS_version) < UCS_Version(ucsversionstart):
-			print('Skipping %s hook %s, because it requires at least UCS version %s.' % (args.hooktype, hookname, ucsversionstart))
-			continue
-		elif ucsversionend and UCS_Version(current_UCS_version) > UCS_Version(ucsversionend):
-			print('Skipping %s hook %s, because it specifies compatibility only up to and including UCS version %s.' % (args.hooktype, hookname, ucsversionend))
-			continue
+        ucsversionstart = udm_object["ucsversionstart"]
+        ucsversionend = udm_object["ucsversionend"]
+        current_UCS_version = "-".join([ucr.get('version/version'), ucr.get('version/patchlevel')])
+        if ucsversionstart and UCS_Version(current_UCS_version) < UCS_Version(ucsversionstart):
+            print('Skipping %s hook %s, because it requires at least UCS version %s.' % (args.hooktype, hookname, ucsversionstart))
+            continue
+        elif ucsversionend and UCS_Version(current_UCS_version) > UCS_Version(ucsversionend):
+            print('Skipping %s hook %s, because it specifies compatibility only up to and including UCS version %s.' % (args.hooktype, hookname, ucsversionend))
+            continue
 
-		print("Running: %s (%s) in %s" % (hookname, udm_object.dn, filepath))
-		if args.verbose:
-			print("###")
-			print(new_object_data)
-			print("###")
+        print("Running: %s (%s) in %s" % (hookname, udm_object.dn, filepath))
+        if args.verbose:
+            print("###")
+            print(new_object_data)
+            print("###")
 
-		with os.fdopen(filepath_fd, "wb") as f:
-			f.write(new_object_data)
-		os.chmod(filepath, 0o755)
-		cmd = [filepath]
-		cmd.extend(hook_options)
-		sys.stdout.flush()
-		sys.stderr.flush()
-		p1 = subprocess.Popen(cmd, close_fds=True)
-		p1.wait()
-		if p1.returncode != 0:
-			print("ERROR: %s hook %s failed." % (args.hooktype, filepath))
-			sys.exit(1)
-		os.unlink(filepath)
-	shutil.rmtree(tempdir)
+        with os.fdopen(filepath_fd, "wb") as f:
+            f.write(new_object_data)
+        os.chmod(filepath, 0o755)
+        cmd = [filepath]
+        cmd.extend(hook_options)
+        sys.stdout.flush()
+        sys.stderr.flush()
+        p1 = subprocess.Popen(cmd, close_fds=True)
+        p1.wait()
+        if p1.returncode != 0:
+            print("ERROR: %s hook %s failed." % (args.hooktype, filepath))
+            sys.exit(1)
+        os.unlink(filepath)
+    shutil.rmtree(tempdir)
 
 
 if __name__ == "__main__":
-	main()
-
-# vim:set sw=4 ts=4 noet:
+    main()

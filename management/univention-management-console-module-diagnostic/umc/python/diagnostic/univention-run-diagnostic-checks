@@ -30,9 +30,9 @@
 # /usr/share/common-licenses/AGPL-3; if not, seGe
 # <https://www.gnu.org/licenses/>.
 
+import argparse
 import sys
 import time
-import argparse
 import traceback
 from getpass import getpass
 from typing import Any, Dict, List
@@ -43,126 +43,126 @@ from univention.lib.umc import Client, Unauthorized
 
 class CLIClient(object):
 
-	@classmethod
-	def main(cls) -> int:
-		parser = argparse.ArgumentParser(description='Executes the diagnostic module checks')
-		parser.add_argument('--bindpwdfile', help='Path to a file that contains your password')
-		parser.add_argument('--username', help='Domain Admin username for authentication')
-		parser.add_argument('-l', '--list', action='store_true', help='List all available checks and exit')
-		parser.add_argument('-t', '--test', default=['all'], nargs='*', dest='checks', help='List of checks to run. Default is: all')
-		parser.add_argument('-s', '--skip', default=[], nargs='*', dest='skip_checks', help='List of checks to skip. Default is: []')
-		args = parser.parse_args()
+    @classmethod
+    def main(cls) -> int:
+        parser = argparse.ArgumentParser(description='Executes the diagnostic module checks')
+        parser.add_argument('--bindpwdfile', help='Path to a file that contains your password')
+        parser.add_argument('--username', help='Domain Admin username for authentication')
+        parser.add_argument('-l', '--list', action='store_true', help='List all available checks and exit')
+        parser.add_argument('-t', '--test', default=['all'], nargs='*', dest='checks', help='List of checks to run. Default is: all')
+        parser.add_argument('-s', '--skip', default=[], nargs='*', dest='skip_checks', help='List of checks to skip. Default is: []')
+        args = parser.parse_args()
 
-		if not args.bindpwdfile and not args.username:
-			args.username = '%s$' % (ucr['hostname'],)
-			args.bindpwdfile = '/etc/machine.secret'
+        if not args.bindpwdfile and not args.username:
+            args.username = '%s$' % (ucr['hostname'],)
+            args.bindpwdfile = '/etc/machine.secret'
 
-		if not args.username:
-			args.username = input('Domain Admin Login: ')
+        if not args.username:
+            args.username = input('Domain Admin Login: ')
 
-		args.password = None
-		try:
-			if args.bindpwdfile:
-				with open(args.bindpwdfile) as fd:
-					args.password = fd.read().strip()
-		except OSError:
-			parser.error('Unable to read the password-file "%s".' % (args.bindpwdfile,))
+        args.password = None
+        try:
+            if args.bindpwdfile:
+                with open(args.bindpwdfile) as fd:
+                    args.password = fd.read().strip()
+        except OSError:
+            parser.error('Unable to read the password-file "%s".' % (args.bindpwdfile,))
 
-		if not args.password:
-			args.password = getpass('Password: ')
-		try:
-			client = Client(None, args.username, args.password)
-		except Unauthorized as exc:
-			parser.error('Login failed: %s' % (exc,))
+        if not args.password:
+            args.password = getpass('Password: ')
+        try:
+            client = Client(None, args.username, args.password)
+        except Unauthorized as exc:
+            parser.error('Login failed: %s' % (exc,))
 
-		plugins = {plugin['id'] for plugin in client.umc_command('diagnostic/query').result}
-		checks = plugins if 'all' in args.checks else set(args.checks)
-		skip_checks = set(args.skip_checks)
+        plugins = {plugin['id'] for plugin in client.umc_command('diagnostic/query').result}
+        checks = plugins if 'all' in args.checks else set(args.checks)
+        skip_checks = set(args.skip_checks)
 
-		if args.list or 'list' in args.checks:
-			print("\n\t".join(['Available checks:'] + sorted(plugins)))
-			sys.exit(0)
+        if args.list or 'list' in args.checks:
+            print("\n\t".join(['Available checks:'] + sorted(plugins)))
+            sys.exit(0)
 
-		missing_checks = sorted(checks - plugins)
-		if missing_checks:
-			print('Error: following checks to perform were not found %r' % (missing_checks, ), file=sys.stderr)
-			sys.exit(1)
+        missing_checks = sorted(checks - plugins)
+        if missing_checks:
+            print('Error: following checks to perform were not found %r' % (missing_checks, ), file=sys.stderr)
+            sys.exit(1)
 
-		missing_skip_checks = sorted(skip_checks - plugins)
-		if missing_skip_checks:
-			print('Error: following checks to skip were not found %r' % (missing_skip_checks,), file=sys.stderr)
-			sys.exit(1)
+        missing_skip_checks = sorted(skip_checks - plugins)
+        if missing_skip_checks:
+            print('Error: following checks to skip were not found %r' % (missing_skip_checks,), file=sys.stderr)
+            sys.exit(1)
 
-		if 'all' not in args.checks:
-			conflicts = sorted(checks & skip_checks)
-			if conflicts:
-				print('Error: following checks are scheduled for both run and skip %r' % (conflicts,), file=sys.stderr)
-				sys.exit(1)
+        if 'all' not in args.checks:
+            conflicts = sorted(checks & skip_checks)
+            if conflicts:
+                print('Error: following checks are scheduled for both run and skip %r' % (conflicts,), file=sys.stderr)
+                sys.exit(1)
 
-		args.checks = sorted(checks - skip_checks)
-		print('Executing following checks: %r' % (args.checks,))
+        args.checks = sorted(checks - skip_checks)
+        print('Executing following checks: %r' % (args.checks,))
 
-		return cls(client, args).run()
+        return cls(client, args).run()
 
-	def __init__(self, client: Client, args: argparse.Namespace):
-		self.client = client
-		self.args = args
+    def __init__(self, client: Client, args: argparse.Namespace):
+        self.client = client
+        self.args = args
 
-	def replace_links(self, description: str, links: List[Dict[str, str]]) -> str:
-		for link in links:
-			placeholder = '{%s}' % (link['name'],)
-			link_text = '%s (%s)' % (link['label'], link['href'])
-			if placeholder in description:
-				description = description.replace(placeholder, link_text)
-			else:
-				description += '\n%s' % link_text
-		return description
+    def replace_links(self, description: str, links: List[Dict[str, str]]) -> str:
+        for link in links:
+            placeholder = '{%s}' % (link['name'],)
+            link_text = '%s (%s)' % (link['label'], link['href'])
+            if placeholder in description:
+                description = description.replace(placeholder, link_text)
+            else:
+                description += '\n%s' % link_text
+        return description
 
-	def run(self) -> int:
-		responses = self.run_diagnostic_checks(self.args.checks)
+    def run(self) -> int:
+        responses = self.run_diagnostic_checks(self.args.checks)
 
-		exit_code = 0
-		print('\nYou can find the logging messages of the diagnostic modules at /var/log/univention/management-console-module-diagnostic.log\n')
-		for plugin, result in sorted(responses.items()):
-			if result['type'] == 'success':
-				print('ran %s successfully.\n' % (plugin,))
-			else:
-				exit_code = 2
-				title = '## Check failed: %s - %s ##' % (plugin, result['title'])
-				print('\n'.join([
-					(' Start %s ' % (plugin,)).center(len(title), '#'),
-					title,
-					self.replace_links(result['description'].strip(), result['links']),
-					(' End %s ' % (plugin,)).center(len(title), '#'),
-					'',
-				]))
-		return exit_code
+        exit_code = 0
+        print('\nYou can find the logging messages of the diagnostic modules at /var/log/univention/management-console-module-diagnostic.log\n')
+        for plugin, result in sorted(responses.items()):
+            if result['type'] == 'success':
+                print('ran %s successfully.\n' % (plugin,))
+            else:
+                exit_code = 2
+                title = '## Check failed: %s - %s ##' % (plugin, result['title'])
+                print('\n'.join([
+                    (' Start %s ' % (plugin,)).center(len(title), '#'),
+                    title,
+                    self.replace_links(result['description'].strip(), result['links']),
+                    (' End %s ' % (plugin,)).center(len(title), '#'),
+                    '',
+                ]))
+        return exit_code
 
-	def run_diagnostic_checks(self, plugins: List[str]) -> Dict[str, Any]:
-		execution: Dict[str, Any] = {}
-		response: Dict[str, Any] = {}
-		for plugin in plugins:
-			execution[plugin] = self.client.umc_command('diagnostic/run', {'plugin': plugin}).result
+    def run_diagnostic_checks(self, plugins: List[str]) -> Dict[str, Any]:
+        execution: Dict[str, Any] = {}
+        response: Dict[str, Any] = {}
+        for plugin in plugins:
+            execution[plugin] = self.client.umc_command('diagnostic/run', {'plugin': plugin}).result
 
-		while len(execution) > len(response):
-			for plugin, progress in execution.items():
-				if plugin in response:
-					continue
-				try:
-					result = self.client.umc_command('diagnostic/progress', {'progress_id': progress['id']}).result
-				except Exception:
-					result = {'finished': True, 'result': {'type': 'traceback', 'title': plugin, 'description': traceback.format_exc()}}
+        while len(execution) > len(response):
+            for plugin, progress in execution.items():
+                if plugin in response:
+                    continue
+                try:
+                    result = self.client.umc_command('diagnostic/progress', {'progress_id': progress['id']}).result
+                except Exception:
+                    result = {'finished': True, 'result': {'type': 'traceback', 'title': plugin, 'description': traceback.format_exc()}}
 
-				if result['finished']:
-					response[plugin] = {
-						'type': result['result']['type'],
-						'title': result['result']['title'],
-						'description': result['result']['description'],
-						'links': result['result']['links'],
-					}
-			time.sleep(0.25)
-		return response
+                if result['finished']:
+                    response[plugin] = {
+                        'type': result['result']['type'],
+                        'title': result['result']['title'],
+                        'description': result['result']['description'],
+                        'links': result['result']['links'],
+                    }
+            time.sleep(0.25)
+        return response
 
 
 if __name__ == '__main__':
-	sys.exit(CLIClient.main())
+    sys.exit(CLIClient.main())

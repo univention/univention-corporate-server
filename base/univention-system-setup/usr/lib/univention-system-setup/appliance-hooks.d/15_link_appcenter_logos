@@ -35,5 +35,6 @@
 
 from univention.appcenter.actions import get_action
 
+
 update = get_action('update')
 update()._update_local_files()  # bad idea to use underscore methods. but it works until we find the timing issue in the App Center. hopefully...

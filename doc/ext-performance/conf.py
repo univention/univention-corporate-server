@@ -11,16 +11,17 @@
 # documentation root, use os.path.abspath to make it absolute, like shown here.
 #
 import sys
-# sys.path.insert(0, os.path.abspath('.'))
-
 from datetime import date
 from os import path
 
+
+# sys.path.insert(0, os.path.abspath('.'))
+
+
 # -- Project information -----------------------------------------------------
 
-project = 'Univention Corporate Server - ' + \
-    'Performance Guide'
-copyright = '2021-{}, Univention GmbH'.format(date.today().year)
+project = 'Univention Corporate Server - Performance Guide'
+copyright = f'2021-{date.today().year}, Univention GmbH'
 author = ''
 
 # The full version, including alpha/beta/rc tags
@@ -116,7 +117,7 @@ html_sidebars = {
     "**": [
         "sidebar-logo.html",
         "search-field.html",
-        "_templates/sidebar-links.html"
+        "_templates/sidebar-links.html",
     ],
 }
 
@@ -131,13 +132,13 @@ latex_elements = {
 }
 
 linkcheck_ignore = [
-    r'https://ldapwiki\.com/.*'
+    r'https://ldapwiki\.com/.*',
 ]
 
 univention_use_doc_base = True
 
 intersphinx_mapping = {
-    "uv-manual": ("https://docs.software-univention.de/manual/5.0/en", None)
+    "uv-manual": ("https://docs.software-univention.de/manual/5.0/en", None),
 }
 
 # See Univention Sphinx Extension for its options and information about the

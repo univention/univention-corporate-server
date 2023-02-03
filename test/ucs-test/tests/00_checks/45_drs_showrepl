@@ -9,7 +9,8 @@
 import re
 from subprocess import PIPE, Popen
 
-import univention.testing.utils as utils
+from univention.testing import utils
+
 
 proc = Popen(['samba-tool', 'drs', 'showrepl'], stdout=PIPE, stderr=PIPE)
 
@@ -23,12 +24,12 @@ print(stdout.strip())
 print('**')
 
 if stderr.strip():
-	errors = []
-	for line in stderr.splitlines():
-		if not line.endswith('WARNING: The "blocking locks" option is deprecated'):
-			errors.append(line)
-	if errors:
-		utils.fail('samba-tool drsi showrepl returned on stderr: %s' % '\n'.join(errors))
+    errors = []
+    for line in stderr.splitlines():
+        if not line.endswith('WARNING: The "blocking locks" option is deprecated'):
+            errors.append(line)
+    if errors:
+        utils.fail('samba-tool drsi showrepl returned on stderr: %s' % '\n'.join(errors))
 
 if re.search('ERR_', stdout):
-	utils.fail('samba-tool drsi showrepl returned a string with ERR_')
+    utils.fail('samba-tool drsi showrepl returned a string with ERR_')

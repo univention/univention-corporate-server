@@ -2,15 +2,15 @@
 
 @!@
 try:
-	import univention.lib.ucrLogrotate
+    import univention.lib.ucrLogrotate
 except ImportError:
-	pass
+    pass
 else:
-	name = "ssl-sync"
-	settings = univention.lib.ucrLogrotate.getLogrotateConfig(name, configRegistry)
+    name = "ssl-sync"
+    settings = univention.lib.ucrLogrotate.getLogrotateConfig(name, configRegistry)
 
-	print("/var/log/univention/%s.log {" % name)
-	for setting in sorted(settings):
-		print("\t%s" % settings[setting])
-	print("}")
+    print("/var/log/univention/%s.log {" % name)
+    for setting in sorted(settings):
+        print("\t%s" % settings[setting])
+    print("}")
 @!@

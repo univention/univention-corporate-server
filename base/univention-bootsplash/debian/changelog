@@ -1,3 +1,9 @@
+univention-bootsplash (11.0.1-1) unstable; urgency=medium
+
+  * Bug #31771: migrate tabs to spaces
+
+ -- Florian Best <best@univention.de>  Fri, 03 Feb 2023 04:17:33 +0100
+
 univention-bootsplash (11.0.0-3) unstable; urgency=medium
 
   * Bug #52454: fix univention-welcome-screen is not shown after system setup

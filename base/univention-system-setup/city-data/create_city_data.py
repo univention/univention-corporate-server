@@ -30,9 +30,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-"""
-Generate `city_data.json`
-"""
+"""Generate `city_data.json`"""
 
 from __future__ import print_function
 
@@ -41,25 +39,26 @@ from argparse import ArgumentParser, FileType
 
 import _util
 
+
 if __name__ == '__main__':
-	parser = ArgumentParser(description=__doc__)
-	parser.add_argument("outfile", type=FileType("w"))
-	parser.add_argument("locales", nargs="+")
-	opt = parser.parse_args()
+    parser = ArgumentParser(description=__doc__)
+    parser.add_argument("outfile", type=FileType("w"))
+    parser.add_argument("locales", nargs="+")
+    opt = parser.parse_args()
 
-	print('generating city data...')
-	city_data = _util.get_city_data()
-	city_geonameids = set(city_data.keys())
-	for iid, icity in city_data.items():
-		icity['id'] = iid
+    print('generating city data...')
+    city_data = _util.get_city_data()
+    city_geonameids = set(city_data.keys())
+    for iid, icity in city_data.items():
+        icity['id'] = iid
 
-	for ilocale in opt.locales + ['']:
-		print('loading data for locale %s' % ilocale)
-		city_names = _util.get_localized_names(city_geonameids, ilocale)
-		for iid, ilabel in city_names.items():
-			city_data[iid].setdefault('label', {})[ilocale] = ilabel
+    for ilocale in opt.locales + ['']:
+        print('loading data for locale %s' % ilocale)
+        city_names = _util.get_localized_names(city_geonameids, ilocale)
+        for iid, ilabel in city_names.items():
+            city_data[iid].setdefault('label', {})[ilocale] = ilabel
 
-	json.dump(list(city_data.values()), opt.outfile, ensure_ascii=False, indent=2, sort_keys=True)
-	opt.outfile.write("\n")
+    json.dump(list(city_data.values()), opt.outfile, ensure_ascii=False, indent=2, sort_keys=True)
+    opt.outfile.write("\n")
 
-	print('... done :)')
+    print('... done :)')

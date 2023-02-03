@@ -30,16 +30,15 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-"""
-|UDM| module for |DHCP| services
-"""
+"""|UDM| module for |DHCP| services"""
 
-from univention.admin.layout import Tab, Group
 import univention.admin.filter
 import univention.admin.handlers
 import univention.admin.localization
+from univention.admin.layout import Group, Tab
 
 from .__common import DHCPBase, add_dhcp_options
+
 
 translation = univention.admin.localization.translation('univention.admin.handlers.dhcp')
 _ = translation.translate
@@ -53,30 +52,30 @@ object_name = _('DHCP service')
 object_name_plural = _('DHCP services')
 long_description = _('The top-level container for a DHCP configuration.')
 options = {
-	'default': univention.admin.option(
-		short_description=short_description,
-		default=True,
-		objectClasses=['top', 'univentionDhcpService'],
-	),
+    'default': univention.admin.option(
+        short_description=short_description,
+        default=True,
+        objectClasses=['top', 'univentionDhcpService'],
+    ),
 }
 property_descriptions = {
-	'service': univention.admin.property(
-		short_description=_('Service name'),
-		long_description=_('A unique name for this DHCP service.'),
-		syntax=univention.admin.syntax.string,
-		include_in_default_search=True,
-		required=True,
-		may_change=False,
-		identifies=True
-	),
+    'service': univention.admin.property(
+        short_description=_('Service name'),
+        long_description=_('A unique name for this DHCP service.'),
+        syntax=univention.admin.syntax.string,
+        include_in_default_search=True,
+        required=True,
+        may_change=False,
+        identifies=True,
+    ),
 }
 
 layout = [
-	Tab(_('General'), _('Basic settings'), layout=[
-		Group(_('DHCP service description'), layout=[
-			'service',
-		]),
-	]),
+    Tab(_('General'), _('Basic settings'), layout=[
+        Group(_('DHCP service description'), layout=[
+            'service',
+        ]),
+    ]),
 ]
 
 mapping = univention.admin.mapping.mapping()
@@ -86,26 +85,26 @@ add_dhcp_options(__name__)
 
 
 class object(DHCPBase):
-	module = module
+    module = module
 
-	def __init__(self, co, lo, position, dn='', superordinate=None, attributes=[]):
-		univention.admin.handlers.simpleLdap.__init__(self, co, lo, position, dn, superordinate, attributes=attributes)
-		if not self.dn and not self.position:
-			raise univention.admin.uexceptions.insufficientInformation(_('Neither DN nor position given.'))
+    def __init__(self, co, lo, position, dn='', superordinate=None, attributes=[]):
+        univention.admin.handlers.simpleLdap.__init__(self, co, lo, position, dn, superordinate, attributes=attributes)
+        if not self.dn and not self.position:
+            raise univention.admin.uexceptions.insufficientInformation(_('Neither DN nor position given.'))
 
-	@staticmethod
-	def unmapped_lookup_filter():
-		return univention.admin.filter.conjunction('&', [
-			univention.admin.filter.conjunction('|', [
-				univention.admin.filter.expression('objectClass', 'dhcpService'),
-				univention.admin.filter.expression('objectClass', 'univentionDhcpService')
-			])
-		])
+    @staticmethod
+    def unmapped_lookup_filter():
+        return univention.admin.filter.conjunction('&', [
+            univention.admin.filter.conjunction('|', [
+                univention.admin.filter.expression('objectClass', 'dhcpService'),
+                univention.admin.filter.expression('objectClass', 'univentionDhcpService'),
+            ]),
+        ])
 
 
 def identify(dn, attr):
-	return b'dhcpService' in attr.get('objectClass', []) \
-		or b'univentionDhcpService' in attr.get('objectClass', [])
+    return b'dhcpService' in attr.get('objectClass', []) \
+        or b'univentionDhcpService' in attr.get('objectClass', [])
 
 
 lookup_filter = object.lookup_filter

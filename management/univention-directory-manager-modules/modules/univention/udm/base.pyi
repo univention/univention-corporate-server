@@ -29,14 +29,15 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-"""
-Base classes for (simplified) UDM modules and objects.
-"""
+"""Base classes for (simplified) UDM modules and objects."""
 
 from __future__ import absolute_import, unicode_literals
+
 from collections import namedtuple
-from typing import Any, Dict, Iterable, Iterator, List, Optional, Text, TypeVar, Union
+from typing import Any, Dict, Iterable, Iterator, List, Optional, Text, TypeVar, Union  # noqa: F401
+
 from six import with_metaclass
+
 from .plugins import Plugin
 
 
@@ -50,93 +51,93 @@ BaseObjectPropertiesTV = TypeVar('BaseObjectPropertiesTV', bound='BaseObjectProp
 
 
 class BaseObjectProperties(object):
-	def __init__(self, udm_obj):  # type: (BaseObjectTV) -> None
-		self._udm_obj = udm_obj
+    def __init__(self, udm_obj):  # type: (BaseObjectTV) -> None
+        self._udm_obj = udm_obj
 
-	def __repr__(self):  # type: () -> Text
-		...
+    def __repr__(self):  # type: () -> Text
+        ...
 
-	def __deepcopy__(self, memo):  # type: (Dict[int, Dict[Text, Any]]) -> Dict[Text, Any]
-		...
+    def __deepcopy__(self, memo):  # type: (Dict[int, Dict[Text, Any]]) -> Dict[Text, Any]
+        ...
 
 
 class BaseObject(object):
-	def __init__(self):  # type: () -> None
-		self.dn = ''
-		self.props = None  # type: BaseObjectPropertiesTV
-		self.options = []  # type: List[Text]
-		self.policies = []  # type: List[Text]
-		self.position = ''  # type: Text
-		self.superordinate = None  # type: Text
-		self._udm_module = None  # type: BaseModuleTV
+    def __init__(self):  # type: () -> None
+        self.dn = ''
+        self.props = None  # type: BaseObjectPropertiesTV
+        self.options = []  # type: List[Text]
+        self.policies = []  # type: List[Text]
+        self.position = ''  # type: Text
+        self.superordinate = None  # type: Text
+        self._udm_module = None  # type: BaseModuleTV
 
-	def __repr__(self):  # type: () -> Text
-		...
+    def __repr__(self):  # type: () -> Text
+        ...
 
-	def reload(self):  # type: () -> BaseObjectTV
-		...
+    def reload(self):  # type: () -> BaseObjectTV
+        ...
 
-	def save(self):  # type: () -> BaseObjectTV
-		...
+    def save(self):  # type: () -> BaseObjectTV
+        ...
 
-	def delete(self, remove_childs=False):  # type: (Optional[bool]) -> None
-		...
+    def delete(self, remove_childs=False):  # type: (Optional[bool]) -> None
+        ...
 
 
 class BaseModuleMetadata(object):
-	auto_open = True
-	auto_reload = True
+    auto_open = True
+    auto_reload = True
 
-	def __init__(self, meta):  # type: (BaseModule.Meta) -> None
-		self.supported_api_versions = []  # type: Iterable[int]
-		self.suitable_for = []  # type: Iterable[Text]
-		self.used_api_version = None  # type: int
-		self._udm_module = None  # type: BaseModuleTV
+    def __init__(self, meta):  # type: (BaseModule.Meta) -> None
+        self.supported_api_versions = []  # type: Iterable[int]
+        self.suitable_for = []  # type: Iterable[Text]
+        self.used_api_version = None  # type: int
+        self._udm_module = None  # type: BaseModuleTV
 
-	@property
-	def identifying_property(self):  # type: () -> Text
-		...
+    @property
+    def identifying_property(self):  # type: () -> Text
+        ...
 
-	def lookup_filter(self, filter_s=None):  # type: (Optional[Text]) -> Text
-		...
+    def lookup_filter(self, filter_s=None):  # type: (Optional[Text]) -> Text
+        ...
 
-	@property
-	def mapping(self):  # type: () -> LdapMapping
-		...
+    @property
+    def mapping(self):  # type: () -> LdapMapping
+        ...
 
 
 class ModuleMeta(Plugin):
-	udm_meta_class = BaseModuleMetadata
+    udm_meta_class = BaseModuleMetadata
 
-	def __new__(mcs, name, bases, attrs):
-		...
+    def __new__(mcs, name, bases, attrs):
+        ...
 
 
 class BaseModule(with_metaclass(ModuleMeta)):
-	_udm_object_class = BaseObject
-	_udm_module_meta_class = BaseModuleMetadata
+    _udm_object_class = BaseObject
+    _udm_module_meta_class = BaseModuleMetadata
 
-	class Meta:
-		supported_api_versions = ()  # type: Iterable[int]
-		suitable_for = []  # type: Iterable[Text]
+    class Meta:
+        supported_api_versions = ()  # type: Iterable[int]
+        suitable_for = []  # type: Iterable[Text]
 
-	def __init__(self, name, connection, api_version):  # type: (Text, Any, int) -> None
-		self.connection = connection  # type: Any
-		self.name = name  # type: Text
-		self.meta = None  # type: BaseModuleMetadataTV
+    def __init__(self, name, connection, api_version):  # type: (Text, Any, int) -> None
+        self.connection = connection  # type: Any
+        self.name = name  # type: Text
+        self.meta = None  # type: BaseModuleMetadataTV
 
-	def __repr__(self):  # type: () -> Text
-		...
+    def __repr__(self):  # type: () -> Text
+        ...
 
-	def new(self, superordinate=None):  # type: (Optional[Union[Text, BaseObjectTV]]) -> BaseObjectTV
-		...
+    def new(self, superordinate=None):  # type: (Optional[Union[Text, BaseObjectTV]]) -> BaseObjectTV
+        ...
 
-	def get(self, dn):  # type: (Text) -> BaseObjectTV
-		...
+    def get(self, dn):  # type: (Text) -> BaseObjectTV
+        ...
 
-	def get_by_id(self, id):  # type: (Text) -> BaseObjectTV
-		...
+    def get_by_id(self, id):  # type: (Text) -> BaseObjectTV
+        ...
 
-	def search(self, filter_s='', base='', scope='sub', sizelimit=0):
-		# type: (Text, Optional[Text], Optional[Text], int) -> Iterator[BaseObjectTV]
-		...
+    def search(self, filter_s='', base='', scope='sub', sizelimit=0):
+        # type: (Text, Optional[Text], Optional[Text], int) -> Iterator[BaseObjectTV]
+        ...

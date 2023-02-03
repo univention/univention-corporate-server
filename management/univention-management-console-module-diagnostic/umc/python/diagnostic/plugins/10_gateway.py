@@ -36,36 +36,37 @@ from univention.config_registry import ucr_live as ucr
 from univention.lib.i18n import Translation
 from univention.management.console.modules.diagnostic import MODULE, Critical, Instance
 
+
 _ = Translation('univention-management-console-module-diagnostic').translate
 
 title = _('Gateway is not reachable')
 description = '\n'.join([
-	_('The gateway %r could not be reached. Please make sure the gateway and related network settings are correctly configured by using the {setup:network}.'),
-	_('If these settings are correct the problem relies in the gateway itself:'),
-	_('Make sure the hardware of the gateway device is working properly.')
+    _('The gateway %r could not be reached. Please make sure the gateway and related network settings are correctly configured by using the {setup:network}.'),
+    _('If these settings are correct the problem relies in the gateway itself:'),
+    _('Make sure the hardware of the gateway device is working properly.'),
 ])
 
 umc_modules = [{
-	'module': 'setup',
-	'flavor': 'network'
+    'module': 'setup',
+    'flavor': 'network',
 }]
 
 run_descr = ['This can be checked by running: ping "$(ucr get gateway)"']
 
 
 def run(_umc_instance: Instance) -> None:
-	gateway = ucr.get('gateway')
-	if not gateway:
-		MODULE.error('There is no gateway configured.')
-		raise Critical(_('There is no gateway configured.'))
-	process = Popen(['/bin/ping', '-c3', '-w4', '-W4', gateway], stdout=PIPE, stderr=STDOUT)
-	stdout_, stderr = process.communicate()
-	stdout = stdout_.decode('UTF-8', 'replace')
-	if process.returncode:
-		MODULE.error('\n'.join(description))
-		raise Critical('\n'.join([description % (gateway,), '', stdout]))
+    gateway = ucr.get('gateway')
+    if not gateway:
+        MODULE.error('There is no gateway configured.')
+        raise Critical(_('There is no gateway configured.'))
+    process = Popen(['/bin/ping', '-c3', '-w4', '-W4', gateway], stdout=PIPE, stderr=STDOUT)
+    stdout_, stderr = process.communicate()
+    stdout = stdout_.decode('UTF-8', 'replace')
+    if process.returncode:
+        MODULE.error('\n'.join(description))
+        raise Critical('\n'.join([description % (gateway,), '', stdout]))
 
 
 if __name__ == '__main__':
-	from univention.management.console.modules.diagnostic import main
-	main()
+    from univention.management.console.modules.diagnostic import main
+    main()

@@ -30,91 +30,90 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-"""
-|UDM| policy utilities
-"""
+"""|UDM| policy utilities"""
 
 from typing import Any, Dict, Tuple  # noqa: F401
 
 import univention.admin.localization
 import univention.admin.syntax
-from univention.admin.mapping import ListToString, mapping as MappingType  # noqa: F401
 from univention.admin.layout import Tab
+from univention.admin.mapping import ListToString, mapping as MappingType  # noqa: F401
+
 
 translation = univention.admin.localization.translation('univention.admin')
 _ = translation.translate
 
 
 def register_policy_mapping(mapping):
-	# type: (MappingType) -> None
-	mapping.register('requiredObjectClasses', 'requiredObjectClasses')
-	mapping.register('prohibitedObjectClasses', 'prohibitedObjectClasses')
-	mapping.register('fixedAttributes', 'fixedAttributes')
-	mapping.register('emptyAttributes', 'emptyAttributes')
-	mapping.register('ldapFilter', 'ldapFilter', None, ListToString)
+    # type: (MappingType) -> None
+    mapping.register('requiredObjectClasses', 'requiredObjectClasses')
+    mapping.register('prohibitedObjectClasses', 'prohibitedObjectClasses')
+    mapping.register('fixedAttributes', 'fixedAttributes')
+    mapping.register('emptyAttributes', 'emptyAttributes')
+    mapping.register('ldapFilter', 'ldapFilter', None, ListToString)
 
 
 def policy_object_tab():
-	# type: () -> Tab
-	return Tab(_('Object'), _('Object'), advanced=True, layout=[
-		['ldapFilter'],
-		['requiredObjectClasses', 'prohibitedObjectClasses'],
-		['fixedAttributes', 'emptyAttributes']
-	])
+    # type: () -> Tab
+    return Tab(_('Object'), _('Object'), advanced=True, layout=[
+        ['ldapFilter'],
+        ['requiredObjectClasses', 'prohibitedObjectClasses'],
+        ['fixedAttributes', 'emptyAttributes'],
+    ])
 
 
 def requiredObjectClassesProperty(**kwargs):
-	# type: (**Any) -> Tuple[str, univention.admin.property]
-	pargs = dict(
-		short_description=_('Required object class'),
-		long_description='',
-		syntax=univention.admin.syntax.ldapObjectClass,
-		multivalue=True,
-	)
-	pargs.update(kwargs)
-	return 'requiredObjectClasses', univention.admin.property(**pargs)
+    # type: (**Any) -> Tuple[str, univention.admin.property]
+    pargs = {
+        "short_description": _('Required object class'),
+        "long_description": '',
+        "syntax": univention.admin.syntax.ldapObjectClass,
+        "multivalue": True,
+    }
+    pargs.update(kwargs)
+    return 'requiredObjectClasses', univention.admin.property(**pargs)
 
 
 def prohibitedObjectClassesProperty(**kwargs):
-	# type: (**Any) -> Tuple[str, univention.admin.property]
-	pargs = dict(
-		short_description=_('Excluded object class'),
-		long_description='',
-		syntax=univention.admin.syntax.ldapObjectClass,
-		multivalue=True,
-	)
-	pargs.update(kwargs)
-	return 'prohibitedObjectClasses', univention.admin.property(**pargs)
+    # type: (**Any) -> Tuple[str, univention.admin.property]
+    pargs = {
+        "short_description": _('Excluded object class'),
+        "long_description": '',
+        "syntax": univention.admin.syntax.ldapObjectClass,
+        "multivalue": True,
+    }
+    pargs.update(kwargs)
+    return 'prohibitedObjectClasses', univention.admin.property(**pargs)
 
 
 def fixedAttributesProperty(**kwargs):
-	# type: (**Any) -> Tuple[str, univention.admin.property]
-	pargs = dict(
-		short_description=_('Fixed attribute'),
-		long_description='',
-		multivalue=True,
-	)
-	pargs.update(kwargs)
-	return 'fixedAttributes', univention.admin.property(**pargs)
+    # type: (**Any) -> Tuple[str, univention.admin.property]
+    pargs = {
+        "short_description": _('Fixed attribute'),
+        "long_description": '',
+        "multivalue": True,
+    }
+    pargs.update(kwargs)
+    return 'fixedAttributes', univention.admin.property(**pargs)
 
 
 def emptyAttributesProperty(**kwargs):
-	# type: (**Any) -> Tuple[str, univention.admin.property]
-	pargs = dict(
-		short_description=_('Empty attribute'),
-		long_description='',
-		multivalue=True,
-	)
-	pargs.update(kwargs)
-	return 'emptyAttributes', univention.admin.property(**pargs)
+    # type: (**Any) -> Tuple[str, univention.admin.property]
+    pargs = {
+        "short_description": _('Empty attribute'),
+        "long_description": '',
+        "multivalue": True,
+    }
+    pargs.update(kwargs)
+    return 'emptyAttributes', univention.admin.property(**pargs)
 
 
 def ldapFilterProperty(**kwargs):
-	# type: (**Any) -> Tuple[str, univention.admin.property]
-	pargs = dict(
-		short_description=_('LDAP filter'),
-		long_description=_('This policy applies only to objects which matches this LDAP filter.'),
-		syntax=univention.admin.syntax.ldapFilter,
-	)
-	pargs.update(kwargs)
-	return 'ldapFilter', univention.admin.property(**pargs)
+    # type: (**Any) -> Tuple[str, univention.admin.property]
+    pargs = {
+        "short_description": _('LDAP filter'),
+        "long_description": _('This policy applies only to objects which matches this LDAP filter.'),
+        "syntax": univention.admin.syntax.ldapFilter,
+    }
+    pargs.update(kwargs)
+    return 'ldapFilter', univention.admin.property(**pargs)

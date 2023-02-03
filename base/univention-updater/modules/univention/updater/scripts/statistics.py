@@ -42,71 +42,71 @@ from univention.config_registry.frontend import ucr_update
 
 
 def encode_number(number: int, significant_digits: int = 3) -> str:
-	assert 0 <= number <= int('9' * 26)
-	assert 1 < significant_digits
-	string = str(number)
-	return string[:significant_digits] + ' abcdefghijklmnopqrstuvwxyz'[len(string)]
+    assert 0 <= number <= int('9' * 26)
+    assert significant_digits > 1
+    string = str(number)
+    return string[:significant_digits] + ' abcdefghijklmnopqrstuvwxyz'[len(string)]
 
 
 def encode_users(users: int) -> str:
-	return encode_number(users)
+    return encode_number(users)
 
 
 def encode_role(role: str) -> str:
-	if role == 'domaincontroller_master':
-		return 'M'
-	if role == 'domaincontroller_backup':
-		return 'B'
-	if role == 'domaincontroller_slave':
-		return 'S'
-	if role == 'memberserver':
-		return 'm'
-	if role == 'basesystem':
-		return 'b'
-	raise ValueError('Invalid role %r' % (role, ))
+    if role == 'domaincontroller_master':
+        return 'M'
+    if role == 'domaincontroller_backup':
+        return 'B'
+    if role == 'domaincontroller_slave':
+        return 'S'
+    if role == 'memberserver':
+        return 'm'
+    if role == 'basesystem':
+        return 'b'
+    raise ValueError('Invalid role %r' % (role, ))
 
 
 def encode_additional_info(users: Optional[int] = None, role: Optional[str] = None) -> str:
-	data: List[Tuple[str, Callable[[Any], str], Any]] = [
-		('U', encode_users, users),
-		('R', encode_role, role),
-	]
-	return ",".join(
-		"%s:%s" % (key, encoder(datum))
-		for key, encoder, datum in data
-		if datum is not None
-	)
+    data: List[Tuple[str, Callable[[Any], str], Any]] = [
+        ('U', encode_users, users),
+        ('R', encode_role, role),
+    ]
+    return ",".join(
+        "%s:%s" % (key, encoder(datum))
+        for key, encoder, datum in data
+        if datum is not None
+    )
 
 
 def getReadonlyAdminConnection() -> Tuple[access, position]:
-	def do_nothing(*a: Any, **kw: Any) -> NoReturn:
-		raise AssertionError('readonly connection')
+    def do_nothing(*a: Any, **kw: Any) -> NoReturn:
+        raise AssertionError('readonly connection')
 
-	lo, position = getAdminConnection()
-	lo.add = lo.modify = lo.rename = lo.delete = do_nothing
-	return lo, position
+    lo, position = getAdminConnection()
+    lo.add = lo.modify = lo.rename = lo.delete = do_nothing
+    return lo, position
 
 
 def main() -> None:
-	def get_role() -> Optional[str]:
-		return configRegistry.get('server/role', None)
+    def get_role() -> Optional[str]:
+        return configRegistry.get('server/role', None)
 
-	def get_users() -> Optional[int]:
-		if get_role() != 'domaincontroller_master':
-			return None
-		lo, _ = getReadonlyAdminConnection()
-		filter = _license.filters['2'][_license.USERS]
-		return len(lo.searchDn(filter=filter))
+    def get_users() -> Optional[int]:
+        if get_role() != 'domaincontroller_master':
+            return None
+        lo, _ = getReadonlyAdminConnection()
+        filter = _license.filters['2'][_license.USERS]
+        return len(lo.searchDn(filter=filter))
 
-	configRegistry = ConfigRegistry()
-	configRegistry.load()
-	ucr_update(
-		configRegistry,
-		{
-			'updater/statistics': encode_additional_info(users=get_users(), role=get_role()),
-		}
-	)
+    configRegistry = ConfigRegistry()
+    configRegistry.load()
+    ucr_update(
+        configRegistry,
+        {
+            'updater/statistics': encode_additional_info(users=get_users(), role=get_role()),
+        },
+    )
 
 
 if __name__ == "__main__":
-	main()
+    main()

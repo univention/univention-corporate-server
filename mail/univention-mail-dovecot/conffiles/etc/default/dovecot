@@ -12,8 +12,8 @@ current_limit = resource.getrlimit(resource.RLIMIT_NOFILE)[0]
 
 max_conn = 2000  # default mail/dovecot/limits/auth/client_limit
 for key, value in configRegistry.items():
-	if key.startswith("mail/dovecot/limits/") and (key.endswith("client_limit") or key.endswith("process_limit")):
-		max_conn = max(max_conn, int(value))
+    if key.startswith("mail/dovecot/limits/") and (key.endswith("client_limit") or key.endswith("process_limit")):
+        max_conn = max(max_conn, int(value))
 if max_conn > current_limit:
-	print("ulimit -n %d" % max_conn)
+    print("ulimit -n %d" % max_conn)
 @!@

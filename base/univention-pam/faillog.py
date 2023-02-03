@@ -38,25 +38,26 @@ from __future__ import absolute_import, annotations
 
 from typing import Dict, List
 
-import listener
 import univention.debug as ud
 from univention.admin.handlers.users.user import unmapLocked
+
+import listener
+
 
 description = 'The listener module resets the faillog count'
 filter = '(objectClass=shadowAccount)'
 
 
 def __login_is_locked(attrs: Dict[str, List[bytes]]) -> bool:
-	return unmapLocked(attrs) == '1'
+    return unmapLocked(attrs) == '1'
 
 
 def handler(dn: str, new: Dict[str, List[bytes]], old: Dict[str, List[bytes]]) -> None:
-	if new and old:
-		if __login_is_locked(old) and not __login_is_locked(new):
-			# reset local bad password count
-			ud.debug(ud.LISTENER, ud.PROCESS, 'Reset faillog for user %s' % new['uid'][0].decode('UTF-8'))
-			listener.setuid(0)
-			try:
-				listener.run('/sbin/pam_tally', ['pam_tally', '--user', new['uid'][0].decode('UTF-8'), '--reset'])
-			finally:
-				listener.unsetuid()
+    if new and old and __login_is_locked(old) and not __login_is_locked(new):
+        # reset local bad password count
+        ud.debug(ud.LISTENER, ud.PROCESS, 'Reset faillog for user %s' % new['uid'][0].decode('UTF-8'))
+        listener.setuid(0)
+        try:
+            listener.run('/sbin/pam_tally', ['pam_tally', '--user', new['uid'][0].decode('UTF-8'), '--reset'])
+        finally:
+            listener.unsetuid()

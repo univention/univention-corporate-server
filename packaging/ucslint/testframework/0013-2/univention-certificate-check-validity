@@ -15,30 +15,30 @@ _bc.load()
 
 
 def get_validity_date():
-	""" returns the validity date fo the locale SSL certificate or None on failure"""
-	global _bc
-	try:
-		fqdn = '.'.join([_bc['hostname'], _bc['domainname']])
+    """ returns the validity date fo the locale SSL certificate or None on failure"""
+    global _bc
+    try:
+        fqdn = '.'.join([_bc['hostname'], _bc['domainname']])
 
-		x509 = X509.load_cert('/etc/univention/ssl/%s/cert.pem' % fqdn)
-		return str(x509.get_not_after())
-	except Exception:
-		return None
+        x509 = X509.load_cert('/etc/univention/ssl/%s/cert.pem' % fqdn)
+        return str(x509.get_not_after())
+    except Exception:
+        return None
 
 
 def get_validity_days():
-	"""returns the validity of the local SSL certificate in days. If the
-	validity could not be determined 0 is returned"""
-	after = get_validity_date()
-	if after:
-		time_after = time.strptime(after, "%b %d %H:%M:%S %Y %Z")
-		return calendar.timegm(time_after) / 60 / 60 / 24
+    """returns the validity of the local SSL certificate in days. If the
+    validity could not be determined 0 is returned"""
+    after = get_validity_date()
+    if after:
+        time_after = time.strptime(after, "%b %d %H:%M:%S %Y %Z")
+        return calendar.timegm(time_after) / 60 / 60 / 24
 
-	return 0
+    return 0
 
 
 if __name__ == '__main__':
-	days = get_validity_days()
-	if days and days != _bc.get('ssl/validity/days', -1):
-		_bc['ssl/validity/days'] = str(days)
-		_bc.save()
+    days = get_validity_days()
+    if days and days != _bc.get('ssl/validity/days', -1):
+        _bc['ssl/validity/days'] = str(days)
+        _bc.save()

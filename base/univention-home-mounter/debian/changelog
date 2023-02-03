@@ -1,3 +1,9 @@
+univention-home-mounter (11.0.2-1) unstable; urgency=medium
+
+  * Bug #31771: migrate tabs to spaces
+
+ -- Florian Best <best@univention.de>  Fri, 03 Feb 2023 04:17:34 +0100
+
 univention-home-mounter (11.0.1-2) unstable; urgency=medium
 
   * Bug #53344: Migrated univention-home-mounter to Python3

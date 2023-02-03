@@ -14,7 +14,7 @@ import univention.testing.udm as udm_test
 
 
 def eapol_test(username):
-	testdata = '''network={{
+    testdata = '''network={{
         key_mgmt=WPA-EAP
         eap=PEAP
         identity="{}"
@@ -23,19 +23,18 @@ def eapol_test(username):
         phase2="autheap=MSCHAPV2"
 }}
 '''.format(username)
-	with tempfile.NamedTemporaryFile() as fd:
-		fd.write(testdata.encode('UTF-8'))
-		fd.flush()
-		subprocess.check_call(['/usr/sbin/eapol_test', '-c', fd.name, '-s', 'testing123'])
+    with tempfile.NamedTemporaryFile() as fd:
+        fd.write(testdata.encode('UTF-8'))
+        fd.flush()
+        subprocess.check_call(['/usr/sbin/eapol_test', '-c', fd.name, '-s', 'testing123'])
 
 
 def main():
-	with ucr_test.UCSTestConfigRegistry() as ucr:
-		with udm_test.UCSTestUDM() as udm:
-			username_allowed = udm.create_user(networkAccess=1)[1]
-			eapol_test(username_allowed)
-			eapol_test('{}\\{}'.format(ucr.get('windows/domain'), username_allowed))
+    with ucr_test.UCSTestConfigRegistry() as ucr, udm_test.UCSTestUDM() as udm:
+        username_allowed = udm.create_user(networkAccess=1)[1]
+        eapol_test(username_allowed)
+        eapol_test('{}\\{}'.format(ucr.get('windows/domain'), username_allowed))
 
 
 if __name__ == '__main__':
-	main()
+    main()

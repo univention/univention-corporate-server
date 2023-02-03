@@ -34,4 +34,5 @@
 
 from univention.testing.selenium.base import UMCSeleniumTest
 
+
 __all__ = ('UMCSeleniumTest',)

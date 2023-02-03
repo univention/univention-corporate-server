@@ -9,23 +9,24 @@
 import os
 import sys
 
+
 D_INFO = '/etc/univention/registry.info'
 exit_code = 100
 
-for dirname, dirnames, names in os.walk(D_INFO):
-	for name in names:
-		filename = os.path.join(dirname, name)
-		if os.path.isfile(filename):
-			with open(filename, 'rb') as f:
-				for (i, line) in enumerate(f):
-					try:
-						line.decode('utf8')
-					except UnicodeDecodeError as E:
-						print(f'Error. Invalid UTF-8-character in file {filename}, line {i}, at position {E.end}', file=sys.stderr)
-						exit_code = 111
-						break
-				else:
-					print(f"OK: {filename}")
+for dirname, _dirnames, names in os.walk(D_INFO):
+    for name in names:
+        filename = os.path.join(dirname, name)
+        if os.path.isfile(filename):
+            with open(filename, 'rb') as f:
+                for (i, line) in enumerate(f):
+                    try:
+                        line.decode('utf8')
+                    except UnicodeDecodeError as E:
+                        print(f'Error. Invalid UTF-8-character in file {filename}, line {i}, at position {E.end}', file=sys.stderr)
+                        exit_code = 111
+                        break
+                else:
+                    print(f"OK: {filename}")
 
 sys.exit(exit_code)
 

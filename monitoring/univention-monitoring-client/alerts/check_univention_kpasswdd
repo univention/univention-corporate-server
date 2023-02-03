@@ -37,11 +37,11 @@ from univention.monitoring import Alert
 
 class Kpasswdd(Alert):
 
-	def write_metrics(self):
-		rc, output = self.exec_command(['/usr/lib/nagios/plugins/check_procs', '-w', '1:1', '-c', '1:', '-C', 'kpasswdd'])
-		self.write_metric('univention_kpasswdd_running', 1 if rc == 0 else 0)
-		self.log.debug(output)
+    def write_metrics(self):
+        rc, output = self.exec_command(['/usr/lib/nagios/plugins/check_procs', '-w', '1:1', '-c', '1:', '-C', 'kpasswdd'])
+        self.write_metric('univention_kpasswdd_running', 1 if rc == 0 else 0)
+        self.log.debug(output)
 
 
 if __name__ == '__main__':
-	Kpasswdd.main()
+    Kpasswdd.main()

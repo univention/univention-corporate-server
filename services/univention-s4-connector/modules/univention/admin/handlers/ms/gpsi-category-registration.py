@@ -33,11 +33,11 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-from univention.admin.layout import Tab, Group
-
-import univention.admin.syntax
 import univention.admin.handlers
 import univention.admin.localization
+import univention.admin.syntax
+from univention.admin.layout import Group, Tab
+
 
 translation = univention.admin.localization.translation('univention.admin.handlers.ms')
 _ = translation.translate
@@ -48,59 +48,59 @@ childs = True
 short_description = _('MS Software Installation Group Policy: Category Registration')
 long_description = ''
 options = {
-	'default': univention.admin.option(
-		short_description=short_description,
-		default=True,
-		objectClasses=['categoryRegistration', 'leaf']
-	),
+    'default': univention.admin.option(
+        short_description=short_description,
+        default=True,
+        objectClasses=['categoryRegistration', 'leaf'],
+    ),
 }
 property_descriptions = {
-	'name': univention.admin.property(
-		short_description=_('Name'),
-		long_description='',
-		syntax=univention.admin.syntax.string,
-		required=True,
-		identifies=True,
-	),
-	'description': univention.admin.property(
-		short_description=_('Description'),
-		long_description='',
-		syntax=univention.admin.syntax.string,
-	),
-	'managedBy': univention.admin.property(
-		short_description=_('managed by'),
-		long_description='',
-		syntax=univention.admin.syntax.string,
-	),
-	'localizedDescription': univention.admin.property(
-		short_description=_('localized description'),
-		long_description='',
-		multivalue=True,
-		syntax=univention.admin.syntax.string,
-	),
-	'localeID': univention.admin.property(
-		short_description=_('locale ID'),
-		long_description='',
-		multivalue=True,
-		syntax=univention.admin.syntax.integer,
-	),
-	'categoryId': univention.admin.property(
-		short_description=_('category ID'),
-		long_description='',
-		syntax=univention.admin.syntax.TextArea,
-	),
+    'name': univention.admin.property(
+        short_description=_('Name'),
+        long_description='',
+        syntax=univention.admin.syntax.string,
+        required=True,
+        identifies=True,
+    ),
+    'description': univention.admin.property(
+        short_description=_('Description'),
+        long_description='',
+        syntax=univention.admin.syntax.string,
+    ),
+    'managedBy': univention.admin.property(
+        short_description=_('managed by'),
+        long_description='',
+        syntax=univention.admin.syntax.string,
+    ),
+    'localizedDescription': univention.admin.property(
+        short_description=_('localized description'),
+        long_description='',
+        multivalue=True,
+        syntax=univention.admin.syntax.string,
+    ),
+    'localeID': univention.admin.property(
+        short_description=_('locale ID'),
+        long_description='',
+        multivalue=True,
+        syntax=univention.admin.syntax.integer,
+    ),
+    'categoryId': univention.admin.property(
+        short_description=_('category ID'),
+        long_description='',
+        syntax=univention.admin.syntax.TextArea,
+    ),
 }
 
 layout = [
-	Tab(_('General'), _('Basic settings'), layout=[
-		Group(_('General'), layout=[
-			["name", "description"],
-			'managedBy',
-			'localizedDescription',
-			'localeID',
-			'categoryId',
-		]),
-	]),
+    Tab(_('General'), _('Basic settings'), layout=[
+        Group(_('General'), layout=[
+            ["name", "description"],
+            'managedBy',
+            'localizedDescription',
+            'localeID',
+            'categoryId',
+        ]),
+    ]),
 ]
 
 mapping = univention.admin.mapping.mapping()
@@ -113,11 +113,11 @@ mapping.register('categoryId', 'categoryId', univention.admin.mapping.mapBase64,
 
 
 class object(univention.admin.handlers.simpleLdap):
-	module = module
+    module = module
 
-	def _ldap_pre_modify(self):
-		if self.hasChanged('name'):
-			self.move(self._ldap_dn())
+    def _ldap_pre_modify(self):
+        if self.hasChanged('name'):
+            self.move(self._ldap_dn())
 
 
 identify = object.identify

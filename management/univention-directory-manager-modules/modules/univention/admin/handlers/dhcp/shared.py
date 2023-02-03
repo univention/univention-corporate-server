@@ -30,16 +30,15 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-"""
-|UDM| module for the |DHCP| shared networks
-"""
+"""|UDM| module for the |DHCP| shared networks"""
 
-from univention.admin.layout import Tab, Group
 import univention.admin.filter
 import univention.admin.handlers
 import univention.admin.localization
+from univention.admin.layout import Group, Tab
 
 from .__common import DHCPBase, add_dhcp_options
+
 
 translation = univention.admin.localization.translation('univention.admin.handlers.dhcp')
 _ = translation.translate
@@ -54,30 +53,30 @@ object_name = _('Shared network')
 object_name_plural = _('Shared network')
 long_description = _('A shared physical network, where multiple IP address ranges are used.')
 options = {
-	'default': univention.admin.option(
-		short_description=short_description,
-		default=True,
-		objectClasses=['top', 'dhcpSharedNetwork'],
-	),
+    'default': univention.admin.option(
+        short_description=short_description,
+        default=True,
+        objectClasses=['top', 'dhcpSharedNetwork'],
+    ),
 }
 property_descriptions = {
-	'name': univention.admin.property(
-		short_description=_('Shared network name'),
-		long_description=_('A unique name for this shared network.'),
-		syntax=univention.admin.syntax.uid,
-		include_in_default_search=True,
-		required=True,
-		may_change=False,
-		identifies=True
-	),
+    'name': univention.admin.property(
+        short_description=_('Shared network name'),
+        long_description=_('A unique name for this shared network.'),
+        syntax=univention.admin.syntax.uid,
+        include_in_default_search=True,
+        required=True,
+        may_change=False,
+        identifies=True,
+    ),
 }
 
 layout = [
-	Tab(_('General'), _('Basic settings'), layout=[
-		Group(_('DHCP shared network description'), layout=[
-			'name'
-		]),
-	]),
+    Tab(_('General'), _('Basic settings'), layout=[
+        Group(_('DHCP shared network description'), layout=[
+            'name',
+        ]),
+    ]),
 ]
 
 mapping = univention.admin.mapping.mapping()
@@ -87,7 +86,7 @@ add_dhcp_options(__name__)
 
 
 class object(DHCPBase):
-	module = module
+    module = module
 
 
 lookup_filter = object.lookup_filter

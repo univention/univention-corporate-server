@@ -47,115 +47,116 @@ from univention.lib.i18n import Translation
 from univention.udm import UDM
 from univention.udm.helpers import get_all_udm_module_names
 
+
 udm = UDM.admin().version(2)
 
 translation = Translation(None)
 
 
 def modules():
-	for m in get_all_udm_module_names():
-		yield udm.get(m)._orig_udm_module
+    for m in get_all_udm_module_names():
+        yield udm.get(m)._orig_udm_module
 
 
 def print_events(m):
-	name = m.module
-	icon = 'domain'
-	if name.startswith('users/'):
-		icon = 'users'
-	if name.startswith('groups/'):
-		icon = 'users'
-	if name.startswith('computers/'):
-		icon = 'devices'
-	if name.startswith('nagios/'):
-		icon = 'devices'
-	if name.startswith('printers/'):
-		icon = 'devices'
-	#if name.startswith('appcenter/'):
-	#	icon = 'software'
-	translation.domain = m._.__self__._domain
-	translation.set_language('en_US.UTF-8')
-	try:
-		object_name = m.object_name
-	except AttributeError:
-		try:
-			object_name = m.short_description
-		except AttributeError:
-			sys.stderr.write('no short_description and no object_name in %s\n' % m)
-			return
-		else:
-			sys.stderr.write('using short_description in %s\n' % m)
-	english_name = translation.translate(object_name)
-	translation.set_language('de_DE.UTF-8')
-	german_name = translation.translate(object_name)
-	any_printed = False
-	args = []
-	if name == 'users/user':
-		args = ['username']
-	elif name == 'groups/group':
-		args = ['name']
-	elif name == 'settings/license':
-		args = ['name', 'keyID']
-	elif name == 'mail/folder':
-		args = ['nameWithMailDomain']
-	elif name == 'container/dc':
-		args = ['name']
-	else:
-		for k, v in m.property_descriptions.items():
-			if v.identifies or not v.may_change:
-				if v.identifies:
-					args.insert(0, k)
-				else:
-					args.append(k)
-	if len(args) == 0:
-		sys.stderr.write('no args in %s\n' % m)
-		return
-	if 'add' in m.operations:
-		print_created(m, english_name, german_name, args, icon)
-		any_printed = True
-	if 'edit' in m.operations:
-		print_modified(m, english_name, german_name, args, icon)
-		any_printed = True
-	if 'move' in m.operations:
-		print_moved(m, english_name, german_name, args, icon)
-		any_printed = True
-	if 'remove' in m.operations:
-		print_removed(m, english_name, german_name, args, icon)
-		any_printed = True
-	if any_printed:
-		print()
+    name = m.module
+    icon = 'domain'
+    if name.startswith('users/'):
+        icon = 'users'
+    if name.startswith('groups/'):
+        icon = 'users'
+    if name.startswith('computers/'):
+        icon = 'devices'
+    if name.startswith('nagios/'):
+        icon = 'devices'
+    if name.startswith('printers/'):
+        icon = 'devices'
+    # if name.startswith('appcenter/'):
+    #    icon = 'software'
+    translation.domain = m._.__self__._domain
+    translation.set_language('en_US.UTF-8')
+    try:
+        object_name = m.object_name
+    except AttributeError:
+        try:
+            object_name = m.short_description
+        except AttributeError:
+            sys.stderr.write('no short_description and no object_name in %s\n' % m)
+            return
+        else:
+            sys.stderr.write('using short_description in %s\n' % m)
+    english_name = translation.translate(object_name)
+    translation.set_language('de_DE.UTF-8')
+    german_name = translation.translate(object_name)
+    any_printed = False
+    args = []
+    if name == 'users/user':
+        args = ['username']
+    elif name == 'groups/group':
+        args = ['name']
+    elif name == 'settings/license':
+        args = ['name', 'keyID']
+    elif name == 'mail/folder':
+        args = ['nameWithMailDomain']
+    elif name == 'container/dc':
+        args = ['name']
+    else:
+        for k, v in m.property_descriptions.items():
+            if v.identifies or not v.may_change:
+                if v.identifies:
+                    args.insert(0, k)
+                else:
+                    args.append(k)
+    if len(args) == 0:
+        sys.stderr.write('no args in %s\n' % m)
+        return
+    if 'add' in m.operations:
+        print_created(m, english_name, german_name, args, icon)
+        any_printed = True
+    if 'edit' in m.operations:
+        print_modified(m, english_name, german_name, args, icon)
+        any_printed = True
+    if 'move' in m.operations:
+        print_moved(m, english_name, german_name, args, icon)
+        any_printed = True
+    if 'remove' in m.operations:
+        print_removed(m, english_name, german_name, args, icon)
+        any_printed = True
+    if any_printed:
+        print()
 
 
 def print_created(m, english_name, german_name, args, icon):
-	name = 'UDM_' + m.module.replace('/', '_')
-	additional_args = ''
-	if len(args) > 1:
-		additional_args = '(%s) ' % ' '.join('{%s}' % arg for arg in args[1:])
-	print(name.upper() + '_CREATED', '=', "DiaryEvent('%s', {'en': '%s {%s} %screated', 'de': '%s {%s} %sangelegt'}, args=%r, icon='%s')" % (name.upper() + '_CREATED', english_name, args[0], additional_args, german_name, args[0], additional_args, args, icon))
+    name = 'UDM_' + m.module.replace('/', '_')
+    additional_args = ''
+    if len(args) > 1:
+        additional_args = '(%s) ' % ' '.join('{%s}' % arg for arg in args[1:])
+    print(name.upper() + '_CREATED', '=', "DiaryEvent('%s', {'en': '%s {%s} %screated', 'de': '%s {%s} %sangelegt'}, args=%r, icon='%s')" % (name.upper() + '_CREATED', english_name, args[0], additional_args, german_name, args[0], additional_args, args, icon))
 
 
 def print_modified(m, english_name, german_name, args, icon):
-	name = 'UDM_' + m.module.replace('/', '_')
-	additional_args = ''
-	if len(args) > 1:
-		additional_args = '(%s) ' % ' '.join('{%s}' % arg for arg in args[1:])
-	print(name.upper() + '_MODIFIED', '=', "DiaryEvent('%s', {'en': '%s {%s} %smodified', 'de': '%s {%s} %sbearbeitet'}, args=%r, icon='%s')" % (name.upper() + '_MODIFIED', english_name, args[0], additional_args, german_name, args[0], additional_args, args, icon))
+    name = 'UDM_' + m.module.replace('/', '_')
+    additional_args = ''
+    if len(args) > 1:
+        additional_args = '(%s) ' % ' '.join('{%s}' % arg for arg in args[1:])
+    print(name.upper() + '_MODIFIED', '=', "DiaryEvent('%s', {'en': '%s {%s} %smodified', 'de': '%s {%s} %sbearbeitet'}, args=%r, icon='%s')" % (name.upper() + '_MODIFIED', english_name, args[0], additional_args, german_name, args[0], additional_args, args, icon))
 
 
 def print_moved(m, english_name, german_name, args, icon):
-	name = 'UDM_' + m.module.replace('/', '_')
-	additional_args = ''
-	if len(args) > 1:
-		additional_args = '(%s) ' % ' '.join('{%s}' % arg for arg in args[1:])
-	print(name.upper() + '_MOVED', '=', "DiaryEvent('%s', {'en': '%s {%s} %smoved to {position}', 'de': '%s {%s} %sverschoben nach {position}'}, args=%r, icon='%s')" % (name.upper() + '_MOVED', english_name, args[0], additional_args, german_name, args[0], additional_args, args, icon))
+    name = 'UDM_' + m.module.replace('/', '_')
+    additional_args = ''
+    if len(args) > 1:
+        additional_args = '(%s) ' % ' '.join('{%s}' % arg for arg in args[1:])
+    print(name.upper() + '_MOVED', '=', "DiaryEvent('%s', {'en': '%s {%s} %smoved to {position}', 'de': '%s {%s} %sverschoben nach {position}'}, args=%r, icon='%s')" % (name.upper() + '_MOVED', english_name, args[0], additional_args, german_name, args[0], additional_args, args, icon))
 
 
 def print_removed(m, english_name, german_name, args, icon):
-	name = 'UDM_' + m.module.replace('/', '_')
-	additional_args = ''
-	if len(args) > 1:
-		additional_args = '(%s) ' % ' '.join('{%s}' % arg for arg in args[1:])
-	print(name.upper() + '_REMOVED', '=', "DiaryEvent('%s', {'en': '%s {%s} %sremoved', 'de': '%s {%s} %sgelöscht'}, args=%r, icon='%s')" % (name.upper() + '_REMOVED', english_name, args[0], additional_args, german_name, args[0], additional_args, args, icon))
+    name = 'UDM_' + m.module.replace('/', '_')
+    additional_args = ''
+    if len(args) > 1:
+        additional_args = '(%s) ' % ' '.join('{%s}' % arg for arg in args[1:])
+    print(name.upper() + '_REMOVED', '=', "DiaryEvent('%s', {'en': '%s {%s} %sremoved', 'de': '%s {%s} %sgelöscht'}, args=%r, icon='%s')" % (name.upper() + '_REMOVED', english_name, args[0], additional_args, german_name, args[0], additional_args, args, icon))
 
 
 for module in modules():
-	print_events(module)
+    print_events(module)

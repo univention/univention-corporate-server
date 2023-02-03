@@ -35,31 +35,32 @@ from subprocess import PIPE, Popen
 from univention.lib.i18n import Translation
 from univention.management.console.modules.diagnostic import Critical, Instance, Warning
 
+
 _ = Translation('univention-management-console-module-diagnostic').translate
 
 title = _('Package status corrupt')
 description = '\n'.join([
-	_('The package status of %s packages is corrupt.'),
-	_('You may log in to the system as root via ssh and run the command "dpkg --configure -a" as an attempt to correct the packages status.'),
-	_('More information about the cause can be gained by executing "dpkg --audit".')
+    _('The package status of %s packages is corrupt.'),
+    _('You may log in to the system as root via ssh and run the command "dpkg --configure -a" as an attempt to correct the packages status.'),
+    _('More information about the cause can be gained by executing "dpkg --audit".'),
 ])
 
 run_descr = ['This can be checked by running: dpkg --audit']
 
 
 def run(_umc_instance: Instance) -> None:
-	proccess = Popen(['dpkg', '--audit'], stdout=PIPE, env={'LANG': 'C'})
-	stdout_, stderr = proccess.communicate()
-	stdout = stdout_.decode('UTF-8', 'replace')
+    proccess = Popen(['dpkg', '--audit'], stdout=PIPE, env={'LANG': 'C'})
+    stdout_, stderr = proccess.communicate()
+    stdout = stdout_.decode('UTF-8', 'replace')
 
-	if 'The following packages' in stdout:
-		num = len([line for line in stdout.splitlines() if line.startswith(' ')])
-		raise Warning(description % num)
+    if 'The following packages' in stdout:
+        num = len([line for line in stdout.splitlines() if line.startswith(' ')])
+        raise Warning(description % num)
 
-	if proccess.returncode:
-		raise Critical(description % _('some'))
+    if proccess.returncode:
+        raise Critical(description % _('some'))
 
 
 if __name__ == '__main__':
-	from univention.management.console.modules.diagnostic import main
-	main()
+    from univention.management.console.modules.diagnostic import main
+    main()

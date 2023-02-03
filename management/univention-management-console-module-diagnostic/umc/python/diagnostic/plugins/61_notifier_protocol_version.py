@@ -37,76 +37,76 @@ from univention.config_registry import handler_set, ucr_live as ucr
 from univention.lib.i18n import Translation
 from univention.management.console.modules.diagnostic import MODULE, Critical, Instance, Warning
 
+
 _ = Translation('univention-management-console-module-diagnostic').translate
 
 UCS = (4, 3, 3, 428)
 UCR = "notifier/protocol/version"
 UDN = 3
 BUTTON = {
-	"label": _("Update protocol version"),
-	"action": "set_protocol_version",
+    "label": _("Update protocol version"),
+    "action": "set_protocol_version",
 }
 
 title = _('Check of the protocol version of the Univention Directory Notifier')
 description = _('Starting with UCS {ucs[0]}.{ucs[1]}-{ucs[2]} erratum {ucs[3]}, the minimum protocol version should be set to {udn}.').format(ucs=UCS, udn=UDN)
-run_descr = ['This can be checked by running: ucr get {}'.format(UCR)]
+run_descr = [f'This can be checked by running: ucr get {UCR}']
 umc_modules = [{'module': 'ucr'}]
 
 invalid_msg = _('The UCR variable <tt>{ucr}</tt> is not configured or invalid.')
 
 
 def run(_umc_instance: Instance) -> None:
-	server_role = ucr.get('server/role')
-	if server_role not in ('domaincontroller_master', 'domaincontroller_backup'):
-		return
+    server_role = ucr.get('server/role')
+    if server_role not in ('domaincontroller_master', 'domaincontroller_backup'):
+        return
 
-	problems: List[str] = []
+    problems: List[str] = []
 
-	var = "version/version"
-	ucs_version = ucr.get(var, "")
-	maj_str, _, min_str = ucs_version.partition(".")
-	try:
-		major, minor = int(maj_str), int(min_str)
-	except ValueError:
-		problems.append(invalid_msg.format(ucr=var))
+    var = "version/version"
+    ucs_version = ucr.get(var, "")
+    maj_str, _, min_str = ucs_version.partition(".")
+    try:
+        major, minor = int(maj_str), int(min_str)
+    except ValueError:
+        problems.append(invalid_msg.format(ucr=var))
 
-	var = "version/patchlevel"
-	ucs_patchlevel = ucr.get_int(var)
-	if not ucs_patchlevel:
-		problems.append(invalid_msg.format(ucr=var))
+    var = "version/patchlevel"
+    ucs_patchlevel = ucr.get_int(var)
+    if not ucs_patchlevel:
+        problems.append(invalid_msg.format(ucr=var))
 
-	var = "version/erratalevel"
-	ucs_erratalevel = ucr.get_int(var)
-	if not ucs_erratalevel:
-		problems.append(invalid_msg.format(ucr=var))
+    var = "version/erratalevel"
+    ucs_erratalevel = ucr.get_int(var)
+    if not ucs_erratalevel:
+        problems.append(invalid_msg.format(ucr=var))
 
-	np_version = ucr.get_int(UCR)
-	if not np_version:
-		problems.append(invalid_msg.format(ucr=UCR))
+    np_version = ucr.get_int(UCR)
+    if not np_version:
+        problems.append(invalid_msg.format(ucr=UCR))
 
-	if problems:
-		text = "\n".join(problems)
-		MODULE.error(text)
-		raise Critical(text)
+    if problems:
+        text = "\n".join(problems)
+        MODULE.error(text)
+        raise Critical(text)
 
-	if (4, 3, 3, 428) <= (major, minor, ucs_patchlevel, ucs_erratalevel):
-		if np_version < UDN:
-			MODULE.error(description)
-			raise Warning(description, buttons=[BUTTON])
+    if (major, minor, ucs_patchlevel, ucs_erratalevel) >= (4, 3, 3, 428) and np_version < UDN:
+        MODULE.error(description)
+        raise Warning(description, buttons=[BUTTON])
 
 
 def set_protocol_version(umc: Instance) -> None:
-	MODULE.process("Setting UDN protocol version {}".format(UDN))
-	handler_set(["%s=%d" % (UCR, UDN)])
-	call(["systemctl", "try-restart", "univention-directory-notifier.service"])
-	return run(umc)
+    MODULE.process(f"Setting UDN protocol version {UDN}")
+    handler_set(["%s=%d" % (UCR, UDN)])
+    call(["systemctl", "try-restart", "univention-directory-notifier.service"])
+    return run(umc)
 
 
 actions: Dict[str, Callable[[Instance], None]] = {
-	"set_protocol_version": set_protocol_version,
+    "set_protocol_version": set_protocol_version,
 }
 
 
 if __name__ == '__main__':
-	from univention.management.console.modules.diagnostic import main
-	main()
+    from univention.management.console.modules.diagnostic import main
+    main()

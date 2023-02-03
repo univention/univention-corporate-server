@@ -30,9 +30,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-"""
-Tool for updating local system
-"""
+"""Tool for updating local system"""
 
 from __future__ import print_function
 
@@ -45,24 +43,29 @@ from errno import ENOENT
 from subprocess import DEVNULL, call
 from textwrap import dedent, wrap
 
+
 try:
     import univention.debug as ud
 except ImportError:
     import univention.debug2 as ud  # type: ignore
 
+from univention.admindiary.client import write_event
+from univention.admindiary.events import UPDATE_FINISHED_FAILURE, UPDATE_FINISHED_SUCCESS, UPDATE_STARTED
 from univention.config_registry import ConfigRegistry
 from univention.lib.ucs import UCS_Version
-
-from univention.admindiary.client import write_event
-from univention.admindiary.events import UPDATE_STARTED, UPDATE_FINISHED_SUCCESS, UPDATE_FINISHED_FAILURE
-
-from univention.updater.errors import PreconditionError, ConfigurationError, RequiredComponentError, VerificationError, DownloadError
-from univention.updater.tools import Component, UniventionUpdater, LocalUpdater  # noqa: F401
+from univention.updater.commands import cmd_dist_upgrade, cmd_update
+from univention.updater.errors import (
+    ConfigurationError, DownloadError, PreconditionError, RequiredComponentError, VerificationError,
+)
 from univention.updater.locking import UpdaterLock, apt_lock
-from univention.updater.commands import cmd_update, cmd_dist_upgrade
+from univention.updater.tools import Component, LocalUpdater, UniventionUpdater  # noqa: F401
+
 
 try:
-    from typing import Container, Dict, IO, Iterable, Iterator, List, NoReturn, Optional, Set, Sequence, Tuple  # noqa: F401
+    from typing import (  # noqa: F401
+        IO, Container, Dict, Iterable, Iterator, List, NoReturn, Optional, Sequence, Set, Tuple,
+    )
+
     from typing_extensions import Literal  # noqa: F401
     _ESRC = Literal["SETTINGS", "PREPARATION", "PREUP", "UPDATE", "POSTUP"]
     _CMDS = Literal["local", "net"]
@@ -98,7 +101,8 @@ RE_APT = re.compile(
 
 
 class UpdateError(Exception):
-    """ Exception to signal errors on update.
+    """
+    Exception to signal errors on update.
 
     :param msg: Human readable message.
     :param errorsource: One of 'SETTINGS', 'PREPARATION', 'PREUP', 'UPDATE', 'POSTUP'
@@ -112,20 +116,20 @@ class UpdateError(Exception):
 
 def log(str):
     # type: (str) -> None
-    """ Log message to LOGNAME. """
+    """Log message to LOGNAME."""
     print(str, file=fd_log)
     fd_log.flush()
 
 
 def dprint(str):  # type: (object) -> None
-    """ Print message to stdout and LOGNAME. """
+    """Print message to stdout and LOGNAME."""
     for fd in (stdout_orig, fd_log)[nostdout:]:
         print(str, file=fd)
         fd.flush()
 
 
 def update_status(**kwargs):  # type: (**str) -> None
-    '''
+    """
     update updater_status and write status to disk
 
     Keys:
@@ -136,7 +140,7 @@ def update_status(**kwargs):  # type: (**str) -> None
     - status          ==> (RUNNING|FAILED|DONE)
     - phase           ==> (PREPARATION|PREUP|UPDATE|POSTUP)     ==> only valid if status=RUNNING
     - errorsource     ==> (SETTINGS|PREPARATION|PREUP|UPDATE|POSTUP)
-    '''
+    """
     updater_status.update(kwargs)
     if updater_status.get('status') != 'RUNNING':
         updater_status.pop('phase', None)
@@ -163,7 +167,7 @@ def get_status():
     """
     status = {}  # type: Dict[str, str]
     try:
-        with open(FN_STATUS, 'r') as fd:
+        with open(FN_STATUS) as fd:
             for line in fd:
                 try:
                     key, value = line.rstrip().split('=', 1)
@@ -177,7 +181,7 @@ def get_status():
 
 def remove_temporary_sources_list():
     # type: () -> None
-    """ Add the temporary sources.list. """
+    """Add the temporary sources.list."""
     for fn in (TMPSOURCE, TMPSOURCE2):
         try:
             os.remove(fn)
@@ -188,7 +192,7 @@ def remove_temporary_sources_list():
 
 def add_temporary_sources_list(temporary_sources_list):
     # type: (Iterable[str]) -> None
-    """ Add line to a temporary sources.list. """
+    """Add line to a temporary sources.list."""
     remove_temporary_sources_list()
     with open(TMPSOURCE, 'w') as fp:
         for entry in temporary_sources_list:
@@ -197,9 +201,10 @@ def add_temporary_sources_list(temporary_sources_list):
 
 def update_available(opt, ucr):
     # type: (Namespace, ConfigRegistry) -> Tuple[UniventionUpdater, Optional[UCS_Version]]
-    """ Checks if there is an update available.
-    Returns the next version, or None if up-to-date, or throws an UpdateError if the next version can not be identified."""
-
+    """
+    Checks if there is an update available.
+    Returns the next version, or None if up-to-date, or throws an UpdateError if the next version can not be identified.
+    """
     log('--->DBG:update_available(mode={.mode})'.format(opt))
 
     if opt.mode == 'local':
@@ -267,9 +272,7 @@ def call_local(opt):
 
 
 def parse_args(args=None):  # type: (Optional[Sequence[str]]) -> Namespace
-    """
-    Parse command line arguments.
-    """
+    """Parse command line arguments."""
     parser = ArgumentParser(description=__doc__)
     parser.add_argument("--reboot", action="store_true", help=SUPPRESS)  # Deprecated
     parser.add_argument("--updateto", metavar="RELEAASE", type=UCS_Version, help="Upper limit for version")
@@ -309,9 +312,7 @@ def setup_logging(opt, ucr):
 
 def check(opt, ucr):
     # type: (Namespace, ConfigRegistry) -> bool
-    """
-    Return pending update status.
-    """
+    """Return pending update status."""
     try:
         _updater, nextversion = update_available(opt, ucr)
         if nextversion:
@@ -362,7 +363,7 @@ def run(opt, ucr, updater, nextversion):
     if opt.noninteractive:
         opt.ignore_releasenotes = True
         os.environ['UCS_FRONTEND'] = 'noninteractive'
-        with open(os.path.devnull, 'r') as null:
+        with open(os.path.devnull) as null:
             os.dup2(null.fileno(), sys.stdin.fileno())
 
     dprint('Update to = %s' % nextversion)
@@ -478,7 +479,7 @@ def main():
                     """\
                     This can and should only be disabled temporarily
                     using the UCR variable 'repository/online/verify'.
-                    """
+                    """,
                 )))
                 raise UpdateError(msg, errorsource='SETTINGS')
             except ConfigurationError as e:

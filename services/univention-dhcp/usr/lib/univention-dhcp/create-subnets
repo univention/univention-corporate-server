@@ -30,9 +30,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-"""
-Create DHCP subnet.
-"""
+"""Create DHCP subnet."""
 
 from __future__ import print_function
 
@@ -43,89 +41,89 @@ from typing import Iterator, Tuple
 from ldap.filter import filter_format
 
 import univention.admin.modules as umod
-import univention.admin.uldap as uldap
+from univention.admin import uldap
 from univention.config_registry.interfaces import ConfigRegistry, Interfaces
 
 
 def main() -> None:
-	opt = parse_args()
+    opt = parse_args()
 
-	ucr = ConfigRegistry()
-	ucr.load()
+    ucr = ConfigRegistry()
+    ucr.load()
 
-	umod.update()
-	mod = umod.get("dhcp/subnet")
+    umod.update()
+    mod = umod.get("dhcp/subnet")
 
-	lo = access(opt, ucr, mod)
+    lo = access(opt, ucr, mod)
 
-	ifaces = Interfaces(ucr)
-	for name, iface in ifaces.ipv4_interfaces:
-		create(opt, ucr, iface, lo, mod)
+    ifaces = Interfaces(ucr)
+    for _name, iface in ifaces.ipv4_interfaces:
+        create(opt, ucr, iface, lo, mod)
 
 
 def parse_args() -> Namespace:
-	parser = ArgumentParser(description=__doc__)
-	parser.add_argument("--binddn", metavar="DN", help="LDAP simple BIND DN")
-	group = parser.add_mutually_exclusive_group()
-	group.add_argument("--bindpwd", metavar="PW", help="LDAP simple BIND password")
-	group.add_argument("--bindpwdfile", metavar="PWFILE", type=FileType("r"), help="LDAP simple BIND password file")
-	parser.add_argument("--service", metavar="SERVICE-DN", required=True, help="LDAP service base DN")
-	parser.add_argument("--policy-reference", metavar="POLICY-DN", action="append", default=[], help="UMC policy references")
+    parser = ArgumentParser(description=__doc__)
+    parser.add_argument("--binddn", metavar="DN", help="LDAP simple BIND DN")
+    group = parser.add_mutually_exclusive_group()
+    group.add_argument("--bindpwd", metavar="PW", help="LDAP simple BIND password")
+    group.add_argument("--bindpwdfile", metavar="PWFILE", type=FileType("r"), help="LDAP simple BIND password file")
+    parser.add_argument("--service", metavar="SERVICE-DN", required=True, help="LDAP service base DN")
+    parser.add_argument("--policy-reference", metavar="POLICY-DN", action="append", default=[], help="UMC policy references")
 
-	opt = parser.parse_args()
+    opt = parser.parse_args()
 
-	if opt.bindpwdfile:
-		opt.bindpwd = opt.bindpwdfile.read()
+    if opt.bindpwdfile:
+        opt.bindpwd = opt.bindpwdfile.read()
 
-	return opt
+    return opt
 
 
 def cred(opt: Namespace, ucr: ConfigRegistry) -> Iterator[Tuple[str, str]]:
-	yield opt.binddn, opt.bindpwd
-	yield "cn=admin,%(ldap/base)s" % ucr, open("/etc/ldap.secret").read()
-	yield ucr["ldap/hostdn"], open("/etc/machine.secret").read()
+    yield opt.binddn, opt.bindpwd
+    yield "cn=admin,%(ldap/base)s" % ucr, open("/etc/ldap.secret").read()
+    yield ucr["ldap/hostdn"], open("/etc/machine.secret").read()
 
 
 def access(opt: Namespace, ucr: ConfigRegistry, mod) -> uldap.access:
-	po = uldap.position(ucr["ldap/base"])
-	for binddn, bindpwd in cred(opt, ucr):
-		try:
-			lo = uldap.access(
-				host=ucr["ldap/master"],
-				port=ucr.get("ldap/master/port", "7389").split(",")[0],
-				base=ucr["ldap/base"],
-				binddn=binddn,
-				bindpw=bindpwd,
-			)
-			umod.init(lo, po, mod)
-			print("Using BINDDN %s" % (binddn,))
-			return lo
-		except Exception as ex:
-			print(ex, file=stderr)
-	exit(1)
+    po = uldap.position(ucr["ldap/base"])
+    for binddn, bindpwd in cred(opt, ucr):
+        try:
+            lo = uldap.access(
+                host=ucr["ldap/master"],
+                port=ucr.get("ldap/master/port", "7389").split(",")[0],
+                base=ucr["ldap/base"],
+                binddn=binddn,
+                bindpw=bindpwd,
+            )
+            umod.init(lo, po, mod)
+            print("Using BINDDN %s" % (binddn,))
+            return lo
+        except Exception as ex:
+            print(ex, file=stderr)
+    exit(1)
 
 
 def create(opt: Namespace, ucr: ConfigRegistry, iface, lo: uldap.access, mod) -> None:
-	co = None
+    co = None
 
-	addr = iface.ipv4_address()
-	net = addr.network
-	network = str(iface.network or net.network_address)
-	if mod.lookup(co, lo, filter_s=filter_format("cn=%s", [network]), base=ucr["ldap/base"]):
-		print("DHCP subnet %s already exists" % (network,))
-		return
+    addr = iface.ipv4_address()
+    net = addr.network
+    network = str(iface.network or net.network_address)
+    if mod.lookup(co, lo, filter_s=filter_format("cn=%s", [network]), base=ucr["ldap/base"]):
+        print("DHCP subnet %s already exists" % (network,))
+        return
 
-	obj = mod.object(co, lo, uldap.position(opt.service))
-	obj["subnet"] = network
-	obj["broadcastaddress"] = str(iface.broadcast or net.broadcast_address)
-	obj["subnetmask"] = str(addr.netmask)
-	obj.policies = opt.policy_reference
-	try:
-		obj.create()
-		print("DHCP subnet %s created" % (obj.dn,))
-	except Exception as ex:
-		print(ex, file=stderr)
+    obj = mod.object(co, lo, uldap.position(opt.service))
+    obj["subnet"] = network
+    obj["broadcastaddress"] = str(iface.broadcast or net.broadcast_address)
+    obj["subnetmask"] = str(addr.netmask)
+    obj.policies = opt.policy_reference
+    try:
+        obj.create()
+        print("DHCP subnet %s created" % (obj.dn,))
+    except Exception as ex:
+        print(ex, file=stderr)
 
 
 if __name__ == "__main__":
-	main()
+    main()

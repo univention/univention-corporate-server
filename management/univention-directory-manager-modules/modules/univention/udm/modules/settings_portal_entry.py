@@ -29,40 +29,41 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-"""
-Module and object specific for "settings/portal_entry" UDM module.
-"""
+"""Module and object specific for "settings/portal_entry" UDM module."""
 
 from __future__ import absolute_import, unicode_literals
+
 from ..encoders import (
-	dn_list_property_encoder_for, dn_property_encoder_for, Base64BinaryPropertyEncoder,
-	StringCaseInsensitiveResultUpperBooleanPropertyEncoder, ListOfListOflTextToDictPropertyEncoder
+    Base64BinaryPropertyEncoder, ListOfListOflTextToDictPropertyEncoder,
+    StringCaseInsensitiveResultUpperBooleanPropertyEncoder, dn_list_property_encoder_for, dn_property_encoder_for,
 )
 from .generic import GenericModule, GenericObject, GenericObjectProperties
 
 
 class SettingsPortalEntryObjectProperties(GenericObjectProperties):
-	"""settings/portal_entry UDM properties."""
+    """settings/portal_entry UDM properties."""
 
-	_encoders = {
-		'activated': StringCaseInsensitiveResultUpperBooleanPropertyEncoder,
-		'description': ListOfListOflTextToDictPropertyEncoder,
-		'displayName': ListOfListOflTextToDictPropertyEncoder,
-		'icon': Base64BinaryPropertyEncoder,
-		'portal': dn_list_property_encoder_for('settings/portal'),
-		'userGroup': dn_property_encoder_for('groups/group'),
-	}
+    _encoders = {
+        'activated': StringCaseInsensitiveResultUpperBooleanPropertyEncoder,
+        'description': ListOfListOflTextToDictPropertyEncoder,
+        'displayName': ListOfListOflTextToDictPropertyEncoder,
+        'icon': Base64BinaryPropertyEncoder,
+        'portal': dn_list_property_encoder_for('settings/portal'),
+        'userGroup': dn_property_encoder_for('groups/group'),
+    }
 
 
 class SettingsPortalEntryObject(GenericObject):
-	"""Better representation of settings/portal_entry properties."""
-	udm_prop_class = SettingsPortalEntryObjectProperties
+    """Better representation of settings/portal_entry properties."""
+
+    udm_prop_class = SettingsPortalEntryObjectProperties
 
 
 class SettingsPortalEntryModule(GenericModule):
-	"""SettingsPortalEntryObject factory"""
-	_udm_object_class = SettingsPortalEntryObject
+    """SettingsPortalEntryObject factory"""
 
-	class Meta:
-		supported_api_versions = [1, 2, 3]
-		suitable_for = ['settings/portal_entry']
+    _udm_object_class = SettingsPortalEntryObject
+
+    class Meta:
+        supported_api_versions = [1, 2, 3]
+        suitable_for = ['settings/portal_entry']

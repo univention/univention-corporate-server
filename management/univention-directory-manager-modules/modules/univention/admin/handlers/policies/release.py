@@ -30,20 +30,16 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-"""
-|UDM| module for the release settings policies
-"""
+"""|UDM| module for the release settings policies"""
 
-from univention.admin.layout import Tab, Group
-import univention.admin.syntax
 import univention.admin.filter
 import univention.admin.handlers
 import univention.admin.localization
-
+import univention.admin.syntax
+from univention.admin.layout import Group, Tab
 from univention.admin.policy import (
-	register_policy_mapping, policy_object_tab,
-	requiredObjectClassesProperty, prohibitedObjectClassesProperty,
-	fixedAttributesProperty, emptyAttributesProperty, ldapFilterProperty
+    emptyAttributesProperty, fixedAttributesProperty, ldapFilterProperty, policy_object_tab,
+    prohibitedObjectClassesProperty, register_policy_mapping, requiredObjectClassesProperty,
 )
 
 
@@ -52,10 +48,10 @@ _ = translation.translate
 
 
 class releaseFixedAttributes(univention.admin.syntax.select):
-	name = 'releaseFixedAttributes'
-	choices = [
-		('univentionUpdateVersion', _('Release Version')),
-	]
+    name = 'releaseFixedAttributes'
+    choices = [
+        ('univentionUpdateVersion', _('Release Version')),
+    ]
 
 
 module = 'policies/release'
@@ -72,51 +68,51 @@ object_name_plural = _('Automatic updates policies')
 policy_short_description = _('Automatic updates')
 long_description = ''
 options = {
-	'default': univention.admin.option(
-		short_description=short_description,
-		default=True,
-		objectClasses=['top', 'univentionPolicy', 'univentionPolicyUpdate'],
-	),
+    'default': univention.admin.option(
+        short_description=short_description,
+        default=True,
+        objectClasses=['top', 'univentionPolicy', 'univentionPolicyUpdate'],
+    ),
 }
 property_descriptions = {
-	'name': univention.admin.property(
-		short_description=_('Name'),
-		long_description='',
-		syntax=univention.admin.syntax.policyName,
-		include_in_default_search=True,
-		required=True,
-		may_change=False,
-		identifies=True,
-	),
-	'activate': univention.admin.property(
-		short_description=_('Activate release updates (Errata updates are activated by default).'),
-		long_description='',
-		syntax=univention.admin.syntax.TrueFalseUp,
-	),
-	'releaseVersion': univention.admin.property(
-		short_description=_('Update to this UCS version'),
-		long_description=_('Without specifying the most recent version will be used'),
-		syntax=univention.admin.syntax.string,
-	),
+    'name': univention.admin.property(
+        short_description=_('Name'),
+        long_description='',
+        syntax=univention.admin.syntax.policyName,
+        include_in_default_search=True,
+        required=True,
+        may_change=False,
+        identifies=True,
+    ),
+    'activate': univention.admin.property(
+        short_description=_('Activate release updates (Errata updates are activated by default).'),
+        long_description='',
+        syntax=univention.admin.syntax.TrueFalseUp,
+    ),
+    'releaseVersion': univention.admin.property(
+        short_description=_('Update to this UCS version'),
+        long_description=_('Without specifying the most recent version will be used'),
+        syntax=univention.admin.syntax.string,
+    ),
 
 }
 property_descriptions.update(dict([
-	requiredObjectClassesProperty(),
-	prohibitedObjectClassesProperty(),
-	fixedAttributesProperty(syntax=releaseFixedAttributes),
-	emptyAttributesProperty(syntax=releaseFixedAttributes),
-	ldapFilterProperty(),
+    requiredObjectClassesProperty(),
+    prohibitedObjectClassesProperty(),
+    fixedAttributesProperty(syntax=releaseFixedAttributes),
+    emptyAttributesProperty(syntax=releaseFixedAttributes),
+    ldapFilterProperty(),
 ]))
 
 layout = [
-	Tab(_('General'), _('Automatic updates'), layout=[
-		Group(_('General automatic updates settings'), layout=[
-			'name',
-			'activate',
-			'releaseVersion'
-		]),
-	]),
-	policy_object_tab()
+    Tab(_('General'), _('Automatic updates'), layout=[
+        Group(_('General automatic updates settings'), layout=[
+            'name',
+            'activate',
+            'releaseVersion',
+        ]),
+    ]),
+    policy_object_tab(),
 ]
 
 mapping = univention.admin.mapping.mapping()
@@ -127,7 +123,7 @@ register_policy_mapping(mapping)
 
 
 class object(univention.admin.handlers.simplePolicy):
-	module = module
+    module = module
 
 
 lookup = object.lookup

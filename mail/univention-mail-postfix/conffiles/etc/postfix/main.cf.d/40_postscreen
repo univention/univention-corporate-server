@@ -1,5 +1,5 @@
 @!@
-yesno = { True: 'yes', False: 'no' }
+yesno = {True: 'yes', False: 'no'}
 print('\n# postscreen settings\n')
 print('postscreen_dnsbl_action = %s' % (configRegistry.get('mail/postfix/postscreen/dnsbl/action', 'enforce'),))
 print('postscreen_dnsbl_threshold = %s' % (configRegistry.get('mail/postfix/postscreen/dnsbl/threshold', '3'),))

@@ -33,12 +33,12 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-from samba.param import LoadParm
 from samba.credentials import Credentials
-from samba.netcmd import CommandError
-from samba.netcmd.drs import drsuapi_connect, drs_parse_ntds_dn
-from samba.netcmd.common import netcmd_dnsname
 from samba.dcerpc import drsuapi
+from samba.netcmd import CommandError
+from samba.netcmd.common import netcmd_dnsname
+from samba.netcmd.drs import drs_parse_ntds_dn, drsuapi_connect
+from samba.param import LoadParm
 
 from univention.config_registry import ucr
 from univention.monitoring import Alert
@@ -46,52 +46,52 @@ from univention.monitoring import Alert
 
 class _CheckSambaDrsRepl(object):
 
-	def __init__(self):
-		self.lp = LoadParm()
-		self.lp.load_default()
-		self.creds = Credentials()
-		self.creds.guess(self.lp)
-		self.creds.set_machine_account(self.lp)
-		self.server = netcmd_dnsname(self.lp)
+    def __init__(self):
+        self.lp = LoadParm()
+        self.lp.load_default()
+        self.creds = Credentials()
+        self.creds.guess(self.lp)
+        self.creds.set_machine_account(self.lp)
+        self.server = netcmd_dnsname(self.lp)
 
-	def check(self):
-		consecutive_sync_failures = {}
-		drsuapi_connect(self)
-		req1 = drsuapi.DsReplicaGetInfoRequest1()
-		req1.info_type = drsuapi.DRSUAPI_DS_REPLICA_INFO_REPSTO
-		(info_type, info) = self.drsuapi.DsReplicaGetInfo(self.drsuapi_handle, 1, req1)
-		for n in info.array:
-			if n.consecutive_sync_failures > 0:
-				(site, server) = drs_parse_ntds_dn(n.source_dsa_obj_dn)
-				consecutive_sync_failures.setdefault(server, 0)
-				consecutive_sync_failures[server] += n.consecutive_sync_failures
-		return consecutive_sync_failures
+    def check(self):
+        consecutive_sync_failures = {}
+        drsuapi_connect(self)
+        req1 = drsuapi.DsReplicaGetInfoRequest1()
+        req1.info_type = drsuapi.DRSUAPI_DS_REPLICA_INFO_REPSTO
+        (info_type, info) = self.drsuapi.DsReplicaGetInfo(self.drsuapi_handle, 1, req1)
+        for n in info.array:
+            if n.consecutive_sync_failures > 0:
+                (site, server) = drs_parse_ntds_dn(n.source_dsa_obj_dn)
+                consecutive_sync_failures.setdefault(server, 0)
+                consecutive_sync_failures[server] += n.consecutive_sync_failures
+        return consecutive_sync_failures
 
 
 class CheckSambaDrsRepl(Alert):
 
-	def write_metrics(self):
-		# return OK, if samba autostart is false
-		if not ucr.is_true('samba4/autostart', False):
-			self.write_metric('univention_samba_drs_failures', 0)
-			self.log.debug('samba4/autostart is not true')
-			return
+    def write_metrics(self):
+        # return OK, if samba autostart is false
+        if not ucr.is_true('samba4/autostart', False):
+            self.write_metric('univention_samba_drs_failures', 0)
+            self.log.debug('samba4/autostart is not true')
+            return
 
-		try:
-			consecutive_sync_failures = _CheckSambaDrsRepl().check()
-		except (CommandError, RuntimeError) as exc:
-			self.write_metric('univention_samba_drs_failures', -1)
-			self.log.exception(str(exc))
-			return
+        try:
+            consecutive_sync_failures = _CheckSambaDrsRepl().check()
+        except (CommandError, RuntimeError) as exc:
+            self.write_metric('univention_samba_drs_failures', -1)
+            self.log.exception(str(exc))
+            return
 
-		msg = None
-		for server, failures in consecutive_sync_failures.items():
-			text = '%s failures on %s' % (failures, server)
-			msg = msg + ', ' + text if msg else text
+        msg = None
+        for server, failures in consecutive_sync_failures.items():
+            text = '%s failures on %s' % (failures, server)
+            msg = msg + ', ' + text if msg else text
 
-		self.write_metric('univention_samba_drs_failures', sum(consecutive_sync_failures.values()))
-		self.log.debug(msg or 'no drs failures')
+        self.write_metric('univention_samba_drs_failures', sum(consecutive_sync_failures.values()))
+        self.log.debug(msg or 'no drs failures')
 
 
 if __name__ == '__main__':
-	CheckSambaDrsRepl.main()
+    CheckSambaDrsRepl.main()

@@ -31,18 +31,19 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
+from univention.admindiary.backend import Base, Meta, get_client, get_engine
 from univention.admindiary.client import DiaryEvent
-from univention.admindiary.backend import Base, get_engine, Meta, get_client
+
 
 Base.metadata.create_all(get_engine())
 
 with get_client(version=1) as client:
-	meta = client._session.query(Meta).first()
-	if meta is None:
-		meta = Meta(schema=1)
-		client._session.add(meta)
+    meta = client._session.query(Meta).first()
+    if meta is None:
+        meta = Meta(schema=1)
+        client._session.add(meta)
 
-	for event_name in DiaryEvent.names():
-		event = client.add_event(event_name)
-		for locale, message in DiaryEvent.get(event_name).message.items():
-			client.add_event_message(event.id, locale, message, True)
+    for event_name in DiaryEvent.names():
+        event = client.add_event(event_name)
+        for locale, message in DiaryEvent.get(event_name).message.items():
+            client.add_event_message(event.id, locale, message, True)

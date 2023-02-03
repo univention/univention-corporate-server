@@ -36,67 +36,68 @@
 #
 
 from __future__ import print_function
-import sys
+
 import re
-from argparse import ArgumentParser, Action, RawTextHelpFormatter
+import sys
+from argparse import Action, ArgumentParser, RawTextHelpFormatter
 
 from univention.admindiary.client import write_event
 from univention.admindiary.events import DiaryEvent
 
 
 class StoreMessageAction(Action):
-	def __call__(self, parser, namespace, value, option_string=None):
-		ret = {}
-		for val in value:
-			match = re.match(r'^\[(.*)\](.*)$', val)
-			if match:
-				locale = match.groups()[0] or 'en'
-				message = match.groups()[1]
-			else:
-				locale, message = 'en', val
-			ret[locale] = message
-		setattr(namespace, self.dest, ret)
+    def __call__(self, parser, namespace, value, option_string=None):
+        ret = {}
+        for val in value:
+            match = re.match(r'^\[(.*)\](.*)$', val)
+            if match:
+                locale = match.groups()[0] or 'en'
+                message = match.groups()[1]
+            else:
+                locale, message = 'en', val
+            ret[locale] = message
+        setattr(namespace, self.dest, ret)
 
 
 def main():
-	usage = '%(prog)s --event EVENT [options]'
-	description = '%(prog)s is a program to add an entry to the Admin Diary'
-	epilog = '''Examples:
-	context_id=$(%(prog)s --event UDM_USERS_USER_CREATED --arg "username=john.doe")
-	%(prog)s --event COMMENT -m "I added this user because..." --context-id="$context_id"
-	%(prog)s --event MY_NEW_EVENT -m "[en]This is the English message for: {a1} {a2}" "[de]Any other locale needs the same amount of place holders ({a1}, {a2})" --arg "a1=Arg1" --arg "a2=Arg2" --tag my-tag
-	'''
-	parser = ArgumentParser(usage=usage, description=description, epilog=epilog, formatter_class=RawTextHelpFormatter)
-	parser.add_argument('-u', '--username', help='Username that issues the diary entry')
-	parser.add_argument('-t', '--tag', action='append', help='Tags added to the diary entry')
-	parser.add_argument('-a', '--arg', action='append', help='Argument used in message')
-	parser.add_argument('--event', required=True, help='Choose one event name. If unknown to the diary backend, the event will be created with MESSAGE. Otherwise, the existing message will be used. Special case: COMMENT')
-	parser.add_argument('--context-id', help='May be given to amend an existing diary entry, effectively grouping those together. The CONTEXT_ID is also returned by this program')
-	parser.add_argument('--message', '-m', action=StoreMessageAction, nargs='*', help='The message. Give one for every required locale. Use format strings if you wish to use ARGs.')
-	args = parser.parse_args()
-	event = DiaryEvent.get(args.event)
-	if not event:
-		if not args.message:
-			print('Unknown events need to have a message', file=sys.stderr)
-			sys.exit(2)
-		event = DiaryEvent(args.event, args.message, [], args.tag)
-	event_args = {}
-	if args.arg:
-		for arg in args.arg:
-			try:
-				key, value = arg.split('=', 1)
-			except ValueError:
-				print('Could not parse %s. Use key=value' % arg, file=sys.stderr)
-				sys.exit(2)
-			else:
-				event_args[key] = value
-	context_id = write_event(event, event_args, args.username, args.context_id)
-	if context_id is not None:
-		print(context_id)
-	else:
-		print('Could not write event', file=sys.stderr)
-		sys.exit(1)
+    usage = '%(prog)s --event EVENT [options]'
+    description = '%(prog)s is a program to add an entry to the Admin Diary'
+    epilog = '''Examples:
+    context_id=$(%(prog)s --event UDM_USERS_USER_CREATED --arg "username=john.doe")
+    %(prog)s --event COMMENT -m "I added this user because..." --context-id="$context_id"
+    %(prog)s --event MY_NEW_EVENT -m "[en]This is the English message for: {a1} {a2}" "[de]Any other locale needs the same amount of place holders ({a1}, {a2})" --arg "a1=Arg1" --arg "a2=Arg2" --tag my-tag
+    '''
+    parser = ArgumentParser(usage=usage, description=description, epilog=epilog, formatter_class=RawTextHelpFormatter)
+    parser.add_argument('-u', '--username', help='Username that issues the diary entry')
+    parser.add_argument('-t', '--tag', action='append', help='Tags added to the diary entry')
+    parser.add_argument('-a', '--arg', action='append', help='Argument used in message')
+    parser.add_argument('--event', required=True, help='Choose one event name. If unknown to the diary backend, the event will be created with MESSAGE. Otherwise, the existing message will be used. Special case: COMMENT')
+    parser.add_argument('--context-id', help='May be given to amend an existing diary entry, effectively grouping those together. The CONTEXT_ID is also returned by this program')
+    parser.add_argument('--message', '-m', action=StoreMessageAction, nargs='*', help='The message. Give one for every required locale. Use format strings if you wish to use ARGs.')
+    args = parser.parse_args()
+    event = DiaryEvent.get(args.event)
+    if not event:
+        if not args.message:
+            print('Unknown events need to have a message', file=sys.stderr)
+            sys.exit(2)
+        event = DiaryEvent(args.event, args.message, [], args.tag)
+    event_args = {}
+    if args.arg:
+        for arg in args.arg:
+            try:
+                key, value = arg.split('=', 1)
+            except ValueError:
+                print('Could not parse %s. Use key=value' % arg, file=sys.stderr)
+                sys.exit(2)
+            else:
+                event_args[key] = value
+    context_id = write_event(event, event_args, args.username, args.context_id)
+    if context_id is not None:
+        print(context_id)
+    else:
+        print('Could not write event', file=sys.stderr)
+        sys.exit(1)
 
 
 if __name__ == '__main__':
-	main()
+    main()

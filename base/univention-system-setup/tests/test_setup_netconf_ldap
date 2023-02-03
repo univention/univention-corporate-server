@@ -7,6 +7,7 @@ import unittest
 
 import univention.management.console.modules
 
+
 univention.management.console.modules.__path__.insert(0, os.path.join(os.path.dirname(__file__), os.path.pardir, 'umc/python'))
 from univention.management.console.modules.setup.netconf import ChangeSet  # noqa: E402
 from univention.management.console.modules.setup.netconf.modules import LdapSelf  # noqa: E402
@@ -14,52 +15,49 @@ from univention.management.console.modules.setup.netconf.modules import LdapSelf
 
 class DummyOption(object):
 
-	def __init__(self):
-		self.no_act = True
+    def __init__(self):
+        self.no_act = True
 
 
 class TestLdapChanged(unittest.TestCase):
+    """Old address changed to new address."""
 
-	"""
-	Old address changed to new address.
-	"""
+    def setUp(self):
+        ucr = {
+            "interfaces/eth0/type": "static",
+            "interfaces/eth0/start": "true",
+            "interfaces/eth0/address": "192.168.122.11",
+            "interfaces/eth0/network": "192.168.122.0",
+            "interfaces/eth0/netmask": "255.255.255.0",
+            "interfaces/eth0/broadcast": "192.168.122.255",
+            "interfaces/eth0/ipv6/default/address": "1111:2222::3333",
+            "interfaces/eth0/ipv6/default/prefix": "64",
+            "ldap/master": "localhost",
+            "ldap/base": "dc=phahn,dc=dev",
+            "server/role": "domaincontroller_master",
+            "ldap/hostdn": "cn=mas11,cn=dc,cn=computers,dc=phahn,dc=dev",
+            "hostname": "mas11",
+            "domainname": "phahn.dev",
+        }
+        profile = {key: None for key in ucr.keys() if key.startswith("interfaces/")}
+        profile.update({
+            "interfaces/eth0/type": "static",
+            "interfaces/eth0/start": "true",
+            "interfaces/eth0/address": "2.3.4.5",
+            "interfaces/eth0/network": "2.3.0.0",
+            "interfaces/eth0/netmask": "255.255.255.0",
+            "interfaces/eth0/broadcast": "2.3.4.255",
+            "interfaces/eth0/ipv6/default/address": "2222:3333:4444::5555",
+            "interfaces/eth0/ipv6/default/prefix": "80",
+        })
+        options = DummyOption()
+        self.cs = ChangeSet(ucr, profile, options)
+        self.phase = LdapSelf.PhaseLdapSelf(self.cs)
 
-	def setUp(self):
-		ucr = {
-			"interfaces/eth0/type": "static",
-			"interfaces/eth0/start": "true",
-			"interfaces/eth0/address": "192.168.122.11",
-			"interfaces/eth0/network": "192.168.122.0",
-			"interfaces/eth0/netmask": "255.255.255.0",
-			"interfaces/eth0/broadcast": "192.168.122.255",
-			"interfaces/eth0/ipv6/default/address": "1111:2222::3333",
-			"interfaces/eth0/ipv6/default/prefix": "64",
-			"ldap/master": "localhost",
-			"ldap/base": "dc=phahn,dc=dev",
-			"server/role": "domaincontroller_master",
-			"ldap/hostdn": "cn=mas11,cn=dc,cn=computers,dc=phahn,dc=dev",
-			"hostname": "mas11",
-			"domainname": "phahn.dev",
-		}
-		profile = {key: None for key in ucr.keys() if key.startswith("interfaces/")}
-		profile.update({
-			"interfaces/eth0/type": "static",
-			"interfaces/eth0/start": "true",
-			"interfaces/eth0/address": "2.3.4.5",
-			"interfaces/eth0/network": "2.3.0.0",
-			"interfaces/eth0/netmask": "255.255.255.0",
-			"interfaces/eth0/broadcast": "2.3.4.255",
-			"interfaces/eth0/ipv6/default/address": "2222:3333:4444::5555",
-			"interfaces/eth0/ipv6/default/prefix": "80",
-		})
-		options = DummyOption()
-		self.cs = ChangeSet(ucr, profile, options)
-		self.phase = LdapSelf.PhaseLdapSelf(self.cs)
-
-	def disabed_test_ldap(self):
-		self.phase.check()
-		self.phase.post()
+    def disabed_test_ldap(self):
+        self.phase.check()
+        self.phase.post()
 
 
 if __name__ == '__main__':
-	unittest.main()
+    unittest.main()

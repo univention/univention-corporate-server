@@ -29,32 +29,33 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-"""
-Module and object specific for "settings/portal_category" UDM module.
-"""
+"""Module and object specific for "settings/portal_category" UDM module."""
 
 from __future__ import absolute_import, unicode_literals
+
 from ..encoders import ListOfListOflTextToDictPropertyEncoder
 from .generic import GenericModule, GenericObject, GenericObjectProperties
 
 
 class SettingsPortalCategoryObjectProperties(GenericObjectProperties):
-	"""settings/portal_category UDM properties."""
+    """settings/portal_category UDM properties."""
 
-	_encoders = {
-		'displayName': ListOfListOflTextToDictPropertyEncoder,
-	}
+    _encoders = {
+        'displayName': ListOfListOflTextToDictPropertyEncoder,
+    }
 
 
 class SettingsPortalCategoryObject(GenericObject):
-	"""Better representation of settings/portal_category properties."""
-	udm_prop_class = SettingsPortalCategoryObjectProperties
+    """Better representation of settings/portal_category properties."""
+
+    udm_prop_class = SettingsPortalCategoryObjectProperties
 
 
 class SettingsPortalCategoryModule(GenericModule):
-	"""SettingsPortalCategoryObject factory"""
-	_udm_object_class = SettingsPortalCategoryObject
+    """SettingsPortalCategoryObject factory"""
 
-	class Meta:
-		supported_api_versions = [2, 3]
-		suitable_for = ['settings/portal_category']
+    _udm_object_class = SettingsPortalCategoryObject
+
+    class Meta:
+        supported_api_versions = [2, 3]
+        suitable_for = ['settings/portal_category']

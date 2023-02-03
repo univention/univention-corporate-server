@@ -21,6 +21,7 @@ from univention import uldap
 from univention.config_registry import ConfigRegistry
 from univention.testing.utils import retry_on_error
 
+
 ucr = ConfigRegistry()
 ucr.load()
 
@@ -49,29 +50,29 @@ class FakeUcr:
 class TestParentDn(TestCase):
 
     def testBase(self):
-        self.assertIsNone(uldap.parentDn('dc=de', 'dc=de'))
+        assert uldap.parentDn('dc=de', 'dc=de') is None
 
     def testOne(self):
         # Before r70653 Bug #40129 returned None
-        self.assertEqual(uldap.parentDn('dc=de'), '')
+        assert uldap.parentDn('dc=de') == ''
 
     def testTwo(self):
-        self.assertEqual(uldap.parentDn('dc=univention,dc=de'), 'dc=de')
+        assert uldap.parentDn('dc=univention,dc=de') == 'dc=de'
 
     def testMultivalued(self):
-        self.assertEqual(uldap.parentDn('a=1+b=2,dc=de'), 'dc=de')
+        assert uldap.parentDn('a=1+b=2,dc=de') == 'dc=de'
 
 
 class TestExplodeDn(TestCase):
 
     def testOne(self):
-        self.assertEqual(uldap.explodeDn('dc=de'), ['dc=de'])
+        assert uldap.explodeDn('dc=de') == ['dc=de']
 
     def testTwo(self):
-        self.assertEqual(uldap.explodeDn('dc=univention,dc=de'), ['dc=univention', 'dc=de'])
+        assert uldap.explodeDn('dc=univention,dc=de') == ['dc=univention', 'dc=de']
 
     def testMultivalued(self):
-        self.assertEqual(uldap.explodeDn('a=1+b=2,dc=de'), ['a=1+b=2', 'dc=de'])
+        assert uldap.explodeDn('a=1+b=2,dc=de') == ['a=1+b=2', 'dc=de']
 
 
 @skipUnless(exists('/etc/ldap.secret'), 'Missing ldap.secret')
@@ -79,12 +80,12 @@ class TestAdminConnection(TestCase):
 
     def testDefault(self):
         access = uldap.getAdminConnection()
-        self.assertIsInstance(access, uldap.access)
+        assert isinstance(access, uldap.access)
 
     def testLocalhost(self):
         with FakeUcr({'ldap/master': 'localhost'}):
             access = uldap.getAdminConnection(reconnect=False)
-            self.assertTrue(isinstance(access, uldap.access))
+            assert isinstance(access, uldap.access) is True
 
 
 @skipUnless(exists('/etc/ldap-backup.secret'), 'Missing ldap-backup.secret')
@@ -92,7 +93,7 @@ class TestBackupConnection(TestCase):
 
     def testDefault(self):
         access = uldap.getBackupConnection()
-        self.assertIsInstance(access, uldap.access)
+        assert isinstance(access, uldap.access)
 
     def testServerDown(self):
         with FakeUcr({'ldap/master': '255.255.255.255', 'ldap/backup': ''}):
@@ -104,21 +105,21 @@ class TestMachineConnection(TestCase):
 
     def testDefault(self):
         access = uldap.getMachineConnection()
-        self.assertIsInstance(access, uldap.access)
-        self.assertEqual(access.host, ucr.get('ldap/master'))
+        assert isinstance(access, uldap.access)
+        assert access.host == ucr.get('ldap/master')
 
     def testNonMaster(self):
         access = uldap.getMachineConnection(ldap_master=False, reconnect=False)
-        self.assertIsInstance(access, uldap.access)
-        self.assertEqual(access.host, ucr.get('ldap/server/name'))
+        assert isinstance(access, uldap.access)
+        assert access.host == ucr.get('ldap/server/name')
 
     def testAdditionDefaultDown(self):
         with FakeUcr({'ldap/server/name': '255.255.255.255', 'ldap/server/addition': ucr.get('ldap/server/name')}):
             ucr_fake = ConfigRegistry()
             ucr_fake.load()
             access = uldap.getMachineConnection(ldap_master=False, reconnect=False)
-            self.assertIsInstance(access, uldap.access)
-            self.assertEqual(access.host, ucr_fake.get('ldap/server/addition'))
+            assert isinstance(access, uldap.access)
+            assert access.host == ucr_fake.get('ldap/server/addition')
 
     def testAdditionDefaultUp(self):
         alt_servers = [f'127.0.0.{i}' for i in range(1, 200)]
@@ -126,8 +127,8 @@ class TestMachineConnection(TestCase):
             ucr_fake = ConfigRegistry()
             ucr_fake.load()
             access = uldap.getMachineConnection(ldap_master=False, reconnect=False, start_tls=0)
-            self.assertIsInstance(access, uldap.access)
-            self.assertEqual(access.host, ucr_fake.get('ldap/server/name'))
+            assert isinstance(access, uldap.access)
+            assert access.host == ucr_fake.get('ldap/server/name')
 
     @skipUnless(exists('/var/run/slapd/ldapi'), 'Missing local LDAP server')
     def testRandomServer(self):
@@ -140,23 +141,23 @@ class TestMachineConnection(TestCase):
                     ucr_fake.load()
                     for _ in range(0, 10):
                         access = uldap.getMachineConnection(ldap_master=False, reconnect=False, start_tls=0, random_server=True)
-                        self.assertIsInstance(access, uldap.access)
-                        self.assertIn(access.host, [ucr_fake.get('ldap/server/name')])  # on DC systems, the local system is used first
+                        assert isinstance(access, uldap.access)
+                        assert access.host in [ucr_fake.get('ldap/server/name')]  # on DC systems, the local system is used first
 
                 # test other servers
                 alt_servers = [f'127.0.0.{i}' for i in range(1, 200)]
                 with FakeUcr({'server/role': role, 'ldap/server/name': 'does.not.exist', 'ldap/server/addition': ' '.join(alt_servers)}):
                     ucr_fake = ConfigRegistry()
                     ucr_fake.load()
-                    used_servers = list()
+                    used_servers = []
                     n = 10
                     for _ in range(0, n):
                         access = uldap.getMachineConnection(ldap_master=False, reconnect=False, start_tls=0, random_server=True)
-                        self.assertIsInstance(access, uldap.access)
-                        self.assertIn(access.host, alt_servers)  # only servers of ldap/server/addition should be returned, if ldap/server/name is not available
+                        assert isinstance(access, uldap.access)
+                        assert access.host in alt_servers  # only servers of ldap/server/addition should be returned, if ldap/server/name is not available
                         used_servers.append(access.host)
                     # Servers should be in random order
-                    self.assertNotIn(''.join(used_servers), ''.join(alt_servers))
+                    assert ''.join(used_servers) not in ''.join(alt_servers)
 
             # test memberserver
             alt_servers = [f'127.0.0.{i}' for i in range(1, 20)]
@@ -164,18 +165,18 @@ class TestMachineConnection(TestCase):
                 ucr_fake = ConfigRegistry()
                 ucr_fake.load()
                 possible_servers = [ucr_fake.get('ldap/server/name')] + alt_servers
-                used_servers = list()
+                used_servers = []
                 n = 10
                 min_servers = 3
                 for _ in range(0, n):
                     access = uldap.getMachineConnection(ldap_master=False, reconnect=False, start_tls=0, random_server=True)
-                    self.assertIsInstance(access, uldap.access)
-                    self.assertIn(access.host, possible_servers)
+                    assert isinstance(access, uldap.access)
+                    assert access.host in possible_servers
                     used_servers.append(access.host)
                 # At least (min_servers - 1) different servers from ldap/server/addition
-                self.assertGreaterEqual(len(set(used_servers)), min_servers)
+                assert len(set(used_servers)) >= min_servers
                 # Servers should be in random order
-                self.assertNotIn(''.join(used_servers), ''.join(possible_servers))
+                assert ''.join(used_servers) not in ''.join(possible_servers)
 
         retry_on_error(__testRandomServer, exceptions=(AssertionError, ), retry_count=10, delay=0)
 
@@ -187,16 +188,16 @@ class TestMachineConnection(TestCase):
             ucr_fake = ConfigRegistry()
             ucr_fake.load()
             possible_servers = [ucr_fake.get('ldap/server/name')] + alt_servers
-            used_servers = list()
+            used_servers = []
             n = 10
             for _ in range(0, n):
                 access = uldap.getMachineConnection(ldap_master=False, reconnect=False, start_tls=0)
-                self.assertIsInstance(access, uldap.access)
-                self.assertIn(access.host, possible_servers)
+                assert isinstance(access, uldap.access)
+                assert access.host in possible_servers
                 used_servers.append(access.host)
             # Should always be expected_server
-            self.assertGreaterEqual(len(set(used_servers)), 1)
-            self.assertEqual(expected_server, used_servers[0])
+            assert len(set(used_servers)) >= 1
+            assert expected_server == used_servers[0]
 
     def testServerDown(self):
         with FakeUcr({'ldap/server/name': '255.255.255.255', 'ldap/server/addition': ''}):
@@ -208,23 +209,23 @@ class TestAccess(TestCase):
 
     def testDefault(self):
         access = uldap.access()
-        self.assertIsInstance(access, uldap.access)
+        assert isinstance(access, uldap.access)
 
     def testIPv6(self):
         access = uldap.access(host='ip6-localhost', start_tls=0)
-        self.assertEqual(access.uri, 'ldap://ip6-localhost:7389')
+        assert access.uri == 'ldap://ip6-localhost:7389'
 
     def testPort(self):
         access = uldap.access(port=7389)
-        self.assertEqual(access.uri, 'ldap://localhost:7389')
+        assert access.uri == 'ldap://localhost:7389'
 
     def testLdaps(self):
         access = uldap.access(use_ldaps=True)
-        self.assertEqual(access.uri, 'ldaps://localhost:7636')
+        assert access.uri == 'ldaps://localhost:7636'
 
     def testUri(self):
         access = uldap.access(uri='ldapi:///')
-        self.assertEqual(access.uri, 'ldapi:///')
+        assert access.uri == 'ldapi:///'
 
 
 @skipUnless(exists('/var/run/slapd/ldapi'), 'Missing local LDAP server')
@@ -235,11 +236,11 @@ class TestAccessUsage(TestCase):
 
     def testGet(self):
         result = self.uut.get('cn=Subschema', ['entryDN'], required=True)
-        self.assertEqual(result, {'entryDN': [b'cn=Subschema']})
+        assert result == {'entryDN': [b'cn=Subschema']}
 
     def testGetAttr(self):
         result = self.uut.getAttr('cn=Subschema', 'entryDN', required=True)
-        self.assertEqual(result, [b'cn=Subschema'])
+        assert result == [b'cn=Subschema']
 
     def testSearch(self):
         result = self.uut.search(
@@ -249,7 +250,7 @@ class TestAccessUsage(TestCase):
             unique=True,
             required=True,
         )
-        self.assertEqual(result, [('', {'subschemaSubentry': [b'cn=Subschema']})])
+        assert result == [('', {'subschemaSubentry': [b'cn=Subschema']})]
 
     def testSearchDn(self):
         result = self.uut.searchDn(
@@ -258,7 +259,7 @@ class TestAccessUsage(TestCase):
             unique=True,
             required=True,
         )
-        self.assertEqual(result, [''])
+        assert result == ['']
 
     @skip('TODO')
     def testGetPolicies(self):
@@ -266,7 +267,7 @@ class TestAccessUsage(TestCase):
 
     def testGetSchema(self):
         result = self.uut.get_schema()
-        self.assertIsInstance(result, ldap.schema.subentry.SubSchema)
+        assert isinstance(result, ldap.schema.subentry.SubSchema)
 
     @skip('TODO')
     def testAdd(self):

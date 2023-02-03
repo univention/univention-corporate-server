@@ -30,18 +30,17 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-"""
-|UDM| module for |DHCP| servers
-"""
+"""|UDM| module for |DHCP| servers"""
 
 from ldap.filter import filter_format
 
-from univention.admin.layout import Tab, Group
 import univention.admin.filter
 import univention.admin.handlers
 import univention.admin.localization
+from univention.admin.layout import Group, Tab
 
 from .__common import DHCPBase
+
 
 translation = univention.admin.localization.translation('univention.admin.handlers.dhcp')
 _ = translation.translate
@@ -55,31 +54,31 @@ object_name = _('DHCP server')
 object_name_plural = _('DHCP servers')
 long_description = _('Associate a service with a server.')
 options = {
-	'default': univention.admin.option(
-		short_description=short_description,
-		default=True,
-		objectClasses=['top', 'dhcpServer'],
-	),
+    'default': univention.admin.option(
+        short_description=short_description,
+        default=True,
+        objectClasses=['top', 'dhcpServer'],
+    ),
 
 }
 
 property_descriptions = {
-	'server': univention.admin.property(
-		short_description=_('Server name'),
-		long_description=_('The name of the server, which should handle this DHCP service.'),
-		syntax=univention.admin.syntax.string,
-		include_in_default_search=True,
-		required=True,
-		identifies=True
-	),
+    'server': univention.admin.property(
+        short_description=_('Server name'),
+        long_description=_('The name of the server, which should handle this DHCP service.'),
+        syntax=univention.admin.syntax.string,
+        include_in_default_search=True,
+        required=True,
+        identifies=True,
+    ),
 }
 
 layout = [
-	Tab(_('General'), _('General settings'), layout=[
-		Group(_('DHCP server description'), layout=[
-			'server'
-		]),
-	])
+    Tab(_('General'), _('General settings'), layout=[
+        Group(_('DHCP server description'), layout=[
+            'server',
+        ]),
+    ]),
 ]
 
 mapping = univention.admin.mapping.mapping()
@@ -87,31 +86,31 @@ mapping.register('server', 'cn', None, univention.admin.mapping.ListToString)
 
 
 class object(DHCPBase):
-	module = module
+    module = module
 
-	def _ldap_addlist(self):
-		searchBase = self.position.getDomain()
-		if self.lo.searchDn(base=searchBase, filter=filter_format('(&(objectClass=dhcpServer)(cn=%s))', [self.info['server']])):
-			raise univention.admin.uexceptions.dhcpServerAlreadyUsed(self.info['server'])
+    def _ldap_addlist(self):
+        searchBase = self.position.getDomain()
+        if self.lo.searchDn(base=searchBase, filter=filter_format('(&(objectClass=dhcpServer)(cn=%s))', [self.info['server']])):
+            raise univention.admin.uexceptions.dhcpServerAlreadyUsed(self.info['server'])
 
-		al = super(object, self)._ldap_addlist()
-		return al + [
-			('dhcpServiceDN', self.superordinate.dn.encode('UTF-8')),
-		]
+        al = super(object, self)._ldap_addlist()
+        return al + [
+            ('dhcpServiceDN', self.superordinate.dn.encode('UTF-8')),
+        ]
 
-	def _ldap_post_move(self, olddn):
-		'''edit dhcpServiceDN'''
-		super(object, self)._ldap_post_move(olddn)
-		oldServiceDN = self.lo.getAttr(self.dn, 'dhcpServiceDN')
-		module = univention.admin.modules.identifyOne(self.position.getDn(), self.lo.get(self.position.getDn()))
-		obj = univention.admin.objects.get(module, None, self.lo, self.position, dn=self.position.getDn())
-		shadow_module, shadow_object = univention.admin.objects.shadow(self.lo, module, obj, self.position)
-		self.lo.modify(self.dn, [('dhcpServiceDN', oldServiceDN[0], shadow_object.dn.encode('UTF-8'))])
+    def _ldap_post_move(self, olddn):
+        """edit dhcpServiceDN"""
+        super(object, self)._ldap_post_move(olddn)
+        oldServiceDN = self.lo.getAttr(self.dn, 'dhcpServiceDN')
+        module = univention.admin.modules.identifyOne(self.position.getDn(), self.lo.get(self.position.getDn()))
+        obj = univention.admin.objects.get(module, None, self.lo, self.position, dn=self.position.getDn())
+        shadow_module, shadow_object = univention.admin.objects.shadow(self.lo, module, obj, self.position)
+        self.lo.modify(self.dn, [('dhcpServiceDN', oldServiceDN[0], shadow_object.dn.encode('UTF-8'))])
 
-	@classmethod
-	def lookup_filter_superordinate(cls, filter, superordinate):
-		filter.expressions.append(univention.admin.filter.expression('dhcpServiceDN', superordinate.dn, escape=True))
-		return filter
+    @classmethod
+    def lookup_filter_superordinate(cls, filter, superordinate):
+        filter.expressions.append(univention.admin.filter.expression('dhcpServiceDN', superordinate.dn, escape=True))
+        return filter
 
 
 lookup = object.lookup

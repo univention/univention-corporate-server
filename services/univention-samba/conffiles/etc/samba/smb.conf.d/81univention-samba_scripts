@@ -1,27 +1,27 @@
 
 @!@
 if configRegistry.get('samba/password/checkscript'):
-	print(' check password script = %s' % configRegistry['samba/password/checkscript'])
+    print(' check password script = %s' % configRegistry['samba/password/checkscript'])
 
 if configRegistry.get('samba/role') == 'memberserver':
-	pass
+    pass
 elif configRegistry['server/role'] == 'domaincontroller_master' or configRegistry.get('samba/domainmaster') == 'yes':
-	def add_script(key, option, default):
-		if configRegistry.is_false(key, False):  # if the value is set to false, the script will be disabled
-			pass
-		elif configRegistry.is_true(key, False):  # if the value is set to true, the default script will be added
-			print('	%s = %s' % (option, default))
-		elif configRegistry.get(key):
-			print('	%s = %s' % (option, configRegistry.get(key)))
+    def add_script(key, option, default):
+        if configRegistry.is_false(key, False):  # if the value is set to false, the script will be disabled
+            pass
+        elif configRegistry.is_true(key, False):  # if the value is set to true, the default script will be added
+            print('	%s = %s' % (option, default))
+        elif configRegistry.get(key):
+            print('	%s = %s' % (option, configRegistry.get(key)))
 
-	add_script('samba/script/adduser', 'add user script', '/usr/share/univention-admin-tools/univention-adduser "%u"')
-	add_script('samba/script/deleteuser', 'delete user script', '/usr/share/univention-admin-tools/univention-deluser "%u"')
-	add_script('samba/script/addgroup', 'add group script', '/usr/share/univention-admin-tools/univention-addgroup "%g"')
-	add_script('samba/script/deletegroup', 'delete group script', '/usr/share/univention-admin-tools/univention-delgroup "%g"')
-	add_script('samba/script/addusertogroup', 'add user to group script', '/usr/share/univention-admin-tools/univention-adduser "%u" "%g"')
-	add_script('samba/script/deleteuserfromgroup', 'delete user from group script', '/usr/share/univention-admin-tools/univention-deluser "%u" "%g"')
-	add_script('samba/script/addmachine', 'add machine script', '/usr/share/univention-admin-tools/univention-addmachine "%u"')
-	add_script('samba/script/setprimarygroup', 'set primary group script', '/usr/share/univention-admin-tools/univention-setprimarygroup "%u" "%g"')
-	add_script('samba/script/renameuser', 'rename user script', '/usr/share/univention-admin-tools/univention-renameuser "%u" "%x"')
-	add_script('samba/script/postusermodify', 'post user modify script', '/usr/share/univention-samba/kerberize_user -u "%u"')
+    add_script('samba/script/adduser', 'add user script', '/usr/share/univention-admin-tools/univention-adduser "%u"')
+    add_script('samba/script/deleteuser', 'delete user script', '/usr/share/univention-admin-tools/univention-deluser "%u"')
+    add_script('samba/script/addgroup', 'add group script', '/usr/share/univention-admin-tools/univention-addgroup "%g"')
+    add_script('samba/script/deletegroup', 'delete group script', '/usr/share/univention-admin-tools/univention-delgroup "%g"')
+    add_script('samba/script/addusertogroup', 'add user to group script', '/usr/share/univention-admin-tools/univention-adduser "%u" "%g"')
+    add_script('samba/script/deleteuserfromgroup', 'delete user from group script', '/usr/share/univention-admin-tools/univention-deluser "%u" "%g"')
+    add_script('samba/script/addmachine', 'add machine script', '/usr/share/univention-admin-tools/univention-addmachine "%u"')
+    add_script('samba/script/setprimarygroup', 'set primary group script', '/usr/share/univention-admin-tools/univention-setprimarygroup "%u" "%g"')
+    add_script('samba/script/renameuser', 'rename user script', '/usr/share/univention-admin-tools/univention-renameuser "%u" "%x"')
+    add_script('samba/script/postusermodify', 'post user modify script', '/usr/share/univention-samba/kerberize_user -u "%u"')
 @!@

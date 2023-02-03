@@ -69,53 +69,53 @@ following web browsers are supported:
 
 
 def query_ec2(key):
-	url = 'http://169.254.169.254/latest/meta-data/' + key
-	socket.setdefaulttimeout(2)
-	try:
-		result = urlopen(url)
-		value = result.read().decode('UTF-8').strip()
-		return value
-	except URLError:
-		pass
+    url = 'http://169.254.169.254/latest/meta-data/' + key
+    socket.setdefaulttimeout(2)
+    try:
+        result = urlopen(url)
+        value = result.read().decode('UTF-8').strip()
+        return value
+    except URLError:
+        pass
 
 
 def get_ip_address(ifname):
-	s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-	ifname = ifname.encode('utf-8')
-	try:
-		# SIOCGIFADDR == 0x8915
-		addr = socket.inet_ntoa(fcntl.ioctl(s.fileno(), 0x8915, struct.pack('256s', ifname[:15]))[20:24])
-	except IOError:
-		addr = None
-	s.close()
-	return addr
+    s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+    ifname = ifname.encode('utf-8')
+    try:
+        # SIOCGIFADDR == 0x8915
+        addr = socket.inet_ntoa(fcntl.ioctl(s.fileno(), 0x8915, struct.pack('256s', ifname[:15]))[20:24])
+    except IOError:
+        addr = None
+    s.close()
+    return addr
 
 
 url_list = []
 if configRegistry.is_true('server/amazon', False):
-	for key in ('public-hostname', 'public-ipv4', 'local-ipv4'):
-		addr = query_ec2(key)
-		if addr:
-			url_list.append('https://%s/' % (addr,))
+    for key in ('public-hostname', 'public-ipv4', 'local-ipv4'):
+        addr = query_ec2(key)
+        if addr:
+            url_list.append('https://%s/' % (addr,))
 
 if not url_list:
-	interfaces = Interfaces(configRegistry)
-	for ifname, iface in interfaces.all_interfaces:
-		#IPv4
-		if iface.type == 'dhcp':
-			addr = get_ip_address(ifname)
-			url_list.append('https://%s/' % (addr,))
-		else:
-			addr = iface.ipv4_address()
-			if addr:
-				url_list.append('https://%s/' % (addr.ip,))
-		# IPv6
-		addr = iface.ipv6_address()
-		if addr:
-			url_list.append('https://[%s]/' % (addr.ip,))
+    interfaces = Interfaces(configRegistry)
+    for ifname, iface in interfaces.all_interfaces:
+        # IPv4
+        if iface.type == 'dhcp':
+            addr = get_ip_address(ifname)
+            url_list.append('https://%s/' % (addr,))
+        else:
+            addr = iface.ipv4_address()
+            if addr:
+                url_list.append('https://%s/' % (addr.ip,))
+        # IPv6
+        addr = iface.ipv6_address()
+        if addr:
+            url_list.append('https://[%s]/' % (addr.ip,))
 
 msg = msg_amazon if configRegistry.is_true('server/amazon') else msg_di_uss
 print(msg % {
-	'url_list': '\n  '.join(url_list),
+    'url_list': '\n  '.join(url_list),
 })
 @!@

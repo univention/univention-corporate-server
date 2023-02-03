@@ -36,5 +36,6 @@
 
 import univention.pkgdb
 
+
 if __name__ == '__main__':
-	univention.pkgdb.main()
+    univention.pkgdb.main()

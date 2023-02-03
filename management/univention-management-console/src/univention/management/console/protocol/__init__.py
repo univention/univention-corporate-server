@@ -52,10 +52,10 @@ With a status code in the response message the client can determine the
 type of result of its request:
 
 * An error occurred during the processing of the request. The status
-	code contains details of the error
+    code contains details of the error
 
 * The command was processed successfully. A status message may contain
-	details about the performed task
+    details about the performed task
 
 --------------
 Authentication
@@ -92,56 +92,56 @@ Message header
 The header defines the message type, a unique identifier, the length of
 the message body in bytes, the command and the MIME type of the body. ::
 
-	(REQUEST|RESPONSE)/<id>/<length of body>[/<mime-type>]: <command>[ <arguments>]
+    (REQUEST|RESPONSE)/<id>/<length of body>[/<mime-type>]: <command>[ <arguments>]
 
 The message contains the following parts:
 
 MESSAGE TYPE
-	By the first keyword the message type is defined. Supported message
-	types are *REQUEST* and *RESPONSE*. Any other type will be
-	ignored.
+    By the first keyword the message type is defined. Supported message
+    types are *REQUEST* and *RESPONSE*. Any other type will be
+    ignored.
 
 ID
-	Separated by a `/` the message id follows that must be unique
-	within a communication channel. By default it consists of a timestamp
-	and a counter.
+    Separated by a `/` the message id follows that must be unique
+    within a communication channel. By default it consists of a timestamp
+    and a counter.
 
 LENGTH
-	The next field is a number defining the length of the
-	body in bytes. Starting to count after the empty line.
+    The next field is a number defining the length of the
+    body in bytes. Starting to count after the empty line.
 
 MIME TYPE
-	Since *UMCP 2.0* there is as another field specifying the MIME type of the body. If not
-	given the guessed value for the MIME type is application/json. If
-	the body can not be decoded using a JSON parser the message is invalid.
+    Since *UMCP 2.0* there is as another field specifying the MIME type of the body. If not
+    given the guessed value for the MIME type is application/json. If
+    the body can not be decoded using a JSON parser the message is invalid.
 
 COMMAND
-	The last two fields define the UMCP command that should be executed by
-	the server. The following commands are supported:
+    The last two fields define the UMCP command that should be executed by
+    the server. The following commands are supported:
 
-	AUTH
-		sends an authentication request. It must be the first command send
-		by the client. All commands send before a successful authentication
-		are rejected.
-		This is no longer true and the `AUTH` command can be replaced by a `SET`
-		command to set information about the user and other details.
+    AUTH
+        sends an authentication request. It must be the first command send
+        by the client. All commands send before a successful authentication
+        are rejected.
+        This is no longer true and the `AUTH` command can be replaced by a `SET`
+        command to set information about the user and other details.
 
-	GET
-		is used to retrieve information from the UMC server, e.g. a list of
-		all UMC modules available in this session.
+    GET
+        is used to retrieve information from the UMC server, e.g. a list of
+        all UMC modules available in this session.
 
-	SET
-		is used to define settings for the session, e.g. the language.
+    SET
+        is used to define settings for the session, e.g. the language.
 
-	COMMAND
-		This command is used to pass requests to UMC modules. Each
-		module defines a set of commands that it implements. The UMC module
-		command is defined by the first argument in the UMCP header, e.g. a
-		request like ::
+    COMMAND
+        This command is used to pass requests to UMC modules. Each
+        module defines a set of commands that it implements. The UMC module
+        command is defined by the first argument in the UMCP header, e.g. a
+        request like ::
 
-			REQUEST/123423423-01/42/application/json: COMMAND ucr/query
+            REQUEST/123423423-01/42/application/json: COMMAND ucr/query
 
-		passes on the module command ucr/query to a UMC module.
+        passes on the module command ucr/query to a UMC module.
 
 
 Message body
@@ -153,26 +153,25 @@ supported MIME type for `REQUEST` messages. It contains a dictionary that
 has a few pre-defined keys (for both message types):
 
 options
-	contains the arguments for the command.
+    contains the arguments for the command.
 
 status
-	defines the status code in response messages. The codes are
-	similar to the HTTP status codes , e.g. 200 defines a successful
-	execution of the command. The appendix contains a detailed list
-	[[#Status-Codes]].
+    defines the status code in response messages. The codes are
+    similar to the HTTP status codes , e.g. 200 defines a successful
+    execution of the command. The appendix contains a detailed list
+    [[#Status-Codes]].
 
 message
-	may contain a human readable description of the status code. This
-	may contain details to explain the user the situation.
+    may contain a human readable description of the status code. This
+    may contain details to explain the user the situation.
 
 flavor
-	is an optional field. If given in a request message the module may
-	act differently than without the flavor.
+    is an optional field. If given in a request message the module may
+    act differently than without the flavor.
 
 --------
 Examples
 --------
-
 This section contains a few example messages of UMCP 2.0
 
 Authentication request
@@ -180,41 +179,41 @@ Authentication request
 
 ::
 
-	REQUEST/130928961341733-1/47/application/json: AUTH
-	{"username": "root", "password": "univention"}
+    REQUEST/130928961341733-1/47/application/json: AUTH
+    {"username": "root", "password": "univention"}
 
-	REQUEST/130928961341733-2/705/application/json: SET
-	{"options":{"locale":"de_DE.UTF-8","credentials":{"auth_type":null,"user_dn":"uid=Administrator,cn=users,dc=test,dc=example","username":"Administrator","password":"univention"},"commands":{"description":"Overview of processes on the local system","translationId":"","keywords":["process","Process overview"],"id":"top","categories":["system"],"icon":null,"flavors":[],"commands":[{"allow_anonymous":false,"method":"query","name":"top/query"},{"allow_anonymous":false,"method":"kill","name":"top/kill"}],"name":"Process overview","url":null,"priority":50.0,"required_commands":[],"version":"8.0.1-3A~4.4.0.201910141206"},"acls":[{"fromUser":false,"flavor":"*","command":"top/*","host":"dc0","options":{}}]}}
+    REQUEST/130928961341733-2/705/application/json: SET
+    {"options":{"locale":"de_DE.UTF-8","credentials":{"auth_type":null,"user_dn":"uid=Administrator,cn=users,dc=test,dc=example","username":"Administrator","password":"univention"},"commands":{"description":"Overview of processes on the local system","translationId":"","keywords":["process","Process overview"],"id":"top","categories":["system"],"icon":null,"flavors":[],"commands":[{"allow_anonymous":false,"method":"query","name":"top/query"},{"allow_anonymous":false,"method":"kill","name":"top/kill"}],"name":"Process overview","url":null,"priority":50.0,"required_commands":[],"version":"8.0.1-3A~4.4.0.201910141206"},"acls":[{"fromUser":false,"flavor":"*","command":"top/*","host":"dc0","options":{}}]}}
 
 Request: Run `top` query
 ========================
 
 ::
 
-	REQUEST/130928961341733-3/16/application/json: COMMAND top/query
-	{"options": {}}
+    REQUEST/130928961341733-3/16/application/json: COMMAND top/query
+    {"options": {}}
 
 Request: Search for users
 =========================
 
 ::
 
-	REQUEST/130928961341726-0/125/application/json: COMMAND udm/query
-	{"flavor": "users/user", "options": {"objectProperty": "name", "objectPropertyValue": "test1*1", "objectType": "users/user"}}
+    REQUEST/130928961341726-0/125/application/json: COMMAND udm/query
+    {"flavor": "users/user", "options": {"objectProperty": "name", "objectPropertyValue": "test1*1", "objectType": "users/user"}}
 
 Response: Search for users
 ==========================
 
 ::
 
-	RESPONSE/130928961341726-0/1639/application/json: COMMAND udm/query
-	{"status": 200, "message": null, "options": {"objectProperty": "name", "objectPropertyValue": "test1*1", "objectType": "users/user"}, "result": [{"ldap-dn": "uid=test11,cn=users,dc=univention,dc=qa", "path": "univention.qa:/users", "name": "test11", "objectType": "users/user"}, {"ldap-dn": "uid=test101,cn=users,dc=univention,dc=qa", "path": "univention.qa:/users", "name": "test101", "objectType": "users/user"}, {"ldap-dn": "uid=test111,cn=users,dc=univention,dc=qa", "path": "univention.qa:/users", "name": "test111", "objectType": "users/user"}, {"ldap-dn": "uid=test121,cn=users,dc=univention,dc=qa", "path": "univention.qa:/users", "name": "test121", "objectType": "users/user"}, {"ldap-dn": "uid=test131,cn=users,dc=univention,dc=qa", "path": "univention.qa:/users", "name": "test131", "objectType": "users/user"}, {"ldap-dn": "uid=test141,cn=users,dc=univention,dc=qa", "path": "univention.qa:/users", "name": "test141", "objectType": "users/user"}, {"ldap-dn": "uid=test151,cn=users,dc=univention,dc=qa", "path": "univention.qa:/users", "name": "test151", "objectType": "users/user"}, {"ldap-dn": "uid=test161,cn=users,dc=univention,dc=qa", "path": "univention.qa:/users", "name": "test161", "objectType": "users/user"}, {"ldap-dn": "uid=test171,cn=users,dc=univention,dc=qa", "path": "univention.qa:/users", "name": "test171", "objectType": "users/user"}, {"ldap-dn": "uid=test181,cn=users,dc=univention,dc=qa", "path": "univention.qa:/users", "name": "test181", "objectType": "users/user"}, {"ldap-dn": "uid=test191,cn=users,dc=univention,dc=qa", "path": "univention.qa:/users", "name": "test191", "objectType": "users/user"}]}
+    RESPONSE/130928961341726-0/1639/application/json: COMMAND udm/query
+    {"status": 200, "message": null, "options": {"objectProperty": "name", "objectPropertyValue": "test1*1", "objectType": "users/user"}, "result": [{"ldap-dn": "uid=test11,cn=users,dc=univention,dc=qa", "path": "univention.qa:/users", "name": "test11", "objectType": "users/user"}, {"ldap-dn": "uid=test101,cn=users,dc=univention,dc=qa", "path": "univention.qa:/users", "name": "test101", "objectType": "users/user"}, {"ldap-dn": "uid=test111,cn=users,dc=univention,dc=qa", "path": "univention.qa:/users", "name": "test111", "objectType": "users/user"}, {"ldap-dn": "uid=test121,cn=users,dc=univention,dc=qa", "path": "univention.qa:/users", "name": "test121", "objectType": "users/user"}, {"ldap-dn": "uid=test131,cn=users,dc=univention,dc=qa", "path": "univention.qa:/users", "name": "test131", "objectType": "users/user"}, {"ldap-dn": "uid=test141,cn=users,dc=univention,dc=qa", "path": "univention.qa:/users", "name": "test141", "objectType": "users/user"}, {"ldap-dn": "uid=test151,cn=users,dc=univention,dc=qa", "path": "univention.qa:/users", "name": "test151", "objectType": "users/user"}, {"ldap-dn": "uid=test161,cn=users,dc=univention,dc=qa", "path": "univention.qa:/users", "name": "test161", "objectType": "users/user"}, {"ldap-dn": "uid=test171,cn=users,dc=univention,dc=qa", "path": "univention.qa:/users", "name": "test171", "objectType": "users/user"}, {"ldap-dn": "uid=test181,cn=users,dc=univention,dc=qa", "path": "univention.qa:/users", "name": "test181", "objectType": "users/user"}, {"ldap-dn": "uid=test191,cn=users,dc=univention,dc=qa", "path": "univention.qa:/users", "name": "test191", "objectType": "users/user"}]}
 """
 
-from .message import *  # noqa: F403,F401
-from .session import *  # noqa: F403,F401
-from .server import *  # noqa: F403,F401
 from .client import *  # noqa: F403,F401
 from .definitions import *  # noqa: F403,F401
-from .version import *  # noqa: F403,F401
+from .message import *  # noqa: F403,F401
 from .modserver import *  # noqa: F403,F401
+from .server import *  # noqa: F403,F401
+from .session import *  # noqa: F403,F401
+from .version import *  # noqa: F403,F401

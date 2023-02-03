@@ -31,17 +31,17 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-"""
-Check the samba account flags
-"""
+"""Check the samba account flags"""
 
 from __future__ import print_function
 
-import ldap
 import sys
+
+import ldap
 
 import univention.config_registry
 import univention.uldap
+
 
 ucr = univention.config_registry.ConfigRegistry()
 ucr.load()
@@ -52,59 +52,59 @@ lo = univention.uldap.getAdminConnection().lo
 
 
 def print_usage():
-	print("\nUse: proof_sambaAccountFlags [query|update] \n")
-	print("Without options you will see a list of SambaSamAccounts with possibly wrong Flags.", end=' ')
-	print("The query-option will request each time for update of such elements, the update-option will", end=' ')
-	print("update every found Flag. If you use both options only the first will define", end=' ')
-	print("the behavior !\n")
+    print("\nUse: proof_sambaAccountFlags [query|update] \n")
+    print("Without options you will see a list of SambaSamAccounts with possibly wrong Flags.", end=' ')
+    print("The query-option will request each time for update of such elements, the update-option will", end=' ')
+    print("update every found Flag. If you use both options only the first will define", end=' ')
+    print("the behavior !\n")
 
 
 # update all if command update is given
 def main():
-	# type: () -> None
-	update_all = 0
-	query = 0
-	if len(sys.argv) > 1:
-		if sys.argv[1] == "update":
-			update_all = 1
-		elif sys.argv[1] == "query":
-			query = 1
-		else:
-			print_usage()
-			sys.exit()
+    # type: () -> None
+    update_all = 0
+    query = 0
+    if len(sys.argv) > 1:
+        if sys.argv[1] == "update":
+            update_all = 1
+        elif sys.argv[1] == "query":
+            query = 1
+        else:
+            print_usage()
+            sys.exit()
 
-	# What we going to do:
-	# 1. list all objectClass=univentionWindows
-	# 2. look if Flag M is set, if yes query
+    # What we going to do:
+    # 1. list all objectClass=univentionWindows
+    # 2. look if Flag M is set, if yes query
 
-	count_flags = 0
-	count_updated_flags = 0
+    count_flags = 0
+    count_updated_flags = 0
 
-	for windows_dn, windows_attr in lo.search_s(baseDN, ldap.SCOPE_SUBTREE, 'objectClass=univentionWindows', ['sambaAcctFlags']):
-		flags = windows_attr["sambaAcctFlags"][0].decode('utf-8')
-		if 'M' in flags:
-			print("found Windows-Account with old (wrong) Flag M (should be W) in %s (%s)" % (windows_dn, flags))
-			count_flags += 1
-			inp = ""
-			if not update_all:
-				if query:
-					print("update Flag (y/N)?")
-					inp = sys.stdin.readline()
-			else:
-				inp = "y"
-			if inp[:1] == "y":
-				modlist = [(ldap.MOD_REPLACE, "sambaAcctFlags", flags.replace('M', 'W').encode('utf-8'))]
-				lo.modify(windows_dn, modlist)
-				print("updated")
-				count_updated_flags += 1
+    for windows_dn, windows_attr in lo.search_s(baseDN, ldap.SCOPE_SUBTREE, 'objectClass=univentionWindows', ['sambaAcctFlags']):
+        flags = windows_attr["sambaAcctFlags"][0].decode('utf-8')
+        if 'M' in flags:
+            print("found Windows-Account with old (wrong) Flag M (should be W) in %s (%s)" % (windows_dn, flags))
+            count_flags += 1
+            inp = ""
+            if not update_all:
+                if query:
+                    print("update Flag (y/N)?")
+                    inp = sys.stdin.readline()
+            else:
+                inp = "y"
+            if inp[:1] == "y":
+                modlist = [(ldap.MOD_REPLACE, "sambaAcctFlags", flags.replace('M', 'W').encode('utf-8'))]
+                lo.modify(windows_dn, modlist)
+                print("updated")
+                count_updated_flags += 1
 
-	print("Found", count_flags, "flags that seemed to be wrong, updated", end=' ')
-	print(count_updated_flags, "of them.")
+    print("Found", count_flags, "flags that seemed to be wrong, updated", end=' ')
+    print(count_updated_flags, "of them.")
 
-	if not query and not update_all:
-		print("\nRun this script with an option to change the listed flags,")
-		print("call \"proof_sambaAccountFlags help\" for details")
+    if not query and not update_all:
+        print("\nRun this script with an option to change the listed flags,")
+        print("call \"proof_sambaAccountFlags help\" for details")
 
 
 if __name__ == "__main__":
-	main()
+    main()

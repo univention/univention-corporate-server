@@ -29,77 +29,78 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-r"""
-Module and object for all `computers/\*` UDM modules.
-"""
+r"""Module and object for all `computers/\*` UDM modules."""
 
 from __future__ import absolute_import, unicode_literals
+
 from ..encoders import (
-	CnameListPropertyEncoder, DnsEntryZoneAliasListPropertyEncoder, DnsEntryZoneForwardListMultiplePropertyEncoder,
-	DnsEntryZoneReverseListMultiplePropertyEncoder,
-	dn_list_property_encoder_for, dn_property_encoder_for, StringIntBooleanPropertyEncoder, StringIntPropertyEncoder
+    CnameListPropertyEncoder, DnsEntryZoneAliasListPropertyEncoder, DnsEntryZoneForwardListMultiplePropertyEncoder,
+    DnsEntryZoneReverseListMultiplePropertyEncoder, StringIntBooleanPropertyEncoder, StringIntPropertyEncoder,
+    dn_list_property_encoder_for, dn_property_encoder_for,
 )
 from .generic import GenericModule, GenericObject, GenericObjectProperties
 
 
 class ComputersAllObjectProperties(GenericObjectProperties):
-	r"""`computers/\*` UDM properties."""
+    r"""`computers/\*` UDM properties."""
 
-	_encoders = {
-		'dnsAlias': CnameListPropertyEncoder,  # What is this? Isn't this data in dnsEntryZoneAlias already?
-		'dnsEntryZoneAlias': DnsEntryZoneAliasListPropertyEncoder,
-		'dnsEntryZoneForward': DnsEntryZoneForwardListMultiplePropertyEncoder,
-		'dnsEntryZoneReverse': DnsEntryZoneReverseListMultiplePropertyEncoder,
-		'groups': dn_list_property_encoder_for('groups/group'),
-		'nagiosParents': dn_list_property_encoder_for('auto'),  # can be different types of computer/* objects
-		'nagiosServices': dn_list_property_encoder_for('nagios/service'),
-		'network': dn_property_encoder_for('networks/network'),
-		'portal': dn_property_encoder_for('settings/portal'),
-		'primaryGroup': dn_property_encoder_for('groups/group'),
-		'reinstall': StringIntBooleanPropertyEncoder,
-		'sambaRID': StringIntPropertyEncoder,
-	}
+    _encoders = {
+        'dnsAlias': CnameListPropertyEncoder,  # What is this? Isn't this data in dnsEntryZoneAlias already?
+        'dnsEntryZoneAlias': DnsEntryZoneAliasListPropertyEncoder,
+        'dnsEntryZoneForward': DnsEntryZoneForwardListMultiplePropertyEncoder,
+        'dnsEntryZoneReverse': DnsEntryZoneReverseListMultiplePropertyEncoder,
+        'groups': dn_list_property_encoder_for('groups/group'),
+        'nagiosParents': dn_list_property_encoder_for('auto'),  # can be different types of computer/* objects
+        'nagiosServices': dn_list_property_encoder_for('nagios/service'),
+        'network': dn_property_encoder_for('networks/network'),
+        'portal': dn_property_encoder_for('settings/portal'),
+        'primaryGroup': dn_property_encoder_for('groups/group'),
+        'reinstall': StringIntBooleanPropertyEncoder,
+        'sambaRID': StringIntPropertyEncoder,
+    }
 
 
 class ComputersAllObject(GenericObject):
-	r"""Better representation of `computers/\*` properties."""
-	udm_prop_class = ComputersAllObjectProperties
+    r"""Better representation of `computers/\*` properties."""
+
+    udm_prop_class = ComputersAllObjectProperties
 
 
 class ComputersAllModule(GenericModule):
-	"""ComputersAllObject factory"""
-	_udm_object_class = ComputersAllObject
+    """ComputersAllObject factory"""
 
-	class Meta:
-		supported_api_versions = [1, 2, 3]
-		default_positions_property = 'computers'
-		suitable_for = ['computers/*']
+    _udm_object_class = ComputersAllObject
+
+    class Meta:
+        supported_api_versions = [1, 2, 3]
+        default_positions_property = 'computers'
+        suitable_for = ['computers/*']
 
 
 class ComputersDCModule(ComputersAllModule):
-	"""ComputersAllObject factory with an adjusted default position"""
+    """ComputersAllObject factory with an adjusted default position"""
 
-	class Meta:
-		supported_api_versions = [1, 2, 3]
-		default_positions_property = 'domaincontroller'
-		suitable_for = ['computers/domaincontroller_master', 'computers/domaincontroller_backup', 'computers/domaincontroller_slave']
+    class Meta:
+        supported_api_versions = [1, 2, 3]
+        default_positions_property = 'domaincontroller'
+        suitable_for = ['computers/domaincontroller_master', 'computers/domaincontroller_backup', 'computers/domaincontroller_slave']
 
 
 class ComputersMemberModule(ComputersAllModule):
-	"""ComputersAllObject factory with an adjusted default position"""
+    """ComputersAllObject factory with an adjusted default position"""
 
-	def _get_default_object_positions(self):
-		ret = super(ComputersMemberModule, self)._get_default_object_positions()
-		if len(ret) == 4 and \
-			'cn=computers,{}'.format(self.connection.base) in ret and \
-			'cn=memberserver,cn=computers,{}'.format(self.connection.base) in ret and \
-			'cn=dc,cn=computers,{}'.format(self.connection.base) in ret and \
-			self.connection.base in ret:
-			ret.remove('cn=memberserver,cn=computers,{}'.format(self.connection.base))
-			ret.insert(0, 'cn=memberserver,cn=computers,{}'.format(self.connection.base))
-		return ret
+    def _get_default_object_positions(self):
+        ret = super(ComputersMemberModule, self)._get_default_object_positions()
+        if len(ret) == 4 and \
+                'cn=computers,{}'.format(self.connection.base) in ret and \
+                'cn=memberserver,cn=computers,{}'.format(self.connection.base) in ret and \
+                'cn=dc,cn=computers,{}'.format(self.connection.base) in ret and \
+                self.connection.base in ret:
+            ret.remove('cn=memberserver,cn=computers,{}'.format(self.connection.base))
+            ret.insert(0, 'cn=memberserver,cn=computers,{}'.format(self.connection.base))
+        return ret
 
-	class Meta:
-		supported_api_versions = [1, 2, 3]
-		default_positions_property = 'computers'
-		suitable_for = ['computers/memberserver']
+    class Meta:
+        supported_api_versions = [1, 2, 3]
+        default_positions_property = 'computers'
+        suitable_for = ['computers/memberserver']

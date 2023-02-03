@@ -40,15 +40,15 @@ from univention.monitoring import Alert
 
 class Winbind(Alert):
 
-	def write_metrics(self):
-		try:
-			rc, output = self.exec_command(['/usr/bin/wbinfo', '-t'], stderr=subprocess.DEVNULL)
-		except FileNotFoundError:
-			self.write_metric('univention_winbind_secret_ok', -1)
-			return
-		self.write_metric('univention_winbind_secret_ok', 1 if rc == 0 else 0)
-		self.log.debug(';'.join(output.splitlines()))
+    def write_metrics(self):
+        try:
+            rc, output = self.exec_command(['/usr/bin/wbinfo', '-t'], stderr=subprocess.DEVNULL)
+        except FileNotFoundError:
+            self.write_metric('univention_winbind_secret_ok', -1)
+            return
+        self.write_metric('univention_winbind_secret_ok', 1 if rc == 0 else 0)
+        self.log.debug(';'.join(output.splitlines()))
 
 
 if __name__ == '__main__':
-	Winbind.main()
+    Winbind.main()

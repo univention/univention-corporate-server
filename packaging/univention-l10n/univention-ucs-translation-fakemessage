@@ -7,6 +7,7 @@ prepeding it with the character sequence '!TR!'.
 It is useful for visual quick testing of translation coverage and po file
 generation.
 """
+import argparse
 #
 # Like what you see? Join us!
 # https://www.univention.com/about-us/careers/vacancies/
@@ -38,37 +39,37 @@ generation.
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 import os
+
 import polib
-import argparse
 
 
 def parse_args():
-	# type: () -> argparse.Namespace
-	parser = argparse.ArgumentParser(description=__doc__, usage='%(prog)s [directory]')
-	parser.add_argument('directory', help="Base directory for recursive search")
-	args = parser.parse_args()
-	return args
+    # type: () -> argparse.Namespace
+    parser = argparse.ArgumentParser(description=__doc__, usage='%(prog)s [directory]')
+    parser.add_argument('directory', help="Base directory for recursive search")
+    args = parser.parse_args()
+    return args
 
 
 def process(po_dir):
-	# type: (str) -> None
-	for _dir, dns, fns in os.walk(os.path.abspath(po_dir)):
-		for po_file in fns:
-			if not po_file.endswith('.po'):
-				continue
-			po = polib.pofile(os.path.join(_dir, po_file))
-			for entry in po:
-				if entry.msgid == '':
-					continue
-				entry.msgstr = "!TR! " + entry.msgid
-			po.save(os.path.join(_dir, po_file))
+    # type: (str) -> None
+    for _dir, _dns, fns in os.walk(os.path.abspath(po_dir)):
+        for po_file in fns:
+            if not po_file.endswith('.po'):
+                continue
+            po = polib.pofile(os.path.join(_dir, po_file))
+            for entry in po:
+                if entry.msgid == '':
+                    continue
+                entry.msgstr = "!TR! " + entry.msgid
+            po.save(os.path.join(_dir, po_file))
 
 
 def main():
-	# type: () -> None
-	args = parse_args()
-	process(args.directory)
+    # type: () -> None
+    args = parse_args()
+    process(args.directory)
 
 
 if __name__ == '__main__':
-	main()
+    main()

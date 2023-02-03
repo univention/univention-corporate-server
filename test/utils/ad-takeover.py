@@ -41,6 +41,7 @@ from time import sleep
 import univention.lib.umc
 from univention.lib.umc import Client
 
+
 client = None
 finished = False
 
@@ -56,47 +57,47 @@ options = parser.parse_args()
 
 
 def domainhost_unreachable(client: Client) -> bool:
-	s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-	s.settimeout(2)
-	try:
-		s.connect((client, 53))
-		return False
-	except socket.error:
-		return True
+    s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    s.settimeout(2)
+    try:
+        s.connect((client, 53))
+        return False
+    except socket.error:
+        return True
 
 
 def get_progress(client: Client) -> None:
-	while not finished:
-		client.umc_command('adtakeover/progress')
-		sleep(1)
+    while not finished:
+        client.umc_command('adtakeover/progress')
+        sleep(1)
 
 
 def wait(client: Client) -> None:
-	path = 'adtakeover/progress'
-	waited = 0
-	result = None
-	while waited <= 1800:
-		sleep(10)
-		waited += 1
-		try:
-			result = client.umc_command(path).result
-		except univention.lib.umc.ConnectionError:
-			print('... Apache down? Ignoring...')
-			continue
-		print(result)
-		if result.get('finished', False):
-			break
-	else:
-		raise Exception("wait timeout")
-	print(result)
-	assert not result['errors']
+    path = 'adtakeover/progress'
+    waited = 0
+    result = None
+    while waited <= 1800:
+        sleep(10)
+        waited += 1
+        try:
+            result = client.umc_command(path).result
+        except univention.lib.umc.ConnectionError:
+            print('... Apache down? Ignoring...')
+            continue
+        print(result)
+        if result.get('finished', False):
+            break
+    else:
+        raise Exception("wait timeout")
+    print(result)
+    assert not result['errors']
 
 
 client = Client(options.host, options.username, options.password, language='en-US')
 request_options = {
-	"ip": options.domain_host,
-	"username": options.domain_admin,
-	"password": options.domain_password
+    "ip": options.domain_host,
+    "username": options.domain_admin,
+    "password": options.domain_password,
 }
 
 print('starting connect')
@@ -105,10 +106,10 @@ print(response.result)
 assert response.status == 200
 
 try:
-	print('starting copy')
-	response = client.umc_command("adtakeover/run/copy", request_options)
+    print('starting copy')
+    response = client.umc_command("adtakeover/run/copy", request_options)
 except Exception:
-	pass
+    pass
 wait(client)
 
 print('starting rpc copy')
@@ -125,7 +126,7 @@ assert result == 0
 finished = True
 
 while not domainhost_unreachable(options.domain_host):
-	sleep(2)
+    sleep(2)
 
 sleep(10)
 
@@ -134,29 +135,29 @@ sleep(10)
 # .../run/takeover|.../status/done in this case fail (not sure why),
 # so as a fallback adtakeover/check/status until finished or fail
 try:
-	print('starting takeover')
-	response = client.umc_command("adtakeover/run/takeover", request_options)
-	print(response.status)
-	assert response.status == 200
+    print('starting takeover')
+    response = client.umc_command("adtakeover/run/takeover", request_options)
+    print(response.status)
+    assert response.status == 200
 
-	print('starting done')
-	response = client.umc_command("adtakeover/status/done", request_options)
-	print(response.status)
-	assert response.status == 200
+    print('starting done')
+    response = client.umc_command("adtakeover/status/done", request_options)
+    print(response.status)
+    assert response.status == 200
 
-	print('OK - finished')
-	sys.exit(0)
+    print('OK - finished')
+    sys.exit(0)
 except Exception:
-	print(traceback.format_exc())
+    print(traceback.format_exc())
 
 # wait until finished
-for i in range(90):
-	sleep(10)
-	response = client.umc_command("adtakeover/check/status", request_options)
-	print('waiting got finished - {}'.format(response.data))
-	if response.result == 'finished':
-		print('OK - finished')
-		sys.exit(0)
+for _i in range(90):
+    sleep(10)
+    response = client.umc_command("adtakeover/check/status", request_options)
+    print(f'waiting got finished - {response.data}')
+    if response.result == 'finished':
+        print('OK - finished')
+        sys.exit(0)
 
-print("FAIL - not finished - {}".format(response.data))
+print(f"FAIL - not finished - {response.data}")
 sys.exit(1)

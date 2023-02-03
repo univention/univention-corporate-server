@@ -1,13 +1,15 @@
 #!/usr/bin/python3
 
-import concurrent.futures
 import multiprocessing
 import time
 from typing import Dict, List
 
+import concurrent.futures
+
 import univention.admin.uldap
 from ucsschool.lib.roles import get_role_info
 from univention.config_registry import ConfigRegistry
+
 
 SEARCH_FILTER = "(&(ucsschoolRole=*)(univentionObjectType=users/user))"
 SEARCH_ATTRS = ["ucsschoolRole"]

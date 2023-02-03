@@ -10,8 +10,8 @@ import sys
 
 import pytest
 
-import univention.testing.utils as utils
 from univention.lib.umc import BadRequest
+from univention.testing import utils
 from univention.testing.strings import random_username
 
 from umc import UDMModule
@@ -54,9 +54,7 @@ class TestUMCNetworkFunctionality(UDMModule):
         self.test_network_dn = request_result[0].get('$dn$')
 
     def query_dhcp_services(self):
-        """
-        Makes a 'udm/query' request to get the DHCP services available
-        """
+        """Makes a 'udm/query' request to get the DHCP services available"""
         options = {"superordinate": "None",
                    "objectType": "dhcp/dhcp",
                    "objectProperty": "None",
@@ -74,9 +72,7 @@ class TestUMCNetworkFunctionality(UDMModule):
         return self.request("udm/network", options)
 
     def get_network_choices(self, syntax):
-        """
-        Returns result of 'udm/syntax/choices' for a given 'syntax' request.
-        """
+        """Returns result of 'udm/syntax/choices' for a given 'syntax' request."""
         options = {"syntax": syntax}
         return self.request("udm/syntax/choices", options, "computers/computer")
 
@@ -122,9 +118,7 @@ class TestUMCNetworkFunctionality(UDMModule):
                        "'ipRange' field: '%s'" % exc)
 
     def modify_network_ip_range(self):
-        """
-        Makes a 'udm/put' request to modify network ipRange
-        """
+        """Makes a 'udm/put' request to modify network ipRange"""
         options = [{"object": {"dnsEntryZoneReverse": "",
                                "dhcpEntryZone": "",
                                "dnsEntryZoneForward": "",
@@ -182,9 +176,7 @@ class TestUMCNetworkFunctionality(UDMModule):
                            "networks query, '%s'" % network)
 
     def query_networks(self):
-        """
-        Makes a 'udm/query' request for networks and returns result
-        """
+        """Makes a 'udm/query' request for networks and returns result"""
         options = {"container": "all",
                    "objectType": "networks/network",
                    "objectProperty": "None",
@@ -327,9 +319,7 @@ class TestUMCNetworkFunctionality(UDMModule):
                        % (self.test_network_name, self.test_ip_range))
 
     def run_basic_checks(self):
-        """
-        Checks the network query structure and that syntax validation works
-        """
+        """Checks the network query structure and that syntax validation works"""
         print("Querying the networks and checking the response structure")
         self.check_networks_query_structure()
 
@@ -343,9 +333,7 @@ class TestUMCNetworkFunctionality(UDMModule):
                                      "10.20.25.")
 
     def main(self):
-        """
-        A method to test the UMC network functionality
-        """
+        """A method to test the UMC network functionality"""
         self.create_connection_authenticate()
         self.ldap_base = self.ucr.get('ldap/base')
 

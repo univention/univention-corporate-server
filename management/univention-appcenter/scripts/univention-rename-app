@@ -38,38 +38,37 @@
 import sys
 from argparse import ArgumentParser
 
-from univention.lib.package_manager import PackageManager
-from univention.updater.tools import UniventionUpdater
 from univention.config_registry import ConfigRegistry
+from univention.lib.package_manager import PackageManager
 from univention.management.console.modules.appcenter.util import ComponentManager, install_opener, rename_app
+from univention.updater.tools import UniventionUpdater
+
 
 ucr = ConfigRegistry()
 ucr.load()
 
 
 def main():
-	# type: () -> None
-	description = '%(prog)s changes the internal ID of an application. This means:' \
-		'(1) unregister OLD_ID, remove from LDAP' \
-		'(2) register NEW_ID, add to LDAP'
-	parser = ArgumentParser(description=description)
-	parser.add_argument("old_id")
-	parser.add_argument("new_id")
-	args = parser.parse_args()
+    # type: () -> None
+    description = '%(prog)s changes the internal ID of an application. This means:(1) unregister OLD_ID, remove from LDAP(2) register NEW_ID, add to LDAP'
+    parser = ArgumentParser(description=description)
+    parser.add_argument("old_id")
+    parser.add_argument("new_id")
+    args = parser.parse_args()
 
-	try:
-		install_opener(ucr)
-		uu = UniventionUpdater(False)
-		component_manager = ComponentManager(ucr, uu)
-		package_manager = PackageManager(lock=False)
-		rename_app(args.old_id, args.new_id, component_manager, package_manager)
-	except Exception:
-		sys.stderr.write('ERROR: univention-rename-app "%s" "%s" did not succeed. Maybe a network error? In this case, just repeat the command.\n' % (args.old_id, args.new_id))
-		sys.exit(1)
-	else:
-		sys.stdout.write('Rename done.\n')
-		sys.exit(0)
+    try:
+        install_opener(ucr)
+        uu = UniventionUpdater(False)
+        component_manager = ComponentManager(ucr, uu)
+        package_manager = PackageManager(lock=False)
+        rename_app(args.old_id, args.new_id, component_manager, package_manager)
+    except Exception:
+        sys.stderr.write('ERROR: univention-rename-app "%s" "%s" did not succeed. Maybe a network error? In this case, just repeat the command.\n' % (args.old_id, args.new_id))
+        sys.exit(1)
+    else:
+        sys.stdout.write('Rename done.\n')
+        sys.exit(0)
 
 
 if __name__ == '__main__':
-	main()
+    main()

@@ -17,7 +17,7 @@ ldap_base = configRegistry['ldap/base']
 print('   by group/univentionGroup/uniqueMember="cn=%s,cn=groups,%s" read' % (groups_default_domainadmins, ldap_base))
 
 if configRegistry['ldap/hostdn']:
-	print('   by dn.base="%s" read' % configRegistry['ldap/hostdn'])
+    print('   by dn.base="%s" read' % configRegistry['ldap/hostdn'])
 @!@   by * none
 
 @!@

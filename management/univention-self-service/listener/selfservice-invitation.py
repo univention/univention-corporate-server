@@ -1,3 +1,4 @@
+#!/usr/bin/python3
 # -*- coding: utf-8 -*-
 #
 # Univention LDAP
@@ -37,8 +38,10 @@ from __future__ import absolute_import, annotations
 import os
 from typing import Dict, List
 
-import listener
 import univention.debug as ud
+
+import listener
+
 
 # pwdChangeNextLogin=1 should be set, this is either shadowMax=1 or shadowLastChange=0
 name = 'selfservice-invitation'
@@ -49,19 +52,19 @@ cache_dir = '/var/cache/univention-directory-listener/selfservice-invitation'
 
 
 def handler(dn: str, new: Dict[str, List[bytes]], old: Dict[str, List[bytes]], command: str) -> None:
-	if not listener.configRegistry.is_true('umc/self-service/invitation/enabled', True):
-		return
+    if not listener.configRegistry.is_true('umc/self-service/invitation/enabled', True):
+        return
 
-	if not listener.configRegistry.get('server/role', 'undefined') == 'domaincontroller_master':
-		return
+    if listener.configRegistry.get('server/role', 'undefined') != 'domaincontroller_master':
+        return
 
-	if new and not old and command == 'a':
-		filename = os.path.join(cache_dir, new.get('uid')[0].decode('UTF-8').replace('/', '') + '.send')
-		ud.debug(ud.LISTENER, ud.PROCESS, '%s: trigger selfservice invitation for %r' % (name, dn))
-		try:
-			os.mknod(filename)
-		except OSError as exc:
-			if hasattr(exc, 'errno') and exc.errno == 17:
-				pass
-			else:
-				raise
+    if new and not old and command == 'a':
+        filename = os.path.join(cache_dir, new.get('uid')[0].decode('UTF-8').replace('/', '') + '.send')
+        ud.debug(ud.LISTENER, ud.PROCESS, '%s: trigger selfservice invitation for %r' % (name, dn))
+        try:
+            os.mknod(filename)
+        except OSError as exc:
+            if hasattr(exc, 'errno') and exc.errno == 17:
+                pass
+            else:
+                raise

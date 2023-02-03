@@ -11,8 +11,8 @@ from time import localtime, sleep, strftime, time
 
 from ldap.filter import filter_format
 
-import univention.testing.utils as utils
 from univention.lib.umc import Unauthorized
+from univention.testing import utils
 from univention.testing.strings import random_username
 from univention.testing.ucs_samba import wait_for_drs_replication
 from univention.testing.udm import UCSTestUDM
@@ -35,9 +35,7 @@ class TestUMCUserAuthentication(UDMModule):
         self.test_password_unicode = ''
 
     def create_user_and_group(self):
-        """
-        Creates a group and a user in it for the test.
-        """
+        """Creates a group and a user in it for the test."""
         test_groupname = 'umc_test_group_' + random_username(6)
 
         print("\nCreating a group '%s' and a user '%s' in it for the test:\n" % (test_groupname, self.test_username))
@@ -163,9 +161,7 @@ class TestUMCUserAuthentication(UDMModule):
             utils.fail("Authentication with a removed user account succeeded.")
 
     def main(self):
-        """
-        Tests the UMC user authentication and various password change cases.
-        """
+        """Tests the UMC user authentication and various password change cases."""
         self.test_username = 'umc_test_user_' + random_username(6)
         self.test_password = 'univention'
 

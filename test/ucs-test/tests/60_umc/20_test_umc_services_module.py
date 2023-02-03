@@ -3,12 +3,14 @@
 ## bugs: [34506]
 ## exposure: dangerous
 
-import pytest
 import subprocess
+
+import pytest
 
 from univention.config_registry.frontend import ucr_update
 
 from umc import UMCBase
+
 
 SERVICE_NAME = "nscd"
 AUTOSTART_VAR = f'{SERVICE_NAME}/autostart'
@@ -88,12 +90,11 @@ class Test_UMCServiceProcessHandling:
             initial_state = self.service.query()
             self.service.check_service_presence(initial_state, SERVICE_NAME)
             for result in initial_state:
-                if result['service'] == SERVICE_NAME:
-                    if result['autostart'] in ('no', 'false'):
-                        print("Skipped due to: %s/autostart=%s" % (SERVICE_NAME, result['autostart']))
-                        self.service.return_code_result_skip()
+                if result['service'] == SERVICE_NAME and result['autostart'] in ('no', 'false'):
+                    print("Skipped due to: %s/autostart=%s" % (SERVICE_NAME, result['autostart']))
+                    self.service.return_code_result_skip()
 
-    @pytest.fixture
+    @pytest.fixture()
     def save_initial_state(self, service_module):
         self.initial_service_state_running = self.query_service_is_running(SERVICE_NAME)
 
@@ -127,7 +128,7 @@ class Test_UMCServiceProcessHandling:
         for result in request_result:
             if result['service'] == service_name:
                 return result['isRunning']
-        assert False, "Couldn't find service %s: %s" % (service_name, request_result)
+        raise AssertionError("Couldn't find service %s: %s" % (service_name, request_result))
 
     def get_service_current_pid(self, service_name):
         """
@@ -172,9 +173,7 @@ class Test_UMCServiceProcessHandling:
             assert all(x in result for x in ('service', 'isRunning', 'description', 'autostart'))
 
     def test_directory_listener(self):
-        """
-        Check if the 'Univention Directory Listener' was listed in the response
-        """
+        """Check if the 'Univention Directory Listener' was listed in the response"""
         request_result = self.service.query()
         assert request_result
         assert any("univention-directory-listener" in x['service'] for x in request_result)

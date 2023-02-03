@@ -36,88 +36,90 @@
 
 
 from __future__ import print_function
+
 import sys
 
 import ldap
+
 import univention
+import univention.config_registry
 import univention.connector
 import univention.connector.ad
 
-import univention.config_registry
 
 CONFIGBASENAME = "connector"
 
 
 def usage():
-	print("")
-	print("This is univention-adconnector-list-rejected")
-	print("")
-	print("Univention-connector-list-rejected tries to summarize the objects which are rejected due to sync failures")
-	print("")
-	print("Usage:")
-	print("univention-adconnector-list-rejected [-c configbase]")
-	print("")
-	print("The default configbase is \"connector\".")
+    print("")
+    print("This is univention-adconnector-list-rejected")
+    print("")
+    print("Univention-connector-list-rejected tries to summarize the objects which are rejected due to sync failures")
+    print("")
+    print("Usage:")
+    print("univention-adconnector-list-rejected [-c configbase]")
+    print("")
+    print("The default configbase is \"connector\".")
 
 
 if len(sys.argv) > 1:
-	if sys.argv[1] in ['-h', '--help', '-?']:
-		usage()
-		sys.exit(0)
-	if sys.argv[1] == '-c':
-		if len(sys.argv) != 3:
-			print("ERROR: option \"-c\" needs an argument!")
-			usage()
-			sys.exit(1)
-		else:
-			CONFIGBASENAME = sys.argv[2]
-			print("use configbase %s" % CONFIGBASENAME)
+    if sys.argv[1] in ['-h', '--help', '-?']:
+        usage()
+        sys.exit(0)
+    if sys.argv[1] == '-c':
+        if len(sys.argv) != 3:
+            print("ERROR: option \"-c\" needs an argument!")
+            usage()
+            sys.exit(1)
+        else:
+            CONFIGBASENAME = sys.argv[2]
+            print("use configbase %s" % CONFIGBASENAME)
 
 
 def main():
-	configRegistry = univention.config_registry.ConfigRegistry()
-	configRegistry.load()
+    configRegistry = univention.config_registry.ConfigRegistry()
+    configRegistry.load()
 
-	ad = univention.connector.ad.ad.main(configRegistry, CONFIGBASENAME)
-	max_retry_rejected = configRegistry.get('%s/ad/max_retry_rejected' % (CONFIGBASENAME,), 10)
-	try:
-		ad.init_ldap_connections()
-	except ldap.SERVER_DOWN as exc:
-		print('WARNING: LDAP server could not be reached: %s' % (exc,), file=sys.stderr)
-		sys.exit(1)
+    ad = univention.connector.ad.ad.main(configRegistry, CONFIGBASENAME)
+    max_retry_rejected = configRegistry.get('%s/ad/max_retry_rejected' % (CONFIGBASENAME,), 10)
+    try:
+        ad.init_ldap_connections()
+    except ldap.SERVER_DOWN as exc:
+        print('WARNING: LDAP server could not be reached: %s' % (exc,), file=sys.stderr)
+        sys.exit(1)
 
-	found_rejected = False
-	i = 1
-	print("\nUCS rejected\n")
-	for filename, dn in ad.list_rejected_ucs():
-		found_rejected = True
-		print("%5d:   UCS DN: %s" % (i, dn))
-		ad_dn = ad.get_dn_by_ucs(dn)
-		if ad_dn:
-			print("          AD DN: %s" % ad_dn)
-		else:
-			print("          AD DN: <not found>")
-		print("         Filename: %s\n" % filename)
-		i += 1
+    found_rejected = False
+    i = 1
+    print("\nUCS rejected\n")
+    for filename, dn in ad.list_rejected_ucs():
+        found_rejected = True
+        print("%5d:   UCS DN: %s" % (i, dn))
+        ad_dn = ad.get_dn_by_ucs(dn)
+        if ad_dn:
+            print("          AD DN: %s" % ad_dn)
+        else:
+            print("          AD DN: <not found>")
+        print("         Filename: %s\n" % filename)
+        i += 1
 
-	i = 1
-	print("\nAD rejected\n")
-	for id, dn, retry_count in ad.list_rejected():
-		found_rejected = True
-		print("%5d:    AD DN: %s" % (i, dn))
-		ucs_dn = ad.get_dn_by_con(dn)
-		if ucs_dn:
-			print("         UCS DN: %s" % ucs_dn)
-		else:
-			print("         UCS DN: <not found>")
-		print("         tried: %s/%s times\n" % (retry_count, max_retry_rejected))
-		i += 1
+    i = 1
+    print("\nAD rejected\n")
+    for _id, dn, retry_count in ad.list_rejected():
+        found_rejected = True
+        print("%5d:    AD DN: %s" % (i, dn))
+        ucs_dn = ad.get_dn_by_con(dn)
+        if ucs_dn:
+            print("         UCS DN: %s" % ucs_dn)
+        else:
+            print("         UCS DN: <not found>")
+        print("         tried: %s/%s times\n" % (retry_count, max_retry_rejected))
+        i += 1
 
-	if not found_rejected:
-		print("\nThere may be no rejected DNs if the connector is in progress, to be\nsure stop the connector before running this script.\n")
+    if not found_rejected:
+        print("\nThere may be no rejected DNs if the connector is in progress, to be\nsure stop the connector before running this script.\n")
 
-	print("\n\tlast synced USN: %s" % ad.get_lastUSN())
+    print("\n\tlast synced USN: %s" % ad.get_lastUSN())
 
 
 if __name__ == "__main__":
-	main()
+    main()

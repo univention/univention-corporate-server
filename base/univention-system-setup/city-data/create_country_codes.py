@@ -30,9 +30,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-"""
-Generate `country_codes.json`
-"""
+"""Generate `country_codes.json`"""
 
 from __future__ import print_function
 
@@ -41,14 +39,15 @@ from argparse import ArgumentParser, FileType
 
 import _util
 
+
 if __name__ == '__main__':
-	parser = ArgumentParser(description=__doc__)
-	parser.add_argument("outfile", type=FileType("w"))
-	opt = parser.parse_args()
+    parser = ArgumentParser(description=__doc__)
+    parser.add_argument("outfile", type=FileType("w"))
+    opt = parser.parse_args()
 
-	print('generating country code data...')
-	pairs = _util.get_country_codes(3)
-	json.dump(pairs, opt.outfile, ensure_ascii=False, indent=2, sort_keys=True)
-	opt.outfile.write("\n")
+    print('generating country code data...')
+    pairs = _util.get_country_codes(3)
+    json.dump(pairs, opt.outfile, ensure_ascii=False, indent=2, sort_keys=True)
+    opt.outfile.write("\n")
 
-	print('... done :)')
+    print('... done :)')

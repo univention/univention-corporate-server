@@ -40,19 +40,20 @@ import os.path
 
 import univention.config_registry
 
+
 PATH_BROWSER_PID = '/var/cache/univention-system-setup/browser.pid'
 
 
 def finish_system_setup_boot():
-	ucr = univention.config_registry.ConfigRegistry()
-	ucr.load()
+    ucr = univention.config_registry.ConfigRegistry()
+    ucr.load()
 
-	# make sure that the status file is removed
-	# (see also 05_remove_setup_status_file)
-	setup_status_file = '/var/www/ucs_setup_process_status.json'
-	if os.path.exists(setup_status_file):
-		os.remove(setup_status_file)
+    # make sure that the status file is removed
+    # (see also 05_remove_setup_status_file)
+    setup_status_file = '/var/www/ucs_setup_process_status.json'
+    if os.path.exists(setup_status_file):
+        os.remove(setup_status_file)
 
 
 if __name__ == "__main__":
-	finish_system_setup_boot()
+    finish_system_setup_boot()

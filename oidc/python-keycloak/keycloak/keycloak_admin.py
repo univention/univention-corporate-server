@@ -884,7 +884,7 @@ class KeycloakAdmin:
         """
         params_path = {"realm-name": self.realm_name, "id": client_id}
         data_raw = self.raw_put(URL_ADMIN_CLIENT.format(**params_path),
-                                           data=json.dumps(payload))
+                                data=json.dumps(payload))
         return raise_error_from_response(data_raw, KeycloakGetError, expected_codes=[204])
 
     def delete_client(self, client_id):
@@ -1066,7 +1066,7 @@ class KeycloakAdmin:
 
         params_path = {"realm-name": self.realm_name}
         data_raw = self.raw_post(URL_ADMIN_REALM_ROLES.format(**params_path),
-                                            data=json.dumps(payload))
+                                 data=json.dumps(payload))
         return raise_error_from_response(data_raw, KeycloakGetError, expected_codes=[201], skip_exists=skip_exists)
 
     def get_realm_role(self, role_name):
@@ -1092,7 +1092,7 @@ class KeycloakAdmin:
 
         params_path = {"realm-name": self.realm_name, "role-name": role_name}
         data_raw = self.connection.raw_put(URL_ADMIN_REALM_ROLES_ROLE_BY_NAME.format(**params_path),
-                                            data=json.dumps(payload))
+                                           data=json.dumps(payload))
         return raise_error_from_response(data_raw, KeycloakGetError, expected_codes=[204])
 
     def delete_realm_role(self, role_name):
@@ -1209,7 +1209,7 @@ class KeycloakAdmin:
         payload = roles if isinstance(roles, list) else [roles]
         params_path = {"realm-name": self.realm_name, "id": group_id}
         data_raw = self.raw_delete(URL_ADMIN_GROUPS_REALM_ROLES.format(**params_path),
-                                 data=json.dumps(payload))
+                                   data=json.dumps(payload))
         return raise_error_from_response(data_raw, KeycloakGetError, expected_codes=[204])
 
     def get_group_realm_roles(self, group_id):
@@ -1265,7 +1265,7 @@ class KeycloakAdmin:
         payload = roles if isinstance(roles, list) else [roles]
         params_path = {"realm-name": self.realm_name, "id": group_id, "client-id": client_id}
         data_raw = self.raw_delete(URL_ADMIN_GROUPS_CLIENT_ROLES.format(**params_path),
-                                 data=json.dumps(payload))
+                                   data=json.dumps(payload))
         return raise_error_from_response(data_raw, KeycloakGetError, expected_codes=[204])
 
     def get_client_roles_of_user(self, user_id, client_id):
@@ -1418,7 +1418,7 @@ class KeycloakAdmin:
 
         params_path = {"realm-name": self.realm_name, "flow-alias": flow_alias}
         data_raw = self.raw_post(URL_ADMIN_FLOWS_EXECUTIONS_EXEUCUTION.format(**params_path),
-                                data=payload)
+                                 data=payload)
         return raise_error_from_response(data_raw, KeycloakGetError, expected_codes=[201])
 
     def create_authentication_flow_subflow(self, payload, flow_alias, skip_exists=False):
@@ -1787,7 +1787,7 @@ class KeycloakAdmin:
 
         headers = {
             'Authorization': 'Bearer ' + self.token.get('access_token'),
-            'Content-Type': 'application/json'
+            'Content-Type': 'application/json',
         }
 
         if self.custom_headers is not None:

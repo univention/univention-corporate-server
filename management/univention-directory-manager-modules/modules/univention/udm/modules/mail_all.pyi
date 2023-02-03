@@ -45,27 +45,30 @@ mail/* and oxmail/* in univentionObjectType.
 """
 
 from __future__ import absolute_import, unicode_literals
-from ..encoders import BaseEncoderTV
-from .generic import GenericModule, GenericObject, GenericObjectProperties, OriUdmHandlerTV
 
-from typing import Dict, Text
+from typing import Dict, Text  # noqa: F401
+
+from ..encoders import BaseEncoderTV  # noqa: F401
+from .generic import GenericModule, GenericObject, GenericObjectProperties, OriUdmHandlerTV  # noqa: F401
 
 
 class MailAllObjectProperties(GenericObjectProperties):
-	"""mail/* UDM properties."""
+    """mail/* UDM properties."""
 
-	_encoders = {}  # type: Dict[Text, BaseEncoderTV]
+    _encoders = {}  # type: Dict[Text, BaseEncoderTV]
 
 
 class MailAllObject(GenericObject):
-	"""Better representation of mail/* properties."""
-	udm_prop_class = MailAllObjectProperties
+    """Better representation of mail/* properties."""
+
+    udm_prop_class = MailAllObjectProperties
 
 
 class MailAllModule(GenericModule):
-	"""MailAllObject factory"""
-	_udm_object_class = MailAllObject
-	supported_api_versions = ()  # type: Iterable[int]
+    """MailAllObject factory"""
 
-	def _verify_univention_object_type(self, orig_udm_obj):  # type: (OriUdmHandlerTV) -> None
-		...
+    _udm_object_class = MailAllObject
+    supported_api_versions = ()  # type: Iterable[int]
+
+    def _verify_univention_object_type(self, orig_udm_obj):  # type: (OriUdmHandlerTV) -> None
+        ...

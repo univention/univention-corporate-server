@@ -30,20 +30,16 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-"""
-|UDM| module for the share userquota policies
-"""
+"""|UDM| module for the share userquota policies"""
 
-from univention.admin.layout import Tab, Group
-import univention.admin.syntax
 import univention.admin.filter
 import univention.admin.handlers
 import univention.admin.localization
-
+import univention.admin.syntax
+from univention.admin.layout import Group, Tab
 from univention.admin.policy import (
-	register_policy_mapping, policy_object_tab,
-	requiredObjectClassesProperty, prohibitedObjectClassesProperty,
-	fixedAttributesProperty, emptyAttributesProperty, ldapFilterProperty
+    emptyAttributesProperty, fixedAttributesProperty, ldapFilterProperty, policy_object_tab,
+    prohibitedObjectClassesProperty, register_policy_mapping, requiredObjectClassesProperty,
 )
 
 
@@ -52,14 +48,14 @@ _ = translation.translate
 
 
 class shareUserQuotaFixedAttributes(univention.admin.syntax.select):
-	name = 'shareUserQuotaFixedAttributes'
-	choices = [
-		('univentionQuotaSoftLimitSpace', _('Soft limit')),
-		('univentionQuotaHardLimitSpace', _('Hard limit')),
-		('univentionQuotaSoftLimitInodes', _('Soft limit (Files)')),
-		('univentionQuotaHardLimitInodes', _('Hard limit (Files)')),
-		('univentionQuotaReapplyEveryLogin', _('Reapply settings on every login'))
-	]
+    name = 'shareUserQuotaFixedAttributes'
+    choices = [
+        ('univentionQuotaSoftLimitSpace', _('Soft limit')),
+        ('univentionQuotaHardLimitSpace', _('Hard limit')),
+        ('univentionQuotaSoftLimitInodes', _('Soft limit (Files)')),
+        ('univentionQuotaHardLimitInodes', _('Hard limit (Files)')),
+        ('univentionQuotaReapplyEveryLogin', _('Reapply settings on every login')),
+    ]
 
 
 module = 'policies/share_userquota'
@@ -76,68 +72,68 @@ object_name_plural = _('User quota policies')
 policy_short_description = _('User quota')
 long_description = _('Default quota for each user on a share')
 options = {
-	'default': univention.admin.option(
-		short_description=short_description,
-		default=True,
-		objectClasses=['top', 'univentionPolicy', 'univentionPolicyShareUserQuota'],
-	),
+    'default': univention.admin.option(
+        short_description=short_description,
+        default=True,
+        objectClasses=['top', 'univentionPolicy', 'univentionPolicyShareUserQuota'],
+    ),
 }
 property_descriptions = {
-	'name': univention.admin.property(
-		short_description=_('Name'),
-		long_description='',
-		syntax=univention.admin.syntax.policyName,
-		include_in_default_search=True,
-		required=True,
-		may_change=False,
-		identifies=True,
-	),
-	'softLimitSpace': univention.admin.property(
-		short_description=_('Soft limit'),
-		long_description=_('Soft limit. If exceeded users can be warned. Values may be entered with one of the following units as postfix: B (default), kB, MB, GB'),
-		syntax=univention.admin.syntax.filesize,
-	),
-	'hardLimitSpace': univention.admin.property(
-		short_description=_('Hard limit'),
-		long_description=_('Hard limit. Can not be exceeded. Values may be entered with one of the following units as postfix: B (default), kB, MB, GB'),
-		syntax=univention.admin.syntax.filesize,
-	),
-	'softLimitInodes': univention.admin.property(
-		short_description=_('Soft limit (Files)'),
-		long_description=_('Soft limit. If exceeded users can be warned.'),
-		syntax=univention.admin.syntax.integer,
-	),
-	'hardLimitInodes': univention.admin.property(
-		short_description=_('Hard limit (Files)'),
-		long_description=_('Hard limit. Can not be exceeded.'),
-		syntax=univention.admin.syntax.integer,
-	),
-	'reapplyeverylogin': univention.admin.property(
-		short_description=_('Reapply settings on every login'),
-		long_description=_('Reapply the mountpoint specific user quota policies on each user login. If not set, the initially configured quota settings will not be overwritten.'),
-		syntax=univention.admin.syntax.TrueFalseUp,
-		default="FALSE"
-	),
+    'name': univention.admin.property(
+        short_description=_('Name'),
+        long_description='',
+        syntax=univention.admin.syntax.policyName,
+        include_in_default_search=True,
+        required=True,
+        may_change=False,
+        identifies=True,
+    ),
+    'softLimitSpace': univention.admin.property(
+        short_description=_('Soft limit'),
+        long_description=_('Soft limit. If exceeded users can be warned. Values may be entered with one of the following units as postfix: B (default), kB, MB, GB'),
+        syntax=univention.admin.syntax.filesize,
+    ),
+    'hardLimitSpace': univention.admin.property(
+        short_description=_('Hard limit'),
+        long_description=_('Hard limit. Can not be exceeded. Values may be entered with one of the following units as postfix: B (default), kB, MB, GB'),
+        syntax=univention.admin.syntax.filesize,
+    ),
+    'softLimitInodes': univention.admin.property(
+        short_description=_('Soft limit (Files)'),
+        long_description=_('Soft limit. If exceeded users can be warned.'),
+        syntax=univention.admin.syntax.integer,
+    ),
+    'hardLimitInodes': univention.admin.property(
+        short_description=_('Hard limit (Files)'),
+        long_description=_('Hard limit. Can not be exceeded.'),
+        syntax=univention.admin.syntax.integer,
+    ),
+    'reapplyeverylogin': univention.admin.property(
+        short_description=_('Reapply settings on every login'),
+        long_description=_('Reapply the mountpoint specific user quota policies on each user login. If not set, the initially configured quota settings will not be overwritten.'),
+        syntax=univention.admin.syntax.TrueFalseUp,
+        default="FALSE",
+    ),
 
 }
 property_descriptions.update(dict([
-	requiredObjectClassesProperty(),
-	prohibitedObjectClassesProperty(),
-	fixedAttributesProperty(syntax=shareUserQuotaFixedAttributes),
-	emptyAttributesProperty(syntax=shareUserQuotaFixedAttributes),
-	ldapFilterProperty(),
+    requiredObjectClassesProperty(),
+    prohibitedObjectClassesProperty(),
+    fixedAttributesProperty(syntax=shareUserQuotaFixedAttributes),
+    emptyAttributesProperty(syntax=shareUserQuotaFixedAttributes),
+    ldapFilterProperty(),
 ]))
 
 layout = [
-	Tab(_('General'), _('Quota'), layout=[
-		Group(_('General user quota settings'), layout=[
-			'name',
-			['softLimitSpace', 'hardLimitSpace'],
-			['softLimitInodes', 'hardLimitInodes'],
-			['reapplyeverylogin']
-		]),
-	]),
-	policy_object_tab()
+    Tab(_('General'), _('Quota'), layout=[
+        Group(_('General user quota settings'), layout=[
+            'name',
+            ['softLimitSpace', 'hardLimitSpace'],
+            ['softLimitInodes', 'hardLimitInodes'],
+            ['reapplyeverylogin'],
+        ]),
+    ]),
+    policy_object_tab(),
 ]
 
 mapping = univention.admin.mapping.mapping()
@@ -151,7 +147,7 @@ register_policy_mapping(mapping)
 
 
 class object(univention.admin.handlers.simplePolicy):
-	module = module
+    module = module
 
 
 lookup = object.lookup

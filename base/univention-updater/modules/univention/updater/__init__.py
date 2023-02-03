@@ -29,8 +29,6 @@
 # License with the Debian GNU/Linux or Univention distribution in file
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
-"""
-Python tools for Updater and repository maintenance.
-"""
+"""Python tools for Updater and repository maintenance."""
 
 from univention.updater.tools import UniventionUpdater  # noqa: F401

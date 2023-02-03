@@ -38,12 +38,12 @@ from univention.monitoring import Alert
 
 class DNS(Alert):
 
-	def write_metrics(self):
-		hostname = ucr.get('monitoring/dns/lookup-domain', 'www.univention.de')
-		rc, output = self.exec_command(['/usr/lib/nagios/plugins/check_dns', '-H', hostname])
-		self.write_metric('univention_dns_resolveable', 1 if rc == 0 else 0)
-		self.log.debug(output)
+    def write_metrics(self):
+        hostname = ucr.get('monitoring/dns/lookup-domain', 'www.univention.de')
+        rc, output = self.exec_command(['/usr/lib/nagios/plugins/check_dns', '-H', hostname])
+        self.write_metric('univention_dns_resolveable', 1 if rc == 0 else 0)
+        self.log.debug(output)
 
 
 if __name__ == '__main__':
-	DNS.main()
+    DNS.main()

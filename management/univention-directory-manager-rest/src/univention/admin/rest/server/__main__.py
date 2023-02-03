@@ -36,5 +36,6 @@
 
 from univention.admin.rest.server import Gateway
 
+
 if __name__ == '__main__':
-	Gateway.main()
+    Gateway.main()

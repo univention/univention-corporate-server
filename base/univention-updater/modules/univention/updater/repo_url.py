@@ -29,31 +29,30 @@
 # License with the Debian GNU/Linux or Univention distribution in file
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
-"""
-Univention Updater: UCR Repository Server URL
-"""
+"""Univention Updater: UCR Repository Server URL"""
 
 from copy import copy
+
+
 try:
     from typing import Optional, TypeVar, Union  # noqa: F401
+
     from univention.config_registry import ConfigRegistry  # noqa: F401
     _T = TypeVar("_T")
 except ImportError:
     pass
 
-from six.moves.urllib_parse import urlsplit, quote
+from six.moves.urllib_parse import quote, urlsplit
 
 
 class UcsRepoUrl(object):
-    """
-    UCS repository server base URL.
-    """
+    """UCS repository server base URL."""
 
     DEFAULT = 'https://updates.software-univention.de/'
 
     def __init__(self, ucr, prefix, default=None):
         # type: (ConfigRegistry, str, Union[None, str, UcsRepoUrl]) -> None
-        '''
+        """
         >>> UcsRepoUrl({'_/server': 'hostname'}, '_').path
         ''
         >>> UcsRepoUrl({'_/server': 'hostname', '_/prefix': '/p'}, '_').path
@@ -68,7 +67,7 @@ class UcsRepoUrl(object):
         'http://other/'
         >>> UcsRepoUrl({}, '').private() == UcsRepoUrl.DEFAULT
         True
-        '''
+        """
         def ucrv(key, default=None):
             # type: (str, _T) -> _T
             return ucr.get('%s/%s' % (prefix, key), default)
@@ -124,7 +123,7 @@ class UcsRepoUrl(object):
         # type: () -> str
         return ':%d' % (self.port) if (self.scheme, self.port) not in (
             ('http', 80),
-            ('https', 443)
+            ('https', 443),
         ) else ''
 
     @property

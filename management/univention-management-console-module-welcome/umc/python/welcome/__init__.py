@@ -33,14 +33,14 @@
 
 from univention.lib.i18n import Translation
 from univention.management.console.modules import Base
-
 from univention.management.console.modules.decorators import simple_response
+
 
 _ = Translation('univention-management-console-module-welcome').translate
 
 
 class Instance(Base):
 
-	@simple_response
-	def welcome(self):
-		return True
+    @simple_response
+    def welcome(self):
+        return True

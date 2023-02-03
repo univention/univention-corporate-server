@@ -39,30 +39,30 @@ from univention.monitoring import Alert
 
 class OPSI(Alert):
 
-	def write_metrics(self):
-		rc, output = self.exec_command(['/usr/lib/nagios/plugins/check_procs', '-w', '1:', '-c', '1:', '-C', 'opsiconfd'])
-		self.write_metric('univention_opsi_running', 1 if rc == 0 else 0)
-		self.log.debug(output)
+    def write_metrics(self):
+        rc, output = self.exec_command(['/usr/lib/nagios/plugins/check_procs', '-w', '1:', '-c', '1:', '-C', 'opsiconfd'])
+        self.write_metric('univention_opsi_running', 1 if rc == 0 else 0)
+        self.log.debug(output)
 
-		# check HTTP service
-		port = '4447'
-		try:
-			with open('/etc/opsi/opsiconfd.conf') as fd:
-				while True:
-					line = fd.readline()
-					if not line:
-						break
-					match = re.match(r'^\s*https port\s+=\s+(\d+)', line)
-					if match:
-						port = match.group(0)
-						break
-		except FileNotFoundError:
-			pass
+        # check HTTP service
+        port = '4447'
+        try:
+            with open('/etc/opsi/opsiconfd.conf') as fd:
+                while True:
+                    line = fd.readline()
+                    if not line:
+                        break
+                    match = re.match(r'^\s*https port\s+=\s+(\d+)', line)
+                    if match:
+                        port = match.group(0)
+                        break
+        except FileNotFoundError:
+            pass
 
-		rc, output = self.exec_command(['/usr/lib/nagios/plugins/check_http', '-I', '127.0.0.1', '-p', port, '-S'])
-		self.write_metric('univention_opsi_reachable', 1 if rc == 0 else 0)
-		self.log.debug(output)
+        rc, output = self.exec_command(['/usr/lib/nagios/plugins/check_http', '-I', '127.0.0.1', '-p', port, '-S'])
+        self.write_metric('univention_opsi_reachable', 1 if rc == 0 else 0)
+        self.log.debug(output)
 
 
 if __name__ == '__main__':
-	OPSI.main()
+    OPSI.main()

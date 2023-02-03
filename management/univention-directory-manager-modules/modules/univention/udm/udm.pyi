@@ -30,49 +30,51 @@
 # <https://www.gnu.org/licenses/>.
 
 from __future__ import absolute_import, unicode_literals
-from .base import BaseModuleTV, BaseObjectTV
-from .utils import UDebug as ud, ConnectionConfig
-from typing import Any, Dict, List, Optional, Text, Tuple, Type
+
+from typing import Any, Dict, List, Optional, Text, Tuple, Type  # noqa: F401
+
+from .base import BaseModuleTV, BaseObjectTV  # noqa: F401
+from .utils import ConnectionConfig, UDebug as ud  # noqa: F401
 
 
 class UDM(object):
-	_module_object_cache = {}  # type: Dict[Tuple[Text, int, int], BaseModuleTV]
-	_imported = False
-	_modules = []  # type: List[BaseModuleTV]
+    _module_object_cache = {}  # type: Dict[Tuple[Text, int, int], BaseModuleTV]
+    _imported = False
+    _modules = []  # type: List[BaseModuleTV]
 
-	def __init__(self, connection, api_version=None):  # type: (Any, Optional[int]) -> None
-		self.connection = connection
-		self._api_version = api_version
+    def __init__(self, connection, api_version=None):  # type: (Any, Optional[int]) -> None
+        self.connection = connection
+        self._api_version = api_version
 
-	@classmethod
-	def admin(cls):  # type: () -> UDM
-		...
+    @classmethod
+    def admin(cls):  # type: () -> UDM
+        ...
 
-	@classmethod
-	def machine(cls):  # type: () -> UDM
-		...
+    @classmethod
+    def machine(cls):  # type: () -> UDM
+        ...
 
-	@classmethod
-	def credentials(
-			cls,
-			identity,  # type: Text
-			password,  # type: Text
-			base=None,  # type: Optional[Text]
-			server=None,  # type: Optional[Text]
-			port=None,  # type: Optional[int]
-	):
-		# type: (...) -> UDM
-		...
+    @classmethod
+    def credentials(
+        cls,
+        identity,  # type: Text
+        password,  # type: Text
+        base=None,  # type: Optional[Text]
+        server=None,  # type: Optional[Text]
+        port=None,  # type: Optional[int]
+    ):
+        # type: (...) -> UDM
+        ...
 
-	def version(self, api_version):  # type: (int) -> UDM
-		...
+    def version(self, api_version):  # type: (int) -> UDM
+        ...
 
-	def get(self, name):  # type: (Text) -> BaseModuleTV
-		...
+    def get(self, name):  # type: (Text) -> BaseModuleTV
+        ...
 
-	def obj_by_dn(self, dn):  # type: (Text) -> BaseObjectTV
-		...
+    def obj_by_dn(self, dn):  # type: (Text) -> BaseObjectTV
+        ...
 
-	@property
-	def api_version(self):  # type: () -> int
-		...
+    @property
+    def api_version(self):  # type: () -> int
+        ...

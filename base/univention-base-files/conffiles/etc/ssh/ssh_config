@@ -51,6 +51,6 @@ Host *
     HashKnownHosts yes
 @!@
 if 'krb5' in configRegistry.get('auth/methods', ''):
-	print('    GSSAPIAuthentication yes')
+    print('    GSSAPIAuthentication yes')
 @!@
     GSSAPIDelegateCredentials no

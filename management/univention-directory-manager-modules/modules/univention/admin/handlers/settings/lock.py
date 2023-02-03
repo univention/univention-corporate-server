@@ -30,15 +30,14 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-"""
-|UDM| module for locking objects
-"""
+"""|UDM| module for locking objects"""
 
-from univention.admin.layout import Tab, Group
-import univention.admin.syntax
 import univention.admin.filter
 import univention.admin.handlers
 import univention.admin.localization
+import univention.admin.syntax
+from univention.admin.layout import Group, Tab
+
 
 translation = univention.admin.localization.translation('univention.admin.handlers.settings')
 _ = translation.translate
@@ -53,37 +52,37 @@ object_name = _('Lock')
 object_name_plural = _('Locks')
 long_description = _('Lock objects')
 options = {
-	'default': univention.admin.option(
-		short_description=short_description,
-		default=True,
-		objectClasses=['lock'],
-	),
+    'default': univention.admin.option(
+        short_description=short_description,
+        default=True,
+        objectClasses=['lock'],
+    ),
 }
 property_descriptions = {
-	'name': univention.admin.property(
-		short_description=_('Name'),
-		long_description=_('Name'),
-		syntax=univention.admin.syntax.string,
-		include_in_default_search=True,
-		required=True,
-		may_change=False,
-		identifies=True,
-	),
-	'locktime': univention.admin.property(
-		short_description=_('Lock Time'),
-		long_description=_('Locked until'),
-		syntax=univention.admin.syntax.string,
-		required=True,
-		may_change=False,
-	),
+    'name': univention.admin.property(
+        short_description=_('Name'),
+        long_description=_('Name'),
+        syntax=univention.admin.syntax.string,
+        include_in_default_search=True,
+        required=True,
+        may_change=False,
+        identifies=True,
+    ),
+    'locktime': univention.admin.property(
+        short_description=_('Lock Time'),
+        long_description=_('Locked until'),
+        syntax=univention.admin.syntax.string,
+        required=True,
+        may_change=False,
+    ),
 }
 
 layout = [
-	Tab(_('General'), _('Lock Information'), layout=[
-		Group(_('General lock settings'), layout=[
-			['name', 'locktime'],
-		]),
-	]),
+    Tab(_('General'), _('Lock Information'), layout=[
+        Group(_('General lock settings'), layout=[
+            ['name', 'locktime'],
+        ]),
+    ]),
 ]
 
 mapping = univention.admin.mapping.mapping()
@@ -92,7 +91,7 @@ mapping.register('locktime', 'lockTime', None, univention.admin.mapping.ListToSt
 
 
 class object(univention.admin.handlers.simpleLdap):
-	module = module
+    module = module
 
 
 lookup = object.lookup

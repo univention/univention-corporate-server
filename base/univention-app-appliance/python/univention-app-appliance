@@ -31,9 +31,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-"""
-Apply App Appliance specific configuration and branding to different parts of UCS.
-"""
+"""Apply App Appliance specific configuration and branding to different parts of UCS."""
 
 import base64
 import json
@@ -58,307 +56,306 @@ UCR = ucr_factory()
 
 
 def _branding_resources_base_url(app_id: str, ucs_version: str) -> str:
-	protocol = 'https://'
-	server = UCR.get('repository/app_center/server')
-	if '://' in server:
-		protocol = ''
-	return '{protocol}{server}/meta-inf/{version}/{app}'.format(
-		protocol=protocol,
-		server=server,
-		version=ucs_version,
-		app=app_id
-	)
+    protocol = 'https://'
+    server = UCR.get('repository/app_center/server')
+    if '://' in server:
+        protocol = ''
+    return '{protocol}{server}/meta-inf/{version}/{app}'.format(
+        protocol=protocol,
+        server=server,
+        version=ucs_version,
+        app=app_id,
+    )
 
 
 def _download_resource(app: App, resource: str, dest_path: str) -> None:
-	app_cache_dir = get_cache_dir_name(app)
-	cached_file_name = os.path.join(app_cache_dir, resource)
-	if os.path.exists(cached_file_name):
-		shutil.copy2(cached_file_name, dest_path)
-		print_status('Successfully copied %s from cache' % resource)
-		return
-	resource_url = "{app_url}/{res_name}".format(
-		app_url=_branding_resources_base_url(app.id, app.ucs_version),
-		res_name=resource)
-	try:
-		req = requests.head(resource_url, timeout=5)
-		if req.status_code < 400:
-			req = requests.get(resource_url)
-			with open(dest_path, 'wb') as handle:
-				for block in req.iter_content(8192):
-					handle.write(block)
-			print_status('Successfully downloaded %s' % resource_url)
-		else:
-			print_status('WARNING: Status: %s; Failed to download %s' % (req.status_code, resource_url))
-	except (IOError, requests.HTTPError, requests.ConnectionError, requests.Timeout):
-		print_status('WARNING: Failed to download %s' % resource_url)
+    app_cache_dir = get_cache_dir_name(app)
+    cached_file_name = os.path.join(app_cache_dir, resource)
+    if os.path.exists(cached_file_name):
+        shutil.copy2(cached_file_name, dest_path)
+        print_status('Successfully copied %s from cache' % resource)
+        return
+    resource_url = "{app_url}/{res_name}".format(
+        app_url=_branding_resources_base_url(app.id, app.ucs_version),
+        res_name=resource)
+    try:
+        req = requests.head(resource_url, timeout=5)
+        if req.status_code < 400:
+            req = requests.get(resource_url)
+            with open(dest_path, 'wb') as handle:
+                for block in req.iter_content(8192):
+                    handle.write(block)
+            print_status('Successfully downloaded %s' % resource_url)
+        else:
+            print_status('WARNING: Status: %s; Failed to download %s' % (req.status_code, resource_url))
+    except (IOError, requests.HTTPError, requests.ConnectionError, requests.Timeout):
+        print_status('WARNING: Failed to download %s' % resource_url)
 
 
 def print_status(message: str) -> None:
-	print('univention-app-appliance: %s' % message)
+    print('univention-app-appliance: %s' % message)
 
 
 def cache_portal(app: App) -> None:
-	app_props: Dict[str, str] = get_app_style_properties(app)
-	app_de: App = app.get_app_cache_obj().copy(locale='de').find_by_component_id(app.component_id)
-	app_props_de: Dict[str, str] = get_app_style_properties(app_de)
-	app_cache_dir: str = get_cache_dir_name(app)
-	if not os.path.exists(app_cache_dir):
-		os.mkdir(app_cache_dir)
-	with open(os.path.join(app_cache_dir, 'app_props'), 'w') as fd:
-		json.dump(app_props, fd)
-	with open(os.path.join(app_cache_dir, 'app_props_de'), 'w') as fd:
-		json.dump(app_props_de, fd)
+    app_props: Dict[str, str] = get_app_style_properties(app)
+    app_de: App = app.get_app_cache_obj().copy(locale='de').find_by_component_id(app.component_id)
+    app_props_de: Dict[str, str] = get_app_style_properties(app_de)
+    app_cache_dir: str = get_cache_dir_name(app)
+    if not os.path.exists(app_cache_dir):
+        os.mkdir(app_cache_dir)
+    with open(os.path.join(app_cache_dir, 'app_props'), 'w') as fd:
+        json.dump(app_props, fd)
+    with open(os.path.join(app_cache_dir, 'app_props_de'), 'w') as fd:
+        json.dump(app_props_de, fd)
 
-	# portal background
-	image_name = app_props.get('portal_background_image')
-	if image_name:
-		dest_path = os.path.join(app_cache_dir, image_name)
-		_download_resource(app, image_name, dest_path)
+    # portal background
+    image_name = app_props.get('portal_background_image')
+    if image_name:
+        dest_path = os.path.join(app_cache_dir, image_name)
+        _download_resource(app, image_name, dest_path)
 
-	# portal logo
-	image_name = app_props.get('portal_logo')
-	if image_name:
-		dest_path = os.path.join(app_cache_dir, image_name)
-		_download_resource(app, image_name, dest_path)
+    # portal logo
+    image_name = app_props.get('portal_logo')
+    if image_name:
+        dest_path = os.path.join(app_cache_dir, image_name)
+        _download_resource(app, image_name, dest_path)
 
 
 def configure_portal(app: App) -> None:
-	lo, po = udm_uldap.getMachineConnection()
-	udm_modules.update()
-	module = udm_modules.get('portals/portal')
-	result = module.lookup(None, lo, 'cn=domain', base=UCR['ldap/base'], scope='sub')
-	if not result:
-		raise RuntimeError('Could not find UDM portal object!')
-	portal_obj = result[0]
+    lo, po = udm_uldap.getMachineConnection()
+    udm_modules.update()
+    module = udm_modules.get('portals/portal')
+    result = module.lookup(None, lo, 'cn=domain', base=UCR['ldap/base'], scope='sub')
+    if not result:
+        raise RuntimeError('Could not find UDM portal object!')
+    portal_obj = result[0]
 
-	# get properties (EN and DE)
-	app_props = get_app_style_properties(app)
-	app_de = app.get_app_cache_obj().copy(locale='de').find_by_component_id(app.component_id)
-	app_props_de = get_app_style_properties(app_de)
+    # get properties (EN and DE)
+    app_props = get_app_style_properties(app)
+    app_de = app.get_app_cache_obj().copy(locale='de').find_by_component_id(app.component_id)
+    app_props_de = get_app_style_properties(app_de)
 
-	# portal title
-	print_status('Setting portal title...')
-	portal_title = app_props.get('portal_title')
-	if portal_title:
-		portal_obj['displayName'] = [
-			['en_US', portal_title],
-			['de_DE', app_props_de.get('portal_title') or app_props.get('portal_title')],
-		]
-	else:
-		# if not specified, use a reasonable fallback
-		portal_obj['displayName'] = [
-			['en_US', app.appliance_name or app.name],
-			['de_DE', app.appliance_name or app.name],
-		]
+    # portal title
+    print_status('Setting portal title...')
+    portal_title = app_props.get('portal_title')
+    if portal_title:
+        portal_obj['displayName'] = [
+            ['en_US', portal_title],
+            ['de_DE', app_props_de.get('portal_title') or app_props.get('portal_title')],
+        ]
+    else:
+        # if not specified, use a reasonable fallback
+        portal_obj['displayName'] = [
+            ['en_US', app.appliance_name or app.name],
+            ['de_DE', app.appliance_name or app.name],
+        ]
 
-	# portal background image
-	image_name = app_props.get('portal_background_image')
-	if image_name:
-		print_status('Setting portal background image...')
-		ext = os.path.splitext(image_name)[1]
-		dest_path = '/tmp/appliance_portal_background_image_%s.%s' % (os.getpid(), ext)
-		_download_resource(app, image_name, dest_path)
-		with open(dest_path, 'rb') as fp:
-			base64_img = base64.b64encode(fp.read()).decode('ASCII')
-		portal_obj['background'] = base64_img
+    # portal background image
+    image_name = app_props.get('portal_background_image')
+    if image_name:
+        print_status('Setting portal background image...')
+        ext = os.path.splitext(image_name)[1]
+        dest_path = '/tmp/appliance_portal_background_image_%s.%s' % (os.getpid(), ext)
+        _download_resource(app, image_name, dest_path)
+        with open(dest_path, 'rb') as fp:
+            base64_img = base64.b64encode(fp.read()).decode('ASCII')
+        portal_obj['background'] = base64_img
 
-	# portal logo
-	image_name = app_props.get('portal_logo')
-	if image_name:
-		print_status('Setting portal logo...')
-		ext = os.path.splitext(image_name)[1]
-		dest_path = '/tmp/appliance_portal_logo_%s.%s' % (os.getpid(), ext)
-		_download_resource(app, image_name, dest_path)
-		with open(dest_path, 'rb') as fp:
-			base64_img = base64.b64encode(fp.read()).decode('ASCII')
-		portal_obj['logo'] = base64_img
+    # portal logo
+    image_name = app_props.get('portal_logo')
+    if image_name:
+        print_status('Setting portal logo...')
+        ext = os.path.splitext(image_name)[1]
+        dest_path = '/tmp/appliance_portal_logo_%s.%s' % (os.getpid(), ext)
+        _download_resource(app, image_name, dest_path)
+        with open(dest_path, 'rb') as fp:
+            base64_img = base64.b64encode(fp.read()).decode('ASCII')
+        portal_obj['logo'] = base64_img
 
-	portal_css_background = app_props.get('portal_css_background')
-	if portal_css_background:
-		print_status('Setting portal CSS background...')
-		theme = get_theme(app)
+    portal_css_background = app_props.get('portal_css_background')
+    if portal_css_background:
+        print_status('Setting portal CSS background...')
+        theme = get_theme(app)
 
-		with open('/usr/share/univention-web/themes/ucs-app-appliance.css', 'w') as fd:
-			fd.write(f'''
+        with open('/usr/share/univention-web/themes/ucs-app-appliance.css', 'w') as fd:
+            fd.write(f'''
 @import url("themes/{theme}.css");
 .portal__background {{
 \tbackground: {portal_css_background}!important;
 }}
 ''')
 
-		ucr_update(UCR, {
-			'ucs/web/theme': 'ucs-app-appliance'
-		})
+        ucr_update(UCR, {
+            'ucs/web/theme': 'ucs-app-appliance',
+        })
 
-	portal_font_color = app_props.get('portal_font_color')
-	if portal_font_color and 'fontColor' in module.property_descriptions:
-		print_status('Setting portal font color')
-		portal_obj['fontColor'] = portal_font_color
+    portal_font_color = app_props.get('portal_font_color')
+    if portal_font_color and 'fontColor' in module.property_descriptions:
+        print_status('Setting portal font color')
+        portal_obj['fontColor'] = portal_font_color
 
-	print_status('Saving modifications to LDAP')
-	portal_obj.modify()
+    print_status('Saving modifications to LDAP')
+    portal_obj.modify()
 
 
 def get_theme(app: App) -> str:
-	primary_color = app.appliance_primary_color
-	theme = 'light'
-	if app.appliance_welcome_screen_font_color:
-		if app.appliance_welcome_screen_font_color == 'white':
-			theme = 'dark'
-	# fallback evaluation
-	elif primary_color and get_luminance(primary_color) < .5:
-		theme = 'dark'
-	return theme
+    primary_color = app.appliance_primary_color
+    theme = 'light'
+    if app.appliance_welcome_screen_font_color:
+        if app.appliance_welcome_screen_font_color == 'white':
+            theme = 'dark'
+    # fallback evaluation
+    elif primary_color and get_luminance(primary_color) < .5:
+        theme = 'dark'
+    return theme
 
 
 def setup_app(app: App) -> None:
-	# query color information
-	css_background = app.appliance_css_background
-	secondary_color = app.appliance_secondary_color
+    # query color information
+    css_background = app.appliance_css_background
+    secondary_color = app.appliance_secondary_color
 
-	theme = get_theme(app)
+    theme = get_theme(app)
 
-	def set_appliance_ucr_values() -> None:
-		ucr_update(UCR, {
-			'system/setup/boot/pages/blacklist': app.appliance_pages_blacklist.replace(', ', ' '),
-			'system/setup/boot/fields/blacklist': app.appliance_fields_blacklist.replace(', ', ' '),
-			'repository/app_center/blacklist': app.appliance_blacklist,
-			'repository/app_center/whitelist': app.appliance_whitelist,
-			'umc/web/appliance/id': app.id,
-			'umc/web/appliance/name': app.appliance_name or app.name,
-			'umc/web/appliance/fast_setup_mode': str(app.appliance_allow_preconfigured_setup).lower(),  # convert bool value to ('true', 'false')
-			'grub/title': "Start %s" % (app.appliance_name or app.name),
-			'appliance/apps/%s/version' % app.id: app.version,
-			'appliance/apps/%s/notifyVendor' % app.id: str(app.notify_vendor),
-		})
+    def set_appliance_ucr_values() -> None:
+        ucr_update(UCR, {
+            'system/setup/boot/pages/blacklist': app.appliance_pages_blacklist.replace(', ', ' '),
+            'system/setup/boot/fields/blacklist': app.appliance_fields_blacklist.replace(', ', ' '),
+            'repository/app_center/blacklist': app.appliance_blacklist,
+            'repository/app_center/whitelist': app.appliance_whitelist,
+            'umc/web/appliance/id': app.id,
+            'umc/web/appliance/name': app.appliance_name or app.name,
+            'umc/web/appliance/fast_setup_mode': str(app.appliance_allow_preconfigured_setup).lower(),  # convert bool value to ('true', 'false')
+            'grub/title': "Start %s" % (app.appliance_name or app.name),
+            'appliance/apps/%s/version' % app.id: app.version,
+            'appliance/apps/%s/notifyVendor' % app.id: str(app.notify_vendor),
+        })
 
-	def adjust_svg_image_colors() -> None:
-		print_status('Adjusting colors of UMC images.')
-		for src_path in glob('/usr/share/univention-app-appliance/images/*.svg'):
-			filename = os.path.basename(src_path)
-			dest_path = os.path.join('/usr/share/univention-system-setup/www/', filename)
-			if secondary_color:
-				with open(src_path, 'r') as in_file:
-					with open(dest_path, 'w') as out_file:
-						for line in in_file:
-							out_file.write(line.replace('#ff00ff', secondary_color))
-			else:
-				# use original SVG files as fallback
-				src_path = '%s.real' % dest_path
-				shutil.copy(src_path, dest_path)
+    def adjust_svg_image_colors() -> None:
+        print_status('Adjusting colors of UMC images.')
+        for src_path in glob('/usr/share/univention-app-appliance/images/*.svg'):
+            filename = os.path.basename(src_path)
+            dest_path = os.path.join('/usr/share/univention-system-setup/www/', filename)
+            if secondary_color:
+                with open(src_path) as in_file, open(dest_path, 'w') as out_file:
+                    for line in in_file:
+                        out_file.write(line.replace('#ff00ff', secondary_color))
+            else:
+                # use original SVG files as fallback
+                src_path = '%s.real' % dest_path
+                shutil.copy(src_path, dest_path)
 
-	def symlink_first_steps() -> None:
-		for lang in ['_DE', '_EN']:
-			source = app.get_cache_file('README_APPLIANCE%s' % (lang, ))
-			target = '/usr/share/univention-web/js/umc/hooks/appliance_readme%s' % (lang.lower(),)
-			if os.path.islink(target):
-				print_status("Remove old first steps symlink")
-				try:
-					os.remove(target)
-				except OSError as exc:
-					print_status('WARNING: An error occurred when removing the file %s: %s' % (target, exc))
-			print_status("Symlink first steps from %s to %s" % (source, target,))
-			if os.path.exists(source):
-				os.symlink(source, target)
+    def symlink_first_steps() -> None:
+        for lang in ['_DE', '_EN']:
+            source = app.get_cache_file('README_APPLIANCE%s' % (lang, ))
+            target = '/usr/share/univention-web/js/umc/hooks/appliance_readme%s' % (lang.lower(),)
+            if os.path.islink(target):
+                print_status("Remove old first steps symlink")
+                try:
+                    os.remove(target)
+                except OSError as exc:
+                    print_status('WARNING: An error occurred when removing the file %s: %s' % (target, exc))
+            print_status("Symlink first steps from %s to %s" % (source, target))
+            if os.path.exists(source):
+                os.symlink(source, target)
 
-	def set_plymouth_theme() -> None:
-		print_status("Applying branded plymouth theme.")
-		if css_background:
-			call(['/usr/share/univention-app-appliance/render-css-background', '1600x1200', css_background, '/usr/share/plymouth/themes/ucs-appliance-%s/bg.png' % theme])
-		else:
-			shutil.copy('/usr/share/plymouth/themes/ucs-appliance-%s/bg.png.fallback' % theme, '/usr/share/plymouth/themes/ucs-appliance-%s/bg.png' % theme)
-		if not app.appliance_bootsplash_logo:
-			shutil.copy('/usr/share/plymouth/themes/ucs-appliance-%s/logo_bootsplash.svg.png.fallback' % theme, '/usr/share/plymouth/themes/ucs-appliance-%s/logo_bootsplash.svg.png' % theme)
-		if not app.appliance_welcome_screen_logo:
-			shutil.copy('/usr/share/plymouth/themes/ucs-appliance-%s/logo_welcome_screen.svg.png.fallback' % theme, '/usr/share/plymouth/themes/ucs-appliance-%s/logo_welcome_screen.svg.png' % theme)
-		ucr_update(UCR, {'bootsplash/theme': 'ucs-appliance-%s' % (theme,)})
+    def set_plymouth_theme() -> None:
+        print_status("Applying branded plymouth theme.")
+        if css_background:
+            call(['/usr/share/univention-app-appliance/render-css-background', '1600x1200', css_background, '/usr/share/plymouth/themes/ucs-appliance-%s/bg.png' % theme])
+        else:
+            shutil.copy('/usr/share/plymouth/themes/ucs-appliance-%s/bg.png.fallback' % theme, '/usr/share/plymouth/themes/ucs-appliance-%s/bg.png' % theme)
+        if not app.appliance_bootsplash_logo:
+            shutil.copy('/usr/share/plymouth/themes/ucs-appliance-%s/logo_bootsplash.svg.png.fallback' % theme, '/usr/share/plymouth/themes/ucs-appliance-%s/logo_bootsplash.svg.png' % theme)
+        if not app.appliance_welcome_screen_logo:
+            shutil.copy('/usr/share/plymouth/themes/ucs-appliance-%s/logo_welcome_screen.svg.png.fallback' % theme, '/usr/share/plymouth/themes/ucs-appliance-%s/logo_welcome_screen.svg.png' % theme)
+        ucr_update(UCR, {'bootsplash/theme': 'ucs-appliance-%s' % (theme,)})
 
-	def set_grub_theme() -> None:
-		print_status("Applying branded grub theme.")
-		grub_color = 'black/black'
-		if theme == 'dark':
-			grub_color = 'white/black'
-		ucr_vars = {
-			'grub/backgroundimage': '/usr/share/plymouth/themes/ucs-appliance-%s/bg.png' % (theme,),
-			'grub/color/highlight': grub_color,
-			'grub/color/normal': grub_color,
-			'grub/menu/color/highlight': grub_color,
-			'grub/menu/color/normal': grub_color,
-		}
-		ucr_update(UCR, ucr_vars)
+    def set_grub_theme() -> None:
+        print_status("Applying branded grub theme.")
+        grub_color = 'black/black'
+        if theme == 'dark':
+            grub_color = 'white/black'
+        ucr_vars = {
+            'grub/backgroundimage': '/usr/share/plymouth/themes/ucs-appliance-%s/bg.png' % (theme,),
+            'grub/color/highlight': grub_color,
+            'grub/color/normal': grub_color,
+            'grub/menu/color/highlight': grub_color,
+            'grub/menu/color/normal': grub_color,
+        }
+        ucr_update(UCR, ucr_vars)
 
-	def commit_css_template_files() -> None:
-		print_status('Updating CSS and JSON files')
-		css_files = [
-			('setup_style.css', '/usr/share/univention-system-setup/www/style.css'),
-			('system_activation_style.css', '/usr/share/univention-system-activation/style.css'),
-		]
-		for isrc_file, idest_path in css_files:
-			with open(os.path.join('/usr/share/univention-app-appliance/templates', isrc_file)) as file_in, open(idest_path, 'w') as file_out:
-				print_status('Creating template file %s' % (idest_path, ))
-				call(['/usr/sbin/ucr', 'filter'], stdin=file_in, stdout=file_out)
+    def commit_css_template_files() -> None:
+        print_status('Updating CSS and JSON files')
+        css_files = [
+            ('setup_style.css', '/usr/share/univention-system-setup/www/style.css'),
+            ('system_activation_style.css', '/usr/share/univention-system-activation/style.css'),
+        ]
+        for isrc_file, idest_path in css_files:
+            with open(os.path.join('/usr/share/univention-app-appliance/templates', isrc_file)) as file_in, open(idest_path, 'w') as file_out:
+                print_status('Creating template file %s' % (idest_path, ))
+                call(['/usr/sbin/ucr', 'filter'], stdin=file_in, stdout=file_out)
 
-	def _svg_to_png(source: str, dest: str, params: str, res: str = '800x600') -> None:
-		css_background = 'url(file:///{source}) {params}'.format(source=source, params=params)
-		call(['/usr/share/univention-app-appliance/render-css-background', res, css_background, dest])
+    def _svg_to_png(source: str, dest: str, params: str, res: str = '800x600') -> None:
+        css_background = f'url(file:///{source}) {params}'
+        call(['/usr/share/univention-app-appliance/render-css-background', res, css_background, dest])
 
-	def download_logo_images() -> None:
-		print_status('Downloading images.')
-		if app.appliance_logo:
-			logo = '/usr/share/univention-system-setup/www/welcome.svg'
-			_download_resource(app, app.appliance_logo, logo)
-			logo_copy = '/var/www/icon/%s' % app.appliance_logo
-			shutil.copy(logo, logo_copy)
-			os.chmod(logo_copy, 0o644)
-			ucr_update(UCR, {'umc/web/appliance/logo': '/icon/%s' % app.appliance_logo})
+    def download_logo_images() -> None:
+        print_status('Downloading images.')
+        if app.appliance_logo:
+            logo = '/usr/share/univention-system-setup/www/welcome.svg'
+            _download_resource(app, app.appliance_logo, logo)
+            logo_copy = '/var/www/icon/%s' % app.appliance_logo
+            shutil.copy(logo, logo_copy)
+            os.chmod(logo_copy, 0o644)
+            ucr_update(UCR, {'umc/web/appliance/logo': '/icon/%s' % app.appliance_logo})
 
-		if app.appliance_umc_header_logo:
-			# UMC
-			header_logo = '/usr/share/univention-web/js/dijit/themes/umc/images/appliance_header_logo.svg'
-			_download_resource(app, app.appliance_umc_header_logo, header_logo)
+        if app.appliance_umc_header_logo:
+            # UMC
+            header_logo = '/usr/share/univention-web/js/dijit/themes/umc/images/appliance_header_logo.svg'
+            _download_resource(app, app.appliance_umc_header_logo, header_logo)
 
-		if app.appliance_welcome_screen_logo:
-			img = '/usr/share/plymouth/themes/ucs-appliance-%s/logo_welcome_screen.svg' % theme
-			_download_resource(app, app.appliance_welcome_screen_logo, img)
-			params = 'no-repeat; background-size: contain; background-position: center center;'
-			_svg_to_png(img, img + '.png', params, '120x120')
+        if app.appliance_welcome_screen_logo:
+            img = '/usr/share/plymouth/themes/ucs-appliance-%s/logo_welcome_screen.svg' % theme
+            _download_resource(app, app.appliance_welcome_screen_logo, img)
+            params = 'no-repeat; background-size: contain; background-position: center center;'
+            _svg_to_png(img, img + '.png', params, '120x120')
 
-		if app.appliance_bootsplash_logo:
-			img = '/usr/share/plymouth/themes/ucs-appliance-%s/logo_bootsplash.svg' % theme
-			_download_resource(app, app.appliance_bootsplash_logo, img)
-			params = 'no-repeat; background-size: contain; background-position: center center;'
-			_svg_to_png(img, img + '.png', params)
+        if app.appliance_bootsplash_logo:
+            img = '/usr/share/plymouth/themes/ucs-appliance-%s/logo_bootsplash.svg' % theme
+            _download_resource(app, app.appliance_bootsplash_logo, img)
+            params = 'no-repeat; background-size: contain; background-position: center center;'
+            _svg_to_png(img, img + '.png', params)
 
-	set_appliance_ucr_values()
-	adjust_svg_image_colors()
-	symlink_first_steps()
-	download_logo_images()
-	set_plymouth_theme()
-	set_grub_theme()
-	commit_css_template_files()
+    set_appliance_ucr_values()
+    adjust_svg_image_colors()
+    symlink_first_steps()
+    download_logo_images()
+    set_plymouth_theme()
+    set_grub_theme()
+    commit_css_template_files()
 
 
 def parse_args() -> Namespace:
-	parser = ArgumentParser(description=__doc__)
-	parser.add_argument("--only-configure-portal", "-p", action="store_true")
-	parser.add_argument("--not-configure-portal", "-P", action="store_true")
-	parser.add_argument("app", metavar="APP-ID", type=Apps().find)
-	opt = parser.parse_args()
-	return opt
+    parser = ArgumentParser(description=__doc__)
+    parser.add_argument("--only-configure-portal", "-p", action="store_true")
+    parser.add_argument("--not-configure-portal", "-P", action="store_true")
+    parser.add_argument("app", metavar="APP-ID", type=Apps().find)
+    opt = parser.parse_args()
+    return opt
 
 
 def main() -> None:
-	opt = parse_args()
+    opt = parse_args()
 
-	if opt.not_configure_portal:
-		cache_portal(opt.app)
-	else:
-		configure_portal(opt.app)
+    if opt.not_configure_portal:
+        cache_portal(opt.app)
+    else:
+        configure_portal(opt.app)
 
-	if not opt.only_configure_portal:
-		setup_app(opt.app)
+    if not opt.only_configure_portal:
+        setup_app(opt.app)
 
 
 if __name__ == '__main__':
-	main()
+    main()

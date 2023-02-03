@@ -24,27 +24,27 @@ LOGS = """
 """
 FILES = {}
 for (path, cat) in findall(r'(/var/log/(\w+)(?:[.]\w+)?)', LOGS):
-	FILES.setdefault(cat, (set(), {}))[0].add(path)
+    FILES.setdefault(cat, (set(), {}))[0].add(path)
 
 other_logfiles = set()
 other_settings = getLogrotateConfig('syslog-other', configRegistry)
 for (cat, (paths, settings)) in list(FILES.items()):
-	custom = getLogrotateConfig(cat, configRegistry)
-	if custom == other_settings:
-		other_logfiles |= paths
-		del FILES[cat]
-	else:
-		settings.update(custom)
+    custom = getLogrotateConfig(cat, configRegistry)
+    if custom == other_settings:
+        other_logfiles |= paths
+        del FILES[cat]
+    else:
+        settings.update(custom)
 
 FILES[None] = (other_logfiles, other_settings)
 
-for (cat, (paths, settings)) in sorted(FILES.items(), key=lambda x: str(x[0])):
-	for path in sorted(paths):
-		print(path)
-	print('{')
-	for setting in sorted(settings.values()):
-		print('\t%s' % (setting, ))
-	print("""\
+for (_cat, (paths, settings)) in sorted(FILES.items(), key=lambda x: str(x[0])):
+    for path in sorted(paths):
+        print(path)
+    print('{')
+    for setting in sorted(settings.values()):
+        print('\t%s' % (setting, ))
+    print("""\
 	delaycompress
 	sharedscripts
 	postrotate

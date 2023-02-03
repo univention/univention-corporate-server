@@ -35,35 +35,37 @@ from __future__ import absolute_import, annotations
 
 from typing import Dict, List
 
-import listener
 import univention.debug as ud
 from univention.config_registry import ConfigRegistry, handler_set, handler_unset
+
+import listener
+
 
 description = 'Replication of identity provider settings'
 filter = '(objectClass=univentionSAMLIdpConfig)'
 
 LDAP_UCR_MAPPING = {
-	'LdapGetAttributes': 'saml/idp/ldap/get_attributes',
+    'LdapGetAttributes': 'saml/idp/ldap/get_attributes',
 }
 
 
 def handler(dn: str, new: Dict[str, List[bytes]], old: Dict[str, List[bytes]]) -> None:
-	ucr = ConfigRegistry()
-	ucr.load()
-	idp_config_objectdn = ucr.get('saml/idp/configobject', 'id=default-saml-idp,cn=univention,%s' % ucr.get('ldap/base'))
-	listener.setuid(0)
-	try:
-		if idp_config_objectdn == new['entryDN'][0].decode('UTF-8'):
-			for key in LDAP_UCR_MAPPING.keys():
-				if key in new:
-					ucr_value = ""
-					if key == 'LdapGetAttributes':
-						ucr_value = "'" + "', '".join(x.decode('ASCII') for x in new[key]) + "'"
+    ucr = ConfigRegistry()
+    ucr.load()
+    idp_config_objectdn = ucr.get('saml/idp/configobject', 'id=default-saml-idp,cn=univention,%s' % ucr.get('ldap/base'))
+    listener.setuid(0)
+    try:
+        if idp_config_objectdn == new['entryDN'][0].decode('UTF-8'):
+            for key in LDAP_UCR_MAPPING.keys():
+                if key in new:
+                    ucr_value = ""
+                    if key == 'LdapGetAttributes':
+                        ucr_value = "'" + "', '".join(x.decode('ASCII') for x in new[key]) + "'"
 
-					handler_set(['%s=%s' % (LDAP_UCR_MAPPING[key], ucr_value)])
-				else:
-					handler_unset(['%s' % LDAP_UCR_MAPPING[key]])
-		else:
-			ud.debug(ud.LISTENER, ud.WARN, 'An IdP config object was modified, but it is not the object the listener is configured for (%s). Ignoring changes. DN of modified object: %r' % (idp_config_objectdn, new['entryDN'][0].decode('UTF-8')))
-	finally:
-		listener.unsetuid()
+                    handler_set(['%s=%s' % (LDAP_UCR_MAPPING[key], ucr_value)])
+                else:
+                    handler_unset(['%s' % LDAP_UCR_MAPPING[key]])
+        else:
+            ud.debug(ud.LISTENER, ud.WARN, 'An IdP config object was modified, but it is not the object the listener is configured for (%s). Ignoring changes. DN of modified object: %r' % (idp_config_objectdn, new['entryDN'][0].decode('UTF-8')))
+    finally:
+        listener.unsetuid()

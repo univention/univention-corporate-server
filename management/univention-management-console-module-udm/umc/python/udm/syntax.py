@@ -36,10 +36,10 @@
 
 
 def widget(syntax, udm_property):
-	"""
-	Returns a widget description as a dictionary
+    """
+    Returns a widget description as a dictionary
 
-	.. deprecated:: 5.0-1
-		remove in 5.0-2
-	"""
-	return syntax.get_widget_options(udm_property)
+    .. deprecated:: 5.0-1
+            remove in 5.0-2
+    """
+    return syntax.get_widget_options(udm_property)

@@ -33,19 +33,19 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-from univention.management.console.log import MODULE
-from univention.management.console.modules.decorators import simple_response, sanitize
-from univention.management.console.modules.sanitizers import StringSanitizer
-from univention.management.console.error import ServerError
-
-from univention.lib.i18n import Translation
+import locale
+import subprocess
+import time
 
 import notifier.threads
-
 import six
-import time
-import subprocess
-import locale
+
+from univention.lib.i18n import Translation
+from univention.management.console.error import ServerError
+from univention.management.console.log import MODULE
+from univention.management.console.modules.decorators import sanitize, simple_response
+from univention.management.console.modules.sanitizers import StringSanitizer
+
 
 _ = Translation('univention-management-console-module-lib').translate
 
@@ -56,78 +56,78 @@ CMD_DISABLE_EXEC = '/usr/share/univention-updater/disable-apache2-umc'
 
 class MessageSanitizer(StringSanitizer):
 
-	def _sanitize(self, value, name, further_args):
-		value = super(MessageSanitizer, self)._sanitize(value, name, further_args)
-		if six.PY2 and isinstance(value, six.text_type):
-			# unicodestr -> bytestr (for use in command strings)
-			for encoding in (locale.getpreferredencoding(), 'UTF-8', 'ISO8859-1'):
-				try:
-					value = value.encode(encoding)
-					break
-				except UnicodeEncodeError:
-					pass
-		return value
+    def _sanitize(self, value, name, further_args):
+        value = super(MessageSanitizer, self)._sanitize(value, name, further_args)
+        if six.PY2 and isinstance(value, six.text_type):
+            # unicodestr -> bytestr (for use in command strings)
+            for encoding in (locale.getpreferredencoding(), 'UTF-8', 'ISO8859-1'):
+                try:
+                    value = value.encode(encoding)
+                    break
+                except UnicodeEncodeError:
+                    pass
+        return value
 
 
 class Server(object):
 
-	def restart_isNeeded(self, request):
-		"""TODO: It would be helpful to monitor the init.d scripts in order to
-		determine which service exactly should be reloaded/restartet.
-		"""
-		self.finished(request.id, True)
+    def restart_isNeeded(self, request):
+        """
+        TODO: It would be helpful to monitor the init.d scripts in order to
+        determine which service exactly should be reloaded/restartet.
+        """
+        self.finished(request.id, True)
 
-	def restart(self, request):
-		"""Restart apache, UMC Web server, and UMC server.
-		"""
-		# send a response immediately as it won't be sent after the server restarts
-		self.finished(request.id, True)
+    def restart(self, request):
+        """Restart apache, UMC Web server, and UMC server."""
+        # send a response immediately as it won't be sent after the server restarts
+        self.finished(request.id, True)
 
-		# enable server restart and trigger restart
-		# (disable first to make sure the services are restarted)
-		subprocess.call(CMD_DISABLE_EXEC)
-		p = subprocess.Popen(CMD_ENABLE_EXEC_WITH_RESTART, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
-		out, err = p.communicate()
-		MODULE.info('enabling server restart:\n%s' % (out.decode('utf-8')))
+        # enable server restart and trigger restart
+        # (disable first to make sure the services are restarted)
+        subprocess.call(CMD_DISABLE_EXEC)
+        p = subprocess.Popen(CMD_ENABLE_EXEC_WITH_RESTART, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+        out, err = p.communicate()
+        MODULE.info('enabling server restart:\n%s' % (out.decode('utf-8')))
 
-	@simple_response
-	def ping(self):
-		return dict(success=True)
+    @simple_response
+    def ping(self):
+        return {"success": True}
 
-	@sanitize(message=MessageSanitizer(default=''))
-	def reboot(self, request):
-		message = _('The system will now be restarted')
-		if request.options['message']:
-			message = '%s (%s)' % (message, request.options['message'])
+    @sanitize(message=MessageSanitizer(default=''))
+    def reboot(self, request):
+        message = _('The system will now be restarted')
+        if request.options['message']:
+            message = '%s (%s)' % (message, request.options['message'])
 
-		if self._shutdown(message, reboot=True) != 0:
-			raise ServerError(_('System could not reboot'))
+        if self._shutdown(message, reboot=True) != 0:
+            raise ServerError(_('System could not reboot'))
 
-		self.finished(request.id, None, message)
+        self.finished(request.id, None, message)
 
-	@sanitize(message=MessageSanitizer(default=''))
-	def shutdown(self, request):
-		message = _('The system will now be shut down')
-		if request.options['message']:
-			message = '%s (%s)' % (message, request.options['message'])
+    @sanitize(message=MessageSanitizer(default=''))
+    def shutdown(self, request):
+        message = _('The system will now be shut down')
+        if request.options['message']:
+            message = '%s (%s)' % (message, request.options['message'])
 
-		if self._shutdown(message, reboot=False) != 0:
-			raise ServerError(_('System could not shutdown'))
+        if self._shutdown(message, reboot=False) != 0:
+            raise ServerError(_('System could not shutdown'))
 
-		self.finished(request.id, None, message)
+        self.finished(request.id, None, message)
 
-	def _shutdown(self, message, reboot=False):
-		action = '-r' if reboot else '-h'
+    def _shutdown(self, message, reboot=False):
+        action = '-r' if reboot else '-h'
 
-		try:
-			subprocess.call(('/usr/bin/logger', '-f', '/var/log/syslog', '-t', 'UMC', message))
-		except (OSError, Exception):
-			pass
+        try:
+            subprocess.call(('/usr/bin/logger', '-f', '/var/log/syslog', '-t', 'UMC', message))
+        except (OSError, Exception):
+            pass
 
-		def halt():
-			time.sleep(1.5)
-			subprocess.call(('/sbin/shutdown', action, 'now', message))
+        def halt():
+            time.sleep(1.5)
+            subprocess.call(('/sbin/shutdown', action, 'now', message))
 
-		thread = notifier.threads.Simple('shutdown', halt, lambda: None)
-		thread.run()
-		return 0
+        thread = notifier.threads.Simple('shutdown', halt, lambda: None)
+        thread.run()
+        return 0

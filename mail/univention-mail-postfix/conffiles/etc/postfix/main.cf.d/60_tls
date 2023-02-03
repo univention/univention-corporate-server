@@ -11,9 +11,9 @@ print('smtpd_tls_exclude_ciphers = %s' % configRegistry.get('mail/postfix/smtpd/
 print('smtpd_tls_cert_file = %s' % configRegistry.get('mail/postfix/ssl/certificate', '/etc/univention/ssl/%s/cert.pem' % fqdn))
 print('smtpd_tls_key_file = %s' % configRegistry.get('mail/postfix/ssl/key', '/etc/univention/ssl/%s/private.key' % fqdn))
 if configRegistry.get('mail/postfix/ssl/cafile'):
-	print('smtpd_tls_CAfile = %s' % configRegistry['mail/postfix/ssl/cafile'])
+    print('smtpd_tls_CAfile = %s' % configRegistry['mail/postfix/ssl/cafile'])
 if configRegistry.get('mail/postfix/ssl/capath'):
-	print('smtpd_tls_CApath = %s' % configRegistry['mail/postfix/ssl/capath'])
+    print('smtpd_tls_CApath = %s' % configRegistry['mail/postfix/ssl/capath'])
 @!@
 smtpd_tls_received_header = no
 smtpd_tls_session_cache_timeout = 3600s
@@ -26,8 +26,8 @@ smtpd_sasl_security_options = noanonymous
 
 @!@
 if configRegistry.is_true('mail/postfix/dovecot_sasl'):
-	print('smtpd_sasl_type = dovecot')
-	print('smtpd_sasl_path = private/auth')
+    print('smtpd_sasl_type = dovecot')
+    print('smtpd_sasl_path = private/auth')
 @!@
 
 # smtp client

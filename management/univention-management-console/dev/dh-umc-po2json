@@ -36,8 +36,8 @@
 
 from __future__ import print_function
 
-from argparse import ArgumentParser
 import sys
+from argparse import ArgumentParser
 
 import univention.l10n.umc as dh_umc
 
@@ -47,8 +47,8 @@ parser.add_argument("files", nargs="+", help="PO files")
 args = parser.parse_args()
 
 for ifile in args.files:
-	try:
-		dh_umc.create_json_file(ifile)
-	except dh_umc.Error as exc:
-		print(str(exc), file=sys.stderr)
-		sys.exit(1)
+    try:
+        dh_umc.create_json_file(ifile)
+    except dh_umc.Error as exc:
+        print(str(exc), file=sys.stderr)
+        sys.exit(1)

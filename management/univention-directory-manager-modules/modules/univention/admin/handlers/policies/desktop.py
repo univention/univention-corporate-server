@@ -30,20 +30,16 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-"""
-|UDM| module for the desktop settings policies
-"""
+"""|UDM| module for the desktop settings policies"""
 
-from univention.admin.layout import Tab, Group
-import univention.admin.syntax
 import univention.admin.filter
 import univention.admin.handlers
 import univention.admin.localization
-
+import univention.admin.syntax
+from univention.admin.layout import Group, Tab
 from univention.admin.policy import (
-	register_policy_mapping, policy_object_tab,
-	requiredObjectClassesProperty, prohibitedObjectClassesProperty,
-	fixedAttributesProperty, emptyAttributesProperty, ldapFilterProperty
+    emptyAttributesProperty, fixedAttributesProperty, ldapFilterProperty, policy_object_tab,
+    prohibitedObjectClassesProperty, register_policy_mapping, requiredObjectClassesProperty,
 )
 
 
@@ -52,11 +48,11 @@ _ = translation.translate
 
 
 class desktopFixedAttributes(univention.admin.syntax.select):
-	name = 'desktopFixedAttributes'
-	choices = [
-		(('univentionDesktopLanguage'), _('Desktop language')),
-		(('univentionDesktopProfile'), _('Desktop profile'))
-	]
+    name = 'desktopFixedAttributes'
+    choices = [
+        (('univentionDesktopLanguage'), _('Desktop language')),
+        (('univentionDesktopProfile'), _('Desktop profile')),
+    ]
 
 
 module = 'policies/desktop'
@@ -72,66 +68,66 @@ object_name_plural = _('Desktop policies')
 policy_short_description = _('Desktop settings')
 long_description = ''
 options = {
-	'default': univention.admin.option(
-		short_description=short_description,
-		default=True,
-		objectClasses=['top', 'univentionPolicy', 'univentionPolicyDesktop'],
-	),
+    'default': univention.admin.option(
+        short_description=short_description,
+        default=True,
+        objectClasses=['top', 'univentionPolicy', 'univentionPolicyDesktop'],
+    ),
 }
 property_descriptions = {
-	'name': univention.admin.property(
-		short_description=_('Name'),
-		long_description='',
-		syntax=univention.admin.syntax.policyName,
-		include_in_default_search=True,
-		required=True,
-		may_change=False,
-		identifies=True,
-	),
-	'language': univention.admin.property(
-		short_description=_('Desktop language'),
-		long_description='',
-		syntax=univention.admin.syntax.language,
-	),
-	'profile': univention.admin.property(
-		short_description=_('Desktop profile'),
-		long_description='',
-		syntax=univention.admin.syntax.KDE_Profile,
-		multivalue=True,
-		include_in_default_search=True,
-	),
-	'logonScripts': univention.admin.property(
-		short_description=_('Logon scripts'),
-		long_description='',
-		syntax=univention.admin.syntax.string,
-		multivalue=True,
-	),
-	'logoutScripts': univention.admin.property(
-		short_description=_('Logout scripts'),
-		long_description='',
-		syntax=univention.admin.syntax.string,
-		multivalue=True,
-	),
+    'name': univention.admin.property(
+        short_description=_('Name'),
+        long_description='',
+        syntax=univention.admin.syntax.policyName,
+        include_in_default_search=True,
+        required=True,
+        may_change=False,
+        identifies=True,
+    ),
+    'language': univention.admin.property(
+        short_description=_('Desktop language'),
+        long_description='',
+        syntax=univention.admin.syntax.language,
+    ),
+    'profile': univention.admin.property(
+        short_description=_('Desktop profile'),
+        long_description='',
+        syntax=univention.admin.syntax.KDE_Profile,
+        multivalue=True,
+        include_in_default_search=True,
+    ),
+    'logonScripts': univention.admin.property(
+        short_description=_('Logon scripts'),
+        long_description='',
+        syntax=univention.admin.syntax.string,
+        multivalue=True,
+    ),
+    'logoutScripts': univention.admin.property(
+        short_description=_('Logout scripts'),
+        long_description='',
+        syntax=univention.admin.syntax.string,
+        multivalue=True,
+    ),
 
 }
 property_descriptions.update(dict([
-	requiredObjectClassesProperty(),
-	prohibitedObjectClassesProperty(),
-	fixedAttributesProperty(syntax=desktopFixedAttributes),
-	emptyAttributesProperty(syntax=desktopFixedAttributes),
-	ldapFilterProperty(),
+    requiredObjectClassesProperty(),
+    prohibitedObjectClassesProperty(),
+    fixedAttributesProperty(syntax=desktopFixedAttributes),
+    emptyAttributesProperty(syntax=desktopFixedAttributes),
+    ldapFilterProperty(),
 ]))
 
 layout = [
-	Tab(_('General'), _('Desktop settings'), layout=[
-		Group(_('General desktop settings'), layout=[
-			'name',
-			'language',
-			'profile',
-			['logonScripts', "logoutScripts"],
-		]),
-	]),
-	policy_object_tab(),
+    Tab(_('General'), _('Desktop settings'), layout=[
+        Group(_('General desktop settings'), layout=[
+            'name',
+            'language',
+            'profile',
+            ['logonScripts', "logoutScripts"],
+        ]),
+    ]),
+    policy_object_tab(),
 ]
 
 mapping = univention.admin.mapping.mapping()
@@ -144,7 +140,7 @@ register_policy_mapping(mapping)
 
 
 class object(univention.admin.handlers.simplePolicy):
-	module = module
+    module = module
 
 
 lookup = object.lookup

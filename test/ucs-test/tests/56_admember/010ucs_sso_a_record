@@ -14,8 +14,9 @@ import univention.lib.admember
 from univention.config_registry.interfaces import Interfaces
 from univention.testing.codes import TestCodes
 
+
 if not univention.lib.admember.is_localhost_in_admember_mode():
-	sys.exit(TestCodes.RESULT_SKIP)
+    sys.exit(TestCodes.RESULT_SKIP)
 
 ucr = univention.config_registry.ConfigRegistry()
 ucr.load()
@@ -32,7 +33,7 @@ response = resolver.query(fqdn, 'A')
 ret_val = TestCodes.RESULT_FAIL
 found = False
 for data in response:
-	if str(data) == str(my_ip):
-		ret_val = TestCodes.RESULT_OKAY
+    if str(data) == str(my_ip):
+        ret_val = TestCodes.RESULT_OKAY
 
 sys.exit(ret_val)

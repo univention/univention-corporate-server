@@ -33,11 +33,11 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-from univention.admin.layout import Tab, Group
-
-import univention.admin.syntax
 import univention.admin.handlers
 import univention.admin.localization
+import univention.admin.syntax
+from univention.admin.layout import Group, Tab
+
 
 translation = univention.admin.localization.translation('univention.admin.handlers.ms')
 _ = translation.translate
@@ -48,66 +48,66 @@ childs = True
 short_description = _('MS IPsec policy: filter')
 long_description = ''
 options = {
-	'default': univention.admin.option(
-		short_description=short_description,
-		default=True,
-		objectClasses=['ipsecFilter', 'top']
-	),
+    'default': univention.admin.option(
+        short_description=short_description,
+        default=True,
+        objectClasses=['ipsecFilter', 'top'],
+    ),
 }
 property_descriptions = {
-	'name': univention.admin.property(
-		short_description=_('Name'),
-		long_description='',
-		syntax=univention.admin.syntax.string,
-		required=True,
-		identifies=True,
-	),
-	'description': univention.admin.property(
-		short_description=_('Description'),
-		long_description='',
-		syntax=univention.admin.syntax.string,
-		size='Two',
-	),
-	'ipsecOwnersReference': univention.admin.property(
-		short_description=_('IPsec Owners reference'),
-		long_description='',
-		multivalue=True,
-		syntax=univention.admin.syntax.string,  # ipsecOwner,
-	),
-	'ipsecName': univention.admin.property(
-		short_description=_('IPsec Name'),
-		long_description='',
-		syntax=univention.admin.syntax.string,  # ipsecName,
-	),
-	'ipsecID': univention.admin.property(
-		short_description=_('IPsec ID'),
-		long_description='',
-		syntax=univention.admin.syntax.string,  # ipsecID,
-	),
-	'ipsecDataType': univention.admin.property(
-		short_description=_('IPsec Data Type'),
-		long_description='',
-		syntax=univention.admin.syntax.integer,
-	),
-	'ipsecData': univention.admin.property(
-		short_description=_('IPsec Data'),
-		long_description='',
-		syntax=univention.admin.syntax.TextArea,
-	),
+    'name': univention.admin.property(
+        short_description=_('Name'),
+        long_description='',
+        syntax=univention.admin.syntax.string,
+        required=True,
+        identifies=True,
+    ),
+    'description': univention.admin.property(
+        short_description=_('Description'),
+        long_description='',
+        syntax=univention.admin.syntax.string,
+        size='Two',
+    ),
+    'ipsecOwnersReference': univention.admin.property(
+        short_description=_('IPsec Owners reference'),
+        long_description='',
+        multivalue=True,
+        syntax=univention.admin.syntax.string,  # ipsecOwner,
+    ),
+    'ipsecName': univention.admin.property(
+        short_description=_('IPsec Name'),
+        long_description='',
+        syntax=univention.admin.syntax.string,  # ipsecName,
+    ),
+    'ipsecID': univention.admin.property(
+        short_description=_('IPsec ID'),
+        long_description='',
+        syntax=univention.admin.syntax.string,  # ipsecID,
+    ),
+    'ipsecDataType': univention.admin.property(
+        short_description=_('IPsec Data Type'),
+        long_description='',
+        syntax=univention.admin.syntax.integer,
+    ),
+    'ipsecData': univention.admin.property(
+        short_description=_('IPsec Data'),
+        long_description='',
+        syntax=univention.admin.syntax.TextArea,
+    ),
 }
 
 layout = [
-	Tab(_('General'), _('Basic settings'), layout=[
-		Group(_('General'), layout=[
-			"name",
-			"description",
-			'ipsecOwnersReference',
-			'ipsecName',
-			'ipsecID',
-			'ipsecDataType',
-			'ipsecData',
-		]),
-	]),
+    Tab(_('General'), _('Basic settings'), layout=[
+        Group(_('General'), layout=[
+            "name",
+            "description",
+            'ipsecOwnersReference',
+            'ipsecName',
+            'ipsecID',
+            'ipsecDataType',
+            'ipsecData',
+        ]),
+    ]),
 ]
 
 mapping = univention.admin.mapping.mapping()
@@ -121,11 +121,11 @@ mapping.register('ipsecData', 'ipsecData', univention.admin.mapping.mapBase64, u
 
 
 class object(univention.admin.handlers.simpleLdap):
-	module = module
+    module = module
 
-	def _ldap_pre_modify(self):
-		if self.hasChanged('name'):
-			self.move(self._ldap_dn())
+    def _ldap_pre_modify(self):
+        if self.hasChanged('name'):
+            self.move(self._ldap_dn())
 
 
 identify = object.identify

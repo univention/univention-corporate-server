@@ -2,6 +2,6 @@
 
 @!@
 for key in sorted(configRegistry):
-	if key.startswith('mail/alias/'):
-		print('%s: %s' % (key.split('/')[-1], configRegistry[key]))
+    if key.startswith('mail/alias/'):
+        print('%s: %s' % (key.split('/')[-1], configRegistry[key]))
 @!@

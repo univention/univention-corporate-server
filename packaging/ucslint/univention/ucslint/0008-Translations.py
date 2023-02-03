@@ -34,8 +34,8 @@ import re
 from typing import Iterable
 
 import univention.ucslint.base as uub
-from univention.ucslint.python import MATCHED_LENIENT as MATCHED_STRING
-from univention.ucslint.python import _or, python_files
+from univention.ucslint.python import MATCHED_LENIENT as MATCHED_STRING, _or, python_files
+
 
 # 1) check if translation strings are correct; detect something like  _('foo %s bar' % var)  ==> _('foo %s bar') % var
 # 2) check if all translation strings are translated in de.po file
@@ -54,82 +54,82 @@ RE_TRANSLATION = re.compile(CONTEXT + SEPARATOR + TRANSLATION, re.DOTALL | re.MU
 
 class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 
-	def getMsgIds(self) -> uub.MsgIds:
-		return {
-			'0008-1': (uub.RESULT_ERROR, 'substitutes before translation'),
-			'0008-2': (uub.RESULT_WARN, 'failed to open file'),
-			'0008-3': (uub.RESULT_ERROR, 'po-file contains "fuzzy" string'),
-			'0008-4': (uub.RESULT_WARN, 'po-file contains empty msg string'),
-			'0008-5': (uub.RESULT_ERROR, 'po-file contains no character set definition'),
-			'0008-6': (uub.RESULT_ERROR, 'po-file contains invalid character set definition'),
-			'0008-7': (uub.RESULT_WARN, 'found well-known LDAP object but no custom_*name()'),
-		}
+    def getMsgIds(self) -> uub.MsgIds:
+        return {
+            '0008-1': (uub.RESULT_ERROR, 'substitutes before translation'),
+            '0008-2': (uub.RESULT_WARN, 'failed to open file'),
+            '0008-3': (uub.RESULT_ERROR, 'po-file contains "fuzzy" string'),
+            '0008-4': (uub.RESULT_WARN, 'po-file contains empty msg string'),
+            '0008-5': (uub.RESULT_ERROR, 'po-file contains no character set definition'),
+            '0008-6': (uub.RESULT_ERROR, 'po-file contains invalid character set definition'),
+            '0008-7': (uub.RESULT_WARN, 'found well-known LDAP object but no custom_*name()'),
+        }
 
-	def check(self, path: str) -> None:
-		""" the real check """
-		super(UniventionPackageCheck, self).check(path)
+    def check(self, path: str) -> None:
+        """the real check"""
+        super(UniventionPackageCheck, self).check(path)
 
-		self.check_py(python_files(path))
-		self.check_po(uub.FilteredDirWalkGenerator(path, suffixes=('.po',)))
-		self.check_names(uub.FilteredDirWalkGenerator(
-			path,
-			ignore_suffixes=uub.FilteredDirWalkGenerator.BINARY_SUFFIXES | uub.FilteredDirWalkGenerator.DOCUMENTATION_SUFFIXES,
-		))
+        self.check_py(python_files(path))
+        self.check_po(uub.FilteredDirWalkGenerator(path, suffixes=('.po',)))
+        self.check_names(uub.FilteredDirWalkGenerator(
+            path,
+            ignore_suffixes=uub.FilteredDirWalkGenerator.BINARY_SUFFIXES | uub.FilteredDirWalkGenerator.DOCUMENTATION_SUFFIXES,
+        ))
 
-	def check_py(self, py_files: Iterable[str]) -> None:
-		"""Check Python files."""
-		for fn in py_files:
-			try:
-				content = open(fn, 'r').read()
-			except EnvironmentError:
-				self.addmsg('0008-2', 'failed to open and read file', fn)
-				continue
+    def check_py(self, py_files: Iterable[str]) -> None:
+        """Check Python files."""
+        for fn in py_files:
+            try:
+                content = open(fn).read()
+            except EnvironmentError:
+                self.addmsg('0008-2', 'failed to open and read file', fn)
+                continue
 
-			self.debug('testing %s' % fn)
-			for row, col, match in uub.line_regexp(content, RE_TRANSLATION):
-				self.addmsg('0008-1', 'substitutes before translation: %s' % match.group(1), fn, row, col)
+            self.debug('testing %s' % fn)
+            for row, col, match in uub.line_regexp(content, RE_TRANSLATION):
+                self.addmsg('0008-1', 'substitutes before translation: %s' % match.group(1), fn, row, col)
 
-	def check_po(self, po_files: Iterable[str]) -> None:
-		"""Check Portable Object files."""
-		for fn in po_files:
-			try:
-				content = open(fn, 'r').read()
-			except EnvironmentError:
-				self.addmsg('0008-2', 'failed to open and read file', fn)
-				continue
+    def check_po(self, po_files: Iterable[str]) -> None:
+        """Check Portable Object files."""
+        for fn in po_files:
+            try:
+                content = open(fn).read()
+            except EnvironmentError:
+                self.addmsg('0008-2', 'failed to open and read file', fn)
+                continue
 
-			match = RE_CHARSET.search(content)
-			if not match:
-				self.addmsg('0008-5', 'cannot find charset definition', fn)
-			elif not match.group(1).lower() in ('utf-8'):
-				self.addmsg('0008-6', 'invalid charset (%s) defined' % (match.group(1)), fn)
+            match = RE_CHARSET.search(content)
+            if not match:
+                self.addmsg('0008-5', 'cannot find charset definition', fn)
+            elif match.group(1).lower() not in 'utf-8':
+                self.addmsg('0008-6', 'invalid charset (%s) defined' % (match.group(1)), fn)
 
-			self.debug('testing %s' % fn)
-			for regex, errid, errtxt in [
-				(RE_FUZZY, '0008-3', 'contains "fuzzy"'),
-				(RE_EMPTY, '0008-4', 'contains empty msgstr')
-			]:
-				for row, col, match in uub.line_regexp(content, regex):
-					self.addmsg(errid, errtxt, fn, row, col)
+            self.debug('testing %s' % fn)
+            for regex, errid, errtxt in [
+                    (RE_FUZZY, '0008-3', 'contains "fuzzy"'),
+                    (RE_EMPTY, '0008-4', 'contains empty msgstr'),
+            ]:
+                for row, col, match in uub.line_regexp(content, regex):
+                    self.addmsg(errid, errtxt, fn, row, col)
 
-	def check_names(self, files: Iterable[str]) -> None:
-		tester = uub.UPCFileTester()
-		tester.addTest(
-			re.compile(
-				r'''
-				(?<!custom_groupname[( ])
-				(?<!custom_username[( ])
-				(['"]) \b
-				(?:Domain\ Users|Domain\ Admins|Administrator|Windows\ Hosts)
-				\b \1
-				''', re.VERBOSE),
-			'0008-7', 'found well-known LDAP object but no custom_*name()', cntmax=0)
+    def check_names(self, files: Iterable[str]) -> None:
+        tester = uub.UPCFileTester()
+        tester.addTest(
+            re.compile(
+                r'''
+                (?<!custom_groupname[( ])
+                (?<!custom_username[( ])
+                (['"]) \b
+                (?:Domain\ Users|Domain\ Admins|Administrator|Windows\ Hosts)
+                \b \1
+                ''', re.VERBOSE),
+            '0008-7', 'found well-known LDAP object but no custom_*name()', cntmax=0)
 
-		for fn in files:
-			try:
-				tester.open(fn)
-			except EnvironmentError:
-				self.addmsg('0002-1', 'failed to open and read file', fn)
-				continue
-			else:
-				self.msg += tester.runTests()
+        for fn in files:
+            try:
+                tester.open(fn)
+            except EnvironmentError:
+                self.addmsg('0002-1', 'failed to open and read file', fn)
+                continue
+            else:
+                self.msg += tester.runTests()

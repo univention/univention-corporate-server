@@ -36,23 +36,24 @@
 
 from __future__ import print_function
 
-from argparse import ArgumentParser
-import sys
-from univention import config_registry
-import univention.s4connector.s4
-import univention.admin.filter
 import copy
-from samba.param import LoadParm
-from samba.auth import system_session
-from samba.samdb import SamDB
-import ldb
+import sys
+from argparse import ArgumentParser
 
+import ldb
+from samba.auth import system_session
+from samba.param import LoadParm
+from samba.samdb import SamDB
 from six.moves import input
+
+import univention.admin.filter
+import univention.s4connector.s4
+from univention import config_registry
 
 
 def log(level, string):
-	if opts.verbose >= level:
-		print(string)
+    if opts.verbose >= level:
+        print(string)
 
 # the following functions are modified versions of the ones in univention.s4connector.s4
 # the only difference is that they use a non-matching objectClass (None)
@@ -61,46 +62,46 @@ def log(level, string):
 
 
 def user_dn_mapping(s4connector, given_object, dn_mapping_stored, isUCSobject):
-	'''
-	map dn of given user using the samaccountname/uid
-	s4connector is an instance of univention.s4connector.s4, given_object an object-dict,
-	dn_mapping_stored a list of dn-types which are already mapped because they were stored in the config-file
-	'''
-	return univention.s4connector.s4.samaccountname_dn_mapping(s4connector, given_object, dn_mapping_stored, isUCSobject, 'user', u'samAccountName', u'posixAccount', 'uid', None)
+    """
+    map dn of given user using the samaccountname/uid
+    s4connector is an instance of univention.s4connector.s4, given_object an object-dict,
+    dn_mapping_stored a list of dn-types which are already mapped because they were stored in the config-file
+    """
+    return univention.s4connector.s4.samaccountname_dn_mapping(s4connector, given_object, dn_mapping_stored, isUCSobject, 'user', u'samAccountName', u'posixAccount', 'uid', None)
 
 
 def group_dn_mapping(s4connector, given_object, dn_mapping_stored, isUCSobject):
-	'''
-	map dn of given group using the samaccountname/cn
-	s4connector is an instance of univention.s4connector.s4, given_object an object-dict,
-	dn_mapping_stored a list of dn-types which are already mapped because they were stored in the config-file
-	'''
-	return univention.s4connector.s4.samaccountname_dn_mapping(s4connector, given_object, dn_mapping_stored, isUCSobject, 'group', u'cn', u'posixGroup', 'cn', None)
+    """
+    map dn of given group using the samaccountname/cn
+    s4connector is an instance of univention.s4connector.s4, given_object an object-dict,
+    dn_mapping_stored a list of dn-types which are already mapped because they were stored in the config-file
+    """
+    return univention.s4connector.s4.samaccountname_dn_mapping(s4connector, given_object, dn_mapping_stored, isUCSobject, 'group', u'cn', u'posixGroup', 'cn', None)
 
 
 def windowscomputer_dn_mapping(s4connector, given_object, dn_mapping_stored, isUCSobject):
-	'''
-	map dn of given windows computer using the samaccountname/uid
-	s4connector is an instance of univention.s4connector.s4, given_object an object-dict,
-	dn_mapping_stored a list of dn-types which are already mapped because they were stored in the config-file
-	'''
-	return univention.s4connector.s4.samaccountname_dn_mapping(s4connector, given_object, dn_mapping_stored, isUCSobject, 'windowscomputer', u'samAccountName', u'posixAccount', 'uid', None)
+    """
+    map dn of given windows computer using the samaccountname/uid
+    s4connector is an instance of univention.s4connector.s4, given_object an object-dict,
+    dn_mapping_stored a list of dn-types which are already mapped because they were stored in the config-file
+    """
+    return univention.s4connector.s4.samaccountname_dn_mapping(s4connector, given_object, dn_mapping_stored, isUCSobject, 'windowscomputer', u'samAccountName', u'posixAccount', 'uid', None)
 
 
 def dc_dn_mapping(s4connector, given_object, dn_mapping_stored, isUCSobject):
-	'''
-	map dn of given dc computer using the samaccountname/uid
-	s4connector is an instance of univention.s4connector.s4, given_object an object-dict,
-	dn_mapping_stored a list of dn-types which are already mapped because they were stored in the config-file
-	'''
-	return univention.s4connector.s4.samaccountname_dn_mapping(s4connector, given_object, dn_mapping_stored, isUCSobject, 'dc', u'samAccountName', u'posixAccount', 'uid', None)
+    """
+    map dn of given dc computer using the samaccountname/uid
+    s4connector is an instance of univention.s4connector.s4, given_object an object-dict,
+    dn_mapping_stored a list of dn-types which are already mapped because they were stored in the config-file
+    """
+    return univention.s4connector.s4.samaccountname_dn_mapping(s4connector, given_object, dn_mapping_stored, isUCSobject, 'dc', u'samAccountName', u'posixAccount', 'uid', None)
 
 
 overload_dn_mapping_function = {
-	univention.s4connector.s4.user_dn_mapping: user_dn_mapping,
-	univention.s4connector.s4.group_dn_mapping: group_dn_mapping,
-	univention.s4connector.s4.windowscomputer_dn_mapping: windowscomputer_dn_mapping,
-	univention.s4connector.s4.dc_dn_mapping: dc_dn_mapping,
+    univention.s4connector.s4.user_dn_mapping: user_dn_mapping,
+    univention.s4connector.s4.group_dn_mapping: group_dn_mapping,
+    univention.s4connector.s4.windowscomputer_dn_mapping: windowscomputer_dn_mapping,
+    univention.s4connector.s4.dc_dn_mapping: dc_dn_mapping,
 }
 
 # subclass the univention.s4connector.s4.s4 for convenience
@@ -108,87 +109,87 @@ overload_dn_mapping_function = {
 
 class S4Connector(univention.s4connector.s4.s4):
 
-	def plain_mapped_dn(self, property_type, object, old_dn):
-		# determine the dn where the S4 Connector would have created the object
-		if hasattr(self.property[property_type], 'dn_mapping_function'):
-			tmp_object = copy.deepcopy(object)
-			tmp_object['dn'] = old_dn
-			for function in self.property[property_type].dn_mapping_function:
-				if function in overload_dn_mapping_function:
-					tmp_object = overload_dn_mapping_function[function](self, tmp_object, [], isUCSobject=True)
-				else:
-					tmp_object = function(self, tmp_object, [], isUCSobject=True)
-			old_dn = tmp_object['dn']
+    def plain_mapped_dn(self, property_type, object, old_dn):
+        # determine the dn where the S4 Connector would have created the object
+        if hasattr(self.property[property_type], 'dn_mapping_function'):
+            tmp_object = copy.deepcopy(object)
+            tmp_object['dn'] = old_dn
+            for function in self.property[property_type].dn_mapping_function:
+                if function in overload_dn_mapping_function:
+                    tmp_object = overload_dn_mapping_function[function](self, tmp_object, [], isUCSobject=True)
+                else:
+                    tmp_object = function(self, tmp_object, [], isUCSobject=True)
+            old_dn = tmp_object['dn']
 
-		if hasattr(self.property[property_type], 'position_mapping'):
-			for mapping in self.property[property_type].position_mapping:
-				old_dn = self._subtree_replace(old_dn.lower(), mapping[0].lower(), mapping[1].lower())
-			old_dn = self._subtree_replace(old_dn, self.lo.base, self.lo_s4.base)
+        if hasattr(self.property[property_type], 'position_mapping'):
+            for mapping in self.property[property_type].position_mapping:
+                old_dn = self._subtree_replace(old_dn.lower(), mapping[0].lower(), mapping[1].lower())
+            old_dn = self._subtree_replace(old_dn, self.lo.base, self.lo_s4.base)
 
-		return old_dn
+        return old_dn
 
 
 if __name__ == "__main__":
-	parser = ArgumentParser()
-	parser.add_argument("--dry-run", action="store_true", dest="dryrun")
-	parser.add_argument("-y", "--yes", action="store_true", dest="assume_yes")
-	parser.add_argument("-v", "--verbose", action="count", default=0)
-	parser.add_argument("--configbasename", help="", metavar="CONFIGBASENAME", default="connector")
-	opts = parser.parse_args()
+    parser = ArgumentParser()
+    parser.add_argument("--dry-run", action="store_true", dest="dryrun")
+    parser.add_argument("-y", "--yes", action="store_true", dest="assume_yes")
+    parser.add_argument("-v", "--verbose", action="count", default=0)
+    parser.add_argument("--configbasename", help="", metavar="CONFIGBASENAME", default="connector")
+    opts = parser.parse_args()
 
-	if opts.dryrun:
-		print("Option --dry-run given, checking only:")
-	elif not opts.assume_yes:
-		answer = input("Really modify Samba4 object positions? [yN]: ")
-		if answer.lower() != 'y':
-			print("Use --dry-run to check what would be done", file=sys.stderr)
-			sys.exit(1)
+    if opts.dryrun:
+        print("Option --dry-run given, checking only:")
+    elif not opts.assume_yes:
+        answer = input("Really modify Samba4 object positions? [yN]: ")
+        if answer.lower() != 'y':
+            print("Use --dry-run to check what would be done", file=sys.stderr)
+            sys.exit(1)
 
-	ucr = config_registry.ConfigRegistry()
-	ucr.load()
+    ucr = config_registry.ConfigRegistry()
+    ucr.load()
 
-	s4 = S4Connector.main(ucr, opts.configbasename)
-	s4.init_ldap_connections()
-	mapping = s4.property
+    s4 = S4Connector.main(ucr, opts.configbasename)
+    s4.init_ldap_connections()
+    mapping = s4.property
 
-	ucs_match_filter = {
-		'user': mapping['user'].match_filter,
-		'group': str(  # filter copied from UDM groups/group
-			univention.admin.filter.conjunction('&', [
-				univention.admin.filter.expression('cn', '*'),
-				univention.admin.filter.conjunction('|', [
-					univention.admin.filter.conjunction('&', [
-						univention.admin.filter.expression('objectClass', 'univentionGroup'),
-					]),
-					univention.admin.filter.conjunction('&', [
-						univention.admin.filter.expression('objectClass', 'sambaGroupMapping'),
-					])
-				])
-			])
-		),
-		'dc': mapping['dc'].match_filter,
-		'windowscomputer': mapping['windowscomputer'].match_filter,
-	}
+    ucs_match_filter = {
+        'user': mapping['user'].match_filter,
+        'group': str(  # filter copied from UDM groups/group
+            univention.admin.filter.conjunction('&', [
+                univention.admin.filter.expression('cn', '*'),
+                univention.admin.filter.conjunction('|', [
+                    univention.admin.filter.conjunction('&', [
+                        univention.admin.filter.expression('objectClass', 'univentionGroup'),
+                    ]),
+                    univention.admin.filter.conjunction('&', [
+                        univention.admin.filter.expression('objectClass', 'sambaGroupMapping'),
+                    ]),
+                ]),
+            ]),
+        ),
+        'dc': mapping['dc'].match_filter,
+        'windowscomputer': mapping['windowscomputer'].match_filter,
+    }
 
-	lp = LoadParm()
-	lp.load('/etc/samba/smb.conf')
-	samdb = SamDB('/var/lib/samba/private/sam.ldb', session_info=system_session(lp), lp=lp)
+    lp = LoadParm()
+    lp.load('/etc/samba/smb.conf')
+    samdb = SamDB('/var/lib/samba/private/sam.ldb', session_info=system_session(lp), lp=lp)
 
-	ldap_base = ucr.get('ldap/base', '')
+    ldap_base = ucr.get('ldap/base', '')
 
-	for key in ucs_match_filter:
-		for dn, attrs in s4.lo.search(ucs_match_filter[key], ldap_base, 'sub', []):
+    for key in ucs_match_filter:
+        for dn, attrs in s4.lo.search(ucs_match_filter[key], ldap_base, 'sub', []):
 
-			log(1, "UCS: %s" % dn)
+            log(1, "UCS: %s" % dn)
 
-			# use the S4 Connector to lookup the current location of the corresponding object
-			object = {'dn': str(dn), 'modtype': 'modify', 'attributes': attrs}
-			object = s4._object_mapping(key, object, 'ucs')
+            # use the S4 Connector to lookup the current location of the corresponding object
+            object = {'dn': str(dn), 'modtype': 'modify', 'attributes': attrs}
+            object = s4._object_mapping(key, object, 'ucs')
 
-			if not s4._ignore_object(key, object):
-				# determine the plain_mapped_dn, i.e. where the S4 Connector would create the object
-				mapped_dn = s4.plain_mapped_dn(key, object, dn)
-				if object['dn'].lower() != mapped_dn.lower():
-					print("RENAME: ", object['dn'], " to ", mapped_dn)
-					if not opts.dryrun:
-						samdb.rename(ldb.Dn(samdb, object['dn']), ldb.Dn(samdb, mapped_dn))
+            if not s4._ignore_object(key, object):
+                # determine the plain_mapped_dn, i.e. where the S4 Connector would create the object
+                mapped_dn = s4.plain_mapped_dn(key, object, dn)
+                if object['dn'].lower() != mapped_dn.lower():
+                    print("RENAME: ", object['dn'], " to ", mapped_dn)
+                    if not opts.dryrun:
+                        samdb.rename(ldb.Dn(samdb, object['dn']), ldb.Dn(samdb, mapped_dn))

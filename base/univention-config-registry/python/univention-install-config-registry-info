@@ -34,68 +34,70 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 from __future__ import print_function
+
 import os
 import sys
-import univention.config_registry_info as ucr_info
-from univention.debhelper import doIt, binary_packages
 from argparse import ArgumentParser
+
+import univention.config_registry_info as ucr_info
+from univention.debhelper import binary_packages, doIt
 
 
 def install_categories(info, package):
-	"""Process debian/$package.univention-config-registry-categories."""
-	cfile = '%s.univention-config-registry-categories' % (package,)
-	source = os.path.join('debian', cfile)
-	if not os.path.exists(source):
-		return
+    """Process debian/$package.univention-config-registry-categories."""
+    cfile = '%s.univention-config-registry-categories' % (package,)
+    source = os.path.join('debian', cfile)
+    if not os.path.exists(source):
+        return
 
-	info.read_categories(source)
-	failed = info.check_categories()
-	if failed:
-		print('Incomplete entries in category definition %s' % (cfile,), file=sys.stderr)
-		for category, keys in failed.items():
-			print('  [%s]' % (category,), file=sys.stderr)
-			for key in keys:
-				print('    %s' % (key,), file=sys.stderr)
-		sys.exit(1)
-	dest_path = os.path.join(
-		'debian', package,
-		ucr_info.ConfigRegistryInfo.BASE_DIR[1:],
-		ucr_info.ConfigRegistryInfo.CATEGORIES)
-	dest = os.path.join(dest_path, package + ucr_info.ConfigRegistryInfo.FILE_SUFFIX)
+    info.read_categories(source)
+    failed = info.check_categories()
+    if failed:
+        print('Incomplete entries in category definition %s' % (cfile,), file=sys.stderr)
+        for category, keys in failed.items():
+            print('  [%s]' % (category,), file=sys.stderr)
+            for key in keys:
+                print('    %s' % (key,), file=sys.stderr)
+        sys.exit(1)
+    dest_path = os.path.join(
+        'debian', package,
+        ucr_info.ConfigRegistryInfo.BASE_DIR[1:],
+        ucr_info.ConfigRegistryInfo.CATEGORIES)
+    dest = os.path.join(dest_path, package + ucr_info.ConfigRegistryInfo.FILE_SUFFIX)
 
-	doIt('install', '-m', '755', '-d', dest_path)
-	doIt('install', '-m', '644', '-p', source, dest)
+    doIt('install', '-m', '755', '-d', dest_path)
+    doIt('install', '-m', '644', '-p', source, dest)
 
 
 def install_variables(info, package):
-	"""Process debian/$package.univention-config-registry-variables."""
-	cfile = '%s.univention-config-registry-variables' % (package,)
-	source = os.path.join('debian', cfile)
-	if not os.path.exists(source):
-		return
+    """Process debian/$package.univention-config-registry-variables."""
+    cfile = '%s.univention-config-registry-variables' % (package,)
+    source = os.path.join('debian', cfile)
+    if not os.path.exists(source):
+        return
 
-	info.read_variables(source)
-	failed = info.check_variables()
-	if failed:
-		print('Incomplete entries in variable definition %s' % (cfile,), file=sys.stderr)
-		for variable, keys in failed.items():
-			print('  %s:' % (variable,), file=sys.stderr)
-			for key in keys:
-				print('    %s' % (key,), file=sys.stderr)
-		sys.exit(1)
-	dest_path = os.path.join(
-		'debian', package,
-		ucr_info.ConfigRegistryInfo.BASE_DIR[1:],
-		ucr_info.ConfigRegistryInfo.VARIABLES)
-	dest = os.path.join(dest_path, package + ucr_info.ConfigRegistryInfo.FILE_SUFFIX)
+    info.read_variables(source)
+    failed = info.check_variables()
+    if failed:
+        print('Incomplete entries in variable definition %s' % (cfile,), file=sys.stderr)
+        for variable, keys in failed.items():
+            print('  %s:' % (variable,), file=sys.stderr)
+            for key in keys:
+                print('    %s' % (key,), file=sys.stderr)
+        sys.exit(1)
+    dest_path = os.path.join(
+        'debian', package,
+        ucr_info.ConfigRegistryInfo.BASE_DIR[1:],
+        ucr_info.ConfigRegistryInfo.VARIABLES)
+    dest = os.path.join(dest_path, package + ucr_info.ConfigRegistryInfo.FILE_SUFFIX)
 
-	doIt('install', '-m', '755', '-d', dest_path)
-	doIt('install', '-m', '644', '-p', source, dest)
+    doIt('install', '-m', '755', '-d', dest_path)
+    doIt('install', '-m', '644', '-p', source, dest)
 
 
 def main():
-	"""Install configuration registry information files."""
-	epilog = '''univention-install-config-registry-info is a debhelper like
+    """Install configuration registry information files."""
+    epilog = '''univention-install-config-registry-info is a debhelper like
 program to install Univention Config Registry (UCR) related description files
 into the package build directories.
 
@@ -103,24 +105,24 @@ The variable descriptions debian/*.univention-config-registry-info go to
 /etc/univention/registry.info/variables/*.cfg.
 The category descriptions debian/*.univention-config-registry-categories got to
 /etc/univention/registry.info/categories/*.cfg.
-	'''
-	parser = ArgumentParser(epilog=epilog)
-	parser.add_argument(
-		'-v', '--verbose', action='store_true',
-		help='Verbose mode: show all commands that modify the package build directory.')
-	options = parser.parse_args()
-	if options.verbose:
-		os.environ['DH_VERBOSE'] = '1'
+    '''
+    parser = ArgumentParser(epilog=epilog)
+    parser.add_argument(
+        '-v', '--verbose', action='store_true',
+        help='Verbose mode: show all commands that modify the package build directory.')
+    options = parser.parse_args()
+    if options.verbose:
+        os.environ['DH_VERBOSE'] = '1'
 
-	info = ucr_info.ConfigRegistryInfo(install_mode=True)
-	try:
-		for package in binary_packages():
-			install_categories(info, package)
-			install_variables(info, package)
-	except IOError as ex:
-		print(ex, file=sys.stderr)
-		sys.exit(1)
+    info = ucr_info.ConfigRegistryInfo(install_mode=True)
+    try:
+        for package in binary_packages():
+            install_categories(info, package)
+            install_variables(info, package)
+    except IOError as ex:
+        print(ex, file=sys.stderr)
+        sys.exit(1)
 
 
 if __name__ == '__main__':
-	main()
+    main()

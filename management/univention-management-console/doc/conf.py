@@ -18,6 +18,8 @@
 import os.path
 import sys
 from datetime import date
+
+
 sys.path.insert(0, os.path.abspath('../src'))
 
 # -- General configuration -----------------------------------------------------
@@ -43,7 +45,7 @@ master_doc = 'index'
 
 # General information about the project.
 project = u'Univention Management Console'
-copyright = u'2012-{}, Univention GmbH'.format(date.today().year)
+copyright = f'2012-{date.today().year}, Univention GmbH'
 
 # The version info for the project you're documenting, acts as replacement for
 # |version| and |release|, also used in various other places throughout the
@@ -213,7 +215,7 @@ latex_documents = [
 # (source start file, name, description, authors, manual section).
 man_pages = [
     ('index', 'univentionmanagementconsole', u'Univention Management Console Documentation',
-     [u'Univention GmbH'], 1)
+     [u'Univention GmbH'], 1),
 ]
 
 

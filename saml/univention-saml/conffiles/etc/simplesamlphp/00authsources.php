@@ -69,17 +69,17 @@ print("	'selfservice.check_email_verification' 	=> %s," % ('TRUE' if configRegis
 
 ldap_user = 'uid=sys-idp-user,cn=users,%s' % configRegistry.get('ldap/base', 'null')
 if configRegistry.get('saml/idp/ldap/user'):
-	ldap_user = configRegistry.get('saml/idp/ldap/user')
+    ldap_user = configRegistry.get('saml/idp/ldap/user')
 
 print("	'search.username'	=> '%s'," % ldap_user)
 
 password = ''
 try:
-	with open('/etc/idp-ldap-user.secret', 'r') as fd:
-		password = fd.read().strip()
+    with open('/etc/idp-ldap-user.secret') as fd:
+        password = fd.read().strip()
 except EnvironmentError:
-	import sys
-	sys.stderr.write('/etc/idp-ldap-user.secret could not be read!\n')
+    import sys
+    sys.stderr.write('/etc/idp-ldap-user.secret could not be read!\n')
 
 print("	'search.password'	=> '%s'," % password)
 @!@

@@ -7,58 +7,59 @@ from lib.screen_shooter import BaseScreenShooter
 
 from univention.admin import localization
 
+
 translator = localization.translation('univention-ucs-test_umc-screenshots')
 _ = translator.translate
 
 
 class ScreenShooter(BaseScreenShooter):
-	def take_screenshots(self):
-		self.open_module_and_take_overview_screenshot()
-		self.take_screenshots_of_adding_a_user()
-		self.take_screenshot_of_details_page()
+    def take_screenshots(self):
+        self.open_module_and_take_overview_screenshot()
+        self.take_screenshots_of_adding_a_user()
+        self.take_screenshot_of_details_page()
 
-	def open_module_and_take_overview_screenshot(self):
-		self.selenium.open_module(_('Users'))
-		self.selenium.wait_for_text(":/users")
-		self.selenium.wait_until_all_standby_animations_disappeared()
-		self.selenium.save_screenshot("umc-users")
+    def open_module_and_take_overview_screenshot(self):
+        self.selenium.open_module(_('Users'))
+        self.selenium.wait_for_text(":/users")
+        self.selenium.wait_until_all_standby_animations_disappeared()
+        self.selenium.save_screenshot("umc-users")
 
-	def take_screenshots_of_adding_a_user(self):
-		self.selenium.click_button(_("Add"))
-		self.take_template_screenshot_and_move_on()
-		self.selenium.wait_for_text(_("First name"))
-		self.selenium.enter_input("firstname", "Anna")
-		self.selenium.enter_input("lastname", "Alster")
-		self.selenium.enter_input("username", "anna")
-		self.selenium.save_screenshot(
-			"umc-users-add_dialog",
-			xpath='//*[contains(concat(" ", normalize-space(@class), " "), " umcUdmNewObjectDialog ")]'
-		)
-		# self.selenium.click_button(_("Next"))
-		# self.selenium.wait_for_text(_("Password *"))
-		# self.selenium.enter_input("password_1", "univention")
-		# self.selenium.enter_input("password_2", "univention")
-		self.selenium.click_button(_("Cancel"))
-		self.selenium.wait_until_all_dialogues_closed()
+    def take_screenshots_of_adding_a_user(self):
+        self.selenium.click_button(_("Add"))
+        self.take_template_screenshot_and_move_on()
+        self.selenium.wait_for_text(_("First name"))
+        self.selenium.enter_input("firstname", "Anna")
+        self.selenium.enter_input("lastname", "Alster")
+        self.selenium.enter_input("username", "anna")
+        self.selenium.save_screenshot(
+            "umc-users-add_dialog",
+            xpath='//*[contains(concat(" ", normalize-space(@class), " "), " umcUdmNewObjectDialog ")]',
+        )
+        # self.selenium.click_button(_("Next"))
+        # self.selenium.wait_for_text(_("Password *"))
+        # self.selenium.enter_input("password_1", "univention")
+        # self.selenium.enter_input("password_2", "univention")
+        self.selenium.click_button(_("Cancel"))
+        self.selenium.wait_until_all_dialogues_closed()
 
-	def take_template_screenshot_and_move_on(self):
-		self.selenium.wait_for_text(_("User template"))
-		template_selection_dropdown_button = self.selenium.driver.find_element_by_xpath(
-			'//input[@name="objectTemplate"]/../..//input[contains(concat(" ", normalize-space(@class), " "), " dijitArrowButtonInner ")]'
-		)
-		template_selection_dropdown_button.click()
-		self.selenium.save_screenshot(
-			"umc-users-template",
-			xpath='//*[contains(concat(" ", normalize-space(@class), " "), " umcUdmNewObjectDialog ")]'
-		)
-		template_selection_dropdown_button.click()
-		self.selenium.click_button(_("Next"))
+    def take_template_screenshot_and_move_on(self):
+        self.selenium.wait_for_text(_("User template"))
+        template_selection_dropdown_button = self.selenium.driver.find_element_by_xpath(
+            '//input[@name="objectTemplate"]/../..//input[contains(concat(" ", normalize-space(@class), " "), " dijitArrowButtonInner ")]',
+        )
+        template_selection_dropdown_button.click()
+        self.selenium.save_screenshot(
+            "umc-users-template",
+            xpath='//*[contains(concat(" ", normalize-space(@class), " "), " umcUdmNewObjectDialog ")]',
+        )
+        template_selection_dropdown_button.click()
+        self.selenium.click_button(_("Next"))
 
-	def take_screenshot_of_details_page(self):
-		self.selenium.click_grid_entry("anna")
-		self.selenium.wait_for_text(_("password history"))
-		self.selenium.wait_until_all_standby_animations_disappeared()
-		self.selenium.save_screenshot("umc-users-details")
+    def take_screenshot_of_details_page(self):
+        self.selenium.click_grid_entry("anna")
+        self.selenium.wait_for_text(_("password history"))
+        self.selenium.wait_until_all_standby_animations_disappeared()
+        self.selenium.save_screenshot("umc-users-details")
 
 
 # This is a base64 encoded jpeg image of an user portrait.
@@ -163,15 +164,15 @@ WnH8MMD8sVxGRIvY4FFFaPoTl9x1z2rHeiisQMzRRRUAf//Z
 """
 
 if __name__ == '__main__':
-	with ScreenShooter(translator) as screen_shooter:
-		screen_shooter.udm.create_user(username='anna', firstname='Anna', lastname='Alster', jpegPhoto=portraitPhoto)
-		screen_shooter.udm.create_object(
-			'settings/usertemplate', name=_('Developer'),
-			position=f"cn=templates,cn=univention,{screen_shooter.selenium.ldap_base}"
-		)
-		screen_shooter.udm.create_object(
-			'settings/usertemplate', name=_('Guest'),
-			position=f"cn=templates,cn=univention,{screen_shooter.selenium.ldap_base}"
-		)
+    with ScreenShooter(translator) as screen_shooter:
+        screen_shooter.udm.create_user(username='anna', firstname='Anna', lastname='Alster', jpegPhoto=portraitPhoto)
+        screen_shooter.udm.create_object(
+            'settings/usertemplate', name=_('Developer'),
+            position=f"cn=templates,cn=univention,{screen_shooter.selenium.ldap_base}",
+        )
+        screen_shooter.udm.create_object(
+            'settings/usertemplate', name=_('Guest'),
+            position=f"cn=templates,cn=univention,{screen_shooter.selenium.ldap_base}",
+        )
 
-		screen_shooter.take_screenshots()
+        screen_shooter.take_screenshots()

@@ -9,9 +9,9 @@ from quota_test import QuotaCheck
 
 
 def main():
-	quotaCheck = QuotaCheck(quota_type="usrjquota=aquota.user,jqfmt=vfsv1")
-	quotaCheck.test_quota_pam()
+    quotaCheck = QuotaCheck(quota_type="usrjquota=aquota.user,jqfmt=vfsv1")
+    quotaCheck.test_quota_pam()
 
 
 if __name__ == '__main__':
-	main()
+    main()

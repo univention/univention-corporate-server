@@ -40,55 +40,55 @@ from univentionunittests import import_module
 
 
 def pytest_addoption(parser):
-	parser.addoption("--installed-portal", action="store_true", help="Test against installed portal")
+    parser.addoption("--installed-portal", action="store_true", help="Test against installed portal")
 
 
-@pytest.fixture
+@pytest.fixture()
 def portal_config(request):
-	use_installed = request.config.getoption("--installed-portal")
-	module = import_module("univention.portal.config", "python/", "univention.portal.config", use_installed=use_installed)
-	return module
+    use_installed = request.config.getoption("--installed-portal")
+    module = import_module("univention.portal.config", "python/", "univention.portal.config", use_installed=use_installed)
+    return module
 
 
-@pytest.fixture
+@pytest.fixture()
 def portal_factory(request):
-	use_installed = request.config.getoption("--installed-portal")
-	module = import_module("univention.portal.factory", "python/", "univention.portal.factory", use_installed=use_installed)
-	return module
+    use_installed = request.config.getoption("--installed-portal")
+    module = import_module("univention.portal.factory", "python/", "univention.portal.factory", use_installed=use_installed)
+    return module
 
 
-@pytest.fixture
+@pytest.fixture()
 def portal_lib(request):
-	use_installed = request.config.getoption("--installed-portal")
-	module = import_module("univention.portal", "python/", "univention.portal", use_installed=use_installed)
-	return module
+    use_installed = request.config.getoption("--installed-portal")
+    module = import_module("univention.portal", "python/", "univention.portal", use_installed=use_installed)
+    return module
 
 
-@pytest.fixture
+@pytest.fixture()
 def dynamic_class(portal_lib):
-	return portal_lib.get_dynamic_classes
+    return portal_lib.get_dynamic_classes
 
 
 # Helper function fixtures
 
 
-@pytest.fixture
+@pytest.fixture()
 def patch_object_module(mocker):
-	""" Helper to patch module level library imports of an object or class """
+    """Helper to patch module level library imports of an object or class"""
 
-	def _(obj, module_name):
-		return mocker.patch("{}.{}".format(obj.__module__, module_name))
+    def _(obj, module_name):
+        return mocker.patch(f"{obj.__module__}.{module_name}")
 
-	return _
+    return _
 
 
-@pytest.fixture
+@pytest.fixture()
 def get_file_path(request):
-	""" Helper to get the absolute path of test files in the unittests directory """
-	unittest_path = request.fspath.dirname
-	files_directory = "files"
+    """Helper to get the absolute path of test files in the unittests directory"""
+    unittest_path = request.fspath.dirname
+    files_directory = "files"
 
-	def _(file_name):
-		return path.join(unittest_path, files_directory, file_name)
+    def _(file_name):
+        return path.join(unittest_path, files_directory, file_name)
 
-	return _
+    return _

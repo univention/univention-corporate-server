@@ -42,57 +42,58 @@ import sys
 
 from univention.config_registry import ucr
 
+
 NODE_EXPORTER_DIR = '/var/lib/prometheus/node-exporter/'
 RE_INVALID_LABEL = re.compile('[{"=}]')
 
 
 def quote(string):
-	return string.replace('\\', '\\\\').replace('"', '\\"').replace('\n', '\\n')
+    return string.replace('\\', '\\\\').replace('"', '\\"').replace('\n', '\\n')
 
 
 class Alert(object):
-	"""Execute alert plugin"""
+    """Execute alert plugin"""
 
-	def __init__(self, args):
-		self.args = args
-		self.log = logging.getLogger(self.args.prog)
-		self.default_labels = {'instance': '%(hostname)s.%(domainname)s' % ucr}
-		self._fd = None
+    def __init__(self, args):
+        self.args = args
+        self.log = logging.getLogger(self.args.prog)
+        self.default_labels = {'instance': '%(hostname)s.%(domainname)s' % ucr}
+        self._fd = None
 
-	@classmethod
-	def main(cls):
-		parser = argparse.ArgumentParser(description=cls.__doc__)
-		parser.add_argument('-v', '--verbose', action='store_true', help='Add debug output')
-		args = parser.parse_args()
-		args.prog = parser.prog
-		plugin = parser.prog
-		if args.verbose:
-			logging.basicConfig(stream=sys.stderr, level=logging.DEBUG)
+    @classmethod
+    def main(cls):
+        parser = argparse.ArgumentParser(description=cls.__doc__)
+        parser.add_argument('-v', '--verbose', action='store_true', help='Add debug output')
+        args = parser.parse_args()
+        args.prog = parser.prog
+        plugin = parser.prog
+        if args.verbose:
+            logging.basicConfig(stream=sys.stderr, level=logging.DEBUG)
 
-		if ucr.is_true('monitoring/plugin/%s/disabled' % (plugin,)):
-			return
+        if ucr.is_true('monitoring/plugin/%s/disabled' % (plugin,)):
+            return
 
-		self = cls(args)
-		with open(os.path.join(NODE_EXPORTER_DIR, '%s.prom' % (plugin,)), 'w') as self._fd:
-			self.write_metrics()
+        self = cls(args)
+        with open(os.path.join(NODE_EXPORTER_DIR, '%s.prom' % (plugin,)), 'w') as self._fd:
+            self.write_metrics()
 
-	def write_metrics(self):
-		pass
+    def write_metrics(self):
+        pass
 
-	def write_metric(self, metric_name, value, **labels):
-		labels = dict(self.default_labels, **labels)
-		label_str = '{%s}' % ','.join(
-			'%s="%s"' % (RE_INVALID_LABEL.sub('', key), quote(val))
-			for key, val in labels.items()
-		) if labels else ''
+    def write_metric(self, metric_name, value, **labels):
+        labels = dict(self.default_labels, **labels)
+        label_str = '{%s}' % ','.join(
+            '%s="%s"' % (RE_INVALID_LABEL.sub('', key), quote(val))
+            for key, val in labels.items()
+        ) if labels else ''
 
-		value = '%d' % (value,) if isinstance(value, int) else '%f' % (value,)
-		self._fd.write('%s%s %s\n' % (metric_name, label_str, value))
+        value = '%d' % (value,) if isinstance(value, int) else '%f' % (value,)
+        self._fd.write('%s%s %s\n' % (metric_name, label_str, value))
 
-	def exec_command(self, *args, **kwargs):
-		kwargs.setdefault('stdout', subprocess.PIPE)
-		kwargs.setdefault('stderr', subprocess.DEVNULL)
-		proc = subprocess.Popen(*args, **kwargs)
-		stdout, stderr = proc.communicate()
-		output = stdout.decode('UTF-8', 'replace') if stdout is not None else None
-		return proc.returncode, output
+    def exec_command(self, *args, **kwargs):
+        kwargs.setdefault('stdout', subprocess.PIPE)
+        kwargs.setdefault('stderr', subprocess.DEVNULL)
+        proc = subprocess.Popen(*args, **kwargs)
+        stdout, stderr = proc.communicate()
+        output = stdout.decode('UTF-8', 'replace') if stdout is not None else None
+        return proc.returncode, output

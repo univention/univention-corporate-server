@@ -34,12 +34,13 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 import os
-from sys import exit
 from shlex import quote
+from sys import exit
 from typing import Dict, List
 
 from univention.config_registry import ConfigRegistry
 from univention.lib.policy_result import PolicyResultFailed, policy_result
+
 
 # Name of the cron.d file
 CRON_D = '/etc/cron.d/univention-maintenance'

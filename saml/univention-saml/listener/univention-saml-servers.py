@@ -39,8 +39,10 @@ import os.path
 import subprocess
 from typing import Dict, List
 
-import listener
 from univention.config_registry import ConfigRegistry, handler_set, handler_unset
+
+import listener
+
 
 description = 'Manage ucs/server/saml-idp-server/* variables'
 filter = '(|(objectClass=univentionDomainController)(objectClass=univentionMemberServer))'
@@ -48,27 +50,27 @@ attributes = ['univentionService']
 
 
 def handler(dn: str, new: Dict[str, List[bytes]], old: Dict[str, List[bytes]]) -> None:
-	ucr = ConfigRegistry()
-	ucr.load()
-	listener.setuid(0)
-	try:
-		try:
-			fqdn = '%s.%s' % (new['cn'][0].decode('UTF-8'), new['associatedDomain'][0].decode('ASCII'))
-		except (KeyError, IndexError):
-			return
+    ucr = ConfigRegistry()
+    ucr.load()
+    listener.setuid(0)
+    try:
+        try:
+            fqdn = '%s.%s' % (new['cn'][0].decode('UTF-8'), new['associatedDomain'][0].decode('ASCII'))
+        except (KeyError, IndexError):
+            return
 
-		change = False
-		if b'univention-saml' in new.get('univentionService', []):
-			handler_set(['ucs/server/saml-idp-server/%s=%s' % (fqdn, fqdn)])
-			change = True
-		elif b'univention-saml' in old.get('univentionService', []):
-			handler_unset(['ucs/server/saml-idp-server/%s' % (fqdn,)])
-			change = True
+        change = False
+        if b'univention-saml' in new.get('univentionService', []):
+            handler_set(['ucs/server/saml-idp-server/%s=%s' % (fqdn, fqdn)])
+            change = True
+        elif b'univention-saml' in old.get('univentionService', []):
+            handler_unset(['ucs/server/saml-idp-server/%s' % (fqdn,)])
+            change = True
 
-		if change:
-			path_to_cert = ucr.get('saml/idp/certificate/certificate')
-			path_to_key = ucr.get('saml/idp/certificate/privatekey')
-			if path_to_cert and os.path.exists(path_to_cert) and path_to_key and os.path.exists(path_to_key):
-				subprocess.call(['systemctl', 'restart', 'univention-saml'])
-	finally:
-		listener.unsetuid()
+        if change:
+            path_to_cert = ucr.get('saml/idp/certificate/certificate')
+            path_to_key = ucr.get('saml/idp/certificate/privatekey')
+            if path_to_cert and os.path.exists(path_to_cert) and path_to_key and os.path.exists(path_to_key):
+                subprocess.call(['systemctl', 'restart', 'univention-saml'])
+    finally:
+        listener.unsetuid()

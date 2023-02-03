@@ -34,45 +34,46 @@
 
 from cloudinit.settings import PER_INSTANCE
 
+
 frequency = PER_INSTANCE
 
 
 def handle(name, cfg, cloud, log, args):
 
-	log.debug('Executing Module %s' % name)
+    log.debug('Executing Module %s' % name)
 
-	if "ucs_setup" not in cfg:
-		log.debug(("Skipping module named %s, ucs_setup not present in config"), name)
-		return
+    if "ucs_setup" not in cfg:
+        log.debug(("Skipping module named %s, ucs_setup not present in config"), name)
+        return
 
-	# read config options and write them to a profile
-	p = dict((k, v) for k, v in cfg["ucs_setup"].items() if v is not None)
-	hostname = p.get('hostname', 'ucs')
-	domainname = p.get('domainname', 'ucs.test')
-	windowsdomain = p.get('windowsdomain', 'UCS')
-	ldap_base = p.get('ldap_base', 'dc=ucs,dc=test')
-	rootpassword = p.get('rootpassword', 'univention')
-	role = p.get('role', 'domaincontroller_master')
-	defaultlocale = p.get('defaultlocale', 'de_DE.UTF-8:UTF-8')
-	components = p.get('components', '')
-	packages_install = p.get('packages_install', '')
-	packages_remove = p.get('packages_remove', '')
-	eth0_address = p.get('eth0_address', 'dhcp')
-	eth0_broadcast = p.get('eth0_broadcast', '')
-	eth0_netmask = p.get('eth0_netmask', '')
-	eth0_network = p.get('eth0_network', '')
-	nameserver = p.get('nameserver', '')
-	dnsforwarder = p.get('dnsforwarder', '')
-	gateway = p.get('gateway', '')
-	sslou = p.get('sslou', 'Univention Corporate Server')
-	sslorg = p.get('sslorg', 'DE')
-	sslemail = p.get('sslemail', 'ssl@%s' % domainname)
-	sslstate = p.get('sslstate', 'DE')
-	ssllocality = p.get('ssllocality', 'DE')
-	timezone = p.get('timezone', 'America/New_York')
-	keymap = p.get('keymap', 'en_us')
+    # read config options and write them to a profile
+    p = {k: v for k, v in cfg["ucs_setup"].items() if v is not None}
+    hostname = p.get('hostname', 'ucs')
+    domainname = p.get('domainname', 'ucs.test')
+    windowsdomain = p.get('windowsdomain', 'UCS')
+    ldap_base = p.get('ldap_base', 'dc=ucs,dc=test')
+    rootpassword = p.get('rootpassword', 'univention')
+    role = p.get('role', 'domaincontroller_master')
+    defaultlocale = p.get('defaultlocale', 'de_DE.UTF-8:UTF-8')
+    components = p.get('components', '')
+    packages_install = p.get('packages_install', '')
+    packages_remove = p.get('packages_remove', '')
+    eth0_address = p.get('eth0_address', 'dhcp')
+    eth0_broadcast = p.get('eth0_broadcast', '')
+    eth0_netmask = p.get('eth0_netmask', '')
+    eth0_network = p.get('eth0_network', '')
+    nameserver = p.get('nameserver', '')
+    dnsforwarder = p.get('dnsforwarder', '')
+    gateway = p.get('gateway', '')
+    sslou = p.get('sslou', 'Univention Corporate Server')
+    sslorg = p.get('sslorg', 'DE')
+    sslemail = p.get('sslemail', 'ssl@%s' % domainname)
+    sslstate = p.get('sslstate', 'DE')
+    ssllocality = p.get('ssllocality', 'DE')
+    timezone = p.get('timezone', 'America/New_York')
+    keymap = p.get('keymap', 'en_us')
 
-	template = '''hostname="%s"
+    template = '''hostname="%s"
 domainname="%s"
 windows/domain="%s"
 ldap/base="%s"
@@ -93,26 +94,26 @@ locale/keymap="%s"
 interfaces/primary="eth0"
 ''' % (hostname, domainname, windowsdomain, ldap_base, role, rootpassword, defaultlocale, components, packages_install, packages_remove, sslou, sslorg, sslemail, sslstate, ssllocality, timezone, keymap)
 
-	if gateway:
-		template += '''gateway="%s"
+    if gateway:
+        template += '''gateway="%s"
 ''' % gateway
-	if nameserver:
-		template += '''nameserver1="%s"
+    if nameserver:
+        template += '''nameserver1="%s"
 ''' % nameserver
-	if dnsforwarder:
-		template += '''dns/forwarder1="%s"
+    if dnsforwarder:
+        template += '''dns/forwarder1="%s"
 ''' % dnsforwarder
 
-	if eth0_address != "dhcp":
-		template += '''interfaces/eth0/type="static"
+    if eth0_address != "dhcp":
+        template += '''interfaces/eth0/type="static"
 interfaces/eth0/address="%s"
 interfaces/eth0/broadcast="%s"
 interfaces/eth0/netmask="%s"
 interfaces/eth0/network="%s"
 ''' % (eth0_address, eth0_broadcast, eth0_netmask, eth0_network)
-	else:
-		template += '''interfaces/eth0/type="dhcp"
+    else:
+        template += '''interfaces/eth0/type="dhcp"
 '''
 
-	with open('/var/cache/univention-system-setup/profile', 'w') as profile:
-		profile.write(template)
+    with open('/var/cache/univention-system-setup/profile', 'w') as profile:
+        profile.write(template)

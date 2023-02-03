@@ -29,41 +29,42 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-"""
-Module and object specific for "nagios/service" UDM module.
-"""
+"""Module and object specific for "nagios/service" UDM module."""
 
 from __future__ import absolute_import, unicode_literals
-from ..encoders import dn_list_property_encoder_for, DisabledPropertyEncoder, StringIntPropertyEncoder
+
+from ..encoders import DisabledPropertyEncoder, StringIntPropertyEncoder, dn_list_property_encoder_for
 from .generic import GenericModule, GenericObject, GenericObjectProperties
 
 
 class NagiosServiceObjectProperties(GenericObjectProperties):
-	"""nagios/service UDM properties."""
+    """nagios/service UDM properties."""
 
-	_encoders = {
-		'assignedHosts': dn_list_property_encoder_for('auto'),  # can be different types of computer/* objects
-		'maxCheckAttempts': StringIntPropertyEncoder,
-		'normalCheckInterval': StringIntPropertyEncoder,
-		'notificationInterval': StringIntPropertyEncoder,
-		'notificationOptionCritical': DisabledPropertyEncoder,
-		'notificationOptionRecovered': DisabledPropertyEncoder,
-		'notificationOptionUnreachable': DisabledPropertyEncoder,
-		'notificationOptionWarning': DisabledPropertyEncoder,
-		'retryCheckInterval': StringIntPropertyEncoder,
-		'useNRPE': DisabledPropertyEncoder,
-	}
+    _encoders = {
+        'assignedHosts': dn_list_property_encoder_for('auto'),  # can be different types of computer/* objects
+        'maxCheckAttempts': StringIntPropertyEncoder,
+        'normalCheckInterval': StringIntPropertyEncoder,
+        'notificationInterval': StringIntPropertyEncoder,
+        'notificationOptionCritical': DisabledPropertyEncoder,
+        'notificationOptionRecovered': DisabledPropertyEncoder,
+        'notificationOptionUnreachable': DisabledPropertyEncoder,
+        'notificationOptionWarning': DisabledPropertyEncoder,
+        'retryCheckInterval': StringIntPropertyEncoder,
+        'useNRPE': DisabledPropertyEncoder,
+    }
 
 
 class NagiosServiceObject(GenericObject):
-	"""Better representation of nagios/service properties."""
-	udm_prop_class = NagiosServiceObjectProperties
+    """Better representation of nagios/service properties."""
+
+    udm_prop_class = NagiosServiceObjectProperties
 
 
 class NagiosServiceModule(GenericModule):
-	"""NagiosServiceObject factory"""
-	_udm_object_class = NagiosServiceObject
+    """NagiosServiceObject factory"""
 
-	class Meta:
-		supported_api_versions = [1, 2, 3]
-		suitable_for = ['nagios/service']
+    _udm_object_class = NagiosServiceObject
+
+    class Meta:
+        supported_api_versions = [1, 2, 3]
+        suitable_for = ['nagios/service']

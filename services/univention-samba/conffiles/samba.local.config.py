@@ -36,24 +36,25 @@
 
 import sys
 
+
 try:
-	from univention.lib.share_restrictions import ShareConfiguration
+    from univention.lib.share_restrictions import ShareConfiguration
 except ImportError as exc:
-	print('Could not import ShareConfiguration: %s' % (exc,), file=sys.stderr)
-	sys.exit(0)
+    print('Could not import ShareConfiguration: %s' % (exc,), file=sys.stderr)
+    sys.exit(0)
 
 # main
 if __name__ == '__main__':
-	conf = ShareConfiguration()
+    conf = ShareConfiguration()
 
-	conf.read()
+    conf.read()
 
-	# DEBUGGING
-	# import pprint
-	# pp = pprint.PrettyPrinter(indent=4)
-	# pp.pprint(conf.shares)
-	# pp.pprint(conf.globals)
-	# pp.pprint(conf.printers)
-	# sys.exit(0)
+    # DEBUGGING
+    # import pprint
+    # pp = pprint.PrettyPrinter(indent=4)
+    # pp.pprint(conf.shares)
+    # pp.pprint(conf.globals)
+    # pp.pprint(conf.printers)
+    # sys.exit(0)
 
-	conf.write()
+    conf.write()

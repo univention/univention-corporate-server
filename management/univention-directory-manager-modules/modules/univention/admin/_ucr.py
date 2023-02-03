@@ -30,11 +30,10 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-"""
-Non public UCR instance.
-"""
+"""Non public UCR instance."""
 
 import univention.config_registry
+
 
 configRegistry = univention.config_registry.ConfigRegistry()
 configRegistry.load()

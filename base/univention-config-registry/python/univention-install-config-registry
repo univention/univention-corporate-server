@@ -37,149 +37,151 @@
 from __future__ import print_function
 
 import os
-import sys
 import subprocess
+import sys
 from argparse import ArgumentParser
 
 import univention.config_registry
-from univention.debhelper import doIt, binary_packages
+from univention.debhelper import binary_packages, doIt
+
+
 try:
-	from shlex import quote
+    from shlex import quote
 except ImportError:
-	from pipes import quote
+    from pipes import quote
 
 
 def tmpDir(package):
-	"""Name of the packages build directory."""
-	return 'debian/' + package
+    """Name of the packages build directory."""
+    return 'debian/' + package
 
 
 def extFile(package, ext):
-	"""Name of a package configuration file."""
-	return 'debian/' + package + '.' + ext
+    """Name of a package configuration file."""
+    return 'debian/' + package + '.' + ext
 
 
 def srcPath(file):
-	"""Find file in source directory."""
-	f = 'conffiles/' + file
-	if os.path.exists(f):
-		return f
-	f = file
-	if os.path.exists(f):
-		return f
-	if file.startswith('etc/'):
-		f = 'conffiles/' + file[4:]
-		if os.path.exists(f):
-			return f
-	print("file %s was not found" % file, file=sys.stderr)
-	sys.exit(1)
+    """Find file in source directory."""
+    f = 'conffiles/' + file
+    if os.path.exists(f):
+        return f
+    f = file
+    if os.path.exists(f):
+        return f
+    if file.startswith('etc/'):
+        f = 'conffiles/' + file[4:]
+        if os.path.exists(f):
+            return f
+    print("file %s was not found" % file, file=sys.stderr)
+    sys.exit(1)
 
 
 def destPath(file, package, type='files'):
-	"""File name for a UCR file inside the packages build directory."""
-	return tmpDir(package) + '/etc/univention/templates/' + type + '/' + file
+    """File name for a UCR file inside the packages build directory."""
+    return tmpDir(package) + '/etc/univention/templates/' + type + '/' + file
 
 
 def destDir(file, package, type='files'):
-	"""Directory name for a UCR file inside the packages build directory."""
-	return tmpDir(package) + '/etc/univention/templates/' + type + '/' + os.path.dirname(file)
+    """Directory name for a UCR file inside the packages build directory."""
+    return tmpDir(package) + '/etc/univention/templates/' + type + '/' + os.path.dirname(file)
 
 
 def typeDir(type):
-	"""Name for the subdirectory for a UCR file."""
-	if type == 'script':
-		return 'script'
-	else:
-		return 'file'
+    """Name for the subdirectory for a UCR file."""
+    if type == 'script':
+        return 'script'
+    else:
+        return 'file'
 
 
 def do_package(package):
-	"""Install all files related to one package."""
-	n_ucr = extFile(package, 'univention-config-registry')
-	if not os.path.exists(n_ucr):
-		return
+    """Install all files related to one package."""
+    n_ucr = extFile(package, 'univention-config-registry')
+    if not os.path.exists(n_ucr):
+        return
 
-	with open(n_ucr, 'r') as f_ucr:
-		for item in univention.config_registry.parseRfc822(f_ucr.read()):
-			typ = item['Type'][0]
-			if typ == 'file':
-				f = item['File'][0]
-				doIt('install', '-d', destDir(f, package))
-				doIt('cp', '-a', srcPath(f), destPath(f, package))
-				for key in ('Preinst', 'Postinst'):
-					if key in item:
-						mod = item[key][0]
-						doIt('install', '-d', destDir(mod, package, 'modules'))
-						doIt('cp', '-a', srcPath(mod), destPath(mod, package, 'modules'))
-			elif typ == 'subfile':
-				f = item['Subfile'][0]
-				doIt('install', '-d', destDir(f, package))
-				doIt('cp', '-a', srcPath(f), destPath(f, package))
-			elif typ == 'multifile':
-				f = item['Multifile'][0]
-				if os.path.exists(f):
-					doIt('install', '-d', destDir(f, package))
-					doIt('cp', '-a', srcPath(f), destPath(f, package))
-				for key in ('Preinst', 'Postinst'):
-					if key in item:
-						mod = item[key][0]
-						doIt('install', '-d', destDir(mod, package, 'modules'))
-						doIt('cp', '-a', srcPath(mod), destPath(mod, package, 'modules'))
-			elif typ == 'script':
-				f = item['Script'][0]
-				doIt('install', '-d', destDir(f, package, 'scripts'))
-				doIt('cp', '-a', srcPath(f), destPath(f, package, 'scripts'))
-				doIt('chmod', 'a+x', destPath(f, package, 'scripts'))
-			elif typ == 'module':
-				f = item['Module'][0]
-				doIt('install', '-d', destDir(f, package, 'modules'))
-				doIt('cp', '-a', srcPath(f), destPath(f, package, 'modules'))
-			else:
-				print('Unknown type: %s' % typ, file=sys.stderr)
-				return
+    with open(n_ucr) as f_ucr:
+        for item in univention.config_registry.parseRfc822(f_ucr.read()):
+            typ = item['Type'][0]
+            if typ == 'file':
+                f = item['File'][0]
+                doIt('install', '-d', destDir(f, package))
+                doIt('cp', '-a', srcPath(f), destPath(f, package))
+                for key in ('Preinst', 'Postinst'):
+                    if key in item:
+                        mod = item[key][0]
+                        doIt('install', '-d', destDir(mod, package, 'modules'))
+                        doIt('cp', '-a', srcPath(mod), destPath(mod, package, 'modules'))
+            elif typ == 'subfile':
+                f = item['Subfile'][0]
+                doIt('install', '-d', destDir(f, package))
+                doIt('cp', '-a', srcPath(f), destPath(f, package))
+            elif typ == 'multifile':
+                f = item['Multifile'][0]
+                if os.path.exists(f):
+                    doIt('install', '-d', destDir(f, package))
+                    doIt('cp', '-a', srcPath(f), destPath(f, package))
+                for key in ('Preinst', 'Postinst'):
+                    if key in item:
+                        mod = item[key][0]
+                        doIt('install', '-d', destDir(mod, package, 'modules'))
+                        doIt('cp', '-a', srcPath(mod), destPath(mod, package, 'modules'))
+            elif typ == 'script':
+                f = item['Script'][0]
+                doIt('install', '-d', destDir(f, package, 'scripts'))
+                doIt('cp', '-a', srcPath(f), destPath(f, package, 'scripts'))
+                doIt('chmod', 'a+x', destPath(f, package, 'scripts'))
+            elif typ == 'module':
+                f = item['Module'][0]
+                doIt('install', '-d', destDir(f, package, 'modules'))
+                doIt('cp', '-a', srcPath(f), destPath(f, package, 'modules'))
+            else:
+                print('Unknown type: %s' % typ, file=sys.stderr)
+                return
 
-	doIt('install', '-d', destDir('', package, 'info'))
-	doIt('install', '-m644', '-p', n_ucr, destPath(package + '.info', package, 'info'))
-	mapping_file = extFile(package, 'univention-config-registry-mapping')
-	if os.path.exists(mapping_file):
-		doIt('install', '-d', destDir('', package, 'mapping'))
-		doIt('install', '-m644', '-p', mapping_file, destPath(package + '.univention-config-registry-mapping', package, 'mapping'))
+    doIt('install', '-d', destDir('', package, 'info'))
+    doIt('install', '-m644', '-p', n_ucr, destPath(package + '.info', package, 'info'))
+    mapping_file = extFile(package, 'univention-config-registry-mapping')
+    if os.path.exists(mapping_file):
+        doIt('install', '-d', destDir('', package, 'mapping'))
+        doIt('install', '-m644', '-p', mapping_file, destPath(package + '.univention-config-registry-mapping', package, 'mapping'))
 
-	data = {
-		'pkg': quote(package),
-		'info': quote("/etc/univention/templates/info/%s.info" % package),
-		'removed': quote("/etc/univention/templates/removed/%s.info" % package),
-	}
+    data = {
+        'pkg': quote(package),
+        'info': quote("/etc/univention/templates/info/%s.info" % package),
+        'removed': quote("/etc/univention/templates/removed/%s.info" % package),
+    }
 
-	with open(extFile(package, 'preinst.debhelper'), 'a') as f_preinst:
-		f_preinst.write('# Automatically added by univention-install-config-registry\n')
-		f_preinst.write('if [ "$1" = "install" ] ; then\n')
-		f_preinst.write('  [ -e %(removed)s ] && [ ! -e %(info)s ] && mv %(removed)s %(info)s || true\n' % data)
-		f_preinst.write('fi\n')
-		f_preinst.write('# End automatically added section\n')
+    with open(extFile(package, 'preinst.debhelper'), 'a') as f_preinst:
+        f_preinst.write('# Automatically added by univention-install-config-registry\n')
+        f_preinst.write('if [ "$1" = "install" ] ; then\n')
+        f_preinst.write('  [ -e %(removed)s ] && [ ! -e %(info)s ] && mv %(removed)s %(info)s || true\n' % data)
+        f_preinst.write('fi\n')
+        f_preinst.write('# End automatically added section\n')
 
-	with open(extFile(package, 'postinst.debhelper'), 'a') as f_postinst:
-		f_postinst.write('# Automatically added by univention-install-config-registry\n')
-		f_postinst.write('if [ "$1" = "abort-remove" ]; then\n')
-		f_postinst.write('  [ -e %(removed)s ] && mv %(removed)s %(info)s || true\n' % data)
-		f_postinst.write('fi\n')
-		f_postinst.write('[ -x /usr/sbin/univention-config-registry ] && univention-config-registry register %(pkg)s || true\n' % data)
-		f_postinst.write('# End automatically added section\n')
+    with open(extFile(package, 'postinst.debhelper'), 'a') as f_postinst:
+        f_postinst.write('# Automatically added by univention-install-config-registry\n')
+        f_postinst.write('if [ "$1" = "abort-remove" ]; then\n')
+        f_postinst.write('  [ -e %(removed)s ] && mv %(removed)s %(info)s || true\n' % data)
+        f_postinst.write('fi\n')
+        f_postinst.write('[ -x /usr/sbin/univention-config-registry ] && univention-config-registry register %(pkg)s || true\n' % data)
+        f_postinst.write('# End automatically added section\n')
 
-	with open(extFile(package, 'prerm.debhelper'), 'a') as f_prerm:
-		f_prerm.write('# Automatically added by univention-install-config-registry\n')
-		f_prerm.write('if [ "$1" = "remove" ] && [ -e %(info)s ] ; then\n' % data)
-		f_prerm.write('  [ -x /usr/sbin/univention-config-registry ] && univention-config-registry unregister %(pkg)s || true\n' % data)
-		f_prerm.write('  mv %(info)s %(removed)s || true\n' % data)
-		f_prerm.write('fi\n')
-		f_prerm.write('# End automatically added section\n')
+    with open(extFile(package, 'prerm.debhelper'), 'a') as f_prerm:
+        f_prerm.write('# Automatically added by univention-install-config-registry\n')
+        f_prerm.write('if [ "$1" = "remove" ] && [ -e %(info)s ] ; then\n' % data)
+        f_prerm.write('  [ -x /usr/sbin/univention-config-registry ] && univention-config-registry unregister %(pkg)s || true\n' % data)
+        f_prerm.write('  mv %(info)s %(removed)s || true\n' % data)
+        f_prerm.write('fi\n')
+        f_prerm.write('# End automatically added section\n')
 
-	doIt('perl', '-e', 'use Debian::Debhelper::Dh_Lib;addsubstvar("%s", "misc:Depends", "univention-config (>= 7.0.25)");' % package)
+    doIt('perl', '-e', 'use Debian::Debhelper::Dh_Lib;addsubstvar("%s", "misc:Depends", "univention-config (>= 7.0.25)");' % package)
 
 
 def main():
-	"""Install config registry script."""
-	epilog = '''univention-install-config-registry is a debhelper like program
+    """Install config registry script."""
+    epilog = '''univention-install-config-registry is a debhelper like program
 to install Univention Config Registry (UCR) related templates, scripts, and
 modules into the package build directories.
 
@@ -192,34 +194,34 @@ The scripts from conffiles/* go to /etc/univention/templates/scripts/.
 The modules from conffiles/* go to /etc/univention/templates/modules/.
 
 The mapping files debian/*.univention-config-registry-mapping go to /etc/univention/templates/mapping/.
-	'''
-	parser = ArgumentParser(epilog=epilog)
-	parser.add_argument(
-		'--verbose', '-v',
-		action='store_true',
-		help='Verbose mode: show all commands that modify the package build directory.')
-	group = parser.add_argument_group("debhelper", "Common debhelper options")
-	group.add_argument("--arch", "-a", action="store_true", help="Act on all architecture dependent packages.")
-	group.add_argument("--indep", "-i", action="store_true", help="Act on all architecture independent packages.")
-	group.add_argument("--option", "-O", action="append", help="Additional debhelper options.")
-	options = parser.parse_args()
-	if options.verbose:
-		os.environ['DH_VERBOSE'] = '1'
+    '''
+    parser = ArgumentParser(epilog=epilog)
+    parser.add_argument(
+        '--verbose', '-v',
+        action='store_true',
+        help='Verbose mode: show all commands that modify the package build directory.')
+    group = parser.add_argument_group("debhelper", "Common debhelper options")
+    group.add_argument("--arch", "-a", action="store_true", help="Act on all architecture dependent packages.")
+    group.add_argument("--indep", "-i", action="store_true", help="Act on all architecture independent packages.")
+    group.add_argument("--option", "-O", action="append", help="Additional debhelper options.")
+    options = parser.parse_args()
+    if options.verbose:
+        os.environ['DH_VERBOSE'] = '1'
 
-	try:
-		for package in binary_packages():
-			do_package(package)
-	except (LookupError, IOError) as ex:
-		print(ex, file=sys.stderr)
-		sys.exit(1)
+    try:
+        for package in binary_packages():
+            do_package(package)
+    except (LookupError, IOError) as ex:
+        print(ex, file=sys.stderr)
+        sys.exit(1)
 
-	for prog in ("univention-install-config-registry-info", "univention-install-service-info"):
-		try:
-			doIt(prog)
-		except subprocess.CalledProcessError as exc:
-			print("Error: %s returned %d" % (prog, exc.returncode), file=sys.stderr)
-			sys.exit(1)
+    for prog in ("univention-install-config-registry-info", "univention-install-service-info"):
+        try:
+            doIt(prog)
+        except subprocess.CalledProcessError as exc:
+            print("Error: %s returned %d" % (prog, exc.returncode), file=sys.stderr)
+            sys.exit(1)
 
 
 if __name__ == '__main__':
-	main()
+    main()

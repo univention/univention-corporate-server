@@ -36,112 +36,114 @@
 
 from __future__ import print_function
 
-from six.moves import cPickle as pickle
-import time
 import os
-import ldap
 import sys
-import univention.uldap
+import time
 from argparse import ArgumentParser
+
+import ldap
+from six.moves import cPickle as pickle
+
+import univention.uldap
 from univention.config_registry import ConfigRegistry
 
 
 class UCSResync(object):
 
-	def __init__(self):
-		self.configRegistry = ConfigRegistry()
-		self.configRegistry.load()
+    def __init__(self):
+        self.configRegistry = ConfigRegistry()
+        self.configRegistry.load()
 
-		self.lo = univention.uldap.getMachineConnection()
+        self.lo = univention.uldap.getMachineConnection()
 
-	def _get_listener_dir(self):
-		return self.configRegistry.get('%s/ad/listener/dir' % options.configbasename, '/var/lib/univention-connector/ad')
+    def _get_listener_dir(self):
+        return self.configRegistry.get('%s/ad/listener/dir' % options.configbasename, '/var/lib/univention-connector/ad')
 
-	def _generate_filename(self):
-		directory = self._get_listener_dir()
-		return os.path.join(directory, "%f" % time.time())
+    def _generate_filename(self):
+        directory = self._get_listener_dir()
+        return os.path.join(directory, "%f" % time.time())
 
-	def _dump_object_to_file(self, object_data):
-		filename = self._generate_filename()
-		with open(filename, 'wb+') as fd:
-			os.chmod(filename, 0o600)
-			p = pickle.Pickler(fd)
-			p.dump(object_data)
-			p.clear_memo()
+    def _dump_object_to_file(self, object_data):
+        filename = self._generate_filename()
+        with open(filename, 'wb+') as fd:
+            os.chmod(filename, 0o600)
+            p = pickle.Pickler(fd)
+            p.dump(object_data)
+            p.clear_memo()
 
-	def _search_ldap_object_orig(self, ucs_dn):
-		return self.lo.get(ucs_dn, attr=['*', '+'], required=True)
+    def _search_ldap_object_orig(self, ucs_dn):
+        return self.lo.get(ucs_dn, attr=['*', '+'], required=True)
 
-	def resync(self, ucs_dns=None, ldapfilter=None, ldapbase=None):
-		treated_dns = []
-		for dn, new in self.search_ldap(ucs_dns, ldapfilter, ldapbase):
-			object_data = (dn, new, {}, None)
-			self._dump_object_to_file(object_data)
-			treated_dns.append(dn)
+    def resync(self, ucs_dns=None, ldapfilter=None, ldapbase=None):
+        treated_dns = []
+        for dn, new in self.search_ldap(ucs_dns, ldapfilter, ldapbase):
+            object_data = (dn, new, {}, None)
+            self._dump_object_to_file(object_data)
+            treated_dns.append(dn)
 
-		return treated_dns
+        return treated_dns
 
-	def search_ldap(self, ucs_dns=None, ldapfilter=None, ldapbase=None):
-		attr = ('*', '+')
+    def search_ldap(self, ucs_dns=None, ldapfilter=None, ldapbase=None):
+        attr = ('*', '+')
 
-		if ucs_dns:
-			if not ldapfilter:
-				ldapfilter = '(objectClass=*)'
+        if ucs_dns:
+            if not ldapfilter:
+                ldapfilter = '(objectClass=*)'
 
-			ldap_result = []
-			missing_dns = []
-			for targetdn in ucs_dns:
-				try:
-					result = self.lo.search(base=targetdn, scope='base', filter=ldapfilter, attr=attr)
-					ldap_result.extend(result)
-				except ldap.NO_SUCH_OBJECT:
-					missing_dns.append(targetdn)
-			if missing_dns:
-				raise ldap.NO_SUCH_OBJECT(1, 'No object: %s' % (missing_dns,), [r[0] for r in ldap_result])
-		else:
-			if not ldapfilter:
-				ldapfilter = '(objectClass=*)'
+            ldap_result = []
+            missing_dns = []
+            for targetdn in ucs_dns:
+                try:
+                    result = self.lo.search(base=targetdn, scope='base', filter=ldapfilter, attr=attr)
+                    ldap_result.extend(result)
+                except ldap.NO_SUCH_OBJECT:
+                    missing_dns.append(targetdn)
+            if missing_dns:
+                raise ldap.NO_SUCH_OBJECT(1, 'No object: %s' % (missing_dns,), [r[0] for r in ldap_result])
+        else:
+            if not ldapfilter:
+                ldapfilter = '(objectClass=*)'
 
-			if not ldapbase:
-				ldapbase = self.configRegistry['ldap/base']
+            if not ldapbase:
+                ldapbase = self.configRegistry['ldap/base']
 
-			ldap_result = self.lo.search(base=ldapbase, filter=ldapfilter, attr=attr)
+            ldap_result = self.lo.search(base=ldapbase, filter=ldapfilter, attr=attr)
 
-		return ldap_result
+        return ldap_result
 
 
 if __name__ == '__main__':
-	parser = ArgumentParser()
-	parser.add_argument("--filter", dest="ldapfilter", help="LDAP search filter")
-	parser.add_argument("-b", "--base", dest="ldapbase", help="LDAP search base")
-	parser.add_argument("-c", "--configbasename", dest="configbasename", metavar="CONFIGBASENAME", default="connector")
-	parser.add_argument("dn", nargs='?', default=None)
-	options = parser.parse_args()
+    parser = ArgumentParser()
+    parser.add_argument("--filter", dest="ldapfilter", help="LDAP search filter")
+    parser.add_argument("-b", "--base", dest="ldapbase", help="LDAP search base")
+    parser.add_argument("-c", "--configbasename", dest="configbasename", metavar="CONFIGBASENAME", default="connector")
+    parser.add_argument("dn", nargs='?', default=None)
+    options = parser.parse_args()
 
-	state_directory = '/etc/univention/%s' % (options.configbasename,)
-	if not os.path.exists(state_directory):
-		parser.error("Invalid configbasename, directory %s does not exist" % state_directory)
+    state_directory = '/etc/univention/%s' % (options.configbasename,)
+    if not os.path.exists(state_directory):
+        parser.error("Invalid configbasename, directory %s does not exist" % state_directory)
 
-	if not options.dn and not options.ldapfilter:
-		parser.print_help()
-		sys.exit(2)
+    if not options.dn and not options.ldapfilter:
+        parser.print_help()
+        sys.exit(2)
 
-	ucs_dns = list(filter(None, [options.dn]))
+    ucs_dns = list(filter(None, [options.dn]))
 
-	treated_dns = []
-	try:
-		resync = UCSResync()
-		treated_dns = resync.resync(ucs_dns, options.ldapfilter, options.ldapbase)
-	except ldap.NO_SUCH_OBJECT as ex:
-		print('ERROR: The LDAP object not found : %s' % str(ex))
-		if len(ex.args) == 3:
-			treated_dns = ex.args[2]
-		sys.exit(1)
-	finally:
-		for dn in treated_dns:
-			print('resync triggered for %s' % dn)
+    treated_dns = []
+    try:
+        resync = UCSResync()
+        treated_dns = resync.resync(ucs_dns, options.ldapfilter, options.ldapbase)
+    except ldap.NO_SUCH_OBJECT as ex:
+        print('ERROR: The LDAP object not found : %s' % str(ex))
+        if len(ex.args) == 3:
+            treated_dns = ex.args[2]
+        sys.exit(1)
+    finally:
+        for dn in treated_dns:
+            print('resync triggered for %s' % dn)
 
-	if not treated_dns:
-		print('No matching objects.')
+    if not treated_dns:
+        print('No matching objects.')
 
-	sys.exit(0)
+    sys.exit(0)

@@ -36,30 +36,32 @@
 
 
 from __future__ import print_function
-import os
+
 import base64
+import os
+
 from six.moves import configparser
 
 
 def fixup(s):
-	# add proper padding to a base64 string
-	n = len(s) & 3
-	if n:
-		s = s + "=" * (4 - n)
-	return s
+    # add proper padding to a base64 string
+    n = len(s) & 3
+    if n:
+        s = s + "=" * (4 - n)
+    return s
 
 
 configfile = '/etc/univention/connector/internal.cfg'
 if not os.path.exists(configfile):
-	print("ERROR: Config-File not found, maybe connector was never started")
+    print("ERROR: Config-File not found, maybe connector was never started")
 config = configparser.ConfigParser()
 config.readfp(open(configfile))
 
 for section in config.sections():
-	print("SECTION: %s" % section)
-	for name, value in config.items(section):
-		if section == "AD GUID":
-			print(" --%s: %s" % (name, value))
-			print(" --%s: %s" % (base64.b64decode(fixup(name).encode('ASCII')).decode('ASCII'), base64.b64decode(fixup(value).encode('ASCII')).decode('ASCII')))
-		else:
-			print(" -- %50s : %s" % (name, value))
+    print("SECTION: %s" % section)
+    for name, value in config.items(section):
+        if section == "AD GUID":
+            print(" --%s: %s" % (name, value))
+            print(" --%s: %s" % (base64.b64decode(fixup(name).encode('ASCII')).decode('ASCII'), base64.b64decode(fixup(value).encode('ASCII')).decode('ASCII')))
+        else:
+            print(" -- %50s : %s" % (name, value))

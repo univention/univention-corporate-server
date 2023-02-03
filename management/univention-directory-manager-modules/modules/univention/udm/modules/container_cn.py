@@ -29,42 +29,43 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-"""
-Module and object specific for "container/cn" UDM module.
-"""
+"""Module and object specific for "container/cn" UDM module."""
 
 from __future__ import absolute_import, unicode_literals
+
 from ..encoders import StringIntBooleanPropertyEncoder
 from .generic import GenericModule, GenericObject, GenericObjectProperties
 
 
 class ContainerCnObjectProperties(GenericObjectProperties):
-	"""container/cn UDM properties."""
+    """container/cn UDM properties."""
 
-	_encoders = {
-		'computerPath': StringIntBooleanPropertyEncoder,
-		'dhcpPath': StringIntBooleanPropertyEncoder,
-		'dnsPath': StringIntBooleanPropertyEncoder,
-		'groupPath': StringIntBooleanPropertyEncoder,
-		'licensePath': StringIntBooleanPropertyEncoder,
-		'mailPath': StringIntBooleanPropertyEncoder,
-		'networkPath': StringIntBooleanPropertyEncoder,
-		'policyPath': StringIntBooleanPropertyEncoder,
-		'printerPath': StringIntBooleanPropertyEncoder,
-		'sharePath': StringIntBooleanPropertyEncoder,
-		'userPath': StringIntBooleanPropertyEncoder,
-	}
+    _encoders = {
+        'computerPath': StringIntBooleanPropertyEncoder,
+        'dhcpPath': StringIntBooleanPropertyEncoder,
+        'dnsPath': StringIntBooleanPropertyEncoder,
+        'groupPath': StringIntBooleanPropertyEncoder,
+        'licensePath': StringIntBooleanPropertyEncoder,
+        'mailPath': StringIntBooleanPropertyEncoder,
+        'networkPath': StringIntBooleanPropertyEncoder,
+        'policyPath': StringIntBooleanPropertyEncoder,
+        'printerPath': StringIntBooleanPropertyEncoder,
+        'sharePath': StringIntBooleanPropertyEncoder,
+        'userPath': StringIntBooleanPropertyEncoder,
+    }
 
 
 class ContainerCnObject(GenericObject):
-	"""Better representation of container/cn properties."""
-	udm_prop_class = ContainerCnObjectProperties
+    """Better representation of container/cn properties."""
+
+    udm_prop_class = ContainerCnObjectProperties
 
 
 class ContainerCnModule(GenericModule):
-	"""ContainerCnObject factory"""
-	_udm_object_class = ContainerCnObject
+    """ContainerCnObject factory"""
 
-	class Meta:
-		supported_api_versions = [1, 2, 3]
-		suitable_for = ['containers/cn']
+    _udm_object_class = ContainerCnObject
+
+    class Meta:
+        supported_api_versions = [1, 2, 3]
+        suitable_for = ['containers/cn']

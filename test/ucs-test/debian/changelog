@@ -1,3 +1,9 @@
+ucs-test (10.0.9-1) unstable; urgency=medium
+
+  * Bug #31771: migrate tabs to spaces
+
+ -- Florian Best <best@univention.de>  Fri, 03 Feb 2023 04:17:46 +0100
+
 ucs-test (10.0.8-1) unstable; urgency=medium
 
   * Updating UCR type definitions: string -> str

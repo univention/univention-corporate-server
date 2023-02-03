@@ -33,14 +33,16 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-from samba.param import LoadParm
-from samba.credentials import Credentials
-from samba.netcmd.drs import drsuapi_connect, drs_parse_ntds_dn
-from samba.netcmd.common import netcmd_dnsname
-from samba.dcerpc import drsuapi
-
 import sys
+
+from samba.credentials import Credentials
+from samba.dcerpc import drsuapi
+from samba.netcmd.common import netcmd_dnsname
+from samba.netcmd.drs import drs_parse_ntds_dn, drsuapi_connect
+from samba.param import LoadParm
+
 import univention.config_registry
+
 
 NAGIOS_STATE_OK = 0
 NAGIOS_STATE_WARNING = 1
@@ -50,67 +52,67 @@ NAGIOS_STATE_UNKNOWN = 3
 
 class CheckSambaDrsRepl(object):
 
-	def __init__(self):
-		self.lp = LoadParm()
-		self.lp.load_default()
-		self.creds = Credentials()
-		self.creds.guess(self.lp)
-		self.creds.set_machine_account(self.lp)
-		self.server = netcmd_dnsname(self.lp)
+    def __init__(self):
+        self.lp = LoadParm()
+        self.lp.load_default()
+        self.creds = Credentials()
+        self.creds.guess(self.lp)
+        self.creds.set_machine_account(self.lp)
+        self.server = netcmd_dnsname(self.lp)
 
-	def check(self):
-		consecutive_sync_failures = dict()
-		failures = False
-		msg = None
-		drsuapi_connect(self)
-		req1 = drsuapi.DsReplicaGetInfoRequest1()
-		req1.info_type = drsuapi.DRSUAPI_DS_REPLICA_INFO_REPSTO
-		(info_type, info) = self.drsuapi.DsReplicaGetInfo(self.drsuapi_handle, 1, req1)
-		for n in info.array:
-			if n.consecutive_sync_failures > 0:
-				failures = True
-				(site, server) = drs_parse_ntds_dn(n.source_dsa_obj_dn)
-				if server not in consecutive_sync_failures:
-					consecutive_sync_failures[server] = 0
-				consecutive_sync_failures[server] += n.consecutive_sync_failures
-		for server in consecutive_sync_failures:
-			text = '%s failures on %s' % (consecutive_sync_failures[server], server)
-			msg = msg + ', ' + text if msg else text
-		return (failures, msg)
+    def check(self):
+        consecutive_sync_failures = {}
+        failures = False
+        msg = None
+        drsuapi_connect(self)
+        req1 = drsuapi.DsReplicaGetInfoRequest1()
+        req1.info_type = drsuapi.DRSUAPI_DS_REPLICA_INFO_REPSTO
+        (info_type, info) = self.drsuapi.DsReplicaGetInfo(self.drsuapi_handle, 1, req1)
+        for n in info.array:
+            if n.consecutive_sync_failures > 0:
+                failures = True
+                (site, server) = drs_parse_ntds_dn(n.source_dsa_obj_dn)
+                if server not in consecutive_sync_failures:
+                    consecutive_sync_failures[server] = 0
+                consecutive_sync_failures[server] += n.consecutive_sync_failures
+        for server in consecutive_sync_failures:
+            text = '%s failures on %s' % (consecutive_sync_failures[server], server)
+            msg = msg + ', ' + text if msg else text
+        return (failures, msg)
 
 
 def nagios_exit(state, msg):
-	if state == NAGIOS_STATE_OK:
-		print('Samba DRS OK: %s' % msg)
-		sys.exit(NAGIOS_STATE_OK)
-	elif state == NAGIOS_STATE_WARNING:
-		print('Samba DRS WARNING: %s' % msg)
-		sys.exit(NAGIOS_STATE_WARNING)
-	elif state == NAGIOS_STATE_CRITICAL:
-		print('Samba DRS CRITICAL: %s' % msg)
-		sys.exit(NAGIOS_STATE_CRITICAL)
-	else:
-		print('Samba DRS UNKNOWN: %s' % msg)
-		sys.exit(NAGIOS_STATE_UNKNOWN)
+    if state == NAGIOS_STATE_OK:
+        print('Samba DRS OK: %s' % msg)
+        sys.exit(NAGIOS_STATE_OK)
+    elif state == NAGIOS_STATE_WARNING:
+        print('Samba DRS WARNING: %s' % msg)
+        sys.exit(NAGIOS_STATE_WARNING)
+    elif state == NAGIOS_STATE_CRITICAL:
+        print('Samba DRS CRITICAL: %s' % msg)
+        sys.exit(NAGIOS_STATE_CRITICAL)
+    else:
+        print('Samba DRS UNKNOWN: %s' % msg)
+        sys.exit(NAGIOS_STATE_UNKNOWN)
 
 
 if __name__ == '__main__':
 
-	# return OK, is samba autostart is false
-	ucr = univention.config_registry.ConfigRegistry()
-	ucr.load()
-	if not ucr.is_true('samba4/autostart', False):
-		nagios_exit(NAGIOS_STATE_OK, 'samba4/autostart is not true')
+    # return OK, is samba autostart is false
+    ucr = univention.config_registry.ConfigRegistry()
+    ucr.load()
+    if not ucr.is_true('samba4/autostart', False):
+        nagios_exit(NAGIOS_STATE_OK, 'samba4/autostart is not true')
 
-	# check drs
-	try:
-		(failures, msg) = CheckSambaDrsRepl().check()
-	except RuntimeError as error:
-		nagios_exit(NAGIOS_STATE_CRITICAL, error)
-	except Exception as ex:
-		nagios_exit(NAGIOS_STATE_CRITICAL, str(ex))
+    # check drs
+    try:
+        (failures, msg) = CheckSambaDrsRepl().check()
+    except RuntimeError as error:
+        nagios_exit(NAGIOS_STATE_CRITICAL, error)
+    except Exception as ex:
+        nagios_exit(NAGIOS_STATE_CRITICAL, str(ex))
 
-	if failures:
-		nagios_exit(NAGIOS_STATE_CRITICAL, msg)
+    if failures:
+        nagios_exit(NAGIOS_STATE_CRITICAL, msg)
 
-	nagios_exit(NAGIOS_STATE_OK, 'no drs failures')
+    nagios_exit(NAGIOS_STATE_OK, 'no drs failures')

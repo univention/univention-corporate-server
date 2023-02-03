@@ -11,7 +11,7 @@
 import sys
 from os import path
 
-import univention.testing.utils as utils
+from univention.testing import utils
 
 from umc import JoinModule
 
@@ -36,9 +36,7 @@ class TestUMCDomainRejoin(JoinModule):
                 File.close()
 
     def main(self):
-        """
-        A method to test the UMC domain complete rejoin
-        """
+        """A method to test the UMC domain complete rejoin"""
         self.create_connection_authenticate()
         join_status_file = '/var/univention-join/status'
 

@@ -35,9 +35,9 @@ print('dn = %s' % configRegistry.get('ldap/hostdn'))
 
 # Password for LDAP server, if dn is specified.
 if os.path.exists('/etc/machine.secret'):
-	print('dnpass = %s' % (open('/etc/machine.secret', 'r').read()))
+    print('dnpass = %s' % (open('/etc/machine.secret').read()))
 else:
-	print('dnpass = MACHINE.SECRET_IS_MISSING')
+    print('dnpass = MACHINE.SECRET_IS_MISSING')
 @!@
 
 # Use SASL binding instead of the simple binding. Note that this changes
@@ -122,14 +122,14 @@ scope = subtree
 # http://wiki2.dovecot.org/UserDatabase/ExtraFields
 @!@
 default_user_attrs = [
-	'user_attrs = mailPrimaryAddress=user',
-	'=uid=dovemail',
-	'=gid=dovemail',
-	'uid=system_groups_user',
-	'univentionMailUserQuota=quota_rule=*:bytes=%$M']
+    'user_attrs = mailPrimaryAddress=user',
+    '=uid=dovemail',
+    '=gid=dovemail',
+    'uid=system_groups_user',
+    'univentionMailUserQuota=quota_rule=*:bytes=%$M']
 additional_user_attrs = configRegistry.get("mail/dovecot/auth/ldap/user/attributes", "")
 if additional_user_attrs:
-	default_user_attrs.append(additional_user_attrs)
+    default_user_attrs.append(additional_user_attrs)
 print(",".join(default_user_attrs))
 @!@
 
@@ -145,7 +145,7 @@ default_user_filter_objectclasses = ["univentionMail", "univentionMailSharedFold
 additional_user_filter_objectclasses = configRegistry.get("mail/dovecot/auth/ldap/user/objectclasses", "")
 additional_user_filter_objectclasses = additional_user_filter_objectclasses.split(",")
 if additional_user_filter_objectclasses[0]:
-	default_user_filter_objectclasses.extend(additional_user_filter_objectclasses)
+    default_user_filter_objectclasses.extend(additional_user_filter_objectclasses)
 # Meaning of / reason for (|(mailPrimaryAddress=%%Lu)(&(uid=%%u)(|(mailPrimaryAddress=*)(uid=Administrator)))) is:
 # A user logging in must either use an email address (mailPrimaryAddress=%%Lu) or use a username (uid=%%u) but must then
 # have an email address (mailPrimaryAddress=*) - except for the user Administrator, which can login without an email
@@ -153,10 +153,10 @@ if additional_user_filter_objectclasses[0]:
 # Reason for the Administrator exception is, that in the listener (at modules/univention/mail/dovecot_shared_folder.py:397
 # in doveadm_set_mailbox_acls()) we need a user account to use "doveadm" without knowing a valid email address.
 print('user_filter = (&(|%(ocs)s)(|(!(univentionMailHomeServer=*))(univentionMailHomeServer=%(hostname)s.%(domainname)s))(|(mailPrimaryAddress=%%Lu)(&(uid=%%u)(|(mailPrimaryAddress=*)(uid=%(admin_user)s)))))' % {
-	"ocs": "".join(["(objectClass=%s)" % obj for obj in default_user_filter_objectclasses]),
-	"hostname": configRegistry.get("hostname"),
-	"domainname": configRegistry.get("domainname"),
-	"admin_user": escape_filter_chars(custom_username("Administrator")),
+    "ocs": "".join(["(objectClass=%s)" % obj for obj in default_user_filter_objectclasses]),
+    "hostname": configRegistry.get("hostname"),
+    "domainname": configRegistry.get("domainname"),
+    "admin_user": escape_filter_chars(custom_username("Administrator")),
 })
 @!@
 

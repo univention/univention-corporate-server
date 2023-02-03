@@ -1,3 +1,9 @@
+univention-directory-manager-modules (15.0.16-1) unstable; urgency=medium
+
+  * Bug #31771: migrate tabs to spaces
+
+ -- Florian Best <best@univention.de>  Fri, 03 Feb 2023 04:17:39 +0100
+
 univention-directory-manager-modules (15.0.15-1) unstable; urgency=medium
 
   * Bug #55598: binding loop variables to function over the signature

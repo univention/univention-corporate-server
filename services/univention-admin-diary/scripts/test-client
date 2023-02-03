@@ -36,96 +36,97 @@
 #
 
 from __future__ import print_function
-from random import randint
-from argparse import ArgumentParser, RawTextHelpFormatter
 
+from argparse import ArgumentParser, RawTextHelpFormatter
+from random import randint
+
+from univention.admindiary.client import add_comment, write_event
 from univention.admindiary.events import DiaryEvent
-from univention.admindiary.client import write_event, add_comment
 
 
 def flip():
-	return randint(0, 1)
+    return randint(0, 1)
 
 
 def write_comment(context):
-	add_comment('Lorem ipsum', context, username='Administrator')
+    add_comment('Lorem ipsum', context, username='Administrator')
 
 
 def write_join(username):
-	hostname = 'member-%s' % randint(1000, 9999)
-	event = DiaryEvent.get('JOIN_STARTED')
-	context = write_event(event, {'hostname': hostname}, username)
-	if flip():
-		event = DiaryEvent.get('JOIN_FINISHED_SUCCESS')
-		return write_event(event, {'hostname': hostname}, username, context)
-	else:
-		scripts = randint(0, 2)
-		while scripts:
-			scripts -= 1
-			event = DiaryEvent.get('JOIN_SCRIPT_FAILED')
-			write_event(event, {'joinscript': '%d%s.inst' % (randint(10, 90), 'univention-some-script')}, username, context)
-		event = DiaryEvent.get('JOIN_FINISHED_FAILURE')
-		return write_event(event, {'hostname': hostname}, username, context)
+    hostname = 'member-%s' % randint(1000, 9999)
+    event = DiaryEvent.get('JOIN_STARTED')
+    context = write_event(event, {'hostname': hostname}, username)
+    if flip():
+        event = DiaryEvent.get('JOIN_FINISHED_SUCCESS')
+        return write_event(event, {'hostname': hostname}, username, context)
+    else:
+        scripts = randint(0, 2)
+        while scripts:
+            scripts -= 1
+            event = DiaryEvent.get('JOIN_SCRIPT_FAILED')
+            write_event(event, {'joinscript': '%d%s.inst' % (randint(10, 90), 'univention-some-script')}, username, context)
+        event = DiaryEvent.get('JOIN_FINISHED_FAILURE')
+        return write_event(event, {'hostname': hostname}, username, context)
 
 
 def write_updates(username):
-	hostname = 'member-%s' % randint(1000, 9999)
-	event = DiaryEvent.get('UPDATE_STARTED')
-	context = write_event(event, {'hostname': hostname}, username)
-	if flip():
-		event = DiaryEvent.get('UPDATE_FINISHED_SUCCESS')
-		return write_event(event, {'hostname': hostname, 'version': 'UCS 4.4-0 errata%s' % randint(100, 500)}, username, context)
-	else:
-		event = DiaryEvent.get('UPDATE_FINISHED_FAILURE')
-		return write_event(event, {'hostname': hostname}, username, context)
+    hostname = 'member-%s' % randint(1000, 9999)
+    event = DiaryEvent.get('UPDATE_STARTED')
+    context = write_event(event, {'hostname': hostname}, username)
+    if flip():
+        event = DiaryEvent.get('UPDATE_FINISHED_SUCCESS')
+        return write_event(event, {'hostname': hostname, 'version': 'UCS 4.4-0 errata%s' % randint(100, 500)}, username, context)
+    else:
+        event = DiaryEvent.get('UPDATE_FINISHED_FAILURE')
+        return write_event(event, {'hostname': hostname}, username, context)
 
 
 def write_password(username):
-	hostname = 'member-%s' % randint(1000, 9999)
-	if flip():
-		event = DiaryEvent.get('SERVER_PASSWORD_CHANGED')
-		return write_event(event, {'hostname': hostname}, username)
-	else:
-		event = DiaryEvent.get('SERVER_PASSWORD_CHANGED_FAILED')
-		return write_event(event, {'hostname': hostname}, username)
+    hostname = 'member-%s' % randint(1000, 9999)
+    if flip():
+        event = DiaryEvent.get('SERVER_PASSWORD_CHANGED')
+        return write_event(event, {'hostname': hostname}, username)
+    else:
+        event = DiaryEvent.get('SERVER_PASSWORD_CHANGED_FAILED')
+        return write_event(event, {'hostname': hostname}, username)
 
 
 def write_some_events(value, username, f):
-	num_runs, num_comments = value.split('+')
-	num_runs = int(num_runs)
-	num_comments = int(num_comments)
-	print(f.__name__, '-', num_runs, 'runs with', num_comments, 'comments each')
-	while num_runs:
-		num_runs -= 1
-		context = f(username)
-		this_num_comments = num_comments
-		while this_num_comments:
-			this_num_comments -= 1
-			write_comment(context)
+    num_runs, num_comments = value.split('+')
+    num_runs = int(num_runs)
+    num_comments = int(num_comments)
+    print(f.__name__, '-', num_runs, 'runs with', num_comments, 'comments each')
+    while num_runs:
+        num_runs -= 1
+        context = f(username)
+        this_num_comments = num_comments
+        while this_num_comments:
+            this_num_comments -= 1
+            write_comment(context)
 
 
 def main():
-	usage = '%(prog)s [options]'
-	description = 'Test the client library'
-	epilog = '''Examples:
-	%(prog)s --updates=10+5 --join=1+25 --join=10+0
-	'''
-	parser = ArgumentParser(usage=usage, description=description, epilog=epilog, formatter_class=RawTextHelpFormatter)
-	parser.add_argument('-u', '--username', help='Username that issues all diary entries')
-	parser.add_argument('--join', action='append', help='JOIN_STARTED + JOIN_FINISHED_SUCCESS/JOIN_FINISHED_FAILURE')
-	parser.add_argument('--updates', action='append', help='UPDATE_STARTED + UPDATE_FINISHED_SUCCESS/UPDATE_FINISHED_FAILURE')
-	parser.add_argument('--password', action='append', help='SERVER_PASSWORD_CHANGED/SERVER_PASSWORD_CHANGED_FAILED')
-	args = parser.parse_args()
-	if args.join:
-		for value in args.join:
-			write_some_events(value, args.username, write_join)
-	if args.updates:
-		for value in args.updates:
-			write_some_events(value, args.username, write_updates)
-	if args.password:
-		for value in args.password:
-			write_some_events(value, args.username, write_password)
+    usage = '%(prog)s [options]'
+    description = 'Test the client library'
+    epilog = '''Examples:
+    %(prog)s --updates=10+5 --join=1+25 --join=10+0
+    '''
+    parser = ArgumentParser(usage=usage, description=description, epilog=epilog, formatter_class=RawTextHelpFormatter)
+    parser.add_argument('-u', '--username', help='Username that issues all diary entries')
+    parser.add_argument('--join', action='append', help='JOIN_STARTED + JOIN_FINISHED_SUCCESS/JOIN_FINISHED_FAILURE')
+    parser.add_argument('--updates', action='append', help='UPDATE_STARTED + UPDATE_FINISHED_SUCCESS/UPDATE_FINISHED_FAILURE')
+    parser.add_argument('--password', action='append', help='SERVER_PASSWORD_CHANGED/SERVER_PASSWORD_CHANGED_FAILED')
+    args = parser.parse_args()
+    if args.join:
+        for value in args.join:
+            write_some_events(value, args.username, write_join)
+    if args.updates:
+        for value in args.updates:
+            write_some_events(value, args.username, write_updates)
+    if args.password:
+        for value in args.password:
+            write_some_events(value, args.username, write_password)
 
 
 if __name__ == '__main__':
-	main()
+    main()

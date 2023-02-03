@@ -33,60 +33,59 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-from univention.config_registry.misc import key_shell_escape, escape_value
+from univention.config_registry.misc import escape_value, key_shell_escape
+
+
 try:
-	from typing import Any, Iterable  # noqa: F401
+    from typing import Any, Iterable  # noqa: F401
 except ImportError:  # pragma: no cover
-	pass
+    pass
 
 __all__ = ['filter_shell', 'filter_keys_only', 'filter_sort']
 
 
 def filter_shell(args, text):  # pylint: disable-msg=W0613
-	# type: (Any, Iterable[str]) -> Iterable[str]
-	"""
-	Filter output for shell: escape keys.
+    # type: (Any, Iterable[str]) -> Iterable[str]
+    """
+    Filter output for shell: escape keys.
 
-	:param args: UNUSED.
-	:param text: Text as list of lines.
-	:returns: Filteres list of lines.
-	"""
-	out = []
-	for line in text:
-		try:
-			var, value = line.split(': ', 1)
-		except ValueError:
-			var = line
-			value = ''
-		out.append('%s=%s' % (key_shell_escape(var), escape_value(value)))
-	return out
+    :param args: UNUSED.
+    :param text: Text as list of lines.
+    :returns: Filteres list of lines.
+    """
+    out = []
+    for line in text:
+        try:
+            var, value = line.split(': ', 1)
+        except ValueError:
+            var = line
+            value = ''
+        out.append('%s=%s' % (key_shell_escape(var), escape_value(value)))
+    return out
 
 
 def filter_keys_only(args, text):  # pylint: disable-msg=W0613
-	# type: (Any, Iterable[str]) -> Iterable[str]
-	"""
-	Filter output: strip values.
+    # type: (Any, Iterable[str]) -> Iterable[str]
+    """
+    Filter output: strip values.
 
-	:param args: UNUSED.
-	:param text: Text as list of lines.
-	:returns: Filteres list of lines.
-	"""
-	out = []
-	for line in text:
-		out.append(line.split(': ', 1)[0])
-	return out
+    :param args: UNUSED.
+    :param text: Text as list of lines.
+    :returns: Filteres list of lines.
+    """
+    out = []
+    for line in text:
+        out.append(line.split(': ', 1)[0])
+    return out
 
 
 def filter_sort(args, text):  # pylint: disable-msg=W0613
-	# type: (Any, Iterable[str]) -> Iterable[str]
-	"""
-	Filter output: sort by key.
+    # type: (Any, Iterable[str]) -> Iterable[str]
+    """
+    Filter output: sort by key.
 
-	:param args: UNUSED.
-	:param text: Text as list of lines.
-	:returns: Filteres list of lines.
-	"""
-	return sorted(text)
-
-
-# vim:set sw=4 ts=4 noet:
+    :param args: UNUSED.
+    :param text: Text as list of lines.
+    :returns: Filteres list of lines.
+    """
+    return sorted(text)

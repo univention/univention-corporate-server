@@ -2,8 +2,7 @@
 
 from typing import Dict, List
 
-import univention.admin.modules as modules
-import univention.admin.uldap as uldap
+from univention.admin import modules, uldap
 from univention.config_registry import ucr
 
 
@@ -29,54 +28,54 @@ group_member: Dict[int, List[str]] = {}
 
 position.setDn('cn=users,%s' % (base,))
 for i in range(number_of_users):
-	name = "%s%s" % (username, i)
-	user = users.lookup(None, lo, "uid=%s" % name)
-	if not user:
-		user = users.object(None, lo, position)
-		user.open()
-		user["lastname"] = name
-		user["password"] = "univention"
-		user["username"] = name
-		print('creating user %s' % name)
-		dn = user.create()
-	else:
-		print('get user %s' % name)
-		dn = user[0].dn
+    name = "%s%s" % (username, i)
+    user = users.lookup(None, lo, "uid=%s" % name)
+    if not user:
+        user = users.object(None, lo, position)
+        user.open()
+        user["lastname"] = name
+        user["password"] = "univention"
+        user["username"] = name
+        print('creating user %s' % name)
+        dn = user.create()
+    else:
+        print('get user %s' % name)
+        dn = user[0].dn
 
-	gid = i % number_of_groups
-	group_member.setdefault(gid, []).append(dn)
-	all_users.append(dn)
+    gid = i % number_of_groups
+    group_member.setdefault(gid, []).append(dn)
+    all_users.append(dn)
 
 position.setDn('cn=groups,%s' % (base,))
 has_nested_group: List[str] = []
 for i in range(number_of_groups):
-	name = "%s%s" % (groupname, i)
-	group = groups.lookup(None, lo, "cn=%s" % name)
-	new_members = group_member.get(i, [])
-	nested_group = False
-	if i and not i % 200:
-		new_members = all_users
-	if i and not i % 550:
-		new_members = new_members + [all_groups[i - 1], all_groups[i - 2], all_groups[i - 3]]
-		nested_group = True
-	if i and not i % 880:
-		new_members = new_members + [has_nested_group[:1][0]]
-		nested_group = True
-	if not group:
-		group = groups.object(None, lo, position)
-		group.open()
-		group["name"] = name
-		if new_members:
-			group["users"] = new_members
-		print('creating group %s' % name)
-		group.create()
-		dn = group.dn
-	else:
-		group[0].open()
-		group[0]["users"] = new_members
-		print('modify group %s' % name)
-		group[0].modify()
-		dn = group[0].dn
-	all_groups.append(dn)
-	if nested_group:
-		has_nested_group.append(dn)
+    name = "%s%s" % (groupname, i)
+    group = groups.lookup(None, lo, "cn=%s" % name)
+    new_members = group_member.get(i, [])
+    nested_group = False
+    if i and not i % 200:
+        new_members = all_users
+    if i and not i % 550:
+        new_members = new_members + [all_groups[i - 1], all_groups[i - 2], all_groups[i - 3]]
+        nested_group = True
+    if i and not i % 880:
+        new_members = new_members + [has_nested_group[:1][0]]
+        nested_group = True
+    if not group:
+        group = groups.object(None, lo, position)
+        group.open()
+        group["name"] = name
+        if new_members:
+            group["users"] = new_members
+        print('creating group %s' % name)
+        group.create()
+        dn = group.dn
+    else:
+        group[0].open()
+        group[0]["users"] = new_members
+        print('modify group %s' % name)
+        group[0].modify()
+        dn = group[0].dn
+    all_groups.append(dn)
+    if nested_group:
+        has_nested_group.append(dn)

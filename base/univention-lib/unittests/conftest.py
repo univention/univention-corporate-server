@@ -32,15 +32,14 @@
 # <https://www.gnu.org/licenses/>.
 
 
-from univentionunittests import import_module
-
 import pytest
+from univentionunittests import import_module
 
 
 def pytest_addoption(parser):
-	parser.addoption("--installed-lib", action="store_true", help="Test against installed Python lib installation (not src)")
+    parser.addoption("--installed-lib", action="store_true", help="Test against installed Python lib installation (not src)")
 
 
 def import_lib_module(name):
-	use_installed = pytest.config.getoption('--installed-lib')
-	return import_module(name, 'python/', 'univention.lib.{}'.format(name), use_installed=use_installed)
+    use_installed = pytest.config.getoption('--installed-lib')
+    return import_module(name, 'python/', 'univention.lib.{}'.format(name), use_installed=use_installed)

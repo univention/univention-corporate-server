@@ -35,49 +35,50 @@ import sys
 from argparse import ArgumentParser
 
 import univention.config_registry
-from univention.lib.umc import Client
 from ucsschool.lib.schoolldap import SchoolSearchBase
+from univention.lib.umc import Client
+
 
 ucr = univention.config_registry.ConfigRegistry()
 ucr.load()
 
 
 def main():
-	samba4_addmachine = ucr.get('samba4/addmachine')
-	if samba4_addmachine == 'deny':
-		sys.exit(2)
+    samba4_addmachine = ucr.get('samba4/addmachine')
+    if samba4_addmachine == 'deny':
+        sys.exit(2)
 
-	samba4_ldap_base = ucr.get('samba4/ldap/base')
-	ldap_base = ucr.get('ldap/base')
-	if not (samba4_ldap_base and ldap_base):
-		sys.exit(255)
+    samba4_ldap_base = ucr.get('samba4/ldap/base')
+    ldap_base = ucr.get('ldap/base')
+    if not (samba4_ldap_base and ldap_base):
+        sys.exit(255)
 
-	parser = ArgumentParser()
-	parser.add_argument('-s', dest='server')
-	parser.add_argument('-P', dest='password')
-	parser.add_argument('-U', dest='username')
-	parser.add_argument('-o', action='append', dest='options')
-	parser.add_argument('command')
-	args = parser.parse_args()
+    parser = ArgumentParser()
+    parser.add_argument('-s', dest='server')
+    parser.add_argument('-P', dest='password')
+    parser.add_argument('-U', dest='username')
+    parser.add_argument('-o', action='append', dest='options')
+    parser.add_argument('command')
+    args = parser.parse_args()
 
-	options = dict(x.split('=', 1) for x in args.options)
-	options['school'] = SchoolSearchBase.getOU(ucr.get('ldap/hostdn', '')) or SchoolSearchBase.getOU(ucr.get('dhcpd/ldap/base', ''))
-	client = Client(args.server, args.username, args.password)
-	result = client.umc_command(args.command, options).result
-	already_exists = result.get('already_exists')
-	dn_ol = result.get('dn')
-	if not dn_ol:
-		# sys.exit(1)
-		sys.exit(0)   # for compatibility with univention-management-console-module-selective-udm before 5.0.0-2
+    options = dict(x.split('=', 1) for x in args.options)
+    options['school'] = SchoolSearchBase.getOU(ucr.get('ldap/hostdn', '')) or SchoolSearchBase.getOU(ucr.get('dhcpd/ldap/base', ''))
+    client = Client(args.server, args.username, args.password)
+    result = client.umc_command(args.command, options).result
+    already_exists = result.get('already_exists')
+    dn_ol = result.get('dn')
+    if not dn_ol:
+        # sys.exit(1)
+        sys.exit(0)   # for compatibility with univention-management-console-module-selective-udm before 5.0.0-2
 
-	if samba4_addmachine == 'dummy':
-		sys.exit(3)
+    if samba4_addmachine == 'dummy':
+        sys.exit(3)
 
-	dn_s4 = dn_ol[:len(dn_ol) - len(ldap_base)] + samba4_ldap_base
-	print(dn_s4)
-	if already_exists:
-		sys.exit(4)
+    dn_s4 = dn_ol[:len(dn_ol) - len(ldap_base)] + samba4_ldap_base
+    print(dn_s4)
+    if already_exists:
+        sys.exit(4)
 
 
 if __name__ == '__main__':
-	main()
+    main()

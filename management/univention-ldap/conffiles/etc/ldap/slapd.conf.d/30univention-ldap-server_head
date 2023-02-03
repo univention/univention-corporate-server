@@ -8,16 +8,16 @@ TLSCertificateFile	/etc/univention/ssl/@%@hostname@%@.@%@domainname@%@/cert.pem
 TLSCertificateKeyFile	/etc/univention/ssl/@%@hostname@%@.@%@domainname@%@/private.key
 TLSCACertificateFile	/etc/univention/ssl/ucsCA/CAcert.pem
 @!@
+from os.path import exists
 ciphers = configRegistry.get("ldap/tls/ciphersuite")
 if ciphers:
-	print('TLSCipherSuite	%s' % (ciphers,))
+    print('TLSCipherSuite	%s' % (ciphers,))
 protocol = configRegistry.get("ldap/tls/minprotocol")
 if protocol:
-	print('TLSProtocolMin	%s' % (protocol,))
-from os.path import exists
+    print('TLSProtocolMin	%s' % (protocol,))
 filename = configRegistry.get("ldap/tls/dh/paramfile")
 if filename and exists(filename):
-	print('TLSDHParamFile	%s' % (filename,))
+    print('TLSDHParamFile	%s' % (filename,))
 @!@
 
 sizelimit @%@ldap/sizelimit@%@

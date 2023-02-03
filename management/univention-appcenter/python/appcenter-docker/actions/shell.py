@@ -35,43 +35,43 @@
 # <https://www.gnu.org/licenses/>.
 #
 
-import subprocess
 import shlex
+import subprocess
 from argparse import REMAINDER
 
-from univention.appcenter.actions import UniventionAppAction, StoreAppAction
-from univention.appcenter.exceptions import ShellNoCommandError, ShellAppNotRunning
+from univention.appcenter.actions import StoreAppAction, UniventionAppAction
 from univention.appcenter.actions.docker_base import DockerActionMixin
+from univention.appcenter.exceptions import ShellAppNotRunning, ShellNoCommandError
 from univention.appcenter.utils import app_is_running
 
 
 class Shell(UniventionAppAction, DockerActionMixin):
+    """Run commands within a docker app."""
 
-	'''Run commands within a docker app.'''
-	help = 'Run in app env'
+    help = 'Run in app env'
 
-	def setup_parser(self, parser):
-		parser.add_argument('app', action=StoreAppAction, help='The ID of the App in whose environment COMMANDS shall be executed')
-		parser.add_argument('commands', nargs=REMAINDER, help='Command to be run. Defaults to an interactive shell')
-		parser.add_argument('-u', '--user', default='root', help='User used to run the command inside the container (default: %(default)s)')
-		parser.add_argument('-i', '--interactive', action='store_true', default=False, help='Keep STDIN open even if not attached')
-		parser.add_argument('-t', '--tty', action='store_true', default=False, help='Allocate a pseudo-TTY')
+    def setup_parser(self, parser):
+        parser.add_argument('app', action=StoreAppAction, help='The ID of the App in whose environment COMMANDS shall be executed')
+        parser.add_argument('commands', nargs=REMAINDER, help='Command to be run. Defaults to an interactive shell')
+        parser.add_argument('-u', '--user', default='root', help='User used to run the command inside the container (default: %(default)s)')
+        parser.add_argument('-i', '--interactive', action='store_true', default=False, help='Keep STDIN open even if not attached')
+        parser.add_argument('-t', '--tty', action='store_true', default=False, help='Allocate a pseudo-TTY')
 
-	def main(self, args):
-		docker = self._get_docker(args.app)
-		docker_exec = ['docker', 'exec', '-u', args.user]
-		commands = args.commands[:]
-		if not commands:
-			commands = shlex.split(args.app.docker_shell_command)
-			args.interactive = True
-			args.tty = True
-		if args.interactive:
-			docker_exec.append('-i')
-		if args.tty:
-			docker_exec.append('-t')
-		if not commands:
-			raise ShellNoCommandError()
-		if not app_is_running(args.app):
-			raise ShellAppNotRunning(args.app)
-		self.debug('Calling %s' % commands[0])
-		return subprocess.call(docker_exec + [docker.container] + commands)
+    def main(self, args):
+        docker = self._get_docker(args.app)
+        docker_exec = ['docker', 'exec', '-u', args.user]
+        commands = args.commands[:]
+        if not commands:
+            commands = shlex.split(args.app.docker_shell_command)
+            args.interactive = True
+            args.tty = True
+        if args.interactive:
+            docker_exec.append('-i')
+        if args.tty:
+            docker_exec.append('-t')
+        if not commands:
+            raise ShellNoCommandError()
+        if not app_is_running(args.app):
+            raise ShellAppNotRunning(args.app)
+        self.debug('Calling %s' % commands[0])
+        return subprocess.call(docker_exec + [docker.container] + commands)

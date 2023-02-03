@@ -31,17 +31,15 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-"""
-|UDM| syntax classes for monitoring alerts
-"""
+"""|UDM| syntax classes for monitoring alerts"""
 
 import univention.admin.syntax
 
 
 class monitoringEnabledHosts(univention.admin.syntax.UDM_Objects):
-	udm_modules = ('computers/computer', )
-	udm_filter = '(univentionService=UCS Monitoring)'
+    udm_modules = ('computers/computer', )
+    udm_filter = '(univentionService=UCS Monitoring)'
 
 
 class monitoringAlerts(univention.admin.syntax.UDM_Objects):
-	udm_modules = ('monitoring/alert', )
+    udm_modules = ('monitoring/alert', )

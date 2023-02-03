@@ -46,17 +46,17 @@ the following example
 
 .. code-block:: xml
 
-	<?xml version="1.0" encoding="UTF-8"?>
-	<umc version="2.0">
-		<categories>
-			<category id="id1">
-				<name>Category 1</name>
-			</category>
-			<category id="id2">
-				<name>Category 2 on {hostname}.{domainname}</name>
-			</category>
-		</categories>
-	</umc>
+    <?xml version="1.0" encoding="UTF-8"?>
+    <umc version="2.0">
+        <categories>
+            <category id="id1">
+                <name>Category 1</name>
+            </category>
+            <category id="id2">
+                <name>Category 2 on {hostname}.{domainname}</name>
+            </category>
+        </categories>
+    </umc>
 
 Each file can define several categories. For each of these
 categories an unique identifier and the english description must be
@@ -70,96 +70,95 @@ must be given in curly braces {VARIABLE}.
 
 import os
 import sys
-import xml.parsers.expat
 import xml.etree.cElementTree as ET
+import xml.parsers.expat
 
 from .log import RESOURCES
 
 
 class XML_Definition(ET.ElementTree):
+    """Represents a category definition."""
 
-	"""Represents a category definition."""
+    def __init__(self, root=None, filename=None, domain=None):
+        ET.ElementTree.__init__(self, element=root, file=filename)
+        self.domain = domain
 
-	def __init__(self, root=None, filename=None, domain=None):
-		ET.ElementTree.__init__(self, element=root, file=filename)
-		self.domain = domain
+    @property
+    def name(self):
+        """Returns the descriptive name of the category"""
+        return self.find('name').text
 
-	@property
-	def name(self):
-		"""Returns the descriptive name of the category"""
-		return self.find('name').text
+    @property
+    def id(self):
+        """Returns the unique identifier of the category"""
+        return self._root.get('id')
 
-	@property
-	def id(self):
-		"""Returns the unique identifier of the category"""
-		return self._root.get('id')
+    @property
+    def icon(self):
+        return self._root.get('icon')
 
-	@property
-	def icon(self):
-		return self._root.get('icon')
+    @property
+    def color(self):
+        return self._root.get('color')
 
-	@property
-	def color(self):
-		return self._root.get('color')
+    @property
+    def priority(self):
+        """
+        Returns the priority of the category. If no priority is
+        defined the default priority of -1 is returned. None is returned
+        if the specified priority is not a valid float
 
-	@property
-	def priority(self):
-		"""Returns the priority of the category. If no priority is
-		defined the default priority of -1 is returned. None is returned
-		if the specified priority is not a valid float
+        :rtype: float or None
+        """
+        try:
+            return float(self._root.get('priority', -1))
+        except ValueError:
+            RESOURCES.warn('No valid number type for property "priority": %s' % self._root.get('priority'))
+        return None
 
-		:rtype: float or None
-		"""
-		try:
-			return float(self._root.get('priority', -1))
-		except ValueError:
-			RESOURCES.warn('No valid number type for property "priority": %s' % self._root.get('priority'))
-		return None
+    def json(self):
+        """
+        Returns a JSON compatible representation of the category
 
-	def json(self):
-		"""Returns a JSON compatible representation of the category
-
-		:rtype: dict
-		"""
-
-		return {
-			'id': self.id,
-			'name': self.name,
-			'icon': self.icon,
-			'color': self.color,
-			'priority': self.priority
-		}
+        :rtype: dict
+        """
+        return {
+            'id': self.id,
+            'name': self.name,
+            'icon': self.icon,
+            'color': self.color,
+            'priority': self.priority,
+        }
 
 
 class Manager(dict):
+    """This class manages all available categories."""
 
-	'''This class manages all available categories.'''
+    DIRECTORY = os.path.join(sys.prefix, 'share/univention-management-console/categories')
 
-	DIRECTORY = os.path.join(sys.prefix, 'share/univention-management-console/categories')
+    def __init__(self):
+        dict.__init__(self)
 
-	def __init__(self):
-		dict.__init__(self)
+    def all(self):
+        return [x.json() for x in self.values()]
 
-	def all(self):
-		return [x.json() for x in self.values()]
-
-	def load(self):
-		self.clear()
-		RESOURCES.info('Loading categories ...')
-		for filename in os.listdir(Manager.DIRECTORY):
-			if not filename.endswith('.xml'):
-				RESOURCES.info('Found file %s with wrong suffix' % filename)
-				continue
-			try:
-				definitions = ET.ElementTree(file=os.path.join(Manager.DIRECTORY, filename))
-				categories = definitions.find('categories')
-				if categories is None:
-					continue
-				i18nDomain = categories.get('domain')
-				for category_elem in definitions.findall('categories/category'):
-					category = XML_Definition(root=category_elem, domain=i18nDomain)
-					self[category.id] = category
-				RESOURCES.info('Loaded categories from %s' % filename)
-			except (xml.parsers.expat.ExpatError, ET.ParseError) as exc:
-				RESOURCES.warn('Failed to parse category file %s: %s' % (filename, exc))
-				continue
+    def load(self):
+        self.clear()
+        RESOURCES.info('Loading categories ...')
+        for filename in os.listdir(Manager.DIRECTORY):
+            if not filename.endswith('.xml'):
+                RESOURCES.info('Found file %s with wrong suffix' % filename)
+                continue
+            try:
+                definitions = ET.ElementTree(file=os.path.join(Manager.DIRECTORY, filename))
+                categories = definitions.find('categories')
+                if categories is None:
+                    continue
+                i18nDomain = categories.get('domain')
+                for category_elem in definitions.findall('categories/category'):
+                    category = XML_Definition(root=category_elem, domain=i18nDomain)
+                    self[category.id] = category
+                RESOURCES.info('Loaded categories from %s' % filename)
+            except (xml.parsers.expat.ExpatError, ET.ParseError) as exc:
+                RESOURCES.warn('Failed to parse category file %s: %s' % (filename, exc))
+                continue

@@ -8,21 +8,22 @@
 
 import univention.testing.strings as uts
 import univention.testing.udm as udm_test
-import univention.testing.utils as utils
+from univention.testing import utils
+
 
 if __name__ == '__main__':
-	with udm_test.UCSTestUDM() as udm:
-		id = uts.random_name()
-		name = uts.random_name()
-		version = uts.random_name()
-		app = udm.create_object('appcenter/app', position=udm.UNIVENTION_CONTAINER, id=id, name=name, version=version)
-		utils.verify_ldap_object(app, {
-			'univentionAppName': [name],
-			'univentionAppID': [id],
-			'univentionAppVersion': [version],
-		})
+    with udm_test.UCSTestUDM() as udm:
+        id = uts.random_name()
+        name = uts.random_name()
+        version = uts.random_name()
+        app = udm.create_object('appcenter/app', position=udm.UNIVENTION_CONTAINER, id=id, name=name, version=version)
+        utils.verify_ldap_object(app, {
+            'univentionAppName': [name],
+            'univentionAppID': [id],
+            'univentionAppVersion': [version],
+        })
 
-		udm.remove_object('appcenter/app', dn=app)
-		utils.verify_ldap_object(app, {
-			'univentionAppName': [name]
-		}, should_exist=False)
+        udm.remove_object('appcenter/app', dn=app)
+        utils.verify_ldap_object(app, {
+            'univentionAppName': [name],
+        }, should_exist=False)

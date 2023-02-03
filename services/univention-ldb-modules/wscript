@@ -5,8 +5,9 @@ VERSION = '0.0.1'
 
 blddir = 'bin'
 
-import sys  # noqa: F402,E402
 import os  # noqa: F402,E402
+import sys  # noqa: F402,E402
+
 
 # find the buildtools directory
 srcdir = '.'
@@ -14,9 +15,9 @@ while not os.path.exists(srcdir + '/buildtools') and len(srcdir.split('/')) < 5:
     srcdir = '../' + srcdir
 sys.path.insert(0, srcdir + '/buildtools/wafsamba')
 
-import wafsamba  # noqa: F401,E402
-import samba_dist  # noqa: F402,E402
 import Options  # noqa: F402,E402
+import samba_dist  # noqa: F402,E402
+import wafsamba  # noqa: F401,E402
 
 
 samba_dist.DIST_DIRS('''lib/ldb:.
@@ -77,10 +78,11 @@ def build(bld):
 
 
 def test(ctx):
-    '''run testsuite'''
-    import Utils
-    import samba_utils
+    """run testsuite"""
     import shutil
+
+    import samba_utils
+    import Utils
     test_prefix = "%s/st" % (Utils.g_module.blddir)
     shutil.rmtree(test_prefix, ignore_errors=True)
     os.makedirs(test_prefix)
@@ -93,7 +95,7 @@ def test(ctx):
 
 
 def dist():
-    '''makes a tarball for distribution'''
+    """makes a tarball for distribution"""
     samba_dist.dist()
 
 

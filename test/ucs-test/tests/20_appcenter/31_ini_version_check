@@ -10,19 +10,18 @@
 from sys import exit
 from time import sleep
 
-import univention.testing.utils as utils
 from univention.appcenter.app_cache import Apps
 from univention.appcenter.ucr import ucr_get
 from univention.appcenter.udm import ApplicationLDAPObject, get_machine_connection
+from univention.testing import utils
 from univention.testing.codes import TestCodes
+
 
 APP_ID = 'univention-demo-data'
 
 
 def get_app_dn(App):
-    """
-    Returns the given 'App' DN.
-    """
+    """Returns the given 'App' DN."""
     app_dn = ("univentionAppID=%s_%s,cn=%s,cn=apps,cn=univention,%s"
               % (App.id, App.version, App.id, ldap_base))
     return app_dn

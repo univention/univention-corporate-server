@@ -40,57 +40,57 @@ from univention.monitoring import Alert
 
 class FSMountCheck(Alert):
 
-	def write_metrics(self):
-		nfscnt = 0
-		mounted = 0
-		umounted = 0
-		msg = ''
+    def write_metrics(self):
+        nfscnt = 0
+        mounted = 0
+        umounted = 0
+        msg = ''
 
-		# read currently mounted filesystems
-		try:
-			mounts = univention.lib.fstab.File('/proc/mounts')
-		except (OSError, EOFError) as err:
-			self.write_metric('univention_nfsstatus', -1)
-			self.log.debug('error while reading /proc/mounts, error: %s' % (err,))
-			return
+        # read currently mounted filesystems
+        try:
+            mounts = univention.lib.fstab.File('/proc/mounts')
+        except (OSError, EOFError) as err:
+            self.write_metric('univention_nfsstatus', -1)
+            self.log.debug('error while reading /proc/mounts, error: %s' % (err,))
+            return
 
-		mountlist = {
-			entry.spec: entry.mount_point
-			for entry in mounts.get(['nfs'])
-		}
+        mountlist = {
+            entry.spec: entry.mount_point
+            for entry in mounts.get(['nfs'])
+        }
 
-		# read desired mounted filesystems
-		try:
-			fstab = univention.lib.fstab.File('/etc/fstab')
-		except (OSError, EOFError) as err:
-			self.write_metric('univention_nfsstatus', -1)
-			self.log.debug('error while reading /etc/fstab, EOF error: %s' % (err,))
-			return
+        # read desired mounted filesystems
+        try:
+            fstab = univention.lib.fstab.File('/etc/fstab')
+        except (OSError, EOFError) as err:
+            self.write_metric('univention_nfsstatus', -1)
+            self.log.debug('error while reading /etc/fstab, EOF error: %s' % (err,))
+            return
 
-		for entry in fstab.get(['nfs']):
-			if ucr.is_true('monitoring/nfs/allnfs') or not entry.hasopt('noauto'):
-				source = entry.spec
-				nfscnt += 1
-				if source in mountlist and mountlist[source] == entry.mount_point:
-					mounted += 1
-				else:
-					umounted += 1
-					msg += '"%s" not mounted, ' % source
+        for entry in fstab.get(['nfs']):
+            if ucr.is_true('monitoring/nfs/allnfs') or not entry.hasopt('noauto'):
+                source = entry.spec
+                nfscnt += 1
+                if source in mountlist and mountlist[source] == entry.mount_point:
+                    mounted += 1
+                else:
+                    umounted += 1
+                    msg += '"%s" not mounted, ' % source
 
-		msg = msg.rstrip(', ')
-		if nfscnt == 0:
-			msg = 'no nfs shares in /etc/fstab present'
-			state = -1
-		elif umounted == 0:
-			state = 0
-			msg = '%s OK, %s - all nfs shares are correctly mounted' % (mounted, umounted)
-		else:
-			state = 1
-			msg = '%s OK, %s - %s' % (mounted, umounted, msg)
+        msg = msg.rstrip(', ')
+        if nfscnt == 0:
+            msg = 'no nfs shares in /etc/fstab present'
+            state = -1
+        elif umounted == 0:
+            state = 0
+            msg = '%s OK, %s - all nfs shares are correctly mounted' % (mounted, umounted)
+        else:
+            state = 1
+            msg = '%s OK, %s - %s' % (mounted, umounted, msg)
 
-		self.write_metric('univention_nfsstatus', state)
-		self.log.debug(msg)
+        self.write_metric('univention_nfsstatus', state)
+        self.log.debug(msg)
 
 
 if __name__ == '__main__':
-	FSMountCheck.main()
+    FSMountCheck.main()

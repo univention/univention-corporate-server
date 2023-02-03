@@ -29,33 +29,34 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-"""
-Module and object specific for "container/dc" UDM module.
-"""
+"""Module and object specific for "container/dc" UDM module."""
 
 from __future__ import absolute_import, unicode_literals
+
 from ..encoders import DnsEntryZoneForwardListSinglePropertyEncoder, DnsEntryZoneReverseListSinglePropertyEncoder
 from .generic import GenericModule, GenericObject, GenericObjectProperties
 
 
 class ContainerDcObjectProperties(GenericObjectProperties):
-	"""container/dc UDM properties."""
+    """container/dc UDM properties."""
 
-	_encoders = {
-		'dnsForwardZone': DnsEntryZoneForwardListSinglePropertyEncoder,
-		'dnsReverseZone': DnsEntryZoneReverseListSinglePropertyEncoder,
-	}
+    _encoders = {
+        'dnsForwardZone': DnsEntryZoneForwardListSinglePropertyEncoder,
+        'dnsReverseZone': DnsEntryZoneReverseListSinglePropertyEncoder,
+    }
 
 
 class ContainerDcObject(GenericObject):
-	"""Better representation of container/dc properties."""
-	udm_prop_class = ContainerDcObjectProperties
+    """Better representation of container/dc properties."""
+
+    udm_prop_class = ContainerDcObjectProperties
 
 
 class ContainerDcModule(GenericModule):
-	"""ContainerDcObject factory"""
-	_udm_object_class = ContainerDcObject
+    """ContainerDcObject factory"""
 
-	class Meta:
-		supported_api_versions = [1, 2, 3]
-		suitable_for = ['containers/dc']
+    _udm_object_class = ContainerDcObject
+
+    class Meta:
+        supported_api_versions = [1, 2, 3]
+        suitable_for = ['containers/dc']

@@ -22,6 +22,7 @@ from univention.testing.strings import random_string
 
 from adconnector import ADConnection, restart_adconnector, wait_for_sync
 
+
 sys.path.append("$TESTLIBPATH")
 
 
@@ -43,7 +44,7 @@ class TestADCustomMappings(unittest.TestCase):
             "            con_attribute='{target_attribute}'\n"
             "        )\n"
             "    return ad_mapping\n".format(
-                attribute=self.attribute, target_attribute=self.target_attribute
+                attribute=self.attribute, target_attribute=self.target_attribute,
             )
         )
 
@@ -85,13 +86,12 @@ class TestADCustomMappings(unittest.TestCase):
             )
 
     def create_extended_attribute(
-        self, udm, ldapMapping, module, defaultValue="defaultValue-TestFailed"
+        self, udm, ldapMapping, module, defaultValue="defaultValue-TestFailed",
     ):
         """
         Creates an extended attribute with a default value under module (e.g.
         under 'user/user')
         """
-
         print(
             "Creating extended attribute '%s' under '%s' with default value '%s'\n"
             % (ldapMapping, self.ldap_base, defaultValue),
@@ -101,16 +101,16 @@ class TestADCustomMappings(unittest.TestCase):
         udm.create_object(
             "settings/extended_attribute",
             position="cn=custom attributes,cn=univention,%s" % self.ldap_base,
-            **dict(
-                name=ldapMapping,
-                ldapMapping=ldapMapping,  # mandatory
-                CLIName=ldapMapping,  # mandatory
-                objectClass="univentionFreeAttributes",  # mandatory
-                shortDescription=("test value: %s" % defaultValue),
-                valueRequired="1",
-                module=[module],
-                default=defaultValue,
-            )
+            **{
+                "name": ldapMapping,
+                "ldapMapping": ldapMapping,  # mandatory
+                "CLIName": ldapMapping,  # mandatory
+                "objectClass": "univentionFreeAttributes",  # mandatory
+                "shortDescription": ("test value: %s" % defaultValue),
+                "valueRequired": "1",
+                "module": [module],
+                "default": defaultValue,
+            },
         )
 
     def test_ldap_to_ad_with_mapping(self):
@@ -120,7 +120,6 @@ class TestADCustomMappings(unittest.TestCase):
         field of the user in the active directory, because that is hard coded
         in the custom mapping.
         """
-
         test_string = random_string()
         self.create_extended_attribute(self.udm, self.attribute, "users/user")
 
@@ -140,7 +139,7 @@ class TestADCustomMappings(unittest.TestCase):
         udm_user.basic[self.attribute] = test_string
 
         (udm_user_dn, ad_user_dn) = create_udm_user(
-            self.udm, self.adc, udm_user, wait_for_sync
+            self.udm, self.adc, udm_user, wait_for_sync,
         )
 
         print(
@@ -150,15 +149,11 @@ class TestADCustomMappings(unittest.TestCase):
         )
 
         # verify that the user exists on the 'ad-side'...
-        self.assertTrue(self.adc.exists(ad_user_dn))
+        assert self.adc.exists(ad_user_dn) is True
 
         # check the value from the mapping
-        self.assertEqual(
-            self.adc.get_attribute(ad_user_dn, self.target_attribute), [test_string.encode('UTF-8')]
-        )
+        assert self.adc.get_attribute(ad_user_dn, self.target_attribute) == [test_string.encode("UTF-8")]
 
 
 if __name__ == "__main__":
     unittest.main()
-
-# vim: filetype=python expandtab tabstop=4 shiftwidth=4 softtabstop=4

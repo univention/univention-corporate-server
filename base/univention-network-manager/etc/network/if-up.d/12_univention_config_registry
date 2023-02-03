@@ -33,62 +33,64 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-import sys
-import os
 import ipaddress
-import netifaces
+import os
 import socket
 import struct
+import sys
+
+import netifaces
 
 from univention.config_registry.frontend import ConfigRegistry, ucr_update
 
+
 # ignore lo and all
 if os.environ.get('METHOD') == 'loopback' or os.environ.get('ADDRFAM') == 'meta':
-	sys.exit(0)
+    sys.exit(0)
 
 # is interface configured as DHCP?
 iface = os.environ.get('IFACE')
 configRegistry = ConfigRegistry()
 configRegistry.load()
 if configRegistry.get('interfaces/%s/type' % iface) != 'dhcp':
-	sys.exit(0)
+    sys.exit(0)
 
 # get first AF_INET interface
 inf = netifaces.ifaddresses(iface).get(netifaces.AF_INET)[0]
 try:
-	newip = inf.get('addr')
-	ip = ipaddress.IPv4Network(u'%(addr)s/%(netmask)s' % inf, False)
+    newip = inf.get('addr')
+    ip = ipaddress.IPv4Network(u'%(addr)s/%(netmask)s' % inf, False)
 except KeyError:
-	sys.exit(0)
+    sys.exit(0)
 inf['address'] = str(newip)
 inf['network'] = str(ip.network_address)
 
 # save to UCR
 restart = configRegistry.get('interfaces/restart/auto')
 ucr_set = {
-	'interfaces/restart/auto': 'false',
+    'interfaces/restart/auto': 'false',
 }
 for k in ['netmask', 'address', 'broadcast', 'network']:
-	ucr_set['interfaces/%s/%s' % (iface, k)] = inf.get(k, None)
+    ucr_set['interfaces/%s/%s' % (iface, k)] = inf.get(k, None)
 
 # if old IP address was set as nameserver, replace it with the new address
 oldip = configRegistry.get('interfaces/%s/address' % iface)
 if oldip:
-	for k in ['nameserver1', 'nameserver2', 'nameserver3']:
-		if oldip == configRegistry.get(k):
-			ucr_set[k] = newip
+    for k in ['nameserver1', 'nameserver2', 'nameserver3']:
+        if oldip == configRegistry.get(k):
+            ucr_set[k] = newip
 
 # read gateway from proc
 gateway = ''
 with open("/proc/net/route") as fh:
-	for line in fh:
-		fields = line.strip().split()
-		if fields[1] != '00000000' or not int(fields[3], 16) & 2:
-			continue
-		gateway = socket.inet_ntoa(struct.pack("<L", int(fields[2], 16)))
+    for line in fh:
+        fields = line.strip().split()
+        if fields[1] != '00000000' or not int(fields[3], 16) & 2:
+            continue
+        gateway = socket.inet_ntoa(struct.pack("<L", int(fields[2], 16)))
 # write to UCR
 if configRegistry.get('gateway') != gateway:
-	ucr_set['gateway'] = gateway
+    ucr_set['gateway'] = gateway
 
 # Redirect stdout
 sys.stdout = open(os.path.devnull, 'w')

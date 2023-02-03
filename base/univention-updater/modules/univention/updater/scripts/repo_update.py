@@ -30,14 +30,12 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-"""
-Update a local repository.
-"""
+"""Update a local repository."""
 
 from __future__ import print_function
 
-import os
 import errno
+import os
 import shutil
 import sys
 import time
@@ -51,6 +49,7 @@ from univention.updater.errors import UpdaterException, VerificationError
 from univention.updater.locking import UpdaterLock
 from univention.updater.mirror import UniventionMirror, makedirs
 
+
 configRegistry = ConfigRegistry()
 configRegistry.load()
 
@@ -62,7 +61,7 @@ _repo_base = os.path.join(_mirror_base, 'mirror', configRegistry.get('version/ve
 
 
 def copy_repository(options: Namespace, source: str, version: UCS_Version) -> None:
-    """ Copy packages and scripts belonging to version from source directory into local repository """
+    """Copy packages and scripts belonging to version from source directory into local repository"""
     print('Please be patient, copying packages ...', end=' ')
     sys.stdout.flush()
 
@@ -91,7 +90,7 @@ def copy_repository(options: Namespace, source: str, version: UCS_Version) -> No
 
 
 def update_net(options: Namespace) -> None:
-    """ Copy packages and scripts from remote mirror into local repository """
+    """Copy packages and scripts from remote mirror into local repository"""
     mirror = UniventionMirror()
     # update local repository if available
     urepo.assert_local_repository()
@@ -187,7 +186,7 @@ def main() -> None:
                     """\
                     This can and should only be disabled temporarily using the UCR variable
                     'repository/mirror/verify'.
-                    """
+                    """,
                 ))))
                 sys.exit(1)
             except UpdaterException as e:

@@ -45,38 +45,38 @@ from six.moves.urllib_parse import unquote
 
 
 def check_user(input__):
-	basic_ldap_auth.sendline(input__)
-	basic_ldap_auth.expect(b'.*\r\n')  # The input is mirrored
-	basic_ldap_auth.expect(b'.*\r\n')  # The actual check result
+    basic_ldap_auth.sendline(input__)
+    basic_ldap_auth.expect(b'.*\r\n')  # The input is mirrored
+    basic_ldap_auth.expect(b'.*\r\n')  # The actual check result
 
 
 def main():
-	try:
-		raw = input()
-	except EOFError:
-		# closed by squid
-		sys.exit(0)
-	check_user(raw.encode('utf-8'))  # maybe it just works
+    try:
+        raw = input()
+    except EOFError:
+        # closed by squid
+        sys.exit(0)
+    check_user(raw.encode('utf-8'))  # maybe it just works
 
-	if basic_ldap_auth.after == b'BH Success\r\n':
-		try:
-			# "auth_param basic utf8 off" default -> decode is needed for IE
-			decoded = unquote(raw, encoding='ISO8859-1', errors='strict')
-			check_user(decoded.encode('utf-8'))
-		except UnicodeDecodeError:
-			pass
-	if basic_ldap_auth.after == b'BH Success\r\n':
-		try:
-			# "auth_param basic utf8 on" -> encode is needed for Chrome/Firefox
-			decoded = unquote(raw, encoding='utf-8', errors='strict')
-			check_user(decoded.encode('ISO8859-1'))
-		except UnicodeDecodeError:
-			pass
-	print(basic_ldap_auth.after.decode('ascii'))
-	sys.stdout.flush()  # Squid needs a flush
+    if basic_ldap_auth.after == b'BH Success\r\n':
+        try:
+            # "auth_param basic utf8 off" default -> decode is needed for IE
+            decoded = unquote(raw, encoding='ISO8859-1', errors='strict')
+            check_user(decoded.encode('utf-8'))
+        except UnicodeDecodeError:
+            pass
+    if basic_ldap_auth.after == b'BH Success\r\n':
+        try:
+            # "auth_param basic utf8 on" -> encode is needed for Chrome/Firefox
+            decoded = unquote(raw, encoding='utf-8', errors='strict')
+            check_user(decoded.encode('ISO8859-1'))
+        except UnicodeDecodeError:
+            pass
+    print(basic_ldap_auth.after.decode('ascii'))
+    sys.stdout.flush()  # Squid needs a flush
 
 
 if __name__ == '__main__':
-	basic_ldap_auth = pexpect.spawn('/usr/lib/squid/basic_ldap_auth', sys.argv[1:])
-	while True:
-		main()
+    basic_ldap_auth = pexpect.spawn('/usr/lib/squid/basic_ldap_auth', sys.argv[1:])
+    while True:
+        main()

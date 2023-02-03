@@ -8,12 +8,6 @@ E:0004-29: conffiles/etc/hosts.d/99-ucs-test: template file contains variables t
 	- not/in/info/file/registered/baseconfigD1
 	- not/in/info/file/registered/configregistryE1
 	- not/in/info/file/registered/baseconfigF1
-	- not/in/info/file/registered/configregistryA3
-	- not/in/info/file/registered/configregistryB3
-	- not/in/info/file/registered/baseconfigC3
-	- not/in/info/file/registered/baseconfigD3
-	- not/in/info/file/registered/configregistryE3
-	- not/in/info/file/registered/baseconfigF3
 	- not/in/info/file/registered/configregistryA2
 	- not/in/info/file/registered/configregistryB2
 	- not/in/info/file/registered/baseconfigC2
@@ -32,3 +26,9 @@ E:0004-29: conffiles/etc/hosts.d/99-ucs-test: template file contains variables t
 	- not/in/info/file/registered/configregistryE5
 	- not/in/info/file/registered/baseconfigF4
 	- not/in/info/file/registered/baseconfigF5
+	- not/in/info/file/registered/configregistryA3
+	- not/in/info/file/registered/configregistryB3
+	- not/in/info/file/registered/baseconfigC3
+	- not/in/info/file/registered/baseconfigD3
+	- not/in/info/file/registered/configregistryE3
+	- not/in/info/file/registered/baseconfigF3

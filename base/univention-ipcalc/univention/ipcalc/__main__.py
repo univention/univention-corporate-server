@@ -36,62 +36,62 @@ from __future__ import print_function
 import ipaddress
 import sys
 from argparse import ArgumentParser, Namespace  # noqa: F401
-from typing import Optional, List  # noqa: F401
+from typing import List, Optional  # noqa: F401
 
 from univention import ipcalc
 
 
 def parse_options(args=None):
-	# type: (Optional[List[str]]) -> Namespace
-	"""Parse command line options."""
-	epilog = 'Calculate network values from network address for DNS records.'
-	parser = ArgumentParser(epilog=epilog)
-	parser.add_argument(
-		'--ip', dest='address',
-		required=True,
-		type=ipaddress.ip_address,
-		help='IPv4 or IPv6 address')
-	parser.add_argument(
-		'--netmask', dest='netmask',
-		required=True,
-		help='Netmask or prefix length')
-	parser.add_argument(
-		'--output', dest='output',
-		required=True,
-		choices=('network', 'reverse', 'pointer'),
-		help='Specify requested output type')
-	parser.add_argument(
-		'--calcdns', dest='calcdns',
-		action='store_true',
-		required=True,
-		help='Request to calcuale DNS record entries')
+    # type: (Optional[List[str]]) -> Namespace
+    """Parse command line options."""
+    epilog = 'Calculate network values from network address for DNS records.'
+    parser = ArgumentParser(epilog=epilog)
+    parser.add_argument(
+        '--ip', dest='address',
+        required=True,
+        type=ipaddress.ip_address,
+        help='IPv4 or IPv6 address')
+    parser.add_argument(
+        '--netmask', dest='netmask',
+        required=True,
+        help='Netmask or prefix length')
+    parser.add_argument(
+        '--output', dest='output',
+        required=True,
+        choices=('network', 'reverse', 'pointer'),
+        help='Specify requested output type')
+    parser.add_argument(
+        '--calcdns', dest='calcdns',
+        action='store_true',
+        required=True,
+        help='Request to calcuale DNS record entries')
 
-	opt = parser.parse_args(args)
+    opt = parser.parse_args(args)
 
-	try:
-		opt.network = ipaddress.ip_interface(u'%s/%s' % (opt.address, opt.netmask))
-	except ValueError as ex:
-		parser.error("Invalid --netmask: %s" % (ex,))
+    try:
+        opt.network = ipaddress.ip_interface(u'%s/%s' % (opt.address, opt.netmask))
+    except ValueError as ex:
+        parser.error("Invalid --netmask: %s" % (ex,))
 
-	return opt
+    return opt
 
 
 def main(args=None):
-	# type: (Optional[List[str]]) -> None
-	"""Calculate IP address parameters-"""
-	options = parse_options(args)
+    # type: (Optional[List[str]]) -> None
+    """Calculate IP address parameters-"""
+    options = parse_options(args)
 
-	if isinstance(options.network, ipaddress.IPv6Interface):
-		family = 'ipv6'
-	elif isinstance(options.network, ipaddress.IPv4Interface):
-		family = 'ipv4'
-	else:  # pragma: no cover
-		sys.exit("Unknown address format")
+    if isinstance(options.network, ipaddress.IPv6Interface):
+        family = 'ipv6'
+    elif isinstance(options.network, ipaddress.IPv4Interface):
+        family = 'ipv4'
+    else:  # pragma: no cover
+        sys.exit("Unknown address format")
 
-	func = getattr(ipcalc, 'calculate_%s_%s' % (family, options.output))
-	result = func(options.network)
-	print(result)
+    func = getattr(ipcalc, 'calculate_%s_%s' % (family, options.output))
+    result = func(options.network)
+    print(result)
 
 
 if __name__ == "__main__":
-	main()
+    main()

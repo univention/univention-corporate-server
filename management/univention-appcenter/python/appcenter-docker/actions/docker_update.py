@@ -40,6 +40,6 @@ from univention.appcenter.actions.update import Update
 
 
 class Update(Update):
-	def _get_conffiles(self):
-		conffiles = super(Update, self)._get_conffiles()
-		return conffiles + ['/etc/apache2/sites-available/000-default.conf', '/etc/apache2/sites-available/default-ssl.conf']
+    def _get_conffiles(self):
+        conffiles = super(Update, self)._get_conffiles()
+        return conffiles + ['/etc/apache2/sites-available/000-default.conf', '/etc/apache2/sites-available/default-ssl.conf']

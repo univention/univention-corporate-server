@@ -3,5 +3,5 @@ from univention.management.console.modules.setup.netconf.conditions import NotNe
 
 
 class PhaseRestartDhcp(RestartService, NotNetworkOnly):
-	service = "isc-dhcp-server"
-	priority = 26
+    service = "isc-dhcp-server"
+    priority = 26

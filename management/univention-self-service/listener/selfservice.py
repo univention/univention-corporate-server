@@ -1,3 +1,4 @@
+#!/usr/bin/python3
 # -*- coding: utf-8 -*-
 #
 # Univention LDAP
@@ -35,11 +36,12 @@
 
 from __future__ import absolute_import, annotations
 
-
 from typing import Dict, List
 
-import listener
 import univention.config_registry
+
+import listener
+
 
 description = 'Set umc/self-service/passwordreset/email/webserver_address.'
 filter = '(univentionService=univention-self-service)'
@@ -48,13 +50,13 @@ UCRV = 'umc/self-service/passwordreset/email/webserver_address'
 
 
 def handler(dn: str, new: Dict[str, List[bytes]], old: Dict[str, List[bytes]]) -> None:
-	if new:
-		ucr = univention.config_registry.ConfigRegistry()
-		ucr.load()
-		if not ucr.get(UCRV):
-			fqdn = '%s.%s' % (new['cn'][0].decode('UTF-8'), new.get('associatedDomain')[0].decode('ASCII'))
-			listener.setuid(0)
-			try:
-				univention.config_registry.handler_set(['%s=%s' % (UCRV, fqdn)])
-			finally:
-				listener.unsetuid()
+    if new:
+        ucr = univention.config_registry.ConfigRegistry()
+        ucr.load()
+        if not ucr.get(UCRV):
+            fqdn = '%s.%s' % (new['cn'][0].decode('UTF-8'), new.get('associatedDomain')[0].decode('ASCII'))
+            listener.setuid(0)
+            try:
+                univention.config_registry.handler_set(['%s=%s' % (UCRV, fqdn)])
+            finally:
+                listener.unsetuid()

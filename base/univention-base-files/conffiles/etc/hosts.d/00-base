@@ -14,30 +14,30 @@ entries = []
 primary_entries = []
 default_hosts = '%(hostname)s.%(domainname)s %(hostname)s' % configRegistry
 for key, value in configRegistry.items():
-	match = RE_IPV4.match(key)
-	if match:
-		(iface,) = match.groups()
-		key = 'interfaces/%s/hosts' % (iface,)
-		hosts = configRegistry.get(key, default_hosts)
-		if hosts:
-			if iface == primary:
-				primary_entries.append((iface, 4, '', '%s\t%s' % (value, hosts)))
-			else:
-				entries.append((iface, 4, '', '%s\t%s' % (value, hosts)))
-	match = RE_IPV6.match(key)
-	if match:
-		(iface, name) = match.groups()
-		key = 'interfaces/%s/ipv6/%s/hosts' % (iface, name)
-		hosts = configRegistry.get(key, default_hosts)
-		if hosts:
-			if name == 'default':
-				name = ''
-			if iface == primary:
-				primary_entries.append((iface, 6, name, '%s\t%s' % (value, hosts)))
-			else:
-				entries.append((iface, 6, name, '%s\t%s' % (value, hosts)))
-for (iface, ip_version, name, line) in sorted(primary_entries):  # IPv4 < IPv6.default < IPv6.*
-	print(line)
-for (iface, ip_version, name, line) in sorted(entries):  # IPv4 < IPv6.default < IPv6.*
-	print(line)
+    match = RE_IPV4.match(key)
+    if match:
+        (iface,) = match.groups()
+        key = 'interfaces/%s/hosts' % (iface,)
+        hosts = configRegistry.get(key, default_hosts)
+        if hosts:
+            if iface == primary:
+                primary_entries.append((iface, 4, '', '%s\t%s' % (value, hosts)))
+            else:
+                entries.append((iface, 4, '', '%s\t%s' % (value, hosts)))
+    match = RE_IPV6.match(key)
+    if match:
+        (iface, name) = match.groups()
+        key = 'interfaces/%s/ipv6/%s/hosts' % (iface, name)
+        hosts = configRegistry.get(key, default_hosts)
+        if hosts:
+            if name == 'default':
+                name = ''
+            if iface == primary:
+                primary_entries.append((iface, 6, name, '%s\t%s' % (value, hosts)))
+            else:
+                entries.append((iface, 6, name, '%s\t%s' % (value, hosts)))
+for (_iface, _ip_version, _name, line) in sorted(primary_entries):  # IPv4 < IPv6.default < IPv6.*
+    print(line)
+for (_iface, _ip_version, _name, line) in sorted(entries):  # IPv4 < IPv6.default < IPv6.*
+    print(line)
 @!@

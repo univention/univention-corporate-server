@@ -9,13 +9,14 @@
 import glob
 import re
 import time
-
-import requests
 from html.parser import HTMLParser
 
-import univention.testing.utils as utils
+import requests
+
+from univention.testing import utils
 
 from appcentertest import get_requested_apps
+
 
 # taken from https://mail.python.org/pipermail/tutor/2002-September/017228.html
 urls = '(?: %s)' % '|'.join("http https telnet gopher file wais ftp".split())
@@ -25,7 +26,7 @@ punc = r'.:?\-'
 anyl = "%(ltrs)s%(gunk)s%(punc)s" % {
     'ltrs': ltrs,
     'gunk': gunk,
-    'punc': punc
+    'punc': punc,
 }
 
 url = r"""
@@ -49,7 +50,7 @@ url = r"""
 url_re = re.compile(url, re.VERBOSE | re.MULTILINE)
 
 # these links return 403 -> Bug #39730
-forbidden_links = dict()
+forbidden_links = {}
 forbidden_links['https://univention.ikarus.at/index-en.php'] = True
 forbidden_links['https://univention.ikarus.at/index.php'] = True
 forbidden_links['http://download.siouxapp.com/redirect/ucs-appcenter/appvendor.html'] = True
@@ -72,7 +73,7 @@ class MyHTMLParser(HTMLParser):
 
     def __init__(self):
         HTMLParser.__init__(self)
-        self.href = list()
+        self.href = []
 
     def handle_starttag(self, tag, attrs):
         if tag == "a":
@@ -82,11 +83,9 @@ class MyHTMLParser(HTMLParser):
 
 
 def findall_urls_from_readme(app):
-    """
-    Readme files are html snippets, check with html parser
-    """
+    """Readme files are html snippets, check with html parser"""
     files_to_check = []
-    all_urls = dict()
+    all_urls = {}
     for readme_file in README_FILES:
         for f in glob.glob('%s*' % app.get_cache_file(readme_file)):
             files_to_check.append(f)
@@ -110,7 +109,7 @@ def findall_urls_from_readme(app):
 
 
 def findall_urls_from_ini(app):
-    all_urls = dict()
+    all_urls = {}
     files_to_check = [app.get_ini_file()]
     for filename in files_to_check:
         print("\nChecking file:", filename)
@@ -136,7 +135,7 @@ def check_files():
     Collects all links from .inis and Readmes of installed Apps;
     Tries to open each URL found using urlopen with a timeout.
     """
-    links = dict()
+    links = {}
     for app in get_requested_apps():
         print("\nChecking App:", app)
         links[app.id] = findall_urls_from_ini(app)

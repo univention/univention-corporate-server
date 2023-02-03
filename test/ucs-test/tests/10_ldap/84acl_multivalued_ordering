@@ -16,6 +16,7 @@ from univention.testing.strings import random_name
 from univention.testing.udm import UCSTestUDM
 from univention.uldap import getMachineConnection
 
+
 ATTR = 'prohibitedUsername'
 container_name = random_name()
 names = ['%s%d' % (random_name(), i) for i in range(2)]
@@ -35,7 +36,7 @@ with UCSTestUDM() as udm:
     old = values[ATTR]
     new = list(reversed(old))
     change = (ATTR, old, new)
-    changes = [change, ]
+    changes = [change]
     access.modify(dn, changes)
 
 # vim: set ft=python :

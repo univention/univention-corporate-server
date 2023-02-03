@@ -1,5 +1,4 @@
 #!/usr/bin/python3
-# vim:set fileencoding=utf-8 filetype=python tabstop=4 shiftwidth=4 expandtab:
 # pylint: disable-msg=C0301,W0212,C0103,R0904
 
 """Unit test for univention.updater.mirror"""
@@ -10,19 +9,18 @@ from os.path import join
 
 import pytest
 from lazy_object_proxy import Proxy
+from mockups import ARCH, DATA, MAJOR, MINOR, RJSON, gen_releases
 
 import univention.updater.mirror as M
-from mockups import ARCH, DATA, MAJOR, MINOR, RJSON, gen_releases
 from univention.lib.ucs import UCS_Version
+
 
 UM = M.UniventionMirror
 
 
-@pytest.fixture
+@pytest.fixture()
 def m(tmpdir, ucr, http):
-    """
-    Mock UCS repository mirror.
-    """
+    """Mock UCS repository mirror."""
     ucr({
         'repository/mirror/basepath': str(tmpdir / 'repo'),
         # 'repository/mirror/version/end': '%d.%d-%d' % (MAJOR, MINOR, PATCH),
@@ -40,14 +38,11 @@ def m(tmpdir, ucr, http):
 
 @pytest.fixture(autouse=True)
 def log(mockopen):
-    """
-    Mock log file for UCS repository mirror.
-    """
+    """Mock log file for UCS repository mirror."""
     mockopen.write("/var/log/univention/repository.log", b"")
 
 
 class TestUniventionMirror(object):
-
     """Unit test for univention.updater.mirror"""
 
     def test_config_repository(self, ucr, m):
@@ -91,8 +86,8 @@ class TestUniventionMirror(object):
             'repository/mirror/version/end': '%d.%d-%d' % (MAJOR, 0, 0),
         })
         uris = {
-            '/dists/ucs%d%d%d/preup.sh' % (MAJOR, MINOR, 0, ): b'#!r_pre',
-            '/dists/ucs%d%d%d/postup.sh' % (MAJOR, MINOR, 0, ): b'#!r_post',
+            '/dists/ucs%d%d%d/preup.sh' % (MAJOR, MINOR, 0): b'#!r_pre',
+            '/dists/ucs%d%d%d/postup.sh' % (MAJOR, MINOR, 0): b'#!r_post',
             '/dists/ucs%d%d%d/main/binary-%s/Packages.gz' % (MAJOR, MINOR, 0, ARCH): DATA,
             '/%d.%d/maintained/component/%s/%s/Packages.gz' % (MAJOR, 0, 'a', 'all'): DATA,
             '/%d.%d/maintained/component/%s/%s/preup.sh' % (MAJOR, 0, 'a', 'all'): b'#!a_pre',
@@ -101,7 +96,7 @@ class TestUniventionMirror(object):
             '/%d.%d/maintained/component/%s/Packages.gz' % (MAJOR, 0, 'b'): DATA,
             '/%d.%d/maintained/component/%s/preup.sh' % (MAJOR, 0, 'b'): b'#!b_pre',
             '/%d.%d/maintained/component/%s/postup.sh' % (MAJOR, 0, 'b'): b'#!b_post',
-            RJSON: gen_releases([(MAJOR, MINOR, 0), ])
+            RJSON: gen_releases([(MAJOR, MINOR, 0)]),
         }
         http(uris)
         m._get_releases()
@@ -126,10 +121,10 @@ class TestUniventionMirror(object):
             'repository/mirror/version/end': '%d.%d-%d' % (MAJOR, 0, 0),
         })
         uris = {
-            '/dists/ucs%d%d%d/preup.sh' % (MAJOR, MINOR, 0, ): b'#!r_pre',
-            '/dists/ucs%d%d%d/postup.sh' % (MAJOR, MINOR, 0, ): b'#!r_post',
+            '/dists/ucs%d%d%d/preup.sh' % (MAJOR, MINOR, 0): b'#!r_pre',
+            '/dists/ucs%d%d%d/postup.sh' % (MAJOR, MINOR, 0): b'#!r_post',
             '/dists/ucs%d%d%d/main/binary-%s/Packages.gz' % (MAJOR, MINOR, 0, ARCH): DATA,
-            RJSON: gen_releases([(MAJOR, MINOR, 0), ])
+            RJSON: gen_releases([(MAJOR, MINOR, 0)]),
         }
         http(uris)
         uris2 = {
@@ -171,16 +166,15 @@ class TestUniventionMirror(object):
 
 
 class TestFilter(object):
-
     """Unit test for univention.updater.mirror.filter_releases_json"""
 
     RELEASES = json.loads(gen_releases([(5, 0, 0), (5, 0, 1), (5, 0, 2)]))
     VER4, VER5, VER6 = (UCS_Version((major, 0, 0)) for major in [4, 5, 6])
 
     def test_filter_releases_json(self, testdir):
-        with open(join(testdir, 'mockup_upstream_releases.json'), 'r') as upstream_releases_fp:
+        with open(join(testdir, 'mockup_upstream_releases.json')) as upstream_releases_fp:
             upstream_releases = json.load(upstream_releases_fp)
-        with open(join(testdir, 'mockup_mirror_releases.json'), 'r') as mirror_releases_fp:
+        with open(join(testdir, 'mockup_mirror_releases.json')) as mirror_releases_fp:
             expected_mirror_releases = json.load(mirror_releases_fp)
 
         mirrored_releases = deepcopy(upstream_releases)

@@ -3,27 +3,21 @@ __all__ = ['TestError', 'TestConditionError']
 
 
 class TestError(Exception):
-
-	"""
-	General test error.
-	"""
+    """General test error."""
 
 
 class TestConditionError(Exception):
+    """Error during prepaation for test."""
 
-	"""
-	Error during prepaation for test.
-	"""
+    def __iter__(self):
+        return self.tests.__iter__()
 
-	def __iter__(self):
-		return self.tests.__iter__()
-
-	@property
-	def tests(self):
-		"""Return failed tests."""
-		return self.args[0]
+    @property
+    def tests(self):
+        """Return failed tests."""
+        return self.args[0]
 
 
 if __name__ == '__main__':
-	import doctest
-	doctest.testmod()
+    import doctest
+    doctest.testmod()

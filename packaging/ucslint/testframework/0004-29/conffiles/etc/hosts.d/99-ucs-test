@@ -7,8 +7,8 @@
 
 
 @!@
-print configRegistry.get('not/in/info/file/registered/multifile/configregistry','YES')
-print baseConfig.get('not/in/info/file/registered/multifile/baseconfig','YES')
-print baseConfig.get('ding','YES')
-print baseConfig.get('dong','YES')
+print configRegistry.get('not/in/info/file/registered/multifile/configregistry', 'YES')
+print baseConfig.get('not/in/info/file/registered/multifile/baseconfig', 'YES')
+print baseConfig.get('ding', 'YES')
+print baseConfig.get('dong', 'YES')
 @!@

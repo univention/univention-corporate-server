@@ -31,33 +31,30 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-"""
-A Python pre-processor
-"""
+"""A Python pre-processor"""
 
 from __future__ import print_function
-import os
-import sys
+
 import getopt
-import re
+import os
 import py_compile
+import re
+import sys
+
 
 define = []
 opts, args = getopt.getopt(sys.argv[1:], 'D:')
 for opt, val in opts:
-	if opt == '-D':
-		define.append(val)
+    if opt == '-D':
+        define.append(val)
 
 input, output = args
 
 print('byte-compiling: %s' % input)
 if os.path.exists(output):
-	os.unlink(output)
+    os.unlink(output)
 
-if output.endswith('.pyo'):
-	output_pp = open(output + '.pp', 'w')
-else:
-	output_pp = open(output, 'w')
+output_pp = open(output + ".pp", "w") if output.endswith(".pyo") else open(output, "w")
 
 ifdef_pattern = re.compile('^#ifdef (.*)')
 endif_pattern = re.compile(r'^#endif *(/\*.*\*/)*')
@@ -67,25 +64,25 @@ depth = 0
 hide = 0
 
 for line in open(input).readlines():
-	line = line[0:-1]
+    line = line[0:-1]
 
-	if ifdef_pattern.match(line):
-		var = ifdef_pattern.findall(line)[0]
-		depth += 1
-		if not hide:
-			hide = var not in define
-			hide_depth = depth
-	elif endif_pattern.match(line):
-		if depth == hide_depth:
-			hide = 0
-		depth -= 1
-	elif not hide:
-		print(line, file=output_pp)
+    if ifdef_pattern.match(line):
+        var = ifdef_pattern.findall(line)[0]
+        depth += 1
+        if not hide:
+            hide = var not in define
+            hide_depth = depth
+    elif endif_pattern.match(line):
+        if depth == hide_depth:
+            hide = 0
+        depth -= 1
+    elif not hide:
+        print(line, file=output_pp)
 output_pp.close()
 
 if output.endswith('.pyo'):
-	e = py_compile.compile(output + '.pp', output, input)
-	# os.unlink(output+'.pp')
+    e = py_compile.compile(output + '.pp', output, input)
+    # os.unlink(output+'.pp')
 
 if not os.path.exists(output):
-	sys.exit(1)
+    sys.exit(1)

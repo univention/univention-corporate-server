@@ -30,31 +30,28 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-"""
-Install UCS release and errata updates.
-"""
+"""Install UCS release and errata updates."""
 
 from __future__ import print_function
 
+import logging
 import os
+import socket
+import subprocess
 import sys
 import time
-import subprocess
 import traceback
-import logging
-import socket
 from argparse import ArgumentParser, FileType, Namespace
-from typing import Iterable, List, Optional, NoReturn, Tuple
-
-from univention.lib.ucs import UCS_Version
-from univention.config_registry import ConfigRegistry, handler_set
+from typing import Iterable, List, NoReturn, Optional, Tuple
 
 from univention.admindiary.client import write_event
-from univention.admindiary.events import UPDATE_STARTED, UPDATE_FINISHED_SUCCESS, UPDATE_FINISHED_FAILURE
-
+from univention.admindiary.events import UPDATE_FINISHED_FAILURE, UPDATE_FINISHED_SUCCESS, UPDATE_STARTED
+from univention.config_registry import ConfigRegistry, handler_set
+from univention.lib.ucs import UCS_Version
 from univention.updater.errors import ConfigurationError
-from univention.updater.tools import UniventionUpdater
 from univention.updater.locking import UpdaterLock
+from univention.updater.tools import UniventionUpdater
+
 
 FN_STATUS = '/var/lib/univention-updater/univention-upgrade.status'
 
@@ -88,7 +85,7 @@ updater_status = {}
 
 
 def update_status(**kwargs: str) -> None:
-    '''
+    """
     update updater_status and write status to disk
 
     Keys:
@@ -97,8 +94,7 @@ def update_status(**kwargs: str) -> None:
     - updatetype      ==> (LOCAL|NET)
     - status          ==> (RUNNING|FAILED|DONE)
     - errorsource     ==> (SETTINGS|PREPARATION|PREUP|UPDATE|POSTUP)
-    '''
-    global updater_status
+    """
     updater_status.update(kwargs)
     # write temporary file
     fn = '%s.new' % FN_STATUS
@@ -248,9 +244,9 @@ def do_app_updates(options: Namespace, checkForUpdates: bool, silent: bool) -> O
 
     interactive = not (options.noninteractive or checkForUpdates)
     try:
-        from univention.appcenter.actions import get_action, Abort
-        from univention.appcenter.app_cache import Apps
         import univention.appcenter.log as appcenter_log
+        from univention.appcenter.actions import Abort, get_action
+        from univention.appcenter.app_cache import Apps
         app_upgrade_search = get_action('upgrade-search')
         app_upgrade = get_action('upgrade')
         if app_upgrade is None:

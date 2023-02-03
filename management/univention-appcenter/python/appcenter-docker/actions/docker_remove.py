@@ -36,44 +36,43 @@
 # <https://www.gnu.org/licenses/>.
 #
 
-from univention.appcenter.exceptions import RemovePluginUnsupported, RemoveBackupFailed
-from univention.appcenter.actions.remove import Remove
 from univention.appcenter.actions.docker_base import DockerActionMixin
+from univention.appcenter.actions.remove import Remove
 from univention.appcenter.actions.service import Stop
+from univention.appcenter.exceptions import RemoveBackupFailed, RemovePluginUnsupported
 
 
 class Remove(Remove, DockerActionMixin):
 
-	def setup_parser(self, parser):
-		super(Remove, self).setup_parser(parser)
-		parser.add_argument('--do-not-backup', action='store_false', dest='backup', help='For docker apps, do not save a backup container')
+    def setup_parser(self, parser):
+        super(Remove, self).setup_parser(parser)
+        parser.add_argument('--do-not-backup', action='store_false', dest='backup', help='For docker apps, do not save a backup container')
 
-	def _do_it(self, app, args):
-		self._unregister_host(app, args)
-		self.percentage = 5
-		super(Remove, self)._do_it(app, args)
+    def _do_it(self, app, args):
+        self._unregister_host(app, args)
+        self.percentage = 5
+        super(Remove, self)._do_it(app, args)
 
-	def _remove_app(self, app, args):
-		if not app.docker:
-			return super(Remove, self)._remove_app(app, args)
-		else:
-			if app.plugin_of:
-				raise RemovePluginUnsupported()
-			else:
-				return self._remove_docker_container(app, args)
+    def _remove_app(self, app, args):
+        if not app.docker:
+            return super(Remove, self)._remove_app(app, args)
+        else:
+            if app.plugin_of:
+                raise RemovePluginUnsupported()
+            else:
+                return self._remove_docker_container(app, args)
 
-	def _remove_docker_container(self, app, args):
-		self._configure(app, args)
-		if args.backup:
-			if self._backup_container(app, remove=True) is False:
-				raise RemoveBackupFailed()
-		docker = self._get_docker(app)
-		Stop.call(app=app)
-		docker.stop()
-		docker.rm()
-		return True
+    def _remove_docker_container(self, app, args):
+        self._configure(app, args)
+        if args.backup and self._backup_container(app, remove=True) is False:
+            raise RemoveBackupFailed()
+        docker = self._get_docker(app)
+        Stop.call(app=app)
+        docker.stop()
+        docker.rm()
+        return True
 
-	def dry_run(self, app, args):
-		if not app.docker:
-			return super(Remove, self).dry_run(app, args)
-		self.log('%s is a Docker App. No sane dry run is implemented' % app)
+    def dry_run(self, app, args):
+        if not app.docker:
+            return super(Remove, self).dry_run(app, args)
+        self.log('%s is a Docker App. No sane dry run is implemented' % app)

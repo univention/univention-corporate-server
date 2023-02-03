@@ -30,14 +30,14 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-from univention.management.console.log import MODULE  # noqa: F401
-from univention.management.console.config import ucr  # noqa: F401
-from univention.management.console.base import Base
-
 from univention.lib.i18n import Translation
+from univention.management.console.base import Base
+from univention.management.console.config import ucr  # noqa: F401
+from univention.management.console.log import MODULE  # noqa: F401
+
 
 _ = Translation('PACKAGENAME').translate
 
 
 class Instance(Base):
-	pass
+    pass

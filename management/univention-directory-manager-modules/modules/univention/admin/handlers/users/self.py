@@ -30,20 +30,18 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-"""
-|UDM| module for the user himself
-"""
+"""|UDM| module for the user himself"""
 
 from __future__ import absolute_import
 
-from univention.admin.layout import Tab
+from ldap.filter import filter_format
+
 import univention.admin.filter
 import univention.admin.handlers
-import univention.admin.localization
-
 import univention.admin.handlers.users.user as udm_user
+import univention.admin.localization
+from univention.admin.layout import Tab
 
-from ldap.filter import filter_format
 
 translation = univention.admin.localization.translation('univention.admin.handlers.users')
 _ = translation.translate
@@ -65,32 +63,31 @@ long_description = ''
 
 
 class object(univention.admin.handlers.users.user.object):
-	module = module
+    module = module
 
-	def __init__(self, co, lo, position, dn=u'', superordinate=None, attributes=None):
-		super(object, self).__init__(co, lo, position, dn=dn, superordinate=superordinate, attributes=attributes)
-		if self._exists:
-			if not self.lo.compare_dn(self.dn, self.lo.whoami()) or not univention.admin.modules.recognize('users/user', self.dn, self.oldattr):
-				raise univention.admin.uexceptions.wrongObjectType('%s is not recognized as %s.' % (self.dn, self.module))
+    def __init__(self, co, lo, position, dn=u'', superordinate=None, attributes=None):
+        super(object, self).__init__(co, lo, position, dn=dn, superordinate=superordinate, attributes=attributes)
+        if self._exists and (not self.lo.compare_dn(self.dn, self.lo.whoami()) or not univention.admin.modules.recognize('users/user', self.dn, self.oldattr)):
+            raise univention.admin.uexceptions.wrongObjectType('%s is not recognized as %s.' % (self.dn, self.module))
 
-	@classmethod
-	def lookup_filter(cls, filter_s=None, lo=None):
-		if lo:
-			dn = lo.whoami()
-			filter_p = univention.admin.filter.parse(filter_format('(&(entryDN=%s))', [dn]))
-			module = univention.admin.modules.get_module(cls.module)
-			filter_p.append_unmapped_filter_string(filter_s, cls.rewrite_filter, module.mapping)
-			return filter_p
-		return super(object, cls).lookup_filter(filter_s, lo)
+    @classmethod
+    def lookup_filter(cls, filter_s=None, lo=None):
+        if lo:
+            dn = lo.whoami()
+            filter_p = univention.admin.filter.parse(filter_format('(&(entryDN=%s))', [dn]))
+            module = univention.admin.modules.get_module(cls.module)
+            filter_p.append_unmapped_filter_string(filter_s, cls.rewrite_filter, module.mapping)
+            return filter_p
+        return super(object, cls).lookup_filter(filter_s, lo)
 
-	@classmethod
-	def lookup(cls, co, lo, filter_s, base='', superordinate=None, scope='sub', unique=False, required=False, timeout=-1, sizelimit=0, serverctrls=None, response=None):
-		dn = lo.whoami()
-		return [user for user in udm_user.lookup(co, lo, filter_s, base, superordinate, scope=scope, unique=unique, required=required, timeout=timeout, sizelimit=sizelimit, serverctrls=serverctrls, response=response) if lo.compare_dn(dn, user.dn)]
+    @classmethod
+    def lookup(cls, co, lo, filter_s, base='', superordinate=None, scope='sub', unique=False, required=False, timeout=-1, sizelimit=0, serverctrls=None, response=None):
+        dn = lo.whoami()
+        return [user for user in udm_user.lookup(co, lo, filter_s, base, superordinate, scope=scope, unique=unique, required=required, timeout=timeout, sizelimit=sizelimit, serverctrls=serverctrls, response=response) if lo.compare_dn(dn, user.dn)]
 
-	@classmethod
-	def identify(cls, dn, attr, canonical=False):
-		return False
+    @classmethod
+    def identify(cls, dn, attr, canonical=False):
+        return False
 
 
 lookup = object.lookup

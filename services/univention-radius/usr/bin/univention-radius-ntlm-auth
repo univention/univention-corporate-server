@@ -37,43 +37,42 @@
 
 from __future__ import print_function
 
-import codecs
 import argparse
+import codecs
 import sys
 
-from univention.radius import get_NetworkAccess
+from univention.radius import get_NetworkAccess, pyMsChapV2
 from univention.radius.networkaccess import NetworkAccessError
-import univention.radius.pyMsChapV2 as pyMsChapV2
 
 
 LOGFIILE = '/var/log/univention/radius_ntlm_auth.log'
 
 
 def main():
-	# type: () -> int
-	parser = argparse.ArgumentParser()
-	parser.add_argument('--request-nt-key', action='store_true', required=True)
-	parser.add_argument('--username', required=True)
-	parser.add_argument('--challenge', required=True)
-	parser.add_argument('--nt-response', required=True)
-	parser.add_argument('--station-id')
-	options = parser.parse_args()
-	options.challenge = codecs.decode(options.challenge, 'hex')
-	options.nt_response = codecs.decode(options.nt_response, 'hex')
-	NetworkAccess = get_NetworkAccess()
-	networkAccess = NetworkAccess(options.username, options.station_id, logfile=LOGFIILE)
-	try:
-		PasswordHash = networkAccess.getNTPasswordHash()
-	except NetworkAccessError as exc:
-		PasswordHash = None
-		networkAccess.logger.warning(exc.msg)
-	if PasswordHash and pyMsChapV2.ChallengeResponse(options.challenge, PasswordHash) == options.nt_response:
-		print('NT_KEY: %s' % (codecs.encode(pyMsChapV2.HashNtPasswordHash(PasswordHash), 'hex').decode('ASCII').upper(), ))
-		return 0
-	else:
-		print('Logon failure (0xc000006d)')
-		return 1
+    # type: () -> int
+    parser = argparse.ArgumentParser()
+    parser.add_argument('--request-nt-key', action='store_true', required=True)
+    parser.add_argument('--username', required=True)
+    parser.add_argument('--challenge', required=True)
+    parser.add_argument('--nt-response', required=True)
+    parser.add_argument('--station-id')
+    options = parser.parse_args()
+    options.challenge = codecs.decode(options.challenge, 'hex')
+    options.nt_response = codecs.decode(options.nt_response, 'hex')
+    NetworkAccess = get_NetworkAccess()
+    networkAccess = NetworkAccess(options.username, options.station_id, logfile=LOGFIILE)
+    try:
+        PasswordHash = networkAccess.getNTPasswordHash()
+    except NetworkAccessError as exc:
+        PasswordHash = None
+        networkAccess.logger.warning(exc.msg)
+    if PasswordHash and pyMsChapV2.ChallengeResponse(options.challenge, PasswordHash) == options.nt_response:
+        print('NT_KEY: %s' % (codecs.encode(pyMsChapV2.HashNtPasswordHash(PasswordHash), 'hex').decode('ASCII').upper(), ))
+        return 0
+    else:
+        print('Logon failure (0xc000006d)')
+        return 1
 
 
 if __name__ == "__main__":
-	sys.exit(main())
+    sys.exit(main())

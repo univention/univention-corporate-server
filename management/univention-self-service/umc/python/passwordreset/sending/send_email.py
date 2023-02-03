@@ -48,88 +48,89 @@
 #
 #
 
+import email.charset
 import os.path
 import smtplib
-from six.moves.urllib_parse import quote
 from email.mime.nonmultipart import MIMENonMultipart
 from email.utils import formatdate
-import email.charset
+
+from six.moves.urllib_parse import quote
 
 from univention.config_registry import ConfigRegistry
 from univention.lib.i18n import Translation
-
 from univention.management.console.modules.passwordreset.send_plugin import UniventionSelfServiceTokenEmitter
+
 
 _ = Translation('univention-self-service-passwordreset-umc').translate
 
 
 class SendEmail(UniventionSelfServiceTokenEmitter):
 
-	def __init__(self, *args, **kwargs):
-		super(SendEmail, self).__init__(*args, **kwargs)
-		self.server = self.ucr.get("umc/self-service/passwordreset/email/server", "localhost")
+    def __init__(self, *args, **kwargs):
+        super(SendEmail, self).__init__(*args, **kwargs)
+        self.server = self.ucr.get("umc/self-service/passwordreset/email/server", "localhost")
 
-	@staticmethod
-	def send_method():
-		return "email"
+    @staticmethod
+    def send_method():
+        return "email"
 
-	@staticmethod
-	def send_method_label():
-		return _("Email")
+    @staticmethod
+    def send_method_label():
+        return _("Email")
 
-	@staticmethod
-	def is_enabled():
-		ucr = ConfigRegistry()
-		ucr.load()
-		return ucr.is_true("umc/self-service/passwordreset/email/enabled")
+    @staticmethod
+    def is_enabled():
+        ucr = ConfigRegistry()
+        ucr.load()
+        return ucr.is_true("umc/self-service/passwordreset/email/enabled")
 
-	@property
-	def udm_property(self):
-		return "PasswordRecoveryEmail"
+    @property
+    def udm_property(self):
+        return "PasswordRecoveryEmail"
 
-	@property
-	def token_length(self):
-		length = self.ucr.get("umc/self-service/passwordreset/email/token_length", 64)
-		try:
-			length = int(length)
-		except ValueError:
-			length = 64
-		return length
+    @property
+    def token_length(self):
+        length = self.ucr.get("umc/self-service/passwordreset/email/token_length", 64)
+        try:
+            length = int(length)
+        except ValueError:
+            length = 64
+        return length
 
-	def send(self):
-		path_ucr = self.ucr.get("umc/self-service/passwordreset/email/text_file")
-		if path_ucr and os.path.exists(path_ucr):
-			path = path_ucr
-		else:
-			path = "/usr/share/univention-self-service/email_bodies/email_body.txt"
-		with open(path, "r") as fp:
-			txt = fp.read()
+    def send(self):
+        path_ucr = self.ucr.get("umc/self-service/passwordreset/email/text_file")
+        if path_ucr and os.path.exists(path_ucr):
+            path = path_ucr
+        else:
+            path = "/usr/share/univention-self-service/email_bodies/email_body.txt"
+        with open(path) as fp:
+            txt = fp.read()
 
-		fqdn = ".".join([self.ucr["hostname"], self.ucr["domainname"]])
-		frontend_server = self.ucr.get("umc/self-service/passwordreset/email/webserver_address", fqdn)
-		links = {
-			'link': "https://{fqdn}/univention/selfservice/#/selfservice/newpassword/".format(fqdn=frontend_server),
-			'tokenlink': "https://{fqdn}/univention/selfservice/#/selfservice/newpassword/?token={token}&username={username}".format(fqdn=frontend_server, username=quote(self.data["username"]), token=quote(self.data["token"]))
-		}
+        fqdn = ".".join([self.ucr["hostname"], self.ucr["domainname"]])
+        frontend_server = self.ucr.get("umc/self-service/passwordreset/email/webserver_address", fqdn)
+        links = {
+            'link': f"https://{frontend_server}/univention/selfservice/#/selfservice/newpassword/",
+            'tokenlink': "https://{fqdn}/univention/selfservice/#/selfservice/newpassword/?token={token}&username={username}".format(fqdn=frontend_server, username=quote(self.data["username"]), token=quote(self.data["token"])),
+        }
 
-		formatter_dict = self.data['user_properties']
-		formatter_dict.update(links)
-		formatter_dict['token'] = self.data['token']
+        formatter_dict = self.data['user_properties']
+        formatter_dict.update(links)
+        formatter_dict['token'] = self.data['token']
 
-		txt = txt.format(**formatter_dict)
+        txt = txt.format(**formatter_dict)
 
-		msg = MIMENonMultipart('text', 'plain', charset='utf-8')
-		cs = email.charset.Charset("utf-8")
-		cs.body_encoding = email.charset.QP
-		msg["Subject"] = self.ucr.get("umc/self-service/passwordreset/email/subject", "Password reset")
-		msg["Date"] = formatdate(localtime=True)
-		msg["From"] = self.ucr.get("umc/self-service/passwordreset/email/sender_address", "Password Reset Service <noreply@{}>".format(fqdn))
-		msg["To"] = self.data["address"]
-		msg.set_payload(txt, charset=cs)
+        msg = MIMENonMultipart('text', 'plain', charset='utf-8')
+        cs = email.charset.Charset("utf-8")
+        cs.body_encoding = email.charset.QP
+        msg["Subject"] = self.ucr.get("umc/self-service/passwordreset/email/subject", "Password reset")
+        msg["Date"] = formatdate(localtime=True)
+        msg["From"] = self.ucr.get("umc/self-service/passwordreset/email/sender_address", f"Password Reset Service <noreply@{fqdn}>")
+        msg["To"] = self.data["address"]
+        msg.set_payload(txt, charset=cs)
 
-		smtp = smtplib.SMTP(self.server)
-		smtp.sendmail(msg["From"], self.data["address"], msg.as_string())
-		smtp.quit()
-		self.log("Sent mail with token to address {}.".format(self.data["address"]))
+        smtp = smtplib.SMTP(self.server)
+        smtp.sendmail(msg["From"], self.data["address"], msg.as_string())
+        smtp.quit()
+        self.log("Sent mail with token to address {}.".format(self.data["address"]))
 
-		return True
+        return True

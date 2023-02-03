@@ -3,5 +3,5 @@ from univention.management.console.modules.setup.netconf.conditions import NotNe
 
 
 class PhaseRestartPostgresql(RestartService, NotNetworkOnly):
-	service = "postgresql"
-	priority = 16
+    service = "postgresql"
+    priority = 16

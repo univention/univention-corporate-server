@@ -15,7 +15,7 @@
 from time import sleep
 
 from ldap_extension_utils import (
-	call_join_script, call_unjoin_script, get_package_name, get_schema_attribute_id, get_schema_name,
+    call_join_script, call_unjoin_script, get_package_name, get_schema_attribute_id, get_schema_name,
 )
 
 import univention.testing.udm as udm_test
@@ -24,6 +24,7 @@ from univention.config_registry import ConfigRegistry
 from univention.testing.debian_package import DebianPackage
 from univention.testing.strings import random_name, random_string
 from univention.testing.utils import fail, wait_for_replication
+
 
 ucr = ConfigRegistry()
 ucr.load()
@@ -103,9 +104,9 @@ attributetype ( 1.3.6.1.4.1.10176.200.10999.1.%(attribute_id)s NAME 'univentionT
     1234567890 1234567890 1234567890 1234567890 1234567890 1234567890 1234567890 1234567890 1234567890
     1234567890 1234567890 1234567890 1234567890 1234567890 1234567890 1234567890 1234567890 1234567890
     '
-	EQUALITY caseExactMatch
-	SUBSTR caseIgnoreSubstringsMatch
-	SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 )
+    EQUALITY caseExactMatch
+    SUBSTR caseIgnoreSubstringsMatch
+    SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 )
 
 objectclass ( 1.3.6.1.4.1.10176.200.10999.1.%(attribute_id)s
     NAME 'univentionTestAttributes%(attribute_id)s'
@@ -115,17 +116,17 @@ objectclass ( 1.3.6.1.4.1.10176.200.10999.1.%(attribute_id)s
             )
     )
 
-''' % {'attribute_id': attribute_id}  # noqa: E101
+''' % {'attribute_id': attribute_id}
 
 udm = udm_test.UCSTestUDM()
 properties = {
-	'name': random_name(),
-	'shortDescription': random_string(),
-	'CLIName': random_name(),
-	'module': 'container/cn',
-	'objectClass': 'univentionTestAttributes%(attribute_id)s' % {'attribute_id': attribute_id},
-	'ldapMapping': 'univentionTestAttributeLongDesc%(attribute_id)s' % {'attribute_id': attribute_id},
-	'position': 'cn=custom attributes,%s' % udm.UNIVENTION_CONTAINER,
+    'name': random_name(),
+    'shortDescription': random_string(),
+    'CLIName': random_name(),
+    'module': 'container/cn',
+    'objectClass': 'univentionTestAttributes%(attribute_id)s' % {'attribute_id': attribute_id},
+    'ldapMapping': 'univentionTestAttributeLongDesc%(attribute_id)s' % {'attribute_id': attribute_id},
+    'position': 'cn=custom attributes,%s' % udm.UNIVENTION_CONTAINER,
 }
 extended_attribute = udm.create_object('settings/extended_attribute', **properties)
 
@@ -139,31 +140,31 @@ package.build()
 
 package.install()
 try:
-	call_join_script(join_script_name)
+    call_join_script(join_script_name)
 
-	# The ldap server needs a few seconds
-	sleep(5)
+    # The ldap server needs a few seconds
+    sleep(5)
 
-	properties = {
-		'name': random_name(),
-		'univentionTestAttributeLongDesc%(attribute_id)s' % {'attribute_id': attribute_id}: random_name(),
-		'position': 'cn=custom attributes,cn=univention,%s' % ucr.get('ldap/base')
-	}
-	container = udm.create_object('container/cn', **properties)
+    properties = {
+        'name': random_name(),
+        'univentionTestAttributeLongDesc%(attribute_id)s' % {'attribute_id': attribute_id}: random_name(),
+        'position': 'cn=custom attributes,cn=univention,%s' % ucr.get('ldap/base'),
+    }
+    container = udm.create_object('container/cn', **properties)
 
-	wait_for_replication()
+    wait_for_replication()
 
-	lo = univention.uldap.getMachineConnection()
-	try:
-		lo.search(base=container)
-	except Exception:
-		fail()
+    lo = univention.uldap.getMachineConnection()
+    try:
+        lo.search(base=container)
+    except Exception:
+        fail()
 finally:
-	call_unjoin_script(unjoin_script_name)
-	package.remove()
-	package.uninstall()
+    call_unjoin_script(unjoin_script_name)
+    package.remove()
+    package.uninstall()
 
-	udm.cleanup()
-	wait_for_replication()
+    udm.cleanup()
+    wait_for_replication()
 
 # vim: set ft=python :

@@ -37,48 +37,43 @@ import os
 import os.path
 from errno import EEXIST
 
+
 portal_path = "/usr/share/univention-portal"
 
 
 def handler(config_registry, changes):
-	old, new = changes['portal/paths']
-	if old:
-		old = [o.strip() for o in old.split(",")]
-	else:
-		old = []
-	if new:
-		new = [n.strip() for n in new.split(",")]
-	else:
-		new = []
-	for path in old:
-		if path in new:
-			continue
-		path = os.path.normpath("/var/www" + path)
-		if not os.path.islink(path) or os.path.realpath(path) != portal_path:
-			print("{} does not link to the portal contents. Skipping...".format(path))
-		else:
-			print("Removing portal link to {}...".format(path))
-			os.unlink(path)
-	for path in new:
-		if path in old:
-			continue
-		path = os.path.normpath("/var/www" + path)
-		if os.path.islink(path):
-			link_target = os.path.realpath(path)
-			print("{} already links (to {}). Skipping...".format(path, link_target))
-		else:
-			print("Linking {} to portal content...".format(path))
-			try:
-				dirname = os.path.dirname(path)
-				try:
-					os.makedirs(dirname)
-				except OSError as exc:
-					if exc.errno != EEXIST:
-						raise
-			except OSError as exc:
-				print("Error creating {}: {}!".format(dirname, exc))
-			else:
-				try:
-					os.symlink(portal_path, path)
-				except OSError as exc:
-					print("Error creating a link from {} to {}: {}!".format(path, portal_path, exc))
+    old, new = changes['portal/paths']
+    old = [o.strip() for o in old.split(",")] if old else []
+    new = [n.strip() for n in new.split(",")] if new else []
+    for path in old:
+        if path in new:
+            continue
+        path = os.path.normpath("/var/www" + path)
+        if not os.path.islink(path) or os.path.realpath(path) != portal_path:
+            print("{} does not link to the portal contents. Skipping...".format(path))
+        else:
+            print("Removing portal link to {}...".format(path))
+            os.unlink(path)
+    for path in new:
+        if path in old:
+            continue
+        path = os.path.normpath("/var/www" + path)
+        if os.path.islink(path):
+            link_target = os.path.realpath(path)
+            print("{} already links (to {}). Skipping...".format(path, link_target))
+        else:
+            print("Linking {} to portal content...".format(path))
+            try:
+                dirname = os.path.dirname(path)
+                try:
+                    os.makedirs(dirname)
+                except OSError as exc:
+                    if exc.errno != EEXIST:
+                        raise
+            except OSError as exc:
+                print("Error creating {}: {}!".format(dirname, exc))
+            else:
+                try:
+                    os.symlink(portal_path, path)
+                except OSError as exc:
+                    print("Error creating a link from {} to {}: {}!".format(path, portal_path, exc))

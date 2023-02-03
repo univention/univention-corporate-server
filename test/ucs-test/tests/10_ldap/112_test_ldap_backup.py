@@ -18,13 +18,14 @@ import pytest
 
 from univention.testing.strings import random_username
 
+
 current_date = datetime.now().strftime("%Y%m%d")
 
 ldap_backup_path = Path(f"/var/univention-backup/ldap-backup_{current_date}.ldif.gz")
 ldap_backup_log_path = Path(f"/var/univention-backup/ldap-backup_{current_date}.log.gz")
 
 
-@pytest.fixture
+@pytest.fixture()
 def cleanup():
     """Remove backup files"""
     yield
@@ -47,7 +48,7 @@ def create_group(udm):
     _, group_name = udm.create_group(
         wait_for_replication=True,
         check_for_drs_replication=True,
-        wait_for=True
+        wait_for=True,
     )
     subprocess.check_call('/usr/lib/univention-pam/ldap-group-to-file.py')
     return group_name
@@ -124,7 +125,7 @@ def test_run_default_backup(udm, ucr, cleanup):
         0o640,
         0o440,
         0o7777 + 1,  # an invalid case
-    ]
+    ],
 )
 def test_run_custom_backup(owner, group, permissions, udm, ucr, cleanup):
     """Test backup when variables were all set and valid"""
@@ -154,8 +155,8 @@ def test_run_custom_backup(owner, group, permissions, udm, ucr, cleanup):
     "owner, group",
     [
         ("root", random_username()),
-        (random_username(), "root")
-    ]
+        (random_username(), "root"),
+    ],
 )
 @pytest.mark.parametrize(
     "permissions",
@@ -164,7 +165,7 @@ def test_run_custom_backup(owner, group, permissions, udm, ucr, cleanup):
         0o600,
         0o640,
         0o440,
-    ]
+    ],
 )
 def test_non_existing_owner_group(owner, group, permissions, udm, ucr, cleanup):
     """Test backup when variables were all set but non existing owner or group"""

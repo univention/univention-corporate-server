@@ -35,71 +35,73 @@
 # <https://www.gnu.org/licenses/>.
 #
 
+from copy import deepcopy
+
 import six
 
 from univention.config_registry import ConfigRegistry
 from univention.config_registry.frontend import ucr_update
 from univention.config_registry.handler import run_filter
-from copy import deepcopy
+
 
 _UCR = ConfigRegistry()
 _UCR.load()
 
 
 def ucr_load():
-	_UCR.load()
+    _UCR.load()
 
 
 def ucr_get(key, default=None):
-	return _UCR.get(key, default)
+    return _UCR.get(key, default)
 
 
 def ucr_save(values):
-	changed_values = {}
-	_UCR.load()
-	for k, v in values.items():
-		if _UCR.get(k) != v:
-			changed_values[k] = v
-	if changed_values:
-		ucr_update(_UCR, changed_values)
-	return changed_values
+    changed_values = {}
+    _UCR.load()
+    for k, v in values.items():
+        if _UCR.get(k) != v:
+            changed_values[k] = v
+    if changed_values:
+        ucr_update(_UCR, changed_values)
+    return changed_values
 
 
 def ucr_includes(key):
-	return key in _UCR
+    return key in _UCR
 
 
 def ucr_is_true(key, default=False, value=None):
-	return _UCR.is_true(key, default=default, value=value)
+    return _UCR.is_true(key, default=default, value=value)
 
 
 def ucr_is_false(key):
-	return _UCR.is_false(key)
+    return _UCR.is_false(key)
 
 
 def ucr_keys():
-	return _UCR.keys()
+    return _UCR.keys()
 
 
 def ucr_evaluated_as_true(value):
-	if isinstance(value, six.string_types):
-		value = value.lower()
-	return _UCR.is_true(value=value)
+    if isinstance(value, six.string_types):
+        value = value.lower()
+    return _UCR.is_true(value=value)
 
 
 def ucr_run_filter(string, additional=None):
-	ucr = _UCR
-	if additional:
-		# memory only ucr. not saved.
-		# if we would... NEVER __setitem__ on ucr!
-		ucr = deepcopy(ucr)
-		for k, v in additional.items():
-			ucr[k] = str(v)
-	value = run_filter(string, ucr)
-	if six.PY2:
-		return value
-	return value.decode('UTF-8')
+    ucr = _UCR
+    if additional:
+        # memory only ucr. not saved.
+        # if we would... NEVER __setitem__ on ucr!
+        ucr = deepcopy(ucr)
+        for k, v in additional.items():
+            ucr[k] = str(v)
+    value = run_filter(string, ucr)
+    if six.PY2:
+        return value
+    return value.decode('UTF-8')
 
 
 def ucr_instance():
-	return _UCR
+    return _UCR

@@ -1,5 +1,4 @@
 #!/usr/bin/python3
-# vim:set fileencoding=utf-8 filetype=python tabstop=4 shiftwidth=4 expandtab:
 # pylint: disable-msg=C0301,R0903,R0913
 from __future__ import print_function
 
@@ -15,13 +14,14 @@ from six.moves import urllib_parse, urllib_response
 import univention.updater.tools as U  # noqa: E402
 from univention.config_registry import ConfigRegistry
 
+
 try:
-    from typing import Any, Dict, IO, List, Sequence, Text, Union  # noqa: F401
+    from typing import IO, Any, Dict, List, Sequence, Text, Union  # noqa: F401
 except ImportError:
     pass
 
 if sys.version_info >= (3,):
-    import builtins as builtins
+    import builtins
 else:
     import __builtin__ as builtins
     FileNotFoundError = IOError
@@ -35,18 +35,14 @@ ERRAT = 3
 
 @pytest.fixture(autouse=True)
 def ucslog():
-    """
-    Enable :py:mod:`univention.debug` logging.
-    """
+    """Enable :py:mod:`univention.debug` logging."""
     U.ud.init("stderr", U.ud.NO_FLUSH, U.ud.NO_FUNCTION)
     U.ud.set_level(U.ud.NETWORK, U.ud.ALL)
 
 
 @pytest.fixture(autouse=True)
 def testdir(doctest_namespace):
-    """
-    Return path to directory :file:`test/`.
-    """
+    """Return path to directory :file:`test/`."""
     testdir = join(dirname(__file__), "tests", "data")
     doctest_namespace["TESTDIR"] = testdir
     return testdir
@@ -54,9 +50,7 @@ def testdir(doctest_namespace):
 
 @pytest.fixture(autouse=True)
 def ucr(monkeypatch, tmpdir):
-    """
-    Return mock Univention Config Registry
-    """
+    """Return mock Univention Config Registry"""
     db = tmpdir / "base.conf"
     monkeypatch.setenv("UNIVENTION_BASECONF", str(db))
     cr = ConfigRegistry()
@@ -75,11 +69,9 @@ def ucr(monkeypatch, tmpdir):
     return extra
 
 
-@pytest.fixture
+@pytest.fixture()
 def http(mocker):
-    """
-    Mock HTTP requests via py2:urllib2 / py3:urllib.requests
-    """
+    """Mock HTTP requests via py2:urllib2 / py3:urllib.requests"""
     ressources = {}
 
     def extra(uris={}, netloc=""):
@@ -114,9 +106,7 @@ def http(mocker):
 
 
 class MockPopen(object):
-    """
-    Mockup for :py:class:`subprocess.Popen`.
-    """
+    """Mockup for :py:class:`subprocess.Popen`."""
 
     mock_commands = []  # type: List[Sequence[str]]
     mock_stdout = b''
@@ -133,7 +123,7 @@ class MockPopen(object):
             if isinstance(cmd, six.string_types):
                 cmd = (cmd,)
             try:
-                with open(cmd[0], 'r') as fd_script:
+                with open(cmd[0]) as fd_script:
                     content = fd_script.read(1024)
             except (EnvironmentError, UnicodeDecodeError) as ex:
                 content = ex
@@ -171,20 +161,16 @@ class MockPopen(object):
         cls.mock_stdout = cls.mock_stderr = b''
 
 
-@pytest.fixture
+@pytest.fixture()
 def mockpopen(monkeypatch):
-    """
-    Mock :py:meth:`subprocess.Popen()` usage
-    """
+    """Mock :py:meth:`subprocess.Popen()` usage"""
     monkeypatch.setattr(subprocess, 'Popen', MockPopen)
     yield MockPopen
     MockPopen.mock_reset()
 
 
 class MockFileManager(object):
-    """
-    Mockup for :py:func:`open()`
-    """
+    """Mockup for :py:func:`open()`"""
 
     def __init__(self, tmpdir):
         # type: (Any) -> None
@@ -255,11 +241,9 @@ class MockFileManager(object):
         self.files[name] = ex
 
 
-@pytest.fixture
+@pytest.fixture()
 def mockopen(monkeypatch, tmpdir):
-    """
-    Mock :py:func:`open()` usage
-    """
+    """Mock :py:func:`open()` usage"""
     manager = MockFileManager(tmpdir)
     monkeypatch.setattr(builtins, "open", manager.open)
     return manager

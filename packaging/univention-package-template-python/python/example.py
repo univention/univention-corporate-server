@@ -3,5 +3,5 @@
 
 class HelloWorld(object):
 
-	def __init__(self):
-		print('Hello World')
+    def __init__(self):
+        print('Hello World')

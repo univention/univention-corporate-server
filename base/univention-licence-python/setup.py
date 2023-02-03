@@ -34,30 +34,32 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 import io
-from setuptools import setup, Extension
 from email.utils import parseaddr
+
 from debian.changelog import Changelog
 from debian.deb822 import Deb822
+from setuptools import Extension, setup
+
 
 dch = Changelog(io.open('debian/changelog', 'r', encoding='utf-8'))
 dsc = Deb822(io.open('debian/control', 'r', encoding='utf-8'))
 realname, email_address = parseaddr(dsc['Maintainer'])
 
 setup(
-	package_dir={'': 'python'},
-	description='Univention license validation library',
+    package_dir={'': 'python'},
+    description='Univention license validation library',
 
-	ext_modules=[Extension(
-		'univention.license', ['python/univention/py_license.c'],
-		libraries=['univentionlicense'])],
+    ext_modules=[Extension(
+        'univention.license', ['python/univention/py_license.c'],
+                libraries=['univentionlicense'])],
 
-	url='https://www.univention.de/',
-	license='GNU Affero General Public License v3',
+    url='https://www.univention.de/',
+    license='GNU Affero General Public License v3',
 
-	name=dch.package,
-	version=dch.version.full_version,
-	maintainer=realname,
-	maintainer_email=email_address,
+    name=dch.package,
+    version=dch.version.full_version,
+    maintainer=realname,
+    maintainer_email=email_address,
 
-	test_suite='test',
+    test_suite='test',
 )

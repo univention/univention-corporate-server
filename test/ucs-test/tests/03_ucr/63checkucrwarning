@@ -11,95 +11,96 @@ import sys
 
 from univention.debhelper import parseRfc822
 
+
 BASE = '/etc/univention/templates/info'
 SKIPLIST = {
-	'/etc/default/capi4hylafax',
-	'/etc/default/hylafax',
-	'/etc/docker/seccomp-systemd.json',
-	'/etc/hostname',
-	'/etc/hylafax/cid',
-	'/etc/hylafax/config',
-	'/etc/hylafax/FaxDispatch',
-	'/etc/hylafax/hosts.hfaxd',
-	'/etc/hylafax/setup.cache',
-	'/etc/hylafax/setup.modem',
-	'/etc/hylafax/tsi',
-	'/etc/isdn/capi.conf',
-	'/etc/issue',
-	'/etc/issue.net',
-	'/etc/listfilter.secret',
-	'/etc/mailname',
-	'/etc/univention/directory/reports/default/de_DE/footer.rml',
-	'/etc/univention/directory/reports/default/de_DE/header.rml',
-	'/etc/univention/directory/reports/default/en_US/footer.rml',
-	'/etc/univention/directory/reports/default/en_US/header.rml',
-	'/etc/welcome.msg',
-	'/usr/share/apps/ksmserver/pics/shutdownkonq.png',
-	'/usr/share/univention-management-console/i18n/de/apps.mo',
-	'/var/www/univention/meta.json',
-	'/usr/share/univention-web/js/umc/hooks.json',
-	'/var/lib/univention-windows-installer/install/bin/mapznrun.bat',
-	'/var/www/univention/languages.json',
-	'/usr/lib/openoffice/basis3.0/share/registry/data/org/openoffice/Office/DataAccess.xcu',
-	'/usr/lib/openoffice/basis3.0/share/registry/modules/org/openoffice/Office/Common/Common-base.xcu',
-	'/usr/lib/openoffice/basis3.0/share/registry/modules/org/openoffice/Office/Common/Common-UseOOoFileDialogs.xcu',
-	'/usr/lib/openoffice/basis3.0/share/registry/schema/org/openoffice/Office/Common.xcs',
-	'/usr/lib/openoffice/basis-link/share/registry/data/org/openoffice/Office/DataAccess.xcu',
-	'/usr/lib/openoffice/basis-link/share/registry/modules/org/openoffice/Office/Common/Common-base.xcu',
-	'/usr/lib/openoffice/basis-link/share/registry/modules/org/openoffice/Office/Common/Common-UseOOoFileDialogs.xcu',
-	'/usr/lib/openoffice/basis-link/share/registry/schema/org/openoffice/Office/Common.xcs',
-	'/etc/docker/daemon.json',
-	'/usr/lib/univention-portal/config/config.json',
-	'/etc/simplesamlphp/univentiontheme/dictionaries/errors.definition.json',
-	'/etc/simplesamlphp/univentiontheme/dictionaries/errors.translation.json',
-	'/etc/simplesamlphp/univentiontheme/dictionaries/login.definition.json',
-	'/etc/simplesamlphp/univentiontheme/dictionaries/login.translation.json',
-	# Bugs: remove the following lines as soon as the bug is fixed:
-	'/etc/nagios-plugins/config/univention-samba.cfg',  # Bug #50112
-	'/etc/nagios-plugins/config/univention-s4-connector.cfg',  # Bug #50112
-	'/etc/nagios-plugins/config/univention-ad-connector.cfg',  # Bug #50176
-	'/usr/share/dovecot/protocols.d/pop3d.protocol',  # Bug #50198
-	'/usr/share/dovecot/protocols.d/imapd.protocol',  # Bug #50198
+    '/etc/default/capi4hylafax',
+    '/etc/default/hylafax',
+    '/etc/docker/seccomp-systemd.json',
+    '/etc/hostname',
+    '/etc/hylafax/cid',
+    '/etc/hylafax/config',
+    '/etc/hylafax/FaxDispatch',
+    '/etc/hylafax/hosts.hfaxd',
+    '/etc/hylafax/setup.cache',
+    '/etc/hylafax/setup.modem',
+    '/etc/hylafax/tsi',
+    '/etc/isdn/capi.conf',
+    '/etc/issue',
+    '/etc/issue.net',
+    '/etc/listfilter.secret',
+    '/etc/mailname',
+    '/etc/univention/directory/reports/default/de_DE/footer.rml',
+    '/etc/univention/directory/reports/default/de_DE/header.rml',
+    '/etc/univention/directory/reports/default/en_US/footer.rml',
+    '/etc/univention/directory/reports/default/en_US/header.rml',
+    '/etc/welcome.msg',
+    '/usr/share/apps/ksmserver/pics/shutdownkonq.png',
+    '/usr/share/univention-management-console/i18n/de/apps.mo',
+    '/var/www/univention/meta.json',
+    '/usr/share/univention-web/js/umc/hooks.json',
+    '/var/lib/univention-windows-installer/install/bin/mapznrun.bat',
+    '/var/www/univention/languages.json',
+    '/usr/lib/openoffice/basis3.0/share/registry/data/org/openoffice/Office/DataAccess.xcu',
+    '/usr/lib/openoffice/basis3.0/share/registry/modules/org/openoffice/Office/Common/Common-base.xcu',
+    '/usr/lib/openoffice/basis3.0/share/registry/modules/org/openoffice/Office/Common/Common-UseOOoFileDialogs.xcu',
+    '/usr/lib/openoffice/basis3.0/share/registry/schema/org/openoffice/Office/Common.xcs',
+    '/usr/lib/openoffice/basis-link/share/registry/data/org/openoffice/Office/DataAccess.xcu',
+    '/usr/lib/openoffice/basis-link/share/registry/modules/org/openoffice/Office/Common/Common-base.xcu',
+    '/usr/lib/openoffice/basis-link/share/registry/modules/org/openoffice/Office/Common/Common-UseOOoFileDialogs.xcu',
+    '/usr/lib/openoffice/basis-link/share/registry/schema/org/openoffice/Office/Common.xcs',
+    '/etc/docker/daemon.json',
+    '/usr/lib/univention-portal/config/config.json',
+    '/etc/simplesamlphp/univentiontheme/dictionaries/errors.definition.json',
+    '/etc/simplesamlphp/univentiontheme/dictionaries/errors.translation.json',
+    '/etc/simplesamlphp/univentiontheme/dictionaries/login.definition.json',
+    '/etc/simplesamlphp/univentiontheme/dictionaries/login.translation.json',
+    # Bugs: remove the following lines as soon as the bug is fixed:
+    '/etc/nagios-plugins/config/univention-samba.cfg',  # Bug #50112
+    '/etc/nagios-plugins/config/univention-s4-connector.cfg',  # Bug #50112
+    '/etc/nagios-plugins/config/univention-ad-connector.cfg',  # Bug #50176
+    '/usr/share/dovecot/protocols.d/pop3d.protocol',  # Bug #50198
+    '/usr/share/dovecot/protocols.d/imapd.protocol',  # Bug #50198
 }
 
 RE_LINE = re.compile(r"Warning: This|but can be overridden via univention-config-registry.")
 
 files = set()
 for info in os.listdir(BASE):
-	if not info.endswith('.info'):
-		continue
-	fn = os.path.join(BASE, info)
-	with open(fn) as f:
-		data = f.read()
+    if not info.endswith('.info'):
+        continue
+    fn = os.path.join(BASE, info)
+    with open(fn) as f:
+        data = f.read()
 
-	for section in parseRfc822(data):
-		if section['Type'][0] == 'file':
-			fn = '/' + section['File'][0]
-		elif section['Type'][0] == 'multifile':
-			fn = '/' + section['Multifile'][0]
-		else:
-			continue
-		files.add(fn)
+    for section in parseRfc822(data):
+        if section['Type'][0] == 'file':
+            fn = '/' + section['File'][0]
+        elif section['Type'][0] == 'multifile':
+            fn = '/' + section['Multifile'][0]
+        else:
+            continue
+        files.add(fn)
 
 files -= set(SKIPLIST)
 
 missing_header_files = False
 for fn in files:
-	if not os.path.exists(fn):
-		print('Warning: Files does not exist: %s' % fn)
-		continue
-	with open(fn) as f:
-		for line in f:
-			if RE_LINE.search(line):
-				break
-		else:
-			print('Error: Missing UCR header for %s' % fn)
-			missing_header_files = True
+    if not os.path.exists(fn):
+        print('Warning: Files does not exist: %s' % fn)
+        continue
+    with open(fn) as f:
+        for line in f:
+            if RE_LINE.search(line):
+                break
+        else:
+            print('Error: Missing UCR header for %s' % fn)
+            missing_header_files = True
 
 if missing_header_files:
-	sys.exit(110)
+    sys.exit(110)
 else:
-	print("Info: All UCR files contain a warning.")
-	sys.exit(100)
+    print("Info: All UCR files contain a warning.")
+    sys.exit(100)
 
 # vim: set filetype=python :

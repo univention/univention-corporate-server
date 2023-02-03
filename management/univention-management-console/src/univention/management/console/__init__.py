@@ -36,6 +36,7 @@
 
 from univention.lib.i18n import Translation
 
+
 __all__ = ('Translation', )
 
 # NOTE: don't import submodules/packages here otherwise the locale is not yet set!
