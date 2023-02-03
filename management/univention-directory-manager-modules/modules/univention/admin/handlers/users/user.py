@@ -317,6 +317,13 @@ property_descriptions = {
         readonly_when_synced=True,
         copyable=True,
     ),
+    'state': univention.admin.property(
+        short_description=_('State'),
+        long_description=_('State / Province'),
+        syntax=univention.admin.syntax.string,
+        readonly_when_synced=True,
+        copyable=True,
+    ),
     'phone': univention.admin.property(
         short_description=_('Telephone number'),
         long_description='',
@@ -402,7 +409,6 @@ property_descriptions = {
         required=True,
         default='/home/<username>',
     ),
-
     'shell': univention.admin.property(
         short_description=_('Login shell'),
         long_description='',
@@ -656,7 +662,7 @@ layout = [
             'phone',
             ['roomNumber', 'departmentNumber'],
             ['street', 'postcode', 'city'],
-            ['country'],
+            ['state', 'country'] if not configRegistry.is_true('directory/manager/web/modules/users/user/map-country-to-st') else ['country'],
         ]),
         Group(_('Private'), layout=[
             'homeTelephoneNumber',
@@ -1068,7 +1074,11 @@ mapping.register('e-mail', 'mail', encoding='ASCII')
 mapping.register('postcode', 'postalCode', None, univention.admin.mapping.ListToString)
 mapping.register('postOfficeBox', 'postOfficeBox')
 mapping.register('city', 'l', None, univention.admin.mapping.ListToString)
-mapping.register('country', 'st', None, univention.admin.mapping.ListToString)
+if configRegistry.is_true('directory/manager/web/modules/users/user/map-country-to-st'):  # old broken behavior
+    mapping.register('country', 'st', None, univention.admin.mapping.ListToString)
+else:
+    mapping.register('country', 'c', None, univention.admin.mapping.ListToString)
+    mapping.register('state', 'st', None, univention.admin.mapping.ListToString)
 mapping.register('phone', 'telephoneNumber')
 mapping.register('roomNumber', 'roomNumber')
 mapping.register('employeeNumber', 'employeeNumber', None, univention.admin.mapping.ListToString)
@@ -1877,7 +1887,7 @@ class object(univention.admin.handlers.simpleLdap, PKIIntegration):
 
     def _modlist_univention_person(self, ml):
         # make sure that univentionPerson is set as objectClass when needed
-        if any(self.hasChanged(ikey) and self[ikey] for ikey in ('umcProperty', 'birthday', 'serviceSpecificPassword')) and b'univentionPerson' not in self.oldattr.get('objectClass', []):
+        if any(self.hasChanged(ikey) and self[ikey] for ikey in ('umcProperty', 'birthday', 'serviceSpecificPassword', 'country')) and b'univentionPerson' not in self.oldattr.get('objectClass', []):
             ml.append(('objectClass', b'', b'univentionPerson'))  # TODO: check if exists already
         return ml
 

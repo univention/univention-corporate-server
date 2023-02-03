@@ -99,7 +99,7 @@ objectclass ( 1.3.6.1.4.1.10176.8 NAME 'univentionPerson'
 	SUP top AUXILIARY
 	MAY ( quotablocksoft $ quotablockhard $ quotafilesoft $ quotafilehard $
 	      temporary $ virtual $ univentionBirthday $ univentionUMCProperty $
-	      univentionAuthTimestamp $ univentionRadiusPassword )
+	      univentionAuthTimestamp $ univentionRadiusPassword $ c )
 	)
 
 attributetype ( 1.3.6.1.4.1.10176.9.1.1 NAME 'univentionGroupType'

@@ -35,6 +35,7 @@
 import univention.admin.filter
 import univention.admin.handlers
 import univention.admin.localization
+from univention.admin._ucr import configRegistry as ucr
 from univention.admin.layout import Group, Tab
 
 
@@ -179,6 +180,13 @@ property_descriptions = {
         long_description='',
         syntax=univention.admin.syntax.Country,
     ),
+    'state': univention.admin.property(
+        short_description=_('State'),
+        long_description=_('State (province)'),
+        syntax=univention.admin.syntax.string,
+        readonly_when_synced=True,
+        copyable=True,
+    ),
     'phone': univention.admin.property(
         short_description=_('Telephone number'),
         long_description='',
@@ -308,7 +316,8 @@ layout = [
             "e-mail",
             "phone",
             ['roomNumber', 'departmentNumber'],
-            ['street', 'postcode', 'city', 'country'],
+            ['street', 'postcode', 'city'],
+            ['state', 'country'] if not ucr.is_true('directory/manager/web/modules/users/user/map-country-to-st') else ['country'],
         ]),
     ]),
 ]
@@ -330,7 +339,11 @@ mapping.register('sambahome', 'sambaHomePath', None, univention.admin.mapping.Li
 mapping.register('scriptpath', 'sambaLogonScript', None, univention.admin.mapping.ListToString)
 mapping.register('profilepath', 'sambaProfilePath', None, univention.admin.mapping.ListToString)
 mapping.register('homedrive', 'sambaHomeDrive', None, univention.admin.mapping.ListToString, encoding='ASCII')
-mapping.register('country', 'st', None, univention.admin.mapping.ListToString)
+if ucr.is_true('directory/manager/web/modules/users/user/map-country-to-st'):  # old broken behavior
+    mapping.register('country', 'st', None, univention.admin.mapping.ListToString)
+else:
+    mapping.register('country', 'c', None, univention.admin.mapping.ListToString)
+    mapping.register('state', 'st', None, univention.admin.mapping.ListToString)
 mapping.register('phone', 'telephoneNumber')
 mapping.register('roomNumber', 'roomNumber')
 mapping.register('employeeNumber', 'employeeNumber', None, univention.admin.mapping.ListToString)

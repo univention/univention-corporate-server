@@ -932,6 +932,10 @@ Univention App Center
 * The UDM object ``users/ldap`` and various computer UDM object types have been extended to
   provide PKI user certificate properties (:uv:bug:`54987`).
 
+* The UDM property ``country`` can now be mapped to the LDAP attribute ``c`` instead
+  of ``st``. This new behavior can be enabled using the diagnostic module or
+  ``udm-remap-country-from-st-to-c``.
+
 .. _changelog-umc-setup:
 
 Modules for system settings / setup wizard

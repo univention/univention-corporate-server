@@ -1,3 +1,9 @@
+univention-ldap (16.0.11-1) unstable; urgency=medium
+
+  * Bug #50073: UDM: remap `country` from `st` to `c`
+
+ -- Maximilian Janßen <janssen@univention.de>  Fri, 06 Feb 2023 19:00:00 +0100
+
 univention-ldap (16.0.10-2) unstable; urgency=medium
 
   * Bug #42330: Remove old maintainer script package update code

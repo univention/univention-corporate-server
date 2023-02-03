@@ -117,6 +117,16 @@ msgstr "Kontaktinformationen"
 msgid "Country"
 msgstr "Land"
 
+#: modules/univention/admin/handlers/users/user.py:331
+#: modules/univention/admin/handlers/users/contact.py:230
+msgid "State"
+msgstr "Bundesland"
+
+#: modules/univention/admin/handlers/users/user.py:331
+#: modules/univention/admin/handlers/users/contact.py:230
+msgid "State / Province"
+msgstr "Bundesland"
+
 #: modules/univention/admin/handlers/users/user.py:1907
 msgid "DN given as share is not valid."
 msgstr "Der DN der Freigabe ist nicht zulässig."
