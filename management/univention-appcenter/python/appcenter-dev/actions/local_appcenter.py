@@ -664,10 +664,7 @@ class DevSetupLocalAppcenter(LocalAppcenterAction):
     def setup_parser(self, parser):
         interfaces = Interfaces(ucr_instance())
         ip_address = interfaces.get_default_ip_address()
-        if ip_address:
-            default_ip_address = ip_address.ip
-        else:
-            default_ip_address = '127.0.0.1'
+        default_ip_address = ip_address.ip if ip_address else '127.0.0.1'
         super(DevSetupLocalAppcenter, self).setup_parser(parser)
         parser.add_argument('--appcenter-host', default=default_ip_address, help='The hostname of the new App Center. Default: %(default)s')
         parser.add_argument('--revert', action='store_true', help='Reverts the changes of a previous dev-setup-local-appcenter')

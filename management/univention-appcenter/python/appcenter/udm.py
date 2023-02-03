@@ -282,8 +282,5 @@ def create_recursive_container(dn, lo, pos):
     create_recursive_container(previous_position, lo, pos)
     pos.setDn(previous_position)
     name = explode_dn(position_parts[0], 1)[0]
-    if dn.startswith('ou'):
-        module = 'container/ou'
-    else:
-        module = 'container/cn'
+    module = 'container/ou' if dn.startswith('ou') else 'container/cn'
     create_object_if_not_exists(module, lo, pos, name=name)

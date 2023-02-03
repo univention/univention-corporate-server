@@ -232,18 +232,9 @@ def get_postinst_script_buffer(extension_type, filename, app_id=None, version_st
     Optionally UNIVENTION_APP_ID, UCS version start and UCS version end may be specified.
     """
     assert extension_type in VALID_EXTENSION_TYPES
-    if not app_id:
-        app_id = ''
-    else:
-        app_id = 'export UNIVENTION_APP_IDENTIFIER="%s"' % app_id
-    if not version_start:
-        version_start = ''
-    else:
-        version_start = '--ucsversionstart %s' % version_start
-    if not version_end:
-        version_end = ''
-    else:
-        version_end = '--ucsversionend %s' % version_end
+    app_id = '' if not app_id else 'export UNIVENTION_APP_IDENTIFIER="%s"' % app_id
+    version_start = '' if not version_start else '--ucsversionstart %s' % version_start
+    version_end = '' if not version_end else '--ucsversionend %s' % version_end
     other_options = ''
     if options:
         for key in options:
@@ -294,18 +285,9 @@ def get_join_script_buffer(extension_type, filename, app_id=None, joinscript_ver
     Optionally a joinscript version, UNIVENTION_APP_ID, UCS version start and UCS version end may be specified.
     """
     assert extension_type in VALID_EXTENSION_TYPES
-    if not app_id:
-        app_id = ''
-    else:
-        app_id = 'export UNIVENTION_APP_IDENTIFIER="%s"' % app_id
-    if not version_start:
-        version_start = ''
-    else:
-        version_start = '--ucsversionstart %s' % version_start
-    if not version_end:
-        version_end = ''
-    else:
-        version_end = '--ucsversionend %s' % version_end
+    app_id = '' if not app_id else 'export UNIVENTION_APP_IDENTIFIER="%s"' % app_id
+    version_start = '' if not version_start else '--ucsversionstart %s' % version_start
+    version_end = '' if not version_end else '--ucsversionend %s' % version_end
     other_options = ''
     if options:
         for key in options:

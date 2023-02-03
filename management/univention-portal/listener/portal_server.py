@@ -48,10 +48,7 @@ filter = '(|(univentionObjectType=portals/portal)(univentionObjectType=portals/c
 def handler(dn: str, new: Dict[str, List[bytes]], old: Dict[str, List[bytes]]) -> None:
     listener.setuid(0)
     try:
-        if not new:
-            attrs = old
-        else:
-            attrs = new
+        attrs = old if not new else new
         object_type = attrs.get('univentionObjectType', [])
         if object_type:
             module = object_type[0].decode('utf-8').split('/')[-1]

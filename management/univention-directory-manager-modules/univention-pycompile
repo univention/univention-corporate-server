@@ -54,10 +54,7 @@ print('byte-compiling: %s' % input)
 if os.path.exists(output):
     os.unlink(output)
 
-if output.endswith('.pyo'):
-    output_pp = open(output + '.pp', 'w')
-else:
-    output_pp = open(output, 'w')
+output_pp = open(output + ".pp", "w") if output.endswith(".pyo") else open(output, "w")
 
 ifdef_pattern = re.compile('^#ifdef (.*)')
 endif_pattern = re.compile(r'^#endif *(/\*.*\*/)*')

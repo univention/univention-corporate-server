@@ -292,10 +292,7 @@ class Client(signals.Provider, Translation):
         :param Request msg: the UMCP request to send
         """
         PROTOCOL.info('Sending UMCP %s REQUEST %s' % (msg.command, msg.id))
-        if self.__ssl and not self.__unix:
-            sock = self.__socket
-        else:
-            sock = self.__realsocket
+        sock = self.__socket if self.__ssl and not self.__unix else self.__realsocket
 
         if msg.command == 'AUTH':
             self.__auth_ids.append(msg.id)

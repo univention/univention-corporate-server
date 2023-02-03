@@ -504,10 +504,7 @@ def variable_info_string(key, value, variable_info, scope=None, details=_SHOW_DE
         return ''
     elif value is None:
         # if not shell filter option is set
-        if not OPT_FILTERS['shell'][2]:
-            value_string = '<empty>'
-        else:
-            value_string = ''
+        value_string = "<empty>" if not OPT_FILTERS["shell"][2] else ""
     else:
         value_string = '%s' % value
 

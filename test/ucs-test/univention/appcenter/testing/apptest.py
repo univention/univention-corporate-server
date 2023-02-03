@@ -373,10 +373,7 @@ else:
         ret = os.environ.get('UCS_TEST_ADMIN_USERNAME')
         if not ret:
             ret = config.get('tests/domainadmin/account')
-            if ret:
-                ret = ret.split(',')[0].split('=')[-1]
-            else:
-                ret = 'Administrator'
+            ret = ret.split(',')[0].split('=')[-1] if ret else 'Administrator'
         return ret
 
     @pytest.fixture(scope='session')

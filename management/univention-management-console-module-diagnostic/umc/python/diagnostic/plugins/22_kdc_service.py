@@ -232,10 +232,7 @@ def send_and_receive(kdc: str, port: int, protocol: str, as_req: bytes) -> bytes
     sock = socket.socket(socket.AF_INET, socket_type)
     sock.settimeout(1)
 
-    if protocol == 'tcp':
-        packed = struct.pack('>I', len(as_req)) + as_req
-    else:
-        packed = as_req
+    packed = struct.pack('>I', len(as_req)) + as_req if protocol == 'tcp' else as_req
 
     try:
         sock.connect((kdc, port))

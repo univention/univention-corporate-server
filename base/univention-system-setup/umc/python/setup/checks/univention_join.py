@@ -52,10 +52,7 @@ def receive_domaincontroller_master_information(dns, nameserver, address, userna
 
 
 def check_credentials_nonmaster(dns, nameserver, address, username, password):
-    if dns:
-        domain = get_ucs_domain(nameserver)
-    else:
-        domain = '.'.join(address.split('.')[1:])
+    domain = get_ucs_domain(nameserver) if dns else '.'.join(address.split('.')[1:])
     if not domain:
         # Not checked... no UCS domain!
         raise UMC_Error(_('No UCS Primary Directory Node could be found at the address.'))

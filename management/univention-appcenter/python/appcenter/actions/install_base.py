@@ -388,10 +388,7 @@ class InstallRemoveUpgrade(Register):
         for other_script in glob(any_number_scripts):
             self.log('Uninstalling %s' % other_script)
             os.unlink(other_script)
-        if unjoin:
-            ext = 'uinst'
-        else:
-            ext = 'inst'
+        ext = 'uinst' if unjoin else 'inst'
         joinscript = app.get_cache_file(ext)
         ret = dest = None
         if os.path.exists(joinscript):

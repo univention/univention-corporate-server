@@ -105,10 +105,7 @@ def run_filter(template, directory, srcfiles=set(), opts={}):
     """
     template = _replace_variables(template, directory, srcfiles)
 
-    if six.PY3:
-        tmpl = template.encode('UTF-8')
-    else:
-        tmpl = template
+    tmpl = template.encode("UTF-8") if six.PY3 else template
 
     if opts.get('disallow-execution', False):
         return tmpl

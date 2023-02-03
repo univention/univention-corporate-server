@@ -162,10 +162,7 @@ def get_user_dn_list_new(CSV_IMPORT_FILE):
     user_dns = []
     for user in imported_users:
         user.make_username()
-        if re.match(r'.*\d$', user.name):
-            username = user.name[:-1]
-        else:
-            username = user.name
+        username = user.name[:-1] if re.match('.*\\d$', user.name) else user.name
         try:
             user_dns.append(get_user_dn(username))
         except IndexError:

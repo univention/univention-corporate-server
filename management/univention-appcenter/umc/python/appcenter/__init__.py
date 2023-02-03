@@ -962,10 +962,7 @@ class Instance(umcm.Base, ProgressMixin):
                 size = float(size) / 1000  # MB, not MiB
             else:
                 size = size * 1000  # once too often
-            if size == int(size):
-                format_string = '%d %s'
-            else:
-                format_string = '%.2f %s'
+            format_string = '%d %s' if size == int(size) else '%.2f %s'
             result['size'] = format_string % (size, byte_mod)
 
         return result

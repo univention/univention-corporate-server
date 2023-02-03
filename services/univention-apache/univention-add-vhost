@@ -120,10 +120,7 @@ def main(fqdn, port, aliases, conffile, binddn, bindpwdfile, ssl, cert, private_
         ssl = True
     if remove:
         aliases = ucr.get(f"apache2/vhosts/{fqdn}/{port}/aliases")
-        if aliases:
-            aliases = aliases.split(',')
-        else:
-            aliases = []
+        aliases = aliases.split(",") if aliases else []
         needs_apache_reload |= unset_ucr_vars(fqdn, port)
     else:
         needs_apache_reload |= set_ucr_vars(udm, fqdn, port, ssl, aliases, conffile, cert, private_key, ca)

@@ -84,10 +84,7 @@ def rename_app(old_id, new_id, component_manager, package_manager):
 def get_hosts(module, lo, ucr=None):
     _hosts = module.lookup(None, lo, None)
     hosts = []
-    if ucr is not None:
-        local_hostname = ucr.get('hostname')
-    else:
-        local_hostname = None
+    local_hostname = ucr.get('hostname') if ucr is not None else None
     for host in _hosts:
         host.open()  # needed for fqdn. it may be enough to return 'name'
         hostname = host.info.get('name')

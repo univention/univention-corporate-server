@@ -883,10 +883,7 @@ def domain2windowdomain(domainname):
 
     invalidChars = re.compile(r"^[^A-Z]*([A-Z0-9-]*?)[^A-Z0-9]*$")
     match = invalidChars.match(windomain)
-    if match:
-        windomain = match.group(1)
-    else:
-        windomain = ''
+    windomain = match.group(1) if match else ''
 
     windomain = windomain[:15]  # enforce netbios limit
 

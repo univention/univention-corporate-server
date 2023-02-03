@@ -217,10 +217,7 @@ class Client(object):
         key = (event_name, locale)
         if key not in self._translation_cache:
             event_message = self._session.query(EventMessage).filter(EventMessage.event_id == Event.id, EventMessage.locale == locale, Event.name == event_name).one_or_none()
-            if event_message:
-                translation = event_message.message
-            else:
-                translation = None
+            translation = event_message.message if event_message else None
             self._translation_cache[key] = translation
         else:
             translation = self._translation_cache[key]
@@ -353,10 +350,7 @@ class Client(object):
                 break
 
             event = entry.event
-            if event:
-                event_name = event.name
-            else:
-                event_name = 'COMMENT'
+            event_name = event.name if event else 'COMMENT'
             args = {arg.key: arg.value for arg in entry.args}
             comments = sum(1 for e in entry.comments if e.message and e.context_id == entry.context_id)
             res.append({
@@ -388,10 +382,7 @@ class Client(object):
             args = {arg.key: arg.value for arg in entry.args}
             tags = [tag.name for tag in entry.tags]
             event = entry.event
-            if event:
-                event_name = event.name
-            else:
-                event_name = 'COMMENT'
+            event_name = event.name if event else 'COMMENT'
             obj = {
                 'id': entry.id,
                 'username': entry.username,

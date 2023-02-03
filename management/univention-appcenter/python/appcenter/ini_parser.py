@@ -234,9 +234,6 @@ class TypedIniSectionObject(with_metaclass(TypedIniSectionObjectMetaClass, IniSe
             value = parser.get(section, cls._type_attr)
         except (NoSectionError, NoOptionError):
             attr = cls._attrs.get(cls._type_attr)
-            if attr:
-                value = attr.default
-            else:
-                value = None
+            value = attr.default if attr else None
         klass = cls.get_class(value)
         return klass.build(parser, section, locale)

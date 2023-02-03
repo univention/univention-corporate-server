@@ -159,10 +159,7 @@ def quota_is_enabled(fstab_entry):
 
 
 def activate_quota(partition, activate, callback):
-    if not isinstance(partition, list):
-        partitions = [partition]
-    else:
-        partitions = partition
+    partitions = [partition] if not isinstance(partition, list) else partition
     func = notifier.Callback(_do_activate_quota, partitions, activate)
     thread = notifier.threads.Simple('quota', func, callback)
     thread.run()

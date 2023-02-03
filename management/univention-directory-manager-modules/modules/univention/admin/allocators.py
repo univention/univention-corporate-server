@@ -168,10 +168,7 @@ def acquireRange(lo, position, atype, attr, ranges, scope='base'):
 
 def acquireUnique(lo, position, type, value, attr, scope='base'):
     ud.debug(ud.ADMIN, ud.INFO, 'LOCK acquireUnique scope = %s' % scope)
-    if scope == 'domain':
-        searchBase = position.getDomain()
-    else:
-        searchBase = position.getBase()
+    searchBase = position.getDomain() if scope == "domain" else position.getBase()
 
     if type == "aRecord":  # uniqueness is only relevant among hosts (one or more dns entries having the same aRecord as a host are allowed)
         univention.admin.locking.lock(lo, position, type, value.encode('utf-8'), scope=scope)

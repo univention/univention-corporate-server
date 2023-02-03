@@ -214,10 +214,7 @@ class Install(InstallRemoveUpgrade):
 
     def _install_packages_dry_run(self, app, args, with_dist_upgrade):
         original_app = Apps().find(app.id)
-        if original_app.is_installed():
-            was_installed = True
-        else:
-            was_installed = False
+        was_installed = True if original_app.is_installed() else False
         self.log('Dry run for %s' % app)
         if self._register_component(app):
             self.debug('Updating packages')

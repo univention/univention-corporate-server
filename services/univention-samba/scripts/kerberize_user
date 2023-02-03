@@ -135,10 +135,7 @@ def main():
                 principal = b'%s@%s' % (attrs['uid'][0], realm.encode('UTF-8'))
                 ml.append(('krb5PrincipalName', None, principal))
 
-            if disabled:
-                flag = b'256'
-            else:
-                flag = b'126'
+            flag = b'256' if disabled else b'126'
 
             if not sambaAcctFlags:
                 ml.append(('sambaAcctFlags', None, b'[U          ]'))

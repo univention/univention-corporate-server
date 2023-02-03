@@ -146,10 +146,7 @@ def no_relevant_change(new: Dict[str, List[bytes]], old: Dict[str, List[bytes]])
 
     ocs = new.get('objectClass', [])
 
-    if b'sambaSamAccount' in ocs:
-        name_attr = 'uid'
-    else:
-        name_attr = 'cn'
+    name_attr = "uid" if b"sambaSamAccount" in ocs else "cn"
 
     old_name = old.get(name_attr, [])
     new_name = new.get(name_attr, [])

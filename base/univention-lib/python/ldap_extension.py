@@ -372,10 +372,7 @@ class UniventionLDAPExtension(six.with_metaclass(ABCMeta)):
             if p.returncode == 0:
                 regex = re.compile('^Object created: (.*)$', re.M)
                 m = regex.search(stdout)
-                if m:
-                    new_object_dn = m.group(1)
-                else:
-                    new_object_dn = None
+                new_object_dn = m.group(1) if m else None
 
                 appidentifier = os.environ.get('UNIVENTION_APP_IDENTIFIER')
                 if appidentifier:

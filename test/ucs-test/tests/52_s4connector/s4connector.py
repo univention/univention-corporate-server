@@ -78,10 +78,7 @@ def get_object_sid(dn):
 
 
 def _replace_uid_with_cn(dn):
-    if dn.lower().startswith('uid='):
-        dn_modified = 'cn=' + dn[4:]
-    else:
-        dn_modified = dn
+    dn_modified = "cn=" + dn[4:] if dn.lower().startswith("uid=") else dn
     return dn_modified
 
 

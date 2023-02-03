@@ -57,10 +57,7 @@ ucr.load()
 
 def dump_modules(cfg, module=None, out=sys.stdout):
     """Dump reports for specific or all known modules."""
-    if module is None:
-        modules = cfg._reports.keys()
-    else:
-        modules = [module]
+    modules = cfg._reports.keys() if module is None else [module]
     for module in modules:
         print('Reports for module: %s' % module, file=out)
         for name in cfg.get_report_names(module):

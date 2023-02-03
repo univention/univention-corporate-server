@@ -115,10 +115,7 @@ class UniventionAppAction(with_metaclass(UniventionAppActionMeta, object)):
 
     @classmethod
     def _log(cls, logger, level, msg, *args, **kwargs):
-        if logger is not None:
-            logger = cls.logger.getChild(logger)
-        else:
-            logger = cls.logger
+        logger = cls.logger.getChild(logger) if logger is not None else cls.logger
         logger.log(level, msg, *args, **kwargs)
 
     @classmethod

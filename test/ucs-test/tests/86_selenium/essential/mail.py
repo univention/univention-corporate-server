@@ -449,10 +449,7 @@ def imap_search_mail(token=None, messageid=None, server=None, imap_user=None, im
     imap_folder = imap_folder or ""
     assert isinstance(imap_folder, str), "imap_search_mail: imap_folder is no string"
 
-    if use_ssl:
-        conn = imaplib.IMAP4_SSL(host=server)
-    else:
-        conn = imaplib.IMAP4(host=server)
+    conn = imaplib.IMAP4_SSL(host=server) if use_ssl else imaplib.IMAP4(host=server)
     assert conn.login(imap_user, imap_password)[0] == 'OK', 'imap_search_mail: login failed'
     assert conn.select(imap_folder)[0] == 'OK', 'imap_search_mail: select folder %r failed' % (imap_folder,)
 

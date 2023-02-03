@@ -43,14 +43,8 @@ portal_path = "/usr/share/univention-portal"
 
 def handler(config_registry, changes):
     old, new = changes['portal/paths']
-    if old:
-        old = [o.strip() for o in old.split(",")]
-    else:
-        old = []
-    if new:
-        new = [n.strip() for n in new.split(",")]
-    else:
-        new = []
+    old = [o.strip() for o in old.split(",")] if old else []
+    new = [n.strip() for n in new.split(",")] if new else []
     for path in old:
         if path in new:
             continue

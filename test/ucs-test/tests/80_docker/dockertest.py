@@ -532,10 +532,7 @@ echo "TEST-%(app_name)s" >>/var/www/%(app_name)s/index.txt
                     raise
 
             html = response.text
-            if should_succeed:
-                correct = html == test_string
-            else:
-                correct = html != test_string
+            correct = html == test_string if should_succeed else html != test_string
             if not correct:
                 raise UCSTest_DockerApp_ModProxyFailed(
                     f'Got: {html}\nTested against: {test_string}\nProtocol: {protocol}\nTested equality: {should_succeed}',

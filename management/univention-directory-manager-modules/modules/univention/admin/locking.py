@@ -85,10 +85,7 @@ def lock(lo, position, type, value, scope='domain', timeout=300):
     dn = lockDn(lo, position, type, value.decode('utf-8'), scope)
 
     now = int(time.time())
-    if timeout > 0:
-        locktime = now + timeout
-    else:
-        locktime = 0
+    locktime = now + timeout if timeout > 0 else 0
 
     al = [
         ('objectClass', [b'top', b'lock']),
@@ -105,10 +102,7 @@ def lock(lo, position, type, value, scope='domain', timeout=300):
             raise univention.admin.uexceptions.permissionDenied(_('Can not modify lock time of %r.') % (dn,))
 
     oldlocktime = lo.getAttr(dn, 'lockTime')
-    if oldlocktime and oldlocktime[0]:
-        oldlocktime = int(oldlocktime[0])
-    else:
-        oldlocktime = 0
+    oldlocktime = int(oldlocktime[0]) if oldlocktime and oldlocktime[0] else 0
 
     # lock is old, try again
     if oldlocktime > 0 and oldlocktime < now:
@@ -141,10 +135,7 @@ def relock(lo, position, type, value, scope='domain', timeout=300):
     dn = lockDn(lo, position, type, value.decode('utf-8'), scope)
 
     now = int(time.time())
-    if timeout > 0:
-        locktime = now + timeout
-    else:
-        locktime = 0
+    locktime = now + timeout if timeout > 0 else 0
     ml = [
         ('lockTime', b'1', str(locktime).encode('ASCII')),
     ]

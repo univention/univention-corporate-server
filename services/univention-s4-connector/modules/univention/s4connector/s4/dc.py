@@ -109,10 +109,7 @@ def ucs2con(s4connector, key, object):
             ud.debug(ud.LDAP, ud.INFO, 'dc ucs2con: s4-time (%s): %s' % (s4_attr, s4_time))
 
             if ucs_time != s4_time:
-                if ucs_time > 0:
-                    s4_time = str(_s2nano(ucs_time) * -1)
-                else:
-                    s4_time = "0"
+                s4_time = str(_s2nano(ucs_time) * -1) if ucs_time > 0 else '0'
                 ml.append((ldap.MOD_REPLACE, s4_attr, [s4_time.encode('ASCII')]))
 
         sync_integers = [('sambaPwdHistoryLength', 'pwdHistoryLength'), ('sambaMinPwdLength', 'minPwdLength'), ('univentionSamba4pwdProperties', 'pwdProperties')]

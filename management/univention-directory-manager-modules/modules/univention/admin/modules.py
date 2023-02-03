@@ -1044,10 +1044,7 @@ def findObject(co, lo, dn, type, attr=None, module_base=None):
         for module in identify(ndn, nattr):
             if module and module.module == type:
                 s = superordinate(module)
-                if s:
-                    so = findObject(co, lo, ndn, s)
-                else:
-                    so = None
+                so = findObject(co, lo, ndn, s) if s else None
                 return module.object(co, lo, ndn, superordinate=so)
         ndn = lo.parentDn(ndn)
         if not ndn:

@@ -175,10 +175,7 @@ def main() -> Optional[int]:
     setup_environment()
     setup_debug(options.verbose)
 
-    if options.sections:
-        selected_sections = options.sections
-    else:
-        selected_sections = all_sections.keys()
+    selected_sections = options.sections if options.sections else all_sections.keys()
     tests = get_tests(selected_sections)
 
     coverage = Coverage(options)

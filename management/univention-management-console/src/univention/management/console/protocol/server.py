@@ -229,10 +229,7 @@ class MagicBucket(object):
         try:
             data = bytes(msg)
             # there is no data from another request in the send queue
-            if not state.resend_queue:
-                ret = state.socket.send(data)
-            else:
-                ret = 0
+            ret = state.socket.send(data) if not state.resend_queue else 0
             # not all data could be send; retry later
             if ret < len(data):
                 if not state.resend_queue:
@@ -452,10 +449,7 @@ class Server(signals.Provider):
         flags = fcntl.fcntl(fd, fcntl.F_GETFD)
         fcntl.fcntl(fd, fcntl.F_SETFD, flags | fcntl.FD_CLOEXEC)
         sock.setblocking(False)
-        if addr:
-            client = '%s:%d' % (addr[0], addr[1])
-        else:
-            client = ''
+        client = "%s:%d" % (addr[0], addr[1]) if addr else ""
         CORE.info('Incoming connection from %s' % client)
         if self.__bucket is not None:
             self.__bucket.new(client, sock)

@@ -75,20 +75,14 @@ def check_webinterface(app):
             port = app.web_interface_port_http
             if app.auto_mod_proxy:
                 port = 80
-            if port != 80:
-                port = ':%d' % port
-            else:
-                port = ''
+            port = ':%d' % port if port != 80 else ''
             url = 'http://%s%s%s' % (fqdn, port, app.web_interface)
             _check_url(url)
         if app.web_interface_port_https:
             port = app.web_interface_port_https
             if app.auto_mod_proxy:
                 port = 443
-            if port != 443:
-                port = ':%d' % port
-            else:
-                port = ''
+            port = ':%d' % port if port != 443 else ''
             url = 'https://%s%s%s' % (fqdn, port, app.web_interface)
             _check_url(url)
     else:

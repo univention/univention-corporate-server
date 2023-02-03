@@ -402,10 +402,7 @@ def _eval_simple_decorated_function(function, with_flavor, single_values=False, 
     # remove self, remove iterator
     arguments = arguments[2:]
     # use defaults as dict
-    if defaults:
-        defaults = dict(zip(arguments[-len(defaults):], defaults))
-    else:
-        defaults = {}
+    defaults = dict(zip(arguments[-len(defaults):], defaults)) if defaults else {}
 
     @sanitize(DictSanitizer({arg: Sanitizer(required=arg not in defaults and arg != with_flavor, default=defaults.get(arg)) for arg in arguments}, _copy_value=False) if not single_values else None)
     def _response(self, request):

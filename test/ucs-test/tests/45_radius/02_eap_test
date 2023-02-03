@@ -18,10 +18,7 @@ DEFAULT_CACERT = "/etc/default/cacert"
 
 
 def get_wpa_config(username, password, ca_cert):
-    if ca_cert == "":
-        comment = "#"
-    else:
-        comment = ""
+    comment = "#" if ca_cert == "" else ""
     wpa_config = '''
 network={{
     ssid="DoesNotMatterForThisTest"

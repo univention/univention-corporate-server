@@ -2309,10 +2309,7 @@ class simpleComputer(simpleLdap):
 
     def __split_dns_line(self, entry):
         zone = entry[0]
-        if len(entry) > 1:
-            ip = self._is_ip(entry[1]) and entry[1] or None
-        else:
-            ip = None
+        ip = self._is_ip(entry[1]) and entry[1] or None if len(entry) > 1 else None
 
         ud.debug(ud.ADMIN, ud.INFO, 'Split entry %s into zone %s and ip %s' % (entry, zone, ip))
         return (zone, ip)

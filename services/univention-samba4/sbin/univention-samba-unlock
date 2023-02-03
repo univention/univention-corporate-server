@@ -117,10 +117,7 @@ def main():
     arguments = parse_arguments()
 
     modify = build_modify_command(arguments)
-    if arguments.is_dn:
-        dn = arguments.account
-    else:
-        dn = lookup_dn(arguments.account)
+    dn = arguments.account if arguments.is_dn else lookup_dn(arguments.account)
 
     unlock_user(modify, dn)
 

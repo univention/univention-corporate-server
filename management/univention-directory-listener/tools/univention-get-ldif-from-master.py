@@ -99,10 +99,7 @@ def create_ldif_from_master(lo, ldif_file, base, page_size):
     # type: (uldap.access, str, str, int) -> None
     """create ldif file from everything from lo"""
     logging.info('Fetching LDIF ...')
-    if ldif_file == '-':
-        output = sys.stdout
-    else:
-        output = io.StringIO()
+    output = sys.stdout if ldif_file == "-" else io.StringIO()
 
     lc = SimplePagedResultsControl(
         criticality=True,

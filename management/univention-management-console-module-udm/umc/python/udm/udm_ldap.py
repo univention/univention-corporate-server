@@ -1003,19 +1003,13 @@ class UDM_Module(object):
         if object_dn is None and udm_object is None:
             obj_options = None
         else:
-            if udm_object is None:
-                obj = self.get(object_dn)
-            else:
-                obj = udm_object
+            obj = self.get(object_dn) if udm_object is None else udm_object
             obj_options = getattr(obj, 'options', {})
             obj_options.extend(AppAttributes.options_for_obj(obj))
 
         options = []
         for name, opt in self.options.items():
-            if obj_options is None:
-                value = bool(opt.default)
-            else:
-                value = name in obj_options
+            value = bool(opt.default) if obj_options is None else name in obj_options
             options.append({
                 'id': name,
                 'is_app_option': opt.is_app_option,

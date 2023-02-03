@@ -90,10 +90,7 @@ def dirIsMountPoint(path):
             for line in f:
                 if line.startswith("#"):
                     continue
-                if "\t" in line:
-                    tmp = line.split("\t")
-                else:
-                    tmp = line.split()
+                tmp = line.split("\t") if "\t" in line else line.split()
                 if len(tmp) > 1:
                     tmp[1] = tmp[1].rstrip("/")
                     if tmp[1] == path:
