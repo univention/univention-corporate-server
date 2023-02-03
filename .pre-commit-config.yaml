@@ -59,6 +59,10 @@ repos:
     rev: v1.1.3
     hooks:
       - id: ucs-erratum
+  - repo: https://github.com/charliermarsh/ruff-pre-commit
+    rev: 'v0.0.240'
+    hooks:
+    - id: ruff
   - repo: https://github.com/pycqa/isort
     rev: 5.11.5
     hooks:
