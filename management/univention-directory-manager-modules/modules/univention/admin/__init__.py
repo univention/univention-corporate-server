@@ -406,10 +406,7 @@ class option(object):
         # type: (Container[str]) -> bool
         if not self.objectClasses:
             return True
-        for oc in self.objectClasses:
-            if oc not in objectClasses:
-                return False
-        return True
+        return all(not oc not in objectClasses for oc in self.objectClasses)
 
 
 def ucr_overwrite_layout(module, ucr_property, tab):
