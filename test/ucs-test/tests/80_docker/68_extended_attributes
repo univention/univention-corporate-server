@@ -64,10 +64,9 @@ def generate_schema():
     app_name = get_app_name()
     activation_name = '%sActivated' % app_name
     generic_user_activation = True
-    with Appcenter() as appcenter:
-        with udm_test.UCSTestUDM() as udm:
-            with build_app(app_name, generic_user_activation, activation_name) as app:
-                test_app(appcenter, app, udm, activation_name)
+    with Appcenter() as appcenter, udm_test.UCSTestUDM() as udm:
+        with build_app(app_name, generic_user_activation, activation_name) as app:
+            test_app(appcenter, app, udm, activation_name)
 
 
 def own_schema():

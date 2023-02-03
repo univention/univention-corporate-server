@@ -60,12 +60,11 @@ class Environment:
         return path
 
     def copy_handler(self) -> None:
-        with open(argv[0]) as source:
-            with open(join(self.mdir, 'filter.py'), 'w') as target:
-                for line in source:
-                    if line.startswith('TMPDIR = '):
-                        line = 'TMPDIR = %r\n' % (self.tmpdir,)
-                    target.write(line)
+        with open(argv[0]) as source, open(join(self.mdir, 'filter.py'), 'w') as target:
+            for line in source:
+                if line.startswith('TMPDIR = '):
+                    line = 'TMPDIR = %r\n' % (self.tmpdir,)
+                target.write(line)
 
     def __exit__(self, exc_type: Type[BaseException] | None, exc_value: BaseException | None, traceback: TracebackType | None) -> None:
         rmtree(self.tmpdir, ignore_errors=True)
@@ -179,22 +178,20 @@ class Listener:
 
 def main() -> None:
     error = False
-    with Environment() as env:
-        with UCSTestConfigRegistry() as ucr:
-            handler_set(
-                ['listener/cache/filter=(ou=%s)' % (UNIQUE,)],
-                opts={'schedule': True},
-                quiet=False)
+    with Environment() as env, UCSTestConfigRegistry() as ucr:
+        handler_set(
+            ['listener/cache/filter=(ou=%s)' % (UNIQUE,)],
+            opts={'schedule': True},
+            quiet=False)
 
-            with Listener(ucr, env) as listener:
-                with UCSTestUDM() as udm:
-                    ou = udm.create_object(MODULE, name=UNIQUE)
-                    udm.modify_object(MODULE, dn=ou, description=UNIQUE)
-                    listener.wait_transactions()
-                    verify_ldap_object(ou)
+        with Listener(ucr, env) as listener, UCSTestUDM() as udm:
+            ou = udm.create_object(MODULE, name=UNIQUE)
+            udm.modify_object(MODULE, dn=ou, description=UNIQUE)
+            listener.wait_transactions()
+            verify_ldap_object(ou)
 
-            error |= unexpected_transactions(env, ucr)
-            error |= is_not_in_cache(env, ucr)
+        error |= unexpected_transactions(env, ucr)
+        error |= is_not_in_cache(env, ucr)
 
     exit(1 if error else 0)
 

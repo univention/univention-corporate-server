@@ -30,11 +30,10 @@ def eapol_test(username):
 
 
 def main():
-    with ucr_test.UCSTestConfigRegistry() as ucr:
-        with udm_test.UCSTestUDM() as udm:
-            username_allowed = udm.create_user(networkAccess=1)[1]
-            eapol_test(username_allowed)
-            eapol_test('{}\\{}'.format(ucr.get('windows/domain'), username_allowed))
+    with ucr_test.UCSTestConfigRegistry() as ucr, udm_test.UCSTestUDM() as udm:
+        username_allowed = udm.create_user(networkAccess=1)[1]
+        eapol_test(username_allowed)
+        eapol_test('{}\\{}'.format(ucr.get('windows/domain'), username_allowed))
 
 
 if __name__ == '__main__':

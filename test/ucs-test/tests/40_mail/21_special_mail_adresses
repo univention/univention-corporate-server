@@ -23,21 +23,20 @@ def check_sending_mail(username, password, recipient_email):
 
 
 def main():
-    with ucr_test.UCSTestConfigRegistry() as ucr:
-        with udm_test.UCSTestUDM() as udm:
-            fqdn = '%(hostname)s.%(domainname)s' % ucr
-            handler_set(['mail/alias/root=systemmail@%s' % fqdn])
-            mailAddress = '%s@%s' % (uts.random_name(), ucr.get('domainname'))
-            userdn, username = udm.create_user(
-                set={
-                    'password': 'univention',
-                    'mailHomeServer': fqdn,
-                    'mailPrimaryAddress': mailAddress,
-                },
-            )
-            for mail_name in ('postmaster', 'webmaster'):
-                recipient_email = '%s@%s' % (mail_name, fqdn)
-                check_sending_mail(mailAddress, 'univention', recipient_email)
+    with ucr_test.UCSTestConfigRegistry() as ucr, udm_test.UCSTestUDM() as udm:
+        fqdn = '%(hostname)s.%(domainname)s' % ucr
+        handler_set(['mail/alias/root=systemmail@%s' % fqdn])
+        mailAddress = '%s@%s' % (uts.random_name(), ucr.get('domainname'))
+        userdn, username = udm.create_user(
+            set={
+                'password': 'univention',
+                'mailHomeServer': fqdn,
+                'mailPrimaryAddress': mailAddress,
+            },
+        )
+        for mail_name in ('postmaster', 'webmaster'):
+            recipient_email = '%s@%s' % (mail_name, fqdn)
+            check_sending_mail(mailAddress, 'univention', recipient_email)
 
 
 if __name__ == '__main__':

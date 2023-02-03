@@ -26,30 +26,29 @@ def check_sending_mail(username, password, recipient_email, should_be_accepted):
 
 
 def main():
-    with ucr_test.UCSTestConfigRegistry() as ucr:
-        with udm_test.UCSTestUDM() as udm:
-            maildomain = '%s.%s' % (uts.random_name(), uts.random_name())
-            udm.create_object(
-                'mail/domain',
-                set={
-                    'name': maildomain,
-                },
-                position="cn=domain,cn=mail,{}".format(ucr.get("ldap/base")),
-            )
+    with ucr_test.UCSTestConfigRegistry() as ucr, udm_test.UCSTestUDM() as udm:
+        maildomain = '%s.%s' % (uts.random_name(), uts.random_name())
+        udm.create_object(
+            'mail/domain',
+            set={
+                'name': maildomain,
+            },
+            position="cn=domain,cn=mail,{}".format(ucr.get("ldap/base")),
+        )
 
-            password = 'univention'
-            recipient_email = '%s@%s' % (uts.random_name(), maildomain)
-            unknown_email = '%s@%s' % (uts.random_name(), maildomain)
-            udm.create_user(
-                set={
-                    'password': password,
-                    'mailHomeServer': '%s.%s' % (ucr.get('hostname'), maildomain),
-                    'mailPrimaryAddress': recipient_email,
-                },
-            )
+        password = 'univention'
+        recipient_email = '%s@%s' % (uts.random_name(), maildomain)
+        unknown_email = '%s@%s' % (uts.random_name(), maildomain)
+        udm.create_user(
+            set={
+                'password': password,
+                'mailHomeServer': '%s.%s' % (ucr.get('hostname'), maildomain),
+                'mailPrimaryAddress': recipient_email,
+            },
+        )
 
-            check_sending_mail(recipient_email, password, recipient_email, True)
-            check_sending_mail(recipient_email, password, unknown_email, False)
+        check_sending_mail(recipient_email, password, recipient_email, True)
+        check_sending_mail(recipient_email, password, unknown_email, False)
 
 
 if __name__ == '__main__':

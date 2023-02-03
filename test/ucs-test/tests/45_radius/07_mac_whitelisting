@@ -32,49 +32,48 @@ def eapol_test(username, client_mac):
 
 
 def main():
-    with ucr_test.UCSTestConfigRegistry():
-        with udm_test.UCSTestUDM() as udm:
-            client_mac = strings.random_mac()
-            userdn, username = udm.create_user(networkAccess=1)
-            clientdn = udm.create_object(
-                'computers/ipmanagedclient',
-                set={
-                    'name': strings.random_name(),
-                    'mac': client_mac,
-                    'networkAccess': 0,
-                },
-            )
-            univention.config_registry.handler_set(['radius/mac/whitelisting=true'])
+    with ucr_test.UCSTestConfigRegistry(), udm_test.UCSTestUDM() as udm:
+        client_mac = strings.random_mac()
+        userdn, username = udm.create_user(networkAccess=1)
+        clientdn = udm.create_object(
+            'computers/ipmanagedclient',
+            set={
+                'name': strings.random_name(),
+                'mac': client_mac,
+                'networkAccess': 0,
+            },
+        )
+        univention.config_registry.handler_set(['radius/mac/whitelisting=true'])
 
-            # try authentication with disabled client
-            try:
-                eapol_test(username, client_mac)
-            except subprocess.CalledProcessError:
-                pass
-            else:
-                utils.fail('User could authenticate on client with disabled network!')
+        # try authentication with disabled client
+        try:
+            eapol_test(username, client_mac)
+        except subprocess.CalledProcessError:
+            pass
+        else:
+            utils.fail('User could authenticate on client with disabled network!')
 
-            # try authentication with enabled client
-            udm.modify_object(
-                'computers/ipmanagedclient',
-                dn=clientdn,
-                set={
-                    'networkAccess': 1,
-                },
-            )
+        # try authentication with enabled client
+        udm.modify_object(
+            'computers/ipmanagedclient',
+            dn=clientdn,
+            set={
+                'networkAccess': 1,
+            },
+        )
 
-            try:
-                eapol_test(username, client_mac)
-            except subprocess.CalledProcessError:
-                utils.fail('User could not authenticate on client with enabled network!')
+        try:
+            eapol_test(username, client_mac)
+        except subprocess.CalledProcessError:
+            utils.fail('User could not authenticate on client with enabled network!')
 
-            # try authentication with unknown client
-            try:
-                eapol_test(username, strings.random_mac())
-            except subprocess.CalledProcessError:
-                pass
-            else:
-                utils.fail('User could authenticate on client with unknown mac address!')
+        # try authentication with unknown client
+        try:
+            eapol_test(username, strings.random_mac())
+        except subprocess.CalledProcessError:
+            pass
+        else:
+            utils.fail('User could authenticate on client with unknown mac address!')
 
 
 if __name__ == '__main__':

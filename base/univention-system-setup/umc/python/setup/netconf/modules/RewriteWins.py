@@ -17,16 +17,15 @@ class PhaseRewriteWins(AddressMap):
 
     def pre(self):
         tmp_wins = "%s.%d" % (self.filename, os.getpid())
-        with open(self.filename) as read_wins:
-            with open(tmp_wins, "w") as write_wins:
-                for line in read_wins:
-                    try:
-                        name, ttl, address, flags = line.split(None, 3)
-                        new_ip = self.ip_mapping[address]
-                        line = ' '.join((name, ttl, new_ip, flags))
-                    except (TypeError, ValueError, KeyError):
-                        pass
-                    write_wins.write(line)
+        with open(self.filename) as read_wins, open(tmp_wins, "w") as write_wins:
+            for line in read_wins:
+                try:
+                    name, ttl, address, flags = line.split(None, 3)
+                    new_ip = self.ip_mapping[address]
+                    line = ' '.join((name, ttl, new_ip, flags))
+                except (TypeError, ValueError, KeyError):
+                    pass
+                write_wins.write(line)
         self.logger.info("Updating %s'", self.filename)
         if self.changeset.no_act:
             os.unlink(tmp_wins)

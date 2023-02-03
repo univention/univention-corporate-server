@@ -147,10 +147,9 @@ class AuthTests:
 
 
 def main():
-    with udm_test.UCSTestUDM() as udm:
-        with ucr_test.UCSTestConfigRegistry() as ucr:
-            authtest = AuthTests(ucr, udm)
-            authtest.run_tests()
+    with udm_test.UCSTestUDM() as udm, ucr_test.UCSTestConfigRegistry() as ucr:
+        authtest = AuthTests(ucr, udm)
+        authtest.run_tests()
 
 
 if __name__ == '__main__':

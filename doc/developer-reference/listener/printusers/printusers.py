@@ -81,13 +81,12 @@ def _writeit(rec: _Rec, comment: str) -> None:
     nuid = u'*****' if rec.uid in ('root', 'spam') else rec.uidNumber
     indent = '\t' if comment is None else ''
     try:
-        with SetUID():
-            with open(USER_LIST, 'a') as out:
-                print(u'%sName: "%s"' % (indent, rec.cn), file=out)
-                print(u'%sUser: "%s"' % (indent, rec.uid), file=out)
-                print(u'%sUID: "%s"' % (indent, nuid), file=out)
-                if comment:
-                    print(u'%s%s' % (indent, comment), file=out)
+        with SetUID(), open(USER_LIST, 'a') as out:
+            print(u'%sName: "%s"' % (indent, rec.cn), file=out)
+            print(u'%sUser: "%s"' % (indent, rec.uid), file=out)
+            print(u'%sUID: "%s"' % (indent, nuid), file=out)
+            if comment:
+                print(u'%s%s' % (indent, comment), file=out)
     except IOError as ex:
         ud.debug(
             ud.LISTENER, ud.ERROR,

@@ -133,9 +133,8 @@ def test_concurrent(lock, mocker):
 
 def test_error_enter(lock, capsys):
     lock.write("INVALID")
-    with pytest.raises(SystemExit) as exc_info:
-        with L.UpdaterLock(1):
-            raise AssertionError()
+    with pytest.raises(SystemExit) as exc_info, L.UpdaterLock(1):
+        raise AssertionError()
 
     assert exc_info.value.code == 5
     out, err = capsys.readouterr()
@@ -152,11 +151,10 @@ def test_error_gone(lock, capsys):
 
 
 def test_error_taken(lock):
-    with pytest.raises(EnvironmentError):
-        with L.UpdaterLock():
-            assert lock.check(file=1)
-            lock.remove()
-            lock.mkdir()
+    with pytest.raises(EnvironmentError), L.UpdaterLock():
+        assert lock.check(file=1)
+        lock.remove()
+        lock.mkdir()
 
 
 @pytest.fixture()

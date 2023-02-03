@@ -237,10 +237,9 @@ def setup_app(app: App) -> None:
             filename = os.path.basename(src_path)
             dest_path = os.path.join('/usr/share/univention-system-setup/www/', filename)
             if secondary_color:
-                with open(src_path) as in_file:
-                    with open(dest_path, 'w') as out_file:
-                        for line in in_file:
-                            out_file.write(line.replace('#ff00ff', secondary_color))
+                with open(src_path) as in_file, open(dest_path, 'w') as out_file:
+                    for line in in_file:
+                        out_file.write(line.replace('#ff00ff', secondary_color))
             else:
                 # use original SVG files as fallback
                 src_path = '%s.real' % dest_path

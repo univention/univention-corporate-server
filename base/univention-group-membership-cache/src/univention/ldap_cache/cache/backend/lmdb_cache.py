@@ -100,9 +100,8 @@ class LmdbCache(LdapCache):
     @contextmanager
     def reading(self):
         # type: () -> Iterator[Any]
-        with self.env.begin(self.sub_db) as txn:
-            with txn.cursor() as cursor:
-                yield cursor
+        with self.env.begin(self.sub_db) as txn, txn.cursor() as cursor:
+            yield cursor
 
     def __iter__(self):
         # type: () -> Iterator[Tuple[str, Any]]
@@ -122,13 +121,12 @@ class LmdbCache(LdapCache):
     def load(self):
         # type: () -> Dict[str, Any]
         ret = {}  # type: Dict[str, Any]
-        with self._load_key_translations() as translations:
-            with self.reading() as reader:
-                for key in reader.iternext_nodup():
-                    translated = translations.get(key)
-                    if translated is None:
-                        continue
-                    ret[translated] = self.get(key)
+        with self._load_key_translations() as translations, self.reading() as reader:
+            for key in reader.iternext_nodup():
+                translated = translations.get(key)
+                if translated is None:
+                    continue
+                ret[translated] = self.get(key)
         return ret
 
     @contextmanager
