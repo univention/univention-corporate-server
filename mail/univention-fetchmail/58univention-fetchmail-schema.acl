@@ -4,7 +4,7 @@ from ldap.dn import escape_dn_chars
 ldap_base = configRegistry['ldap/base']
 access_type = "read"
 if configRegistry['ldap/server/type'] == 'master':
-	access_type = "write"
+    access_type = "write"
 
 print('access to attrs=univentionFetchmailPasswd')
 print('    by group/univentionGroup/uniqueMember="cn=%s,cn=groups,%s" %s' % (escape_dn_chars(custom_groupname('Domain Admins')), ldap_base, access_type))
