@@ -1,3 +1,9 @@
+univention-management-console-module-diagnostic (6.0.4-1) unstable; urgency=medium
+
+  * Bug #50073: UDM: conditionally remap `country` from `st` to `c`
+
+ -- Maximilian Janßen <janssen@univention.de> Fri, 03 Feb 2023 12:00:00 +0100
+
 univention-management-console-module-diagnostic (6.0.3-1) unstable; urgency=medium
 
   * Bug #31771: migrate tabs to spaces
