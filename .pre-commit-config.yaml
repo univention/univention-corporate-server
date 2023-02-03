@@ -67,6 +67,14 @@ repos:
                   |^services/univention-ldb-modules/buildtools/\
                   |^packaging/ucslint/testframework/\
                  "
+      - id: ruff
+        alias: "ruff-fix"
+        stages: [ manual ]
+        args: ["--fix"]
+        exclude: "^oidc/python-keycloak/\
+                  |^services/univention-ldb-modules/buildtools/\
+                  |^packaging/ucslint/testframework/\
+                 "
   - repo: https://github.com/pycqa/isort
     rev: 5.11.5
     hooks:
@@ -77,7 +85,7 @@ repos:
                   |^packaging/ucslint/testframework/\
                  "
       - id: isort
-        alias: isort-edit
+        alias: "isort-fix"
         stages: [ manual ]
         entry: isort
         exclude: "^oidc/python-keycloak/\
@@ -89,6 +97,14 @@ repos:
     hooks:
     -   id: autopep8
         args: ["-d"]
+        exclude: "^oidc/python-keycloak/\
+                  |^services/univention-ldb-modules/buildtools/\
+                  |^packaging/ucslint/testframework/\
+                  "
+    -   id: autopep8
+        alias: "autopep8-fix"
+        stages: [ manual ]
+        args: ["-i"]
         exclude: "^oidc/python-keycloak/\
                   |^services/univention-ldb-modules/buildtools/\
                   |^packaging/ucslint/testframework/\
