@@ -123,7 +123,7 @@ def convert(app, dumped, filename, lo, pos):
             else:
                 attrs = {
                     key: TypeHint.detect(objs[0].descriptions[key], key).decode_json(value)
-                    for key, value in attrs.items()
+                    for key, value in objs[0].info.items()
                 }
             options = objs[0].options
         else:
