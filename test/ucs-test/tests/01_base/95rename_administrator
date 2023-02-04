@@ -109,6 +109,9 @@ def uid2dn(uid, ldap_base):
 
 
 def wait_to_settle(old_admin_name):  # type: (str) -> None
+	utils.wait_for_replication_and_postrun()
+	time.sleep(20)  # for slapd restart + ldap-groups-to-file
+
 	FN = "/etc/ldap/slapd.conf"
 	try:
 		old = ()
@@ -130,9 +133,6 @@ def wait_to_settle(old_admin_name):  # type: (str) -> None
 				return
 	except Exception as exc:
 		print(exc)
-
-	utils.wait_for_replication_and_postrun()
-	time.sleep(20)  # for slapd restart + ldap-groups-to-file
 
 
 def test_rename_domain_users():
