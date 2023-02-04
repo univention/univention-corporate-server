@@ -1,3 +1,9 @@
+univention-self-service (5.0.6-3) unstable; urgency=medium
+
+  * Bug #55529: Add `umc/login/password-complexity-message/*` to password reset and create new account error message
+
+ -- Ivan Barbecho Delgado <delgado.extern@univention.de>  Wed, 22 Feb 2023 00:27:58 +0100
+
 univention-self-service (5.0.6-2) unstable; urgency=medium
 
   * Bug #55684: fix traceback during password-reset get_reset_methods

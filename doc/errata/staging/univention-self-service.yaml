@@ -1,0 +1,13 @@
+product: ucs
+release: "5.0"
+version: [3]
+scope: ucs_5.0-0-errata5.0-3
+src: univention-self-service
+fix:
+desc: |
+ This update addresses the following issue:
+ * The error message shown during password reset or when creating a
+ new account now appends the text from the UCR variable
+ `umc/login/password-complexity-message/.*` when password complexity
+ criteria weren't matched.
+bug: [55529]
