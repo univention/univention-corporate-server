@@ -77,7 +77,7 @@ def test_listener():
         assert get_attr('users/user', u2[0], 'description') == 'xyz'
         assert get_attr('users/user', u3[0], 'description') == 'öäü????ßßßß!'
         assert get_attr('users/user', u1[0], 'description')
-        assert get_attr('users/user', u1[0], 'disabled')
+        assert get_attr('users/user', u1[0], 'disabled') is False
         assert get_attr('users/user', u1[0], 'displayName')
         assert get_attr('users/user', u1[0], 'gidNumber')
         assert get_attr('users/user', u1[0], 'groups')
