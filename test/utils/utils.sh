@@ -1,6 +1,9 @@
 #!/bin/bash
 #
-# Copyright 2013-2022 Univention GmbH
+# Like what you see? Join us!
+# https://www.univention.com/about-us/careers/vacancies/
+#
+# Copyright 2013-2023 Univention GmbH
 #
 # https://www.univention.de/
 #
@@ -31,6 +34,15 @@
 
 set -x
 
+die () {
+	echo "${0##*/}: $*" >&2
+	exit 1
+}
+
+have () {
+	command -v "$1" >/dev/null 2>&1
+}
+
 FTP_DOM='software-univention.de' FTP_SCHEME='https'
 case "${VIRTTECH:=$(systemd-detect-virt)}" in
 amazon|xen) ;;
@@ -49,7 +61,7 @@ basic_setup_allow_uss () {
 		echo "Assuming Amazon Cloud"
 		if grep -F /dev/vda /boot/grub/device.map && [ -b /dev/xvda ] # Bug 36256
 		then
-			/usr/sbin/grub-mkdevicemap
+			grub-mkdevicemap
 			echo set grub-pc/install_devices /dev/xvda | debconf-communicate
 		fi
 		;;
@@ -95,20 +107,20 @@ stop_uss_and_restore_profile () {
 }
 
 rotate_logfiles () {
-	test -x /usr/sbin/logrotate && logrotate -f /etc/logrotate.conf
+	have logrotate &&
+		logrotate -f /etc/logrotate.conf
 }
 
 jenkins_updates () {
-	ucr set update43/checkfilesystems=no
-	ucr set update44/checkfilesystems=no
+	ucr set update43/checkfilesystems=no update44/checkfilesystems=no
 	local version_version version_patchlevel version_erratalevel target rc=0
 	target="$(echo "${JOB_NAME:-}"|sed -rne 's,.*/UCS-([0-9]+\.[0-9]+-[0-9]+)/.*,\1,p')"
 	# Update UCS@school instances always to latest patchlevel version
 	[ -z "$target" ] && target="$(echo "${JOB_NAME:-}"|sed -rne 's,^UCSschool-([0-9]+\.[0-9]+)/.*,\1-99,p')"
 
-	test -n "$TARGET_VERSION" && target="$TARGET_VERSION"
-	test -n "$RELEASE_UPDATE" && release_update="$RELEASE_UPDATE"
-	test -n "$ERRATA_UPDATE" && errata_update="$ERRATA_UPDATE"
+	[ -n "${TARGET_VERSION:-}" ] && target="$TARGET_VERSION"
+	[ -n "${RELEASE_UPDATE:-}" ] && release_update="$RELEASE_UPDATE"
+	[ -n "${ERRATA_UPDATE:-}" ] && errata_update="$ERRATA_UPDATE"
 
 	eval "$(ucr shell '^version/(version|patchlevel|erratalevel)$')"
 	echo "Starting from ${version_version}-${version_patchlevel}+${version_erratalevel} to ${target}..."
@@ -138,12 +150,14 @@ jenkins_updates () {
 }
 
 upgrade_to_latest_patchlevel () {
-	local updateto="$(ucr get version/version)-99"
+	local updateto
+	updateto="$(ucr get version/version)-99"
 	upgrade_to_latest --updateto "$updateto"
 }
 
 upgrade_to_latest_errata () {
-	local current="$(ucr get version/version)-$(ucr get version/patchlevel)"
+	local current
+	current="$(ucr get version/version)-$(ucr get version/patchlevel)"
 	upgrade_to_latest --updateto "$current"
 }
 
@@ -200,9 +214,10 @@ upgrade_to_latest () {
 }
 _upgrade_to_latest () {
 	declare -i remain=300 rv delay=30
+	declare -a upgrade_opts=("--noninteractive" "--ignoreterm" "--ignoressh")
 	while true
 	do
-		univention-upgrade --noninteractive --ignoreterm --ignoressh "$@"
+		univention-upgrade "${upgrade_opts[@]}" "$@"
 		rv="$?"
 		case "$rv" in
 		0) return 0 ;;  # success
@@ -220,6 +235,7 @@ _upgrade_to_latest () {
 
 # temp. patch to retry source.list commit and apt-get update after error
 patch_setup_join () {
+	# shellcheck disable=SC2016
 	local script='{ set -x; nscd -i hosts; grep -H . /etc/resolv.conf /etc/apt/sources.list.d/15_ucs-online-version.list; ifconfig; ping -c 4 "$(ucr get repository/online/server)"; nslookup "$(ucr get repository/online/server)"; sleep 60; ucr commit /etc/apt/sources.list.d/*.list; apt-get update; } ; grep -H . /etc/apt/sources.list.d/15_ucs-online-version.list'
 	sed -i "s~^apt-get update\$~& || $script~" /usr/lib/univention-system-setup/scripts/setup-join.sh
 }
@@ -233,14 +249,11 @@ _fix_ssh47233 () { # Bug #47233: ssh connection stuck on reboot
 }
 
 run_setup_join () {
-	local srv rv=0
+	local rv=0
 	patch_setup_join # temp. remove me
 	/usr/lib/univention-system-setup/scripts/setup-join.sh ${1:+"$@"} || rv=$?
 	ucr set apache2/startsite='univention/' # Bug #31682
-	for srv in univention-management-console-server univention-management-console-web-server apache2
-	do
-		invoke-rc.d "$srv" restart
-	done
+	systemctl try-reload-or-restart univention-management-console-server univention-management-console-web-server apache2
 	ucr unset --forced update/available
 
 	# No this breaks univention-check-templates -> 00_checks.81_diagnostic_checks.test _fix_ssh47233  # temp. remove me
@@ -260,12 +273,13 @@ run_setup_join_on_non_master () {
 
 wait_until_update_server_is_resolvable () {
 	local i=0
-	local servers=""
-	is_ec2 && servers="updates.software-univention.de updates-test.software-univention.de" || server="updates.knut.univention.de updates-test.knut.univention.de"
-	for server in $servers; do
+	declare -a servers=()
+	is_ec2 && servers=(updates.software-univention.de updates-test.software-univention.de) || server=(updates.knut.univention.de updates-test.knut.univention.de)
+	for server in "${servers[@]}"
+	do
 		while [ $i -lt 900 ]
 		do
-			host $server >/dev/null && break
+			host "$server" >/dev/null && break
 			sleep 1
 			i=$((i + 1))
 		done
@@ -302,14 +316,15 @@ wait_for_reboot () {
 wait_for_replication () {
 	local timeout=${1:-3600}
 	local steps=${2:-10}
-	local timestamp=$(date +"%s")
+	local timestamp
+	timestamp=$(date +"%s")
 	echo "Waiting for replication..."
 	while ! /usr/lib/nagios/plugins/check_univention_replication; do
-		if [ $((timestamp+timeout)) -lt $(date +"%s") ]; then
+		if [ "$((timestamp+timeout))" -lt "$(date +"%s")" ]; then
 			echo "ERROR: replication incomplete."
 			return 1
 		fi
-		sleep $steps
+		sleep "$steps"
 	done
 	return 0
 }
@@ -319,9 +334,8 @@ wait_for_setup_process () {
 	local setup_file="/var/www/ucs_setup_process_status.json"
 	sleep 10
 	for i in $(seq 1 1200); do
-		if [ ! -e "$setup_file" ]; then
+		[ -e "$setup_file" ] ||
 			return 0
-		fi
 		sleep 3
 	done
 	echo "setup did not finish after 3600s, timeout"
@@ -330,7 +344,7 @@ wait_for_setup_process () {
 
 switch_to_test_app_center () {
 	local app rv=0
-	[ -x "$(which univention-app)" ] || return 1
+	have univention-app || return 1
 	univention-install --yes univention-appcenter-dev
 	univention-app dev-use-test-appcenter
 	if [ -e /var/cache/appcenter-installed.txt ]; then
@@ -420,11 +434,13 @@ install_with_unmaintained () {
 }
 
 wait_for_repo_server () {
+	local i repository_online_server
 	eval "$(ucr shell 'repository/online/server')"
 	repository_online_server=${repository_online_server#https://}
 	repository_online_server=${repository_online_server#http://}
 	repository_online_server=${repository_online_server%%/*}
-	for i in $(seq 1 300); do
+	for ((i=0; i<300; i++))
+	do
 		ping -c 2 "$repository_online_server" && return 0
 		sleep 1
 	done
@@ -443,7 +459,7 @@ install_ucs_test () {
 install_ucs_test_from_errata_test () {
 	wait_for_repo_server || return 1
 	bash /root/activate-errata-test-scope.sh || return 1
-	install_ucs_test || return 1
+	install_ucs_test
 }
 
 install_ucs_test_checks_from_errata_test () {
@@ -470,9 +486,9 @@ install_apps_test_packages () {
 	ucr set repository/online/unmaintained=yes
 	for app in "$@"
 	do
-		if [ -n "$(univention-app get $app DockerImage)" ]; then
+		if [ -n "$(univention-app get "$app" DockerImage)" ]; then
 			univention-app shell "$app" apt-get download "ucs-test-$app" &&
-			dpkg -i /var/lib/docker/overlay/$(ucr get appcenter/apps/$app/container)/merged/ucs-test-${app}_*.deb &&
+			dpkg -i "/var/lib/docker/overlay/$(ucr get "appcenter/apps/$app/container")/merged/ucs-test-${app}_"*.deb &&
 			univention-install -f --yes || rv=$?
 		else
 			univention-install --yes "ucs-test-$app" || rv=$?
@@ -496,10 +512,10 @@ create_DONT_START_UCS_TEST () {
 
 prevent_ucstest_on_fail () {
 	local rv=0
-	"$@" || rv=$?
-	if [ ! "$rv" = "0" ] ; then
+	"$@" || {
+		rv=$?
 		create_DONT_START_UCS_TEST "FAILED: prevent_ucstest_on_fail $*"
-	fi
+	}
 	return $rv
 }
 
@@ -518,7 +534,7 @@ ucsschool_scope_enabled () {
 install_ucsschool () {
 	local rv=0
 
-	# Bug #50690: ucs-school-webproxy would set this to yes. Which breaks out test environment
+	# Bug #50690: ucs-school-webproxy would set this to yes. Which breaks our test environment
 	ucr set --force dhcpd/authoritative=no
 
 	case "${UCSSCHOOL_RELEASE:-scope}" in
@@ -554,7 +570,7 @@ install_coverage () {
 
 remove_s4connector_tests_and_mark_tests_manual_installed () {
 	univention-remove --yes ucs-test-s4connector
-	apt-mark manual $(apt-mark showauto | grep ^ucs-test-)
+	apt-mark manual 'ucs-test-*'
 }
 
 install_ucs_windows_tools () {
@@ -574,9 +590,13 @@ run_apptests () {
 	# until this is fixed, force the variables in the docker container
 	for app in $(< /var/cache/appcenter-installed.txt); do
 		if [ -n "$(univention-app get "$app" DockerImage)" ]; then
-			univention-app shell "$app" bash -c 'eval "$(ucr shell)"; test -n "$ldap_server_name" && ucr set --force ldap/server/name="$ldap_server_name"'
-			univention-app shell "$app" bash -c 'eval "$(ucr shell)"; test -n "$ldap_master" && ucr set --force ldap/master="$ldap_master"'
-			univention-app shell "$app" bash -c 'eval "$(ucr shell)"; test -n "$kerberos_adminserver" && ucr set --force kerberos/adminserver="$kerberos_adminserver"'
+			# shellcheck disable=SC2016
+			univention-app shell "$app" bash -c '
+			eval "$(ucr shell)"
+			[ -n "${ldap_server_name:-}" && ucr set --force ldap/server/name="$ldap_server_name"
+			[ -n "${ldap_master:-}" ] && ucr set --force ldap/master="$ldap_master"
+			[ -n "${kerberos_adminserver:-}" ] && ucr set --force kerberos/adminserver="$kerberos_adminserver"
+			'
 		fi
 	done
 
@@ -587,6 +607,7 @@ run_minimal_tests () {
 	run_tests -s checks "$@"
 }
 
+# shellcheck disable=SC2120
 run_minimal_apptests () {
 	run_apptests -s checks -s appcenter "$@"
 }
@@ -603,7 +624,7 @@ run_admember_tests () {
 ad_member_fix_udm_rest_api () {  # workaround for Bug #50527
 	ucr unset directory/manager/rest/authorized-groups/domain-admins
 	univention-run-join-scripts --force --run-scripts 22univention-directory-manager-rest.inst
-	service univention-directory-manager-rest restart
+	systemctl restart univention-directory-manager-rest
 }
 
 run_adconnector_tests () {
@@ -659,7 +680,7 @@ run_tests () {
 		echo "-----------------------------------------------------------------------------------"
 		return 1
 	fi
-	if [ "$COVERAGE_REPORT" = "true" ]; then
+	if [ "${COVERAGE_REPORT:-}" = "true" ]; then
 		GENERATE_COVERAGE_REPORT="--with-coverage --coverage-show-missing --coverage-output-directory=/var/log/univention/coverage"
 		install_with_unmaintained python-pip
 		pip install coverage
@@ -667,11 +688,12 @@ run_tests () {
 	dpkg-query -W -f '${Status}\t${binary:Package}\t${Version}\n' > "packages-under-test.log"
 
 	# check is ucs-test run is allowed
-	if [ -n "$UCS_TEST_RUN" -a "$UCS_TEST_RUN" = "false" ]; then
+	if [ "${UCS_TEST_RUN:-}" = "false" ]; then
 		echo "ucs-test disabled by env UCS_TEST_RUN=$UCS_TEST_RUN"
 		return 0
 	fi
 
+	# shellcheck disable=SC2086
 	LANG=de_DE.UTF-8 ucs-test -E dangerous -F junit -l "ucs-test.log" -p producttest $GENERATE_COVERAGE_REPORT "$@"
 }
 
@@ -755,10 +777,10 @@ assert_adconnector_configuration () {
 }
 
 assert_packages () {
-	local package
+	local package installed
 	for package in "$@"
 	do
-		local installed=$(dpkg-query -W -f '${status}' "$package")
+		installed=$(dpkg-query -W -f '${status}' "$package")
 		if [ "$installed" != "install ok installed" ]; then
 			create_DONT_START_UCS_TEST "Failed: package status of $package is $installed"
 			exit 1
@@ -768,7 +790,8 @@ assert_packages () {
 }
 
 set_administrator_dn_for_ucs_test () {
-	local dn="$(univention-ldapsearch sambaSid=*-500 -LLL dn | sed -ne 's|dn: ||p')"
+	local dn
+	dn="$(univention-ldapsearch -LLL '(sambaSid=*-500)' 1.1 | sed -ne 's|dn: ||p')"
 	ucr set tests/domainadmin/account="$dn"
 }
 
@@ -795,19 +818,19 @@ set_windows_localadmin_password_for_ucs_test () {
 		tests/windows/localadmin/pwd="$password"
 }
 
-set_userpassword_for_administrator ()
-{
+set_userpassword_for_administrator () {
 	local password="$1"
 	local user="${2:-Administrator}"
+	local lb
+	lb="$(ucr get ldap/base)"
 
-	eval "$(ucr shell ldap/base)"
-
-	local passwordhash="$(mkpasswd -m sha-512 $password)"
-	echo "dn: uid=$user,cn=users,$ldap_base
+	local passwordhash
+	passwordhash="$(mkpasswd -m sha-512 "$password")"
+	echo "dn: uid=$user,cn=users,$lb
 changetype: modify
 replace: userPassword
 userPassword: {crypt}$passwordhash
-" | ldapmodify -x -D "cn=admin,$ldap_base" -y /etc/ldap.secret
+" | ldapmodify -x -D "cn=admin,$lb" -y /etc/ldap.secret
 }
 
 
@@ -817,26 +840,29 @@ monkeypatch () {
 	# Bug #42658: temporary raise the connection timeout which the UMC Server waits the module process to start
 	[ -e /usr/share/pyshared/univention/management/console/protocol/session.py ] && sed -i 's/if mod._connect_retries > 200:/if mod._connect_retries > 1200:/' /usr/share/pyshared/univention/management/console/protocol/session.py
 	[ -e /usr/lib/python2.7/dist-packages/univention/management/console/protocol/session.py ] && sed -i 's/if mod._connect_retries > 200:/if mod._connect_retries > 1200:/' /usr/lib/python2.7/dist-packages/univention/management/console/protocol/session.py
-	univention-management-console-server restart
+	systemctl restart univention-management-console-server
 
 	# Bug #40419: UCS@school Slave reject: LDAP sambaSID != S4 objectSID == SID(Master)
 	[ "$(hostname)" = "slave300-s1" ] && /usr/share/univention-s4-connector/remove_ucs_rejected.py "cn=master300,cn=dc,cn=computers,dc=autotest300,dc=local" || true
 }
 
 import_license () {
+	local users="${1:-50}"
+	local lb
+	lb="$(ucr get ldap/base)"
 	# wait for server
-	local server="license.univention.de"
+	local server="license.univention.de" i
 	for i in $(seq 1 100); do
-		nc -w 3 -z license.univention.de 443 && break
+		nc -w 3 -z "$server" 443 && break
 		sleep 1
 	done
-	python -m shared-utils/license_client "$(ucr get ldap/base)" "$(date -d '+6 month' '+%d.%m.%Y')"
+	python -m shared-utils/license_client "${lb}" -u "$users" "$(date -d '+6 month' '+%d.%m.%Y')"
 	# It looks like we have in some AD member setups problems with the DNS resolution. Try to use
 	# the static variante (Bug #46448)
 	if [ ! -e ./ValidTest.license ]; then
-		ucr set hosts/static/85.184.250.151=license.univention.de
+		ucr set "hosts/static/85.184.250.151=$server"
 		nscd -i hosts
-		python -m shared-utils/license_client "$(ucr get ldap/base)" "$(date -d '+6 month' '+%d.%m.%Y')"
+		python -m shared-utils/license_client "${lb}" -u "$users" "$(date -d '+6 month' '+%d.%m.%Y')"
 		ucr unset hosts/static/85.184.250.151
 		nscd -i hosts
 	fi
@@ -847,9 +873,9 @@ import_license () {
 install_apps_via_umc () {
 	local username=${1:?missing username} password=${2:?missing password} rv=0 app
 	shift 2 || return $?
-	test -e /var/cache/appcenter-installed.txt && rm /var/cache/appcenter-installed.txt
+	rm -f /var/cache/appcenter-installed.txt
 	for app in "$@"; do
-		python -m shared-utils/apps -U "$username" -p "$password" -a $app || rv=$?
+		python -m shared-utils/apps -U "$username" -p "$password" -a "$app" || rv=$?
 		echo "$app" >>/var/cache/appcenter-installed.txt
 	done
 	return $rv
@@ -888,16 +914,16 @@ remove_apps_via_umc () {
 		echo "$app" >>/var/cache/appcenter-uninstalled.txt
 	done
 	for app in $reverse; do
-		python -m shared-utils/apps -U "$username" -p "$password" -a $app -r || rv=$?
+		python -m shared-utils/apps -U "$username" -p "$password" -a "$app" -r || rv=$?
 	done
 	return $rv
 }
 
 assert_app_is_installed_and_latest () {
 	univention-app info
-	local rv=0 app
+	local rv=0 app latest
 	for app in "$@"; do
-		local latest="$(python -m shared-utils/app-info -a $app -v)"
+		latest="$(python -m shared-utils/app-info -a "$app" -v)"
 		univention-app info | grep -q "Installed: .*\b$latest\b.*" || rv=$?
 	done
 	return $rv
@@ -908,7 +934,7 @@ assert_app_is_installed () {
 	univention-app info
 	local rv=0 app
 	for app in "$@"; do
-		 univention-app info | grep -q "Installed: .*\b$app\b.*" || rv=$?
+		univention-app info | grep -q "Installed: .*\b$app\b.*" || rv=$?
 	done
 	return $rv
 }
@@ -923,17 +949,18 @@ assert_app_master_packages () {
 run_app_appliance_tests () {
 	local app rv=0
 	for app in "$@"; do
-		assert_app_is_installed $app || return 1
-		echo $app >>/var/cache/appcenter-installed.txt
+		assert_app_is_installed "$app" || return 1
+		echo "$app" >>/var/cache/appcenter-installed.txt
 		# check additinal apps too
-		for add in $(univention-app get $app ApplianceAdditionalApps | sed -ne 's|ApplianceAdditionalApps: ||p' | sed 's|,| |g'); do
-			assert_app_is_installed $add || return 1
-			echo $add >>/var/cache/appcenter-installed.txt
+		for add in $(univention-app get "$app" ApplianceAdditionalApps | sed -ne 's|ApplianceAdditionalApps: ||p' | sed 's|,| |g'); do
+			assert_app_is_installed "$add" || return 1
+			echo "$add" >>/var/cache/appcenter-installed.txt
 		done
 	done
 	## install ucs-test from errata test
 	#/root/activate-errata-test-scope.sh
 	install_with_unmaintained ucs-test-appcenter ucs-test-checks || rv=$?
+	# shellcheck disable=SC2119
 	run_minimal_apptests || rv=$?
 	return $rv
 }
@@ -957,6 +984,7 @@ add_tech_key_authorized_keys() {
 }
 
 assert_admember_mode () {
+	# shellcheck source=/dev/null
 	. /usr/share/univention-lib/admember.sh
 	is_localhost_in_admember_mode
 }
@@ -968,40 +996,43 @@ start_portal_in_local_firefox () {
 	X &
 	DISPLAY=:0 openbox --config-file /etc/xdg/openbox/rc_no_shortcuts.xml &
 	sleep 1
-	DISPLAY=:0 firefox http://$(hostname -f)/univention/portal &
+	DISPLAY=:0 firefox "http://$(hostname -f)/univention/portal" &
 	sleep 10
 	chvt 2
 	sleep 1
 }
 
 postgres91_update () {
+	postgres_update '9.1' '9.4'
+}
+postgres_update () {
+	local old="${1:?}" new="${2:?}"
 	[ -f /usr/sbin/univention-pkgdb-scan ] && chmod -x /usr/sbin/univention-pkgdb-scan
 	service postgresql stop
-	rm -rf /etc/postgresql/9.4
-	apt-get install --reinstall postgresql-9.4
-	pg_dropcluster 9.4 main --stop
+	rm -rf "/etc/postgresql/$new"
+	apt-get install -y --reinstall "postgresql-$new"
+	pg_dropcluster "$new" main --stop
 	service postgresql start
-	test -e /var/lib/postgresql/9.4/main && mv /var/lib/postgresql/9.4/main /var/lib/postgresql/9.4/main.old
-	pg_upgradecluster 9.1 main
-	ucr commit /etc/postgresql/9.4/main/*
-	chown -R postgres:postgres /var/lib/postgresql/9.4
+	[ -e "/var/lib/postgresql/$new/main" ] && mv "/var/lib/postgresql/$new/main" "/var/lib/postgresql/$new/main.old"
+	pg_upgradecluster "$old" main
+	ucr commit "/etc/postgresql/$new/main/"*
+	chown -R postgres:postgres "/var/lib/postgresql/$new"
 	service postgresql restart
-	[ -f /usr/sbin/univention-pkgdb-scan ] && chmod +x /usr/sbin/univention-pkgdb-scan
-	DEBIAN_FRONTEND='noninteractive'  univention-install --yes univention-postgresql-9.4
-	pg_dropcluster 9.1 main --stop
-	DEBIAN_FRONTEND='noninteractive' apt-get purge --yes postgresql-9.1
+	[ -f /usr/sbin/univention-pkgdb-scan ] && chmod +x "/usr/sbin/univention-pkgdb-scan"
+	DEBIAN_FRONTEND='noninteractive' univention-install --yes "univention-postgresql-$new"
+	pg_dropcluster "$old" main --stop
+	DEBIAN_FRONTEND='noninteractive' apt-get purge --yes "postgresql-$old"
+	service postgresql restart
 }
 
 dump_systemd_journal () {
 	journalctl > /var/log/journalctl.log || echo "Could not dump systemd journal."
 }
 
-add_hostname_to_juint_results ()
-{
-	local hostname="$(hostname)"
-	for f in test-reports/*/*.xml; do
-		sed -i "s| name=\"| name=\"${hostname}.|g;s|testcase classname=\"|testcase classname=\"${hostname}.|g" $f
-	done
+add_hostname_to_juint_results () {
+	local HOSTNAME
+	: "${HOSTNAME:=$(hostname)}"
+	sed -i "s|<testsuite\>[^<>]*\<name=\"|&${HOSTNAME}.|g;s|<testcase\>[^<>]*\<classname=\"|&${HOSTNAME}.|g" test-reports/*/*.xml
 }
 
 prepare_results () {
@@ -1009,44 +1040,39 @@ prepare_results () {
 	dump_systemd_journal
 }
 
-add_branch_repository () {
-	local extra_list="/root/apt-get-branch-repo.list"
-	if [ -s "$extra_list" ]; then
-		cp "$extra_list" /etc/apt/sources.list.d/
-		chmod a+r "/etc/apt/sources.list.d/$(basename "$extra_list")"
-		apt-get update
-		return $?
-	fi
-}
-
 add_ucsschool_dev_repo () {
-	local majorminor="$(ucr get version/version)"
+	local majorminor
+	majorminor="$(ucr get version/version)"
 	cat << EOF > /etc/apt/sources.list.d/ucsschool-dev-repo.list
 deb [trusted=yes] http://omar.knut.univention.de/build2/ ucs_${majorminor}-0-ucs-school-${majorminor}/all/
 deb [trusted=yes] http://omar.knut.univention.de/build2/ ucs_${majorminor}-0-ucs-school-${majorminor}/\$(ARCH)/
 EOF
 }
 
-restart_services_bug_47762 ()
-{
+add_branch_repository () {
+	local extra_list="/root/apt-get-branch-repo.list"
+	[ -s "$extra_list" ] ||
+		return 0
+	install -m644 "$extra_list" /etc/apt/sources.list.d/
+	apt-get -qq update
+}
+
+restart_services_bug_47762 () {
 	# https://forge.univention.org/bugzilla/show_bug.cgi?id=47762
 	# The services needs to be restart otherwise they wouldn't bind
 	# to the new IP address
-	if [ -x /etc/init.d/samba ]; then
+	[ -x /etc/init.d/samba ] &&  # FYI: Bug#44237
 		/etc/init.d/samba restart
-	fi
 	sleep 15
 }
 
 # https://forge.univention.org/bugzilla/show_bug.cgi?id=48157
-restart_umc_bug_48157 ()
-{
+restart_umc_bug_48157 () {
 	sleep 30
-	service univention-management-console-server restart || true
+	systemctl restart univention-management-console-server || true
 }
 
-run_workarounds_before_starting_the_tests ()
-{
+run_workarounds_before_starting_the_tests () {
 	restart_services_bug_47762
 	#restart_umc_bug_48157 # Bug is verified for now. Code can be removed if bug is closed.
 }
@@ -1078,15 +1104,14 @@ online_fsresize () {
 	echo "Grow root partition"
 	root_device="$(readlink -f "$(df --output=source / | tail -n 1)")"
 	disk="${root_device%[0-9]}"
-	part_number="${root_device#${disk}}"
+	part_number="${root_device#"${disk}"}"
 	growpart "$disk" "$part_number"
 	resize2fs "$root_device"
 }
 
 winrm_config () {
-	local domain=${1:?missing domain} password=${2:?missing password} user=${3:?missing user} client=${4:?missing client} rv=0
-	echo -e "[default]\ndomain = ${domain}\npassword = ${password}\nuser = ${user}\nclient = ${client}" > /root/.ucs-winrm.ini || rv=1
-	return $rv
+	local domain=${1:?missing domain} password=${2:?missing password} user=${3:?missing user} client=${4:?missing client}
+	echo -e "[default]\ndomain = ${domain}\npassword = ${password}\nuser = ${user}\nclient = ${client}" > /root/.ucs-winrm.ini
 }
 
 # setup for the ucs-$role kvm template (provisioned but not joined)
@@ -1106,9 +1131,8 @@ basic_setup_ucs_role () {
 }
 
 ucs-winrm () {
-    local image="docker.software-univention.de/ucs-winrm"
-    docker run --rm -v /etc/localtime:/etc/localtime:ro -v "$HOME/.ucs-winrm.ini:/root/.ucs-winrm.ini:ro" "$image" "$@"
-	return $?
+	local image="docker.software-univention.de/ucs-winrm"
+	docker run --rm -v /etc/localtime:/etc/localtime:ro -v "$HOME/.ucs-winrm.ini:/root/.ucs-winrm.ini:ro" "$image" "$@"
 }
 
 basic_setup_ucs_joined () {
@@ -1243,6 +1267,7 @@ log_call_stack () {
 log_execution_time () {
 	${LOGGER:-logger} "$BASH_EXECUTION_STRING needed $(( ($(date +%s%N) - START) / 1000000)) ms"
 }
+
 
 # trap log_execution_time EXIT
 
