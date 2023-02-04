@@ -97,9 +97,11 @@ msgstr "Der Token wurde erfolgreich versendet."
 #, python-format
 msgid ""
 "The account could not be created:\n"
+"%s\n"
 "%s"
 msgstr ""
 "Das Konto konnte nicht erstellt werden:\n"
+"%s\n"
 "%s"
 
 #: umc/python/passwordreset/__init__.py:614

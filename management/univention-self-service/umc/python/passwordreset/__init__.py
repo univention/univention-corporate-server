@@ -575,6 +575,12 @@ class Instance(Base):
             raise UMC_Error(_('The attributes could not be saved: %s') % (UDM_Error(exc)))
         return _("Successfully changed your profile data.")
 
+    def _get_password_complexity_message(self):
+        return ucr.get(
+            'umc/login/password-complexity-message/%s' % (self.locale.language,),
+            ucr.get('umc/login/password-complexity-message/en', ''),
+        )
+
     @forward_to_master
     @simple_response
     def create_self_registered_account(self, attributes):
@@ -670,11 +676,12 @@ class Instance(Base):
         try:
             new_user.create()
         except univention.admin.uexceptions.base as exc:
+            password_complexity_message = self._get_password_complexity_message() if isinstance(exc, (udm_errors.pwToShort, udm_errors.pwQuality)) else ''
             MODULE.error('create_self_registered_account(): could not create user: %s' % (traceback.format_exc(),))
             return {
                 'success': False,
                 'failType': 'CREATION_FAILED',
-                'data': _('The account could not be created:\n%s') % UDM_Error(exc),
+                'data': (_('The account could not be created:\n%s\n%s') % (UDM_Error(exc), password_complexity_message)).rstrip(),
             }
         finally:
             # TODO cleanup
@@ -1167,7 +1174,8 @@ class Instance(Base):
         try:
             user.modify()
         except (udm_errors.pwToShort, udm_errors.pwQuality) as exc:
-            raise UMC_Error(str(exc))
+            password_complexity_message = ucr.get('umc/login/password-complexity-message/%s' % (self.locale.language,), ucr.get('umc/login/password-complexity-message/en', ''))
+            raise UMC_Error(("%s %s" % (exc, password_complexity_message)).rstrip())
         except udm_errors.pwalreadyused as exc:
             raise UMC_Error(exc.message)
         except Exception:
