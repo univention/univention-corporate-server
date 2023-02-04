@@ -1218,8 +1218,9 @@ run_workarounds_before_starting_the_tests () {
 sa_bug53751 () {
 	# https://forge.univention.org/bugzilla/show_bug.cgi?id=47030
 	# https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=922499
-	[ -f /etc/ca-certificates.conf/etc/ca-certificates.conf ] &&
-		sed -i -e 's=^mozilla/DST_Root_CA_X3.crt=!&=' /etc/ca-certificates.conf &&
+	local cfg='/etc/ca-certificates.conf'
+	[ -f "$cfg" ] &&
+		sed -i -e 's=^mozilla/DST_Root_CA_X3.crt=!&=' "$cfg" &&
 		update-ca-certificates ||
 		true
 
