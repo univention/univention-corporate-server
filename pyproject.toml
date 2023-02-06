@@ -1,5 +1,4 @@
 [tool.isort]
-# ruff 0.0.240
 py_version = "37"
 combine_as_imports = true
 filter_files = true
@@ -15,6 +14,7 @@ skip = "doc/doc-common/,base/univention-system-setup/tests,services/univention-l
 skip_glob = "venv/*"
 
 [tool.ruff]
+# ruff 0.0.241
 external = ["W601", "F812", "E403", "E704"]
 line-length = 180
 update-check = false
@@ -86,7 +86,7 @@ ignore = [
  "UP032",  # f-string
  "UP035",  # import-replacements
  "UP036",  # outdated-version-block
-# F401: not py2 compat because of "typing" type hint comments
+# F401: not py2 compat because of "typing" type hint comments: https://github.com/charliermarsh/ruff/issues/1619
 
  # would be nice but no autofix available
  "TID252",  # relative-imports
@@ -118,7 +118,6 @@ ignore = [
  "SIM118",  # unsure if everything is a dict, let's select each individually somewhen
 
  # issues in ruff:
- "B007",  # https://github.com/charliermarsh/ruff/issues/2207
  "PIE804",  # no-unnecessary-dict-kwargs https://github.com/charliermarsh/ruff/issues/2387
  "RUF100",  # https://github.com/charliermarsh/ruff/issues/2406, https://github.com/charliermarsh/ruff/issues/2407
 ]
@@ -165,9 +164,8 @@ combine-as-imports = true
 known-first-party = ["ucsschool", "univention"]
 known-third-party = ["apt", "apt_pkg", "atexit", "bzrlib", "cherrypy", "concurrent", "Crypto", "cryptography", "daemon", "debian", "defusedxml", "genshi", "M2Crypto", "OpenSSL", "PAM", "pexpect", "PIL", "pyasn1", "PyQt4", "saml2", "StringIO", "sqlalchemy", "StringIO", "tornado", "unittest", "yattag", "colorlog", "commands", "cups", "dateutil", "dns", "DNS", "ipaddr", "lazy_object_proxy", "ldap", "ldb", "ldif", "listener", "magic", "mock", "netifaces", "notifier", "psutil", "pycurl", "pytest", "pytz", "requests", "samba", "six", "smbpasswd", "tdb", "urllib3", "urlparse", "utils"]
 # known-local-folder = ["listener", "adconnector", "appcentertest", "appcenteruninstalltest", "dockertest", "s4connector", "dnstests", "grep_traceback", "essential", "samltest", "ldap_glue", "ldap_glue_s4", "quota_test", "quota_cache", "umc"]
-#line-length = 105
+#line-length = 120
 #multi-line-output = 5
 #include-trailing-comma = true
-#indent = "    "
 #skip = "doc/doc-common/,base/univention-system-setup/tests,services/univention-ldb-modules,packaging/ucslint/testframework"
 #skip-glob = "venv/*"

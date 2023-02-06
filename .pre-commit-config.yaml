@@ -76,7 +76,7 @@ repos:
     hooks:
       - id: ucs-erratum
   - repo: https://github.com/charliermarsh/ruff-pre-commit
-    rev: 'v0.0.240'
+    rev: 'v0.0.241'
     hooks:
       - id: ruff
         exclude: "^oidc/python-keycloak/\
