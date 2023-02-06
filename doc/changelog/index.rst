@@ -10,7 +10,7 @@ Changelog for Univention Corporate Server (UCS) |release|
 General
 *******
 
-* All Python source code is now indented with 4 spaces instead of tabulars
+* All Python source code is now indented with 4 spaces instead of tabulators
   (:uv:bug:`55642`).
 
 * The server password change script has been improved to track and log the
