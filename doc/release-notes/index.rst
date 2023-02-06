@@ -31,7 +31,7 @@ the most important changes:
 
 * The program :program:`univention-keycloak` was added to support the new App
   :guilabel:`Keycloak`, which can be installed from the :guilabel:`App Center`
-  to provide Single Sign On.
+  to provide :guilabel:`Single Sign On`.
 
 * This |UCSUCS| release is based on Debian 10.13 Buster.
 
