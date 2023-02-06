@@ -36,39 +36,35 @@ UPDATER_LOG="/var/log/univention/updater.log"
 exec 3>>"$UPDATER_LOG"
 UPDATE_NEXT_VERSION="$1"
 
+have () {
+	command -v "$1" >/dev/null 2>&1
+}
 die () {
 	echo "$*" >&2
 	exit 1
 }
-install () {
+apt_install () {
 	DEBIAN_FRONTEND=noninteractive apt-get -o DPkg::Options::=--force-confold -o DPkg::Options::=--force-overwrite -o DPkg::Options::=--force-overwrite-dir -y --allow-unauthenticated --allow-downgrades --allow-remove-essential --allow-change-held-packages install "$@" >&3 2>&3
 }
-reinstall () {
-	install --reinstall "$@"
+apt_reinstall () {
+	apt_install --reinstall "$@"
 }
 check_and_install () {
-	local state
-	state="$(dpkg --get-selections "$1" 2>/dev/null | awk '{print $2}')"
-	if [ "$state" = "install" ]; then
-		install "$1"
-	fi
+	is_installed "$1" &&
+		apt_install "$1"
 }
 check_and_reinstall () {
-	local state
-	state="$(dpkg --get-selections "$1" 2>/dev/null | awk '{print $2}')"
-	if [ "$state" = "install" ]; then
+	is_installed "$1" &&
 		reinstall "$1"
-	fi
 }
 is_installed () {
-	local state
-	state="$(dpkg --get-selections "$1" 2>/dev/null | awk '{print $2}')"
-	test "$state" = "install"
+	[ 'install' = "$(dpkg-query -f '${db:Status-Want}' -W "$1")" ]
 }
-is_deinstalled() {
-	local state
-	state="$(dpkg --get-selections "$1" 2>/dev/null | awk '{print $2}')"
-	test "$state" = "deinstall"
+is_deinstalled () {
+	[ 'deinstall' = "$(dpkg-query -f '${db:Status-Want}' -W "$1")" ]
+}
+is_joined () {
+	[ -f /var/univention-join/joined ]
 }
 
 echo -n "Running postup.sh script:"
@@ -80,23 +76,19 @@ eval "$(univention-config-registry shell)" >&3 2>&3
 . /usr/share/univention-lib/ucr.sh || exit $?
 
 case "${server_role:-}" in
-domaincontroller_master) install univention-server-master ;;
-domaincontroller_backup) install univention-server-backup ;;
-domaincontroller_slave) install univention-server-slave ;;
-memberserver) install univention-server-member ;;
+domaincontroller_master) apt_install univention-server-master ;;
+domaincontroller_backup) apt_install univention-server-backup ;;
+domaincontroller_slave) apt_install univention-server-slave ;;
+memberserver) apt_install univention-server-member ;;
 '') ;;  # unconfigured
-basesystem) die "The server role '$server_role' is not supported anymore with UCS-5!" ;;
 *) die "The server role '$server_role' is not supported!" ;;
 esac
 
-if ! is_ucr_true update50/skip/autoremove; then
+is_ucr_true update50/skip/autoremove ||
 	DEBIAN_FRONTEND=noninteractive apt-get -y --allow-unauthenticated --allow-downgrades --allow-remove-essential --allow-change-held-packages autoremove >&3 2>&3
-fi
 
 # removes temporary sources list (always required)
-if [ -e "/etc/apt/sources.list.d/00_ucs_temporary_installation.list" ]; then
-	rm -f /etc/apt/sources.list.d/00_ucs_temporary_installation.list
-fi
+rm -f /etc/apt/sources.list.d/00_ucs_temporary_installation.list
 
 # removing the atd service conf file that is setting the KillMode attribute
 if [ -e "/etc/systemd/system/atd.service.d/update500.conf" ]; then
@@ -104,11 +96,6 @@ if [ -e "/etc/systemd/system/atd.service.d/update500.conf" ]; then
 	rmdir --ignore-fail-on-non-empty /etc/systemd/system/atd.service.d/
 	systemctl daemon-reload
 fi
-
-# Bug #52993: recreate initramfs for all available kernels due to removed initramfs/init
-echo "recreate initramfs for all available kernels due to changes in univention-initrd..." >&3 2>&3
-/usr/sbin/update-initramfs -k all -c >&3 2>&3
-echo "done" >&3 2>&3
 
 # executes custom postup script (always required)
 if [ -n "${update_custom_postup:-}" ]; then
@@ -125,44 +112,29 @@ if [ -n "${update_custom_postup:-}" ]; then
 	fi
 fi
 
-if [ -x /usr/sbin/univention-check-templates ]; then
-	if ! /usr/sbin/univention-check-templates >&3 2>&3
-	then
-		echo "Warning: UCR templates were not updated. Please check $UPDATER_LOG or execute univention-check-templates as root."
-	fi
-fi
+have univention-check-templates &&
+	! univention-check-templates >&3 2>&3 &&
+	echo "Warning: UCR templates were not updated. Please check $UPDATER_LOG or execute univention-check-templates as root."
 
-if [ -f /var/univention-join/joined ]
-then
+is_joined &&
 	udm "computers/$server_role" modify \
 		--binddn "${ldap_hostdn:?}" \
 		--bindpwdfile "/etc/machine.secret" \
 		--dn "${ldap_hostdn:?}" \
 		--set operatingSystem="Univention Corporate Server" \
 		--set operatingSystemVersion="$UPDATE_NEXT_VERSION" >&3 2>&3
-fi
 
 # Bug #44188: recreate and reload packetfilter rules to make sure the system is accessible
 service univention-firewall restart >&3 2>&3
 
 # run remaining joinscripts
-if [ "$server_role" = "domaincontroller_master" ]; then
-	univention-run-join-scripts >&3 2>&3
-fi
-
-rm -f /etc/apt/preferences.d/99ucs500.pref /etc/apt/apt.conf.d/99ucs500
-
-rm -f /etc/apt/sources.list.d/15_ucs-online-version.list.upgrade500-backup
-rm -f /etc/apt/sources.list.d/20_ucs-online-component.list.upgrade500-backup
-
-# Bug #47192: Remove deprecated errata components
-ucr search --brief --non-empty '^repository/online/component/[1-4][.][0-9]+-[0-9]+-errata' |
-  tee -a "$UPDATER_LOG" |
-  cut -d: -f1 |
-  xargs -r ucr unset
+case "${server_role:-}" in
+domaincontroller_master) univention-run-join-scripts >&3 2>&3 ;;
+domaincontroller_backup) is_joined && univention-run-join-scripts >&3 2>&3 ;;
+esac
 
 # Bug #52971: fix __pycache__ directory permissions
-find /usr/lib/python3/dist-packages/ -type d -not -perm 755 -name __pycache__ -exec chmod 755 {} \;
+find /usr/lib/python3/dist-packages/ -type d -not -perm 755 -name __pycache__ -exec chmod 755 {} +
 
 
 echo "
@@ -182,35 +154,31 @@ date >&3
 # make sure that UMC server is restarted (Bug #43520, Bug #33426)
 at now >&3 2>&3 <<EOF
 sleep 30
-exec 3>>"$UPDATER_LOG"
-# Bug #47436: Only re-enable apache2 and umc if system-setup
-# is not running. System-setup will re-enable apache2 and umc.
-if ! pgrep -l -f /usr/lib/univention-system-setup/scripts/setup-join.sh; then
-  /usr/share/univention-updater/enable-apache2-umc --no-restart >&3 2>&3
-fi
-service univention-management-console-server restart >&3 2>&3
-service univention-management-console-web-server restart >&3 2>&3
-# the file path moved. during update via UMC the apache is not restarted. The new init script therefore checks the wrong pidfile which fails restarting.
-cp /var/run/apache2.pid /var/run/apache2/apache2.pid
-service apache2 restart >&3 2>&3
+exec >>"$UPDATER_LOG" 2>&1
+
+# Bug #47436: Only re-enable Apache2 and UMC if USS is not running. USS will re-enable Apache2 and UMC.
+/usr/share/univention-updater/enable-apache2-umc \$(pgrep -f /usr/lib/univention-system-setup/scripts/setup-join.sh >/dev/null && echo '--no-restart')
+
 # Bug #48808
-univention-app update >&3 2>&3 || true
-univention-app register --app >&3 2>&3 || true
+univention-app update || true
+univention-app register --app || true
+
+# Bug #53212 (4.4-x to 5.0-0)
 if dpkg -l univention-samba4 | grep -q ^ii; then
-	if samba-tool drs showrepl  2>&1 | egrep -q "DsReplicaGetInfo (.*) failed"; then
+	if samba-tool drs showrepl 2>&1 | egrep -q "DsReplicaGetInfo (.*) failed"; then
 		/etc/init.d/samba restart
 	fi
 	sleep 5
-	if [ "$(pgrep -c '(samba|rpc[([]|s3fs|cldap|ldap|drepl|kdc|kcc|ntp_signd|dnsupdate|winbindd|wrepl)') -lt 10 ]; then  # should be about 25
-		echo "WARNING "
-		echo "WARNING: There are too few samba processes running. Please check functionality before updating other UCS systems!"
-		echo "WARNING "
+	if [ "\$(pgrep -c '(samba|rpc[([]|s3fs|cldap|ldap|drepl|kdc|kcc|ntp_signd|dnsupdate|winbindd|wrepl)')" -lt 10 ]; then  # should be about 25
+		echo 'WARNING '
+		echo 'WARNING: There are too few samba processes running. Please check functionality before updating other UCS systems!'
+		echo 'WARNING '
 	fi
 	if ! univention-s4search -s base -b '' defaultNamingContext >/dev/null 2>&1; then
-		echo "ERROR "
-		echo "ERROR: Samba/AD LDAP is not available. Please check functionality before updating other UCS systems!"
-		echo "ERROR "
-	elif
+		echo 'ERROR '
+		echo 'ERROR: Samba/AD LDAP is not available. Please check functionality before updating other UCS systems!'
+		echo 'ERROR '
+	fi
 fi
 EOF
 

@@ -108,15 +108,11 @@ if [ -n "${update_custom_preup:-}" ]; then
 fi
 
 update_check_kernel () {
-	if is_ucr_true "update${VERSION}/pruneoldkernel"; then
+	is_ucr_true "update${VERSION}/pruneoldkernel" &&
 		univention-prune-kernels
-	fi
 }
 
 checks
-
-# Bug #53099: make sure upgrade does not break with univention-kde installed
-[ -e "/etc/univention/templates/files/usr/share/apps/ksmserver/pics/shutdownkonq.png" ] && rm -f "/etc/univention/templates/files/usr/share/apps/ksmserver/pics/shutdownkonq.png"
 
 # save ucr settings
 [ -d "${updateLogDir:?}" ] ||
@@ -125,11 +121,10 @@ cp /etc/univention/base*.conf "$updateLogDir/"
 ucr dump > "$updateLogDir/ucr.dump"
 
 # move old initrd files in /boot
-initrd_backup=/var/backups/univention-initrd.bak/
-if [ ! -d "$initrd_backup" ]; then
+initrd_backup='/var/backups/univention-initrd.bak'
+[ -d "$initrd_backup" ] ||
 	mkdir "$initrd_backup"
-fi
-mv /boot/*.bak /var/backups/univention-initrd.bak/ >/dev/null 2>&1
+mv /boot/*.bak "$initrd_backup" >/dev/null 2>&1
 
 
 # set KillMode of atd service to process to save the children from getting killed
@@ -145,32 +140,8 @@ case "${locale:-}" in
 esac
 
 # autoremove before the update
-if ! is_ucr_true update50/skip/autoremove; then
+is_ucr_true update50/skip/autoremove ||
 	DEBIAN_FRONTEND=noninteractive apt-get -y --allow-unauthenticated --allow-downgrades --allow-remove-essential --allow-change-held-packages autoremove >&3 2>&3
-fi
-
-[ -f /etc/apt/preferences.d/99ucs500.pref ] ||
-cat >/etc/apt/preferences.d/99ucs500.pref <<__PREF__
-Package: *
-Pin: release l=Univention Corporate Server, v=5.0.0
-Pin-Priority: 1001
-__PREF__
-[ -f /etc/apt/apt.conf.d/99ucs500 ] ||
-	echo 'APT::Get::Allow-Downgrades "true";' >/etc/apt/apt.conf.d/99ucs500
-
-deactivate_old_package_sources () {
-	# disable UCS 4 package sources to avoid mixing stretch and buster packages during the upgrade
-	local sources_lists
-	sources_lists=("/etc/apt/sources.list.d/15_ucs-online-version.list" "/etc/apt/sources.list.d/20_ucs-online-component.list")
-	for sources_list in "${sources_lists[@]}"; do
-		mv "$sources_list" "${sources_list}.upgrade500-backup"
-	done
-}
-deactivate_old_package_sources
-
-if udm "computers/$server_role" list --position "$ldap_hostdn" --filter 'objectClass=univentionNagiosHostClass' | grep -q "^DN:"; then
-	ucr set monitoring/client/nagios-automigration=true
-fi
 
 # Pre-upgrade
 preups=""
