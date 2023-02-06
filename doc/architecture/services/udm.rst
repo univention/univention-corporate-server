@@ -38,7 +38,7 @@ UDM architecture
    single: udm; architecture
    single: udm; python library
    single: udm; udm in umc
-   single: udm; udm python framework
+   single: udm; udm python library
 
 :numref:`architecture-model-udm` shows the architecture for |UDM|. A description
 of the elements follows.
@@ -58,13 +58,13 @@ LDAP Directory
 |UDM| uses a two layer architecture for abstraction as shown in
 :numref:`architecture-model-udm`. Except for the *LDAP directory*, all shown
 elements belong to |UDM|. The first abstraction layer at the bottom is the *UDM
-Python framework* with the following elements:
+Python library* with the following elements:
 
-UDM Python framework
+UDM Python library
    Provides the library for abstraction and the environment for *UDM syntax*,
-   *UDM modules*, and *UDM hooks*. *UDM Python framework* uses the *LDAP
+   *UDM modules*, and *UDM hooks*. *UDM Python library* uses the *LDAP
    directory*. You can imagine something similar to an object relational mapper
-   for SQL. *UDM Python framework* provides Python modules and classes below
+   for SQL. *UDM Python library* provides Python modules and classes below
    ``univention.admin.*``:
 
 UDM Syntax
@@ -94,13 +94,13 @@ UDM hooks
    customize |UDM|. For more information, refer to :ref:`services-hooks`.
 
 The second abstraction layer in :numref:`architecture-model-udm` uses the *UDM
-Python framework* and offers *UDM in UMC*, *UDM HTTP REST API*, the *UDM CLI daemon*, the
+Python library* and offers *UDM in UMC*, *UDM HTTP REST API*, the *UDM CLI daemon*, the
 *UCS\@school library*, and the *UDM Simple API*.
 
 UDM in UMC
    Runs the UDM modules inside |UMC| and presents them to the user over HTTP
    through the web browser. It creates one process per user session for all UDM
-   modules. *UDM in UMC* uses the *UDM Python framework*.
+   modules. *UDM in UMC* uses the *UDM Python library*.
 
 UDM HTTP REST API
    Provides the HTTP REST API interface to |UDM| as a separate service. |UDM|
@@ -111,14 +111,14 @@ UDM HTTP REST API
 UDM CLI Daemon
    Provides the command-line interface to |UDM| through one system wide process
    for each user. The process terminates itself after a default idle time of 10
-   minutes. The command-line interface uses the *UDM Python framework*.
+   minutes. The command-line interface uses the *UDM Python library*.
 
    .. TODO : Corresponding UCR variable is directory/manager/cmd/timeout. But
       not mentioned in other documents.
 
 UCS\@school library
    Provides an abstraction in Python for UCS\@school. The UCS\@school library
-   uses the *UDM Python framework*.
+   uses the *UDM Python library*.
 
 UDM Simple API
    Allows to use |UDM| capability and objects directly in Python programs. For
@@ -147,7 +147,7 @@ Dependencies for UDM
 
 .. index::
    pair: dependency; udm
-   single: udm dependency; udm python framework
+   single: udm dependency; udm python library
    single: udm dependency; udm syntax
    single: udm dependency; udm modules
    single: udm dependency; udm hooks
@@ -169,7 +169,7 @@ Following the chain, *UDM in UMC* and *UDM HTTP REST API* wouldn't work without
 |UDM| either. From the items mentioned in :ref:`services-udm-architecture` and
 :numref:`architecture-model-udm`, |UDM| needs the following to work properly:
 
-* *UDM Python framework*
+* *UDM Python library*
 * *UDM syntax*
 * *UDM modules*
 * *UDM hooks*
