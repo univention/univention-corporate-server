@@ -686,6 +686,11 @@ Listener/Notifier domain replication
   specify using the configuration file instead to avoid this problem
   (:uv:bug:`54986`).
 
+* The API for writing Listener modules has been simplified and the module name
+  is now automatically derived from the file name of the module, which removes
+  the requirement to explicitly specify the module name via the module variable
+  ``name``.
+
 .. _changelog-domain-dnsserver:
 
 DNS server
@@ -1275,9 +1280,6 @@ Samba
   (:uv:bug:`55591`).
 
 * Rotate additional log files :file:`log.dcerpcd` and file:`log.rpcd_*` (:uv:bug:`55435`).
-
-* Renaming a share works again. This was broken in UCS 5.0-0 due to an error in
-  the listener module writing the share configuration (:uv:bug:`55077`).
 
 * A segmentation fault in :program:`rpcd_spoolss` has been fixed. Adding printer drivers
   is possible again (:uv:bug:`55048`).
