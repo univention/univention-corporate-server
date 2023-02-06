@@ -4,7 +4,7 @@ msgstr ""
 "Project-Id-Version: UCS 5.0 Release Notes 5.0\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-02-06 15:25+0000\n"
-"PO-Revision-Date: 2023-02-06 17:00+0100\n"
+"PO-Revision-Date: 2023-02-06 17:06+0100\n"
 "Last-Translator: Univention GmbH <packages@univention.de>\n"
 "Language-Team: Univention GmbH <packages@univention.de>\n"
 "MIME-Version: 1.0\n"
@@ -66,11 +66,11 @@ msgstr ""
 
 #: ../../index.rst:27
 msgid ""
-"Group membership is now maintained using the OpenLDAP Overlay module "
+"Group membership is now maintained using the OpenLDAP overlay module "
 "``memberof``, which improves performance in large environments."
 msgstr ""
 "Die Zugehörigkeit von Benutzern zu Gruppen wird nun über das OpenLDAP "
-"overlay Modul ``memberof`` gepflegt, das in größeren Umgebungen eine "
+"Overlay Modul ``memberof`` gepflegt, das in größeren Umgebungen eine "
 "bessere Leistung verspricht."
 
 #: ../../index.rst:30
