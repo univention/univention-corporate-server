@@ -1075,18 +1075,25 @@ msgstr ""
 #: ../../mail/fetchmail.rst:13
 msgid ""
 "Once the installation is finished, there are additional input fields in "
-"the :menuselection:`Advanced settings --> Remote mail retrieval` tab of "
-"the user administration which can be used to configure the collection of "
-"mails from an external server. The mails are delivered to the inboxes of "
-"the respective users. The primary email address must be configured for "
-"that."
+"the :menuselection:`Advanced settings --> Remote mail retrieval (single)` "
+"and :menuselection:`Remote mail retrieval (multi)` tab of the user "
+"administration which can be used to configure the collection of mails "
+"from an external server. The mails are delivered to the inboxes of the "
+"respective users. The primary email address must be configured for that. "
+"Before using multi-drop configurations it is recommended to read "
+"`THE USE AND ABUSE OF MULTIDROP MAILBOXES <fetchmail-multidrop_>` in the "
+"Fetchmail manual."
 msgstr ""
-"Nach Abschluss der Installation finden sich in der Benutzerverwaltung im "
-"Reiter :menuselection:`Erweiterte Einstellungen --> Mailabruf von "
-"externen Servern` zusätzliche Eingabefelder, mit denen der Mailabruf von "
-"einem externen Server konfiguriert werden kann. Die Mails werden dabei in"
-" die Postfächer der jeweiligen Benutzer eingeliefert (die primäre E-Mail-"
-"Adresse muss dafür konfiguriert sein)."
+"Nach Abschluss der Installation finden sich in der Benutzerverwaltung, im "
+"Reiter :menuselection:`Erweiterte Einstellungen --> Mailabruf von externen "
+"Servern (Single)` und :menuselection:`Erweiterte Einstellungen --> "
+"Mailabruf von externen Servern (Multi), zusätzliche Eingabefelder, mit "
+"denen der Mailabruf von externen Servern konfiguriert werden kann. Die "
+"Mails werden dabei in die Postfächer der jeweiligen Benutzer eingeliefert "
+"(die primäre E-Mail-Adresse muss dafür konfiguriert sein). Vor der "
+"Verwendung von Multidrop-Konfigurationen ist es empfehlenswert `THE USE AND "
+"ABUSE OF MULTIDROP MAILBOXES <fetchmail-multidrop_>` zu lesen."
+
 
 #: ../../mail/fetchmail.rst:19
 msgid ""
@@ -1105,8 +1112,8 @@ msgstr ""
 "``false``)."
 
 #: ../../mail/fetchmail.rst:25
-msgid "*Remote mail retrieval* tab"
-msgstr "Reiter *Mailabruf von externen Servern*"
+msgid "*Remote mail retrieval (single)* tab"
+msgstr "Reiter *Mailabruf von externen Servern (Single)*"
 
 #: ../../mail/fetchmail.rst:29 ../../mail/management.rst:199
 #: ../../mail/management.rst:241
@@ -1153,8 +1160,8 @@ msgid "The name of the mail server from which the emails are to be fetched."
 msgstr "Der Name des Mailservers, von dem die Mails abgerufen werden sollen."
 
 #: ../../mail/fetchmail.rst:44
-msgid "Encrypt connection (SSL/TLS)"
-msgstr "Verbindung verschlüsseln (SSL/TLS)"
+msgid "Use SSL"
+msgstr "SSL verwenden"
 
 #: ../../mail/fetchmail.rst:45
 msgid ""
@@ -1164,11 +1171,11 @@ msgstr ""
 "Ist diese Option aktiviert, erfolgt der Mailabruf verschlüsselt (sofern "
 "dies vom Mailserver unterstützt wird)."
 
-#: ../../mail/fetchmail.rst:48
-msgid "Keep mails on the server"
-msgstr "Mails auf dem Server nicht löschen"
+#: ../../mail/fetchmail.rst:51
+msgid "Keep mails on remote server"
+msgstr "Mails auf dem externen Server nicht löschen"
 
-#: ../../mail/fetchmail.rst:49
+#: ../../mail/fetchmail.rst:52
 msgid ""
 "By default the fetched mails are deleted from the server following the "
 "transfer. If this option is enabled, it can be suppressed."
@@ -1176,6 +1183,50 @@ msgstr ""
 "In der Grundeinstellungen werden die abgerufenen Mails nach dem Transfer "
 "auf dem Server gelöscht. Ist diese Option aktiviert, kann dies "
 "unterbunden werden."
+
+#: ../../mail/fetchmail.rst:55
+msgid "*Remote mail retrieval (multi)* tab"
+msgstr "Reiter *Mailabruf von externen Servern (Multi)*"
+
+#: ../../mail/fetchmail.rst:74
+msgid "Local Domain Names"
+msgstr "Lokale Domänennamen"
+
+#: ../../mail/fetchmail.rst:75
+msgid "A space-separated list of local domain names. Leave it empty to use "
+"all local domains."
+msgstr "Eine leerzeichenseparierte Liste lokaler Domänennamen. Feld leer "
+"lassen, um alle lokalen Domänen zu verwenden."
+
+#: ../../mail/fetchmail.rst:78
+msgid "Virtual *qmail* prefix"
+msgstr "Virtuelle *Qmail* Präfix"
+
+#: ../../mail/fetchmail.rst:79
+msgid "The string prefix assigned to this field will be removed from the "
+"address found in the header which is specified with the envelope header "
+"option. E.g. if the value is set to `example-prefix-` and Fetchmail "
+"retrieves an email whose header matches with an address like "
+"`example-prefix-info@remotedomain.com` the mail will be forwarded as "
+"`info@localdomain.com.`"
+msgstr "Dieser String-Präfix wird von der Adresse, die sich im Header "
+"befindet und über das `Envelope-Header` Feld gesetzt werden kann, "
+"entfernt. Wenn der Wert beispielsweise auf `example-prefix-` gesetzt "
+"wird und Fetchmail eine Email abruft, in deren Header "
+"`example-prefix-info@remotedomain.com` angegeben ist, wird die Mail an "
+"`info@localdomain.com` weitergeleitet."
+
+#: ../../mail/fetchmail.rst:85
+msgid "Envelope Header"
+msgstr "Envelope-Header"
+
+#: ../../mail/fetchmail.rst:86
+msgid ""
+"The value of this field sets the header that Fetchmail expects to appear "
+"as a copy of the mail envelope address. It is used for mail rerouting. "
+msgstr ""
+"Ändert den Wert des Headers, in welchem Fetchmail eine Kopie der "
+"Envelope-Adresse erwartet. Wird zur Email-Umleitung verwendet."
 
 #: ../../mail/index.rst:57
 msgid "Chapter contents:"
