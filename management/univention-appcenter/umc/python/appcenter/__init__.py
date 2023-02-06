@@ -956,7 +956,7 @@ class Instance(umcm.Base, ProgressMixin):
             # format size to handle bytes
             size = result['size']
             byte_mods = ['B', 'kB', 'MB']
-            for byte_mod in byte_mods:
+            for byte_mod in byte_mods:  # noqa: B007
                 if size < 10000:
                     break
                 size = float(size) / 1000  # MB, not MiB
