@@ -35,9 +35,6 @@ the most important changes:
 
 * This |UCSUCS| release is based on Debian 10.13 Buster.
 
-* The Linux kernel has been updated to version 5.10.162 from Debian 11.6
-  Bullseye to support newer hardware.
-
 * Various security updates have been integrated into UCS 5.0-3, for example for
   :program:`Samba4`, Squid, BIND9, PostgreSQL and Dovecot.
 
