@@ -45,8 +45,8 @@ case "$1" in
 			pkgdb/scan?yes
 
 		# Create the local DB-Superuser pkgdbu for pkgdb with password in /etc/postgresql/pkgdb.secret
-		pkgdbu=`su - postgres -c "psql template1 -c \"select * from pg_user where usename='pkgdbu'\""|awk '/ pkgdbu /{print $1}'`
-		if [ ! "$pkgdbu" ] ;then
+		pkgdbu="$(su - postgres -c "psql template1 -c \"select * from pg_user where usename='pkgdbu'\""|awk '/ pkgdbu /{print $1}')"
+		if [ -z "$pkgdbu" ]; then
 			# only, if pkgdbu not exists
 			su - postgres -c "createuser --adduser --no-createdb pkgdbu"
 		fi
@@ -54,7 +54,7 @@ case "$1" in
 		# password
 		newPwd="$(create_machine_password)"
 		if su - postgres -c "psql -c \"ALTER USER pkgdbu WITH PASSWORD '$newPwd';\" template1"; then
-			printf "$newPwd" >/etc/postgresql/pkgdb.secret
+			printf '%s' "$newPwd" >/etc/postgresql/pkgdb.secret
 		fi
 		chmod ug=r,o= /etc/postgresql/pkgdb.secret
 		chown postgres:www-data /etc/postgresql/pkgdb.secret

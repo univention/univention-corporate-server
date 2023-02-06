@@ -34,6 +34,7 @@
 
 eval "$(univention-config-registry shell)"
 
+# shellcheck source=/dev/null
 . /usr/share/univention-lib/all.sh
 
 create_logfile_if_missing /var/log/univention/spamassassin-learn.log "root:adm" 640

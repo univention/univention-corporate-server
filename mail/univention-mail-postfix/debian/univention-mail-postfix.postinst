@@ -112,8 +112,7 @@ for file in transport virtual canonical access relocated; do
 done
 
 
-univention-config-registry commit /etc/mailname
-univention-config-registry commit /etc/listfilter.secret
+univention-config-registry commit /etc/mailname /etc/listfilter.secret
 
 if [ -z "$postfix_autostart" ] || [ "$postfix_autostart" = "yes" ]; then
 	deb-systemd-invoke restart postfix.service

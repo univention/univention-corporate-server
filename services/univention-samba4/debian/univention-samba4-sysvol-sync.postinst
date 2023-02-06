@@ -46,18 +46,12 @@ if [ "$1" = "configure" ]; then
 	univention-config-registry set samba4/sysvol/cleanup/cron?"4 4 * * *"
 
 	## create the sysvol directory
-	if [ ! -d /var/lib/samba/sysvol ]; then
-		   mkdir -p /var/lib/samba/sysvol
-		   chown -R root.adm /var/lib/samba/sysvol
-		   chmod 755 /var/lib/samba/sysvol
-	fi
+	[ -d /var/lib/samba/sysvol ] ||
+		install -m 755 -o root -g adm -d /var/lib/samba/sysvol
 
 	## create a sysvol backup directory
-	if [ ! -d /var/lib/samba/sysvol_backup ]; then
-		   mkdir -p /var/lib/samba/sysvol_backup
-		   chown -R root.adm /var/lib/samba/sysvol_backup
-		   chmod 755 /var/lib/samba/sysvol_backup
-	fi
+	[ -d /var/lib/samba/sysvol_backup ] ||
+		install -m 755 -o root -g adm -d /var/lib/samba/sysvol_backup
 fi
 
 # Fix permissions for the sysvol share

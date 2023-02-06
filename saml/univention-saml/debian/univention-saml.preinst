@@ -32,6 +32,7 @@
 
 #DEBHELPER#
 
+# shellcheck source=/dev/null
 . /usr/share/univention-lib/all.sh
 
 if ! grep "^samlcgi" /etc/passwd; then

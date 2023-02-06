@@ -103,10 +103,10 @@ then
 		tmphostname="$hostname"
 	fi
 	univention-config-registry set samba/profileserver?$tmphostname \
-								   samba/profilepath?'%U\windows-profiles\%a' \
-								   samba/homedirserver?$tmphostname \
-								   samba/homedirpath?%U \
-								   samba/homedirletter?I
+		samba/profilepath?'%U\windows-profiles\%a' \
+		samba/homedirserver?$tmphostname \
+		samba/homedirpath?%U \
+		samba/homedirletter?I
 fi
 
 univention-config-registry set \
@@ -185,7 +185,7 @@ run_dbcheck() {
 	required_space=$(du -s -B 1024 /var/lib/samba/private | awk '{print $1}')
 	free_space=$(df -P -B 1024 /var/backups | tail -n1 | awk '{print $4}')
 	safety_margin=102400
-	if [ "$free_space" -lt $(($required_space + $safety_margin)) ]; then
+	if [ "$free_space" -lt $((required_space + safety_margin)) ]; then
 		echo "ERROR: Not enough space for backup, skipping samba-tool dbcheck --cross-ncs --fix --yes"
 		return 1
 	fi
@@ -204,10 +204,8 @@ run_dbcheck() {
 }
 
 if [ "$1" = "configure" ]; then
-
-
 	if [ -z "$2" ]; then
-    		univention-config-registry set samba4/autostart="no"
+		univention-config-registry set samba4/autostart="no"
 
 		# only set this for new installations
 		if [ "$server_role" = "domaincontroller_master" ]; then
@@ -244,14 +242,14 @@ if [ "$1" = "configure" ]; then
 		##  https://forge.univention.org/bugzilla/show_bug.cgi?id=26641
 
 		# get the secret from ldb
-		secret="$(ldbsearch -H /var/lib/samba/private/secrets.ldb  flatname=$windows_domain secret | sed -ne 's|secret: ||p')"
+		secret="$(ldbsearch -H /var/lib/samba/private/secrets.ldb "flatname=$windows_domain" secret | sed -ne 's|secret: ||p')"
 		# get the host dn
 		dn="$(ldbsearch -H /var/lib/samba/private/sam.ldb "(&(cn=$hostname)(objectClass=computer))" dn | ldapsearch-wrapper | sed -ne 's|^dn: ||p')"
-		if [ -n "$dn" -a -n "$secret" ]; then
+		if [ -n "$dn" ] && [ -n "$secret" ]; then
 			machine_secret="$(cat /etc/machine.secret)"
 			if [ "$secret" != "$machine_secret" ]; then
 				# try to search with the machine secret in S4 LDAP
-				s_res="$(univention-ldapsearch -s base -h $hostname.$domainname -p 389 -w "$machine_secret" -D "$dn" dn | ldapsearch-wrapper | sed -ne 's|^dn: ||p')"
+				s_res="$(univention-ldapsearch -s base -h "$hostname.$domainname" -p 389 -w "$machine_secret" -D "$dn" dn | ldapsearch-wrapper | sed -ne 's|^dn: ||p')"
 				if [ -n "$s_res" ]; then
 					# the password from machine.secret is the valid password, so change the secrets.ldb
 					echo "Set secret for flatname=$windows_domain,cn=Primary Domains"
@@ -279,8 +277,7 @@ secret: $machine_secret
 	ntp_socket_dir='/var/lib/samba/ntp_signd'
 	ntp_needs_restart=false
 	if [ ! -d "$ntp_socket_dir" ]; then
-		mkdir -p -m 750 "$ntp_socket_dir"
-		chgrp ntp "$ntp_socket_dir"
+		install -m 750 -g ntp -d  "$ntp_socket_dir"
 		ntp_needs_restart=true
 	else
 		if [ "$(stat --printf '%G' "$ntp_socket_dir")" != 'ntp' ]; then

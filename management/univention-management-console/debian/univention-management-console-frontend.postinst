@@ -36,6 +36,7 @@
 #DEBHELPER#
 
 # generate a new hash for the UMC frontend in order to avoid caching problems
+# shellcheck source=/dev/null
 . /usr/share/univention-lib/umc.sh
 umc_frontend_new_hash
 

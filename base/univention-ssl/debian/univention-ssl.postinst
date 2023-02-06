@@ -34,6 +34,7 @@
 # <https://www.gnu.org/licenses/>.
 
 CERTPATH="/etc/univention/ssl/ucsCA/certs"
+# shellcheck disable=SC2034
 INDEXATTRPATH="/etc/univention/ssl/ucsCA/index.txt.attr"
 
 test -d "$CERTPATH" || /bin/mkdir -p "$CERTPATH"

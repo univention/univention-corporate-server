@@ -34,6 +34,7 @@
 
 #DEBHELPER#
 
+# shellcheck source=/dev/null
 . /usr/share/univention-lib/base.sh
 call_joinscript 31univention-nagios-raid.inst
 
