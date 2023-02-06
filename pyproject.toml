@@ -89,6 +89,7 @@ ignore = [
 # F401: not py2 compat because of "typing" type hint comments: https://github.com/charliermarsh/ruff/issues/1619
 
  # would be nice but no autofix available
+ "B007",  # unused-loop-control-variable
  "TID252",  # relative-imports
  "B904",  # allow raise-without-from-inside-except → too many violations
  "C417",  # unnecessary-map
