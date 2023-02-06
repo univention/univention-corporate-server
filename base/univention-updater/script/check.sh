@@ -1129,6 +1129,22 @@ if ucr.is_true("ucsschool/singlemaster", False) or (host_dn in edu_dc_dns):
 EOF
 }
 
+
+# check for custom rabbitmq-server configuration
+update_check_rabbitmq_server_custom_configuration () {
+	local var="update$VERSION/ignore_rabbitmq_custom_configuration"
+	ignore_check "$var" && return 100
+	if rabbitmqctl list_vhosts --no-table-headers | grep -Eqv '/|importhttpapi|Listing vhosts'
+	then
+		echo "	WARNING: Detected custom rabbitmq-server configuration."
+		echo "	The rabbitmq-server database will be moved during the upgrade and be unusable afterwards."
+		echo "	This is not a problem for UCS or UCS@school but might be a problem for other services using rabbitmq-server."
+		echo "	If you are OK with this, set the UCR variable $var to yes to skip this check."
+	return 1
+	fi
+	return 0
+}
+
 checks () {
 	# stderr to log
 	exec 2>>"$UPDATER_LOG"

@@ -237,6 +237,9 @@ done
 # Bug #52971: fix __pycache__ directory permissions
 find /usr/lib/python3/dist-packages/ -type d -not -perm 755 -name __pycache__ -exec chmod 755 {} \;
 
+# Bug #55637
+systemctl restart rabbitmq-server.service
+
 
 echo "
 
