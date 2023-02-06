@@ -37,16 +37,4 @@
 . /usr/share/univention-lib/base.sh
 call_joinscript 31univention-nagios-raid.inst
 
-if [ "$1" = "configure" ] && [ -n "$2" ]; then
-
-	# Bug 47319
-	if dpkg --compare-versions "$2" lt 7.0.1-0; then
-		if [ -e /var/univention-join/joined -a -e /etc/nagios/nrpe.univention.d/UNIVENTION_RAID.cfg ]; then
-			sed -i -r 's|^command\[UNIVENTION_RAID\]=/usr/lib/nagios/plugins/check_raid$|& -p mdstat|' /etc/nagios/nrpe.univention.d/UNIVENTION_RAID.cfg
-			service nagios-nrpe-server restart
-		fi
-	fi
-
-fi
-
 exit 0

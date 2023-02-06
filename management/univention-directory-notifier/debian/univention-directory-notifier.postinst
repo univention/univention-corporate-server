@@ -76,29 +76,8 @@ call_joinscript 02univention-directory-notifier.inst
 
 if [ "$1" = "configure" ]
 then
-	if [ -z "${2:-}" ]
-	then  # new installation
-		ucr set notifier/protocol/version?3
-		systemctl restart univention-directory-notifier || :
-	else  # upgrade
-		ucr set notifier/protocol/version?2
-
-		if [ -f /var/univention-join/joined ] &&
-			[ -s /var/lib/univention-ldap/notify/transaction ] &&
-			dpkg --compare-versions "$2" lt-nl 12.0.1-3
-		then
-			if systemctl is-active univention-directory-notifier >/dev/null
-			then
-				systemctl stop univention-directory-notifier
-				/usr/share/univention-directory-notifier/univention-translog --lenient import
-				systemctl start univention-directory-notifier
-			else
-				/usr/share/univention-directory-notifier/univention-translog --lenient import
-			fi
-		else
-			systemctl try-restart univention-directory-notifier || :
-		fi
-	fi
+	ucr set notifier/protocol/version?3
+	systemctl restart univention-directory-notifier || :
 fi
 
 exit 0

@@ -51,20 +51,6 @@ if apache2ctl --configtest; then
 	invoke-rc.d apache2 restart
 fi
 
-# update to UCS 4.2
-if [ "$1" = "configure" ] && dpkg --compare-versions "$2" lt-nl 9.0.47-1; then
-	univention-config-registry unset umc/http/session/timeout
-	a2dissite univention-management-console
-fi
-
-if [ "$1" = "configure" ] && dpkg --compare-versions "$2" lt-nl 9.0.80-67; then
-	univention-config-registry set umc/http/content-security-policy/script-src="$(univention-config-registry get umc/http/content-security-policy/script-src | sed  's#https://www.piwik.univention.de/ ##g')"
-fi
-
-if [ "$1" = "configure" ] && dpkg --compare-versions "$2" lt-nl 10.0.4-9; then
-	univention-config-registry unset umc/http/content-security-policy/child-src
-fi
-
 # update to UCS 5.0
 if [ "$1" = "configure" ] && dpkg --compare-versions "$2" lt-nl 12.0.0-1; then
 	# Delete old Python 2 cache which is incompatible with Python 3

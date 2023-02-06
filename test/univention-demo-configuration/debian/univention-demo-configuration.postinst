@@ -74,24 +74,6 @@ case "$1" in
 			/usr/share/univention-demo-configuration/portal/register_portal_entries.sh
 		fi
 
-		# update from version prior to 5.0.2-9 (UCS 4.2-2)
-		if dpkg --compare-versions "$2" lt-nl 5.0.2-9; then
-			# add test data upon update from versions
-			/usr/share/univention-demo-configuration/portal/register_portal_entries.sh
-
-			# remove obsolete portal entries
-			for ikey in demo-configuration demo-configuration-forum; do
-				ucr_keys=""
-				for jkey in description description/de label label/de link priority; do
-					ucr_keys="$ucr_keys ucs/web/overview/entries/admin/$ikey/$jkey"
-				done
-				# shellcheck disable=SC2086
-				ucr unset $ucr_keys
-				dn="cn=$ikey,cn=entry,cn=portals,cn=univention,$ldap_base"
-				udm portals/entry remove --dn "$dn"
-			done
-		fi
-
 		# Online Demo UMC has a unique piwik tracking id
 		sed -i 's|Piwik.getTracker("https://www.piwik.univention.de/piwik.php",14)|Piwik.getTracker("https://www.piwik.univention.de/piwik.php",37)|' /usr/share/univention-web/js/dojo/dojo.js
 		sed -i 's|PortalReloaderUDM|DemoPortalReloader|' /usr/share/univention-portal/portals.json

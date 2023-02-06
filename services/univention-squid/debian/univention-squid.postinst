@@ -41,16 +41,6 @@
 # the proxy user needs to be in the group winbindd_priv to be able to access winbind
 adduser proxy winbindd_priv
 
-# 4.3 update
-if [ "$1" = configure -a -n "$2" ] && dpkg --compare-versions "$2" lt 11.0.0-3; then
-	if [ -e "/etc/squid3.secret" ] && [ ! -e "/etc/squid.secret" ]; then
-		mv /etc/squid3.secret /etc/squid.secret
-	fi
-	if [ -e /etc/squid3/local.conf ] && [ ! -e /etc/squid/local.conf ]; then
-		mv /etc/squid3/local.conf /etc/squid/local.conf
-	fi
-fi
-
 LOCALINCLUDE=/etc/squid/local.conf
 if [ ! -e "$LOCALINCLUDE" ]; then
 	echo "# add local config here" >> "$LOCALINCLUDE"

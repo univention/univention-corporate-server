@@ -48,14 +48,7 @@ univention-config-registry set mail/antivir/spam?yes \
 
 #DEBHELPER#
 
-if [ "$1" = "configure" ]; then
-	# update
-	if [ -n "$2" ]; then
-		if dpkg --compare-versions "$2" lt 6.0.1-1 ; then
-			univention-config-registry set mail/antivir/spam=yes
-		fi
-	# installation
-	else
+if [ "$1" = "configure" ] && [ -z "$2" ]; then # installation
 		if is_ucr_true mail/antispam/rules/autoupdate ; then
 			# update spamassassin rules
 			umask 022
@@ -70,10 +63,8 @@ if [ "$1" = "configure" ]; then
 			echo "WARNING: the automatic update of the spamassassin rules has been deactivated."
 			echo "WARNING: for the correct function of spamassassin you may have to call sa-update manually."
 		fi
-	fi
 fi
 
 test -x /etc/init.d/amavis && invoke-rc.d amavis restart
 
 exit 0
-

@@ -87,7 +87,7 @@ postmap /etc/postfix/tls_policy
 eval "$(univention-config-registry shell)"
 
 # fresh installation
-if [ "$1" = "configure" -a -z "$2" ] ; then
+if [ "$1" = "configure" ] && [ -z "$2" ] ; then
 	univention-config-registry set \
 		mail/postfix/smtpd/restrictions/recipient/10="permit_mynetworks" \
 		mail/postfix/smtpd/restrictions/recipient/30="permit_sasl_authenticated" \
@@ -104,17 +104,6 @@ if [ "$1" = "configure" -a -z "$2" ] ; then
 fi
 
 # Bug 42249 - support virtual mail aliases
-if [ "$1" = configure -a -n "$2" ] && dpkg --compare-versions "$2" lt 11.0.1-5; then
-    # if mail/postfix/virtual/alias/maps is set, append ldap.external_aliases
-    if [ -n "$mail_postfix_virtual_alias_maps" ] && [ "${mail_postfix_virtual_alias_maps#*ldap.external_aliases}" = "$mail_postfix_virtual_alias_maps" ]; then
-        ucr set mail/postfix/virtual/alias/maps="$mail_postfix_virtual_alias_maps, ldap:/etc/postfix/ldap.external_aliases"
-    fi
-    # if mail/postfix/virtual/mailbox/maps is set and contains ldap.virtual, append ldap.virtual_mailbox (was split from ldap.virtual)
-    if [ -n "$mail_postfix_virtual_mailbox_maps" ] && [ "${mail_postfix_virtual_mailbox_maps#*ldap.virtual}" != "$mail_postfix_virtual_mailbox_maps" ] && [ "${mail_postfix_virtual_mailbox_maps#*ldap.virtual_mailbox}" = "$mail_postfix_virtual_mailbox_maps" ]; then
-        ucr set mail/postfix/virtual/mailbox/maps="$mail_postfix_virtual_mailbox_maps, ldap:/etc/postfix/ldap.virtual_mailbox"
-    fi
-fi
-
 for file in transport virtual canonical access relocated; do
   if [ ! -e /etc/postfix/$file ]; then
       touch /etc/postfix/$file

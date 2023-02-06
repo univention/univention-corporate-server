@@ -62,11 +62,8 @@ fi
 
 # Fix permissions for the sysvol share
 #  https://forge.univention.org/bugzilla/show_bug.cgi?id=27249
-if [ "$1" = "configure" -a -n "$2" ] && dpkg --compare-versions "$2" lt 1.0.176-1 ; then
-	chmod 755 /var/lib/samba/sysvol
-fi
-
-if [ "$1" = "configure" ] && dpkg --compare-versions "$2" lt 5.0.1-4 ; then
+if [ "$1" = "configure" ] && [ -z "$2" ]
+then
 	SYSVOL_LOCKFILE="/var/lock/sysvol-sync-dir"
 	touch "$SYSVOL_LOCKFILE" \
 	&& chgrp "DC Slave Hosts" "$SYSVOL_LOCKFILE" \

@@ -43,10 +43,4 @@ if ! grep "^samlcgi" /etc/group; then
 	adduser samlcgi samlcgi
 fi
 
-# Bug #45882 workaround, remove old stunnel config so that
-# the stunnel package can start the daemon
-if [ "$1" = upgrade ] && dpkg --compare-versions "$2" lt 5.0.0-3; then
-	rm /etc/stunnel/univention_saml.conf
-fi
-
 exit 0

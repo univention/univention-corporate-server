@@ -112,22 +112,7 @@ ucr set \
 	security/packetfilter/package/univention-ldap-server/tcp/7636/all/en="LDAPS"
 [ -x "/etc/init.d/univention-firewall" ] && invoke-rc.d univention-firewall restart
 
-if [ "$1" = configure ] && dpkg --compare-versions "$2" lt-nl 14.0.2-21; then
-	find /etc/ldap/ -name 'dh_2048.pem.??????????' -type f -empty -delete
-fi
 [ -s /etc/ldap/dh_2048.pem ] || cp /usr/share/univention-ldap/dh_2048.pem /etc/ldap/
-
-[ "$1" = configure ] && dpkg --compare-versions "$2" lt-nl 15.0.0-33 && systemctl daemon-reload
-
-# set ldap/shadowbind to false for updates (4.1 -> 4.2)
-if [ "$1" = configure ] && dpkg --compare-versions "$2" lt-nl 13.0.3-5; then
-	ucr set ldap/shadowbind=false
-fi
-
-# set ldap/refint to false for updates
-if [ "$1" = configure ] && dpkg --compare-versions "$2" lt-nl 16.0.7-7; then
-	ucr set ldap/refint=false
-fi
 
 ucr set \
 	ldap/debug/level?none \
@@ -183,17 +168,7 @@ upgrade_license () {
 
 if [ "$server_role" = "domaincontroller_master" ] || [ "$server_role" = "domaincontroller_backup" ]; then
 	/usr/lib/univention-install/01univention-ldap-server-init.inst || true
-	[ "$1" = configure ] && dpkg --compare-versions "$2" lt-nl 14.0.2-37 && /usr/share/univention-ldap/setup-translog init
 	/usr/lib/univention-install/10univention-ldap-server.inst || true
-	[ "$1" = configure ] && dpkg --compare-versions "$2" lt-nl 11.0.12-5 && upgrade_license || :
-fi
-
-if [ "$1" = "configure" ]; then
-	if dpkg --compare-versions "$2" lt-nl 14.0.2-16; then
-		if [ "$ldap_debug_level" = 0 ]; then
-			ucr set ldap/debug/level=none
-		fi
-	fi
 fi
 
 ## after this line slapd.conf is expected to be updated properly and slapd may restart
@@ -221,18 +196,7 @@ if [ "$1" = "configure" ]; then
 	## load the listener module
 	systemctl try-restart univention-directory-listener
 
-	# Bug #48530: resync listener module ldap_extension on Backup Directory Node/Replica Directory Node updating from older version
-	# to fix replication/activation issue in older versions of the listener module.
-	if [ -n "$2" ] && dpkg --compare-versions "$2" lt 14.0.2-35; then
-		if [ -e /var/univention-join/joined ] ; then
-			if [ "$server_role" = "domaincontroller_backup" -o "$server_role" = "domaincontroller_slave" ] ; then
-				echo "NOTICE: resyncing listener module 'ldap_extension' to replicate missing LDAP ACLs"
-				/usr/sbin/jitter 15 univention-directory-listener-ctrl resync ldap_extension
-			fi
-		fi
-	fi
-
-	if [ -n "$2" ] && dpkg --compare-versions "$2" lt 16.0.7-22; then
+	if dpkg --compare-versions "$2" lt-nl 16.0.7-22; then
 		if [ -e /var/univention-join/joined ] ; then
 			if [ "$server_role" = "domaincontroller_master" ] ; then
 				univention-directory-manager \

@@ -47,12 +47,6 @@ univention-config-registry set directory/manager/web/modules/autosearch?1 \
 	directory/manager/web/modules/groups/group/checks/circular_dependency?"yes" \
 	umc/module/udm/users/self/disabled?true
 
-if [ "$1" = "configure" ] && dpkg --compare-versions "$2" lt 7.0.10-23; then
-	mv /var/www/univention-directory-reports/univention-directory-reports-* /usr/share/univention-management-console-module-udm/
-	rmdir /var/www/univention-directory-reports || true
-	a2dissite univention-directory-manager.conf || true
-fi
-
 if [ "$1" = "configure" ] && dpkg --compare-versions "$2" lt-nl "10.0.1.24" && [ "$server_role" = "domaincontroller_master" ]; then
 	umc_operation_create "udm-reports" "UDM - Reports" "" "udm/reports/query" "udm/reports/create" "udm/reports/get"
 fi

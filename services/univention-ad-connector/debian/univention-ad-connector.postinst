@@ -43,26 +43,6 @@ create_logfile /var/log/univention/connector-ad.log "root:adm" 640
 create_logfile /var/log/univention/connector-ad-status.log "root:adm" 640
 create_logfile /var/log/univention/connector-ad-mapping.log "root:adm" 640
 
-if [ "$1" = "configure" -a -n "$2" ] && dpkg --compare-versions "$2" lt 8.0.0-1; then
-	univention-config-registry set connector/ad/mapping/group/grouptype?false
-
-fi
-
-if [ "$1" = "configure" -a -n "$2" ] && dpkg --compare-versions "$2" lt 8.0.17-7; then
-	# disable windowscomputer sync for existing installations
-	ucr connector/ad/mapping/computer/syncmode?none
-fi
-
-if [ "$1" = "configure" -a -n "$2" ] && dpkg --compare-versions "$2" lt 12.0.0-32; then
-	# do not sync userPrincipalName's
-	ucr set connector/ad/mapping/sync/userPrincipalName='false'
-fi
-
-# This ad-connector update depends on a Heimdal update, which needs a restart of the umc-server (Bug 51462)
-if [ "$1" = "configure" -a -n "$2" ] && dpkg --compare-versions "$2" lt 13.0.0-41; then
-	systemctl restart univention-management-console-server
-fi
-
 univention-config-registry set connector/ad/listener/dir?/var/lib/univention-connector/ad \
 			connector/ad/poll/sleep?5 \
 			connector/ad/retryrejected?10 \

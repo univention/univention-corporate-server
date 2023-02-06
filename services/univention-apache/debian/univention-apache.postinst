@@ -35,15 +35,6 @@
 
 #DEBHELPER#
 
-# update to 4.2-0
-if dpkg --compare-versions "$2" lt-nl 9.0.0; then
-	ucr update
-	a2dismod auth_pam
-	if [ "$(ucr get apache2/startsite)" = "ucs-overview/" ]; then
-		univention-config-registry unset "apache2/startsite"
-	fi
-fi
-
 a2enmod authnz_pam || true
 a2enmod unique_id || true
 a2enmod rewrite || true
@@ -56,7 +47,7 @@ a2enmod mpm_prefork || true
 
 a2enconf ucs.conf || true
 
-if [ "$1" = configure -a -z "$2" ]; then
+if [ "$1" = configure ] && [ -z "$2" ]; then
 	a2dismod ssl || true
 	a2enmod ssl || true
 	a2dissite default-ssl.conf || true

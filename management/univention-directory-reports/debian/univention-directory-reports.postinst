@@ -41,10 +41,6 @@ create_logfile /var/log/univention/directory-reports.log "root:adm" 640
 
 eval "$(univention-config-registry shell)"
 
-if dpkg --compare-versions "$2" lt-nl 9.0.1-1; then
-	univention-config-registry unset directory/reports/templates/pdf/user1 directory/reports/templates/pdf/group1 directory/reports/templates/pdf/computer1
-fi
-
 univention-config-registry set directory/reports/logo?/usr/share/univention-directory-reports/univention_logo.png \
 	directory/reports/templates/pdf/user1?'users/user "PDF Document" /etc/univention/directory/reports/default users.rml' \
 	directory/reports/templates/pdf/group1?'groups/group "PDF Document" /etc/univention/directory/reports/default groups.rml' \

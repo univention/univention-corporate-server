@@ -40,24 +40,6 @@
 
 chown listener:root /var/spool/univention-fetchmail
 
-if [ "$1" = configure -a -n "$2" ] && dpkg --compare-versions "$2" lt 6.0.1; then
-	if ! is_ucr_true fetchmail/enabled; then
-		ucr set fetchmail/autostart="$(ucr get fetchmail/enabled)"
-	fi
-	ucr unset fetchmail/enabled
-fi
-
-
-if dpkg --compare-versions "$2" le-nl 7.0.0-2; then
-	ucrToRemove=()
-	for var in server description server prefix password username defaultpackages version localmirror unmaintained; do
-		ucrToRemove[${#ucrToRemove[@]}]="repository/online/component/fetchmail/$var"
-	done
-	ucrToRemove[${#ucrToRemove[@]}]="repository/online/component/fetchmail"
-	ucr unset "${ucrToRemove[@]}"
-fi
-
-
 call_joinscript 92univention-fetchmail.inst
 
 systemctl try-reload-or-restart univention-directory-listener

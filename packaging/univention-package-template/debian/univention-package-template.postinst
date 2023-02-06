@@ -46,10 +46,9 @@ case "$1" in
 		# call the join script
 		call_joinscript 76univention-package-template.inst
 
-		# if [ -z "$2" ]; then    # installation
+		# if [ -z "$2" ]; then  # fresh installation
 		# fi
-
-		# if [ -n "$2" ] && dpkg --compare-versions "$2" lt 3.0.9-1; then #upgrade
+		# if dpkg --compare-versions "$2" lt-nl 8.0.1-1; then # upgrade
 		# fi
 
 		;;

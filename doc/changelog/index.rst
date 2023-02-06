@@ -1496,3 +1496,5 @@ Other changes
 * Python 3 compatibility for the SSS (Server Side Search control) has been
   added (:uv:bug:`49666`).
 
+* Code to handle old package updates has been removed from many packages (:uv:bug:`42330`).
+

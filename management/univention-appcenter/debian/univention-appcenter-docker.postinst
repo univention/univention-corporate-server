@@ -38,21 +38,6 @@
 ucr set appcenter/docker?enabled
 ucr set appcenter/docker/compose/network?172.16.1.1/16
 
-if dpkg --compare-versions "$2" lt-nl 5.0.22-7; then
-	test -x /etc/init.d/postgresl && service postgresql restart
-fi
-
-if dpkg --compare-versions "$2" lt-nl 6.0.2-4; then
-	for initscript in /etc/init.d/docker-app-*; do
-		test -e "$initscript" || continue
-		app_id="$(basename $initscript)"
-		app_id=${app_id#docker-app-}
-		rm "$initscript"
-		cat /usr/share/docker-app-container-init-script | sed -e "s|@%@APPID@%@|$app_id|g" >"$initscript"
-		chmod 755 "$initscript"
-	done
-fi
-
 #######
 ## This code can be used for further updates if
 ## scripts/docker-app-container-init-script will be changed

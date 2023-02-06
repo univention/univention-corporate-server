@@ -1,3 +1,9 @@
+univention-nagios-raid (9.0.1-2) unstable; urgency=medium
+
+  * Bug #42330: Remove old maintainer script package update code
+
+ -- Philipp Hahn <hahn@univention.de>  Mon, 06 Feb 2023 14:21:34 +0100
+
 univention-nagios-raid (9.0.1-1) unstable; urgency=medium
 
   * Bug #54748: add dependencies to monitoring packages

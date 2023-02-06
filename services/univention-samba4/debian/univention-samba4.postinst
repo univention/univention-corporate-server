@@ -61,70 +61,6 @@ if [ -z "$2" ]; then
 	done
 fi
 
-if [ "$1" = "configure" -a -n "$2" ] && dpkg --compare-versions "$2" lt 6.0.10-29; then
-	python - <<EOF
-# coding: utf-8
-import os
-import urllib
-rewrite = False
-dir = '/etc/samba/shares.conf.d'
-for f in os.listdir(dir):
-	name = urllib.quote(f, safe='')
-	if name != f:
-		os.rename(os.path.join(dir, f), os.path.join(dir, name))
-		rewrite = True
-
-if rewrite:
-	with open('/etc/samba/shares.conf.temp2', 'w') as fp:
-		print >>fp, '# Warning: This file is auto-generated and will be overwritten by \n#          univention-directory-listener module. \n#          Please edit the following file instead: \n#          /etc/samba/local.conf \n  \n# Warnung: Diese Datei wurde automatisch generiert und wird durch ein \n#          univention-directory-listener Modul überschrieben werden. \n#          Ergänzungen können an folgende Datei vorgenommen werden: \n# \n#          /etc/samba/local.conf \n#'
-		for f in os.listdir('/etc/samba/shares.conf.d'):
-			print >>fp, 'include = %s' % os.path.join('/etc/samba/shares.conf.d', f)
-	os.rename('/etc/samba/shares.conf.temp2', '/etc/samba/shares.conf')
-EOF
-fi
-
-if [ "$1" = "configure" -a -n "$2" ] && dpkg --compare-versions "$2" lt 6.0.10-33; then
-	SAMBA_DRIVERS="/var/lib/samba/drivers"
-	if [ -d "$SAMBA_DRIVERS" ]; then
-		chgrp -R "Printer-Admins" "$SAMBA_DRIVERS"
-		chmod -R g+rws "$SAMBA_DRIVERS"
-		setfacl -R -d -m g:Printer-Admins:rwx "$SAMBA_DRIVERS"
-	fi
-fi
-
-if [ "$1" = "configure" -a -n "$2" ] && dpkg --compare-versions "$2" lt 1.0.148-1 ; then
-	mkdir -p /etc/univention/skel/windows-profiles/default
-	mkdir -p /etc/univention/skel/windows-profiles/default.V2
-fi
-
-if [ "$1" = "configure" -a -n "$2" ] && dpkg --compare-versions "$2" lt 3.0; then
-	## set default for Bug #32394, may be removed after ucs3.2-0
-	ucr set samba/max/protocol?NT1
-fi
-
-
-# do not start wins in an ipv6 (only) setup Bug #33250
-if [ "$1" = "configure" -a -n "$2" ] && dpkg --compare-versions "$2" lt 3.0.39-8 ; then
-	if [ -z "$(get_default_ipv4_address)" ]; then
-		echo "WARNING: Wins support deactivated (this is an ipv6 only environment)."
-		univention-config-registry set windows/wins-support="no"
-	fi
-fi
-
-if [ "$1" = "configure" -a -n "$2" ] && dpkg --compare-versions "$2" lt 4.0.3-4 ; then
-	univention-config-registry set samba/spoolss/architecture?"Windows NT x86"
-fi
-
-if [ "$1" = "configure" -a -n "$2" ] && dpkg --compare-versions "$2" lt 4.0.3-6 ; then
-	for dname in default.V3 default.V4 default.V5; do
-		mkdir -p "/etc/univention/skel/windows-profiles/$dname"
-	done
-fi
-
-if [ "$1" = "configure" -a -n "$2" ] && dpkg --compare-versions "$2" lt 6.0.10-24 ; then
-	mkdir -p "/etc/univention/skel/windows-profiles/default.V6"
-fi
-
 ## samba3 defaults copied from univention-samba
 univention-config-registry set \
 	samba/share/home?yes \
@@ -151,7 +87,7 @@ univention-config-registry set \
 	samba/register/exclude/interfaces='docker0'
 
 # Set defaults during new installation
-if [ "$1" = "configure" -a -z "$2" ]; then
+if [ "$1" = "configure" ] && [ -z "$2" ]; then
 	# https://forge.univention.org/bugzilla/show_bug.cgi?id=41057
 	ucr set samba/interfaces?"lo <interfaces/primary>" \
 			samba/interfaces/bindonly?yes
@@ -225,14 +161,6 @@ ucr set security/packetfilter/package/univention-samba4/tcp/389/all="ACCEPT" \
 		security/packetfilter/package/univention-samba4/tcp/749/all="ACCEPT" \
 		security/packetfilter/package/univention-samba4/tcp/749/all/en="Kerberos admin"
 
-if [ "$1" = "configure" ]; then
-	if dpkg --compare-versions "$2" lt-nl "7.0.2-10"; then
-		ucr unset \
-			security/packetfilter/package/univention-samba4/tcp/49152/all \
-			security/packetfilter/package/univention-samba4/tcp/49152/all/en
-	fi
-fi
-
 [ -x "/etc/init.d/univention-firewall" ] && invoke-rc.d univention-firewall restart
 
 divert_univention_heimdal_service_cfg() {
@@ -298,11 +226,6 @@ if [ "$1" = "configure" ]; then
 			fi
 		fi
 
-		### The following block of code may be removed after ucs_3.2-1
-		if dpkg --compare-versions "$2" lt-nl "3.0.39-17"; then
-			univention-config-registry set samba/enable-msdfs=yes
-		fi
-
 		### The samba restart should always be done on updates
 		if [ -x /etc/init.d/samba ]; then
 			processes=$(pgrep -cfx '/usr/sbin/samba -D')
@@ -342,100 +265,6 @@ secret: $machine_secret
 					/etc/init.d/samba restart
 				fi
 			fi
-		fi
-
-		### The following block of code may be removed after ucs_3.2-0
-		if dpkg --compare-versions "$2" lt-nl "2.0.44-24"; then
-			default_domain_gpo_dir="/var/lib/samba/sysvol/$domainname/Policies/{31B2F340-016D-11D2-945F-00C04FB984F9}"
-			if [ -d "$default_domain_gpo_dir" ]; then
-				gpo_dir_owner=$(stat --printf '%U' "$default_domain_gpo_dir" 2>&1)
-				if [ "$gpo_dir_owner" = "UNKNOWN" ]; then
-					samba-tool ntacl sysvolreset
-				fi
-			fi
-		fi
-		### The following block of code may be removed after ucs_3.2-0
-		if dpkg --compare-versions "$2" lt-nl "3.0.6-10"; then
-
-			krb5conf_commit_needed=0
-			if [ -z "$kerberos_kdc" ]; then
-				univention-config-registry set \
-					kerberos/kdc?127.0.0.1
-			else
-				krb5conf_commit_needed=1
-			fi
-
-			if [ "$kerberos_kpasswdserver" = "$ldap_master" ] || [ -z "$kerberos_kpasswdserver" ]; then
-				## only change the default
-				univention-config-registry set \
-					kerberos/kpasswdserver=127.0.0.1
-			elif [ "$krb5conf_commit_needed" -eq 1 ]; then
-					univention-config-registry commit /etc/krb5.conf
-			fi
-
-			## run dbcheck on update but backup first.
-			if [ -d /var/lib/samba/private ]; then
-				backup_id=$(date +%Y%m%d-%H%M%S)
-				backup_dir="/var/backups/samba4.$backup_id"
-				if [ -d "$backup_dir" ]; then
-					rm -rf "$backup_dir"
- 				fi
-				mkdir "$backup_dir" && \
-				cp -a /var/lib/samba/private "$backup_dir" && \
-				samba-tool dbcheck --cross-ncs --fix --yes
- 			fi
-
-			if ! [ -r "/etc/krb5.keytab" ]; then
-				echo "/etc/krb5.keytab does not exist yet."
-			fi
-			# Re-commit /etc/krb5.keytab
-			#  https://forge.univention.org/bugzilla/show_bug.cgi?id=27426
-			/usr/share/univention-samba4/scripts/create-keytab.sh
-			if ! [ -r "/etc/krb5.keytab" ]; then
-				echo "WARNING: /etc/krb5.keytab not created."
-			fi
-		fi
-
-		### The following block of code may be removed after ucs_4.1-0
-		if dpkg --compare-versions "$2" lt-nl "5.0.0-11"; then
-			if [ "$samba_max_protocol" = "SMB2" ]; then
-				univention-config-registry unset samba/max/protocol
-			fi
-		fi
-
-		### The following block of code may be removed after ucs4.1-2
-		if dpkg --compare-versions "$2" lt-nl "5.0.1-27"; then
-			divert_univention_heimdal_service_cfg
-		fi
-		### The following block of code may be removed after errata4.2-1
-		if dpkg --compare-versions "$2" lt-nl "6.0.10-26"; then
-			run_dbcheck
-		fi
-
-		# bug #41190 / bug #39806 - restart bind9 after bind-dlz changes
-		if dpkg --compare-versions "$2" lt-nl "6.0.10-13"; then
-				if [ -x /etc/init.d/bind9 ]; then
-					/etc/init.d/bind9 restart
-				fi
-		fi
-
-		if dpkg --compare-versions "$2" lt-nl "7.0.0-1"; then
-				if [ -x /etc/init.d/bind9 ]; then
-					/etc/init.d/bind9 restart
-				fi
-		fi
-
-		if dpkg --compare-versions "$2" lt-nl "8.0.0-1"; then
-			/etc/init.d/samba stop
-			/usr/bin/samba-tool dbcheck --reindex
-			/etc/init.d/samba start
-			if [ -x /etc/init.d/bind9 ]; then
-				/etc/init.d/bind9 restart
-			fi
-		fi
-
-		if dpkg --compare-versions "$2" lt-nl "8.0.0-17"; then
-			chmod go-w /var/lib/samba/private/*_update_list
 		fi
 
 		if dpkg --compare-versions "$2" lt-nl "9.0.6-5"; then

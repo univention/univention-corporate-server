@@ -98,39 +98,22 @@ if [ ! -e /etc/bind/local-predlz.conf.samba4 ]; then
 fi
 
 if [ "$1" = "configure" ]; then
-	dpkg --compare-versions "$2" lt 11.0.0-6 &&
+	if [ -z "$2" ]
+	then
 		ucr commit /etc/bind/named.conf.samba4
-	dpkg --compare-versions "$2" lt 11.0.0-9 && {
 		rm -f /etc/systemd/system/bind9.service
 		systemctl --system daemon-reload
-	}
-	dpkg --compare-versions "$2" lt 12.0.2-1 && {
-		service bind9 stop
-		for dirname in "univention-bind" "univention-bind-proxy" "univention-bind-samba4"; do
-			rm -rf "/etc/runit/$dirname"
-			rm -rf "/etc/runit/univention/$dirname"
-			rm -rf "/etc/univention/templates/files/etc/runit/$dirname"
-		done
-		systemctl --system daemon-reload
-		service bind9 start
-	}
-	if [ -n "$2" ]; then
-		systemctl try-restart bind9 || service bind9 restart
-	else
-		service bind9 start
 	fi
-	dpkg --compare-versions "$2" lt 11.0.0-11 &&
+	deb-systemd-invoke restart bind9
+	if [ -z "$2" ]
+	then
+		# shellcheck disable=SC2015
 		[ -e /var/univention-join/joined ] &&
 		[ -x /usr/share/univention-server/univention-fix-ucr-dns ] &&
 		/usr/share/univention-server/univention-fix-ucr-dns ||
 		: # better safe than sorry
-	if dpkg --compare-versions "$2" lt 11.0.0-17
-	then
-		rm -f /etc/init.d/univention-bind /etc/init.d/univention-bind-proxy
-		update-rc.d -f univention-bind remove
-		update-rc.d -f univention-bind-proxy remove
 	fi
-	systemctl try-restart univention-directory-listener
+	deb-systemd-invoke try-restart univention-directory-listener
 fi
 
 deb-systemd-helper enable bind9.service

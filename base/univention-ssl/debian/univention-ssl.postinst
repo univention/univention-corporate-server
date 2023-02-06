@@ -88,31 +88,6 @@ esac
 
 if [ "$1" = "configure" ]
 then
-	if dpkg --compare-versions "$2" lt-nl 12.0.0-9
-	then
-		echo 'unique_subject = no' > "$INDEXATTRPATH"
-		sed -i '/^policy \+=/aunique_subject      = no' /etc/univention/ssl/openssl.cnf
-	fi
-
-	if dpkg --compare-versions "$2" lt-nl 10.0.0-12
-	then
-		# shellcheck disable=SC2016
-		find /etc/univention/ssl -name openssl.cnf -exec sed -r \
-			-e 's/^(default_bits\s*=\s*)\d+$/\1$ENV::DEFAULT_BITS/' \
-			-e 's/^(default_md\s*=\s*)\S+$/\1$ENV::DEFAULT_MD/' \
-			-e 's/^(default_crl_days\s*=\s*)\S+$/\1$ENV::DEFAULT_CRL_DAYS/' \
-			-i {} +
-	fi
-	if dpkg --compare-versions "$2" lt-nl 10.0.0-5
-	then
-		if ! grep -q 'copy_extensions     = copy' /etc/univention/ssl/openssl.cnf; then
-			sed --in-place 's/crl_extensions     = crl_ext/crl_extensions     = crl_ext\ncopy_extensions     = copy/g' /etc/univention/ssl/openssl.cnf
-		fi
-		# create new ssl/validity/... ucr variables
-		if [ -x /usr/sbin/univention-certificate-check-validity ]; then
-			/usr/sbin/univention-certificate-check-validity
-		fi
-	fi
 	SSL='/usr/local/share/ca-certificates/ucsCA.crt'
 	if [ ! -e "$SSL" ]
 	then
@@ -121,10 +96,6 @@ then
 	fi
 
 	systemctl try-restart univention-directory-listener
-fi
-
-if dpkg --compare-versions "$2" lt-nl 10.0.0-12 && [ -e '/usr/local/share/ca-certificates/ucsCA.crt' ]; then
-	update-ca-certificates --fresh
 fi
 
 #DEBHELPER#

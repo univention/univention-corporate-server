@@ -40,7 +40,7 @@ if [ -x /etc/init.d/slapd ] &&
 	[ -x /usr/share/univention-ldap/ldap_setup_index ] &&
 	[ -e /var/univention-join/joined ] &&
 	[ "$1" = configure ] &&
-	dpkg --compare-versions "$2" lt 13.0.7-11~ &&
+	[ -z "$2" ] &&
 	! ucr get ldap/index/eq | tr , '\n' | grep -Fxq univentionUDMPropertyCopyable &&
 	univention-ldapsearch -LLL -o ldif-wrap=no -b cn=Subschema -s base attributeTypes | grep -Fq "NAME 'univentionUDMPropertyCopyable'"
 then
@@ -54,50 +54,15 @@ then
 	fi
 fi
 
-if [ "$1" = "configure" -a -z "$2" ]; then
+if [ "$1" = "configure" ] && [ -z "$2" ]; then
 	if test -x /etc/init.d/slapd; then
 		# start on Primary, slapd may be down by schema-conflicts which are cleared by a new slapd.conf-template
 		server_role=$(ucr get server/role)
 		if [ "$server_role" = "domaincontroller_master" ]
 		then
-			/etc/init.d/slapd restart
+			deb-systemd-invoke restart slapd
 		else
-			grep -q crestart /etc/init.d/slapd && /etc/init.d/slapd crestart || true
-		fi
-	fi
-fi
-
-if [ "$1" = "configure" -a -n "$2" ]; then
-	## On update
-	# Revert diversion created in errata3.2-5 for (Bug #38488)
-	if dpkg --compare-versions "$2" lt '11.0.12-6'; then
-
-		diverted_schema_file='/usr/share/univention-ldap/schema/msgpo.schema'
-		dpkg-divert --local \
-			--remove "$diverted_schema_file" || true
-
-		diversion_target="$diverted_schema_file".ucs-errata
-		if [ -r "$diversion_target" ]; then
-			rm "$diversion_target"
-		fi
-	fi
-	# UCS 4.4-0-errata: add univentionDomainControllerComputersObject attribute default value to "cn=default containers"
-	eval "$(ucr shell ldap/base server/role)"
-	if [ -e /var/univention-join/joined -a "$server_role" = "domaincontroller_master" ] && dpkg --compare-versions "$2" lt '15.0.0-16'; then
-		dc_content="$(ldapsearch -QLLLo ldif-wrap=no -Y EXTERNAL -H ldapi:/// -b "$(ucr get ldap/base)" -z 1 "objectClass=univentionDirectory" "univentionComputersObject")"
-		dc_dn="$(echo "$dc_content" | sed -ne 's/^dn: //p;T;q')"
-		dc_content="$(echo "$dc_content" | grep '^univentionComputersObject:' | grep -v -i -e "^univentionComputersObject: cn=computers,$ldap_base" -e "^univentionComputersObject: cn=memberserver,cn=computers,$ldap_base" | sed 's/^univentionComputersObject/univentionDomainControllerComputersObject/g')"
-
-		if [ -n "$dc_dn" -a -n "$dc_content" ]; then
-			invoke-rc.d slapd restart  # apply new schema
-			cat <<__LDIF__ | ldapmodify -QY EXTERNAL -H ldapi:///
-dn: $dc_dn
-changetype: modify
-add: univentionDomainControllerComputersObject
-$dc_content
-
-__LDIF__
-		[ "$?" != 0 ] && echo 'ERROR: Modifying default container failed. Please run univention-run-join-scripts --force --run-scripts 18python-univention-directory-manager.inst.'
+			deb-systemd-invoke try-restart slapd
 		fi
 	fi
 fi

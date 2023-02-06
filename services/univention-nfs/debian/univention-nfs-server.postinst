@@ -60,19 +60,10 @@ case "$1" in
 			security/packetfilter/package/univention-nfs/tcp/32765:32769/all/en="NFS related RPC daemons" \
 			security/packetfilter/package/univention-nfs/udp/32765:32769/all="ACCEPT" \
 			security/packetfilter/package/univention-nfs/udp/32765:32769/all/en="NFS related RPC daemons"
-		# Bug #33254:
-		if dpkg --compare-versions "$2" lt-nl 9.0.0-3
-		then
-			ucr unset \
-				security/packetfilter/package/univention-nfs/tcp/4660/all \
-				security/packetfilter/package/univention-nfs/tcp/4660/all/en \
-				security/packetfilter/package/univention-nfs/udp/4660/all \
-				security/packetfilter/package/univention-nfs/udp/4660/all/en
-		fi
 		[ -x "/etc/init.d/univention-firewall" ] && invoke-rc.d univention-firewall restart
 
-		# Bug #46587: Disable rpc-svcgssd.service for now
-		if dpkg --compare-versions "$2" lt 10.0.0-3
+		# Bug #46587: Disable rpc-svcgssd.service for now on fresh installations only
+		if [ -z "$2" ]
 		then
 			systemctl mask rpc-svcgssd.service
 		fi

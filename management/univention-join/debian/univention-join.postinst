@@ -43,29 +43,4 @@ create_logfile /var/log/univention/join.log "root:adm" 640
 
 call_joinscript 20univention-join.inst
 
-if [ "$1" = configure -a -n "$2" ] && dpkg --compare-versions "$2" lt 0.7; then
-	res=`find /etc/univention/ssl/ -group root`
-	if [ -n "$res" ]; then
-		find /etc/univention/ssl/ -group root | xargs chown root."DC Backup Hosts" >/dev/null 2>&1
-	fi
-fi
-
-if [ "$1" = configure -a -n "$2" ] && dpkg --compare-versions "$2" lt 2.0.19-1; then
-       if [ -e "/etc/ldap-backup.secret" ]; then
-		chmod 640 /etc/ldap-backup.secret
-		chgrp "DC Backup Hosts" /etc/ldap-backup.secret || true
-       fi
-fi
-
-if [ "$1" = "configure" -a -n "$2" ] && dpkg --compare-versions "$2" lt 4.0.4-1; then
-	for secret_file in "/etc/ldap.secret" "/etc/ldap-backup.secret" "/etc/machine.secret" "/etc/backup-join.secret" "/etc/slave-join.secret"; do
-		## remove EOL
-		if test -e "$secret_file"; then
-			tmp_ldap_secret_file="${secret_file}.dpkg-tmp"
-			cp -a "$secret_file" "$tmp_ldap_secret_file"
-			echo -n "$(cat "$secret_file")" > "$tmp_ldap_secret_file" && mv "$tmp_ldap_secret_file" "$secret_file"
-		fi
-	done
-fi
-
 exit 0
