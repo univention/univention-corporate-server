@@ -92,7 +92,7 @@ run-parts -v /usr/lib/univention-system-setup/scripts/25_defaultlocale
 # Do not allow the UMC to be restarted, webserver is OK, but
 # make sure the webserver uses the same certificates during setup.
 # The variables are removed in during cleanup
-/usr/share/univention-updater/disable-apache2-umc --exclude-apache
+/usr/share/univention-updater/disable-apache2-umc
 # Do not change apache certificate when installing via debian installer
 eval "$(univention-config-registry shell)"
 if [ "$system_setup_boot_installer" != "true" ]; then

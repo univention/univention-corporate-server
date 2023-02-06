@@ -346,7 +346,7 @@ class Instance(umcm.Base, ProgressMixin):
         action.logger.addHandler(handler)
         try:
             package_manager = get_package_manager()
-            with package_manager.no_umc_restart(exclude_apache=True):
+            with package_manager.no_umc_restart():
                 success = action.call(app=[app], username=self.username, password=self.password, **kwargs)
                 return {'success': success}
         except AppCenterError as exc:
@@ -861,7 +861,7 @@ class Instance(umcm.Base, ProgressMixin):
                 if not not_found:
                     def _thread(package_manager, function, packages):
                         with package_manager.locked(set_finished=True):
-                            with package_manager.no_umc_restart(exclude_apache=True):
+                            with package_manager.no_umc_restart():
                                 if function == 'install':
                                     package_manager.install(*packages)
                                 else:

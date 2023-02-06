@@ -33,7 +33,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-RESTART=true
+action='restart'
 
 die () {
 	echo "${0##/*}: $*" >&2
@@ -50,7 +50,7 @@ do
 		exit 0
 		;;
 	--no-restart)
-		RESTART=false
+		action='start'
 		shift
 		;;
 	--)
@@ -63,29 +63,13 @@ do
 	esac
 done
 
-for prog in univention-management-console-server univention-management-console-web-server apache2
-do
-	bin="/usr/sbin/$prog"
-	if [ -f "$bin" ] && [ ! -x "$bin" ]
-	then
-		dpkg-statoverride --remove "$bin" 2>&1
-		chmod a+x "$bin"
-		"$RESTART" &&
-			systemctl restart "$prog"
-	fi
-done
+# TODO: Can be removed after UCS 5.0-3
+dpkg-statoverride --quiet --force-statoverride-remove --remove /usr/sbin/apache2
+dpkg-statoverride --quiet --force-statoverride-remove --remove /usr/sbin/univention-management-console-web-server
+dpkg-statoverride --quiet --force-statoverride-remove --remove /usr/sbin/univention-management-console-server
+chmod +x /usr/sbin/apache2 /usr/sbin/univention-management-console-web-server /usr/sbin/univention-management-console-server
 
-if [ -d /run/systemd/system ]
-then
-	# Try to reach a working state: Start all $prog services.
-	# The --no-restart parameter is there to avoid stopping
-	# existing connections and sessions. Simply trying to start
-	# an already running service should do no harm
-	case "$(systemctl is-system-running)" in
-	running|degraded)
-		systemctl start univention-management-console-server univention-management-console-web-server
-		;;
-	esac
-fi
+systemctl unmask --runtime univention-management-console-web-server.service univention-management-console-server.service
+systemctl "$action" univention-management-console-web-server.service univention-management-console-server.service apache2.service
 
 exit 0

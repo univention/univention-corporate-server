@@ -555,12 +555,9 @@ class PackageManager(object):
         """
         Run package manager with restart of |UMC| (and Apache) disabled.
 
-        :param bool exclude_apache: If `True` Apache may be restarted.
+        :param bool exclude_apache: DEPRECATED
         """
-        if exclude_apache:
-            cmd_disable_exec = [CMD_DISABLE_EXEC, '--exclude-apache']
-        else:
-            cmd_disable_exec = CMD_DISABLE_EXEC
+        cmd_disable_exec = CMD_DISABLE_EXEC
         self._shell_command(cmd_disable_exec, False)
         try:
             yield

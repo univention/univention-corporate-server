@@ -48,6 +48,7 @@ do
 		exit 0
 		;;
 	--exclude-apache)
+		echo "$0: DEPRECATED --exclude-apache"
 		shift
 		;;
 	--)
@@ -60,13 +61,6 @@ do
 	esac
 done
 
-for prog in univention-management-console-web-server univention-management-console-server
-do
-	bin="/usr/sbin/$prog"
-	if [ -x "$bin" ]
-	then
-		dpkg-statoverride --quiet --update --add root root 0644 "$bin" 2>&1
-	fi
-done
+systemctl mask --runtime univention-management-console-web-server.service univention-management-console-server.service
 
 exit 0

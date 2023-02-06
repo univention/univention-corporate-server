@@ -62,7 +62,7 @@ from univention.management.console.modules.sanitizers import BooleanSanitizer, L
 _ = umc.Translation('univention-management-console-module-join').translate
 
 CMD_ENABLE_EXEC = ['/usr/share/univention-updater/enable-apache2-umc', '--no-restart']
-CMD_DISABLE_EXEC = ['/usr/share/univention-updater/disable-apache2-umc', '--exclude-apache']
+CMD_DISABLE_EXEC = ['/usr/share/univention-updater/disable-apache2-umc']
 RE_HOSTNAME = re.compile(r'^[a-z]([a-z0-9-]*[a-z0-9])*(\.([a-z0-9]([a-z0-9-]*[a-z0-9])*[.])*[a-z0-9]([a-z0-9-]*[a-z0-9])*)?$')
 
 
