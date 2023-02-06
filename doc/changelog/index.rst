@@ -654,9 +654,7 @@ Univention Configuration Registry
 * Add validation for values of UCR variables. By default only a warning is
   printed if an invalid value is set. By setting the UCR variable
   :envvar:`ucr/check/type` to ``yes`` type checking can be enforced, which will prevent
-  invalid values to be set. As the type annotation of several UCR variables is
-  currently wrong, types ``int`` and ``bool`` are ignored for now and will be fixed
-  by future updates (:uv:bug:`54495`).
+  invalid values to be set (:uv:bug:`54495`).
 
 * A new variable type ``url_http`` was added in order to support validation of
   http/https URL strings (:uv:bug:`55044`).
@@ -683,7 +681,7 @@ Listener/Notifier domain replication
 
 * Calls to several OpenLDAP tools (:command:`slaptest` etc.) fail when the :file:`cn=config`
   LDIF exists in the file-system. The package has been adjusted to explicitly
-  specify using the configuration file instead to avoid this problem
+  use the configuration file instead to avoid this problem
   (:uv:bug:`54986`).
 
 * The API for writing Listener modules has been simplified and the module name
@@ -733,7 +731,8 @@ Univention Management Console web interface
 * The UDM REST API responses now respect the requested language so that e.g.
   error messages are correctly translated (:uv:bug:`55224`).
 
-* For request tracing a unique ID has been added to each request via the HTTP header ``X-Request-Id`` which is accepted as request header (or if not given
+* For request tracing a unique ID has been added to each request via the HTTP
+  header ``X-Request-Id`` which is accepted as request header (or if not given
   uniquely created) and returned in the response headers (:uv:bug:`55186`).
 
 * The translation of error messages in the UDM REST API has been corrected
@@ -742,8 +741,8 @@ Univention Management Console web interface
 * The error response format has been improved (while being backwards
   compatible). It is now described in the OpenAPI schema (:uv:bug:`50249`).
 
-* A client can now requests all CSS themes. This makes it possible to base
-  themes on another themes. This is required for :program:`univention-app-appliance`
+* A client can now request all CSS themes. This makes it possible to base
+  themes on another theme. This is required for :program:`univention-app-appliance`
   (:uv:bug:`55107`).
 
 * The checkboxes in grids are now rendered in the correct state while scrolling
@@ -786,8 +785,9 @@ Univention Management Console server
   (:uv:bug:`55229`).
 
 * The SAML identity cache has been changed to an in-memory cache. This can be
-  changed to the filesystem database by setting the UCR variable :envvar:`umc/saml/in- memory-identity-cache` to ``false``. This is done automatically for servers
-  with enabled multiprocessing (:uv:bug:`55424`).
+  changed to the filesystem database by setting the UCR variable
+  :envvar:`umc/saml/in-memory-identity-cache` to ``false``. This is done
+  automatically for servers with enabled multiprocessing (:uv:bug:`55424`).
 
 * The error handling of the :program:`pysaml2` usage has been improved (:uv:bug:`55248`).
 
@@ -799,7 +799,7 @@ Univention Management Console server
 
 * Calls to several OpenLDAP tools (:command:`slaptest` etc.) fail when the :file:`cn=config`
   LDIF exists in the file-system. The package has been adjusted to explicitly
-  specify using the configuration file instead to avoid this problem
+  use the configuration file instead to avoid this problem
   (:uv:bug:`55570`).
 
 * The library functions to get cached LDAP connections has been enhanced
@@ -941,7 +941,7 @@ Modules for system settings / setup wizard
 
 * Calls to several OpenLDAP tools (:command:`slaptest` etc.) fail when the :file:`cn=config`
   LDIF exists in the file-system. The package has been adjusted to explicitly
-  specify using the configuration file instead to avoid this problem
+  use the configuration file instead to avoid this problem
   (:uv:bug:`54986`).
 
 * Joining into the domain is now also possible for users containing a zero in
@@ -972,7 +972,7 @@ System diagnostic module
 
 * Calls to several OpenLDAP tools (:command:`slaptest` etc.) fail when the :file:`cn=config`
   LDIF exists in the file-system. The package has been adjusted to explicitly
-  specify using the configuration file instead to avoid this problem
+  use the configuration file instead to avoid this problem
   (:uv:bug:`54986`).
 
 * A new diagnostic routine was added to check and optionally to reestablish the
@@ -985,12 +985,12 @@ System diagnostic module
      the diagnostic routine including the deletion of the deprecated variables.
 
   2. It is checked if there are UCR variables :envvar:`repository/online/server` or
-  :envvar:`repository/online/component/*/server` having a scheme other
-  than ``http`` or ``https``. This can only be corrected manually using either the
-  repository settings module or the UCR module to directly modify the
-  variables. This second check can be disabled by defining an UCR variable
-  :envvar:`diagnostic/check/65_check_repository_config/ignore` to any non-empty
-  value (:uv:bug:`55044`).
+     :envvar:`repository/online/component/*/server` having a scheme other than
+     ``http`` or ``https``. This can only be corrected manually using either
+     the repository settings module or the UCR module to directly modify the
+     variables. This second check can be disabled by defining an UCR variable
+     :envvar:`diagnostic/check/65_check_repository_config/ignore` to any
+     non-empty value (:uv:bug:`55044`).
 
 * It is now possible to disable any diagnostic check by setting the UCR
   variable :envvar:`diagnostic/check/disable/TEST_NAME` to ``true`` (:uv:bug:`55468`).
@@ -1012,7 +1012,7 @@ System diagnostic module
   provides automatic fixers to correct issues (:uv:bug:`49417`).
 
 * The diagnostics check for the Univention Directory Notifier Protocol version
-  has been extended to provide mot information in case of errors and provides
+  has been extended to provide more information in case of errors and provides
   an automatic fixer to update the protocol version (:uv:bug:`49417`).
 
 .. _changelog-umc-ucr:
@@ -1054,7 +1054,7 @@ Univention base libraries
 
 * Calls to several OpenLDAP tools (:command:`slaptest` etc.) fail when the :file:`cn=config`
   LDIF exists in the file-system. The package has been adjusted to explicitly
-  specify using the configuration file instead to avoid this problem
+  use the configuration file instead to avoid this problem
   (:uv:bug:`54986`).
 
 * LDAP search requests now evaluate the response of server controls
@@ -1068,7 +1068,7 @@ Software deployment
 
 * Calls to several OpenLDAP tools (:command:`slaptest` etc.) fail when the :file:`cn=config`
   LDIF exists in the file-system. The package has been adjusted to explicitly
-  specify using the configuration file instead to avoid this problem
+  use the configuration file instead to avoid this problem
   (:uv:bug:`54986`).
 
 * The description of the UCR variables :envvar:`repository/online/*` which is displayed
@@ -1123,8 +1123,10 @@ Univention self service
 =======================
 
 * The subject of all self-service emails is now configurable via the UCR
-  variables :envvar:`umc/self-service/account-deregistration/email/subject`. :envvar:`umc/self-service/account-verification/email/subject`. and :envvar:`umc/self-service/email-
-  change-notification/email/subject` (:uv:bug:`55028`).
+  variables :envvar:`umc/self-service/account-deregistration/email/subject`,
+  :envvar:`umc/self-service/account-verification/email/subject`, and
+  :envvar:`umc/self-service/email-change-notification/email/subject`
+  (:uv:bug:`55028`).
 
 * The email subject of the self-service password reset email is now
   configurable via the UCR variable :envvar:`umc/self-service/passwordreset/email/subject` (:uv:bug:`53227`).
@@ -1194,18 +1196,13 @@ Proxy services
 * The script :file:`squid-pw-rotate` has been updated to generate more useful debug
   information (:uv:bug:`54273`).
 
-* The join process for UCS@School replica servers has been sped up by syncing
-  certain objects during join in an earlier erratum. The speedup was only
-  applied if there was no S4-Connector installed on the DC primary. This has
-  been fixed (:uv:bug:`55218`).
-
 * Joining UCS@School replica servers into environments with many objects could
   fail due to timeouts in the join scripts :file:`97univention-s4-connector`, :file:`98univention-samba4-dn` and :file:`98univention-squid-samba4`. The
   synchronization of existing objects delayed the synchronization of new
   objects which are created during the join and necessary for its completion.
   The S4-Connector and the join scripts have been modified to sync these vital
   objects first, which speeds up the join process considerably
-  (:uv:bug:`54791`).
+  (:uv:bug:`54791`, :uv:bug:`55218`).
 
 .. _changelog-service-ssl:
 
@@ -1257,18 +1254,13 @@ Samba
 * Added a dependency on a specific package ``samba-dsdb-modules`` version to
   prevent issues with new package installations (:uv:bug:`54994`).
 
-* The join process for UCS@School replica servers has been sped up by syncing
-  certain objects during join in an earlier erratum. The speedup was only
-  applied if there was no S4-Connector installed on the DC primary. This has
-  been fixed (:uv:bug:`55218`).
-
 * Joining UCS@School replica servers into environments with many objects could
   fail due to timeouts in the join scripts :file:`97univention-s4-connector`, :file:`98univention-samba4-dn` and :file:`98univention-squid-samba4`. The
   synchronization of existing objects delayed the synchronization of new
   objects which are created during the join and necessary for its completion.
   The S4-Connector and the join scripts have been modified to sync these vital
   objects first, which speeds up the join process considerably
-  (:uv:bug:`54791`).
+  (:uv:bug:`54791`, :uv:bug:`55218`).
 
 * Renaming a share works again. This was broken in UCS 5.0-0 due to an error in
   the listener module writing the share configuration (:uv:bug:`55077`).
@@ -1348,7 +1340,7 @@ Univention Active Directory Connection
   Kerberos logons would use the new NT-hashes, but Kerberos authentication
   would still use the previous password hashes (:uv:bug:`52192`).
 
-* When objects where changed in Microsoft Active Directory, the AD-Connector
+* When objects were changed in Microsoft Active Directory, the AD-Connector
   checked if the object should be ignored. The decision is based on three
   criteria, ``match_filter``, ``ignoresubtree`` and the ``ignorelist`` from which the
   ``ignore_filter`` is constructed. Since :uv:bug:`37351` has been fixed in UCS
@@ -1401,7 +1393,7 @@ Other changes
 
 * The flag ``--metadata-file`` has been added to :command:`univention-keycloak`. This is
   necessary to create a UMC SAML client during the join since the metadata
-  information can not be fetched via https during the join (:uv:bug:`55570`).
+  information cannot be fetched via https during the join (:uv:bug:`55570`).
 
 * The ownership, group and permissions of LDAP backups are now configurable via
   the UCR variables :envvar:`slapd/backup/owner`, :envvar:`slapd/backup/group` and
@@ -1422,7 +1414,7 @@ Other changes
 
 * Calls to several OpenLDAP tools (:command:`slaptest` etc.) fail when the :file:`cn=config`
   LDIF exists in the file-system. The package has been adjusted to explicitly
-  specify using the configuration file instead to avoid this problem
+  use the configuration file instead to avoid this problem
   (:uv:bug:`54986`).
 
 * The object class ``univentionObject`` now offers two additional optional
