@@ -15,12 +15,25 @@ available. It provides several feature improvements and extensions, new
 properties as well as various improvements and bug fixes. Here is an overview of
 the most important changes:
 
-* XXX
+* The program :program:`univention-support-info` is now included with the
+  distribution. It can be used to collect useful information from the system
+  when a support case is opened with Univention GmbH.
 
-* This |UCSUCS| release is based on Debian 10.12 Buster.
+* Several new modules have been added to the UMC module :guilabel:`System
+  diagnostic` and some existing ones have been improved. For example several
+  |UCSUCRV|\ s now have type information, which can be used to validate their
+  values. Individual modules can also be disabled in case of false positives.
+
+* Group membership is now maintained using the OpenLDAP overlay module
+  ``memberof``, which improves performance in large environments.
+
+* This |UCSUCS| release is based on Debian 10.13 Buster.
+
+* The Linux kernel has been updated to version 5.10.162 from Debian 11.6
+  Bullseye to support newer hardware.
 
 * Various security updates have been integrated into UCS 5.0-3, for example for
-  :program:`Samba4`, OpenLDAP, OpenSSL, and the Linux kernel.
+  :program:`Samba4`, Squid, BIND9, PostgreSQL and Dovecot.
 
 .. _relnotes-update:
 
