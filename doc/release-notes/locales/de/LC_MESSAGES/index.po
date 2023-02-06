@@ -485,12 +485,18 @@ msgstr ""
 msgid "Changelog"
 msgstr "Changelog"
 
+msgid "Operational LDAP attributes can now be visualized in the :guilabel:`Directory Manager`."
+msgstr "Operative LDAP-Attribute können jetzt im :guilabel:`Directory Manager` angezeigt werden."
+
+msgid "The program :program:`univention-keycloak` was added to support the new App :guilabel:`Keycloak`, which can be installed from the :guilabel:`App Center` to provide Single Sign On."
+msgstr "Das Programm :program:`univention-keycloak` wurde hinzugefügt. Es unterstützt die App :guilabel:`Keycloak`, die aus dem :guilabel:`App Center` installiert werden kann und Single Sign On-Szenarien ermöglicht."
+
 #: ../../index.rst:248
 msgid ""
-"You find the changes since UCS 5.0-1 in :external+uv-"
+"You find the changes since UCS 5.0-2 in :external+uv-"
 "changelog:doc:`index`."
 msgstr ""
-"Die Änderungen seit UCS 5.0-1 finden Sie in :external+uv-"
+"Die Änderungen seit UCS 5.0-2 finden Sie in :external+uv-"
 "changelog:doc:`index`."
 
 #: ../../index.rst:256

@@ -27,6 +27,12 @@ the most important changes:
 * Group membership is now maintained using the OpenLDAP overlay module
   ``memberof``, which improves performance in large environments.
 
+* Operational LDAP attributes can now be visualized in the :guilabel:`Directory Manager`.
+
+* The program :program:`univention-keycloak` was added to support the new App
+  :guilabel:`Keycloak`, which can be installed from the :guilabel:`App Center`
+  to provide Single Sign On.
+
 * This |UCSUCS| release is based on Debian 10.13 Buster.
 
 * The Linux kernel has been updated to version 5.10.162 from Debian 11.6
@@ -245,7 +251,7 @@ Users running older browsers may experience display or performance issues.
 Changelog
 *********
 
-You find the changes since UCS 5.0-1 in
+You find the changes since UCS 5.0-2 in
 :external+uv-changelog:doc:`index`.
 
 
