@@ -42,10 +42,12 @@ while [ $# -gt 0 ]
 do
 	case "$1" in
 		"--check_ldap_access")
+			# shellcheck disable=SC2034
 			check_ldap_access=1
 			shift
 			;;
 		"--check_ldap_availability")
+			# shellcheck disable=SC2034
 			check_ldap_availability=1
 			shift
 			;;
@@ -59,7 +61,7 @@ done
 # @param  script path
 # @param  description (optional)
 info_header () {
-	_path=$1
+	_path="$1"
 	script="${_path##*scripts/}"
 	echo "=== $script ($(date +'%Y-%m-%d %H:%M:%S')) ==="
 
@@ -100,50 +102,38 @@ progress_steps () {
 progress_next_step () {
 	if [ -n "$1" ]; then
 		echo "__STEP__:$1"
-		_STEP_=$1
+		_STEP_="$1"
 	else
 		echo "__STEP__:$_STEP_"
-		_STEP_=$((_STEP_+1))
+		_STEP_="$((_STEP_+1))"
 	fi
 }
 
 is_variable_set () {
-	if [ ! -e "$profile_file" ]; then
+	[ -e "$profile_file" ] ||
 		return 0
-	fi
-
-	if [ -z "$1" ]; then
+	[ -n "$1" ] ||
 		return 0
-	fi
-	value="$(egrep "^$1=" "$profile_file")"
-	if [ -z "$value" ]; then
-		return 0
-	else
-		return 1
-	fi
+	value="$(grep -E "^$1=" "$profile_file")"
+	[ -z "$value" ]
 }
 get_profile_var () {
-	if [ ! -e "$profile_file" ]; then
+	[ -e "$profile_file" ] ||
 		return
-	fi
-
-	if [ -z "$1" ]; then
+	[ -n "$1" ] ||
 		return
-	fi
-
 	sed -rne "/^ *#/d;s|^$1=||;T;s|([\"'])(.*)\1 *\$|\2|;p;q" "$profile_file"
 }
 
 is_profile_var_true () {
-	local value="$(get_profile_var "$1")"
-	if [ -z "$value" ]; then
+	local value
+	value="$(get_profile_var "$1")"
+	[ -n "$value" ] ||
 		return 2
-	fi
-	value=$(echo "$value" | tr '[:upper:]' '[:lower:]')
+	value="$(echo "$value" | tr '[:upper:]' '[:lower:]')"
 	for falsevalue in no false 0 disable disabled off; do
-		if [ "$value" = "$falsevalue" ]; then
+		[ "$value" = "$falsevalue" ] &&
 			return 1
-		fi
 	done
 	return 0
 }
@@ -172,25 +162,27 @@ service_stop () { service stop "$@"; }
 
 ldap_binddn () {
 	eval "$(univention-config-registry shell server/role ldap/base ldap/master ldap/hostdn)"
-	if [ "$server_role" = "domaincontroller_master" ] || [ "$server_role" = "domaincontroller_backup" ]; then
-		echo "cn=admin,$ldap_base"
-	else
-		ldap_username=`get_profile_var ldap_username`
-		if [ -n "$ldap_username" ]; then
-			dn="$(ldapsearch -x -ZZ -D "$ldap_hostdn" -y /etc/machine.secret -h "$ldap_master" "(&(objectClass=person)(uid=$ldap_username))" | sed -ne 's|^dn: ||p;T;q')"
-			echo "$dn"
-		fi
-	fi
+	case "${server_role:?}" in
+	domaincontroller_master|domaincontroller_backup)
+		echo "cn=admin,${ldap_base:?}"
+		;;
+	*)
+		ldap_username="$(get_profile_var ldap_username)"
+		[ -n "$ldap_username" ] ||
+			return
+		ldapsearch -x -ZZ -D "${ldap_hostdn:?}" -y /etc/machine.secret -h "${ldap_master:?}" -LLLo ldif-wrap=no "(&(objectClass=person)(uid=${ldap_username:?}))" 1.1 | sed -ne 's|^dn: ||p;T;q'
+		;;
+	esac
 }
 
 ldap_bindpwd () {
 	eval "$(univention-config-registry shell server/role ldap/base ldap/master)"
-	if [ "$server_role" = "domaincontroller_master" ] || [ "$server_role" = "domaincontroller_backup" ]; then
-		echo "`cat /etc/ldap.secret`"
-	else
-		ldap_password=`get_profile_var ldap_password`
-		if [ -n "$ldap_password" ]; then
-			echo "$ldap_password"
-		fi
-	fi
+	case "${server_role:?}" in
+	domaincontroller_master|domaincontroller_backup)
+		cat /etc/ldap.secret
+		;;
+	*)
+		get_profile_var ldap_password
+		;;
+	esac
 }
