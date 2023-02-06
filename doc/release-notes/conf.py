@@ -53,6 +53,7 @@ intersphinx_mapping = {
     "uv-dev-ref": ("https://docs.software-univention.de/developer-reference/5.0/en", None),
     "uv-manual": ("https://docs.software-univention.de/manual/5.0/en", None),
     "uv-changelog": ("https://docs.software-univention.de/changelog/5.0-3/en", None),
+    "uv-ext-windows": ("https://docs.software-univention.de/ext-windows/5.0/en", None),
 }
 
 bibtex_bibfiles = ["../bibliography.bib"]
@@ -170,6 +171,7 @@ def adapt_settings_to_translation(app, config):
             "uv-dev-ref": ("https://docs.software-univention.de/developer-reference/5.0/en", None),
             "uv-manual": ("https://docs.software-univention.de/manual/5.0/de", None),
             "uv-changelog": ("https://docs.software-univention.de/changelog/5.0-3/en", None),
+            "uv-ext-windows": ("https://docs.software-univention.de/ext-windows/5.0/en", None),
         }
         config.bibtex_bibfiles = ["../bibliography-de.bib"]
 

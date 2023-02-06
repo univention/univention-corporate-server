@@ -135,9 +135,7 @@ containing Python code. Customized AD-Connector mapping templates are an example
 for this. See also the :cite:t:`developer-reference` for advice.
 
 When multiple instances of the :program:`AD Connector` are operated as described
-in `Synchronization of several Active Directory domains with one UCS directory
-service
-<https://docs.software-univention.de/windows-5.0.html#ad:multiple>`_, an
+in :ref:`ad-multiple`, an
 adjustment of the mapping configuration is needed and Python 3.7 compatibility
 must be ensured before the update. :uv:kb:`17754` describes the steps.
 

@@ -3,14 +3,14 @@ msgid ""
 msgstr ""
 "Project-Id-Version: UCS 5.0 Release Notes 5.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-02-06 15:25+0000\n"
-"PO-Revision-Date: 2023-02-06 17:06+0100\n"
+"POT-Creation-Date: 2023-02-06 17:43+0100\n"
+"PO-Revision-Date: 2023-02-06 17:44+0100\n"
 "Last-Translator: Univention GmbH <packages@univention.de>\n"
 "Language-Team: Univention GmbH <packages@univention.de>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Generated-By: Babel 2.8.0\n"
+"Generated-By: Babel 2.9.1\n"
 
 #: ../../index.rst:3
 msgid ""
@@ -59,10 +59,10 @@ msgid ""
 " false positives."
 msgstr ""
 "Einige neue Module wurden zum UMC-Modul :guilabel:`System diagnostic` "
-"hinzugefügt und einige existierende Module wurden verbessert, Zum Beispiel "
-"haben viele |UCSUSRV|\ n Typ-Informationen, die für die Validierung ihrer "
-"Werte verwendet werden. Individuelle Module können im Falle von Fehlmeldungen "
-"auch deaktiviert werden."
+"hinzugefügt und einige existierende Module wurden verbessert, Zum "
+"Beispiel haben viele |UCSUCRV|\\ n Typ-Informationen, die für die "
+"Validierung ihrer Werte verwendet werden. Individuelle Module können im "
+"Falle von Fehlmeldungen auch deaktiviert werden."
 
 #: ../../index.rst:27
 msgid ""
@@ -289,21 +289,17 @@ msgstr ""
 #: ../../index.rst:137
 msgid ""
 "When multiple instances of the :program:`AD Connector` are operated as "
-"described in `Synchronization of several Active Directory domains with "
-"one UCS directory service <https://docs.software-"
-"univention.de/windows-5.0.html#ad:multiple>`_, an adjustment of the "
-"mapping configuration is needed and Python 3.7 compatibility must be "
-"ensured before the update. :uv:kb:`17754` describes the steps."
+"described in :ref:`ad-multiple`, an adjustment of the mapping "
+"configuration is needed and Python 3.7 compatibility must be ensured "
+"before the update. :uv:kb:`17754` describes the steps."
 msgstr ""
 "Wenn mehrere Instanzen des :program:`AD Connector` betrieben werden, wie "
-"in `Synchronization of several Active Directory domains with one UCS "
-"directory service <https://docs.software- "
-"univention.de/windows-5.0.html#ad:multiple>`_ beschrieben, ist eine "
+"in :ref:`ad-multiple` beschrieben, ist eine "
 "Anpassung der Mapping-Konfiguration erforderlich. Außerdem muss die "
 "Kompatibilität mit Python 3.7 vor dem Update sichergestellt werden. "
 ":uv:kb:`17754` beschreibt die Schritte."
 
-#: ../../index.rst:144
+#: ../../index.rst:142
 msgid ""
 "It must be checked whether sufficient disk space is available. A standard"
 " installation requires a minimum of 6-10 GB of disk space. The update "
@@ -316,7 +312,7 @@ msgstr ""
 "GB zusätzlichen Speicherplatz zum Herunterladen und Installieren der "
 "Pakete."
 
-#: ../../index.rst:149
+#: ../../index.rst:147
 msgid ""
 "For the update, a login should be performed on the system's local console"
 " as user ``root``, and the update should be initiated there. "
@@ -326,7 +322,7 @@ msgstr ""
 "mit dem Benutzer ``root`` durchgeführt und das Update dort gestartet "
 "werden. Alternativ kann das Update über |UCSUMC| durchgeführt werden."
 
-#: ../../index.rst:153
+#: ../../index.rst:151
 msgid ""
 "Remote updating via SSH is not recommended as this may result in the "
 "update procedure being canceled, e.g., if the network connection is "
@@ -346,7 +342,7 @@ msgstr ""
 "Tools :command:`tmux`, :command:`screen` oder :command:`at` eingesetzt "
 "werden, die auf allen UCS Systemrollen installiert sind."
 
-#: ../../index.rst:161
+#: ../../index.rst:159
 msgid ""
 "Univention provides a script that checks for problems which would prevent"
 " the successful update of the system. Prior to the update, this script "
@@ -357,7 +353,7 @@ msgstr ""
 "Dieses Skript kann vor dem Update manuell auf das System geladen und "
 "ausgeführt werden:"
 
-#: ../../index.rst:165
+#: ../../index.rst:163
 msgid ""
 "# download\n"
 "$ curl -OOf https://updates.software-univention.de/download/univention-"
@@ -381,11 +377,11 @@ msgid ""
 "..."
 msgstr ""
 
-#: ../../index.rst:191
+#: ../../index.rst:189
 msgid "Post processing of the update"
 msgstr "Nachbereitung des Updates"
 
-#: ../../index.rst:193
+#: ../../index.rst:191
 msgid ""
 "Following the update, new or updated join scripts need to be executed. "
 "This can be done in two ways: Either using the UMC module *Domain join* "
@@ -397,19 +393,19 @@ msgstr ""
 "UMC-Modul *Domänenbeitritt* oder durch Aufruf des Befehls :command"
 ":`univention-run-join-scripts` als Benutzer ``root``."
 
-#: ../../index.rst:197
+#: ../../index.rst:195
 msgid "Subsequently the UCS system needs to be restarted."
 msgstr "Anschließend muss das UCS-System neu gestartet werden."
 
-#: ../../index.rst:203
+#: ../../index.rst:201
 msgid "Notes on selected packages"
 msgstr "Hinweise zum Einsatz einzelner Pakete"
 
-#: ../../index.rst:208
+#: ../../index.rst:206
 msgid "Collection of usage statistics"
 msgstr "Erfassung von Nutzungsstatistiken"
 
-#: ../../index.rst:210
+#: ../../index.rst:208
 msgid ""
 "Anonymous usage statistics on the use of |UCSUMC| are collected when "
 "using the *UCS Core Edition*. The modules opened get logged to an "
@@ -423,7 +419,7 @@ msgstr ""
 "Dies ermöglicht es Univention die Entwicklung von |UCSUMC| besser auf das"
 " Kundeninteresse zuzuschneiden und Usability-Verbesserungen vorzunehmen."
 
-#: ../../index.rst:216
+#: ../../index.rst:214
 msgid ""
 "This logging is only performed when the *UCS Core Edition* license is "
 "used. The license status can be verified via the menu entry "
@@ -440,7 +436,7 @@ msgstr ""
 "Einsatz einer regulären UCS-Lizenz erfolgt keine Teilnahme an der "
 "Nutzungsstatistik."
 
-#: ../../index.rst:222
+#: ../../index.rst:220
 msgid ""
 "Independent of the license used, the statistics generation can be "
 "deactivated by setting the |UCSUCRV| :envvar:`umc/web/piwik` to *false*."
@@ -449,11 +445,11 @@ msgstr ""
 "Setzen der |UCSUCRV| :envvar:`umc/web/piwik` auf ``false`` deaktiviert "
 "werden."
 
-#: ../../index.rst:228
+#: ../../index.rst:226
 msgid "Recommended browsers for the access to |UCSUMC|"
 msgstr "Empfohlene Browser für den Zugriff auf |UCSUMC|"
 
-#: ../../index.rst:230
+#: ../../index.rst:228
 msgid ""
 "|UCSUMC| uses numerous JavaScript and CSS functions to display the web "
 "interface. Cookies need to be permitted in the browser. The following "
@@ -463,33 +459,33 @@ msgstr ""
 "JavaScript- und CSS-Funktionen. Cookies müssen im Browser zugelassen "
 "sein. Die folgenden Browser werden empfohlen:"
 
-#: ../../index.rst:234
+#: ../../index.rst:232
 msgid "Chrome as of version 85"
 msgstr "Chrome ab Version 85"
 
-#: ../../index.rst:236
+#: ../../index.rst:234
 msgid "Firefox as of version 78"
 msgstr "Firefox ab Version 78"
 
-#: ../../index.rst:238
+#: ../../index.rst:236
 msgid "Safari and Safari Mobile as of version 13"
 msgstr "Safari und Safari Mobile ab Version 13"
 
-#: ../../index.rst:240
+#: ../../index.rst:238
 msgid "Microsoft Edge as of version 88"
 msgstr "Microsoft Edge ab Version 88"
 
-#: ../../index.rst:242
+#: ../../index.rst:240
 msgid "Users running older browsers may experience display or performance issues."
 msgstr ""
 "Mit älteren Browsern können Darstellungs- oder Performanceprobleme "
 "auftreten."
 
-#: ../../index.rst:248
+#: ../../index.rst:246
 msgid "Changelog"
 msgstr "Changelog"
 
-#: ../../index.rst:250
+#: ../../index.rst:248
 msgid ""
 "You find the changes since UCS 5.0-1 in :external+uv-"
 "changelog:doc:`index`."
@@ -497,7 +493,7 @@ msgstr ""
 "Die Änderungen seit UCS 5.0-1 finden Sie in :external+uv-"
 "changelog:doc:`index`."
 
-#: ../../index.rst:258
+#: ../../index.rst:256
 msgid "Bibliography"
 msgstr "Literaturverzeichnis"
 
