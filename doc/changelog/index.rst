@@ -1493,3 +1493,9 @@ Other changes
   added (:uv:bug:`49666`).
 
 * Code to handle old package updates has been removed from many packages (:uv:bug:`42330`).
+
+* Add missing features from the OX Fetchmail implementation to
+  :program:`univention-fetchmail`. Now users can have more than
+  one Fetchmail configuration and use multi-drop configurations.
+  (:uv:bug:`55575`).
+

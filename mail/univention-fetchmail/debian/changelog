@@ -1,3 +1,11 @@
+univention-fetchmail (13.0.4-1) unstable; urgency=medium
+
+  * Bug #55575: Add ox-fetchmail features to univention-fetchmail.
+    Support for multidrop Fetchmail configurations and users can
+    have more than one Fetchmail configuration.
+
+ -- Juan Carlos García García <garcia-garcia.extern@univention.de>  Mon, 06 Feb 2023 19:38:00 +0100
+
 univention-fetchmail (13.0.3-2) unstable; urgency=medium
 
   * Bug #42330: Remove old maintainer script package update code
