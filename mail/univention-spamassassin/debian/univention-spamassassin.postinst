@@ -55,7 +55,7 @@ if [ "$1" = "configure" ] && [ -z "$2" ]; then # installation
 			umask 022
 			if [ -f /etc/cron.daily/spamassassin ] ; then
 				echo "Updating spamassassin rules..."
-				python -c 'import pty; pty.spawn(["/etc/cron.daily/spamassassin"])'
+				python3 -c 'import pty; pty.spawn(["/etc/cron.daily/spamassassin"])'
 				echo "Updating spamassassin rules... done"
 			else
 				echo "ERROR: the update of the spamassassin rules failed. Please run 'sa-update' manually."

@@ -1,6 +1,7 @@
 univention-spamassassin (11.0.1-2) unstable; urgency=medium
 
   * Bug #42330: Remove old maintainer script package update code
+  * BUg #55632: Use Python 3 to sawn rule update from postint
 
  -- Philipp Hahn <hahn@univention.de>  Mon, 06 Feb 2023 14:21:32 +0100
 
