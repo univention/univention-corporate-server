@@ -45,7 +45,7 @@ from subprocess import PIPE, Popen
 
 import requests
 from defusedxml import ElementTree
-from keycloak import KeycloakAdmin
+from keycloak import URL_ADMIN_REALM, KeycloakAdmin
 from keycloak.exceptions import KeycloakError, KeycloakGetError, raise_error_from_response
 from ldap.dn import explode_rdn
 
@@ -56,6 +56,8 @@ except ModuleNotFoundError:
     ucr = {}
 
 DEFAULT_REALM = "master"
+URL_ADMIN_REQUIRED_ACTIONS = URL_ADMIN_REALM + "/authentication/required-actions"
+URL_ADMIN_REQUIRED_ACTION_REGISTER = URL_ADMIN_REALM + "/authentication/register-required-action"
 
 
 def check_and_create_component(kc_client, name, prov_id, payload_):
@@ -1307,13 +1309,24 @@ def init_keycloak_ucs(opt):
             ],
         },
     }
+    univention_ldap_mapper = {
+        "name": "univention-ldap-mapper",
+        "parentId": ldap_component_id,
+        "config": {},
+        "providerId": "univention-ldap-mapper",
+        "providerType": "org.keycloak.storage.ldap.mappers.LDAPStorageMapper",
+    }
     # find existing uid->uid mapper or create if none exits
     check_and_create_component(kc_admin, payload_ldap_mapper["name"], payload_ldap_mapper["providerId"], payload_ldap_mapper)
+
+    # find existing univention-ldap-mapper or create if none exits
+    check_and_create_component(kc_admin, univention_ldap_mapper["name"], univention_ldap_mapper["providerId"], univention_ldap_mapper)
 
     # Modify default mappers to correct ones
     modify_component(kc_admin, firstname_ldap_mapper)
     modify_component(kc_admin, mail_ldap_mapper)
     modify_component(kc_admin, lastname_ldap_mapper)
+    modify_component(kc_admin, univention_ldap_mapper)
 
     # Setting admin level to all Domain Admins
     # Change realm to master
@@ -1334,14 +1347,78 @@ def init_keycloak_ucs(opt):
     payload_ldap_mapper["providerId"] = "hardcoded-ldap-role-mapper"
     payload_ldap_mapper["config"] = {"role": ["admin"]}
 
-    # find existing mapper or create if none exits
+    # find existing uid->uid mapper or create if none exits
     check_and_create_component(kc_admin, payload_ldap_mapper["name"], payload_ldap_mapper["providerId"], payload_ldap_mapper)
+    # find existing univention-ldap-mapper or create if none exits
+    check_and_create_component(kc_admin, univention_ldap_mapper["name"], univention_ldap_mapper["providerId"], univention_ldap_mapper)
     firstname_ldap_mapper["parentId"] = ldap_component_id
     mail_ldap_mapper["parentId"] = ldap_component_id
     lastname_ldap_mapper["parentId"] = ldap_component_id
     modify_component(kc_admin, firstname_ldap_mapper)
     modify_component(kc_admin, mail_ldap_mapper)
     modify_component(kc_admin, lastname_ldap_mapper)
+    modify_component(kc_admin, univention_ldap_mapper)
+
+    # add required action to realm(s):
+    for realm in {DEFAULT_REALM, opt.realm}:
+        register_update_password(kc_admin, realm)
+
+
+def get_required_actions(kc_admin, realm: str):
+    """
+    Get the required actions for the realms.
+    :return: the required actions (list of RequiredActionProviderRepresentation).
+    :rtype: list
+    """
+    params_path = {"realm-name": realm}
+    data_raw = kc_admin.raw_get(URL_ADMIN_REQUIRED_ACTIONS.format(**params_path))
+    return raise_error_from_response(data_raw, KeycloakGetError)
+
+
+def get_required_action_by_alias(kc_admin, realm: str, action_alias: str):
+    """
+    Get a required action by its alias.
+    :param action_alias: the alias of the required action.
+    :type action_alias: str
+    :return: the required action (RequiredActionProviderRepresentation).
+    :rtype: dict
+    """
+    actions = get_required_actions(kc_admin, realm)
+    for a in actions:
+        if a["alias"] == action_alias:
+            return a
+    return None
+
+
+def create_required_action(kc_admin, realm: str, provider_id: str, name: str, enabled: bool = True):
+    params = {"realm-name": realm}
+    payload = {"providerId": provider_id, "name": name, "enabled": enabled}
+
+    data_raw = kc_admin.raw_post(URL_ADMIN_REQUIRED_ACTION_REGISTER.format(**params), data=json.dumps(payload))
+    return raise_error_from_response(data_raw, KeycloakError)
+
+
+def delete_required_action(kc_admin, realm: str, action_alias: str):
+    params = {"realm-name": realm}
+    url = URL_ADMIN_REQUIRED_ACTIONS.format(**params) + f'/{action_alias}'
+
+    data_raw = kc_admin.raw_delete(url)
+    return raise_error_from_response(data_raw, KeycloakGetError)
+
+
+def register_update_password(kc_admin, realm: str, remove_built_in: bool = False):
+    if remove_built_in:
+        # remove built-in "Update password" action
+        alias = "UPDATE_PASSWORD"
+        action = get_required_action_by_alias(kc_admin, realm, alias)
+        if action:
+            delete_required_action(kc_admin, realm, alias)
+
+    # if not exist, add "UNIVENTION_UPDATE_PASSWORD"
+    alias = "UNIVENTION_UPDATE_PASSWORD"
+    action = get_required_action_by_alias(kc_admin, realm, alias)
+    if not action:
+        create_required_action(kc_admin, realm, alias, "Univention update password")
 
 
 def main() -> int:

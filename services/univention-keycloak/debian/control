@@ -4,6 +4,9 @@ Priority: optional
 Maintainer: Univention GmbH <packages@univention.de>
 Build-Depends:
  debhelper-compat (= 12),
+ dh-python,
+ python3-all,
+ python3-setuptools,
 Standards-Version: 4.3.0.3
 
 Package: univention-keycloak-client

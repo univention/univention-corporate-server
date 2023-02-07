@@ -1,3 +1,15 @@
+univention-keycloak (1.0.9-3) unstable; urgency=medium
+
+  * Made a PyPI package
+
+ -- Nikola Radovanovic <radovanovic.extern@univention.de>  Mon, 06 Feb 2023 12:11:31 +0100
+
+univention-keycloak (1.0.9-2) unstable; urgency=medium
+
+  * Register univention-ldap-mapper
+
+ -- Nikola Radovanovic <radovanovic.extern@univention.de>  Mon, 06 Feb 2023 12:11:31 +0100
+
 univention-keycloak (1.0.9-1) unstable; urgency=medium
 
   * Bug #31771: migrate tabs to spaces
