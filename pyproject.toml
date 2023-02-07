@@ -14,7 +14,7 @@ skip = "doc/doc-common/,base/univention-system-setup/tests,services/univention-l
 skip_glob = "venv/*"
 
 [tool.ruff]
-# ruff 0.0.241
+# ruff 0.0.243
 external = ["W601", "F812", "E403", "E704"]
 line-length = 180
 update-check = false
@@ -61,6 +61,8 @@ ignore = [
  "BLE001",  # allow catching Exception (blind-except)
  "PLR0913",  # too-many-args
  "PLR0915",  # too-many-statements
+ "PLR0911",  # too-many-return-statements
+ "PLR0912",  # too-many-branches
 
  # not py2 compatible
  "UP004", "UP008", "UP009", "UP010", "UP025", "UP029",  # be Python 2 compatible
@@ -86,6 +88,7 @@ ignore = [
  "UP032",  # f-string
  "UP035",  # import-replacements
  "UP036",  # outdated-version-block
+ "PIE810",  # single-starts-ends-with
 # F401: not py2 compat because of "typing" type hint comments: https://github.com/charliermarsh/ruff/issues/1619
 
  # would be nice but no autofix available
