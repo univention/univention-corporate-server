@@ -934,7 +934,7 @@ Univention App Center
 
 * The UDM property ``country`` can now be mapped to the LDAP attribute ``c`` instead
   of ``st``. This new behavior can be enabled using the diagnostic module or
-  ``udm-remap-country-from-st-to-c``.
+  :file:`/usr/share/univention-directory-manager-tools/udm-remap-country-from-st-to-c` (:uv:bug:`50073`).
 
 .. _changelog-umc-setup:
 
@@ -1502,4 +1502,3 @@ Other changes
   :program:`univention-fetchmail`. Now users can have more than
   one Fetchmail configuration and use multi-drop configurations.
   (:uv:bug:`55575`).
-

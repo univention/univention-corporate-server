@@ -823,7 +823,7 @@ msgid "Test again"
 msgstr "Erneut testen"
 
 #: umc/python/diagnostic/plugins/66_udm_country_remap_from_st_to_c.py:47
-msgid "The user property \"country\" is currently erroneously mapped to the LDAP attribute \"st\". \"st\" represents a state (province) while the correct LDAP attribute \"c\" represents a country. The migration will check and move all LDAP data from \"st\" to \"c\" for all users and user templates and install a domain wide UCR policy to change the fields in UDM. If this behavior is not wanted this check can be disabled by setting the UCR variable \"diagnostic/check/66_udm_country_remap_from_st_to_c\" to true."
+msgid "The user property \"country\" is currently erroneously mapped to the LDAP attribute \"st\". \"st\" represents a state (province) while the correct LDAP attribute \"c\" represents a country. The migration will check and move all LDAP data from \"st\" to \"c\" for all users and user templates and install a domain wide UCR policy to change the fields in UDM. If this behavior is not wanted this check can be disabled by setting the UCR variable \"diagnostic/check/disable/66_udm_country_remap_from_st_to_c\" to true."
 msgstr ""
 "Die Benutzereigenschaft \"country\" (Land)  ist derzeit fälschlicherweise "
 "dem LDAP-Attribut \"st\" in UDM zugewiesen, welches ein Bundesland repräsentiert. "
@@ -832,7 +832,7 @@ msgstr ""
 "Benutzervorlagen verschieben und eine domänenweite UCR-Richtlinie zum Ändern "
 "der Eigenschaften in UDM installieren. Wenn dieses Verhalten nicht erwünscht "
 "ist kann dieser Test durch setzen der UCR-Variable \"diagnostic/"
-"check/66_udm_country_remap_from_st_to_c\" auf \"true\" deaktiviert werden."
+"check/disable/66_udm_country_remap_from_st_to_c\" auf \"true\" deaktiviert werden."
 
 #: umc/python/diagnostic/plugins/58_check_memberOf.py:42
 msgid ""
