@@ -4,7 +4,7 @@ After=network.target remote-fs.target univention-management-console-server.servi
 Before=apache2.service
 
 [Service]
-Type=exec
+Type=notify
 UMask=0077
 ExecStart=/usr/sbin/univention-management-console-web-server
 ExecReload=/bin/kill -SIGUSR1 $MAINPID

@@ -9,6 +9,7 @@ Build-Depends:
  python2.7,
  python3,
  python3-polib,
+ python3-sdnotify,
  univention-config-dev (>= 15.0.3),
  univention-l10n-dev (>= 7.0.1),
 Standards-Version: 3.7.2
@@ -58,6 +59,7 @@ Depends:
  python-univention-lib (>= 1.0.25-1),
  python-univention-management-console (= ${source:Version}),
  python3-daemon,
+ python3-sdnotify,
  python3-univention-lib,
  python3-univention-management-console (= ${source:Version}),
  shell-univention-lib (>= 1.0.10-1),

@@ -69,6 +69,7 @@ from saml2.response import StatusError, UnsolicitedResponse, VerificationError
 from saml2.s_utils import UnknownPrincipal, UnsupportedBinding, rndstr
 from saml2.sigver import MissingKey, SignatureError
 from saml2.validate import ResponseLifetimeExceed
+from sdnotify import SystemdNotifier
 from six.moves import queue as Queue
 from six.moves.http_client import (
     BAD_REQUEST, LENGTH_REQUIRED, NOT_FOUND, REQUEST_ENTITY_TOO_LARGE, SERVICE_UNAVAILABLE, UNAUTHORIZED,
@@ -1515,6 +1516,8 @@ def run_cherrypy(options):
         'error_page.default': default_error_page,
     })
 
+    n = SystemdNotifier()
+    n.notify("READY=1")
     cherrypy.quickstart(root=root)
 
 

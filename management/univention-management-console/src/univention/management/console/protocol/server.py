@@ -51,6 +51,7 @@ import notifier
 from notifier import signals
 from OpenSSL import SSL
 from OpenSSL.crypto import X509  # noqa: F401
+from sdnotify import SystemdNotifier
 from tornado import process
 
 from univention.lib.i18n import Translation
@@ -307,6 +308,7 @@ class Server(signals.Provider):
         self.__magicClass = magicClass
         self.__bucket = None  # type: Optional[MagicBucket]
         self.crypto_context = None  # type: Optional[SSL.Context]
+        self.systemd_notifier = SystemdNotifier()
 
     def __enter__(self):
         # type: () -> Server
@@ -382,6 +384,9 @@ class Server(signals.Provider):
                 os.umask(old_umask)
             CRYPT.info('Server listening to UNIX connections')
             self.__realunixsocket.listen(SERVER_MAX_CONNECTIONS)
+
+        if self.systemd_notifier:
+            self.systemd_notifier.notify("READY=1")
 
         if self.__processes != 1:
             self._children = multiprocessing.Manager().dict()

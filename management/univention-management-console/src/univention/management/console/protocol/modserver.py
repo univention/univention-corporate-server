@@ -100,6 +100,7 @@ class ModuleServer(Server):
         self.__handler = None
         self._load_module()
         Server.__init__(self, port=None, ssl=False, unix=socket, magic=False, load_ressources=False)
+        self.systemd_notifier = None
         MODULE.process('Module socket initialized.')
 
     def __enter__(self):

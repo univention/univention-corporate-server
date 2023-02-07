@@ -4,7 +4,7 @@ After=network.target remote-fs.target
 Wants=slapd.service
 
 [Service]
-Type=exec
+Type=notify
 KillMode=mixed
 UMask=0077
 LimitNOFILE=64512
