@@ -64,7 +64,7 @@ class LogrotateService:
             new_stat = self.stat(logfile)
             if not os.path.samestat(self.old_stat, new_stat):
                 return
-        raise AssertationError('Logrotate was executed, the service %s did not reopen the logfile %s.' % (self.service, logfile))
+        raise AssertionError('Logrotate was executed, the service %s did not reopen the logfile %s.' % (self.service, logfile))
 
 
 @pytest.mark.parametrize('service,logfile', [
