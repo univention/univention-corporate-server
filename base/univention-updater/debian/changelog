@@ -1,3 +1,9 @@
+univention-updater (15.0.6-3) unstable; urgency=low
+
+  * Bug #55640: Fix shell abort error in preup.sh
+
+ -- Philipp Hahn <hahn@univention.de>  Tue, 07 Feb 2023 11:46:24 +0100
+
 univention-updater (15.0.6-2) unstable; urgency=medium
 
   * Bug #42330: Remove old maintainer script package update code

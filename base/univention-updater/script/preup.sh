@@ -108,8 +108,8 @@ if [ -n "${update_custom_preup:-}" ]; then
 fi
 
 update_check_kernel () {
-	is_ucr_true "update${VERSION}/pruneoldkernel" &&
-		univention-prune-kernels
+	is_ucr_true "update${VERSION}/pruneoldkernel" || return 0
+	univention-prune-kernels
 }
 
 checks
@@ -123,13 +123,13 @@ ucr dump > "$updateLogDir/ucr.dump"
 # move old initrd files in /boot
 initrd_backup='/var/backups/univention-initrd.bak'
 [ -d "$initrd_backup" ] ||
-	mkdir "$initrd_backup"
+	install -m 0755 -o root -g root -d "$initrd_backup"
 mv /boot/*.bak "$initrd_backup" >/dev/null 2>&1
 
 
 # set KillMode of atd service to process to save the children from getting killed
 # up to this point the updater process is a child of atd as well
-mkdir -p /etc/systemd/system/atd.service.d
+install -m 0755 -o root -g root -d /etc/systemd/system/atd.service.d
 echo -en "[Service]\nKillMode=process" > /etc/systemd/system/atd.service.d/update500.conf
 systemctl daemon-reload
 
