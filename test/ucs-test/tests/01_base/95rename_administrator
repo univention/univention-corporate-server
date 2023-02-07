@@ -129,8 +129,8 @@ def wait_to_settle(old_admin_name):  # type: (str) -> None
 				print("%2d\t%7d\t%7d\t%7d\t%7d\t%s\t%7d\t%7d\t%s" % ((i,) + new + (datetime.now(),)))
 				old = new  # type: ignore
 
-			if not found_old:
-				return
+			if not found_old and lid == nid:
+				break
 	except Exception as exc:
 		print(exc)
 
