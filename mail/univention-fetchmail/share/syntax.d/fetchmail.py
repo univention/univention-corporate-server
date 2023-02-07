@@ -39,7 +39,7 @@ class FetchMailSingle(complex):
     subsyntaxes = [
         ('Remote Server', string), ('Protocol', IMAP_POP3),
         ('Remote Username', string), ('Password', userPasswd),
-        ('Use SSL', boolean), ('Keep in server', boolean),
+        ('Use SSL', boolean), ('Keep on remote server', boolean),
     ]
 
     subsyntax_names = ('server', 'protocol', 'remote username', 'password', 'ssl', 'keep')
@@ -50,6 +50,12 @@ class FetchMailSingle(complex):
         descr = super(FetchMailSingle, self).get_widget_options(udm_property)
         descr['rowLabelsVisibility'] = 'allRows'
         return descr
+
+    @classmethod
+    def parse(cls, texts, minn=None):
+        if texts and not any(texts):
+            return None
+        return super(FetchMailSingle, cls).parse(texts, minn)
 
 
 class FetchmailEnvelope(select):
@@ -72,7 +78,7 @@ class FetchMailMulti(complex):
         ('Remote Server', string), ('Protocol', IMAP_POP3),
         ('Remote Username', string), ('Password', userPasswd),
         ('Local Domain Names', string), ('Virtual qmail Prefix', string),
-        ('Envelope Header', FetchmailEnvelope), ('Use SSL', boolean), ('Keep in remote server', boolean),
+        ('Envelope Header', FetchmailEnvelope), ('Use SSL', boolean), ('Keep on remote server', boolean),
     ]
 
     subsyntax_names = ('server', 'protocol', 'remote username', 'password', 'Local Domain Name', 'qmail prefix', 'envelopeheader', 'ssl', 'keep')
@@ -83,3 +89,9 @@ class FetchMailMulti(complex):
         descr = super(FetchMailMulti, self).get_widget_options(udm_property)
         descr['rowLabelsVisibility'] = 'allRows'
         return descr
+
+    @classmethod
+    def parse(cls, texts, minn=None):
+        if texts and not any(texts):
+            return None
+        return super(FetchMailMulti, cls).parse(texts, minn)
