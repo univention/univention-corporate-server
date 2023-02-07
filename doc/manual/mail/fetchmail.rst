@@ -10,14 +10,13 @@ directly via SMTP. UCS also offers optional integration of the software
 Fetchmail can be installed via the Univention App Center; simply select the
 :program:`Fetchmail` application and then click on :guilabel:`Install`.
 
-Once the installation is finished, there are additional input fields in the
-:menuselection:`Advanced settings --> Remote mail retrieval (single)` and
-:menuselection:`Remote mail retrieval (multi)` tab of the user administration
-which can be used to configure the collection of mails from an external server.
-The mails are delivered to the inboxes of the respective users. The primary
-email address must be configured for that. Before using multi-drop
-configurations it is recommended to read `THE USE AND ABUSE OF MULTIDROP MAILBOXES <fetchmail-multidrop_>`_
-in the Fetchmail manual.
+After the installation, the :menuselection:`Advanced settings --> Remote mail retrieval (single)`
+and :menuselection:`Remote mail retrieval (multi)` tabs in the user administration provide
+additional input fields. Use them to configure the retrieval of emails from a remote mail server.
+
+Fetchmail delivers emails to the inboxes of the corresponding users. The user account must have
+the primary email address configured for this. Before using multi-drop configurations, read
+`THE USE AND ABUSE OF MULTIDROP MAILBOXES <fetchmail-multidrop_>`_ in the Fetchmail manual.
 
 The mail is fetched every twenty minutes once at least one email address is
 configured for mail retrieval. After the initial configuration of a user
@@ -33,24 +32,24 @@ that module the fetching can also be disabled (alternatively by setting the
      - Description
 
    * - Username
-     - The username to be provided to the mail server for fetching mail.
+     - The username to connect to the email server for fetching emails.
 
    * - Password
-     - The password to be used for fetching mail.
+     - The password for the user to connect to the email server for fetching mail.
 
    * - Protocol
-     - The mail can be fetched via the IMAP or POP3 protocols.
+     - The protocol that Fetchmail uses for fetching emails. Choose either ``IMAP`` or ``POP3``.
 
    * - Remote mail server
-     - The name of the mail server from which the emails are to be fetched.
+     - The hostname of the email server that Fetchmail uses to fetch emails.
 
    * - Use SSL
-     - If this option is enabled, the mail is fetched in an encrypted form (when
-       this is supported by the mail server).
+     - This option enables encrypted mail fetching. For it to work, this feature has to be
+       supported by the mail server.
 
-   * - Keep mails on remote server
-     - By default the fetched mails are deleted from the server following the
-       transfer. If this option is enabled, it can be suppressed.
+   * - Keep mail on remote server
+     - By default, Fetchmail deletes fetched email from the remote server after
+       the transfer. To keep the emails on the remote server, enable this option.
 
 .. list-table:: *Remote mail retrieval (multi)* tab
    :header-rows: 1
@@ -60,36 +59,36 @@ that module the fetching can also be disabled (alternatively by setting the
      - Description
 
    * - Username
-     - The username to be provided to the mail server for fetching mail.
+     - The username to connect to the email server for fetching emails.
 
    * - Password
-     - The password to be used for fetching mail.
+     - The password for the user to connect to the email server for fetching mail.
 
    * - Protocol
-     - The mail can be fetched via the IMAP or POP3 protocols.
+     - The protocol that Fetchmail uses for fetching emails. Choose either ``IMAP`` or ``POP3``.
 
    * - Remote mail server
-     - The name of the mail server from which the emails are to be fetched.
+     - The hostname of the email server that Fetchmail uses to fetch emails.
 
    * - Local Domain Names
      - A space-separated list of local domain names. Leave it empty to use all
        local domains.
 
    * - Virtual *qmail* prefix
-     - The string prefix assigned to this field will be removed from the address
-       found in the header which is specified with the envelope header option.
-       E.g. if the value is set to `example-prefix-` and Fetchmail retrieves an
-       email whose header matches with an address like `example-prefix-info@remotedomain.com`
-       the mail will be forwarded as `info@localdomain.com.`
+     - Fetchmail removes the defined string prefix from the email address found in the header
+       specified with the envelope header option. For example, if the value is
+       ``example-prefix-`` and Fetchmail retrieves an email whose header matches an address
+       such as ``example-prefix-info@remotedomain.com``, Fetchmail forwards the email as
+       ``info@localdomain.com``.
 
    * - Envelope Header
      - The value of this field sets the header that Fetchmail expects to appear
-       as a copy of the mail envelope address. It is used for mail rerouting.
+       as a copy of the mail envelope address. Fetchmail uses it for mail rerouting.
 
    * - Use SSL
-     - If this option is enabled, the mail is fetched in an encrypted form (when
-       this is supported by the mail server).
+     - This option enables encrypted mail fetching. For it to work, this feature has to be
+       supported by the mail server.
 
-   * - Keep mails on remote server
-     - By default the fetched mails are deleted from the server following the
-       transfer. If this option is enabled, it can be suppressed.
+   * - Keep mail on remote server
+     - By default, Fetchmail deletes fetched email from the remote server after
+       the transfer. To keep the emails on the remote server, enable this option.

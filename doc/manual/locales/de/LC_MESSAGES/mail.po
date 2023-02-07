@@ -4,7 +4,7 @@ msgstr ""
 "Project-Id-Version: Univention Corporate Server - Manual for users and "
 "administrators\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-08-26 08:20+0000\n"
+"POT-Creation-Date: 2023-02-07 22:58+0000\n"
 "PO-Revision-Date: 2022-06-14 16:17+0200\n"
 "Last-Translator: Univention GmbH <packages@univention.de>\n"
 "Language: de\n"
@@ -566,11 +566,11 @@ msgstr ""
 "Eine neue, leere Mailbox wird erzeugt. Die alte Mailbox wird inklusive "
 "aller enthaltenen Mails von der Festplatte gelöscht."
 
-#: ../../mail/configuration-server.rst:267
+#: ../../mail/configuration-server.rst:261
 msgid "Distribution of an installation on several mail servers"
 msgstr "Verteilung einer Installation auf mehrere Mailserver"
 
-#: ../../mail/configuration-server.rst:269
+#: ../../mail/configuration-server.rst:263
 msgid ""
 "The UCS mail system offers the possibility of distributing users across "
 "several mail servers. To this end, each user is assigned a so-called mail"
@@ -584,7 +584,7 @@ msgstr ""
 "werden. Beim Zustellen einer E-Mail wird der zuständige Home Server "
 "automatisch aus dem LDAP-Verzeichnis ermittelt."
 
-#: ../../mail/configuration-server.rst:274
+#: ../../mail/configuration-server.rst:268
 msgid ""
 "It must be observed that global IMAP folders (see :ref:`mail-management-"
 "shared-folder`) are assigned to a mail home server."
@@ -592,7 +592,7 @@ msgstr ""
 "Es ist zu beachten, dass globale IMAP-Ordner (siehe :ref:`mail-"
 "management-shared-folder`) einem Mail Home Server zugeordnet sind."
 
-#: ../../mail/configuration-server.rst:277
+#: ../../mail/configuration-server.rst:271
 msgid ""
 "If the mail home server changes for a user, the user's mail data is *not*"
 " moved to the server automatically."
@@ -600,11 +600,11 @@ msgstr ""
 "Beim Ändern des Mail Home Servers eines Benutzers werden dessen E-Mails "
 "*nicht* automatisch auf den neuen Server verschoben."
 
-#: ../../mail/configuration-server.rst:283
+#: ../../mail/configuration-server.rst:277
 msgid "Mail storage on NFS"
 msgstr "Mailserver-Speicher auf NFS"
 
-#: ../../mail/configuration-server.rst:285
+#: ../../mail/configuration-server.rst:279
 msgid ""
 "Dovecot supports storing emails and index files on cluster file systems "
 "and on NFS. Some settings are necessary to prevent data loss in certain "
@@ -614,7 +614,7 @@ msgstr ""
 "Cluster-Dateisystemen und NFS. Einige Einstellungen sind jedoch nötig, um"
 " Datenverluste in bestimmten Situationen zu vermeiden."
 
-#: ../../mail/configuration-server.rst:288
+#: ../../mail/configuration-server.rst:282
 msgid ""
 "The following settings assume that mailboxes are not accessed "
 "simultaneously by multiple servers. This is the case if for each user "
@@ -624,19 +624,19 @@ msgstr ""
 "gleichzeitig von mehreren Servern aus zugegriffen wird. Das ist der Fall,"
 " wenn jedem Benutzer ein Mail Home Server zugeordnet ist."
 
-#: ../../mail/configuration-server.rst:292
+#: ../../mail/configuration-server.rst:286
 msgid ":envvar:`mail/dovecot/process/mmap_disable`\\ ``=yes``"
 msgstr ":envvar:`mail/dovecot/process/mmap_disable`\\ ``=yes``"
 
-#: ../../mail/configuration-server.rst:294
+#: ../../mail/configuration-server.rst:288
 msgid ":envvar:`mail/dovecot/process/dotlock_use_excl`\\ ``=yes``"
 msgstr ":envvar:`mail/dovecot/process/dotlock_use_excl`\\ ``=yes``"
 
-#: ../../mail/configuration-server.rst:296
+#: ../../mail/configuration-server.rst:290
 msgid ":envvar:`mail/dovecot/process/mail_fsync`\\ ``=always``"
 msgstr ":envvar:`mail/dovecot/process/mail_fsync`\\ ``=always``"
 
-#: ../../mail/configuration-server.rst:298
+#: ../../mail/configuration-server.rst:292
 msgid ""
 "To achieve higher performance, index files can be kept on the local "
 "servers disk, instead of storing them together with the messages on NFS. "
@@ -650,7 +650,7 @@ msgstr ""
 "zu finden. Setzen Sie dafür die |UCSUCRV| "
 ":envvar:`mail/dovecot/location/separate_index`\\ ``=yes``."
 
-#: ../../mail/configuration-server.rst:303
+#: ../../mail/configuration-server.rst:297
 msgid ""
 "With the above settings the mail server should work without problems on "
 "NFS. There are however a lot of different client and server systems in "
@@ -662,7 +662,7 @@ msgstr ""
 "sind jedoch so vielfältig, dass hier noch ein paar Hinweise folgen, wie "
 "bei Schwierigkeiten weiter vorgegangen werden kann:"
 
-#: ../../mail/configuration-server.rst:307
+#: ../../mail/configuration-server.rst:301
 msgid ""
 "If NFSv2 is in use (not the case if the NFS server is a |UCSUCS|), please"
 " set :envvar:`mail/dovecot/process/dotlock_use_excl`\\ ``=no``."
@@ -671,7 +671,7 @@ msgstr ""
 "|UCSUCS| ist), setzen Sie bitte "
 ":envvar:`mail/dovecot/process/dotlock_use_excl`\\ ``=no``."
 
-#: ../../mail/configuration-server.rst:310
+#: ../../mail/configuration-server.rst:304
 msgid ""
 "If *lockd* is not in use (not the case on |UCSUCS| systems) or if even "
 "with *lockd* in use locking error are encountered, set "
@@ -684,7 +684,7 @@ msgstr ""
 "verringert die Performance, aber behebt die meisten Locking-bezogenen "
 "Probleme."
 
-#: ../../mail/configuration-server.rst:315
+#: ../../mail/configuration-server.rst:309
 msgid ""
 "Dovecot flushes NFS caches when needed if you set "
 ":envvar:`mail/dovecot/process/mail_nfs_storage`\\ ``=yes``, but "
@@ -699,7 +699,7 @@ msgstr ""
 "von Index-Dateien: :envvar:`mail/dovecot/process/mail_nfs_index`\\ "
 "``=yes``."
 
-#: ../../mail/configuration-server.rst:321
+#: ../../mail/configuration-server.rst:315
 msgid ""
 "The Dovecot documentation has more information on the topic: `Dovecot "
 "Wiki: Mail storage on shared disks <dovecot-mail-storage-shared-disk_>`_ "
@@ -709,11 +709,11 @@ msgstr ""
 " `Dovecot Wiki: Mail storage on shared disks <dovecot-mail-storage-"
 "shared-disk_>`_ und `Dovecot Wiki: NFS <dovecot-nfs_>`_."
 
-#: ../../mail/configuration-server.rst:328
+#: ../../mail/configuration-server.rst:322
 msgid "Connection limits"
 msgstr "Beschränkung der Verbindungsanzahl"
 
-#: ../../mail/configuration-server.rst:330
+#: ../../mail/configuration-server.rst:324
 msgid ""
 "In a default |UCSUCS| configuration Dovecot allows ``400`` concurrent "
 "IMAP and POP3 connections each. That is enough to serve at least 100 "
@@ -724,7 +724,7 @@ msgstr ""
 "sicher aus, um 100 gleichzeitig eingeloggte IMAP-Benutzer zu bedienen, "
 "unter Umständen deutlich mehr."
 
-#: ../../mail/configuration-server.rst:334
+#: ../../mail/configuration-server.rst:328
 msgid ""
 "How many IMAP connections are opened by a user depends on the clients "
 "they use:"
@@ -732,17 +732,17 @@ msgstr ""
 "Wie viele IMAP-Verbindungen Benutzer gleichzeitig geöffnet haben, hängt "
 "von den eingesetzten Clients ab:"
 
-#: ../../mail/configuration-server.rst:336
+#: ../../mail/configuration-server.rst:330
 msgid "Web mail opens just a few short lived connections."
 msgstr "Webmail öffnet nur einzelne, kurzlebige Verbindungen."
 
-#: ../../mail/configuration-server.rst:338
+#: ../../mail/configuration-server.rst:332
 msgid "Desktop clients keep multiple connections open over a long period of time."
 msgstr ""
 "Desktop E-Mail-Programme halten über lange Zeit mehrere Verbindungen "
 "offen."
 
-#: ../../mail/configuration-server.rst:340
+#: ../../mail/configuration-server.rst:334
 msgid ""
 "Mobile clients keep just a few connections open over a long period of "
 "time. But they tend to never close them, unnecessarily wasting resources."
@@ -751,7 +751,7 @@ msgstr ""
 "beenden diese oft nicht von sich aus, so dass sie unnötig lang Ressourcen"
 " belegen."
 
-#: ../../mail/configuration-server.rst:343
+#: ../../mail/configuration-server.rst:337
 msgid ""
 "The limits exist mainly to resist denial of service attacks that open a "
 "lot of connections and create lots of processes."
@@ -760,25 +760,25 @@ msgstr ""
 "durch sehr viele geöffnete Prozesse und Netzwerkverbindungen zu "
 "widerstehen."
 
-#: ../../mail/configuration-server.rst:346
+#: ../../mail/configuration-server.rst:340
 msgid "To list the open connections, run:"
 msgstr ""
 "Um die in diesem Augenblick offenen Verbindungen zu sehen, kann folgender"
 " Befehl ausgeführt werden:"
 
-#: ../../mail/configuration-server.rst:348
+#: ../../mail/configuration-server.rst:342
 msgid "$ doveadm who"
 msgstr "$ doveadm who"
 
-#: ../../mail/configuration-server.rst:352
+#: ../../mail/configuration-server.rst:346
 msgid "To display the total amount of open connections, run:"
 msgstr "Um die Gesamtanzahl auszugeben:"
 
-#: ../../mail/configuration-server.rst:354
+#: ../../mail/configuration-server.rst:348
 msgid "$ doveadm who -1 | wc -l"
 msgstr "$ doveadm who -1 | wc -l"
 
-#: ../../mail/configuration-server.rst:358
+#: ../../mail/configuration-server.rst:352
 msgid ""
 "The |UCSUCRV|\\ s :envvar:`mail/dovecot/limits`\\ ``/*`` can be set to "
 "modify the limits. The process of adapting those variables is only semi "
@@ -792,7 +792,7 @@ msgstr ""
 "automatisch. Die Bedeutung aller Variablen kann in `Dovecot Wiki: Service"
 " configuration <dovecot-services_>`_ nachgelesen werden."
 
-#: ../../mail/configuration-server.rst:363
+#: ../../mail/configuration-server.rst:357
 msgid ""
 "Dovecot uses separate processes for login and to access emails. The "
 "limits for these can be configured separately. The maximum number of "
@@ -817,7 +817,7 @@ msgstr ""
 "betreut. Da standardmäßig nur 400 Prozesse erlaubt sind, können auch "
 "nicht mehr Verbindungen geöffnet werden."
 
-#: ../../mail/configuration-server.rst:374
+#: ../../mail/configuration-server.rst:368
 msgid ""
 "To allow 3000 clients to connect to their emails, another |UCSUCRV| has "
 "to be set:"
@@ -825,7 +825,7 @@ msgstr ""
 "Um 3000 Verbindungen von Benutzern zu ihren E-Mails zu erlauben, muss "
 "daher eine weitere |UCSUCRV| gesetzt werden:"
 
-#: ../../mail/configuration-server.rst:377
+#: ../../mail/configuration-server.rst:371
 msgid ""
 "$ ucr set mail/dovecot/limits/default_client_limit=3000\n"
 "$ ucr set mail/dovecot/limits/default_process_limit=3000\n"
@@ -835,11 +835,11 @@ msgstr ""
 "$ ucr set mail/dovecot/limits/default_process_limit=3000\n"
 "$ doveadm reload"
 
-#: ../../mail/configuration-server.rst:384
+#: ../../mail/configuration-server.rst:378
 msgid "Reading :file:`/var/log/dovecot.info` reveals a warning:"
 msgstr "Ein Blick in :file:`/var/log/dovecot.info` offenbart nun eine Warnung:"
 
-#: ../../mail/configuration-server.rst:388
+#: ../../mail/configuration-server.rst:382
 msgid ""
 "config: Warning: service auth { client_limit=2000 } is lower than "
 "required under max. load (15000)\n"
@@ -851,7 +851,7 @@ msgstr ""
 "config: Warning: service anvil { client_limit=1603 } is lower than "
 "required under max. load (12003)"
 
-#: ../../mail/configuration-server.rst:391
+#: ../../mail/configuration-server.rst:385
 msgid ""
 "The services ``auth`` (responsible for login and SSL connections) and "
 "``anvil`` (responsible for statistics collection) are set to their "
@@ -865,7 +865,7 @@ msgstr ""
 "aber die Anzahl der Prozesse für Login und SSL ist nun zu niedrig um sie "
 "alle zu bedienen. Dies wird dazu führen, dass Logins fehlschlagen."
 
-#: ../../mail/configuration-server.rst:397
+#: ../../mail/configuration-server.rst:391
 msgid ""
 "The values are so high, because ``default_client_limit`` and "
 "``default_process_limit`` do not only lift limits for IMAP and POP3, but "
@@ -884,13 +884,13 @@ msgstr ""
 "gleichzeitiger Verbindungen zu den Diensten ``auth`` und ``anvil`` "
 "erhöht."
 
-#: ../../mail/configuration-server.rst:404
+#: ../../mail/configuration-server.rst:398
 msgid "The values have to be adapted, using the numbers from the log file:"
 msgstr ""
 "Die Werte für die Dienste müssen nun der Fehlermeldung entsprechend "
 "angepasst werden:"
 
-#: ../../mail/configuration-server.rst:406
+#: ../../mail/configuration-server.rst:400
 msgid ""
 "$ ucr set mail/dovecot/limits/auth/client_limit=15000\n"
 "$ ucr set mail/dovecot/limits/anvil/client_limit=12003\n"
@@ -900,13 +900,13 @@ msgstr ""
 "$ ucr set mail/dovecot/limits/anvil/client_limit=12003\n"
 "$ doveadm reload"
 
-#: ../../mail/configuration-server.rst:412
+#: ../../mail/configuration-server.rst:406
 msgid "Another warning appears in :file:`/var/log/dovecot.info`:"
 msgstr ""
 "Ein Blick in :file:`/var/log/dovecot.info` offenbart nun noch eine letzte"
 " Warnung:"
 
-#: ../../mail/configuration-server.rst:417
+#: ../../mail/configuration-server.rst:411
 msgid ""
 "master: Warning: fd limit (ulimit -n) is lower than required under max. "
 "load (2000 < 15000),…\n"
@@ -916,7 +916,7 @@ msgstr ""
 "load (2000 < 15000),…\n"
 " because of service auth { client_limit }"
 
-#: ../../mail/configuration-server.rst:420
+#: ../../mail/configuration-server.rst:414
 msgid ""
 "The Linux kernel controlled setting ``ulimit`` setting (limit on the "
 "number of files/connections a process is allowed to open) is changed only"
@@ -926,11 +926,11 @@ msgstr ""
 "gleichzeitig geöffneter Dateien/Verbindungen pro Prozess) wird nur bei "
 "einem Neustart des Dovecot-Dienstes verändert, daher:"
 
-#: ../../mail/configuration-server.rst:424
+#: ../../mail/configuration-server.rst:418
 msgid "$ systemctl restart dovecot"
 msgstr "$ systemctl restart dovecot"
 
-#: ../../mail/configuration-server.rst:428
+#: ../../mail/configuration-server.rst:422
 msgid ""
 "No more warnings are written to the log file and both IMAP and POP3 "
 "servers now accept 3000 client connections each."
@@ -938,7 +938,7 @@ msgstr ""
 "Nun erscheint keine Fehlermeldung mehr, und IMAP- und POP3-Server "
 "akzeptieren nun beide je 3000 Verbindungen."
 
-#: ../../mail/configuration-server.rst:431
+#: ../../mail/configuration-server.rst:425
 msgid ""
 "|UCSUCS| configures Dovecot to run in \"High-security mode\" by default. "
 "For installations with 10.000s of users, Dovecot offers the \"High-"
@@ -1074,28 +1074,30 @@ msgstr ""
 
 #: ../../mail/fetchmail.rst:13
 msgid ""
-"Once the installation is finished, there are additional input fields in "
-"the :menuselection:`Advanced settings --> Remote mail retrieval (single)` "
-"and :menuselection:`Remote mail retrieval (multi)` tab of the user "
-"administration which can be used to configure the collection of mails "
-"from an external server. The mails are delivered to the inboxes of the "
-"respective users. The primary email address must be configured for that. "
-"Before using multi-drop configurations it is recommended to read "
-"`THE USE AND ABUSE OF MULTIDROP MAILBOXES <fetchmail-multidrop_>` in the "
-"Fetchmail manual."
+"After the installation, the :menuselection:`Advanced settings --> Remote "
+"mail retrieval (single)` and :menuselection:`Remote mail retrieval "
+"(multi)` tabs in the user administration provide additional input fields."
+" Use them to configure the retrieval of emails from a remote mail server."
 msgstr ""
-"Nach Abschluss der Installation finden sich in der Benutzerverwaltung, im "
-"Reiter :menuselection:`Erweiterte Einstellungen --> Mailabruf von externen "
-"Servern (Single)` und :menuselection:`Erweiterte Einstellungen --> "
-"Mailabruf von externen Servern (Multi), zusätzliche Eingabefelder, mit "
-"denen der Mailabruf von externen Servern konfiguriert werden kann. Die "
-"Mails werden dabei in die Postfächer der jeweiligen Benutzer eingeliefert "
-"(die primäre E-Mail-Adresse muss dafür konfiguriert sein). Vor der "
-"Verwendung von Multidrop-Konfigurationen ist es empfehlenswert `THE USE AND "
-"ABUSE OF MULTIDROP MAILBOXES <fetchmail-multidrop_>` zu lesen."
+"Nach der Installation stellen die Reiter :menuselection:`Erweiterte "
+"Einstellungen --> Mailabruf von externen Servern (Single)` und "
+":menuselection:`Erweiterte Einstellungen --> Mailabruf von externen "
+"Servern (Multi)` zusätzliche Eingabefelder bereit. Verwenden Sie diese, "
+"um den Abruf von Mails von externen Servern zu konfigurieren."
 
+#: ../../mail/fetchmail.rst:17
+msgid ""
+"Fetchmail delivers emails to the inboxes of the corresponding users. The "
+"user account must have the primary email address configured for this. "
+"Before using multi-drop configurations, read `THE USE AND ABUSE OF "
+"MULTIDROP MAILBOXES <fetchmail-multidrop_>`_ in the Fetchmail manual."
+msgstr ""
+"Fetchmail liefert Mails zu den Posteingängen der jeweiligen Benutzer. Der"
+" Account des Benutzers muss dafür über eine primäre E-Mail-Adresse "
+"verfügen. Vor der Verwendung von *Multidrop-Konfigurationen* lesen Sie "
+"bitte `THE USE AND ABUSE OF MULTIDROP MAILBOXES <fetchmail-multidrop_>`_."
 
-#: ../../mail/fetchmail.rst:19
+#: ../../mail/fetchmail.rst:21
 msgid ""
 "The mail is fetched every twenty minutes once at least one email address "
 "is configured for mail retrieval. After the initial configuration of a "
@@ -1111,122 +1113,131 @@ msgstr ""
 "(alternativ durch Setzen der |UCSUCRV| :envvar:`fetchmail/autostart` auf "
 "``false``)."
 
-#: ../../mail/fetchmail.rst:25
+#: ../../mail/fetchmail.rst:27
 msgid "*Remote mail retrieval (single)* tab"
 msgstr "Reiter *Mailabruf von externen Servern (Single)*"
 
-#: ../../mail/fetchmail.rst:29 ../../mail/management.rst:199
-#: ../../mail/management.rst:241
+#: ../../mail/fetchmail.rst:31 ../../mail/fetchmail.rst:58
+#: ../../mail/management.rst:199 ../../mail/management.rst:241
 msgid "Attribute"
 msgstr "Attribut"
 
-#: ../../mail/fetchmail.rst:30 ../../mail/management.rst:200
-#: ../../mail/management.rst:242
+#: ../../mail/fetchmail.rst:32 ../../mail/fetchmail.rst:59
+#: ../../mail/management.rst:200 ../../mail/management.rst:242
 msgid "Description"
 msgstr "Beschreibung"
 
-#: ../../mail/fetchmail.rst:32
+#: ../../mail/fetchmail.rst:34 ../../mail/fetchmail.rst:61
 msgid "Username"
 msgstr "Benutzername"
 
-#: ../../mail/fetchmail.rst:33
-msgid "The username to be provided to the mail server for fetching mail."
-msgstr ""
-"Der Benutzername, der für den Abruf der Mail an den Mailserver übergeben "
-"werden soll."
+#: ../../mail/fetchmail.rst:35 ../../mail/fetchmail.rst:62
+msgid "The username to connect to the email server for fetching emails."
+msgstr "Der Benutzername für die Verbindung zum Mailserver."
 
-#: ../../mail/fetchmail.rst:35
+#: ../../mail/fetchmail.rst:37 ../../mail/fetchmail.rst:64
 msgid "Password"
 msgstr "Passwort"
 
-#: ../../mail/fetchmail.rst:36
-msgid "The password to be used for fetching mail."
-msgstr "Das Passwort, das für den Mailabruf verwendet werden soll."
+#: ../../mail/fetchmail.rst:38 ../../mail/fetchmail.rst:65
+msgid ""
+"The password for the user to connect to the email server for fetching "
+"mail."
+msgstr "Das Passwort für die Verbindung zum Mailserver."
 
-#: ../../mail/fetchmail.rst:38
+#: ../../mail/fetchmail.rst:40 ../../mail/fetchmail.rst:67
 msgid "Protocol"
 msgstr "Protokoll"
 
-#: ../../mail/fetchmail.rst:39
-msgid "The mail can be fetched via the IMAP or POP3 protocols."
-msgstr "Der Abruf kann über die Protokolle IMAP oder POP3 erfolgen."
+#: ../../mail/fetchmail.rst:41 ../../mail/fetchmail.rst:68
+msgid ""
+"The protocol that Fetchmail uses for fetching emails. Choose either "
+"``IMAP`` or ``POP3``."
+msgstr ""
+"Das Protokoll, welches Fetchmail zum Abrufen von Mails verwendet. Wählen "
+"Sie entweder ``IMAP`` oder ``POP3``."
 
-#: ../../mail/fetchmail.rst:41
+#: ../../mail/fetchmail.rst:43 ../../mail/fetchmail.rst:70
 msgid "Remote mail server"
 msgstr "Externer Mailserver"
 
-#: ../../mail/fetchmail.rst:42
-msgid "The name of the mail server from which the emails are to be fetched."
-msgstr "Der Name des Mailservers, von dem die Mails abgerufen werden sollen."
+#: ../../mail/fetchmail.rst:44 ../../mail/fetchmail.rst:71
+msgid "The hostname of the email server that Fetchmail uses to fetch emails."
+msgstr "Der Name des Mailservers, den Fetchmail verwendet, um Mails abzurufen."
 
-#: ../../mail/fetchmail.rst:44
+#: ../../mail/fetchmail.rst:46 ../../mail/fetchmail.rst:88
 msgid "Use SSL"
 msgstr "SSL verwenden"
 
-#: ../../mail/fetchmail.rst:45
+#: ../../mail/fetchmail.rst:47 ../../mail/fetchmail.rst:89
 msgid ""
-"If this option is enabled, the mail is fetched in an encrypted form (when"
-" this is supported by the mail server)."
+"This option enables encrypted mail fetching. For it to work, this feature"
+" has to be supported by the mail server."
 msgstr ""
-"Ist diese Option aktiviert, erfolgt der Mailabruf verschlüsselt (sofern "
-"dies vom Mailserver unterstützt wird)."
+"Diese Option aktiviert einen verschlüsselten Abruf von Mails. Dies muss "
+"ebenfalls vom Mailserver unterstützt werden."
 
-#: ../../mail/fetchmail.rst:51
-msgid "Keep mails on remote server"
+#: ../../mail/fetchmail.rst:50 ../../mail/fetchmail.rst:92
+msgid "Keep mail on remote server"
 msgstr "Mails auf dem externen Server nicht löschen"
 
-#: ../../mail/fetchmail.rst:52
+#: ../../mail/fetchmail.rst:51 ../../mail/fetchmail.rst:93
 msgid ""
-"By default the fetched mails are deleted from the server following the "
-"transfer. If this option is enabled, it can be suppressed."
+"By default, Fetchmail deletes fetched email from the remote server after "
+"the transfer. To keep the emails on the remote server, enable this "
+"option."
 msgstr ""
-"In der Grundeinstellungen werden die abgerufenen Mails nach dem Transfer "
-"auf dem Server gelöscht. Ist diese Option aktiviert, kann dies "
-"unterbunden werden."
+"In der Grundeinstellung löscht Fetchmail die abgerufenen Mails nach deren"
+" Übertragung vom externen Server. Um die Mails auf dem externen Server zu"
+" behalten, diese Option aktivieren."
 
-#: ../../mail/fetchmail.rst:55
+#: ../../mail/fetchmail.rst:54
 msgid "*Remote mail retrieval (multi)* tab"
 msgstr "Reiter *Mailabruf von externen Servern (Multi)*"
 
-#: ../../mail/fetchmail.rst:74
+#: ../../mail/fetchmail.rst:73
 msgid "Local Domain Names"
 msgstr "Lokale Domänennamen"
 
-#: ../../mail/fetchmail.rst:75
-msgid "A space-separated list of local domain names. Leave it empty to use "
-"all local domains."
-msgstr "Eine leerzeichenseparierte Liste lokaler Domänennamen. Feld leer "
+#: ../../mail/fetchmail.rst:74
+msgid ""
+"A space-separated list of local domain names. Leave it empty to use all "
+"local domains."
+msgstr ""
+"Eine durch Leerzeichen getrennte Liste lokaler Domänennamen. Feld leer "
 "lassen, um alle lokalen Domänen zu verwenden."
 
-#: ../../mail/fetchmail.rst:78
+#: ../../mail/fetchmail.rst:77
 msgid "Virtual *qmail* prefix"
 msgstr "Virtuelle *Qmail* Präfix"
 
-#: ../../mail/fetchmail.rst:79
-msgid "The string prefix assigned to this field will be removed from the "
-"address found in the header which is specified with the envelope header "
-"option. E.g. if the value is set to `example-prefix-` and Fetchmail "
-"retrieves an email whose header matches with an address like "
-"`example-prefix-info@remotedomain.com` the mail will be forwarded as "
-"`info@localdomain.com.`"
-msgstr "Dieser String-Präfix wird von der Adresse, die sich im Header "
-"befindet und über das `Envelope-Header` Feld gesetzt werden kann, "
-"entfernt. Wenn der Wert beispielsweise auf `example-prefix-` gesetzt "
-"wird und Fetchmail eine Email abruft, in deren Header "
-"`example-prefix-info@remotedomain.com` angegeben ist, wird die Mail an "
-"`info@localdomain.com` weitergeleitet."
+#: ../../mail/fetchmail.rst:78
+msgid ""
+"Fetchmail removes the defined string prefix from the email address found "
+"in the header specified with the envelope header option. For example, if "
+"the value is ``example-prefix-`` and Fetchmail retrieves an email whose "
+"header matches an address such as ``example-prefix-"
+"info@remotedomain.com``, Fetchmail forwards the email as "
+"``info@localdomain.com``."
+msgstr ""
+"Fetchmail entfernt den angegebenen Präfix von der Mailadresse aus dem "
+"Header, welche mit der Option *Envelope-Header* angegeben ist. Wenn "
+"dieser Wert beispielsweise ``example-prefix-`` ist und Fetchmail eine "
+"Mail abruft, in deren Header ``example-prefix-info@remotedomain.com`` "
+"vorkommt, leitet Fetchmail die Mail an ``info@localdomain.com`` weiter."
+
+#: ../../mail/fetchmail.rst:84
+msgid "Envelope Header"
+msgstr "*Envelope-Header*"
 
 #: ../../mail/fetchmail.rst:85
-msgid "Envelope Header"
-msgstr "Envelope-Header"
-
-#: ../../mail/fetchmail.rst:86
 msgid ""
 "The value of this field sets the header that Fetchmail expects to appear "
-"as a copy of the mail envelope address. It is used for mail rerouting. "
+"as a copy of the mail envelope address. Fetchmail uses it for mail "
+"rerouting."
 msgstr ""
-"Ändert den Wert des Headers, in welchem Fetchmail eine Kopie der "
-"Envelope-Adresse erwartet. Wird zur Email-Umleitung verwendet."
+"Ändert den Wert des Headers, in welchem Fetchmail eine Kopie der *Envelope-"
+"Adresse* erwartet. Fetchmail verwendet diesen zur Umleitung von E-Mails."
 
 #: ../../mail/index.rst:57
 msgid "Chapter contents:"
@@ -2260,4 +2271,3 @@ msgstr ""
 "Alternativ oder zusätzlich können andere Virenscanner in AMaViS "
 "eingebunden werden. Nach Änderungen an der AMaViS- oder ClamAV-"
 "Konfiguration müssen Postfix und AMaViS neu gestartet werden."
-
