@@ -1,3 +1,9 @@
+univention-directory-manager-modules (15.0.19-1) unstable; urgency=low
+
+  * Bug #51631: Fix Replaces/Breaks for upgrade from UCS 5.0-3
+
+ -- Philipp Hahn <hahn@univention.de>  Tue, 07 Feb 2023 16:16:35 +0100
+
 univention-directory-manager-modules (15.0.18-1) unstable; urgency=medium
 
   * Bug #50073: UDM: remap `country` from `st` to `c`: add

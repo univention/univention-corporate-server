@@ -1,3 +1,4 @@
 0013-2: univention-user-passwd:44
 0018-2: debian/python3-univention-directory-manager.dirs
 0006-2: debian/python3-univention-directory-manager.postinst
+0008-7: debian/python3-univention-directory-manager.univention-config-registry-variables

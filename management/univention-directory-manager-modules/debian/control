@@ -128,9 +128,9 @@ Depends:
  ${misc:Depends},
  ${python3:Depends},
 Breaks:
- python3-univention-directory-manager (<< 15.0.12-1),
+ python3-univention-directory-manager (<< 15.0.19-1),
 Replaces:
- python3-univention-directory-manager (<< 15.0.12-1),
+ python3-univention-directory-manager (<< 15.0.19-1),
 Description: UCS - Modules for administration tools
  This package contains the Python 3 modules that implement the
  features of UCS Directory Manager.
