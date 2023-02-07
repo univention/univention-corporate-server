@@ -1,0 +1,10 @@
+[
+	{
+		"input_files": [
+			"share/syntax.d/fetchmail.py"
+		],
+		"po_path": "share/syntax.d/{lang}.po",
+		"target_type": "mo",
+		"destination": "usr/share/locale/{lang}/LC_MESSAGES/univention-admin-fetchmail.mo"
+	}
+]

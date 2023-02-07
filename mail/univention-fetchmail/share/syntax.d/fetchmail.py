@@ -30,16 +30,20 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
+import univention.admin.localization
 from univention.admin.syntax import IMAP_POP3, boolean, complex, select, string, userPasswd
+
+
+_ = univention.admin.localization.translation("univention.admin.fetchmail").translate
 
 
 class FetchMailSingle(complex):
     """Syntax for single drop fetchmail configuration."""
 
     subsyntaxes = [
-        ('Remote Server', string), ('Protocol', IMAP_POP3),
-        ('Remote Username', string), ('Password', userPasswd),
-        ('Use SSL', boolean), ('Keep on remote server', boolean),
+        (_('Remote Server'), string), (_('Protocol'), IMAP_POP3),
+        (_('Remote Username'), string), (_('Password'), userPasswd),
+        (_('Use SSL'), boolean), (_('Keep on remote server'), boolean),
     ]
 
     subsyntax_names = ('server', 'protocol', 'remote username', 'password', 'ssl', 'keep')
@@ -75,10 +79,10 @@ class FetchMailMulti(complex):
     """Syntax for multi drop fetchmail configuration."""
 
     subsyntaxes = [
-        ('Remote Server', string), ('Protocol', IMAP_POP3),
-        ('Remote Username', string), ('Password', userPasswd),
-        ('Local Domain Names', string), ('Virtual qmail Prefix', string),
-        ('Envelope Header', FetchmailEnvelope), ('Use SSL', boolean), ('Keep on remote server', boolean),
+        (_('Remote Server'), string), (_('Protocol'), IMAP_POP3),
+        (_('Remote Username'), string), (_('Password'), userPasswd),
+        (_('Local Domain Names'), string), (_('Virtual Qmail Prefix'), string),
+        (_('Envelope Header'), FetchmailEnvelope), (_('Use SSL'), boolean), (_('Keep on remote server'), boolean),
     ]
 
     subsyntax_names = ('server', 'protocol', 'remote username', 'password', 'Local Domain Name', 'qmail prefix', 'envelopeheader', 'ssl', 'keep')

@@ -1,0 +1,48 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: univention-fetchmail\n"
+"Report-Msgid-Bugs-To: packages@univention.de\n"
+"POT-Creation-Date: 2023-02-07 12:30+0200\n"
+"PO-Revision-Date: 2023-02-07 12:50+0200\n"
+"Last-Translator: Univention GmbH <packages@univention.de>\n"
+"Language-Team: Univention GmbH <packages@univention.de>\n"
+"Language: de\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: share/syntax.d/fetchmail.py:40 share/syntax.d/fetchmail.py:78
+msgid "Remote Server"
+msgstr "Externer Server"
+
+#: share/syntax.d/fetchmail.py:40 share/syntax.d/fetchmail.py:78
+msgid "Protocol"
+msgstr "Protokoll"
+
+#: share/syntax.d/fetchmail.py:41 share/syntax.d/fetchmail.py:79
+msgid "Remote Username"
+msgstr "Externer Benutzername"
+
+#: share/syntax.d/fetchmail.py:41 share/syntax.d/fetchmail.py:79
+msgid "Password"
+msgstr "Passwort"
+
+#: share/syntax.d/fetchmail.py:42 share/syntax.d/fetchmail.py:81
+msgid "Use SSL"
+msgstr "SSL verwenden"
+
+#: share/syntax.d/fetchmail.py:42 share/syntax.d/fetchmail.py:81
+msgid "Keep on remote server"
+msgstr "E-mails auf externem Server behalten"
+
+#: share/syntax.d/fetchmail.py:42
+msgid "Local Domain Names"
+msgstr "Lokale Domänennamen"
+
+#: share/syntax.d/fetchmail.py:42
+msgid "Virtual Qmail Prefix"
+msgstr "Virtueller Qmail-Präfix"
+
+#: share/syntax.d/fetchmail.py:42
+msgid "Envelope Header"
+msgstr "Envelope-Header"

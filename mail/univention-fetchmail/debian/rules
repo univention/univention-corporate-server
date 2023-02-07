@@ -37,5 +37,10 @@ override_dh_fixperms:
 	dh_fixperms
 	chmod 0700 debian/univention-fetchmail/var/spool/univention-fetchmail
 
+override_dh_install:
+	dh_install
+	mkdir debian/univention-fetchmail-schema/usr/share/univention-fetchmail/
+	install debian/univention-fetchmail-schema/usr/share/locale/de/LC_MESSAGES/univention-admin-fetchmail.mo debian/univention-fetchmail-schema/usr/share/univention-fetchmail/de.mo
+
 %:
-	dh $@ --with ucr
+	dh $@ --with ucr,univention-l10n
