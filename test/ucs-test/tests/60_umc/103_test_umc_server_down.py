@@ -6,6 +6,7 @@
 import json
 import socket
 import subprocess
+import time
 
 import pytest
 
@@ -23,6 +24,7 @@ class Test_ServerDown_Messages:
             assert exc.value.response.reason == 'UMC-Web-Server Unavailable'
         finally:
             subprocess.call(['service', 'univention-management-console-web-server', 'start'])
+            time.sleep(1)
 
     def test_umc_server_down(self, Client):
         try:
