@@ -1,3 +1,10 @@
+univention-ldap (16.0.12-1) unstable; urgency=medium
+
+  * Bug #50073: UDM: remap `country` from `st` to `c`: allow templates to
+    contain `c`
+
+ -- Maximilian Janßen <janssen@univention.de>  Fri, 06 Feb 2023 19:00:00 +0100
+
 univention-ldap (16.0.11-1) unstable; urgency=medium
 
   * Bug #50073: UDM: remap `country` from `st` to `c`

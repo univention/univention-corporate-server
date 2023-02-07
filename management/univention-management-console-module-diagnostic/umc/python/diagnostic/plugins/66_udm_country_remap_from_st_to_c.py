@@ -45,7 +45,7 @@ from univention.management.console.modules.diagnostic import Critical, ProblemFi
 _ = Translation('univention-management-console-module-diagnostic').translate
 
 title = _('Check if UDM country can be remapped from st to c.')
-description = _('The user property "country" is currently erroneously mapped to the LDAP attribute "st". "st" represents a state (province) while the correct LDAP attribute "c" represents a country. The migration will check and move all LDAP data from "st" to "c" for all users and user templates and install a domain wide UCR policy to change the fields in UDM. If this behavior is not wanted this check can be disabled by setting the UCR variable "diagnostic/check/66_udm_country_remap_from_st_to_c" to true.')
+description = _('The user property "country" is currently erroneously mapped to the LDAP attribute "st". "st" represents a state (province) while the correct LDAP attribute "c" represents a country. The migration will check and move all LDAP data from "st" to "c" for all users and user templates and install a domain wide UCR policy to change the fields in UDM. If this behavior is not wanted this check can be disabled by setting the UCR variable "diagnostic/check/disable/66_udm_country_remap_from_st_to_c" to true.')
 run_descr = ['This can be checked by running: /usr/share/univention-directory-manager-tools/udm-remap-country-from-st-to-c --check']
 
 

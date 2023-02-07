@@ -408,12 +408,12 @@ class object(univention.admin.handlers.simpleLdap):
         return ml
 
     def _modlist_univention_person(self, ml):
-        if self.hasChanged('birthday'):
-            # make sure that univentionPerson is set as objectClass when birthday is set
-            if self['birthday'] and b'univentionPerson' not in self.oldattr.get('objectClass', []):
-                ml.append(('objectClass', b'', b'univentionPerson'))
-            # remove univentionPerson as objectClass when birthday is unset
-            elif not self['birthday'] and b'univentionPerson' in self.oldattr.get('objectClass', []):
+        univention_person_property_names = ('birthday', 'country')
+        if any(self.hasChanged(ikey) for ikey in univention_person_property_names):
+            if any(self[ikey] for ikey in univention_person_property_names):
+                if b'univentionPerson' not in self.oldattr.get('objectClass', []):
+                    ml.append(('objectClass', b'', b'univentionPerson'))
+            elif b'univentionPerson' in self.oldattr.get('objectClass', []):
                 ml.append(('objectClass', b'univentionPerson', b''))
         return ml
 

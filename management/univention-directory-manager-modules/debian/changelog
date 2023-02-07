@@ -1,3 +1,10 @@
+univention-directory-manager-modules (15.0.18-1) unstable; urgency=medium
+
+  * Bug #50073: UDM: remap `country` from `st` to `c`: add
+    univentionPerson to contacts
+
+ -- Maximilian Janßen <janssen@univention.de>  Fri, 07 Feb 2023 12:00:00 +0100
+
 univention-directory-manager-modules (15.0.17-1) unstable; urgency=medium
 
   * Bug #50073: UDM: remap `country` from `st` to `c`
