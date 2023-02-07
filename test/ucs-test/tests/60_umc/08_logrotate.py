@@ -42,6 +42,7 @@ class LogrotateService:
         print('No logfile for service %s found.' % (self.service,))
 
     def stat(self, logfile):
+        assert logfile
         stat = os.stat(logfile)
         print(logfile, stat)
         return stat
