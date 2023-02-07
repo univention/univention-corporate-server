@@ -1,3 +1,10 @@
+univention-fetchmail (13.0.5-1) unstable; urgency=medium
+
+  * Bug #55575: Fix error in attribute deletion and
+    update attribute field names.
+
+ -- Juan Carlos García García <garcia-garcia.extern@univention.de>  Mon, 07 Feb 2023 11:55:00 +0100
+
 univention-fetchmail (13.0.4-1) unstable; urgency=medium
 
   * Bug #55575: Add ox-fetchmail features to univention-fetchmail.
