@@ -1,3 +1,10 @@
+ucs-test (10.0.10-1) unstable; urgency=medium
+
+  * Bug #55346: adjust self-service blacklist test for new anti
+    usernameenumeration responses.
+
+ -- Maximilian Janßen <mjanssen@univention.de>  Fri, 07 Feb 2023 17:23:32 +0100
+
 ucs-test (10.0.9-2) unstable; urgency=medium
 
   * Bug #50073: adjust UMC check for new `country` mapping (`st` -> `c`)
