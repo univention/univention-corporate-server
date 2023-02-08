@@ -47,7 +47,7 @@ def diagnostic_results():
         } for success, failed, error_message in DIAGNOSTIC_RE.findall(stdout.decode('UTF-8', 'replace'))
     }
     if not proc.returncode:
-        assert all(not failure for _, failure, _ in params)
+        assert all(item['success'] for plugin, item in params.items())
     return params
 
 
