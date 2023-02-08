@@ -254,7 +254,7 @@ create_ec2_image () {
 _convert_image () {
 	_ssh "${KVM_SERVER:?}" "
 		set -e -u -x
-		img=\"\$(virsh dumpxml '${KVM_NAME:?}' | xmllint --xpath 'string(/domain/devices/disk[@device=\"disk\"]/source/@file)')\"
+		img=\"\$(virsh dumpxml '${KVM_NAME:?}' | xmllint --xpath 'string(/domain/devices/disk[@device=\"disk\"]/source/@file)' -)\"
 		qemu-img convert -p -c -O qcow2 \"\${img:?}\" '${TMP_KVM_IMAGE:?}'
 	"
 }
