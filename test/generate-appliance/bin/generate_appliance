@@ -318,7 +318,7 @@ class Pkzip(File):
         if not os.path.exists(store):
             log('Creating PKZIP')
             os.mkdir(store)
-            with ZipFile(target, mode="w") as archive:
+            with ZipFile(target, mode="w", allowZip64=True) as archive:
                 for name, source_file in self._file_list:
                     if isinstance(source_file, bytes):
                         archive.writestr(name, source_file)
