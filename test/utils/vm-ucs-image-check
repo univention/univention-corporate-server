@@ -195,7 +195,7 @@ check_ucr () {
 	*) issue "online should be disabled" ucr set repository/online='false' ;;
 	esac
 	case "${repository_online_unmaintained:-}" in
-	false|no|disable|disabled|0) ;;
+	false|no|disable|disabled|0|'') ;;
 	*) issue "unmaintained should be disabled" ucr set repository/online/unmaintained='no' ;;
 	esac
 	while IFS=': ' read -r key value
