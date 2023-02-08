@@ -1,7 +1,7 @@
 #!/usr/share/ucs-test/runner bash
 # shellcheck shell=bash
 ## desc: Test for compatibility with python-udm-rest-api-client
-## tags: [udm,apptest,openapi]
+## tags: [udm,apptest,openapi,skip_admember]
 ## roles: [domaincontroller_master]
 ## exposure: careful
 ## packages:
