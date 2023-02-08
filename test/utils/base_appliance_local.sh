@@ -30,26 +30,26 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-set -x
-set -e
+set -e -u -x
 
-APPS_SERVER="omar.knut.univention.de"
-IMAGE_SERVER="docker.knut.univention.de"
+TMPDIR="/var/tmp"
+APPSDIR="/var/univention/buildsystem2/mirror/appcenter.test/univention-apps"
 
 _ssh () {
-	ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -o BatchMode=yes -n "$@"
+	ssh -o BatchMode=yes -n "$@"
 }
 
 
 _scp () {
-	scp -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no "$@"
+	scp -B "$@"
 }
 
 
 _kvm_image () {
 	local identify="$1"
-	_ssh -l "$KVM_USER" "${IMAGE_SERVER}" "
-		set -e -x
+	_ssh "${IMAGE_SERVER}" "
+		set -e -u -x
+		install -m 2775 -d '$APPS_BASE'
 		cd '$APPS_BASE'
 		rm -f '${TMP_KVM_IMAGE}.kv' '$KVM_IMAGE'
 		cp '${TMP_KVM_IMAGE}' '${TMP_KVM_IMAGE}.kv'
@@ -65,8 +65,9 @@ _kvm_image () {
 
 _vmplayer_image () {
 	local identify="$1"
-	_ssh -l "$KVM_USER" "${IMAGE_SERVER}" "
-		set -e -x
+	_ssh "${IMAGE_SERVER}" "
+		set -e -u -x
+		install -m 2775 -d '$APPS_BASE'
 		cd '$APPS_BASE'
 		rm -f '${TMP_KVM_IMAGE}.vm' '${VMPLAYER_IMAGE}'
 		cp '${TMP_KVM_IMAGE}' '${TMP_KVM_IMAGE}.vm'
@@ -82,27 +83,30 @@ _vmplayer_image () {
 
 _virtualbox_image () {
 	local identify="$1"
-	_scp utils/install-vbox-guesttools.sh "${KVM_USER}@${IMAGE_SERVER}:/tmp"
-	_ssh -l "$KVM_USER" "${IMAGE_SERVER}" "
-		set -e -x
+	local VGT='/var/tmp/install-vbox-guesttools.sh'
+	_scp utils/install-vbox-guesttools.sh "${IMAGE_SERVER}:${VGT}"
+	_ssh "${IMAGE_SERVER}" "
+		set -e -u -x
+		install -m 2775 -d '$APPS_BASE'
 		cd '$APPS_BASE'
 		rm -f '${TMP_KVM_IMAGE}.vb' '${VBOX_IMAGE}'
 		cp '${TMP_KVM_IMAGE}' '${TMP_KVM_IMAGE}.vb'
-		guestfish add '${TMP_KVM_IMAGE}.vb' : set-network true : run : mount /dev/mapper/vg_ucs-root / : copy-in /tmp/install-vbox-guesttools.sh /root/ : command /root/install-vbox-guesttools.sh
+		guestfish add '${TMP_KVM_IMAGE}.vb' : set-network true : run : mount /dev/mapper/vg_ucs-root / : copy-in ${VGT} /root/ : command /root/install-vbox-guesttools.sh
 		guestfish add '${TMP_KVM_IMAGE}.vb' : run : mount /dev/mapper/vg_ucs-root / : command \"/usr/sbin/ucr set updater/identify='$identify'\"
 		generate_appliance -m '$MEMORY' -p UCS -v '$IMAGE_VERSION' -o --ova-virtualbox -s '${TMP_KVM_IMAGE}.vb' -f '${VBOX_IMAGE}'
 		md5sum '${VBOX_IMAGE}' > '${VBOX_IMAGE}.md5'
 		sha256sum '${VBOX_IMAGE}' > '${VBOX_IMAGE}.sha256'
 		chmod 644 '${VBOX_IMAGE}'*
-		rm -f '${TMP_KVM_IMAGE}.vb'
+		rm -f '${TMP_KVM_IMAGE}.vb' '${VGT}'
 	"
 }
 
 
 _esxi () {
 	local identify="$1"
-	_ssh -l "$KVM_USER" "${IMAGE_SERVER}" "
-		set -e -x
+	_ssh "${IMAGE_SERVER}" "
+		set -e -u -x
+		install -m 2775 -d '$APPS_BASE'
 		cd '$APPS_BASE'
 		rm -f '${TMP_KVM_IMAGE}.es' '${ESX_IMAGE}'
 		cp '${TMP_KVM_IMAGE}' '${TMP_KVM_IMAGE}.es'
@@ -118,8 +122,9 @@ _esxi () {
 
 _hyperv_image () {
 	local identify="$1"
-	_ssh -l "$KVM_USER" "${IMAGE_SERVER}" "
-		set -e -x
+	_ssh "${IMAGE_SERVER}" "
+		set -e -u -x
+		install -m 2775 -d '$APPS_BASE'
 		cd '$APPS_BASE'
 		rm -f '${TMP_KVM_IMAGE}.hv' '${HYPERV_IMAGE_BASE}.vhdx' '${HYPERV_IMAGE_BASE}.zip'
 		cp '${TMP_KVM_IMAGE}' '${TMP_KVM_IMAGE}.hv'
@@ -136,19 +141,22 @@ _hyperv_image () {
 
 _ec2_image () {
 	# Identifier already set
-	_ssh -l "$KVM_USER" "${IMAGE_SERVER}" "generate_appliance --only --ec2-ebs -s /tmp/master-ec2-appliance/master.qcow2 -v '${UCS_VERSION_INFO}'"
+	_ssh "${IMAGE_SERVER}" "generate_appliance --only --ec2-ebs -s '${TMP_KVM_IMAGE}' -v '${UCS_VERSION_INFO}'"
 }
 
+# (app|ec2)-appliance
 _set_global_vars () {
-	APP_ID=$1
-	KVM_USER=$2
-	KVM_SERVER=$3
-	UCS_VERSION=$4
-	UCS_VERSION_INFO="$5"
+	APP_ID="${1:?}"
+	KVM_USER="${2:?}"
+	KVM_SERVER="${KVM_USER}@${3:?}"
+	UCS_VERSION="${4:?}"
+	UCS_VERSION_INFO="${5?}"
 
-	APPS_BASE="/var/univention/buildsystem2/mirror/appcenter.test/univention-apps/${UCS_VERSION}/${APP_ID}"
-	TMP_DIR="/var/univention/buildsystem2/temp/build-app-appliance/${APP_ID}"
-	TMP_KVM_IMAGE="$TMP_DIR/master.qcow2"
+	APPS_SERVER="${KVM_USER}@omar.knut.univention.de"
+	IMAGE_SERVER="${KVM_USER}@docker.knut.univention.de"
+
+	APPS_BASE="${APPSDIR}/${UCS_VERSION}/${APP_ID}"
+	TMP_KVM_IMAGE="${TMPDIR}/app-appliance-${APP_ID}.qcow2"
 	IMAGE_VERSION="${UCS_VERSION}-with-${APP_ID}"
 	VMPLAYER_IMAGE="Univention-App-${APP_ID}-vmware.zip"
 	KVM_IMAGE="Univention-App-${APP_ID}-KVM.qcow2"
@@ -163,18 +171,13 @@ create_app_images () {
 	KT_CREATE_IMAGE="/var/lib/libvirt/images/${KVM_USER}_app-appliance-${APP_ID}-0.qcow2"
 
 	# convert image
-	_ssh -l "$KVM_USER" "$KVM_SERVER" "
-		set -e -x
-		[ -d '$TMP_DIR' ] && rm -rf '$TMP_DIR' || true
-		install -m 2775 -d '$TMP_DIR' '$APPS_BASE'
-		qemu-img convert -p -c -O qcow2 '$KT_CREATE_IMAGE' '$TMP_KVM_IMAGE'
-	"
+	_ssh "$KVM_SERVER" "qemu-img convert -p -c -O qcow2 '$KT_CREATE_IMAGE' '$TMP_KVM_IMAGE'"
 
-	# get memory specification (is saved in /tmp/.memory in image)
-	MEMORY=$(_ssh -l "$KVM_USER" "${IMAGE_SERVER}" "virt-cat -a '${TMP_KVM_IMAGE}' /.memory 2>/dev/null || echo 2048")
+	MEMORY=$(_ssh "${IMAGE_SERVER}" "virt-cat -a '${TMP_KVM_IMAGE}' /.memory 2>/dev/null || echo 2048")
+	IDENTIFIER=$(_ssh "${IMAGE_SERVER}" "virt-cat -a '${TMP_KVM_IMAGE}' /.identifier 2>/dev/null || echo '$APP_ID'")
 
-	# get appliance identifier (is saved in /tmp/.identifier in image)
-	IDENTIFIER=$(_ssh -l "$KVM_USER" "${IMAGE_SERVER}" "virt-cat -a '${TMP_KVM_IMAGE}' /.identifier 2>/dev/null || echo '$APP_ID'")
+	# copy to image convert server for later steps and remove tmp image from kvm server
+	_scp "${KVM_SERVER}:/${TMP_KVM_IMAGE}" "${IMAGE_SERVER}:${TMP_KVM_IMAGE}"
 
 	_kvm_image "Univention App ${UCS_VERSION} Appliance ${IDENTIFIER} (KVM)"
 	_vmplayer_image "Univention App ${UCS_VERSION} Appliance ${IDENTIFIER} (VMware)"
@@ -182,30 +185,34 @@ create_app_images () {
 	_virtualbox_image "Univention App ${UCS_VERSION} Appliance ${IDENTIFIER} (VirtualBox)"
 
 	# cleanup
-	_ssh -l "$KVM_USER" "${IMAGE_SERVER}" "rm -rf '${TMP_DIR}'"
+	_ssh "${KVM_SERVER}" "rm -f '${TMP_KVM_IMAGE}'"
+	_ssh "${IMAGE_SERVER}" "rm -f '${TMP_KVM_IMAGE}'"
 
 	# update current link and sync test mirror
-	_ssh -l "$KVM_USER" "$APPS_SERVER" "
-		set -e -x
-		cd /var/univention/buildsystem2/mirror/appcenter.test/univention-apps/current/
-		test -L '${APP_ID}' && rm '${APP_ID}'
-		ln -s '../${UCS_VERSION}/${APP_ID}' '${APP_ID}'
+	_ssh "$APPS_SERVER" "
+		set -e -u -x
+		cd '${APPSDIR}'
+		test -L 'current/${APP_ID}' && rm 'current/${APP_ID}'
+		ln -s '${UCS_VERSION}/${APP_ID}' 'current/${APP_ID}'
 		sudo update_mirror.sh -v 'appcenter.test/univention-apps/${UCS_VERSION}/${APP_ID}' 'appcenter.test/univention-apps/current/${APP_ID}'
 	"
 }
 
 # Used by scenarios/appliances/ucs-appliance.cfg
 create_ucs_images () {
-	UPDATER_ID="$1"
-	KVM_USER="$2"
-	KVM_SERVER="$3"
-	UCS_VERSION="$4"
+	UPDATER_ID="${1:?}"
+	KVM_USER="${2:?}"
+	KVM_SERVER="${KVM_USER}@${3:?}"
+	UCS_VERSION="${4:?}"
+
+	APPS_SERVER="${KVM_USER}@omar.knut.univention.de"
+	IMAGE_SERVER="${KVM_USER}@docker.knut.univention.de"
 
 	KT_CREATE_IMAGE="/var/lib/libvirt/images/${KVM_USER}_master-ucs-appliance-0.qcow2"
-	TMP_DIR="/tmp/build-ucs-appliance"
-	TMP_KVM_IMAGE="$TMP_DIR/master.qcow2"
-	APPS_BASE="/var/univention/buildsystem2/temp/build/appliance/"
 	MEMORY=2048
+
+	APPS_BASE="/var/univention/buildsystem2/temp/build/appliance/"
+	TMP_KVM_IMAGE="$TMPDIR/ucs-appliance-master.qcow2"
 	IMAGE_VERSION="${UCS_VERSION}"
 	VMPLAYER_IMAGE="UCS-VMware-Image.zip"
 	KVM_IMAGE="UCS-KVM-Image.qcow2"
@@ -214,18 +221,10 @@ create_ucs_images () {
 	HYPERV_IMAGE_BASE="UCS-Hyper-V-Image"
 
 	# convert image
-	_ssh -l "$KVM_USER" "$KVM_SERVER" "test -d '$TMP_DIR' && rm -rf '$TMP_DIR' || true"
-	_ssh -l "$KVM_USER" "$KVM_SERVER" "install -m 2775 -d '$TMP_DIR'"
-	_ssh -l "$KVM_USER" "$KVM_SERVER" "qemu-img convert -p -c -O qcow2 '$KT_CREATE_IMAGE' '$TMP_KVM_IMAGE'"
+	_ssh "$KVM_SERVER" "qemu-img convert -p -c -O qcow2 '$KT_CREATE_IMAGE' '$TMP_KVM_IMAGE'"
 
 	# copy to image convert server for later steps and remove tmp image from kvm server
-	_ssh -l "$KVM_USER" "$IMAGE_SERVER" "test -d '$TMP_DIR' && rm -rf '$TMP_DIR' || true"
-	_ssh -l "$KVM_USER" "$IMAGE_SERVER" "install -m 2775 -d '$TMP_DIR'"
-	_scp -r "${KVM_USER}@${KVM_SERVER}:/${TMP_KVM_IMAGE}" "${KVM_USER}@${IMAGE_SERVER}:${TMP_DIR}"
-	_ssh -l "$KVM_USER" "${KVM_SERVER}" "rm -rf '${TMP_DIR}'"
-
-	# create apps dir
-	_ssh -l "$KVM_USER" "$APPS_SERVER" "install -m 2775 -d '$APPS_BASE'"
+	_scp "${KVM_SERVER}:/${TMP_KVM_IMAGE}" "${IMAGE_SERVER}:${TMP_KVM_IMAGE}"
 
 	_kvm_image "$UPDATER_ID (KVM)"
 	_vmplayer_image "$UPDATER_ID (VMware)"
@@ -234,7 +233,8 @@ create_ucs_images () {
 	_hyperv_image "$UPDATER_ID (HyperV)"
 
 	# cleanup
-	_ssh -l "$KVM_USER" "${IMAGE_SERVER}" "rm -rf '${TMP_DIR}'"
+	_ssh "${KVM_SERVER}" "rm -f '${TMP_KVM_IMAGE}'"
+	_ssh "${IMAGE_SERVER}" "rm -f '${TMP_KVM_IMAGE}'"
 
 	echo "## Images available at $APPS_BASE"
 }
@@ -245,16 +245,14 @@ create_ec2_image () {
 	KT_CREATE_IMAGE="/var/lib/libvirt/images/${KVM_USER}_${APP_ID}-0.qcow2"
 
 	# convert image
-	_ssh -l "$KVM_USER" "$KVM_SERVER" "test -d '$TMP_DIR' && rm -rf '$TMP_DIR' || true"
-	_ssh -l "$KVM_USER" "$KVM_SERVER" "install -m 2775 -d '$TMP_DIR'"
-	_ssh -l "$KVM_USER" "$KVM_SERVER" "qemu-img convert -p -c -O qcow2 '$KT_CREATE_IMAGE' '$TMP_KVM_IMAGE'"
+	_ssh "$KVM_SERVER" "qemu-img convert -p -c -O qcow2 '$KT_CREATE_IMAGE' '$TMP_KVM_IMAGE'"
 
 	# copy to image convert server for later steps and remove tmp image from kvm server
-	_scp -r "${KVM_USER}@${KVM_SERVER}:/${TMP_DIR}" "${KVM_USER}@${IMAGE_SERVER}:/tmp"
-	_ssh -l "$KVM_USER" "${KVM_SERVER}" "rm -rf '${TMP_DIR}'"
+	_scp "${KVM_SERVER}:${TMP_KVM_IMAGE}" "${IMAGE_SERVER}:${TMP_KVM_IMAGE}"
 
 	_ec2_image
 
 	# cleanup
-	_ssh -l "$KVM_USER" "${IMAGE_SERVER}" "rm -rf '${TMP_DIR}'"
+	_ssh "${KVM_SERVER}" "rm -f '${TMP_KVM_IMAGE}'"
+	_ssh "${IMAGE_SERVER}" "rm -f '${TMP_KVM_IMAGE}'"
 }
