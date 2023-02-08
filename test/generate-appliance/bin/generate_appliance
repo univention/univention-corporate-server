@@ -1356,6 +1356,7 @@ def parse_options():
     for target in Target.__subclasses__():
         group.add_argument(
             '--%s' % (target.__name__.lower(),),
+            '--%s' % (target.__name__.lower().replace("_", "-"),),
             help='create "%s"%s"' % (
                 (target.__doc__ or "").strip(),
                 ' (selected by default)' if target.default else '',
