@@ -8,9 +8,13 @@ App Center service
    single: app center; python app center library
    single: python library; app center
 
-This section describes the architecture of the App Center service in UCS. For a
-general overview of the App Center, its ecosystem, the participating actors, and
-the infrastructure, see :ref:`component-app-center`.
+This section describes the architecture of the App Center service focused solely
+on |UCS|.
+
+For a general overview of the App Center, its ecosystem, the participating
+actors, and the infrastructure, see :ref:`univention-app-ecosystem`. For the
+overview of the App Center as product component, see
+:ref:`component-app-center`.
 
 You can find the source code at :uv:src:`management/univention-appcenter/`.
 
@@ -94,7 +98,7 @@ Apps in UMC
 The right side shows the path to the command line interface of the App Center.
 
 The items *App Center*, *Python App Center library*, and *App* in the middle are
-the core of the App Center.
+the core of the App Center. The following sections describe them in more detail.
 
 .. seealso::
 
@@ -169,7 +173,7 @@ The *App Center actions*\ ' purpose is manifold:
 
 .. seealso::
 
-   :ref:`component-app-center-ecosystem-apps`
+   :ref:`app-center-ecosystem-apps`
       for information about the various distribution flavors *Package based app*
       and *Docker based app*.
 
@@ -205,9 +209,8 @@ Cache* relationship to the *App Center actions*.
 The App Center has the action *App update* that downloads and writes the *Apps
 Cache* on a UCS system. It has the following purposes:
 
-* Download all the *App metadata* from the central *App Center repository*. For
-  information about the infrastructure, refer to
-  :ref:`component-app-center-infrastructure`.
+* Download all the *App metadata* from the *App repository*. For information
+  about the infrastructure, refer to :ref:`app-center-infrastructure`.
 
 * Consolidate the app metadata in a JSON file.
 
@@ -329,7 +332,7 @@ limitations:
 
 * UCS installs the |RDBMS| on the same host as the app and creates one database.
 
-* The App Center doesn't install the |RDBMS| on a remote host or in a Docker
+* The App Center doesn't use the |RDBMS| on a remote host or in a Docker
   environment.
 
 * Apps have limited possibilities to configure the |RDBMS|.
@@ -354,6 +357,7 @@ distribution of the |RDBMS|.
 
    Maintenance of databases for Apps
 
+   Consider the *OR* junction as *XOR* for the realization relation.
 
 .. seealso::
 

@@ -14,6 +14,7 @@ The following concepts explain how UCS uses them and are organized top-down:
 #. :ref:`concept-role`
 #. :ref:`concept-permission`
 #. :ref:`concept-certificates`
+#. :ref:`univention-app-ecosystem`
 
 .. toctree::
    :maxdepth: 2
@@ -24,3 +25,4 @@ The following concepts explain how UCS uses them and are organized top-down:
    role
    permission
    certificates
+   app-center
