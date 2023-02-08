@@ -260,8 +260,8 @@ enable_bsb_repos () {
 
 	# also add internal repo
 	cat <<"EOF" > "/etc/apt/sources.list.d/99_bsb.list"
-deb [trusted=yes] http://192.168.0.10/build2/ ucs_5.0-0-fhh-bsb-iam-dev/all/
-deb [trusted=yes] http://192.168.0.10/build2/ ucs_5.0-0-fhh-bsb-iam-dev/$(ARCH)/
+deb [trusted=yes] http://192.168.0.10/build2/ ucs_5.0-0-fhh-bsb-iam-dev-intern/all/
+deb [trusted=yes] http://192.168.0.10/build2/ ucs_5.0-0-fhh-bsb-iam-dev-intern/$(ARCH)/
 EOF
 }
 
