@@ -1,3 +1,9 @@
+univention-directory-manager-modules (15.0.20-1) unstable; urgency=low
+
+  * Bug #51631: Fix Replaces/Breaks for upgrade from UCS 5.0-3
+
+ -- Philipp Hahn <hahn@univention.de>  Wed, 08 Feb 2023 16:38:46 +0100
+
 univention-directory-manager-modules (15.0.19-2) unstable; urgency=medium
 
   * Bug #55554: drop default of directory/manager/samba3/legacy
