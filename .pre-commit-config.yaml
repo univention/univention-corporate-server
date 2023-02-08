@@ -3,7 +3,7 @@
 exclude: "^packaging/ucslint/testframework/"
 repos:
   - repo: https://git.knut.univention.de/univention/dist/pre-commit-ucr
-    rev: '0.0.3'
+    rev: '0.0.4'
     hooks:
       - id: ucr-python-lint
         alias: "ucr-flake8"
