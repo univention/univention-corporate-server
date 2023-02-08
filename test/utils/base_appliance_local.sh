@@ -168,10 +168,8 @@ _set_global_vars () {
 # Used by scenarios/app-appliance.cfg
 create_app_images () {
 	_set_global_vars "$@"
-	KT_CREATE_IMAGE="/var/lib/libvirt/images/${KVM_USER}_app-appliance-${APP_ID}-0.qcow2"
 
-	# convert image
-	_ssh "$KVM_SERVER" "qemu-img convert -p -c -O qcow2 '$KT_CREATE_IMAGE' '$TMP_KVM_IMAGE'"
+	_convert_image
 
 	MEMORY=$(_ssh "${IMAGE_SERVER}" "virt-cat -a '${TMP_KVM_IMAGE}' /.memory 2>/dev/null || echo 2048")
 	IDENTIFIER=$(_ssh "${IMAGE_SERVER}" "virt-cat -a '${TMP_KVM_IMAGE}' /.identifier 2>/dev/null || echo '$APP_ID'")
@@ -208,7 +206,6 @@ create_ucs_images () {
 	APPS_SERVER="${KVM_USER}@omar.knut.univention.de"
 	IMAGE_SERVER="${KVM_USER}@docker.knut.univention.de"
 
-	KT_CREATE_IMAGE="/var/lib/libvirt/images/${KVM_USER}_master-ucs-appliance-0.qcow2"
 	MEMORY=2048
 
 	APPS_BASE="/var/univention/buildsystem2/temp/build/appliance/"
@@ -220,8 +217,7 @@ create_ucs_images () {
 	ESX_IMAGE="UCS-VMware-ESX-Image.ova"
 	HYPERV_IMAGE_BASE="UCS-Hyper-V-Image"
 
-	# convert image
-	_ssh "$KVM_SERVER" "qemu-img convert -p -c -O qcow2 '$KT_CREATE_IMAGE' '$TMP_KVM_IMAGE'"
+	_convert_image
 
 	# copy to image convert server for later steps and remove tmp image from kvm server
 	_scp "${KVM_SERVER}:/${TMP_KVM_IMAGE}" "${IMAGE_SERVER}:${TMP_KVM_IMAGE}"
@@ -242,10 +238,8 @@ create_ucs_images () {
 # Used by scenarios/appliances/ec2-appliance.cfg
 create_ec2_image () {
 	_set_global_vars "$@"
-	KT_CREATE_IMAGE="/var/lib/libvirt/images/${KVM_USER}_${APP_ID}-0.qcow2"
 
-	# convert image
-	_ssh "$KVM_SERVER" "qemu-img convert -p -c -O qcow2 '$KT_CREATE_IMAGE' '$TMP_KVM_IMAGE'"
+	_convert_image
 
 	# copy to image convert server for later steps and remove tmp image from kvm server
 	_scp "${KVM_SERVER}:${TMP_KVM_IMAGE}" "${IMAGE_SERVER}:${TMP_KVM_IMAGE}"
@@ -255,4 +249,12 @@ create_ec2_image () {
 	# cleanup
 	_ssh "${KVM_SERVER}" "rm -f '${TMP_KVM_IMAGE}'"
 	_ssh "${IMAGE_SERVER}" "rm -f '${TMP_KVM_IMAGE}'"
+}
+
+_convert_image () {
+	_ssh "${KVM_SERVER:?}" "
+		set -e -u -x
+		img=\"\$(virsh dumpxml '${KVM_NAME:?}' | xmllint --xpath 'string(/domain/devices/disk[@device=\"disk\"]/source/@file)')\"
+		qemu-img convert -p -c -O qcow2 \"\${img:?}\" '${TMP_KVM_IMAGE:?}'
+	"
 }
