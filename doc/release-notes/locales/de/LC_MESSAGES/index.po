@@ -4,7 +4,7 @@ msgstr ""
 "Project-Id-Version: UCS 5.0 Release Notes 5.0\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-02-06 17:43+0100\n"
-"PO-Revision-Date: 2023-02-06 17:44+0100\n"
+"PO-Revision-Date: 2023-02-08 16:46+0100\n"
 "Last-Translator: Univention GmbH <packages@univention.de>\n"
 "Language-Team: Univention GmbH <packages@univention.de>\n"
 "MIME-Version: 1.0\n"
@@ -21,8 +21,8 @@ msgstr ""
 "Corporate Server (UCS) |release|"
 
 #: ../../index.rst:5
-msgid "Publication date of UCS |release|: 2023-02-07"
-msgstr "Veröffentlichungsdatum von UCS |release|: 2023-02-07"
+msgid "Publication date of UCS |release|: 2023-02-08"
+msgstr "Veröffentlichungsdatum von UCS |release|: 2023-02-08"
 
 #: ../../index.rst:11
 msgid "Release Highlights"
