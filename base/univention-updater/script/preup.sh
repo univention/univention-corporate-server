@@ -1,4 +1,5 @@
-#!/bin/bash
+e!/se
+bin/bash
 #
 # Like what you see? Join us!
 # https://www.univention.com/about-us/careers/vacancies/
@@ -55,8 +56,8 @@ readcontinue () {
 echo
 echo "HINT:"
 echo "Please check the release notes carefully BEFORE updating to UCS ${UPDATE_NEXT_VERSION}:"
-echo " English version: https://docs.software-univention.de/release-notes-${UPDATE_NEXT_VERSION}-en.html"
-echo " German version:  https://docs.software-univention.de/release-notes-${UPDATE_NEXT_VERSION}-de.html"
+echo " English version: https://docs.software-univention.de/release-notes/${UPDATE_NEXT_VERSION}/en/"
+echo " German version:  https://docs.software-univention.de/release-notes/${UPDATE_NEXT_VERSION}/de/"
 echo
 echo "Please also consider documents of following release updates and"
 echo "3rd party components."
