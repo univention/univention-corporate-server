@@ -14,7 +14,7 @@ from univention.testing import utils
 from univention.testing.umc import Client
 
 
-DIAGNOSTIC_RE = re.compile(r'(?:^ran ([\d\w]*) successfully.$)|(?:#+ Start ([\d\w]*) #+)\n(.*)\n(?:#+ End (?:[\d\w]*) #+)', flags=re.M | re.S)
+DIAGNOSTIC_RE = re.compile(r'(?:^ran ([\d\w]*) successfully.$)|(?:#+ Start ([\d\w]*) #+)\n(.*)\n(?:#+ End (?:\2) #+)', flags=re.M | re.S)
 # One would need a strong argument to skip any tests here, as it masks reals problems (See bug #50021)
 SKIPPED_TESTS = {
     '66_udm_country_remap_from_st_to_c': 'Bug #50073: UCS 5.0-3 introduced a required manual LDAP data migration for changing mapping of UDM:country from LDAP:"st" to LDAP:"c".',
@@ -52,7 +52,8 @@ def diagnostic_results():
 
 
 def test_run_diagnostic_checks(plugin, diagnostic_results):
-    assert plugin in diagnostic_results
+    plugin_data = diagnostic_results.get(plugin)
     print(plugin)
-    print(diagnostic_results[plugin]['error_message'])
-    assert diagnostic_results[plugin]['success'], diagnostic_results[plugin]['error_message']
+    assert plugin_data
+    print(plugin_data['error_message'])
+    assert plugin_data['success'], plugin_data['error_message']
