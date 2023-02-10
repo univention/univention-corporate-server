@@ -80,7 +80,7 @@ def get_user_object(user, position, lo):
         for handler in [univention.admin.handlers.computers.windows, univention.admin.handlers.computers.domaincontroller_master, univention.admin.handlers.computers.domaincontroller_slave, univention.admin.handlers.computers.domaincontroller_backup, univention.admin.handlers.computers.memberserver]:
             try:
                 return univention.admin.modules.lookup(handler, None, lo, scope='domain', base=position.getDn(), filter=filter_format(u'(uid=%s)', [user]), required=True, unique=True)[0]
-            except Exception:
+            except Exception:  # noqa: S112
                 continue
     return 'ERROR: account not found, nothing modified'
 

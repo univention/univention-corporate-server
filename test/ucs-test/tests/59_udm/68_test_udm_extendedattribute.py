@@ -323,10 +323,7 @@ class Test_UDMExtension:
         module_help_text = subprocess.Popen([udm.PATH_UDM_CLI_CLIENT, properties['module']], stdout=subprocess.PIPE).communicate()[0].decode('UTF-8').splitlines()
         tab_position = 1
         for line in module_help_text:
-            try:
-                cli_name = line.strip().split()[0]
-            except Exception:
-                continue
+            cli_name = line.strip().split()[0]
 
             if cli_name in extended_attributes:
                 assert extended_attributes[cli_name] == tab_position, 'Detected mistake in appearance order of attribute CLI names under tab'

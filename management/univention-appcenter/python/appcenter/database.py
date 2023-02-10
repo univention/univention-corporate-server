@@ -257,7 +257,7 @@ class PostgreSQL(DatabaseConnector):
 
     def db_exists(self):
         database_logger.info('Checking if database %s exists (postgresql implementation)' % self.get_db_name())
-        stdout = self.execute('SELECT COUNT(*) FROM pg_database WHERE datname = %s' % self._escape(self.get_db_name()))
+        stdout = self.execute('SELECT COUNT(*) FROM pg_database WHERE datname = %s' % self._escape(self.get_db_name()))  # noqa: S608
         if stdout and stdout[0].strip() == '1':
             database_logger.info('Database %s already exists' % self.get_db_name())
             return True
@@ -266,7 +266,7 @@ class PostgreSQL(DatabaseConnector):
             return False
 
     def db_user_exists(self):
-        stdout = self.execute('SELECT COUNT(*) FROM pg_user WHERE usename = %s' % self._escape(self.get_db_user()))
+        stdout = self.execute('SELECT COUNT(*) FROM pg_user WHERE usename = %s' % self._escape(self.get_db_user()))  # noqa: S608
         if stdout and stdout[0].strip() == '1':
             return True
 

@@ -152,7 +152,7 @@ class configdb(object):
         for _i in [1, 2]:
             try:
                 cur = self._dbcon.cursor()
-                cur.execute("SELECT key FROM '%s' WHERE value=?" % section, (option,))
+                cur.execute("SELECT key FROM '%s' WHERE value=?" % section, (option,))  # noqa: S608
                 rows = cur.fetchall()
                 cur.close()
                 if rows:
@@ -167,7 +167,7 @@ class configdb(object):
         for _i in [1, 2]:
             try:
                 cur = self._dbcon.cursor()
-                cur.execute("SELECT value FROM '%s' WHERE key=?" % section, (option,))
+                cur.execute("SELECT value FROM '%s' WHERE key=?" % section, (option,))  # noqa: S608
                 rows = cur.fetchall()
                 cur.close()
                 if rows:
@@ -196,7 +196,7 @@ class configdb(object):
         for _i in [1, 2]:
             try:
                 cur = self._dbcon.cursor()
-                cur.execute("SELECT * FROM '%s'" % (section))
+                cur.execute("SELECT * FROM '%s'" % (section))  # noqa: S608
                 rows = cur.fetchall()
                 cur.close()
                 return rows
@@ -210,7 +210,7 @@ class configdb(object):
         for _i in [1, 2]:
             try:
                 cur = self._dbcon.cursor()
-                cur.execute("DELETE FROM '%s' WHERE key=?" % section, (option,))
+                cur.execute("DELETE FROM '%s' WHERE key=?" % section, (option,))  # noqa: S608
                 self._dbcon.commit()
                 cur.close()
                 return
@@ -252,7 +252,7 @@ class configdb(object):
         for _i in [1, 2]:
             try:
                 cur = self._dbcon.cursor()
-                cur.execute("SELECT value FROM '%s' WHERE key=?" % section, (option,))
+                cur.execute("SELECT value FROM '%s' WHERE key=?" % section, (option,))  # noqa: S608
                 rows = cur.fetchall()
                 cur.close()
                 return bool(rows)

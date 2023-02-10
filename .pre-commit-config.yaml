@@ -3,21 +3,14 @@
 exclude: "^packaging/ucslint/testframework/"
 repos:
   - repo: https://git.knut.univention.de/univention/dist/pre-commit-ucr
-    rev: '0.0.4'
+    rev: '0.0.7'
     hooks:
-      - id: ucr-python-lint
-        alias: "ucr-flake8"
-        args: ["--tool", "flake8", "--select", "E1,E2"]
-      - id: ucr-python-lint
-        alias: "ucr-ruff"
-      - id: ucr-python-lint
-        alias: "ucr-autopep8"
+      - id: ucr-flake8
+      - id: ucr-ruff
+      - id: ucr-autopep8
         stages: [ manual ]
-        args: ["--tool", "autopep8", "--fix", "--select", "E1,E2"]
-      - id: ucr-python-lint
-        alias: "ucr-ruff"
+      - id: ucr-ruff-fix
         stages: [ manual ]
-        args: ["--fix"]
   - repo: https://github.com/pre-commit/pre-commit-hooks
     rev: v4.1.0
     hooks:
@@ -76,7 +69,7 @@ repos:
     hooks:
       - id: ucs-erratum
   - repo: https://github.com/charliermarsh/ruff-pre-commit
-    rev: 'v0.0.243'
+    rev: 'v0.0.246'
     hooks:
       - id: ruff
         exclude: "^oidc/python-keycloak/\

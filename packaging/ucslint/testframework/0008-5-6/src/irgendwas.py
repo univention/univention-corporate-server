@@ -1,6 +1,6 @@
 import foo  # noqa
 import bar  # noqa
-def _(s): return s  # noqa: E731
+def _(s): return s  # noqa: E731,E704
 
 
 def main():

@@ -180,7 +180,7 @@ def main() -> None:
               udm container/dc modify \
                 --dn "%(ldap/base)s" \
                 --policy-reference "cn=%(hostname)s repository,cn=repository,cn=update,cn=policies,%(ldap/base)s"
-            """ % configRegistry))
+            """ % configRegistry))  # noqa: S608
 
         if options.version.minor != 0 or options.version.patchlevel != 0:
             print(dedent(
