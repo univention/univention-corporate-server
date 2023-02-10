@@ -111,7 +111,7 @@ def test_rename_domain_users():
 
 			success, ucr_group = wait_for_ucr(10, new_group_name, ucr_test)
 			if not success:
-				utils.fail('UCR variable groups/default/domainusers was set to %s instead of %s' % (old_group_name, new_group_name))
+				utils.fail('UCR variable groups/default/domainusers was set to %s instead of %s' % (ucr_group, new_group_name))
 
 			# Search templates
 			print('\n##################################################################')
@@ -136,10 +136,10 @@ def test_rename_domain_users():
 
 			# wait until renaming and UCR Variable is set back again
 			utils.wait_for_replication_and_postrun()
-			success, ucr_group = wait_for_ucr(10, old_group_name, ucr_test)
+			success, ucr_group = wait_for_ucr(15, old_group_name, ucr_test)
 			if not success:
 				univention.config_registry.handler_set(['groups/default/domainadmins=Domain Admins'])
-				utils.fail('UCR variable groups/default/domainadmins was set to %s instead of %s' % (ucr_group, new_group_name))
+				utils.fail('UCR variable groups/default/domainadmins was set to %s instead of %s' % (ucr_group, old_group_name))
 
 
 if __name__ == '__main__':
