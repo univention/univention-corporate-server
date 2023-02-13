@@ -13,13 +13,32 @@ for name in ('smbd', 'nmbd'):
     print("\tendscript")
     print("}")
 
+# samba-dcerpcd
+settings = univention.lib.ucrLogrotate.getLogrotateConfig("samba-dcerpcd", configRegistry)
 filelist = ["/var/log/samba/%s" % name for name in ('log.samba-dcerpcd', 'log.rpcd_*')]
 print(" ".join(filelist) + " {")
 for setting in sorted(settings):
     print("\t%s" % settings[setting])
 print("\tsharedscripts")
+print("\tcreateolddir 750 root adm")
+print("\tolddir archive")
 print("\tpostrotate")
-print("\t\t{ pidof samba-dcerpcd && pkill --signal HUP samba-dcerpcd; } > /dev/null")
+print("\t\tif pidof samba-dcerpcd > /dev/null; then")
+print("\t\t\tpkill --signal HUP samba-dcerpcd > /dev/null")
+print("\t\tfi")
+print("\tendscript")
+print("}")
+
+# samba-bgqd
+name = "samba-bgqd"
+settings = univention.lib.ucrLogrotate.getLogrotateConfig(name, configRegistry)
+print("/var/log/samba/log.%s {" % name)
+for setting in sorted(settings):
+    print("\t%s" % settings[setting])
+print("\tpostrotate")
+print("\t\tif pidof samba-bgqd > /dev/null; then")
+print("\t\t\tpkill --signal HUP samba-bgqd > /dev/null")
+print("\t\tfi")
 print("\tendscript")
 print("}")
 @!@

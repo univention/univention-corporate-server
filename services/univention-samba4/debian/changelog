@@ -1,3 +1,9 @@
+univention-samba4 (9.0.11-3) unstable; urgency=medium
+
+  * Bug #55597: logrotate samba-dcerpcd
+
+ -- Felix Botner <botner@univention.de>  Wed, 08 Feb 2023 21:37:07 +0100
+
 univention-samba4 (9.0.11-2) unstable; urgency=medium
 
   * Bug #42330: Remove old maintainer script package update code
