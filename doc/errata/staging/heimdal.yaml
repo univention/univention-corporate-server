@@ -1,0 +1,12 @@
+product: ucs
+release: "5.0"
+version: [2, 3]
+scope: ucs_5.0-0-errata5.0-3
+src: heimdal
+fix: 7.5.0+dfsg-3+deb10u2A~5.0.3.202302131713
+desc: |
+ This update addresses the following issue:
+ * heimdal (CVE-2022-45142)
+bug: [55674]
+cve:
+- CVE-2022-45142
