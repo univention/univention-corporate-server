@@ -69,8 +69,8 @@ def create_extended_attr():
     except CreateError:
         print('Extended attr: "ucsschool_id_connector_last_update" already exists. Ignoring.')
 
-    ucsschool_id_connector_last_update = sea_mod.new(superordinate='cn=univention,{}'.format(ldap_base))
-    ucsschool_id_connector_last_update.position = 'cn=custom attributes,cn=univention,{}'.format(ldap_base)
+    ucsschool_id_connector_pw = sea_mod.new(superordinate='cn=univention,{}'.format(ldap_base))
+    ucsschool_id_connector_pw.position = 'cn=custom attributes,cn=univention,{}'.format(ldap_base)
     props = {
         'name': 'ucsschool_id_connector_pw',
         'CLIName': 'ucsschool_id_connector_pw',
