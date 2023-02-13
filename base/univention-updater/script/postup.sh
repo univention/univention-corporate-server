@@ -130,7 +130,6 @@ service univention-firewall restart >&3 2>&3
 # run remaining joinscripts
 case "${server_role:-}" in
 domaincontroller_master) univention-run-join-scripts >&3 2>&3 ;;
-domaincontroller_backup) is_joined && univention-run-join-scripts >&3 2>&3 ;;
 esac
 
 # Bug #52971: fix __pycache__ directory permissions
