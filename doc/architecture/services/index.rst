@@ -6,18 +6,20 @@ Services
 
 .. TODO : Rework the introduction to the services chapter.
 
-This section covers numerous services that UCS offers to IT infrastructures. It
-is for administrators and solution architects.
+This section covers numerous services that |UCS| offers to IT infrastructures.
+It's for administrators and solution architects.
 
-For notation, the section uses the *ArchiMate* notation. For more information,
-refer to :ref:`architecture-notation`.
+For architecture notation, this part of the document uses ArchiMate® 3.1, a
+visual language with a set of default iconography for describing, analyzing, and
+communicating many concerns of enterprise architectures. For more information
+about how the document uses the notation, refer to
+:ref:`architecture-notation-archimate`.
 
 .. toctree::
    :maxdepth: 2
 
-   portal
+   ucr
    udm
    umc
-   ucr
+   portal
    app-center
-
