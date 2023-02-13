@@ -3,9 +3,23 @@ release: "5.0"
 version: [3]
 scope: ucs_5.0-0-errata5.0-3
 src: samba
-fix: 2:4.16.8-1A~5.0.0.202302131011
+fix: 2:4.16.8-1A~5.0.0.202302131032
 desc: |
  This update addresses the following issues:
- * The samba init scripts "samba-ad-dc" and "samba" now also stop
-   the services "samba-dcerpcd" and "samba-bgqd".
-bug: [55595]
+ * The samba init scripts `samba-ad-dc` and `samba` now also stop
+   the services `samba-dcerpcd` and `samba-bgqd`.
+ * In scenarios where a UCS AD domain is run next to a native Microsoft AD
+   domain with an AD-Connector mirroring users and password hashes between
+   both the option `auth methods` is usually adjusted on the UCS AD DCs
+   to make access to SMB shares hosted on UCS memberservers possible
+   for Microsoft AD users without needing to type in their password again.
+   Since UCS 5.0 this broke Samba logon on the UCS AD DCs themselves.
+   The Samba patch now has been adjusted to only consider the method
+   `sam_ignoredomain` from the list of values specified via the
+   UCR variable `samba/global/options/"auth methods"` or directly
+   in the Samba `local.conf` as configuration parameter `auth methods`.
+   If samba finds this particular method in the Samba configuration,
+   then it now only appends it to the standard list of authentication
+   methods, rather than replacing the standard list completely. This
+   approach should be more robust with respect to Samba release updates.
+bug: [55595, 55515]
