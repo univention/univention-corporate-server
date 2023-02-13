@@ -1005,6 +1005,8 @@ chgrp -R "Printer-Admins" "$SAMBA_DRIVERS"
 chmod -R g+rws "$SAMBA_DRIVERS"
 setfacl -R -d -m g:Printer-Admins:rwx "$SAMBA_DRIVERS"
 
+give_print_admin_rights
+
 # do create and modify in two steps, maybe the share already exists
 univention-directory-manager container/cn create "$@" --position "cn=shares,$ldap_base" --ignore_exists --set name=$hostname.$domainname || die
 univention-directory-manager container/cn modify "$@" --dn "cn=$hostname.$domainname,cn=shares,$ldap_base" --set sharePath=1 || die

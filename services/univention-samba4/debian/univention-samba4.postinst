@@ -218,24 +218,8 @@ if [ "$1" = "configure" ]; then
 		divert_univention_heimdal_service_cfg
 
 	elif [ -n "$2" ]; then
-		if dpkg --compare-versions "$2" lt-nl "9.0.6-13"; then
-			if univention-ldapsearch -LLL "(&(univentionShareHost=$hostname.$domainname)(|(&(univentionShareSambaNtAclSupport=1)(univentionShareSambaInheritAcls=1))(univentionShareSambaVFSObjects=*)(univentionShareSambaWriteList=*)(univentionShareSambaHostsAllow=*)(univentionShareSambaHostsDeny=*)))" 1.1 | grep -q "^dn:"; then
-				univention-directory-listener-ctrl resync samba-shares
-			fi
-		fi
-
 		### The samba restart should always be done on updates
-		if [ -x /etc/init.d/samba ]; then
-			processes=$(pgrep -cfx '/usr/sbin/samba -D')
-			if [ "$processes" = 0 ]; then
-				/etc/init.d/samba start
-			elif [ "$processes" = 1 ]; then
-				pkill -9 -xf '/usr/sbin/samba -D'
-				/etc/init.d/samba start
-			else
-				/etc/init.d/samba restart
-			fi
-		fi
+		/etc/init.d/samba restart
 
 		## Is the password in secrets.ldb the valid password? In some cases
 		## the password from machine.secret is the correct password.
@@ -262,14 +246,6 @@ secret: $machine_secret
 %EOF
 					/etc/init.d/samba restart
 				fi
-			fi
-		fi
-
-		if dpkg --compare-versions "$2" lt-nl "9.0.6-5"; then
-			/etc/init.d/samba stop
-			/etc/init.d/samba start
-			if [ -x /etc/init.d/bind9 ]; then
-				/etc/init.d/bind9 restart
 			fi
 		fi
 	fi
@@ -314,11 +290,5 @@ fi
 call_joinscript 96univention-samba4.inst
 call_joinscript 98univention-samba4-saml-kerberos.inst
 ## cannot call joinscript 98univention-samba4-dns.inst here, maybe the s4-connector did not run yet
-
-if [ "$1" = "configure" ] && [ -n "$2" ]; then
-	if dpkg --compare-versions "$2" lt-nl 9.0.8-9; then
-		give_print_admin_rights
-	fi
-fi
 
 exit 0

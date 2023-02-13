@@ -1,3 +1,9 @@
+univention-samba4 (9.0.11-4) unstable; urgency=medium
+
+  * Bug #55677: Fix samba restart in postinst
+
+ -- Arvid <requate@univention.de>  Mon, 13 Feb 2023 18:37:57 +0100
+
 univention-samba4 (9.0.11-3) unstable; urgency=medium
 
   * Bug #55597: logrotate samba-dcerpcd
