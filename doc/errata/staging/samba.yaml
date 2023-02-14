@@ -3,7 +3,7 @@ release: "5.0"
 version: [3]
 scope: ucs_5.0-0-errata5.0-3
 src: samba
-fix: 2:4.16.8-1A~5.0.0.202302131032
+fix: 2:4.16.8-1A~5.0.0.202302142143
 desc: |
  This update addresses the following issues:
  * The samba init scripts `samba-ad-dc` and `samba` now also stop
@@ -22,4 +22,8 @@ desc: |
    then it now only appends it to the standard list of authentication
    methods, rather than replacing the standard list completely. This
    approach should be more robust with respect to Samba release updates.
-bug: [55595, 55515]
+ * Running the `samba-ad-dc` init script with the `restart` operation
+   left samba in a state that didn't recognize non-local domains.
+   It has been made more robust by taking care that `nmbd` is started
+   again before the main `samba` daemon.
+bug: [55595, 55515, 55678]
