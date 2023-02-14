@@ -27,6 +27,16 @@ UCR architecture
 
 .. index::
    single: ucr; architecture
+   single: model; ucr python api
+   single: model; ucr c api
+   single: model; scripts
+   single: model; apps
+   single: model; services
+   single: http; ucr
+   single: https; ucr
+   single: model; univention configuration registry
+   single: interfaces; terminal / ssh
+   single: interfaces; http/https
 
 :numref:`services-ucr-architecture-model` shows the architecture overview of
 UCR.
@@ -34,7 +44,7 @@ UCR.
 .. _services-ucr-architecture-model:
 
 .. figure:: /images/UCR-architecture.*
-   :width: 600 px
+   :width: 650 px
 
    Architecture overview of UCR
 
@@ -76,6 +86,13 @@ UCR persistence layer
    single: ucr; variables
    single: ucr; templates
    single: ucr; service restart
+   single: model; ucr variables
+   single: model; ucr templates
+   single: model; system configuration
+   single: model; ucr commit
+   single: model; ucr set / unset
+   single: model; univention configuration registry
+   single: model; ucr variable priority
 
 :numref:`services-ucr-persistence-layer-model` shows the relation between the
 active *Univention Configuration Registry (UCR) [application component]* and the
@@ -88,6 +105,9 @@ passive *UCR variables*, *UCR templates* and *System configuration files*.
 
    Architecture of Univention configuration registry persistence layer
 
+.. index::
+   single: ucr; base*.conf
+
 UCR variables
    |UCR| is independent from any LDAP directory service. Instead, UCR uses plain
    text files as its storage back end for UCR variables and saves them in
@@ -96,6 +116,10 @@ UCR variables
 
    The variables don't follow a hierarchy. The separator slash (``/``) exists
    for readability.
+
+.. index::
+   single: directory; /etc/univention/templates/files
+   single: directory; /etc/univention/templates/info
 
 UCR templates
    *UCR templates* are file templates for configuration files of various
@@ -138,11 +162,21 @@ System configuration files
 :numref:`services-ucr-workflow-set-variable` shows this general workflow after
 an administrator sets a UCR variable.
 
+.. index::
+   single: role; administrator
+
 .. _services-ucr-workflow-set-variable:
 
 .. figure:: /images/UCR-set-variable.*
 
    Workflow after setting a UCR variable
+
+   The *Administrator* triggers the event *UCR set variable* by using the UCR
+   command. *UCR set / unset* writes one of the *UCR variables* and triggers a
+   *UCR commit*. The *UCR commit* uses the *UCR variable priority*, the *UCR
+   variables*, and the *UCR templates* to write and update the *System
+   configuration*. After *UCR commit* finished, it triggers the *Configuration
+   written* event.
 
 .. seealso::
 
@@ -204,10 +238,13 @@ Default
       layer requires updates in multiple code locations resulting in a major
       drawback with increased effort.
 
+.. index::
+   single: role; administrator
+
 Normal
    The priority layer *normal* becomes effective after an administrator, a
    package installation or something else explicitly sets a value for a UCR
-   variable. UCR uses this layer by default, when an actor like administrator or
+   variable. UCR uses this layer by default, when a role like administrator or
    script uses none of the options ``--force``, ``--schedule``, or
    ``--ldap-policy`` to explicitly use another layer.
 
@@ -308,8 +345,14 @@ UCR limitations
       .. warning::
 
          Don't access UCR variables directly from the files. Always use the
-         interfaces like the :ref:`web interface
-         <computers-using-the-univention-management-console-web-interface>`, the
-         :ref:`command line interface
-         <computers-using-the-command-line-front-end>`, in :ref:`shell scripts
-         <ucr-usage-shell>` or the :ref:`Python interface <ucr-usage-python>`.
+         interfaces such as:
+
+         * For administrators, see :cite:t:`ucs-manual`:
+
+           * :ref:`web interface <computers-using-the-univention-management-console-web-interface>`
+           * :ref:`command line interface <computers-using-the-command-line-front-end>`
+
+         * For developers, see :cite:t:`developer-reference`:
+
+           * :ref:`shell scripts <ucr-usage-shell>`
+           * :ref:`Python interface <ucr-usage-python>`
