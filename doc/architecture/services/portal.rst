@@ -6,6 +6,11 @@ UCS portal service
 .. index::
    single: ucs portal; architecture model
    single: ucs portal
+   single: model; ucs group cache
+   single: model; ucs portal tiles cache
+   single: model; ucs portal
+   single: model; ucs portal front end
+   single: model; ucs portal back end
 
 This section describes the technical architecture of the UCS portal service.
 For a general overview, see :ref:`component-portal`.
@@ -26,7 +31,7 @@ UCS Portal and the description below.
 
 .. figure:: /images/UCS-portal-architecture.*
    :alt: Architecture of the UCS portal consisting of front end and back end
-   :width: 600 px
+   :width: 650 px
 
    Architecture of the UCS Portal
 
@@ -72,7 +77,6 @@ TypeScript
    linting features. Furthermore, *TypeScript* avoids common JavaScript mistakes
    and helps software developers to write cleaner code.
 
-
 .. _services-ucs-portal-front-end:
 
 Portal front end
@@ -85,6 +89,8 @@ The portal front end is a `single-page application <w-spa_>`_ and renders the
 UCS portal in the users' web browser. Users see for example the portal header,
 background image, a menu and various tiles consisting of logo, title, and
 description.
+
+.. index:: files; portal.json
 
 The portal requests the structured data in :file:`portal.json` about what to
 render from the :ref:`services-ucs-portal-back-end`.
@@ -118,9 +124,16 @@ follows.
 
    Architecture of the UCS Portal back end
 
+.. index:: ucs portal; tiles cache
+
 UCS Portal tiles cache
    Provides structured data about the tiles configured for every portal in the
    domain. Every tile has assignments to user groups.
+
+.. index::
+   single: ucs portal; ucs group cache
+   single: ucs group cache
+   single: cache; group cache
 
 UCS group cache
    Provides structured data to resolve a user and its group memberships
@@ -128,6 +141,9 @@ UCS group cache
 
 UMC server
    Validates user authentication for a given user.
+
+.. index::
+   pair: directory listener; ucs portal
 
 Univention Directory Listener
    In the context of the UCS Portal, the Univention Directory Listener triggers
@@ -147,6 +163,7 @@ User identification
 .. index::
    single: ucs portal; user identification
    single: ucs portal; identification flow
+   single: role; user
 
 :numref:`services-ucs-portal-back-end-user-identification-model` shows the basic
 model of the user identification. The description follows below.
@@ -176,7 +193,9 @@ Structured data for portal content
 
 .. index::
    single: ucs portal; portal.json
+   single: files; portal.json
    single: ucs portal; data
+   single: JSON; portal.json
 
 The structured data in :file:`portal.json` for the portal front end has
 information for example about folders in the menu, categories in the portal main
@@ -207,7 +226,7 @@ description, logo, and category. Furthermore, it knows the group assignment for
 every tile.
 
 When administrators create or modify a portal in the |UMC| module *LDAP
-directory* the Univention Directory Listener reacts on this change and triggers
+directory*, the Univention Directory Listener reacts on this change and triggers
 the listener module responsible for the portal tile cache. The module then uses
 |UDM| and recreates the portal tile cache.
 
@@ -217,9 +236,10 @@ the listener module responsible for the portal tile cache. The module then uses
    the listener module responsible for the portal tile cache. The module then
    uses |UDM| and recreates the portal tile cache.
 
+.. index:: JSON; portal tile cache
+
 The portal tile cache uses structured data, as well. The listener module saves it
 in a JSON file in the file system of the UCS system.
-
 
 .. _services-ucs-portal-back-end-group-cache:
 
@@ -254,7 +274,7 @@ Dependencies for UCS portal
 ---------------------------
 
 .. index::
-   pair: ucs portal; dependencies
+   pair: ucs portal; dependency
 
 The UCS portal depends on the Univention Directory Listener,
 :ref:`services-udm`, the *UCS group membership cache*, and the *UCS Portal tile
