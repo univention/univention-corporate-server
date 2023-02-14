@@ -54,7 +54,6 @@ App Center interfaces
 
 .. index::
    single: app center; interfaces
-   single: app center; app presentation
    single: app center; http/https
    single: app center; terminal / ssh
    single: interfaces; http/https
@@ -92,7 +91,7 @@ App Center in UMC
 Apps in UMC
    The UMC module *Apps in UMC* provides a proper view in the UCS management
    system for every installed app. It shows the app description, detailed
-   information and offers actions like install or update on the app to the
+   information and offers actions like update or remove on the app to the
    administrator.
 
 The right side shows the path to the command line interface of the App Center.
@@ -115,7 +114,6 @@ App Center actions
 ------------------
 
 .. index::
-   single: app center; actions
    single: app actions; install
    single: app actions; remove
    single: app actions; upgrade
@@ -124,7 +122,7 @@ App Center actions
    single: app actions; stop
    single: app actions; restart
    single: app actions; available actions
-   single: listener; app center
+   single: directory listener; app center
    single: lifecycle management
 
 *App Center actions* are the center piece for all behavior in the *App Center*.
@@ -158,7 +156,7 @@ are actions like for example:
 * *App restart*
 * *App update*
 
-And the App Center has other actions, for example they run during installation
+And the App Center has other actions, for example, they run during installation
 like the *App Center database integration* or handle a listener module dedicated
 to the app. Furthermore, app developers use the *App Center Dev actions* during
 app development.
@@ -184,14 +182,11 @@ App Center apps cache
 
 .. index::
    single: app center; apps cache
-   single: app center; app metadata
    single: app; metadata
    single: app actions; update
-   single: directory; /var/cache/univention-appcenter
    pair: cache; apps cache
-   single: cache; /var/cache/univention-appcenter
    single: cache; command univention-app update
-   single: command; univention-app update
+   single: univention-app; update
    single: JSON; app metadata
    see: file formats; JSON
 
@@ -206,13 +201,18 @@ Cache* relationship to the *App Center actions*.
 
    App Center *Apps cache*
 
-The App Center has the action *App update* that downloads and writes the *Apps
-Cache* on a UCS system. It has the following purposes:
+The App Center has the action *App update* that downloads information from the
+*App repository* and writes the *Apps Cache* on a UCS system. It has the
+following purposes:
 
 * Download all the *App metadata* from the *App repository*. For information
   about the infrastructure, refer to :ref:`app-center-infrastructure`.
 
 * Consolidate the app metadata in a JSON file.
+
+.. index::
+   single: directory; /var/cache/univention-appcenter
+   single: cache; /var/cache/univention-appcenter
 
 The app metadata locates in the directory
 :file:`/var/cache/univention-appcenter/` on a UCS system. The data from the
@@ -251,9 +251,9 @@ server integration as shown in
    App Center web server integration
 
 The *App Center web server integration* appends the *Web server configuration*
-and adds the path to the app's web interface. The procedure uses *Univention
-Configuration Registry (UCS)*. The *App Center web server integration* removes
-the appended configuration upon app removal.
+and adds the path to the app's web interface. The procedure uses
+:ref:`services-ucr`. The *App Center web server integration* removes the
+appended configuration upon app removal.
 
 Apps can also provide a complex web server integration by adding their own
 configuration to the *HTTP web server*. App developers handle the configuration
@@ -383,13 +383,15 @@ The identity management integration consists of the following aspects:
 
 User provisioning
    Provisioning means that the app gains knowledge about user account
-   information and can for example create a user account in its own data
+   information and can, for example, create a user account in its own data
    structure and map it with the user account in the UCS identity management.
    Each app handles the mapping individually.
 
    The preferred provisioning method is *push*. Upon changes in the LDAP
    directory, the Univention Directory Listener creates information for the app
    to handle.
+
+   .. TODO : Add link to directory listener, after the section is done.
 
    In contrast, the pull method through direct LDAP connection requires periodic
    pulls. The app must then identify and handle changes on its own.
@@ -433,12 +435,14 @@ Register App directory listener
    management integration, the App Center generates five listener modules and
    services.
 
+.. index:: JSON; app directory listener, listener; app directory listener
+
 Listener module service
    The listener listens for changes in the LDAP directory service. The listener
    module consists of two parts:
 
    #. Part one creates change information relevant to the app based on changes
-      in the LDAP directory. Such changes are for example *user account
+      in the LDAP directory. Such changes are, for example, *user account
       created*, *user account modified*, or *user account removed*.
 
    #. Part two takes the information about the changes and creates a JSON file,
@@ -459,12 +463,13 @@ Provision users to app
    to app* assigned, is responsible to handle the JSON files written by the
    *Listener module service*.
 
-
 .. seealso::
 
    For app software developers, refer to the following content in
-   :cite:t:`ucs-app-center`, :ref:`connection-idm` for information about how to
-   connect an app with the identity management.
+   :cite:t:`ucs-app-center`:
+
+   * :ref:`connection-idm` for information about how to connect an app with the
+     identity management.
 
    * :ref:`provisioning`
 
@@ -478,7 +483,6 @@ Provision users to app
 
      * :ref:`authentication-kerberos`
 
-
 .. _services-app-center-integration-extended-attributes:
 
 Extended attributes
@@ -487,10 +491,10 @@ Extended attributes
 .. index::
    pair: extended attributes; app center integration
 
-The App Center uses extended attributes for every app upon installation when
+The App Center uses *extended attributes* for every app upon installation when
 the app requires the administrator to enable user accounts for the app.
 
-Extended attributes require a LDAP schema extension. The App Center creates that
+Extended attributes require an LDAP schema extension. The App Center creates that
 schema extension automatically and registers it in the LDAP directory service.
 And it also generates the extended attribute accordingly to use the extra fields
 added with the schema extension and map them to respective fields in UDM.
@@ -501,7 +505,7 @@ perspective, refer to :ref:`services-udm-data`.
 Beyond the default schema extension, the App Center also registers schema
 extensions provisioned with the app. Apps that use the LDAP directory as their
 user database make use of schema extensions and extended attributes to enable a
-respective user administration for the system administrator. A LDAP schema
+respective user administration for the system administrator. An LDAP schema
 extension ensures that the third party software can use the required LDAP
 attributes.
 
@@ -524,6 +528,9 @@ attributes.
 
 Dependencies for the App Center
 -------------------------------
+
+.. index::
+   pair: dependency; app center
 
 As complex component in UCS, the service *App Center* has the following dependencies:
 
