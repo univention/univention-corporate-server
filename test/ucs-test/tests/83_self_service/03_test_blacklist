@@ -21,7 +21,7 @@ error_set_password = 'The token you supplied is either expired or invalid. Pleas
 
 def main():
     account = utils.UCSTestDomainAdminCredentials()
-    user = SelfServiceUser(account.username, account.bindpw)
+    user = SelfServiceUser(account.username, account.bindpw, language='en-US')
 
     assert_raises(HTTPError, error_get_contact, user.get_contact)
     assert_raises(HTTPError, error_set_contact, user.set_contact)

@@ -1,3 +1,10 @@
+ucs-test (10.0.10-5) unstable; urgency=medium
+
+  * Bug #55346: Prevent the self-service blacklist checks from returning false
+    positives on domains with a non-english default language.
+
+ -- Maximilian Janßen <janssen@univention.de>  Mon, 20 Feb 2023 12:44:11 +0100
+
 ucs-test (10.0.10-4) unstable; urgency=medium
 
   * Bug #42840: Retrigger object sync after changing sync mode

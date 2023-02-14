@@ -14,8 +14,8 @@ from univention.testing.umc import Client
 
 class SelfServiceUser:
 
-    def __init__(self, username, password):
-        self._client = Client()
+    def __init__(self, username, password, language=None):
+        self._client = Client(language=language)
         self.username = username
         self.password = password
 
