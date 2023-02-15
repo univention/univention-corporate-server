@@ -3,10 +3,10 @@ release: "5.0"
 version: [3]
 scope: ucs_5.0-0-errata5.0-3
 src: univention-appcenter
-fix:
+fix: 9.0.7-3A~5.0.0.202302151305
 desc: |
  This update addresses the following issues:
  * The message and the button label in the UMC App Center
    presented when a pinned App should be removed or
-   updated was made more consistent
+   upgraded was made more consistent
 bug: [55679]
