@@ -1,3 +1,9 @@
+univention-fetchmail (13.0.5-2) unstable; urgency=medium
+
+  * Bug #55681: Install syntax, hooks and scripts in univention-fetchmail-schema
+
+ -- Juan Carlos García García <garcia-garcia.extern@univention.de>  Wed, 15 Feb 2023 11:46:43 +0100
+
 univention-fetchmail (13.0.5-1) unstable; urgency=medium
 
   * Bug #55575: Fix error in attribute deletion and

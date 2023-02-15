@@ -1,0 +1,13 @@
+product: ucs
+release: "5.0"
+version: [3]
+scope: ucs_5.0-0-errata5.0-3
+src: univention-fetchmail
+fix:
+desc: |
+ This update addresses the following issues:
+ * The hooks, syntax files and scripts are now installed
+   on the univention-fetchmail-schema package to avoid
+   errors in installations where univention-fetchmail
+   is installed in members or slaves.
+bug: [55681]
