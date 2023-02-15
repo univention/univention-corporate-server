@@ -1,3 +1,6 @@
 58univention-fetchmail-schema.acl	usr/share/univention-fetchmail-schema/
 92univention-fetchmail-schema.inst	usr/lib/univention-install/
+scripts/*.py	/usr/share/univention-fetchmail/
+share/hooks.d/*.py	/usr/share/univention-fetchmail/hooks.d/
+share/syntax.d/*.py	/usr/share/univention-fetchmail/syntax.d/
 univention-fetchmail.schema	usr/share/univention-fetchmail-schema/

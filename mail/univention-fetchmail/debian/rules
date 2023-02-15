@@ -39,7 +39,7 @@ override_dh_fixperms:
 
 override_dh_install:
 	dh_install
-	mkdir debian/univention-fetchmail-schema/usr/share/univention-fetchmail/
+	mkdir -p debian/univention-fetchmail-schema/usr/share/univention-fetchmail/
 	install debian/univention-fetchmail-schema/usr/share/locale/de/LC_MESSAGES/univention-admin-fetchmail.mo debian/univention-fetchmail-schema/usr/share/univention-fetchmail/de.mo
 
 %:

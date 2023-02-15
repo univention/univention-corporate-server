@@ -16,7 +16,7 @@ Depends:
  python3-six,
  shell-univention-lib (>> 2.0.17-1.125),
  univention-directory-manager-tools (>> 7.0.147),
- univention-fetchmail-schema,
+ univention-fetchmail-schema (>= 13.0.5-2),
  univention-join (>> 5.0.20-1.436),
  ${misc:Depends},
 Breaks:
@@ -38,7 +38,10 @@ Depends:
  univention-join (>> 5.0.20-1.436),
  ${misc:Depends},
 Breaks:
+ univention-fetchmail (<< 13.0.5-2),
  univention-ldap-server (<< 9.0.20-1.580.201303211526),
+Replaces:
+ univention-fetchmail (<< 13.0.5-2),
 Description: UCS schema package for univention-fetchmail
  This package contains additional LDAP schema
  defining extension for fetchmail management.
