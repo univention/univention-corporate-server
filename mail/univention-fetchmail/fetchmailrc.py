@@ -54,7 +54,7 @@ fn_fetchmailrc = '/etc/fetchmailrc'
 __initscript = '/etc/init.d/fetchmail'
 FETCHMAIL_OLD_PICKLE = "/var/spool/univention-fetchmail/fetchmail_old_dn"
 
-UID_REGEX = re.compile("#UID='(([a-zA-Z0-9])[a-zA-Z0-9._-]*([a-zA-Z0-9]))'")
+UID_REGEX = re.compile("#UID='(.+)'[ \t]*$")
 
 
 def _split_file(fetch_list, new_line):
@@ -134,12 +134,15 @@ def objappend_multi(flist: List[str], new: Dict[str, List[bytes]], password: str
 
 def handler(dn: str, new: Dict[str, List[bytes]], old: Dict[str, List[bytes]], command: str) -> None:
     if os.path.exists(FETCHMAIL_OLD_PICKLE):
-        with open(FETCHMAIL_OLD_PICKLE) as fd:
+        with open(FETCHMAIL_OLD_PICKLE, 'rb') as fd:
             p = pickle.Unpickler(fd)
-            old = p.load()
+            try:
+                old = p.load()
+            except EOFError:
+                pass
         os.unlink(FETCHMAIL_OLD_PICKLE)
     if command == 'r':
-        with open(FETCHMAIL_OLD_PICKLE, 'w+') as fd:
+        with open(FETCHMAIL_OLD_PICKLE, 'wb+') as fd:
             os.chmod(FETCHMAIL_OLD_PICKLE, 0o600)
             p = pickle.Pickler(fd)
             old = p.dump(old)
@@ -151,8 +154,10 @@ def handler(dn: str, new: Dict[str, List[bytes]], old: Dict[str, List[bytes]], c
         new_single = new.get('univentionFetchmailSingle', [])
         old_multi = old.get('univentionFetchmailMulti', [])
         new_multi = new.get('univentionFetchmailMulti', [])
+        old_uid = old['uid'][0]
+        new_uid = new['uid'][0]
 
-        if old_single != new_single or old_multi != new_multi:
+        if old_single != new_single or old_multi != new_multi or old_uid != new_uid:
             flist = objdelete(flist, old)
             objappend_single(flist, new)
             objappend_multi(flist, new)
