@@ -1,0 +1,50 @@
+#!/usr/share/ucs-test/runner bash
+# shellcheck shell=bash
+## desc: "Simulate share access from external windows clients"
+## exposure: safe
+## bugs:
+## - 55515
+## roles:
+## - memberserver
+## - domaincontroller_master
+## - domaincontroller_backup
+## tags:
+##  - samba4
+
+# shellcheck source=../../lib/base.sh
+. "$TESTLIBPATH/base.sh" || exit 137
+
+RETVAL=100
+
+eval "$(ucr shell tests/root/pwdfile tests/domainadmin/account tests/domainadmin/pwd)"
+
+## Conditions when to execute this test
+if [ "$server_role" = "memberserver" ]; then
+    ## On a memberserver univention-samba needs to be installed
+    if ! dpkg -s univention-samba 2>&1 | grep -e "^Status: install ok installed" > /dev/null; then
+        exit 137
+    fi
+
+    ## And on the Samba/AD DCs (the primary here) a special UCR variable needs to have been set (during VM setup via scenario file)
+    auth_methods_on_primary=$(univention-ssh "$tests_root_pwdfile" "root@$ldap_master" ucr get '\"samba/global/options/auth methods\"')
+    if ! grep -qw "sam_ignoredomain" <<<"$auth_methods_on_primary"; then
+    	exit 137
+    fi
+elif [[ "$server_role" =~ "^domaincontroller_".* ]]; then
+    ## On a Samba AD DCs the test should even work without the UCR variable
+    if ! dpkg -s univention-samba4 2>&1 | grep -e "^Status: install ok installed" > /dev/null; then
+        exit 137
+    fi
+else
+    ## Whatever this server/role would be
+    exit 137
+fi
+
+
+## Using the tests/domainadmin/account here but could be any user
+tests_domainadmin_name=$(ucr get tests/domainadmin/account | sed -e 's/^uid=//' -e 's/,.*//')
+if ! smbclient "//$(hostname -f)/$tests_domainadmin_name" -W "ExtDomNameFoo" -U"$tests_domainadmin_name"%"$tests_domainadmin_pwd" -c quit; then
+    fail_fast 110 "Simulation of share access from external domain failed"
+fi
+
+exit $RETVAL
