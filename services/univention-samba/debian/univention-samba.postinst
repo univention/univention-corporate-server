@@ -142,8 +142,8 @@ if [ "$1" = "configure" ]; then
 			mkdir -p /var/log/samba/archive
 			chmod 750 /var/log/samba/archive
 			chown root:adm /var/log/samba/archive
-			mv /var/log/samba/archive/log.samba-dcerpcd.* /var/log/samba/archive/ || true
-			mv /var/log/samba/archive/log.rpcd_*.* /var/log/samba/archive/ || true
+			mv /var/log/samba/log.samba-dcerpcd.* /var/log/samba/archive/ || true
+			mv /var/log/samba/log.rpcd_*.* /var/log/samba/archive/ || true
 		fi
 	fi
 
