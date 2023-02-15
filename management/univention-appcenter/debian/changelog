@@ -1,3 +1,9 @@
+univention-appcenter (9.0.7-3) unstable; urgency=medium
+
+  * Bug #55679: Improve wording in UMC App Center for pinned Apps
+
+ -- Peter Stoll <stoll.extern@univention.de>  Mon, 13 Feb 2023 19:28:30 +0100
+
 univention-appcenter (9.0.7-2) unstable; urgency=medium
 
   * Bug #42330: Remove old maintainer script package update code

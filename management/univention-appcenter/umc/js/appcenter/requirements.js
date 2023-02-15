@@ -287,13 +287,13 @@ define([
 		}),
 		must_not_be_pinned: new Requirement({
 			reasonDescription: function() {
-				return _('The App is frozen to the currently installed version.');
+				return _('The App is pinned to the currently installed version.');
 			},
 			solutionDescription: function() {
 				return _('Please revert this state before upgrading or removing.');
 			},
 			solutionLabel: function() {
-				return _('Revert the App state now.');
+				return _('Revert the pinned App state now');
 			},
 			solution: function(opts, details) {
 				tools.umcpCommand('appcenter/unpin_app', {app: details.appid});
