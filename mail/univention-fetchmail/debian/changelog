@@ -1,3 +1,10 @@
+univention-fetchmail (13.0.5-3) unstable; urgency=medium
+
+  * Bug #55682: Correctly load /etc/fetchmailrc in fetchmail
+    listener
+
+ -- Juan Carlos García García <garcia-garcia.extern@univention.de>  Wed, 15 Feb 2023 11:54:15 +0100
+
 univention-fetchmail (13.0.5-2) unstable; urgency=medium
 
   * Bug #55681: Install syntax, hooks and scripts in univention-fetchmail-schema
