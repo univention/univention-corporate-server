@@ -1,3 +1,9 @@
+univention-samba4 (9.0.11-5) unstable; urgency=medium
+
+  * Bug #55597: move old logs during update
+
+ -- Felix Botner <botner@univention.de>  Wed, 15 Feb 2023 12:42:58 +0100
+
 univention-samba4 (9.0.11-4) unstable; urgency=medium
 
   * Bug #55677: Fix samba restart in postinst
