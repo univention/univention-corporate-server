@@ -39,12 +39,29 @@ install_keycloak () {
         python3 /root/appcenter-change-compose-image.py -a keycloak -i "$KEYCLOAK_IMAGE"
     fi
     univention-app install keycloak --username=Administrator --pwdfile=/tmp/pwdfile --skip --noninteractive
-}
-
-keycloak_saml_idp_setup () {
     if [ "$(ucr get server/role)" = "domaincontroller_master" ]; then
         udm portals/entry modify --dn "cn=login-saml,cn=entry,cn=portals,cn=univention,$(ucr get ldap/base)" --set activated=TRUE
     fi
     ucr set umc/saml/idp-server="https://ucs-sso-ng.$(ucr get domainname)/realms/ucs/protocol/saml/descriptor"
     service slapd restart
+}
+
+install_self_service () {
+    if [ "$(ucr get server/role)" = "domaincontroller_master" ]; then
+        apt-get -y install univention-self-service-master univention-self-service
+        ucr set \
+            umc/self-service/account-registration/frontend/enabled=true \
+            umc/self-service/account-registration/backend/enabled=true \
+            umc/self-service/account-verification/backend/enabled=true
+        # this is for simplesamlphp
+        #  only verified account in simplesamlphp login
+        #  error message for account verification
+        ucr set \
+            saml/idp/selfservice/check_email_verification=true \
+            saml/idp/selfservice/account-verification/error-descr='<span>You must <a href="https://master.ucs.test/univention/selfservice/#/selfservice/verifyaccount">verify your account</a> before you can login.</span>'
+    else
+        apt-get -s -y install univention-self-service
+    fi
+    service univention-management-console-server restart
+    service univention-portal-server restart
 }
