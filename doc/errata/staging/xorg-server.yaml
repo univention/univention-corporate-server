@@ -6,9 +6,7 @@ src: xorg-server
 fix: 2:1.19.2-1+deb9u13
 desc: |
  This update addresses the following issue:
- 2:1.19.2-1+deb9u13 (Sun, 05 Feb 2023 22:03:02 +0100)
- * Non-maintainer upload by the LTS Team.
- * CVE-2023-0494 potential use-after-free in DeepCopyPointerClasses
+ * CVE-2023-0494: potential use-after-free in `DeepCopyPointerClasses`
 bug: [55688]
 cve:
 - CVE-2023-0494
