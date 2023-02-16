@@ -11,3 +11,5 @@ desc: |
  * The final restart of Samba at the end of a package update has been adjusted
    to the new daemon signature in the process list.
 bug: [55597, 55677]
+erratum: 575
+announced: 2023-02-16
