@@ -1,0 +1,26 @@
+product: ucs
+release: "4.4"
+version: [9]
+scope: ucs_4.4-0-errata4.4-9
+src: wireshark
+fix: 2.6.20-0+deb9u4
+desc: |
+ This update addresses the following issues:
+ 2.6.20-0+deb9u4 (Wed, 08 Feb 2023 19:44:07 +0100)
+ * Non-maintainer upload by the LTS Security Team.
+ * Apply applicable part of the patch for CVE-2022-4345. (only one dissector
+   is affected, the others missing the vulnerable features).
+ * Apply applicable parts of the patch for CVE-2023-0411. (see patch -- named
+   after the CVE for details)
+ * Backport patch for CVE-2023-0412.
+ * Cherry-pick upstream fix for CVE-2023-0413.
+ * Apply upstream patch for CVE-2023-0415.
+ * Apply upstream patch for CVE-2023-0417.
+bug: [55689]
+cve:
+- CVE-2022-4345
+- CVE-2023-0411
+- CVE-2023-0412
+- CVE-2023-0413
+- CVE-2023-0415
+- CVE-2023-0417
