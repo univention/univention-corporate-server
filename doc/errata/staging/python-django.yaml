@@ -6,7 +6,6 @@ src: python-django
 fix: 1:1.10.7-2+deb9u19
 desc: |
  This update addresses the following issue:
- 1:1.10.7-2+deb9u19 (Wed, 01 Feb 2023 12:37:27 -0800)
  * CVE-2023-23969: Prevent a potential Denial of Service vulnerability with
    pathological values for the Accept-Language header. The parsed values of
    Accept-Language headers are cached in order to avoid repetitive parsing.
@@ -14,7 +13,6 @@ desc: |
    memory usage if the raw value of Accept-Language headers was very large.
    Accept-Language headers are now limited to a maximum length in order to
    avoid this issue.
- * Disable piuparts testing.
 bug: [55691]
 cve:
 - CVE-2023-23969
