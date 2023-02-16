@@ -354,39 +354,6 @@ if ucsschool.is_installed():
 	fi
 }
 
-# Bug #55516 begin - check for samba custom "auth methods"
-update_check_samba4_auth_methods () {
-	local var="update$VERSION/ignore_samba4_auth_methods"
-	local val
-	ignore_check "$var" && return 100
-
-	[ "$server_role" = "memberserver" ] && return 0
-
-	val=$(ucr get samba/global/options/"auth methods")
-	[ -n "$val" ] || return 0
-
-	echo "	The Samba parameter \"auth methods\" has been explicitly customized on this system"
-	echo "	by setting the UCR variable \"samba/global/options/auth methods\"."
-	echo "	This may lead to problems with the Samba/AD refusing user logins after the update."
-	echo "	Please unset thjis variable or postpone the update until a solution for"
-	echo "	https://forge.univention.org/bugzilla/show_bug.cgi?id=55515 has been researched and implemented."
-	if grep -q "sam_ignoredomain" <<<"$val"; then
-		echo "	Please note that the value \"sam_ignoredomain\" may have been set on this server to explicitly"
-		echo "	enable access to Samba file shares seved by UCS managed nodes for uses from an external domain."
-		echo "	Typically this could be an MS Active Directory domain."
-		echo "	Please note that unsetting this variable may cause Samba on the memberserver to deny access"
-		echo "	by uses from the external domain, despite having the same username and password as in the UCS domain."
-		if univention-ldapsearch -LLL univentionService="AD Connector" 1.1 | grep -q ^dn:; then
-			echo
-			echo "	As there seems to be an AD-Connector running in this domain, please check carefully"
-			echo "	before continuing the update."
-		fi
-	fi
-	echo
-	echo "	This check can be disabled by setting the UCR variable '$var' to 'yes'."
-	return 1
-}
-
 checks () {
 	# stderr to log
 	exec 2>>"$UPDATER_LOG"
