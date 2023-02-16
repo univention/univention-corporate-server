@@ -262,7 +262,6 @@ def initialize() -> None:
 
 
 def handler(dn: str, new: Dict[str, List[bytes]], old: Dict[str, List[bytes]], operation: str) -> None:
-
     idmap = open_idmap()
     if new:
         try:
@@ -275,7 +274,7 @@ def handler(dn: str, new: Dict[str, List[bytes]], old: Dict[str, List[bytes]], o
                 xid_type = 'ID_TYPE_GID'
                 samaccountname = new.get('cn', [b''])[0]
 
-            new_xid = new.get(xid_attr, [b''])[0]
+            new_xid = new.get(xid_attr, [b''])[0].decode('ASCII')
             if new_xid:
                 new_sambaSID = new.get(sidAttribute, [b''])[0]
                 if xid_type == 'ID_TYPE_GID' and new_sambaSID in __SPECIAL_SIDS:
@@ -289,12 +288,12 @@ def handler(dn: str, new: Dict[str, List[bytes]], old: Dict[str, List[bytes]], o
                         rename_or_modify_idmap_entry(old_sambaSID.decode('ASCII'), new_sambaSID.decode('ASCII'), new_xid, xid_type, idmap)
                     old_xid = old.get(xid_attr, [b''])[0]
                     if new_xid != old_xid:
-                        add_or_modify_idmap_entry(new_sambaSID.decode('ASCII'), new_xid.decode('ASCII'), xid_type, idmap)
+                        add_or_modify_idmap_entry(new_sambaSID.decode('ASCII'), new_xid, xid_type, idmap)
                 else:
                     if not new_sambaSID:
                         ud.debug(ud.LISTENER, ud.WARN, "Samba account %r has no attribute '%s', cannot add" % (samaccountname, sidAttribute))
                         return
-                    add_or_modify_idmap_entry(new_sambaSID.decode('ASCII'), new_xid.decode('ASCII'), xid_type, idmap)
+                    add_or_modify_idmap_entry(new_sambaSID.decode('ASCII'), new_xid, xid_type, idmap)
         except ldb.LdbError as exc:
             (enum, estr) = exc.args
             ud.debug(ud.LISTENER, ud.ERROR, "%s: entry for %r could not be updated" % (name, new[sidAttribute][0]))

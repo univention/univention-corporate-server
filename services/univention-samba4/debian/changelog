@@ -1,3 +1,10 @@
+univention-samba4 (9.0.11-6) unstable; urgency=medium
+
+  * Bug #55686: Fix missing bytecode to string conversion in
+    samba4-idmap.py leading to broken xidNumber entries in idmap.ldb
+
+ -- Arvid <requate@univention.de>  Thu, 16 Feb 2023 13:10:22 +0100
+
 univention-samba4 (9.0.11-5) unstable; urgency=medium
 
   * Bug #55597: move old logs during update

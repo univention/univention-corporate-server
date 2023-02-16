@@ -256,6 +256,16 @@ secret: $machine_secret
 			mv /var/log/samba/log.samba-dcerpcd.* /var/log/samba/archive/ || true
 			mv /var/log/samba/log.rpcd_*.* /var/log/samba/archive/ || true
 		fi
+
+		# Bug #55686 fix idmap.ldb
+		if dpkg --compare-versions "$2" lt-nl "9.0.11-6"; then
+			if ldbsearch -H /var/lib/samba/private/idmap.ldb "xidNumber=b*" xidnumber | grep -q ^dn:; then
+				echo "Fixing Bug #55686 related xidnumber records in idmap.ldb"
+				systemctl stop univention-directory-listener
+				/usr/lib/univention-directory-listener/system/samba4-idmap.py --direct-resync
+				systemctl start univention-directory-listener
+			fi
+		fi
 	fi
 
 	ntp_socket_dir='/var/lib/samba/ntp_signd'
