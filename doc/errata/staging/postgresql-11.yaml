@@ -6,9 +6,8 @@ src: postgresql-11
 fix: 11.19-0+deb10u1
 desc: |
  This update addresses the following issue:
- 11.18-0+deb10u1 (Wed, 09 Nov 2022 10:09:35 +0100)
- * New upstream version.
- * postgresql-11 (CVE-2022-41862)
+ * Client memory disclosure when connecting, with Kerberos, to modified server
+   (CVE-2022-41862)
 bug: [55676]
 cve:
 - CVE-2022-41862
