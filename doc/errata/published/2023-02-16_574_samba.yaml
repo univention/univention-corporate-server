@@ -27,3 +27,5 @@ desc: |
    more robust by taking care that `nmbd` is started again before the main
    `samba` daemon.
 bug: [55595, 55515, 55678]
+erratum: 574
+announced: 2023-02-16
