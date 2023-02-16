@@ -38,14 +38,17 @@ from __future__ import annotations
 
 import json
 import sys
-from argparse import ArgumentParser, Namespace
+from argparse import ArgumentDefaultsHelpFormatter, ArgumentParser, Namespace
 from base64 import b64decode
+from collections import namedtuple
+from enum import Enum
 from os.path import exists
 from subprocess import PIPE, Popen
+from typing import Dict
 
 import requests
 from defusedxml import ElementTree
-from keycloak import KeycloakAdmin
+from keycloak import URL_ADMIN_COMPONENTS, URL_ADMIN_REALM, KeycloakAdmin
 from keycloak.exceptions import KeycloakError, KeycloakGetError, raise_error_from_response
 from ldap.dn import explode_rdn
 
@@ -56,6 +59,101 @@ except ModuleNotFoundError:
     ucr = {}
 
 DEFAULT_REALM = "master"
+URL_ADMIN_REQUIRED_ACTIONS = URL_ADMIN_REALM + "/authentication/required-actions"
+URL_ADMIN_REQUIRED_ACTION_REGISTER = URL_ADMIN_REALM + "/authentication/register-required-action"
+
+
+def create_kc_admin(opt: Namespace) -> KeycloakAdmin:
+    return KeycloakAdmin(server_url=opt.keycloak_url, username=opt.binduser, password=opt.bindpwd, realm_name=opt.realm, user_realm_name=DEFAULT_REALM, verify=opt.no_ssl_verify)
+
+
+class ExtType(Enum):
+    ACTION = 1
+    LDAP_MAPPER = 2
+
+
+Ext = namedtuple("Ext", ["type", "alias", "name"])
+
+
+class ExtService(object):
+
+    def __init__(self, kc_admin: KeycloakAdmin):
+        self._kc_admin = kc_admin
+
+    @classmethod
+    def extensions(cls) -> Dict[str, Ext]:
+        return {
+            "password": Ext(ExtType.ACTION, "UNIVENTION_UPDATE_PASSWORD", "Univention update password"),
+            "ldapmapper": Ext(ExtType.LDAP_MAPPER, "univention-ldap-mapper", "Univention ldap mapper"),
+        }
+
+    def register_required_action(self, realm: str, alias: str, name: str):
+        action = self._get_required_action_by_alias(realm, alias)
+        if not action:
+            self._create_required_action(realm, alias, name)
+
+    def unregister_required_action(self, realm: str, alias: str):
+        action = self._get_required_action_by_alias(realm, alias)
+        if action:
+            self._delete_required_action(realm, alias)
+
+    def register_ldap_mapper(self, realm: str, alias: str, name: str):
+        params = {"providerId": alias, "name": name}
+        mapper = self._kc_admin.get_components(params)
+        if not mapper:
+            params = {"providerId": "ldap-provider", "name": "ldap-provider"}
+            parent = self._realm_components(realm, params)
+            if not parent:
+                raise RuntimeError("ldap-provider with name ldap is not found")
+
+            payload = {
+                "name": name,
+                "parentId": parent[0]["id"],
+                "config": {},
+                "providerId": alias,
+                "providerType": "org.keycloak.storage.ldap.mappers.LDAPStorageMapper",
+            }
+            self._kc_admin.create_component(payload=payload)
+
+    def unregister_ldap_mapper(self, realm: str, alias: str):
+        params = {"providerId": alias, "name": "Univention ldap mapper"}
+        mapper = self._realm_components(realm, params)
+        if mapper:
+            self._kc_admin.delete_component(mapper[0]["id"])
+
+    def _realm_components(self, realm: str, query: dict = {}):
+        params_path = {"realm-name": realm}
+        data_raw = self._kc_admin.raw_get(URL_ADMIN_COMPONENTS.format(**params_path), data=None, **query)
+
+        return raise_error_from_response(data_raw, KeycloakGetError)
+
+    def _create_required_action(self, realm: str, provider_id: str, name: str, enabled: bool = True):
+        params = {"realm-name": realm}
+        payload = {"providerId": provider_id, "name": name, "enabled": enabled}
+
+        data_raw = self._kc_admin.raw_post(URL_ADMIN_REQUIRED_ACTION_REGISTER.format(**params), data=json.dumps(payload))
+        return raise_error_from_response(data_raw, KeycloakError)
+
+    def _get_required_actions(self, realm: str):
+        params_path = {"realm-name": realm}
+        data_raw = self._kc_admin.raw_get(URL_ADMIN_REQUIRED_ACTIONS.format(**params_path))
+
+        return raise_error_from_response(data_raw, KeycloakGetError)
+
+    def _get_required_action_by_alias(self, realm: str, action_alias: str):
+        actions = self._get_required_actions(realm)
+        for a in actions:
+            if a["alias"] == action_alias:
+                return a
+
+        return None
+
+    def _delete_required_action(self, realm: str, alias: str):
+        params = {"realm-name": realm}
+        url = URL_ADMIN_REQUIRED_ACTIONS.format(**params) + f"/{alias}"
+
+        data_raw = self._kc_admin.raw_delete(url)
+        return raise_error_from_response(data_raw, KeycloakGetError)
 
 
 def check_and_create_component(kc_client, name, prov_id, payload_):
@@ -444,6 +542,50 @@ def get_client_secret(opt):
     print(kc_admin.get_client_secrets(kc_admin.get_client_id(opt.client_name)))
 
 
+def register_extensions(opt: Namespace):
+    available_extensions = ExtService.extensions()
+    unknown_extensions = set(opt.names) - set(available_extensions.keys())
+    if unknown_extensions:
+        raise RuntimeError(f"Unknown extensions: {','.join(unknown_extensions)}")
+
+    ext_to_process = set(opt.names) & set(available_extensions.keys())
+    funcs = {
+        ExtType.ACTION: ExtService.register_required_action,
+        ExtType.LDAP_MAPPER: ExtService.register_ldap_mapper,
+    }
+
+    kc_admin = create_kc_admin(opt)
+    service = ExtService(kc_admin)
+    for ext_name in ext_to_process:
+        ext = available_extensions.get(ext_name)
+        func = funcs.get(ext.type)
+        if not func:
+            raise RuntimeError(f"No register function found for {ext.type}")
+        func(service, opt.realm, ext.alias, ext.name)
+
+
+def unregister_extensions(opt: Namespace):
+    available_extensions = ExtService.extensions()
+    unknown_extensions = set(opt.names) - set(available_extensions.keys())
+    if unknown_extensions:
+        raise RuntimeError(f"Unknown extensions: {','.join(unknown_extensions)}")
+
+    ext_to_process = set(opt.names) & set(available_extensions.keys())
+    funcs = {
+        ExtType.ACTION: ExtService.unregister_required_action,
+        ExtType.LDAP_MAPPER: ExtService.unregister_ldap_mapper,
+    }
+
+    kc_admin = create_kc_admin(opt)
+    service = ExtService(kc_admin)
+    for ext_name in ext_to_process:
+        ext = available_extensions.get(ext_name)
+        func = funcs.get(ext.type)
+        if not func:
+            raise RuntimeError(f"No unregister function found for {ext.type}")
+        func(service, opt.realm, ext.alias)
+
+
 def parse_args(args: list[str] = None) -> Namespace:
     """
     Parse command line arguments.
@@ -541,6 +683,17 @@ def parse_args(args: list[str] = None) -> Namespace:
     adhoc_parser_opp.add_argument("--group-2fa", default="2FA group")
     adhoc_parser_opp.add_argument("--ldap-base", required=no_ucr_available, default=ldap_base)
     adhoc_parser_opp.set_defaults(func=enable_2fa)
+
+    parser_ext = subparsers.add_parser("extension", help="manage extensions")
+    operation_subparsers = parser_ext.add_subparsers(title="operation", description="valid subcommands", required=True, dest="operation")
+
+    ext_register_parser = operation_subparsers.add_parser("register", help="register extension", formatter_class=ArgumentDefaultsHelpFormatter)
+    ext_register_parser.add_argument("--names", metavar="name", nargs="+", default=["password", "ldapmapper"], help="Names of extensions to be activated")
+    ext_register_parser.set_defaults(func=register_extensions)
+
+    ext_unregister_parser = operation_subparsers.add_parser("unregister", help="unregister extension", formatter_class=ArgumentDefaultsHelpFormatter)
+    ext_unregister_parser.add_argument("--names", metavar="name", nargs="+", default=["password", "ldapmapper"], help="Names of extensions to be deactivated")
+    ext_unregister_parser.set_defaults(func=unregister_extensions)
 
     opt = parser.parse_args(args)
     if opt.binddn:
