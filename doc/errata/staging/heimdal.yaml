@@ -1,0 +1,27 @@
+product: ucs
+release: "4.4"
+version: [9]
+scope: ucs_4.4-0-errata4.4-9
+src: heimdal
+fix: 7.1.0+dfsg-13+deb9u4A~4.4.9.202302161326
+desc: |
+ This update addresses the following issues:
+ 7.1.0+dfsg-13+deb9u4 (Tue, 07 Feb 2023 21:08:05 +0100)
+ * Non-maintainer upload by the ELTS Team.
+ * Fix CVE-2019-14870
+ * Fix CVE-2021-3671
+ * Fix CVE-2021-44758 (PartOf: #1024187)
+ * Fix CVE-2022-3437 (PartOf: #1024187) + Do not introduce CVE-2022-45142
+ * Fix CVE-2022-41916 (PartOf: #1024187)
+ * Fix CVE-2022-42898 (PartOf: #1024187)
+ * Fix CVE-2022-44640 (PartOf: #1024187)
+bug: [55687]
+cve:
+- CVE-2019-14870
+- CVE-2021-3671
+- CVE-2021-44758
+- CVE-2022-3437
+- CVE-2022-45142
+- CVE-2022-41916
+- CVE-2022-42898
+- CVE-2022-44640
