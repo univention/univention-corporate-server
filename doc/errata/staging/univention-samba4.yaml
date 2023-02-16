@@ -6,9 +6,8 @@ src: univention-samba4
 fix: 9.0.11-5A~5.0.0.202302151614
 desc: |
  This update addresses the following issues:
- * The logrotate configuration for `samba-dcerpcd` and `samba-bgqd` has
-   been fixed.
- * The final restart of samba at the end of a package update has been
-   adjusted to the new daemon signature in the process list.
+ * The logrotate configuration for `samba-dcerpcd` and `samba-bgqd` has been
+   fixed.
+ * The final restart of Samba at the end of a package update has been adjusted
+   to the new daemon signature in the process list.
 bug: [55597, 55677]
-
