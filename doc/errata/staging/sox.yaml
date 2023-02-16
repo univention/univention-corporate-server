@@ -6,22 +6,13 @@ src: sox
 fix: 14.4.1-5+deb9u3
 desc: |
  This update addresses the following issues:
- 14.4.1-5+deb9u3 (Thu, 09 Feb 2023 16:51:32 +0100)
- * Non-maintainer upload by the ELTS Team.
- * Fix some resource leaks.
- * Replace CVE-2017-11358 patch with the non-broken one from upstream
-
- * Fix big endian 64bit FTBFS: Import upstream patch to fix hcom writing
- * Enable test suite. Non-fatal on mipsen, see #1030674
- * Fix CVE-2021-3643 and CVE-2021-23210: voc validation
- * Fix CVE-2021-23159 and CVE-2021-23172: hcom validation
- , #1021134)
- * Fix CVE-2021-33844: wav validation
- * Fix CVE-2021-40426: sphere validation
- * Fix CVE-2022-31650: aiff validation
- * Fix CVE-2022-31651: reject implausible rate
- * Silence dh_missing
- * Add an autopkgtest
+ * CVE-2017-11358: Invalid memory read in read_samples function in `hcom.c`
+ * CVE-2021-3643, CVE-2021-23210: VOC validation
+ * CVE-2021-23159, CVE-2021-23172: HCOM validation
+ * CVE-2021-33844: WAV validation
+ * CVE-2021-40426: SPHERE validation
+ * CVE-2022-31650: AIFF validation
+ * CVE-2022-31651: reject implausible rate
 bug: [55690]
 cve:
 - CVE-2017-11358
