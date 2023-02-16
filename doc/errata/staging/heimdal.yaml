@@ -6,7 +6,8 @@ src: heimdal
 fix: 7.5.0+dfsg-3+deb10u2A~5.0.3.202302131713
 desc: |
  This update addresses the following issue:
- * heimdal (CVE-2022-45142)
+ * Fix signature validation failure regression introduced by erratum 449
+   fixing CVE-2022-3437 (CVE-2022-45142)
 bug: [55674]
 cve:
 - CVE-2022-45142
