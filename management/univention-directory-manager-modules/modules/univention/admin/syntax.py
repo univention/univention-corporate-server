@@ -4347,12 +4347,48 @@ class IComputer_FQDN(UDM_Objects):
 
     .. seealso::
             * :py:class:`HostDN`
+
+    >>> IComputer_FQDN.parse('a.bc')
+    'a.bc'
+    >>> IComputer_FQDN.parse('') # doctest: +IGNORE_EXCEPTION_DETAIL
+    Traceback (most recent call last):
+    ...
+    valueError:
+    >>> IComputer_FQDN.parse('ab') # doctest: +IGNORE_EXCEPTION_DETAIL
+    Traceback (most recent call last):
+    ...
+    valueError:
+    >>> IComputer_FQDN.parse('a.b') # doctest: +IGNORE_EXCEPTION_DETAIL
+    Traceback (most recent call last):
+    ...
+    valueError:
+    >>> IComputer_FQDN.parse('a.b') # doctest: +IGNORE_EXCEPTION_DETAIL
+    Traceback (most recent call last):
+    ...
+    valueError:
+    >>> IComputer_FQDN.parse('-a.bc') # doctest: +IGNORE_EXCEPTION_DETAIL
+    Traceback (most recent call last):
+    ...
+    valueError:
+    >>> IComputer_FQDN.parse('a.b_') # doctest: +IGNORE_EXCEPTION_DETAIL
+    Traceback (most recent call last):
+    ...
+    valueError:
+    >>> IComputer_FQDN.parse('0.bc') # doctest: +IGNORE_EXCEPTION_DETAIL
+    Traceback (most recent call last):
+    ...
+    valueError:
     """
 
     udm_modules = ()  # type: Sequence[str]
     key = '%(name)s.%(domain)s'  # '%(fqdn)s' optimized for LDAP lookup. Has to be in sync with the computer handlers' info['fqdn']
     label = '%(name)s.%(domain)s'  # '%(fqdn)s'
-    regex = re.compile(r'(?=^.{1,254}$)(^(?:(?!\d+\.)[a-zA-Z0-9_\-]{1,63}\.?)+(?:[a-zA-Z0-9]{2,})$)')  # '(^[a-zA-Z])(([a-zA-Z0-9-_]*)([a-zA-Z0-9]$))?$' )
+    regex = re.compile(
+        r'''
+        (?=^ .{4,254}$ )
+        (?: (?![0-9]+\. | [_-]) [a-zA-Z0-9_-]{1,63} (?<![_-]) \. )+
+            (?![0-9]+$  | [_-]) [a-zA-Z0-9_-]{2,63} (?<![_-]) $
+        ''', re.VERBOSE)
     error_message = _('Not a valid FQDN')
     udm_filter = '!(univentionObjectFlag=docker)'
     simple = True

@@ -1,3 +1,9 @@
+univention-directory-manager-modules (15.0.20-2) unstable; urgency=low
+
+  * Bug #33684: Fix slow and invalid syntax for IComputer_FQDN
+
+ -- Philipp Hahn <hahn@univention.de>  Fri, 17 Feb 2023 13:12:35 +0100
+
 univention-directory-manager-modules (15.0.20-1) unstable; urgency=low
 
   * Bug #51631: Fix Replaces/Breaks for upgrade from UCS 5.0-3
