@@ -1,0 +1,12 @@
+product: ucs
+release: "5.0"
+version: [3]
+scope: ucs_5.0-0-errata5.0-3
+src: univention-samba
+fix: 14.0.8-4A~5.0.0.202302171430
+desc: |
+ This update addresses the following issues:
+ * The AD password change has been moved to another package
+   to avoid problems on system that doesn't have `univention-samba`
+   installed.
+bug: [54390]
