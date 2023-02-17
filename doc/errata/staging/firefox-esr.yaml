@@ -1,0 +1,37 @@
+product: ucs
+release: "5.0"
+version: [2, 3]
+scope: ucs_5.0-0-errata5.0-3
+src: firefox-esr
+fix: 102.8.0esr-1~deb10u1
+desc: |
+ This update addresses the following issues:
+ * Arbitrary memory write via PKCS 12 in NSS (CVE-2023-0767)
+ * Content security policy leak in violation reports using iframes
+   (CVE-2023-25728)
+ * Extensions could have opened external schemes without user knowledge
+   (CVE-2023-25729)
+ * Screen hijack via browser fullscreen mode (CVE-2023-25730)
+ * Out of bounds memory write from EncodeInputStream (CVE-2023-25732)
+ * Potential use-after-free from compartment mismatch in SpiderMonkey
+   (CVE-2023-25735)
+ * Invalid downcast in SVGUtils::SetupStrokeGeometry (CVE-2023-25737)
+ * Use-after-free in mozilla::dom::ScriptLoadContext::~ScriptLoadContext
+   (CVE-2023-25739)
+ * Web Crypto ImportKey crashes tab (CVE-2023-25742)
+ * Memory safety bugs fixed in Firefox 110 and Firefox ESR 102.8
+   (CVE-2023-25744)
+ * Memory safety bugs fixed in Firefox ESR 102.8 (CVE-2023-25746)
+bug: [55720]
+cve:
+- CVE-2023-0767
+- CVE-2023-25728
+- CVE-2023-25729
+- CVE-2023-25730
+- CVE-2023-25732
+- CVE-2023-25735
+- CVE-2023-25737
+- CVE-2023-25739
+- CVE-2023-25742
+- CVE-2023-25744
+- CVE-2023-25746
