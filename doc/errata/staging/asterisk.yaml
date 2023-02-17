@@ -6,11 +6,9 @@ src: asterisk
 fix: 1:13.14.1~dfsg-2+deb9u8
 desc: |
  This update addresses the following issues:
- 1:13.14.1~dfsg-2+deb9u8 (Thu, 16 Feb 2023 23:52:07 +0100)
- * Non-maintainer upload by the ELTS team.
  * Fix CVE-2022-37325: An incoming Setup message to
-   addons/ooh323c/src/ooq931.c with a malformed Calling or Called Party IE can
-   cause a denial of service.
+   `addons/ooh323c/src/ooq931.c` with a malformed "Calling" or "Called Party
+   IE" can cause a denial of service.
  * Fix CVE-2022-42706: GetConfig, via Asterisk Manager Interface, allows a
    connected application to access files outside of the asterisk configuration
    directory, aka Directory Traversal.
