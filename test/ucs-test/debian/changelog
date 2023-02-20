@@ -1,3 +1,9 @@
+ucs-test (10.0.10-3) unstable; urgency=medium
+
+  * Bug #54390: remove samba password change workaround
+
+ -- Felix Botner <botner@univention.de>  Mon, 20 Feb 2023 12:05:42 +0100
+
 ucs-test (10.0.10-2) unstable; urgency=medium
 
   * Bug #40228: separate 81_diagnostic_checks test into pytest
