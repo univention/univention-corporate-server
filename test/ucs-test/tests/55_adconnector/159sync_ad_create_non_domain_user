@@ -39,10 +39,14 @@ section "Set group as primary group of user"
 
 ad_append_to_attribute "$AD_GROUP_DN" "member" "$AD_USER_DN" || fail_test 110
 ad_set_primary_group "$AD_USER_DN" "$AD_GROUP_DN" || fail_test 110
+ad_wait_for_synchronization; fail_bool 0 110
 
 section "Re-enable connector"
 
 ad_set_sync_mode "sync"
+# trigger object sync
+ad_set_attribute "$AD_GROUP_DN" "description" "ucs-test" || fail_test 110
+ad_set_attribute "$AD_USER_DN" "description" "ucs-test" || fail_test 110
 ad_wait_for_synchronization; fail_bool 0 110
 
 ad_exists "$AD_GROUP_DN"; fail_bool 0 110
