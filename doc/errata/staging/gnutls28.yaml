@@ -1,0 +1,12 @@
+product: ucs
+release: "5.0"
+version: [2, 3]
+scope: ucs_5.0-0-errata5.0-3
+src: gnutls28
+fix: 3.6.7-4+deb10u10
+desc: |
+ This update addresses the following issue:
+ * timing side-channel in the TLS RSA key exchange code (CVE-2023-0361)
+bug: [55723]
+cve:
+- CVE-2023-0361
