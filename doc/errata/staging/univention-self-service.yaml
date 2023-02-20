@@ -1,0 +1,11 @@
+product: ucs
+release: "5.0"
+version: [3]
+scope: ucs_5.0-0-errata5.0-3
+src: univention-self-service
+fix:
+desc: |
+ This update addresses the following issues:
+ * A regression introduced in UCS 5.0-3 has been fixed which caused that
+   accessing available password reset methods was not possible anymore.
+bug: [55684]

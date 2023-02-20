@@ -1,3 +1,10 @@
+univention-self-service (5.0.6-2) unstable; urgency=medium
+
+  * Bug #55684: fix traceback during password-reset get_reset_methods
+    from ddos-protection-decorator
+
+ -- Maximilian Janssen <janssen@univention.de>  Mon, 20 Feb 2023 14:54:09 +0100
+
 univention-self-service (5.0.6-1) unstable; urgency=medium
 
   * Bug #55346: prevent password-reset based username enumeration by

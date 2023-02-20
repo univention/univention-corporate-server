@@ -980,7 +980,6 @@ class Instance(Base):
         return token_from_db
 
     @forward_to_master
-    @prevent_denial_of_service
     @simple_response
     def get_reset_methods(self) -> List[Dict[str, Any]]:
         if ucr.is_false('umc/self-service/passwordreset/backend/enabled'):
