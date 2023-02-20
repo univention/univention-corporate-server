@@ -875,7 +875,11 @@ install_apps_via_umc () {
 	shift 2 || return $?
 	rm -f /var/cache/appcenter-installed.txt
 	for app in "$@"; do
-		python -m shared-utils/apps -U "$username" -p "$password" -a "$app" || rv=$?
+		if [ -n "$MAIN_APP" ] && [ -n "$MAIN_APP_VERSION" ] && [ "$MAIN_APP" = "$app" ]; then
+			python -m shared-utils/apps -U "$username" -p "$password" -a "$app" -v $MAIN_APP_VERSION || rv=$?
+		else
+			python -m shared-utils/apps -U "$username" -p "$password" -a "$app" || rv=$?
+		fi
 		echo "$app" >>/var/cache/appcenter-installed.txt
 	done
 	return $rv
