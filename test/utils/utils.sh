@@ -934,9 +934,7 @@ install_apps_via_umc () {
 	rm -f /var/cache/appcenter-installed.txt
 	for app in "$@"; do
 		if [ -n "$MAIN_APP" ] && [ -n "$MAIN_APP_VERSION" ] && [ "$MAIN_APP" = "$app" ]; then
-			echo "$password" > /tmp/pwdfile
-			univention-app install --noninteractive --username "$username" --pwdfile /tmp/pwdfile $app=$MAIN_APP_VERSION || rv=$?
-			rm /tmp/pwdfile
+			umc_apps -U "$username" -p "$password" -a $app -v $MAIN_APP_VERSION || rv=$?
 		else
 			umc_apps -U "$username" -p "$password" -a $app || rv=$?
 		fi

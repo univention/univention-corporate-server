@@ -26,6 +26,7 @@ class Apps(object):
         parser.add_argument("-U", "--username", help="username", required=True)
         parser.add_argument("-p", "--password", help="password", required=True)
         parser.add_argument("-a", "--app", help="app id", required=True)
+        parser.add_argument("-v", "--version", help="app version")
         parser.add_argument("-r", "--remove", action="store_true", help="remove app")
         parser.add_argument("-u", "--update", action="store_true", help="upgrade app")
         parser.add_argument(
@@ -71,8 +72,8 @@ class Apps(object):
         print(result)
         assert result['result'][get_local_fqdn()][app]['success'] is True
 
-    def run_script(self, app_id: str, script: str) -> None:
-        app = FindApps().find(app_id)
+    def run_script(self, app_id: str, script: str, version: str | None = None) -> None:
+        app = FindApps().find(app_id, version)
         url = os.path.join('http://appcenter-test.software-univention.de', 'univention-repository', app.get_ucs_version(), 'maintained', 'component', app.component_id, 'test_%s' % script)
         print(url)
         response = get(url)
@@ -105,26 +106,26 @@ class Apps(object):
             if unlink_pwd_file:
                 os.unlink(pwd_file)
 
-    def make_args(self, action: str, app: str) -> Dict[str, Any]:
+    def make_args(self, action: str, app: str, version: str | None = None) -> Dict[str, Any]:
         host = get_local_fqdn()
         settings: Dict[str, Any] = {}
         return {
             "action": action,
             "auto_installed": [],
             "hosts": {host: app},
-            "apps": [app],
+            "apps": [f"{app}={version}"] if version else [app],
             "dry_run": False,
             "settings": {app: settings},
         }
 
-    def run_action(self, action: str, app: str) -> None:
-        data = self.make_args(action, app)
+    def run_action(self, action: str, app: str, version: str | None = None) -> None:
+        data = self.make_args(action, app, version)
         resp = self.umc("appcenter/run", data)
         self.wait(resp, app)
 
     def install(self) -> None:
-        self.run_script(self.options.app, 'preinstall')
-        self.run_action("install", self.options.app)
+        self.run_script(self.options.app, 'preinstall', self.options.version)
+        self.run_action("install", self.options.app, self.options.version)
 
     def uninstall(self) -> None:
         self.run_script(self.options.app, 'preremove')
