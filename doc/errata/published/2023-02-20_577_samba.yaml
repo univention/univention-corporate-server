@@ -1,6 +1,6 @@
 product: ucs
 release: "5.0"
-version: [2]
+version: [2,3]
 scope: ucs_5.0-0-errata5.0-3
 src: samba
 fix: 2:4.16.8-1A~5.0.0.202302151028
@@ -27,3 +27,6 @@ desc: |
    more robust by taking care that `nmbd` is started again before the main
    `samba` daemon.
 bug: [55727]
+erratum: 577
+announced: 2023-02-20
+support: core
