@@ -122,11 +122,11 @@ To create the template, go to Jenkins UCS-X.X / UCS-X.X-X / KVM Templates and st
 
 Here some hints how to prepare such a windows template
 
-* start/install the windows system on our KVM environment
-* deactivate the firewall (TODO, add the correct exceptions instead of deactivating)
+* start/install the windows system on our KVM environment (add virtio iso before installation and use virtio hd and network interface, during the setup you can install the virtio hd driver)
+* deactivate the firewall (TODO, add the correct exceptions instead of deactivating) for all network profiles
 * add VirtIO drivers
 * set DCHP for the network
-* Administrator password -> univention (clients), Univention.99 (server)
+* activate Administrator account and set password -> univention (clients), Univention.99 (server)
 * set network profie to "Private"
   * powershell
   * Get-NetConnectionProfile
@@ -135,9 +135,29 @@ Here some hints how to prepare such a windows template
   * winrm quickconfig
   * Restart-Service winrm
 * apply the ucs-winrm default settings (!! important, otherwise ucs-winrm will not work later)
-  * cd git/ucs-ec2-tools/
-  * python shared-utils/ucs-winrm.py winrm-config --client $IP --user Administrator --password univention
-  * python shared-utils/ucs-winrm.py run-ps --cmd ipconfig --client $IP --user Administrator --password univention
+  ```
+  Enable-WSManCredSSP -Role Server -Force
+  Enable-WSManCredSSP -Role Client -DelegateComputer * -Force
+  Set-Item -Path "wsman:\localhost\service\auth\credSSP" -Value $True -Force
+  Set-Item WSMan:\localhost\Client\TrustedHosts -Value "*" -Force
+  New-Item -Path HKLM:\SOFTWARE\Policies\Microsoft\Windows\CredentialsDelegation -Name AllowFreshCredentialsWhenNTLMOnly -Force
+  New-ItemProperty -Path HKLM:\SOFTWARE\Policies\Microsoft\Windows\CredentialsDelegation\AllowFreshCredentialsWhenNTLMOnly -Name 1 -Value * -PropertyType String -Force
+  winrm set winrm/config '@{MaxTimeoutms="7200000"}'
+  winrm set winrm/config/winrs '@{MaxMemoryPerShellMB="0"}'
+  winrm set winrm/config/winrs '@{MaxProcessesPerShell="0"}'
+  winrm set winrm/config/winrs '@{MaxShellsPerUser="0"}'
+  winrm set winrm/config/service '@{AllowUnencrypted="true"}'
+  winrm set winrm/config/service/auth '@{Basic="true"}'
+  winrm set winrm/config/client/auth '@{Basic="true"}'
+  winrm set winrm/config/client '@{TrustedHosts="*"}'
+  Restart-Service winrm
+  ```
+  * test connection with `python3 ucs-winrm run-ps --cmd ls  --client "10.207.67.241" --user univention --password univention` in `dist/ucs-winrm/src`
 * cleanup windows (disk cleanup to save disk space)
 * stop instance
 * use `ucs-kt-put` on the KVM server to create a template
+  ```
+  ucs-kt-put -C single -O Windows \
+    -c "$INSTANCE_NAME" \ 
+    "win11-pro-winrm-20290218_en-winrm-credssp_amd64"
+  ```
