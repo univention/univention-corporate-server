@@ -1,0 +1,11 @@
+product: ucs
+release: "5.0"
+version: [3]
+scope: ucs_5.0-0-errata5.0-3
+src: univention-management-console
+fix:
+desc: |
+ This update addresses the following issues:
+ * The UCR template for the Apache configuration in multiprocessing mode has
+   been repaired.
+bug: [55726]

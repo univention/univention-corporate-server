@@ -1,3 +1,10 @@
+univention-management-console (12.0.17-4) unstable; urgency=medium
+
+  * Bug #55726: fix UCR template for umc/http/processes/start-port
+    Variable
+
+ -- Florian Best <best@univention.de>  Mon, 20 Feb 2023 14:01:25 +0100
+
 univention-management-console (12.0.17-3) unstable; urgency=low
 
   * Bug #53885: Use sd_notidy() to signal services are ready
