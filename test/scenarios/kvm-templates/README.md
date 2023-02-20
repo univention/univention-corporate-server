@@ -158,6 +158,6 @@ Here some hints how to prepare such a windows template
 * use `ucs-kt-put` on the KVM server to create a template
   ```
   ucs-kt-put -C single -O Windows \
-    -c "$INSTANCE_NAME" \ 
+    -c "$INSTANCE_NAME" \
     "win11-pro-winrm-20290218_en-winrm-credssp_amd64"
   ```
