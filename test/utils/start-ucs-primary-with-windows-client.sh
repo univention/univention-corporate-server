@@ -30,4 +30,4 @@ case "$WINDOWS_CLIENT" in
         ;;
 esac
 
-#exec ./utils/start-test.sh scenarios/base/ucs-primary-with-windows-client.cfg
+exec ./utils/start-test.sh scenarios/base/ucs-primary-with-windows-client.cfg
