@@ -12,7 +12,6 @@ Architecture: all
 Depends:
  apache2,
  libapache2-mod-authnz-pam,
- python2.7,
  univention-apache-vhost (= ${source:Version}),
  univention-config (>= 8.0.2),
  ${misc:Depends},
@@ -30,8 +29,6 @@ Description: UCS - Apache2 configuration
 Package: univention-apache-vhost
 Architecture: all
 Depends:
- python-click,
- python-univention-directory-manager,
  univention-ssl,
  ${misc:Depends},
 Suggests:

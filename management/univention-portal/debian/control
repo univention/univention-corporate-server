@@ -48,9 +48,6 @@ Depends:
  python3-requests,
  python3-tornado,
  python3-univention-directory-manager (>= 15.0.20-9),
- ${python:Depends},
-Provides:
- ${python:Provides},
 Description: Library for Univention Portal
  .
  It is part of Univention Corporate Server (UCS), an

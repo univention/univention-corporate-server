@@ -16,7 +16,6 @@ Depends:
  bind9-host,
  db5.3-util,
  makepasswd,
- python-univention-lib (>= 8.0.1-29),
  python3-univention-lib (>= 8.0.1-29),
  shell-univention-lib (>= 6.0.9-8),
  univention-base-files,
@@ -48,7 +47,6 @@ Recommends:
 Depends:
  ldap-utils,
  libldap-2.4-2,
- python-univention-lib (>= 3.0.3-1),
  python3-univention-lib (>= 3.0.3-1),
  univention-config,
  ${misc:Depends},
