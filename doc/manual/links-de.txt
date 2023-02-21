@@ -19,7 +19,7 @@
 .. _mozilla-css-selectors: https://developer.mozilla.org/en-US/docs/Learn/CSS/Building_blocks/Selectors
 .. _postfix-reject-rbl-client: http://www.postfix.org/postconf.5.html#reject_rbl_client
 .. _postfix-smtp-recipient-restrictions: http://www.postfix.org/postconf.5.html#smtpd_recipient_restrictions
-.. _python2-re: https://docs.python.org/2/library/re.html
+.. _python3-re: https://docs.python.org/3/library/re.html
 .. _prometheus-query-expression: https://prometheus.io/docs/prometheus/latest/querying/basics/
 .. _ucs-documentation-overview: https://docs.software-univention.de/
 .. _univention-kb-admin-diary-separate-frontend-backend: https://help.univention.com/t/admin-diary-how-to-seperate-frontend-and-backend/11331
