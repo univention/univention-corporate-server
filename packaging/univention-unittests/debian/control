@@ -5,9 +5,6 @@ Maintainer: Univention GmbH <packages@univention.de>
 Build-Depends:
  debhelper,
  dh-python,
- python-all,
- python-debian,
- python-setuptools,
  python3-all,
  python3-debian,
  python3-setuptools,
@@ -15,18 +12,7 @@ Standards-Version: 3.8.2
 
 Package: python-univentionunittests
 Architecture: all
-Depends:
- python-mock,
- python-pytest,
- python-pytest-mock,
- ${python:Depends},
-Provides:
- ${python:Provides},
-Recommends:
- univention-unittests,
-Suggests:
- python-pytest-cov,
-Description: Plugins for pytest that go with UCS specific packages.
+Description: UCS transitional dummy package
  .
  It is part of Univention Corporate Server (UCS), an
  integrated, directory driven solution for managing
@@ -55,7 +41,6 @@ Description: Plugins for pytest that go with UCS specific packages.
 Package: univention-unittests
 Architecture: all
 Depends:
- python-univentionunittests,
  python3-univentionunittests,
 Description: Unittests for UCS.
  .

@@ -6,9 +6,6 @@ Build-Depends:
  debhelper,
  dh-python,
  node-stylus,
- python-all,
- python-debian,
- python-setuptools,
  python3-all,
  python3-setuptools,
  univention-config-dev (>= 15.0.3),
@@ -43,7 +40,6 @@ Description: UMC module for software management
 
 Package: univention-appcenter
 Depends:
- python-univention-appcenter (= ${source:Version}),
  python3-univention-appcenter (= ${source:Version}),
  ${misc:Depends},
 Recommends:
@@ -58,27 +54,7 @@ Description: Tools for Univention App Center
 
 Package: python-univention-appcenter
 Architecture: all
-Depends:
- gnupg,
- python-backports.tempfile,
- python-ipaddress,
- python-mysqldb,
- python-six,
- python-univention (>= 12.0.0-5),
- python-univention-admin-diary,
- python-univention-config-registry,
- python-univention-directory-manager (>= 14.0.14-14),
- univention-directory-manager-tools (>= 14.0.14-14),
- univention-join (>= 10.0.0-12),
- univention-ssh,
- zsync,
- ${misc:Depends},
- ${python:Depends},
-Recommends:
- univention-appcenter,
-Provides:
- ${python:Provides},
-Description: Library for Univention App Center
+Description: UCS transitional dummy package
  .
  It is part of Univention Corporate Server (UCS), an
  integrated, directory driven solution for managing
@@ -102,10 +78,6 @@ Depends:
  zsync,
  ${misc:Depends},
  ${python3:Depends},
-Breaks:
- python-univention-appcenter (<< 9.0.3-1),
-Replaces:
- python-univention-appcenter (<< 9.0.3-1),
 Recommends:
  univention-appcenter,
 Provides:
@@ -120,7 +92,6 @@ Description: Library for Univention App Center
 Package: univention-appcenter-dev
 Architecture: all
 Depends:
- python-univention-appcenter-dev,
  python3-univention-appcenter-dev,
  ${misc:Depends},
 Description: Development tools for Univention App Center
@@ -132,17 +103,7 @@ Description: Development tools for Univention App Center
 
 Package: python-univention-appcenter-dev
 Architecture: all
-Depends:
- apt-utils,
- dpkg,
- python-univention (>= 12.0.0-5),
- univention-appcenter (= ${source:Version}),
- zsync,
- ${misc:Depends},
- ${python:Depends},
-Provides:
- ${python:Provides},
-Description: Development tools for Univention App Center
+Description: UCS transitional dummy package
  .
  It is part of Univention Corporate Server (UCS), an
  integrated, directory driven solution for managing
@@ -171,7 +132,6 @@ Description: Development tools for Univention App Center
 Package: univention-appcenter-docker
 Architecture: all
 Depends:
- python-univention-appcenter-docker,
  python3-univention-appcenter-docker,
  ${misc:Depends},
 Description: Docker integration for Univention App Center
@@ -188,15 +148,9 @@ Architecture: all
 Depends:
  docker-compose,
  pass,
- python-ruamel.yaml,
- python-univention (>= 12.0.0-5),
- python-univention-appcenter (= ${source:Version}),
  univention-apache,
  univention-docker (>= 2.0.0-4),
  ${misc:Depends},
- ${python:Depends},
-Provides:
- ${python:Provides},
 Description: Docker integration for Univention App Center
  This package contains a Docker integration for certain apps
  of the Univention App Center.

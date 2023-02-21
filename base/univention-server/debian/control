@@ -10,12 +10,10 @@ Standards-Version: 3.5.2
 Package: univention-server-master
 Architecture: all
 Pre-Depends:
- python-univention-lib (>= 9.0.11-9),
  shell-univention-lib (>= 9.0.11-9),
  univention-ssl,
 Recommends:
  openssh-server,
- python-univention-license,
  univention-monitoring-client,
  univention-nagios-client,
  univention-saml,
@@ -48,7 +46,6 @@ Package: univention-server-backup
 Architecture: all
 Recommends:
  openssh-server,
- python-univention-license,
  univention-bind,
  univention-monitoring-client,
  univention-nagios-client,
@@ -58,7 +55,6 @@ Pre-Depends:
  univention-config (>= 7.0.25),
 Depends:
  nscd,
- python-univention-lib (>= 9.0.11-9),
  shell-univention-lib (>= 9.0.11-9),
  univention-directory-manager-rest,
  univention-directory-notifier,
@@ -94,7 +90,6 @@ Recommends:
  univention-nagios-client,
 Depends:
  nscd,
- python-univention-lib (>= 9.0.11-9),
  shell-univention-lib (>= 9.0.11-9),
  univention-directory-replication,
  univention-heimdal-kdc,
@@ -120,7 +115,6 @@ Recommends:
  univention-monitoring-client,
  univention-nagios-client,
 Depends:
- python-univention-lib (>= 9.0.11-9),
  shell-univention-lib (>= 9.0.11-9),
  univention-heimdal-member,
  univention-role-server-common (= ${source:Version}) | univention-container-role-server-common (= ${source:Version}),
@@ -139,8 +133,6 @@ Depends:
  linux-image-amd64 [amd64],
  ntp | ntp-server,
  ntpdate,
- python-dnspython,
- python-ipaddress,
  rdate,
  univention-directory-listener,
  univention-directory-manager-tools,
@@ -174,7 +166,6 @@ Description: UCS system server role common dependencies and files
 Package: univention-container-role-server-common
 Architecture: all
 Depends:
- python-ipaddress,
  univention-container-role-common (= ${source:Version}),
  univention-directory-listener,
  univention-directory-manager-tools,
@@ -195,7 +186,6 @@ Description: UCS system server role common dependencies and files
 Package: univention-role-common
 Architecture: all
 Depends:
- python-univention-lib (>= 9.0.11-9),
  shell-univention-lib (>= 9.0.11-9),
  univention-admin-diary-client,
  univention-appcenter,
@@ -230,7 +220,6 @@ Recommends:
 Conflicts:
  libnss-passwdcache,
  libpam-passwdcache,
- python-univention-directory-manager-uvmm,
  python3-univention-directory-manager-uvmm,
  univention-bacula,
  univention-check-printers,
@@ -275,7 +264,6 @@ Description: UCS system role common dependencies and files
 Package: univention-container-role-common
 Architecture: all
 Depends:
- python-univention-lib (>= 1.0.25-1),
  shell-univention-lib (>= 1.0.25-1),
  univention-admin-diary-client,
  univention-appcenter,

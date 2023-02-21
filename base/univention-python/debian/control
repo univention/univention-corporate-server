@@ -6,9 +6,6 @@ Standards-Version: 3.9.8
 Build-Depends:
  debhelper,
  dh-python,
- python-all,
- python-debian,
- python-setuptools,
  python3-all,
  python3-cracklib,
  python3-debian,
@@ -24,17 +21,7 @@ Build-Depends:
 
 Package: python-univention-namespace
 Architecture: all
-Depends:
- ${misc:Depends},
- ${python:Depends},
-Provides:
- ${python:Provides},
-Replaces:
- python-univention (<< 12.0.0-10),
-Breaks:
- python-univention (<< 12.0.0-10),
-Description: UCS - Python 2 namespace module
- This package declares the 'univention' namespace for Python 2.
+Description: UCS transitional dummy package
  .
  It is part of Univention Corporate Server (UCS), an
  integrated, directory driven solution for managing
@@ -43,21 +30,7 @@ Description: UCS - Python 2 namespace module
 
 Package: python-univention
 Architecture: all
-Depends:
- python-cracklib,
- python-ipaddress,
- python-ldap,
- python-six,
- python-univention-config-registry (>= 15.0.7-16),
- python-univention-debug (>= 12.0.3-5),
- python-univention-namespace,
- ${misc:Depends},
- ${python:Depends},
-Provides:
- ${python:Provides},
-Description: UCS - common Python 2 modules
- This package contains Python modules used by various
- components of UCS.
+Description: UCS transitional dummy package
  .
  It is part of Univention Corporate Server (UCS), an
  integrated, directory driven solution for managing

@@ -68,7 +68,7 @@ univention-server-member
 univention-container-role-common
 /* Recommends */
 openssh-server
-python-univention-license
+python3-univention-license
 univention-nagios-client
 univention-saml
 univention-sudo
