@@ -60,7 +60,7 @@ class S4Connector(Alert):
         # check whether the s4 connector is running; for this
         # WARNING: if more than one instance of the same connector is running
         # CRITICAL: if no process is running
-        rc, output = self.exec_command(['/usr/lib/nagios/plugins/check_procs', '-w', ':1', '-c', '1:', '--ereg-argument-array', '^([^ ]+)?python.*s4connector.s4.main(.py)?$'], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+        rc, output = self.exec_command(['/usr/lib/nagios/plugins/check_procs', '-w', ':1', '-c', '1:', '--ereg-argument-array', '^([^ ]+)?python3.*s4connector.s4.main$'], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
         output = {1: 'More than one s4 connector instance are running!', 2: 's4 connector is not running!'}.get(rc, 'Unknown state!')
         self.log.debug(output)
         self.write_metric('univention_s4_connector_running', rc if rc in (0, 1, 2) else -1)
