@@ -1,3 +1,9 @@
+univention-admin-diary (2.99.0-1) unstable; urgency=medium
+
+  * UCS 5.1-0
+
+ -- Florian Best <best@univention.de>  Tue, 29 Aug 2023 21:43:50 +0200
+
 univention-admin-diary (2.0.7-2) unstable; urgency=medium
 
   * Bug #56201: replace python-notifier and adjust to new UMC module API

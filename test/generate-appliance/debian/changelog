@@ -1,3 +1,9 @@
+generate-appliance (6.99.0-1) unstable; urgency=medium
+
+  * UCS 5.1-0
+
+ -- Florian Best <best@univention.de>  Mon, 19 Jun 2023 17:53:37 +0200
+
 generate-appliance (6.0.2-2) unstable; urgency=low
 
   * Bug #45426: Fix OVA capacity size
