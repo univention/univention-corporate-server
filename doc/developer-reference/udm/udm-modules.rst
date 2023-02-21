@@ -820,7 +820,6 @@ The last step is to install the Python module and LDAP schema,
 documented in the following.
 
 The Python module must be copied to the
-:file:`/usr/lib/python2.7/dist-packages/univention/admin/handlers/` and
 :file:`/usr/lib/python3/dist-packages/univention/admin/handlers/` directory for
 the |UCSUDM| to find it. In this directory a subdirectory has to be created
 corresponding to the first part of the module name. For example, if the module
