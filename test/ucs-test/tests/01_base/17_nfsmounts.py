@@ -48,6 +48,8 @@ def test_nfsmount(udm, ucr, lo, backup_fstab):
             host='%(hostname)s.%(domainname)s' % ucr,
             directorymode="0770",
             position='cn=shares,%(ldap/base)s' % ucr,
+            root_squash="0",
+            options=['nfs'],
         )
         utils.verify_ldap_object(share, {'cn': [share_name]})
         utils.wait_for_listener_replication_and_postrun()
@@ -78,7 +80,6 @@ def test_nfsmount(udm, ucr, lo, backup_fstab):
             print("About to run %s" % (' '.join(command),))
             subprocess.check_call(command)
 
-            # breakpoint()
             assert (Path(shared_dest) / SOURCE_FILE_NAME).exists()
 
             # Check write to shared
@@ -95,7 +96,7 @@ def test_nfsmount(udm, ucr, lo, backup_fstab):
             assert mt.find(mount_point=shared_dest, type='nfs4')
 
             # Check that shared_path is in /etc/exports
-            expected_line = f'"{shared_path}" -rw,root_squash,sync,subtree_check * # LDAP:{share}'
+            expected_line = f'"{shared_path}" -rw,no_root_squash,sync,subtree_check * # LDAP:{share}'
             exports_lines = Path("/etc/exports").read_text().splitlines()
             assert expected_line in exports_lines
 
