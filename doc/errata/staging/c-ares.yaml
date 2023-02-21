@@ -6,10 +6,7 @@ src: c-ares
 fix: 1.12.0-1+deb9u3
 desc: |
  This update addresses the following issue:
- 1.12.0-1+deb9u3 (Sat, 18 Feb 2023 23:32:53 +0100)
- * Non-maintainer upload by the ELTS team.
- * Fix CVE-2022-4904: It was discovered that in c-ares, an asynchronous name
-   resolver library, the config_sortlist function is missing checks about the
+ * CVE-2022-4904: the function `config_sortlist` is missing checks about the
    validity of the input string, which allows a possible arbitrary length
    stack overflow and thus may cause a denial of service.
 bug: [55724]
