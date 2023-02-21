@@ -1,3 +1,9 @@
+univention-s4-connector (14.99.0-1) unstable; urgency=medium
+
+  * UCS 5.1-0
+
+ -- Florian Best <best@univention.de>  Tue, 21 Feb 2023 13:49:04 +0100
+
 univention-s4-connector (14.0.13-5) unstable; urgency=medium
 
   * Bug #54586: replace bytestrings in S4-Connector reject table which

@@ -1,3 +1,9 @@
+univention-base-files (9.99.0-1) unstable; urgency=medium
+
+  * UCS 5.1-0
+
+ -- Florian Best <best@univention.de>  Tue, 21 Feb 2023 13:49:07 +0100
+
 univention-base-files (9.0.5-4) unstable; urgency=low
 
   * Bug #50193: Allow to mount NFS share from self

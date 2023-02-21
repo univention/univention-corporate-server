@@ -1,3 +1,9 @@
+univention-docker-container-mode (5.99.0-1) unstable; urgency=medium
+
+  * UCS 5.1-0
+
+ -- Florian Best <best@univention.de>  Tue, 21 Feb 2023 13:48:55 +0100
+
 univention-docker-container-mode (5.0.0-2) unstable; urgency=medium
 
   * Bug #52539: Deprecate univention-docker-container-mode

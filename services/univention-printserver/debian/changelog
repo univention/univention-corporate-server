@@ -1,3 +1,9 @@
+univention-printserver (13.99.0-1) unstable; urgency=medium
+
+  * UCS 5.1-0
+
+ -- Florian Best <best@univention.de>  Tue, 21 Feb 2023 13:49:02 +0100
+
 univention-printserver (13.0.8-2) unstable; urgency=medium
 
   * Bug #55860: Existing print server UCR values were overwritten with defaults upon update of the package. This is now fixed.

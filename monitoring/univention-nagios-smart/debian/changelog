@@ -1,3 +1,9 @@
+univention-nagios-smart (9.99.0-1) unstable; urgency=medium
+
+  * UCS 5.1-0
+
+ -- Florian Best <best@univention.de>  Tue, 21 Feb 2023 13:48:54 +0100
+
 univention-nagios-smart (9.0.1-1) unstable; urgency=medium
 
   * Bug #54748: add dependencies to monitoring packages

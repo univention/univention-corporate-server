@@ -1,3 +1,9 @@
+univention-mail-dovecot (6.99.0-1) unstable; urgency=medium
+
+  * UCS 5.1-0
+
+ -- Florian Best <best@univention.de>  Tue, 21 Feb 2023 13:49:04 +0100
+
 univention-mail-dovecot (6.0.7-1) unstable; urgency=medium
 
   * Bug #31771: migrate tabs to spaces
