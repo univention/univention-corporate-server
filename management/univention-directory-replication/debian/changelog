@@ -1,3 +1,9 @@
+univention-directory-replication (13.99.0-1) unstable; urgency=medium
+
+  * UCS 5.1-0
+
+ -- Florian Best <best@univention.de>  Mon, 19 Jun 2023 17:53:37 +0200
+
 univention-directory-replication (13.0.7-4) unstable; urgency=medium
 
   * Bug #56801: Newline in temporary password file inhibits import of failed.ldif

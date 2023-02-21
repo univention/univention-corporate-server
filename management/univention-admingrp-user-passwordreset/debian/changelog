@@ -1,3 +1,9 @@
+univention-admingrp-user-passwordreset (10.99.0-1) unstable; urgency=medium
+
+  * UCS 5.1-0
+
+ -- Florian Best <best@univention.de>  Mon, 19 Jun 2023 17:53:37 +0200
+
 univention-admingrp-user-passwordreset (10.0.2-4) unstable; urgency=low
 
   * Bug #56099: Fix inverted logic for --no-slapd-restart

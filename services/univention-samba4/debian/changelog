@@ -1,3 +1,9 @@
+univention-samba4 (9.99.0-1) unstable; urgency=medium
+
+  * UCS 5.1-0
+
+ -- Florian Best <best@univention.de>  Tue, 29 Aug 2023 21:43:51 +0200
+
 univention-samba4 (9.0.14-4) unstable; urgency=medium
 
   * Bug #56354: do not leak password in process list during package
