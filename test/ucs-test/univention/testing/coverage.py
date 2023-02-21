@@ -43,7 +43,7 @@ class Coverage:
 
         try:
             subprocess.check_call(
-                ["dpkg", "-l", "python-ucs-school"],
+                ["dpkg", "-l", "python3-ucs-school"],
                 stderr=open("/dev/null", "a"),
                 stdout=open("/dev/null", "a"),
             )
@@ -111,7 +111,7 @@ directory = {directory}
             except OSError:
                 pass
         try:
-            subprocess.call(['pkill', '-f', 'python.*univention-cli-server'])
+            subprocess.call(['pkill', '-f', 'python3.*univention-cli-server'])
         except OSError:
             pass
 
@@ -126,7 +126,7 @@ directory = {directory}
             os.remove(self.COVERAGE_PTH)
         self.restart_python_services()
 
-        for exe in ("coverage", "python3-coverage", "python-coverage"):
+        for exe in ("coverage", "python3-coverage"):
             coverage_bin = shutil.which(exe)
             if coverage_bin:
                 break
@@ -161,7 +161,7 @@ directory = {directory}
         if os.getuid():
             return False
         exe = os.path.basename(argv[0])
-        if exe not in {'python', 'python2', 'python2.7', 'python3', 'python3.5', 'python3.7'}:
+        if exe not in {'python', 'python3', 'python3.7', 'python3.9', 'python3.10', 'python3.11'}:
             return False
         if not any(s in arg for arg in argv for s in {'univention', 'udm', 'ucs', 'ucr'}):
             cls.debug_message('skip non-ucs process', argv)
