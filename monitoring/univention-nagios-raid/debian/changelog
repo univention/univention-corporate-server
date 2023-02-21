@@ -1,3 +1,9 @@
+univention-nagios-raid (10.0.0-1) unstable; urgency=medium
+
+  * Bug #55706: UCS 5.1-0 version bump
+
+ -- Florian Best <best@univention.de>  Thu, 11 Jan 2024 14:40:34 +0100
+
 univention-nagios-raid (9.0.2-1) UNRELEASED; urgency=medium
 
   * Bug #56832: UCS 5.0-6 version bump
