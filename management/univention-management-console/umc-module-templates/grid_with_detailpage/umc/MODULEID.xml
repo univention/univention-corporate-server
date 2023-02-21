@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <umc version="2.0">
-	<module id="MODULEID" version="1.0" python="3">
+	<module id="MODULEID" version="1.0">
 	<name>MODULENAME</name>
 	<description>MODULEDESC</description>
 	<keywords>MODULEKEYWORDS</keywords>

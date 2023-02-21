@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <umc version="2.0">
-	<module id="ipchange" version="1.0" python="3">
+	<module id="ipchange" version="1.0">
 		<name>IP change</name>
 		<description>Change ip for ucs servers</description>
 		<keywords></keywords>
