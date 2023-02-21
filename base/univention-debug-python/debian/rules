@@ -36,7 +36,7 @@ export PYBUILD_NAME=univention-debug
 export LC_ALL=C.UTF-8
 
 %:
-	dh $@ --with python2,python3 --buildsystem=pybuild
+	dh $@ --with python3 --buildsystem=pybuild
 
 override_dh_auto_install:
 	dh_auto_install

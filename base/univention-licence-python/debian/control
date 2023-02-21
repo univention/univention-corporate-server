@@ -3,15 +3,10 @@ Section: univention
 Priority: optional
 Maintainer: Univention GmbH <packages@univention.de>
 Build-Depends:
- cython-dbg,
  cython3-dbg,
  debhelper,
  dh-python,
  libunivention-license-dev (>= 10.0.0-4),
- python-dbg,
- python-debian,
- python-dev,
- python-setuptools,
  python3-dbg,
  python3-debian,
  python3-dev,
@@ -20,16 +15,7 @@ Standards-Version: 3.8.2
 
 Package: python-univention-license
 Architecture: any
-Depends:
- python-univention-namespace (>= 12.0.0-10),
- ${misc:Depends},
- ${python:Depends},
- ${shlibs:Depends},
-Provides:
- ${python:Provides},
-Description: UCS - licence validation library for Python 2
- This package contains a Python interface to the UCS
- licence validation library.
+Description: UCS transitional dummy package
  .
  It is part of Univention Corporate Server (UCS), an
  integrated, directory driven solution for managing
@@ -38,16 +24,7 @@ Description: UCS - licence validation library for Python 2
 
 Package: python-univention-license-dbg
 Architecture: any
-Depends:
- python-univention-license (= ${binary:Version}),
- ${misc:Depends},
- ${python:Depends},
- ${shlibs:Depends},
-Provides:
- ${python:Provides},
-Description: UCS - licence validation library for Python 2 - Debug version
- This package contains a Python interface to the UCS
- licence validation library.
+Description: UCS transitional dummy package
  .
  It is part of Univention Corporate Server (UCS), an
  integrated, directory driven solution for managing
