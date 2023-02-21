@@ -329,7 +329,7 @@ def get_absolute_extension_filename(extension_type: str, filename: str) -> str:
     assert extension_type in VALID_EXTENSION_TYPES
     if extension_type == 'module':
         assert '/' in filename
-    return '/usr/lib/python2.7/dist-packages%s' % ({
+    return '/usr/lib/python3/dist-packages%s' % ({
         'hook': '/univention/admin/hooks.d/%s',
         'syntax': '/univention/admin/syntax.d/%s',
         'module': '/univention/admin/handlers/%s',
