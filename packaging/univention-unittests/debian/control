@@ -12,14 +12,7 @@ Standards-Version: 3.8.2
 
 Package: python-univentionunittests
 Architecture: all
-Depends:
- ${python:Depends},
-Provides:
- ${python:Provides},
-Recommends:
- univention-unittests,
-Suggests:
-Description: Plugins for pytest that go with UCS specific packages.
+Description: UCS transitional dummy package
  .
  It is part of Univention Corporate Server (UCS), an
  integrated, directory driven solution for managing

@@ -13,15 +13,7 @@ Build-Depends:
 
 Package: python-univention-debug
 Architecture: any
-Depends:
- ${misc:Depends},
- ${python:Depends},
- ${shlibs:Depends},
-Provides:
- ${python:Provides},
-Description: UCS - debugging and logging library (Python2 interface)
- This package includes the Python2 interface to the
- UCS debugging and logging library.
+Description: UCS transitional dummy package
  .
  It is part of Univention Corporate Server (UCS), an
  integrated, directory driven solution for managing

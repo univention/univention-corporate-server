@@ -27,16 +27,7 @@ Description: UCS - ipcalc tool for network
 
 Package: python-univention-ipcalc
 Architecture: all
-Depends:
- ${python:Depends},
-Provides:
- ${python:Provides},
-Replaces:
- univention-ipcalc (<< 10.0.0-2),
-Breaks:
- univention-ipcalc (<< 10.0.0-2),
-Description: UCS - ipcalc tool for network
- This package contain the Python 2 files for the ipcalc tool.
+Description: UCS transitional dummy package
  .
  This package is part of Univention Corporate Server (UCS),
  an integrated, directory driven solution for managing

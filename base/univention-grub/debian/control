@@ -12,7 +12,6 @@ Architecture: all
 Depends:
  shell-univention-lib (>= 1.0.16-2),
  ${misc:Depends},
- ${python:Depends},
 Description: UCS - meta package for the Grub2 configuration
  This package contains the configuration for the Grub2 boot loader.
  .

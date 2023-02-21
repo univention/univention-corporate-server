@@ -28,20 +28,7 @@ Build-Depends:
 
 Package: python-univention-directory-manager
 Architecture: all
-Depends:
- iso-codes,
- makepasswd,
- python (>= 2.7),
- shell-univention-lib,
- ${misc:Depends},
- ${python:Depends},
-Provides:
- ${python:Provides},
-Breaks:
-Replaces:
-Description: UCS - Modules for administration tools
- This package contains the Python modules that implement the
- features of UCS Directory Manager.
+Description: UCS transitional dummy package
  .
  It is part of Univention Corporate Server (UCS), an
  integrated, directory driven solution for managing
@@ -50,9 +37,6 @@ Description: UCS - Modules for administration tools
 
 Package: python-univention-directory-manager-cli
 Architecture: all
-Depends:
- shell-univention-lib,
- ${misc:Depends},
 Description: UCS transitional dummy package
  .
  It is part of Univention Corporate Server (UCS), an

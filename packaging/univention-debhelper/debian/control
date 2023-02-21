@@ -29,20 +29,7 @@ Description: transitional dummy Univention helper programs for debian/rules
 
 Package: python-univention-debhelper
 Architecture: all
-Depends:
- ${misc:Depends},
- ${python:Depends},
-Breaks:
-Replaces:
-Provides:
- ${python:Provides},
-Description: Univention helper Python 3 library for debian/rules
- A collection of programs that can be used in a debian/rules file to
- automate common tasks related to building UCS packages. Programs
- are included to install various files into your package. Most Univention
- packages use debhelper as part of their build process.
- .
- This package contains the Pyhon 3 version.
+Description: UCS transitional dummy package
  .
  This package is part of Univention Corporate Server (UCS),
  an integrated, directory driven solution for managing

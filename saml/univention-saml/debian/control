@@ -37,7 +37,6 @@ Depends:
  univention-saml-schema (= ${source:Version}),
  ${misc:Depends},
  ${python3:Depends},
- ${python:Depends},
 Breaks:
  univention-saml-schema (<< 3.0.16-1),
 Description: Integrates simpleSAMLphp Identity Provider into UCS

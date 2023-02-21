@@ -54,10 +54,8 @@ Depends:
  univention-nagios-client,
  ${misc:Depends},
  ${python3:Depends},
- ${python:Depends},
 Provides:
  ${python3:Provides},
- ${python:Provides},
 Description: UCS test environment
  This package includes some scripts for testing the UCS installation or the UCS
  upgrade.

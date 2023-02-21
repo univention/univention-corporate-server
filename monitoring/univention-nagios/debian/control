@@ -24,7 +24,6 @@ Depends:
  univention-monitoring-client,
  univention-nagios-common (= ${binary:Version}),
  ${misc:Depends},
- ${python:Depends},
  ${shlibs:Depends},
 Conflicts:
  nagios2 (<< 3.0),

@@ -38,7 +38,6 @@ Depends:
  univention-policy-tools,
  ${misc:Depends},
  ${python3:Depends},
- ${python:Depends},
 Recommends:
  screen,
 Suggests:
@@ -53,16 +52,7 @@ Description: UCS - system upgrading tool
 
 Package: python-univention-updater
 Architecture: all
-Replaces:
- univention-updater (<< 14.0.2-6),
-Breaks:
- univention-updater (<< 14.0.2-6),
-Provides:
- ${python:Provides},
-Depends:
- ${misc:Depends},
- ${python:Depends},
-Description: UCS Updater Python modules
+Description: UCS transitional dummy package
  .
  This package is part of Univention Corporate Server (UCS),
  an integrated, directory driven solution for managing

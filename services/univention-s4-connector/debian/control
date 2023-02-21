@@ -12,11 +12,7 @@ Build-Depends:
 
 Package: python-univention-connector-s4
 Architecture: all
-Depends:
- ${misc:Depends},
 Description: UCS transitional dummy package
- This package contains the modules that implement the
- features of UCS Samba4 Connector.
  .
  It is part of Univention Corporate Server (UCS), an
  integrated, directory driven solution for managing

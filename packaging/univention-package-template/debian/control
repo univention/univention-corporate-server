@@ -14,7 +14,6 @@ Depends:
  shell-univention-lib,
  univention-directory-manager-tools,
  ${misc:Depends},
- ${python:Depends},
 Description: Test package result
  This package was build as result of a univention package temaplate.
  .

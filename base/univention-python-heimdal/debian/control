@@ -16,14 +16,7 @@ Standards-Version: 3.8.2
 
 Package: python-univention-heimdal
 Architecture: any
-Depends:
- ${python:Depends},
- ${shlibs:Depends},
-Replaces:
-Provides:
- ${python:Provides},
-Description: UCS - Kerberos interface module for Python 2.
- This module provides a Python interface to the Heimdal Kerberos library.
+Description: UCS transitional dummy package
  .
  It is part of Univention Corporate Server (UCS), an
  integrated, directory driven solution for managing
@@ -32,15 +25,7 @@ Description: UCS - Kerberos interface module for Python 2.
 
 Package: python-univention-heimdal-dbg
 Architecture: any
-Depends:
- ${python:Depends},
- ${shlibs:Depends},
-Provides:
- ${python:Provides},
-Description: UCS - Kerberos interface module for Python 2 - Debug version
- This module provides a Python interface to the Heimdal Kerberos library.
- It includes the shared library for the Python debug interpreter and the
- debug symbols for all extension modules.
+Description: UCS transitional dummy package
  .
  It is part of Univention Corporate Server (UCS), an
  integrated, directory driven solution for managing

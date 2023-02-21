@@ -48,7 +48,6 @@ Depends:
  python3-six,
  samba (>= 3.0.20) | samba-ad-dc,
  ${misc:Depends},
- ${python:Depends},
 Breaks:
  univention-samba4 (<< 1.0.118-2),
 Description: UCS - UCR Extensions for configuration of local shares

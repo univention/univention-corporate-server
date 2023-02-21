@@ -67,7 +67,6 @@ Depends:
  ${misc:Depends},
  ${perl:Depends},
  ${python3:Depends},
- ${python:Depends},
 Description: UCS - domain join development files
  This package contains the files needed to develop packages
  that use univention-join.

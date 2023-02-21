@@ -35,7 +35,6 @@ Depends:
  libunivention-policy0 (= ${binary:Version}),
  ${misc:Depends},
  ${python3:Depends},
- ${python:Depends},
 Replaces:
  libunivention-policy0 (<< 5),
 Description: UCS - group policy library (development files)
@@ -52,11 +51,9 @@ Architecture: any
 Depends:
  ${misc:Depends},
  ${python3:Depends},
- ${python:Depends},
  ${shlibs:Depends},
 Provides:
  ${python3:Provides},
- ${python:Provides},
 Replaces:
 Description: UCS - tool to view group policies
  This package includes the univention_policy_result tool

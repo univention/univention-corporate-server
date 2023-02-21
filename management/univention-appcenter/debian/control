@@ -54,19 +54,7 @@ Description: Tools for Univention App Center
 
 Package: python-univention-appcenter
 Architecture: all
-Depends:
- gnupg,
- univention-directory-manager-tools (>= 14.0.14-14),
- univention-join (>= 10.0.0-12),
- univention-ssh,
- zsync,
- ${misc:Depends},
- ${python:Depends},
-Recommends:
- univention-appcenter,
-Provides:
- ${python:Provides},
-Description: Library for Univention App Center
+Description: UCS transitional dummy package
  .
  It is part of Univention Corporate Server (UCS), an
  integrated, directory driven solution for managing
@@ -116,16 +104,7 @@ Description: Development tools for Univention App Center
 
 Package: python-univention-appcenter-dev
 Architecture: all
-Depends:
- apt-utils,
- dpkg,
- univention-appcenter (= ${source:Version}),
- zsync,
- ${misc:Depends},
- ${python:Depends},
-Provides:
- ${python:Provides},
-Description: Development tools for Univention App Center
+Description: UCS transitional dummy package
  .
  It is part of Univention Corporate Server (UCS), an
  integrated, directory driven solution for managing
@@ -173,9 +152,7 @@ Depends:
  univention-apache,
  univention-docker (>= 2.0.0-4),
  ${misc:Depends},
- ${python:Depends},
 Provides:
- ${python:Provides},
 Description: Docker integration for Univention App Center
  This package contains a Docker integration for certain apps
  of the Univention App Center.

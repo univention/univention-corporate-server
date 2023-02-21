@@ -76,18 +76,7 @@ Description: UCS Management Console - server
 
 Package: python-univention-management-console
 Architecture: all
-Depends:
- univention-join,
- ${misc:Depends},
- ${python:Depends},
-Provides:
- ${python:Provides},
-Description: UCS Management Console - Python 2 Modules
- UCS Management Console is a web based program to manage computers.
- It has an extensible architecture, using modules to implement
- its features. This package contains the backend-daemon, which
- can be installed on any UCS-system to provide functionalities
- for univention-management-console
+Description: UCS transitional dummy package
  .
  This package is part of Univention Corporate Server (UCS),
  an integrated, directory driven solution for managing
@@ -140,7 +129,6 @@ Depends:
  univention-join-dev,
  univention-l10n-dev (>= 7.0.1),
  ${misc:Depends},
- ${python:Depends},
 Description: UCS Management Console - development files
  UCS Management Console is a web based program to manage computers. It has
  an extensible architecture, using modules to implement its

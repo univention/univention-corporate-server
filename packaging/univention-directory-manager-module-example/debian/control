@@ -19,7 +19,6 @@ Depends:
  univention-directory-manager-tools,
  ${misc:Depends},
  ${python3:Depends},
- ${python:Depends},
 Recommends:
  univention-directory-manager-module-example-schema,
 Description: Univention Directory Manager example module to manage IP phones

@@ -32,12 +32,7 @@ Description: Univention Admin Diary backend
 
 Package: python-univention-admin-diary-backend
 Architecture: all
-Provides:
- ${python:Provides},
-Depends:
- ${misc:Depends},
- ${python:Depends},
-Description: Univention Admin Diary backend library
+Description: UCS transitional dummy package
  .
  It is part of Univention Corporate Server (UCS), an
  integrated, directory driven solution for managing
@@ -95,17 +90,7 @@ Description: Univention Admin Diary client
 
 Package: python-univention-admin-diary
 Architecture: all
-Depends:
- shell-univention-lib,
- ${misc:Depends},
- ${python:Depends},
-Breaks:
- univention-admin-diary-client (<< 2.0.3),
-Replaces:
- univention-admin-diary-client (<< 2.0.3),
-Provides:
- ${python:Provides},
-Description: Univention Admin Diary lib
+Description: UCS transitional dummy package
  .
  It is part of Univention Corporate Server (UCS), an
  integrated, directory driven solution for managing

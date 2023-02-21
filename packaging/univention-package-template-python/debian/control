@@ -10,13 +10,7 @@ Build-Depends:
 
 Package: python-univention-package-template
 Architecture: all
-Depends:
- ${misc:Depends},
- ${python:Depends},
-Provides:
- ${python:Provides},
-Description: UCS - python module template
- This package contains an example Python 2 module.
+Description: UCS transitional dummy package
  .
  It is part of Univention Corporate Server (UCS), an
  integrated, directory driven solution for managing

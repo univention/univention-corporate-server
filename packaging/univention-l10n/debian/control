@@ -20,7 +20,6 @@ Depends:
  ${misc:Depends},
  ${perl:Depends},
  ${python3:Depends},
- ${python:Depends},
 Recommends:
  univention-management-console-dev,
 Conflicts:

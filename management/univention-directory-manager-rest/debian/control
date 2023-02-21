@@ -29,8 +29,6 @@ Description: REST service for UCS Directory Manager
 
 Package: python-univention-directory-manager-rest
 Architecture: all
-Depends:
- ${misc:Depends},
 Description: UCS transitional dummy package
  .
  It is part of Univention Corporate Server (UCS), an

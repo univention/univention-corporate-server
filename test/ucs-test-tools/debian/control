@@ -16,10 +16,8 @@ Depends:
  univention-directory-manager-tools,
  ${misc:Depends},
  ${python3:Depends},
- ${python:Depends},
 Provides:
  ${python3:Provides},
- ${python:Provides},
 Description: Tool collection for UCS development
  This package contains tools to test UCS installations.
  .

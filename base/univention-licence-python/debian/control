@@ -15,15 +15,7 @@ Standards-Version: 3.8.2
 
 Package: python-univention-license
 Architecture: any
-Depends:
- ${misc:Depends},
- ${python:Depends},
- ${shlibs:Depends},
-Provides:
- ${python:Provides},
-Description: UCS - licence validation library for Python 2
- This package contains a Python interface to the UCS
- licence validation library.
+Description: UCS transitional dummy package
  .
  It is part of Univention Corporate Server (UCS), an
  integrated, directory driven solution for managing
@@ -32,15 +24,7 @@ Description: UCS - licence validation library for Python 2
 
 Package: python-univention-license-dbg
 Architecture: any
-Depends:
- ${misc:Depends},
- ${python:Depends},
- ${shlibs:Depends},
-Provides:
- ${python:Provides},
-Description: UCS - licence validation library for Python 2 - Debug version
- This package contains a Python interface to the UCS
- licence validation library.
+Description: UCS transitional dummy package
  .
  It is part of Univention Corporate Server (UCS), an
  integrated, directory driven solution for managing
