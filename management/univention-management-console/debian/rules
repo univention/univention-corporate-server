@@ -52,23 +52,6 @@ override_dh_python3:
 	$(RM) -r debian/python3-${PYBUILD_NAME}/usr/lib/python3/dist-packages/univention/__init__.py debian/python3-${PYBUILD_NAME}/usr/share/locale/ debian/python3-${PYBUILD_NAME}/usr/share/univention-management-console/
 	mv debian/python3-${PYBUILD_NAME}/usr/sbin/ debian/${PYBUILD_NAME}-server/usr/
 
-override_dh_python2:
-	dh_python2
-	$(RM) -r debian/python-${PYBUILD_NAME}/usr/lib/python2.7/dist-packages/univention/__init__.py \
-		debian/python-${PYBUILD_NAME}/usr/share/univention-management-console/ \
-		debian/python-${PYBUILD_NAME}/usr/bin/ \
-		debian/python-${PYBUILD_NAME}/usr/lib/python2.7/dist-packages/univention/management/console/acl.py \
-		debian/python-${PYBUILD_NAME}/usr/lib/python2.7/dist-packages/univention/management/console/auth.py \
-		debian/python-${PYBUILD_NAME}/usr/lib/python2.7/dist-packages/univention/management/console/category.py \
-		debian/python-${PYBUILD_NAME}/usr/lib/python2.7/dist-packages/univention/management/console/module.py \
-		debian/python-${PYBUILD_NAME}/usr/lib/python2.7/dist-packages/univention/management/console/pam.py \
-		debian/python-${PYBUILD_NAME}/usr/lib/python2.7/dist-packages/univention/management/console/resource.py \
-		debian/python-${PYBUILD_NAME}/usr/lib/python2.7/dist-packages/univention/management/console/resources.py \
-		debian/python-${PYBUILD_NAME}/usr/lib/python2.7/dist-packages/univention/management/console/saml.py \
-		debian/python-${PYBUILD_NAME}/usr/lib/python2.7/dist-packages/univention/management/console/server.py \
-		debian/python-${PYBUILD_NAME}/usr/lib/python2.7/dist-packages/univention/management/console/session.py \
-		debian/python-${PYBUILD_NAME}/usr/lib/python2.7/dist-packages/univention/management/console/shared_memory.py
-
 override_dh_install:
 	dh_install -Xde.po
 
@@ -76,4 +59,4 @@ override_dh_systemd_start:
 	dh_systemd_start --restart-after-upgrade
 
 %:
-	dh $@ --with python2,python3,univention-l10n,ucr --buildsystem=pybuild
+	dh $@ --with python3,univention-l10n,ucr --buildsystem=pybuild

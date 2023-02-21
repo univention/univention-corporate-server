@@ -16,7 +16,6 @@ Depends:
  ldap-utils,
  netcat-traditional,
  nmap,
- python-univention-lib (>= 1.0.25-1),
  univention-config,
  univention-mail-postfix | mail-transport-agent,
  ${misc:Depends},

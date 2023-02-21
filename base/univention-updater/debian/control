@@ -7,18 +7,6 @@ Build-Depends:
  bash-completion,
  debhelper,
  dh-python,
- python-all,
- python-backports.tempfile,
- python-lazy-object-proxy,
- python-monotonic,
- python-pytest,
- python-pytest-cov,
- python-pytest-mock,
- python-pytest-timeout,
- python-setuptools,
- python-six,
- python-univention-debug,
- python-univention-lib (>= 8.0.1-33),
  python3-all,
  python3-lazy-object-proxy,
  python3-pytest,
@@ -38,7 +26,6 @@ Depends:
  at,
  ca-certificates,
  netcat-traditional,
- python-univention-updater (= ${source:Version}),
  python3-apt,
  python3-packaging,
  python3-univention-config-registry,
@@ -52,7 +39,6 @@ Depends:
  univention-policy-tools,
  ${misc:Depends},
  ${python3:Depends},
- ${python:Depends},
 Recommends:
  screen,
 Suggests:
@@ -67,21 +53,7 @@ Description: UCS - system upgrading tool
 
 Package: python-univention-updater
 Architecture: all
-Replaces:
- univention-updater (<< 14.0.2-6),
-Breaks:
- univention-updater (<< 14.0.2-6),
-Provides:
- ${python:Provides},
-Depends:
- python-backports.tempfile,
- python-monotonic,
- python-six,
- python-univention-admin-diary,
- python-univention-config-registry,
- ${misc:Depends},
- ${python:Depends},
-Description: UCS Updater Python modules
+Description: UCS transitional dummy package
  .
  This package is part of Univention Corporate Server (UCS),
  an integrated, directory driven solution for managing
