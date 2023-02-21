@@ -1,3 +1,9 @@
+univention-dvd (6.0.0-1) unstable; urgency=medium
+
+  * UCS 5.1-0 version bump
+
+ -- Florian Best <best@univention.de>  Wed, 08 Nov 2023 12:38:56 +0100
+
 univention-dvd (5.0.2-1) unstable; urgency=low
 
   * Bug #56444: UCS-5.0-4 DVD

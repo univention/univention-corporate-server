@@ -1,3 +1,9 @@
+univention-lib (10.0.0-1) unstable; urgency=medium
+
+  * UCS 5.1-0 version bump
+
+ -- Florian Best <best@univention.de>  Wed, 08 Nov 2023 12:38:58 +0100
+
 univention-lib (9.0.16-5) unstable; urgency=medium
 
   * Bug #56698: use cn=admin in ldap_touch_udm_object on primary

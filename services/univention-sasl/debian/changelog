@@ -1,3 +1,9 @@
+univention-sasl (9.0.0-1) unstable; urgency=medium
+
+  * UCS 5.1-0 version bump
+
+ -- Florian Best <best@univention.de>  Wed, 08 Nov 2023 12:38:52 +0100
+
 univention-sasl (8.0.0-1) unstable; urgency=medium
 
   * Bug #51419: UCS-5.0-0 version bump
