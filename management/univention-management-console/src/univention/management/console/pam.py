@@ -43,6 +43,7 @@ from PAM import (
 )
 
 from univention.lib.i18n import I18N_Error, Translation
+from univention.management.console.config import ucr
 from univention.management.console.log import AUTH
 
 
@@ -211,7 +212,14 @@ class PamAuth(object):
         except (I18N_Error, AttributeError, TypeError):
             i18n.set_language('C')
         self._ = i18n.translate
+        self._language = i18n.locale.language
         self.pam = self.init()
+
+    def _get_password_complexity_message(self):  # type: () -> str
+        return ucr.get(
+            'umc/login/password-complexity-message/%s' % (self._language,),
+            ucr.get('umc/login/password-complexity-message/en', ''),
+        )
 
     def authenticate(self, username, password, **answers):  # type: (str, str, **Any) -> None
         answers.update({
@@ -229,7 +237,8 @@ class PamAuth(object):
         except PAMError as pam_err:
             AUTH.error("PAM: authentication error: %s" % (pam_err,))
             if pam_err.args[1] == PAM_NEW_AUTHTOK_REQD:  # error: ('Authentication token is no longer valid; new one required', 12)
-                raise PasswordExpired(self.error_message(pam_err.args))
+                message = self.error_message(pam_err.args)
+                raise PasswordExpired(("%s %s" % (message, self._get_password_complexity_message())).rstrip())
             if pam_err.args[1] == PAM_ACCT_EXPIRED:  # error: ('User account has expired', 13)
                 raise AccountExpired(self.error_message(pam_err.args))
             if missing:
@@ -258,7 +267,9 @@ class PamAuth(object):
         except PAMError as pam_err:
             AUTH.warn('Changing password failed (%s). Prompts: %r' % (pam_err, prompts))
             message = self._parse_error_message_from(pam_err.args, prompts)
-            raise PasswordChangeFailed('%s %s' % (self._('Changing password failed.'), message))
+            raise PasswordChangeFailed(
+                ('%s %s %s' % (self._('Changing password failed.'), message, self._get_password_complexity_message())).rstrip(),
+            )
 
     def init(self):  # type: () -> PAM
         pam = PAM()

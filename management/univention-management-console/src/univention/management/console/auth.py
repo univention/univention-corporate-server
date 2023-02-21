@@ -44,8 +44,6 @@ from ldap.filter import filter_format
 from notifier import signals, threads
 
 import univention.admin.uexceptions as udm_errors
-from univention.lib.i18n import Locale
-from univention.management.console.config import ucr
 from univention.management.console.ldap import get_machine_connection, reset_cache
 from univention.management.console.log import AUTH
 from univention.management.console.pam import (
@@ -86,9 +84,6 @@ class AuthenticationResult(object):
                 self.result['missing_prompts'] = result.missing_prompts
             elif isinstance(result, PasswordChangeFailed):
                 self.result['password_change_failed'] = True
-            if isinstance(result, (PasswordExpired, PasswordChangeFailed)):
-                _locale = Locale(locale)
-                self.message += (' %s' % (ucr.get('umc/login/password-complexity-message/%s' % (_locale.language,), ucr.get('umc/login/password-complexity-message/en', '')),)).rstrip()
         elif isinstance(result, BaseException):
             self.status = 500
             self.message = str(result)
