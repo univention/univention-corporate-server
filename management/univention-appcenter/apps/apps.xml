@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <umc version="2.0">
-	<module id="apps" icon="apps-module" priority="-100" version="1.0" python="3">
+	<module id="apps" icon="apps-module" priority="-100" version="1.0">
 		<name>Applications</name>
 		<description>Introduction to installed Apps</description>
 		<categories>
