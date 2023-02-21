@@ -12,7 +12,6 @@ Package: univention-fetchmail
 Architecture: all
 Depends:
  fetchmail,
- python-six,
  python3-six,
  shell-univention-lib (>> 2.0.17-1.125),
  univention-directory-manager-tools (>> 7.0.147),

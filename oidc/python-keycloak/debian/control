@@ -3,7 +3,8 @@ Section: python
 Priority: optional
 Maintainer: Univention GmbH <packages@univention.de>
 Build-Depends:
- debhelper-compat (= 11),
+ debhelper-compat (= 13),
+ dh-python,
  python3-all,
  python3-httmock,
  python3-jose (>= 1.4.0),

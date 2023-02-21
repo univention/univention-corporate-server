@@ -32,7 +32,3 @@
 
 %:
 	dh $@ --with python3 --buildsystem=pybuild
-
-override_dh_python2:
-	dh_python2 --no-guessing-versions
-

@@ -37,8 +37,7 @@ export PYBUILD_NAME=univention-license
 export LC_ALL=C.UTF-8
 
 %:
-	dh $@ --with python2,python3 --buildsystem=pybuild
+	dh $@ --with python3 --buildsystem=pybuild
 
 override_dh_strip:
-	dh_strip -ppython-$(PYBUILD_NAME) --dbg-package=python-$(PYBUILD_NAME)-dbg
 	dh_strip -ppython3-$(PYBUILD_NAME) --dbg-package=python3-$(PYBUILD_NAME)-dbg

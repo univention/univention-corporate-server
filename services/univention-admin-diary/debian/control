@@ -6,8 +6,6 @@ Build-Depends:
  debhelper,
  dh-python,
  node-stylus,
- python-all,
- python-typing,
  python3-all,
  univention-config-dev (>= 15.0.3),
  univention-join-dev,
@@ -17,8 +15,6 @@ Standards-Version: 3.7.2
 Package: univention-admin-diary-backend
 Architecture: all
 Depends:
- python-pyparsing,
- python-univention-admin-diary-backend (= ${binary:Version}),
  python3-pyparsing,
  python3-univention-admin-diary-backend (= ${binary:Version}),
  rsyslog-relp,
@@ -36,17 +32,7 @@ Description: Univention Admin Diary backend
 
 Package: python-univention-admin-diary-backend
 Architecture: all
-Provides:
- ${python:Provides},
-Depends:
- python-mysqldb,
- python-psycopg2,
- python-sqlalchemy,
- python-typing,
- python-univention-admin-diary (= ${binary:Version}),
- ${misc:Depends},
- ${python:Depends},
-Description: Univention Admin Diary backend library
+Description: UCS transitional dummy package
  .
  It is part of Univention Corporate Server (UCS), an
  integrated, directory driven solution for managing
@@ -62,10 +48,6 @@ Depends:
  python3-univention-admin-diary (= ${binary:Version}),
  ${misc:Depends},
  ${python3:Depends},
-Replaces:
- python-univention-admin-diary-backend (<< 2.0.4-1),
-Breaks:
- python-univention-admin-diary-backend (<< 2.0.4-1),
 Description: Univention Admin Diary backend library
  .
  It is part of Univention Corporate Server (UCS), an
@@ -106,18 +88,7 @@ Description: Univention Admin Diary client
 
 Package: python-univention-admin-diary
 Architecture: all
-Depends:
- python-typing,
- shell-univention-lib,
- ${misc:Depends},
- ${python:Depends},
-Breaks:
- univention-admin-diary-client (<< 2.0.3),
-Replaces:
- univention-admin-diary-client (<< 2.0.3),
-Provides:
- ${python:Provides},
-Description: Univention Admin Diary lib
+Description: UCS transitional dummy package
  .
  It is part of Univention Corporate Server (UCS), an
  integrated, directory driven solution for managing

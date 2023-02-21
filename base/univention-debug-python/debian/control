@@ -7,10 +7,6 @@ Build-Depends:
  debhelper,
  dh-python,
  libunivention-debug-dev (>= 11.0.0-2),
- python-all-dev,
- python-debian,
- python-pytest,
- python-setuptools,
  python3-all-dev,
  python3-debian,
  python3-pytest,
@@ -18,16 +14,7 @@ Build-Depends:
 
 Package: python-univention-debug
 Architecture: any
-Depends:
- python-univention-namespace (>= 12.0.0-10),
- ${misc:Depends},
- ${python:Depends},
- ${shlibs:Depends},
-Provides:
- ${python:Provides},
-Description: UCS - debugging and logging library (Python2 interface)
- This package includes the Python2 interface to the
- UCS debugging and logging library.
+Description: UCS transitional dummy package
  .
  It is part of Univention Corporate Server (UCS), an
  integrated, directory driven solution for managing
