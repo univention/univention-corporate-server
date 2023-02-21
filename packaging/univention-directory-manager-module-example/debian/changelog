@@ -1,3 +1,9 @@
+univention-directory-manager-module-example (11.0.1) unstable; urgency=medium
+
+  * Bug #55706: UCS 5.2-0 version bump
+
+ -- Florian Best <best@univention.de>  Fri, 08 Mar 2024 00:12:16 +0100
+
 univention-directory-manager-module-example (10.0.4) unstable; urgency=medium
 
   * Bug #56604: remove workarounds for Python 2 compatibility

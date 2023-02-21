@@ -1,3 +1,9 @@
+univention-nagios-s4-connector (7.0.1) unstable; urgency=medium
+
+  * Bug #55706: UCS 5.2-0 version bump
+
+ -- Florian Best <best@univention.de>  Fri, 08 Mar 2024 00:12:15 +0100
+
 univention-nagios-s4-connector (6.0.4) unstable; urgency=medium
 
   * Bug #56367: remove UDM integration for Nagios server
