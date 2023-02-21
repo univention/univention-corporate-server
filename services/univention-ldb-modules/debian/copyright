@@ -99,3 +99,362 @@ License: ISC+IBM
  DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES WHATSOEVER ARISING
  OUT OF OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE, EVEN
  IF IBM IS APPRISED OF THE POSSIBILITY OF SUCH DAMAGES.
+
+Files:
+  buildtools/bin/waf
+  buildtools/wafsamba/stale_files.py
+  third_party/waf/*
+Comment: See https://gitlab.com/ita1024/waf/blob/master/waf-light#L6
+Copyright:
+  Copyright Scott Newton, 2005 (scottn)
+  Copyright Thomas Nagy, 2005-2018 (ita)
+License: BSD-3
+
+Files:
+  third_party/waf/waflib/extras/bjam.py
+  third_party/waf/waflib/extras/proc.py
+  third_party/waf/waflib/extras/softlink_libs.py
+Copyright:
+  Copyright rosengren 2011
+License: BSD-3
+
+Files: third_party/waf/waflib/extras/blender.py
+Copyright:
+  Copyright Michal Proszek, 2014 (poxip)
+License: BSD-3
+
+Files: third_party/waf/waflib/extras/boo.py
+Copyright:
+  Copyright Yannick LM 2011
+License: BSD-3
+
+Files: third_party/waf/waflib/extras/boost.py
+Copyright:
+  Copyright Gernot Vormayr
+  Copyright Ruediger Sonderfeld <ruediger@c-plusplus.de>, 2008
+  Copyright Bjoern Michaelsen, 2008
+  Copyright Luca Fossati, 2008
+  Copyright Thomas Nagy, 2008
+  Copyright Sylvain Rouquette, 2011
+License: BSD-3
+
+Files: third_party/waf/waflib/extras/buildcopy.py
+Copyright:
+  Copyright Calle Rosenquist, 2017 (xbreak)
+License: BSD-3
+
+Files: third_party/waf/waflib/extras/cabal.py
+Copyright:
+  Copyright Anton Feldmann, 2012
+License: BSD-3
+
+Files:
+  third_party/waf/waflib/extras/c_bgxlc.py
+  third_party/waf/waflib/extras/c_nec.py
+  third_party/waf/waflib/extras/fc_bgxlf.py
+  third_party/waf/waflib/extras/fc_cray.py
+  third_party/waf/waflib/extras/fc_nag.py
+  third_party/waf/waflib/extras/fc_nec.py
+  third_party/waf/waflib/extras/fc_open64.py
+  third_party/waf/waflib/extras/fc_solstudio.py
+  third_party/waf/waflib/extras/fc_xlf.py
+Copyright:
+  Copyright harald at klimachs.de
+License: BSD-3
+
+Files: third_party/waf/waflib/extras/clang_compilation_database.py
+Copyright:
+  Copyright Christoph Koke, 2013
+License: BSD-3
+
+Files: third_party/waf/waflib/extras/codelite.py
+Copyright:
+  Copyright Christian Klein (chrikle@berlios.de)
+License: BSD-3
+
+Files:
+ third_party/waf/waflib/extras/color_gcc.py
+ third_party/waf/waflib/extras/color_rvct.py
+ third_party/waf/waflib/extras/cross_gnu.py
+ third_party/waf/waflib/extras/dcc.py
+ third_party/waf/waflib/extras/halide.py
+ third_party/waf/waflib/extras/qnxnto.py
+ third_party/waf/waflib/extras/remote.py
+ third_party/waf/waflib/extras/rst.py
+ third_party/waf/waflib/extras/ticgt.py
+Copyright:
+  Copyright Jérôme Carretero, 2011-2014
+License: BSD-3
+
+Files: third_party/waf/waflib/extras/cppcheck.py
+Copyright:
+  Copyright Michel Mooij, michel.mooij7@gmail.com
+License: BSD-3
+
+Files:
+  third_party/waf/waflib/extras/cpplint.py
+  third_party/waf/waflib/extras/freeimage.py
+  third_party/waf/waflib/extras/pep8.py
+Copyright:
+  Copyright Sylvain Rouquette, 2011-2014
+License: BSD-3
+
+Files: third_party/waf/waflib/extras/dpapi.py
+Copyright:
+  Copyright Matt Clarkson, 2012
+License: BSD-3
+
+Files: third_party/waf/waflib/extras/eclipse.py
+Copyright:
+  Copyright Richard Quirk 2009-1011
+License: BSD-3
+
+Files: third_party/waf/waflib/extras/erlang.py
+Copyright:
+  Copyright Thomas Nagy, 2010 (ita)
+  Copyright Przemyslaw Rzepecki, 2016
+License: BSD-3
+
+Files: third_party/waf/waflib/extras/fluid.py third_party/waf/waflib/extras/objcopy.py
+Copyright:
+  Copyright Grygoriy Fuchedzhy 2009-2010
+License: BSD-3
+
+Files: third_party/waf/waflib/extras/gdbus.py third_party/waf/waflib/extras/msvcdeps.py
+Copyright:
+  Copyright Copyright Garmin International or its subsidiaries, 2012-2018
+License: BSD-3
+
+Files:
+  third_party/waf/waflib/extras/gob2.py
+  third_party/waf/waflib/Tools/dbus.py
+  third_party/waf/waflib/Tools/gnu_dirs.py
+Copyright:
+  Copyright Ali Sabil, 2007
+License: BSD-3
+
+Files: third_party/waf/waflib/extras/javatest.py third_party/waf/waflib/extras/pyqt5.py
+Copyright:
+  Copyright Federico Pellegrin, 2016-2018 (fedepell)
+License: BSD-3
+
+Files: third_party/waf/waflib/extras/midl.py
+Copyright:
+  Copyright ultrix gmail com
+License: BSD-3
+
+Files: third_party/waf/waflib/extras/msvs.py
+Copyright:
+  Copyright Avalanche Studios 2009-2011
+  Copyright Thomas Nagy 2011
+License: BSD-3
+
+Files: third_party/waf/waflib/extras/pch.py
+Copyright:
+  Copyright Alexander Afanasyev (UCLA), 2014
+License: BSD-3
+
+Files: third_party/waf/waflib/extras/pgicc.py third_party/waf/waflib/extras/pgicxx.py
+Copyright:
+  Copyright Antoine Dechaume 2011
+License: BSD-3
+
+Files: third_party/waf/waflib/extras/protoc.py
+Copyright:
+  Copyright Philipp Bender, 2012
+  Copyright Matt Clarkson, 2012
+License: BSD-3
+
+Files: third_party/waf/waflib/extras/pytest.py
+Copyright:
+  Copyright Calle Rosenquist, 2016-2018 (xbreak)
+License: BSD-3
+
+Files: third_party/waf/waflib/extras/review.py
+Copyright:
+  Copyright Laurent Birtz, 2011
+License: BSD-3
+
+Files:
+  third_party/waf/waflib/extras/run_do_script.py
+  third_party/waf/waflib/extras/run_m_script.py
+  third_party/waf/waflib/extras/run_py_script.py
+  third_party/waf/waflib/extras/run_r_script.py
+Copyright:
+  Copyright Hans-Martin von Gaudecker, 2012
+License: BSD-3
+
+Files: third_party/waf/waflib/extras/sas.py
+Copyright:
+  Copyright Mark Coggeshall, 2010
+License: BSD-3
+
+Files: third_party/waf/waflib/extras/swig.py
+Copyright:
+  Copyright Petar Forai
+  Copyright Thomas Nagy 2008-2010 (ita)
+License: BSD-3
+
+Files: third_party/waf/waflib/extras/use_config.py
+Copyright:
+  Copyright Mathieu Courtois - EDF R&D, 2013 - http://www.code-aster.org
+License: BSD-3
+
+Files: third_party/waf/waflib/extras/valadoc.py
+Copyright:
+  Copyright Nicolas Joseph 2009
+License: BSD-3
+
+Files: third_party/waf/waflib/extras/xcode6.py
+Copyright:
+  Copyright Nicolas Mercier 2011
+  Copyright Simon Warg 2015, https://github.com/mimom
+License: BSD-3
+
+Files: third_party/waf/waflib/Tools/ar.py
+Copyright:
+  Copyright Thomas Nagy, 2006-2018 (ita)
+  Copyright Ralf Habacker, 2006 (rh)
+License: BSD-3
+
+Files: third_party/waf/waflib/Tools/bison.py
+Copyright:
+  Copyright John O'Meara, 2006
+  Copyright Thomas Nagy 2009-2018 (ita)
+License: BSD-3
+
+Files: third_party/waf/waflib/Tools/clang.py
+Copyright:
+  Copyright Krzysztof Kosiński 2014
+License: BSD-3
+
+Files: third_party/waf/waflib/Tools/compiler_c.py third_party/waf/waflib/Tools/compiler_cxx.py
+Copyright:
+  Copyright Matthias Jahn jahn dôt matthias ât freenet dôt de, 2007 (pmarat)
+License: BSD-3
+
+Files:
+  third_party/waf/waflib/Tools/compiler_d.py
+  third_party/waf/waflib/Tools/dmd.py
+  third_party/waf/waflib/Tools/d.py
+  third_party/waf/waflib/Tools/gdc.py
+  third_party/waf/waflib/Tools/waf_unit_test.py
+Copyright:
+  Copyright Carlos Rafael Giani, 2006-2007 (dv)
+  Copyright Thomas Nagy, 2008-2018 (ita)
+License: BSD-3
+
+Files: third_party/waf/waflib/Tools/flex.py
+Copyright:
+  Copyright John O'Meara, 2006
+  Thomas Nagy, 2006-2018 (ita)
+License: BSD-3
+
+Files: third_party/waf/waflib/Tools/g95.py
+Copyright:
+  Copyright KWS 2010
+  Copyright Thomas Nagy 2016-2018 (ita)
+License: BSD-3
+
+Files: third_party/waf/waflib/Tools/gcc.py third_party/waf/waflib/Tools/gxx.py
+Copyright:
+  Copyright Thomas Nagy, 2006-2018 (ita)
+  Copyright Ralf Habacker, 2006 (rh)
+  Copyright Yinon Ehrlich, 2009
+License: BSD-3
+
+Files: third_party/waf/waflib/Tools/icc.py
+Copyright:
+  Copyright Stian Selnes 2008
+  Copyright Thomas Nagy 2009-2018 (ita)
+License: BSD-3
+
+Files: third_party/waf/waflib/Tools/ldc2.py
+Copyright:
+  Copyright Alex Rønne Petersen, 2012 (alexrp/Zor)
+License: BSD-3
+
+Files: third_party/waf/waflib/Tools/lua.py
+Copyright:
+  Copyright Sebastian Schlingmann, 2008
+  Copyright Thomas Nagy, 2008-2018 (ita)
+License: BSD-3
+
+Files: third_party/waf/waflib/Tools/msvc.py
+Copyright:
+  Copyright Carlos Rafael Giani, 2006 (dv)
+  Copyright Tamas Pal, 2007 (folti)
+  Copyright Nicolas Mercier, 2009
+  Copyright Matt Clarkson, 2012
+License: BSD-3
+
+Files: third_party/waf/waflib/Tools/perl.py
+Copyright:
+  Copyright andersg at 0x63.nu 2007
+  Copyright Thomas Nagy 2016-2018 (ita)
+License: BSD-3
+
+Files: third_party/waf/waflib/Tools/python.py
+Copyright:
+  Copyright Thomas Nagy, 2007-2015 (ita)
+  Copyright Gustavo Carneiro (gjc), 2007
+License: BSD-3
+
+Files: third_party/waf/waflib/Tools/ruby.py
+Copyright:
+  Copyright daniel.svensson at purplescout.se 2008
+  Copyright Thomas Nagy 2016-2018 (ita)
+License: BSD-3
+
+Files: third_party/waf/waflib/Tools/suncc.py third_party/waf/waflib/Tools/suncxx.py
+Copyright:
+  Copyright Thomas Nagy, 2006-2018 (ita)
+  Copyright Ralf Habacker, 2006 (rh)
+License: BSD-3
+
+Files: third_party/waf/waflib/Tools/vala.py
+Copyright:
+  Copyright Ali Sabil, 2007
+  Copyright Radosław Szkodziński, 2010
+License: BSD-3
+
+Files: third_party/waf/waflib/Tools/winres.py
+Copyright:
+  Copyright Brant Young, 2007
+License: BSD-3
+
+Files: third_party/waf/waflib/Tools/xlc.py third_party/waf/waflib/Tools/xlcxx.py
+Copyright:
+  Copyright Thomas Nagy, 2006-2018 (ita)
+  Copyright Ralf Habacker, 2006 (rh)
+  Copyright Yinon Ehrlich, 2009
+  Copyright Michael Kuhn, 2009
+License: BSD-3
+
+License: BSD-3
+ Redistribution and use in source and binary forms, with or without
+ modification, are permitted provided that the following conditions
+ are met:
+ .
+ 1. Redistributions of source code must retain the above copyright
+    notice, this list of conditions and the following disclaimer.
+ .
+ 2. Redistributions in binary form must reproduce the above copyright
+    notice, this list of conditions and the following disclaimer in the
+    documentation and/or other materials provided with the distribution.
+ .
+ 3. Neither the name of the Institute nor the names of its contributors
+    may be used to endorse or promote products derived from this software
+    without specific prior written permission.
+ .
+ THIS SOFTWARE IS PROVIDED BY THE INSTITUTE AND CONTRIBUTORS ``AS IS'' AND
+ ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+ IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+ ARE DISCLAIMED.  IN NO EVENT SHALL THE INSTITUTE OR CONTRIBUTORS BE LIABLE
+ FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+ DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS
+ OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
+ HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT
+ LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY
+ OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.

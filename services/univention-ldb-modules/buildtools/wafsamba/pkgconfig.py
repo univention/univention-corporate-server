@@ -1,16 +1,13 @@
 # handle substitution of variables in pc files
 
-import Build, sys, Logs
-from samba_utils import *
+import os, re, sys
+from waflib import Build, Logs
+from samba_utils import SUBST_VARS_RECURSIVE, TO_LIST
 
 def subst_at_vars(task):
     '''substiture @VAR@ style variables in a file'''
-    src = task.inputs[0].srcpath(task.env)
-    tgt = task.outputs[0].bldpath(task.env)
 
-    f = open(src, 'r')
-    s = f.read()
-    f.close()
+    s = task.inputs[0].read()
     # split on the vars
     a = re.split('(@\w+@)', s)
     out = []
@@ -37,23 +34,25 @@ def subst_at_vars(task):
                     break
         out.append(v)
     contents = ''.join(out)
-    f = open(tgt, 'w')
-    s = f.write(contents)
-    f.close()
+    task.outputs[0].write(contents)
     return 0
 
 
-def PKG_CONFIG_FILES(bld, pc_files, vnum=None):
+def PKG_CONFIG_FILES(bld, pc_files, vnum=None, extra_name=None):
     '''install some pkg_config pc files'''
     dest = '${PKGCONFIGDIR}'
     dest = bld.EXPAND_VARIABLES(dest)
     for f in TO_LIST(pc_files):
-        base=os.path.basename(f)
+        if extra_name:
+            target = f.split('.pc')[0] + extra_name + ".pc"
+        else:
+            target = f
+        base=os.path.basename(target)
         t = bld.SAMBA_GENERATOR('PKGCONFIG_%s' % base,
                                 rule=subst_at_vars,
                                 source=f+'.in',
-                                target=f)
-        bld.add_manual_dependency(bld.path.find_or_declare(f), bld.env['PREFIX'])
+                                target=target)
+        bld.add_manual_dependency(bld.path.find_or_declare(f), bld.env['PREFIX'].encode('utf8'))
         t.vars = []
         if t.env.RPATH_ON_INSTALL:
             t.env.LIB_RPATH = t.env.RPATH_ST % t.env.LIBDIR
@@ -63,7 +62,7 @@ def PKG_CONFIG_FILES(bld, pc_files, vnum=None):
             t.env.PACKAGE_VERSION = vnum
         for v in [ 'PREFIX', 'EXEC_PREFIX', 'LIB_RPATH' ]:
             t.vars.append(t.env[v])
-        bld.INSTALL_FILES(dest, f, flat=True, destname=base)
+        bld.INSTALL_FILES(dest, target, flat=True, destname=base)
 Build.BuildContext.PKG_CONFIG_FILES = PKG_CONFIG_FILES
 
 

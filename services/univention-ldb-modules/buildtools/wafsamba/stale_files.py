@@ -1,4 +1,3 @@
-#! /usr/bin/env python
 # encoding: utf-8
 # Thomas Nagy, 2006-2010 (ita)
 
@@ -15,7 +14,9 @@ nodes/tasks, in which case the method will have to be modified
 to exclude some folders for example.
 """
 
-import Logs, Build, os, samba_utils, Options, Utils
+from waflib import Logs, Build, Options, Utils, Errors
+import os
+from wafsamba import samba_utils
 from Runner import Parallel
 
 old_refill_task_list = Parallel.refill_task_list
@@ -47,8 +48,8 @@ def replace_refill_task_list(self):
 
     # paranoia
     if bin_base[-4:] != '/bin':
-        raise Utils.WafError("Invalid bin base: %s" % bin_base)
-    
+        raise Errors.WafError("Invalid bin base: %s" % bin_base)
+
     # obtain the expected list of files
     expected = []
     for i in range(len(bld.task_manager.groups)):
@@ -58,7 +59,20 @@ def replace_refill_task_list(self):
             try:
                 if getattr(x, 'target'):
                     tlist = samba_utils.TO_LIST(getattr(x, 'target'))
+                    ttype = getattr(x, 'samba_type', None)
+                    task_list = getattr(x, 'compiled_tasks', [])
+                    if task_list:
+                        # this gets all of the .o files, including the task
+                        # ids, so foo.c maps to foo_3.o for idx=3
+                        for tsk in task_list:
+                            for output in tsk.outputs:
+                                objpath = os.path.normpath(output.abspath(bld.env))
+                                expected.append(objpath)
                     for t in tlist:
+                        if ttype in ['LIBRARY', 'PLUGIN', 'MODULE']:
+                            t = samba_utils.apply_pattern(t, bld.env.shlib_PATTERN)
+                        if ttype == 'PYTHON':
+                            t = samba_utils.apply_pattern(t, bld.env.pyext_PATTERN)
                         p = os.path.join(x.path.abspath(bld.env), t)
                         p = os.path.normpath(p)
                         expected.append(p)
@@ -78,13 +92,14 @@ def replace_refill_task_list(self):
                     p = link
             if f in ['config.h']:
                 continue
-            if f[-2:] not in [ '.c', '.h' ]:
+            (froot, fext) = os.path.splitext(f)
+            if fext not in [ '.c', '.h', '.so', '.o' ]:
                 continue
             if f[-7:] == '.inst.h':
                 continue
             if p.find("/.conf") != -1:
                 continue
-            if not p in expected:
+            if not p in expected and os.path.exists(p):
                 Logs.warn("Removing stale file: %s" % p)
                 os.unlink(p)
     return iit
