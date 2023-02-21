@@ -47,7 +47,6 @@ syntax list is not complete. For a complete overview, consult the file directly.
     further described in :ref:`udm-syntax-ldap`.
 
 Additional syntax classes can be added by placing a Python file in
-:file:`/usr/lib/python2.7/dist-packages/univention/admin/syntax.d/` and
 :file:`/usr/lib/python3/dist-packages/univention/admin/syntax.d/`. They're
 automatically imported by UDM.
 
