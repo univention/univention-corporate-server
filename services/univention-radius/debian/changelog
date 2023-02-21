@@ -1,3 +1,9 @@
+univention-radius (7.0.5-2) unstable; urgency=medium
+
+  * Bug #55247: disable tls v3 for radius
+
+ -- Maximilian Janßen <janssen@univention.de>  Tue, 14 Feb 2023 12:53:35 +0100
+
 univention-radius (7.0.5-1) unstable; urgency=medium
 
   * Bug #31771: migrate tabs to spaces

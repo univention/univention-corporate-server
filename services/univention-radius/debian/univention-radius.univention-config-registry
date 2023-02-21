@@ -39,6 +39,7 @@ Variables: freeradius/conf/private/key/secret/file
 Variables: freeradius/conf/private/key/file
 Variables: freeradius/conf/certificate/file
 Variables: freeradius/conf/ca/file
+Variables: freeradius/conf/tls-max-version
 
 Type: file
 File: etc/freeradius/3.0/mods-available/ldap

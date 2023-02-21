@@ -52,6 +52,13 @@ Type=bool
 Default=true
 Categories=service-radius
 
+[freeradius/conf/tls-max-version]
+Description[de]=Spezifiziert die maximale TLS-Version, die von Radius genutzt wird.
+Description[en]=Specifies the maximum TLS version which is used by radius.
+Type=str
+Default=1.2
+Categories=service-radius
+
 [freeradius/auth/helper/ntlm/debug]
 Description[de]=Debuglevel für die RADIUS-NTLM-Authentifizierung. Mögliche Werte: 0-4 (0: nur Fehlermeldungen bis 4: alle Debugausgaben).
 Description[en]=Debuglevel for the RADIUS NTLM authentication. Possible values: 0-4 (0: only error messages to 4: all debug statements).
