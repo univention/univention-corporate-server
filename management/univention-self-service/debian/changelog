@@ -1,3 +1,9 @@
+univention-self-service (5.99.0-1) unstable; urgency=medium
+
+  * UCS 5.1-0
+
+ -- Florian Best <best@univention.de>  Tue, 29 Aug 2023 21:43:49 +0200
+
 univention-self-service (5.0.7-3) unstable; urgency=medium
 
   * Bug #56201: replace python-notifier and adjust to new UMC module API

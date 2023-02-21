@@ -1,3 +1,9 @@
+univention-docker (5.99.0-1) unstable; urgency=medium
+
+  * UCS 5.1-0
+
+ -- Florian Best <best@univention.de>  Mon, 19 Jun 2023 17:53:37 +0200
+
 univention-docker (5.0.4-2) unstable; urgency=medium
 
   *  Bug #55360: Add clone3 and libseccomp2 to the seccomp rules
