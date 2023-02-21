@@ -57,7 +57,6 @@ name = 'udm_extension'
 description = 'Handle UDM module, hook and syntax extensions'
 filter = '(|(objectClass=univentionUDMModule)(objectClass=univentionUDMHook)(objectClass=univentionUDMSyntax))'
 
-PYTHON_DIR = '/usr/lib/python2.7/dist-packages/'
 PYTHON3_DIR = '/usr/lib/python3/dist-packages/'
 LOCALE_BASEDIR = "/usr/share/locale"  # mo files go to /usr/share/locale/<language-tag>/LC_MESSAGES/
 LOCALE_BASEDIR_UMC = "/usr/share/univention-management-console/i18n"  # umc translation files go to /usr/share/univention-management-console/i18n/<language-tag>/<UMCModuleID>.mo
@@ -264,29 +263,25 @@ def install_python_file(objectclass: str, target_subdir: str, target_filename: s
 
     # trivial checks passed, go for it
     try:
-        create_python_moduledir(PYTHON_DIR, target_subdir, os.path.dirname(target_filename))
         create_python_moduledir(PYTHON3_DIR, target_subdir, os.path.dirname(target_filename))
     except moduleCreationFailed as exc:
         ud.debug(ud.LISTENER, ud.ERROR, '%s: %s' % (name, exc))
         return False
 
-    failed = False
-    for python_dir in (PYTHON_DIR, PYTHON3_DIR):
-        filename = os.path.join(python_dir, relative_filename)
-        try:
-            with open(filename, 'wb') as f:
-                f.write(data)
-            ud.debug(ud.LISTENER, ud.INFO, '%s: %s installed.' % (name, relative_filename))
-            subprocess.call(['/usr/bin/pycompile' if python_dir == PYTHON_DIR else '/usr/bin/py3compile', '-q', filename])
-        except Exception as exc:
-            ud.debug(ud.LISTENER, ud.ERROR, '%s: Writing new data to %s failed: %s.' % (name, filename, exc))
-            failed = True
-    return not failed
+    filename = os.path.join(PYTHON3_DIR, relative_filename)
+    try:
+        with open(filename, 'wb') as f:
+            f.write(data)
+        ud.debug(ud.LISTENER, ud.INFO, '%s: %s installed.' % (name, relative_filename))
+        subprocess.call(['/usr/bin/py3compile', '-q', filename])
+    except Exception as exc:
+        ud.debug(ud.LISTENER, ud.ERROR, '%s: Writing new data to %s failed: %s.' % (name, filename, exc))
+        return False
+    return True
 
 
 def remove_python_file(objectclass: str, target_subdir: str, target_filename: str) -> Optional[bool]:
     """Remove Python module files"""
-    remove_python_files(PYTHON_DIR, target_subdir, target_filename)
     return remove_python_files(PYTHON3_DIR, target_subdir, target_filename)
 
 
@@ -383,7 +378,7 @@ def create_python_moduledir(python_basedir: str, target_subdir: str, module_dire
     python_init_filename = os.path.join(target_path, '__init__.py')
     if not os.path.exists(python_init_filename):
         with open(python_init_filename, 'wb') as fd:  # touch
-            if target_subdir == 'univention/admin/handlers' and python_basedir in (PYTHON_DIR, PYTHON3_DIR):
+            if target_subdir == 'univention/admin/handlers' and python_basedir == PYTHON3_DIR:
                 fd.write(EXTEND_PATH)
     init_file_list.append(python_init_filename)
 
@@ -416,7 +411,7 @@ def cleanup_python_moduledir(python_basedir: str, target_subdir: str, module_dir
         if os.path.getsize(python_init_filename) != 0:
             return
 
-        if python_basedir in (PYTHON_DIR, PYTHON3_DIR):
+        if python_basedir == PYTHON3_DIR:
             # Only remove the file if it was not shipped as part of a debian package.
             p = subprocess.Popen(['dpkg', '-S', python_init_filename], stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
             p.wait()
