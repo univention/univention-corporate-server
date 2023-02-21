@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <umc version="2.0">
-	<module id="pkgdb" icon="software-monitoring" priority="50" version="1.0" python="3">
+	<module id="pkgdb" icon="software-monitoring" priority="50" version="1.0">
 		<name>Software monitor</name>
 		<description>Manage installed software versions of UCS systems in the domain</description>
 		<keywords>pkgdb</keywords>

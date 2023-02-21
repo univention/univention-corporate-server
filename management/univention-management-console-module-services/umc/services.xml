@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <umc version="2.0">
-	<module id="services" icon="system-services" priority="50" version="1.0" python="3">
+	<module id="services" icon="system-services" priority="50" version="1.0">
 		<name>System services</name>
 		<description>Overview and configuration of services on the local system</description>
 		<keywords>system,services,daemon</keywords>
