@@ -1,3 +1,9 @@
+univention-debhelper (4.0.0-1) unstable; urgency=medium
+
+  * Bug #55706: UCS 5.2-0 version bump
+
+ -- Florian Best <best@univention.de>  Thu, 11 Jan 2024 14:49:49 +0100
+
 univention-debhelper (3.0.0-1) unstable; urgency=medium
 
   * Bug #55706: UCS 5.1-0 version bump

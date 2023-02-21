@@ -1,3 +1,9 @@
+univention-debug (14.0.0-1) unstable; urgency=medium
+
+  * Bug #55706: UCS 5.2-0 version bump
+
+ -- Florian Best <best@univention.de>  Thu, 11 Jan 2024 14:50:01 +0100
+
 univention-debug (13.0.0-1) unstable; urgency=medium
 
   * Bug #55706: UCS 5.1-0 version bump
