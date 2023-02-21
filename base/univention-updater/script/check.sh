@@ -42,7 +42,7 @@ fi
 
 VERSION="50"
 VERSION_NAME="5.0"
-MIN_VERSION="4.4-8"
+MIN_VERSION="5.0-3"
 
 updateLogDir="/var/univention-backup/update-to-${UPDATE_NEXT_VERSION:-$VERSION}"
 
@@ -297,8 +297,7 @@ update_check_system_date_too_old() {
 update_check_minimum_ucs_version_of_all_systems_in_domain () {  # Bug #51621
 	[ "$server_role" != "domaincontroller_master" ] && return 0
 
-	# FIXME: python3-univention-lib is not installed on UCS-4.4-7 by default, so this must remain Python 2 (for now):
-	MIN_VERSION="$MIN_VERSION" /usr/bin/python2.7 -c '
+	MIN_VERSION="$MIN_VERSION" /usr/bin/python3 -c '
 # -*- coding: utf-8 -*-
 from __future__ import print_function
 from distutils.version import LooseVersion
