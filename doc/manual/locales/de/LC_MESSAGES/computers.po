@@ -2472,11 +2472,11 @@ msgstr "$ univention-config-registry search --value primary.example.com"
 msgid ""
 "Search templates in the form of regular expressions can also be used in "
 "the search. The complete format is documented at `Regular expression "
-"operations in the Python 2 documentation <python2-re_>`_."
+"operations in the Python 3 documentation <python3-re_>`_."
 msgstr ""
 "Bei der Suche können auch Suchmuster in Form von regulären Ausdrücken "
 "verwendet werden. Das vollständige Format ist unter `Regular expression "
-"operations in the Python 2 documentation <python2-re_>`_ dokumentiert."
+"operations in the Python 3 documentation <python3-re_>`_ dokumentiert."
 
 #: ../../computers/ucr.rst:231
 msgid "Deleting UCR variables"

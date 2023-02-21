@@ -223,7 +223,7 @@ Searching for variables and set values
 
 Search templates in the form of regular expressions can also be used in
 the search. The complete format is documented at
-`Regular expression operations in the Python 2 documentation <python2-re_>`_.
+`Regular expression operations in the Python 3 documentation <python3-re_>`_.
 
 .. _computers-deleting-ucr-variables:
 
