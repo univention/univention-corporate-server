@@ -1,3 +1,9 @@
+univention-s4-connector (15.0.0-1) unstable; urgency=medium
+
+  * Bug #55706: UCS 5.1-0 version bump
+
+ -- Florian Best <best@univention.de>  Thu, 11 Jan 2024 14:40:41 +0100
+
 univention-s4-connector (14.0.16-3) unstable; urgency=medium
 
   * Bug #56956: Improve prioritization for initial S4-Connector sync
