@@ -44,7 +44,7 @@ if [ "$1" = "configure" ] && dpkg --compare-versions "$2" lt-nl 8.0.0-15; then
 	systemctl try-restart univention-directory-listener 2>/dev/null || true
 
 	fqdn="$(hostname -f)"
-	python <<EOL
+	python3 <<EOL
 import os
 import pipes
 import ldap.filter

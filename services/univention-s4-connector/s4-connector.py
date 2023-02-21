@@ -111,7 +111,7 @@ def _is_module_disabled() -> bool:
 def _restart_connector() -> None:
     listener.setuid(0)
     try:
-        if not subprocess.call(['pgrep', '-f', 'python.*s4connector.s4.main']):
+        if not subprocess.call(['pgrep', '-f', 'python3.*s4connector.s4.main']):
             ud.debug(ud.LISTENER, ud.PROCESS, "s4-connector: restarting connector ...")
             subprocess.call(('systemctl', 'restart', 'univention-s4-connector'))
             ud.debug(ud.LISTENER, ud.PROCESS, "s4-connector: ... done")

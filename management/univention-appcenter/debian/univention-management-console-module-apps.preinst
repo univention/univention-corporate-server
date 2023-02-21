@@ -41,7 +41,7 @@ case "$1" in
 		# this has to be done only once after initial install.
 		# otherwise the cache dir will be empty and the conffiles
 		# will not be populated
-		echo 'from univention.management.console.modules.appcenter.app_center import Application; Application.sync_with_server()' | python
+		echo 'from univention.management.console.modules.appcenter.app_center import Application; Application.sync_with_server()' | python3
 		;;
 esac
 

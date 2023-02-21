@@ -368,7 +368,7 @@ class Instance(Base, ProgressMixin):
         self.status_ssl = ucr.is_true('connector/ad/ldap/ssl')
         self.status_password_sync = ucr.is_true('connector/ad/mapping/user/password/kinit')
         self.status_certificate = bool(fn and os.path.exists(fn))
-        self.status_running = self.__is_process_running('^([^ ]+)?python.*univention.connector.ad.main(.py)?$')
+        self.status_running = self.__is_process_running('^([^ ]+)?python3.*univention.connector.ad.main$')
         self.status_mode_admember = admember.is_localhost_in_admember_mode(ucr)
         self.status_mode_adconnector = admember.is_localhost_in_adconnector_mode(ucr)
 

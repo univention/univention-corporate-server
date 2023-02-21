@@ -61,7 +61,7 @@ conffile_is_unmodified () {
 	# returns exitcode 0 if given conffile is unmodified
 	local chksum fnregex testchksum
 	chksum="$(md5sum "${1:?}" | awk '{print $1}')"
-	fnregex="$(python -c 'import re,sys;print re.escape(sys.argv[1])' "$1")"
+	fnregex="$(python3 -c 'import re, sys; print(re.escape(sys.argv[1]))' "$1")"
 	for testchksum in $(dpkg-query -W -f '${Conffiles}\n' | sed -nre "s,^ $fnregex ([0-9a-f]+)( .*)?$,\\1,p") ; do
 		[ "$testchksum" = "$chksum" ] &&
 			return 0
