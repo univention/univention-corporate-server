@@ -63,9 +63,9 @@ class ADConnector(Alert):
         # in order to match the command via check_procs
         # WARNING: if not exactly the number of configured connectors is running
         # CRITICAL: if no process is running
-        rc, output = self.exec_command(['/usr/lib/nagios/plugins/check_procs', '-w', '%d:%d' % (connectors, connectors), '-c', '1:', '--ereg-argument-array', '^([^ ]+)?python.*univention.connector.ad.main(.py)?'], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+        rc, output = self.exec_command(['/usr/lib/nagios/plugins/check_procs', '-w', '%d:%d' % (connectors, connectors), '-c', '1:', '--ereg-argument-array', '^([^ ]+)?python3.*univention.connector.ad.main'], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
         if rc == 1:
-            rc2, output = self.exec_command(['/usr/lib/nagios/plugins/check_procs', '-w', '%d' % (connectors,), '-c', '1:', '--ereg-argument-array', '^([^ ]+)?python.*univention.connector.ad.main(.py)?'], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+            rc2, output = self.exec_command(['/usr/lib/nagios/plugins/check_procs', '-w', '%d' % (connectors,), '-c', '1:', '--ereg-argument-array', '^([^ ]+)?python3.*univention.connector.ad.main'], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
             output = {
                 1: 'More than the %s configured AD connectors are running!' % (connectors,),
                 2: 'Less than the %s configured AD connectors are running!' % (connectors,),
