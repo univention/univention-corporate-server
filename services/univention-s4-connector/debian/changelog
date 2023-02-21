@@ -1,3 +1,9 @@
+univention-s4-connector (15.0.0-1) unstable; urgency=medium
+
+  * UCS 5.1-0 version bump
+
+ -- Florian Best <best@univention.de>  Wed, 08 Nov 2023 12:38:53 +0100
+
 univention-s4-connector (14.0.15-5) unstable; urgency=medium
 
   * Bug #56537: Adjust to upstream change in python3-samba

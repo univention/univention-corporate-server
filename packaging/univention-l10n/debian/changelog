@@ -1,3 +1,9 @@
+univention-l10n (8.0.0-1) unstable; urgency=medium
+
+  * UCS 5.1-0 version bump
+
+ -- Florian Best <best@univention.de>  Wed, 08 Nov 2023 12:38:44 +0100
+
 univention-l10n (7.0.2-2) unstable; urgency=medium
 
   * Bug #55632: Changed the hashbangs to /usr/bin/python3

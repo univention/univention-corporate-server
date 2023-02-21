@@ -1,3 +1,9 @@
+ucs-test (11.0.0-1) unstable; urgency=medium
+
+  * UCS 5.1-0 version bump
+
+ -- Florian Best <best@univention.de>  Wed, 08 Nov 2023 12:38:50 +0100
+
 ucs-test (10.0.19-24) unstable; urgency=medium
 
   * Bug #31771: fix test case

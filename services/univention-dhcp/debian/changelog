@@ -1,3 +1,9 @@
+univention-dhcp (15.0.0-1) unstable; urgency=medium
+
+  * UCS 5.1-0 version bump
+
+ -- Florian Best <best@univention.de>  Wed, 08 Nov 2023 12:38:53 +0100
+
 univention-dhcp (14.0.7-1) unstable; urgency=medium
 
   * Bug #31771: migrate tabs to spaces

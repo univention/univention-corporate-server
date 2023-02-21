@@ -1,3 +1,9 @@
+univention-server (16.0.0-1) unstable; urgency=medium
+
+  * UCS 5.1-0 version bump
+
+ -- Florian Best <best@univention.de>  Wed, 08 Nov 2023 12:38:57 +0100
+
 univention-server (15.0.7-3) unstable; urgency=medium
 
   * Bug #55940: move server_password_change script univention-admember

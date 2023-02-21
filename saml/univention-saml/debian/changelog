@@ -1,3 +1,9 @@
+univention-saml (8.0.0-1) unstable; urgency=medium
+
+  * UCS 5.1-0 version bump
+
+ -- Florian Best <best@univention.de>  Wed, 08 Nov 2023 12:38:55 +0100
+
 univention-saml (7.0.8-9) unstable; urgency=medium
 
   * Bug #56647: restore Python 2.7 compatibility in UCR template

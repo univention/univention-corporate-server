@@ -1,3 +1,9 @@
+univention-group-membership-cache (3.0.0-1) unstable; urgency=medium
+
+  * UCS 5.1-0 version bump
+
+ -- Florian Best <best@univention.de>  Wed, 08 Nov 2023 12:38:57 +0100
+
 univention-group-membership-cache (2.0.1-3) unstable; urgency=medium
 
   * Revert "Bug #55610: added univention-group-membership-cache logrotate configuration and a UCR variable"

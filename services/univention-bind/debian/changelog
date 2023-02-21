@@ -1,3 +1,9 @@
+univention-bind (15.0.0-1) unstable; urgency=medium
+
+  * UCS 5.1-0 version bump
+
+ -- Florian Best <best@univention.de>  Wed, 08 Nov 2023 12:38:53 +0100
+
 univention-bind (14.0.5-2) unstable; urgency=medium
 
   * Bug #42330: Remove old maintainer script package update code

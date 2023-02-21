@@ -1,3 +1,9 @@
+univention-dojo (14.0.0-1) unstable; urgency=medium
+
+  * UCS 5.1-0 version bump
+
+ -- Florian Best <best@univention.de>  Wed, 08 Nov 2023 12:38:47 +0100
+
 univention-dojo (13.0.1-2) unstable; urgency=medium
 
   * Bug #52453: UCS5 design - added patches to use umc/widgets/Icon
