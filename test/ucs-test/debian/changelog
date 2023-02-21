@@ -1,3 +1,9 @@
+ucs-test (10.0.10-43) unstable; urgency=medium
+
+  * Bug #55757: add test for radius login with email
+
+ -- Maximilian Janßen <janssen@univention.de>  Tue, 11 Apr 2023 10:47:27 +0100
+
 ucs-test (10.0.10-42) unstable; urgency=medium
 
   * Bug #55949: test for frame-ancestors on keycloak apache2 config
