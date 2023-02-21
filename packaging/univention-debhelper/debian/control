@@ -6,7 +6,6 @@ Standards-Version: 3.5.5
 Build-Depends-Indep:
  debhelper,
  dh-python,
- python-all,
  python3-all,
 
 Package: univention-debhelper
@@ -31,13 +30,10 @@ Description: transitional dummy Univention helper programs for debian/rules
 Package: python-univention-debhelper
 Architecture: all
 Depends:
- python-univention-namespace,
  ${misc:Depends},
  ${python:Depends},
 Breaks:
- python-univention-config-registry (<< 14.0.0-17),
 Replaces:
- python-univention-config-registry (<< 14.0.0-17),
 Provides:
  ${python:Provides},
 Description: Univention helper Python 3 library for debian/rules

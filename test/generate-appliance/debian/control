@@ -9,9 +9,6 @@ Build-Depends:
 Package: generate-appliance
 Architecture: all
 Depends:
- python-boto,
- python-lxml,
- python-typing,
  qemu-utils,
 Recommends:
  libguestfs-tools,

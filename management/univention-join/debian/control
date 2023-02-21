@@ -15,7 +15,6 @@ Architecture: all
 Depends:
  iputils-ping,
  ldap-utils,
- python-univention-lib (>= 1.0.25-1),
  python3-univention-lib (>= 1.0.25-1),
  shell-univention-lib (>= 3.0.26-28),
  tofrodos,

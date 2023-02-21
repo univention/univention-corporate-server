@@ -13,7 +13,6 @@ Build-Depends:
  libtool,
  libunivention-config-dev,
  libunivention-debug-dev (>= 5.0.2-1),
- python-all,
  python3-all,
 
 Package: libunivention-policy0
@@ -59,7 +58,6 @@ Provides:
  ${python3:Provides},
  ${python:Provides},
 Replaces:
- python-univention-lib (<< 1.0.16-1),
 Description: UCS - tool to view group policies
  This package includes the univention_policy_result tool
  that displays all group policies for a given DN.

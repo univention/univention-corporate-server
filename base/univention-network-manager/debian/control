@@ -22,8 +22,6 @@ Description: UCS - Transitional dummy package
 Package: univention-network-common
 Architecture: all
 Depends:
- python-ipaddress,
- python-netifaces,
  python3-netifaces,
  python3-univention-lib,
  univention-config (>= 8.0.2),

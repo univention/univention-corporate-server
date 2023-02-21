@@ -30,8 +30,6 @@ Description: UCS - Apache2 configuration
 Package: univention-apache-vhost
 Architecture: all
 Depends:
- python-click,
- python-univention-directory-manager,
  univention-ssl,
  ${misc:Depends},
 Suggests:

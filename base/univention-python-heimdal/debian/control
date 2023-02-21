@@ -1,18 +1,12 @@
 Source: univention-python-heimdal
-Section: python
+Section: python3
 Priority: optional
 Maintainer: Univention GmbH <packages@univention.de>
 Build-Depends:
- cython-dbg,
  cython3-dbg,
  debhelper,
  dh-python,
  heimdal-dev,
- python-dbg,
- python-debian,
- python-dev,
- python-pkgconfig,
- python-setuptools,
  python3-dbg,
  python3-debian,
  python3-dev,
@@ -26,9 +20,7 @@ Depends:
  ${python:Depends},
  ${shlibs:Depends},
 Replaces:
- python-heimdal,
 Provides:
- python-heimdal,
  ${python:Provides},
 Description: UCS - Kerberos interface module for Python 2.
  This module provides a Python interface to the Heimdal Kerberos library.
@@ -41,7 +33,6 @@ Description: UCS - Kerberos interface module for Python 2.
 Package: python-univention-heimdal-dbg
 Architecture: any
 Depends:
- python-univention-heimdal (= ${binary:Version}),
  ${python:Depends},
  ${shlibs:Depends},
 Provides:

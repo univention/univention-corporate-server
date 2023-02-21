@@ -6,14 +6,12 @@ Standards-Version: 3.5.5
 Build-Depends:
  debhelper,
  dh-python,
- python-all,
  python3-all,
  univention-config-dev (>= 15.0.3),
 
 Package: ucs-test-tools
 Architecture: all
 Depends:
- python-univention-lib (>> 0.0.3-1),
  shell-univention-lib,
  univention-directory-manager-tools,
  ${misc:Depends},

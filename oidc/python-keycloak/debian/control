@@ -1,6 +1,6 @@
 Source: python-keycloak
 Maintainer: Univention GmbH <packages@univention.de>
-Section: python
+Section: python3
 Priority: optional
 Build-Depends:
  debhelper-compat (= 11),
