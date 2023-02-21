@@ -1,3 +1,9 @@
+univention-directory-manager-rest (11.0.0-1) unstable; urgency=medium
+
+  * UCS 5.1-0 version bump
+
+ -- Florian Best <best@univention.de>  Fri, 08 Dec 2023 12:31:09 +0100
+
 univention-directory-manager-rest (10.0.7-2) unstable; urgency=medium
 
   * Bug #56714: fix HAL-JSON formatter

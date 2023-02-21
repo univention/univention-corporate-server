@@ -1,3 +1,9 @@
+univention-directory-listener (15.0.0-1) unstable; urgency=medium
+
+  * UCS 5.1-0 version bump
+
+ -- Florian Best <best@univention.de>  Fri, 08 Dec 2023 12:31:09 +0100
+
 univention-directory-listener (14.0.9-1) UNRELEASED; urgency=medium
 
   * Bug #56832: UCS 5.0-6 version bump

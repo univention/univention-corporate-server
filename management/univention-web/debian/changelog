@@ -1,3 +1,9 @@
+univention-web (5.0.0-1) unstable; urgency=medium
+
+  * UCS 5.1-0 version bump
+
+ -- Florian Best <best@univention.de>  Fri, 08 Dec 2023 12:31:14 +0100
+
 univention-web (4.0.6-1) UNRELEASED; urgency=medium
 
   * Bug #56832: UCS 5.0-6 version bump
