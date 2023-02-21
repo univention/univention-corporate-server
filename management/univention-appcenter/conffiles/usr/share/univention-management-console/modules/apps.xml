@@ -3,7 +3,7 @@
 	<!--
 @%@UCRWARNING=# @%@
 	-->
-	<module id="apps" icon="apps-module" priority="-100" version="1.0" python="3">
+	<module id="apps" icon="apps-module" priority="-100" version="1.0">
 @!@
 # flake8: noqa
 # make sure locale is always original english

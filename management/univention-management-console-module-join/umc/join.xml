@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <umc version="2.0">
-	<module id="join" icon="domain-join" priority="50" version="1.0" python="3">
+	<module id="join" icon="domain-join" priority="50" version="1.0">
 		<name>Domain join</name>
 		<description>Domain join of the local system</description>
 		<keywords>join scripts,domain join,join</keywords>
