@@ -8,9 +8,6 @@ Build-Depends:
  debhelper,
  dh-python,
  pwgen,
- python-all,
- python-pil,
- python-typing,
  python3-all,
  python3-pil,
  univention-config-dev (>= 15.0.3),
@@ -19,29 +16,7 @@ Build-Depends:
 
 Package: python-univention-lib
 Architecture: all
-Depends:
- at,
- dnsutils,
- pwgen,
- python-apt,
- python-dnspython,
- python-ipaddress,
- python-ldap,
- python-magic,
- python-pil,
- python-six,
- python-typing,
- python-univention (>= 12.0.0-4),
- python-univention-config-registry (>= 15),
- ${misc:Depends},
- ${python:Depends},
-Provides:
- ${python:Provides},
-Breaks:
- python-univention-connector-s4 (<< 13.0.2-11),
-Description: UCS - common scripting functions for Python 2 scripts
- This package contains Python functions used by various
- components of UCS.
+Description: UCS transitional dummy package
  .
  It is part of Univention Corporate Server (UCS), an
  integrated, directory driven solution for managing
@@ -68,10 +43,6 @@ Depends:
  ${python3:Depends},
 Provides:
  ${python3:Provides},
-Breaks:
- python-univention-lib (<< 9.0.12-1),
-Replaces:
- python-univention-lib (<< 9.0.12-1),
 Description: UCS - common scripting functions for Python 3 scripts
  This package contains Python functions used by various
  components of UCS.

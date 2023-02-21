@@ -36,10 +36,9 @@
 export PYBUILD_NAME=univention-config-registry
 export PYBUILD_INSTALL_ARGS=--install-scripts=../univention-config/usr/bin/
 export PYBUILD_AFTER_INSTALL=$(RM) '{destdir}/{install_dir}/univention/__init__.py'
-export PYBUILD_AFTER_INSTALL_python2=$(RM) '{destdir}/{install_dir}/univention/__init__.py' '{destdir}/{install_dir}/univention/ldif.py'
 
 %:
-	dh $@ --with 'python2,python3'
+	dh $@ --with 'python3'
 
 override_dh_auto_clean-arch:
 	[ ! -f Makefile ] || $(MAKE) maintainer-clean
@@ -64,7 +63,6 @@ override_dh_auto_build-indep:
 	dh_auto_build --buildsystem pybuild
 
 override_dh_auto_test-indep:
-	pytest
 	pytest-3
 	tests/unwrap/test.sh
 
@@ -80,6 +78,6 @@ override_dh_auto_install-indep:
 version := $(shell dpkg-parsechangelog -SVersion)
 override_dh_installinit-indep:
 	dh_installinit -i
-	sed -i -e 's/@%@package_version@%@/$(version)/' debian/python*-univention-config-registry/usr/lib/python*/dist-packages/univention/config_registry/frontend.py
+	sed -i -e 's/@%@package_version@%@/$(version)/' debian/python3-univention-config-registry/usr/lib/python3/dist-packages/univention/config_registry/frontend.py
 
 override_dh_installinit-dep: ; # BUG: install -p -m755 debian/univention-config-registry.univention-config-registry debian/univention-config-registry/etc/init.d/univention-config-registry
