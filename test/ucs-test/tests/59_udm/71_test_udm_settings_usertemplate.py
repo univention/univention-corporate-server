@@ -14,7 +14,7 @@ import univention.testing.strings as uts
 from univention.admin._ucr import configRegistry as ucr
 from univention.admin.uldap import getAdminConnection
 from univention.testing import utils
-from univention.testing.strings import random_int, random_name
+from univention.testing.strings import random_domain_name, random_int, random_name
 from univention.testing.umc import Client
 
 
@@ -57,7 +57,7 @@ def test_use_usertemplate(udm):
     dn_group1 = udm.create_group(wait_for_replication=False)[0]
     dn_group2 = udm.create_group(wait_for_replication=False)[0]
 
-    host = random_name()
+    host = random_domain_name()
     path = '/%s' % (random_name(),)
     dn_share = udm.create_object('shares/share', wait_for_replication=False, name=random_name(), path=path, host=host)
 

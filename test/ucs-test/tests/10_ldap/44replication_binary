@@ -68,6 +68,7 @@ users=()
 for ((u=0; u<ucount; u++))
 do
 	username="$(user_randomname)"
+	# shellcheck disable=SC2015
 	MAIL=true PERSON=true POSIX=true SAMBA=true PKI=true \
 		user_create "$username" \
 			--set description="$unique" \
@@ -86,7 +87,7 @@ do
 			--set pagerTelephoneNumber='+1-555-567' --set pagerTelephoneNumber='+1-555-765' \
 			--set homePostalAddress='"Mary Somerville Str. 1" "28359" "Bremen"' \
 			--set homePostalAddress='"Mary-Somerville-Str. 1" "28359" "Bremen"' \
-			--set mailHomeServer="$hostname" \
+			--set mailHomeServer="${hostname}.${domainname}" \
 			--set userCertificate="$(base64 <"$tmpdir/userCertificate.bin")" &&
 		undo user_remove "$username" ||
 		fail_fast 1 "Failed to create user $username"
@@ -100,7 +101,7 @@ validate () {
 	local file="$1" attr="$2" value
 	ldapsearch-wrapper <"$tmpdir/${file}.ldif" |
 		sed -rne "s/^${attr}(;binary)?:: //p" >"$tmpdir/tmp"
-	while read value
+	while read -r value
 	do
 		base64 -d <<<"$value" | cmp "$tmpdir/$attr.bin" ||
 			fail_test 1 "Difference in '$attr' on $file"
@@ -130,10 +131,10 @@ do
 		-p "$ldap_master_port" \
 		-D "$tests_domainadmin_account" \
 		-y "$tests_domainadmin_pwdfile" \
-		"(description=$unique)" >"$tmpdir/master.ldif" ||
+		"(description=$unique)" >"$tmpdir/master.ldif" \
 		>"$tmpdir/master.ldif" ||
 		fail_fast 1 "Failure to dump master"
-	[ $(grep -c '^dn:' "$tmpdir/master.ldif") -ne $ucount ] &&
+	[ "$(grep -c '^dn:' "$tmpdir/master.ldif")" -ne $ucount ] &&
 		fail_test 1 "Incomplete LDIF of master: $(grep '^dn:' "$tmpdir/master.ldif")"
 	validate master userCertificate
 	validate master jpegPhoto
@@ -143,10 +144,10 @@ do
 		-p "$ldap_server_port" \
 		-D "$tests_domainadmin_account" \
 		-y "$tests_domainadmin_pwdfile" \
-		"(description=$unique)" >"$tmpdir/server.ldif" ||
+		"(description=$unique)" >"$tmpdir/server.ldif" \
 		>"$tmpdir/server.ldif" ||
 		fail_fast 1 "Failure to dump server"
-	[ $(grep -c '^dn:' "$tmpdir/server.ldif") -ne $ucount ] &&
+	[ "$(grep -c '^dn:' "$tmpdir/server.ldif")" -ne $ucount ] &&
 		fail_fast 1 "Incomplete LDIF of server: $(grep '^dn:' "$tmpdir/server.ldif")"
 	validate server userCertificate
 	validate server jpegPhoto
@@ -154,8 +155,8 @@ do
 	ldiff --exclude sambaSID "$tmpdir/master.ldif" "$tmpdir/server.ldif" ||
 		fail_fast 1 "Difference between master and server"
 
-	if tail -n +$log_lines /var/log/univention/listener.log |
-		egrep -m 5 'listener does not have value for key (jpegPhoto|userCertificate)'
+	if tail -n "+$log_lines" /var/log/univention/listener.log |
+		grep -Em 5 'listener does not have value for key (jpegPhoto|userCertificate)'
 	then
 		fail_fast 1 "Problem replicating binary data"
 	fi
@@ -163,4 +164,4 @@ do
 	"$ALREADY_FAILED" && break
 done
 
-exit $RETVAL
+exit "$RETVAL"

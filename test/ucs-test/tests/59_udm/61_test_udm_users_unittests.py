@@ -16,10 +16,14 @@ import pytest
 from M2Crypto import X509
 
 from univention.config_registry import handler_set
-from univention.testing.strings import random_username
+from univention.testing.strings import random_domain_name, random_username
 from univention.testing.ucr import UCSTestConfigRegistry
 from univention.testing.udm import UCSTestUDM_NoModification
 from univention.testing.utils import wait_for_connector_replication
+
+
+def utc_days_since_epoch(offset=0):
+    return str(calendar.timegm(time.gmtime()) // 3600 // 24 + offset)
 
 
 class TestUsers:
@@ -40,19 +44,16 @@ class TestUsers:
     what if pwdChangeNextLogin = 1 and password=foo at the same time?
     """
 
-    def utc_days_since_epoch():
-        return calendar.timegm(time.gmtime()) // 3600 // 24
-
     @pytest.mark.parametrize('shadowLastChange,shadowMax,pwd_change_next_login,password_expiry', [
         ('0', '', '1', []),
         ('0', '0', '1', ['1970-01-01']),
         ('0', '1', '1', ['1970-01-02']),
-        ('0', str(utc_days_since_epoch() + 2), '1', (datetime.utcnow() + timedelta(days=2)).strftime('%Y-%m-%d')),
-        ('', str(utc_days_since_epoch() + 2), '0', []),
+        ('0', utc_days_since_epoch(2), '1', (datetime.utcnow() + timedelta(days=2)).strftime('%Y-%m-%d')),
+        ('', utc_days_since_epoch(2), '0', []),
         ('', '', '0', []),
-        ('', str(utc_days_since_epoch() - 2), '0', []),
-        ('1', str(utc_days_since_epoch() - 2), '1', (datetime.utcnow() - timedelta(days=1)).strftime('%Y-%m-%d')),
-        ('0', str(utc_days_since_epoch() - 2), '1', (datetime.utcnow() - timedelta(days=2)).strftime('%Y-%m-%d')),
+        ('', utc_days_since_epoch(-2), '0', []),
+        ('1', utc_days_since_epoch(-2), '1', (datetime.utcnow() - timedelta(days=1)).strftime('%Y-%m-%d')),
+        ('0', utc_days_since_epoch(-2), '1', (datetime.utcnow() - timedelta(days=2)).strftime('%Y-%m-%d')),
     ])
     def test_unmap_pwd_change_next_login_and_password_expiry(self, udm, lo, shadowLastChange, shadowMax, pwd_change_next_login, password_expiry):
         user = udm.create_user()[0]
@@ -69,7 +70,7 @@ class TestUsers:
     @pytest.mark.parametrize('path', ['/test', '/test2/'])
     def test_unmap_automount_information(self, udm, path, random_name, lo, verify_udm_object):
         homeSharePath = random_name()
-        host = random_name()
+        host = random_domain_name()
         share = udm.create_object('shares/share', name=random_name(), path=path, host=host)
 
         user = udm.create_user(homeShare=share, homeSharePath=homeSharePath)[0]

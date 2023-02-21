@@ -1,3 +1,9 @@
+ucs-test (10.0.10-6) unstable; urgency=low
+
+  * Bug #33684: Fix slow and invalid syntax for IComputer_FQDN
+
+ -- Philipp Hahn <hahn@univention.de>  Tue, 21 Feb 2023 16:41:47 +0100
+
 ucs-test (10.0.10-5) unstable; urgency=medium
 
   * Bug #55346: Prevent the self-service blacklist checks from returning false
