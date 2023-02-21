@@ -328,13 +328,6 @@ class XML_Definition(ET.ElementTree):
         return self.root.get('notifier')
 
     @property
-    def python_version(self):
-        try:
-            return int(float(self.root.get('python', 2)))
-        except ValueError:
-            return 2
-
-    @property
     def singleton(self):
         return self.root.get('singleton', 'no').lower() in ('yes', 'true', '1')
 
