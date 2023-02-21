@@ -290,21 +290,6 @@ File: etc/security/packetfilter.d/20_rsyslog.sh
 Variables: syslog/input/.*
 Mode: 0755
 
-Type: multifile
-Multifile: etc/python2.7/sitecustomize.py
-
-Type: subfile
-Multifile: etc/python2.7/sitecustomize.py
-Subfile: etc/python2.7/sitecustomize.py.d/00header.py
-
-Type: subfile
-Multifile: etc/python2.7/sitecustomize.py
-Subfile: etc/python2.7/sitecustomize.py.d/10apport.py
-
-Type: subfile
-Multifile: etc/python2.7/sitecustomize.py
-Subfile: etc/python2.7/sitecustomize.py.d/20utf8.py
-
 Type: file
 File: etc/logrotate.d/univention-config-registry-replog
 Variables: logrotate/.*
