@@ -3,16 +3,10 @@ Section: python
 Priority: optional
 Maintainer: Univention GmbH <packages@univention.de>
 Build-Depends:
- cython-dbg,
  cython3-dbg,
  debhelper,
  dh-python,
  heimdal-dev,
- python-dbg,
- python-debian,
- python-dev,
- python-pkgconfig,
- python-setuptools,
  python3-dbg,
  python3-debian,
  python3-dev,
@@ -22,16 +16,7 @@ Standards-Version: 3.8.2
 
 Package: python-univention-heimdal
 Architecture: any
-Depends:
- ${python:Depends},
- ${shlibs:Depends},
-Replaces:
- python-heimdal,
-Provides:
- python-heimdal,
- ${python:Provides},
-Description: UCS - Kerberos interface module for Python 2.
- This module provides a Python interface to the Heimdal Kerberos library.
+Description: UCS transitional dummy package
  .
  It is part of Univention Corporate Server (UCS), an
  integrated, directory driven solution for managing
@@ -40,16 +25,7 @@ Description: UCS - Kerberos interface module for Python 2.
 
 Package: python-univention-heimdal-dbg
 Architecture: any
-Depends:
- python-univention-heimdal (= ${binary:Version}),
- ${python:Depends},
- ${shlibs:Depends},
-Provides:
- ${python:Provides},
-Description: UCS - Kerberos interface module for Python 2 - Debug version
- This module provides a Python interface to the Heimdal Kerberos library.
- It includes the shared library for the Python debug interpreter and the
- debug symbols for all extension modules.
+Description: UCS transitional dummy package
  .
  It is part of Univention Corporate Server (UCS), an
  integrated, directory driven solution for managing
@@ -65,24 +41,6 @@ Provides:
  ${python3:Provides},
 Description: UCS - Kerberos interface module for Python 3.
  This module provides a Python interface to the Heimdal Kerberos library.
- .
- It is part of Univention Corporate Server (UCS), an
- integrated, directory driven solution for managing
- corporate environments. For more information about UCS,
- refer to: https://www.univention.de/
-
-Package: python3-univention-heimdal-dbg
-Architecture: any
-Depends:
- python3-univention-heimdal (= ${binary:Version}),
- ${python3:Depends},
- ${shlibs:Depends},
-Provides:
- ${python3:Provides},
-Description: UCS - Kerberos interface module for Python 3 - Debug version
- This module provides a Python interface to the Heimdal Kerberos library.
- It includes the shared library for the Python debug interpreter and the
- debug symbols for all extension modules.
  .
  It is part of Univention Corporate Server (UCS), an
  integrated, directory driven solution for managing
