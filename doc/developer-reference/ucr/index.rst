@@ -26,4 +26,3 @@ a domain.
    templates
    integration
    examples
-   python3

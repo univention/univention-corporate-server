@@ -33,4 +33,3 @@ This chapter has the following content:
    local-system-module
    udm
    module
-   python-migration
