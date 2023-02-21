@@ -1,3 +1,9 @@
+univention-management-console-module-join (13.0.1) unstable; urgency=medium
+
+  * Bug #55706: UCS 5.1-0 version bump
+
+ -- Florian Best <best@univention.de>  Thu, 07 Mar 2024 22:19:31 +0100
+
 univention-management-console-module-join (12.0.7-1) UNRELEASED; urgency=medium
 
   * Bug #57118 UCS 5.0-7 version bump
