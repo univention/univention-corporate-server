@@ -127,16 +127,6 @@ class UMC_Module(dict):
             return None
 
     @property
-    def python_versions(self):
-        # type: () -> List[float]
-        versions = [2.7]
-        if '${python3:Provides}' in self['provides']:
-            versions.append(3)
-            if '${python:Provides}' not in self['provides']:
-                versions.remove(2.7)
-        return versions
-
-    @property
     def js_path(self):
         # type: () -> Optional[str]
         """Return path to JavaScript UMC directory."""
