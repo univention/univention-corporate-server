@@ -49,7 +49,7 @@ The following example defines a module with the id `udm`:
 
     <?xml version="1.0" encoding="UTF-8"?>
     <umc version="2.0">
-        <module id="udm" icon="udm-module" version="1.0" python="3">
+        <module id="udm" icon="udm-module" version="1.0">
             <name>Univention Directory Manager</name>
             <description>Manages all UDM modules</description>
             <flavor icon="udm-users" id="users/user">
