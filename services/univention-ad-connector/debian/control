@@ -14,10 +14,6 @@ Build-Depends:
 
 Package: python-univention-connector
 Architecture: all
-Depends:
- ${misc:Depends},
-Conflicts:
- univention-server-member,
 Description: UCS transitional dummy package
  .
  It is part of Univention Corporate Server (UCS), an
