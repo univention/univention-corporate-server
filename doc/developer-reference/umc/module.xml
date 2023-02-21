@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--DOCTYPE umc SYSTEM "management/univention-management-console/data/umc-module.dtd"-->
 <umc version="2.0">
-	<module id="udm" icon="udm-MODULE" priority="50" version="1.0" python="3">
+	<module id="udm" icon="udm-MODULE" priority="50" version="1.0">
 		<name>...</name>
 		<description>...</description>
 		<keywords>...,...</keywords>

@@ -42,7 +42,7 @@ the ``<module>`` tag:
 
    <?xml version="1.0" encoding="UTF-8"?>
    <umc version="2.0">
-       <module id="..." priority="50" version="1.0" python="3">
+       <module id="..." priority="50" version="1.0">
            ...
        </module>
    </umc>
