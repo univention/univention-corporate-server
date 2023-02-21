@@ -1,3 +1,9 @@
+univention-self-service (5.99.0-1) unstable; urgency=medium
+
+  * UCS 5.1-0
+
+ -- Florian Best <best@univention.de>  Mon, 19 Jun 2023 17:53:37 +0200
+
 univention-self-service (5.0.7-2) unstable; urgency=medium
 
   * Bug #50167: Use API version 2, as 3 changed the way policy references are

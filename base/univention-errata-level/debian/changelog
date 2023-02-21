@@ -1,3 +1,9 @@
+univention-errata-level (5.99.0-1) unstable; urgency=medium
+
+  * UCS 5.1-0
+
+ -- Florian Best <best@univention.de>  Mon, 19 Jun 2023 17:53:37 +0200
+
 univention-errata-level (5.0.4-713) unstable; urgency=low
 
   * Bug #54263: maintain more packages
