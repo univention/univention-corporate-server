@@ -1,6 +1,9 @@
 # See https://pre-commit.com for more information
 # See https://pre-commit.com/hooks.html for more hooks
-exclude: "^packaging/ucslint/testframework/"
+exclude: "^packaging/ucslint/testframework/\
+          |^services/univention-ldb-modules/buildtools/\
+          |^services/univention-ldb-modules/third_party/
+         "
 repos:
   - repo: https://git.knut.univention.de/univention/dist/pre-commit-ucr
     rev: '0.0.9'
@@ -39,7 +42,8 @@ repos:
                 |^base/univention-lib/unittests/fstab$\
                 |^base/univention-system-setup/city-data/.*[.](txt|json)$\
                 |^doc/errata/staging/0.*template[.]yaml$\
-                |^services/univention-ldb-modules/buildtools/wafsamba/\
+                |^services/univention-ldb-modules/buildtools/\
+                |^services/univention-ldb-modules/third_party/\
                 |[.]ai$\
                 |[.]csv$\
                 |[.]diff$\
@@ -52,6 +56,8 @@ repos:
     - id: python-check-blanket-noqa
     - id: python-no-eval
       exclude: "^management/univention-directory-manager-modules/modules/univention/admin/__init__.py\
+                |^services/univention-ldb-modules/buildtools/\
+                |^services/univention-ldb-modules/third_party/\
                 |^test/ucs-test/tests/10_ldap/52listener-filter.py\
                 |^packaging/univention-l10n/univention/l10n/umc.py"
     - id: rst-backticks
@@ -63,6 +69,7 @@ repos:
     - id: flake8
       exclude: "^oidc/python-keycloak/\
                 |^services/univention-ldb-modules/buildtools/\
+                |^services/univention-ldb-modules/third_party/\
                 |^packaging/ucslint/testframework/\
                "
   - repo: https://git.knut.univention.de/univention/dist/pre-commit-debian.git
@@ -82,6 +89,7 @@ repos:
       - id: ruff
         exclude: "^oidc/python-keycloak/\
                   |^services/univention-ldb-modules/buildtools/\
+                  |^services/univention-ldb-modules/third_party/\
                   |^packaging/ucslint/testframework/\
                  "
       - id: ruff
@@ -90,6 +98,7 @@ repos:
         args: ["--fix"]
         exclude: "^oidc/python-keycloak/\
                   |^services/univention-ldb-modules/buildtools/\
+                  |^services/univention-ldb-modules/third_party/\
                   |^packaging/ucslint/testframework/\
                  "
       - id: ruff
@@ -107,6 +116,7 @@ repos:
         entry: isort -c
         exclude: "^oidc/python-keycloak/\
                   |^services/univention-ldb-modules/buildtools/\
+                  |^services/univention-ldb-modules/third_party/\
                   |^packaging/ucslint/testframework/\
                  "
       - id: isort
@@ -115,6 +125,7 @@ repos:
         entry: isort
         exclude: "^oidc/python-keycloak/\
                   |^services/univention-ldb-modules/buildtools/\
+                  |^services/univention-ldb-modules/third_party/\
                   |^packaging/ucslint/testframework/\
                  "
   - repo: https://github.com/pre-commit/mirrors-autopep8
@@ -124,6 +135,7 @@ repos:
         args: ["-d"]
         exclude: "^oidc/python-keycloak/\
                   |^services/univention-ldb-modules/buildtools/\
+                  |^services/univention-ldb-modules/third_party/\
                   |^packaging/ucslint/testframework/\
                   "
     -   id: autopep8
@@ -132,5 +144,6 @@ repos:
         args: ["-i"]
         exclude: "^oidc/python-keycloak/\
                   |^services/univention-ldb-modules/buildtools/\
+                  |^services/univention-ldb-modules/third_party/\
                   |^packaging/ucslint/testframework/\
                   "
