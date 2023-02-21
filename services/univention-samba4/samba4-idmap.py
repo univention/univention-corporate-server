@@ -286,7 +286,7 @@ def handler(dn: str, new: Dict[str, List[bytes]], old: Dict[str, List[bytes]], o
                         return
                     if new_sambaSID != old_sambaSID:
                         rename_or_modify_idmap_entry(old_sambaSID.decode('ASCII'), new_sambaSID.decode('ASCII'), new_xid, xid_type, idmap)
-                    old_xid = old.get(xid_attr, [b''])[0]
+                    old_xid = old.get(xid_attr, [b''])[0].decode('ASCII')
                     if new_xid != old_xid:
                         add_or_modify_idmap_entry(new_sambaSID.decode('ASCII'), new_xid, xid_type, idmap)
                 else:
@@ -311,7 +311,7 @@ def handler(dn: str, new: Dict[str, List[bytes]], old: Dict[str, List[bytes]], o
                 xid_type = 'ID_TYPE_GID'
                 samaccountname = old.get('cn', [b''])[0]
 
-            old_xid = old.get(xid_attr, [b''])[0]
+            old_xid = old.get(xid_attr, [b''])[0].decode('ASCII')
             if old_xid:
                 old_sambaSID = old.get(sidAttribute, [b''])[0]
                 if not old_sambaSID:
@@ -319,7 +319,7 @@ def handler(dn: str, new: Dict[str, List[bytes]], old: Dict[str, List[bytes]], o
                     return
                 if xid_type == 'ID_TYPE_GID' and old_sambaSID in __SPECIAL_SIDS:
                     xid_type = 'ID_TYPE_BOTH'
-                remove_idmap_entry(old_sambaSID.decode('ASCII'), old_xid.decode('ASCII'), xid_type, idmap)
+                remove_idmap_entry(old_sambaSID.decode('ASCII'), old_xid, xid_type, idmap)
         except ldb.LdbError as exc:
             (enum, estr) = exc.args
             ud.debug(ud.LISTENER, ud.ERROR, "%s: entry for %r could not be updated" % (name, old[sidAttribute][0]))
