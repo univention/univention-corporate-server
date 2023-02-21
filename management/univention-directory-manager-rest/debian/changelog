@@ -1,3 +1,9 @@
+univention-directory-manager-rest (11.0.0-1) unstable; urgency=medium
+
+  * UCS 5.1-0 version bump
+
+ -- Florian Best <best@univention.de>  Wed, 08 Nov 2023 12:38:45 +0100
+
 univention-directory-manager-rest (10.0.6-15) unstable; urgency=medium
 
   * Bug #56714: fix access when no "Accept: application/json" is

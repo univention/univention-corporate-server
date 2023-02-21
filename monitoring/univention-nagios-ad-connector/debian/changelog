@@ -1,3 +1,9 @@
+univention-nagios-ad-connector (10.0.0-1) unstable; urgency=medium
+
+  * UCS 5.1-0 version bump
+
+ -- Florian Best <best@univention.de>  Wed, 08 Nov 2023 12:38:42 +0100
+
 univention-nagios-ad-connector (9.0.1-1) unstable; urgency=medium
 
   * Bug #54748: add dependencies to monitoring packages

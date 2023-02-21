@@ -1,3 +1,9 @@
+univention-management-console-module-adtakeover (8.0.0-1) unstable; urgency=medium
+
+  * UCS 5.1-0 version bump
+
+ -- Florian Best <best@univention.de>  Wed, 08 Nov 2023 12:38:48 +0100
+
 univention-management-console-module-adtakeover (7.0.6-1) unstable; urgency=medium
 
   * Bug #43633: answer HTTP requests in main thread / loop

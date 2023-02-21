@@ -1,3 +1,9 @@
+univention-appcenter (10.0.0-1) unstable; urgency=medium
+
+  * UCS 5.1-0 version bump
+
+ -- Florian Best <best@univention.de>  Wed, 08 Nov 2023 12:38:48 +0100
+
 univention-appcenter (9.0.9-2) unstable; urgency=medium
 
   * Bug #56827: Fix typo for RAM warning
