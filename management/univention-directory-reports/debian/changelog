@@ -1,3 +1,9 @@
+univention-directory-reports (14.0.0-1) unstable; urgency=medium
+
+  * UCS 5.2-0 version bump
+
+ -- Florian Best <best@univention.de>  Fri, 08 Dec 2023 12:53:58 +0100
+
 univention-directory-reports (13.0.0-1) unstable; urgency=medium
 
   * UCS 5.1-0 version bump

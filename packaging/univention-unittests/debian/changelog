@@ -1,3 +1,9 @@
+univention-unittests (4.0.0-1) unstable; urgency=medium
+
+  * UCS 5.2-0 version bump
+
+ -- Florian Best <best@univention.de>  Fri, 08 Dec 2023 12:53:54 +0100
+
 univention-unittests (3.0.0-1) unstable; urgency=medium
 
   * UCS 5.1-0 version bump
