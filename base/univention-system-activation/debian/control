@@ -18,7 +18,6 @@ Package: univention-system-activation
 Architecture: all
 Depends:
  libapache2-mod-wsgi-py3,
- python-ldap,
  sudo,
  univention-apache,
  ${misc:Depends},

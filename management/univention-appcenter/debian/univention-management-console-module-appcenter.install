@@ -1,7 +1,6 @@
 listener/app_attributes.py	usr/lib/univention-directory-listener/system/
 scripts/univention-register-apps	usr/sbin/
 scripts/univention-rename-app	usr/sbin/
-udm/handlers/appcenter/*.py	usr/lib/python2.7/dist-packages/univention/admin/handlers/appcenter/
 udm/handlers/appcenter/*.py	usr/lib/python3/dist-packages/univention/admin/handlers/appcenter/
 umc/js/appcenter.css	usr/share/univention-management-console-frontend/js/umc/modules/
 umc/js/appcenter/app-vignette.svg	usr/share/univention-management-console-frontend/js/umc/modules/appcenter/
