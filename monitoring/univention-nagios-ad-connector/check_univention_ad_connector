@@ -106,12 +106,12 @@ fi
 # in order to match the command via check_procs
 # WARNING: if not exactly the number of configured connectors is running
 # CRITICAL: if no process is running
-/usr/lib/nagios/plugins/check_procs -w "$connectors":"$connectors" -c 1: --ereg-argument-array "^([^ ]+)?python.*univention.connector.ad.main(.py)?" >/dev/null 2>&1
+/usr/lib/nagios/plugins/check_procs -w "$connectors":"$connectors" -c 1: --ereg-argument-array "^([^ ]+)?python3.*univention.connector.ad.main" >/dev/null 2>&1
 ret="$?"
 # WARNING: if less than the configured number of connectors is running
 # CRITICAL: if more than the configured number of connector is running
 if [ "$ret" = "$STATE_WARNING" ]; then
-	/usr/lib/nagios/plugins/check_procs -w "$connectors": -c :"$connectors" --ereg-argument-array "^([^ ]+)?python.*univention.connector.ad.main(.py)?" >/dev/null 2>&1
+	/usr/lib/nagios/plugins/check_procs -w "$connectors": -c :"$connectors" --ereg-argument-array "^([^ ]+)?python3.*univention.connector.ad.main" >/dev/null 2>&1
 	ret2="$?"
 fi
 
