@@ -1,3 +1,9 @@
+univention-management-console-module-diagnostic (7.0.1) unstable; urgency=medium
+
+  * Bug #55706: UCS 5.1-0 version bump
+
+ -- Florian Best <best@univention.de>  Tue, 20 Feb 2024 08:51:30 +0100
+
 univention-management-console-module-diagnostic (6.0.7-2) unstable; urgency=medium
 
   * Bug #49006: extend 31_file_permissions for OIDC configuration

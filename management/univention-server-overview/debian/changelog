@@ -1,3 +1,9 @@
+univention-server-overview (4.0.1) unstable; urgency=medium
+
+  * Bug #55706: UCS 5.1-0 version bump
+
+ -- Florian Best <best@univention.de>  Tue, 20 Feb 2024 08:51:28 +0100
+
 univention-server-overview (3.0.4-1) UNRELEASED; urgency=medium
 
   * Bug #56832: UCS 5.0-6 version bump

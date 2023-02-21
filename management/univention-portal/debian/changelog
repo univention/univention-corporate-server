@@ -1,3 +1,9 @@
+univention-portal (5.0.1) unstable; urgency=medium
+
+  * Bug #55706: UCS 5.1-0 version bump
+
+ -- Florian Best <best@univention.de>  Tue, 20 Feb 2024 08:51:30 +0100
+
 univention-portal (4.0.15-2) unstable; urgency=medium
 
   * Bug #56917: make HTML title and favicon configurable
