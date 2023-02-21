@@ -49,4 +49,4 @@ override_dh_auto_install:
 	done
 
 %:
-	dh $@ --with python2,univention-l10n,ucr
+	dh $@ --with univention-l10n,ucr
