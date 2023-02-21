@@ -102,4 +102,3 @@ This chapter has the following content:
    package-extension-modules
    package-syntax-extension
    rest-api
-   python3-migration
