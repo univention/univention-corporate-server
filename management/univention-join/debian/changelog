@@ -1,3 +1,9 @@
+univention-join (12.99.0-1) unstable; urgency=medium
+
+  * UCS 5.1-0
+
+ -- Florian Best <best@univention.de>  Tue, 29 Aug 2023 21:43:49 +0200
+
 univention-join (12.0.5-6) unstable; urgency=medium
 
   * Bug #55937: New UCR variable join/samba/dns/replication/timeout
