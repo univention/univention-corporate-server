@@ -1,3 +1,9 @@
+univention-sudo (7.0.1) unstable; urgency=medium
+
+  * Bug #55706: UCS 5.2-0 version bump
+
+ -- Florian Best <best@univention.de>  Tue, 20 Feb 2024 08:54:13 +0100
+
 univention-sudo (6.0.1) unstable; urgency=medium
 
   * Bug #55706: UCS 5.1-0 version bump
