@@ -36,10 +36,6 @@ Description: UCS - Software monitoring database
 
 Package: python-univention-pkgdb
 Architecture: all
-Depends:
- ${misc:Depends},
-Conflicts:
- univention-pkgdb-lib (<< 1.0.4),
 Description: UCS transitional dummy package
  .
  It is part of Univention Corporate Server (UCS), an

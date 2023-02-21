@@ -44,11 +44,8 @@ override_dh_install:
 override_dh_installinit:
 	dh_installinit --name="univention-maintenance" --no-start --update-rcd-params="defaults 97 05"
 
-override_dh_python2:
-	dh_python2 --skip-private
-
 override_dh_python3:
 	dh_python3 --skip-private
 
 %:
-	dh $@ --with python2,python3,umc,ucr,bash_completion --buildsystem=pybuild
+	dh $@ --with python3,umc,ucr,bash_completion --buildsystem=pybuild

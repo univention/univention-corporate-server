@@ -6,12 +6,6 @@ Standards-Version: 3.5.2
 Build-Depends:
  debhelper,
  dh-python,
- python-all,
- python-ipaddr,
- python-pytest,
- python-pytest-cov,
- python-six,
- python-typing,
  python3-all,
  python3-pytest,
  python3-pytest-cov,
@@ -33,19 +27,7 @@ Description: UCS - ipcalc tool for network
 
 Package: python-univention-ipcalc
 Architecture: all
-Depends:
- python-ipaddr,
- python-six,
- python-typing,
- ${python:Depends},
-Provides:
- ${python:Provides},
-Replaces:
- univention-ipcalc (<< 10.0.0-2),
-Breaks:
- univention-ipcalc (<< 10.0.0-2),
-Description: UCS - ipcalc tool for network
- This package contain the Python 2 files for the ipcalc tool.
+Description: UCS transitional dummy package
  .
  This package is part of Univention Corporate Server (UCS),
  an integrated, directory driven solution for managing

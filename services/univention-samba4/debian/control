@@ -20,8 +20,6 @@ Depends:
  ldb-tools,
  libunivention-ldb-modules,
  pwgen,
- python-univention (>= 6.0.9-3),
- python-univention-lib (>= 9.0.11-9),
  python3-univention,
  python3-univention-heimdal,
  python3-univention-lib (>= 9.0.11-9),

@@ -5,8 +5,6 @@ Maintainer: Univention GmbH <packages@univention.de>
 Build-Depends:
  debhelper,
  dh-python,
- python-all,
- python-setuptools,
  python3-all,
  python3-setuptools,
 Standards-Version: 3.8.2
@@ -14,11 +12,6 @@ Standards-Version: 3.8.2
 Package: univention-l10n-dev
 Architecture: all
 Depends:
- python-debian,
- python-lxml,
- python-magic,
- python-polib,
- python-univention-config-registry,
  python3-debian,
  python3-lxml,
  python3-magic,
@@ -27,7 +20,6 @@ Depends:
  ${misc:Depends},
  ${perl:Depends},
  ${python3:Depends},
- ${python:Depends},
 Recommends:
  univention-management-console-dev,
 Conflicts:

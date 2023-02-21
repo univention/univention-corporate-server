@@ -4,7 +4,6 @@ Priority: optional
 Maintainer: Univention GmbH <packages@univention.de>
 Build-Depends:
  debhelper,
- python-all,
  univention-config-dev (>= 15.0.3),
 Standards-Version: 3.8.2
 
@@ -25,7 +24,6 @@ Depends:
  univention-monitoring-client,
  univention-nagios-common (= ${binary:Version}),
  ${misc:Depends},
- ${python:Depends},
  ${shlibs:Depends},
 Conflicts:
  nagios2 (<< 3.0),

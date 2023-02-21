@@ -33,16 +33,11 @@
 export PYBUILD_NAME=univention-debhelper
 
 override_dh_auto_test:
-	python2 -m doctest univention/debhelper.py
 	python3 -m doctest univention/debhelper.py
-
-override_dh_python2:
-	dh_python2
-	rm debian/python-univention-debhelper/usr/lib/python2.7/dist-packages/univention/__init__.py
 
 override_dh_python3:
 	dh_python3
 	rm debian/python3-univention-debhelper/usr/lib/python3/dist-packages/univention/__init__.py
 
 %:
-	dh $@ --with python2,python3 --buildsystem=pybuild
+	dh $@ --with python3 --buildsystem=pybuild
