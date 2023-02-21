@@ -1,5 +1,5 @@
 #!/usr/share/ucs-test/runner pytest-3 -svv --tb=native
-## desc: Check Python 2 + 3 compatibility and idempotency of UCR templates
+## desc: Check Python 3 compatibility and idempotency of UCR templates
 ## tags: [apptest]
 ## exposure: safe
 
