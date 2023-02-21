@@ -38,11 +38,7 @@ Description: FreeRADIUS 802.1X integration package for Univention Corporate Serv
 
 Package: python-univention-radius
 Architecture: all
-Depends:
- ${misc:Depends},
 Description: UCS transitional dummy package
- This package contains Python 2 modules for the RADIUS
- integration.
  .
  It is part of Univention Corporate Server (UCS), an
  integrated, directory driven solution for managing

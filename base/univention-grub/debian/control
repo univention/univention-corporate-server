@@ -10,11 +10,8 @@ Build-Depends:
 Package: univention-grub
 Architecture: all
 Depends:
- python-univention-config-registry,
- python-univention-debug,
  shell-univention-lib (>= 1.0.16-2),
  ${misc:Depends},
- ${python:Depends},
 Description: UCS - meta package for the Grub2 configuration
  This package contains the configuration for the Grub2 boot loader.
  .
