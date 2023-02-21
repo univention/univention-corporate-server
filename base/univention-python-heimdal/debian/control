@@ -19,7 +19,6 @@ Build-Depends:
  python3-pkgconfig,
  python3-setuptools,
 Standards-Version: 3.8.2
-X-Python-Version: 2.7, 3.5
 
 Package: python-univention-heimdal
 Architecture: any
