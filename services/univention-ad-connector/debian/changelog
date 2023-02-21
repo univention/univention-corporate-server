@@ -1,3 +1,9 @@
+univention-ad-connector (14.99.0-1) unstable; urgency=medium
+
+  * UCS 5.1-0
+
+ -- Florian Best <best@univention.de>  Mon, 19 Jun 2023 17:53:37 +0200
+
 univention-ad-connector (14.0.16-3) unstable; urgency=medium
 
   * Bug #56603: Adjust to fixed post-read-control in python-ldap 4.0
