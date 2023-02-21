@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <umc version="2.0">
-	<module id="admindiary" icon="admin-diary" priority="50" version="1.0" python="3">
+	<module id="admindiary" icon="admin-diary" priority="50" version="1.0">
 		<name>Admin Diary</name>
 		<description>Keep an overview of the important events in the domain</description>
 		<keywords>log,diary,event</keywords>
