@@ -1,3 +1,9 @@
+univention-management-console-module-top (10.0.0-1) unstable; urgency=medium
+
+  * UCS 5.1-0 version bump
+
+ -- Florian Best <best@univention.de>  Wed, 08 Nov 2023 12:38:46 +0100
+
 univention-management-console-module-top (9.0.2-1) unstable; urgency=medium
 
   * Bug #31771: migrate tabs to spaces

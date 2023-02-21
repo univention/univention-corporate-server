@@ -1,3 +1,9 @@
+univention-management-console-module-diagnostic (7.0.0-1) unstable; urgency=medium
+
+  * UCS 5.1-0 version bump
+
+ -- Florian Best <best@univention.de>  Wed, 08 Nov 2023 12:38:49 +0100
+
 univention-management-console-module-diagnostic (6.0.6-4) unstable; urgency=medium
 
   * Bug #56773: Add new diagnostic plugin to check if PostgreSQL was migrated

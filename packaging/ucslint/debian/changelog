@@ -1,3 +1,9 @@
+ucslint (10.0.0-1) unstable; urgency=medium
+
+  * UCS 5.1-0 version bump
+
+ -- Florian Best <best@univention.de>  Wed, 08 Nov 2023 12:38:43 +0100
+
 ucslint (9.0.3-3) unstable; urgency=low
 
   * Bug #51611: Fix detection of old Debian maintainer script chunks
