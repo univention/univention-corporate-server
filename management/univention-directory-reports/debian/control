@@ -12,10 +12,6 @@ Build-Depends:
 
 Package: univention-directory-reports
 Architecture: all
-Breaks:
- python-univention-directory-reports (<< 12.0.1-1),
-Replaces:
- python-univention-directory-reports (<< 12.0.1-1),
 Depends:
  python3-univention-directory-reports,
  python3-univention-lib (>= 1.0.25-1),
@@ -28,8 +24,6 @@ Description: Creates reports for UCS Directory Manager objects
 
 Package: python-univention-directory-reports
 Architecture: all
-Depends:
- ${misc:Depends},
 Description: UCS transitional dummy package
 
 Package: python3-univention-directory-reports
