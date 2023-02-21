@@ -43,11 +43,10 @@ override_dh_auto_clean:
 override_dh_auto_test:
 	dh_auto_test
 	PYTHONPATH=modules pytest-3
-	PYTHONPATH=modules pytest   --cov-append
 
 override_dh_install:
 	dh_install
 	sed -i "s/@%@package_version@%@/${version}/g;s/@%@copyright_lastyear@%@/${copyrightyear}/" debian/python3-univention-directory-manager-cli/usr/lib/python3/dist-packages/univention/admincli/admin.py
 
 %:
-	dh $@ --with python2,python3,univention-l10n,ucr
+	dh $@ --with python3,univention-l10n,ucr
