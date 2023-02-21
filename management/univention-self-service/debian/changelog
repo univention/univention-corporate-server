@@ -1,3 +1,9 @@
+univention-self-service (7.0.0-1) unstable; urgency=medium
+
+  * UCS 5.2-0 version bump
+
+ -- Florian Best <best@univention.de>  Mon, 13 Nov 2023 14:31:06 +0100
+
 univention-self-service (6.0.0-1) unstable; urgency=medium
 
   * UCS 5.1-0 version bump
