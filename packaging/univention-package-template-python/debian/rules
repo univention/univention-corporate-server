@@ -37,4 +37,4 @@ override_dh_auto_install:
 	dh_auto_install
 
 %:
-	dh $@ --with python2,python3
+	dh $@ --with python3
