@@ -10,7 +10,6 @@
 	icon:     base directory
 	version:  only "1.0"
 	notifier: use specific notifier loop 'generic', 'tornado', 'qt'
-	python: Python version the module runs with ('3' or '2')
 	-->
 <!ATTLIST module
 	id CDATA #REQUIRED
@@ -19,7 +18,6 @@
 	version (1.0) #FIXED "1.0"
 	notifier (tornado) #IMPLIED
 	deactivated  CDATA #IMPLIED
-	python CDATA #IMPLIED
 	singleton CDATA #IMPLIED
 	proxy CDATA #IMPLIED
 >
