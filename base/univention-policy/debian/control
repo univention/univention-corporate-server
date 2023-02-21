@@ -54,7 +54,6 @@ Depends:
  ${shlibs:Depends},
 Provides:
  ${python3:Provides},
-Replaces:
 Description: UCS - tool to view group policies
  This package includes the univention_policy_result tool
  that displays all group policies for a given DN.

@@ -43,8 +43,6 @@ Depends:
  ${python3:Depends},
 Provides:
  ${python3:Provides},
-Breaks:
-Replaces:
 Description: UCS - common scripting functions for Python 3 scripts
  This package contains Python functions used by various
  components of UCS.

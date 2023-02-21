@@ -77,8 +77,6 @@ Depends:
  zsync,
  ${misc:Depends},
  ${python3:Depends},
-Breaks:
-Replaces:
 Recommends:
  univention-appcenter,
 Provides:
@@ -152,7 +150,6 @@ Depends:
  univention-apache,
  univention-docker (>= 2.0.0-4),
  ${misc:Depends},
-Provides:
 Description: Docker integration for Univention App Center
  This package contains a Docker integration for certain apps
  of the Univention App Center.

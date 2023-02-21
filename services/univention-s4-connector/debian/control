@@ -28,8 +28,6 @@ Depends:
  python3-univention-heimdal,
  ${misc:Depends},
  ${python3:Depends},
-Breaks:
-Replaces:
 Description: UCS - Modules for connector synchronisation
  This package contains the modules that implement the
  features of UCS Samba4 Connector.

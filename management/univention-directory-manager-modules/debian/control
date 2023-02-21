@@ -93,8 +93,6 @@ Depends:
  shell-univention-lib,
  ${misc:Depends},
  ${python3:Depends},
-Breaks:
-Replaces:
 Description: UCS - Modules for administration tools
  This package contains the Python 3 modules for the command line client that
  implement the features of UCS Directory Manager.
@@ -109,8 +107,6 @@ Architecture: all
 Depends:
  python3-univention-directory-manager (= ${binary:Version}),
  ${misc:Depends},
-Replaces:
-Breaks:
 Description: UCS - Command-line based administration tools
  This package contains command-line based programs to
  manage UCS.

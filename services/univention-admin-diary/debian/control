@@ -48,8 +48,6 @@ Depends:
  python3-univention-admin-diary (= ${binary:Version}),
  ${misc:Depends},
  ${python3:Depends},
-Replaces:
-Breaks:
 Description: Univention Admin Diary backend library
  .
  It is part of Univention Corporate Server (UCS), an

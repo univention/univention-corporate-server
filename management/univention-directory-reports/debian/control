@@ -12,8 +12,6 @@ Build-Depends:
 
 Package: univention-directory-reports
 Architecture: all
-Breaks:
-Replaces:
 Depends:
  python3-univention-directory-reports,
  python3-univention-lib (>= 1.0.25-1),
