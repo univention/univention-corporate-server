@@ -307,8 +307,7 @@ new syntax is best registered in LDAP. This can be done by using
 :ref:`ucs_registerLDAPExtension <join-ucs-register-ldap-extension>` which is
 described in :ref:`join-libraries-shell`.
 
-As an alternative the file can be put into the directories
-:file:`/usr/lib/python2.7/dist-packages/univention/admin/syntax.d/` and
+As an alternative the file can be put into the directory
 :file:`/usr/lib/python3/dist-packages/univention/admin/syntax.d/`.
 
 The following example is comparable to the default example in file
@@ -530,8 +529,7 @@ Hooks provide a mechanism to pre- and post-process the values of *Extended
 Attributes*. Normally, UDM properties are stored as-is in LDAP attributes. Hooks
 can modify the LDAP operations when an object is created, modified, deleted or
 retrieved. They are implemented in Python and the file must be placed in the
-directory :file:`/usr/lib/python2.7/dist-packages/univention/admin/hooks.d/` and
-:file:`/usr/lib/python3/dist-packages/univention/admin/hooks.d/`. The filename
+directory :file:`/usr/lib/python3/dist-packages/univention/admin/hooks.d/`. The filename
 must end with :file:`.py`.
 
 The module :py:mod:`univention.admin.hook` provides the class :py:class:`simpleHook`,
