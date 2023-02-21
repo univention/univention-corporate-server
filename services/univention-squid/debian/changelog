@@ -1,3 +1,9 @@
+univention-squid (15.0.0-1) unstable; urgency=medium
+
+  * Bug #55706: UCS 5.2-0 version bump
+
+ -- Florian Best <best@univention.de>  Thu, 11 Jan 2024 14:49:54 +0100
+
 univention-squid (14.0.0-1) unstable; urgency=medium
 
   * Bug #55706: UCS 5.1-0 version bump
