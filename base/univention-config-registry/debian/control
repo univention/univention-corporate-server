@@ -9,20 +9,6 @@ Build-Depends:
  dh-python,
  libtool,
  libunivention-debug-dev (>= 5.0.6-1),
- python-all,
- python-enum34,
- python-ipaddress,
- python-lazy-object-proxy,
- python-mock,
- python-pytest,
- python-pytest-benchmark,
- python-pytest-cov,
- python-pytest-mock,
- python-pytest-timeout,
- python-setuptools,
- python-six,
- python-typing,
- python-univention-debhelper,
  python3 (>= 3.6) | python3-mock,
  python3-all,
  python3-lazy-object-proxy,
@@ -60,7 +46,6 @@ Depends:
  python3-debian,
  python3-univention-config-registry (= ${source:Version}),
  ${misc:Depends},
- ${python:Depends},
 Replaces:
  shell-univention-lib (<< 8.0.1-21),
  univention-config-registry (<< 7.0.9~),
@@ -81,7 +66,6 @@ Depends:
  univention-config (= ${binary:Version}),
  ${misc:Depends},
  ${perl:Depends},
- ${python:Depends},
 Description: UCS - configuration manager (development files)
  This package contains the files needed to develop packages
  that use univention-config.
@@ -123,22 +107,7 @@ Description: UCS - C interface to configuration manager (development files)
 
 Package: python-univention-config-registry
 Architecture: all
-Depends:
- ifupdown,
- python-enum34,
- python-ipaddress,
- python-lazy-object-proxy,
- python-six,
- python-typing,
- python-univention-debhelper,
- python-univention-namespace,
- ${misc:Depends},
- ${python:Depends},
-Provides:
- ${python:Provides},
-Description: UCS - Python 2 interface to configuration registry
- This package includes the Python interface to the
- UCS configuration manager.
+Description: UCS transitional dummy package
  .
  It is part of Univention Corporate Server (UCS), an
  integrated, directory driven solution for managing

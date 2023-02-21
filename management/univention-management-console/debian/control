@@ -5,11 +5,6 @@ Maintainer: Univention GmbH <packages@univention.de>
 Build-Depends:
  debhelper-compat (=11),
  dh-python,
- python-all,
- python-polib,
- python-sdnotify,
- python-setuptools,
- python2.7,
  python3,
  python3-all,
  python3-polib,
@@ -22,7 +17,6 @@ Standards-Version: 3.7.2
 Package: univention-management-console
 Architecture: all
 Depends:
- python-univention-management-console (= ${source:Version}),
  python3-univention-management-console (= ${source:Version}),
  univention-management-console-module-appcenter,
  univention-management-console-module-apps,
@@ -62,8 +56,6 @@ Depends:
  libpam-oauthbearer,
  libsasl2-modules-oauthbearer,
  pam-saml,
- python-univention-lib (>= 1.0.25-1),
- python-univention-management-console (= ${source:Version}),
  python3-univention-lib,
  python3-univention-management-console (= ${source:Version}),
  shell-univention-lib (>= 1.0.10-1),
@@ -86,36 +78,7 @@ Description: UCS Management Console - server
 
 Package: python-univention-management-console
 Architecture: all
-Depends:
- python-cryptography,
- python-ipaddress,
- python-monotonic,
- python-notifier (>= 0.9.9-1),
- python-openssl,
- python-pam,
- python-polib,
- python-pycurl,
- python-pysaml2,
- python-sdnotify,
- python-setproctitle,
- python-six,
- python-tornado,
- python-typing,
- python-univention,
- python-univention-config-registry,
- python-univention-directory-manager (>=9.0.75-1),
- python-univention-lib (>= 1.0.80),
- univention-join,
- ${misc:Depends},
- ${python:Depends},
-Provides:
- ${python:Provides},
-Description: UCS Management Console - Python 2 Modules
- UCS Management Console is a web based program to manage computers.
- It has an extensible architecture, using modules to implement
- its features. This package contains the backend-daemon, which
- can be installed on any UCS-system to provide functionalities
- for univention-management-console
+Description: UCS transitional dummy package
  .
  This package is part of Univention Corporate Server (UCS),
  an integrated, directory driven solution for managing
@@ -167,14 +130,11 @@ Depends:
  imagemagick,
  inkscape,
  librsvg2-bin,
- python-polib,
- python-univention-config-registry,
  python3-polib,
  python3-univention-config-registry,
  univention-join-dev,
  univention-l10n-dev (>= 7.0.1),
  ${misc:Depends},
- ${python:Depends},
 Description: UCS Management Console - development files
  UCS Management Console is a web based program to manage computers. It has
  an extensible architecture, using modules to implement its
@@ -215,10 +175,6 @@ Depends:
  curl,
  libapache2-mod-wsgi-py3,
  openssl,
- python-defusedxml,
- python-pysaml2,
- python-six,
- python-univention-management-console (= ${source:Version}),
  python3-defusedxml,
  python3-pysaml2,
  python3-six,
