@@ -19,9 +19,6 @@
 0004-56: conffiles/etc/init.d/rpcbind
 0004-56: conffiles/etc/inputrc
 0004-56: conffiles/etc/networks
-0004-56: conffiles/etc/python2.7/sitecustomize.py.d/00header.py
-0004-56: conffiles/etc/python2.7/sitecustomize.py.d/10apport.py
-0004-56: conffiles/etc/python2.7/sitecustomize.py.d/20utf8.py
 # Python substitution in UCR variable name
 0004-12: conffiles/etc/default/ntpdate
 0004-12: conffiles/etc/ntp.conf
