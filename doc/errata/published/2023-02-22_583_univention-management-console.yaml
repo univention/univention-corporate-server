@@ -9,3 +9,6 @@ desc: |
  * The UCR template for the Apache configuration in UMC multiprocessing mode
    has been repaired.
 bug: [55726]
+erratum: 583
+announced: 2023-02-22
+support: core
