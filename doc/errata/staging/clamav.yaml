@@ -1,0 +1,17 @@
+product: ucs
+release: "5.0"
+version: [2, 3]
+scope: ucs_5.0-0-errata5.0-3
+src: clamav
+fix: 0.103.8+dfsg-0+deb10u1A~5.0.3.202302221419
+desc: |
+ This update addresses the following issues:
+ 0.103.7+dfsg-0+deb10u1 (Sun, 04 Dec 2022 22:22:22 +0530)
+ * Non-maintainer upload by the LTS team.
+ * Import 0.103.7 - Update symbol file.
+ * clamav (CVE-2023-20032)
+ * clamav (CVE-2023-20052)
+bug: [55734]
+cve:
+- CVE-2023-20032
+- CVE-2023-20052
