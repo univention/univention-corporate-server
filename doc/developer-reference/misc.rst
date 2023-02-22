@@ -125,9 +125,6 @@ exist:
 ``0018-Debian``
    Checks for Debian packaging issues
 
-``0020-flake8``
-   Checks Python scripts for :command:`flake8` issues
-
 The module and test number may be optionally followed by a filename, line
 number in that file, and column number in that line, where the issue was found.
 After that a message is printed, which describes the issue in more detail.
