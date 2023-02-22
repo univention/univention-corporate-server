@@ -65,7 +65,6 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
             '0011-14': (uub.RESULT_WARN, 'no matching package in debian/control'),
             '0011-15': (uub.RESULT_WARN, 'non-prefixed debhelper file'),
             '0011-16': (uub.RESULT_INFO, 'unknown debhelper file'),
-            '0011-17': (uub.RESULT_WARN, 'debian/control: please use dh-python instead of python-support in Build-Depends'),
             '0011-18': (uub.RESULT_WARN, 'debian/rules: please use --with python2,python3 instead of python_support'),
             '0011-19': (uub.RESULT_WARN, 'parsing error in debian/compat'),
             '0011-20': (uub.RESULT_WARN, 'debian/compat and debian/control disagree on the version for debhelper'),
@@ -137,9 +136,6 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
                 ) if dep
             ) if m
         }
-
-        if 'python-support' in build_depends:
-            self.addmsg('0011-17', 'please use dh-python instead of python-support in Build-Depends', fn_control)
 
         try:
             dep = build_depends['debhelper']
