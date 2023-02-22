@@ -118,7 +118,31 @@ configurable interval by the App Center, if at least one JSON file has
 been written. Once the script has finished a JSON file, the script must
 delete the JSON file.
 
-All files are JSON with one dictionary and the following content:
+.. versionadded:: 5.0-3 ``ListenerUDMVersion``
+
+   ``ListenerUDMVersion`` is a custom configuration for an app. It defines the
+   format version, that the listener uses to pass data from UDM to the app.
+   Possible values are ``1`` and ``2``. If ``ListenerUDMVersion`` isn't defined
+   as custom configuration in the app metadata, the listener uses version ``2``.
+
+   Univention recommends to use ``ListenerUDMVersion`` 2, because it uses the
+   UDM REST API representation.
+
+   .. rubric:: Configuration in App Provider Portal
+
+   To set ``ListenerUDMVersion`` in the App Provider Portal, open the app of
+   interest and navigate to :menuselection:`Advanced --> Custom configuration`.
+   Add a new custom configuration with the key ``ListenerUDMVersion``.
+
+   .. rubric:: Migration to ``ListenerUDMVersion`` 2
+
+   For using version ``2``, app developers need to compare what data they
+   process and how they handle the representation. In best case, they don't
+   need to adjust the listener integration.
+
+All files are JSON with one dictionary and the following content. You find
+logging information about the listener in
+:file:`/var/log/univention/listener_modules/$appid.log`.
 
 ``id``
    A unique identifier for the object holding the value of
@@ -130,18 +154,30 @@ All files are JSON with one dictionary and the following content:
    The distinguished name of the LDAP object.
 
 ``udm_object_type``
-   The type of the object, i.e., "users/user", or "groups/group".
+   The type of the object, for example ``users/user``, or ``groups/group``.
 
 ``object``
-   A dictionary of the attributes of this object.
-   For versions lower than ``2`` in the ``ListenerUDMVersion`` app definition the content is
-   defined by the UDM (Univention Directory Manager) representation of the object. For all other
-   versions the UDM REST API representation of the object is used.
-   If it is null instead, the object has been deleted.
+   A dictionary of the attributes of this object. If ``object`` is ``null``, the
+   object was deleted.
+
+   .. tab:: ``ListenerUDMVersion`` 2
+
+      The listener passes the data in the UDM REST API representation to the
+      ``object`` dictionary.
+
+      For example, refer to
+      :ref:`provision-push-json-listener-udm-version-2-example`.
+
+   .. tab:: ``ListenerUDMVersion`` 1
+
+      The listener passes the data in the UDM representation to the ``object``
+      dictionary. The representation uses strings for boolean values such as
+      ``"OK"``, ``"1"``, ``"0"``, ``"TRUE"``, or ``"FALSE"``.
+
+      For example, refer to
+      :ref:`provision-push-json-listener-udm-version-1-example`.
 
 
-Logging information about the listener can found in
-:file:`/var/log/univention/listener_modules/$appid.log`.
 
 .. _provision-push-script:
 
@@ -181,7 +217,10 @@ JSON example
 This is an example of a JSON file for a user change. It is not complete,
 but should clarify the idea.
 
-For versions higher than ``1``:
+.. _provision-push-json-listener-udm-version-2-example:
+
+JSON example for ``ListenerUDMVersion`` 2
+"""""""""""""""""""""""""""""""""""""""""
 
 .. code:: js
 
@@ -273,7 +312,10 @@ For versions higher than ``1``:
        "udm_object_type": "users/user"
    }
 
-For versions lower than ``2``:
+.. _provision-push-json-listener-udm-version-1-example:
+
+JSON example for ``ListenerUDMVersion`` 1
+"""""""""""""""""""""""""""""""""""""""""
 
 .. code:: js
 
