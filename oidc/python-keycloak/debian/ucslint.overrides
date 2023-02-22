@@ -5,7 +5,6 @@
 0020-F401: keycloak/__init__.py
 0020-W293: keycloak/connection.py
 0020-E302: keycloak/exceptions.py
-0009-7:    keycloak/keycloak_admin.py
 0020-E121: keycloak/keycloak_admin.py
 0020-E127: keycloak/keycloak_admin.py
 0020-E128: keycloak/keycloak_admin.py
