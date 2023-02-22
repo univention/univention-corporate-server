@@ -682,3 +682,15 @@ Provides:
 Description: Test the UDM HTTP API
  This package includes test to verify the functionality of utilities
  from the UDM HTTP API.
+
+Package: ucs-test-keycloak
+Architecture: all
+Depends:
+ python3-pytest-xvfb,
+ ucs-test-libs (= ${source:Version}),
+ ucs-test-selenium (= ${source:Version}),
+ ${misc:Depends},
+Recommends:
+ ucs-test-framework,
+Description: Test scripts for the keycloak app
+ This package includes test-cases for the keycloak app.

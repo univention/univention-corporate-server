@@ -35,10 +35,21 @@ set -e
 
 install_keycloak () {
     echo "univention" > /tmp/pwdfile
+    local app
     if [ -n "$KEYCLOAK_IMAGE" ]; then
         python3 /root/appcenter-change-compose-image.py -a keycloak -i "$KEYCLOAK_IMAGE"
     fi
-    univention-app install keycloak --username=Administrator --pwdfile=/tmp/pwdfile --skip --noninteractive
+    if [ -n "$APPVERSION" ]; then
+        app="keycloak=$APPVERSION"
+    else
+        app="keycloak"
+    fi
+    univention-app install "$app" --username=Administrator --pwdfile=/tmp/pwdfile --skip --noninteractive
+    # for the app specific test
+    echo "keycloak" >>/var/cache/appcenter-installed.txt
+}
+
+keycloak_saml_idp_setup () {
     if [ "$(ucr get server/role)" = "domaincontroller_master" ]; then
         udm portals/entry modify --dn "cn=login-saml,cn=entry,cn=portals,cn=univention,$(ucr get ldap/base)" --set activated=TRUE
     fi

@@ -1293,12 +1293,11 @@ change_template_hostname () {
 	test -e /etc/bind/named.conf.samba4 && ucr commit /etc/bind/named.conf.samba4
 	test -e /etc/postgresql/pam_ldap.conf && ucr commit /etc/postgresql/pam_ldap.conf
 
-	service slapd restart || rv=1
-	service univention-directory-listener restart || rv=1
-	service univention-management-console-server restart || rv=1
-	service univention-management-console-web-server restart || rv=1
-	service apache2  restart || rv=1
-	service postgresql restart || rv=1
+	for service in slapd univention-directory-listener univention-management-console-server univention-management-console-web-server apache2 postgresql; do
+		if service "$service" status 2>/dev/null 1>/dev/null; then
+			service "$service" restart || rv=1
+		fi
+	done
 
 	# register ip and basic setup
 	basic_setup_ucs_joined "$primary_ip" "$admin_password" || rv=1
