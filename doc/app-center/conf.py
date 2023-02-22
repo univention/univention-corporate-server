@@ -43,6 +43,7 @@ extensions = [
     "sphinx_copybutton",
     "sphinx_sitemap",
     "sphinx.ext.intersphinx",
+    "sphinx_inline_tabs",
 ]
 
 intersphinx_mapping = {
