@@ -1,3 +1,10 @@
+ucs-test (10.0.10-9) unstable; urgency=medium
+
+  * Bug #55747: more keycloak tests
+    univention/components/keycloak-app#50
+
+ -- Felix Botner <botner@univention.de>  Wed, 22 Feb 2023 21:53:11 +0100
+
 ucs-test (10.0.10-8) unstable; urgency=low
 
   * Bug #33684: Fix 01/17_nfsmounts
@@ -6,7 +13,7 @@ ucs-test (10.0.10-8) unstable; urgency=low
 
 ucs-test (10.0.10-7) unstable; urgency=medium
 
-  * Issue #50: added keycloak tests
+  * Bug #55747: added keycloak tests
     univention/components/keycloak-app#50
 
  -- Felix Botner <botner@univention.de>  Wed, 22 Feb 2023 18:06:06 +0100

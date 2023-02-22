@@ -34,3 +34,9 @@ def test_login_domain_admins_wrong_password_fails(keycloak_adm_login, keycloak_c
     with udm_test.UCSTestUDM() as udm:
         username = udm.create_user(password="univention", primaryGroup=domain_admins_dn)[1]
         assert keycloak_adm_login(username, "password", fails_with=keycloak_config.wrong_password_msg)
+
+
+def test_login_domain_admins_pwdChangeNextLogin(keycloak_adm_login, keycloak_config, domain_admins_dn):
+    with udm_test.UCSTestUDM() as udm:
+        username = udm.create_user(password="univention", primaryGroup=domain_admins_dn, pwdChangeNextLogin=1)[1]
+        assert keycloak_adm_login(username, "univention", new_password="Univention.99")

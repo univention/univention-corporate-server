@@ -86,6 +86,7 @@ def keycloak_config(ucr: ConfigRegistry) -> SimpleNamespace:
         "password_confirm_id": "password-confirm",
         "password_new_id": "password-new",
         "password_update_feedback_class": "pf-c-alert__title kc-feedback-text",
+        "password_change_button_id": "kc-form-buttons",
     }
     return SimpleNamespace(**config)
 
@@ -134,16 +135,16 @@ def portal_login_via_keycloak(selenium: webdriver.Chrome, portal_config: SimpleN
                 error = portal.find_element_by_css_selector(f"span[class='{keycloak_config.password_update_feedback_class}']")
                 assert fails_with == error.text
                 assert error.is_displayed()
-            else:
-                wait_for_id(portal, portal_config.header_menu_id)
+                return True
         # login succeeded?
         else:
             if fails_with:
                 error = portal.find_element_by_id(keycloak_config.input_error_id)
                 assert fails_with == error.text
                 assert error.is_displayed()
-            else:
-                wait_for_id(portal, portal_config.header_menu_id)
+                return True
+        # check that we are logged in
+        wait_for_id(portal, portal_config.header_menu_id)
         return True
     return _func
 
@@ -155,11 +156,12 @@ def _keycloak_password_change(
     new_password: str,
     new_password_confirm: str,
 ) -> None:
+    # TODO verify password change error message
     wait_for_id(keycloak, keycloak_config.kc_passwd_update_form_id)
     keycloak.find_element_by_id(keycloak_config.password_id).send_keys(password)
     keycloak.find_element_by_id(keycloak_config.password_new_id).send_keys(new_password)
     keycloak.find_element_by_id(keycloak_config.password_confirm_id).send_keys(new_password_confirm)
-    keycloak.find_element_by_id("kc-form-buttons").click()
+    keycloak.find_element_by_id(keycloak_config.password_change_button_id).click()
 
 
 def _keycloak_login(keycloak: webdriver.Chrome, keycloak_config: SimpleNamespace, username: str, password: str) -> None:
@@ -178,16 +180,34 @@ def keycloak_adm_login(selenium: webdriver.Chrome, keycloak_config: SimpleNamesp
     assert selenium.title == keycloak_config.title
     keycloak = selenium
 
-    def _func(username: str, password: str, fails_with: str = "") -> bool:
+    def _func(
+        username: str,
+        password: str,
+        fails_with: str = "",
+        new_password: str = "",
+        new_password_confirm: str = "",
+    ) -> bool:
         admin_console = wait_for_class(keycloak, keycloak_config.admin_console_class)[0]
         admin_console.find_element_by_tag_name("a").click()
         _keycloak_login(keycloak, keycloak_config, username, password)
-        if fails_with:
-            error = keycloak.find_element_by_id(keycloak_config.input_error_id)
-            assert fails_with == error.text
-            assert error.is_displayed()
+        # check password change
+        if new_password:
+            new_password_confirm = new_password_confirm if new_password_confirm else new_password
+            _keycloak_password_change(keycloak, keycloak_config, password, new_password, new_password_confirm)
+            if fails_with:
+                error = keycloak.find_element_by_css_selector(f"span[class='{keycloak_config.password_update_feedback_class}']")
+                assert fails_with == error.text
+                assert error.is_displayed()
+                return True
+        # login succeeded
         else:
-            wait_for_class(keycloak, keycloak_config.realm_selector_class)
+            if fails_with:
+                error = keycloak.find_element_by_id(keycloak_config.input_error_id)
+                assert fails_with == error.text
+                assert error.is_displayed()
+                return True
+        # check that we are logged in
+        wait_for_class(keycloak, keycloak_config.realm_selector_class)
         return True
 
     return _func
