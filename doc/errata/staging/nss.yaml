@@ -6,12 +6,10 @@ src: nss
 fix: 2:3.26.2-1.1+deb9u6
 desc: |
  This update addresses the following issue:
- 2:3.26.2-1.1+deb9u6 (Mon, 20 Feb 2023 23:09:45 +0100)
- * Non-maintainer upload by the ELTS team.
- * Fix CVE-2023-0767: Christian Holler discovered that incorrect handling of
-   PKCS 12 Safe Bag attributes in nss, the Mozilla Network Security Service
-   library, may result in execution of arbitrary code if a specially crafted
-   PKCS 12 certificate bundle is processed.
+ * CVE-2023-0767: incorrect handling of PKCS 12 Safe Bag attributes in the
+   Mozilla Network Security Service (NSS) library, may result in execution of
+   arbitrary code if a specially crafted PKCS 12 certificate bundle is
+   processed.
 bug: [55744]
 cve:
 - CVE-2023-0767
