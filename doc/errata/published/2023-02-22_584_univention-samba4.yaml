@@ -10,3 +10,6 @@ desc: |
    invalid values in the attributes `xidNumber` of the file `idmap.ldb`.
    During package update they will be fixed.
 bug: [55686]
+erratum: 584
+announced: 2023-02-22
+support: core
