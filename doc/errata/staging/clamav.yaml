@@ -1,0 +1,22 @@
+product: ucs
+release: "4.4"
+version: [9]
+scope: ucs_4.4-0-errata4.4-9
+src: clamav
+fix: 0.103.8+dfsg-0+deb9u1A~4.4.9.202302221422
+desc: |
+ This update addresses the following issues:
+ 0.103.7+dfsg-0+deb9u1 (Mon, 05 Dec 2022 15:43:46 +0530)
+ * Non-maintainer upload by the ELTS Team.
+ * New upstream version 0.103.7+dfsg
+ * Update symbol file.
+ 0.103.8+dfsg-0+deb9u1 (Mon, 20 Feb 2023 18:34:21 +0100)
+ * New upstream release. - CVE-2023-20032 (Possible RCE in the HFS+ file
+   parser). - CVE-2023-20052 (Possible information leak in the DMG file
+   parser).
+ * Update symbols and clamav compatibility level.
+ * debian/libclamav9.symbols: - add Build-Depends-Package.
+bug: [55741]
+cve:
+- CVE-2023-20032
+- CVE-2023-20052
