@@ -4,18 +4,6 @@ E:0009-3: src/nur24.py:1: file specifies wrong Python version in hashbang
 E:0009-3: src/nur25.py:1: file specifies wrong Python version in hashbang
 E:0009-3: src/py35.py:1: file specifies wrong Python version in hashbang
 E:0009-3: src/py37.py:1: file specifies wrong Python version in hashbang
-E:0009-5: src/haskey-without-hashbang.py:7:9: dict.has_key is deprecated in python3 - please use "if key in dict:"
-	    if y.has_key('foo '):
-	        ^^^^^^^^^
-E:0009-5: src/haskey-without-hashbang.py:9:9: dict.has_key is deprecated in python3 - please use "if key in dict:"
-	    if x.has_key('foo'):
-	        ^^^^^^^^^
-E:0009-5: src/haskey.py:10:9: dict.has_key is deprecated in python3 - please use "if key in dict:"
-	    if x.has_key('foo'):
-	        ^^^^^^^^^
-E:0009-5: src/haskey.py:8:9: dict.has_key is deprecated in python3 - please use "if key in dict:"
-	    if y.has_key('foo '):
-	        ^^^^^^^^^
 E:0009-6: src/haskey-without-hashbang.py:15:5: raise "text" is deprecated in python3
 	    raise "Error"
 	    ^^^^^^^^^^^^^

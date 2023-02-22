@@ -7,8 +7,6 @@
 0010-2: tmp/dojox/storage/buildFlashStorage.sh
 0010-2: tmp/dojox/flash/tests/buildFlashTest.sh
 0010-2: tmp/dojox/date/tests/tztests_from_zdump.pl
-0009-5: tmp/dojo/tests/io/upload.cgi
-0009-5: tmp/dojo/tests/io/upload.cgi
 0009-2: tmp/dojo/tests/io/upload.cgi
 0008-4: build/umc/en.po
 0008-4: tmp/umc/en.po
