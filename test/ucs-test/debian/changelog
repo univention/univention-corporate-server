@@ -1,3 +1,9 @@
+ucs-test (10.0.10-8) unstable; urgency=low
+
+  * Bug #33684: Fix 01/17_nfsmounts
+
+ -- Philipp Hahn <hahn@univention.de>  Wed, 22 Feb 2023 20:28:56 +0100
+
 ucs-test (10.0.10-7) unstable; urgency=medium
 
   * Issue #50: added keycloak tests
