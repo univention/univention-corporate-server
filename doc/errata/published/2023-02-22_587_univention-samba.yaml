@@ -10,3 +10,6 @@ desc: |
    to avoid problems on system that doesn't have `univention-samba`
    installed.
 bug: [54390]
+erratum: 587
+announced: 2023-02-22
+support: core
