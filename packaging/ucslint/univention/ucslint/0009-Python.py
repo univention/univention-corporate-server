@@ -50,7 +50,6 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
             '0009-9': (uub.RESULT_ERROR, 'hashbang contains more than one option'),
             '0009-10': (uub.RESULT_WARN, 'invalid Python string literal escape sequence'),
             '0009-11': (uub.RESULT_STYLE, 'Use uldap.searchDn() instead of uldap.search(attr=["dn"])'),
-            '0009-12': (uub.RESULT_ERROR, 'variable names must not use reserved Python keywords'),
             '0009-13': (uub.RESULT_STYLE, 'variable names should not use internal Python keywords'),
         }
 
@@ -125,9 +124,6 @@ class FindVariables(ast.NodeVisitor):
         self.fn = fn
 
     def visit_Name(self, node: ast.Name) -> None:
-        if node.id in PYTHON_RESERVED:
-            self.check.addmsg('0009-12', 'Variable uses reserved Python keyword: %r' % node.id, self.fn, node.lineno, node.col_offset)
-
         if node.id in PYTHON_INTERNAL:
             self.check.addmsg('0009-13', 'Variable uses internal Python keyword: %r' % node.id, self.fn, node.lineno, node.col_offset)
 
@@ -141,46 +137,6 @@ class FindAssign(ast.NodeVisitor):
             self.visitor.visit(target)
 
 
-PYTHON_RESERVED = """
-adef
-and
-as
-assert
-async
-await
-break
-class
-continue
-def
-del
-elif
-else
-except
-exec
-False
-finally
-for
-from
-global
-if
-import
-in
-is
-lambda
-None
-nonlocal
-not
-or
-pass
-print
-raise
-return
-True
-try
-while
-with
-yield
-""".split()
 # <https://docs.python.org/2.7/reference/lexical_analysis.html#keywords>
 # <https://docs.python.org/3.8/reference/lexical_analysis.html#keywords>
 PYTHON_INTERNAL = """
