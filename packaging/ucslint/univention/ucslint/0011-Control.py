@@ -61,7 +61,6 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
             '0011-5': (uub.RESULT_ERROR, 'wrong maintainer - should be "Univention GmbH <packages@univention.de>"'),
             '0011-9': (uub.RESULT_ERROR, 'cannot determine source package name'),
             '0011-10': (uub.RESULT_ERROR, 'parsing error in debian/control'),
-            '0011-12': (uub.RESULT_ERROR, 'debian/control: please use python-support instead of python-central in Build-Depends'),
             '0011-13': (uub.RESULT_WARN, 'debian/control: ucslint is missing in Build-Depends'),
             '0011-14': (uub.RESULT_WARN, 'no matching package in debian/control'),
             '0011-15': (uub.RESULT_WARN, 'non-prefixed debhelper file'),
@@ -138,9 +137,6 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
                 ) if dep
             ) if m
         }
-
-        if 'python-central' in build_depends:
-            self.addmsg('0011-12', 'please use python-support instead of python-central in Build-Depends', fn_control)
 
         if 'python-support' in build_depends:
             self.addmsg('0011-17', 'please use dh-python instead of python-support in Build-Depends', fn_control)
