@@ -9,3 +9,6 @@ desc: |
  * A regression introduced in UCS 5.0-3 has been fixed which caused that
    accessing available password reset methods was not possible anymore.
 bug: [55684]
+erratum: 585
+announced: 2023-02-22
+support: core
