@@ -30,7 +30,6 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-import ast
 import re
 
 import univention.ucslint.base as uub
@@ -50,7 +49,6 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
             '0009-9': (uub.RESULT_ERROR, 'hashbang contains more than one option'),
             '0009-10': (uub.RESULT_WARN, 'invalid Python string literal escape sequence'),
             '0009-11': (uub.RESULT_STYLE, 'Use uldap.searchDn() instead of uldap.search(attr=["dn"])'),
-            '0009-13': (uub.RESULT_STYLE, 'variable names should not use internal Python keywords'),
         }
 
     RE_HASHBANG = re.compile(r'''^#!\s*/usr/bin/python(?:([0-9.]+))?(?:(\s+)(?:(\S+)(\s.*)?)?)?$''')
@@ -109,123 +107,3 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
                     continue
 
                 self.addmsg('0009-10', 'invalid Python string literal: %s' % (txt,), fn, row, col)
-
-            try:
-                tree = ast.parse(tester.raw, fn)
-                visitor = FindAssign(self, fn)
-                visitor.visit(tree)
-            except Exception as ex:
-                self.addmsg('0009-1', 'Parsing failed: %s' % ex, fn)
-
-
-class FindVariables(ast.NodeVisitor):
-    def __init__(self, check: uub.UniventionPackageCheckDebian, fn: str) -> None:
-        self.check = check
-        self.fn = fn
-
-    def visit_Name(self, node: ast.Name) -> None:
-        if node.id in PYTHON_INTERNAL:
-            self.check.addmsg('0009-13', 'Variable uses internal Python keyword: %r' % node.id, self.fn, node.lineno, node.col_offset)
-
-
-class FindAssign(ast.NodeVisitor):
-    def __init__(self, check: uub.UniventionPackageCheckDebian, fn: str) -> None:
-        self.visitor = FindVariables(check, fn)
-
-    def visit_Assign(self, node: ast.Assign) -> None:
-        for target in node.targets:
-            self.visitor.visit(target)
-
-
-# <https://docs.python.org/2.7/reference/lexical_analysis.html#keywords>
-# <https://docs.python.org/3.8/reference/lexical_analysis.html#keywords>
-PYTHON_INTERNAL = """
-abs
-all
-any
-apply
-BaseException
-basestring
-bin
-bool
-buffer
-bytearray
-bytes
-callable
-chr
-classmethod
-cmp
-coerce
-compile
-complex
-copyright
-credits
-delattr
-dict
-dir
-divmod
-Ellipsis
-enumerate
-eval
-Exception
-execfile
-exit
-file
-filter
-float
-format
-frozenset
-getattr
-globals
-hasattr
-hash
-help
-hex
-id
-input
-int
-intern
-isinstance
-issubclass
-iter
-lambda
-len
-license
-list
-locals
-long
-map
-max
-memoryview
-min
-next
-object
-oct
-open
-ord
-pow
-property
-quit
-range
-raw_input
-reduce
-reload
-repr
-reversed
-round
-set
-setattr
-slice
-sorted
-staticmethod
-str
-sum
-super
-tuple
-type
-unichr
-unicode
-vars
-xrange
-zip
-""".split()
