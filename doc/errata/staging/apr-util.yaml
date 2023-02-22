@@ -6,7 +6,7 @@ src: apr-util
 fix: 1.6.1-4+deb10u1
 desc: |
  This update addresses the following issue:
- * out-of-bounds writes in the apr_base64 (CVE-2022-25147)
+ * Out-of-bounds writes in the `apr_base64` (CVE-2022-25147)
 bug: [55738]
 cve:
 - CVE-2022-25147
