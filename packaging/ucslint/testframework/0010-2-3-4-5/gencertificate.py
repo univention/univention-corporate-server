@@ -71,8 +71,8 @@ def handler(dn, new, old):
 
 
 def set_permissions(tmp1, directory, filename):
-    global uidNumber
-    global gidNumber
+    global uidNumber  # noqa: PLW0602
+    global gidNumber  # noqa: PLW0602
 
     univention.debug.debug(univention.debug.LISTENER, univention.debug.ERROR, 'CERTIFICATE: Set permissions for = %s with owner/group %s/%s' % (directory, gidNumber, uidNumber))
     os.chown(directory, uidNumber, gidNumber)
