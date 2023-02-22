@@ -14,3 +14,6 @@ desc: |
    `/etc/fetchmailrc` when there are entries from UIDs with a single character
    or with other valid characters like "'".
 bug: [55681, 55682]
+erratum: 582
+announced: 2023-02-22
+support: core
