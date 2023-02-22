@@ -8,7 +8,6 @@ def main():
     print _('Dieser Test ist ok')
     print _('Hier lieg auch %d Problem vor') % 0
     x = 'hier'
-    raise "Error"
 
 
 main()
