@@ -6,11 +6,10 @@ src: clamav
 fix: 0.103.8+dfsg-0+deb10u1A~5.0.3.202302221419
 desc: |
  This update addresses the following issues:
- 0.103.7+dfsg-0+deb10u1 (Sun, 04 Dec 2022 22:22:22 +0530)
- * Non-maintainer upload by the LTS team.
- * Import 0.103.7 - Update symbol file.
- * clamav (CVE-2023-20032)
- * clamav (CVE-2023-20052)
+ * CVE-2023-20032: Fixed a possible remote code execution vulnerability in the
+   HFS+ file parser.
+ * CVE-2023-20052: Fixed a possible remote information leak vulnerability in
+   the DMG file parser.
 bug: [55734]
 cve:
 - CVE-2023-20032
