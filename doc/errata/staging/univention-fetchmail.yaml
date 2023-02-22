@@ -6,11 +6,11 @@ src: univention-fetchmail
 fix: 13.0.5-3A~5.0.0.202302200925
 desc: |
  This update addresses the following issues:
- * The hooks, syntax files and scripts are now installed
-   on the univention-fetchmail-schema package to avoid
-   errors in installations where univention-fetchmail
-   is installed on Managed Nodes or Replica Directory Nodes.
- * The fetchmail listener now correctly loads /etc/fetchmailrc
-   when there are entries from uids with a single character
+ * The hooks, syntax files and scripts are now installed on the package
+   `univention-fetchmail-schema` to avoid errors in installations where
+   `univention-fetchmail` is installed on Managed Nodes or Replica Directory
+   Nodes.
+ * The listener module `fetchmail` now correctly loads the file
+   `/etc/fetchmailrc` when there are entries from UIDs with a single character
    or with other valid characters like "'".
 bug: [55681, 55682]
