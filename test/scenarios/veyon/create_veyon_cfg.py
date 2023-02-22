@@ -32,7 +32,7 @@ def main():
         max_windows_hosts = 5
     if args.windows_clients > max_windows_hosts:
         parser.error(
-            f"{args.windows_clients} windows clients, this seems excessive, aborting!",
+            "{} windows clients, this seems excessive, aborting!".format(args.windows_clients),
         )
     config = ConfigParser(interpolation=None)
     config.read(template_file)
@@ -44,8 +44,8 @@ def main():
     ip_list = "[windows_IP] "
     section = ""
     for i in range(2, args.windows_clients + 1):
-        section = f"windows{i}"
-        ip_list += f"[{section}_IP] "
+        section = "windows{}".format(i)
+        ip_list += "[{}_IP] ".format(section)
         config.add_section(section)
         for option, value in windows_section:
             config.set(section, option, value)
@@ -56,8 +56,8 @@ def main():
     for env in environment.split("\n"):
         if env.startswith("UCS_ENV_WINDOWS_CLIENTS="):
             continue
-        new_environment += f"{env}\n"
-    new_environment += f"UCS_ENV_WINDOWS_CLIENTS={ip_list}\n"
+        new_environment += "{}\n".format(env)
+    new_environment += "UCS_ENV_WINDOWS_CLIENTS={}\n".format(ip_list)
     config.set("Global", "environment", new_environment)
 
     config.write(sys.stdout)
