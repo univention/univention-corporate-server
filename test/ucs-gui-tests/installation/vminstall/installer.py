@@ -81,16 +81,8 @@ class Installer(object):
         return config
 
     def __set_language(self, language):
-        self.locale_strings = self.__get_strings(language)
+        self.locale_strings = {'en': english.strings, 'de': german.strings, 'fr': french.strings}.get(language)
         self.__set_ocr_language(language)
-
-    def __get_strings(self, language):
-        if language == 'en':
-            return english.strings
-        elif language == 'de':
-            return german.strings
-        elif language == 'fr':
-            return french.strings
 
     def __set_ocr_language(self, language):
         language_iso_639_2 = utils.iso_639_1_to_iso_639_2(language)
