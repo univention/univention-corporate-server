@@ -1,0 +1,12 @@
+product: ucs
+release: "5.0"
+version: [2, 3]
+scope: ucs_5.0-0-errata5.0-3
+src: python-cryptography
+fix: 2.6.1-3+deb10u3
+desc: |
+ This update addresses the following issue:
+ * memory corruption via immutable objects (CVE-2023-23931)
+bug: [55739]
+cve:
+- CVE-2023-23931
