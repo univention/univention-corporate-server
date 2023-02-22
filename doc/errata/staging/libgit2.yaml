@@ -6,13 +6,7 @@ src: libgit2
 fix: 0.25.1+really0.24.6-1+deb9u2
 desc: |
  This update addresses the following issue:
- 0.25.1+really0.24.6-1+deb9u2 (Tue, 21 Feb 2023 18:22:52 +0100)
- * Non-maintainer upload by the LTS Security Team.
- * Backuport upstream fix for CVE-2023-22742
- * Add d/NEWS as the fix for the CVE might -- due to being stricter on
-   certificates -- break setups and additionally stretch's libssh does not
-   support all HostKeyAlgorithms.
- * Make testsuite non-failing (no regression, it failed before already)
+ * CVE-2023-22742: fails to verify SSH keys by default
 bug: [55742]
 cve:
 - CVE-2023-22742
