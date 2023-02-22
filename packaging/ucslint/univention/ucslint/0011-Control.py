@@ -65,7 +65,6 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
             '0011-14': (uub.RESULT_WARN, 'no matching package in debian/control'),
             '0011-15': (uub.RESULT_WARN, 'non-prefixed debhelper file'),
             '0011-16': (uub.RESULT_INFO, 'unknown debhelper file'),
-            '0011-18': (uub.RESULT_WARN, 'debian/rules: please use --with python2,python3 instead of python_support'),
             '0011-19': (uub.RESULT_WARN, 'parsing error in debian/compat'),
             '0011-20': (uub.RESULT_WARN, 'debian/compat and debian/control disagree on the version for debhelper'),
         }
@@ -158,15 +157,6 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
                 pass
 
         self.check_debhelper(path, parser)
-
-        try:
-            fn_rules = os.path.join(path, 'debian', 'rules')
-            with open(fn_rules) as fd:
-                rules = fd.read()
-                if re.search('--with[ =]*["\']?python_support', rules):
-                    self.addmsg('0011-18', 'please use --with python2,python3 instead of python_support', fn_rules)
-        except EnvironmentError:
-            pass
 
     EXCEPTION_FILES = {
         'changelog',  # dh_installchangelogs default
