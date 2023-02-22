@@ -104,7 +104,6 @@ If such a package has been created a few things need to be adjusted
 		  python3-all,
 		  univention-management-console-dev (>= 12.0.2),
 		Standards-Version: 3.5.2
-		XS-Python-Version: all
 
 		Package: univention-management-console-module-ucr
 		Architecture: all

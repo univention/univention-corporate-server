@@ -61,7 +61,6 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
             '0011-5': (uub.RESULT_ERROR, 'wrong maintainer - should be "Univention GmbH <packages@univention.de>"'),
             '0011-9': (uub.RESULT_ERROR, 'cannot determine source package name'),
             '0011-10': (uub.RESULT_ERROR, 'parsing error in debian/control'),
-            '0011-11': (uub.RESULT_WARN, 'debian/control: XS-Python-Version is not required any longer'),
             '0011-12': (uub.RESULT_ERROR, 'debian/control: please use python-support instead of python-central in Build-Depends'),
             '0011-13': (uub.RESULT_WARN, 'debian/control: ucslint is missing in Build-Depends'),
             '0011-14': (uub.RESULT_WARN, 'no matching package in debian/control'),
@@ -91,7 +90,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
             self.addmsg('0011-1', 'failed to open and read file', fn_control)
             return
         except uub.UCSLintException:
-            self.addmsg('0011-11', 'parsing error', fn_control)
+            self.addmsg('0011-1', 'parsing error', fn_control)
             return
 
         compat_version = 0
@@ -129,9 +128,6 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 
         if parser.source_section.get('Maintainer', '') not in 'Univention GmbH <packages@univention.de>':
             self.addmsg('0011-5', 'wrong Maintainer entry - should be "Univention GmbH <packages@univention.de>"', fn_control)
-
-        if parser.source_section.get('XS-Python-Version', ''):
-            self.addmsg('0011-11', 'XS-Python-Version is not required any longer', fn_control)
 
         build_depends = {
             m.group(1): m.groupdict() for m in (
