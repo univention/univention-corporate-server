@@ -6,26 +6,22 @@ src: tiff
 fix: 4.1.0+git191117-2~deb10u7
 desc: |
  This update addresses the following issues:
- * out-of-bounds read in extractContigSamplesShifted16bits() in
-   tools/tiffcrop.c (CVE-2023-0795)
- * out-of-bounds read in extractContigSamplesShifted24bits() in
-   tools/tiffcrop.c (CVE-2023-0796)
- * out-of-bounds read in _TIFFmemcpy() in libtiff/tif_unix.c when called by
-   functions in tools/tiffcrop.c (CVE-2023-0797)
- * out-of-bounds read in extractContigSamplesShifted8bits() in
-   tools/tiffcrop.c (CVE-2023-0798)
- * use-after-free in extractContigSamplesShifted32bits() in tools/tiffcrop.c
-   (CVE-2023-0799)
- * out-of-bounds write in extractContigSamplesShifted16bits() in
-   tools/tiffcrop.c (CVE-2023-0800)
- * out-of-bounds write in _TIFFmemcpy() in libtiff/tif_unix.c when called by
-   functions in tools/tiffcrop.c (CVE-2023-0801)
- * out-of-bounds write in extractContigSamplesShifted32bits() in
-   tools/tiffcrop.c (CVE-2023-0802)
- * out-of-bounds write in extractContigSamplesShifted16bits() in
-   tools/tiffcrop.c (CVE-2023-0803)
- * out-of-bounds write in extractContigSamplesShifted24bits() in
-   tools/tiffcrop.c (CVE-2023-0804)
+ * Out-of-bounds read in `extractContigSamplesShifted16bits()` (CVE-2023-0795)
+ * Out-of-bounds read in `extractContigSamplesShifted24bits()` (CVE-2023-0796)
+ * Out-of-bounds read in `_TIFFmemcpy()` in `libtiff/tif_unix.c` when called
+   by functions (CVE-2023-0797)
+ * Out-of-bounds read in `extractContigSamplesShifted8bits()` (CVE-2023-0798)
+ * Use-after-free in `extractContigSamplesShifted32bits()` (CVE-2023-0799)
+ * Out-of-bounds write in `extractContigSamplesShifted16bits()`
+   (CVE-2023-0800)
+ * Out-of-bounds write in `_TIFFmemcpy()` in `libtiff/tif_unix.c` when called
+   by functions (CVE-2023-0801)
+ * Out-of-bounds write in `extractContigSamplesShifted32bits()`
+   (CVE-2023-0802)
+ * Out-of-bounds write in `extractContigSamplesShifted16bits()`
+   (CVE-2023-0803)
+ * Out-of-bounds write in `extractContigSamplesShifted24bits()`
+   (CVE-2023-0804)
 bug: [55736]
 cve:
 - CVE-2023-0795
