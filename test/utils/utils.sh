@@ -1350,7 +1350,7 @@ basic_setup_ucs_joined () {
 		fi
 		ucr unset nameserver2
 		systemctl restart univention-directory-listener || rv=1
-		univention-register-network-address || rv=1
+		univention-register-network-address --verbose || rv=1
 		service nscd restart || rv=1
 	fi
 
