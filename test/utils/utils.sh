@@ -345,6 +345,7 @@ switch_app_center() {
 	if [ "$UCS_TEST_APPCENTER" = "true" ]; then
 		switch_to_test_app_center
 	elif [ "$(ucr get repository/app_center/server)" != "appcenter.software-univention.de" ]; then
+		univention-install --yes univention-appcenter-dev
 		univention-app dev-use-test-appcenter --revert
 	fi
 }

@@ -50,6 +50,7 @@ install_kelvin_api () {
     if [[ $UCS_ENV_KELVIN_IMAGE =~ ^gitregistry.knut.univention.de.* ]]; then
         docker login -u "$GITLAB_REGISTRY_TOKEN" -p "$GITLAB_REGISTRY_TOKEN_SECRET" gitregistry.knut.univention.de
     fi
+    univention-install --yes univention-appcenter-dev
     univention-app dev-set ucsschool-kelvin-rest-api "DockerImage=$UCS_ENV_KELVIN_IMAGE"
   fi
   univention-app install ucsschool-kelvin-rest-api --noninteractive --username Administrator --pwdfile /tmp/univention --set ucsschool/kelvin/processes=0 ucsschool/kelvin/log_level=DEBUG
