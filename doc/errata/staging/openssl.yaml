@@ -6,10 +6,8 @@ src: openssl
 fix: 1.1.0l-1~deb9u8
 desc: |
  This update addresses the following issues:
- 1.1.0l-1~deb9u8 (Wed, 22 Feb 2023 09:33:30 +0100)
- * Non-maintainer upload by the ELTS Team.
- * CVE-2023-0215 (Use-after-free following BIO_new_NDEF).
- * CVE-2023-0286 (X.400 address type confusion in X.509 GeneralName).
+ * Use-after-free following `BIO_new_NDEF` (CVE-2023-0215)
+ * X.400 address type confusion in X.509 `GeneralName` (CVE-2023-0286)
 bug: [55748]
 cve:
 - CVE-2023-0215
