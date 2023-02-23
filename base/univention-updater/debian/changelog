@@ -1,3 +1,9 @@
+univention-updater (15.0.6-4) unstable; urgency=low
+
+  * Bug #55667: Update UMC links to future release notes.
+
+ -- Philipp Hahn <hahn@univention.de>  Thu, 23 Feb 2023 14:36:24 +0100
+
 univention-updater (15.0.6-3) unstable; urgency=low
 
   * Bug #55640: Fix shell abort error in preup.sh

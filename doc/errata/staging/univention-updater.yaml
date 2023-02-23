@@ -1,0 +1,10 @@
+product: ucs
+release: '5.0'
+version: [3]
+scope: ucs_5.0-0-errata5.0-3
+src: univention-updater
+fix: 15.0.6-4
+desc: |-
+  This update addresses the following issues:
+  * Fix the link to the release notes of future UCS releases.
+bug: [55667]
