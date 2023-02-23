@@ -28,7 +28,9 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
+import os
 from types import SimpleNamespace
+from typing import Optional
 
 import pytest
 from selenium import webdriver
@@ -36,6 +38,21 @@ from utils import get_portal_tile, wait_for_class, wait_for_id
 
 from univention.config_registry import ConfigRegistry
 from univention.lib.misc import custom_groupname
+
+
+@pytest.fixture()
+def keycloak_secret() -> Optional[str]:
+    secret_file = "/etc/keycloak.secret"
+    password = None
+    if os.path.isfile(secret_file):
+        with open(secret_file) as fd:
+            password = fd.read().strip()
+    return password
+
+
+@pytest.fixture()
+def keycloak_admin() -> str:
+    return "admin"
 
 
 @pytest.fixture()
@@ -124,27 +141,31 @@ def portal_login_via_keycloak(selenium: webdriver.Chrome, portal_config: SimpleN
         new_password: str = "",
         new_password_confirm: str = "",
     ) -> bool:
-        get_portal_tile(portal, portal_config.sso_login_tile_de, portal_config).click()
-        # login
-        _keycloak_login(portal, keycloak_config, username, password)
-        # check password change
-        if new_password:
-            new_password_confirm = new_password_confirm if new_password_confirm else new_password
-            _keycloak_password_change(portal, keycloak_config, password, new_password, new_password_confirm)
-            if fails_with:
-                error = portal.find_element_by_css_selector(f"span[class='{keycloak_config.password_update_feedback_class}']")
-                assert fails_with == error.text
-                assert error.is_displayed()
-                return True
-        # login succeeded?
-        else:
-            if fails_with:
-                error = portal.find_element_by_id(keycloak_config.input_error_id)
-                assert fails_with == error.text
-                assert error.is_displayed()
-                return True
-        # check that we are logged in
-        wait_for_id(portal, portal_config.header_menu_id)
+        try:
+            get_portal_tile(portal, portal_config.sso_login_tile_de, portal_config).click()
+            # login
+            _keycloak_login(portal, keycloak_config, username, password)
+            # check password change
+            if new_password:
+                new_password_confirm = new_password_confirm if new_password_confirm else new_password
+                _keycloak_password_change(portal, keycloak_config, password, new_password, new_password_confirm)
+                if fails_with:
+                    error = portal.find_element_by_css_selector(f"span[class='{keycloak_config.password_update_feedback_class}']")
+                    assert fails_with == error.text
+                    assert error.is_displayed()
+                    return True
+            # login succeeded?
+            else:
+                if fails_with:
+                    error = portal.find_element_by_id(keycloak_config.input_error_id)
+                    assert fails_with == error.text
+                    assert error.is_displayed()
+                    return True
+            # check that we are logged in
+            wait_for_id(portal, portal_config.header_menu_id)
+        except Exception:
+            print(portal.page_source)
+            raise
         return True
     return _func
 
@@ -187,27 +208,31 @@ def keycloak_adm_login(selenium: webdriver.Chrome, keycloak_config: SimpleNamesp
         new_password: str = "",
         new_password_confirm: str = "",
     ) -> bool:
-        admin_console = wait_for_class(keycloak, keycloak_config.admin_console_class)[0]
-        admin_console.find_element_by_tag_name("a").click()
-        _keycloak_login(keycloak, keycloak_config, username, password)
-        # check password change
-        if new_password:
-            new_password_confirm = new_password_confirm if new_password_confirm else new_password
-            _keycloak_password_change(keycloak, keycloak_config, password, new_password, new_password_confirm)
-            if fails_with:
-                error = keycloak.find_element_by_css_selector(f"span[class='{keycloak_config.password_update_feedback_class}']")
-                assert fails_with == error.text
-                assert error.is_displayed()
-                return True
-        # login succeeded
-        else:
-            if fails_with:
-                error = keycloak.find_element_by_id(keycloak_config.input_error_id)
-                assert fails_with == error.text
-                assert error.is_displayed()
-                return True
-        # check that we are logged in
-        wait_for_class(keycloak, keycloak_config.realm_selector_class)
+        try:
+            admin_console = wait_for_class(keycloak, keycloak_config.admin_console_class)[0]
+            admin_console.find_element_by_tag_name("a").click()
+            _keycloak_login(keycloak, keycloak_config, username, password)
+            # check password change
+            if new_password:
+                new_password_confirm = new_password_confirm if new_password_confirm else new_password
+                _keycloak_password_change(keycloak, keycloak_config, password, new_password, new_password_confirm)
+                if fails_with:
+                    error = keycloak.find_element_by_css_selector(f"span[class='{keycloak_config.password_update_feedback_class}']")
+                    assert fails_with == error.text
+                    assert error.is_displayed()
+                    return True
+            # login succeeded
+            else:
+                if fails_with:
+                    error = keycloak.find_element_by_id(keycloak_config.input_error_id)
+                    assert fails_with == error.text
+                    assert error.is_displayed()
+                    return True
+            # check that we are logged in
+            wait_for_class(keycloak, keycloak_config.realm_selector_class)
+        except Exception:
+            print(keycloak.page_source)
+            raise
         return True
 
     return _func
