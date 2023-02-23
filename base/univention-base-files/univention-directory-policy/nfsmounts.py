@@ -40,6 +40,7 @@ import argparse
 import os
 import subprocess
 import sys
+from typing import IO, List, Optional, Set, Tuple
 
 import ldap
 from ldap.filter import filter_format
@@ -60,13 +61,13 @@ ldap_hostdn = configRegistry.get('ldap/hostdn')
 MAGIC_LDAP = '#LDAP Entry DN:'
 
 
-def debug(msg, out=sys.stderr):
+def debug(msg: str, out: IO[str] = sys.stderr) -> None:
     """Print verbose information 'msg' to 'out'."""
     if verbose:
         print(msg, file=out)
 
 
-def exit(result, message=None):
+def exit(result: int, message: Optional[str] = None) -> None:
     """Exit with optional error message."""
     script = os.path.basename(sys.argv[0])
     if message:
@@ -74,7 +75,7 @@ def exit(result, message=None):
     sys.exit(result)
 
 
-def query_policy(host_dn, server=None, password_file="/etc/machine.secret", verbose=False):
+def query_policy(host_dn: str, server: Optional[str] = None, password_file: str = "/etc/machine.secret", verbose: bool = False) -> Set[str]:
     """Get NFS shares from LDAP as per policy for dn."""
     debug('Retrieving policy for %s...\n' % (host_dn,))
     try:
@@ -86,7 +87,7 @@ def query_policy(host_dn, server=None, password_file="/etc/machine.secret", verb
     return set(results.get('univentionNFSMounts', []))
 
 
-def main():
+def main() -> None:
     # parse command line
     description = "Add NFS mount points from LDAP to /etc/fstab and mount them"
     parser = argparse.ArgumentParser(description=description)
@@ -107,7 +108,7 @@ def main():
     mount(to_mount)
 
 
-def update_fstab(args, simulate):
+def update_fstab(args: argparse.Namespace, simulate: bool) -> Set[str]:
     """remove all nfs mounts from the fstab"""
     debug("Rewriting /etc/fstab...\n")
     current_fstab = fstab.File('/etc/fstab')
@@ -141,14 +142,14 @@ def update_fstab(args, simulate):
     return to_mount
 
 
-def get_nfs_data(nfs_mount, entries):
+def get_nfs_data(nfs_mount: str, entries: List[fstab.Entry]) -> Optional[Tuple[str, str, str]]:
     fields = nfs_mount.split(' ')  # dn_univentionShareNFS mount_point
     dn = fields[0]
     fqdn = "%(hostname)s.%(domainname)s" % configRegistry
     lo = univention.uldap.getMachineConnection()
     if not dn:
         debug('no dn, skipping\n')
-        return
+        return None
     # get univention share host and path for dn
     try:
         result = lo.lo.search_s(
@@ -157,7 +158,7 @@ def get_nfs_data(nfs_mount, entries):
             'objectclass=*',
             attrlist=['univentionShareHost', 'univentionSharePath'])
     except ldap.NO_SUCH_OBJECT:
-        return
+        return None
 
     try:
         attributes = result[0][1]
@@ -165,26 +166,26 @@ def get_nfs_data(nfs_mount, entries):
         share_path = attributes['univentionSharePath'][0].decode('utf-8')
     except LookupError:
         debug('not found, skipping\n')
-        return
+        return None
 
     mp = fields[-1] or share_path
     # skip share if target already in fstab
     mount_points = [entry.mount_point for entry in entries]
     if mp in mount_points:
         debug('already mounted on %s, skipping\n' % mp)
-        return
+        return None
 
     # skip share if to self
     if share_host == fqdn and share_path == mp:
         debug('is self, skipping\n')
-        return
+        return None
 
     nfs_path_fqdn = "%s:%s" % (share_host, share_path)
     # skip share if the source is already in the fstab
     sources = [entry.spec for entry in entries]
     if nfs_path_fqdn in sources:
         debug('already mounted from %s, skipping\n' % nfs_path_fqdn)
-        return
+        return None
 
     # get the ip of the share_host
     hostname, _, domain = share_host.partition('.')
@@ -201,12 +202,12 @@ def get_nfs_data(nfs_mount, entries):
     # skip share if the source is already in the fstab
     if nfs_path_ip in sources:
         debug('already mounted from %s, skipping\n' % nfs_path_ip)
-        return
+        return None
 
     return dn, nfs_path_ip, mp
 
 
-def mount(to_mount):
+def mount(to_mount: Set[str]) -> None:
     """mount new NFS filesystems"""
     for mp in sorted(to_mount):
         if not os.path.exists(mp):

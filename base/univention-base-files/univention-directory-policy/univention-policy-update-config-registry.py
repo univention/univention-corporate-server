@@ -53,7 +53,7 @@ def get_policy(host_dn, server=None, password_file="/etc/machine.secret", verbos
     return results
 
 
-def parse_cmdline():
+def parse_cmdline() -> argparse.Namespace:
     """Parse command line and return options and dn."""
     ucr = confreg.ConfigRegistry()
     ucr.load()
@@ -80,7 +80,7 @@ def parse_cmdline():
     return args
 
 
-def main():
+def main() -> None:
     """Get UCR settings from LDAP policy."""
     args = parse_cmdline()
 
