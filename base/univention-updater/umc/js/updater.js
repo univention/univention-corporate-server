@@ -337,7 +337,7 @@ define([
 				msg += '<li>' + _('The update should occur in a <b>maintenance window</b> as some services in the domain may not be available during the update.') + '</li>';
 				msg += '<li>' + _('It is recommended to <b>test the update</b> in a separate test environment prior to the actual update.') + '</li>';
 				if (args.detail) {
-					msg += '<li>' + _('Consider <a href="https://docs.software-univention.de/release-notes-%s-en.html" target="_blank">release notes and changelogs</a> as well as references posted in the <a href="https://help.univention.com/" target="_blank">Univention Help</a>.', args.detail) + '</li>';
+					msg += '<li>' + _('Consider <a href="https://docs.software-univention.de/release-notes/%s/en/index.html" target="_blank">release notes and changelogs</a> as well as references posted in the <a href="https://help.univention.com/" target="_blank">Univention Help</a>.', args.detail) + '</li>';
 				}
 				else {
 					msg += '<li>' + _('Consider <a href="https://docs.software-univention.de/" target="_blank">release notes and changelogs</a> as well as references posted in the <a href="https://help.univention.com/" target="_blank">Univention Help</a>.') + '</li>';
