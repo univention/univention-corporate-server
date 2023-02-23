@@ -172,8 +172,8 @@ def get_nfs_data(nfs_mount: str, entries: List[fstab.Entry]) -> Optional[Tuple[s
 
     # skip share if to self
     fqdn = "%(hostname)s.%(domainname)s" % ucr
-    if share_host == fqdn and not overlap(share_path, mp):
-        debug('is self, skipping\n')
+    if share_host == fqdn and overlap(share_path, mp):
+        debug('is self and %s overlaps %s, skipping\n' % (share_path, mp))
         return None
 
     nfs_path_fqdn = "%s:%s" % (share_host, share_path)

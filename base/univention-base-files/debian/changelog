@@ -1,3 +1,9 @@
+univention-base-files (9.0.5-4) unstable; urgency=low
+
+  * Bug #50193: Allow to mount NFS share from self
+
+ -- Philipp Hahn <hahn@univention.de>  Wed, 08 Mar 2023 15:15:44 +0100
+
 univention-base-files (9.0.5-3) unstable; urgency=low
 
   * Bug #50193: Allow to mount NFS share from self
