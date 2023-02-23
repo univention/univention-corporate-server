@@ -8,4 +8,5 @@ desc: |
   This update addresses the following issue:
   * Allow NFS shares to be mounted on exporting host itself to prevent
     data-loss on shared access.
+  * The deprecated command `univention-keyboardmapping` has been removed.
 bug: [50193]

@@ -1,6 +1,7 @@
 univention-base-files (9.0.5-3) unstable; urgency=low
 
   * Bug #50193: Allow to mount NFS share from self
+  * Remove unused univention-keyboardmapping
 
  -- Philipp Hahn <hahn@univention.de>  Thu, 23 Feb 2023 09:37:16 +0100
 
