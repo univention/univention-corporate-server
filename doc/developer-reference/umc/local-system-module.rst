@@ -26,8 +26,8 @@ custom UMC module.
 Python API
 ----------
 
-The Python API for the UMCP is defined in the Python module
-:py:mod:`univention.management.console.protocol`.
+The Python API for the UMC is defined in the Python module
+:py:mod:`univention.management.console.base`.
 
 .. _umc-module-api:
 
@@ -90,10 +90,6 @@ UMC module.
    The value of this attribute defines an identifier for the icon that
    should be used for the module. Details for installing icons can be
    found in the :ref:`umc-module-packaging`.
-
-``python``
-   This value can be used to specify the Python interpreter version, for example
-   ``2`` or ``3``. Default is Python 2.
 
 The child elements ``name`` and ``description`` define the English human
 readable name and description of the module. For other translations the build

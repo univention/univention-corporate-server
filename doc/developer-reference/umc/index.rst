@@ -30,8 +30,6 @@ This chapter has the following content:
 .. toctree::
 
    architecture
-   framework
-   umcp
    http-umc
    files
    local-system-module

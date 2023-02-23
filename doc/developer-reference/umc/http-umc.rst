@@ -9,8 +9,7 @@ Protocol HTTP for UMC
 =====================
 
 With the new generation of UMC there is also an HTTP server available that can
-be used to access the UMC server. The web server is implemented as a front end to
-the UMC server and translates HTTP POST requests to UMCP commands.
+be used to access the UMC server.
 
 .. code-block::
    :caption: Authentication request
