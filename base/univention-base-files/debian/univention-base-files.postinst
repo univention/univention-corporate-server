@@ -129,7 +129,6 @@ univention-config-registry set sshd/port?22 \
 if [ -n "$locale" ]; then
 	locale-gen || true
 fi
-dpkg-maintscript-helper rm_conffile /etc/univention/templates/modules/keymap.py 4~ -- "$@"
 
 # set UCR value for package python-univention (Bug: #15971)
 univention-config-registry set ldap/binaryattributes?"krb5Key,userCertificate;binary"
