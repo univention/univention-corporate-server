@@ -329,7 +329,7 @@ def create_template(udm, host, path):
 # @pytest.mark.bugs(52878)
 def test_use_usertemplate_umlauts(udm):
     """Test umlauts for usertemplate object"""
-    host = random_name()
+    host = random_domain_name()
     path = '/%s' % (random_name(),)
     properties, dn_template = create_template(udm, host, path)
     co = None
