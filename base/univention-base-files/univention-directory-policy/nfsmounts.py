@@ -45,18 +45,14 @@ from typing import IO, List, Optional, Set, Tuple
 import ldap
 from ldap.filter import filter_format
 
-import univention.config_registry
 import univention.uldap
+from univention.config_registry import ucr
 from univention.lib import fstab
 from univention.lib.policy_result import PolicyResultFailed, policy_result
 
 
-configRegistry = univention.config_registry.ConfigRegistry()
-configRegistry.load()
 verbose = False
 simulate = False
-
-ldap_hostdn = configRegistry.get('ldap/hostdn')
 
 MAGIC_LDAP = '#LDAP Entry DN:'
 
@@ -91,7 +87,7 @@ def main() -> None:
     # parse command line
     description = "Add NFS mount points from LDAP to /etc/fstab and mount them"
     parser = argparse.ArgumentParser(description=description)
-    parser.add_argument('--dn', default=configRegistry.get('ldap/hostdn'), help=argparse.SUPPRESS)
+    parser.add_argument('--dn', default=ucr['ldap/hostdn'], help=argparse.SUPPRESS)
     parser.add_argument('-s', '--simulate', action='store_true', help='simulate and show values to be set')
     parser.add_argument('-v', '--verbose', action='store_true', help='print verbose information')
     args = parser.parse_args()
@@ -145,7 +141,6 @@ def update_fstab(args: argparse.Namespace, simulate: bool) -> Set[str]:
 def get_nfs_data(nfs_mount: str, entries: List[fstab.Entry]) -> Optional[Tuple[str, str, str]]:
     fields = nfs_mount.split(' ')  # dn_univentionShareNFS mount_point
     dn = fields[0]
-    fqdn = "%(hostname)s.%(domainname)s" % configRegistry
     lo = univention.uldap.getMachineConnection()
     if not dn:
         debug('no dn, skipping\n')
@@ -176,6 +171,7 @@ def get_nfs_data(nfs_mount: str, entries: List[fstab.Entry]) -> Optional[Tuple[s
         return None
 
     # skip share if to self
+    fqdn = "%(hostname)s.%(domainname)s" % ucr
     if share_host == fqdn and share_path == mp:
         debug('is self, skipping\n')
         return None
@@ -190,7 +186,7 @@ def get_nfs_data(nfs_mount: str, entries: List[fstab.Entry]) -> Optional[Tuple[s
     # get the ip of the share_host
     hostname, _, domain = share_host.partition('.')
     if hostname and _ and domain:
-        result = lo.lo.search_s(configRegistry['ldap/base'], ldap.SCOPE_SUBTREE, filter_format('(&(relativeDomainName=%s)(zoneName=%s))', (hostname, domain)), attrlist=['aRecord'])
+        result = lo.lo.search_s(ucr['ldap/base'], ldap.SCOPE_SUBTREE, filter_format('(&(relativeDomainName=%s)(zoneName=%s))', (hostname, domain)), attrlist=['aRecord'])
         try:
             attributes = result[0][1]
             nfs_path_ip = "%s:%s" % (attributes['aRecord'][0].decode('ASCII'), share_path)

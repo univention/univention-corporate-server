@@ -39,6 +39,7 @@ import os
 import sys
 
 import univention.config_registry as confreg
+from univention.config_registry import ucr
 from univention.lib.policy_result import PolicyResultFailed, ucr_policy_result
 
 
@@ -55,9 +56,6 @@ def get_policy(host_dn, server=None, password_file="/etc/machine.secret", verbos
 
 def parse_cmdline() -> argparse.Namespace:
     """Parse command line and return options and dn."""
-    ucr = confreg.ConfigRegistry()
-    ucr.load()
-
     description = "Set local UCR settings from LDAP policy."
     parser = argparse.ArgumentParser(description=description)
     parser.add_argument('-a', '--setall', action='store_true', help='write all variables set by policy')
