@@ -756,7 +756,7 @@ class Instance(Base, ProgressMixin):
             objects = template.search(ucr.get('ldap/base'))
             for obj in objects:
                 obj.open()
-                result.append({'id': obj.dn, 'label': obj[template.identifies]})
+                result.append({'id': obj.dn, 'label': template.obj_description(obj)})
 
         return result
 
@@ -1061,7 +1061,7 @@ class Instance(Base, ProgressMixin):
                     module = UDM_Module(item.module)
                     result.append({
                         'id': item.dn,
-                        'label': item[module.identifies],
+                        'label': module.obj_description(item),
                         'icon': 'udm-%s' % (module.name.replace('/', '-')),
                         'path': ldap_dn2path(item.dn),
                         'objectType': module.name,

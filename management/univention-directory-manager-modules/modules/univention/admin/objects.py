@@ -150,25 +150,7 @@ def description(object):
 
     :param object: |UDM| object.
     """
-    if hasattr(object, 'description'):
-        return object.description()
-    else:
-        description = None
-        object_module = module(object)
-        object_module = univention.admin.modules.get(object_module)
-        if hasattr(object_module, 'property_descriptions'):
-            for name, property in object_module.property_descriptions.items():
-                if property.identifies:
-                    syntax = property.syntax
-                    description = syntax.tostring(object[name])
-                    break
-        if not description:
-            if object.dn:
-                description = univention.admin.uldap.explodeDn(object.dn, 1)[0]
-                ud.debug(ud.ADMIN, ud.INFO, 'falling back to rdn: %s' % (object.dn))
-            else:
-                description = 'None'
-        return description
+    return object.description()
 
 
 def shadow(lo, module, object, position):

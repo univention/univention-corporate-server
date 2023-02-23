@@ -1183,11 +1183,16 @@ class simpleLdap(object):
         Return a descriptive string for the object.
         By default the relative distinguished name is returned.
 
-        :returns: A descriptive string or `none` if no :py:attr:`dn` is not yet set.
+        :returns: A descriptive string or `none` as fallback.
         :rtype: str
         """
         if self.dn:
             return u'+'.join(explode_rdn(self.dn, 1))
+        else:
+            for name, property in self.descriptions.items():
+                if property.identifies:
+                    syntax = property.syntax
+                    return syntax.tostring(self[name])
         return u'none'
 
     def _post_unmap(self, info, values):

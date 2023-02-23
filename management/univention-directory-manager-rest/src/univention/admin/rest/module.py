@@ -2362,7 +2362,7 @@ class ContainerQueryBase(Resource):
                     module = UDM_Module(item.module, ldap_connection=self.ldap_connection, ldap_position=self.ldap_position)
                     result.append({
                         'id': item.dn,
-                        'label': item[module.identifies],
+                        'label': module.obj_description(item),
                         'icon': 'udm-%s' % (module.name.replace('/', '-')),
                         'path': ldap_dn2path(item.dn),
                         'objectType': module.name,
@@ -3698,7 +3698,7 @@ class ObjectAdd(FormBase, _OpenAPIBase, Resource):
                 form = self.add_form(result, action='', method='GET', id='template', layout='template')  # FIXME: preserve query string
                 template_layout = [{'label': _('Template'), 'description': 'A template defines rules for default object properties.', 'layout': ['template', '']}]
                 self.add_layout(result, template_layout, 'template')
-                self.add_form_element(form, 'template', '', element='select', options=[{'value': _obj.dn, 'label': _obj[template.identifies]} for _obj in templates])
+                self.add_form_element(form, 'template', '', element='select', options=[{'value': _obj.dn, 'label': template.obj_description(_obj)} for _obj in templates])
                 self.add_form_element(form, '', _('Fill template values'), type='submit')
 
         self.add_caching(public=True, must_revalidate=True)
