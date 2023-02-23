@@ -1,3 +1,4 @@
+# shellcheck shell=sh
 
 # check autostart variable of service and exit (a)
 # if variable eq false or no and (b) if var eq manually

@@ -33,7 +33,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-test -f "/etc/univention/templates/cache" && rm -f "/etc/univention/templates/cache"
+rm -f "/etc/univention/templates/cache"
 
 univention-config-registry set ldap/base?dc=univention,dc=unconfigured \
 	ldap/server/name?ds1 \
@@ -58,7 +58,7 @@ univention-config-registry set ldap/base?dc=univention,dc=unconfigured \
 
 eval "$(univention-config-registry shell logrotate/rotate/count)"
 univention-config-registry set \
-	'logrotate/syslog/rotate/count?'"$(expr "$logrotate_rotate_count" '*' '7')" \
+	"logrotate/syslog/rotate/count?$((${logrotate_rotate_count:-1} * 7))" \
 	'logrotate/syslog/rotate?daily'
 
 # services
@@ -70,7 +70,7 @@ univention-config-registry set cron/autostart?yes \
 	rpcbind/autostart?yes \
 
 # syslog
-if [ "$1" = configure -a -z "$2" ]; then
+if [ "$1" = configure ] && [ -z "$2" ]; then
 	# installation
 	univention-config-registry set syslog/mail/mirrorto/syslog?no \
 		'systemd/journald/Storage?persistent' \
@@ -89,12 +89,12 @@ else
 fi
 
 # this must be done _before_ dephelper runs
-if [ "$1" = configure -a \! -e /vmlinuz.install -a \! -e /initrd.img.install ]; then
+if [ "$1" = configure ] && [ ! -e /vmlinuz.install ] && [ ! -e /initrd.img.install ]; then
 	newestkernel=$(readlink /vmlinuz)
 	if [ -z "$newestkernel" ]; then newestkernel=boot/vmlinuz-$(uname -r); fi
 	newestinitrd=$(readlink /initrd.img)
 	if [ -z "$newestinitrd" ]; then newestinitrd=boot/initrd.img-$(uname -r); fi
-	if [ -n "$newestkernel" -a -n "$newestinitrd" ]; then
+	if [ -n "$newestkernel" ] && [ -n "$newestinitrd" ]; then
 		ln -snf "$newestkernel" /vmlinuz.install
 		ln -snf "$newestinitrd" /initrd.img.install
 	fi
@@ -113,8 +113,8 @@ getent group kvm >/dev/null || addgroup --system kvm
 password_quality_credit_digist=$(univention-config-registry get password/quality/credit/digist)
 if [ -n "$password_quality_credit_digist" ]
 then
-    univention-config-registry set password/quality/credit/digits="$password_quality_credit_digist"
-    univention-config-registry unset password/quality/credit/digist
+	univention-config-registry set password/quality/credit/digits="$password_quality_credit_digist"
+	univention-config-registry unset password/quality/credit/digist
 fi
 
 # to use pam_tally (account locking) via ssh the passwordauthentication
@@ -126,7 +126,7 @@ univention-config-registry set sshd/port?22 \
 	sshd/challengeresponse?yes \
 	sshd/passwordauthentication?no
 
-if [ -n "$locale" ]; then
+if [ -n "${locale:-}" ]; then
 	locale-gen || true
 fi
 
@@ -155,7 +155,7 @@ if [ "$1" = "configure" ] && dpkg --compare-versions "$2" lt 9.0.3-3; then
 fi
 
 if test -x /etc/init.d/ssh; then
-    invoke-rc.d ssh reload
+	invoke-rc.d ssh reload
 fi
 
 exit 0

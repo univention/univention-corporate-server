@@ -33,6 +33,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
+# shellcheck source=/dev/null
 . /usr/share/univention-lib/backup.sh
 
 TARGETDIR="/var/univention-backup"
@@ -41,7 +42,7 @@ install -m 755 -o root -g root -d "$TARGETDIR"
 TARGET="$TARGETDIR/ucr-backup_$(date +%Y%m%d).tgz"
 install -m 600 -o root -g root /dev/null "$TARGET"
 
-cd /etc/univention
+cd /etc/univention &&
 tar cfz "$TARGET" ./base*.conf
 
 clean_old_backups 'ucr-backup_.*\.tgz'
