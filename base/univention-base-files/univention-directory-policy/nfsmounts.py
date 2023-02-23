@@ -39,6 +39,7 @@ import argparse
 import os
 import subprocess
 import sys
+from os.path import abspath, sep
 from typing import IO, List, Optional, Set, Tuple
 
 import ldap
@@ -171,7 +172,7 @@ def get_nfs_data(nfs_mount: str, entries: List[fstab.Entry]) -> Optional[Tuple[s
 
     # skip share if to self
     fqdn = "%(hostname)s.%(domainname)s" % ucr
-    if share_host == fqdn and share_path == mp:
+    if share_host == fqdn and not overlap(share_path, mp):
         debug('is self, skipping\n')
         return None
 
@@ -200,6 +201,26 @@ def get_nfs_data(nfs_mount: str, entries: List[fstab.Entry]) -> Optional[Tuple[s
         return None
 
     return dn, nfs_path_ip, mp
+
+
+def overlap(path_a: str, path_b: str) -> bool:
+    """
+    Check if two paths overlap.
+
+    >>> overlap("/mnt/a", "/mnt/b")
+    False
+    >>> overlap("/mnt/a", "/mnt/aa")
+    False
+    >>> overlap("/mnt/a", "/mnt")
+    True
+    """
+    return all(
+        a == b
+        for a, b in zip(
+            abspath(path_a).split(sep),
+            abspath(path_b).split(sep),
+        )
+    )
 
 
 def mount(to_mount: Set[str]) -> None:
