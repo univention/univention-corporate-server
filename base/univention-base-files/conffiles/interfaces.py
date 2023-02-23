@@ -1,8 +1,5 @@
 # -*- coding: utf-8 -*-
 #
-# Univention Configuration Registry
-"""config registry module for the network interfaces."""
-#
 # Like what you see? Join us!
 # https://www.univention.com/about-us/careers/vacancies/
 #
@@ -32,6 +29,8 @@
 # License with the Debian GNU/Linux or Univention distribution in file
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
+
+"""config registry module for the network interfaces."""
 
 import re
 from subprocess import call

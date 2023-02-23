@@ -1,9 +1,6 @@
 #!/usr/bin/python3
 # -*- coding: utf-8 -*-
 #
-# Univention Configuration Registry
-#  add and remove nfs shares from the LDAP directory to /etc/fstab
-#
 # Like what you see? Join us!
 # https://www.univention.com/about-us/careers/vacancies/
 #
@@ -33,6 +30,8 @@
 # License with the Debian GNU/Linux or Univention distribution in file
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
+
+"Add/remove NFS mount points from LDAP to/from /etc/fstab and mount them"
 
 from __future__ import print_function
 
@@ -85,8 +84,7 @@ def query_policy(host_dn: str, server: Optional[str] = None, password_file: str 
 
 def main() -> None:
     # parse command line
-    description = "Add NFS mount points from LDAP to /etc/fstab and mount them"
-    parser = argparse.ArgumentParser(description=description)
+    parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--dn', default=ucr['ldap/hostdn'], help=argparse.SUPPRESS)
     parser.add_argument('-s', '--simulate', action='store_true', help='simulate and show values to be set')
     parser.add_argument('-v', '--verbose', action='store_true', help='print verbose information')
@@ -141,10 +139,11 @@ def update_fstab(args: argparse.Namespace, simulate: bool) -> Set[str]:
 def get_nfs_data(nfs_mount: str, entries: List[fstab.Entry]) -> Optional[Tuple[str, str, str]]:
     fields = nfs_mount.split(' ')  # dn_univentionShareNFS mount_point
     dn = fields[0]
-    lo = univention.uldap.getMachineConnection()
     if not dn:
         debug('no dn, skipping\n')
         return None
+
+    lo = univention.uldap.getMachineConnection()
     # get univention share host and path for dn
     try:
         result = lo.lo.search_s(

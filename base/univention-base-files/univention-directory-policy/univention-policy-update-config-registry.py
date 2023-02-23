@@ -5,7 +5,6 @@
 # https://www.univention.com/about-us/careers/vacancies/
 #
 # Copyright 2007-2023 Univention GmbH
-"""Get UCR settings from LDAP policy."""
 #
 # https://www.univention.de/
 #
@@ -32,6 +31,8 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
+"""Apply LDAP UCR policy to local UCR."""
+
 from __future__ import print_function
 
 import argparse
@@ -55,9 +56,8 @@ def get_policy(host_dn, server=None, password_file="/etc/machine.secret", verbos
 
 
 def parse_cmdline() -> argparse.Namespace:
-    """Parse command line and return options and dn."""
-    description = "Set local UCR settings from LDAP policy."
-    parser = argparse.ArgumentParser(description=description)
+    """Parse command line and return options and DN."""
+    parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('-a', '--setall', action='store_true', help='write all variables set by policy')
     parser.add_argument('-s', '--simulate', action='store_true', help='simulate update and show values to be set')
     parser.add_argument('-v', '--verbose', action='store_true', help='print verbose information')
@@ -79,7 +79,7 @@ def parse_cmdline() -> argparse.Namespace:
 
 
 def main() -> None:
-    """Get UCR settings from LDAP policy."""
+    """Apply LDAP UCR policy to local UCR."""
     args = parse_cmdline()
 
     confregfn = os.path.join(confreg.ConfigRegistry.PREFIX, confreg.ConfigRegistry.BASES[confreg.ConfigRegistry.LDAP])
