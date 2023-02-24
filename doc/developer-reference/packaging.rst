@@ -257,7 +257,7 @@ example, but others must be completed using an editor.
       Priority: optional
       Maintainer: John Doe <user@example.com>
       Build-Depends:
-        debhelper-compat (= 12),
+        debhelper-compat (= 13),
       Standards-Version: 4.3.0.3
 
       Package: testdeb
