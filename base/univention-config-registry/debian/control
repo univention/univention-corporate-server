@@ -5,7 +5,7 @@ Maintainer: Univention GmbH <packages@univention.de>
 Build-Depends:
  autoconf,
  automake,
- debhelper,
+ debhelper-compat (=13),
  dh-python,
  libtool,
  libunivention-debug-dev (>= 5.0.6-1),

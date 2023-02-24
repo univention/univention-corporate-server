@@ -3,13 +3,14 @@ Section: univention
 Priority: optional
 Maintainer: Univention GmbH <packages@univention.de>
 Build-Depends:
- debhelper-compat (=11),
+ debhelper-compat (=13),
  dh-python,
  python3,
  python3-all,
  python3-polib,
  python3-sdnotify,
  python3-setuptools,
+ python3-univention-lib,
  univention-config-dev (>= 15.0.3),
  univention-l10n-dev (>= 7.0.1),
 Standards-Version: 3.7.2
