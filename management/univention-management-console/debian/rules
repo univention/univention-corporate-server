@@ -35,7 +35,7 @@
 
 override_dh_auto_build:
 	./dev/dh-umc-module-build --core
-	dh_auto_build -- --executable=/usr/bin/python3
+	dh_auto_build
 
 override_dh_auto_install:
 	./dev/dh-umc-module-install --core
@@ -44,8 +44,8 @@ override_dh_auto_install:
 override_dh_install:
 	dh_install -Xde.po
 
-override_dh_systemd_start:
-	dh_systemd_start --restart-after-upgrade
+override_dh_installsystemd:
+	dh_installsystemd --restart-after-upgrade
 
 %:
-	dh $@ --with python3,univention-l10n,ucr,systemd
+	dh $@ --with python3,univention-l10n,ucr --buildsystem=pybuild

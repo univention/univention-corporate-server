@@ -4,7 +4,7 @@ Priority: optional
 Maintainer: Univention GmbH <packages@univention.de>
 Standards-Version: 3.5.2
 Build-Depends:
- debhelper,
+ debhelper-compat (=13),
  dh-python,
  python3-all,
  python3-pytest,

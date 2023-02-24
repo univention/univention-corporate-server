@@ -33,7 +33,8 @@
 export PYBUILD_NAME=univention-debhelper
 
 override_dh_auto_test:
+	dh_auto_test
 	python3 -m doctest univention/debhelper.py
 
 %:
-	dh $@ --with python3
+	dh $@ --with python3 --buildsystem=pybuild
