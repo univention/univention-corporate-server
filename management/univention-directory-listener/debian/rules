@@ -73,4 +73,4 @@ override_dh_installdocs:
 	dh_installdocs --link-doc=univention-directory-listener
 
 %:
-	dh $@ --with python3,ucr,systemd --buildsystem=pybuild
+	dh $@ --with python3,ucr --buildsystem=pybuild

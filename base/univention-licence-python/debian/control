@@ -4,7 +4,7 @@ Priority: optional
 Maintainer: Univention GmbH <packages@univention.de>
 Build-Depends:
  cython3-dbg,
- debhelper,
+ debhelper-compat (=13),
  dh-python,
  libunivention-license-dev (>= 10.0.0-4),
  python3-dbg,
