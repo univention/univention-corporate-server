@@ -12,4 +12,6 @@ desc: |
    causes the service to stop during the upgrade, which kills any web session
    and abort the update process running in the background. This update adds a
    mitigation to prevent the service from stopping during the update.
-bug: [55753]
+ * A missing Python 2.7 dependency has been added so that UMC modules using
+   Python 2.7 work again.
+bug: [55753, 55752]
