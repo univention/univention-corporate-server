@@ -108,7 +108,7 @@ Source code: :uv:src:`doc/developer-reference/ucr/papersize/`
       Priority: optional
       Maintainer: Univention GmbH <packages@univention.de>
       Build-Depends:
-       debhelper-compat (= 12),
+       debhelper-compat (= 13),
        univention-config-dev (>= 15.0.3),
       Standards-Version: 4.3.0.3
 
@@ -348,7 +348,7 @@ Source code: :uv:src:`doc/developer-reference/ucr/service/`
       Priority: optional
       Maintainer: Univention GmbH <packages@univention.de>
       Build-Depends:
-       debhelper-compat (= 12),
+       debhelper-compat (= 13),
        univention-config-dev (>= 15.0.3),
       Standards-Version: 4.3.0.3
 
