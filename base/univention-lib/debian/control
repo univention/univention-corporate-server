@@ -5,7 +5,7 @@ Maintainer: Univention GmbH <packages@univention.de>
 Standards-Version: 3.9.8
 Build-Depends:
  at,
- debhelper,
+ debhelper-compat (=13),
  dh-python,
  pwgen,
  python3-all,

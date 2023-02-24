@@ -33,8 +33,8 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-override_dh_systemd_start:
-	dh_systemd_start -punivention-welcome-screen --no-start univention-welcome-screen.service
+override_dh_installsystemd:
+	dh_installsystemd --no-start
 
 %:
-	dh $@ --with systemd,univention-l10n,ucr
+	dh $@ --with univention-l10n,ucr
