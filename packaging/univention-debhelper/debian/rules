@@ -33,6 +33,7 @@
 export PYBUILD_NAME=univention-debhelper
 
 override_dh_auto_test:
+	dh_auto_test
 	python3 -m doctest univention/debhelper.py
 
 override_dh_python3:

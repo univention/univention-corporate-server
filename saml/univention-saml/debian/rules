@@ -31,8 +31,8 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-override_dh_installinit:
-	dh_installinit --restart-after-upgrade
+override_dh_installsystemd:
+	dh_installsystemd --restart-after-upgrade
 
 %:
-	dh $@ --with python3,systemd,univention-l10n,univention-join,umc,ucr
+	dh $@ --with python3,univention-l10n,univention-join,umc,ucr
