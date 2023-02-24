@@ -3,7 +3,7 @@ Section: libs
 Priority: optional
 Maintainer: Univention GmbH <packages@univention.de>
 Build-Depends:
- debhelper,
+ debhelper-compat (=13),
  dh-autoreconf,
  liblasso3-dev,
  libpam0g-dev,
