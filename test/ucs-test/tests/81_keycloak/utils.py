@@ -30,6 +30,7 @@
 
 import time
 from types import SimpleNamespace
+from typing import Optional
 
 from selenium.webdriver.chrome.webdriver import WebDriver
 from selenium.webdriver.common.by import By
@@ -59,3 +60,41 @@ def get_portal_tile(driver: WebDriver, text: str, portal_config: SimpleNamespace
     for tile in driver.find_elements_by_class_name(portal_config.tile_name_class):
         if tile.text == text:
             return tile
+
+
+def keycloak_password_change(
+    driver: WebDriver,
+    keycloak_config: SimpleNamespace,
+    password: str,
+    new_password: str,
+    new_password_confirm: str,
+    fails_with: Optional[str] = None,
+) -> None:
+    wait_for_id(driver, keycloak_config.kc_passwd_update_form_id)
+    driver.find_element_by_id(keycloak_config.password_id).send_keys(password)
+    driver.find_element_by_id(keycloak_config.password_new_id).send_keys(new_password)
+    driver.find_element_by_id(keycloak_config.password_confirm_id).send_keys(new_password_confirm)
+    driver.find_element_by_id(keycloak_config.password_change_button_id).click()
+    if fails_with:
+        error = driver.find_element_by_css_selector(f"span[class='{keycloak_config.password_update_feedback_class}']")
+        assert fails_with == error.text
+        assert error.is_displayed()
+
+
+def keycloak_login(
+    driver: WebDriver,
+    keycloak_config: SimpleNamespace,
+    username: str,
+    password: str,
+    fails_with: Optional[str] = None,
+) -> None:
+    wait_for_id(driver, keycloak_config.username_id)
+    wait_for_id(driver, keycloak_config.password_id)
+    wait_for_id(driver, keycloak_config.login_id)
+    driver.find_element_by_id(keycloak_config.username_id).send_keys(username)
+    driver.find_element_by_id(keycloak_config.password_id).send_keys(password)
+    driver.find_element_by_id(keycloak_config.login_id).click()
+    if fails_with:
+        error = driver.find_element_by_id(keycloak_config.input_error_id)
+        assert fails_with == error.text
+        assert error.is_displayed()

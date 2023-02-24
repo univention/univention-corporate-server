@@ -5,6 +5,7 @@
 ## exposure: dangerous
 
 import pytest
+from utils import keycloak_password_change, wait_for_id
 
 import univention.testing.udm as udm_test
 from univention.lib.umc import Unauthorized
@@ -30,7 +31,7 @@ def test_login_disabled(portal_login_via_keycloak, keycloak_config):
         assert portal_login_via_keycloak(username, "univention", fails_with=keycloak_config.wrong_password_msg)
 
 
-def test_login_pwdChangeNextLogin(portal_login_via_keycloak, keycloak_config):
+def test_pwdChangeNextLogin(portal_login_via_keycloak, keycloak_config):
     with udm_test.UCSTestUDM() as udm:
         username = udm.create_user(pwdChangeNextLogin=1)[1]
         assert portal_login_via_keycloak(username, "univention", new_password="Univention.99")
@@ -39,10 +40,26 @@ def test_login_pwdChangeNextLogin(portal_login_via_keycloak, keycloak_config):
             Client(username=username, password="univention")
 
 
-def test_login_pwdChangeNextLogin_wrong_password(portal_login_via_keycloak, keycloak_config):
+def test_pwdChangeNextLogin_wrong_password(portal_login_via_keycloak, keycloak_config):
     with udm_test.UCSTestUDM() as udm:
         username = udm.create_user(pwdChangeNextLogin=1)[1]
-        assert portal_login_via_keycloak(username, "univentionBAD", new_password="Univention.99", fails_with=keycloak_config.wrong_password_msg)
+        assert portal_login_via_keycloak(username, "univentionBAD", fails_with=keycloak_config.wrong_password_msg)
+
+
+def test_pwdChangeNextLogin_same_password_fails(portal_login_via_keycloak, keycloak_config, portal_config):
+    with udm_test.UCSTestUDM() as udm:
+        username = udm.create_user(pwdChangeNextLogin=1)[1]
+        assert portal_login_via_keycloak(username, "univention", new_password="univention", fails_with=keycloak_config.password_update_failed_msg)
+
+
+def test_pwdChangeNextLogin_password_update_twice(portal_login_via_keycloak, keycloak_config, portal_config):
+    with udm_test.UCSTestUDM() as udm:
+        username = udm.create_user(pwdChangeNextLogin=1)[1]
+        driver = portal_login_via_keycloak(username, "univention", new_password="univention", fails_with=keycloak_config.password_update_failed_msg)
+        # and again THIS FAILS CURRENTLY
+        keycloak_password_change(driver, keycloak_config, "univention", "Univention.99", "Univention.99")
+        wait_for_id(driver, portal_config.header_menu_id)
+        assert Client(username=username, password="Univention.99")
 
 
 def test_password_expired_shadowLastChange(portal_login_via_keycloak, keycloak_config):
