@@ -3,7 +3,7 @@ Section: web
 Priority: optional
 Maintainer: Univention GmbH <packages@univention.de>
 Build-Depends:
- debhelper,
+ debhelper-compat (=13),
  dh-php,
  libkrb5-dev,
  php7.3-dev,

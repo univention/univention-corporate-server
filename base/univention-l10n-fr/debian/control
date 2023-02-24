@@ -3,7 +3,7 @@ Section: univention
 Priority: optional
 Maintainer: Univention GmbH <packages@univention.de>
 Build-Depends:
- debhelper,
+ debhelper-compat (=13),
  univention-config-dev (>= 15.0.3),
  univention-join-dev (>= 12),
  univention-management-console-dev (>= 12.0.2),
