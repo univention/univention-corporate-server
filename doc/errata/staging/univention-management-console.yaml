@@ -1,0 +1,15 @@
+product: ucs
+release: "5.0"
+version: [3]
+scope: ucs_5.0-0-errata5.0-3
+src: univention-management-console
+fix: 12.0.17-5
+desc: |
+ This update addresses the following issue:
+ * For UCS 5.0-3 the UMC services where converted to systemd. These services
+   are essential to continue running even when updates are installed from UMC.
+   Due to an oversight the first erratum 583 triggered a latent bug, which
+   causes the service to stop during the upgrade, which kills any web session
+   and abort the update process running in the background. This update adds a
+   mitigation to prevent the service from stopping during the update.
+bug: [55753]

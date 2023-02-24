@@ -1,3 +1,9 @@
+univention-management-console (12.0.17-5) unstable; urgency=low
+
+  * Bug #55753: Fix UMC-web-server restart during upgrade  UCS 5.0-3+572..583
+
+ -- Philipp Hahn <hahn@univention.de>  Fri, 24 Feb 2023 07:00:06 +0100
+
 univention-management-console (12.0.17-4) unstable; urgency=medium
 
   * Bug #55726: fix UCR template for umc/http/processes/start-port
