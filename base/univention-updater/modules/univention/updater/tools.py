@@ -1029,8 +1029,8 @@ class Component(object):
         :raises ConfigurationError: if the configured server is not usable.
         """
         c_url = copy.copy(self.baseurl(for_mirror_list))
+        prefix = c_url.path or self['prefix']
         c_url.path = ''
-        prefix = self["prefix"]
 
         user_agent = self.updater._get_user_agent_string()
 
@@ -1041,7 +1041,7 @@ class Component(object):
         )
         try:
             # if prefix.lower() == 'none' ==> use no prefix
-            if prefix and prefix.lower() == 'none':
+            if prefix and prefix.lower().strip('/') == 'none':
                 try:
                     assert server.access(None, '')
                 except DownloadError as e:

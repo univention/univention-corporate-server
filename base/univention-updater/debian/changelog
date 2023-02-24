@@ -1,3 +1,9 @@
+univention-updater (15.0.6-5) unstable; urgency=medium
+
+  * Bug #55636: Fix updater ignoring the url prefix for component repositories
+
+ -- Peter Stoll <stoll.extern@univention.de>  Fri, 24 Feb 2023 12:09:52 +0100
+
 univention-updater (15.0.6-4) unstable; urgency=low
 
   * Bug #55667: Update UMC links to future release notes.
