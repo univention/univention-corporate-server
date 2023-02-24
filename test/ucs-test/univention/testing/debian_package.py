@@ -172,7 +172,7 @@ class DebianPackage:
 Section: univention
 Priority: optional
 Maintainer: Univention GmbH <packages@univention.de>
-Build-Depends: debhelper-compat (=12)
+Build-Depends: debhelper-compat (=13)
 Standards-Version: 3.5.2
 
 Package: %(package_name)s

@@ -38,7 +38,7 @@
 export DH_VERBOSE=1
 
 override_dh_install:
-	dh_install --fail-missing
+	dh_install
 	sed '/^###CHECKS###/r script/check.sh' script/preup.sh >debian/univention-updater/usr/share/univention-updater/preup.sh
 
 override_dh_installinit:

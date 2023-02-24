@@ -6,7 +6,7 @@ Standards-Version: 3.7.2
 Build-Depends:
  autoconf,
  automake,
- debhelper,
+ debhelper-compat (=13),
  libtool,
 
 Package: libunivention-debug1

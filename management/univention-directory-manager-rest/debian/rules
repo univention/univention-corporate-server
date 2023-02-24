@@ -34,4 +34,4 @@
 # <https://www.gnu.org/licenses/>.
 
 %:
-	dh $@ --with python3,univention-l10n,ucr --with systemd
+	dh $@ --with python3,univention-l10n,ucr

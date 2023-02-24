@@ -38,7 +38,7 @@ export PYBUILD_INSTALL_ARGS=--install-scripts=../univention-config/usr/bin/
 export PYBUILD_AFTER_INSTALL=$(RM) '{destdir}/{install_dir}/univention/__init__.py'
 
 %:
-	dh $@ --with 'python3'
+	dh $@ --with 'python3' --buildsystem=pybuild
 
 override_dh_auto_clean-arch:
 	[ ! -f Makefile ] || $(MAKE) maintainer-clean
