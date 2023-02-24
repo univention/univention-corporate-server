@@ -55,8 +55,8 @@ override_dh_python3:
 override_dh_install:
 	dh_install -Xde.po
 
-override_dh_systemd_start:
-	dh_systemd_start --restart-after-upgrade
+override_dh_installsystemd:
+	dh_installsystemd --restart-after-upgrade
 
 %:
 	dh $@ --with python3,univention-l10n,ucr --buildsystem=pybuild
