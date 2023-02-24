@@ -130,7 +130,7 @@ Source code:
       Priority: optional
       Maintainer: Univention GmbH <packages@univention.de>
       Build-Depends:
-       debhelper-compat (= 12),
+       debhelper-compat (= 13),
        univention-join-dev (>= 12),
       Standards-Version: 4.3.0.3
 

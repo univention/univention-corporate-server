@@ -3,7 +3,7 @@ Section: univention
 Priority: optional
 Maintainer: Univention GmbH <packages@univention.de>
 Build-Depends:
- debhelper,
+ debhelper-compat (=13),
  dh-python,
  python3-all,
  python3-apt,
@@ -40,7 +40,7 @@ Description: Libraries used by the UCS-test-framework.
 Package: ucs-test-framework
 Architecture: all
 Depends:
- debhelper,
+ debhelper-compat (=13),
  dpkg-dev,
  fakeroot,
  python3-apt,

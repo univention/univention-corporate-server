@@ -2,8 +2,9 @@ Source: univention-ssl
 Section: univention
 Priority: optional
 Maintainer: Univention GmbH <packages@univention.de>
+Build-Depends:
+ debhelper-compat (=13),
 Build-Depends-Indep:
- debhelper,
  faketime,
  openssl,
  python3-m2crypto,
