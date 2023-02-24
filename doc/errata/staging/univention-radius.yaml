@@ -3,7 +3,7 @@ release: "5.0"
 version: [3]
 scope: ucs_5.0-0-errata5.0-3
 src: univention-radius
-fix:
+fix: 7.0.5-2A~5.0.0.202302241341
 desc: |
  This update addresses the following issues:
  * The maximum TLS version has been changed to 1.2
