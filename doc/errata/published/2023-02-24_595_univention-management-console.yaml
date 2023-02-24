@@ -15,3 +15,6 @@ desc: |
  * A missing Python 2.7 dependency has been added so that UMC modules using
    Python 2.7 work again.
 bug: [55753, 55752]
+erratum: 595
+announced: 2023-02-24
+support: core
