@@ -1,14 +1,13 @@
 product: ucs
 release: '5.0'
-version: [3]
+version: [2,3]
 scope: ucs_5.0-0-errata5.0-3
 src: univention-updater
 fix: 15.0.6-5A~5.0.0.202302241506
 desc: |
   This update addresses the following issues:
   * Fix the link to the release notes of future UCS releases.
-  * With UCS 5.0-3 the updater did ignore the url path when
+  * Fixed a regression where the updater did ignore the url path when
     creating the /etc/apt/sources.list.d/20_ucs-online-component.list
     file leading to issues updating the component.
-    This was fixed with this update.
 bug: [55667, 55636]
