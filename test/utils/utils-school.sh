@@ -441,3 +441,33 @@ EOF
 		sshpass -p "$root_password" scp -r  -o StrictHostKeyChecking=no -o UpdateHostKeys=no /var/lib/test-data root@"$ip":/var/lib/ || return 1
 	done
 }
+
+set_udm_properties_for_kelvin_api_tests () {
+  cat <<EOF > /etc/ucsschool/kelvin/mapped_udm_properties.json
+{
+    "user": [
+        "description",
+        "displayName",
+        "e-mail",
+        "employeeType",
+        "gidNumber",
+        "organisation",
+        "phone",
+        "title",
+        "ucsschoolPurgeTimestamp",
+        "uidNumber"
+    ],
+    "school_class": [
+        "gidNumber",
+        "mailAddress"
+    ],
+    "workgroup": [
+        "gidNumber",
+        "mailAddress"
+    ],
+    "school": [
+        "description"
+    ]
+}
+EOF
+}
