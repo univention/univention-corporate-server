@@ -454,7 +454,6 @@ set_udm_properties_for_kelvin_api_tests () {
         "organisation",
         "phone",
         "title",
-        "ucsschoolPurgeTimestamp",
         "uidNumber"
     ],
     "school_class": [
