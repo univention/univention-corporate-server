@@ -50,7 +50,7 @@ def check_login(activated_email=False):
         )[1]
         SamlSession = samltest.SamlTest(testcase_user_name, 'univention')
         SamlSession.login_with_new_session_at_IdP()
-        SamlSession.test_login()
+        SamlSession.test_logged_in_status()
         SamlSession.logout_at_IdP()
         SamlSession.test_logout_at_IdP()
         SamlSession.test_logout()

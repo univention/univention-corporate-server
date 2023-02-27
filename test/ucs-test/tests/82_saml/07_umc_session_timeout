@@ -27,12 +27,12 @@ def main():
         SamlSession = samltest.SamlTest(account.username, account.bindpw)
         try:
             SamlSession.login_with_new_session_at_IdP()
-            SamlSession.test_login()
+            SamlSession.test_logged_in_status()
             SamlSession.test_slapd()
             print('Waiting for session timeout')
             subprocess.check_call(['systemctl', 'restart', 'slapd.service'])  # close ldap connections
             time.sleep(session_timeout + 10)
-            for test_method in (SamlSession.test_login, SamlSession.test_slapd):
+            for test_method in (SamlSession.test_logged_in_status, SamlSession.test_slapd):
                 try:
                     print(f'testing {test_method}')
                     test_method()
@@ -44,7 +44,7 @@ def main():
                 else:
                     utils.fail(f'No session timeout error for {test_method}')
             SamlSession.login_with_existing_session_at_IdP()
-            SamlSession.test_login()
+            SamlSession.test_logged_in_status()
             SamlSession.test_slapd()
             SamlSession.logout_at_IdP()
             SamlSession.test_logout_at_IdP()

@@ -30,7 +30,7 @@ def saml_check():
     SamlSession = samltest.SamlTest(account.username, account.bindpw)
     try:
         SamlSession.login_with_new_session_at_IdP()
-        SamlSession.test_login()
+        SamlSession.test_logged_in_status()
         SamlSession.logout_at_IdP()
         SamlSession.test_logout_at_IdP()
         SamlSession.test_logout()

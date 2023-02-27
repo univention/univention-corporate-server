@@ -25,10 +25,10 @@ def main():
     master_hostname = "%s.%s" % (master[0]['name'], master[0]['domain'])
     try:
         SamlSession.login_with_new_session_at_IdP()
-        SamlSession.test_login()
+        SamlSession.test_logged_in_status()
         SamlSession.target_sp_hostname = master_hostname
         SamlSession.login_with_existing_session_at_IdP()
-        SamlSession.test_login()
+        SamlSession.test_logged_in_status()
     except samltest.SamlError as exc:
         utils.fail(str(exc))
 

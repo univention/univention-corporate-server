@@ -161,6 +161,9 @@ class SamlTest:
             raise SamlError("Problem while %s\nSSL error: %s" % (self.position, 'Some ssl error'))
         except requests.ConnectionError as exc:
             raise SamlError("Problem while %s\nNo connection to server: %s" % (self.position, exc))
+        print(f'> {method} {url} -> {self.page.status_code}')
+        for resp in self.page.history:
+            print(f'>> {resp.request.method} {resp.url} -> {resp.status_code}')
         if expected_format == 'html':
             try:
                 self.parsed_page = ET.fromstring(bytes(self.page.content))
@@ -234,7 +237,7 @@ class SamlTest:
         self.position = "posting SAML message"
         self._request('POST', url, 200, data={'SAMLResponse': saml_msg, 'RelayState': relay_state})
 
-    def test_login(self):
+    def test_logged_in_status(self):
         """Test login on umc"""
         url = "https://%s/univention/get/session-info" % self.target_sp_hostname
         print("Test login @ %s" % url)

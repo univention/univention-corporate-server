@@ -34,12 +34,12 @@ def main():
     try:
         with samltest.GuaranteedIdP(master_ip):
             SamlSession.login_with_new_session_at_IdP()
-            SamlSession.test_login()
+            SamlSession.test_logged_in_status()
             time.sleep(1)
         SamlSession.target_sp_hostname = master_hostname
         with samltest.GuaranteedIdP(backup_ip):
             SamlSession.login_with_existing_session_at_IdP()
-            SamlSession.test_login()
+            SamlSession.test_logged_in_status()
     except samltest.SamlError as exc:
         utils.fail(str(exc))
 

@@ -67,7 +67,7 @@ def main():
                 # Use the local IdP server, that way we don't need to wait for domain wide replication.
                 SamlSession.target_sp_hostname = master_hostname
                 SamlSession.login_with_new_session_at_IdP()
-                SamlSession.test_login()
+                SamlSession.test_logged_in_status()
         except samltest.SamlError as exc:
             expected_error = "<h2>Metadata not found</h2>"
             if expected_error not in str(exc):
@@ -88,7 +88,7 @@ def main():
             with samltest.GuaranteedIdP('127.0.0.1'):
                 SamlSession.target_sp_hostname = master_hostname
                 SamlSession.login_with_new_session_at_IdP()
-                SamlSession.test_login()
+                SamlSession.test_logged_in_status()
     except samltest.SamlError as exc:
         utils.fail(str(exc))
     finally:

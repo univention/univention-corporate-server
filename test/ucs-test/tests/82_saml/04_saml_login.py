@@ -1,4 +1,4 @@
-#!/usr/share/ucs-test/runner pytest-3 -svvv
+#!/usr/share/ucs-test/runner pytest-3 -s -l -vvv
 ## desc: SSO Login at UMC as Service Provider
 ## tags: [saml]
 ## join: true
@@ -26,4 +26,4 @@ def __test_umc_sp(samlSession, test_function):
 
 def test_umc_web_server():
     samlSession = __get_samlSession()
-    __test_umc_sp(samlSession, samlSession.test_login)
+    __test_umc_sp(samlSession, samlSession.test_logged_in_status)
