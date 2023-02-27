@@ -1,6 +1,7 @@
 #!/usr/share/ucs-test/runner bash
 # shellcheck shell=bash
 ## desc: Check unclosed file handles after umc password change
+## bugs: [51366]
 ## packages:
 ##  - univention-management-console-module-udm
 ##  - univention-management-console-module-passwordchange
@@ -26,30 +27,30 @@ username="$(random_chars)"
 
 # we work in parallel and we want to abort all executions with a single CTRL-C:
 function ctrl_c {
-	killall umc-set $0
+	killall umc-set "$0"
 }
 trap ctrl_c INT
 trap "service univention-management-console-server restart" EXIT
 
 # returns the number of open connections by the umc-server
 function get_number_of_close_waits() {
-    echo $(lsof -p $(pidof -x univention-management-console-server) | grep CLOSE_WAIT | wc -l)
+    lsof -p "$(pidof -x univention-management-console-server)" | grep -c CLOSE_WAIT
 }
 
 function get_user_ldap_domain() {
-	echo $(ucr get tests/domainadmin/account | egrep -o 'cn=.*')
+    ucr get tests/domainadmin/account | grep -Eo 'cn=.*'
 }
 
 # $1 = number of users
 function create_sample_users {
 	DOMAIN=$(get_user_ldap_domain)
-    for i in $(seq 1 $1); do
+    for i in $(seq 1 "$1"); do
         set -x
         # if the user already exists we want to reset the password
-        udm users/user modify --dn uid="$username""$i",$DOMAIN \
+        udm users/user modify --dn uid="$username""$i","$DOMAIN" \
             --set overridePWHistory=1 \
             --set password="univention_0" ||\
-        udm users/user create  --superordinate $DOMAIN \
+        udm users/user create  --superordinate "$DOMAIN" \
             --set lastname="nobody" \
             --set username="$username$i" \
             --set password="univention_0"
@@ -58,11 +59,11 @@ function create_sample_users {
 }
 
 function remove_sample_users {
-	DOMAIN=$(get_user_ldap_domain)
-    for i in $(seq 1 $1); do
+    DOMAIN=$(get_user_ldap_domain)
+    for i in $(seq 1 "$1"); do
         set -x
         # if the user already exists we want to reset the password
-        udm users/user remove --dn uid="$username""$i",$DOMAIN
+        udm users/user remove --dn uid="$username""$i","$DOMAIN"
         set +x
     done
 }
@@ -77,7 +78,7 @@ function umc_cycle_password {
 
 # $1 = number of users
 function parallel_cycle_passwords {
-    for i in $(seq 1 $1); do
+    for i in $(seq 1 "$1"); do
         set -x
         umc_cycle_password "$username""$i" &
         set +x
@@ -93,11 +94,11 @@ sleep 60
 service slapd restart
 sleep 2
 
-close_wait=`get_number_of_close_waits`
+close_wait=$(get_number_of_close_waits)
 echo "number of close wait connections: $close_wait"
 
 remove_sample_users $MAX_USERS
-if [ $close_wait -gt 2 ]; then
+if [ "$close_wait" -gt 2 ]; then
     fail_fast 110 "number of close wait connections > 2"
 fi
 
