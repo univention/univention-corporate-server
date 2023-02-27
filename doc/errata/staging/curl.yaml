@@ -1,0 +1,12 @@
+product: ucs
+release: "5.0"
+version: [2, 3]
+scope: ucs_5.0-0-errata5.0-3
+src: curl
+fix: 7.64.0-4+deb10u5
+desc: |
+ This update addresses the following issue:
+ * HTTP multi-header compression denial of service (CVE-2023-23916)
+bug: [55760]
+cve:
+- CVE-2023-23916
