@@ -748,7 +748,7 @@ def rewrite(filename):
         try:
             rename(cur, bak)
         except EnvironmentError as ex:
-            log.debug('rename %s %s: %s', cur, bak)
+            log.debug('rename %s %s: %s', cur, bak, ex)
             if ex.errno != ENOENT:
                 raise
 

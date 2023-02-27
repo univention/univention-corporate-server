@@ -2256,7 +2256,7 @@ def check_samba4_started():
             (stdout, stderr) = p.communicate()
             stdout = stdout.decode('UTF-8').rstrip()
             if int(stdout) > 0:
-                log.debug("ERROR: Stray Processes:", int(stdout))
+                log.debug("ERROR: Stray Processes: %s", int(stdout))
                 run_and_output_to_log(["pkill", "-9", "-xf", "/usr/sbin/samba -D"], log.debug)
             run_and_output_to_log(["/etc/init.d/samba-ad-dc", "start"], log.debug)
             # fallback
@@ -2266,7 +2266,7 @@ def check_samba4_started():
             stdout = stdout.decode('UTF-8').rstrip()
             if int(stdout) == 1:
                 attempt = 3
-                log.debug("ERROR: Stray Processes:", int(stdout))
+                log.debug("ERROR: Stray Processes: %s", int(stdout))
                 run_and_output_to_log(["pkill", "-9", "-xf", "/usr/sbin/samba -D"], log.debug)
                 run_and_output_to_log(["/etc/init.d/samba-ad-dc", "start"], log.debug)
                 # and log
