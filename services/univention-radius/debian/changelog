@@ -1,3 +1,9 @@
+univention-radius (7.0.5-3) unstable; urgency=medium
+
+  * Bug #55757: allow login with the primary email address
+
+ -- Maximilian Janßen <janssen@univention.de>  Fri, 24 Feb 2023 19:06:27 +0100
+
 univention-radius (7.0.5-2) unstable; urgency=medium
 
   * Bug #55247: disable tls v3 for radius

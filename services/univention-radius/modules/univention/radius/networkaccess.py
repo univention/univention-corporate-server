@@ -142,6 +142,8 @@ class NetworkAccess(object):
     def get_user_network_access(self, uid):
         # type: (str) -> Dict[str, bool]
         users = self.ldapConnection.search(filter=filter_format('(uid=%s)', (uid, )), attr=['univentionNetworkAccess'])
+        if not users:
+            users = self.ldapConnection.search(filter=filter_format('(mailPrimaryAddress=%s)', (uid, )), attr=['univentionNetworkAccess'])
         return self.build_access_dict(users)
 
     def get_station_network_access(self, mac_address):
@@ -220,7 +222,10 @@ class NetworkAccess(object):
         self.logger.info('User is allowed to use RADIUS')
 
         pwd_attr = 'univentionRadiusPassword' if self.use_ssp else 'sambaNTPassword'
-        result = self.ldapConnection.search(filter=filter_format('(uid=%s)', (self.username, )), attr=[pwd_attr, 'sambaAcctFlags'])
+        if '@' in self.username:
+            result = self.ldapConnection.search(filter=filter_format('(mailPrimaryAddress=%s)', (self.username, )), attr=[pwd_attr, 'sambaAcctFlags'])
+        else:
+            result = self.ldapConnection.search(filter=filter_format('(uid=%s)', (self.username, )), attr=[pwd_attr, 'sambaAcctFlags'])
         try:
             nt_password_hash = codecs.decode(result[0][1][pwd_attr][0], 'hex')
         except (IndexError, KeyError, TypeError):
