@@ -1,0 +1,16 @@
+product: ucs
+release: "5.0"
+version: [2, 3]
+scope: ucs_5.0-0-errata5.0-3
+src: freeradius
+fix: 3.0.17+dfsg-1.1+deb10u2A~5.0.3.202302271022
+desc: |
+ This update addresses the following issues:
+ * Information leakage in EAP-PWD (CVE-2022-41859)
+ * Crash on unknown option in EAP-SIM (CVE-2022-41860)
+ * Crash on invalid abinary data (CVE-2022-41861)
+bug: [55758]
+cve:
+- CVE-2022-41859
+- CVE-2022-41860
+- CVE-2022-41861
