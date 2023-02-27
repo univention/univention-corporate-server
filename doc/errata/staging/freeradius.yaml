@@ -1,0 +1,108 @@
+product: ucs
+release: "4.4"
+version: [9]
+scope: ucs_4.4-0-errata4.4-9
+src: freeradius
+fix: 3.0.17+dfsg-1.1+deb9u1A~4.4.9.202302271026
+desc: |
+ This update addresses the following issues:
+ 3.0.17+dfsg-1.1+deb9u1 (Fri, 24 Feb 2023 14:19:28 +0100)
+ * Non-maintainer upload by the ELTS team.
+ * CVE-2022-41859: In freeradius, the EAP-PWD function
+   compute_password_element() leaks information about the password which
+   allows an attacker to substantially reduce the size of an offline
+   dictionary attack.
+ * CVE-2022-41860: In freeradius, when an EAP-SIM supplicant sends an unknown
+   SIM option, the server will try to look that option up in the internal
+   dictionaries. This lookup will fail, but the SIM code will not check for
+   that failure. Instead, it will dereference a NULL pointer, and cause the
+   server to crash.
+ * CVE-2022-41861: A flaw was found in freeradius. A malicious RADIUS client
+   or home server can send a malformed attribute which can cause the server to
+   crash.
+ * CVE-2019-11234: FreeRADIUS does not prevent use of reflection for
+   authentication spoofing, aka a "Dragonblood" issue, a similar issue to
+   CVE-2019-9497.
+ * CVE-2019-11235: FreeRADIUS mishandles the "each participant verifies that
+   the received scalar is within a range, and that the received group element
+   is a valid point on the curve being used" protection mechanism, aka a
+   "Dragonblood" issue, a similar issue to CVE-2019-9498 and CVE-2019-9499.
+ * CVE-2019-13456: In FreeRADIUS 3.0 on average 1 in every 2048 EAP-pwd
+   handshakes fails because the password element cannot be found within 10
+   iterations of the hunting and pecking loop. This leaks information that an
+   attacker can use to recover the password of any user. This information
+   leakage is similar to the "Dragonblood" attack and CVE-2019-9494.
+ * CVE-2019-17185: In FreeRADIUS 3.0.x the EAP-pwd module used a global
+   OpenSSL BN_CTX instance to handle all handshakes. This mean multiple
+   threads use the same BN_CTX instance concurrently, resulting in crashes
+   when concurrent EAP-pwd handshakes are initiated. This can be abused by an
+   adversary as a Denial-of-Service (DoS) attack.
+ 3.0.17+dfsg-1.1+deb10u1 (Sat, 27 Aug 2022 22:29:38 +0300)
+ * Non-maintainer upload.
+ * CVE-2019-13456: side-channel leak where 1 in 2048 handshakes fail
+ * CVE-2019-17185: DoS due to multithreaded BN_CTX access
+ * Add upstream fix for a crash bug.
+ 3.0.17+dfsg-1.1 (Mon, 22 Apr 2019 23:23:36 +0200)
+ * Cherry-Pick upstream commits to fix CVE-2019-11234 / CVE-2019-11235 /
+   VU#871675 (Invalid Curve Attack and Reflection Attack on EAP-PWD, leading
+   to authentication bypass)
+ 3.0.17+dfsg-1 (Mon, 07 Jan 2019 09:38:17 +0100)
+ * stop using pristine-tar
+ * New upstream version 3.0.17+dfsg
+ 3.0.16+dfsg-5 (Fri, 14 Dec 2018 09:33:40 +0100)
+ * Revert "Strip rpath from a few modules."
+ 3.0.16+dfsg-4.1 (Tue, 25 Sep 2018 15:18:31 +0100)
+ * Non-maintainer upload with permission.
+ * Split out python2 freeradius module into a standalone package.
+
+ * Strip rpath from a few modules.
+ * Drop upstart system jobs.
+ * Update git vcs URLs to salsa.
+ 3.0.16+dfsg-3 (Tue, 20 Mar 2018 07:52:46 +0100)
+ * Change default /etc/freeradius permission from 2751 to 2750
+ 3.0.16+dfsg-2 (Sun, 25 Feb 2018 16:25:54 +0100)
+ * Remove sites-enabled/* from freeradius-config
+ 3.0.16+dfsg-1 (Mon, 22 Jan 2018 19:05:09 +0100)
+ * New upstream version 3.0.16+dfsg
+ 3.0.15+dfsg-2 (Tue, 15 Aug 2017 09:50:16 +0200)
+ * logrotate: don’t accidentally define global options
+ 3.0.15+dfsg-1 (Tue, 18 Jul 2017 20:49:31 +0200)
+ * New upstream version 3.0.15+dfsg, addressing the following security issues:
+   CVE-2017-10978 (denial of service) CVE-2017-10984 (remote code execution,
+   denial of service) CVE-2017-10985 (denial of service) CVE-2017-10983
+   (denial of service) CVE-2017-10986 (denial of service) CVE-2017-10987
+   (denial of service)
+ 3.0.14+dfsg-3 (Tue, 18 Jul 2017 09:30:49 +0200)
+ * Revert "Work around debhelper bug to fix FTBFS" (fixed upstream in
+   debhelper 10.6.3)
+ 3.0.14+dfsg-2 (Wed, 05 Jul 2017 08:23:11 +0200)
+ * Work around debhelper bug to fix FTBFS
+ 3.0.14+dfsg-1 (Mon, 03 Jul 2017 09:01:13 +0200)
+ * New upstream version 3.0.14+dfsg
+ * Switch to dh_missing’s --fail-missing feature
+ * Install missing file rlm_sql_freetds.so
+ * drop debian/patches/openssl-autoconf.diff (merged upstream)
+ * drop debian/patches/openssl-1.1.diff (merged upstream)
+ * drop debian/patches/manpage-fixes.diff (merged upstream)
+ * refresh patches
+ * add build-dependency on freetds-dev to build rlm_sql_freetds
+ * update Standards-Version to 4.0.0 (no changes necessary)
+bug: [55761]
+cve:
+- CVE-2022-41859
+- CVE-2022-41860
+- CVE-2022-41861
+- CVE-2019-11234
+- CVE-2019-9497
+- CVE-2019-11235
+- CVE-2019-9498
+- CVE-2019-9499
+- CVE-2019-13456
+- CVE-2019-9494
+- CVE-2019-17185
+- CVE-2017-10978
+- CVE-2017-10984
+- CVE-2017-10985
+- CVE-2017-10983
+- CVE-2017-10986
+- CVE-2017-10987
