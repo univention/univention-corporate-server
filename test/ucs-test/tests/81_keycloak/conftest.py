@@ -36,8 +36,12 @@ import pytest
 from selenium import webdriver
 from utils import get_portal_tile, keycloak_login, keycloak_password_change, wait_for_class, wait_for_id
 
+import univention.testing.udm as udm_test
+from univention.appcenter.actions import get_action
+from univention.appcenter.app_cache import Apps
 from univention.config_registry import ConfigRegistry
 from univention.lib.misc import custom_groupname
+from univention.testing.utils import get_ldap_connection, wait_for_listener_replication
 
 
 @pytest.fixture()
@@ -56,6 +60,57 @@ def keycloak_admin() -> str:
 
 
 @pytest.fixture()
+def keycloak_settings() -> dict:
+    apps_cache = Apps()
+    settings = {}
+    candidate = apps_cache.find("keycloak", latest=True)
+    configure = get_action('configure')
+    for setting in configure.list_config(candidate):
+        settings[setting["name"]] = setting["value"]
+    return settings
+
+
+@pytest.fixture()
+def change_app_setting():
+    apps_cache = Apps()
+    app = apps_cache.find("keycloak", latest=True)
+    configure = get_action('configure')
+    settings = configure.list_config(app)
+    revert_changes = {}
+
+    def _func(app_id: str, changes: dict, revert: bool = True) -> None:
+        known_settings = {x.get("name"): x.get("value") for x in settings}
+        for change in changes:
+            if change in known_settings:
+                if revert:
+                    revert_changes[change] = known_settings[change]
+            else:
+                raise Exception(f"Unknown setting: {change}")
+        configure.call(app=app, set_vars=changes)
+
+    yield _func
+
+    if revert_changes:
+        configure.call(app=app, set_vars=revert_changes)
+
+
+@pytest.fixture()
+def unverified_user() -> dict:
+    with udm_test.UCSTestUDM() as udm:
+        dn, username = udm.create_user()
+        ldap = get_ldap_connection(primary=True)
+        changes = [
+            ("objectClass", [""], ldap.get(dn).get("objectClass") + [b"univentionPasswordSelfService"]),
+            ("univentionPasswordSelfServiceEmail", [""], [b"root@localhost"]),
+            ("univentionPasswordRecoveryEmailVerified", [""], [b"FALSE"]),
+            ("univentionRegisteredThroughSelfService", [""], [b"TRUE"]),
+        ]
+        ldap.modify(dn, changes)
+        wait_for_listener_replication()
+        yield SimpleNamespace(**{"username": username, "dn": dn, "password": "univention"})
+
+
+@pytest.fixture()
 def portal_config(ucr: ConfigRegistry) -> SimpleNamespace:
     config = {
         "url": f"https://{ucr['hostname']}.{ucr['domainname']}/univention/portal",
@@ -71,6 +126,7 @@ def portal_config(ucr: ConfigRegistry) -> SimpleNamespace:
         "username": "admin",
         "password": "univention",
         "header_menu_id": "header-button-menu",
+        "portal_sidenavigation_username_class": "portal-sidenavigation--username",
     }
 
     return SimpleNamespace(**config)
@@ -82,6 +138,7 @@ def keycloak_config(ucr: ConfigRegistry) -> SimpleNamespace:
     config = {
         "url": url,
         "token_url": f"{url}/realms/master/protocol/openid-connect/token",
+        "users_url": f"{url}/admin/realms/ucs/users",
         "client_session_stats_url": f"{url}/admin/realms/ucs/client-session-stats",
         "logout_all_url": f"{url}/admin/realms/ucs/logout-all",
         "title": "Welcome to Keycloak",
@@ -125,15 +182,12 @@ def selenium() -> webdriver.Chrome:
     chrome_options.add_experimental_option('prefs', {'intl.accept_languages': 'de_DE'})
     driver = webdriver.Chrome(options=chrome_options)
     yield driver
+    print(driver.page_source)
     driver.quit()
 
 
 @pytest.fixture()
 def portal_login_via_keycloak(selenium: webdriver.Chrome, portal_config: SimpleNamespace, keycloak_config: SimpleNamespace):
-    selenium.get(portal_config.url)
-    wait_for_id(selenium, portal_config.categories_id)
-    assert selenium.title == portal_config.title
-    portal = selenium
 
     def _func(
         username: str,
@@ -141,50 +195,49 @@ def portal_login_via_keycloak(selenium: webdriver.Chrome, portal_config: SimpleN
         fails_with: Optional[str] = None,
         new_password: Optional[str] = None,
         new_password_confirm: Optional[str] = None,
+        verify_login: Optional[bool] = True,
+        url: Optional[str] = portal_config.url,
     ) -> webdriver.Chrome:
-        try:
-            get_portal_tile(portal, portal_config.sso_login_tile_de, portal_config).click()
-            # login
-            keycloak_login(portal, keycloak_config, username, password, fails_with=fails_with if not new_password else None)
-            # check password change
-            if new_password:
-                new_password_confirm = new_password_confirm if new_password_confirm else new_password
-                keycloak_password_change(portal, keycloak_config, password, new_password, new_password_confirm, fails_with=fails_with)
-            if fails_with:
-                return portal
-            # check that we are logged in
-            wait_for_id(portal, portal_config.header_menu_id)
-        except Exception:
-            print(portal.page_source)
-            raise
-        return portal
+        selenium.get(url)
+        wait_for_id(selenium, portal_config.categories_id)
+        assert selenium.title == portal_config.title
+        get_portal_tile(selenium, portal_config.sso_login_tile_de, portal_config).click()
+        # login
+        keycloak_login(selenium, keycloak_config, username, password, fails_with=fails_with if not new_password else None)
+        # check password change
+        if new_password:
+            new_password_confirm = new_password_confirm if new_password_confirm else new_password
+            keycloak_password_change(selenium, keycloak_config, password, new_password, new_password_confirm, fails_with=fails_with)
+        if fails_with:
+            return selenium
+        # check that we are logged in
+        if verify_login:
+            wait_for_id(selenium, portal_config.header_menu_id)
+        return selenium
+
     return _func
 
 
 @pytest.fixture()
 def keycloak_adm_login(selenium: webdriver.Chrome, keycloak_config: SimpleNamespace):
-    selenium.get(keycloak_config.url)
-    wait_for_class(selenium, keycloak_config.admin_console_class)
-    assert selenium.title == keycloak_config.title
-    keycloak = selenium
 
     def _func(
         username: str,
         password: str,
         fails_with: Optional[str] = None,
+        url: Optional[str] = keycloak_config.url,
     ) -> webdriver.Chrome:
-        try:
-            admin_console = wait_for_class(keycloak, keycloak_config.admin_console_class)[0]
-            admin_console.find_element_by_tag_name("a").click()
-            keycloak_login(keycloak, keycloak_config, username, password, fails_with=fails_with)
-            if fails_with:
-                return keycloak
-            # check that we are logged in
-            wait_for_class(keycloak, keycloak_config.realm_selector_class)
-        except Exception:
-            print(keycloak.page_source)
-            raise
-        return keycloak
+        selenium.get(url)
+        wait_for_class(selenium, keycloak_config.admin_console_class)
+        assert selenium.title == keycloak_config.title
+        admin_console = wait_for_class(selenium, keycloak_config.admin_console_class)[0]
+        admin_console.find_element_by_tag_name("a").click()
+        keycloak_login(selenium, keycloak_config, username, password, fails_with=fails_with)
+        if fails_with:
+            return selenium
+        # check that we are logged in
+        wait_for_class(selenium, keycloak_config.realm_selector_class)
+        return selenium
 
     return _func
 

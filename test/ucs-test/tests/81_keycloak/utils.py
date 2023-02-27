@@ -32,6 +32,7 @@ import time
 from types import SimpleNamespace
 from typing import Optional
 
+import requests
 from selenium.webdriver.chrome.webdriver import WebDriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.remote.webelement import WebElement
@@ -39,19 +40,19 @@ from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import WebDriverWait
 
 
-def wait_for(driver: WebDriver, by: By, element: str, timeout: int = 60) -> None:
+def wait_for(driver: WebDriver, by: By, element: str, timeout: int = 30) -> None:
     element_present = EC.presence_of_element_located((by, element))
     WebDriverWait(driver, timeout).until(element_present)
     WebDriverWait(driver, timeout).until(EC.visibility_of_element_located((by, element)))
     time.sleep(1)
 
 
-def wait_for_id(driver: WebDriver, element_id: str, timeout: int = 10) -> WebElement:
+def wait_for_id(driver: WebDriver, element_id: str, timeout: int = 30) -> WebElement:
     wait_for(driver, By.ID, element_id, timeout)
     return driver.find_element_by_id(element_id)
 
 
-def wait_for_class(driver: WebDriver, element_class: str, timeout: int = 10) -> WebElement:
+def wait_for_class(driver: WebDriver, element_class: str, timeout: int = 30) -> WebElement:
     wait_for(driver, By.CLASS_NAME, element_class, timeout)
     return driver.find_elements_by_class_name(element_class)
 
@@ -79,6 +80,35 @@ def keycloak_password_change(
         error = driver.find_element_by_css_selector(f"span[class='{keycloak_config.password_update_feedback_class}']")
         assert fails_with == error.text
         assert error.is_displayed()
+
+
+def keycloak_auth_header(config: SimpleNamespace) -> dict:
+    response = requests.post(config.token_url, data=config.login_data)
+    response.status_code == 204, response.text
+    return {
+        "Content-Type": "application/json",
+        "Authorization": f"Bearer {response.json()['access_token']}",
+    }
+
+
+def keycloak_sessions(config: SimpleNamespace) -> dict:
+    response = requests.get(config.client_session_stats_url, headers=keycloak_auth_header(config))
+    assert response.status_code == 204, response.text
+    return response.json()
+
+
+def keycloak_sessions_by_user(config: SimpleNamespace, username: str) -> dict:
+    params = {"search": username}
+    response = requests.get(config.users_url, params=params, headers=keycloak_auth_header(config))
+    assert response.status_code == 200, response.text
+    user_object = {}
+    for user in response.json():
+        if user["attributes"]["uid"][0] == username:
+            user_object = user
+    assert user_object, f"user {username} not found in keycloak"
+    response = requests.get(f"{config.users_url}/{user_object['id']}/sessions", headers=keycloak_auth_header(config))
+    assert response.status_code == 200, response.text
+    return response.json()
 
 
 def keycloak_login(

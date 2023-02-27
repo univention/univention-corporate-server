@@ -49,14 +49,36 @@ def test_pwdChangeNextLogin_wrong_password(portal_login_via_keycloak, keycloak_c
 def test_pwdChangeNextLogin_same_password_fails(portal_login_via_keycloak, keycloak_config, portal_config):
     with udm_test.UCSTestUDM() as udm:
         username = udm.create_user(pwdChangeNextLogin=1)[1]
-        assert portal_login_via_keycloak(username, "univention", new_password="univention", fails_with=keycloak_config.password_update_failed_msg)
+        driver = portal_login_via_keycloak(username, "univention", new_password="univention", fails_with=keycloak_config.password_update_failed_msg)
+        wait_for_id(driver, keycloak_config.password_id)
+
+
+def test_pwdChangeNextLogin_confirm_new_passwords_fails(portal_login_via_keycloak, keycloak_config, portal_config):
+    with udm_test.UCSTestUDM() as udm:
+        username = udm.create_user(pwdChangeNextLogin=1)[1]
+        driver = portal_login_via_keycloak(
+            username,
+            "univention",
+            new_password="univention",
+            new_password_confirm="univention1",
+            verify_login=False,
+        )
+        wait_for_id(driver, keycloak_config.password_id)
+
+
+def test_pwdChangeNextLogin_empty_new_password(portal_login_via_keycloak, keycloak_config, portal_config):
+    with udm_test.UCSTestUDM() as udm:
+        username = udm.create_user(pwdChangeNextLogin=1)[1]
+        driver = portal_login_via_keycloak(username, "univention", verify_login=False)
+        wait_for_id(driver, keycloak_config.password_id)
+        driver.find_element_by_id(keycloak_config.password_change_button_id).click()
+        wait_for_id(driver, keycloak_config.password_id)
 
 
 def test_pwdChangeNextLogin_password_update_twice(portal_login_via_keycloak, keycloak_config, portal_config):
     with udm_test.UCSTestUDM() as udm:
         username = udm.create_user(pwdChangeNextLogin=1)[1]
         driver = portal_login_via_keycloak(username, "univention", new_password="univention", fails_with=keycloak_config.password_update_failed_msg)
-        # and again THIS FAILS CURRENTLY
         keycloak_password_change(driver, keycloak_config, "univention", "Univention.99", "Univention.99")
         wait_for_id(driver, portal_config.header_menu_id)
         assert Client(username=username, password="Univention.99")

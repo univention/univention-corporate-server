@@ -1,3 +1,9 @@
+ucs-test (10.0.10-15) unstable; urgency=medium
+
+  * Bug #55747: keycloak tests
+
+ -- Felix Botner <botner@univention.de>  Mon, 27 Feb 2023 22:04:50 +0100
+
 ucs-test (10.0.10-14) unstable; urgency=medium
 
   * Bug #55247: add test case for TLS v3 checking if a client
