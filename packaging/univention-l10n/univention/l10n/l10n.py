@@ -91,7 +91,7 @@ class UMCModuleTranslation(umc.UMC_Module):
     def __init__(self, attrs, target_language):
         # type: (Dict[str, Any], str) -> None
         attrs['target_language'] = target_language
-        return super(UMCModuleTranslation, self).__init__(attrs)
+        super(UMCModuleTranslation, self).__init__(attrs)
 
     @property
     def python_po_files(self):
