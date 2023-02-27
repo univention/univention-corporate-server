@@ -3,13 +3,17 @@
 exclude: "^packaging/ucslint/testframework/"
 repos:
   - repo: https://git.knut.univention.de/univention/dist/pre-commit-ucr
-    rev: '0.0.7'
+    rev: '0.0.9'
     hooks:
       - id: ucr-flake8
+        additional_dependencies: ["flake8==5.0.4"]
       - id: ucr-ruff
+        additional_dependencies: ["ruff==0.0.252"]
       - id: ucr-autopep8
+        additional_dependencies: ["autopep8<=2.0.2"]
         stages: [ manual ]
       - id: ucr-ruff-fix
+        additional_dependencies: ["ruff==0.0.252"]
         stages: [ manual ]
   - repo: https://github.com/pre-commit/pre-commit-hooks
     rev: v4.1.0
@@ -69,7 +73,7 @@ repos:
     hooks:
       - id: ucs-erratum
   - repo: https://github.com/charliermarsh/ruff-pre-commit
-    rev: 'v0.0.246'
+    rev: 'v0.0.252'
     hooks:
       - id: ruff
         exclude: "^oidc/python-keycloak/\

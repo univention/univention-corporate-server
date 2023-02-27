@@ -14,7 +14,7 @@ skip = "doc/doc-common/,base/univention-system-setup/tests,services/univention-l
 skip_glob = "venv/*"
 
 [tool.ruff]
-# ruff 0.0.246
+# ruff 0.0.252
 external = ["W601", "F812", "E403", "E704"]
 line-length = 180
 update-check = false
@@ -63,6 +63,7 @@ ignore = [
  "PLR0915",  # too-many-statements
  "PLR0911",  # too-many-return-statements
  "PLR0912",  # too-many-branches
+ "PLW2901",  # redefined-loop-name
 
  # not py2 compatible
  "UP004", "UP008", "UP009", "UP010", "UP025", "UP029",  # be Python 2 compatible
