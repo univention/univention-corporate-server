@@ -44,7 +44,7 @@ install_keycloak () {
     else
         app="keycloak"
     fi
-    univention-app install "$app" --username=Administrator --pwdfile=/tmp/pwdfile --skip --noninteractive
+    univention-app install "$app" --username=Administrator --pwdfile=/tmp/pwdfile --skip --noninteractive "$@"
     # for the app specific test
     echo "keycloak" >>/var/cache/appcenter-installed.txt
 }
