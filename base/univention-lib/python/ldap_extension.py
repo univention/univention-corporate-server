@@ -234,6 +234,8 @@ class UniventionLDAPExtension(six.with_metaclass(ABCMeta)):
 
     def wait_for_activation(self, timeout=180):
         # type: (int) -> bool
+        if not self._todo_list:
+            return True
         print("Waiting for activation of the extension object %s:" % (self.objectname,), end=' ')
         t0 = time.time()
         while not self.is_local_active()[1]:
@@ -245,6 +247,7 @@ class UniventionLDAPExtension(six.with_metaclass(ABCMeta)):
             sys.stdout.flush()
             time.sleep(3)
         print("OK")
+        self._todo_list = []
         return True
 
     def udm_find_object(self):
@@ -444,6 +447,8 @@ class UniventionLDAPExtension(six.with_metaclass(ABCMeta)):
             p = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
             (stdout, stderr) = p.communicate()
             stdout = stdout.decode('UTF-8', 'replace')
+            if stdout.startswith("Object modified: "):
+                self._todo_list.append(self.object_dn)
             print(stdout)
             if p.returncode != 0:
                 print("ERROR: Modification of %s object failed." % (self.udm_module_name,), file=sys.stderr)
