@@ -111,15 +111,18 @@ class Configure(UniventionAppAction):
                     break
             else:
                 other_settings[key] = value
+        distributed_config_set = False
         if together_config_settings.get('outside'):
             ucr_save(together_config_settings['outside'])
         if together_config_settings.get('distributed'):
             set_for_app(app, together_config_settings['distributed'])
+            self.log('Set distributed configuration. Skip running scripts now; will be done async later')
+            distributed_config_set = True
         if together_config_settings.get('inside'):
             other_settings.update(together_config_settings['inside'])
         if other_settings:
             self._set_config_via_tool(app, other_settings)
-        if args.run_script != 'no':
+        if args.run_script != 'no' and not distributed_config_set:
             self._run_configure_script(app, args.run_script)
 
     def _set_config_via_tool(self, app, set_vars):

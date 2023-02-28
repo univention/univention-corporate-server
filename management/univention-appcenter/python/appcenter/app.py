@@ -318,6 +318,15 @@ class AppFromFileAttribute(AppAttribute):
         setattr(klass, 'get_%s' % name, _get_objects_fn)
 
 
+class AppFromFileAttributeForSettings(AppFromFileAttribute):
+    def post_creation(self, app):
+        super(AppFromFileAttributeForSettings, self).post_creation(app)
+        for setting in app.get_settings():
+            if setting.is_distributed(app) and 'dcd' not in app.required_apps_in_domain:
+                app.required_apps_in_domain.append('dcd')
+                break
+
+
 class AppRatingAttribute(AppListAttribute):
     def post_creation(self, app):
         value = []
@@ -935,7 +944,7 @@ class App(with_metaclass(AppMetaClass, object)):
     additional_packages_slave = AppListAttribute()
     additional_packages_member = AppListAttribute()
 
-    settings = AppFromFileAttribute(Setting)
+    settings = AppFromFileAttributeForSettings(Setting)
     rating = AppRatingAttribute()
 
     umc_module_name = AppAttribute()
