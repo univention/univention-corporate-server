@@ -51,6 +51,10 @@ override_dh_auto_build:
 	make
 	dh_auto_build --buildsystem=pybuild
 
+override_dh_install:
+	dh_install
+	install dummy/dcd.py debian/python-univention-appcenter/usr/lib/python2.7/dist-packages/univention/appcenter/dcd.py
+
 override_dh_auto_install:
 	dh_auto_install --buildsystem=pybuild
 	python setup_dev.py build --force -b build/python-univention-appcenter-dev install --force --root=debian/python-univention-appcenter-dev --install-layout=deb
