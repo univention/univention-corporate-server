@@ -34,7 +34,7 @@ network={{
     return wpa_config
 
 
-def test_eap(udm, ca_cert):
+def test_eap(udm):
     password = 'univention'
     username = udm.create_user(networkAccess=1)[1]
     ca_cert = UNIVENTION_CACERT
