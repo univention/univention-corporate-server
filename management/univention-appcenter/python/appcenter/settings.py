@@ -40,6 +40,7 @@ import os.path
 
 from six import string_types
 
+from univention.appcenter.dcd import get_from_app
 from univention.appcenter.ini_parser import (
     IniSectionAttribute, IniSectionBooleanAttribute, IniSectionListAttribute, TypedIniSectionObject,
 )
@@ -103,15 +104,7 @@ class Setting(TypedIniSectionObject):
         if self.is_outside(app):
             value = ucr_get(self.name)
         elif self.is_distributed(app):
-            from univention.appcenter.dcd import DCD
-            dcd = DCD("Administrator", "univention", "https://member.ucs.test/univention/dcd/", version=1)
-            key = 'apps/%s' % app.id
-            old_value = dcd.get(key)
-            if old_value and self.name in old_value:
-                value = old_value[self.name]
-            else:
-                settings_logger.info('Cannot find %s in DCD (%s)' % (self.name, key))
-                value = None
+            value = get_from_app(app, self.name)
         else:
             if app_is_running(app):
                 from univention.appcenter.actions import get_action

@@ -40,6 +40,7 @@ from tempfile import NamedTemporaryFile
 
 from univention.appcenter.actions import StoreAppAction, UniventionAppAction
 from univention.appcenter.actions.install_base import StoreConfigAction
+from univention.appcenter.dcd import set_for_app
 from univention.appcenter.exceptions import ConfigureFailed
 from univention.appcenter.settings import FileSetting, SettingValueError
 from univention.appcenter.ucr import ucr_save
@@ -113,13 +114,7 @@ class Configure(UniventionAppAction):
         if together_config_settings.get('outside'):
             ucr_save(together_config_settings['outside'])
         if together_config_settings.get('distributed'):
-            from univention.appcenter.dcd import DCD
-            dcd = DCD("Administrator", "univention", "https://member.ucs.test/univention/dcd/", version=1)
-            key = 'apps/%s' % app.id
-            dcd.register(key, {'type': 'object'})
-            old_value = dcd.get(key) or {}
-            old_value.update(together_config_settings['distributed'])
-            dcd.set(key, old_value)
+            set_for_app(app, together_config_settings['distributed'])
         if together_config_settings.get('inside'):
             other_settings.update(together_config_settings['inside'])
         if other_settings:

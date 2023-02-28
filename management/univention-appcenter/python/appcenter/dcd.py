@@ -36,6 +36,9 @@ from urllib.parse import urlparse
 import requests
 from requests.compat import json as requests_json
 
+from univention.appcenter.ucr import ucr_get
+from univention.appcenter.udm import get_machine_connection, search_objects
+
 
 class DCDError(BaseException):
     pass
@@ -210,3 +213,33 @@ class DCD:
                 msg = json.loads(msg)
                 key = msg["key"]
                 yield key, self.get(key, request_id=request_id)
+
+
+def _get_dcd():
+    username = '%s$' % ucr_get('hostname')
+    password = open('/etc/machine.secret').read()
+    lo, pos = get_machine_connection()
+    for role in ['domaincontroller_master', 'domaincontroller_backup', 'domaincontroller_slave', 'memberserver']:
+        servers = search_objects('computers/%s' % role, lo, pos, service='Distributed Configuration Database')
+        if servers:
+            server = servers[0]['fqdn']
+            break
+    else:
+        return None
+    print(username, password)
+    return DCD(username, password, "https://%s/univention/dcd/" % server, version=1)
+
+
+def get_from_app(app, setting):
+    dcd = _get_dcd()
+    key = 'apps/%s' % app.id
+    return (dcd.get(key) or {}).get(setting)
+
+
+def set_for_app(app, settings):
+    dcd = _get_dcd()
+    key = 'apps/%s' % app.id
+    dcd.register(key, {'type': 'object'})
+    old_value = dcd.get(key) or {}
+    old_value.update(settings)
+    dcd.set(key, old_value)
