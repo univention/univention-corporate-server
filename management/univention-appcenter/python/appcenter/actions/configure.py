@@ -112,6 +112,14 @@ class Configure(UniventionAppAction):
                 other_settings[key] = value
         if together_config_settings.get('outside'):
             ucr_save(together_config_settings['outside'])
+        if together_config_settings.get('distributed'):
+            from univention.appcenter.dcd import DCD
+            dcd = DCD("Administrator", "univention", "https://member.ucs.test/univention/dcd/", version=1)
+            key = 'apps/%s' % app.id
+            dcd.register(key, {'type': 'object'})
+            old_value = dcd.get(key) or {}
+            old_value.update(together_config_settings['distributed'])
+            dcd.set(key, old_value)
         if together_config_settings.get('inside'):
             other_settings.update(together_config_settings['inside'])
         if other_settings:

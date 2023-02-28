@@ -102,6 +102,16 @@ class Setting(TypedIniSectionObject):
         """Get the current value for this Setting. Easy implementation"""
         if self.is_outside(app):
             value = ucr_get(self.name)
+        elif self.is_distributed(app):
+            from univention.appcenter.dcd import DCD
+            dcd = DCD("Administrator", "univention", "https://member.ucs.test/univention/dcd/", version=1)
+            key = 'apps/%s' % app.id
+            old_value = dcd.get(key)
+            if old_value and self.name in old_value:
+                value = old_value[self.name]
+            else:
+                settings_logger.info('Cannot find %s in DCD (%s)' % (self.name, key))
+                value = None
         else:
             if app_is_running(app):
                 from univention.appcenter.actions import get_action
@@ -137,6 +147,9 @@ class Setting(TypedIniSectionObject):
         if self.is_outside(app):
             together_config_settings.setdefault('outside', {})
             self.set_value(app, value, together_config_settings, 'outside')
+        if self.is_distributed(app):
+            together_config_settings.setdefault('distributed', {})
+            self.set_value(app, value, together_config_settings, 'distributed')
         if self.is_inside(app):
             together_config_settings.setdefault('inside', {})
             self.set_value(app, value, together_config_settings, 'inside')
