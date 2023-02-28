@@ -226,7 +226,6 @@ def _get_dcd():
             break
     else:
         return None
-    print(username, password)
     return DCD(username, password, "https://%s/univention/dcd/" % server, version=1)
 
 
