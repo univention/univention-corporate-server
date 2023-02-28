@@ -7,7 +7,7 @@
 # Like what you see? Join us!
 # https://www.univention.com/about-us/careers/vacancies/
 #
-# Copyright 2015-2023 Univention GmbH
+# Copyright 2023 Univention GmbH
 #
 # https://www.univention.de/
 #
@@ -36,12 +36,15 @@
 #
 
 import asyncio
-import subprocess
 
+from univention.appcenter.actions import get_action
 from univention.appcenter.app_cache import Apps
 from univention.appcenter.dcd import _get_dcd
+from univention.appcenter.log import log_to_logfile
 
 
+log_to_logfile()
+configure = get_action('configure')
 dcd = _get_dcd()
 
 
@@ -53,8 +56,12 @@ async def listen():
                 dcd_keys.append('apps/%s' % app.id)
 
     async for key, value in dcd.changes(dcd_keys):
-        print(key, value)
-        subprocess.call(['univention-app', 'configure', app])
+        app = Apps.find(key[4:])
+        set_vars = {}
+        for setting in app.get_settings():
+            if setting.is_distributed() and setting.name in value:
+                set_vars[setting.name] = value[setting.name]
+        configure.call(app=app, set_vars=set_vars)
 
 if __name__ == '__main__':
     asyncio.run(listen())
