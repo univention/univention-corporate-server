@@ -176,18 +176,6 @@ msgstr ""
 msgid "key=%(key)s old=%(old)s new=%(new)s"
 msgstr "clé=%(key)s ancien=%(old)s nouveau=%(new)s"
 
-#~ msgid "DHCP"
-#~ msgstr "DHCP"
-
-#~ msgid "DNS Alias"
-#~ msgstr "Alias DNS"
-
-#~ msgid "DNS forward zone"
-#~ msgstr "Zone DNS directe"
-
-#~ msgid "DNS reverse zone"
-#~ msgstr "Zone DNS inverse"
-
 # __init__.py:chen"024
 #~ msgid "delete"
 #~ msgstr "supprimer"

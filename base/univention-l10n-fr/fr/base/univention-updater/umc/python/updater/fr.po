@@ -46,9 +46,3 @@ msgstr "Voici le message d’erreur :"
 #: umc/python/updater/__init__.py:266
 msgid "latest version"
 msgstr "dernière version"
-
-#~ msgid "Release update"
-#~ msgstr "Mise à niveau de version"
-
-#~ msgid "unknown"
-#~ msgstr "inconnue"

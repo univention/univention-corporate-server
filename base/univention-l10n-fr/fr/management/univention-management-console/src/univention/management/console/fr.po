@@ -593,21 +593,3 @@ msgstr ""
 #: src/univention/management/console/protocol/message.py:285
 msgid "error parsing UMCP message body"
 msgstr "erreur lors de l'analyse du corps du message UMCP"
-
-#~ msgid "An option passed to %(method)s has the wrong type: %(exc)s"
-#~ msgstr "Une option transmise à %(method)s est du mauvais type : %(exc)s"
-
-#~ msgid ""
-#~ "Execution of command '%(command)s' has failed:\n"
-#~ "\n"
-#~ "%(text)s"
-#~ msgstr ""
-#~ "Échec de l'exécution de la commande « %(command)s » :\n"
-#~ "\n"
-#~ "%(text)s"
-
-#~ msgid "One or more options to %(method)s are missing: %(exc)s"
-#~ msgstr "Une ou plusieurs options de %(method)s sont manquantes : %(exc)s"
-
-#~ msgid "The command has failed: %s"
-#~ msgstr "Échec de la commande : %s"

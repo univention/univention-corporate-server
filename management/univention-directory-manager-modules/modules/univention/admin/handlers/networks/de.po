@@ -101,36 +101,3 @@ msgstr "Netze: Netz"
 #: modules/univention/admin/handlers/networks/network.py:94
 msgid "Next IP address"
 msgstr "Nächste IP-Adresse"
-
-#~ msgid "Add"
-#~ msgstr "Hinzufügen"
-
-#~ msgid "Add network object"
-#~ msgstr "Netz-Objekte hinzufügen"
-
-#~ msgid "Add, edit and delete networks"
-#~ msgstr "Hinzufügen, Bearbeiten und Löschen von Netzwerken"
-
-#~ msgid "DHCP"
-#~ msgstr "DHCP"
-
-#~ msgid "DNS"
-#~ msgstr "DNS"
-
-#~ msgid "IP"
-#~ msgstr "IP"
-
-#~ msgid "IP address ranges"
-#~ msgstr "IP-Adressbereiche"
-
-#~ msgid "Network Manager"
-#~ msgstr "Netzwerkverwaltung"
-
-#~ msgid "Search"
-#~ msgstr "Suchen"
-
-#~ msgid "Search network object(s)"
-#~ msgstr "Netz-Objekt(e) suchen"
-
-#~ msgid "nextIp"
-#~ msgstr "nächste IP-Adresse"

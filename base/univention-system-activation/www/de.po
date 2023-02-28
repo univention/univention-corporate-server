@@ -159,15 +159,3 @@ msgstr "[%(appliance_name)s Appliance] Fehler bei Aktivierung"
 #: www/ActivationWizard.js:92
 msgid "your email address"
 msgstr "Ihre E-Mail-Adresse"
-
-#~ msgid "Continue"
-#~ msgstr "Weiter"
-
-#~ msgid "License request."
-#~ msgstr "Anforderung einer Lizenz."
-
-#~ msgid "You have got mail!"
-#~ msgstr "Sie haben eine neue E-Mail!"
-
-#~ msgid "You have received a license file by email!"
-#~ msgstr "Sie haben eine Lizendatei per E-Mail erhalten!"

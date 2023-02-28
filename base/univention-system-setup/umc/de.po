@@ -37,9 +37,3 @@ msgstr "ip,dhcp,dns,nameserver,forwarder,gateway,interface"
 
 msgid "timezone,locale,keyboard"
 msgstr "Zeitzone,Sprache,Tastatur"
-
-#~ msgid "Configuration of the UCS system"
-#~ msgstr "Konfiguration des UCS-Systems"
-
-#~ msgid "UCS setup wizard"
-#~ msgstr "UCS-Einrichtungsassistent"

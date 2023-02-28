@@ -228,14 +228,5 @@ msgstr ""
 msgid "no module available"
 msgstr ""
 
-#~ msgid "Administration"
-#~ msgstr "Verwaltung"
-
-#~ msgid "Favorites"
-#~ msgstr "Favoriten"
-
-#~ msgid "LDAP directory"
-#~ msgstr "LDAP-Verzeichnis"
-
 msgid "Show server error message"
 msgstr "Fehlernachricht des Servers anzeigen"

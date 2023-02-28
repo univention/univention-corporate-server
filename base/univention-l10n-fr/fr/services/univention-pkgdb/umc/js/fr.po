@@ -67,6 +67,3 @@ msgstr "Rôle système"
 #: umc/js/pkgdb/KeyTranslator.js:74
 msgid "UCS version"
 msgstr "Version UCS"
-
-#~ msgid "Search"
-#~ msgstr "Chercher"

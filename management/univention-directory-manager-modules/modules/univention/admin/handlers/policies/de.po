@@ -1264,39 +1264,3 @@ msgstr "Ohne Angabe wird die aktuellste Version verwendet"
 msgid "https://docs.software-univention.de/manual-5.0.html#central:policies"
 msgstr ""
 "https://docs.software-univention.de/handbuch-5.0.html#central:policies"
-
-#~ msgid "Autostart"
-#~ msgstr "Autostart"
-
-#~ msgid "Autostart policies"
-#~ msgstr "Autostart-Richtlinien"
-
-#~ msgid "Autostart policy"
-#~ msgstr "Autostart-Richtlinie"
-
-#~ msgid "Autostart session"
-#~ msgstr "Autostart Sitzung"
-
-#~ msgid "General autostart settings"
-#~ msgstr "Grundeinstellungen - Autostart"
-
-#~ msgid "General member server packages settings"
-#~ msgstr "Grundeinstellungen - Memberserver Pakete"
-
-#~ msgid "Member Server packages"
-#~ msgstr "Memberserver Pakete"
-
-#~ msgid "Member Server packages policies"
-#~ msgstr "Memberserver Pakete-Richtlinien"
-
-#~ msgid "Member Server packages policy"
-#~ msgstr "Memberserver Pakete-Richtlinie"
-
-#~ msgid "Policy: Autostart"
-#~ msgstr "Richtlinie: Autostart"
-
-#~ msgid "Policy: Member Server packages"
-#~ msgstr "Richtlinie: Memberserver Pakete"
-
-#~ msgid "Session script to be launched by autostart"
-#~ msgstr "Sitzungsskript, das von Autostart ausgeführt werden soll"

@@ -19,9 +19,3 @@ msgstr "Univention Configuration Registry"
 
 msgid "ucr,config,registry,univention config registry,configuration"
 msgstr ""
-
-#~ msgid "Managing additional parameters of UCR variables"
-#~ msgstr "Erweiterte Einstellungen von UCR Variablen verwalten"
-
-#~ msgid "Univention Configuration Registry (Experts)"
-#~ msgstr "Univention Configuration Registry (Experten)"

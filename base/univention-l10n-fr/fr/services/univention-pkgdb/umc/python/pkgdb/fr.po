@@ -172,6 +172,3 @@ msgstr "Désinstallé"
 #: umc/python/pkgdb/__init__.py:190
 msgid "Unpacked"
 msgstr "Extrait du paquetage"
-
-#~ msgid "Deinstall"
-#~ msgstr "Désinstaller"

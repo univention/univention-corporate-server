@@ -114,9 +114,3 @@ msgstr ""
 #, python-format
 msgid "https://docs.software-univention.de/manual-%s.html#networks:dns"
 msgstr "https://docs.software-univention.de/handbuch-%s.html#networks:dns"
-
-#~ msgid "Error while contacting Docker registry server %s"
-#~ msgstr "Fehler bei der Kontaktaufnahme mit dem Docker-Registry-Server %s"
-
-#~ msgid "Manifest checksum mismatch"
-#~ msgstr "Prüfsumme für das Manifest weicht ab"

@@ -157,6 +157,3 @@ msgstr "Website Maintainer"
 #: udm/handlers/appcenter/app.py:151
 msgid "Website Vendor"
 msgstr "Webseite Hersteller"
-
-#~ msgid "Screenshot"
-#~ msgstr "Screenshot"

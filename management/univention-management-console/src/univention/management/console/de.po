@@ -583,13 +583,3 @@ msgstr ""
 #: src/univention/management/console/protocol/message.py:271
 msgid "error parsing UMCP message body"
 msgstr "Fehler beim Parsen des UMCP-Nachrichtenrumpfes"
-
-#~ msgid ""
-#~ "The password does not meet the password policy requirements. Check the "
-#~ "minimum password length, password complexity and password history "
-#~ "requirements."
-#~ msgstr ""
-#~ "Der Wert, der als neues Kennwort angegeben wurde, entspricht nicht den "
-#~ "Kennwortrichtlinien der Domäne. Überprüfen Sie die Kennwortlänge, die "
-#~ "Komplexität des Kennworts und die Anforderungen bezüglich früherer "
-#~ "Kennwörter."

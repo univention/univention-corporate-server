@@ -126,9 +126,3 @@ msgstr "Mitgliedschaft von weiteren Gruppen"
 #: group.py:188
 msgid "Membership in other Groups"
 msgstr "Mitgliedschaft in weiteren Gruppen"
-
-#~ msgid "memberOf"
-#~ msgstr "Mitgliedschaft in"
-
-#~ msgid "Group Manager"
-#~ msgstr "Gruppenverwaltung"

@@ -441,9 +441,3 @@ msgid ""
 msgstr ""
 "Benutzen Sie die zweite Option für komplexere Szenarien, die den "
 "Parallelbetrieb der Active Directory- und UCS-Domäne voraussetzen."
-
-#~ msgid "Activate password synchronization"
-#~ msgstr "Passwortsynchronisation aktivieren"
-
-#~ msgid "Stop password synchronization"
-#~ msgstr "Passwortsynchronisation deaktivieren"

@@ -289,16 +289,3 @@ msgstr "ausstehend"
 #: umc/js/join/Grid.js:123
 msgid "successful"
 msgstr "erfolgreich"
-
-#~ msgid "Initial system join"
-#~ msgstr "Initialer Domänenbeitritt"
-
-#~ msgid "Join status"
-#~ msgstr "Join-Status"
-
-#~ msgid ""
-#~ "The system has not been joined into a domain so far. Please visit the %s "
-#~ "to join the system."
-#~ msgstr ""
-#~ "Das System ist bisher noch keiner Domäne beigetreten. Bitte rufen Sie das "
-#~ "%s auf um das System zu joinen."

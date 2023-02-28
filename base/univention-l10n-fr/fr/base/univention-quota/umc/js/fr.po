@@ -215,12 +215,3 @@ msgstr "Utilisateur"
 #: umc/js/quota/PartitionPage.js:74
 msgid "loading..."
 msgstr "chargement en cours…"
-
-#~ msgid "Could not remove the following user: %s"
-#~ msgstr "Impossible de supprimer l'utilisateur suivant : %s"
-
-#~ msgid "Failed to activate quota support: "
-#~ msgstr "Échec de l'activation de la prise en charge des quotas :"
-
-#~ msgid "Failed to deactivate quota support: "
-#~ msgstr "Échec de la désactivation de la prise en charge des quotas :"

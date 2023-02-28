@@ -118,12 +118,3 @@ msgstr ""
 #, python-format
 msgid "https://docs.software-univention.de/manual-%s.html#networks:dns"
 msgstr "https://docs.software-univention.de/manual-%s.html#networks:dns"
-
-#~ msgid "Error while contacting Docker registry server %s"
-#~ msgstr "Erreur lors du contact du service d'enregistrement Docker %s"
-
-#~ msgid "Manifest checksum mismatch"
-#~ msgstr "Différences dans la somme de contrôle du manifeste"
-
-#~ msgid "Setup script failed!"
-#~ msgstr "Le script d'installation a échoué"

@@ -2366,27 +2366,3 @@ msgstr ""
 #: modules/univention/admin/handlers/settings/udm_syntax.py:168
 msgid "packageversion: Version must not be lower than the current one."
 msgstr "Paketversion: Der Wert darf nicht geringer sein als der aktuelle."
-
-#~ msgid "Alternative e-mail address"
-#~ msgstr "Alternative E-Mail-Adresse"
-
-#~ msgid "Default DC Slave Computer Group"
-#~ msgstr "Standardgruppe für DC Slave-Rechner"
-
-#~ msgid ""
-#~ "Display name of the category; strongly encouraged to have one for en_US"
-#~ msgstr ""
-#~ "Überschrift des Portals. Mindestens ein Wert; insbesondere en_US ist "
-#~ "empfohlen"
-
-#~ msgid "POSIX (Linux/UNIX) account settings"
-#~ msgstr "POSIX (Linux/UNIX) Kontoeinstellungen"
-
-#~ msgid "Settings: Extended options"
-#~ msgstr "Einstellungen: Erweiterte Optionen"
-
-#~ msgid "User group"
-#~ msgstr "Benutzergruppe"
-
-#~ msgid "Windows Account Settings"
-#~ msgstr "Windows-Kontoeinstellungen"

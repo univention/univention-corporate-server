@@ -27,4 +27,3 @@ msgstr ""
 msgid "Configure Univention Configuration Registry"
 msgstr "Configurer le registre de configuration d'Univention"
 
-

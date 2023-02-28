@@ -1004,18 +1004,3 @@ msgstr "Benutzer"
 #: modules/univention/admin/handlers/shares/share.py:670
 msgid "uses"
 msgstr "benutzt"
-
-#~ msgid "%(name)s is member of the following quota printer groups %(groups)s"
-#~ msgstr "%(name)s ist Mitglied der folgenden Quota-Druckergruppen %(groups)s"
-
-#~ msgid "%s is disabled for quota support. "
-#~ msgstr "Quota an %s ist deaktiviert. "
-
-#~ msgid "Enable quota support"
-#~ msgstr "Quota aktivieren"
-
-#~ msgid "Price per page"
-#~ msgstr "Preis pro Seite"
-
-#~ msgid "Price per print job"
-#~ msgstr "Preis pro Druckauftrag"

@@ -44,21 +44,3 @@ msgstr ""
 #: usr/share/univention-web/js/umc/hooks/univention_demo.js:87
 msgid "https://univention.com/download/ucs-download/"
 msgstr "https://www.univention.de/download/ucs-download/"
-
-#~ msgid "%s web interface"
-#~ msgstr "%s Weboberfläche"
-
-#~ msgid "Hide content next time."
-#~ msgstr "Diesen Inhalt das nächste Mal ausblenden."
-
-#~ msgid ""
-#~ "Welcome to Univention Management Console (UMC), the administration interface"
-#~ " for your appliance. UMC is provided by Univention Corporate Server, the "
-#~ "platform on which %s is running on."
-#~ msgstr ""
-#~ "Willkommen auf Univention Management Console (UMC), die "
-#~ "Administrationsoberfläche Ihrer Appliance. UMC wird zur Verfügung gestellt "
-#~ "von Univention Corporate Server, der Plattform auf der %s läuft."
-
-#~ msgid "appliance_first_steps.README"
-#~ msgstr "appliance_first_steps.README_DE"

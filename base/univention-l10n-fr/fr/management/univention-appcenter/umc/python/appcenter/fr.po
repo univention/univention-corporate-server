@@ -241,23 +241,3 @@ msgstr ""
 #: umc/python/appcenter/__init__.py:914
 msgid "upgradable"
 msgstr "mise à jour possible"
-
-#~ msgid "Any of %r must be given"
-#~ msgstr "Une valeur parmi %r doit être donnée"
-
-#~ msgid "Error while contacting the App Center server. %s"
-#~ msgstr "Erreur lors du contact du serveur de l'App Center. %s"
-
-#~ msgid ""
-#~ "Registration of the application in LDAP failed. It will be retried every "
-#~ "time the App Center module is opened."
-#~ msgstr ""
-#~ "Échec de l'inscription de l'application dans LDAP. Cette action sera "
-#~ "retentée à chaque fois que le module App Center sera ouvert."
-
-#~ msgid ""
-#~ "The application needs a %(needs)s-bit operating system. This server is "
-#~ "running a %(has)s-bit operating system."
-#~ msgstr ""
-#~ "L'application a besoin d'un système d'exploitation %(needs)s bits. Le "
-#~ "serveur est exécuté sur un système d'exploitation %(has)s bits."

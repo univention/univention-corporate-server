@@ -26,21 +26,3 @@ msgstr "Das System wird nun neu gestartet"
 #: umc/python/lib/server.py:107
 msgid "The system will now be shut down"
 msgstr "Das System wird nun heruntergefahren"
-
-#~ msgid "certificate error when connecting to %r: %s"
-#~ msgstr "Zertifikatsfehler während des Verbindungsaufbaus mit %r: %s"
-
-#~ msgid "failed to get login token for host %r"
-#~ msgstr "Login-Token für Rechner %r konnte nicht bezogen werden."
-
-#~ msgid "given hostname seems to contain invalid characters"
-#~ msgstr "Der angegebene Rechnername enthält ungültige Zeichen."
-
-#~ msgid "no credentials available"
-#~ msgstr "Benutzeranmeldedaten sind nicht verfügbar"
-
-#~ msgid "option \"host\" has not been specified"
-#~ msgstr "Die Option \"host\" wurde nicht angegeben."
-
-#~ msgid "unable to connect to %r: %s"
-#~ msgstr "Verbindung zu %r fehlgeschlagen: %s"

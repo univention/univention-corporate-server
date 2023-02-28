@@ -1605,15 +1605,3 @@ msgstr ""
 "Das Plugin kann auch in Multi-Connector-Instanzen verwendet werden. Dabei"
 " muss der Name der Instanz als Parameter übergeben werden."
 
-#~ msgid "'Verify'"
-#~ msgstr "'Verify'"
-
-#~ msgid "'Dead'"
-#~ msgstr "'Dead'"
-
-#~ msgid "'Failed'"
-#~ msgstr "'Failed'"
-
-#~ msgid "'Error'"
-#~ msgstr "'Error'"
-

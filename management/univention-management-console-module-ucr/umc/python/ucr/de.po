@@ -45,16 +45,6 @@ msgstr "Die UCR-Variable %s ist nur lesbar und kann nicht geändert werden!"
 msgid "The UCR variable %s is read-only and can not be removed!"
 msgstr "Die UCR-variable %s ist nur lesbar und kann nicht entfernt werden"
 
-#~ msgid ""
-#~ "Invalid UCR variable entry, the properties \"key\" and \"value\" need to "
-#~ "be specified."
-#~ msgstr ""
-#~ "Ungültiger UCR-Variableneintrag. Die Optionen \"key\" und \"value\" "
-#~ "müssen angegeben werden"
-
-#~ msgid "The UCR variable %r has an invalid name."
-#~ msgstr "Der Name der UCR-Variable %r ist nicht gültig."
-
 #: umc/python/ucr/__init__.py:167
 #, python-format
 msgid "The value %s is not valid for the UCR variable %s!"

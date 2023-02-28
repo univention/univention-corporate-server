@@ -243,24 +243,3 @@ msgstr "Samba-Einstellungen"
 #: modules/univention/admin/handlers/container/dc.py:100
 msgid "Samba domain name"
 msgstr "Samba-Domänenname"
-
-#~ msgid "Add to standard domain controller computer containers"
-#~ msgstr "Zu Standard-Domänencontroller-Rechner-Containern hinzufügen"
-
-#~ msgid "Administrator password for this domain"
-#~ msgstr "Administrator Passwort für die Domäne"
-
-#~ msgid "Domain Password"
-#~ msgstr "Domänen-Passwort"
-
-#~ msgid "Domain password"
-#~ msgstr "Domänen-Passwort"
-
-#~ msgid "Mail"
-#~ msgstr "Mail"
-
-#~ msgid "Mail Settings"
-#~ msgstr "Mail-Einstellungen"
-
-#~ msgid "Mail relay server"
-#~ msgstr "Mail Relay-Server"

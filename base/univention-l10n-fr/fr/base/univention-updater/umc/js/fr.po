@@ -499,26 +499,3 @@ msgstr "{count} paquetages à installer"
 #: umc/js/updater.js:260
 msgid "{count} packages to be updated"
 msgstr "{count} paquetages à mettre à jour"
-
-#~ msgid ""
-#~ "Further release updates are available but cannot be installed because the "
-#~ "component '{0}' is not available for newer release versions."
-#~ msgstr ""
-#~ "D'autres mises à niveau de version sont disponibles mais ne peuvent pas "
-#~ "être installées car le composant '{0}' n'est pas disponible pour ces "
-#~ "versions plus récentes."
-
-#~ msgid "Release information"
-#~ msgstr "Informations de version"
-
-#~ msgid "Start Upgrade"
-#~ msgstr "Démarrer la mise à niveau"
-
-#~ msgid "There are no updates available."
-#~ msgstr "Il n'y a aucune mise à jour disponible."
-
-#~ msgid "There are updates available."
-#~ msgstr "Des mises à jour sont disponibles."
-
-#~ msgid "Upgrade system"
-#~ msgstr "Mettre à niveau le système"

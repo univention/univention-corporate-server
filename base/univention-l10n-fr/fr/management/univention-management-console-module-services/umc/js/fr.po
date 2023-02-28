@@ -129,15 +129,3 @@ msgstr "lancé"
 #: umc/js/services.js:157
 msgid "stopped"
 msgstr "arrêté"
-
-#~ msgid "Could not change start type of the following services: "
-#~ msgstr "Impossible de modifier le type de démarrage des services suivants :"
-
-#~ msgid "Restarting the following services failed: "
-#~ msgstr "Échec du redémarrage des services suivants :"
-
-#~ msgid "Starting the following services failed: "
-#~ msgstr "Échec du démarrage des services suivants :"
-
-#~ msgid "Stopping the following services failed: "
-#~ msgstr "Échec de l'arrêt des services suivants :"

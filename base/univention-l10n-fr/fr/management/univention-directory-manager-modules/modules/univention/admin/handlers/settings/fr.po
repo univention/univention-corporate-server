@@ -2407,15 +2407,3 @@ msgid "packageversion: Version must not be lower than the current one."
 msgstr ""
 "version du paquetage : la version ne doit pas être inférieure à la version "
 "actuelle."
-
-#~ msgid "Alternative e-mail address"
-#~ msgstr "Adresse électronique alternative"
-
-#~ msgid "Default Computer Group"
-#~ msgstr "Groupe par défaut des ordinateurs"
-
-#~ msgid "POSIX (Linux/UNIX) account settings"
-#~ msgstr "Réglages de compte POSIX (Linux/UNIX)"
-
-#~ msgid "Windows Account Settings"
-#~ msgstr "Réglages de compte Windows"

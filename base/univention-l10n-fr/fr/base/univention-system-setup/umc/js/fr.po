@@ -560,17 +560,3 @@ msgstr "ne pas définir"
 #: umc/js/setup/InterfaceWizard.js:637
 msgid "set"
 msgstr "définir"
-
-#~ msgid ""
-#~ "Changing network settings is disabled. It can be re enabled by unsetting "
-#~ "the UCR variable \"umc/modules/setup/network/disabled/by\"."
-#~ msgstr ""
-#~ "Le réglage des paramètres réseau est désactivé. Vous pouvez le réactiver "
-#~ "en réinitialisant la variable UCR \"umc/modules/setup/network/disabled/by"
-#~ "\"."
-
-#~ msgid "Name of new interface"
-#~ msgstr "Nom de la nouvelle interface"
-
-#~ msgid "Setup for UCS Virtual Machine Manager"
-#~ msgstr "Installation d'UCS Virtual Machine Manager"

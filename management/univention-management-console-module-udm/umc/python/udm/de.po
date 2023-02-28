@@ -406,16 +406,3 @@ msgstr "https://docs.software-univention.de/handbuch-%s.html#networks:dns"
 #: umc/python/udm/udm_ldap.py:741
 msgid "manual"
 msgstr "handbuch"
-
-#~ msgid ""
-#~ "Your license status could not be validated. Thus, you are not eligible to "
-#~ "support and maintenance. If you have bought a license, please contact "
-#~ "Univention or your Univention partner."
-#~ msgstr ""
-#~ "Der Lizenzstatus konnte nicht validiert werden, Sie verwenden zur Zeit "
-#~ "eine Version ohne Support oder Maintenance-Unterstützung durch "
-#~ "Univention. Wenn Sie über eine Lizenz verfügen, wenden Sie sich bitte an "
-#~ "Univention oder Ihren Univention Partner."
-
-#~ msgid "text file"
-#~ msgstr "Textdatei"

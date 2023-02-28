@@ -162,22 +162,3 @@ msgstr "[Appliance %(appliance_name)s] Erreur d’activation"
 #: www/ActivationWizard.js:93
 msgid "your email address"
 msgstr "votre adresse électronique"
-
-#~ msgid "An unknown error occured. Please try it again later!"
-#~ msgstr ""
-#~ "Une erreur inconnue s'est produite. Veuillez réessayer ultérieurement."
-
-#~ msgid ""
-#~ "If you encounter problems during the activation, please send an email to: "
-#~ "<strong><a href=\"mailto:feedback@univention.de\" style=\"color:"
-#~ "#000\">feedback@univention.de</a></strong>"
-#~ msgstr ""
-#~ "Si vous rencontrez des problèmes durant l'activation, veuillez envoyer un "
-#~ "courriel à : <strong><a href=\"mailto:feedback@univention.de\" style="
-#~ "\"color:#000\">feedback@univention.de</a></strong>"
-
-#~ msgid "License request."
-#~ msgstr "Demande de licence."
-
-#~ msgid "You have received a license file by email!"
-#~ msgstr "Vous avez reçu un fichier de licence par courriel !"

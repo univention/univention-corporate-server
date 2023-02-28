@@ -177,6 +177,3 @@ msgstr "Réglages de compte Windows"
 #: modules/univention/admin/handlers/groups/group.py:108
 msgid "Windows group type"
 msgstr "Type de groupe Windows"
-
-#~ msgid "NT group type"
-#~ msgstr "Type de groupe NT"

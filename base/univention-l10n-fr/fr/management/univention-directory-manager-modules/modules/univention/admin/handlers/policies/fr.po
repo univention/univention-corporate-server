@@ -1276,18 +1276,3 @@ msgstr "Si rien n'est indiqué, la version la plus récente sera utilisée"
 #: modules/univention/admin/handlers/policies/policy.py:52
 msgid "https://docs.software-univention.de/manual-5.0.html#central:policies"
 msgstr "https://docs.software-univention.de/manual-5.0.html#central:policies"
-
-#~ msgid "Autostart"
-#~ msgstr "Démarrage automatique"
-
-#~ msgid "Autostart session"
-#~ msgstr "Session démarrée automatiquement"
-
-#~ msgid "General autostart settings"
-#~ msgstr "Réglages généraux du démarrage automatique"
-
-#~ msgid "Policy: Autostart"
-#~ msgstr "Stratégie : démarrage automatique"
-
-#~ msgid "Session script to be launched by autostart"
-#~ msgstr "Script de session devant être exécuté par autostart"

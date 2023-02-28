@@ -149,37 +149,3 @@ msgstr "Wert der UCR-Variable"
 #: umc/js/ucr.js:326
 msgid "Variable"
 msgstr "Variable"
-
-#~ msgid ""
-#~ "A valid key must contain at least one character and can only contain "
-#~ "letters, numerals, and \"/\", \".\", \":\", \"_\" and \"-\"."
-#~ msgstr ""
-#~ "Ein gültiger Name muss mindestens ein Zeichen lang sein und kann nur "
-#~ "Buchstaben, Zahlen und die Zeichen \"/\", \".\", \":\", \"_\" und \"-\" "
-#~ "enthalten."
-
-#~ msgid "Categories"
-#~ msgstr "Kategorien"
-
-#~ msgid "Categories that the UCR variable is associated with"
-#~ msgstr "Kategorien, die der UCR-Variable zugeordnet sind"
-
-#~ msgid "Entries"
-#~ msgstr "Einträge"
-
-#~ msgid "Keyword"
-#~ msgstr "Schlüsselwort"
-
-#~ msgid "Keyword %(a)s %(b)04d"
-#~ msgstr "Schlüsselwort"
-
-#~ msgid "Keyword that should be searched for in the selected attribute"
-#~ msgstr ""
-#~ "Schlüsselwort, nach dem in dem ausgewählten Attribut gesucht werden soll"
-
-#~ msgid "Reset"
-#~ msgstr "Zurücksetzen"
-
-#~ msgid "The sequence \": \" in the name of a UCR variable is not allowed."
-#~ msgstr ""
-#~ "Die Zeichenkette \": \" in einem UCR-Variablen Namen ist nicht erlaubt"

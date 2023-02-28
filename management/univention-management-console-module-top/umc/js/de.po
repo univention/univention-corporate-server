@@ -88,21 +88,3 @@ msgstr ""
 #: umc/js/top.js:109 umc/js/top.js:154
 msgid "User"
 msgstr "Benutzer"
-
-#~ msgid "Entries"
-#~ msgstr "Einträge"
-
-#~ msgid "Keyword"
-#~ msgstr "Schlüsselwort"
-
-#~ msgid "Kill"
-#~ msgstr "Beenden"
-
-#~ msgid "Process overview"
-#~ msgstr "Prozessübersicht"
-
-#~ msgid "Processes killed successfully"
-#~ msgstr "Prozesse würden erfolgreich beendet"
-
-#~ msgid "Virtual (MB)"
-#~ msgstr "Virtuell (MB)"

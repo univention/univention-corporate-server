@@ -171,55 +171,6 @@ msgstr ""
 msgid "key=%(key)s old=%(old)s new=%(new)s"
 msgstr "Attribut=%(key)s alter Wert=%(old)s neuer Wert=%(new)s"
 
-#~ msgid "DHCP"
-#~ msgstr "DHCP"
-
-#~ msgid "DNS Alias"
-#~ msgstr "DNS-Alias"
-
-#~ msgid "DNS forward zone"
-#~ msgstr "DNS-Forward-Zone"
-
-#~ msgid "DNS reverse zone"
-#~ msgstr "DNS-Reverse-Zone"
-
-#~ msgid "MAC Address not found: %s"
-#~ msgstr "MAC Adresse nicht gefunden: %s"
-
-#~ msgid "Missing DNS Forward Entry"
-#~ msgstr "Ein DNS Forward Eintrag fehlt"
-
-#~ msgid "Next free IP Address not found"
-#~ msgstr "Keine weiteren freien IP-Adressen gefunden"
-
-#~ msgid "Object has entries in more than one DNS-Forward-Zone."
-#~ msgstr "Das Objekt hat mehr als einen Eintrag in einer DNS-Forward-Zone."
-
-#~ msgid ""
-#~ "Reverse Zone Entry can not be created without corresponding Forward Zone "
-#~ "entry."
-#~ msgstr ""
-#~ "Ein Reverse Zone Eintrag kann nicht ohne einen entsprechen Forward Zone "
-#~ "Eintrag erstellt werden."
-
-#~ msgid "The IP Address is missing."
-#~ msgstr "Die IP-Adresse fehlt."
-
-#~ msgid "The MAC Address is missing."
-#~ msgstr "Die MAC-Adresse fehlt."
-
-#~ msgid "There is more than one DHCP-Entry."
-#~ msgstr "Es existiert mehr als ein DHCP-Eintrag."
-
-#~ msgid "There is more than one DNS Forward-Zone-Entry."
-#~ msgstr "Es existiert mehr als ein Eintrag in einer DNS-Forward-Zone."
-
-#~ msgid "There is more than one DNS Reverse-Zone-Entry."
-#~ msgstr "Es existiert mehr als ein Eintrag in einer DNS-Reverse-Zone."
-
-#~ msgid "create"
-#~ msgstr "Anlegen"
-
 # __init__.py:chen"024
 #~ msgid "delete"
 #~ msgstr "Löschen"

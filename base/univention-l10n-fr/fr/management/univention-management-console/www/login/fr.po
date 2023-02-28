@@ -145,14 +145,3 @@ msgstr "Utiliser l’identifiant %s pour la configuration initiale du système."
 #: www/login/LoginDialog.js:61 www/login/LoginDialog.js:242
 msgid "Username"
 msgstr "Identifiant"
-
-#~ msgid "The default username to manage the domain is %s."
-#~ msgstr "Le nom d'utilisateur par défaut pour gérer le domaine est %s."
-
-#~ msgid ""
-#~ "Your browser is outdated! You may experience performance issues and other "
-#~ "problems when using Univention Services."
-#~ msgstr ""
-#~ "Votre navigateur est obsolète ! Vous pouvez rencontrer des problèmes de "
-#~ "performances et d'autres soucis lorsque vous utilisez les services "
-#~ "Univention."

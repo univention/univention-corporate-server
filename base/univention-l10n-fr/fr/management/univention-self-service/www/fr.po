@@ -291,6 +291,3 @@ msgstr "votre compte a déjà été vérifié"
 #: www/VerifyAccount.js:184
 msgid "your account has been successfully verified"
 msgstr "votre compte a été vérifié avec succès"
-
-#~ msgid "Invalid credentials. Password change failed."
-#~ msgstr "Identifiants invalides. Le changement de mot de passe a échoué."

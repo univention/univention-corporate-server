@@ -1075,23 +1075,3 @@ msgstr "utilisateurs"
 #: modules/univention/admin/handlers/shares/share.py:670
 msgid "uses"
 msgstr "utilise"
-
-#~ msgid "%(name)s is member of the following quota printer groups %(groups)s"
-#~ msgstr ""
-#~ "%(name)s est membre des groupes de quotas d'impression suivants : "
-#~ "%(groups)s"
-
-#~ msgid "%s is disabled for quota support. "
-#~ msgstr "%s est désactivé pour la prise en charge des quotas. "
-
-#~ msgid "Enable quota support"
-#~ msgstr "Activer la prise en charge des quotas"
-
-#~ msgid "Price per page"
-#~ msgstr "Coût par page"
-
-#~ msgid "Price per print job"
-#~ msgstr "Coût par tâche d'impression"
-
-#~ msgid "Spool host"
-#~ msgstr "Serveur d'impression"

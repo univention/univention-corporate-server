@@ -442,6 +442,3 @@ msgstr "Die Netzmaske passt nicht zum Subnetz."
 #: modules/univention/admin/handlers/dhcp/service.py:51
 msgid "The top-level container for a DHCP configuration."
 msgstr "Der übergeordnete Container für eine DHCP Konfiguration."
-
-#~ msgid "Defines DHCP options for the subnet."
-#~ msgstr "Definiert DHCP-Optionen für das Subnetz."

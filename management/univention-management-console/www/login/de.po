@@ -142,16 +142,3 @@ msgstr "Verwenden Sie den Benutzer %s für die initiale Systemeinrichtung."
 #: www/login/LoginDialog.js:61 www/login/LoginDialog.js:263
 msgid "Username"
 msgstr "Benutzername"
-
-#~ msgid "Login at %(hostname)s.%(domainname)s"
-#~ msgstr "Anmelden auf %(hostname)s.%(domainname)s"
-
-#~ msgid "Login with your domain account."
-#~ msgstr "Melden Sie sich mit ihrem Domänen-Konto an."
-
-#~ msgid ""
-#~ "Your browser is outdated! You may experience performance issues and other "
-#~ "problems when using Univention Services."
-#~ msgstr ""
-#~ "Ihr Browser ist veraltet! Dadurch kann es zu Geschwindigkeits- und anderen "
-#~ "Problemen bei der Verwendung von Univention Diensten kommen."

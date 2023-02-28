@@ -38,15 +38,3 @@ msgstr "Échec de l’arrêt du service %s :"
 #: umc/python/services/__init__.py:132
 msgid "Successfully changed start type"
 msgstr "Le type de démarrage a été modifié avec succès"
-
-#~ msgid "Successfully restarted"
-#~ msgstr "Redémarré avec succès"
-
-#~ msgid "Successfully started"
-#~ msgstr "Démarré avec succès"
-
-#~ msgid "Successfully stopped"
-#~ msgstr "Arrêté avec succès"
-
-#~ msgid "You are not permitted to run this command."
-#~ msgstr "Vous n'avez pas le droit d'exécuter cette commande."

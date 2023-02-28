@@ -678,6 +678,3 @@ msgstr ""
 #: tests/86_selenium/12_product_test_ucr:130
 msgid "value"
 msgstr ""
-
-#~ msgid "Search users..."
-#~ msgstr "Suche Benutzer..."

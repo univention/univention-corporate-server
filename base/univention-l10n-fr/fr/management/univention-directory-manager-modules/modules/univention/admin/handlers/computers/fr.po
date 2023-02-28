@@ -740,6 +740,3 @@ msgstr "Client macOS"
 #: modules/univention/admin/handlers/computers/macos.py:51
 msgid "macOS Clients"
 msgstr "Clients macOS"
-
-#~ msgid "Domain controller name"
-#~ msgstr "Nom du contrôleur de domaine"

@@ -48,15 +48,3 @@ msgstr "unbekannt"
 #: umc/python/updater/__init__.py:459
 msgid "Error checking if installed apps are available for next UCS version."
 msgstr "Fehler beim Prüfen, ob die installierten Apps für die neue UCS Version verfügbar sind."
-
-#~ msgid "Install all available updates for the current release"
-#~ msgstr "Alle verfügbaren Aktualisierungen installieren"
-
-#~ msgid "Install all errata updates"
-#~ msgstr "Alle Errata-Aktualisierungen installieren"
-
-#~ msgid "Install component '%s'"
-#~ msgstr "Komponente '%s' installieren"
-
-#~ msgid "Unknown"
-#~ msgstr "Unbekannt"

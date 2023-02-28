@@ -275,6 +275,3 @@ msgstr ""
 #: usr/lib/univention-system-setup/scripts/90_postjoin/20upgrade:35
 msgid "Upgrading the system"
 msgstr "Mise à niveau du système"
-
-#~ msgid "Installing univention-welcome-screen"
-#~ msgstr "univention-welcome-screen en cours d'installation"

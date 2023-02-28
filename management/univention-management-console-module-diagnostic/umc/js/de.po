@@ -82,6 +82,3 @@ msgid ""
 msgstr ""
 "Mit diesem Modul kann das System auf verschiedene bekannte Probleme "
 "analysiert werden. "
-
-#~ msgid "Finished running diagnosis of \"%s\" again."
-#~ msgstr "Erneuter Diagnosedurchlauf von \"%s\" beendet."

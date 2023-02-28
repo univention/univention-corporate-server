@@ -29,18 +29,3 @@ msgid ""
 "Univention Management Console (UMC) for administrating users, computers, "
 "etc."
 msgstr "Univention Management Console (UMC) zur Verwaltung von Benutzern, Computern etc."
-
-#~ msgid "Hide content next time."
-#~ msgstr "Diesen Inhalt das nächste Mal ausblenden."
-
-#~ msgid ""
-#~ "Welcome to Univention Management Console (UMC), the administration interface"
-#~ " for your appliance. UMC is provided by Univention Corporate Server, the "
-#~ "platform on which %s is running on."
-#~ msgstr ""
-#~ "Willkommen auf Univention Management Console (UMC), die "
-#~ "Administrationsoberfläche Ihrer Appliance. UMC wird zur Verfügung gestellt "
-#~ "von Univention Corporate Server, der Plattform auf der %s läuft."
-
-#~ msgid "appliance_first_steps.README"
-#~ msgstr "appliance_first_steps.README_DE"

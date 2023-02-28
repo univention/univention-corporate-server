@@ -278,21 +278,3 @@ msgstr ""
 #: usr/lib/univention-system-setup/scripts/90_postjoin/20upgrade:35
 msgid "Upgrading the system"
 msgstr "Aktualisiere das System"
-
-#~ msgid "Configuring init-scripts"
-#~ msgstr "Einrichten der Init-Skripte"
-
-#~ msgid "Installing univention-welcome-screen"
-#~ msgstr "Installiere univention-welcome-screen"
-
-#~ msgid "Setting LDAP base"
-#~ msgstr "Einrichten der LDAP-Basis"
-
-#~ msgid "Setting Windows domain"
-#~ msgstr "Einrichten der Windows-Domäne"
-
-#~ msgid "Setting domain name"
-#~ msgstr "Einrichten des Domänennamens"
-
-#~ msgid "Setting hostname"
-#~ msgstr "Einrichten des Rechnernamens"

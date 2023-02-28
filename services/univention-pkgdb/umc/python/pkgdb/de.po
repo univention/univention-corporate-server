@@ -168,18 +168,3 @@ msgstr "Deinstalliert"
 #: umc/python/pkgdb/__init__.py:190
 msgid "Unpacked"
 msgstr "Ausgepackt"
-
-#~ msgid "Deinstall"
-#~ msgstr "Deinstall"
-
-#~ msgid "Domain controller Backup"
-#~ msgstr "Domaincontroller Backup"
-
-#~ msgid "Domain controller Master"
-#~ msgstr "Domaincontroller Master"
-
-#~ msgid "Domain controller Slave"
-#~ msgstr "Domaincontroller Slave"
-
-#~ msgid "Member Server"
-#~ msgstr "Memberserver"
