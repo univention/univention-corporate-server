@@ -91,11 +91,13 @@ Architecture: all
 Depends:
  gnupg,
  python3-mysqldb,
+ python3-requests,
  python3-six,
  python3-univention,
  python3-univention-admin-diary,
  python3-univention-config-registry,
  python3-univention-directory-manager,
+ python3-websockets,
  univention-directory-manager-tools,
  univention-join,
  univention-ssh,
