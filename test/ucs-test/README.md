@@ -11,10 +11,10 @@ Every section should be packaged in a separate (binary) Debian package to allow 
 ## Single tests
 For every test a single executable file exists, which implements the test.
 * The name of the file must begin with a two or three digit number, followed by a short description.
-* No file extension (`.py`, `.sh`, …) must be used (as this gets interpreted as a separator by Jenkins).
+* The file extension should be present (`.py`, `.sh`, …) as pre-commit detects them then.
 * The file should be marked as executable.
 * In the hash-bang-line `#!/usr/share/ucs-test/runner` should be used instead of using `/bin/bash` or `/usr/bin/python` directly.
-  Is interpreter asserts several things:
+  This interpreter asserts several things:
   * The current working directory is changed to the directory containing the script.
   * Meta data information from the test case file are used to check the required system role, check for required packages and versions.
     The test is only run if those pre-conditions are met.
@@ -112,7 +112,7 @@ Any other return value is interpreted as a failure.
 * line 1 uses `/usr/share/ucs-test/runner` instead of `/bin/bash`.
   This wrapper prints some more information in addition to the return value of the tests.
   The language used for the implementation of the test is passed as the sole parameter to this wrapper.
-  Next to `bash`, `python`, `python2.7`, `python3`, `pytest`, `pytest-3` any other interpreter might be used as well as long as the fully qualified path to the interpreter is given.
+  Next to `bash`, `python3`, `pytest-3` any other interpreter might be used as well as long as the fully qualified path to the interpreter is given.
 * line 2 just tells `shellcheck` to use `bash` style.
 * line 3 gives a description using the meta data syntax.
   This description is included in the output next to the return value.
@@ -303,7 +303,8 @@ To enforce this `ucs-test` by default refrains from running tests with an [#expo
 ## Using pytest
 Since UCS 4.4-8 tests can directly use [pytest](http://pytest.org/).
 1. The file implementing the test must be executable and its name must have the suffix `.py`.
-2. The hash-bang-line should be `#!/usr/share/ucs-test/runner [/usr/bin/]py[.]test[-3]` followed by additional options for `pytest`.
+2. The hash-bang-line should be `#!/usr/share/ucs-test/runner [/usr/bin/]pytest-3` followed by additional options for `pytest`.
+3. Typical options are `-s -l -vv` (should not be written as `-slvv` as we are parsing them).
 
 The following [markers](univention/testing/conftest.py) are supported:
 * use `@pytest.mark.tags('apptest')` to add single tags for tests
