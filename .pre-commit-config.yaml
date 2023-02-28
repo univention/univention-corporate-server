@@ -100,6 +100,47 @@ repos:
       - id: ucs-erratum
       - id: missing-executable-flag-for-python-file
       - id: missing-executable-flag-for-shell-file
+  - repo: https://git.knut.univention.de/univention/dist/pre-commit-ucs.git
+    rev: "9e44eef9a3329c18ecc651041941e73bf369f7d0"
+    hooks:
+      - id: ucslint-0001-joinscript
+      - id: ucslint-0002-copy-paste-errors
+      - id: ucslint-0004-ucr
+      - id: ucslint-0006-postinst
+      - id: ucslint-0007-changelog
+      - id: ucslint-0008-translations
+      - id: ucslint-0009-python
+      - id: ucslint-0010-copyright
+        exclude: "^doc/developer-reference/.*$\
+                  |^doc/Makefile$\
+                  |^doc/manual/images/image-shadow.sh\
+                  |^management/univention-directory-listener/debian/tests\
+                  |^.gitlab-ci/\
+                  |^test/branch-tests/\
+                  |^test/product-tests/\
+                  |^test/scenarios/\
+                  |^test/utils/\
+                  |^management/univention-management-console/umc-module-templates/\
+                 "
+      - id: ucslint-0011-control
+        exclude: "^doc/developer-reference/.*$"
+      # - id: ucslint-0013-bashism  # too slow
+      #   exclude: "^base/univention-lib/shell/base.sh$\
+      #             |services/univention-samba4/lib/base.sh$\
+      #             |test/product-tests/component/openid-connect.sh$\
+      #             |test/scenarios/veyon/utils-veyon.sh$\
+      #             |test/ucs-test/lib/ldap.sh$\
+      #             |test/ucs-test/lib/samba.sh$\
+      #             |test/ucs-test/tests/09_updater/pool.sh$\
+      #             |test/ucs-test/tests/52_s4connector/s4connector.sh$\
+      #             |test/utils/base_appliance.sh$\
+      #             |test/utils/ram/utils-ram.sh$\
+      #            "
+      - id: ucslint-0014-depends  # requires to be run on the same Debian version
+      - id: ucslint-0015-fuzzy-names
+      - id: ucslint-0016-deprecated
+      - id: ucslint-0017-shell
+      - id: ucslint-0018-debian
   - repo: https://github.com/astral-sh/ruff-pre-commit
     rev: 'v0.1.4'
     hooks:
