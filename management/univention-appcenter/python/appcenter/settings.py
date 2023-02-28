@@ -69,7 +69,7 @@ class Setting(TypedIniSectionObject):
 
     initial_value = IniSectionAttribute()
     required = IniSectionBooleanAttribute()
-    scope = IniSectionListAttribute(choices=['inside', 'outside'])
+    scope = IniSectionListAttribute(choices=['inside', 'outside', 'distributed'])
 
     @classmethod
     def get_class(cls, name):
@@ -84,6 +84,10 @@ class Setting(TypedIniSectionObject):
     def is_inside(self, app):
         # only for Docker Apps (and called from the Docker Host). And not only 'outside' is specified
         return app.docker and not container_mode() and ('inside' in self.scope or self.scope == [])
+
+    def is_distributed(self, app):
+        # Setting is using DCD for value storage
+        return 'distributed' in self.scope
 
     def get_initial_value(self, app):
         if self.is_outside(app):
