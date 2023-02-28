@@ -3,6 +3,8 @@ ldap/*.acl	usr/share/univention-appcenter/
 ldap/*.schema	usr/share/univention-appcenter/
 scripts/joinscripthelper.sh	usr/share/univention-appcenter/
 scripts/univention-app	usr/bin/
+scripts/univention-appcenter-dcd-listener	usr/share/
+scripts/univention-appcenter-dcd-listener.service	lib/systemd/system/
 scripts/univention-appcenter-listener-converter	usr/share/
 scripts/univention-appcenter-listener-converter@.service	lib/systemd/system/
 udm/handlers/appcenter/*.py	usr/share/univention-appcenter/

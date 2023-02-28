@@ -1,0 +1,9 @@
+[Install]
+WantedBy=default.target
+
+[Unit]
+Description=Listen to DCD changes
+
+[Service]
+Type=simple
+ExecStart=/usr/bin/python3 /usr/share/univention-appcenter-dcd-listener

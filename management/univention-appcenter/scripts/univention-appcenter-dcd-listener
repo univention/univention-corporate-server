@@ -1,0 +1,25 @@
+#!/usr/bin/python3
+
+import asyncio
+import subprocess
+
+from univention.appcenter.dcd import _get_dcd
+
+
+dcd = _get_dcd()
+
+
+app = 'keycloak'
+dcd_keys = ['keycloak/theme']
+
+
+async def listen():
+    async def _listen(dcd):
+        async for key, value in dcd.changes(dcd_keys):
+            print(key, value)
+            subprocess.call(['univention-app', 'configure', app])
+
+    await _listen(dcd)
+
+if __name__ == '__main__':
+    asyncio.run(listen())

@@ -59,4 +59,6 @@ then
 	fi
 fi
 
+systemctl enable univention-appcenter-dcd-listener
+systemctl start univention-appcenter-dcd-listener
 exit 0
