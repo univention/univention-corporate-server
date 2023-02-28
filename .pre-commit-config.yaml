@@ -73,6 +73,8 @@ repos:
     rev: v1.4.0
     hooks:
       - id: ucs-erratum
+      - id: missing-executable-flag-for-python-file
+      - id: missing-executable-flag-for-shell-file
   - repo: https://github.com/charliermarsh/ruff-pre-commit
     rev: 'v0.0.254'
     hooks:
