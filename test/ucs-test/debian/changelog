@@ -1,3 +1,9 @@
+ucs-test (10.0.10-31) unstable; urgency=medium
+
+  * Bug #55777: add ".py" file extension to python test cases
+
+ -- Florian Best <best@univention.de>  Mon, 20 Mar 2023 01:56:08 +0100
+
 ucs-test (10.0.10-30) unstable; urgency=medium
 
   * Bug #55747: keycloak test

@@ -52,6 +52,7 @@ repos:
     - id: python-check-blanket-noqa
     - id: python-no-eval
       exclude: "^management/univention-directory-manager-modules/modules/univention/admin/__init__.py\
+                |^test/ucs-test/tests/10_ldap/52listener-filter.py\
                 |^packaging/univention-l10n/univention/l10n/umc.py"
     - id: rst-backticks
     - id: rst-directive-colons
