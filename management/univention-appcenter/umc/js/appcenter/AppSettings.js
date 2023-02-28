@@ -38,6 +38,9 @@ define([
 					disabled: (variable.show_read_only || []).indexOf(phase) !== -1 || values[variable.name] === undefined,
 					value: value
 				};
+				if ((variable.scope || []).indexOf('distributed') !== -1) {
+					params.description = _('This variable will be stored globally and is distributed to any additional installation of this App');
+				}
 				if (variable.type == 'String') {
 					ret.push(lang.mixin(params, {
 						type: TextBox

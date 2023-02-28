@@ -241,5 +241,8 @@ def set_for_app(app, settings):
     key = 'apps/%s' % app.id
     dcd.register(key, {'type': 'object'})
     old_value = dcd.get(key) or {}
-    old_value.update(settings)
-    dcd.set(key, old_value)
+    new_value = dict(old_value, **settings)
+    if new_value != old_value:
+        dcd.set(key, new_value)
+        return True
+    return False

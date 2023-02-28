@@ -115,9 +115,9 @@ class Configure(UniventionAppAction):
         if together_config_settings.get('outside'):
             ucr_save(together_config_settings['outside'])
         if together_config_settings.get('distributed'):
-            set_for_app(app, together_config_settings['distributed'])
-            self.log('Set distributed configuration. Skip running scripts now; will be done async later')
-            distributed_config_set = True
+            if set_for_app(app, together_config_settings['distributed']):
+                self.log('Set distributed configuration. Skip running scripts now; will be done async later')
+                distributed_config_set = True
         if together_config_settings.get('inside'):
             other_settings.update(together_config_settings['inside'])
         if other_settings:
