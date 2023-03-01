@@ -1,6 +1,7 @@
 ucs-test (10.0.10-17) unstable; urgency=low
 
   * Bug #54264: Skip on old upgrade tests
+  * Bug #53528: Fix 00/03_check_release_signature_do_not_ignore_me
 
  -- Philipp Hahn <hahn@univention.de>  Wed, 01 Mar 2023 14:04:07 +0100
 
