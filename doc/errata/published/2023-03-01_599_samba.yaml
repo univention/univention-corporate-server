@@ -9,3 +9,6 @@ desc: |
  * When uploading printer drivers, PE files with a higher version
    now replace older files, regardless of the case of the filename.
 bug: [52051]
+erratum: 599
+announced: 2023-03-01
+support: core
