@@ -6,9 +6,9 @@ src: php7.3
 fix: 7.3.31-1~deb10u3
 desc: |
  This update addresses the following issues:
- * PDO::quote() may return unquoted string due to an integer overflow
+ * `PDO::quote()` may return unquoted string due to an integer overflow
    (CVE-2022-31631)
- * Password_verify() always return true with some hash (CVE-2023-0567)
+ * `Password_verify()` always return true with some hash (CVE-2023-0567)
  * 1-byte array overrun in common path resolve code (CVE-2023-0568)
  * DoS vulnerability when parsing multipart request body (CVE-2023-0662)
 bug: [55759]
