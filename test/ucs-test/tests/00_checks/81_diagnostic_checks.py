@@ -21,11 +21,11 @@ PREFIX = "diagnostic/check/disable/"
 SKIPPED_TESTS = {
     '66_udm_country_remap_from_st_to_c': 'Bug #50073: UCS 5.0-3 introduced a required manual LDAP data migration for changing mapping of UDM:country from LDAP:"st" to LDAP:"c".',
 }
-SKIPPED_TESTS |= {
+SKIPPED_TESTS.update({
     k[len(PREFIX):]: PREFIX
     for k, v in ucr.items()
     if k.startswith(PREFIX) and ucr.is_true(value=v)
-}
+})
 
 
 def pytest_generate_tests(metafunc):
