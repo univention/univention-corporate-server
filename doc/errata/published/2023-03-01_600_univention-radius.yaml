@@ -10,3 +10,6 @@ desc: |
    with Windows 10 and 11 clients. The maximum TLS version can be specified
    via the UCR variable `freeradius/conf/tls-max-version`.
 bug: [55247]
+erratum: 600
+announced: 2023-03-01
+support: core
