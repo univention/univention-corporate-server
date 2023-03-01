@@ -1,4 +1,5 @@
 #!/usr/share/ucs-test/runner bash
+# shellcheck shell=bash
 ## desc: |
 ##  Das ist ein Test
 ##  ich weiß noch nicht, ob er funktioniert
@@ -33,8 +34,9 @@
 ## exposure: dangerous
 ## timeout: 0
 
+# shellcheck source=/dev/null
 . "$TESTLIBPATH/base.sh" || exit 137
 
-echo "$0 $@"
+echo "$0 $*"
 sed -ne '1,/^[^#]\|^$/s/^## //p' "$0"
 # vim: set ft=sh :
