@@ -6,9 +6,15 @@ src: freeradius
 fix: 3.0.17+dfsg-1.1+deb10u2A~5.0.3.202302271022
 desc: |
  This update addresses the following issues:
- * Information leakage in EAP-PWD (CVE-2022-41859)
- * Crash on unknown option in EAP-SIM (CVE-2022-41860)
- * Crash on invalid abinary data (CVE-2022-41861)
+ * CVE-2022-41859: the EAP-PWD function `compute_password_element()` leaks
+   information about the password which allows an attacker to substantially
+   reduce the size of an offline dictionary attack.
+ * CVE-2022-41860: when an EAP-SIM supplicant sends an unknown SIM option, the
+   server will try to look that option up in the internal dictionaries. This
+   lookup will fail, but the SIM code will not check for that failure.
+   Instead, it will dereference a NULL pointer, and cause the server to crash.
+ * CVE-2022-41861: A malicious RADIUS client or home server can send a
+   malformed attribute which can cause the server to crash.
 bug: [55758]
 cve:
 - CVE-2022-41859
