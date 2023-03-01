@@ -6,17 +6,13 @@ src: git
 fix: 1:2.11.0-3+deb9u10
 desc: |
  This update addresses the following issues:
- 1:2.11.0-3+deb9u10 (Fri, 24 Feb 2023 14:14:07 +0100)
- * Non-maintainer upload by the ELTS Team.
- * Add a follow up fix for CVE-2022-23521 where one of the patches could cause
-   issues on 32 bit platforms.
- * Backport dir-iterator flag changes. - Adjust CVE-2022-39253-1 to use
-   dir-iterator flags.
+ * CVE-2022-23521: fix potential regression on 32 bit platforms for integer
+   overflows when parsing `gitattributes`
+ * Adjust CVE-2022-39253-1 to use flags `dir-iterator` for incorrect symlink
+   handling on local clones.
  * CVE-2023-22490: local repository clone when .git/objects is a symlink.
  * CVE-2023-23946: file overwrite in git-apply via file containing both a
    symlink and a file overwrite using that symlink.
- * Add a gitlab CI pipeline
- * Add a gbp.conf file
 bug: [55762]
 cve:
 - CVE-2022-23521
