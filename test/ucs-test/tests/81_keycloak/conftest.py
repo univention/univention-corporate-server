@@ -162,6 +162,11 @@ def keycloak_config(ucr: ConfigRegistry) -> SimpleNamespace:
         "password_update_feedback_class": "pf-c-alert__title kc-feedback-text",
         "password_change_button_id": "kc-form-buttons",
         "password_update_failed_msg": "Update password failed",
+        "password_already_used_msg": "Changing password failed. The password was already used.",
+        "password_confirm_error_msg": "Passwords don't match.",
+        "password_confirm_error_id": "input-error-password-confirm",
+        "password_input_error_id": "input-error-password",
+        "password_input_error_msg": "Please specify password.",
     }
     return SimpleNamespace(**config)
 

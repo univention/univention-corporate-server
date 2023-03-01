@@ -19,19 +19,19 @@ def test_login(portal_login_via_keycloak):
         assert portal_login_via_keycloak(username, "univention")
 
 
-def test_login_wrong_password(portal_login_via_keycloak, keycloak_config):
+def test_login_wrong_password_fails(portal_login_via_keycloak, keycloak_config):
     with udm_test.UCSTestUDM() as udm:
         username = udm.create_user()[1]
         assert portal_login_via_keycloak(username, "univentionWrong", fails_with=keycloak_config.wrong_password_msg)
 
 
-def test_login_disabled(portal_login_via_keycloak, keycloak_config):
+def test_login_disabled_fails(portal_login_via_keycloak, keycloak_config):
     with udm_test.UCSTestUDM() as udm:
         username = udm.create_user(disabled=1)[1]
         assert portal_login_via_keycloak(username, "univention", fails_with=keycloak_config.wrong_password_msg)
 
 
-def test_pwdChangeNextLogin(portal_login_via_keycloak, keycloak_config):
+def test_password_change_pwdChangeNextLogin(portal_login_via_keycloak, keycloak_config):
     with udm_test.UCSTestUDM() as udm:
         username = udm.create_user(pwdChangeNextLogin=1)[1]
         assert portal_login_via_keycloak(username, "univention", new_password="Univention.99")
@@ -40,20 +40,20 @@ def test_pwdChangeNextLogin(portal_login_via_keycloak, keycloak_config):
             Client(username=username, password="univention")
 
 
-def test_pwdChangeNextLogin_wrong_password(portal_login_via_keycloak, keycloak_config):
+def test_password_change_wrong_old_password_fails(portal_login_via_keycloak, keycloak_config):
     with udm_test.UCSTestUDM() as udm:
         username = udm.create_user(pwdChangeNextLogin=1)[1]
         assert portal_login_via_keycloak(username, "univentionBAD", fails_with=keycloak_config.wrong_password_msg)
 
 
-def test_pwdChangeNextLogin_same_password_fails(portal_login_via_keycloak, keycloak_config, portal_config):
+def test_password_change_same_passwords_fails(portal_login_via_keycloak, keycloak_config, portal_config):
     with udm_test.UCSTestUDM() as udm:
         username = udm.create_user(pwdChangeNextLogin=1)[1]
-        driver = portal_login_via_keycloak(username, "univention", new_password="univention", fails_with=keycloak_config.password_update_failed_msg)
+        driver = portal_login_via_keycloak(username, "univention", new_password="univention", fails_with=keycloak_config.password_already_used_msg)
         wait_for_id(driver, keycloak_config.password_id)
 
 
-def test_pwdChangeNextLogin_confirm_new_passwords_fails(portal_login_via_keycloak, keycloak_config, portal_config):
+def test_password_change_confirm_new_passwords_fails(portal_login_via_keycloak, keycloak_config, portal_config):
     with udm_test.UCSTestUDM() as udm:
         username = udm.create_user(pwdChangeNextLogin=1)[1]
         driver = portal_login_via_keycloak(
@@ -63,28 +63,33 @@ def test_pwdChangeNextLogin_confirm_new_passwords_fails(portal_login_via_keycloa
             new_password_confirm="univention1",
             verify_login=False,
         )
+        error = wait_for_id(driver, keycloak_config.password_confirm_error_id)
+        assert error.text == keycloak_config.password_confirm_error_msg, error.text
         wait_for_id(driver, keycloak_config.password_id)
 
 
-def test_pwdChangeNextLogin_empty_new_password(portal_login_via_keycloak, keycloak_config, portal_config):
+def test_password_change_empty_passwords_fails(portal_login_via_keycloak, keycloak_config, portal_config):
     with udm_test.UCSTestUDM() as udm:
         username = udm.create_user(pwdChangeNextLogin=1)[1]
         driver = portal_login_via_keycloak(username, "univention", verify_login=False)
         wait_for_id(driver, keycloak_config.password_id)
+        # just click the button without old or new passwords
         driver.find_element_by_id(keycloak_config.password_change_button_id).click()
+        error = wait_for_id(driver, keycloak_config.password_input_error_id)
+        assert error.text == keycloak_config.password_input_error_msg, error.text
         wait_for_id(driver, keycloak_config.password_id)
 
 
-def test_pwdChangeNextLogin_password_update_twice(portal_login_via_keycloak, keycloak_config, portal_config):
+def test_password_change_after_second_try(portal_login_via_keycloak, keycloak_config, portal_config):
     with udm_test.UCSTestUDM() as udm:
         username = udm.create_user(pwdChangeNextLogin=1)[1]
-        driver = portal_login_via_keycloak(username, "univention", new_password="univention", fails_with=keycloak_config.password_update_failed_msg)
+        driver = portal_login_via_keycloak(username, "univention", new_password="univention", fails_with=keycloak_config.password_already_used_msg)
         keycloak_password_change(driver, keycloak_config, "univention", "Univention.99", "Univention.99")
         wait_for_id(driver, portal_config.header_menu_id)
         assert Client(username=username, password="Univention.99")
 
 
-def test_password_expired_shadowLastChange(portal_login_via_keycloak, keycloak_config):
+def test_password_change_expired_shadowLastChange(portal_login_via_keycloak, keycloak_config):
     ldap = get_ldap_connection(primary=True)
     with udm_test.UCSTestUDM() as udm:
         dn, username = udm.create_user()

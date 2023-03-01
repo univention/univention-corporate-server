@@ -78,7 +78,7 @@ def keycloak_password_change(
     driver.find_element_by_id(keycloak_config.password_change_button_id).click()
     if fails_with:
         error = driver.find_element_by_css_selector(f"span[class='{keycloak_config.password_update_feedback_class}']")
-        assert fails_with == error.text
+        assert fails_with == error.text, error.text
         assert error.is_displayed()
 
 
@@ -126,5 +126,5 @@ def keycloak_login(
     driver.find_element_by_id(keycloak_config.login_id).click()
     if fails_with:
         error = driver.find_element_by_id(keycloak_config.input_error_id)
-        assert fails_with == error.text
+        assert fails_with == error.text, error.text
         assert error.is_displayed()
