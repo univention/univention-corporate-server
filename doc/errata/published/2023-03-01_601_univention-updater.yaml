@@ -11,3 +11,6 @@ desc: |
    components when creating the list of repositories in the file
    `/etc/apt/sources.list.d/20_ucs-online-component.list`.
 bug: [55667, 55636]
+erratum: 601
+announced: 2023-03-01
+support: core
