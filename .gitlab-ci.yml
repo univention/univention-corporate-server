@@ -61,8 +61,10 @@ drop aptly:
     - "curl --silent --show-error -X DELETE $APTLY/publish/$CI_COMMIT_REF_SLUG/git || :"
     - "curl --silent --show-error -X DELETE $APTLY/repos/$CI_COMMIT_REF_SLUG || :"
   rules:
-    - when: manual
-      allow_failure: true
+    - if: '$CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH'
+      when: never
+    - if: $CI_COMMIT_REF_PROTECTED
+      when: never
   environment:
     name: $CI_COMMIT_REF_NAME
     action: stop
