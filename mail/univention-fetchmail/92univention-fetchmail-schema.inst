@@ -44,6 +44,26 @@ joinscript_init
 
 eval "$(univention-config-registry shell)"
 
+
+extract_binddn_and_bindpwd_from_args() {
+	## parse binddn and bindpwd from command line arguments into shell variables
+	while [ $# -gt 0 ]; do
+		case "$1" in
+			"--binddn")
+				binddn="${2:?missing binddn}"
+				shift 2 || exit 2
+				;;
+			"--bindpwdfile")
+				bindpwdfile="${2:?missing bindpwdfile}"
+				shift 2 || exit 2
+				;;
+			*)
+				shift
+				;;
+		esac
+	done
+}
+
 ucs_registerLDAPExtension "$@" \
     --ucsversionstart "4.4-0" --ucsversionend "5.99-0" \
     --schema /usr/share/univention-fetchmail-schema/univention-fetchmail.schema \
@@ -169,7 +189,8 @@ if [ $JS_LAST_EXECUTED_VERSION -le 6 ]; then
     systemctl try-restart univention-directory-listener
 
     # MIGRATE CURRENT CONFIGURATION
-    python3 /usr/share/univention-fetchmail/migrate-fetchmail.py || die
+    extract_binddn_and_bindpwd_from_args "$@"
+    python3 /usr/share/univention-fetchmail/migrate-fetchmail.py --binddn "$binddn" --bindpwdfile "$bindpwdfile"|| die
 
     # REMOVE OLD ATTRIBUTES
     univention-directory-manager settings/extended_attribute remove "$@" --dn "cn=UniventionFetchmail-User-Password,cn=mail,cn=custom attributes,cn=univention,$ldap_base"

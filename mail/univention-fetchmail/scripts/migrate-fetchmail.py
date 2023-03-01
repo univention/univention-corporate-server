@@ -32,10 +32,10 @@
 # <https://www.gnu.org/licenses/>.
 
 """Update old fetchmail configurations."""
+import argparse
 import re
 import sys
 
-import univention.admin.config
 import univention.admin.uldap
 import univention.debug as ud
 from univention.config_registry import ConfigRegistry
@@ -79,26 +79,47 @@ def unmap_fetchmail(value):
 
 class Converter(object):
     def __init__(self):
-        self.options = None
         self.ucr = ConfigRegistry()
         self.ucr.load()
-        self.config = None
         self.access = None
         self.position = None
         self.ret = 0
 
+    def parse_cmdline(self):
+        parser = argparse.ArgumentParser(description=__doc__)
+        parser.add_argument('--binddn', help='LDAP bind dn')
+        parser.add_argument('--bindpwdfile', help='LDAP bind password file for bind dn')
+        self.args = parser.parse_args()
+
     def main(self):
+        self.parse_cmdline()
         self.get_ldap()
         ret = self.convert()
 
         return ret
 
     def get_ldap(self):
-        self.access, self.position = univention.admin.uldap.getAdminConnection()
+        if self.args.binddn and self.args.bindpwdfile:
+            with open(self.args.bindpwdfile) as fp:
+                bindpwd = fp.read().strip()
+
+            self.access = univention.admin.uldap.access(
+                host=self.ucr["ldap/master"],
+                port=int(self.ucr.get('ldap/master/port', '7389')),
+                base=self.ucr['ldap/base'],
+                binddn=self.args.binddn,
+                bindpw=bindpwd,
+            )
+            self.position = univention.admin.uldap.position(self.ucr['ldap/base'])
+        else:
+            self.access, self.position = univention.admin.uldap.getAdminConnection()
 
     def convert(self):
         self.debug("Converting old fetchmail configuration...")
         file = load_rc(FETCHMAILRC)
+        if not file:
+            return
+
         for dn, attrs in self.access.search(
             filter='(objectClass=univentionFetchmail)',
             attr=['uid', 'univentionFetchmailAddress', 'univentionFetchmailServer', 'univentionFetchmailProtocol', 'univentionFetchmailPasswd', 'univentionFetchmailKeepMailOnServer', 'univentionFetchmailUseSSL', 'univentionFetchmailSingle'],
