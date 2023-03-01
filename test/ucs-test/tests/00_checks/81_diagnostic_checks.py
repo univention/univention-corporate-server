@@ -10,14 +10,21 @@ import tempfile
 
 import pytest
 
+from univention.config_registry import ucr
 from univention.testing import utils
 from univention.testing.umc import Client
 
 
 DIAGNOSTIC_RE = re.compile(r'(?:^ran ([\d\w]*) successfully.$)|(?:#+ Start ([\d\w]*) #+)\n(.*)\n(?:#+ End (?:\2) #+)', flags=re.M | re.S)
 # One would need a strong argument to skip any tests here, as it masks reals problems (See bug #50021)
+PREFIX = "diagnostic/check/disable/"
 SKIPPED_TESTS = {
     '66_udm_country_remap_from_st_to_c': 'Bug #50073: UCS 5.0-3 introduced a required manual LDAP data migration for changing mapping of UDM:country from LDAP:"st" to LDAP:"c".',
+}
+SKIPPED_TESTS |= {
+    k[len(PREFIX):]: PREFIX
+    for k, v in ucr.items()
+    if k.startswith(PREFIX) and ucr.is_true(value=v)
 }
 
 
