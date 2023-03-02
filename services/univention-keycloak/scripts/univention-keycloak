@@ -84,6 +84,7 @@ class ExtService(object):
     def extensions(cls) -> Dict[str, Ext]:
         return {
             "password": Ext(ExtType.ACTION, "UNIVENTION_UPDATE_PASSWORD", "Univention update password"),
+            "self-service": Ext(ExtType.ACTION, "UNIVENTION_SELF_SERVICE", "Univention self service checks"),
             "ldapmapper": Ext(ExtType.LDAP_MAPPER, "univention-ldap-mapper", "Univention ldap mapper"),
         }
 
@@ -688,11 +689,11 @@ def parse_args(args: list[str] = None) -> Namespace:
     operation_subparsers = parser_ext.add_subparsers(title="operation", description="valid subcommands", required=True, dest="operation")
 
     ext_register_parser = operation_subparsers.add_parser("register", help="register extension", formatter_class=ArgumentDefaultsHelpFormatter)
-    ext_register_parser.add_argument("--names", metavar="name", nargs="+", default=["password", "ldapmapper"], help="Names of extensions to be activated")
+    ext_register_parser.add_argument("--names", metavar="name", nargs="+", default=["password", "ldapmapper", "self-service"], help="Names of extensions to be activated")
     ext_register_parser.set_defaults(func=register_extensions)
 
     ext_unregister_parser = operation_subparsers.add_parser("unregister", help="unregister extension", formatter_class=ArgumentDefaultsHelpFormatter)
-    ext_unregister_parser.add_argument("--names", metavar="name", nargs="+", default=["password", "ldapmapper"], help="Names of extensions to be deactivated")
+    ext_unregister_parser.add_argument("--names", metavar="name", nargs="+", default=["password", "ldapmapper", "self-service"], help="Names of extensions to be deactivated")
     ext_unregister_parser.set_defaults(func=unregister_extensions)
 
     opt = parser.parse_args(args)
