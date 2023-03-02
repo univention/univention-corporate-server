@@ -176,9 +176,9 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
             if not f[0:2].isdigit():
                 continue
             if f.endswith('.inst'):
-                fnlist_joinscripts[fn] = CALLED
+                fnlist_joinscripts[f] = CALLED
             elif f.endswith('.uinst'):
-                fnlist_joinscripts[fn] = CALLED | COPIED
+                fnlist_joinscripts[f] = CALLED | COPIED
             else:
                 continue
             self.debug('found %s' % fn)
