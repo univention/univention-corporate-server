@@ -1,1 +1,3 @@
 E:0001-24: 34ucslint.inst:4: Invalid joinscript api 'invalid'
+W:0001-6: 34ucslint.inst: join script is not mentioned in debian/rules or *.install files
+W:0001-7: 34ucslint.inst: Join script is not mentioned in debian/*.postinst
