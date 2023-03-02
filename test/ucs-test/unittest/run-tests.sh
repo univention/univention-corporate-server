@@ -6,6 +6,7 @@ BASE=$(cd "${0%/*}" >/dev/null && pwd -P)
 BIN="$BASE"/../univention/testing/ldif.py
 ret=0
 python3 "$BIN" --test-internal
+{ [ -n "${TERM:-}" ] && [ -t 1 ]; } || tput () { :; }
 for directory in "$BASE"/*/
 do
 	(
