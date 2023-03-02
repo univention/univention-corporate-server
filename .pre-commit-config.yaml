@@ -65,9 +65,10 @@ repos:
                 |^packaging/ucslint/testframework/\
                "
   - repo: https://git.knut.univention.de/univention/dist/pre-commit-debian.git
-    rev: v1.0.0
+    rev: v1.1.0
     hooks:
       - id: debian-control
+      - id: debian-changelog
   - repo: https://git.knut.univention.de/univention/dist/pre-commit-ucs.git
     rev: v1.2.0
     hooks:
