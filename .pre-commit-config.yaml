@@ -56,6 +56,17 @@ repos:
                 |[.]patch$\
                 |[.]svg$\
                "
+  - repo: local
+    hooks:
+      - id: univention-l10n
+        name: univention-l10n-build de
+        stages: [manual]
+        description: univention-l10n
+        language: script
+        entry: packaging/univention-l10n/univention-l10n-build
+        pass_filenames: false
+        require_serial: true
+        args: [de]
   - repo: https://github.com/pre-commit/pygrep-hooks
     rev: v1.9.0
     hooks:
