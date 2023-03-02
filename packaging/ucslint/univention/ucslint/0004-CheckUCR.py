@@ -809,11 +809,5 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
             self.addmsg('0004-32', 'odd number of @%@ markers', fn)
 
 
-# TODO: add pytest
-#if __name__ == '__main__':
-#    import doctest
-#    doctest.testmod()
-
-
 if __name__ == '__main__':
     sys.exit(UniventionPackageCheck.run())

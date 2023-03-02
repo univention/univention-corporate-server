@@ -9,6 +9,7 @@ Build-Depends:
  python3-all,
  python3-apt,
  python3-debian,
+ python3-pytest,
  python3-setuptools,
 Standards-Version: 3.6.1
 
