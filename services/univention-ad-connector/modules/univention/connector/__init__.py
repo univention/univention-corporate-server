@@ -66,6 +66,9 @@ term_signal_caught = False
 
 univention.admin.modules.update()
 
+RE_NO_RESYNC = re.compile('^<NORESYNC(=.*?)?>;')
+
+
 try:
     univention.admin.handlers.disable_ad_restrictions(disable=False)
 except AttributeError:
@@ -581,8 +584,7 @@ class ucs(object):
     def list_rejected_ucs(self, filter_noresync=False):
         rejected = self._get_config_items('UCS rejected')
         if filter_noresync:
-            no_resync = re.compile('^<NORESYNC(=.*?)?>;')
-            return [(fn, dn) for (fn, dn) in rejected if no_resync.match(dn) is None]
+            return [(fn, dn) for (fn, dn) in rejected if RE_NO_RESYNC.match(dn) is None]
         return rejected
 
     def _list_rejected_ucs(self):
