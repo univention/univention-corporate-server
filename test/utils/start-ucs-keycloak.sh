@@ -13,4 +13,4 @@ export UCS_TEST_RUN=false
 export KVM_OWNER="${BUILD_USER_ID:=$USER}"
 export JOB_BASE_NAME="${JOB_BASE_NAME:=ucs-keycloak}"
 
-exec ./utils/start-test.sh scenarios/keycloak/keycloak-env.cfg
+exec ./utils/start-test.sh scenarios/keycloak/keycloak_2backups.cfg
