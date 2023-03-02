@@ -33,6 +33,7 @@ from __future__ import annotations
 import re
 import time
 from pathlib import Path
+from typing import Iterable
 
 import univention.ucslint.base as uub
 
@@ -74,8 +75,13 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
             if fn.name in uub.FilteredDirWalkGenerator.MAINT_SCRIPT_SUFFIXES or fn.suffix in uub.FilteredDirWalkGenerator.MAINT_SCRIPT_SUFFIXES
         ]
         check_files += uub.FilteredDirWalkGenerator(path, reHashBang=RE_HASHBANG, readSize=100)
+        self.check_files(check_files)
 
-        fn = path / 'debian' / 'copyright'
+    def check_files(self, paths: Iterable[Path]) -> None:
+        check_files: Iterable[Path] = []
+
+        # check if copyright file is missing
+        fn = self.path / 'debian' / 'copyright'
         try:
             with fn.open() as stream:
                 line = stream.readline().rstrip()
@@ -84,6 +90,21 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
             check_files.append(fn)
         except OSError:
             self.addmsg('0010-5', 'file is missing', fn)
+
+        for fn in paths:
+            # looking for files below debian/
+            if fn.absolute().parent.parts[-1] == 'debian':
+                if fn.suffix in uub.FilteredDirWalkGenerator.MAINT_SCRIPT_SUFFIXES or fn.name in uub.FilteredDirWalkGenerator.MAINT_SCRIPT_SUFFIXES:
+                    check_files.append(fn)
+                    continue
+
+            # looking for scripts
+            try:
+                with open(fn.as_posix(), 'rb') as fd:
+                    if fd.read(2) == b'#!':
+                        check_files.append(fn)
+            except OSError:
+                pass
 
         # check files for copyright
         for fn in check_files:

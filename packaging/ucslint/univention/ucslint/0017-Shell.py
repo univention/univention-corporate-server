@@ -34,6 +34,7 @@ from __future__ import annotations
 
 import re
 from pathlib import Path
+from typing import Iterable
 
 import univention.ucslint.base as uub
 from univention.ucslint.common import RE_HASHBANG_SHELL
@@ -101,7 +102,10 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
         #
         # search shell scripts and execute test
         #
-        for fn in uub.FilteredDirWalkGenerator(path, suffixes=['.sh'], reHashBang=RE_HASHBANG_SHELL):
+        self.check_files(uub.FilteredDirWalkGenerator(path, suffixes=['.sh'], reHashBang=RE_HASHBANG_SHELL))
+
+    def check_files(self, paths: Iterable[Path]) -> None:
+        for fn in paths:
             try:
                 self.tester.open(fn)
             except OSError:

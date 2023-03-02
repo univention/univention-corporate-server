@@ -33,6 +33,7 @@ from __future__ import annotations
 import re
 from itertools import chain
 from pathlib import Path
+from typing import Iterable
 
 import univention.ucslint.base as uub
 
@@ -52,15 +53,17 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 
     def check(self, path: Path) -> None:
         super().check(path)
+        self.check_files(chain(
+            uub.FilteredDirWalkGenerator(path / 'conffiles'),
+            uub.FilteredDirWalkGenerator(path / 'debian'),
+        ))
 
+    def check_files(self, paths: Iterable[Path]) -> None:
         tester = uub.UPCFileTester()
         tester.addTest(re.compile(r'dc=univention,dc=(?:local|qa|test)'), '0002-2', 'contains invalid basedn', cntmax=0)
         tester.addTest(re.compile(r'univention\.(?:local|qa|test)'), '0002-3', 'contains invalid domainname', cntmax=0)
 
-        for fn in chain(
-                uub.FilteredDirWalkGenerator(path / 'conffiles'),
-                uub.FilteredDirWalkGenerator(path / 'debian'),
-        ):
+        for fn in paths:
             try:
                 tester.open(fn)
             except OSError:

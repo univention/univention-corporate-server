@@ -1,5 +1,3 @@
-#!/usr/bin/env python3
-#
 # Like what you see? Join us!
 # https://www.univention.com/about-us/careers/vacancies/
 #
@@ -34,12 +32,19 @@ from __future__ import annotations
 
 import re
 from pathlib import Path
-from typing import Iterable, Iterator
+from typing import TYPE_CHECKING, Iterable, Iterator
 
-from apt import Cache
-from apt.package import Version
+
+try:
+    from apt import Cache  # type: ignore
+except ImportError:
+    Cache = None
 
 import univention.ucslint.base as uub
+
+
+if TYPE_CHECKING:
+    from apt.package import Version
 
 
 class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
@@ -176,12 +181,13 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 
     def check(self, path: Path) -> None:
         super().check(path)
+        self.check_files([])
 
-        fn_control = path / 'debian' / 'control'
+    def check_files(self, paths: Iterable[Path]) -> None:
+        fn_control = self.path / 'debian' / 'control'
         self.debug(f'Reading {fn_control}')
         try:
             parser = uub.ParserDebianControl(fn_control)
-            self.path = path
         except uub.FailedToReadFile:
             self.addmsg('0014-0', 'failed to open and read file', fn_control)
             return
@@ -189,13 +195,13 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
             self.addmsg('0014-1', 'parsing error', fn_control)
             return
 
-        deps = self.check_source(path, parser.source_section)
+        deps = self.check_source(self.path, parser.source_section)
         for section in parser.binary_sections:
-            deps |= self.check_package(path, section)
+            deps |= self.check_package(self.path, section)
 
-        self.check_unknown(path, parser)
-        self.check_transitional(path, deps)
-        self.check_essential(path, deps)
+        self.check_unknown(self.path, parser)
+        self.check_transitional(self.path, deps)
+        self.check_essential(self.path, deps)
 
     def check_unknown(self, path: Path, parser: uub.ParserDebianControl) -> None:
         # Assert all files debian/$pkg.$suffix belong to a package $pkg declared in debian/control
@@ -248,11 +254,3 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
                 self.debug(f'not found {dep}: {ex}')
             else:
                 yield cand
-
-
-if __name__ == '__main__':
-    upc = UniventionPackageCheck()
-    upc.check(Path())
-    msglist = upc.result()
-    for msg in msglist:
-        print(str(msg))

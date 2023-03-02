@@ -32,7 +32,9 @@ from __future__ import annotations
 
 import re
 from enum import IntFlag
+from itertools import chain
 from pathlib import Path
+from typing import Iterable
 
 import univention.ucslint.base as uub
 
@@ -164,9 +166,16 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 
     def check(self, path: Path) -> None:
         super().check(path)
+        self.check_files(chain(
+            path.glob("[0-9][0-9]*.inst"),
+            path.glob("[0-9][0-9]*.uinst"),
+        ))
 
-        fnlist_joinscripts = {fn: JSS.CALLED for fn in path.glob("[0-9][0-9]*.inst")}
-        fnlist_joinscripts.update({fn: JSS.CALLED | JSS.COPIED for fn in path.glob("[0-9][0-9]*.uinst")})
+    def check_files(self, paths: Iterable[Path]) -> None:
+        paths = list(paths)
+        fnlist_joinscripts = {}
+        fnlist_joinscripts.update({fn: JSS.CALLED for fn in paths if fn.match("[0-9][0-9]*.inst")})
+        fnlist_joinscripts.update({fn: JSS.CALLED | JSS.COPIED for fn in paths if fn.match("[0-9][0-9]*.uinst")})
 
         #
         # check if join scripts use versioning
@@ -178,16 +187,16 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
         # check if join scripts are present in debian/rules || debian/*.install
         #
         found: dict[Path, int] = {}
-        debianpath = path / 'debian'
+        debianpath = self.path / 'debian'
         # get all .install files
         fnlist = list(uub.FilteredDirWalkGenerator(debianpath, suffixes=['.install']))
         # append debian/rules
-        fn_rules = path / 'debian' / 'rules'
+        fn_rules = self.path / 'debian' / 'rules'
         fnlist.append(fn_rules)
 
         # Look for dh-umc-modules-install
         try:
-            fn_control = path / 'debian' / 'control'
+            fn_control = self.path / 'debian' / 'control'
             ctrl: uub.ParserDebianControl | None = uub.ParserDebianControl(fn_control)
         except uub.UCSLintException:
             self.debug('Errors in debian/control. Skipping here')
@@ -245,7 +254,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
         #
         # check if join scripts are present in debian/*{pre,post}{inst,rm}
         #
-        for fn in path.glob("debian/*"):
+        for fn in self.path.glob("debian/*"):
             if '.debhelper.' in fn.name:
                 continue
 

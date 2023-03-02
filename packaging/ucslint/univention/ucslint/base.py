@@ -3,7 +3,7 @@
 # Like what you see? Join us!
 # https://www.univention.com/about-us/careers/vacancies/
 #
-# Copyright (C) 2008-2023 Univention GmbH
+# Copyright 2008-2023 Univention GmbH
 #
 # https://www.univention.de/
 #
@@ -179,6 +179,7 @@ class UniventionPackageCheckBase:
         self.name: str = self.__class__.__module__
         self.msg: list[UPCMessage] = []
         self.debuglevel: int = 0
+        self.path = Path('.')  # base directory of Debian package to check.
 
     def addmsg(self, msgid: str, msg: str, filename: Path | None = None, row: int | None = None, col: int | None = None, line: str = '') -> None:
         """
@@ -197,7 +198,7 @@ class UniventionPackageCheckBase:
         self.msg.append(message)
 
     def getMsgIds(self) -> MsgIds:
-        """Return mapping from message-identifiert to 2-tuple (severity, message-text)."""
+        """Return mapping from message-identifier to 2-tuple (severity, message-text)."""
         return {}
 
     def setdebug(self, level: int) -> None:
@@ -224,12 +225,20 @@ class UniventionPackageCheckBase:
         :param path: Directory or file to check.
         """
 
+    def check_files(self, paths: Iterable[Path]) -> None:
+        """
+        The real check.
+
+        :param paths: files to check.
+        """
+
     def check(self, path: Path) -> None:
         """
         The real check.
 
         :param path: Directory or file to check.
         """
+        self.path = path
 
     def result(self) -> list[UPCMessage]:
         """

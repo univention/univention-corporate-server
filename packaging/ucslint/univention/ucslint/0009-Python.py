@@ -32,6 +32,7 @@ from __future__ import annotations
 
 import re
 from pathlib import Path
+from typing import Iterable
 
 import univention.ucslint.base as uub
 from univention.ucslint.python import RE_LENIENT, Python36 as PythonVer, python_files
@@ -57,7 +58,9 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 
     def check(self, path: Path) -> None:
         super().check(path)
+        self.check_files(python_files(path))
 
+    def check_files(self, paths: Iterable[Path]) -> None:
         tester = uub.UPCFileTester()
         tester.addTest(re.compile(
             r'''(?:baseConfig|configRegistry|ucr)(?:\[.+\]|\.get\(.+\)).*\bin\s*
@@ -80,7 +83,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
             ''', re.VERBOSE),
             '0009-11', 'Use uldap.searchDn() instead of uldap.search(attr=["dn"])', cntmax=0)
 
-        for fn in python_files(path):
+        for fn in paths:
             tester.open(fn)
             if not tester.raw:
                 continue

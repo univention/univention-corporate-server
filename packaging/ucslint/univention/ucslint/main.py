@@ -144,6 +144,20 @@ class DebianPackageCheck:
                 print(ex, file=sys.stderr)
             self.msglist.extend(obj.result())
 
+    def check_files(self, files) -> None:
+        """Run plugin on given files."""
+        for plugin in self.pluginlist.values():
+            obj = plugin.UniventionPackageCheck()  # type: ignore
+            obj.path = self.path
+            self.msgidlist.update(obj.getMsgIds())
+            obj.setdebug(self.debuglevel)
+            obj.postinit(self.path)
+            try:
+                obj.check_files(files)
+            except uub.UCSLintException as ex:
+                print(ex, file=sys.stderr)
+            self.msglist.extend(obj.result())
+
     def loadOverrides(self) -> None:
         """Parse :file:`debian/ucslint.overrides` file."""
         self.overrides = set()
@@ -285,13 +299,12 @@ def clean_msgid(msgid: str) -> str:
     return f'{int(msgid):d}'
 
 
-def parse_args() -> Namespace:
+def parse_args(parser: ArgumentParser) -> Namespace:
     """
     Parse command line arguments.
 
     :returns: parsed options.
     """
-    parser = ArgumentParser()
     parser.add_argument(
         '--debug',
         '-d',
@@ -374,17 +387,14 @@ def parse_args() -> Namespace:
         help='generate JUnit-XML output',
         metavar='FILE',
     )
-    parser.add_argument(
-        'pkgpath',
-        nargs='*',
-        type=debian_dir,
-        default=[Path(".")],
-        help='Source package directory',
-    )
+
     args = parser.parse_args()
 
     if args.junit_xml and not uub.JUNIT:
         parser.error("Missing Python support for JUNIT_XML")
+
+    if args.debug:
+        print(f'Using univention.ucslint.base from {uub.__file__}')
 
     return args
 
@@ -407,11 +417,59 @@ def debian_dir(pkgpath: str) -> Path:
     return p
 
 
+def run() -> None:
+    """Run a single given check on selected files."""
+    parser = ArgumentParser()
+    parser.add_argument(
+        'files',
+        nargs='*',
+        help='The files which are suitable for the selected module.',
+    )
+    options = parse_args(parser)
+
+    plugins = load_plugins(options)
+
+    ignore_IDs = [clean_id(x) for ign in options.ignore_IDs for x in ign.split(',')]
+    display_only_IDs = [clean_id(x) for dsp in options.display_only_IDs for x in dsp.split(',')]
+
+    def group_by_package(files):
+        """group files by traversing the filesystem up until a debian directory is found"""
+        packages = {}
+        for filename in files:
+            parent_dir = Path(filename).absolute().parent
+            while not (parent_dir / 'debian').is_dir():
+                parent_dir = parent_dir.parent
+                if parent_dir == Path('/'):
+                    break
+            packages.setdefault(parent_dir.relative_to(Path('.').absolute()), []).append(Path(filename).absolute().relative_to(Path('.').absolute()))
+        return packages.items()
+
+    fail = False
+    for base, files in group_by_package(options.files):
+        chk = DebianPackageCheck(base, plugins, debuglevel=options.debug)
+        try:
+            chk.check_files(files)
+        except uub.UCSLintException as ex:
+            print(ex, file=sys.stderr)
+
+        incident_cnt, exitcode_cnt = chk.printResult(ignore_IDs, display_only_IDs, options.display_only_categories, options.exitcode_categories, options.junit_xml)
+        fail |= bool(exitcode_cnt)
+
+    if fail:
+        sys.exit(2)
+
+
 def main() -> None:
     """Run checks."""
-    options = parse_args()
-    if options.debug:
-        print(f'Using univention.ucslint.base from {uub.__file__}')
+    parser = ArgumentParser()
+    parser.add_argument(
+        'pkgpath',
+        nargs='*',
+        type=debian_dir,
+        default=[Path(".")],
+        help='Source package directory',
+    )
+    options = parse_args(parser)
 
     plugins = load_plugins(options)
 

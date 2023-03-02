@@ -33,7 +33,7 @@ from __future__ import annotations
 import re
 from itertools import chain
 from pathlib import Path
-from typing import Any, Iterator
+from typing import Any, Iterable, Iterator
 
 import univention.ucslint.base as uub
 
@@ -177,8 +177,10 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 
     def check(self, path: Path) -> None:
         super().check(path)
+        self.check_files(uub.FilteredDirWalkGenerator(path, ignore_suffixes=uub.FilteredDirWalkGenerator.BINARY_SUFFIXES))
 
-        for fn in uub.FilteredDirWalkGenerator(path, ignore_suffixes=uub.FilteredDirWalkGenerator.BINARY_SUFFIXES):
+    def check_files(self, paths: Iterable[Path]) -> None:
+        for fn in paths:
             try:
                 with fn.open() as fd:
                     for row, line in enumerate(fd, start=1):

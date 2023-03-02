@@ -31,7 +31,7 @@
 from __future__ import annotations
 
 from pathlib import Path
-from typing import Any
+from typing import Any, Iterable
 
 import univention.ucslint.base as uub
 
@@ -52,25 +52,30 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 
     def check(self, path: Path) -> None:
         super().check(path)
+        self.check_files([
+            fn
+            for fn in path.glob("debian/*")
+            if fn.name in uub.FilteredDirWalkGenerator.MAINT_SCRIPT_SUFFIXES or fn.suffix in uub.FilteredDirWalkGenerator.MAINT_SCRIPT_SUFFIXES
+        ])
 
+    def check_files(self, paths: Iterable[Path]) -> None:
         fnlist_scripts: dict[Path, dict[str, Any]] = {}
 
         #
         # search debian scripts
         #
-        for fn in path.glob("debian/*"):
-            if fn.name in uub.FilteredDirWalkGenerator.MAINT_SCRIPT_SUFFIXES or fn.suffix in uub.FilteredDirWalkGenerator.MAINT_SCRIPT_SUFFIXES:
-                fnlist_scripts[fn] = {
-                    'debhelper': False,
-                    'udm_calls': 0,
-                    'udm_in_line': 0,
-                    'set-e-hashbang': False,
-                    'set-e-body': 0,
-                    'endswith-exit-0': False,
-                    'uses-remove_ucr_template': False,
-                    'uses-remove_ucr_info_file': False,
-                }
-                self.debug(f'found {fn}')
+        for fn in paths:
+            fnlist_scripts[fn] = {
+                'debhelper': False,
+                'udm_calls': 0,
+                'udm_in_line': 0,
+                'set-e-hashbang': False,
+                'set-e-body': 0,
+                'endswith-exit-0': False,
+                'uses-remove_ucr_template': False,
+                'uses-remove_ucr_info_file': False,
+            }
+            self.debug(f'found {fn}')
 
         #
         # check scripts

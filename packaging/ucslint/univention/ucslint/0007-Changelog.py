@@ -33,6 +33,7 @@ from __future__ import annotations
 import re
 from email.utils import mktime_tz, parsedate_tz
 from pathlib import Path
+from typing import Iterable
 
 from debian.changelog import Changelog, ChangelogParseError
 
@@ -63,8 +64,14 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 
     def check(self, path: Path) -> None:
         super().check(path)
+        self._main(path / 'debian' / 'changelog')
 
-        fn = path / 'debian' / 'changelog'
+    def check_files(self, paths: Iterable[Path]) -> None:
+        for fn in paths:
+            if fn.name == 'changelog':
+                self._main(fn)
+
+    def _main(self, fn: str) -> None:
         try:
             with fn.open() as stream:
                 changelog = Changelog(stream, strict=True)

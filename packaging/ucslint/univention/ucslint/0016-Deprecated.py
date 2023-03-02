@@ -33,6 +33,7 @@ from __future__ import annotations
 
 import re
 from pathlib import Path
+from typing import Iterable
 
 import univention.ucslint.base as uub
 
@@ -54,7 +55,14 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
     def check(self, path: Path) -> None:
         """the real check"""
         super().check(path)
+        IGNORE_SUFFIXES = ('.1', '.2', '.3', '.4', '.5', '.6', '.7', '.8', '.txt')
+        IGNORE_FILES = ('changelog', 'README')
+        self.check_files(
+            set(uub.FilteredDirWalkGenerator(path, ignore_suffixes=IGNORE_SUFFIXES, ignore_files=IGNORE_FILES))
+            | set(uub.FilteredDirWalkGenerator(path / 'debian', suffixes=('.univention-baseconfig',)))
+        )
 
+    def check_files(self, paths: Iterable[Path]) -> None:
         tester = uub.UPCFileTester()
         tester.addTest(
             re.compile(r'''(?:(?<=['" \t])|^)(?:/usr/sbin/)?univention-admin(?=['" \t]|$)'''),
@@ -69,12 +77,12 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
             re.compile(r'''@%@BCWARNING=.+?@%@'''),
             '0016-5', 'Use of deprecated "@%@BCWARNING=@%@"', cntmax=0)
 
-        ignore_suffixes = ('.1', '.2', '.3', '.4', '.5', '.6', '.7', '.8', '.txt')
-        ignore_files = ('changelog', 'README')
-        for fn in uub.FilteredDirWalkGenerator(path, ignore_suffixes=ignore_suffixes, ignore_files=ignore_files):
+        paths = list(paths)
+        for fn in paths:
             tester.open(fn)
             msglist = tester.runTests()
             self.msg.extend(msglist)
 
-        for fn in uub.FilteredDirWalkGenerator(path / 'debian', suffixes=('.univention-baseconfig',)):
-            self.addmsg('0016-6', 'Use of deprecated "debian/*.univention-baseconfig"', fn)
+        for fn in paths:
+            if fn.suffix == '.univention-baseconfig':
+                self.addmsg('0016-6', 'Use of deprecated "debian/*.univention-baseconfig"', fn)

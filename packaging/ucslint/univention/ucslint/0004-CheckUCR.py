@@ -1,5 +1,3 @@
-#!/usr/bin/env python3
-#
 # Like what you see? Join us!
 # https://www.univention.com/about-us/careers/vacancies/
 #
@@ -39,7 +37,7 @@ from configparser import (
     DuplicateOptionError, DuplicateSectionError, MissingSectionHeaderError, ParsingError, RawConfigParser,
 )
 from pathlib import Path
-from typing import Any, Dict, Iterator, List
+from typing import Any, Dict, Iterable, Iterator, List
 
 import univention.ucslint.base as uub
 
@@ -173,13 +171,17 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
     RE_FUNC_CUSTOM_USER = re.compile(r'(?: univention\.lib\.misc\. | ^\s* from \s+ univention\.lib\.misc \s+ import \s+ (?:\(.*?)? ) \b custom_username \b', re.MULTILINE | re.VERBOSE)
     RE_FUNC_CUSTOM_GROUP = re.compile(r'(?: univention\.lib\.misc\. | ^\s* from \s+ univention\.lib\.misc \s+ import \s+ (?:\(.*?)? ) \b custom_groupname \b', re.MULTILINE | re.VERBOSE)
 
-    def check_conffiles(self, path: Path) -> dict[Path, Any]:
+    def check_conffiles(self, paths: List[Path]) -> dict[Path, Any]:
         """Analyze UCR templates below :file:`conffiles/`."""
         conffiles: dict[Path, dict[str, Any]] = {}
 
-        confdir = path / 'conffiles'
-        for fn in uub.FilteredDirWalkGenerator(confdir, ignore_suffixes=uub.FilteredDirWalkGenerator.BINARY_SUFFIXES):
+        confdir = self.path / 'conffiles'
+        for fn in paths:
             fname = fn.relative_to(confdir).as_posix()
+            if not fn.absolute().as_posix().startswith(confdir.absolute().as_posix()):
+                continue
+            if fn.suffix in uub.FilteredDirWalkGenerator.BINARY_SUFFIXES:
+                continue
             checks: dict[str, Any] = {
                 'headerfound': False,
                 'variables': [],  # List[str] # Python code
@@ -327,9 +329,17 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 
     def check(self, path: Path) -> None:
         super().check(path)
+        confdir = path / 'conffiles'
+        conffiles = self.check_conffiles(uub.FilteredDirWalkGenerator(confdir, ignore_suffixes=uub.FilteredDirWalkGenerator.BINARY_SUFFIXES))
+        self.check_config_registry(path.glob("debian/*"), conffiles)
 
-        conffiles = self.check_conffiles(path)
+    def check_files(self, paths: Iterable[Path]) -> None:
+        paths = list(paths)
+        conffiles = self.check_conffiles(paths)
+        self.check_config_registry(paths, conffiles)
 
+    def check_config_registry(self, paths: Iterable[Path], conffiles: dict[str, Any]):
+        paths = list(paths)
         #
         # check UCR templates
         #
@@ -346,7 +356,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
         objlist: dict[str, list[UcrInfo]] = {}  # { CONF-FN ==> [ OBJ... ] }
 
         # read debian/rules
-        fn_rules = path / 'debian' / 'rules'
+        fn_rules = self.path / 'debian' / 'rules'
         try:
             rules_content = fn_rules.read_text()
         except OSError:
@@ -357,7 +367,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
             self.addmsg('0004-25', 'file contains old univention-install-baseconfig call', fn_rules)
 
         # find debian/*.u-c-r and check for univention-config-registry-install in debian/rules
-        for fn in path.glob("debian/*"):
+        for fn in paths:
             if fn.suffix == '.univention-config-registry-categories':
                 self.read_ini(fn)
             elif fn.suffix == '.univention-config-registry-mapping':
@@ -377,7 +387,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
                     self.addmsg('0004-23', f'{fn.name} exists but debian/rules contains no univention-install-config-registry', fn_rules)
                     break
 
-        for fn in path.glob("debian/*.univention-config-registry"):
+        for fn in [path for path in paths if path.suffix == '.univention-config-registry']:
             # OBJ = { 'Type': [ STRING, ... ],
             #         'Subfile': [ STRING, ... ] ,
             #         'Multifile': [ STRING, ... ],
@@ -613,7 +623,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 
         for fn, checks in conffiles.items():
             conffnfound = False
-            shortconffn = fn.relative_to(path / 'conffiles').as_posix()
+            shortconffn = fn.relative_to(self.path / 'conffiles').as_posix()
             short2conffn[shortconffn] = fn
 
             try:
@@ -725,7 +735,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
                 else:
                     if not any(conffiles[fn][typ] for typ in ('headerfound', 'ucrwarning')):
                         self.addmsg('0004-16', 'UCR header is missing', fn)
-                self.test_marker(path / 'conffiles' / tmplfn)
+                self.test_marker(self.path / 'conffiles' / tmplfn)
 
         # Part2: subfile templates
         for mfn, items in all_subfiles.items():
@@ -749,7 +759,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 
         # Test modules / scripts
         for f in all_preinst | all_postinst | all_module | all_script:
-            fn = path / 'conffiles' / f
+            fn = self.path / 'conffiles' / f
             try:
                 checks = conffiles[fn]
             except KeyError:
