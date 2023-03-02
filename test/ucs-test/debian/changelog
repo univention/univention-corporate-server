@@ -34,7 +34,7 @@ ucs-test (10.0.10-14) unstable; urgency=medium
   * Bug #55247: add test case for TLS v3 checking if a client
     with PEAP is working
 
- -- Maximilian Janßen <janssen@univention.de> Tue, 24 Feb 2023 13:33:53 +0100
+ -- Maximilian Janßen <janssen@univention.de>  Tue, 24 Feb 2023 13:33:53 +0100
 
 ucs-test (10.0.10-13) unstable; urgency=medium
 
