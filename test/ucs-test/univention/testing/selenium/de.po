@@ -52,7 +52,7 @@ msgstr ""
 
 #: univention/testing/selenium/appcenter.py:155
 msgid "Continue"
-msgstr ""
+msgstr "Weiter"
 
 #: univention/testing/selenium/udm.py:221
 msgid "Create computer"
@@ -74,8 +74,7 @@ msgstr ""
 msgid "Create user"
 msgstr ""
 
-#: univention/testing/selenium/udm.py:98
-#: univention/testing/selenium/udm.py:103
+#: univention/testing/selenium/udm.py:98 univention/testing/selenium/udm.py:103
 msgid "Delete"
 msgstr ""
 
@@ -230,3 +229,12 @@ msgstr ""
 
 msgid "Show server error message"
 msgstr "Fehlernachricht des Servers anzeigen"
+
+#~ msgid "Administration"
+#~ msgstr "Verwaltung"
+
+#~ msgid "Favorites"
+#~ msgstr "Favoriten"
+
+#~ msgid "LDAP directory"
+#~ msgstr "LDAP-Verzeichnis"

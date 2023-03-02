@@ -235,7 +235,7 @@ msgstr "Tab wählen"
 #: src/tmp/ts/src/components/ChooseTabs.vue:45
 #: src/tmp/ts/src/components/navigation/HeaderTab.vue:51
 msgid "Close"
-msgstr "schließen"
+msgstr "Schließen"
 
 #: src/tmp/ts/src/components/PortalToolTip.vue:62
 msgid "Close Tooltip"
@@ -495,8 +495,7 @@ msgstr "Interner Name"
 #: src/jsHelper/forms.ts:287
 msgid ""
 "Internal name must not contain anything other than digits, letters or dots, "
-"must be at least 2 characters long, and start and end with a digit or "
-"letter!"
+"must be at least 2 characters long, and start and end with a digit or letter!"
 msgstr ""
 "Interner Name darf nur Ziffern, Buchstaben und Punkte enthalten, muss "
 "mindestens 2 Zeichen lang sein, und mit einer Ziffer oder einem Buchstaben "
@@ -658,11 +657,10 @@ msgid "Password forgotten"
 msgstr "Passwort vergessen"
 
 #: src/tmp/ts/src/views/selfservice/ServiceSpecificPasswords.vue:46
-msgid ""
-"Please add it to your device now. You will not be able to see it again."
+msgid "Please add it to your device now. You will not be able to see it again."
 msgstr ""
-"Bitte hinterlegen Sie es jetzt auf Ihrem Gerät. Das Passwort wird nicht noch"
-" einmal angezeigt."
+"Bitte hinterlegen Sie es jetzt auf Ihrem Gerät. Das Passwort wird nicht noch "
+"einmal angezeigt."
 
 #: src/tmp/ts/src/views/selfservice/PasswordForgotten.vue:41
 msgid "Please choose an option to renew your password."
@@ -838,8 +836,7 @@ msgstr "Tabs"
 #: src/tmp/ts/src/views/selfservice/VerifyAccount.vue:167
 msgid "The account could not be verified. Please verify your input."
 msgstr ""
-"Das Konto konnte nicht verifiziert werden. Bitte überprüfen Sie Ihre "
-"Eingabe."
+"Das Konto konnte nicht verifiziert werden. Bitte überprüfen Sie Ihre Eingabe."
 
 #: src/tmp/ts/src/components/widgets/ImageUploader.vue:151
 msgid ""
@@ -872,8 +869,8 @@ msgid ""
 "The portal is temporarily unavailable. If the problem persists, please "
 "contact your system administrator."
 msgstr ""
-"Das Portal ist momentan nicht verfügbar. Wenn das Problem weiterhin besteht,"
-" wenden Sie sich bitte an Ihren Systemadministrator."
+"Das Portal ist momentan nicht verfügbar. Wenn das Problem weiterhin besteht, "
+"wenden Sie sich bitte an Ihren Systemadministrator."
 
 #: src/tmp/ts/src/views/selfservice/VerifyAccount.vue:130
 msgid "The verification token could not be sent. Please verify your input."
@@ -914,8 +911,8 @@ msgid ""
 "time, rendering the previous password invalid."
 msgstr ""
 "Um sich am WLAN anzumelden, benötigen Sie ein gesondertes Passwort. Das "
-"Passwort wird vom System erzeugt und ist gültig, bis es wieder überschrieben"
-" wird. Sie können das Passwort einmalig beim Anlegen ansehen. Ein neues "
+"Passwort wird vom System erzeugt und ist gültig, bis es wieder überschrieben "
+"wird. Sie können das Passwort einmalig beim Anlegen ansehen. Ein neues "
 "Passwort kann jederzeit erzeugt werden, womit das alte ungültig wird."
 
 #: src/tmp/ts/src/views/selfservice/NewPassword.vue:52
@@ -993,13 +990,13 @@ msgstr ""
 
 #: src/tmp/ts/src/components/globals/CookieBanner.vue:26
 msgid ""
-"We use cookies in order to provide you with certain functions and to be able"
-" to guarantee an unrestricted service. By clicking on \"Accept\", you "
-"consent to the collection of information on this portal."
+"We use cookies in order to provide you with certain functions and to be able "
+"to guarantee an unrestricted service. By clicking on \"Accept\", you consent "
+"to the collection of information on this portal."
 msgstr ""
 "Wir verwenden Cookies, um Ihnen bestimmte Funktionen bereitzustellen und "
-"einen uneingeschränkten Service gewährleisten zu können. Mit einem Klick auf"
-" \"Akzeptieren\" willigen Sie in die Erhebung von Informationen auf diesem "
+"einen uneingeschränkten Service gewährleisten zu können. Mit einem Klick auf "
+"\"Akzeptieren\" willigen Sie in die Erhebung von Informationen auf diesem "
 "Portal ein."
 
 #: src/tmp/ts/src/views/selfservice/VerifyAccount.vue:156
@@ -1037,8 +1034,8 @@ msgid ""
 "sent you an email to %(email)s. Please follow the instructions in the email "
 "to verify your account."
 msgstr ""
-"Ihr Konto muss nach der Änderung Ihrer E-Mail erneut verifiziert werden. Wir"
-" haben Ihnen eine E-Mail an %(email)s gesendet. Bitte folgen Sie den "
+"Ihr Konto muss nach der Änderung Ihrer E-Mail erneut verifiziert werden. Wir "
+"haben Ihnen eine E-Mail an %(email)s gesendet. Bitte folgen Sie den "
 "Anweisungen in der E-Mail, um Ihr Konto zu verifizieren."
 
 #: src/tmp/ts/src/views/selfservice/ProtectAccount.vue:68
@@ -1098,3 +1095,101 @@ msgid ""
 msgstr ""
 "wir haben Ihnen eine E-Mail an %(email)s gesendet. Bitte folgen Sie den "
 "Anweisungen in der E-Mail, um Ihr Konto zu verifizieren."
+
+#~ msgid "Categories \"%(cat1)s\" and \"%(cat2)s\" changed places"
+#~ msgstr "Kategorien \"%(cat1)s\" und \"%(cat2)s\" wurden getauscht"
+
+#~ msgid "Categories successfully re-sorted"
+#~ msgstr "Kategorien erfolgreich umsortiert"
+
+#~ msgid "Category \"%(cat1)s\" and \"%(cat2)s\" changed places"
+#~ msgstr "Kategorie \"%(cat1)s\" und \"%(cat2)s\" wurden getauscht"
+
+#~ msgid "Edit"
+#~ msgstr "Bearbeiten"
+
+#~ msgid "Edit category"
+#~ msgstr "Kategorie bearbeiten"
+
+#~ msgid "Error on validation"
+#~ msgstr "Fehler bei der Validierung"
+
+#~ msgid ""
+#~ "Everyone forgets his password now and then. Protect yourself and activate "
+#~ "the opportunity to set a new password."
+#~ msgstr ""
+#~ "Jeder vergisst mal das Passwort. Schützen Sie sich und aktivieren Sie die "
+#~ "Möglichkeit, Ihr Passwort erneuern zu können."
+
+#~ msgid "Failed to retrieve profile"
+#~ msgstr "Profilinformationen abrufen fehlgeschlagen"
+
+#~ msgid "Failed to save"
+#~ msgstr "Speichern fehlgeschlagen"
+
+#~ msgid "Hello %(username)s"
+#~ msgstr "Hallo %(username)s,"
+
+#~ msgid "Hello, %(username)s"
+#~ msgstr "Hallo %(username)s"
+
+#~ msgid "Hello, %(username)s,"
+#~ msgstr "Hallo %(username)s"
+
+#~ msgid ""
+#~ "If you have problems using the self service instance, please contact your "
+#~ "system administrator."
+#~ msgstr ""
+#~ "Bei Problemen mit dem Self Service, wenden Sie sich bitte an den "
+#~ "Administrator."
+
+#~ msgid "Move category"
+#~ msgstr "Kategorie verschieben"
+
+#~ msgid "Moving tile %(tile)s into category %(category)s"
+#~ msgstr "Bewege Kachel %(tile)s in Kategorie %(category)s"
+
+#~ msgid "Please enter a description"
+#~ msgstr "Bitte geben Sie eine Beschreibung ein"
+
+#~ msgid "Please enter a display name"
+#~ msgstr "Bitte geben Sie einen Anzeigenamen ein"
+
+#~ msgid "Please enter an internal name"
+#~ msgstr "Bitte geben Sie einen internen Namen ein"
+
+#~ msgid "Please enter at least an english value."
+#~ msgstr "Bitte geben Sie mindestens einen englischen Wert ein."
+
+#~ msgid "Portal is in edit mode"
+#~ msgstr "Portal ist im Editiermodus"
+
+#~ msgid "Remove entry"
+#~ msgstr "Eintrag entfernen"
+
+#~ msgid "Sending token failed"
+#~ msgstr "Senden des Token ist fehlgeschlagen"
+
+#~ msgid "Successfully logged out"
+#~ msgstr "Erfolgreich abgemeldet"
+
+#~ msgid "The form data is not valid"
+#~ msgstr "Die Formulardaten sind fehlerhaft"
+
+#~ msgid "This service is disabled"
+#~ msgstr "Diese Seite wurde abgeschaltet"
+
+#~ msgid "added"
+#~ msgstr "hinzugefügt"
+
+#~ msgid "readonly"
+#~ msgstr "schreibgeschützt"
+
+#~ msgid "removed"
+#~ msgstr "entfernt"
+
+#~ msgid "required"
+#~ msgstr "erforderlich"
+
+#~ msgid "view-only"
+#~ msgstr "schreibgeschützt"

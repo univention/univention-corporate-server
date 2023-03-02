@@ -18,8 +18,8 @@ msgid ""
 "%s could not be downloaded. This seems to be a problem with the App Center "
 "server. Please try again later."
 msgstr ""
-"Konnte %s nicht herunterladen. Das deutet auf ein Problem auf dem App "
-"Center-Server hin. Bitte versuchen Sie es später noch einmal."
+"Konnte %s nicht herunterladen. Das deutet auf ein Problem auf dem App Center-"
+"Server hin. Bitte versuchen Sie es später noch einmal."
 
 #: python/appcenter/exceptions.py:332
 msgid "An error occurred!"
@@ -40,7 +40,7 @@ msgstr ""
 
 #: python/appcenter/settings.py:254
 msgid "Password"
-msgstr ""
+msgstr "Passwort"
 
 #: python/appcenter/app.py:1437 python/appcenter/install_checks.py:361
 #, python-format
@@ -71,8 +71,8 @@ msgstr ""
 #: python/appcenter/utils.py:276
 msgid "This is a problem with the App Center server. Please try again later."
 msgstr ""
-"Das ist ein Problem auf dem App Center-Server. Bitte versuchen Sie es später"
-" noch einmal."
+"Das ist ein Problem auf dem App Center-Server. Bitte versuchen Sie es später "
+"noch einmal."
 
 #: python/appcenter/utils.py:292
 #, python-format
@@ -89,13 +89,13 @@ msgid ""
 "This may be a problem with the firewall or proxy of your system. You may "
 "find help at %s."
 msgstr ""
-"Dies kann auf ein Problem mit einer auf Ihrem System eingerichteten Firewall"
-" oder Proxy hindeuten. Sie finden Hilfe unter %s."
+"Dies kann auf ein Problem mit einer auf Ihrem System eingerichteten Firewall "
+"oder Proxy hindeuten. Sie finden Hilfe unter %s."
 
 #: python/appcenter/exceptions.py:333
 msgid ""
-"We are sorry for the inconvenience. Please help us to improve the App Center"
-" and the Apps by sending us the information below."
+"We are sorry for the inconvenience. Please help us to improve the App Center "
+"and the Apps by sending us the information below."
 msgstr ""
 "Wir entschuldigen uns für die Unannehmlichkeiten. Bitte helfen Sie uns, das "
 "App Center und die Apps zu verbessern, indem Sie uns die unten stehenden "
@@ -104,8 +104,8 @@ msgstr ""
 #: python/appcenter/utils.py:288
 #, python-format
 msgid ""
-"https://docs.software-univention.de/manual-%s.html#ip-"
-"config:Web_proxy_for_caching_and_policy_management__virus_scan"
+"https://docs.software-univention.de/manual-%s.html#ip-config:"
+"Web_proxy_for_caching_and_policy_management__virus_scan"
 msgstr ""
 "https://docs.software-univention.de/handbuch-%s.html#ip-config:Web-"
 "Proxy_fuer_Caching_und_Policy_Management_Virenscan"
@@ -114,3 +114,9 @@ msgstr ""
 #, python-format
 msgid "https://docs.software-univention.de/manual-%s.html#networks:dns"
 msgstr "https://docs.software-univention.de/handbuch-%s.html#networks:dns"
+
+#~ msgid "Error while contacting Docker registry server %s"
+#~ msgstr "Fehler bei der Kontaktaufnahme mit dem Docker-Registry-Server %s"
+
+#~ msgid "Manifest checksum mismatch"
+#~ msgstr "Prüfsumme für das Manifest weicht ab"

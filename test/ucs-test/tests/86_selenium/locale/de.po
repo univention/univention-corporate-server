@@ -97,7 +97,7 @@ msgstr ""
 
 #: tests/86_selenium/132_miscellaneous_open_all_modules:39
 msgid "Close"
-msgstr ""
+msgstr "Schließen"
 
 #: tests/86_selenium/160_process_overview_module:46
 msgid "Command"
@@ -571,8 +571,8 @@ msgid ""
 "Univention Management Console for admin­is­tra­ting the UCS domain and the "
 "local system"
 msgstr ""
-"Univention Management Console zur Ver­wal­tung der UCS-Domäne und des "
-"lokalen Systems"
+"Univention Management Console zur Ver­wal­tung der UCS-Domäne und des lokalen "
+"Systems"
 
 #: tests/86_selenium/180_portal_entries:38
 #: tests/86_selenium/180_portal_entries:42
@@ -678,3 +678,6 @@ msgstr ""
 #: tests/86_selenium/12_product_test_ucr:130
 msgid "value"
 msgstr ""
+
+#~ msgid "Search users..."
+#~ msgstr "Suche Benutzer..."

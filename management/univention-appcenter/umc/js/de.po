@@ -46,7 +46,7 @@ msgstr "Diese Nachricht nicht wieder anzeigen"
 #: umc/js/appcenter/AppChooseHostWizard.js:277
 #: umc/js/appcenter/AppDetailsPage.js:704
 msgid "Continue"
-msgstr "Fortfahren"
+msgstr "Weiter"
 
 #: umc/js/appcenter/AppCenterPage.js:208 umc/js/appcenter/SettingsPage.js:234
 msgid "Installed"
@@ -1489,3 +1489,384 @@ msgstr ""
 #: umc/js/appcenter/Vote.js:49
 msgid "Vote now"
 msgstr "Jetzt abstimmen"
+
+#~ msgid ""
+#~ "Activation is not possible. Please login as Administrator on the Primary "
+#~ "Directory Node."
+#~ msgstr ""
+#~ "Aktivierung is nicht möglich. Bitte als Administrator auf dem Primary "
+#~ "Directory Node einloggen."
+
+#~ msgid "Manage local installation"
+#~ msgstr "Installation lokal verwalten"
+
+#~ msgid "Password"
+#~ msgstr "Passwort"
+
+#~ msgid "Repository prefix"
+#~ msgstr "Repository-Präfix"
+
+#~ msgid "Username"
+#~ msgstr "Benutzername"
+
+#~ msgid "%s Apps"
+#~ msgstr "%s Apps"
+
+#~ msgid "%s: Performing software tests on involved systems"
+#~ msgstr "%s: Führe Softwaretests auf den beteiligten Systemen durch"
+
+#~ msgid ""
+#~ "<p>This App meets all <a target='_blank' href='https://wiki.univention.de/"
+#~ "index.php/Criteria_Recommended_Apps'>Univention's quality criteria</a> "
+#~ "for use in a professional environment. These include, among other things, "
+#~ "timely updates, commercial support offerings, integration in the UCS "
+#~ "identity management and support of the current UCS version.</p>"
+#~ msgstr ""
+#~ "<p>Diese App erfüllt alle <a target='_blank' href='https://wiki."
+#~ "univention.de/index.php/Criteria_Recommended_Apps'>Qualitätskriterien von "
+#~ "Univention</a> für den Einsatz im professionellen Umfeld. Dazu zählen "
+#~ "unter anderem zeitnahe Updates, kommerzielle Support-Angebote, "
+#~ "Integration mit UCS Identity Management sowie die Unterstützung der "
+#~ "aktuellen UCS Version.</p>"
+
+#~ msgid "Activation of UCS"
+#~ msgstr "UCS-Aktivierung"
+
+#~ msgid "After saving, the file length will be %d bytes"
+#~ msgstr "Nach dem Speichern wird die Dateigröße %d Bytes sein."
+
+#~ msgid "After that you can \"%(action)s\" \"%(app)s\" here on this system."
+#~ msgstr ""
+#~ "Danach können Sie \"%(app)s\" hier auf diesem System \"%(action)s\"."
+
+#~ msgid "All"
+#~ msgstr "Alle"
+
+#~ msgid "App installation notes"
+#~ msgstr "App-Installationshinweise"
+
+#~ msgid "App status"
+#~ msgstr "App Status"
+
+#~ msgid "Available version"
+#~ msgstr "Verfügbare Version"
+
+#~ msgid "Backup all data and configs of the app"
+#~ msgstr "Sichern Sie alle Daten und Konfigurationen der App"
+
+#~ msgid "Check log files"
+#~ msgstr "Prüfen Sie die Log-Dateien"
+
+#~ msgid "Consult the forum or contact the Univention support"
+#~ msgstr ""
+#~ "Konsultieren Sie das Forum oder kontaktieren Sie den Univention Support"
+
+#~ msgid "Current file length is %d bytes."
+#~ msgstr "Aktuelle Dateigröße ist %d Bytes."
+
+#~ msgid ""
+#~ "Depending on the guideline of the respective application vendor an "
+#~ "updated UCS license key with so-called key identification (Key ID) is "
+#~ "required for the installation of an application. In this case, the Key ID "
+#~ "will be sent to Univention together with the notification. As a result "
+#~ "the application vendor receives a message from Univention with the "
+#~ "following information:"
+#~ msgstr ""
+#~ "Abhängig von der Vorgabe des jeweiligen Applikationsherstellers ist für "
+#~ "die Installation einer Applikationen ein aktueller UCS-Lizenzschlüssel "
+#~ "mit sogenannter Schlüsselidentifikation (Key-ID) notwendig. In diesem "
+#~ "Fall wird bei der Benachrichtigung die Key-ID an Univention mitgeschickt. "
+#~ "Der Applikationshersteller erhält daraufhin eine Nachricht von Univention "
+#~ "mit folgenden Informationen:"
+
+#~ msgid ""
+#~ "Depending on your internet connection and on your server performance, the "
+#~ "download and the App installation may take up to 15 minutes"
+#~ msgstr ""
+#~ "Abhängig von Ihrer Internetverbindung und der Leistungsfähigkeit Ihres "
+#~ "Servers, kann das Herunterladen und die App-Installation bis zu 15 "
+#~ "Minuten dauern."
+
+#~ msgid "Error performing the action"
+#~ msgstr "Ein Fehler trat während der Aktion auf"
+
+#~ msgid "Extended software management"
+#~ msgstr "Erweiterte Software-Verwaltung"
+
+#~ msgid "File length was %d bytes."
+#~ msgstr "Dateigröße war %d Bytes."
+
+#~ msgid ""
+#~ "Further information can be found in the following log file on each of the "
+#~ "involved systems: %s"
+#~ msgstr ""
+#~ "Weitere Hinweise finden Sie in der folgenden Logdatei auf den beteiligten "
+#~ "Systemen: %s"
+
+#~ msgid ""
+#~ "Here you can set configuration options as well as start and stop the "
+#~ "application."
+#~ msgstr ""
+#~ "Hier können Sie die die Applikation konfigurieren, sowie sie starten und "
+#~ "stoppen."
+
+#~ msgid "Host for installation of application"
+#~ msgstr "Rechner für die Installation der Applikation"
+
+#~ msgid ""
+#~ "If everything else went correct and this is just a temporary network "
+#~ "problem, you should execute %s as root on that Backup Node."
+#~ msgstr ""
+#~ "Wenn keine weiteren Fehler auftraten und dies nur ein temporäres "
+#~ "Netzwerkproblem ist, sollten Sie %s als root auf dem Backup Node "
+#~ "ausführen."
+
+#~ msgid ""
+#~ "If your UCS environment does not have such a key at it's disposal (e.g. "
+#~ "UCS Core Edition) and the vendor requires a Key ID, you will be asked to "
+#~ "request an updated license key directly from Univention. Afterwards the "
+#~ "new key can be applied."
+#~ msgstr ""
+#~ "Sollte Ihre UCS-Umgebung nicht über einen solchen Schlüssel verfügen (z."
+#~ "B. UCS Core Edition) und der Hersteller eine Key-ID voraussetzen, werden "
+#~ "Sie aufgefordert, einen aktualisierten Lizenzschlüssel direkt bei "
+#~ "Univention anzufordern. Anschließend kann der neue Schlüssel eingespielt "
+#~ "werden."
+
+#~ msgid "Install Information"
+#~ msgstr "Informationen zur Installation"
+
+#~ msgid "Install anyway"
+#~ msgstr "Trotzdem installieren"
+
+#~ msgid "Install app"
+#~ msgstr "App Installieren"
+
+#~ msgid "Install apps"
+#~ msgstr "Apps Installieren"
+
+#~ msgid "Install information"
+#~ msgstr "Informationen zur Installation"
+
+#~ msgid "Install or remove applications on this or another UCS system."
+#~ msgstr ""
+#~ "Fügen Sie dieser oder einer anderen UCS-Instanz Applikationen hinzu oder "
+#~ "entfernen Sie diese."
+
+#~ msgid "Install this App"
+#~ msgstr "Diese App installieren"
+
+#~ msgid "Installation target"
+#~ msgstr "Ziel der "
+
+#~ msgid "Installed locally"
+#~ msgstr "Installiert auf diesem RechnerLokal installiert"
+
+#~ msgid "Installed on any UCS server in the domain"
+#~ msgstr "Installiert auf einem UCS-Server in der Domäne"
+
+#~ msgid "Installing %(name)s on host %(host)s"
+#~ msgstr "Installiere %(name)s auf Rechner %(host)s"
+
+#~ msgid "Installing %s"
+#~ msgstr "Installiere %s"
+
+#~ msgid "Installing %s on this host"
+#~ msgstr "Installiere %s auf diesem Rechner"
+
+#~ msgid ""
+#~ "Installing the extension of the LDAP schema on %s seems to have failed."
+#~ msgstr ""
+#~ "Die Installation der Schemaerweiterung für LDAP auf %s scheint "
+#~ "fehlgeschlagen zu sein."
+
+#~ msgid "Less"
+#~ msgstr "Weniger"
+
+#~ msgid "Manage domain wide installations"
+#~ msgstr "Installationen in der Domäne verwalten"
+
+#~ msgid "More"
+#~ msgstr "Mehr"
+
+#~ msgid "Name of the installed application"
+#~ msgstr "Name der soeben installierten Applikation"
+
+#~ msgid "Next"
+#~ msgstr "Weiter"
+
+#~ msgid "Pattern"
+#~ msgstr "Suchbegriff"
+
+#~ msgid ""
+#~ "Please also have a look at %s for more App upgrade troubleshooting "
+#~ "information."
+#~ msgstr ""
+#~ "Weitere Informationen zur Fehlerbehebung bei App-Upgrades finden Sie "
+#~ "unter %s."
+
+#~ msgid "Please confirm to install %s."
+#~ msgstr "Bitte bestätigen Sie die Installation von %s."
+
+#~ msgid "Please confirm to install the App %(name)s on host %(host)s."
+#~ msgstr ""
+#~ "Bitte bestätigen Sie die Installation der App %(name)s auf Rechner "
+#~ "%(host)s"
+
+#~ msgid "Please confirm to uninstall %s."
+#~ msgstr "Bitte bestätigen Sie die Deinstallation von %s."
+
+#~ msgid "Please confirm to uninstall the App %(name)s from host %(host)s."
+#~ msgstr ""
+#~ "Bitte bestätigen Sie die Deinstallation der App %(name)s auf Rechner "
+#~ "%(host)s."
+
+#~ msgid "Please confirm to upgrade %s."
+#~ msgstr "Bitte bestätigen Sie die Aktualisierung von %s."
+
+#~ msgid "Please confirm to upgrade the App %(name)s on host %(host)s."
+#~ msgstr ""
+#~ "Bitte bestätigen Sie die Aktualisierung der App %(name)s auf Rechner "
+#~ "%(host)s."
+
+#~ msgid "Registered email address"
+#~ msgstr "Registrierte E-Mail-Adresse"
+
+#~ msgid "Repository settings"
+#~ msgstr "Repository-Einstellungen"
+
+#~ msgid "Reset"
+#~ msgstr "Zurücksetzen"
+
+#~ msgid "Settings (advanced)"
+#~ msgstr "Einstellungen (erweitert)"
+
+#~ msgid "Show progress"
+#~ msgstr "Fortschritt anzeigen"
+
+#~ msgid "Start"
+#~ msgstr "Starten"
+
+#~ msgid "The App update has failed!"
+#~ msgstr "Das App Update ist fehlgeschlagen!"
+
+#~ msgid ""
+#~ "The description of every application includes a respective indication for "
+#~ "such cases."
+#~ msgstr ""
+#~ "In der Beschreibung jeder Applikation befindet sich in diesen Fällen ein "
+#~ "entsprechender Hinweis."
+
+#~ msgid "The error message was:"
+#~ msgstr "Die Fehlermeldung lautet:"
+
+#~ msgid "The next steps could be:"
+#~ msgstr "Die nächsten Schritt wären:"
+
+#~ msgid ""
+#~ "The requested action cannot be carried out. Please consider the "
+#~ "information listed below in order to resolve the problem and try again."
+#~ msgstr ""
+#~ "Die angeforderte Aktion kann nicht durchgeführt werden. Bitte "
+#~ "berücksichtigen Sie die Informationen, die unten angegeben sind, um das "
+#~ "Problem zu beheben und es erneut zu versuchen."
+
+#~ msgid ""
+#~ "The sale of licenses, maintenance or support for the applications uses "
+#~ "the default processes of the respective vendor and is not part of "
+#~ "Univention App Center."
+#~ msgstr ""
+#~ "Der Kauf von Lizenzen, Maintenance oder Support wird über die normalen "
+#~ "Wege des jeweiligen Anbieters abgewickelt und ist nicht Teil von "
+#~ "Univention App Center."
+
+#~ msgid ""
+#~ "This App uses a container technology. Containers have to be downloaded "
+#~ "once. After that they can be used multiple times."
+#~ msgstr ""
+#~ "Diese App verwendet eine Container-Technologie. Container müssen einmalig "
+#~ "heruntergeladen werden. Danach können sie beliebig oft genutzt werden."
+
+#~ msgid ""
+#~ "To do this please log in as %s and repeat the steps taken until this "
+#~ "dialog. You will be guided through the installation."
+#~ msgstr ""
+#~ "Melden Sie sich dazu bitte als %s an und wiederholen Sie alle Schritte "
+#~ "bis zu diesem Dialog. Sie werden durch die Installation geführt werden."
+
+#~ msgid ""
+#~ "To do this please log in on %(host)s as an administrator. Open the menu "
+#~ "in the top right corner of the screen and choose \"License\" > "
+#~ "\"%(dialogName)s\". There you can request the new license."
+#~ msgstr ""
+#~ "Melden Sie sich dazu bitte als ein Administrator auf %(host)s an. Öffnen "
+#~ "Sie das Menü in der oberen rechten Bildschirmecke und wählen Sie den "
+#~ "Punkt \"Lizenz\" > \"%(dialogName)s\" aus. Dort können Sie eine neue "
+#~ "Lizenz anfordern."
+
+#~ msgid "Try to install the app again"
+#~ msgstr "Versuchen Sie, die App wieder zu installieren"
+
+#~ msgid "Try to uninstall the app"
+#~ msgstr "Versuchen Sie, die App zu deinstallieren"
+
+#~ msgid "Uninstall Information"
+#~ msgstr "Informationen zur Deinstallation"
+
+#~ msgid "Uninstall anyway"
+#~ msgstr "Trotzdem deinstallieren"
+
+#~ msgid "Uninstalling %(name)s from host %(host)s"
+#~ msgstr "Deinstalliere %(name)s von Rechner %(host)s"
+
+#~ msgid "Uninstalling %s"
+#~ msgstr "Deinstalliere %s"
+
+#~ msgid "Uninstalling %s from this host"
+#~ msgstr "Deinstalliere %s von diesem Rechner"
+
+#~ msgid ""
+#~ "Univention App Center is the simplest method to install or uninstall "
+#~ "applications on Univention Corporate Server."
+#~ msgstr ""
+#~ "Univention App Center ist die einfachste Form, um Applikationen auf "
+#~ "Univention Corporate Server zu installieren oder zu deinstallieren."
+
+#~ msgid ""
+#~ "Univention always receives an estranged notification for statistical "
+#~ "purposes upon installation and uninstallation of an application in "
+#~ "Univention App Center that is only saved at Univention for data "
+#~ "processing and will not be forwarded to any third party."
+#~ msgstr ""
+#~ "Bei der Installation oder Deinstallation einer Applikation mit Univention "
+#~ "App Center erhält Univention zu statistischen Zwecken immer eine "
+#~ "anonymisierte Benachrichtigung, die nur bei Univention zur "
+#~ "Datenverarbeitung gespeichert und nicht an Dritte weiter gegeben wird."
+
+#~ msgid "Upgrade Information"
+#~ msgstr "Informationen zur Aktualisierung"
+
+#~ msgid "Upgrading %(name)s on host %(host)s"
+#~ msgstr "Aktualisiere %(name)s auf Rechner %(host)s"
+
+#~ msgid "Upgrading %s"
+#~ msgstr "Aktualisiere %s"
+
+#~ msgid "Upgrading %s on this host"
+#~ msgstr "Aktualisiere %s auf diesem Rechner"
+
+#~ msgid "Use this App"
+#~ msgstr "Die App verwenden"
+
+#~ msgid "Wait for that operation to finish."
+#~ msgstr "Warten Sie, bis diese Operation beendet wurde."
+
+#~ msgid "We are sorry for the inconvenience."
+#~ msgstr "Wir entschuldigen uns für die Unannehmlichkeiten."
+
+#~ msgid ""
+#~ "You need to request and install a new license in order to use the "
+#~ "Univention App Center."
+#~ msgstr ""
+#~ "Eine neue Lizenz muss angefordert und installiert werden, um das "
+#~ "Univention App Center zu nutzen."
