@@ -3,7 +3,7 @@ release: "5.0"
 version: [3]
 scope: ucs_5.0-0-errata5.0-3
 src: univention-management-console
-fix: 12.0.17-7
+fix: 12.0.17-7A~5.0.0.202303021739
 desc: |
  This update addresses the following issue:
  * Buildings the downstream package _Univention System Setup_ failed because
