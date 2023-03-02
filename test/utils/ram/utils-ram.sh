@@ -313,7 +313,7 @@ create_test_admin_account () {
 			"name": "admin",
 			"firstname": "test",
 			"lastname": "admin",
-			"password": "univentionunivention",
+			"password": "A1.univentionunivention",
 			"school": "https://'"$fqdn"'/ucsschool/kelvin/v1/schools/school1",
 			"roles": ["https://'"$fqdn"'/ucsschool/kelvin/v1/roles/teacher"],
 			"record_uid": "admin",
