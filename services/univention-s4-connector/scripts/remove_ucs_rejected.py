@@ -52,11 +52,16 @@ def remove_ucs_rejected(ucs_dn):
     config = univention.s4connector.configdb('/etc/univention/connector/s4internal.sqlite')
     found = False
     for filename, rejected_dn in config.items('UCS rejected'):
-        if univention.uldap.access.compare_dn(ucs_dn, rejected_dn):
-            if os.path.exists(filename):
-                os.remove(filename)
-            config.remove_option('UCS rejected', filename)
-            found = True
+        if univention.s4connector.RE_NO_RESYNC.match(rejected_dn):
+            if ucs_dn != rejected_dn:
+                continue
+        elif not univention.uldap.access.compare_dn(ucs_dn, rejected_dn):
+            continue
+
+        if os.path.exists(filename):
+            os.remove(filename)
+        config.remove_option('UCS rejected', filename)
+        found = True
 
     if not found:
         raise ObjectNotFound()
