@@ -1,4 +1,4 @@
-# -*- coding: utf-8 -*-
+#!/usr/bin/python3
 #
 # Like what you see? Join us!
 # https://www.univention.com/about-us/careers/vacancies/
@@ -29,6 +29,8 @@
 # License with the Debian GNU/Linux or Univention distribution in file
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
+
+from __future__ import annotations
 
 import os
 import re
@@ -62,14 +64,13 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
         }
 
     def check(self, path: str) -> None:
-        """the real check"""
-        super(UniventionPackageCheck, self).check(path)
+        super().check(path)
 
         fn = os.path.join(path, 'debian', 'changelog')
         try:
             with open(fn) as stream:
                 changelog = Changelog(stream, strict=True)
-        except EnvironmentError as ex:
+        except OSError as ex:
             self.addmsg('0007-1', 'failed to open and read file: %s' % ex, fn)
             return
         except ChangelogParseError as ex:
@@ -87,14 +88,14 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
             if last:
                 if mktime_tz(parsedate_tz(last.date)) <= mktime_tz(parsedate_tz(block.date)):
                     if nr < RECENT_ENTRIES:
-                        self.addmsg('0007-3', 'not strict-monotonically increasing by time: %s <= %s' % (last.date, block.date), fn)
+                        self.addmsg('0007-3', f'not strict-monotonically increasing by time: {last.date} <= {block.date}', fn)
                     else:
-                        self.addmsg('0007-5', 'old not strict-monotonically increasing by time: %s <= %s' % (last.date, block.date), fn)
+                        self.addmsg('0007-5', f'old not strict-monotonically increasing by time: {last.date} <= {block.date}', fn)
 
                 if last.version <= block.version:
                     if nr < RECENT_ENTRIES:
-                        self.addmsg('0007-4', 'not strict-monotonically increasing by version: %s <= %s' % (last.version, block.version), fn)
+                        self.addmsg('0007-4', f'not strict-monotonically increasing by version: {last.version} <= {block.version}', fn)
                     else:
-                        self.addmsg('0007-6', 'old not strict-monotonically increasing by version: %s <= %s' % (last.version, block.version), fn)
+                        self.addmsg('0007-6', f'old not strict-monotonically increasing by version: {last.version} <= {block.version}', fn)
 
             last = block

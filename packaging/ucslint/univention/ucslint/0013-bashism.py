@@ -1,4 +1,4 @@
-# -*- coding: utf-8 -*-
+#!/usr/bin/python3
 #
 # Like what you see? Join us!
 # https://www.univention.com/about-us/careers/vacancies/
@@ -29,6 +29,8 @@
 # License with the Debian GNU/Linux or Univention distribution in file
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
+
+from __future__ import annotations
 
 import re
 import subprocess
@@ -65,8 +67,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
         }
 
     def check(self, path: str) -> None:
-        """the real check"""
-        super(UniventionPackageCheck, self).check(path)
+        super().check(path)
 
         for fn in uub.FilteredDirWalkGenerator(
                 path,
@@ -77,7 +78,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
             try:
                 self.check_bashism(fn)
                 self.check_unquoted_local(fn)
-            except (EnvironmentError, UnicodeDecodeError):
+            except (OSError, UnicodeDecodeError):
                 self.addmsg('0013-1', 'failed to open file', fn)
 
     def check_bashism(self, fn: str) -> None:
@@ -101,7 +102,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
                 msg = match.group(2)
                 code = match.group(3)
 
-                self.addmsg('0013-2', 'possible bashism (%s):\n%s' % (msg, code), fn, row)
+                self.addmsg('0013-2', f'possible bashism ({msg}):\n{code}', fn, row)
 
     def check_unquoted_local(self, fn: str) -> None:
         with open(fn) as fd:
@@ -111,4 +112,4 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
                 if not match:
                     continue
 
-                self.addmsg('0013-4', 'unquoted local variable: %s' % (line,), fn, row)
+                self.addmsg('0013-4', f'unquoted local variable: {line}', fn, row)

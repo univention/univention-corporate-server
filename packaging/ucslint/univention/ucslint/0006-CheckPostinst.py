@@ -1,4 +1,4 @@
-# -*- coding: utf-8 -*-
+#!/usr/bin/python3
 #
 # Like what you see? Join us!
 # https://www.univention.com/about-us/careers/vacancies/
@@ -30,8 +30,10 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
+from __future__ import annotations
+
 import os
-from typing import Any, Dict  # noqa: F401
+from typing import Any
 
 import univention.ucslint.base as uub
 
@@ -51,10 +53,9 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
         }
 
     def check(self, path: str) -> None:
-        """the real check"""
-        super(UniventionPackageCheck, self).check(path)
+        super().check(path)
 
-        fnlist_scripts = {}  # type: Dict[str, Dict[str, Any]]
+        fnlist_scripts: dict[str, dict[str, Any]] = {}
 
         #
         # search debian scripts
@@ -79,8 +80,9 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
         #
         for fn, checks in fnlist_scripts.items():
             try:
-                content = open(fn).read()
-            except EnvironmentError:
+                with open(fn) as fd:
+                    content = fd.read()
+            except OSError:
                 content = ''
 
             if not content:

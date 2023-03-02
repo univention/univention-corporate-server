@@ -1,4 +1,4 @@
-# -*- coding: utf-8 -*-
+#!/usr/bin/python3
 #
 # Like what you see? Join us!
 # https://www.univention.com/about-us/careers/vacancies/
@@ -30,6 +30,9 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
+from __future__ import annotations
+
+import contextlib
 import os
 import re
 import sys
@@ -136,7 +139,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
     @classmethod
     def check_invalid_variable_name(cls, var: str) -> bool:
         """
-        Returns True if given variable name contains invalid characters
+        Return True if given variable name contains invalid characters
 
         :param var: variable name to check.
         :returns: `False` if the name is valid, `True` otherwise.
@@ -170,13 +173,13 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
     RE_FUNC_CUSTOM_USER = re.compile(r'(?: univention\.lib\.misc\. | ^\s* from \s+ univention\.lib\.misc \s+ import \s+ (?:\(.*?)? ) \b custom_username \b', re.MULTILINE | re.VERBOSE)
     RE_FUNC_CUSTOM_GROUP = re.compile(r'(?: univention\.lib\.misc\. | ^\s* from \s+ univention\.lib\.misc \s+ import \s+ (?:\(.*?)? ) \b custom_groupname \b', re.MULTILINE | re.VERBOSE)
 
-    def check_conffiles(self, path: str) -> Dict[str, Any]:
+    def check_conffiles(self, path: str) -> dict[str, Any]:
         """Analyze UCR templates below :file:`conffiles/`."""
-        conffiles = {}  # type: Dict[str, Dict[str, Any]]
+        conffiles: Dict[str, Dict[str, Any]] = {}
 
         confdir = os.path.join(path, 'conffiles')
         for fn in uub.FilteredDirWalkGenerator(confdir, ignore_suffixes=uub.FilteredDirWalkGenerator.BINARY_SUFFIXES):
-            checks = {
+            checks: Dict[str, Any] = {
                 'headerfound': False,
                 'variables': [],  # List[str] # Python code
                 'placeholder': [],  # List[str] # @%@
@@ -187,7 +190,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
                 'handler': False,
                 'custom_user': False,
                 'custom_group': False,
-            }  # type: Dict[str, Any]
+            }
             conffiles[fn] = checks
 
             match = self.RE_PYTHON_FNAME.match(os.path.relpath(fn, confdir))
@@ -195,8 +198,9 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
                 checks['pythonic'] = True
 
             try:
-                content = open(fn).read()
-            except EnvironmentError:
+                with open(fn) as fd:
+                    content = fd.read()
+            except OSError:
                 self.addmsg('0004-27', 'cannot open/read file', fn)
                 continue
             except UnicodeDecodeError as ex:
@@ -222,13 +226,13 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
             warning_pos = 0
             for match in self.RE_UCR_PLACEHOLDER_VAR1.finditer(content):
                 var = match.group(1)
-                if var.startswith('BCWARNING=') or var.startswith('UCRWARNING=') or var.startswith('UCRWARNING_ASCII='):
+                if var.startswith(('BCWARNING=', 'UCRWARNING=', 'UCRWARNING_ASCII=')):
                     checks['ucrwarning'] = True
                     warning_pos = warning_pos or match.start() + 1
                 elif var not in checks['placeholder']:
                     checks['placeholder'].append(var)
             if checks['placeholder']:
-                self.debug('found UCR placeholder variables in %s\n- %s' % (fn, '\n- '.join(checks['placeholder'])))
+                self.debug('found UCR placeholder variables in {}\n- {}'.format(fn, '\n- '.join(checks['placeholder'])))
 
             match = self.RE_IDENTIFIER.search(content, 0)
             if warning_pos and match:
@@ -236,7 +240,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
                 pos = match.start()
                 self.debug('Identifier "%s" found at %d' % (identifier, pos))
                 if warning_pos < pos:
-                    self.addmsg('0004-34', 'UCR warning before file type magic "%s"' % (identifier,), fn)
+                    self.addmsg('0004-34', f'UCR warning before file type magic "{identifier}"', fn)
 
             #
             # subcheck: check if UCR header is present
@@ -251,7 +255,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
                     if var not in checks['variables']:
                         checks['variables'].append(var)
             if checks['variables']:
-                self.debug('found UCR variables in %s\n- %s' % (fn, '\n- '.join(checks['variables'])))
+                self.debug('found UCR variables in {}\n- {}'.format(fn, '\n- '.join(checks['variables'])))
 
             if checks['headerfound']:
                 #
@@ -261,7 +265,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
                 if match:
                     fname = fn[fn.find('/conffiles/') + 10:]
                     if match.group(2) != fname:
-                        self.addmsg('0004-1', 'Path in UCR header seems to be incorrect.\n      - template filename = /etc/univention/templates/files%s\n      - path in header    = %s' % (fname, match.group(1)), fn)
+                        self.addmsg('0004-1', f'Path in UCR header seems to be incorrect.\n      - template filename = /etc/univention/templates/files{fname}\n      - path in header    = {match.group(1)}', fn)
 
         self.debug('found conffiles: %s' % conffiles.keys())
 
@@ -270,7 +274,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
     def read_ucr(self, fn: str) -> Iterator[UcrInfo]:
         self.debug('Reading %s' % fn)
         try:
-            entry = {}  # type: UcrInfo
+            entry: UcrInfo = {}
             with open(fn) as stream:
                 for row, line in enumerate(stream, start=1):
                     line = line.strip()
@@ -287,13 +291,13 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 
                     values = entry.setdefault(key, [])
                     if val in values:
-                        self.addmsg('0004-60', 'Duplicate entry for %s: %s' % (key, val), fn, row, line=line)
+                        self.addmsg('0004-60', f'Duplicate entry for {key}: {val}', fn, row, line=line)
 
                     values.append(val)
 
                 if entry:
                     yield entry
-        except EnvironmentError:
+        except OSError:
             self.addmsg('0004-27', 'cannot open/read file', fn)
 
     def read_ini(self, fn: str) -> RawConfigParser:
@@ -303,53 +307,51 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
         try:
             if not cfg.read(fn):
                 self.addmsg('0004-27', 'cannot open/read file', fn)
-
-            return cfg
         except DuplicateSectionError as ex:
             self.addmsg('0004-60', 'Duplicate section entry: %s' % (ex.section), ex.source, ex.lineno)
         except MissingSectionHeaderError as ex:
-            self.addmsg('0004-61', 'Invalid entry: %s' % (ex,), fn, ex.lineno)
+            self.addmsg('0004-61', f'Invalid entry: {ex}', fn, ex.lineno)
         except DuplicateOptionError as ex:
-            self.addmsg('0004-61', 'Invalid entry: %s' % (ex,), fn)
+            self.addmsg('0004-61', f'Invalid entry: {ex}', fn)
         except ParsingError as ex:
-            self.addmsg('0004-61', 'Invalid entry: %s' % (ex,), fn)
+            self.addmsg('0004-61', f'Invalid entry: {ex}', fn)
         except UnicodeDecodeError as ex:
             self.addmsg('0004-30', 'contains invalid characters', fn, ex.start)
+        else:
+            return cfg
 
         cfg = RawConfigParser(strict=False, interpolation=None)
-        try:
+        with contextlib.suppress(DuplicateSectionError, ParsingError, UnicodeDecodeError):
             cfg.read(fn)
-        except (DuplicateSectionError, ParsingError, UnicodeDecodeError):
-            pass
 
         return cfg
 
     def check(self, path: str) -> None:
-        """the real check"""
-        super(UniventionPackageCheck, self).check(path)
+        super().check(path)
 
         conffiles = self.check_conffiles(path)
 
         #
         # check UCR templates
         #
-        all_multifiles = {}  # type: Dict[str, List[UcrInfo]] # { MULTIFILENAME ==> [ OBJ... ] }
-        all_subfiles = {}    # type: Dict[str, List[UcrInfo]] # { MULTIFILENAME ==> [ OBJ... ] }
-        all_files = []       # type: List[UcrInfo] # [ OBJ... ]
-        all_preinst = set()  # type: Set[str] # { FN... }
-        all_postinst = set()  # type: Set[str] # { FN... }
-        all_module = set()   # type: Set[str] # { FN... }
-        all_script = set()   # type: Set[str] # { FN... }
-        all_definitions = {}  # type: Dict[str, Set[str]] # { SHORT-FN ==> { FULL-FN... } }
-        all_descriptions = set()  # type: Set[str] # { FN... }
-        all_variables = set()  # type: Set[str] # { VAR... }
-        objlist = {}         # type: Dict[str, List[UcrInfo]] # { CONF-FN ==> [ OBJ... ] }
+        all_multifiles: Dict[str, List[UcrInfo]] = {}  # { MULTIFILENAME ==> [ OBJ... ] }
+        all_subfiles: Dict[str, List[UcrInfo]] = {}  # { MULTIFILENAME ==> [ OBJ... ] }
+        all_files: List[UcrInfo] = []  # [ OBJ... ]
+        all_preinst: Set[str] = set()  # { FN... }
+        all_postinst: Set[str] = set()  # { FN... }
+        all_module: Set[str] = set()  # { FN... }
+        all_script: Set[str] = set()  # { FN... }
+        all_definitions: Dict[str, Set[str]] = {}  # { SHORT-FN ==> { FULL-FN... } }
+        all_descriptions: Set[str] = set()  # { FN... }
+        all_variables: Set[str] = set()  # { VAR... }
+        objlist: Dict[str, List[UcrInfo]] = {}  # { CONF-FN ==> [ OBJ... ] }
 
         # read debian/rules
         fn_rules = os.path.join(path, 'debian', 'rules')
         try:
-            rules_content = open(fn_rules).read()
-        except EnvironmentError:
+            with open(fn_rules) as fd:
+                rules_content = fd.read()
+        except OSError:
             self.addmsg('0004-2', 'file is missing', fn_rules)
             rules_content = ''
 
@@ -359,20 +361,20 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
         # find debian/*.u-c-r and check for univention-config-registry-install in debian/rules
         for f in os.listdir(os.path.join(path, 'debian')):
             fn = os.path.join(path, 'debian', f)
-            if f.endswith('.univention-config-registry-categories'):
+            if fn.endswith('.univention-config-registry-categories'):
                 self.read_ini(fn)
-            elif f.endswith('.univention-config-registry-mapping'):
+            elif fn.endswith('.univention-config-registry-mapping'):
                 pass
-            elif f.endswith('.univention-config-registry-variables'):
+            elif fn.endswith('.univention-config-registry-variables'):
                 cfg = self.read_ini(fn)
                 all_descriptions |= set(cfg.sections())
-            elif f.endswith('.univention-service'):
+            elif fn.endswith('.univention-service'):
                 self.read_ini(fn)
-            elif f.endswith('.univention-config-registry') or f.endswith('.univention-baseconfig'):
+            elif fn.endswith(('.univention-config-registry', '.univention-baseconfig')):
                 tmpfn = os.path.join(path, 'debian', '%s.univention-config-registry-variables' % f.rsplit('.', 1)[0])
                 self.debug('testing %s' % tmpfn)
                 if not os.path.exists(tmpfn):
-                    self.addmsg('0004-24', '%s exists but corresponding %s is missing' % (f, tmpfn), tmpfn)
+                    self.addmsg('0004-24', f'{f} exists but corresponding {tmpfn} is missing', tmpfn)
 
                 if not self.RE_UICR.search(rules_content):
                     self.addmsg('0004-23', '%s exists but debian/rules contains no univention-install-config-registry' % f, fn_rules)
@@ -391,10 +393,10 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
                 #         'Module': [ STRING, ... ] ,
                 #         'Script': [ STRING, ... ] ,
                 #       }
-                multifiles = {}  # type: Dict[str, UcrInfo] # { MULTIFILENAME ==> OBJ }
-                subfiles = {}  # type: Dict[str, List[UcrInfo]] # { MULTIFILENAME ==> [ OBJ, OBJ, ... ] }
-                files = []  # type: List[UcrInfo] # [ OBJ, OBJ, ... ]
-                unique = set()  # type: Set[Union[str, Tuple[str, str]]]
+                multifiles: Dict[str, UcrInfo] = {}  # { MULTIFILENAME ==> OBJ }
+                subfiles: Dict[str, List[UcrInfo]] = {}  # { MULTIFILENAME ==> [ OBJ, OBJ, ... ] }
+                files: List[UcrInfo] = []  # [ OBJ, OBJ, ... ]
+                unique: Set[str | Tuple[str, str]] = set()
 
                 for entry in self.read_ucr(fn):
                     self.debug('Entry: %s' % entry)
@@ -414,7 +416,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
                                 multifiles[mfile[0]] = entry
                             for conffn in mfile:
                                 if conffn in unique:
-                                    self.addmsg('0004-60', 'Duplicate entry: Multifile %s' % (conffn,), fn)
+                                    self.addmsg('0004-60', f'Duplicate entry: Multifile {conffn}', fn)
                                 else:
                                     unique.add(conffn)
 
@@ -451,14 +453,14 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
                             all_postinst |= set(post)
 
                             for key in set(entry) - {'Type', 'Multifile', 'Variables', 'User', 'Group', 'Mode', 'Preinst', 'Postinst'}:
-                                self.addmsg('0004-42', 'UCR .info-file contains entry with unexpected key "%s"' % (key,), fn)
+                                self.addmsg('0004-42', f'UCR .info-file contains entry with unexpected key "{key}"', fn)
 
                         elif typ == 'subfile':
                             sfile = entry.get('Subfile', [])
                             if not sfile:
                                 self.addmsg('0004-5', 'file contains subfile entry without "Subfile:" line', fn)
                                 continue
-                            elif len(sfile) != 1:
+                            if len(sfile) != 1:
                                 self.addmsg('0004-7', 'file contains subfile entry with %d "Subfile:" lines' % (len(sfile),), fn)
                             for conffn in sfile:
                                 objlist.setdefault(conffn, []).append(entry)
@@ -492,7 +494,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
                             all_postinst |= set(post)
 
                             for key in set(entry) - {'Type', 'Subfile', 'Multifile', 'Variables'}:
-                                self.addmsg('0004-42', 'UCR .info-file contains entry with unexpected key "%s"' % (key,), fn)
+                                self.addmsg('0004-42', f'UCR .info-file contains entry with unexpected key "{key}"', fn)
 
                         elif typ == 'file':
                             sfile = entry.get('File', [])
@@ -502,7 +504,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
                                 objlist.setdefault(conffn, []).append(entry)
                                 all_definitions.setdefault(conffn, set()).add(fn)
                                 if conffn in unique:
-                                    self.addmsg('0004-60', 'Duplicate entry: File %s' % (conffn,), fn)
+                                    self.addmsg('0004-60', f'Duplicate entry: File {conffn}', fn)
                                 else:
                                     unique.add(conffn)
                             files.append(entry)
@@ -540,7 +542,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
                             all_postinst |= set(post)
 
                             for key in set(entry) - {'Type', 'File', 'Variables', 'User', 'Group', 'Mode', 'Preinst', 'Postinst'}:
-                                self.addmsg('0004-42', 'UCR .info-file contains entry with unexpected key "%s"' % (key,), fn)
+                                self.addmsg('0004-42', f'UCR .info-file contains entry with unexpected key "{key}"', fn)
 
                         elif typ == 'module':
                             module = entry.get('Module', [])
@@ -549,13 +551,13 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
                             for conffn in module:
                                 objlist.setdefault(conffn, []).append(entry)
                                 if conffn in unique:
-                                    self.addmsg('0004-60', 'Duplicate entry: Module %s' % (conffn,), fn)
+                                    self.addmsg('0004-60', f'Duplicate entry: Module {conffn}', fn)
                                 else:
                                     unique.add(conffn)
                             all_module |= set(module)
 
                             for key in set(entry) - {'Type', 'Module', 'Variables'}:
-                                self.addmsg('0004-42', 'UCR .info-file contains entry with unexpected key "%s"' % (key,), fn)
+                                self.addmsg('0004-42', f'UCR .info-file contains entry with unexpected key "{key}"', fn)
 
                         elif typ == 'script':
                             script = entry.get('Script', [])
@@ -564,22 +566,22 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
                             for conffn in script:
                                 objlist.setdefault(conffn, []).append(entry)
                                 if conffn in unique:
-                                    self.addmsg('0004-60', 'Duplicate entry: Script %s' % (conffn,), fn)
+                                    self.addmsg('0004-60', f'Duplicate entry: Script {conffn}', fn)
                                 else:
                                     unique.add(conffn)
                             all_script |= set(script)
 
                             for key in set(entry) - {'Type', 'Script', 'Variables'}:
-                                self.addmsg('0004-42', 'UCR .info-file contains entry with unexpected key "%s"' % (key,), fn)
+                                self.addmsg('0004-42', f'UCR .info-file contains entry with unexpected key "{key}"', fn)
 
                         else:
-                            self.addmsg('0004-9', 'file contains entry with invalid "Type: %s"' % (typ,), fn)
+                            self.addmsg('0004-9', f'file contains entry with invalid "Type: {typ}"', fn)
                             continue
 
                         variables = entry.get('Variables', [])
                         for var in variables:
                             if '*' in var and '.*' not in var:
-                                self.addmsg('0004-55', 'UCR .info-file may contain globbing pattern instead of regular expression: "%s"' % (var,), fn)
+                                self.addmsg('0004-55', f'UCR .info-file may contain globbing pattern instead of regular expression: "{var}"', fn)
                                 break
 
                 self.debug('Multifiles: %s' % multifiles)
@@ -587,7 +589,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
                 self.debug('Files: %s' % files)
                 for multifile, subfileentries in subfiles.items():
                     if multifile not in multifiles:
-                        self.addmsg('0004-10', 'file contains subfile entry without corresponding multifile entry.\n      - subfile = %s\n      - multifile = %s' % (subfileentries[0]['Subfile'][0], multifile), fn)
+                        self.addmsg('0004-10', 'file contains subfile entry without corresponding multifile entry.\n      - subfile = {}\n      - multifile = {}'.format(subfileentries[0]['Subfile'][0], multifile), fn)
 
                 # merge into global list
                 for mfn, item in multifiles.items():
@@ -599,11 +601,12 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
         #
         # check if all variables are registered
         #
-        short2conffn = {}  # type: Dict[str, str] # relative name -> full path
+        short2conffn: Dict[str, str] = {}  # relative name -> full path
 
         def find_conf(fn: str) -> str:
             """
             Find file in conffiles/ directory.
+
             Mirror base/univention-config/python/univention-install-config-registry#srcPath
             """
             try:
@@ -611,10 +614,9 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
             except KeyError:
                 if fn.startswith('conffiles/'):
                     return short2conffn[fn[len('conffiles/'):]]
-                elif fn.startswith('etc/'):
+                if fn.startswith('etc/'):
                     return short2conffn[fn[len('etc/'):]]
-                else:
-                    raise
+                raise
 
         for conffn, checks in conffiles.items():
             conffnfound = False
@@ -630,11 +632,11 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
                     except LookupError:
                         obj = objlist['etc/' + shortconffn][0]
             except LookupError:
-                self.debug('"%s" not found in %r' % (conffn, objlist.keys()))
+                self.debug(f'"{conffn}" not found in {objlist.keys()!r}')
             else:
                 conffnfound = True
-                notregistered = []  # type: List[str]
-                invalidUCRVarNames = set()  # type: Set[str]
+                notregistered: List[str] = []
+                invalidUCRVarNames: Set[str] = set()
 
                 mfn = obj.get('Multifile', [''])[0]
                 if mfn and mfn in all_multifiles:
@@ -728,7 +730,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
                     conffn = find_conf(fn)
                 except LookupError:
                     for _ in all_definitions[fn]:
-                        self.addmsg('0004-15', 'UCR template file "%s" is registered but not found in conffiles/ (1)' % (fn,), _)
+                        self.addmsg('0004-15', f'UCR template file "{fn}" is registered but not found in conffiles/ (1)', _)
                 else:
                     if not any(conffiles[conffn][typ] for typ in ('headerfound', 'ucrwarning')):
                         self.addmsg('0004-16', 'UCR header is missing', conffn)
@@ -747,12 +749,12 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
                         conffn = find_conf(fn)
                     except LookupError:
                         for _ in all_definitions[fn]:
-                            self.addmsg('0004-17', 'UCR template file "%s" is registered but not found in conffiles/ (2)' % (fn,), _)
+                            self.addmsg('0004-17', f'UCR template file "{fn}" is registered but not found in conffiles/ (2)', _)
                     else:
                         found |= any(conffiles[conffn][typ] for typ in ('headerfound', 'ucrwarning'))
             if not found:
                 for _ in all_definitions[mfn]:
-                    self.addmsg('0004-18', 'UCR header is maybe missing in multifile "%s"' % (mfn,), _)
+                    self.addmsg('0004-18', f'UCR header is maybe missing in multifile "{mfn}"', _)
 
         # Test modules / scripts
         for f in all_preinst | all_postinst | all_module | all_script:
@@ -760,7 +762,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
             try:
                 checks = conffiles[fn]
             except KeyError:
-                self.addmsg('0004-36', 'Module file "%s" does not exist' % (f,))
+                self.addmsg('0004-36', f'Module file "{f}" does not exist')
                 continue
             if f in all_preinst | all_postinst | all_module and not checks['pythonic']:
                 self.addmsg('0004-35', 'Invalid module file name', fn)
@@ -774,7 +776,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
         # Disable the following test to check for descriptions because it is too verbose
         return
         for var in all_variables - all_descriptions:
-            self.addmsg('0004-57', 'No description found for UCR variable "%s"' % (var,))
+            self.addmsg('0004-57', f'No description found for UCR variable "{var}"')
 
     def test_marker(self, fn: str) -> None:
         """Bug #24728: count of markers must be even."""
@@ -787,7 +789,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
                         count_python += 1
                     for _ in self.RE_VAR.finditer(line):
                         count_var += 1
-        except EnvironmentError:
+        except OSError:
             # self.addmsg('0004-27', 'cannot open/read file', fn)
             return
         except UnicodeDecodeError:

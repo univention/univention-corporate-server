@@ -1,5 +1,4 @@
-# -*- coding: utf-8 -*-
-"""Find use of deprecated functions / programs / scripts."""
+#!/usr/bin/python3
 #
 # Like what you see? Join us!
 # https://www.univention.com/about-us/careers/vacancies/
@@ -30,6 +29,9 @@
 # License with the Debian GNU/Linux or Univention distribution in file
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
+"""Find use of deprecated functions / programs / scripts."""
+
+from __future__ import annotations
 
 import os
 import re
@@ -53,7 +55,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 
     def check(self, path: str) -> None:
         """the real check"""
-        super(UniventionPackageCheck, self).check(path)
+        super().check(path)
 
         tester = uub.UPCFileTester()
         tester.addTest(

@@ -1,4 +1,4 @@
-# -*- coding: utf-8 -*-
+#!/usr/bin/python3
 #
 # Like what you see? Join us!
 # https://www.univention.com/about-us/careers/vacancies/
@@ -30,9 +30,11 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
+from __future__ import annotations
+
 import re
 from itertools import chain
-from typing import Any, Dict, Iterator, List  # noqa: F401
+from typing import Any, Iterator  # noqa: F401
 
 import univention.ucslint.base as uub
 
@@ -54,10 +56,10 @@ def levenshtein(word: str, distance: int = 1, subst: str = '.') -> Iterator[str]
         return
 
     n = len(word)
-    m_sub = ('%s%s%s' % (word[0:i], subst, word[i + 1:]) for i in range(n))
-    m_ins = ('%s%s%s' % (word[0:i], subst, word[i:]) for i in range(n + 1))
-    m_del = ('%s%s' % (word[0:i], word[1 + i:]) for i in range(n))
-    m_swp = ('%s%s%s%s%s' % (word[0:i], word[j], word[i + 1:j], word[i], word[j + 1:]) for j in range(n) for i in range(j))
+    m_sub = (f'{word[0:i]}{subst}{word[i + 1:]}' for i in range(n))
+    m_ins = (f'{word[0:i]}{subst}{word[i:]}' for i in range(n + 1))
+    m_del = (f'{word[0:i]}{word[1 + i:]}' for i in range(n))
+    m_swp = (f'{word[0:i]}{word[j]}{word[i + 1:j]}{word[i]}{word[j + 1:]}' for j in range(n) for i in range(j))
     for modified in chain(m_sub, m_ins, m_del, m_swp):
         for result in levenshtein(modified, distance - 1):
             yield result
@@ -65,12 +67,14 @@ def levenshtein(word: str, distance: int = 1, subst: str = '.') -> Iterator[str]
 
 class Trie():
     """
-    Regex::Trie in Python. Creates a Trie out of a list of words. The trie can be exported to a Regex pattern.
+    Regex::Trie in Python.
+
+    Creates a Trie out of a list of words. The trie can be exported to a Regex pattern.
     The corresponding Regex should match much faster than a simple Regex union.
     """
 
     def __init__(self, *args: str) -> None:
-        self.data = {}  # type: Dict[str, Any]
+        self.data: dict[str, Any] = {}
         for word in args:
             self.add(word)
 
@@ -86,7 +90,7 @@ class Trie():
 
         ref[''] = None
 
-    def _pattern(self, pData: (Dict[str, Any])) -> str:
+    def _pattern(self, pData: (dict[str, Any])) -> str:
         """
         Recursively convert Trie structuture to regular expression.
 
@@ -97,8 +101,8 @@ class Trie():
         if '' in data and len(data) == 1:
             return ''
 
-        alt = []  # type: List[str]
-        cc = []  # type: List[str]
+        alt: list[str] = []
+        cc: list[str] = []
         q = False
         for char, subtree in sorted(data.items()):
             if char == '':
@@ -115,7 +119,7 @@ class Trie():
         if cc:
             alt.append(cc[0] if len(cc) == 1 else '[%s]' % ''.join(cc))
 
-        return '%s%s' % (
+        return '{}{}'.format(
             '(?:%s)' % '|'.join(alt) if len(alt) > 1 or q and not cconly else alt[0],
             '?' if q else '',
         )
@@ -173,8 +177,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
     """.split()))
 
     def check(self, path: str) -> None:
-        """the real check"""
-        super(UniventionPackageCheck, self).check(path)
+        super().check(path)
 
         for fn in uub.FilteredDirWalkGenerator(path, ignore_suffixes=uub.FilteredDirWalkGenerator.BINARY_SUFFIXES):
             try:

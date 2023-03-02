@@ -1,5 +1,4 @@
 #!/usr/bin/python3
-# -*- coding: utf-8 -*-
 #
 # Like what you see? Join us!
 # https://www.univention.com/about-us/careers/vacancies/
@@ -31,6 +30,8 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
+from __future__ import annotations
+
 import re
 from glob import glob
 from os import listdir
@@ -56,7 +57,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
     PRIORITIES = frozenset({'required', 'important'})
 
     def __init__(self) -> None:
-        super(UniventionPackageCheck, self).__init__()
+        super().__init__()
         self.apt = None
         self.path = ''  # updated in check()
 
@@ -77,30 +78,30 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
         }
 
     def postinit(self, path: str) -> None:
-        """Checks to be run before real check or to create pre-calculated data for several runs. Only called once!"""
+        """Check to be run before real check or to create pre-calculated data for several runs. Only called once!"""
         try:
             self.apt = Cache(memonly=True)
         except Exception as ex:
-            self.debug('failed to load APT cache: %s' % (ex,))
+            self.debug(f'failed to load APT cache: {ex}')
 
-    def _scan_script(self, fn: str) -> Set[str]:
-        """find calls to 'univention-install-', 'ucr' and use of 'init-autostart.lib' in file 'fn'."""
+    def _scan_script(self, fn: str) -> set[str]:
+        """Find calls to 'univention-install-', 'ucr' and use of 'init-autostart.lib' in file 'fn'."""
         need = set()
-        self.debug('Reading %s' % (fn,))
+        self.debug(f'Reading {fn}')
         try:
             with open(fn) as fd:
                 for line in fd:
                     for (key, (regexp, _pkgs)) in self.DEPS.items():
                         if regexp.search(line):
-                            self.debug('Found %s in %s' % (key.upper(), fn))
+                            self.debug(f'Found {key.upper()} in {fn}')
                             need.add(key)
-        except EnvironmentError:
+        except OSError:
             self.addmsg('0014-0', 'failed to open and read file', fn)
             return need
 
         return need
 
-    def check_source(self, source_section: uub.DebianControlSource) -> Set[str]:
+    def check_source(self, source_section: uub.DebianControlSource) -> set[str]:
         """Check source package for dependencies."""
         src_deps = source_section.dep_all
 
@@ -118,17 +119,17 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 
         return src_deps
 
-    def check_package(self, section: uub.DebianControlBinary) -> Set[str]:
+    def check_package(self, section: uub.DebianControlBinary) -> set[str]:
         """Check binary package for dependencies."""
         pkg = section['Package']
-        self.debug('Package: %s' % (pkg,))
+        self.debug(f'Package: {pkg}')
 
         bin_pre_set = section.pre
         bin_deps = bin_pre_set | section.dep
 
         # Assert packages using "ucr" in preinst pre-depend on "univention-config"
         for ms in ('preinst',):
-            fn = join(self.path, 'debian', '%s.%s' % (pkg, ms))
+            fn = join(self.path, 'debian', f'{pkg}.{ms}')
             if not exists(fn):
                 continue
             need = self._scan_script(fn)
@@ -137,14 +138,14 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 
         # Assert packages using "ucr" depend on "univention-config"
         for ms in ('postinst', 'prerm', 'postrm'):
-            fn = join(self.path, 'debian', '%s.%s' % (pkg, ms))
+            fn = join(self.path, 'debian', f'{pkg}.{ms}')
             if not exists(fn):
                 continue
             need = self._scan_script(fn)
             if 'ucr' in need and not bin_deps & self.DEPS['ucr'][1]:
                 self.addmsg('0014-5', 'Missing Depends: univention-config, ${misc:Depends}', fn)
 
-        p = join(self.path, '[0-9][0-9]%s.inst' % (pkg,))
+        p = join(self.path, f'[0-9][0-9]{pkg}.inst')
         for fn in glob(p):
             need = self._scan_script(fn)
             if 'ucr' in need and not bin_deps & self.DEPS['ucr'][1]:
@@ -154,10 +155,10 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 
         # Assert packages using "init-autostart.lib" depends on "univention-base-files"
         init_files = set()
-        init_files.add(join(self.path, 'debian', '%s.init' % (pkg,)))
-        init_files.add(join(self.path, 'debian', '%s.init.d' % (pkg,)))
+        init_files.add(join(self.path, 'debian', f'{pkg}.init'))
+        init_files.add(join(self.path, 'debian', f'{pkg}.init.d'))
         try:
-            fn = join(self.path, 'debian', '%s.univention-config-registry' % (pkg,))
+            fn = join(self.path, 'debian', f'{pkg}.univention-config-registry')
             if exists(fn):
                 with open(fn) as fd:
                     for line in fd:
@@ -165,7 +166,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
                         if m:
                             fn = join(self.path, 'conffiles', m.group(1))
                             init_files.add(fn)
-        except EnvironmentError:
+        except OSError:
             self.addmsg('0014-0', 'failed to open and read file', fn)
 
         for fn in init_files:
@@ -178,11 +179,10 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
         return bin_deps | section.rec | section.sug
 
     def check(self, path: str) -> None:
-        """the real check"""
-        super(UniventionPackageCheck, self).check(path)
+        super().check(path)
 
         fn_control = join(path, 'debian', 'control')
-        self.debug('Reading %s' % (fn_control,))
+        self.debug(f'Reading {fn_control}')
         try:
             parser = uub.ParserDebianControl(fn_control)
             self.path = path
@@ -226,15 +226,15 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
         fn_control = join(self.path, 'debian', 'control')
         for cand in self._cand(deps):
             if self.RE_TRANSITIONAL.search(cand.summary):
-                self.addmsg('0014-8', 'depends on transitional package %s' % (cand.package.name,), fn_control)
+                self.addmsg('0014-8', f'depends on transitional package {cand.package.name}', fn_control)
 
     def check_essential(self, deps: Iterable[str]) -> None:
         fn_control = join(self.path, 'debian', 'control')
         for cand in self._cand(deps):
             if cand.package.essential:
-                self.addmsg('0014-10', 'depends on "Essential:yes" package %s' % (cand.package.name,), fn_control)
+                self.addmsg('0014-10', f'depends on "Essential:yes" package {cand.package.name}', fn_control)
             elif cand.priority in self.PRIORITIES:
-                self.addmsg('0014-11', 'depends on "Priority:required/important" package %s' % (cand.package.name,), fn_control)
+                self.addmsg('0014-11', f'depends on "Priority:required/important" package {cand.package.name}', fn_control)
 
     def _cand(self, deps: Iterable[str]) -> Iterator[Version]:
         if not self.apt:
@@ -249,7 +249,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
                 if not cand:
                     raise LookupError(dep)
             except LookupError as ex:
-                self.debug('not found %s: %s' % (dep, ex))
+                self.debug(f'not found {dep}: {ex}')
             else:
                 yield cand
 

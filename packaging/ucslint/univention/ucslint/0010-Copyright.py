@@ -1,4 +1,4 @@
-# -*- coding: utf-8 -*-
+#!/usr/bin/python3
 #
 # Like what you see? Join us!
 # https://www.univention.com/about-us/careers/vacancies/
@@ -29,6 +29,8 @@
 # License with the Debian GNU/Linux or Univention distribution in file
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
+
+from __future__ import annotations
 
 import os
 import re
@@ -66,10 +68,9 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
         }
 
     def check(self, path: str) -> None:
-        """the real check"""
-        super(UniventionPackageCheck, self).check(path)
+        super().check(path)
 
-        check_files = []  # type: List[str]
+        check_files: List[str] = []
 
         # check if copyright file is missing
         fn = os.path.join(path, 'debian', 'copyright')
@@ -78,14 +79,13 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
                 line = stream.readline().rstrip()
                 if line != DEP5:
                     self.addmsg('0010-6', 'not machine-readable DEP-5', fn)
-        except EnvironmentError:
+        except OSError:
             self.addmsg('0010-5', 'file is missing', fn)
 
         # looking for files below debian/
         for f in os.listdir(os.path.join(path, 'debian')):
             fn = os.path.join(path, 'debian', f)
-            if f.endswith('.preinst') or f.endswith('.postinst') or f.endswith('.prerm') or f.endswith('.postrm') or \
-                    f in ['preinst', 'postinst', 'prerm', 'postrm', 'copyright']:
+            if f.endswith(('.preinst', '.postinst', '.prerm', '.postrm')) or f in ['preinst', 'postinst', 'prerm', 'postrm', 'copyright']:
                 check_files.append(fn)
 
         # looking for Python files
@@ -95,8 +95,9 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
         # check files for copyright
         for fn in check_files:
             try:
-                content = open(fn).read()
-            except (EnvironmentError, UnicodeDecodeError):
+                with open(fn) as fd:
+                    content = fd.read()
+            except (OSError, UnicodeDecodeError):
                 self.addmsg('0010-1', 'failed to open and read file', fn)
                 continue
             self.debug('testing %s' % fn)
@@ -127,5 +128,5 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
                     years = match.group(1)
                     current_year = str(time.localtime()[0])
                     if current_year not in years:
-                        self.debug('Current year=%s  years="%s"' % (current_year, years))
+                        self.debug(f'Current year={current_year}  years="{years}"')
                         self.addmsg('0010-3', 'copyright line seems to be outdated', fn)

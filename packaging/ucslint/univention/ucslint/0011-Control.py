@@ -1,4 +1,4 @@
-# -*- coding: utf-8 -*-
+#!/usr/bin/python3
 #
 # Like what you see? Join us!
 # https://www.univention.com/about-us/careers/vacancies/
@@ -29,6 +29,8 @@
 # License with the Debian GNU/Linux or Univention distribution in file
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
+
+from __future__ import annotations
 
 import os
 import re
@@ -70,13 +72,13 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
         }
 
     def check(self, path: str) -> None:
-        """the real check"""
-        super(UniventionPackageCheck, self).check(path)
+        super().check(path)
 
         fn_changelog = os.path.join(path, 'debian', 'changelog')
         try:
-            content_changelog = open(fn_changelog).read(1024)
-        except EnvironmentError:
+            with open(fn_changelog) as fd:
+                content_changelog = fd.read(1024)
+        except OSError:
             self.addmsg('0011-1', 'failed to open and read file', fn_changelog)
             return
 
@@ -93,9 +95,9 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
         compat_version = 0
         fn_compat = os.path.join(path, 'debian', 'compat')
         try:
-            content_compat = open(fn_compat).read()
-            compat_version = int(content_compat)
-        except EnvironmentError:
+            with open(fn_compat) as fd:
+                compat_version = int(fd.read())
+        except OSError:
             # self.addmsg('0011-1', 'failed to open and read file', fn_compat)
             pass
         except ValueError:
@@ -294,7 +296,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
         files = os.listdir(debianpath)
 
         regexp = re.compile(
-            r'^(?:%s)[.](?:%s|.+[.](?:%s))$' % (
+            r'^(?:{})[.](?:{}|.+[.](?:{}))$'.format(
                 '|'.join(re.escape(pkg) for pkg in pkgs),
                 '|'.join(re.escape(suffix) for suffix in self.KNOWN_DH_FILES | self.NAMED_DH_FILES),
                 '|'.join(re.escape(suffix) for suffix in self.NAMED_DH_FILES),
@@ -314,9 +316,9 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 
             for suffix in self.KNOWN_DH_FILES | self.NAMED_DH_FILES:
                 if rel_name == suffix:
-                    self.addmsg('0011-15', 'non-prefixed debhelper file of package "%s"' % (pkgs[0],), fn)
+                    self.addmsg('0011-15', f'non-prefixed debhelper file of package "{pkgs[0]}"', fn)
                     break
-                elif rel_name.endswith('.%s' % (suffix,)):
+                if rel_name.endswith(f'.{suffix}'):
                     self.addmsg('0011-14', 'no matching package in debian/control', fn)
                     break
             else:

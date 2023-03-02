@@ -1,4 +1,4 @@
-# -*- coding: utf-8 -*-
+#!/usr/bin/python3
 #
 # Like what you see? Join us!
 # https://www.univention.com/about-us/careers/vacancies/
@@ -30,6 +30,8 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
+from __future__ import annotations
+
 import re
 
 import univention.ucslint.base as uub
@@ -55,8 +57,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
     RE_STRING = PythonVer.matcher()
 
     def check(self, path: str) -> None:
-        """the real check"""
-        super(UniventionPackageCheck, self).check(path)
+        super().check(path)
 
         tester = uub.UPCFileTester()
         tester.addTest(re.compile(
@@ -106,4 +107,4 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
                 if self.RE_STRING.match(txt):
                     continue
 
-                self.addmsg('0009-10', 'invalid Python string literal: %s' % (txt,), fn, row, col)
+                self.addmsg('0009-10', f'invalid Python string literal: {txt}', fn, row, col)

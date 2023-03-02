@@ -1,4 +1,4 @@
-# -*- coding: utf-8 -*-
+#!/usr/bin/python3
 #
 # Like what you see? Join us!
 # https://www.univention.com/about-us/careers/vacancies/
@@ -30,6 +30,8 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
+from __future__ import annotations
+
 import re
 from itertools import chain
 from os.path import join
@@ -51,8 +53,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
         }
 
     def check(self, path: str) -> None:
-        """the real check"""
-        super(UniventionPackageCheck, self).check(path)
+        super().check(path)
 
         tester = uub.UPCFileTester()
         tester.addTest(re.compile(r'dc=univention,dc=(?:local|qa|test)'), '0002-2', 'contains invalid basedn', cntmax=0)
@@ -64,7 +65,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
         ):
             try:
                 tester.open(fn)
-            except EnvironmentError:
+            except OSError:
                 self.addmsg('0002-1', 'failed to open and read file', fn)
             else:
                 self.msg += tester.runTests()

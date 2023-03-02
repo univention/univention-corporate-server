@@ -1,5 +1,4 @@
-# -*- coding: utf-8 -*-
-"""Find unquoted usage of eval "$(ucr shell)"."""
+#!/usr/bin/python3
 #
 # Like what you see? Join us!
 # https://www.univention.com/about-us/careers/vacancies/
@@ -30,6 +29,9 @@
 # License with the Debian GNU/Linux or Univention distribution in file
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
+"""Find unquoted usage of eval "$(ucr shell)"."""
+
+from __future__ import annotations
 
 import re
 
@@ -40,7 +42,7 @@ from univention.ucslint.common import RE_HASHBANG_SHELL
 class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 
     def __init__(self) -> None:
-        super(UniventionPackageCheck, self).__init__()
+        super().__init__()
         self.tester = uub.UPCFileTester()
         self.tester.addTest(
             re.compile(r'eval\s+(`|[$][(])\s*(/usr/sbin/)?(ucr|univention-baseconfig|univention-config-registry)\s+shell\s*[^`)]*[`)]\s*'),
@@ -94,8 +96,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
         }
 
     def check(self, path: str) -> None:
-        """the real check"""
-        super(UniventionPackageCheck, self).check(path)
+        super().check(path)
 
         #
         # search shell scripts and execute test
@@ -103,7 +104,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
         for fn in uub.FilteredDirWalkGenerator(path, suffixes=['.sh'], reHashBang=RE_HASHBANG_SHELL):
             try:
                 self.tester.open(fn)
-            except EnvironmentError:
+            except OSError:
                 continue
             else:
                 msglist = self.tester.runTests()

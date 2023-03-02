@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 #
 # Like what you see? Join us!
 # https://www.univention.com/about-us/careers/vacancies/
@@ -112,5 +111,4 @@ class Python36(Base):
 def python_files(path: str) -> Iterator[str]:
     SUFFIXES = ('.py',)
 
-    for path in FilteredDirWalkGenerator(path, suffixes=SUFFIXES, reHashBang=RE_HASHBANG):
-        yield path
+    yield from FilteredDirWalkGenerator(path, suffixes=SUFFIXES, reHashBang=RE_HASHBANG)

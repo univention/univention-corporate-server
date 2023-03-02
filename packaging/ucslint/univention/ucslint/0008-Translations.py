@@ -1,4 +1,4 @@
-# -*- coding: utf-8 -*-
+#!/usr/bin/python3
 #
 # Like what you see? Join us!
 # https://www.univention.com/about-us/careers/vacancies/
@@ -29,6 +29,8 @@
 # License with the Debian GNU/Linux or Univention distribution in file
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
+
+from __future__ import annotations
 
 import re
 from typing import Iterable
@@ -66,8 +68,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
         }
 
     def check(self, path: str) -> None:
-        """the real check"""
-        super(UniventionPackageCheck, self).check(path)
+        super().check(path)
 
         self.check_py(python_files(path))
         self.check_po(uub.FilteredDirWalkGenerator(path, suffixes=('.po',)))
@@ -80,8 +81,9 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
         """Check Python files."""
         for fn in py_files:
             try:
-                content = open(fn).read()
-            except EnvironmentError:
+                with open(fn) as fd:
+                    content = fd.read()
+            except OSError:
                 self.addmsg('0008-2', 'failed to open and read file', fn)
                 continue
 
@@ -93,8 +95,9 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
         """Check Portable Object files."""
         for fn in po_files:
             try:
-                content = open(fn).read()
-            except EnvironmentError:
+                with open(fn) as fd:
+                    content = fd.read()
+            except OSError:
                 self.addmsg('0008-2', 'failed to open and read file', fn)
                 continue
 
@@ -109,7 +112,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
                     (RE_FUZZY, '0008-3', 'contains "fuzzy"'),
                     (RE_EMPTY, '0008-4', 'contains empty msgstr'),
             ]:
-                for row, col, match in uub.line_regexp(content, regex):
+                for row, col, _match in uub.line_regexp(content, regex):
                     self.addmsg(errid, errtxt, fn, row, col)
 
     def check_names(self, files: Iterable[str]) -> None:
@@ -128,7 +131,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
         for fn in files:
             try:
                 tester.open(fn)
-            except EnvironmentError:
+            except OSError:
                 self.addmsg('0002-1', 'failed to open and read file', fn)
                 continue
             else:
