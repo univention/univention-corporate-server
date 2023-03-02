@@ -452,8 +452,3 @@ class Version:
 
     def __repr__(self) -> str:
         return f'{self.__class__.__name__}({self.__str__()!r})'
-
-
-if __name__ == '__main__':
-    import doctest
-    doctest.testmod()

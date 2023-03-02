@@ -803,8 +803,3 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
             self.addmsg('0004-31', 'odd number of @!@ markers', fn)
         if count_var % 2:
             self.addmsg('0004-32', 'odd number of @%@ markers', fn)
-
-
-if __name__ == '__main__':
-    import doctest
-    doctest.testmod()

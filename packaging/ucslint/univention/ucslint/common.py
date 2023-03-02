@@ -77,9 +77,3 @@ RE_DEBIAN_CHANGELOG = re.compile(
     re.MULTILINE | re.VERBOSE,
 )
 RE_HASHBANG_SHELL = re.compile(r'^#!\s*/bin/(?:a|ba|c|da|z)?sh\b')
-
-
-if __name__ == '__main__':
-    import doctest
-
-    doctest.testmod()

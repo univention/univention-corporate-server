@@ -685,8 +685,3 @@ class FilteredDirWalkGenerator:
         except (OSError, UnicodeDecodeError):
             return False
         return bool(self.reHashBang.search(content))
-
-
-if __name__ == '__main__':
-    import doctest
-    doctest.testmod()
