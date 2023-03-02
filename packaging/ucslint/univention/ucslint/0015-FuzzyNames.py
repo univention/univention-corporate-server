@@ -33,6 +33,7 @@
 from __future__ import annotations
 
 import re
+import sys
 from itertools import chain
 from typing import Any, Iterator  # noqa: F401
 
@@ -178,8 +179,10 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 
     def check(self, path: str) -> None:
         super().check(path)
+        self.main(list(uub.FilteredDirWalkGenerator(path, ignore_suffixes=uub.FilteredDirWalkGenerator.BINARY_SUFFIXES)))
 
-        for fn in uub.FilteredDirWalkGenerator(path, ignore_suffixes=uub.FilteredDirWalkGenerator.BINARY_SUFFIXES):
+    def main(self, pathes: list[str]) -> None:
+        for fn in pathes:
             try:
                 with open(fn) as fd:
                     for row, line in enumerate(fd, start=1):
@@ -195,3 +198,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
             except UnicodeDecodeError:
                 # Silently skip binary files
                 pass
+
+
+if __name__ == '__main__':
+    sys.exit(UniventionPackageCheck.run())

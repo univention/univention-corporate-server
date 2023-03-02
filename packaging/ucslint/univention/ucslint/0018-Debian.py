@@ -34,6 +34,7 @@
 from __future__ import annotations
 
 import re
+import sys
 from glob import glob
 from itertools import cycle
 from os import walk
@@ -69,8 +70,14 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
         }
 
     def check(self, path: str) -> None:
-        self.check_scripts(path)
-        self.check_dirs(path)
+        super().check(path)
+        debianpath = join(path, 'debian')
+        self.check_scripts(list(uub.FilteredDirWalkGenerator(debianpath, suffixes=self.SCRIPTS)))
+        self.check_dirs(list(uub.FilteredDirWalkGenerator(debianpath, suffixes=['install', 'pyinstall', 'dirs'])))
+
+    def main(self, pathes: list[str]) -> None:
+        self.check_scripts(pathes)
+        self.check_dirs(pathes)
 
     def get_debian_version(self, path: str) -> Version:
         try:
@@ -83,10 +90,11 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
         else:
             return Version(changelog.version.full_version)
 
-    def check_scripts(self, path: str) -> None:
-        debianpath = join(path, 'debian')
-        version = self.get_debian_version(path)
-        for script_path in uub.FilteredDirWalkGenerator(debianpath, suffixes=self.SCRIPTS):
+    def check_scripts(self, pathes: list[str]) -> None:
+        version = self.get_debian_version(self.path)
+        for script_path in pathes:
+            if not script_path.endswith(tuple('.%s' % suf for suf in self.SCRIPTS)):
+                continue
             package, suffix = self.split_pkg(script_path)
 
             other_scripts = self.SCRIPTS - {suffix}
@@ -212,11 +220,12 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 
         return result
 
-    def check_dirs(self, path: str) -> None:
+    def check_dirs(self, pathes: list[str]) -> None:
         dirs: Dict[str, Set[str]] = {}
-        debianpath = join(path, 'debian')
 
-        for fp in uub.FilteredDirWalkGenerator(debianpath, suffixes=['install']):
+        for fp in pathes:
+            if not fp.endswith('.install'):
+                continue
             package, suffix = self.split_pkg(fp)
             pkg = dirs.setdefault(package, Dirs(package))
             # ~/doc/2018-04-11-ApiDoc/pymerge
@@ -232,7 +241,9 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
                         'Use debian/*.pyinstall to install Python modules',
                         fp, row)
 
-        for fp in uub.FilteredDirWalkGenerator(debianpath, suffixes=['pyinstall']):
+        for fp in pathes:
+            if not fp.endswith('.pyinstall'):
+                continue
             package, suffix = self.split_pkg(fp)
             pkg = dirs.setdefault(package, Dirs(package))
             for row, line in self.lines(fp):
@@ -240,7 +251,9 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
                     self.debug('%s:%d Installs %s to %s' % (fp, row, src, dst))
                     pkg.add(dst)
 
-        for fp in uub.FilteredDirWalkGenerator(debianpath, suffixes=['dirs']):
+        for fp in pathes:
+            if not fp.endswith('.dirs'):
+                continue
             package, suffix = self.split_pkg(fp)
             pkg = dirs.setdefault(package, Dirs(package))
             for row, line in self.lines(fp):
@@ -454,7 +467,11 @@ class Version:
     def __repr__(self) -> str:
         return f'{self.__class__.__name__}({self.__str__()!r})'
 
+# TOOD: pytest
+#if __name__ == '__main__':
+#    import doctest
+#    doctest.testmod()
+
 
 if __name__ == '__main__':
-    import doctest
-    doctest.testmod()
+    sys.exit(UniventionPackageCheck.run())

@@ -33,6 +33,7 @@
 from __future__ import annotations
 
 import re
+import sys
 from itertools import chain
 from os.path import join
 
@@ -54,18 +55,24 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 
     def check(self, path: str) -> None:
         super().check(path)
+        self.main(chain(
+            uub.FilteredDirWalkGenerator(join(path, 'conffiles')),
+            uub.FilteredDirWalkGenerator(join(path, 'debian')),
+        ))
 
+    def main(self, pathes: list[str]) -> None:
         tester = uub.UPCFileTester()
         tester.addTest(re.compile(r'dc=univention,dc=(?:local|qa|test)'), '0002-2', 'contains invalid basedn', cntmax=0)
         tester.addTest(re.compile(r'univention\.(?:local|qa|test)'), '0002-3', 'contains invalid domainname', cntmax=0)
 
-        for fn in chain(
-                uub.FilteredDirWalkGenerator(join(path, 'conffiles')),
-                uub.FilteredDirWalkGenerator(join(path, 'debian')),
-        ):
+        for fn in pathes:
             try:
                 tester.open(fn)
             except OSError:
                 self.addmsg('0002-1', 'failed to open and read file', fn)
             else:
                 self.msg += tester.runTests()
+
+
+if __name__ == '__main__':
+    sys.exit(UniventionPackageCheck.run())

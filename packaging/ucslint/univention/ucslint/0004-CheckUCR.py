@@ -173,12 +173,16 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
     RE_FUNC_CUSTOM_USER = re.compile(r'(?: univention\.lib\.misc\. | ^\s* from \s+ univention\.lib\.misc \s+ import \s+ (?:\(.*?)? ) \b custom_username \b', re.MULTILINE | re.VERBOSE)
     RE_FUNC_CUSTOM_GROUP = re.compile(r'(?: univention\.lib\.misc\. | ^\s* from \s+ univention\.lib\.misc \s+ import \s+ (?:\(.*?)? ) \b custom_groupname \b', re.MULTILINE | re.VERBOSE)
 
-    def check_conffiles(self, path: str) -> dict[str, Any]:
+    def check_conffiles(self, pathes: list[str]) -> dict[str, Any]:
         """Analyze UCR templates below :file:`conffiles/`."""
         conffiles: Dict[str, Dict[str, Any]] = {}
 
-        confdir = os.path.join(path, 'conffiles')
-        for fn in uub.FilteredDirWalkGenerator(confdir, ignore_suffixes=uub.FilteredDirWalkGenerator.BINARY_SUFFIXES):
+        confdir = os.path.join(self.path, 'conffiles')
+        for fn in pathes:
+            if not fn.startswith(confdir):
+                continue
+            if fn.endswith(tuple(uub.FilteredDirWalkGenerator.BINARY_SUFFIXES)):
+                continue
             checks: Dict[str, Any] = {
                 'headerfound': False,
                 'variables': [],  # List[str] # Python code
@@ -328,9 +332,15 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 
     def check(self, path: str) -> None:
         super().check(path)
+        confdir = os.path.join(path, 'conffiles')
+        conffiles = self.check_conffiles(list(uub.FilteredDirWalkGenerator(confdir, ignore_suffixes=uub.FilteredDirWalkGenerator.BINARY_SUFFIXES)))
+        self.check_config_registry([os.path.join(path, 'debian', f) for f in os.listdir(os.path.join(path, 'debian'))], conffiles)
 
-        conffiles = self.check_conffiles(path)
+    def main(self, pathes: list[str]) -> None:
+        conffiles = self.check_conffiles(pathes)
+        self.check_config_registry(pathes, conffiles)
 
+    def check_config_registry(self, pathes: list[str], conffiles: dict[str, Any]):
         #
         # check UCR templates
         #
@@ -347,7 +357,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
         objlist: Dict[str, List[UcrInfo]] = {}  # { CONF-FN ==> [ OBJ... ] }
 
         # read debian/rules
-        fn_rules = os.path.join(path, 'debian', 'rules')
+        fn_rules = os.path.join(self.path, 'debian', 'rules')
         try:
             with open(fn_rules) as fd:
                 rules_content = fd.read()
@@ -359,8 +369,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
             self.addmsg('0004-25', 'file contains old univention-install-baseconfig call', fn_rules)
 
         # find debian/*.u-c-r and check for univention-config-registry-install in debian/rules
-        for f in os.listdir(os.path.join(path, 'debian')):
-            fn = os.path.join(path, 'debian', f)
+        for fn in pathes:
             if fn.endswith('.univention-config-registry-categories'):
                 self.read_ini(fn)
             elif fn.endswith('.univention-config-registry-mapping'):
@@ -371,19 +380,17 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
             elif fn.endswith('.univention-service'):
                 self.read_ini(fn)
             elif fn.endswith(('.univention-config-registry', '.univention-baseconfig')):
-                tmpfn = os.path.join(path, 'debian', '%s.univention-config-registry-variables' % f.rsplit('.', 1)[0])
+                tmpfn = '%s.univention-config-registry-variables' % fn.rsplit('.', 1)[0]
                 self.debug('testing %s' % tmpfn)
                 if not os.path.exists(tmpfn):
-                    self.addmsg('0004-24', f'{f} exists but corresponding {tmpfn} is missing', tmpfn)
+                    self.addmsg('0004-24', f'{os.path.basename(fn)} exists but corresponding {tmpfn} is missing', tmpfn)
 
                 if not self.RE_UICR.search(rules_content):
-                    self.addmsg('0004-23', '%s exists but debian/rules contains no univention-install-config-registry' % f, fn_rules)
+                    self.addmsg('0004-23', f'{os.path.basename(fn)} exists but debian/rules contains no univention-install-config-registry', fn_rules)
                     break
 
-        for f in os.listdir(os.path.join(path, 'debian')):
-            if f.endswith('.univention-config-registry') or f.endswith('.univention-baseconfig'):
-                fn = os.path.join(path, 'debian', f)
-
+        for fn in pathes:
+            if fn.endswith(('.univention-config-registry', '.univention-baseconfig')):
                 # OBJ = { 'Type': [ STRING, ... ],
                 #         'Subfile': [ STRING, ... ] ,
                 #         'Multifile': [ STRING, ... ],
@@ -734,7 +741,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
                 else:
                     if not any(conffiles[conffn][typ] for typ in ('headerfound', 'ucrwarning')):
                         self.addmsg('0004-16', 'UCR header is missing', conffn)
-                self.test_marker(os.path.join(path, 'conffiles', fn))
+                self.test_marker(os.path.join(self.path, 'conffiles', fn))
 
         # Part2: subfile templates
         for mfn, items in all_subfiles.items():
@@ -758,7 +765,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 
         # Test modules / scripts
         for f in all_preinst | all_postinst | all_module | all_script:
-            fn = os.path.join(path, 'conffiles', f)
+            fn = os.path.join(self.path, 'conffiles', f)
             try:
                 checks = conffiles[fn]
             except KeyError:
@@ -802,6 +809,11 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
             self.addmsg('0004-32', 'odd number of @%@ markers', fn)
 
 
+# TODO: add pytest
+#if __name__ == '__main__':
+#    import doctest
+#    doctest.testmod()
+
+
 if __name__ == '__main__':
-    import doctest
-    doctest.testmod()
+    sys.exit(UniventionPackageCheck.run())

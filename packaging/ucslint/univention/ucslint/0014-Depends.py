@@ -33,15 +33,23 @@
 from __future__ import annotations
 
 import re
+import sys
 from glob import glob
 from os import listdir
-from os.path import curdir, exists, join, splitext
-from typing import Iterable, Iterator, Set  # noqa: F401
+from os.path import exists, join, splitext
+from typing import TYPE_CHECKING, Iterable, Iterator  # noqa: F401
 
-from apt import Cache  # type: ignore
-from apt_pkg import Version  # noqa: F401
+
+try:
+    from apt import Cache  # type: ignore
+except ImportError:
+    Cache = None
 
 import univention.ucslint.base as uub
+
+
+if TYPE_CHECKING:
+    from apt_pkg import Version
 
 
 class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
@@ -59,7 +67,6 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
     def __init__(self) -> None:
         super().__init__()
         self.apt = None
-        self.path = ''  # updated in check()
 
     def getMsgIds(self) -> uub.MsgIds:
         return {
@@ -180,12 +187,13 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 
     def check(self, path: str) -> None:
         super().check(path)
+        self.main([])
 
-        fn_control = join(path, 'debian', 'control')
+    def main(self, pathes: list[str]) -> None:
+        fn_control = join(self.path, 'debian', 'control')
         self.debug(f'Reading {fn_control}')
         try:
             parser = uub.ParserDebianControl(fn_control)
-            self.path = path
         except uub.FailedToReadFile:
             self.addmsg('0014-0', 'failed to open and read file', fn_control)
             return
@@ -197,7 +205,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
         for section in parser.binary_sections:
             deps |= self.check_package(section)
 
-        self.check_unknown(path, parser)
+        self.check_unknown(self.path, parser)
         self.check_transitional(deps)
         self.check_essential(deps)
 
@@ -255,8 +263,4 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 
 
 if __name__ == '__main__':
-    upc = UniventionPackageCheck()
-    upc.check(curdir)
-    msglist = upc.result()
-    for msg in msglist:
-        print(str(msg))
+    sys.exit(UniventionPackageCheck.run())

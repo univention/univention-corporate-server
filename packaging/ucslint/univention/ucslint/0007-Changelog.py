@@ -34,6 +34,7 @@ from __future__ import annotations
 
 import os
 import re
+import sys
 from email.utils import mktime_tz, parsedate_tz
 
 from debian.changelog import Changelog, ChangelogParseError
@@ -65,8 +66,13 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 
     def check(self, path: str) -> None:
         super().check(path)
+        self._main(os.path.join(path, 'debian', 'changelog'))
 
-        fn = os.path.join(path, 'debian', 'changelog')
+    def main(self, pathes: list[str]) -> None:
+        for fn in pathes:
+            self._main(fn)
+
+    def _main(self, fn: str) -> None:
         try:
             with open(fn) as stream:
                 changelog = Changelog(stream, strict=True)
@@ -99,3 +105,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
                         self.addmsg('0007-6', f'old not strict-monotonically increasing by version: {last.version} <= {block.version}', fn)
 
             last = block
+
+
+if __name__ == '__main__':
+    sys.exit(UniventionPackageCheck.run())

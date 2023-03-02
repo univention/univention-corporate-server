@@ -33,6 +33,7 @@
 from __future__ import annotations
 
 import re
+import sys
 from typing import Iterable
 
 import univention.ucslint.base as uub
@@ -74,6 +75,15 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
         self.check_po(uub.FilteredDirWalkGenerator(path, suffixes=('.po',)))
         self.check_names(uub.FilteredDirWalkGenerator(
             path,
+            ignore_suffixes=uub.FilteredDirWalkGenerator.BINARY_SUFFIXES | uub.FilteredDirWalkGenerator.DOCUMENTATION_SUFFIXES,
+        ))
+
+    def main(self, pathes: list[str]) -> None:
+        # FIXME: split into 3 modules
+        self.check_py(python_files(self.path))
+        self.check_po([po_file for po_file in pathes if po_file.endswith('.po')])
+        self.check_names(uub.FilteredDirWalkGenerator(
+            self.path,
             ignore_suffixes=uub.FilteredDirWalkGenerator.BINARY_SUFFIXES | uub.FilteredDirWalkGenerator.DOCUMENTATION_SUFFIXES,
         ))
 
@@ -136,3 +146,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
                 continue
             else:
                 self.msg += tester.runTests()
+
+
+if __name__ == '__main__':
+    sys.exit(UniventionPackageCheck.run())

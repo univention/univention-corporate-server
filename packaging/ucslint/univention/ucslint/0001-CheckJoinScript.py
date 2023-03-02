@@ -34,6 +34,7 @@ from __future__ import annotations
 
 import os
 import re
+import sys
 
 import univention.ucslint.base as uub
 
@@ -162,16 +163,18 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 
     def check(self, path: str) -> None:
         super().check(path)
+        self.main([os.path.join(path, f) for f in os.listdir(path)])
 
+    def main(self, pathes: list[str]) -> None:
         fnlist_joinscripts = {}
 
         #
         # search join scripts
         #
-        for f in os.listdir(path):
+        for fn in pathes:
+            f = os.path.basename(fn)
             if not f[0:2].isdigit():
                 continue
-            fn = os.path.join(path, f)
             if f.endswith('.inst'):
                 fnlist_joinscripts[fn] = CALLED
             elif f.endswith('.uinst'):
@@ -190,16 +193,16 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
         # check if join scripts are present in debian/rules || debian/*.install
         #
         found: dict[str, int] = {}
-        debianpath = os.path.join(path, 'debian')
+        debianpath = os.path.join(self.path, 'debian')
         # get all .install files
         fnlist = list(uub.FilteredDirWalkGenerator(debianpath, suffixes=['.install']))
         # append debian/rules
-        fn_rules = os.path.join(path, 'debian', 'rules')
+        fn_rules = os.path.join(self.path, 'debian', 'rules')
         fnlist.append(fn_rules)
 
         # Look for dh-umc-modules-install
         try:
-            fn_control = os.path.join(path, 'debian', 'control')
+            fn_control = os.path.join(self.path, 'debian', 'control')
             ctrl: uub.ParserDebianControl | None = uub.ParserDebianControl(fn_control)
         except uub.UCSLintException:
             self.debug('Errors in debian/control. Skipping here')
@@ -263,7 +266,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
         #
         # check if join scripts are present in debian/*{pre,post}{inst,rm}
         #
-        for f in os.listdir(os.path.join(path, 'debian')):
+        for f in os.listdir(os.path.join(self.path, 'debian')):
             if '.debhelper.' in f:
                 continue
 
@@ -276,7 +279,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
             else:
                 continue
 
-            fn = os.path.join(path, 'debian', f)
+            fn = os.path.join(self.path, 'debian', f)
             self.debug('loading %s' % (fn))
             try:
                 with open(fn) as fd:
@@ -310,3 +313,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
                 self.addmsg('0001-17', 'Unjoin script seems not to be called in any postrm file', js)
             if missing & COPIED and js.endswith('.uinst'):
                 self.addmsg('0001-18', 'Unjoin script seems not to be copied in any prerm file', js)
+
+
+if __name__ == '__main__':
+    sys.exit(UniventionPackageCheck.run())

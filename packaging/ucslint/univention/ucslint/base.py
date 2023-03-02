@@ -31,8 +31,13 @@
 
 from __future__ import annotations
 
+import argparse
 import os
 import re
+import sys
+from errno import ENOENT
+from fnmatch import fnmatch
+from os.path import normpath, relpath
 from typing import (  # noqa: F401
     Any, Callable, Dict, Iterable, Iterator, List, Mapping, Match, Optional, Pattern, Set, Tuple,
 )
@@ -57,6 +62,18 @@ except (ImportError, TypeError):
             pass
 
 
+RE_OVERRIDE = re.compile(
+    r'''^
+    (?P<module> \d+-[BEFNW]?\d+)
+    (?: [:]
+        (?: \s* (?P<pattern> .+?) \s*
+            (?: [:] \s* (?P<linenumber> \d+)
+            )?
+        )?
+    )?
+    $''', re.VERBOSE)
+
+
 RESULT_UNKNOWN = -1
 RESULT_OK = 0
 RESULT_WARN = 1
@@ -77,6 +94,52 @@ MsgIds = Dict[str, Tuple[int, str]]
 
 RE_MSGID = re.compile(r'\d{4}-[BEFNW]?\d+')
 RE_IGNORE = re.compile(r'\s+ ucslint :? \s* (?: ({msgid} (?: [, ]+ {msgid})*) \s* )? $'.format(msgid=RE_MSGID.pattern), re.VERBOSE)
+
+
+def clean_id(idstr: str) -> str:
+    """
+    Format message ID string.
+
+    :param idstr: message identifier.
+    :returns: formatted message identifier.
+
+    >>> clean_id('1-2')
+    '0001-2'
+    """
+    if '-' not in idstr:
+        raise ValueError('no valid id (%s) - missing dash' % idstr)
+    modid, msgid = idstr.strip().split('-', 1)
+    return '%s-%s' % (clean_modid(modid), clean_msgid(msgid))
+
+
+def clean_modid(modid: str) -> str:
+    """
+    Format module ID string.
+
+    :param modid: module number.
+    :returns: formatted module number.
+
+    >>> clean_modid('1')
+    '0001'
+    """
+    if not modid.isdigit():
+        raise ValueError('modid contains invalid characters: %s' % modid)
+    return '%04d' % (int(modid))
+
+
+def clean_msgid(msgid: str) -> str:
+    """
+    Format message ID string.
+
+    :param msgid: message number.
+    :returns: formatted message number.
+
+    >>> clean_msgid('01')
+    '1'
+    """
+    if not msgid.isdigit():
+        raise ValueError('msgid contains invalid characters: %s' % msgid)
+    return '%d' % int(msgid)
 
 
 def noqa(line: str) -> Callable[[str], bool]:
@@ -182,6 +245,8 @@ class UniventionPackageCheckBase:
         self.name: str = self.__class__.__module__
         self.msg: List[UPCMessage] = []
         self.debuglevel: int = 0
+        self.overrides = set()
+        self.path = '.'  # base directory of Debian package to check.
 
     def addmsg(self, msgid: str, msg: str, filename: str | None = None, row: int | None = None, col: int | None = None, line: str = '') -> None:
         """
@@ -200,7 +265,7 @@ class UniventionPackageCheckBase:
         self.msg.append(message)
 
     def getMsgIds(self) -> MsgIds:
-        """Return mapping from message-identifiert to 2-tuple (severity, message-text)."""
+        """Return mapping from message-identifier to 2-tuple (severity, message-text)."""
         return {}
 
     def setdebug(self, level: int) -> None:
@@ -227,12 +292,20 @@ class UniventionPackageCheckBase:
         :param path: Directory or file to check.
         """
 
+    def main(self, pathes: List[str]) -> None:
+        """
+        The real check.
+
+        :param pathes: files to check.
+        """
+
     def check(self, path: str) -> None:
         """
         The real check.
 
         :param path: Directory or file to check.
         """
+        self.path = path
 
     def result(self) -> List[UPCMessage]:
         """
@@ -241,6 +314,172 @@ class UniventionPackageCheckBase:
         :returns: List of :py:class:`UPCMessage`
         """
         return self.msg
+
+    @classmethod
+    def run(cls, arguments=None):
+        parser = argparse.ArgumentParser()
+        parser.add_argument(
+            '-o', '--display-only', metavar='MODULES',
+            dest='display_only_IDs', action='append', default=[],
+            help='list of IDs to be displayed (e.g. -o 9-1,0027-12)',
+        )
+        parser.add_argument(
+            '-i', '--ignore', metavar='MODULES',
+            dest='ignore_IDs', action='append', default=[],
+            help='list of IDs to be ignored (e.g. -i 0003-4,19-27)',
+        )
+        parser.add_argument(
+            '-d', '--debug', metavar='LEVEL',
+            type=int, default=0,
+            help='if set, debugging is activated and set to the specified level',
+        )
+        parser.add_argument(
+            '-c', '--display-categories', metavar='CATEGORIES',
+            dest='display_only_categories', default='',
+            help='categories to be displayed (e.g. -c EWIS)',
+        )
+        parser.add_argument(
+            '-e', '--exitcode-categories', metavar='CATEGORIES',
+            default='E',
+            help='categories that cause an exitcode != 0 (e.g. -e EWIS)',
+        )
+        parser.add_argument('files', nargs='*')
+        args = parser.parse_args(arguments)
+
+        for path in args.files:
+            print(os.getpid(), path, file=sys.stderr)
+
+        ignore_IDs = [clean_id(x) for ign in args.ignore_IDs for x in ign.split(',')]
+        display_only_IDs = [clean_id(x) for dsp in args.display_only_IDs for x in dsp.split(',')]
+        fail = False
+        for base, files in cls.group_by_package(args.files):
+            msglist = []  # type: List[UPCMessage]
+            obj = cls()
+            obj.path = base
+            obj.setdebug(args.debug)
+            obj.postinit(obj.path)
+            try:
+                obj.main(files)
+            except UCSLintException as ex:
+                print(ex, file=sys.stderr)
+            msglist.extend(obj.result())
+            incident_cnt, exitcode_cnt = obj.printResult(msglist, ignore_IDs, display_only_IDs, args.display_only_categories, args.exitcode_categories)
+            fail |= bool(exitcode_cnt)
+
+        return 2 if fail else 0
+
+    @classmethod
+    def group_by_package(cls, files):
+        packages = {}
+        for filename in files:
+            parent_dir = os.path.dirname(filename)
+            while not os.path.isdir(os.path.join(parent_dir, 'debian')) and parent_dir != '/':
+                parent_dir = os.path.abspath(os.path.join(parent_dir, os.path.pardir))
+            packages.setdefault(parent_dir, []).append(filename)
+        return packages.items()
+
+    def loadOverrides(self) -> None:
+        """Parse :file:`debian/ucslint.overrides` file."""
+        self.overrides = set()
+        fn = os.path.join(self.path, 'debian', 'ucslint.overrides')
+        try:
+            with open(fn) as overrides:
+                for row, line in enumerate(overrides, start=1):
+                    line = line.strip()
+                    if not line:
+                        continue
+                    if line.startswith('#'):
+                        continue
+                    result = RE_OVERRIDE.match(line)
+                    if not result:
+                        print('IGNORED: debian/ucslint.overrides:%d: %s' % (row, line), file=sys.stderr)
+                        continue
+
+                    module, pattern, linenumber = result.groups()
+                    override = (module, pattern, int(linenumber) if pattern and linenumber else None)
+                    self.overrides.add(override)
+        except OSError as ex:
+            if ex.errno != ENOENT:
+                print('WARNING: load debian/ucslint.overrides: %s' % (ex,), file=sys.stderr)
+
+    def in_overrides(self, msg: UPCMessage) -> bool:
+        """
+        Check message against overrides.
+
+        :param msg: Message to check.
+        :returns: `True` when the check should be ignored, `False` otherwise.
+        """
+        filepath = normpath(relpath(msg.filename, self.path)) if msg.filename else ''
+        for (modulename, pattern, linenumber) in self.overrides:
+            if modulename != msg.getId():
+                continue
+            if pattern and not fnmatch(filepath, pattern):
+                continue
+            if linenumber is not None and linenumber != msg.row:
+                continue
+            return True
+        return False
+
+    def printResult(
+            self,
+            msglist,
+            ignore_IDs: List[str],
+            display_only_IDs: List[str],
+            display_only_categories: str,
+            exitcode_categories: str,
+            #junit: IO[str] = None
+    ) -> Tuple[int, int]:
+        """
+        Print result of checks.
+
+        :param ignore_IDs: List of message identifiers to ignore.
+        :param display_only_IDs: List of message identifiers to display.
+        :param display_only_categories: List of message categories to display.
+        :param exitcode_categories: List of message categories to signal as fatal.
+        :param junit: Generate JUnit XML output to given file.
+        :returns: 2-tuple (incident-count, exitcode-count)
+        """
+        incident_cnt = 0
+        exitcode_cnt = 0
+
+        self.loadOverrides()
+        test_cases = []  # type: List[TestCase]
+        msgidlist = self.getMsgIds()
+
+        for msg in msglist:
+            tc = msg.junit()
+            test_cases.append(tc)
+
+            if msg.getId() in ignore_IDs:
+                tc.add_skipped_info('ignored')
+                continue
+            if display_only_IDs and msg.getId() not in display_only_IDs:
+                tc.add_skipped_info('hidden')
+                continue
+            if self.in_overrides(msg):
+                # ignore msg if mentioned in overrides files
+                tc.add_skipped_info('overridden')
+                continue
+
+            msgid = msg.getId()
+            try:
+                lvl, msgstr = msgidlist[msgid]
+                category = RESULT_INT2STR[lvl]
+            except LookupError:
+                category = 'FIXME'
+
+            if category in display_only_categories or display_only_categories == '':
+                print('%s:%s' % (category, msg))
+                incident_cnt += 1
+
+            if category in exitcode_categories or exitcode_categories == '':
+                exitcode_cnt += 1
+
+        # if junit:
+        #     ts = TestSuite("ucslint", test_cases)
+        #     TestSuite.to_file(junit, [ts], prettyprint=False)
+
+        return incident_cnt, exitcode_cnt
 
 
 class UniventionPackageCheckDebian(UniventionPackageCheckBase):

@@ -33,6 +33,7 @@
 from __future__ import annotations
 
 import re
+import sys
 
 import univention.ucslint.base as uub
 from univention.ucslint.python import RE_LENIENT, Python36 as PythonVer, python_files
@@ -58,7 +59,9 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 
     def check(self, path: str) -> None:
         super().check(path)
+        self.main(list(python_files(path)))
 
+    def main(self, pathes: list[str]) -> None:
         tester = uub.UPCFileTester()
         tester.addTest(re.compile(
             r'''(?:baseConfig|configRegistry|ucr)(?:\[.+\]|\.get\(.+\)).*\bin\s*
@@ -81,7 +84,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
             ''', re.VERBOSE),
             '0009-11', 'Use uldap.searchDn() instead of uldap.search(attr=["dn"])', cntmax=0)
 
-        for fn in python_files(path):
+        for fn in pathes:
             tester.open(fn)
             if not tester.raw:
                 continue
@@ -108,3 +111,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
                     continue
 
                 self.addmsg('0009-10', f'invalid Python string literal: {txt}', fn, row, col)
+
+
+if __name__ == '__main__':
+    sys.exit(UniventionPackageCheck.run())

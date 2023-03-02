@@ -34,6 +34,7 @@ from __future__ import annotations
 
 import re
 import subprocess
+import sys
 
 import univention.ucslint.base as uub
 from univention.ucslint.common import RE_HASHBANG_SHELL
@@ -69,11 +70,14 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
     def check(self, path: str) -> None:
         super().check(path)
 
-        for fn in uub.FilteredDirWalkGenerator(
-                path,
-                ignore_suffixes=['.po'],
-                reHashBang=RE_HASHBANG_SHELL,
-        ):
+        self.main(list(uub.FilteredDirWalkGenerator(
+            path,
+            ignore_suffixes=['.po'],
+            reHashBang=RE_HASHBANG_SHELL,
+        )))
+
+    def main(self, pathes: list[str]) -> None:
+        for fn in pathes:
             self.debug('Testing file %s' % fn)
             try:
                 self.check_bashism(fn)
@@ -113,3 +117,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
                     continue
 
                 self.addmsg('0013-4', f'unquoted local variable: {line}', fn, row)
+
+
+if __name__ == '__main__':
+    sys.exit(UniventionPackageCheck.run())

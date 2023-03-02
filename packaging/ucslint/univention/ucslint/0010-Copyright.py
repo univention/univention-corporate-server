@@ -34,6 +34,7 @@ from __future__ import annotations
 
 import os
 import re
+import sys
 import time
 from typing import List  # noqa: F401
 
@@ -69,28 +70,41 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 
     def check(self, path: str) -> None:
         super().check(path)
+        self.main(list(
+            {os.path.join(path, 'debian', f) for f in os.listdir(os.path.join(path, 'debian'))}
+            | set(uub.FilteredDirWalkGenerator(path, reHashBang=RE_HASHBANG, readSize=100)),
+        ))
 
-        check_files: List[str] = []
-
+    def main(self, pathes: list[str]) -> None:
         # check if copyright file is missing
-        fn = os.path.join(path, 'debian', 'copyright')
+        fn = os.path.join(self.path, 'debian', 'copyright')
         try:
             with open(fn) as stream:
                 line = stream.readline().rstrip()
                 if line != DEP5:
                     self.addmsg('0010-6', 'not machine-readable DEP-5', fn)
         except OSError:
+            # FIXME: ignore everything else if we don't have a debian directory?!
+            #if not os.path.exists(os.path.join(self.path, 'debian')):
+            #    return
             self.addmsg('0010-5', 'file is missing', fn)
 
-        # looking for files below debian/
-        for f in os.listdir(os.path.join(path, 'debian')):
-            fn = os.path.join(path, 'debian', f)
-            if f.endswith(('.preinst', '.postinst', '.prerm', '.postrm')) or f in ['preinst', 'postinst', 'prerm', 'postrm', 'copyright']:
-                check_files.append(fn)
+        check_files: List[str] = []
+        for fn in pathes:
+            # looking for files below debian/
+            f = os.path.basename(fn)
+            if os.path.dirname(fn).endswith('/debian'):
+                if f.endswith(('.preinst', '.postinst', '.prerm', '.postrm')) or f in ['preinst', 'postinst', 'prerm', 'postrm', 'copyright']:
+                    check_files.append(fn)
+                    continue
 
-        # looking for Python files
-        for fn in uub.FilteredDirWalkGenerator(path, reHashBang=RE_HASHBANG, readSize=100):
-            check_files.append(fn)
+            # looking for Scripts
+            try:
+                with open(fn, 'rb') as fd:
+                    if fd.read(2) == b'#!':
+                        check_files.append(fn)
+            except OSError:
+                pass
 
         # check files for copyright
         for fn in check_files:
@@ -130,3 +144,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
                     if current_year not in years:
                         self.debug(f'Current year={current_year}  years="{years}"')
                         self.addmsg('0010-3', 'copyright line seems to be outdated', fn)
+
+
+if __name__ == '__main__':
+    sys.exit(UniventionPackageCheck.run())

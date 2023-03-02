@@ -34,6 +34,7 @@ from __future__ import annotations
 
 import os
 import re
+import sys
 
 import univention.ucslint.base as uub
 from univention.ucslint.common import RE_DEBIAN_CHANGELOG
@@ -73,8 +74,10 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 
     def check(self, path: str) -> None:
         super().check(path)
+        self.main([])
 
-        fn_changelog = os.path.join(path, 'debian', 'changelog')
+    def main(self, pathes: list[str]) -> None:
+        fn_changelog = os.path.join(self.path, 'debian', 'changelog')
         try:
             with open(fn_changelog) as fd:
                 content_changelog = fd.read(1024)
@@ -82,7 +85,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
             self.addmsg('0011-1', 'failed to open and read file', fn_changelog)
             return
 
-        fn_control = os.path.join(path, 'debian', 'control')
+        fn_control = os.path.join(self.path, 'debian', 'control')
         try:
             parser = uub.ParserDebianControl(fn_control)
         except uub.FailedToReadFile:
@@ -93,7 +96,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
             return
 
         compat_version = 0
-        fn_compat = os.path.join(path, 'debian', 'compat')
+        fn_compat = os.path.join(self.path, 'debian', 'compat')
         try:
             with open(fn_compat) as fd:
                 compat_version = int(fd.read())
@@ -158,7 +161,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
             else:
                 pass
 
-        self.check_debhelper(path, parser)
+        self.check_debhelper(self.path, parser)
 
     EXCEPTION_FILES = {
         'changelog',  # dh_installchangelogs default
@@ -323,3 +326,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
                     break
             else:
                 self.addmsg('0011-16', 'unknown debhelper file', fn)
+
+
+if __name__ == '__main__':
+    sys.exit(UniventionPackageCheck.run())

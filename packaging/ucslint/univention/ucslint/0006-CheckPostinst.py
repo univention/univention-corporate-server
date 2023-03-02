@@ -33,6 +33,7 @@
 from __future__ import annotations
 
 import os
+import sys
 from typing import Any
 
 import univention.ucslint.base as uub
@@ -54,26 +55,30 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 
     def check(self, path: str) -> None:
         super().check(path)
+        self.main([
+            os.path.join(path, 'debian', f)
+            for f in os.listdir(os.path.join(path, 'debian'))
+            if f.rsplit('.', 1)[-1] in ['preinst', 'postinst', 'prerm', 'postrm']
+        ])
 
+    def main(self, pathes: list[str]) -> None:
         fnlist_scripts: dict[str, dict[str, Any]] = {}
 
         #
         # search debian scripts
         #
-        for f in os.listdir(os.path.join(path, 'debian')):
-            fn = os.path.join(path, 'debian', f)
-            if f.rsplit('.', 1)[-1] in ['preinst', 'postinst', 'prerm', 'postrm']:
-                fnlist_scripts[fn] = {
-                    'debhelper': False,
-                    'udm_calls': 0,
-                    'udm_in_line': 0,
-                    'set-e-hashbang': False,
-                    'set-e-body': 0,
-                    'endswith-exit-0': False,
-                    'uses-remove_ucr_template': False,
-                    'uses-remove_ucr_info_file': False,
-                }
-                self.debug('found %s' % fn)
+        for fn in pathes:
+            fnlist_scripts[fn] = {
+                'debhelper': False,
+                'udm_calls': 0,
+                'udm_in_line': 0,
+                'set-e-hashbang': False,
+                'set-e-body': 0,
+                'endswith-exit-0': False,
+                'uses-remove_ucr_template': False,
+                'uses-remove_ucr_info_file': False,
+            }
+            self.debug('found %s' % fn)
 
         #
         # check scripts
@@ -146,3 +151,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 
             if checks['uses-remove_ucr_info_file']:
                 self.addmsg('0006-8', 'script uses broken remove_ucr_info_file; should use dpkg-maintscript-helper rm_conffile', fn)
+
+
+if __name__ == '__main__':
+    sys.exit(UniventionPackageCheck.run())
