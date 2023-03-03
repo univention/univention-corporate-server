@@ -681,8 +681,8 @@ class ucs(object):
                     old_dn = old_dn.decode('utf-8')
         except IOError:
             return True  # file not found so there's nothing to sync
-        except (pickle.UnpicklingError, EOFError) as e:
-            message = 'file emtpy' if isinstance(e, EOFError) else e.message
+        except (pickle.UnpicklingError, EOFError) as exc:
+            message = 'file empty' if isinstance(exc, EOFError) else exc
             ud.debug(ud.LDAP, ud.ERROR, f'__sync_file_from_ucs: invalid pickle file {filename}: {message}')
             # ignore corrupted pickle file, but save as rejected to not try again
             self._save_rejected_ucs(filename, 'unknown', resync=False, reason='broken file')
@@ -988,8 +988,8 @@ class ucs(object):
                                 old_dn = old_dn.decode('utf-8')
                     except IOError:
                         continue  # file not found so there's nothing to sync
-                    except (pickle.UnpicklingError, EOFError) as e:
-                        message = 'file emtpy' if isinstance(e, EOFError) else e.message
+                    except (pickle.UnpicklingError, EOFError) as exc:
+                        message = 'file empty' if isinstance(exc, EOFError) else exc
                         ud.debug(ud.LDAP, ud.ERROR, f'poll_ucs: invalid pickle file {filename}: {message}')
                         # ignore corrupted pickle file, but save as rejected to not try again
                         self._save_rejected_ucs(filename, 'unknown', resync=False, reason='broken file')

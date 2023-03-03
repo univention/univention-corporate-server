@@ -1,3 +1,9 @@
+univention-ad-connector (14.0.13-4) unstable; urgency=medium
+
+  * Bug #55774: fix handling of rejects
+
+ -- Florian Best <best@univention.de>  Fri, 03 Mar 2023 13:03:09 +0100
+
 univention-ad-connector (14.0.13-3) unstable; urgency=medium
 
   * Bug #55582: new univention-admember script to change the password on AD
