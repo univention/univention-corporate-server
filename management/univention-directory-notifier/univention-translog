@@ -599,8 +599,10 @@ def reindex(opt):
     log = getLogger(__name__).getChild("REINDEX")
 
     index = Index(opt.translog_file)
+    log.warning("Ignore the following 2 WARNINGS about the missing and mismatching index")
     with stopped(opt, (UDN,)), rewrite(index.filename) as index.filename:
         with index, Translog(opt.translog_file, index) as translog:
+            log.warning("Re-building index %s now...", index.filename)
             assert translog.translog is not None
             pos = 0
             for lnr, line in enumerate(translog.translog, start=1):
