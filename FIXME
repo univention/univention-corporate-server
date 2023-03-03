@@ -1,0 +1,277 @@
+1. pre-commit run -a ucslint-0008-translations
+→ takes too long
+
+2. check if ucslint ignores are correctly evaluated. Run pre-commit agains the testsuite and verify same output
+
+3. pre-commit run -a ucslint-0010-copyright
+E:0010-5: /debian/copyright: file is missing
+E:0010-2: .gitlab-ci/aptly-publish: file contains no copyright text block
+E:0010-2: test/utils/install-vbox-guesttools.sh: file contains no copyright text block
+E:0010-2: test/product-tests/appcenter/first_run.py: file contains no copyright text block
+E:0010-2: test/product-tests/base/utils.sh: file contains no copyright text block
+E:0010-2: test/product-tests/samba/multi-server.sh: file contains no copyright text block
+E:0010-2: test/product-tests/base/create_5000_users_in_1000_groups.sh: file contains no copyright text block
+E:0010-2: test/product-tests/samba/bigenv.sh: file contains no copyright text block
+E:0010-2: test/scenarios/veyon/start-kvm.sh: file contains no copyright text block
+E:0010-2: test/product-tests/umc/member.sh: file contains no copyright text block
+E:0010-2: test/product-tests/base/ldap-in-samba-domain.sh: file contains no copyright text block
+E:0010-2: test/utils/samba-utils.sh: file contains no copyright text block
+E:0010-2: test/utils/200.000-users.py: file contains no copyright text block
+E:0010-2: test/utils/start-ucs-school-multiserver-joined-kvm.sh: file contains no copyright text block
+E:0010-2: test/utils/ucsschool-start-multiserver-env.sh: file contains no copyright text block
+E:0010-2: test/product-tests/samba/single-server.sh: file contains no copyright text block
+E:0010-2: test/scenarios/veyon/start-ec2.sh: file contains no copyright text block
+E:0010-2: test/utils/ucsschool-start-id-broker-performance-env.sh: file contains no copyright text block
+E:0010-4: management/univention-management-console/umc-module-templates/grid_with_detailpage/umc/python/MODULEID/__init__.py: cannot find copyright line containing year
+E:0010-5: /debian/copyright: file is missing
+E:0010-2: test/product-tests/umc/backup.sh: file contains no copyright text block
+E:0010-2: test/product-tests/umc/slave.sh: file contains no copyright text block
+E:0010-2: test/utils/ucsschool-start-singleserver-env.sh: file contains no copyright text block
+E:0010-2: test/product-tests/domain-join/kpasswd: file contains no copyright text block
+E:0010-2: test/utils/ram/start-kvm-bsb-ms2.sh: file contains no copyright text block
+E:0010-2: test/utils/start-ucs-school-performance-env1.sh: file contains no copyright text block
+E:0010-2: test/product-tests/base/fake-listener.sh: file contains no copyright text block
+E:0010-2: test/product-tests/samba/utils.sh: file contains no copyright text block
+E:0010-2: test/utils/start-ucs-primary-with-200000-users.sh: file contains no copyright text block
+E:0010-2: .gitlab-ci/build-ci: file contains no copyright text block
+E:0010-2: test/scenarios/appliance-testing/prepare-appliance-image-for-tests.sh: file contains no copyright text block
+E:0010-2: management/univention-directory-listener/debian/tests/add-source.sh: file contains no copyright text block
+E:0010-2: management/univention-directory-listener/debian/tests/filter: file contains no copyright text block
+E:0010-4: management/univention-management-console/umc-module-templates/plain/umc/python/MODULEID/__init__.py: cannot find copyright line containing year
+E:0010-4: management/univention-management-console/umc-module-templates/plain/35PACKAGENAME.inst: cannot find copyright line containing year
+E:0010-5: /debian/copyright: file is missing
+E:0010-2: test/utils/create-id-broker-performance-tests-template-cfg.py: file contains no copyright text block
+E:0010-2: test/product-tests/samba/migrate-samldb-from-tdb-to-mdb: file contains no copyright text block
+E:0010-2: test/product-tests/samba/ad-trust.sh: file contains no copyright text block
+E:0010-2: test/scenarios/veyon/get-ec2.sh: file contains no copyright text block
+E:0010-2: test/product-tests/ucsschool/migration_importuser.py: file contains no copyright text block
+E:0010-2: doc/Makefile: file contains no copyright text block
+E:0010-2: test/utils/installation_test/appliance-vnc-setup.py: file contains no copyright text block
+E:0010-2: test/scenarios/veyon/create_veyon_cfg.py: file contains no copyright text block
+E:0010-2: test/product-tests/base/ldap-non-samba-domain.sh: file contains no copyright text block
+E:0010-2: test/utils/installation_test/languages/french.py: file contains no copyright text block
+E:0010-2: test/product-tests/umc/lib.sh: file contains no copyright text block
+E:0010-2: test/utils/ucs-ec2-list: file contains no copyright text block
+E:0010-2: test/utils/start-ucs-keycloak.sh: file contains no copyright text block
+E:0010-2: .gitlab-ci/aptly-upload: file contains no copyright text block
+E:0010-2: test/utils/id-broker/start-kvm.sh: file contains no copyright text block
+E:0010-2: test/utils/start-ucs-adconnector-w2k19.sh: file contains no copyright text block
+E:0010-2: test/utils/ucsschool_id_connector.py: file contains no copyright text block
+E:0010-2: test/utils/start-ucs-primary-with-windows-client.sh: file contains no copyright text block
+E:0010-2: test/utils/prepare-ucs-appliance-for-tests.sh: file contains no copyright text block
+E:0010-2: test/utils/ram/start-kvm-performance.sh: file contains no copyright text block
+E:0010-2: test/scenarios/veyon/destroy-ec2.sh: file contains no copyright text block
+E:0010-2: management/univention-directory-listener/debian/tests/lxc-ucs: file contains no copyright text block
+E:0010-4: management/univention-management-console/umc-module-templates/debian/copyright: cannot find copyright line containing year
+E:0010-4: management/univention-management-console/umc-module-templates/grid_with_detailpage/35PACKAGENAME.inst: cannot find copyright line containing year
+E:0010-5: /debian/copyright: file is missing
+E:0010-2: test/branch-tests/UCSBranchTest.sh: file contains no copyright text block
+E:0010-2: test/utils/appcenter-change-compose-image.py: file contains no copyright text block
+E:0010-2: test/utils/umc-appcenter.py: file contains no copyright text block
+E:0010-2: test/utils/start-ucs-master-slave-joined.sh: file contains no copyright text block
+E:0010-2: test/branch-tests/run.sh: file contains no copyright text block
+E:0010-2: test/utils/keycloaklocust.py: file contains no copyright text block
+E:0010-2: test/utils/start-ucs-samba-env1-primary-replica.sh: file contains no copyright text block
+E:0010-2: test/utils/ram/start-kvm.sh: file contains no copyright text block
+E:0010-2: .gitlab-ci/aptly-create: file contains no copyright text block
+E:0010-2: test/utils/start-test.sh: file contains no copyright text block
+E:0010-2: test/product-tests/domain-join/login: file contains no copyright text block
+E:0010-2: test/utils/installation_test/vnc-install-ucs.py: file contains no copyright text block
+E:0010-2: test/product-tests/umc/master.sh: file contains no copyright text block
+E:0010-2: test/scenarios/veyon/create_computer_rooms.py: file contains no copyright text block
+E:0010-2: test/utils/installation_test/languages/german.py: file contains no copyright text block
+E:0010-2: test/utils/create-id-broker-performance-tests-kvm-templates.sh: file contains no copyright text block
+E:0010-2: test/product-tests/base/saml.sh: file contains no copyright text block
+E:0010-2: doc/manual/images/image-shadow.sh: file contains no copyright text block
+E:0010-2: test/utils/vm-ucs-image-check: file contains no copyright text block
+E:0010-4: management/univention-management-console/umc-module-templates/simple_form/35PACKAGENAME.inst: cannot find copyright line containing year
+E:0010-5: /debian/copyright: file is missing
+E:0010-2: test/utils/ram/add_bsb_role.py: file contains no copyright text block
+E:0010-2: test/utils/installation_test/languages/english.py: file contains no copyright text block
+E:0010-2: test/utils/installation_test/installation.py: file contains no copyright text block
+E:0010-4: management/univention-management-console/umc-module-templates/debian/rules: cannot find copyright line containing year
+
+4. pre-commit run -a ucslint-0013-bashism
+→ too slow
+
+5. newly found bashisms:
+E:0013-2: test/ucs-test/tests/52_s4connector/s4connector.sh:88: possible bashism ('function' is useless):
+E:0013-2: test/ucs-test/tests/52_s4connector/s4connector.sh:89: possible bashism (let ...):
+E:0013-2: test/ucs-test/tests/52_s4connector/s4connector.sh:101: possible bashism (let ...):
+E:0013-2: test/ucs-test/tests/52_s4connector/s4connector.sh:141: possible bashism ('function' is useless):
+E:0013-2: test/ucs-test/tests/52_s4connector/s4connector.sh:148: possible bashism ('function' is useless):
+E:0013-2: test/ucs-test/tests/52_s4connector/s4connector.sh:153: possible bashism ('function' is useless):
+E:0013-2: test/ucs-test/tests/52_s4connector/s4connector.sh:158: possible bashism ('function' is useless):
+E:0013-2: test/ucs-test/tests/52_s4connector/s4connector.sh:176: possible bashism ('function' is useless):
+E:0013-2: test/ucs-test/tests/52_s4connector/s4connector.sh:191: possible bashism (should be 'b = a'):
+E:0013-2: test/ucs-test/tests/52_s4connector/s4connector.sh:194: possible bashism (should be 'b = a'):
+E:0013-2: test/ucs-test/tests/52_s4connector/s4connector.sh:203: possible bashism ('function' is useless):
+E:0013-2: test/ucs-test/tests/52_s4connector/s4connector.sh:219: possible bashism ('function' is useless):
+E:0013-2: test/ucs-test/tests/52_s4connector/s4connector.sh:233: possible bashism (should be 'b = a'):
+E:0013-2: test/ucs-test/tests/52_s4connector/s4connector.sh:242: possible bashism ('function' is useless):
+E:0013-2: test/ucs-test/tests/52_s4connector/s4connector.sh:264: possible bashism (should be 'b = a'):
+E:0013-2: test/ucs-test/tests/52_s4connector/s4connector.sh:273: possible bashism ('function' is useless):
+E:0013-2: test/ucs-test/tests/52_s4connector/s4connector.sh:287: possible bashism (should be 'b = a'):
+E:0013-2: test/ucs-test/tests/52_s4connector/s4connector.sh:296: possible bashism ('function' is useless):
+E:0013-2: test/ucs-test/tests/52_s4connector/s4connector.sh:311: possible bashism (should be 'b = a'):
+E:0013-2: test/ucs-test/tests/52_s4connector/s4connector.sh:320: possible bashism ('function' is useless):
+E:0013-2: test/ucs-test/tests/52_s4connector/s4connector.sh:335: possible bashism (should be 'b = a'):
+E:0013-2: test/ucs-test/tests/52_s4connector/s4connector.sh:344: possible bashism ('function' is useless):
+E:0013-2: test/ucs-test/tests/52_s4connector/s4connector.sh:370: possible bashism (should be 'b = a'):
+E:0013-2: test/ucs-test/tests/52_s4connector/s4connector.sh:379: possible bashism ('function' is useless):
+E:0013-2: test/ucs-test/tests/52_s4connector/s4connector.sh:394: possible bashism (should be 'b = a'):
+E:0013-2: test/ucs-test/tests/52_s4connector/s4connector.sh:403: possible bashism ('function' is useless):
+E:0013-2: test/ucs-test/tests/52_s4connector/s4connector.sh:418: possible bashism (should be 'b = a'):
+E:0013-2: test/ucs-test/tests/52_s4connector/s4connector.sh:427: possible bashism ('function' is useless):
+E:0013-2: test/ucs-test/tests/52_s4connector/s4connector.sh:442: possible bashism (should be 'b = a'):
+E:0013-2: test/ucs-test/tests/52_s4connector/s4connector.sh:451: possible bashism ('function' is useless):
+E:0013-2: test/ucs-test/tests/52_s4connector/s4connector.sh:466: possible bashism (should be 'b = a'):
+E:0013-2: test/ucs-test/tests/52_s4connector/s4connector.sh:475: possible bashism ('function' is useless):
+E:0013-2: test/ucs-test/tests/52_s4connector/s4connector.sh:495: possible bashism (should be 'b = a'):
+E:0013-2: test/ucs-test/tests/52_s4connector/s4connector.sh:503: possible bashism ('function' is useless):
+E:0013-2: test/ucs-test/tests/52_s4connector/s4connector.sh:537: possible bashism ('function' is useless):
+E:0013-2: test/ucs-test/tests/52_s4connector/s4connector.sh:560: possible bashism ('function' is useless):
+E:0013-2: test/ucs-test/tests/52_s4connector/s4connector.sh:575: possible bashism (should be 'b = a'):
+E:0013-2: test/ucs-test/tests/52_s4connector/s4connector.sh:583: possible bashism ('function' is useless):
+E:0013-2: test/ucs-test/tests/52_s4connector/s4connector.sh:597: possible bashism (should be 'b = a'):
+E:0013-2: test/ucs-test/tests/52_s4connector/s4connector.sh:605: possible bashism ('function' is useless):
+E:0013-2: test/ucs-test/tests/52_s4connector/s4connector.sh:621: possible bashism (${parm,[,][pat]} or ${parm^[^][pat]}):
+E:0013-2: test/ucs-test/tests/52_s4connector/s4connector.sh:630: possible bashism ('function' is useless):
+E:0013-2: test/ucs-test/tests/52_s4connector/s4connector.sh:645: possible bashism ('function' is useless):
+E:0013-2: test/ucs-test/tests/52_s4connector/s4connector.sh:669: possible bashism ('function' is useless):
+E:0013-2: test/ucs-test/tests/52_s4connector/s4connector.sh:675: possible bashism ('function' is useless):
+E:0013-2: test/ucs-test/tests/52_s4connector/s4connector.sh:681: possible bashism ('function' is useless):
+E:0013-2: test/ucs-test/tests/52_s4connector/s4connector.sh:687: possible bashism ('function' is useless):
+E:0013-2: test/ucs-test/tests/52_s4connector/s4connector.sh:710: possible bashism ('function' is useless):
+E:0013-2: test/ucs-test/tests/09_updater/pool.sh:59: possible bashism (shopt):
+E:0013-2: test/ucs-test/tests/09_updater/pool.sh:63: possible bashism (declare):
+E:0013-2: test/ucs-test/tests/09_updater/pool.sh:64: possible bashism (declare):
+E:0013-2: test/ucs-test/tests/09_updater/pool.sh:65: possible bashism (declare):
+E:0013-2: test/ucs-test/tests/09_updater/pool.sh:66: possible bashism ($RANDOM):
+E:0013-2: test/ucs-test/tests/09_updater/pool.sh:70: possible bashism (declare):
+E:0013-2: test/ucs-test/tests/09_updater/pool.sh:88: possible bashism (declare):
+E:0013-2: test/ucs-test/tests/09_updater/pool.sh:89: possible bashism ('((' should be '$(('):
+E:0013-2: test/ucs-test/tests/09_updater/pool.sh:102: possible bashism (alternative test command ([[ foo ]] should be [ foo ])):
+E:0013-2: test/ucs-test/lib/ldap.sh:39: possible bashism (declare):
+E:0013-2: test/ucs-test/lib/ldap.sh:40: possible bashism (bash arrays, ${name[0|*|@]}):
+E:0013-2: test/ucs-test/lib/samba.sh:44: possible bashism (local -opt):
+E:0013-2: test/ucs-test/lib/samba.sh:58: possible bashism (bash arrays, ${name[0|*|@]}):
+E:0013-2: test/ucs-test/lib/samba.sh:60: possible bashism (<<< here string):
+E:0013-2: test/ucs-test/lib/samba.sh:71: possible bashism (bash arrays, ${name[0|*|@]}):
+E:0013-2: test/ucs-test/lib/samba.sh:73: possible bashism (<<< here string):
+E:0013-2: test/ucs-test/lib/samba.sh:93: possible bashism (<<< here string):
+E:0013-2: test/ucs-test/lib/samba.sh:101: possible bashism (should be 'b = a'):
+E:0013-2: test/ucs-test/lib/samba.sh:116: possible bashism (local -opt):
+E:0013-2: test/ucs-test/lib/samba.sh:124: possible bashism ('$((++n))' should be '$((n=n+1))'):
+E:0013-2: test/ucs-test/tests/55_adconnector/adconnector.sh:88: possible bashism ('function' is useless):
+E:0013-2: test/ucs-test/tests/55_adconnector/adconnector.sh:89: possible bashism (let ...):
+E:0013-2: test/ucs-test/tests/55_adconnector/adconnector.sh:101: possible bashism (let ...):
+E:0013-2: test/ucs-test/tests/55_adconnector/adconnector.sh:140: possible bashism ('function' is useless):
+E:0013-2: test/ucs-test/tests/55_adconnector/adconnector.sh:147: possible bashism ('function' is useless):
+E:0013-2: test/ucs-test/tests/55_adconnector/adconnector.sh:152: possible bashism ('function' is useless):
+E:0013-2: test/ucs-test/tests/55_adconnector/adconnector.sh:157: possible bashism ('function' is useless):
+E:0013-2: test/ucs-test/tests/55_adconnector/adconnector.sh:175: possible bashism ('function' is useless):
+E:0013-2: test/ucs-test/tests/55_adconnector/adconnector.sh:190: possible bashism (should be 'b = a'):
+E:0013-2: test/ucs-test/tests/55_adconnector/adconnector.sh:193: possible bashism (should be 'b = a'):
+E:0013-2: test/ucs-test/tests/55_adconnector/adconnector.sh:202: possible bashism ('function' is useless):
+E:0013-2: test/ucs-test/tests/55_adconnector/adconnector.sh:224: possible bashism ('function' is useless):
+E:0013-2: test/ucs-test/tests/55_adconnector/adconnector.sh:238: possible bashism (should be 'b = a'):
+E:0013-2: test/ucs-test/tests/55_adconnector/adconnector.sh:247: possible bashism ('function' is useless):
+E:0013-2: test/ucs-test/tests/55_adconnector/adconnector.sh:269: possible bashism (should be 'b = a'):
+E:0013-2: test/ucs-test/tests/55_adconnector/adconnector.sh:278: possible bashism ('function' is useless):
+E:0013-2: test/ucs-test/tests/55_adconnector/adconnector.sh:292: possible bashism (should be 'b = a'):
+E:0013-2: test/ucs-test/tests/55_adconnector/adconnector.sh:301: possible bashism ('function' is useless):
+E:0013-2: test/ucs-test/tests/55_adconnector/adconnector.sh:316: possible bashism (should be 'b = a'):
+E:0013-2: test/ucs-test/tests/55_adconnector/adconnector.sh:325: possible bashism ('function' is useless):
+E:0013-2: test/ucs-test/tests/55_adconnector/adconnector.sh:340: possible bashism (should be 'b = a'):
+E:0013-2: test/ucs-test/tests/55_adconnector/adconnector.sh:349: possible bashism ('function' is useless):
+E:0013-2: test/ucs-test/tests/55_adconnector/adconnector.sh:364: possible bashism (should be 'b = a'):
+E:0013-2: test/ucs-test/tests/55_adconnector/adconnector.sh:373: possible bashism ('function' is useless):
+E:0013-2: test/ucs-test/tests/55_adconnector/adconnector.sh:388: possible bashism (should be 'b = a'):
+E:0013-2: test/ucs-test/tests/55_adconnector/adconnector.sh:397: possible bashism ('function' is useless):
+E:0013-2: test/ucs-test/tests/55_adconnector/adconnector.sh:412: possible bashism (should be 'b = a'):
+E:0013-2: test/ucs-test/tests/55_adconnector/adconnector.sh:421: possible bashism ('function' is useless):
+E:0013-2: test/ucs-test/tests/55_adconnector/adconnector.sh:436: possible bashism (should be 'b = a'):
+E:0013-2: test/ucs-test/tests/55_adconnector/adconnector.sh:445: possible bashism ('function' is useless):
+E:0013-2: test/ucs-test/tests/55_adconnector/adconnector.sh:465: possible bashism (should be 'b = a'):
+E:0013-2: test/ucs-test/tests/55_adconnector/adconnector.sh:473: possible bashism ('function' is useless):
+E:0013-2: test/ucs-test/tests/55_adconnector/adconnector.sh:507: possible bashism ('function' is useless):
+E:0013-2: test/ucs-test/tests/55_adconnector/adconnector.sh:530: possible bashism ('function' is useless):
+E:0013-2: test/ucs-test/tests/55_adconnector/adconnector.sh:545: possible bashism (should be 'b = a'):
+E:0013-2: test/ucs-test/tests/55_adconnector/adconnector.sh:553: possible bashism ('function' is useless):
+E:0013-2: test/ucs-test/tests/55_adconnector/adconnector.sh:567: possible bashism (should be 'b = a'):
+E:0013-2: test/ucs-test/tests/55_adconnector/adconnector.sh:575: possible bashism ('function' is useless):
+E:0013-2: test/ucs-test/tests/55_adconnector/adconnector.sh:585: possible bashism ('function' is useless):
+E:0013-2: test/ucs-test/tests/55_adconnector/adconnector.sh:595: possible bashism (should be 'b = a'):
+E:0013-2: test/ucs-test/tests/55_adconnector/adconnector.sh:604: possible bashism ('function' is useless):
+E:0013-2: test/ucs-test/tests/55_adconnector/adconnector.sh:615: possible bashism (should be 'b = a'):
+E:0013-2: test/ucs-test/tests/55_adconnector/adconnector.sh:624: possible bashism ('function' is useless):
+E:0013-2: test/ucs-test/tests/55_adconnector/adconnector.sh:635: possible bashism (should be 'b = a'):
+E:0013-2: test/ucs-test/tests/55_adconnector/adconnector.sh:644: possible bashism ('function' is useless):
+E:0013-2: test/ucs-test/tests/55_adconnector/adconnector.sh:660: possible bashism (${parm,[,][pat]} or ${parm^[^][pat]}):
+E:0013-2: test/ucs-test/tests/55_adconnector/adconnector.sh:669: possible bashism ('function' is useless):
+E:0013-2: test/ucs-test/tests/55_adconnector/adconnector.sh:684: possible bashism ('function' is useless):
+E:0013-2: test/ucs-test/tests/55_adconnector/adconnector.sh:690: possible bashism ('function' is useless):
+E:0013-2: test/ucs-test/tests/55_adconnector/adconnector.sh:713: possible bashism ('function' is useless):
+E:0013-2: test/product-tests/component/openid-connect.sh:11: possible bashism (should be 'b = a'):
+E:0013-2: test/scenarios/veyon/utils-veyon.sh:90: possible bashism (echo -e):
+E:0013-2: test/scenarios/veyon/utils-veyon.sh:108: possible bashism ('((' should be '$(('):
+E:0013-2: test/scenarios/veyon/utils-veyon.sh:131: possible bashism (should be VAR="${VAR}foo"):
+E:0013-2: test/scenarios/veyon/utils-veyon.sh:133: possible bashism (bash arrays, ${name[0|*|@]}):
+E:0013-2: test/scenarios/veyon/utils-veyon.sh:151: possible bashism (should be VAR="${VAR}foo"):
+E:0013-2: test/scenarios/veyon/utils-veyon.sh:152: possible bashism ('((' should be '$(('):
+E:0013-2: test/scenarios/veyon/utils-veyon.sh:154: possible bashism (bash arrays, ${name[0|*|@]}):
+E:0013-2: test/scenarios/veyon/utils-veyon.sh:161: possible bashism (should be VAR="${VAR}foo"):
+E:0013-2: test/scenarios/veyon/utils-veyon.sh:163: possible bashism (bash arrays, ${name[0|*|@]}):
+E:0013-2: test/scenarios/veyon/utils-veyon.sh:182: possible bashism (should be VAR="${VAR}foo"):
+E:0013-2: test/scenarios/veyon/utils-veyon.sh:203: possible bashism (brace expansion):
+E:0013-2: test/scenarios/veyon/utils-veyon.sh:203: possible bashism (alternative test command ([[ foo ]] should be [ foo ])):
+E:0013-2: test/scenarios/veyon/utils-veyon.sh:224: possible bashism (alternative test command ([[ foo ]] should be [ foo ])):
+E:0013-2: test/scenarios/veyon/utils-veyon.sh:224: possible bashism (should be 'b = a'):
+E:0013-2: test/utils/ram/utils-ram.sh:401: possible bashism (bash arrays, ${name[0|*|@]}):
+E:0013-2: test/utils/ram/utils-ram.sh:414: possible bashism (bash arrays, ${name[0|*|@]}):
+E:0013-2: test/utils/ram/utils-ram.sh:416: possible bashism (bash arrays, ${name[0|*|@]}):
+E:0013-2: test/product-tests/domain-join/domain-join.sh:7: possible bashism (should be 'b = a'):
+E:0013-2: test/utils/base_appliance.sh:122: possible bashism (${parm/?/pat[/str]}):
+E:0013-2: test/utils/base_appliance.sh:302: possible bashism (<() process substitution):
+E:0013-2: test/utils/base_appliance.sh:473: possible bashism (declare):
+E:0013-2: test/utils/base_appliance.sh:474: possible bashism (declare):
+E:0013-2: test/utils/base_appliance.sh:480: possible bashism (bash arrays, ${name[0|*|@]}):
+E:0013-2: test/utils/base_appliance.sh:487: possible bashism (should be VAR="${VAR}foo"):
+E:0013-2: test/utils/base_appliance.sh:565: possible bashism (declare):
+E:0013-2: test/utils/base_appliance.sh:579: possible bashism (should be VAR="${VAR}foo"):
+E:0013-2: test/utils/base_appliance.sh:596: possible bashism (bash arrays, ${name[0|*|@]}):
+E:0013-2: test/utils/base_appliance.sh:620: possible bashism (declare):
+E:0013-2: test/utils/base_appliance.sh:630: possible bashism (bash arrays, ${name[0|*|@]}):
+E:0013-2: test/utils/base_appliance.sh:660: possible bashism (${parm/?/pat[/str]}):
+E:0013-2: test/utils/base_appliance.sh:964: possible bashism (<<< here string):
+E:0013-2: base/univention-lib/shell/base.sh:47: possible bashism ('command' with option other than -p):
+E:0013-2: services/univention-samba4/lib/base.sh:71: possible bashism ('$(< foo)' should be '$(cat foo)'):
+E:0013-2: services/univention-samba4/lib/base.sh:125: possible bashism (read with option other than -r):
+E:0013-2: services/univention-samba4/lib/base.sh:127: possible bashism (<<< here string):
+E:0013-2: services/univention-samba4/lib/base.sh:128: possible bashism (<<< here string):
+E:0013-2: services/univention-samba4/lib/base.sh:129: possible bashism (should be VAR="${VAR}foo"):
+E:0013-2: services/univention-samba4/lib/base.sh:131: possible bashism (echo -e):
+E:0013-2: services/univention-samba4/lib/base.sh:131: possible bashism (<() process substitution):
+E:0013-2: services/univention-samba4/lib/base.sh:135: possible bashism (bash arrays, ${name[0|*|@]}):
+E:0013-2: services/univention-samba4/lib/base.sh:139: possible bashism (<<< here string):
+E:0013-2: services/univention-samba4/lib/base.sh:140: possible bashism (<<< here string):
+E:0013-2: services/univention-samba4/lib/base.sh:147: possible bashism (bash arrays, ${name[0|*|@]}):
+E:0013-2: services/univention-samba4/lib/base.sh:149: possible bashism (bash arrays, ${name[0|*|@]}):
+E:0013-2: services/univention-samba4/lib/base.sh:150: possible bashism (bash arrays, ${name[0|*|@]}):
+E:0013-2: services/univention-samba4/lib/base.sh:155: possible bashism (bash arrays, ${name[0|*|@]}):
+E:0013-2: services/univention-samba4/lib/base.sh:156: possible bashism (bash arrays, ${name[0|*|@]}):
+E:0013-2: services/univention-samba4/lib/base.sh:163: possible bashism (<<< here string):
+E:0013-2: services/univention-samba4/lib/base.sh:202: possible bashism (<<< here string):
+E:0013-2: services/univention-samba4/lib/base.sh:212: possible bashism (<<< here string):
+E:0013-2: services/univention-samba4/lib/base.sh:222: possible bashism (<<< here string):
+E:0013-2: services/univention-samba4/lib/base.sh:328: possible bashism (<<< here string):
+E:0013-2: services/univention-samba4/lib/base.sh:332: possible bashism (bash arrays, ${name[0|*|@]}):
+E:0013-2: services/univention-samba4/lib/base.sh:333: possible bashism (bash arrays, ${name[0|*|@]}):
+E:0013-2: services/univention-samba4/lib/base.sh:358: possible bashism (<<< here string):
+E:0013-2: services/univention-samba4/lib/base.sh:359: possible bashism (<<< here string):
+E:0013-2: services/univention-samba4/lib/base.sh:360: possible bashism (<<< here string):
+E:0013-2: services/univention-samba4/lib/base.sh:375: possible bashism (<<< here string):
+E:0013-2: services/univention-samba4/lib/base.sh:376: possible bashism (<<< here string):
+E:0013-2: services/univention-samba4/lib/base.sh:377: possible bashism (<<< here string):
+E:0013-2: services/univention-samba4/lib/base.sh:445: possible bashism (${parm/?/pat[/str]}):
