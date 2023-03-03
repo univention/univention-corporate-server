@@ -1,3 +1,9 @@
+univention-directory-notifier (13.0.3-11) unstable; urgency=low
+
+  * Bug #55863: Implement `univention-translog reindex`
+
+ -- Philipp Hahn <hahn@univention.de>  Wed, 08 Mar 2023 08:49:44 +0100
+
 univention-directory-notifier (13.0.3-10) unstable; urgency=medium
 
   * Bug #55235: listener/listener.priv is now processed in smaller chunks,
