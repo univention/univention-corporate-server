@@ -1,0 +1,15 @@
+product: ucs
+release: "5.0"
+version: [3]
+scope: ucs_5.0-0-errata5.0-3
+src: univention-directory-notifier
+fix: 14.0.6-3
+desc: |
+ This update addresses the following issue:
+ * Implement `univention-translog reinex` to re-built the transaction index
+   file in case it gets corrupted. Univention Directory Notifier already has
+   code to do maintain the index, but after certain error cases the index may
+   become corrupt and has to be re-built. The code in UDN is not optimized to
+   re-index many transactions in batch and shows performance issues for large
+   transaction files.
+bug: [54797]

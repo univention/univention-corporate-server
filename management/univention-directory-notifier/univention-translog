@@ -1,5 +1,4 @@
 #!/usr/bin/python3
-"""Univention Directory Notifier Transaction log admin commmand"""
 # Like what you see? Join us!
 # https://www.univention.com/about-us/careers/vacancies/
 #
@@ -29,6 +28,8 @@
 # License with the Debian GNU/Linux or Univention distribution in file
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
+
+"""Univention Directory Notifier Transaction log admin commmand"""
 
 from __future__ import print_function
 
@@ -588,6 +589,27 @@ def dump_index(opt):
             print('%8d[%c]: %d' % (tid, 'x' if rec.valid else ' ', rec.offset))
 
 
+def reindex(opt):
+    # type: (Namespace) -> None
+    """
+    Re-build transaction index
+
+    :param opt: Command line options.
+    """
+    log = getLogger(__name__).getChild("REINDEX")
+
+    index = Index(opt.translog_file)
+    with stopped(opt, (UDN,)), rewrite(index.filename) as index.filename:
+        with index, Translog(opt.translog_file, index) as translog:
+            assert translog.translog is not None
+            pos = 0
+            for lnr, line in enumerate(translog.translog, start=1):
+                rec = translog.parse_line(line)
+                log.info("%d: tid=%d @ %d", lnr, rec.tid, pos)
+                index[rec.tid] = pos
+                pos += len(line.encode())
+
+
 def lookup(opt):
     # type: (Namespace) -> None
     """
@@ -702,10 +724,13 @@ def stopped(opt, services):
     :param opt: Command line options.
     :param services: Sequence of service names.
     """
+    log = getLogger(__name__).getChild("SERVICE")
+
     if opt.skip_services or not opt.fix:
         yield
         return
 
+    log.info("Stopping %s", services)
     cmd = ('systemctl', 'stop') + services
     call(cmd)
 
@@ -714,6 +739,7 @@ def stopped(opt, services):
     except Exception:
         raise
     else:
+        log.info("Starting %s", services)
         cmd = ('systemctl', 'start') + services
         call(cmd)
 
@@ -1323,6 +1349,10 @@ def parse_args(args=None):
     parser_index.add_argument("--min", "-m", metavar="TID", type=parse_int_pos, help="First transaction ID to process [%(default)s]", default=1)
     parser_index.add_argument("--max", "-M", metavar="TID", type=parse_int_pos, help="Last transaction ID to process")
     parser_index.set_defaults(func=dump_index)
+
+    parser_reindex = subparsers.add_parser("reindex", help="Re-build index file")
+    parser_reindex.add_argument("--skip-services", "-S", action="store_true", help="Skip stopping and starting services")
+    parser_reindex.set_defaults(func=reindex, fix=True)
 
     parser_check = subparsers.add_parser("check", help="Check transaction files")
     parser_check.add_argument("--fix", "-f", action="store_true", help="Try to fix issues")
