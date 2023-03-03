@@ -3,7 +3,7 @@ release: '5.0'
 version: [3]
 scope: ucs_5.0-0-errata5.0-3
 src: univention-directory-notifier
-fix: 14.0.6-4
+fix: 14.0.6-4A~5.0.0.202303031532
 desc: |
   This update addresses the following issue:
   * Implement `univention-translog reinex` to re-built the transaction index
