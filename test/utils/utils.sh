@@ -196,6 +196,14 @@ upgrade_to_testing () {
 set_repository_to_testing () {
 	ucr set repository/online/server="${FTP_SCHEME}://updates-test.${FTP_DOM}/"
 }
+fix_repository_schema () {  # Bug #55044 - to be removed when upgrading from 5.0-2+e528
+	local key='repository/online/server' repo
+	repo="$(ucr get "$key")"
+	case "$repo" in
+	*://*) return 0 ;;
+	esac
+	ucr set "${key}=${FTP_SCHEME}://${repo}/"
+}
 
 # This HAS to be executed after basic_setup, in basic_setup the check is done for EC2 env
 check_repository_to_testing () {
@@ -933,10 +941,11 @@ install_apps_via_umc () {
 	univention-app update || return $?
 	rm -f /var/cache/appcenter-installed.txt
 	for app in "$@"; do
+		# shellcheck disable=SC2153
 		if [ -n "$MAIN_APP" ] && [ -n "$MAIN_APP_VERSION" ] && [ "$MAIN_APP" = "$app" ]; then
-			umc_apps -U "$username" -p "$password" -a $app -v $MAIN_APP_VERSION || rv=$?
+			umc_apps -U "$username" -p "$password" -a "$app" -v "$MAIN_APP_VERSION" || rv=$?
 		else
-			umc_apps -U "$username" -p "$password" -a $app || rv=$?
+			umc_apps -U "$username" -p "$password" -a "$app" || rv=$?
 		fi
 		echo "$app" >>/var/cache/appcenter-installed.txt
 	done
