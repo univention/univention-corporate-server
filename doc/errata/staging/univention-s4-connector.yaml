@@ -3,7 +3,7 @@ release: "5.0"
 version: [3]
 scope: ucs_5.0-0-errata5.0-3
 src: univention-s4-connector
-fix:
+fix: 14.0.13-2A~5.0.0.202303031516
 desc: |
  This update addresses the following issues:
  * Handling of rejects due to invalid pickle files has been repaired.
