@@ -3,9 +3,9 @@ release: "5.0"
 version: [3]
 scope: ucs_5.0-0-errata5.0-3
 src: univention-keycloak
-fix: 1.0.9-2A~5.0.0.202302170558
+fix: 1.0.9-3A~5.0.0.202303061056
 desc: |
  This update addresses the following issue:
- * Register LDAP mapper and password update modules in Keycloak to allow
-   user to change password when expired
+ * Subcommands for registering LDAP mapper, password update and self
+   service extensions have been added.
 bug: [55663]
