@@ -127,6 +127,8 @@ def portal_config(ucr: ConfigRegistry) -> SimpleNamespace:
         "password": "univention",
         "header_menu_id": "header-button-menu",
         "portal_sidenavigation_username_class": "portal-sidenavigation--username",
+        "logout_msg_de": "Abmelden",
+        "logout_button_id": "loginButton",
     }
 
     return SimpleNamespace(**config)
@@ -163,6 +165,7 @@ def keycloak_config(ucr: ConfigRegistry) -> SimpleNamespace:
         "password_change_button_id": "kc-form-buttons",
         "password_update_failed_msg": "Update password failed",
         "password_already_used_msg": "Changing password failed. The password was already used.",
+        "password_too_short_msg": "Changing password failed. The password is too short.",
         "password_confirm_error_msg": "Passwords don't match.",
         "password_confirm_error_id": "input-error-password-confirm",
         "password_input_error_id": "input-error-password",

@@ -1,3 +1,9 @@
+ucs-test (10.0.10-20) unstable; urgency=medium
+
+  * Bug #55747: keycloak tests
+
+ -- Felix Botner <botner@univention.de>  Mon, 06 Mar 2023 13:13:03 +0100
+
 ucs-test (10.0.10-19) unstable; urgency=low
 
   * Bug #54264: Skip on old upgrade tests
