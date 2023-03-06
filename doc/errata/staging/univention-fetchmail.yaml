@@ -1,0 +1,13 @@
+product: ucs
+release: "5.0"
+version: [3]
+scope: ucs_5.0-0-errata5.0-3
+src: univention-fetchmail
+fix:
+desc: |
+ This update addresses the following issues:
+ * Fix error in univention-fetchmail-schema joinscript execution
+   caused by a script. On member nodes now the correct credentials
+   are used to connect to LDAP. Also it is checked if
+   /etc/fetchmailrc file exists.
+bug: [55766]

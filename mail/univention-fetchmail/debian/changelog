@@ -1,3 +1,10 @@
+univention-fetchmail (13.0.5-4) unstable; urgency=medium
+
+  * Bug #55766: Fix error in univention-fetchmail-schema joinscript
+    execution caused by a migration script
+
+ -- Juan Carlos García García <garcia-garcia.extern@univention.de>  Wed, 6 Mar 2023 11:15:00 +0100
+
 univention-fetchmail (13.0.5-3) unstable; urgency=medium
 
   * Bug #55682: Correctly load /etc/fetchmailrc in fetchmail
