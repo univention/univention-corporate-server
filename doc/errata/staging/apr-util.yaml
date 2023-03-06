@@ -1,0 +1,19 @@
+product: ucs
+release: "4.4"
+version: [9]
+scope: ucs_4.4-0-errata4.4-9
+src: apr-util
+fix: 1.5.4-3+deb9u1
+desc: |
+ This update addresses the following issues:
+ 1.5.4-3+deb9u1 (Sat, 04 Mar 2023 18:41:22 +0530)
+ * Non-maintainer upload by the ELTS team.
+ * debian/patches/CVE-2017-12618.patch: validate the integrity of SDBM
+   database files. (Fixes: CVE-2017-12618)
+ * debian/patches/CVE-2022-25147.patch: add assertions to check if a buffer
+   length is bigger than a pre-determined value in multiple methods in
+   encoding/apr_base64.c. (Fixes: CVE-2022-25147)
+bug: [55781]
+cve:
+- CVE-2017-12618
+- CVE-2022-25147
