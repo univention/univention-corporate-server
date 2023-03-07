@@ -1,4 +1,4 @@
-# Configuration file for the Sphinx documentation builder.
+#Configuration file for the Sphinx documentation builder.
 #
 # This file only contains a selection of the most common options. For a full
 # list see the documentation:
@@ -45,6 +45,9 @@ extensions = [
     "sphinx.ext.intersphinx",
     "sphinx_inline_tabs",
 ]
+
+# Warnings may come up by sphinx-last-updated-by-git. Suppress such warnings for all jobs.
+suppress_warnings = ['git.too_shallow']
 
 intersphinx_mapping = {
     "uv-manual": ("https://docs.software-univention.de/manual/5.0/en", None),
@@ -99,11 +102,6 @@ if "spelling" in sys.argv:
     spelling_show_suggestions = True
     spelling_warning = True
     spelling_word_list_filename = []
-    # Warnings may come up by sphinx-last-updated-by-git. Shall be suppressed in spelling job
-    suppress_warnings = ['git.too_shallow']
-
-if "linkcheck" in sys.argv:
-    suppress_warnings = ['git.too_shallow']
 
 latex_engine = 'lualatex'
 latex_show_pagerefs = True

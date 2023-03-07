@@ -44,6 +44,8 @@ extensions = [
     "sphinx.ext.intersphinx",
 ]
 
+# Warnings may come up by sphinx-last-updated-by-git. Suppress such warnings for all jobs.
+suppress_warnings = ['git.too_shallow']
 
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ['_templates']
@@ -82,11 +84,6 @@ if "spelling" in sys.argv:
     spelling_show_suggestions = True
     spelling_warning = True
     spelling_word_list_filename = []
-    # Warnings may come up by sphinx-last-updated-by-git. Shall be suppressed in spelling job
-    suppress_warnings = ['git.too_shallow']
-
-if "linkcheck" in sys.argv:
-    suppress_warnings = ['git.too_shallow']
 
 root_doc = "contents"
 

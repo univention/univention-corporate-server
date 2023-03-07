@@ -46,6 +46,9 @@ extensions = [
     "sphinx_copybutton",
 ]
 
+# Warnings may come up by sphinx-last-updated-by-git. Suppress such warnings for all jobs.
+suppress_warnings = ['git.too_shallow']
+
 copybutton_prompt_text = r"\$ |> |.+# "
 copybutton_prompt_is_regexp = True
 
@@ -93,12 +96,7 @@ if "spelling" in sys.argv:
     # Don't load extension to speed up the job
     extensions.remove("sphinx_last_updated_by_git")
     extensions.remove("sphinx_sitemap")
-    # Warnings may come up by sphinx-last-updated-by-git.
-    # Shall be suppressed in spelling job
-    suppress_warnings = ['git.too_shallow', "bibtex"]
-
-if "linkcheck" in sys.argv:
-    suppress_warnings = ['git.too_shallow', "bibtex"]
+    suppress_warnings.append("bibtex")
 
 root_doc = "index"
 
