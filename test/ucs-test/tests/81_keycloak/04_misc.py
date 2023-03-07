@@ -25,9 +25,7 @@ def test_session_sync(ucr, portal_login_via_keycloak, portal_config, keycloak_co
     """
     ldap = get_ldap_connection()
     fqdn = ucr["keycloak/server/sso/fqdn"]
-    addresses = []
-    for addr in dns.resolver.query(fqdn, "A"):
-        addresses.append(addr.address)
+    addresses = [addr.address for addr in dns.resolver.query(fqdn, "A")]
     # check if there are enough keycloak hosts
     # make sure there is at least one scenario in jenkins with two keycloak host
     if len(addresses) < 2:
