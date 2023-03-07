@@ -6,13 +6,29 @@ src: libde265
 fix: 1.0.11-0+deb9u3
 desc: |
  This update addresses the following issues:
- 1.0.11-0+deb9u3 (Sun, 05 Mar 2023 09:01:53 +0100)
- * Non-maintainer upload by the LTS Security Team.
- * Import new upstream version, based on the 1.0.11-0+deb10u4 package from
-   buster. - fixing: CVE-2023-24751, CVE-2023-24752, CVE-2023-24754,
-   CVE-2023-24755, CVE-2023-24756, CVE-2023-24757, CVE-2023-24758 and
-   CVE-2023-25221. - dropping no longer needed patches that have been
-   integrated or made obsolete by the new upstream version.
+ * NULL pointer dereference in function `mc_chroma` at `motion.cc`. This
+   vulnerability allows attackers to cause a Denial of Service (DoS) via a
+   crafted input file. (CVE-2023-24751)
+ * NULL pointer dereference in function `ff_hevc_put_hevc_epel_pixels_8_sse`
+   at `sse-motion.cc`. This vulnerability allows attackers to cause a Denial
+   of Service (DoS) via a crafted input file. (CVE-2023-24752)
+ * NULL pointer dereference in function `ff_hevc_put_weighted_pred_avg_8_sse`
+   at `sse-motion.cc`. This vulnerability allows attackers to cause a Denial
+   of Service (DoS) via a crafted input file. (CVE-2023-24754)
+ * NULL pointer dereference in function `put_weighted_pred_8_fallback` at
+   `fallback-motion.cc`. This vulnerability allows attackers to cause a Denial
+   of Service (DoS) via a crafted input file. (CVE-2023-24755)
+ * NULL pointer dereference in function `ff_hevc_put_unweighted_pred_8_sse` at
+   `sse-motion.cc`. This vulnerability allows attackers to cause a Denial of
+   Service (DoS) via a crafted input file. (CVE-2023-24756)
+ * NULL pointer dereference in function `put_unweighted_pred_16_fallback` at
+   `fallback-motion.cc`. This vulnerability allows attackers to cause a Denial
+   of Service (DoS) via a crafted input file. (CVE-2023-24757)
+ * NULL pointer dereference in function `ff_hevc_put_weighted_pred_avg_8_sse`
+   at `sse-motion.cc`. This vulnerability allows attackers to cause a Denial
+   of Service (DoS) via a crafted input file. (CVE-2023-24758)
+ * Heap-buffer-overflow vulnerability in the function
+   `derive_spatial_luma_vector_prediction` in `motion.cc`. (CVE-2023-25221)
 bug: [55783]
 cve:
 - CVE-2023-24751
