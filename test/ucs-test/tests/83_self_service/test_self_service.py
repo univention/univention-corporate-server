@@ -46,10 +46,10 @@ def self_service_user(email=None, **kwargs):
     with udm_test.UCSTestUDM() as udm:
         if 'mailPrimaryAddress' in kwargs:
             udm.create_object('mail/domain', ignore_exists=True, wait_for_replication=True, check_for_drs_replication=False, name=kwargs['mailPrimaryAddress'].split('@', 1)[1])
-        password = uts.random_string()
         if email:
             kwargs['PasswordRecoveryEmail'] = email
-        dn, username = udm.create_user(password=password, **kwargs)
+        password = kwargs.setdefault('password', uts.random_string())
+        dn, username = udm.create_user(**kwargs)
         utils.verify_ldap_object(dn)
         yield SelfServiceUser(username, password)
 
