@@ -6,10 +6,9 @@ src: mono
 fix: 4.6.2.7+dfsg-1+deb9u1
 desc: |
  This update addresses the following issue:
- 4.6.2.7+dfsg-1+deb9u1 (Sun, 05 Mar 2023 20:10:26 +0200)
- * Non-maintainer upload by the ELTS team.
  * CVE-2023-26314: Triggering arbitrary code execution was possible due to
-   .desktop files registered as application/x-ms-dos-executable MIME handlers.
+   `.desktop` files registered as `application/x-ms-dos-executable` MIME
+   handlers.
 bug: [55782]
 cve:
 - CVE-2023-26314
