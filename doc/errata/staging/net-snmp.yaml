@@ -6,14 +6,8 @@ src: net-snmp
 fix: 5.7.3+dfsg-1.7+deb9u5
 desc: |
  This update addresses the following issues:
- 5.7.3+dfsg-1.7+deb9u5 (Sat, 04 Mar 2023 21:24:07 +0530)
- * Add patches to fix DoS via null pointer exception issues: -
-   debian/patches/CVE-2022-4479x-1.patch: disallow SET with NULL varbind in
-   agent/snmp_agent.c. - debian/patches/CVE-2022-4479x-2.patch: allow SET with
-   NULL varbind for testing in apps/snmpset.c. -
-   debian/patches/CVE-2022-4479x-3.patch: add test for NULL varbind set in
-   testing/fulltests/default/T0142snmpv2csetnull_simple. (Fixes:
-   CVE-2022-44792, CVE-2022-44793
+ * CVE-2022-44792, CVE-2022-44793: Add patches to fix Denial-of-Service via
+   NULL pointer exception issues.
 bug: [55784]
 cve:
 - CVE-2022-44792
