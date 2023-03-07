@@ -1,46 +1,59 @@
+include:
+  - project: 'univention/documentation/sphinx-docker'
+    file: 'pipeline/sphinx.yml'
+
 stages:
   - build
+  - merge
   - review
   - staging
   - production
 
 .sphinx-doc:
-  stage: build
-  image: $SPHINX_BASE
   variables:
     DOC_TARGET_VERSION: "5.0"
     CHANGELOG_TARGET_VERSION: "5.0-3"
   artifacts:
     paths:
-      - $base/_build
-      - $CI_PROJECT_DIR/public
-    reports:
-      codequality: $base/codeclimate.json
+      - $DOCS_DIR/_build
+      - $CI_PROJECT_DIR/out
 
 .sphinx-html:
-  extends: .sphinx-doc
+  extends:
+    - .sphinx-doc
+    - .sphinx-html-template
   script:
-    - make -C $base -e SPHINXOPTS="-D language='$language'" -e BUILDDIR="_build/$language" html
-    - mkdir -p $CI_PROJECT_DIR/public/$DOC_NAME/$DOC_TARGET_VERSION/$language
-    - rsync -av --delete --exclude-from doc/pipeline-rsync-exclude.txt $base/_build/$language/html/ $CI_PROJECT_DIR/public/$DOC_NAME/$DOC_TARGET_VERSION/$language
+    - mkdir -p "$CI_PROJECT_DIR"/out/"$DOC_NAME"/"$DOC_TARGET_VERSION"/"$language"
+    - make -C "$DOCS_DIR" -e FORCE_COLOR="TRUE" -e SPHINXOPTS="-v -D language='$language'" -e BUILDDIR="_build/$language" html
+    - rsync -av --delete "$DOCS_DIR"/_build/"$language"/html/ "$CI_PROJECT_DIR"/out/"$DOC_NAME"/"$DOC_TARGET_VERSION"/"$language"
 
 .sphinx-pdf:
-  extends: .sphinx-doc
-  image: $SPHINX_FULL
+  extends:
+    - .sphinx-doc
+    - .sphinx-pdf-template
   script:
-    - make -C $base -e SPHINXOPTS="-D language='$language'" -e BUILDDIR="_build/$language" latexpdf
-    - mkdir -p $CI_PROJECT_DIR/public/$DOC_NAME/$DOC_TARGET_VERSION/$language
-    - rsync -av --exclude-from doc/pipeline-rsync-exclude.txt $base/_build/$language/latex/*.pdf $CI_PROJECT_DIR/public/$DOC_NAME/$DOC_TARGET_VERSION/$language
+    - mkdir -p "$CI_PROJECT_DIR"/out/"$DOC_NAME"/"$DOC_TARGET_VERSION"/"$language"
+    - make -C "$DOCS_DIR" -e FORCE_COLOR="TRUE" -e SPHINXOPTS="-v -D language='$language'" -e BUILDDIR="_build/$language" latexpdf
+    - rsync -av "$DOCS_DIR"/_build/"$language"/latex/"$DOC_NAME".pdf "$CI_PROJECT_DIR"/out/"$DOC_NAME"/"$DOC_TARGET_VERSION"/"$language"/"$DOC_NAME".pdf
 
 .sphinx-linkcheck:
-  extends: .sphinx-doc
+  extends:
+    - .sphinx-doc
+    - .sphinx-linkcheck-template
   script:
-    - make -C $base -e SPHINXOPTS="-W --keep-going -D language='$language'" -e BUILDDIR="_build/$language" linkcheck
+    - make -C "$DOCS_DIR" -e FORCE_COLOR="TRUE" -e SPHINXOPTS="-v -D language='$language'" -e BUILDDIR="_build/$language" linkcheck
 
 .sphinx-spelling:
-  extends: .sphinx-doc
+  extends:
+    - .sphinx-doc
+    - .sphinx-spelling-template
   script:
-    - make -C $base -e SPHINXOPTS="-W --keep-going -D language='$language'" -e BUILDDIR="_build/$language" spelling
+    - make -C "$DOCS_DIR" -e FORCE_COLOR="TRUE" -e SPHINXOPTS="-v -W --keep-going -D language='$language'" -e BUILDDIR="_build/$language" spelling
+
+.sphinx-warnings:
+  extends: .sphinx-warnings-template
+  script:
+    - make -C "$DOCS_DIR" -e FORCE_COLOR="TRUE" -e SPHINXOPTS="-v -W --keep-going -D language='$language'" -e BUILDDIR="_build/$language" html
 
 # The child pipeline needs at minimum one job to run - otherwise the sub-pipeline fails
 webframe:
@@ -65,7 +78,7 @@ review:
   tags:
     - omar
   script:
-    - rsync -av --delete public/ /var/univention/buildsystem2/test_mirror/ftp/download/docs.$CI_BUILD_REF_SLUG
+    - rsync -av --delete out/ /var/univention/buildsystem2/test_mirror/ftp/download/docs.$CI_BUILD_REF_SLUG
   environment:
     name: review/$CI_BUILD_REF_NAME
     url: http://apt.knut.univention.de/download/docs.$CI_BUILD_REF_SLUG/
@@ -97,39 +110,7 @@ staging:
   rules:
     - if: '$CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH'
   script:
-    - rsync -av --delete public/ /var/univention/buildsystem2/test_mirror/ftp/download/docs
+    - rsync -av --delete out/ /var/univention/buildsystem2/test_mirror/ftp/download/docs
   environment:
     name: staging
     url: http://apt.knut.univention.de/download/docs/
-
-production:
-  stage: production
-  extends: .publish
-  cache:
-    paths:
-      - docs
-  rules:
-    - if: '$CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH'
-      when: manual
-  variables:
-    GIT_AUTHOR_NAME: $GITLAB_USER_NAME
-    GIT_AUTHOR_EMAIL: $GITLAB_USER_EMAIL
-    GIT_COMMITTER_NAME: $GITLAB_USER_NAME
-    GIT_COMMITTER_EMAIL: $GITLAB_USER_EMAIL
-  resource_group: prod
-  image: $GIT_SYNC
-  script:
-    - git config --global credential.$CI_SERVER_URL.username ucs-docs-deployment
-    - git config --global credential.$CI_SERVER_URL.helper '!f() { [ "$1" = get ] && echo password="$DOCS_TOKEN"; }; f'
-    - '[ -d docs ] || git clone --branch master --depth 1 --single-branch $CI_SERVER_URL/univention/docs.univention.de.git docs'
-    - cd docs
-    - git clean -f -d
-    - git fetch --no-tags origin
-    - git reset --hard origin/master
-    - rsync -av ../public/ ./
-    - git add -- .
-    - git commit -m "Automatic doc deployment from $CI_PROJECT_PATH by GitLab commit $CI_COMMIT_SHA"
-    - git push
-  environment:
-    name: production
-    url: http://updates.knut.univention.de/download/docs/

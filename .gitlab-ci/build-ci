@@ -7,49 +7,87 @@ cat "${0%/*}/base.yml"
 cat "${0%/*}/base-doc.yml"
 
 doc_job () { # <extends> [<suffix> [<language>]]
-	echo
-	echo "build ${pkg}${3:+ "$3"}${2:+ "$2"}:"
-	echo '  variables:'
-	echo "    base: $path"
-	echo "    DOC_NAME: ${path##*/}"
-	if [ "${pkg}" = "changelog" ] || [ "${pkg}" = "release-notes" ]
-	then
-		echo '    DOC_TARGET_VERSION: $CHANGELOG_TARGET_VERSION'
-	fi
-	if [ "${pkg}" = "release-notes" ] && [ "${2}" = "html" ]
-	then
-		echo '    GIT_DEPTH: 0'
-	fi
-	[ -n "${3+empty}" ] && echo "    language: $3"
-	echo "  extends: ${1:?extends}"
-	echo '  rules:'
-	echo '    - if: "$CI_COMMIT_MESSAGE =~ /skip-doc/ || $pipeline =~ /skip-doc/"'
-	echo '      when: never'
-	echo '    - if: "$CI_COMMIT_MESSAGE =~ /force-doc/ || $pipeline =~ /force-doc/"'
-	echo '    - changes:'
-	echo "      - ${path}/**/*"
+    echo
+    echo "build ${pkg}${3:+ "$3"}${2:+ "$2"}:"
+    echo '  variables:'
+    echo "    DOCS_DIR: $path"
+    echo "    DOC_NAME: ${path##*/}"
+    if [ "${pkg}" = "changelog" ] || [ "${pkg}" = "release-notes" ]
+    then
+        echo '    DOC_TARGET_VERSION: $CHANGELOG_TARGET_VERSION'
+    fi
+    if [ "${pkg}" = "release-notes" ] && [ "${2}" = "html" ]
+    then
+        echo '    GIT_DEPTH: 0'
+    fi
+    [ -n "${3+empty}" ] && echo "    language: $3"
+    echo "  extends: ${1:?extends}"
+    echo '  rules:'
+    echo '    - if: "$CI_COMMIT_MESSAGE =~ /skip-doc/ || $pipeline =~ /skip-doc/"'
+    echo '      when: never'
+    echo '    - if: "$CI_COMMIT_MESSAGE =~ /force-doc/ || $pipeline =~ /force-doc/"'
+    echo '    - changes:'
+    echo "      - ${path}/**/*"
+}
+
+document_paths () {
+    for p in in doc/*/conf.py
+    do
+        [ -f "$p" ] || continue
+        path="${p%/conf.py}"
+        echo "      - $path/**/*"
+    done
+}
+
+merge_one_artifact () {
+    echo
+    echo 'docs-merge-to-one-artifact:'
+    echo '  extends: .sphinx-merge-template'
+    echo '  rules:'
+    echo '    - if: $CI_COMMIT_BRANCH != $CI_DEFAULT_BRANCH'
+    echo '      changes:'
+    document_paths
+    echo '    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH'
+    echo '      changes:'
+    document_paths
+    echo '      when: manual'
+}
+
+create_production_merge_request () {
+    echo
+    echo 'docs-create-production-merge-request:'
+    echo '  extends: .sphinx-docs-merge-request-template'
+    echo '  needs:'
+    echo '    - job: docs-merge-to-one-artifact'
+    echo '  rules:'
+    echo '    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH'
+    echo '      changes:'
+    document_paths
 }
 
 for make in doc/*/Makefile
 do
-	[ -f "$make" ] || continue
-	path="${make%/Makefile}"
-	pkg="${path##*/}"
+    [ -f "$make" ] || continue
+    path="${make%/Makefile}"
+    pkg="${path##*/}"
 
-	# Automatically detect Sphinx or Docbook
-	if [ -f "${path}/conf.py" ] # Use Sphinx's conf.py as hint to Sphinx
-	then
-		for l_path in "$path"/locales/* "en"
-		do
-			language="${l_path##*/}"
-			[ "$language" = '*' ] && continue
-			doc_job '.sphinx-html' html "$language"
-			doc_job '.sphinx-pdf' pdf "$language"
-			doc_job '.sphinx-linkcheck' linkcheck "$language"
-			doc_job '.sphinx-spelling' spelling "$language"
-		done
-	elif [ -f "${path}/Makefile" ]
-	then
-		doc_job '.doc'
-	fi
+    # Automatically detect Sphinx or Docbook
+    if [ -f "${path}/conf.py" ] # Use Sphinx's conf.py as hint to Sphinx
+    then
+        for l_path in "$path"/locales/* "en"
+        do
+            language="${l_path##*/}"
+            [ "$language" = '*' ] && continue
+            doc_job '.sphinx-html' html "$language"
+            doc_job '.sphinx-pdf' pdf "$language"
+            doc_job '.sphinx-linkcheck' linkcheck "$language"
+            doc_job '.sphinx-spelling' spelling "$language"
+            doc_job '.sphinx-warnings' warnings "$language"
+        done
+    elif [ -f "${path}/Makefile" ]
+    then
+        doc_job '.doc'
+    fi
 done
+merge_one_artifact
+create_production_merge_request

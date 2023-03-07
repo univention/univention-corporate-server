@@ -1,6 +1,0 @@
-univention_logo.pdf
-*webpack-macros.html
-.buildinfo
-*.py
-__pycache__
-.doctrees
