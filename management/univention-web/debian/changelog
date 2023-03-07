@@ -1,3 +1,9 @@
+univention-web (4.0.3-2) unstable; urgency=medium
+
+  * Bug #55862: Remove unused icons
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Tue, 07 Mar 2023 22:18:01 +0100
+
 univention-web (4.0.3-1) unstable; urgency=medium
 
   * Bug #31771: migrate tabs to spaces
