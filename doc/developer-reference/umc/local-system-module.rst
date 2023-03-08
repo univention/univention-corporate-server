@@ -392,4 +392,3 @@ If such a package has been created a few things need to be adjusted
 
 :file:`debian/control`
    .. literalinclude:: ucr/debian/control
-      :language: control
