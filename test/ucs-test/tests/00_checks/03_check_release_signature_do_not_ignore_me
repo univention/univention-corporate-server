@@ -10,7 +10,7 @@
 ## exposure: safe
 
 # shellcheck source=../../lib/base.sh
-. "$TESTLIBPATH/base.sh" || exit 137
+. "$TESTLIBPATH/base.sh" || exit 137  # INSTALL
 
 detect_lib () {
 	local arch
@@ -20,7 +20,7 @@ detect_lib () {
 		[ -f "$libfaketime" ] &&
 			return 0
 	done
-	fail_fast 77 "libfaketime not found"
+	fail_fast 137 "libfaketime not found"  # INSTALL
 }
 detect_lib
 
@@ -44,20 +44,20 @@ apt_update () {
 }
 
 case "$(ucr get repository/app_center/server)" in
-*appcenter-test*) exit 33
+*appcenter-test*) exit 77  # SKIP
 esac
 
 # check if apt-get update in now+2y works
 if apt_update '+2y'
 then
 	apt-key list
-	fail_fast 110 "warnings/error during apt-get update"
+	fail_fast 110 "warnings/error during apt-get update"  # FAIL
 fi
 
 # check if apt-get update in now+50y fails (just to test the test)
 if ! apt_update '+50y' -q
 then
-	fail_fast 110 "did not fail 50 years into the future, key should have expired by then"
+	fail_fast 110 "did not fail 50 years into the future, key should have expired by then"  # FAIL
 fi
 
-exit 0
+exit 0  # OKAY
