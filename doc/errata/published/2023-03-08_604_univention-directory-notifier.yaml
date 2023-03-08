@@ -13,3 +13,6 @@ desc: |
     re-index many transactions in batch and shows performance issues for large
     transaction files.
 bug: [54797]
+erratum: 604
+announced: 2023-03-08
+support: core
