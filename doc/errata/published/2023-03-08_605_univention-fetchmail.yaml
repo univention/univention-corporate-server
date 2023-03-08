@@ -11,3 +11,6 @@ desc: |
    are used to connect to LDAP. Also it is checked if
    /etc/fetchmailrc file exists.
 bug: [55766]
+erratum: 605
+announced: 2023-03-08
+support: core
