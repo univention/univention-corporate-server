@@ -45,10 +45,10 @@
 #include <limits.h>
 #include <sys/types.h>
 #define PY_SSIZE_T_CLEAN
-#include <python3.7/Python.h>
-#include <python3.7/compile.h>
-#include <python3.7/marshal.h>
-#include <python3.7/node.h>
+#include <python3.9/Python.h>
+#include <python3.9/compile.h>
+#include <python3.9/marshal.h>
+#include <python3.9/node.h>
 #include <univention/debug.h>
 
 #include "cache_lowlevel.h"
