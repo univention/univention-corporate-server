@@ -39,9 +39,9 @@ DB_OBJS := cache.o cache_dn.o cache_entry.o cache_lowlevel.o base64.o filter.o
 
 LDAP_LDLIBS := -lldap -llber
 
-CFLAGS += -Wall -Werror -D_FILE_OFFSET_BITS=64
+CFLAGS += -Wall -Werror -D_FILE_OFFSET_BITS=64 -I/usr/include/ -I/usr/include/python3.9/ -Wno-error=deprecated-declarations
 LDLIBS := -luniventiondebug -luniventionconfig -licuuc
-LISTENER_LDLIBS := -luniventionpolicy $(LDAP_LDLIBS) -lpython3.7m $(DB_LDLIBS)
+LISTENER_LDLIBS := -luniventionpolicy $(LDAP_LDLIBS) -lpython3.9 $(DB_LDLIBS)
 LISTENER_OBJS := main.o notifier.o transfile.o handlers.o change.o network.o signals.o select_server.o utils.o $(DB_OBJS)
 DUMP_LDLIBS := $(LDAP_LDLIBS) $(DB_LDLIBS)
 DUMP_OBJS := dump.o dump_signals.o utils.o $(DB_OBJS)
