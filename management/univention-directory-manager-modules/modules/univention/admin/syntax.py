@@ -786,7 +786,7 @@ class UDM_Objects(ISyntax, _UDMObjectOrAttribute):
                     break
                 if module is not None:
                     mapping = module.mapping
-                    if not all([mapping.mapName(att) for att in attr]):
+                    if not all(mapping.mapName(att) for att in attr):
                         break
             else:
                 simple = True
