@@ -40,7 +40,6 @@ PluginTV = TypeVar('PluginTV', bound='univention.udm.plugins.Plugin')
 
 
 class Plugin(type):
-    """Meta class for plugins."""
 
     def __new__(mcs, name, bases, attrs):  # type: (Plugin, str, Iterable[str], Dict[str, Any]) -> PluginTV
         new_cls = super(Plugin, mcs).__new__(mcs, name, bases, attrs)
@@ -49,36 +48,19 @@ class Plugin(type):
 
 
 class Plugins(object):
-    """Register `Plugin` subclasses and iterate over them."""
 
     _plugins = None  # type: OrderedDict
     _imported = {}  # type: Dict[Text, bool]
 
     def __init__(self, python_path):  # type: (Text) -> None
-        """
-        :param str python_path: fully dotted Python path that the plugins will
-                be found below
-        """
         ...
 
     @classmethod
     def add_plugin(cls, plugin):  # type: (PluginTV) -> None
-        """
-        Called by `Plugin` meta class to register a new `Plugin` subclass.
-
-        :param type plugin: a `Plugin` subclass
-        """
         ...
 
     def __iter__(self):  # type: () -> PluginTV
-        """
-        Iterator for registered `Plugin` subclasses.
-
-        :return: `Plugin` subclass
-        :rtype: type
-        """
         ...
 
     def load(self):  # type: () -> None
-        """Load plugins."""
         ...

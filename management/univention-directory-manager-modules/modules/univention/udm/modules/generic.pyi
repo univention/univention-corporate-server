@@ -30,11 +30,6 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-"""
-A generic UDM module and object implementation.
-Will work for all kinds of UDM modules.
-"""
-
 from __future__ import absolute_import, unicode_literals
 
 from typing import Any, Dict, Iterable, Iterator, List, Optional, Text, Tuple, Type, TypeVar, Union  # noqa: F401
@@ -108,7 +103,7 @@ class GenericObject(BaseObjectTV):
 
 class GenericModuleMetadata(BaseModuleMetadataTV):
     def __init__(self, meta):  # type: (GenericModuleTV.Meta) -> None
-        self.default_positions_property = None  # type: Text
+        ...
 
 
 class GenericModuleMeta(ModuleMeta):
@@ -120,13 +115,14 @@ class GenericModule(BaseModuleTV):
     _udm_module_meta_class = GenericModuleMetadata  # type: Type[GenericModuleMetadata]
     _udm_module_cache = {}  # type: Dict[Tuple[Text, Text, Text, Text], OriUdmHandlerTV]
     _default_containers = {}  # type: Dict[Text, Dict[Text, Any]]
+    _orig_udm_module = None  # type: OriUdmHandlerTV
 
     class Meta:
         supported_api_versions = ()  # type: Iterable[int]
         suitable_for = []  # type: Iterable[Text]
 
     def __init__(self, name, connection, api_version):  # type: (Text, Any, int) -> None
-        self._orig_udm_module = None  # type: OriUdmHandlerTV
+        ...
 
     def new(self, superordinate=None):  # type: (Optional[Union[Text, GenericObjectTV]]) -> GenericObjectTV
         ...

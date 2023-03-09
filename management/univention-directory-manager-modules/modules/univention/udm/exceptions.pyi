@@ -108,7 +108,6 @@ class NoSuperordinate(UdmError):
 
 
 class SearchLimitReached(UdmError):
-    """Raised when the search results in more objects than specified by the sizelimit."""
 
     def __init__(self, msg=None, dn=None, module_name=None, search_filter=None, sizelimit=None):
         # type: (Optional[Text], Optional[Text], Optional[Text], Optional[Text], Optional[int]) -> None

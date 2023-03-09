@@ -30,8 +30,6 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-"""En/Decoders for object properties."""
-
 from __future__ import absolute_import, unicode_literals
 
 import datetime  # noqa: F401
@@ -300,7 +298,7 @@ class DnsEntryZoneReverseListMultiplePropertyEncoder(DnsEntryZoneForwardListMult
 
     @staticmethod
     def _itemgetter(value):
-        return value[0]
+        ...
 
 
 class DnsEntryZoneReverseListSinglePropertyEncoder(DnsEntryZoneReverseListMultiplePropertyEncoder):

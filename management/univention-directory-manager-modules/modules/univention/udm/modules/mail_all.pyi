@@ -30,21 +30,6 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-"""
-Module and object specific for all "mail/*" UDM modules.
-
-This module handles the problem that on a OX system, UDM modules are registered
-for oxmail/ox$NAME, that opens LDAP objects with both
-``univentionObjectType=oxmail/ox$NAME`` *and*
-``univentionObjectType=mail/$NAME``.
-
-:py:meth:`GenericModule._verify_univention_object_type()` raises a
-:py:exc:`WrongObjectType` exception when loading it.
-
-The overwritten method :py:meth:`_verify_univention_object_type()` allows both
-mail/* and oxmail/* in univentionObjectType.
-"""
-
 from __future__ import absolute_import, unicode_literals
 
 from typing import Dict, Text  # noqa: F401
@@ -54,19 +39,16 @@ from .generic import GenericModule, GenericObject, GenericObjectProperties, OriU
 
 
 class MailAllObjectProperties(GenericObjectProperties):
-    """mail/* UDM properties."""
 
     _encoders = {}  # type: Dict[Text, BaseEncoderTV]
 
 
 class MailAllObject(GenericObject):
-    """Better representation of mail/* properties."""
 
     udm_prop_class = MailAllObjectProperties
 
 
 class MailAllModule(GenericModule):
-    """MailAllObject factory"""
 
     _udm_object_class = MailAllObject
     supported_api_versions = ()  # type: Iterable[int]

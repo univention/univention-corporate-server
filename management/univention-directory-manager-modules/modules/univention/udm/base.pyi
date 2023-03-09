@@ -30,8 +30,6 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-"""Base classes for (simplified) UDM modules and objects."""
-
 from __future__ import absolute_import, unicode_literals
 
 from collections import namedtuple
@@ -52,8 +50,10 @@ BaseObjectPropertiesTV = TypeVar('BaseObjectPropertiesTV', bound='BaseObjectProp
 
 
 class BaseObjectProperties(object):
+    _udm_obj = None  # type: BaseObjectTV
+
     def __init__(self, udm_obj):  # type: (BaseObjectTV) -> None
-        self._udm_obj = udm_obj
+        ...
 
     def __repr__(self):  # type: () -> Text
         ...
@@ -63,14 +63,16 @@ class BaseObjectProperties(object):
 
 
 class BaseObject(object):
+    dn = ''
+    props = None  # type: BaseObjectPropertiesTV
+    options = []  # type: List[Text]
+    policies = []  # type: List[Text]
+    position = ''  # type: Text
+    superordinate = None  # type: Text
+    _udm_module = None  # type: BaseModuleTV
+
     def __init__(self):  # type: () -> None
-        self.dn = ''
-        self.props = None  # type: BaseObjectPropertiesTV
-        self.options = []  # type: List[Text]
-        self.policies = []  # type: List[Text]
-        self.position = ''  # type: Text
-        self.superordinate = None  # type: Text
-        self._udm_module = None  # type: BaseModuleTV
+        ...
 
     def __repr__(self):  # type: () -> Text
         ...
