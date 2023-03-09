@@ -24,6 +24,7 @@
         "en_US": "Wikipedia Test Page"
       },
       "dn": "cn=wiki1,cn=entry,cn=portals,cn=univention,dc=intranet,dc=portal,dc=de",
+      "icon_url": null,
       "linkTarget": "useportaldefault",
       "links": [
         {
@@ -31,7 +32,6 @@
           "value": "https://de.wikipedia.org/wiki/Test"
         }
       ],
-      "logo_name": null,
       "name": {
         "en_US": "Wikipedia Test"
       }
@@ -45,6 +45,7 @@
         "en_US": "Wikipedia Vue Page"
       },
       "dn": "cn=wiki2,cn=entry,cn=portals,cn=univention,dc=intranet,dc=portal,dc=de",
+      "icon_url": null,
       "linkTarget": "useportaldefault",
       "links": [
         {
@@ -52,7 +53,6 @@
           "value": "https://de.wikipedia.org/wiki/Vue"
         }
       ],
-      "logo_name": null,
       "name": {
         "en_US": "Wikipedia Vue"
       }

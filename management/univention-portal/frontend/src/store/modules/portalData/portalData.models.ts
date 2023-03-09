@@ -98,7 +98,7 @@ export interface PortalEntry {
   linkTarget: LinkTargetOrDefault,
   target: string | null,
   links: Link[],
-  logo_name: string | null,
+  icon_url: string | null,
   name: LocalizedString,
 }
 

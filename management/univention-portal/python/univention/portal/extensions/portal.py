@@ -351,7 +351,7 @@ class UMCPortal(Portal):
             },
             "linkTarget": "embedded",
             "target": None,
-            "logo_name": icon_url,
+            "icon_url": icon_url,
             "backgroundColor": color,
             "links": [{
                 "locale": locale,

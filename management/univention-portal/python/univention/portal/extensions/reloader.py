@@ -257,9 +257,9 @@ class PortalReloaderUDM(MtimeBasedLazyFileReloader):
                 or any(entry.dn in category["entries"] for category in categories if category["in_portal"])
                 or any(entry.dn in folder["entries"] for folder in folders if folder["in_portal"])
             )
-            logo_name = None
+            icon_url = None
             if entry.props.icon:
-                logo_name = cls._write_image(entry.props.icon.raw, entry.props.name, "entries")
+                icon_url = cls._write_image(entry.props.icon.raw, entry.props.name, "entries")
 
             entries[entry.dn] = {
                 "dn": entry.dn,
@@ -267,7 +267,7 @@ class PortalReloaderUDM(MtimeBasedLazyFileReloader):
                 "name": entry.props.displayName,
                 "description": entry.props.description,
                 'keywords': entry.props.keywords,
-                "logo_name": logo_name,
+                "icon_url": icon_url,
                 "activated": entry.props.activated,
                 "anonymous": entry.props.anonymous,
                 "allowedGroups": entry.props.allowedGroups,

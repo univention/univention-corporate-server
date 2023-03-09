@@ -75,7 +75,7 @@ function makeEntry(
       linkTarget: entry.linkTarget === 'useportaldefault' ? defaultLinkTarget : entry.linkTarget,
       target: entry.target,
       originalLinkTarget: entry.linkTarget,
-      pathToLogo: entry.logo_name || './questionMark.svg',
+      pathToLogo: entry.icon_url || './questionMark.svg',
       key: {
         de_DE: 'de_DE',
         en_US: 'en_US',

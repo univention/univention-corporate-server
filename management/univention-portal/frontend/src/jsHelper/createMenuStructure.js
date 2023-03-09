@@ -42,7 +42,7 @@ function makeEntry(entryID, availableTiles, availableFolders, defaultLinkTarget)
       links: entry.links,
       linkTarget: entry.linkTarget === 'useportaldefault' ? defaultLinkTarget : entry.linkTarget,
       target: entry.target,
-      pathToLogo: entry.logo_name,
+      pathToLogo: entry.icon_url,
       backgroundColor: entry.backgroundColor,
     };
   }

@@ -189,7 +189,7 @@ class TestPortal:
                 "in_portal": True,
                 "linkTarget": "useportaldefault",
                 "links": ["/univention/server-overview/"],
-                "logo_name": "/univention/portal/icons/entries/server-overview.svg",
+                "icon_url": "/univention/portal/icons/entries/server-overview.svg",
                 "name": {"de_DE": u"Server\xfcbersicht", "en_US": u"Server overview", "fr_FR": u"Vue d'ensemble de serveurs"},
             },
             {
@@ -205,7 +205,7 @@ class TestPortal:
                 "in_portal": True,
                 "linkTarget": "useportaldefault",
                 "links": ["/univention/management/"],
-                "logo_name": "/univention/portal/icons/entries/umc-domain.svg",
+                "icon_url": "/univention/portal/icons/entries/umc-domain.svg",
                 "name": {"de_DE": u"System- und Dom\xe4neneinstellungen", "en_US": u"System and domain settings", "fr_FR": u"R\xe9glages du syst\xe8me et du domaine"},
             },
             {
@@ -226,7 +226,7 @@ class TestPortal:
                 "links": [
                     "https://www.univention.com/news/blog-en/",
                 ],
-                "logo_name": "/univention/portal/icons/entries/univentionblog.png",
+                "icon_url": "/univention/portal/icons/entries/univentionblog.png",
                 "name": {
                     "de_DE": "Univention Blog",
                     "en_US": "Univention Blog",

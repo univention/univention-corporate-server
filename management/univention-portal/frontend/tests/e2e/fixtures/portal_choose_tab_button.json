@@ -52,6 +52,7 @@
         "en_US": "Root certificate"
       },
       "dn": "cn=root-cert,cn=entry,cn=portals,cn=univention,dc=intranet,dc=portal,dc=de",
+      "icon_url": null,
       "linkTarget": "samewindow",
       "links": [
         {
@@ -63,7 +64,6 @@
           "value": "/ucs-root-ca-en.crt"
         }
       ],
-      "logo_name": null,
       "name": {
         "de_DE": "Wurzelzertifikat",
         "en_US": "Root certificate"
@@ -78,6 +78,7 @@
         "en_US": "Wikipedia Test Page"
       },
       "dn": "cn=wiki1,cn=entry,cn=portals,cn=univention,dc=intranet,dc=portal,dc=de",
+      "icon_url": null,
       "linkTarget": "useportaldefault",
       "links": [
         {
@@ -85,7 +86,6 @@
           "value": "https://de.wikipedia.org/wiki/Test"
         }
       ],
-      "logo_name": null,
       "name": {
         "en_US": "Wikipedia Test"
       }
@@ -99,6 +99,7 @@
         "en_US": "Wikipedia Vue Page"
       },
       "dn": "cn=wiki2,cn=entry,cn=portals,cn=univention,dc=intranet,dc=portal,dc=de",
+      "icon_url": null,
       "linkTarget": "useportaldefault",
       "links": [
         {
@@ -106,7 +107,6 @@
           "value": "https://de.wikipedia.org/wiki/Vue"
         }
       ],
-      "logo_name": null,
       "name": {
         "en_US": "Wikipedia Vue"
       }
@@ -120,6 +120,7 @@
         "en_US": "Wikipedia Front end and back end"
       },
       "dn": "cn=wiki3,cn=entry,cn=portals,cn=univention,dc=intranet,dc=portal,dc=de",
+      "icon_url": null,
       "linkTarget": "useportaldefault",
       "links": [
         {
@@ -127,7 +128,6 @@
           "value": "https://en.wikipedia.org/wiki/Front_end_and_back_end"
         }
       ],
-      "logo_name": null,
       "name": {
         "en_US": "Wikipedia Front end and back end"
       }
@@ -141,6 +141,7 @@
         "en_US": "MacBook"
       },
       "dn": "cn=wiki4,cn=entry,cn=portals,cn=univention,dc=intranet,dc=portal,dc=de",
+      "icon_url": null,
       "linkTarget": "useportaldefault",
       "links": [
         {
@@ -148,7 +149,6 @@
           "value": "https://en.wikipedia.org/wiki/MacBook"
         }
       ],
-      "logo_name": null,
       "name": {
         "en_US": "MacBook"
       }
@@ -162,6 +162,7 @@
         "en_US": "Climate change"
       },
       "dn": "cn=wiki5,cn=entry,cn=portals,cn=univention,dc=intranet,dc=portal,dc=de",
+      "icon_url": null,
       "linkTarget": "useportaldefault",
       "links": [
         {
@@ -169,7 +170,6 @@
           "value": "https://en.wikipedia.org/wiki/Climate_change"
         }
       ],
-      "logo_name": null,
       "name": {
         "en_US": "Climate change"
       }
@@ -183,6 +183,7 @@
         "en_US": "Arctic Ocean"
       },
       "dn": "cn=wiki6,cn=entry,cn=portals,cn=univention,dc=intranet,dc=portal,dc=de",
+      "icon_url": null,
       "linkTarget": "useportaldefault",
       "links": [
         {
@@ -190,7 +191,6 @@
           "value": "https://en.wikipedia.org/wiki/Arctic_Ocean"
         }
       ],
-      "logo_name": null,
       "name": {
         "en_US": "Arctic Ocean"
       }
@@ -205,6 +205,7 @@
         "en_US": "Certificate revocation list"
       },
       "dn": "cn=certificate-revocation,cn=entry,cn=portals,cn=univention,dc=intranet,dc=portal,dc=de",
+      "icon_url": null,
       "linkTarget": "samewindow",
       "links": [
         {
@@ -212,7 +213,6 @@
           "value": "/ucsCA.crl"
         }
       ],
-      "logo_name": null,
       "name": {
         "de_DE": "Zertifikat-Sperrliste",
         "en_US": "Certificate revocation list"
@@ -227,6 +227,7 @@
         "de_DE": "ownCloud Administrations-Handbuch (in Englisch)"
       },
       "dn": "cn=owncloud-admindoc,cn=entry,cn=portals,cn=univention,dc=intranet,dc=portal,dc=de",
+      "icon_url": "./data/icons/owncloud-admindoc.svg",
       "linkTarget": "useportaldefault",
       "links": [
         {
@@ -238,7 +239,6 @@
           "value": "https://doc.owncloud.com/server/10.0/admin_manual/"
         }
       ],
-      "logo_name": "./data/icons/owncloud-admindoc.svg",
       "name": {
         "de_DE": "Admin Handbuch",
         "en_US": "Admin Handbook"
@@ -254,6 +254,7 @@
         "en_US": "ownCloud User Manual"
       },
       "dn": "cn=owncloud-userdoc,cn=entry,cn=portals,cn=univention,dc=intranet,dc=portal,dc=de",
+      "icon_url": "./data/icons/owncloud-userdoc.svg",
       "linkTarget": "useportaldefault",
       "links": [
         {
@@ -261,7 +262,6 @@
           "value": "https://doc.owncloud.com/server/10.0/user_manual/"
         }
       ],
-      "logo_name": "./data/icons/owncloud-userdoc.svg",
       "name": {
         "de_DE": "Benutzer Handbuch",
         "en_US": "User Manual"
@@ -278,6 +278,7 @@
         "fr_FR": "Console de gestion Univention pour admin­is­trer le domaine UCS et le système local"
       },
       "dn": "cn=umc-domain,cn=entry,cn=portals,cn=univention,dc=intranet,dc=portal,dc=de",
+      "icon_url": "./data/icons/umc-domain.svg",
       "linkTarget": "newwindow",
       "links": [
         {
@@ -285,7 +286,6 @@
           "value": "/univention/management/"
         }
       ],
-      "logo_name": "./data/icons/umc-domain.svg",
       "name": {
         "de_DE": "System- und Domäneneinstellungen",
         "en_US": "System and domain settings",
@@ -303,6 +303,7 @@
         "fr_FR": "Nouvelles, conseils et bonne pratique"
       },
       "dn": "cn=univentionblog,cn=entry,cn=portals,cn=univention,dc=intranet,dc=portal,dc=de",
+      "icon_url": "./data/icons/univentionblog.png",
       "linkTarget": "newwindow",
       "links": [
         {
@@ -314,7 +315,6 @@
           "value": "https://www.univention.com/news/blog-en"
         }
       ],
-      "logo_name": "./data/icons/univentionblog.png",
       "name": {
         "de_DE": "Univention Blog",
         "en_US": "Univention Blog",
@@ -332,6 +332,7 @@
         "fr_FR": "Impressions"
       },
       "dn": "cn=univentionfeedback,cn=entry,cn=portals,cn=univention,dc=intranet,dc=portal,dc=de",
+      "icon_url": null,
       "linkTarget": "newwindow",
       "links": [
         {
@@ -343,7 +344,6 @@
           "value": "https://www.univention.com/feedback/?umc=portal"
         }
       ],
-      "logo_name": null,
       "name": {
         "de_DE": "Feedback",
         "en_US": "Feedback",
@@ -360,6 +360,7 @@
         "en_US": "Univention Forum \"Help\""
       },
       "dn": "cn=univentionforum,cn=entry,cn=portals,cn=univention,dc=intranet,dc=portal,dc=de",
+      "icon_url": null,
       "linkTarget": "newwindow",
       "links": [
         {
@@ -367,7 +368,6 @@
           "value": "https://help.univention.com"
         }
       ],
-      "logo_name": null,
       "name": {
         "de_DE": "Univention Forum \"Hilfe\"",
         "en_US": "Univention Forum \"Help\""
@@ -384,6 +384,7 @@
         "fr_FR": "Site Internet Univention"
       },
       "dn": "cn=univentionwebsite,cn=entry,cn=portals,cn=univention,dc=intranet,dc=portal,dc=de",
+      "icon_url": null,
       "linkTarget": "newwindow",
       "links": [
         {
@@ -395,7 +396,6 @@
           "value": "https://www.univention.com"
         }
       ],
-      "logo_name": null,
       "name": {
         "de_DE": "Univention Webseite",
         "en_US": "Univention Website",

@@ -89,6 +89,7 @@
         "fr_FR": "displayName => , link => https://www.arr-bonn.de/, activated => TRUE, linkTarget => useportaldefault, name => ano_def_act, anonymous => TRUE, allowedGroups =>  for fr_FR"
       },
       "dn": "cn=ano_def_act,cn=entry,cn=portals,cn=univention,dc=dev,dc=upx,dc=mydemoenv,dc=net",
+      "icon_url": "./icons/entries/ano_def_act.svg",
       "in_portal": true,
       "linkTarget": "useportaldefault",
       "links": [
@@ -97,7 +98,6 @@
           "value": "https://www.arr-bonn.de/"
         }
       ],
-      "logo_name": "./icons/entries/ano_def_act.svg",
       "name": {
         "de_DE": "ano_def_act for de_DE",
         "en_US": "ano_def_act for en_US",
@@ -115,6 +115,7 @@
         "fr_FR": "anonymous => TRUE, name => ano_embd_act, allowedGroups => , displayName => , link => http://www.schmitz-rauschendorf.de/, activated => TRUE, linkTarget => embedded for fr_FR"
       },
       "dn": "cn=ano_embd_act,cn=entry,cn=portals,cn=univention,dc=dev,dc=upx,dc=mydemoenv,dc=net",
+      "icon_url": "./icons/entries/ano_embd_act.svg",
       "in_portal": true,
       "linkTarget": "embedded",
       "links": [
@@ -123,7 +124,6 @@
           "value": "http://www.schmitz-rauschendorf.de/"
         }
       ],
-      "logo_name": "./icons/entries/ano_embd_act.svg",
       "name": {
         "de_DE": "ano_embd_act for de_DE",
         "en_US": "ano_embd_act for en_US",
@@ -141,6 +141,7 @@
         "fr_FR": "allowedGroups => , anonymous => TRUE, name => ano_new_act, linkTarget => newwindow, activated => TRUE, link => https://www.univention.de/, displayName =>  for fr_FR"
       },
       "dn": "cn=ano_new_act,cn=entry,cn=portals,cn=univention,dc=dev,dc=upx,dc=mydemoenv,dc=net",
+      "icon_url": "./icons/entries/ano_new_act.svg",
       "in_portal": true,
       "linkTarget": "newwindow",
       "links": [
@@ -149,7 +150,6 @@
           "value": "https://www.univention.de/"
         }
       ],
-      "logo_name": "./icons/entries/ano_new_act.svg",
       "name": {
         "de_DE": "ano_new_act for de_DE",
         "en_US": "ano_new_act for en_US",
@@ -167,6 +167,7 @@
         "fr_FR": "name => ano_same_act, anonymous => TRUE, allowedGroups => , activated => TRUE, linkTarget => samewindow, displayName => , link => https://www.heise.de/ for fr_FR"
       },
       "dn": "cn=ano_same_act,cn=entry,cn=portals,cn=univention,dc=dev,dc=upx,dc=mydemoenv,dc=net",
+      "icon_url": "./icons/entries/ano_same_act.svg",
       "in_portal": true,
       "linkTarget": "samewindow",
       "links": [
@@ -175,7 +176,6 @@
           "value": "https://www.heise.de/"
         }
       ],
-      "logo_name": "./icons/entries/ano_same_act.svg",
       "name": {
         "de_DE": "ano_same_act for de_DE",
         "en_US": "ano_same_act for en_US",
@@ -193,6 +193,7 @@
         "fr_FR": "Liste de révocation de certificats"
       },
       "dn": "cn=certificate-revocation,cn=entry,cn=portals,cn=univention,dc=dev,dc=upx,dc=mydemoenv,dc=net",
+      "icon_url": null,
       "in_portal": true,
       "linkTarget": "samewindow",
       "links": [
@@ -201,7 +202,6 @@
           "value": "/ucsCA.crl"
         }
       ],
-      "logo_name": null,
       "name": {
         "de_DE": "Zertifikat-Sperrliste",
         "en_US": "Certificate revocation list",
@@ -219,6 +219,7 @@
         "fr_FR": "allowedGroups => , name => log_def_act, anonymous => FALSE, link => https://www.arr-bonn.de/, displayName => , linkTarget => useportaldefault, activated => TRUE for fr_FR"
       },
       "dn": "cn=log_def_act,cn=entry,cn=portals,cn=univention,dc=dev,dc=upx,dc=mydemoenv,dc=net",
+      "icon_url": "./icons/entries/log_def_act.svg",
       "in_portal": true,
       "linkTarget": "useportaldefault",
       "links": [
@@ -227,7 +228,6 @@
           "value": "https://www.arr-bonn.de/"
         }
       ],
-      "logo_name": "./icons/entries/log_def_act.svg",
       "name": {
         "de_DE": "log_def_act for de_DE",
         "en_US": "log_def_act for en_US",
@@ -245,6 +245,7 @@
         "fr_FR": "allowedGroups => , name => log_embd_act, anonymous => FALSE, linkTarget => embedded, activated => TRUE, link => http://www.schmitz-rauschendorf.de/, displayName =>  for fr_FR"
       },
       "dn": "cn=log_embd_act,cn=entry,cn=portals,cn=univention,dc=dev,dc=upx,dc=mydemoenv,dc=net",
+      "icon_url": "./icons/entries/log_embd_act.svg",
       "in_portal": true,
       "linkTarget": "embedded",
       "links": [
@@ -253,7 +254,6 @@
           "value": "http://www.schmitz-rauschendorf.de/"
         }
       ],
-      "logo_name": "./icons/entries/log_embd_act.svg",
       "name": {
         "de_DE": "log_embd_act for de_DE",
         "en_US": "log_embd_act for en_US",
@@ -271,6 +271,7 @@
         "fr_FR": "displayName => , link => https://www.univention.de/, activated => TRUE, linkTarget => newwindow, anonymous => FALSE, name => log_new_act, allowedGroups =>  for fr_FR"
       },
       "dn": "cn=log_new_act,cn=entry,cn=portals,cn=univention,dc=dev,dc=upx,dc=mydemoenv,dc=net",
+      "icon_url": "./icons/entries/log_new_act.svg",
       "in_portal": true,
       "linkTarget": "newwindow",
       "links": [
@@ -279,7 +280,6 @@
           "value": "https://www.univention.de/"
         }
       ],
-      "logo_name": "./icons/entries/log_new_act.svg",
       "name": {
         "de_DE": "log_new_act for de_DE",
         "en_US": "log_new_act for en_US",
@@ -297,6 +297,7 @@
         "fr_FR": "linkTarget => samewindow, activated => TRUE, link => https://www.heise.de/, displayName => , allowedGroups => , anonymous => FALSE, name => log_same_act for fr_FR"
       },
       "dn": "cn=log_same_act,cn=entry,cn=portals,cn=univention,dc=dev,dc=upx,dc=mydemoenv,dc=net",
+      "icon_url": "./icons/entries/log_same_act.svg",
       "in_portal": true,
       "linkTarget": "samewindow",
       "links": [
@@ -305,7 +306,6 @@
           "value": "https://www.heise.de/"
         }
       ],
-      "logo_name": "./icons/entries/log_same_act.svg",
       "name": {
         "de_DE": "log_same_act for de_DE",
         "en_US": "log_same_act for en_US",
@@ -323,6 +323,7 @@
         "fr_FR": "Connectez-vous au portail"
       },
       "dn": "cn=login-ucs,cn=entry,cn=portals,cn=univention,dc=dev,dc=upx,dc=mydemoenv,dc=net",
+      "icon_url": "./icons/entries/login-ucs.svg",
       "in_portal": true,
       "linkTarget": "samewindow",
       "links": [
@@ -331,7 +332,6 @@
           "value": "/univention/login/?location=/univention/portal/"
         }
       ],
-      "logo_name": "./icons/entries/login-ucs.svg",
       "name": {
         "de_DE": "Anmelden",
         "en_US": "Login",
@@ -349,6 +349,7 @@
         "fr_FR": "Certificat racine"
       },
       "dn": "cn=root-cert,cn=entry,cn=portals,cn=univention,dc=dev,dc=upx,dc=mydemoenv,dc=net",
+      "icon_url": null,
       "in_portal": true,
       "linkTarget": "samewindow",
       "links": [
@@ -357,7 +358,6 @@
           "value": "/ucs-root-ca.crt"
         }
       ],
-      "logo_name": null,
       "name": {
         "de_DE": "Wurzelzertifikat",
         "en_US": "Root certificate",
@@ -375,6 +375,7 @@
         "fr_FR": "Module de libre-service (changer et réinitialiser des mots de passe)"
       },
       "dn": "cn=self-service,cn=entry,cn=portals,cn=univention,dc=dev,dc=upx,dc=mydemoenv,dc=net",
+      "icon_url": "./icons/entries/self-service.svg",
       "in_portal": true,
       "linkTarget": "useportaldefault",
       "links": [
@@ -383,7 +384,6 @@
           "value": "https://master.dev.upx.mydemoenv.net/univention/self-service/?header=try-hide#page=passwordchange"
         }
       ],
-      "logo_name": "./icons/entries/self-service.svg",
       "name": {
         "de_DE": "Passwort ändern",
         "en_US": "Change password",
@@ -400,6 +400,7 @@
         "en_US": "Manage profile"
       },
       "dn": "cn=self-service-my-profile,cn=entry,cn=portals,cn=univention,dc=dev,dc=upx,dc=mydemoenv,dc=net",
+      "icon_url": "./icons/entries/self-service-my-profile.png",
       "in_portal": true,
       "linkTarget": "useportaldefault",
       "links": [
@@ -408,7 +409,6 @@
           "value": "https://master.dev.upx.mydemoenv.net/univention/self-service/?header=try-hide#page=profiledata"
         }
       ],
-      "logo_name": "./icons/entries/self-service-my-profile.png",
       "name": {
         "de_DE": "Mein Profil",
         "en_US": "My Profile"
@@ -424,6 +424,7 @@
         "en_US": "Protect your account"
       },
       "dn": "cn=self-service-protect-account,cn=entry,cn=portals,cn=univention,dc=dev,dc=upx,dc=mydemoenv,dc=net",
+      "icon_url": "./icons/entries/self-service-protect-account.png",
       "in_portal": true,
       "linkTarget": "useportaldefault",
       "links": [
@@ -432,7 +433,6 @@
           "value": "https://master.dev.upx.mydemoenv.net/univention/self-service/?header=try-hide#page=setcontactinformation"
         }
       ],
-      "logo_name": "./icons/entries/self-service-protect-account.png",
       "name": {
         "de_DE": "Kontozugang schützen",
         "en_US": "Protect your account"
@@ -449,6 +449,7 @@
         "fr_FR": "Console de gestion Univention pour admin­is­trer le domaine UCS et le système local"
       },
       "dn": "cn=umc-domain,cn=entry,cn=portals,cn=univention,dc=dev,dc=upx,dc=mydemoenv,dc=net",
+      "icon_url": "./icons/entries/umc-domain.svg",
       "in_portal": true,
       "linkTarget": "newwindow",
       "links": [
@@ -457,7 +458,6 @@
           "value": "/univention/umc/"
         }
       ],
-      "logo_name": "./icons/entries/umc-domain.svg",
       "name": {
         "de_DE": "System- und Domäneneinstellungen",
         "en_US": "System and domain settings",
@@ -475,6 +475,7 @@
         "fr_FR": "Nouvelles, conseils et bonne pratique"
       },
       "dn": "cn=univentionblog,cn=entry,cn=portals,cn=univention,dc=dev,dc=upx,dc=mydemoenv,dc=net",
+      "icon_url": "./icons/entries/univentionblog.png",
       "in_portal": true,
       "linkTarget": "newwindow",
       "links": [
@@ -487,7 +488,6 @@
           "value": "https://www.univention.com/news/blog-en"
         }
       ],
-      "logo_name": "./icons/entries/univentionblog.png",
       "name": {
         "de_DE": "Univention Blog",
         "en_US": "Univention Blog",
@@ -505,6 +505,7 @@
         "fr_FR": "Impressions"
       },
       "dn": "cn=univentionfeedback,cn=entry,cn=portals,cn=univention,dc=dev,dc=upx,dc=mydemoenv,dc=net",
+      "icon_url": null,
       "in_portal": true,
       "linkTarget": "newwindow",
       "links": [
@@ -517,7 +518,6 @@
           "value": "https://www.univention.com/feedback/?umc=portal"
         }
       ],
-      "logo_name": null,
       "name": {
         "de_DE": "Feedback",
         "en_US": "Feedback",
@@ -534,6 +534,7 @@
         "en_US": "Univention Forum (Help)"
       },
       "dn": "cn=univentionforum,cn=entry,cn=portals,cn=univention,dc=dev,dc=upx,dc=mydemoenv,dc=net",
+      "icon_url": null,
       "in_portal": true,
       "linkTarget": "newwindow",
       "links": [
@@ -542,7 +543,6 @@
           "value": "https://help.univention.com"
         }
       ],
-      "logo_name": null,
       "name": {
         "de_DE": "Univention Forum (Hilfe)",
         "en_US": "Univention Forum (Help)"
@@ -559,6 +559,7 @@
         "fr_FR": "Site Internet Univention"
       },
       "dn": "cn=univentionwebsite,cn=entry,cn=portals,cn=univention,dc=dev,dc=upx,dc=mydemoenv,dc=net",
+      "icon_url": null,
       "in_portal": true,
       "linkTarget": "newwindow",
       "links": [
@@ -571,7 +572,6 @@
           "value": "https://www.univention.de"
         }
       ],
-      "logo_name": null,
       "name": {
         "de_DE": "Univention Webseite",
         "en_US": "Univention Website",
