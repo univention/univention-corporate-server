@@ -36,22 +36,17 @@ import time
 
 import pytest
 
-from .conftest import import_lib_module
 
-
-atjobs = import_lib_module("atjobs")
-
-
-def test_add_simple():
+def test_add_simple(atjobs):
     atjobs.add('ls')
 
 
-def test_add_later():
+def test_add_later(atjobs):
     j = atjobs.add('ls', time.time() + 120)
     assert atjobs.load(j.nr) is not None
 
 
-def test_comments():
+def test_comments(atjobs):
     comments = {'my': 'comment', 'another': 'comment #2'}
     j = atjobs.add('ls', time.time() + 120, comments)
     j = atjobs.load(j.nr, extended=True)
@@ -60,14 +55,14 @@ def test_comments():
 
 
 @pytest.mark.skip(reason='Why do I need comments to get command?')
-def test_command():
+def test_command(atjobs):
     j = atjobs.add('ls', time.time() + 120)
     j = atjobs.load(j.nr, extended=True)
     assert j.command == 'ls\n'
 
 
 @pytest.mark.xfail(reason='This is bad: No comment -> Broken new job')
-def test_reschedule():
+def test_reschedule(atjobs):
     exec_time = time.time() + 120
     exec_time_datetime = datetime.datetime.fromtimestamp(exec_time)
     exec_time_datetime = exec_time_datetime.replace(second=0, microsecond=0)
@@ -80,12 +75,12 @@ def test_reschedule():
     assert j2.command == 'ls\n'
 
 
-def test_reschedule_unknown():
+def test_reschedule_unknown(atjobs):
     with pytest.raises(AttributeError):
         atjobs.reschedule(-1)
 
 
-def test_remove():
+def test_remove(atjobs):
     j = atjobs.add('ls', time.time() + 120)
     j = atjobs.load(j.nr, extended=True)
     assert j is not None
@@ -95,7 +90,7 @@ def test_remove():
 
 
 @pytest.mark.skip()
-def test_running():
+def test_running(atjobs):
     j = atjobs.add('sleep 10')
     j = atjobs.load(j.nr, extended=True)
     assert str(j) == 'Job #{} (running)'.format(j.nr)

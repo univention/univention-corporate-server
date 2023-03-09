@@ -35,13 +35,8 @@ from argparse import Namespace
 
 import pytest
 
-from .conftest import import_lib_module
 
-
-umc = import_lib_module('umc')
-
-
-def test_HTTError():
+def test_HTTError(umc):
     _resp = Namespace(**{'getheader': lambda a, b: b})
     req = umc.Request('GET', '/')
     for code, Error in umc.HTTPError.codes.items():

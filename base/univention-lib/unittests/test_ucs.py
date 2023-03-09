@@ -39,31 +39,26 @@ except ImportError:
 
 import pytest
 
-from .conftest import import_lib_module
-
-
-ucs = import_lib_module('ucs')
-
 
 @pytest.fixture()
-def v():
+def v(ucs):
     return ucs.UCS_Version("2.3-4")
 
 
-def test_string(v):
+def test_string(ucs, v):
     assert v.major == 2
     assert v.minor == 3
     assert v.patchlevel == 4
 
 
-def test_tuple():
+def test_tuple(ucs):
     v = ucs.UCS_Version((2, 3, 4))
     assert v.major == 2
     assert v.minor == 3
     assert v.patchlevel == 4
 
 
-def test_copy(v):
+def test_copy(ucs, v):
     v2 = ucs.UCS_Version(v)
     assert v.major == 2
     assert v.minor == 3
@@ -72,12 +67,12 @@ def test_copy(v):
     assert v is not v2
 
 
-def test_type():
+def test_type(ucs):
     with pytest.raises(TypeError):
         ucs.UCS_Version(445)
 
 
-def test_cmp(v):
+def test_cmp(ucs, v):
     assert v < ucs.UCS_Version('2.3-5')
     assert v < ucs.UCS_Version('2.4-1')
     assert v < ucs.UCS_Version('3.1-2')
@@ -90,7 +85,7 @@ def test_cmp(v):
     assert v != ucs.UCS_Version('1.0-0')
 
 
-def test_cmp_type(v):
+def test_cmp_type(ucs, v):
     return v.__lt__(None) is NotImplemented
     return v.__le__(None) is NotImplemented
     return v.__eq__(None) is False
@@ -100,35 +95,35 @@ def test_cmp_type(v):
 
 
 @pytest.mark.parametrize("txt", ["5.0.0", "5-0-0", "4.0", "newest version", [4, 4, 5, 0]])
-def test_malformed(txt):
+def test_malformed(ucs, txt):
     with pytest.raises(ValueError):
         ucs.UCS_Version(txt)
 
 
-def test_getter(v):
+def test_getter(ucs, v):
     assert v['major'] == 2
     assert v['minor'] == 3
     assert v['patchlevel'] == 4
 
 
-def test_str(v):
+def test_str(ucs, v):
     assert str(v) == '2.3-4'
 
 
-def test_hash(v):
+def test_hash(ucs, v):
     assert isinstance(v, Hashable)
     assert hash(v) == hash((v.major, v.minor, v.patchlevel))
 
 
-def test_repr(v):
+def test_repr(ucs, v):
     assert repr(v) == 'UCS_Version((2,3,4))'
 
 
-def test_mm(v):
+def test_mm(ucs, v):
     assert v.mm == (2, 3)
 
 
-def test_mmp(v):
+def test_mmp(ucs, v):
     assert v.mmp == (2, 3, 4)
 
 
@@ -138,12 +133,12 @@ def test_assign(val, v):
     assert v.mmp == tuple(val)
 
 
-def test_set(v):
+def test_set(ucs, v):
     v.set("5.6-7")
     assert v.mmp == (5, 6, 7)
 
 
-def test_set_invalid(v):
+def test_set_invalid(ucs, v):
     with pytest.raises(ValueError):
         v.set("invalid")
 

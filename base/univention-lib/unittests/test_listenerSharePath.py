@@ -33,11 +33,6 @@
 
 import doctest
 
-from .conftest import import_lib_module
 
-
-listenerSharePath = import_lib_module('listenerSharePath')
-
-
-def test_docstrings():
+def test_docstrings(listenerSharePath):
     assert doctest.testmod(listenerSharePath)
