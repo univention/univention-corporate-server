@@ -34,7 +34,8 @@
 # <https://www.gnu.org/licenses/>.
 
 override_dh_auto_test:
-	univention-unittest
+	dh_auto_test
+	#univention-unittest
 
 %:
 	dh $@ --with python3,univention-l10n,ucr
