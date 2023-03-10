@@ -403,6 +403,7 @@ class Instance(Base):
             raise ServiceForbidden()
 
         user_attributes = [attr.strip() for attr in ucr.get('self-service/udm_attributes', '').split(',')]
+
         user = self.get_udm_user_by_dn(dn)
         user.set_defaults = True
         user.set_default_values()
@@ -418,7 +419,7 @@ class Instance(Base):
 
     def _get_user_attributes_descriptions(self):
         user_attributes = [attr.strip() for attr in ucr.get('self-service/udm_attributes', '').split(',')]
-
+        read_only_attributes = [attr.strip() for attr in ucr.get('self-service/udm_attributes/read-only', '').split(',')]
         widget_descriptions = []
         label_overwrites = {
             'jpegPhoto': _('Your picture'),
@@ -437,7 +438,7 @@ class Instance(Base):
                 'size': prop.size or prop.syntax.size,
                 'required': bool(prop.required),
                 'editable': bool(prop.may_change),
-                'readonly': not bool(prop.editable),
+                'readonly': not bool(prop.editable) or propname in read_only_attributes,
                 'multivalue': bool(prop.multivalue),
             }
             widget_description.update(prop.syntax.get_widget_options(prop))
@@ -563,6 +564,12 @@ class Instance(Base):
             raise ServiceForbidden()
 
         user_attributes = [attr.strip() for attr in ucr.get('self-service/udm_attributes', '').split(',')]
+        read_only_attributes = [attr.strip() for attr in ucr.get('self-service/udm_attributes/read-only', '').split(',')]
+
+        for attr in attributes:
+            if attr in read_only_attributes:
+                MODULE.error('set_user_attributes(): attribute %s is read-only' % (attr,))
+                raise UMC_Error(_('The attribute %s is read-only.') % (attr,))
         user = self.usersmod.object(None, lo, po, dn)
         user.open()
         for propname, value in attributes.items():

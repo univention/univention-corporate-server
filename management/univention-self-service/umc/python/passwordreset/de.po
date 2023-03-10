@@ -159,6 +159,11 @@ msgstr ""
 "Die erlaubte maximale Anzahl an Verbindungen zum Server wurde erreicht. "
 "Bitte versuchen Sie es in {} erneut."
 
+#: umc/python/passwordreset/__init__.py:572
+#, python-format
+msgid "The attribute %s is read-only."
+msgstr "Das Attribut %s ist schreibgeschützt."
+
 #: umc/python/passwordreset/__init__.py:574
 #, python-format
 msgid "The attributes could not be saved: %s"

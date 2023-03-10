@@ -12,6 +12,14 @@ Separator=,
 Elementtype=str
 Categories=self-service
 
+[self-service/udm_attributes/read-only]
+Description[en]=A comma-separated list of UDM attributes that sets UDM attributes specified in the UCR variable "self-service/udm-attributes" to "read-only".
+Description[de]=Eine kommaseparierte Liste von UDM-Attributen, welche die in der UCR-Variable "self-service/udm-attributes" spezifizierten UDM-Attribute auf "schreibgeschützt" setzt.
+Type=list
+Separator=,
+Elementtype=str
+Categories=self-service
+
 [umc/self-service/allow-authenticated-use]
 Description[de]=Aktiviert, dass keine erneute Passworteingabe notwendig ist, um das Self-Service "Profil" Modul benutzen zu können (Standardwert: true).
 Description[en]=Activates that no new password submission is required, to use the self service "Your profile" module (default value: true).
