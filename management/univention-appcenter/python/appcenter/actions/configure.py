@@ -42,7 +42,7 @@ from univention.appcenter.actions import StoreAppAction, UniventionAppAction
 from univention.appcenter.actions.install_base import StoreConfigAction
 from univention.appcenter.dcd import set_for_app
 from univention.appcenter.exceptions import ConfigureFailed
-from univention.appcenter.settings import FileSetting, SettingValueError
+from univention.appcenter.settings import FileSetting, SettingGetError, SettingValueError
 from univention.appcenter.ucr import ucr_save
 from univention.appcenter.utils import get_locale
 
@@ -59,7 +59,8 @@ class Configure(UniventionAppAction):
         parser.add_argument('--set', nargs='+', action=StoreConfigAction, metavar='KEY=VALUE', dest='set_vars', help='Sets the configuration variable. Example: --set some/variable=value some/other/variable="value 2"')
         parser.add_argument('--unset', nargs='+', metavar='KEY', help='Unsets the configuration variable. Example: --unset some/variable')
         parser.add_argument('--run-script', choices=['settings', 'install', 'upgrade', 'remove', 'no'], default='settings', help='Run configuration script to support a specific action - or not at all. Default: %(default)s')
-        parser.add_argument('--scope', choices=['inside', 'outside'], help=SUPPRESS)
+        parser.add_argument('--scope', choices=['inside', 'outside', 'distributed'], help=SUPPRESS)
+        parser.add_argument('--enforce', choices=['inside', 'outside', 'distributed'], help=SUPPRESS)
 
     def main(self, args):
         if args.list:
@@ -75,7 +76,14 @@ class Configure(UniventionAppAction):
                 self.log('%s: %s (%s)' % (setting.name, value, setting.description))
         else:
             self.log('Configuring %s' % args.app)
-            set_vars = (args.set_vars or {}).copy()
+            set_vars = {}
+            if args.enforce:
+                for setting in args.app.get_settings():
+                    try:
+                        set_vars[setting.name] = setting.get_value(args.app, scope=args.enforce)
+                    except SettingGetError:
+                        pass
+            set_vars.update(args.set_vars or {})
             for key in (args.unset or []):
                 set_vars[key] = None
             self._set_config(args.app, set_vars, args)
@@ -111,18 +119,15 @@ class Configure(UniventionAppAction):
                     break
             else:
                 other_settings[key] = value
-        distributed_config_set = False
         if together_config_settings.get('outside'):
             ucr_save(together_config_settings['outside'])
         if together_config_settings.get('distributed'):
-            if set_for_app(app, together_config_settings['distributed']):
-                self.log('Set distributed configuration. Skip running scripts now; will be done async later')
-                distributed_config_set = True
+            set_for_app(app, together_config_settings['distributed'])
         if together_config_settings.get('inside'):
             other_settings.update(together_config_settings['inside'])
         if other_settings:
             self._set_config_via_tool(app, other_settings)
-        if args.run_script != 'no' and not distributed_config_set:
+        if args.run_script != 'no':
             self._run_configure_script(app, args.run_script)
 
     def _set_config_via_tool(self, app, set_vars):

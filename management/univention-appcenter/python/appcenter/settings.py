@@ -52,6 +52,10 @@ from univention.appcenter.utils import _, app_is_running, container_mode, mkdir
 settings_logger = get_base_logger().getChild('settings')
 
 
+class SettingGetError(Exception):
+    pass
+
+
 class SettingValueError(Exception):
     pass
 
@@ -99,13 +103,13 @@ class Setting(TypedIniSectionObject):
             return ucr_run_filter(self.initial_value)
         return self.initial_value
 
-    def get_value(self, app, phase='Settings'):
+    def get_value(self, app, phase='Settings', scope=None):
         """Get the current value for this Setting. Easy implementation"""
-        if self.is_outside(app):
+        if self.is_outside(app) and (scope is None or scope == 'outside'):
             value = ucr_get(self.name)
-        elif self.is_distributed(app):
+        elif self.is_distributed(app) and (scope is None or scope == 'distributed'):
             value = get_from_app(app, self.name)
-        else:
+        elif (scope is None or scope == 'inside'):
             if app_is_running(app):
                 from univention.appcenter.actions import get_action
                 configure = get_action('configure')
@@ -114,6 +118,8 @@ class Setting(TypedIniSectionObject):
             else:
                 settings_logger.info('Cannot read %s while %s is not running' % (self.name, app))
                 value = None
+        else:
+            raise SettingGetError(self.name)
         try:
             value = self.sanitize_value(app, value)
         except SettingValueError:
