@@ -31,7 +31,7 @@
 
 import json
 from typing import Any, Iterator, List, Optional, Tuple
-from urllib.parse import urlparse
+from urllib.parse import quote, urlencode, urlparse
 
 import requests
 from requests.compat import json as requests_json
@@ -133,13 +133,13 @@ class DCD:
         Returns an iterator over the keys and their values.
         Unset values will be found with their default values (or None)
         """
-        data, _, request_id = self._req("GET", "/config/", params={"pattern": f"{pattern}"}, request_id=request_id)
+        data, _, request_id = self._req("GET", "/config/", params={"pattern": pattern}, request_id=request_id)
         for key in data["keys"]:
             yield key, self.get(key, request_id=request_id)
 
     def get(self, key: str, request_id: Optional[str] = None) -> Any:
         """Get one specific key from the database"""
-        data, _, _ = self._req("GET", f"/config/{key}", request_id=request_id)
+        data, _, _ = self._req("GET", f"/config/{quote(key)}", request_id=request_id)
         return data.get("value")
 
     def set(self, key: str, value: Any, request_id: Optional[str] = None) -> bool:
@@ -148,12 +148,12 @@ class DCD:
         A key needs to be registered first. And the value needs to be valid
         with respect to the JSON Schema.
         """
-        _, code, _ = self._req("PUT", f"/config/{key}", json={"value": value}, request_id=request_id)
+        _, code, _ = self._req("PUT", f"/config/{quote(key)}", json={"value": value}, request_id=request_id)
         return code < 400
 
     def unset(self, key: str, request_id: Optional[str] = None) -> bool:
         """Unset a key. Default values will still be returned."""
-        _, code, _ = self._req("DELETE", f"/config/{key}", request_id=request_id)
+        _, code, _ = self._req("DELETE", f"/config/{quote(key)}", request_id=request_id)
         return code < 400
 
     def schema(self, key: str, request_id: Optional[str] = None) -> dict:
@@ -161,7 +161,7 @@ class DCD:
         Get the currently registered schema for a key. Will raise a KeyError
         if the key is unknown
         """
-        data, _, _ = self._req("GET", f"/schema/{key}", request_id=request_id)
+        data, _, _ = self._req("GET", f"/schema/{quote(key)}", request_id=request_id)
         return data["json_schema"]
 
     def register(self, key: str, schema: dict, request_id: Optional[str] = None) -> bool:
@@ -170,7 +170,7 @@ class DCD:
         set, the new schema has to be valid for the set value. Otherwise, it
         will not be set. Returns the success
         """
-        _, code, _ = self._req("PUT", f"/schema/{key}", json={"json_schema": schema}, request_id=request_id)
+        _, code, _ = self._req("PUT", f"/schema/{quote(key)}", json={"json_schema": schema}, request_id=request_id)
         return code < 400
 
     def unregister(self, key: str, request_id: Optional[str] = None) -> bool:
@@ -178,7 +178,7 @@ class DCD:
         Unregisters the schema of a key. A potential value has to be unset
         before unregistering
         """
-        _, code, _ = self._req("DELETE", f"/schema/{key}", request_id=request_id)
+        _, code, _ = self._req("DELETE", f"/schema/{quote(key)}", request_id=request_id)
         return code < 400
 
     async def changes(self, keys: List[str], request_id: Optional[str] = None):
@@ -200,8 +200,9 @@ class DCD:
         else:
             scheme = 'wss'
         url = parsed._replace(scheme=scheme).geturl()
-        keys = "&keys=".join([f"{key}" for key in keys])
-        url = f"{url}/updates/?token={self.token}&keys={keys}"
+        params = [("token", self.token)] + [("keys", key) for key in keys]
+        params = urlencode(params)
+        url = f"{url}/updates/?{params}"
         async with connect(url) as websocket:
             while True:
                 try:
