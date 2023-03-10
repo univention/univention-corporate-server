@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 # -*- coding: utf-8 -*-
 
-# Copyright 2022 Univention GmbH
+# Copyright 2023 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -140,9 +140,7 @@ class DCD:
     def get(self, key: str, request_id: Optional[str] = None) -> Any:
         """Get one specific key from the database"""
         data, _, _ = self._req("GET", f"/config/{key}", request_id=request_id)
-        if "value" in data:
-            return data["value"]
-        return None
+        return data.get("value")
 
     def set(self, key: str, value: Any, request_id: Optional[str] = None) -> bool:
         """
