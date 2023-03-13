@@ -32,7 +32,12 @@
 
 export DH_VERBOSE=1
 export PYBUILD_VERBOSE=1
-#export PYBUILD_NAME=univention-ipcalc
+export PYBUILD_NAME=univention-ipcalc
+
+override_dh_install:
+	mkdir -p debian/tmp/usr/bin/
+	mv debian/python3-univention-ipcalc/usr/bin/univention-ipcalc6 debian/tmp/usr/bin/
+	dh_install
 
 %:
 	dh $@ --with python3 --buildsystem=pybuild
