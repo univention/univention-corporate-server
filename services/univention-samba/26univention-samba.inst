@@ -238,16 +238,14 @@ if [ -x /etc/init.d/winbind ]; then
 	/etc/init.d/winbind stop
 fi
 
-case "${server_role}" in
-domaincontroller_slave|memberserver)
+if [ "$samba_role" = memberserver ]; then
 	univention-config-registry set	samba/user="$ldap_hostdn" \
 									samba/user/pwdfile?"/etc/machine.secret"
 	smbpasswd -w "$(< /etc/machine.secret)"
 
 	echo "setting idmap secret for '*' from /etc/machine.secret"
 	net idmap set secret '*' "$(< /etc/machine.secret)" 2>/dev/null
-	;;
-*)
+else
 	univention-config-registry set	samba/user?"cn=admin,${ldap_base:?}" \
 									samba/user/pwdfile?"/etc/ldap.secret"
 	/etc/init.d/samba restart >/dev/null 2>&1
@@ -256,8 +254,7 @@ domaincontroller_slave|memberserver)
 
 	echo "setting idmap secret for '*' from /etc/ldap.secret"
 	net idmap set secret '*' "$(< /etc/ldap.secret)" 2>/dev/null
-	;;
-esac
+fi
 
 eval "$(univention-config-registry shell samba/user/pwdfile samba/user)"
 
