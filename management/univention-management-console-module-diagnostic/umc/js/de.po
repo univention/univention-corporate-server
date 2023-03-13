@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-management-console-module-diagnostic\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2020-03-02 15:14+0100\n"
+"POT-Creation-Date: 2023-03-13 16:06+0100\n"
 "PO-Revision-Date: 2022-09-29 16:29+0200\n"
 "Last-Translator: Univention GmbH <packages@univention.de>\n"
 "Language-Team: Univention GmbH <packages@univention.de>\n"
@@ -11,28 +11,28 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: umc/js/diagnostic.js:120
+#: umc/js/diagnostic.js:125
 msgid "\"%(module)s - %(flavor)s\" Module (as Administrator)"
 msgstr "Module \"%(module)s - %(flavor)s\" (als Administrator)"
 
-#: umc/js/diagnostic.js:219
+#: umc/js/diagnostic.js:226
 msgid "Analyzing for problems..."
 msgstr "Analysiere auf Probleme..."
 
-#: umc/js/diagnostic.js:60
+#: umc/js/diagnostic.js:63
 msgid "Conflict: "
 msgstr "Konflikt: "
 
-#: umc/js/diagnostic.js:59
+#: umc/js/diagnostic.js:62
 msgid "Critical: "
 msgstr "Kritisch: "
 
-#: umc/js/diagnostic.js:291
+#: umc/js/diagnostic.js:299
 #, javascript-format
 msgid "Diagnosis of \"%s\" was successful"
 msgstr "Diagnose von \"%s\" war erfolgreich"
 
-#: umc/js/diagnostic.js:196
+#: umc/js/diagnostic.js:203
 msgid ""
 "If the system is able to automatically repair found problems it offers the "
 "function as additional buttons. "
@@ -40,11 +40,11 @@ msgstr ""
 "Wenn das System in der Lage ist gefundene Probleme automatisch zu beheben "
 "werden die Funktionen als weitere Buttons angeboten. "
 
-#: umc/js/diagnostic.js:218 umc/js/diagnostic.js:326
+#: umc/js/diagnostic.js:225 umc/js/diagnostic.js:334
 msgid "No problems could be detected."
 msgstr "Es wurden keine Probleme entdeckt."
 
-#: umc/js/diagnostic.js:197
+#: umc/js/diagnostic.js:204
 msgid ""
 "Otherwise the problems can be solved manually with help of the displayed "
 "links to articles by using the linked UMC modules. "
@@ -52,31 +52,31 @@ msgstr ""
 "Andererseits können die Probleme mithilfe der angezeigten Links zu Artikeln "
 "und verlinkten UMC Modulen von Hand gelöst werden. "
 
-#: umc/js/diagnostic.js:62
+#: umc/js/diagnostic.js:65
 msgid "Problem repaired: "
 msgstr "Probleme repariert: "
 
-#: umc/js/diagnostic.js:64
+#: umc/js/diagnostic.js:67
 msgid "Problem: "
 msgstr "Problem: "
 
-#: umc/js/diagnostic.js:200
+#: umc/js/diagnostic.js:207
 msgid "Run system diagnosis"
 msgstr "System-Diagnose starten"
 
-#: umc/js/diagnostic.js:279
+#: umc/js/diagnostic.js:286
 msgid "Running full diagnosis..."
 msgstr "Komplette Diagnose läuft..."
 
-#: umc/js/diagnostic.js:63
+#: umc/js/diagnostic.js:66
 msgid "Success: "
 msgstr "Erfolg: "
 
-#: umc/js/diagnostic.js:61
+#: umc/js/diagnostic.js:64
 msgid "Warning: "
 msgstr "Warnung: "
 
-#: umc/js/diagnostic.js:195
+#: umc/js/diagnostic.js:202
 msgid ""
 "Within this module the system can be analyzed for various known problems. "
 msgstr ""

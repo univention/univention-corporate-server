@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-management-console-module-diagnostic\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2023-02-06 16:42+0100\n"
+"POT-Creation-Date: 2023-03-13 16:06+0100\n"
 "PO-Revision-Date: 2023-03-13 15:12+0100\n"
 "Last-Translator: Univention GmbH <packages@univention.de>\n"
 "Language-Team: Univention GmbH <packages@univention.de>\n"
@@ -83,8 +83,8 @@ msgstr "Alle SIDs existieren und die Namen sind konsistent."
 msgid "All SSL certificates valid."
 msgstr "Alle SSL Zertifikate sind gültig."
 
-#: umc/python/diagnostic/plugins/54_sources_list_check.py:45
 #: umc/python/diagnostic/plugins/31_file_permissions.py:50
+#: umc/python/diagnostic/plugins/54_sources_list_check.py:45
 msgid "All files ok."
 msgstr "Alle Dateien in Ordnung."
 
@@ -176,7 +176,7 @@ msgstr "Überprüfe freien Festplatten Platz"
 msgid "Check hostname RFC compliance"
 msgstr "Überprüfe Rechnernamen auf RFC Konformität"
 
-#: umc/python/diagnostic/plugins/66_udm_country_remap_from_st_to_c.py:46
+#: umc/python/diagnostic/plugins/66_udm_country_remap_from_st_to_c.py:47
 msgid "Check if UDM country can be remapped from st to c."
 msgstr ""
 "Kontrolliere, ob der UDM-Eigenschaft \"country\" \"c\" anstelle von \"st\" "
@@ -507,8 +507,8 @@ msgstr "Nameserver sind nicht ansprechbar"
 msgid "No S4 Connector rejects were found."
 msgstr "Keine nicht synchronisierten S4 Connector Objekte gefunden."
 
-#: umc/python/diagnostic/plugins/40_samba_tool_dbcheck.py:40
 #: umc/python/diagnostic/plugins/41_samba_tool_showrepl.py:56
+#: umc/python/diagnostic/plugins/40_samba_tool_dbcheck.py:40
 msgid "No errors found."
 msgstr "Keine Fehler gefunden."
 
@@ -603,9 +603,9 @@ msgstr ""
 "In ausgehend {nc!r}: Fehler während der DRS Replikation nach {source} "
 "({estring})."
 
-#: umc/python/diagnostic/plugins/40_samba_tool_dbcheck.py:53
-#: umc/python/diagnostic/plugins/66_udm_country_remap_from_st_to_c.py:57
+#: umc/python/diagnostic/plugins/66_udm_country_remap_from_st_to_c.py:58
 #: umc/python/diagnostic/plugins/63_proof_uniqueMembers.py:54
+#: umc/python/diagnostic/plugins/40_samba_tool_dbcheck.py:53
 #, python-brace-format
 msgid "Output of `{cmd}`:"
 msgstr "Ausgabe von `{cmd}`:"
@@ -822,18 +822,6 @@ msgstr ""
 msgid "Test again"
 msgstr "Erneut testen"
 
-#: umc/python/diagnostic/plugins/66_udm_country_remap_from_st_to_c.py:47
-msgid "The user property \"country\" is currently erroneously mapped to the LDAP attribute \"st\". \"st\" represents a state (province) while the correct LDAP attribute \"c\" represents a country. The migration will check and move all LDAP data from \"st\" to \"c\" for all users and user templates and install a domain wide UCR policy to change the fields in UDM. If this behavior is not wanted this check can be disabled by setting the UCR variable \"diagnostic/check/disable/66_udm_country_remap_from_st_to_c\" to true."
-msgstr ""
-"Die Benutzereigenschaft \"country\" (Land)  ist derzeit fälschlicherweise "
-"dem LDAP-Attribut \"st\" in UDM zugewiesen, welches ein Bundesland repräsentiert. "
-"Das korrekte LDAP-Attribut \"c\" repräsentiert ein Land. Die Migration wird "
-"sämtliche LDAP Daten kontrollieren, die vorhandenen Werte von Benutzern und "
-"Benutzervorlagen verschieben und eine domänenweite UCR-Richtlinie zum Ändern "
-"der Eigenschaften in UDM installieren. Wenn dieses Verhalten nicht erwünscht "
-"ist kann dieser Test durch setzen der UCR-Variable \"diagnostic/"
-"check/disable/66_udm_country_remap_from_st_to_c\" auf \"true\" deaktiviert werden."
-
 #: umc/python/diagnostic/plugins/58_check_memberOf.py:42
 msgid ""
 "The \"memberOf\" group membership attribute is not available in the LDAP "
@@ -880,6 +868,11 @@ msgid ""
 msgstr ""
 "Die UCR-Variable {variable!r} ist nicht gesetzt, aber notwendig für den S4 "
 "Connector."
+
+#: umc/python/diagnostic/plugins/66_udm_country_remap_from_st_to_c.py:106
+msgid "The automation script dry-run failed:"
+msgstr ""
+"Der Testdurchlauf des Scripts zur automatischen Migration ist fehlgeschlagen:"
 
 #: umc/python/diagnostic/plugins/21_check_join_status.py:42
 msgid "The check for the join status was succsesful."
@@ -950,6 +943,10 @@ msgstr ""
 msgid "The limits have been adjusted to the suggested value."
 msgstr "Die Limits wurden auf die empfohlenen Werte erhöht."
 
+#: umc/python/diagnostic/plugins/66_udm_country_remap_from_st_to_c.py:62
+msgid "The migration failed:"
+msgstr "Die Migration ist fehlgeschlagen:"
+
 #: umc/python/diagnostic/plugins/55_user_migration.py:72
 #, python-format
 msgid "The migration failed: %s"
@@ -1013,7 +1010,7 @@ msgstr ""
 msgid "The registration failed: %s"
 msgstr "Die Registrierung schlug fehl: %s"
 
-#: umc/python/diagnostic/plugins/66_udm_country_remap_from_st_to_c.py:97
+#: umc/python/diagnostic/plugins/66_udm_country_remap_from_st_to_c.py:101
 msgid "The script would apply the following changes:"
 msgstr "Das Script würde folgende Änderungen auf dem System anwenden:"
 
@@ -1047,6 +1044,27 @@ msgid ""
 msgstr ""
 "Der SSH Host-Key des entfernten Rechners hat sich geändert (vielleicht wurde "
 "der Rechner neu installiert). "
+
+#: umc/python/diagnostic/plugins/66_udm_country_remap_from_st_to_c.py:48
+msgid ""
+"The user property \"country\" is currently erroneously mapped to the LDAP "
+"attribute \"st\". \"st\" represents a state (province) while the correct "
+"LDAP attribute \"c\" represents a country. The migration will check and move "
+"all LDAP data from \"st\" to \"c\" for all users and user templates and "
+"install a domain wide UCR policy to change the fields in UDM. If this "
+"behavior is not wanted this check can be disabled by setting the UCR "
+"variable \"diagnostic/check/disable/66_udm_country_remap_from_st_to_c\" to "
+"true."
+msgstr ""
+"Die Benutzereigenschaft \"country\" (Land)  ist derzeit fälschlicherweise "
+"dem LDAP-Attribut \"st\" in UDM zugewiesen, welches ein Bundesland "
+"repräsentiert. Das korrekte LDAP-Attribut \"c\" repräsentiert ein Land. Die "
+"Migration wird sämtliche LDAP Daten kontrollieren, die vorhandenen Werte von "
+"Benutzern und Benutzervorlagen verschieben und eine domänenweite UCR-"
+"Richtlinie zum Ändern der Eigenschaften in UDM installieren. Wenn dieses "
+"Verhalten nicht erwünscht ist kann dieser Test durch setzen der UCR-Variable "
+"\"diagnostic/check/disable/66_udm_country_remap_from_st_to_c\" auf \"true\" "
+"deaktiviert werden."
 
 #: umc/python/diagnostic/plugins/65_check_repository_config.py:136
 #, python-format
@@ -1278,7 +1296,7 @@ msgstr ""
 "Sie können `/usr/share/univention-directory-manager-tools/"
 "proof_uniqueMembers` ausführen um das Problem zu beheben."
 
-#: umc/python/diagnostic/plugins/66_udm_country_remap_from_st_to_c.py:94
+#: umc/python/diagnostic/plugins/66_udm_country_remap_from_st_to_c.py:98
 msgid ""
 "You can run `/usr/share/univention-directory-manager-tools/udm-remap-country-"
 "from-st-to-c` to migrate."
@@ -1344,7 +1362,7 @@ msgstr ""
 "keine Probleme in der LDAP-Datenbank mit Gruppenmitgliedschafts-Attributen "
 "gefunden."
 
-#: umc/python/diagnostic/plugins/66_udm_country_remap_from_st_to_c.py:86
+#: umc/python/diagnostic/plugins/66_udm_country_remap_from_st_to_c.py:90
 msgid ""
 "`/usr/share/univention-directory-manager-tools/udm-remap-country-from-st-to-"
 "c` successfully migrated your UCS instance to the new UDM country mapping."
@@ -1352,14 +1370,6 @@ msgstr ""
 "`/usr/share/univention-directory-manager-tools/udm-remap-country-from-st-to-"
 "c` hat erfolgreich die Benutzereigenschaft \"country\" zu seinem neuen "
 "Mapping migriert."
-
-#: umc/python/diagnostic/plugins/66_udm_country_remap_from_st_to_c.y:102
-msgid "The migration failed:"
-msgstr "Die Migration ist fehlgeschlagen:"
-
-#: umc/python/diagnostic/plugins/66_udm_country_remap_from_st_to_c.y:102
-msgid "The automation script dry-run failed:"
-msgstr "Der Testdurchlauf des Scripts zur automatischen Migration ist fehlgeschlagen:"
 
 #: umc/python/diagnostic/plugins/46_kerberos_ddns_update.py:63
 #, python-brace-format
@@ -1440,7 +1450,7 @@ msgstr "https://help.univention.com/t/samba4-max-open-files/1758"
 msgid "https://tools.ietf.org/html/rfc1123#section-2"
 msgstr "https://tools.ietf.org/html/rfc1123#section-2"
 
-#: umc/python/diagnostic/plugins/66_udm_country_remap_from_st_to_c.py:77
+#: umc/python/diagnostic/plugins/66_udm_country_remap_from_st_to_c.py:81
 msgid "migrate LDAP data"
 msgstr "Migriere LDAP daten"
 
