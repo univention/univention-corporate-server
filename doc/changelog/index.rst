@@ -1027,10 +1027,15 @@ Univention Configuration Registry module
 ========================================
 
 * In the UCR module of the management console the following deprecated
-  variables are hidden and therefore no longer displayed:
-  * :envvar:`repository/online/{prefix,port}`
-  * :envvar:`repository/online/component/*/{prefix,port,username,password,unmaintained}`
-  (:uv:bug:`55044`).
+  variables are hidden and therefore no longer displayed (:uv:bug:`55044`):
+
+  * :envvar:`repository/online/prefix`
+  * :envvar:`repository/online/port`
+  * :envvar:`repository/online/component/*/prefix`
+  * :envvar:`repository/online/component/*/port`
+  * :envvar:`repository/online/component/*/username`
+  * :envvar:`repository/online/component/*/password`
+  * :envvar:`repository/online/component/*/unmaintained`
 
 * The UCR module now displays errors regarding the type constraints
   (:uv:bug:`55573`).
