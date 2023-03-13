@@ -1,0 +1,34 @@
+Source: univention-management-console-module-join
+Section: univention
+Priority: optional
+Maintainer: Univention GmbH <packages@univention.de>
+Standards-Version: 3.5.2
+Build-Depends:
+ debhelper-compat (=13),
+ dh-python,
+ python3-all,
+ univention-config-dev (>= 15.0.3),
+ univention-management-console-dev (>= 12.0.2),
+
+Package: univention-management-console-module-join
+Architecture: all
+Depends:
+ python3-apt,
+ python3-dnspython,
+ python3-notifier,
+ univention-directory-manager-tools (>> 7.0.147),
+ univention-join (= ${source:Version}),
+ univention-management-console-module-lib (>= 3.0.0-1),
+ univention-management-console-server (>= 11.0.4-37),
+ univention-updater,
+ ${misc:Depends},
+ ${python3:Depends},
+Provides:
+ ${python3:Provides},
+Description: UMC module for domain join
+ This package contains the UMC module for domain join actions.
+ .
+ It is part of Univention Corporate Server (UCS), an
+ integrated, directory driven solution for managing
+ corporate environments. For more information about UCS,
+ refer to: https://www.univention.de/
