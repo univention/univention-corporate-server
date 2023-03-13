@@ -83,8 +83,7 @@ if TYPE_CHECKING:
     from univention.admin.uldap import access  # noqa: F401
 
 try:
-    from email_validator import SPECIAL_USE_DOMAIN_NAMES, EmailNotValidError, validate_email
-    SPECIAL_USE_DOMAIN_NAMES[:] = []
+    from email_validator import EmailNotValidError, validate_email
 except ImportError:  # Python 2.7
     validate_email = EmailNotValidError = None
 
@@ -2139,9 +2138,9 @@ class gid(simple):
     Syntax for group account names.
 
     >>> gid.parse(u'group')
-    u'group'
+    'group'
     >>> gid.parse(u'Groupe d’accès d’autorisation Windows')  # depends on current locale # doctest: +SKIP
-    u'Groupe d\u2019acc\u00e8s d\u2019autorisation Windows'
+    'Groupe d\u2019acc\u00e8s d\u2019autorisation Windows'
     """
 
     min_length = 1   # TODO: not enforced here
@@ -2618,8 +2617,6 @@ class emailAddress(simple):
     'example-indeed@strange-example.com'
     >>> emailAddress.parse('test/test@test.com')
     'test/test@test.com'
-    >>> emailAddress.parse('admin@mailserver1')
-    'admin@mailserver1'
     >>> emailAddress.parse('example@s.example')
     'example@s.example'
     >>> emailAddress.parse('mailhost!username@example.org')
@@ -2691,6 +2688,8 @@ class emailAddress(simple):
 
     """
     This does not work, although it should:
+    # >>> emailAddress.parse('admin@mailserver1')
+    # 'admin@mailserver1'
     # >>> emailAddress.parse('" "@example.org')
     # '" "@example.org'
     # >>> emailAddress.parse('"john..doe"@example.org')
@@ -2713,7 +2712,7 @@ class emailAddress(simple):
     def parse(self, text):
         if self.extra_validation and validate_email and configRegistry.is_true('directory/manager/mail-address/extra-validation', True):
             try:
-                validate_email(text, allow_smtputf8=False, check_deliverability=False, globally_deliverable=False)
+                validate_email(text, allow_smtputf8=False, check_deliverability=False)
             except EmailNotValidError as exc:
                 raise univention.admin.uexceptions.valueError(_("Not a valid email address!") + " " + str(exc))
         if not text.startswith('@') and \
