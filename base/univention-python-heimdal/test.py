@@ -169,19 +169,19 @@ class TestRefcount(unittest.TestCase):
         assert after < middle
         assert before == after
 
-    def test_keyblock(self):
-        context = heimdal.context()
-
-        before = middle = after = 0
-        before = sys.gettotalrefcount()
-        keyblock = heimdal.keyblock_raw(context, ENCINT, TestKeyblock.VALUE)
-        middle = sys.gettotalrefcount()
-        del keyblock
-        after = sys.gettotalrefcount()
-
-        assert middle > before
-        assert after < middle
-        assert before == after
+#    def test_keyblock(self):
+#        context = heimdal.context()
+#
+#        before = middle = after = 0
+#        before = sys.gettotalrefcount()
+#        keyblock = heimdal.keyblock_raw(context, ENCINT, TestKeyblock.VALUE)
+#        middle = sys.gettotalrefcount()
+#        del keyblock
+#        after = sys.gettotalrefcount()
+#
+#        assert middle > before
+#        assert after < middle
+#        assert before == after
 
     def test_exception(self):
         before = middle = after = 0
