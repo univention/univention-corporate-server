@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: univention-management-console-module-diagnostic\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
 "POT-Creation-Date: 2023-02-06 16:42+0100\n"
-"PO-Revision-Date: 2022-10-17 19:54+0200\n"
+"PO-Revision-Date: 2023-03-13 15:12+0100\n"
 "Last-Translator: Univention GmbH <packages@univention.de>\n"
 "Language-Team: Univention GmbH <packages@univention.de>\n"
 "Language: de\n"
@@ -275,14 +275,14 @@ msgstr "Konnte kein Zertifikat in {{{link}}} finden"
 #: umc/python/diagnostic/plugins/04_saml_certificate_check.py:236
 #: umc/python/diagnostic/plugins/04_saml_certificate_check.py:245
 msgid "Failed to load certificate {cert!r}: {exc}"
-msgstr "Zerifikat {cert!r} konnte nicht geladen werden: {exc}"
+msgstr "Zertifikat {cert!r} konnte nicht geladen werden: {exc}"
 
 #: umc/python/diagnostic/plugins/04_saml_certificate_check.py:160
 #: umc/python/diagnostic/plugins/04_saml_certificate_check.py:170
 #: umc/python/diagnostic/plugins/04_saml_certificate_check.py:273
 #, python-brace-format
 msgid "Failed to load certificate {{{link}}}: {exc}"
-msgstr "Zerifikat {{{link}}} konnte nicht geladen werden: {exc}"
+msgstr "Zertifikat {{{link}}} konnte nicht geladen werden: {exc}"
 
 #: umc/python/diagnostic/plugins/31_file_permissions.py:61
 msgid "File {path!r} does not exist."
