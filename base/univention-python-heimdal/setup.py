@@ -50,7 +50,7 @@ realname, email_address = parseaddr(dsc['Maintainer'])
 
 setup(
     name=dch.package,
-    version=dch.version.full_version,
+    version=dch.version.full_version.split('A~')[0],
     description='Heimdal Kerberos Python bindings',
     maintainer=realname,
     maintainer_email=email_address,
