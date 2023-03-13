@@ -1,113 +1,113 @@
-univention-join (12.0.5-3) unstable; urgency=medium
+univention-management-console-module-join (12.0.5-3) unstable; urgency=medium
 
   * Bug #55870: move umc-join into separate source package
 
  -- Florian Best <best@univention.de>  Mon, 13 Mar 2023 11:41:26 +0100
 
-univention-join (12.0.5-2) unstable; urgency=medium
+univention-management-console-module-join (12.0.5-2) unstable; urgency=medium
 
   * Bug #42330: Remove old maintainer script package update code
 
  -- Philipp Hahn <hahn@univention.de>  Mon, 06 Feb 2023 14:21:33 +0100
 
-univention-join (12.0.5-1) unstable; urgency=medium
+univention-management-console-module-join (12.0.5-1) unstable; urgency=medium
 
   * Bug #31771: migrate tabs to spaces
 
  -- Florian Best <best@univention.de>  Fri, 03 Feb 2023 04:17:40 +0100
 
-univention-join (12.0.4-3) unstable; urgency=medium
+univention-management-console-module-join (12.0.4-3) unstable; urgency=medium
 
   * Bug #54967: filter out UDM warnings in univention-server-join
 
  -- Florian Best <best@univention.de>  Thu, 11 Aug 2022 13:40:59 +0200
 
-univention-join (12.0.4-2) unstable; urgency=medium
+univention-management-console-module-join (12.0.4-2) unstable; urgency=medium
 
   * Bug #54967: fix univention-server-join with multiple MAC addresses
 
  -- Florian Best <best@univention.de>  Wed, 13 Jul 2022 11:51:13 +0200
 
-univention-join (12.0.4-1) unstable; urgency=medium
+univention-management-console-module-join (12.0.4-1) unstable; urgency=medium
 
   * Bug #54706: drop Python 3 package files
 
  -- Florian Best <best@univention.de>  Mon, 13 Jun 2022 12:21:57 +0200
 
-univention-join (12.0.3-14) unstable; urgency=medium
+univention-management-console-module-join (12.0.3-14) unstable; urgency=medium
 
   * Bug #33255: refactoring of univention-join line parser for read out of joinscript output
 
  -- Christian Castens <castens@univention.de>  Wed, 01 Jun 2022 15:45:40 +0200
 
-univention-join (12.0.3-13) unstable; urgency=medium
+univention-management-console-module-join (12.0.3-13) unstable; urgency=medium
 
   * Bug #33255: make Domain Join progress bar show currently executed join script
 
  -- Christian Castens <castens@univention.de>  Mon, 23 May 2022 13:03:00 +0200
 
-univention-join (12.0.3-12) unstable; urgency=medium
+univention-management-console-module-join (12.0.3-12) unstable; urgency=medium
 
   * Bug #53100: Code cleanup
 
  -- Ivan Barbecho Delgado <delgado.extern@univention.de>  Thu, 03 Feb 2022 15:00:21 +0100
 
-univention-join (12.0.3-11) unstable; urgency=medium
+univention-management-console-module-join (12.0.3-11) unstable; urgency=medium
 
   * Bug #53100: Passes credentials with an authentication file to remove
     credentials in clear text
 
  -- Ivan Barbecho Delgado <delgado.extern@univention.de>  Tue, 25 Jan 2022 14:12:36 +0100
 
-univention-join (12.0.3-10) unstable; urgency=medium
+univention-management-console-module-join (12.0.3-10) unstable; urgency=medium
 
   * Bug #53941: fixup for log truncation
 
  -- Jan Luttermann <luttermann@univention.de>  Fri, 26 Nov 2021 15:41:57 +0100
 
-univention-join (12.0.3-9) unstable; urgency=medium
+univention-management-console-module-join (12.0.3-9) unstable; urgency=medium
 
   * Bug #53941: fixed the join log truncation in umc
 
  -- Jan Luttermann <luttermann@univention.de>  Thu, 25 Nov 2021 14:21:12 +0100
 
-univention-join (12.0.3-8) unstable; urgency=medium
+univention-management-console-module-join (12.0.3-8) unstable; urgency=medium
 
   * Bug #53181: fix password encoding
 
  -- Jürn Brodersen <brodersen@univention.de>  Wed, 02 Jun 2021 12:02:58 +0200
 
-univention-join (12.0.3-7) unstable; urgency=medium
+univention-management-console-module-join (12.0.3-7) unstable; urgency=medium
 
   * Bug #52453: adjust style of join module
 
  -- Johannes Keiser <keiser@univention.de>  Tue, 27 Apr 2021 10:54:50 +0200
 
-univention-join (12.0.3-6) unstable; urgency=medium
+univention-management-console-module-join (12.0.3-6) unstable; urgency=medium
 
   * Bug #52941: added new icon design for domain join
 
  -- Jan Luttermann <luttermann@univention.de>  Fri, 23 Apr 2021 14:08:50 +0200
 
-univention-join (12.0.3-5) unstable; urgency=medium
+univention-management-console-module-join (12.0.3-5) unstable; urgency=medium
 
   * Bug #52941: update module icon for portal
 
  -- Johannes Keiser <keiser@univention.de>  Wed, 14 Apr 2021 09:59:02 +0200
 
-univention-join (12.0.3-4) unstable; urgency=medium
+univention-management-console-module-join (12.0.3-4) unstable; urgency=medium
 
   * Bug #52941: added module icon for portal
 
  -- Jan Luttermann <jluttermann@linux.fritz.box>  Wed, 24 Mar 2021 11:14:00 +0100
 
-univention-join (12.0.3-3) unstable; urgency=medium
+univention-management-console-module-join (12.0.3-3) unstable; urgency=medium
 
   * Bug #52437: Increment joinscript version by 10 relative to 4.4-7
 
  -- Arvid <requate@univention.de>  Mon, 22 Mar 2021 18:08:41 +0100
 
-univention-join (12.0.3-2) unstable; urgency=low
+univention-management-console-module-join (12.0.3-2) unstable; urgency=low
 
   * Bug #51624: During the update from UCS 4.4 to UCS 5.0 the execution of
     joinscripts is postponed depending on the phase read from the updater
@@ -116,57 +116,57 @@ univention-join (12.0.3-2) unstable; urgency=low
 
  -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Mon, 15 Mar 2021 12:38:33 +0100
 
-univention-join (12.0.3-1) unstable; urgency=medium
+univention-management-console-module-join (12.0.3-1) unstable; urgency=medium
 
   * Bug #51330: UMC module join migrated to python 3
 
  -- Jan Luttermann <luttermann@univention.de>  Tue, 26 Jan 2021 19:02:42 +0100
 
-univention-join (12.0.2-4) unstable; urgency=medium
+univention-management-console-module-join (12.0.2-4) unstable; urgency=medium
 
   * Bug #52453: adjust design of join module
 
  -- Johannes Keiser <keiser@univention.de>  Tue, 26 Jan 2021 09:30:07 +0100
 
-univention-join (12.0.2-3) unstable; urgency=medium
+univention-management-console-module-join (12.0.2-3) unstable; urgency=medium
 
   * Bug #52453: UCS 5 design - adjust styling
 
  -- Johannes Keiser <keiser@univention.de>  Fri, 11 Dec 2020 08:47:56 +0100
 
-univention-join (12.0.2-2) unstable; urgency=medium
+univention-management-console-module-join (12.0.2-2) unstable; urgency=medium
 
   * Bug #52437: Increase joinscript version and add --ucsversionstart
     and --ucsversionend to the ucs_registerLDAPExtension call
 
  -- Arvid <requate@univention.de>  Thu, 26 Nov 2020 16:24:27 +0100
 
-univention-join (12.0.2-1) unstable; urgency=medium
+univention-management-console-module-join (12.0.2-1) unstable; urgency=medium
 
   * Bug #43687: use systemctl to start stop or restart univention-directory-notifier
 
  -- Sebastian Lobinger <lobinger@univention.de>  Thu, 19 Nov 2020 18:49:42 +0100
 
-univention-join (12.0.1-2) unstable; urgency=medium
+univention-management-console-module-join (12.0.1-2) unstable; urgency=medium
 
   * Bug #46985: Show an error and help if no scripts were provided with --run-scripts
 
  -- Julia Bremer <bremer@univention.de>  Thu, 19 Nov 2020 09:44:44 +0100
 
-univention-join (12.0.1-1) unstable; urgency=medium
+univention-management-console-module-join (12.0.1-1) unstable; urgency=medium
 
   * Bug #43686: use systemctl to restart univention-directory-listener
 
  -- Sebastian Lobinger <lobinger@univention.de>  Fri, 30 Oct 2020 12:08:20 +0100
 
-univention-join (12.0.0-9) unstable; urgency=medium
+univention-management-console-module-join (12.0.0-9) unstable; urgency=medium
 
   * Bug #49898: univention-join-hooks cannot use python2.7 any longer
     because it uses udm which requires python3-samba.
 
  -- Arvid <requate@univention.de>  Fri, 23 Oct 2020 09:55:38 +0200
 
-univention-join (12.0.0-8) unstable; urgency=low
+univention-management-console-module-join (12.0.0-8) unstable; urgency=low
 
   * Bug #51624: During the update from UCS 4.4 to UCS 5.0 the execution of
     joinscripts is postponed depending on the phase read from the updater
@@ -174,7 +174,7 @@ univention-join (12.0.0-8) unstable; urgency=low
 
  -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Fri, 16 Oct 2020 17:48:59 +0200
 
-univention-join (12.0.0-7) unstable; urgency=low
+univention-management-console-module-join (12.0.0-7) unstable; urgency=low
 
   * Bug #52211: Move join function to separate join.sh
   * Bug #48730: Only call join scripts on joined system
@@ -182,766 +182,766 @@ univention-join (12.0.0-7) unstable; urgency=low
 
  -- Philipp Hahn <hahn@univention.de>  Tue, 13 Oct 2020 16:43:19 +0200
 
-univention-join (12.0.0-6) unstable; urgency=medium
+univention-management-console-module-join (12.0.0-6) unstable; urgency=medium
 
   * Bug #42374: Wording fixes
 
  -- Arvid <requate@univention.de>  Mon, 05 Oct 2020 16:20:39 +0200
 
-univention-join (12.0.0-5) unstable; urgency=medium
+univention-management-console-module-join (12.0.0-5) unstable; urgency=medium
 
   * Bug #42374: Wording - Master -> Primary; Slave -> Replica
 
  -- Dirk Wiesenthal <wiesenthal@univention.de>  Fri, 25 Sep 2020 01:31:38 +0200
 
-univention-join (12.0.0-4) unstable; urgency=medium
+univention-management-console-module-join (12.0.0-4) unstable; urgency=medium
 
   * Bug #51625: prevent Systems between UCS 4.0 and UCS 4.4-5 to join into the
   	domain
 
  -- Florian Best <best@univention.de>  Thu, 13 Aug 2020 13:54:07 +0200
 
-univention-join (12.0.0-3) unstable; urgency=medium
+univention-management-console-module-join (12.0.0-3) unstable; urgency=medium
 
   * Bug #35561: fix exitcode of univention-run-join-scripts
 
  -- Florian Best <best@univention.de>  Thu, 16 Jul 2020 15:43:53 +0200
 
-univention-join (12.0.0-1) unstable; urgency=medium
+univention-management-console-module-join (12.0.0-1) unstable; urgency=medium
 
   * Bug #51419: UCS-5.0-0 version bump
 
  -- Dirk Wiesenthal <wiesenthal@univention.de>  Fri, 05 Jun 2020 18:06:21 +0200
 
-univention-join (11.0.1-30) unstable; urgency=low
+univention-management-console-module-join (11.0.1-30) unstable; urgency=low
 
   * Bug #51374: Make Admin diary optional
 
  -- Philipp Hahn <hahn@univention.de>  Fri, 29 May 2020 12:24:37 +0200
 
-univention-join (11.0.1-29) unstable; urgency=medium
+univention-management-console-module-join (11.0.1-29) unstable; urgency=medium
 
   * Bug #51095: make UCR templates compatible to python3
 
  -- Florian Best <best@univention.de>  Tue, 14 Apr 2020 11:09:01 +0200
 
-univention-join (11.0.1-28) unstable; urgency=medium
+univention-management-console-module-join (11.0.1-28) unstable; urgency=medium
 
   * Bug #49036: Fix wrong permission set in 20univention-join.inst
 
  -- Julia Bremer <bremer@univention.de>  Thu, 12 Dec 2019 17:34:06 +0100
 
-univention-join (11.0.1-27) unstable; urgency=medium
+univention-management-console-module-join (11.0.1-27) unstable; urgency=medium
 
   * Bug #49036: Fix wrong permission set in 20univention-join.inst
 
  -- Julia Bremer <bremer@univention.de>  Thu, 12 Dec 2019 16:39:39 +0100
 
-univention-join (11.0.1-26) unstable; urgency=medium
+univention-management-console-module-join (11.0.1-26) unstable; urgency=medium
 
   * Bug #45115: move univention-fetch-certificate to univention-ssl
 
  -- Dirk Wiesenthal <wiesenthal@univention.de>  Thu, 31 Oct 2019 11:53:47 +0100
 
-univention-join (11.0.1-25) unstable; urgency=medium
+univention-management-console-module-join (11.0.1-25) unstable; urgency=medium
 
   * Bug #45115: use univention-fetch-certificate in univention-join
 
  -- Felix Botner <botner@univention.de>  Tue, 29 Oct 2019 15:29:05 +0100
 
-univention-join (11.0.1-24) unstable; urgency=medium
+univention-management-console-module-join (11.0.1-24) unstable; urgency=medium
 
   * Bug #45115: use univention-fetch-certificate in univention-join
 
  -- Felix Botner <botner@univention.de>  Tue, 29 Oct 2019 15:21:53 +0100
 
-univention-join (11.0.1-23) unstable; urgency=medium
+univention-management-console-module-join (11.0.1-23) unstable; urgency=medium
 
   * Bug #45115: use univention-fetch-certificate in univention-join
 
  -- Felix Botner <botner@univention.de>  Tue, 29 Oct 2019 15:17:16 +0100
 
-univention-join (11.0.1-22) unstable; urgency=medium
+univention-management-console-module-join (11.0.1-22) unstable; urgency=medium
 
   * Bug #45115: based on dwiesent/bug45115, added univention-fetch-certificate
 
  -- Felix Botner <botner@univention.de>  Mon, 28 Oct 2019 18:05:29 +0100
 
-univention-join (11.0.1-21) unstable; urgency=medium
+univention-management-console-module-join (11.0.1-21) unstable; urgency=medium
 
   * Bug #49149: migrate to dh_python
 
  -- Florian Best <best@univention.de>  Wed, 16 Oct 2019 13:16:27 +0200
 
-univention-join (11.0.1-20) unstable; urgency=medium
+univention-management-console-module-join (11.0.1-20) unstable; urgency=medium
 
   * Bug #49149: migrate to dh_python
 
  -- Florian Best <best@univention.de>  Fri, 11 Oct 2019 13:55:04 +0200
 
-univention-join (11.0.1-19) unstable; urgency=medium
+univention-management-console-module-join (11.0.1-19) unstable; urgency=medium
 
   * Bug #50114: apply master settings for LDAP and UDL mdb maxsize
 
  -- Felix Botner <botner@univention.de>  Tue, 24 Sep 2019 16:39:05 +0200
 
-univention-join (11.0.1-18) unstable; urgency=medium
+univention-management-console-module-join (11.0.1-18) unstable; urgency=medium
 
   * Bug #48698: Fix GUI visible spelling errors
 
  -- Philipp Hahn <hahn@univention.de>  Thu, 08 Aug 2019 07:10:47 +0200
 
-univention-join (11.0.1-17) unstable; urgency=medium
+univention-management-console-module-join (11.0.1-17) unstable; urgency=medium
 
   * Bug #49298: Repair join when using bonding
 
  -- Jannik Ahlers <ahlers@univention.de>  Mon, 29 Apr 2019 11:22:44 +0200
 
-univention-join (11.0.1-16) unstable; urgency=medium
+univention-management-console-module-join (11.0.1-16) unstable; urgency=medium
 
   * Bug #47603: Detect failed.ldif early and remove
 
  -- Julia Bremer <bremer@univention.de>  Tue, 16 Apr 2019 17:24:37 +0200
 
-univention-join (11.0.1-15) unstable; urgency=medium
+univention-management-console-module-join (11.0.1-15) unstable; urgency=medium
 
   * Bug #48972: Make path to admin-diary cli explicit
 
  -- Dirk Wiesenthal <wiesenthal@univention.de>  Tue, 12 Mar 2019 18:41:42 +0100
 
-univention-join (11.0.1-14) unstable; urgency=medium
+univention-management-console-module-join (11.0.1-14) unstable; urgency=medium
 
   * Bug #48718: Explicit dependency to univention-admin-diary-client
 
  -- Dirk Wiesenthal <wiesenthal@univention.de>  Tue, 26 Feb 2019 20:32:16 +0100
 
-univention-join (11.0.1-13) unstable; urgency=medium
+univention-management-console-module-join (11.0.1-13) unstable; urgency=medium
 
   * Bug #47940: fix minor collateral commit damage
 
  -- Arvid Requate <requate@univention.de>  Mon, 25 Feb 2019 20:32:40 +0100
 
-univention-join (11.0.1-12) unstable; urgency=low
+univention-management-console-module-join (11.0.1-12) unstable; urgency=low
 
   * Bug #48751: reset the status file a second time to prevent issues with
     join hooks
 
  -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Mon, 25 Feb 2019 13:38:44 +0100
 
-univention-join (11.0.1-11) unstable; urgency=medium
+univention-management-console-module-join (11.0.1-11) unstable; urgency=medium
 
   * Bug #48475: Fix join failing on some network setups
 
  -- Jannik Ahlers <ahlers@univention.de>  Fri, 22 Feb 2019 10:42:52 +0100
 
-univention-join (11.0.1-10) unstable; urgency=medium
+univention-management-console-module-join (11.0.1-10) unstable; urgency=medium
 
   * Bug #48642: Merge UDN protocol 3
 
  -- Philipp Hahn <hahn@univention.de>  Mon, 18 Feb 2019 15:17:44 +0100
 
-univention-join (11.0.1-9) unstable; urgency=medium
+univention-management-console-module-join (11.0.1-9) unstable; urgency=medium
 
   * Bug #47940: status info about running join hooks
 
  -- Felix Botner <botner@univention.de>  Thu, 14 Feb 2019 17:22:59 +0100
 
-univention-join (11.0.1-8) unstable; urgency=medium
+univention-management-console-module-join (11.0.1-8) unstable; urgency=medium
 
   * Bug #47940: status info about running join hooks
 
  -- Felix Botner <botner@univention.de>  Thu, 14 Feb 2019 14:52:15 +0100
 
-univention-join (11.0.1-7) unstable; urgency=medium
+univention-management-console-module-join (11.0.1-7) unstable; urgency=medium
 
   * Bug #47940: renamed join hooks
 
  -- Felix Botner <botner@univention.de>  Tue, 12 Feb 2019 17:03:39 +0100
 
-univention-join (11.0.1-6) unstable; urgency=medium
+univention-management-console-module-join (11.0.1-6) unstable; urgency=medium
 
   * Bug #47940: renamed join hooks
 
  -- Felix Botner <botner@univention.de>  Tue, 12 Feb 2019 16:38:17 +0100
 
-univention-join (11.0.1-5) unstable; urgency=medium
+univention-management-console-module-join (11.0.1-5) unstable; urgency=medium
 
   * Bug #47940: renamed join hooks
 
  -- Felix Botner <botner@univention.de>  Tue, 12 Feb 2019 16:15:39 +0100
 
-univention-join (11.0.1-4) unstable; urgency=medium
+univention-management-console-module-join (11.0.1-4) unstable; urgency=medium
 
   * Bug #47940: fixed joinscripthelper.lib
 
  -- Felix Botner <botner@univention.de>  Fri, 08 Feb 2019 13:26:37 +0100
 
-univention-join (11.0.1-3) unstable; urgency=medium
+univention-management-console-module-join (11.0.1-3) unstable; urgency=medium
 
   * Bug #47940: Run univention-join-hooks
 
  -- Jürn Brodersen <brodersen@univention.de>  Mon, 28 Jan 2019 10:03:11 +0100
 
-univention-join (11.0.1-2) unstable; urgency=medium
+univention-management-console-module-join (11.0.1-2) unstable; urgency=medium
 
   * Bug #48471: UMC design adjustments
 
  -- Johannes Keiser <keiser@univention.de>  Thu, 17 Jan 2019 16:19:15 +0100
 
-univention-join (11.0.1-1) unstable; urgency=medium
+univention-management-console-module-join (11.0.1-1) unstable; urgency=medium
 
   * Bug #46969: bindpwdfile support
 
  -- Felix Botner <botner@univention.de>  Fri, 21 Dec 2018 11:46:23 +0100
 
-univention-join (11.0.0-1) unstable; urgency=medium
+univention-management-console-module-join (11.0.0-1) unstable; urgency=medium
 
   * Bug #48326: UCS-4.4-0 version bump
 
  -- Philipp Hahn <hahn@univention.de>  Fri, 14 Dec 2018 15:12:37 +0100
 
-univention-join (10.0.0-25) unstable; urgency=medium
+univention-management-console-module-join (10.0.0-25) unstable; urgency=medium
 
   * Bug #30005: Stop trying to download host certificate during join
     after 10 minutes have passed and mark join as failed
 
  -- Erik Damrose <damrose@univention.de>  Tue, 27 Nov 2018 15:31:26 +0100
 
-univention-join (10.0.0-24) unstable; urgency=medium
+univention-management-console-module-join (10.0.0-24) unstable; urgency=medium
 
   * Bug #47338: Fix DHCP entry
 
  -- Jannik Ahlers <ahlers@univention.de>  Fri, 28 Sep 2018 16:22:35 +0200
 
-univention-join (10.0.0-23) unstable; urgency=medium
+univention-management-console-module-join (10.0.0-23) unstable; urgency=medium
 
   * Bug #47338: Allow for multiple macs on preexisting machine account
 
  -- Jannik Ahlers <ahlers@univention.de>  Fri, 28 Sep 2018 12:36:22 +0200
 
-univention-join (10.0.0-22) unstable; urgency=medium
+univention-management-console-module-join (10.0.0-22) unstable; urgency=medium
 
   * Bug #47338: Allow for multiple macs on preexisting machine account
 
  -- Jürn Brodersen <brodersen@univention.de>  Fri, 21 Sep 2018 14:57:16 +0200
 
-univention-join (10.0.0-21) unstable; urgency=medium
+univention-management-console-module-join (10.0.0-21) unstable; urgency=medium
 
   * Bug #47338: Revert
 
  -- Jürn Brodersen <brodersen@univention.de>  Tue, 18 Sep 2018 17:47:29 +0200
 
-univention-join (10.0.0-20) unstable; urgency=medium
+univention-management-console-module-join (10.0.0-20) unstable; urgency=medium
 
   * Bug #47338: fix univention-join and univention-server-join for handling
   	multiple mac addresses
 
  -- Jannik Ahlers <ahlers@univention.de>  Fri, 14 Sep 2018 16:04:49 +0200
 
-univention-join (10.0.0-19) unstable; urgency=medium
+univention-management-console-module-join (10.0.0-19) unstable; urgency=medium
 
   * Bug #42366: Remove debug leftover
 
  -- Arvid Requate <requate@univention.de>  Tue, 07 Aug 2018 20:30:00 +0200
 
-univention-join (10.0.0-18) unstable; urgency=low
+univention-management-console-module-join (10.0.0-18) unstable; urgency=low
 
   * Bug #47114: Fix UMC notifier traceback memory leak
 
  -- Philipp Hahn <hahn@univention.de>  Tue, 31 Jul 2018 16:36:42 +0200
 
-univention-join (10.0.0-17) unstable; urgency=medium
+univention-management-console-module-join (10.0.0-17) unstable; urgency=medium
 
   * Bug #42022: Fix test in -checkPrerequisites mode of univention-join
 
  -- Richard Ulmer <ulmer@univention.de>  Wed, 18 Jul 2018 12:22:34 +0200
 
-univention-join (10.0.0-16) unstable; urgency=medium
+univention-management-console-module-join (10.0.0-16) unstable; urgency=medium
 
   * Bug #42022: Add -checkPrerequisites mode for univention-join
 
  -- Richard Ulmer <ulmer@univention.de>  Mon, 09 Jul 2018 14:58:25 +0200
 
-univention-join (10.0.0-15) unstable; urgency=medium
+univention-management-console-module-join (10.0.0-15) unstable; urgency=medium
 
   * Bug #42366: Repair logging of failed join scripts and adapt to changes in
     system setup
 
  -- Jannik Ahlers <ahlers@univention.de>  Fri, 29 Jun 2018 16:10:01 +0200
 
-univention-join (10.0.0-14) unstable; urgency=medium
+univention-management-console-module-join (10.0.0-14) unstable; urgency=medium
 
   * Bug #42124: univention-server-join now checked for conflicts in name/role,
     MAC and IP.
 
  -- Arvid Requate <requate@univention.de>  Thu, 21 Jun 2018 21:28:49 +0200
 
-univention-join (10.0.0-13) unstable; urgency=medium
+univention-management-console-module-join (10.0.0-13) unstable; urgency=medium
 
   * Bug #45514: join fail message
 
  -- Felix Botner <botner@univention.de>  Wed, 23 May 2018 17:28:42 +0200
 
-univention-join (10.0.0-12) unstable; urgency=medium
+univention-management-console-module-join (10.0.0-12) unstable; urgency=medium
 
   * Bug #42986: Adjust comment and log message
 
  -- Johannes Keiser <keiser@univention.de>  Wed, 16 May 2018 16:23:16 +0200
 
-univention-join (10.0.0-11) unstable; urgency=medium
+univention-management-console-module-join (10.0.0-11) unstable; urgency=medium
 
   * Bug #46842: fixes after qa
 
  -- Felix Botner <botner@univention.de>  Tue, 15 May 2018 17:23:13 +0200
 
-univention-join (10.0.0-10) unstable; urgency=medium
+univention-management-console-module-join (10.0.0-10) unstable; urgency=medium
 
   * Bug #42986: enable restart of apache in umc join process
 
  -- Johannes Keiser <keiser@univention.de>  Wed, 09 May 2018 13:51:17 +0200
 
-univention-join (10.0.0-9) unstable; urgency=medium
+univention-management-console-module-join (10.0.0-9) unstable; urgency=medium
 
   * Bug #46842: grep without output
 
  -- Felix Botner <botner@univention.de>  Mon, 07 May 2018 15:52:02 +0200
 
-univention-join (10.0.0-8) unstable; urgency=medium
+univention-management-console-module-join (10.0.0-8) unstable; urgency=medium
 
   * Bug #46842: fixed DCPWD permissions
 
  -- Felix Botner <botner@univention.de>  Mon, 07 May 2018 14:18:05 +0200
 
-univention-join (10.0.0-7) unstable; urgency=medium
+univention-management-console-module-join (10.0.0-7) unstable; urgency=medium
 
   * Bug 46842: added api_bindpwdfile ... and fixed last commit
 
  -- Felix Botner <botner@univention.de>  Mon, 07 May 2018 13:35:54 +0200
 
-univention-join (10.0.0-6) unstable; urgency=medium
+univention-management-console-module-join (10.0.0-6) unstable; urgency=medium
 
   * Bug #46731: added joinscript_check_status_file to joinscript_init
 
  -- Felix Botner <botner@univention.de>  Thu, 03 May 2018 17:23:18 +0200
 
-univention-join (10.0.0-5) unstable; urgency=medium
+univention-management-console-module-join (10.0.0-5) unstable; urgency=medium
 
   * Bug #46731: added joinscript_check_status_file
 
  -- Felix Botner <botner@univention.de>  Thu, 03 May 2018 17:15:34 +0200
 
-univention-join (10.0.0-4) unstable; urgency=medium
+univention-management-console-module-join (10.0.0-4) unstable; urgency=medium
 
   * Bug #36097: Refine sed command for filtering the DN out of an UDM output
 
  -- Richard Ulmer <ulmer@univention.de>  Mon, 19 Mar 2018 09:44:19 +0100
 
-univention-join (10.0.0-3) unstable; urgency=medium
+univention-management-console-module-join (10.0.0-3) unstable; urgency=medium
 
   * Bug #43336: remove XS-Python-Version
 
  -- Florian Best <best@univention.de>  Thu, 21 Dec 2017 11:52:25 +0100
 
-univention-join (10.0.0-2) unstable; urgency=medium
+univention-management-console-module-join (10.0.0-2) unstable; urgency=medium
 
   * Bug #42110: style changes
 
  -- Florian Best <best@univention.de>  Tue, 12 Dec 2017 16:16:10 +0100
 
-univention-join (10.0.0-1) unstable; urgency=medium
+univention-management-console-module-join (10.0.0-1) unstable; urgency=medium
 
   * Bug #45841: UCS-4.3 version bump
 
  -- Jürn Brodersen <brodersen@univention.de>  Mon, 11 Dec 2017 14:40:29 +0100
 
-univention-join (9.0.3-11) unstable; urgency=medium
+univention-management-console-module-join (9.0.3-11) unstable; urgency=medium
 
   * Bug #42110: Add utilities to log error messages in joinscripts
 
  -- Florian Best <best@univention.de>  Fri, 01 Dec 2017 18:19:26 +0100
 
-univention-join (9.0.3-10) unstable; urgency=medium
+univention-management-console-module-join (9.0.3-10) unstable; urgency=medium
 
   * Bug #42505: memberOf test only for dc's
 
  -- Felix Botner <botner@univention.de>  Wed, 20 Sep 2017 09:23:47 +0200
 
-univention-join (9.0.3-9) unstable; urgency=medium
+univention-management-console-module-join (9.0.3-9) unstable; urgency=medium
 
   * Bug #42505: memberOf test only for dc's
 
  -- Felix Botner <botner@univention.de>  Fri, 15 Sep 2017 14:03:48 +0200
 
-univention-join (9.0.3-8) unstable; urgency=medium
+univention-management-console-module-join (9.0.3-8) unstable; urgency=medium
 
   * Bug #43999: Adjust styling of dialogs
 
  -- Johannes Keiser <keiser@univention.de>  Wed, 13 Sep 2017 18:38:59 +0200
 
-univention-join (9.0.3-7) unstable; urgency=medium
+univention-management-console-module-join (9.0.3-7) unstable; urgency=medium
 
   * Bug #42505: Added memberOf test in univention-join
 
  -- Felix Botner <botner@univention.de>  Fri, 08 Sep 2017 10:03:43 +0200
 
-univention-join (9.0.3-6) unstable; urgency=medium
+univention-management-console-module-join (9.0.3-6) unstable; urgency=medium
 
   * Bug #42021 #42425: Improve join script error messages
 
  -- Felix Botner <botner@univention.de>  Tue, 29 Aug 2017 16:34:38 +0200
 
-univention-join (9.0.3-5) unstable; urgency=medium
+univention-management-console-module-join (9.0.3-5) unstable; urgency=medium
 
   * Bug #42021 #42425: Improve join script error messages
 
  -- Felix Botner <botner@univention.de>  Wed, 23 Aug 2017 13:45:18 +0200
 
-univention-join (9.0.3-4) unstable; urgency=medium
+univention-management-console-module-join (9.0.3-4) unstable; urgency=medium
 
   * Bug #44429: show error message if server join fails
 
  -- Felix Botner <botner@univention.de>  Tue, 22 Aug 2017 15:11:22 +0200
 
-univention-join (9.0.3-3) unstable; urgency=medium
+univention-management-console-module-join (9.0.3-3) unstable; urgency=medium
 
   * Bug #43987: Use SNTP for initial time sync
 
  -- Arvid Requate <requate@univention.de>  Tue, 21 Mar 2017 13:43:02 +0100
 
-univention-join (9.0.3-2) unstable; urgency=medium
+univention-management-console-module-join (9.0.3-2) unstable; urgency=medium
 
   * Bug #43528: Use full width for grids by default
 
  -- Alexander Kläser <klaeser@univention.de>  Mon, 20 Mar 2017 17:18:44 +0100
 
-univention-join (9.0.3-1) unstable; urgency=medium
+univention-management-console-module-join (9.0.3-1) unstable; urgency=medium
 
   * Bug #43811: make sure SSL certificate cache is rewritten
 
  -- Florian Best <best@univention.de>  Mon, 13 Mar 2017 15:26:59 +0100
 
-univention-join (9.0.2-3) unstable; urgency=medium
+univention-management-console-module-join (9.0.2-3) unstable; urgency=medium
 
   * Bug #42174: adjust call for relogin
 
  -- Alexander Kläser <klaeser@univention.de>  Thu, 23 Feb 2017 03:27:26 +0100
 
-univention-join (9.0.2-2) unstable; urgency=low
+univention-management-console-module-join (9.0.2-2) unstable; urgency=low
 
   * Bug #43381: redirect hostname warning to join.log
 
  -- Felix Botner <botner@univention.de>  Tue, 31 Jan 2017 10:07:21 +0100
 
-univention-join (9.0.2-1) unstable; urgency=medium
+univention-management-console-module-join (9.0.2-1) unstable; urgency=medium
 
   * Bug #41539: fix decoding error if logfile contains non-utf-8 character
 
  -- Florian Best <best@univention.de>  Tue, 24 Jan 2017 10:59:06 +0100
 
-univention-join (9.0.1-4) unstable; urgency=medium
+univention-management-console-module-join (9.0.1-4) unstable; urgency=medium
 
   * Bug #41221: Added comments for translators.
 
  -- Richard Ulmer <ulmer@univention.de>  Fri, 04 Nov 2016 13:59:17 +0100
 
-univention-join (9.0.1-3) unstable; urgency=low
+univention-management-console-module-join (9.0.1-3) unstable; urgency=low
 
   * Bug #40611: added -containerAdMemberMode
 
  -- Felix Botner <botner@univention.de>  Thu, 03 Nov 2016 14:30:19 +0100
 
-univention-join (9.0.1-2) unstable; urgency=low
+univention-management-console-module-join (9.0.1-2) unstable; urgency=low
 
   * Bug #40611: added -skipAdMemberMode
 
  -- Felix Botner <botner@univention.de>  Mon, 24 Oct 2016 13:43:14 +0200
 
-univention-join (9.0.1-1) unstable; urgency=medium
+univention-management-console-module-join (9.0.1-1) unstable; urgency=medium
 
   * Bug #35326: disable button if no pending join scripts exists
 
  -- Florian Best <best@univention.de>  Fri, 21 Oct 2016 13:11:48 +0200
 
-univention-join (9.0.0-3) unstable; urgency=medium
+univention-management-console-module-join (9.0.0-3) unstable; urgency=medium
 
   * Bug #32107: fix crash in UMC module during detection of joinscripts with invalid names
 
  -- Florian Best <best@univention.de>  Mon, 10 Oct 2016 12:32:43 +0200
 
-univention-join (9.0.0-2) unstable; urgency=low
+univention-management-console-module-join (9.0.0-2) unstable; urgency=low
 
   * Bug #42420: Use univention-ldapsearch
 
  -- Philipp Hahn <hahn@univention.de>  Tue, 20 Sep 2016 12:10:57 +0200
 
-univention-join (9.0.0-1) unstable; urgency=medium
+univention-management-console-module-join (9.0.0-1) unstable; urgency=medium
 
   * Bug #41963: UCS-4.2 version bump
 
  -- Philipp Hahn <hahn@univention.de>  Fri, 12 Aug 2016 13:56:40 +0200
 
-univention-join (8.0.4-2) unstable; urgency=medium
+univention-management-console-module-join (8.0.4-2) unstable; urgency=medium
 
   * Bug #40339: format string with multiple unnamed arguments
 
  -- Florian Best <best@univention.de>  Thu, 14 Jan 2016 12:35:03 +0100
 
-univention-join (8.0.4-1) unstable; urgency=medium
+univention-management-console-module-join (8.0.4-1) unstable; urgency=medium
 
   * Bug #40391: Stop univention-s4-connector if present
   * Stop samba instead of only samba-ad-dc
 
  -- Arvid Requate <requate@univention.de>  Tue, 12 Jan 2016 13:51:50 +0100
 
-univention-join (8.0.3-1) unstable; urgency=medium
+univention-management-console-module-join (8.0.3-1) unstable; urgency=medium
 
   * Fixed typo in operatingSystemVersion (Bug #39915)
 
  -- Stefan Gohmann <gohmann@univention.de>  Thu, 12 Nov 2015 22:03:22 +0100
 
-univention-join (8.0.2-1) unstable; urgency=medium
+univention-management-console-module-join (8.0.2-1) unstable; urgency=medium
 
   * Save UCS version at ldap host object (Bug #39915)
 
  -- Stefan Gohmann <gohmann@univention.de>  Thu, 12 Nov 2015 20:21:26 +0100
 
-univention-join (8.0.1-1) unstable; urgency=medium
+univention-management-console-module-join (8.0.1-1) unstable; urgency=medium
 
   * Bug #39233: simplify error handling
 
  -- Florian Best <best@univention.de>  Sat, 17 Oct 2015 15:13:29 +0200
 
-univention-join (8.0.0-4) unstable; urgency=low
+univention-management-console-module-join (8.0.0-4) unstable; urgency=low
 
   * Bug #38437: removed bashism
 
  -- Daniel Troeder <troeder@univention.de>  Mon, 31 Aug 2015 08:50:57 +0200
 
-univention-join (8.0.0-3) unstable; urgency=low
+univention-management-console-module-join (8.0.0-3) unstable; urgency=low
 
   *  Bug #38437: add option to skip IP / MAC / DNS registration while joining
      by using "-skipIpMac" command line option
 
  -- Daniel Troeder <troeder@univention.de>  Fri, 28 Aug 2015 18:32:42 +0200
 
-univention-join (8.0.0-2) unstable; urgency=low
+univention-management-console-module-join (8.0.0-2) unstable; urgency=low
 
   * Bug #38756: Force kill UDN und UDL
 
  -- Philipp Hahn <hahn@univention.de>  Thu, 20 Aug 2015 18:37:16 +0200
 
-univention-join (8.0.0-1) unstable; urgency=low
+univention-management-console-module-join (8.0.0-1) unstable; urgency=low
 
   * Bug #38662: Check for nscd; Bug #38714: depend on ping
 
  -- Dirk Wiesenthal <wiesenthal@univention.de>  Wed, 24 Jun 2015 00:39:02 +0200
 
-univention-join (7.1.2-15) unstable; urgency=low
+univention-management-console-module-join (7.1.2-15) unstable; urgency=low
 
   * Bug #38216: Fixed typo in German translation
 
  -- Alexander Kramer <kramer@univention.de>  Tue, 02 Jun 2015 10:16:11 +0200
 
-univention-join (7.1.2-14) unstable; urgency=low
+univention-management-console-module-join (7.1.2-14) unstable; urgency=low
 
   * Bug #37489: filter out password from log file
 
  -- Philipp Hahn <hahn@univention.de>  Fri, 13 Mar 2015 14:49:39 +0100
 
-univention-join (7.1.2-13) unstable; urgency=low
+univention-management-console-module-join (7.1.2-13) unstable; urgency=low
 
   * Bug #34238: update translation,  fix link to network module
 
  -- Drees Dormann <dormann@univention.de>  Tue, 03 Feb 2015 13:30:58 +0100
 
-univention-join (7.1.2-12) unstable; urgency=low
+univention-management-console-module-join (7.1.2-12) unstable; urgency=low
 
   * Bug #32525: Fixes for univention-install-joinscript
 
  -- Dirk Wiesenthal <wiesenthal@univention.de>  Mon, 02 Feb 2015 17:16:28 +0100
 
-univention-join (7.1.2-11) unstable; urgency=low
+univention-management-console-module-join (7.1.2-11) unstable; urgency=low
 
   * Bug #34238: more small fixes and translation updates
 
  -- Drees Dormann <dormann@univention.de>  Mon, 02 Feb 2015 17:00:45 +0100
 
-univention-join (7.1.2-10) unstable; urgency=low
+univention-management-console-module-join (7.1.2-10) unstable; urgency=low
 
   * Bug #34238: fixed syntax error
 
  -- Drees Dormann <dormann@univention.de>  Mon, 02 Feb 2015 15:30:51 +0100
 
-univention-join (7.1.2-9) unstable; urgency=low
+univention-management-console-module-join (7.1.2-9) unstable; urgency=low
 
   * Bug #34238: small fix, updated translation
 
  -- Drees Dormann <dormann@univention.de>  Mon, 02 Feb 2015 14:58:22 +0100
 
-univention-join (7.1.2-8) unstable; urgency=low
+univention-management-console-module-join (7.1.2-8) unstable; urgency=low
 
   * Bug #32525: Fixes for univention-install-joinscript
 
  -- Dirk Wiesenthal <wiesenthal@univention.de>  Mon, 02 Feb 2015 14:15:32 +0100
 
-univention-join (7.1.2-7) unstable; urgency=low
+univention-management-console-module-join (7.1.2-7) unstable; urgency=low
 
   * Bug #34238: Fix DNS error handling, add maximum timeout of 3 seconds
 
  -- Drees Dormann <dormann@univention.de>  Mon, 02 Feb 2015 12:23:34 +0100
 
-univention-join (7.1.2-6) unstable; urgency=low
+univention-management-console-module-join (7.1.2-6) unstable; urgency=low
 
   * Bug #32525: Add univention-install-joinscripts to work as a debhelper for
     packages that contain join scripts
 
  -- Dirk Wiesenthal <wiesenthal@univention.de>  Mon, 26 Jan 2015 10:04:26 +0100
 
-univention-join (7.1.2-5) unstable; urgency=low
+univention-management-console-module-join (7.1.2-5) unstable; urgency=low
 
   *Bug #34238: minor correction
 
  -- Drees Dormann <dormann@univention.de>  Wed, 21 Jan 2015 15:29:16 +0100
 
-univention-join (7.1.2-4) unstable; urgency=low
+univention-management-console-module-join (7.1.2-4) unstable; urgency=low
 
   *Bug #34238: fixed translation, corrected warning message
 
  -- Drees Dormann <dormann@univention.de>  Wed, 21 Jan 2015 15:15:08 +0100
 
-univention-join (7.1.2-3) unstable; urgency=low
+univention-management-console-module-join (7.1.2-3) unstable; urgency=low
 
   * Bug #34238: added error handling for failed dns queries during
   	guessing of fqdn
 
  -- Drees Dormann <dormann@univention.de>  Wed, 21 Jan 2015 14:17:14 +0100
 
-univention-join (7.1.2-2) unstable; urgency=medium
+univention-management-console-module-join (7.1.2-2) unstable; urgency=medium
 
   * Add timestamps to log files from joinscript_init and
     joinscript_save_current_version (Bug #36290)
 
  -- Janek Walkenhorst <walkenhorst@univention.de>  Thu, 08 Jan 2015 16:12:26 +0100
 
-univention-join (7.1.1-1) unstable; urgency=low
+univention-management-console-module-join (7.1.1-1) unstable; urgency=low
 
   * Bug #36935: Timeout ntpdate command after 15s
 
  -- Philipp Hahn <hahn@univention.de>  Fri, 21 Nov 2014 16:24:47 +0100
 
-univention-join (7.1.0-6) unstable; urgency=medium
+univention-management-console-module-join (7.1.0-6) unstable; urgency=medium
 
   * Bug #35654: use app.registerOnStartup instead of topic
 
  -- Florian Best <best@univention.de>  Wed, 29 Oct 2014 10:55:49 +0100
 
-univention-join (7.1.0-5) unstable; urgency=medium
+univention-management-console-module-join (7.1.0-5) unstable; urgency=medium
 
   * Bug #35654: implement startup checks
 
  -- Florian Best <best@univention.de>  Fri, 24 Oct 2014 13:19:06 +0200
 
-univention-join (7.1.0-4) unstable; urgency=low
+univention-management-console-module-join (7.1.0-4) unstable; urgency=low
 
   * Copy dns/forwarder settings from master
     while joining backup/slave (Bug #36245)
 
  -- Felix Botner <botner@univention.de>  Fri, 24 Oct 2014 10:33:38 +0200
 
-univention-join (7.1.0-3) unstable; urgency=low
+univention-management-console-module-join (7.1.0-3) unstable; urgency=low
 
   * Bug #35654: move footer buttons into header buttons
 
  -- Florian Best <best@univention.de>  Mon, 06 Oct 2014 14:32:22 +0200
 
-univention-join (7.1.0-2) unstable; urgency=low
+univention-management-console-module-join (7.1.0-2) unstable; urgency=low
 
   * Bug #35654: UMC design adaptions
 
  -- Florian Best <best@univention.de>  Thu, 25 Sep 2014 12:43:47 +0200
 
-univention-join (7.0.0-4) unstable; urgency=low
+univention-management-console-module-join (7.0.0-4) unstable; urgency=low
 
   * don't overwrite join.log on slaves (Bug #34909)
 
  -- Felix Botner <botner@univention.de>  Thu, 28 Aug 2014 15:32:32 +0200
 
-univention-join (7.0.0-3) unstable; urgency=medium
+univention-management-console-module-join (7.0.0-3) unstable; urgency=medium
 
   * Call samba-ad-dc init script instead of samba4 (Bug #35319)
 
  -- Arvid Requate <requate@univention.de>  Tue, 26 Aug 2014 21:22:37 +0200
 
-univention-join (7.0.0-2) unstable; urgency=medium
+univention-management-console-module-join (7.0.0-2) unstable; urgency=medium
 
   * Merge -r51215:52491 from ucs3.2-3 (Bug #34091)
 
  -- Arvid Requate <requate@univention.de>  Wed, 06 Aug 2014 11:57:46 +0200
 
-univention-join (7.0.0-1) unstable; urgency=low
+univention-management-console-module-join (7.0.0-1) unstable; urgency=low
 
   * Bug #35145: Start UCS 4.0 development
 
  -- Florian Best <best@univention.de>  Wed, 16 Jul 2014 12:25:53 +0200
 
-univention-join (6.0.18-11) unstable; urgency=low
+univention-management-console-module-join (6.0.18-11) unstable; urgency=low
 
   * don't ask for join account in member mode (Bug #35446)
 
  -- Felix Botner <botner@univention.de>  Mon, 04 Aug 2014 11:52:49 +0200
 
-univention-join (6.0.18-10) unstable; urgency=low
+univention-management-console-module-join (6.0.18-10) unstable; urgency=low
 
   * small fix (Bug #35470)
 
  -- Felix Botner <botner@univention.de>  Tue, 29 Jul 2014 09:43:20 +0200
 
-univention-join (6.0.18-9) unstable; urgency=low
+univention-management-console-module-join (6.0.18-9) unstable; urgency=low
 
   * small fix (Bug #35470)
 
  -- Felix Botner <botner@univention.de>  Tue, 29 Jul 2014 09:21:00 +0200
 
-univention-join (6.0.18-8) unstable; urgency=low
+univention-management-console-module-join (6.0.18-8) unstable; urgency=low
 
   * small fix (Bug #35470)
 
  -- Felix Botner <botner@univention.de>  Tue, 29 Jul 2014 09:07:33 +0200
 
-univention-join (6.0.18-7) unstable; urgency=low
+univention-management-console-module-join (6.0.18-7) unstable; urgency=low
 
   * don't set kerberos/adminserver in member mode
     in univention-join (Bug #35470)
 
  -- Felix Botner <botner@univention.de>  Fri, 25 Jul 2014 12:07:42 +0200
 
-univention-join (6.0.18-6) unstable; urgency=low
+univention-management-console-module-join (6.0.18-6) unstable; urgency=low
 
   * do not configure ad member mode if ad/member is
     already true (Bug #35446)
 
  -- Felix Botner <botner@univention.de>  Wed, 23 Jul 2014 16:08:09 +0200
 
-univention-join (6.0.18-5) unstable; urgency=low
+univention-management-console-module-join (6.0.18-5) unstable; urgency=low
 
   * log ad member mode (Bug #35446)
 
  -- Felix Botner <botner@univention.de>  Wed, 23 Jul 2014 16:02:03 +0200
 
-univention-join (6.0.18-4) unstable; urgency=low
+univention-management-console-module-join (6.0.18-4) unstable; urgency=low
 
   * removed 04univention-samba-role.inst, added
     ad member mode check to univention-join (Bug #35446)
 
  -- Felix Botner <botner@univention.de>  Wed, 23 Jul 2014 12:30:50 +0200
 
-univention-join (6.0.18-3) unstable; urgency=low
+univention-management-console-module-join (6.0.18-3) unstable; urgency=low
 
   * added execution rights to 04univention-samba-role.inst (Bug #35094)
 
  -- Felix Botner <botner@univention.de>  Fri, 20 Jun 2014 13:26:52 +0200
 
-univention-join (6.0.18-2) unstable; urgency=low
+univention-management-console-module-join (6.0.18-2) unstable; urgency=low
 
   * Merged patches from ucs-in-ad-domain (Bug #35094)
     [ Stefan Gohmann ]
@@ -955,243 +955,243 @@ univention-join (6.0.18-2) unstable; urgency=low
 
  -- Felix Botner <botner@univention.de>  Thu, 19 Jun 2014 17:27:18 +0200
 
-univention-join (6.0.16-3) unstable; urgency=low
+univention-management-console-module-join (6.0.16-3) unstable; urgency=low
 
   * Bug #33793: Reverted change, univention-run-join-scripts works while dpkg
     is running; but the UMC module will prevent the execution of the script
 
  -- Dirk Wiesenthal <wiesenthal@univention.de>  Tue, 07 Jan 2014 16:32:45 +0100
 
-univention-join (6.0.16-2) unstable; urgency=low
+univention-management-console-module-join (6.0.16-2) unstable; urgency=low
 
   * Bug #33793: univention-run-join-scripts no longer works while dpkg is
     running
 
  -- Dirk Wiesenthal <wiesenthal@univention.de>  Tue, 07 Jan 2014 13:20:57 +0100
 
-univention-join (6.0.16-1) unstable; urgency=low
+univention-management-console-module-join (6.0.16-1) unstable; urgency=low
 
   * revised UMC module description (Bug #32022)
 
  -- Lukas Walter <walter@univention.de>  Wed, 30 Oct 2013 16:44:34 +0100
 
-univention-join (6.0.15-1) unstable; urgency=low
+univention-management-console-module-join (6.0.15-1) unstable; urgency=low
 
   * fixed common spelling mistakes (Bug #32662)
 
  -- Lukas Walter <walter@univention.de>  Tue, 29 Oct 2013 13:04:43 +0100
 
-univention-join (6.0.14-1) unstable; urgency=low
+univention-management-console-module-join (6.0.14-1) unstable; urgency=low
 
   * Bug #30004: adjustements for new notifications
 
  -- Alexander Kläser <klaeser@univention.de>  Wed, 23 Oct 2013 16:20:23 +0200
 
-univention-join (6.0.13-1) unstable; urgency=low
+univention-management-console-module-join (6.0.13-1) unstable; urgency=low
 
   * revised UMC module description (Bug #32022)
 
  -- Lukas Walter <walter@univention.de>  Fri, 18 Oct 2013 18:06:32 +0200
 
-univention-join (6.0.12-1) unstable; urgency=low
+univention-management-console-module-join (6.0.12-1) unstable; urgency=low
 
   * Hide join-backup and join-slave by default (Bug #32871)
 
  -- Stefan Gohmann <gohmann@univention.de>  Tue, 15 Oct 2013 19:14:09 +0200
 
-univention-join (6.0.11-1) unstable; urgency=low
+univention-management-console-module-join (6.0.11-1) unstable; urgency=low
 
   * Bug #26418: adapt grid actions
 
  -- Florian Best <best@univention.de>  Tue, 08 Oct 2013 11:24:22 +0200
 
-univention-join (6.0.10-1) unstable; urgency=low
+univention-management-console-module-join (6.0.10-1) unstable; urgency=low
 
   * Bug #24727: use app.linkToModule for links to other UMC modules
 
  -- Florian Best <best@univention.de>  Mon, 30 Sep 2013 10:59:53 +0200
 
-univention-join (6.0.9-1) unstable; urgency=low
+univention-management-console-module-join (6.0.9-1) unstable; urgency=low
 
   * Bug #24727: use app.linkToModule for links to other UMC modules
 
  -- Florian Best <best@univention.de>  Mon, 30 Sep 2013 09:59:02 +0200
 
-univention-join (6.0.8-1) unstable; urgency=low
+univention-management-console-module-join (6.0.8-1) unstable; urgency=low
 
   * Bug #24727: use app.linkToModule for links to other UMC modules
 
  -- Florian Best <best@univention.de>  Thu, 26 Sep 2013 09:18:19 +0200
 
-univention-join (6.0.7-1) unstable; urgency=low
+univention-management-console-module-join (6.0.7-1) unstable; urgency=low
 
   * Bug #24727: don't hardcode "setup" module name
 
  -- Florian Best <best@univention.de>  Fri, 20 Sep 2013 08:45:27 +0200
 
-univention-join (6.0.6-1) unstable; urgency=low
+univention-management-console-module-join (6.0.6-1) unstable; urgency=low
 
   * set PATH in univention-server-join before importing
     shell libs (Bug #31281)
 
  -- Felix Botner <botner@univention.de>  Thu, 12 Sep 2013 10:43:38 +0200
 
-univention-join (6.0.5-1) unstable; urgency=low
+univention-management-console-module-join (6.0.5-1) unstable; urgency=low
 
   * Bug #32048: Add keywords to UMC module definition
 
  -- Florian Best <best@univention.de>  Mon, 09 Sep 2013 13:26:08 +0200
 
-univention-join (6.0.4-1) unstable; urgency=low
+univention-management-console-module-join (6.0.4-1) unstable; urgency=low
 
   * Bug #9927: Add missing translation
 
  -- Florian Best <best@univention.de>  Thu, 15 Aug 2013 16:56:59 +0200
 
-univention-join (6.0.3-1) unstable; urgency=low
+univention-management-console-module-join (6.0.3-1) unstable; urgency=low
 
   * Bug #9927: Don't display reboot dialog if joining failed
 
  -- Florian Best <best@univention.de>  Thu, 25 Jul 2013 09:55:47 +0200
 
-univention-join (6.0.2-1) unstable; urgency=low
+univention-management-console-module-join (6.0.2-1) unstable; urgency=low
 
   * Bug #9927: Ask to reboot the system after join progress
 
  -- Florian Best <best@univention.de>  Wed, 24 Jul 2013 16:28:20 +0200
 
-univention-join (6.0.1-1) unstable; urgency=low
+univention-management-console-module-join (6.0.1-1) unstable; urgency=low
 
   * Fix univention-run-join-scripts (Bug #32005)
 
  -- Philipp Hahn <hahn@univention.de>  Thu, 18 Jul 2013 14:13:53 +0200
 
-univention-join (6.0.0-2) unstable; urgency=low
+univention-management-console-module-join (6.0.0-2) unstable; urgency=low
 
   * set windows/domain during join (Bug #24442)
 
  -- Felix Botner <botner@univention.de>  Thu, 27 Jun 2013 12:07:14 +0200
 
-univention-join (6.0.0-1) unstable; urgency=low
+univention-management-console-module-join (6.0.0-1) unstable; urgency=low
 
   * replaced makepasswd with create_machine_password (Bug #31281)
   * bump version for UCS 3.2
 
  -- Felix Botner <botner@univention.de>  Mon, 10 Jun 2013 12:27:57 +0200
 
-univention-join (5.0.47-1) unstable; urgency=low
+univention-management-console-module-join (5.0.47-1) unstable; urgency=low
 
   * Invalidate nscd hosts cache before joining the computer account
     (Bug #30886)
 
  -- Stefan Gohmann <gohmann@univention.de>  Sun, 24 Mar 2013 21:28:14 +0100
 
-univention-join (5.0.46-1) unstable; urgency=low
+univention-management-console-module-join (5.0.46-1) unstable; urgency=low
 
   * fix wrong error messages when providing no credentials; Bug #27792
 
  -- Florian Best <best@univention.de>  Fri, 22 Mar 2013 08:56:49 +0100
 
-univention-join (5.0.45-1) unstable; urgency=low
+univention-management-console-module-join (5.0.45-1) unstable; urgency=low
 
   * univention-run-join-scripts: check also for uinst suffix
     (Bug #30596)
 
  -- Stefan Gohmann <gohmann@univention.de>  Fri, 22 Mar 2013 07:30:23 +0100
 
-univention-join (5.0.44-1) unstable; urgency=low
+univention-management-console-module-join (5.0.44-1) unstable; urgency=low
 
   * Also execute unjoin scripts (Bug #30596)
 
  -- Stefan Gohmann <gohmann@univention.de>  Thu, 21 Mar 2013 21:55:34 +0100
 
-univention-join (5.0.43-1) unstable; urgency=low
+univention-management-console-module-join (5.0.43-1) unstable; urgency=low
 
   * fix typo which prevents displaying of UMC restart required dialog;
   	Bug #27792
 
  -- Florian Best <best@univention.de>  Thu, 21 Mar 2013 14:38:59 +0100
 
-univention-join (5.0.42-1) unstable; urgency=low
+univention-management-console-module-join (5.0.42-1) unstable; urgency=low
 
   * display the correct component in progressbar; Bug #27792
 
  -- Florian Best <best@univention.de>  Thu, 21 Mar 2013 10:09:17 +0100
 
-univention-join (5.0.41-1) unstable; urgency=low
+univention-management-console-module-join (5.0.41-1) unstable; urgency=low
 
   * fixed -disableVersionCheck log message (Bug #30492)
 
  -- Felix Botner <botner@univention.de>  Wed, 20 Mar 2013 14:24:42 +0100
 
-univention-join (5.0.40-1) unstable; urgency=low
+univention-management-console-module-join (5.0.40-1) unstable; urgency=low
 
   * sort join scripts also by priority; Bug #27792
 
  -- Florian Best <best@univention.de>  Wed, 20 Mar 2013 09:44:16 +0100
 
-univention-join (5.0.39-1) unstable; urgency=low
+univention-management-console-module-join (5.0.39-1) unstable; urgency=low
 
   * fix typo which prevents correct sorting of join scripts; Bug #27792
 
  -- Florian Best <best@univention.de>  Tue, 19 Mar 2013 16:15:35 +0100
 
-univention-join (5.0.38-2) unstable; urgency=low
+univention-management-console-module-join (5.0.38-2) unstable; urgency=low
 
   * Don't run *.unist as uninstall script (Bug #30596)
 
  -- Stefan Gohmann <gohmann@univention.de>  Fri, 15 Mar 2013 10:14:15 +0100
 
-univention-join (5.0.38-1) unstable; urgency=low
+univention-management-console-module-join (5.0.38-1) unstable; urgency=low
 
   * Added support for uninstallation of packages, including a schema
     registration (Bug #30596)
 
  -- Stefan Gohmann <gohmann@univention.de>  Thu, 14 Mar 2013 07:52:16 +0100
 
-univention-join (5.0.37-1) unstable; urgency=low
+univention-management-console-module-join (5.0.37-1) unstable; urgency=low
 
   * Bug #30577: remove adaptation for join/Grid:_publishAction()
 
  -- Alexander Kläser <klaeser@univention.de>  Wed, 13 Mar 2013 19:41:38 +0100
 
-univention-join (5.0.36-1) unstable; urgency=low
+univention-management-console-module-join (5.0.36-1) unstable; urgency=low
 
   * Bug #30577: publish actions for initial join and filter grid reload actions
 
  -- Alexander Kläser <klaeser@univention.de>  Tue, 12 Mar 2013 14:04:06 +0100
 
-univention-join (5.0.35-1) unstable; urgency=low
+univention-management-console-module-join (5.0.35-1) unstable; urgency=low
 
   * fix wording; Bug #27792, Bug #30112
 
  -- Florian Best <best@univention.de>  Thu, 07 Mar 2013 15:50:00 +0100
 
-univention-join (5.0.34-1) unstable; urgency=low
+univention-management-console-module-join (5.0.34-1) unstable; urgency=low
 
   * fix typo; Bug #27792, Bug #30112
 
  -- Florian Best <best@univention.de>  Wed, 06 Mar 2013 15:11:00 +0100
 
-univention-join (5.0.33-1) unstable; urgency=low
+univention-management-console-module-join (5.0.33-1) unstable; urgency=low
 
   * fix status; Bug #27792, Bug #30112
 
  -- Florian Best <best@univention.de>  Wed, 06 Mar 2013 13:23:13 +0100
 
-univention-join (5.0.32-1) unstable; urgency=low
+univention-management-console-module-join (5.0.32-1) unstable; urgency=low
 
   * fixed display_header (Bug #30492)
 
  -- Felix Botner <botner@univention.de>  Mon, 04 Mar 2013 15:35:00 +0100
 
-univention-join (5.0.31-1) unstable; urgency=low
+univention-management-console-module-join (5.0.31-1) unstable; urgency=low
 
   * fix status of unexecuted join scripts; Bug #27792
 
  -- Florian Best <best@univention.de>  Mon, 04 Mar 2013 14:53:06 +0100
 
-univention-join (5.0.30-1) unstable; urgency=low
+univention-management-console-module-join (5.0.30-1) unstable; urgency=low
 
   * added LC_COLLATE="C" to univention-join,
     univention-check-join-status and univention-run-join-scripts
@@ -1199,37 +1199,37 @@ univention-join (5.0.30-1) unstable; urgency=low
 
  -- Felix Botner <botner@univention.de>  Fri, 01 Mar 2013 15:39:32 +0100
 
-univention-join (5.0.29-1) unstable; urgency=low
+univention-management-console-module-join (5.0.29-1) unstable; urgency=low
 
   * fixed disableVersionCheck logging (Bug #30492)
 
  -- Felix Botner <botner@univention.de>  Fri, 01 Mar 2013 14:56:00 +0100
 
-univention-join (5.0.28-1) unstable; urgency=low
+univention-management-console-module-join (5.0.28-1) unstable; urgency=low
 
   * added -verbose to univention-join (Bug #30154)
 
  -- Felix Botner <botner@univention.de>  Fri, 01 Mar 2013 14:45:38 +0100
 
-univention-join (5.0.27-1) unstable; urgency=low
+univention-management-console-module-join (5.0.27-1) unstable; urgency=low
 
   * add dependency to python-dnspython; Bug #30112
 
  -- Florian Best <best@univention.de>  Wed, 27 Feb 2013 15:20:23 +0100
 
-univention-join (5.0.26-1) unstable; urgency=low
+univention-management-console-module-join (5.0.26-1) unstable; urgency=low
 
   * fix translations; Bug #30112
 
  -- Florian Best <best@univention.de>  Wed, 27 Feb 2013 14:09:47 +0100
 
-univention-join (5.0.25-1) unstable; urgency=low
+univention-management-console-module-join (5.0.25-1) unstable; urgency=low
 
   * log disableVersionCheck (Bug #30492)
 
  -- Felix Botner <botner@univention.de>  Tue, 26 Feb 2013 21:35:28 +0100
 
-univention-join (5.0.24-1) unstable; urgency=low
+univention-management-console-module-join (5.0.24-1) unstable; urgency=low
 
   * show progressbar instead of the join log; Bug #30112
   * add possibility to rejoin a system; Bug #27792
@@ -1240,7 +1240,7 @@ univention-join (5.0.24-1) unstable; urgency=low
 
  -- Florian Best <best@univention.de>  Fri, 22 Feb 2013 13:55:34 +0100
 
-univention-join (5.0.23-1) unstable; urgency=low
+univention-management-console-module-join (5.0.23-1) unstable; urgency=low
 
   * Close fd 3 while calling the join script otherwise a running daemon
     could inherit it and a python parent program with subprocess won't
@@ -1248,81 +1248,81 @@ univention-join (5.0.23-1) unstable; urgency=low
 
  -- Stefan Gohmann <gohmann@univention.de>  Fri, 01 Feb 2013 09:57:54 +0100
 
-univention-join (5.0.22-1) unstable; urgency=low
+univention-management-console-module-join (5.0.22-1) unstable; urgency=low
 
   * univention-run-join-scripts does not print its header when called
     with parameters -dcaccount and -dcpwd (Bug #29432)
 
  -- Erik Damrose <damrose@univention.de>  Wed, 02 Jan 2013 16:51:11 +0100
 
-univention-join (5.0.21-1) unstable; urgency=low
+univention-management-console-module-join (5.0.21-1) unstable; urgency=low
 
   * Updated deprecated file reference (Bug #28991)
 
  -- Erik Damrose <damrose@univention.de>  Fri, 21 Dec 2012 14:48:34 +0100
 
-univention-join (5.0.20-1) unstable; urgency=low
+univention-management-console-module-join (5.0.20-1) unstable; urgency=low
 
   * Fix memory leak (Bug #27432)
 
  -- Dirk Wiesenthal <wiesenthal@univention.de>  Tue, 20 Nov 2012 10:25:46 +0100
 
-univention-join (5.0.19-1) unstable; urgency=low
+univention-management-console-module-join (5.0.19-1) unstable; urgency=low
 
   * removed obsolete server-join.log log file (Bug #13105)
 
  -- Felix Botner <botner@univention.de>  Mon, 19 Nov 2012 09:54:05 +0100
 
-univention-join (5.0.18-1) unstable; urgency=low
+univention-management-console-module-join (5.0.18-1) unstable; urgency=low
 
   * Add priority (Bug #26961)
 
  -- Dirk Wiesenthal <wiesenthal@univention.de>  Tue, 06 Nov 2012 18:29:23 +0100
 
-univention-join (5.0.17-1) unstable; urgency=low
+univention-management-console-module-join (5.0.17-1) unstable; urgency=low
 
   * Fixed commandline parsing in univention-join (Bug #28789)
 
  -- Stefan Gohmann <gohmann@univention.de>  Tue, 06 Nov 2012 08:33:09 +0100
 
-univention-join (5.0.16-1) unstable; urgency=low
+univention-management-console-module-join (5.0.16-1) unstable; urgency=low
 
   * check versions in univention-join (Bug #25824)
 
  -- Felix Botner <botner@univention.de>  Fri, 02 Nov 2012 09:26:20 +0100
 
-univention-join (5.0.15-1) unstable; urgency=low
+univention-management-console-module-join (5.0.15-1) unstable; urgency=low
 
   * Don't use sanitizers yet (Bug #27720)
 
  -- Dirk Wiesenthal <wiesenthal@univention.de>  Tue, 16 Oct 2012 12:10:00 +0200
 
-univention-join (5.0.14-1) unstable; urgency=low
+univention-management-console-module-join (5.0.14-1) unstable; urgency=low
 
   * Remove old syntax definitions (Bug #27720)
 
  -- Dirk Wiesenthal <wiesenthal@univention.de>  Mon, 15 Oct 2012 19:43:57 +0200
 
-univention-join (5.0.13-1) unstable; urgency=low
+univention-management-console-module-join (5.0.13-1) unstable; urgency=low
 
   * Create kerberos principal for ldap in 10univention-ldap-server.inst
     (Bug #28379)
 
  -- Stefan Gohmann <gohmann@univention.de>  Fri, 12 Oct 2012 13:52:11 +0200
 
-univention-join (5.0.12-1) unstable; urgency=low
+univention-management-console-module-join (5.0.12-1) unstable; urgency=low
 
   * abort join script on failing udm call (Bug #27753)
 
  -- Lukas Walter <walter@univention.de>  Wed, 10 Oct 2012 13:11:10 +0200
 
-univention-join (5.0.11-2) unstable; urgency=low
+univention-management-console-module-join (5.0.11-2) unstable; urgency=low
 
   * Support creation of UCC systems (Bug #28570)
 
  -- Moritz Mühlenhoff <muehlenhoffunivention.de>  Wed, 10 Oct 2012 12:15:59 +0200
 
-univention-join (5.0.11-1) unstable; urgency=low
+univention-management-console-module-join (5.0.11-1) unstable; urgency=low
 
   * display grid when system is already joined
   * show correct status of join scripts
@@ -1330,68 +1330,68 @@ univention-join (5.0.11-1) unstable; urgency=low
 
  -- Lukas Walter <walter@univention.de>  Thu, 27 Sep 2012 17:04:24 +0200
 
-univention-join (5.0.10-1) unstable; urgency=low
+univention-management-console-module-join (5.0.10-1) unstable; urgency=low
 
   * fixed typo in German localization (Bug #28397)
 
  -- Lukas Walter <walter@univention.de>  Mon, 17 Sep 2012 16:14:36 +0200
 
-univention-join (5.0.9-1) unstable; urgency=low
+univention-management-console-module-join (5.0.9-1) unstable; urgency=low
 
   * fixed additional comma in join/Form.js; Bug #26857
 
  -- Alexander Kläser <klaeser@univention.de>  Thu, 13 Sep 2012 16:48:51 +0200
 
-univention-join (5.0.8-1) unstable; urgency=low
+univention-management-console-module-join (5.0.8-1) unstable; urgency=low
 
   * bug fixes due to Dojo update; Bug #26857
 
  -- Alexander Kläser <klaeser@univention.de>  Wed, 12 Sep 2012 21:46:28 +0200
 
-univention-join (5.0.7-2) unstable; urgency=low
+univention-management-console-module-join (5.0.7-2) unstable; urgency=low
 
   * create ssl/validity/... during join to avoid nagios UNIVENTION_SSL
     warnings  (Bug #25788)
 
  -- Felix Botner <botner@univention.de>  Thu, 06 Sep 2012 15:53:37 +0200
 
-univention-join (5.0.6-1) unstable; urgency=low
+univention-management-console-module-join (5.0.6-1) unstable; urgency=low
 
   * version bump; Bug #26857
 
  -- Florian Best <best@univention.de>  Thu, 06 Sep 2012 13:55:34 +0200
 
-univention-join (5.0.5-1) unstable; urgency=low
+univention-management-console-module-join (5.0.5-1) unstable; urgency=low
 
   * Consider nss/group/cachefile in join script (Bug #28361)
 
  -- Stefan Gohmann <gohmann@univention.de>  Thu, 06 Sep 2012 10:11:40 +0200
 
-univention-join (5.0.4-2) unstable; urgency=low
+univention-management-console-module-join (5.0.4-2) unstable; urgency=low
 
   * Remove supperious curly brace (Bug #26058)
 
  -- Philipp Hahn <hahn@univention.de>  Wed, 05 Sep 2012 12:04:17 +0200
 
-univention-join (5.0.4-1) unstable; urgency=low
+univention-management-console-module-join (5.0.4-1) unstable; urgency=low
 
   * Fix univention-server-join --bindpwd (Bug #19978)
 
  -- Philipp Hahn <hahn@univention.de>  Wed, 05 Sep 2012 09:49:37 +0200
 
-univention-join (5.0.3-1) unstable; urgency=low
+univention-management-console-module-join (5.0.3-1) unstable; urgency=low
 
   * ported module to Dojo 1.8; Bug #26857
 
  -- Florian Best <best@univention.de>  Wed, 05 Sep 2012 09:17:06 +0200
 
-univention-join (5.0.2-1) unstable; urgency=low
+univention-management-console-module-join (5.0.2-1) unstable; urgency=low
 
   * Use primary interface by default (Bug #26058}
 
  -- Philipp Hahn <hahn@univention.de>  Mon, 20 Aug 2012 07:43:47 +0200
 
-univention-join (5.0.1-1) unstable; urgency=low
+univention-management-console-module-join (5.0.1-1) unstable; urgency=low
 
   * Fix /32 network (Bug #28143)
   * Fix copying password (Bug #19430)
@@ -1399,26 +1399,26 @@ univention-join (5.0.1-1) unstable; urgency=low
 
  -- Philipp Hahn <hahn@univention.de>  Tue, 14 Aug 2012 07:27:43 +0200
 
-univention-join (5.0.0-1) unstable; urgency=low
+univention-management-console-module-join (5.0.0-1) unstable; urgency=low
 
   * remove useless "known bugs" message (Bug #25379)
 
  -- Janek Walkenhorst <walkenhorst@univention.de>  Wed, 18 Jul 2012 17:36:31 +0200
 
-univention-join (4.0.43-1) unstable; urgency=low
+univention-management-console-module-join (4.0.43-1) unstable; urgency=low
 
   * univention-jon: the error message parsing for univention-server-join has
     been corrected, error messages begin with "^E:"; Bug #27861
 
  -- Alexander Kläser <klaeser@univention.de>  Tue, 10 Jul 2012 11:47:28 +0200
 
-univention-join (4.0.42-1) unstable; urgency=low
+univention-management-console-module-join (4.0.42-1) unstable; urgency=low
 
   * fix new lines in failed_message; important for Bug #25805
 
  -- Dirk Wiesenthal <wiesenthal@univention.de>  Thu, 05 Jul 2012 17:15:24 +0200
 
-univention-join (4.0.41-1) unstable; urgency=low
+univention-management-console-module-join (4.0.41-1) unstable; urgency=low
 
   * fixed polling issues
   * fixed backend error handling with for credentials check
@@ -1426,25 +1426,25 @@ univention-join (4.0.41-1) unstable; urgency=low
 
  -- Alexander Kläser <klaeser@univention.de>  Tue, 03 Jul 2012 17:37:43 +0200
 
-univention-join (4.0.40-1) unstable; urgency=low
+univention-management-console-module-join (4.0.40-1) unstable; urgency=low
 
   * added option '-q' to univention-ssh for credentials check; Bug #26235
 
  -- Alexander Kläser <klaeser@univention.de>  Tue, 03 Jul 2012 13:42:47 +0200
 
-univention-join (4.0.39-1) unstable; urgency=low
+univention-management-console-module-join (4.0.39-1) unstable; urgency=low
 
   * fixed JavaScript syntax error; Bug #26235
 
  -- Alexander Kläser <klaeser@univention.de>  Tue, 03 Jul 2012 10:51:54 +0200
 
-univention-join (4.0.38-1) unstable; urgency=low
+univention-management-console-module-join (4.0.38-1) unstable; urgency=low
 
   * added translations; Bug #26235
 
  -- Alexander Kläser <klaeser@univention.de>  Mon, 02 Jul 2012 16:29:15 +0200
 
-univention-join (4.0.37-1) unstable; urgency=low
+univention-management-console-module-join (4.0.37-1) unstable; urgency=low
 
   * refactored UMC module to either show the join log, the grid or the form
     for initial join, no parallel view allowed anymore
@@ -1455,7 +1455,7 @@ univention-join (4.0.37-1) unstable; urgency=low
 
  -- Alexander Kläser <klaeser@univention.de>  Mon, 02 Jul 2012 16:06:01 +0200
 
-univention-join (4.0.36-1) unstable; urgency=low
+univention-management-console-module-join (4.0.36-1) unstable; urgency=low
 
   * univention-server-join: Improved error checking (Bug #16214)
   * Replaced "if [ $? = 1 ]" with "if [ $? -gt 0 ]" in several
@@ -1470,51 +1470,51 @@ univention-join (4.0.36-1) unstable; urgency=low
 
  -- Juergen Kahrs <Kahrs@univention.de>  Thu, 28 Jun 2012 09:45:35 +0200
 
-univention-join (4.0.35-1) unstable; urgency=low
+univention-management-console-module-join (4.0.35-1) unstable; urgency=low
 
   * Fix rare shell quoting issue in kerberos realm detection (Bug #26475)
 
  -- Arvid Requate <requate@univention.de>  Wed, 02 May 2012 19:56:33 +0200
 
-univention-join (4.0.34-1) unstable; urgency=low
+univention-management-console-module-join (4.0.34-1) unstable; urgency=low
 
   * show join script name in log output and not its first argument (Bug #26720)
 
  -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Tue, 24 Apr 2012 09:51:20 +0200
 
-univention-join (4.0.33-1) unstable; urgency=low
+univention-management-console-module-join (4.0.33-1) unstable; urgency=low
 
   * ask for credentials in UMC module if join scripts shall be executed on
     non-master systems (Bug #26720)
 
  -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Mon, 23 Apr 2012 16:31:44 +0200
 
-univention-join (4.0.32-1) unstable; urgency=low
+univention-management-console-module-join (4.0.32-1) unstable; urgency=low
 
   * fix for Bug #21587 now pertains all system roles (Bug #21587)
 
  -- Lukas Walter <walter@univention.de>  Mon, 13 Feb 2012 15:41:04 +0100
 
-univention-join (4.0.31-1) unstable; urgency=low
+univention-management-console-module-join (4.0.31-1) unstable; urgency=low
 
   * Use ldapsearch-wrapper to support join DNs with more than 74
     characters (Bug #26019)
 
  -- Stefan Gohmann <gohmann@univention.de>  Fri, 03 Feb 2012 07:19:36 +0100
 
-univention-join (4.0.30-1) unstable; urgency=low
+univention-management-console-module-join (4.0.30-1) unstable; urgency=low
 
   * prevent join from failing if umask is modified (Bug #21587)
 
  -- Lukas Walter <walter@univention.de>  Tue, 17 Jan 2012 12:38:04 +0100
 
-univention-join (4.0.29-1) unstable; urgency=low
+univention-management-console-module-join (4.0.29-1) unstable; urgency=low
 
   * UMC module: reset umask to default; Bug #25287
 
  -- Andreas Büsching <buesching@univention.de>  Wed, 07 Dec 2011 17:22:41 +0100
 
-univention-join (4.0.28-3) unstable; urgency=low
+univention-management-console-module-join (4.0.28-3) unstable; urgency=low
 
   * univention-run-join-scripts must pass the credentials to
     the join scripts if --ask-pass was given on domaincontroller_master.
@@ -1522,7 +1522,7 @@ univention-join (4.0.28-3) unstable; urgency=low
 
  -- Arvid Requate <requate@univention.de>  Wed, 30 Nov 2011 20:29:15 +0100
 
-univention-join (4.0.28-2) unstable; urgency=low
+univention-management-console-module-join (4.0.28-2) unstable; urgency=low
 
   * new option --ask-pass for univention-run-join-scripts asks
     for DC master credentials also on domaincontroller_master.
@@ -1531,189 +1531,189 @@ univention-join (4.0.28-2) unstable; urgency=low
 
  -- Arvid Requate <requate@univention.de>  Wed, 30 Nov 2011 12:24:18 +0100
 
-univention-join (4.0.28-1.1) unstable; urgency=low
+univention-management-console-module-join (4.0.28-1.1) unstable; urgency=low
 
   * adapted captions and translations (Bug #24724)
 
  -- Lukas Walter <walter@univention.de>  Mon, 21 Nov 2011 13:28:30 +0100
 
-univention-join (4.0.28-1) unstable; urgency=low
+univention-management-console-module-join (4.0.28-1) unstable; urgency=low
 
   * removed join.log from logrotate config (Bug #18002)
 
  -- Felix Botner <botner@univention.de>  Mon, 21 Nov 2011 09:41:58 +0100
 
-univention-join (4.0.27-2) unstable; urgency=low
+univention-management-console-module-join (4.0.27-2) unstable; urgency=low
 
   * Adapted caption and translation (Bug #24724)
 
  -- Stefan Gohmann <gohmann@univention.de>  Fri, 18 Nov 2011 23:51:35 +0100
 
-univention-join (4.0.27-1) unstable; urgency=low
+univention-management-console-module-join (4.0.27-1) unstable; urgency=low
 
   * fixed logrotate template (Bug #18002)
 
  -- Felix Botner <botner@univention.de>  Fri, 18 Nov 2011 16:47:34 +0100
 
-univention-join (4.0.26-1) unstable; urgency=low
+univention-management-console-module-join (4.0.26-1) unstable; urgency=low
 
   * add copyright headers to JavaScript files (Bug #23210)
 
  -- Janek Walkenhorst <walkenhorst@univention.de>  Thu, 17 Nov 2011 12:33:01 +0100
 
-univention-join (4.0.25-1) unstable; urgency=low
+univention-management-console-module-join (4.0.25-1) unstable; urgency=low
 
   * fix join with IPv6 only hosts (Bug #24475)
 
  -- Janek Walkenhorst <walkenhorst@univention.de>  Wed, 09 Nov 2011 14:37:38 +0100
 
-univention-join (4.0.24-2) unstable; urgency=low
+univention-management-console-module-join (4.0.24-2) unstable; urgency=low
 
   * produce simpler output for univention-installer (Bug #3796)
 
  -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Sun, 30 Oct 2011 17:24:03 +0100
 
-univention-join (4.0.24-1) unstable; urgency=low
+univention-management-console-module-join (4.0.24-1) unstable; urgency=low
 
   * produce simpler output for univention-installer (Bug #3796)
 
  -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Sun, 30 Oct 2011 00:15:34 +0200
 
-univention-join (4.0.23-2) unstable; urgency=low
+univention-management-console-module-join (4.0.23-2) unstable; urgency=low
 
   * Added dependency to univention-directory-manager-tools (Bug #23342)
 
  -- Stefan Gohmann <gohmann@univention.de>  Tue, 25 Oct 2011 15:35:21 +0200
 
-univention-join (4.0.23-1) unstable; urgency=low
+univention-management-console-module-join (4.0.23-1) unstable; urgency=low
 
   * Set dns/backend to ldap when stopping s4 server (Bug #24088)
 
  -- Stefan Gohmann <gohmann@univention.de>  Sun, 23 Oct 2011 00:22:01 +0200
 
-univention-join (4.0.22-3) unstable; urgency=low
+univention-management-console-module-join (4.0.22-3) unstable; urgency=low
 
   * Fix dependencies on u-c (Bug #22668)
 
  -- Philipp Hahn <hahn@univention.de>  Sat, 22 Oct 2011 04:11:20 +0200
 
-univention-join (4.0.22-2) unstable; urgency=low
+univention-management-console-module-join (4.0.22-2) unstable; urgency=low
 
   * Fix try-except-finally use (Bug #24116)
 
  -- Philipp Hahn <hahn@univention.de>  Fri, 21 Oct 2011 15:36:08 +0200
 
-univention-join (4.0.22-1) unstable; urgency=low
+univention-management-console-module-join (4.0.22-1) unstable; urgency=low
 
   * removed duplicated code in umc.widgets._join.Form (Bug #23701)
 
  -- Alexander Kläser <klaeser@univention.de>  Thu, 13 Oct 2011 12:29:51 +0200
 
-univention-join (4.0.21-1) unstable; urgency=low
+univention-management-console-module-join (4.0.21-1) unstable; urgency=low
 
   * adapt join script to new UMC UDM modules for access right management; Bug #23494
 
  -- Andreas Büsching <buesching@univention.de>  Wed, 12 Oct 2011 19:31:00 +0200
 
-univention-join (4.0.20-1) unstable; urgency=low
+univention-management-console-module-join (4.0.20-1) unstable; urgency=low
 
   * produce simpler output for univention-installer (Bug #3796)
 
  -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Wed, 12 Oct 2011 17:20:50 +0200
 
-univention-join (4.0.19-2) unstable; urgency=low
+univention-management-console-module-join (4.0.19-2) unstable; urgency=low
 
   * added missing debian/*.umc-modules file (Bug #23701)
 
  -- Alexander Kläser <klaeser@univention.de>  Wed, 12 Oct 2011 16:42:30 +0200
 
-univention-join (4.0.19-1) unstable; urgency=low
+univention-management-console-module-join (4.0.19-1) unstable; urgency=low
 
   * integrated univention-management-console-module-join into univention-join
     (Bug #23701)
 
  -- Alexander Kläser <klaeser@univention.de>  Wed, 12 Oct 2011 14:57:02 +0200
 
-univention-join (4.0.18-3) unstable; urgency=low
+univention-management-console-module-join (4.0.18-3) unstable; urgency=low
 
   * added more logrotate configurations (Bug #18002)
 
  -- Felix Botner <botner@univention.de>  Wed, 12 Oct 2011 10:10:48 +0200
 
-univention-join (4.0.18-2) unstable; urgency=low
+univention-management-console-module-join (4.0.18-2) unstable; urgency=low
 
   * added univention-install-config-registry to rules file (Bug #18002)
 
  -- Felix Botner <botner@univention.de>  Wed, 12 Oct 2011 09:56:20 +0200
 
-univention-join (4.0.18-1) unstable; urgency=low
+univention-management-console-module-join (4.0.18-1) unstable; urgency=low
 
   * added logrotate configuration (Bug #18002)
 
  -- Felix Botner <botner@univention.de>  Wed, 12 Oct 2011 09:47:10 +0200
 
-univention-join (4.0.17-1) unstable; urgency=low
+univention-management-console-module-join (4.0.17-1) unstable; urgency=low
 
   * Use shell-univention-lib for address determination (Bug #10825)
 
  -- Stefan Gohmann <gohmann@univention.de>  Sat, 08 Oct 2011 08:13:47 +0200
 
-univention-join (4.0.16-1) unstable; urgency=low
+univention-management-console-module-join (4.0.16-1) unstable; urgency=low
 
   * Removed dependency to eth0 (Bug #10825)
 
  -- Stefan Gohmann <gohmann@univention.de>  Sat, 08 Oct 2011 07:57:57 +0200
 
-univention-join (4.0.15-1) unstable; urgency=low
+univention-management-console-module-join (4.0.15-1) unstable; urgency=low
 
   * set ldap/server/port on all system roles (Bug #23231)
 
  -- Arvid Requate <requate@univention.de>  Mon, 26 Sep 2011 11:06:32 +0200
 
-univention-join (4.0.14-1) unstable; urgency=low
+univention-management-console-module-join (4.0.14-1) unstable; urgency=low
 
   * Support for ldap/master/port on memberserver (Bug #20026)
 
  -- Stefan Gohmann <gohmann@univention.de>  Tue, 20 Sep 2011 14:15:19 +0200
 
-univention-join (4.0.13-3) unstable; urgency=low
+univention-management-console-module-join (4.0.13-3) unstable; urgency=low
 
   * keep ownership and mode when migrating .secret files (Bug #14186)
 
  -- Arvid Requate <requate@univention.de>  Wed, 17 Aug 2011 12:43:34 +0200
 
-univention-join (4.0.13-2) unstable; urgency=low
+univention-management-console-module-join (4.0.13-2) unstable; urgency=low
 
   * trim EOL from backup-join and slave-join.secret on update (Bug #14186)
 
  -- Arvid Requate <requate@univention.de>  Wed, 17 Aug 2011 09:45:51 +0200
 
-univention-join (4.0.13-1) unstable; urgency=low
+univention-management-console-module-join (4.0.13-1) unstable; urgency=low
 
   * store backup-join and slave-join.secret without newline (Bug #14186)
 
  -- Arvid Requate <requate@univention.de>  Mon, 15 Aug 2011 14:21:06 +0200
 
-univention-join (4.0.12-3) unstable; urgency=low
+univention-management-console-module-join (4.0.12-3) unstable; urgency=low
 
   * revert change of 4.0.12-1 (Bug #17519)
 
  -- Arvid Requate <requate@univention.de>  Wed, 10 Aug 2011 16:59:24 +0200
 
-univention-join (4.0.12-2) unstable; urgency=low
+univention-management-console-module-join (4.0.12-2) unstable; urgency=low
 
   * use binddn lookup code from univention-join also in
     univention-run-join-scripts (Bug #17519)
 
  -- Arvid Requate <requate@univention.de>  Tue, 09 Aug 2011 14:06:50 +0200
 
-univention-join (4.0.12-1) unstable; urgency=low
+univention-management-console-module-join (4.0.12-1) unstable; urgency=low
 
   * Add joinscript_extract_binddn_and_bindpwd_from_args (Bug #17519)
 
  -- Arvid Requate <requate@univention.de>  Tue, 09 Aug 2011 11:32:08 +0200
 
-univention-join (4.0.11-1) unstable; urgency=low
+univention-management-console-module-join (4.0.11-1) unstable; urgency=low
 
   * UCS 3.0 adjustments (Bug #22413)
   * Support for ldap/master/port (Bug #20026)
@@ -1721,75 +1721,75 @@ univention-join (4.0.11-1) unstable; urgency=low
 
  -- Stefan Gohmann <gohmann@univention.de>  Fri, 05 Aug 2011 10:49:38 +0200
 
-univention-join (4.0.10-1) unstable; urgency=low
+univention-management-console-module-join (4.0.10-1) unstable; urgency=low
 
   * Set execute permissions to univention-run-join-scripts (Bug #22431)
 
  -- Stefan Gohmann <gohmann@univention.de>  Tue, 02 Aug 2011 11:02:32 +0200
 
-univention-join (4.0.9-1) unstable; urgency=low
+univention-management-console-module-join (4.0.9-1) unstable; urgency=low
 
   * Fix installation of check-join-status (Bug #22431)
 
  -- Stefan Gohmann <gohmann@univention.de>  Mon, 01 Aug 2011 15:25:39 +0200
 
-univention-join (4.0.8-1) unstable; urgency=low
+univention-management-console-module-join (4.0.8-1) unstable; urgency=low
 
   * More bashisms (Bug #22431)
 
  -- Stefan Gohmann <gohmann@univention.de>  Fri, 29 Jul 2011 07:16:03 +0200
 
-univention-join (4.0.7-1) unstable; urgency=low
+univention-management-console-module-join (4.0.7-1) unstable; urgency=low
 
   * Fixed bashisms (Bug #22431)
 
  -- Stefan Gohmann <gohmann@univention.de>  Fri, 29 Jul 2011 06:58:52 +0200
 
-univention-join (4.0.6-1) unstable; urgency=low
+univention-management-console-module-join (4.0.6-1) unstable; urgency=low
 
   * set ldap/master/port?7389 in univention-join for all roles
     except domaincontroller_master and basesystem (Bug #20026)
 
  -- Arvid Requate <requate@univention.de>  Tue, 26 Jul 2011 14:50:56 +0200
 
-univention-join (4.0.5-1) unstable; urgency=low
+univention-management-console-module-join (4.0.5-1) unstable; urgency=low
 
   * made joinscripthelper.lib dash compliant (Bug #23006)
 
  -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Tue, 12 Jul 2011 14:15:35 +0200
 
-univention-join (4.0.4-2) unstable; urgency=low
+univention-management-console-module-join (4.0.4-2) unstable; urgency=low
 
   * removed dependency to sysutils (Bug #22602)
 
  -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Fri, 01 Jul 2011 11:41:46 +0200
 
-univention-join (4.0.4-1) unstable; urgency=low
+univention-management-console-module-join (4.0.4-1) unstable; urgency=low
 
   * remove EOL from ldap.secret, ldap-backup.secret and machine.secret
     (Bug #14186)
 
  -- Arvid Requate <requate@univention.de>  Tue, 28 Jun 2011 16:43:43 +0200
 
-univention-join (4.0.3-1) unstable; urgency=low
+univention-management-console-module-join (4.0.3-1) unstable; urgency=low
 
   * Added dependency to shell-univention-lib > 1.0.6 (Bug #22431)
 
  -- Stefan Gohmann <gohmann@univention.de>  Tue, 07 Jun 2011 09:58:25 +0200
 
-univention-join (4.0.2-1) unstable; urgency=low
+univention-management-console-module-join (4.0.2-1) unstable; urgency=low
 
   * Consider ldap/server/port (Bug #20026)
 
  -- Stefan Gohmann <gohmann@univention.de>  Tue, 07 Jun 2011 07:49:13 +0200
 
-univention-join (4.0.1-1) unstable; urgency=low
+univention-management-console-module-join (4.0.1-1) unstable; urgency=low
 
   * avoid anonymous ldap searches in univention-join (Bug #17519)
 
  -- Arvid Requate <requate@univention.de>  Tue, 31 May 2011 19:38:18 +0200
 
-univention-join (4.0.0-1) unstable; urgency=low
+univention-management-console-module-join (4.0.0-1) unstable; urgency=low
 
   * Package cleanup for UCS 3.0 (Bug #22431)
     * Bump version for UCS 3.0
@@ -1799,40 +1799,40 @@ univention-join (4.0.0-1) unstable; urgency=low
 
  -- Stefan Gohmann <gohmann@univention.de>  Mon, 09 May 2011 13:53:45 +0200
 
-univention-join (3.0.4-4) unstable; urgency=low
+univention-management-console-module-join (3.0.4-4) unstable; urgency=low
 
   * Display a warning and error out if univention-run-join-scripts
     is run on a system not yet joined (Bug #20050)
 
  -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Tue, 01 Feb 2011 09:32:08 +0100
 
-univention-join (3.0.4-3) unstable; urgency=low
+univention-management-console-module-join (3.0.4-3) unstable; urgency=low
 
   * Improve check for join status (Bug #19361,#13495,#13497,#18120)
 
  -- Philipp Hahn <hahn@univention.de>  Thu, 12 Aug 2010 19:38:02 +0200
 
-univention-join (3.0.4-2) unstable; urgency=low
+univention-management-console-module-join (3.0.4-2) unstable; urgency=low
 
   * Remove + from lines beginning (Bug #14121)
 
  -- Philipp Hahn <hahn@univention.de>  Fri, 13 Aug 2010 08:05:22 +0200
 
-univention-join (3.0.4-1) unstable; urgency=low
+univention-management-console-module-join (3.0.4-1) unstable; urgency=low
 
   * Fix copying of SSL settings (Bug #14212)
   * debian/control: Depend on re-implementation of univention-ssh.
 
  -- Philipp Hahn <hahn@univention.de>  Thu, 12 Aug 2010 20:01:49 +0200
 
-univention-join (3.0.3-1) unstable; urgency=low
+univention-management-console-module-join (3.0.3-1) unstable; urgency=low
 
   * For join scripts is an admin account required on DC Backups
     (Bug #19362)
 
  -- Stefan Gohmann <gohmann@univention.de>  Tue, 10 Aug 2010 20:00:44 +0200
 
-univention-join (3.0.2-1) unstable; urgency=low
+univention-management-console-module-join (3.0.2-1) unstable; urgency=low
 
   * redirect stderr to join.log. Bug #19180
   * added options to univention-join:
@@ -1841,7 +1841,7 @@ univention-join (3.0.2-1) unstable; urgency=low
 
  -- Stefan Gohmann <gohmann@univention.de>  Sat, 31 Jul 2010 16:22:19 +0200
 
-univention-join (3.0.1-2) unstable; urgency=low
+univention-management-console-module-join (3.0.1-2) unstable; urgency=low
 
   * move univention join script from 91 to 23 because we need in some
     join scripts the new generated users, for example join-backup in
@@ -1849,163 +1849,163 @@ univention-join (3.0.1-2) unstable; urgency=low
 
  -- Stefan Gohmann <gohmann@univention.de>  Wed, 21 Jul 2010 15:09:48 +0200
 
-univention-join (3.0.1-1) unstable; urgency=low
+univention-management-console-module-join (3.0.1-1) unstable; urgency=low
 
   * don't cut the last character because univention-ssh was fixed. Bug
     #14212
 
  -- Stefan Gohmann <gohmann@univention.de>  Wed, 21 Jul 2010 11:31:12 +0200
 
-univention-join (3.0.0-1) unstable; urgency=low
+univention-management-console-module-join (3.0.0-1) unstable; urgency=low
 
   * convert to GNU APGL V3 (Bug #17543)
   * bump version for UCS 2.4
 
  -- Janek Walkenhorst <walkenhorst@univention.de>  Tue, 22 Jun 2010 13:47:04 +0200
 
-univention-join (2.0.26-1) unstable; urgency=low
+univention-management-console-module-join (2.0.26-1) unstable; urgency=low
 
   * fix for joinusers with long Bind-DN in univention-join and
     univention-run-join-scripts Bug #16210
 
  -- Arvid Requate <requate@univention.de>  Mon, 29 Mar 2010 13:22:12 +0200
 
-univention-join (2.0.25-1) unstable; urgency=low
+univention-management-console-module-join (2.0.25-1) unstable; urgency=low
 
   * updated copyright Bug #17222
 
  -- Felix Botner <botner@univention.de>  Thu, 07 Jan 2010 14:41:07 +0100
 
-univention-join (2.0.24-2) unstable; urgency=low
+univention-management-console-module-join (2.0.24-2) unstable; urgency=low
 
   * suppress unwanted output when checking LDAP TLS configuration (Bug #16568)
 
  -- Andreas Büsching <buesching@univention.de>  Wed, 30 Dec 2009 13:05:27 +0100
 
-univention-join (2.0.23-1) unstable; urgency=low
+univention-management-console-module-join (2.0.23-1) unstable; urgency=low
 
   * do not write the password of the host account to the log file (Bug #11893)
 
  -- Andreas Büsching <buesching@univention.de>  Wed, 30 Dec 2009 11:42:47 +0100
 
-univention-join (2.0.22-1) unstable; urgency=low
+univention-management-console-module-join (2.0.22-1) unstable; urgency=low
 
   * force removal of /usr/share/univention-join/.joined during symlink
     creation (Bug #16560)
 
  -- Sönke Schwardt <schwardt@univention.de>  Wed, 25 Nov 2009 14:25:28 +0100
 
-univention-join (2.0.21-1) unstable; urgency=low
+univention-management-console-module-join (2.0.21-1) unstable; urgency=low
 
   * force removal of /usr/share/univention-join/.joined during symlink
     creation (Bug #16560)
 
  -- Sönke Schwardt <schwardt@univention.de>  Wed, 25 Nov 2009 10:56:43 +0100
 
-univention-join (2.0.20-1) unstable; urgency=low
+univention-management-console-module-join (2.0.20-1) unstable; urgency=low
 
   * fixed path to rdate (Bug #16504)
 
  -- Sönke Schwardt <schwardt@univention.de>  Fri, 20 Nov 2009 15:24:44 +0100
 
-univention-join (2.0.19-5) unstable; urgency=low
+univention-management-console-module-join (2.0.19-5) unstable; urgency=low
 
   * Suppress error message (Bug: #14846)
 
  -- Moritz Mühlenhoff <muehlenhoff@univention.de>  Mon, 09 Nov 2009 14:42:41 +0100
 
-univention-join (2.0.19-4) unstable; urgency=low
+univention-management-console-module-join (2.0.19-4) unstable; urgency=low
 
   * Create a fallback symlink (Bug: #14846)
 
  -- Moritz Mühlenhoff <muehlenhoff@univention.de>  Mon, 09 Nov 2009 14:38:34 +0100
 
-univention-join (2.0.19-3) unstable; urgency=low
+univention-management-console-module-join (2.0.19-3) unstable; urgency=low
 
   * Initialise /var/univention-join/status for the new
     file path (Bug: #14846)
 
  -- Moritz Mühlenhoff <muehlenhoff@univention.de>  Mon, 09 Nov 2009 13:15:15 +0100
 
-univention-join (2.0.19-2) unstable; urgency=low
+univention-management-console-module-join (2.0.19-2) unstable; urgency=low
 
   * fixed postinst (Bug: 15557)
 
  -- Felix Botner <botner@univention.de>  Thu,  5 Nov 2009 10:04:16 +0100
 
-univention-join (2.0.19-1) unstable; urgency=low
+univention-management-console-module-join (2.0.19-1) unstable; urgency=low
 
   * chgrp ldap-backup.secret to "DC Backup Hosts" (Bug: 15557)
 
  -- Felix Botner <botner@univention.de>  Wed,  4 Nov 2009 14:34:42 +0100
 
-univention-join (2.0.18-1) unstable; urgency=low
+univention-management-console-module-join (2.0.18-1) unstable; urgency=low
 
   * remove accidentally leftover exit 0 (Bug: #9650)
 
  -- Daniel Hofmann <hofmann@univention.de>  Tue,  3 Nov 2009 16:45:38 +0100
 
-univention-join (2.0.17-1) unstable; urgency=low
+univention-management-console-module-join (2.0.17-1) unstable; urgency=low
 
   * move fqdn-check behind cacert-download so it can actually succeed (Bug: #9650)
 
  -- Daniel Hofmann <hofmann@univention.de>  Tue,  3 Nov 2009 15:13:32 +0100
 
-univention-join (2.0.16-1) unstable; urgency=low
+univention-management-console-module-join (2.0.16-1) unstable; urgency=low
 
   * change implementation of fqdn-check to avoid many problems caused by the old one (Bug: #9650)
 
  -- Daniel Hofmann <hofmann@univention.de>  Thu, 29 Oct 2009 18:16:05 +0100
 
-univention-join (2.0.15-1) unstable; urgency=low
+univention-management-console-module-join (2.0.15-1) unstable; urgency=low
 
   * small quotation cosmetics that hopefully fix (Bug: #9650)
 
  -- Daniel Hofmann <hofmann@univention.de>  Wed, 28 Oct 2009 16:37:42 +0100
 
-univention-join (2.0.14-1) unstable; urgency=low
+univention-management-console-module-join (2.0.14-1) unstable; urgency=low
 
   * make joinscripthelper.lib more tolerant for different forms of VERSION-definitions (Bug: #14873)
 
  -- Daniel Hofmann <hofmann@univention.de>  Wed, 21 Oct 2009 18:19:53 +0200
 
-univention-join (2.0.13-2) unstable; urgency=low
+univention-management-console-module-join (2.0.13-2) unstable; urgency=low
 
   * get hostname from ucr rather than from HOSTNAME shell var (Bug: #13404)
 
  -- Felix Botner <botner@univention.de>  Wed, 30 Sep 2009 12:15:10 +0200
 
-univention-join (2.0.13-1) unstable; urgency=low
+univention-management-console-module-join (2.0.13-1) unstable; urgency=low
 
   * chmod ldap-backup.secret to 640 (Bug: #15557)
 
  -- Felix Botner <botner@univention.de>  Fri, 25 Sep 2009 16:45:55 +0200
 
-univention-join (2.0.12-1) unstable; urgency=low
+univention-management-console-module-join (2.0.12-1) unstable; urgency=low
 
   * add possibility to use joinscripthelper.lib by external scripts (Bug: #15082)
 
  -- Daniel Hofmann <hofmann@univention.de>  Thu, 24 Sep 2009 13:43:06 +0200
 
-univention-join (2.0.11-1) unstable; urgency=low
+univention-management-console-module-join (2.0.11-1) unstable; urgency=low
 
   * small readability tweaks and parsing changes in joinscript-lib (Bug #14873)
 
  -- Daniel Hofmann <dhofmann@univention.de>  Tue, 15 Sep 2009 11:53:25 +0200
 
-univention-join (2.0.10-4) unstable; urgency=low
+univention-management-console-module-join (2.0.10-4) unstable; urgency=low
 
   * Symlinks are needed in more code branches (Bug #14846)
 
  -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Tue,  8 Sep 2009 09:41:20 +0200
 
-univention-join (2.0.10-3) unstable; urgency=low
+univention-management-console-module-join (2.0.10-3) unstable; urgency=low
 
   * Create a compatibility symlink for all legacy join scripts (Bug #14846)
 
  -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Tue,  8 Sep 2009 09:06:23 +0200
 
-univention-join (2.0.10-2) unstable; urgency=low
+univention-management-console-module-join (2.0.10-2) unstable; urgency=low
 
   * The transition code was only executed if /usr/lib/univention-install/.index.txt
     existed, which isn't the case on a non-master, which isn't joined yet. In that
@@ -2014,76 +2014,76 @@ univention-join (2.0.10-2) unstable; urgency=low
 
  -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Mon,  7 Sep 2009 13:20:50 +0200
 
-univention-join (2.0.10-1) unstable; urgency=low
+univention-management-console-module-join (2.0.10-1) unstable; urgency=low
 
   * implement qa wishes, include more checks in joinscript-lib (Bug #14873)
 
  -- Daniel Hofmann <dhofmann@univention.de>  Thu, 27 Aug 2009 13:35:47 +0200
 
-univention-join (2.0.9-1) unstable; urgency=low
+univention-management-console-module-join (2.0.9-1) unstable; urgency=low
 
   * add yet another error condition for inability to extract commonName from certificate file (Bug #9650)
 
  -- Daniel Hofmann <dhofmann@univention.de>  Wed, 26 Aug 2009 13:58:42 +0200
 
-univention-join (2.0.8-1) unstable; urgency=low
+univention-management-console-module-join (2.0.8-1) unstable; urgency=low
 
   * add error condition for inability to find dc-hostcertificate in univention-join (Bug #9650)
 
  -- Daniel Hofmann <dhofmann@univention.de>  Wed, 26 Aug 2009 13:40:13 +0200
 
-univention-join (2.0.7-1) unstable; urgency=low
+univention-management-console-module-join (2.0.7-1) unstable; urgency=low
 
   * explain "skipped" output to avoid even more confusion (Bug #15082)
 
  -- Daniel Hofmann <dhofmann@univention.de>  Fri, 14 Aug 2009 16:15:22 +0200
 
-univention-join (2.0.6-1) unstable; urgency=low
+univention-management-console-module-join (2.0.6-1) unstable; urgency=low
 
   * add copyright header for joinscripthelper.lib (Bug #14873)
 
  -- Daniel Hofmann <dhofmann@univention.de>  Tue, 11 Aug 2009 11:48:25 +0200
 
-univention-join (2.0.5-1) unstable; urgency=low
+univention-management-console-module-join (2.0.5-1) unstable; urgency=low
 
   * replace "(exitcode 1)" by "skipped" in univention-run-join-scripts output (Bug #15082)
   * add symlink for check_join_status.sh to /usr/sbin, and make log more verbose (Bug #11888)
 
  -- Daniel Hofmann <dhofmann@univention.de>  Tue, 11 Aug 2009 11:15:44 +0200
 
-univention-join (2.0.4-1) unstable; urgency=low
+univention-management-console-module-join (2.0.4-1) unstable; urgency=low
 
   * move the check from the last commit to the right position. (Bug #9650)
 
  -- Daniel Hofmann <dhofmann@univention.de>  Mon, 10 Aug 2009 15:57:32 +0200
 
-univention-join (2.0.3-1) unstable; urgency=low
+univention-management-console-module-join (2.0.3-1) unstable; urgency=low
 
   * add check to univention-join that verifies, that the specified dname matches
     the cname in the master certificate. (Bug #9650)
 
  -- Daniel Hofmann <dhofmann@univention.de>  Mon, 10 Aug 2009 15:41:04 +0200
 
-univention-join (2.0.2-1) unstable; urgency=low
+univention-management-console-module-join (2.0.2-1) unstable; urgency=low
 
   * some renaming and cosmetics in joinscript-helperlib (Bug #14873)
 
  -- Daniel Hofmann <dhofmann@univention.de>  Mon, 10 Aug 2009 10:54:48 +0200
 
-univention-join (2.0.1-1) unstable; urgency=low
+univention-management-console-module-join (2.0.1-1) unstable; urgency=low
 
   * add helper lib for join scripts (Bug #14873)
 
  -- Daniel Hofmann <dhofmann@univention.de>  Fri,  7 Aug 2009 17:27:02 +0200
 
-univention-join (2.0.0-2) unstable; urgency=low
+univention-management-console-module-join (2.0.0-2) unstable; urgency=low
 
   * Also add a symbolic link for /usr/share/univention-join/.joined, since the
     status checks of the individual join scripts fail otherwise (Bug #14846)
 
  -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Thu, 25 Jun 2009 11:30:25 +0200
 
-univention-join (2.0.0-1) unstable; urgency=low
+univention-management-console-module-join (2.0.0-1) unstable; urgency=low
 
   * Add transition code which moves /usr/lib/univention-install/.index to
     /var/univention-join/status. Also, add a symbolic link. (Bug #14846)
@@ -2095,317 +2095,317 @@ univention-join (2.0.0-1) unstable; urgency=low
 
  -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Wed, 24 Jun 2009 16:47:44 +0200
 
-univention-join (2.0.0-0) unstable; urgency=low
+univention-management-console-module-join (2.0.0-0) unstable; urgency=low
 
   * bump version for UCS 2.3
 
  -- Sönke Schwardt <schwardt@univention.de>  Wed, 10 Jun 2009 08:20:32 +0200
 
-univention-join (1.1.2-2) unstable; urgency=low
+univention-management-console-module-join (1.1.2-2) unstable; urgency=low
 
   * added symlink to univention-run-join-scripts in /usr/sbin
 
  -- Sönke Schwardt <schwardt@univention.de>  Fri, 20 Jun 2008 13:27:51 +0200
 
-univention-join (1.1.2-1) unstable; urgency=low
+univention-management-console-module-join (1.1.2-1) unstable; urgency=low
 
   * added univention-run-join-scripts
 
  -- Sönke Schwardt <schwardt@univention.de>  Wed, 18 Jun 2008 13:27:10 +0200
 
-univention-join (1.1.1-1) unstable; urgency=low
+univention-management-console-module-join (1.1.1-1) unstable; urgency=low
 
   * if the ucsCA certificate couldn't be copied then try to copy the
     udsCA certificate
 
  -- Stefan Gohmann <gohmann@univention.de>  Wed, 17 Oct 2007 12:54:11 +0200
 
-univention-join (1.0.8-2) unstable; urgency=low
+univention-management-console-module-join (1.0.8-2) unstable; urgency=low
 
   * fixed logfile permissions
 
  -- Sönke Schwardt <schwardt@univention.de>  Thu, 27 Sep 2007 15:07:52 +0200
 
-univention-join (1.0.8-1) unstable; urgency=low
+univention-management-console-module-join (1.0.8-1) unstable; urgency=low
 
   * renamed /etc/univention/ssl/udsCA to /etc/univention/ssl/ucsCA
 
  -- Sönke Schwardt <schwardt@univention.de>  Wed, 22 Aug 2007 14:36:58 +0200
 
-univention-join (1.0.7-1) unstable; urgency=low
+univention-management-console-module-join (1.0.7-1) unstable; urgency=low
 
   * rename univention domain to ucs domain
 
  -- Stefan Gohmann <gohmann@univention.de>  Wed, 22 Aug 2007 12:58:14 +0200
 
-univention-join (1.0.6-4) unstable; urgency=low
+univention-management-console-module-join (1.0.6-4) unstable; urgency=low
 
   * Adapt to Univention Directory Replication
 
  -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Wed,  8 Aug 2007 14:48:25 +0200
 
-univention-join (1.0.6-3) unstable; urgency=low
+univention-management-console-module-join (1.0.6-3) unstable; urgency=low
 
   * Adapt to Univention Directory Listener / Notifier
 
  -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Wed,  8 Aug 2007 14:25:28 +0200
 
-univention-join (1.0.6-2) unstable; urgency=low
+univention-management-console-module-join (1.0.6-2) unstable; urgency=low
 
   * more wording change univention-config-registry and univention-
     baseconfig
 
  -- Stefan Gohmann <gohmann@univention.de>  Fri,  3 Aug 2007 09:45:44 +0200
 
-univention-join (1.0.6-1) unstable; urgency=low
+univention-management-console-module-join (1.0.6-1) unstable; urgency=low
 
   * add version number to join script
 
  -- Andreas Büsching <buesching@univention.de>  Thu,  2 Aug 2007 10:35:32 +0200
 
-univention-join (1.0.5-2) unstable; urgency=low
+univention-management-console-module-join (1.0.5-2) unstable; urgency=low
 
   * added missing / in univention-join
 
  -- Tobias Scherer <scherer@univention.de>  Wed, 25 Jul 2007 10:48:20 +0200
 
-univention-join (1.0.5-1) unstable; urgency=low
+univention-management-console-module-join (1.0.5-1) unstable; urgency=low
 
   * added more error handling in the join script
 
  -- Stefan Gohmann <gohmann@univention.de>  Tue, 24 Jul 2007 13:43:55 +0200
 
-univention-join (1.0.4-2) unstable; urgency=low
+univention-management-console-module-join (1.0.4-2) unstable; urgency=low
 
   * re-added the dependency to sysutils
 
  -- Stefan Gohmann <gohmann@univention.de>  Fri, 20 Jul 2007 13:04:09 +0200
 
-univention-join (1.0.4-1) unstable; urgency=low
+univention-management-console-module-join (1.0.4-1) unstable; urgency=low
 
   * switch group of /etc/ldap.secret to "DC Backup Hosts"
 
  -- Sönke Schwardt <schwardt@univention.de>  Wed, 18 Jul 2007 14:15:34 +0200
 
-univention-join (1.0.3-2) unstable; urgency=low
+univention-management-console-module-join (1.0.3-2) unstable; urgency=low
 
   * changed computers/client to computers/managedclient
 
  -- Tobias Scherer <scherer@univention.de>  Tue, 17 Jul 2007 15:10:27 +0200
 
-univention-join (1.0.3-1) unstable; urgency=low
+univention-management-console-module-join (1.0.3-1) unstable; urgency=low
 
   * switch from runsvstat to sv
 
  -- Stefan Gohmann <gohmann@univention.de>  Wed, 20 Jun 2007 10:38:15 +0200
 
-univention-join (1.0.2-2) unstable; urgency=low
+univention-management-console-module-join (1.0.2-2) unstable; urgency=low
 
   * encoded files utf-8
 
  -- Janis Meybohm <meybohm@univention.de>  Wed, 13 Jun 2007 15:29:32 +0200
 
-univention-join (1.0.2-1) unstable; urgency=low
+univention-management-console-module-join (1.0.2-1) unstable; urgency=low
 
   * update the check_join_status.sh script
 
  -- Stefan Gohmann <gohmann@univention.de>  Fri,  1 Jun 2007 14:50:46 +0200
 
-univention-join (1.0.1-1) unstable; urgency=low
+univention-management-console-module-join (1.0.1-1) unstable; urgency=low
 
   * restart listener and notifier after joining the domain
 
  -- Stefan Gohmann <gohmann@univention.de>  Fri,  1 Jun 2007 13:43:28 +0200
 
-univention-join (1.0.0-2) unstable; urgency=low
+univention-management-console-module-join (1.0.0-2) unstable; urgency=low
 
   * remove sysutils dependency
 
  -- Stefan Gohmann <gohmann@univention.de>  Thu, 24 May 2007 16:14:14 +0200
 
-univention-join (1.0.0-1) unstable; urgency=low
+univention-management-console-module-join (1.0.0-1) unstable; urgency=low
 
   * update to ucs 2.0 policies
 
  -- Stefan Gohmann <gohmann@univention.de>  Mon, 14 May 2007 11:51:50 +0200
 
-univention-join (0.21-19) unstable; urgency=low
+univention-management-console-module-join (0.21-19) unstable; urgency=low
 
   * invalidate the nscd hosts cache during the join for all server roles
 
  -- Stefan Gohmann <gohmann@univention.de>  Tue, 19 Dec 2006 08:36:53 +0100
 
-univention-join (0.21-18) unstable; urgency=low
+univention-management-console-module-join (0.21-18) unstable; urgency=low
 
   * invalidate the nscd hosts cache during the join
 
  -- Stefan Gohmann <gohmann@univention.de>  Thu, 14 Dec 2006 14:24:28 +0100
 
-univention-join (0.21-13) unstable; urgency=low
+univention-management-console-module-join (0.21-13) unstable; urgency=low
 
   * add GPL headers
 
  -- Andreas Büsching <buesching@univention.de>  Wed, 29 Nov 2006 13:01:44 +0100
 
-univention-join (0.21-11) unstable; urgency=low
+univention-management-console-module-join (0.21-11) unstable; urgency=low
 
   * don't fail if the dns forward zone does not exists
 
  -- Stefan Gohmann <gohmann@univention.de>  Fri,  6 Oct 2006 17:06:21 +0200
 
-univention-join (0.21-10) unstable; urgency=low
+univention-management-console-module-join (0.21-10) unstable; urgency=low
 
   * added auto-generated copyright date
 
  -- Janis Meybohm <meybohm@univention.de>  Tue, 20 Jun 2006 14:07:31 +0200
 
-univention-join (0.21-9) unstable; urgency=low
+univention-management-console-module-join (0.21-9) unstable; urgency=low
 
   * fixed typo in univention-join
 
  -- Janis Meybohm <meybohm@univention.de>  Mon, 19 Jun 2006 16:14:46 +0200
 
-univention-join (0.21-8) unstable; urgency=low
+univention-management-console-module-join (0.21-8) unstable; urgency=low
 
   * change domain if the host account already exists
 
  -- Stefan Gohmann <gohmann@univention.de>  Mon, 12 Jun 2006 07:03:55 +0200
 
-univention-join (0.21-6) unstable; urgency=low
+univention-management-console-module-join (0.21-6) unstable; urgency=low
 
   * added -domainname parameter to univention-server-join
 
  -- Stefan Gohmann <gohmann@univention.de>  Tue,  6 Jun 2006 06:47:25 +0200
 
-univention-join (0.21-4) unstable; urgency=low
+univention-management-console-module-join (0.21-4) unstable; urgency=low
 
   * avoid chmod on not existing files
 
  -- Ingo Steuwer <steuwer@univention.de>  Tue, 25 Apr 2006 14:46:05 +0200
 
-univention-join (0.21-2) unstable; urgency=low
+univention-management-console-module-join (0.21-2) unstable; urgency=low
 
   * implemented first support for join without root-priviledges in the master
 
  -- Ingo Steuwer <steuwer@univention.de>  Mon,  3 Apr 2006 08:58:13 +0200
 
-univention-join (0.20) unstable; urgency=low
+univention-management-console-module-join (0.20) unstable; urgency=low
 
   * fix wrong ldap-filter for user-account
 
  -- Ingo Steuwer <steuwer@univention.de>  Thu,  9 Mar 2006 13:43:43 +0100
 
-univention-join (0.19) unstable; urgency=low
+univention-management-console-module-join (0.19) unstable; urgency=low
 
   * fix typo in ssl certificate sync
 
  -- Martin Kuehl <kuehl@univention.de>  Thu,  2 Mar 2006 09:53:59 +0100
 
-univention-join (0.18) unstable; urgency=low
+univention-management-console-module-join (0.18) unstable; urgency=low
 
   * set kerberos realm from master when joining
 
  -- Martin Kuehl <kuehl@univention.de>  Tue, 28 Feb 2006 17:20:39 +0100
 
-univention-join (0.17) unstable; urgency=low
+univention-management-console-module-join (0.17) unstable; urgency=low
 
   * ignore admin-settings-object during join
 
  -- Ingo Steuwer <steuwer@univention.de>  Fri, 24 Feb 2006 14:14:20 +0100
 
-univention-join (0.16) unstable; urgency=low
+univention-management-console-module-join (0.16) unstable; urgency=low
 
   * write /etc/resolv.conf
 
  -- Stefan Gohmann <gohmann@univention.de>  Mon, 12 Sep 2005 07:51:23 +0200
 
-univention-join (0.15) unstable; urgency=low
+univention-management-console-module-join (0.15) unstable; urgency=low
 
   * proper error description
 
  -- Stefan Gohmann <gohmann@univention.de>  Thu,  7 Jul 2005 11:25:02 +0200
 
-univention-join (0.14) unstable; urgency=low
+univention-management-console-module-join (0.14) unstable; urgency=low
 
   * check configured install files
 
  -- Stefan Gohmann <gohmann@univention.de>  Thu,  7 Jul 2005 10:12:16 +0200
 
-univention-join (0.13) unstable; urgency=low
+univention-management-console-module-join (0.13) unstable; urgency=low
 
   * don't set ldap/server
 
  -- Stefan Gohmann <gohmann@univention.de>  Wed,  6 Apr 2005 08:09:54 +0200
 
-univention-join (0.12) unstable; urgency=low
+univention-management-console-module-join (0.12) unstable; urgency=low
 
   * support for notifier on DC Slaves
 
  -- Stefan Gohmann <gohmann@univention.de>  Sun, 20 Mar 2005 20:26:04 +0100
 
-univention-join (0.11) unstable; urgency=low
+univention-management-console-module-join (0.11) unstable; urgency=low
 
   * more and better debug output
 
  -- Stefan Gohmann <gohmann@univention.de>  Mon, 24 May 2004 13:27:21 +0200
 
-univention-join (0.10) unstable; urgency=low
+univention-management-console-module-join (0.10) unstable; urgency=low
 
   * Add proper package description.
 
  -- Roland Bauerschmidt <bauerschmidt@univention.de>  Fri, 30 Apr 2004 10:28:13 +0200
 
-univention-join (0.9) unstable; urgency=low
+univention-management-console-module-join (0.9) unstable; urgency=low
 
   * check ldap positions
   * support for MAC
 
  -- Stefan Gohmann <gohmann@univention.de>  Mon, 26 Apr 2004 15:33:55 +0200
 
-univention-join (0.8) unstable; urgency=low
+univention-management-console-module-join (0.8) unstable; urgency=low
 
   * remove root user warning
 
  -- Stefan Gohmann <gohmann@univention.de>  Tue, 13 Apr 2004 09:38:44 +0200
 
-univention-join (0.7) unstable; urgency=low
+univention-management-console-module-join (0.7) unstable; urgency=low
 
   * reset permissions for /etc/univention/ssl
 
  -- Stefan Gohmann <gohmann@univention.de>  Mon,  5 Apr 2004 14:59:13 +0200
 
-univention-join (0.6) unstable; urgency=low
+univention-management-console-module-join (0.6) unstable; urgency=low
 
   * cleanup code
   * added support for managed clients
 
  -- Stefan Gohmann <gohmann@univention.de>  Tue, 16 Mar 2004 15:32:04 +0100
 
-univention-join (0.5) unstable; urgency=low
+univention-management-console-module-join (0.5) unstable; urgency=low
 
   * added chech_join_status script
 
  -- Stefan Gohmann <stefan@ds-work.office.univention.de>  Tue, 10 Feb 2004 09:18:56 +0100
 
-univention-join (0.4) unstable; urgency=low
+univention-management-console-module-join (0.4) unstable; urgency=low
 
   * check for dc listing
 
  -- Stefan Gohmann <gohmann@univention.de>  Mon,  2 Feb 2004 09:34:01 +0100
 
-univention-join (0.3) unstable; urgency=low
+univention-management-console-module-join (0.3) unstable; urgency=low
 
   * added more debug output
 
  -- Stefan Gohmann <gohmann@univention.de>  Sat, 24 Jan 2004 13:18:59 +0100
 
-univention-join (0.2) unstable; urgency=low
+univention-management-console-module-join (0.2) unstable; urgency=low
 
   * move univention-ssh and univention-scp into univention-ssh package
 
  -- Stefan Gohmann <gohmann@univention.de>  Tue, 10 Dec 2003 07:49:42 +0200
 
-univention-join (0.1.univention) unstable; urgency=low
+univention-management-console-module-join (0.1.univention) unstable; urgency=low
 
   * Initial Release.
 

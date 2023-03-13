@@ -1,0 +1,12 @@
+product: ucs
+release: "5.0"
+version: [3]
+scope: ucs_5.0-0-errata5.0-3
+src: univention-management-console-module-join
+fix:
+desc: |
+ This update addresses the following issues:
+ * The binary package `univention-management-console-module-join` has been
+   split from the source package `univention-join` into a separate one to
+   prevent a circular build dependency.
+bug: [55870]

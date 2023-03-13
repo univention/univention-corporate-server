@@ -33,19 +33,5 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-version := $(shell dpkg-parsechangelog | sed -ne 's/Version: //p')
-copyrightyear := $(shell date +%Y)
-
-override_dh_install:
-	dh_install
-	sed -i "s/@%@copyright_lastyear@%@/${copyrightyear}/g;s/@%@package_version@%@/${version}/g" debian/univention-join/usr/share/univention-join/univention-server-join
-	sed -i "s/@%@copyright_lastyear@%@/${copyrightyear}/g;s/@%@package_version@%@/${version}/g" debian/univention-join/usr/share/univention-join/univention-join
-	sed -i "s/@%@copyright_lastyear@%@/${copyrightyear}/g;s/@%@package_version@%@/${version}/g" debian/univention-join/usr/share/univention-join/univention-run-join-scripts
-	mv debian/univention-join/usr/share/univention-join/check_join_status.sh debian/univention-join/usr/share/univention-join/check_join_status
-
-override_dh_fixperms:
-	dh_fixperms
-	chmod 755 debian/univention-join/usr/share/univention-join/univention-run-join-scripts
-
 %:
-	dh $@ --with python3,ucr
+	dh $@ --with python3,umc
