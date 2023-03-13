@@ -1,9 +1,10 @@
 Source: python-keycloak
 Maintainer: Univention GmbH <packages@univention.de>
-Section: python3
+Section: python
 Priority: optional
 Build-Depends:
- debhelper-compat (= 11),
+ debhelper-compat (= 13),
+ dh-python,
  python3-all,
  python3-setuptools,
 Standards-Version: 3.9.1

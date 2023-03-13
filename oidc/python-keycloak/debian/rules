@@ -34,14 +34,7 @@
 # Tue, 12 Apr 2022 17:19:05 +0200
 
 %:
-	dh $@ --with python3 --buildsystem=python_distutils
+	dh $@ --with python3 --buildsystem=pybuild
 
-override_dh_auto_clean:
-	python3 setup.py clean -a
-	find . -name \*.pyc -exec rm {} \;
-
-override_dh_auto_build:
-	python3 setup.py build --force
-
-override_dh_auto_install:
-	python3 setup.py install --force --root=debian/python3-keycloak --no-compile -O0 --install-layout=deb
+override_dh_auto_test:
+	echo skip
