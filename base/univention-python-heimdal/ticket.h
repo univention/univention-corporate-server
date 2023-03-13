@@ -46,7 +46,7 @@ typedef struct {
 	krb5_ticket ticket;
 } krb5TicketObject;
 
-PyTypeObject krb5TicketType;
+extern PyTypeObject krb5TicketType;
 
 krb5TicketObject *ticket_new(PyObject *unused, PyObject *args);
 

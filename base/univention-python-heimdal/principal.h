@@ -46,7 +46,7 @@ typedef struct {
 	krb5_principal principal;
 } krb5PrincipalObject;
 
-PyTypeObject krb5PrincipalType;
+extern PyTypeObject krb5PrincipalType;
 
 krb5PrincipalObject *principal_new(PyObject *unused, PyObject *args);
 

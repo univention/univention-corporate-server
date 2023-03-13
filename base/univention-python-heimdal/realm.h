@@ -46,7 +46,7 @@ typedef struct {
 	krb5_realm *realm;
 } krb5RealmObject;
 
-PyTypeObject krb5RealmType;
+extern PyTypeObject krb5RealmType;
 
 #if 0
 krb5RealmObject *realm_from_realm(krb5ContextObject *context, krb5_realm *realm);

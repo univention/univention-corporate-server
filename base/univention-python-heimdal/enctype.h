@@ -46,7 +46,7 @@ typedef struct {
 	krb5_enctype enctype;
 } krb5EnctypeObject;
 
-PyTypeObject krb5EnctypeType;
+extern PyTypeObject krb5EnctypeType;
 
 krb5EnctypeObject *enctype_new(PyObject *unused, PyObject *args);
 krb5EnctypeObject *enctype_from_enctype(krb5ContextObject *context, krb5_enctype enctype);

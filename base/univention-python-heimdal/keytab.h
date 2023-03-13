@@ -79,7 +79,7 @@ typedef struct {
 	krb5_keytab keytab;
 } krb5KeytabObject;
 
-PyTypeObject krb5KeytabType;
+extern PyTypeObject krb5KeytabType;
 
 krb5KeytabObject *keytab_open(PyObject *unused, PyObject *args);
 

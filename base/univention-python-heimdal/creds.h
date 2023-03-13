@@ -46,7 +46,7 @@ typedef struct {
 	krb5_creds creds;
 } krb5CredsObject;
 
-PyTypeObject krb5CredsType;
+extern PyTypeObject krb5CredsType;
 
 krb5CredsObject *creds_from_creds(krb5ContextObject *context, krb5_creds creds);
 krb5CredsObject *creds_new(PyObject *unused, PyObject *args);

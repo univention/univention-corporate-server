@@ -44,7 +44,7 @@ typedef struct {
 	krb5_context context;
 } krb5ContextObject;
 
-PyTypeObject krb5ContextType;
+extern PyTypeObject krb5ContextType;
 
 krb5ContextObject *context_open(PyObject *unused);
 

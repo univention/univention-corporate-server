@@ -46,7 +46,7 @@ typedef struct {
 	krb5_ccache ccache;
 } krb5CcacheObject;
 
-PyTypeObject krb5CcacheType;
+extern PyTypeObject krb5CcacheType;
 
 krb5CcacheObject *ccache_open(PyObject *unused, PyObject *args);
 

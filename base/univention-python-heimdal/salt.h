@@ -46,7 +46,7 @@ typedef struct {
 	krb5_salt salt;
 } krb5SaltObject;
 
-PyTypeObject krb5SaltType;
+extern PyTypeObject krb5SaltType;
 
 krb5SaltObject *salt_new(PyObject *unused, PyObject *args);
 krb5SaltObject *salt_raw_new(PyObject *unused, PyObject *args);

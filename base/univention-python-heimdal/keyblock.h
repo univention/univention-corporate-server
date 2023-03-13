@@ -46,7 +46,7 @@ typedef struct {
 	krb5_keyblock keyblock;
 } krb5KeyblockObject;
 
-PyTypeObject krb5KeyblockType;
+extern PyTypeObject krb5KeyblockType;
 
 krb5KeyblockObject *keyblock_new(PyObject *unused, PyObject *args);
 krb5KeyblockObject *keyblock_raw_new(PyObject *unused, PyObject *args);
