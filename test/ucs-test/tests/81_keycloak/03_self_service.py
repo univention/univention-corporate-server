@@ -8,8 +8,6 @@
 from bs4 import BeautifulSoup
 from utils import wait_for_id
 
-from univention.testing.utils import get_ldap_connection, wait_for_listener_replication
-
 
 def test_login_denied_if_not_verified(keycloak_settings, portal_login_via_keycloak, unverified_user, portal_config):
     assert keycloak_settings["ucs/self/registration/check_email_verification"] is True
@@ -18,15 +16,8 @@ def test_login_denied_if_not_verified(keycloak_settings, portal_login_via_keyclo
     error_msg = BeautifulSoup(error.text, "lxml").text.replace("\n", " ")
     expected_msg = BeautifulSoup(keycloak_settings["keycloak/login/messages/en/accountNotVerifiedMsg"], "lxml").text.replace("\n", " ")
     assert expected_msg == error_msg
-
     # verify
-    ldap = get_ldap_connection(primary=True)
-    changes = [
-        ("univentionPasswordRecoveryEmailVerified", [""], [b"TRUE"]),
-    ]
-    ldap.modify(unverified_user.dn, changes)
-    wait_for_listener_replication()
-
+    unverified_user.verify()
     # try again
     driver.find_element_by_css_selector("input[class='pf-c-button pf-m-primary pf-m-block btn-lg']").click()
     wait_for_id(driver, portal_config.header_menu_id)

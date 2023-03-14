@@ -36,11 +36,11 @@ import pytest
 from selenium import webdriver
 from utils import get_portal_tile, keycloak_login, keycloak_password_change, wait_for_class, wait_for_id
 
-import univention.testing.udm as udm_test
 from univention.appcenter.actions import get_action
 from univention.appcenter.app_cache import Apps
 from univention.config_registry import ConfigRegistry
 from univention.lib.misc import custom_groupname
+from univention.testing.udm import UCSTestUDM
 from univention.testing.utils import get_ldap_connection, wait_for_listener_replication
 
 
@@ -94,20 +94,35 @@ def change_app_setting():
         configure.call(app=app, set_vars=revert_changes)
 
 
-@pytest.fixture()
-def unverified_user() -> dict:
-    with udm_test.UCSTestUDM() as udm:
-        dn, username = udm.create_user()
-        ldap = get_ldap_connection(primary=True)
+class UnverfiedUser(object):
+
+    def __init__(self, udm: UCSTestUDM, password: str = "univention"):
+        self.ldap = get_ldap_connection(primary=True)
+        self.password = password
+        self.dn, self.username = udm.create_user(password=password)
         changes = [
-            ("objectClass", [""], ldap.get(dn).get("objectClass") + [b"univentionPasswordSelfService"]),
+            ("objectClass", [""], self.ldap.get(self.dn).get("objectClass") + [b"univentionPasswordSelfService"]),
             ("univentionPasswordSelfServiceEmail", [""], [b"root@localhost"]),
             ("univentionPasswordRecoveryEmailVerified", [""], [b"FALSE"]),
             ("univentionRegisteredThroughSelfService", [""], [b"TRUE"]),
         ]
-        ldap.modify(dn, changes)
+        self.ldap.modify(self.dn, changes)
         wait_for_listener_replication()
-        yield SimpleNamespace(**{"username": username, "dn": dn, "password": "univention"})
+
+    def verify(self) -> None:
+        # verify
+        changes = [
+            ("univentionPasswordRecoveryEmailVerified", [""], [b"TRUE"]),
+        ]
+        self.ldap.modify(self.dn, changes)
+        wait_for_listener_replication()
+
+
+@pytest.fixture()
+def unverified_user() -> dict:
+    with UCSTestUDM() as udm:
+        user = UnverfiedUser(udm)
+        yield user
 
 
 @pytest.fixture()

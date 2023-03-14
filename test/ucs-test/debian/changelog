@@ -1,3 +1,9 @@
+ucs-test (10.0.10-23) unstable; urgency=medium
+
+  * Bug #55747: keycloak test
+
+ -- Felix Botner <botner@univention.de>  Tue, 14 Mar 2023 09:26:12 +0100
+
 ucs-test (10.0.10-22) unstable; urgency=low
 
   * Bug #53528: Fix 00/03_check_release_signature_do_not_ignore_me
