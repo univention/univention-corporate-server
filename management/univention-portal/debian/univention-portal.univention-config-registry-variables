@@ -30,8 +30,8 @@ Type=str
 Categories=portal
 
 [portal/default-dn]
-Description[de]=LDAP-DN des Portal-Objektes, das die Daten für das Portal beinhaltet.
-Description[en]=LDAP DN of the portal object holding the data for the portal.
+Description[de]=LDAP-DN des Portal-Objektes, das die Daten für das Portal beinhaltet. Führen Sie nach der Änderung der Variable den Befehl `univention-portal update` aus.
+Description[en]=LDAP DN of the portal object holding the data for the portal. After changing the variable, run the command `univention-portal update`.
 Default=cn=domain,cn=portal,cn=portals,cn=univention,@%@ldap/base@%@
 Type=str
 Categories=portal
