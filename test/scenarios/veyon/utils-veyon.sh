@@ -120,7 +120,6 @@ disable_wuauserv  () {
 		sc.exe config wuauserv start=disabled
 		sc.exe stop wuauserv
 		netsh advfirewall set allprofiles state off
-		Restart-Computer -Force
 	'
 }
 
