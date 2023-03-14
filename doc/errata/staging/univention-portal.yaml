@@ -1,0 +1,12 @@
+product: ucs
+release: "5.0"
+version: [3]
+scope: ucs_5.0-0-errata5.0-3
+src: univention-portal
+fix:
+desc: |
+ This update addresses the following issues:
+ * The documentation wasn't specific enough about what command to run, after
+   the UCR variable ``portal/default-dn`` changed. Running
+   ``univention-portal update`` after changing the UCR variable is enough.
+bug: [55871]

@@ -1,3 +1,9 @@
+univention-portal (4.0.9-2) unstable; urgency=medium
+
+  * Bug #55871: Run univention-portal update after changing portal/default-dn
+
+ -- Nico Gulden <gulden@univention.de>  Tue, 14 Mar 2023 15:57:03 +0100
+
 univention-portal (4.0.9-1) unstable; urgency=medium
 
   * Bug #31771: migrate tabs to spaces
