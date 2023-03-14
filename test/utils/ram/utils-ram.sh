@@ -421,7 +421,7 @@ create_user_from_json () {
 
 create_school_ou () {
 	# $1: displayname $2: ou $3: edu-dc
-	test -e "/usr/share/ucs-school-import/scripts/create_ou" && exit 1
+	test -e "/usr/share/ucs-school-import/scripts/create_ou" || exit 1
 	/usr/share/ucs-school-import/scripts/create_ou --displayName "$1" -v "$2" "$3"
 	udm container/ou modify --dn "ou=$2,$(ucr get ldap/base)" --set dwh_ShortName="$3" --set description="$3"
 }
