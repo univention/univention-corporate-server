@@ -1,0 +1,13 @@
+product: ucs
+release: "5.0"
+version: [3]
+scope: ucs_5.0-0-errata5.0-3
+src: univention-management-console-module-diagnostic
+fix:
+desc: |
+ This update addresses the following issues:
+ * Two messages in the SAML certificate diagnostic check contained a
+   typographical error (typo) in the German translation. The messages show up
+   when the diagnostic check complains about SAML certificates. The typo has
+   been fixed.
+bug: [55874]

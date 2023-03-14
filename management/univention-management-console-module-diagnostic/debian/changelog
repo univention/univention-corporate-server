@@ -1,3 +1,9 @@
+univention-management-console-module-diagnostic (6.0.5-2) unstable; urgency=medium
+
+  * Bug #55874: Fix German translation in Diagnostic check
+
+ -- Nico Gulden <gulden@univention.de>  Tue, 14 Mar 2023 13:53:55 +0100
+
 univention-management-console-module-diagnostic (6.0.5-1) unstable; urgency=medium
 
   * Bug #50073: UDM: conditionally remap `country` from `st` to `c`: fix
