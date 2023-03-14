@@ -259,9 +259,10 @@ enable_bsb_repos () {
 		repository/online/component/fhh-bsb-iam/password="$password"
 
 	# also add internal repo
-	cat <<"EOF" > "/etc/apt/sources.list.d/99_bsb.list"
-deb [trusted=yes] http://192.168.0.10/build2/ ucs_5.0-0-fhh-bsb-iam-dev-intern/all/
-deb [trusted=yes] http://192.168.0.10/build2/ ucs_5.0-0-fhh-bsb-iam-dev-intern/$(ARCH)/
+	echo "enabling repository ucs_5.0-0-${BSB_PACKAGE_SCOPES:-fhh-bsb-iam-dev-intern}..."
+	cat <<EOF > /etc/apt/sources.list.d/99_bsb.list
+deb [trusted=yes] http://192.168.0.10/build2/ ucs_5.0-0-${BSB_PACKAGE_SCOPES:-fhh-bsb-iam-dev-intern}/all/
+deb [trusted=yes] http://192.168.0.10/build2/ ucs_5.0-0-${BSB_PACKAGE_SCOPES:-fhh-bsb-iam-dev-intern}/\$(ARCH)/
 EOF
 }
 
@@ -281,6 +282,27 @@ install_bsb_m2 () {
 	/usr/sbin/univention-config-registry set dataport/umgebung='DEV'
 
 	univention-install -y bsb-release-m2
+	systemctl restart univention-directory-manager-rest.service
+}
+
+install_bsb_packages () {
+	# install the bsb milestone 2 metapackage
+	enable_bsb_repos
+	/usr/sbin/univention-config-registry set dataport/umgebung='DEV'
+
+	univention-install -y \
+		bsb-release-m1 \
+		bsb-release-m2 \
+		bsb-release-m3 \
+		ucsschool-divis-custom-import-config \
+		ucs-school-umc-multiple-users-export \
+		ucs-school-umc-wizards \
+		univention-management-console-module-custom-grouppermissions \
+		univention-self-service
+
+	univention-run-join-scripts --force --run-scripts 35ucs-school-umc-multiple-users-export.inst
+	echo "rdate -n 192.168.0.3" >> "$HOME/.profile"
+
 	systemctl restart univention-directory-manager-rest.service
 }
 
@@ -323,6 +345,79 @@ create_test_admin_account () {
 		--dn "uid=admin,cn=lehrer,cn=users,ou=school1,$(ucr get ldap/base)" \
 		--set password="$technical_admin_pw" \
 		--append groups="cn=Domain Users,cn=groups,$(ucr get ldap/base)"
+}
+
+create_bsb_test_users () {
+	fqdn="$(hostname -f)"
+	# create fl user
+	create_user_from_json '{
+		"name": "fl-thawkins",
+		"firstname": "Taylor",
+		"lastname": "Hawkins",
+		"password": "!Univention2023",
+		"school": "https://'"$fqdn"'/ucsschool/kelvin/v1/schools/5048",
+		"roles": ["https://'"$fqdn"'/ucsschool/kelvin/v1/roles/school_admin"],
+		"record_uid": "1a23bc45-67890-1234-56d7-89012345e6f7g",
+		"ucsschool_roles": ["technical_admin:bsb:*", "teacher:school:0000Schuldock"]
+	}'
+	# create schuladmin
+	create_user_from_json '{
+		"firstname": "Jeff",
+		"lastname": "Buckley",
+		"password": "!Univention2023",
+		"school": "https://'"$fqdn"'/ucsschool/kelvin/v1/schools/5048",
+		"roles": ["https://'"$fqdn"'/ucsschool/kelvin/v1/roles/school_admin"],
+		"record_uid": "027ada41-60dc-47fd-96dc-98559ae65245",
+		"ucsschool_roles": ["school_admin:bsb:5048", "school_admin:school:5048"]
+	}'
+	# create lehrkraft
+	create_user_from_json '{
+		"firstname": "Layne",
+		"lastname": "Staley",
+		"password": "!Univention2023",
+		"school": "https://'"$fqdn"'/ucsschool/kelvin/v1/schools/5048",
+		"roles": ["https://'"$fqdn"'/ucsschool/kelvin/v1/roles/teacher"],
+		"record_uid": "ee4ba50b-ef8b-483f-8a06-0aa8e7dac374",
+		"ucsschool_roles": ["teacher:bsb:5048", "teacher:school:5048"]
+	}'
+	# create nutzende
+	create_user_from_json '{
+		"firstname": "Janis",
+		"lastname": "Joplin",
+		"password": "!Univention2023",
+		"school": "https://'"$fqdn"'/ucsschool/kelvin/v1/schools/5048",
+		"roles": ["https://'"$fqdn"'/ucsschool/kelvin/v1/roles/student"],
+		"record_uid": "67a693e9-a080-4a84-aec6-46f6a0b68a1f",
+		"ucsschool_roles": ["generic_user:bsb:5048", "student:school:5048"]
+	}'
+	# create lernende
+	create_user_from_json '{
+		"firstname": "Amy",
+		"lastname": "Winehouse",
+		"password": "!Univention2023",
+		"school": "https://'"$fqdn"'/ucsschool/kelvin/v1/schools/5048",
+		"roles": ["https://'"$fqdn"'/ucsschool/kelvin/v1/roles/student"],
+		"record_uid": "195687c7-99c5-47b6-9ff0-42290683fe8a",
+		"ucsschool_roles": ["student:bsb:5048", "student:school:5048"]
+	}'
+}
+
+create_user_from_json () {
+	local username password fqdn token
+	test -z "$(which jq)" && univention-install -y jq
+	test -z "$(which curl)" && univention-install -y curl
+	username="Administrator"
+	password="univention"
+	fqdn="$(hostname -f)"
+	token="$(curl -s -k -X POST "https://$fqdn/ucsschool/kelvin/token" \
+		-H "Content-Type:application/x-www-form-urlencoded" \
+		-d "username=$username" \
+		-d "password=$password" | jq -r '.access_token')"
+	curl --fail -X POST "https://$fqdn/ucsschool/kelvin/v1/users/" \
+		-H "Authorization: Bearer $token" \
+		-H "accept: application/json" \
+		-H "Content-Type: application/json" \
+		-d "$1"
 }
 
 load_balancer_setup () {
