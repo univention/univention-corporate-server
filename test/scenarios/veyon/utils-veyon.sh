@@ -116,11 +116,12 @@ disable_wuauserv  () {
 	local client="$1"
 	ucs_winrm wait_for_client --client "$client" --timeout 3600
 	ucs_winrm run-ps  --client "$client" --cmd '
+		$ErrorActionPreference = "SilentlyContinue"
 		sc.exe config wuauserv start=disabled
 		sc.exe stop wuauserv
 		netsh advfirewall set allprofiles state off
 		Restart-Computer -Force
-    '
+	'
 }
 
 prepare_windows () {
