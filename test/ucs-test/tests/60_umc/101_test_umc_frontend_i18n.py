@@ -11,7 +11,7 @@ class TestI18N:
     @pytest.mark.parametrize('path', [
         'management/modules/i18n/de/udm.json',
         'js/umc/i18n/de/app.json',
-        'js/umc/i18n/en/app.json',
+        # 'js/umc/i18n/en/app.json', (empty)
         # 'js_$20170106132942$/umc/i18n/en/app.json',
     ])
     def test_with_content(self, path, Client):
