@@ -482,6 +482,16 @@ performance_test_setup () {
 	sysctl -p
 }
 
+create_mail_domains_dwh_ShortName () {
+	DOM="$(jq -r .maildomain /var/lib/ucs-school-import/configs/kelvin.json)"
+	for dwh_ShortName in $(udm container/ou list | grep dwh_ShortName: | cut -d ' ' -f 4); do
+		if [ "$dwh_ShortName" = "None" ]; then
+			continue
+		fi
+		udm mail/domain create --position "cn=domain,cn=mail,$(ucr get ldap/base)" --ignore_exists --set name="$dwh_ShortName.$DOM"
+	done
+}
+
 create_mail_domains () {
 	DOM="$(jq -r .maildomain /var/lib/ucs-school-import/configs/kelvin.json)"
 	for OU in $(udm container/ou list | grep name: | cut -d ' ' -f 4); do
