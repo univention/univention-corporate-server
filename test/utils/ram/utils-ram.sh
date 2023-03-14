@@ -299,7 +299,9 @@ install_bsb_packages () {
 		univention-management-console-module-custom-grouppermissions \
 		univention-self-service
 
-	univention-run-join-scripts --force --run-scripts 35ucs-school-umc-multiple-users-export.inst
+	if [ "$(ucr get server/role)" = "domaincontroller_master" ]; then
+		univention-run-join-scripts --force --run-scripts 35ucs-school-umc-multiple-users-export.inst
+	fi
 	echo "rdate -n 192.168.0.3" >> "$HOME/.profile"
 
 	systemctl restart univention-directory-manager-rest.service
