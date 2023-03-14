@@ -976,8 +976,16 @@ class ucs(object):
         print("done:", end=' ')
         sys.stdout.flush()
         done_counter = 0
-        files = sorted(os.listdir(self.listener_dir))
 
+        def _only_floats(iterable):
+            for el in iterable:
+                try:
+                    float(el)
+                    yield el
+                except ValueError:
+                    continue
+
+        files = sorted(_only_floats(os.listdir(self.listener_dir)), key=float)
         # Only synchronize the first MAX_SYNC_IN_ONE_INTERVAL changes otherwise
         # the change list is too long and it took too much time
         files = files[:MAX_SYNC_IN_ONE_INTERVAL]
@@ -988,6 +996,8 @@ class ucs(object):
         for listener_file in files:
             sync_successfull = False
             filename = os.path.join(self.listener_dir, listener_file)
+            if os.path.isdir(filename):
+                continue
             if filename != '%s/tmp' % self.configRegistry['%s/s4/listener/dir' % self.CONFIGBASENAME]:
                 if filename not in self.rejected_files:
                     try:
