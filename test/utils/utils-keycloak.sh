@@ -76,3 +76,16 @@ install_self_service () {
     service univention-management-console-server restart
     service univention-portal-server restart
 }
+
+performance_settings () {
+	ucr set umc/http/processes=8
+	ucr set umc/server/processes=8
+	service univention-management-console-server restart
+	service univention-management-console-web-server restart
+}
+
+run_performance_tests () {
+	univention-install -y libffi-dev python3-pip
+	pip3 install locust bs4
+	prlimit -n100000:100000 locust -t 20m -u 500 --spawn-rate 10 --host master.ucs.test --html keycloak.html --headless -f keycloaklocust.py || :
+}
