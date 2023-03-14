@@ -998,47 +998,46 @@ class ucs(object):
             filename = os.path.join(self.listener_dir, listener_file)
             if os.path.isdir(filename):
                 continue
-            if filename != '%s/tmp' % self.configRegistry['%s/s4/listener/dir' % self.CONFIGBASENAME]:
-                if filename not in self.rejected_files:
+            if filename not in self.rejected_files:
+                try:
+                    with open(filename, 'rb') as fob:
+                        (dn, new, old, old_dn) = pickle.load(fob, encoding='bytes')
+                        if isinstance(dn, bytes):
+                            dn = dn.decode('utf-8')
+                        if isinstance(old_dn, bytes):
+                            old_dn = old_dn.decode('utf-8')
+                except IOError:
+                    continue  # file not found so there's nothing to sync
+                except (pickle.UnpicklingError, EOFError) as exc:
+                    message = 'file empty' if isinstance(exc, EOFError) else exc
+                    ud.debug(ud.LDAP, ud.ERROR, f'poll_ucs: invalid pickle file {filename}: {message}')
+                    # ignore corrupted pickle file, but save as rejected to not try again
+                    self._save_rejected_ucs(filename, 'unknown', resync=False, reason='broken file')
+                    continue
+
+                # If the list contains more than one file, the DN will be synced later
+                # but if the object was added or removed, the synchonization is required
+                for i in [0, 1]:  # do it twice if the LDAP connection was closed
                     try:
-                        with open(filename, 'rb') as fob:
-                            (dn, new, old, old_dn) = pickle.load(fob, encoding='bytes')
-                            if isinstance(dn, bytes):
-                                dn = dn.decode('utf-8')
-                            if isinstance(old_dn, bytes):
-                                old_dn = old_dn.decode('utf-8')
-                    except IOError:
-                        continue  # file not found so there's nothing to sync
-                    except (pickle.UnpicklingError, EOFError) as exc:
-                        message = 'file empty' if isinstance(exc, EOFError) else exc
-                        ud.debug(ud.LDAP, ud.ERROR, f'poll_ucs: invalid pickle file {filename}: {message}')
-                        # ignore corrupted pickle file, but save as rejected to not try again
-                        self._save_rejected_ucs(filename, 'unknown', resync=False, reason='broken file')
-                        continue
+                        sync_successfull = self.__sync_file_from_ucs(filename, traceback_level=traceback_level)
+                    except (ldap.SERVER_DOWN, SystemExit):
+                        # once again, ldap idletimeout ...
+                        if i == 0:
+                            self.open_ucs()
+                            continue
+                        raise
+                    except Exception:
+                        self._save_rejected_ucs(filename, dn)
+                        # We may dropped the parent object, so don't show this warning
+                        self._debug_traceback(traceback_level, "sync failed, saved as rejected \n\t%s" % filename)
+                    if sync_successfull:
+                        os.remove(os.path.join(self.listener_dir, listener_file))
+                        change_counter += 1
+                    break
 
-                    # If the list contains more than one file, the DN will be synced later
-                    # but if the object was added or removed, the synchonization is required
-                    for i in [0, 1]:  # do it twice if the LDAP connection was closed
-                        try:
-                            sync_successfull = self.__sync_file_from_ucs(filename, traceback_level=traceback_level)
-                        except (ldap.SERVER_DOWN, SystemExit):
-                            # once again, ldap idletimeout ...
-                            if i == 0:
-                                self.open_ucs()
-                                continue
-                            raise
-                        except Exception:
-                            self._save_rejected_ucs(filename, dn)
-                            # We may dropped the parent object, so don't show this warning
-                            self._debug_traceback(traceback_level, "sync failed, saved as rejected \n\t%s" % filename)
-                        if sync_successfull:
-                            os.remove(os.path.join(self.listener_dir, listener_file))
-                            change_counter += 1
-                        break
-
-                done_counter += 1
-                print("%s" % done_counter, end=' ')
-                sys.stdout.flush()
+            done_counter += 1
+            print("%s" % done_counter, end=' ')
+            sys.stdout.flush()
 
         print("")
 
