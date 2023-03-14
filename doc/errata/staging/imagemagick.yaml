@@ -7,65 +7,67 @@ fix: 8:6.9.10.23+dfsg-2.1+deb10u2
 desc: |
  This update addresses the following issues:
  * Stack buffer overflow in XPM coder could result in a crash (CVE-2020-19667)
- * heap-based buffer overflow in WritePALMImage in coders/palm.c
+ * Heap-based buffer overflow in `WritePALMImage` in `coders/palm.c`
    (CVE-2020-25665)
- * outside the range of representable values of type int and signed integer
-   overflow in MagickCore/histogram.c (CVE-2020-25666)
- * heap-based buffer overflow in WriteOnePNGImage in coders/png.c
+ * Outside the range of representable values of type `int` and `signed
+   integer` overflow in `MagickCore/histogram.c` (CVE-2020-25666)
+ * Heap-based buffer overflow in `WriteOnePNGImage` in `coders/png.c`
    (CVE-2020-25674)
- * outside the range of representable values of type 'long' and integer
-   overflow at MagickCore/transform.c and MagickCore/image.c (CVE-2020-25675)
- * outside the range of representable values of type 'long' and integer
-   overflow at MagickCore/pixel.c and MagickCore/cache.c (CVE-2020-25676)
- * division by zero in OptimizeLayerFrames function in MagickCore/layer.c
+ * Outside the range of representable values of type 'long' and `integer`
+   overflow at `MagickCore/transform.c` and `MagickCore/image.c`
+   (CVE-2020-25675)
+ * Outside the range of representable values of type 'long' and `integer`
+   overflow at `MagickCore/pixel.c` and `MagickCore/cache.c` (CVE-2020-25676)
+ * Division-by-zero in function `OptimizeLayerFrames` in `MagickCore/layer.c`
    (CVE-2020-27560)
- * division by zero in MagickCore/colorspace-private.h (CVE-2020-27750)
- * integer overflow in MagickCore/quantum-export.c (CVE-2020-27751)
- * outside the range of representable values of type 'long' and signed integer
-   overflow at MagickCore/quantize.c (CVE-2020-27754)
- * division by zero at MagickCore/geometry.c (CVE-2020-27756)
- * outside the range of representable values of type 'unsigned long long' at
-   MagickCore/quantum-private.h (CVE-2020-27757)
- * outside the range of representable values of type 'unsigned long long' at
-   coders/txt.c (CVE-2020-27758)
- * outside the range of representable values of type 'int' at
-   MagickCore/quantize.c (CVE-2020-27759)
- * division by zero at MagickCore/enhance.c (CVE-2020-27760)
- * outside the range of representable values of type 'unsigned long' at
-   coders/palm.c (CVE-2020-27761)
- * outside the range of representable values of type 'unsigned char' at
-   coders/hdr.c (CVE-2020-27762)
- * division by zero at MagickCore/resize.c (CVE-2020-27763)
- * outside the range of representable values of type 'unsigned long' at
-   MagickCore/statistic.c (CVE-2020-27764)
- * division by zero at MagickCore/segment.c (CVE-2020-27765)
- * outside the range of representable values of type 'unsigned long' at
-   MagickCore/statistic.c (CVE-2020-27766)
- * outside the range of representable values of type 'float' at
-   MagickCore/quantum.h (CVE-2020-27767)
- * outside the range of representable values of type 'unsigned int' at
-   MagickCore/quantum-private.h (CVE-2020-27768)
- * outside the range of representable values of type 'float' at
-   MagickCore/quantize.c (CVE-2020-27769)
- * unsigned offset overflowed at MagickCore/string.c (CVE-2020-27770)
- * outside the range of representable values of type 'unsigned char' at
-   coders/pdf.c (CVE-2020-27771)
- * outside the range of representable values of type 'unsigned int' at
-   coders/bmp.c (CVE-2020-27772)
- * division by zero at MagickCore/gem-private.h (CVE-2020-27773)
- * integer overflow at MagickCore/statistic.c (CVE-2020-27774)
- * outside the range of representable values of type 'unsigned char' at
-   MagickCore/quantum.h (CVE-2020-27775)
- * outside the range of representable values of type 'unsigned long' at
-   MagickCore/statistic.c (CVE-2020-27776)
+ * Division-by-zero in `MagickCore/colorspace-private.h` (CVE-2020-27750)
+ * Integer overflow in `MagickCore/quantum-export.c` (CVE-2020-27751)
+ * Outside the range of representable values of type 'long' and `signed
+   integer` overflow at `MagickCore/quantize.c` (CVE-2020-27754)
+ * Division-by-zero at `MagickCore/geometry.c` (CVE-2020-27756)
+ * Outside the range of representable values of type 'unsigned long long' at
+   `MagickCore/quantum-private.h` (CVE-2020-27757)
+ * Outside the range of representable values of type 'unsigned long long' at
+   `coders/txt.c` (CVE-2020-27758)
+ * Outside the range of representable values of type 'int' at
+   `MagickCore/quantize.c` (CVE-2020-27759)
+ * Division-by-zero at `MagickCore/enhance.c` (CVE-2020-27760)
+ * Outside the range of representable values of type 'unsigned long' at
+   `coders/palm.c` (CVE-2020-27761)
+ * Outside the range of representable values of type 'unsigned char' at
+   `coders/hdr.c` (CVE-2020-27762)
+ * Division-by-zero at `MagickCore/resize.c` (CVE-2020-27763)
+ * Outside the range of representable values of type 'unsigned long' at
+   `MagickCore/statistic.c` (CVE-2020-27764)
+ * Division-by-zero at `MagickCore/segment.c` (CVE-2020-27765)
+ * Outside the range of representable values of type 'unsigned long' at
+   `MagickCore/statistic.c` (CVE-2020-27766)
+ * Outside the range of representable values of type 'float' at
+   `MagickCore/quantum.h` (CVE-2020-27767)
+ * Outside the range of representable values of type 'unsigned int' at
+   `MagickCore/quantum-private.h` (CVE-2020-27768)
+ * Outside the range of representable values of type 'float' at
+   `MagickCore/quantize.c` (CVE-2020-27769)
+ * Unsigned offset overflowed at `MagickCore/string.c` (CVE-2020-27770)
+ * Outside the range of representable values of type 'unsigned char' at
+   `coders/pdf.c` (CVE-2020-27771)
+ * Outside the range of representable values of type 'unsigned int' at
+   `coders/bmp.c` (CVE-2020-27772)
+ * Division-by-zero at `MagickCore/gem-private.h` (CVE-2020-27773)
+ * Integer overflow at `MagickCore/statistic.c` (CVE-2020-27774)
+ * Outside the range of representable values of type 'unsigned char' at
+   `MagickCore/quantum.h` (CVE-2020-27775)
+ * Outside the range of representable values of type 'unsigned long' at
+   `MagickCore/statistic.c` (CVE-2020-27776)
  * Shell injection via PDF password could result in arbitrary code execution
    (CVE-2020-29599)
- * memory leaks with convert command (CVE-2021-3574)
- * NULL pointer dereference in ReadSVGImage() in coders/svg.c (CVE-2021-3596)
- * integer overflow in ExportIndexQuantum() in MagickCore/quantum-export.c
+ * Memory leaks with command `convert` (CVE-2021-3574)
+ * NULL pointer dereference in `ReadSVGImage()` in `coders/svg.c`
+   (CVE-2021-3596)
+ * Integer overflow in `ExportIndexQuantum()` in `MagickCore/quantum-export.c`
    (CVE-2021-20224)
- * Denial of Service when it parses a PNG image (CVE-2022-44267)
- * vulnerable to Information Disclosure when it parses a PNG image
+ * Denial-of-service when it parses a PNG image (CVE-2022-44267)
+ * Vulnerable to information disclosure when it parses a PNG image
    (CVE-2022-44268)
 bug: [55869]
 cve:
