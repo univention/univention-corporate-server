@@ -1105,6 +1105,7 @@ This appendix lists the |UCSUCRV|\ s mentioned in the document.
 .. envvar:: portal/default-dn
 
    Defines the LDAP DN of the portal object that holds the data for the portal.
+   After changing the variable value, run :command:`univention-portal update`.
    For more information, see :ref:`central-portal`.
 
 
