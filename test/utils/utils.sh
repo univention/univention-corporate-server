@@ -1173,13 +1173,15 @@ sa_bug53751 () {
 		true
 
 	local base='/var/lib/spamassassin/compiled' user='debian-spamd'
+	have sa-update &&
+		curl http://spamassassin.apache.org/updates/GPG.KEY | sa-update --import -
 	[ -d "$base" ] &&
 		find "$base" -not -user "$user" -exec chown -v "$user:" {} +
-	[ -x /usr/bin/sa-update ] &&
+	have sa-update &&
 		su -c 'sa-update -vv' - "$user" &&
 		su -c 'sa-compile' - "$user" &&
-		systemctl try-restart spamassassin amavis &&
-		true
+		systemctl try-restart spamassassin amavis
+	:
 }
 
 fake_initial_schema () {
