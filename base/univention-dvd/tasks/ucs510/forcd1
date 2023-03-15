@@ -1,0 +1,24 @@
+/* Packages that belong on the first CD (but not the netinst), despite
+ * not being directly installed by debootstrap, or d-i, or tasksel.
+ */
+
+/* hysterical raisins, but too small to remove */
+openssh-client
+/* could be used by debconf in certain configurations */
+libterm-readline-gnu-perl
+
+/* See rationale in #630805 */
+apt-offline
+
+/* #231583: Make life easier for Australian ISP users */
+bpalogin
+
+/* pppconfig helps various people too */
+pppconfig
+
+/* #861288 - make it easier for users to report installation problems */
+reportbug
+
+/* ensure eatmydata-udeb can speed up offline installs too */
+eatmydata
+libeatmydata1
