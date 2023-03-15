@@ -9,3 +9,6 @@ desc: |
  * Updates no longer overwrite existing print-server configuration values with
    the defaults.
 bug: [55860]
+erratum: 611
+announced: 2023-03-15
+support: core
