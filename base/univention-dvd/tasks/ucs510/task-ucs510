@@ -1,0 +1,146 @@
+/* this file must NOT contain leading or trailing whilespaces !!! */
+
+#include <debian-installer+kernel>
+#include <forcd1>
+
+/* Univention System Setup */
+univention-system-setup
+univention-system-setup-boot
+univention-management-console-module-setup
+univention-management-console-server
+univention-management-console-web-server
+xinit
+xorg
+xserver-xorg-input-all
+xserver-xorg-video-all
+univention-cloud-init
+univention-system-activation
+univention-welcome-screen
+rdate
+ntpdate
+firefox-esr-l10n-de
+firefox-esr
+
+univention-appcenter-docker
+cgroupfs-mount
+
+/* Kernel Packages */
+linux-image-amd64
+univention-initrd
+dkms
+firmware-linux
+/* add the list of firmware packages here too if required */
+#ifdef FORCE_FIRMWARE
+#    include <firmware>
+#endif
+
+/* UEFI */
+grub-efi
+efibootmgr
+shim-signed
+grub-efi-amd64-signed
+
+/* Recommended base packages */
+eject
+elinks
+emacs-gtk
+less
+locate
+nmap
+univention-network-common
+unzip
+vim
+wget
+zip
+memtest86+
+lvm2
+bridge-utils
+ifenslave
+vlan
+man-db
+gsfonts
+
+/* Role Packages */
+univention-server-master
+univention-server-backup
+univention-server-slave
+univention-server-member
+univention-basesystem
+univention-container-role-common
+/* Recommends */
+openssh-server
+openssh-blacklist
+python-univention-license
+univention-nagios-client
+univention-saml
+univention-sudo
+univention-portal
+univention-server-overview
+screen
+
+/* Translation Packages */
+univention-l10n-fr
+
+univention-management-console-module-quota
+
+
+/* usr/share/univention-system-setup/download-packages */
+
+univention-ad-connector
+univention-nagios-ad-connector
+
+univention-management-console-module-adtakeover
+
+univention-printserver
+univention-nagios-cups
+printer-driver-all
+printer-driver-c2050
+printer-driver-c2esp
+printer-driver-cjet
+printer-driver-escpr
+printer-driver-foo2zjs
+printer-driver-gutenprint
+printer-driver-hpcups
+printer-driver-hpijs
+printer-driver-m2300w
+printer-driver-min12xxw
+printer-driver-pnm2ppa,
+printer-driver-postscript-hp
+printer-driver-ptouch
+printer-driver-pxljr
+printer-driver-sag-gdi
+printer-driver-splix
+libsensors5
+
+univention-dhcp
+
+univention-fetchmail
+univention-fetchmail-schema
+
+univention-radius
+
+univention-mail-server
+bsd-mailx
+univention-antivir-mail
+univention-spamassassin
+libmail-spf-perl
+re2c
+
+univention-pkgdb
+
+univention-samba
+univention-samba4
+cifs-utils
+
+univention-s4-connector
+univention-nagios-s4-connector
+univention-nagios-samba
+sqlite3
+
+univention-squid
+univention-nagios-squid
+univention-firewall
+
+univention-self-service
+univention-self-service-passwordreset-umc
+univention-self-service-master
