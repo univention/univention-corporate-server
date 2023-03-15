@@ -10,3 +10,6 @@ desc: |
    data-loss on shared access.
  * The deprecated command `univention-keyboardmapping` has been removed.
 bug: [50193]
+erratum: 613
+announced: 2023-03-15
+support: core
