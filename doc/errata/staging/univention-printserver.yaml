@@ -1,11 +1,11 @@
 product: ucs
 release: "5.0"
-version: [ 3 ]
+version: [3]
 scope: ucs_5.0-0-errata5.0-3
 src: univention-printserver
 fix: 13.0.8-2A~5.0.0.202303140937
 desc: |
  This update addresses the following issue:
- * Existing print server configuration values were always overwritten with
-   defaults upon update of the package. This is now fixed.
-bug: [ 55860 ]
+ * Updates no longer overwrite existing print-server configuration values with
+   the defaults.
+bug: [55860]
