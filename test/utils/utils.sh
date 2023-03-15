@@ -673,6 +673,10 @@ run_admember_tests () {
 	run_tests -p skip_admember -p docker "$@"
 }
 
+run_keycloak_tests () {
+	run_tests -s appcenter -s keycloak -r app_specific_test -r keycloak "$@"
+}
+
 ad_member_fix_udm_rest_api () {  # workaround for Bug #50527
 	ucr unset directory/manager/rest/authorized-groups/domain-admins
 	univention-run-join-scripts --force --run-scripts 22univention-directory-manager-rest.inst
