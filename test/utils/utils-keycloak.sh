@@ -33,6 +33,17 @@
 set -x
 set -e
 
+wait_for_server () {
+	local server="${1:?missing server param}"
+	for ((i=0; i<300; i++))
+	do
+		ping -c 2 "$server" && return 0
+		sleep 1
+	done
+	return 1
+}
+
+
 install_keycloak () {
     echo "univention" > /tmp/pwdfile
     local app
@@ -80,8 +91,8 @@ install_self_service () {
 performance_settings () {
 	ucr set umc/http/processes=8
 	ucr set umc/server/processes=8
-	service univention-management-console-server restart
-	service univention-management-console-web-server restart
+	systemctl restart univention-management-console-server
+	systemctl restart univention-management-console-web-server
 }
 
 run_performance_tests () {
