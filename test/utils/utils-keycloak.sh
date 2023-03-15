@@ -84,7 +84,7 @@ install_self_service () {
     else
         apt-get -s -y install univention-self-service
     fi
-    systemcctl restart univention-management-console-server univention-portal-server
+    systemctl restart univention-management-console-server univention-portal-server
 }
 
 performance_settings () {
