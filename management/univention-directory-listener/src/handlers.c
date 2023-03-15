@@ -40,15 +40,15 @@
 
 #include <dirent.h>
 #include <string.h>
+#include <stdio.h>
 #include <stdlib.h>
 #include <stdbool.h>
 #include <limits.h>
 #include <sys/types.h>
 #define PY_SSIZE_T_CLEAN
-#include <python3.9/Python.h>
-#include <python3.9/compile.h>
-#include <python3.9/marshal.h>
-#include <python3.9/node.h>
+#include <python3.11/Python.h>
+#include <python3.11/compile.h>
+#include <python3.11/marshal.h>
 #include <univention/debug.h>
 
 #include "cache_lowlevel.h"
@@ -85,11 +85,14 @@ static PyObject *module_import(char *filename) {
 	   been imported even in these low-level functions */
 	char *name = strdup(filename);
 	char *namep;
+	char *source_buf;
 	FILE *fp;
-	PyCodeObject *co;
+	long size;
+	size_t sizeread;
+	PyObject *co;
 	PyObject *m;
 
-	if ((fp = fopen(filename, "r")) == NULL)
+	if ((fp = fopen(filename, "rb")) == NULL)
 		return NULL;
 	univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ALL, "Load file %s", filename);
 
@@ -101,18 +104,23 @@ static PyObject *module_import(char *filename) {
 		/* we should probably check the magic here */
 		(void)PyMarshal_ReadLongFromFile(fp);
 
-		co = (PyCodeObject *)PyMarshal_ReadLastObjectFromFile(fp);
+		co = PyMarshal_ReadLastObjectFromFile(fp);
 	} else {
-		node *n;
-
-		univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ALL, "Parse file %s", filename);
-		if ((n = PyParser_SimpleParseFile(fp, filename, Py_file_input)) == NULL) {
-			univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ALL, "Parse failed %s", filename);
-			return NULL;
+		univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ALL, "Read and compile %s", filename);
+		fseek(fp, 0, SEEK_END);
+		size = ftell(fp);
+		fseek(fp, 0, SEEK_SET);
+		source_buf = malloc(size + 1);
+		sizeread = fread(source_buf, size, 1, fp);
+		source_buf[size] = '\0';
+		if (sizeread == (size_t) size) {
+			univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "Reading %s failed: %ld != %ld", filename, sizeread, size);
+			co = NULL;
 		}
-		univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ALL, "pyNode compile %s", filename);
-		co = PyNode_Compile(n, filename);
-		PyNode_Free(n);
+		else {
+			co = Py_CompileString(source_buf, filename, Py_file_input);
+		}
+		free(source_buf);
 	}
 	fclose(fp);
 
@@ -123,7 +131,7 @@ static PyObject *module_import(char *filename) {
 	}
 
 	univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ALL, "execCodeModuleEx %s", filename);
-	m = PyImport_ExecCodeModuleEx(name, (PyObject *)co, filename);
+	m = PyImport_ExecCodeModuleEx(name, co, filename);
 	free(name);
 	univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ALL, "Module done %s", filename);
 
