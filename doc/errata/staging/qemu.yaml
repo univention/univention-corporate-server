@@ -6,24 +6,18 @@ src: qemu
 fix: 1:3.1+dfsg-8+deb10u10
 desc: |
  This update addresses the following issues:
- * infinite loop in xhci_ring_chain_length() in hw/usb/hcd-xhci.c
+ * Infinite loop in `xhci_ring_chain_length()` in `hw/usb/hcd-xhci.c`
    (CVE-2020-14394)
- * heap buffer overflow in sdhci_sdma_transfer_multi_blocks() in hw/sd/sdhci.c
-   (CVE-2020-17380)
- * slirp: out-of-bounds access while processing ARP/NCSI packets
+ * Heap buffer overflow in `sdhci_sdma_transfer_multi_blocks()` in
+   `hw/sd/sdhci.c` (CVE-2020-17380)
+ * sdhci: Incomplete fix for CVE-2020-17380 / CVE-2020-25085 (CVE-2021-3409)
+ * slirp: Out-of-bounds access while processing ARP/NCSI packets
    (CVE-2020-29130)
- * sdhci: incomplete fix for CVE-2020-17380/CVE-2020-25085 (CVE-2021-3409)
- * slirp: invalid pointer initialization may lead to information disclosure
-   (bootp) (CVE-2021-3592)
- * slirp: invalid pointer initialization may lead to information disclosure
-   (udp6) (CVE-2021-3593)
- * slirp: invalid pointer initialization may lead to information disclosure
-   (udp) (CVE-2021-3594)
- * slirp: invalid pointer initialization may lead to information disclosure
-   (tftp) (CVE-2021-3595)
- * use-after-free in lsi_do_msgout function in hw/scsi/lsi53c895a.c
+ * slirp: Invalid pointer initialization may lead to information disclosure
+   (CVE-2021-3592, CVE-2021-3593, CVE-2021-3594, CVE-2021-3595)
+ * Use-after-free in function `lsi_do_msgout` in `hw/scsi/lsi53c895a.c`
    (CVE-2022-0216)
- * pvrdma: use-after-free issue in pvrdma_exec_cmd() (CVE-2022-1050)
+ * pvrdma: Use-after-free issue in `pvrdma_exec_cmd()` (CVE-2022-1050)
 bug: [55881]
 cve:
 - CVE-2020-14394
