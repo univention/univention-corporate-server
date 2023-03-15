@@ -1,0 +1,1 @@
+../bookworm/x86-desktop.sh
