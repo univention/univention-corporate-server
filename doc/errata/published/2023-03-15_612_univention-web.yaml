@@ -9,3 +9,6 @@ desc: |
  * Updated the copyright file. We do not ship icons from iconmonstr.com since
    UCS 5.0.
 bug: [55862]
+erratum: 612
+announced: 2023-03-15
+support: core
