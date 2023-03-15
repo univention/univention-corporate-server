@@ -357,10 +357,10 @@ create_bsb_test_users () {
 		"lastname": "Hawkins",
 		"password": "!Univention2023",
 		"source_uid": "Manuell",
-		"school": "https://'"$fqdn"'/ucsschool/kelvin/v1/schools/0000Schuldock",
+		"school": "https://'"$fqdn"'/ucsschool/kelvin/v1/schools/aa-Schuldock",
 		"roles": ["https://'"$fqdn"'/ucsschool/kelvin/v1/roles/school_admin"],
 		"record_uid": "1a23bc45-67890-1234-56d7-89012345e6f7g",
-		"ucsschool_roles": ["technical_admin:bsb:*", "teacher:school:0000Schuldock"]
+		"ucsschool_roles": ["technical_admin:bsb:*", "teacher:school:aa-Schuldock"]
 	}'
 	# create schuladmin
 	create_user_from_json '{
