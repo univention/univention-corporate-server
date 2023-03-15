@@ -70,7 +70,7 @@ repos:
       - id: debian-control
       - id: debian-changelog
   - repo: https://git.knut.univention.de/univention/dist/pre-commit-ucs.git
-    rev: v1.2.0
+    rev: v1.4.0
     hooks:
       - id: ucs-erratum
   - repo: https://github.com/charliermarsh/ruff-pre-commit
