@@ -10,3 +10,6 @@ desc: |
     did accept some invalid values and was also susceptible to a regular
     expression denial of service vulnerability.
 bug: [33684]
+erratum: 614
+announced: 2023-03-15
+support: core
