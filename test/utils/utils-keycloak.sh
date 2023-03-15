@@ -65,7 +65,7 @@ keycloak_saml_idp_setup () {
         udm portals/entry modify --dn "cn=login-saml,cn=entry,cn=portals,cn=univention,$(ucr get ldap/base)" --set activated=TRUE
     fi
     ucr set umc/saml/idp-server="https://ucs-sso-ng.$(ucr get domainname)/realms/ucs/protocol/saml/descriptor"
-    service slapd restart
+    systemctl restart slapd
 }
 
 install_self_service () {
@@ -84,15 +84,12 @@ install_self_service () {
     else
         apt-get -s -y install univention-self-service
     fi
-    service univention-management-console-server restart
-    service univention-portal-server restart
+    systemcctl restart univention-management-console-server univention-portal-server
 }
 
 performance_settings () {
-	ucr set umc/http/processes=8
-	ucr set umc/server/processes=8
-	systemctl restart univention-management-console-server
-	systemctl restart univention-management-console-web-server
+	ucr set umc/http/processes=8 umc/server/processes=8
+	systemctl restart univention-management-console-server univention-management-console-web-server
 }
 
 run_performance_tests () {
