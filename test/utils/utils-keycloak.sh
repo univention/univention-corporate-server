@@ -33,17 +33,6 @@
 set -x
 set -e
 
-wait_for_server () {
-	local server="${1:?missing server param}"
-	for ((i=0; i<300; i++))
-	do
-		ping -c 2 "$server" && return 0
-		sleep 1
-	done
-	return 1
-}
-
-
 install_keycloak () {
     echo "univention" > /tmp/pwdfile
     local app
