@@ -470,20 +470,20 @@ install_ucs_test () {
 
 install_ucs_test_from_errata_test () {
 	wait_for_repo_server || return 1
-	bash /root/activate-errata-test-scope.sh || return 1
+	/root/activate-errata-test-scope.sh || return 1
 	install_ucs_test
 }
 
 install_ucs_test_checks_from_errata_test () {
 	local rv=0
-	bash /root/activate-errata-test-scope.sh || rv=$?
+	/root/activate-errata-test-scope.sh || rv=$?
 	install_with_unmaintained ucs-test-checks "$@" || rv=$?
 	return $rv
 }
 
 install_from_errata_test () {
 	local rv=0
-	bash /root/activate-errata-test-scope.sh || rv=$?
+	/root/activate-errata-test-scope.sh || rv=$?
 	install_with_unmaintained "$@" || rv=$?
 	return $rv
 }
@@ -1113,7 +1113,7 @@ postgres_update () {
 }
 
 dump_systemd_journal () {
-	journalctl > /var/log/journalctl.log || echo "Could not dump systemd journal."
+	journalctl > /var/log/journalctl.log || echo "Could not dump systemd journal." >&2
 }
 
 add_hostname_to_juint_results () {
