@@ -5,21 +5,21 @@
 ## exposure: dangerous
 ## packages: [univention-self-service]
 
-from bs4 import BeautifulSoup
-from utils import wait_for_id
+from utils import wait_for_class, wait_for_id
 
 
-def test_login_denied_if_not_verified(keycloak_settings, portal_login_via_keycloak, unverified_user, portal_config):
+def test_login_denied_if_not_verified(keycloak_settings, portal_login_via_keycloak, unverified_user, portal_config, keycloak_config):
     assert keycloak_settings["ucs/self/registration/check_email_verification"] is True
     driver = portal_login_via_keycloak(unverified_user.username, unverified_user.password, verify_login=False)
-    error = driver.find_element_by_css_selector("label[class='pf-c-form__label pf-c-form__label-text']")
-    error_msg = BeautifulSoup(error.text, "lxml").text.replace("\n", " ")
-    expected_msg = BeautifulSoup(keycloak_settings["keycloak/login/messages/en/accountNotVerifiedMsg"], "lxml").text.replace("\n", " ")
+    error = wait_for_class(driver, "ucs-p")[0]
+    error_msg = error.get_attribute("innerHTML")
+    expected_msg = keycloak_settings["keycloak/login/messages/en/accountNotVerifiedMsg"].replace("/>", ">")
     assert expected_msg == error_msg
     # verify
     unverified_user.verify()
     # try again
     driver.find_element_by_css_selector("input[class='pf-c-button pf-m-primary pf-m-block btn-lg']").click()
+    # verify that we are in the portal now
     wait_for_id(driver, portal_config.header_menu_id)
 
 
@@ -31,7 +31,7 @@ def test_verified_msg(change_app_setting, unverified_user, portal_login_via_keyc
     }
     change_app_setting("keycloak", settings)
     driver = portal_login_via_keycloak(unverified_user.username, unverified_user.password, verify_login=False)
-    error = driver.find_element_by_css_selector("label[class='pf-c-form__label pf-c-form__label-text']")
-    error_msg = BeautifulSoup(error.text, "lxml").text.replace("\n", " ")
+    error = wait_for_class(driver, "ucs-p")[0]
+    error_msg = error.get_attribute("innerHTML")
     assert error_msg == "en yada yada yada"
     driver.find_element_by_css_selector("input[class='pf-c-button pf-m-primary pf-m-block btn-lg']")

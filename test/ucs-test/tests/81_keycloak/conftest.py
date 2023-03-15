@@ -171,20 +171,15 @@ def keycloak_config(ucr: ConfigRegistry) -> SimpleNamespace:
         "login_id": "kc-login",
         "username_id": "username",
         "password_id": "password",
-        "input_error_id": "input-error",
+        "login_error_css_selector": "span[class='pf-c-alert__title kc-feedback-text']",
+        "password_update_error_css_selector": "span[class='pf-c-alert__title kc-feedback-text']",
         "wrong_password_msg": "Invalid username or password.",
         "kc_passwd_update_form_id": "kc-passwd-update-form",
         "password_confirm_id": "password-confirm",
         "password_new_id": "password-new",
-        "password_update_feedback_class": "pf-c-alert__title kc-feedback-text",
         "password_change_button_id": "kc-form-buttons",
         "password_update_failed_msg": "Update password failed",
-        "password_already_used_msg": "Changing password failed. The password was already used.",
-        "password_too_short_msg": "Changing password failed. The password is too short.",
-        "password_confirm_error_msg": "Passwords don't match.",
-        "password_confirm_error_id": "input-error-password-confirm",
-        "password_input_error_id": "input-error-password",
-        "password_input_error_msg": "Please specify password.",
+        "kc_page_title_id": "kc-page-title",
     }
     return SimpleNamespace(**config)
 

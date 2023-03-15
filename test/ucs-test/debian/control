@@ -686,7 +686,6 @@ Description: Test the UDM HTTP API
 Package: ucs-test-keycloak
 Architecture: all
 Depends:
- python3-bs4,
  python3-dnspython,
  python3-pytest-xvfb,
  ucs-test-libs (= ${source:Version}),

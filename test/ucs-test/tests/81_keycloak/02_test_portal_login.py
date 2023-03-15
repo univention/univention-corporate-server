@@ -49,7 +49,11 @@ def test_password_change_wrong_old_password_fails(portal_login_via_keycloak, key
 def test_password_change_same_passwords_fails(portal_login_via_keycloak, keycloak_config, portal_config):
     with udm_test.UCSTestUDM() as udm:
         username = udm.create_user(pwdChangeNextLogin=1)[1]
-        driver = portal_login_via_keycloak(username, "univention", new_password="univention", fails_with=keycloak_config.password_already_used_msg)
+        driver = portal_login_via_keycloak(
+            username,
+            "univention",
+            new_password="univention",
+            fails_with="Changing password failed. The password was already used.")
         wait_for_id(driver, keycloak_config.password_id)
 
 
@@ -60,7 +64,7 @@ def test_password_change_new_password_too_short_fails(portal_login_via_keycloak,
             username,
             "univention",
             new_password="a",
-            fails_with=keycloak_config.password_too_short_msg,
+            fails_with="Changing password failed. The password is too short.",
         )
 
 
@@ -72,10 +76,8 @@ def test_password_change_confirm_new_passwords_fails(portal_login_via_keycloak, 
             "univention",
             new_password="univention",
             new_password_confirm="univention1",
-            verify_login=False,
+            fails_with="Passwords don't match.",
         )
-        error = wait_for_id(driver, keycloak_config.password_confirm_error_id)
-        assert error.text == keycloak_config.password_confirm_error_msg, error.text
         wait_for_id(driver, keycloak_config.password_id)
 
 
@@ -86,15 +88,20 @@ def test_password_change_empty_passwords_fails(portal_login_via_keycloak, keyclo
         wait_for_id(driver, keycloak_config.password_id)
         # just click the button without old or new passwords
         driver.find_element_by_id(keycloak_config.password_change_button_id).click()
-        error = wait_for_id(driver, keycloak_config.password_input_error_id)
-        assert error.text == keycloak_config.password_input_error_msg, error.text
+        error = driver.find_element_by_css_selector(keycloak_config.password_update_error_css_selector)
+        assert error.text == "Please specify password.", error.text
         wait_for_id(driver, keycloak_config.password_id)
 
 
 def test_password_change_after_second_try(portal_login_via_keycloak, keycloak_config, portal_config):
     with udm_test.UCSTestUDM() as udm:
         username = udm.create_user(pwdChangeNextLogin=1)[1]
-        driver = portal_login_via_keycloak(username, "univention", new_password="univention", fails_with=keycloak_config.password_already_used_msg)
+        driver = portal_login_via_keycloak(
+            username,
+            "univention",
+            new_password="univention",
+            fails_with="Changing password failed. The password was already used.",
+        )
         keycloak_password_change(driver, keycloak_config, "univention", "Univention.99", "Univention.99")
         wait_for_id(driver, portal_config.header_menu_id)
         assert Client(username=username, password="Univention.99")
