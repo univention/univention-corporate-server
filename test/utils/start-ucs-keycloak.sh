@@ -12,6 +12,6 @@ export SCENARIO="${SCENARIO:=keycloak_2backups}"
 
 # user specific instances "username_..."
 export KVM_OWNER="${BUILD_USER_ID:=$USER}"
-export JOB_BASE_NAME="${JOB_BASE_NAME:=$SCENARIO}"
+export JOB_BASE_NAME="$SCENARIO"
 
 exec ./utils/start-test.sh scenarios/keycloak/${SCENARIO}.cfg
