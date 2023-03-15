@@ -33,20 +33,26 @@
 set -x
 set -e
 
-install_keycloak () {
-    echo "univention" > /tmp/pwdfile
-    local app
-    if [ -n "$KEYCLOAK_IMAGE" ]; then
-        python3 /root/appcenter-change-compose-image.py -a keycloak -i "$KEYCLOAK_IMAGE"
-    fi
-    if [ -n "$APPVERSION" ]; then
-        app="keycloak=$APPVERSION"
-    else
-        app="keycloak"
-    fi
-    univention-app install "$app" --username=Administrator --pwdfile=/tmp/pwdfile --skip --noninteractive "$@"
-    # for the app specific test
-    echo "keycloak" >>/var/cache/appcenter-installed.txt
+install_upgrade_keycloak () {
+	echo "univention" > /tmp/pwdfile
+	local app
+	if [ -n "$KEYCLOAK_IMAGE" ]; then
+		python3 /root/appcenter-change-compose-image.py -a keycloak -i "$KEYCLOAK_IMAGE"
+	fi
+	if [ -n "$APPVERSION" ]; then
+		app="keycloak=$APPVERSION"
+	else
+		app="keycloak"
+	fi
+	if [ -z "$(ucr get "appcenter/apps/keycloak/status")" ]; then
+		# installation
+		univention-app install "$app" --username=Administrator --pwdfile=/tmp/pwdfile --skip --noninteractive "$@" || return 1
+	else
+		# upgrade
+		univention-app upgrade "$app" --username=Administrator --pwdfile=/tmp/pwdfile --skip --noninteractive "$@" || return 1
+	fi
+	# for the app specific test
+	echo "keycloak" >>/var/cache/appcenter-installed.txt
 }
 
 keycloak_saml_idp_setup () {
