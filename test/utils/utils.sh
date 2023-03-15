@@ -1182,11 +1182,6 @@ sa_bug53751 () {
 		true
 }
 
-sa_bug54194 () {
-	curl -k https://spamassassin.apache.org/updates/MIRRORED.BY -o /var/lib/spamassassin/3.004002/updates_spamassassin_org/MIRRORED.BY
-	sa-update
-}
-
 fake_initial_schema () {
 	[ "$(ucr get ldap/server/type)" = master ] && return
 	[ -s /var/lib/univention-ldap/schema.conf ] && return
