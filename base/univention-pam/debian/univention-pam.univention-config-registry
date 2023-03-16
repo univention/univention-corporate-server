@@ -25,18 +25,15 @@ Variables: nscd/group/enabled
 Variables: nscd/hosts/enabled
 
 Type: file
-File: etc/libnss-ldap.conf
+File: etc/nslcd.conf
 Variables: ldap/server/name
 Variables: ldap/server/port
 Variables: ldap/server/addition
 Variables: ldap/hostdn
-Variables: nssldap/bindpolicy
 Variables: nssldap/auth
 Variables: nssldap/idle/timelimit
-Variables: nssldap/tls/checkpeer
 Variables: nssldap/nss_initgroups_ignoreusers
 Variables: nssldap/nss_initgroups_ignoreusers/users
-Variables: nssldap/nss_srv
 User: messagebus
 Group: root
 Mode: 0440
@@ -46,14 +43,6 @@ File: etc/nsswitch.conf
 Variables: auth/methods
 Variables: nsswitch/ldap
 Variables: nss/group/cachefile
-
-Type: file
-File: etc/pam_ldap.conf
-Variables: ldap/server/name
-Variables: ldap/server/port
-Variables: ldap/server/addition
-Variables: ldap/hostdn
-Variables: pamldap/auth
 
 Type: file
 File: etc/security/limits.conf
