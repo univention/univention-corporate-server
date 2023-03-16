@@ -9,7 +9,7 @@
 0004-12: conffiles/etc/pam.d/other
 0004-12: conffiles/etc/pam.d/cron
 0004-12: conffiles/etc/nscd.conf
-0004-12: conffiles/etc/libnss-ldap.conf
+0004-12: conffiles/etc/nslcd.conf
 0004-12: conffiles/etc/pam.d/login
 0004-12: conffiles/etc/pam.d/rlogin
 0004-12: conffiles/etc/security/access-rlogin.conf
