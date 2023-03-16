@@ -1444,6 +1444,49 @@ set_env_variables_from_env_file () {
 	return 0
 }
 
+# create python diskcache for users and groups
+# (used in performance template job)
+create_and_copy_test_data_cache () {
+	local root_password="${1:?missing root password}"
+	univention-install -y python3-pip sshpass
+	pip3 install diskcache
+	python3 - <<"EOF" || return 1
+from diskcache import Index
+from univention.udm import UDM
+
+udm = UDM.admin().version(2)
+udm_users = udm.get("users/user")
+udm_groups = udm.get("groups/group")
+CACHE_PATH = "/var/lib/test-data"
+db = Index(str(CACHE_PATH))
+user_data = {
+    user.props.username: {
+        "username": user.props.username,
+        "dn": user.dn,
+        "password": "univention",
+        "groups": list(user.props.groups),
+    } for user in udm_users.search()
+    if "hidden" not in user.props.objectFlag
+}
+group_data = {
+    group.props.name: {
+        "name": group.props.name,
+        "dn": group.dn,
+        "users": list(group.props.users),
+    } for group in udm_groups.search()
+}
+
+db["users"] = user_data
+db["groups"] = group_data
+db.cache.close()
+EOF
+
+	shift
+	for ip in "$@"; do
+		sshpass -p "$root_password" scp -r  -o StrictHostKeyChecking=no -o UpdateHostKeys=no /var/lib/test-data root@"$ip":/var/lib/ || return 1
+	done
+}
+
 ################################################################################
 # performance measurement to syslog
 #
