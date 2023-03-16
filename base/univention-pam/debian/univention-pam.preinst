@@ -37,7 +37,7 @@
 if [ -z "$2" ]; then
 	cat <<EOF | while read file origsum; do
 /etc/univention/templates/files/etc/pam_ldap.conf 97c81abb9b8d1a532ea13976aaabc3cf
-/etc/univention/templates/files/etc/libnss-ldap.conf 62776b38e97aa5e49a2e748aa4a2643a
+/etc/univention/templates/files/etc/libnss-ldap.conf 62776b38e97aa5e49a2e748aa4a2643a  # TODO:
 /etc/univention/templates/files/etc/nsswitch.conf b583d911ea6d9370afe6f1360a58f61d
 /etc/univention/templates/files/etc/pam.d/admin-account 0f344954ea6901274f8bcaa78db146a5
 /etc/univention/templates/files/etc/pam.d/admin-auth 796deafd112bd8d187eb235afc3c8af5

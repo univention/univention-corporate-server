@@ -2014,7 +2014,7 @@ libnpth0-dev
 libnspr4
 libnspr4-dev
 libnss-extrausers
-libnss-ldap
+libnss-ldapd
 libnss-libvirt
 libnss-mdns
 libnss-myhostname
@@ -2087,7 +2087,7 @@ libpam-cracklib
 libpam-doc
 libpam-heimdal
 libpam-krb5
-libpam-ldap
+libpam-ldapd
 libpam-modules
 libpam-modules-bin
 libpam-runtime
