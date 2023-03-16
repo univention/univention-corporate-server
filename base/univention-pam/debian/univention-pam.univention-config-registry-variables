@@ -121,12 +121,6 @@ Description[en]=Activates or deactivates the LDAP access during name resolution.
 Type=bool
 Categories=system-base
 
-[nssldap/tls/checkpeer]
-Description[de]=Diese Einstellung legt fest, ob bei LDAP-Zugriffen im Rahmen der NSS-Namensauflösung das SSL-Zertifikat des LDAP-Servers validiert wird (mögliche Werte: yes/no).
-Description[en]=This setting configures, whether the SSL certificate of the LDAP server is validated when performing LDAP accesses during NSS name resolution (possible values: yes/no).
-Type=str
-Categories=system-base
-
 [nssldap/nss_initgroups_ignoreusers]
 Description[de]=Diese Option konfiguriert, ob die Auflösung der Gruppenmitgliedschaften aus dem LDAP-Verzeichnis für bestimmte Benutzer deaktiviert wird (die betroffenen Benutzer werden mit der Variable nssldap/nss_initgroups_ignoreusers/users konfiguriert). Ist die Variable nicht gesetzt, ist die Option aktiviert.
 Description[en]=This option configures whether the resolution of group memberships from the LDAP directory should be disabled for some users (the affected users are configured through the variable nssldap/nss_initgroups_ignoreusers/users). If this variable isn't set, the option is activated.
@@ -144,12 +138,6 @@ Categories=system-base
 [nssldap/auth]
 Description[de]=Konfiguriert, ob am für die NSS-Namensauflösung verwendeten LDAP-Server eine Authentifizierung durchgeführt wird. In der Grundeinstellung aktiviert.
 Description[en]=Specifies whether authentication should be performed on the LDAP server used during NSS name resolution. Activated in the default setting.
-Type=bool
-Categories=system-base
-
-[nssldap/nss_srv]
-Description[de]=Konfiguriert, ob das NSS-LDAP-Modul zur Lokalisierung des LDAP-Server auf DNS-Service-Records zugreift. Ist die Variable nicht gesetzt, werden DNS-Service-Records abgefragt.
-Description[en]=Configures whether the NSS LDAP module looks up DNS service records to locate its LDAP server. If this variable isn't set, DNS service records are queried.
 Type=bool
 Categories=system-base
 

@@ -1,3 +1,4 @@
+rm_conffile /etc/univention/templates/files/etc/libnss-ldap.conf 13.99~
 rm_conffile /etc/univention/templates/files/etc/pam.d/ftp 13.0.0-4~
 rm_conffile /etc/univention/templates/files/etc/pam.d/gdm 13.0.0-4~
 rm_conffile /etc/univention/templates/files/etc/pam.d/kcheckpass 13.0.0-4~
