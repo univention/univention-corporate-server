@@ -11,10 +11,10 @@ Package: univention-pam
 Architecture: all
 Depends:
  libnss-extrausers,
- libnss-ldap (>= 204),
+ libnss-ldapd,
  libpam-cracklib,
  libpam-heimdal,
- libpam-ldap (>= 161),
+ libpam-ldapd,
  libpam-modules (>= 1.1.8),
  nscd,
  pam-runasroot,
