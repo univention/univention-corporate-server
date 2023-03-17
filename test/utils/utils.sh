@@ -1184,6 +1184,38 @@ sa_bug53751 () {
 	:
 }
 
+fix_certificates53013 () { # <ip>
+	# https://forge.univention.org/bugzilla/show_bug.cgi?id=53013
+	local ip="${1:?}"
+	ucr set ssl/default/hashfunction=sha256 ssl/default/bits=2048
+
+	local hostname domainname ldap_base saml_idp_certificate_certificate saml_idp_certificate_privatekey ucs_server_sso_fqdn ssl_default_days
+	eval "$(ucr shell hostname domainname ldap/base saml/idp/certificate/certificate saml/idp/certificate/privatekey ucs/server/sso/fqdn ssl/default/days)"
+	local fqhn="${hostname:?}.${domainname:?}"
+
+	# Rebew host certificate
+	univention-certificate revoke -name "${fqhn}"
+	univention-certificate renew -name "${fqhn}" -days "${ssl_default_days:-365}"
+
+	# Overwrite IP address from KVM template with urrent IP
+	udm dns/host_record modify --dn relativeDomainName="${ucs_server_sso_fqdn%%.*},zoneName=${ucs_server_sso_fqdn#*.},cn=dns,${ldap_base:?}" --set a="${ip}"
+
+	# Renew SSO certificate
+	univention-certificate revoke -name "${ucs_server_sso_fqdn:?}"
+	rm -f "${saml_idp_certificate_certificate:?}" "${saml_idp_certificate_privatekey:?}"
+	univention-run-join-scripts --force --run-scripts 91univention-saml.inst 92univention-management-console-web-server
+	return 0
+
+	# Incomplete alternative: renew SSO certificate manually
+	univention-certificate renew -name "${ucs_server_sso_fqdn}" -days "${ssl_default_days:-365}"
+	install -o root -g samlcgi -m 0644 "/etc/univention/ssl/${ucs_server_sso_fqdn}/cert.pem" "${saml_idp_certificate_certificate:?}"
+	install -o root -g samlcgi -m 0640 "/etc/univention/ssl/${ucs_server_sso_fqdn}/private.key" "${saml_idp_certificate_privatekey:?}"
+	/usr/sbin/univention-directory-listener-ctrl resync univention-saml-simplesamlphp-configuration
+	/usr/share/univention-management-console/saml/update_metadata
+	# TODO: /usr/share/univention-management-console/saml/idp/*.xml -> https:/${ucs/server/sso/fqdn}/simplesamlphp/saml2/idp/certificate
+	# TODO: What else?
+}
+
 fake_initial_schema () {
 	[ "$(ucr get ldap/server/type)" = master ] && return
 	[ -s /var/lib/univention-ldap/schema.conf ] && return
