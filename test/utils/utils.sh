@@ -1454,34 +1454,55 @@ from univention.udm import UDM
 udm = UDM.admin().version(2)
 udm_users = udm.get("users/user")
 udm_groups = udm.get("groups/group")
-CACHE_PATH = "/var/lib/test-data"
-db = Index(str(CACHE_PATH))
-user_data = {
-    user.props.username: {
-        "username": user.props.username,
-        "dn": user.dn,
-        "password": "univention",
-        "groups": list(user.props.groups),
-    } for user in udm_users.search()
-    if "hidden" not in user.props.objectFlag
-}
-group_data = {
-    group.props.name: {
-        "name": group.props.name,
-        "dn": group.dn,
-        "users": list(group.props.users),
-    } for group in udm_groups.search()
-}
+users_db = Index("/var/lib/test-data/users")
+groups_db = Index("/var/lib/test-data/groups")
 
-db["users"] = user_data
-db["groups"] = group_data
-db.cache.close()
+for user in udm_users.search():
+    if "hidden" not in user.props.objectFlag:
+        users_db.update(
+            {
+                user.props.username: {
+                    "dn": user.dn,
+                    "username": user.props.username,
+                    "password": "univention",
+                }
+            }
+        )
+
+for group in udm_groups.search():
+    groups_db.update(
+        {
+            group.props.name: {
+                "name": group.props.name,
+                "dn": group.dn,
+            }
+        }
+    )
+
+users_db.cache.close()
+groups_db.cache.close()
 EOF
 
 	shift
 	for ip in "$@"; do
 		sshpass -p "$root_password" scp -r  -o StrictHostKeyChecking=no -o UpdateHostKeys=no /var/lib/test-data root@"$ip":/var/lib/ || return 1
 	done
+}
+
+cleanup_translog () {
+	service univention-directory-listener stop || return 1
+	service univention-directory-notifier stop || return 1
+	/usr/share/univention-directory-notifier/univention-translog stat || return 1
+	/usr/share/univention-directory-notifier/univention-translog prune -1000 || return 1
+}
+
+performance_template_settings () {
+	local mdb_maxsize="${1:-12884901888}"
+	ucr set directory/manager/user/primarygroup/update=false
+	ucr set nss/group/cachefile/invalidate_interval=disabled
+	ucr set ldap/database/mdb/maxsize="$mdb_maxsize"
+	ucr set listener/cache/mdb/maxsize="$mdb_maxsize"
+	ucr set slapd/backup=disabled
 }
 
 ################################################################################
