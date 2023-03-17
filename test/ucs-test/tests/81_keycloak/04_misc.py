@@ -6,9 +6,11 @@
 
 
 import json
+import os
 import socket
 
 import dns.resolver
+import pytest
 from utils import (
     get_portal_tile, host_is_alive, keycloak_get_request, keycloak_sessions_by_user, run_command, wait_for_class,
     wait_for_id,
@@ -144,6 +146,7 @@ def test_ucs_realm_config(keycloak_config, ucr):
     }
 
 
+@pytest.mark.skipif(not os.path.isfile("/etc/keycloak.secret"), reason="fails on hosts without keycloak.secret")
 def test_upgrade_config_status(keycloak_app_version):
     """no upgrade needed after installation"""
     upgrades = run_command(["univention-keycloak", "upgrade-config", "--json", "--get-upgrade-steps"])
@@ -156,6 +159,7 @@ def test_upgrade_config_status(keycloak_app_version):
     assert upgrades["domain_config_init"] == keycloak_app_version
 
 
+@pytest.mark.skipif(not os.path.isfile("/etc/keycloak.secret"), reason="fails on hosts without keycloak.secret")
 def test_upgrade_config_pending_upgrades(upgrade_status_obj):
     """
     remove domain config version and checks for updates
