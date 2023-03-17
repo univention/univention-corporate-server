@@ -76,13 +76,12 @@ class KeycloakDomainConfig():
     def __init__(
         self,
         binddn: str | None,
-        bindpwdfile: str | None,
+        bindpwd: str | None,
     ) -> None:
-        if binddn and bindpwdfile:
-            password = bindpwdfile.read().strip()
+        if binddn and bindpwd:
             server = ucr["ldap/master"]
             server_port = ucr["ldap/master/port"]
-            udm = UDM.credentials(binddn, password, server=server, port=server_port).version(2)
+            udm = UDM.credentials(binddn, bindpwd, server=server, port=server_port).version(2)
         else:
             udm = UDM.admin().version(2)
         self.name = "keycloak"
@@ -811,7 +810,7 @@ def parse_args(args: list[str] = None) -> Namespace:
 
 def domain_config(opt: Namespace) -> None:
     if IS_UCS:
-        kdc = KeycloakDomainConfig(opt.binddn, opt.bindpwdfile)
+        kdc = KeycloakDomainConfig(opt.binddn, opt.bindpwd)
         if opt.get:
             versions = kdc.get()
             out = json.dumps(versions, indent=4) if opt.json else versions
@@ -832,7 +831,7 @@ def upgrade_config(opt: Namespace) -> None:
             "19.0.2-ucs2",
         ]
         upgrades.sort(key=LooseVersion)
-        kdc = KeycloakDomainConfig(opt.binddn, opt.bindpwdfile)
+        kdc = KeycloakDomainConfig(opt.binddn, opt.bindpwd)
         domain_config_version = kdc.get_domain_config_version()
         # check what needs to be done
         upgrade_steps = [
@@ -1460,7 +1459,7 @@ def init_keycloak_ucs(opt):
             if IS_UCS:
                 # save current keycloak version as domain config version
                 # and domain init version
-                kdc = KeycloakDomainConfig(opt.binddn, opt.bindpwdfile)
+                kdc = KeycloakDomainConfig(opt.binddn, opt.bindpwd)
                 print(f"Setting domain config version to {kdc.current_version}")
                 kdc.set_domain_config_version(kdc.current_version)
                 kdc.set_domain_config_init(kdc.current_version)

@@ -1,3 +1,9 @@
+univention-keycloak (1.0.9-5) unstable; urgency=medium
+
+  * Bug #55866: run keycloak init only once in domain
+
+ -- Felix Botner <botner@univention.de>  Fri, 17 Mar 2023 13:12:36 +0100
+
 univention-keycloak (1.0.9-4) unstable; urgency=medium
 
   * Bug #55866: run keycloak init only once in domain
