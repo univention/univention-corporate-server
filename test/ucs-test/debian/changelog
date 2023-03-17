@@ -1,3 +1,9 @@
+ucs-test (10.0.10-28) unstable; urgency=medium
+
+  * Bug #55747: keycloak test
+
+ -- Felix Botner <botner@univention.de>  Fri, 17 Mar 2023 17:22:06 +0100
+
 ucs-test (10.0.10-27) unstable; urgency=medium
 
   * Bug #55866: tests

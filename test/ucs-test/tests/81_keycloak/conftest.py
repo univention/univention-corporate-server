@@ -41,7 +41,7 @@ from univention.appcenter.app_cache import Apps
 from univention.config_registry import ConfigRegistry
 from univention.lib.misc import custom_groupname
 from univention.testing.udm import UCSTestUDM
-from univention.testing.utils import UCSTestDomainAdminCredentials, get_ldap_connection, wait_for_listener_replication
+from univention.testing.utils import get_ldap_connection, wait_for_listener_replication
 from univention.udm import UDM
 from univention.udm.binary_props import Base64Bzip2BinaryProperty
 from univention.udm.modules.settings_data import SettingsDataObject
@@ -109,8 +109,7 @@ def change_app_setting():
 
 @pytest.fixture()
 def upgrade_status_obj(ucr) -> SettingsDataObject:
-    account = UCSTestDomainAdminCredentials()
-    udm = UDM.credentials(account.binddn, account.bindpw).version(2)
+    udm = UDM.admin().version(2)
     mod = udm.get("settings/data")
     obj = mod.get(f"cn=keycloak,cn=data,cn=univention,{ucr.get('ldap/base')}")
     orig_value = obj.props.data.raw
