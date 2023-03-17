@@ -1189,13 +1189,13 @@ fix_certificates53013 () { # <ip>
 	local ip="${1:?}"
 	ucr set ssl/default/hashfunction=sha256 ssl/default/bits=2048
 
-	local hostname domainname ldap_base saml_idp_certificate_certificate saml_idp_certificate_privatekey ucs_server_sso_fqdn ssl_default_days
-	eval "$(ucr shell hostname domainname ldap/base saml/idp/certificate/certificate saml/idp/certificate/privatekey ucs/server/sso/fqdn ssl/default/days)"
+	local hostname domainname ldap_base saml_idp_certificate_certificate saml_idp_certificate_privatekey ucs_server_sso_fqdn
+	eval "$(ucr shell hostname domainname ldap/base saml/idp/certificate/certificate saml/idp/certificate/privatekey ucs/server/sso/fqdn)"
 	local fqhn="${hostname:?}.${domainname:?}"
 
 	# Rebew host certificate
 	univention-certificate revoke -name "${fqhn}"
-	univention-certificate renew -name "${fqhn}" -days "${ssl_default_days:-365}"
+	univention-certificate new -name "${fqhn}"
 
 	# Overwrite IP address from KVM template with urrent IP
 	udm dns/host_record modify --dn relativeDomainName="${ucs_server_sso_fqdn%%.*},zoneName=${ucs_server_sso_fqdn#*.},cn=dns,${ldap_base:?}" --set a="${ip}"
@@ -1207,7 +1207,7 @@ fix_certificates53013 () { # <ip>
 	return 0
 
 	# Incomplete alternative: renew SSO certificate manually
-	univention-certificate renew -name "${ucs_server_sso_fqdn}" -days "${ssl_default_days:-365}"
+	univention-certificate new -name "${ucs_server_sso_fqdn}"
 	install -o root -g samlcgi -m 0644 "/etc/univention/ssl/${ucs_server_sso_fqdn}/cert.pem" "${saml_idp_certificate_certificate:?}"
 	install -o root -g samlcgi -m 0640 "/etc/univention/ssl/${ucs_server_sso_fqdn}/private.key" "${saml_idp_certificate_privatekey:?}"
 	/usr/sbin/univention-directory-listener-ctrl resync univention-saml-simplesamlphp-configuration
