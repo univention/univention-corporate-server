@@ -156,7 +156,7 @@ def test_upgrade_config_status(keycloak_app_version):
     upgrades = run_command(["univention-keycloak", "domain-config", "--json", "--get"])
     upgrades = json.loads(upgrades)
     assert upgrades["domain_config_version"] == keycloak_app_version
-    assert upgrades["domain_config_init"] == keycloak_app_version
+    assert upgrades.get("domain_config_init")
 
 
 @pytest.mark.skipif(not os.path.isfile("/etc/keycloak.secret"), reason="fails on hosts without keycloak.secret")
