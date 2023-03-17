@@ -3,7 +3,7 @@ release: "5.0"
 version: [3]
 scope: ucs_5.0-0-errata5.0-3
 src: univention-keycloak
-fix: 1.0.9-5A~5.0.0.202303171313
+fix: 1.0.9-6A~5.0.0.202303172025
 desc: |
  This update addresses the following issues:
  * The command `upgrade-config` has been added to
