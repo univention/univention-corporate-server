@@ -3,7 +3,7 @@ release: "5.0"
 version: [3]
 scope: ucs_5.0-0-errata5.0-3
 src: univention-management-console-module-diagnostic
-fix:
+fix: 6.0.5-2A~5.0.0.202303170913
 desc: |
  This update addresses the following issues:
  * Two messages in the SAML certificate diagnostic check contained a
