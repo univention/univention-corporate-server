@@ -49,6 +49,7 @@ extensions = [
 
 intersphinx_mapping = {
     "uv-dev-ref": ("https://docs.software-univention.de/developer-reference/5.0/en", None),
+    "uv-keycloak-ref": ("https://docs.software-univention.de/keycloak-app/latest", None),
 }
 
 bibtex_bibfiles = ["../bibliography.bib"]

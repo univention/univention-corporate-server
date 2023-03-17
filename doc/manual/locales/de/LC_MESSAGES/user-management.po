@@ -4,7 +4,7 @@ msgstr ""
 "Project-Id-Version: Univention Corporate Server - Manual for users and "
 "administrators\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-09-26 13:04+0000\n"
+"POT-Creation-Date: 2023-03-17 15:13+0000\n"
 "PO-Revision-Date: 2022-09-01 09:50+0200\n"
 "Last-Translator: Univention GmbH <packages@univention.de>\n"
 "Language: de\n"
@@ -2254,7 +2254,7 @@ msgstr ""
 "ist :samp:`Account Verification Service <noreply@{FQDN}>`."
 
 #: ../../user-management/user-self-service.rst:229
-#: ../../user-management/user-self-service.rst:314
+#: ../../user-management/user-self-service.rst:318
 msgid "Server name or IP address of the mail server to use."
 msgstr "Servername oder IP-Adresse des zu verwendenden Mail-Servers."
 
@@ -2345,11 +2345,22 @@ msgstr ""
 "werden, indem eine *Locale* wie z.B. ``de`` an die Variable angehängt "
 "wird. Z.B. ``saml/idp/selfservice/account-verification/error-title/de``."
 
-#: ../../user-management/user-self-service.rst:291
+#: ../../user-management/user-self-service.rst:288
+msgid ""
+"If the :program:`Keycloak` app is used as identity provider see "
+":ref:`uv-keycloak-ref:app-settings` in the :cite:t:`ucs-keycloak-doc` "
+"for the corresponding settings."
+msgstr ""
+"Falls die :program:`Keycloak` App als Identity Provider eingesetzt wird,"
+"schauen Sie bitte in der :cite:t:`ucs-keycloak-doc` unter "
+":ref:`uv-keycloak-ref:app-settings` für die entsprechenden Einstellungen."
+
+
+#: ../../user-management/user-self-service.rst:295
 msgid "Self deregistration"
 msgstr "Selbst-Deregistrierung"
 
-#: ../../user-management/user-self-service.rst:293
+#: ../../user-management/user-self-service.rst:297
 msgid ""
 "The :program:`Self Service` allows for users to request the deletion of "
 "their own account. This feature can be activated with the |UCSUCRV| "
@@ -2364,7 +2375,7 @@ msgstr ""
 "Seite *Ihr Profil* des *Self Service* angezeigt wird (:ref:`users-"
 "templates`)."
 
-#: ../../user-management/user-self-service.rst:299
+#: ../../user-management/user-self-service.rst:303
 msgid ""
 "If a user has requested to delete their account, it will not be deleted "
 "directly but deactivated. In addition the "
@@ -2384,7 +2395,7 @@ msgstr ""
 "angegeben hat, wird er eine E-Mail-Benachrichtigung erhalten, die mit den"
 " folgenden |UCSUCRV|\\ n konfiguriert werden kann."
 
-#: ../../user-management/user-self-service.rst:309
+#: ../../user-management/user-self-service.rst:313
 msgid ""
 "Defines the sender address of the email. Default is :samp:`Password Reset"
 " Service <noreply@{FQDN}>`."
@@ -2392,7 +2403,7 @@ msgstr ""
 "Definiert die E-Mail-Adresse des Absenders für Benachrichtigung. Die "
 "Voreinstellung ist :samp:`Password Reset Service <noreply@{FQDN}>`."
 
-#: ../../user-management/user-self-service.rst:318
+#: ../../user-management/user-self-service.rst:322
 msgid ""
 "A path to a text file whose content will be used for the body of the "
 "email. The text can contain the following strings which will be "
@@ -2407,7 +2418,7 @@ msgstr ""
 "service/email_bodies/deregistration_notification_email_body.txt` "
 "verwendet."
 
-#: ../../user-management/user-self-service.rst:324
+#: ../../user-management/user-self-service.rst:328
 msgid ""
 "The Self Service provides a script under :file:`/usr/share/univention-"
 "self-service/delete_deregistered_accounts.py` that can be used to delete "
@@ -2421,7 +2432,7 @@ msgstr ""
 "``DeregistredThroughSelfService`` auf ``TRUE`` gesetzt ist und deren "
 "``DeregistrationTimestamp`` älter ist als eine angegebene Zeit."
 
-#: ../../user-management/user-self-service.rst:330
+#: ../../user-management/user-self-service.rst:334
 msgid ""
 "The following command would delete users whose "
 "``DeregistrationTimestamp`` is older than 5 days and 2 hours:"
@@ -2429,7 +2440,7 @@ msgstr ""
 "Der folgende Befehl würde Benutzer löschen, deren "
 "``DeregistrationTimestamp`` älter als 5 Tage und 2 Stunden ist:"
 
-#: ../../user-management/user-self-service.rst:333
+#: ../../user-management/user-self-service.rst:337
 msgid ""
 "$ /usr/share/univention-self-service/delete_deregistered_accounts.py \\\n"
 "  --timedelta-days 5 \\\n"
@@ -2439,11 +2450,11 @@ msgstr ""
 "  --timedelta-days 5 \\\n"
 "  --timedelta-hours 2"
 
-#: ../../user-management/user-self-service.rst:339
+#: ../../user-management/user-self-service.rst:343
 msgid "For all possible arguments to the script see:"
 msgstr "Für alle möglichen Argumente zum Skript siehe:"
 
-#: ../../user-management/user-self-service.rst:341
+#: ../../user-management/user-self-service.rst:345
 msgid ""
 "$ /usr/share/univention-self-service/delete_deregistered_accounts.py "
 "--help"
@@ -2451,13 +2462,13 @@ msgstr ""
 "$ /usr/share/univention-self-service/delete_deregistered_accounts.py "
 "--help"
 
-#: ../../user-management/user-self-service.rst:346
+#: ../../user-management/user-self-service.rst:350
 msgid "The script can be run regularly by creating a cron job via |UCSUCR|."
 msgstr ""
 "Das Skript kann regelmäßig ausgeführt werden, indem ein Cron-Job über "
 "|UCSUCR| erstellt wird."
 
-#: ../../user-management/user-self-service.rst:348
+#: ../../user-management/user-self-service.rst:352
 msgid ""
 "$ ucr set cron/delete_deregistered_accounts/command=\\\n"
 "/usr/share/univention-self-service/delete_deregistered_accounts.py\\\n"
@@ -2469,7 +2480,7 @@ msgstr ""
 "' --timedelta-days 30'\\\n"
 "  cron/delete_deregistered_accounts/time='00 06 * * *'  # daily at 06:00"
 
-#: ../../user-management/user-self-service.rst:356
+#: ../../user-management/user-self-service.rst:360
 msgid ""
 "More information on how to set cron jobs via |UCSUCR| can be found in "
 ":ref:`computers-defining-cron-jobs-in-univention-configuration-registry`."

@@ -285,6 +285,10 @@ and
 message can be configured by adding a *locale* like ``en`` to the variable, for
 example ``saml/idp/selfservice/account-verification/error-title/en``.
 
+If the :program:`Keycloak` app is used as identity provider
+see :ref:`uv-keycloak-ref:app-settings` in the :cite:t:`ucs-keycloak-doc`
+for the corresponding settings.
+
 .. _user-management-password-changes-by-users-selfderegistration:
 
 Self deregistration
