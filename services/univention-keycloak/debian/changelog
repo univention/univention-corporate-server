@@ -1,3 +1,9 @@
+univention-keycloak (1.0.9-4) unstable; urgency=medium
+
+  * Bug #55866: run keycloak init only once in domain
+
+ -- Felix Botner <botner@univention.de>  Fri, 10 Mar 2023 15:09:47 +0100
+
 univention-keycloak (1.0.9-3) unstable; urgency=medium
 
   * Bug #55663: Register self-service extension

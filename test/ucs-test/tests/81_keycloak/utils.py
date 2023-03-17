@@ -28,6 +28,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
+import subprocess
 import time
 from types import SimpleNamespace
 from typing import Optional
@@ -38,6 +39,11 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.remote.webelement import WebElement
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import WebDriverWait
+
+
+def host_is_alive(host: str) -> bool:
+    command = ["ping", "-c", "2", host]
+    return subprocess.call(command) == 0
 
 
 def wait_for(driver: WebDriver, by: By, element: str, timeout: int = 30) -> None:
@@ -84,16 +90,22 @@ def keycloak_password_change(
 
 def keycloak_auth_header(config: SimpleNamespace) -> dict:
     response = requests.post(config.token_url, data=config.login_data)
-    response.status_code == 204, response.text
+    assert response.status_code == 200, response.text
     return {
         "Content-Type": "application/json",
         "Authorization": f"Bearer {response.json()['access_token']}",
     }
 
 
+def keycloak_get_request(config: SimpleNamespace, path: str) -> dict:
+    response = requests.get(f"{config.admin_url}/{path}", headers=keycloak_auth_header(config))
+    assert response.status_code == 200, response.text
+    return response.json()
+
+
 def keycloak_sessions(config: SimpleNamespace) -> dict:
     response = requests.get(config.client_session_stats_url, headers=keycloak_auth_header(config))
-    assert response.status_code == 204, response.text
+    assert response.status_code == 200, response.text
     return response.json()
 
 
@@ -128,3 +140,7 @@ def keycloak_login(
         error = driver.find_element_by_css_selector(keycloak_config.login_error_css_selector)
         assert fails_with == error.text, f"{fails_with} != {error.text}"
         assert error.is_displayed()
+
+
+def run_command(cmd: list) -> str:
+    return subprocess.run(cmd, stdout=subprocess.PIPE).stdout.decode('utf-8')

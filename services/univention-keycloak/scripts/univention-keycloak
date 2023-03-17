@@ -38,7 +38,7 @@ from __future__ import annotations
 
 import json
 import sys
-from argparse import ArgumentDefaultsHelpFormatter, ArgumentParser, Namespace
+from argparse import SUPPRESS, ArgumentDefaultsHelpFormatter, ArgumentParser, Namespace
 from base64 import b64decode
 from collections import namedtuple
 from enum import Enum
@@ -54,17 +54,93 @@ from ldap.dn import explode_rdn
 
 
 try:
+    from univention.appcenter.app import LooseVersion
+    from univention.appcenter.app_cache import Apps
     from univention.config_registry import ucr
-except ModuleNotFoundError:
+    from univention.udm import UDM
+    from univention.udm.binary_props import Base64Bzip2BinaryProperty
+    from univention.udm.modules.settings_data import SettingsDataObject
+    IS_UCS = True
+except ImportError:
     ucr = {}
+    IS_UCS = False
 
 DEFAULT_REALM = "master"
 URL_ADMIN_REQUIRED_ACTIONS = URL_ADMIN_REALM + "/authentication/required-actions"
 URL_ADMIN_REQUIRED_ACTION_REGISTER = URL_ADMIN_REALM + "/authentication/register-required-action"
+DEFAULT_EXTENTIONS = ["password", "ldapmapper", "self-service"]
+
+
+class KeycloakDomainConfig():
+
+    def __init__(
+        self,
+        binddn: str | None,
+        bindpwdfile: str | None,
+    ) -> None:
+        if binddn and bindpwdfile:
+            password = bindpwdfile.read().strip()
+            server = ucr["ldap/master"]
+            server_port = ucr["ldap/master/port"]
+            udm = UDM.credentials(binddn, password, server=server, port=server_port).version(2)
+        else:
+            udm = UDM.admin().version(2)
+        self.name = "keycloak"
+        self.mod = udm.get("settings/data")
+        self.position = f"cn=data,cn=univention,{ucr.get('ldap/base')}"
+        apps_cache = Apps()
+        installed_apps = apps_cache.get_all_locally_installed_apps()
+        keycloak_version = [app.version for app in installed_apps if app.id == "keycloak"]
+        if not keycloak_version:
+            raise Exception("This command needs to be executed on a UCS system where keycloak is installed")
+        self.current_version = keycloak_version[0]
+        keycloak_apps = apps_cache.get_all_apps_with_id("keycloak")
+        self.keycloak_versions = [app.version for app in keycloak_apps]
+        self.keycloak_versions.sort(key=LooseVersion)
+
+    def get_obj(self) -> SettingsDataObject:
+        obj = self.mod.get(f'cn={self.name},{self.position}')
+        return obj
+
+    def save_obj(self, data: dict, obj: SettingsDataObject) -> None:
+        raw_value = json.dumps(data).encode("ascii")
+        obj.props.data = Base64Bzip2BinaryProperty("data", raw_value=raw_value)
+        obj.save()
+
+    def get(self) -> dict:
+        obj = self.get_obj()
+        return json.loads(obj.props.data.raw)
+
+    def get_domain_config_version(self) -> str:
+        data = self.get()
+        return data.get("domain_config_version", "0")
+
+    def set_domain_config_version(self, version: str) -> None:
+        if version not in self.keycloak_versions:
+            raise Exception(f"{version} is not a valid keycloak version")
+        obj = self.get_obj()
+        data = json.loads(obj.props.data.raw)
+        data["domain_config_version"] = version
+        self.save_obj(data, obj)
+
+    def set_domain_config_init(self, version: str) -> None:
+        if version not in self.keycloak_versions:
+            raise Exception(f"{version} is not a valid keycloak version")
+        obj = self.get_obj()
+        data = json.loads(obj.props.data.raw)
+        data["domain_config_init"] = version
+        self.save_obj(data, obj)
 
 
 def create_kc_admin(opt: Namespace) -> KeycloakAdmin:
-    return KeycloakAdmin(server_url=opt.keycloak_url, username=opt.binduser, password=opt.bindpwd, realm_name=opt.realm, user_realm_name=DEFAULT_REALM, verify=opt.no_ssl_verify)
+    return KeycloakAdmin(
+        server_url=opt.keycloak_url,
+        username=opt.binduser,
+        password=opt.bindpwd,
+        realm_name=opt.realm,
+        user_realm_name=DEFAULT_REALM,
+        verify=opt.no_ssl_verify,
+    )
 
 
 class ExtType(Enum):
@@ -662,6 +738,7 @@ def parse_args(args: list[str] = None) -> Namespace:
     init_parser.add_argument("--domainname", required=no_ucr_available, default=domainname)
     init_parser.add_argument("--locales", required=no_ucr_available, default=ucr.get("locale"))
     init_parser.add_argument("--default-locale", required=no_ucr_available, default=ucr.get("locale/default"))
+    init_parser.add_argument("--check-init-done", help="only check if init has been already executed", default=False, action="store_true")
     init_parser.set_defaults(func=init_keycloak_ucs)
 
     adhoc_parser = subparsers.add_parser("ad-hoc", help="configure the ad-hoc federation login flow")
@@ -689,12 +766,29 @@ def parse_args(args: list[str] = None) -> Namespace:
     operation_subparsers = parser_ext.add_subparsers(title="operation", description="valid subcommands", required=True, dest="operation")
 
     ext_register_parser = operation_subparsers.add_parser("register", help="register extension", formatter_class=ArgumentDefaultsHelpFormatter)
-    ext_register_parser.add_argument("--names", metavar="name", nargs="+", default=["password", "ldapmapper", "self-service"], help="Names of extensions to be activated")
+    ext_register_parser.add_argument("--names", metavar="name", nargs="+", default=DEFAULT_EXTENTIONS, help="Names of extensions to be activated")
     ext_register_parser.set_defaults(func=register_extensions)
 
     ext_unregister_parser = operation_subparsers.add_parser("unregister", help="unregister extension", formatter_class=ArgumentDefaultsHelpFormatter)
-    ext_unregister_parser.add_argument("--names", metavar="name", nargs="+", default=["password", "ldapmapper", "self-service"], help="Names of extensions to be deactivated")
+    ext_unregister_parser.add_argument("--names", metavar="name", nargs="+", default=DEFAULT_EXTENTIONS, help="Names of extensions to be deactivated")
     ext_unregister_parser.set_defaults(func=unregister_extensions)
+
+    # upgrade-config
+    parser_upgrade_config = subparsers.add_parser("upgrade-config", help="upgrade keycloak configuration to currently installed version (UCS only)")
+    parser_upgrade_config.add_argument("--json", help="json output", default=False, action="store_true")
+    parser_upgrade_config.add_argument("--dry-run", help="do nothing, only print", default=False, action="store_true")
+    parser_upgrade_config.add_argument("--get-upgrade-steps", help="just print the upgrade steps", default=False, action="store_true")
+    parser_upgrade_config.set_defaults(func=upgrade_config)
+
+    # domain-config
+    parser_domain_config = subparsers.add_parser("domain-config", help="get/manage keycloak domain config (UCS only)")
+    parser_domain_config.add_argument("--json", help="json output", default=False, action="store_true")
+    parser_domain_config.add_argument("--get", help="get domain config", default=False, action="store_true")
+    # dangerous, hidden, should only be used for tests
+    parser_domain_config.add_argument("--set-domain-config-version", help=SUPPRESS)
+    # dangerous, hidden, should only be used for tests
+    parser_domain_config.add_argument("--set-domain-config-init", help=SUPPRESS)
+    parser_domain_config.set_defaults(func=domain_config)
 
     opt = parser.parse_args(args)
     if opt.binddn:
@@ -713,6 +807,58 @@ def parse_args(args: list[str] = None) -> Namespace:
             with open(opt.ldap_system_user_pwdfile) as fd:
                 opt.ldap_system_user_pwd = fd.read().strip()
     return opt
+
+
+def domain_config(opt: Namespace) -> None:
+    if IS_UCS:
+        kdc = KeycloakDomainConfig(opt.binddn, opt.bindpwdfile)
+        if opt.get:
+            versions = kdc.get()
+            out = json.dumps(versions, indent=4) if opt.json else versions
+            print(out)
+        if opt.set_domain_config_version:
+            kdc.set_domain_config_version(opt.set_domain_config_version)
+        if opt.set_domain_config_init:
+            kdc.set_domain_config_init(opt.set_domain_config_init)
+    else:
+        print("Only supported on UCS systems")
+
+
+def upgrade_config(opt: Namespace) -> None:
+    if IS_UCS:
+        # these are the version that need a config upgrade
+        # never change the order of this list, just append
+        upgrades = [
+            "19.0.2-ucs2",
+        ]
+        upgrades.sort(key=LooseVersion)
+        kdc = KeycloakDomainConfig(opt.binddn, opt.bindpwdfile)
+        domain_config_version = kdc.get_domain_config_version()
+        # check what needs to be done
+        upgrade_steps = [
+            version for version in upgrades
+            # only those versions that are greater than the current domain config version
+            if LooseVersion(version) > LooseVersion(domain_config_version)
+            # only up until the currently installed version
+            if LooseVersion(version) <= LooseVersion(kdc.current_version)
+        ]
+        if opt.get_upgrade_steps:
+            out = json.dumps(upgrade_steps, indent=4) if opt.json else upgrade_steps
+            print(out)
+            return
+        # check if we are already up-to-date
+        if not upgrade_steps:
+            print(f"Nothing to do, already at domain config version {domain_config_version}")
+            return
+        for version in upgrade_steps:
+            if version == "19.0.2-ucs2":
+                print(f"Running update steps for version: {version}")
+                if not opt.dry_run:
+                    opt.names = ['password', 'ldapmapper', 'self-service']
+                    register_extensions(opt)
+                    kdc.set_domain_config_version(version)
+    else:
+        print("Only supported on UCS systems")
 
 
 def create_adhoc_idp(opt):
@@ -1296,6 +1442,29 @@ def init_keycloak_ucs(opt):
     # log into default realm in case UCS realm doesn't exist yet
     kc_admin = KeycloakAdmin(server_url=opt.keycloak_url, username=opt.binduser, password=opt.bindpwd, realm_name=opt.realm, user_realm_name=DEFAULT_REALM, verify=opt.no_ssl_verify)
 
+    # check if we need to run init
+    print("Check if init is needed", end=": ")
+    realm = [
+        realm for realm in kc_admin.get_realms()
+        if realm.get("realm", "") == opt.realm
+    ]
+    if realm:
+        print("no, already executed")
+        sys.exit(0)
+    else:
+        if opt.check_init_done:
+            print("yes")
+            sys.exit(1)
+        else:
+            print("yes, continuing init")
+            if IS_UCS:
+                # save current keycloak version as domain config version
+                # and domain init version
+                kdc = KeycloakDomainConfig(opt.binddn, opt.bindpwdfile)
+                print(f"Setting domain config version to {kdc.current_version}")
+                kdc.set_domain_config_version(kdc.current_version)
+                kdc.set_domain_config_init(kdc.current_version)
+
     server_url = f"https://{opt.host_fqdn}"
 
     # set locale languages
@@ -1496,6 +1665,11 @@ def init_keycloak_ucs(opt):
     modify_component(kc_admin, firstname_ldap_mapper)
     modify_component(kc_admin, mail_ldap_mapper)
     modify_component(kc_admin, lastname_ldap_mapper)
+
+    # register all extensions
+    opt.names = DEFAULT_EXTENTIONS
+    print(f"Register extenions: {' '.join(opt.names)}")
+    register_extensions(opt)
 
 
 def main() -> int:
