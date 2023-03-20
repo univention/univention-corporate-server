@@ -1,3 +1,9 @@
+ucs-test (10.0.10-32) unstable; urgency=low
+
+  * Bug #55529: self-service test that check the password complexity message
+
+ -- Ivan Barbecho Delgado <delgado.extern@univention.de>  Tue, 21 Mar 2023 14:38:38 +0100
+
 ucs-test (10.0.10-31) unstable; urgency=medium
 
   * Bug #55777: add ".py" file extension to python test cases
