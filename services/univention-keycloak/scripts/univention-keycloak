@@ -71,7 +71,7 @@ URL_ADMIN_REQUIRED_ACTION_REGISTER = URL_ADMIN_REALM + "/authentication/register
 DEFAULT_EXTENTIONS = ["password", "ldapmapper", "self-service"]
 
 
-class KeycloakDomainConfig():
+class KeycloakDomainConfig:
 
     def __init__(
         self,
@@ -81,9 +81,9 @@ class KeycloakDomainConfig():
         if binddn and bindpwd:
             server = ucr["ldap/master"]
             server_port = ucr["ldap/master/port"]
-            udm = UDM.credentials(binddn, bindpwd, server=server, port=server_port).version(2)
+            udm = UDM.credentials(binddn, bindpwd, server=server, port=server_port).version(3)
         else:
-            udm = UDM.admin().version(2)
+            udm = UDM.admin().version(3)
         self.name = "keycloak"
         self.mod = udm.get("settings/data")
         self.position = f"cn=data,cn=univention,{ucr.get('ldap/base')}"
