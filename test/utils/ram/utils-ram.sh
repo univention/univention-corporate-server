@@ -352,7 +352,7 @@ create_bsb_test_users () {
 	fqdn="$(hostname -f)"
 	# create fl user
 	create_user_from_json '{
-		"name": "fl-thawkins",
+		"name": "fl-hawkins",
 		"firstname": "Taylor",
 		"lastname": "Hawkins",
 		"password": "!Univention2023",
