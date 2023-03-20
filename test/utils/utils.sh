@@ -1522,19 +1522,19 @@ EOF
 }
 
 cleanup_translog () {
-	service univention-directory-listener stop || return 1
-	service univention-directory-notifier stop || return 1
+	systemctl stop univention-directory-listener univention-directory-notifier || return 1
 	/usr/share/univention-directory-notifier/univention-translog stat || return 1
 	/usr/share/univention-directory-notifier/univention-translog prune -1000 || return 1
 }
 
 performance_template_settings () {
 	local mdb_maxsize="${1:-12884901888}"
-	ucr set directory/manager/user/primarygroup/update=false
-	ucr set nss/group/cachefile/invalidate_interval=disabled
-	ucr set ldap/database/mdb/maxsize="$mdb_maxsize"
-	ucr set listener/cache/mdb/maxsize="$mdb_maxsize"
-	ucr set slapd/backup=disabled
+	ucr set \
+		directory/manager/user/primarygroup/update=false \
+		nss/group/cachefile/invalidate_interval=disabled \
+		ldap/database/mdb/maxsize="$mdb_maxsize" \
+		listener/cache/mdb/maxsize="$mdb_maxsize" \
+		slapd/backup=disabled
 }
 
 ################################################################################
