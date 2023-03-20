@@ -89,8 +89,8 @@ def load_plugins(opt: Namespace) -> Plugins:
             if opt.debug:
                 print(f'WARNING: plugindir {plugindir} does not exist', file=sys.stderr)
         else:
-            for fn in plugindir.glob("[0-9][0-9][0-9][0-9]*.py"):
-                code = fn.stem[0:4]
+            for fn in plugindir.glob("u[0-9][0-9][0-9][0-9]*.py"):
+                code = fn.stem[1:5]
                 if code in disabled:
                     if opt.debug:
                         print(f'Module {fn.stem} is disabled', file=sys.stderr)
