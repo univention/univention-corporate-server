@@ -1483,8 +1483,7 @@ def init_keycloak_ucs(opt):
             "contentSecurityPolicyReportOnly": "",
             "xContentTypeOptions": "nosniff",
             "xRobotsTag": "none",
-            "xFrameOptions": "",
-            "contentSecurityPolicy": f"frame-src 'self'; frame-ancestors 'self' {server_url}/univention; object-src 'none';",
+            "xFrameOptions": "",  # we want to overwrite default value, which is: SAMEORIGIN
             "xXSSProtection": "1; mode=block",
             "strictTransportSecurity": "max-age=31536000; includeSubDomains",
         },

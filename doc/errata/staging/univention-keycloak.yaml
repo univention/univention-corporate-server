@@ -10,4 +10,6 @@ desc: |
    `univention-keycloak`. This is used during upgrades
    of the keycloak app to update the domain wide
    keycloak configuration.
+ * `Content-Security-Policy` is removed from `UCS` realm init config,
+   since it is handled by `apache` configuration.
 bug: [55866]
