@@ -84,15 +84,15 @@ memberserver) apt_install univention-server-member ;;
 *) die "The server role '$server_role' is not supported!" ;;
 esac
 
-is_ucr_true update50/skip/autoremove ||
+is_ucr_true update52/skip/autoremove ||
 	DEBIAN_FRONTEND=noninteractive apt-get -y --allow-unauthenticated --allow-downgrades --allow-remove-essential --allow-change-held-packages autoremove >&3 2>&3
 
 # removes temporary sources list (always required)
 rm -f /etc/apt/sources.list.d/00_ucs_temporary_installation.list
 
 # removing the atd service conf file that is setting the KillMode attribute
-if [ -e "/etc/systemd/system/atd.service.d/update500.conf" ]; then
-	rm -f /etc/systemd/system/atd.service.d/update500.conf
+if [ -e "/etc/systemd/system/atd.service.d/update510.conf" ]; then
+	rm -f /etc/systemd/system/atd.service.d/update510.conf
 	rmdir --ignore-fail-on-non-empty /etc/systemd/system/atd.service.d/
 	systemctl daemon-reload
 fi
