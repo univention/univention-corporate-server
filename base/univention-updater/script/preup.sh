@@ -78,7 +78,7 @@ echo ""
 
 update_check_ssh () {
 	[ -n "$SSH_CLIENT" ] || return 0
-	[ "${update50_ignoressh:-}" = "yes" ] && return 0
+	[ "${update52_ignoressh:-}" = "yes" ] && return 0
 	echo "WARNING: You are logged in using SSH -- this may interrupt the update and result in an inconsistent system!"
 	echo "Please log in under the console or re-run with \"--ignoressh\" to ignore it."
 	return 1
@@ -86,7 +86,7 @@ update_check_ssh () {
 
 update_check_term () {
 	[ "$TERM" = "xterm" ] || return 0
-	[ "${update50_ignoreterm:-}" = "yes" ] && return 0
+	[ "${update52_ignoreterm:-}" = "yes" ] && return 0
 	echo "WARNING: You are logged in under X11 -- this may interrupt the update and result in an inconsistent system!"
 	echo "Please log in under the console or re-run with \"--ignoreterm\" to ignore it."
 	return 1
@@ -130,7 +130,7 @@ mv /boot/*.bak "$initrd_backup" >/dev/null 2>&1
 # set KillMode of atd service to process to save the children from getting killed
 # up to this point the updater process is a child of atd as well
 install -m 0755 -o root -g root -d /etc/systemd/system/atd.service.d
-echo -en "[Service]\nKillMode=process" > /etc/systemd/system/atd.service.d/update500.conf
+echo -en "[Service]\nKillMode=process" > /etc/systemd/system/atd.service.d/update510.conf
 systemctl daemon-reload
 
 # ensure that en_US is included in list of available locales (Bug #44150)
@@ -140,7 +140,7 @@ case "${locale:-}" in
 esac
 
 # autoremove before the update
-is_ucr_true update50/skip/autoremove ||
+is_ucr_true update52/skip/autoremove ||
 	DEBIAN_FRONTEND=noninteractive apt-get -y --allow-unauthenticated --allow-downgrades --allow-remove-essential --allow-change-held-packages autoremove >&3 2>&3
 
 # Pre-upgrade
