@@ -74,7 +74,7 @@ def map_fetchmail(value):
 
 
 def unmap_fetchmail(value):
-    return [[w.strip('\"') for w in v.split(';')] for v in value]
+    return [[w.strip(b'\"') for w in v.split(b';')] for v in value]
 
 
 class Converter(object):
@@ -124,32 +124,38 @@ class Converter(object):
             filter='(objectClass=univentionFetchmail)',
             attr=['uid', 'univentionFetchmailAddress', 'univentionFetchmailServer', 'univentionFetchmailProtocol', 'univentionFetchmailPasswd', 'univentionFetchmailKeepMailOnServer', 'univentionFetchmailUseSSL', 'univentionFetchmailSingle'],
         ):
+            uid = attrs['uid'][0].decode('UTF-8')
             server = attrs.get('univentionFetchmailServer', [])
             protocol = attrs.get('univentionFetchmailProtocol', [])
-            passwd = attrs.get('univentionFetchmailPasswd', [])
+            passwd = attrs.get('univentionFetchmailPasswd', [get_pw_from_rc(file, uid)])[0]
             address = attrs.get('univentionFetchmailAddress', [])
             keep = attrs.get('univentionFetchmailKeepMailOnServer', [])
             ssl = attrs.get('univentionFetchmailUseSSL', [])
 
             if not server:
-                self.debug('Skip object with uid "%s". Already migrated or incomplete configuration' % (attrs['uid'][0].decode('UTF-8'),))
+                self.debug('Skip object with uid "%s". Already migrated or incomplete configuration' % (uid,))
                 continue
 
+            if not passwd:
+                self.debug('Skip object with uid "%s". Unable to retrieve univentionFetchmailPasswd attribute from /etc/fetchmailrc file' % (uid,))
+                continue
+
+            passwd = passwd.encode('UTF-8') if isinstance(passwd, str) else passwd
             old_fetchmail_new = attrs.get('univentionFetchmailSingle', [])
             updated_fetchmail_new = unmap_fetchmail(old_fetchmail_new)
             updated_fetchmail_new.append([
                 server[0] if server else b'',
                 protocol[0] if protocol else b'',
                 address[0] if address else b'',
-                passwd[0] if passwd else get_pw_from_rc(file, attrs['uid'][0].decode('UTF-8')).encode('UTF-8'),
+                passwd,
                 keep[0] if keep else b'0',
                 ssl[0] if ssl else b'0',
             ])
 
             changes = [
                 ('univentionFetchmailServer', server, []), ('univentionFetchmailProtocol', protocol, []),
-                ('univentionFetchmailPasswd', passwd, []), ('univentionFetchmailAddress', address, []),
-                ('univentionFetchmailKeepMailOnServer', keep, []), ('univentionFetchmailUseSSL', ssl, []), ('univentionFetchmailSingle', old_fetchmail_new, map_fetchmail(updated_fetchmail_new)),
+                ('univentionFetchmailAddress', address, []), ('univentionFetchmailKeepMailOnServer', keep, []),
+                ('univentionFetchmailUseSSL', ssl, []), ('univentionFetchmailSingle', old_fetchmail_new, map_fetchmail(updated_fetchmail_new)),
             ]
             try:
                 self.debug('Updating %s' % (dn,))
