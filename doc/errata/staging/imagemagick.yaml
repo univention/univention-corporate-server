@@ -6,19 +6,20 @@ src: imagemagick
 fix: 8:6.9.7.4+dfsg-11+deb9u17
 desc: |
  This update addresses the following issues:
- 8:6.9.7.4+dfsg-11+deb9u17 (Sat, 18 Mar 2023 23:42:18 +0000)
- * Upload by ELTS Security Team.
- * Fix CVE-2017-18028: a memory exhaustion vulnerability was found in the
-   function ReadTIFFImage in coders/tiff.c, which allow remote attackers to
-   cause a denial of service via a crafted file.
- * Correctly backport CVE-2018-16644 by using correct exception handling
- * Fix CVE-2021-3574: A memory leaks was found when executing convert command
- * Fix CVE-2021-20224: An integer overflow issue was discovered in
-   ImageMagick's ExportIndexQuantum() function in MagickCore/quantum-export.c.
-   Function calls to GetPixelIndex() could result in values outside the range
-   of representable for the 'unsigned char'. When ImageMagick processes a
-   crafted pdf file, this could lead to an undefined behaviour or a crash.
- * Fix CVE-2022-44267
+ * CVE-2017-18028: A memory exhaustion vulnerability was found in the function
+   `ReadTIFFImage` in `coders/tiff.c`, which allow remote attackers to cause a
+   denial of service via a crafted file.
+ * CVE-2018-16644: Use correct exception handling to check for length in the
+   functions `ReadDCMImage` of `coders/dcm.c` and `ReadPICTImage` of
+   `coders/pict.c`, which allows remote attackers to cause a denial of service
+   via a crafted image.
+ * CVE-2021-3574: A memory leaks was found when executing command `convert`.
+ * CVE-2021-20224: An integer overflow issue was discovered in ImageMagick's
+   function `ExportIndexQuantum()` in `MagickCore/quantum-export.c`. Function
+   calls to `GetPixelIndex()` could result in values outside the range of
+   representable for the 'unsigned char'. When ImageMagick processes a crafted
+   pdf file, this could lead to an undefined behaviour or a crash.
+ * CVE-2022-44267: Denial-of-service when it parses a PNG image.
 bug: [55899]
 cve:
 - CVE-2017-18028
