@@ -40,11 +40,11 @@ then
 fi
 ###CHECKS_COMMON###
 
-VERSION="50"
-VERSION_NAME="5.0"
+VERSION="52"  # we don't put 51 here because the upgrade should look like upgrading to UCS 5.2
+VERSION_NAME="5.1"
 MIN_VERSION="5.0-5"
 
-updateLogDir="/var/univention-backup/update-to-${UPDATE_NEXT_VERSION:-$VERSION}"
+updateLogDir="/var/univention-backup/update-to-${UPDATE_NEXT_VERSION:-$VERSION_NAME}"
 
 tmp="$(mktemp)"
 trap 'rm -f "$tmp"' EXIT
@@ -247,7 +247,7 @@ update_check_disk_space () {
 		then
 			echo "	Not enough space in $partition, need at least $usersize."
 			echo "	This may interrupt the update and result in an inconsistent system!"
-			if [ "$partition" = "/boot" ] && [ "$update50_pruneoldkernel" != "yes" ]
+			if [ "$partition" = "/boot" ] && [ "$update51_pruneoldkernel" != "yes" ]
 			then
 				echo
 				echo "	Old kernel versions on /boot/ can be pruned by manully by running"
