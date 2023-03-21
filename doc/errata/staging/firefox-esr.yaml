@@ -1,0 +1,22 @@
+product: ucs
+release: "5.0"
+version: [2, 3]
+scope: ucs_5.0-0-errata5.0-3
+src: firefox-esr
+fix: 102.9.0esr-1~deb10u1
+desc: |
+ This update addresses the following issues:
+ * Incorrect code generation during JIT compilation (CVE-2023-25751)
+ * Potential out-of-bounds when accessing throttled streams (CVE-2023-25752)
+ * Invalid downcast in Worklets (CVE-2023-28162)
+ * URL being dragged from a removed cross-origin iframe into the same tab
+   triggered navigation (CVE-2023-28164)
+ * Memory safety bugs fixed in Firefox 111 and Firefox ESR 102.9
+   (CVE-2023-28176)
+bug: [55895]
+cve:
+- CVE-2023-25751
+- CVE-2023-25752
+- CVE-2023-28162
+- CVE-2023-28164
+- CVE-2023-28176
