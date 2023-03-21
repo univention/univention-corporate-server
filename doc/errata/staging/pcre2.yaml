@@ -6,15 +6,11 @@ src: pcre2
 fix: 10.22-3+deb9u1
 desc: |
  This update addresses the following issue:
- 10.22-3+deb9u1 (Sat, 18 Mar 2023 15:53:31 +0100)
- * Non-maintainer upload by the LTS Security Team.
  * CVE-2022-1586: Out-of-bounds read involving unicode property matching in
    JIT-compiled regular expressions. The issue occurs because the character
    was not fully read in case-less matching within JIT..
- * Subject buffer overread in JIT when UTF is disabled and \X or \R has a
-   greater than 1 fixed quantifier.
- * Thanks for Guilhem for preparing the buster update, as this upload recycles
-   many bits from their package!
+ * Out of bounds read in JIT mode when \X is used in non-UTF mode
+   (CVE-2019-20454)
 bug: [55898]
 cve:
 - CVE-2022-1586
