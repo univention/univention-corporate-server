@@ -5,13 +5,9 @@ scope: ucs_5.0-0-errata5.0-3
 src: imagemagick
 fix: 8:6.9.10.23+dfsg-2.1+deb10u4
 desc: |
- This update addresses the following issue:
- 8:6.9.10.23+dfsg-2.1+deb10u3 (Thu, 16 Mar 2023 21:40:55 +0000)
- * Bug fix: "font issue since 8:6.9.10.23+dfsg-2.1+deb10u2", thanks to Maxime
-   Besson. Revert policy.xml patch.
- 8:6.9.10.23+dfsg-2.1+deb10u4 (Sat, 18 Mar 2023 11:58:46 +0000)
- * Fix FTBFS due to CVE-2020-27767
- * Add regression test for Bug #1032998.
+ This update addresses a regression from erratum 610:
+ * Outside the range of representable values of type "float" at
+   `MagickCore/quantum.h` (CVE-2020-27767)
 bug: [55896]
 cve:
 - CVE-2020-27767
