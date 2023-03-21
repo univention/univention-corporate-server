@@ -1,4 +1,3 @@
-debian/
 doc/
 .mypy_cache/
 testframework/
