@@ -1,3 +1,9 @@
+ucs-test (10.0.10-33) unstable; urgency=medium
+
+  * Bug #55747: keycloak test, removed CSP tests
+
+ -- Felix Botner <botner@univention.de>  Tue, 21 Mar 2023 19:18:30 +0100
+
 ucs-test (10.0.10-32) unstable; urgency=low
 
   * Bug #55529: self-service test that check the password complexity message

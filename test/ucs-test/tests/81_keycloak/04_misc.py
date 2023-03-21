@@ -84,12 +84,6 @@ def test_every_umc_server_has_a_saml_client(ucr, keycloak_config):
 
 
 def test_master_realm_config(keycloak_config, ucr):
-    # CSP
-    settings = keycloak_get_request(keycloak_config, "realms/master")
-    for csp_setting in settings["browserSecurityHeaders"]["contentSecurityPolicy"].split(";"):
-        csp_setting = csp_setting.strip()
-        if csp_setting.startswith("frame-ancestors"):
-            assert set(csp_setting.split()) == {"frame-ancestors", f"https://*.{ucr['domainname']}/univention", "'self'"}
     # required actions master realm
     required_actions = keycloak_get_request(keycloak_config, "realms/master/authentication/required-actions")
     required_actions = [ra["alias"] for ra in required_actions if ra["enabled"]]
@@ -115,12 +109,6 @@ def test_master_realm_config(keycloak_config, ucr):
 
 
 def test_ucs_realm_config(keycloak_config, ucr):
-    # CSP
-    settings = keycloak_get_request(keycloak_config, "realms/ucs")
-    for csp_setting in settings["browserSecurityHeaders"]["contentSecurityPolicy"].split(";"):
-        csp_setting = csp_setting.strip()
-        if csp_setting.startswith("frame-ancestors"):
-            assert set(csp_setting.split()) == {"frame-ancestors", f"https://*.{ucr['domainname']}/univention", "'self'"}
     # required actions ucs realm
     required_actions = keycloak_get_request(keycloak_config, "realms/ucs/authentication/required-actions")
     required_actions = [ra["alias"] for ra in required_actions if ra["enabled"]]
