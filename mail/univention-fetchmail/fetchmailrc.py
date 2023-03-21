@@ -56,6 +56,9 @@ FETCHMAIL_OLD_PICKLE = "/var/spool/univention-fetchmail/fetchmail_old_dn"
 
 UID_REGEX = re.compile("#UID='(.+)'[ \t]*$")
 
+# Bug 55882: Compatibility with old attributes.
+REpassword = re.compile("^poll .*? there with password '(.*?)' is '[^']+' here")
+
 
 def _split_file(fetch_list, new_line):
     if new_line.startswith('set') or new_line.startswith('#'):
@@ -98,10 +101,56 @@ def objdelete(dlist: Iterable[str], old: Dict[str, List[bytes]]) -> List[str]:
         return [line for line in dlist if not re.search("#UID='%s'[ \t]*$" % re.escape(old['uid'][0].decode('UTF-8')), line)]
     else:
         ud.debug(ud.LISTENER, ud.INFO, 'Removal of user in fetchmailrc failed: %r' % old.get('uid'))
+        return dlist
+
+
+# Bug 55882: Compatibility with old attributes.
+def objappend(flist: List[str], new: Dict[str, List[bytes]], password: str | None = None):
+    """add new entry"""
+    if details_complete(new, password):
+        flag_ssl = 'ssl' if new.get('univentionFetchmailUseSSL', [b''])[0] == b'1' else ''
+        flag_keep = 'keep' if new.get('univentionFetchmailKeepMailOnServer', [b''])[0] == b'1' else 'nokeep'
+
+        flist.append("poll %s with proto %s auth password user '%s' there with password '%s' is '%s' here %s %s #UID='%s'\n" % (
+            new['univentionFetchmailServer'][0].decode('UTF-8'),
+            new['univentionFetchmailProtocol'][0].decode('UTF-8'),
+            new['univentionFetchmailAddress'][0].decode('ASCII'),
+            password.decode('UTF-8'),
+            new['mailPrimaryAddress'][0].decode('UTF-8'),
+            flag_keep,
+            flag_ssl,
+            new['uid'][0].decode('UTF-8'),
+        ))
+    else:
+        ud.debug(ud.LISTENER, ud.INFO, 'Adding user to "fetchmailrc" failed')
+
+
+# Bug 55882: Compatibility with old attributes.
+def get_pw_from_rc(lines: Iterable[str], uid: int) -> str | None:
+    """get current password of a user from fetchmailrc"""
+    if not uid:
+        return None
+    for line in lines:
+        line = line.rstrip()
+        if line.endswith("#UID='%s'" % uid):
+            match = REpassword.match(line)
+            if match:
+                return match.group(1)
+    return None
+
+
+# Bug 55882: Compatibility with old attributes.
+def details_complete(obj: Dict[str, List[bytes]] | None, password: str | None):
+    if not obj or not password:
+        return False
+    attrlist = ['mailPrimaryAddress', 'univentionFetchmailServer', 'univentionFetchmailProtocol', 'univentionFetchmailAddress']
+    return all(obj.get(attr, [b''])[0] for attr in attrlist)
 
 
 def objappend_single(flist: List[str], new: Dict[str, List[bytes]], password: str | None = None) -> None:
     """add user's single fetchmail entries to flist"""
+    # Bug 55882: Compatibility with old attributes.
+    objappend(flist, new, password)
     entries = [[w.strip('\"') for w in v.decode('UTF-8').split(';')] for v in new.get('univentionFetchmailSingle', [])]
     for entry in entries:
         server, protocol, username, passwd, ssl, keep = entry
@@ -154,12 +203,14 @@ def handler(dn: str, new: Dict[str, List[bytes]], old: Dict[str, List[bytes]], c
         new_single = new.get('univentionFetchmailSingle', [])
         old_multi = old.get('univentionFetchmailMulti', [])
         new_multi = new.get('univentionFetchmailMulti', [])
-        old_uid = old['uid'][0]
-        new_uid = new['uid'][0]
+        old_uid = old.get('uid', [b''])[0]
+        new_uid = new.get('uid', [b''])[0]
+        # Bug 55882: Compatibility with old attributes.
+        oldatt_passwd = new.get('univentionFetchmailPasswd', [get_pw_from_rc(flist, old_uid)])[0]
 
         if old_single != new_single or old_multi != new_multi or old_uid != new_uid:
             flist = objdelete(flist, old)
-            objappend_single(flist, new)
+            objappend_single(flist, new, oldatt_passwd)
             objappend_multi(flist, new)
             write_rc(flist, fn_fetchmailrc)
     elif old and command != 'r':

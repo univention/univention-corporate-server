@@ -13,11 +13,15 @@ print('    by * +0 stop')
 
 print('access to attrs=univentionFetchmailSingle')
 print('    by group/univentionGroup/uniqueMember="cn=%s,cn=groups,%s" %s' % (escape_dn_chars(custom_groupname('Domain Admins')), ldap_base, access_type))
+print('    by group/univentionGroup/uniqueMember="cn=%s,cn=groups,%s" read' % (escape_dn_chars(custom_groupname('DC Backup Hosts')), ldap_base))
+print('    by group/univentionGroup/uniqueMember="cn=%s,cn=groups,%s" read' % (escape_dn_chars(custom_groupname('DC Slave Hosts')), ldap_base))
 print('    by set="user/univentionService & [Fetchmail]" %s' % access_type)
 print('    by * +0 stop')
 
 print('access to attrs=univentionFetchmailMulti')
 print('    by group/univentionGroup/uniqueMember="cn=%s,cn=groups,%s" %s' % (escape_dn_chars(custom_groupname('Domain Admins')), ldap_base, access_type))
+print('    by group/univentionGroup/uniqueMember="cn=%s,cn=groups,%s" read' % (escape_dn_chars(custom_groupname('DC Backup Hosts')), ldap_base))
+print('    by group/univentionGroup/uniqueMember="cn=%s,cn=groups,%s" read' % (escape_dn_chars(custom_groupname('DC Slave Hosts')), ldap_base))
 print('    by set="user/univentionService & [Fetchmail]" %s' % access_type)
 print('    by * +0 stop')
 @!@

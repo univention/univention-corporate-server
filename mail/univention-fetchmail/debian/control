@@ -20,7 +20,10 @@ Depends:
  univention-join (>> 5.0.20-1.436),
  ${misc:Depends},
 Breaks:
+ univention-fetchmail-schema (<< 13.0.5-5),
  univention-ldap-server (<< 9.0.20-1.580.201303211526),
+Replaces:
+ univention-fetchmail-schema (<< 13.0.5-5),
 Description: UCS fetchmail integration for UDM
  This package contains UDM extensions for integrating
  remote mail retrieval via fetchmail.
@@ -38,7 +41,7 @@ Depends:
  univention-join (>> 5.0.20-1.436),
  ${misc:Depends},
 Breaks:
- univention-fetchmail (<< 13.0.5-2),
+ univention-fetchmail (<< 13.0.5-5),
  univention-ldap-server (<< 9.0.20-1.580.201303211526),
 Replaces:
  univention-fetchmail (<< 13.0.5-2),
