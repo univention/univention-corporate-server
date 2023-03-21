@@ -1,0 +1,19 @@
+product: ucs
+release: "5.0"
+version: [2, 3]
+scope: ucs_5.0-0-errata5.0-3
+src: pcre2
+fix: 10.32-5+deb10u1
+desc: |
+ This update addresses the following issues:
+ * Out of bounds read in JIT mode when \X is used in non-UTF mode
+   (CVE-2019-20454)
+ * Out-of-bounds read in compile_xclass_matchingpath in pcre2_jit_compile.c
+   (CVE-2022-1586)
+ * Out-of-bounds read in get_recurse_data_length in pcre2_jit_compile.c
+   (CVE-2022-1587)
+bug: [55897]
+cve:
+- CVE-2019-20454
+- CVE-2022-1586
+- CVE-2022-1587
