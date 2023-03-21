@@ -1,0 +1,18 @@
+product: ucs
+release: "5.0"
+version: [3]
+scope: ucs_5.0-0-errata5.0-3
+src: univention-fetchmail
+fix:
+desc: |
+ This update addresses the following issues:
+ * The migration of fetchmail extended attributes has been moved
+   to the univenition-fetchmail joinscript to fix errors in environments
+   where univention-fetchmail is installed on a non-primary node.
+   The old extended attributes have also been restored to fix errors
+   in environments where univention-fetchmail is running on a server
+   that has not yet been upgraded.
+ * New checks have been added to the migrate-fetchmail.py script to
+   avoid errors during execution when a fetchmail configuration is
+   incomplete.
+bug: [55882, 55893]

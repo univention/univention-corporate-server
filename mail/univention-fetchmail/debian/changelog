@@ -1,3 +1,19 @@
+univention-fetchmail (13.0.5-6) unstable; urgency=medium
+
+  * Bug #55893: Added new checks to avoid errors during
+    execution of migrate-fetchmail.py script
+
+ -- Juan Carlos García García <garcia-garcia.extern@univention.de>  Tue, 21 Mar 2023 12:41:00 +0100
+
+univention-fetchmail (13.0.5-5) unstable; urgency=medium
+
+  * Bug #55882: Some of the work done in the univention-fetchmail-schema
+    joinscript has been moved to the univention-fetchmail
+    package to fix bugs in environments where the latter is
+    installed on a non-primary node.
+
+ -- Juan Carlos García García <garcia-garcia.extern@univention.de>  Mon, 20 Mar 2023 8:55:00 +0100
+
 univention-fetchmail (13.0.5-4) unstable; urgency=medium
 
   * Bug #55766: Fix error in univention-fetchmail-schema joinscript
