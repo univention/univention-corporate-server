@@ -9,10 +9,9 @@ desc: |
  * Incorrect code generation during JIT compilation (CVE-2023-25751)
  * Potential out-of-bounds when accessing throttled streams (CVE-2023-25752)
  * Invalid downcast in Worklets (CVE-2023-28162)
- * URL being dragged from a removed cross-origin iframe into the same tab
+ * URL being dragged from a removed cross-origin `iframe` into the same tab
    triggered navigation (CVE-2023-28164)
- * Memory safety bugs fixed in Firefox 111 and Firefox ESR 102.9
-   (CVE-2023-28176)
+ * Memory safety bugs fixed (CVE-2023-28176)
 bug: [55895]
 cve:
 - CVE-2023-25751
