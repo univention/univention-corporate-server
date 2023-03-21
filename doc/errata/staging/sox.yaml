@@ -6,10 +6,7 @@ src: sox
 fix: 14.4.1-5+deb9u4
 desc: |+
  This update addresses the following issue:
- 14.4.1-5+deb9u4 (Mon, 20 Mar 2023 10:11:00 +0100)
- * Non-maintainer upload by the ELTS Team.
- * Fix regression in wav-gsm decodeing introduced via fixing CVE-2021-33844.
-
+ * Fix regression in wav-gsm decoding introduced via fixing CVE-2021-33844.
 bug: [55900]
 cve:
 - CVE-2021-33844
