@@ -823,7 +823,6 @@ class PackageManager(object):
                 fixer.clear(pkg)
                 fixer.protect(pkg)
 
-        fixer.install_protect()  # type: ignore
         try:
             fixer.resolve()
         except SystemError as exc:
