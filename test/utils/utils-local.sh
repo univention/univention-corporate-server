@@ -64,6 +64,7 @@ fetch-results () { # <IP-ADDRESS> [TARGET-DIR]
 		'packages-under-test.log'
 		'test-reports'
 		'ucs-test.log'
+		'docker_logs*'=
 		'*.html'=
 		'/usr/share/ucs-test/*/selenium'
 		'/var/log/apache2/error.log'='apache2-error.log'

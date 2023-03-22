@@ -674,7 +674,7 @@ run_admember_tests () {
 }
 
 run_keycloak_tests () {
-	run_tests -s appcenter -s keycloak -r app_specific_test -r keycloak "$@"
+	run_tests -s appcenter -s keycloak -s end -r app_specific_test -r keycloak -r apptest "$@"
 }
 
 ad_member_fix_udm_rest_api () {  # workaround for Bug #50527

@@ -1,3 +1,9 @@
+ucs-test (10.0.10-34) unstable; urgency=medium
+
+  * Bug #55747: keycloak fetch docker logs
+
+ -- Julia Bremer <bremer@univention.de>  Wed, 22 Mar 2023 14:15:39 +0100
+
 ucs-test (10.0.10-33) unstable; urgency=medium
 
   * Bug #55747: keycloak test, removed CSP tests
