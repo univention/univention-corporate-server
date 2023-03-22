@@ -13,7 +13,7 @@ from setuptools import setup as orig_setup
 
 def _get_version():
     changelog = Changelog(io.open('debian/changelog', 'r', encoding='utf-8'))
-    return changelog.full_version
+    return changelog.full_version.split('A~')[0]
 
 
 def _get_description(name):

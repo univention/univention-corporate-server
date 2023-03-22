@@ -11,7 +11,7 @@ import sys
 from setuptools import setup
 
 
-version = open("debian/changelog").readline().split()[1][1:-1]
+version = open("debian/changelog").readline().split()[1][1:-1].split('A~')[0]
 
 packages = ['univention', 'univention.updater']
 if sys.version_info >= (3,):
