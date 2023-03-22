@@ -72,9 +72,36 @@ def test_expired_user_login_returns_password_complexity_message(ucr, selfservice
         assert response.status == 401
         assert message in response.data['message']
         with pytest.raises(Exception) as exc:
-            umc_client.umc_auth(user.username, user.password, new_password="U1n2i3v4e5n6t7i8o9n0@#")
+            umc_client.umc_auth(user.username, user.password, new_password="U")
         response = exc.value.response
         assert response.status == 401
+        assert message in response.data['message']
+
+
+@pytest.mark.parametrize("message,lang", [
+    ("Password must contain at least 3 upper case letters", "en-US"),
+    ("Passwort muss mindestens 3 Großbuchstaben enthalten", "de-DE"),
+])
+def test_user_password_change_password_complexity_message(ucr, selfservice_container_dn, message, lang):
+    umc_client = univention.lib.umc.Client(language=lang.split('-')[0])
+    reset_mail_address = f'{random_username()}@{random_username()}'
+    with self_service_user(mailPrimaryAddress=reset_mail_address, overridePWLength=1, overridePWHistory=1, position=selfservice_container_dn) as user:
+
+        umc_client.umc_auth(user.username, user.password)
+        with pytest.raises(Exception) as exc:
+            data = {
+                "password": {
+                    "password": user.password,
+                    "new_password": "U",
+                },
+            }
+            headers = {
+                "Accept-Language": lang,
+            }
+            umc_client.umc_set(options=data, headers=headers)
+
+        response = exc.value.response
+        assert response.status == 400
         assert message in response.data['message']
 
 
