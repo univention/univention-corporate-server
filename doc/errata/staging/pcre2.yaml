@@ -5,12 +5,13 @@ scope: ucs_4.4-0-errata4.4-9
 src: pcre2
 fix: 10.22-3+deb9u1
 desc: |
- This update addresses the following issue:
+ This update addresses the following issues:
+ * CVE-2019-20454: Out of bounds read in JIT mode when \X is used in non-UTF
+   mode
  * CVE-2022-1586: Out-of-bounds read involving unicode property matching in
    JIT-compiled regular expressions. The issue occurs because the character
    was not fully read in case-less matching within JIT..
- * Out of bounds read in JIT mode when \X is used in non-UTF mode
-   (CVE-2019-20454)
 bug: [55898]
 cve:
 - CVE-2022-1586
+- CVE-2019-20454
