@@ -6,6 +6,7 @@ Build-Depends:
  debhelper-compat (=13),
  dh-python,
  python3-all,
+ python3-debian,
  python3-setuptools,
 Standards-Version: 3.8.2
 
