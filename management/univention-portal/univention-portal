@@ -371,7 +371,10 @@ def ask_value(name: str, klass_default: Union[str, None] = None, value_default: 
         click.echo(f"Okay, got class {klass_name}")
         kwargs = {}
         try:
-            spec = inspect.getargspec(klass.__init__)
+            try:
+                spec = inspect.getargspec(klass.__init__)
+            except AttributeError:
+                spec = inspect.getfullargspec(klass.__init__)
         except TypeError:
             # __init__ not defined
             pass

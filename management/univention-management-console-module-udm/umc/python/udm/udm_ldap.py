@@ -73,7 +73,7 @@ udm_modules.update()
 __bind_function = None
 _licenseCheck = 0
 
-getfullargspec = getattr(inspect, 'getfullargspec', inspect.getargspec)
+getfullargspec = getattr(inspect, 'getfullargspec', getattr(inspect, 'getargspec', None))
 
 
 def set_bind_function(connection_getter):

@@ -41,7 +41,10 @@ import platform
 import re
 from copy import copy
 from distutils.version import LooseVersion
-from inspect import getargspec
+try:
+    from inspect import getargspec
+except ImportError:
+    from inspect import getfullargspec as getargspec
 from weakref import ref
 
 import six
