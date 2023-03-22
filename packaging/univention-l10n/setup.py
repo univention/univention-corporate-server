@@ -30,12 +30,14 @@
 # License with the Debian GNU/Linux or Univention distribution in file
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
+
+from debian.changelog import Changelog
 from setuptools import setup
 
 
-VER = open('debian/changelog').readline().split()[1][1:-1].split('A~')[0]
+dch = Changelog(open('debian/changelog'))
 
 setup(
     package_dir={'': '.'},
-    version=VER,
+    version=dch.version.full_version.split('A~')[0],
 )

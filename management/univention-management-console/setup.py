@@ -111,7 +111,7 @@ setup(
     test_suite='',
 
     name=dch.package,
-    version=dch.version.full_version,
+    version=dch.version.full_version.split('A~')[0],
     maintainer=realname,
     maintainer_email=email_address,
     url='https://www.univention.de/',
