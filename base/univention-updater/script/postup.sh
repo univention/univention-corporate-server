@@ -91,8 +91,8 @@ is_ucr_true update52/skip/autoremove ||
 rm -f /etc/apt/sources.list.d/00_ucs_temporary_installation.list
 
 # removing the atd service conf file that is setting the KillMode attribute
-if [ -e "/etc/systemd/system/atd.service.d/update510.conf" ]; then
-	rm -f /etc/systemd/system/atd.service.d/update510.conf
+if [ -e "/etc/systemd/system/atd.service.d/update520.conf" ]; then
+	rm -f /etc/systemd/system/atd.service.d/update520.conf
 	rmdir --ignore-fail-on-non-empty /etc/systemd/system/atd.service.d/
 	systemctl daemon-reload
 fi
