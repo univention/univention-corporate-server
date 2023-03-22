@@ -59,7 +59,6 @@ import dateutil
 import ldap
 import ldap.dn
 import PIL
-import pytz
 import six
 from ldap.filter import escape_filter_chars, filter_format
 from ldap.schema import AttributeType, ObjectClass
@@ -74,6 +73,12 @@ from univention.lib.ucs import UCS_Version
 from univention.lib.umc_module import get_mime_description, get_mime_type, image_mime_type_of_buffer
 from univention.uldap import getMachineConnection
 
+
+try:
+    import zoneinfo
+except ImportError:
+    zoneinfo = None
+    import pytz
 
 if TYPE_CHECKING:
     from univention.admin.uldap import access  # noqa: F401
@@ -6860,6 +6865,8 @@ class TimeZone(select):
 
     @ClassProperty
     def choices(cls):
+        if zoneinfo:
+            return [(x, x) for x in zoneinfo.available_timezones()]
         return [(x, x) for x in pytz.all_timezones]
 
 
