@@ -1,7 +1,7 @@
 #!/usr/share/ucs-test/runner pytest-3 -s
 ## desc: "Write docker logs into logfiles"
 ## exposure: safe
-## tags: [apptest]
+## tags: [apptest, keycloak]
 
 import docker
 import pytest
