@@ -133,7 +133,7 @@ mv /boot/*.bak "$initrd_backup" >/dev/null 2>&1
 # set KillMode of atd service to process to save the children from getting killed
 # up to this point the updater process is a child of atd as well
 install -m 0755 -o root -g root -d /etc/systemd/system/atd.service.d
-echo -en "[Service]\nKillMode=process" > /etc/systemd/system/atd.service.d/update510.conf
+echo -en "[Service]\nKillMode=process" > /etc/systemd/system/atd.service.d/update520.conf
 systemctl daemon-reload
 
 # ensure that en_US is included in list of available locales (Bug #44150)
