@@ -6,8 +6,7 @@ src: univention-management-console
 fix: 12.0.17-8A~5.0.0.202303211206
 desc: |
  This update addresses the following issue:
- * The error message shown during password reset or password change
-   now appends the text from the UCR variable
-   `umc/login/password-complexity-message/.*` when password complexity
-   criteria weren't matched.
+ * The error message shown during password reset or change now appends the
+   text from the UCR variable `umc/login/password-complexity-message/.*` when
+   password complexity criteria are not matched.
 bug: [55529]
