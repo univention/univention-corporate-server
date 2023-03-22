@@ -10,3 +10,6 @@ desc: |
    the UCR variable `portal/default-dn` changed. Running
    `univention-portal update` after changing the UCR variable is enough.
 bug: [55871]
+erratum: 622
+announced: 2023-03-22
+support: core
