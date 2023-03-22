@@ -1,0 +1,36 @@
+product: ucs
+release: "4.3"
+version: [5]
+scope: ucs_4.3-0-extsec4.3
+src: poppler
+fix: 0.48.0-2+deb9u3
+desc: |
+ This update addresses the following issues:
+ * Infinite recursion in function `fofi/FoFiType1C.cc:FoFiType1C::cvtGlyph()`
+   allows denial of service (CVE-2017-18267)
+ * Infinite recursion in function `Parser::getObj` in `Parser.cc`
+   (CVE-2018-16646)
+ * NULL pointer dereference in function `XRef::getEntry` in `XRef.cc`
+   (CVE-2018-20481)
+ * Integer overflow in `Parser::makeStream` in Parser.cc (CVE-2018-21009)
+ * Heap-based buffer overflow in function `ImageStream::getLine()` in
+   `Stream.cc` (CVE-2019-9200)
+ * Heap-based buffer over-read in function `downsample_row_box_filter` in
+   `CairoRescaleBox.cc` (CVE-2019-9631)
+ * Heap-based buffer over-read in function `Splash::blitTransparent` in
+   splash/Splash.cc (CVE-2019-10872)
+ * Heap-based buffer over-read in `JPXStream::init` in `JPEG2000Stream.cc`
+   (CVE-2019-12293)
+bug: [52081]
+cve:
+- CVE-2017-18267
+- CVE-2018-16646
+- CVE-2018-20481
+- CVE-2018-21009
+- CVE-2019-9200
+- CVE-2019-9631
+- CVE-2019-10872
+- CVE-2019-12293
+erratum: 725
+announced: 2020-11-30
+support: lts

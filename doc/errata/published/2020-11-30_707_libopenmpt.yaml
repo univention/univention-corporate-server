@@ -1,0 +1,18 @@
+product: ucs
+release: "4.3"
+version: [5]
+scope: ucs_4.3-0-extsec4.3
+src: libopenmpt
+fix: 0.2.7386~beta20.3-3+deb9u4
+desc: |
+ This update addresses the following issue:
+ * In libopenmpt before 0.3.19 and 0.4.x before 0.4.9,
+   `ModPlug_InstrumentName` and `ModPlug_SampleName` in `libopenmpt_modplug`.c
+   do not restrict the lengths of libmodplug output-buffer strings in the C
+   API, leading to a buffer overflow. (CVE-2019-17113)
+bug: [52094]
+cve:
+- CVE-2019-17113
+erratum: 707
+announced: 2020-11-30
+support: lts

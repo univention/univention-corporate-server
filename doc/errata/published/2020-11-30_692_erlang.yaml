@@ -1,0 +1,16 @@
+product: ucs
+release: "4.3"
+version: [5]
+scope: ucs_4.3-0-extsec4.3
+src: erlang
+fix: 1:19.2.1+dfsg-2+deb9u3
+desc: |
+ This update addresses the following issue:
+ * `yaws_config.erl` loads obsolete TLS ciphers, as demonstrated by ones that
+   allow Sweet32 attacks. (CVE-2020-12872)
+bug: [52070]
+cve:
+- CVE-2020-12872
+erratum: 692
+announced: 2020-11-30
+support: lts

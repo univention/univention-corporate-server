@@ -1,0 +1,16 @@
+product: ucs
+release: "4.3"
+version: [5]
+scope: ucs_4.3-0-extsec4.3
+src: glib-networking
+fix: 2.50.0-1+deb9u1
+desc: |
+ This update addresses the following issue:
+ * `GTlsClientConnection` silently ignores unset server identity
+   (CVE-2020-13645)
+bug: [52072]
+cve:
+- CVE-2020-13645
+erratum: 699
+announced: 2020-11-30
+support: lts

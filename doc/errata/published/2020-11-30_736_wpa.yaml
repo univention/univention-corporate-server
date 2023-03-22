@@ -1,0 +1,18 @@
+product: ucs
+release: "4.3"
+version: [5]
+scope: ucs_4.3-0-extsec4.3
+src: wpa
+fix: 2:2.4-1+deb9u7A~4.4.5.202008100901
+desc: |
+ This update addresses the following issues:
+ * Not preventig the use of low quality PRNG in EAP mode leads to insufficient
+   entropy (CVE-2019-10064)
+ * UPnP SUBSCRIBE misbehavior in WPS AP (CVE-2020-12695)
+bug: [52100]
+cve:
+- CVE-2019-10064
+- CVE-2020-12695
+erratum: 736
+announced: 2020-11-30
+support: lts

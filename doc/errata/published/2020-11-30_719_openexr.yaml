@@ -1,0 +1,60 @@
+product: ucs
+release: "4.3"
+version: [5]
+scope: ucs_4.3-0-extsec4.3
+src: openexr
+fix: 2.2.0-11+deb9u1
+desc: |
+ This update addresses the following issues:
+ * Out-of-bounds read in the function `hufDecode` (CVE-2017-9110)
+ * Out-of-bounds write in the function `storeSSE` (CVE-2017-9111)
+ * Out-of-bounds read in the function `getBits` (CVE-2017-9112)
+ * Out-of-bounds write in the function `bufferedReadPixels` (CVE-2017-9113)
+ * Out-of-bounds read in the function `refill` (CVE-2017-9114)
+ * Out-of-bounds write in the `=` operator function (CVE-2017-9115)
+ * Out-of-bounds read in the function `uncompress` (CVE-2017-9116)
+ * Heap-based buffer over-read in function `hufDecode` (CVE-2017-12596)
+ * Out-of-bounds read in `ImfOptimizedPixelReading.h` (CVE-2020-11758)
+ * Out-of-bounds write due to integer overflows in
+   `CompositeDeepScanLine::Data::handleDeepFrameBuffer` and
+   `readSampleCountForLineBlock` (CVE-2020-11759)
+ * Out-of-bounds read during RLE uncompression in rleUncompress function in
+   ImfRle.cpp (CVE-2020-11760)
+ * Out-of-bounds read during Huffman uncompression (CVE-2020-11761)
+ * Out-of-bounds read and write in `DwaCompressor::uncompress` in
+   `ImfDwaCompressor.cpp` (CVE-2020-11762)
+ * `std::vector` out-of-bounds read and write in `ImfTileOffsets.cpp`
+   (CVE-2020-11763)
+ * Out-of-bounds write in function `copyIntoFrameBuffer` in `ImfMisc.cpp`
+   (CVE-2020-11764)
+ * Off-by-one error in `ImfXdr.h` function `read` by
+   `DwaCompressor::Classifier::Classifier` leading to an out-of-bounds read
+   (CVE-2020-11765)
+ * Invalid input could cause a use-after-free in
+   `DeepScanLineInputFile::DeepScanLineInputFile()` in
+   `IlmImf/ImfDeepScanLineInputFile.cpp` (CVE-2020-15305)
+ * Invalid chunkCount attributes could cause a heap buffer overflow in
+   `getChunkOffsetTableSize()` in `IlmImf/ImfMisc.cpp` (CVE-2020-15306)
+bug: [52111]
+cve:
+- CVE-2017-9110
+- CVE-2017-9111
+- CVE-2017-9112
+- CVE-2017-9113
+- CVE-2017-9114
+- CVE-2017-9115
+- CVE-2017-9116
+- CVE-2017-12596
+- CVE-2020-11758
+- CVE-2020-11759
+- CVE-2020-11760
+- CVE-2020-11761
+- CVE-2020-11762
+- CVE-2020-11763
+- CVE-2020-11764
+- CVE-2020-11765
+- CVE-2020-15305
+- CVE-2020-15306
+erratum: 719
+announced: 2020-11-30
+support: lts

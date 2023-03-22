@@ -1,0 +1,22 @@
+product: ucs
+release: "4.3"
+version: [5]
+scope: ucs_4.3-0-extsec4.3
+src: perl
+fix: 5.24.1-3+deb9u7
+desc: |
+ This update addresses the following issues:
+ * Heap-based buffer overflow in regular expression compiler leads to DoS
+   (CVE-2020-10543)
+ * Corruption of intermediate language state of compiled regular expression
+   due to integer overflow leads to DoS (CVE-2020-10878)
+ * Corruption of intermediate language state of compiled regular expression
+   due to recursive `S_study_chunk()` calls leads to DoS (CVE-2020-12723)
+bug: [52080]
+cve:
+- CVE-2020-10543
+- CVE-2020-10878
+- CVE-2020-12723
+erratum: 722
+announced: 2020-11-30
+support: lts

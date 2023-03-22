@@ -1,0 +1,19 @@
+product: ucs
+release: "4.3"
+version: [5]
+scope: ucs_4.3-0-extsec4.3
+src: vlc
+fix: 3.0.11-0+deb9u1
+desc: |
+ This update addresses the following issue:
+ * A heap-based buffer overflow in the function `hxxx_AnnexB_to_xVC` in
+   `modules/packetizer/hxxx_nal.c` in VideoLAN VLC media player before 3.0.11
+   for macOS/iOS allows remote attackers to cause a denial of service
+   (application crash) or execute arbitrary code via a crafted H.264 Annex-B
+   video (.avi for example) file. (CVE-2020-13428)
+bug: [52065]
+cve:
+- CVE-2020-13428
+erratum: 735
+announced: 2020-11-30
+support: lts

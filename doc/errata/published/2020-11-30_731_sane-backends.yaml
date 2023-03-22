@@ -1,0 +1,22 @@
+product: ucs
+release: "4.3"
+version: [5]
+scope: ucs_4.3-0-extsec4.3
+src: sane-backends
+fix: 1.0.25-4.1+deb9u1
+desc: |
+ This update addresses the following issues:
+ * Out-of-bounds read in function `decode_binary` (CVE-2020-12862)
+ * Out-of-bounds read in function `esci2_check_header` (CVE-2020-12863)
+ * Heap buffer overflow in function `esci2_img` (CVE-2020-12865)
+ * NULL pointer dereference in function `sanei_epson_net_read`
+   (CVE-2020-12867)
+bug: [52104]
+cve:
+- CVE-2020-12862
+- CVE-2020-12863
+- CVE-2020-12865
+- CVE-2020-12867
+erratum: 731
+announced: 2020-11-30
+support: lts

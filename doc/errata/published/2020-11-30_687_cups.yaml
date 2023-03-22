@@ -1,0 +1,18 @@
+product: ucs
+release: "4.3"
+version: [5]
+scope: ucs_4.3-0-extsec4.3
+src: cups
+fix: 2.2.1-8+deb9u6A~4.4.5.202007221413
+desc: |
+ This update addresses the following issues:
+ * The function `ippReadIO` may under-read an extension field (CVE-2019-8842)
+ * Heap based buffer overflow in libcups's `ppdFindOption()` in `ppd-mark.c`
+   (CVE-2020-3898)
+bug: [52067]
+cve:
+- CVE-2019-8842
+- CVE-2020-3898
+erratum: 687
+announced: 2020-11-30
+support: lts

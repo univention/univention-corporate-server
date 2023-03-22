@@ -1,0 +1,17 @@
+product: ucs
+release: "4.3"
+version: [5]
+scope: ucs_4.3-0-extsec4.3
+src: python-django
+fix: 1:1.10.7-2+deb9u9
+desc: |
+ This update addresses the following issues:
+ * Potential data leakage via malformed memcached keys (CVE-2020-13254)
+ * Possible XSS via admin `ForeignKeyRawIdWidget` (CVE-2020-13596)
+bug: [52064]
+cve:
+- CVE-2020-13254
+- CVE-2020-13596
+erratum: 727
+announced: 2020-11-30
+support: lts

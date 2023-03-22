@@ -1,0 +1,15 @@
+product: ucs
+release: "4.3"
+version: [5]
+scope: ucs_4.3-0-extsec4.3
+src: php7.0
+fix: 7.0.33-0+deb9u9
+desc: |
+ This update addresses the following issue:
+ * Use of freed hash key in the function `phar_parse_zipfile` (CVE-2020-7068)
+bug: [52112]
+cve:
+- CVE-2020-7068
+erratum: 723
+announced: 2020-11-30
+support: lts

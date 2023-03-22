@@ -1,0 +1,15 @@
+product: ucs
+release: "4.3"
+version: [5]
+scope: ucs_4.3-0-extsec4.3
+src: e2fsprogs
+fix: 1.43.4-2+deb9u2A~4.4.5.202007270745
+desc: |
+ This update addresses the following issue:
+ * Out-of-bounds write in `e2fsck/rehash.c` (CVE-2019-5188)
+bug: [52069]
+cve:
+- CVE-2019-5188
+erratum: 691
+announced: 2020-11-30
+support: lts

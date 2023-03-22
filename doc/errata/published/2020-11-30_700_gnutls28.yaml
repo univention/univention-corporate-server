@@ -1,0 +1,15 @@
+product: ucs
+release: "4.3"
+version: [5]
+scope: ucs_4.3-0-extsec4.3
+src: gnutls28
+fix: 3.5.8-5+deb9u5
+desc: |
+ This update addresses the following issue:
+ * Use-after-free/double-free in certificate verification (CVE-2019-3829)
+bug: [52073]
+cve:
+- CVE-2019-3829
+erratum: 700
+announced: 2020-11-30
+support: lts

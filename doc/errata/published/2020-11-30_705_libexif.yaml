@@ -1,0 +1,43 @@
+product: ucs
+release: "4.3"
+version: [5]
+scope: ucs_4.3-0-extsec4.3
+src: libexif
+fix: 0.6.21-2+deb9u4
+desc: |
+ This update addresses the following issues:
+ * Integer overflow in parsing MNOTE entry data of the input file
+   (CVE-2016-6328)
+ * Out-of-bounds heap read in function `exif_data_save_data_entry`
+   (CVE-2017-7544)
+ * Input validation issue resulting in a denial of service (CVE-2018-20030)
+ * Out of bounds read due to a missing bounds check in function
+   `exif_data_save_data_entry` in `exif-data.c` (CVE-2020-0093)
+ * Out of bounds read due to a missing bounds check in function
+   `exif_entry_get_value` in `exif-entry.c` (CVE-2020-0182)
+ * Integer overflow in function `exif_data_load_data_content` in `exif-data.c`
+   (CVE-2020-0198)
+ * Divide-by-zero in function `exif_entry_get_value` in `exif-entry.c`
+   (CVE-2020-12767)
+ * Several buffer over-reads in EXIF MakerNote handling can lead to
+   information disclosure and DoS (CVE-2020-13112)
+ * Use of uninitialized memory in EXIF Makernote handling can lead to crashes
+   and use-after-free (CVE-2020-13113)
+ * Unrestricted size in handling Canon EXIF MakerNote data can lead to
+   consumption of large amounts of compute time for decoding EXIF data
+   (CVE-2020-13114)
+bug: [52075]
+cve:
+- CVE-2016-6328
+- CVE-2017-7544
+- CVE-2018-20030
+- CVE-2020-0093
+- CVE-2020-0182
+- CVE-2020-0198
+- CVE-2020-12767
+- CVE-2020-13112
+- CVE-2020-13113
+- CVE-2020-13114
+erratum: 705
+announced: 2020-11-30
+support: lts

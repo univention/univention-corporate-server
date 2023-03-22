@@ -1,0 +1,34 @@
+product: ucs
+release: "4.3"
+version: [5]
+scope: ucs_4.3-0-extsec4.3
+src: libxml2
+fix: 2.9.4+dfsg1-2.2+deb9u3
+desc: |
+ This update addresses the following issues:
+ * Out-of-bounds read in `htmlParseTryOrFinish` (CVE-2017-8872)
+ * Denial of service in function `xz_head` in `xzlib.c` (CVE-2017-18258)
+ * NULL pointer dereference in `xpath.c:xmlXPathCompOpEval()` can allow
+   attackers to cause a denial of service (CVE-2018-14404)
+ * Infinite loop when `--with-lzma` is used allows for denial of service via
+   crafted XML file (CVE-2018-14567)
+ * Memory leak in `xmlParseBalancedChunkMemoryRecover` in `parser.c`
+   (CVE-2019-19956)
+ * Memory leak in `xmlSchemaPreRun` in `xmlschemas.c` (CVE-2019-20388)
+ * Infinite loop in `xmlStringLenDecodeEntities` in some end-of-file
+   situations (CVE-2020-7595)
+ * Global Buffer Overflow vulnerability in `xmlEncodeEntitiesInternal` at
+   `libxml2/entities.c`. (CVE-2020-24977)
+bug: [52117]
+cve:
+- CVE-2017-8872
+- CVE-2017-18258
+- CVE-2018-14404
+- CVE-2018-14567
+- CVE-2019-19956
+- CVE-2019-20388
+- CVE-2020-7595
+- CVE-2020-24977
+erratum: 714
+announced: 2020-11-30
+support: lts

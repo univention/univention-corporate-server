@@ -1,0 +1,15 @@
+product: ucs
+release: "4.3"
+version: [5]
+scope: ucs_4.3-0-extsec4.3
+src: intel-microcode
+fix: 3.20200616.1~deb9u1
+desc: |
+ This update addresses the following issue:
+ * Special Register Buffer Data Sampling (SRBDS) (CVE-2020-0543)
+bug: [52074]
+cve:
+- CVE-2020-0543
+erratum: 702
+announced: 2020-11-30
+support: lts

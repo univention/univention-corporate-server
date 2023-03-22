@@ -1,0 +1,25 @@
+product: ucs
+release: "4.3"
+version: [5]
+scope: ucs_4.3-0-extsec4.3
+src: libjpeg-turbo
+fix: 1:1.5.1-2+deb9u1
+desc: |
+ This update addresses the following issues:
+ * Divide by zero allows for denial of service via crafted BMP image
+   (CVE-2018-1152)
+ * Heap-based buffer over-read via crafted 8-bit BMP in `get_8bit_row` in
+   `rdbmp.c` leads to denial of service (CVE-2018-14498)
+ * Heap-based buffer over-read in `get_rgb_row()` in `rdppm.c`
+   (CVE-2020-13790)
+ * Improper handling of `max_memory_to_use` setting can lead to excessive
+   memory consumption (CVE-2020-14152)
+bug: [52093]
+cve:
+- CVE-2018-1152
+- CVE-2018-14498
+- CVE-2020-13790
+- CVE-2020-14152
+erratum: 706
+announced: 2020-11-30
+support: lts

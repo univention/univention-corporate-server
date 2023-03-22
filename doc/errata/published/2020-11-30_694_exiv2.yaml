@@ -1,0 +1,15 @@
+product: ucs
+release: "4.3"
+version: [5]
+scope: ucs_4.3-0-extsec4.3
+src: exiv2
+fix: 0.25-3.1+deb9u2
+desc: |
+ This update addresses the following issue:
+ * Heap-based buffer over-read via a crafted image file (CVE-2018-16336)
+bug: [52071]
+cve:
+- CVE-2018-16336
+erratum: 694
+announced: 2020-11-30
+support: lts

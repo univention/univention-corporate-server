@@ -1,0 +1,16 @@
+product: ucs
+release: "4.3"
+version: [5]
+scope: ucs_4.3-0-extsec4.3
+src: evolution-data-server
+fix: 3.22.7-1+deb9u2
+desc: |
+ This update addresses the following issue:
+ * NULL pointer dereference elated to `imapx_free_capability` and
+   `imapx_connect_to_server` (CVE-2020-16117)
+bug: [52089]
+cve:
+- CVE-2020-16117
+erratum: 693
+announced: 2020-11-30
+support: lts

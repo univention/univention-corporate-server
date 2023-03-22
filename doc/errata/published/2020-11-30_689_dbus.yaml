@@ -1,0 +1,15 @@
+product: ucs
+release: "4.3"
+version: [5]
+scope: ucs_4.3-0-extsec4.3
+src: dbus
+fix: 1.10.32-0+deb9u1
+desc: |
+ This update addresses the following issue:
+ * Denial of service via file descriptor leak (CVE-2020-12049)
+bug: [52068]
+cve:
+- CVE-2020-12049
+erratum: 689
+announced: 2020-11-30
+support: lts

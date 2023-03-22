@@ -1,0 +1,15 @@
+product: ucs
+release: "4.3"
+version: [5]
+scope: ucs_4.3-0-extsec4.3
+src: nfs-utils
+fix: 1:1.3.4-2.1+deb9u1A~4.4.5.202007231320
+desc: |
+ This update addresses the following issue:
+ * Root-owned files stored in insecure `/var/lib/nfs` (CVE-2019-3689)
+bug: [52078]
+cve:
+- CVE-2019-3689
+erratum: 718
+announced: 2020-11-30
+support: lts
