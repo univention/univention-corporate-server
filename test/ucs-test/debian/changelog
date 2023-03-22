@@ -1,3 +1,10 @@
+ucs-test (10.0.10-35) unstable; urgency=medium
+
+  * Bug #55529: fix ucs-test-self-service and create a new one to check password
+  complexity message on password change.
+
+ -- Ivan Barbecho Delgado <delgado.extern@univention.de>  Wed, 22 Mar 2023 17:32:46 +0100
+
 ucs-test (10.0.10-34) unstable; urgency=medium
 
   * Bug #55747: keycloak fetch docker logs
