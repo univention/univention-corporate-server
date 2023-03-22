@@ -3,8 +3,11 @@ import sys
 
 from setuptools import setup
 
+from debian.changelog import Changelog
 
-version = open("debian/changelog").readline().split()[1][1:-1]
+
+dch = Changelog(open('debian/changelog'))
+
 
 packages = ['univention', 'univention.updater']
 if sys.version_info >= (3,):
@@ -13,5 +16,5 @@ if sys.version_info >= (3,):
 setup(
     packages=packages,
     package_dir={'': 'modules'},
-    version=version,
+    version=dch.version.full_version.split('A~')[0],
 )

@@ -51,7 +51,7 @@ setup(
     package_dir={'univention.portal': 'python/univention/portal'},
 
     name=dch.package,
-    version=dch.version.full_version,
+    version=dch.version.full_version.split('A~')[0],
     maintainer=realname,
     maintainer_email=email_address,
 )

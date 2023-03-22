@@ -7,9 +7,11 @@
 
 from setuptools import setup
 
+from debian.changelog import Changelog
 
-version = open("debian/changelog").readline().split()[1][1:-1]
+
+dch = Changelog(open('debian/changelog'))
 
 setup(
-    version=version,
+    version=dch.version.full_version.split('A~')[0],
 )
