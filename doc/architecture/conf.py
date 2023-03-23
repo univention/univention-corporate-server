@@ -21,8 +21,8 @@ from datetime import date
 
 # -- Project information -----------------------------------------------------
 
-version = "5.0"
-release = "5.0-6"
+version = "5.1"
+release = "5.1-0"
 project = f"Univention Corporate Server {version} Architecture"
 copyright = f'{date.today().year}, Univention GmbH'
 author = 'Univention GmbH'
@@ -47,9 +47,9 @@ extensions = [
 ]
 
 intersphinx_mapping = {
-    "uv-manual": ("https://docs.software-univention.de/manual/5.0/en", ("../manual/_build/html/objects.inv", None)),
-    "uv-dev-ref": ("https://docs.software-univention.de/developer-reference/5.0/en", ("../developer-reference/_build/html/objects.inv", None)),
-    "uv-app-center": ("https://docs.software-univention.de/app-center/5.0/en", ("../app-center/_build/html/objects.inv", None)),
+    "uv-manual": ("https://docs.software-univention.de/manual/5.1/en", ("../manual/_build/html/objects.inv", None)),
+    "uv-developer-reference": ("https://docs.software-univention.de/developer-reference/5.1/en", ("../developer-reference/_build/html/objects.inv", None)),
+    "uv-app-center": ("https://docs.software-univention.de/app-center/5.1/en", ("../app-center/_build/html/objects.inv", None)),
     "uv-ucs-python-api": ("https://docs.software-univention.de/ucs-python-api", None),
 }
 
@@ -108,7 +108,7 @@ git_last_updated_timezone = 'Europe/Berlin'
 numfig = True
 
 linkcheck_ignore = [
-    "https://github.com/univention/univention-corporate-server/blob/5.0-6/base/univention-config-registry/python/univention/config_registry/misc.py",
+    "https://github.com/univention/univention-corporate-server/blob/5.1-0/base/univention-config-registry/python/univention/config_registry/misc.py",
 ]
 
 # Warnings may come up by sphinx-last-updated-by-git. Shall be suppressed to

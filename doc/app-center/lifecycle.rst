@@ -440,32 +440,32 @@ The following examples show how the script can be used.
 .. code-block::
 
    # creates a new version based on the latest version of myapp
-   $ ./univention-appcenter-control new-version 5.0/myapp
+   $ ./univention-appcenter-control new-version 5.1/myapp
 
    # finds out on which UCS versions this Docker App may be installed
    # Note: jq is an external tool: apt-get install jq
    # you may parse JSON without it, of course
-   $ ./univention-appcenter-control get --json 5.0/myapp |
+   $ ./univention-appcenter-control get --json 5.1/myapp |
      jq '._ini_vars.SupportedUCSVersions'
 
    # creates version 2.0 of myapp based on the (formerly) latest version
-   $ ./univention-appcenter-control new-version 5.0/myapp 5.0/myapp=2.0
+   $ ./univention-appcenter-control new-version 5.1/myapp 5.1/myapp=2.0
 
    # sets the DockerImage of the new app
-   $ ./univention-appcenter-control set 5.0/myapp=2.0 \
+   $ ./univention-appcenter-control set 5.1/myapp=2.0 \
      --json '{"DockerImage": "mycompany/myimage:2.0"}'
 
-   # copies myapp Version 1.0 from UCS 4.4 to UCS 5.0.
-   $ ./univention-appcenter-control new-version 4.4/myapp=1.0 5.0/myapp=1.0
+   # copies myapp Version 1.0 from UCS 4.4 to UCS 5.1.
+   $ ./univention-appcenter-control new-version 4.4/myapp=1.0 5.1/myapp=1.0
 
    # uploads all README files in the current folder to the latest version
    # myapp in UCS 4.2
-   $ ./univention-appcenter-control upload 5.0/myapp README*
+   $ ./univention-appcenter-control upload 5.1/myapp README*
 
    # uploads an image. Will be rejected if this image is not specified
    # somewhere in the ini file. Note: This may overwrite the logo for other
    # version using the same logo name, too.
-   $ ./univention-appcenter-control upload 5.0/myapp=1.0 myapp.svg
+   $ ./univention-appcenter-control upload 5.1/myapp=1.0 myapp.svg
 
 The script can also be used to automate the creation of a new app
 version for an app update. The generics steps are the following:
