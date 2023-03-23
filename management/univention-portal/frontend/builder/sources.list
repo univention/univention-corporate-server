@@ -2,5 +2,5 @@
 #deb [trusted=yes] http://updates.software-univention.de/ ucs500 main
 #deb [trusted=yes] http://updates.software-univention.de/ errata500 main
 
-deb [trusted=yes] http://omar.knut.univention.de/build2/ ucs_5.0-0/all/
-deb [trusted=yes] http://omar.knut.univention.de/build2/ ucs_5.0-0/$(ARCH)/
+deb [trusted=yes] http://omar.knut.univention.de/build2/ ucs_5.1-0/all/
+deb [trusted=yes] http://omar.knut.univention.de/build2/ ucs_5.1-0/$(ARCH)/
