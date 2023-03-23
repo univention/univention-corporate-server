@@ -1,6 +1,6 @@
 dn: univentionAppID=self-service_4.0,cn=self-service,cn=apps,cn=univention,dc=intranet,dc=example,dc=de
-univentionAppWebsite: [de] https://docs.software-univention.de/handbuch-5.0.html#user-management:password-changes-by-users:self-service
-univentionAppWebsite: [en] https://docs.software-univention.de/manual-5.0.html#user-management:password-changes-by-users:self-service
+univentionAppWebsite: [de] https://docs.software-univention.de/handbuch-5.1.html#user-management:password-changes-by-users:self-service
+univentionAppWebsite: [en] https://docs.software-univention.de/manual-5.1.html#user-management:password-changes-by-users:self-service
 objectClass: univentionApp
 objectClass: top
 objectClass: univentionObject
@@ -88,7 +88,7 @@ krb5KeyVersionNumber: 3
 userPassword:: e2NyeXB0fSQ2JDcuLzVJSlFiQ1dqYTA5V0ckdHdNQmNVc1ZwSzlsc0ZhSmJBTE5vQ2RhbktxaDZXbDZBaDZQejBIMkZiNHg5RDNHbmNiZzdaNTBDUS9iclRBQnc5c1JLdlJlRFdCakx5cGRTSE5ySTA=
 sambaNTPassword: 1021775152867F233FF28393763BCC04
 sambaPwdLastSet: 1578010132
-univentionOperatingSystemVersion: 5.0-0
+univentionOperatingSystemVersion: 5.1-0
 univentionService: LDAP
 univentionService: Univention Directory Manager REST
 univentionService: NFS
