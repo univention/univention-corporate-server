@@ -138,29 +138,6 @@ nbd-client-udeb
 pwgen-udeb
 # Eh?
 gnumach-udeb
-# UCS: Remove udeb from Debian-Wheezy and Debian-Jessie
-alsa-base-udeb
-localization-config-udeb
-mountfloppy
-partman-reiserfs
-partman-ufs
-userdevfs
-btrfs-tools-udeb
-cpuburn-udeb
-gnupg-udeb
-klibc-utils-floppy-udeb
-libcrypto1.0.0-udeb
-libdns-export100-udeb
-libffi5-udeb
-libgcrypt11-udeb
-libirs-export91-udeb
-libisccfg-export90-udeb
-libisc-export95-udeb
-libnss-dns-udeb
-libnss-files-udeb
-libparted0-udeb
-libpthread-stubs0-udeb
-libvte-2.90-9-udeb
-mii-diag-udeb
-ntfsprogs-udeb
-syslinux-udeb
+# We only support grub these days, drop lilo and elilo
+lilo-installer
+elilo-installer

@@ -1,1 +1,1 @@
-../buster/x86-desktop.sh
+../bullseye/x86-desktop.sh
