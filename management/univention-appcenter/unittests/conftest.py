@@ -75,7 +75,7 @@ def mocked_ucr_appcenter(mock_ucr, mocker):
     mock_ucr['server/role'] = 'domaincontroller_master'
     mock_ucr['hostname'] = 'master'
     mock_ucr['domainname'] = 'intranet.example.de'
-    mock_ucr['version/version'] = '5.0'
+    mock_ucr['version/version'] = '5.1'
     mock_ucr['version/patchlevel'] = '0'
     mock_ucr['version/erratalevel'] = '0'
     mock_ucr['repository/app_center/server'] = 'https://appcenter.software-univention.de'
