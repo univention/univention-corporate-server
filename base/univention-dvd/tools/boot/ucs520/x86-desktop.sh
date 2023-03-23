@@ -1,1 +1,1 @@
-../buster/x86-desktop.sh
+../bookworm/x86-desktop.sh
