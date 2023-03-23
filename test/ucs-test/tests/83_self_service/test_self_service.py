@@ -40,6 +40,12 @@ class SelfServiceUser:
     def set_password(self, token, password):
         return self.request('passwordreset/set_password', token=token, password=password).result
 
+    def auth(self):
+        self._client.umc_auth(self.username, self.password)
+
+    def command(self, uri, **kwargs):
+        return self._client.umc_command(uri, kwargs)
+
 
 @contextlib.contextmanager
 def self_service_user(email=None, **kwargs):
