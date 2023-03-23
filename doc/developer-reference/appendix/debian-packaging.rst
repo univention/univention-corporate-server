@@ -423,7 +423,7 @@ detecting dependencies, which are stored in variables.
    the programs and libraries of the package and stores the package names
    providing them in this variable.
 
-``${python:Depends}``
+``${python3:Depends}``
    :command:`dh_python` detects similar dependencies for Python modules.
 
 ``${misc:Depends}``
