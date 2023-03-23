@@ -168,10 +168,10 @@ Upon app creation the *UCS Version* has been specified. Please define
 the supported UCS version explicitly on the :guilabel:`Version` tab in the
 :guilabel:`Supported UCS versions` section.
 
-Example: The app has been created for *UCS Version* ``4.4``. Two
-entries for Supported UCS versions for App could be made: ``4.4-8`` and
-``5.0-0``. This means that for the installation of the app UCS 4.4-8 or
-UCS 5.0-0 are required.
+Example: The app has been created for *UCS Version* ``5.0``. Two
+entries for Supported UCS versions for App could be made: ``5.0-4`` and
+``5.1-0``. This means that for the installation of the app UCS 5.0-4 or
+UCS 5.1-0 are required.
 
 .. _create-app-with-docker-description:
 
