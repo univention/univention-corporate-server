@@ -21,8 +21,8 @@ from datetime import date
 
 # -- Project information -----------------------------------------------------
 
-version = "5.1"
-release = "5.1-0"
+version = "5.2"
+release = "5.2-0"
 project = f"Univention Corporate Server Architecture {version}"
 copyright = f'{date.today().year}, Univention GmbH'
 author = 'Univention GmbH'
@@ -46,9 +46,9 @@ extensions = [
 ]
 
 intersphinx_mapping = {
-    "uv-manual": ("https://docs.software-univention.de/manual/5.1/en", ("../manual/_build/html/objects.inv", None)),
-    "uv-developer-reference": ("https://docs.software-univention.de/developer-reference/5.1/en", ("../developer-reference/_build/html/objects.inv", None)),
-    "uv-app-center": ("https://docs.software-univention.de/app-center/5.1/en", ("../app-center/_build/html/objects.inv", None)),
+    "uv-manual": ("https://docs.software-univention.de/manual/5.2/en", ("../manual/_build/html/objects.inv", None)),
+    "uv-developer-reference": ("https://docs.software-univention.de/developer-reference/5.2/en", ("../developer-reference/_build/html/objects.inv", None)),
+    "uv-app-center": ("https://docs.software-univention.de/app-center/5.2/en", ("../app-center/_build/html/objects.inv", None)),
     "uv-ucs-python-api": ("https://docs.software-univention.de/ucs-python-api", None),
 }
 
