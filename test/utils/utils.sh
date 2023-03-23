@@ -1159,6 +1159,10 @@ prepare_domain_for_ucs50_postup () {
 	postgres_update '9.6' '11'
 }
 
+prepare_domain_for_ucs52_postup () {
+    return
+}
+
 postgres_update () {
 	local old="${1:?}" new="${2:?}"
 	if ! dpkg -l | grep -q '^ii.*postgresql-'"$old"' '; then
