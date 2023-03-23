@@ -1,1 +1,1 @@
-../buster/common.sh
+../bullseye/common.sh
