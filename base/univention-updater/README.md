@@ -48,14 +48,14 @@ Sometimes the scripts need to be modified **after** a release, for example to bl
 2. It is then recommended to import and build the package using `repo-ng`, after which the scripts can be extract from the binary package by using `dpkg -x univention-updaeter_${version}_all.deb /some/temporary/directory/`.
 3. The scripts **must** be signed **manually** using `repo-ng-sign-release-file` from `repo-ng` with the PGP key **corresponding** to the UCS release.
     ```sh
-    repo-ng-sign-release-file -i pre-update-checks-5.0-0 -o pre-update-checks-5.0-0.gpg -k 8321745BB32A82C75BBD4BC2D293E501A055F562 -p /etc/archive-keys/ucs5.0.txt
+    repo-ng-sign-release-file -i pre-update-checks-5.1-0 -o pre-update-checks-5.1-0.gpg -k 8321745BB32A82C75BBD4BC2D293E501A055F562 -p /etc/archive-keys/ucs5.1.txt
     ```
 4. Afterwards the script and signature files must be copied **manually** to the above mentions locations.
 5. Test it thoroughly before updating our **external** mirror:
     ```sh
-    curl -OOf https://updates.knut.univention.de/download/univention-update-checks/pre-update-checks-5.0-0{.gpg,}
-    apt-key verify pre-update-checks-5.0-0{.gpg,}
-    bash pre-update-checks-5.0-0
+    curl -OOf https://updates.knut.univention.de/download/univention-update-checks/pre-update-checks-5.1-0{.gpg,}
+    apt-key verify pre-update-checks-5.1-0{.gpg,}
+    bash pre-update-checks-5.1-0
     ```
 6. Update the external mirror:
     ```sh

@@ -10,7 +10,7 @@ When writing the README file, please consider the intended scope of the content.
 
 * The file contains information _for developers_.
 * The file is a starting point for internal documentation about the code, architecture and design of the package.
-* When this internal documentation grows beyond a single `README` file or needs more structure to ensure readability, consider creating a proper manual for developers with Sphinx in the package source tree. Other options may be to add the content to the UCS architecture documentation or developer reference, see [UCS Developer documentation overview](https://docs.software-univention.de/developers_5.0.html.en).
+* When this internal documentation grows beyond a single `README` file or needs more structure to ensure readability, consider creating a proper manual for developers with Sphinx in the package source tree. Other options may be to add the content to the UCS architecture documentation or developer reference, see [UCS Developer documentation overview](https://docs.software-univention.de/developers_5.1.html.en).
 
 ## Content
 
@@ -39,7 +39,7 @@ The `univention-transmogrifier` package contains a daemon and a command line fro
 Administrators can use the package through a UMC module (see package `management/univention-management-console-module-transmogrifier`).
 Developers can use the functionality through a REST API interface (see package `management/univention-transmogrifier-rest-api`).
 
-You find user documentation in the [UCS Manual - Transmogrifier](https://docs.software-univention.de/manual-5.0.html#magic:transmogrifier).
+You find user documentation in the [UCS Manual - Transmogrifier](https://docs.software-univention.de/manual-5.1.html#magic:transmogrifier).
 
 ## Development
 
