@@ -39,7 +39,7 @@
 .. _tornado: https://www.tornadoweb.org/en/stable/
 .. _typescript: https://www.typescriptlang.org/
 .. _ucs-demo-portal-json: https://demo.univention.de/univention/portal/portal.json
-.. _univention-ucs-manual: https://docs.software-univention.de/manual-5.1.html
+.. _univention-ucs-manual: https://docs.software-univention.de/manual-5.2.html
 .. _vuejs: https://vuejs.org
 .. _w-archimate: https://en.wikipedia.org/wiki/ArchiMate
 .. _w-c4-model: https://en.wikipedia.org/w/index.php?title=C4_model&oldid=1115745383
