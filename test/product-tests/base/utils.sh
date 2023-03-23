@@ -3,12 +3,12 @@
 umc_login() {
 	local user="$1"
 	local password="$2"
-	python <<%EOF
+	python3 <<%EOF
 import sys
 import univention.lib.umc
 client = univention.lib.umc.Client(None, $user, $password)
 r = client.umc_command("ucr/get", ["apache2/autostart"])
-if not r.status == "200":
+if r.status != 200:
 	sys.exit(1)
 %EOF
 }
