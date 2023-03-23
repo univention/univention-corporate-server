@@ -22,7 +22,7 @@ copyright = f'2021-{date.today().year}, Univention GmbH'
 author = ''
 
 # The full version, including alpha/beta/rc tags
-release = '5.0'
+release = '5.1'
 version = release
 
 html_show_copyright = True
@@ -50,8 +50,8 @@ extensions = [
 suppress_warnings = ['git.too_shallow']
 
 intersphinx_mapping = {
-    "uv-manual": ("https://docs.software-univention.de/manual/5.0/en", None),
-    "uv-dev-ref": ("https://docs.software-univention.de/developer-reference/5.0/en", None),
+    "uv-manual": ("https://docs.software-univention.de/manual/5.1/en", None),
+    "uv-dev-ref": ("https://docs.software-univention.de/developer-reference/5.1/en", None),
 }
 
 copybutton_prompt_text = r"\$ "
