@@ -4,7 +4,7 @@ msgstr ""
 "Project-Id-Version: Univention Corporate Server - Manual for users and "
 "administrators\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-03-17 15:13+0000\n"
+"POT-Creation-Date: 2023-03-28 14:51+0000\n"
 "PO-Revision-Date: 2022-09-01 09:50+0200\n"
 "Last-Translator: Univention GmbH <packages@univention.de>\n"
 "Language: de\n"
@@ -2037,13 +2037,39 @@ msgstr ""
 
 #: ../../user-management/user-self-service.rst:102
 msgid ""
+"This variable sets *UDM* attributes specified in |UCSUCRV| :envvar:`self-"
+"service/udm_attributes` to read-only. Use a comma-separated list for "
+"multiple values. Set this variable on all hosts, where the :program:`Self"
+" Service` app is installed, including |UCSPRIMARYDN|."
+msgstr ""
+"Diese Variable setzt *UDM* Attribute, welche in |UCSUCRV| :envvar:`self-"
+"service/udm_attributes` gesetzt sind, auf schreibgeschützt. Trennen Sie "
+"mehrere Werte durch Kommata. Setzen Sie diese Variable auf allen Hosts, "
+"auf denen die :program:`Self Service` App installiert ist, einschließlich "
+"|UCSPRIMARYDN|."
+
+#: ../../user-management/user-self-service.rst:107
+msgid ""
+"To prevent this variable's intended behavior from being prohibited, "
+"remove the *LDAP* attributes specified in |UCSUCRV| :envvar:`self-"
+"service/ldap_attributes` that should be read-only. Otherwise, these "
+"*LDAP* attributes will keep the corresponding *UDM* attributes writable."
+msgstr ""
+"Entfernen Sie die *LDAP* Attribute, welche in |UCSUCRV| :envvar:`self-"
+"service/ldap_attributes` gesetzt sind und schreibgeschützt werden sollen, "
+"damit diese Variable wie vorgesehen funktioniert. Andernfalls werden "
+"diese *LDAP* Attribute verhindern, dass die in dieser Variable angegebenen"
+" *UDM* Attribute schreibgeschützt werden."
+
+#: ../../user-management/user-self-service.rst:114
+msgid ""
 "This variable must be set to ``true`` on all involved server systems to "
 "enable the mechanism."
 msgstr ""
 "Diese Variable muss auf allen beteiligten Server-Systemen auf ``true`` "
 "gesetzt werden, um den Mechanismus zu aktivieren."
 
-#: ../../user-management/user-self-service.rst:107
+#: ../../user-management/user-self-service.rst:119
 msgid ""
 "This variable defines whether the specification of user name and password"
 " is necessary when opening and modifying your own user profile if you are"
@@ -2053,7 +2079,7 @@ msgstr ""
 "Benutzerprofils die Angabe von Benutzername und Passwort notwendig ist, "
 "wenn man bereits am Univention Portal angemeldet ist."
 
-#: ../../user-management/user-self-service.rst:111
+#: ../../user-management/user-self-service.rst:123
 msgid ""
 "As of UCS 4.4-7, this |UCSUCRV| is automatically set to ``true`` when the"
 " :program:`Self Service` is installed for the first time. The ``true`` "
@@ -2066,7 +2092,7 @@ msgstr ""
 "vorhandenen Portalsitzung aktiviert. Die Felder *Benutzername* und "
 "*Passwort* werden dann automatisch ausgefüllt oder nicht mehr angezeigt."
 
-#: ../../user-management/user-self-service.rst:117
+#: ../../user-management/user-self-service.rst:129
 msgid ""
 "Systems upgraded to UCS 4.4-7 will retain the old behavior by "
 "automatically setting the value to ``false``. Note that this variable "
@@ -2079,7 +2105,7 @@ msgstr ""
 "Systemen inklusive |UCSPRIMARYDN| auf den gleichen Wert gesetzt sein "
 "muss."
 
-#: ../../user-management/user-self-service.rst:123
+#: ../../user-management/user-self-service.rst:135
 msgid ""
 "Both ``*attributes`` variables must match each other. The names of the "
 "attributes and their mapping can be fetched from the following command:"
@@ -2087,7 +2113,7 @@ msgstr ""
 "Beide ``*attributes`` Variablen müssen zueinander passen. Die Namen der "
 "Attribute und deren Zuordnung kann man über folgenden Aufruf erhalten:"
 
-#: ../../user-management/user-self-service.rst:126
+#: ../../user-management/user-self-service.rst:138
 msgid ""
 "$ python3 -c 'from univention.admin.handlers.users.user import mapping;\\"
 "\n"
@@ -2103,11 +2129,11 @@ msgstr ""
 "sorted(mapping._map.items()))) \\\n"
 "  )'"
 
-#: ../../user-management/user-self-service.rst:136
+#: ../../user-management/user-self-service.rst:148
 msgid "Self registration"
 msgstr "Selbstregistrierung"
 
-#: ../../user-management/user-self-service.rst:138
+#: ../../user-management/user-self-service.rst:150
 msgid ""
 "The Self Service allows for users to register themselves, which will "
 "create a user account that has to be verified via email."
@@ -2116,7 +2142,7 @@ msgstr ""
 "wodurch ein Benutzerkonto erstellt wird, das per E-Mail verifiziert "
 "werden muss."
 
-#: ../../user-management/user-self-service.rst:141
+#: ../../user-management/user-self-service.rst:153
 msgid ""
 "User accounts that are created via the Self Service will have the "
 "``RegisteredThroughSelfService`` attribute of the user set to ``TRUE`` "
@@ -2131,15 +2157,15 @@ msgstr ""
 "hat, wird das ``PasswordRecoveryEmailVerified`` Attribut auf ``TRUE`` "
 "gesetzt."
 
-#: ../../user-management/user-self-service.rst:150
+#: ../../user-management/user-self-service.rst:162
 msgid "Account creation"
 msgstr "Kontoerstellung"
 
-#: ../../user-management/user-self-service.rst:157
+#: ../../user-management/user-self-service.rst:169
 msgid "Account registration"
 msgstr "Selbstregistrierung"
 
-#: ../../user-management/user-self-service.rst:159
+#: ../../user-management/user-self-service.rst:171
 msgid ""
 "Aspects about the *Create an account* page and the account creation "
 "itself can be configured with the following |UCSUCRV|\\ s. These "
@@ -2155,13 +2181,13 @@ msgstr ""
 "Anfragen bezüglich dieser Variablen an das Self Service Backend "
 "weitergeleitet werden."
 
-#: ../../user-management/user-self-service.rst:168
+#: ../../user-management/user-self-service.rst:180
 msgid "With this variable the account registration can be disabled/enabled."
 msgstr ""
 "Mit dieser Variable kann die Selbstregistrierung deaktiviert/aktiviert "
 "werden."
 
-#: ../../user-management/user-self-service.rst:172
+#: ../../user-management/user-self-service.rst:184
 msgid ""
 "With this variable a :ref:`user template <users-templates>` can be "
 "specified that will be used for the creation of self registered accounts."
@@ -2170,7 +2196,7 @@ msgstr ""
 "angegeben werden, die für die Erstellung von selbst registrierten Konten "
 "verwendet wird."
 
-#: ../../user-management/user-self-service.rst:177
+#: ../../user-management/user-self-service.rst:189
 msgid ""
 "With this variable a container can be specified under which the self "
 "registered users are created."
@@ -2178,7 +2204,7 @@ msgstr ""
 "Mit dieser Variable kann ein Container angegeben werden, unter dem die "
 "selbst registrierten Benutzer angelegt werden."
 
-#: ../../user-management/user-self-service.rst:182
+#: ../../user-management/user-self-service.rst:194
 msgid ""
 "This variable configures which UDM attributes of a user account are shown"
 " on the *Create an account* page of the Self Service. The names of the "
@@ -2189,7 +2215,7 @@ msgstr ""
 "Namen der UDM-Attribute müssen als kommaseparierte Liste angegeben "
 "werden."
 
-#: ../../user-management/user-self-service.rst:188
+#: ../../user-management/user-self-service.rst:200
 msgid ""
 "This variable configures which of the UDM attributes set via the "
 "|UCSUCRV| :envvar:`umc/self-service/account-registration/udm_attributes` "
@@ -2201,11 +2227,11 @@ msgstr ""
 "Attribute vom Benutzer angegeben werden müssen. Die Namen der UDM-"
 "Attribute müssen als kommaseparierte Liste angegeben werden."
 
-#: ../../user-management/user-self-service.rst:196
+#: ../../user-management/user-self-service.rst:208
 msgid "Verification email"
 msgstr "Verifizierungsmail"
 
-#: ../../user-management/user-self-service.rst:198
+#: ../../user-management/user-self-service.rst:210
 msgid ""
 "After a user has clicked on :guilabel:`Create account`, they will see a "
 "message that an email for the account verification has been sent."
@@ -2214,11 +2240,11 @@ msgstr ""
 "er eine Nachricht, dass eine E-Mail für die Kontoverifizierung versendet "
 "wurde."
 
-#: ../../user-management/user-self-service.rst:207
+#: ../../user-management/user-self-service.rst:219
 msgid "Sending the verification email"
 msgstr "Senden der Verifizierungsmail"
 
-#: ../../user-management/user-self-service.rst:209
+#: ../../user-management/user-self-service.rst:221
 msgid ""
 "Aspects about the *verification email* and the verification token can be "
 "configured with the following |UCSUCRV|\\ s. These |UCSUCRV|\\ s have to "
@@ -2233,7 +2259,7 @@ msgstr ""
 "bezüglich dieser Variablen an den *Self Service Backend* weitergeleitet "
 "werden."
 
-#: ../../user-management/user-self-service.rst:217
+#: ../../user-management/user-self-service.rst:229
 msgid ""
 "Defines the ``host`` part to use in the verification link URL. The "
 "default is to use the FQDN of the :program:`Self Service Backend` defined"
@@ -2245,7 +2271,7 @@ msgstr ""
 ":`self-service/backend-server` definierten :program:`Self Service "
 "Backend` verwendet, da diese |UCSUCRV| dort ausgewertet wird."
 
-#: ../../user-management/user-self-service.rst:224
+#: ../../user-management/user-self-service.rst:236
 msgid ""
 "Defines the sender address of the verification email. Default is "
 ":samp:`Account Verification Service <noreply@{FQDN}>`."
@@ -2253,12 +2279,12 @@ msgstr ""
 "Definiert die Absenderadresse der Verifizierungsmail. Die Voreinstellung "
 "ist :samp:`Account Verification Service <noreply@{FQDN}>`."
 
-#: ../../user-management/user-self-service.rst:229
-#: ../../user-management/user-self-service.rst:318
+#: ../../user-management/user-self-service.rst:241
+#: ../../user-management/user-self-service.rst:330
 msgid "Server name or IP address of the mail server to use."
 msgstr "Servername oder IP-Adresse des zu verwendenden Mail-Servers."
 
-#: ../../user-management/user-self-service.rst:233
+#: ../../user-management/user-self-service.rst:245
 msgid ""
 "A path to a text file whose content will be used for the body of the "
 "verification email. The text can contain the following strings which will"
@@ -2273,7 +2299,7 @@ msgstr ""
 "Datei :file:`/usr/share/univention-self-"
 "service/email_bodies/verification_email_body.txt` verwendet."
 
-#: ../../user-management/user-self-service.rst:242
+#: ../../user-management/user-self-service.rst:254
 msgid ""
 "Defines the number of characters that is used for the verification token."
 " Defaults to ``64``."
@@ -2281,12 +2307,12 @@ msgstr ""
 "Definiert die Anzahl der Zeichen, die für den Verifizierungstoken "
 "verwendet wird. Als Standard werden 64 Zeichen verwendet."
 
-#: ../../user-management/user-self-service.rst:248
-#: ../../user-management/user-self-service.rst:258
+#: ../../user-management/user-self-service.rst:260
+#: ../../user-management/user-self-service.rst:270
 msgid "Account verification"
 msgstr "Kontoverifizierung"
 
-#: ../../user-management/user-self-service.rst:250
+#: ../../user-management/user-self-service.rst:262
 msgid ""
 "Following the verification link from the email, the user will land on the"
 " *Account verification* page of the :program:`Self Service`."
@@ -2294,7 +2320,7 @@ msgstr ""
 "Wenn der Benutzer dem Verifizierungslink aus der E-Mail folgt, gelangt er"
 " auf die Seite *Kontoverifizierung* des :program:`Self Service`."
 
-#: ../../user-management/user-self-service.rst:260
+#: ../../user-management/user-self-service.rst:272
 msgid ""
 "The account verification and request of new verification tokens can be "
 "disabled/enabled with the |UCSUCRV| :envvar:`umc/self-service/account-"
@@ -2309,11 +2335,11 @@ msgstr ""
 "das über die |UCSUCRV| :envvar:`self-service/backend-server` definiert "
 "ist."
 
-#: ../../user-management/user-self-service.rst:272
+#: ../../user-management/user-self-service.rst:284
 msgid "Account verification message"
 msgstr "Kontoverifizierung"
 
-#: ../../user-management/user-self-service.rst:274
+#: ../../user-management/user-self-service.rst:286
 msgid ""
 "The SSO login can be configured to deny login from unverified, self "
 "registered accounts. This is configured through the |UCSUCRV| "
@@ -2328,7 +2354,7 @@ msgstr ""
 " vorgenommen werden. Für Konten, die durch einen Administrator angelegt "
 "wurden, hat diese Einstellung keine Auswirkung."
 
-#: ../../user-management/user-self-service.rst:280
+#: ../../user-management/user-self-service.rst:292
 msgid ""
 "The message on the SSO login page for unverified, self registered "
 "accounts, can be set with the |UCSUCRV|\\ s :envvar:`saml/idp/selfservice"
@@ -2345,22 +2371,21 @@ msgstr ""
 "werden, indem eine *Locale* wie z.B. ``de`` an die Variable angehängt "
 "wird. Z.B. ``saml/idp/selfservice/account-verification/error-title/de``."
 
-#: ../../user-management/user-self-service.rst:288
+#: ../../user-management/user-self-service.rst:300
 msgid ""
-"If the :program:`Keycloak` app is used as identity provider see "
-":ref:`uv-keycloak-ref:app-settings` in the :cite:t:`ucs-keycloak-doc` "
-"for the corresponding settings."
+"If the :program:`Keycloak` app is used as identity provider see :ref:`uv-"
+"keycloak-ref:app-settings` in the :cite:t:`ucs-keycloak-doc` for the "
+"corresponding settings."
 msgstr ""
-"Falls die :program:`Keycloak` App als Identity Provider eingesetzt wird,"
-"schauen Sie bitte in der :cite:t:`ucs-keycloak-doc` unter "
-":ref:`uv-keycloak-ref:app-settings` für die entsprechenden Einstellungen."
+"Falls die :program:`Keycloak` App als Identity Provider eingesetzt "
+"wird,schauen Sie bitte in der :cite:t:`ucs-keycloak-doc` unter :ref:`uv-"
+"keycloak-ref:app-settings` für die entsprechenden Einstellungen."
 
-
-#: ../../user-management/user-self-service.rst:295
+#: ../../user-management/user-self-service.rst:307
 msgid "Self deregistration"
 msgstr "Selbst-Deregistrierung"
 
-#: ../../user-management/user-self-service.rst:297
+#: ../../user-management/user-self-service.rst:309
 msgid ""
 "The :program:`Self Service` allows for users to request the deletion of "
 "their own account. This feature can be activated with the |UCSUCRV| "
@@ -2375,7 +2400,7 @@ msgstr ""
 "Seite *Ihr Profil* des *Self Service* angezeigt wird (:ref:`users-"
 "templates`)."
 
-#: ../../user-management/user-self-service.rst:303
+#: ../../user-management/user-self-service.rst:315
 msgid ""
 "If a user has requested to delete their account, it will not be deleted "
 "directly but deactivated. In addition the "
@@ -2395,7 +2420,7 @@ msgstr ""
 "angegeben hat, wird er eine E-Mail-Benachrichtigung erhalten, die mit den"
 " folgenden |UCSUCRV|\\ n konfiguriert werden kann."
 
-#: ../../user-management/user-self-service.rst:313
+#: ../../user-management/user-self-service.rst:325
 msgid ""
 "Defines the sender address of the email. Default is :samp:`Password Reset"
 " Service <noreply@{FQDN}>`."
@@ -2403,7 +2428,7 @@ msgstr ""
 "Definiert die E-Mail-Adresse des Absenders für Benachrichtigung. Die "
 "Voreinstellung ist :samp:`Password Reset Service <noreply@{FQDN}>`."
 
-#: ../../user-management/user-self-service.rst:322
+#: ../../user-management/user-self-service.rst:334
 msgid ""
 "A path to a text file whose content will be used for the body of the "
 "email. The text can contain the following strings which will be "
@@ -2418,7 +2443,7 @@ msgstr ""
 "service/email_bodies/deregistration_notification_email_body.txt` "
 "verwendet."
 
-#: ../../user-management/user-self-service.rst:328
+#: ../../user-management/user-self-service.rst:340
 msgid ""
 "The Self Service provides a script under :file:`/usr/share/univention-"
 "self-service/delete_deregistered_accounts.py` that can be used to delete "
@@ -2432,7 +2457,7 @@ msgstr ""
 "``DeregistredThroughSelfService`` auf ``TRUE`` gesetzt ist und deren "
 "``DeregistrationTimestamp`` älter ist als eine angegebene Zeit."
 
-#: ../../user-management/user-self-service.rst:334
+#: ../../user-management/user-self-service.rst:346
 msgid ""
 "The following command would delete users whose "
 "``DeregistrationTimestamp`` is older than 5 days and 2 hours:"
@@ -2440,7 +2465,7 @@ msgstr ""
 "Der folgende Befehl würde Benutzer löschen, deren "
 "``DeregistrationTimestamp`` älter als 5 Tage und 2 Stunden ist:"
 
-#: ../../user-management/user-self-service.rst:337
+#: ../../user-management/user-self-service.rst:349
 msgid ""
 "$ /usr/share/univention-self-service/delete_deregistered_accounts.py \\\n"
 "  --timedelta-days 5 \\\n"
@@ -2450,11 +2475,11 @@ msgstr ""
 "  --timedelta-days 5 \\\n"
 "  --timedelta-hours 2"
 
-#: ../../user-management/user-self-service.rst:343
+#: ../../user-management/user-self-service.rst:355
 msgid "For all possible arguments to the script see:"
 msgstr "Für alle möglichen Argumente zum Skript siehe:"
 
-#: ../../user-management/user-self-service.rst:345
+#: ../../user-management/user-self-service.rst:357
 msgid ""
 "$ /usr/share/univention-self-service/delete_deregistered_accounts.py "
 "--help"
@@ -2462,13 +2487,13 @@ msgstr ""
 "$ /usr/share/univention-self-service/delete_deregistered_accounts.py "
 "--help"
 
-#: ../../user-management/user-self-service.rst:350
+#: ../../user-management/user-self-service.rst:362
 msgid "The script can be run regularly by creating a cron job via |UCSUCR|."
 msgstr ""
 "Das Skript kann regelmäßig ausgeführt werden, indem ein Cron-Job über "
 "|UCSUCR| erstellt wird."
 
-#: ../../user-management/user-self-service.rst:352
+#: ../../user-management/user-self-service.rst:364
 msgid ""
 "$ ucr set cron/delete_deregistered_accounts/command=\\\n"
 "/usr/share/univention-self-service/delete_deregistered_accounts.py\\\n"
@@ -2480,7 +2505,7 @@ msgstr ""
 "' --timedelta-days 30'\\\n"
 "  cron/delete_deregistered_accounts/time='00 06 * * *'  # daily at 06:00"
 
-#: ../../user-management/user-self-service.rst:360
+#: ../../user-management/user-self-service.rst:372
 msgid ""
 "More information on how to set cron jobs via |UCSUCR| can be found in "
 ":ref:`computers-defining-cron-jobs-in-univention-configuration-registry`."

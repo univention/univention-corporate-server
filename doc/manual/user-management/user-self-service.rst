@@ -97,6 +97,18 @@ For this the following |UCSUCRV|\ s must be configured:
    the attributes must be separated by comma. This variable must be set on all
    hosts, where the :program:`Self Service` app is installed (incl. |UCSPRIMARYDN|).
 
+.. envvar:: self-service/udm_attributes/read-only
+
+   This variable sets *UDM* attributes specified in |UCSUCRV|
+   :envvar:`self-service/udm_attributes` to read-only. Use a comma-separated list
+   for multiple values. Set this variable on all hosts, where the
+   :program:`Self Service` app is installed, including |UCSPRIMARYDN|.
+
+   To prevent this variable's intended behavior from being prohibited, remove
+   the *LDAP* attributes specified in |UCSUCRV|
+   :envvar:`self-service/ldap_attributes` that should be read-only. Otherwise,
+   these *LDAP* attributes will keep the corresponding *UDM* attributes writable.
+
 .. envvar:: umc/self-service/profiledata/enabled
 
    This variable must be set to ``true`` on all involved server systems to
