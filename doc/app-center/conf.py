@@ -25,7 +25,7 @@ project = 'Univention App Center for App Providers'
 copyright = f'2021-{date.today().year}, Univention GmbH'
 author = ''
 
-version = '5.0'
+version = '5.1'
 # The full version, including alpha/beta/rc tags
 release = version
 
@@ -54,8 +54,8 @@ extensions = [
 suppress_warnings = ['git.too_shallow']
 
 intersphinx_mapping = {
-    "uv-manual": ("https://docs.software-univention.de/manual/5.0/en", ("../manual/_build/html/objects.inv", None)),
-    "uv-dev-ref": ("https://docs.software-univention.de/developer-reference/5.0/en", ("../developer-reference/_build/html/objects.inv", None)),
+    "uv-manual": ("https://docs.software-univention.de/manual/5.1/en", ("../manual/_build/html/objects.inv", None)),
+    "uv-dev-ref": ("https://docs.software-univention.de/developer-reference/5.1/en", ("../developer-reference/_build/html/objects.inv", None)),
 }
 
 copybutton_prompt_text = r"\$ "

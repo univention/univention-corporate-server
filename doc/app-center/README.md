@@ -7,7 +7,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 # Redirects from legacy DocBook text to Sphinx builds
 
 The legacy DocBook text for the app-center documentation was published
-at <https://docs.software-univention.de/app-provider-5.0.html>. The
+at <https://docs.software-univention.de/app-provider-5.1.html>. The
 generic link to the latest documentation was
 <https://docs.software-univention.de/app-provider.html>.
 
@@ -21,7 +21,7 @@ with a HTML file that takes care of the redirects. When a reader opens
 an old link, their browser redirects them to the new documentation
 location.
 
-In the document's root directory is the file `app-provider-5.0.html`,
+In the document's root directory is the file `app-provider-5.1.html`,
 called *redirect map* in this README. In takes care of the redirection
 from the before mentioned links to the new location and supports the
 following cases:
@@ -32,13 +32,13 @@ following cases:
    together with the direct link.
 2. The reader accesses the documentation with an anchor link to a
    specific section, for example
-   <https://docs.software-univention.de/app-provider-5.0.html#testing:test-app-center>.
+   <https://docs.software-univention.de/app-provider-5.1.html#testing:test-app-center>.
    The redirect map detects the hash part of the link and redirects the
    reader's browser to the new location
-   <https://docs.software-univention.de/app-center/5.0/en/lifecycle.html#testing-test-app-center>
+   <https://docs.software-univention.de/app-center/5.1/en/lifecycle.html#testing-test-app-center>
    directly and immediately.
 
 The redirect map is not automatically copied to the docs.univention.de
-repository by the build pipeline. Changes to `app-provider-5.0.html`
+repository by the build pipeline. Changes to `app-provider-5.1.html`
 need to be pushed manually to the docs.univention.de documentation
 repository.
