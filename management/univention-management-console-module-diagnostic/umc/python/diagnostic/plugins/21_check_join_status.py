@@ -42,7 +42,7 @@ title = _('Check join status')
 description = _('The check for the join status was succsesful.')
 links = [{
     'name': 'erroranalysis',
-    'href': _('https://docs.software-univention.de/manual-5.1.html#domain:listenernotifier:erroranalysis'),
+    'href': _('https://docs.software-univention.de/manual-5.2.html#domain:listenernotifier:erroranalysis'),
     'label': _('Manual: Analysis of listener/notifier problems'),
 }]
 umc_modules = [{'module': 'join'}]
