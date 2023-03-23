@@ -13,7 +13,7 @@ For every test a single executable file exists, which implements the test.
 * The name of the file must begin with a two or three digit number, followed by a short description.
 * The file extension should be present (`.py`, `.sh`, …) as pre-commit detects them then.
 * The file should be marked as executable.
-* In the hash-bang-line `#!/usr/share/ucs-test/runner` should be used instead of using `/bin/bash` or `/usr/bin/python` directly.
+* In the hash-bang-line `#!/usr/share/ucs-test/runner` should be used instead of using `/bin/bash` or `/usr/bin/python3` directly.
   This interpreter asserts several things:
   * The current working directory is changed to the directory containing the script.
   * Meta data information from the test case file are used to check the required system role, check for required packages and versions.
