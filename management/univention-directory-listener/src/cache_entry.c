@@ -519,7 +519,7 @@ static CacheEntryAttribute *_cache_entry_add_new_attribute(CacheEntry *entry, LD
 	entry->attributes = tmp;
 
 	BER2STR(&ava->la_attr, &attr->name);
-	if (!&attr->name) {
+	if (!attr->name) {
 		univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "%s:%d BER2STR() failed", __FILE__, __LINE__);
 		goto error;
 	}
