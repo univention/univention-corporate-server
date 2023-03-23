@@ -1407,11 +1407,11 @@ msgstr ""
 
 #: umc/python/diagnostic/plugins/21_check_join_status.py:45
 msgid ""
-"https://docs.software-univention.de/manual-5.1.html#domain:listenernotifier:"
+"https://docs.software-univention.de/manual-5.2.html#domain:listenernotifier:"
 "erroranalysis"
 msgstr ""
-"https://docs.software-univention.de/handbuch-5.1.html#domain:"
-"listenernotifier:erroranalysis"
+"https://docs.software-univention.de/handbuch-5.2.html#domain:listenernotifier:"
+"erroranalysis"
 
 #: umc/python/diagnostic/plugins/32_security_limits.py:55
 msgid "https://help.univention.com/t/samba4-max-open-files/1758"

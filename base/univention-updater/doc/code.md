@@ -34,7 +34,7 @@ Updater
 
 [univention-updater](../modules/univention/updater/scripts/updater.py) is the low-level tool to perform release upgrades.
 
-[Sequence of events](https://docs.software-univention.de/developer-reference-5.1.html#updater:release-update)
+[Sequence of events](https://docs.software-univention.de/developer-reference-5.2.html#updater:release-update)
 
 
 Actualize
