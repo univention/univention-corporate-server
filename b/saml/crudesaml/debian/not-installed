@@ -1,0 +1,3 @@
+lib/${DEB_HOST_MULTIARCH}/security/pam_saml.la
+usr/lib/${DEB_HOST_MULTIARCH}/sasl2/libsaml.a
+usr/lib/${DEB_HOST_MULTIARCH}/sasl2/libsaml.la
