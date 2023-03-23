@@ -33,4 +33,4 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-exec /usr/bin/php-cgi7.3 -c /etc/php/7.3/apache2 "$@"
+exec /usr/bin/php-cgi7.4 -c /etc/php/7.4/apache2 "$@"
