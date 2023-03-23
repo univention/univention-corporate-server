@@ -29,15 +29,15 @@
 1.3.6.1.4.1.42.2.27.8.1.21           # ppolicy: attributeType.pwdGraceUseTime
 1.3.6.1.4.1.42.2.27.8.1.22           # ppolicy: attributeType.pwdReset
 1.3.6.1.4.1.42.2.27.8.1.23           # ppolicy: attributeType.pwdPolicySubentry
-1.3.6.1.4.1.42.2.27.8.1.24           # ppolicy: attributeType.pwdMinDelay
-1.3.6.1.4.1.42.2.27.8.1.25           # ppolicy: attributeType.pwdMaxDelay
+#1.3.6.1.4.1.42.2.27.8.1.24           # ppolicy: attributeType.pwdMinDelay
+#1.3.6.1.4.1.42.2.27.8.1.25           # ppolicy: attributeType.pwdMaxDelay
 1.3.6.1.4.1.42.2.27.8.1.26           # ppolicy: attributeType.pwdMaxIdle
 1.3.6.1.4.1.42.2.27.8.1.27           # ppolicy: attributeType.pwdStartTime
 1.3.6.1.4.1.42.2.27.8.1.28           # ppolicy: attributeType.pwdEndTime
 1.3.6.1.4.1.42.2.27.8.1.29           # attributeType.pwdLastSuccess
 #ppolicy.schema# 1.3.6.1.4.1.42.2.27.8.1.30           # ppolicy: attributeType.pwdGraceExpiry
-1.3.6.1.4.1.42.2.27.8.1.31           # ppolicy: attributeType.pwdMaxLength
-1.3.6.1.4.1.42.2.27.8.1.32           # ppolicy: attributeType.pwdMaxRecordedFailure
+#1.3.6.1.4.1.42.2.27.8.1.31           # ppolicy: attributeType.pwdMaxLength
+#1.3.6.1.4.1.42.2.27.8.1.32           # ppolicy: attributeType.pwdMaxRecordedFailure
 1.3.6.1.4.1.42.2.27.8.1.33           # ppolicy: attributeType.pwdAccountTmpLockoutEnd
 #ppolicy.schema# 1.3.6.1.4.1.42.2.27.8.2.1            # ppolicy: objectClass.pwdPolicy
 1.3.6.1.4.1.250.1.57                 # attributeType.labeledURI
@@ -446,6 +446,7 @@
 1.3.6.1.4.1.4203.666.1.13            # attributeType.namingCSN
 1.3.6.1.4.1.4203.666.1.23            # attributeType.syncreplCookie
 1.3.6.1.4.1.4203.666.1.25            # attributeType.contextCSN
+1.3.6.1.4.1.4203.666.1.33            # attributeType.entryDN
 1.3.6.1.4.1.4203.666.1.60            # attributeType.pKCS8PrivateKey
 1.3.6.1.4.1.4203.666.3.4             # objectClass.glue
 1.3.6.1.4.1.4203.666.3.5             # objectClass.syncConsumerSubentry
@@ -497,7 +498,7 @@
 1.3.6.1.4.1.4203.666.11.5.2.11       # accesslog: objectClass.auditSearch
 1.3.6.1.4.1.4203.666.11.5.2.12       # accesslog: objectClass.auditExtended
 #ppolicy.schema# 1.3.6.1.4.1.4754.1.99.1              # ppolicy: attributeType.pwdCheckModule
-1.3.6.1.4.1.4754.1.99.2              # ppolicy: attributeType.pwdCheckModuleArg
+#1.3.6.1.4.1.4754.1.99.2              # ppolicy: attributeType.pwdCheckModuleArg
 #ppolicy.schema# 1.3.6.1.4.1.4754.2.99.1              # ppolicy: objectClass.pwdPolicyChecker
 1.3.6.1.4.1.5427.1.389.4226.4.1      # otp: attributeType.oathSecret
 1.3.6.1.4.1.5427.1.389.4226.4.2      # otp: attributeType.oathTokenSerialNumber
