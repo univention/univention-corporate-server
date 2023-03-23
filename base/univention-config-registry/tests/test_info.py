@@ -9,14 +9,18 @@ import pytest
 import univention.config_registry_info as ucri
 
 
-@pytest.fixture()
-def variable():
+def _variable():
     """Complete UCR variable description."""
     v = ucri.Variable()
     v["description"] = "description"
     v["type"] = "type"
     v["categories"] = "categories"
     return v
+
+
+@pytest.fixture()
+def variable():
+    return _variable()
 
 
 @pytest.fixture()
@@ -269,7 +273,7 @@ class TestConfigRegistryInfo(object):
         if result is None:
             v = None
         else:
-            v = variable()
+            v = _variable()
             v["description"] = result["description"]
             v["type"] = result["type"]
             v["categories"] = result["categories"]
