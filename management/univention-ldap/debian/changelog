@@ -1,3 +1,10 @@
+univention-ldap (17.0.4) unstable; urgency=medium
+
+  * Bug #55998: make include of ppolicy.schema optional so that we can
+    remove it in UCS 5.2
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Thu, 07 Mar 2024 23:53:45 +0100
+
 univention-ldap (17.0.3) unstable; urgency=medium
 
   * Bug #53127: upgrade to latest debhelper compat version
