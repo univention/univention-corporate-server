@@ -6,7 +6,7 @@ Build-Depends:
  debhelper-compat (=13),
  dh-php,
  libkrb5-dev,
- php7.4-dev,
+ php8.2-dev,
 Standards-Version: 3.9.1
 Homepage: https://pecl.php.net/package/krb5
 
