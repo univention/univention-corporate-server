@@ -30,8 +30,8 @@ copyright = '2023-{}, Univention GmbH'.format(date.today().year)
 author = ''
 
 # The full version, including alpha/beta/rc tags
-release = '5.0-4'
-version = '5.0'
+release = '5.1-0'
+version = '5.1'
 
 html_show_copyright = True
 language = 'en'

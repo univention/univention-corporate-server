@@ -11,7 +11,7 @@
 .. _openldap-docs-schema: https://www.openldap.org/doc/admin24/schema.html
 .. _ucs-download: https://www.univention.com/downloads/download-ucs/
 .. _ucs-maintenance-cycle: https://wiki.univention.de/index.php/Maintenance_Cycle_for_UCS
-.. _ucs-quickstart: https://docs.software-univention.de/quickstart-en-5.0.html
+.. _ucs-quickstart: https://docs.software-univention.de/quickstart-en-5.1.html
 .. _univention-app-catalog-recommended: https://www.univention.com/products/univention-app-center/app-catalog/?recommended_app=1
 .. _univention-app-catalog: https://www.univention.com/products/univention-app-center/app-catalog/
 .. _univention-forum-apps: https://help.univention.com/c/apps/dev/50

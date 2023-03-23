@@ -25,9 +25,9 @@ from datetime import date
 # -- Project information -----------------------------------------------------
 
 # The full version, including alpha/beta/rc tags
-release = "5.0-4"
+release = "5.1-0"
 
-version = "5.0"
+version = "5.1"
 
 project = f'UCS {release} Changelog'
 copyright = f'2023-{date.today().year}, Univention GmbH'
@@ -58,8 +58,8 @@ extensions = [
 suppress_warnings = ['git.too_shallow']
 
 intersphinx_mapping = {
-    "uv-dev-ref": ("https://docs.software-univention.de/developer-reference/5.0/en", ("../developer-reference/_build/html/objects.inv", None)),
-    "uv-manual": ("https://docs.software-univention.de/manual/5.0/en", ("../manual/_build/html/objects.inv", None)),
+    "uv-dev-ref": ("https://docs.software-univention.de/developer-reference/5.1/en", ("../developer-reference/_build/html/objects.inv", None)),
+    "uv-manual": ("https://docs.software-univention.de/manual/5.1/en", ("../manual/_build/html/objects.inv", None)),
 }
 
 bibtex_bibfiles = ["../bibliography.bib"]
@@ -144,7 +144,7 @@ univention_use_doc_base = True
 
 # See README.md in this repository
 # https://git.knut.univention.de/univention/documentation/univention_sphinx_changelog#configuration-settings
-univention_changelog_previous_release = "5.0-3"
+univention_changelog_previous_release = "5.0-4"
 univention_changelog_builder = "ucs"
 
 # See Univention Sphinx Extension for its options.
