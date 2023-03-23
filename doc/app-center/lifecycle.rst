@@ -423,7 +423,7 @@ stored in separate files (no new line at the end) that are passed as
 parameters.
 
 The scripts needs to be `downloaded <univention-provider-portal-script_>`_.
-It requires Python 2.7 and cURL to run. For a list of available actions
+It requires Python 3.7 and cURL to run. For a list of available actions
 and their parameters, use the script's help:
 
 .. code-block::
