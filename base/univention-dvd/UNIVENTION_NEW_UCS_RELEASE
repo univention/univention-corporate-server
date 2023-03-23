@@ -8,6 +8,7 @@ parse () {
 	case "${1:?major}" in
 	[1-9]*.[0-9]*-[0-9]*)
 		local IFS='.-'
+		# shellcheck disable=SC2068
 		parse $@ # IFS
 		return $?
 		;;
@@ -15,13 +16,13 @@ parse () {
 		major="${1:?major}"
 		minor="${2:?minor}"
 		patch="${3:?patch}"
-		if [ $patch -ge 1 ]
+		if [ "$patch" -ge 1 ]
 		then
-			prev="$(($patch - 1))"
+			prev="$((patch - 1))"
 			papt="ucs_${major}.${minor}-0-ucs${major}.${minor}-${prev}"
 			plong="${major}.${minor}-${prev}"
 			pshort="ucs${major}${minor}${prev}"
-		elif [ $minor -ge 1 ]
+		elif [ "$minor" -ge 1 ]
 		then
 			prev="${4:?old-minor}"
 			papt="ucs_${major}.${minor}-0"
