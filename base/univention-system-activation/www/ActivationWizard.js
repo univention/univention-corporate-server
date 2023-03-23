@@ -57,7 +57,7 @@ define([
 
 		postMixInProperties: function() {
 			this.inherited(arguments);
-			var version = '5.1';
+			var version = '5.2';
 			lang.mixin(this, {
 				pages: [{
 					name: 'register',
