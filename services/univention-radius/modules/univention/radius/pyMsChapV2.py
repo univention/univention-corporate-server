@@ -35,16 +35,10 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-import hashlib
+import binascii
 
 import passlib.crypto.des
-
-
-def md4(data):
-    # type: (bytes) -> bytes
-    md = hashlib.new('md4')
-    md.update(data)
-    return md.digest()
+import passlib.hash
 
 
 def DesEncrypt(data, key):
@@ -54,7 +48,7 @@ def DesEncrypt(data, key):
 
 def HashNtPasswordHash(passwordhash):
     # type: (bytes) -> bytes
-    return md4(passwordhash)
+    return binascii.unhexlify(passlib.hash.hex_md4.hash(passwordhash))
 
 
 def ChallengeResponse(challenge, passwordhash):
