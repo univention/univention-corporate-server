@@ -449,12 +449,12 @@ For this example the repository is created below :file:`/var/www/repository/`,
 which is exported by default on all UCS systems, where :program:`apache2` is
 installed. Below that directory several other sub-directories and files must be
 created to be compatible with the :program:`UCS Updater`. The following example
-commands create a repository for UCS version 5.1 with the component name
+commands create a repository for UCS version 5.2 with the component name
 :samp:`{testcomp}`:
 
 .. code-block::
 
-   $ WWW_BASE="/var/www/repository/5.1/maintained/component"
+   $ WWW_BASE="/var/www/repository/5.2/maintained/component"
    $ TESTCOMP="testcomp/all"
    $ install -m755 -d "$WWW_BASE/$TESTCOMP"
    $ install -m644 -t "$WWW_BASE/$TESTCOMP" *.deb
@@ -471,7 +471,7 @@ the repository is named :samp:`{repository.server}`:
 
 .. code-block:: debsources
 
-   deb [trusted=yes] http://repository.server/repository/5.1/maintained/component testcomp/all/
+   deb [trusted=yes] http://repository.server/repository/5.2/maintained/component testcomp/all/
 
 .. note::
 
