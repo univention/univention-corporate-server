@@ -715,7 +715,7 @@ written locally and then uploaded with the following command:
 
 .. code:: sh
 
-   ./univention-appcenter-control upload --username "$your_username" 5.0/myapp=1.0 update_certificates
+   ./univention-appcenter-control upload --username "$your_username" 5.1/myapp=1.0 update_certificates
 
 .. _mail-integration:
 
