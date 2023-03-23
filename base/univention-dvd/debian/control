@@ -9,6 +9,7 @@ Standards-Version: 3.9.8
 Package: univention-dvd
 Architecture: all
 Depends:
+ cpio,
  debian-cd (>= 3.1.20),
  dosfstools,
  mtools,
