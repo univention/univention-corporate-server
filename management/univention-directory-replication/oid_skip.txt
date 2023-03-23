@@ -31,7 +31,7 @@
 1.3.6.1.4.1.42.2.27.8.1.23           # ppolicy: attributeType.pwdPolicySubentry
 #ppolicy.schema# 1.3.6.1.4.1.42.2.27.8.1.24           # ppolicy: attributeType.pwdMinDelay
 #ppolicy.schema# 1.3.6.1.4.1.42.2.27.8.1.25           # ppolicy: attributeType.pwdMaxDelay
-#ppolicy.schema# 1.3.6.1.4.1.42.2.27.8.1.26           # ppolicy: attributeType.pwdMaxIdle
+1.3.6.1.4.1.42.2.27.8.1.26           # ppolicy: attributeType.pwdMaxIdle
 1.3.6.1.4.1.42.2.27.8.1.27           # ppolicy: attributeType.pwdStartTime
 1.3.6.1.4.1.42.2.27.8.1.28           # ppolicy: attributeType.pwdEndTime
 1.3.6.1.4.1.42.2.27.8.1.29           # attributeType.pwdLastSuccess
@@ -446,6 +446,7 @@
 1.3.6.1.4.1.4203.666.1.13            # attributeType.namingCSN
 1.3.6.1.4.1.4203.666.1.23            # attributeType.syncreplCookie
 1.3.6.1.4.1.4203.666.1.25            # attributeType.contextCSN
+1.3.6.1.4.1.4203.666.1.33            # attributeType.entryDN
 1.3.6.1.4.1.4203.666.1.60            # attributeType.pKCS8PrivateKey
 1.3.6.1.4.1.4203.666.3.4             # objectClass.glue
 1.3.6.1.4.1.4203.666.3.5             # objectClass.syncConsumerSubentry
