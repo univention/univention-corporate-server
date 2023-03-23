@@ -29,10 +29,10 @@ project = 'Univention Corporate Server - Manual for developers'
 copyright = '2023-{}, Univention GmbH'.format(date.today().year)
 author = ''
 
-version = '5.0'
+version = '5.1'
 # The full version, including alpha/beta/rc tags
 # Used for source reference in :uv:src: role
-release = '5.0-6'
+release = '5.1-0'
 
 html_show_copyright = True
 language = 'en'
