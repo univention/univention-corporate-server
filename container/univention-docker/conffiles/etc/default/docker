@@ -21,7 +21,7 @@ for var in configRegistry:
     elif var.startswith('docker/daemon/default/parameter') and configRegistry.is_true(var):
         opt = var.split('/')[-1]
         docker_opts += '--%s ' % (opt)
-print('DOCKER_OPTS="%s"' % docker_opts)
+print('#DOCKER_OPTS="%s"' % docker_opts)
 @!@
 
 # If you need Docker to use an HTTP proxy, it can also be specified here.
