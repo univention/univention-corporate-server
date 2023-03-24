@@ -12,9 +12,8 @@ conf = {
 registry_mirrors = configRegistry.get('docker/daemon/default/opts/registry-mirrors')
 if registry_mirrors:
     conf.update({"registry-mirrors": [mirror.strip() for mirror in registry_mirrors.split(',')]})
-tmpl = configRegistry.get("docker/daemon/default/json", "{}")
-extra = json.loads(tmpl)
-conf.update(extra)
+
+conf.update(json.loads(configRegistry.get("docker/daemon/default/json", "{}")))
 text = json.dumps(conf, indent=4, sort_keys=True)
 print(text)
 @!@
