@@ -68,7 +68,7 @@ uniqueMember: uid=nsstest$t,cn=users,$ldap_base"
 		--position "cn=groups,$ldap_base" \
 		--set name="supergroup"
 
-	ldapmodify -x -h "$ldap_master" -p "$ldap_master_port" -D "cn=admin,$ldap_base" -y /etc/ldap.secret <<EOF
+	ldapmodify -x -H "ldap://$ldap_master:$ldap_master_port" -D "cn=admin,$ldap_base" -y /etc/ldap.secret <<EOF
 dn: cn=supergroup,cn=groups,$ldap_base
 changetype: modify
 replace: uniqueMember
@@ -104,7 +104,7 @@ uniqueMember: uid=nsstest$t,cn=users,$ldap_base"
 		--position "cn=groups,$ldap_base" \
 		--set name="supergroup"
 
-	ldapmodify -x -h "$ldap_master" -p "$ldap_master_port" -D "cn=admin,$ldap_base" -y /etc/ldap.secret <<EOF
+	ldapmodify -x -H "ldap://$ldap_master:$ldap_master_port" -D "cn=admin,$ldap_base" -y /etc/ldap.secret <<EOF
 dn: cn=supergroup,cn=groups,$ldap_base
 changetype: modify
 replace: uniqueMember

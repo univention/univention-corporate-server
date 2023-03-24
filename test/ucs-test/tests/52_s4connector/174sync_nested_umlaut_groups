@@ -44,7 +44,7 @@ grp1_dn=$(univention-ldapsearch cn=$groupname1 dn | ldapsearch-wrapper | ldapsea
 grp2_dn=$(univention-ldapsearch cn=$groupname2 dn | ldapsearch-wrapper | ldapsearch-decode64 | sed -ne 's|dn: ||p')
 
 # Use ldapmodify, see Bug #33656
-ldapmodify -x -D "cn=admin,$ldap_base" -y /etc/ldap.secret -h "$ldap_master" -p "$ldap_master_port" <<EOF
+ldapmodify -x -D "cn=admin,$ldap_base" -y /etc/ldap.secret -H "ldap://$ldap_master:$ldap_master_port" <<EOF
 dn: $grp1_dn
 changetype: modify
 add: uniqueMember

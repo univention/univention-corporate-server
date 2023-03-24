@@ -80,8 +80,7 @@ tmpdir=$(mktemp -d)
 undo rm -rf "$tmpdir"
 
 ldapsearch -x -LLL \
-	-h "$ldap_master" \
-	-p "$ldap_master_port" \
+	-H "ldap://$ldap_master:$ldap_master_port" \
 	-D "$tests_domainadmin_account" \
 	-y "$tests_domainadmin_pwdfile" \
 	"(description=$unique)" >"$tmpdir/master.ldif" ||
@@ -90,8 +89,7 @@ ldapsearch -x -LLL \
 	fail_test 1 "Too few entries in LDIF of master"
 
 ldapsearch -x -LLL \
-	-h "$ldap_server_name" \
-	-p "$ldap_server_port" \
+	-H "ldap://$ldap_server_name:$ldap_server_port" \
 	-D "$tests_domainadmin_account" \
 	-y "$tests_domainadmin_pwdfile" \
 	"(description=$unique)" >"$tmpdir/server.ldif" ||
