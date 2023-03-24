@@ -8,12 +8,12 @@ class PhaseResolvConv(Dhcp):
 
     priority = 75
 
-    def check(self):
+    def check(self) -> None:
         super(PhaseResolvConv, self).check()
         if self.new_dhcps:
             raise SkipPhase("Still using DHCP")
 
-    def post(self):
+    def post(self) -> None:
         super(PhaseResolvConv, self).post()
         self.logger.info("Committing /etc/resolv.conf...")
         if not self.changeset.no_act:

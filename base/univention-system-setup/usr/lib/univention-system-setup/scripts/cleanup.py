@@ -46,7 +46,7 @@ PATH_CLEANUP_PRE_SCRIPTS = '/usr/lib/univention-system-setup/cleanup-pre.d/'
 PATH_CLEANUP_POST_SCRIPTS = '/usr/lib/univention-system-setup/cleanup-post.d/'
 
 
-def cleanup():
+def cleanup() -> None:
     temp_dir = mkdtemp()
 
     pre_dir = os.path.join(temp_dir, 'pre')

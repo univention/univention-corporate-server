@@ -1,9 +1,6 @@
 #!/usr/bin/python3
 # -*- coding: utf-8 -*-
 #
-# Univention Management Console Module System-Setup
-# Network interfaces
-#
 # Like what you see? Join us!
 # https://www.univention.com/about-us/careers/vacancies/
 #
@@ -34,16 +31,24 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-from __future__ import print_function
+"""
+Univention Management Console Module System-Setup
+Network interfaces
+"""
+
+from __future__ import annotations, print_function
 
 import ipaddress
 import re
+from typing import Any, Dict, List, Mapping, Set, Tuple, Type, TypeVar
 
 from univention.config_registry import ConfigRegistry
 from univention.lib.i18n import Translation
 from univention.management.console.log import MODULE
 from univention.management.console.modules.setup.util import detect_interfaces
 
+
+_TD = TypeVar("_TD", bound="Device", covariant=True)
 
 ucr = ConfigRegistry()
 ucr.load()
@@ -60,7 +65,7 @@ PHYSICAL_INTERFACES = [dev['name'] for dev in detect_interfaces()]
 
 class DeviceError(ValueError):
 
-    def __init__(self, msg, device=None):
+    def __init__(self, msg: str, device: str | None = None) -> None:
         if device is not None:
             msg = '%s: %s' % (device, msg)
         self.device = device
@@ -69,26 +74,26 @@ class DeviceError(ValueError):
 
 class IP4Set(set):
 
-    def add(self, ip):
+    def add(self, ip: str) -> None:
         set.add(self, ipaddress.IPv4Address(u'%s' % (ip,)))
 
-    def __contains__(self, ip):
+    def __contains__(self, ip: object) -> bool:
         return set.__contains__(self, ipaddress.IPv4Address(u'%s' % (ip,)))
 
 
 class IP6Set(set):
 
-    def add(self, ip):
+    def add(self, ip: str) -> None:
         set.add(self, ipaddress.IPv6Address(u'%s' % (ip,)))
 
-    def __contains__(self, ip):
+    def __contains__(self, ip: object) -> bool:
         return set.__contains__(self, ipaddress.IPv6Address(u'%s' % (ip,)))
 
 
-class Interfaces(dict):
+class Interfaces(Dict[str, "Device"]):
     """All network interfaces"""
 
-    def __init__(self, *args, **kwargs):
+    def __init__(self, *args: Any, **kwargs: Any):
         """Loads all network devices from UCR variables"""
         super(Interfaces, self).__init__(*args, **kwargs)
 
@@ -101,7 +106,7 @@ class Interfaces(dict):
             device.parse_ucr()
             self[device.name] = device
 
-    def from_dict(self, interfaces):
+    def from_dict(self, interfaces: Mapping[str, str]) -> None:
         """Replaces all interfaces with the given interfaces and removes non existing interfaces"""
         ucr.load()
 
@@ -116,7 +121,7 @@ class Interfaces(dict):
             device = Device.from_dict(values, self)
             self[device.name] = device
 
-    def to_ucr(self):
+    def to_ucr(self) -> Dict[str, str | None]:
         """Returns a UCR representation of all interfaces"""
         ucr.load()
 
@@ -126,11 +131,11 @@ class Interfaces(dict):
 
         return ucrv
 
-    def to_dict(self):
+    def to_dict(self) -> Dict[str, Dict[str, str]]:
         """Returns a dict structure of all interfaces"""
         return {device.name: device.dict for device in self.values()}
 
-    def check_consistency(self):
+    def check_consistency(self) -> None:
         """Checks and partly enforces the consistency of all network interfaces"""
         for device in self.values():
             device.prepare_consistency()
@@ -145,7 +150,7 @@ class Interfaces(dict):
 
         self.set_device_order()
 
-    def check_unique_ip4_address(self):
+    def check_unique_ip4_address(self) -> None:
         all_ip4s = IP4Set()
         for device in self.values():
             if not device.ip4dynamic:
@@ -155,7 +160,7 @@ class Interfaces(dict):
                         raise DeviceError(_('Duplicated IP address: %r') % (address), device.name)
                     all_ip4s.add(address)
 
-    def check_unique_ip6_address(self):
+    def check_unique_ip6_address(self) -> None:
         all_ip6s = IP6Set()
         for device in self.values():
             if not device.ip6dynamic:
@@ -165,7 +170,7 @@ class Interfaces(dict):
                         raise DeviceError(_('Duplicated IP address: %r') % (address), device.name)
                     all_ip6s.add(address)
 
-    def set_device_order(self):
+    def set_device_order(self) -> None:
         if not any(isinstance(device, (VLAN, Bridge, Bond)) for device in self.values()):
             # no VLAN, Bridge or Bond devices
             # we don't need to set the device order
@@ -193,31 +198,31 @@ class Interfaces(dict):
 class Device(object):
     """Abstract base class for network interfaces"""
 
-    def __new__(cls, name, interfaces):
+    def __new__(cls: Type[_TD], name: str, interfaces: Any) -> _TD:
         # make it abstract ;)
         if cls is Device:
             # detect type of interface
             device = Ethernet(name, interfaces)
             device.parse_ucr()
-            cls = Ethernet
+            cls = Ethernet  # type: ignore
             if '.' in name:
-                cls = VLAN
+                cls = VLAN  # type: ignore
             elif device.options:
                 if any(opt.startswith('bridge_ports') for opt in device.options):
-                    cls = Bridge
+                    cls = Bridge  # type: ignore
                 elif any(opt.startswith('bond-slaves') for opt in device.options):
-                    cls = Bond
+                    cls = Bond  # type: ignore
                 elif any(opt.startswith('vlan-raw-device') for opt in device.options):
-                    cls = VLAN
+                    cls = VLAN  # type: ignore
         return object.__new__(cls)
 
     @property
-    def primary_ip4(self):
+    def primary_ip4(self) -> Tuple[str | None, str | None]:
         if self.ip4:
             return self.ip4[0]
         return (None, None)
 
-    def __init__(self, name, interfaces):
+    def __init__(self, name: str, interfaces: Interfaces) -> None:
         """
         :param name: the interface name, e.g. wlan0, eth0, br0, eth0.2, bond0
 
@@ -230,46 +235,46 @@ class Device(object):
         # set initial values
         self.clear()
 
-    def clear(self):
+    def clear(self) -> None:
         # array of IP4 addresses and netmask assigned to this interface
         # e.g. [('1.2.3.4', '255.255.255.0'), ('1.2.3.5', '24')]
-        self.ip4 = []
+        self.ip4: List[Tuple[str, str]] = []
 
         # array of IPv6 addresses, prefix and identifier
         # e.g. [('::1', '64', 'default'), ('::2', '64', 'foobar')]
-        self.ip6 = []
+        self.ip6: List[Tuple[str, str, str]] = []
 
         # flags whether this interface gets its IP addresses via DHCP or SLAAC
         self.ip4dynamic = False
         self.ip6dynamic = False
 
         # flag indicating that this interface should automatically start at system startup
-        self.start = None
+        self.start: bool | None = None
 
         # type of network for this interface e.g. static, manual, dhcp
-        self.type = None
+        self.type: str | None = None
 
         # topological ordering for interface dependency
-        self.order = None
+        self.order: int | None = None
 
         # additional options for this interface
-        self.options = []
+        self.options: List[str] = []
 
         # unknown UCR variables
-        self._leftover = []
+        self._leftover: List[Tuple[str, str | None]] = []
 
         # TODO: MAC address ?
 
     @property
-    def subdevice_names(self):
+    def subdevice_names(self) -> Set[str]:
         return set()
 
     @property
-    def subdevices(self):
+    def subdevices(self) -> Set[Device]:
         """Returns a set of subdevices of this device if there are any, leavong out not existing devices"""
         return {self.interfaces[name] for name in self.subdevice_names if name in self.interfaces}
 
-    def prepare_consistency(self):
+    def prepare_consistency(self) -> None:
         self._remove_old_fallback_variables()
 
         self.order = None
@@ -281,18 +286,18 @@ class Device(object):
         elif self.ip4 or self.ip6:
             self.type = 'static'
 
-    def _remove_old_fallback_variables(self):
+    def _remove_old_fallback_variables(self) -> None:
         # removes deprecated UCR variables from UCS <= 3.1-1... can be removed in future
         self._leftover = [
             (leftover[0], None) if leftover[0].startswith('interfaces/%s/fallback/' % (self.name,))
             else leftover for leftover in self._leftover]
 
-    def validate(self):
+    def validate(self) -> None:
         self.validate_name()
         self.validate_ip4()
         self.validate_ip6()
 
-    def validate_name(self):
+    def validate_name(self) -> None:
         """
         Valid interface name: max 15 characters, no slash, no space, not . or ..
         See linux/net/core/dev.c:933#dev_valid_name()
@@ -331,7 +336,7 @@ class Device(object):
             return
         raise DeviceError(_('Invalid device name: %r') % (self.name,))
 
-    def validate_ip4(self):
+    def validate_ip4(self) -> None:
         # validate IPv4
         if not self.ip4dynamic:
             for address, netmask in self.ip4:
@@ -347,7 +352,7 @@ class Device(object):
                 except (ValueError, ipaddress.NetmaskValueError, ipaddress.AddressValueError):
                     raise DeviceError(_('Invalid IPv4 netmask: %r') % (netmask), self.name)
 
-    def validate_ip6(self):
+    def validate_ip6(self) -> None:
         # validate IPv6
         if not self.ip6dynamic:
             for address, prefix, identifier in self.ip6:
@@ -371,12 +376,12 @@ class Device(object):
             if self.ip6 and not any(identifier == 'default' for address, prefix, identifier in self.ip6):
                 raise DeviceError(_('Missing IPv6 default identifier'), self.name)
 
-    def limit_ip4_address(self):
+    def limit_ip4_address(self) -> None:
         if len(self.ip4) > 1:
             # UCR can't support multiple IPv4 addresses on VLAN, Bridge and Bond interfaces; Bug #31767
             raise DeviceError(_('Multiple IPv4 addresses are not supported on this device.'), self.name)
 
-    def check_unique_interface_usage(self):
+    def check_unique_interface_usage(self) -> None:
         # make sure that used interfaces can not be used by other interfaces, too
         for device in self.interfaces.values():
             if device.name != self.name:
@@ -384,16 +389,16 @@ class Device(object):
                     if idevice in device.subdevices:
                         raise DeviceError(_('Device %(device)r is already in use by %(name)r') % {'device': idevice.name, 'name': device.name}, self.name)
 
-    def disable_ips(self):
+    def disable_ips(self) -> None:
         self.ip4 = []
         self.ip6 = []
         self.ip4dynamic = False
         self.ip6dynamic = False
 
-    def get_options(self):
+    def get_options(self) -> List[str]:
         return self.options
 
-    def parse_ucr(self):
+    def parse_ucr(self) -> None:
         name = self.name
         self.clear()
 
@@ -439,7 +444,7 @@ class Device(object):
         self.options.sort()
         self._leftover.sort()
 
-    def to_ucr(self):
+    def to_ucr(self) -> Dict[str, str | None]:
         """
         Returns a dict of UCR variables to set or unset.
         Values which are None should be unset.
@@ -447,7 +452,7 @@ class Device(object):
         name = self.name
 
         pattern = re.compile('^interfaces/%s(?:_[0-9]+)?/.*' % re.escape(name))
-        vals = {key: None for key in ucr if pattern.match(key)}
+        vals: Dict[str, str | None] = {key: None for key in ucr if pattern.match(key)}
 
         for key, val in self._leftover:
             vals[key] = val
@@ -493,13 +498,13 @@ class Device(object):
 
         return vals
 
-    def __repr__(self):
+    def __repr__(self) -> str:
         return '<%s %r>' % (self.__class__.__name__, self.name)
 
-    def __str__(self):
+    def __str__(self) -> str:
         return str(self.name)
 
-    def __hash__(self):
+    def __hash__(self) -> int:
         return hash(self.name)
 
     @property
@@ -540,19 +545,19 @@ class Device(object):
 class _RemovedDevice(Device):
     """Internal class representing that a device have to be removed from UCR"""
 
-    def to_ucr(self):
-        to_remove = {}
+    def to_ucr(self) -> Dict[str, str | None]:
+        to_remove: Dict[str, str | None] = {}
         for key in ucr:
             match = RE_INTERFACE.match(key)
             if match and self.name == match.group(1):
                 to_remove[key] = None
         return to_remove
 
-    def validate(self):
-        return True
+    def validate(self) -> None:
+        return
 
-    def validate_name(self):
-        return True
+    def validate_name(self) -> None:
+        return
 
 
 class Ethernet(Device):
@@ -563,27 +568,27 @@ class VLAN(Device):
     """A virtual network interface (VLAN)"""
 
     @property
-    def vlan_id(self):
+    def vlan_id(self) -> int:
         if '.' in self.name:
             return int(self.name.rsplit('.', 1)[1])
 
     @vlan_id.setter
-    def vlan_id(self, vlan_id):
+    def vlan_id(self, vlan_id: int) -> None:
         self.name = '%s.%d' % (self.parent_device, vlan_id)
 
     @property
-    def parent_device(self):
+    def parent_device(self) -> str:
         return self.name.rsplit('.', 1)[0]
 
     @parent_device.setter
-    def parent_device(self, parent_device):
+    def parent_device(self, parent_device: str) -> None:
         self.name = '%s.%d' % (parent_device, self.vlan_id)
 
     @property
-    def subdevice_names(self):
+    def subdevice_names(self) -> Set[str]:
         return {self.parent_device}
 
-    def validate(self):
+    def validate(self) -> None:
         super(VLAN, self).validate()
 
         self.limit_ip4_address()
@@ -596,7 +601,7 @@ class VLAN(Device):
             # unsupported
             raise DeviceError('Nested VLAN-devices are currently unsupported.', self.name)
 
-    def validate_name(self):
+    def validate_name(self) -> None:
         super(VLAN, self).validate_name()
         if '.' not in self.name:
             raise DeviceError(_('Invalid device name: %r') % (self.name,))
@@ -604,7 +609,7 @@ class VLAN(Device):
             raise DeviceError(_('Invalid VLAN ID. Must be between 1 and 4095.'), self.name)
 
     @property
-    def dict(self):
+    def dict(self) -> Dict[str, str]:
         d = super(VLAN, self).dict
         d.update(dict(
             vlan_id=self.vlan_id,
@@ -612,7 +617,7 @@ class VLAN(Device):
         ))
         return d
 
-    def parse_ucr(self):
+    def parse_ucr(self) -> None:
         super(VLAN, self).parse_ucr()
         options = []
         for option in self.options:
@@ -627,7 +632,7 @@ class VLAN(Device):
                 options.append(option)
         self.options = options
 
-    def get_options(self):
+    def get_options(self) -> List[str]:
         options = super(VLAN, self).get_options()
         options += [
             'vlan-raw-device %s' % (self.parent_device,),
@@ -649,16 +654,16 @@ class Bond(Device):
     }
     MODES_R = {v: k for k, v in MODES.items()}
 
-    def clear(self):
+    def clear(self) -> None:
         super(Bond, self).clear()
-        self.bond_miimon = None
-        self.bond_primary = []
-        self.bond_slaves = []
+        self.bond_miimon: int | None = None
+        self.bond_primary: List[str] = []
+        self.bond_slaves: List[str] = []
         self.bond_mode = 0
 
         # TODO: arp_interval arp_ip_target downdelay lacp_rate max_bonds primary updelay use_carrier xmit_hash_policy
 
-    def prepare_consistency(self):
+    def prepare_consistency(self) -> None:
         super(Bond, self).prepare_consistency()
 
         if self.bond_mode is None:
@@ -668,7 +673,7 @@ class Bond(Device):
             # make sure that used interfaces does not have any IPv4 or IPv6 address
             idevice.disable_ips()
 
-    def validate(self):
+    def validate(self) -> None:
         super(Bond, self).validate()
 
         self.limit_ip4_address()
@@ -700,7 +705,7 @@ class Bond(Device):
 
         self.check_unique_interface_usage()
 
-    def validate_bond_mode(self):
+    def validate_bond_mode(self) -> None:
         if self.bond_mode in self.MODES:
             return
         try:
@@ -709,10 +714,10 @@ class Bond(Device):
             raise DeviceError(_('Invalid bond-mode: %r') % (self.bond_mode,), self.name)
 
     @property
-    def subdevice_names(self):
+    def subdevice_names(self) -> Set[str]:
         return set(self.bond_slaves)
 
-    def parse_ucr(self):
+    def parse_ucr(self) -> None:
         super(Bond, self).parse_ucr()
         options = []
         for option in self.options:
@@ -742,7 +747,7 @@ class Bond(Device):
                 options.append(option)
         self.options = options
 
-    def get_options(self):
+    def get_options(self) -> List[str]:
         options = super(Bond, self).get_options()
         options += [
             'bond-slaves %s' % (' '.join(self.bond_slaves),),
@@ -759,25 +764,25 @@ class Bond(Device):
 class Bridge(Device):
     """A network bridge interface"""
 
-    def clear(self):
+    def clear(self) -> None:
         super(Bridge, self).clear()
-        self.bridge_ports = []
+        self.bridge_ports: List[str] = []
         self.bridge_fd = 0
 
         # TODO: bridge_ageing bridge_bridgeprio bridge_gcint bridge_hello bridge_hw bridge_maxage bridge_maxwait bridge_pathcost bridge_portprio bridge_stp bridge_waitport
 
     @property
-    def subdevice_names(self):
+    def subdevice_names(self) -> Set[str]:
         return set(self.bridge_ports)
 
-    def prepare_consistency(self):
+    def prepare_consistency(self) -> None:
         super(Bridge, self).prepare_consistency()
 
         for idevice in self.subdevices:
             # make sure that used interfaces does not have any IPv4 or IPv6 address
             idevice.disable_ips()
 
-    def validate(self):
+    def validate(self) -> None:
         super(Bridge, self).validate()
 
         self.limit_ip4_address()
@@ -793,7 +798,7 @@ class Bridge(Device):
 
         self.check_unique_interface_usage()
 
-    def parse_ucr(self):
+    def parse_ucr(self) -> None:
         super(Bridge, self).parse_ucr()
         options = []
         for option in self.options:
@@ -817,7 +822,7 @@ class Bridge(Device):
                 options.append(option)
         self.options = options
 
-    def get_options(self):
+    def get_options(self) -> List[str]:
         options = super(Bridge, self).get_options()
         options += [
             'bridge_ports %s' % (' '.join(self.bridge_ports) or 'none',),

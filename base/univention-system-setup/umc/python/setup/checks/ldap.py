@@ -45,12 +45,11 @@ from univention.management.console.log import MODULE
 from univention.management.console.modules.setup.util import _temporary_password_file
 
 
-def check_if_uid_is_available(uid, role, address, username, password):
+def check_if_uid_is_available(uid: str, role: str, address: str, username: str, password: str) -> bool:
     """
     check if either the UID it not yet taken at all
     or it is already taken (by our previous self) and still matches the server role
     """
-    # type: (str, str, str, str, str) -> bool
     filter_s = filter_format("(&(objectClass=person)(uid=%s)(!(univentionServerRole=%s)))", [uid, role])
     rcmd = 'univention-ldapsearch -LLL %s 1.1' % (quote(filter_s),)
     with _temporary_password_file(password) as password_file:

@@ -1,4 +1,3 @@
-"""Univention Setup: network configuration abstract base classes"""
 # Like what you see? Join us!
 # https://www.univention.com/about-us/careers/vacancies/
 #
@@ -29,67 +28,72 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
+"""Univention Setup: network configuration abstract base classes"""
+
 import logging
 import subprocess
 from abc import ABCMeta
+from ipaddress import IPv4Interface, IPv6Interface
+from typing import Dict, List, Optional, Sequence, Set, Type
 
 from six import with_metaclass
 
+from univention.config_registry import ConfigRegistry
 from univention.config_registry.interfaces import Interfaces
 
 
 class ChangeSet(object):
 
-    def __init__(self, ucr, profile, options):
+    def __init__(self, ucr: ConfigRegistry, profile: Dict[str, str], options):
         self.ucr = ucr
         self.profile = profile
         self.options = options
-        self.ucr_changes = {}
+        self.ucr_changes: Dict[str, Optional[str]] = {}
         self.old_interfaces = Interfaces(ucr)
         self.logger = logging.getLogger("uss.network.change")
 
         self.update_config(self.only_network_config(profile))
 
     @staticmethod
-    def only_network_config(profile):
-        config = {}
+    def only_network_config(profile: Dict[str, str]) -> Dict[str, Optional[str]]:
+        config: Dict[str, Optional[str]] = {}
         for key, value in profile.items():
             if key.startswith("interfaces/"):
                 config[key] = value or None
         return config
 
-    def update_config(self, changes):
+    def update_config(self, changes: Dict[str, Optional[str]]) -> None:
         self.ucr_changes.update(changes)
         new_ucr = dict(self.ucr.items())  # Bug #33101
         new_ucr.update(changes)
         self.new_interfaces = Interfaces(new_ucr)
 
     @property
-    def no_act(self):
+    def no_act(self) -> bool:
         return self.options.no_act
 
     @property
-    def old_names(self):
+    def old_names(self) -> Set[str]:
         return {name for name, _iface in self.old_interfaces.all_interfaces}
 
     @property
-    def new_names(self):
+    def new_names(self) -> Set[str]:
         return {name for name, _iface in self.new_interfaces.all_interfaces}
 
     @property
-    def old_ipv4s(self):
+    def old_ipv4s(self) -> List[IPv4Interface]:
         return [iface.ipv4_address() for _name, iface in self.old_interfaces.ipv4_interfaces]
 
     @property
-    def new_ipv4s(self):
+    def new_ipv4s(self) -> List[IPv4Interface]:
         return [iface.ipv4_address() for _name, iface in self.new_interfaces.ipv4_interfaces]
 
     @property
-    def old_ipv6s(self):
+    def old_ipv6s(self) -> List[IPv6Interface]:
         return [iface.ipv6_address(name) for iface, name in self.old_interfaces.ipv6_interfaces]
 
     @property
-    def new_ipv6s(self):
+    def new_ipv6s(self) -> List[IPv6Interface]:
         return [iface.ipv6_address(name) for iface, name in self.new_interfaces.ipv6_interfaces]
 
 
@@ -102,11 +106,11 @@ class Phase(with_metaclass(ABCMeta, object)):
 
     priority = 0
 
-    def __init__(self, changeset):
+    def __init__(self, changeset: ChangeSet) -> None:
         self.changeset = changeset
         self.logger = logging.getLogger("uss.network.phase.%s" % (self,))
 
-    def __lt__(self, other):
+    def __lt__(self, other: object) -> object:
         """
         Order phases by priority.
 
@@ -125,29 +129,29 @@ class Phase(with_metaclass(ABCMeta, object)):
         """
         return (self.priority, str(self)) < (other.priority, str(other)) if isinstance(other, Phase) else NotImplemented
 
-    def __le__(self, other):
+    def __le__(self, other: object) -> object:
         return (self.priority, str(self)) <= (other.priority, str(other)) if isinstance(other, Phase) else NotImplemented
 
-    def __eq__(self, other):
+    def __eq__(self, other: object) -> bool:
         return (self.priority, str(self)) == (other.priority, str(other)) if isinstance(other, Phase) else NotImplemented
 
-    def __ne__(self, other):
+    def __ne__(self, other: object) -> bool:
         return (self.priority, str(self)) != (other.priority, str(other)) if isinstance(other, Phase) else NotImplemented
 
-    def __ge__(self, other):
+    def __ge__(self, other: object) -> object:
         return (self.priority, str(self)) >= (other.priority, str(other)) if isinstance(other, Phase) else NotImplemented
 
-    def __gt__(self, other):
+    def __gt__(self, other: object) -> object:
         return (self.priority, str(self)) > (other.priority, str(other)) if isinstance(other, Phase) else NotImplemented
 
-    def __str__(self):
+    def __str__(self) -> str:
         name = self.__class__.__name__
         if name.startswith("Phase"):
             name = name[len("Phase"):]
         return name
 
     @classmethod
-    def _check_valid(cls, other):
+    def _check_valid(cls, other: Type["Phase"]) -> None:
         try:
             if not issubclass(other, cls):
                 raise SkipPhase('Invalid super-class')
@@ -158,19 +162,19 @@ class Phase(with_metaclass(ABCMeta, object)):
         except TypeError:
             raise SkipPhase('Not a class')
 
-    def check(self):
+    def check(self) -> None:
         """
         Check if the phase should be activated.
         Throw SkipPhase to skip this phase.
         """
 
-    def pre(self):
+    def pre(self) -> None:
         """Called before the changes are applied to UCR."""
 
-    def post(self):
+    def post(self) -> None:
         """Called after the changes have been applied to UCR."""
 
-    def call(self, command):
+    def call(self, command: Sequence[str]) -> int:
         """Call external command using subprocess.call(shell=False)."""
         self.logger.debug("Running %r", command)
         if self.changeset.no_act:

@@ -1,4 +1,3 @@
-"""Univention Setup: network configuration abstract common classes"""
 # Like what you see? Join us!
 # https://www.univention.com/about-us/careers/vacancies/
 #
@@ -29,13 +28,17 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
+"""Univention Setup: network configuration abstract common classes"""
+
 import os
 from abc import ABCMeta
-from ipaddress import IPv4Network, IPv6Network
+from ipaddress import IPv4Interface, IPv4Network, IPv6Interface, IPv6Network
+from typing import Dict, Optional, Union
 
 from six import with_metaclass
 
 from univention.admin import uldap
+from univention.management.console.modules.setup.netconf import ChangeSet
 from univention.management.console.modules.setup.netconf.conditions import AddressChange, Executable, Ldap
 
 
@@ -46,14 +49,14 @@ class RestartService(with_metaclass(ABCMeta, Executable)):
     PREFIX = "/etc/init.d"
 
     @property
-    def executable(self):
+    def executable(self) -> str:
         return os.path.join(self.PREFIX, self.service)
 
-    def pre(self):
+    def pre(self) -> None:
         super(RestartService, self).pre()
         self.call(["systemctl", "stop", self.service])
 
-    def post(self):
+    def post(self) -> None:
         super(RestartService, self).pre()
         self.call(["systemctl", "start", self.service])
 
@@ -61,7 +64,7 @@ class RestartService(with_metaclass(ABCMeta, Executable)):
 class AddressMap(with_metaclass(ABCMeta, AddressChange)):
     """Helper to provide a mapping from old addresses to new addresses."""
 
-    def __init__(self, changeset):
+    def __init__(self, changeset: ChangeSet) -> None:
         super(AddressMap, self).__init__(changeset)
         self.old_primary, self.new_primary = (
             iface.get_default_ip_address()
@@ -73,15 +76,15 @@ class AddressMap(with_metaclass(ABCMeta, AddressChange)):
         self.net_changes = self._map_ip()
         self.ip_mapping = self._get_address_mapping()
 
-    def _map_ip(self):
+    def _map_ip(self) -> Dict[Union[IPv4Interface, IPv6Interface], Union[None, IPv4Interface, IPv6Interface]]:
         ipv4_changes = self.ipv4_changes()
         ipv6_changes = self.ipv6_changes()
-        net_changes = {}
-        net_changes.update(ipv4_changes)
-        net_changes.update(ipv6_changes)
+        net_changes: Dict[Union[IPv4Interface, IPv6Interface], Union[None, IPv4Interface, IPv6Interface]] = {}
+        net_changes.update(ipv4_changes)  # type: ignore
+        net_changes.update(ipv6_changes)  # type: ignore
         return net_changes
 
-    def ipv4_changes(self):
+    def ipv4_changes(self) -> Dict[IPv4Interface, Optional[IPv4Interface]]:
         ipv4s = {
             name: iface.ipv4_address()
             for name, iface in self.changeset.new_interfaces.ipv4_interfaces
@@ -95,7 +98,7 @@ class AddressMap(with_metaclass(ABCMeta, AddressChange)):
                 mapping[old_addr] = new_addr
         return mapping
 
-    def ipv6_changes(self):
+    def ipv6_changes(self) -> Dict[IPv6Interface, Optional[IPv6Interface]]:
         ipv6s = {
             (iface.name, name): iface.ipv6_address(name)
             for (iface, name) in self.changeset.new_interfaces.ipv6_interfaces
@@ -109,7 +112,7 @@ class AddressMap(with_metaclass(ABCMeta, AddressChange)):
                 mapping[old_addr] = new_addr
         return mapping
 
-    def _get_address_mapping(self):
+    def _get_address_mapping(self) -> Dict[str, Optional[str]]:
         mapping = {
             str(old_ip.ip): str(new_ip.ip) if new_ip else None
             for (old_ip, new_ip) in self.net_changes.items()
@@ -120,12 +123,12 @@ class AddressMap(with_metaclass(ABCMeta, AddressChange)):
 class LdapChange(with_metaclass(ABCMeta, type('NewBase', (AddressChange, Ldap), {}))):
     """Helper to provide access to LDAP through UDM."""
 
-    def __init__(self, changeset):
+    def __init__(self, changeset: ChangeSet) -> None:
         super(LdapChange, self).__init__(changeset)
         self.ldap = None
         self.position = None
 
-    def open_ldap(self):
+    def open_ldap(self) -> None:
         ldap_host = self.changeset.ucr["ldap/master"]
         ldap_base = self.changeset.ucr["ldap/base"]
         self.ldap = uldap.access(
@@ -137,14 +140,14 @@ class LdapChange(with_metaclass(ABCMeta, type('NewBase', (AddressChange, Ldap), 
         self.position = uldap.position(ldap_base)
 
 
-def convert_udm_subnet_to_network(subnet):
+def convert_udm_subnet_to_network(subnet: str) -> Union[IPv4Network, IPv6Network]:
     if ":" in subnet:
         return convert_udm_subnet_to_ipv6_network(subnet)
     else:
         return convert_udm_subnet_to_ipv4_network(subnet)
 
 
-def convert_udm_subnet_to_ipv4_network(subnet):
+def convert_udm_subnet_to_ipv4_network(subnet: str) -> IPv4Network:
     octets = subnet.split('.')
     count = len(octets)
     assert 1 <= count <= 4
@@ -154,7 +157,7 @@ def convert_udm_subnet_to_ipv4_network(subnet):
     return IPv4Network(u"%s/%d" % (address, prefix_length), False)
 
 
-def convert_udm_subnet_to_ipv6_network(subnet):
+def convert_udm_subnet_to_ipv6_network(subnet: str) -> IPv6Network:
     prefix = subnet.replace(":", "")
     count = len(prefix)
     assert 1 <= count <= 32

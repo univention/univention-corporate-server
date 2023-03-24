@@ -1,4 +1,3 @@
-"""Univention Setup: network configuration abstract base classes"""
 # Like what you see? Join us!
 # https://www.univention.com/about-us/careers/vacancies/
 #
@@ -29,12 +28,15 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
+"""Univention Setup: network configuration abstract base classes"""
+
 import importlib.util
 import logging
 import os
 import sys
+from typing import Any, Iterator, List, Tuple
 
-from univention.management.console.modules.setup.netconf import Phase, SkipPhase
+from univention.management.console.modules.setup.netconf import ChangeSet, Phase, SkipPhase
 
 
 class RunPhases(object):
@@ -43,12 +45,12 @@ class RunPhases(object):
     <http://lkubuntu.wordpress.com/2012/10/02/writing-a-python-plugin-api/>
     """
 
-    def __init__(self):
-        self.classes = []
-        self.phases = []
+    def __init__(self) -> None:
+        self.classes: List[Any] = []
+        self.phases: List[Phase] = []
         self.logger = logging.getLogger("uss.network.plug")
 
-    def find(self):
+    def find(self) -> Iterator[Tuple[str, Any]]:
         for module_dir in sys.modules[__name__].__path__:
             for dirpath, _dirnames, filenames in os.walk(module_dir):
                 self.logger.debug("Processing '%s'...", dirpath)
@@ -63,7 +65,7 @@ class RunPhases(object):
                         self.logger.warning("Failed to open '%s'", filename)
                     yield name, info
 
-    def load(self):
+    def load(self) -> None:
         for name, info in self.find():
             try:
                 module = importlib.util.module_from_spec(info)
@@ -76,7 +78,7 @@ class RunPhases(object):
                     self.add(key, value)
         self.logger.info("Finished loading %d modules", len(self.classes))
 
-    def add(self, name, obj):
+    def add(self, name: str, obj: Any) -> None:
         try:
             Phase._check_valid(obj)
             self.logger.info("Adding phase %s", name)
@@ -84,7 +86,7 @@ class RunPhases(object):
         except SkipPhase as ex:
             self.logger.debug("Phase '%s' is invalid: %s", name, ex)
 
-    def setup(self, changeset):
+    def setup(self, changeset: ChangeSet) -> None:
         for clazz in self.classes:
             self.logger.info("Configuring phase %s...", clazz.__name__)
             try:
@@ -96,7 +98,7 @@ class RunPhases(object):
             except SkipPhase as ex:
                 self.logger.warning("Phase skipped: %s", ex)
 
-    def pre(self):
+    def pre(self) -> None:
         for phase in sorted(self.phases):
             self.logger.info("Calling %s.pre() at %02d...", phase, phase.priority)
             try:
@@ -104,7 +106,7 @@ class RunPhases(object):
             except Exception as ex:
                 self.logger.warning("Failed %s.pre(): %s", phase, ex, exc_info=True)
 
-    def post(self):
+    def post(self) -> None:
         for phase in sorted(self.phases, reverse=True):
             self.logger.info("Calling %s.post() at %02d...", phase, phase.priority)
             try:

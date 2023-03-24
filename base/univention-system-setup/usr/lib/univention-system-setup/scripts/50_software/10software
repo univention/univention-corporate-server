@@ -41,14 +41,14 @@ class SoftwareScript(AptScript):
     name = _('Configuring software components')
     brutal_apt_options = False
 
-    def up(self):
+    def up(self) -> None:
         super(SoftwareScript, self).up()
 
         # get this scripts configuration options
         self.packages_remove = self.profile.get_list('packages_remove')
         self.packages_install = self.profile.get_list('packages_install')
 
-    def inner_run(self):
+    def inner_run(self) -> bool:
         if not (self.packages_remove or self.packages_install):
             # nothing to do. don't autoremove either
             return True

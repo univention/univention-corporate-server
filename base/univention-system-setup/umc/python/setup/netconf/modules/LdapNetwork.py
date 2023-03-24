@@ -17,17 +17,17 @@ class PhaseLdapNetwork(LdapChange):
 
     priority = 44
 
-    def check(self):
+    def check(self) -> None:
         super(PhaseLdapNetwork, self).check()
         self._check_role()
         self._check_network()
 
-    def _check_role(self):
+    def _check_role(self) -> None:
         role = self.changeset.ucr.get("server/role")
         if role != "domaincontroller_master":
             raise SkipPhase("Wrong server/role")
 
-    def _check_network(self):
+    def _check_network(self) -> None:
         old_default = self.changeset.old_interfaces.get_default_ipv4_address()
         new_default = self.changeset.new_interfaces.get_default_ipv4_address()
         if not new_default:
@@ -35,7 +35,7 @@ class PhaseLdapNetwork(LdapChange):
         if old_default == new_default:
             raise SkipPhase("No change in default network")
 
-    def post(self):
+    def post(self) -> None:
         try:
             self.open_ldap()
             # PMH: the original shell version first updates univentionNetwork,
@@ -46,7 +46,7 @@ class PhaseLdapNetwork(LdapChange):
         except (LDAPError, UniventionBaseException) as ex:
             self.logger.warning("Failed LDAP: %s", ex)
 
-    def _update_network(self):
+    def _update_network(self) -> None:
         network_dn = "cn=default,cn=networks,%(ldap/base)s" % self.changeset.ucr
         new_default = str(self.changeset.new_interfaces.get_default_ipv4_address().network.network_address)
         changes = [("univentionNetwork", b"UNKNOWN", new_default.encode("UTF-8"))]
@@ -57,14 +57,14 @@ class PhaseLdapNetwork(LdapChange):
             except (LDAPError, UniventionBaseException) as ex:
                 self.logger.warning("Failed to update default network '%s': %s", network_dn, ex)
 
-    def _recreate_network(self):
+    def _recreate_network(self) -> None:
         self._remove_old_network()
         forward_zone = self._find_forward_zone()
         reverse_zone = self._find_reverse_zone()
         dhcp_service = self._find_dhcp_service()
         self._create_new_network(forward_zone, reverse_zone, dhcp_service)
 
-    def _remove_old_network(self):
+    def _remove_old_network(self) -> None:
         network_dn = "cn=default,cn=networks,%(ldap/base)s" % self.changeset.ucr
         network_module = modules.get("networks/network")
         modules.init(self.ldap, self.position, network_module)
@@ -76,14 +76,14 @@ class PhaseLdapNetwork(LdapChange):
         if not self.changeset.no_act:
             network.remove()
 
-    def _find_forward_zone(self):
+    def _find_forward_zone(self) -> str:
         forward_module = modules.get("dns/forward_zone")
         modules.init(self.ldap, self.position, forward_module)
         forward_zones = forward_module.lookup(None, self.ldap, filter_format("zone=%s", [self.changeset.ucr['domainname']]))
         if forward_zones:
             return forward_zones[0].dn
 
-    def _find_reverse_zone(self):
+    def _find_reverse_zone(self) -> str:
         new_default = self.changeset.new_interfaces.get_default_ipv4_address()
         reverse_module = modules.get("dns/reverse_zone")
         modules.init(self.ldap, self.position, reverse_module)
@@ -94,14 +94,14 @@ class PhaseLdapNetwork(LdapChange):
             if new_default in network:
                 return zone.dn
 
-    def _find_dhcp_service(self):
+    def _find_dhcp_service(self) -> str:
         dhcp_module = modules.get("dhcp/service")
         modules.init(self.ldap, self.position, dhcp_module)
         dhcp_services = dhcp_module.lookup(None, self.ldap, None)
         if dhcp_services:
             return dhcp_services[0].dn
 
-    def _create_new_network(self, forward_zone, reverse_zone, dhcp_service):
+    def _create_new_network(self, forward_zone: str, reverse_zone: str, dhcp_service: str) -> None:
         ipv4 = self.changeset.new_interfaces.get_default_ipv4_address()
 
         network_position = uldap.position(self.position.getDn())

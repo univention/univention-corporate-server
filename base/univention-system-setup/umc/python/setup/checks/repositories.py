@@ -1,5 +1,6 @@
 import subprocess
 from os import environ
+from typing import Iterable, List, Tuple
 
 import univention.config_registry
 from univention.management.console.log import MODULE
@@ -15,7 +16,7 @@ PROXY_MAP = {
 }
 
 
-def get_unreachable_repository_servers():
+def get_unreachable_repository_servers() -> List[str]:
     UCR.load()
 
     servers = [
@@ -30,7 +31,7 @@ def get_unreachable_repository_servers():
     return [server for server, process in zip(servers, processes) if process.returncode != 0]
 
 
-def start_curl_processes(servers):
+def start_curl_processes(servers: Iterable[str]) -> List[subprocess.Popen]:
     ENV = {
         envvar: UCR[ucrvar]
         for (envvar, ucrvar) in PROXY_MAP.items()
@@ -43,12 +44,12 @@ def start_curl_processes(servers):
     ]
 
 
-def wait_for_processes_to_finish(processes):
+def wait_for_processes_to_finish(processes: Iterable[subprocess.Popen]) -> None:
     for process in processes:
         process.wait()
 
 
-def log_warnings_about_unreachable_repository_servers(servers_with_curl_processes):
+def log_warnings_about_unreachable_repository_servers(servers_with_curl_processes: Iterable[Tuple[str, subprocess.Popen]]) -> None:
     for server, process in servers_with_curl_processes:
         if process.returncode != 0:
             MODULE.warn(

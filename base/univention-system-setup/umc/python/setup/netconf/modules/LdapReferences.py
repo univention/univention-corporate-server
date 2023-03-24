@@ -1,7 +1,10 @@
+from typing import Any, Iterator, Tuple
+
 from ldap import LDAPError
 
 from univention.admin import modules
 from univention.admin.uexceptions import base as UniventionBaseException
+from univention.management.console.modules.setup.netconf import ChangeSet
 from univention.management.console.modules.setup.netconf.common import AddressMap, LdapChange
 
 
@@ -24,11 +27,11 @@ class PhaseLdapReferences(AddressMap, LdapChange):
         ("portals/entry", "link", 2),
     )
 
-    def __init__(self, changeset):
+    def __init__(self, changeset: ChangeSet) -> None:
         super(PhaseLdapReferences, self).__init__(changeset)
         modules.update()
 
-    def post(self):
+    def post(self) -> None:
         try:
             self.open_ldap()
             for module, udm_property, replace_type in self._iterate_objects():
@@ -40,7 +43,7 @@ class PhaseLdapReferences(AddressMap, LdapChange):
         except (LDAPError, UniventionBaseException) as ex:
             self.logger.warning("Failed LDAP: %s", ex, exc_info=True)
 
-    def _iterate_objects(self):
+    def _iterate_objects(self) -> Iterator[Tuple[Any, str, int]]:
         for module_name, udm_property, replace_type in self.referers:
             module = modules.get(module_name)
             if not module:
@@ -50,7 +53,7 @@ class PhaseLdapReferences(AddressMap, LdapChange):
             modules.init(self.ldap, self.position, module)
             yield module, udm_property, replace_type
 
-    def _rewrite_object(self, obj, udm_property, replace_type):
+    def _rewrite_object(self, obj: Any, udm_property: str, replace_type: int) -> None:
         obj.open()
         try:
             old_values = obj[udm_property]

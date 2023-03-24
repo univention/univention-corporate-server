@@ -2,7 +2,9 @@ from ldap import LDAPError
 from ldap.filter import filter_format
 
 from univention.admin import modules
+from univention.admin.handlers import simpleLdap
 from univention.admin.uexceptions import base as UniventionBaseException
+from univention.management.console.modules.setup.netconf import ChangeSet
 from univention.management.console.modules.setup.netconf.common import AddressMap, LdapChange
 
 
@@ -11,11 +13,11 @@ class PhaseLdapSSO(AddressMap, LdapChange):
 
     priority = 49
 
-    def __init__(self, changeset):
+    def __init__(self, changeset: ChangeSet) -> None:
         super(PhaseLdapSSO, self).__init__(changeset)
         modules.update()
 
-    def post(self):
+    def post(self) -> None:
         try:
             if self.changeset.ucr.is_true('ucs/server/sso/autoregistraton', True):
                 self.open_ldap()
@@ -23,7 +25,7 @@ class PhaseLdapSSO(AddressMap, LdapChange):
         except (LDAPError, UniventionBaseException) as ex:
             self.logger.warning("Failed LDAP: %s", ex)
 
-    def _update_sso(self):
+    def _update_sso(self) -> None:
         forward_module = modules.get("dns/forward_zone")
         modules.init(self.ldap, self.position, forward_module)
 
@@ -41,7 +43,7 @@ class PhaseLdapSSO(AddressMap, LdapChange):
             for host in hosts:
                 self._update_host(host)
 
-    def _update_host(self, obj):
+    def _update_host(self, obj: simpleLdap) -> None:
         obj.open()
         try:
             old_values = set(obj.info["a"])

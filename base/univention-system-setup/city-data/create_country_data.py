@@ -32,11 +32,11 @@
 
 """Generate `country_data.json`"""
 
-from __future__ import print_function
+from __future__ import annotations, print_function
 
 import json
 from argparse import ArgumentParser, FileType
-from typing import Any, Dict  # noqa: F401
+from typing import Any, Dict
 
 import _util
 
@@ -48,7 +48,7 @@ if __name__ == '__main__':
     opt = parser.parse_args()
 
     print('generating country data...')
-    country_data = {}  # type: Dict[str, Dict[str, Any]]
+    country_data: Dict[str, Dict[str, Any]] = {}
 
     country_default_lang = _util.get_country_default_language()
     for icountry, ilang in country_default_lang.items():

@@ -8,6 +8,6 @@ class PhaseRestartBind(RestartService, NotNetworkOnly):
     service = "bind9"
     priority = 24
 
-    def post(self):
+    def post(self) -> None:
         self.call(['find', '/var/cache/bind', '-type', 'f', '-delete'])
         super(PhaseRestartBind, self).post()

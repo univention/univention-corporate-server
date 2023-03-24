@@ -1,3 +1,5 @@
+from typing import Set
+
 from univention.management.console.modules.setup.netconf.common import Executable
 
 
@@ -14,7 +16,7 @@ class PhaseKernelModules(Executable):
     priority = 95
     executable = "/sbin/modprobe"
 
-    def pre(self):
+    def pre(self) -> None:
         modules = self.get_configured_modules()
         self.clean_known_modules(modules)
         new_modules = self.scan_required_modules()
@@ -22,17 +24,17 @@ class PhaseKernelModules(Executable):
         self.set_configured_modules(modules)
         self.load_modules(new_modules)
 
-    def get_configured_modules(self):
+    def get_configured_modules(self) -> Set[str]:
         value = self.changeset.ucr.get(self.variable_name, "")
         modules = set(value.split(self.variable_separator))
         modules.discard("")
         return modules
 
-    def clean_known_modules(self, modules):
+    def clean_known_modules(self, modules: Set[str]) -> None:
         for module, _option in self.module_option:
             modules.discard(module)
 
-    def scan_required_modules(self):
+    def scan_required_modules(self) -> Set[str]:
         modules = set()
         for _name, iface in self.changeset.new_interfaces.all_interfaces:
             for iface_option in iface.options:
@@ -41,12 +43,12 @@ class PhaseKernelModules(Executable):
                         modules.add(module)
         return modules
 
-    def set_configured_modules(self, modules):
+    def set_configured_modules(self, modules: Set[str]) -> None:
         value = self.variable_separator.join(sorted(modules)) or None
         self.logger.info("Updating '%s'='%s'...", self.variable_name, value)
         self.changeset.ucr_changes[self.variable_name] = value
 
-    def load_modules(self, modules):
+    def load_modules(self, modules: Set[str]) -> None:
         if modules:
             cmd = [self.executable] + list(modules)
             self.call(cmd)

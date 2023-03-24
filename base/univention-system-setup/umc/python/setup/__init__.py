@@ -34,6 +34,8 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
+from __future__ import annotations
+
 import copy
 import json
 import locale as _locale
@@ -44,6 +46,7 @@ import subprocess
 import threading
 import time
 import traceback
+from typing import Any, Dict, List
 
 import lxml.etree
 import notifier
@@ -110,18 +113,17 @@ class Instance(Base, ProgressMixin):
         # reset umask to default
         os.umask(0o022)
 
-    def init(self):
+    def init(self) -> None:
         os.putenv('LANG', str(self.locale))
         _locale.setlocale(_locale.LC_ALL, str(self.locale))
         if not util.is_system_joined():
             self._preload_city_data()
 
-    def _preload_city_data(self):
+    def _preload_city_data(self) -> None:
         util.get_city_data()
         util.get_country_data()
 
-    def _get_localized_label(self, label_dict):
-        # return the correctly loca
+    def _get_localized_label(self, label_dict: Dict[str, str]) -> str:
         return label_dict.get(self.locale.language) or label_dict.get('en', '') or label_dict.get('', '')
 
     def ping(self, request):
@@ -131,7 +133,7 @@ class Instance(Base, ProgressMixin):
         self.finished(request.id, None)
 
     @simple_response
-    def close_browser(self):
+    def close_browser(self) -> bool:
         try:
             with open('/var/cache/univention-system-setup/browser.pid', 'rb') as fd:
                 pid = int(fd.readline().strip())
@@ -155,7 +157,7 @@ class Instance(Base, ProgressMixin):
         return util.load_values(self.locale.language)
 
     @simple_response
-    def save_keymap(self, layout=None):
+    def save_keymap(self, layout=None) -> bool:
         """
         Set the systems x-keymap according to
         request.options[keymap]
@@ -241,7 +243,7 @@ class Instance(Base, ProgressMixin):
             finally:
                 obj._finishedLock.release()
 
-        def _finished(thread, result):
+        def _finished(thread, result) -> None:
             if self.__keep_alive_request:
                 self.finished(self.__keep_alive_request.id, None)
                 self.__keep_alive_request = None
@@ -258,7 +260,7 @@ class Instance(Base, ProgressMixin):
         self.finished(request.id, None)
 
     @simple_response
-    def join(self, values=None, dcname=None, username=None, password=None):
+    def join(self, values=None, dcname: str | None = None, username: str | None = None, password: str | None = None) -> None:
         '''
         Join and reconfigure the system according to the values specified in the dict given as
         option named "values".
@@ -274,7 +276,7 @@ class Instance(Base, ProgressMixin):
         # create a status file that indicates that save has been triggered
         util.create_status_file()
 
-        def _thread(obj, username, password):
+        def _thread(obj, username: str, password: str) -> bool:
             # acquire the lock until the scripts have been executed
             self._finishedResult = False
             obj._finishedLock.acquire()
@@ -306,7 +308,7 @@ class Instance(Base, ProgressMixin):
             finally:
                 obj._finishedLock.release()
 
-        def _finished(thread, result):
+        def _finished(thread, result) -> None:
             if self.__keep_alive_request:
                 self.finished(self.__keep_alive_request.id, None)
                 self.__keep_alive_request = None
@@ -322,7 +324,7 @@ class Instance(Base, ProgressMixin):
         thread.run()
         return
 
-    def check_finished(self, request):
+    def check_finished(self, request) -> None:
         """
         Check whether the join/setup scripts are finished. This method implements a long
         polling request, i.e., the request is only finished at the moment when all scripts
@@ -364,7 +366,7 @@ class Instance(Base, ProgressMixin):
         thread.run()
 
     @simple_response(with_flavor=True)
-    def validate(self, values=None, flavor=None):
+    def validate(self, values: Dict | None = None, flavor: str | None = None):
         '''
         Validate the specified values given in the dict as option named "values".
         Return a dict (with variable names as key) of dicts with the structure:
@@ -389,7 +391,8 @@ class Instance(Base, ProgressMixin):
         # helper functions
         # TODO: 'valid' is not correctly evaluated in frontend
         # i.e. if valid you may continue without getting message
-        def _check(key, check, message, critical=True):
+        def _check(key: str, check, message: str, critical: bool = True) -> None:
+            assert values is not None
             if key not in values:
                 return
             if not check(values[key]):
@@ -399,7 +402,7 @@ class Instance(Base, ProgressMixin):
                     'key': key,
                 })
 
-        def _append(key, message):
+        def _append(key: str, message: str) -> None:
             MODULE.warn('Validation failed for key %s: %s' % (key, message))
             messages.append({
                 'key': key,
@@ -704,7 +707,7 @@ class Instance(Base, ProgressMixin):
 
     @sanitize(pattern=StringSanitizer(), max_results=IntegerSanitizer(minimum=1, default=5))
     @simple_response
-    def find_city(self, pattern, max_results):
+    def find_city(self, pattern: str, max_results: int) -> List | None:
         pattern = pattern.lower()
         MODULE.info('pattern: %s' % pattern)
         if not pattern:
@@ -763,11 +766,11 @@ class Instance(Base, ProgressMixin):
         return matches
 
     @simple_response
-    def apps_query(self):
+    def apps_query(self) -> List[Dict[str, Any]]:
         return util.get_apps(True)
 
     @simple_response
-    def check_domain(self, role, nameserver):
+    def check_domain(self, role: str, nameserver: str) -> Dict[str, Any]:
         result = {}
         if role == 'ad':
             try:
@@ -796,7 +799,7 @@ class Instance(Base, ProgressMixin):
         return result
 
     @simple_response
-    def check_domain_join_information(self, domain_check_role, role, dns, nameserver, address, username, password):
+    def check_domain_join_information(self, domain_check_role: str, role: str, dns: str, nameserver: str, address: str, username: str, password: str) -> Dict[str, str]:
         result = {}
         if domain_check_role == 'ad':
             domain = util.check_credentials_ad(nameserver, address, username, password)
@@ -816,13 +819,13 @@ class Instance(Base, ProgressMixin):
         return result
 
     @simple_response
-    def check_school_information(self, hostname, address, username, password):
+    def check_school_information(self, hostname: str, address: str, username: str, password: str):
         return check_for_school_domain(hostname, address, username, password)
 
     @simple_response
-    def check_repository_accessibility(self):
+    def check_repository_accessibility(self) -> List[str]:
         return get_unreachable_repository_servers()
 
     @simple_response
-    def check_uid(self, uid, role, address, username, password):
+    def check_uid(self, uid: str, role: str, address: str, username: str, password: str) -> bool:
         return check_if_uid_is_available(uid, role, address, username, password)

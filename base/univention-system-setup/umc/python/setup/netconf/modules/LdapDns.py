@@ -1,3 +1,5 @@
+from typing import List
+
 from univention import ipcalc
 from univention.management.console.modules.setup.netconf.common import AddressMap
 from univention.management.console.modules.setup.netconf.conditions import Executable, Ldap
@@ -9,11 +11,11 @@ class PhaseLdapDns(AddressMap, Ldap, Executable):
     priority = 46
     executable = "/usr/share/univention-directory-manager-tools/univention-dnsedit"
 
-    def post(self):
+    def post(self) -> None:
         self._create_reverse_dns_ipv4()
         self._create_reverse_dns_ipv6()
 
-    def _create_reverse_dns_ipv4(self):
+    def _create_reverse_dns_ipv4(self) -> None:
         for ipv4 in set(self.changeset.new_ipv4s) - set(self.changeset.old_ipv4s):
             self.call([
                 self.executable,
@@ -34,7 +36,7 @@ class PhaseLdapDns(AddressMap, Ldap, Executable):
                 "%(hostname)s.%(domainname)s." % self.changeset.ucr,
             ])
 
-    def _create_reverse_dns_ipv6(self):
+    def _create_reverse_dns_ipv6(self) -> None:
         for ipv6 in set(self.changeset.new_ipv6s) - set(self.changeset.old_ipv6s):
             self.call([
                 self.executable,
@@ -55,7 +57,7 @@ class PhaseLdapDns(AddressMap, Ldap, Executable):
                 "%(hostname)s.%(domainname)s." % self.changeset.ucr,
             ])
 
-    def _soa(self):
+    def _soa(self) -> List[str]:
         return [
             "root@%(domainname)s." % self.changeset.ucr,
             "1",

@@ -16,12 +16,12 @@ class PhaseRewriteUcr(AddressMap):
     )
     priority = 95
 
-    def check(self):
+    def check(self) -> None:
         super(PhaseRewriteUcr, self).check()
         if self.old_primary is None:
             raise SkipPhase('No old primary IP')
 
-    def pre(self):
+    def pre(self) -> None:
         for key in self.variables:
             value = self.changeset.ucr.get(key, None)
             if value is None:

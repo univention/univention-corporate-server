@@ -1,9 +1,6 @@
 #!/usr/bin/python3
 # -*- coding: utf-8 -*-
 #
-# Univention System Setup
-#  Python setup script base
-#
 # Like what you see? Join us!
 # https://www.univention.com/about-us/careers/vacancies/
 #
@@ -34,24 +31,34 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
+"""
+Univention System Setup
+ Python setup script base
+"""
+
 from __future__ import print_function
 
+import locale
+import logging
 import os
 import sys
 import traceback
 from contextlib import contextmanager
 from datetime import datetime
+from types import TracebackType
+from typing import Dict, Iterable, Iterator, List, Optional, Type  # noqa: F401
+
+import apt
 
 from univention.config_registry import ConfigRegistry
 from univention.config_registry.frontend import ucr_update
+from univention.lib.i18n import Translation
 from univention.lib.package_manager import PackageManager, _PackageManagerLoggerHandler
 from univention.management.console.modules.setup.util import PATH_PROFILE, PATH_SETUP_SCRIPTS
 
 
-def setup_i18n():
-    import locale
+def setup_i18n() -> Translation:
     locale.setlocale(locale.LC_ALL, "")
-    from univention.lib.i18n import Translation
     translation = Translation('univention-system-setup-scripts')
     translation.set_language()
     return translation.translate
@@ -62,7 +69,7 @@ _ = setup_i18n()
 
 class Profile(dict):
 
-    def load(self, filename=PATH_PROFILE):
+    def load(self, filename: str = PATH_PROFILE) -> None:
         with open(filename) as profile:
             for line in profile:
                 line = line.strip()
@@ -78,7 +85,7 @@ class Profile(dict):
                 self[key] = value
         self._filename = filename
 
-    def hide(self, key):
+    def hide(self, key: str) -> None:
         filename = self._filename
         with open(filename) as profile:
             all_lines = profile.readlines()
@@ -88,14 +95,14 @@ class Profile(dict):
                     line = '#%s="********"\n' % key
                 profile.write(line)
 
-    def is_true(self, key):
+    def is_true(self, key: str) -> bool:
         value = self.get(key)
         if value:
             value = value.lower()
         ucr = ConfigRegistry()
         return ucr.is_true(value=value)
 
-    def get_list(self, key, split_by=' '):
+    def get_list(self, key: str, split_by=' ') -> List[str]:
         """
         Retrieve the value of var_name from the profile file.
         Return the string as a list split by split_by.
@@ -106,12 +113,12 @@ class Profile(dict):
 
 class TransactionalUcr(object):
 
-    def __init__(self):
+    def __init__(self) -> None:
         self.ucr = ConfigRegistry()
         self.ucr.load()
-        self.changes = {}
+        self.changes: Dict[str, Optional[str]] = {}
 
-    def set(self, key, value):
+    def set(self, key: str, value: str) -> None:
         """
         Set the value of key of UCR.
         Does not save immediately.
@@ -125,7 +132,7 @@ class TransactionalUcr(object):
         else:
             self.changes[key] = value
 
-    def commit(self):
+    def commit(self) -> None:
         """
         Saves UCR variables previously set by set_ucr_var(). Also commits
         changes (if done any). Is called automatically *if inner_run() did not
@@ -137,7 +144,7 @@ class TransactionalUcr(object):
             # reset (in case it is called multiple) times in a script
             self.changes.clear()
 
-    def get(self, key, search_in_changes=True):
+    def get(self, key: str, search_in_changes=True) -> Optional[str]:
         """
         Retrieve the value of key from ucr.
         If search_in_changes, it first looks in (not yet committed) values.
@@ -149,10 +156,10 @@ class TransactionalUcr(object):
                 pass
         return self.ucr.get(key)
 
-    def __enter__(self):
+    def __enter__(self) -> "TransactionalUcr":
         return self
 
-    def __exit__(self, exc_type, exc_value, traceback):
+    def __exit__(self, exc_type: Type[BaseException], exc_value: BaseException, traceback: TracebackType) -> None:
         if exc_type is None:
             self.commit()
 
@@ -161,41 +168,45 @@ class SetupScript(object):
     """
     Baseclass for all Python-based Setup-Scripts.
 
-    Script lifecycle:
-            __init__() -> up()
-            run() -> (inner_run() -> commit()) -> down()
+    Script lifecycle::
 
-    up(), (inner_run() -> commit), and down() and encapsulated by
+        __init__() -> up()
+        run() -> (inner_run() -> commit()) -> down()
+
+    `up()`, (`inner_run()` -> `commit()`), and `down()` and encapsulated by
     try-blocks, so the script should under no cirucumstances break.
 
-    You should define name and script_name class (or instance) variables
-    where name is localised and will show up at top of the progress and
-    script_name is for logging and internal infos found at
+    You should define `name` and `script_name` class (or instance) variables
+    where `name` is localised and will show up at top of the progress and
+    `script_name` is for logging and internal infos found at
     univention.management.console.modules.setup.util.ProgressParser.FRACTIONS.
 
     You should define your own inner_run-method, and, if needed,
-    override (initially dummy) up() and down().
+    override (initially dummy) `up()` and `down()`.
 
-    You should execute a script like so:
-    script = MySetupScript()
-    script.run()
-    Or maybe even better like so, as it calls sys.exit
-    if __name__ == '__main__':
+    You should execute a script like so::
+
+        script = MySetupScript()
+        script.run()
+
+    Or maybe even better like so, as it calls `sys.exit`::
+
+        if __name__ == '__main__':
             script = MySetupScript()
             main(script) # helper function defined in here
 
     You may control the progress parser with these methods:
-    self.header(msg) # automatically called by run()
-    self.message(msg)
-    self.error(msg)
-    self.join_error(msg)
-    self.steps(steps)
-    self.step(step)
+    * self.header(msg) # automatically called by run()
+    * self.message(msg)
+    * self.error(msg)
+    * self.join_error(msg)
+    * self.steps(steps)
+    * self.step(step)
     """
 
     name = ''
 
-    def __init__(self, *args, **kwargs):
+    def __init__(self, *args, **kwargs) -> None:
         """
         Initialise Script. Will call self.up() with same *args
         and **kwargs as __init__() (which itself will leave them
@@ -223,17 +234,17 @@ class SetupScript(object):
             self.up(*args, **kwargs)
         except Exception as exc:
             # save caught exception. raise later (in run())
-            self._broken = exc
+            self._broken: Optional[Exception] = exc
         else:
-            self._broken = False
+            self._broken = None
 
     @staticmethod
-    def parse_profile():
+    def parse_profile() -> Profile:
         profile = Profile()
         profile.load()
         return profile
 
-    def inform_progress_parser(self, progress_attribute, msg):
+    def inform_progress_parser(self, progress_attribute: str, msg: object) -> None:
         """
         Internal method to inform progress parser.
 
@@ -245,7 +256,7 @@ class SetupScript(object):
         sys.stdout.write('%s\n' % (msg,))
         sys.stdout.flush()
 
-    def header(self, msg):
+    def header(self, msg: object) -> None:
         """
         Write header info of this script (for log file and parser).
 
@@ -254,11 +265,11 @@ class SetupScript(object):
         print('===', self.script_name, datetime.now().strftime('(%Y-%m-%d %H:%M:%S)'), '===')
         self.inform_progress_parser('name', '%s %s' % (self.script_name, msg))
 
-    def message(self, msg):
+    def message(self, msg: object) -> None:
         """Write a harmless __MSG__: for the parser"""
         self.inform_progress_parser('msg', msg)
 
-    def error(self, msg):
+    def error(self, msg: object) -> None:
         """
         Write a non-critical __ERR__: for the parser
         The parser will save the error and inform the frontend
@@ -266,7 +277,7 @@ class SetupScript(object):
         """
         self.inform_progress_parser('err', msg)
 
-    def join_error(self, msg):
+    def join_error(self, msg: object) -> None:
         """
         Write a critical __JOINERR__: for the parser.
         The parser will save it and inform the frontend that something
@@ -274,7 +285,7 @@ class SetupScript(object):
         """
         self.inform_progress_parser('joinerr', msg)
 
-    def steps(self, steps):
+    def steps(self, steps: int) -> None:
         """
         Total number of __STEPS__: to come throughout the whole
         script. Progress within the script should be done with
@@ -282,7 +293,7 @@ class SetupScript(object):
         """
         self.inform_progress_parser('steps', steps)
 
-    def step(self, step=None):
+    def step(self, step: Optional[int] = None) -> None:
         """
         Inform parser that the next __STEP__: in this script
         was done. You can provide an exact number or None
@@ -293,31 +304,31 @@ class SetupScript(object):
         self.inform_progress_parser('step', self._step)
         self._step += 1
 
-    def log(self, *msgs):
+    def log(self, *msgs: object) -> None:
         """Log messages in a log file"""
         for msg in msgs:
             print(msg, end=' ')
         print('')
 
-    def run(self):
+    def run(self) -> bool:
         """
         Run the SetupScript.
         Don't override this method, instead define your own
-        inner_run()-method.
+        :py:meth:`inner_run()`.
 
-        Call self.header()
-        If up() failed raise its exception.
+        Call :py:meth:`.header()`
+        If `up()` failed raise its exception.
         Run inner_run() in a try-except-block
         Return False if an exception occurred
-        Otherwise return True/False depending on
+        Otherwise return `True`/`False` depending on
         return code of inner_run itself.
-        *In any case*, run self.down() in a try-except-block
-        afterwards. If this should fail, return False.
+        *In any case*, run `self.down()` in a try-except-block
+        afterwards. If this should fail, return `False`.
         """
         if self.name:
             self.header(self.name)
         try:
-            if self._broken:
+            if self._broken is not None:
                 raise self._broken
             else:
                 success = self.inner_run()
@@ -337,7 +348,7 @@ class SetupScript(object):
                 success = False
         return success is not False
 
-    def inner_run(self):
+    def inner_run(self) -> Optional[bool]:
         """
         Main function, called by run().
         Override this method in your SetupScriptClass.
@@ -347,14 +358,14 @@ class SetupScript(object):
         """
         raise NotImplementedError('Define your own inner_run() method, please.')
 
-    def up(self, *args, **kwargs):
+    def up(self, *args, **kwargs) -> None:
         """
         Override this method if needed.
         It is called during __init__ with the very same parameters
         as __init__ was called.
         """
 
-    def down(self):
+    def down(self) -> None:
         """
         Override this method if needed.
         It is called at the end of run() even when an error in up()
@@ -364,7 +375,7 @@ class SetupScript(object):
 
 class _PackageManagerLoggerHandlerWithoutProcess(_PackageManagerLoggerHandler):
 
-    def emit(self, record):
+    def emit(self, record: logging.LogRecord) -> None:
         if record.name == 'packagemanager.dpkg.process':
             return
         super(_PackageManagerLoggerHandlerWithoutProcess, self).emit(record)
@@ -379,7 +390,7 @@ class AptScript(SetupScript):
 
     brutal_apt_options = True
 
-    def up(self, *args, **kwargs):
+    def up(self, *args, **kwargs) -> None:
         self.package_manager = PackageManager(always_noninteractive=False)
         handler = _PackageManagerLoggerHandlerWithoutProcess(self.message, self.step, self.error)
         self.package_manager.logger.addHandler(handler)
@@ -393,11 +404,11 @@ class AptScript(SetupScript):
         self.current_server_role = self.ucr.get('server/role')
         self.wanted_server_role = self.profile.get('server/role')
 
-    def set_always_install(self, *packages):
+    def set_always_install(self, *packages) -> None:
         self.package_manager.always_install(packages)
 
     @contextmanager
-    def noninteractive(self):
+    def noninteractive(self) -> Iterator[None]:
         if self.brutal_apt_options:
             with self.package_manager.brutal_noninteractive():
                 yield
@@ -405,14 +416,14 @@ class AptScript(SetupScript):
             with self.package_manager.noninteractive():
                 yield
 
-    def update(self):
+    def update(self) -> bool:
         with self.noninteractive():
             return self.package_manager.update()
 
-    def get_package(self, pkg_name):
+    def get_package(self, pkg_name: str) -> Optional[apt.package.Package]:
         return self.package_manager.get_package(pkg_name)
 
-    def finish_task(self, *log_msgs):
+    def finish_task(self, *log_msgs: object) -> None:
         """
         Task is finished. Increment counter and inform
         the progress parser. Reopen the cache (maybe unneeded
@@ -422,25 +433,30 @@ class AptScript(SetupScript):
         self.package_manager.add_hundred_percent()
         self.reopen_cache()
 
-    def reopen_cache(self):
-        return self.package_manager.reopen_cache()
+    def reopen_cache(self) -> None:
+        self.package_manager.reopen_cache()
 
-    def mark_auto(self, auto, *pkgs):
-        return self.package_manager.mark_auto(auto, *pkgs)
+    def mark_auto(self, auto: bool, *pkgs: str) -> None:
+        self.package_manager.mark_auto(auto, *pkgs)
 
-    def commit(self, install=None, remove=None, msg_if_failed=''):
+    def commit(
+        self,
+        install: Iterable[str] = [],
+        remove: Iterable[str] = [],
+        msg_if_failed: str = '',
+    ) -> bool:
         with self.noninteractive():
             return self.package_manager.commit(install, remove, msg_if_failed=msg_if_failed)
 
-    def install(self, *pkg_names):
+    def install(self, *pkg_names: str) -> bool:
         with self.noninteractive():
             return self.package_manager.install(*pkg_names)
 
-    def uninstall(self, *pkg_names):
+    def uninstall(self, *pkg_names: str) -> bool:
         with self.noninteractive():
             return self.package_manager.uninstall(*pkg_names)
 
-    def get_package_for_role(self, role_name):
+    def get_package_for_role(self, role_name: str) -> Optional[apt.package.Package]:
         """
         Searches for the meta-package that belongs
         to the given role_name
@@ -453,15 +469,15 @@ class AptScript(SetupScript):
             self.error(_('Failed to get package for Role %s') % role_name)
             return None
 
-    def autoremove(self):
+    def autoremove(self) -> bool:
         with self.noninteractive():
             return self.package_manager.autoremove()
 
-    def down(self):
+    def down(self) -> None:
         self.package_manager.unlock()
 
 
-def main(setup_script, exit=True):
+def main(setup_script: SetupScript, exit: bool = True) -> int:
     '''
     Helper function to run the setup_script and evaluate its
     return code as a "shell-compatible" one. You may sys.exit immediately

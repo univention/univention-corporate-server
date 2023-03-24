@@ -1,9 +1,6 @@
 #!/usr/bin/python3
 # -*- coding: utf-8 -*-
 #
-# Univention Management Console
-#  module: system setup
-#
 # Like what you see? Join us!
 # https://www.univention.com/about-us/careers/vacancies/
 #
@@ -34,6 +31,13 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
+"""
+Univention Management Console
+ module: system setup
+"""
+
+from __future__ import annotations
+
 import copy
 import csv
 import ipaddress
@@ -49,6 +53,7 @@ import threading
 import time
 import traceback
 from contextlib import contextmanager
+from typing import IO, Any, Container, Dict, Iterator, List, Mapping, Pattern, Set
 
 import dns.exception
 import dns.resolver
@@ -127,16 +132,15 @@ UCR_VARIABLES = [
 ]
 
 
-def timestamp():
+def timestamp() -> str:
     return time.strftime('%Y-%m-%d %H:%M:%S')
 
 
-def is_system_joined():
+def is_system_joined() -> bool:
     return os.path.exists('/var/univention-join/joined')
 
 
-def load_values(lang=None):
-    # load UCR variables
+def load_values(lang: str | None = None) -> Dict[str, str]:
     ucr.load()
     values = {ikey: ucr[ikey] if ucr[ikey] else ucr[ikey] for ikey in UCR_VARIABLES}
 
@@ -179,7 +183,7 @@ def load_values(lang=None):
     return values
 
 
-def auto_complete_values_for_join(newValues, current_locale=None):
+def auto_complete_values_for_join(newValues: Dict[str, str], current_locale: Locale | None = None) -> Dict[str, str]:
     # try to automatically determine the domain, except on a dcmaster
     if newValues['server/role'] != 'domaincontroller_master' and not newValues.get('domainname'):
         ucr.load()
@@ -220,7 +224,7 @@ def auto_complete_values_for_join(newValues, current_locale=None):
 
     # add lists with all packages that should be removed/installed on the system
     if selectedComponents:
-        currentComponents = set()
+        currentComponents: Set[str] = set()
         for iapp in get_apps():
             if iapp['is_installed']:
                 for ipackages in (iapp['default_packages'], iapp['default_packages_master']):
@@ -268,7 +272,7 @@ def auto_complete_values_for_join(newValues, current_locale=None):
     return newValues
 
 
-def pre_save(newValues):
+def pre_save(newValues: Dict[str, str]) -> None:
     """Modify the final dict before saving it to the profile file."""
     # network interfaces
     from univention.management.console.modules.setup.network import Interfaces
@@ -279,7 +283,7 @@ def pre_save(newValues):
         newValues.update({key: value or '' for key, value in interfaces.to_ucr().items()})
 
 
-def write_profile(values):
+def write_profile(values: Dict[str, str]) -> None:
     pre_save(values)
     old_umask = os.umask(0o177)
     try:
@@ -292,7 +296,7 @@ def write_profile(values):
         os.umask(old_umask)
 
 
-def run_networkscrips(demo_mode=False):
+def run_networkscrips(demo_mode: bool = False) -> None:
     # write header before executing scripts
     f = open(LOG_FILE, 'a')
     f.write('\n\n=== RUNNING NETWORK APPLY SCRIPTS (%s) ===\n\n' % timestamp())
@@ -329,7 +333,7 @@ def run_networkscrips(demo_mode=False):
 
 
 @contextmanager
-def written_profile(values):
+def written_profile(values: Dict[str, str]) -> Iterator[None]:
     write_profile(values)
     try:
         yield
@@ -339,10 +343,10 @@ def written_profile(values):
 
 class ProgressState(object):
 
-    def __init__(self):
+    def __init__(self) -> None:
         self.reset()
 
-    def reset(self):
+    def reset(self) -> None:
         self.name = ''
         self.message = ''
         self._percentage = 0.0
@@ -351,20 +355,20 @@ class ProgressState(object):
         self.steps = 1
         self.step = 0
         self.max = 100
-        self.errors = []
+        self.errors: List[str] = []
         self.critical = False
 
     @property
-    def percentage(self):
+    def percentage(self) -> float:
         return (self._percentage + self.fraction * (self.step / float(self.steps))) / self.max * 100
 
-    def __eq__(self, other):
+    def __eq__(self, other: Any) -> bool:
         return self.name == other.name and self.message == other.message and self.percentage == other.percentage and self.fraction == other.fraction and self.steps == other.steps and self.step == other.step and self.errors == other.errors and self.critical == other.critical
 
-    def __ne__(self, other):
+    def __ne__(self, other: Any) -> bool:
         return not self.__eq__(other)
 
-    def __bool__(self):
+    def __bool__(self) -> bool:
         return bool(self.name or self.message or self.percentage or self._join_error or self._misc_error)
     __nonzero__ = __bool__
 
@@ -394,13 +398,13 @@ class ProgressParser(object):
     }
 
     # current status
-    def __init__(self):
+    def __init__(self) -> None:
         self.current = ProgressState()
         self.old = ProgressState()
-        self.allowed_subdirs = None
+        self.allowed_subdirs: Container[str] | None = None
         self.reset()
 
-    def reset(self, allowed_subdirs=None):
+    def reset(self, allowed_subdirs: Container[str] | None = None) -> None:
         self.allowed_subdirs = allowed_subdirs
         ucr.load()
         self.current.reset()
@@ -408,7 +412,7 @@ class ProgressParser(object):
         self.fractions = copy.copy(ProgressParser.FRACTIONS)
         self.calculateFractions()
 
-    def calculateFractions(self):
+    def calculateFractions(self) -> None:
         MODULE.info('Calculating maximum value for fractions ...')
         for category in [x for x in os.listdir(PATH_SETUP_SCRIPTS) if os.path.isdir(os.path.join(PATH_SETUP_SCRIPTS, x))]:
             cat_path = os.path.join(PATH_SETUP_SCRIPTS, category)
@@ -424,14 +428,14 @@ class ProgressParser(object):
         MODULE.info('Dumping all fractions:\n%s' % self.fractions)
 
     @property
-    def changed(self):
+    def changed(self) -> bool:
         if self.current != self.old:
             MODULE.info('Progress state has changed!')
             self.old = copy.copy(self.current)
             return True
         return False
 
-    def parse(self, line):
+    def parse(self, line: str) -> bool:
         # start new component name
         match = ProgressParser.NAME.match(line)
         if match is not None:
@@ -497,7 +501,7 @@ class ProgressParser(object):
         return False
 
 
-def sorted_files_in_subdirs(directory, allowed_subdirs=None):
+def sorted_files_in_subdirs(directory: str, allowed_subdirs: Container[str] | None = None) -> Iterator[str]:
     for entry in sorted(os.listdir(directory)):
         if allowed_subdirs and entry not in allowed_subdirs:
             continue
@@ -507,7 +511,7 @@ def sorted_files_in_subdirs(directory, allowed_subdirs=None):
                 yield os.path.join(path, filename)
 
 
-def run_scripts(progressParser, restartServer=False, allowed_subdirs=None, lang='C', args=[]):
+def run_scripts(progressParser: ProgressParser, restartServer: bool = False, allowed_subdirs: Container[str] | None = None, lang: str = 'C', args: List[str] = []) -> None:
     # write header before executing scripts
     f = open(LOG_FILE, 'a')
     f.write('\n\n=== RUNNING SETUP SCRIPTS (%s) ===\n\n' % timestamp())
@@ -575,7 +579,7 @@ systemctl restart univention-management-console-web-server''')
 
 
 @contextmanager
-def _temporary_password_file(password):
+def _temporary_password_file(password: str) -> Iterator[str]:
     # write password file
     with open(PATH_PASSWORD_FILE, 'w') as fp:
         fp.write('%s' % password)
@@ -587,7 +591,7 @@ def _temporary_password_file(password):
         os.remove(PATH_PASSWORD_FILE)
 
 
-def run_joinscript(progressParser, values, _username, password, dcname=None, lang='C'):
+def run_joinscript(progressParser: ProgressParser, values: Dict[str, str], _username: str, password: str, dcname: str | None = None, lang: str = 'C') -> None:
     # write header before executing join script
     f = open(LOG_FILE, 'a')
     f.write('\n\n=== RUNNING SETUP JOIN SCRIPT (%s) ===\n\n' % timestamp())
@@ -650,7 +654,7 @@ def run_joinscript(progressParser, values, _username, password, dcname=None, lan
     f.close()
 
 
-def cleanup(with_appliance_hooks=False):
+def cleanup(with_appliance_hooks: bool = False) -> None:
     # add delay of 1 sec before actually executing the commands
     # in order to avoid problems with restarting the UMC server
     # and thus killing the setup module process
@@ -663,7 +667,7 @@ def cleanup(with_appliance_hooks=False):
     atjobs.add(cmd)
 
 
-def run_scripts_in_path(path, logfile, category_name=""):
+def run_scripts_in_path(path: str, logfile: IO[str], category_name: str = "") -> None:
     logfile.write('\n=== Running %s scripts (%s) ===\n' % (category_name, timestamp()))
     logfile.flush()
 
@@ -681,18 +685,18 @@ def run_scripts_in_path(path, logfile, category_name=""):
     logfile.flush()
 
 
-def create_status_file():
+def create_status_file() -> None:
     with open(PATH_STATUS_FILE, 'w') as status_file:
         status_file.write('"setup-scripts"')
 
 
-def detect_interfaces():
+def detect_interfaces() -> List[Dict[str, str | None]]:
     """
     Function to detect network interfaces in local sysfs.
     The loopback interface "lo" will be filtered out.
     Returns a list of dicts with the entries 'name' and 'mac'.
     """
-    interfaces = []
+    interfaces: List[Dict[str, str | None]] = []
 
     if not os.path.exists(PATH_SYS_CLASS_NET):
         return interfaces
@@ -720,7 +724,7 @@ def detect_interfaces():
     return interfaces
 
 
-def dhclient(interface, timeout=None):
+def dhclient(interface: str, timeout: float | None = None) -> Dict[str, str]:
     """
     perform DHCP request for specified interface. If successful, returns a dict
     similar to the following:
@@ -753,7 +757,7 @@ def dhclient(interface, timeout=None):
     def _readerthread(fh, stringbufferlist):
         stringbufferlist.append(fh.read())
 
-    stderr = []
+    stderr = []  # type: List[str]
     stderr_thread = threading.Thread(target=_readerthread, args=(p.stderr, stderr))
     stderr_thread.daemon = True
     stderr_thread.start()
@@ -787,20 +791,20 @@ def dhclient(interface, timeout=None):
     return dhcp_dict
 
 
-def get_apps(no_cache=False):
+def get_apps(no_cache: bool = False) -> List[Dict[str, Any]]:
     if no_cache:
         AppCache().clear_cache()
     get = get_action('get')
     return [get.to_dict(app) for app in Apps().get_all_apps() if app.is_ucs_component()]
 
 
-def is_proxy(proxy):
+def is_proxy(proxy: str) -> bool:
     if proxy and proxy != 'http://' and proxy != 'https://' and not proxy.startswith('http://') and not proxy.startswith('https://'):
         return False
     return True
 
 
-def is_ipaddr(addr):
+def is_ipaddr(addr: str) -> bool:
     try:
         ipaddress.ip_address(u'%s' % (addr,))
     except ValueError:
@@ -808,7 +812,7 @@ def is_ipaddr(addr):
     return True
 
 
-def is_ipv4addr(addr):
+def is_ipv4addr(addr: str) -> bool:
     try:
         ipaddress.IPv4Address(u'%s' % (addr,))
     except ValueError:
@@ -816,7 +820,7 @@ def is_ipv4addr(addr):
     return True
 
 
-def is_ipv4netmask(addr_netmask):
+def is_ipv4netmask(addr_netmask: str) -> bool:
     try:
         ipaddress.IPv4Network(u'%s' % (addr_netmask,), False)
     except (ValueError, ipaddress.NetmaskValueError, ipaddress.AddressValueError):
@@ -824,7 +828,7 @@ def is_ipv4netmask(addr_netmask):
     return True
 
 
-def is_ipv6addr(addr):
+def is_ipv6addr(addr: str) -> bool:
     try:
         ipaddress.IPv6Address(u'%s' % (addr,))
     except ValueError:
@@ -832,7 +836,7 @@ def is_ipv6addr(addr):
     return True
 
 
-def is_ipv6netmask(addr_netmask):
+def is_ipv6netmask(addr_netmask: str) -> bool:
     try:
         ipaddress.IPv6Network(u'%s' % (addr_netmask,), False)
     except (ValueError, ipaddress.NetmaskValueError, ipaddress.AddressValueError):
@@ -840,14 +844,14 @@ def is_ipv6netmask(addr_netmask):
     return True
 
 
-def is_hostname(hostname):
-    return is_hostname.RE.match(hostname) is not None
+def is_hostname(hostname: str) -> bool:
+    return is_hostname.RE.match(hostname) is not None  # type: ignore
 
 
-is_hostname.RE = re.compile("^[a-z0-9]([a-z0-9-]*[a-z0-9])?$", re.IGNORECASE)
+is_hostname.RE = re.compile("^[a-z0-9]([a-z0-9-]*[a-z0-9])?$", re.IGNORECASE)  # type: ignore
 
 
-def is_domainname(domainname):
+def is_domainname(domainname: str) -> bool:
     """
     Check if domainname is a valid DNS domainname according to RFC952/1123.
     >>> is_domainname('foo')
@@ -865,20 +869,20 @@ def is_domainname(domainname):
     >>> is_domainname('1234567890123456789012345678901234567890123456789012345678901234.bar')
     False
     """
-    return all(is_domainname.RE.match(_) for _ in domainname.split('.'))
+    return all(is_domainname.RE.match(_) for _ in domainname.split('.'))  # type: ignore
 
 
-is_domainname.RE = re.compile(r'^[a-z0-9]([a-z0-9-]{0,61}[a-z0-9])?$', re.I)
+is_domainname.RE = re.compile(r'^[a-z0-9]([a-z0-9-]{0,61}[a-z0-9])?$', re.I)  # type: ignore
 
 
-def is_windowsdomainname(domainname):
-    return is_windowsdomainname.RE.match(domainname) is not None and len(domainname) < 14
+def is_windowsdomainname(domainname: str) -> bool:
+    return is_windowsdomainname.RE.match(domainname) is not None and len(domainname) < 14  # type: ignore
 
 
-is_windowsdomainname.RE = re.compile(r"^[A-Z](?:[A-Z0-9-]*[A-Z0-9])?$")
+is_windowsdomainname.RE = re.compile(r"^[A-Z](?:[A-Z0-9-]*[A-Z0-9])?$")  # type: ignore
 
 
-def domain2windowdomain(domainname):
+def domain2windowdomain(domainname: str) -> str:
     windomain = domainname.split('.', 1)[0].upper()
 
     invalidChars = re.compile(r"^[^A-Z]*([A-Z0-9-]*?)[^A-Z0-9]*$")
@@ -893,14 +897,14 @@ def domain2windowdomain(domainname):
     return windomain
 
 
-def is_domaincontroller(domaincontroller):
-    return is_domaincontroller.RE.match(domaincontroller) is not None
+def is_domaincontroller(domaincontroller: str) -> bool:
+    return is_domaincontroller.RE.match(domaincontroller) is not None  # type: ignore
 
 
-is_domaincontroller.RE = re.compile(r"^[a-zA-Z].*\..*$")
+is_domaincontroller.RE = re.compile(r"^[a-zA-Z].*\..*$")  # type: ignore
 
 
-def is_ldap_base(ldap_base):
+def is_ldap_base(ldap_base: str) -> bool:
     """
     >>> is_ldap_base('dc=foo,dc=bar')
     True
@@ -917,17 +921,17 @@ def is_ldap_base(ldap_base):
     >>> is_ldap_base('cn=foo,c=ZZ,dc=foo,dc=bar')
     False
     """
-    match = is_ldap_base.RE.match(ldap_base)
-    return match is not None and not any(part.upper().startswith('C=') and part.upper()[2:] not in is_ldap_base.CC for part in ldap.dn.explode_dn(ldap_base))
+    match = is_ldap_base.RE.match(ldap_base)  # type: ignore
+    return match is not None and not any(part.upper().startswith('C=') and part.upper()[2:] not in is_ldap_base.CC for part in ldap.dn.explode_dn(ldap_base))  # type: ignore
 
 
-is_ldap_base.RE = re.compile('^(c=[A-Za-z]{2}|(dc|cn|o|l)=[a-zA-Z0-9-]+)(,(c=[A-Za-z]{2}|((dc|cn|o|l)=[a-zA-Z0-9-]+)))+$')
-is_ldap_base.CC = ['AD', 'AE', 'AF', 'AG', 'AI', 'AL', 'AM', 'AO', 'AQ', 'AR', 'AS', 'AT', 'AU', 'AW', 'AX', 'AZ', 'BA', 'BB', 'BD', 'BE', 'BF', 'BG', 'BH', 'BI', 'BJ', 'BL', 'BM', 'BN', 'BO', 'BQ', 'BR', 'BS', 'BT', 'BV', 'BW', 'BY', 'BZ', 'CA', 'CC', 'CD', 'CF', 'CG', 'CH', 'CI', 'CK', 'CL', 'CM', 'CN', 'CO', 'CR', 'CU', 'CV', 'CW', 'CX', 'CY', 'CZ', 'DE', 'DJ', 'DK', 'DM', 'DO', 'DZ', 'EC', 'EE', 'EG', 'EH', 'ER', 'ES', 'ET', 'FI', 'FJ', 'FK', 'FM', 'FO', 'FR', 'GA', 'GB', 'GD', 'GE', 'GF', 'GG', 'GH', 'GI', 'GL', 'GM', 'GN', 'GP', 'GQ', 'GR', 'GS', 'GT', 'GU', 'GW', 'GY', 'HK', 'HM', 'HN', 'HR', 'HT', 'HU', 'ID', 'IE', 'IL', 'IM', 'IN', 'IO', 'IQ', 'IR', 'IS', 'IT', 'JE', 'JM', 'JO', 'JP', 'KE', 'KG', 'KH', 'KI', 'KM', 'KN', 'KP', 'KR', 'KW', 'KY', 'KZ', 'LA', 'LB', 'LC', 'LI', 'LK', 'LR', 'LS', 'LT', 'LU', 'LV', 'LY', 'MA', 'MC', 'MD', 'ME', 'MF', 'MG', 'MH', 'MK', 'ML', 'MM', 'MN', 'MO', 'MP', 'MQ', 'MR', 'MS', 'MT', 'MU', 'MV', 'MW', 'MX', 'MY', 'MZ', 'NA', 'NC', 'NE', 'NF', 'NG', 'NI', 'NL', 'NO', 'NP', 'NR', 'NU', 'NZ', 'OM', 'PA', 'PE', 'PF', 'PG', 'PH', 'PK', 'PL', 'PM', 'PN', 'PR', 'PS', 'PT', 'PW', 'PY', 'QA', 'RE', 'RO', 'RS', 'RU', 'RW', 'SA', 'SB', 'SC', 'SD', 'SE', 'SG', 'SH', 'SI', 'SJ', 'SK', 'SL', 'SM', 'SN', 'SO', 'SR', 'SS', 'ST', 'SV', 'SX', 'SY', 'SZ', 'TC', 'TD', 'TF', 'TG', 'TH', 'TJ', 'TK', 'TL', 'TM', 'TN', 'TO', 'TR', 'TT', 'TV', 'TW', 'TZ', 'UA', 'UG', 'UM', 'US', 'UY', 'UZ', 'VA', 'VC', 'VE', 'VG', 'VI', 'VN', 'VU', 'WF', 'WS', 'YE', 'YT', 'ZA', 'ZM', 'ZW']
+is_ldap_base.RE = re.compile('^(c=[A-Za-z]{2}|(dc|cn|o|l)=[a-zA-Z0-9-]+)(,(c=[A-Za-z]{2}|((dc|cn|o|l)=[a-zA-Z0-9-]+)))+$')  # type: ignore
+is_ldap_base.CC = ['AD', 'AE', 'AF', 'AG', 'AI', 'AL', 'AM', 'AO', 'AQ', 'AR', 'AS', 'AT', 'AU', 'AW', 'AX', 'AZ', 'BA', 'BB', 'BD', 'BE', 'BF', 'BG', 'BH', 'BI', 'BJ', 'BL', 'BM', 'BN', 'BO', 'BQ', 'BR', 'BS', 'BT', 'BV', 'BW', 'BY', 'BZ', 'CA', 'CC', 'CD', 'CF', 'CG', 'CH', 'CI', 'CK', 'CL', 'CM', 'CN', 'CO', 'CR', 'CU', 'CV', 'CW', 'CX', 'CY', 'CZ', 'DE', 'DJ', 'DK', 'DM', 'DO', 'DZ', 'EC', 'EE', 'EG', 'EH', 'ER', 'ES', 'ET', 'FI', 'FJ', 'FK', 'FM', 'FO', 'FR', 'GA', 'GB', 'GD', 'GE', 'GF', 'GG', 'GH', 'GI', 'GL', 'GM', 'GN', 'GP', 'GQ', 'GR', 'GS', 'GT', 'GU', 'GW', 'GY', 'HK', 'HM', 'HN', 'HR', 'HT', 'HU', 'ID', 'IE', 'IL', 'IM', 'IN', 'IO', 'IQ', 'IR', 'IS', 'IT', 'JE', 'JM', 'JO', 'JP', 'KE', 'KG', 'KH', 'KI', 'KM', 'KN', 'KP', 'KR', 'KW', 'KY', 'KZ', 'LA', 'LB', 'LC', 'LI', 'LK', 'LR', 'LS', 'LT', 'LU', 'LV', 'LY', 'MA', 'MC', 'MD', 'ME', 'MF', 'MG', 'MH', 'MK', 'ML', 'MM', 'MN', 'MO', 'MP', 'MQ', 'MR', 'MS', 'MT', 'MU', 'MV', 'MW', 'MX', 'MY', 'MZ', 'NA', 'NC', 'NE', 'NF', 'NG', 'NI', 'NL', 'NO', 'NP', 'NR', 'NU', 'NZ', 'OM', 'PA', 'PE', 'PF', 'PG', 'PH', 'PK', 'PL', 'PM', 'PN', 'PR', 'PS', 'PT', 'PW', 'PY', 'QA', 'RE', 'RO', 'RS', 'RU', 'RW', 'SA', 'SB', 'SC', 'SD', 'SE', 'SG', 'SH', 'SI', 'SJ', 'SK', 'SL', 'SM', 'SN', 'SO', 'SR', 'SS', 'ST', 'SV', 'SX', 'SY', 'SZ', 'TC', 'TD', 'TF', 'TG', 'TH', 'TJ', 'TK', 'TL', 'TM', 'TN', 'TO', 'TR', 'TT', 'TV', 'TW', 'TZ', 'UA', 'UG', 'UM', 'US', 'UY', 'UZ', 'VA', 'VC', 'VE', 'VG', 'VI', 'VN', 'VU', 'WF', 'WS', 'YE', 'YT', 'ZA', 'ZM', 'ZW']  # type: ignore
 
 # new defined methods
 
 
-def is_ascii(string):
+def is_ascii(string: str) -> bool:
     try:
         string.encode("ascii")
         return True
@@ -935,18 +939,18 @@ def is_ascii(string):
         return False
 
 
-def _get_dns_resolver(nameserver):
+def _get_dns_resolver(nameserver: str) -> dns.resolver.Resolver:
     resolver = dns.resolver.Resolver()
     resolver.lifetime = 10  # make sure that we get an early timeout
     resolver.nameservers = [nameserver]
     return resolver
 
 
-def is_ucs_domain(nameserver, domain):
+def is_ucs_domain(nameserver: str, domain: str) -> bool:
     return bool(get_ucs_domaincontroller_master_query(nameserver, domain))
 
 
-def get_ucs_domaincontroller_master_query(nameserver, domain):
+def get_ucs_domaincontroller_master_query(nameserver: str, domain: str) -> dns.resolver.Answer | None:
     if not nameserver or not domain:
         return
 
@@ -964,7 +968,7 @@ def get_ucs_domaincontroller_master_query(nameserver, domain):
         MODULE.error('DNS Exception: %s' % (traceback.format_exc()))
 
 
-def resolve_domaincontroller_master_srv_record(nameserver, domain):
+def resolve_domaincontroller_master_srv_record(nameserver: str, domain: str) -> bool:
     query = get_ucs_domaincontroller_master_query(nameserver, domain)
     if not query:
         return False
@@ -974,7 +978,7 @@ def resolve_domaincontroller_master_srv_record(nameserver, domain):
         return False
 
 
-def is_ssh_reachable(host):
+def is_ssh_reachable(host: str) -> bool:
     if not host:
         return False
     s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -992,20 +996,20 @@ def is_ssh_reachable(host):
     return False
 
 
-def get_ucs_domain(nameserver):
+def get_ucs_domain(nameserver: str) -> str:
     domain = get_domain(nameserver)
     if not is_ucs_domain(nameserver, domain):
         return None
     return domain
 
 
-def get_domain(nameserver):
+def get_domain(nameserver: str) -> str:
     fqdn = get_fqdn(nameserver)
     if fqdn:
         return '.'.join(fqdn.split('.')[1:])
 
 
-def get_fqdn(nameserver):
+def get_fqdn(nameserver: str) -> str | None:
     # register nameserver
     resolver = _get_dns_resolver(nameserver)
 
@@ -1031,7 +1035,7 @@ def get_fqdn(nameserver):
     return None
 
 
-def get_available_locales(pattern, category='language_en'):
+def get_available_locales(pattern: Pattern[str], category: str = 'language_en') -> List[Dict[str, str]] | None:
     """Return a list of all available locales."""
     try:
         fsupported = open('/usr/share/i18n/SUPPORTED')
@@ -1104,7 +1108,7 @@ def get_available_locales(pattern, category='language_en'):
 _city_data = None
 
 
-def get_city_data():
+def get_city_data() -> Any:
     global _city_data
     if not _city_data:
         with open(CITY_DATA_PATH) as infile:
@@ -1115,7 +1119,7 @@ def get_city_data():
 _country_data = None
 
 
-def get_country_data():
+def get_country_data() -> Any:
     global _country_data
     if not _country_data:
         with open(COUNTRY_DATA_PATH) as infile:
@@ -1123,7 +1127,7 @@ def get_country_data():
     return _country_data
 
 
-def get_random_nameserver(country):
+def get_random_nameserver(country: Mapping[str, Any]) -> Dict[str, str | None]:
     ipv4_servers = country.get('ipv4') or country.get('ipv4_erroneous') or [None]
     ipv6_servers = country.get('ipv6') or country.get('ipv6_erroneous') or [None]
     return {
@@ -1132,7 +1136,7 @@ def get_random_nameserver(country):
     }
 
 
-def check_credentials_ad(nameserver, address, username, password):
+def check_credentials_ad(nameserver: str, address: str, username: str, password: str) -> str:
     try:
         ad_domain_info = lookup_adds_dc(address, ucr={'nameserver1': nameserver})
         check_connection(ad_domain_info, username, password)

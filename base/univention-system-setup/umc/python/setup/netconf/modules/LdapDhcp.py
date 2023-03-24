@@ -10,14 +10,14 @@ class PhaseLdapDhcp(LdapChange):
 
     priority = 48
 
-    def post(self):
+    def post(self) -> None:
         try:
             self.open_ldap()
             self._create_subnet()
         except (LDAPError, UniventionBaseException) as ex:
             self.logger.warning("Failed LDAP: %s", ex)
 
-    def _create_subnet(self):
+    def _create_subnet(self) -> None:
         ipv4 = self.changeset.new_interfaces.get_default_ipv4_address()
         if not ipv4:
             return

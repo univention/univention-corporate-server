@@ -1,11 +1,15 @@
 import os
+from ipaddress import IPv4Interface, IPv6Interface
+from typing import Iterable, Union
 
 from ldap import LDAPError
 from ldap.filter import escape_filter_chars
 
 import univention.admin.objects
 from univention.admin import modules
+from univention.admin.handlers import simpleComputer
 from univention.admin.uexceptions import base as UniventionBaseException
+from univention.management.console.modules.setup.netconf import ChangeSet
 from univention.management.console.modules.setup.netconf.common import (
     AddressMap, LdapChange, convert_udm_subnet_to_network,
 )
@@ -18,11 +22,11 @@ class PhaseLdapSelf(AddressMap, LdapChange, Executable):
     priority = 40
     executable = "/usr/share/univention-directory-manager-tools/univention-dnsedit"
 
-    def __init__(self, changeset):
+    def __init__(self, changeset: ChangeSet) -> None:
         super(PhaseLdapSelf, self).__init__(changeset)
         self.module = None
 
-    def post(self):
+    def post(self) -> None:
         try:
             self.open_ldap()
             self._get_module()
@@ -39,25 +43,25 @@ class PhaseLdapSelf(AddressMap, LdapChange, Executable):
         except (LDAPError, UniventionBaseException) as ex:
             self.logger.warning("Failed LDAP: %s", ex, exc_info=True)
 
-    def _get_module(self):
+    def _get_module(self) -> None:
         modules.update()
         module_name = "computers/%(server/role)s" % self.changeset.ucr
         self.module = modules.get(module_name)
         modules.init(self.ldap, self.position, self.module)
 
-    def _find_computer_by_dn(self):
+    def _find_computer_by_dn(self) -> simpleComputer:
         self_dn = self.changeset.ucr["ldap/hostdn"]
         return self._get_computer_at_dn(self_dn)
 
-    def _find_computer_by_ipv4(self):
+    def _find_computer_by_ipv4(self) -> simpleComputer:
         ldap_filter = self._build_address_filter("aRecord", self.changeset.old_ipv4s)
         return self._search_computer(ldap_filter)
 
-    def _find_computer_by_ipv6(self):
+    def _find_computer_by_ipv6(self) -> simpleComputer:
         ldap_filter = self._build_address_filter("aAARecord", self.changeset.old_ipv6s)
         return self._search_computer(ldap_filter)
 
-    def _build_address_filter(self, key, addresses):
+    def _build_address_filter(self, key: str, addresses: Iterable[Union[IPv4Interface, IPv6Interface]]) -> str:
         hostname = self.changeset.ucr["hostname"]
         addresses = [
             "(%s=%s)" % (key, escape_filter_chars(str(address.ip)))
@@ -69,7 +73,7 @@ class PhaseLdapSelf(AddressMap, LdapChange, Executable):
         )
         return ldap_filter
 
-    def _search_computer(self, ldap_filter):
+    def _search_computer(self, ldap_filter: str) -> simpleComputer:
         self.logger.debug("Searching '%s'...", ldap_filter)
         result = self.ldap.searchDn(ldap_filter)
         try:
@@ -78,12 +82,12 @@ class PhaseLdapSelf(AddressMap, LdapChange, Executable):
             raise KeyError(ldap_filter)
         return self._get_computer_at_dn(self_dn)
 
-    def _get_computer_at_dn(self, dn):
+    def _get_computer_at_dn(self, dn: str) -> simpleComputer:
         computer = univention.admin.objects.get(self.module, None, self.ldap, self.position, dn)
         computer.open()
         return computer
 
-    def _update(self, computer):
+    def _update(self, computer: simpleComputer) -> None:
         self._update_ips(computer)
         self._update_reverse_zones(computer)
         self._update_mac(computer)
@@ -91,11 +95,11 @@ class PhaseLdapSelf(AddressMap, LdapChange, Executable):
         if not self.changeset.no_act:
             computer.modify()
 
-    def _update_ips(self, computer):
+    def _update_ips(self, computer: simpleComputer) -> None:
         all_addr = [str(addr.ip) for addr in (self.changeset.new_ipv4s + self.changeset.new_ipv6s)]
         computer["ip"] = list(set(all_addr))
 
-    def _update_reverse_zones(self, computer):
+    def _update_reverse_zones(self, computer: simpleComputer) -> None:
         reverse_module = modules.get("dns/reverse_zone")
         modules.init(self.ldap, self.position, reverse_module)
         reverse_zones = reverse_module.lookup(None, self.ldap, None)
@@ -109,7 +113,7 @@ class PhaseLdapSelf(AddressMap, LdapChange, Executable):
             if addr.ip in convert_udm_subnet_to_network(zone.info["subnet"])
         ]
 
-    def _update_mac(self, computer):
+    def _update_mac(self, computer: simpleComputer) -> None:
         macs = set()
         for name in self.changeset.new_names:
             filename = os.path.join("/sys/class/net", name, "address")

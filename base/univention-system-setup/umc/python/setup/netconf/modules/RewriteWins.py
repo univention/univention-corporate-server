@@ -10,12 +10,12 @@ class PhaseRewriteWins(AddressMap):
     priority = 95
     filename = "/var/lib/samba/wins.dat"
 
-    def check(self):
+    def check(self) -> None:
         super(PhaseRewriteWins, self).check()
         if not os.path.exists(self.filename):
             raise SkipPhase("No wins.dat")
 
-    def pre(self):
+    def pre(self) -> None:
         tmp_wins = "%s.%d" % (self.filename, os.getpid())
         with open(self.filename) as read_wins, open(tmp_wins, "w") as write_wins:
             for line in read_wins:

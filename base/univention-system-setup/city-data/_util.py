@@ -33,9 +33,10 @@
 import json
 import os
 import sys
+from typing import Any, Container, Dict, List, Tuple
 
 
-def _get_path(filename):
+def _get_path(filename: str) -> str:
     for ipath in (
             os.path.join(os.path.dirname(sys.argv[0]), filename),
             filename,
@@ -45,7 +46,7 @@ def _get_path(filename):
     raise RuntimeError('Cannot find data file %s' % filename)
 
 
-def get_country_codes(countryCodeKeyType=2):
+def get_country_codes(countryCodeKeyType: int = 2) -> Dict[str, str]:
     if countryCodeKeyType == 2:
         idx1 = 0
         idx2 = 1
@@ -65,7 +66,7 @@ def get_country_codes(countryCodeKeyType=2):
         return pairs
 
 
-def get_country_code_to_geonameid_map(countryCodeType=2):
+def get_country_code_to_geonameid_map(countryCodeType: int = 2) -> Dict[str, str]:
     countries = {}
     if countryCodeType == 2:
         countryCodeIndex = 0
@@ -83,7 +84,7 @@ def get_country_code_to_geonameid_map(countryCodeType=2):
     return countries
 
 
-def get_country_default_language(countryCodeType=2):
+def get_country_default_language(countryCodeType: int = 2) -> Dict[str, str]:
     if countryCodeType == 2:
         countryCodeIndex = 0
     elif countryCodeType == 3:
@@ -110,7 +111,7 @@ def get_country_default_language(countryCodeType=2):
     return locales
 
 
-def get_city_geonameid_to_country_code_map():
+def get_city_geonameid_to_country_code_map() -> Dict[str, str]:
     cities = {}
     with open(_get_path('cities15000.txt')) as infile:
         for line in infile:
@@ -119,7 +120,7 @@ def get_city_geonameid_to_country_code_map():
     return cities
 
 
-def get_city_data():
+def get_city_data() -> Dict[str, Dict[str, Any]]:
     cities = {}
     with open(_get_path('cities15000.txt')) as infile:
         for line in infile:
@@ -132,9 +133,9 @@ def get_city_data():
     return cities
 
 
-def get_localized_names(geonameids, lang):
+def get_localized_names(geonameids: Container[str], lang: str) -> Dict[str, str]:
     labels = {}
-    label_score = {}
+    label_score: Dict[str, int] = {}
     with open(_get_path('alternateNames.txt')) as infile:
         for line in infile:
             parts = line.split('\t')
@@ -149,10 +150,11 @@ def get_localized_names(geonameids, lang):
                 if iscore >= label_score.get(iid, 0):
                     labels[iid] = ilabel
                     label_score[iid] = iscore
+
     return labels
 
 
-def get_alternate_names(geonameids, *locales):
+def get_alternate_names(geonameids: Container[str], *locales: str) -> List[Tuple[str, str]]:
     labels = []
     with open(_get_path('alternateNames.txt')) as infile:
         for line in infile:
@@ -163,22 +165,25 @@ def get_alternate_names(geonameids, *locales):
 
             if iid in geonameids and (not ilang or ilang in locales):
                 labels.append((iid, ilabel))
+
     return labels
 
 
-def get_timezones():
+def get_timezones() -> Dict[str, Dict[str, str]]:
     with open(_get_path('timeZones.txt')) as infile:
         countries = {}
         for line in infile:
             parts = line.split('\t')
             countries[parts[0]] = {"id": parts[1], "offset": parts[4]}
+
         return countries
 
 
-def get_country_code_to_nameserver_map():
+def get_country_code_to_nameserver_map() -> Dict[str, Dict[str, List[str]]]:
+    mapping: Dict[str, Dict[str, List[str]]] = {}
+
     with open(_get_path('nameservers.json')) as infile:
         data = json.load(infile)
-        mapping = {}
         for ientry in data:
             country = ientry['country_id']
             if not country:

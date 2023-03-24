@@ -1,4 +1,3 @@
-"""Univention Setup: network configuration conditions"""
 # Like what you see? Join us!
 # https://www.univention.com/about-us/careers/vacancies/
 #
@@ -29,13 +28,17 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
+"""Univention Setup: network configuration conditions"""
+
 import os
 from abc import ABCMeta
+from typing import Iterator, Set
 
 from ldap import LDAPError
 from ldap.filter import filter_format
 from six import with_metaclass
 
+from univention.config_registry.interfaces import Interfaces
 from univention.management.console.modules.setup.netconf import Phase, SkipPhase
 from univention.uldap import getMachineConnection
 
@@ -43,7 +46,7 @@ from univention.uldap import getMachineConnection
 class AddressChange(with_metaclass(ABCMeta, Phase)):
     """Check for at least one removed or added address."""
 
-    def check(self):
+    def check(self) -> None:
         super(AddressChange, self).check()
         old_ipv4s = {_.ip for _ in self.changeset.old_ipv4s}
         new_ipv4s = {_.ip for _ in self.changeset.new_ipv4s}
@@ -56,7 +59,7 @@ class AddressChange(with_metaclass(ABCMeta, Phase)):
 class Server(with_metaclass(ABCMeta, Phase)):
     """Check server role for being a UCS server."""
 
-    def check(self):
+    def check(self) -> None:
         super(Server, self).check()
         role = self.changeset.ucr.get("server/role")
         if role not in (
@@ -73,7 +76,7 @@ class Executable(with_metaclass(ABCMeta, Phase)):
 
     executable = None
 
-    def check(self):
+    def check(self) -> None:
         super(Executable, self).check()
         if not os.path.exists(self.executable):
             raise SkipPhase("Missing executable %s" % (self.executable,))
@@ -83,15 +86,15 @@ class Dhcp(with_metaclass(ABCMeta, Phase)):
     """Check for interfaces using DHCP."""
 
     @property
-    def old_dhcps(self):
+    def old_dhcps(self) -> Set[str]:
         return set(self._find_dhcp_interfaces(self.changeset.old_interfaces))
 
     @property
-    def new_dhcps(self):
+    def new_dhcps(self) -> Set[str]:
         return set(self._find_dhcp_interfaces(self.changeset.new_interfaces))
 
     @staticmethod
-    def _find_dhcp_interfaces(interfaces):
+    def _find_dhcp_interfaces(interfaces: Interfaces) -> Iterator[str]:
         for name, iface in interfaces.ipv4_interfaces:
             if iface.type in ("dhcp", "dynamic"):
                 yield name
@@ -100,7 +103,7 @@ class Dhcp(with_metaclass(ABCMeta, Phase)):
 class NotNetworkOnly(with_metaclass(ABCMeta, Phase)):
     """Skip when not in network only mode."""
 
-    def check(self):
+    def check(self) -> None:
         super(NotNetworkOnly, self).check()
         if self.changeset.options.network_only:
             raise SkipPhase("Network only mode")
@@ -113,46 +116,46 @@ class Ldap(with_metaclass(ABCMeta, Phase)):
     bindpwd = None
     available = None
 
-    def check(self):
+    def check(self) -> None:
         super(Ldap, self).check()
         if self.available is None:
             self.load_state()
         if not self.available:
             raise SkipPhase("Missing LDAP")
 
-    def load_state(self):
+    def load_state(self) -> None:
         self.check_available()
         if self.available:
             self.load_credentials()
 
-    def check_available(self):
+    def check_available(self) -> None:
         self.available = not os.path.exists("/var/run/univention-system-setup.ldap")
 
-    def load_credentials(self):
+    def load_credentials(self) -> None:
         if self.is_master_or_backup():
             self.load_admin_credentials()
         else:
             self.load_remote_credentials()
 
-    def is_master(self):
+    def is_master(self) -> bool:
         role = self.changeset.ucr.get("server/role")
         return role == "domaincontroller_master"
 
-    def is_master_or_backup(self):
+    def is_master_or_backup(self) -> bool:
         role = self.changeset.ucr.get("server/role")
         return role in (
             "domaincontroller_master",
             "domaincontroller_backup",
         )
 
-    def load_admin_credentials(self):
+    def load_admin_credentials(self) -> None:
         self.binddn = "cn=admin,%(ldap/base)s" % self.changeset.ucr
         try:
             self.bindpwd = open("/etc/ldap.secret").read()
         except IOError:
             self.available = False
 
-    def load_remote_credentials(self):
+    def load_remote_credentials(self) -> None:
         try:
             username = self.changeset.profile["ldap_username"]
             self.bindpwd = self.changeset.profile["ldap_password"]
@@ -160,7 +163,7 @@ class Ldap(with_metaclass(ABCMeta, Phase)):
         except KeyError:
             self.available = False
 
-    def lookup_user(self, username):
+    def lookup_user(self, username: str) -> None:
         try:
             ldap = getMachineConnection(ldap_master=True)
             ldap_filter = filter_format(
