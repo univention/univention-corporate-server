@@ -32,19 +32,19 @@ udm () {
 	/usr/sbin/udm "$module" "$action" --binddn "$BINDDN" --bindpwd "$BINDPW" "$@"
 }
 ldapsearch () {
-	/usr/bin/ldapsearch -h "$BINDHOST" -p "$BINDPORT" -x -D "$BINDDN" -w "$BINDPW" -LLL -o ldif-wrap=no "$@"
+	/usr/bin/ldapsearch -H "ldap://$BINDHOST:$BINDPORT" -x -D "$BINDDN" -w "$BINDPW" -LLL -o ldif-wrap=no "$@"
 }
 ldapadd () {
-	/usr/bin/ldapadd -x -h "$BINDHOST" -p "$BINDPORT" -D "$BINDDN" -w "$BINDPW" "$@"
+	/usr/bin/ldapadd -x -H "ldap://$BINDHOST:$BINDPORT" -D "$BINDDN" -w "$BINDPW" "$@"
 }
 ldapmodify () {
-	/usr/bin/ldapmodify -x -h "$BINDHOST" -p "$BINDPORT" -D "$BINDDN" -w "$BINDPW" "$@"
+	/usr/bin/ldapmodify -x -H "ldap://$BINDHOST:$BINDPORT" -D "$BINDDN" -w "$BINDPW" "$@"
 }
 ldapmodrdn () {
-	/usr/bin/ldapmodrdn -x -h "$BINDHOST" -p "$BINDPORT" -D "$BINDDN" -w "$BINDPW" "$@"
+	/usr/bin/ldapmodrdn -x -H "ldap://$BINDHOST:$BINDPORT" -D "$BINDDN" -w "$BINDPW" "$@"
 }
 ldapdelete () {
-	/usr/bin/ldapdelete -x -h "$BINDHOST" -p "$BINDPORT" -D "$BINDDN" -w "$BINDPW" "$@"
+	/usr/bin/ldapdelete -x -H "ldap://$BINDHOST:$BINDPORT" -D "$BINDDN" -w "$BINDPW" "$@"
 }
 
 setup () {
