@@ -1,3 +1,9 @@
+univention-quota (14.0.4-2) unstable; urgency=medium
+
+  * Bug #55664: add missing translations.
+
+ -- Ivan Barbecho Delgado <delgado.extern@univention.de>  Thu, 23 Mar 2023 08:43:20 +0100
+
 univention-quota (14.0.4-1) unstable; urgency=medium
 
   * Bug #31771: migrate tabs to spaces
