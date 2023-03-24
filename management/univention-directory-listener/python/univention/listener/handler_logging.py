@@ -50,7 +50,6 @@ import os
 import pwd
 import stat
 import syslog
-from collections import Mapping
 from logging.handlers import WatchedFileHandler
 from typing import IO, Any, Dict, Optional, Type  # noqa: F401
 
@@ -60,6 +59,12 @@ import univention.debug as ud
 from univention.config_registry import ConfigRegistry
 
 import listener
+
+
+try:
+    from collections import Mapping
+except ImportError:
+    from collections.abc import Mapping
 
 
 __syslog_opened = False
