@@ -49,7 +49,6 @@ import re
 import socket
 import subprocess
 import tempfile
-import threading
 import time
 import traceback
 from contextlib import contextmanager
@@ -728,11 +727,12 @@ def detect_interfaces() -> List[Dict[str, str | None]]:
     return interfaces
 
 
-def dhclient(interface: str, timeout: float | None = None) -> Dict[str, str]:
+def dhclient(interface: str, timeout: float = 10.0) -> Dict[str, str]:
     """
     perform DHCP request for specified interface. If successful, returns a dict
-    similar to the following:
-    {
+    similar to the following::
+
+        {
             'address': '10.200.26.51',
             'broadcast': '10.200.26.255',
             'domainname': 'univention.qa',
@@ -741,58 +741,32 @@ def dhclient(interface: str, timeout: float | None = None) -> Dict[str, str]:
             'nameserver_2': '',
             'nameserver_3': '',
             'netmask': '255.255.255.0'
-    }
+        }
     """
-    tempfilename = tempfile.mkstemp('.out', 'dhclient.', '/tmp')[1]
-    pidfilename = tempfile.mkstemp('.pid', 'dhclient.', '/tmp')[1]
-    cmd = (
-        '/sbin/dhclient',
-        '-1',
-        '-lf', '/tmp/dhclient.leases',
-        '-pf', pidfilename,
-        '-sf', '/usr/share/univention-system-setup/dhclient-script-wrapper',
-        '-e', 'dhclientscript_outputfile=%s' % (tempfilename,),
-        interface,
-    )
-    MODULE.info('Launch dhclient query via command: %s' % (cmd, ))
-    p = subprocess.Popen(cmd, stderr=subprocess.PIPE, stdout=subprocess.PIPE)
+    dhcp = {}
 
-    # read from stderr until timeout, following recipe of subprocess.communicate()
-    def _readerthread(fh, stringbufferlist):
-        stringbufferlist.append(fh.read())
+    with tempfile.NamedTemporaryFile("w+") as tmp:
+        cmd = (
+            '/usr/bin/timeout', '-k', '1', str(timeout),
+            '/sbin/dhclient',
+            "-q",
+            "-d",  # force dhclient to always run as a foreground process
+            '-1',
+            '-lf', '/tmp/dhclient.leases',
+            '-sf', '/usr/share/univention-system-setup/dhclient-script-wrapper',
+            '-e', 'dhclientscript_outputfile=%s' % (tmp.name,),
+            interface,
+        )
+        MODULE.info('Launch dhclient query via command: %s' % (cmd, ))
+        subprocess.call(cmd, stdin=subprocess.DEVNULL, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
 
-    stderr = []  # type: List[str]
-    stderr_thread = threading.Thread(target=_readerthread, args=(p.stderr, stderr))
-    stderr_thread.daemon = True
-    stderr_thread.start()
-    stderr_thread.join(timeout)
+        for line in tmp:
+            key, _, value = line.strip().partition('=')
+            dhcp[key] = value[1:-1]
 
-    if stderr:
-        stderr = stderr[0]
+    MODULE.info('dhclient returned the following values: %r' % (dhcp,))
 
-    # note: despite '-1' background dhclient never seems to terminate
-    try:
-        dhclientpid = int(open(pidfilename).read().strip('\n\r\t '))
-        os.kill(dhclientpid, 15)
-        time.sleep(1.0)  # sleep 1s
-        os.kill(dhclientpid, 9)
-    except Exception:
-        pass
-    try:
-        os.unlink(pidfilename)
-    except Exception:
-        pass
-
-    dhcp_dict = {}
-    MODULE.info('dhclient returned the following values:')
-    with open(tempfilename) as file:
-        for line in file.readlines():
-            key, value = line.strip().split('=', 1)
-            dhcp_dict[key] = value[1:-1]
-            MODULE.info('  %s: %s' % (key, dhcp_dict[key]))
-    os.unlink(tempfilename)
-
-    return dhcp_dict
+    return dhcp
 
 
 def get_apps(no_cache: bool = False) -> List[Dict[str, Any]]:

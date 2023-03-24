@@ -33,7 +33,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-case "$reason" in
+case "${reason:-}" in
 	PREINIT)
 		# The DHCP client is requesting that an interface be
 		# configured as required in order to send packets prior to
@@ -45,38 +45,39 @@ case "$reason" in
 		#fi
 
 		# silence the kernel printk
-		PRINTK=$(cat /proc/sys/kernel/printk)
 		echo "0" >/proc/sys/kernel/printk
 
 		# basic interface setup if it is not already up
-		ip link show "$interface" | grep -w UP || ip link set "$interface" dynamic off up
+		ip link show "${interface:?}" | grep -qw UP ||
+			ip link set "$interface" dynamic off up
 
 		# We need to give the kernel some time to get the interface up.
 		sleep 1
 		# echo "$PRINTK" >/proc/sys/kernel/printk
 		;;
-    BOUND|RENEW|REBIND|REBOOT)
-		set -- $new_routers
+	BOUND|RENEW|REBIND|REBOOT)
+		# shellcheck disable=SC2086
+		set -- ${new_routers:-}  # IFS
 		first_router="$1"
 
 		i=1
-		for new_nameserver in $new_domain_name_servers; do
-			eval nameserver_$i=$new_nameserver
+		for new_nameserver in ${new_domain_name_servers:-}
+		do
+			eval "nameserver_$i=$new_nameserver"
 			i=$((i+1))
 		done
-		if [ -n "$dhclientscript_outputfile" ]; then
-			cat > $dhclientscript_outputfile <<%EOF%
-${interface}_ip="$new_ip_address"
-${interface}_netmask="$new_subnet_mask"
-${interface}_broadcast="$new_broadcast_address"
-gateway="$first_router"
-nameserver_1="$nameserver_1"
-nameserver_2="$nameserver_2"
-nameserver_3="$nameserver_3"
-domainname="$new_domain_name"
+		if [ -n "${dhclientscript_outputfile:-}" ]; then
+			cat >"$dhclientscript_outputfile" <<%EOF%
+${interface}_ip="${new_ip_address:-}"
+${interface}_netmask="${new_subnet_mask:-}"
+${interface}_broadcast="${new_broadcast_address:-}"
+gateway="${first_router:-}"
+nameserver_1="${nameserver_1:-}"
+nameserver_2="${nameserver_2:-}"
+nameserver_3="${nameserver_3:-}"
+domainname="${new_domain_name:-}"
 %EOF%
 		fi
-
         ;;
 esac
 
