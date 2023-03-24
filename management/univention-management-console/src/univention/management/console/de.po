@@ -106,6 +106,8 @@ msgid ""
 "Cross Site Request Forgery attack detected. Please provide the "
 "\"UMCSessionId\" cookie value as HTTP request header \"X-Xsrf-Protection\"."
 msgstr ""
+"Cross-Site-Request-Forgery-Attacke erkannt. Bitte geben Sie den Wert des "
+"\"UMCSessionId\" Cookies als HTTP-Request-Header \"X-Xsrf-Protection\" an."
 
 #: src/univention/management/console/error.py:146
 #, python-format
@@ -127,7 +129,7 @@ msgstr ""
 
 #: src/univention/management/console/protocol/session.py:235
 msgid "For using this request a login is required."
-msgstr ""
+msgstr "Für diese Anfrage ist eine Anmeldung erforderlich."
 
 #: src/univention/management/console/error.py:69
 #: src/univention/management/console/protocol/definitions.py:64
@@ -224,7 +226,7 @@ msgstr ""
 #: src/univention/management/console/error.py:79
 #: src/univention/management/console/protocol/definitions.py:66
 msgid "Method not allowed"
-msgstr ""
+msgstr "Methode nicht erlaubt"
 
 #: src/univention/management/console/protocol/definitions.py:70
 msgid "Module process died unexpectedly"
@@ -309,7 +311,7 @@ msgstr "Angegebene Sprache ist nicht verfügbar"
 
 #: src/univention/management/console/base.py:288
 msgid "The \"Referer\" HTTP header must start with \"/univention/\"."
-msgstr ""
+msgstr "Der \"Referer\" HTTP-Header muss mit \"/univention/\" beginnen."
 
 #: univention-management-console-web-server:593
 msgid "The SAML message is invalid for this service provider."
@@ -469,6 +471,14 @@ msgstr "Das Passwort muss mindestens %s Zeichen lang sein."
 msgid "The password was already used."
 msgstr "Das Passwort wurde bereits genutzt."
 
+#: univention-management-console-web-server:596
+msgid "A hacking attempt was prevented."
+msgstr "Ein Versuch der Manipulation wurde verhindert."
+
+#: univention-management-console-web-server:600
+msgid "The response lifetime has exceeded: %s. Please make sure the server times are in sync."
+msgstr "Die Antwortzeit ist überschritten: %s. Bitte stellen Sie sicher, dass die Serverzeiten synchronisiert sind."
+
 #: univention-management-console-web-server:561
 #, python-format
 msgid "The principal is unknown: %s"
@@ -481,11 +491,11 @@ msgstr "Der Grund konnte nicht festgestellt werden"
 #: src/univention/management/console/base.py:294
 #, python-format
 msgid "The requested Content-Type is not acceptable. Please use one of %s."
-msgstr ""
+msgstr "Der angeforderte Content-Type ist nicht akzeptabel. Bitte verwenden Sie einen von %s."
 
 #: src/univention/management/console/base.py:281
 msgid "The requested HTTP method is not allowed on this resource."
-msgstr ""
+msgstr "Die angeforderte HTTP-Methode ist auf dieser Ressource nicht erlaubt."
 
 #: univention-management-console-web-server:565
 #, python-format
@@ -503,6 +513,8 @@ msgid ""
 "The response lifetime is exceeded:: %s. Please make sure the server times "
 "are in sync."
 msgstr ""
+"Die Antwortzeit ist überschritten: %s. Bitte stellen Sie sicher, dass die "
+"Serverzeiten synchronisiert sind."
 
 #: src/univention/management/console/protocol/session.py:499
 #: src/univention/management/console/protocol/session.py:500
@@ -562,7 +574,7 @@ msgstr "Wert ist ungültig"
 
 #: src/univention/management/console/modules/sanitizers.py:617
 msgid "Value is not a LDAP DN."
-msgstr ""
+msgstr "Wert ist kein LDAP-DN."
 
 #: src/univention/management/console/modules/sanitizers.py:593
 msgid "Value is not a string"

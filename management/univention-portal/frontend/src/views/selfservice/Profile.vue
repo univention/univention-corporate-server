@@ -326,7 +326,7 @@ export default defineComponent({
       if (isEmpty(alteredValues)) {
         this.$store.dispatch('notifications/addSuccessNotification', {
           title: _('Profile changes'),
-          description: 'Your profile data is up to date',
+          description: _('Your profile data is up to date'),
         });
         return;
       }
@@ -350,7 +350,7 @@ export default defineComponent({
           }).then(() => {
             this.$store.dispatch('notifications/addSuccessNotification', {
               title: _('Profile changes'),
-              description: 'Successfully saved changes',
+              description: _('Successfully saved changes'),
             });
             this.$router.push({ name: 'portal' });
           });

@@ -182,7 +182,7 @@ msgstr "Speichere Änderungen"
 
 #: umc/js/quota/PartitionPage.js:99
 msgid "Search..."
-msgstr ""
+msgstr "Suche..."
 
 #: umc/js/quota.js:75
 msgid "Set, unset and modify filesystem quota"

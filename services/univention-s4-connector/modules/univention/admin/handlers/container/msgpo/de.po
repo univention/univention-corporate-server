@@ -76,7 +76,7 @@ msgstr "MS Group Policy WQL Filter"
 
 #: modules/univention/admin/handlers/container/msgpo.py:112
 msgid "MS NT Security Descriptor"
-msgstr ""
+msgstr "MS NT Sicherheitsbeschreibung"
 
 #: modules/univention/admin/handlers/container/msgpo.py:55
 msgid "Name"

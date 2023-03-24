@@ -720,6 +720,14 @@ msgstr "Profil"
 msgid "Profile changes"
 msgstr "Profil-Änderungen"
 
+#: src/views/selfservice/Profile.vue:353
+msgid "Successfully saved changes"
+msgstr "Änderungen erfolgreich gespeichert"
+
+#: src/views/selfservice/Profile.vue:329
+msgid "Your profile data is up to date"
+msgstr "Ihre Profildaten sind aktuell"
+
 #: src/tmp/ts/src/views/selfservice/ProtectAccount.vue:30
 msgid "Protect account"
 msgstr "Kontozugang schützen"

@@ -27,7 +27,7 @@ msgstr "Es ist ein Fehler aufgetreten!"
 
 #: python/appcenter/exceptions.py:343
 msgid "An unexpected error occured before the installation started!"
-msgstr ""
+msgstr "Bevor die Installation begann, ist ein unerwarteter Fehler aufgetreten!"
 
 #: python/appcenter/exceptions.py:282
 msgid ""
@@ -40,7 +40,7 @@ msgstr ""
 
 #: python/appcenter/settings.py:254
 msgid "Password"
-msgstr ""
+msgstr "Passwort"
 
 #: python/appcenter/app.py:1437 python/appcenter/install_checks.py:361
 #, python-format
