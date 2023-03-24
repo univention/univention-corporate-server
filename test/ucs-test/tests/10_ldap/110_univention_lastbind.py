@@ -105,8 +105,8 @@ def readudm():
 def bind_for_timestamp(dn, host=None):
     args = ['univention-ldapsearch', '-LLL', '-D', dn, '-w', 'univention', '-b', dn, 'authTimestamp']
     if host:
-        args.insert(1, "%s:7389" % host)
-        args.insert(1, '-h')
+        args.insert(1, "ldap://%s:7389" % host)
+        args.insert(1, '-H')
     out = subprocess.check_output(args).decode('UTF-8', 'replace')
     timestamp = [line.split()[1] for line in out.splitlines() if 'authTimestamp' in line]
     timestamp = timestamp[0] if len(timestamp) else None
