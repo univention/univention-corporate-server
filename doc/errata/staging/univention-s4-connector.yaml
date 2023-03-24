@@ -1,0 +1,10 @@
+product: ucs
+release: "5.0"
+version: [3]
+scope: ucs_5.0-0-errata5.0-3
+src: univention-s4-connector
+fix:
+desc: |
+ This update addresses the following issue:
+ * A translation for the MS group policy attribute has been added.
+bug: [55664]
