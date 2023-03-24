@@ -597,7 +597,7 @@ univentionSamba4SID: $sid
 "
 		fi
 
-		echo "$ldif" | ldapmodify -x -h "$ldap_master" -p "${ldap_master_port:-7389}" -D "$binddn" -y "$bindpwdfile"
+		echo "$ldif" | ldapmodify -x -H "ldap://$ldap_master:${ldap_master_port:-7389}" -D "$binddn" -y "$bindpwdfile"
 
 		if [ "$name" = "Authenticated Users" ]; then
 			udm groups/group modify "$@" --dn "cn=$name,$position,$ldap_base" \
@@ -670,7 +670,7 @@ add: univentionGroupType
 univentionGroupType: -2147483643
 -
 replace: sambaGroupType
-sambaGroupType: 5" | ldapmodify -x -h "$ldap_master" -p "${ldap_master_port:-7389}" -D "$binddn" -y "$bindpwdfile"
+sambaGroupType: 5" | ldapmodify -x -H "ldap://$ldap_master:${ldap_master_port:-7389}" -D "$binddn" -y "$bindpwdfile"
 	fi
 }
 

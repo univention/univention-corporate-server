@@ -54,13 +54,13 @@ if [ ! -e /etc/machine.secret ]; then
 	log_error "/etc/machine.secret not found"
 fi
 
-if ! ldapsearch -x -h "$ldap_master" -p "$ldap_master_port" -D "$ldap_hostdn" -y /etc/machine.secret -b "$ldap_base" -s base >>"$LOG_FILE" 2>&1
+if ! ldapsearch -x -H "ldap://$ldap_master:$ldap_master_port" -D "$ldap_hostdn" -y /etc/machine.secret -b "$ldap_base" -s base >>"$LOG_FILE" 2>&1
 then
 	log_error "ldapsearch -x failed"
 fi
 
 
-if ! ldapsearch -x -ZZ -h "$ldap_master" -p "$ldap_master_port" -D "$ldap_hostdn" -y /etc/machine.secret -b "$ldap_base" -s base >>"$LOG_FILE" 2>&1
+if ! ldapsearch -x -ZZ -H "ldap://$ldap_master:$ldap_master_port" -D "$ldap_hostdn" -y /etc/machine.secret -b "$ldap_base" -s base >>"$LOG_FILE" 2>&1
 then
 	log_error "ldapsearch -x -ZZ failed"
 fi
