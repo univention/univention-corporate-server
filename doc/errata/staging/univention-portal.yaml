@@ -1,0 +1,12 @@
+product: ucs
+release: "5.0"
+version: [3]
+scope: ucs_5.0-0-errata5.0-3
+src: univention-portal
+fix:
+desc: |
+ This update addresses the following issue:
+ * The self-service notifications no longer show mixed language
+   (English and German) when users modify their profile or change
+   their password.
+bug: [55664]
