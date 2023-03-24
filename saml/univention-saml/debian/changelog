@@ -1,3 +1,9 @@
+univention-saml (8.0.6) unstable; urgency=medium
+
+  * Bug #55997: replace obsolete ldap client utility options (-h/-p)
+
+ -- Florian Best <best@univention.de>  Thu, 07 Mar 2024 23:53:46 +0100
+
 univention-saml (8.0.5) unstable; urgency=medium
 
   * Bug #56535: adjust logging to upstream API changes

@@ -1,3 +1,9 @@
+ucs-test (11.0.5) unstable; urgency=medium
+
+  * Bug #55997: replace obsolete ldap client utility options (-h/-p)
+
+ -- Florian Best <best@univention.de>  Thu, 07 Mar 2024 23:53:46 +0100
+
 ucs-test (11.0.4) unstable; urgency=medium
 
   * Bug #55998: always enable ppolicy module because it provides the
