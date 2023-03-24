@@ -86,14 +86,14 @@ basic_setup () {
 
 stop_uss_and_restore_profile () {
 	local SRV='univention-system-setup-boot.service' job
-	if [ loaded = "$(systemctl --property LoadState --value show "$SRV")" ]
+	if [ 'LoadState=loaded' = "$(systemctl --property LoadState show "$SRV")" ]
 	then
 		# prevent future
 		systemctl mask "$SRV"
 		# cancel pending
-		job="$(systemctl --property Job --value show "$SRV")" &&
-			[ -n "$job" ] &&
-			systemctl cancel "$job" ||
+		job="$(systemctl --property Job show "$SRV")" &&
+			[ -n "${job#Job=}" ] &&
+			systemctl cancel "${job#Job=}" ||
 			:
 		# kill current
 		systemctl kill "$SRV"
