@@ -1,3 +1,9 @@
+univention-appcenter (9.0.7-4) unstable; urgency=medium
+
+  * Bug #55664: add missing translations.
+
+ -- Ivan Barbecho Delgado <delgado.extern@univention.de>  Thu, 23 Mar 2023 08:43:20 +0100
+
 univention-appcenter (9.0.7-3) unstable; urgency=medium
 
   * Bug #55679: Improve wording in UMC App Center for pinned Apps
