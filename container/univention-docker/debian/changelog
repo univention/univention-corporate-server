@@ -1,3 +1,10 @@
+univention-docker (6.0.3) unstable; urgency=medium
+
+  * Bug #56001: adjust docker configuration template to changed CLI
+    arguments
+
+ -- Florian Best <best@univention.de>  Thu, 07 Mar 2024 23:53:47 +0100
+
 univention-docker (6.0.2) unstable; urgency=medium
 
   * Bug #53127: upgrade to latest debhelper compat version

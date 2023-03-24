@@ -1,16 +1,30 @@
 @%@UCRWARNING=# @%@
 
-# Docker Upstart and SysVinit configuration file
+# Here in Debian, this file is sourced by:
+#   - /etc/init.d/docker (sysvinit)
+#   - /etc/init/docker (upstart)
+#   - systemd's docker.service
 
-# Customize location of Docker binary (especially for development testing).
-#DOCKER="/usr/local/bin/docker"
+# Use of this file for configuring your Docker daemon is discouraged.
 
-# Use DOCKER_OPTS to modify the daemon startup options.
-# DOCKER_OPTS="--dns 8.8.8.8 --dns 8.8.4.4"
-# DOCKER_OPTS="-H tcp://172.17.42.1:4243 -H unix:///var/run/docker.sock"
+# The recommended alternative is "/etc/docker/daemon.json", as described in:
+#   https://docs.docker.com/engine/reference/commandline/dockerd/#daemon-configuration-file
+
+# If that does not suit your needs, try a systemd drop-in file, as described in:
+#   https://docs.docker.com/config/daemon/systemd/
 @!@
+# backwards compatibility:
 docker_opts = ''
 for var in configRegistry:
+    if var in (
+        'docker/daemon/default/opts/max-file',
+        'docker/daemon/default/opts/max-size',
+        'docker/daemon/default/opts/bip',
+        'docker/daemon/default/opts/log-driver',
+        'docker/daemon/default/parameter/live-restore',
+        'docker/daemon/default/opts/registry-mirrors',
+    ):
+        continue  # already configured via json
     if var.startswith('docker/daemon/default/map'):
         opt = var.split('/')[-1]
         for i in configRegistry[var].split(','):
@@ -21,7 +35,8 @@ for var in configRegistry:
     elif var.startswith('docker/daemon/default/parameter') and configRegistry.is_true(var):
         opt = var.split('/')[-1]
         docker_opts += '--%s ' % (opt)
-print('DOCKER_OPTS="%s"' % docker_opts)
+if docker_opts:
+    print('DOCKER_OPTS="%s"' % docker_opts)
 @!@
 
 # If you need Docker to use an HTTP proxy, it can also be specified here.
@@ -32,5 +47,3 @@ if pr:
 else:
     print('#export http_proxy="http://127.0.0.1:3128/" set UCR variable proxy/http to change this')
 @!@
-# This is also a handy place to tweak where Docker's temporary files go.
-#export TMPDIR="/mnt/bigdrive/docker-tmp"
