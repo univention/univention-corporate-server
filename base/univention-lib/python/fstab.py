@@ -1,10 +1,6 @@
 #!/usr/bin/python3
 # -*- coding: utf-8 -*-
-"""
-Handle parsing and writing :file:`/etc/fstab`.
-
-See <http://linux.die.net/include/mntent.h>.
-"""
+#
 # Like what you see? Join us!
 # https://www.univention.com/about-us/careers/vacancies/
 #
@@ -34,6 +30,12 @@ See <http://linux.die.net/include/mntent.h>.
 # License with the Debian GNU/Linux or Univention distribution in file
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
+
+"""
+Handle parsing and writing :file:`/etc/fstab`.
+
+See <http://linux.die.net/include/mntent.h>.
+"""
 
 from __future__ import print_function
 

@@ -1,6 +1,6 @@
 #!/usr/bin/python3
 # -*- coding: utf-8 -*-
-"""Univention Helper functions for creating or renaming share directories"""
+#
 # Like what you see? Join us!
 # https://www.univention.com/about-us/careers/vacancies/
 #
@@ -30,6 +30,8 @@
 # License with the Debian GNU/Linux or Univention distribution in file
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
+
+"""Univention Helper functions for creating or renaming share directories"""
 
 import fnmatch
 import os
@@ -131,7 +133,7 @@ def checkDirFileSystem(path, cr):
 
 
 def createOrRename(old, new, cr):
-    # type: (Dict[str, List[str]], Dict[str, List[str]], ConfigRegistry) -> Optional[str]
+    # type: (Dict[str, List[bytes]], Dict[str, List[bytes]], ConfigRegistry) -> Optional[str]
     """
     Create or rename a share.
 

@@ -1,6 +1,6 @@
 #!/usr/bin/python3
 # -*- coding: utf-8 -*-
-"""Python function to register |UDM| extensions in |LDAP|."""
+#
 # Like what you see? Join us!
 # https://www.univention.com/about-us/careers/vacancies/
 #
@@ -31,6 +31,8 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
+"""Python function to register |UDM| extensions in |LDAP|."""
+
 from __future__ import absolute_import, print_function
 
 import base64
@@ -48,7 +50,7 @@ import time
 from abc import ABCMeta, abstractmethod, abstractproperty
 from copy import copy
 from optparse import Option, OptionGroup, OptionParser, OptionValueError, Values  # noqa: F401
-from typing import Dict, List, Optional, Tuple  # noqa: F401
+from typing import TYPE_CHECKING, Dict, List, Optional, Tuple  # noqa: F401
 
 import apt
 import six
@@ -56,6 +58,11 @@ from ldap.dn import escape_dn_chars
 from ldap.filter import filter_format
 
 import univention.admin as udm
+
+
+if TYPE_CHECKING:
+    import univention.admin.handlers as udm_handlers  # noqa: F401
+
 import univention.debug as ud
 from univention.admin import modules as udm_modules, uexceptions as udm_errors, uldap as udm_uldap
 from univention.config_registry import ConfigRegistry, configHandlers
@@ -96,7 +103,7 @@ def _verify_handler_message_container(lo, position):
 
 
 def _get_handler_message_object(lo, position, handler_name, create=False):
-    # type: (udm_uldap.access, udm_uldap.position, str, bool) -> None
+    # type: (udm_uldap.access, udm_uldap.position, str, bool) -> udm_handlers.simpleLdap
     position_dn = 'cn=handler_messages,cn=univention,{}'.format(listener.configRegistry.get('ldap/base'))
     udm_modules.update()
     data_module = udm_modules.get('settings/data')
@@ -546,7 +553,7 @@ class UniventionLDAPExtensionWithListenerHandler(six.with_metaclass(ABCMeta, Uni
 
     @abstractmethod
     def handler(self, dn, new, old, name=None):
-        # type: (str, Optional[Dict[str, List[bytes]]], Optional[Dict[str, List[bytes]]], str) -> None
+        # type: (str, Dict[str, List[bytes]], Dict[str, List[bytes]], str) -> None
         pass
 
 
@@ -562,14 +569,14 @@ class UniventionLDAPSchema(UniventionLDAPExtensionWithListenerHandler):
         return True
 
     def handler(self, dn, new, old, name=None):
-        # type: (str, Optional[Dict[str, List[bytes]]], Optional[Dict[str, List[bytes]]], str) -> None
+        # type: (str, Dict[str, List[bytes]], Dict[str, List[bytes]], str) -> None
         try:
             return self._handler(dn, new, old, name)
         except BaseDirRestriction as exc:
             ud.debug(ud.LISTENER, ud.ERROR, '%r basedir conflict: %s' % (dn, exc))
 
     def _handler(self, dn, new, old, name=None):
-        # type: (str, Optional[Dict[str, List[bytes]]], Optional[Dict[str, List[bytes]]], str) -> None
+        # type: (str, Dict[str, List[bytes]], Dict[str, List[bytes]], str) -> None
         """Handle LDAP schema extensions on Primary and Backup Directory Nodes"""
         if listener.configRegistry.get("server/role") not in ("domaincontroller_master", "domaincontroller_backup"):
             return
@@ -755,14 +762,14 @@ class UniventionLDAPACL(UniventionLDAPExtensionWithListenerHandler):
     file_prefix = 'ldapacl_'
 
     def handler(self, dn, new, old, name=None):
-        # type: (str, Optional[Dict[str, List[bytes]]], Optional[Dict[str, List[bytes]]], str) -> None
+        # type: (str, Dict[str, List[bytes]], Dict[str, List[bytes]], str) -> None
         try:
             return self._handler(dn, new, old, name)
         except BaseDirRestriction as exc:
             ud.debug(ud.LISTENER, ud.ERROR, '%r basedir conflict: %s' % (dn, exc))
 
     def _handler(self, dn, new, old, name=None):
-        # type: (str, Optional[Dict[str, List[bytes]]], Optional[Dict[str, List[bytes]]], str) -> None
+        # type: (str, Dict[str, List[bytes]], Dict[str, List[bytes]], str) -> None
         """Handle LDAP ACL extensions on Primary, Backup and Replica Directory Nodes"""
         if not listener.configRegistry.get('ldap/server/type'):
             return
@@ -1042,6 +1049,7 @@ class UniventionUDMExtension(six.with_metaclass(ABCMeta, UniventionLDAPExtension
 
     @property
     def target_filepath(self):
+        # type: () -> str
         """return the most likely path where the listener will write the file to"""
         return os.path.abspath(os.path.join(os.path.dirname(udm.__file__), self.target_subdir, self.target_filename.replace('/', '')))
 
@@ -1076,6 +1084,7 @@ class UniventionUDMModule(UniventionUDMExtension):
 
     @property
     def target_filepath(self):
+        # type: () -> str
         """return the most likely path where the listener will write the file to"""
         module_dir, module_name = self.target_udm_module.split('/', 1)
         return os.path.abspath(os.path.join(os.path.dirname(udm.__file__), self.target_subdir, module_dir, '%s.py' % (module_name.replace('/', ''),)))
@@ -1106,6 +1115,7 @@ class UniventionUDMModule(UniventionUDMExtension):
         UniventionUDMExtension.register(self, filename, options, udm_passthrough_options, target_filename=module_name + ".py")
 
     def wait_for_activation(self, timeout=180):
+        # type: (int) -> bool
         if not super(UniventionUDMModule, self).wait_for_activation(timeout):
             return False
 

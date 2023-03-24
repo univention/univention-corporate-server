@@ -1,5 +1,6 @@
 #!/usr/bin/python3
-"""Univention Common Python Library for file locking"""
+# -*- coding: utf-8 -*-
+#
 # Like what you see? Join us!
 # https://www.univention.com/about-us/careers/vacancies/
 #
@@ -29,6 +30,8 @@
 # License with the Debian GNU/Linux or Univention distribution in file
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
+
+"""Univention Common Python Library for file locking"""
 
 from __future__ import print_function
 

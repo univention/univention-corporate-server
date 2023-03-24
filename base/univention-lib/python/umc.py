@@ -1,18 +1,6 @@
 #!/usr/bin/python3
 # -*- coding: utf-8 -*-
-"""
-Univention common Python library to manage
-connections to remote |UMC| servers
-
->>> umc = Client()
->>> umc.authenticate_with_machine_account()
->>> response = umc.umc_get('session-info')
->>> response.status
-200
->>> response = umc.umc_logout()
->>> response.status
-303
-"""
+#
 # Like what you see? Join us!
 # https://www.univention.com/about-us/careers/vacancies/
 #
@@ -43,11 +31,25 @@ connections to remote |UMC| servers
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
+"""
+Univention common Python library to manage
+connections to remote |UMC| servers
+
+>>> umc = Client()
+>>> umc.authenticate_with_machine_account()
+>>> response = umc.umc_get('session-info')
+>>> response.status
+200
+>>> response = umc.umc_logout()
+>>> response.status
+303
+"""
+
 import base64
 import json
 import locale
 import ssl
-from typing import Any, Dict, List, Optional, Tuple, Type, TypeVar, Union  # noqa: F401
+from typing import Any, Dict, List, Optional, Tuple, Type, TypeVar, Union, overload  # noqa: F401
 
 import six
 from six.moves import http_client as httplib  # noqa: F401
@@ -322,8 +324,18 @@ class Response(object):
         self._response = _response
         self.data = self.decode_body()
 
+    @overload
+    def get_header(self, name):
+        # type: (str) -> Optional[str]
+        pass
+
+    @overload
     def get_header(self, name, default=None):
         # type: (str, _T) -> _T
+        pass
+
+    def get_header(self, name, default=None):
+        # type: (str, _T) -> Union[None, str, _T]
         """
         Return original |HTTP| response header.
 
@@ -587,7 +599,7 @@ class Client(object):
         :param httplib.HTTPResponse: The |HTTP| response.
         """
         # FIXME: this cookie handling doesn't respect path, domain and expiry
-        cookies = SimpleCookie()
+        cookies = SimpleCookie()  # type: SimpleCookie[Any]
         cookies.load(response.getheader('set-cookie', ''))
         self.cookies.update({cookie.key: cookie.value for cookie in cookies.values()})
 

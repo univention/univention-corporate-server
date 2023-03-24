@@ -1,6 +1,6 @@
 #!/usr/bin/python3
 # -*- coding: utf-8 -*-
-"""Internationalization (i18n) utilities."""
+#
 # Like what you see? Join us!
 # https://www.univention.com/about-us/careers/vacancies/
 #
@@ -31,11 +31,13 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
+"""Internationalization (i18n) utilities."""
+
 import gettext
 import re
 import weakref
 from locale import LC_MESSAGES, Error, getlocale
-from typing import Optional  # noqa: F401
+from typing import List, Optional  # noqa: F401
 
 import six
 
@@ -128,7 +130,7 @@ class NullTranslation(object):
 
     def __init__(self, namespace, locale_spec=None, localedir=None):
         # type: (str, Optional[str], Optional[str]) -> None
-        self._set_domain(namespace)  # type: Optional[str]
+        self._set_domain(namespace)
         self._translation = None  # type: Optional[gettext.NullTranslations]
         self._localedir = localedir  # type: Optional[str]
         self._localespec = None  # type: Optional[Locale]
@@ -203,7 +205,7 @@ class NullTranslation(object):
 class Translation(NullTranslation):
     """Translation."""
 
-    _instances = []
+    _instances = []  # type: List[weakref.ReferenceType[Translation]]
     locale = Locale()  # type: Locale # type: ignore
 
     def set_language(self, language=""):

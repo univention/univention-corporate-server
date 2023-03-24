@@ -1,9 +1,6 @@
 #!/usr/bin/python3
 # -*- coding: utf-8 -*-
 #
-# Univention Lib
-#  Python module
-#
 # Like what you see? Join us!
 # https://www.univention.com/about-us/careers/vacancies/
 #
@@ -34,7 +31,9 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-__path__ = __import__('pkgutil').extend_path(__path__, __name__)  # type: ignore
+"""Univention Lib Python module."""
+
+__path__ = __import__('pkgutil').extend_path(__path__, __name__)
 
 __all__ = ('get_lock', 'release_lock', 'Translation', 'NullTranslation', 'Locale', 'I18N_Error')
 
