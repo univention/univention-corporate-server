@@ -51,6 +51,7 @@ import subprocess
 import sys
 import tempfile
 import time
+from collections import namedtuple
 from datetime import datetime, timedelta
 from typing import Any, Callable, Dict, Iterable, List, Optional, Tuple, Union  # noqa: F401
 
@@ -76,7 +77,6 @@ if not six.PY2:
     from samba.net import Net
     from samba.param import LoadParm
 else:
-    from collections import namedtuple
     DOMAIN_RID_ADMINS = 512
     DOMAIN_RID_ADMINISTRATOR = 500
 
@@ -786,6 +786,7 @@ SAMBA_TOOL_FIELDNAMES_TO_CLDAP_RES = {
     'Server site': 'server_site',
     'Client site': 'client_site',
 }
+CLDAP_RES = namedtuple('CLDAP_RES', 'forest dns_domain domain_name pdc_dns_name pdc_name server_site client_site')
 
 
 def cldap_finddc(ip, use_samba_lib=six.PY3):
@@ -817,7 +818,6 @@ def cldap_finddc(ip, use_samba_lib=six.PY3):
         for fieldname, key in list(SAMBA_TOOL_FIELDNAMES_TO_CLDAP_RES.items()):
             if key not in res:
                 raise RuntimeError("Missing field in samba-tool output: %s\nfull output:\n%s" % (fieldname, output))
-        CLDAP_RES = namedtuple('CLDAP_RES', SAMBA_TOOL_FIELDNAMES_TO_CLDAP_RES.values())
         cldap_res = CLDAP_RES(**res)
     return cldap_res
 
