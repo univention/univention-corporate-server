@@ -800,11 +800,12 @@ def cldap_finddc(ip, use_samba_lib=six.PY3):
     else:
         cmd = ['samba-tool', 'domain', 'info', ip]
         p1 = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, close_fds=True)
-        output, _ = p1.communicate()
+        out, _ = p1.communicate()
+        output = out.decode('UTF-8').rstrip()
         if not output:
             raise RuntimeError("No output from command: %s" % " ".join(cmd))
         res = {}
-        for line in output.rstrip().decode('UTF-8').split('\n'):
+        for line in output.split('\n'):
             try:
                 fieldname, value = line.split(':', 1)
             except ValueError as exc:
@@ -875,8 +876,8 @@ def lookup_adds_dc(ad_server="", ucr=None, check_dns=True):
                 cmd = ['dig', '@' + ip, ad_server, '+short', '+nocookie']
                 ud.debug(ud.MODULE, ud.PROCESS, "running %s" % cmd)
                 p1 = subprocess.Popen(cmd, close_fds=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-                stdout, stderr = p1.communicate()
-                stdout, stderr = stdout.decode('UTF-8', 'replace'), stderr.decode('UTF-8', 'replace')
+                out, err = p1.communicate()
+                stdout, stderr = out.decode('UTF-8', 'replace'), err.decode('UTF-8', 'replace')
                 ud.debug(ud.MODULE, ud.PROCESS, "stdout: %s" % stdout)
                 ud.debug(ud.MODULE, ud.PROCESS, "stderr: %s" % stderr)
                 if p1.returncode == 0:
@@ -910,10 +911,9 @@ def lookup_adds_dc(ad_server="", ucr=None, check_dns=True):
                 cmd = ['dig', '@%s' % ip, '+nocookie']
                 ud.debug(ud.MODULE, ud.PROCESS, "running %s" % cmd)
                 p1 = subprocess.Popen(cmd, close_fds=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-                stdout, stderr = p1.communicate()
-                stdout, stderr = stdout.decode('UTF-8', 'replace'), stderr.decode('UTF-8', 'replace')
-                ud.debug(ud.MODULE, ud.PROCESS, "stdout: %s" % stdout)
-                ud.debug(ud.MODULE, ud.PROCESS, "stderr: %s" % stderr)
+                out, err = p1.communicate()
+                ud.debug(ud.MODULE, ud.PROCESS, "stdout: %s" % out.decode('UTF-8', 'replace'))
+                ud.debug(ud.MODULE, ud.PROCESS, "stderr: %s" % err.decode('UTF-8', 'replace'))
                 if p1.returncode == 0:  # yes, this is also a DNS server, we are good
                     ad_server_ip = ip
                     break
