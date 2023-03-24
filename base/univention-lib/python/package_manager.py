@@ -482,19 +482,19 @@ class PackageManager(object):
             return True
 
         self.lock_fd = get_lock('univention-lib-package-manager', nonblocking=True)
-        return_value = self.lock_fd is not None
+        locked = self.lock_fd is not None
 
-        if return_value is True:
+        if locked:
             # get apt lock; taken from dist-packages/apt/cache.py
             lockfile = apt_pkg.config.find_dir("Dir::Cache::Archives") + "lock"
             self.apt_lock_fd = apt_pkg.get_lock(lockfile)
             if self.apt_lock_fd < 0:
-                return_value = False
+                locked = False
 
-        if return_value is False and raise_on_fail:
+        if not locked and raise_on_fail:
             raise LockError(_('Failed to lock'))
 
-        return return_value
+        return locked
 
     def unlock(self):
         # type: () -> bool
