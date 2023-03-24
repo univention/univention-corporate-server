@@ -50,6 +50,7 @@ import shutil
 import socket
 import ssl
 import time
+from collections import OrderedDict
 from hashlib import md5, sha256
 from locale import getlocale
 from logging import Logger  # noqa: F401
@@ -480,8 +481,7 @@ def flatten(list_of_lists):
 def unique(sequence):
     # type: (Iterable[_T]) -> List[_T]
     # uniquifies any list; preserves ordering
-    seen = set()
-    return [val for val in sequence if val not in seen and not seen.add(val)]
+    return list(OrderedDict.fromkeys(sequence))
 
 
 def get_locale():
