@@ -133,25 +133,7 @@ class Gateway(tornado.web.RequestHandler):
             self.write(response.body)
         self.finish()
 
-    @tornado.web.asynchronous
-    def post(self):
-        return self.get()
-
-    @tornado.web.asynchronous
-    def put(self):
-        return self.get()
-
-    @tornado.web.asynchronous
-    def delete(self):
-        return self.get()
-
-    @tornado.web.asynchronous
-    def patch(self):
-        return self.get()
-
-    @tornado.web.asynchronous
-    def options(self):
-        return self.get()
+    post = put = delete = patch = options = get
 
     def select_language(self):
         languages = self.request.headers.get("Accept-Language", "en-US").split(",")
