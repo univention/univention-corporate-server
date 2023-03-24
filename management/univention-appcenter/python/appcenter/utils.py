@@ -211,7 +211,8 @@ def currently_free_port_in_range(lower_bound, upper_bound, blacklist):
 
 def generate_password():
     # type: () -> str
-    return get_sha256(str(uuid4()) + str(time.time()))
+    text = "%s%s" % (uuid4(), time.time())
+    return get_sha256(text.encode("utf-8"))
 
 
 def underscore(value):
@@ -265,9 +266,8 @@ def call_process2(cmd, logger=None, env=None, cwd=None):
         p = Popen(cmd, stdout=PIPE, stderr=STDOUT, close_fds=True, env=env, cwd=cwd)
         assert p.stdout is not None
         while p.poll() is None:
-            stdout = p.stdout.readline()
+            stdout = p.stdout.readline().decode('utf-8')
             if stdout:
-                stdout = stdout.decode('utf-8')
                 out += stdout
                 if logger:
                     logger.info(stdout.strip())
