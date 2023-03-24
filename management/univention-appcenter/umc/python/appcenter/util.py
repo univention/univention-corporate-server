@@ -43,7 +43,6 @@ from urllib.parse import ParseResult, urlparse
 # import psutil # our psutil is outdated. re-enable when methods are supported
 from six.moves import http_client, urllib_request
 
-import univention.config_registry
 import univention.management.console as umc
 from univention.admin.handlers.computers import (
     domaincontroller_backup, domaincontroller_master, domaincontroller_slave, memberserver,
@@ -181,33 +180,6 @@ def install_opener(ucr):
     handler.append(HTTPSHandler())
     opener = urllib_request.build_opener(*handler)
     urllib_request.install_opener(opener)
-
-
-def verbose_http_error(exc):
-    strerror = ''
-    if hasattr(exc, 'getcode'):
-        code = exc.getcode()
-        if code == 404:
-            strerror = _('%s could not be downloaded. This seems to be a problem with the App Center server. Please try again later.') % exc.url
-        elif code >= 500:
-            strerror = _('This is a problem with the App Center server. Please try again later.')
-    while hasattr(exc, 'reason'):
-        exc = exc.reason
-    if hasattr(exc, 'errno'):
-        ucr = univention.config_registry.ConfigRegistry()
-        ucr.load()
-        version = ucr.get('version/version')
-        errno = exc.errno
-        strerror += getattr(exc, 'strerror', '') or ''
-        if errno == 1:  # gaierror(1, something like 'SSL Unknown protocol')
-            link_to_doc = _('https://docs.software-univention.de/manual-%s.html#ip-config:Web_proxy_for_caching_and_policy_management__virus_scan') % version
-            strerror += '. ' + _('This may be a problem with the firewall or proxy of your system. You may find help at %s.') % link_to_doc
-        if errno == -2:  # gaierror(-2, 'Name or service not known')
-            link_to_doc = _('https://docs.software-univention.de/manual-%s.html#networks:dns') % version
-            strerror += '. ' + _('This is probably due to the DNS settings of your server. You may find help at %s.') % link_to_doc
-    if not strerror.strip():
-        strerror = str(exc)
-    return strerror
 
 
 def urlopen(request):

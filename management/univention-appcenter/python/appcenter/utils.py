@@ -326,23 +326,27 @@ def call_process_as(user, args, logger=None, env=None):
 def verbose_http_error(exc):
     # type: (Exception) -> str
     strerror = ''
-    if hasattr(exc, 'getcode'):
-        code = exc.getcode()
+    getcode = getattr(exc, "getcode", None)
+    if getcode is not None:
+        code = getcode()
         if code == 404:
-            strerror = _('%s could not be downloaded. This seems to be a problem with the App Center server. Please try again later.') % exc.url
+            url = getattr(exc, "url", None)
+            strerror = _('%s could not be downloaded. This seems to be a problem with the App Center server. Please try again later.') % url
         elif code >= 500:
             strerror = _('This is a problem with the App Center server. Please try again later.')
 
-    if hasattr(exc, 'reason') and isinstance(exc.reason, ssl.SSLError):
+    reason = getattr(exc, "reason", None)
+    if reason is not None and isinstance(reason, ssl.SSLError):
         strerror = _('There is a problem with the certificate of the App Center server %s.') % get_server()
-        strerror += ' (' + str(exc.reason) + ')'
+        strerror += ' (%s)' % (reason,)
 
-    while hasattr(exc, 'reason'):
-        exc = exc.reason
+    while reason:
+        exc = reason
+        reason = getattr(exc, "reason", None)
 
-    if hasattr(exc, 'errno'):
+    errno = getattr(exc, "errno", None)
+    if errno is not None:
         version = ucr_get('version/version')
-        errno = exc.errno
         strerror += getattr(exc, 'strerror', '') or ''
         if errno == 1:  # gaierror(1, something like 'SSL Unknown protocol')  SSLError(1, '_ssl.c:504: error:14090086:SSL routines:ssl3_get_server_certificate:certificate verify failed')
             link_to_doc = _('https://docs.software-univention.de/manual-%s.html#ip-config:Web_proxy_for_caching_and_policy_management__virus_scan') % version
@@ -354,7 +358,7 @@ def verbose_http_error(exc):
     if not strerror.strip():
         strerror = str(exc)
     if isinstance(exc, ssl.CertificateError):
-        strerror = _('There is a problem with the certificate of the App Center server %s.') % get_server() + ' (' + strerror + ')'
+        strerror = _('There is a problem with the certificate of the App Center server %s.') % get_server() + ' (%s)' % (strerror,)
     if isinstance(exc, http_client.BadStatusLine):
         strerror = _('There was a problem with the HTTP response of the server (BadStatusLine). Please try again later.')
     return strerror
