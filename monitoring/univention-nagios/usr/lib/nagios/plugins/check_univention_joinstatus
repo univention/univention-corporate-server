@@ -119,15 +119,15 @@ if [ ! -e /etc/machine.secret ]; then
 	exit_with_msg $STATE_CRITICAL "/etc/machine.secret not found - system not joined yet?"
 fi
 
-ldapsearch -x -h "$LDAPSERVER" -p "$LDAPPORT" -D "$ldap_hostdn" -w $(cat /etc/machine.secret) -b "$ldap_base" -s base 2> /dev/null > /dev/null
+ldapsearch -x -H "ldap://$LDAPSERVER:$LDAPPORT" -D "$ldap_hostdn" -w $(cat /etc/machine.secret) -b "$ldap_base" -s base 2> /dev/null > /dev/null
 if [ $? != 0 ]; then
-	exit_with_msg $STATE_CRITICAL "auth failed: ldapsearch -x -h $LDAPSERVER -p $LDAPPORT -D <ldap_hostdn>"
+	exit_with_msg $STATE_CRITICAL "auth failed: ldapsearch -x -H ldap://$LDAPSERVER:$LDAPPORT -D <ldap_hostdn>"
 fi
 
 
-ldapsearch -x -ZZ -h "$LDAPSERVER" -p "$LDAPPORT" -D "$ldap_hostdn" -w $(cat /etc/machine.secret) -b "$ldap_base" -s base 2> /dev/null > /dev/null
+ldapsearch -x -ZZ -H "ldap://$LDAPSERVER:$LDAPPORT" -D "$ldap_hostdn" -w $(cat /etc/machine.secret) -b "$ldap_base" -s base 2> /dev/null > /dev/null
 if [ $? != 0 ]; then
-	exit_with_msg $STATE_CRITICAL "auth or TLS failed: ldapsearch -x -ZZ -h $LDAPSERVER -p $LDAPPORT -D <ldap_hostdn>"
+	exit_with_msg $STATE_CRITICAL "auth or TLS failed: ldapsearch -x -ZZ -H ldap://$LDAPSERVER:$LDAPPORT -D <ldap_hostdn>"
 fi
 
 if [ ! -e /usr/share/univention-join/.joined -a ! -e /var/univention-join/joined ]; then
