@@ -9,6 +9,7 @@
 # DOCKER_OPTS="--dns 8.8.8.8 --dns 8.8.4.4"
 # DOCKER_OPTS="-H tcp://172.17.42.1:4243 -H unix:///var/run/docker.sock"
 @!@
+import sys
 docker_opts = ''
 for var in configRegistry:
     if var.startswith('docker/daemon/default/map'):
@@ -16,6 +17,9 @@ for var in configRegistry:
         for i in configRegistry[var].split(','):
             docker_opts += '--%s=%s ' % (opt, i)
     elif var.startswith('docker/daemon/default/opts'):
+        if opt in ('max-file', 'max-size'):
+            opt = 'log-opt %s' % (opt,)
+            print('Using deprecated UCR variable %s: use %s instead' % (var, opt), file=sys.stderr)
         opt = var.split('/')[-1]
         docker_opts += '--%s=%s ' % (opt, configRegistry[var])
     elif var.startswith('docker/daemon/default/parameter') and configRegistry.is_true(var):
