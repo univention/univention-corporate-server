@@ -210,8 +210,8 @@ def _get_kerberos_ticket(principal, password, ucr=None):
     # otherwise kinit may use an old ticket and run into "krb5_get_init_creds: Clock skew too great".
     cmd1 = ("/usr/bin/kdestroy",)
     p1 = subprocess.Popen(cmd1, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, close_fds=True)
-    stdout, stderr = p1.communicate()
-    if p1.returncode != 0:
+    stdout, _ = p1.communicate()
+    if p1.returncode:
         ud.debug(ud.MODULE, ud.ERROR, "kdestroy failed:\n%s" % stdout.decode('UTF-8', 'replace'))
 
     with tempfile.NamedTemporaryFile('w+') as f:
@@ -221,8 +221,8 @@ def _get_kerberos_ticket(principal, password, ucr=None):
 
         cmd2 = ("/usr/bin/kinit", "--no-addresses", "--password-file=%s" % (f.name,), principal)
         p1 = subprocess.Popen(cmd2, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, close_fds=True)
-        stdout, stderr = p1.communicate()
-        if p1.returncode != 0:
+        stdout, _ = p1.communicate()
+        if p1.returncode:
             msg = "kinit failed:\n%s" % (stdout.decode('UTF-8', 'replace'),)
             ud.debug(ud.MODULE, ud.ERROR, msg)
             raise connectionFailed(msg)
@@ -236,8 +236,8 @@ def check_connection(ad_domain_info, username, password):
     test_share = '//%s/sysvol' % ad_domain_info["DC IP"]
     cmd = ('smbclient', '-U', '%s%%%s' % (username, password), '-c', 'quit', test_share)
     p1 = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, close_fds=True)
-    stdout, stderr = p1.communicate()
-    if p1.returncode != 0:
+    stdout, _ = p1.communicate()
+    if p1.returncode:
         raise connectionFailed(stdout.decode('UTF-8', 'replace'))
 
 
@@ -457,8 +457,8 @@ def _create_domain_admin_account_in_udm(username, password, lo=None, ucr=None):
     cmd = ("univention-directory-manager", "users/user", "create", "--position", "cn=users,%s" % ucr.get("ldap/base"), "--set", "username=%s" % username, "--set", "lastname=tmp", "--set", "password=%s" % password, "--set", "primaryGroup=%s" % domain_admins_dn)
 
     p1 = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, close_fds=True)
-    stdout, stderr = p1.communicate()
-    if p1.returncode != 0:
+    stdout, _ = p1.communicate()
+    if p1.returncode:
         ud.debug(ud.MODULE, ud.ERROR, "Account creation for %s failed" % username)
         if stdout:
             ud.debug(ud.MODULE, ud.ERROR, "udm users/user create output:\n%s" % stdout.decode('UTF-8', 'replace'))
@@ -494,8 +494,8 @@ def _add_udm_account_to_domain_admins(user_dn, lo=None, ucr=None):
     domain_admins_dn = _dn_of_udm_domain_admins(lo, ucr)
     cmd = ("univention-directory-manager", "users/user", "modify", "--dn", user_dn, "--append", "groups=%s" % domain_admins_dn)
     p1 = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, close_fds=True)
-    stdout, stderr = p1.communicate()
-    if p1.returncode != 0:
+    stdout, _ = p1.communicate()
+    if p1.returncode:
         ud.debug(ud.MODULE, ud.ERROR, "Adding %s to Domain Admins failed" % user_dn)
         if stdout:
             ud.debug(ud.MODULE, ud.ERROR, "udm users/user modify groups output:\n%s" % stdout.decode('UTF-8', 'replace'))
@@ -507,8 +507,8 @@ def _set_udm_account_password(user_dn, password):
     # type: (str, str) -> bool
     cmd = ('univention-directory-manager', 'users/user', 'modify', '--dn', user_dn, '--set', 'password=%s' % password, '--set', 'overridePWHistory=1', '--set', 'overridePWLength=1')
     p1 = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, close_fds=True)
-    stdout, stderr = p1.communicate()
-    if p1.returncode != 0:
+    stdout, _ = p1.communicate()
+    if p1.returncode:
         ud.debug(ud.MODULE, ud.ERROR, "Failed to set AD password in UDM for %s" % user_dn)
         if stdout:
             ud.debug(ud.MODULE, ud.ERROR, "udm users/user modify password output:\n%s" % stdout.decode('UTF-8', 'replace'))
@@ -650,8 +650,8 @@ def synchronize_account_position(ad_domain_info, username, password, ucr=None):
 
     cmd = ("univention-directory-manager", "users/user", "move", "--dn", ucs_user_dn, "--position", target_position)
     p1 = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, close_fds=True)
-    stdout, stderr = p1.communicate()
-    if p1.returncode != 0:
+    stdout, _ = p1.communicate()
+    if p1.returncode:
         ud.debug(ud.MODULE, ud.ERROR, "Moving UDM object %s to %s failed" % (ucs_user_dn, target_position))
         if stdout:
             ud.debug(ud.MODULE, ud.ERROR, "udm users/user modify groups output:\n%s" % stdout.decode('UTF-8', 'replace'))
@@ -678,7 +678,7 @@ def server_supports_ssl(server):
     ud.debug(ud.MODULE, ud.PROCESS, "Check if server supports SSL")
     # we have to create a new process because there is only one sec context allowed in python-ldap
     p1 = subprocess.Popen([sys.executable, "-c", 'import univention.lib.admember; print(univention.lib.admember._server_supports_ssl(%r))' % (server,)], close_fds=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-    stdout, stderr = p1.communicate()
+    stdout, _ = p1.communicate()
     if p1.returncode == 0 and stdout.strip() == b'True':
         ud.debug(ud.MODULE, ud.PROCESS, "SSL True")
         return True
@@ -707,7 +707,7 @@ def _add_service_to_localhost(service):
     # type: (str) -> None
     ud.debug(ud.MODULE, ud.PROCESS, "Adding service %s to localhost" % service)
     res = subprocess.call('. /usr/share/univention-lib/ldap.sh; ucs_addServiceToLocalhost %s' % (quote(service),), shell=True)
-    if res != 0:
+    if res:
         raise failedToSetService()
 
 
@@ -715,7 +715,7 @@ def _remove_service_from_localhost(service):
     # type: (str) -> None
     ud.debug(ud.MODULE, ud.PROCESS, "Remove service %s from localhost" % service)
     res = subprocess.call('. /usr/share/univention-lib/ldap.sh; ucs_removeServiceFromLocalhost %s' % (quote(service),), shell=True)
-    if res != 0:
+    if res:
         raise failedToSetService()
 
 
@@ -874,10 +874,9 @@ def lookup_adds_dc(ad_server="", ucr=None, check_dns=True):
                 cmd = ['dig', '@' + ip, ad_server, '+short', '+nocookie']
                 ud.debug(ud.MODULE, ud.PROCESS, "running %s" % cmd)
                 p1 = subprocess.Popen(cmd, close_fds=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-                out, err = p1.communicate()
-                stdout, stderr = out.decode('UTF-8', 'replace'), err.decode('UTF-8', 'replace')
-                ud.debug(ud.MODULE, ud.PROCESS, "stdout: %s" % stdout)
-                ud.debug(ud.MODULE, ud.PROCESS, "stderr: %s" % stderr)
+                stdout, stderr = p1.communicate()
+                ud.debug(ud.MODULE, ud.PROCESS, "stdout: %s" % stdout.decode('UTF-8', 'replace'))
+                ud.debug(ud.MODULE, ud.PROCESS, "stderr: %s" % stderr.decode('UTF-8', 'replace'))
                 if p1.returncode == 0:
                     for i in stdout.split(u'\n'):
                         if i:
@@ -973,8 +972,8 @@ def invoke_service(service, cmd):
     if not os.path.exists(init_script):
         return
     try:
-        p1 = subprocess.Popen([init_script, cmd], close_fds=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-        stdout, stderr = p1.communicate()
+        p1 = subprocess.Popen([init_script, cmd], close_fds=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+        stdout, _ = p1.communicate()
     except OSError as ex:
         ud.debug(ud.MODULE, ud.ERROR, "%s %s failed: %s" % (init_script, cmd, ex.args[1]))
         return
@@ -990,7 +989,7 @@ def do_time_sync(ad_ip):
     # type: (str) -> bool
     ud.debug(ud.MODULE, ud.PROCESS, "Synchronizing time to %s" % ad_ip)
     p1 = subprocess.Popen(["rdate", "-s", "-n", ad_ip], close_fds=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-    stdout, stderr = p1.communicate()
+    p1.communicate()
     if p1.returncode:
         ud.debug(ud.MODULE, ud.ERROR, "rdate -s -p failed (%d)" % (p1.returncode,))
         return False
@@ -1005,7 +1004,7 @@ def time_sync(ad_ip, tolerance=180, critical_difference=360):
     env["LC_ALL"] = "C"
     try:
         p1 = subprocess.Popen(["rdate", "-p", "-n", ad_ip], close_fds=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE, env=env)
-        stdout, stderr = p1.communicate()
+        p1.communicate()
     except OSError as ex:
         ud.debug(ud.MODULE, ud.ERROR, "rdate -p -n %s: %s" % (ad_ip, ex.args[1]))
         return False
@@ -1116,7 +1115,7 @@ def rename_well_known_sid_objects(username, password, ucr=None):
         stdout, stderr = p1.communicate()
         ud.debug(ud.MODULE, ud.PROCESS, "%s" % stdout.decode('UTF-8', 'replace'))
 
-    if p1.returncode != 0:
+    if p1.returncode:
         msg = "well-known-sid-object-rename failed with %d (%s)" % (p1.returncode, stderr.decode('UTF-8', 'replace'))
         ud.debug(ud.MODULE, ud.ERROR, msg)
         raise connectionFailed(msg)
@@ -1163,7 +1162,7 @@ def make_deleted_objects_readable_for_this_machine(username, password, ucr=None)
             close_fds=True)
         stdout, stderr = p1.communicate()
         ud.debug(ud.MODULE, ud.PROCESS, "%s" % stdout.decode('UTF-8', 'replace'))
-    if p1.returncode != 0:
+    if p1.returncode:
         msg = "make-deleted-objects-readable-for-this-machine failed with %d (%s)" % (p1.returncode, stderr.decode('UTF-8', 'replace'))
         ud.debug(ud.MODULE, ud.ERROR, msg)
         raise connectionFailed(msg)
@@ -1392,10 +1391,10 @@ def run_samba_join_script(username, password, ucr=None):
         my_env = os.environ
         my_env['SMB_CONF_PATH'] = '/etc/samba/smb.conf'
         cmd = ('/usr/lib/univention-install/26univention-samba.inst', '--binddn', binddn, '--bindpwdfile', fd.name)
-        p1 = subprocess.Popen(cmd, close_fds=True, env=my_env, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+        p1 = subprocess.Popen(cmd, close_fds=True, env=my_env, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
         stdout, stderr = p1.communicate()
         ud.debug(ud.MODULE, ud.PROCESS, "%s" % stdout.decode('UTF-8', 'replace'))
-    if p1.returncode != 0:
+    if p1.returncode:
         if stderr:
             ud.debug(ud.MODULE, ud.ERROR, "stderr:\n%s" % (stderr.decode('UTF-8', 'replace'),))
         ud.debug(ud.MODULE, ud.ERROR, "26univention-samba.inst failed with %d" % (p1.returncode,))
