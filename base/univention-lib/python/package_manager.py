@@ -45,6 +45,7 @@ import sys
 import threading
 from contextlib import contextmanager
 from errno import ENOENT, ENOSPC
+from io import TextIOBase
 from logging import DEBUG, Handler, getLogger
 from time import sleep
 from types import TracebackType  # noqa: F401
@@ -202,7 +203,7 @@ class ProgressState(object):
         return result
 
 
-class MessageWriter(object):
+class MessageWriter(TextIOBase):
     """
     Mimics a :py:func:`file` object
     supports :py:meth:`flush` and :py:meth:`write`. Writes no '\\r',
@@ -221,7 +222,7 @@ class MessageWriter(object):
         """Dummy function to flush all pending writes."""
 
     def write(self, msg):
-        # type: (Any) -> None
+        # type: (str) -> int
         """
         Write sanitized message to the state collector.
 
@@ -230,6 +231,7 @@ class MessageWriter(object):
         msg = msg.replace('\r', '').strip()
         if msg:
             self.progress_state.info(msg, logger_name='fetch')
+        return len(msg)
 
 
 class FetchProgress(apt.progress.text.AcquireProgress):
