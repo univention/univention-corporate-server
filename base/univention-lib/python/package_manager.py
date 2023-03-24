@@ -583,9 +583,7 @@ class PackageManager(object):
 
     def __del__(self):
         # type: () -> None
-        # should be done automatically. i am a bit paranoid
-        if self.lock_fd is not None:
-            self.unlock()
+        self.unlock()
 
     def _set_apt_pkg_config(self, options):
         # type: (Iterable[Tuple[str, Optional[str]]]) -> List[Tuple[str, Optional[str]]]
