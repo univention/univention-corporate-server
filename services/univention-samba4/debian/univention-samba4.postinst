@@ -233,7 +233,7 @@ if [ "$1" = "configure" ]; then
 			machine_secret="$(cat /etc/machine.secret)"
 			if [ "$secret" != "$machine_secret" ]; then
 				# try to search with the machine secret in S4 LDAP
-				s_res="$(univention-ldapsearch -s base -h "$hostname.$domainname" -p 389 -y /etc/machine.secret -D "$dn" dn | ldapsearch-wrapper | sed -ne 's|^dn: ||p')"
+				s_res="$(univention-ldapsearch -s base -H "ldap://$hostname.$domainname:389" -y /etc/machine.secret -D "$dn" dn | ldapsearch-wrapper | sed -ne 's|^dn: ||p')"
 				if [ -n "$s_res" ]; then
 					# the password from machine.secret is the valid password, so change the secrets.ldb
 					echo "Set secret for flatname=$windows_domain,cn=Primary Domains"
