@@ -1,20 +1,65 @@
 @!@
 import json
-conf = {
-    "log-opts": {
-        "max-file": configRegistry["docker/daemon/default/opts/max-file"],
-        "max-size": configRegistry["docker/daemon/default/opts/max-size"],
-    },
-    "bip": configRegistry["docker/daemon/default/opts/bip"],
-    "log-driver": configRegistry["docker/daemon/default/opts/log-driver"],
-    "live-restore": configRegistry.is_true("docker/daemon/default/parameter/live-restore"),
+
+conf = {}
+
+proxies = {}
+for key, value in {'proxy/http': 'http-proxy', 'proxy/https': 'https-proxy', 'proxy/no_proxy': 'no-proxy'}.items():
+    if configRegistry.get(key):
+        proxies[value] = configRegistry[key]
+if proxies:
+    pass  # conf['proxies'] = proxies  # FIXME: unable to configure the Docker daemon with file /etc/docker/daemon.json: the following directives don't match any configuration option: https-proxy
+
+translation_table = {
+    # --command line argument to JSON key
+    'authorization-plugin': 'authorization-plugins',
+    'default-address-pool': 'default-address-pools',
+    'default-ulimit': 'default-ulimits',
+    'dns-opt': 'dns-opts',
+    'exec-opt': 'exec-opts',
+    'host': 'hosts',
+    'insecure-registry': 'insecure-registries',
+    'label': 'labels',
+    'log-opt': 'log-opts',
+    'node-generic-resource': 'node-generic-resources',
+    'registry-mirror': 'registry-mirrors',
+    'storage-opts': 'storage-opt',
+    'b': 'bridge',
+    'D': 'debug',
+    'G': 'group',
+    'H': 'host',
+    'l': 'log-level',
+    'p': 'pidfile',
+    's': 'storage-driver',
 }
-registry_mirrors = configRegistry.get('docker/daemon/default/opts/registry-mirrors')
-if registry_mirrors:
-    conf.update({"registry-mirrors": [mirror.strip() for mirror in registry_mirrors.split(',')]})
-tmpl = configRegistry.get("docker/daemon/default/json", "{}")
-extra = json.loads(tmpl)
-conf.update(extra)
-text = json.dumps(conf, indent=4, sort_keys=True)
-print(text)
+
+def translate(opt, value):
+    opt = translation_table.get(opt, opt)
+    if opt in {'default-ipc-mode', 'metrics-addr', 'network-control-plane-mtu', 'rootless', 'validate', 'version'}:
+        return  # invalid / no mapping
+    if opt in {'max-file', 'max-size'}:
+        conf.setdefault('log-opts', {})[opt] = value
+        return
+    if opt == 'log-opts':
+        key, val = value.split('=', 1)
+        conf.setdefault('log-opts', {})[key] = val
+        return
+    if opt in {'default-address-pools', 'default-ulimits'}:
+        return  # FIXME: transform into valid JSON format
+    conf[opt] = value
+
+
+for var in configRegistry:
+    if var.startswith('docker/daemon/default/map') or var == 'docker/daemon/default/opts/registry-mirrors':
+        opt = var.split('/')[-1]
+        translate(opt, [x.strip() for x in configRegistry[var].split(',')])
+    elif var.startswith('docker/daemon/default/opts'):
+        opt = var.split('/')[-1]
+        translate(opt, configRegistry[var])
+    elif var.startswith('docker/daemon/default/parameter') and configRegistry.is_true(var):
+        opt = var.split('/')[-1]
+        translate(opt, True)
+
+conf.update(json.loads(configRegistry.get("docker/daemon/default/json", "{}")))
+print(json.dumps(conf, indent=4, sort_keys=True))
 @!@
