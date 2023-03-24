@@ -450,18 +450,15 @@ def get_free_disk_space():
     docker_path = '/var/lib/docker'
     try:
         fd = os.open(docker_path, os.O_RDONLY)
-        stats = os.fstatvfs(fd)
-        bytes_free = stats.f_frsize * stats.f_bavail  # block size * number of free blocks
-        mb_free = bytes_free * 1e-6
-        return mb_free
+        try:
+            stats = os.fstatvfs(fd)
+            bytes_free = stats.f_frsize * stats.f_bavail  # block size * number of free blocks
+            mb_free = bytes_free * 1e-6
+            return mb_free
+        finally:
+            os.close(fd)
     except Exception:
         utils_logger.debug('Free disk space could not be determined.')
-    finally:
-        try:
-            os.close(fd)
-        except (NameError, OSError):
-            # file has not been opened
-            pass
     return 0.0
 
 
