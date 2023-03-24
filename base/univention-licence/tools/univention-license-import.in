@@ -120,7 +120,7 @@ if ! echo "$dn" | grep -i -q "$ldap_base\$"; then
 fi
 
 # ldapadd and ldapmodify work correctly with DOS linebreaks
-err=$(ldapadd -x -h "$ldap_master" -p "$ldap_master_port" -ZZ -D "cn=admin,$ldap_base" -y /etc/ldap.secret -f "$file" 2>&1)
+err=$(ldapadd -x -H "ldap://$ldap_master:$ldap_master_port" -ZZ -D "cn=admin,$ldap_base" -y /etc/ldap.secret -f "$file" 2>&1)
 rv=$?
 if [ "$rv" = "68" ]; then
 	mkdir -p "/var/univention-backup"
@@ -131,11 +131,11 @@ if [ "$rv" = "68" ]; then
 	touch "$backupfile"
 	chmod 0600 "$backupfile"
 
-	ldapsearch -xLLL -h "$ldap_master" -p "$ldap_master_port" -ZZ -D "cn=admin,$ldap_base" -y /etc/ldap.secret cn=admin -b "cn=license,cn=univention,$ldap_base" | ldapsearch-wrapper > "$backupfile"
+	ldapsearch -xLLL -H "ldap://$ldap_master:$ldap_master_port" -ZZ -D "cn=admin,$ldap_base" -y /etc/ldap.secret cn=admin -b "cn=license,cn=univention,$ldap_base" | ldapsearch-wrapper > "$backupfile"
 
-	ldapdelete -x -h "$ldap_master" -p "$ldap_master_port" -ZZ -D "cn=admin,$ldap_base" -y /etc/ldap.secret "cn=admin,cn=license,cn=univention,$ldap_base"
+	ldapdelete -x -H "ldap://$ldap_master:$ldap_master_port" -ZZ -D "cn=admin,$ldap_base" -y /etc/ldap.secret "cn=admin,cn=license,cn=univention,$ldap_base"
 
-	ldapadd -x -h "$ldap_master" -p "$ldap_master_port" -ZZ -D "cn=admin,$ldap_base" -y /etc/ldap.secret -f "$file"
+	ldapadd -x -H "ldap://$ldap_master:$ldap_master_port" -ZZ -D "cn=admin,$ldap_base" -y /etc/ldap.secret -f "$file"
 
 	echo "Replaced license."
 elif [ "$rv" != 0 ] && [ "$rv" != 89 ]; then
