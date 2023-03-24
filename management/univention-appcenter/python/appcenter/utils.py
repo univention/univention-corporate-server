@@ -57,6 +57,7 @@ from subprocess import PIPE, STDOUT, Popen, list2cmdline
 from threading import Thread
 from typing import (  # noqa: F401
     TYPE_CHECKING, Any, Container, Dict, Iterable, List, Mapping, Optional, Sequence, Tuple, Type, TypeVar, Union,
+    overload,
 )
 from uuid import uuid4
 
@@ -87,8 +88,19 @@ _ = Translation('univention-appcenter').translate
 utils_logger = get_base_logger().getChild('utils')
 
 
-def read_ini_file(filename, parser_class=RawConfigParser):
+@overload
+def read_ini_file(filename):
+    # type: (str) -> RawConfigParser
+    pass
+
+
+@overload
+def read_ini_file(filename, parser_class):
     # type: (str, Type[_ConfigParser]) -> _ConfigParser
+    pass
+
+
+def read_ini_file(filename, parser_class=RawConfigParser):
     parser = parser_class()
     try:
         with open(filename) as f:
@@ -254,6 +266,7 @@ def call_process2(cmd, logger=None, env=None, cwd=None):
     ret = 0
     try:
         p = Popen(cmd, stdout=PIPE, stderr=STDOUT, close_fds=True, env=env, cwd=cwd)
+        assert p.stdout is not None
         while p.poll() is None:
             stdout = p.stdout.readline()
             if stdout:
@@ -319,11 +332,14 @@ def verbose_http_error(exc):
             strerror = _('%s could not be downloaded. This seems to be a problem with the App Center server. Please try again later.') % exc.url
         elif code >= 500:
             strerror = _('This is a problem with the App Center server. Please try again later.')
+
     if hasattr(exc, 'reason') and isinstance(exc.reason, ssl.SSLError):
         strerror = _('There is a problem with the certificate of the App Center server %s.') % get_server()
         strerror += ' (' + str(exc.reason) + ')'
+
     while hasattr(exc, 'reason'):
         exc = exc.reason
+
     if hasattr(exc, 'errno'):
         version = ucr_get('version/version')
         errno = exc.errno
@@ -334,6 +350,7 @@ def verbose_http_error(exc):
         if errno == -2:  # gaierror(-2, 'Name or service not known')
             link_to_doc = _('https://docs.software-univention.de/manual-%s.html#networks:dns') % version
             strerror += '. ' + _('This is probably due to the DNS settings of your server. You may find help at %s.') % link_to_doc
+
     if not strerror.strip():
         strerror = str(exc)
     if isinstance(exc, ssl.CertificateError):
@@ -374,7 +391,7 @@ def urlopen(request):
     return urllib_request.urlopen(request, timeout=60)
 
 
-urlopen._opener_installed = False
+urlopen._opener_installed = False  # type: ignore
 
 
 def get_md5(content):
@@ -467,7 +484,7 @@ def unique(sequence):
 
 
 def get_locale():
-    # type: () -> str
+    # type: () -> Optional[str]
     # returns currently set locale: de_AT.UTF-8 -> de
     # may return None if not set (i.e. 'C')
     locale = getlocale()[0]
