@@ -162,7 +162,7 @@ create_krb_apache2_user() {
 		test -z "$bindpwdfile" && bindpwdfile="/etc/ldap.secret"
 
 		# modify attribute directly
-		ldapmodify -x -h "$ldap_master" -p "${ldap_master_port:-7389}" -D "$binddn" -y "$bindpwdfile" <<%EOF
+		ldapmodify -x -H "ldap://$ldap_master:${ldap_master_port:-7389}" -D "$binddn" -y "$bindpwdfile" <<%EOF
 dn: uid=$spn_account_name,cn=users,$ldap_base
 changetype: modify
 replace: krb5PrincipalName

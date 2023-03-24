@@ -164,7 +164,7 @@ ldap_binddn () {
 		ldap_username="$(get_profile_var ldap_username)"
 		[ -n "$ldap_username" ] ||
 			return
-		ldapsearch -x -ZZ -D "${ldap_hostdn:?}" -y /etc/machine.secret -h "${ldap_master:?}" -LLLo ldif-wrap=no "(&(objectClass=person)(uid=${ldap_username:?}))" 1.1 | sed -ne 's|^dn: ||p;T;q'
+		ldapsearch -x -ZZ -D "${ldap_hostdn:?}" -y /etc/machine.secret -H "ldap://${ldap_master:?}" -LLLo ldif-wrap=no "(&(objectClass=person)(uid=${ldap_username:?}))" 1.1 | sed -ne 's|^dn: ||p;T;q'
 		;;
 	esac
 }
