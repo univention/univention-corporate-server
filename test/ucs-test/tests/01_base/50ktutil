@@ -23,7 +23,7 @@ description: ktutil check $(random_chars)
 __HERE__
 
 echo -e "\n\n***Change the description of the local host"
-ldapmodify -x -D "cn=admin,$ldap_base" -y /etc/ldap.secret -h "$ldap_master:$ldap_master_port" -f "$tmpfile"
+ldapmodify -x -D "cn=admin,$ldap_base" -y /etc/ldap.secret -H "ldap://$ldap_master:$ldap_master_port" -f "$tmpfile"
 
 if ! wait_for_replication; then
 	echo "Error: The notifier_id is wrong. Please check Bug #10047."

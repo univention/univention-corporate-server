@@ -43,7 +43,7 @@ testldif () {
 }
 
 #check if master ldap-server can be reached
-univention-ldapsearch -h "$ldap_master" -p "$ldap_master_port" uid=Administrator |
+univention-ldapsearch -H "ldap://$ldap_master:$ldap_master_port" uid=Administrator |
 	grep -q "# numEntries: 1" ||
 	exit 120
 

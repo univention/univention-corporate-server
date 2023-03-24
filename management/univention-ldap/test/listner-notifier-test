@@ -356,7 +356,7 @@ config_replicalistener () # config listener to connect first on $con_to
 	backup="$con_to.$domainname"
 	echo '#!/bin/sh -e' > /tmp/listener-run0
 	echo "" >> /tmp/listener-run0
-	echo "exec /usr/sbin/univention-directory-listener -h '$backup' -F -b '$ldap_base' -m '/usr/lib/univention-directory-listener/system' -c '/var/lib/univention-directory-listener' -o -x -ZZ -D '$replica_hostdn' -y /etc/machine.secret >>/var/log/univention/listener.log 2>&1" >> /tmp/listener-run0
+	echo "exec /usr/sbin/univention-directory-listener -H 'ldap://$backup' -F -b '$ldap_base' -m '/usr/lib/univention-directory-listener/system' -c '/var/lib/univention-directory-listener' -o -x -ZZ -D '$replica_hostdn' -y /etc/machine.secret >>/var/log/univention/listener.log 2>&1" >> /tmp/listener-run0
 
 	univention-scp -timeout 60 "$pw" /tmp/listener-run0 "root@$where:/etc/runit/univention-directory-listener/run"
 	rm /tmp/listener-run0

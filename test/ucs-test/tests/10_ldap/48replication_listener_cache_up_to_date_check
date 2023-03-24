@@ -38,7 +38,7 @@ set_description ()
 	description="$2"
 
 	update_pwd="$(cat /etc/ldap/rootpw.conf  | sed -e 's|^rootpw "||;s|"$||')"
-	ldapmodify -x -h "$hostname.$domainname" -p "$ldap_server_port" -D "cn=update,$ldap_base" -w "$update_pwd" <<EOF
+	ldapmodify -x -H "ldap://$hostname.$domainname:$ldap_server_port" -D "cn=update,$ldap_base" -w "$update_pwd" <<EOF
 dn: cn=$containername,cn=groups,$ldap_base
 changetype: modify
 replace: description
