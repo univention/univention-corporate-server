@@ -32,11 +32,8 @@
 
 import logging
 import subprocess
-from abc import ABCMeta
 from ipaddress import IPv4Interface, IPv6Interface
 from typing import Dict, List, Optional, Sequence, Set, Type
-
-from six import with_metaclass
 
 from univention.config_registry import ConfigRegistry
 from univention.config_registry.interfaces import Interfaces
@@ -101,7 +98,7 @@ class SkipPhase(Exception):
     pass
 
 
-class Phase(with_metaclass(ABCMeta, object)):
+class Phase:
     """Base-class for all phases."""
 
     priority = 0

@@ -36,14 +36,13 @@ from typing import Iterator, Set
 
 from ldap import LDAPError
 from ldap.filter import filter_format
-from six import with_metaclass
 
 from univention.config_registry.interfaces import Interfaces
 from univention.management.console.modules.setup.netconf import Phase, SkipPhase
 from univention.uldap import getMachineConnection
 
 
-class AddressChange(with_metaclass(ABCMeta, Phase)):
+class AddressChange(Phase, metaclass=ABCMeta):
     """Check for at least one removed or added address."""
 
     def check(self) -> None:
@@ -56,7 +55,7 @@ class AddressChange(with_metaclass(ABCMeta, Phase)):
             raise SkipPhase("No address change")
 
 
-class Server(with_metaclass(ABCMeta, Phase)):
+class Server(Phase, metaclass=ABCMeta):
     """Check server role for being a UCS server."""
 
     def check(self) -> None:
@@ -71,7 +70,7 @@ class Server(with_metaclass(ABCMeta, Phase)):
             raise SkipPhase("Wrong server/role")
 
 
-class Executable(with_metaclass(ABCMeta, Phase)):
+class Executable(Phase, metaclass=ABCMeta):
     """Check executable exists."""
 
     executable = ""
@@ -82,7 +81,7 @@ class Executable(with_metaclass(ABCMeta, Phase)):
             raise SkipPhase("Missing executable %s" % (self.executable,))
 
 
-class Dhcp(with_metaclass(ABCMeta, Phase)):
+class Dhcp(Phase, metaclass=ABCMeta):
     """Check for interfaces using DHCP."""
 
     @property
@@ -100,7 +99,7 @@ class Dhcp(with_metaclass(ABCMeta, Phase)):
                 yield name
 
 
-class NotNetworkOnly(with_metaclass(ABCMeta, Phase)):
+class NotNetworkOnly(Phase, metaclass=ABCMeta):
     """Skip when not in network only mode."""
 
     def check(self) -> None:
@@ -109,7 +108,7 @@ class NotNetworkOnly(with_metaclass(ABCMeta, Phase)):
             raise SkipPhase("Network only mode")
 
 
-class Ldap(with_metaclass(ABCMeta, Phase)):
+class Ldap(Phase, metaclass=ABCMeta):
     """Check LDAP server is available."""
 
     binddn = None

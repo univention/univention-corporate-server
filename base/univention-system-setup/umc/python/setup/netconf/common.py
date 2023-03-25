@@ -35,14 +35,12 @@ from abc import ABCMeta
 from ipaddress import IPv4Interface, IPv4Network, IPv6Interface, IPv6Network
 from typing import Dict, Optional, Union
 
-from six import with_metaclass
-
 from univention.admin import uldap
 from univention.management.console.modules.setup.netconf import ChangeSet
 from univention.management.console.modules.setup.netconf.conditions import AddressChange, Executable, Ldap
 
 
-class RestartService(with_metaclass(ABCMeta, Executable)):
+class RestartService(Executable, metaclass=ABCMeta):
     """Helper to restart a single service."""
 
     service = ""
@@ -61,7 +59,7 @@ class RestartService(with_metaclass(ABCMeta, Executable)):
         self.call(["systemctl", "start", self.service])
 
 
-class AddressMap(with_metaclass(ABCMeta, AddressChange)):
+class AddressMap(AddressChange, metaclass=ABCMeta):
     """Helper to provide a mapping from old addresses to new addresses."""
 
     def __init__(self, changeset: ChangeSet) -> None:
@@ -120,7 +118,7 @@ class AddressMap(with_metaclass(ABCMeta, AddressChange)):
         return mapping
 
 
-class LdapChange(with_metaclass(ABCMeta, type('NewBase', (AddressChange, Ldap), {}))):
+class LdapChange(AddressChange, Ldap, metaclass=ABCMeta):
     """Helper to provide access to LDAP through UDM."""
 
     def __init__(self, changeset: ChangeSet) -> None:

@@ -1,12 +1,12 @@
 @!@
-import socket
 import fcntl
+import socket
 import struct
-
-from six.moves.urllib_request import urlopen
-from six.moves.urllib_error import URLError
+from urllib.error import URLError
+from urllib.request import urlopen
 
 from univention.config_registry.interfaces import Interfaces
+
 
 msg_amazon = '''
 ########################################################################
