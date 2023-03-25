@@ -77,7 +77,6 @@ ignore = [
  "S103",  # bad-file-permissions
  "S110",  # try-except-pass
  "UP006",  # use-pep585-annotation
- "UP007",  # typing-union (Py3.9+)
  "UP003",  # type-of-primitive
  "UP012",  # unnecessary-encode-utf8
  #"UP016",  # remove-six-compat
