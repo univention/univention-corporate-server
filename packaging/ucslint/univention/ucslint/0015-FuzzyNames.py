@@ -34,7 +34,7 @@ from __future__ import annotations
 
 import re
 from itertools import chain
-from typing import Any, Iterator  # noqa: F401
+from typing import Any, Iterator
 
 import univention.ucslint.base as uub
 

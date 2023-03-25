@@ -35,7 +35,6 @@ from __future__ import annotations
 import os
 import re
 import time
-from typing import List  # noqa: F401
 
 import univention.ucslint.base as uub
 
@@ -70,7 +69,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
     def check(self, path: str) -> None:
         super().check(path)
 
-        check_files: List[str] = []
+        check_files: list[str] = []
 
         # check if copyright file is missing
         fn = os.path.join(path, 'debian', 'copyright')

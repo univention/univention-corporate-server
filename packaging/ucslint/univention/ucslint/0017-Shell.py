@@ -29,6 +29,7 @@
 # License with the Debian GNU/Linux or Univention distribution in file
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
+
 """Find unquoted usage of eval "$(ucr shell)"."""
 
 from __future__ import annotations

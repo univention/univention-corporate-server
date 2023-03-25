@@ -1,9 +1,6 @@
 #!/usr/bin/python3
 # -*- coding: utf-8 -*-
 #
-# Univention ucslint
-"""Check UCS packages for policy compliance."""
-#
 # Like what you see? Join us!
 # https://www.univention.com/about-us/careers/vacancies/
 #
@@ -34,16 +31,23 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
+"""
+Univention ucslint
+Check UCS packages for policy compliance.
+"""
+
+from __future__ import annotations
+
 import os
 import re
 import sys
-from argparse import ArgumentParser, ArgumentTypeError, FileType, Namespace  # noqa: F401
+from argparse import ArgumentParser, ArgumentTypeError, FileType, Namespace
 from errno import ENOENT
 from fnmatch import fnmatch
 from importlib.util import module_from_spec, spec_from_file_location
 from os.path import abspath, dirname, exists, expanduser, isdir, join, normpath, relpath
-from types import ModuleType  # noqa: F401
-from typing import IO, Container, Dict, List, Optional, Sequence, Set, Tuple  # noqa: F401
+from types import ModuleType
+from typing import IO, Container, Optional, Sequence
 
 import univention.ucslint.base as uub
 
@@ -80,13 +84,13 @@ class DebianPackageCheck(object):
     def __init__(self, path: str, plugindirs: Sequence[str], enabled_modules: Container[str] = None, disabled_modules: Container[str] = None, debuglevel: int = 0):
         self.path = path
         self.plugindirs = plugindirs
-        self.pluginlist = {}  # type: Dict[str, ModuleType]
-        self.msglist = []  # type: List[uub.UPCMessage]
-        self.enabled_modules = enabled_modules or ()  # type: Container[str]
-        self.disabled_modules = disabled_modules or ()  # type: Container[str]
+        self.pluginlist: dict[str, ModuleType] = {}
+        self.msglist: list[uub.UPCMessage] = []
+        self.enabled_modules: Container[str] = enabled_modules or ()
+        self.disabled_modules: Container[str] = disabled_modules or ()
         self.debuglevel = debuglevel
-        self.msgidlist = {}  # type: Dict[str, Tuple[int, str]]
-        self.overrides = set()  # type: Set[Tuple[str, Optional[str], Optional[int]]]
+        self.msgidlist: dict[str, tuple[int, str]] = {}
+        self.overrides: set[tuple[str, Optional[str], Optional[int]]] = set()
         self.loadplugins()
 
     def loadplugins(self) -> None:
@@ -105,6 +109,7 @@ class DebianPackageCheck(object):
                             try:
                                 fn = os.path.join(plugindir, f)
                                 spec = spec_from_file_location(f[:-3], fn)
+                                assert spec is not None
                                 module = module_from_spec(spec)
                                 assert spec.loader
                                 spec.loader.exec_module(module)  # type: ignore
@@ -172,7 +177,7 @@ class DebianPackageCheck(object):
             return True
         return False
 
-    def printResult(self, ignore_IDs: Container[str], display_only_IDs: Container[str], display_only_categories: str, exitcode_categories: str, junit: IO[str] = None) -> Tuple[int, int]:
+    def printResult(self, ignore_IDs: Container[str], display_only_IDs: Container[str], display_only_categories: str, exitcode_categories: str, junit: IO[str] = None) -> tuple[int, int]:
         """
         Print result of checks.
 
@@ -187,7 +192,7 @@ class DebianPackageCheck(object):
         exitcode_cnt = 0
 
         self.loadOverrides()
-        test_cases = []  # type: List[uub.TestCase]
+        test_cases: list[uub.TestCase] = []
 
         for msg in self.msglist:
             tc = msg.junit()

@@ -36,10 +36,10 @@ import re
 from glob import glob
 from os import listdir
 from os.path import curdir, exists, join, splitext
-from typing import Iterable, Iterator, Set  # noqa: F401
+from typing import Iterable, Iterator
 
-from apt import Cache  # type: ignore
-from apt_pkg import Version  # noqa: F401
+from apt import Cache
+from apt.package import Version
 
 import univention.ucslint.base as uub
 
@@ -58,7 +58,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 
     def __init__(self) -> None:
         super().__init__()
-        self.apt = None
+        self.apt: Cache | None = None
         self.path = ''  # updated in check()
 
     def getMsgIds(self) -> uub.MsgIds:

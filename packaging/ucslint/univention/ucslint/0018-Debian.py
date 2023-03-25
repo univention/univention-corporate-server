@@ -29,6 +29,7 @@
 # License with the Debian GNU/Linux or Univention distribution in file
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
+
 """Find maintainer scripts using wrong header."""
 
 from __future__ import annotations
@@ -39,7 +40,7 @@ from itertools import cycle
 from os import walk
 from os.path import basename, dirname, isdir, join, normpath, relpath, splitext
 from shlex import split
-from typing import Callable, Dict, Iterable, Iterator, List, Set, Tuple, Union  # noqa: F401
+from typing import Callable, Iterable, Iterator
 
 from debian.changelog import Changelog, ChangelogParseError  # Version
 
@@ -213,7 +214,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
         return result
 
     def check_dirs(self, path: str) -> None:
-        dirs: Dict[str, Set[str]] = {}
+        dirs: dict[str, set[str]] = {}
         debianpath = join(path, 'debian')
 
         for fp in uub.FilteredDirWalkGenerator(debianpath, suffixes=['install']):
@@ -384,7 +385,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
     RE_ARG2 = re.compile(r'^("?)\$(?:2|\{2[#%:?+=/-[^}]*\})(\1)$')
 
 
-class Dirs(Set[str]):
+class Dirs(set[str]):
     """Set of directories."""
 
     DIRS = frozenset({
