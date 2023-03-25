@@ -42,7 +42,7 @@ fi
 
 VERSION="51"
 VERSION_NAME="5.1"
-MIN_VERSION="4.4-9"
+MIN_VERSION="5.0-4"
 
 updateLogDir="/var/univention-backup/update-to-${UPDATE_NEXT_VERSION:-$VERSION}"
 
