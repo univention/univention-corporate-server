@@ -509,7 +509,8 @@ class Device(object):
 
     @property
     def dict(self):
-        d = dict(self.__dict__, interfaceType=self.__class__.__name__)
+        d = dict(self.__dict__)
+        d["interfaceType"] = self.__class__.__name__
         for key in ('interfaces', '_leftover', 'network', 'broadcast', 'start', 'type', 'order'):
             d.pop(key, None)
         return d
@@ -609,10 +610,8 @@ class VLAN(Device):
     @property
     def dict(self) -> Dict[str, str]:
         d = super(VLAN, self).dict
-        d.update(dict(
-            vlan_id=self.vlan_id,
-            parent_device=self.parent_device,
-        ))
+        d["vlan_id"] = self.vlan_id
+        d["parent_device"] = self.parent_device
         return d
 
     def parse_ucr(self) -> None:
