@@ -89,10 +89,10 @@ def check_domain_has_activated_license(address: str, username: str, password: st
             error = _('The license %s is not valid.') % (license_uuid,)
 
     if not valid_license:
-        raise UMC_Error(' '.join(
+        raise UMC_Error(' '.join((
             _('To install the {appliance_name} appliance it is necessary to have an activated UCS license on the Primary Directory Node.').format(appliance_name=appliance_name),
             _('During the check of the license status the following error occurred:\n{error}').format(error=error),
-        ))
+        )))
 
 
 def check_domain_is_higher_or_equal_version(address: str, username: str, password: str) -> None:
