@@ -203,6 +203,7 @@ class UniventionLDAPExtension(six.with_metaclass(ABCMeta)):
 
     def __init__(self, ucr):
         # type: (ConfigRegistry) -> None
+        self._todo_list = []  # type: List[str]
         self.target_container_dn = "cn=%s,cn=univention,%s" % (escape_dn_chars(self.target_container_name), ucr["ldap/base"])
 
     @classmethod
@@ -548,7 +549,6 @@ class UniventionLDAPExtensionWithListenerHandler(six.with_metaclass(ABCMeta, Uni
         # type: (ConfigRegistry) -> None
         super(UniventionLDAPExtensionWithListenerHandler, self).__init__(ucr)
         self._do_reload = False
-        self._todo_list = []
         self.ucr_template_dir = '/etc/univention/templates'
         self.ucr_slapd_conf_subfile_dir = '%s/files/etc/ldap/slapd.conf.d' % self.ucr_template_dir
         self.ucr_info_basedir = '%s/info' % self.ucr_template_dir

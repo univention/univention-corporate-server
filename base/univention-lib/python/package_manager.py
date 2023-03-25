@@ -713,7 +713,7 @@ class PackageManager(object):
         :param pkg_names: A list of binary package names.
         :returns: A list of |APT| cache entries.
         """
-        packages = [self.get_package(pkg_name) for pkg_name in pkg_names]
+        packages = (self.get_package(pkg_name) for pkg_name in pkg_names)
         return [pkg for pkg in packages if pkg]
 
     def get_package(self, pkg_name, raise_key_error=False):
@@ -859,11 +859,8 @@ class PackageManager(object):
                 to_be_installed.add(pkg.name)
                 if pkg in remove:
                     broken.add(pkg.name)
-                if apt_pkg.config.get('APT::Get::AllowUnauthenticated') != '1':
-                    authenticated = False
-                    for origin in pkg.candidate.origins:
-                        authenticated |= origin.trusted
-                    if not authenticated:
+                if apt_pkg.config.get('APT::Get::AllowUnauthenticated') != '1' and pkg.candidate:
+                    if not any(origin.trusted for origin in pkg.candidate.origins):
                         self.progress_state.error('%s: %s' % (pkg.name, _('Untrusted origin')))
                         broken.add(pkg.name)
             if pkg.marked_delete:

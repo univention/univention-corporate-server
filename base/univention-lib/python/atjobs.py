@@ -186,7 +186,7 @@ def remove(nr):
 
     :param int nr: Job number.
     """
-    for job in list():
+    for job in list():  # noqa: C408
         if job.nr == nr:
             return job.rm()
     return None

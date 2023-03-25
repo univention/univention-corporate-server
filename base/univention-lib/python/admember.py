@@ -196,9 +196,7 @@ def is_domain_in_admember_mode(ucr=None):
 
     lo = univention.uldap.getMachineConnection()
     res = lo.search(base=ucr.get('ldap/base'), filter='(&(univentionServerRole=master)(univentionService=AD Member))')
-    if res:
-        return True
-    return False
+    return bool(res)
 
 
 def _get_kerberos_ticket(principal, password, ucr=None):
@@ -971,7 +969,7 @@ def restart_service(service):
 
 def invoke_service(service, cmd):
     # type: (str, str) ->  None
-    init_script = '/etc/init.d/%s' % service
+    init_script = '/etc/init.d/%s' % service  # FIXME: SysV-init → systemd.service
     if not os.path.exists(init_script):
         return
     try:
@@ -1327,7 +1325,7 @@ def prepare_connector_settings(username, password, ad_domain_info, ucr=None):
 
     ud.debug(ud.MODULE, ud.PROCESS, "Prepare connector settings")
 
-    binddn = '%s$' % (ucr.get('hostname'))
+    binddn = '%(hostname)s$' % ucr
     ucr_set = [
         u'connector/ad/ldap/host=%s' % ad_domain_info["DC DNS Name"],
         u'connector/ad/ldap/base=%s' % ad_domain_info["LDAP Base"],
@@ -1655,8 +1653,6 @@ def configure_ad_member(ad_server_ip, username, password):
         disable_ssl()
 
     start_service('univention-ad-connector')
-
-    return True
 
 
 def configure_backup_as_ad_member():

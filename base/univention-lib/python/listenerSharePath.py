@@ -45,7 +45,6 @@ except ImportError:
 
 import shutil
 import sys
-from functools import reduce
 from typing import Dict, List, Optional  # noqa: F401
 
 
@@ -314,8 +313,12 @@ def is_blacklisted(path, ucr):
     False
     """
     path = '%s/' % (path.rstrip('/'),)
-    whitelist = [set(val.split(':')) for key, val in ucr.items() if key.startswith('listener/shares/whitelist/')]
-    whitelist = reduce(set.union, whitelist) if whitelist else set()
+    whitelist = {
+        path
+        for key, value in ucr.itmes()
+        if key.startswith('listener/shares/whitelist/')
+        for path in value.split(":")
+    }
     for directory in DIR_BLACKLIST:
         if path in whitelist or path.rstrip('/') in whitelist or any(fnmatch.fnmatch(path, allowed) for allowed in whitelist):
             continue
