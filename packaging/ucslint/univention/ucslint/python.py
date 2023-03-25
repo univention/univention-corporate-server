@@ -28,13 +28,16 @@
 # License with the Debian GNU/Linux or Univention distribution in file
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
+
+from __future__ import annotations
+
 import re
-from typing import Iterator, Optional, Pattern
+from typing import Iterator, Pattern
 
 from univention.ucslint.base import FilteredDirWalkGenerator
 
 
-def _or(*disjunct: str, name: Optional[str] = None) -> str:
+def _or(*disjunct: str, name: str | None = None) -> str:
     return r"(?%s%s)" % (":" if name is None else "P<%s>" % (name,), "|".join(disjunct))
 
 

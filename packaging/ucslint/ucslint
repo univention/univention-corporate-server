@@ -47,7 +47,7 @@ from fnmatch import fnmatch
 from importlib.util import module_from_spec, spec_from_file_location
 from os.path import abspath, dirname, exists, expanduser, isdir, join, normpath, relpath
 from types import ModuleType
-from typing import IO, Container, Optional, Sequence
+from typing import IO, Container, Sequence
 
 import univention.ucslint.base as uub
 
@@ -90,7 +90,7 @@ class DebianPackageCheck(object):
         self.disabled_modules: Container[str] = disabled_modules or ()
         self.debuglevel = debuglevel
         self.msgidlist: dict[str, tuple[int, str]] = {}
-        self.overrides: set[tuple[str, Optional[str], Optional[int]]] = set()
+        self.overrides: set[tuple[str, str | None, int | None]] = set()
         self.loadplugins()
 
     def loadplugins(self) -> None:
