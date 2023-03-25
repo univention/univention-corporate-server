@@ -74,7 +74,7 @@ class Server(with_metaclass(ABCMeta, Phase)):
 class Executable(with_metaclass(ABCMeta, Phase)):
     """Check executable exists."""
 
-    executable = None
+    executable = ""
 
     def check(self) -> None:
         super(Executable, self).check()

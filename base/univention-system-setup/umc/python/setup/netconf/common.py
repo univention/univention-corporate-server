@@ -45,7 +45,7 @@ from univention.management.console.modules.setup.netconf.conditions import Addre
 class RestartService(with_metaclass(ABCMeta, Executable)):
     """Helper to restart a single service."""
 
-    service = None
+    service = ""
     PREFIX = "/etc/init.d"
 
     @property

@@ -41,7 +41,7 @@ from typing import Any, Dict
 import _util
 
 
-if __name__ == '__main__':
+def main() -> None:
     parser = ArgumentParser(description=__doc__)
     parser.add_argument("outfile", type=FileType("w"))
     parser.add_argument("locales", nargs="+")
@@ -76,3 +76,7 @@ if __name__ == '__main__':
     opt.outfile.write("\n")
 
     print('... done :)')
+
+
+if __name__ == '__main__':
+    main()

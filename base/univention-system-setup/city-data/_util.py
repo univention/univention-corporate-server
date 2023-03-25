@@ -176,15 +176,14 @@ def get_timezones() -> Dict[str, Dict[str, str]]:
             parts = line.split('\t')
             countries[parts[0]] = {"id": parts[1], "offset": parts[4]}
 
-        return countries
+    return countries
 
 
 def get_country_code_to_nameserver_map() -> Dict[str, Dict[str, List[str]]]:
     mapping: Dict[str, Dict[str, List[str]]] = {}
 
     with open(_get_path('nameservers.json')) as infile:
-        data = json.load(infile)
-        for ientry in data:
+        for ientry in json.load(infile):
             country = ientry['country_id']
             if not country:
                 continue

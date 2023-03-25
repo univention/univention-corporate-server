@@ -124,7 +124,7 @@ class Instance(Base, ProgressMixin):
         util.get_country_data()
 
     def _get_localized_label(self, label_dict: Dict[str, str]) -> str:
-        return label_dict.get(self.locale.language) or label_dict.get('en', '') or label_dict.get('', '')
+        return label_dict.get(self.locale.language, '') or label_dict.get('en', '') or label_dict.get('', '')
 
     def ping(self, request):
         if request.options.get('keep_alive'):

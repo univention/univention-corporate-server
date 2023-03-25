@@ -357,7 +357,7 @@ class ProgressState(object):
         self.fraction = 0.0
         self.fractionName = ''
         self.steps = 1
-        self.step = 0
+        self.step = 0.0
         self.max = 100
         self.errors: List[str] = []
         self.critical = False
@@ -956,7 +956,7 @@ def is_ucs_domain(nameserver: str, domain: str) -> bool:
 
 def get_ucs_domaincontroller_master_query(nameserver: str, domain: str) -> dns.resolver.Answer | None:
     if not nameserver or not domain:
-        return
+        return None
 
     # register nameserver
     resolver = _get_dns_resolver(nameserver)
@@ -970,6 +970,7 @@ def get_ucs_domaincontroller_master_query(nameserver: str, domain: str) -> dns.r
         MODULE.warn('Lookup for Primary Directory Node record at nameserver %s timed out: %s' % (nameserver, exc))
     except dns.exception.DNSException:
         MODULE.error('DNS Exception: %s' % (traceback.format_exc()))
+    return None
 
 
 def resolve_domaincontroller_master_srv_record(nameserver: str, domain: str) -> bool:
@@ -1008,9 +1009,9 @@ def get_ucs_domain(nameserver: str) -> str:
 
 
 def get_domain(nameserver: str) -> str:
-    fqdn = get_fqdn(nameserver)
-    if fqdn:
-        return '.'.join(fqdn.split('.')[1:])
+    fqdn = get_fqdn(nameserver) or ""
+    _, _, domain = fqdn.partition(".")
+    return domain
 
 
 def get_fqdn(nameserver: str) -> str | None:
@@ -1046,7 +1047,7 @@ def get_available_locales(pattern: Pattern[str], category: str = 'language_en') 
         flanguages = open('/usr/share/univention-system-setup/locale/languagelist')
     except Exception:
         MODULE.error('Cannot find locale data for languages in /usr/share/univention-system-setup/locale')
-        return
+        return None
 
     # get all locales that are supported
     rsupported = csv.reader(fsupported, delimiter=' ')

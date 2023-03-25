@@ -133,10 +133,10 @@ class Phase(with_metaclass(ABCMeta, object)):
         return (self.priority, str(self)) <= (other.priority, str(other)) if isinstance(other, Phase) else NotImplemented
 
     def __eq__(self, other: object) -> bool:
-        return (self.priority, str(self)) == (other.priority, str(other)) if isinstance(other, Phase) else NotImplemented
+        return isinstance(other, Phase) and (self.priority, str(self)) == (other.priority, str(other))
 
     def __ne__(self, other: object) -> bool:
-        return (self.priority, str(self)) != (other.priority, str(other)) if isinstance(other, Phase) else NotImplemented
+        return not self.__eq__(other)
 
     def __ge__(self, other: object) -> object:
         return (self.priority, str(self)) >= (other.priority, str(other)) if isinstance(other, Phase) else NotImplemented

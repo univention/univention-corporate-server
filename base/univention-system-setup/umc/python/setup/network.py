@@ -93,9 +93,9 @@ class IP6Set(set):
 class Interfaces(Dict[str, "Device"]):
     """All network interfaces"""
 
-    def __init__(self, *args: Any, **kwargs: Any):
+    def __init__(self) -> None:
         """Loads all network devices from UCR variables"""
-        super(Interfaces, self).__init__(*args, **kwargs)
+        super(Interfaces, self).__init__()
 
         ucr.load()
 
@@ -509,10 +509,7 @@ class Device(object):
 
     @property
     def dict(self):
-        d = dict(self.__dict__)
-        d.update(dict(
-            interfaceType=self.__class__.__name__,
-        ))
+        d = dict(self.__dict__, interfaceType=self.__class__.__name__)
         for key in ('interfaces', '_leftover', 'network', 'broadcast', 'start', 'type', 'order'):
             d.pop(key, None)
         return d
@@ -569,8 +566,8 @@ class VLAN(Device):
 
     @property
     def vlan_id(self) -> int:
-        if '.' in self.name:
-            return int(self.name.rsplit('.', 1)[1])
+        _, _, vlan = self.name.rpartition(".")
+        return int(vlan)
 
     @vlan_id.setter
     def vlan_id(self, vlan_id: int) -> None:
@@ -578,7 +575,8 @@ class VLAN(Device):
 
     @property
     def parent_device(self) -> str:
-        return self.name.rsplit('.', 1)[0]
+        parent, _, _ = self.name.rpartition(".")
+        return parent
 
     @parent_device.setter
     def parent_device(self, parent_device: str) -> None:
