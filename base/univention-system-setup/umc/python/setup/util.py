@@ -369,7 +369,7 @@ class ProgressState(object):
         return not self.__eq__(other)
 
     def __bool__(self) -> bool:
-        return bool(self.name or self.message or self.percentage or self._join_error or self._misc_error)
+        return bool(self.name or self.message or self.percentage)
     __nonzero__ = __bool__
 
 
