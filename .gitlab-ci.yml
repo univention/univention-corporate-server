@@ -86,6 +86,7 @@ prepare ucslint:
   variables:
     KANIKO_BUILD_CONTEXT: packaging/ucslint
     KANIKO_ARGS: --build-arg ucs=$ucs --cache=true
+    IMAGE_TAG: ""
   rules:
     - changes:
       - packaging/ucslint/**/*
