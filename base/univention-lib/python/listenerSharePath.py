@@ -315,7 +315,7 @@ def is_blacklisted(path, ucr):
     path = '%s/' % (path.rstrip('/'),)
     whitelist = {
         path
-        for key, value in ucr.itmes()
+        for key, value in ucr.items()
         if key.startswith('listener/shares/whitelist/')
         for path in value.split(":")
     }
