@@ -49,7 +49,8 @@ clean_old_backups () {
 	local max_age="${arg_max_age:-$backup_clean_max_age}"
 
 	if [ -n "$max_age" ]; then
-		local count=$(find "$backup_dir" -type f -mtime "+$max_age" -regex "$pattern" | wc -l)
+		local count
+		count=$(find "$backup_dir" -type f -mtime "+$max_age" -regex "$pattern" | wc -l)
 		if [ "$count" -ge "${backup_clean_min_backups:-10}" ]; then
 				find "$backup_dir" -type f -mtime "+$max_age" -regex "$pattern" -delete >/dev/null
 		fi

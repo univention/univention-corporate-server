@@ -1,3 +1,4 @@
+# shellcheck shell=sh
 # Univention Common Shell Library
 #
 # Like what you see? Join us!
@@ -30,7 +31,6 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-var_lib_samba_is_s4 ()
-{
+var_lib_samba_is_s4 () {
 	test -e /var/lib/samba/private/secrets.ldb
 }

@@ -34,6 +34,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
+# shellcheck source=base.sh
 . /usr/share/univention-lib/base.sh
 
 eval "$(/usr/sbin/univention-config-registry shell ldap/base)"
@@ -83,7 +84,7 @@ umc_frontend_new_hash () {
 
 umc_init () {
 	# containers
-	umc_udm container/cn create --ignore_exists --position "cn=univention,$ldap_base" --set name=UMC || exit $?
+	umc_udm container/cn create --ignore_exists --position "cn=univention,${ldap_base:?}" --set name=UMC || exit $?
 	umc_udm container/cn create --ignore_exists --position "cn=policies,$ldap_base" --set name=UMC --set policyPath=1 || exit $?
 	umc_udm container/cn create --ignore_exists --position "cn=UMC,cn=univention,$ldap_base" --set name=operations || exit $?
 

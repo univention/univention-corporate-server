@@ -1,3 +1,4 @@
+# shellcheck shell=sh
 # Univention Common Shell Library
 #
 # Like what you see? Join us!
@@ -46,8 +47,8 @@ ucs_getAttrOfDN () { # <attr> <dn> [<ldapsearch-credentials>]
 		return 2
 	fi
 	if [ -n "$attr" ]; then
-		univention-ldapsearch "$@" -s base -b "$base" -LLL "$attr" \
-			| ldapsearch-wrapper | ldapsearch-decode64 | sed -ne "s/^$attr: //p"
+		univention-ldapsearch "$@" -s base -b "$base" -LLLo ldif-wrap=no "$attr" |
+			ldapsearch-decode64 | sed -ne "s/^$attr: //p"
 	fi
 }
 
@@ -70,7 +71,7 @@ ucs_convertUID2DN () { # <uid> [<ldapsearch-credentials>]
 		return 2
 	fi
 	if [ -n "$uid" ]; then
-		univention-ldapsearch "$@" -LLL "(&(|(&(objectClass=posixAccount)(objectClass=shadowAccount))(objectClass=univentionMail)(objectClass=sambaSamAccount)(objectClass=simpleSecurityObject)(&(objectClass=person)(objectClass=organizationalPerson)(objectClass=inetOrgPerson)))(!(uidNumber=0))(!(uid=*\$))(uid=$uid))" dn | ldapsearch-wrapper | ldapsearch-decode64 | sed -ne 's/dn: //p'
+		univention-ldapsearch "$@" -LLLo ldif_wrap=no "(&(|(&(objectClass=posixAccount)(objectClass=shadowAccount))(objectClass=univentionMail)(objectClass=sambaSamAccount)(objectClass=simpleSecurityObject)(&(objectClass=person)(objectClass=organizationalPerson)(objectClass=inetOrgPerson)))(!(uidNumber=0))(!(uid=*\$))(uid=$uid))" dn | ldapsearch-decode64 | sed -ne 's/dn: //p'
 	fi
 }
 
@@ -120,12 +121,10 @@ ucs_getGroupMembersRecursive () { # <groupDN> [<ldapsearch-credentials>]
 		echo "ucs_getGroupMembersRecursive: wrong number of arguments" >&2
 		return 2
 	fi
-	ucs_getGroupMembersDirect "$groupdn" "$@" | while read reply
+	ucs_getGroupMembersDirect "$groupdn" "$@" | while read -r reply
 	do
-		ldif=$(univention-ldapsearch "$@" -LLL -b "$reply" '(!(objectClass=univentionGroup))' dn | sed -ne "s/^dn: //p")
-		if [ "$?" != 0 ]; then	## don't recurse in case of error
+		ldif=$(univention-ldapsearch "$@" -LLL -b "$reply" '(!(objectClass=univentionGroup))' dn | sed -ne "s/^dn: //p") ||
 			break
-		fi
 		if [ -z "$ldif" ]
 		then
 			ucs_getGroupMembersRecursive "$reply" "$@"
@@ -166,7 +165,8 @@ ucs_addServiceToHost () { # <servicename> <udm-module-name> <dn> [options]
 	local servicename="$1"
 	local modulename="$2"
 	local hostdn="$3"
-	local ldap_base="$(/usr/sbin/univention-config-registry get ldap/base)"
+	local ldap_base
+	ldap_base="$(/usr/sbin/univention-config-registry get ldap/base)"
 	if ! shift 3
 	then
 		echo "ucs_addServiceToHost: wrong argument number" >&2
@@ -211,7 +211,8 @@ ucs_removeServiceFromHost () { # <servicename> <udm-module-name> <dn> [options]
 	local servicename="$1"
 	local modulename="$2"
 	local hostdn="$3"
-	local ldap_base="$(/usr/sbin/univention-config-registry get ldap/base)"
+	local ldap_base
+	ldap_base="$(/usr/sbin/univention-config-registry get ldap/base)"
 	if ! shift 3
 	then
 		echo "ucs_removeServiceFromHost: wrong argument number" >&2
@@ -265,8 +266,9 @@ ucs_parseCredentials () {
 #
 ucs_isServiceUnused () { # <servicename>
 	local servicename="$1"
-	local master="$(/usr/sbin/univention-config-registry get ldap/master)"
-	local port="$(/usr/sbin/univention-config-registry get ldap/master/port)"
+	local master port tempfile
+	master="$(/usr/sbin/univention-config-registry get ldap/master)"
+	port="$(/usr/sbin/univention-config-registry get ldap/master/port)"
 
 	if ! shift 1
 	then
@@ -295,24 +297,21 @@ ucs_isServiceUnused () { # <servicename>
 
 	# create a tempfile to get the real return code of the ldapsearch command,
 	# otherwise we get only the code of the sed command
-	local tempfile="$(mktemp)"
-	univention-ldapsearch univentionService="${servicename}" "$@" cn >"$tempfile"
-	if [ $? != 0 ]; then
+	tempfile="$(mktemp)"
+	univention-ldapsearch univentionService="${servicename}" "$@" cn >"$tempfile" || {
 		rm -f "$tempfile"
 		echo "ucs_isServiceUnused: search failed" >&2
 		return 2
-	fi
+	}
 
-	count=$(grep -c "^cn: " "$tempfile")
-	if [ $? = 0 ] && [ $count -gt 0 ]; then
-		ret=1
-	else
+	count=$(grep -c "^cn: " "$tempfile") &&
+		[ "$count" -ge 0 ] &&
+		ret=1 ||
 		ret=0
-	fi
 
 	rm -f "$tempfile"
 
-	return $ret
+	return "$ret"
 }
 
 # ucs_registerLDAPExtension writes an LDAP schema or ACL extension to UDM.
@@ -389,7 +388,7 @@ ucs_registerLDAPExtension () {
 			package_version=$(dpkg-query -f '${Version}' -W "$package_name")
 		else
 			eval "$(/usr/sbin/univention-config-registry shell '^tests/ucs_registerLDAP/.*')"
-			if [ -n "$tests_ucs_registerLDAP_packagename" ] && [ -n "$tests_ucs_registerLDAP_packageversion" ]; then
+			if [ -n "${tests_ucs_registerLDAP_packagename:-}" ] && [ -n "${tests_ucs_registerLDAP_packageversion:-}" ]; then
 				package_name="$tests_ucs_registerLDAP_packagename"
 				package_version="$tests_ucs_registerLDAP_packageversion"
 			else

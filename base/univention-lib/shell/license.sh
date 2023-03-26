@@ -1,3 +1,4 @@
+# shellcheck shell=sh
 # Univention Common Shell Library
 #
 # Like what you see? Join us!

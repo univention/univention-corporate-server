@@ -1,3 +1,4 @@
+# shellcheck shell=sh
 # Univention admember Shell Library
 #
 # Like what you see? Join us!
@@ -137,31 +138,21 @@ univention.lib.admember.revert_container_ad_member()
 }
 
 configure_nonmaster_as_ad_member () {
-	local role="$1"
-	if [ -n "$role" ]; then
-		if [ "$role" = "domaincontroller_backup" ]; then
-			configure_backup_as_ad_member
-		elif [ "$role" = "domaincontroller_slave" ]; then
-			configure_slave_as_ad_member
-		elif [ "$role" = "memberserver" ]; then
-			configure_member_as_ad_member
-		elif [ "$role" = "container" ]; then
-			configure_container_as_ad_member
-		fi
-	fi
+	local role="${1:-}"
+	case "$role" in
+	domaincontroller_backup) configure_backup_as_ad_member ;;
+	domaincontroller_slave) configure_slave_as_ad_member ;;
+	memberserver) configure_member_as_ad_member ;;
+	container) configure_container_as_ad_member ;;
+	esac
 }
 
 revert_nonmaster_ad_member () {
-	local role="$1"
-	if [ -n "$role" ]; then
-		if [ "$role" = "domaincontroller_backup" ]; then
-			revert_backup_ad_member
-		elif [ "$role" = "domaincontroller_slave" ]; then
-			revert_slave_ad_member
-		elif [ "$role" = "memberserver" ]; then
-			revert_member_ad_member
-		elif [ "$role" = "container" ]; then
-			revert_container_ad_member
-		fi
-	fi
+	local role="${1:-}"
+	case "$role" in
+	domaincontroller_backup) revert_backup_ad_member ;;
+	domaincontroller_slave) revert_slave_ad_member ;;
+	memberserver) revert_member_ad_member ;;
+	container) revert_container_ad_member ;;
+	esac
 }
