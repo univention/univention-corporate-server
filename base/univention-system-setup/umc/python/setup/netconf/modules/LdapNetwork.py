@@ -80,8 +80,7 @@ class PhaseLdapNetwork(LdapChange):
         forward_module = modules.get("dns/forward_zone")
         modules.init(self.ldap, self.position, forward_module)
         forward_zones = forward_module.lookup(None, self.ldap, filter_format("zone=%s", [self.changeset.ucr['domainname']]))
-        if forward_zones:
-            return forward_zones[0].dn
+        return forward_zones[0].dn if forward_zones else ""
 
     def _find_reverse_zone(self) -> str:
         new_default = self.changeset.new_interfaces.get_default_ipv4_address()
@@ -93,13 +92,13 @@ class PhaseLdapNetwork(LdapChange):
             network = convert_udm_subnet_to_network(zone.info["subnet"])
             if new_default in network:
                 return zone.dn
+        return ""
 
     def _find_dhcp_service(self) -> str:
         dhcp_module = modules.get("dhcp/service")
         modules.init(self.ldap, self.position, dhcp_module)
         dhcp_services = dhcp_module.lookup(None, self.ldap, None)
-        if dhcp_services:
-            return dhcp_services[0].dn
+        return dhcp_services[0].dn if dhcp_services else ""
 
     def _create_new_network(self, forward_zone: str, reverse_zone: str, dhcp_service: str) -> None:
         ipv4 = self.changeset.new_interfaces.get_default_ipv4_address()

@@ -62,10 +62,10 @@ class SoftwareScript(AptScript):
         else:
             return False
         self.base_package = self.get_package_for_role(self.current_server_role)
-        if self.base_package is None:
-            return False
-        else:
+        if self.base_package:
             self.set_always_install(self.base_package)
+        else:
+            return False
 
         for pkg in self.packages_remove:
             # apt-get remove pkg
