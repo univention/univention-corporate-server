@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 #
 # Like what you see? Join us!
 # https://www.univention.com/about-us/careers/vacancies/
@@ -28,6 +29,7 @@
 # License with the Debian GNU/Linux or Univention distribution in file
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
+
 """
 >>> RE_DEBIAN_PACKAGE_NAME.match("0").groups()
 ('0',)
@@ -44,6 +46,7 @@ True
 >>> RE_HASHBANG_SHELL.match('#! /bin/bash') is not None
 True
 """
+
 import re
 
 

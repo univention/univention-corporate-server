@@ -1,5 +1,3 @@
-#!/usr/bin/python3
-#
 # Like what you see? Join us!
 # https://www.univention.com/about-us/careers/vacancies/
 #
@@ -34,7 +32,7 @@ from __future__ import annotations
 
 import re
 from itertools import chain
-from typing import Any, Iterator
+from typing import Any, Dict, Iterator, List
 
 import univention.ucslint.base as uub
 
@@ -74,7 +72,7 @@ class Trie():
     """
 
     def __init__(self, *args: str) -> None:
-        self.data: dict[str, Any] = {}
+        self.data: Dict[str, Any] = {}
         for word in args:
             self.add(word)
 
@@ -90,7 +88,7 @@ class Trie():
 
         ref[''] = None
 
-    def _pattern(self, pData: (dict[str, Any])) -> str:
+    def _pattern(self, pData: (Dict[str, Any])) -> str:
         """
         Recursively convert Trie structuture to regular expression.
 
@@ -101,8 +99,8 @@ class Trie():
         if '' in data and len(data) == 1:
             return ''
 
-        alt: list[str] = []
-        cc: list[str] = []
+        alt: List[str] = []
+        cc: List[str] = []
         q = False
         for char, subtree in sorted(data.items()):
             if char == '':

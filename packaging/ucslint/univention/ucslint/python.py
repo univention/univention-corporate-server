@@ -1,4 +1,3 @@
-#
 # Like what you see? Join us!
 # https://www.univention.com/about-us/careers/vacancies/
 #
@@ -29,15 +28,13 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-from __future__ import annotations
-
 import re
-from typing import Iterator, Pattern
+from typing import Iterator, Optional, Pattern
 
 from univention.ucslint.base import FilteredDirWalkGenerator
 
 
-def _or(*disjunct: str, name: str | None = None) -> str:
+def _or(*disjunct: str, name: Optional[str] = None) -> str:
     return r"(?%s%s)" % (":" if name is None else "P<%s>" % (name,), "|".join(disjunct))
 
 

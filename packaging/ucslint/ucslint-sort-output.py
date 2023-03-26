@@ -1,4 +1,4 @@
-#!/usr/bin/python3
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
 """Sort ucslint output for stable comparison."""
@@ -9,7 +9,7 @@ import re
 from argparse import ArgumentParser, FileType
 from collections import defaultdict
 from operator import itemgetter
-from typing import IO
+from typing import IO, Dict, List
 
 
 RE_ID = re.compile(r'^([UWEIS]:\d{4}-[BEFNW]?\d+)(?=: )')
@@ -26,7 +26,7 @@ def main() -> None:
     eventlist = sorted(parse_content(args.content))
 
     last = ''
-    summary: dict[str, int] = defaultdict(int)
+    summary: Dict[str, int] = defaultdict(int)
     for event in eventlist:
         match = RE_ID.match(event)
         assert match
@@ -48,10 +48,10 @@ def main() -> None:
             print('%-12s %d' % (group, count))
 
 
-def parse_content(content: IO[str]) -> list[str]:
-    eventlist: list[str] = []
+def parse_content(content: IO[str]) -> List[str]:
+    eventlist: List[str] = []
 
-    tmplines: list[str] = []
+    tmplines: List[str] = []
     for line in content:
         if not line:
             continue

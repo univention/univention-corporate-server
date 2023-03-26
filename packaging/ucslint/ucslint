@@ -1,4 +1,4 @@
-#!/usr/bin/python3
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 #
 # Like what you see? Join us!
@@ -47,7 +47,7 @@ from fnmatch import fnmatch
 from importlib.util import module_from_spec, spec_from_file_location
 from os.path import abspath, dirname, exists, expanduser, isdir, join, normpath, relpath
 from types import ModuleType
-from typing import IO, Container, Sequence
+from typing import IO, Container, Dict, List, Sequence, Set, Tuple
 
 import univention.ucslint.base as uub
 
@@ -84,13 +84,13 @@ class DebianPackageCheck(object):
     def __init__(self, path: str, plugindirs: Sequence[str], enabled_modules: Container[str] = None, disabled_modules: Container[str] = None, debuglevel: int = 0):
         self.path = path
         self.plugindirs = plugindirs
-        self.pluginlist: dict[str, ModuleType] = {}
-        self.msglist: list[uub.UPCMessage] = []
+        self.pluginlist: Dict[str, ModuleType] = {}
+        self.msglist: List[uub.UPCMessage] = []
         self.enabled_modules: Container[str] = enabled_modules or ()
         self.disabled_modules: Container[str] = disabled_modules or ()
         self.debuglevel = debuglevel
-        self.msgidlist: dict[str, tuple[int, str]] = {}
-        self.overrides: set[tuple[str, str | None, int | None]] = set()
+        self.msgidlist: Dict[str, Tuple[int, str]] = {}
+        self.overrides: Set[Tuple[str, str | None, int | None]] = set()
         self.loadplugins()
 
     def loadplugins(self) -> None:
@@ -177,7 +177,7 @@ class DebianPackageCheck(object):
             return True
         return False
 
-    def printResult(self, ignore_IDs: Container[str], display_only_IDs: Container[str], display_only_categories: str, exitcode_categories: str, junit: IO[str] = None) -> tuple[int, int]:
+    def printResult(self, ignore_IDs: Container[str], display_only_IDs: Container[str], display_only_categories: str, exitcode_categories: str, junit: IO[str] = None) -> Tuple[int, int]:
         """
         Print result of checks.
 
@@ -192,7 +192,7 @@ class DebianPackageCheck(object):
         exitcode_cnt = 0
 
         self.loadOverrides()
-        test_cases: list[uub.TestCase] = []
+        test_cases: List[uub.TestCase] = []
 
         for msg in self.msglist:
             tc = msg.junit()

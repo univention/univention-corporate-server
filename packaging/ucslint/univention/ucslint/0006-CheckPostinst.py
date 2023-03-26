@@ -1,5 +1,3 @@
-#!/usr/bin/python3
-#
 # Like what you see? Join us!
 # https://www.univention.com/about-us/careers/vacancies/
 #
@@ -33,7 +31,7 @@
 from __future__ import annotations
 
 import os
-from typing import Any
+from typing import Any, Dict
 
 import univention.ucslint.base as uub
 
@@ -55,7 +53,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
     def check(self, path: str) -> None:
         super().check(path)
 
-        fnlist_scripts: dict[str, dict[str, Any]] = {}
+        fnlist_scripts: Dict[str, Dict[str, Any]] = {}
 
         #
         # search debian scripts

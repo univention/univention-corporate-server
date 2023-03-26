@@ -1,5 +1,3 @@
-#!/usr/bin/python3
-#
 # Like what you see? Join us!
 # https://www.univention.com/about-us/careers/vacancies/
 #
@@ -35,6 +33,7 @@ from __future__ import annotations
 import os
 import re
 import time
+from typing import List
 
 import univention.ucslint.base as uub
 
@@ -69,7 +68,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
     def check(self, path: str) -> None:
         super().check(path)
 
-        check_files: list[str] = []
+        check_files: List[str] = []
 
         # check if copyright file is missing
         fn = os.path.join(path, 'debian', 'copyright')

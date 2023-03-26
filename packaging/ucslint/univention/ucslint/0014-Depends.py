@@ -1,4 +1,4 @@
-#!/usr/bin/python3
+#!/usr/bin/env python3
 #
 # Like what you see? Join us!
 # https://www.univention.com/about-us/careers/vacancies/
@@ -36,7 +36,7 @@ import re
 from glob import glob
 from os import listdir
 from os.path import curdir, exists, join, splitext
-from typing import Iterable, Iterator
+from typing import Iterable, Iterator, Set
 
 from apt import Cache
 from apt.package import Version
@@ -84,7 +84,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
         except Exception as ex:
             self.debug(f'failed to load APT cache: {ex}')
 
-    def _scan_script(self, fn: str) -> set[str]:
+    def _scan_script(self, fn: str) -> Set[str]:
         """Find calls to 'univention-install-', 'ucr' and use of 'init-autostart.lib' in file 'fn'."""
         need = set()
         self.debug(f'Reading {fn}')
@@ -101,7 +101,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 
         return need
 
-    def check_source(self, source_section: uub.DebianControlSource) -> set[str]:
+    def check_source(self, source_section: uub.DebianControlSource) -> Set[str]:
         """Check source package for dependencies."""
         src_deps = source_section.dep_all
 
@@ -119,7 +119,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 
         return src_deps
 
-    def check_package(self, section: uub.DebianControlBinary) -> set[str]:
+    def check_package(self, section: uub.DebianControlBinary) -> Set[str]:
         """Check binary package for dependencies."""
         pkg = section['Package']
         self.debug(f'Package: {pkg}')
@@ -225,7 +225,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
     def check_transitional(self, deps: Iterable[str]) -> None:
         fn_control = join(self.path, 'debian', 'control')
         for cand in self._cand(deps):
-            if self.RE_TRANSITIONAL.search(cand.summary):
+            if self.RE_TRANSITIONAL.search(cand.summary or ''):
                 self.addmsg('0014-8', f'depends on transitional package {cand.package.name}', fn_control)
 
     def check_essential(self, deps: Iterable[str]) -> None:

@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 #
 # Like what you see? Join us!
 # https://www.univention.com/about-us/careers/vacancies/
@@ -33,7 +34,7 @@ from __future__ import annotations
 
 import os
 import re
-from typing import Callable, Iterable, Iterator, Match, Pattern
+from typing import Callable, Dict, Iterable, Iterator, List, Match, Pattern, Set, Tuple
 
 
 try:
@@ -62,7 +63,7 @@ RESULT_ERROR = 2
 RESULT_INFO = 3
 RESULT_STYLE = 4
 
-RESULT_INT2STR: dict[int, str] = {
+RESULT_INT2STR: Dict[int, str] = {
     RESULT_UNKNOWN: 'U',
     RESULT_OK: 'OK',
     RESULT_WARN: 'W',
@@ -71,7 +72,7 @@ RESULT_INT2STR: dict[int, str] = {
     RESULT_STYLE: 'S',
 }
 
-MsgIds = dict[str, tuple[int, str]]
+MsgIds = Dict[str, Tuple[int, str]]
 
 RE_MSGID = re.compile(r'\d{4}-[BEFNW]?\d+')
 RE_IGNORE = re.compile(r'\s+ ucslint :? \s* (?: ({msgid} (?: [, ]+ {msgid})*) \s* )? $'.format(msgid=RE_MSGID.pattern), re.VERBOSE)
@@ -104,7 +105,7 @@ def noqa(line: str) -> Callable[[str], bool]:
     return lambda issue: issue in issues
 
 
-def line_regexp(text: str, regexp: Pattern[str]) -> Iterator[tuple[int, int, Match[str]]]:
+def line_regexp(text: str, regexp: Pattern[str]) -> Iterator[Tuple[int, int, Match[str]]]:
     """
     Find all matches and return row and colum number.
 
@@ -178,7 +179,7 @@ class UniventionPackageCheckBase:
 
     def __init__(self) -> None:
         self.name: str = self.__class__.__module__
-        self.msg: list[UPCMessage] = []
+        self.msg: List[UPCMessage] = []
         self.debuglevel: int = 0
 
     def addmsg(self, msgid: str, msg: str, filename: str | None = None, row: int | None = None, col: int | None = None, line: str = '') -> None:
@@ -232,7 +233,7 @@ class UniventionPackageCheckBase:
         :param path: Directory or file to check.
         """
 
-    def result(self) -> list[UPCMessage]:
+    def result(self) -> List[UPCMessage]:
         """
         Return result as list of messages.
 
@@ -271,7 +272,7 @@ class FailedToReadFile(UCSLintException):
         self.fn = fn
 
 
-class DebianControlEntry(dict[str, str]):
+class DebianControlEntry(Dict[str, str]):
     """
     Handle paragraph in Deb822 control file.
 
@@ -304,7 +305,7 @@ class DebianControlEntry(dict[str, str]):
                 if pkg:
                     yield pkg
 
-    def _pkgs(self, key: str) -> set[str]:
+    def _pkgs(self, key: str) -> Set[str]:
         """Return package list."""
         return set(self._split_field(self.get(key, "")))
 
@@ -417,8 +418,8 @@ class UPCFileTester:
         self.maxsize = maxsize
         self.filename: str | None = None
         self.raw: str = ''
-        self.lines: list[str] = []
-        self.tests: list[RegExTest] = []
+        self.lines: List[str] = []
+        self.tests: List[RegExTest] = []
 
     def open(self, filename: str) -> None:
         """
@@ -437,7 +438,7 @@ class UPCFileTester:
         lines = self.raw.replace('\\\n', '  ').replace('\\\r\n', '   ')
         self.lines = lines.splitlines()
 
-    def _getpos(self, linenumber: int, pos_in_line: int) -> tuple[int, int]:
+    def _getpos(self, linenumber: int, pos_in_line: int) -> Tuple[int, int]:
         """
         Converts 'unwrapped' position values (line and position in line) into
         position values corresponding to the raw file.
@@ -470,7 +471,7 @@ class UPCFileTester:
             raise ValueError('cntmin or cntmax has to be set')
         self.tests.append(RegExTest(regex, msgid, msg, cntmin, cntmax))
 
-    def runTests(self) -> list[UPCMessage]:
+    def runTests(self) -> List[UPCMessage]:
         """
         Runs all given tests on loaded file.
 

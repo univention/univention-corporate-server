@@ -1,5 +1,3 @@
-#!/usr/bin/python3
-#
 # Like what you see? Join us!
 # https://www.univention.com/about-us/careers/vacancies/
 #
@@ -34,6 +32,7 @@ from __future__ import annotations
 
 import os
 import re
+from typing import Dict
 
 import univention.ucslint.base as uub
 
@@ -189,7 +188,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
         #
         # check if join scripts are present in debian/rules || debian/*.install
         #
-        found: dict[str, int] = {}
+        found: Dict[str, int] = {}
         debianpath = os.path.join(path, 'debian')
         # get all .install files
         fnlist = list(uub.FilteredDirWalkGenerator(debianpath, suffixes=['.install']))
