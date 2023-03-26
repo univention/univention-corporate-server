@@ -283,6 +283,8 @@ def createOrRename(old, new, cr):
     except Exception:
         return "setting custom permissions for %s failed" % newPath
 
+    return None
+
 
 def is_blacklisted(path, ucr):
     # type: (str, ConfigRegistry) -> bool

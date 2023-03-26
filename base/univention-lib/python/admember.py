@@ -586,7 +586,7 @@ def _mapped_ad_dn(ad_dn, ad_ldap_base, ucr=None):
         parent = univention.uldap.parentDn(parent)
     else:
         ud.debug(ud.MODULE, ud.ERROR, "Mapping of AD DN %r failed, base is not %r" % (ad_dn, ad_ldap_base))
-        return
+        return None
 
     if not ucr:
         ucr = univention.config_registry.ConfigRegistry()
@@ -847,7 +847,7 @@ def get_defaultNamingContext(ad_server_ip, use_samba_lib=six.PY3):
         return lines[1][22:]
 
 
-def lookup_adds_dc(ad_server=None, ucr=None, check_dns=True):
+def lookup_adds_dc(ad_server="", ucr=None, check_dns=True):
     # type: (str, Optional[ConfigRegistry], bool) -> Dict[str, str]
     """CLDAP lookup"""
     ud.debug(ud.MODULE, ud.PROCESS, "Lookup ADDS DC")
@@ -858,22 +858,21 @@ def lookup_adds_dc(ad_server=None, ucr=None, check_dns=True):
         ucr = univention.config_registry.ConfigRegistry()
         ucr.load()
     if not ad_server:
-        ad_server = ucr.get('domainname')
+        ad_server = ucr['domainname']
 
     # get ip addresses
     try:
         ipaddress.ip_address(u'%s' % (ad_server,))
         ips.append(ad_server)
     except ValueError:
-        dig_sources = []
         dig_sources_ucr = []
         for source in ['dns/forwarder1', 'dns/forwarder2', 'dns/forwarder3', 'nameserver1', 'nameserver2', 'nameserver3']:
-            if source in ucr:
-                dig_sources.append("@%s" % ucr[source])
-                dig_sources_ucr.append(source)
-        for dig_source in dig_sources:
+            ip = ucr.get(source)
+            if not ip:
+                continue
+            dig_sources_ucr.append(source)
             try:
-                cmd = ['dig', dig_source, ad_server, '+short', '+nocookie']
+                cmd = ['dig', '@' + ip, ad_server, '+short', '+nocookie']
                 ud.debug(ud.MODULE, ud.PROCESS, "running %s" % cmd)
                 p1 = subprocess.Popen(cmd, close_fds=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
                 stdout, stderr = p1.communicate()
@@ -896,6 +895,8 @@ def lookup_adds_dc(ad_server=None, ucr=None, check_dns=True):
     ad_server_ip = None
     check_results = []
     for ip in ips:
+        if not ip:
+            continue
         try:  # check cldap
             cldap_res = cldap_finddc(ip)
         except RuntimeError as ex:

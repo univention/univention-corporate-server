@@ -379,7 +379,8 @@ class UniventionLDAPExtension(six.with_metaclass(ABCMeta)):
             if p.returncode == 0:
                 regex = re.compile('^Object created: (.*)$', re.M)
                 m = regex.search(stdout)
-                new_object_dn = m.group(1) if m else None
+                assert m is not None, stdout
+                new_object_dn = m.group(1)
 
                 appidentifier = os.environ.get('UNIVENTION_APP_IDENTIFIER')
                 if appidentifier:
@@ -401,20 +402,20 @@ class UniventionLDAPExtension(six.with_metaclass(ABCMeta)):
             regex = re.compile('^ *package: (.*)$', re.M)
             m = regex.search(stdout)
             if m:
-                registered_package = m.group(1)  # type: Optional[str]
+                registered_package = m.group(1)
                 if registered_package == "None":
-                    registered_package = None
+                    registered_package = ""
             else:
-                registered_package = None
+                registered_package = ""
 
             regex = re.compile('^ *packageversion: (.*)$', re.M)
             m = regex.search(stdout)
             if m:
-                registered_package_version = m.group(1)  # type: Optional[str]
+                registered_package_version = m.group(1)
                 if registered_package_version == "None":
-                    registered_package_version = None
+                    registered_package_version = ""
             else:
-                registered_package_version = None
+                registered_package_version = ""
 
             if registered_package == options.packagename:
                 rc = apt.apt_pkg.version_compare(options.packageversion, registered_package_version)
@@ -427,20 +428,21 @@ class UniventionLDAPExtension(six.with_metaclass(ABCMeta)):
             regex = re.compile('^ *data: (.*)$', re.M)
             m = regex.search(stdout)
             if m:
-                old_data = m.group(1)  # type: Optional[str]
+                old_data = m.group(1)
                 if old_data == "None":
-                    old_data = None
+                    old_data = ""
             else:
-                old_data = None
+                old_data = ""
 
             regex = re.compile('^ *filename: (.*)$', re.M)
             m = regex.search(stdout)
             if m:
-                old_filename = m.group(1)  # type: Optional[str]
+                old_filename = m.group(1)
                 if old_filename == "None":
-                    old_filename = None
+                    old_filename = ""
             else:
-                old_filename = None
+                old_filename = ""
+
             if new_data == old_data and self.target_filename == old_filename:
                 print("INFO: No change of core data of object %s." % (self.objectname,), file=sys.stderr)
                 active_change_udm_options = []
@@ -552,7 +554,7 @@ class UniventionLDAPExtensionWithListenerHandler(six.with_metaclass(ABCMeta, Uni
         self.ucr_info_basedir = '%s/info' % self.ucr_template_dir
 
     @abstractmethod
-    def handler(self, dn, new, old, name=None):
+    def handler(self, dn, new, old, name=""):
         # type: (str, Dict[str, List[bytes]], Dict[str, List[bytes]], str) -> None
         pass
 
@@ -568,14 +570,14 @@ class UniventionLDAPSchema(UniventionLDAPExtensionWithListenerHandler):
         # type (ConfigRegistry) -> bool
         return True
 
-    def handler(self, dn, new, old, name=None):
+    def handler(self, dn, new, old, name=""):
         # type: (str, Dict[str, List[bytes]], Dict[str, List[bytes]], str) -> None
         try:
             return self._handler(dn, new, old, name)
         except BaseDirRestriction as exc:
             ud.debug(ud.LISTENER, ud.ERROR, '%r basedir conflict: %s' % (dn, exc))
 
-    def _handler(self, dn, new, old, name=None):
+    def _handler(self, dn, new, old, name=""):
         # type: (str, Dict[str, List[bytes]], Dict[str, List[bytes]], str) -> None
         """Handle LDAP schema extensions on Primary and Backup Directory Nodes"""
         if listener.configRegistry.get("server/role") not in ("domaincontroller_master", "domaincontroller_backup"):
@@ -586,7 +588,7 @@ class UniventionLDAPSchema(UniventionLDAPExtensionWithListenerHandler):
             if not new_version:
                 return
 
-            new_pkgname = new.get('univentionOwnedByPackage', [None])[0]
+            new_pkgname = new.get('univentionOwnedByPackage', [b""])[0]
             if not new_pkgname:
                 return
 
@@ -600,7 +602,7 @@ class UniventionLDAPSchema(UniventionLDAPExtensionWithListenerHandler):
                     return
                 ud.debug(ud.LISTENER, ud.INFO, '%s: extension %s: changed attributes: %s' % (name, new['cn'][0].decode('UTF-8'), diff_keys))
 
-                if new_pkgname == old.get('univentionOwnedByPackage', [None])[0]:
+                if new_pkgname == old.get('univentionOwnedByPackage', [b""])[0]:
                     old_version = old.get('univentionOwnedByPackageVersion', [b'0'])[0].decode('UTF-8')
                     rc = apt.apt_pkg.version_compare(new_version, old_version)
                     if not rc > -1:
@@ -622,7 +624,7 @@ class UniventionLDAPSchema(UniventionLDAPExtensionWithListenerHandler):
                 if old:
                     ud.debug(ud.LISTENER, ud.ERROR, 'invalid filename detected during modification. removing file!')
                     set_handler_message(name, dn, 'invalid filename detected during modification. removing file!')
-                    self._handler(dn, [], old, name)
+                    self._handler(dn, {}, old, name)
                 raise exc
 
             listener.setuid(0)
@@ -761,14 +763,14 @@ class UniventionLDAPACL(UniventionLDAPExtensionWithListenerHandler):
     filesuffix = ".acl"
     file_prefix = 'ldapacl_'
 
-    def handler(self, dn, new, old, name=None):
+    def handler(self, dn, new, old, name=""):
         # type: (str, Dict[str, List[bytes]], Dict[str, List[bytes]], str) -> None
         try:
             return self._handler(dn, new, old, name)
         except BaseDirRestriction as exc:
             ud.debug(ud.LISTENER, ud.ERROR, '%r basedir conflict: %s' % (dn, exc))
 
-    def _handler(self, dn, new, old, name=None):
+    def _handler(self, dn, new, old, name=""):
         # type: (str, Dict[str, List[bytes]], Dict[str, List[bytes]], str) -> None
         """Handle LDAP ACL extensions on Primary, Backup and Replica Directory Nodes"""
         if not listener.configRegistry.get('ldap/server/type'):
@@ -792,18 +794,18 @@ class UniventionLDAPACL(UniventionLDAPExtensionWithListenerHandler):
             if univentionUCSVersionStart and UCS_Version(current_UCS_version) < UCS_Version(univentionUCSVersionStart):
                 ud.debug(ud.LISTENER, ud.INFO, '%s: extension %s requires at least UCR version %s.' % (name, new['cn'][0].decode('UTF-8'), univentionUCSVersionStart))
                 old = old or new
-                new = None
+                new = {}
             elif univentionUCSVersionEnd and UCS_Version(current_UCS_version) > UCS_Version(univentionUCSVersionEnd):
                 ud.debug(ud.LISTENER, ud.INFO, '%s: extension %s specifies compatibility only up to and including UCR version %s.' % (name, new['cn'][0].decode('UTF-8'), univentionUCSVersionEnd))
                 old = old or new
-                new = None
+                new = {}
 
         if new:
             new_version = new.get('univentionOwnedByPackageVersion', [b''])[0].decode('UTF-8')
             if not new_version:
                 return
 
-            new_pkgname = new.get('univentionOwnedByPackage', [None])[0]
+            new_pkgname = new.get('univentionOwnedByPackage', [b""])[0]
             if not new_pkgname:
                 return
 
@@ -821,7 +823,7 @@ class UniventionLDAPACL(UniventionLDAPExtensionWithListenerHandler):
                     return
                 ud.debug(ud.LISTENER, ud.INFO, '%s: extension %s: changed attributes: %s' % (name, new['cn'][0].decode('UTF-8'), diff_keys))
 
-                if new_pkgname == old.get('univentionOwnedByPackage', [None])[0]:
+                if new_pkgname == old.get('univentionOwnedByPackage', [b""])[0]:
                     old_version = old.get('univentionOwnedByPackageVersion', [b'0'])[0].decode('UTF-8')
                     rc = apt.apt_pkg.version_compare(new_version, old_version)
                     if not rc > -1:
@@ -844,7 +846,7 @@ class UniventionLDAPACL(UniventionLDAPExtensionWithListenerHandler):
                 if old:
                     ud.debug(ud.LISTENER, ud.ERROR, 'invalid filename detected during modification. removing file!')
                     set_handler_message(name, dn, 'invalid filename detected during modification. removing file!')
-                    self._handler(dn, [], old, name)
+                    self._handler(dn, {}, old, name)
                 raise exc
             listener.setuid(0)
             try:
@@ -1079,7 +1081,7 @@ class UniventionUDMModule(UniventionUDMExtension):
     udm_module_name = "settings/udm_module"
     active_flag_attribute = "univentionUDMModuleActive"
     filesuffix = ".py"
-    target_udm_module = None
+    target_udm_module = ""
     target_subdir = 'handlers'
 
     @property
@@ -1101,7 +1103,9 @@ class UniventionUDMModule(UniventionUDMExtension):
             else:
                 import importlib.util
                 spec = importlib.util.spec_from_file_location(os.path.basename(filename).rsplit('.', 1)[0], filename)
+                assert spec is not None
                 mod = importlib.util.module_from_spec(spec)
+                assert spec.loader is not None
                 spec.loader.exec_module(mod)
 
             try:
@@ -1189,6 +1193,8 @@ class UCSOption(Option):
 
 def option_callback_udm_passthrough_options(option, opt_str, value, parser, *args):
     # type: (Option, str, str, OptionParser, *List[str]) -> None
+    assert parser.values is not None
+    assert option.dest is not None
     if value.startswith('--'):
         raise OptionValueError("%s requires an argument" % (opt_str,))
     udm_passthrough_options = args[0]
@@ -1199,6 +1205,7 @@ def option_callback_udm_passthrough_options(option, opt_str, value, parser, *arg
 
 def check_data_module_options(option, opt_str, value, parser):
     # type: (Option, str, str, OptionParser) -> None
+    assert parser.values is not None
     if value.startswith('--'):
         raise OptionValueError("%s requires an argument" % (opt_str,))
     if not parser.values.data:
@@ -1207,18 +1214,23 @@ def check_data_module_options(option, opt_str, value, parser):
 
 def option_callback_set_data_module_options(option, opt_str, value, parser):
     # type: (Option, str, str, OptionParser) -> None
+    assert parser.values is not None
+    assert option.dest is not None
     check_data_module_options(option, opt_str, value, parser)
     setattr(parser.values, option.dest, value)
 
 
 def option_callback_append_data_module_options(option, opt_str, value, parser):
     # type: (Option, str, str, OptionParser) -> None
+    assert parser.values is not None
+    assert option.dest is not None
     check_data_module_options(option, opt_str, value, parser)
     parser.values.ensure_value(option.dest, []).append(value)
 
 
 def check_udm_module_options(option, opt_str, value, parser):
     # type: (Option, str, str, OptionParser) -> None
+    assert parser.values is not None
     if value.startswith('--'):
         raise OptionValueError("%s requires an argument" % (opt_str,))
     if not parser.values.udm_module:
@@ -1227,18 +1239,23 @@ def check_udm_module_options(option, opt_str, value, parser):
 
 def option_callback_set_udm_module_options(option, opt_str, value, parser):
     # type: (Option, str, str, OptionParser) -> None
+    assert parser.values is not None
+    assert option.dest is not None
     check_udm_module_options(option, opt_str, value, parser)
     setattr(parser.values, option.dest, value)
 
 
 def option_callback_append_udm_module_options(option, opt_str, value, parser):
     # type: (Option, str, str, OptionParser) -> None
+    assert parser.values is not None
+    assert option.dest is not None
     check_udm_module_options(option, opt_str, value, parser)
     parser.values.ensure_value(option.dest, []).append(value)
 
 
 def check_udm_syntax_options(option, opt_str, value, parser):
     # type: (Option, str, str, OptionParser) -> None
+    assert parser.values is not None
     if value.startswith('--'):
         raise OptionValueError("%s requires an argument" % (opt_str,))
     if not parser.values.udm_syntax:
@@ -1247,12 +1264,15 @@ def check_udm_syntax_options(option, opt_str, value, parser):
 
 def option_callback_append_udm_syntax_options(option, opt_str, value, parser):
     # type: (Option, str, str, OptionParser) -> None
+    assert parser.values is not None
+    assert option.dest is not None
     check_udm_syntax_options(option, opt_str, value, parser)
     parser.values.ensure_value(option.dest, []).append(value)
 
 
 def check_udm_hook_options(option, opt_str, value, parser):
     # type: (Option, str, str, OptionParser) -> None
+    assert parser.values is not None
     if value.startswith('--'):
         raise OptionValueError("%s requires an argument" % (opt_str,))
     if not parser.values.udm_hook:
@@ -1261,6 +1281,8 @@ def check_udm_hook_options(option, opt_str, value, parser):
 
 def option_callback_append_udm_hook_options(option, opt_str, value, parser):
     # type: (Option, str, str, OptionParser) -> None
+    assert parser.values is not None
+    assert option.dest is not None
     check_udm_hook_options(option, opt_str, value, parser)
     parser.values.ensure_value(option.dest, []).append(value)
 

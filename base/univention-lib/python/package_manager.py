@@ -172,15 +172,14 @@ class ProgressState(object):
 
     @property
     def _steps(self):
-        # type: () -> Optional[float]
+        # type: () -> float
         """
         Return progress as step counter
 
         :returns: A percentage value, which might be >100%
         :rtype: float
         """
-        if self._percentage is not None:
-            return self._start_steps + self._percentage
+        return self._start_steps + (self._percentage or 0.0)
 
     def poll(self):
         # type: () -> Dict[str, Any]
@@ -241,7 +240,7 @@ class FetchProgress(apt.progress.text.AcquireProgress):
     :param ProgressState outfile: An instance to receive the progress information.
     """
 
-    def __init__(self, outfile=None):
+    def __init__(self, outfile):
         # type: (ProgressState) -> None
         super(FetchProgress, self).__init__()
         self._file = MessageWriter(outfile)
@@ -450,8 +449,8 @@ class PackageManager(object):
         assert self._cache is not None
         return self._cache
 
-    def always_install(self, pkgs=None, just_mark=False):
-        # type: (Optional[List[apt.package.Package]], bool) -> None
+    def always_install(self, pkgs=(), just_mark=False):
+        # type: (Iterable[apt.package.Package], bool) -> None
         """
         Set packages that should be installed and never
         uninstalled. If you overwrite old `always_install`,
@@ -461,9 +460,7 @@ class PackageManager(object):
         :param bool just_mark: if `True`, process the previously saved list of packages instead of the given new list.
         """
         if not just_mark:
-            if pkgs is None:
-                pkgs = []
-            self._always_install = pkgs
+            self._always_install = list(pkgs)
 
         for pkg in self._always_install:
             if self.is_installed(pkg):
@@ -738,6 +735,7 @@ class PackageManager(object):
                 raise
             else:
                 self.progress_state.error('%s: %s' % (pkg_name, _('No such package')))
+                return None
 
     def is_installed(self, pkg_name, reopen=False):
         # type: (PkgNameOrApt, bool) -> Optional[bool]
@@ -798,10 +796,6 @@ class PackageManager(object):
         to_be_installed = set()
         to_be_removed = set()
         broken = set()
-        if install is None:
-            install = []
-        if remove is None:
-            remove = []
         # fix problems and fix them only once
         # this is necessary because we used auto_fix=False
         # auto_fix causes problems when used multiple times
@@ -895,7 +889,7 @@ class PackageManager(object):
             self.reopen_cache()
         return sorted(to_be_installed), sorted(to_be_removed), sorted(broken)
 
-    def commit(self, install=None, remove=None, upgrade=False, dist_upgrade=False, msg_if_failed=''):
+    def commit(self, install=(), remove=(), upgrade=False, dist_upgrade=False, msg_if_failed=''):
         # type: (Iterable[PkgNameOrApt], Iterable[PkgNameOrApt], bool, bool, str) -> bool
         """
         Really commit changes (mark_install or mark_delete)
@@ -1091,7 +1085,7 @@ class PackageManager(object):
         return message
 
     def autoremove(self):
-        # type: () -> Optional[bool]
+        # type: () -> bool
         """
         Remove all packages which are no longer required.
 
@@ -1110,9 +1104,9 @@ class PackageManager(object):
         if self.cache.broken_count:
             self.progress_state.error(failed_msg)
             return False
-        else:
-            if self.cache.get_changes():
-                return self.commit(msg_if_failed=failed_msg)
+        if not self.cache.get_changes():
+            return True
+        return self.commit(msg_if_failed=failed_msg)
 
     def upgrade(self):
         # type: () -> bool

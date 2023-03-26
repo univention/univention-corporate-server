@@ -177,6 +177,7 @@ def imagecategory_of_buffer(data):
         return (mime_type, compression_mime_type, "%sx%s" % imagedimensions_of_buffer(uncompressed_data))
     elif mime_type in ('image/svg+xml', 'application/x-gzip'):
         return (mime_type, compression_mime_type, "scalable")
+    return None
 
 
 def default_filename_suffix_for_mime_type(mime_type, compression_mime_type):
