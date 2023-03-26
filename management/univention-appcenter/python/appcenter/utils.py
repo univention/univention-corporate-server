@@ -215,25 +215,22 @@ def generate_password():
 
 
 def underscore(value):
-    # type: (str) -> Optional[str]
-    if value:
-        return re.sub('([a-z])([A-Z])', r'\1_\2', value).lower()
+    # type: (str) -> str
+    return re.sub('([a-z])([A-Z])', r'\1_\2', value).lower()
 
 
 def capfirst(value):
-    # type: (str) -> Optional[str]
-    if value:
-        return value[0].upper() + value[1:]
+    # type: (str) -> str
+    return value[0].upper() + value[1:]
 
 
 def camelcase(value):
-    # type: (str) -> Optional[str]
-    if value:
-        return ''.join(capfirst(part) for part in value.split('_'))
+    # type: (str) -> str
+    return ''.join(capfirst(part) for part in value.split('_'))
 
 
 def shell_safe(value):
-    # type: (str) -> Optional[str]
+    # type: (str) -> str
     return underscore(key_shell_escape(value))
 
 
@@ -447,7 +444,7 @@ def get_current_ram_available():
 
 
 def get_free_disk_space():
-    # type: () -> Optional[float]
+    # type: () -> float
     """Returns disk space currently free in MB"""
     docker_path = '/var/lib/docker'
     try:
@@ -464,7 +461,7 @@ def get_free_disk_space():
         except (NameError, OSError):
             # file has not been opened
             pass
-    return
+    return 0.0
 
 
 def flatten(list_of_lists):
