@@ -623,7 +623,7 @@ appliance_preinstall_non_univention_packages () {
 		libgomp1 libgpm2 libgs9 libgs9-common libijs-0.35 libio-socket-inet6-perl libjbig2dec0 libkdc2-heimdal
 		liblinear3 liblqr-1-0 libltdl7 liblua5.1-0 liblua5.3-0 libm17n-0
 		libmcrypt4 libnet-snmp-perl libnetpbm10 libnfsidmap2 libnl-3-200 libnl-genl-3-200 libnss-extrausers libnss-ldapd
-		libodbc1 libopenjp2-7 libopts25 libotf0 libpam-cap libpam-cracklib libpam-heimdal libpam-ldapd libpaper-utils
+		libodbc1 libopenjp2-7 libopts25 libotf0 libpam-cap libpam-heimdal libpam-ldapd libpam-passwdqc libpaper-utils
 		libpaper1 libpcap0.8 libpq5 libquadmath0 libradcli4 libsnmp-base libsnmp-session-perl libsnmp30 libsocket6-perl
 		libtre5 libyaml-0-2 bind9 emacs24 ifplugd sudo vim zip
 	)
