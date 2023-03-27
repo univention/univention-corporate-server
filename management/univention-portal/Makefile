@@ -38,4 +38,4 @@ build:
 	npm install -g npm@8.1.3
 	$$HOME/.node/bin/npm install -g yarn
 	cd frontend && $$HOME/.node/bin/yarn install
-	cd frontend && $$HOME/.node/bin/yarn build
+	cd frontend && NODE_OPTIONS=--openssl-legacy-provider $$HOME/.node/bin/yarn build
