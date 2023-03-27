@@ -2,22 +2,20 @@
 
 import random
 from html.parser import HTMLParser
+from types import SimpleNamespace
+from typing import List
 
 from bs4 import BeautifulSoup
+from diskcache import Index
 from locust import HttpUser, constant_throughput, task
 
-from univention.testing import utils
 
-
+USER_CACHE_PATH = "/var/lib/test-data/users"
+GROUP_CACHE_PATH = "/var/lib/test-data/groups"
 html = HTMLParser()
-
-account = utils.UCSTestDomainAdminCredentials()
-
 WAIT_MIN = 1
 WAIT_MAX = 1
-hosts = ["https://master.ucs.test", "https://backup.ucs.test"]
-#hosts = ["https://master.ucs.test"]
-login_user = ["testuser" + str(i) for i in range(10000)]
+hosts = ["https://primary.ucs.test", "https://backup1.ucs.test"]
 
 
 def logout_at_idp(client, host):
@@ -28,43 +26,110 @@ def logout_at_idp(client, host):
             return
 
 
-def login_at_idp_with_credentials(client, login_link):
-    data = {'username': 'Administrator', 'password': "univention"}
-    with client.post(login_link, name="/realms/ucs/login-actions/authenticate", allow_redirects=True, timeout=30, catch_response=True, data=data) as req2:
-        soup = BeautifulSoup(req2.content, features="lxml")
-        try:
-            saml_response = soup.find("input", {"name": "SAMLResponse"}).get("value")
-        except AttributeError:
-            print(soup)
+def login_at_idp_with_credentials(client, login_link, user):
+    data = {'username': user.username, 'password': user.password}
+    name = login_link.split("?")[0]
+    with client.post(login_link, name=name, allow_redirects=True, timeout=30, catch_response=True, data=data) as res:
+        if res.status_code != 200:
             return
+        soup = BeautifulSoup(res.content, features="lxml")
+        saml_response = soup.find("input", {"name": "SAMLResponse"})
         if not saml_response:
-            return
-        if not (200 <= req2.status_code <= 399):
+            res.failure(f"no saml response in: {res.text}")
             return
 
 
-def entry(client, host):
+def entry(client, host, user):
     entry = "/univention/saml/"
     uri = host + entry
     try:
-        with client.get(uri, name="/univention/saml/", allow_redirects=True, timeout=30, catch_response=True) as req1:
-            if not (200 <= req1.status_code <= 399):
+        with client.get(uri, name=uri, allow_redirects=True, timeout=30, catch_response=True) as res:
+            if res.status_code != 200:
                 return
-            if req1.content is None or len(req1.content) == 0:
+            if res.content is None or len(res.content) == 0:
                 return
-        soup = BeautifulSoup(req1.content, features="lxml")
-        login_link = soup.find("form", {"id": "kc-form-login"}).get("action")
-        login_link = html.unescape(login_link)
-        login_at_idp_with_credentials(client, login_link)
+            soup = BeautifulSoup(res.content, features="lxml")
+            login_link = soup.find("form", {"id": "kc-form-login"})
+            if not login_link:
+                return
+            login_link = html.unescape(login_link.get("action"))
+        login_at_idp_with_credentials(client, login_link, user)
     finally:
         #logout_at_idp(client, host)
         client.cookies.clear()
 
 
+class TestData(object):
+
+    def __init__(self):
+        self.user_cache = Index(USER_CACHE_PATH)
+        self.group_cache = Index(GROUP_CACHE_PATH)
+        self.user_list = list(self.user_cache.keys())
+        self.group_list = list(self.group_cache.keys())
+        self.user_index = 0
+        self.group_index = 0
+        # check that the database is not empty
+        assert self.user_list
+        assert self.group_list
+
+    @property
+    def users(self) -> List[str]:
+        return self.user_list
+
+    @property
+    def groups(self) -> List[str]:
+        return self.group_list
+
+    def user(self, username: str) -> SimpleNamespace:
+        return SimpleNamespace(**self.user_cache[username])
+
+    def random_user(self) -> SimpleNamespace:
+        return SimpleNamespace(**self.user_cache[random.choice(self.user_list)])
+
+    def random_users(self, k: int = 10) -> List[SimpleNamespace]:
+        return [
+            SimpleNamespace(**self.user_cache[user])
+            for user in random.sample(self.user_list, k=k)
+        ]
+
+    def walk_users(self) -> SimpleNamespace:
+        try:
+            self.user_list[self.user_index]
+        except IndexError:
+            self.user_index = 0
+        user = self.user_cache[self.user_list[self.user_index]]
+        self.user_index += 1
+        return SimpleNamespace(**user)
+
+    def group(self, name: str) -> SimpleNamespace:
+        return SimpleNamespace(**self.db["groups"][name])
+
+    def random_group(self) -> SimpleNamespace:
+        return SimpleNamespace(**self.group_cache[random.choice(self.group_list)])
+
+    def random_groups(self, k: int = 10) -> List[SimpleNamespace]:
+        return [
+            SimpleNamespace(**self.group_cache[group])
+            for group in random.sample(self.group_list, k=k)
+        ]
+
+    def walk_groups(self) -> SimpleNamespace:
+        try:
+            self.group_list[self.group_index]
+        except IndexError:
+            self.group_index = 0
+        group = self.group_cache[self.group_list[self.group_index]]
+        self.group_index += 1
+        return SimpleNamespace(**group)
+
+
 class QuickstartUser(HttpUser):
     wait_time = constant_throughput(0.1)
 
+    td = TestData()
+
     @task
     def get_samlSession(self):
+        user = self.td.walk_users()
         host = random.choice(hosts)
-        entry(self.client, host)
+        entry(self.client, host, user)

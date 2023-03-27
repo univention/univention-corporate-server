@@ -1473,11 +1473,19 @@ set_env_variables_from_env_file () {
 	return 0
 }
 
+copy_test_data_cache() {
+	univention-install -y sshpass
+	local root_password="${1:?missing root password}"
+	shift
+	for ip in "$@"; do
+		sshpass -p "$root_password" scp -r  -o StrictHostKeyChecking=no -o UpdateHostKeys=no /var/lib/test-data root@"$ip":/var/lib/ || return 1
+	done
+}
+
 # create python diskcache for users and groups
 # (used in performance template job)
 create_and_copy_test_data_cache () {
-	local root_password="${1:?missing root password}"
-	univention-install -y python3-pip sshpass
+	univention-install -y python3-pip
 	pip3 install diskcache
 	python3 - <<"EOF" || return 1
 from diskcache import Index
@@ -1514,11 +1522,8 @@ for group in udm_groups.search():
 users_db.cache.close()
 groups_db.cache.close()
 EOF
+	copy_test_data_cache "$@"
 
-	shift
-	for ip in "$@"; do
-		sshpass -p "$root_password" scp -r  -o StrictHostKeyChecking=no -o UpdateHostKeys=no /var/lib/test-data root@"$ip":/var/lib/ || return 1
-	done
 }
 
 cleanup_translog () {

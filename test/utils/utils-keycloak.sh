@@ -89,6 +89,10 @@ performance_settings () {
 
 run_performance_tests () {
 	univention-install -y libffi-dev python3-pip
-	pip3 install locust bs4
-	prlimit -n100000:100000 locust -t 20m -u 500 --spawn-rate 10 --host master.ucs.test --html keycloak.html --headless -f keycloaklocust.py || :
+	pip3 install locust bs4 diskcache
+	if [ "false" = "$UCS_TEST_RUN" ]; then
+		echo "Test disabled by UCS_TEST_RUN"
+	else
+		prlimit -n100000:100000 locust -t 20m -u 500 --spawn-rate 10 --host primary.ucs.test --html keycloak.html --headless -f keycloaklocust.py || :
+	fi
 }
