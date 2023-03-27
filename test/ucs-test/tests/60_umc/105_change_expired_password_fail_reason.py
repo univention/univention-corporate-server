@@ -36,15 +36,15 @@ REASON_TOO_SIMILAR = 'Changing password failed. The password is too similar to t
 reasons = {
     REASON_TOO_SHORT: ['Test', 'ana'],
     REASON_TOO_SHORT_AT_LEAST_CHARACTERS: [],
-    REASON_TOO_SIMPLE: ['123456789'],
+    REASON_TOO_SIMPLE: ['123456789', 'chocolate', 'ooooooooo'],
     REASON_PALINDROME: [],
-    REASON_DICTIONARY: ['chocolate'],
-    REASON_DIFFERENT_WORDS: ['ooooooooo'],
+    REASON_DICTIONARY: [],
+    REASON_DIFFERENT_WORDS: [],
 }  # type: Dict[str, List[str]]
 if samba4_installed:
     reasons = {
-        REASON_TOO_SHORT: [],
-        REASON_TOO_SHORT_AT_LEAST_CHARACTERS: ['Test', 'ana'],
+        REASON_TOO_SHORT: ['Test', 'ana'],
+        REASON_TOO_SHORT_AT_LEAST_CHARACTERS: [],
         REASON_TOO_SIMPLE: ['123456789', 'chocolate', 'ooooooooo'],
         REASON_PALINDROME: [],
         REASON_DICTIONARY: [],

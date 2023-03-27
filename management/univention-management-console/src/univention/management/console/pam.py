@@ -67,8 +67,7 @@ _('The minimum password age is not reached yet.')
 _('Make sure the kerberos service is functioning or inform an Administrator.')
 _('The password is too similar to the old one.')
 _('The password does not meet the password complexity requirements.')
-_('The password contains user account name.')
-_('The password contains parts of the full user name.')
+_('The password contains personal user information.')
 
 
 class AuthenticationError(Exception):  # abstract base class
@@ -110,6 +109,7 @@ class PamAuth(object):
             'You must choose a longer password'
             'Password Too Short',
             'Password is too short',
+            'Weak password: too short',
             ': Es ist zu kurz',
             ': Es ist VIEL zu kurz',
             ': it is WAY too short',
@@ -121,6 +121,7 @@ class PamAuth(object):
         'The password is too long.': [
             'You must choose a shorter password.',
             'Sie müssen ein kürzeres Passwort wählen.',
+            'Weak password: too long',
         ],
         'The password is too simple.': [
             ': Es ist zu einfach/systematisch',
@@ -136,6 +137,8 @@ class PamAuth(object):
             'is too simple',
             "The passwort didn't pass quality check",
             "Password doesn't meet complexity requirement.",
+            'Weak password: not enough different characters or classes for this length',
+            'Weak password: not enough different characters or classes',
             # 'contains the user name in some form'
         ],
         'The password is a palindrome.': [
@@ -148,6 +151,11 @@ class PamAuth(object):
         'The password is based on a dictionary word.': [
             ': Es basiert auf einem Wörterbucheintrag',
             ': it is based on a dictionary word',
+            'Weak password: based on a dictionary word and not a passphrase',
+            'Weak password: based on a common sequence of characters and not a passphrase',
+            'Weak password: based on a word list entry',
+            'Weak password: is in deny list',
+            'Weak password: appears to be in a database',
             'Schlechtes Passwort: Es basiert auf einem (umgekehrten) W?rterbucheintrag',
             'Schlechtes Passwort: Es basiert auf einem (umgekehrten) Wörterbucheintrag',
             'Schlechtes Passwort: Es basiert auf einem W?rterbucheintrag',
@@ -162,6 +170,7 @@ class PamAuth(object):
             'Password has been already used.',
             'Password has been already used. Choose another.',
             'is the same as the old one',
+            'Weak password: is the same as the old one',
             'is rotated',
             'password unchanged',
             'Passwort nicht geändert',
@@ -177,6 +186,7 @@ class PamAuth(object):
             'case changes only',
             'Bad: new and old password must differ by more than just case',
             'is too similar to the old one',
+            'Weak password: is based on the old one',
             'Bad: new and old password are too similar',
             'Bad: new password is just a wrapped version of the old one',
             'Schlechtes Passwort: ist dem alten zu ?hnlich',
@@ -190,11 +200,10 @@ class PamAuth(object):
         'The password does not meet the password complexity requirements.': [
             'Password does not meet the password complexity requirements.',
         ],
-        'The password contains user account name.': [
+        'The password contains personal user information.': [
             'Password contains user account name.',
-        ],
-        'The password contains parts of the full user name.': [
             'Password contains parts of the full user name.',
+            'Weak password: based on personal login information',
         ],
     }  # type: Dict[str, List[Union[str, Pattern[str]]]]
     known_errors = {
