@@ -1824,7 +1824,7 @@ liblasso3-dev
 liblcms2-2
 liblcms2-dev
 liblcms2-utils
-libldap-2.4-2
+libldap-2.5-0
 libldap-common
 libldap2-dev
 libldb-dev
