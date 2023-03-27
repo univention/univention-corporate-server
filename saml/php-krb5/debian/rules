@@ -1,7 +1,7 @@
 #!/usr/bin/make -f
 export DH_VERBOSE=1
 
-TAR := krb5-1.1.3.tgz
+TAR := krb5-1.1.5.tgz
 
 override_dh_auto_clean:
 	$(RM) -r src
