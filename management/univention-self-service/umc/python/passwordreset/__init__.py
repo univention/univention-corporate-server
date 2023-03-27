@@ -677,7 +677,7 @@ class Instance(Base):
             new_user.create()
         except univention.admin.uexceptions.base as exc:
             password_complexity_message = self._get_password_complexity_message() if isinstance(exc, (udm_errors.pwToShort, udm_errors.pwQuality)) else ''
-            MODULE.error('create_self_registered_account(): could not create user: %s' % (traceback.format_exc(),))
+            MODULE.error('create_self_registered_account(): could not create user: %s' % (exc,))
             return {
                 'success': False,
                 'failType': 'CREATION_FAILED',
