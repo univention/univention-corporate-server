@@ -2352,13 +2352,13 @@ libpackage-stash-perl
 libpackage-stash-xs-perl
 libpam-apparmor
 libpam-cap
-libpam-cracklib
 libpam-doc
 libpam-heimdal
 libpam-krb5
 libpam-ldapd
 libpam-modules
 libpam-modules-bin
+libpam-pwquality
 libpam-runtime
 libpam-systemd
 libpam-univentionmailcyrus
