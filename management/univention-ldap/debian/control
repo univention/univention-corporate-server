@@ -47,7 +47,7 @@ Recommends:
  univention-pam,
 Depends:
  ldap-utils,
- libldap-2.4-2,
+ libldap-2.5-0,
  python3-univention-lib (>= 3.0.3-1),
  univention-config,
  ${misc:Depends},
