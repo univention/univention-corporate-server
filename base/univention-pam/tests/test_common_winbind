@@ -16,7 +16,7 @@ main () {
 	check session 'optional' pam_winbind.so
 	check session 'required' pam_limits.so
 
-	check password 'requisite' pam_cracklib.so
+	check password 'requisite' pam_pwquality.so
 	check password '[success=2 default=ignore]' pam_unix.so 'obscure sha512 try_first_pass use_authtok'
 	check password '[success=1 default=ignore]' pam_winbind.so 'try_first_pass use_authtok'
 	check password 'requisite' pam_deny.so
