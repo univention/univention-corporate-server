@@ -12,10 +12,10 @@ Architecture: all
 Depends:
  libnss-extrausers,
  libnss-ldapd,
- libpam-cracklib,
  libpam-heimdal,
  libpam-ldapd,
  libpam-modules (>= 1.1.8),
+ libpam-pwquality,
  nscd,
  pam-runasroot,
  python3-ldap,
