@@ -7,7 +7,7 @@ from typing import List
 
 from bs4 import BeautifulSoup
 from diskcache import Index
-from locust import HttpUser, constant_throughput, task
+from locust import FastHttpUser, constant_throughput, run_single_user, task
 
 
 USER_CACHE_PATH = "/var/lib/test-data/users"
@@ -56,7 +56,7 @@ def entry(client, host, user):
         login_at_idp_with_credentials(client, login_link, user)
     finally:
         #logout_at_idp(client, host)
-        client.cookies.clear()
+        client.cookiejar.clear()
 
 
 class TestData(object):
@@ -123,7 +123,7 @@ class TestData(object):
         return SimpleNamespace(**group)
 
 
-class QuickstartUser(HttpUser):
+class QuickstartUser(FastHttpUser):
     wait_time = constant_throughput(0.1)
 
     td = TestData()
@@ -133,3 +133,7 @@ class QuickstartUser(HttpUser):
         user = self.td.walk_users()
         host = random.choice(hosts)
         entry(self.client, host, user)
+
+
+if __name__ == "__main__":
+    run_single_user(QuickstartUser)
