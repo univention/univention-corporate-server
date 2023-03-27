@@ -48,10 +48,9 @@ class FetchMailSingle(complex):
 
     subsyntax_names = ('server', 'protocol', 'remote username', 'password', 'ssl', 'keep')
     all_required = True
-    subsyntax_key_value = True
 
     def get_widget_options(self, udm_property):
-        descr = super(FetchMailSingle, self).get_widget_options(udm_property)
+        descr = complex.get_widget_options(self, udm_property)
         descr['rowLabelsVisibility'] = 'allRows'
         return descr
 
@@ -59,7 +58,7 @@ class FetchMailSingle(complex):
     def parse(cls, texts, minn=None):
         if texts and not any(texts):
             return None
-        return super(FetchMailSingle, cls).parse(texts, minn)
+        return super(cls, cls).parse(texts, minn)
 
 
 class FetchmailEnvelope(select):
@@ -87,10 +86,9 @@ class FetchMailMulti(complex):
 
     subsyntax_names = ('server', 'protocol', 'remote username', 'password', 'Local Domain Name', 'qmail prefix', 'envelopeheader', 'ssl', 'keep')
     all_required = True
-    subsyntax_key_value = True
 
     def get_widget_options(self, udm_property):
-        descr = super(FetchMailMulti, self).get_widget_options(udm_property)
+        descr = complex.get_widget_options(self, udm_property)
         descr['rowLabelsVisibility'] = 'allRows'
         return descr
 
@@ -98,4 +96,4 @@ class FetchMailMulti(complex):
     def parse(cls, texts, minn=None):
         if texts and not any(texts):
             return None
-        return super(FetchMailMulti, cls).parse(texts, minn)
+        return super(cls, cls).parse(texts, minn)
