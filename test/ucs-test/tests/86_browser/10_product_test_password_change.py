@@ -59,7 +59,8 @@ class PasswordChangeExpectedOutcome(Enum):
 
 @pytest.fixture()
 def random_password():
-    return uts.random_string()
+    s = uts.random_string()
+    return f'{s[:5]}%{s[5:10]}'
 
 
 def create_testusers_container(udm, ldap_base):

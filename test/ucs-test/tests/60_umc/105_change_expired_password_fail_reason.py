@@ -9,7 +9,6 @@ import contextlib
 from typing import Dict, List  # noqa: F401
 
 import pytest
-from samba import generate_random_machine_password
 
 from univention.admin.uldap import getAdminConnection
 from univention.config_registry import ConfigRegistry
@@ -21,6 +20,9 @@ samba4_installed = utils.package_installed('univention-samba4')
 ucr = ConfigRegistry()
 ucr.load()
 lo, pos = getAdminConnection()
+
+# from samba import generate_random_machine_password
+INITIAL_PASSWORD = 'Noitnevinu.1'  # generate_random_machine_password(14, 14)
 
 REASON_TOO_SHORT = "Changing password failed. The password is too short."
 REASON_TOO_SHORT_AT_LEAST_CHARACTERS = "Changing password failed. The password is too short. The password must consist of at least 8 characters."
@@ -34,21 +36,25 @@ REASON_TOO_SIMILAR = 'Changing password failed. The password is too similar to t
 
 # TODO: add a lot more unimplemented tests!
 reasons = {
-    REASON_TOO_SHORT: ['Test', 'ana'],
+    REASON_TOO_SHORT: ['a1z'],
     REASON_TOO_SHORT_AT_LEAST_CHARACTERS: [],
     REASON_TOO_SIMPLE: ['123456789'],
     REASON_PALINDROME: [],
-    REASON_DICTIONARY: ['chocolate'],
+    REASON_DICTIONARY: ['Test', 'ana', 'chocolate'],
     REASON_DIFFERENT_WORDS: ['ooooooooo'],
+    REASON_TOO_SIMILAR: [INITIAL_PASSWORD[:-1] + '2'],
+    REASON_ALREADY_USED: [INITIAL_PASSWORD],
 }  # type: Dict[str, List[str]]
 if samba4_installed:
     reasons = {
         REASON_TOO_SHORT: [],
-        REASON_TOO_SHORT_AT_LEAST_CHARACTERS: ['Test', 'ana'],
-        REASON_TOO_SIMPLE: ['123456789', 'chocolate', 'ooooooooo'],
+        REASON_TOO_SHORT_AT_LEAST_CHARACTERS: ['a1z'],
+        REASON_TOO_SIMPLE: ['123456789', 'ooooooooo'],
         REASON_PALINDROME: [],
-        REASON_DICTIONARY: [],
+        REASON_DICTIONARY: ['Test', 'ana', 'chocolate'],
         REASON_DIFFERENT_WORDS: [],
+        REASON_TOO_SIMILAR: [INITIAL_PASSWORD[:-1] + '2'],
+        REASON_ALREADY_USED: [INITIAL_PASSWORD],
     }
 
 
@@ -75,12 +81,11 @@ def test_password_changing_failure_reason(new_password, reason, udm, Client, ran
 
 
 def _test_password_changing_failure_reason(new_password, reason, udm, Client, random_string):
-    password = generate_random_machine_password(14, 14)
-    userdn, username = udm.create_user(password=password, pwdChangeNextLogin=1)
+    userdn, username = udm.create_user(password=INITIAL_PASSWORD, pwdChangeNextLogin=1, overridePWLength=1)
     client = Client(language='en-US')
     if samba4_installed:
         utils.wait_for_connector_replication()
-    print(f'change password from {password!r} to {new_password!r}')
+    print(f'change password from {INITIAL_PASSWORD!r} to {new_password!r}')
     with pytest.raises(Unauthorized) as msg:
-        client.umc_auth(username, password, new_password=new_password)
+        client.umc_auth(username, INITIAL_PASSWORD, new_password=new_password)
     assert reason == msg.value.message, f'Expected error {reason!r} but got {msg.value.message!r}'
