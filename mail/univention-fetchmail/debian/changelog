@@ -1,3 +1,11 @@
+univention-fetchmail (13.0.5-7) unstable; urgency=medium
+
+  * Bug #55910: Fixed syntax classes to prevent udm errors
+    in scenarios where user extended attributes hooks
+    load udm modules.
+
+ -- Juan Carlos García García <garcia-garcia.extern@univention.de>  Mon, 27 Mar 2023 12:46:00 +0100
+
 univention-fetchmail (13.0.5-6) unstable; urgency=medium
 
   * Bug #55893: Added new checks to avoid errors during
