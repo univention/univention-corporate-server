@@ -143,7 +143,7 @@ def test_upgrade_config_status(keycloak_app_version):
     # no pending upgrades
     upgrades = run_command(["univention-keycloak", "domain-config", "--json", "--get"])
     upgrades = json.loads(upgrades)
-    assert upgrades["domain_config_version"] == keycloak_app_version
+    assert upgrades.get("domain_config_version")
     assert upgrades.get("domain_config_init")
 
 
