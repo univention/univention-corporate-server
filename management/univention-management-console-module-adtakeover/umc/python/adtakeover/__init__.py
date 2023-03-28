@@ -39,18 +39,12 @@ from threading import Thread
 
 import univention.management.console as umc
 import univention.management.console.modules as umcm
-from univention.config_registry import ConfigRegistry
+# from univention.lib.package_manager import CMD_DISABLE_EXEC, CMD_ENABLE_EXEC
 from univention.management.console.log import MODULE
 from univention.management.console.modules.adtakeover import takeover
 from univention.management.console.modules.decorators import simple_response
-from univention.management.console.protocol.definitions import BAD_REQUEST, MODULE_ERR_COMMAND_FAILED, SUCCESS
 
 
-# from univention.lib.package_manager import CMD_DISABLE_EXEC, CMD_ENABLE_EXEC
-
-
-ucr = ConfigRegistry()
-ucr.load()
 _ = umc.Translation('univention-management-console-module-adtakeover').translate
 
 
@@ -61,16 +55,16 @@ def background(func):
             MODULE.process('Running %s' % func.__name__)
             result = None
             message = None
-            status = SUCCESS
+            status = 200
             try:
                 result = func(self, request)
             except takeover.TakeoverError as exc:
-                status = BAD_REQUEST
+                status = 400
                 MODULE.warn('Error during %s: %s' % (func.__name__, exc))
                 message = str(exc)
                 self.progress.error(message)
             except Exception:
-                status = MODULE_ERR_COMMAND_FAILED
+                status = 500
                 tb_text = traceback.format_exc()
                 message = _("Execution of command '%(command)s' has failed:\n\n%(text)s") % {
                     'command': func.__name__,
