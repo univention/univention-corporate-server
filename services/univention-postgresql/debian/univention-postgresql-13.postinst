@@ -43,23 +43,16 @@ case "$1" in
 		if [ -z "$2" ] # installation
 		then
 			# configure firewall
-			ucr set security/packetfilter/package/univention-postgresql-11/tcp/5432/all="ACCEPT" \
-				security/packetfilter/package/univention-postgresql-11/tcp/5432/all/en="postgresql"
+			ucr set security/packetfilter/package/univention-postgresql-13/tcp/5432/all="ACCEPT" \
+				security/packetfilter/package/univention-postgresql-13/tcp/5432/all/en="postgresql"
 			if [ -x "/etc/init.d/univention-firewall" ]
 			then
 				invoke-rc.d univention-firewall restart
 			fi
 		fi
 
-		if dpkg --compare-versions "${2:-}" lt-nl 12.0.2-2~ # upgrade
-		then
-			# Bug #54255: unset UCRV postgresql/autostart=no accidently set by 5.0-1 postup.sh
-			zgrep -qs '^2021-12-1[456] ..:..:..: set postgres11/autostart=no ' /var/log/univention/config-registry.replog* &&
-				ucr unset postgres11/autostart
-		fi
-
 		# restart postgresql to load correct configfiles (Bug #27786)
-			service postgresql restart
+		service postgresql restart
 		;;
 
 	abort-upgrade|abort-remove|abort-deconfigure)
