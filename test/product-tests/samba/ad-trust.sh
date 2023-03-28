@@ -47,7 +47,7 @@ type forward;
 forwarders { $WINRM_CLIENT; };
 };
 %EOR
-	service bind9 restart
+	service named restart
 	ping -c 2 "$win_fqdn"
 	# and AD
 	ucs-winrm run-ps --cmd "Add-DnsServerConditionalForwarderZone -Name $domainname -MasterServers $ucs_ip"

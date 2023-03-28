@@ -102,10 +102,10 @@ if [ "$1" = "configure" ]; then
 	if [ -z "$2" ]
 	then
 		ucr commit /etc/bind/named.conf.samba4
-		rm -f /etc/systemd/system/bind9.service
+		rm -f /etc/systemd/system/named.service
 		systemctl --system daemon-reload
 	fi
-	deb-systemd-invoke restart bind9
+	deb-systemd-invoke restart named
 	if [ -z "$2" ]
 	then
 		# shellcheck disable=SC2015
@@ -117,7 +117,7 @@ if [ "$1" = "configure" ]; then
 	deb-systemd-invoke try-restart univention-directory-listener
 fi
 
-deb-systemd-helper enable bind9.service
+deb-systemd-helper enable named.service
 
 call_joinscript 05univention-bind.inst
 call_joinscript 90univention-bind-post.inst
