@@ -43,8 +43,8 @@ case "$1" in
 		if [ -z "$2" ] # installation
 		then
 			# configure firewall
-			ucr set security/packetfilter/package/univention-postgresql-13/tcp/5432/all="ACCEPT" \
-				security/packetfilter/package/univention-postgresql-13/tcp/5432/all/en="postgresql"
+			ucr set security/packetfilter/package/univention-postgresql-15/tcp/5432/all="ACCEPT" \
+				security/packetfilter/package/univention-postgresql-15/tcp/5432/all/en="postgresql"
 			if [ -x "/etc/init.d/univention-firewall" ]
 			then
 				invoke-rc.d univention-firewall restart
