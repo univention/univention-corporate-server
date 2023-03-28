@@ -1057,7 +1057,7 @@ def get_available_locales(pattern: Pattern[str], category: str = 'language_en') 
         if m:
             supportedLocales[m.groups()[0]] = True
 
-    category = {'langcode': 0, 'language_en': 1, 'language': 2, 'countrycode': 4, 'fallbacklocale': 5}.get(category, 1)
+    column = {'langcode': 0, 'language_en': 1, 'language': 2, 'countrycode': 4, 'fallbacklocale': 5}.get(category, 1)
 
     # open all languages
     rlanguages = csv.reader(flanguages, delimiter=';')
@@ -1066,7 +1066,7 @@ def get_available_locales(pattern: Pattern[str], category: str = 'language_en') 
         if ilang[0].startswith('#'):
             continue
 
-        if not pattern.match(ilang[category]):
+        if not pattern.match(ilang[column]):
             continue
 
         # each language might be spoken in several countries

@@ -63,13 +63,13 @@ class PhaseLdapSelf(AddressMap, LdapChange, Executable):
 
     def _build_address_filter(self, key: str, addresses: Iterable[Union[IPv4Interface, IPv6Interface]]) -> str:
         hostname = self.changeset.ucr["hostname"]
-        addresses = [
+        addr = [
             "(%s=%s)" % (key, escape_filter_chars(str(address.ip)))
             for address in addresses
         ]
         ldap_filter = "(&(cn=%s)(|%s))" % (
             escape_filter_chars(hostname),
-            "".join(addresses),
+            "".join(addr),
         )
         return ldap_filter
 
