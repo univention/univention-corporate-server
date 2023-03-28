@@ -15,7 +15,7 @@ Pre-Depends:
 Depends:
  shell-univention-lib,
  univention-config,
- univention-postgresql-13 | univention-postgresql-11 | univention-postgresql-9.6 | univention-postgresql-9.4,
+ univention-postgresql-15 | univention-postgresql-13 | univention-postgresql-11 | univention-postgresql-9.6 | univention-postgresql-9.4,
  ${misc:Depends},
 Description: UCS - PostgreSQL configuration
  This meta-package depends on the package with the configuration for
@@ -26,16 +26,16 @@ Description: UCS - PostgreSQL configuration
  corporate environments. For more information about UCS,
  refer to: https://www.univention.de/
 
-Package: univention-postgresql-13
+Package: univention-postgresql-15
 Architecture: all
 Depends:
- postgresql-13,
+ postgresql-15,
  shell-univention-lib,
  univention-config,
  ${misc:Depends},
-Description: UCS - PostgreSQL 13 configuration
+Description: UCS - PostgreSQL 15 configuration
  This package contains the configuration for the
- postgresql-13 package.
+ postgresql-15 package.
  .
  It is part of Univention Corporate Server (UCS), an
  integrated, directory driven solution for managing
