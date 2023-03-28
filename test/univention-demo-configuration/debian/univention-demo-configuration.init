@@ -3,7 +3,7 @@
 # Provides:          univention-demo-configuration
 # Required-Start:    $remote_fs $network
 # Required-Stop:     $remote_fs $network
-# Should-Start:      bind9
+# Should-Start:      named
 # Should-Stop:
 # Default-Start:     2 3 4 5
 # Default-Stop:      0 1 6

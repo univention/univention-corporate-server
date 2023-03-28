@@ -82,7 +82,7 @@ then
 		fi
 		i=$((i+1))
 	done </etc/resolv.conf
-	"$need_restart" && invoke-rc.d bind9 reload
+	"$need_restart" && invoke-rc.d named reload
 	ucr commit /etc/resolv.conf
 else
 	# Add the local configured nameserver to the resolv.conf
