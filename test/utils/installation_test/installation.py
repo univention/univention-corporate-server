@@ -456,6 +456,12 @@ class UCSInstallation(object):
             self.joinpass()
             self.hostname()
             self.ucsschool()
+            import pipes
+            import subprocess
+            if self.args.password and self.args.ip:
+                subprocess.check_call("utils/sshpass -v -p %s ssh  -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null root@%s -C %s" % (pipes.quote(self.args.password), pipes.quote(self.args.ip), pipes.quote("set -x; ucr set repository/online/server='http://apt.knut.univention.de/' repository/online=yes; echo 'deb [trusted=yes] http://omar.knut.univention.de/build2/ ucs_5.2-0/all/' >>/etc/apt/sources.list; echo 'deb [trusted=yes] http://omar.knut.univention.de/build2/ ucs_5.2-0/$(ARCH)/' >>/etc/apt/sources.list; apt-get update; echo erledigt")), shell=True)
+            else:
+                print('########## error', self.args.password, self.args.ip)
             self.finish()
             if not self.args.no_second_interface:
                 # TODO activate `KVM_INTERFACE` so that ucs-kvm-create can connect to instance
