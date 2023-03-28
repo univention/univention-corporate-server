@@ -3,7 +3,7 @@ release: "5.0"
 version: [3]
 scope: ucs_5.0-0-errata5.0-3
 src: univention-quota
-fix:
+fix: 14.0.4-2A~5.0.0.202303281802
 desc: |
  This update addresses the following issue:
  * Translations for the search bar in the Filesystem quotas UMC module have
