@@ -1,11 +1,11 @@
-[postgres11/maxconnections]
+[postgres13/maxconnections]
 Description[de]=Diese Variable konfiguriert die maximale Anzahl gleichzeitiger Verbindungen beim Zugriff auf den PostgresSQL-9-Datenbankserver.
 Description[en]=This variable configures the maximum number of concurrent connections when accessing the PostgresSQL 9 database server.
 Type=uint
 Default=100
 Categories=System
 
-[postgres11/listenaddress]
+[postgres13/listenaddress]
 Description[de]=Verfügt der Server auf dem PostgreSQL 9 läuft über mehr als ein Netzwerkinterface, kann mit dieser Variable die IP-Adresse(n) beschränkt werden, unter denen auf Anfragen gewartet wird. Ist die Variable nicht gesetzt, bedient PostgreSQL Anfragen auf allen Interfaces. Mehrere IP-Adressen müssen durch Komma getrennt werden.
 Description[en]=If the server running PostgreSQL has more than one network interface this variable allows the restriction of IP addresses on which PostgreSQL is listening for connections. If the variable is unset all interfaces are served. Multiple IP addresses need to be separated by a comma.
 Type=list
@@ -13,9 +13,9 @@ Separator=,
 Elementtype=ipaddress
 Categories=System
 
-[postgres11/pg_hba/config/.*]
-Description[de]=Spezifiziert zusätzliche Konfigurationsoptionen für /etc/postgresql/11/main/pg_hba.conf. Siehe `https://www.postgresql.org/docs/11/auth-pg-hba-conf.html` für Details. Die Variable folgt dabei dem Schema postgres9/pg_hba/config/REIHENFOLGE=EINTRAG. Beispiel: 'postgres9/pg_hba/config/01="hostssl mydb myuser 127.0.0.2/32 md5"'.
+[postgres13/pg_hba/config/.*]
+Description[de]=Spezifiziert zusätzliche Konfigurationsoptionen für /etc/postgresql/13/main/pg_hba.conf. Siehe `https://www.postgresql.org/docs/13/auth-pg-hba-conf.html` für Details. Die Variable folgt dabei dem Schema postgres9/pg_hba/config/REIHENFOLGE=EINTRAG. Beispiel: 'postgres9/pg_hba/config/01="hostssl mydb myuser 127.0.0.2/32 md5"'.
 
-Description[en]=Specifies additional configuration options for /etc/postgresql/11/main/pg_hba.conf. See `https://www.postgresql.org/docs/11/auth-pg-hba-conf.html` for details. The variable follows the scheme postgres9/pg_hba/config/ORDER=ENTRY. Example: 'postgres9/pg_hba/config/01="hostssl mydb myuser 127.0.0.2/32 md5"'.
+Description[en]=Specifies additional configuration options for /etc/postgresql/13/main/pg_hba.conf. See `https://www.postgresql.org/docs/13/auth-pg-hba-conf.html` for details. The variable follows the scheme postgres9/pg_hba/config/ORDER=ENTRY. Example: 'postgres9/pg_hba/config/01="hostssl mydb myuser 127.0.0.2/32 md5"'.
 Type=str
 Categories=System
