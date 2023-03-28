@@ -25,10 +25,12 @@ format: ## This formats all changed python files.
 	-{ git diff --name-only; git ls-files --others --exclude-standard; git diff --cached --name-only; } | xargs pre-commit run --hook-stage manual ucr-autopep8 --files
 	-{ git diff --name-only; git ls-files --others --exclude-standard; git diff --cached --name-only; } | xargs pre-commit run --hook-stage manual ucr-ruff-fix --files
 	-{ git diff --name-only; git ls-files --others --exclude-standard; git diff --cached --name-only; } | xargs pre-commit run --hook-stage manual ruff-fix --files
+	-{ git diff --name-only; git ls-files --others --exclude-standard; git diff --cached --name-only; } | xargs pre-commit run --hook-stage manual isort-fix --files
 	-{ git diff --name-only; git ls-files --others --exclude-standard; git diff --cached --name-only; } | xargs pre-commit run --hook-stage manual autopep8-fix --files
 
 format-all: ## This formats all python files in the repository
 	-pre-commit run -a --hook-stage manual ucr-autopep8
 	-pre-commit run -a --hook-stage manual ucr-ruff-fix
-	-pre-commit run -a --hook-stage manual autopep8-fix
 	-pre-commit run -a --hook-stage manual ruff-fix
+	-pre-commit run -a --hook-stage manual isort-fix
+	-pre-commit run -a --hook-stage manual autopep8-fix
