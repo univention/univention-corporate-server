@@ -3,7 +3,7 @@ release: "5.0"
 version: [3]
 scope: ucs_5.0-0-errata5.0-3
 src: univention-fetchmail
-fix:
+fix: 13.0.5-7A~5.0.0.202303281008
 desc: |
  This update addresses the following issue:
  * Fixed error in udm caused by the syntax of Fetchmail extended attributes.
