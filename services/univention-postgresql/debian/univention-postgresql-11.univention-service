@@ -1,7 +1,0 @@
-[postgresql11]
-Description[de]=PostgreSQL 11 Server
-Description[en]=PostgreSQL 11 Server
-icon=service/postgres
-programs=/usr/lib/postgresql/11/bin/postgres
-start_type=postgres11/autostart
-systemd=postgresql@11-main
