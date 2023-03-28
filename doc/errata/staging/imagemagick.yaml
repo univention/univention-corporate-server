@@ -20,11 +20,8 @@ desc: |
    representable for the 'unsigned char'. When ImageMagick processes a crafted
    pdf file, this could lead to an undefined behaviour or a crash.
  * CVE-2022-44267: Denial-of-service when it parses a PNG image.
- 8:6.9.7.4+dfsg-11+deb9u18 (Thu, 23 Mar 2023 11:38:54 +0000)
- * Upload by ELTS Security Team.
- * Fix CVE-2020-27767 fallout
- * Improve test suite debugging in case of failure.
- * Fix a FTBFS if pid is > 1,000,000.
+ * CVE-2020-27767: Outside the range of representable values of type 'float'
+   at MagickCore/quantum.h
 bug: [55899]
 cve:
 - CVE-2017-18028
