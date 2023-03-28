@@ -39,6 +39,14 @@ Variables: appcenter/docker/compose/network
 Variables: appcenter/apps/.*/version
 Variables: appcenter/apps/.*/status
 
+Type: subfile
+Multifile: etc/postgresql/15/main/pg_hba.conf
+Subfile: etc/postgresql/15/main/pg_hba.conf.d/10-appcenter
+Variables: docker/daemon/default/opts/bip
+Variables: appcenter/docker/compose/network
+Variables: appcenter/apps/.*/version
+Variables: appcenter/apps/.*/status
+
 Type: module
 Module: create_portal_entries.py
 Variables: ucs/web/overview/entries/.*
