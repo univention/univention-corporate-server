@@ -97,8 +97,8 @@ def keycloak_auth_header(config: SimpleNamespace) -> dict:
     }
 
 
-def keycloak_get_request(config: SimpleNamespace, path: str) -> dict:
-    response = requests.get(f"{config.admin_url}/{path}", headers=keycloak_auth_header(config))
+def keycloak_get_request(config: SimpleNamespace, path: str, params: dict = None) -> dict:
+    response = requests.get(f"{config.admin_url}/{path}", headers=keycloak_auth_header(config), params=params)
     assert response.status_code == 200, response.text
     return response.json()
 

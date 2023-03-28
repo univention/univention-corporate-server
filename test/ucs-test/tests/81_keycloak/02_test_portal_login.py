@@ -5,7 +5,7 @@
 ## exposure: dangerous
 
 import pytest
-from utils import keycloak_password_change, keycloak_sessions_by_user, wait_for_id
+from utils import keycloak_get_request, keycloak_password_change, keycloak_sessions_by_user, wait_for_id
 
 import univention.testing.udm as udm_test
 from univention.lib.umc import Unauthorized
@@ -136,3 +136,36 @@ def test_logout(portal_login_via_keycloak, portal_config, keycloak_config):
         wait_for_id(driver, portal_config.categories_id)
         sessions = keycloak_sessions_by_user(keycloak_config, username)
         assert not sessions
+
+
+def test_login_not_possible_with_deleted_user(keycloak_config, portal_login_via_keycloak, portal_config):
+    with udm_test.UCSTestUDM() as udm:
+        dn, username = udm.create_user()
+        # login
+        driver = portal_login_via_keycloak(username, "univention")
+        users = keycloak_get_request(keycloak_config, "realms/ucs/users", params={"search": username})
+        assert len(users) == 1
+        assert users[0]["username"] == username
+        # logout
+        wait_for_id(driver, portal_config.header_menu_id).click()
+        wait_for_id(driver, portal_config.logout_button_id).click()
+        wait_for_id(driver, portal_config.categories_id)
+        sessions = keycloak_sessions_by_user(keycloak_config, username)
+        assert not sessions
+    wait_for_listener_replication()
+
+    # user has been deleted, login should be denied
+    #
+    # see https://forge.univention.org/bugzilla/show_bug.cgi?id=55903
+    # we can't logon with that deleted user, just check for that
+    # generic error message
+    # if this bug is fixed, just
+    #   assert portal_login_via_keycloak(username, "univention", fails_with=keycloak_config.wrong_password_msg)
+    # should do it
+    driver = portal_login_via_keycloak(username, "univention", verify_login=False)
+    error = wait_for_id(driver, "kc-error-message")
+    assert error.text == "Unexpected error when handling authentication request to identity provider."
+
+    # check that user is no longer available in keycloak
+    users = keycloak_get_request(keycloak_config, "realms/ucs/users", params={"search": username})
+    assert len(users) == 0
