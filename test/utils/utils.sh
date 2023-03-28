@@ -1181,7 +1181,7 @@ prepare_domain_for_ucs50_postup () {
 }
 
 prepare_domain_for_ucs52_postup () {
-    return
+	postgres_update '11' '15'
 }
 
 postgres_update () {
