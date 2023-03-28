@@ -1,5 +1,9 @@
 rm_conffile /etc/univention/service.info/services/univention-postgresql.cfg                          11.0.1-2~
 rm_conffile /etc/univention/templates/files/etc/cron.d/postgresql                                    12.0.0-0~
+rm_conffile /etc/univention/templates/files/etc/postgresql/11/main/pg_hba.conf.d/00-pg_hba.conf      13.0.0-0~
+rm_conffile /etc/univention/templates/files/etc/postgresql/11/main/pg_hba.conf.d/99-pg_hba.conf      13.0.0-0~
+rm_conffile /etc/univention/templates/files/etc/postgresql/11/main/pg_ident.conf.d/00-pg_ident.conf  13.0.0-0~
+rm_conffile /etc/univention/templates/files/etc/postgresql/11/main/postgresql.conf                   13.0.0-0~
 rm_conffile /etc/univention/templates/files/etc/postgresql/9.4/main/pg_hba.conf.d/00-pg_hba.conf     12.0.0-0~
 rm_conffile /etc/univention/templates/files/etc/postgresql/9.4/main/pg_hba.conf.d/99-pg_hba.conf     12.0.0-0~
 rm_conffile /etc/univention/templates/files/etc/postgresql/9.4/main/pg_ident.conf.d/00-pg_ident.conf 12.0.0-0~
@@ -7,4 +11,3 @@ rm_conffile /etc/univention/templates/files/etc/postgresql/9.4/main/postgresql.c
 rm_conffile /etc/univention/templates/files/etc/postgresql/9.6/main/pg_hba.conf.d/00-pg_hba.conf     12.0.0-0~
 rm_conffile /etc/univention/templates/files/etc/postgresql/9.6/main/pg_hba.conf.d/99-pg_hba.conf     12.0.0-0~
 rm_conffile /etc/univention/templates/files/etc/postgresql/9.6/main/pg_ident.conf.d/00-pg_ident.conf 12.0.0-0~
-rm_conffile /etc/univention/templates/files/etc/postgresql/9.6/main/postgresql.conf                  12.0.0-0~
