@@ -529,8 +529,8 @@ apt-get -y install univention-server-master univention-server-backup-
 
 udm_remove_dns_service_account "$old_ldap_master_hostname"
 
-# Any bind9 that might be running shall be restarted.
-test -x /etc/init.d/bind9 && /etc/init.d/bind9 force-reload
+# Any named that might be running shall be restarted.
+test -x /etc/init.d/named && /etc/init.d/named force-reload
 
 # Tell trap handler to terminate silently.
 STILL_RUNNING=

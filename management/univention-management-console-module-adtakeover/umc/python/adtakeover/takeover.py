@@ -937,8 +937,8 @@ class AD_Takeover(object):
         run_and_output_to_log(["/etc/init.d/nscd", "stop"], log.debug)
         progress.percentage_increment_scaled(1.0 / 32)
 
-        # Restart bind9 to use the OpenLDAP backend, just to be sure
-        run_and_output_to_log(["/etc/init.d/bind9", "restart"], log.debug)
+        # Restart named to use the OpenLDAP backend, just to be sure
+        run_and_output_to_log(["/etc/init.d/named", "restart"], log.debug)
         progress.percentage_increment_scaled(1.0 / 16)
 
         with NamedTemporaryFile(mode="w+") as fd:
@@ -1040,8 +1040,8 @@ class AD_Takeover(object):
         # Use Samba4 as DNS backend
         run_and_output_to_log(["univention-config-registry", "set", "dns/backend=samba4"], log.debug)
 
-        # Restart bind9 to use the Samba4 backend, just to be sure
-        run_and_output_to_log(["/etc/init.d/bind9", "restart"], log.debug)
+        # Restart named to use the Samba4 backend, just to be sure
+        run_and_output_to_log(["/etc/init.d/named", "restart"], log.debug)
 
         # Start the NSCD again
         run_and_output_to_log(["/etc/init.d/nscd", "restart"], log.debug)
@@ -1920,7 +1920,7 @@ class AD_Takeover_Finalize(object):
         run_and_output_to_log(["univention-config-registry", "set", "univention/ad/takeover/completed=yes"], log.debug)
         run_and_output_to_log(["univention-config-registry", "unset", "univention/ad/takeover/ad/server/ip"], log.debug)
         run_and_output_to_log(["samba-tool", "dbcheck", "--fix", "--yes"], log.debug)
-        run_and_output_to_log(["/etc/init.d/bind9", "restart"], log.debug)
+        run_and_output_to_log(["/etc/init.d/named", "restart"], log.debug)
 
 
 def check_gpo_presence():
@@ -2590,7 +2590,7 @@ def run_phaseI(ucr, lp, opts, args, parser, creds, always_answer_with=None):
     # Move current Samba directory out of the way
     # Adjust some UCR settings
     # Stop the NSCD
-    # Restart bind9 to use the OpenLDAP backend, just to be sure
+    # Restart named to use the OpenLDAP backend, just to be sure
     # Get machine credentials
     # Join into the domain
     # create backup dir
@@ -2650,7 +2650,7 @@ def run_phaseIII(ucr, lp, ad_server_ip, ad_server_fqdn, ad_server_name):
     time.sleep(3)
     # Restart Samba and make sure the rapid restart did not leave the main process blocking
     # Create new DNS SPN account in Samba4
-    # Restart bind9 to use the OpenLDAP backend, just to be sure
+    # Restart named to use the OpenLDAP backend, just to be sure
     # re-create /etc/krb5.keytab
     # Enable NTP Signing for Windows SNTP clients
     # Re-run joinscripts that create an SPN account (lost in old secrets.ldb)

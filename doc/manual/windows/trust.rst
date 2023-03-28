@@ -45,7 +45,7 @@ On the UCS side the conditional forwarding of DNS queries can be set up as
      forwarders { 192.0.2.20; };
    };
    __EOT__
-   $ systemctl restart bind9
+   $ systemctl restart named
 
 The success can be checked by running:
 
