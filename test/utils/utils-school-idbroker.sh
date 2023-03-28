@@ -123,18 +123,35 @@ add_bettermarks_app_portal_link () {
 	local keycloak_identifier="${1:?missing keycloak_identifier=}"
 	local lb
 	lb="$(ucr get ldap/base)"
-	udm settings/portal_entry create \
-		--position "cn=portal,cn=univention,${lb}" \
-		--set activated=TRUE \
-		--set authRestriction=anonymous \
-		--set category=service \
-		--set description="en_US \"bettermarks is an adaptive learning system for maths\"" \
-		--set displayName="en_US \"bettermarks\"" \
-		--set link="https://acc.bettermarks.com/auth/univention/DE_univention?kc_idp_hint=$keycloak_identifier" \
-		--set linkTarget=useportaldefault \
-		--set name=bettermarks \
-		--set portal="cn=ucsschool_demo_portal,cn=portal,cn=univention,${lb}" \
-		--set icon="$(base64 bettermarks-logo.svg)"
+	if udm portals/entry list &> /dev/null; then
+		# UCS >= 5.0
+		udm portals/entry create \
+			--position "cn=entry,cn=portals,cn=univention,${lb}" \
+			--set activated=TRUE \
+			--set description="en_US \"bettermarks is an adaptive learning system for maths\"" \
+			--set displayName="en_US \"bettermarks\"" \
+			--set link="en_US \"https://acc.bettermarks.com/auth/univention/DE_univention?kc_idp_hint=$keycloak_identifier\"" \
+			--set linkTarget=useportaldefault \
+			--set name=bettermarks \
+			--set icon="$(base64 bettermarks-logo.svg)"
+		udm portals/category modify \
+			--dn "cn=domain-service,cn=category,cn=portals,cn=univention,${lb}" \
+			--append entries="cn=bettermarks,cn=entry,cn=portals,cn=univention,${lb}"
+	else
+		# UCS < 5.0
+		udm settings/portal_entry create \
+			--position "cn=portal,cn=univention,${lb}" \
+			--set activated=TRUE \
+			--set authRestriction=anonymous \
+			--set category=service \
+			--set description="en_US \"bettermarks is an adaptive learning system for maths\"" \
+			--set displayName="en_US \"bettermarks\"" \
+			--set link="https://acc.bettermarks.com/auth/univention/DE_univention?kc_idp_hint=$keycloak_identifier" \
+			--set linkTarget=useportaldefault \
+			--set name=bettermarks \
+			--set portal="cn=ucsschool_demo_portal,cn=portal,cn=univention,${lb}" \
+			--set icon="$(base64 bettermarks-logo.svg)"
+	fi
 }
 
 add_test_app_portal_link () {
@@ -142,18 +159,35 @@ add_test_app_portal_link () {
 	local keycloak_identifier="${2:?missing keycloak_identifier=}"
 	local lb
 	lb="$(ucr get ldap/base)"
-	udm settings/portal_entry create \
-		--position "cn=portal,cn=univention,${lb}" \
-		--set activated=TRUE \
-		--set authRestriction=anonymous \
-		--set category=service \
-		--set description="en_US \"Test app to check oauth login and tokens\"" \
-		--set displayName="en_US \"Test oauth\"" \
-		--set link="https://$broker_fqdn/univention-test-app/?kc_idp_hint=$keycloak_identifier&pkce=y" \
-		--set linkTarget=useportaldefault \
-		--set name=univention-test-app \
-		--set portal="cn=ucsschool_demo_portal,cn=portal,cn=univention,${lb}" \
-		--set icon="$(base64 oidc-logo.svg)"
+	if udm portals/entry list &> /dev/null; then
+		# UCS >= 5.0
+		udm portals/entry create \
+			--position "cn=entry,cn=portals,cn=univention,${lb}" \
+			--set activated=TRUE \
+			--set description="en_US \"Test app to check oauth login and tokens\"" \
+			--set displayName="en_US \"Test oauth\"" \
+			--set link="en_US \"https://$broker_fqdn/univention-test-app/?kc_idp_hint=$keycloak_identifier&pkce=y\"" \
+			--set linkTarget=useportaldefault \
+			--set name=univention-test-app \
+			--set icon="$(base64 oidc-logo.svg)"
+		udm portals/category modify \
+			--dn "cn=domain-service,cn=category,cn=portals,cn=univention,${lb}" \
+			--append entries="cn=univention-test-app,cn=entry,cn=portals,cn=univention,${lb}"
+	else
+		# UCS < 5.0
+		udm settings/portal_entry create \
+			--position "cn=portal,cn=univention,${lb}" \
+			--set activated=TRUE \
+			--set authRestriction=anonymous \
+			--set category=service \
+			--set description="en_US \"Test app to check oauth login and tokens\"" \
+			--set displayName="en_US \"Test oauth\"" \
+			--set link="https://$broker_fqdn/univention-test-app/?kc_idp_hint=$keycloak_identifier&pkce=y" \
+			--set linkTarget=useportaldefault \
+			--set name=univention-test-app \
+			--set portal="cn=ucsschool_demo_portal,cn=portal,cn=univention,${lb}" \
+			--set icon="$(base64 oidc-logo.svg)"
+	fi
 }
 
 create_id_connector_school_authority_config () {
