@@ -42,17 +42,17 @@ RESUME_DEBUG
 
 if [ -n "$bind_bindpw" -a "$bind_bindpw" != "/etc/machine.secret" ]; then
 	# Skip the passwdord change
-	echowithtimestamp "skip bind9 server password change"
+	echowithtimestamp "skip named server password change"
 	exit 0
 fi
 
 if [ "$1" = "postchange" ] ; then
-	echowithtimestamp "updating bind9 zone files after server password change"
+	echowithtimestamp "updating named zone files after server password change"
 	# update zone files
 	sed -i "s|\!x-bindpw=\(.*\),x-tls|\!x-bindpw=$(cat /etc/machine.secret),x-tls|" /etc/bind/univention.conf.d/*
 	# Reload or restart LDAP-BIND (if running)
 	if [ "$dns_backend" = "ldap" ]; then
-		echowithtimestamp "reload or restart bind9 after server password change"
-		systemctl reload-or-try-restart bind9.service
+		echowithtimestamp "reload or restart named after server password change"
+		systemctl reload-or-try-restart named.service
 	fi
 fi

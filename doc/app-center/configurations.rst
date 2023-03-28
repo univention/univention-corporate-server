@@ -882,7 +882,7 @@ script <installation-joinscript>`):
    # write the apache.conf, maybe by using the App Settings
    systemctl reload apache2
    nscd -i hosts  # only needed if the new fqdn should be used immediately by the system
-   systemctl reload bind9  # same here
+   systemctl reload named  # same here
 
 This will create the following entry in
 :file:`/etc/apache2/sites-available/univention-vhosts.conf`

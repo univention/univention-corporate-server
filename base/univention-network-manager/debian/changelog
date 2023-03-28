@@ -1,3 +1,9 @@
+univention-network-manager (14.0.2) unstable; urgency=medium
+
+  * Bug #56003: bind9 service was renamed to named
+
+ -- Florian Best <best@univention.de>  Fri, 08 Mar 2024 00:18:25 +0100
+
 univention-network-manager (14.0.1) unstable; urgency=medium
 
   * Bug #55706: UCS 5.2-0 version bump

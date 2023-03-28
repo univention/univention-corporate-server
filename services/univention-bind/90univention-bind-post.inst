@@ -48,7 +48,7 @@ if test -z "$ldap_server_ip" -a -z "$ldap_server_name"; then
 fi
 
 wait_for_dns () {
-	echo -n "Wait for bind9: "
+	echo -n "Wait for named: "
 	count=0
 	while [ $count -le 600 ]; do
 		if LC_ALL=C host -W 1 "$ldap_master" 127.0.0.1 2>&1 | grep -q 'has \(IPv6 \)\?address '
@@ -58,7 +58,7 @@ wait_for_dns () {
 		else
 			echo -n "."
 			# restart bind every 200 seconds
-			expr $count % 200 >/dev/null || service bind9 restart
+			expr $count % 200 >/dev/null || service named restart
 			sleep 1
 		fi
 		count=$((count+1))
@@ -74,7 +74,7 @@ wait_for_dns () {
 			else
 				echo -n "."
 				# restart bind every 200 seconds
-				expr $count % 200 >/dev/null || service bind9 restart
+				expr $count % 200 >/dev/null || service named restart
 				sleep 1
 			fi;
 			count=$((count+1))
@@ -93,9 +93,9 @@ if [ $JS_LAST_EXECUTED_VERSION = 0 ]; then
 	pkill -9 -f /usr/sbin/named
 fi
 
-# Restart the bind9 daemon and wait for a few seconds if the local nameserver should be used
-sleep 5  # Make sure the bind9.service is linked.
-service bind9 restart
+# Restart the named daemon and wait for a few seconds if the local nameserver should be used
+sleep 5  # Make sure the named.service is linked.
+service named restart
 if [ -z "$nameserver_external" ] || ! is_ucr_true nameserver/external; then
 	wait_for_dns
 fi

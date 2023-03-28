@@ -326,12 +326,12 @@ if [ -z "$s4connector_dc" ] \
 	/etc/init.d/univention-s4-connector restart
 
 	univention-config-registry set dns/backend=samba4
-	if [ -x /etc/init.d/bind9 ]; then
-		/etc/init.d/bind9 restart
+	if [ -x /etc/init.d/named ]; then
+		/etc/init.d/named restart
 	fi
 
 	# Wait until the local S4 contains the DNS record
-	echo -n "Wait for bind9: "
+	echo -n "Wait for named: "
 	count=0
 	while [ $count -le "$join_samba_dns_replication_timeout" ]; do
 		message=$(LC_ALL=C host -W 1 "$ldap_master" 2>&1| grep 'has \(IPv6 \)\?address ')
@@ -341,7 +341,7 @@ if [ -z "$s4connector_dc" ] \
 		else
 			echo -n "."
 			# restart bind9 every 100 seconds
-			expr $count % 100 >/dev/null || /etc/init.d/bind9 restart
+			expr $count % 100 >/dev/null || /etc/init.d/named restart
 			# restart samba-ad-dc every 200 seconds
 			expr $count % 200 >/dev/null || /etc/init.d/samba-ad-dc restart
 			sleep 1
@@ -354,8 +354,8 @@ if [ -z "$s4connector_dc" ] \
 	if [ $count -gt "$join_samba_dns_replication_timeout" ]; then
 		echo " failed"
 		univention-config-registry set dns/backend=ldap
-		if [ -x /etc/init.d/bind9 ]; then
-			/etc/init.d/bind9 restart
+		if [ -x /etc/init.d/named ]; then
+			/etc/init.d/named restart
 		fi
 
 		echo "**************************************************************"

@@ -80,7 +80,7 @@ if [ "$1" = "remove" ]; then
 	# Set DNS backend to ldap
 	if [ "$dns_backend" = "samba4" ]; then
 		ucr set dns/backend=ldap
-		test -x /etc/init.d/bind9 && invoke-rc.d bind9 restart
+		test -x /etc/init.d/named && invoke-rc.d named restart
 	fi
 
 	# Bug #43874: samba4 has that idea to divert the univention-service file to "not confuse the admin with a stopped heimdal-kdc", but now we're confusing systemd

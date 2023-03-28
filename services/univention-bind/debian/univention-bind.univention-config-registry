@@ -3,7 +3,7 @@ File: etc/bind/named.conf
 Variables: dns/ipv6
 
 Type: file
-File: etc/systemd/system/bind9.service.d/10-configure-backend.conf
+File: etc/systemd/system/named.service.d/10-configure-backend.conf
 Postinst: systemctl_daemon-reload.py
 Variables: dns/backend
 

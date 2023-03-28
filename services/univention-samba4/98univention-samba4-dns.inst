@@ -66,12 +66,12 @@ s4connectorservicedcs="$(ldapsearch -x -ZZ -LLL -D "$ldap_hostdn" -y /etc/machin
 
 if [ $JS_LAST_EXECUTED_VERSION = 0 ] && [ "$dns_backend" != "samba4" ] && [ -n "$s4connectorservicedcs" ]; then
 	univention-config-registry set dns/backend=samba4
-	if [ -x /etc/init.d/bind9 ]; then
-		/etc/init.d/bind9 restart
+	if [ -x /etc/init.d/named ]; then
+		/etc/init.d/named restart
 	fi
 
 	# Wait until the local S4 contains the DNS record
-	echo -n "Wait for bind9: "
+	echo -n "Wait for named: "
 	count=0
 	while [ $count -le "$join_samba_dns_replication_timeout" ]; do
 		message=$(LC_ALL=C host -W 1 "$ldap_master" 2>&1| grep 'has \(IPv6 \)\?address ')
@@ -90,8 +90,8 @@ if [ $JS_LAST_EXECUTED_VERSION = 0 ] && [ "$dns_backend" != "samba4" ] && [ -n "
 	if [ $count -gt "$join_samba_dns_replication_timeout" ]; then
 		echo " failed"
 		univention-config-registry set dns/backend=ldap
-		if [ -x /etc/init.d/bind9 ]; then
-			/etc/init.d/bind9 restart
+		if [ -x /etc/init.d/named ]; then
+			/etc/init.d/named restart
 		fi
 		echo "**************************************************************"
 		echo "* ERROR: Failed to configure Samba4 as backend for bind.     *"

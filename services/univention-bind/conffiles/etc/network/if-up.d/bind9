@@ -33,9 +33,9 @@
 #
 
 [ -x /usr/sbin/rndc ] || exit 0
-systemctl is-active --quiet bind9.service || exit 0
+systemctl is-active --quiet named.service || exit 0
 
 # Always reload, even for loopback
-service bind9 reload
+service named reload
 
 exit 0
