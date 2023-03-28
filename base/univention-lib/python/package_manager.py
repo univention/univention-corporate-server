@@ -435,7 +435,7 @@ class PackageManager(object):
             handler = _PackageManagerLoggerHandler(info_handler, step_handler, error_handler)
             self.logger.addHandler(handler)
 
-        self.cache = None  # type: Optional[apt.cache.Cache]
+        self._cache = None  # type: Optional[apt.cache.Cache]
         self._open_cache()
         self.progress_state = ProgressState(self.logger)
         self.fetch_progress = FetchProgress(self.progress_state)
