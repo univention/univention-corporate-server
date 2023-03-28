@@ -38,7 +38,6 @@ import base64
 import bz2
 import copy
 import datetime
-import imghdr
 import inspect
 import io
 import ipaddress
@@ -1404,7 +1403,7 @@ class jpegPhoto(Upload):
     def parse(self, text):
         try:
             raw = base64.b64decode(text)
-            if imghdr.what(None, raw) == 'png':
+            if raw.startswith(b'\211PNG\r\n\032\n'):  # PNG
                 # convert from PNG to JPEG
                 try:
                     fp = BytesIO(raw)
@@ -1421,9 +1420,7 @@ class jpegPhoto(Upload):
                 except (KeyError, IOError, IndexError):
                     ud.debug(ud.ADMIN, ud.WARN, 'Failed to convert PNG file into JPEG: %s' % (traceback.format_exc(),))
                     raise univention.admin.uexceptions.valueError(_('Failed to convert PNG file into JPEG format.'))
-            # imghdr.what(None, base64.b64dcode(text)) == 'jpeg'  # See Bug #36304
-            # this is what imghdr.py probably does in  the future:
-            if raw[0:2] != b'\xff\xd8':
+            if raw[:2] != b'\xff\xd8' and raw[6:10] not in (b'JFIF', b'Exif'):
                 raise ValueError()
             return text
         except (base64.binascii.Error, ValueError, TypeError):
