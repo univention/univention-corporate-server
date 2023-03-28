@@ -444,6 +444,12 @@ class PackageManager(object):
         if lock:
             self.lock()
 
+    @property
+    def cache(self):
+        # type: () -> apt.cache.Cache
+        assert self._cache is not None
+        return self._cache
+
     def always_install(self, pkgs=None, just_mark=False):
         # type: (Optional[List[apt.package.Package]], bool) -> None
         """
@@ -905,8 +911,8 @@ class PackageManager(object):
         :returns: `True` on success, `False` otherwise.
         """
         # translate package names to apt.package.Package instances
-        install = self.get_packages(install or [])
-        remove = self.get_packages(remove or [])
+        install_pkgs = self.get_packages(install or [])
+        remove_pkgs = self.get_packages(remove or [])
 
         # perform an upgrade/dist_upgrade
         if dist_upgrade:
@@ -918,8 +924,8 @@ class PackageManager(object):
         # to really commit changes made manually, don't dry_run
         # as it reopens the cache
         broken = []  # type: List[str]
-        if install or remove:
-            _, _, broken = self.mark(install, remove, dry_run=True)
+        if install_pkgs or remove_pkgs:
+            _, _, broken = self.mark(install_pkgs, remove_pkgs, dry_run=True)
 
         result = False
         try:
@@ -933,7 +939,7 @@ class PackageManager(object):
                 self.cache.upgrade(dist_upgrade=False)
 
             # mark packages to install/remove
-            self.mark(install, remove, dry_run=False)
+            self.mark(install_pkgs, remove_pkgs, dry_run=False)
 
             # commit marked packages
             if self.always_noninteractive:
@@ -956,12 +962,12 @@ class PackageManager(object):
         self.reopen_cache()
 
         # check whether all packages have been installed
-        for pkg in install:
+        for pkg in install_pkgs:
             if not self.is_installed(pkg.name):  # fresh from cache
                 self.progress_state.error('%s: %s' % (pkg.name, _('Failed to install')))
 
         # check whether all packages have been removed
-        for pkg in remove:
+        for pkg in remove_pkgs:
             if self.is_installed(pkg.name):  # fresh from cache
                 self.progress_state.error('%s: %s' % (pkg.name, _('Failed to uninstall')))
 
@@ -982,10 +988,10 @@ class PackageManager(object):
         """Internal function to (re-)open the |APT| cache."""
         def _open():
             # type: () -> None
-            if self.cache is None:
-                self.cache = apt.Cache()
+            if self._cache is None:
+                self._cache = apt.Cache()
             else:
-                self.cache.open()
+                self._cache.open()
 
         for _i in range(10):
             try:

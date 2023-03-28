@@ -582,14 +582,14 @@ class Client(object):
         if 'UMCSessionId' in self.cookies:
             request.headers['X-XSRF-Protection'] = self.cookies['UMCSessionId']
         try:
-            response = self.__request(request)
+            http_response = self.__request(request)
         except (HTTPException, EnvironmentError, ssl.CertificateError) as exc:
             raise ConnectionError('Could not send request.', reason=exc)
-        self._handle_cookies(response)
-        response = Response._from_httplib_response(response)
-        if self._raise_errors and response.status > 299:
-            raise HTTPError(request, response, self.hostname)
-        return response
+        self._handle_cookies(http_response)
+        umc_response = Response._from_httplib_response(http_response)
+        if self._raise_errors and umc_response.status > 299:
+            raise HTTPError(request, umc_response, self.hostname)
+        return umc_response
 
     def _handle_cookies(self, response):
         # type: (httplib.HTTPResponse) -> None

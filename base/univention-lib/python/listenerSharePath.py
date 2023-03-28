@@ -271,9 +271,9 @@ def createOrRename(old, new, cr):
 
     # set permissions, only modify them if a change has occurred
     try:
-        mode = int(mode, 16 if mode.startswith(b'0x') else (8 if mode.startswith(b'0') else 10))
+        perm = int(mode, 16 if mode.startswith(b'0x') else (8 if mode.startswith(b'0') else 10))
         if (not old or (new.get("univentionShareDirectoryMode") and old.get("univentionShareDirectoryMode") and new["univentionShareDirectoryMode"][0] != old["univentionShareDirectoryMode"][0])):
-            os.chmod(newPath, mode)
+            os.chmod(newPath, perm)
 
         if (not old or (new.get("univentionShareUid") and old.get("univentionShareUid") and new["univentionShareUid"][0] != old["univentionShareUid"][0])):
             os.chown(newPath, uid, -1)
