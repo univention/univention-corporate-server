@@ -5,7 +5,7 @@ Maintainer: Univention GmbH <packages@univention.de>
 Standards-Version: 3.8.2
 Build-Depends:
  debhelper-compat (=13),
- univention-config-dev (>= 15.0.3),
+ univention-config-dev,
  univention-join-dev,
 
 Package: univention-postgresql
@@ -13,9 +13,9 @@ Architecture: all
 Pre-Depends:
  ${misc:Pre-Depends},
 Depends:
- shell-univention-lib (>= 3.0.4-1),
+ shell-univention-lib,
  univention-config,
- univention-postgresql-11 | univention-postgresql-9.6 | univention-postgresql-9.4,
+ univention-postgresql-13 | univention-postgresql-11 | univention-postgresql-9.6 | univention-postgresql-9.4,
  ${misc:Depends},
 Description: UCS - PostgreSQL configuration
  This meta-package depends on the package with the configuration for
@@ -26,16 +26,16 @@ Description: UCS - PostgreSQL configuration
  corporate environments. For more information about UCS,
  refer to: https://www.univention.de/
 
-Package: univention-postgresql-11
+Package: univention-postgresql-13
 Architecture: all
 Depends:
- postgresql-11,
- shell-univention-lib (>= 3.0.4-1),
+ postgresql-13,
+ shell-univention-lib,
  univention-config,
  ${misc:Depends},
-Description: UCS - PostgreSQL 11 configuration
+Description: UCS - PostgreSQL 13 configuration
  This package contains the configuration for the
- postgresql-9.6 package.
+ postgresql-13 package.
  .
  It is part of Univention Corporate Server (UCS), an
  integrated, directory driven solution for managing
