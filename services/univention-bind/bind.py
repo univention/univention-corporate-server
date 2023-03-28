@@ -290,7 +290,7 @@ def _reload(zones: List[str], restart: bool = False, dns_backend: str = 'ldap') 
     # Fall back to restart, which will temporarily interrupt the service
     if restart:
         ud.debug(ud.LISTENER, ud.INFO, 'DNS: Restarting BIND')
-        cmd = ['service', 'bind9', 'restart']
+        cmd = ['service', 'named', 'restart']
         pid = os.spawnv(os.P_NOWAIT, '/usr/sbin/service', cmd)  # noqa: S606
         pids[pid] = cmd
     return pids
@@ -387,7 +387,7 @@ def postrun() -> None:
             for filename in os.listdir(PROXY_CACHE_DIR):
                 os.remove(os.path.join(PROXY_CACHE_DIR, filename))
                 if not os.path.exists(os.path.join(NAMED_CACHE_DIR, filename)):
-                    ud.debug(ud.LISTENER, ud.PROCESS, 'DNS: %s does not exist. Triggering a bind9 restart.' % (os.path.join(NAMED_CACHE_DIR, filename)))
+                    ud.debug(ud.LISTENER, ud.PROCESS, 'DNS: %s does not exist. Triggering a named restart.' % (os.path.join(NAMED_CACHE_DIR, filename)))
                     restart = True
                 elif filename.endswith('.zone'):
                     zone = filename[:-len('.zone')]

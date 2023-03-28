@@ -467,7 +467,7 @@ apt-get -q --assume-yes install univention-server-master univention-server-backu
 udm_remove_dns_service_account "$old_ldap_master_hostname"
 
 # Any bind9 that might be running shall be restarted.
-systemctl reload bind9
+systemctl reload named.service
 
 trap - EXIT
 exit 0

@@ -96,7 +96,7 @@ if [ $JS_LAST_EXECUTED_VERSION = 0 ]; then
 	# touch config files just in case the listener module bind.py has not created them yet
 	touch /etc/bind/univention.conf /etc/bind/univention.conf.proxy
 	# start the bind service
-	systemctl restart bind9.service
+	systemctl restart named.service
 
 	# Append local server as DNS server to the zones, except if disabled by UCR
 	if ! is_ucr_false dns/nameserver/registration/forward_zone; then
