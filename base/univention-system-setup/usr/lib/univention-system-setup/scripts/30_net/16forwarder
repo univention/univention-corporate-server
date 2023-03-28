@@ -58,7 +58,7 @@ do
 	fi
 done
 
-systemctl restart bind9
+systemctl restart named
 
 if [ -d "/var/lib/univention-system-setup/dnsforwarder.post" ]; then
 	run-parts /var/lib/univention-system-setup/dnsforwarder.post --arg="$oldvalues" --arg="$newvalues"
