@@ -144,7 +144,7 @@ def main(fqdn, port, aliases, conffile, binddn, bindpwdfile, ssl, cert, private_
             click.echo(click.style("$ service apache2 reload", bold=True))
         if needs_dns_reload:
             click.echo(click.style("$ nscd -i hosts", bold=True))
-            click.echo(click.style("$ service bind9 reload", bold=True))
+            click.echo(click.style("$ service named reload", bold=True))
     else:
         if needs_apache_reload:
             click.echo('Reloading Apache ...')
@@ -156,7 +156,7 @@ def main(fqdn, port, aliases, conffile, binddn, bindpwdfile, ssl, cert, private_
         if needs_dns_reload:
             click.echo('Reloading Bind ...')
             subprocess.call(['nscd', '-i', 'hosts'])
-            subprocess.call(['service', 'bind9', 'reload'])
+            subprocess.call(['service', 'named', 'reload'])
             click.echo(f'Checking on {fqdn}...')
             # normally, we would need to check for aliases as well
             # but checking the most important one should be good enough
@@ -175,7 +175,7 @@ def main(fqdn, port, aliases, conffile, binddn, bindpwdfile, ssl, cert, private_
                 click.echo(f"`host {fqdn}` did not respond as expected after {timeout} seconds.")
                 click.echo(click.style("You may want to try", bold=True))
                 click.echo(click.style("$ nscd -i hosts", bold=True))
-                click.echo(click.style("$ service bind9 reload", bold=True))
+                click.echo(click.style("$ service named reload", bold=True))
 
 
 def resolve_host(hostname, timeout):
