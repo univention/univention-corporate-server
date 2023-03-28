@@ -6,7 +6,7 @@ revert_to_samba47 () {
 	set -e -x
 	/etc/init.d/univention-s4-connector stop
 	ucr set dns/backend='ldap'
-	/etc/init.d/bind9 restart
+	/etc/init.d/named restart
 	/etc/init.d/samba stop
 	OLD_PKG_VERSION_SAMBA='2:4.7.8-1A~4.3.0.201905081755'
 	OLD_PKG_VERSION_LDB='2:1.2.3-1A~4.3.0.201801031047'
@@ -37,7 +37,7 @@ revert_to_samba47 () {
 	/etc/init.d/samba start
 	/etc/init.d/univention-s4-connector start
 	ucr set dns/backend='samba4'
-	/etc/init.d/bind9 restart
+	/etc/init.d/named restart
 }
 
 set_MaxConnIdleTime () {
@@ -62,7 +62,7 @@ clone_copy_samdb () {
 
 replace_samdb_and_upgrade () {
 	ucr set dns/backend='ldap'
-	/etc/init.d/bind9 restart
+	/etc/init.d/named restart
 	/etc/init.d/samba stop
 
 	local ridsetldif nextrid prevpool
@@ -101,7 +101,7 @@ rIDPreviousAllocationPool: $prevpool" | ldbmodify -H /var/lib/samba/private/sam.
 restart_connector_and_bind () {
 	/etc/init.d/univention-s4-connector start
 	ucr set dns/backend='samba4'
-	/etc/init.d/bind9 restart
+	/etc/init.d/named restart
 }
 
 bigenv_settings () {
