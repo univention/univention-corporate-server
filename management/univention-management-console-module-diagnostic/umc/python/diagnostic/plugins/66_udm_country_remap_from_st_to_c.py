@@ -33,7 +33,7 @@
 # <https://www.gnu.org/licenses/>.
 
 import html
-import pipes
+import shlex
 import subprocess
 
 from univention.config_registry import ucr
@@ -53,7 +53,7 @@ def run_remap_country_script(umc_instance):
     cmd = ['/usr/share/univention-directory-manager-tools/udm-remap-country-from-st-to-c']
     (success, output) = util.run_with_output(cmd)
 
-    cmd_string = ' '.join(pipes.quote(x) for x in cmd)
+    cmd_string = ' '.join(shlex.quote(x) for x in cmd)
     MODULE.process('Output of %s:\n%r' % (cmd_string, output))
     fix_log = [_('Output of `{cmd}`:').format(cmd=cmd_string)]
 

@@ -30,7 +30,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-import pipes
+import shlex
 
 from univention.config_registry import ucr
 from univention.lib.i18n import Translation
@@ -49,7 +49,7 @@ def run_proof_uniqueMembers_fix(umc_instance: Instance) -> None:
     cmd = ['/usr/share/univention-directory-manager-tools/proof_uniqueMembers']
     (success, output) = util.run_with_output(cmd)
 
-    cmd_string = ' '.join(pipes.quote(x) for x in cmd)
+    cmd_string = ' '.join(shlex.quote(x) for x in cmd)
     MODULE.process('Output of %s:\n%r' % (cmd_string, output))
     fix_log = [_('Output of `{cmd}`:').format(cmd=cmd_string)]
 

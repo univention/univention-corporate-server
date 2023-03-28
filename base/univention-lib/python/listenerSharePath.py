@@ -33,7 +33,7 @@
 
 import fnmatch
 import os
-import pipes
+import shlex
 import shutil
 import sys
 from functools import reduce
@@ -109,7 +109,7 @@ def checkDirFileSystem(path, cr):
     :rtype: str or None
     """
     knownFs = cr.get("listener/shares/rename/fstypes", DEFAULT_FS).split(":")
-    ret, out = getstatusoutput("LC_ALL=C stat -f %s" % pipes.quote(path))
+    ret, out = getstatusoutput("LC_ALL=C stat -f %s" % shlex.quote(path))
     myFs = ""
     for line in out.split("\n"):
         tmp = line.split("Type: ")

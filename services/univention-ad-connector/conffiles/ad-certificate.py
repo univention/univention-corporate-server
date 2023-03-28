@@ -34,7 +34,7 @@
 # <https://www.gnu.org/licenses/>.
 
 import os
-import pipes
+import shlex
 
 
 ad_var = 'connector/ad/ldap/host'
@@ -48,4 +48,4 @@ def handler(configRegistry, changes):
     new = configRegistry.get(ad_var, '')
     path = os.path.join(ssl_path, new)
     if new and not os.path.exists(path):
-        os.system('%s new -name %s >> %s 2>&1' % (cert_cmd, pipes.quote(new), cert_log))
+        os.system('%s new -name %s >> %s 2>&1' % (cert_cmd, shlex.quote(new), cert_log))

@@ -39,7 +39,7 @@ import os
 import re
 import string  # pylint: disable-msg=W0402
 import sys
-from pipes import quote as escape_value
+from shlex import quote as escape_value
 
 
 try:

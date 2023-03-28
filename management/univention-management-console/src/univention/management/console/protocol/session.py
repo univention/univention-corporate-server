@@ -44,8 +44,8 @@ import errno
 import gzip
 import json
 import os
-import pipes
 import re
+import shlex
 import time
 import traceback
 
@@ -109,7 +109,7 @@ class ModuleProcess(Client):
             self.__locale = None
         Client.__init__(self, unix=socket, ssl=False)
         self.signal_connect('response', self._response)
-        CORE.process('running: %s' % ' '.join(pipes.quote(x) for x in args))
+        CORE.process('running: %s' % ' '.join(shlex.quote(x) for x in args))
         self.__process = popen.RunIt(args, stdout=False)
         self.__process.signal_connect('killed', self._died)
         self.__pid = self.__process.start()

@@ -38,8 +38,8 @@
 import ipaddress
 import os
 import os.path
-import pipes
 import re
+import shlex
 import shutil
 import socket
 import ssl
@@ -267,7 +267,7 @@ def call_process(args, logger=None, env=None, cwd=None):
     if logger is not None:
         if cwd:
             logger.debug('Calling in %s:' % cwd)
-        logger.debug('Calling %s' % ' '.join(pipes.quote(arg) for arg in args))
+        logger.debug('Calling %s' % ' '.join(shlex.quote(arg) for arg in args))
         remove_ansi_escape_sequence_regex = re.compile(r'\x1B\[[0-9;]*[a-zA-Z]')
 
         def _handle_output(out, handler):

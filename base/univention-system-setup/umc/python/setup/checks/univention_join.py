@@ -1,4 +1,4 @@
-import pipes
+import shlex
 import subprocess
 import traceback
 from distutils.version import LooseVersion
@@ -153,7 +153,7 @@ def check_is_school_multiserver_domain(address, username, password):
                 'get',
                 'ldap/base',
             ]).strip().decode('UTF-8')
-            remote_cmd = ' '.join(pipes.quote(x) for x in [
+            remote_cmd = ' '.join(shlex.quote(x) for x in [
                 'univention-ldapsearch',
                 '-D',
                 f'cn=admin,{ldap_base}',
@@ -190,7 +190,7 @@ def get_server_school_roles(hostname, address, username, password):
                 'get',
                 'ldap/base',
             ]).strip().decode('UTF-8')
-            remote_cmd = ' '.join(pipes.quote(x) for x in [
+            remote_cmd = ' '.join(shlex.quote(x) for x in [
                 'univention-ldapsearch',
                 '-D',
                 f'cn=admin,{ldap_base}',

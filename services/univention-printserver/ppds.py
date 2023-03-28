@@ -39,7 +39,6 @@ from __future__ import print_function
 
 import gzip
 import os
-import pipes
 import shlex
 import subprocess
 import sys
@@ -75,9 +74,9 @@ def get_ppd_infos(filename):
 def get_udm_command(manufacturer, models):
     manufacturer = _sanitize_printer_manufacturer(manufacturer)
     models.sort()
-    create = 'univention-directory-manager settings/printermodel create "$@" --ignore_exists --position "cn=cups,cn=univention,$ldap_base" --set name=%s || rc=$?' % (pipes.quote(manufacturer),)
-    modify = 'univention-directory-manager settings/printermodel modify "$@" --ignore_exists --dn %s"$ldap_base"' % (pipes.quote('cn=%s,cn=cups,cn=univention,' % (ldap.dn.escape_dn_chars(manufacturer),)),)
-    rest = [modify] + ['--append printmodel=%s' % (pipes.quote('"%s" "%s"' % (path, name)),) for path, name in models]
+    create = 'univention-directory-manager settings/printermodel create "$@" --ignore_exists --position "cn=cups,cn=univention,$ldap_base" --set name=%s || rc=$?' % (shlex.quote(manufacturer),)
+    modify = 'univention-directory-manager settings/printermodel modify "$@" --ignore_exists --dn %s"$ldap_base"' % (shlex.quote('cn=%s,cn=cups,cn=univention,' % (ldap.dn.escape_dn_chars(manufacturer),)),)
+    rest = [modify] + ['--append printmodel=%s' % (shlex.quote('"%s" "%s"' % (path, name)),) for path, name in models]
     return '# Manufacturer: %s Printers: %d\n' % (manufacturer, len(models)) + create + '\n' + ' \\\n\t'.join(rest) + ' || rc=$?'
 
 
@@ -127,8 +126,8 @@ def check_obsolete():
             if not os.path.isfile(ppd_path) and ppd not in compressed_ppds:
                 obsolete.setdefault(cn, []).append(i)
         for cn in obsolete:
-            print('/usr/lib/univention-printserver/univention-ppds/mark_models_as_deprecated.py "$@" --verbose --name %s \\' % (pipes.quote(cn),))
-            print('\t' + ' \\\n\t'.join(map(pipes.quote, obsolete[cn])) + ' || rc=$?\n')
+            print('/usr/lib/univention-printserver/univention-ppds/mark_models_as_deprecated.py "$@" --verbose --name %s \\' % (shlex.quote(cn),))
+            print('\t' + ' \\\n\t'.join(map(shlex.quote, obsolete[cn])) + ' || rc=$?\n')
 
 
 def main():

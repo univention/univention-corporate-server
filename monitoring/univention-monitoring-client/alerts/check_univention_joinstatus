@@ -35,8 +35,8 @@
 
 
 import os.path
-import pipes
 import re
+import shlex
 import subprocess
 from enum import IntEnum
 from os import listdir
@@ -105,7 +105,7 @@ class JoinStatusCheck(Alert):
         try:
             subprocess.check_call(cmd, stdout=subprocess.DEVNULL)
         except subprocess.CalledProcessError:
-            raise JoinStatusError('auth failed: %s' % ' '.join(pipes.quote(x) for x in cmd))
+            raise JoinStatusError('auth failed: %s' % ' '.join(shlex.quote(x) for x in cmd))
 
     def check_ldapsearch_tls(self):
         cmd = [
@@ -122,7 +122,7 @@ class JoinStatusCheck(Alert):
         try:
             subprocess.check_call(cmd, stdout=subprocess.DEVNULL)
         except subprocess.CalledProcessError:
-            raise JoinStatusError('auth or TLS failed: %s' % ' '.join(pipes.quote(x) for x in cmd))
+            raise JoinStatusError('auth or TLS failed: %s' % ' '.join(shlex.quote(x) for x in cmd))
 
     def check_joined_file_exists(self):
         if not os.path.exists('/usr/share/univention-join/.joined') or not os.path.exists('/var/univention-join/joined'):
@@ -141,7 +141,7 @@ class JoinStatusCheck(Alert):
         try:
             subprocess.check_call(cmd, stdout=subprocess.DEVNULL)
         except subprocess.CalledProcessError:
-            raise JoinStatusError('auth failed: %s' % ' '.join(pipes.quote(x) for x in cmd))
+            raise JoinStatusError('auth failed: %s' % ' '.join(shlex.quote(x) for x in cmd))
 
     def check_missing_joinscripts(self):
         install_files = [

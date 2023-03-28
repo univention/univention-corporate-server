@@ -38,7 +38,7 @@ from __future__ import absolute_import, print_function
 import ipaddress
 import locale
 import os
-import pipes
+import shlex
 import socket
 import subprocess
 import sys
@@ -686,14 +686,14 @@ def disable_ssl():
 
 def _add_service_to_localhost(service):
     ud.debug(ud.MODULE, ud.PROCESS, "Adding service %s to localhost" % service)
-    res = subprocess.call('. /usr/share/univention-lib/ldap.sh; ucs_addServiceToLocalhost %s' % (pipes.quote(service),), shell=True)
+    res = subprocess.call('. /usr/share/univention-lib/ldap.sh; ucs_addServiceToLocalhost %s' % (shlex.quote(service),), shell=True)
     if res != 0:
         raise failedToSetService()
 
 
 def _remove_service_from_localhost(service):
     ud.debug(ud.MODULE, ud.PROCESS, "Remove service %s from localhost" % service)
-    res = subprocess.call('. /usr/share/univention-lib/ldap.sh; ucs_removeServiceFromLocalhost %s' % (pipes.quote(service),), shell=True)
+    res = subprocess.call('. /usr/share/univention-lib/ldap.sh; ucs_removeServiceFromLocalhost %s' % (shlex.quote(service),), shell=True)
     if res != 0:
         raise failedToSetService()
 
@@ -1535,7 +1535,7 @@ def add_domaincontroller_srv_record_in_ad(ad_ip, username, password, ucr=None):
 def get_ucr_variable_from_ucs(host, server, var):
     cmd = ['univention-ssh', '/etc/machine.secret']
     cmd += [r'%s\$@%s' % (host, server)]
-    cmd += ['/usr/sbin/ucr get %s' % (pipes.quote(var),)]
+    cmd += ['/usr/sbin/ucr get %s' % (shlex.quote(var),)]
     p1 = subprocess.Popen(cmd, close_fds=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
     stdout, stderr = p1.communicate()
     if p1.returncode:

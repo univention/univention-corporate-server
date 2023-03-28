@@ -35,8 +35,8 @@
 # <https://www.gnu.org/licenses/>.
 
 import os.path
-import pipes
 import re
+import shlex
 import subprocess
 import time
 import traceback
@@ -281,7 +281,7 @@ class Instance(Base, ProgressMixin):
                 self.finished(request.id, {'success': False, 'message': _('Creation of certificate failed (%s)') % ssldir})
             self.finished(request.id, {'success': True, 'message': _('Active Directory connection settings have been saved and a new certificate for the Active Directory server has been created.')})
 
-        cmd = '/usr/sbin/univention-certificate new -name %s' % pipes.quote(request.options['LDAP_Host'])
+        cmd = '/usr/sbin/univention-certificate new -name %s' % shlex.quote(request.options['LDAP_Host'])
         MODULE.info('Creating new SSL certificate: %s' % cmd)
         proc = notifier.popen.Shell(cmd, stdout=True)
         cb = notifier.Callback(_return, request)
@@ -312,7 +312,7 @@ class Instance(Base, ProgressMixin):
         upload = request.options[0]['tmpfile']
         now = time.strftime('%Y%m%d_%H%M%S', time.localtime())
         fn = '/etc/univention/connector/ad/ad_cert_%s.pem' % now
-        cmd = '/usr/bin/openssl x509 -inform der -outform pem -in %s -out %s 2>&1' % (pipes.quote(upload), fn)
+        cmd = '/usr/bin/openssl x509 -inform der -outform pem -in %s -out %s 2>&1' % (shlex.quote(upload), fn)
 
         MODULE.info('Converting certificate into correct format: %s' % cmd)
         proc = notifier.popen.Shell(cmd, stdout=True, stderr=True)
