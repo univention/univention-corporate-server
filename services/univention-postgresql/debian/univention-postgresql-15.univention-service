@@ -1,0 +1,7 @@
+[postgresql15]
+Description[de]=PostgreSQL 15 Server
+Description[en]=PostgreSQL 15 Server
+icon=service/postgres
+programs=/usr/lib/postgresql/15/bin/postgres
+start_type=postgres15/autostart
+systemd=postgresql@15-main
