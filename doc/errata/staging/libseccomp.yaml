@@ -7,7 +7,7 @@ fix: 2.5.1-1~bpo10+1A~5.0.0.202303281914
 desc: |
  This update addresses the following issues:
  * The syscall table of libseccomp2 has been updated, which allows
-   containers to add syscalls like `clone3` or `faccessstat2` to
+   containers to add syscalls like `clone3` or `faccessat2` to
    their custom seccomp rules.
    This is needed for containers that use glibc version 2.34 or above.
 bug: [55360]
