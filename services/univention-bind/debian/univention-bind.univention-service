@@ -4,4 +4,4 @@ description[en]=DNS Server
 icon=service/bind
 programs=/usr/sbin/named
 start_type=bind/autostart
-systemd=bind9.service
+systemd=named.service
