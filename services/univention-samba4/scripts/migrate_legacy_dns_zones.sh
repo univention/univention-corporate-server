@@ -167,9 +167,9 @@ fi
 log "Active DNS Zones: ${active_zonenames[*]}"
 
 start_services() {
-	if [ "$bind9_was_running" = 1 ]; then
-		echo "INFO: Starting bind9"
-		service bind9 start
+	if [ "$named_was_running" = 1 ]; then
+		echo "INFO: Starting named"
+		service named start
 	fi
 	if [ "$s4_connector_was_running" = 1 ]; then
 		echo "INFO: Starting univention-s4-connector"
@@ -180,16 +180,16 @@ start_services() {
 
 trap start_services EXIT
 
-echo "INFO: Stopping univention-s4-connector and bind9"
+echo "INFO: Stopping univention-s4-connector and named"
 s4_connector_was_running=0
 if service univention-s4-connector status >/dev/null; then
 	s4_connector_was_running=1
 	service univention-s4-connector stop || :
 fi
-bind9_was_running=0
-if service bind9 status >/dev/null; then
-	bind9_was_running=1
-	service bind9 stop || :
+named_was_running=0
+if service named status >/dev/null; then
+	named_was_running=1
+	service named stop || :
 fi
 
 echo "INFO: Migration starts"
