@@ -21,7 +21,7 @@ desc: |
    pdf file, this could lead to an undefined behaviour or a crash.
  * CVE-2022-44267: Denial-of-service when it parses a PNG image.
  * CVE-2020-27767: Outside the range of representable values of type 'float'
-   at MagickCore/quantum.h
+   at `MagickCore/quantum.h`
 bug: [55899]
 cve:
 - CVE-2017-18028
