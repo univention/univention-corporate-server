@@ -30,3 +30,6 @@ cve:
 - CVE-2021-20224
 - CVE-2022-44267
 - CVE-2020-27767
+erratum: 1394
+announced: 2023-03-29
+support: lts
