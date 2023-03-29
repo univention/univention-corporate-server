@@ -2593,6 +2593,8 @@ class emailForwardSetting(select):
 
 
 class emailAddress(simple):
+    """foo"""
+
     """
     Syntax class for an e-mail address.
 
@@ -2709,11 +2711,11 @@ class emailAddress(simple):
 
     @classmethod
     def parse(self, text):
-        if self.extra_validation and validate_email and configRegistry.is_true('directory/manager/mail-address/extra-validation', True):
-            try:
-                validate_email(text, allow_smtputf8=False, check_deliverability=False)
-            except EmailNotValidError as exc:
-                raise univention.admin.uexceptions.valueError(_("Not a valid email address!") + " " + str(exc))
+        #if self.extra_validation and validate_email and configRegistry.is_true('directory/manager/mail-address/extra-validation', True):
+        #    try:
+        #        validate_email(text, allow_smtputf8=False, check_deliverability=False)
+        #    except EmailNotValidError as exc:
+        #        raise univention.admin.uexceptions.valueError(_("Not a valid email address!") + " " + str(exc))
         if not text.startswith('@') and \
                 '@' in text and \
                 not text.endswith('@') and \
