@@ -12,6 +12,7 @@ from functools import wraps
 
 from languages import english, french, german
 from vncautomate import VNCConnection, init_logger
+from vncautomate.client import VNCAutomateException
 from vncautomate.config import OCRConfig
 from vncdotool.api import VNCDoException
 
@@ -406,8 +407,22 @@ class UCSInstallation(object):
     def finish(self):  # type: () -> None
         self.client.waitForText(self._['confirm_config'], timeout=self.timeout)
         self.client.keyPress('enter')
-        sleep(self.setup_finish_sleep)
-        self.client.waitForText(self._['setup_successful'], timeout=2100)
+        for i in range(15):
+            sleep(self.setup_finish_sleep / 15)
+            try:
+                self.client.waitForText('putting UCS into', timeout=1)
+                break
+            except VNCAutomateException:
+                pass
+            try:
+                self.client.waitForText(self._['setup_successful'], timeout=1)
+                break
+            except VNCAutomateException:
+                pass
+        try:
+            self.client.waitForText('putting UCS into', timeout=20)
+        except VNCAutomateException:
+            self.client.waitForText(self._['setup_successful'], timeout=2100)
         self.client.keyPress('tab')
         self.client.keyPress('enter')
         sleep(10)
