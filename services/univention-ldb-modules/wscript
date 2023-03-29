@@ -12,7 +12,6 @@ sys.path.insert(0, srcdir + '/buildtools/wafsamba')
 
 import samba_dist  # noqa: F402,E402
 import wafsamba  # noqa: F401,E402
-from waflib import Options  # noqa: F402,E402
 
 
 APPNAME = 'univention-ldb-modules'
@@ -47,7 +46,7 @@ def configure(conf):
 def build(bld):
     bld.RECURSE('buildtools/wafsamba')
 
-    if Options.is_install:
+    if bld.is_install:
         modules_dir = bld.EXPAND_VARIABLES('${LDB_MODULESDIR}')
     else:
         # when we run from the source directory, we want to use
@@ -82,11 +81,12 @@ def test(ctx):
     import shutil
 
     import samba_utils
-    from waflib import Utils
-    test_prefix = "%s/st" % (Utils.g_module.blddir)
+    from waflib import Context
+    test_prefix = "%s/st" % (Context.g_module.blddir)
     shutil.rmtree(test_prefix, ignore_errors=True)
     os.makedirs(test_prefix)
     os.environ['TEST_DATA_PREFIX'] = test_prefix
+    os.environ['LDB_MODULES_PATH'] = Context.g_module.blddir + "/modules/ldb"
     cmd = 'tests/test-soloading.sh'
     ret = samba_utils.RUN_COMMAND(cmd)
     print("testsuite returned %d" % ret)
