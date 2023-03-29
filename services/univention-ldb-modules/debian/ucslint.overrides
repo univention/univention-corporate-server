@@ -1,2 +1,10 @@
 # No copyright for external project
 0010-2
+0009-2: third_party/waf/waflib/extras/halide.py
+0009-2: third_party/waf/waflib/extras/cross_gnu.py
+0009-2: third_party/waf/waflib/extras/wix.py
+0009-2: third_party/waf/waflib/extras/objcopy.py
+0009-2: third_party/waf/waflib/extras/file_to_object.py
+0009-2: third_party/waf/waflib/extras/fluid.py
+0009-2: third_party/waf/waflib/extras/satellite_assembly.py
+0009-2: third_party/waf/waflib/extras/cfg_altoptions.py

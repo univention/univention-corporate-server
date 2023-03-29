@@ -1,3 +1,9 @@
+univention-ldb-modules (8.0.1-2) unstable; urgency=medium
+
+  * Bug #55921: update waf to 2.0.25 to use Python 3 as build dependency
+
+ -- Florian Best <best@univention.de>  Wed, 29 Mar 2023 20:35:42 +0200
+
 univention-ldb-modules (8.0.1-1) unstable; urgency=medium
 
   * Bug #31771: migrate tabs to spaces
