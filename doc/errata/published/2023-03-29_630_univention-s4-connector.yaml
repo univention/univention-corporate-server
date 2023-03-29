@@ -8,3 +8,6 @@ desc: |
  This update addresses the following issue:
  * A translation for the MS group policy attribute has been added.
 bug: [55664]
+erratum: 630
+announced: 2023-03-29
+support: core
