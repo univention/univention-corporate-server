@@ -3,7 +3,7 @@ release: "5.0"
 version: [3]
 scope: ucs_5.0-0-errata5.0-3
 src: univention-docker
-fix:
+fix: 5.0.4-2A~5.0.0.202303291821
 desc: |
  This update addresses the following issues:
   * Containers that use glibc version 2.34 or above
