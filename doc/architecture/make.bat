@@ -1,3 +1,35 @@
+REM Like what you see? Join us!
+REM https://www.univention.com/about-us/careers/vacancies/
+REM
+REM Copyright (C) 2021-2023 Univention GmbH
+REM
+REM SPDX-License-Identifier: AGPL-3.0-only
+REM
+REM https://www.univention.com/
+REM
+REM All rights reserved.
+REM
+REM The source code of this program is made available under the terms of
+REM the GNU Affero General Public License v3.0 only (AGPL-3.0-only) as
+REM published by the Free Software Foundation.
+REM
+REM Binary versions of this program provided by Univention to you as
+REM well as other copyrighted, protected or trademarked materials like
+REM Logos, graphics, fonts, specific documentations and configurations,
+REM cryptographic keys etc. are subject to a license agreement between
+REM you and Univention and not subject to the AGPL-3.0-only.
+REM
+REM In the case you use this program under the terms of the AGPL-3.0-only,
+REM the program is provided in the hope that it will be useful, but
+REM WITHOUT ANY WARRANTY; without even the implied warranty of
+REM MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+REM Affero General Public License for more details.
+REM
+REM You should have received a copy of the GNU Affero General Public
+REM License with the Debian GNU/Linux or Univention distribution in file
+REM /usr/share/common-licenses/AGPL-3; if not, see
+REM <https://www.gnu.org/licenses/agpl-3.0.txt>.
+
 @ECHO OFF
 
 pushd %~dp0
