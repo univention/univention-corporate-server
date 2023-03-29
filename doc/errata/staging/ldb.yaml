@@ -6,7 +6,10 @@ src: ldb
 fix: 2:2.5.3-1A~5.0.0.202303221553
 desc: |
  This update addresses the following issues:
- * TODO
+ * Access controlled AD LDAP attributes could be discovered.
+   See https://www.samba.org/samba/security/CVE-2023-0614.html for details.
+   https://bugzilla.samba.org/show_bug.cgi?id=15270#c50 has a script
+   to check for confidential attributes that may have been exposed.
 bug: [55892]
 cve:
- - TEMP-I-promise-to-replace-this-with-the-real-CVE-when-the-embargo-is-lifted
+ - CVE-2023-0614
