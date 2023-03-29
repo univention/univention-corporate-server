@@ -48,10 +48,6 @@ questions like "What dependencies does component X have?"
    `The C4 model for visualizing software architecture <c4-model_>`_
       for a description of the C4 model from :cite:t:`c4-model`
 
-   `Diagramming vs. modelling <c4-model-diagramming_>`_
-      for an explanation of the differences between diagramming with lines and
-      boxes and modeling from :cite:t:`c4-model`
-
 .. _architecture-notation-archimate:
 
 ArchiMate
