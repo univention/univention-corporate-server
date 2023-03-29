@@ -1,3 +1,10 @@
+univention-docker (5.0.4-2) unstable; urgency=medium
+
+  *  Bug #55360: Add clone3 and libseccomp2 to the seccomp rules
+     that are set to single container apps by the appcenter
+
+ -- Julia Bremer <bremer@univention.de>  Wed, 29 Mar 2023 17:43:50 +0200
+
 univention-docker (5.0.4-1) unstable; urgency=medium
 
   * Bug #31771: migrate tabs to spaces
