@@ -37,7 +37,7 @@ def self_service_prepare(ucr, udm, close_all_processes):
 
 def test_self_service_read_only_attribute(ucr, self_service_prepare):
     reset_mail_address = f'{random_username()}@{random_username()}'
-    with self_service_user(mailPrimaryAddress=reset_mail_address, language="de-DE") as user:
+    with self_service_user(mailPrimaryAddress=reset_mail_address, language="en-US") as user:
         user.auth()
         # check that title is returned by get_user_attributes_descriptions
         response = user.command('passwordreset/get_user_attributes_descriptions', **{})
