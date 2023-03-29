@@ -14,3 +14,6 @@ desc: |
     can be configured as read-only via the UCR variable
     `self-service/udm_attributes/read-only`.
 bug: [55529, 55733]
+erratum: 631
+announced: 2023-03-29
+support: core
