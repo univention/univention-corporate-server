@@ -918,13 +918,13 @@ import_license () {
 		nc -w 3 -z "$server" 443 && break
 		sleep 1
 	done
-	python -m shared-utils/license_client "${lb}" -u "$users" "$(date -d '+6 month' '+%d.%m.%Y')"
+	/root/shared-utils/license_client.py "${lb}" -u "$users" "$(date -d '+6 month' '+%d.%m.%Y')"
 	# It looks like we have in some AD member setups problems with the DNS resolution. Try to use
 	# the static variante (Bug #46448)
 	if [ ! -e ./ValidTest.license ]; then
 		ucr set "hosts/static/85.184.250.151=$server"
 		nscd -i hosts
-		python -m shared-utils/license_client "${lb}" -u "$users" "$(date -d '+6 month' '+%d.%m.%Y')"
+		/root/shared-utils/license_client.py "${lb}" -u "$users" "$(date -d '+6 month' '+%d.%m.%Y')"
 		ucr unset hosts/static/85.184.250.151
 		nscd -i hosts
 	fi
@@ -939,8 +939,8 @@ umc_apps () {
 		# umc appcenter with UCS 5.0
 		python3 umc-appcenter.py "$@"
 	else
-		# legacy umc appcenter, neede for app release tests
-		python -m shared-utils/apps "$@"
+		# legacy umc appcenter, needed for app release tests
+		/root/shared-utils/apps.py "$@"
 	fi
 }
 
@@ -1016,7 +1016,7 @@ assert_app_is_installed_and_latest () {
 	univention-app info
 	local rv=0 app latest
 	for app in "$@"; do
-		latest="$(python -m shared-utils/app-info -a "$app" -v)"
+		latest="$(/root/shared-utils/app-info.py -a "$app" -v)"
 		univention-app info | grep -q "Installed: .*\b$latest\b.*" || rv=$?
 	done
 	return $rv
