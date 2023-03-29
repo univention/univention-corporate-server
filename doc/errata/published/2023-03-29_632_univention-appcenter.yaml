@@ -8,3 +8,6 @@ desc: |
  This update addresses the following issue:
  * Error messages during app installations are now being translated.
 bug: [55664]
+erratum: 632
+announced: 2023-03-29
+support: core
