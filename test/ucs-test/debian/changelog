@@ -1,3 +1,10 @@
+ucs-test (10.0.10-39) unstable; urgency=medium
+
+  * Bug #55733: fix language ucs-test-self-service to check the read only
+  configuration of the self service.
+
+ -- Ivan Barbecho Delgado <delgado.extern@univention.de>  Wed, 29 Mar 2023 13:06:41 +0200
+
 ucs-test (10.0.10-38) unstable; urgency=medium
 
   * Bug #55733: added new ucs-test-self-service to check the read only
