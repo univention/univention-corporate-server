@@ -8,3 +8,6 @@ desc: |
  This update addresses the following issues:
  * The package is now using the latest ldb version.
 bug: [55892]
+erratum: 625
+announced: 2023-03-29
+support: core
