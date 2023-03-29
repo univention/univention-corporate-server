@@ -1,8 +1,8 @@
 """Code coverage measurement for ucs-test"""
 
 
-import distutils.spawn
 import os
+import shutil
 import signal
 import subprocess
 import time
@@ -128,7 +128,7 @@ directory = {directory}
         self.restart_python_services()
 
         for exe in ("coverage", "python3-coverage", "python-coverage"):
-            coverage_bin = distutils.spawn.find_executable(exe)
+            coverage_bin = shutil.which(exe)
             if coverage_bin:
                 break
         else:

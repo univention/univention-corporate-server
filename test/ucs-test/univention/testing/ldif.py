@@ -18,11 +18,8 @@ import unicodedata
 from optparse import SUPPRESS_HELP, OptionGroup, OptionParser, Values  # noqa: F401
 from typing import Any, Dict, Iterable, Iterator, List, NoReturn, Set, Text, Tuple  # noqa: F401
 
+from typing_extensions import Literal  # noqa: F401
 
-try:
-    from typing_extensions import Literal  # noqa: F401
-except ImportError:
-    pass
 
 Entry = Dict[str, List[str]]
 

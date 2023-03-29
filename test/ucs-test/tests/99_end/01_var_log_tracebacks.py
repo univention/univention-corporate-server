@@ -6,7 +6,7 @@
 import argparse
 import glob
 import os
-import pipes
+import shlex
 import subprocess
 import tempfile
 
@@ -80,7 +80,7 @@ def test_fetch_logfiles_on_dc_master(ucr, testcase=None):
         fd.write(password.encode('UTF-8'))
         fd.flush()
         try:
-            cmd_install = """univention-ssh %s root@%s '[ -e %s ] || univention-install -y ucs-test-end'""" % (pipes.quote(fd.name), pipes.quote(ucr['ldap/master']), pipes.quote(pipes.quote(testpath)))
+            cmd_install = """univention-ssh %s root@%s '[ -e %s ] || univention-install -y ucs-test-end'""" % (shlex.quote(fd.name), shlex.quote(ucr['ldap/master']), shlex.quote(shlex.quote(testpath)))
             subprocess.check_output(cmd_install, shell=True)
         except subprocess.CalledProcessError as exc:
             print(cmd_install)
@@ -89,7 +89,7 @@ def test_fetch_logfiles_on_dc_master(ucr, testcase=None):
             raise AssertionError((cmd_install, exc.output.decode('UTF-8', 'replace')))
 
         try:
-            cmd_test = """univention-ssh %s root@%s '%s -i -f'""" % (pipes.quote(fd.name), pipes.quote(ucr['ldap/master']), pipes.quote(pipes.quote(testpath)))
+            cmd_test = """univention-ssh %s root@%s '%s -i -f'""" % (shlex.quote(fd.name), shlex.quote(ucr['ldap/master']), shlex.quote(shlex.quote(testpath)))
             subprocess.check_call(cmd_test, shell=True)
         except subprocess.CalledProcessError as exc:
             print(cmd_test)

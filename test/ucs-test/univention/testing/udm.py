@@ -51,11 +51,12 @@ import base64
 import copy
 import functools
 import os
-import pipes
 import random
+import shlex
 import subprocess
 import sys
 import time
+from inspect import getfullargspec as getargspec
 from typing import Any, Dict, Iterable, List, Mapping, Optional, Text, Tuple, Union  # noqa: F401
 
 import ldap
@@ -69,12 +70,6 @@ import univention.testing.strings as uts
 import univention.testing.ucr
 from univention.testing import utils
 from univention.testing.ucs_samba import DRSReplicationFailed, wait_for_drs_replication
-
-
-try:
-    from inspect import getfullargspec as getargspec
-except ImportError:
-    from inspect import getargspec  # Python 2
 
 
 class UCSTestUDM_Exception(Exception):
@@ -1219,7 +1214,7 @@ def verify_udm_object(module, dn, expected_properties):
 
 def _prettify_cmd(cmd):
     # type: (Iterable[str]) -> str
-    cmd = ' '.join(pipes.quote(x) for x in cmd)
+    cmd = ' '.join(shlex.quote(x) for x in cmd)
     if set(cmd) & {'\x00', '\n'}:
         cmd = repr(cmd)
     return cmd

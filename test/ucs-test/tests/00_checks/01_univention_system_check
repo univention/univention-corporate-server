@@ -15,4 +15,4 @@ gpgv \
   univention-system-check.tar.gz.gpg \
   univention-system-check.tar.gz
 tar -xzf  univention-system-check.tar.gz
-python ./univention-system-check
+python3 ./univention-system-check

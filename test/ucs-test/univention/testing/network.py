@@ -48,11 +48,7 @@ import subprocess
 from types import TracebackType  # noqa: F401
 from typing import List, Mapping, Optional, Set, Tuple, Type, Union  # noqa: F401
 
-
-try:
-    from typing_extensions import Literal  # noqa: F401
-except ImportError:
-    pass
+from typing_extensions import Literal  # noqa: F401
 
 import univention.config_registry
 

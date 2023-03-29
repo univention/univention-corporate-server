@@ -9,7 +9,7 @@
 import base64
 import bz2
 import os
-import pipes
+import shlex
 import shutil
 import subprocess
 
@@ -401,7 +401,7 @@ def test_register_data(udm, ucr, remove_tmp_file):
         '--data_meta', kwargs['meta'][0],
         '--data_meta', kwargs['meta'][1],
     ]
-    cmd = ['/bin/bash', '-c', 'source /usr/share/univention-lib/ldap.sh && {}'.format(' '.join([pipes.quote(x) for x in register_cmd]))]
+    cmd = ['/bin/bash', '-c', 'source /usr/share/univention-lib/ldap.sh && {}'.format(' '.join([shlex.quote(x) for x in register_cmd]))]
     run_cmd(cmd)
 
     cmd = ['udm', 'settings/data', 'list', '--filter', f'cn={file_name}']
@@ -445,7 +445,7 @@ def test_register_data(udm, ucr, remove_tmp_file):
         '--data_meta', 'Some different meta data',
         '--data_meta', 'Some very different meta data',
     ]
-    cmd = ['/bin/bash', '-c', 'source /usr/share/univention-lib/ldap.sh && {}'.format(' '.join([pipes.quote(x) for x in register_cmd]))]
+    cmd = ['/bin/bash', '-c', 'source /usr/share/univention-lib/ldap.sh && {}'.format(' '.join([shlex.quote(x) for x in register_cmd]))]
     run_cmd(cmd)
 
     utils.verify_ldap_object(

@@ -25,13 +25,7 @@ import univention.config_registry
 import univention.testing.strings as uts
 import univention.testing.udm as udm_test
 from univention.testing import utils
-
-
-try:
-    from univention.testing.ucs_samba import wait_for_drs_replication
-except ImportError:
-    def wait_for_drs_replication(ldap_filter, attrs=None):
-        pass
+from univention.testing.ucs_samba import wait_for_drs_replication
 
 
 class Test:

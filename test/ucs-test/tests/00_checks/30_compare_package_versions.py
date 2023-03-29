@@ -5,7 +5,6 @@
 ## tags: [producttest]
 ## exposure: safe
 
-from distutils.version import StrictVersion
 from gzip import open as gzip_open
 from optparse import OptionParser
 from os import makedirs, path
@@ -18,6 +17,7 @@ from urllib.error import ContentTooShortError
 
 from apt_pkg import init as apt_init, version_compare
 from lxml.html import fromstring
+from packaging.version import Version
 
 from univention.testing import utils
 
@@ -303,8 +303,8 @@ def parse_arguments():
 
     if len(args) == 2:
         try:
-            old_version = StrictVersion(args[0])
-            new_version = StrictVersion(args[1])
+            old_version = Version(args[0])
+            new_version = Version(args[1])
             if new_version < old_version:
                 utils.fail("The given new '%s' version cannot be smaller "
                            "than the older '%s' version"

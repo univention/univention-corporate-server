@@ -15,12 +15,6 @@ import univention.testing.udm as udm_test
 import s4connector
 
 
-try:
-    from itertools import izip as zip
-except ImportError:  # Py3
-    pass
-
-
 if __name__ == '__main__':
     with udm_test.UCSTestUDM() as udm:
         s4connector.exit_if_connector_not_running()

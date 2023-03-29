@@ -5,12 +5,7 @@
 import os
 import sys
 from argparse import REMAINDER, ArgumentParser, FileType, Namespace  # noqa: F401
-
-
-try:
-    from typing import Optional, Sequence  # noqa: F401
-except ImportError:
-    pass
+from typing import Optional, Sequence  # noqa: F401
 
 import univention.testing.format
 from univention.testing.data import TestCase, TestEnvironment, TestResult
