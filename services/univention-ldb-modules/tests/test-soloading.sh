@@ -6,7 +6,7 @@ base="${test}/.."
 
 export PATH="${base}/bin${PATH:+:$PATH}"
 export LDBDIR="${LDBDIR:-${base}}"
-export LDB_MODULES_PATH="${base}/bin/modules/ldb/"
+export LDB_MODULES_PATH="${base}/modules/ldb/"
 export LDB_URL="${TEST_DATA_PREFIX:-.}/tdbtest.ldb"
 
 rm -f "$LDB_URL"*

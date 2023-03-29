@@ -3,10 +3,9 @@ Section: univention
 Priority: optional
 Maintainer: Univention GmbH <packages@univention.de>
 Build-Depends:
- debhelper,
+ debhelper-compat (=12),
  ldb-tools,
  libunivention-config-dev,
- python,
  python3,
  samba-dev,
  univention-config-dev (>= 15.0.3),
