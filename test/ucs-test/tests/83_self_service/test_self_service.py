@@ -55,7 +55,7 @@ def self_service_user(email=None, **kwargs):
         if email:
             kwargs['PasswordRecoveryEmail'] = email
         password = kwargs.setdefault('password', uts.random_string())
-        language = kwargs.pop('language')
+        language = kwargs.pop('language', None)
         dn, username = udm.create_user(**kwargs)
         utils.verify_ldap_object(dn)
         yield SelfServiceUser(username, password, language=language)
