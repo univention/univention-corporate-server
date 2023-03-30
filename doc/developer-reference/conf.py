@@ -116,6 +116,7 @@ if "spelling" in sys.argv:
 
 linkcheck_ignore = [
     r"https://errata\.software-univention\.de/#/\?erratum=\d\.\dx\d{1,3}",
+    r"https://www\.zytrax\.com/books/ldap/",  # FIXME : Reactivate, once the expired certificate is replaced and works.
 ]
 
 linkcheck_allowed_redirects = {
