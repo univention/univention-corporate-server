@@ -3,7 +3,7 @@ release: "5.0"
 version: [3]
 scope: ucs_5.0-0-errata5.0-3
 src: univention-portal
-fix:
+fix: 4.0.9-4A~5.0.0.202303301335
 desc: |
  This update addresses the following issue:
  * The "Choose a tab" dialog box will now display tabs with their
