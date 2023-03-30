@@ -51,7 +51,10 @@ License with the Debian GNU/Linux or Univention distribution in file
             @click.prevent="gotoTab(index)"
             @keydown.enter.prevent="gotoTab(index)"
           >
-            <div class="choose-tab__logo-wrapper">
+            <div
+                class="choose-tab__logo-wrapper"
+                :style="tab.backgroundColor ? `background: ${tab.backgroundColor}` : ''"
+            >
               <img
                 :src="tab.logo"
                 onerror="this.src='./questionMark.svg'"
