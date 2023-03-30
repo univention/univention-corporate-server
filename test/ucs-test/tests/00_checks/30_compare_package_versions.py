@@ -13,7 +13,8 @@ from re import IGNORECASE, compile as re_compile
 from shutil import Error as shutil_Error, rmtree
 from tempfile import mkdtemp
 from time import sleep
-from urllib import ContentTooShortError, urlopen, urlretrieve
+from urllib import urlopen, urlretrieve
+from urllib.error import ContentTooShortError
 
 from apt_pkg import init as apt_init, version_compare
 from lxml.html import fromstring
