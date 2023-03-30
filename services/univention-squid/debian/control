@@ -10,7 +10,6 @@ Build-Depends:
 Package: univention-squid
 Architecture: all
 Depends:
- python3-crypto,
  python3-passlib,
  python3-pexpect,
  squid (>> 3.5.23),
