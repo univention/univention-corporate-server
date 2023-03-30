@@ -56,10 +56,11 @@ install_upgrade_keycloak () {
 }
 
 keycloak_saml_idp_setup () {
+    local idp="${1:-ucs-sso-ng.$(ucr get domainname)}"
     if [ "$(ucr get server/role)" = "domaincontroller_master" ]; then
         udm portals/entry modify --dn "cn=login-saml,cn=entry,cn=portals,cn=univention,$(ucr get ldap/base)" --set activated=TRUE
     fi
-    ucr set umc/saml/idp-server="https://ucs-sso-ng.$(ucr get domainname)/realms/ucs/protocol/saml/descriptor"
+    ucr set umc/saml/idp-server="https://$idp/realms/ucs/protocol/saml/descriptor"
     systemctl restart slapd
 }
 
@@ -95,4 +96,41 @@ run_performance_tests () {
 	else
 		prlimit -n100000:100000 locust -t 20m -u 500 --spawn-rate 5 --host https://primary.ucs.test --html keycloak.html --headless -f keycloaklocust.py || :
 	fi
+}
+
+external_keycloak_dns_setup () {
+	local fqdn="${1:?missing fqdn}"; shift
+	local ip="${1:?missing ip}"; shift
+	local name="${fqdn%%.*}"
+	local domain="${fqdn#*.}"
+	/usr/share/univention-directory-manager-tools/univention-dnsedit "$@" --ignore-exists \
+		"$domain" add zone "root@$domain." 1 28800 7200 604800 10800 "$(ucr get hostname).$(ucr get domainname)."
+	/usr/share/univention-directory-manager-tools/univention-dnsedit "$@" --ignore-exists \
+		"$domain" add a "$name" "$ip"
+}
+
+external_keycloak_fqdn_setup () {
+	# create a dummy certificate in /opt/$fqdn
+	# set dns forwarder to an ip that can resolv $fqdn
+	local fqdn="${1:?missing fqdn}"; shift
+	local forwarder="${1:?missing forwarder}"; shift
+	# external fqdn setup
+	ucr set dns/forwarder1="$forwarder"
+	ucr unset dns/forwarder2 dns/forwarder3
+	systemctl restart bind9
+	# create dummy certificate
+	univention-certificate new -name "$fqdn"
+	mv /etc/univention/ssl/"$fqdn" /opt/
+}
+
+external_keycloak_fqdn_config () {
+	# requiremnts:
+	# * certifcate must be in /opt/$fqdn
+	# * external name is resolvable via DNS
+	local fqdn="${1:?missing fqdn}"; shift
+	# keycloak config
+	ucr set \
+		keycloak/apache2/ssl/certificate="/opt/${fqdn}/cert.pem" \
+		keycloak/apache2/ssl/key="/opt/${fqdn}/private.key" \
+		keycloak/server/sso/fqdn="${fqdn}"
 }
