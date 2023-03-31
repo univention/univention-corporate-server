@@ -1,0 +1,11 @@
+product: ucs
+release: "5.0"
+version: [3]
+scope: ucs_5.0-0-errata5.0-3
+src: cups-filters
+fix: 1.21.6-5A~5.0.0.202303301212
+desc: |
+ This update addresses the following issues:
+ * `cups-filters` has been updated, so that copy printing now works
+    as expected.
+bug: [55886]
