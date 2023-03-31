@@ -92,7 +92,7 @@ apache_custom_vhosts () {
 ansible_run_keycloak_configuration () {
 	cd deployment || return $?
 	/usr/local/bin/ansible-galaxy install -r requirements.yml
-	/usr/local/bin/ansible-playbook site.yml --vault-password-file /root/idbroker_jenkins_ansible.password -i inventories/jenkins
+	ANSIBLE_LOG_PATH=ansible.log /usr/local/bin/ansible-playbook site.yml --vault-password-file /root/idbroker_jenkins_ansible.password -i inventories/jenkins
 }
 
 # register IDBroker as service in ucs IdP
