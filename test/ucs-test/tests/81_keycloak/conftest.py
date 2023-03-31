@@ -190,7 +190,7 @@ def keycloak_config(ucr: ConfigRegistry) -> SimpleNamespace:
         "logout_all_url": f"{url}/admin/realms/ucs/logout-all",
         "title": "Welcome to Keycloak",
         "admin_console_class": "welcome-primary-link",
-        "realm_selector_class": "realm-selector",
+        "main_content_page_container_id": "kc-main-content-page-container",
         "login_data": {
             "client_id": "admin-cli",
             "username": "Administrator",
@@ -204,6 +204,7 @@ def keycloak_config(ucr: ConfigRegistry) -> SimpleNamespace:
         "login_error_css_selector": "span[class='pf-c-alert__title kc-feedback-text']",
         "password_update_error_css_selector": "span[class='pf-c-alert__title kc-feedback-text']",
         "wrong_password_msg": "Invalid username or password.",
+        "wrong_password_msg_de": "Ungültiger Benutzername oder Passwort.",
         "kc_passwd_update_form_id": "kc-passwd-update-form",
         "password_confirm_id": "password-confirm",
         "password_new_id": "password-new",
@@ -284,7 +285,7 @@ def keycloak_adm_login(selenium: webdriver.Chrome, keycloak_config: SimpleNamesp
         if fails_with:
             return selenium
         # check that we are logged in
-        wait_for_class(selenium, keycloak_config.realm_selector_class)
+        wait_for_id(selenium, keycloak_config.main_content_page_container_id)
         return selenium
 
     return _func
