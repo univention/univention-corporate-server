@@ -7,21 +7,21 @@
 1.3.6.1.1.5                          # attributeType.vendorVersion
 1.3.6.1.1.16.4                       # attributeType.entryUUID
 1.3.6.1.1.20                         1.3.6.1.4.1.4203.666.1.33            # attributeType.entryDN
-#ppolicy.schema# 1.3.6.1.4.1.42.2.27.8.1.1            # ppolicy: attributeType.pwdAttribute
-#ppolicy.schema# 1.3.6.1.4.1.42.2.27.8.1.2            # ppolicy: attributeType.pwdMinAge
-#ppolicy.schema# 1.3.6.1.4.1.42.2.27.8.1.3            # ppolicy: attributeType.pwdMaxAge
-#ppolicy.schema# 1.3.6.1.4.1.42.2.27.8.1.4            # ppolicy: attributeType.pwdInHistory
-#ppolicy.schema# 1.3.6.1.4.1.42.2.27.8.1.5            # ppolicy: attributeType.pwdCheckQuality
-#ppolicy.schema# 1.3.6.1.4.1.42.2.27.8.1.6            # ppolicy: attributeType.pwdMinLength
-#ppolicy.schema# 1.3.6.1.4.1.42.2.27.8.1.7            # ppolicy: attributeType.pwdExpireWarning
-#ppolicy.schema# 1.3.6.1.4.1.42.2.27.8.1.8            # ppolicy: attributeType.pwdGraceAuthNLimit
-#ppolicy.schema# 1.3.6.1.4.1.42.2.27.8.1.9            # ppolicy: attributeType.pwdLockout
-#ppolicy.schema# 1.3.6.1.4.1.42.2.27.8.1.10           # ppolicy: attributeType.pwdLockoutDuration
-#ppolicy.schema# 1.3.6.1.4.1.42.2.27.8.1.11           # ppolicy: attributeType.pwdMaxFailure
-#ppolicy.schema# 1.3.6.1.4.1.42.2.27.8.1.12           # ppolicy: attributeType.pwdFailureCountInterval
-#ppolicy.schema# 1.3.6.1.4.1.42.2.27.8.1.13           # ppolicy: attributeType.pwdMustChange
-#ppolicy.schema# 1.3.6.1.4.1.42.2.27.8.1.14           # ppolicy: attributeType.pwdAllowUserChange
-#ppolicy.schema# 1.3.6.1.4.1.42.2.27.8.1.15           # ppolicy: attributeType.pwdSafeModify
+1.3.6.1.4.1.42.2.27.8.1.1            # ppolicy: attributeType.pwdAttribute
+1.3.6.1.4.1.42.2.27.8.1.2            # ppolicy: attributeType.pwdMinAge
+1.3.6.1.4.1.42.2.27.8.1.3            # ppolicy: attributeType.pwdMaxAge
+1.3.6.1.4.1.42.2.27.8.1.4            # ppolicy: attributeType.pwdInHistory
+1.3.6.1.4.1.42.2.27.8.1.5            # ppolicy: attributeType.pwdCheckQuality
+1.3.6.1.4.1.42.2.27.8.1.6            # ppolicy: attributeType.pwdMinLength
+1.3.6.1.4.1.42.2.27.8.1.7            # ppolicy: attributeType.pwdExpireWarning
+1.3.6.1.4.1.42.2.27.8.1.8            # ppolicy: attributeType.pwdGraceAuthNLimit
+1.3.6.1.4.1.42.2.27.8.1.9            # ppolicy: attributeType.pwdLockout
+1.3.6.1.4.1.42.2.27.8.1.10           # ppolicy: attributeType.pwdLockoutDuration
+1.3.6.1.4.1.42.2.27.8.1.11           # ppolicy: attributeType.pwdMaxFailure
+1.3.6.1.4.1.42.2.27.8.1.12           # ppolicy: attributeType.pwdFailureCountInterval
+1.3.6.1.4.1.42.2.27.8.1.13           # ppolicy: attributeType.pwdMustChange
+1.3.6.1.4.1.42.2.27.8.1.14           # ppolicy: attributeType.pwdAllowUserChange
+1.3.6.1.4.1.42.2.27.8.1.15           # ppolicy: attributeType.pwdSafeModify
 1.3.6.1.4.1.42.2.27.8.1.16           # ppolicy: attributeType.pwdChangedTime
 1.3.6.1.4.1.42.2.27.8.1.17           # ppolicy: attributeType.pwdAccountLockedTime
 1.3.6.1.4.1.42.2.27.8.1.19           # ppolicy: attributeType.pwdFailureTime
@@ -29,17 +29,17 @@
 1.3.6.1.4.1.42.2.27.8.1.21           # ppolicy: attributeType.pwdGraceUseTime
 1.3.6.1.4.1.42.2.27.8.1.22           # ppolicy: attributeType.pwdReset
 1.3.6.1.4.1.42.2.27.8.1.23           # ppolicy: attributeType.pwdPolicySubentry
-#ppolicy.schema# 1.3.6.1.4.1.42.2.27.8.1.24           # ppolicy: attributeType.pwdMinDelay
-#ppolicy.schema# 1.3.6.1.4.1.42.2.27.8.1.25           # ppolicy: attributeType.pwdMaxDelay
-#ppolicy.schema# 1.3.6.1.4.1.42.2.27.8.1.26           # ppolicy: attributeType.pwdMaxIdle
+1.3.6.1.4.1.42.2.27.8.1.24           # ppolicy: attributeType.pwdMinDelay
+1.3.6.1.4.1.42.2.27.8.1.25           # ppolicy: attributeType.pwdMaxDelay
+1.3.6.1.4.1.42.2.27.8.1.26           # ppolicy: attributeType.pwdMaxIdle
 1.3.6.1.4.1.42.2.27.8.1.27           # ppolicy: attributeType.pwdStartTime
 1.3.6.1.4.1.42.2.27.8.1.28           # ppolicy: attributeType.pwdEndTime
 1.3.6.1.4.1.42.2.27.8.1.29           # attributeType.pwdLastSuccess
-#ppolicy.schema# 1.3.6.1.4.1.42.2.27.8.1.30           # ppolicy: attributeType.pwdGraceExpiry
-#ppolicy.schema# 1.3.6.1.4.1.42.2.27.8.1.31           # ppolicy: attributeType.pwdMaxLength
-#ppolicy.schema# 1.3.6.1.4.1.42.2.27.8.1.32           # ppolicy: attributeType.pwdMaxRecordedFailure
+1.3.6.1.4.1.42.2.27.8.1.30           # ppolicy: attributeType.pwdGraceExpiry
+1.3.6.1.4.1.42.2.27.8.1.31           # ppolicy: attributeType.pwdMaxLength
+1.3.6.1.4.1.42.2.27.8.1.32           # ppolicy: attributeType.pwdMaxRecordedFailure
 1.3.6.1.4.1.42.2.27.8.1.33           # ppolicy: attributeType.pwdAccountTmpLockoutEnd
-#ppolicy.schema# 1.3.6.1.4.1.42.2.27.8.2.1            # ppolicy: objectClass.pwdPolicy
+1.3.6.1.4.1.42.2.27.8.2.1            # ppolicy: objectClass.pwdPolicy
 1.3.6.1.4.1.250.1.57                 # attributeType.labeledURI
 1.3.6.1.4.1.250.1.32                 # attributeType.krbName
 1.3.6.1.4.1.453.16.2.188             # lastbind: attributeType.authTimestamp
@@ -496,9 +496,9 @@
 1.3.6.1.4.1.4203.666.11.5.2.10       # accesslog: objectClass.auditModRDN
 1.3.6.1.4.1.4203.666.11.5.2.11       # accesslog: objectClass.auditSearch
 1.3.6.1.4.1.4203.666.11.5.2.12       # accesslog: objectClass.auditExtended
-#ppolicy.schema# 1.3.6.1.4.1.4754.1.99.1              # ppolicy: attributeType.pwdCheckModule
-#ppolicy.schema# 1.3.6.1.4.1.4754.1.99.2              # ppolicy: attributeType.pwdCheckModuleArg
-#ppolicy.schema# 1.3.6.1.4.1.4754.2.99.1              # ppolicy: objectClass.pwdPolicyChecker
+1.3.6.1.4.1.4754.1.99.1              # ppolicy: attributeType.pwdCheckModule
+1.3.6.1.4.1.4754.1.99.2              # ppolicy: attributeType.pwdCheckModuleArg
+1.3.6.1.4.1.4754.2.99.1              # ppolicy: objectClass.pwdPolicyChecker
 1.3.6.1.4.1.5427.1.389.4226.4.1      # otp: attributeType.oathSecret
 1.3.6.1.4.1.5427.1.389.4226.4.2      # otp: attributeType.oathTokenSerialNumber
 1.3.6.1.4.1.5427.1.389.4226.4.3      # otp: attributeType.oathTokenIdentifier
