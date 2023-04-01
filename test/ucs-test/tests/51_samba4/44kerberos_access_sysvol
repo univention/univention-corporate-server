@@ -107,6 +107,7 @@ do
 		net cache list | grep "IDMAP/UID2SID/$uidNumber"
 		echo "============================================"
 		fail_test 1 "Could not access Policies on sysvol with Kerberos authentication"
+		break
 	fi
 	sleep 1
 done
