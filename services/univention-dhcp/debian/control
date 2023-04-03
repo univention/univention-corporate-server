@@ -21,6 +21,7 @@ Depends:
  univention-join (>= 4.0.13-3),
  ${misc:Depends},
 Breaks:
+ selinux-utils,
  univention-bind (<< 11.0.0-4),
 Description: UCS - DHCP server
  This package installs a DHCP server that uses LDAP for
