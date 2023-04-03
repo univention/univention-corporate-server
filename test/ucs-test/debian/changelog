@@ -1,3 +1,9 @@
+ucs-test (11.0.6) unstable; urgency=medium
+
+  * Bug #55994: test idempotency of UCR templates with Python 3 only
+
+ -- Florian Best <best@univention.de>  Thu, 07 Mar 2024 23:53:47 +0100
+
 ucs-test (11.0.5) unstable; urgency=medium
 
   * Bug #55997: replace obsolete ldap client utility options (-h/-p)
