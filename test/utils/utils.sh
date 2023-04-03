@@ -255,6 +255,11 @@ _fix_ssh47233 () { # Bug #47233: ssh connection stuck on reboot
 }
 
 run_setup_join () {
+	if [ "$(ucr get version/version)" = "5.2" ]; then
+	    echo 'deb [trusted=yes] http://omar.knut.univention.de/build2/ ucs_5.2-0/all/' >>/etc/apt/sources.list
+	    echo 'deb [trusted=yes] http://omar.knut.univention.de/build2/ ucs_5.2-0/$(ARCH)/' >>/etc/apt/sources.list
+	    univention-upgrade --disable-app-updates --noninteractive --ignoreterm --ignoressh --updateto 5.2-0
+	fi
 	local rv=0
 	patch_setup_join # temp. remove me
 	set -o pipefail
