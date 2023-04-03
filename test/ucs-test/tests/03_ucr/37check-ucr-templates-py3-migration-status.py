@@ -22,7 +22,7 @@ from univention.config_registry.handler import EXECUTE_TOKEN, run_filter
 ucr = ConfigRegistry()
 ucr.load()
 
-VERSIONS = (2, 3)
+VERSIONS = (3, 3)
 BASE_DIR = "/etc/univention/templates/files/"
 
 ALLOWED_DIFFERENCES = [
