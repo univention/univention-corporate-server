@@ -1,0 +1,14 @@
+product: ucs
+release: "5.0"
+version: [3]
+scope: ucs_5.0-0-errata5.0-3
+src: systemd
+fix: 241-7~deb10u9A~5.0.3.202304031003
+desc: |
+ This update addresses the following issue:
+ 241-7~deb10u9 (Thu, 30 Mar 2023 22:32:31 +0300)
+ * Non-maintainer upload by the LTS Security Team.
+ * CVE-2023-26604: Local privilege escalation for some sudo configurations.
+bug: [55928]
+cve:
+- CVE-2023-26604
