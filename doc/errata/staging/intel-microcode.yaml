@@ -1,0 +1,26 @@
+product: ucs
+release: "5.0"
+version: [3]
+scope: ucs_5.0-0-errata5.0-3
+src: intel-microcode
+fix: 3.20230214.1~deb10u1
+desc: |
+ This update addresses the following issues:
+ * Intel firmware update for insufficient granularity of access control in
+   out-of-band management in some Intel Atom and Intel Xeon Scalable
+   Processors (CVE-2022-21216)
+ * cpu: Intel: Stale Data Read from legacy xAPIC vulnerability
+   (CVE-2022-21233)
+ * Intel firmware update for Incorrect default permissions in some memory
+   controller configurations (CVE-2022-33196)
+ * Intel firmware update for incorrect calculation in microcode keying
+   mechanism (CVE-2022-33972)
+ * Intel firmware update for improper isolation of shared resources
+   (CVE-2022-38090)
+bug: [55933]
+cve:
+- CVE-2022-21216
+- CVE-2022-21233
+- CVE-2022-33196
+- CVE-2022-33972
+- CVE-2022-38090
