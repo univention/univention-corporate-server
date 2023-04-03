@@ -1,3 +1,9 @@
+ucs-test (9.0.7-97) unstable; urgency=low
+
+  * Bug #55602: 01_base/96rename_domain_admins: prevent spaces in old name
+
+ -- Ivan Barbecho Delgado <delgado.extern@univention.de>  Mon, 03 Apr 2023 11:36:47 +0200
+
 ucs-test (9.0.7-96) unstable; urgency=low
 
   * Bug #54264: Skip on old upgrade tests
