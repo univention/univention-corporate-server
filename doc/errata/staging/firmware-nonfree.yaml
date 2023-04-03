@@ -1,0 +1,43 @@
+product: ucs
+release: "5.0"
+version: [3]
+scope: ucs_5.0-0-errata5.0-3
+src: firmware-nonfree
+fix: 20190114+really20220913-0+deb10u1
+desc: |
+ This update addresses the following issues:
+ * Integer overflow in Intel(R) Graphics Drivers (CVE-2020-12362)
+ * Improper input validation in some Intel(R) Graphics Drivers
+   (CVE-2020-12363)
+ * Null pointer dereference in some Intel(R) Graphics Drivers (CVE-2020-12364)
+ * Fragmentation cache not cleared on reconnection (CVE-2020-24586)
+ * Reassembling fragments encrypted under different keys (CVE-2020-24587)
+ * wifi frame payload being parsed incorrectly as an L2 frame (CVE-2020-24588)
+ * Out of bounds read for some Intel(R) PROSet/Wireless WiFi and Killer(TM)
+   WiFi products may allow an unauthenticated user to potentially enable
+   denial of service via adjacent access. (CVE-2021-23168)
+ * Improper initialization for some Intel(R) PROSet/Wireless WiFi and
+   Killer(TM) WiFi products may allow a privileged user to potentially enable
+   escalation of privilege via local access. (CVE-2021-23223)
+ * Improper access control for some Intel(R) PROSet/Wireless WiFi and
+   Killer(TM) WiFi products may allow a privileged user to potentially enable
+   escalation of privilege via local access. (CVE-2021-37409)
+ * Improper input validation for some Intel(R) PROSet/Wireless WiFi and
+   Killer(TM) WiFi products may allow an unauthenticated user to potentially
+   enable denial of service via adjacent access. (CVE-2021-44545)
+ * Improper input validation for some Intel(R) PROSet/Wireless WiFi and
+   Killer(TM) WiFi products may allow a privileged user to potentially enable
+   escalation of privilege via local access. (CVE-2022-21181)
+bug: [55935]
+cve:
+- CVE-2020-12362
+- CVE-2020-12363
+- CVE-2020-12364
+- CVE-2020-24586
+- CVE-2020-24587
+- CVE-2020-24588
+- CVE-2021-23168
+- CVE-2021-23223
+- CVE-2021-37409
+- CVE-2021-44545
+- CVE-2022-21181
