@@ -134,6 +134,12 @@ jenkins_updates () {
 	[ -n "${RELEASE_UPDATE:-}" ] && release_update="$RELEASE_UPDATE"
 	[ -n "${ERRATA_UPDATE:-}" ] && errata_update="$ERRATA_UPDATE"
 
+	if [ "$(ucr get version/version)" = "5.0" ] && [ "$target" = "5.1-0" ]; then
+	    echo 'deb [trusted=yes] http://omar.knut.univention.de/build2/ ucs_5.1-0/all/' >>/etc/apt/sources.list
+	    echo 'deb [trusted=yes] http://omar.knut.univention.de/build2/ ucs_5.1-0/$(ARCH)/' >>/etc/apt/sources.list
+	    apt update
+	fi
+
 	eval "$(ucr shell '^version/(version|patchlevel|erratalevel)$')"
 	echo "Starting from ${version_version}-${version_patchlevel}+${version_erratalevel} to ${target}..."
 	echo "release_update=$release_update"
@@ -144,6 +150,12 @@ jenkins_updates () {
 	none|"") ;;
 	*) echo "Unknown release_update='$release_update'" >&1 ; exit 1 ;;
 	esac
+
+	if [ "$(ucr get version/version)" = "5.0" ] && [ "$target" = "5.1-0" ]; then
+	    echo 'deb [trusted=yes] http://omar.knut.univention.de/build2/ ucs_5.1-0/all/' >>/etc/apt/sources.list
+	    echo 'deb [trusted=yes] http://omar.knut.univention.de/build2/ ucs_5.1-0/$(ARCH)/' >>/etc/apt/sources.list
+	    apt update
+	fi
 
 	eval "$(ucr shell '^version/(version|patchlevel|erratalevel)$')"
 	echo "Continuing from ${version_version}-${version_patchlevel}+${version_erratalevel} to ${target}..."
@@ -261,6 +273,11 @@ _fix_ssh47233 () { # Bug #47233: ssh connection stuck on reboot
 }
 
 run_setup_join () {
+	if [ "$(ucr get version/version)" = "5.1" ]; then
+	    echo 'deb [trusted=yes] http://omar.knut.univention.de/build2/ ucs_5.1-0/all/' >>/etc/apt/sources.list
+	    echo 'deb [trusted=yes] http://omar.knut.univention.de/build2/ ucs_5.1-0/$(ARCH)/' >>/etc/apt/sources.list
+	    univention-upgrade --disable-app-updates --noninteractive --ignoreterm --ignoressh --updateto 5.1-0
+	fi
 	local rv=0
 	patch_setup_join # temp. remove me
 	set -o pipefail
