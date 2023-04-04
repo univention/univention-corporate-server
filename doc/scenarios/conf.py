@@ -130,10 +130,12 @@ figure_language_filename = "{root}-{language}{ext}"
 
 univention_use_doc_base = True
 
-# See Univention Sphinx Extension for its options and information about the
-# feedback link.
+# See Univention Sphinx Extension for its options.
 # https://git.knut.univention.de/univention/documentation/univention_sphinx_extension
+# Information about the feedback link.
 univention_feedback = True
+# Information about the license statement for the source files
+univention_pdf_show_source_license = True
 
 
 def adapt_settings_to_translation(app, config):
