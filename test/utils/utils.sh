@@ -1136,12 +1136,36 @@ deb [trusted=yes] http://omar.knut.univention.de/build2/ ucs_${majorminor}-0-ucs
 EOF
 }
 
+# deprecated (use add_extra_branch_repo)
 add_branch_repository () {
 	local extra_list="/root/apt-get-branch-repo.list"
 	[ -s "$extra_list" ] ||
 		return 0
 	install -m644 "$extra_list" /etc/apt/sources.list.d/
 	apt-get -qq update
+}
+
+slugify() {
+  iconv -t ascii//TRANSLIT \
+  | tr -d "'" \
+  | sed -E 's/[^a-zA-Z0-9]+/-/g' \
+  | sed -E 's/^-+|-+$//g' \
+  | tr "[:upper:]" "[:lower:]"
+}
+
+# configure branch repository and apt prefs
+add_extra_branch_repository () {
+	local repo_server="http://omar.knut.univention.de/build2/git" repo_name
+	if [ -n "$UCS_ENV_UCS_BRANCH" ]; then
+		repo_name="$(echo "$UCS_ENV_UCS_BRANCH" | slugify)"
+		echo "deb [trusted=yes] $repo_server/$repo_name git main" >"/etc/apt/sources.list.d/$repo_name.list"
+		cat >"/etc/apt/preferences.d/99$repo_name.pref" <<__PREF__
+Package: *
+Pin: release o=Univention,a=git,n=git
+Pin-Priority: 1001
+__PREF__
+		apt-get update -y
+	fi
 }
 
 restart_services_bug_47762 () {
