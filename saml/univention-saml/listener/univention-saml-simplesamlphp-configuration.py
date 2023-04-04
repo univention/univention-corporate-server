@@ -60,12 +60,13 @@ set_error_handler(function($errno, $errstr, $errfile, $errline) {
 
 $xmldata = file_get_contents("php://stdin");
 require_once('/usr/share/simplesamlphp/lib/_autoload.php');
+use Symfony\Component\VarExporter\VarExporter;
 \SimpleSAML\Utils\XML::checkSAMLMessage($xmldata, 'saml-meta');
-$entities = SimpleSAML_Metadata_SAMLParser::parseDescriptorsString($xmldata);
+$entities = \SimpleSAML\Metadata\SAMLParser::parseDescriptorsString($xmldata);
 foreach ($entities as $entityId => &$entity) {
     $entityMetadata = $entity->getMetadata20SP();
     unset($entityMetadata['entityDescriptor']);
-    print('$metadata['.var_export($entityId, true).'] = ' . var_export($entityMetadata, true).";\n");
+    print('$metadata[' . var_export($entityId, true) . '] = ' . VarExporter::export($entityMetadata) . ";\n");
 }
 '''
 sp_config_dir = '/etc/simplesamlphp/metadata.d'
