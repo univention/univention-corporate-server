@@ -60,7 +60,7 @@ def main():
 
                 # Testing being within the messagesizelimit
                 with tempfile.NamedTemporaryFile() as h:
-                    h.truncate(limit / 8)
+                    h.truncate(limit // 8)
                     check_sending_mail(mail, [h.name], mail, password, True)
 
 
