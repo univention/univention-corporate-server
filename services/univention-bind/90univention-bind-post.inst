@@ -119,6 +119,7 @@ fi
 
 ucs_addServiceToLocalhost 'DNS' "$@" || die
 
+service named reload
 joinscript_save_current_version
 
 exit 0
