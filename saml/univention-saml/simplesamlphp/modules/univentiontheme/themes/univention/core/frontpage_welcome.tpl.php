@@ -3,7 +3,7 @@
 $this->data['header'] = $this->t('{core:frontpage:page_title}');
 $this->includeAtTemplateBase('includes/header.php');
 
-#SimpleSAML_Utilities::redirect('/univention/');
+#SimpleSAML\Utilities::redirect('/univention/');
 if ($this->data['isadmin']) {
 	echo '<p class="float-r youareadmin">' . $this->t('{core:frontpage:loggedin_as_admin}') . '</p>';
 } else {
