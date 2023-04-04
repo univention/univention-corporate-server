@@ -10,13 +10,14 @@
 ## join: true
 ## exposure: dangerous
 
-import pprint
 import json
+import pprint
 
+import univention.testing.utils as utils
 from univention.admin import localization
 from univention.testing import selenium
-import univention.testing.utils as utils
 from univention.testing.selenium.appcenter import AppCenter
+
 
 translator = localization.translation('ucs-test-selenium')
 _ = translator.translate

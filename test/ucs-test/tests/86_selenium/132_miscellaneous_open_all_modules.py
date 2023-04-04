@@ -10,12 +10,14 @@
 ## exposure: dangerous
 
 import logging
-import selenium.common.exceptions as selenium_exceptions
 import time
+
+import selenium.common.exceptions as selenium_exceptions
 
 from univention.admin import localization
 from univention.testing import selenium
 from univention.testing.selenium.appcenter import AppCenter
+
 
 logger = logging.getLogger(__name__)
 

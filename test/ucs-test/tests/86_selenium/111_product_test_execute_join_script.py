@@ -14,11 +14,12 @@ import os
 import time
 from shutil import copyfile
 
+from selenium import webdriver
+from selenium.common.exceptions import TimeoutException
+
 from univention.admin import localization
 from univention.testing import selenium
 
-from selenium import webdriver
-from selenium.common.exceptions import TimeoutException
 
 translator = localization.translation('ucs-test-selenium')
 _ = translator.translate

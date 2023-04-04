@@ -8,10 +8,12 @@
 ## tags: [SKIP, umc-producttest]
 ## exposure: dangerous
 
+import os
 from shutil import copyfile
+
 from univention.admin import localization
 from univention.testing import selenium
-import os
+
 
 translator = localization.translation('ucs-test-selenium')
 _ = translator.translate

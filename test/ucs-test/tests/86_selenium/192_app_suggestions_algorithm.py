@@ -10,9 +10,10 @@
 ## exposure: dangerous
 
 from univention.admin import localization
+from univention.appcenter.app_cache import AppCache
 from univention.testing import selenium
 from univention.testing.selenium.appcenter import AppCenter
-from univention.appcenter.app_cache import AppCache
+
 
 translator = localization.translation('ucs-test-selenium')
 _ = translator.translate

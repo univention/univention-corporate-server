@@ -9,12 +9,14 @@
 ## join: true
 ## exposure: dangerous
 
-from univention.admin import localization
 import subprocess
 import tempfile
 import time
+
+from univention.admin import localization
 from univention.testing import selenium
 from univention.testing.selenium.utils import expand_path
+
 
 translator = localization.translation('ucs-test-selenium')
 _ = translator.translate

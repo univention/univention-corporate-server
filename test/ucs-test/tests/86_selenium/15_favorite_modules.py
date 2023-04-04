@@ -14,11 +14,12 @@ import time
 
 from selenium.common.exceptions import NoSuchElementException
 
-from univention.admin import localization
 import univention.testing.ucr as ucr_test
 import univention.testing.utils as utils
+from univention.admin import localization
 from univention.testing import selenium
 from univention.testing.selenium.utils import expand_path
+
 
 translator = localization.translation('ucs-test-selenium')
 _ = translator.translate

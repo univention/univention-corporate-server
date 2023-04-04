@@ -9,15 +9,16 @@
 ## join: true
 ## exposure: dangerous
 
-import time
 import logging
+import time
 
-from univention.testing import selenium
-import univention.testing.ucr as ucr_test
-from univention.testing.udm import UCSTestUDM
 import univention.testing.strings as uts
+import univention.testing.ucr as ucr_test
 from univention.admin import localization
+from univention.testing import selenium
+from univention.testing.udm import UCSTestUDM
 from univention.udm import UDM
+
 
 logger = logging.getLogger(__name__)
 

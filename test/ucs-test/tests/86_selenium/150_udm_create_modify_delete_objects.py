@@ -9,9 +9,10 @@
 ## join: true
 ## exposure: dangerous
 
+import univention.testing.selenium.udm as selenium_udm
 from univention.admin import localization
 from univention.testing import selenium
-import univention.testing.selenium.udm as selenium_udm
+
 
 translator = localization.translation('ucs-test-selenium')
 _ = translator.translate

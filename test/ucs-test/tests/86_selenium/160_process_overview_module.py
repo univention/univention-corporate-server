@@ -10,14 +10,15 @@
 ## join: true
 ## exposure: dangerous
 
-import psutil
 import subprocess
 
+import psutil
 from selenium.common.exceptions import NoSuchElementException
 
-from univention.testing import selenium
 from univention.admin import localization
+from univention.testing import selenium
 from univention.testing.selenium.utils import expand_path
+
 
 translator = localization.translation('ucs-test-selenium')
 _ = translator.translate

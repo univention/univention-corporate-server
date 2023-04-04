@@ -8,8 +8,9 @@
 ## join: true
 ## exposure: dangerous
 
-from univention.testing import selenium
 from univention.admin import localization
+from univention.testing import selenium
+
 
 translator = localization.translation('ucs-test-selenium')
 _ = translator.translate

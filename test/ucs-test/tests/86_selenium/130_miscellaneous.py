@@ -11,14 +11,17 @@
 ## join: true
 ## exposure: dangerous
 
-from univention.admin import localization
-import psutil
 import subprocess
 import time
+
+import psutil
+
 import univention.testing.ucr as ucr_test
 import univention.testing.udm as udm_test
-from univention.testing import selenium
+from univention.admin import localization
 from univention.config_registry import handler_set
+from univention.testing import selenium
+
 
 translator = localization.translation('ucs-test-selenium')
 _ = translator.translate

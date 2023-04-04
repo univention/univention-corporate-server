@@ -11,14 +11,16 @@
 import logging
 import subprocess
 
-import univention.config_registry
-from univention.testing import selenium
-import univention.testing.ucr as ucr_test
-from univention.testing.udm import UCSTestUDM
-from univention.admin import localization
-from univention.udm import UDM
 from selenium.common.exceptions import TimeoutException
+
+import univention.config_registry
 import univention.testing.selenium.udm as selenium_udm
+import univention.testing.ucr as ucr_test
+from univention.admin import localization
+from univention.testing import selenium
+from univention.testing.udm import UCSTestUDM
+from univention.udm import UDM
+
 
 logger = logging.getLogger(__name__)
 

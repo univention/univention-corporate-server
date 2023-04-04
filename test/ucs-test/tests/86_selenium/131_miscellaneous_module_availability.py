@@ -13,9 +13,12 @@
 import os.path
 import subprocess
 import time
+
 from selenium.common.exceptions import TimeoutException
+
 from univention.admin import localization
 from univention.testing import selenium
+
 
 translator = localization.translation('ucs-test-selenium')
 _ = translator.translate

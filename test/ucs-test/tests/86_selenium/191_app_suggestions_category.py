@@ -12,9 +12,10 @@
 import shutil
 
 from univention.admin import localization
+from univention.appcenter.app_cache import AppCenterCache, default_server
 from univention.testing import selenium
 from univention.testing.selenium.appcenter import AppCenter
-from univention.appcenter.app_cache import AppCenterCache, default_server
+
 
 translator = localization.translation('ucs-test-selenium')
 _ = translator.translate

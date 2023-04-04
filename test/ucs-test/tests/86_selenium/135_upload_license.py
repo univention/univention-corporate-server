@@ -9,20 +9,20 @@
 ## exposure: dangerous
 
 import os
-from os import path
-import time
 import sys
-from subprocess import Popen, PIPE, check_call
-from tempfile import mkdtemp
+import time
+from os import path
 from shutil import rmtree
+from subprocess import PIPE, Popen, check_call
+from tempfile import mkdtemp
 
 from selenium.common.exceptions import NoSuchElementException
 
 import univention.testing.ucr as ucr_test
 import univention.testing.utils as utils
+from univention.admin import localization
 from univention.testing import selenium
 from univention.testing.codes import TestCodes
-from univention.admin import localization
 
 
 translator = localization.translation('ucs-test-selenium')

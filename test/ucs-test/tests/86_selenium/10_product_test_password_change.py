@@ -18,15 +18,16 @@ from selenium import webdriver
 from selenium.common.exceptions import TimeoutException, WebDriverException
 from selenium.webdriver.support import expected_conditions
 
-from univention.admin import localization
 import univention.admin.modules as udm_modules
-from univention.testing import selenium
-from univention.testing.utils import get_ldap_connection
-import univention.testing.strings as uts
-import univention.testing.udm as udm_test
-import univention.testing.ucr as ucr_test
-from univention.testing.ucs_samba import password_policy, wait_for_drs_replication
 import univention.testing.selenium.udm as selenium_udm
+import univention.testing.strings as uts
+import univention.testing.ucr as ucr_test
+import univention.testing.udm as udm_test
+from univention.admin import localization
+from univention.testing import selenium
+from univention.testing.ucs_samba import password_policy, wait_for_drs_replication
+from univention.testing.utils import get_ldap_connection
+
 
 translator = localization.translation('ucs-test-selenium')
 _ = translator.translate

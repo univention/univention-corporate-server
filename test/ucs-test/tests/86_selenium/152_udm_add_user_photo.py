@@ -13,11 +13,12 @@
 
 from selenium.common.exceptions import NoSuchElementException
 
-from univention.admin import localization
-from univention.testing.utils import get_ldap_connection
-import univention.testing.udm as udm_test
 import univention.testing.selenium as selenium
 import univention.testing.selenium.udm as selenium_udm
+import univention.testing.udm as udm_test
+from univention.admin import localization
+from univention.testing.utils import get_ldap_connection
+
 
 translator = localization.translation('ucs-test-selenium')
 _ = translator.translate

@@ -14,16 +14,16 @@
 import subprocess
 import time
 
-from selenium.webdriver.support.ui import WebDriverWait
-from selenium.webdriver.support import expected_conditions
 from selenium.webdriver.common.by import By
-import univention.testing.utils as utils
-from univention.testing import selenium
-
-from univention.admin import localization
+from selenium.webdriver.support import expected_conditions
+from selenium.webdriver.support.ui import WebDriverWait
 
 import univention.testing.ucr as ucr_test
 import univention.testing.udm as udm_test
+import univention.testing.utils as utils
+from univention.admin import localization
+from univention.testing import selenium
+
 
 translator = localization.translation("ucs-test-selenium")
 _ = translator.translate

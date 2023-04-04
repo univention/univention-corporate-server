@@ -15,15 +15,19 @@
 ## join: true
 ## exposure: dangerous
 
-from essential.mail import file_search_mail
-from selenium import webdriver
-from univention.admin import localization
-from univention.testing.udm import UCSTestUDM_CreateUDMObjectFailed
 import time
+
+from selenium import webdriver
+
 import univention.testing.strings as uts
 import univention.testing.ucr as ucr_test
 import univention.testing.udm as udm_test
+from univention.admin import localization
 from univention.testing import selenium
+from univention.testing.udm import UCSTestUDM_CreateUDMObjectFailed
+
+from essential.mail import file_search_mail
+
 
 translator = localization.translation('ucs-test-selenium')
 _ = translator.translate
