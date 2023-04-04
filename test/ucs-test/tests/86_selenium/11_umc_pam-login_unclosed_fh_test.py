@@ -145,7 +145,7 @@ class UMCTester:
 
         close_wait = self.count_fhs()
         print("> close wait: %d\n" % close_wait)
-        return close_wait < 3 # the hard coded value of 3 has to be adapted later
+        return close_wait < 3  # the hard coded value of 3 has to be adapted later
 
 
 if __name__ == "__main__":

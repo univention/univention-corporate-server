@@ -71,7 +71,7 @@ class UMCTester(object):
             self.test_password_change(self.regular_user, uts.random_string())
             self.test_usability_of_a_module_after_password_change(self.admin, uts.random_string())
             self.check_for_short_password_error(self.admin)
-            #FIXME: admins can somehow always reuse passwords in a samba domain; testing with regular user only on this point
+            # FIXME: admins can somehow always reuse passwords in a samba domain; testing with regular user only on this point
             self.check_for_password_reuse_error(self.regular_user)
             self.check_change_password_on_login(self.admin, uts.random_string())
         finally:

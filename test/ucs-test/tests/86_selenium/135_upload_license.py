@@ -43,8 +43,8 @@ class UMCTester(object):
         time.sleep(10)  # wait while server is restarting
         self.selenium.do_login()
 
-
     # copy pasted and adapted from 60_umc/80_udm_license
+
     def restore_initial_license_and_cleanup(self, license_file):
         """
         Restores the initially dumped license, removes created
@@ -63,7 +63,6 @@ class UMCTester(object):
             print("An OSError while deleting the temporary"
                   "folder with license files: '%s'" % exc)
 
-
     def open_license_info_dialog(self):
         self.selenium.open_side_menu()
         self.selenium.wait_for_text(_('License'))
@@ -73,7 +72,6 @@ class UMCTester(object):
         self.selenium.wait_for_text(_('Information about the current UCS license'))
         time.sleep(5)
 
-
     def open_license_import_dialog(self):
         self.selenium.open_side_menu()
         self.selenium.wait_for_text(_('License'))
@@ -82,7 +80,6 @@ class UMCTester(object):
         self.selenium.click_side_menu_entry(_('Import new license'))
         self.selenium.wait_for_text(_('UCS license import'))
         time.sleep(5)
-
 
     def upload_license(self, path, as_text):
         self.restart_umc_server()
@@ -103,7 +100,6 @@ class UMCTester(object):
             self.selenium.click_button('Ok')
             self.selenium.wait_until_all_dialogues_closed()
 
-
     def check_license_information(self):
         self.open_license_info_dialog()
         expected_license_type = None
@@ -120,14 +116,13 @@ class UMCTester(object):
             utils.fail('The "License type" in the license information dialog should have been "%s" but was "%s" instead' % (expected_license_type, license_type))
         print('Correct license type found')
 
-
     def run_test(self):
         self.upload_license('FreeForPersonalUseTest.license', as_text=False)
         self.check_license_information()
         self.upload_license('FreeForPersonalUseTest.license', as_text=True)
 
-
     # copy pasted from 60_umc/80_udm_license
+
     def dump_current_license_to_file(self, license_file):
         """
         Opens a given 'license_file' for writing and puts in the output of
@@ -153,8 +148,8 @@ class UMCTester(object):
                        "license file '%s', exception: %r"
                        % (license_file, exc))
 
-
     # copy pasted from 60_umc/80_udm_license
+
     def modify_free_license_template(self):
         """
         Modifies the 'FreeForPersonalUseTest.license' to have a correct
@@ -178,7 +173,6 @@ class UMCTester(object):
                        "with a free license 'FreeForPersonalUseTest.license':"
                        " %r" % exc)
 
-
     def init(self):
         self.ucr.save()
         self.license_dump_successful = False
@@ -188,7 +182,6 @@ class UMCTester(object):
         print("Temporary folder to be used to store obtained test licenses: "
               "'%s'" % self.temp_license_folder)
         self.initial_license_file = (self.temp_license_folder + '/InitiallyInstalled.license')
-
 
     def test_umc(self):
         try:

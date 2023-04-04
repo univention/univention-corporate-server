@@ -63,6 +63,7 @@ class UMCTester(object):
 }
 ''')
 
+
 if __name__ == '__main__':
     with selenium.UMCSeleniumTest() as s:
         umc_tester = UMCTester()

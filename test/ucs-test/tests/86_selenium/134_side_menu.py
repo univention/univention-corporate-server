@@ -22,11 +22,11 @@ class UMCTester(object):
         self.selenium.do_login()
         self.selenium.open_side_menu()
         self.selenium.click_side_menu_entry(_('User settings'))
-        self.selenium.wait_for_text(_('Change password')) # check if submenu opened
+        self.selenium.wait_for_text(_('Change password'))  # check if submenu opened
         self.selenium.click_side_menu_back()
-        self.selenium.wait_for_text(_('User settings')) # check if submenu closed
+        self.selenium.wait_for_text(_('User settings'))  # check if submenu closed
         self.selenium.close_side_menu()
-        self.selenium.open_side_menu() # if opening does not work here that means closing did not work
+        self.selenium.open_side_menu()  # if opening does not work here that means closing did not work
 
 
 if __name__ == '__main__':

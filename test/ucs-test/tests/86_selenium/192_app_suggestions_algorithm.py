@@ -65,6 +65,7 @@ class UMCTester(object):
         assert apps[4].id in r, "Expected '%s' to be in suggested ids %s" % (apps[6].id, r)
         assert apps[5].id in r, "Expected '%s' to be in suggested ids %s" % (apps[6].id, r)
 
+
 if __name__ == '__main__':
     with selenium.UMCSeleniumTest() as s:
         umc_tester = UMCTester()
