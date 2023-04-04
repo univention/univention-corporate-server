@@ -25,85 +25,85 @@ _ = translator.translate
 
 
 class UmcError(Exception):
-	pass
+    pass
 
 
 class UMCTester(object):
 
-	def test_umc(self):
-		self.selenium.do_login()
-		self.selenium.open_module(_('Process overview'))
+    def test_umc(self):
+        self.selenium.do_login()
+        self.selenium.open_module(_('Process overview'))
 
-		self.search('', _('All'))
-		self.check_for_malformed_entries()
+        self.search('', _('All'))
+        self.check_for_malformed_entries()
 
-		self.search('root', _('User'))
-		self.check_user_filter()
+        self.search('root', _('User'))
+        self.check_user_filter()
 
-		p = subprocess.Popen(['sleep', '5000'])
-		self.check_if_process_is_searchable(p.pid, _('PID'), p.pid)
-		self.check_if_process_is_searchable(p.pid, _('Command'), 'sleep 5000')
+        p = subprocess.Popen(['sleep', '5000'])
+        self.check_if_process_is_searchable(p.pid, _('PID'), p.pid)
+        self.check_if_process_is_searchable(p.pid, _('Command'), 'sleep 5000')
 
-		self.kill_process_and_check_if_gone(p, force=False)
-		p = subprocess.Popen(['sleep', '5000'])
-		self.kill_process_and_check_if_gone(p, force=True)
+        self.kill_process_and_check_if_gone(p, force=False)
+        p = subprocess.Popen(['sleep', '5000'])
+        self.kill_process_and_check_if_gone(p, force=True)
 
-	def check_for_malformed_entries(self):
-		cells = self.selenium.driver.find_elements_by_css_selector('.dgrid-row .dgrid-cell:not(.dgrid-selector)')
-		if not all((c.text for c in cells)):
-			raise UmcError('Malformed(empty) cell in one of the rows displaying the processes.')
+    def check_for_malformed_entries(self):
+        cells = self.selenium.driver.find_elements_by_css_selector('.dgrid-row .dgrid-cell:not(.dgrid-selector)')
+        if not all((c.text for c in cells)):
+            raise UmcError('Malformed(empty) cell in one of the rows displaying the processes.')
 
-	def check_user_filter(self):
-		cells = self.selenium.driver.find_elements_by_css_selector('.field-user[role=gridcell')
-		if not all(c.text == 'root' for c in cells):
-			raise UmcError('Found process that belongs to another user than root after filtering process for root user only')
+    def check_user_filter(self):
+        cells = self.selenium.driver.find_elements_by_css_selector('.field-user[role=gridcell')
+        if not all(c.text == 'root' for c in cells):
+            raise UmcError('Found process that belongs to another user than root after filtering process for root user only')
 
-	def check_if_process_is_searchable(self, pid, category, search_value):
-		self.search(search_value, category)
-		try:
-			self.selenium.driver.find_element_by_xpath(self._pid_xpath(pid))
-		except NoSuchElementException:
-			raise UmcError('The created process was not searchable via the "%s" category' % category)
+    def check_if_process_is_searchable(self, pid, category, search_value):
+        self.search(search_value, category)
+        try:
+            self.selenium.driver.find_element_by_xpath(self._pid_xpath(pid))
+        except NoSuchElementException:
+            raise UmcError('The created process was not searchable via the "%s" category' % category)
 
-	def kill_process_and_check_if_gone(self, p, force):
-		self.search(p.pid, _('PID'))
-		self.selenium.click_element(self._pid_xpath(p.pid))
+    def kill_process_and_check_if_gone(self, p, force):
+        self.search(p.pid, _('PID'))
+        self.selenium.click_element(self._pid_xpath(p.pid))
 
-		button = _('Force termination') if force else _('Terminate')
-		self.selenium.click_button(button)
-		self.selenium.click_button(_('OK'))
-		signal = 'SIGKILL' if force else 'SIGTERM'
-		self.selenium.wait_for_text(_('Signal (%s) sent successfully') % signal)
-		self.selenium.wait_until_all_standby_animations_disappeared()
-		code = -9 if force else -15
-		assert code == p.poll()
-		self.search(p.pid)
-		try:
-			self.selenium.driver.find_element_by_xpath(self._pid_xpath(p.pid))
-		except NoSuchElementException:
-			pass
-		else:
-			raise UmcError('Error with "%s". The process was termined via UMC but was still visible in the UMC grid' % 'Force termination' if force else 'Terminate')
-		if psutil.pid_exists(p.pid):
-			raise UmcError('Error with "%s". The process was terminated via UMC but still existed (psutil.pid_exists)' % 'Force termination' if force else 'Terminate')
+        button = _('Force termination') if force else _('Terminate')
+        self.selenium.click_button(button)
+        self.selenium.click_button(_('OK'))
+        signal = 'SIGKILL' if force else 'SIGTERM'
+        self.selenium.wait_for_text(_('Signal (%s) sent successfully') % signal)
+        self.selenium.wait_until_all_standby_animations_disappeared()
+        code = -9 if force else -15
+        assert code == p.poll()
+        self.search(p.pid)
+        try:
+            self.selenium.driver.find_element_by_xpath(self._pid_xpath(p.pid))
+        except NoSuchElementException:
+            pass
+        else:
+            raise UmcError('Error with "%s". The process was termined via UMC but was still visible in the UMC grid' % 'Force termination' if force else 'Terminate')
+        if psutil.pid_exists(p.pid):
+            raise UmcError('Error with "%s". The process was terminated via UMC but still existed (psutil.pid_exists)' % 'Force termination' if force else 'Terminate')
 
-	def search(self, search_value, category=None):
-		if category:
-			self.choose_category(category)
-		self.selenium.enter_input('pattern', str(search_value))
-		self.selenium.submit_input('pattern')
-		self.selenium.wait_until_standby_animation_appears_and_disappears()
+    def search(self, search_value, category=None):
+        if category:
+            self.choose_category(category)
+        self.selenium.enter_input('pattern', str(search_value))
+        self.selenium.submit_input('pattern')
+        self.selenium.wait_until_standby_animation_appears_and_disappears()
 
-	def choose_category(self, category):
-		self.selenium.enter_input_combobox('category', category)
+    def choose_category(self, category):
+        self.selenium.enter_input_combobox('category', category)
 
-	def _pid_xpath(self, pid):
-		return expand_path('//td[@containsClass="field-pid"]/descendant-or-self::*[text() = "%s"]' % pid)
+    def _pid_xpath(self, pid):
+        return expand_path('//td[@containsClass="field-pid"]/descendant-or-self::*[text() = "%s"]' % pid)
 
 
 if __name__ == '__main__':
-	with selenium.UMCSeleniumTest(suppress_notifications=False) as s:
-		umc_tester = UMCTester()
-		umc_tester.selenium = s
+    with selenium.UMCSeleniumTest(suppress_notifications=False) as s:
+        umc_tester = UMCTester()
+        umc_tester.selenium = s
 
-		umc_tester.test_umc()
+        umc_tester.test_umc()

@@ -18,20 +18,20 @@ _ = translator.translate
 
 class UMCTester(object):
 
-	def test_umc(self):
-		self.selenium.do_login()
-		self.selenium.open_side_menu()
-		self.selenium.click_side_menu_entry(_('User settings'))
-		self.selenium.wait_for_text(_('Change password')) # check if submenu opened
-		self.selenium.click_side_menu_back()
-		self.selenium.wait_for_text(_('User settings')) # check if submenu closed
-		self.selenium.close_side_menu()
-		self.selenium.open_side_menu() # if opening does not work here that means closing did not work
+    def test_umc(self):
+        self.selenium.do_login()
+        self.selenium.open_side_menu()
+        self.selenium.click_side_menu_entry(_('User settings'))
+        self.selenium.wait_for_text(_('Change password')) # check if submenu opened
+        self.selenium.click_side_menu_back()
+        self.selenium.wait_for_text(_('User settings')) # check if submenu closed
+        self.selenium.close_side_menu()
+        self.selenium.open_side_menu() # if opening does not work here that means closing did not work
 
 
 if __name__ == '__main__':
-	with selenium.UMCSeleniumTest() as s:
-		umc_tester = UMCTester()
-		umc_tester.selenium = s
+    with selenium.UMCSeleniumTest() as s:
+        umc_tester = UMCTester()
+        umc_tester.selenium = s
 
-		umc_tester.test_umc()
+        umc_tester.test_umc()

@@ -158,8 +158,8 @@ class UMCTester:
 if __name__ == "__main__":
 
     with selenium.UMCSeleniumTest() as s,\
-         ucr_test.UCSTestConfigRegistry() as ucr,\
-         udm_test.UCSTestUDM() as udm:
+            ucr_test.UCSTestConfigRegistry() as ucr,\
+            udm_test.UCSTestUDM() as udm:
 
         umc_tester = UMCTester(s, ucr.get("hostname"), ucr.get("domainname"))
 
