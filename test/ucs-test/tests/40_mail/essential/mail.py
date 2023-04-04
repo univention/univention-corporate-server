@@ -399,8 +399,8 @@ def file_search_mail(tokenlist=None, user=None, mail_address=None, folder=None, 
         if user:
             _file = os.path.join('/var/mail', user)
             if os.path.isfile(_file):
-                with open(_file) as fd:
-                    content = fd.read()
+                with open(_file, 'rb') as fd:
+                    content = fd.read().decode('UTF-8', 'replace')
                     for token in tokenlist:
                         if token not in content:
                             break
