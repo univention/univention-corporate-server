@@ -6,9 +6,7 @@ src: xorg-server
 fix: 2:1.19.2-1+deb9u14
 desc: |
  This update addresses the following issue:
- 2:1.19.2-1+deb9u14 (Tue, 28 Mar 2023 19:03:02 +0200)
- * Non-maintainer upload by the ELTS Team.
- * CVE-2023-1393 Fix use-after-free of the COW.
+ * CVE-2023-1393: A Use-After-Free may lead to local privilege escalation. 
 bug: [55929]
 cve:
 - CVE-2023-1393
