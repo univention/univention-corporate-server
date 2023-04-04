@@ -89,9 +89,9 @@ def main():
     else:
         mailbox = "/var/mail/root"
 
-    with open(mailbox) as f:
+    with open(mailbox, 'rb') as f:
         for line in f:
-            if token in line:
+            if token in line.decode('UTF-8', 'replace'):
                 break
         else:
             utils.fail(f"Token '{token}' not found in /var/mail/root at {datetime.datetime.now()}, UCRs: {ucrs}.")
