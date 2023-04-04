@@ -436,7 +436,7 @@ class Test_UDMExtension:
         udm.create_object('settings/extended_attribute', position=udm.UNIVENTION_CONTAINER, **properties)
 
         user = udm.create_user(**{properties['CLIName']: uts.random_string()})[0]
-        with pytest.raises(udm_test.UCSTestUDM_ModifyUDMObjectFailed, message='UDM did not report an error while trying to modify a settings/extended_attribute value which may not change'):
+        with pytest.raises(udm_test.UCSTestUDM_ModifyUDMObjectFailed):
             udm.modify_object('users/user', dn=user, **{properties['CLIName']: uts.random_string()})
 
     @pytest.mark.tags('udm', 'apptest')
@@ -457,7 +457,7 @@ class Test_UDMExtension:
         )
 
         # try creating an udm object without the just created extended attribute given (expected to fail)
-        with pytest.raises(udm_test.UCSTestUDM_CreateUDMObjectFailed, message='UDM did not report an error while trying to create an object a required single value extended attribute was not given'):
+        with pytest.raises(udm_test.UCSTestUDM_CreateUDMObjectFailed):
             udm.create_group()
 
     @pytest.mark.tags('udm')
@@ -480,7 +480,7 @@ class Test_UDMExtension:
         extended_attribute_value = uts.random_string()
         group = udm.create_group(**{properties['CLIName']: extended_attribute_value})[0]
 
-        with pytest.raises(udm_test.UCSTestUDM_ModifyUDMObjectFailed, message='UDM did not report an error while trying to remove a required settings/extended_attribute single value from object'):
+        with pytest.raises(udm_test.UCSTestUDM_ModifyUDMObjectFailed):
             udm.modify_object('groups/group', dn=group, remove={properties['CLIName']: [extended_attribute_value]})
 
     @pytest.mark.tags('udm')
@@ -525,7 +525,7 @@ class Test_UDMExtension:
         )
 
         # try creating an udm object without the just created extended attribute given (expected to fail)
-        with pytest.raises(udm_test.UCSTestUDM_CreateUDMObjectFailed, message='UDM did not report an error while trying to create an object even though a required single value extended attribute was not given'):
+        with pytest.raises(udm_test.UCSTestUDM_CreateUDMObjectFailed):
             udm.create_group()
 
     @pytest.mark.tags('udm')
@@ -550,7 +550,7 @@ class Test_UDMExtension:
             multivalue='1',
         )
 
-        with pytest.raises(udm_test.UCSTestUDM_CreateUDMObjectFailed, message='UDM did not report an error while trying to create an object even though a required multivalue extended attribute was not given'):
+        with pytest.raises(udm_test.UCSTestUDM_CreateUDMObjectFailed):
             udm.create_group()
 
     @pytest.mark.tags('udm')
@@ -1018,7 +1018,7 @@ class %s(univention.admin.hook.simpleHook):
         utils.verify_ldap_object(group_dn, expected_attr={'objectClass': ['univentionFreeAttributes']}, strict=False)
 
         udm.modify_object('groups/group', dn=group_dn, set={ea_name: ''})
-        with pytest.raises(utils.LDAPObjectValueMissing, message='objectClass was not removed from group %r @ %r' % (group_name, group_dn)):
+        with pytest.raises(utils.LDAPObjectValueMissing):
             utils.verify_ldap_object(group_dn, expected_attr={'objectClass': ['univentionFreeAttributes']}, strict=False)
 
     @pytest.mark.tags('udm')
@@ -1042,7 +1042,7 @@ class %s(univention.admin.hook.simpleHook):
         utils.verify_ldap_object(group_dn, expected_attr={'objectClass': ['univentionFreeAttributes']}, strict=False)
 
         udm.modify_object('groups/group', dn=group_dn, options=['posix'])
-        with pytest.raises(utils.LDAPObjectValueMissing, message='objectClass was not removed from group %r @ %r' % (group_name, group_dn)):
+        with pytest.raises(utils.LDAPObjectValueMissing):
             utils.verify_ldap_object(group_dn, expected_attr={'objectClass': ['univentionFreeAttributes']}, strict=False, retry_count=0)
         utils.start_s4connector()
 
