@@ -86,7 +86,7 @@ print("	'showerrors'            =>	%s," % ('TRUE' if configRegistry.is_true('sam
 print("	'errorreporting'            =>	%s," % ('TRUE' if configRegistry.is_true('saml/idp/show-error-reporting') else 'FALSE'))
 @!@
 	/**
-	 * Custom error show function called from SimpleSAML_Error_Error::show.
+	 * Custom error show function called from SimpleSAML\Error\Error::show.
 	 * See docs/simplesamlphp-errorhandling.txt for function code example.
 	 *
 	 * Example:
