@@ -50,7 +50,7 @@ class UMCTester(object):
 
     def check_for_malformed_entries(self):
         cells = self.selenium.driver.find_elements_by_css_selector('.dgrid-row .dgrid-cell:not(.dgrid-selector)')
-        if not all((c.text for c in cells)):
+        if not all(c.text for c in cells):
             raise UmcError('Malformed(empty) cell in one of the rows displaying the processes.')
 
     def check_user_filter(self):

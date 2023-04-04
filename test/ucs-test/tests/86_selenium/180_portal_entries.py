@@ -24,23 +24,23 @@ class UMCTester(object):
         print("Getting expected entries for: %s" % (server_role))
         expected_entries_map = {
             'domaincontroller_master_single': [
-                (_('Administration'), _('System and domain settings'), _('Univention Management Console for admin­is­tra­ting the UCS domain and the local system'),),
+                (_('Administration'), _('System and domain settings'), _('Univention Management Console for admin­is­tra­ting the UCS domain and the local system')),
             ],
             'domaincontroller_master_multi': [
-                (_('Administration'), _('System and domain settings'), _('Univention Management Console for admin­is­tra­ting the UCS domain and the local system'),),
-                (_('Administration'), _('Server overview'), _('Provide an overview of all UCS server in the domain'),),
+                (_('Administration'), _('System and domain settings'), _('Univention Management Console for admin­is­tra­ting the UCS domain and the local system')),
+                (_('Administration'), _('Server overview'), _('Provide an overview of all UCS server in the domain')),
             ],
             'domaincontroller_backup': [
-                (_('Administration'), _('System and domain settings'), _('Univention Management Console for admin­is­tra­ting the UCS domain and the local system'),),
-                (_('Administration'), _('Server overview'), _('Provide an overview of all UCS server in the domain'),),
+                (_('Administration'), _('System and domain settings'), _('Univention Management Console for admin­is­tra­ting the UCS domain and the local system')),
+                (_('Administration'), _('Server overview'), _('Provide an overview of all UCS server in the domain')),
             ],
             'domaincontroller_slave': [
-                (_('Administration'), _('System settings'), _('Univention Management Console for admin­is­tra­ting the local system'),),
-                (_('Administration'), _('Univention Portal'), _('Central portal web page for the UCS domain'),),
+                (_('Administration'), _('System settings'), _('Univention Management Console for admin­is­tra­ting the local system')),
+                (_('Administration'), _('Univention Portal'), _('Central portal web page for the UCS domain')),
             ],
             'memberserver': [
-                (_('Administration'), _('System settings'), _('Univention Management Console for admin­is­tra­ting the local system'),),
-                (_('Administration'), _('Univention Portal'), _('Central portal web page for the UCS domain'),),
+                (_('Administration'), _('System settings'), _('Univention Management Console for admin­is­tra­ting the local system')),
+                (_('Administration'), _('Univention Portal'), _('Central portal web page for the UCS domain')),
             ],
         }
         return expected_entries_map[server_role]

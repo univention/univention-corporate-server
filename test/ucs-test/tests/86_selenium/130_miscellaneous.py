@@ -11,7 +11,6 @@
 ## join: true
 ## exposure: dangerous
 
-import subprocess
 import time
 
 import psutil
@@ -73,10 +72,10 @@ class UMCTester(object):
 
         if self.module_process_alive('ucr'):
             raise UmcError(
-                'A module\'s process still exists after it\'s timeout.'
+                "A module's process still exists after it's timeout.",
             )
         if not self.module_process_alive('top'):
-            raise UmcError('A module\'s process died before it\'s timeout.')
+            raise UmcError("A module's process died before it's timeout.")
 
     def test_module_visibility_for_regular_user(self):
         username = 'umc_test_user'
@@ -97,12 +96,12 @@ class UMCTester(object):
             'policies/umc',
             name='username_policy',
             allow='cn=top-all,cn=operations,cn=UMC,cn=univention,%s' % (self.selenium.ldap_base,),
-            position='cn=policies,%s' % (self.selenium.ldap_base,)
+            position='cn=policies,%s' % (self.selenium.ldap_base,),
         )
         self.udm.modify_object(
             'users/user',
             dn='uid=%s,cn=users,%s' % (username, self.selenium.ldap_base),
-            policy_reference='cn=username_policy,cn=policies,%s' % (self.selenium.ldap_base,)
+            policy_reference='cn=username_policy,cn=policies,%s' % (self.selenium.ldap_base,),
         )
 
     def add_group_policy(self, username):
@@ -114,36 +113,36 @@ class UMCTester(object):
         self.udm.modify_object(
             'users/user',
             dn='uid=%s,cn=users,%s' % (username, self.selenium.ldap_base),
-            append={'groups': ['cn=umc_test_group,cn=groups,%s' % (self.selenium.ldap_base,)]}
+            append={'groups': ['cn=umc_test_group,cn=groups,%s' % (self.selenium.ldap_base,)]},
         )
         self.udm.create_object(
             'policies/umc',
             name='umc_test_group_policy',
             allow='cn=ucr-all,cn=operations,cn=UMC,cn=univention,%s' % (self.selenium.ldap_base,),
-            position='cn=policies,%s' % (self.selenium.ldap_base,)
+            position='cn=policies,%s' % (self.selenium.ldap_base,),
         )
         self.udm.modify_object(
             'groups/group',
             dn='cn=umc_test_group,cn=groups,%s' % (self.selenium.ldap_base,),
-            policy_reference='cn=umc_test_group_policy,cn=policies,%s' % (self.selenium.ldap_base,)
+            policy_reference='cn=umc_test_group_policy,cn=policies,%s' % (self.selenium.ldap_base,),
         )
 
     def check_if_allowed_modules_are_visible(self):
         available_modules = self.get_available_modules()
         required_modules = [
             _('Univention Configuration Registry'),
-            _('Process overview')
+            _('Process overview'),
         ]
-        differing_modules = set(
-            [module.lower() for module in required_modules]
-        ).symmetric_difference(set(
-            [module.lower() for module in available_modules]
-        ))
+        differing_modules = {
+            module.lower() for module in required_modules
+        }.symmetric_difference({
+            module.lower() for module in available_modules
+        })
         if len(differing_modules) > 0:
             raise UmcError(
                 'Applying module-visibility-policies for a regular user did not'
                 ' work.\nThese modules are missing or excess in the UMC: %r'
-                % (differing_modules,)
+                % (differing_modules,),
             )
 
     def kill_all_module_processes(self):
@@ -153,16 +152,13 @@ class UMCTester(object):
                 process.kill()
 
     def module_process_alive(self, module):
-        for process in psutil.process_iter():
-            if {'/usr/sbin/univention-management-console-module', '-m', module}.issubset(set(process.cmdline())):
-                return True
-        return False
+        return any({'/usr/sbin/univention-management-console-module', '-m', module}.issubset(set(process.cmdline())) for process in psutil.process_iter())
 
     def switch_language(self, target_language_code):
         iso_639_1_to_name = {
             'en': 'English',
             'de': 'Deutsch',
-            'fr': u'Français'
+            'fr': u'Français',
         }
         target_language = iso_639_1_to_name[target_language_code]
         self.selenium.open_side_menu()

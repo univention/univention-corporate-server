@@ -34,7 +34,7 @@ class UMCTester(object):
             Users(self.selenium),
             Groups(self.selenium),
             Computers(self.selenium),
-            Policies(self.selenium)
+            Policies(self.selenium),
         ]
         for module in modules:
             self.selenium.open_module(module.name)
@@ -49,7 +49,7 @@ class UMCTester(object):
         if not module.exists(added_object):
             raise UmcUdmError(
                 'Adding the object %r in the module %r did not work.'
-                % (added_object, module.name)
+                % (added_object, module.name),
             )
         return added_object
 
@@ -66,7 +66,7 @@ class UMCTester(object):
         if module.exists(added_object):
             raise UmcUdmError(
                 'Deleting the object %r in the module %r did not work.'
-                % (added_object, module.name)
+                % (added_object, module.name),
             )
 
 

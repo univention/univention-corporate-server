@@ -10,9 +10,6 @@
 ## exposure: dangerous
 
 import logging
-import time
-
-import selenium.common.exceptions as selenium_exceptions
 
 from univention.admin import localization
 from univention.testing import selenium
@@ -35,7 +32,6 @@ class UMCTester(object):
         available_modules = self.get_available_modules()
         self.selenium.show_notifications(False)
         for module in available_modules:
-            retries = 3
             logger.info('opening module: %s' % (module,))
             if module == _('App Center'):
                 AppCenter(self.selenium).open()

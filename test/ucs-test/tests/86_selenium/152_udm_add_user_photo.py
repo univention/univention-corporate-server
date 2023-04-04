@@ -13,10 +13,10 @@
 
 from selenium.common.exceptions import NoSuchElementException
 
-import univention.testing.selenium as selenium
 import univention.testing.selenium.udm as selenium_udm
 import univention.testing.udm as udm_test
 from univention.admin import localization
+from univention.testing import selenium
 from univention.testing.utils import get_ldap_connection
 
 

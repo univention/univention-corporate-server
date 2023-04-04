@@ -150,7 +150,7 @@ class UMCTester(object):
         action = {
             'stop': _('Stop'),
             'start': _('Start'),
-            'restart': _('Restart')
+            'restart': _('Restart'),
         }[cmd]
         self.search_and_action(service, action)
         self.confirm_status(service, cmd)

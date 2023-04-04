@@ -12,9 +12,6 @@
 
 import os.path
 import subprocess
-import time
-
-from selenium.common.exceptions import TimeoutException
 
 from univention.admin import localization
 from univention.testing import selenium
@@ -60,7 +57,7 @@ expected_modules_for_role = {
             _('App Center'),
             _('Package Management'),
             _('Repository Settings'),
-            _('Software update')
+            _('Software update'),
         ],
         ROOT: [
             _('Filesystem quotas'),
@@ -72,8 +69,8 @@ expected_modules_for_role = {
             _('Process overview'),
             _('System services'),
             _('Univention Configuration Registry'),
-            _('Software update')
-        ]
+            _('Software update'),
+        ],
     },
     BACKUP: {
         ADMIN: [
@@ -102,7 +99,7 @@ expected_modules_for_role = {
             _('App Center'),
             _('Package Management'),
             _('Repository Settings'),
-            _('Software update')
+            _('Software update'),
         ],
         ROOT: [
             _('Filesystem quotas'),
@@ -113,8 +110,8 @@ expected_modules_for_role = {
             _('Process overview'),
             _('System services'),
             _('Univention Configuration Registry'),
-            _('Software update')
-        ]
+            _('Software update'),
+        ],
     },
     SLAVE: {
         ADMIN: [
@@ -130,7 +127,7 @@ expected_modules_for_role = {
             _('App Center'),
             _('Package Management'),
             _('Repository Settings'),
-            _('Software update')
+            _('Software update'),
         ],
         ROOT: [
             _('Filesystem quotas'),
@@ -141,8 +138,8 @@ expected_modules_for_role = {
             _('Process overview'),
             _('System services'),
             _('Univention Configuration Registry'),
-            _('Software update')
-        ]
+            _('Software update'),
+        ],
     },
     MEMBER: {
         ADMIN: [
@@ -158,7 +155,7 @@ expected_modules_for_role = {
             _('App Center'),
             _('Package Management'),
             _('Repository Settings'),
-            _('Software update')
+            _('Software update'),
         ],
         ROOT: [
             _('Filesystem quotas'),
@@ -169,9 +166,9 @@ expected_modules_for_role = {
             _('Process overview'),
             _('System services'),
             _('Univention Configuration Registry'),
-            _('Software update')
-        ]
-    }
+            _('Software update'),
+        ],
+    },
 }
 
 
@@ -216,7 +213,7 @@ class UMCTester(object):
         missing_modules = set(requiered_modules) - set(available_modules)
         if len(missing_modules) > 0:
             raise UmcError(
-                'These modules are missing in the UMC: %r' % (missing_modules,)
+                'These modules are missing in the UMC: %r' % (missing_modules,),
             )
 
     def get_available_modules(self):

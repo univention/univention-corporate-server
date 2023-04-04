@@ -9,9 +9,7 @@
 ## join: true
 ## exposure: dangerous
 
-import json
 import logging
-import time
 
 import univention.testing.strings as uts
 import univention.testing.ucr as ucr_test
@@ -121,7 +119,7 @@ class UMCTester(object):
         logger.info('Drag category b above category a')
         self.selenium.drag_and_drop(
             expand_path('//*[@containsClass="dojoDndHandle"][text()="%s"]' % (self.cat_b_dname)),
-            expand_path('//*[@containsClass="dojoDndHandle"][text()="%s"]' % (self.cat_a_dname))
+            expand_path('//*[@containsClass="dojoDndHandle"][text()="%s"]' % (self.cat_a_dname)),
         )
         self.selenium.wait_for_text('Order saved')
         self.selenium.wait_for_text_to_disappear('Order saved')
@@ -139,7 +137,7 @@ class UMCTester(object):
         # TODO dragging entries across categories does not work in selenium for some reason
         self.selenium.drag_and_drop(
             expand_path('//*[@containsClass="dojoDndItem"]//*[@containsClass="tile__name"][text()="%s"]' % (self.entry_a_1_dname)),
-            expand_path('//*[@containsClass="dojoDndItem"]//*[@containsClass="tile__name"][text()="%s"]' % (self.entry_a_2_dname))
+            expand_path('//*[@containsClass="dojoDndItem"]//*[@containsClass="tile__name"][text()="%s"]' % (self.entry_a_2_dname)),
         )
         self.selenium.wait_for_text('Order saved')
         self.selenium.wait_for_text_to_disappear('Order saved')

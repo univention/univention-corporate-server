@@ -15,7 +15,6 @@ import time
 
 from univention.admin import localization
 from univention.testing import selenium
-from univention.testing.selenium.utils import expand_path
 
 
 translator = localization.translation('ucs-test-selenium')
@@ -25,36 +24,36 @@ _ = translator.translate
 SEARCHES = [
     {
         'pattern': '*tmpKey',
-        'expected_results': 2
+        'expected_results': 2,
     },
     {
         'pattern': 'tmpKey',
-        'expected_results': 4
+        'expected_results': 4,
     },
     {
         'pattern': '*tmpDesc',
-        'expected_results': 2
+        'expected_results': 2,
     },
     {
         'pattern': '*tmpDesc*',
-        'expected_results': 4
+        'expected_results': 4,
     },
     {
         'pattern': '*tmpVal',
-        'expected_results': 2
+        'expected_results': 2,
     },
     {
         'pattern': 'tmpVal*',
-        'expected_results': 2
+        'expected_results': 2,
     },
     {
         'pattern': '*tmpVal*',
-        'expected_results': 4
+        'expected_results': 4,
     },
     {
         'pattern': 'tmpVal',
-        'expected_results': 4
-    }
+        'expected_results': 4,
+    },
 ]
 
 
@@ -82,7 +81,7 @@ def create_testing_ucr_variables(ucr_variable_file):
         b"Description[de]=This is a test-description. tmpDesc\n"
         b"Description[en]=This is a test-description. tmpDesc\n"
         b"Type=str\n"
-        b"Categories=management-umc\n"
+        b"Categories=management-umc\n",
     )
     ucr_variable_file.flush()
 
@@ -118,8 +117,8 @@ class UMCTester(object):
                     % (
                         search['pattern'],
                         len(search_results),
-                        search['expected_results']
-                    )
+                        search['expected_results'],
+                    ),
                 )
 
     def test_setting_a_variable(self, ucr_key, value):
@@ -139,7 +138,7 @@ class UMCTester(object):
         ucr_result = self.get_ucr_cli_search_results(ucr_key)
         if ucr_result[ucr_key] != value:
             raise UcrSearchError(
-                "Setting a variable's value via the UMC-UCR did not work."
+                "Setting a variable's value via the UMC-UCR did not work.",
             )
 
     def test_category_filter(self):
@@ -150,12 +149,12 @@ class UMCTester(object):
             raise UcrSearchError(
                 "Filtering the results of an UMC-UCR search by category did not"
                 " work. Got %d instead of the expected %d results."
-                % (result_count, expected_result_count)
+                % (result_count, expected_result_count),
             )
 
     def get_ucr_cli_search_results(self, pattern):
         search_result_string = subprocess.check_output(
-            ['ucr', 'search', '--brief', '--all', pattern]
+            ['ucr', 'search', '--brief', '--all', pattern],
         ).decode()
         result_strings = search_result_string.split('\n')[:-1]
         search_results = {}
@@ -177,7 +176,7 @@ class UMCTester(object):
         self.selenium.wait_until_standby_animation_appears_and_disappears()
         grid_rows = self.selenium.driver.find_elements_by_xpath(
             '//*[contains(concat(" ", normalize-space(@class), " "), '
-            '" dgrid-row ")][@role="row"]'
+            '" dgrid-row ")][@role="row"]',
         )
         search_results = {}
         for row in grid_rows:
@@ -187,14 +186,14 @@ class UMCTester(object):
     def get_key(self, grid_row):
         elem = grid_row.find_element_by_xpath(
             './/*[contains(concat(" ", normalize-space(@class), " "), '
-            '" field-key ")]'
+            '" field-key ")]',
         )
         return elem.text
 
     def get_value(self, grid_row):
         elem = grid_row.find_element_by_xpath(
             './/*[contains(concat(" ", normalize-space(@class), " "), '
-            '" field-value ")]'
+            '" field-value ")]',
         )
         return elem.text
 
@@ -202,7 +201,7 @@ class UMCTester(object):
 if __name__ == '__main__':
     f = tempfile.NamedTemporaryFile(
         suffix=".cfg",
-        dir="/etc/univention/registry.info/variables/"
+        dir="/etc/univention/registry.info/variables/",
     )
     with f as ucr_variable_file, selenium.UMCSeleniumTest() as s:
         umc_tester = UMCTester()

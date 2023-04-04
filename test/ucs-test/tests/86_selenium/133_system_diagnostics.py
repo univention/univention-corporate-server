@@ -116,7 +116,7 @@ actions = {{
         return plugin_path
 
     def get_random_plugin_path(self):
-        plugin_name = '{0}.py'.format(self.get_random_ascii_string(10))
+        plugin_name = '{}.py'.format(self.get_random_ascii_string(10))
         return os.path.join(self.PLUGIN_DIR, plugin_name)
 
     def get_random_ascii_string(self, length):

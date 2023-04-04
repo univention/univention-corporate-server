@@ -13,9 +13,8 @@
 import json
 import pprint
 
-import univention.testing.utils as utils
 from univention.admin import localization
-from univention.testing import selenium
+from univention.testing import selenium, utils
 from univention.testing.selenium.appcenter import AppCenter
 
 

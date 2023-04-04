@@ -63,7 +63,7 @@ class UMCTester(object):
         old_samba_settings = self.get_samba_settings()
         self.set_samba_settings({
             'passwordHistory': '3',
-            'domainPasswordComplex': '0'
+            'domainPasswordComplex': '0',
         })
 
         try:
@@ -83,13 +83,13 @@ class UMCTester(object):
             name='ucs-test_pw_policy',
             length='3',
             pwLength='8',
-            position='cn=pwhistory,cn=users,cn=policies,%s' % (self.selenium.ldap_base,)
+            position='cn=pwhistory,cn=users,cn=policies,%s' % (self.selenium.ldap_base,),
         )
 
         self.udm.modify_object(
             'container/cn',
             dn='cn=testusers,cn=users,%s' % (self.selenium.ldap_base,),
-            policy_reference='cn=ucs-test_pw_policy,cn=pwhistory,cn=users,cn=policies,%s' % (self.selenium.ldap_base,)
+            policy_reference='cn=ucs-test_pw_policy,cn=pwhistory,cn=users,cn=policies,%s' % (self.selenium.ldap_base,),
         )
 
     def _get_samba_obj(self):
@@ -98,7 +98,7 @@ class UMCTester(object):
         lo = get_ldap_connection()
         udm_modules.update()
         samba_module = udm_modules.get('settings/sambadomain')
-        obj = samba_module.object(None, lo, None, 'sambaDomainName=%s,cn=samba,%s' % (ucr.get('windows/domain'), ucr.get('ldap/base'),))
+        obj = samba_module.object(None, lo, None, 'sambaDomainName=%s,cn=samba,%s' % (ucr.get('windows/domain'), ucr.get('ldap/base')))
         obj.open()
         return obj
 
@@ -106,7 +106,7 @@ class UMCTester(object):
         obj = self._get_samba_obj()
         return {
             'passwordHistory': obj['passwordHistory'],
-            'domainPasswordComplex': obj['domainPasswordComplex']
+            'domainPasswordComplex': obj['domainPasswordComplex'],
         }
 
     def set_samba_settings(self, settings):
@@ -199,7 +199,7 @@ class UMCTester(object):
         for i in range(3):
             try:
                 self.selenium.do_login(username, new_password)
-            except Exception as exc:
+            except Exception:
                 pass
             else:
                 exc = None
@@ -213,12 +213,12 @@ class UMCTester(object):
     def submit_login_credentials(self, username, password):
         self.selenium.driver.get(
             self.selenium.base_url + 'univention/login/?lang=%s'
-            % (self.selenium.language,)
+            % (self.selenium.language,),
         )
         self.selenium.wait_until(
             expected_conditions.presence_of_element_located(
-                (webdriver.common.by.By.ID, "umcLoginUsername")
-            )
+                (webdriver.common.by.By.ID, "umcLoginUsername"),
+            ),
         )
         self.selenium.enter_input('username', username)
         self.selenium.enter_input('password', password)
@@ -227,7 +227,7 @@ class UMCTester(object):
     def check_if_login_was_successful(self):
         self.selenium.wait_for_any_text_in_list([
             _('Favorites'),
-            _('no module available')
+            _('no module available'),
         ])
         try:
             self.selenium.wait_for_text(_('no module available'), timeout=1)
@@ -283,21 +283,21 @@ if __name__ == '__main__':
         test_user_cn = umc_tester.udm.create_object(
             'container/cn',
             name='testusers',
-            position='cn=users,%s' % (umc_tester.udm.LDAP_BASE,)
+            position='cn=users,%s' % (umc_tester.udm.LDAP_BASE,),
         )
 
         lo = get_ldap_connection()
 
         regular_dn, regular_username = umc_tester.udm.create_user(
             password='univention',
-            position=test_user_cn
+            position=test_user_cn,
         )
         regular_user = lo.get(regular_dn)
 
         admin_dn, admin_username = umc_tester.udm.create_user(
             password='univention',
             position=test_user_cn,
-            primaryGroup='cn=Domain Admins,cn=groups,%s' % (umc_tester.udm.LDAP_BASE,)
+            primaryGroup='cn=Domain Admins,cn=groups,%s' % (umc_tester.udm.LDAP_BASE,),
         )
         admin_user = lo.get(admin_dn)
 

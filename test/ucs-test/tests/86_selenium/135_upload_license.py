@@ -19,9 +19,8 @@ from tempfile import mkdtemp
 from selenium.common.exceptions import NoSuchElementException
 
 import univention.testing.ucr as ucr_test
-import univention.testing.utils as utils
 from univention.admin import localization
-from univention.testing import selenium
+from univention.testing import selenium, utils
 from univention.testing.codes import TestCodes
 
 
@@ -90,7 +89,7 @@ class UMCTester(object):
         self.open_license_import_dialog()
         if as_text:
             licenseText = self.selenium.driver.find_element_by_xpath('//textarea[@name="licenseText"]')
-            with open(path, 'r') as f:
+            with open(path) as f:
                 s = f.read()
                 licenseText.send_keys(s)
             self.selenium.click_button('Import from text field')
@@ -118,7 +117,7 @@ class UMCTester(object):
         except NoSuchElementException:
             license_type = self.selenium.driver.find_element_by_xpath('//*[text() = "License type:"]/parent::*').text
             license_type = license_type.split(':')[1].strip()
-            utils.fail('The "License type" in the license information dialog should have been "%s" but was "%s" instead' % (expected_license_type, license_type,))
+            utils.fail('The "License type" in the license information dialog should have been "%s" but was "%s" instead' % (expected_license_type, license_type))
         print('Correct license type found')
 
 

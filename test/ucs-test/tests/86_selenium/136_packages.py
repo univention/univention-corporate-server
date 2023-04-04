@@ -10,9 +10,8 @@
 
 import apt
 
-import univention.testing.utils as utils
 from univention.admin import localization
-from univention.testing import selenium
+from univention.testing import selenium, utils
 from univention.testing.selenium.utils import expand_path
 
 
@@ -74,7 +73,7 @@ class UMCTester(object):
             installation_status_path = expand_path('//*[text() = "%s"]/ancestor-or-self::*[@containsClass="field-package"]/following-sibling::*[@containsClass="field-status"]' % package_name)
             installation_status = self.selenium.driver.find_element_by_xpath(installation_status_path).text
             if installation_status != expected_status:
-                raise UmcError('The installation status of package "%s" should be "%s" but is "%s"' % (package_name, expected_status, installation_status,))
+                raise UmcError('The installation status of package "%s" should be "%s" but is "%s"' % (package_name, expected_status, installation_status))
 
 
 if __name__ == '__main__':

@@ -45,7 +45,7 @@ class UMCTester(object):
         self.dummy_portal_dn = self.udm_test.create_object(
             'settings/portal',
             name=uts.random_string(),
-            displayName=['en_US ' + self.dummy_portal_title]
+            displayName=['en_US ' + self.dummy_portal_title],
         )
         logger.info('Saving previous set portal of host')
         udm = UDM.admin().version(1)

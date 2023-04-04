@@ -20,9 +20,8 @@ from selenium.webdriver.support.ui import WebDriverWait
 
 import univention.testing.ucr as ucr_test
 import univention.testing.udm as udm_test
-import univention.testing.utils as utils
 from univention.admin import localization
-from univention.testing import selenium
+from univention.testing import selenium, utils
 
 
 translator = localization.translation("ucs-test-selenium")
@@ -30,9 +29,7 @@ _ = translator.translate
 
 
 class UMCTester:
-    """
-    This test checks problems caused by open file descriptors.
-    """
+    """This test checks problems caused by open file descriptors."""
 
     def __init__(self, sel, hostname, domainname):
 
@@ -44,7 +41,7 @@ class UMCTester:
         self.browser = self.selenium.driver
 
     def test_umc(self, udm):
-        """ call all tests """
+        """call all tests"""
         if not self.test_umc_logon(udm):
             msg = "The amount of connections in CLOSE_WAIT state are > 2 after testing UMC logon"
             return False, msg
@@ -64,7 +61,7 @@ class UMCTester:
 
     def take_a_screenshot(self):
         self.selenium.driver.get(
-            s.base_url + "/univention/self-service/#page=passwordchange"
+            s.base_url + "/univention/self-service/#page=passwordchange",
         )
         self.selenium.save_screenshot()
 
@@ -74,31 +71,27 @@ class UMCTester:
         check_call runs a command with arguments and waits for command to
         complete. No further wait is necessary.
         """
-
         subprocess.check_call(["systemctl", "restart", service])
 
     def umc_logon(self, username, pw, try_wrong_pw):
-        """
-        method to log into the ucs portal with a given username and password
-        """
-
+        """method to log into the ucs portal with a given username and password"""
         try:
             self.browser.get("http://" + self.fqdn + "/univention/portal/")
 
             WebDriverWait(self.browser, 30).until(
                 expected_conditions.element_to_be_clickable(
-                    (By.XPATH, '//*[@id="umcLoginButton_label"]')
-                )
+                    (By.XPATH, '//*[@id="umcLoginButton_label"]'),
+                ),
             ).click()
             WebDriverWait(self.browser, 30).until(
                 expected_conditions.element_to_be_clickable(
-                    (By.XPATH, '//*[@id="umcLoginUsername"]')
-                )
+                    (By.XPATH, '//*[@id="umcLoginUsername"]'),
+                ),
             ).send_keys(username)
             WebDriverWait(self.browser, 30).until(
                 expected_conditions.element_to_be_clickable(
-                    (By.XPATH, '//*[@id="umcLoginPassword"]')
-                )
+                    (By.XPATH, '//*[@id="umcLoginPassword"]'),
+                ),
             ).send_keys(pw)
 
             elem = self.browser.find_elements_by_id("umcLoginSubmit")[0]
@@ -106,10 +99,10 @@ class UMCTester:
 
             WebDriverWait(self.browser, 30).until(
                 expected_conditions.element_to_be_clickable(
-                    (By.XPATH, '//*[@id="umcLoginButton_label"]')
-                )
+                    (By.XPATH, '//*[@id="umcLoginButton_label"]'),
+                ),
             ).click()
-        except BaseException as exc:
+        except BaseException:
             if not try_wrong_pw:
                 self.take_a_screenshot()
         finally:
@@ -139,7 +132,7 @@ class UMCTester:
 
             print(
                 "Created user %d '%s' with password %s. Logging in..."
-                % (i, username, password)
+                % (i, username, password),
             )
 
             self.umc_logon(username, login_password, try_wrong_pw)

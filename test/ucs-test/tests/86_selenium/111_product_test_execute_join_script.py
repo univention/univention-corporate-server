@@ -69,7 +69,7 @@ class UMCTester(object):
         self.selenium.open_module(_('Domain join'))
         xpaths = ['//div[contains(concat(" ", normalize-space(@class), " "), " dgrid-row ")]']
         webdriver.support.ui.WebDriverWait(xpaths, 60).until(
-            self.selenium.get_all_visible_elements, 'Waited 60s for grid load.'
+            self.selenium.get_all_visible_elements, 'Waited 60s for grid load.',
         )
         self.selenium.wait_for_text('99univention-test-join-script')
         self.selenium.wait_until_all_standby_animations_disappeared()
@@ -101,23 +101,16 @@ class UMCTester(object):
 
     def get_joinscript_status(self, joinscript):
         self.scroll_join_script_into_view(joinscript)
-        xpath = \
-            '//*[contains(concat(" ", normalize-space(@class), " "), " dgrid-cell ")]' \
-            '[@role="gridcell"]/descendant-or-self::node()[contains(text(), "%s")]' \
-            '/../*[contains(concat(" ", normalize-space(@class), " "), " field-status ")]/*' \
-            % (joinscript,)
+        xpath = '//*[contains(concat(" ", normalize-space(@class), " "), " dgrid-cell ")][@role="gridcell"]/descendant-or-self::node()[contains(text(), "%s")]/../*[contains(concat(" ", normalize-space(@class), " "), " field-status ")]/*' % (joinscript,)
         elems = webdriver.support.ui.WebDriverWait(xpath, 60).until(
-            self.selenium.get_all_enabled_elements
+            self.selenium.get_all_enabled_elements,
         )
         return elems[0].get_attribute('innerHTML')
 
     def scroll_join_script_into_view(self, joinscript):
-        xpath = \
-            '//*[contains(concat(" ", normalize-space(@class), " "), " dgrid-cell ")]' \
-            '[@role="gridcell"]/descendant-or-self::node()[contains(text(), "%s")]' \
-            % (joinscript,)
+        xpath = '//*[contains(concat(" ", normalize-space(@class), " "), " dgrid-cell ")][@role="gridcell"]/descendant-or-self::node()[contains(text(), "%s")]' % (joinscript,)
         elems = webdriver.support.ui.WebDriverWait(xpath, 60).until(
-            self.selenium.get_all_enabled_elements
+            self.selenium.get_all_enabled_elements,
         )
         self.selenium.driver.execute_script("arguments[0].scrollIntoView();", elems[0])
 

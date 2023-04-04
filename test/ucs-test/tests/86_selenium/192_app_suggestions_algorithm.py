@@ -35,26 +35,26 @@ class UMCTester(object):
             'condition': [installed_apps[0]['id'], 'xxx'],
             'candidates': [{
                 'id': apps[2].id,
-                'mayNotBeInstalled': []
-            }]
+                'mayNotBeInstalled': [],
+            }],
         }, {
             'condition': [installed_apps[0]['id']],
             'candidates': [{
                 'id': apps[3].id,
-                'mayNotBeInstalled': [installed_apps[1]['id']]
-            }]
+                'mayNotBeInstalled': [installed_apps[1]['id']],
+            }],
         }, {
             'condition': [installed_apps[0]['id'], installed_apps[1]['id']],
             'candidates': [{
                 'id': apps[4].id,
-                'mayNotBeInstalled': ['xxx']
+                'mayNotBeInstalled': ['xxx'],
             }, {
                 'id': apps[5].id,
-                'mayNotBeInstalled': ['xxx']
+                'mayNotBeInstalled': ['xxx'],
             }, {
                 'id': apps[6].id,
-                'mayNotBeInstalled': [installed_apps[0]['id']]
-            }]
+                'mayNotBeInstalled': [installed_apps[0]['id']],
+            }],
         }]
 
         r = self.selenium.driver.execute_script('''
@@ -62,8 +62,8 @@ class UMCTester(object):
             return w._getSuggestedAppIds(arguments[0], arguments[1]);
         ''', suggestions, installed_apps)
 
-        assert apps[4].id in r, "Expected '%s' to be in suggested ids %s" % (apps[6].id, r,)
-        assert apps[5].id in r, "Expected '%s' to be in suggested ids %s" % (apps[6].id, r,)
+        assert apps[4].id in r, "Expected '%s' to be in suggested ids %s" % (apps[6].id, r)
+        assert apps[5].id in r, "Expected '%s' to be in suggested ids %s" % (apps[6].id, r)
 
 if __name__ == '__main__':
     with selenium.UMCSeleniumTest() as s:

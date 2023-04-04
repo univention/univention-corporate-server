@@ -15,9 +15,8 @@ import time
 from selenium.common.exceptions import NoSuchElementException
 
 import univention.testing.ucr as ucr_test
-import univention.testing.utils as utils
 from univention.admin import localization
-from univention.testing import selenium
+from univention.testing import selenium, utils
 from univention.testing.selenium.utils import expand_path
 
 
@@ -82,7 +81,7 @@ class UMCTester(object):
         module_name = self.selenium.driver.find_element_by_css_selector('.umcGalleryName').text
         self.selenium.click_element(
             expand_path('//*[@containsClass="umcGalleryName"][text() = "%s"]' % (module_name,)),
-            right_click=True
+            right_click=True,
         )
         self.selenium.click_text(_('Add to favorites'))
 

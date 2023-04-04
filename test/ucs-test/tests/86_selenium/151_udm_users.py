@@ -71,7 +71,7 @@ class UMCTester(object):
             name=description_template,
             # Using description instead of mailPrimaryAddress here, because
             # mailPrimaryAddress always gets lower-cased.
-            description='<firstname:lower,umlauts>.<lastname>[0:2]@test.com'
+            description='<firstname:lower,umlauts>.<lastname>[0:2]@test.com',
         )
 
         # The user-template would not be available when adding a user without
@@ -80,7 +80,7 @@ class UMCTester(object):
         self.users.wait_for_main_grid_load()
 
         user_description_template = self.users.add(
-            template=description_template, firstname=u'Bärbel', lastname='Edison'
+            template=description_template, firstname=u'Bärbel', lastname='Edison',
         )
 
         self.users.open_details(user_description_template)
@@ -89,7 +89,7 @@ class UMCTester(object):
             raise UmcUdmError(
                 'Setting the description via a usertemplate did not work. '
                 'The generated description was %r instead of %r .'
-                % (self.users.get_description(), expected_description)
+                % (self.users.get_description(), expected_description),
             )
         self.users.close_details()
 
@@ -101,7 +101,7 @@ class UMCTester(object):
             'settings/usertemplate',
             position='cn=templates,cn=univention,%s' % (self.ucr.get('ldap/base'),),
             name=secondary_group_template,
-            groups='cn=Domain Admins,cn=groups,%s' % (self.ucr.get('ldap/base'),)
+            groups='cn=Domain Admins,cn=groups,%s' % (self.ucr.get('ldap/base'),),
         )
 
         # The user-template would not be available when adding a user without
@@ -110,7 +110,7 @@ class UMCTester(object):
         self.users.wait_for_main_grid_load()
 
         user_group_template = self.users.add(
-            template=secondary_group_template, firstname='Thomas', lastname='Edison'
+            template=secondary_group_template, firstname='Thomas', lastname='Edison',
         )
 
         self.users.open_details(user_group_template)

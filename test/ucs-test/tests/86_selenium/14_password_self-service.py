@@ -79,8 +79,8 @@ class UMCTester(object):
             set={
                 'mailHomeServer': '%s.%s' % (self.ucr.get('hostname'), domain),
                 'mailPrimaryAddress': mail,
-                'password': password
-            }
+                'password': password,
+            },
         )
         return User(username, password=password, mail=mail)
 
@@ -152,7 +152,7 @@ class UMCTester(object):
 
     def wait_for_and_get_element_by_xpath(self, xpath):
         elems = webdriver.support.ui.WebDriverWait(xpath, 60).until(
-            self.selenium.get_all_enabled_elements
+            self.selenium.get_all_enabled_elements,
         )
         return elems[0]
 

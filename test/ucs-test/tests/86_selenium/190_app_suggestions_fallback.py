@@ -26,7 +26,7 @@ class UMCTester(object):
         cache = AppCenterCache.build(server=default_server())
         self.json_file = cache.get_cache_file('.suggestions.json')
         self.json_file_bak = cache.get_cache_file('.suggestions.bak.json')
-        print('moving %s to %s' % (self.json_file, self.json_file_bak,))
+        print('moving %s to %s' % (self.json_file, self.json_file_bak))
         shutil.move(self.json_file, self.json_file_bak)
 
     def cleanup(self):
