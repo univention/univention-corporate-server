@@ -12,7 +12,7 @@ desc: |
  * Null pointer dereference in some Intel(R) Graphics Drivers (CVE-2020-12364)
  * Fragmentation cache not cleared on reconnection (CVE-2020-24586)
  * Reassembling fragments encrypted under different keys (CVE-2020-24587)
- * wifi frame payload being parsed incorrectly as an L2 frame (CVE-2020-24588)
+ * Wifi frame payload being parsed incorrectly as an L2 frame (CVE-2020-24588)
  * Out of bounds read for some Intel(R) PROSet/Wireless WiFi and Killer(TM)
    WiFi products may allow an unauthenticated user to potentially enable
    denial of service via adjacent access. (CVE-2021-23168)
