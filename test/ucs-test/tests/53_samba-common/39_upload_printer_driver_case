@@ -4,7 +4,7 @@
 ## exposure: dangerous
 ## packages:
 ##  - univention-samba | univention-samba4
-## bugs: [52051]
+## bugs: [52051, 55940]
 ## roles:
 ## - domaincontroller_master
 ## - domaincontroller_backup
@@ -35,9 +35,9 @@ trap cleanup INT TERM EXIT
 upload_printer_driver () {
 	local driver_file="$1" driver_name data_file config_file help_file
 	driver_name="test-driver-$(makepasswd)"
-	data_file="$(mktemp -p $driver_dir)"
-	config_file="$(mktemp -p $driver_dir)"
-	help_file="$(mktemp -p $driver_dir)"
+	data_file="$(su "$admin_account" -c "mktemp -p $driver_dir")"
+	config_file="$(su "$admin_account" -c "mktemp -p $driver_dir")"
+	help_file="$(su "$admin_account" -c "mktemp -p $driver_dir")"
 	local driver_settings="$driver_name"
 	driver_settings+=":$(basename "$driver_file")"
 	driver_settings+=":$(basename "$data_file")"
@@ -72,6 +72,7 @@ rm -f "$driver_dir/3/moin.dll"
 
 # this should work
 echo "version1" > "$driver_dir/MOIN.DLL"
+chown "$admin_account" "$driver_dir/MOIN.DLL"
 md5sum_1="$(md5sum "$driver_dir/MOIN.DLL" | awk '{print $1}')"
 upload_printer_driver "MOIN.DLL"
 check_driver_file MOIN.DLL "$md5sum_1" || fail_fast 1 "driver file checksum mismatch in download area"
@@ -79,6 +80,7 @@ rm -f "$driver_dir/MOIN.DLL"
 
 # check that this file is not uploaded
 echo "version2" > "$driver_dir/moin.dll"
+chown "$admin_account" "$driver_dir/moin.dll"
 touch -a -m -d "-20days" "$driver_dir/moin.dll"
 upload_printer_driver "moin.dll"
 check_driver_file MOIN.DLL "$md5sum_1" || fail_fast 1 "driver file checksum mismatch in download area, driver overwritten?"
@@ -88,6 +90,7 @@ rm -f "$driver_dir/moin.dll"
 # check that this file is upload (modify time is older than the first file)
 # and MOIN.DLL is overwritten
 echo "version3" > "$driver_dir/moin.dll"
+chown "$admin_account" "$driver_dir/moin.dll"
 touch -a -m -d "+10days" "$driver_dir/moin.dll"
 md5sum_3="$(md5sum "$driver_dir/moin.dll" | awk '{print $1}')"
 upload_printer_driver "moin.dll"
@@ -97,6 +100,7 @@ rm -f "$driver_dir/moin.dll"
 
 # and again
 echo "version4" > "$driver_dir/moin.DLL"
+chown "$admin_account" "$driver_dir/moin.DLL"
 touch -a -m -d "+20days" "$driver_dir/moin.DLL"
 md5sum_4="$(md5sum "$driver_dir/moin.DLL" | awk '{print $1}')"
 upload_printer_driver "moin.DLL"

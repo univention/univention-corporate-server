@@ -1,3 +1,9 @@
+ucs-test (10.0.10-52) unstable; urgency=medium
+
+  * Bug 55941: fix printer upload tests
+
+ -- Felix Botner <botner@univention.de>  Mon, 17 Apr 2023 15:48:21 +0200
+
 ucs-test (10.0.10-51) unstable; urgency=medium
 
   * Bug #55978: added workaround
