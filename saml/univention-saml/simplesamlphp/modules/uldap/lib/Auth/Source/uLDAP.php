@@ -10,7 +10,7 @@
  *
  * @package simpleSAMLphp
  */
-class sspmod_uldap_Auth_Source_uLDAP extends sspmod_core_Auth_UserPassBase {
+class sspmod_uldap_Auth_Source_uLDAP extends SimpleSAML\Module\core\Auth\UserPassBase {
 
 	/**
 	 * A LDAP configuration object.
@@ -33,7 +33,7 @@ class sspmod_uldap_Auth_Source_uLDAP extends sspmod_core_Auth_UserPassBase {
 		/* Call the parent constructor first, as required by the interface. */
 		parent::__construct($info, $config);
 
-		$this->ldapConfig = new sspmod_ldap_ConfigHelper($config,
+		$this->ldapConfig = new SimpleSAML\Module\ldap\ConfigHelper($config,
 			'Authentication source ' . var_export($this->authId, TRUE));
 		$this->config = $config;
 	}
@@ -62,9 +62,9 @@ class sspmod_uldap_Auth_Source_uLDAP extends sspmod_core_Auth_UserPassBase {
 
 		try {
 			$attributes = $this->ldapConfig->login($username, $new_password, $sasl_args);
-		} catch (SimpleSAML_Error_Error $e) {
+		} catch (SimpleSAML\Error\Error $e) {
 			if ($password !== $new_password) {  // The password was changed, but the S4-Connector did not yet sync it back to OpenLDAP
-				throw new SimpleSAML_Error_Error('univention:PASSWORD_CHANGE_SUCCESS');
+				throw new SimpleSAML\Error\Error('univention:PASSWORD_CHANGE_SUCCESS');
 			}
 			if ($e->getMessage() === 'WRONGUSERPASS') {
 				/* Our ldap overlays return INVALID_CREDENTIALS if the password has expired
@@ -97,7 +97,7 @@ class sspmod_uldap_Auth_Source_uLDAP extends sspmod_core_Auth_UserPassBase {
 		assert('is_string($new_password)');
 
 		if (isset($_POST['new_password_retype']) && $_POST['new_password_retype'] !== $new_password) {
-			throw new SimpleSAML_Error_Error('univention:RETYPE_MISMATCH');
+			throw new SimpleSAML\Error\Error('univention:RETYPE_MISMATCH');
 		}
 
 		$config = SimpleSAML_Configuration::getInstance();
@@ -125,14 +125,14 @@ class sspmod_uldap_Auth_Source_uLDAP extends sspmod_core_Auth_UserPassBase {
 		}
 		if ($httpcode !== 200) {
 			if ($httpcode >= 500) {
-				throw new SimpleSAML_Error_Error(array('univention:ERROR',
+				throw new SimpleSAML\Error\Error(array('univention:ERROR',
 					'status' => $httpcode,
 					'title' => $response['title'],
 					'message' => $response['message'],
 					'traceback' => $response['traceback'],
 				));
 			}
-			throw new SimpleSAML_Error_Error(array('univention:PW_CHANGE_FAILED', '%s' => $response['message']));
+			throw new SimpleSAML\Error\Error(array('univention:PW_CHANGE_FAILED', '%s' => $response['message']));
 		}
 		curl_close($ch);
 		return $new_password;
@@ -153,11 +153,11 @@ class sspmod_uldap_Auth_Source_uLDAP extends sspmod_core_Auth_UserPassBase {
 		if (isset($attributes['shadowExpire']) && is_string($attributes["shadowExpire"][0])) {
 			if ((int)$attributes['shadowExpire'][0] == 1) {
 				\SimpleSAML\Logger::debug('LDAP Account disabled');
-				throw new SimpleSAML_Error_Error('LDAP_ACCDISABLED');
+				throw new SimpleSAML\Error\Error('LDAP_ACCDISABLED');
 			}
 			else if ((int)$attributes['shadowExpire'][0] < (floor($the_time / 86400))) {
 				\SimpleSAML\Logger::debug('LDAP Account expired');
-				throw new SimpleSAML_Error_Error('LDAP_ACCEXPIRED');
+				throw new SimpleSAML\Error\Error('LDAP_ACCEXPIRED');
 			}
 		}
 		// Kerberos expired
@@ -166,14 +166,14 @@ class sspmod_uldap_Auth_Source_uLDAP extends sspmod_core_Auth_UserPassBase {
 			$date = DateTime::createFromFormat('Ymd+', $attributes['krb5ValidEnd'][0]);
 			if ($date->getTimestamp() < ($the_time + 1)) {
 				\SimpleSAML\Logger::debug('Kerberos Account expired');
-				throw new SimpleSAML_Error_Error('KRB_ACCEXPIRED');
+				throw new SimpleSAML\Error\Error('KRB_ACCEXPIRED');
 			}
 		}
 		// Samba expired
 		if (isset($attributes['sambaKickoffTime']) && is_string($attributes['sambaKickoffTime'][0])) {
 			if ((int)$attributes['sambaKickoffTime'][0] < $the_time) {
 				\SimpleSAML\Logger::debug('Samba Account expired');
-				throw new SimpleSAML_Error_Error('SAMBA_ACCEXPIRED');
+				throw new SimpleSAML\Error\Error('SAMBA_ACCEXPIRED');
 			}
 		}
 
@@ -182,7 +182,7 @@ class sspmod_uldap_Auth_Source_uLDAP extends sspmod_core_Auth_UserPassBase {
 		if (isset($attributes['shadowMax']) && is_array($attributes['shadowLastChange'])) {
 			if (((int)$attributes['shadowMax'][0] + (int)$attributes['shadowLastChange'][0]) < (floor($the_time / 86400))) {
 				\SimpleSAML\Logger::debug('LDAP password change required');
-				throw new SimpleSAML_Error_Error('LDAP_PWCHANGE');
+				throw new SimpleSAML\Error\Error('LDAP_PWCHANGE');
 			}
 		}
 		// krb5PasswordEnd < today (ldap attribute format: 20161020000000Z)
@@ -191,14 +191,14 @@ class sspmod_uldap_Auth_Source_uLDAP extends sspmod_core_Auth_UserPassBase {
 			$date = DateTime::createFromFormat('Ymd+', $attributes['krb5PasswordEnd'][0]);
 			if ($date->getTimestamp() < ($the_time + 1)) {
 				\SimpleSAML\Logger::debug('Kerberos password change required');
-				throw new SimpleSAML_Error_Error('KRB_PWCHANGE');
+				throw new SimpleSAML\Error\Error('KRB_PWCHANGE');
 			}
 		}
 		// samba:
 		if (isset($attributes['sambaKickoffTime']) && is_string($attributes['sambaKickoffTime'][0])) {
 			if ((int)$attributes['sambaKickoffTime'][0] < $the_time) {
 				\SimpleSAML\Logger::debug('Samba password change required');
-				throw new SimpleSAML_Error_Error('SAMBA_PWCHANGE');
+				throw new SimpleSAML\Error\Error('SAMBA_PWCHANGE');
 			}
 		}
 
@@ -207,14 +207,14 @@ class sspmod_uldap_Auth_Source_uLDAP extends sspmod_core_Auth_UserPassBase {
 		if (isset($attributes['sambaAcctFlags']) && is_string($attributes['sambaAcctFlags'][0])) {
 			if (strpos($attributes['sambaAcctFlags'][0],'L') !== false) {
 				\SimpleSAML\Logger::debug('Samba account locked');
-				throw new SimpleSAML_Error_Error('SAMBA_ACCLOCKED');
+				throw new SimpleSAML\Error\Error('SAMBA_ACCLOCKED');
 			}
 		}
 		// krb: krb5KDCFlags=254
 		if (isset($attributes['krb5KDCFlags']) && is_string($attributes['krb5KDCFlags'][0])) {
 			if ((int)$attributes['krb5KDCFlags'][0] === 254) {
 				\SimpleSAML\Logger::debug('Kerberos account locked');
-				throw new SimpleSAML_Error_Error('KRB_ACCLOCKED');
+				throw new SimpleSAML\Error\Error('KRB_ACCLOCKED');
 			}
 		}
 		// ldap: locking ldap is done by modifying password > but then ldap bind has failed anyway
@@ -238,7 +238,7 @@ class sspmod_uldap_Auth_Source_uLDAP extends sspmod_core_Auth_UserPassBase {
 				// The double dot in the error marks this as custom error which is not defined in
 				// lib/SimpleSAML/Error/ErrorCodes.php
 				// Without it a cgi error is thrown "PHP Notice:  Undefined index: SELFSERVICE_ACCUNVERIFIED"
-				throw new SimpleSAML_Error_Error('univention:SELFSERVICE_ACCUNVERIFIED');
+				throw new SimpleSAML\Error\Error('univention:SELFSERVICE_ACCUNVERIFIED');
 			}
 		}
 	}
