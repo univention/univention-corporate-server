@@ -6,12 +6,12 @@ src: unbound
 fix: 1.9.0-2+deb10u3
 desc: |
  This update addresses the following issues:
- * symbolic link traversal when writing PID file (CVE-2020-28935)
+ * Symbolic link traversal when writing PID file (CVE-2020-28935)
  * NRDelegation attack leads to uncontrolled resource consumption
    (Non-Responsive Delegation Attack) (CVE-2022-3204)
- * novel ghost domain attack that allows attackers to trigger continued
+ * Novel ghost domain attack that allows attackers to trigger continued
    resolvability of malicious domain names (CVE-2022-30698)
- * novel ghost domain attack that allows attackers to trigger continued
+ * Novel ghost domain attack that allows attackers to trigger continued
    resolvability of malicious domain names (CVE-2022-30699)
 bug: [55932]
 cve:
