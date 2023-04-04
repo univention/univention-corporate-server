@@ -63,7 +63,7 @@ if ($json != NULL) {
 		$langlinkarray[] = array(
 			"id" => $entry['id'],
 			"label" => $entry['label'],
-			"href" => SimpleSAML_Utilities::addURLparameter(SimpleSAML_Utilities::selfURL(), array($langparam => $langstring))
+			"href" => SimpleSAML\Utilities::addURLparameter(SimpleSAML\Utilities::selfURL(), array($langparam => $langstring))
 		);
 	}
 }
