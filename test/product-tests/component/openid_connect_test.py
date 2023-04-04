@@ -108,7 +108,7 @@ def owncloud_logout(chrome):
     element.click()
     time.sleep(1)  # this sleep improves visibility in the screen recording
     # within the open menu there is a logout link. Click it...
-    chrome.driver.find_element_by_id('logout').click()
+    chrome.driver.find_element(By.ID, 'logout').click()
     wait_for_page_fully_loaded(chrome.driver)
 
 
@@ -119,7 +119,7 @@ def owncloud_close_welcome_screen(chrome):
         # version But we do not want to test owncloud and only get rid of the
         # dialog.  So we try to get rid of it, but it does not break our test
         # if it is not there.
-        chrome.driver.find_element_by_id("closeWizard").click()
+        chrome.driver.find_element(By.ID, "closeWizard").click()
         time.sleep(1)
     except NoSuchElementException:
         pass  # since we are not testing the owncloud app it does not matter
@@ -155,7 +155,7 @@ def portal_login_click(chrome):
     # sanity check...
     assert chrome.driver.current_url.find("/univention/portal/")
     # click the login button and wait for the login page...
-    chrome.driver.find_element_by_id('umcLoginButton_label').click()
+    chrome.driver.find_element(By.ID, 'umcLoginButton_label').click()
     wait_for_page_fully_loaded(chrome.driver)
 
 
@@ -170,9 +170,9 @@ def portal_login(chrome, username, password):
     # we enter username and password and log in. Because logging in takes a
     # while we can see the values in the produced video. No sleep required
     # here...
-    chrome.driver.find_element_by_id('umcLoginUsername').send_keys(username)
-    chrome.driver.find_element_by_id('umcLoginPassword').send_keys(password)
-    chrome.driver.find_element_by_id('umcLoginSubmit').click()
+    chrome.driver.find_element(By.ID, 'umcLoginUsername').send_keys(username)
+    chrome.driver.find_element(By.ID, 'umcLoginPassword').send_keys(password)
+    chrome.driver.find_element(By.ID, 'umcLoginSubmit').click()
     wait_for_page_fully_loaded(chrome.driver)
 
 
@@ -180,8 +180,7 @@ def owncloud_click_single_signon(chrome):
     # the single sign own button is a little hard to locate, because it has no
     # dedicated id. We use the xpath syntax to click the correct link within
     # the last known element with an `id`
-    chrome.driver.find_element_by_xpath(
-        '//*[@id="alternative-logins"]/fieldset/ul/li/a').click()
+    chrome.driver.find_element(By.XPATH, '//*[@id="alternative-logins"]/fieldset/ul/li/a').click()
     wait_for_page_fully_loaded(chrome.driver)
 
 
@@ -233,7 +232,7 @@ def test_owncloud_with_portal_login(chrome, users):
         assert chrome.driver.current_url == "https://backup.autotest.test/univention/portal/"
 
         # assert "LOGOUT" \ # it is logout for some reason :/
-        assert chrome.driver.find_element_by_id('umcLoginButton_label').text == "LOGOUT"
+        assert chrome.driver.find_element(By.ID, 'umcLoginButton_label').text == "LOGOUT"
 
 
 def test_owncloud_with_openid_login(chrome, users):
@@ -327,7 +326,8 @@ def test_owncloud_in_tab_logout_in_portal(chrome, users):
         portal_wait_for_tiles(chrome)
 
         # locate the owncloud tile based on its xpath
-        owncloud_tile = chrome.driver.find_element_by_xpath(
+        owncloud_tile = chrome.driver.find_element(
+            By.XPATH,
             "//*[contains(@class, 'umcGalleryNameContent') and text() = 'ownCloud']")
 
         # hold the CTRL key, click the owncloud tile, release the CTRL key...
@@ -352,11 +352,11 @@ def test_owncloud_in_tab_logout_in_portal(chrome, users):
         chrome.change_tab(0)
 
         # logout button
-        chrome.driver.find_element_by_id('umcLoginButton_label').click()
+        chrome.driver.find_element(By.ID, 'umcLoginButton_label').click()
         wait_for_page_fully_loaded(chrome.driver)
         highlight_this_part(chrome, test_name + "-portal_logout_clicked")
         # confirmation dialog of the log out from the portal
-        chrome.driver.find_element_by_id('umc_widgets_Button_1_label').click()
+        chrome.driver.find_element(By.ID, 'umc_widgets_Button_1_label').click()
         wait_for_page_fully_loaded(chrome.driver)
         highlight_this_part(chrome, test_name + "-portal_logout_confirmation")
 

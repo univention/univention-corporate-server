@@ -14,6 +14,7 @@
 import time
 
 import psutil
+from selenium.webdriver.common.by import By
 
 import univention.testing.ucr as ucr_test
 import univention.testing.udm as udm_test
@@ -175,7 +176,7 @@ class UMCTester(object):
         self.selenium.search_module('*')
 
         xpath = '//*[contains(concat(" ", normalize-space(@class), " "), " umcGalleryName ")]'
-        tile_headings = self.selenium.driver.find_elements_by_xpath(xpath)
+        tile_headings = self.selenium.driver.find_elements(By.XPATH, xpath)
 
         return [tile_heading.get_attribute("title") if tile_heading.get_attribute("title") else tile_heading.text for tile_heading in tile_headings]
 

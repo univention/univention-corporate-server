@@ -14,6 +14,7 @@
 import time
 
 import psutil
+from selenium.webdriver.common.by import By
 
 from univention.admin import localization
 from univention.service_info import ServiceInfo
@@ -124,7 +125,7 @@ class UMCTester(object):
 
     def get_service_grid_start_type(self, service):
         start_type_cell_xpath = expand_path('//td[@containsClass="field-service"]/descendant-or-self::*[text() = "%s"]/following::td[@containsClass="field-autostart"]/descendant-or-self::*[text() = "Automatically" or text() = "Manually" or text() = "Never"]' % service)
-        return self.selenium.driver.find_element_by_xpath(start_type_cell_xpath).text
+        return self.selenium.driver.find_element(By.XPATH, start_type_cell_xpath).text
 
     #
     # Code for starting, stopping, restarting
@@ -185,7 +186,7 @@ class UMCTester(object):
 
     def get_service_grid_status(self, service):
         status_cell_xpath = expand_path('//td[@containsClass="field-service"]/descendant-or-self::*[text() = "%s"]/following::td[@containsClass="field-isRunning"]/descendant-or-self::*[text() = "stopped" or text() = "running"]' % service)
-        return self.selenium.driver.find_element_by_xpath(status_cell_xpath).text
+        return self.selenium.driver.find_element(By.XPATH, status_cell_xpath).text
 
 
 if __name__ == '__main__':

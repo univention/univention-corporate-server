@@ -38,6 +38,7 @@ from typing import Any, Dict, Mapping, Optional  # noqa: F401
 
 from selenium import webdriver
 from selenium.common.exceptions import TimeoutException
+from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
 
 import univention.testing.strings as uts
@@ -153,7 +154,7 @@ class UDMBase:
             # FIXME: clicking Next on the page with the active directory warning
             # cuts the dialog in half and the dom elements are not clickable/visible.
             # This is a workaround
-            dialogs = self.selenium.driver.find_elements_by_class_name('umcUdmNewObjectDialog')
+            dialogs = self.selenium.driver.find_elements(By.CLASS_NAME, 'umcUdmNewObjectDialog')
             if len(dialogs):
                 self.selenium.driver.execute_script('dijit.byId("%s")._position()' % (dialogs[0].get_attribute('widgetid')))
 

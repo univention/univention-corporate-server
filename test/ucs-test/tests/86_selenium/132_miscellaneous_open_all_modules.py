@@ -11,6 +11,8 @@
 
 import logging
 
+from selenium.webdriver.common.by import By
+
 from univention.admin import localization
 from univention.testing import selenium
 from univention.testing.selenium.appcenter import AppCenter
@@ -41,7 +43,7 @@ class UMCTester(object):
 
     def get_available_modules(self):
         self.selenium.search_module('*')
-        tile_headings = self.selenium.driver.find_elements_by_css_selector('.umcGalleryName')
+        tile_headings = self.selenium.driver.find_elements(By.CSS_SELECTOR, '.umcGalleryName')
         return [tile_heading.get_attribute("title") if tile_heading.get_attribute("title") else tile_heading.text for tile_heading in tile_headings]
 
 

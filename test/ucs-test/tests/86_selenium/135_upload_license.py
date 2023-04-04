@@ -17,6 +17,7 @@ from subprocess import PIPE, Popen, check_call
 from tempfile import mkdtemp
 
 from selenium.common.exceptions import NoSuchElementException
+from selenium.webdriver.common.by import By
 
 import univention.testing.ucr as ucr_test
 from univention.admin import localization
@@ -85,7 +86,7 @@ class UMCTester(object):
         self.restart_umc_server()
         self.open_license_import_dialog()
         if as_text:
-            licenseText = self.selenium.driver.find_element_by_xpath('//textarea[@name="licenseText"]')
+            licenseText = self.selenium.driver.find_element(By.XPATH, '//textarea[@name="licenseText"]')
             with open(path) as f:
                 s = f.read()
                 licenseText.send_keys(s)
@@ -94,7 +95,7 @@ class UMCTester(object):
             self.selenium.click_button('Ok')
             self.selenium.wait_until_all_dialogues_closed()
         else:
-            uploader = self.selenium.driver.find_element_by_xpath('//*[contains(@id, "_Uploader_")]//input[@type="file"]')
+            uploader = self.selenium.driver.find_element(By.XPATH, '//*[contains(@id, "_Uploader_")]//input[@type="file"]')
             uploader.send_keys(os.path.abspath(path))
             self.selenium.wait_for_text('The license has been imported successfully')
             self.selenium.click_button('Ok')
@@ -109,9 +110,9 @@ class UMCTester(object):
                     expected_license_type = line.split(':')[1].strip()
         print('Checking if "%s" is set as "License type" in the license information dialog' % (expected_license_type,))
         try:
-            self.selenium.driver.find_element_by_xpath('//*[text() = "License type:"]/parent::*[contains(text(), "%s")]' % (expected_license_type,))
+            self.selenium.driver.find_element(By.XPATH, '//*[text() = "License type:"]/parent::*[contains(text(), "%s")]' % (expected_license_type,))
         except NoSuchElementException:
-            license_type = self.selenium.driver.find_element_by_xpath('//*[text() = "License type:"]/parent::*').text
+            license_type = self.selenium.driver.find_element(By.XPATH, '//*[text() = "License type:"]/parent::*').text
             license_type = license_type.split(':')[1].strip()
             utils.fail('The "License type" in the license information dialog should have been "%s" but was "%s" instead' % (expected_license_type, license_type))
         print('Correct license type found')

@@ -15,6 +15,7 @@ import time
 
 import passlib.hash
 import pytest
+from selenium.webdriver.common.by import By
 
 import univention.admin.uldap
 from univention.config_registry import handler_set as hs
@@ -57,9 +58,9 @@ def get_new_ssp(chrome, user):
     chrome.enter_input('password', 'univention')
     chrome.enter_return()
     time.sleep(10)
-    chrome.driver.find_elements_by_css_selector(".primary")[0].click()
+    chrome.driver.find_elements(By.CSS_SELECTOR, ".primary")[0].click()
     time.sleep(10)
-    elem = chrome.driver.find_elements_by_css_selector(".service-specific-passwords__hint")[0]
+    elem = chrome.driver.find_elements(By.CSS_SELECTOR, ".service-specific-passwords__hint")[0]
     return elem.text.splitlines()[1]
 
 

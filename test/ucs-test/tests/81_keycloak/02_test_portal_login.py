@@ -5,6 +5,7 @@
 ## exposure: dangerous
 
 import pytest
+from selenium.webdriver.common.by import By
 from utils import keycloak_get_request, keycloak_password_change, keycloak_sessions_by_user, wait_for_id
 
 import univention.testing.udm as udm_test
@@ -87,8 +88,8 @@ def test_password_change_empty_passwords_fails(portal_login_via_keycloak, keyclo
         driver = portal_login_via_keycloak(username, "univention", verify_login=False)
         wait_for_id(driver, keycloak_config.password_id)
         # just click the button without old or new passwords
-        driver.find_element_by_id(keycloak_config.password_change_button_id).click()
-        error = driver.find_element_by_css_selector(keycloak_config.password_update_error_css_selector)
+        driver.find_element(By.ID, keycloak_config.password_change_button_id).click()
+        error = driver.find_element(By.CSS_SELECTOR, keycloak_config.password_update_error_css_selector)
         assert error.text == "Please specify password.", error.text
         wait_for_id(driver, keycloak_config.password_id)
 

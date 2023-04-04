@@ -9,6 +9,7 @@
 ## exposure: dangerous
 
 import apt
+from selenium.webdriver.common.by import By
 
 from univention.admin import localization
 from univention.testing import selenium, utils
@@ -71,7 +72,7 @@ class UMCTester(object):
             self.selenium.wait_until_standby_animation_appears_and_disappears()
 
             installation_status_path = expand_path('//*[text() = "%s"]/ancestor-or-self::*[@containsClass="field-package"]/following-sibling::*[@containsClass="field-status"]' % package_name)
-            installation_status = self.selenium.driver.find_element_by_xpath(installation_status_path).text
+            installation_status = self.selenium.driver.find_element(By.XPATH, installation_status_path).text
             if installation_status != expected_status:
                 raise UmcError('The installation status of package "%s" should be "%s" but is "%s"' % (package_name, expected_status, installation_status))
 

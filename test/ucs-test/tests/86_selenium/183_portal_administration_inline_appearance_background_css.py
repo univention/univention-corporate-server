@@ -12,6 +12,8 @@
 import logging
 import time
 
+from selenium.webdriver.common.by import By
+
 import univention.testing.strings as uts
 import univention.testing.ucr as ucr_test
 from univention.admin import localization
@@ -78,7 +80,7 @@ class UMCTester(object):
         time.sleep(10)  # wait for the css to be reloaded
 
         logger.info('Checking whether changing the background css worked')
-        body_background = self.selenium.driver.find_element_by_tag_name('body').value_of_css_property('background')
+        body_background = self.selenium.driver.find_element(By.TAG_NAME, 'body').value_of_css_property('background')
         if 'rgb(100, 100, 100)' not in body_background:
             # the appearance changes should be hot reloaded so this is a fail
             # but check if the color was changed at all
@@ -87,7 +89,7 @@ class UMCTester(object):
             self.selenium.driver.get(self.selenium.base_url)
             self.selenium.wait_for_text(self.dummy_portal_title)
 
-            body_background = self.selenium.driver.find_element_by_tag_name('body').value_of_css_property('background')
+            body_background = self.selenium.driver.find_element(By.TAG_NAME, 'body').value_of_css_property('background')
             if 'rgb(100, 100, 100)' not in body_background:
                 raise ChangeBackgroundCSSError('Changing the background css did not work')
             raise ChangeBackgroundCSSError('(Setting) The background css should be hot reloaded after a save but it was not')

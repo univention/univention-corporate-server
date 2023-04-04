@@ -37,6 +37,7 @@ from time import sleep
 from typing import Any  # noqa: F401
 
 from selenium.common.exceptions import TimeoutException
+from selenium.webdriver.common.by import By
 
 from univention.admin import localization
 from univention.testing.selenium.utils import expand_path
@@ -145,7 +146,8 @@ class AppCenter:
         category = category or _('All')
         self.select_search_category(category)
 
-        search_field = self.selenium.driver.find_element_by_xpath(
+        search_field = self.selenium.driver.find_element(
+            By.XPATH,
             '//*[contains(text(), "%s")]/../input' % ('Search applications...',),
         )
         search_field.send_keys(text)

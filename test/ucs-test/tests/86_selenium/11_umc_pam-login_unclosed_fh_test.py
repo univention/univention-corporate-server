@@ -94,7 +94,7 @@ class UMCTester:
                 ),
             ).send_keys(pw)
 
-            elem = self.browser.find_elements_by_id("umcLoginSubmit")[0]
+            elem = self.browser.find_elements(By.ID, "umcLoginSubmit")[0]
             elem.click()
 
             WebDriverWait(self.browser, 30).until(

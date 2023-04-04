@@ -13,6 +13,8 @@
 import json
 import pprint
 
+from selenium.webdriver.common.by import By
+
 from univention.admin import localization
 from univention.testing import selenium, utils
 from univention.testing.selenium.appcenter import AppCenter
@@ -53,7 +55,7 @@ class UMCTester(object):
 
     def get_available_modules(self):
         self.selenium.search_module('*')
-        tile_headings = self.selenium.driver.find_elements_by_class_name('umcGalleryName')
+        tile_headings = self.selenium.driver.find_elements(By.CLASS_NAME, 'umcGalleryName')
         return [tile_heading.text for tile_heading in tile_headings]
 
     def gather_dijit_registy_map(self):

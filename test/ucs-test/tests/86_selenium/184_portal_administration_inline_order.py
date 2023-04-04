@@ -11,6 +11,8 @@
 
 import logging
 
+from selenium.webdriver.common.by import By
+
 import univention.testing.strings as uts
 import univention.testing.ucr as ucr_test
 from univention.admin import localization
@@ -108,13 +110,13 @@ class UMCTester(object):
 
         logger.info('Check order before dnd')
         # Category_B is after Category_A
-        self.selenium.driver.find_element_by_xpath('//h2[text()="%s"]/following::h2[text()="%s"]' % (self.cat_a_dname, self.cat_b_dname))
+        self.selenium.driver.find_element(By.XPATH, '//h2[text()="%s"]/following::h2[text()="%s"]' % (self.cat_a_dname, self.cat_b_dname))
         # Entry_A is in Category_A
-        self.selenium.driver.find_element_by_xpath(expand_path('//h2[text()="%s"]/following-sibling::*//*[@containsClass="tile__name"][text()="%s"]' % (self.cat_a_dname, self.entry_a_1_dname)))
-        self.selenium.driver.find_element_by_xpath(expand_path('//h2[text()="%s"]/following-sibling::*//*[@containsClass="tile__name"][text()="%s"]' % (self.cat_a_dname, self.entry_a_2_dname)))
-        self.selenium.driver.find_element_by_xpath(expand_path('//h2[text()="%s"]/following-sibling::*//*[@containsClass="tile__name"][text()="%s"]/following::*[@containsClass="tile__name"][text()="%s"]' % (self.cat_a_dname, self.entry_a_1_dname, self.entry_a_2_dname)))
+        self.selenium.driver.find_element(By.XPATH, expand_path('//h2[text()="%s"]/following-sibling::*//*[@containsClass="tile__name"][text()="%s"]' % (self.cat_a_dname, self.entry_a_1_dname)))
+        self.selenium.driver.find_element(By.XPATH, expand_path('//h2[text()="%s"]/following-sibling::*//*[@containsClass="tile__name"][text()="%s"]' % (self.cat_a_dname, self.entry_a_2_dname)))
+        self.selenium.driver.find_element(By.XPATH, expand_path('//h2[text()="%s"]/following-sibling::*//*[@containsClass="tile__name"][text()="%s"]/following::*[@containsClass="tile__name"][text()="%s"]' % (self.cat_a_dname, self.entry_a_1_dname, self.entry_a_2_dname)))
         # Entry_B is in Category_B
-        self.selenium.driver.find_element_by_xpath(expand_path('//h2[text()="%s"]/following-sibling::*//*[@containsClass="tile__name"][text()="%s"]' % (self.cat_b_dname, self.entry_b_dname)))
+        self.selenium.driver.find_element(By.XPATH, expand_path('//h2[text()="%s"]/following-sibling::*//*[@containsClass="tile__name"][text()="%s"]' % (self.cat_b_dname, self.entry_b_dname)))
 
         logger.info('Drag category b above category a')
         self.selenium.drag_and_drop(
@@ -126,13 +128,13 @@ class UMCTester(object):
 
         logger.info('Check order after category dnd')
         # Category_A is after Category_B
-        self.selenium.driver.find_element_by_xpath(expand_path('//h2[text()="%s"]/following::h2[text()="%s"]' % (self.cat_b_dname, self.cat_a_dname)))
+        self.selenium.driver.find_element(By.XPATH, expand_path('//h2[text()="%s"]/following::h2[text()="%s"]' % (self.cat_b_dname, self.cat_a_dname)))
         # Entry_A is in Category_A
-        self.selenium.driver.find_element_by_xpath(expand_path('//h2[text()="%s"]/following-sibling::*//*[@containsClass="tile__name"][text()="%s"]' % (self.cat_a_dname, self.entry_a_1_dname)))
-        self.selenium.driver.find_element_by_xpath(expand_path('//h2[text()="%s"]/following-sibling::*//*[@containsClass="tile__name"][text()="%s"]' % (self.cat_a_dname, self.entry_a_2_dname)))
-        self.selenium.driver.find_element_by_xpath(expand_path('//h2[text()="%s"]/following-sibling::*//*[@containsClass="tile__name"][text()="%s"]/following::*[@containsClass="tile__name"][text()="%s"]' % (self.cat_a_dname, self.entry_a_1_dname, self.entry_a_2_dname)))
+        self.selenium.driver.find_element(By.XPATH, expand_path('//h2[text()="%s"]/following-sibling::*//*[@containsClass="tile__name"][text()="%s"]' % (self.cat_a_dname, self.entry_a_1_dname)))
+        self.selenium.driver.find_element(By.XPATH, expand_path('//h2[text()="%s"]/following-sibling::*//*[@containsClass="tile__name"][text()="%s"]' % (self.cat_a_dname, self.entry_a_2_dname)))
+        self.selenium.driver.find_element(By.XPATH, expand_path('//h2[text()="%s"]/following-sibling::*//*[@containsClass="tile__name"][text()="%s"]/following::*[@containsClass="tile__name"][text()="%s"]' % (self.cat_a_dname, self.entry_a_1_dname, self.entry_a_2_dname)))
         # Entry_B is in Category_B
-        self.selenium.driver.find_element_by_xpath(expand_path('//h2[text()="%s"]/following-sibling::*//*[@containsClass="tile__name"][text()="%s"]' % (self.cat_b_dname, self.entry_b_dname)))
+        self.selenium.driver.find_element(By.XPATH, expand_path('//h2[text()="%s"]/following-sibling::*//*[@containsClass="tile__name"][text()="%s"]' % (self.cat_b_dname, self.entry_b_dname)))
 
         # TODO dragging entries across categories does not work in selenium for some reason
         self.selenium.drag_and_drop(
@@ -144,13 +146,13 @@ class UMCTester(object):
 
         logger.info('Check order after entry dnd')
         # Category_A is after Category_B
-        self.selenium.driver.find_element_by_xpath('//h2[text()="%s"]/following::h2[text()="%s"]' % (self.cat_b_dname, self.cat_a_dname))
+        self.selenium.driver.find_element(By.XPATH, '//h2[text()="%s"]/following::h2[text()="%s"]' % (self.cat_b_dname, self.cat_a_dname))
         # Entry_A is in Category_A
-        self.selenium.driver.find_element_by_xpath(expand_path('//h2[text()="%s"]/following-sibling::*//*[@containsClass="tile__name"][text()="%s"]' % (self.cat_a_dname, self.entry_a_1_dname)))
-        self.selenium.driver.find_element_by_xpath(expand_path('//h2[text()="%s"]/following-sibling::*//*[@containsClass="tile__name"][text()="%s"]' % (self.cat_a_dname, self.entry_a_2_dname)))
-        self.selenium.driver.find_element_by_xpath(expand_path('//h2[text()="%s"]/following-sibling::*//*[@containsClass="tile__name"][text()="%s"]/following::*[@containsClass="tile__name"][text()="%s"]' % (self.cat_a_dname, self.entry_a_2_dname, self.entry_a_1_dname)))
+        self.selenium.driver.find_element(By.XPATH, expand_path('//h2[text()="%s"]/following-sibling::*//*[@containsClass="tile__name"][text()="%s"]' % (self.cat_a_dname, self.entry_a_1_dname)))
+        self.selenium.driver.find_element(By.XPATH, expand_path('//h2[text()="%s"]/following-sibling::*//*[@containsClass="tile__name"][text()="%s"]' % (self.cat_a_dname, self.entry_a_2_dname)))
+        self.selenium.driver.find_element(By.XPATH, expand_path('//h2[text()="%s"]/following-sibling::*//*[@containsClass="tile__name"][text()="%s"]/following::*[@containsClass="tile__name"][text()="%s"]' % (self.cat_a_dname, self.entry_a_2_dname, self.entry_a_1_dname)))
         # Entry_B is in Category_B
-        self.selenium.driver.find_element_by_xpath(expand_path('//h2[text()="%s"]/following-sibling::*//*[@containsClass="tile__name"][text()="%s"]' % (self.cat_b_dname, self.entry_b_dname)))
+        self.selenium.driver.find_element(By.XPATH, expand_path('//h2[text()="%s"]/following-sibling::*//*[@containsClass="tile__name"][text()="%s"]' % (self.cat_b_dname, self.entry_b_dname)))
 
         logger.info('Reload dummy portal')
         self.selenium.driver.get(self.selenium.base_url)
@@ -158,13 +160,13 @@ class UMCTester(object):
 
         logger.info('Check order after reload')
         # Category_A is after Category_B
-        self.selenium.driver.find_element_by_xpath('//h2[text()="%s"]/following::h2[text()="%s"]' % (self.cat_b_dname, self.cat_a_dname))
+        self.selenium.driver.find_element(By.XPATH, '//h2[text()="%s"]/following::h2[text()="%s"]' % (self.cat_b_dname, self.cat_a_dname))
         # Entry_A is in Category_A
-        self.selenium.driver.find_element_by_xpath(expand_path('//h2[text()="%s"]/following-sibling::*//*[@containsClass="tile__name"][text()="%s"]' % (self.cat_a_dname, self.entry_a_1_dname)))
-        self.selenium.driver.find_element_by_xpath(expand_path('//h2[text()="%s"]/following-sibling::*//*[@containsClass="tile__name"][text()="%s"]' % (self.cat_a_dname, self.entry_a_2_dname)))
-        self.selenium.driver.find_element_by_xpath(expand_path('//h2[text()="%s"]/following-sibling::*//*[@containsClass="tile__name"][text()="%s"]/following::*[@containsClass="tile__name"][text()="%s"]' % (self.cat_a_dname, self.entry_a_2_dname, self.entry_a_1_dname)))
+        self.selenium.driver.find_element(By.XPATH, expand_path('//h2[text()="%s"]/following-sibling::*//*[@containsClass="tile__name"][text()="%s"]' % (self.cat_a_dname, self.entry_a_1_dname)))
+        self.selenium.driver.find_element(By.XPATH, expand_path('//h2[text()="%s"]/following-sibling::*//*[@containsClass="tile__name"][text()="%s"]' % (self.cat_a_dname, self.entry_a_2_dname)))
+        self.selenium.driver.find_element(By.XPATH, expand_path('//h2[text()="%s"]/following-sibling::*//*[@containsClass="tile__name"][text()="%s"]/following::*[@containsClass="tile__name"][text()="%s"]' % (self.cat_a_dname, self.entry_a_2_dname, self.entry_a_1_dname)))
         # Entry_B is in Category_B
-        self.selenium.driver.find_element_by_xpath(expand_path('//h2[text()="%s"]/following-sibling::*//*[@containsClass="tile__name"][text()="%s"]' % (self.cat_b_dname, self.entry_b_dname)))
+        self.selenium.driver.find_element(By.XPATH, expand_path('//h2[text()="%s"]/following-sibling::*//*[@containsClass="tile__name"][text()="%s"]' % (self.cat_b_dname, self.entry_b_dname)))
 
     def cleanup(self):
         logger.info('Cleanup')

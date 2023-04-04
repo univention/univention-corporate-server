@@ -13,6 +13,8 @@ import subprocess
 import tempfile
 import time
 
+from selenium.webdriver.common.by import By
+
 from univention.admin import localization
 from univention.testing import selenium
 
@@ -174,7 +176,8 @@ class UMCTester(object):
         self.selenium.enter_input('pattern', pattern)
         self.selenium.submit_input('pattern')
         self.selenium.wait_until_standby_animation_appears_and_disappears()
-        grid_rows = self.selenium.driver.find_elements_by_xpath(
+        grid_rows = self.selenium.driver.find_elements(
+            By.XPATH,
             '//*[contains(concat(" ", normalize-space(@class), " "), '
             '" dgrid-row ")][@role="row"]',
         )
@@ -184,14 +187,16 @@ class UMCTester(object):
         return search_results
 
     def get_key(self, grid_row):
-        elem = grid_row.find_element_by_xpath(
+        elem = grid_row.find_element(
+            By.XPATH,
             './/*[contains(concat(" ", normalize-space(@class), " "), '
             '" field-key ")]',
         )
         return elem.text
 
     def get_value(self, grid_row):
-        elem = grid_row.find_element_by_xpath(
+        elem = grid_row.find_element(
+            By.XPATH,
             './/*[contains(concat(" ", normalize-space(@class), " "), '
             '" field-value ")]',
         )

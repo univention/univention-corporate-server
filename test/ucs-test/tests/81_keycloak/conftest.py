@@ -34,6 +34,7 @@ from typing import Optional
 
 import pytest
 from selenium import webdriver
+from selenium.webdriver.common.by import By
 from utils import get_portal_tile, keycloak_login, keycloak_password_change, wait_for_class, wait_for_id
 
 from univention.appcenter.actions import get_action
@@ -276,7 +277,7 @@ def keycloak_adm_login(selenium: webdriver.Chrome, keycloak_config: SimpleNamesp
         wait_for_class(selenium, keycloak_config.admin_console_class)
         assert selenium.title == keycloak_config.title
         admin_console = wait_for_class(selenium, keycloak_config.admin_console_class)[0]
-        admin_console.find_element_by_tag_name("a").click()
+        admin_console.find_element(By.TAG_NAME, "a").click()
         keycloak_login(selenium, keycloak_config, username, password, fails_with=fails_with)
         if fails_with:
             return selenium

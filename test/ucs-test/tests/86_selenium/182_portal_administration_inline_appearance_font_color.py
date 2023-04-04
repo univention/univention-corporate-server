@@ -12,6 +12,8 @@
 import logging
 import time
 
+from selenium.webdriver.common.by import By
+
 import univention.testing.strings as uts
 import univention.testing.ucr as ucr_test
 from univention.admin import localization
@@ -78,7 +80,7 @@ class UMCTester(object):
         time.sleep(10)  # wait for the css to be reloaded
 
         logger.info('Checking whether changing the font color worked')
-        title_node_font_color = self.selenium.driver.find_element_by_id('portalTitle').value_of_css_property('color')
+        title_node_font_color = self.selenium.driver.find_element(By.ID, 'portalTitle').value_of_css_property('color')
         if 'rgba(255, 255, 255, 1)' not in title_node_font_color:
             # the appearance changes should be hot reloaded so this is a fail
             # but check if the color was changed at all
@@ -87,7 +89,7 @@ class UMCTester(object):
             self.selenium.driver.get(self.selenium.base_url)
             self.selenium.wait_for_text(self.dummy_portal_title)
 
-            title_node_font_color = self.selenium.driver.find_element_by_id('portalTitle').value_of_css_property('color')
+            title_node_font_color = self.selenium.driver.find_element(By.ID, 'portalTitle').value_of_css_property('color')
             if 'rgba(255, 255, 255, 1)' not in title_node_font_color:
                 raise ChangeFontColorError('Changing the font color did not work')
             raise ChangeFontColorError('The font color should be hot reloaded after a save but it was not')

@@ -16,6 +16,7 @@ import time
 from ldap.filter import filter_format
 from selenium import webdriver
 from selenium.common.exceptions import TimeoutException, WebDriverException
+from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions
 
 import univention.admin.modules as udm_modules
@@ -189,7 +190,7 @@ class UMCTester(object):
         self.selenium.enter_input('new_password', new_password)
         # FIXME: Thing get dirty here, because the input field for the password
         # retype has no name.
-        elem = self.selenium.driver.find_element_by_xpath('//input[@id="umcLoginNewPasswordRetype"]')
+        elem = self.selenium.driver.find_element(By.XPATH, '//input[@id="umcLoginNewPasswordRetype"]')
         elem.clear()
         elem.send_keys(new_password)
         elem.submit()

@@ -45,6 +45,7 @@ from typing import Optional, Type  # noqa: F401
 import selenium.common.exceptions as selenium_exceptions
 from PIL import Image
 from selenium import webdriver
+from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions
 
 import univention.testing.ucr as ucr_test
@@ -197,7 +198,7 @@ class UMCSeleniumTest(ChecksAndWaits, Interactions):
 
     def crop_screenshot_to_element(self, image_filename, xpath):
         # type: (str, str) -> Image
-        elem = self.driver.find_element_by_xpath(xpath)
+        elem = self.driver.find_element(By.XPATH, xpath)
         location = elem.location
         size = elem.size
         top, left = int(location['y']), int(location['x'])
@@ -327,7 +328,7 @@ class UMCSeleniumTest(ChecksAndWaits, Interactions):
     #     """
     #     This method finds html input tags by name attribute and selects and returns first element with location on screen (visible region).
     #     """
-    #     elems = self.driver.find_elements_by_name(inputname)
+    #     elems = self.driver.find_elements(By.NAME, inputname)
     #     elem = self.find_visible_element_from_list(elems)
     #     if not elem:
     #         elem = self.find_visible_checkbox_from_list(elems)
@@ -338,14 +339,14 @@ class UMCSeleniumTest(ChecksAndWaits, Interactions):
     #     return elem
 
     # def check_wizard_checkbox_by_name(self, inputname, checked=True):
-    #     elem = self.driver.find_element_by_xpath("//div[starts-with(@id,'umc_modules_udm_wizards_')]//input[@name= %s ]" % json.dumps(inputname))
+    #     elem = self.driver.find_element(By.XPATH, "//div[starts-with(@id,'umc_modules_udm_wizards_')]//input[@name= %s ]" % json.dumps(inputname))
     #     for i in range(0, 3):
     #         if elem.is_selected() is not checked:
     #             elem.click()
     #     return elem
 
     # def find_combobox_by_name(self, inputname):
-    #     return self.driver.find_element_by_xpath("//input[@name = %s]/parent::div/input[starts-with(@id,'umc_widgets_ComboBox')]" % json.dumps(inputname))
+    #     return self.driver.find_element(By.XPATH, "//input[@name = %s]/parent::div/input[starts-with(@id,'umc_widgets_ComboBox')]" % json.dumps(inputname))
 
     # @staticmethod
     # def find_visible_element_from_list(elements):
@@ -366,7 +367,7 @@ class UMCSeleniumTest(ChecksAndWaits, Interactions):
 
     # def find_error_symbol_for_inputfield(self, inputfield):
     #     logger.info('check error symbol', inputfield)
-    #     elems = self.driver.find_elements_by_xpath("//input[@name= %s ]/parent::div/parent::div/div[contains(@class,'dijitValidationContainer')]" % json.dumps(inputfield))
+    #     elems = self.driver.find_elements(By.XPATH, "//input[@name= %s ]/parent::div/parent::div/div[contains(@class,'dijitValidationContainer')]" % json.dumps(inputfield))
     #     elem = self.find_visible_element_from_list(elems)
     #     if elem:
     #         return True
@@ -383,6 +384,6 @@ class UMCSeleniumTest(ChecksAndWaits, Interactions):
     #             raise ValueError()
 
     # def select_table_item_by_name(self, itemname):
-    #     elem = self.driver.find_element_by_xpath("//div[contains(text(), %s )]/parent::td" % json.dumps(itemname))
+    #     elem = self.driver.find_element(By.XPATH, "//div[contains(text(), %s )]/parent::td" % json.dumps(itemname))
     #     #TODO if not elem search itemname
     #     elem.click()

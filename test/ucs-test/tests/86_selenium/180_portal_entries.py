@@ -9,6 +9,8 @@
 ## join: true
 ## exposure: dangerous
 
+from selenium.webdriver.common.by import By
+
 import univention.testing.ucr as ucr_test
 from univention.admin import localization
 from univention.testing import selenium
@@ -49,7 +51,7 @@ class UMCTester(object):
         for entry in expected_entries:
             print("Looking under category '%s' for entry with name '%s'" % (entry[0], entry[1]))
             self.selenium.wait_for_text(entry[1])
-            self.selenium.driver.find_element_by_xpath('//*[@class = "portal-category"]/h2/span[text() = "%s"]/../..//*[@class = "portal-tile__name"][text() = "%s"]' % (entry[0], entry[1]))
+            self.selenium.driver.find_element(By.XPATH, '//*[@class = "portal-category"]/h2/span[text() = "%s"]/../..//*[@class = "portal-tile__name"][text() = "%s"]' % (entry[0], entry[1]))
 
     def go_to_portal(self, url):
         print("Going to portal of: %s" % (url))

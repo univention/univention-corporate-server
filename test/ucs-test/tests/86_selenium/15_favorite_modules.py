@@ -13,6 +13,7 @@ import re
 import time
 
 from selenium.common.exceptions import NoSuchElementException
+from selenium.webdriver.common.by import By
 
 import univention.testing.ucr as ucr_test
 from univention.admin import localization
@@ -56,7 +57,7 @@ class UMCTester(object):
         # check if the default favorite modules are in the favorites category
         for favorite in self._get_default_favorites():
             try:
-                self.selenium.driver.find_element_by_css_selector('.umcGalleryWrapperItem[moduleid^="%s"]' % (favorite,))
+                self.selenium.driver.find_element(By.CSS_SELECTOR, '.umcGalleryWrapperItem[moduleid^="%s"]' % (favorite,))
             except NoSuchElementException:
                 raise FavoriteModulesError('A default favorite module is missing: %s' % (favorite,))
 
@@ -78,7 +79,7 @@ class UMCTester(object):
     def test_add_to_favorites(self):
         # add a module to favorites via right click from users category
         self.selenium.click_button(_('Users'))
-        module_name = self.selenium.driver.find_element_by_css_selector('.umcGalleryName').text
+        module_name = self.selenium.driver.find_element(By.CSS_SELECTOR, '.umcGalleryName').text
         self.selenium.click_element(
             expand_path('//*[@containsClass="umcGalleryName"][text() = "%s"]' % (module_name,)),
             right_click=True,
@@ -86,7 +87,7 @@ class UMCTester(object):
         self.selenium.click_text(_('Add to favorites'))
 
         # check if the flag icon appeared
-        if not len(self.selenium.driver.find_elements_by_xpath(cc('//div[@containsClass="umcGalleryName"][text() = "%s"]/../div[@containsClass="umcFavoriteIconDefault"]') % (module_name,))):
+        if not len(self.selenium.driver.find_elements(By.XPATH, cc('//div[@containsClass="umcGalleryName"][text() = "%s"]/../div[@containsClass="umcFavoriteIconDefault"]') % (module_name,))):
             raise FavoriteModulesError('Adding module to favorites did not update immediately')
 
         # check if the favorites category reappeared
@@ -101,14 +102,14 @@ class UMCTester(object):
 
     def cleanup(self):
         # remove added module from favorites
-        module_name = self.selenium.driver.find_element_by_css_selector('.umcGalleryName').text
+        module_name = self.selenium.driver.find_element(By.CSS_SELECTOR, '.umcGalleryName').text
         self.selenium.click_tile_menu_icon(module_name)
         self.selenium.click_text(_('Remove from favorites'))
 
         # restore the default favorites
         self.selenium.search_module('*')
         for favorite in self._get_default_favorites():
-            module_name = self.selenium.driver.find_element_by_css_selector('.umcGalleryWrapperItem[moduleid^="%s"] .umcGalleryName' % (favorite,)).text
+            module_name = self.selenium.driver.find_element(By.CSS_SELECTOR, '.umcGalleryWrapperItem[moduleid^="%s"] .umcGalleryName' % (favorite,)).text
             self.selenium.click_tile_menu_icon(module_name)
             self.selenium.click_text('Add to favorites')
 

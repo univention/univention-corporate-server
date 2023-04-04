@@ -4,6 +4,7 @@
 ## exposure: dangerous
 
 from lib.screen_shooter import BaseScreenShooter
+from selenium.webdriver.common.by import By
 
 from univention.admin import localization
 
@@ -44,7 +45,8 @@ class ScreenShooter(BaseScreenShooter):
 
     def take_template_screenshot_and_move_on(self):
         self.selenium.wait_for_text(_("User template"))
-        template_selection_dropdown_button = self.selenium.driver.find_element_by_xpath(
+        template_selection_dropdown_button = self.selenium.driver.find_element(
+            By.XPATH,
             '//input[@name="objectTemplate"]/../..//input[contains(concat(" ", normalize-space(@class), " "), " dijitArrowButtonInner ")]',
         )
         template_selection_dropdown_button.click()

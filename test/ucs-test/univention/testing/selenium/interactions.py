@@ -32,7 +32,6 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-
 import json
 import logging
 import time
@@ -41,6 +40,7 @@ from typing import Any, List, Union  # noqa: F401
 import selenium.common.exceptions as selenium_exceptions
 from selenium import webdriver
 from selenium.webdriver.common.action_chains import ActionChains
+from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
 
 from univention.testing.selenium.utils import expand_path
@@ -275,7 +275,7 @@ class Interactions:
 
     def get_all_enabled_elements(self, xpath):
         # type: (str) -> List[Any]
-        elems = self.driver.find_elements_by_xpath(xpath)
+        elems = self.driver.find_elements(By.XPATH, xpath)
         try:
             return [
                 elem
@@ -297,7 +297,7 @@ class Interactions:
         self.wait_until_element_visible(xpath_prefix + uploader_button_xpath)
         uploader_xpath = '//*[contains(@id, "_ImageUploader_")]//input[@type="file"]'
         logger.info("Getting the uploader with xpath: %s%s", xpath_prefix, uploader_xpath)
-        uploader = self.driver.find_element_by_xpath(xpath_prefix + uploader_xpath)
+        uploader = self.driver.find_element(By.XPATH, xpath_prefix + uploader_xpath)
         logger.info("Uploading the image: %s" % img_path)
         uploader.send_keys(img_path)
         logger.info("Waiting for upload to finish")
@@ -307,15 +307,17 @@ class Interactions:
     def drag_and_drop(self, source, target, find_by='xpath'):
         # type: (Union[Any, str], Union[Any, str], str) -> None
         """Wrapper for selenium.webdriver.common.action_chains.drag_and_drop"""
+        by = {'xpath': By.XPATH, 'id': By.ID}[find_by]
         if isinstance(source, str):
-            source = getattr(self.driver, 'find_element_by_%s' % find_by)(source)
+            source = self.driver.find_element(by, source)
         if isinstance(target, str):
-            target = getattr(self.driver, 'find_element_by_%s' % find_by)(target)
+            target = self.driver.find_element(by, target)
         ActionChains(self.driver).drag_and_drop(source, target).perform()
 
     def drag_and_drop_by_offset(self, source, xoffset, yoffset, find_by='xpath'):
         # type: (Union[Any, str], int, int, str) -> None
         """Wrapper for selenium.webdriver.common.action_chains.drag_and_drop_by_offset"""
+        by = {'xpath': By.XPATH, 'id': By.ID}[find_by]
         if isinstance(source, str):
-            source = getattr(self.driver, 'find_element_by_%s' % find_by)(source)
+            source = self.driver.find_element(by, source)
         ActionChains(self.driver).drag_and_drop_by_offset(source, xoffset, yoffset).perform()

@@ -55,16 +55,16 @@ def wait_for(driver: WebDriver, by: By, element: str, timeout: int = 30) -> None
 
 def wait_for_id(driver: WebDriver, element_id: str, timeout: int = 30) -> WebElement:
     wait_for(driver, By.ID, element_id, timeout)
-    return driver.find_element_by_id(element_id)
+    return driver.find_element(By.ID, element_id)
 
 
 def wait_for_class(driver: WebDriver, element_class: str, timeout: int = 30) -> WebElement:
     wait_for(driver, By.CLASS_NAME, element_class, timeout)
-    return driver.find_elements_by_class_name(element_class)
+    return driver.find_elements(By.CLASS_NAME, element_class)
 
 
 def get_portal_tile(driver: WebDriver, text: str, portal_config: SimpleNamespace) -> WebElement:
-    for tile in driver.find_elements_by_class_name(portal_config.tile_name_class):
+    for tile in driver.find_elements(By.CLASS_NAME, portal_config.tile_name_class):
         if tile.text == text:
             return tile
 
@@ -78,12 +78,12 @@ def keycloak_password_change(
     fails_with: Optional[str] = None,
 ) -> None:
     wait_for_id(driver, keycloak_config.kc_passwd_update_form_id)
-    driver.find_element_by_id(keycloak_config.password_id).send_keys(password)
-    driver.find_element_by_id(keycloak_config.password_new_id).send_keys(new_password)
-    driver.find_element_by_id(keycloak_config.password_confirm_id).send_keys(new_password_confirm)
-    driver.find_element_by_id(keycloak_config.password_change_button_id).click()
+    driver.find_element(By.ID, keycloak_config.password_id).send_keys(password)
+    driver.find_element(By.ID, keycloak_config.password_new_id).send_keys(new_password)
+    driver.find_element(By.ID, keycloak_config.password_confirm_id).send_keys(new_password_confirm)
+    driver.find_element(By.ID, keycloak_config.password_change_button_id).click()
     if fails_with:
-        error = driver.find_element_by_css_selector(keycloak_config.password_update_error_css_selector)
+        error = driver.find_element(By.CSS_SELECTOR, keycloak_config.password_update_error_css_selector)
         assert fails_with == error.text, f"{fails_with} != {error.text}"
         assert error.is_displayed()
 
@@ -133,11 +133,11 @@ def keycloak_login(
     wait_for_id(driver, keycloak_config.username_id)
     wait_for_id(driver, keycloak_config.password_id)
     wait_for_id(driver, keycloak_config.login_id)
-    driver.find_element_by_id(keycloak_config.username_id).send_keys(username)
-    driver.find_element_by_id(keycloak_config.password_id).send_keys(password)
-    driver.find_element_by_id(keycloak_config.login_id).click()
+    driver.find_element(By.ID, keycloak_config.username_id).send_keys(username)
+    driver.find_element(By.ID, keycloak_config.password_id).send_keys(password)
+    driver.find_element(By.ID, keycloak_config.login_id).click()
     if fails_with:
-        error = driver.find_element_by_css_selector(keycloak_config.login_error_css_selector)
+        error = driver.find_element(By.CSS_SELECTOR, keycloak_config.login_error_css_selector)
         assert fails_with == error.text, f"{fails_with} != {error.text}"
         assert error.is_displayed()
 

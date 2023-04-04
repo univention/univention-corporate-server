@@ -19,6 +19,7 @@ from urllib.parse import parse_qs, urlparse
 import pytest
 import selenium.common.exceptions as selenium_exceptions
 from selenium.common.exceptions import TimeoutException
+from selenium.webdriver.common.by import By
 from test_self_service import capture_mails
 
 import univention.testing.strings as uts
@@ -114,9 +115,9 @@ def _get_mail(mails, idx=-1):
 
 def click_submit(selenium):
     try:
-        selenium.driver.find_elements_by_css_selector(".primary")[0].click()
+        selenium.driver.find_elements(By.CSS_SELECTOR, ".primary")[0].click()
     except IndexError:
-        selenium.driver.find_element_by_xpath("//*[@id='modal-wrapper--isVisible-1']/section/form/footer/button").click()
+        selenium.driver.find_element(By.XPATH, "//*[@id='modal-wrapper--isVisible-1']/section/form/footer/button").click()
 
 
 def _enter_attributes(selenium, attributes, button=True):
@@ -289,10 +290,10 @@ def test_email_change(selenium, mails, get_registration_info, change_email):
     selenium.wait_for_text('Email')
     if change_email:
         new_email = 'foo@bar.com'
-        e = selenium.driver.find_element_by_name('email')
+        e = selenium.driver.find_element(By.NAME, 'email')
         e.clear()
         e.send_keys(new_email)
-        e = selenium.driver.find_element_by_name('email--retype')
+        e = selenium.driver.find_element(By.NAME, 'email--retype')
         e.clear()
         e.send_keys(new_email)
         click_submit(selenium)

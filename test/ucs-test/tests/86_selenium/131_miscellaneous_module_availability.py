@@ -13,6 +13,8 @@
 import os.path
 import subprocess
 
+from selenium.webdriver.common.by import By
+
 from univention.admin import localization
 from univention.testing import selenium
 
@@ -220,7 +222,7 @@ class UMCTester(object):
         self.selenium.search_module('*')
 
         xpath = '//*[contains(concat(" ", normalize-space(@class), " "), " umcGalleryName ")]'
-        tile_headings = self.selenium.driver.find_elements_by_xpath(xpath)
+        tile_headings = self.selenium.driver.find_elements(By.XPATH, xpath)
 
         return [tile_heading.text if not tile_heading.get_attribute("title") else tile_heading.get_attribute("title") for tile_heading in tile_headings]
 

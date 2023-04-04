@@ -12,6 +12,7 @@
 ## exposure: dangerous
 
 from selenium.common.exceptions import NoSuchElementException
+from selenium.webdriver.common.by import By
 
 import univention.testing.selenium.udm as selenium_udm
 import univention.testing.udm as udm_test
@@ -86,7 +87,7 @@ class UMCTester(object):
 
     def get_uploaded_src(self):
         try:
-            img = self.selenium.driver.find_element_by_css_selector('.umcUDMUsersModule__jpegPhoto .umcImage__img')
+            img = self.selenium.driver.find_element(By.CSS_SELECTOR, '.umcUDMUsersModule__jpegPhoto .umcImage__img')
         except NoSuchElementException:
             return None
         else:

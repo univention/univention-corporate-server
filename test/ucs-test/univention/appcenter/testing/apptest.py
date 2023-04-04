@@ -15,6 +15,7 @@ from shlex import quote
 from urllib.parse import urlparse
 
 import requests
+from selenium.webdriver.common.by import By
 
 
 logger = logging.getLogger(__name__)
@@ -188,7 +189,7 @@ class Session:
                 time.sleep(2)
                 try:
                     # iframe mode
-                    self.driver.switch_to.frame(self.driver.find_element_by_xpath('//iframe[@class="portal-iframe__iframe"]'))
+                    self.driver.switch_to.frame(self.driver.find_element(By.XPATH, '//iframe[@class="portal-iframe__iframe"]'))
                 except NoSuchElementException:
                     # tab mode
                     self.change_tab(-1)
@@ -216,10 +217,10 @@ class Session:
 
     def find_all(self, css):
         logger.info("Searching for %r", css)
-        return self.driver.find_elements_by_css_selector(css)
+        return self.driver.find_elements(By.CSS_SELECTOR, css)
 
     def find_all_below(self, element, css):
-        return element.find_elements_by_css_selector(css)
+        return element.find_elements(By.CSS_SELECTOR, css)
 
     def find_first(self, css):
         elements = self.find_all(css)

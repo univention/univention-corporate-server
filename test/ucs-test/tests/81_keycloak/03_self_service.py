@@ -5,6 +5,7 @@
 ## exposure: dangerous
 ## packages: [univention-self-service]
 
+from selenium.webdriver.common.by import By
 from utils import wait_for_class, wait_for_id
 
 
@@ -18,7 +19,7 @@ def test_login_denied_if_not_verified(keycloak_settings, portal_login_via_keyclo
     # verify
     unverified_user.verify()
     # try again
-    driver.find_element_by_css_selector("input[class='pf-c-button pf-m-primary pf-m-block btn-lg']").click()
+    driver.find_element(By.CSS_SELECTOR, "input[class='pf-c-button pf-m-primary pf-m-block btn-lg']").click()
     # verify that we are in the portal now
     wait_for_id(driver, portal_config.header_menu_id)
 
@@ -34,4 +35,4 @@ def test_verified_msg(change_app_setting, unverified_user, portal_login_via_keyc
     error = wait_for_class(driver, "ucs-p")[0]
     error_msg = error.get_attribute("innerHTML")
     assert error_msg == "en yada yada yada"
-    driver.find_element_by_css_selector("input[class='pf-c-button pf-m-primary pf-m-block btn-lg']")
+    driver.find_element(By.CSS_SELECTOR, "input[class='pf-c-button pf-m-primary pf-m-block btn-lg']")

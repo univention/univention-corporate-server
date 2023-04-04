@@ -14,6 +14,7 @@ import subprocess
 
 import psutil
 from selenium.common.exceptions import NoSuchElementException
+from selenium.webdriver.common.by import By
 
 from univention.admin import localization
 from univention.testing import selenium
@@ -49,19 +50,19 @@ class UMCTester(object):
         self.kill_process_and_check_if_gone(p, force=True)
 
     def check_for_malformed_entries(self):
-        cells = self.selenium.driver.find_elements_by_css_selector('.dgrid-row .dgrid-cell:not(.dgrid-selector)')
+        cells = self.selenium.driver.find_elements(By.CSS_SELECTOR, '.dgrid-row .dgrid-cell:not(.dgrid-selector)')
         if not all(c.text for c in cells):
             raise UmcError('Malformed(empty) cell in one of the rows displaying the processes.')
 
     def check_user_filter(self):
-        cells = self.selenium.driver.find_elements_by_css_selector('.field-user[role=gridcell')
+        cells = self.selenium.driver.find_elements(By.CSS_SELECTOR, '.field-user[role=gridcell')
         if not all(c.text == 'root' for c in cells):
             raise UmcError('Found process that belongs to another user than root after filtering process for root user only')
 
     def check_if_process_is_searchable(self, pid, category, search_value):
         self.search(search_value, category)
         try:
-            self.selenium.driver.find_element_by_xpath(self._pid_xpath(pid))
+            self.selenium.driver.find_element(By.XPATH, self._pid_xpath(pid))
         except NoSuchElementException:
             raise UmcError('The created process was not searchable via the "%s" category' % category)
 
@@ -79,7 +80,7 @@ class UMCTester(object):
         assert code == p.poll()
         self.search(p.pid)
         try:
-            self.selenium.driver.find_element_by_xpath(self._pid_xpath(p.pid))
+            self.selenium.driver.find_element(By.XPATH, self._pid_xpath(p.pid))
         except NoSuchElementException:
             pass
         else:
