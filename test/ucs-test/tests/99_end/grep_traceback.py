@@ -223,9 +223,9 @@ COMMON_EXCEPTIONS = (
 #    E('urllib.error.HTTPError: .*', ['updater/tools.py.*in access']),
 #    E('ConfigurationError: Configuration error: host is unresolvable'),
 #    E('ConfigurationError: Configuration error: port is closed'),
-#    E('ConfigurationError: Configuration error: non-existing prefix "/DUMMY/.*'),
+    E('ConfigurationError: Configuration error: non-existing prefix "/DUMMY/.*'),
 #    E('ConfigurationError: Configuration error: timeout in network connection'),
-#    E('(univention.updater.errors.)?DownloadError: Error downloading http://localhost/DUMMY/.*: 403'),
+    E('(univention.updater.errors.)?DownloadError: Error downloading http://localhost/DUMMY/.*: 403'),
 #    E('ProxyError: Proxy configuration error: credentials not accepted'),
 #    E('socket.timeout: timed out'),
 #    E(r'socket.gaierror: \[Errno \-2\] Name or service not known'),
@@ -233,10 +233,10 @@ COMMON_EXCEPTIONS = (
 #    E(r'socket.gaierror: \[Errno \-3\] Temporary failure in name resolution', ['urllib/request.py']),
 #    # 10_ldap/listener_module_testpy
 #    E('MyTestException: .*'),
-#    E('univention.management.console.modules.ucstest.ThreadedError'),  # 60_umc/17_traceback_handling.py
+    E('univention.management.console.modules.ucstest.ThreadedError'),  # 60_umc/17_traceback_handling.py
 #    # various test cases:
 #    E('AssertionError: .*contain.*traceback.*', ['01_var_log_tracebacks']),
-#    E('^(univention.management.console.modules.ucstest.)?NonThreadedError$'),
+    E('^(univention.management.console.modules.ucstest.)?NonThreadedError$'),
 #    E(r'^(ldap\.)?INVALID_SYNTAX: .*ABCDEFGHIJKLMNOPQRSTUVWXYZ.*', ['sync_from_ucs']),
 #    E(r'^(ldap\.)?INVALID_SYNTAX: .*telephoneNumber.*', ['sync_from_ucs'], 35391),  # 52_s4connector/134sync_incomplete_attribute_ucs
 #    E('^ldap.OTHER: .*[cC]annot rename.*parent does not exist', ['sync_from_ucs'], 53748),
@@ -246,7 +246,7 @@ COMMON_EXCEPTIONS = (
 #    E(r'error: \[Errno 24\] Too many open files.*'),
 #    E('ImportError: cannot import name saxutils', [r'_cperror\.py']),
 #    E(r'gaierror: \[Errno -5\] No address associated with hostname'),
-#    E('.*moduleCreationFailed: Target directory.*not below.*'),
+    E('.*moduleCreationFailed: Target directory.*not below.*'),
 #    E("univention.udm.exceptions.NoObject: No object found at DN 'cn=internal-name-for-a-tile", ['in refresh']),  # 86_selenium/185_portal_administration_inline_creation  # Bug #53333
 #    E("univention.admin.uexceptions.noObject: cn=internal-name-for-a-tile,cn=entry,cn=portals"),  # 86_selenium/185_portal_administration_inline_creation  # Bug #53333
 #    E("ldap.NO_SUCH_OBJECT:.*'matched': 'cn=entry,cn=portals,cn=univention,"),  # 86_selenium/185_portal_administration_inline_creation  # Bug #53333
