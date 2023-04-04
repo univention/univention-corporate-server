@@ -22,9 +22,9 @@ def main():
         utils.wait_for_replication_and_postrun()
         time.sleep(45)
         expected = f'Dear user {username}'
-        with open('/var/spool/mail/systemmail') as f:
+        with open('/var/spool/mail/systemmail', 'rb') as f:
             for line in f.readlines():
-                if expected.lower() in line.lower():
+                if expected.lower() in line.decode('UTF-8', 'replace').lower():
                     break
             else:
                 utils.fail(f'Expected user invitation "{expected}" not found in /var/spool/mail/systemmail')
