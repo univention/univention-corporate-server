@@ -244,7 +244,7 @@ def call_process2(cmd, logger=None, env=None, cwd=None):
     out = ""
     ret = 0
     try:
-        p = Popen(cmd, stdout=PIPE, stderr=STDOUT, bufsize=1, close_fds=True, env=env, cwd=cwd)
+        p = Popen(cmd, stdout=PIPE, stderr=STDOUT, close_fds=True, env=env, cwd=cwd)
         while p.poll() is None:
             stdout = p.stdout.readline()
             if stdout:
@@ -263,7 +263,7 @@ def call_process2(cmd, logger=None, env=None, cwd=None):
 
 def call_process(args, logger=None, env=None, cwd=None):
     # type: (Sequence[str], Optional[Logger], Optional[Mapping[str, str]], Optional[str]) -> Any
-    process = Popen(args, stdout=PIPE, stderr=PIPE, bufsize=1, close_fds=True, env=env, cwd=cwd)
+    process = Popen(args, stdout=PIPE, stderr=PIPE, close_fds=True, env=env, cwd=cwd)
     if logger is not None:
         if cwd:
             logger.debug('Calling in %s:' % cwd)
