@@ -21,7 +21,7 @@ from datetime import date
 
 # -- Project information -----------------------------------------------------
 
-release = "5.0-3"
+release = "5.0-4"
 project = f"Univention Corporate Server Architecture {release}"
 copyright = f'{date.today().year}, Univention GmbH'
 author = 'Univention GmbH'
