@@ -574,7 +574,7 @@ def __pack_txtRecord(object, dnsRecords):
         if txtRecord:
             ud.debug(ud.LDAP, ud.INFO, '__pack_txtRecord: %s' % txtRecord)
             token_list = TXT.from_text(rdataclass.IN, rdatatype.TXT, Tokenizer(txtRecord)).strings
-            ndr_txt_record = ndr_pack(TXTRecord(token_list))
+            ndr_txt_record = ndr_pack(TXTRecord(list(token_list)))
             dnsRecords.append(ndr_txt_record)
             ud.debug(ud.LDAP, ud.INFO, '__pack_txtRecord: %s' % ndr_txt_record)
 
