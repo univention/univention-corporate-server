@@ -1,3 +1,9 @@
+univention-s4-connector (14.0.15-5) unstable; urgency=medium
+
+  * Bug #56537: Adjust to upstream change in python3-samba
+
+ -- Florian Best <best@univention.de>  Thu, 05 Oct 2023 13:50:25 +0200
+
 univention-s4-connector (14.0.15-4) unstable; urgency=medium
 
   * Bug #56603: Adjust to fixed post-read-control in python-ldap 4.0

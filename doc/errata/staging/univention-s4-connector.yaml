@@ -3,8 +3,9 @@ release: "5.0"
 version: [5]
 scope: ucs_5.0-0-errata5.0-5
 src: univention-s4-connector
-fix: 14.0.15-4
+fix: 14.0.15-5
 desc: |
  This update addresses the following issues:
  * Future compatibility for python3-ldap >= 4 has been added.
-bug: [56603]
+ * Future compatibility for python3-samba has been added.
+bug: [56603, 56537]
