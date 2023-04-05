@@ -98,7 +98,7 @@ run_performance_tests () {
 	fi
 }
 
-external_keycloak_dns_setup () {
+add_fqdn_to_dns () {
 	local fqdn="${1:?missing fqdn}"; shift
 	local ip="${1:?missing ip}"; shift
 	local name="${fqdn%%.*}"
@@ -109,18 +109,28 @@ external_keycloak_dns_setup () {
 		"$domain" add a "$name" "$ip"
 }
 
-external_keycloak_fqdn_setup () {
-	# create a dummy certificate in /opt/$fqdn
-	# set dns forwarder to an ip that can resolv $fqdn
+# create a dummy certificate in /opt/$fqdn
+create_dummy_certficate () {
 	local fqdn="${1:?missing fqdn}"; shift
+	univention-certificate new -name "$fqdn"
+	mv /etc/univention/ssl/"$fqdn" /opt/
+}
+
+copy_dummy_certficate () {
+	local ip="${1:?missing ip}"; shift
+	local root_password="${1:?missing root_password}"; shift
+	local fqdn="${1:?missing fqdn}"; shift
+	univention-install -y sshpass
+	sshpass -p "$root_password" scp -r  -o StrictHostKeyChecking=no -o UpdateHostKeys=no root@"$ip":/opt/"$fqdn" /opt
+}
+
+set_dns_forwarder () {
+	# set dns forwarder to an ip that can resolv $fqdn
 	local forwarder="${1:?missing forwarder}"; shift
 	# external fqdn setup
 	ucr set dns/forwarder1="$forwarder"
 	ucr unset dns/forwarder2 dns/forwarder3
 	systemctl restart bind9
-	# create dummy certificate
-	univention-certificate new -name "$fqdn"
-	mv /etc/univention/ssl/"$fqdn" /opt/
 }
 
 external_keycloak_fqdn_config () {
@@ -134,4 +144,6 @@ external_keycloak_fqdn_config () {
 		keycloak/apache2/ssl/key="/opt/${fqdn}/private.key" \
 		keycloak/server/sso/autoregistration=false \
 		keycloak/server/sso/fqdn="${fqdn}"
+	# to not create a certificate for external name in univention-saml/91univention-saml.inst
+	#ucr set keycloak/server/sso/certificate/generation=false
 }
