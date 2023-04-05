@@ -48,7 +48,7 @@ case "$1" in
 		pkgdbu="$(su - postgres -c "psql template1 -c \"select * from pg_user where usename='pkgdbu'\""|awk '/ pkgdbu /{print $1}')"
 		if [ -z "$pkgdbu" ]; then
 			# only, if pkgdbu not exists
-			su - postgres -c "createuser --adduser --no-createdb pkgdbu"
+			su - postgres -c "createuser --superuser --no-createdb pkgdbu"
 		fi
 
 		# password
@@ -78,6 +78,7 @@ esac
 
 case "$1" in
 	configure)
+		systemctl restart postgresql
 		systemctl try-restart univention-directory-listener
 		;;
 
