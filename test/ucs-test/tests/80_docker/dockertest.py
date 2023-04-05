@@ -78,7 +78,7 @@ class UCSTest_DockerApp_RegisterFailed(Exception):
 def ucs_versions_for_appcenter(version):
     version = Version(version)
 
-    versions = ['4.4']
+    versions = []
 
     if version.major == 5:
         versions.extend(f'5.{minor}' for minor in range(version.minor + 1))
