@@ -502,13 +502,11 @@ class Appcenter:
             raise AppcenterRepositoryAlreadyExists()
 
         if not version:
-            self.add_ucs_version_to_appcenter('4.1')
-            self.add_ucs_version_to_appcenter('4.2')
-            self.add_ucs_version_to_appcenter('4.3')
             self.add_ucs_version_to_appcenter('4.4')
             self.add_ucs_version_to_appcenter('5.0')
-            self.versions = ['4.1', '4.2', '4.3', '4.4', '5.0']
-            self._write_ucs_ini('[5.0]\nSupportedUCSVersions=5.0, 4.4, 4.3\n[4.4]\nSupportedUCSVersions=4.4, 4.3, 4.2, 4.1\n[4.3]\nSupportedUCSVersions=4.3, 4.2, 4.1\n')
+            self.add_ucs_version_to_appcenter('5.1')
+            self.versions = ['4.4', '5.0', '5.1']
+            self._write_ucs_ini('[5.1]\nSupportedUCSVersions=5.1, 5.0, 4.4\n[5.0]\nSupportedUCSVersions=5.0, 4.4, 4.3\n[4.4]\nSupportedUCSVersions=4.4, 4.3, 4.2, 4.1\n[4.3]\nSupportedUCSVersions=4.3, 4.2, 4.1\n')
             self._write_suggestions_json()
         else:
             self.add_ucs_version_to_appcenter(version)
