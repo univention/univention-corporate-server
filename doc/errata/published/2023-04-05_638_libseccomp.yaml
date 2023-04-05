@@ -11,3 +11,6 @@ desc: |
    their custom seccomp rules.
    This is needed for containers that use glibc version 2.34 or above.
 bug: [55360]
+erratum: 638
+announced: 2023-04-05
+support: core
