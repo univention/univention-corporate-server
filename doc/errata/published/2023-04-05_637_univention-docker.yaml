@@ -13,3 +13,6 @@ desc: |
     seccomp rules that are used by single container apps
     in the appcenter.
 bug: [55360]
+erratum: 637
+announced: 2023-04-05
+support: core
