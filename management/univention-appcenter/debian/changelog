@@ -1,3 +1,9 @@
+univention-appcenter (10.0.7) unstable; urgency=medium
+
+  * Bug #56598: adjust section error in the UMC software packages module
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Thu, 07 Mar 2024 23:53:57 +0100
+
 univention-appcenter (10.0.6) unstable; urgency=medium
 
   * Bug #56540: Add Postgres 13 support for Docker Apps
