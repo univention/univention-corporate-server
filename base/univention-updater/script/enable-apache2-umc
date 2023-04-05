@@ -63,12 +63,6 @@ do
 	esac
 done
 
-# TODO: Can be removed after UCS 5.0-3
-dpkg-statoverride --quiet --force-statoverride-remove --remove /usr/sbin/apache2
-dpkg-statoverride --quiet --force-statoverride-remove --remove /usr/sbin/univention-management-console-web-server
-dpkg-statoverride --quiet --force-statoverride-remove --remove /usr/sbin/univention-management-console-server
-chmod +x /usr/sbin/apache2 /usr/sbin/univention-management-console-web-server /usr/sbin/univention-management-console-server
-
 systemctl unmask --runtime univention-management-console-web-server.service univention-management-console-server.service
 systemctl "$action" univention-management-console-web-server.service univention-management-console-server.service apache2.service
 
