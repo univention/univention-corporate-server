@@ -778,7 +778,12 @@ run_rejoin () {
 	local admin_password="${1:-univention}"
 
 	echo -n "$admin_password" >/tmp/univention
-	univention-join -dcaccount Administrator -dcpwd /tmp/univention
+	if ! univention-join -dcaccount Administrator -dcpwd /tmp/univention; then
+		# Later join scripts can fail in large environments if the replication can not keep up
+		wait_for_replication "$(( 6 * 3600 ))" 60
+		univention-install -y ucs-test-framework && python3 -c "import univention.testing.ucs_samba; univention.testing.ucs_samba.wait_for_s4connector(timeout=3600 * 24, delta_t=60)"
+		univention-run-join-scripts -dcaccount Administrator -dcpwd /tmp/univention
+	fi
 }
 
 do_reboot () {
