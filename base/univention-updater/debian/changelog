@@ -1,3 +1,9 @@
+univention-updater (15.0.7-1) unstable; urgency=medium
+
+  * Bug #55695: adjust preup.sh / postup.sh for UCS 5.0-4
+
+ -- Florian Best <best@univention.de>  Wed, 05 Apr 2023 19:40:33 +0200
+
 univention-updater (15.0.6-6) unstable; urgency=medium
 
   * Bug #55632: Migrated Python 2 leftovers to Python 3
