@@ -9,3 +9,6 @@ desc: |
  * The "Choose a tab" dialog box will now display tabs with their
    background color.
 bug: [55919]
+erratum: 635
+announced: 2023-04-05
+support: core
