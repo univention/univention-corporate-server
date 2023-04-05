@@ -6,29 +6,21 @@ src: intel-microcode
 fix: 3.20230214.1~deb9u1
 desc: |
  This update addresses the following issues:
- * New upstream microcode datafile 20230214 - Includes Fixes for: -
-   INTEL-SA-00700 (CVE-2022-21216): Insufficient granularity of access control
-   in out-of-band management in some Intel(R) Atom and Intel Xeon Scalable
-   Processors may allow a privileged user to potentially enable escalation of
-   privilege via adjacent network access. - INTEL-SA-00730 (CVE-2022-33972):
-   Incorrect calculation in microcode keying mechanism for some 3rd Generation
-   Intel(R) Xeon(R) Scalable Processors may allow a privileged user to
-   potentially enable information disclosure via local acces - INTEL-SA-00738
-   (CVE-2022-33196): Incorrect default permissions in some memory controller
-   configurations for some Intel(R) Xeon(R) Processors when using Intel(R)
-   Software Guard Extensions which may allow a privileged user to potentially
-   enable escalation of privilege via local access. The fix for Intel-SA
-   0000738 may require a firmware update to be effective on some processors. -
-   INTEL-SA-00767 (CVE-2022-38090): Improper isolation of shared resources in
-   some Intel(R) Processors when using Intel(R) Software Guard Extensions may
-   allow a privileged user to potentially enable information disclosure via
-   local access.
- * Fixes INTEL-SA-00657, CVE-2022-21233 Stale data from APIC leaks SGX memory
-   (AEPIC leak)
+ * Intel firmware update for insufficient granularity of access control in
+   out-of-band management in some Intel Atom and Intel Xeon scalable
+   processors (CVE-2022-21216)
+ * cpu: Intel: Stale data read from legacy xAPIC vulnerability
+   (CVE-2022-21233)
+ * Intel firmware update for incorrect default permissions in some memory
+   controller configurations (CVE-2022-33196)
+ * Intel firmware update for incorrect calculation in microcode keying
+   mechanism (CVE-2022-33972)
+ * Intel firmware update for improper isolation of shared resources
+   (CVE-2022-38090)
 bug: [55930]
 cve:
 - CVE-2022-21216
-- CVE-2022-33972
-- CVE-2022-33196
-- CVE-2022-38090
 - CVE-2022-21233
+- CVE-2022-33196
+- CVE-2022-33972
+- CVE-2022-38090
