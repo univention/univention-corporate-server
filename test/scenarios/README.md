@@ -133,3 +133,41 @@ Best practice
 
 * Whenever possible it is best to re-use an existing scenario file from a test job, so that we don't have to maintain multiple version of a scenario
 * `export UCS_TEST_RUN=false` to disable ucs-test (so only setup, not tests), keep in mind to also add this to the environment section of the scenario file, so that the instnaces can see this varibale
+
+
+UCS Branch Tests
+================
+
+In order to test change from feature branches we need a way to add repositories to our test instances (via our scenario files), for that we have:
+
+**packages from gitlab pipeline:**
+
+* use `utils.sh::add_extra_branch_repository()`
+* uses env var `UCS_ENV_UCS_BRANCH` (an ucs branch name)
+* adds `http://omar.knut.univention.de/build2/git` sources list for corresonding repository
+* adds apt.conf for that repo with priority 1001 (install, downgrade from this repo)
+
+**packages from different scope repository**
+
+* use `utils.sh::add_extra_apt_scope()`
+* uses env var `SCOPE` (an ucs build scope)
+* **TODO** merge with univention/dist/jenkins#2 - `UCS_ENV_APT_REPO` and `UCS_ENV_APT_PREFS`
+
+Jenkins
+-------
+
+The idea is that we have dedicated jenkins jobs for different scenarios which can be used to test the "pipeline" packages from ucs feature branches (or packags from a custome scope).
+
+* because we don't want to spoil the history of the daily jobs
+* make it as easy as possible for dev's to start branch tests
+
+These jenkins jobs
+
+* a required parameter `UCS_ENV_UCS_BRANCH`
+* checks out this ucs branch and starts the scenario
+* adds the gitlab branch repo and from that on just the usual setup and test runs
+
+See https://jenkins2022.knut.univention.de/job/UCS-5.0/job/UCS-5.0-3/view/Branch%20test%20(WIP)/ for what we have so far.
+
+New jobs can be added in the jenkins seed file in the univention/dist/jenkins repository.
+
