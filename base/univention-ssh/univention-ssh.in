@@ -206,12 +206,7 @@ try:
                 os.environ[UNIVENTION_SSH_ASKPASS_ENV] = password
                 # path to self
                 os.environ['SSH_ASKPASS'] = UNIVENTION_SSH_ASKPASS_HELPER
-                # DISPLAY must be non-empty
-                if 'DISPLAY' not in os.environ:
-                    os.environ['DISPLAY'] = ':99'
-
-                # create new session to force ssh to call SSH_ASKPASS
-                os.setsid()
+                os.environ['SSH_ASKPASS_REQUIRE'] = 'force'
 
                 os.execvp(command[0], command)  # noqa: S606
 
