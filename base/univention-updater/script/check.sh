@@ -42,7 +42,7 @@ fi
 
 VERSION="50"
 VERSION_NAME="5.0"
-MIN_VERSION="4.4-8"
+MIN_VERSION="4.4-9"
 
 updateLogDir="/var/univention-backup/update-to-${UPDATE_NEXT_VERSION:-$VERSION}"
 
@@ -297,8 +297,7 @@ update_check_system_date_too_old() {
 update_check_minimum_ucs_version_of_all_systems_in_domain () {  # Bug #51621
 	[ "$server_role" != "domaincontroller_master" ] && return 0
 
-	# FIXME: python3-univention-lib is not installed on UCS-4.4-7 by default, so this must remain Python 2 (for now):
-	MIN_VERSION="$MIN_VERSION" /usr/bin/python2.7 -c '
+	MIN_VERSION="$MIN_VERSION" /usr/bin/python3 -c '
 # -*- coding: utf-8 -*-
 from __future__ import print_function
 from distutils.version import LooseVersion
@@ -336,22 +335,6 @@ if blocking_objects:
 
 if blocking_computers or blocking_objects:
     exit(1)'
-}
-
-update_check_required_ucsschool_version () {  # Bug #54883 Bug #54896
-	if ! python3 -c '
-import sys
-from distutils.version import LooseVersion
-from univention.appcenter.app_cache import Apps
-ucsschool = Apps().find("ucsschool")
-
-if ucsschool.is_installed():
-	sys.exit(LooseVersion(ucsschool.version) <= LooseVersion("5.0 v1"))
-	'; then
-		echo "UCS@school is installed. To upgrade to UCS 5.0-2 as least UCS@school 5.0 v2 is required."
-		echo "Please upgrade the UCS@school app first!"
-		return 1
-	fi
 }
 
 checks () {
