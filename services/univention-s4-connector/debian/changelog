@@ -1,3 +1,9 @@
+univention-s4-connector (14.0.13-4) unstable; urgency=medium
+
+  * Bug #55880: Fix sort oder of pickle files
+
+ -- Arvid <requate@univention.de>  Wed, 05 Apr 2023 23:50:16 +0200
+
 univention-s4-connector (14.0.13-3) unstable; urgency=medium
 
   * Bug #55664: add missing translations.
