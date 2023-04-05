@@ -43,10 +43,10 @@ have () {
 	command -v "$1" >/dev/null 2>&1
 }
 
-FTP_DOM='software-univention.de' FTP_SCHEME='https'
+FTP_DOM='software-univention.de' FTP_SCHEME='https' FTP_REPO="updates-test"
 case "${VIRTTECH:=$(systemd-detect-virt)}" in
 amazon|xen) ;;
-qemu|kvm) FTP_DOM='knut.univention.de' FTP_SCHEME='http' ;;
+qemu|kvm) FTP_DOM='knut.univention.de' FTP_SCHEME='http' FTP_REPO="apt" ;;
 esac
 
 basic_setup_allow_uss () {
@@ -196,7 +196,7 @@ upgrade_to_testing () {
 }
 
 set_repository_to_testing () {
-	ucr set repository/online/server="${FTP_SCHEME}://updates-test.${FTP_DOM}/"
+	ucr set repository/online/server="${FTP_SCHEME}://${FTP_REPO}.${FTP_DOM}/"
 	apt-get -qq update
 }
 fix_repository_schema () {  # Bug #55044 - to be removed when upgrading from 5.0-2+e528
@@ -538,7 +538,7 @@ activate_ucsschool_devel_scope () {
 	local component="repository/online/component/ucsschool_DEVEL"
 	ucr set "$component/description=Development version of UCS@school packages" \
 		"$component/version=$(ucr get version/version)" \
-		"$component/server=${FTP_SCHEME}://updates-test.${FTP_DOM}/" \
+		"$component/server=${FTP_SCHEME}://${FTP_REPO}.${FTP_DOM}/" \
 		"$component=enabled"
 }
 
@@ -546,7 +546,7 @@ activate_idbroker_devel_scope () {
 	local component="repository/online/component/idbroker_DEVEL"
 	ucr set "$component/description=Development version of UCS idbroker" \
 		"$component/version=current" \
-		"$component/server=${FTP_SCHEME}://updates-test.${FTP_DOM}/" \
+		"$component/server=${FTP_SCHEME}://${FTP_REPO}.${FTP_DOM}/" \
 		"$component=enabled"
 }
 
