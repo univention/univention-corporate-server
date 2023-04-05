@@ -259,7 +259,7 @@ Source: {package_name}
 Section: univention
 Priority: optional
 Maintainer: Univention GmbH <packages@univention.de>
-Build-Depends: debhelper
+Build-Depends: debhelper-compat (=12)
 Standards-Version: 3.5.2
 
 Package: {package_name}

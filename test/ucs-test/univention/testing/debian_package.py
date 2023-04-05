@@ -74,7 +74,6 @@ class DebianPackage():
         self._create_changelog()
         self._create_control()
         self._create_rules()
-        self._create_compat()
         self._create_install()
 
     def get_package_name(self):
@@ -173,7 +172,7 @@ class DebianPackage():
 Section: univention
 Priority: optional
 Maintainer: Univention GmbH <packages@univention.de>
-Build-Depends: debhelper
+Build-Depends: debhelper-compat (=12)
 Standards-Version: 3.5.2
 
 Package: %(package_name)s
@@ -196,11 +195,6 @@ Description: UCS - Test package
 override_dh_strip_nondeterminism: ; # Bug #46002
 '''
         self.create_debian_file_from_buffer('rules', rules)
-
-    def _create_compat(self):
-        # type: () -> None
-        compat = '10\n'
-        self.create_debian_file_from_buffer('compat', compat)
 
     def _create_install(self):
         # type: () -> None
