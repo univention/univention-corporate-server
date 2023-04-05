@@ -1,3 +1,9 @@
+ucs-test (10.0.10-41) unstable; urgency=medium
+
+  * Bug #55747: keycloak test
+
+ -- Felix Botner <botner@univention.de>  Wed, 05 Apr 2023 12:54:11 +0200
+
 ucs-test (10.0.10-40) unstable; urgency=medium
 
   * Bug #55715: make test compatible with Selenium 4.3.0

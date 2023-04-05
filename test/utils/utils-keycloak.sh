@@ -132,5 +132,6 @@ external_keycloak_fqdn_config () {
 	ucr set \
 		keycloak/apache2/ssl/certificate="/opt/${fqdn}/cert.pem" \
 		keycloak/apache2/ssl/key="/opt/${fqdn}/private.key" \
+		keycloak/server/sso/autoregistration=false \
 		keycloak/server/sso/fqdn="${fqdn}"
 }
