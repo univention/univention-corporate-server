@@ -599,7 +599,8 @@ class Instance(umcm.Base, ProgressMixin):
         sections = set()
         cache = apt.Cache()
         for package in cache:
-            sections.add(package.section)
+            if package.candidate:
+                sections.add(package.candidate.section)
 
         return sorted(sections)
 
@@ -609,7 +610,7 @@ class Instance(umcm.Base, ProgressMixin):
         """Query to fill the grid. Structure is fixed here."""
         result = []
         for package in self.package_manager.packages(reopen=True):
-            if section in ('all', package.section):
+            if section in ('all', package.candidate and package.candidate.section):
                 toshow = False
                 if pattern.pattern == '^.*$':
                     toshow = True
@@ -753,7 +754,7 @@ class Instance(umcm.Base, ProgressMixin):
         if full:
             # Some fields differ depending on whether the package is installed or not:
             if package.is_installed:
-                result['section'] = installed.section
+                result['section'] = candidate.section
                 result['priority'] = installed.priority or ''
                 result['summary'] = installed.summary   # take the current one
                 result['description'] = installed.description
