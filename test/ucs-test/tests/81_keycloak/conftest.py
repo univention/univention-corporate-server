@@ -33,6 +33,7 @@ from types import SimpleNamespace
 from typing import Optional
 
 import pytest
+from keycloak import KeycloakAdmin, KeycloakOpenID
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from utils import get_portal_tile, keycloak_login, keycloak_password_change, wait_for_class, wait_for_id
@@ -42,7 +43,7 @@ from univention.appcenter.app_cache import Apps
 from univention.config_registry import ConfigRegistry
 from univention.lib.misc import custom_groupname
 from univention.testing.udm import UCSTestUDM
-from univention.testing.utils import get_ldap_connection, wait_for_listener_replication
+from univention.testing.utils import UCSTestDomainAdminCredentials, get_ldap_connection, wait_for_listener_replication
 from univention.udm import UDM
 from univention.udm.binary_props import Base64Bzip2BinaryProperty
 from univention.udm.modules.settings_data import SettingsDataObject
@@ -292,3 +293,43 @@ def keycloak_adm_login(selenium: webdriver.Chrome, keycloak_config: SimpleNamesp
 @pytest.fixture()
 def domain_admins_dn(ucr: ConfigRegistry) -> str:
     return f"cn={custom_groupname('Domain Admins')},cn=groups,{ucr['ldap/base']}"
+
+
+@pytest.fixture()
+def keycloak_administrator_connection(keycloak_config: SimpleNamespace) -> KeycloakAdmin:
+    account = UCSTestDomainAdminCredentials()
+    return KeycloakAdmin(
+        server_url=keycloak_config.url,
+        username=account.username,
+        password=account.bindpw,
+        realm_name="ucs",
+        user_realm_name="master",
+        verify=True,
+    )
+
+
+@pytest.fixture()
+def keycloak_admin_connection(
+    keycloak_config: SimpleNamespace,
+    keycloak_admin: str,
+    keycloak_secret: str,
+) -> KeycloakAdmin:
+    if keycloak_secret:
+        return KeycloakAdmin(
+            server_url=keycloak_config.url,
+            username=keycloak_admin,
+            password=keycloak_secret,
+            realm_name="ucs",
+            user_realm_name="master",
+            verify=True,
+        )
+
+
+@pytest.fixture()
+def keycloak_openid_connection(keycloak_config: SimpleNamespace) -> KeycloakOpenID:
+    return KeycloakOpenID(
+        server_url=keycloak_config.url,
+        client_id="admin-cli",
+        realm_name="ucs",
+        client_secret_key="secret",
+    )
