@@ -1,3 +1,10 @@
+ucs-test (10.0.10-45) unstable; urgency=medium
+
+  * Bug #55747: keycloak test, move app specific test
+    to ucs-test
+
+ -- Felix Botner <botner@univention.de>  Thu, 13 Apr 2023 11:28:11 +0200
+
 ucs-test (10.0.10-44) unstable; urgency=medium
 
   * Bug #55632: Removed old Python 2 leftovers and updated it to Python 3

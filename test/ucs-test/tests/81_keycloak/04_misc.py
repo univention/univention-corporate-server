@@ -4,13 +4,9 @@
 ## roles: [domaincontroller_master, domaincontroller_backup]
 ## exposure: dangerous
 
-
-import json
-import os
 import socket
 
 import dns.resolver
-import pytest
 import requests
 from utils import (
     get_portal_tile, host_is_alive, keycloak_get_request, keycloak_sessions_by_user, run_command, wait_for_class,
@@ -19,8 +15,7 @@ from utils import (
 
 import univention.testing.ucr as ucr_test
 import univention.testing.udm as udm_test
-from univention.testing.utils import get_ldap_connection, wait_for_listener_replication
-from univention.udm.binary_props import Base64Bzip2BinaryProperty
+from univention.testing.utils import get_ldap_connection
 
 
 def test_session_sync(ucr, portal_login_via_keycloak, portal_config, keycloak_config):
@@ -150,33 +145,3 @@ def test_csp(keycloak_config, ucr):
         assert response.headers["Content-Security-Policy"]
         _ucr.load()
         assert f"{_ucr.get('keycloak/csp/frame-ancestors')}" in response.headers["Content-Security-Policy"]
-
-
-@pytest.mark.skipif(not os.path.isfile("/etc/keycloak.secret"), reason="fails on hosts without keycloak.secret")
-def test_upgrade_config_status(keycloak_app_version):
-    """no upgrade needed after installation"""
-    upgrades = run_command(["univention-keycloak", "upgrade-config", "--json", "--get-upgrade-steps"])
-    upgrades = json.loads(upgrades)
-    assert not upgrades
-    # no pending upgrades
-    upgrades = run_command(["univention-keycloak", "domain-config", "--json", "--get"])
-    upgrades = json.loads(upgrades)
-    assert upgrades.get("domain_config_version")
-    assert upgrades.get("domain_config_init")
-
-
-@pytest.mark.skipif(not os.path.isfile("/etc/keycloak.secret"), reason="fails on hosts without keycloak.secret")
-def test_upgrade_config_pending_upgrades(upgrade_status_obj):
-    """
-    remove domain config version and checks for updates
-    there should be at least one update
-    """
-    data = json.loads(upgrade_status_obj.props.data.raw)
-    del data["domain_config_version"]
-    raw_value = json.dumps(data).encode("ascii")
-    upgrade_status_obj.props.data = Base64Bzip2BinaryProperty("data", raw_value=raw_value)
-    upgrade_status_obj.save()
-    wait_for_listener_replication()
-    pending_upgrades = run_command(["univention-keycloak", "upgrade-config", "--json", "--get-upgrade-steps"])
-    pending_upgrades = json.loads(pending_upgrades)
-    assert len(pending_upgrades) > 0
