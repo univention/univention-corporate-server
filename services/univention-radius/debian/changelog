@@ -1,3 +1,9 @@
+univention-radius (8.0.4) unstable; urgency=medium
+
+  * Bug #55963: add /etc/freeradius.secret credentials file
+
+ -- Florian Best <best@univention.de>  Thu, 07 Mar 2024 23:53:49 +0100
+
 univention-radius (8.0.3) unstable; urgency=medium
 
   * Bug #53127: upgrade to latest debhelper compat version
