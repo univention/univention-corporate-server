@@ -36,6 +36,8 @@
 
 #DEBHELPER#
 
+install -o freerad -g freerad -m 0660 /dev/null /var/log/univention/radius_ntlm_auth.log
+
 eval "$(univention-config-registry shell)"
 
 case "$1" in

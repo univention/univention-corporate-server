@@ -67,10 +67,10 @@ def get_ldapConnection():
     # type: () -> univention.uldap.access
     try:
         # try ldap/server/name, then each of ldap/server/addition
-        return univention.uldap.getMachineConnection(ldap_master=False, reconnect=False)
+        return univention.uldap.getMachineConnection(ldap_master=False, reconnect=False, secret_file='/etc/freeradius.secret')
     except SERVER_DOWN:
         # then primary directory node
-        return univention.uldap.getMachineConnection()
+        return univention.uldap.getMachineConnection(secret_file='/etc/freeradius.secret')
 
 
 class NetworkAccessError(Exception):
