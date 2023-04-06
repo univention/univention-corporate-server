@@ -140,14 +140,16 @@ def test_csp(keycloak_config, ucr):
     assert response.headers["Content-Security-Policy"]
     assert f"*.{ucr['domainname']}" in response.headers["Content-Security-Policy"]
 
-    # change app setting for csp
-    ucr.set('keycloak/csp/frame-ancestors', 'https://*.external.com')
-    run_command(['systemctl', 'restart', 'apache2'])
+    with ucr_test.UCSTestConfigRegistry() as _ucr:
+        # change app setting for csp
+        _ucr.handler_set(['keycloak/csp/frame-ancestors=https://*.external.com'])
+        run_command(['systemctl', 'restart', 'apache2'])
 
-    # test again the
-    response = requests.post(keycloak_config.admin_url, headers={"Accept": "text/html"})
-    assert response.headers["Content-Security-Policy"]
-    assert f"{ucr['keycloak/csp/frame-ancestors']}" in response.headers["Content-Security-Policy"]
+        # test again the
+        response = requests.post(keycloak_config.admin_url, headers={"Accept": "text/html"})
+        assert response.headers["Content-Security-Policy"]
+        _ucr.load()
+        assert f"{_ucr.get('keycloak/csp/frame-ancestors')}" in response.headers["Content-Security-Policy"]
 
 
 @pytest.mark.skipif(not os.path.isfile("/etc/keycloak.secret"), reason="fails on hosts without keycloak.secret")
