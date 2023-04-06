@@ -6,12 +6,11 @@ src: ghostscript
 fix: 9.27~dfsg-2+deb10u7
 desc: |
  This update addresses the following issue:
- * In Artifex Ghostscript through 10.01.0, there is a buffer overflow leading
-   to potential corruption of data internal to the PostScript interpreter, in
-   base/sbcp.c. This affects BCPEncode, BCPDecode, TBCPEncode, and TBCPDecode.
-   If the write buffer is filled to one byte less than full, and one then
-   tries to write an escaped character, two bytes are written.
-   (CVE-2023-28879)
+ * Buffer overflow leading to potential corruption of data internal to the
+   PostScript interpreter, in `base/sbcp.c`. This affects `BCPEncode`,
+   `BCPDecode`, `TBCPEncode`, and `TBCPDecode`. If the write buffer is filled
+   to one byte less than full, and one then tries to write an escaped
+   character, two bytes are written. (CVE-2023-28879)
 bug: [55948]
 cve:
 - CVE-2023-28879
