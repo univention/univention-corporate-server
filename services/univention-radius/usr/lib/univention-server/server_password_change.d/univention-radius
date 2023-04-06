@@ -36,6 +36,8 @@
 . /usr/share/univention-lib/base.sh
 
 if [ "$1" = "postchange" ] ; then
+	install -o freerad -g freerad -m 0440 /etc/machine.secret /etc/freeradius.secret
+
 	# update ldap query definitions
 	ucr commit /etc/freeradius/3.0/mods-available/ldap
 
