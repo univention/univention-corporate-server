@@ -11,6 +11,7 @@ import socket
 
 import dns.resolver
 import pytest
+import requests
 from utils import (
     get_portal_tile, host_is_alive, keycloak_get_request, keycloak_sessions_by_user, run_command, wait_for_class,
     wait_for_id,
@@ -132,6 +133,21 @@ def test_ucs_realm_config(keycloak_config, ucr):
         "email",
         "modify date",
     }
+
+
+def test_csp(keycloak_config, ucr):
+    response = requests.post(keycloak_config.admin_url, headers={"Accept": "text/html"})
+    assert response.headers["Content-Security-Policy"]
+    assert f"*.{ucr['domainname']}" in response.headers["Content-Security-Policy"]
+
+    # change app setting for csp
+    ucr.set('keycloak/csp/frame-ancestors', 'https://*.external.com')
+    run_command(['systemctl', 'restart', 'apache2'])
+
+    # test again the
+    response = requests.post(keycloak_config.admin_url, headers={"Accept": "text/html"})
+    assert response.headers["Content-Security-Policy"]
+    assert f"{ucr['keycloak/csp/frame-ancestors']}" in response.headers["Content-Security-Policy"]
 
 
 @pytest.mark.skipif(not os.path.isfile("/etc/keycloak.secret"), reason="fails on hosts without keycloak.secret")
