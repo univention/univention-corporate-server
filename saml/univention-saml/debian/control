@@ -24,7 +24,7 @@ Depends:
  php-curl,
  php-krb5,
  php-ldap,
- php-memcache,
+ php-memcached,
  php-xml,
  python3-six,
  python3-univention-lib,
