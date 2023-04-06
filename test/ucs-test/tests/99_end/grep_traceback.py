@@ -70,13 +70,22 @@ def getfile(filename, mode):
             yield filename, name
 
 
+def _readline(fd):
+    line = fd.readline()
+    if isinstance(line, bytes):
+        return line.decode('UTF-8', 'replace')
+    return line
+
+
 def main(files, ignore_exceptions=[], out=sys.stdout):
     tracebacks = {}
     for file_ in files:
         with getfile(file_, 'rt') as (fd, filename):
             line = True
             while line:
-                line = fd.readline()
+                line = _readline(fd)
+                if isinstance(line, bytes):
+                    line = line.decode('UTF-8', 'replace')
                 if line.endswith('Traceback (most recent call last):\n'):
                     # TODO: refactor: can probably be done easily by just fetching 2 lines until first line doesn't start with '.*File "' and strip the start
                     # please note that tracebacks may leave out the source code of lines in some certain situations
@@ -84,7 +93,7 @@ def main(files, ignore_exceptions=[], out=sys.stdout):
                     lines = []
                     line = '  '
                     while line.startswith('  ') or RE_BROKEN.match(line) or (RE_APPCENTER.match(line) and 'appcenter' in filename):
-                        line = fd.readline()
+                        line = _readline(fd)
                         if num_spaces is None and line.strip().startswith('File '):
                             num_spaces = len(line.split('File ', 1)[0]) - 2
                         if num_spaces and num_spaces > 0 and line[:num_spaces].startswith('  '):
@@ -93,11 +102,11 @@ def main(files, ignore_exceptions=[], out=sys.stdout):
                             line = RE_APPCENTER.sub('', line)
                             lines.append(line[1:])
                             if RE_BROKEN.match(line.strip()):
-                                lines.append(RE_APPCENTER.sub('', fd.readline())[1:])
+                                lines.append(RE_APPCENTER.sub('', _readline(fd))[1:])
                         elif RE_BROKEN.match(line):
                             lines.append('  ' + line)
                             if 'File "<stdin>"' not in line:
-                                lines.append('    ' + fd.readline())
+                                lines.append('    ' + _readline(fd))
                         else:
                             lines.append(line)
                     d = Tracebacks()
