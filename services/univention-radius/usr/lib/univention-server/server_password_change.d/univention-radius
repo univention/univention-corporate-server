@@ -36,6 +36,7 @@
 . /usr/share/univention-lib/base.sh
 
 if [ "$1" = "postchange" ] ; then
+	cat /etc/machine.secret > /etc/freeradius.secret
 	# update ldap query definitions
 	ucr commit /etc/freeradius/3.0/mods-available/ldap
 

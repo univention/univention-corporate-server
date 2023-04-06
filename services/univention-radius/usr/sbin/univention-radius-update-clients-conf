@@ -37,6 +37,7 @@
 from __future__ import print_function
 
 import os
+import pwd
 import shutil
 import tempfile
 from argparse import ArgumentParser
@@ -93,6 +94,8 @@ def main():  # type: () -> None
                 )
 
     shutil.move(fd.name, os.path.join(BASE_DIR, BASE_NAME))
+    os.chmod('/etc/freeradius/3.0/clients.univention.conf', 0o600)
+    os.chown('/etc/freeradius/3.0/clients.univention.conf', pwd.getpwnam('freerad').pw_uid, 0)
 
 
 if __name__ == '__main__':
