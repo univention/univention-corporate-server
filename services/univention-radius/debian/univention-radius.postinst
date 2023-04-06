@@ -36,6 +36,10 @@
 
 #DEBHELPER#
 
+touch /var/log/univention/radius_ntlm_auth.log
+chgrp freerad /var/log/univention/radius_ntlm_auth.log
+chmod 0660 /var/log/univention/radius_ntlm_auth.log
+
 eval "$(univention-config-registry shell)"
 
 case "$1" in
