@@ -146,6 +146,7 @@ def get_docker_appbox_ucs():
 
 
 def get_docker_appbox_image():
+    raise Exception('appbox not supported anymore')
     image_name = f'docker-test.software-univention.de/ucs-appbox-amd64:{get_docker_appbox_ucs()}-8'
     print('Using %s' % image_name)
     return image_name
