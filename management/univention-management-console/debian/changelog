@@ -1,3 +1,9 @@
+univention-management-console (12.0.17-11) unstable; urgency=medium
+
+  * Bug #55951: avoid overwritting `umc/saml/idp-server` during joinscript execution
+
+ -- Juan Pedro Torres <torres-munoz.extern@univention.de>  Tue, 18 Apr 2023 11:59:49 +0200
+
 univention-management-console (12.0.17-10) unstable; urgency=medium
 
   * Bug #55959: fix UMC-Server crashes when status is given as request
