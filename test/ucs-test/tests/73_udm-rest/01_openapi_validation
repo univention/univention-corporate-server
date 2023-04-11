@@ -11,14 +11,19 @@
 . "$TESTLIBPATH/base.sh" || exit 137
 . /usr/share/univention-lib/ldap.sh || exit 137
 
-set -x
+set -ex
 
-pip3 install openapi-spec-validator
-pip3 install -U jsonschema
+[ -e ucs-test-udm-rest-api/bin/activate ] || python3 -m venv ucs-test-udm-rest-api
+. ucs-test-udm-rest-api/bin/activate
 
 cleanup() {
-	pip3 uninstall -y openapi-spec-validator
+	deactivate
+	rm -rf "$DIR"
 }
 trap cleanup INT TERM EXIT
+
+python3 -m pip install -U pip
+python3 -m pip install openapi-spec-validator
+python3 -m pip install -U jsonschema
 
 curl -u "$(ucs_convertDN2UID ${tests_domainadmin_account})":"${tests_domainadmin_pwd}" http://localhost/univention/udm/openapi.json | python3 -m openapi_spec_validator - || fail_fast 1
