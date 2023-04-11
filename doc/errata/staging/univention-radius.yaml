@@ -3,7 +3,7 @@ release: "5.0"
 version: [3]
 scope: ucs_5.0-0-errata5.0-3
 src: univention-radius
-fix:
+fix: 7.0.5-3A~5.0.0.202304111523
 desc: |
  This update addresses the following issues:
  * It is now possible to login with the mailPrimaryAdress additionally
