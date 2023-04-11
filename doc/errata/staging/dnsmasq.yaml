@@ -1,0 +1,30 @@
+product: ucs
+release: "4.4"
+version: [9]
+scope: ucs_4.4-0-errata4.4-9
+src: dnsmasq
+fix: 2.76-5+deb9u4
+desc: |
+ This update addresses the following issues:
+ 2.76-5+deb9u4 (Mon, 10 Apr 2023 09:01:45 +0000)
+ * Non-maintainer upload by the ELTS Security Team.
+ * Move to source version 3.0
+ * Improve salsa testing.
+ * CVE-2017-15107: A vulnerability was found in the implementation of DNSSEC
+   in Dnsmasq. Wildcard synthesized NSEC records could be improperly
+   interpreted to prove the non-existence of hostnames that actually exist.
+ * CVE-2019-14834: A vulnerability was found in dnsmasq before version 2.81,
+   where the memory leak allows remote attackers to cause a denial of service
+   (memory consumption) via vectors involving DHCP response creation..
+ * CVE-2023-28450: The default maximum EDNS.0 UDP packet size was set to 4096
+   but should be 1232 because of DNS Flag Day 2020.
+
+ * CVE-2022-0934: A single-byte, non-arbitrary write/use-after-free flaw was
+   found in dnsmasq. This flaw allows an attacker who sends a crafted packet
+   processed by dnsmasq, potentially causing a denial of service.
+bug: [55952]
+cve:
+- CVE-2017-15107
+- CVE-2019-14834
+- CVE-2023-28450
+- CVE-2022-0934
