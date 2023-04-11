@@ -14,7 +14,6 @@
 . "$TESTLIBPATH/user.sh" || exit 137
 
 username=$(user_randomname)
-sshKnownHostsFile="$(mktemp)"
 user_create "$username" \
 	--set groups="$(get_domain_admins_dn)"
 
@@ -39,7 +38,7 @@ password = b'univention'
 ex_newkey = b'Are you sure you want to continue connecting'
 ex_password = b'assword: '
 
-child = pexpect.spawn('ssh -o UserKnownHostsFile=\"${sshKnownHostsFile}\" %s@%s' % (user, host), timeout=10)
+child = pexpect.spawn('ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null %s@%s' % (user, host), timeout=10)
 child.logfile = sys.stderr.buffer
 i = child.expect([pexpect.TIMEOUT, ex_newkey, ex_password])
 if i == 0:  # Timeout
@@ -75,7 +74,6 @@ ret=$?
 
 user_remove "$username"
 
-rm -f "$sshKnownHostsFile"
 exit $ret
 
 # vim:set filetype=sh ts=4:
