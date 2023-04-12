@@ -9,3 +9,6 @@ desc: |
  * It is now possible to login with the mailPrimaryAdress additionally
    to the username.
 bug: [55757]
+erratum: 642
+announced: 2023-04-12
+support: core
