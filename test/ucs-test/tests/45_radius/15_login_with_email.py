@@ -3,7 +3,6 @@
 ## tags: [apptest, radius]
 ## packages:
 ##   - univention-radius
-##   - univention-directory-manager-rest
 ## join: true
 ## bugs: [55757]
 ## exposure: dangerous
