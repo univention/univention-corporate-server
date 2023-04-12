@@ -318,8 +318,6 @@ class Response(Message):
             self.arguments = request.arguments
             if request.mimetype == MIMETYPE_JSON:
                 self.options = request.options
-                if 'status' in request.body:
-                    self.status = request.status
         elif data:
             self.parse(data)
 

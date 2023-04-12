@@ -1,3 +1,10 @@
+univention-management-console (12.0.17-10) unstable; urgency=medium
+
+  * Bug #55959: fix UMC-Server crashes when status is given as request
+    argument
+
+ -- Florian Best <best@univention.de>  Wed, 12 Apr 2023 14:53:56 +0200
+
 univention-management-console (12.0.17-9) unstable; urgency=low
 
   * Bug #55664: add missing translations.
