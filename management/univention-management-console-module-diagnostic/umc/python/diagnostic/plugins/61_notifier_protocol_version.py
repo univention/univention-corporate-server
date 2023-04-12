@@ -72,17 +72,17 @@ def run(_umc_instance: Instance) -> None:
         problems.append(invalid_msg.format(ucr=var))
 
     var = "version/patchlevel"
-    ucs_patchlevel = ucr.get_int(var)
-    if not ucs_patchlevel:
+    ucs_patchlevel = ucr.get_int(var, -1)
+    if ucs_patchlevel < 0:
         problems.append(invalid_msg.format(ucr=var))
 
     var = "version/erratalevel"
-    ucs_erratalevel = ucr.get_int(var)
-    if not ucs_erratalevel:
+    ucs_erratalevel = ucr.get_int(var, -1)
+    if ucs_erratalevel < 0:
         problems.append(invalid_msg.format(ucr=var))
 
-    np_version = ucr.get_int(UCR)
-    if not np_version:
+    np_version = ucr.get_int(UCR, -1)
+    if np_version < 0:
         problems.append(invalid_msg.format(ucr=UCR))
 
     if problems:
