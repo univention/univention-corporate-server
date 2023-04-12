@@ -1,3 +1,9 @@
+univention-directory-notifier (14.0.6-5) unstable; urgency=medium
+
+  * Bug #55957: Fix start-stop-daemon option handling
+
+ -- Arvid <requate@univention.de>  Wed, 12 Apr 2023 13:03:43 +0200
+
 univention-directory-notifier (14.0.6-4) unstable; urgency=low
 
   * Bug #54797: Implement `univention-translog reindex`

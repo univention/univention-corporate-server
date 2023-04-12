@@ -1,0 +1,13 @@
+product: ucs
+release: "5.0"
+version: [3]
+scope: ucs_5.0-0-errata5.0-3
+src: univention-directory-notifier
+fix:
+desc: |
+ This update addresses the following issues:
+ * The fix for Bug 54986 introduced an issue with
+   the handling of `start-stop-daemon` that could result
+   in an error message during
+   `systemctl restart univention-directory-notifier`.
+bug: [55957]

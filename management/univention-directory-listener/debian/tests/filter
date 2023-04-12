@@ -21,11 +21,11 @@ reset () {
 	local rv="$?"
 	set +e
 	[ $rv -gt 0 ] && [ -t 1 ] && bash -i
-	start-stop-daemon -R TERM/5/KILL/5 --exec /usr/sbin/slapd -f /etc/ldap/slapd.conf --stop
+	start-stop-daemon -R TERM/5/KILL/5 --exec /usr/sbin/slapd --stop -- -f /etc/ldap/slapd.conf
 	start-stop-daemon -R TERM/5/KILL/5 --exec /usr/sbin/univention-directory-listener --stop
 	rm -rf /usr/lib/univention-directory-listener/system2
 	start-stop-daemon -R TERM/5/KILL/5 --exec /usr/sbin/univention-directory-notifier --stop
-	start-stop-daemon -R TERM/5/KILL/5 --exec /usr/sbin/slapd2 -f /etc/ldap/slapd.conf --stop
+	start-stop-daemon -R TERM/5/KILL/5 --exec /usr/sbin/slapd2 --stop -- -f /etc/ldap/slapd.conf
 	rm -f /usr/sbin/slapd2 /etc/ldap/slapd2.conf
 	set -e
 	return "$rv"

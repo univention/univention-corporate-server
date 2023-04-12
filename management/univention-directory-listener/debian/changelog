@@ -1,3 +1,9 @@
+univention-directory-listener (14.0.8-2) unstable; urgency=medium
+
+  * Bug #55957: Fix start-stop-daemon option handling
+
+ -- Arvid <requate@univention.de>  Wed, 12 Apr 2023 13:04:54 +0200
+
 univention-directory-listener (14.0.8-1) unstable; urgency=medium
 
   * Bug #31771: migrate tabs to spaces

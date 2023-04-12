@@ -34,7 +34,7 @@ set -e
 t='/var/lib/univention-ldap/notify/transaction'
 if [ -s "$t" ] &&
 	[ -f /var/univention-join/joined ] &&
-	start-stop-daemon --status --pidfile /var/run/slapd/slapd.pid -x /usr/sbin/slapd -f /etc/ldap/slapd.conf &&
+	start-stop-daemon --status --pidfile /var/run/slapd/slapd.pid -x /usr/sbin/slapd -- -f /etc/ldap/slapd.conf &&
 	last="$(awk 'END{print $1}' "$t")" &&
 	! /usr/share/univention-directory-notifier/univention-translog ldap "$last" >/dev/null
 then
