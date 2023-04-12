@@ -6,6 +6,6 @@ src: cups-filters
 fix: 1.21.6-5A~5.0.0.202303301212
 desc: |
  This update addresses the following issues:
- * `cups-filters` has been updated, so that copy printing now works
-    as expected.
+ * `cups-filters` has been updated, so that printing multiple
+    copies now works.
 bug: [55886]
