@@ -1,3 +1,10 @@
+univention-nagios (15.0.2) unstable; urgency=medium
+
+  * Bug #56580: nagios check_ldap -y has been replaced with
+    LDAP_PASSWORD environment variable
+
+ -- Florian Best <best@univention.de>  Fri, 08 Mar 2024 00:18:23 +0100
+
 univention-nagios (15.0.1) unstable; urgency=medium
 
   * Bug #55706: UCS 5.2-0 version bump
