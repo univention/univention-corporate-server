@@ -685,7 +685,7 @@ print("\t'store.type' => '%s'," % (configRegistry.get('saml/idp/session-type', '
 	 */
 	'memcache_store.servers' => array(
 		array(
-			array('hostname' => 'unix:///var/run/univention-saml/memcached.socket'),
+			array('hostname' => '/var/run/univention-saml/memcached.socket'),
 		),
 @!@
 # flake8: noqa
