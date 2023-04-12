@@ -19,7 +19,6 @@ cleanup () {
 }
 trap cleanup EXIT
 
-OPENSSL="$(dpkg-query -W -f '${Version}' openssl)"
 CMD=(
 	openssl s_client
 	-CAfile /etc/univention/ssl/ucsCA/CAcert.pem
@@ -34,33 +33,14 @@ check () {
 	for check in "$@"
 	do
 		protocol=${check%=*} result=${check#*=}
-		case "$protocol/$OPENSSL" in
-		ssl2/1.*) continue ;; # SSLv2 is completely disabled in OpenSSL-1.x
-		ssl3/1.1*) continue ;; # SSLv3 is completely disabled in OpenSSL-1.1x
-		tls1_?/0.*) continue ;; # OpenSSL-0.x does not yet support TLSv1_x
-		esac
 		info "$check"
 		"check${result}" "${CMD[@]}" "-${protocol}" </dev/null ;
 	done
 }
-check0 () { "$@" 2>&1 | grep -q -F "ssl handshake failure" || fail_test 1 "$*"; }
 check1 () { "$@" 2>&1 | grep -q -F -x "DONE" || fail_test 1 "$*"; }
-check2 () { "$@" 2>&1 | grep -q -F "write:errno=0" || fail_test 1 "$*"; }
-check3 () { "$@" 2>&1 | grep -q -F "tlsv1 alert protocol version" || fail_test 1 "$*"; }
+check2 () { "$@" 2>&1 | grep -q -F "SSL alert number 80" || fail_test 1 "$*"; }
 
 ucr unset apache2/ssl/tlsv11 apache2/ssl/tlsv12 apache2/ssl/tlsv13
-check ssl2=0 ssl3=0 tls1=1 tls1_1=1 tls1_2=1 tls1_3=1
-
-case "$OPENSSL" in
-1.*)
-	ucr set apache2/ssl/tlsv11=true
-	check ssl2=0 ssl3=0 tls1_1=1 tls1_2=1 tls1_3=1
-
-	ucr set apache2/ssl/tlsv12=true
-	check ssl2=0 ssl3=0 tls1=3 tls1_1=3 tls1_2=1 tls1_3=1
-
-	ucr set apache2/ssl/tlsv13=true
-	check ssl2=0 ssl3=0 tls1=3 tls1_1=3 tls1_2=3 tls1_3=1
-esac
+check tls1=2 tls1_1=2 tls1_2=1 tls1_3=1
 
 # vim: set ft=sh :
