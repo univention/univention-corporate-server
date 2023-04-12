@@ -4,16 +4,16 @@ msgstr ""
 "Project-Id-Version: Univention Corporate Server - Manual for users and "
 "administrators\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-03-14 16:53+0100\n"
+"POT-Creation-Date: 2023-04-12 12:33+0000\n"
 "PO-Revision-Date: 2023-03-14 16:54+0100\n"
 "Last-Translator: Univention GmbH <packages@univention.de>\n"
 "Language: de\n"
 "Language-Team: Univention GmbH <packages@univention.de>\n"
-"Plural-Forms: nplurals=2; plural=(n != 1)\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Generated-By: Babel 2.9.1\n"
+"Generated-By: Babel 2.12.1\n"
 
 #: ../../central-management-umc/delegated-administration.rst:4
 msgid "Delegated administration for UMC modules"
@@ -1946,6 +1946,8 @@ msgid ""
 "  --set filename=62my-portal-acl \\\n"
 "  --set data=\"$(bzip2 -c /opt/62my-portal-acl.acl | base64)\" \\\n"
 "  --set package=\"62my-portal-acl\" \\\n"
+"  --set ucsversionstart=4.4-0 \\\n"
+"  --set ucsversionend=5.99-0 \\\n"
 "  --set packageversion=1"
 msgstr ""
 "$ udm settings/ldapacl create \\\n"
@@ -1954,15 +1956,17 @@ msgstr ""
 "  --set filename=62my-portal-acl \\\n"
 "  --set data=\"$(bzip2 -c /opt/62my-portal-acl.acl | base64)\" \\\n"
 "  --set package=\"62my-portal-acl\" \\\n"
+"  --set ucsversionstart=4.4-0 \\\n"
+"  --set ucsversionend=5.99-0 \\\n"
 "  --set packageversion=1"
 
-#: ../../central-management-umc/portal.rst:95
+#: ../../central-management-umc/portal.rst:97
 msgid "If the ACL is to be deleted again, the following command can be used:"
 msgstr ""
 "Wenn die ACL wieder gelöscht werden soll, kann folgender Befehl verwendet"
 " werden:"
 
-#: ../../central-management-umc/portal.rst:97
+#: ../../central-management-umc/portal.rst:99
 msgid ""
 "udm settings/ldapacl remove \\\n"
 "  --dn \"cn=62my-portal-acl,cn=ldapacl,cn=univention,$(ucr get "
@@ -1972,7 +1976,7 @@ msgstr ""
 "  --dn \"cn=62my-portal-acl,cn=ldapacl,cn=univention,$(ucr get "
 "ldap/base)\""
 
-#: ../../central-management-umc/portal.rst:102
+#: ../../central-management-umc/portal.rst:104
 msgid ""
 "An appropriate UMC policy can now be created via UMC. The following *UMC "
 "operations* must be allowed within the policy:"
@@ -1981,23 +1985,23 @@ msgstr ""
 "folgenden *UMC-Operationen* müssen dafür innerhalb der Richtlinie erlaubt"
 " werden:"
 
-#: ../../central-management-umc/portal.rst:105
+#: ../../central-management-umc/portal.rst:107
 msgid "*udm-new-portal*"
 msgstr "*udm-portal*"
 
-#: ../../central-management-umc/portal.rst:106
+#: ../../central-management-umc/portal.rst:108
 msgid "*udm-syntax*"
 msgstr "*udm-syntax*"
 
-#: ../../central-management-umc/portal.rst:107
+#: ../../central-management-umc/portal.rst:109
 msgid "*udm-validate*"
 msgstr "*udm-validate*"
 
-#: ../../central-management-umc/portal.rst:108
+#: ../../central-management-umc/portal.rst:110
 msgid "*udm-license*"
 msgstr "*udm-license*"
 
-#: ../../central-management-umc/portal.rst:110
+#: ../../central-management-umc/portal.rst:112
 msgid ""
 "How to create a policy is described in :ref:`central-management-umc-"
 "create-policy`. Now the newly created policy only needs to be assigned to"
