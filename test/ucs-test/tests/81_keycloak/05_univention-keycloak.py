@@ -14,6 +14,7 @@ from univention.testing.utils import wait_for_listener_replication
 from univention.udm.binary_props import Base64Bzip2BinaryProperty
 
 
+@pytest.mark.skipif(not os.path.isfile("/etc/keycloak.secret"), reason="fails on hosts without keycloak.secret")
 def test_create_oidc_client(keycloak_administrator_connection):
     """Creates and delete OIDC client in Keycloak"""
     client_id = 'foo-cli'

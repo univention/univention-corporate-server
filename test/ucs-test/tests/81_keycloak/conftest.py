@@ -50,6 +50,11 @@ from univention.udm.modules.settings_data import SettingsDataObject
 
 
 @pytest.fixture()
+def admin_account() -> UCSTestDomainAdminCredentials:
+    return UCSTestDomainAdminCredentials()
+
+
+@pytest.fixture()
 def keycloak_secret() -> Optional[str]:
     secret_file = "/etc/keycloak.secret"
     password = None
@@ -216,12 +221,6 @@ def keycloak_config(ucr: ConfigRegistry) -> SimpleNamespace:
 
 
 @pytest.fixture()
-def ucr() -> ConfigRegistry:
-    ucr = ConfigRegistry()
-    return ucr.load()
-
-
-@pytest.fixture()
 def selenium() -> webdriver.Chrome:
     """Browser based testing for using Selenium."""
     chrome_options = webdriver.ChromeOptions()
@@ -297,12 +296,11 @@ def domain_admins_dn(ucr: ConfigRegistry) -> str:
 
 
 @pytest.fixture()
-def keycloak_administrator_connection(keycloak_config: SimpleNamespace) -> KeycloakAdmin:
-    account = UCSTestDomainAdminCredentials()
+def keycloak_administrator_connection(keycloak_config: SimpleNamespace, admin_account: UCSTestDomainAdminCredentials) -> KeycloakAdmin:
     return KeycloakAdmin(
         server_url=keycloak_config.url,
-        username=account.username,
-        password=account.bindpw,
+        username=admin_account.username,
+        password=admin_account.bindpw,
         realm_name="ucs",
         user_realm_name="master",
         verify=True,
