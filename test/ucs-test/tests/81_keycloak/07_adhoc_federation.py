@@ -377,6 +377,7 @@ def _test_sso_login(selenium: WebDriver, portal_config: SimpleNamespace, keycloa
     keycloak_login(selenium, keycloak_config, "test_user1", "univention")
     wait_for_id(selenium, portal_config.header_menu_id).click()
     wait_for_id(selenium, "loginButton").click()
+    wait_for_id(selenium, portal_config.categories_id)
     assert get_portal_tile(selenium, portal_config.sso_login_tile_de, portal_config)
 
 
