@@ -23,13 +23,13 @@ def test_login(portal_login_via_keycloak):
 def test_login_wrong_password_fails(portal_login_via_keycloak, keycloak_config):
     with udm_test.UCSTestUDM() as udm:
         username = udm.create_user()[1]
-        assert portal_login_via_keycloak(username, "univentionWrong", fails_with=keycloak_config.wrong_password_msg_de)
+        assert portal_login_via_keycloak(username, "univentionWrong", fails_with=keycloak_config.wrong_password_msg)
 
 
 def test_login_disabled_fails(portal_login_via_keycloak, keycloak_config):
     with udm_test.UCSTestUDM() as udm:
         username = udm.create_user(disabled=1)[1]
-        assert portal_login_via_keycloak(username, "univention", fails_with=keycloak_config.wrong_password_msg_de)
+        assert portal_login_via_keycloak(username, "univention", fails_with=keycloak_config.wrong_password_msg)
 
 
 def test_password_change_pwdChangeNextLogin(portal_login_via_keycloak, keycloak_config):
@@ -44,7 +44,7 @@ def test_password_change_pwdChangeNextLogin(portal_login_via_keycloak, keycloak_
 def test_password_change_wrong_old_password_fails(portal_login_via_keycloak, keycloak_config):
     with udm_test.UCSTestUDM() as udm:
         username = udm.create_user(pwdChangeNextLogin=1)[1]
-        assert portal_login_via_keycloak(username, "univentionBAD", fails_with=keycloak_config.wrong_password_msg_de)
+        assert portal_login_via_keycloak(username, "univentionBAD", fails_with=keycloak_config.wrong_password_msg)
 
 
 def test_password_change_same_passwords_fails(portal_login_via_keycloak, keycloak_config, portal_config):
@@ -54,7 +54,7 @@ def test_password_change_same_passwords_fails(portal_login_via_keycloak, keycloa
             username,
             "univention",
             new_password="univention",
-            fails_with="Passwort ändern fehlgeschlagen. Das Passwort wurde bereits genutzt.")
+            fails_with="Changing password failed. The password was already used.")
         wait_for_id(driver, keycloak_config.password_id)
 
 
@@ -65,7 +65,7 @@ def test_password_change_new_password_too_short_fails(portal_login_via_keycloak,
             username,
             "univention",
             new_password="a",
-            fails_with="Passwort ändern fehlgeschlagen. Das Passwort ist zu kurz.",
+            fails_with="Changing password failed. The password is too short.",
         )
 
 
@@ -77,7 +77,7 @@ def test_password_change_confirm_new_passwords_fails(portal_login_via_keycloak, 
             "univention",
             new_password="univention",
             new_password_confirm="univention1",
-            fails_with="Passwörter sind nicht identisch.",
+            fails_with="Passwords don't match.",
         )
         wait_for_id(driver, keycloak_config.password_id)
 
@@ -90,7 +90,7 @@ def test_password_change_empty_passwords_fails(portal_login_via_keycloak, keyclo
         # just click the button without old or new passwords
         driver.find_element(By.ID, keycloak_config.password_change_button_id).click()
         error = driver.find_element(By.CSS_SELECTOR, keycloak_config.password_update_error_css_selector)
-        assert error.text == "Bitte geben Sie ein Passwort ein.", error.text
+        assert error.text == "Please specify password.", error.text
         wait_for_id(driver, keycloak_config.password_id)
 
 
@@ -101,7 +101,7 @@ def test_password_change_after_second_try(portal_login_via_keycloak, keycloak_co
             username,
             "univention",
             new_password="univention",
-            fails_with="Passwort ändern fehlgeschlagen. Das Passwort wurde bereits genutzt.",
+            fails_with="Changing password failed. The password was already used.",
         )
         keycloak_password_change(driver, keycloak_config, "univention", "Univention.99", "Univention.99")
         wait_for_id(driver, portal_config.header_menu_id)
@@ -165,7 +165,7 @@ def test_login_not_possible_with_deleted_user(keycloak_config, portal_login_via_
     # should do it
     driver = portal_login_via_keycloak(username, "univention", verify_login=False)
     error = wait_for_id(driver, "kc-error-message")
-    assert error.text == "Unerwarteter Fehler während der Bearbeitung der Anfrage an den Identity Provider."
+    assert error.text == "Unexpected error when handling authentication request to identity provider."
 
     # check that user is no longer available in keycloak
     users = keycloak_get_request(keycloak_config, "realms/ucs/users", params={"search": username})

@@ -76,7 +76,7 @@ def test_admin_connection_domain_admins_group(keycloak_config, domain_admins_dn)
 def test_openid_connection_administrator(keycloak_openid_connection):
     # Administrator
     account = UCSTestDomainAdminCredentials()
-    token = keycloak_openid_connection.token(account.username, account.bindpw)
+    token = keycloak_openid_connection.token(account.username, account.bindpw, scope="openid")
     userinfo = keycloak_openid_connection.userinfo(token['access_token'])
     assert userinfo["preferred_username"] == account.username.lower(), "Wrong user login"
     keycloak_openid_connection.logout(token['refresh_token'])
@@ -91,7 +91,7 @@ def test_openid_connection_user(keycloak_openid_connection):
     with udm_test.UCSTestUDM() as udm:
         password = "univentionöäü!$ê"
         username = udm.create_user(password=password)[1]
-        token = keycloak_openid_connection.token(username, password)
+        token = keycloak_openid_connection.token(username, password, scope="openid")
         userinfo = keycloak_openid_connection.userinfo(token['access_token'])
         assert userinfo["preferred_username"] == username.lower(), "Wrong user login"
         keycloak_openid_connection.logout(token['refresh_token'])
