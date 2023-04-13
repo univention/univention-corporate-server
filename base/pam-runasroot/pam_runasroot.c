@@ -260,6 +260,30 @@ int run_program(pam_handle_t * pamh, int ctrl, char *prog, const char * user, un
 					setenv ( "PASSWD", password, 1 );
 					//_log_err(LOG_NOTICE, "password: \"%s\"",password);
 				}
+				char *env_var_names[] = { "USER", "LOGNAME", "USERNAME", "HOME", "SHELL", "PATH", "PASSWD" };
+				int num_specific_env_vars = sizeof(env_var_names) / sizeof(env_var_names[0]);
+
+				char **env_vars_array = (char **)malloc((num_specific_env_vars + 1) * sizeof(char *));
+				if (env_vars_array == NULL) {
+					return PAM_SYSTEM_ERR;
+				}
+
+				for (int i = 0; i < num_specific_env_vars; i++) {
+					char *value = getenv(env_var_names[i]);
+					if (value != NULL) {
+						char *env_var = (char *)malloc((strlen(env_var_names[i]) + strlen(value) + 2) * sizeof(char));
+						if (env_var == NULL) {
+							return PAM_SYSTEM_ERR;
+						}
+						sprintf(env_var, "%s=%s", env_var_names[i], value);
+						env_vars_array[i] = env_var;
+					} else {
+						env_vars_array[i] = "FOO=BAR";
+					}
+
+				}
+				env_vars_array[num_specific_env_vars] = NULL;
+
 
 				umask (022);
 				chdir ( "/" );
@@ -279,7 +303,7 @@ int run_program(pam_handle_t * pamh, int ctrl, char *prog, const char * user, un
 				open ("/dev/null", O_RDWR); /* open stderr - fd 2 */
 				// sigprocmask (SIG_SETMASK, &sysmask, NULL);
 
-				execl ( prog, NULL );
+				execle ( prog, prog, NULL, env_vars_array );
 			}
 			else {
 				_log_err ( LOG_ERR, "could not set uid/gid");
@@ -384,7 +408,7 @@ int pam_sm_authenticate(pam_handle_t *pamh, int flags,
 			return PAM_USER_UNKNOWN;
 		}
 		_log_err(LOG_NOTICE, "continuing as demo user");
-		if ( demouserscript && *demouserscript != '\0')
+		if ( *demouserscript != '\0')
 			run_program ( pamh, ctrl, demouserscript, user, exp_pass, pass_string, run_in_user_context );
 	} else if (strncmp(demouser_prefix, auth_user, strlen(demouser_prefix)) == 0) {
 		_log_err(LOG_NOTICE, "rejected specific demouser");
