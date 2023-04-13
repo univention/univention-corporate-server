@@ -252,8 +252,8 @@ class Update(UniventionAppAction):
         content = response.read()
         with open(target, 'wb') as f:
             if filename == 'ucs.ini':
-                # b'[4.2]\nSupportedUCSVersions=4.2, 4.3, 4.1\n\n[4.3]\nSupportedUCSVersions=4.3, 4.2, 4.1\n\n[4.4]\nSupportedUCSVersions=4.4, 4.3, 4.2, 4.1\n\n[5.0]\nSupportedUCSVersions=5.0, 4.4, 4.3\n\n[5.1]\nSupportedUCSVersions=5.0'
-                content = b'[5.1]\nSupportedUCSVersions=5.1, 5.0, 4.4\n[5.0]\nSupportedUCSVersions=5.0, 4.4, 4.3\n[4.4]\nSupportedUCSVersions=4.4, 4.3, 4.2, 4.1\n[4.3]\nSupportedUCSVersions=4.3, 4.2, 4.1\n'
+                # b'[4.2]\nSupportedUCSVersions=4.2, 4.3, 4.1\n\n[4.3]\nSupportedUCSVersions=4.3, 4.2, 4.1\n\n[4.4]\nSupportedUCSVersions=4.4, 4.3, 4.2, 4.1\n\n[5.0]\nSupportedUCSVersions=5.0, 4.4, 4.3\n\n[5.1]\nSupportedUCSVersions=5.0\n\n[5.2]\nSupportedUCSVersions=5.0\n'
+                content = b'[5.2]\nSupportedUCSVersions=5.2, 5.1, 5.0, 4.4\n[5.1]\nSupportedUCSVersions=5.1, 5.0, 4.4\n[5.0]\nSupportedUCSVersions=5.0, 4.4, 4.3\n[4.4]\nSupportedUCSVersions=4.4, 4.3, 4.2, 4.1\n[4.3]\nSupportedUCSVersions=4.3, 4.2, 4.1\n'
             f.write(content)
         return etag
 
