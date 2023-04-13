@@ -298,7 +298,6 @@ UCS with pre-installed App, to check if changes in UCS break the appliance setup
 * [scenarios/autotest-243-ucsschool-DL-SH.cfg](scenarios/autotest-243-ucsschool-DL-SH.cfg): obsolete, remove?
 * [scenarios/autotest-244-ucsschool-id-sync.cfg](scenarios/autotest-244-ucsschool-id-sync.cfg): UCSschool ID Connector
 * [scenarios/autotest-245-ucsschool-apple-school-manager.cfg](scenarios/autotest-245-ucsschool-apple-school-manager.cfg): UCS@School apple school manager tests
-* [scenarios/autotest-246-ucsschool-id-broker-performance.cfg](scenarios/autotest-246-ucsschool-id-broker-performance.cfg): obsolete, remove?
 * [scenarios/autotest-247-ucsschool-id-broker.cfg](scenarios/autotest-247-ucsschool-id-broker.cfg) UCS@School ID Broker tests
 * [scenarios/autotest-247-ucsschool-id-broker-additional-traeger-staging.cfg](scenarios/autotest-247-ucsschool-id-broker-additional-traeger-staging.cfg)
 * [scenarios/autotest-247-ucsschool-id-broker-perf-ec2.cfg](scenarios/autotest-247-ucsschool-id-broker-perf-ec2.cfg): ID Broker Performance (EC2)
