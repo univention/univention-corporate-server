@@ -596,6 +596,18 @@ property_descriptions = dict({
         may_change=False,
         dontsearch=True,
     ),
+    'placeOfBirth': univention.admin.property(
+        short_description=_('Place of birth'),
+        long_description=_('The place where the user was born.'),
+        syntax=univention.admin.syntax.string,
+        copyable=True,
+    ),
+    'gender': univention.admin.property(
+        short_description=_('Gender'),
+        long_description=_('The gender of an individual.'),
+        syntax=getattr(univention.admin.syntax, 'Gender', univention.admin.syntax.string),
+        copyable=True,
+    ),
 }, **pki_properties())
 
 layout = [
@@ -610,6 +622,8 @@ layout = [
         Group(_('Personal information'), layout=[
             'displayName',
             'birthday',
+            'placeOfBirth',
+            'gender',
             'jpegPhoto',
         ]),
         Group(_('Organisation'), layout=[
@@ -1122,6 +1136,8 @@ mapping.register('lockedTime', 'sambaBadPasswordTime', mapWindowsFiletime, unmap
 mapping.register('accountActivationDate', 'krb5ValidStart', mapDateTimeTimezoneTupleToUTCDateTimeString, unmapUTCDateTimeToLocaltime, encoding='ASCII')
 mapping.register('univentionObjectIdentifier', 'univentionObjectIdentifier', None, univention.admin.mapping.ListToString)
 mapping.register('univentionSourceIAM', 'univentionSourceIAM', None, univention.admin.mapping.ListToString)
+mapping.register('placeOfBirth', 'univentionPlaceOfBirth', None, univention.admin.mapping.ListToString)
+mapping.register('gender', 'univentionGender', univention.admin.mapping.mapGender, univention.admin.mapping.unmapGender)
 
 mapping.registerUnmapping('sambaRID', unmapSambaRid)
 mapping.registerUnmapping('passwordexpiry', unmapPasswordExpiry)
@@ -1897,7 +1913,7 @@ class object(univention.admin.handlers.simpleLdap, PKIIntegration):
 
     def _modlist_univention_person(self, ml):
         # make sure that univentionPerson is set as objectClass when needed
-        if any(self.hasChanged(ikey) and self[ikey] for ikey in ('umcProperty', 'birthday', 'serviceSpecificPassword', 'country')) and b'univentionPerson' not in self.oldattr.get('objectClass', []):
+        if any(self.hasChanged(ikey) and self[ikey] for ikey in ('umcProperty', 'birthday', 'serviceSpecificPassword', 'country', 'gender', 'placeOfBirth')) and b'univentionPerson' not in self.oldattr.get('objectClass', []):
             ml.append(('objectClass', b'', b'univentionPerson'))  # TODO: check if exists already
         return ml
 

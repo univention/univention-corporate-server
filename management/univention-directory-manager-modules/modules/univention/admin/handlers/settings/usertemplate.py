@@ -270,6 +270,18 @@ property_descriptions = {
         multivalue=True,
         dontsearch=True,
     ),
+    'placeOfBirth': univention.admin.property(
+        short_description=_('Place of birth'),
+        long_description=_('The place where the user was born.'),
+        syntax=univention.admin.syntax.string,
+        copyable=True,
+    ),
+    'gender': univention.admin.property(
+        short_description=_('Gender'),
+        long_description=_('The gender of an individual.'),
+        syntax=getattr(univention.admin.syntax, 'Gender', univention.admin.syntax.string),
+        copyable=True,
+    ),
 }
 
 layout = [
@@ -285,6 +297,8 @@ layout = [
         ]),
         Group(_('Personal information'), layout=[
             ["displayName"],
+            'placeOfBirth',
+            'gender',
         ]),
         Group(_('Organisation'), layout=[
             'organisation',
@@ -364,6 +378,8 @@ mapping.register('mailPrimaryAddress', 'mailPrimaryAddress', None, univention.ad
 #mapping.register('postOfficeBox', 'postOfficeBox')
 mapping.register('mailAlternativeAddress', 'mailAlternativeAddress')
 mapping.register('_options', 'userOptionsPreset', encoding='ASCII')
+mapping.register('placeOfBirth', 'univentionPlaceOfBirth', None, univention.admin.mapping.ListToString)
+mapping.register('gender', 'univentionGender', univention.admin.mapping.mapGender, univention.admin.mapping.unmapGender)
 
 BLACKLISTED_OBJECT_CLASSES = {b'inetOrgPerson'}
 

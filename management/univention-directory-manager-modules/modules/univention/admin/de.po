@@ -644,6 +644,22 @@ msgstr "Juni"
 msgid "Keep e-mails and forward a copy"
 msgstr "E-Mails behalten und eine Kopie weiterleiten"
 
+#: modules/univention/admin/syntax.py:2598
+msgid "Not known"
+msgstr "Unbekannt"
+
+#: modules/univention/admin/syntax.py:2599
+msgid "Male"
+msgstr "Männlich"
+
+#: modules/univention/admin/syntax.py:2600
+msgid "Female"
+msgstr "Weiblich"
+
+#: modules/univention/admin/syntax.py:2601
+msgid "Not applicable"
+msgstr "Nicht zutreffend"
+
 #: modules/univention/admin/syntax.py:3060
 msgid "Key"
 msgstr "Schlüssel"

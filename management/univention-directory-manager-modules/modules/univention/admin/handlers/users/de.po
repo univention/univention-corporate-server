@@ -270,6 +270,22 @@ msgstr "Unveränderlicher Objekt-Identifikator"
 msgid "Immutable attribute to identfy source IAM"
 msgstr "Unveränderliches Attribut zur Identifizierung der IAM-Quelle"
 
+#: modules/univention/admin/handlers/users/user.py:593
+msgid "Place of birth"
+msgstr "Geburtsort"
+
+#: modules/univention/admin/handlers/users/user.py:594
+msgid "The place where the user was born."
+msgstr "Der Geburtsort des Benutzers."
+
+#: modules/univention/admin/handlers/users/user.py:599
+msgid "Gender"
+msgstr "Geschlecht"
+
+#: modules/univention/admin/handlers/users/user.py:60
+msgid "The gender of an individual."
+msgstr "Das Geschlecht einer Person."
+
 #: modules/univention/admin/handlers/users/user.py:591
 msgid "Immutable attribute to track the identity of an object in UDM"
 msgstr ""
