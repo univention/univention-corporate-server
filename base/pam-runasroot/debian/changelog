@@ -1,3 +1,10 @@
+pam-runasroot (11.0.0-2) unstable; urgency=medium
+
+  * Bug #56579: Don't use setenv function to modify environment
+    variables and use execle with a local pointer instead.
+
+ -- Juan Carlos García García <garcia-garcia.extern@univention.de>  Mon, 09 Oct 2023 08:03:00 +0200
+
 pam-runasroot (11.0.0-1) unstable; urgency=medium
 
   * Bug #51419: UCS-5.0-0 version bump
