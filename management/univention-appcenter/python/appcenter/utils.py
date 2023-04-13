@@ -86,7 +86,10 @@ def read_ini_file(filename, parser_class=RawConfigParser):
     parser = parser_class()
     try:
         with open(filename) as f:
-            parser.readfp(f)
+            if hasattr(parser, 'read_file'):
+                parser.read_file(f)
+            else:
+                parser.readfp(f)
     except TypeError:
         pass
     except EnvironmentError:
@@ -282,7 +285,7 @@ def call_process(args, logger=None, env=None, cwd=None):
         stdout_thread = Thread(target=_handle_output, args=(process.stdout, logger.info))
         stdout_thread.daemon = True
         stdout_thread.start()
-        stderr_thread = Thread(target=_handle_output, args=(process.stderr, logger.warn))
+        stderr_thread = Thread(target=_handle_output, args=(process.stderr, logger.warning))
         stderr_thread.daemon = True
         stderr_thread.start()
 

@@ -128,7 +128,7 @@ class UniventionAppAction(with_metaclass(UniventionAppActionMeta, object)):
 
     @classmethod
     def warn(cls, msg, logger=None):
-        cls._log(logger, logging.WARN, str(msg))
+        cls._log(logger, logging.WARNING, str(msg))
 
     @classmethod
     def fatal(cls, msg, logger=None):
