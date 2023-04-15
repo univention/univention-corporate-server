@@ -314,7 +314,7 @@ class PamAuth(object):
 
             if qt in (PAM_TEXT_INFO, PAM_ERROR_MSG):
                 AUTH.info('PAM says: %r' % (query,))
-            # AUTH.error('# PAM(%d) %s: answer=%r' % (qt, repr(query).strip("':\" "), response))
+            AUTH.error('# PAM(%d) %s: answer=%r' % (qt, repr(query).strip("':\" "), response))
             yield (response, 0)
 
     def _parse_error_message_from(self, pam_err, prompts):  # type: (Tuple[Any, int], Sequence[Tuple[str, int]]) -> str
