@@ -1,0 +1,30 @@
+product: ucs
+release: "5.0"
+version: [3]
+scope: ucs_5.0-0-errata5.0-3
+src: firefox-esr
+fix: 102.10.0esr-1~deb10u1
+desc: |
+ This update addresses the following issues:
+ * Memory Corruption in Safe Browsing Code (CVE-2023-1945)
+ * Fullscreen notification obscured (CVE-2023-29533)
+ * Potential Memory Corruption following Garbage Collector compaction
+   (CVE-2023-29535)
+ * Invalid free from JavaScript code (CVE-2023-29536)
+ * Content-Disposition filename truncation leads to Reflected File Download
+   (CVE-2023-29539)
+ * Files with malicious extensions could have been downloaded unsafely on
+   Linux (CVE-2023-29541)
+ * Incorrect optimization result on ARM64 (CVE-2023-29548)
+ * Memory safety bugs fixed in Firefox 112 and Firefox ESR 102.10
+   (CVE-2023-29550)
+bug: [55974]
+cve:
+- CVE-2023-1945
+- CVE-2023-29533
+- CVE-2023-29535
+- CVE-2023-29536
+- CVE-2023-29539
+- CVE-2023-29541
+- CVE-2023-29548
+- CVE-2023-29550
