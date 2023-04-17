@@ -54,6 +54,17 @@ def admin_account() -> UCSTestDomainAdminCredentials:
     return UCSTestDomainAdminCredentials()
 
 
+# don't use the ucs-test ucr fixture (UCSTestConfigRegistry)
+# this will revert UCR all changes during the test, also changes
+# that a not supposed to be reverted, e.g. univention-app configure
+# sets a new appcenter/apps/$app_id/container, if that gets
+# reverted to app is in a broken state
+@pytest.fixture()
+def ucr() -> ConfigRegistry:
+    ucr = ConfigRegistry()
+    return ucr.load()
+
+
 @pytest.fixture()
 def keycloak_secret() -> Optional[str]:
     secret_file = "/etc/keycloak.secret"
