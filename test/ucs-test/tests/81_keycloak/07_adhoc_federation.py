@@ -6,11 +6,13 @@
 
 import base64
 import json
+import os
 import subprocess
 import uuid
 from types import SimpleNamespace
 from typing import Optional
 
+import pytest
 from keycloak import KeycloakAdmin
 from keycloak.exceptions import KeycloakError, KeycloakGetError
 from selenium.webdriver.chrome.webdriver import WebDriver
@@ -406,6 +408,7 @@ def _test_federated_user(keycloak_admin_connection: KeycloakAdmin, ucr: ConfigRe
     assert kc_user["lastName"] == "Example"
 
 
+@pytest.mark.skipif(not os.path.isfile("/etc/keycloak.secret"), reason="fails on hosts without keycloak.secret")
 def test_adhoc_federation(keycloak_admin_connection: KeycloakAdmin, ucr: ConfigRegistry, keycloak_config: SimpleNamespace, selenium: WebDriver, portal_config: SimpleNamespace):
 
     realm = "dummy"
