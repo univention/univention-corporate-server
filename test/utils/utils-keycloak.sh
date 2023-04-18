@@ -147,3 +147,35 @@ external_keycloak_fqdn_config () {
 	# to not create a certificate for external name in univention-saml/91univention-saml.inst
 	#ucr set keycloak/server/sso/certificate/generation=false
 }
+
+external_portal_apache_config () {
+	local fqdn="${1:?missing fqdn}"; shift
+	cat <<-EOF >"/etc/apache2/sites-enabled/univention-portal-external-fqdn.conf"
+	<IfModule mod_ssl.c>
+	<VirtualHost *:443>
+		ServerName $fqdn
+		IncludeOptional /etc/apache2/ucs-sites.conf.d/*.conf
+		SSLEngine on
+		SSLProxyEngine on
+		SSLProxyCheckPeerCN off
+		SSLProxyCheckPeerName off
+		SSLProxyCheckPeerExpire off
+		SSLCertificateFile /opt/portal.extern.test/cert.pem
+		SSLCertificateKeyFile /opt/portal.extern.test/private.key
+		SSLCACertificateFile /etc/univention/ssl/ucsCA/CAcert.pem
+	</VirtualHost>
+	</IfModule>
+EOF
+	systemctl reload apache2.service
+}
+
+external_portal_config () {
+	# requiremnts:
+	# * certificate/apache config for external portal
+	local fqdn="${1:?missing fqdn}"; shift
+	ucr set umc/saml/sp-server="$fqdn"
+	# workaround for https://forge.univention.org/bugzilla/show_bug.cgi?id=55982
+	# copy certificate to /etc/univention/ssl
+	cp -rf "/opt/$fqdn" /etc/univention/ssl/
+	univention-run-join-scripts --force --run-scripts 92univention-management-console-web-server.inst
+}
