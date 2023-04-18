@@ -3652,7 +3652,6 @@ univention-base-files
 univention-base-packages
 univention-bind
 univention-bootsplash
-univention-cloud-init
 univention-config
 univention-config-dev
 univention-config-registry

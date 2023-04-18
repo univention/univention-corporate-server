@@ -1,4 +1,0 @@
-appliance-hooks.d/10_restart_umc	usr/lib/univention-system-setup/appliance-hooks.d/
-etc
-python/*	usr/lib/python3/dist-packages/cloudinit/
-var

@@ -13,7 +13,6 @@ xinit
 xorg
 xserver-xorg-input-all
 xserver-xorg-video-all
-univention-cloud-init
 univention-system-activation
 univention-welcome-screen
 rdate

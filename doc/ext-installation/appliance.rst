@@ -157,7 +157,7 @@ Providing an image for OpenStack
 The provisioning for OpenStack images occurs via Cloud-Init (see
 :ref:`use-cloudinit`). Cloud-Init is a standardized solution for
 configuration of an image. Cloud-Init checks a range of data sources for an
-existing configuration. The :program:`univention-cloud-init` package must be
+existing configuration. The package :program:`cloud-init` must be
 installed to prepare an image for provisioning via Cloud-Init:
 
 .. code-block:: console

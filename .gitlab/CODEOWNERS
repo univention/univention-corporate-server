@@ -109,7 +109,6 @@
 /services/univention-admin-diary/ @arequate
 /services/univention-apache/ @fbest
 /services/univention-bind/ @jbroders
-/services/univention-cloud-init/ @edamrose @phahn
 /services/univention-dhcp/ @phahn
 /services/univention-foomatic-ppds/ @fbotner
 /services/univention-ldb-modules/ @arequate @fbest @jbremer

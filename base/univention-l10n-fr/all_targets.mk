@@ -230,4 +230,3 @@ $(DESTDIR)/usr/share/univention-web/js/umc/hooks/i18n/fr/passwordchange.json: fr
 $(DESTDIR)/usr/share/univention-web/js/umc/hooks/i18n/fr/passwordreset.json: fr/management/univention-self-service/hook/fr.po
 $(DESTDIR)/usr/share/univention-web/js/umc/hooks/i18n/fr/univention_demo.json: fr/test/univention-demo-configuration/usr/share/univention-web/js/umc/hooks/fr.po
 $(DESTDIR)/usr/share/univention-web/js/umc/i18n/fr/app.json: fr/management/univention-web/js/fr.po
-$(DESTDIR)/var/www/univention/js/ci-appliance/fr.json: fr/services/univention-cloud-init/var/www/univention/js/ci-appliance/fr.po
