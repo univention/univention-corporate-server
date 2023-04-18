@@ -28,10 +28,10 @@ fi
 #TEST PREPARATION
 
 deactivate_ppolicy() {
-	ucr unset ldap/ppolicy ldap/ppolicy/enabled; systemctl restart slapd
+	ucr unset ldap/ppolicy/enabled; systemctl restart slapd
 }
 
-ucr set ldap/ppolicy=yes ldap/ppolicy/enabled=yes; systemctl restart slapd; undo deactivate_ppolicy
+ucr set ldap/ppolicy/enabled=yes; systemctl restart slapd; undo deactivate_ppolicy
 
 default_ppolicy_ldif=$(univention-ldapsearch -LLL -b "cn=default,cn=ppolicy,cn=univention,$ldap_base")
 
