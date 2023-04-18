@@ -61,10 +61,10 @@ restart_slapd_if_it_hangs() {
 #TEST PREPARATION
 
 deactivate_ppolicy() {
-	ucr unset ldap/ppolicy ldap/ppolicy/enabled; /etc/init.d/slapd restart
+	ucr unset ldap/ppolicy/enabled; /etc/init.d/slapd restart
 }
 
-ucr set ldap/ppolicy=yes ldap/ppolicy/enabled=yes; /etc/init.d/slapd restart; undo deactivate_ppolicy
+ucr set ldap/ppolicy/enabled=yes; /etc/init.d/slapd restart; undo deactivate_ppolicy
 
 default_ppolicy_ldif=$(univention-ldapsearch -LLL -b "cn=default,cn=ppolicy,cn=univention,$ldap_base")
 
