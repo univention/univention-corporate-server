@@ -61,6 +61,7 @@ class PytestRunner:
         if cls.options.verbose:
             args.append('-' + 'v' * cls.options.verbose)
         args.append('--continue-on-collection-errors')
+        args.extend(('-c', '/usr/share/ucs-test/pytest.ini'))
         # args.append('--strict')
         # args.append('--showlocals')
         # args.append('--full-trace')

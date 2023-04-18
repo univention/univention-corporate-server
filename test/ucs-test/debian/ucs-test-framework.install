@@ -4,3 +4,4 @@ bin/ucs-test	usr/sbin/
 bin/udm-test	usr/sbin/
 bin/udm-test-rest	usr/sbin/
 tests/conftest.py	usr/share/ucs-test/
+tests/pytest.ini	usr/share/ucs-test/
