@@ -530,18 +530,10 @@ This appendix lists the |UCSUCRV|\ s mentioned in the document.
    :ref:`ucr-templates-policy`.
 
 
-.. envvar:: ldap/ppolicy
-
-   To enable automatic account locking, set the value to ``yes``. Also set
-   :envvar:`ldap/ppolicy/enabled`. For more information, see
-   :ref:`users-faillog-openldap`.
-
-
 .. envvar:: ldap/ppolicy/enabled
 
-   To enable automatic account locking, set the value to ``yes``. Also set
-   :envvar:`ldap/ppolicy`. For more information, see
-   :ref:`users-faillog-openldap`.
+   To enable automatic account locking, set the value to ``yes``.
+   For more information, see :ref:`users-faillog-openldap`.
 
 
 .. envvar:: ldap/pw-bcrypt

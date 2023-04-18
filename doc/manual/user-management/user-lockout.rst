@@ -119,13 +119,12 @@ the default backend since UCS 4, previous systems must be migrated to the MDB
 LDAP backend, see :cite:t:`ucs-performance-guide`.
 
 Automatic account locking must be enabled for each UCS Directory Node.
-To do this, the |UCSUCRV|\ s :envvar:`ldap/ppolicy` and
-:envvar:`ldap/ppolicy/enabled` must be set to
+To do this, the |UCSUCRV| :envvar:`ldap/ppolicy/enabled` must be set to
 ``yes`` and the OpenLDAP server must be restarted:
 
 .. code-block:: console
 
-   $ ucr set ldap/ppolicy=yes ldap/ppolicy/enabled=yes
+   $ ucr set ldap/ppolicy/enabled=yes
    $ systemctl restart slapd
 
 
