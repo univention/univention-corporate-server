@@ -240,6 +240,49 @@ find /usr/lib/python3/dist-packages/ -type d -not -perm 755 -name __pycache__ -e
 # Bug #55637
 systemctl restart rabbitmq-server.service
 
+# Bug #54586
+# Bug #54587
+if is_installed univention-s4-connector && [ -e "/etc/univention/connector/s4internal.sqlite" ]; then
+	systemctl stop univention-s4-connector
+	python3 - <<EOF
+#!/usr/bin/python3
+import sqlite3
+db = sqlite3.connect('/etc/univention/connector/s4internal.sqlite')
+cursor = db.cursor()
+cursor.execute('select * from "S4 rejected";')
+rejects = cursor.fetchall()
+cursor.execute('delete from "S4 rejected"')
+for key, value in rejects:
+    if isinstance(value, bytes):
+        value = value.decode('UTF-8')
+    if isinstance(key, bytes):
+        key = key.decode('UTF-8')
+    cursor.execute('insert into "S4 rejected" (key, value) VALUES (?, ?)', (key, value))
+db.commit()
+EOF
+	systemctl start univention-s4-connector
+fi
+
+if is_installed univention-ad-connector && [ -e "/etc/univention/connector/internal.sqlite" ]; then
+	systemctl stop univention-ad-connector
+	python3 - <<EOF
+#!/usr/bin/python3
+import sqlite3
+db = sqlite3.connect('/etc/univention/connector/internal.sqlite')
+cursor = db.cursor()
+cursor.execute('select * from "AD rejected";')
+rejects = cursor.fetchall()
+cursor.execute('delete from "AD rejected"')
+for key, value in rejects:
+    if isinstance(value, bytes):
+        value = value.decode('UTF-8')
+    if isinstance(key, bytes):
+        key = key.decode('UTF-8')
+    cursor.execute('insert into "AD rejected" (key, value) VALUES (?, ?)', (key, value))
+db.commit()
+EOF
+	systemctl start univention-ad-connector
+fi
 
 echo "
 
