@@ -18,7 +18,7 @@ if configRegistry.is_true('ldap/k5pwd', True):
 if configRegistry.is_true('ldap/pwd_scheme_kinit', True):
     print("overlay\t\tpwd_scheme_kinit")
 
-if configRegistry.get('ldap/database/type') == "mdb" and configRegistry.is_true('ldap/ppolicy'):
+if configRegistry.get('ldap/database/type') == "mdb":
     print("overlay\t\tppolicy")
     if configRegistry.is_true('ldap/ppolicy/enabled', False):
         ppolicy_default = 'cn=default,cn=ppolicy,cn=univention,%(ldap/base)s' % configRegistry
