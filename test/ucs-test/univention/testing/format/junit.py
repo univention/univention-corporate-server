@@ -43,6 +43,7 @@ class Junit(TestFormatInterface):
 
     def end_test(self, result):  # type: (TestResult) -> None
         """Called after each test."""
+        self.raw.end_test(result, end='')
         failures = errors = skipped = disabled = 0
         if result.eofs == 'O':
             pass

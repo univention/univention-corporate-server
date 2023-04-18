@@ -10,7 +10,8 @@ from typing import IO  # noqa: F401
 from weakref import WeakValueDictionary
 
 import univention.config_registry
-from univention.testing.data import TestCase, TestCodes, TestEnvironment, TestFormatInterface, TestResult  # noqa: F401
+from univention.testing.codes import TestCodes
+from univention.testing.data import TestCase, TestEnvironment, TestFormatInterface, TestResult  # noqa: F401
 
 
 __all__ = ['Text', 'Raw']
@@ -94,7 +95,7 @@ class Text(TestFormatInterface):
         print(f'{title}{ruler}', end=' ', file=self.stream)
         self.stream.flush()
 
-    def end_test(self, result):  # type: (TestResult) -> None
+    def end_test(self, result, end='\n'):  # type: (TestResult, str) -> None
         """Called after each test."""
         reason = result.reason
         msg = TestCodes.MESSAGE.get(reason, reason)
@@ -102,7 +103,7 @@ class Text(TestFormatInterface):
         colorname = TestCodes.COLOR.get(result.reason, 'BLACK')
         color = getattr(self.term, colorname.upper(), b'')
 
-        print('%s%s%s' % (color.decode('ASCII'), msg, self.term.NORMAL.decode('ASCII')), file=self.stream)
+        print('%s%s%s' % (color.decode('ASCII'), msg, self.term.NORMAL.decode('ASCII')), end=end, file=self.stream)
         super().end_test(result)
 
     def end_section(self):  # type: () -> None
