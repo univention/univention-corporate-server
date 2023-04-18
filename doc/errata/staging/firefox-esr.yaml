@@ -6,18 +6,17 @@ src: firefox-esr
 fix: 102.10.0esr-1~deb10u1
 desc: |
  This update addresses the following issues:
- * Memory Corruption in Safe Browsing Code (CVE-2023-1945)
+ * Memory corruption in safe browsing code (CVE-2023-1945)
  * Fullscreen notification obscured (CVE-2023-29533)
- * Potential Memory Corruption following Garbage Collector compaction
+ * Potential memory corruption following garbage collector compaction
    (CVE-2023-29535)
  * Invalid free from JavaScript code (CVE-2023-29536)
- * Content-Disposition filename truncation leads to Reflected File Download
+ * Content-Disposition filename truncation leads to reflected file download
    (CVE-2023-29539)
  * Files with malicious extensions could have been downloaded unsafely on
    Linux (CVE-2023-29541)
  * Incorrect optimization result on ARM64 (CVE-2023-29548)
- * Memory safety bugs fixed in Firefox 112 and Firefox ESR 102.10
-   (CVE-2023-29550)
+ * Memory safety bugs fixed (CVE-2023-29550)
 bug: [55974]
 cve:
 - CVE-2023-1945
