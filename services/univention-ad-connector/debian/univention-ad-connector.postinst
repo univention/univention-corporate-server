@@ -70,7 +70,32 @@ fi
 
 sqlite3 "/etc/univention/connector/internal.sqlite" "ALTER TABLE 'AD rejected' ADD retry_count NUMBER DEFAULT 0;" 2>/dev/null || true
 
-/etc/init.d/univention-ad-connector crestart || true
+# Bug #54587
+if [ "$1" = "configure" ] && [ -n "$2" ] && dpkg --compare-versions "$2" lt 14.0.13-5; then
+	systemctl stop univention-ad-connector
+	python3 - <<EOF
+#!/usr/bin/python3
+import sqlite3
+db = sqlite3.connect('/etc/univention/connector/internal.sqlite')
+cursor = db.cursor()
+cursor.execute('select * from "AD rejected";')
+rejects = cursor.fetchall()
+cursor.execute('delete from "AD rejected"')
+for key, value in rejects:
+    if isinstance(value, bytes):
+        value = value.decode('UTF-8')
+    if isinstance(key, bytes):
+        key = key.decode('UTF-8')
+    cursor.execute('insert into "AD rejected" (key, value) VALUES (?, ?)', (key, value))
+db.commit()
+EOF
+	systemctl start univention-ad-connector
+	skip_final_restart=true
+fi
+
+if [ "$skip_final_restart" != "true" ]; then
+	/etc/init.d/univention-ad-connector crestart || true
+fi
 systemctl try-restart univention-directory-listener || true
 
 #DEBHELPER#

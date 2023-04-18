@@ -1,3 +1,10 @@
+univention-ad-connector (14.0.13-5) unstable; urgency=medium
+
+  * Bug #54587: replace bytestrings in AD-Connector reject table which
+    were leftover from UCS 4.4 upgrade
+
+ -- Florian Best <best@univention.de>  Tue, 18 Apr 2023 17:16:16 +0200
+
 univention-ad-connector (14.0.13-4) unstable; urgency=medium
 
   * Bug #55774: fix handling of rejects
