@@ -81,12 +81,28 @@ stop_udm_cli_server
 if [ -x /etc/init.d/univention-s4-connector ] && [ -f /usr/share/univention-join/.joined ]; then
 	## This would be the location for errata bugfixes
 
-	# Bug $BUGNR
-	# if [ "$1" = "configure" -a -n "$2" ] && dpkg --compare-versions "$2" lt 14.1.0-1; then
-	# 	# Fix goes here
-	# 	/etc/init.d/univention-s4-connector start
-	# 	skip_final_restart=true
-	# fi
+	# Bug #54586
+	if [ "$1" = "configure" ] && [ -n "$2" ] && dpkg --compare-versions "$2" lt 14.0.13-5; then
+		systemctl stop univention-s4-connector
+		python3 - <<EOF
+#!/usr/bin/python3
+import sqlite3
+db = sqlite3.connect('/etc/univention/connector/s4internal.sqlite')
+cursor = db.cursor()
+cursor.execute('select * from "S4 rejected";')
+rejects = cursor.fetchall()
+cursor.execute('delete from "S4 rejected"')
+for key, value in rejects:
+    if isinstance(value, bytes):
+        value = value.decode('UTF-8')
+    if isinstance(key, bytes):
+        key = key.decode('UTF-8')
+    cursor.execute('insert into "S4 rejected" (key, value) VALUES (?, ?)', (key, value))
+db.commit()
+EOF
+		/etc/init.d/univention-s4-connector start
+		skip_final_restart=true
+	 fi
 
 	if [ "$skip_final_restart" != "true" ]; then
 		/etc/init.d/univention-s4-connector restart

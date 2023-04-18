@@ -1,3 +1,10 @@
+univention-s4-connector (14.0.13-5) unstable; urgency=medium
+
+  * Bug #54586: replace bytestrings in S4-Connector reject table which
+    were leftover from UCS 4.4 upgrade
+
+ -- Florian Best <best@univention.de>  Tue, 18 Apr 2023 17:14:29 +0200
+
 univention-s4-connector (14.0.13-4) unstable; urgency=medium
 
   * Bug #55880: Fix sort oder of pickle files
