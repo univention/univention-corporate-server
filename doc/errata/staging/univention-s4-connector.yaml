@@ -3,11 +3,13 @@ release: "5.0"
 version: [3]
 scope: ucs_5.0-0-errata5.0-3
 src: univention-s4-connector
-fix: 14.0.13-4A~5.0.0.202304061740
+fix: 14.0.13-5A~5.0.0.202304181831
 desc: |
  This update addresses the following issues:
  * The script `resync_object_from_ucs.py` has an option `--first`
    which allows a particular DN or filtered list of DNs to be replicated
    with priority. This update fixes the sort order to actually
    put the DNs to the first position in the synchronization queue.
-bug: [55880]
+ * If the system was upgraded from UCS 4.4 and had rejected objects
+   the internal SQLite database was corrupted. The database will be repaired.
+bug: [55880, 54586]
