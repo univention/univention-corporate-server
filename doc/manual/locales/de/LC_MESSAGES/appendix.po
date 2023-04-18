@@ -794,16 +794,6 @@ msgstr ""
 "wird. Für weitere Informationen, siehe :ref:`users-lastbind-overlay-"
 "module`."
 
-#: ../../appendix/variables.rst:521
-msgid ""
-"Configures the attribute at user objects that shows the group membership."
-" Default value is ``memberOf``. For more information, see :ref:`groups-"
-"memberof`."
-msgstr ""
-"Konfiguriert das Attribut bei Benutzerobjekten, das die "
-"Gruppenzugehörigkeit anzeigt. Standardwert ist ``memberOf``. Für weitere "
-"Informationen, siehe :ref:`groups-memberof`."
-
 #: ../../appendix/variables.rst:528
 msgid ""
 "Time interval to write profile based UCR variables to a UCS system. The "
@@ -822,16 +812,6 @@ msgid ""
 msgstr ""
 "Um die automatische Kontosperrung zu aktivieren, setzen Sie den Wert auf "
 "``yes``. Setzen Sie auch :envvar:`ldap/ppolicy/enabled`. Für weitere "
-"Informationen, siehe :ref:`users-faillog-openldap`."
-
-#: ../../appendix/variables.rst:542
-msgid ""
-"To enable automatic account locking, set the value to ``yes``. Also set "
-":envvar:`ldap/ppolicy`. For more information, see :ref:`users-faillog-"
-"openldap`."
-msgstr ""
-"Um die automatische Kontosperrung zu aktivieren, setzen Sie den Wert auf "
-"``yes``. Setzen Sie auch :envvar:`ldap/ppolicy`. Für weitere "
 "Informationen, siehe :ref:`users-faillog-openldap`."
 
 #: ../../appendix/variables.rst:549 ../../appendix/variables.rst:1025
