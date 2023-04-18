@@ -233,12 +233,6 @@ Separator=[ ]
 Elementtype=str
 Categories=service-ldap
 
-[ldap/ppolicy]
-Description[de]=Diese Variable legt fest, ob das LDAP Overlay ppolicy geladen wird. Dies sorgt dafür, dass der LDAP-Server einen Satz von benutzerspezifischen ppolicy Attributen läd. Wenn es einmal aktiviert wurde, sollte es nicht wieder deaktivert werden, um Probleme durch undefinierte Attribute zu vermeiden. Die Aktiviertung der Funktionalität des Overlays ist unabhängig davon über eine andere UCR Variable möglich (siehe UCR Variable ldap/ppolicy/enable).
-Description[en]=If this variable is set to yes, the LDAP server loads the LDAP overlay ppolicy on the next restart. In this case the LDAP server loads a set of ppolicy specific user attributes. Once the overlay has been activated, it should not be deactivated again to avoid problems due to undefined attributes. Loading and activation of the overlay are two different things, activation is controlled by a separate UCR variable (see UCR variable ldap/ppolicy/enable).
-Type=str
-Categories=service-ldap
-
 [ldap/ppolicy/enabled]
 Description[de]=Diese Variable legt fest, ob die Konfiguration des LDAP overlay ppolicy für das lokale System aktivert wird. Wenn die Variable auf yes gesetzt wird, dann wendet der lokale LDAP Server eim LDAP-Anmeldeversuchen die Einstellungen an, die an einem bestimmten pwdPolicy Objekt im LDAP definiert sind (siehe UCR Variable ldap/ppolicy/default).
 Description[en]=Setting this variable to yes activates the configuration of the LDAP overlay ppolicy. If enabled LDAP bind attempts are monitored by the ppolicy overlay according to the settings defined on a special pwdPolicy LDAP objekt (see UCR variable ldap/ppolicy/default).
