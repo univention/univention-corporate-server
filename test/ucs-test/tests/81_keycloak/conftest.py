@@ -171,8 +171,9 @@ def unverified_user() -> dict:
 
 @pytest.fixture()
 def portal_config(ucr: ConfigRegistry) -> SimpleNamespace:
+    portal_fqdn = ucr["umc/saml/sp-server"] if ucr["umc/saml/sp-server"] else f"{ucr['hostname']}.{ucr['domainname']}"
     config = {
-        "url": f"https://{ucr['hostname']}.{ucr['domainname']}/univention/portal",
+        "url": f"https://{portal_fqdn}/univention/portal",
         "title": "Univention Portal",
         "sso_login_tile": "Login (Single sign-on)",
         "sso_login_tile_de": "Anmelden (Single Sign-on)",
