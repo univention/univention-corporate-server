@@ -24,7 +24,8 @@ driver_dir="/var/lib/samba/drivers/x64"
 
 cleanup () {
 	for file in "${files_to_remove[@]}"; do
-		rm -f "$file"
+		rm -f "$driver_dir/3/$file"
+		rm -f "$driver_dir/$file"
 	done
 	for driver in "${drivers_to_remove[@]}"; do
 		rpcclient -U "$admin_account%$admin_passwd" localhost -c "deldriverex $driver"
@@ -32,12 +33,21 @@ cleanup () {
 }
 trap cleanup INT TERM EXIT
 
+upload_driver_file () {
+	local tmp_file
+	tmp_file="$(su "$admin_account" -c "mktemp")"
+	cd /tmp || fail_fast 1 "cd /tmp failed"
+	tmp_file="$(basename "$tmp_file")"
+	smbclient "//$(hostname)/print\$" -U "$admin_account%$admin_passwd" -c "prompt; put $tmp_file x64/$tmp_file" || fail_fast 1 "smbclient failed"
+	echo "$tmp_file"
+}
+
 upload_printer_driver () {
 	local driver_file="$1" driver_name data_file config_file help_file
 	driver_name="test-driver-$(makepasswd)"
-	data_file="$(su "$admin_account" -c "mktemp -p $driver_dir")"
-	config_file="$(su "$admin_account" -c "mktemp -p $driver_dir")"
-	help_file="$(su "$admin_account" -c "mktemp -p $driver_dir")"
+	data_file="$(upload_driver_file)"
+	config_file="$(upload_driver_file)"
+	help_file="$(upload_driver_file)"
 	local driver_settings="$driver_name"
 	driver_settings+=":$(basename "$driver_file")"
 	driver_settings+=":$(basename "$data_file")"

@@ -1,3 +1,9 @@
+ucs-test (10.0.10-54) unstable; urgency=medium
+
+  * Bug #55941: fix printer upload tests
+
+ -- Felix Botner <botner@univention.de>  Tue, 18 Apr 2023 13:38:38 +0200
+
 ucs-test (10.0.10-53) unstable; urgency=medium
 
   * Bug #55747: modified keycloak test for keycloak 21
