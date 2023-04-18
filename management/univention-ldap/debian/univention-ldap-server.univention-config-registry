@@ -41,7 +41,6 @@ Variables: ldap/tool-threads
 Variables: ldap/database/mdb/maxsize
 Variables: ldap/database/mdb/checkpoint
 Variables: ldap/database/mdb/envflags
-Variables: ldap/ppolicy
 Variables: ldap/ppolicy/enabled
 Variables: ldap/ppolicy/default
 Variables: ldap/shadowbind
@@ -86,7 +85,6 @@ Variables: ldap/database/type
 Variables: ldap/translogfile
 Variables: ldap/k5pwd
 Variables: ldap/pwd_scheme_kinit
-Variables: ldap/ppolicy
 Variables: ldap/shadowbind
 Variables: ldap/overlay/lastbind
 Variables: ldap/pw-bcrypt
@@ -125,7 +123,6 @@ Variables: ldap/database/mdb/checkpoint
 Variables: ldap/database/mdb/envflags
 Variables: ldap/cachesize
 Variables: ldap/idlcachesize
-Variables: ldap/ppolicy
 Variables: ldap/ppolicy/enabled
 Variables: ldap/ppolicy/default
 Variables: ldap/shadowbind

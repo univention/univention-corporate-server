@@ -1,3 +1,10 @@
+ucs-test (11.0.4) unstable; urgency=medium
+
+  * Bug #55998: always enable ppolicy module because it provides the
+    schema necessary to create our internal entries
+
+ -- Florian Best <best@univention.de>  Thu, 07 Mar 2024 23:53:45 +0100
+
 ucs-test (11.0.3) unstable; urgency=medium
 
   * Bug #53127: upgrade to latest debhelper compat version

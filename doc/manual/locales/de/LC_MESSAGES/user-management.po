@@ -2125,21 +2125,21 @@ msgstr ""
 #: ../../user-management/user-lockout.rst:121
 msgid ""
 "Automatic account locking must be enabled for each UCS Directory Node. To"
-" do this, the |UCSUCRV|\\ s :envvar:`ldap/ppolicy` and "
-":envvar:`ldap/ppolicy/enabled` must be set to ``yes`` and the OpenLDAP "
+" do this, the |UCSUCRV| :envvar:`ldap/ppolicy/enabled` "
+"must be set to ``yes`` and the OpenLDAP "
 "server must be restarted:"
 msgstr ""
 "Die Aktivierung der automatischen Kontosperrung muss pro UCS Directory "
-"Node aktiviert werden. Dazu müssen die |UCSUCRV|\\ n "
-":envvar:`ldap/ppolicy` und :envvar:`ldap/ppolicy/enabled` auf ``yes`` "
+"Node aktiviert werden. Dazu muss die |UCSUCRV| "
+":envvar:`ldap/ppolicy/enabled` auf ``yes`` "
 "gesetzt werden und der OpenLDAP Server muss neu gestartet werden:"
 
 #: ../../user-management/user-lockout.rst:126
 msgid ""
-"$ ucr set ldap/ppolicy=yes ldap/ppolicy/enabled=yes\n"
+"$ ucr set ldap/ppolicy/enabled=yes\n"
 "$ systemctl restart slapd"
 msgstr ""
-"$ ucr set ldap/ppolicy=yes ldap/ppolicy/enabled=yes\n"
+"$ ucr set ldap/ppolicy/enabled=yes\n"
 "$ systemctl restart slapd"
 
 #: ../../user-management/user-lockout.rst:132
