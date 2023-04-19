@@ -1,0 +1,11 @@
+product: ucs
+release: "5.0"
+version: [3]
+scope: ucs_5.0-0-errata5.0-3
+src: univention-directory-manager-rest
+fix:
+desc: |
+ This update addresses the following issues:
+ * It is now possible to access UDM modules with numbers in its name via the
+   UDM REST API.
+bug: [55551]

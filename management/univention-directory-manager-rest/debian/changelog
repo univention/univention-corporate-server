@@ -1,3 +1,9 @@
+univention-directory-manager-rest (10.0.6-2) unstable; urgency=medium
+
+  * Bug #55551: fix accessing UDM modules with numbers in its name
+
+ -- Florian Best <best@univention.de>  Wed, 19 Apr 2023 11:13:14 +0200
+
 univention-directory-manager-rest (10.0.6-1) unstable; urgency=medium
 
   * Bug #31771: migrate tabs to spaces
