@@ -252,11 +252,14 @@ cursor = db.cursor()
 cursor.execute('select * from "S4 rejected";')
 rejects = cursor.fetchall()
 cursor.execute('delete from "S4 rejected"')
+new_entries = {}
 for key, value in rejects:
     if isinstance(value, bytes):
         value = value.decode('UTF-8')
     if isinstance(key, bytes):
         key = key.decode('UTF-8')
+    new_entries[key] = value
+for key, value in new_entries.items():
     cursor.execute('insert into "S4 rejected" (key, value) VALUES (?, ?)', (key, value))
 db.commit()
 EOF
@@ -273,11 +276,14 @@ cursor = db.cursor()
 cursor.execute('select * from "AD rejected";')
 rejects = cursor.fetchall()
 cursor.execute('delete from "AD rejected"')
+new_entries = {}
 for key, value in rejects:
     if isinstance(value, bytes):
         value = value.decode('UTF-8')
     if isinstance(key, bytes):
         key = key.decode('UTF-8')
+    new_entries[key] = value
+for key, value in new_entries.items():
     cursor.execute('insert into "AD rejected" (key, value) VALUES (?, ?)', (key, value))
 db.commit()
 EOF
