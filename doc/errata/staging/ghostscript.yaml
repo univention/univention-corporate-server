@@ -6,11 +6,11 @@ src: ghostscript
 fix: 9.26a~dfsg-0+deb9u11
 desc: |
  This update addresses the following issue:
- 9.26a~dfsg-0+deb9u11 (Mon, 17 Apr 2023 23:26:35 +0200)
- * Non-maintainer upload by the ELTS team.
- * Fix CVE-2023-28879: It was discovered that there was a potential
-   buffer-overflow vulnerability in ghostscript, a popular interpreter for the
-   PostScript language used, for example, to generate PDF files.
+ * Buffer overflow leading to potential corruption of data internal to the
+   PostScript interpreter, in `base/sbcp.c`. This affects `BCPEncode`,
+   `BCPDecode`, `TBCPEncode`, and `TBCPDecode`. If the write buffer is filled
+   to one byte less than full, and one then tries to write an escaped
+   character, two bytes are written. (CVE-2023-28879)
 bug: [55988]
 cve:
 - CVE-2023-28879
