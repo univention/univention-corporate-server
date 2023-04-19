@@ -9,3 +9,6 @@ desc: |
  * It is now possible to access UDM modules with numbers in its name via the
    UDM REST API.
 bug: [55551]
+erratum: 644
+announced: 2023-04-19
+support: core
