@@ -510,7 +510,6 @@ test "$test_settings_bool" = "true" || exit 1
 exit 0'''
 
 
-@pytest.fixture(scope='module')
 def docker_app_ini():
     return '''[Application]
 ID = alpine
@@ -528,7 +527,6 @@ AutoModProxy = False
 UCSOverviewCategory = False''', 'alpine'
 
 
-@pytest.fixture(scope='module')
 def package_app_ini():
     return '''[Application]
 ID = ucstest
