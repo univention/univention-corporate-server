@@ -1,0 +1,16 @@
+product: ucs
+release: "4.4"
+version: [9]
+scope: ucs_4.4-0-errata4.4-9
+src: ghostscript
+fix: 9.26a~dfsg-0+deb9u11
+desc: |
+ This update addresses the following issue:
+ 9.26a~dfsg-0+deb9u11 (Mon, 17 Apr 2023 23:26:35 +0200)
+ * Non-maintainer upload by the ELTS team.
+ * Fix CVE-2023-28879: It was discovered that there was a potential
+   buffer-overflow vulnerability in ghostscript, a popular interpreter for the
+   PostScript language used, for example, to generate PDF files.
+bug: [55988]
+cve:
+- CVE-2023-28879
