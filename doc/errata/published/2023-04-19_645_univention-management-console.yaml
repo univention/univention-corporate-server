@@ -8,3 +8,6 @@ desc: |
  This update addresses the following issues:
  * A crash of the UMC-Server and UMC-Web-Server is now prevented.
 bug: [55959]
+erratum: 645
+announced: 2023-04-19
+support: core
