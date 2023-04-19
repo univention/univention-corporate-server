@@ -243,7 +243,7 @@ class TempFilesystem:
             "if=/dev/zero",
             f"of={self.filename}",
             "bs=1M",
-            "count=20",
+            "count=301",
         ])
         print("Format file")
         subprocess.check_call([

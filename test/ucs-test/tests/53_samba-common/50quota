@@ -45,7 +45,10 @@ for FS in xfs ext2 ext3 ext4; do
 		exit 110
 	fi
 
-	if ! dd if=/dev/zero of="${image}"  bs=1M count=1 seek=100; then
+	count="1"
+	test ${FS} = "xfs" && count="301"
+
+	if ! dd if=/dev/zero of="${image}"  bs="1M" count="$count" seek=100; then
 		fail_test
 		exit 110
 	fi
