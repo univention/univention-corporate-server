@@ -5,21 +5,9 @@ scope: ucs_4.4-0-errata4.4-9
 src: pjproject
 fix: 2.5.5~dfsg-6+deb9u9
 desc: |
- This update addresses the following issues:
-
- Debian update 2.5.5~dfsg-6+deb9u9
- 2.5.5~dfsg-6+deb9u9 (Tue, 18 Apr 2023 21:46:06 +0200)
- * Non-maintainer upload by the ELTS team.
- * Fix CVE-2023-27585: PJSIP is a free and open source multimedia
-   communication library written in C. A buffer overflow vulnerability affects
-   applications that use PJSIP DNS resolver. It doesn't affect PJSIP users who
-   do not utilise PJSIP DNS resolver. This vulnerability is related to
-   CVE-2022-24793. The difference is that this issue is in parsing the query
-   record `parse_query()`, while the issue in CVE-2022-24793 is in
-   `parse_rr()`. A workaround is to disable DNS resolution in PJSIP config (by
-   setting `nameserver_count` to zero) or use an external resolver
-   implementation instead.
+ This update addresses the following issue:
+ * CVE-2023-27585: A buffer overflow vulnerability affects applications that
+   use PJSIP DNS resolver parsing the query record `parse_query()`,
 bug: [55989]
 cve:
 - CVE-2023-27585
-- CVE-2022-24793
