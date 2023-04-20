@@ -52,15 +52,6 @@ Description: Tools for Univention App Center
  corporate environments. For more information about UCS,
  refer to: https://www.univention.de/
 
-Package: python-univention-appcenter
-Architecture: all
-Description: UCS transitional dummy package
- .
- It is part of Univention Corporate Server (UCS), an
- integrated, directory driven solution for managing
- corporate environments. For more information about UCS,
- refer to: https://www.univention.de/
-
 Package: python3-univention-appcenter
 Architecture: all
 Depends:
@@ -100,15 +91,6 @@ Description: Development tools for Univention App Center
  corporate environments. For more information about UCS,
  refer to: https://www.univention.de/
 
-Package: python-univention-appcenter-dev
-Architecture: all
-Description: UCS transitional dummy package
- .
- It is part of Univention Corporate Server (UCS), an
- integrated, directory driven solution for managing
- corporate environments. For more information about UCS,
- refer to: https://www.univention.de/
-
 Package: python3-univention-appcenter-dev
 Architecture: all
 Depends:
@@ -132,23 +114,6 @@ Package: univention-appcenter-docker
 Architecture: all
 Depends:
  python3-univention-appcenter-docker,
- ${misc:Depends},
-Description: Docker integration for Univention App Center
- This package contains a Docker integration for certain apps
- of the Univention App Center.
- .
- It is part of Univention Corporate Server (UCS), an
- integrated, directory driven solution for managing
- corporate environments. For more information about UCS,
- refer to: https://www.univention.de/
-
-Package: python-univention-appcenter-docker
-Architecture: all
-Depends:
- docker-compose,
- pass,
- univention-apache,
- univention-docker (>= 2.0.0-4),
  ${misc:Depends},
 Description: Docker integration for Univention App Center
  This package contains a Docker integration for certain apps

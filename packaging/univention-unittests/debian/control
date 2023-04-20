@@ -10,15 +10,6 @@ Build-Depends:
  python3-setuptools,
 Standards-Version: 3.8.2
 
-Package: python-univentionunittests
-Architecture: all
-Description: UCS transitional dummy package
- .
- It is part of Univention Corporate Server (UCS), an
- integrated, directory driven solution for managing
- corporate environments. For more information about UCS,
- refer to: https://www.univention.de/
-
 Package: python3-univentionunittests
 Architecture: all
 Depends:
