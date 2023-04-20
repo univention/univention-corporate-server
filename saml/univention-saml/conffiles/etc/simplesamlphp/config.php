@@ -31,7 +31,7 @@ hostfqdn = '%(hostname)s.%(domainname)s' % configRegistry
 
 print("	'timezone'		=> '%s'," % configRegistry.get('saml/idp/timezone', 'Europe/Berlin'))
 print("	'debug'		=> %s," % ('TRUE' if configRegistry.is_true('saml/idp/log/debug/enabled', False) else 'FALSE'))
-print("	'logging.level'		=> SimpleSAML\\Logger::%s," % configRegistry.get('saml/idp/log/level', 'ERR'))
+print("	'logging.level'		=> \\SimpleSAML\\Logger::%s," % configRegistry.get('saml/idp/log/level', 'ERR'))
 print("	'language.default'	=> '%s'," % configRegistry.get('locale/default', 'en')[:2])
 print("	'theme.use'		=> '%s'," % configRegistry.get('saml/idp/lookandfeel/theme', 'default'))
 print("	'technicalcontact_name'		=> '%s'," % configRegistry.get('saml/idp/technicalcontactname', 'Administrator'))
@@ -141,18 +141,18 @@ print("	'errorreporting'            =>	%s," % ('TRUE' if configRegistry.is_true(
 	 * Logging.
 	 *
 	 * define the minimum log level to log
-	 *		SimpleSAML\Logger::ERR		No statistics, only errors
-	 *		SimpleSAML\Logger::WARNING	No statistics, only warnings/errors
-	 *		SimpleSAML\Logger::NOTICE	Statistics and errors
-	 *		SimpleSAML\Logger::INFO		Verbose logs
-	 *		SimpleSAML\Logger::DEBUG	Full debug logs - not recommended for production
+	 *		\SimpleSAML\Logger::ERR		No statistics, only errors
+	 *		\SimpleSAML\Logger::WARNING	No statistics, only warnings/errors
+	 *		\SimpleSAML\Logger::NOTICE	Statistics and errors
+	 *		\SimpleSAML\Logger::INFO		Verbose logs
+	 *		\SimpleSAML\Logger::DEBUG	Full debug logs - not recommended for production
 	 *
 	 * Choose logging handler.
 	 *
 	 * Options: [syslog,file,errorlog]
 	 *
 	 */
-#	'logging.level'         => SimpleSAML\Logger::NOTICE,
+#	'logging.level'         => \SimpleSAML\Logger::NOTICE,
 	'logging.handler'       => 'syslog',
 
 	/*
