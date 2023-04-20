@@ -75,7 +75,7 @@ class sspmod_uldap_Auth_Source_uLDAP extends sspmod_core_Auth_UserPassBase {
 				 */
 				$expired_messages = array("password expired", "The password has expired.", "account expired");
 				if (in_array($this->ldapConfig->extended_error, $expired_messages)) {
-					SimpleSAML\Logger::debug('password is expired, checking for password change');
+					\SimpleSAML\Logger::debug('password is expired, checking for password change');
 					$user_dn = $this->ldap()->searchfordn($this->config['search.base'], $this->config['search.attributes'], $username, TRUE);
 					$attributes = $this->ldap()->getAttributes($user_dn);
 					$this->throw_common_login_errors($attributes);
@@ -114,10 +114,10 @@ class sspmod_uldap_Auth_Source_uLDAP extends sspmod_core_Auth_UserPassBase {
 		curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
 		$response = curl_exec($ch);
 		if ($response === FALSE) {
-			SimpleSAML\Logger::warning('Error: ' . curl_error($ch));
+			\SimpleSAML\Logger::warning('Error: ' . curl_error($ch));
 		}
 		$httpcode = curl_getinfo($ch, CURLINFO_RESPONSE_CODE);
-		SimpleSAML\Logger::debug('Password changing response: ' . var_export(array($httpcode, $response), true));
+		\SimpleSAML\Logger::debug('Password changing response: ' . var_export(array($httpcode, $response), true));
 		if (FALSE !== $response && strpos(curl_getinfo($ch, CURLINFO_CONTENT_TYPE), 'application/json') >= 0) {
 			$response = json_decode($response, TRUE);
 		} else {
@@ -145,18 +145,18 @@ class sspmod_uldap_Auth_Source_uLDAP extends sspmod_core_Auth_UserPassBase {
 	 * @param array $attributes
 	 */
 	private function throw_common_login_errors($attributes) {
-		SimpleSAML\Logger::debug('got LDAP attributes:' . var_export($attributes, true));
+		\SimpleSAML\Logger::debug('got LDAP attributes:' . var_export($attributes, true));
 
 		$the_time = time();
 		// Account expired
 		// Posix: shadowExpire: 1 if set: disabled , or: days since epoch the account expires
 		if (isset($attributes['shadowExpire']) && is_string($attributes["shadowExpire"][0])) {
 			if ((int)$attributes['shadowExpire'][0] == 1) {
-				SimpleSAML\Logger::debug('LDAP Account disabled');
+				\SimpleSAML\Logger::debug('LDAP Account disabled');
 				throw new SimpleSAML_Error_Error('LDAP_ACCDISABLED');
 			}
 			else if ((int)$attributes['shadowExpire'][0] < (floor($the_time / 86400))) {
-				SimpleSAML\Logger::debug('LDAP Account expired');
+				\SimpleSAML\Logger::debug('LDAP Account expired');
 				throw new SimpleSAML_Error_Error('LDAP_ACCEXPIRED');
 			}
 		}
@@ -165,14 +165,14 @@ class sspmod_uldap_Auth_Source_uLDAP extends sspmod_core_Auth_UserPassBase {
 			// Parse strange krb5ValidEnd format '20151020000000Z' (missing T)
 			$date = DateTime::createFromFormat('Ymd+', $attributes['krb5ValidEnd'][0]);
 			if ($date->getTimestamp() < ($the_time + 1)) {
-				SimpleSAML\Logger::debug('Kerberos Account expired');
+				\SimpleSAML\Logger::debug('Kerberos Account expired');
 				throw new SimpleSAML_Error_Error('KRB_ACCEXPIRED');
 			}
 		}
 		// Samba expired
 		if (isset($attributes['sambaKickoffTime']) && is_string($attributes['sambaKickoffTime'][0])) {
 			if ((int)$attributes['sambaKickoffTime'][0] < $the_time) {
-				SimpleSAML\Logger::debug('Samba Account expired');
+				\SimpleSAML\Logger::debug('Samba Account expired');
 				throw new SimpleSAML_Error_Error('SAMBA_ACCEXPIRED');
 			}
 		}
@@ -181,7 +181,7 @@ class sspmod_uldap_Auth_Source_uLDAP extends sspmod_core_Auth_UserPassBase {
 		// shadowMax + shadowLastChange < (floor(time() / 86400))
 		if (isset($attributes['shadowMax']) && is_array($attributes['shadowLastChange'])) {
 			if (((int)$attributes['shadowMax'][0] + (int)$attributes['shadowLastChange'][0]) < (floor($the_time / 86400))) {
-				SimpleSAML\Logger::debug('LDAP password change required');
+				\SimpleSAML\Logger::debug('LDAP password change required');
 				throw new SimpleSAML_Error_Error('LDAP_PWCHANGE');
 			}
 		}
@@ -190,14 +190,14 @@ class sspmod_uldap_Auth_Source_uLDAP extends sspmod_core_Auth_UserPassBase {
 			// Parse strange krb5PasswordEnd format '20151020000000Z' (missing T)
 			$date = DateTime::createFromFormat('Ymd+', $attributes['krb5PasswordEnd'][0]);
 			if ($date->getTimestamp() < ($the_time + 1)) {
-				SimpleSAML\Logger::debug('Kerberos password change required');
+				\SimpleSAML\Logger::debug('Kerberos password change required');
 				throw new SimpleSAML_Error_Error('KRB_PWCHANGE');
 			}
 		}
 		// samba:
 		if (isset($attributes['sambaKickoffTime']) && is_string($attributes['sambaKickoffTime'][0])) {
 			if ((int)$attributes['sambaKickoffTime'][0] < $the_time) {
-				SimpleSAML\Logger::debug('Samba password change required');
+				\SimpleSAML\Logger::debug('Samba password change required');
 				throw new SimpleSAML_Error_Error('SAMBA_PWCHANGE');
 			}
 		}
@@ -206,14 +206,14 @@ class sspmod_uldap_Auth_Source_uLDAP extends sspmod_core_Auth_UserPassBase {
 		// samba: L in sambaAcctFlags
 		if (isset($attributes['sambaAcctFlags']) && is_string($attributes['sambaAcctFlags'][0])) {
 			if (strpos($attributes['sambaAcctFlags'][0],'L') !== false) {
-				SimpleSAML\Logger::debug('Samba account locked');
+				\SimpleSAML\Logger::debug('Samba account locked');
 				throw new SimpleSAML_Error_Error('SAMBA_ACCLOCKED');
 			}
 		}
 		// krb: krb5KDCFlags=254
 		if (isset($attributes['krb5KDCFlags']) && is_string($attributes['krb5KDCFlags'][0])) {
 			if ((int)$attributes['krb5KDCFlags'][0] === 254) {
-				SimpleSAML\Logger::debug('Kerberos account locked');
+				\SimpleSAML\Logger::debug('Kerberos account locked');
 				throw new SimpleSAML_Error_Error('KRB_ACCLOCKED');
 			}
 		}
@@ -234,7 +234,7 @@ class sspmod_uldap_Auth_Source_uLDAP extends sspmod_core_Auth_UserPassBase {
 			$selfservice_email_verified = isset($attributes['univentionPasswordRecoveryEmailVerified']) &&
 				$attributes['univentionPasswordRecoveryEmailVerified'][0] === 'TRUE';
 			if ($is_self_registered && !$selfservice_email_verified) {
-				SimpleSAML\Logger::debug('Self service mail not verified');
+				\SimpleSAML\Logger::debug('Self service mail not verified');
 				// The double dot in the error marks this as custom error which is not defined in
 				// lib/SimpleSAML/Error/ErrorCodes.php
 				// Without it a cgi error is thrown "PHP Notice:  Undefined index: SELFSERVICE_ACCUNVERIFIED"
