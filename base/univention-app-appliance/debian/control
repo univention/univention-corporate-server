@@ -11,15 +11,6 @@ Build-Depends:
  univention-config-dev (>= 15.0.3),
  univention-l10n-dev (>= 7.0.1),
 
-Package: python-univention-app-appliance
-Architecture: all
-Description: UCS transitional dummy package
- .
- It is part of Univention Corporate Server (UCS), an
- integrated, directory driven solution for managing
- corporate environments. For more information about UCS,
- refer to: https://www.univention.de/
-
 Package: python3-univention-app-appliance
 Architecture: all
 Depends:

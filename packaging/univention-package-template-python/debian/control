@@ -8,15 +8,6 @@ Build-Depends:
  dh-python,
  python3-all,
 
-Package: python-univention-package-template
-Architecture: all
-Description: UCS transitional dummy package
- .
- It is part of Univention Corporate Server (UCS), an
- integrated, directory driven solution for managing
- corporate environments. For more information about UCS,
- refer to: https://www.univention.de/
-
 Package: python3-univention-package-template
 Architecture: all
 Depends:
