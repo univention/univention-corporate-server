@@ -35,7 +35,7 @@
 
 ## joinscript api: bindpwdfile
 
-VERSION=22
+VERSION=23
 . /usr/share/univention-join/joinscripthelper.lib
 joinscript_init
 
@@ -538,6 +538,211 @@ univention-directory-manager settings/printermodel modify "$@" --ignore_exists -
 	--append printmodel='"hplip/HP/HP-Fax4-hpcups.ppd.gz" "HP Fax4 hpcups"' \
 	--append printmodel='"hplip/HP/HP-Fax4-hpijs.ppd.gz" "HP Fax4 hpijs"' || rc=$?
 
+# Manufacturer: OKI Printers: 14
+univention-directory-manager settings/printermodel create "$@" --ignore_exists --position "cn=cups,cn=univention,$ldap_base" --set name=OKI || rc=$?
+univention-directory-manager settings/printermodel modify "$@" --ignore_exists --dn cn=OKI,cn=cups,cn=univention,"$ldap_base" \
+	--append printmodel='"okidata/B2200PCL.ppd" "OKI B2200  / B2400 PCL"' \
+	--append printmodel='"okidata/B6500PS.ppd" "OKI B6250 / B6500"' \
+	--append printmodel='"okidata/B700PS.ppd" "OKI B710 / B720 / B730"' \
+	--append printmodel='"okidata/B930PS.ppd" "OKI B930"' \
+	--append printmodel='"okidata/C330PS.ppd" "OKI C330 / C530"' \
+	--append printmodel='"okidata/C6000PS.ppd" "OKI C6050 / C6150"' \
+	--append printmodel='"okidata/C800PS.ppd" "OKI C830 / MC860 MFP / CX2633 MFP"' \
+	--append printmodel='"okidata/MC56XPS.ppd" "OKI C5550 MFP / MC560 MFP / CX2032 MFP / CX2033 MFP"' \
+	--append printmodel='"okidata/OK400PCL.ppd" "OKI B4000 / B400 / MB400 PCL"' \
+	--append printmodel='"okidata/OK400PS.ppd" "OKI B4000 / B400 / MB400 PS"' \
+	--append printmodel='"okidata/ok361u1.ppd" "OKI MC361 MFP / MC561 MFP / CX2731 MFP"' \
+	--append printmodel='"okidata/ok400PSBP.ppd" "OKI B4000 / B400 / MB400 PS"' \
+	--append printmodel='"okidata/okdotmatrix24.ppd" "OKI 24 Pin Dot Matrix"' \
+	--append printmodel='"okidata/okdotmatrix9.ppd" "OKI 9 Pin Dot Matrix"' || rc=$?
+
+# Manufacturer: Oki Printers: 144
+univention-directory-manager settings/printermodel create "$@" --ignore_exists --position "cn=cups,cn=univention,$ldap_base" --set name=Oki || rc=$?
+univention-directory-manager settings/printermodel modify "$@" --ignore_exists --dn cn=Oki,cn=cups,cn=univention,"$ldap_base" \
+	--append printmodel='"foomatic-db-compressed-ppds:0/ppd/foomatic-ppd/Oki-14i-Postscript.ppd" "Oki 14i Foomatic/Postscript"' \
+	--append printmodel='"foomatic-db-compressed-ppds:0/ppd/foomatic-ppd/Oki-B2400-pxlmono.ppd" "Oki B2400 Foomatic/pxlmono (recommended)"' \
+	--append printmodel='"foomatic-db-compressed-ppds:0/ppd/foomatic-ppd/Oki-B2540_MFP-Postscript.ppd" "Oki B2540 MFP Foomatic/Postscript (recommended)"' \
+	--append printmodel='"foomatic-db-compressed-ppds:0/ppd/foomatic-ppd/Oki-B410-hpijs-pcl5e.ppd" "Oki B410 Foomatic/hpijs-pcl5e"' \
+	--append printmodel='"foomatic-db-compressed-ppds:0/ppd/foomatic-ppd/Oki-B410-lj4dith.ppd" "Oki B410 Foomatic/lj4dith"' \
+	--append printmodel='"foomatic-db-compressed-ppds:0/ppd/foomatic-ppd/Oki-B410-ljet4.ppd" "Oki B410 Foomatic/ljet4"' \
+	--append printmodel='"foomatic-db-compressed-ppds:0/ppd/foomatic-ppd/Oki-B410-ljet4d.ppd" "Oki B410 Foomatic/ljet4d"' \
+	--append printmodel='"foomatic-db-compressed-ppds:0/ppd/foomatic-ppd/Oki-B410-pxlmono.ppd" "Oki B410 Foomatic/pxlmono (recommended)"' \
+	--append printmodel='"foomatic-db-compressed-ppds:0/ppd/foomatic-ppd/Oki-B4200-pxlmono.ppd" "Oki B4200 Foomatic/pxlmono (recommended)"' \
+	--append printmodel='"foomatic-db-compressed-ppds:0/ppd/foomatic-ppd/Oki-B4250-pxlmono.ppd" "Oki B4250 Foomatic/pxlmono (recommended)"' \
+	--append printmodel='"foomatic-db-compressed-ppds:0/ppd/foomatic-ppd/Oki-B4300-Postscript.ppd" "Oki B4300 Foomatic/Postscript"' \
+	--append printmodel='"foomatic-db-compressed-ppds:0/ppd/foomatic-ppd/Oki-B4300-lj5gray.ppd" "Oki B4300 Foomatic/lj5gray"' \
+	--append printmodel='"foomatic-db-compressed-ppds:0/ppd/foomatic-ppd/Oki-B4300-pxlmono.ppd" "Oki B4300 Foomatic/pxlmono (recommended)"' \
+	--append printmodel='"foomatic-db-compressed-ppds:0/ppd/foomatic-ppd/Oki-B4350-Postscript.ppd" "Oki B4350 Foomatic/Postscript"' \
+	--append printmodel='"foomatic-db-compressed-ppds:0/ppd/foomatic-ppd/Oki-B4350-hpijs-pcl5e.ppd" "Oki B4350 Foomatic/hpijs-pcl5e"' \
+	--append printmodel='"foomatic-db-compressed-ppds:0/ppd/foomatic-ppd/Oki-B4350-lj4dith.ppd" "Oki B4350 Foomatic/lj4dith"' \
+	--append printmodel='"foomatic-db-compressed-ppds:0/ppd/foomatic-ppd/Oki-B4350-ljet4.ppd" "Oki B4350 Foomatic/ljet4 (recommended)"' \
+	--append printmodel='"foomatic-db-compressed-ppds:0/ppd/foomatic-ppd/Oki-B4350-pxlmono.ppd" "Oki B4350 Foomatic/pxlmono"' \
+	--append printmodel='"foomatic-db-compressed-ppds:0/ppd/foomatic-ppd/Oki-B4400-hpijs-pcl5e.ppd" "Oki B4400 Foomatic/hpijs-pcl5e"' \
+	--append printmodel='"foomatic-db-compressed-ppds:0/ppd/foomatic-ppd/Oki-B4400-pxlmono.ppd" "Oki B4400 Foomatic/pxlmono (recommended)"' \
+	--append printmodel='"foomatic-db-compressed-ppds:0/ppd/foomatic-ppd/Oki-B4545_MFP-Postscript.ppd" "Oki B4545 MFP Foomatic/Postscript (recommended)"' \
+	--append printmodel='"foomatic-db-compressed-ppds:0/ppd/foomatic-ppd/Oki-B4600-hpijs-pcl5e.ppd" "Oki B4600 Foomatic/hpijs-pcl5e"' \
+	--append printmodel='"foomatic-db-compressed-ppds:0/ppd/foomatic-ppd/Oki-B4600-pxlmono.ppd" "Oki B4600 Foomatic/pxlmono (recommended)"' \
+	--append printmodel='"foomatic-db-compressed-ppds:0/ppd/foomatic-ppd/Oki-B4600_PS-Postscript.ppd" "Oki B4600 PS Foomatic/Postscript (recommended)"' \
+	--append printmodel='"foomatic-db-compressed-ppds:0/ppd/foomatic-ppd/Oki-B4600_PS-pxlmono.ppd" "Oki B4600 PS Foomatic/pxlmono"' \
+	--append printmodel='"foomatic-db-compressed-ppds:0/ppd/foomatic-ppd/Oki-B6200-Postscript.ppd" "Oki B6200 Foomatic/Postscript (recommended)"' \
+	--append printmodel='"foomatic-db-compressed-ppds:0/ppd/foomatic-ppd/Oki-B6250-Postscript.ppd" "Oki B6250 Foomatic/Postscript (recommended)"' \
+	--append printmodel='"foomatic-db-compressed-ppds:0/ppd/foomatic-ppd/Oki-B6300-Postscript.ppd" "Oki B6300 Foomatic/Postscript (recommended)"' \
+	--append printmodel='"foomatic-db-compressed-ppds:0/ppd/foomatic-ppd/Oki-B6300-pxlmono.ppd" "Oki B6300 Foomatic/pxlmono"' \
+	--append printmodel='"foomatic-db-compressed-ppds:0/ppd/foomatic-ppd/Oki-B6500-Postscript.ppd" "Oki B6500 Foomatic/Postscript (recommended)"' \
+	--append printmodel='"foomatic-db-compressed-ppds:0/ppd/foomatic-ppd/Oki-C5300-Postscript.ppd" "Oki C5300 Foomatic/Postscript"' \
+	--append printmodel='"foomatic-db-compressed-ppds:0/ppd/foomatic-ppd/Oki-C5300-cljet5.ppd" "Oki C5300 Foomatic/cljet5"' \
+	--append printmodel='"foomatic-db-compressed-ppds:0/ppd/foomatic-ppd/Oki-C5300-hpijs-pcl5c.ppd" "Oki C5300 Foomatic/hpijs-pcl5c"' \
+	--append printmodel='"foomatic-db-compressed-ppds:0/ppd/foomatic-ppd/Oki-C5400-Postscript.ppd" "Oki C5400 Foomatic/Postscript"' \
+	--append printmodel='"foomatic-db-compressed-ppds:0/ppd/foomatic-ppd/Oki-C5400-cljet5.ppd" "Oki C5400 Foomatic/cljet5"' \
+	--append printmodel='"foomatic-db-compressed-ppds:0/ppd/foomatic-ppd/Oki-C5400-hpijs-pcl5c.ppd" "Oki C5400 Foomatic/hpijs-pcl5c"' \
+	--append printmodel='"foomatic-db-compressed-ppds:0/ppd/foomatic-ppd/Oki-C5450-Postscript.ppd" "Oki C5450 Foomatic/Postscript"' \
+	--append printmodel='"foomatic-db-compressed-ppds:0/ppd/foomatic-ppd/Oki-C5540_MFP-Postscript.ppd" "Oki C5540 MFP Foomatic/Postscript (recommended)"' \
+	--append printmodel='"foomatic-db-compressed-ppds:0/ppd/foomatic-ppd/Oki-C5550_MFP-Postscript.ppd" "Oki C5550 MFP Foomatic/Postscript (recommended)"' \
+	--append printmodel='"foomatic-db-compressed-ppds:0/ppd/foomatic-ppd/Oki-C5700-Postscript.ppd" "Oki C5700 Foomatic/Postscript"' \
+	--append printmodel='"foomatic-db-compressed-ppds:0/ppd/foomatic-ppd/Oki-C5750-Postscript.ppd" "Oki C5750 Foomatic/Postscript (recommended)"' \
+	--append printmodel='"foomatic-db-compressed-ppds:0/ppd/foomatic-ppd/Oki-C5900-Postscript.ppd" "Oki C5900 Foomatic/Postscript"' \
+	--append printmodel='"foomatic-db-compressed-ppds:0/ppd/foomatic-ppd/Oki-C6000-Postscript.ppd" "Oki C6000 Foomatic/Postscript (recommended)"' \
+	--append printmodel='"foomatic-db-compressed-ppds:0/ppd/foomatic-ppd/Oki-C6000-pxlcolor.ppd" "Oki C6000 Foomatic/pxlcolor"' \
+	--append printmodel='"foomatic-db-compressed-ppds:0/ppd/foomatic-ppd/Oki-C6050-Postscript.ppd" "Oki C6050 Foomatic/Postscript (recommended)"' \
+	--append printmodel='"foomatic-db-compressed-ppds:0/ppd/foomatic-ppd/Oki-C6100-Postscript.ppd" "Oki C6100 Foomatic/Postscript"' \
+	--append printmodel='"foomatic-db-compressed-ppds:0/ppd/foomatic-ppd/Oki-C6100-pxlcolor.ppd" "Oki C6100 Foomatic/pxlcolor"' \
+	--append printmodel='"foomatic-db-compressed-ppds:0/ppd/foomatic-ppd/Oki-C6150-Postscript.ppd" "Oki C6150 Foomatic/Postscript (recommended)"' \
+	--append printmodel='"foomatic-db-compressed-ppds:0/ppd/foomatic-ppd/Oki-C710-Postscript.ppd" "Oki C710 Foomatic/Postscript (recommended)"' \
+	--append printmodel='"foomatic-db-compressed-ppds:0/ppd/foomatic-ppd/Oki-C7100-Postscript.ppd" "Oki C7100 Foomatic/Postscript"' \
+	--append printmodel='"foomatic-db-compressed-ppds:0/ppd/foomatic-ppd/Oki-C7200-Postscript.ppd" "Oki C7200 Foomatic/Postscript"' \
+	--append printmodel='"foomatic-db-compressed-ppds:0/ppd/foomatic-ppd/Oki-C7300-Postscript.ppd" "Oki C7300 Foomatic/Postscript"' \
+	--append printmodel='"foomatic-db-compressed-ppds:0/ppd/foomatic-ppd/Oki-C7300-cljet5.ppd" "Oki C7300 Foomatic/cljet5"' \
+	--append printmodel='"foomatic-db-compressed-ppds:0/ppd/foomatic-ppd/Oki-C7300-hpijs-pcl5c.ppd" "Oki C7300 Foomatic/hpijs-pcl5c"' \
+	--append printmodel='"foomatic-db-compressed-ppds:0/ppd/foomatic-ppd/Oki-C7350-Postscript.ppd" "Oki C7350 Foomatic/Postscript (recommended)"' \
+	--append printmodel='"foomatic-db-compressed-ppds:0/ppd/foomatic-ppd/Oki-C7350-pxlcolor.ppd" "Oki C7350 Foomatic/pxlcolor"' \
+	--append printmodel='"foomatic-db-compressed-ppds:0/ppd/foomatic-ppd/Oki-C7400-Postscript.ppd" "Oki C7400 Foomatic/Postscript"' \
+	--append printmodel='"foomatic-db-compressed-ppds:0/ppd/foomatic-ppd/Oki-C7500-Postscript.ppd" "Oki C7500 Foomatic/Postscript"' \
+	--append printmodel='"foomatic-db-compressed-ppds:0/ppd/foomatic-ppd/Oki-C7550-Postscript.ppd" "Oki C7550 Foomatic/Postscript (recommended)"' \
+	--append printmodel='"foomatic-db-compressed-ppds:0/ppd/foomatic-ppd/Oki-C7550-pxlcolor.ppd" "Oki C7550 Foomatic/pxlcolor"' \
+	--append printmodel='"foomatic-db-compressed-ppds:0/ppd/foomatic-ppd/Oki-C8800-Postscript.ppd" "Oki C8800 Foomatic/Postscript"' \
+	--append printmodel='"foomatic-db-compressed-ppds:0/ppd/foomatic-ppd/Oki-C8800-pxlcolor.ppd" "Oki C8800 Foomatic/pxlcolor (recommended)"' \
+	--append printmodel='"foomatic-db-compressed-ppds:0/ppd/foomatic-ppd/Oki-C9200-Postscript.ppd" "Oki C9200 Foomatic/Postscript"' \
+	--append printmodel='"foomatic-db-compressed-ppds:0/ppd/foomatic-ppd/Oki-C9200-cljet5.ppd" "Oki C9200 Foomatic/cljet5"' \
+	--append printmodel='"foomatic-db-compressed-ppds:0/ppd/foomatic-ppd/Oki-C9200-hpijs-pcl5c.ppd" "Oki C9200 Foomatic/hpijs-pcl5c"' \
+	--append printmodel='"foomatic-db-compressed-ppds:0/ppd/foomatic-ppd/Oki-C9300-Postscript.ppd" "Oki C9300 Foomatic/Postscript"' \
+	--append printmodel='"foomatic-db-compressed-ppds:0/ppd/foomatic-ppd/Oki-C9400-Postscript.ppd" "Oki C9400 Foomatic/Postscript"' \
+	--append printmodel='"foomatic-db-compressed-ppds:0/ppd/foomatic-ppd/Oki-C9400-cljet5.ppd" "Oki C9400 Foomatic/cljet5"' \
+	--append printmodel='"foomatic-db-compressed-ppds:0/ppd/foomatic-ppd/Oki-C9400-hpijs-pcl5c.ppd" "Oki C9400 Foomatic/hpijs-pcl5c"' \
+	--append printmodel='"foomatic-db-compressed-ppds:0/ppd/foomatic-ppd/Oki-C9500-Postscript.ppd" "Oki C9500 Foomatic/Postscript"' \
+	--append printmodel='"foomatic-db-compressed-ppds:0/ppd/foomatic-ppd/Oki-C9600-Postscript.ppd" "Oki C9600 Foomatic/Postscript"' \
+	--append printmodel='"foomatic-db-compressed-ppds:0/ppd/foomatic-ppd/Oki-C9650-Postscript.ppd" "Oki C9650 Foomatic/Postscript (recommended)"' \
+	--append printmodel='"foomatic-db-compressed-ppds:0/ppd/foomatic-ppd/Oki-C9650-pxlcolor.ppd" "Oki C9650 Foomatic/pxlcolor"' \
+	--append printmodel='"foomatic-db-compressed-ppds:0/ppd/foomatic-ppd/Oki-C9800-Postscript.ppd" "Oki C9800 Foomatic/Postscript (recommended)"' \
+	--append printmodel='"foomatic-db-compressed-ppds:0/ppd/foomatic-ppd/Oki-C9800-pxlcolor.ppd" "Oki C9800 Foomatic/pxlcolor"' \
+	--append printmodel='"foomatic-db-compressed-ppds:0/ppd/foomatic-ppd/Oki-C9800_MFP-Postscript.ppd" "Oki C9800 MFP Foomatic/Postscript (recommended)"' \
+	--append printmodel='"foomatic-db-compressed-ppds:0/ppd/foomatic-ppd/Oki-DP_5000-md50Eco.ppd" "Oki DP 5000 Foomatic/md50Eco"' \
+	--append printmodel='"foomatic-db-compressed-ppds:0/ppd/foomatic-ppd/Oki-DP_5000-md50Mono.ppd" "Oki DP 5000 Foomatic/md50Mono"' \
+	--append printmodel='"foomatic-db-compressed-ppds:0/ppd/foomatic-ppd/Oki-DP_5000-md5k.ppd" "Oki DP 5000 Foomatic/md5k"' \
+	--append printmodel='"foomatic-db-compressed-ppds:0/ppd/foomatic-ppd/Oki-ML_320-okiibm.ppd" "Oki ML 320 Foomatic/okiibm (recommended)"' \
+	--append printmodel='"foomatic-db-compressed-ppds:0/ppd/foomatic-ppd/Oki-ML_321-okiibm.ppd" "Oki ML 321 Foomatic/okiibm (recommended)"' \
+	--append printmodel='"foomatic-db-compressed-ppds:0/ppd/foomatic-ppd/Oki-ML_380-epson.ppd" "Oki ML 380 Foomatic/epson (recommended)"' \
+	--append printmodel='"foomatic-db-compressed-ppds:0/ppd/foomatic-ppd/Oki-Microline_182-oki182.ppd" "Oki Microline 182 Foomatic/oki182 (recommended)"' \
+	--append printmodel='"foomatic-db-compressed-ppds:0/ppd/foomatic-ppd/Oki-Microline_192plus-ibmpro.ppd" "Oki Microline 192+ Foomatic/ibmpro"' \
+	--append printmodel='"foomatic-db-compressed-ppds:0/ppd/foomatic-ppd/Oki-Microline_192plus-oki182.ppd" "Oki Microline 192+ Foomatic/oki182 (recommended)"' \
+	--append printmodel='"foomatic-db-compressed-ppds:0/ppd/foomatic-ppd/Oki-Microline_600CL-ml600.ppd" "Oki Microline 600CL Foomatic/ml600 (recommended)"' \
+	--append printmodel='"foomatic-db-compressed-ppds:0/ppd/foomatic-ppd/Oki-Microline_620CL-ml600.ppd" "Oki Microline 620CL Foomatic/ml600 (recommended)"' \
+	--append printmodel='"foomatic-db-compressed-ppds:0/ppd/foomatic-ppd/Oki-Microline_IBM_compatible_9_pin-okiibm.ppd" "Oki Microline IBM compatible 9 pin Foomatic/okiibm (recommended)"' \
+	--append printmodel='"foomatic-db-compressed-ppds:0/ppd/foomatic-ppd/Oki-OL400-laserjet.ppd" "Oki OL400 Foomatic/laserjet (recommended)"' \
+	--append printmodel='"foomatic-db-compressed-ppds:0/ppd/foomatic-ppd/Oki-OL400e-ljet2p.ppd" "Oki OL400e Foomatic/ljet2p"' \
+	--append printmodel='"foomatic-db-compressed-ppds:0/ppd/foomatic-ppd/Oki-OL400ex-ljet2p.ppd" "Oki OL400ex Foomatic/ljet2p (recommended)"' \
+	--append printmodel='"foomatic-db-compressed-ppds:0/ppd/foomatic-ppd/Oki-OL400w-oki4w.ppd" "Oki OL400w Foomatic/oki4w (recommended)"' \
+	--append printmodel='"foomatic-db-compressed-ppds:0/ppd/foomatic-ppd/Oki-OL410e-hpijs-pcl5e.ppd" "Oki OL410e Foomatic/hpijs-pcl5e"' \
+	--append printmodel='"foomatic-db-compressed-ppds:0/ppd/foomatic-ppd/Oki-OL410e-lj4dith.ppd" "Oki OL410e Foomatic/lj4dith"' \
+	--append printmodel='"foomatic-db-compressed-ppds:0/ppd/foomatic-ppd/Oki-OL410e-ljet4.ppd" "Oki OL410e Foomatic/ljet4 (recommended)"' \
+	--append printmodel='"foomatic-db-compressed-ppds:0/ppd/foomatic-ppd/Oki-OL600e-ljet2p.ppd" "Oki OL600e Foomatic/ljet2p (recommended)"' \
+	--append printmodel='"foomatic-db-compressed-ppds:0/ppd/foomatic-ppd/Oki-OL610e_PS-Postscript.ppd" "Oki OL610e/PS Foomatic/Postscript (recommended)"' \
+	--append printmodel='"foomatic-db-compressed-ppds:0/ppd/foomatic-ppd/Oki-OL610e_S-laserjet.ppd" "Oki OL610e/S Foomatic/laserjet (recommended)"' \
+	--append printmodel='"foomatic-db-compressed-ppds:0/ppd/foomatic-ppd/Oki-OL800-laserjet.ppd" "Oki OL800 Foomatic/laserjet (recommended)"' \
+	--append printmodel='"foomatic-db-compressed-ppds:0/ppd/foomatic-ppd/Oki-OL810e_PS-Postscript.ppd" "Oki OL810e/PS Foomatic/Postscript (recommended)"' \
+	--append printmodel='"foomatic-db-compressed-ppds:0/ppd/foomatic-ppd/Oki-OL810ex-hpijs-pcl5e.ppd" "Oki OL810ex Foomatic/hpijs-pcl5e (recommended)"' \
+	--append printmodel='"foomatic-db-compressed-ppds:0/ppd/foomatic-ppd/Oki-OL810ex-lj4dith.ppd" "Oki OL810ex Foomatic/lj4dith"' \
+	--append printmodel='"foomatic-db-compressed-ppds:0/ppd/foomatic-ppd/Oki-OL810ex-ljet4.ppd" "Oki OL810ex Foomatic/ljet4"' \
+	--append printmodel='"foomatic-db-compressed-ppds:0/ppd/foomatic-ppd/Oki-OL830Plus-Postscript.ppd" "Oki OL830Plus Foomatic/Postscript (recommended)"' \
+	--append printmodel='"foomatic-db-compressed-ppds:0/ppd/foomatic-ppd/Oki-Okijet_2500-cdj550.ppd" "Oki Okijet 2500 Foomatic/cdj550 (recommended)"' \
+	--append printmodel='"foomatic-db-compressed-ppds:0/ppd/foomatic-ppd/Oki-Okipage_10e-hpijs-pcl5e.ppd" "Oki Okipage 10e Foomatic/hpijs-pcl5e (recommended)"' \
+	--append printmodel='"foomatic-db-compressed-ppds:0/ppd/foomatic-ppd/Oki-Okipage_10e-lj4dith.ppd" "Oki Okipage 10e Foomatic/lj4dith"' \
+	--append printmodel='"foomatic-db-compressed-ppds:0/ppd/foomatic-ppd/Oki-Okipage_10e-ljet4.ppd" "Oki Okipage 10e Foomatic/ljet4"' \
+	--append printmodel='"foomatic-db-compressed-ppds:0/ppd/foomatic-ppd/Oki-Okipage_10ex-hpijs-pcl5e.ppd" "Oki Okipage 10ex Foomatic/hpijs-pcl5e"' \
+	--append printmodel='"foomatic-db-compressed-ppds:0/ppd/foomatic-ppd/Oki-Okipage_10ex-lj4dith.ppd" "Oki Okipage 10ex Foomatic/lj4dith"' \
+	--append printmodel='"foomatic-db-compressed-ppds:0/ppd/foomatic-ppd/Oki-Okipage_10ex-lj5gray.ppd" "Oki Okipage 10ex Foomatic/lj5gray"' \
+	--append printmodel='"foomatic-db-compressed-ppds:0/ppd/foomatic-ppd/Oki-Okipage_10ex-ljet4.ppd" "Oki Okipage 10ex Foomatic/ljet4"' \
+	--append printmodel='"foomatic-db-compressed-ppds:0/ppd/foomatic-ppd/Oki-Okipage_10ex-pxlmono.ppd" "Oki Okipage 10ex Foomatic/pxlmono (recommended)"' \
+	--append printmodel='"foomatic-db-compressed-ppds:0/ppd/foomatic-ppd/Oki-Okipage_12i-Postscript.ppd" "Oki Okipage 12i Foomatic/Postscript (recommended)"' \
+	--append printmodel='"foomatic-db-compressed-ppds:0/ppd/foomatic-ppd/Oki-Okipage_14ex-hpijs-pcl5e.ppd" "Oki Okipage 14ex Foomatic/hpijs-pcl5e"' \
+	--append printmodel='"foomatic-db-compressed-ppds:0/ppd/foomatic-ppd/Oki-Okipage_14ex-lj4dith.ppd" "Oki Okipage 14ex Foomatic/lj4dith"' \
+	--append printmodel='"foomatic-db-compressed-ppds:0/ppd/foomatic-ppd/Oki-Okipage_14ex-lj5gray.ppd" "Oki Okipage 14ex Foomatic/lj5gray"' \
+	--append printmodel='"foomatic-db-compressed-ppds:0/ppd/foomatic-ppd/Oki-Okipage_14ex-ljet4.ppd" "Oki Okipage 14ex Foomatic/ljet4"' \
+	--append printmodel='"foomatic-db-compressed-ppds:0/ppd/foomatic-ppd/Oki-Okipage_14ex-pxlmono.ppd" "Oki Okipage 14ex Foomatic/pxlmono (recommended)"' \
+	--append printmodel='"foomatic-db-compressed-ppds:0/ppd/foomatic-ppd/Oki-Okipage_20DXn-Postscript.ppd" "Oki Okipage 20DXn Foomatic/Postscript (recommended)"' \
+	--append printmodel='"foomatic-db-compressed-ppds:0/ppd/foomatic-ppd/Oki-Okipage_4w-oki4w.ppd" "Oki Okipage 4w Foomatic/oki4w (recommended)"' \
+	--append printmodel='"foomatic-db-compressed-ppds:0/ppd/foomatic-ppd/Oki-Okipage_4wplus-oki4w.ppd" "Oki Okipage 4w+ Foomatic/oki4w (recommended)"' \
+	--append printmodel='"foomatic-db-compressed-ppds:0/ppd/foomatic-ppd/Oki-Okipage_6e-hpijs-pcl5e.ppd" "Oki Okipage 6e Foomatic/hpijs-pcl5e (recommended)"' \
+	--append printmodel='"foomatic-db-compressed-ppds:0/ppd/foomatic-ppd/Oki-Okipage_6e-lj4dith.ppd" "Oki Okipage 6e Foomatic/lj4dith"' \
+	--append printmodel='"foomatic-db-compressed-ppds:0/ppd/foomatic-ppd/Oki-Okipage_6e-ljet4.ppd" "Oki Okipage 6e Foomatic/ljet4"' \
+	--append printmodel='"foomatic-db-compressed-ppds:0/ppd/foomatic-ppd/Oki-Okipage_6ex-hpijs-pcl5e.ppd" "Oki Okipage 6ex Foomatic/hpijs-pcl5e (recommended)"' \
+	--append printmodel='"foomatic-db-compressed-ppds:0/ppd/foomatic-ppd/Oki-Okipage_6ex-lj4dith.ppd" "Oki Okipage 6ex Foomatic/lj4dith"' \
+	--append printmodel='"foomatic-db-compressed-ppds:0/ppd/foomatic-ppd/Oki-Okipage_6ex-ljet4.ppd" "Oki Okipage 6ex Foomatic/ljet4"' \
+	--append printmodel='"foomatic-db-compressed-ppds:0/ppd/foomatic-ppd/Oki-Okipage_6w-oki4w.ppd" "Oki Okipage 6w Foomatic/oki4w (recommended)"' \
+	--append printmodel='"foomatic-db-compressed-ppds:0/ppd/foomatic-ppd/Oki-Okipage_8c-Postscript.ppd" "Oki Okipage 8c Foomatic/Postscript (recommended)"' \
+	--append printmodel='"foomatic-db-compressed-ppds:0/ppd/foomatic-ppd/Oki-Okipage_8p-hpijs-pcl5e.ppd" "Oki Okipage 8p Foomatic/hpijs-pcl5e (recommended)"' \
+	--append printmodel='"foomatic-db-compressed-ppds:0/ppd/foomatic-ppd/Oki-Okipage_8p-lj4dith.ppd" "Oki Okipage 8p Foomatic/lj4dith"' \
+	--append printmodel='"foomatic-db-compressed-ppds:0/ppd/foomatic-ppd/Oki-Okipage_8p-ljet4.ppd" "Oki Okipage 8p Foomatic/ljet4"' \
+	--append printmodel='"foomatic-db-compressed-ppds:0/ppd/foomatic-ppd/Oki-Okipage_8w-oki4w.ppd" "Oki Okipage 8w Foomatic/oki4w (recommended)"' \
+	--append printmodel='"foomatic-db-compressed-ppds:0/ppd/foomatic-ppd/Oki-Okipage_8w_Lite-oki4w.ppd" "Oki Okipage 8w Lite Foomatic/oki4w (recommended)"' \
+	--append printmodel='"foomatic-db-compressed-ppds:0/ppd/foomatic-ppd/Oki-Okipage_8z-oki4w.ppd" "Oki Okipage 8z Foomatic/oki4w (recommended)"' \
+	--append printmodel='"foomatic-db-compressed-ppds:0/ppd/foomatic-ppd/Oki-Super_6e-hpijs-pcl5e.ppd" "Oki Super 6e Foomatic/hpijs-pcl5e"' \
+	--append printmodel='"foomatic-db-compressed-ppds:0/ppd/foomatic-ppd/Oki-Super_6e-lj4dith.ppd" "Oki Super 6e Foomatic/lj4dith"' \
+	--append printmodel='"foomatic-db-compressed-ppds:0/ppd/foomatic-ppd/Oki-Super_6e-ljet4.ppd" "Oki Super 6e Foomatic/ljet4 (recommended)"' \
+	--append printmodel='"okidata/B6300PS.ppd" "OKI B6300"' \
+	--append printmodel='"okidata/C3600PS.ppd" "OKI C3600"' \
+	--append printmodel='"okidata/C610PS.ppd" "OKI C610 / C711 / C710"' \
+	--append printmodel='"okidata/C900PS.ppd" "OKI C910 / C9600 / C9650"' \
+	--append printmodel='"okidata/OK4X1PSBR.ppd" "OKI MB471 MFP / MB491 MFP"' || rc=$?
+
+# Manufacturer: None Printers: 3
+univention-directory-manager settings/printermodel create "$@" --ignore_exists --position "cn=cups,cn=univention,$ldap_base" --set name=None || rc=$?
+univention-directory-manager settings/printermodel modify "$@" --ignore_exists --dn cn=None,cn=cups,cn=univention,"$ldap_base" \
+	--append printmodel='"hp-ppd/HP/HP_ColorLaserJet_5-5M.ppd" "HP ColorLaserJet 5/5M PS"' \
+	--append printmodel='"hp-ppd/HP/HP_LaserJet_5.ppd" "HP LaserJet 5/5M PostScript"' \
+	--append printmodel='"hp-ppd/HP/HP_LaserJet_5P.ppd" "HP LaserJet 5P/5MP PostScript"' || rc=$?
+
+# Manufacturer: Ricoh Printers: 22
+univention-directory-manager settings/printermodel create "$@" --ignore_exists --position "cn=cups,cn=univention,$ldap_base" --set name=Ricoh || rc=$?
+univention-directory-manager settings/printermodel modify "$@" --ignore_exists --dn cn=Ricoh,cn=cups,cn=univention,"$ldap_base" \
+	--append printmodel='"cupsfilters/Ricoh-PDF_Printer-PDF.ppd" "Ricoh PDF Printer"' \
+	--append printmodel='"foomatic-db-compressed-ppds:0/ppd/foomatic-ppd/Ricoh-4081-r4081.ppd" "Ricoh 4081 Foomatic/r4081 (recommended)"' \
+	--append printmodel='"foomatic-db-compressed-ppds:0/ppd/foomatic-ppd/Ricoh-4801-r4081.ppd" "Ricoh 4801 Foomatic/r4081 (recommended)"' \
+	--append printmodel='"foomatic-db-compressed-ppds:0/ppd/foomatic-ppd/Ricoh-6000-r4081.ppd" "Ricoh 6000 Foomatic/r4081 (recommended)"' \
+	--append printmodel='"foomatic-db-compressed-ppds:0/ppd/foomatic-ppd/Ricoh-Aficio_220-hpijs-pcl5e.ppd" "Ricoh Aficio 220 Foomatic/hpijs-pcl5e"' \
+	--append printmodel='"foomatic-db-compressed-ppds:0/ppd/foomatic-ppd/Ricoh-Aficio_220-lj4dith.ppd" "Ricoh Aficio 220 Foomatic/lj4dith"' \
+	--append printmodel='"foomatic-db-compressed-ppds:0/ppd/foomatic-ppd/Ricoh-Aficio_220-lj5gray.ppd" "Ricoh Aficio 220 Foomatic/lj5gray"' \
+	--append printmodel='"foomatic-db-compressed-ppds:0/ppd/foomatic-ppd/Ricoh-Aficio_220-ljet4.ppd" "Ricoh Aficio 220 Foomatic/ljet4"' \
+	--append printmodel='"foomatic-db-compressed-ppds:0/ppd/foomatic-ppd/Ricoh-Aficio_220-ljet4d.ppd" "Ricoh Aficio 220 Foomatic/ljet4d"' \
+	--append printmodel='"foomatic-db-compressed-ppds:0/ppd/foomatic-ppd/Ricoh-Aficio_220-pxlmono.ppd" "Ricoh Aficio 220 Foomatic/pxlmono (recommended)"' \
+	--append printmodel='"foomatic-db-compressed-ppds:0/ppd/foomatic-ppd/Ricoh-Aficio_401-hpijs-pcl5e.ppd" "Ricoh Aficio 401 Foomatic/hpijs-pcl5e"' \
+	--append printmodel='"foomatic-db-compressed-ppds:0/ppd/foomatic-ppd/Ricoh-Aficio_401-lj4dith.ppd" "Ricoh Aficio 401 Foomatic/lj4dith"' \
+	--append printmodel='"foomatic-db-compressed-ppds:0/ppd/foomatic-ppd/Ricoh-Aficio_401-ljet4.ppd" "Ricoh Aficio 401 Foomatic/ljet4 (recommended)"' \
+	--append printmodel='"foomatic-db-compressed-ppds:0/ppd/foomatic-ppd/Ricoh-Aficio_5206-Postscript.ppd" "Ricoh Aficio 5206 Foomatic/Postscript (recommended)"' \
+	--append printmodel='"foomatic-db-compressed-ppds:0/ppd/foomatic-ppd/Ricoh-Aficio_700-hpijs-pcl5e.ppd" "Ricoh Aficio 700 Foomatic/hpijs-pcl5e (recommended)"' \
+	--append printmodel='"foomatic-db-compressed-ppds:0/ppd/foomatic-ppd/Ricoh-Aficio_700-lj4dith.ppd" "Ricoh Aficio 700 Foomatic/lj4dith"' \
+	--append printmodel='"foomatic-db-compressed-ppds:0/ppd/foomatic-ppd/Ricoh-Aficio_700-ljet4.ppd" "Ricoh Aficio 700 Foomatic/ljet4"' \
+	--append printmodel='"foomatic-db-compressed-ppds:0/ppd/foomatic-ppd/Ricoh-Aficio_AP2000-Postscript.ppd" "Ricoh Aficio AP2000 Foomatic/Postscript (recommended)"' \
+	--append printmodel='"foomatic-db-compressed-ppds:0/ppd/foomatic-ppd/Ricoh-RPDL_III_Laser_Printer-rpdl.ppd" "Ricoh RPDL III Laser Printer Foomatic/rpdl (recommended)"' \
+	--append printmodel='"foomatic-db-compressed-ppds:0/ppd/foomatic-ppd/Ricoh-RPDL_II_Laser_Printer-rpdl.ppd" "Ricoh RPDL II Laser Printer Foomatic/rpdl (recommended)"' \
+	--append printmodel='"foomatic-db-compressed-ppds:0/ppd/foomatic-ppd/Ricoh-RPDL_IV_Laser_Printer-rpdl.ppd" "Ricoh RPDL IV Laser Printer Foomatic/rpdl (recommended)"' \
+	--append printmodel='"foomatic-db-compressed-ppds:0/ppd/foomatic-ppd/Ricoh-RPDL_I_Laser_Printer-rpdl.ppd" "Ricoh RPDL I Laser Printer Foomatic/rpdl (recommended)"' || rc=$?
+
+# Manufacturer: FujiXerox Printers: 2
+univention-directory-manager settings/printermodel create "$@" --ignore_exists --position "cn=cups,cn=univention,$ldap_base" --set name=FujiXerox || rc=$?
+univention-directory-manager settings/printermodel modify "$@" --ignore_exists --dn cn=FujiXerox,cn=cups,cn=univention,"$ldap_base" \
+	--append printmodel='"cupsfilters/Fuji_Xerox-DocuPrint_CM305_df-PDF.ppd" "Fuji Xerox DocuPrint CM305 df PDF"' \
+	--append printmodel='"foomatic-db-compressed-ppds:0/ppd/foomatic-ppd/Fuji_Xerox-DocuPrint_CM305_df-Postscript.ppd" "Fuji Xerox DocuPrint CM305 df Foomatic/Postscript (recommended)"' || rc=$?
+
 # Manufacturer: Generic Printers: 33
 univention-directory-manager settings/printermodel create "$@" --ignore_exists --position "cn=cups,cn=univention,$ldap_base" --set name=Generic || rc=$?
 univention-directory-manager settings/printermodel modify "$@" --ignore_exists --dn cn=Generic,cn=cups,cn=univention,"$ldap_base" \
@@ -574,45 +779,6 @@ univention-directory-manager settings/printermodel modify "$@" --ignore_exists -
 	--append printmodel='"foomatic-db-compressed-ppds:0/ppd/foomatic-ppd/Generic-PCL_6_PCL_XL_Printer-pxlmono.ppd" "Generic PCL 6/PCL XL Printer Foomatic/pxlmono"' \
 	--append printmodel='"foomatic-db-compressed-ppds:0/ppd/foomatic-ppd/Generic-PostScript_Level_1_Printer-Postscript1.ppd" "Generic PostScript Level 1 Printer Foomatic/Postscript1 (recommended)"' \
 	--append printmodel='"foomatic-db-compressed-ppds:0/ppd/foomatic-ppd/Generic-PostScript_Printer-Postscript.ppd" "Generic PostScript Printer Foomatic/Postscript (recommended)"' || rc=$?
-
-# Manufacturer: None Printers: 3
-univention-directory-manager settings/printermodel create "$@" --ignore_exists --position "cn=cups,cn=univention,$ldap_base" --set name=None || rc=$?
-univention-directory-manager settings/printermodel modify "$@" --ignore_exists --dn cn=None,cn=cups,cn=univention,"$ldap_base" \
-	--append printmodel='"hp-ppd/HP/HP_ColorLaserJet_5-5M.ppd" "HP ColorLaserJet 5/5M PS"' \
-	--append printmodel='"hp-ppd/HP/HP_LaserJet_5.ppd" "HP LaserJet 5/5M PostScript"' \
-	--append printmodel='"hp-ppd/HP/HP_LaserJet_5P.ppd" "HP LaserJet 5P/5MP PostScript"' || rc=$?
-
-# Manufacturer: FujiXerox Printers: 1
-univention-directory-manager settings/printermodel create "$@" --ignore_exists --position "cn=cups,cn=univention,$ldap_base" --set name=FujiXerox || rc=$?
-univention-directory-manager settings/printermodel modify "$@" --ignore_exists --dn cn=FujiXerox,cn=cups,cn=univention,"$ldap_base" \
-	--append printmodel='"cupsfilters/Fuji_Xerox-DocuPrint_CM305_df-PDF.ppd" "Fuji Xerox DocuPrint CM305 df PDF"' || rc=$?
-
-# Manufacturer: Ricoh Printers: 23
-univention-directory-manager settings/printermodel create "$@" --ignore_exists --position "cn=cups,cn=univention,$ldap_base" --set name=Ricoh || rc=$?
-univention-directory-manager settings/printermodel modify "$@" --ignore_exists --dn cn=Ricoh,cn=cups,cn=univention,"$ldap_base" \
-	--append printmodel='"cupsfilters/Ricoh-PDF_Printer-PDF.ppd" "Ricoh PDF Printer"' \
-	--append printmodel='"foomatic-db-compressed-ppds:0/ppd/foomatic-ppd/Ricoh-4081-r4081.ppd" "Ricoh 4081 Foomatic/r4081 (recommended)"' \
-	--append printmodel='"foomatic-db-compressed-ppds:0/ppd/foomatic-ppd/Ricoh-4801-r4081.ppd" "Ricoh 4801 Foomatic/r4081 (recommended)"' \
-	--append printmodel='"foomatic-db-compressed-ppds:0/ppd/foomatic-ppd/Ricoh-6000-r4081.ppd" "Ricoh 6000 Foomatic/r4081 (recommended)"' \
-	--append printmodel='"foomatic-db-compressed-ppds:0/ppd/foomatic-ppd/Ricoh-Aficio_220-hpijs-pcl5e.ppd" "Ricoh Aficio 220 Foomatic/hpijs-pcl5e"' \
-	--append printmodel='"foomatic-db-compressed-ppds:0/ppd/foomatic-ppd/Ricoh-Aficio_220-lj4dith.ppd" "Ricoh Aficio 220 Foomatic/lj4dith"' \
-	--append printmodel='"foomatic-db-compressed-ppds:0/ppd/foomatic-ppd/Ricoh-Aficio_220-lj5gray.ppd" "Ricoh Aficio 220 Foomatic/lj5gray"' \
-	--append printmodel='"foomatic-db-compressed-ppds:0/ppd/foomatic-ppd/Ricoh-Aficio_220-ljet4.ppd" "Ricoh Aficio 220 Foomatic/ljet4"' \
-	--append printmodel='"foomatic-db-compressed-ppds:0/ppd/foomatic-ppd/Ricoh-Aficio_220-ljet4d.ppd" "Ricoh Aficio 220 Foomatic/ljet4d"' \
-	--append printmodel='"foomatic-db-compressed-ppds:0/ppd/foomatic-ppd/Ricoh-Aficio_220-pxlmono.ppd" "Ricoh Aficio 220 Foomatic/pxlmono (recommended)"' \
-	--append printmodel='"foomatic-db-compressed-ppds:0/ppd/foomatic-ppd/Ricoh-Aficio_401-hpijs-pcl5e.ppd" "Ricoh Aficio 401 Foomatic/hpijs-pcl5e"' \
-	--append printmodel='"foomatic-db-compressed-ppds:0/ppd/foomatic-ppd/Ricoh-Aficio_401-lj4dith.ppd" "Ricoh Aficio 401 Foomatic/lj4dith"' \
-	--append printmodel='"foomatic-db-compressed-ppds:0/ppd/foomatic-ppd/Ricoh-Aficio_401-ljet4.ppd" "Ricoh Aficio 401 Foomatic/ljet4 (recommended)"' \
-	--append printmodel='"foomatic-db-compressed-ppds:0/ppd/foomatic-ppd/Ricoh-Aficio_5206-Postscript.ppd" "Ricoh Aficio 5206 Foomatic/Postscript (recommended)"' \
-	--append printmodel='"foomatic-db-compressed-ppds:0/ppd/foomatic-ppd/Ricoh-Aficio_700-hpijs-pcl5e.ppd" "Ricoh Aficio 700 Foomatic/hpijs-pcl5e (recommended)"' \
-	--append printmodel='"foomatic-db-compressed-ppds:0/ppd/foomatic-ppd/Ricoh-Aficio_700-lj4dith.ppd" "Ricoh Aficio 700 Foomatic/lj4dith"' \
-	--append printmodel='"foomatic-db-compressed-ppds:0/ppd/foomatic-ppd/Ricoh-Aficio_700-ljet4.ppd" "Ricoh Aficio 700 Foomatic/ljet4"' \
-	--append printmodel='"foomatic-db-compressed-ppds:0/ppd/foomatic-ppd/Ricoh-Aficio_AP2000-Postscript.ppd" "Ricoh Aficio AP2000 Foomatic/Postscript (recommended)"' \
-	--append printmodel='"foomatic-db-compressed-ppds:0/ppd/foomatic-ppd/Ricoh-Aficio_SP_C222SF-Postscript.ppd" "Ricoh Aficio SP C222SF Foomatic/Postscript (recommended)"' \
-	--append printmodel='"foomatic-db-compressed-ppds:0/ppd/foomatic-ppd/Ricoh-RPDL_III_Laser_Printer-rpdl.ppd" "Ricoh RPDL III Laser Printer Foomatic/rpdl (recommended)"' \
-	--append printmodel='"foomatic-db-compressed-ppds:0/ppd/foomatic-ppd/Ricoh-RPDL_II_Laser_Printer-rpdl.ppd" "Ricoh RPDL II Laser Printer Foomatic/rpdl (recommended)"' \
-	--append printmodel='"foomatic-db-compressed-ppds:0/ppd/foomatic-ppd/Ricoh-RPDL_IV_Laser_Printer-rpdl.ppd" "Ricoh RPDL IV Laser Printer Foomatic/rpdl (recommended)"' \
-	--append printmodel='"foomatic-db-compressed-ppds:0/ppd/foomatic-ppd/Ricoh-RPDL_I_Laser_Printer-rpdl.ppd" "Ricoh RPDL I Laser Printer Foomatic/rpdl (recommended)"' || rc=$?
 
 # Manufacturer: Alps Printers: 10
 univention-directory-manager settings/printermodel create "$@" --ignore_exists --position "cn=cups,cn=univention,$ldap_base" --set name=Alps || rc=$?
@@ -667,7 +833,7 @@ univention-directory-manager settings/printermodel modify "$@" --ignore_exists -
 	--append printmodel='"foomatic-db-compressed-ppds:0/ppd/foomatic-ppd/Apple-LaserWriter_Select_360-Postscript.ppd" "Apple LaserWriter Select 360 Foomatic/Postscript (recommended)"' \
 	--append printmodel='"foomatic-db-compressed-ppds:0/ppd/foomatic-ppd/Apple-LaserWriter_Select_360-ljet2p.ppd" "Apple LaserWriter Select 360 Foomatic/ljet2p"' || rc=$?
 
-# Manufacturer: Brother Printers: 340
+# Manufacturer: Brother Printers: 345
 univention-directory-manager settings/printermodel create "$@" --ignore_exists --position "cn=cups,cn=univention,$ldap_base" --set name=Brother || rc=$?
 univention-directory-manager settings/printermodel modify "$@" --ignore_exists --dn cn=Brother,cn=cups,cn=univention,"$ldap_base" \
 	--append printmodel='"foomatic-db-compressed-ppds:0/ppd/foomatic-ppd/Brother-DCP-1200-hl1250.ppd" "Brother DCP-1200 Foomatic/hl1250 (recommended)"' \
@@ -829,6 +995,11 @@ univention-directory-manager settings/printermodel modify "$@" --ignore_exists -
 	--append printmodel='"foomatic-db-compressed-ppds:0/ppd/foomatic-ppd/Brother-HL-2070N-lj5gray.ppd" "Brother HL-2070N Foomatic/lj5gray"' \
 	--append printmodel='"foomatic-db-compressed-ppds:0/ppd/foomatic-ppd/Brother-HL-2070N-ljet4.ppd" "Brother HL-2070N Foomatic/ljet4"' \
 	--append printmodel='"foomatic-db-compressed-ppds:0/ppd/foomatic-ppd/Brother-HL-2070N-pxlmono.ppd" "Brother HL-2070N Foomatic/pxlmono"' \
+	--append printmodel='"foomatic-db-compressed-ppds:0/ppd/foomatic-ppd/Brother-HL-2130-hl1250.ppd" "Brother HL-2130 Foomatic/hl1250 (recommended)"' \
+	--append printmodel='"foomatic-db-compressed-ppds:0/ppd/foomatic-ppd/Brother-HL-2130-hpijs-pcl5e.ppd" "Brother HL-2130 Foomatic/hpijs-pcl5e"' \
+	--append printmodel='"foomatic-db-compressed-ppds:0/ppd/foomatic-ppd/Brother-HL-2130-lj4dith.ppd" "Brother HL-2130 Foomatic/lj4dith"' \
+	--append printmodel='"foomatic-db-compressed-ppds:0/ppd/foomatic-ppd/Brother-HL-2130-lj5gray.ppd" "Brother HL-2130 Foomatic/lj5gray"' \
+	--append printmodel='"foomatic-db-compressed-ppds:0/ppd/foomatic-ppd/Brother-HL-2130-ljet4.ppd" "Brother HL-2130 Foomatic/ljet4"' \
 	--append printmodel='"foomatic-db-compressed-ppds:0/ppd/foomatic-ppd/Brother-HL-2135-hl1250.ppd" "Brother HL-2135 Foomatic/hl1250 (recommended)"' \
 	--append printmodel='"foomatic-db-compressed-ppds:0/ppd/foomatic-ppd/Brother-HL-2135-hpijs-pcl5e.ppd" "Brother HL-2135 Foomatic/hpijs-pcl5e"' \
 	--append printmodel='"foomatic-db-compressed-ppds:0/ppd/foomatic-ppd/Brother-HL-2135-lj4dith.ppd" "Brother HL-2135 Foomatic/lj4dith"' \
@@ -1634,11 +1805,6 @@ univention-directory-manager settings/printermodel modify "$@" --ignore_exists -
 	--append printmodel='"foomatic-db-compressed-ppds:0/ppd/foomatic-ppd/Epson-Stylus_Photo_750-stcolor.ppd" "Epson Stylus Photo 750 Foomatic/stcolor"' \
 	--append printmodel='"foomatic-db-compressed-ppds:0/ppd/foomatic-ppd/Epson-Stylus_Pro_XL-stcolor.ppd" "Epson Stylus Pro XL Foomatic/stcolor"' \
 	--append printmodel='"foomatic-db-compressed-ppds:0/ppd/foomatic-ppd/Epson-Stylus_Scan_2500-stcolor.ppd" "Epson Stylus Scan 2500 Foomatic/stcolor"' || rc=$?
-
-# Manufacturer: FujiXerox Printers: 1
-univention-directory-manager settings/printermodel create "$@" --ignore_exists --position "cn=cups,cn=univention,$ldap_base" --set name=FujiXerox || rc=$?
-univention-directory-manager settings/printermodel modify "$@" --ignore_exists --dn cn=FujiXerox,cn=cups,cn=univention,"$ldap_base" \
-	--append printmodel='"foomatic-db-compressed-ppds:0/ppd/foomatic-ppd/Fuji_Xerox-DocuPrint_CM305_df-Postscript.ppd" "Fuji Xerox DocuPrint CM305 df Foomatic/Postscript (recommended)"' || rc=$?
 
 # Manufacturer: Fujitsu Printers: 18
 univention-directory-manager settings/printermodel create "$@" --ignore_exists --position "cn=cups,cn=univention,$ldap_base" --set name=Fujitsu || rc=$?
@@ -3056,149 +3222,6 @@ univention-directory-manager settings/printermodel modify "$@" --ignore_exists -
 	--append printmodel='"foomatic-db-compressed-ppds:0/ppd/foomatic-ppd/Oce-sx1480-Postscript.ppd" "Oce sx1480 Foomatic/Postscript"' \
 	--append printmodel='"foomatic-db-compressed-ppds:0/ppd/foomatic-ppd/Oce-sx1480-pxlmono.ppd" "Oce sx1480 Foomatic/pxlmono (recommended)"' \
 	--append printmodel='"foomatic-db-compressed-ppds:0/ppd/foomatic-ppd/Oce-sx2100-Postscript.ppd" "Oce sx2100 Foomatic/Postscript (recommended)"' || rc=$?
-
-# Manufacturer: Oki Printers: 139
-univention-directory-manager settings/printermodel create "$@" --ignore_exists --position "cn=cups,cn=univention,$ldap_base" --set name=Oki || rc=$?
-univention-directory-manager settings/printermodel modify "$@" --ignore_exists --dn cn=Oki,cn=cups,cn=univention,"$ldap_base" \
-	--append printmodel='"foomatic-db-compressed-ppds:0/ppd/foomatic-ppd/Oki-14i-Postscript.ppd" "Oki 14i Foomatic/Postscript"' \
-	--append printmodel='"foomatic-db-compressed-ppds:0/ppd/foomatic-ppd/Oki-B2400-pxlmono.ppd" "Oki B2400 Foomatic/pxlmono (recommended)"' \
-	--append printmodel='"foomatic-db-compressed-ppds:0/ppd/foomatic-ppd/Oki-B2540_MFP-Postscript.ppd" "Oki B2540 MFP Foomatic/Postscript (recommended)"' \
-	--append printmodel='"foomatic-db-compressed-ppds:0/ppd/foomatic-ppd/Oki-B410-hpijs-pcl5e.ppd" "Oki B410 Foomatic/hpijs-pcl5e"' \
-	--append printmodel='"foomatic-db-compressed-ppds:0/ppd/foomatic-ppd/Oki-B410-lj4dith.ppd" "Oki B410 Foomatic/lj4dith"' \
-	--append printmodel='"foomatic-db-compressed-ppds:0/ppd/foomatic-ppd/Oki-B410-ljet4.ppd" "Oki B410 Foomatic/ljet4"' \
-	--append printmodel='"foomatic-db-compressed-ppds:0/ppd/foomatic-ppd/Oki-B410-ljet4d.ppd" "Oki B410 Foomatic/ljet4d"' \
-	--append printmodel='"foomatic-db-compressed-ppds:0/ppd/foomatic-ppd/Oki-B410-pxlmono.ppd" "Oki B410 Foomatic/pxlmono (recommended)"' \
-	--append printmodel='"foomatic-db-compressed-ppds:0/ppd/foomatic-ppd/Oki-B4200-pxlmono.ppd" "Oki B4200 Foomatic/pxlmono (recommended)"' \
-	--append printmodel='"foomatic-db-compressed-ppds:0/ppd/foomatic-ppd/Oki-B4250-pxlmono.ppd" "Oki B4250 Foomatic/pxlmono (recommended)"' \
-	--append printmodel='"foomatic-db-compressed-ppds:0/ppd/foomatic-ppd/Oki-B4300-Postscript.ppd" "Oki B4300 Foomatic/Postscript"' \
-	--append printmodel='"foomatic-db-compressed-ppds:0/ppd/foomatic-ppd/Oki-B4300-lj5gray.ppd" "Oki B4300 Foomatic/lj5gray"' \
-	--append printmodel='"foomatic-db-compressed-ppds:0/ppd/foomatic-ppd/Oki-B4300-pxlmono.ppd" "Oki B4300 Foomatic/pxlmono (recommended)"' \
-	--append printmodel='"foomatic-db-compressed-ppds:0/ppd/foomatic-ppd/Oki-B4350-Postscript.ppd" "Oki B4350 Foomatic/Postscript"' \
-	--append printmodel='"foomatic-db-compressed-ppds:0/ppd/foomatic-ppd/Oki-B4350-hpijs-pcl5e.ppd" "Oki B4350 Foomatic/hpijs-pcl5e"' \
-	--append printmodel='"foomatic-db-compressed-ppds:0/ppd/foomatic-ppd/Oki-B4350-lj4dith.ppd" "Oki B4350 Foomatic/lj4dith"' \
-	--append printmodel='"foomatic-db-compressed-ppds:0/ppd/foomatic-ppd/Oki-B4350-ljet4.ppd" "Oki B4350 Foomatic/ljet4 (recommended)"' \
-	--append printmodel='"foomatic-db-compressed-ppds:0/ppd/foomatic-ppd/Oki-B4350-pxlmono.ppd" "Oki B4350 Foomatic/pxlmono"' \
-	--append printmodel='"foomatic-db-compressed-ppds:0/ppd/foomatic-ppd/Oki-B4400-hpijs-pcl5e.ppd" "Oki B4400 Foomatic/hpijs-pcl5e"' \
-	--append printmodel='"foomatic-db-compressed-ppds:0/ppd/foomatic-ppd/Oki-B4400-pxlmono.ppd" "Oki B4400 Foomatic/pxlmono (recommended)"' \
-	--append printmodel='"foomatic-db-compressed-ppds:0/ppd/foomatic-ppd/Oki-B4545_MFP-Postscript.ppd" "Oki B4545 MFP Foomatic/Postscript (recommended)"' \
-	--append printmodel='"foomatic-db-compressed-ppds:0/ppd/foomatic-ppd/Oki-B4600-hpijs-pcl5e.ppd" "Oki B4600 Foomatic/hpijs-pcl5e"' \
-	--append printmodel='"foomatic-db-compressed-ppds:0/ppd/foomatic-ppd/Oki-B4600-pxlmono.ppd" "Oki B4600 Foomatic/pxlmono (recommended)"' \
-	--append printmodel='"foomatic-db-compressed-ppds:0/ppd/foomatic-ppd/Oki-B4600_PS-Postscript.ppd" "Oki B4600 PS Foomatic/Postscript (recommended)"' \
-	--append printmodel='"foomatic-db-compressed-ppds:0/ppd/foomatic-ppd/Oki-B4600_PS-pxlmono.ppd" "Oki B4600 PS Foomatic/pxlmono"' \
-	--append printmodel='"foomatic-db-compressed-ppds:0/ppd/foomatic-ppd/Oki-B6200-Postscript.ppd" "Oki B6200 Foomatic/Postscript (recommended)"' \
-	--append printmodel='"foomatic-db-compressed-ppds:0/ppd/foomatic-ppd/Oki-B6250-Postscript.ppd" "Oki B6250 Foomatic/Postscript (recommended)"' \
-	--append printmodel='"foomatic-db-compressed-ppds:0/ppd/foomatic-ppd/Oki-B6300-Postscript.ppd" "Oki B6300 Foomatic/Postscript (recommended)"' \
-	--append printmodel='"foomatic-db-compressed-ppds:0/ppd/foomatic-ppd/Oki-B6300-pxlmono.ppd" "Oki B6300 Foomatic/pxlmono"' \
-	--append printmodel='"foomatic-db-compressed-ppds:0/ppd/foomatic-ppd/Oki-B6500-Postscript.ppd" "Oki B6500 Foomatic/Postscript (recommended)"' \
-	--append printmodel='"foomatic-db-compressed-ppds:0/ppd/foomatic-ppd/Oki-C5300-Postscript.ppd" "Oki C5300 Foomatic/Postscript"' \
-	--append printmodel='"foomatic-db-compressed-ppds:0/ppd/foomatic-ppd/Oki-C5300-cljet5.ppd" "Oki C5300 Foomatic/cljet5"' \
-	--append printmodel='"foomatic-db-compressed-ppds:0/ppd/foomatic-ppd/Oki-C5300-hpijs-pcl5c.ppd" "Oki C5300 Foomatic/hpijs-pcl5c"' \
-	--append printmodel='"foomatic-db-compressed-ppds:0/ppd/foomatic-ppd/Oki-C5400-Postscript.ppd" "Oki C5400 Foomatic/Postscript"' \
-	--append printmodel='"foomatic-db-compressed-ppds:0/ppd/foomatic-ppd/Oki-C5400-cljet5.ppd" "Oki C5400 Foomatic/cljet5"' \
-	--append printmodel='"foomatic-db-compressed-ppds:0/ppd/foomatic-ppd/Oki-C5400-hpijs-pcl5c.ppd" "Oki C5400 Foomatic/hpijs-pcl5c"' \
-	--append printmodel='"foomatic-db-compressed-ppds:0/ppd/foomatic-ppd/Oki-C5450-Postscript.ppd" "Oki C5450 Foomatic/Postscript"' \
-	--append printmodel='"foomatic-db-compressed-ppds:0/ppd/foomatic-ppd/Oki-C5540_MFP-Postscript.ppd" "Oki C5540 MFP Foomatic/Postscript (recommended)"' \
-	--append printmodel='"foomatic-db-compressed-ppds:0/ppd/foomatic-ppd/Oki-C5550_MFP-Postscript.ppd" "Oki C5550 MFP Foomatic/Postscript (recommended)"' \
-	--append printmodel='"foomatic-db-compressed-ppds:0/ppd/foomatic-ppd/Oki-C5700-Postscript.ppd" "Oki C5700 Foomatic/Postscript"' \
-	--append printmodel='"foomatic-db-compressed-ppds:0/ppd/foomatic-ppd/Oki-C5750-Postscript.ppd" "Oki C5750 Foomatic/Postscript (recommended)"' \
-	--append printmodel='"foomatic-db-compressed-ppds:0/ppd/foomatic-ppd/Oki-C5900-Postscript.ppd" "Oki C5900 Foomatic/Postscript"' \
-	--append printmodel='"foomatic-db-compressed-ppds:0/ppd/foomatic-ppd/Oki-C6000-Postscript.ppd" "Oki C6000 Foomatic/Postscript (recommended)"' \
-	--append printmodel='"foomatic-db-compressed-ppds:0/ppd/foomatic-ppd/Oki-C6000-pxlcolor.ppd" "Oki C6000 Foomatic/pxlcolor"' \
-	--append printmodel='"foomatic-db-compressed-ppds:0/ppd/foomatic-ppd/Oki-C6050-Postscript.ppd" "Oki C6050 Foomatic/Postscript (recommended)"' \
-	--append printmodel='"foomatic-db-compressed-ppds:0/ppd/foomatic-ppd/Oki-C6100-Postscript.ppd" "Oki C6100 Foomatic/Postscript"' \
-	--append printmodel='"foomatic-db-compressed-ppds:0/ppd/foomatic-ppd/Oki-C6100-pxlcolor.ppd" "Oki C6100 Foomatic/pxlcolor"' \
-	--append printmodel='"foomatic-db-compressed-ppds:0/ppd/foomatic-ppd/Oki-C6150-Postscript.ppd" "Oki C6150 Foomatic/Postscript (recommended)"' \
-	--append printmodel='"foomatic-db-compressed-ppds:0/ppd/foomatic-ppd/Oki-C710-Postscript.ppd" "Oki C710 Foomatic/Postscript (recommended)"' \
-	--append printmodel='"foomatic-db-compressed-ppds:0/ppd/foomatic-ppd/Oki-C7100-Postscript.ppd" "Oki C7100 Foomatic/Postscript"' \
-	--append printmodel='"foomatic-db-compressed-ppds:0/ppd/foomatic-ppd/Oki-C7200-Postscript.ppd" "Oki C7200 Foomatic/Postscript"' \
-	--append printmodel='"foomatic-db-compressed-ppds:0/ppd/foomatic-ppd/Oki-C7300-Postscript.ppd" "Oki C7300 Foomatic/Postscript"' \
-	--append printmodel='"foomatic-db-compressed-ppds:0/ppd/foomatic-ppd/Oki-C7300-cljet5.ppd" "Oki C7300 Foomatic/cljet5"' \
-	--append printmodel='"foomatic-db-compressed-ppds:0/ppd/foomatic-ppd/Oki-C7300-hpijs-pcl5c.ppd" "Oki C7300 Foomatic/hpijs-pcl5c"' \
-	--append printmodel='"foomatic-db-compressed-ppds:0/ppd/foomatic-ppd/Oki-C7350-Postscript.ppd" "Oki C7350 Foomatic/Postscript (recommended)"' \
-	--append printmodel='"foomatic-db-compressed-ppds:0/ppd/foomatic-ppd/Oki-C7350-pxlcolor.ppd" "Oki C7350 Foomatic/pxlcolor"' \
-	--append printmodel='"foomatic-db-compressed-ppds:0/ppd/foomatic-ppd/Oki-C7400-Postscript.ppd" "Oki C7400 Foomatic/Postscript"' \
-	--append printmodel='"foomatic-db-compressed-ppds:0/ppd/foomatic-ppd/Oki-C7500-Postscript.ppd" "Oki C7500 Foomatic/Postscript"' \
-	--append printmodel='"foomatic-db-compressed-ppds:0/ppd/foomatic-ppd/Oki-C7550-Postscript.ppd" "Oki C7550 Foomatic/Postscript (recommended)"' \
-	--append printmodel='"foomatic-db-compressed-ppds:0/ppd/foomatic-ppd/Oki-C7550-pxlcolor.ppd" "Oki C7550 Foomatic/pxlcolor"' \
-	--append printmodel='"foomatic-db-compressed-ppds:0/ppd/foomatic-ppd/Oki-C8800-Postscript.ppd" "Oki C8800 Foomatic/Postscript"' \
-	--append printmodel='"foomatic-db-compressed-ppds:0/ppd/foomatic-ppd/Oki-C8800-pxlcolor.ppd" "Oki C8800 Foomatic/pxlcolor (recommended)"' \
-	--append printmodel='"foomatic-db-compressed-ppds:0/ppd/foomatic-ppd/Oki-C9200-Postscript.ppd" "Oki C9200 Foomatic/Postscript"' \
-	--append printmodel='"foomatic-db-compressed-ppds:0/ppd/foomatic-ppd/Oki-C9200-cljet5.ppd" "Oki C9200 Foomatic/cljet5"' \
-	--append printmodel='"foomatic-db-compressed-ppds:0/ppd/foomatic-ppd/Oki-C9200-hpijs-pcl5c.ppd" "Oki C9200 Foomatic/hpijs-pcl5c"' \
-	--append printmodel='"foomatic-db-compressed-ppds:0/ppd/foomatic-ppd/Oki-C9300-Postscript.ppd" "Oki C9300 Foomatic/Postscript"' \
-	--append printmodel='"foomatic-db-compressed-ppds:0/ppd/foomatic-ppd/Oki-C9400-Postscript.ppd" "Oki C9400 Foomatic/Postscript"' \
-	--append printmodel='"foomatic-db-compressed-ppds:0/ppd/foomatic-ppd/Oki-C9400-cljet5.ppd" "Oki C9400 Foomatic/cljet5"' \
-	--append printmodel='"foomatic-db-compressed-ppds:0/ppd/foomatic-ppd/Oki-C9400-hpijs-pcl5c.ppd" "Oki C9400 Foomatic/hpijs-pcl5c"' \
-	--append printmodel='"foomatic-db-compressed-ppds:0/ppd/foomatic-ppd/Oki-C9500-Postscript.ppd" "Oki C9500 Foomatic/Postscript"' \
-	--append printmodel='"foomatic-db-compressed-ppds:0/ppd/foomatic-ppd/Oki-C9600-Postscript.ppd" "Oki C9600 Foomatic/Postscript"' \
-	--append printmodel='"foomatic-db-compressed-ppds:0/ppd/foomatic-ppd/Oki-C9650-Postscript.ppd" "Oki C9650 Foomatic/Postscript (recommended)"' \
-	--append printmodel='"foomatic-db-compressed-ppds:0/ppd/foomatic-ppd/Oki-C9650-pxlcolor.ppd" "Oki C9650 Foomatic/pxlcolor"' \
-	--append printmodel='"foomatic-db-compressed-ppds:0/ppd/foomatic-ppd/Oki-C9800-Postscript.ppd" "Oki C9800 Foomatic/Postscript (recommended)"' \
-	--append printmodel='"foomatic-db-compressed-ppds:0/ppd/foomatic-ppd/Oki-C9800-pxlcolor.ppd" "Oki C9800 Foomatic/pxlcolor"' \
-	--append printmodel='"foomatic-db-compressed-ppds:0/ppd/foomatic-ppd/Oki-C9800_MFP-Postscript.ppd" "Oki C9800 MFP Foomatic/Postscript (recommended)"' \
-	--append printmodel='"foomatic-db-compressed-ppds:0/ppd/foomatic-ppd/Oki-DP_5000-md50Eco.ppd" "Oki DP 5000 Foomatic/md50Eco"' \
-	--append printmodel='"foomatic-db-compressed-ppds:0/ppd/foomatic-ppd/Oki-DP_5000-md50Mono.ppd" "Oki DP 5000 Foomatic/md50Mono"' \
-	--append printmodel='"foomatic-db-compressed-ppds:0/ppd/foomatic-ppd/Oki-DP_5000-md5k.ppd" "Oki DP 5000 Foomatic/md5k"' \
-	--append printmodel='"foomatic-db-compressed-ppds:0/ppd/foomatic-ppd/Oki-ML_320-okiibm.ppd" "Oki ML 320 Foomatic/okiibm (recommended)"' \
-	--append printmodel='"foomatic-db-compressed-ppds:0/ppd/foomatic-ppd/Oki-ML_321-okiibm.ppd" "Oki ML 321 Foomatic/okiibm (recommended)"' \
-	--append printmodel='"foomatic-db-compressed-ppds:0/ppd/foomatic-ppd/Oki-ML_380-epson.ppd" "Oki ML 380 Foomatic/epson (recommended)"' \
-	--append printmodel='"foomatic-db-compressed-ppds:0/ppd/foomatic-ppd/Oki-Microline_182-oki182.ppd" "Oki Microline 182 Foomatic/oki182 (recommended)"' \
-	--append printmodel='"foomatic-db-compressed-ppds:0/ppd/foomatic-ppd/Oki-Microline_192plus-ibmpro.ppd" "Oki Microline 192+ Foomatic/ibmpro"' \
-	--append printmodel='"foomatic-db-compressed-ppds:0/ppd/foomatic-ppd/Oki-Microline_192plus-oki182.ppd" "Oki Microline 192+ Foomatic/oki182 (recommended)"' \
-	--append printmodel='"foomatic-db-compressed-ppds:0/ppd/foomatic-ppd/Oki-Microline_600CL-ml600.ppd" "Oki Microline 600CL Foomatic/ml600 (recommended)"' \
-	--append printmodel='"foomatic-db-compressed-ppds:0/ppd/foomatic-ppd/Oki-Microline_620CL-ml600.ppd" "Oki Microline 620CL Foomatic/ml600 (recommended)"' \
-	--append printmodel='"foomatic-db-compressed-ppds:0/ppd/foomatic-ppd/Oki-Microline_IBM_compatible_9_pin-okiibm.ppd" "Oki Microline IBM compatible 9 pin Foomatic/okiibm (recommended)"' \
-	--append printmodel='"foomatic-db-compressed-ppds:0/ppd/foomatic-ppd/Oki-OL400-laserjet.ppd" "Oki OL400 Foomatic/laserjet (recommended)"' \
-	--append printmodel='"foomatic-db-compressed-ppds:0/ppd/foomatic-ppd/Oki-OL400e-ljet2p.ppd" "Oki OL400e Foomatic/ljet2p"' \
-	--append printmodel='"foomatic-db-compressed-ppds:0/ppd/foomatic-ppd/Oki-OL400ex-ljet2p.ppd" "Oki OL400ex Foomatic/ljet2p (recommended)"' \
-	--append printmodel='"foomatic-db-compressed-ppds:0/ppd/foomatic-ppd/Oki-OL400w-oki4w.ppd" "Oki OL400w Foomatic/oki4w (recommended)"' \
-	--append printmodel='"foomatic-db-compressed-ppds:0/ppd/foomatic-ppd/Oki-OL410e-hpijs-pcl5e.ppd" "Oki OL410e Foomatic/hpijs-pcl5e"' \
-	--append printmodel='"foomatic-db-compressed-ppds:0/ppd/foomatic-ppd/Oki-OL410e-lj4dith.ppd" "Oki OL410e Foomatic/lj4dith"' \
-	--append printmodel='"foomatic-db-compressed-ppds:0/ppd/foomatic-ppd/Oki-OL410e-ljet4.ppd" "Oki OL410e Foomatic/ljet4 (recommended)"' \
-	--append printmodel='"foomatic-db-compressed-ppds:0/ppd/foomatic-ppd/Oki-OL600e-ljet2p.ppd" "Oki OL600e Foomatic/ljet2p (recommended)"' \
-	--append printmodel='"foomatic-db-compressed-ppds:0/ppd/foomatic-ppd/Oki-OL610e_PS-Postscript.ppd" "Oki OL610e/PS Foomatic/Postscript (recommended)"' \
-	--append printmodel='"foomatic-db-compressed-ppds:0/ppd/foomatic-ppd/Oki-OL610e_S-laserjet.ppd" "Oki OL610e/S Foomatic/laserjet (recommended)"' \
-	--append printmodel='"foomatic-db-compressed-ppds:0/ppd/foomatic-ppd/Oki-OL800-laserjet.ppd" "Oki OL800 Foomatic/laserjet (recommended)"' \
-	--append printmodel='"foomatic-db-compressed-ppds:0/ppd/foomatic-ppd/Oki-OL810e_PS-Postscript.ppd" "Oki OL810e/PS Foomatic/Postscript (recommended)"' \
-	--append printmodel='"foomatic-db-compressed-ppds:0/ppd/foomatic-ppd/Oki-OL810ex-hpijs-pcl5e.ppd" "Oki OL810ex Foomatic/hpijs-pcl5e (recommended)"' \
-	--append printmodel='"foomatic-db-compressed-ppds:0/ppd/foomatic-ppd/Oki-OL810ex-lj4dith.ppd" "Oki OL810ex Foomatic/lj4dith"' \
-	--append printmodel='"foomatic-db-compressed-ppds:0/ppd/foomatic-ppd/Oki-OL810ex-ljet4.ppd" "Oki OL810ex Foomatic/ljet4"' \
-	--append printmodel='"foomatic-db-compressed-ppds:0/ppd/foomatic-ppd/Oki-OL830Plus-Postscript.ppd" "Oki OL830Plus Foomatic/Postscript (recommended)"' \
-	--append printmodel='"foomatic-db-compressed-ppds:0/ppd/foomatic-ppd/Oki-Okijet_2500-cdj550.ppd" "Oki Okijet 2500 Foomatic/cdj550 (recommended)"' \
-	--append printmodel='"foomatic-db-compressed-ppds:0/ppd/foomatic-ppd/Oki-Okipage_10e-hpijs-pcl5e.ppd" "Oki Okipage 10e Foomatic/hpijs-pcl5e (recommended)"' \
-	--append printmodel='"foomatic-db-compressed-ppds:0/ppd/foomatic-ppd/Oki-Okipage_10e-lj4dith.ppd" "Oki Okipage 10e Foomatic/lj4dith"' \
-	--append printmodel='"foomatic-db-compressed-ppds:0/ppd/foomatic-ppd/Oki-Okipage_10e-ljet4.ppd" "Oki Okipage 10e Foomatic/ljet4"' \
-	--append printmodel='"foomatic-db-compressed-ppds:0/ppd/foomatic-ppd/Oki-Okipage_10ex-hpijs-pcl5e.ppd" "Oki Okipage 10ex Foomatic/hpijs-pcl5e"' \
-	--append printmodel='"foomatic-db-compressed-ppds:0/ppd/foomatic-ppd/Oki-Okipage_10ex-lj4dith.ppd" "Oki Okipage 10ex Foomatic/lj4dith"' \
-	--append printmodel='"foomatic-db-compressed-ppds:0/ppd/foomatic-ppd/Oki-Okipage_10ex-lj5gray.ppd" "Oki Okipage 10ex Foomatic/lj5gray"' \
-	--append printmodel='"foomatic-db-compressed-ppds:0/ppd/foomatic-ppd/Oki-Okipage_10ex-ljet4.ppd" "Oki Okipage 10ex Foomatic/ljet4"' \
-	--append printmodel='"foomatic-db-compressed-ppds:0/ppd/foomatic-ppd/Oki-Okipage_10ex-pxlmono.ppd" "Oki Okipage 10ex Foomatic/pxlmono (recommended)"' \
-	--append printmodel='"foomatic-db-compressed-ppds:0/ppd/foomatic-ppd/Oki-Okipage_12i-Postscript.ppd" "Oki Okipage 12i Foomatic/Postscript (recommended)"' \
-	--append printmodel='"foomatic-db-compressed-ppds:0/ppd/foomatic-ppd/Oki-Okipage_14ex-hpijs-pcl5e.ppd" "Oki Okipage 14ex Foomatic/hpijs-pcl5e"' \
-	--append printmodel='"foomatic-db-compressed-ppds:0/ppd/foomatic-ppd/Oki-Okipage_14ex-lj4dith.ppd" "Oki Okipage 14ex Foomatic/lj4dith"' \
-	--append printmodel='"foomatic-db-compressed-ppds:0/ppd/foomatic-ppd/Oki-Okipage_14ex-lj5gray.ppd" "Oki Okipage 14ex Foomatic/lj5gray"' \
-	--append printmodel='"foomatic-db-compressed-ppds:0/ppd/foomatic-ppd/Oki-Okipage_14ex-ljet4.ppd" "Oki Okipage 14ex Foomatic/ljet4"' \
-	--append printmodel='"foomatic-db-compressed-ppds:0/ppd/foomatic-ppd/Oki-Okipage_14ex-pxlmono.ppd" "Oki Okipage 14ex Foomatic/pxlmono (recommended)"' \
-	--append printmodel='"foomatic-db-compressed-ppds:0/ppd/foomatic-ppd/Oki-Okipage_20DXn-Postscript.ppd" "Oki Okipage 20DXn Foomatic/Postscript (recommended)"' \
-	--append printmodel='"foomatic-db-compressed-ppds:0/ppd/foomatic-ppd/Oki-Okipage_4w-oki4w.ppd" "Oki Okipage 4w Foomatic/oki4w (recommended)"' \
-	--append printmodel='"foomatic-db-compressed-ppds:0/ppd/foomatic-ppd/Oki-Okipage_4wplus-oki4w.ppd" "Oki Okipage 4w+ Foomatic/oki4w (recommended)"' \
-	--append printmodel='"foomatic-db-compressed-ppds:0/ppd/foomatic-ppd/Oki-Okipage_6e-hpijs-pcl5e.ppd" "Oki Okipage 6e Foomatic/hpijs-pcl5e (recommended)"' \
-	--append printmodel='"foomatic-db-compressed-ppds:0/ppd/foomatic-ppd/Oki-Okipage_6e-lj4dith.ppd" "Oki Okipage 6e Foomatic/lj4dith"' \
-	--append printmodel='"foomatic-db-compressed-ppds:0/ppd/foomatic-ppd/Oki-Okipage_6e-ljet4.ppd" "Oki Okipage 6e Foomatic/ljet4"' \
-	--append printmodel='"foomatic-db-compressed-ppds:0/ppd/foomatic-ppd/Oki-Okipage_6ex-hpijs-pcl5e.ppd" "Oki Okipage 6ex Foomatic/hpijs-pcl5e (recommended)"' \
-	--append printmodel='"foomatic-db-compressed-ppds:0/ppd/foomatic-ppd/Oki-Okipage_6ex-lj4dith.ppd" "Oki Okipage 6ex Foomatic/lj4dith"' \
-	--append printmodel='"foomatic-db-compressed-ppds:0/ppd/foomatic-ppd/Oki-Okipage_6ex-ljet4.ppd" "Oki Okipage 6ex Foomatic/ljet4"' \
-	--append printmodel='"foomatic-db-compressed-ppds:0/ppd/foomatic-ppd/Oki-Okipage_6w-oki4w.ppd" "Oki Okipage 6w Foomatic/oki4w (recommended)"' \
-	--append printmodel='"foomatic-db-compressed-ppds:0/ppd/foomatic-ppd/Oki-Okipage_8c-Postscript.ppd" "Oki Okipage 8c Foomatic/Postscript (recommended)"' \
-	--append printmodel='"foomatic-db-compressed-ppds:0/ppd/foomatic-ppd/Oki-Okipage_8p-hpijs-pcl5e.ppd" "Oki Okipage 8p Foomatic/hpijs-pcl5e (recommended)"' \
-	--append printmodel='"foomatic-db-compressed-ppds:0/ppd/foomatic-ppd/Oki-Okipage_8p-lj4dith.ppd" "Oki Okipage 8p Foomatic/lj4dith"' \
-	--append printmodel='"foomatic-db-compressed-ppds:0/ppd/foomatic-ppd/Oki-Okipage_8p-ljet4.ppd" "Oki Okipage 8p Foomatic/ljet4"' \
-	--append printmodel='"foomatic-db-compressed-ppds:0/ppd/foomatic-ppd/Oki-Okipage_8w-oki4w.ppd" "Oki Okipage 8w Foomatic/oki4w (recommended)"' \
-	--append printmodel='"foomatic-db-compressed-ppds:0/ppd/foomatic-ppd/Oki-Okipage_8w_Lite-oki4w.ppd" "Oki Okipage 8w Lite Foomatic/oki4w (recommended)"' \
-	--append printmodel='"foomatic-db-compressed-ppds:0/ppd/foomatic-ppd/Oki-Okipage_8z-oki4w.ppd" "Oki Okipage 8z Foomatic/oki4w (recommended)"' \
-	--append printmodel='"foomatic-db-compressed-ppds:0/ppd/foomatic-ppd/Oki-Super_6e-hpijs-pcl5e.ppd" "Oki Super 6e Foomatic/hpijs-pcl5e"' \
-	--append printmodel='"foomatic-db-compressed-ppds:0/ppd/foomatic-ppd/Oki-Super_6e-lj4dith.ppd" "Oki Super 6e Foomatic/lj4dith"' \
-	--append printmodel='"foomatic-db-compressed-ppds:0/ppd/foomatic-ppd/Oki-Super_6e-ljet4.ppd" "Oki Super 6e Foomatic/ljet4 (recommended)"' || rc=$?
 
 # Manufacturer: Olivetti Printers: 5
 univention-directory-manager settings/printermodel create "$@" --ignore_exists --position "cn=cups,cn=univention,$ldap_base" --set name=Olivetti || rc=$?
@@ -6912,6 +6935,7 @@ univention-directory-manager settings/printermodel modify "$@" --ignore_exists -
 	'"foomatic-rip/Ricoh-Aficio_MP_9000-gutenprint-ijs-simplified.5.2.ppd" "Ricoh Aficio MP 9000 Foomatic/gutenprint-ijs-simplified.5.2"' \
 	'"foomatic-rip/Ricoh-Aficio_MP_9000-gutenprint-ijs.5.2.ppd" "Ricoh Aficio MP 9000 Foomatic/gutenprint-ijs.5.2"' \
 	'"foomatic-rip/Ricoh-Aficio_SP_C222SF-Postscript.ppd" "Ricoh Aficio SP C222SF Foomatic/Postscript (recommended)"' \
+	'"foomatic-db-compressed-ppds:0/ppd/foomatic-ppd/Ricoh-Aficio_SP_C222SF-Postscript.ppd" "Ricoh Aficio SP C222SF Foomatic/Postscript (recommended)"' \
 	'"foomatic-rip/Ricoh-RPDL_III_Laser_Printer-rpdl.ppd" "Ricoh RPDL III Laser Printer Foomatic/rpdl (recommended)"' \
 	'"foomatic-rip/Ricoh-RPDL_II_Laser_Printer-rpdl.ppd" "Ricoh RPDL II Laser Printer Foomatic/rpdl (recommended)"' \
 	'"foomatic-rip/Ricoh-RPDL_IV_Laser_Printer-rpdl.ppd" "Ricoh RPDL IV Laser Printer Foomatic/rpdl (recommended)"' \
