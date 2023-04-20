@@ -13,24 +13,6 @@ Build-Depends:
  python3-setuptools,
 Standards-Version: 3.8.2
 
-Package: python-univention-license
-Architecture: any
-Description: UCS transitional dummy package
- .
- It is part of Univention Corporate Server (UCS), an
- integrated, directory driven solution for managing
- corporate environments. For more information about UCS,
- refer to: https://www.univention.de/
-
-Package: python-univention-license-dbg
-Architecture: any
-Description: UCS transitional dummy package
- .
- It is part of Univention Corporate Server (UCS), an
- integrated, directory driven solution for managing
- corporate environments. For more information about UCS,
- refer to: https://www.univention.de/
-
 Package: python3-univention-license
 Architecture: any
 Depends:
@@ -40,24 +22,6 @@ Depends:
 Provides:
  ${python3:Provides},
 Description: UCS - licence validation library for Python 3
- This package contains a Python interface to the UCS
- licence validation library.
- .
- It is part of Univention Corporate Server (UCS), an
- integrated, directory driven solution for managing
- corporate environments. For more information about UCS,
- refer to: https://www.univention.de/
-
-Package: python3-univention-license-dbg
-Architecture: any
-Depends:
- python3-univention-license (= ${binary:Version}),
- ${misc:Depends},
- ${python3:Depends},
- ${shlibs:Depends},
-Provides:
- ${python3:Provides},
-Description: UCS - licence validation library for Python 3 - Debug version
  This package contains a Python interface to the UCS
  licence validation library.
  .
