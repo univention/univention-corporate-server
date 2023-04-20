@@ -1,0 +1,18 @@
+product: ucs
+release: "4.4"
+version: [9]
+scope: ucs_4.4-0-errata4.4-9
+src: protobuf
+fix: 3.0.0-9+deb9u1
+desc: |
+ This update addresses the following issues:
+ 3.0.0-9+deb9u1 (Tue, 04 Apr 2023 17:09:08 +0200)
+ * Non-maintainer upload by the ELTS Team.
+ * Fix CVE-2021-22569 (DoS in Java)
+ * Fix CVE-2021-22570 (NULL pointer dereference)
+ * Fix CVE-2022-1941 (memory DoS)
+bug: [55993]
+cve:
+- CVE-2021-22569
+- CVE-2021-22570
+- CVE-2022-1941
