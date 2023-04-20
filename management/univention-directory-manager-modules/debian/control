@@ -26,24 +26,6 @@ Build-Depends:
  univention-config-dev (>= 15.0.7-16),
  univention-l10n-dev (>= 7.0.1),
 
-Package: python-univention-directory-manager
-Architecture: all
-Description: UCS transitional dummy package
- .
- It is part of Univention Corporate Server (UCS), an
- integrated, directory driven solution for managing
- corporate environments. For more information about UCS,
- refer to: https://www.univention.de/
-
-Package: python-univention-directory-manager-cli
-Architecture: all
-Description: UCS transitional dummy package
- .
- It is part of Univention Corporate Server (UCS), an
- integrated, directory driven solution for managing
- corporate environments. For more information about UCS,
- refer to: https://www.univention.de/
-
 Package: python3-univention-directory-manager
 Architecture: all
 Depends:

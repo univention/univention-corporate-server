@@ -1,3 +1,9 @@
+univention-debug-python (13.0.4) unstable; urgency=medium
+
+  * Bug #55994: drop Python 2 binary packages
+
+ -- Florian Best <best@univention.de>  Thu, 07 Mar 2024 23:53:51 +0100
+
 univention-debug-python (13.0.3) unstable; urgency=medium
 
   * Bug #53127: upgrade to latest debhelper compat version
