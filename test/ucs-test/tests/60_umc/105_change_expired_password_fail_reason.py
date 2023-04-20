@@ -43,8 +43,8 @@ reasons = {
 }  # type: Dict[str, List[str]]
 if samba4_installed:
     reasons = {
-        REASON_TOO_SHORT: [],
-        REASON_TOO_SHORT_AT_LEAST_CHARACTERS: ['Test', 'ana'],
+        REASON_TOO_SHORT: ['Test', 'ana'],
+        REASON_TOO_SHORT_AT_LEAST_CHARACTERS: [],
         REASON_TOO_SIMPLE: ['123456789', 'chocolate', 'ooooooooo'],
         REASON_PALINDROME: [],
         REASON_DICTIONARY: [],
