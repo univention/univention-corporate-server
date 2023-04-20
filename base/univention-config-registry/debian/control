@@ -105,15 +105,6 @@ Description: UCS - C interface to configuration manager (development files)
  corporate environments. For more information about UCS,
  refer to: https://www.univention.de/
 
-Package: python-univention-config-registry
-Architecture: all
-Description: UCS transitional dummy package
- .
- It is part of Univention Corporate Server (UCS), an
- integrated, directory driven solution for managing
- corporate environments. For more information about UCS,
- refer to: https://www.univention.de/
-
 Package: python3-univention-config-registry
 Architecture: all
 Depends:

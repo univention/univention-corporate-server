@@ -28,15 +28,6 @@ Description: transitional dummy Univention helper programs for debian/rules
  corporate environments. For more information about UCS,
  refer to: https://www.univention.de/
 
-Package: python-univention-debhelper
-Architecture: all
-Description: UCS transitional dummy package
- .
- This package is part of Univention Corporate Server (UCS),
- an integrated, directory driven solution for managing
- corporate environments. For more information about UCS,
- refer to: https://www.univention.de/
-
 Package: python3-univention-debhelper
 Architecture: all
 Depends:
