@@ -8,7 +8,7 @@
 # shellcheck source=../../lib/base.sh
 . "$TESTLIBPATH/base.sh" || exit 137
 
-if pgrep -f "/usr/bin/dockerd " >/dev/null
+if pgrep -f "$(command -v dockerd)" >/dev/null
 then
 	echo "OK. Process found."
 else
