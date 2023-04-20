@@ -77,15 +77,6 @@ Description: UCS Management Console - server
  corporate environments. For more information about UCS,
  refer to: https://www.univention.de/
 
-Package: python-univention-management-console
-Architecture: all
-Description: UCS transitional dummy package
- .
- This package is part of Univention Corporate Server (UCS),
- an integrated, directory driven solution for managing
- corporate environments. For more information about UCS,
- refer to: http://www.univention.de/
-
 Package: python3-univention-management-console
 Architecture: all
 Depends:
