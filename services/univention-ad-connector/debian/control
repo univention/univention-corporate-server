@@ -12,15 +12,6 @@ Build-Depends:
  univention-l10n-dev (>= 7.0.1),
  univention-management-console-dev (>= 12.0.2),
 
-Package: python-univention-connector
-Architecture: all
-Description: UCS transitional dummy package
- .
- It is part of Univention Corporate Server (UCS), an
- integrated, directory driven solution for managing
- corporate environments. For more information about UCS,
- refer to: https://www.univention.de/
-
 Package: python3-univention-connector
 Architecture: all
 Depends:
@@ -38,17 +29,6 @@ Conflicts:
 Description: UCS - Modules for connector sychronisation
  This package contains the modules that implement the
  features of UCS Active Directory (AD) Connector.
- .
- It is part of Univention Corporate Server (UCS), an
- integrated, directory driven solution for managing
- corporate environments. For more information about UCS,
- refer to: https://www.univention.de/
-
-Package: python-univention-connector-ad
-Architecture: all
-Depends:
- ${misc:Depends},
-Description: UCS transitional dummy package
  .
  It is part of Univention Corporate Server (UCS), an
  integrated, directory driven solution for managing
