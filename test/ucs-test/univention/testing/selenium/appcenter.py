@@ -192,7 +192,7 @@ class AppCenter:
             self.selenium.wait_for_text(_('Do not show this message again'), timeout=5)
             self.selenium.click_button(_('Continue'))
         except TimeoutException:
-            pass
+            print('"Do not show this message again" not detected in 5 seconds')
         self.selenium.wait_until_all_standby_animations_disappeared()
 
 
