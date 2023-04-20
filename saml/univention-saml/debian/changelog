@@ -1,3 +1,9 @@
+univention-saml (8.0.5) unstable; urgency=medium
+
+  * Bug #56535: adjust logging to upstream API changes
+
+ -- Florian Best <best@univention.de>  Thu, 07 Mar 2024 23:53:43 +0100
+
 univention-saml (8.0.4) unstable; urgency=medium
 
   * Bug #55999: run SimpleSAMLphp with PHP 7.4
