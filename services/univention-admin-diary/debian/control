@@ -30,15 +30,6 @@ Description: Univention Admin Diary backend
  corporate environments. For more information about UCS,
  refer to: https://www.univention.de/
 
-Package: python-univention-admin-diary-backend
-Architecture: all
-Description: UCS transitional dummy package
- .
- It is part of Univention Corporate Server (UCS), an
- integrated, directory driven solution for managing
- corporate environments. For more information about UCS,
- refer to: https://www.univention.de/
-
 Package: python3-univention-admin-diary-backend
 Architecture: all
 Depends:
@@ -80,15 +71,6 @@ Depends:
  rsyslog-relp,
  ${misc:Depends},
 Description: Univention Admin Diary client
- .
- It is part of Univention Corporate Server (UCS), an
- integrated, directory driven solution for managing
- corporate environments. For more information about UCS,
- refer to: https://www.univention.de/
-
-Package: python-univention-admin-diary
-Architecture: all
-Description: UCS transitional dummy package
  .
  It is part of Univention Corporate Server (UCS), an
  integrated, directory driven solution for managing
