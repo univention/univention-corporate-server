@@ -12,15 +12,6 @@ Build-Depends:
  python3-pytest,
  python3-setuptools,
 
-Package: python-univention-debug
-Architecture: any
-Description: UCS transitional dummy package
- .
- It is part of Univention Corporate Server (UCS), an
- integrated, directory driven solution for managing
- corporate environments. For more information about UCS,
- refer to: https://www.univention.de/
-
 Package: python3-univention-debug
 Architecture: any
 Depends:
