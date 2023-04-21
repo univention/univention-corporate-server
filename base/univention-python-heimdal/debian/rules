@@ -35,7 +35,7 @@
 export PYBUILD_NAME=univention-heimdal
 
 override_dh_strip:
-	dh_strip -ppython-univention-heimdal  --dbg-package=python-univention-heimdal-dbg
+	dh_strip -ppython3-univention-heimdal  --dbg-package=python3-univention-heimdal-dbg
 
 %:
 	dh $@ --with python3 --buildsystem=pybuild
