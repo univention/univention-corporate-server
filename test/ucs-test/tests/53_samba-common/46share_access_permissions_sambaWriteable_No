@@ -58,6 +58,7 @@ if dpkg -s univention-samba4 2>&1 | grep "install ok installed" > /dev/null; the
 	wait_for_drs_replication "(sAMAccountName=$username)"
 fi
 
+sleep 10
 admin_account="$(ucs_convertDN2UID "$tests_domainadmin_account")"
 
 echo "## wait for samba share export"
