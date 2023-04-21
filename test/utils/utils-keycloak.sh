@@ -138,10 +138,12 @@ external_keycloak_fqdn_config () {
 	# * certifcate must be in /opt/$fqdn
 	# * external name is resolvable via DNS
 	local fqdn="${1:?missing fqdn}"; shift
+	local certificate="${1:?missing certificate}"; shift
+	local keyfile="${1:?missing keyfile}"; shift
 	# keycloak config
 	ucr set \
-		keycloak/apache2/ssl/certificate="/opt/${fqdn}/cert.pem" \
-		keycloak/apache2/ssl/key="/opt/${fqdn}/private.key" \
+		keycloak/apache2/ssl/certificate="$certificate" \
+		keycloak/apache2/ssl/key="$keyfile" \
 		keycloak/server/sso/autoregistration=false \
 		keycloak/server/sso/fqdn="${fqdn}"
 	# to not create a certificate for external name in univention-saml/91univention-saml.inst
@@ -173,9 +175,13 @@ external_portal_config () {
 	# requiremnts:
 	# * certificate/apache config for external portal
 	local fqdn="${1:?missing fqdn}"; shift
+	local certificate="${1:?missing certificate}"; shift
+	local keyfile="${1:?missing keyfile}"; shift
 	ucr set umc/saml/sp-server="$fqdn"
 	# workaround for https://forge.univention.org/bugzilla/show_bug.cgi?id=55982
 	# copy certificate to /etc/univention/ssl
-	cp -rf "/opt/$fqdn" /etc/univention/ssl/
+	mkdir -p "/etc/univention/ssl/$fqdn"
+	cp -rf "$certificate" "/etc/univention/ssl/$fqdn/cert.pem"
+	cp -rf "$keyfile" "/etc/univention/ssl/$fqdn/private.key"
 	univention-run-join-scripts --force --run-scripts 92univention-management-console-web-server.inst
 }
