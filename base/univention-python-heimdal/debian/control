@@ -1,5 +1,5 @@
 Source: univention-python-heimdal
-Section: python3
+Section: python
 Priority: optional
 Maintainer: Univention GmbH <packages@univention.de>
 Build-Depends:
@@ -23,24 +23,6 @@ Provides:
  ${python3:Provides},
 Description: UCS - Kerberos interface module for Python 3.
  This module provides a Python interface to the Heimdal Kerberos library.
- .
- It is part of Univention Corporate Server (UCS), an
- integrated, directory driven solution for managing
- corporate environments. For more information about UCS,
- refer to: https://www.univention.de/
-
-Package: python3-univention-heimdal-dbg
-Architecture: any
-Depends:
- python3-univention-heimdal (= ${binary:Version}),
- ${python3:Depends},
- ${shlibs:Depends},
-Provides:
- ${python3:Provides},
-Description: UCS - Kerberos interface module for Python 3 - Debug version
- This module provides a Python interface to the Heimdal Kerberos library.
- It includes the shared library for the Python debug interpreter and the
- debug symbols for all extension modules.
  .
  It is part of Univention Corporate Server (UCS), an
  integrated, directory driven solution for managing
