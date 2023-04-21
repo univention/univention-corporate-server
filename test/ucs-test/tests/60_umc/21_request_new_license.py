@@ -99,7 +99,7 @@ class TestRequestLicense(TestCase):
             '--password', account.bindpw,
             'udm/request_new_license',
             '--flavor', 'license-request',
-            '--option', 'email=brodersen@univention.de',
+            '--option', 'email=packages@univention.de',
         ]).decode('UTF-8', 'replace')
         print(ans)
         assert 'STATUS   : 200' in ans
@@ -115,7 +115,7 @@ class TestRequestLicense(TestCase):
             '--password', password,
             'udm/request_new_license',
             '--flavor', 'license-request',
-            '--option', 'email=brodersen@univention.de',
+            '--option', 'email=packages@univention.de',
         ]).decode('UTF-8', 'replace')
         print(ans)
         assert 'STATUS   : 200' in ans
