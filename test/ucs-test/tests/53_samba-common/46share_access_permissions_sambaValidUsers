@@ -68,6 +68,7 @@ fi
 
 admin_account="$(ucs_convertDN2UID "$tests_domainadmin_account")"
 
+sleep 10
 echo "## wait for samba share export"
 i=0
 while ( output=$(smbclient -U "$admin_account%$tests_domainadmin_pwd" "//$hostname.$domainname/$sharename" -c "exit" 2>&1); grep -q "NT_STATUS_BAD_NETWORK_NAME" <<<"$output" )

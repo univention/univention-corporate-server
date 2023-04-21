@@ -67,16 +67,16 @@ echo "----Testing whether printer share '$printername' and user '$username' have
 i=0
 while ! output="$(smbclient //localhost/$printername -U "$username%$password" -c "exit" 2>&1)"
 do
-        echo '.'
-        let i=$i+1
-        if [ $i = 20 ]; then
-		if echo "$output" | grep NT_STATUS_ACCESS_DENIED; then
-			fail_fast 1 "User was not provided 20 seconds after creation"
+	echo '.'
+	let i=$i+1
+	if [ $i = 30 ]; then
+		if echo "$output" | egrep -q "(NT_STATUS_ACCESS_DENIED|NT_STATUS_LOGON_FAILURE)"; then
+			fail_fast 1 "User was not provided 30 seconds after creation"
 		else
-			fail_fast 1 "Samba did not provide the printer share 20 seconds after creation"
+			fail_fast 1 "Samba did not provide the printer share 30 seconds after creation"
 		fi
-        fi
-        sleep 1
+	fi
+	sleep 1
 done
 
 #create input file
