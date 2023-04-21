@@ -21,7 +21,7 @@ RETVAL=100
 ls -la /var/lib/samba/ntp_signd
 
 dir_owner=$(stat /var/lib/samba/ntp_signd --print=%G)
-test "$dir_owner" != "ntp" && fail_test 110 "/var/lib/samba/ntp_signd does not belong to ntp: $dir_owner"
+test "$dir_owner" != "ntpsec" && fail_test 110 "/var/lib/samba/ntp_signd does not belong to ntpsec: $dir_owner"
 
 permissions=$(stat /var/lib/samba/ntp_signd --print=%a)
 

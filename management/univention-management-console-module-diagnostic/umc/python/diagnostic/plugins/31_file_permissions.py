@@ -155,6 +155,7 @@ def file_and_permission_checks() -> Iterator[CheckError]:
         cf_type('/var/mail/systemmail', 'systemmail', 'mail', 0o600, False),
         cf_type('/var/tmp/univention-management-console-frontend', 'root', 'root', 0o755, False),
         cf_type('/etc/freeradius/ssl', 'root', 'freerad', 0o2755, False),
+        cf_type('/var/lib/samba/ntp_signd', 'root', 'ntpsec', 0o750, False),
     ]
 
     iglob_paths = [
