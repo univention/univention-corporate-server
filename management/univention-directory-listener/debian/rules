@@ -66,9 +66,6 @@ override_dh_fixperms:
 override_dh_auto_test:
 	make -C tests tests
 
-override_dh_strip:
-	dh_strip --dbgsym-migration='univention-directory-listener-dbg (<< 13.0.2-12~)'
-
 override_dh_installdocs:
 	dh_installdocs --link-doc=univention-directory-listener
 
