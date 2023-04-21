@@ -274,9 +274,9 @@ secret: $machine_secret
 		install -m 750 -g ntp -d  "$ntp_socket_dir"
 		ntp_needs_restart=true
 	else
-		if [ "$(stat --printf '%G' "$ntp_socket_dir")" != 'ntp' ]; then
+		if [ "$(stat --printf '%G' "$ntp_socket_dir")" != 'ntpsec' ]; then
 			echo "fixing group ownership of $ntp_socket_dir"
-			chgrp ntp "$ntp_socket_dir"
+			chgrp ntpsec "$ntp_socket_dir"
 			ntp_needs_restart=true
 		fi
 
