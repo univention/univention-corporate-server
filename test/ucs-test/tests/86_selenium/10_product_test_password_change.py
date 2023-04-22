@@ -57,6 +57,11 @@ class User(object):
         self.password = password
 
 
+def random_password():
+    s = uts.random_string()
+    return f'{s[:5]}%{s[5:10]}'
+
+
 class UMCTester(object):
 
     def test_umc(self):
@@ -68,13 +73,13 @@ class UMCTester(object):
         })
 
         try:
-            self.test_password_change(self.admin, uts.random_string())
-            self.test_password_change(self.regular_user, uts.random_string())
-            self.test_usability_of_a_module_after_password_change(self.admin, uts.random_string())
+            self.test_password_change(self.admin, random_password())
+            self.test_password_change(self.regular_user, random_password())
+            self.test_usability_of_a_module_after_password_change(self.admin, random_password())
             self.check_for_short_password_error(self.admin)
             # FIXME: admins can somehow always reuse passwords in a samba domain; testing with regular user only on this point
             self.check_for_password_reuse_error(self.regular_user)
-            self.check_change_password_on_login(self.admin, uts.random_string())
+            self.check_change_password_on_login(self.admin, random_password())
         finally:
             self.set_samba_settings(old_samba_settings)
 
