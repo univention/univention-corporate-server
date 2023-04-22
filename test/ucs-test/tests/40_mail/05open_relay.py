@@ -28,16 +28,6 @@ def get_ext_ip():
     return addrs[0]
 
 
-def set_postfix_networks(networks='127.0.0.0/8'):
-    handler_set(['main/postfix/mynetworks=%s' % networks])
-
-
-def restart_postfix():
-    print('\n* restarting postfix')
-    cmd = ['service', 'postfix', 'restart']
-    subprocess.Popen(cmd, stderr=open('/dev/null', 'w')).communicate()
-
-
 def reverse_dns_name(ip):
     reverse = ip.split('.')
     reverse.reverse()
