@@ -14,6 +14,7 @@ import univention.testing.ucr as ucr_test
 from univention.config_registry import handler_set
 from univention.testing import utils
 
+SMTP_PORT = 25
 
 def get_ext_ip():
     ifaces = netifaces.interfaces()
@@ -38,15 +39,7 @@ def print_header(section_string):
     print('info', 40 * '+', '\n%s\ninfo' % section_string, 40 * '+')
 
 
-ucr = ucr_test.UCSTestConfigRegistry()
-ucr.load()
-fqdn = '{}.{}'.format(ucr['hostname'], ucr['domainname'])
-sender_ip = get_ext_ip()
-smtp_port = 25
-
-
-def create_bad_mailheader(mailfrom, rcptto):
-
+def create_bad_mailheader(fqdn: str, sender_ip: str, mailfrom: str, rcptto: str):
     def get_return_code(s):
         try:
             return int(s[:4])
@@ -76,8 +69,9 @@ def create_bad_mailheader(mailfrom, rcptto):
         print(f'IN : {reply[-1]!r} (return code: {r!r})')
         return r
 
+    print(f'Connecting to {sender_ip}:{SMTP_PORT} (TCP)...')
     s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    s.connect((sender_ip, smtp_port))
+    s.connect((sender_ip, SMTP_PORT))
     s.settimeout(0.2)
     reply = get_reply(s)
     r = get_return_code(reply)
@@ -143,9 +137,12 @@ def main(ucr):
         ("<>", "victim@mailinator.com", header9),
     ]
 
+    fqdn = '{}.{}'.format(ucr['hostname'], ucr['domainname'])
+    sender_ip = get_ext_ip()
+
     for (mailfrom, rcpt, header) in test_cases:
         print_header(header)
-        if create_bad_mailheader(mailfrom, rcpt) != 1:
+        if create_bad_mailheader(fqdn, sender_ip, mailfrom, rcpt) != 1:
             utils.fail('*** Open relay found ***')
 
 
