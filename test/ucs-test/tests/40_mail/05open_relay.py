@@ -15,6 +15,9 @@ from univention.config_registry import handler_set
 from univention.testing import utils
 
 
+SMTP_PORT = 25
+
+
 def get_ext_ip():
     ifaces = netifaces.interfaces()
     print(f'interfaces: {ifaces!r}')
@@ -28,16 +31,6 @@ def get_ext_ip():
     return addrs[0]
 
 
-def set_postfix_networks(networks='127.0.0.0/8'):
-    handler_set(['main/postfix/mynetworks=%s' % networks])
-
-
-def restart_postfix():
-    print('\n* restarting postfix')
-    cmd = ['service', 'postfix', 'restart']
-    subprocess.Popen(cmd, stderr=open('/dev/null', 'w')).communicate()
-
-
 def reverse_dns_name(ip):
     reverse = ip.split('.')
     reverse.reverse()
@@ -48,15 +41,7 @@ def print_header(section_string):
     print('info', 40 * '+', '\n%s\ninfo' % section_string, 40 * '+')
 
 
-ucr = ucr_test.UCSTestConfigRegistry()
-ucr.load()
-fqdn = '{}.{}'.format(ucr['hostname'], ucr['domainname'])
-sender_ip = get_ext_ip()
-smtp_port = 25
-
-
-def create_bad_mailheader(mailfrom, rcptto):
-
+def create_bad_mailheader(fqdn: str, sender_ip: str, mailfrom: str, rcptto: str):
     def get_return_code(s):
         try:
             return int(s[:4])
@@ -86,8 +71,9 @@ def create_bad_mailheader(mailfrom, rcptto):
         print(f'IN : {reply[-1]!r} (return code: {r!r})')
         return r
 
+    print(f'Connecting to {sender_ip}:{SMTP_PORT} (TCP)...')
     s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    s.connect((sender_ip, smtp_port))
+    s.connect((sender_ip, SMTP_PORT))
     s.settimeout(0.2)
     reply = get_reply(s)
     r = get_return_code(reply)
@@ -99,16 +85,12 @@ def create_bad_mailheader(mailfrom, rcptto):
     send_and_receive(s, 'DATA')
     send_and_receive(s, 'SPAMBODY')
     retval = send_and_receive(s, '.')
-    send_and_receive(s, 'QUIT')
+    send_message(s, 'QUIT')
     s.close()
-
-    if retval == 250:
-        return 0
-    else:
-        return 1
+    assert retval != 250
 
 
-def main():
+def main(ucr):
     header0 = "The classic open-relay test:"
     header1 = "The classic open-relay test with the \"\" (Sendmail 8.8 and others MTAs, much used by the spammers):"
     header2 = "The non-RFC821 compliant test (MS Exchange and SLmail betas):"
@@ -153,11 +135,21 @@ def main():
         ("<>", "victim@mailinator.com", header9),
     ]
 
+    fqdn = '%(hostname)s.%(domainname)s' % ucr
+    sender_ip = get_ext_ip()
+
     for (mailfrom, rcpt, header) in test_cases:
         print_header(header)
-        if create_bad_mailheader(mailfrom, rcpt) != 1:
-            utils.fail('*** Open relay found ***')
+        create_bad_mailheader(fqdn, sender_ip, mailfrom, rcpt)
 
 
 if __name__ == '__main__':
-    main()
+    with utils.AutoCallCommand(exit_cmd=["/bin/systemctl", "restart", "postfix.service"]), utils.AutoCallCommand(exit_cmd=["/usr/sbin/ucr", "commit", "/etc/postfix/main.cf"]), ucr_test.UCSTestConfigRegistry() as ucr:
+        # disable postscreen to check postfix rules directly otherwise
+        # connection might get dropped directly on first misbehaviour by postscreen.
+        print('Disabling postscreen during tests...')
+        handler_set(['mail/postfix/postscreen/enabled=no'])
+        subprocess.call(["/usr/sbin/ucr", "commit", "/etc/postfix/main.cf"])
+        subprocess.call(["/bin/systemctl", "restart", "postfix.service"], stderr=open('/dev/null', 'w'))
+        print('postscreen disabled. Starting tests...')
+        main(ucr)
