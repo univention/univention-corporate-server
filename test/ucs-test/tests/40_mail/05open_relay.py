@@ -98,7 +98,7 @@ def create_bad_mailheader(mailfrom, rcptto):
         return 1
 
 
-def main():
+def main(ucr):
     header0 = "The classic open-relay test:"
     header1 = "The classic open-relay test with the \"\" (Sendmail 8.8 and others MTAs, much used by the spammers):"
     header2 = "The non-RFC821 compliant test (MS Exchange and SLmail betas):"
@@ -150,4 +150,14 @@ def main():
 
 
 if __name__ == '__main__':
-    main()
+    with utils.AutoCallCommand(exit_cmd=["/bin/systemctl", "restart", "postfix.service"]):
+        with utils.AutoCallCommand(exit_cmd=["/usr/sbin/ucr", "commit", "/etc/postfix/main.cf"]):
+            with ucr_test.UCSTestConfigRegistry() as ucr:
+                # disable postscreen to check postfix rules directly otherwise
+                # connection might get dropped directly on first misbehaviour by postscreen.
+                print('Disabling postscreen during tests...')
+                handler_set(['mail/postfix/postscreen/enabled=no'])
+                subprocess.call(["/usr/sbin/ucr", "commit", "/etc/postfix/main.cf"])
+                subprocess.call(["/bin/systemctl", "restart", "postfix.service"], stderr=open('/dev/null', 'w'))
+                print('postscreen disabled. Starting tests...')
+                main(ucr)
