@@ -89,7 +89,7 @@ def create_bad_mailheader(mailfrom, rcptto):
     send_and_receive(s, 'DATA')
     send_and_receive(s, 'SPAMBODY')
     retval = send_and_receive(s, '.')
-    send_and_receive(s, 'QUIT')
+    send_message(s, 'QUIT')
     s.close()
 
     if retval == 250:
