@@ -1,0 +1,14 @@
+product: ucs
+release: "5.0"
+version: [3]
+scope: ucs_5.0-0-errata5.0-3
+src: apache2
+fix: 2.4.38-3+deb10u10A~5.0.3.202304251027
+desc: |
+ This update addresses the following issues:
+ * HTTP request splitting with mod_rewrite and mod_proxy (CVE-2023-25690)
+ * mod_proxy_uwsgi HTTP response splitting (CVE-2023-27522)
+bug: [56013]
+cve:
+- CVE-2023-25690
+- CVE-2023-27522
