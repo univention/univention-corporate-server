@@ -1483,6 +1483,10 @@ basic_setup_ucs_joined () {
 			fi
 		fi
 	fi
+	if [ "$server_role" = "domaincontroller_master" ] || [ "$server_role" = "domaincontroller_backup" ]; then
+		# Flush old ip's from bind
+		/usr/sbin/rndc retransfer "$(hostname -d)".
+	fi
 
 	return $rv
 }
