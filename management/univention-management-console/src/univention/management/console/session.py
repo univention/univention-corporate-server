@@ -273,18 +273,26 @@ class IACLs(object):
         self.__permitted_commands = None
 
     def _reload_acls_and_permitted_commands(self):
-        if not self.session.authenticated:
-            # We need to set empty ACL's for unauthenticated requests
-            self.__acls = ACLs()
-        else:
+        self.__acls = self._get_acls()
+        if isinstance(self.acls, LDAP_ACLs):
             lo, po = get_machine_connection()
             try:
-                self.__acls = LDAP_ACLs(lo, self.session.user.username, ucr['ldap/base'])
+                self.acls.reload(lo)
             except (ldap.LDAPError, udm_errors.ldapError):
                 reset_ldap_connection_cache(lo)
                 raise
+        else:
+            self.acls.reload()
         self.__permitted_commands = None
         self.get_permitted_commands(moduleManager)
+
+    def _get_acls(self):
+        if not self.session.authenticated:
+            # We need to set empty ACL's for unauthenticated requests
+            return ACLs()
+        else:
+            return LDAP_ACLs(self.session.user.username, ucr['ldap/base'])
+            lo, po = get_machine_connection()
 
     def is_command_allowed(self, request, command):
         kwargs = {}
