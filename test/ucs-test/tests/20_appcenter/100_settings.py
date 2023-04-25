@@ -216,6 +216,52 @@ Scope = inside, outside
         assert ucr_get(setting.name) == 'My new value'
 
 
+def test_string_custom_setting_docker(installed_apache_docker_app):
+    content = '''[test/setting]
+Type = String
+Description = My Description
+InitialValue = Default: @%@ldap/base@%@
+Scope = inside, outside
+'''
+    content_custom = '''[test2/setting]
+Type = String
+Description = My Description
+InitialValue = Default: @%@ldap/base@%@
+Scope = inside, outside
+'''
+
+    try:
+        custom_settings_file = "/var/lib/univention-appcenter/apps/{}/custom.settings".format("apache")
+        with open(custom_settings_file, "w") as f:
+            f.write(content_custom)
+        app, settings = fresh_settings(content, installed_apache_docker_app, 2)
+        setting = settings[0]
+        custom_setting = settings[1]
+        assert repr(setting) == "StringSetting(name='test/setting')"
+        assert setting.is_inside(app) is True
+        assert setting.is_outside(app) is True
+        assert setting.get_initial_value(app) == 'Default: %s' % ucr_get('ldap/base')
+        assert setting.get_value(app) is None
+        with Configuring(app, revert='ucr') as config:
+            config.set({setting.name: 'My value'})
+            config.set({custom_setting.name: 'My value2'})
+            assert setting.get_value(app) == 'My value'
+            assert custom_setting.get_value(app) == 'My value2'
+            assert ucr_get(setting.name) == 'My value'
+            assert ucr_get(custom_setting.name) == 'My value2'
+            assert docker_shell(app, 'grep "test/setting: " /etc/univention/base.conf') == 'test/setting: My value\n'
+            assert docker_shell(app, 'grep "test2/setting: " /etc/univention/base.conf') == 'test2/setting: My value2\n'
+            stop = get_action('stop')
+            stop.call(app=app)
+            config.set({setting.name: 'My new value', custom_setting.name: 'My new value2'})
+            start = get_action('start')
+            start.call(app=app)
+            assert ucr_get(setting.name) == 'My new value'
+            assert ucr_get(custom_setting.name) == 'My new value2'
+    finally:
+        os.remove(custom_settings_file)
+
+
 def test_int_setting(installed_component_app):
     content = '''[test/setting2]
 Type = Int

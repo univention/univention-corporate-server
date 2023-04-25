@@ -1,3 +1,9 @@
+ucs-test (10.0.10-55) unstable; urgency=medium
+
+  * Bug #55765: added new test case for customs settings for apps.
+
+ -- Ivan Barbecho Delgado <delgado.extern@univention.de>  Mon, 24 Apr 2023 09:27:32 +0200
+
 ucs-test (10.0.10-54) unstable; urgency=medium
 
   * Bug #55941: fix printer upload tests

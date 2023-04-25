@@ -1,3 +1,9 @@
+univention-appcenter (9.0.7-5) unstable; urgency=medium
+
+  * Bug #55765: add custom settings for apps
+
+ -- Christian Castens <castens@univention.de>  Mon, 24 Apr 2023 09:27:32 +0200
+
 univention-appcenter (9.0.7-4) unstable; urgency=medium
 
   * Bug #55664: add missing translations.
