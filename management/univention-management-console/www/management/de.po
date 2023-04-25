@@ -18,6 +18,8 @@ msgid ""
 "your email address. Upload the license file from the email to activate your "
 "UCS instance.</p>"
 msgstr ""
+"<p><b>Sie haben eine E-Mail erhalten!</b></p><p>Eine Lizenzdatei wurde an "
+"Ihre E-Mail-Adresse gesendet. Laden Sie die Lizenzdatei aus der E-Mail hoch, um Ihre UCS-Instanz zu aktivieren."
 
 #: www/management/widgets/HelpPage.js:44
 msgid ""
@@ -25,6 +27,10 @@ msgid ""
 "in the UCS manual. The manual as well as further important information are "
 "available via the following links:</p>"
 msgstr ""
+"<p>Detaillierte Informationen zur Verwendung der Univention Management Console finden Sie "
+"im UCS-Handbuch. Das Handbuch sowie weitere wichtige Informationen sind "
+"unter den folgenden Links verfügbar:</p>"
+
 
 #: www/management/widgets/ActivationPage.js:65
 msgid ""
@@ -33,12 +39,15 @@ msgid ""
 "univention.de/manual-%(version)s.html#central:license\" "
 "target=\"_blank\">UCS manual</a>.</p>"
 msgstr ""
+"<p>Details zur Aktivierung einer UCS-Lizenz finden Sie im <a href=\"https://docs.software-univention.de/manual-%(version)s.html#central:license\" target=\"_blank\">UCS-Handbuch</a>.</p>"
 
 #: www/management/widgets/ActivationPage.js:61
 msgid ""
 "<p>Leave the field empty to perform the activation at a later point in time "
 "via the user menu in top right corner.</p>"
 msgstr ""
+"<p>Lassen Sie das Feld leer, um die Aktivierung zu einem späteren Zeitpunkt "
+"über das Benutzermenü in der oberen rechten Ecke durchzuführen.</p>"
 
 #: www/management/widgets/FeedbackPage.js:47
 msgid ""
@@ -59,6 +68,9 @@ msgid ""
 "use UMC, all applications in the Univention App Center are now available for"
 " installation on this system.</p>"
 msgstr ""
+"<p>Die Lizenz wurde erfolgreich aktualisiert.</p><p>Sie können nun weiterhin "
+"UMC verwenden, alle Anwendungen im Univention App Center sind nun zur "
+"Installation auf diesem System verfügbar.</p>"
 
 #: www/management/widgets/ActivationPage.js:47
 msgid ""
@@ -66,6 +78,9 @@ msgid ""
 "system to use the App Center. In the next step you can upload the license "
 "file that has been sent to your email address.</p>"
 msgstr ""
+"<p>Sie können nun eine gültige E-Mail-Adresse eingeben, um das UCS-"
+"System für die Nutzung des App Centers zu aktivieren. Im nächsten Schritt "
+"können Sie die Lizenz Datei hochladen, die an Ihre E-Mail-Adresse gesendet wurde.</p>"
 
 #: www/management/widgets/HelpPage.js:48
 msgid ""
@@ -76,19 +91,25 @@ msgid ""
 "href=\"https://www.univention.com/products/support/community-support/\" "
 "target=\"_blank\">Community and support</a></li></ul>"
 msgstr ""
+"<ul><li><a href=\"https://docs.software-univention.de/\" "
+"target=\"_blank\">Online-Dokumentation</a></li><li><a "
+"href=\"https://wiki.univention.de/index.php?title=Hauptseite\" "
+"target=\"_blank\">Univention Wiki</a></li><li><a "
+"href=\"https://www.univention.com/products/support/community-support/\" "
+"target=\"_blank\">Community und Support</a></li></ul>"
 
 #: www/management/main.js:781
 msgid "About UMC"
-msgstr ""
+msgstr "Über UMC"
 
 #: www/management/widgets/ActivationPage.js:40
 #: www/management/widgets/ActivationDialog.js:56
 msgid "Activation of Univention Corporate Server"
-msgstr ""
+msgstr "Aktivierung vom Univention Corporate Server"
 
 #: www/management/main.js:1436
 msgid "Add to favorites"
-msgstr ""
+msgstr "Zu Favoriten hinzufügen"
 
 #: www/management/main.js:807
 msgid "Close"
@@ -97,15 +118,15 @@ msgstr "Schließen"
 #: www/management/main.js:1213
 #, javascript-format
 msgid "Could not load module \"%s\"."
-msgstr ""
+msgstr "Konnte das Modul \"%s\" nicht laden."
 
 #: www/management/widgets/AboutPage.js:59
 msgid "Date of expiry of the SSL certificate for this system"
-msgstr ""
+msgstr "Ablaufdatum des SSL-Zertifikats für dieses System."
 
 #: www/management/widgets/AboutPage.js:56
 msgid "Date of expiry of the SSL root certificate"
-msgstr ""
+msgstr "Ablaufdatum des SSL-Root-Zertifikats."
 
 #: www/management/main.js:774
 msgid "Documentation and Support"
@@ -113,48 +134,49 @@ msgstr "Dokumentation und Support"
 
 #: www/management/widgets/ActivationPage.js:51
 msgid "E-mail address"
-msgstr ""
+msgstr "E-Mail-Adresse"
 
 #: www/management/widgets/FeedbackPage.js:54
 msgid "Enable one-time statistic on hardware configuration."
 msgstr ""
+"Aktiviere die einmalige Übermittlung der Hardware-Konfiguration."
 
 #: www/management/widgets/FeedbackPage.js:40
 msgid "Feedback via usage statistics"
-msgstr ""
+msgstr "Rückmeldung über Benutzerstatistiken."
 
 #: www/management/widgets/HelpPage.js:37
 msgid "Further Information"
-msgstr ""
+msgstr "Weitere Informationen."
 
 #: www/management/widgets/LicenseImportPage.js:57
 #: www/management/widgets/ActivationDialog.js:139
 msgid "Importing license data..."
-msgstr ""
+msgstr "Importiere Lizenzdaten..."
 
 #: www/management/widgets/LicenseImportPage.js:41
 msgid "License import"
-msgstr ""
+msgstr "Lizenz-Import"
 
 #: www/management/widgets/ActivationPage.js:53
 msgid "No valid e-mail address."
-msgstr ""
+msgstr "Keine gültige E-Mail-Adresse."
 
 #: www/management/main.js:1426
 msgid "Open module"
-msgstr ""
+msgstr "Modul öffnen"
 
 #: www/management/main.js:1436
 msgid "Remove from favorites"
-msgstr ""
+msgstr "Aus den Favoriten entfernen"
 
 #: www/management/main.js:432
 msgid "SSL host certificate"
-msgstr ""
+msgstr "SSL-Host-Zertifikat"
 
 #: www/management/main.js:429
 msgid "SSL root certificate"
-msgstr ""
+msgstr "SSL-Root-Zertifikat"
 
 #: www/management/main.js:713
 msgid "Search"
@@ -163,19 +185,19 @@ msgstr "Suchen"
 #: www/management/main.js:1572
 #, javascript-format
 msgid "Search query ›%s‹"
-msgstr ""
+msgstr "Suchfilter ›%s‹"
 
 #: www/management/widgets/ActivationDialog.js:133
 msgid "Send license"
-msgstr ""
+msgstr "Sende Lizenz"
 
 #: www/management/widgets/ActivationDialog.js:101
 msgid "Sending activation email..."
-msgstr ""
+msgstr "Sende Aktivierungsmail..."
 
 #: www/management/widgets/AboutPage.js:47
 msgid "Server"
-msgstr ""
+msgstr "Server"
 
 #: www/management/widgets/ActivationDialog.js:150
 msgid "Server error message:"
@@ -185,50 +207,55 @@ msgstr "Fehlernachricht des Servers:"
 msgid ""
 "The %(certificate)s will expire in %(days)d days and should be renewed!"
 msgstr ""
+"Das %(certificate)s läuft in %(days)d Tagen ab und sollte erneuert werden!"
 
 #: www/management/widgets/ActivationDialog.js:188
 msgid ""
 "The activation of UCS failed. Please re-try to perform the activation "
 "again via the user menu in the top right."
-msgstr ""
+msgstr "Die Aktivierung von UCS schlug fehl. Bitte versuchen Sie, die "
+"Aktivierung erneut über das Nutzermenü in der rechten oberen Ecke "
+"durchzuführen."
 
 #: www/management/widgets/ActivationDialog.js:148
 msgid ""
 "The import of the license failed. Check the integrity of the original file "
 "given to you."
-msgstr ""
+msgstr "Der Import der Lizenzdatei schlug fehl. Bitte prüfen Sie die Integrität "
+"der ausgestellten Datei."
 
 #: www/management/main.js:1277
 #, javascript-format
 msgid "There is no module available for the authenticated user %s."
-msgstr ""
+msgstr "Für den Benutzer %s steht kein UMC-Modul zur Verfügung."
 
 #: www/management/widgets/AboutPage.js:50
 msgid "UCS Version"
-msgstr ""
+msgstr "UCS-Version"
 
 #: www/management/widgets/AboutPage.js:53
 msgid "UMC Version"
-msgstr ""
+msgstr "UMC-Version"
 
 #: www/management/widgets/AboutPage.js:44
 msgid "Univention Management Console"
-msgstr ""
+msgstr "Univention Management Console"
 
 #: www/management/widgets/LicenseImportPage.js:62
 msgid "Updating session data..."
-msgstr ""
+msgstr "Aktualisiere Sitzungsdaten..."
 
 #: www/management/widgets/LicenseImportPage.js:52
 msgid "Upload license file..."
-msgstr ""
+msgstr "Lade Lizenzdatei hoch..."
 
 #: www/management/main.js:794
 msgid "Usage statistics"
-msgstr ""
+msgstr "Nutzungsstatistiken"
 
 #: www/management/widgets/LicenseImportPage.js:78
 msgid ""
 "You may as well import the license file at a later point in time via the "
 "user menu in the top right."
-msgstr ""
+msgstr "Sie können die Lizenzdatei auch zu einem späteren Zeitpunkt über "
+"das Nutzermenü in der rechten oberen Ecke importieren."
