@@ -45,9 +45,6 @@ from argparse import ArgumentParser, FileType, Namespace  # noqa: F401
 from datetime import datetime
 from getpass import getpass
 
-import six
-from six.moves import input
-
 from univention.lib.umc import Client, ConnectionError, HTTPError
 
 
@@ -98,7 +95,7 @@ class CLIClient(object):
                 key, value = opt.split('=', 1)
                 if ':' in key:
                     try:
-                        value = {'bool': bool, 'int': int, 'str': str, 'unicode': six.text_type}[key.split(':', 1)[0]](value)
+                        value = {'bool': bool, 'int': int, 'str': str, 'unicode': str}[key.split(':', 1)[0]](value)
                         key = key.split(':', 1)[1]
                     except KeyError:
                         pass
@@ -125,12 +122,12 @@ class CLIClient(object):
 
         self.print_timing()
 
-        print('Response: %s' % arguments.command)
+        print('Response: %s' % arguments.command.upper())
         print('  ---')
         if arguments.path:
             print('  ARGUMENTS: %s' % (arguments.path,))
         mimetype = response.get_header('Content-Type')
-        print('  MIMETYPE   : %s' % (mimetype,))
+        print('  MIMETYPE : %s' % (mimetype,))
         if mimetype.startswith('application/json'):
             print('  STATUS   : %d' % response.status)
             if options:
@@ -157,11 +154,11 @@ class CLIClient(object):
         return exit_code
 
     def print_timing(self):  # type: () -> None
-        if not self.arguments.timing:
+        if not self.arguments.timing or self.arguments.quiet:
             return
         finished = datetime.now()
         diff = finished - self.__started
-        print(' Request send at', self.__started)
+        print(' Request sent at', self.__started)
         print(' Response received at', finished)
         print(' Elapsed time', diff)
 
@@ -174,13 +171,13 @@ def parse_args(argv=sys.argv):  # type: (Sequence[str]) -> Namespace
         help='if given than debugging is activated and set to the specified level [default: %(default)s]')
     group.add_argument(
         '-q', '--quiet', action='store_true',
-        help='if given no output is generated')
+        help='Deprecated')
     group.add_argument(
         '-r', '--pretty-print', action='store_true', dest='prettyprint',
         help='if given the output will be printed out using pretty print')
     group.add_argument(
         '-t', '--timing', action='store_true',
-        help='if given the amount of time required for the UMCP request is measured. -q will not suppress the output')
+        help='if given the amount of time required for the HTTP request is measured. -q will not suppress the output')
     parser.add_argument_group(group)
 
     group = parser.add_argument_group('Connection')
