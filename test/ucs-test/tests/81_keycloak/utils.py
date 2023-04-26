@@ -143,4 +143,4 @@ def keycloak_login(
 
 
 def run_command(cmd: list) -> str:
-    return subprocess.run(cmd, stdout=subprocess.PIPE).stdout.decode('utf-8')
+    return subprocess.run(cmd, stdout=subprocess.PIPE, check=True).stdout.decode('utf-8')

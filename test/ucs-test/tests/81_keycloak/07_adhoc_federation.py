@@ -7,7 +7,6 @@
 import base64
 import json
 import os
-import subprocess
 import uuid
 from types import SimpleNamespace
 from typing import Optional
@@ -16,7 +15,7 @@ import pytest
 from keycloak import KeycloakAdmin
 from keycloak.exceptions import KeycloakError, KeycloakGetError
 from selenium.webdriver.chrome.webdriver import WebDriver
-from utils import get_portal_tile, keycloak_login, wait_for_id
+from utils import get_portal_tile, keycloak_login, run_command, wait_for_id
 
 from univention.config_registry.backend import ConfigRegistry
 from univention.udm import UDM
@@ -197,6 +196,7 @@ def get_user_payload(uid: str) -> dict:
 
 
 def get_idp_payload(keycloak_fqdn: str, certificate: str) -> dict:
+    keycloak_fqdn = keycloak_fqdn.rstrip("/")
     return {
         "alias": "saml",
         "providerId": "saml",
@@ -231,7 +231,6 @@ def get_idp_payload(keycloak_fqdn: str, certificate: str) -> dict:
 
 
 def _create_idp(keycloak_admin_connection: KeycloakAdmin, ucr: ConfigRegistry, keycloak_fqdn: str, realm: str) -> None:
-    keycloak_admin_connection.realm_name = realm
     # auth flow
     payload_authflow = {"newName": "Univention-Authenticator ad-hoc federation flow"}
     try:
@@ -275,7 +274,7 @@ def _create_idp(keycloak_admin_connection: KeycloakAdmin, ucr: ConfigRegistry, k
     }
     keycloak_admin_connection.raw_post("admin/realms/{}/authentication/executions/{}/config".format(realm, ua_execution["id"]), json.dumps(config_ua))
     # create idp
-    subprocess.call(["univention-keycloak", "saml/idp/cert", "get", "--output", "/root/sign.cert"])
+    run_command(["univention-keycloak", "saml/idp/cert", "get", "--output", "/root/sign.cert"])
     with open("/root/sign.cert") as fd:
         certificate = fd.read()
     payload_idp = get_idp_payload(keycloak_fqdn, certificate)
@@ -399,7 +398,6 @@ def _test_federated_user(keycloak_admin_connection: KeycloakAdmin, ucr: ConfigRe
     assert udm_user.props.lastname == 'Example'
     assert udm_user.props.firstname == 'Test'
     assert udm_user.props.description == 'Shadow copy of user'
-    keycloak_admin_connection.realm_name = "ucs"
     kc_user_id = keycloak_admin_connection.get_user_id(username="external-saml-test_user1")
     kc_user = keycloak_admin_connection.get_user(user_id=kc_user_id)
     assert kc_user["username"] == "external-saml-test_user1"
@@ -421,19 +419,21 @@ def test_adhoc_federation(keycloak_admin_connection: KeycloakAdmin, ucr: ConfigR
         default_locale = default_locale_ucr[:default_locale_ucr.index("_")]
         realm_payload = get_realm_payload(realm, locales_format, default_locale, keycloak_config.url)
         keycloak_admin_connection.create_realm(payload=realm_payload, skip_exists=True)
-        keycloak_admin_connection.realm_name = realm
-        # create client
+        # create client in dummy realm
+        keycloak_admin_connection.realm_name = "dummy"
         client_id_location = f"/realms/{realm}"
-        valid_redirect_urls = [keycloak_config.url + "/realms/ucs/broker/saml/endpoint"]
-        client_id = keycloak_config.url + client_id_location
+        valid_redirect_urls = [keycloak_config.url.rstrip("/") + "/realms/ucs/broker/saml/endpoint"]
+        client_id = keycloak_config.url.rstrip("/") + client_id_location
         client_payload = get_client_payload(client_id, valid_redirect_urls)
         keycloak_admin_connection.create_client(payload=client_payload, skip_exists=True)
         # create dummy users
         keycloak_admin_connection.create_user(get_user_payload("test_user1"))
         keycloak_admin_connection.create_user(get_user_payload("test_user2"))
-        # create IdP federation
+        # create IdP federation in ucs realm
+        keycloak_admin_connection.realm_name = "ucs"
         _create_idp(keycloak_admin_connection, ucr, keycloak_config.url, "ucs")
         # do some tests
+        keycloak_admin_connection.realm_name = "ucs"
         _test_sso_login(selenium, portal_config, keycloak_config)
         _test_federated_user(keycloak_admin_connection, ucr)
     finally:
@@ -444,8 +444,9 @@ def test_adhoc_federation(keycloak_admin_connection: KeycloakAdmin, ucr: ConfigR
         if kc_user_id:
             keycloak_admin_connection.delete_user(kc_user_id)
         keycloak_admin_connection.delete_idp("saml")
-        keycloak_admin_connection.delete_realm(realm_name=realm)
+        keycloak_admin_connection.delete_realm(realm_name="dummy")
         # function not present in our version, workaround
+        keycloak_admin_connection.realm_name = "ucs"
         flow_id = [
             x for x in keycloak_admin_connection.get_authentication_flows()
             if x["alias"] == "Univention-Authenticator ad-hoc federation flow"
