@@ -14,7 +14,7 @@ old_ami=ami-02ad9aab36aadf18a
 
 # defaults
 kvm_template='generic-unsafe'
-kvm_build_server='lattjo.knut.univention.de'
+kvm_build_server='tross.knut.univention.de'
 kvm_memory='2048M'
 kvm_cpus='1'
 kvm_label_suffix=''
@@ -59,53 +59,53 @@ usage () {
 	echo "  # start scenario with default options"
 	echo "  ./utils/start-test.sh scenarios/autotest-090-master-no-samba.cfg"
 	echo ""
-	echo "  # start scenario with docker mode on KVM server lattjo"
-	echo "  KVM_BUILD_SERVER=lattjo DOCKER=true ./utils/start-test.sh scenarios/autotest-090-master-no-samba.cfg"
+	echo "  # start scenario with docker mode on KVM server 'tross'"
+	echo "  KVM_BUILD_SERVER=tross DOCKER=true ./utils/start-test.sh scenarios/autotest-090-master-no-samba.cfg"
 	echo ""
 	echo "${GREEN}Environment variables:${NORM}"
-	echo "  Environment variables maked '<' are used to modify the default behavior."
+	echo "  Environment variables marked '<' are used to modify the default behavior."
 	echo "  Several additional variables marked '>' get derived and exported."
 	echo "  Other variables marked '|' get just passed through."
-	echo "  All can also be referenced in the .cfg file via [ENV:KVM_BUILD_SERVER]."
+	echo "  All can also be referenced in the .cfg file via [ENV:name]."
 	echo "  The key 'environment:' in each VM section gets exported to the VM (UCS)."
 	echo ""
-	echo "  ec2"
-	echo "    <>${BOLD}CURRENT_AMI${NORM}          - the ec2 ami for the current UCS release (default: $current_ami)"
-	echo "    <>${BOLD}OLD_AMI${NORM}              - the ec2 ami for the release before the current (default: $old_ami)"
+	echo "  EC2"
+	echo "    <>${BOLD}CURRENT_AMI${NORM}          - the EC2 AMI for the current UCS release (default: $current_ami)"
+	echo "    <>${BOLD}OLD_AMI${NORM}              - the EC2 AMI for the release before the current (default: $old_ami)"
 	echo ""
-	echo "  ucs"
-	echo "    <>${BOLD}TARGET_VERSION${NORM}       - the version to we expect to update during update tests (default: $release)"
+	echo "  UCS"
+	echo "    <>${BOLD}TARGET_VERSION${NORM}       - the version to expect to update during update tests (default: $release)"
 	echo "    <>${BOLD}UCS_VERSION${NORM}          - the current UCS version (default: $release)"
 	echo "     >${BOLD}UCS_MINORRELEASE${NORM}     - the current minor version (default: ${release%%-*})"
 	echo "    <>${BOLD}OLD_VERSION${NORM}          - the UCS version before the current UCS release (default: $old_release)"
 	echo ""
-	echo "  kvm"
-	echo "    <>${BOLD}KVM_TEMPLATE${NORM}         - the KVM ucs-kt-get template to use (default: $kvm_template)"
-	echo "    <>${BOLD}KVM_UCSVERSION${NORM}       - the KVM ucs-kt-get template version (default: $kvm_template_version)"
-	echo "    <>${BOLD}KVM_OLDUCSVERSION${NORM}    - the KVM ucs-kt-get template version for the UCS release before the current release (default: $old_release)"
+	echo "  KVM"
+	echo "    <>${BOLD}KVM_TEMPLATE${NORM}         - the KVM template to use (default: $kvm_template)"
+	echo "    <>${BOLD}KVM_UCSVERSION${NORM}       - the KVM template version (default: $kvm_template_version)"
+	echo "    <>${BOLD}KVM_OLDUCSVERSION${NORM}    - the KVM template version for the UCS release before the current release (default: $old_release)"
 	echo "    <>${BOLD}KVM_BUILD_SERVER${NORM}     - the KVM build server to use (default: $kvm_build_server)"
-	echo "    <>${BOLD}KVM_MEMORY${NORM}           - ram for the KVM instance (default: $kvm_memory)"
-	echo "    <>${BOLD}KVM_CPUS${NORM}             - cpu's for the KVM instance (default: $kvm_cpus)"
+	echo "    <>${BOLD}KVM_MEMORY${NORM}           - RAM for the KVM instance (default: $kvm_memory)"
+	echo "    <>${BOLD}KVM_CPUS${NORM}             - CPU's for the KVM instance (default: $kvm_cpus)"
 	echo "    <>${BOLD}KVM_LABEL_SUFFIX${NORM}     - additional label for instance name (default: $kvm_label_suffix)"
 	echo "    | ${BOLD}KVM_KEYPAIR_PASSPHRASE${NORM} - ssh key password, also used as a fallback password for the ssh connection"
-	echo "    | ${BOLD}SOURCE_ISO${NORM}           - an iso to mount (default: None)"
+	echo "    | ${BOLD}SOURCE_ISO${NORM}           - an ISO to mount (default: None)"
 	echo ""
 	echo "  ucs-*-create"
-	echo "    <>${BOLD}EXACT_MATCH${NORM}          - if true, add -e (only look for exact matches in template names) option to ucs-kvm-create (default: $exact_match)"
-	echo "    <>${BOLD}SHUTDOWN${NORM}             - if true, add -s (shutdown VMs after run) option to ucs-*-create (default: $shutdown)"
-	echo "    <>${BOLD}HALT${NORM}                 - if true, add -t (Terminate VMs after run) option to ucs-*-create (default: true for jenkins, otherwise false)"
-	echo "    <>${BOLD}TERMINATE_ON_SUCCESS${NORM} - if true, add --terminate-on-success (Terminate VMs after run only if setup has been successful)"
-	echo "                           to ucs-*-create (default: true for jenkins, otherwise false)"
-	echo "    <>${BOLD}REPLACE${NORM}              - if true, add --replace (if set, tries to terminate an instance similar to the to be created one)"
-	echo "                           to ucs-*-create (default: true for jenkins, otherwise false)"
+	echo "    <>${BOLD}EXACT_MATCH${NORM}          - if true, add -e (only look for exact matches in template names) (default: $exact_match)"
+	echo "    <>${BOLD}SHUTDOWN${NORM}             - if true, add -s (shutdown VMs after run) (default: $shutdown)"
+	echo "    <>${BOLD}HALT${NORM}                 - if true, add -t (Remove VMs after run) (default: true for jenkins, otherwise false)"
+	echo "    <>${BOLD}TERMINATE_ON_SUCCESS${NORM} - if true, add --terminate-on-success (Remove VMs after run only if setup has been successful)"
+	echo "                           (default: true for jenkins, otherwise false)"
+	echo "    <>${BOLD}REPLACE${NORM}              - if true, add --replace (if set, overwrite previous VMs with same name)"
+	echo "                           (default: true for jenkins, otherwise false)"
 	echo ""
 	echo "  update behaviour/dev or released version"
 	# TODO make the env var a captial letter, -> modify jenkins seed job(s) and cfg files
 	echo "    <>${BOLD}release_update${NORM}       - public, testing or none for release updates (default: public)"
 	# TODO see RELEASE_UPDATE
 	echo "    <>${BOLD}errata_update${NORM}        - public, testing or none for errata updates (default: testing)"
-	echo "    <>${BOLD}UCSSCHOOL_RELEASE${NORM}    - ucs school release (default: $ucsschool_release)"
-	echo "    <>${BOLD}COMPONENT_VERSION${NORM}    - update component? should indicate dev/released version of non ucs component (app, ...) (default: testing)"
+	echo "    <>${BOLD}UCSSCHOOL_RELEASE${NORM}    - UCS@school release (default: $ucsschool_release)"
+	echo "    <>${BOLD}COMPONENT_VERSION${NORM}    - update component? should indicate dev/released version of non UCS component (app, ...) (default: testing)"
 	echo "    | ${BOLD}SCOPE${NORM}                - defines a extra apt repo/scope that can be included during the test (default: None)"
 	echo "    | ${BOLD}TESTING${NORM}              - indicates unreleased UCS version (e.g. testing)"
 	echo ""
@@ -250,7 +250,7 @@ build_git () {
 [ -n "${UCSSCHOOL_BRANCH}${UCS_BRANCH}" ] &&
 	build_git
 
-# create the command and run in ec2 or kvm depending on cfg
+# create the command and run in EC2 or KVM depending on cfg
 KVM=false
 grep -q '^\w*kvm_template' "$CFG" && KVM=true # if kvm is configure in cfg, use kvm
 [ "$KVM_BUILD_SERVER" = "EC2" ] && KVM=false
@@ -260,7 +260,7 @@ then
 else
 	exe='ucs-ec2-create'
 	[ -f ~/.boto ] ||
-		die "Missing ~/.boto file for ec2 access!"
+		die "Missing ~/.boto file for EC2 access!"
 fi
 
 # start the test
