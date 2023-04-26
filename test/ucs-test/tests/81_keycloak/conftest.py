@@ -197,7 +197,8 @@ def portal_config(ucr: ConfigRegistry) -> SimpleNamespace:
 @pytest.fixture()
 def keycloak_config(ucr: ConfigRegistry) -> SimpleNamespace:
     server = ucr.get("keycloak/server/sso/fqdn", f"ucs-sso-ng.{ucr['domainname']}")
-    url = f"https://{server}"
+    path = ucr["keycloak/server/sso/path"] if ucr["keycloak/server/sso/path"] else ""
+    url = f"https://{server}{path}"
     config = {
         "url": url,
         "admin_url": f"{url}/admin",
