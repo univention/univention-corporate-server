@@ -1,1 +1,2 @@
+server_password_change.d/univention-admember	usr/lib/univention-server/server_password_change.d/
 univention-fix-ucr-dns	usr/share/univention-server/

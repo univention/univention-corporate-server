@@ -159,6 +159,10 @@ Recommends:
  univention-portal,
 Conflicts:
  univention-container-role-server-common (>= 12.0.0-10),
+Replaces:
+ univention-ad-connector (<< 14.0.13-6),
+Breaks:
+ univention-ad-connector (<< 14.0.13-6),
 Description: UCS system server role common dependencies and files
  This package contains common files used by all server system roles.
  .

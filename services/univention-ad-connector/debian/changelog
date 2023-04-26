@@ -1,3 +1,10 @@
+univention-ad-connector (14.0.13-6) unstable; urgency=medium
+
+  * Bug #55940: move server_password_change script univention-admember
+    to univention-role-server-common
+
+ -- Arvid <requate@univention.de>  Wed, 26 Apr 2023 18:23:05 +0200
+
 univention-ad-connector (14.0.13-5) unstable; urgency=medium
 
   * Bug #54587: replace bytestrings in AD-Connector reject table which

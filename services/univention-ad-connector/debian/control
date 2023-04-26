@@ -97,6 +97,7 @@ Depends:
  univention-directory-manager-tools (>= 13.0.21-21),
  univention-join (>= 10.0.0-12),
  univention-management-console-module-adconnector (= ${binary:Version}),
+ univention-role-server-common (>= 15.0.7-3),
  ${misc:Depends},
 Recommends:
  sqlite3,

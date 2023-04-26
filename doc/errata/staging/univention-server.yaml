@@ -3,12 +3,10 @@ release: "5.0"
 version: [3]
 scope: ucs_5.0-0-errata5.0-3
 src: univention-ad-connector
-fix: 14.0.13-5A~5.0.0.202304191548
+fix:
 desc: |
  This update addresses the following issues:
- * If the system was upgraded from UCS 4.4 and had rejected objects
-   the internal SQLite database was corrupted. The database will be repaired.
  * A server password change script for AD member mode has been moved
    from univention-ad-connector to univention-role-server-common to
    cover different use cases.
-bug: [54587, 55940]
+bug: [55940]

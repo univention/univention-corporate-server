@@ -1,3 +1,10 @@
+univention-server (15.0.7-3) unstable; urgency=medium
+
+  * Bug #55940: move server_password_change script univention-admember
+    to univention-role-server-common
+
+ -- Arvid <requate@univention.de>  Wed, 26 Apr 2023 18:23:05 +0200
+
 univention-server (15.0.7-2) unstable; urgency=medium
 
   * Bug #42330: Remove old maintainer script package update code
