@@ -10,5 +10,5 @@ desc: |
    `umc/saml/idp-server` during execution.
  * The script `univention-management-console-client` now accesses UMC via the
    HTTP interface instead of the deprecated UMCP.
- * Some missing german translations have been added.
+ * Some missing German translations have been added.
 bug: [55951, 55913, 56010]
