@@ -35,9 +35,32 @@ set -e
 
 install_upgrade_keycloak () {
 	echo "univention" > /tmp/pwdfile
-	local app
-	if [ -n "$KEYCLOAK_IMAGE" ]; then
-		python3 /root/appcenter-change-compose-image.py -a keycloak -i "$KEYCLOAK_IMAGE"
+	local app image location
+	local project=600
+	local repo_id=68
+	local gitlab="git.knut.univention.de"
+	# TODO add versio parameter to ./update-appcenter-test.sh and appcenter-change-compose-image.py
+	#      (currently only "latest" is supported)
+	if [ -n "$KEYCLOAK_BRANCH" ]; then
+		univention-app update
+		univention-install -y git slugify jq
+		git clone "https://$gitlab/univention/components/keycloak-app.git" /opt/keycloak-app
+		cd /opt/keycloak-app
+		git checkout "$KEYCLOAK_BRANCH"
+		# update local cache files for app
+		./update-appcenter-test.sh -l
+		# gitlab doesn't like underscore
+		image_name="${KEYCLOAK_BRANCH//_/}"
+		# change image in local cache
+		image="branch-$(slugify "$image_name")"
+		location="$(curl "https://$gitlab/api/v4/projects/$project/registry/repositories/$repo_id/tags/$image" | jq -r '.location')"
+		if [ -n "$location" ] && [ ! "$location" = "null" ]; then
+			python3 /root/appcenter-change-compose-image.py -a keycloak -i "$location"
+		fi
+		# never update appcenter cache in UMC
+		ucr set appcenter/umc/update/always=false
+		ucr set update/check/cron/enabled='no'
+		ucr set update/check/boot/enabled='no'
 	fi
 	if [ -n "$APPVERSION" ]; then
 		app="keycloak=$APPVERSION"
