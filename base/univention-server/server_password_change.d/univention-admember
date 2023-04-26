@@ -42,17 +42,18 @@ from univention.config_registry import ucr
 
 
 def run_postchange():
-    windows_domain = ucr.get('windows/domain', '').upper()
-    with open('/etc/machine.secret') as fd:
-        machine_password = fd.read().strip()
+
+    # If in ad/member mode change password in AD DC
+    # This could run on any server/role
     samba_role = ucr.get('samba/role')
-
-    if not windows_domain:
-        sys.stdout.write("ERROR: windows/domain is not set!\n")
-        return 1
-
-    # change password on ad in member mode
     if samba_role == 'memberserver' and univention.lib.admember.is_localhost_in_admember_mode(ucr=ucr):
+        windows_domain = ucr.get('windows/domain', '').upper()
+        if not windows_domain:
+            sys.stdout.write("ERROR: windows/domain is not set!\n")
+            return 1
+
+        with open('/etc/machine.secret') as fd:
+            machine_password = fd.read().strip()
         cmd = ['/usr/bin/samba-tool', 'user', 'password']
         cmd.append('--newpassword=%s' % (machine_password))
         cmd.append('-U=%s$' % ucr.get('hostname', '').upper())
@@ -64,15 +65,15 @@ def run_postchange():
 
 
 def run_prechange():
-    windows_domain = ucr.get('windows/domain', '').upper()
+
+    # check time difference against AD DC
     samba_role = ucr.get('samba/role')
-
-    if not windows_domain:
-        sys.stdout.write("ERROR: windows/domain is not set!\n")
-        return 1
-
-    # check time diff with ad server
     if samba_role == 'memberserver' and univention.lib.admember.is_localhost_in_admember_mode(ucr=ucr):
+        windows_domain = ucr.get('windows/domain', '').upper()
+        if not windows_domain:
+            sys.stdout.write("ERROR: windows/domain is not set!\n")
+            return 1
+
         TIME_FORMAT = "%a %b %d %H:%M:%S %Z %Y"
         tolerance = 180
         info = univention.lib.admember.lookup_adds_dc()
@@ -94,8 +95,9 @@ def run_prechange():
         delta_t = local_datetime - remote_datetime
 
         if abs(delta_t) > timedelta(0, tolerance):
-            sys.stderr.write('Time difference with AD server (%s) is too big. Can not change password via net ads.\n' % (info['DC IP'],))
+            sys.stderr.write('Time difference with AD server (%s) is too big. Cannot change password via samba-tool.\n' % (info['DC IP'],))
             return 1
+
     return 0
 
 
