@@ -1,3 +1,9 @@
+<!--
+SPDX-FileCopyrightText: 2021-2023 Univention GmbH
+
+SPDX-License-Identifier: AGPL-3.0-only
+-->
+
 # Univention production documentation for UCS
 
 This directory contains the product documentation related to UCS.
