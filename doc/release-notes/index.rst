@@ -1,3 +1,7 @@
+.. SPDX-FileCopyrightText: 2021-2023 Univention GmbH
+..
+.. SPDX-License-Identifier: AGPL-3.0-only
+
 ############################################################################################
 Release notes for the installation and update of Univention Corporate Server (UCS) |release|
 ############################################################################################
