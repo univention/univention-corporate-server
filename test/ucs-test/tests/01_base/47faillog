@@ -65,7 +65,7 @@ fi
 
 #activate
 ucr set auth/faillog=yes auth/faillog/lock_global=no
-pam_tally --user "$NAME" --reset
+faillock --user "$NAME" --reset
 
 info "Login via ssh"
 ssh_hostname="$(ssh_login "$tests_domainadmin_pwdfile")"
@@ -78,9 +78,10 @@ info "Login with wrong password via ssh"
 ssh_login "$fake_passwd"
 ssh_login "$fake_passwd"
 
+faillock --user "$NAME"
 # by default the user should be disabled
-failCount=$(pam_tally --user="$NAME" | awk '{print $NF}')
-if [ "$failCount" != "6" ]; then
+failCount=$(( $(faillock --user "$NAME" | wc -l) - 2 ))
+if [ "$failCount" != "5" ]; then
 	fail_test 110 "E: failCount is $failCount and should be 6"
 fi
 
@@ -90,7 +91,7 @@ if [ "$ssh_hostname" = "$hostname" ]; then
 fi
 
 info "Reset counter for $NAME"
-pam_tally --user="$NAME" --reset
+faillock --user "$NAME" --reset
 
 info "Normal ssh login"
 ssh_hostname="$(ssh_login "$tests_domainadmin_pwdfile")"
@@ -100,19 +101,20 @@ fi
 
 info "Login with wrong password"
 ssh_login "$fake_passwd"
-failCount=$(pam_tally --user="$NAME" | awk '{print $NF}')
+failCount=$(( $(faillock --user "$NAME" | wc -l) - 2 ))
 if [ "$failCount" != "3" ]; then
 	fail_test 110 "E: failCount is $failCount and should be 3"
 fi
 
-pam_tally --user="$NAME"
+faillock --user "$NAME"
+faillog --user "$NAME"
 # reset failCount
 info "Reset counter with a success login"
 ssh_hostname="$(ssh_login "$tests_domainadmin_pwdfile")"
 if [ "$ssh_hostname" != "$hostname" ]; then
 	fail_fast 110 "E: The login wasn't successful, but the user faillog is lower than the maximum"
 fi
-failCount=$(pam_tally --user="$NAME" | awk '{print $NF}')
+failCount=$(faillog --user "$NAME" | tail -1 | awk '{print $2}')
 if [ "$failCount" != "0" ]; then
 	fail_test 110 "E: failCount should be empty"
 	faillog -u "$NAME"
