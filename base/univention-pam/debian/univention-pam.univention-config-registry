@@ -303,3 +303,7 @@ Variables: nss/group/cachefile/check_member
 
 Type: file
 File: etc/passwdqc.conf
+
+Type: file
+File: etc/security/faillock.conf
+Variables: auth/faillog/.*

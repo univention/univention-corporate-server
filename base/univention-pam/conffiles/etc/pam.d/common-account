@@ -2,7 +2,7 @@
 
 @!@
 if configRegistry.is_true('auth/faillog', False):
-    print('account	required	pam_tally.so')
+    print('account	required	pam_faillock.so')
 @!@
 
 # local unix authentication; deny access if account is expired
