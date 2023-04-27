@@ -1,3 +1,7 @@
+.. SPDX-FileCopyrightText: 2021-2023 Univention GmbH
+..
+.. SPDX-License-Identifier: AGPL-3.0-only
+
 .. _computers-administration-of-local-system-configuration-with-univention-configuration-registry:
 
 Administration of local system configuration with Univention Configuration Registry

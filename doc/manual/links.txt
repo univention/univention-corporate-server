@@ -1,3 +1,7 @@
+.. SPDX-FileCopyrightText: 2021-2023 Univention GmbH
+..
+.. SPDX-License-Identifier: AGPL-3.0-only
+
 .. _docker-hub-univention: https://hub.docker.com/u/univention/
 .. _dovecot-mail-storage-shared-disk: https://wiki2.dovecot.org/MailLocation/SharedDisk
 .. _dovecot-nfs: https://doc.dovecot.org/configuration_manual/nfs/

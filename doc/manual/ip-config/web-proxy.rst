@@ -1,3 +1,7 @@
+.. SPDX-FileCopyrightText: 2021-2023 Univention GmbH
+..
+.. SPDX-License-Identifier: AGPL-3.0-only
+
 .. _ip-config-web-proxy-for-caching-and-policy-management-virus-scan:
 
 Web proxy for caching and policy management / virus scan
