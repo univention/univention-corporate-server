@@ -629,20 +629,34 @@ to attach them to the start of each source file to most effectively
 state the exclusion of warranty; and each file should have at least
 the "copyright" line and a pointer to where the full notice is found.
 
-    Univention Corporate Server
-    Copyright (C) <year> Univention GmbH
+    Copyright (C) <years> Univention GmbH
 
-    This program is free software: you can redistribute it and/or modify
-    it under the terms of the GNU Affero General Public License as published
-    by the Free Software Foundation, version 3 of the License.
+    SPDX-License-Identifier: AGPL-3.0-only
 
-    This program is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU Affero General Public License for more details.
 
-    You should have received a copy of the GNU Affero General Public License
-    along with this program.  If not, see <https://www.gnu.org/licenses/>.
+Univention Corporate Server
+https://www.univention.com/
+
+The source code is made available under the terms of the GNU Affero
+General Public License v3.0 only (AGPL-3.0-only) as published by the
+Free Software Foundation. You can redistribute it and/or modify it
+under the terms of the GNU Affero General Public License as published
+by the Free Software Foundation, version 3 of the License.
+
+Binary versions of this program provided by Univention to you as well
+as other copyrighted, protected or trademarked materials like Logos,
+graphics, fonts, specific documentations and configurations,
+cryptographic keys etc. are subject to a license agreement between you
+and Univention and not subject to the AGPL-3.0-only.
+
+In the case you use this program under the terms of the AGPL-3.0-only,
+the program is provided in the hope that it will be useful, but
+WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+Affero General Public License for more details.
+
+You should have received a copy of the GNU Affero General Public License
+along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 Also add information on how to contact you by electronic and paper mail.
 
