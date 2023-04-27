@@ -1418,7 +1418,7 @@ basic_setup_ucs_joined () {
 		# primary for yet unknown reasons, make sure to update the ip address
 		local current_ip
 		current_ip="$(udm dns/host_record list --filter name=master | sed -n 's/^\W*a: //p')"
-		if [ -n "$current_ip" ] && [ "$current_ip" != "$masterip=" ]; then
+		if [ -n "$current_ip" ] && [ "$current_ip" != "$masterip" ]; then
 			/usr/sbin/univention-register-network-address --verbose
 		fi
 	fi
