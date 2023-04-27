@@ -54,7 +54,7 @@ You find the source code at the following locations:
   * :uv:src:`base/univention-system-setup/umc/`
   * :uv:src:`base/univention-updater/umc/`
   * :uv:src:`management/univention-appcenter/umc/`
-  * :uv:src:`management/univention-join/umc/`
+  * :uv:src:`management/univention-management-console-module-join/umc/`
   * :uv:src:`management/univention-management-console-module-adtakeover/umc/`
   * :uv:src:`management/univention-management-console-module-diagnostic/umc/`
   * :uv:src:`management/univention-management-console-module-ipchange/umc/`
