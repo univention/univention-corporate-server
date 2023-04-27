@@ -1,3 +1,7 @@
+# SPDX-FileCopyrightText: 2021-2023 Univention GmbH
+#
+# SPDX-License-Identifier: AGPL-3.0-only
+
 from univention.management.console import Translation
 from univention.management.console.base import Base, UMC_Error
 from univention.management.console.config import ucr

@@ -1,3 +1,7 @@
+.. SPDX-FileCopyrightText: 2021-2023 Univention GmbH
+..
+.. SPDX-License-Identifier: AGPL-3.0-only
+
 .. _udm-python-migration:
 
 UCS 5.0: Python 3 migration of modules and extensions

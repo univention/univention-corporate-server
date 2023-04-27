@@ -1,3 +1,7 @@
+.. SPDX-FileCopyrightText: 2021-2023 Univention GmbH
+..
+.. SPDX-License-Identifier: AGPL-3.0-only
+
 .. _debian-dep5: https://dep-team.pages.debian.net/deps/dep5/
 .. _debian-policy-priority: https://www.debian.org/doc/debian-policy/ch-archive.html#s-priorities
 .. _debian-policy-subsection: https://www.debian.org/doc/debian-policy/ch-archive.html#s-subsections
