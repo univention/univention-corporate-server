@@ -1,3 +1,7 @@
+# SPDX-FileCopyrightText: 2021-2023 Univention GmbH
+#
+# SPDX-License-Identifier: AGPL-3.0-only
+
 # Configuration file for the Sphinx documentation builder.
 #
 # This file only contains a selection of the most common options. For a full
@@ -77,12 +81,10 @@ exclude_patterns = ['_build', 'Thumbs.db', '.DS_Store']
 pdf_doc_base = path.basename(path.dirname(__file__))
 
 html_theme = 'univention_sphinx_book_theme'
-html_context = {
-    "pdf_download_filename": f"{pdf_doc_base}.pdf",
-}
-
 html_theme_options = {
     "use_download_button": False,
+    "pdf_download_filename": f"{pdf_doc_base}.pdf",
+    "show_source_license": True,
 }
 
 # Add any paths that contain custom static files (such as style sheets) here,
