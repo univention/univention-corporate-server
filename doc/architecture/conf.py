@@ -1,3 +1,7 @@
+# SPDX-FileCopyrightText: 2021-2023 Univention GmbH
+#
+# SPDX-License-Identifier: AGPL-3.0-only
+
 # Configuration file for the Sphinx documentation builder.
 #
 # This file only contains a selection of the most common options. For a full
@@ -81,8 +85,9 @@ pdf_doc_base = "architecture"
 
 html_theme = 'univention_sphinx_book_theme'
 
-html_context = {
+html_theme_options = {
     "pdf_download_filename": f"{pdf_doc_base}.pdf",
+    "show_source_license": True,
 }
 
 # Add any paths that contain custom static files (such as style sheets) here,
@@ -102,7 +107,7 @@ suppress_warnings = ['git.too_shallow']
 if "spelling" in sys.argv:
     spelling_lang = "en_US"
     spelling_show_suggestions = True
-    spelling_word_list_filename = ["spelling-wordlist"]
+    spelling_word_list_filename = ["spelling_wordlist"]
 
 latex_engine = 'lualatex'
 latex_show_pagerefs = True

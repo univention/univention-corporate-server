@@ -1,3 +1,7 @@
+.. SPDX-FileCopyrightText: 2021-2023 Univention GmbH
+..
+.. SPDX-License-Identifier: AGPL-3.0-only
+
 .. _apache-httpd: https://httpd.apache.org/
 .. _archimate-3-1-spec: https://pubs.opengroup.org/architecture/archimate31-doc/
 .. _archimate-application-layer: https://pubs.opengroup.org/architecture/archimate31-doc/chap09.html
