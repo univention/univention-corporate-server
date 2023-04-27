@@ -1,3 +1,7 @@
+.. SPDX-FileCopyrightText: 2021-2023 Univention GmbH
+..
+.. SPDX-License-Identifier: AGPL-3.0-only
+
 .. _css-linear-gradient: https://www.w3schools.com/csSref/func_linear-gradient.asp
 .. _docker-compose-docs: https://docs.docker.com/compose/overview/
 .. _docker-docs-volumes: https://docs.docker.com/storage/volumes/
