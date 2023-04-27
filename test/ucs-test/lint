@@ -24,7 +24,7 @@ issue () {
 	fi
 }
 
-find . -type f -exec grep -P '^## (?!desc|bugs|otrs|versions|tags|roles|roles-not|join|components|packages|exposure|timeout)[a-z-]+:' {} + >"$tmp" || :
+find . -type f -exec grep -P '^## (?!desc|bugs|otrs|versions|tags|roles|roles-not|apps|apps-not|join|components|packages|exposure|timeout)[a-z-]+:' {} + >"$tmp" || :
 issue "Unknown ucs-test tag"
 
 find . -type f ! -name '*.py' ! -name '*.pyc' -exec grep '^source\>' {} + >"$tmp" || :

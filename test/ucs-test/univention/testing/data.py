@@ -20,6 +20,7 @@ from typing import IO, Any, Dict, Iterable, Iterator, List, Optional, Sequence, 
 import apt
 import yaml
 
+from univention.appcenter.app_cache import Apps
 from univention.config_registry import ConfigRegistry
 from univention.testing.codes import TestCodes
 from univention.testing.errors import TestError
@@ -69,6 +70,7 @@ class TestEnvironment:
         self._load_ucr()
         self._load_join()
         self._load_apt()
+        self._load_apps()
 
         if interactive:
             self.tags_required = None  # type: Optional[Set[str]]
@@ -78,6 +80,16 @@ class TestEnvironment:
             self.tags_prohibited = {'SKIP', 'WIP'}
 
         self.log = open(logfile or os.path.devnull, 'a')
+
+    def _load_apps(self):  # type: () -> None
+        """Load locally installed apps."""
+        logging.getLogger('univention.appcenter').setLevel(TestEnvironment.logger.getEffectiveLevel())
+        apps_cache = Apps()
+        # shitty, but we have no app cache in pbuilder and apps_cache can't handle that
+        try:
+            self.local_apps = [app.id for app in apps_cache.get_all_locally_installed_apps()]
+        except TypeError:
+            self.local_apps = []
 
     def _load_host(self):  # type: () -> None
         """Load host system information."""
@@ -125,6 +137,7 @@ class TestEnvironment:
         print('architecture: %s' % (self.architecture,), file=stream)
         print('version: %s' % (self.ucs_version,), file=stream)
         print('role: %s' % (self.role,), file=stream)
+        print('apps: %s' % (self.apps,), file=stream)
         print('joined: %s' % (self.joined,), file=stream)
         print('tags_required: %s' % (' '.join(self.tags_required or set()) or '-',), file=stream)
         print('tags_prohibited: %s' % (' '.join(self.tags_prohibited or set()) or '-',), file=stream)
@@ -296,6 +309,24 @@ class CheckTags(Check):
                 continue
             args.extend(['--ucs-test-tags-prohibited', tag])
         return args
+
+
+class CheckApps(Check):
+    """Check apps on server."""
+
+    def __init__(self, apps_required=(), apps_prohibited=()):  # type: (Iterable[str], Iterable[str]) -> None
+        super().__init__()
+        self.apps_required = checked_set(apps_required)
+        self.apps_prohibited = checked_set(apps_prohibited)
+
+    def check(self, environment):  # type: (TestEnvironment) -> Iterator[Verdict]
+        """Check environment for required / prohibited apps."""
+        for app in self.apps_required:
+            if app not in environment.local_apps:
+                yield Verdict(Verdict.ERROR, 'Required app missing: %s' % app, TestCodes.REASON_APP_MISMATCH)
+        for app in self.apps_prohibited:
+            if app in environment.local_apps:
+                yield Verdict(Verdict.ERROR, 'Prohibited app installed: %s' % app, TestCodes.REASON_APP_MISMATCH)
 
 
 class CheckRoles(Check):
@@ -525,6 +556,9 @@ class TestCase:
             self.roles = CheckRoles(
                 header.get('roles', []),
                 header.get('roles-not', []))
+            self.apps = CheckApps(
+                header.get('apps', []),
+                header.get('apps-not', []))
             self.join = CheckJoin(header.get('join', None))
             self.components = CheckComponents(header.get('components', {}))
             self.packages = CheckPackages(header.get('packages', []), header.get('packages-not', []))
@@ -553,6 +587,7 @@ class TestCase:
         conditions += list(self.versions.check(environment))
         conditions += list(self.tags.check(environment))
         conditions += list(self.roles.check(environment))
+        conditions += list(self.apps.check(environment))
         conditions += list(self.components.check(environment))
         conditions += list(self.packages.check(environment))
         conditions += list(self.exposure.check(environment))
@@ -564,6 +599,7 @@ class TestCase:
         args += self.versions.pytest_args(environment)
         args += self.tags.pytest_args(environment)
         args += self.roles.pytest_args(environment)
+        args += self.apps.pytest_args(environment)
         args += self.components.pytest_args(environment)
         args += self.packages.pytest_args(environment)
         args += self.exposure.pytest_args(environment)

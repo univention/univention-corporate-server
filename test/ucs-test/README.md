@@ -259,6 +259,20 @@ But in some cases tests need special software, which is not wanted on normal sys
 This mechanism allows the user to still install the full `ucs-test-*` section package without forcing him to install several other packages only relevant for corner case tests.
 By using this mechanism of `ucs-test`, tests still missing some dependent packages are skipped.
 
+### apps
+A list of apps that have to be installed on the system
+otherwise the test is not executed.
+```
+## apps: [keycloak,mynewapp]
+```
+
+### apps-not
+A list of apps that must not to be installed on the system
+otherwise the test is not executed.
+```
+## apps-not: [keycloak,mynewapp]
+```
+
 ### exposure
 A string consisting of one of the words `safe`, `careful` or `dangerous`.
 This is used to classify tests in different categories:

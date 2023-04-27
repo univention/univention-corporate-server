@@ -10,6 +10,7 @@ Build-Depends:
  python3-ldap,
  python3-psutil,
  python3-typing-extensions,
+ python3-univention-appcenter,
  python3-univention-directory-manager,
  python3-yaml,
  univention-config,

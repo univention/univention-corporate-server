@@ -1,3 +1,9 @@
+ucs-test (10.0.19-3) unstable; urgency=medium
+
+  * Bug #55747: added apps (apps-not) check
+
+ -- Felix Botner <botner@univention.de>  Mon, 18 Sep 2023 10:28:35 +0200
+
 ucs-test (10.0.19-2) unstable; urgency=medium
 
   * Bug #56434: added 51_samba4/68univention-samba-backup
