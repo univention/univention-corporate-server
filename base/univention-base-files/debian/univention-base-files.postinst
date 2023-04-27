@@ -86,7 +86,7 @@ getent group kvm >/dev/null || addgroup --system kvm
 
 #DEBHELPER#
 
-# to use pam_tally (account locking) via ssh the passwordauthentication
+# to use pam_faillock (account locking) via ssh the passwordauthentication
 # must be disabled otherwise the pam stack won't use for authentication
 #  https://forge.univention.org/bugzilla/show_bug.cgi?id=18750
 univention-config-registry set sshd/port?22 \

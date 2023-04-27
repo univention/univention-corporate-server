@@ -1,3 +1,9 @@
+univention-pam (14.0.6) unstable; urgency=medium
+
+  * Bug #56547: replace pam_tally with pam_faillock
+
+ -- Florian Best <best@univention.de>  Thu, 07 Mar 2024 23:53:53 +0100
+
 univention-pam (14.0.5) unstable; urgency=medium
 
   * Bug #56002: replace upstream removed libpam-cracklib with libpam-

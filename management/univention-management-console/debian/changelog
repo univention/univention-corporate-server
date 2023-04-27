@@ -1,3 +1,9 @@
+univention-management-console (13.0.8) unstable; urgency=medium
+
+  * Bug #56547: replace pam_tally with pam_faillock
+
+ -- Florian Best <best@univention.de>  Thu, 07 Mar 2024 23:53:54 +0100
+
 univention-management-console (13.0.7) unstable; urgency=medium
 
   * Bug #55994: drop Python 2 binary packages
