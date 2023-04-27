@@ -300,3 +300,7 @@ File: etc/cron.d/univention-pam
 Variables: nss/group/cachefile
 Variables: nss/group/cachefile/invalidate_interval
 Variables: nss/group/cachefile/check_member
+
+Type: file
+File: etc/security/faillock.conf
+Variables: auth/faillog/.*
