@@ -36,7 +36,7 @@ ssh_login () {
 }
 
 info "Lock reset"
-pam_tally --user "$NAME" --reset
+faillock --user "$NAME" --reset
 ssh_hostname="$(ssh_login "$tests_root_pwdfile")"
 if [ "$ssh_hostname" != "$hostname" ]
 then
@@ -44,7 +44,7 @@ then
 fi
 
 
-info "Lock all after tally"
+info "Lock all after faillock"
 ssh_login "$fake_passwd" # 3
 ssh_login "$fake_passwd" # 6
 ssh_hostname="$(ssh_login "$tests_root_pwdfile")"
@@ -55,7 +55,7 @@ fi
 
 
 info "Reset"
-pam_tally --user "$NAME" --reset
+faillock --user "$NAME" --reset
 ssh_hostname="$(ssh_login "$tests_root_pwdfile")"
 if [ "$ssh_hostname" != "$hostname" ]
 then
