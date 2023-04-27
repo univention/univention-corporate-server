@@ -1,3 +1,9 @@
+<!--
+SPDX-FileCopyrightText: 2021-2023 Univention GmbH
+
+SPDX-License-Identifier: AGPL-3.0-only
+-->
+
 # Redirects from legacy DocBook text to Sphinx builds
 
 The legacy DocBook text for the quickstart guide was published at
