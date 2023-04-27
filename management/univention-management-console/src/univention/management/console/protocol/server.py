@@ -336,7 +336,7 @@ class Server(signals.Provider):
 
         if self.__ssl and self.__realtcpsocket is not None:
             CORE.info('Setting up SSL configuration')
-            self.crypto_context = SSL.Context(SSL.TLSv1_METHOD)
+            self.crypto_context = SSL.Context(SSL.TLSv1_2_METHOD)
             self.crypto_context.set_cipher_list(ucr.get('umc/server/ssl/ciphers', 'DEFAULT'))
             self.crypto_context.set_options(SSL.OP_NO_SSLv2)
             self.crypto_context.set_options(SSL.OP_NO_SSLv3)

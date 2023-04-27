@@ -110,7 +110,7 @@ class Client(signals.Provider, Translation):
         self.__ssl = ssl
         self.__unix = unix
         if self.__ssl and not self.__unix:
-            self.__crypto_context = SSL.Context(SSL.TLSv1_METHOD)
+            self.__crypto_context = SSL.Context(SSL.TLSv1_2_METHOD)
             self.__crypto_context.set_cipher_list(ucr.get('umc/server/ssl/ciphers', 'DEFAULT'))
             self.__crypto_context.set_options(SSL.OP_NO_SSLv2)
             self.__crypto_context.set_options(SSL.OP_NO_SSLv3)
