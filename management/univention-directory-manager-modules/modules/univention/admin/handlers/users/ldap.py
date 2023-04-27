@@ -276,12 +276,12 @@ class object(univention.admin.handlers.simpleLdap, PKIIntegration):
     def _check_password_history(self, ml, pwhistoryPolicy):
         if not self.hasChanged('password'):
             return ml
-        if self['overridePWHistory'] == u'1':
-            return ml
 
         pwhistory = self.oldattr.get('pwhistory', [b''])[0].decode('ASCII')
 
         if univention.admin.password.password_already_used(self['password'], pwhistory):
+            if self['overridePWHistory'] == u'1':
+                return ml
             raise univention.admin.uexceptions.pwalreadyused()
 
         if pwhistoryPolicy.pwhistoryLength is not None:
