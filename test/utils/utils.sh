@@ -1413,6 +1413,16 @@ basic_setup_ucs_joined () {
 	ldap_base="$(ucr get ldap/base)"
 	domain="$(ucr get domainname)"
 
+	if [ "$server_role" = "domaincontroller_master" ]; then
+		# sometimes univention-network-common.service fails on the
+		# primary for yet unknown reasons, make sure to update the ip address
+		local current_ip
+		current_ip="$(udm dns/host_record list --filter name=master | sed -n 's/^\W*a: //p')"
+		if [ -n "$current_ip" ] && [ "$current_ip" != "$masterip=" ]; then
+			/usr/sbin/univention-register-network-address --verbose
+		fi
+	fi
+
 	# TODO
 	#  ... recreate ssh keys ...
 	# fix ip on non-master systems
