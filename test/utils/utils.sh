@@ -277,6 +277,7 @@ run_setup_join () {
 	    echo 'deb [trusted=yes] http://omar.knut.univention.de/build2/ ucs_5.2-0/all/' >>/etc/apt/sources.list
 	    echo 'deb [trusted=yes] http://omar.knut.univention.de/build2/ ucs_5.2-0/$(ARCH)/' >>/etc/apt/sources.list
 	    univention-upgrade --disable-app-updates --noninteractive --ignoreterm --ignoressh --updateto 5.2-0
+	    switch_to_test_app_center
 	fi
 	local rv=0
 	patch_setup_join # temp. remove me
