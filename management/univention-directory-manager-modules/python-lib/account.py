@@ -72,7 +72,7 @@ def lock(userdn, lock_timestamp):
     Lock a user account
 
     * used by ppolicy OpenLDAP overlay
-    * used by PAM tally
+    * used by PAM faillock
 
     >>> from univention.lib.account import lock  # doctest: +SKIP
     >>> lock('uid=user1,dc=example,dc=com', '20141006192950Z')  # doctest: +SKIP
