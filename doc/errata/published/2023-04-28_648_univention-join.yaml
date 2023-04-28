@@ -10,3 +10,6 @@ desc: |
    split from the source package `univention-join` into a separate one to
    prevent a circular build dependency.
 bug: [55870]
+erratum: 648
+announced: 2023-04-28
+support: core
