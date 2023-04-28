@@ -1220,21 +1220,31 @@ fix_certificates53013 () { # <ip>
 	local ip="${1:?}"
 	ucr set ssl/default/hashfunction=sha256 ssl/default/bits=2048
 
-	local hostname domainname ldap_base saml_idp_certificate_certificate saml_idp_certificate_privatekey ucs_server_sso_fqdn
-	eval "$(ucr shell hostname domainname ldap/base saml/idp/certificate/certificate saml/idp/certificate/privatekey ucs/server/sso/fqdn)"
+	local hostname domainname ldap_base saml_idp_certificate_certificate saml_idp_certificate_privatekey ucs_server_sso_fqdn server_role ldap_hostdn
+	eval "$(ucr shell hostname domainname ldap/base saml/idp/certificate/certificate saml/idp/certificate/privatekey ucs/server/sso/fqdn server/role ldap/hostdn)"
 	local fqhn="${hostname:?}.${domainname:?}"
 
-	# Rebew host certificate
+	# Renew host certificate
 	univention-certificate revoke -name "${fqhn}"
 	univention-certificate new -name "${fqhn}"
 
-	# Overwrite IP address from KVM template with urrent IP
+	systemctl try-restart slapd.service apache2.service univention-management-console-server.service || :
+
+	[ -f /var/univention-join/joined ] || return 0
+
+	# Overwrite IP address from KVM template with current IP
+	univention-register-network-address --verbose
+	udm "computers/${server_role}" modify --dn "${ldap_hostdn}" --set ip="${ip}"
 	udm dns/host_record modify --dn relativeDomainName="${ucs_server_sso_fqdn%%.*},zoneName=${ucs_server_sso_fqdn#*.},cn=dns,${ldap_base:?}" --set a="${ip}"
+	nscd -i hosts || :
 
 	# Renew SSO certificate
+	[ -n "${ucs_server_sso_fqdn:-}" ] || return 0
+
 	univention-certificate revoke -name "${ucs_server_sso_fqdn:?}"
 	rm -f "${saml_idp_certificate_certificate:?}" "${saml_idp_certificate_privatekey:?}"
 	univention-run-join-scripts --force --run-scripts 91univention-saml.inst 92univention-management-console-web-server
+
 	return 0
 
 	# Incomplete alternative: renew SSO certificate manually
