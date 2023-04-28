@@ -1225,7 +1225,8 @@ fix_certificates53013 () { # <ip>
 	local fqhn="${hostname:?}.${domainname:?}"
 
 	# Renew host certificate
-	univention-certificate revoke -name "${fqhn}"
+	univention-certificate update-expired || :
+	univention-certificate revoke -name "${fqhn}" || :
 	univention-certificate new -name "${fqhn}"
 
 	systemctl try-restart slapd.service apache2.service univention-management-console-server.service || :
@@ -1241,7 +1242,7 @@ fix_certificates53013 () { # <ip>
 	# Renew SSO certificate
 	[ -n "${ucs_server_sso_fqdn:-}" ] || return 0
 
-	univention-certificate revoke -name "${ucs_server_sso_fqdn:?}"
+	univention-certificate revoke -name "${ucs_server_sso_fqdn:?}" || :
 	rm -f "${saml_idp_certificate_certificate:?}" "${saml_idp_certificate_privatekey:?}"
 	univention-run-join-scripts --force --run-scripts 91univention-saml.inst 92univention-management-console-web-server
 
