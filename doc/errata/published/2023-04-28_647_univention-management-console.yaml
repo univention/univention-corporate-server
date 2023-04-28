@@ -12,3 +12,6 @@ desc: |
    HTTP interface instead of the deprecated UMCP.
  * Some missing German translations have been added.
 bug: [55951, 55913, 56010]
+erratum: 647
+announced: 2023-04-28
+support: core
