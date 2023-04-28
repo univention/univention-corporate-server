@@ -220,7 +220,7 @@ then
 	# in Jenkins do not terminate VMs if setup is broken,
 	# so we can investigate the situation and use replace
 	# to overwrite old VMs
-	export TERMINATE_ON_SUCCESS="${HALT:=true}"
+	export TERMINATE_ON_SUCCESS="${TERMINATE_ON_SUCCESS:=$HALT}"
 	export REPLACE="${REPLACE:=true}"
 else
 	export HALT="${HALT:=false}"
