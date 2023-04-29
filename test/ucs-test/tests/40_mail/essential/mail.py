@@ -284,31 +284,36 @@ def activate_spam_header_tag(tag):
 
 
 def restart_postfix():
-    cmd = ['/etc/init.d/postfix', 'restart']
+    cmd = ['systemctl', 'restart', 'postfix']
     try:
+        print(repr(cmd))
         subprocess.Popen(cmd, stderr=open('/dev/null', 'w')).communicate()
     except OSError as ex:
         print(ex, file=sys.stderr)
 
 
 def reload_postfix():
-    cmd = ['/etc/init.d/postfix', 'force-reload']
+    cmd = ['systemctl', 'reload', 'postfix']
     try:
+        print(repr(cmd))
         subprocess.Popen(cmd, stderr=open('/dev/null', 'w')).communicate()
     except OSError as ex:
         print(ex, file=sys.stderr)
+    time.sleep(1)
 
 
 def reload_amavis_postfix():
     for cmd in (
             ['newaliases'],
-            ['/etc/init.d/amavis', 'force-reload'],
-            ['/etc/init.d/postfix', 'force-reload'],
+            ['systemctl', 'reload', 'amavis'],
+            ['systemctl', 'reload', 'postfix'],
     ):
         try:
+            print(repr(cmd))
             subprocess.Popen(cmd, stderr=open('/dev/null', 'w')).communicate()
         except OSError as ex:
             print(ex, file=sys.stderr)
+    time.sleep(1)
 
 
 def get_spam_folder_name():
