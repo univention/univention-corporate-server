@@ -305,8 +305,8 @@ def reload_postfix():
 def reload_amavis_postfix():
     for cmd in (
             ['newaliases'],
-            ['systemctl', 'reload', 'amavis'],
-            ['systemctl', 'reload', 'postfix'],
+            ['/etc/init.d/amavis', 'force-reload'],
+            ['/etc/init.d/postfix', 'force-reload'],
     ):
         try:
             print(repr(cmd))
