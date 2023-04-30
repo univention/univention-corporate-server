@@ -524,14 +524,12 @@ Type=bool
 Categories=service-mail
 Default=yes
 
-[mail/dovecot/ssl/protocols]
-Description[de]=Zu verwendende SSL-Protokolle.
-Description[en]=SSL protocols to use.
-Type=list
-Separator=[ ]
-Elementtype=str
+[mail/dovecot/ssl/min_protocol]
+Description[de]=Die niedrigste SSL-Protokoll-Version, die Dovecot akzeptieren soll.
+Description[en]=The minimum SSL protocol version Dovecot accepts.
+Type=str
 Categories=service-mail
-Default=!SSLv2 !SSLv3
+Default=TLSv1.2
 
 [mail/dovecot/ssl/sni/.*]
 Description[de]=Konfiguration von SNI zur Verwendung verschiedener Zertifikate pro FQDN. Für jeden FQDN und Zertifikat sind zwei Variablen zu konfigurieren: mail/dovecot/ssl/sni/$fqdn/certificate=$pfad_zum_zertifikat und mail/dovecot/ssl/sni/$fqdn/key=$pfad_zum_zertifikatsschlüssel
