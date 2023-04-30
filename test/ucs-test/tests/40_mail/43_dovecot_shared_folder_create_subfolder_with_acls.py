@@ -8,6 +8,7 @@
 ##  - univention-directory-manager-tools
 
 import os
+import subprocess
 import sys
 import time
 
@@ -48,6 +49,11 @@ def main():
         send_mail(recipients=[user_addr1, user_addr2], msg=token, subject='Test')
         check_delivery(token, user_addr1, True)
         check_delivery(token, user_addr2, True)
+
+        # Bug #56648. Without tht doveadm auth cache flush the imap client can't
+        # find the mail. Should be removed when the behaviour in dovecot is
+        # correct again.
+        subprocess.call(['doveadm', 'auth', 'cache', 'flush'])
 
         print('*** OK: mails were received by users')
 
