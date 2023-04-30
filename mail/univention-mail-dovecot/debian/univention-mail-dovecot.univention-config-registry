@@ -83,7 +83,7 @@ Variables: mail/dovecot/ssl/certificate
 Variables: mail/dovecot/ssl/cipher_list
 Variables: mail/dovecot/ssl/key
 Variables: mail/dovecot/ssl/prefer_server_ciphers
-Variables: mail/dovecot/ssl/protocols
+Variables: mail/dovecot/ssl/min_protocol
 Variables: mail/dovecot/ssl/sni/.*
 Variables: hostname
 Variables: domainname
