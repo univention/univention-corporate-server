@@ -57,6 +57,12 @@ def main():
                 if found == len(userbase):
                     break
                 time.sleep(1)
+                if loopcnt and (loopcnt % 3 == 0):
+                    print('There are still mails missing - trying to flush dovecot auth caches:')
+                    subprocess.call(['doveadm', 'auth', 'cache', 'flush'])
+                if loopcnt and (loopcnt % 15 == 0):
+                    print('There are still mails missing - trying to force postfix to deliver mails:')
+                    subprocess.call(['/usr/sbin/postqueue', '-f'])
             if loopcnt == 0:
                 utils.fail('Could only deliver %d of %d mails to test users' % (found, len(userbase)))
 
