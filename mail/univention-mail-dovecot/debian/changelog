@@ -1,3 +1,9 @@
+univention-mail-dovecot (7.0.3) unstable; urgency=medium
+
+  * Bug #56544: replace option ssl_protocols with ssl_min_protocol
+
+ -- Soenke Schwardt-Krummrich <schwardt@univention.de>  Thu, 07 Mar 2024 23:54:01 +0100
+
 univention-mail-dovecot (7.0.2) unstable; urgency=medium
 
   * Bug #53127: upgrade to latest debhelper compat version
