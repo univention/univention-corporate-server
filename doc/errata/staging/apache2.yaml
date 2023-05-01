@@ -6,25 +6,22 @@ src: apache2
 fix: 2.4.25-3+deb9u15A~4.4.9.202305010729
 desc: |
  This update addresses the following issues:
- 2.4.25-3+deb9u15 (Tue, 25 Apr 2023 08:16:21 +0000)
- * Non-maintainer upload by the ELTS team.
- * CVE-2023-25690: Some mod_proxy configurations allow a HTTP Request
-   Smuggling attack. Configurations are affected when mod_proxy is enabled
-   along with some form of RewriteRule or ProxyPassMatch in which a
-   non-specific pattern matches some portion of the user-supplied
-   request-target (URL) data and is then re-inserted into the proxied
-   request-target using variable substitution.
- * CVE-2022-36760: Inconsistent Interpretation of HTTP Requests (‘HTTP Request
-   Smuggling’) vulnerability in mod_proxy_ajp of Apache HTTP Server allows an
-   attacker to smuggle requests to the AJP server it forwards requests to.
- * CVE-2006-20001: A carefully crafted If: request header can cause a memory
+ * CVE-2006-20001: A carefully crafted `If:` request header can cause a memory
    read, or write of a single zero byte, in a pool (heap) memory location
    beyond the header value sent. This could cause the process to crash.
+ * CVE-2022-36760: Inconsistent Interpretation of HTTP Requests ("HTTP Request
+   Smuggling") vulnerability in `mod_proxy_ajp` of Apache HTTP Server allows
+   an attacker to smuggle requests to the AJP server it forwards requests to.
  * CVE-2022-37436: a malicious backend can cause the response headers to be
    truncated early, resulting in some headers being incorporated into the
    response body. If the later headers have any security purpose, they will
    not be interpreted by the client.
- * Backport regression fix for CVE-2023-25690.
+ * CVE-2023-25690: Some `mod_proxy` configurations allow a HTTP Request
+   Smuggling attack. Configurations are affected when `mod_proxy` is enabled
+   along with some form of `RewriteRule` or `ProxyPassMatch` in which a
+   non-specific pattern matches some portion of the user-supplied
+   request-target (URL) data and is then re-inserted into the proxied
+   request-target using variable substitution.
 bug: [56026]
 cve:
 - CVE-2023-25690
