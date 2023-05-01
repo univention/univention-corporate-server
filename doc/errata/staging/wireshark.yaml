@@ -1,0 +1,20 @@
+product: ucs
+release: "4.4"
+version: [9]
+scope: ucs_4.4-0-errata4.4-9
+src: wireshark
+fix: 2.6.20-0+deb9u5
+desc: |
+ This update addresses the following issues:
+ 2.6.20-0+deb9u5 (Sat, 29 Apr 2023 22:34:08 +0300)
+ * Non-maintainer upload by the ELTS Team.
+ * CVE-2023-1161: ISO 15765 dissector crash.
+ * CVE-2023-1992: RPCoRDMA dissector crash.
+ * CVE-2023-1993: LISP dissector large loop vulnerability.
+ * CVE-2023-1994: GQUIC dissector crash.
+bug: [56027]
+cve:
+- CVE-2023-1161
+- CVE-2023-1992
+- CVE-2023-1993
+- CVE-2023-1994
