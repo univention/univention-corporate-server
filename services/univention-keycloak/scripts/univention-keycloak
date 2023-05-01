@@ -45,6 +45,7 @@ from enum import Enum
 from os.path import exists
 from subprocess import PIPE, Popen
 from typing import Dict
+from urllib.parse import urljoin
 
 import requests
 from defusedxml import ElementTree
@@ -673,6 +674,15 @@ def parse_args(args: list[str] = None) -> Namespace:
     domainname = ucr.get("domainname")
     host_fqdn = "%s.%s" % (ucr.get("hostname"), ucr.get("domainname"))
     keycloak_fqdn = ucr.get("keycloak/server/sso/fqdn", f"ucs-sso-ng.{domainname}")
+    keycloak_url = f"https://{keycloak_fqdn}"
+    keycloak_sso_path = ucr.get("keycloak/server/sso/path", "/")
+    if keycloak_fqdn == host_fqdn and keycloak_sso_path == "/":
+        keycloak_sso_path = "/auth"
+
+    keycloak_url = urljoin(keycloak_url, keycloak_sso_path)
+    if not keycloak_url.endswith("/"):
+        keycloak_url = f"{keycloak_url}/"
+
     no_ucr_available = not (ucr and ldap_base)
 
     parser = ArgumentParser(description=__doc__)
@@ -682,7 +692,7 @@ def parse_args(args: list[str] = None) -> Namespace:
     parser.add_argument("--bindpwdfile", default="/etc/keycloak.secret")
     parser.add_argument("--realm", default="ucs")
     parser.add_argument("--keycloak-pwd", default="")
-    parser.add_argument("--keycloak-url", required=no_ucr_available, default=f"https://{keycloak_fqdn}:443")
+    parser.add_argument("--keycloak-url", required=no_ucr_available, default=keycloak_url)
     parser.add_argument("--no-ssl-verify", action='store_false')
     subparsers = parser.add_subparsers(title="subcommands", description="valid subcommands", required=True, dest="command")
 

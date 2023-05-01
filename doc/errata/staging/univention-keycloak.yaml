@@ -1,0 +1,11 @@
+product: ucs
+release: "5.0"
+version: [3]
+scope: ucs_5.0-0-errata5.0-3
+src: univention-keycloak
+fix:
+desc: |
+ This update addresses the following issue:
+ * The package `univention-keycloak` now supports the
+   `keycloak/server/sso/path` app setting from the `Keycloak` app.
+bug: [56022]

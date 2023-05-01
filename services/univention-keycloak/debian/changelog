@@ -1,3 +1,9 @@
+univention-keycloak (1.0.9-8) unstable; urgency=medium
+
+  * Bug #56022: Allow keycloak to run under the same fqdn as the host
+
+ -- Nikola Radovanovic <radovanovic.extern@univention.de>  Thu, 27 Apr 2023 19:43:26 +0100
+
 univention-keycloak (1.0.9-7) unstable; urgency=medium
 
   * Bug #55866: run keycloak init only once in domain
