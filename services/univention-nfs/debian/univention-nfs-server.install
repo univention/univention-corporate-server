@@ -1,4 +1,3 @@
 81univention-nfs-server.inst	usr/lib/univention-install/
 nfs-homes.py	usr/lib/univention-directory-listener/system/
 nfs-shares.py	usr/lib/univention-directory-listener/system/
-univention-nfs.conf	lib/systemd/system/nfs-kernel-server.service.d/
