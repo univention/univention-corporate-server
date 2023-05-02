@@ -3,7 +3,7 @@ release: "5.0"
 version: [3]
 scope: ucs_5.0-0-errata5.0-3
 src: univention-ad-connector
-fix:
+fix: 15.0.7-3A~5.0.0.202305021145
 desc: |
  This update addresses the following issues:
  * A server password change script for AD member mode has been moved
