@@ -3,7 +3,7 @@ release: "5.0"
 version: [4]
 scope: ucs_5.0-0-errata5.0-4
 src: univention-directory-manager-modules
-fix: 15.0.24-8
+fix: 15.0.24-10
 desc: |
  This update addresses the following issues:
  * When computer objects were assigned with a network the DHCP and DNS
@@ -16,4 +16,7 @@ desc: |
    for example for OX IMAP folder objects did not include
    the domain name which made it difficult to differentiate
    folder names for different domains.
-bug: [55459, 27241, 55216, 50632]
+  * The AttributeHook class was not idempotent and caused errors when multiple
+    `open()` calls have been done. This is for example the case in the
+    UCS@school importer.
+bug: [55459, 27241, 55216, 50632, 56036]

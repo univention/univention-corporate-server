@@ -1108,7 +1108,8 @@ class %s(univention.admin.hook.simpleHook):
         attr_name = 'univentionFreeAttribute15'
         with udm_test.UCSTestUDM() as udm:
             with open(fn_hook, 'w') as hook_module:
-                hook_module.write("""
+                hook_module.write(f"""
+import univention.debug as ud
 import univention.admin
 import univention.admin.modules
 import univention.admin.hook
@@ -1116,40 +1117,46 @@ import univention.admin.handlers.users.user
 import univention.testing.utils
 
 def mydebug(msg):
-    univention.debug.debug(univention.debug.ADMIN, univention.debug.ERROR, '40_extended_attribute_attributehook_value_mapping: {hook_name}: %s' % (msg,))
+    ud.debug(ud.ADMIN, ud.ERROR, '40_extended_attribute_attributehook_value_mapping: {hook_name}: %s' % (msg,))
 
 mydebug('TEST MODULE LOADED')
 
+
 class {hook_name}(univention.admin.hook.AttributeHook):
+    version = 2
     ldap_attribute_name = '{attr_name}'
     udm_attribute_name = '{cli_name}'
 
     def map_attribute_value_to_ldap(self, value):
         mydebug('map_attribute_value_to_ldap(%r)' % (value,))
-        if value in (b'FALSE', b'yes'):
+        if value == 'FALSE':
             return b'no'
-        elif value in (b'TRUE', b'yes'):
+        elif value == 'TRUE':
             return b'yes'
-        elif value in (b'', None):
+        elif value in ('', None):
             return b''
         else:
             # this is not great, but works reasonably well
             mydebug('map_attribute_value_to_ldap(%r) ==> found invalid value' % (value,))
             raise univention.admin.uexceptions.valueError('%s: LDAP Value may not be %r' % (self.ldap_attribute_name, value))
 
-    def map_attribute_value_to_udm(self, value):
-        mydebug('map_attribute_value_to_udm(%r)' % (value,))
-        if value == 'yes':
+    def map_attribute_value_to_udm(self, values):
+        mydebug('map_attribute_value_to_udm(%r)' % (values,))
+        assert len(values) <= 1
+        if not values:
+            return ''
+        value = values[0]
+        if value == b'yes':
             return 'TRUE'
-        elif value == 'no':
+        elif value == b'no':
             return 'FALSE'
-        elif value in ('', None):
+        elif value in (b'', None):
             return ''
         else:
             # this is not great, but works reasonably well
             mydebug('map_attribute_value_to_udm(%r) ==> found invalid value' % (value,))
             raise univention.admin.uexceptions.valueError('%s: UDM Value may not be %r' % (self.udm_attribute_name, value))
-""".format(hook_name=hook_name, cli_name=cli_name, attr_name=attr_name))
+""")
 
             udm.create_object(
                 'settings/extended_attribute',

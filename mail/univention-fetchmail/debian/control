@@ -37,7 +37,7 @@ Package: univention-fetchmail-schema
 Architecture: all
 Depends:
  shell-univention-lib (>> 2.0.17-1.125),
- univention-directory-manager-tools (>> 7.0.147),
+ univention-directory-manager-tools (>= 15.0.24-10),
  univention-join (>> 5.0.20-1.436),
  ${misc:Depends},
 Breaks:

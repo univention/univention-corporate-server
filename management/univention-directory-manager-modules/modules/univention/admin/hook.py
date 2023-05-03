@@ -36,9 +36,8 @@ import io
 import os
 import sys
 import traceback
-from typing import TYPE_CHECKING, List, Tuple, Union  # noqa: F401
-
-import six
+import warnings
+from typing import TYPE_CHECKING, Any, List, Tuple, Union  # noqa: F401
 
 import univention.debug as ud
 from univention.admin import localization
@@ -193,6 +192,8 @@ class AttributeHook(simpleHook):
     udm_attribute_name = None
     ldap_attribute_name = None
 
+    version = 1  # don't subclass if you don't set version to 2!
+
     def hook_open(self, obj):
         # type: (univention.admin.handlers.simpleLdap) -> None
         """
@@ -200,9 +201,11 @@ class AttributeHook(simpleHook):
 
         :param obj: The |UDM| object instance.
         """
-        assert isinstance(self.udm_attribute_name, six.string_types), "udm_attribute_name has to be a str"  # noqa: F821
         ud.debug(ud.ADMIN, ud.INFO, 'admin.syntax.hook.AttributeHook: Mapping %s (LDAP) -> %s (UDM)' % (self.ldap_attribute_name, self.udm_attribute_name))
-        old_value = obj[self.udm_attribute_name]
+        old_value = obj.oldattr.get(self.ldap_attribute_name, [])
+        if self.version < 2:  # TODO: remove in UCS 5.1
+            warnings.warn('Still using deprecated AttributeHook.version == 1', DeprecationWarning, stacklevel=2)
+            old_value = obj[self.udm_attribute_name]
         new_value = self.map_attribute_value_to_udm(old_value)
         ud.debug(ud.ADMIN, ud.INFO, 'admin.syntax.hook.AttributeHook: Setting UDM value from %r to %r' % (old_value, new_value))
         obj[self.udm_attribute_name] = new_value
@@ -227,24 +230,35 @@ class AttributeHook(simpleHook):
         :param ml: The modification list to extend.
         :returns: The extended modification list.
         """
-        assert isinstance(self.ldap_attribute_name, six.string_types), "ldap_attribute_name has to be a str"  # noqa: F821
-        new_ml = []
-        for ml_value in ml:
-            if len(ml_value) == 2:
-                key, old_value, new_value = ml_value[0], [], ml_value[1]
-            else:
-                key, old_value, new_value = ml_value
-            if key == self.ldap_attribute_name:
-                ud.debug(ud.ADMIN, ud.INFO, 'admin.syntax.hook.AttributeHook: Mapping %s (UDM) -> %s (LDAP)' % (self.udm_attribute_name, self.ldap_attribute_name))
-                old_value = self.map_attribute_value_to_ldap(old_value)
-                new_new_value = self.map_attribute_value_to_ldap(new_value)
-                ud.debug(ud.ADMIN, ud.INFO, 'admin.syntax.hook.AttributeHook: Setting LDAP value from %r to %r' % (new_value, new_new_value))
-                new_value = new_new_value
-            new_ml.append((key, old_value, new_value))
+        if self.version < 2:  # TODO: remove in UCS 5.1
+            warnings.warn('Still using deprecated AttributeHook.version == 1', DeprecationWarning, stacklevel=2)
+            new_ml = []
+            for ml_value in ml:
+                if len(ml_value) == 2:
+                    key, old_value, new_value = ml_value[0], [], ml_value[1]
+                else:
+                    key, old_value, new_value = ml_value
+                if key == self.ldap_attribute_name:
+                    ud.debug(ud.ADMIN, ud.INFO, 'admin.syntax.hook.AttributeHook: Mapping %s (UDM) -> %s (LDAP)' % (self.udm_attribute_name, self.ldap_attribute_name))
+                    old_value = self.map_attribute_value_to_ldap(old_value)
+                    new_new_value = self.map_attribute_value_to_ldap(new_value)
+                    ud.debug(ud.ADMIN, ud.INFO, 'admin.syntax.hook.AttributeHook: Setting LDAP value from %r to %r' % (new_value, new_new_value))
+                    new_value = new_new_value
+                new_ml.append((key, old_value, new_value))
+            return new_ml
+
+        new_ml = [x for x in ml if x[0] != self.ldap_attribute_name]
+
+        if obj.hasChanged(self.udm_attribute_name):
+            old_value = obj.oldattr.get(self.ldap_attribute_name, [])
+            new_value = obj.info.get(self.udm_attribute_name)
+            if new_value is not None:
+                new_value = self.map_attribute_value_to_ldap(new_value)
+            new_ml.append((self.ldap_attribute_name, old_value, new_value))
         return new_ml
 
     def map_attribute_value_to_ldap(self, value):
-        # type: (bytes) -> bytes
+        # type: (Any) -> List[bytes]
         """
         Return value as it shall be saved in |LDAP|.
 
@@ -254,7 +268,7 @@ class AttributeHook(simpleHook):
         return value
 
     def map_attribute_value_to_udm(self, value):
-        # type: (str) -> str
+        # type: (List[bytes]) -> Any
         """
         Return value as it shall be used in |UDM| objects.
 

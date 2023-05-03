@@ -1,3 +1,9 @@
+univention-fetchmail (13.0.6-4) unstable; urgency=medium
+
+  * Bug #56036: fix use of AttributeHook
+
+ -- Florian Best <best@univention.de>  Tue, 11 Jul 2023 15:42:23 +0200
+
 univention-fetchmail (13.0.6-3) unstable; urgency=medium
 
   * Bug #56008: Fix type error on fetchmailrc listener.
