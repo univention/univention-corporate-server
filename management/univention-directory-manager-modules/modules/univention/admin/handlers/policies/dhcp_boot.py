@@ -75,7 +75,7 @@ options = {
         objectClasses=['top', 'univentionPolicy', 'univentionPolicyDhcpBoot'],
     ),
 }
-property_descriptions = {
+property_descriptions = dict({
     'name': univention.admin.property(
         short_description=_('Name'),
         long_description='',
@@ -96,8 +96,7 @@ server from which the initial boot file is retrieved.'),
         long_description=_('Initial boot file to be loaded by a client'),
         syntax=univention.admin.syntax.string,
     ),
-}
-property_descriptions.update(dict([
+}, **dict([
     requiredObjectClassesProperty(),
     prohibitedObjectClassesProperty(),
     fixedAttributesProperty(syntax=dhcp_bootFixedAttributes),

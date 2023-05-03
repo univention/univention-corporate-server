@@ -79,7 +79,7 @@ options = {
         objectClasses=['top', 'univentionPolicy', 'univentionPolicyDhcpStatements'],
     ),
 }
-property_descriptions = {
+property_descriptions = dict({
     'name': univention.admin.property(
         short_description=_('Name'),
         long_description='',
@@ -119,8 +119,7 @@ property_descriptions = {
         long_description=_('Define the name of the DHCP server'),
         syntax=univention.admin.syntax.hostName,
     ),
-}
-property_descriptions.update(dict([
+}, **dict([
     requiredObjectClassesProperty(),
     prohibitedObjectClassesProperty(),
     fixedAttributesProperty(syntax=dhcp_statementsFixedAttributes),

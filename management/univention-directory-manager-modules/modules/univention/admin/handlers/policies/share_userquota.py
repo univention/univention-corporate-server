@@ -78,7 +78,7 @@ options = {
         objectClasses=['top', 'univentionPolicy', 'univentionPolicyShareUserQuota'],
     ),
 }
-property_descriptions = {
+property_descriptions = dict({
     'name': univention.admin.property(
         short_description=_('Name'),
         long_description='',
@@ -115,8 +115,7 @@ property_descriptions = {
         default="FALSE",
     ),
 
-}
-property_descriptions.update(dict([
+}, **dict([
     requiredObjectClassesProperty(),
     prohibitedObjectClassesProperty(),
     fixedAttributesProperty(syntax=shareUserQuotaFixedAttributes),

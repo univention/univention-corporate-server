@@ -75,7 +75,7 @@ options = {
         objectClasses=['top', 'univentionPolicy', 'univentionPolicyDhcpDns'],
     ),
 }
-property_descriptions = {
+property_descriptions = dict({
     'name': univention.admin.property(
         short_description=_('Name'),
         long_description='',
@@ -97,8 +97,7 @@ property_descriptions = {
         syntax=univention.admin.syntax.string,
         multivalue=True,
     ),
-}
-property_descriptions.update(dict([
+}, **dict([
     requiredObjectClassesProperty(),
     prohibitedObjectClassesProperty(),
     fixedAttributesProperty(syntax=dhcp_dnsFixedAttributes),

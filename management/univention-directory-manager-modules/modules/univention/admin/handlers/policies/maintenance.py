@@ -76,7 +76,7 @@ options = {
         objectClasses=['top', 'univentionPolicy', 'univentionPolicyInstallationTime'],
     ),
 }
-property_descriptions = {
+property_descriptions = dict({
     'name': univention.admin.property(
         short_description=_('Name'),
         long_description='',
@@ -137,8 +137,7 @@ property_descriptions = {
         multivalue=True,
     ),
 
-}
-property_descriptions.update(dict([
+}, **dict([
     requiredObjectClassesProperty(),
     prohibitedObjectClassesProperty(),
     fixedAttributesProperty(syntax=maintenanceFixedAttributes),

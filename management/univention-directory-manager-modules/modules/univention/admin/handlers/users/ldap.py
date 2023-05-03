@@ -45,7 +45,7 @@ import univention.admin.mapping
 import univention.admin.password
 import univention.admin.syntax
 import univention.admin.uexceptions
-from univention.admin.certificate import PKIIntegration, register_pki_integration
+from univention.admin.certificate import PKIIntegration, pki_option, pki_properties, pki_tab, register_pki_mapping
 from univention.admin.handlers.users.user import check_prohibited_username
 from univention.admin.layout import Group, Tab
 
@@ -69,8 +69,9 @@ options = {
         default=True,
         objectClasses=['top', 'person', 'univentionPWHistory', 'simpleSecurityObject', 'uidObject'],
     ),
+    'pki': pki_option(),
 }
-property_descriptions = {
+property_descriptions = dict({
     'username': univention.admin.property(
         short_description=_('User name'),
         long_description='',
@@ -147,7 +148,7 @@ property_descriptions = {
         readonly_when_synced=True,
         copyable=True,
     ),
-}
+}, **pki_properties())
 
 layout = [
     Tab(_('General'), _('Basic settings'), layout=[
@@ -159,6 +160,7 @@ layout = [
             ['locked'],
         ]),
     ]),
+    pki_tab(),
 ]
 
 
@@ -179,8 +181,7 @@ mapping.register('name', 'cn', None, univention.admin.mapping.ListToString)
 mapping.register('description', 'description', None, univention.admin.mapping.ListToString)
 mapping.register('password', 'userPassword', univention.admin.mapping.dontMap(), univention.admin.mapping.ListToString)
 mapping.registerUnmapping('locked', unmapLocked)
-
-register_pki_integration(property_descriptions, mapping, options, layout)
+register_pki_mapping(mapping)
 
 
 class object(univention.admin.handlers.simpleLdap, PKIIntegration):

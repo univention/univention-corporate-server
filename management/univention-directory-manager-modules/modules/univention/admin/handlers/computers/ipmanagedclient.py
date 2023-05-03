@@ -42,7 +42,7 @@ import univention.admin.mapping
 import univention.admin.syntax
 import univention.admin.uldap
 from univention.admin import nagios
-from univention.admin.certificate import PKIIntegration, register_pki_integration
+from univention.admin.certificate import PKIIntegration, pki_option, pki_properties, pki_tab, register_pki_mapping
 from univention.admin.layout import Group, Tab
 
 
@@ -58,8 +58,9 @@ object_name = _('IP client')
 object_name_plural = _('IP clients')
 long_description = ''
 options = {
+    'pki': pki_option(),
 }
-property_descriptions = {
+property_descriptions = dict({
     'name': univention.admin.property(
         short_description=_('IP client name'),
         long_description='',
@@ -147,7 +148,7 @@ property_descriptions = {
         syntax=univention.admin.syntax.string,
         include_in_default_search=True,
     ),
-}
+}, **pki_properties())
 
 layout = [
     Tab(_('General'), _('Basic settings'), layout=[
@@ -174,6 +175,7 @@ layout = [
     Tab(_('DNS alias'), _('Alias DNS entry'), advanced=True, layout=[
         'dnsEntryZoneAlias',
     ]),
+    pki_tab(),
 ]
 
 mapping = univention.admin.mapping.mapping()
@@ -183,10 +185,10 @@ mapping.register('inventoryNumber', 'univentionInventoryNumber')
 mapping.register('mac', 'macAddress', encoding='ASCII')
 mapping.register('network', 'univentionNetworkLink', None, univention.admin.mapping.ListToString)
 mapping.register('domain', 'associatedDomain', None, univention.admin.mapping.ListToString, encoding='ASCII')
+register_pki_mapping(mapping)
 
 # add Nagios extension
 nagios.addPropertiesMappingOptionsAndLayout(property_descriptions, mapping, options, layout)
-register_pki_integration(property_descriptions, mapping, options, layout)
 
 
 class object(univention.admin.handlers.simpleComputer, nagios.Support, PKIIntegration):

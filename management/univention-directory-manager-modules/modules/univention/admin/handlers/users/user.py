@@ -67,7 +67,7 @@ import univention.admin.uldap
 import univention.debug as ud
 import univention.password
 from univention.admin import configRegistry
-from univention.admin.certificate import PKIIntegration, register_pki_integration
+from univention.admin.certificate import PKIIntegration, pki_option, pki_properties, pki_tab, register_pki_mapping
 from univention.admin.layout import Group, Tab
 from univention.lib.s4 import rids_for_well_known_security_identifiers
 
@@ -95,8 +95,9 @@ options = {
         default=True,
         objectClasses=['top', 'person', 'univentionPWHistory', 'posixAccount', 'shadowAccount', 'sambaSamAccount', 'krb5Principal', 'krb5KDCEntry', 'univentionMail', 'organizationalPerson', 'inetOrgPerson'],
     ),
+    'pki': pki_option(),
 }
-property_descriptions = {
+property_descriptions = dict({
     'username': univention.admin.property(
         short_description=_('User name'),
         long_description='',
@@ -588,7 +589,7 @@ property_descriptions = {
         may_change=False,
         dontsearch=True,
     ),
-}
+}, **pki_properties())
 
 layout = [
     Tab(_('General'), _('Basic settings'), layout=[
@@ -677,6 +678,7 @@ layout = [
             'umcProperty',
         ]),
     ]),
+    pki_tab(),
 ]
 
 
@@ -1118,8 +1120,8 @@ mapping.registerUnmapping('userexpiry', unmapUserExpiry)
 mapping.registerUnmapping('disabled', unmapDisabled)
 mapping.registerUnmapping('locked', unmapLocked)
 mapping.register('password', 'userPassword', univention.admin.mapping.dontMap(), univention.admin.mapping.ListToString)
+register_pki_mapping(mapping)
 
-register_pki_integration(property_descriptions, mapping, options, layout)
 default_property_descriptions = copy.deepcopy(property_descriptions)  # for later reset of descriptions
 
 _sentinel = builtins.object()

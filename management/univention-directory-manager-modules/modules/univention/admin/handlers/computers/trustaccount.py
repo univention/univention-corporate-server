@@ -41,7 +41,7 @@ import univention.admin.mapping
 import univention.admin.password
 import univention.admin.syntax
 import univention.admin.uexceptions
-from univention.admin.certificate import PKIIntegration, register_pki_integration
+from univention.admin.certificate import PKIIntegration, pki_option, pki_properties, pki_tab, register_pki_mapping
 from univention.admin.layout import Group, Tab
 
 
@@ -57,8 +57,9 @@ object_name = _('Domain trust account')
 object_name_plural = _('Domain trust accounts')
 long_description = ''
 options = {
+    'pki': pki_option(),
 }
-property_descriptions = {
+property_descriptions = dict({
     'name': univention.admin.property(
         short_description=_('Name'),
         long_description='',
@@ -80,7 +81,7 @@ property_descriptions = {
         required=True,
         dontsearch=True,
     ),
-}
+}, **pki_properties())
 
 layout = [
     Tab(_('General'), _('Basic values'), layout=[
@@ -89,13 +90,13 @@ layout = [
             "password",
         ]),
     ]),
+    pki_tab(),
 ]
 
 mapping = univention.admin.mapping.mapping()
 mapping.register('name', 'cn', None, univention.admin.mapping.ListToString)
 mapping.register('description', 'description', None, univention.admin.mapping.ListToString)
-
-register_pki_integration(property_descriptions, mapping, options, layout)
+register_pki_mapping(mapping)
 
 
 class object(univention.admin.handlers.simpleLdap, PKIIntegration):

@@ -76,7 +76,7 @@ options = {
         objectClasses=['top', 'univentionPolicy', 'univentionPolicyDhcpLeaseTime'],
     ),
 }
-property_descriptions = {
+property_descriptions = dict({
     'name': univention.admin.property(
         short_description=_('Name'),
         long_description='',
@@ -101,8 +101,7 @@ property_descriptions = {
         long_description=_('Minimum granted lease time'),
         syntax=univention.admin.syntax.UNIX_TimeInterval,
     ),
-}
-property_descriptions.update(dict([
+}, **dict([
     requiredObjectClassesProperty(),
     prohibitedObjectClassesProperty(),
     fixedAttributesProperty(syntax=dhcp_leasetimeFixedAttributes),

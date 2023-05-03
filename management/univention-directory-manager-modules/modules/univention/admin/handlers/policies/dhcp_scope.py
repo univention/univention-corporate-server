@@ -78,7 +78,7 @@ options = {
         objectClasses=['top', 'univentionPolicy', 'univentionPolicyDhcpScope'],
     ),
 }
-property_descriptions = {
+property_descriptions = dict({
     'name': univention.admin.property(
         short_description=_('Name'),
         long_description='',
@@ -113,8 +113,7 @@ property_descriptions = {
         long_description=_("Honor DHCPDECLINE messages. deny/ignore will prevent malicious or buggy clients from completely exhausting the DHCP server's allocation pool."),
         syntax=univention.admin.syntax.AllowDenyIgnore,
     ),
-}
-property_descriptions.update(dict([
+}, **dict([
     requiredObjectClassesProperty(),
     prohibitedObjectClassesProperty(),
     fixedAttributesProperty(syntax=dhcp_scopeFixedAttributes),

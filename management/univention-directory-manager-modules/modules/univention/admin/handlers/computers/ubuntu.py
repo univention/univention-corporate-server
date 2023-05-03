@@ -39,7 +39,7 @@ import univention.admin.mapping
 import univention.admin.syntax
 import univention.admin.uexceptions
 from univention.admin import nagios
-from univention.admin.certificate import register_pki_integration
+from univention.admin.certificate import pki_option, pki_properties, pki_tab, register_pki_mapping
 from univention.admin.handlers.computers.__base import ComputerObject
 from univention.admin.layout import Group, Tab
 
@@ -77,8 +77,9 @@ options = {
         default=1,
         objectClasses=('sambaSamAccount',),
     ),
+    'pki': pki_option(),
 }
-property_descriptions = {
+property_descriptions = dict({
     'name': univention.admin.property(
         short_description=_('Hostname'),
         long_description='',
@@ -214,7 +215,7 @@ property_descriptions = {
         dontsearch=True,
         options=['samba'],
     ),
-}
+}, **pki_properties())
 
 layout = [
     Tab(_('General'), _('Basic settings'), layout=[
@@ -249,6 +250,7 @@ layout = [
     Tab(_('DNS alias'), _('Alias DNS entry'), advanced=True, layout=[
         'dnsEntryZoneAlias',
     ]),
+    pki_tab(),
 ]
 
 mapping = univention.admin.mapping.mapping()
@@ -262,10 +264,10 @@ mapping.register('unixhome', 'homeDirectory', None, univention.admin.mapping.Lis
 mapping.register('shell', 'loginShell', None, univention.admin.mapping.ListToString, encoding='ASCII')
 mapping.register('operatingSystem', 'univentionOperatingSystem', None, univention.admin.mapping.ListToString)
 mapping.register('operatingSystemVersion', 'univentionOperatingSystemVersion', None, univention.admin.mapping.ListToString)
+register_pki_mapping(mapping)
 
 # add Nagios extension
 nagios.addPropertiesMappingOptionsAndLayout(property_descriptions, mapping, options, layout)
-register_pki_integration(property_descriptions, mapping, options, layout)
 
 
 class object(ComputerObject):

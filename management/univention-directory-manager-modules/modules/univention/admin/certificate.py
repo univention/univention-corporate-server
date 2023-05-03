@@ -45,15 +45,17 @@ translation = univention.admin.localization.translation('univention.admin')
 _ = translation.translate
 
 
-def register_pki_integration(property_descriptions, mapping, options, layout):
-    options['pki'] = univention.admin.option(
+def pki_option():
+    return univention.admin.option(
         short_description=_('Public key infrastructure account'),
         default=False,
         editable=True,
         objectClasses=['pkiUser'],
     )
 
-    property_descriptions.update({
+
+def pki_properties():
+    return {
         'userCertificate': univention.admin.property(
             short_description=_("PKI certificate (DER format)"),
             long_description=_('Public key infrastructure - certificate'),
@@ -205,11 +207,15 @@ def register_pki_integration(property_descriptions, mapping, options, layout):
             editable=False,
             options=['pki'],
         ),
-    })
+    }
 
+
+def register_pki_mapping(mapping):
     mapping.register('userCertificate', 'userCertificate;binary', univention.admin.mapping.mapBase64, univention.admin.mapping.unmapBase64)
 
-    layout.append(Tab(_('Certificate'), _('Certificate'), advanced=True, layout=[
+
+def pki_tab():
+    return Tab(_('Certificate'), _('Certificate'), advanced=True, layout=[
         Group(_('General'), '', [
             'userCertificate',
         ]),
@@ -231,7 +237,20 @@ def register_pki_integration(property_descriptions, mapping, options, layout):
         Group(_('Misc'), '', [
             ['certificateVersion', 'certificateSerial'],
         ]),
-    ]))
+    ])
+
+
+def register_pki_integration(property_descriptions, mapping, options, layout):
+    """
+    Register the PKI integration for the given object type.
+
+    .. deprecated: 5.0-3
+         Warning: Using this function the property descriptions, mapping, options and layout are updated without atomicity.
+    """
+    options['pki'] = pki_option()
+    property_descriptions.update(pki_properties())
+    layout.append(pki_tab())
+    register_pki_mapping(mapping)
 
 
 def load_certificate(user_certificate):

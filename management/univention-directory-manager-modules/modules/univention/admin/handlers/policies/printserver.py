@@ -73,7 +73,7 @@ options = {
         objectClasses=['top', 'univentionPolicy', 'univentionPolicyPrintServer'],
     ),
 }
-property_descriptions = {
+property_descriptions = dict({
     'name': univention.admin.property(
         short_description=_('Name'),
         long_description='',
@@ -90,8 +90,7 @@ property_descriptions = {
         include_in_default_search=True,
     ),
 
-}
-property_descriptions.update(dict([
+}, **dict([
     requiredObjectClassesProperty(),
     prohibitedObjectClassesProperty(),
     fixedAttributesProperty(syntax=printServerFixedAttributes),

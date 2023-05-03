@@ -38,7 +38,7 @@ import univention.admin.localization
 import univention.admin.mapping
 import univention.admin.syntax
 from univention.admin import nagios
-from univention.admin.certificate import register_pki_integration
+from univention.admin.certificate import pki_option, pki_properties, pki_tab, register_pki_mapping
 from univention.admin.handlers.computers.__base import ComputerObject
 from univention.admin.layout import Group, Tab
 
@@ -76,8 +76,9 @@ options = {
         default=True,
         objectClasses=('sambaSamAccount',),
     ),
+    'pki': pki_option(),
 }
-property_descriptions = {
+property_descriptions = dict({
     'name': univention.admin.property(
         short_description=_('Windows domaincontroller name'),
         long_description='',
@@ -227,7 +228,7 @@ property_descriptions = {
         dontsearch=True,
         options=['samba'],
     ),
-}
+}, **pki_properties())
 
 layout = [
     Tab(_('General'), _('Basic settings'), layout=[
@@ -265,6 +266,7 @@ layout = [
     Tab(_('DNS alias'), _('Alias DNS entry'), advanced=True, layout=[
         'dnsEntryZoneAlias',
     ]),
+    pki_tab(),
 ]
 
 mapping = univention.admin.mapping.mapping()
@@ -280,10 +282,9 @@ mapping.register('network', 'univentionNetworkLink', None, univention.admin.mapp
 mapping.register('unixhome', 'homeDirectory', None, univention.admin.mapping.ListToString)
 mapping.register('shell', 'loginShell', None, univention.admin.mapping.ListToString, encoding='ASCII')
 mapping.register('service', 'univentionService')
-
+register_pki_mapping(mapping)
 # add Nagios extension
 nagios.addPropertiesMappingOptionsAndLayout(property_descriptions, mapping, options, layout)
-register_pki_integration(property_descriptions, mapping, options, layout)
 
 
 class object(ComputerObject):

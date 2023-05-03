@@ -76,7 +76,7 @@ options = {
         objectClasses=['top', 'univentionPolicy', 'univentionPolicyDhcpNetbios'],
     ),
 }
-property_descriptions = {
+property_descriptions = dict({
     'name': univention.admin.property(
         short_description=_('Name'),
         long_description='',
@@ -102,8 +102,7 @@ property_descriptions = {
         long_description=_('The node type of clients for NetBIOS over TCP/IP'),
         syntax=univention.admin.syntax.netbiosNodeType,
     ),
-}
-property_descriptions.update(dict([
+}, **dict([
     requiredObjectClassesProperty(),
     prohibitedObjectClassesProperty(),
     fixedAttributesProperty(syntax=dhcp_netbiosFixedAttributes),

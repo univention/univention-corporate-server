@@ -101,6 +101,7 @@ nagios_options = {
 
 def addPropertiesMappingOptionsAndLayout(new_property, new_mapping, new_options, new_layout):
     """Add Nagios properties."""
+    # FIXME: property_descriptions is not changed atomically during module initialization
     for key, value in nagios_properties.items():
         new_property[key] = value
 
