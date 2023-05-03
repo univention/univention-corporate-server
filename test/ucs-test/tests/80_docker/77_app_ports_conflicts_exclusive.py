@@ -9,16 +9,12 @@ import pytest
 
 from univention.testing.utils import is_port_open
 
-from dockertest import (
-    Appcenter, UCSTest_DockerApp_InstallationFailed, get_app_version, get_docker_appbox_image, tiny_app,
-)
+from dockertest import Appcenter, UCSTest_DockerApp_InstallationFailed, get_app_version, tiny_app
 
 
 if __name__ == '__main__':
     with Appcenter() as appcenter:
-
         version = get_app_version()
-        image = get_docker_appbox_image()
 
         app = tiny_app(name='app', version=version)
         exclusive = tiny_app(name='exclusive', version=version)

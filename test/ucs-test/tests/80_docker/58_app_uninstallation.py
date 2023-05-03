@@ -9,7 +9,7 @@ import os
 
 from univention.testing.utils import fail, get_ldap_connection
 
-from dockertest import App, Appcenter, get_app_name, get_app_version, get_docker_appbox_image, get_docker_appbox_ucs
+from dockertest import Appcenter, tiny_app
 
 
 def fail_if_file_exists(f):
@@ -17,41 +17,41 @@ def fail_if_file_exists(f):
         fail('%s still exists' % f)
 
 
+def fail_if_file_does_not_exist(f):
+    if not os.path.exists(f):
+        fail('%s still exists' % f)
+
+
 if __name__ == '__main__':
 
     with Appcenter() as appcenter:
-        app_name = get_app_name()
-        app_version = get_app_version()
-
-        app = App(name=app_name, version=app_version, container_version=get_docker_appbox_ucs())
+        app = tiny_app()
 
         try:
             app.set_ini_parameter(
-                DockerImage=get_docker_appbox_image(),
-                DockerScriptSetup='/usr/sbin/%s-setup' % app_name,
+                DockerScriptSetup='/usr/sbin/%s-setup' % app.app_name,
             )
 
-            app.add_script(setup='''#!/bin/bash
+            app.add_script(setup='''#!/bin/sh
 set -x -e
 echo "Test 123 Data" >/var/lib/univention-appcenter/apps/%(app_name)s/data/test123
 echo "Test 123 Conf" >/var/lib/univention-appcenter/apps/%(app_name)s/conf/test123
-/usr/share/univention-docker-container-mode/setup "$@"
 ''' % {'app_name': app.app_name})
             app.add_to_local_appcenter()
 
             appcenter.update()
 
             app.install()
-            app.verify()
+            app.verify(joined=False)
 
             lo = get_ldap_connection()
-            print(lo.searchDn(filter='(&(cn=%s-*)(objectClass=univentionMemberServer)(!(aRecord=*))(!(macAddress=*)))' % app_name[:5], unique=True, required=True))
+            print(lo.searchDn(filter='(&(cn=%s-*)(objectClass=univentionMemberServer)(!(aRecord=*))(!(macAddress=*)))' % app.app_name[:5], unique=True, required=True))
 
         finally:
             app.uninstall()
             app.remove()
 
-        # fail_if_file_exists('/var/lib/univention-appcenter/apps/%s/data/test123' % app.app_name)
+        fail_if_file_does_not_exist('/var/lib/univention-appcenter/apps/%s/data/test123' % app.app_name)
         fail_if_file_exists('/var/lib/univention-appcenter/apps/%s/conf/test123' % app.app_name)
         fail_if_file_exists('/var/lib/univention-appcenter/apps/%s/conf/base.conf' % app.app_name)
 

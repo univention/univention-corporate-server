@@ -13,7 +13,7 @@ import univention.testing.udm as udm_test
 from univention.config_registry import ConfigRegistry
 from univention.testing.utils import verify_ldap_object
 
-from dockertest import App, Appcenter, get_app_name, get_app_version, get_docker_appbox_image
+from dockertest import Appcenter, get_app_name, tiny_app
 
 
 ucr = ConfigRegistry()
@@ -22,15 +22,12 @@ ucr.load()
 
 @contextmanager
 def build_app(app_name, generic_user_activation, generic_user_activation_attribute=None, generic_user_activation_option=None):
-    app_version = get_app_version()
-    app = App(name=app_name, version=app_version, build_package=False)
+    app = tiny_app(name=app_name)
     try:
         app.set_ini_parameter(
-            DockerImage=get_docker_appbox_image(),
             GenericUserActivation=generic_user_activation,
             GenericUserActivationAttribute=generic_user_activation_attribute,
             GenericUserActivationOption=generic_user_activation_option,
-            DockerScriptSetup='/bin/true',
         )
         yield app
     finally:
