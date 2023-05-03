@@ -1,0 +1,113 @@
+product: ucs
+release: "5.0"
+version: [3]
+scope: ucs_5.0-0-errata5.0-3
+src: linux
+fix: 4.19.282-1
+desc: |
+ This update addresses the following issues:
+ * an out-of-bounds vulnerability in i2c-ismt driver (CVE-2022-2873)
+ * Use after Free in gru_set_context_option leading to kernel panic
+   (CVE-2022-3424)
+ * A flaw leading to a use-after-free in area_cache_get() (CVE-2022-3545)
+ * Double-free in split_2MB_gtt_entry when function
+   intel_gvt_dma_map_guest_page failed (CVE-2022-3707)
+ * avoid double free in tun_free_netdev (CVE-2022-4744)
+ * out-of-bounds write in vmw_kms_cursor_snoop (CVE-2022-36280)
+ * Report vmalloc UAF in dvb-core/dmxdev (CVE-2022-41218)
+ * integer overflow in l2cap_config_req() in net/bluetooth/l2cap_core.c
+   (CVE-2022-45934)
+ * NULL pointer dereference in traffic control subsystem (CVE-2022-47929)
+ * The current implementation of the prctl syscall does not issue an IBPB
+   immediately during the syscall. The ib_prctl_set  function updates the
+   Thread Information Flags (TIFs) for the task and updates the SPEC_CTRL MSR
+   on the function __speculation_ctrl_update, but the IBPB is only issued on
+   the next schedule, when the TIF bits are checked. This leaves the victim
+   vulnerable to values already injected on the BTB, prior to the prctl
+   syscall.  The patch that added the support for the conditional mitigation
+   via prctl (ib_prctl_set) dates back to the kernel 4.9.176. We recommend
+   upgrading past commit a664ec9158eeddd75121d39c9a0758016097fa96
+   (CVE-2023-0045)
+ * Move rwsem lock inside snd_ctl_elem_read to prevent UAF (CVE-2023-0266)
+ * NULL pointer dereference in rawv6_push_pending_frames (CVE-2023-0394)
+ * A speculative pointer dereference problem exists in the Linux Kernel on the
+   do_prlimit() function. The resource argument value is controlled and is
+   used in pointer arithmetic for the 'rlim' variable and can be used to leak
+   the contents. We recommend upgrading past version 6.1.8 or commit
+   739790605705ddcf18f21782b9c99ad7d53a8c11 (CVE-2023-0458)
+ * linux (CVE-2023-0459)
+ * use-after-free in listening ULP sockets (CVE-2023-0461)
+ * HID: check empty report_list in hid_validate_values() (CVE-2023-1073)
+ * sctp: fail if no bound addresses can be used for a given scope
+   (CVE-2023-1074)
+ * Heap OOB Write in rds_rm_zerocopy_callback() (CVE-2023-1078)
+ * Use After Free in asus_remove() (CVE-2023-1079)
+ * use-after-free in drivers/media/rc/ene_ir.c due to race condition
+   (CVE-2023-1118)
+ * Use After Free vulnerability in traffic control index filter (tcindex)
+   allows Privilege Escalation (CVE-2023-1281)
+ * KVM: information leak in KVM_GET_DEBUGREGS ioctl on 32-bit systems
+   (CVE-2023-1513)
+ * use after free bug in xirc2ps_detach (CVE-2023-1670)
+ * Use-after-free vulnerability in the Linux Kernel traffic control index
+   filter (CVE-2023-1829)
+ * use-after-free bug in remove function xgene_hwmon_remove (CVE-2023-1855)
+ * Use after free in xen_9pfs_front_remove due to race condition
+   (CVE-2023-1859)
+ * Use after free bug in btsdio_remove due to race condition (CVE-2023-1989)
+ * Use after free bug in ndlc_remove due to race condition (CVE-2023-1990)
+ * Spectre v2 SMT mitigations problem (CVE-2023-1998)
+ * UAF during login when accessing the shost ipaddress (CVE-2023-2162)
+ * out-of-bounds write in xgene_slimpro_i2c_xfer() (CVE-2023-2194)
+ * slab-out-of-bounds read vulnerabilities in cbq_classify (CVE-2023-23454)
+ * denial of service in atm_tc_enqueue in net/sched/sch_atm.c due to type
+   confusion (CVE-2023-23455)
+ * Integer overflow in function rndis_query_oid of rndis_wlan.c
+   (CVE-2023-23559)
+ * double free on sysctl allocation failure (CVE-2023-26545)
+ * A denial of service issue in az6027 driver in
+   drivers/media/usb/dev-usb/az6027.c (CVE-2023-28328)
+ * missing consistency checks for CR0 and CR4 (CVE-2023-30456)
+ * The Linux kernel before 6.2.9 has a race condition and resultant
+   use-after-free in drivers/power/supply/da9150-charger.c if a physically
+   proximate attacker unplugs a device. (CVE-2023-30772)
+bug: [56032]
+cve:
+- CVE-2022-2873
+- CVE-2022-3424
+- CVE-2022-3545
+- CVE-2022-3707
+- CVE-2022-4744
+- CVE-2022-36280
+- CVE-2022-41218
+- CVE-2022-45934
+- CVE-2022-47929
+- CVE-2023-0045
+- CVE-2023-0266
+- CVE-2023-0394
+- CVE-2023-0458
+- CVE-2023-0459
+- CVE-2023-0461
+- CVE-2023-1073
+- CVE-2023-1074
+- CVE-2023-1078
+- CVE-2023-1079
+- CVE-2023-1118
+- CVE-2023-1281
+- CVE-2023-1513
+- CVE-2023-1670
+- CVE-2023-1829
+- CVE-2023-1855
+- CVE-2023-1859
+- CVE-2023-1989
+- CVE-2023-1990
+- CVE-2023-1998
+- CVE-2023-2162
+- CVE-2023-2194
+- CVE-2023-23454
+- CVE-2023-23455
+- CVE-2023-23559
+- CVE-2023-26545
+- CVE-2023-28328
+- CVE-2023-30456
+- CVE-2023-30772
