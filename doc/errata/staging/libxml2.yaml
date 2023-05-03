@@ -6,7 +6,7 @@ src: libxml2
 fix: 2.9.4+dfsg1-7+deb10u6
 desc: |
  This update addresses the following issues:
- * NULL dereference in xmlSchemaFixupComplexType (CVE-2023-28484)
+ * NULL dereference in `xmlSchemaFixupComplexType` (CVE-2023-28484)
  * Hashing of empty dict strings isn't deterministic (CVE-2023-29469)
 bug: [56033]
 cve:
