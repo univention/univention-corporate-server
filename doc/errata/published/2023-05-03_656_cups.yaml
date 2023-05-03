@@ -9,3 +9,6 @@ desc: |
  * `cups` has been updated, so that printing multiple
     copies now works.
 bug: [55886]
+erratum: 656
+announced: 2023-05-03
+support: core
