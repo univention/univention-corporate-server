@@ -10,3 +10,6 @@ desc: |
    file `/var/lib/univention-appcenter/apps/$APP_ID/custom.settings`.
    This file has the same format as the standard appcenter settings file.
 bug: [55765]
+erratum: 654
+announced: 2023-05-03
+support: core
