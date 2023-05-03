@@ -824,6 +824,7 @@ assert_minor_version () {
 assert_join () {
 	# sometimes univention-check-join-status fails because the ldap server is restarted
 	# and not available at this moment, so try it three times
+	local i
 	for i in $(seq 1 3); do
 		univention-check-join-status
 		test $? -eq 0 && return 0
