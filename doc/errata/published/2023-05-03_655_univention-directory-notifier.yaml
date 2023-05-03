@@ -11,3 +11,6 @@ desc: |
    in an error message during
    `systemctl restart univention-directory-notifier`.
 bug: [55957]
+erratum: 655
+announced: 2023-05-03
+support: core
