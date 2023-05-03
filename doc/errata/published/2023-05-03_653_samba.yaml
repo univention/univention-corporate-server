@@ -9,3 +9,6 @@ desc: |
  * In domains with larger numbers of users the command `wbinfo -u`
    did not return any results.
 bug: [55962]
+erratum: 653
+announced: 2023-05-03
+support: core
