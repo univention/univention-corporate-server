@@ -2,8 +2,8 @@ product: ucs
 release: "5.0"
 version: [3]
 scope: ucs_5.0-0-errata5.0-3
-src: linux-signed-amd64
-fix: 4.19.282+1
+src: linux-latest
+fix: 105+deb10u19
 desc: |
  This update addresses the following issues:
  * An out-of-bounds vulnerability in i2c-ismt driver (CVE-2022-2873)
@@ -69,7 +69,7 @@ desc: |
  * Race condition and resultant use-after-free in
    `drivers/power/supply/da9150-charger.c` if a physically proximate attacker
    unplugs a device. (CVE-2023-30772)
-note: This is the 2nd of 3 parts.
+note: This is the 3rd of 3 parts.
 bug: [56032]
 cve:
 - CVE-2022-2873
