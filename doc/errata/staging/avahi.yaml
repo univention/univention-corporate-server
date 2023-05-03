@@ -1,0 +1,12 @@
+product: ucs
+release: "5.0"
+version: [3]
+scope: ucs_5.0-0-errata5.0-3
+src: avahi
+fix: 0.7-4+deb10u2
+desc: |
+ This update addresses the following issue:
+ * avahi-daemon can be crashed via DBus (CVE-2023-1981)
+bug: [56034]
+cve:
+- CVE-2023-1981
