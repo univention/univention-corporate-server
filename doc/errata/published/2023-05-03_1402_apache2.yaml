@@ -12,7 +12,7 @@ desc: |
  * CVE-2022-36760: Inconsistent Interpretation of HTTP Requests ("HTTP Request
    Smuggling") vulnerability in `mod_proxy_ajp` of Apache HTTP Server allows
    an attacker to smuggle requests to the AJP server it forwards requests to.
- * CVE-2022-37436: a malicious backend can cause the response headers to be
+ * CVE-2022-37436: A malicious backend can cause the response headers to be
    truncated early, resulting in some headers being incorporated into the
    response body. If the later headers have any security purpose, they will
    not be interpreted by the client.
