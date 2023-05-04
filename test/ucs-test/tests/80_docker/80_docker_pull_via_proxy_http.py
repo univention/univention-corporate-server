@@ -14,8 +14,7 @@ from univention.testing.ucr import UCSTestConfigRegistry
 from univention.testing.utils import fail
 
 from dockertest import (
-    docker_image_is_present, docker_login, get_docker_appbox_image, pull_docker_image, remove_docker_image,
-    restart_docker,
+    docker_image_is_present, docker_login, pull_docker_image, remove_docker_image, restart_docker, tiny_app,
 )
 
 
@@ -46,7 +45,7 @@ class TestCase:
         self.ucr = UCSTestConfigRegistry()
         self.ucr.load()
 
-        self.imgname = get_docker_appbox_image()
+        self.imgname = tiny_app().ini['DockerImage']
 
         required_pkgname = 'univention-squid'
         if not deb_package_is_installed(required_pkgname):

@@ -1,5 +1,5 @@
 #!/usr/share/ucs-test/runner python3
-## desc: Create and install a simple UCS 4.1 docker app
+## desc: Create and install a simple UCS 4.4 docker app
 ## tags: [docker]
 ## exposure: dangerous
 ## packages:
@@ -15,10 +15,10 @@ if __name__ == '__main__':
         app_name = get_app_name()
         app_version = get_app_version()
 
-        app = App(name=app_name, version=app_version, container_version='4.3')
+        app = App(name=app_name, version=app_version, container_version='4.4')
 
         try:
-            app.set_ini_parameter(DockerImage='docker.software-univention.de/ucs-appbox-amd64:4.3-3')
+            app.set_ini_parameter(DockerImage='docker-test.software-univention.de/ucs-appbox-amd64:4.4-8')
             app.add_to_local_appcenter()
 
             appcenter.update()

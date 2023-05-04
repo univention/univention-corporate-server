@@ -31,7 +31,6 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-import json
 import os
 import shutil
 import subprocess
@@ -149,16 +148,6 @@ def get_docker_appbox_image():
     image_name = f'docker-test.software-univention.de/ucs-appbox-amd64:{get_docker_appbox_ucs()}-8'
     print('Using %s' % image_name)
     return image_name
-
-
-def get_latest_docker_appbox_image():
-    url = 'https://docker.software-univention.de/v2/ucs-appbox-amd64/tags/list'
-    username = 'ucs'
-    password = 'readonly'
-    resp = requests.get(url, auth=(username, password)).content
-    data = json.loads(resp)
-    image = 'docker.software-univention.de/ucs-appbox-amd64:' + max(data['tags'])
-    return image
 
 
 def docker_login(server='docker.software-univention.de'):
@@ -488,19 +477,6 @@ class App:
 
             with open(target, 'w') as f:
                 f.write(self.scripts[script])
-
-    def create_basic_modproxy_settings(self):
-        self.add_script(setup=r'''#!/bin/bash
-set -x -e
-eval "$(ucr shell)"
-if [ "$version_version" = 4.0 ]; then
-    ucr set repository/online/server="$(echo $repository_online_server | sed -e 's|.*//\(.*\)|\\1|')"
-fi
-univention-install --yes univention-apache
-mkdir /var/www/%(app_name)s
-echo "TEST-%(app_name)s" >>/var/www/%(app_name)s/index.txt
-/usr/share/univention-docker-container-mode/setup "$@"
-''' % {'app_name': self.app_name})
 
     def configure_tinyapp_modproxy(self):
         fqdn = '%(hostname)s.%(domainname)s' % self.ucr

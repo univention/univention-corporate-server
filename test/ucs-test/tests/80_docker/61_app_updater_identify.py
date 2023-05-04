@@ -1,43 +1,28 @@
-#!/usr/share/ucs-test/runner python3
+#!/usr/share/ucs-test/runner pytest-3 -s -l -vv
 ## desc: Check updater/identify in a new Docker App
 ## tags: [docker]
 ## exposure: dangerous
 ## packages:
 ##   - docker.io
 
-from dockertest import (
-    App, Appcenter, UCSTest_Docker_Exception, get_app_name, get_app_version, get_docker_appbox_image,
-    get_docker_appbox_ucs,
-)
+from dockertest import tiny_app
 
 
-class UCSTest_DockerApp_Identify(UCSTest_Docker_Exception):
-    pass
+def test_app_updater_identify(appcenter):
+    app = tiny_app()
 
+    try:
+        app.add_to_local_appcenter()
 
-if __name__ == '__main__':
+        appcenter.update()
 
-    with Appcenter() as appcenter:
-        app_name = get_app_name()
-        app_version = get_app_version()
+        app.install()
 
-        app = App(name=app_name, version=app_version, container_version=get_docker_appbox_ucs())
+        app.verify(joined=False)
 
-        try:
-            app.set_ini_parameter(DockerImage=get_docker_appbox_image())
-            app.add_to_local_appcenter()
-
-            appcenter.update()
-
-            app.install()
-
-            app.verify()
-
-            identify = app.execute_command_in_container('ucr get updater/identify')
-            print('Identify: %s' % identify)
-            if identify.strip() != 'Docker App':
-                raise UCSTest_DockerApp_Identify()
-
-        finally:
-            app.uninstall()
-            app.remove()
+        identify = app.execute_command_in_container("env | sed -rne 's/UPDATER_IDENTIFY=//p'")
+        print('Identify: %s' % identify)
+        assert identify.strip() == 'Docker App'
+    finally:
+        app.uninstall()
+        app.remove()

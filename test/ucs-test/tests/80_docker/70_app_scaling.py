@@ -6,7 +6,7 @@
 ## packages:
 ##   - docker.io
 
-from dockertest import Appcenter, get_app_name, get_app_version, tiny_app
+from dockertest import Appcenter, get_app_name, get_app_version, tiny_app_apache
 
 
 DOCKER_APP_COUNT = 20
@@ -18,14 +18,13 @@ if __name__ == '__main__':
 
         try:
             for i in range(0, DOCKER_APP_COUNT):
-                app = tiny_app(get_app_name(), get_app_version())
+                app = tiny_app_apache(get_app_name(), get_app_version())
                 app.set_ini_parameter(
                     WebInterface='/%s' % app.app_name,
                     WebInterfacePortHTTP='80',
                     WebInterfacePortHTTPS='443',
                     AutoModProxy='True',
                 )
-                app.create_basic_modproxy_settings()
                 app.add_to_local_appcenter()
 
                 apps.append(app)
@@ -37,6 +36,8 @@ if __name__ == '__main__':
 
             for i in range(0, DOCKER_APP_COUNT):
                 apps[i].verify(joined=False)
+                apps[i].configure_tinyapp_modproxy()
+                apps[i].verify_basic_modproxy_settings_tinyapp()
 
         finally:
             for i in range(0, len(apps)):
