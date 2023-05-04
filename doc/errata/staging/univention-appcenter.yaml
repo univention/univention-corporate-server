@@ -1,0 +1,12 @@
+product: ucs
+release: "5.0"
+version: [3]
+scope: ucs_5.0-0-errata5.0-3
+src: univention-appcenter
+fix:
+desc: |
+ This update addresses the following issues:
+ * The command `univention-app shell` now supports the option `--service_name`
+   to specify the docker compose service name where the command is executed
+   in.
+bug: [56038]
