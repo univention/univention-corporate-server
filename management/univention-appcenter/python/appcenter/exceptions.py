@@ -173,6 +173,11 @@ class ShellAppNotRunning(Abort):
     default_error_msg = 'Cannot run command: %(app)s is not running in a container'
 
 
+class ShellContainerNotFound(Abort):
+    code = 440
+    default_error_msg = 'Cannot run command: No container found for %(service)s of %(app)s'
+
+
 class InstallSetupFailed(AbortWithDetails):
     code = 416
     default_error_msg = 'Setup script failed!'

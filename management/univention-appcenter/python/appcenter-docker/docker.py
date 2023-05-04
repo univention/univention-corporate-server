@@ -616,13 +616,14 @@ class MultiDocker(Docker):
                     outfile.write('\n')
             self.env_file_created = env_file_name
 
-    def _get_main_service_container_id(self):
+    def get_container_id(self, service_name=None):
         name = None
         yml_file = self.app.get_compose_file('docker-compose.yml')
         content = yaml.load(open(yml_file), yaml.RoundTripLoader, preserve_quotes=True)
         # name from yaml
-        if content['services'][self.app.docker_main_service].get('container_name'):
-            name = content['services'][self.app.docker_main_service]['container_name']
+        service_name = service_name or self.app.docker_main_service
+        if service_name in content['services'] and content['services'][service_name].get('container_name'):
+            name = content['services'][service_name]['container_name']
         else:
             # name from docker-compose ps
             ps = ''
@@ -643,11 +644,11 @@ class MultiDocker(Docker):
                     _logger.warning('Fail: {}'.format(e))
                     break
                 container_name = container_inspect['Name']
-                if '_{}_'.format(self.app.docker_main_service) in container_name:
+                if '_{}_'.format(service_name) in container_name:
                     return container_inspect['Id']
         # default
         if name is None:
-            name = '{}_{}_1'.format(self.app.id, self.app.docker_main_service)
+            name = '{}_{}_1'.format(self.app.id, service_name)
         # get containert id
         try:
             insp = inspect_with_retry(name)
@@ -655,6 +656,9 @@ class MultiDocker(Docker):
         except DockerInspectCallFailed as e:
             _logger.warning('Fail: {}'.format(e))
         return None
+
+    def _get_main_service_container_id(self):
+        return self.get_container_id(self.app.docker_main_service)
 
     def create(self, hostname, env):
         env = {k: yaml.scalarstring.DoubleQuotedScalarString(v) for k, v in env.items() if v is not None}
