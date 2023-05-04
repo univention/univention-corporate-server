@@ -490,19 +490,6 @@ class App:
             with open(target, 'w') as f:
                 f.write(self.scripts[script])
 
-    def create_basic_modproxy_settings(self):
-        self.add_script(setup=r'''#!/bin/bash
-set -x -e
-eval "$(ucr shell)"
-if [ "$version_version" = 4.0 ]; then
-    ucr set repository/online/server="$(echo $repository_online_server | sed -e 's|.*//\(.*\)|\\1|')"
-fi
-univention-install --yes univention-apache
-mkdir /var/www/%(app_name)s
-echo "TEST-%(app_name)s" >>/var/www/%(app_name)s/index.txt
-/usr/share/univention-docker-container-mode/setup "$@"
-''' % {'app_name': self.app_name})
-
     def configure_tinyapp_modproxy(self):
         fqdn = '%(hostname)s.%(domainname)s' % self.ucr
         self.execute_command_in_container('apk update --allow-untrusted')

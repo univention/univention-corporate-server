@@ -7,18 +7,12 @@
 
 import pytest
 
-from dockertest import (
-    App, Appcenter, UCSTest_DockerApp_InstallationFailed, get_app_name, get_app_version, get_docker_appbox_ucs,
-)
+from dockertest import Appcenter, UCSTest_DockerApp_InstallationFailed, tiny_app
 
 
 if __name__ == '__main__':
-
     with Appcenter() as appcenter:
-        app_name = get_app_name()
-        app_version = get_app_version()
-
-        app = App(name=app_name, version=app_version, container_version=get_docker_appbox_ucs(), build_package=False)
+        app = tiny_app()
 
         try:
             app.set_ini_parameter(DefaultPackages='foobar')
