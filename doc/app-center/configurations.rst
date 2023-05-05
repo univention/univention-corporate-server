@@ -26,6 +26,10 @@ see the overview below about of the involved scripts and the parameters
 they are called with. More information on the scripts themselves can be
 found in the following sections.
 
+During installation process you may need to run commands inside a container of
+your app, for example, to properly prepare it. For more information, refer to
+:ref:`command-univention-app`.
+
 .. _installation-scripts-app-flow-install:
 
 .. figure:: /images/app-flow-install.png
@@ -343,6 +347,10 @@ the app is uninstalled. The upgrade scripts can be used for this
 purpose. Please see an overview of the involved scripts and the
 parameters they are called with in the figure below. More information on
 the scripts themselves can be found in the following sections.
+
+During upgrade process you may need to run commands inside a container of
+your app, for example, to run a data migration. For more information, refer to
+:ref:`command-univention-app`.
 
 .. _upgrade-scripts-app-flow-update:
 
