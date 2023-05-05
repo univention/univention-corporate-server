@@ -1,3 +1,10 @@
+univention-directory-manager-modules (15.0.20-4) unstable; urgency=medium
+
+  * Bug #54597: Each UDM module are updated to assign the value to `property_descriptions`
+   layout, and `options` atomically, avoid problems with concurrent updates.
+
+ -- Ivan Barbecho Delgado <delgado.extern@univention.de>  Fri, 05 May 2023 09:28:20 +0200
+
 univention-directory-manager-modules (15.0.20-3) unstable; urgency=medium
 
   * Bug #56020: always add new password to password history

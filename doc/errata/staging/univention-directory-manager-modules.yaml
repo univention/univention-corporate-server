@@ -1,0 +1,10 @@
+product: ucs
+release: "5.0"
+version: [3]
+scope: ucs_5.0-0-errata5.0-3
+src: univention-directory-manager-modules
+fix: 5.0.20-4
+desc: |
+ This update addresses the following issues:
+ * Problems during concurrently reloading of UDM modules have been resolved.
+bug: [54597]
