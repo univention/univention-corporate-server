@@ -571,7 +571,7 @@ def download_cert_oidc(opt):
     if opt.oidc_url:
         oidc_conf_url = opt.oidc_url
     else:
-        oidc_conf_url = f"https://{opt.keycloak_sso_fqdn}/realms/ucs/.well-known/openid-configuration"
+        oidc_conf_url = f"{opt.keycloak_url}realms/ucs/.well-known/openid-configuration"
 
     oidc_conf = requests.get(oidc_conf_url)
     certs_oidc = oidc_conf.json()["jwks_uri"]
@@ -594,7 +594,7 @@ def download_cert_saml(opt):
     if opt.saml_url:
         saml_descriptor_url = opt.saml_url
     else:
-        saml_descriptor_url = f"https://{opt.keycloak_sso_fqdn}/realms/ucs/protocol/saml/descriptor"
+        saml_descriptor_url = f"{opt.keycloak_url}realms/ucs/protocol/saml/descriptor"
 
     saml_descriptor = requests.get(saml_descriptor_url)
     saml_descriptor_xml = ElementTree.fromstring(saml_descriptor.content)
@@ -673,11 +673,10 @@ def parse_args(args: list[str] = None) -> Namespace:
     ldap_base = ucr.get("ldap/base")
     domainname = ucr.get("domainname")
     host_fqdn = "%s.%s" % (ucr.get("hostname"), ucr.get("domainname"))
+    umc_saml_sp_server = ucr.get("umc/saml/sp-server", host_fqdn)
     keycloak_fqdn = ucr.get("keycloak/server/sso/fqdn", f"ucs-sso-ng.{domainname}")
     keycloak_url = f"https://{keycloak_fqdn}"
-    keycloak_sso_path = ucr.get("keycloak/server/sso/path", "/")
-    if keycloak_fqdn == host_fqdn and keycloak_sso_path == "/":
-        keycloak_sso_path = "/auth"
+    keycloak_sso_path = ucr.get("keycloak/server/sso/path")
 
     keycloak_url = urljoin(keycloak_url, keycloak_sso_path)
     if not keycloak_url.endswith("/"):
@@ -725,7 +724,6 @@ def parse_args(args: list[str] = None) -> Namespace:
     get_cert_saml_parser.add_argument("--as-pem", action='store_true')
     get_cert_saml_parser.add_argument("--saml-url", default="")
     get_cert_saml_parser.add_argument("--output", required=True)
-    get_cert_saml_parser.add_argument("--keycloak-sso-fqdn", required=no_ucr_available, default=keycloak_fqdn)
     get_cert_saml_parser.set_defaults(func=download_cert_saml)
 
     parser_oidc_op_cert = subparsers.add_parser("oidc/op/cert", help="OIDC provider certificate")
@@ -734,7 +732,6 @@ def parse_args(args: list[str] = None) -> Namespace:
     get_cert_oidc_parser.add_argument("--as-pem", action='store_true')
     get_cert_oidc_parser.add_argument("--oidc-url", default="")
     get_cert_oidc_parser.add_argument("--output", required=True)
-    get_cert_oidc_parser.add_argument("--keycloak-sso-fqdn", required=no_ucr_available, default=keycloak_fqdn)
     get_cert_oidc_parser.set_defaults(func=download_cert_oidc)
 
     init_parser = subparsers.add_parser("init", help="configure a Keycloak app")
@@ -744,6 +741,7 @@ def parse_args(args: list[str] = None) -> Namespace:
     init_parser.add_argument("--ldap-system-user-dn", required=no_ucr_available, default=f"uid=sys-idp-user,cn=users,{ldap_base}")
     init_parser.add_argument("--ldap-system-user-pwdfile", default="/etc/idp-ldap-user.secret")
     init_parser.add_argument("--host-fqdn", required=no_ucr_available, default=host_fqdn)
+    init_parser.add_argument("--umc-saml-sp-server", metavar="FQDN", required=no_ucr_available, default=umc_saml_sp_server)
     init_parser.add_argument("--domainname", required=no_ucr_available, default=domainname)
     init_parser.add_argument("--locales", required=no_ucr_available, default=ucr.get("locale"))
     init_parser.add_argument("--default-locale", required=no_ucr_available, default=ucr.get("locale/default"))
@@ -1475,8 +1473,6 @@ def init_keycloak_ucs(opt):
                 kdc.set_domain_config_version(kdc.current_version)
                 kdc.set_domain_config_init(kdc.current_version)
 
-    server_url = f"https://{opt.host_fqdn}"
-
     # set locale languages
     realm_payload = {
         "id": DEFAULT_REALM,
@@ -1504,10 +1500,10 @@ def init_keycloak_ucs(opt):
     realm_payload["id"] = opt.realm
     realm_payload["realm"] = opt.realm
     kc_admin.create_realm(payload=realm_payload, skip_exists=True)
-
     configure_login_page(opt, kc_admin)
+
     # create portal saml client
-    opt.metadata_url = server_url + "/univention/saml/metadata"
+    opt.metadata_url = f"https://{opt.umc_saml_sp_server}/univention/saml/metadata"
     opt.metadata_file = None
     opt.umc_uid_mapper = True
     create_SAML_client(opt)
