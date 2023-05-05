@@ -3,7 +3,7 @@ release: "5.0"
 version: [3]
 scope: ucs_5.0-0-errata5.0-3
 src: univention-base-files
-fix: 9.0.5-5
+fix: 9.0.5-5A~5.0.0.202305051447
 desc: |
  This update addresses the following issue:
  * A wrong Python format string in the `rsyslog` configuration has been fixed,
