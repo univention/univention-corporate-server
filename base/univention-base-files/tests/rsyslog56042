@@ -1,0 +1,14 @@
+#!/bin/sh
+set -e -u
+
+tmp="$(mktemp -d)"
+cleanup () {
+	rm -rf "$tmp"
+}
+trap cleanup EXIT
+
+ucr filter <conffiles/etc/rsyslog.conf >"$tmp/old"
+
+printf "\n\nsyslog/input/udp: 123\n" >"$tmp/ucr"
+UNIVENTION_BASECONF="$tmp/ucr" ucr filter <conffiles/etc/rsyslog.conf >"$tmp/new"
+! diff "$tmp/old" "$tmp/new" >/dev/null
