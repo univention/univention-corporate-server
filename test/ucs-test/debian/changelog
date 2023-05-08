@@ -1,3 +1,9 @@
+ucs-test (10.0.10-59) unstable; urgency=medium
+
+  * Bug #56022: Allow keycloak to run under the same fqdn as the host
+
+ -- Felix Botner <botner@univention.de>  Mon, 08 May 2023 16:41:48 +0200
+
 ucs-test (10.0.10-58) unstable; urgency=medium
 
   * Bug #56022: Allow keycloak to run under the same fqdn as the host
