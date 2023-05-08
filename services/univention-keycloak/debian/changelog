@@ -1,3 +1,9 @@
+univention-keycloak (1.0.9-10) unstable; urgency=medium
+
+  * Bug #56066: Don't set loginHtml via REST-API, do it via language configuration file within the app
+
+ -- Julia Bremer <bremer@univention.de>  Mon, 08 May 2023 09:00:22 +0200
+
 univention-keycloak (1.0.9-9) unstable; urgency=medium
 
   * Bug #56022: respect umc/saml/sp-server for umc saml client in

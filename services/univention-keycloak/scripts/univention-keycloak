@@ -1342,19 +1342,6 @@ def create_config_for_execution(kc_admin, config, execution_id):
     return raise_error_from_response(data_raw, KeycloakGetError, expected_codes=[204, 201])
 
 
-def configure_login_page(opt, kc_admin):
-    # english
-    url = f"admin/realms/{kc_admin.realm_name}/localization/en"
-    data = {"loginTitleHtml": f"Login at {opt.domainname}", "loginTitle": "Univention Corporate Server Single-Sign On"}
-    data_raw = kc_admin.raw_post(url, data=json.dumps(data))
-    raise_error_from_response(data_raw, KeycloakGetError, expected_codes=[204, 201])
-    # german
-    url = f"admin/realms/{kc_admin.realm_name}/localization/de"
-    data = {"loginTitleHtml": f"Anmelden bei {opt.domainname}", "loginTitle": "Univention Corporate Server Single-Sign On"}
-    data_raw = kc_admin.raw_post(url, data=json.dumps(data))
-    raise_error_from_response(data_raw, KeycloakGetError, expected_codes=[204, 201])
-
-
 def delete_authentication_flow(kc_admin, flow_id):
     data_raw = kc_admin.raw_delete(f"admin/realms/{kc_admin.realm_name}/authentication/flows/{flow_id}")
     return raise_error_from_response(data_raw, KeycloakError, expected_codes=[204])
@@ -1500,7 +1487,6 @@ def init_keycloak_ucs(opt):
     realm_payload["id"] = opt.realm
     realm_payload["realm"] = opt.realm
     kc_admin.create_realm(payload=realm_payload, skip_exists=True)
-    configure_login_page(opt, kc_admin)
 
     # create portal saml client
     opt.metadata_url = f"https://{opt.umc_saml_sp_server}/univention/saml/metadata"
