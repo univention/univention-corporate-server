@@ -1,7 +1,7 @@
 #!/usr/share/ucs-test/runner pytest-3 -s -l -vv
 ## desc: Test keycloak admin console login
 ## tags: [keycloak]
-## roles: [domaincontroller_master, domaincontroller_backup]
+## roles: [domaincontroller_master]
 ## exposure: dangerous
 
 import pytest
