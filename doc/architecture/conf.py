@@ -90,8 +90,6 @@ html_context = {
 # so a file named "default.css" will overwrite the builtin "default.css".
 html_static_path = []  # value usually is ['_static']
 
-html_last_updated_fmt = "%d. %b %Y at %H:%M (UTC%z)"
-
 # https://github.com/mgeier/sphinx-last-updated-by-git
 git_last_updated_timezone = 'Europe/Berlin'
 

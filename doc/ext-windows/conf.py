@@ -88,7 +88,6 @@ html_theme_options = {
 # relative to this directory. They are copied after the builtin static files,
 # so a file named "default.css" will overwrite the builtin "default.css".
 html_static_path = []  # value usually is ['_static']
-html_last_updated_fmt = "%a, %d. %b %Y at %H:%M (UTC%z)"
 
 # https://github.com/mgeier/sphinx-last-updated-by-git
 git_last_updated_timezone = 'Europe/Berlin'
