@@ -9,3 +9,6 @@ desc: |
  * Newly set passwords are now always added to the password history even if
    the check for password history is disabled.
 bug: [56020]
+erratum: 663
+announced: 2023-05-10
+support: core
