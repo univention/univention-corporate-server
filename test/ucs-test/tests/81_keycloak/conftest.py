@@ -41,7 +41,6 @@ from utils import get_portal_tile, keycloak_login, keycloak_password_change, wai
 from univention.appcenter.actions import get_action
 from univention.appcenter.app_cache import Apps
 from univention.config_registry import ConfigRegistry
-from univention.config_registry.interfaces import Interfaces
 from univention.lib.misc import custom_groupname
 from univention.testing.udm import UCSTestUDM
 from univention.testing.utils import UCSTestDomainAdminCredentials, get_ldap_connection, wait_for_listener_replication
@@ -200,13 +199,8 @@ def keycloak_config(ucr: ConfigRegistry) -> SimpleNamespace:
     server = ucr.get("keycloak/server/sso/fqdn", f"ucs-sso-ng.{ucr['domainname']}")
     path = ucr["keycloak/server/sso/path"] if ucr["keycloak/server/sso/path"] else ""
     url = f"https://{server}{path}"
-    ip = Interfaces().get_default_ip_address().ip
-    local_url = f"https://{ip}{path}"
-    Interfaces().get_default_ip_address().ip
     config = {
         "url": url,
-        "local_url": local_url,
-        "local_admin_url": f"{local_url}/admin",
         "admin_url": f"{url}/admin",
         "token_url": f"{url}/realms/master/protocol/openid-connect/token",
         "users_url": f"{url}/admin/realms/ucs/users",

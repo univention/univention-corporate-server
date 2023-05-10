@@ -136,13 +136,15 @@ def test_csp(keycloak_config, ucr):
     response = requests.post(keycloak_config.admin_url, headers={"Accept": "text/html"})
     assert response.headers["Content-Security-Policy"]
     assert f"*.{ucr['domainname']}" in response.headers["Content-Security-Policy"]
+    if ucr["server/role"] != "domaincontroller_master":
+        pytest.skip("onyl on master, we have scenarios where keycloak/server/sso/fqdn points to a different server, but in this test we changed the local apache config.")
     try:
         with ucr_test.UCSTestConfigRegistry() as _ucr:
             # change app setting for csp
             _ucr.handler_set(['keycloak/csp/frame-ancestors=https://*.external.com'])
             run_command(['systemctl', 'restart', 'apache2'])
             # test again the
-            response = requests.post(keycloak_config.local_admin_url, headers={"Accept": "text/html"}, verify=False)  # noqa: S501
+            response = requests.post(keycloak_config.admin_url, headers={"Accept": "text/html"})
             assert response.headers["Content-Security-Policy"]
             assert f"frame-src 'self'; frame-ancestors 'self' https://*.{ucr['domainname']} https://*.external.com;  object-src 'none';" == response.headers["Content-Security-Policy"]
     finally:
