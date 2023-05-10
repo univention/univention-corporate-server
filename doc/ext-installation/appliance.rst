@@ -54,7 +54,7 @@ The following settings are configured for the basic image:
 
 Once the basic installation is complete, a dialogue is shown in which you can
 select whether to create a new UCS domain or join an existing domain. To create
-the appliance, :kbd:`Control + Q` must be pressed at this point to interrupt the
+the appliance, :kbd:`Control+Q` must be pressed at this point to interrupt the
 process. The installation continues for a short period of time, during which the
 *Starting Univention System Setup* message appears and the systems then
 restarts.
