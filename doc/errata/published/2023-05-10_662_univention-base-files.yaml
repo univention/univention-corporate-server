@@ -9,3 +9,6 @@ desc: |
  * A wrong Python format string in the `rsyslog` configuration has been fixed,
    which is used by UCRVs `syslog/input/{udp,tcp,relp}`.
 bug: [56042]
+erratum: 662
+announced: 2023-05-10
+support: core
