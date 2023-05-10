@@ -22,6 +22,9 @@ def test_kc_fqdn_path(change_app_setting, fqdn, path):
         settings['keycloak/server/sso/virtualhost'] = False
         if path == "/":
             pytest.skip("this is not supported")
+    default_fqdn = 'ucs-sso-ng.%(domainname)s' % ucr
+    if ucr.get('keycloak/server/sso/fqdn', default_fqdn) != default_fqdn:
+        pytest.skip("this test makes only sense in scenarios without custom settings for keycloak FQDN/path")
     change_app_setting('keycloak', settings)
     url = f"https://{fqdn}{path}/realms/ucs"
     resp = requests.get(url)

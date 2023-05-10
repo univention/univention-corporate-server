@@ -4,9 +4,11 @@
 ## roles: [domaincontroller_master, domaincontroller_backup]
 ## exposure: dangerous
 
+import os
 import socket
 
 import dns.resolver
+import pytest
 import requests
 from utils import (
     get_portal_tile, host_is_alive, keycloak_get_request, keycloak_sessions_by_user, run_command, wait_for_class,
@@ -129,16 +131,19 @@ def test_ucs_realm_config(keycloak_config, ucr):
     }
 
 
+@pytest.mark.skipif(not os.path.isfile("/etc/keycloak.secret"), reason="fails on hosts without keycloak.secret")
 def test_csp(keycloak_config, ucr):
     response = requests.post(keycloak_config.admin_url, headers={"Accept": "text/html"})
     assert response.headers["Content-Security-Policy"]
     assert f"*.{ucr['domainname']}" in response.headers["Content-Security-Policy"]
-
-    with ucr_test.UCSTestConfigRegistry() as _ucr:
-        # change app setting for csp
-        _ucr.handler_set(['keycloak/csp/frame-ancestors=https://*.external.com'])
+    try:
+        with ucr_test.UCSTestConfigRegistry() as _ucr:
+            # change app setting for csp
+            _ucr.handler_set(['keycloak/csp/frame-ancestors=https://*.external.com'])
+            run_command(['systemctl', 'restart', 'apache2'])
+            # test again the
+            response = requests.post(keycloak_config.local_admin_url, headers={"Accept": "text/html"}, verify=False)  # noqa: S501
+            assert response.headers["Content-Security-Policy"]
+            assert f"frame-src 'self'; frame-ancestors 'self' https://*.{ucr['domainname']} https://*.external.com;  object-src 'none';" == response.headers["Content-Security-Policy"]
+    finally:
         run_command(['systemctl', 'restart', 'apache2'])
-        # test again the
-        response = requests.post(keycloak_config.admin_url, headers={"Accept": "text/html"})
-        assert response.headers["Content-Security-Policy"]
-        assert f"frame-src 'self'; frame-ancestors 'self' https://*.{ucr['domainname']} https://*.external.com;  object-src 'none';" == response.headers["Content-Security-Policy"]
