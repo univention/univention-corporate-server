@@ -10,3 +10,6 @@ desc: |
    to specify the docker compose service name where the command is executed
    in.
 bug: [56038]
+erratum: 661
+announced: 2023-05-10
+support: core
