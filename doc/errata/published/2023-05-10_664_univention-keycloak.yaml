@@ -9,3 +9,6 @@ desc: |
  * The package `univention-keycloak` now supports the
    `keycloak/server/sso/path` app setting from the `Keycloak` app.
 bug: [56022]
+erratum: 664
+announced: 2023-05-10
+support: core
