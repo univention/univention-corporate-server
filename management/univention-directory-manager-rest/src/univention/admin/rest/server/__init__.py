@@ -180,7 +180,7 @@ class Gateway(tornado.web.RequestHandler):
     @classmethod
     def main(cls):
         parser = argparse.ArgumentParser(prog=f'{sys.executable} -m univention.admin.rest.server')
-        parser.add_argument('-d', '--debug', type=int, default=2)
+        parser.add_argument('-d', '--debug', type=int, default=ucr.get_int('directory/manager/rest/debug/level', 2))
         parser.add_argument('-p', '--port', help='Bind to a TCP port (%(default)s)', type=int, default=ucr.get_int('directory/manager/rest/server/port'))
         parser.add_argument('-i', '--interface', help='Bind to specified interface address (%(default)s)', default=ucr['directory/manager/rest/server/address'])
         parser.add_argument('-s', '--unix-socket', help='Bind to specified UNIX socket')
@@ -214,7 +214,7 @@ class Gateway(tornado.web.RequestHandler):
 
         # start sub processes for each required locale
         try:
-            cls.start_processes(args.processes, args.port)
+            cls.start_processes(args.processes, args.port, args.debug)
         except Exception:
             cls.signal_handler_stop(signal.SIGTERM, None)
             raise
@@ -272,13 +272,13 @@ class Gateway(tornado.web.RequestHandler):
         return f'/var/run/univention-directory-manager-rest-{language}-{territory.lower()}.socket'
 
     @classmethod
-    def start_processes(cls, num_processes=1, start_port=9979):
+    def start_processes(cls, num_processes=1, start_port=9979, debug_level=2):
         languages = [
             language.split(':', 1)[0]
             for language in ucr.get('locale', 'de_DE.UTF-8:UTF-8 en_US.UTF-8:UTF-8').split()
         ]
         for language in languages:
-            cmd = [sys.executable, '-m', 'univention.admin.rest', '-l', language, '-c', str(num_processes)]
+            cmd = [sys.executable, '-m', 'univention.admin.rest', '-l', language, '-c', str(num_processes), '-d', debug_level]
             language = language.split('.', 1)[0]
 
             sock = cls.get_socket_for_locale(language)
