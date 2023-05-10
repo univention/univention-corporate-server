@@ -111,11 +111,7 @@ rst_epilog = """
 """
 
 html_sidebars = {
-    "**": [
-        "sidebar-logo.html",
-        "search-field.html",
-        "_templates/sidebar-links.html",
-    ],
+    "**": ["navbar-logo.html", "icon-links.html", "sections/sidebar-links.html"],
 }
 
 latex_engine = 'lualatex'

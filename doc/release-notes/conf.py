@@ -114,7 +114,7 @@ if "spelling" in sys.argv:
 root_doc = "index"
 
 html_sidebars = {
-    "**": ["sidebar-logo.html", "search-field.html", "_templates/sidebar-links.html"],
+    "**": ["navbar-logo.html", "icon-links.html", "sections/sidebar-links.html"],
 }
 
 rst_epilog = """

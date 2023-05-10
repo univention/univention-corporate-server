@@ -10,9 +10,9 @@
 # add these directories to sys.path here. If the directory is relative to the
 # documentation root, use os.path.abspath to make it absolute, like shown here.
 #
-# import os
 import sys
 from datetime import date
+from os import path
 
 
 # sys.path.insert(0, os.path.abspath('.'))
@@ -66,7 +66,7 @@ exclude_patterns = ['_build', 'Thumbs.db', '.DS_Store']
 # The theme to use for HTML and HTML Help pages.  See the documentation for
 # a list of builtin themes.
 #
-pdf_doc_base = "ext-networks"
+pdf_doc_base = path.basename(path.dirname(__file__))
 
 html_theme = 'univention_sphinx_book_theme'
 html_context = {
@@ -104,11 +104,7 @@ rst_epilog = """
 """
 
 html_sidebars = {
-    "**": [
-        "sidebar-logo.html",
-        "search-field.html",
-        "_templates/sidebar-links.html",
-    ],
+    "**": ["navbar-logo.html", "icon-links.html", "sections/sidebar-links.html"],
 }
 
 latex_engine = 'lualatex'
