@@ -1,4 +1,4 @@
-#!/usr/share/ucs-test/runner /usr/share/ucs-test/selenium
+#!/usr/share/ucs-test/runner /usr/share/ucs-test/playwright
 # -*- coding: utf-8 -*-
 ## desc: Test Dudle installation via the 'Appcenter' module
 ## roles-not:
@@ -8,25 +8,16 @@
 ## join: true
 ## exposure: dangerous
 
-import time
-
-from univention.testing import selenium
-from univention.testing.selenium.appcenter import AppCenter
+from univention.testing.browser.appcenter import AppCenter
+from univention.testing.browser.lib import UMCBrowserTest
 
 
-class UMCTester(object):
-
-    def test_umc(self):
-        self.selenium.do_login()
-        self.appcenter.install_app('Admin Diary Backend')
-        time.sleep(5)
-        self.appcenter.uninstall_app('Admin Diary Backend')
+APP_NAME = "Admin Diary Backend"
 
 
-if __name__ == '__main__':
-    with selenium.UMCSeleniumTest() as s:
-        umc_tester = UMCTester()
-        umc_tester.selenium = s
-        umc_tester.appcenter = AppCenter(umc_tester.selenium)
+def test_appcenter_install_uninstall_admin_diary_backend(umc_browser_test: UMCBrowserTest):
+    app_center = AppCenter(umc_browser_test)
 
-        umc_tester.test_umc()
+    app_center.navigate()
+    app_center.install_app(APP_NAME)
+    app_center.uninstall_app(APP_NAME)
