@@ -41,6 +41,7 @@ define([
 	"../tools",
 	"./_SelectMixin",
 	"./_FormWidgetMixin",
+	// StandbyMixin is used by _SelectMixin
 	"./StandbyMixin",
 	"./_RegisterOnShowMixin",
 	"umc/i18n!",
@@ -229,9 +230,6 @@ define([
 			if (this._loadingDeferred.isFulfilled()) {
 				this._loadingDeferred = new Deferred();
 			}
-
-			// start standby animation
-			this.standby(true);
 		},
 
 		onValuesLoaded: function(values) {
@@ -242,8 +240,6 @@ define([
 				this._loadingDeferred.resolve();
 			}
 
-			// stop standby animation and re-render
-			this.standby(false);
 			this.render();
 		},
 

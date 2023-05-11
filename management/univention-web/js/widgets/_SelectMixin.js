@@ -85,6 +85,12 @@ define([
 		//		other form fields.
 		depends: null,
 
+		// selectFirstValueInListIfValueIsInvalidAfterLoadingValues: Boolean
+		// 		If the widget is invalid after loading values, select the first value in the list.
+		// 		This can happen if this widget uses `depends` and the current value is not
+		// 		in the list anymore after new values are loaded.
+		selectFirstValueInListIfValueIsInvalidAfterLoadingValues: false,
+
 		// searchAttr needs to specified, otherwise the values from the store will not be displayed.
 		searchAttr: 'label',
 
@@ -151,9 +157,22 @@ define([
 				}
 			}));
 
-			// if the value is not set (undefined/null), automatically choose the first element in the list
+			this.on('loadDynamicValues', lang.hitch(this, function() {
+				if (this.standby) {
+					this.standby(true);
+				}
+			}));
 			this.on('valuesLoaded', lang.hitch(this, function() {
+				if (this.standby) {
+					this.standby(false);
+				}
+
+				// if the value is not set (undefined/null), automatically choose the first element in the list
 				if (null === this.get('value') || undefined === this.get('value')) {
+					this.set('value', this._firstValueInList);
+				}
+
+				if (this.selectFirstValueInListIfValueIsInvalidAfterLoadingValues && this.isValid && !this.isValid()) {
 					this.set('value', this._firstValueInList);
 				}
 			}));
@@ -415,7 +434,7 @@ define([
 			}
 
 			// only load dynamic values in case all dependencies are fulfilled
-			if (dependList.length != nDepValues) {
+			if (dependList.length !== nDepValues) {
 				//console.log('### _SelectMixin ['+this.name+']: return');
 				return;
 			}

@@ -39,12 +39,13 @@ define([
 	"dojo/json",
 	"dijit/layout/ContentPane",
 	"umc/tools",
+	"umc/widgets/StandbyMixin",
 	"umc/widgets/_FormWidgetMixin",
 	"umc/widgets/TextBox",
 	"umc/widgets/ComboBox",
 	"umc/widgets/CheckBox"
-], function(declare, lang, Deferred, when, json, ContentPane, tools, _FormWidgetMixin) {
-	return declare("umc.widgets.MixedInput", [ ContentPane, _FormWidgetMixin ], {
+], function(declare, lang, Deferred, when, json, ContentPane, tools, StandbyMixin, _FormWidgetMixin) {
+	return declare("umc.widgets.MixedInput", [ ContentPane, _FormWidgetMixin, StandbyMixin ], {
 		// umcpCommand:
 		//		Reference to the umcpCommand the widget should use.
 		//		In order to make the widget send information such as module flavor
@@ -116,6 +117,8 @@ define([
 		},
 
 		_loadValues: function(/*Object?*/ _dependValues) {
+			this.standby(true);
+
 			// unify `depends` property to be an array
 			var dependList = this.depends instanceof Array ? this.depends :
 				(this.depends && typeof this.depends == "string") ? [ this.depends ] : [];
@@ -134,7 +137,7 @@ define([
 			}
 
 			// only load dynamic values in case all dependencies are fulfilled
-			if (dependList.length != nDepValues) {
+			if (dependList.length !== nDepValues) {
 				return;
 			}
 
@@ -156,7 +159,10 @@ define([
 			// get new values from the server and create a new form widget dynamically
 			var func = tools.stringOrFunction(this.dynamicValues, this.umcpCommand);
 			var deferredOrValues = func(params);
-			when(deferredOrValues, lang.hitch(this, '_setValues'));
+			when(deferredOrValues, lang.hitch(this, function(values) {
+				this._setValues(values);
+				this.standby(false);
+			}));
 		},
 
 		setWidget: function(type) {

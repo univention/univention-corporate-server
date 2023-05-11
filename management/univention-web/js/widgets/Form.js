@@ -418,6 +418,10 @@ define([
 			return widget;
 		},
 
+		onUpdatingDependencies: function() {
+			// event stub
+		},
+
 		_updateDependencies: function(/*String*/ publisherName) {
 			// summary:
 			//		This method is called when the value of the specified form widget
@@ -431,17 +435,23 @@ define([
 			//var json = require("dojo/json");
 			//console.log(lang.replace('# _updateDependencies: publisherName={0} _dependencyMap[{0}]={1}', [publisherName, json.stringify(tmp)]));
 
+
+			var updatingDependencies = false;
 			if (publisherName in this._dependencyMap) {
 				var values = this.get('value');
 				var readyInfo = this._allReadyNamed;
 				array.forEach(this._dependencyMap[publisherName], lang.hitch(this, function(ireceiver) {
 					if (ireceiver && ireceiver._loadValues) {
+						updatingDependencies = true;
 						ireceiver._loadValues(values, readyInfo);
 						if (this.standbyDuring) {
 							this.standbyDuring(this.ready(), this.standbyContent, this.standbyOptions);
 						}
 					}
 				}));
+			}
+			if (updatingDependencies) {
+				this.onUpdatingDependencies();
 			}
 		},
 

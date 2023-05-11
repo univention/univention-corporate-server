@@ -39,11 +39,13 @@ define([
 	"dijit/form/FilteringSelect",
 	"umc/widgets/_SelectMixin",
 	"umc/widgets/_FormWidgetMixin",
+	// StandbyMixin is used by _SelectMixin
+	"umc/widgets/StandbyMixin",
 	"umc/widgets/Icon",
 	"./Button",
 	"put-selector/put"
-], function(declare, lang, on, query, FilteringSelect, _SelectMixin, _FormWidgetMixin, Icon, Button, put) {
-	return declare("umc.widgets.ComboBox", [ FilteringSelect , _SelectMixin, _FormWidgetMixin ], {
+], function(declare, lang, on, query, FilteringSelect, _SelectMixin, _FormWidgetMixin, StandbyMixin, Icon, Button, put) {
+	return declare("umc.widgets.ComboBox", [ FilteringSelect , _SelectMixin, _FormWidgetMixin, StandbyMixin ], {
 		// search for the substring when typing
 		queryExpr: '*${0}*',
 
@@ -51,7 +53,7 @@ define([
 		autoComplete: false,
 
 		// autoHide: Boolean
-		//		If true, the ComboBox will only be visible if there it lists more than
+		//		If true, the ComboBox will only be visible if it lists more than
 		//		one element.
 		autoHide: false,
 

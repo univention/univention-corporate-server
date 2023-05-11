@@ -37,10 +37,11 @@ define([
 	"dojo/_base/array",
 	"dojo/dom-class",
 	"dojo/topic",
+	"dojo/on",
 	"umc/tools",
 	"umc/widgets/Form",
 	"umc/i18n!"
-], function(declare, lang, array, domClass, topic, tools, Form, _) {
+], function(declare, lang, array, domClass, topic, on, tools, Form, _) {
 	return declare("umc.widgets.SearchForm", Form, {
 		// summary:
 		//		Encapsulates a complete search form with standard search and cancel
@@ -54,6 +55,8 @@ define([
 		_publishPrefix: null,
 
 		hideSubmitButton: false,
+
+		doDisableSubmitWhileFormValuesLoad: false,
 
 		_isSubmitButtonSpecified: function() {
 			return array.some(this.buttons, function(ibutton) {
@@ -150,6 +153,25 @@ define([
 
 				// inverse the localized subtab title
 				topic.publish('/umc/actions', this._parentModule.moduleID, this._parentModule.moduleFlavor, this._publishPrefix, 'search');
+			}));
+
+			if (this.doDisableSubmitWhileFormValuesLoad) {
+				this._disabledSubmitUntilReady();
+				on(this, 'updatingDependencies', lang.hitch(this, function() {
+					this._disabledSubmitUntilReady();
+				}));
+			}
+		},
+
+		_disableSubmitUntilReadyDeferred: null,
+		_disabledSubmitUntilReady: function() {
+			this._buttons.submit.set('disabled', true);
+			if (this._disabledSubmitUntilReadyDeferred && !this._disabledSubmitUntilReadyDeferred.isFulfilled()) {
+				return;
+			}
+			this._disableSubmitUntilReadyDeferred = this.ready();
+			this._disableSubmitUntilReadyDeferred.then(lang.hitch(this, function() {
+				this._buttons.submit.set('disabled', false);
 			}));
 		},
 

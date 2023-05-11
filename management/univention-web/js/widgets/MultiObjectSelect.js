@@ -157,7 +157,8 @@ define([
 						if (this.autoSearch) {
 							this.search(this._form.get('value'));
 						}
-					})
+					}),
+					doDisableSubmitWhileFormValuesLoad: true,
 				});
 				this._container.addChild(this._form);
 
@@ -251,7 +252,7 @@ define([
 		},
 
 		// autoSearch: String
-		//	  Specifies whether or not a query is executed as soon as the dialog is
+		//	  Specifies whether a query is executed as soon as the dialog is
 		//	  opened for the first time.
 		autoSearch: true,
 
@@ -343,6 +344,9 @@ define([
 						this._detailDialog.on('add', lang.hitch(this, '_addElements'));
 						this.onCreateDialog( this._detailDialog );
 					}
+
+					// Be careful not to change order of `onShowDialog` call.
+					// ucs-school-umc-groups/umc/js/schoolgroups/DetailPage.js expects `onShowDialog` to run before `show()`
 					this.onShowDialog( this._detailDialog );
 					this._detailDialog.show();
 				})
