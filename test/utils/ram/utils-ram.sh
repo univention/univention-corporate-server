@@ -357,10 +357,10 @@ create_bsb_test_users () {
 		"lastname": "Hawkins",
 		"password": "!Univention2023",
 		"source_uid": "Manuell",
-		"school": "https://'"$fqdn"'/ucsschool/kelvin/v1/schools/aa-Schuldock",
+		"school": "https://'"$fqdn"'/ucsschool/kelvin/v1/schools/9990000",
 		"roles": ["https://'"$fqdn"'/ucsschool/kelvin/v1/roles/school_admin"],
 		"record_uid": "1a23bc45-67890-1234-56d7-89012345e6f7g",
-		"ucsschool_roles": ["technical_admin:bsb:*", "teacher:school:aa-Schuldock"]
+		"ucsschool_roles": ["technical_admin:bsb:*", "teacher:school:9990000"]
 	}'
 	# create schuladmin
 	create_user_from_json '{
@@ -431,6 +431,10 @@ create_school_ou () {
 	test -e "/usr/share/ucs-school-import/scripts/create_ou" || exit 1
 	/usr/share/ucs-school-import/scripts/create_ou --displayName "$1" -v "$2" "$3"
 	udm container/ou modify --dn "ou=$2,$(ucr get ldap/base)" --set dwh_ShortName="$3" --set description="$3"
+}
+
+modify_dwh_ShortName_school_ou () {
+    udm container/ou modify --dn "ou=$1,$(ucr get ldap/base)" --set dwh_ShortName="$2"
 }
 
 load_balancer_setup () {
