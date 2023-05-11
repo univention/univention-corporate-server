@@ -3,7 +3,7 @@ release: "5.0"
 version: [3]
 scope: ucs_5.0-0-errata5.0-3
 src: univention-web
-fix:
+fix: 4.0.3-3A~5.0.0.202305110948
 desc: |
  This update addresses the following issues:
  * Form input fields that load values now show a standby animation.
