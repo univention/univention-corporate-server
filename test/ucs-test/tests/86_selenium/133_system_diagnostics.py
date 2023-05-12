@@ -15,13 +15,12 @@ import tempfile
 
 from selenium.common.exceptions import TimeoutException
 
-from univention.admin import localization
+from univention.lib.i18n import Translation
 from univention.management.console.modules.diagnostic import plugins
 from univention.testing import selenium
 
 
-translator = localization.translation('ucs-test-selenium')
-_ = translator.translate
+_ = Translation('ucs-test-selenium').translate
 
 
 class UmcError(Exception):

@@ -24,14 +24,13 @@ import univention.testing.selenium.udm as selenium_udm
 import univention.testing.strings as uts
 import univention.testing.ucr as ucr_test
 import univention.testing.udm as udm_test
-from univention.admin import localization
+from univention.lib.i18n import Translation
 from univention.testing import selenium
 from univention.testing.ucs_samba import password_policy, wait_for_drs_replication
 from univention.testing.utils import get_ldap_connection
 
 
-translator = localization.translation('ucs-test-selenium')
-_ = translator.translate
+_ = Translation('ucs-test-selenium').translate
 
 
 class PasswordChangeError(Exception):

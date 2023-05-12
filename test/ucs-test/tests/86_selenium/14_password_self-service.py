@@ -22,15 +22,14 @@ from selenium import webdriver
 import univention.testing.strings as uts
 import univention.testing.ucr as ucr_test
 import univention.testing.udm as udm_test
-from univention.admin import localization
+from univention.lib.i18n import Translation
 from univention.testing import selenium
 from univention.testing.udm import UCSTestUDM_CreateUDMObjectFailed
 
 from essential.mail import file_search_mail
 
 
-translator = localization.translation('ucs-test-selenium')
-_ = translator.translate
+_ = Translation('ucs-test-selenium').translate
 
 
 MAIL_RECEIVE_TIMEOUT = 120

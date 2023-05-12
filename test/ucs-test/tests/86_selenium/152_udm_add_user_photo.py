@@ -16,13 +16,12 @@ from selenium.webdriver.common.by import By
 
 import univention.testing.selenium.udm as selenium_udm
 import univention.testing.udm as udm_test
-from univention.admin import localization
+from univention.lib.i18n import Translation
 from univention.testing import selenium
 from univention.testing.utils import get_ldap_connection
 
 
-translator = localization.translation('ucs-test-selenium')
-_ = translator.translate
+_ = Translation('ucs-test-selenium').translate
 
 
 class UmcUdmError(Exception):

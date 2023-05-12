@@ -13,15 +13,14 @@ import logging
 
 from selenium.webdriver.common.by import By
 
-from univention.admin import localization
+from univention.lib.i18n import Translation
 from univention.testing import selenium
 from univention.testing.selenium.appcenter import AppCenter
 
 
 logger = logging.getLogger(__name__)
 
-translator = localization.translation('ucs-test-selenium')
-_ = translator.translate
+_ = Translation('ucs-test-selenium').translate
 
 
 class UMCTester(object):

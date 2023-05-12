@@ -16,7 +16,7 @@ from selenium.webdriver.common.by import By
 
 import univention.testing.strings as uts
 import univention.testing.ucr as ucr_test
-from univention.admin import localization
+from univention.lib.i18n import Translation
 from univention.testing import selenium
 from univention.testing.udm import UCSTestUDM
 from univention.udm import UDM
@@ -24,8 +24,7 @@ from univention.udm import UDM
 
 logger = logging.getLogger(__name__)
 
-translator = localization.translation('ucs-test-selenium')
-_ = translator.translate
+_ = Translation('ucs-test-selenium').translate
 
 
 class ChangeFontColorError(Exception):

@@ -20,11 +20,11 @@ from selenium.webdriver.support.ui import WebDriverWait
 
 import univention.testing.ucr as ucr_test
 import univention.testing.udm as udm_test
-from univention.admin import localization
+from univention.lib.i18n import Translation
 from univention.testing import selenium, utils
 
 
-translator = localization.translation("ucs-test-selenium")
+translator = Translation("ucs-test-selenium")
 _ = translator.translate
 
 

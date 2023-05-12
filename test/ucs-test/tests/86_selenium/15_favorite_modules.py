@@ -16,13 +16,12 @@ from selenium.common.exceptions import NoSuchElementException
 from selenium.webdriver.common.by import By
 
 import univention.testing.ucr as ucr_test
-from univention.admin import localization
+from univention.lib.i18n import Translation
 from univention.testing import selenium, utils
 from univention.testing.selenium.utils import expand_path
 
 
-translator = localization.translation('ucs-test-selenium')
-_ = translator.translate
+_ = Translation('ucs-test-selenium').translate
 
 
 class FavoriteModulesError(Exception):

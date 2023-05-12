@@ -17,12 +17,11 @@ from shutil import copyfile
 from selenium import webdriver
 from selenium.common.exceptions import TimeoutException
 
-from univention.admin import localization
+from univention.lib.i18n import Translation
 from univention.testing import selenium
 
 
-translator = localization.translation('ucs-test-selenium')
-_ = translator.translate
+_ = Translation('ucs-test-selenium').translate
 
 
 class PasswordChangeError(Exception):
