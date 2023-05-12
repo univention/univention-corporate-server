@@ -433,8 +433,8 @@ create_school_ou () {
 	udm container/ou modify --dn "ou=$2,$(ucr get ldap/base)" --set dwh_ShortName="$3" --set description="$3"
 }
 
-modify_dwh_ShortName_school_ou () {
-    udm container/ou modify --dn "ou=$1,$(ucr get ldap/base)" --set dwh_ShortName="$2"
+modify_dwh_ShortName_descr_school_ou () {
+    udm container/ou modify --dn "ou=$1,$(ucr get ldap/base)" --set dwh_ShortName="$2" --set description="$3"
 }
 
 load_balancer_setup () {
