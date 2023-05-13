@@ -1,0 +1,24 @@
+product: ucs
+release: "5.0"
+version: [3]
+scope: ucs_5.0-0-errata5.0-3
+src: firefox-esr
+fix: 102.11.0esr-1~deb10u1
+desc: |
+ This update addresses the following issues:
+ 102.11.0esr-1~deb10u1 (Wed, 10 May 2023 10:18:11 +0200)
+ * Backport to buster.
+ 102.11.0esr-1 (Wed, 10 May 2023 06:32:15 +0900)
+ * New upstream release.
+ * Fixes for mfsa2023-17, also known as: CVE-2023-32205, CVE-2023-32206,
+   CVE-2023-32207, CVE-2023-32211, CVE-2023-32212, CVE-2023-32213,
+   CVE-2023-32215.
+bug: [56062]
+cve:
+- CVE-2023-32205
+- CVE-2023-32206
+- CVE-2023-32207
+- CVE-2023-32211
+- CVE-2023-32212
+- CVE-2023-32213
+- CVE-2023-32215
