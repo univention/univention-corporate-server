@@ -1,0 +1,16 @@
+product: ucs
+release: "4.4"
+version: [9]
+scope: ucs_4.4-0-errata4.4-9
+src: sqlite
+fix: 2.8.17-14+deb9u1
+desc: |
+ This update addresses the following issues:
+ 2.8.17-14+deb9u1 (Sat, 13 May 2023 12:43:40 +0200)
+ * Non-maintainer upload by the ELTS Security Team.
+ * Backport patch for CVE-2016-6153, insecure tmpfile generation.
+ * Backport patch for CVE-2018-8740, segfault on corrupted file.
+bug: [56070]
+cve:
+- CVE-2016-6153
+- CVE-2018-8740
