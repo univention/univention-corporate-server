@@ -1,3 +1,9 @@
+univention-management-console (12.0.17-13) unstable; urgency=medium
+
+  * Bug #56069: disable soap binding for SAML slo
+
+ -- Felix Botner <botner@univention.de>  Mon, 15 May 2023 15:14:05 +0200
+
 univention-management-console (12.0.17-12) unstable; urgency=medium
 
   * Bug #55913: use HTTP interface in univention-management-console-

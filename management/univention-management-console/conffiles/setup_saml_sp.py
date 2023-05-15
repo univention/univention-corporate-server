@@ -41,7 +41,9 @@ from glob import glob
 from subprocess import call
 from time import sleep
 
-from defusedxml import ElementTree
+from defusedxml import ElementTree, lxml
+from saml2 import BINDING_SOAP
+from saml2.md import NAMESPACE
 from six.moves.urllib_parse import urlparse
 
 
@@ -67,6 +69,7 @@ def handler(config_registry, changes):
         metadata_download_failed.append(saml_idp)
     elif not valid_metadata(saml_idp):
         metadata_validation_failed.append(saml_idp)
+    remove_saml_logout_soap_binding(config_registry, saml_idp)
     reload_webserver()
     if not rewrite_sasl_configuration():
         raise SystemExit('Could not rewrite SASL configuration for UMC.')
@@ -74,6 +77,25 @@ def handler(config_registry, changes):
         raise SystemExit('Could not download IDP metadata for %s' % (', '.join(metadata_download_failed),))
     if metadata_validation_failed:
         raise SystemExit('IDP metadata not valid for %s' % (', '.join(metadata_validation_failed),))
+
+
+def remove_saml_logout_soap_binding(config_registry, saml_idp):
+    """Remove the saml logout SOAP binding from the IDP metadata"""
+    if not config_registry.is_true("umc/saml/idp-server/remove-soap-logout", True):
+        return
+    idp = str(urlparse(saml_idp).netloc)
+    filename = '/usr/share/univention-management-console/saml/idp/%s.xml' % (idp,)
+    with open(filename) as xmlfile:
+        dom_xml = lxml.fromstring(xmlfile.read())
+    slo_endpoints = dom_xml.findall('.//{%s}SingleLogoutService' % NAMESPACE)
+    modified = False
+    for endpoint in slo_endpoints:
+        if endpoint.get('Binding') == BINDING_SOAP:
+            endpoint.getparent().remove(endpoint)
+            modified = True
+    if modified:
+        with open(filename, 'wb') as xmlfile:
+            xmlfile.write(lxml.tostring(dom_xml))
 
 
 def cleanup():
