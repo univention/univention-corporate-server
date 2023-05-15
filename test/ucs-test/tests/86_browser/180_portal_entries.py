@@ -1,4 +1,4 @@
-#!/usr/share/ucs-test/runner /usr/share/ucs-test/selenium
+#!/usr/share/ucs-test/runner /usr/share/ucs-test/playwright
 # -*- coding: utf-8 -*-
 ## desc: Test portal entries
 ## roles:
@@ -9,74 +9,83 @@
 ## join: true
 ## exposure: dangerous
 
-from selenium.webdriver.common.by import By
+from typing import Dict, List
 
-import univention.testing.ucr as ucr_test
+from playwright.sync_api import Page, expect
+
 from univention.lib.i18n import Translation
-from univention.testing import selenium
+from univention.testing.browser.lib import UMCBrowserTest
 
 
-_ = Translation('ucs-test-selenium').translate
+translator = Translation("ucs-test-")
+_ = translator.translate
 
 
-class UMCTester(object):
+tooltip_system_settings = _("Univention Management Console for admin­is­tra­ting the UCS domain and the local system")
+tooltip_server_overview = _("Provide an overview of all UCS server in the domain")
+row_system_and_domain_settings = [_("Administration"), _("System and domain settings"), tooltip_system_settings]
+row_server_overview = [_("Administration"), _("Server overview"), tooltip_server_overview]
+row_system_settings = [_("Administration"), _("System settings"), _("Univention Management Console for admin­is­tra­ting the local system")]
+row_portal = [_("Administration"), _("Univention Portal"), _("Central portal web page for the UCS domain")]
 
-    def get_expected_entries(self, server_role):
-        print("Getting expected entries for: %s" % (server_role))
-        expected_entries_map = {
-            'domaincontroller_master_single': [
-                (_('Administration'), _('System and domain settings'), _('Univention Management Console for admin­is­tra­ting the UCS domain and the local system')),
-            ],
-            'domaincontroller_master_multi': [
-                (_('Administration'), _('System and domain settings'), _('Univention Management Console for admin­is­tra­ting the UCS domain and the local system')),
-                (_('Administration'), _('Server overview'), _('Provide an overview of all UCS server in the domain')),
-            ],
-            'domaincontroller_backup': [
-                (_('Administration'), _('System and domain settings'), _('Univention Management Console for admin­is­tra­ting the UCS domain and the local system')),
-                (_('Administration'), _('Server overview'), _('Provide an overview of all UCS server in the domain')),
-            ],
-            'domaincontroller_slave': [
-                (_('Administration'), _('System settings'), _('Univention Management Console for admin­is­tra­ting the local system')),
-                (_('Administration'), _('Univention Portal'), _('Central portal web page for the UCS domain')),
-            ],
-            'memberserver': [
-                (_('Administration'), _('System settings'), _('Univention Management Console for admin­is­tra­ting the local system')),
-                (_('Administration'), _('Univention Portal'), _('Central portal web page for the UCS domain')),
-            ],
-        }
-        return expected_entries_map[server_role]
-
-    def check_if_expected_entries_are_shown(self, expected_entries):
-        for entry in expected_entries:
-            print("Looking under category '%s' for entry with name '%s'" % (entry[0], entry[1]))
-            self.selenium.wait_for_text(entry[1])
-            self.selenium.driver.find_element(By.XPATH, '//*[@class = "portal-category"]/h2/span[text() = "%s"]/../..//*[@class = "portal-tile__name"][text() = "%s"]' % (entry[0], entry[1]))
-
-    def go_to_portal(self, url):
-        print("Going to portal of: %s" % (url))
-        self.selenium.driver.get(url)
-
-    def test_umc(self):
-        server_role = ucr.get('server/role')
-        if server_role == 'domaincontroller_master':
-            self.go_to_portal(self.selenium.base_url)
-            expected_entries = self.get_expected_entries('domaincontroller_master_single')
-            self.check_if_expected_entries_are_shown(expected_entries)
-        elif server_role in ['domaincontroller_backup', 'domaincontroller_slave', 'memberserver']:
-            # check master
-            self.go_to_portal('https://%s/' % (ucr.get('ldap/master'),))
-            expected_entries = self.get_expected_entries('domaincontroller_master_multi')
-            self.check_if_expected_entries_are_shown(expected_entries)
-            # check server_role
-            self.go_to_portal(self.selenium.base_url)
-            expected_entries = self.get_expected_entries(server_role)
-            self.check_if_expected_entries_are_shown(expected_entries)
+expected_entries: Dict[str, List[List[str]]] = {
+    "domaincontroller_master_single": [
+        row_system_and_domain_settings,
+    ],
+    "domaincontroller_master_multi": [
+        row_system_and_domain_settings,
+        row_server_overview,
+    ],
+    "domaincontroller_backup": [
+        row_system_and_domain_settings,
+        row_server_overview,
+    ],
+    "domaincontroller_slave": [
+        row_system_settings,
+        row_portal,
+    ],
+    "memberserver": [
+        row_system_settings,
+        row_portal,
+    ],
+}
 
 
-if __name__ == '__main__':
-    with ucr_test.UCSTestConfigRegistry() as ucr, selenium.UMCSeleniumTest() as s:
-        umc_tester = UMCTester()
-        umc_tester.ucr = ucr
-        umc_tester.selenium = s
+def get_entries_for_role(role: str) -> List[List[str]]:
+    return expected_entries[role]
 
-        umc_tester.test_umc()
+
+def test_portal_entries_appear_as_expected(umc_browser_test: UMCBrowserTest, ucr):
+    page = umc_browser_test.page
+    role = ucr.get("server/role")
+
+    if role == "domaincontroller_master":
+        entries = get_entries_for_role("domaincontroller_master_single")
+        page.goto(umc_browser_test.base_url)
+        check_if_expected_entries_are_shown(page, entries)
+    elif role in ["domaincontroller_backup", "domaincontroller_slave"]:
+        # check the master
+        entries = get_entries_for_role("domaincontroller_master_multi")
+        page.goto(f"https://{ucr.get('ldap/master')}/")
+        check_if_expected_entries_are_shown(page, entries)
+
+        # check member/slave
+        entries = get_entries_for_role(role)
+        page.goto(umc_browser_test.base_url)
+        check_if_expected_entries_are_shown(page, entries)
+
+
+def check_if_expected_entries_are_shown(
+    page: Page,
+    entries: List[List[str]],
+):
+    for entry in entries:
+        (header, group, tooltip) = entry
+        expect(page.get_by_text(header)).to_be_visible()
+
+        system_and_domain_settings = page.get_by_text(group)
+        expect(system_and_domain_settings).to_be_visible()
+
+        system_and_domain_settings.hover()
+        tooltip_loc = page.get_by_role("tooltip", name=tooltip)
+        expect(tooltip_loc).to_be_visible()
