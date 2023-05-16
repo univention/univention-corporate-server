@@ -36,7 +36,7 @@
 force_recreate=0
 
 while [ "$#" -gt 0 ]; do
-	case $1 in
+	case "$1" in
 		--force-recreate)
 			force_recreate=1
 			shift 1

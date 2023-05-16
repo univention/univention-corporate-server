@@ -51,15 +51,15 @@ for name in dns/forwarder1 dns/forwarder2 dns/forwarder3; do
 		continue
 	fi
 
-	oldvalues="$oldvalues#$(univention-config-registry get $name)"
+	oldvalues="$oldvalues#$(univention-config-registry get "$name")"
 
 	var=`get_profile_var $name`
 
 	if [ -z "$var" ]; then
-		univention-config-registry unset $name
+		univention-config-registry unset "$name"
 		newvalues="$newvalues#"
 	else
-		univention-config-registry set $name=$var
+		univention-config-registry set "$name=$var"
 		newvalues="$newvalues#$var"
 	fi
 done
@@ -67,7 +67,7 @@ done
 systemctl restart bind9
 
 if [ -d "/var/lib/univention-system-setup/dnsforwarder.post" ]; then
-	run-parts /var/lib/univention-system-setup/dnsforwarder.post --arg=$oldvalues --arg=$newvalues
+	run-parts /var/lib/univention-system-setup/dnsforwarder.post --arg="$oldvalues" --arg="$newvalues"
 fi
 
 exit 0

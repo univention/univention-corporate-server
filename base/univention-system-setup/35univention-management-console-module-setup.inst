@@ -55,7 +55,7 @@ umc_policy_append "default-umc-all" "setup-all"
 
 # allow Backup Directory Node group activiation of new UCS license via udm/request_new_license
 umc_operation_create "udm-request-license" "UDM - Request new license" "" "udm/request_new_license"
-udm policies/umc create "$@" --ignore_exists --set "name=default-backup-umc" --position "cn=UMC,cn=policies,$ldap_base" || die
+udm policies/umc create "$@" --ignore_exists --set "name=default-backup-umc" --position "cn=UMC,cn=policies,${ldap_base:?}" || die
 umc_policy_append "default-backup-umc" "udm-request-license"
 
 joinscript_save_current_version

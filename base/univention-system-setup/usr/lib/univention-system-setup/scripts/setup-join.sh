@@ -40,7 +40,7 @@ dcname=""
 runcleanup=true
 
 while [ "$#" -gt 0 ]; do
-	case $1 in
+	case "$1" in
 		--dcname)
 			dcname="$2"
 			shift 2
@@ -160,7 +160,7 @@ fi
 /usr/lib/univention-system-setup/scripts/10_basis/18root_password
 
 if [ "$server_role" = "domaincontroller_master" ]; then
-	realm="$(echo $domainname | tr "[:lower:]" "[:upper:]")"
+	realm="$(echo "$domainname" | tr "[:lower:]" "[:upper:]")"
 	univention-config-registry set ldap/server/name="$hostname.$domainname" \
 						ldap/master="$hostname.$domainname" \
 						kerberos/adminserver="$hostname.$domainname" \
@@ -310,7 +310,7 @@ if [ $? -ne 1 ]; then
 				# found line starting with "Configure " ... parse the join script name
 				joinScript=${line#Configure }
 				joinScript=${joinScript%%.inst*}
-				progress_msg "$(gettext "Configure") $(basename $joinScript)"
+				progress_msg "$(gettext "Configure") $(basename "$joinScript")"
 				progress_next_step
 			fi
 			if [ "${line#__JOINERR__}" != "$line" ]; then

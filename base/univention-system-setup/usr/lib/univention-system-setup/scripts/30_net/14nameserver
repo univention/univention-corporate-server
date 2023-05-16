@@ -51,21 +51,21 @@ for name in nameserver1 nameserver2 nameserver3; do
 		continue
 	fi
 
-	oldvalues="$oldvalues#$(univention-config-registry get $name)"
+	oldvalues="$oldvalues#$(univention-config-registry get "$name")"
 
 	var=`get_profile_var $name`
 
 	if [ -z "$var" ]; then
-		univention-config-registry unset $name
+		univention-config-registry unset "$name"
 		newvalues="$newvalues#"
 	else
-		univention-config-registry set $name=$var
+		univention-config-registry set "$name=$var"
 		newvalues="$newvalues#$var"
 	fi
 done
 
 if [ -d "/var/lib/univention-system-setup/nameserver.post" ]; then
-	run-parts /var/lib/univention-system-setup/nameserver.post --arg=$oldvalues --arg=$newvalues
+	run-parts /var/lib/univention-system-setup/nameserver.post --arg="$oldvalues" --arg="$newvalues"
 fi
 
 exit 0
