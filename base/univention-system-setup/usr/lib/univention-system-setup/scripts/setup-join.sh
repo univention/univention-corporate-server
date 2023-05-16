@@ -113,7 +113,7 @@ fi
 # Re-create sources.list files before installing the role packages
 #  https://forge.univention.org/bugzilla/show_bug.cgi?id=28089
 ucr commit /etc/apt/sources.list.d/*
-apt-get update
+apt-get -q update
 
 # Bug #45896: Make the UCS ISO trusted
 sed -i 's|deb cdrom:\[UCS |deb \[trusted=yes\] cdrom:\[UCS |' /etc/apt/sources.list
@@ -234,7 +234,7 @@ else
 	echo "Creating base ssl certificate"
 	fqdn="$hostname.$domainname"
 	gencert "$SSLBASE/$fqdn" "$fqdn" "${days:-365}"
-	if getent group "DC Backup Hosts" 2>&1 >/dev/null
+	if getent group "DC Backup Hosts" >/dev/null 2>&1
 	then
 		chgrp -R "DC Backup Hosts" "$SSLBASE/$name"
 		chmod -R g+rX "$SSLBASE/$name"
