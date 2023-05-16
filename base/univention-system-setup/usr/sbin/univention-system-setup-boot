@@ -35,66 +35,47 @@
 # shellcheck source=/dev/null
 . /usr/share/univention-lib/ucr.sh
 
-if [ $# -eq 0 -o "$1" = "-h" -o "$1" = "--help" ]; then
+SITE_EC2='univention/initialsetup/'  # EC2
+SITE_USS='univention/setup/?username=root'
+
+action_help () {
 	echo
 	echo "When started, all UCR variables and configurations will be set to prepare the"
 	echo "VM for appliance mode: At next boot the configuration wizard will be started."
 	echo
-	echo "usage: $(basename "$0") [start|stop]"
+	echo "usage: ${0##*/} [start|stop]"
 	echo
 	exit 0
-fi
-
-ACTION=$1
-
-eval "$(univention-config-registry shell)"
-
-SITE_INITIALSETUP="univention/initialsetup/"
-SITE_SYSTEM_SETUP='univention/setup/?username=root'
-
-_has_system_setup_boot_startsite() {
-	if [ "$apache2_startsite" = "$SITE_SYSTEM_SETUP" -o "$apache2_startsite" = "$SITE_INITIALSETUP" ]; then
-		return 0
-	fi
-	return 1
 }
 
-if [ "$ACTION" = "start" ]; then
-	univention-config-registry set \
-		'system/setup/boot/start=true' \
-		'system/setup/boot/select/role=true' \
-		"system/setup/boot/nssldaptimeout=$nssldap_timelimit" \
-		'nssldap/timelimit=10'
+action_start () {
+	univention-config-registry set --schedule \
+		apache2/startsite="$(is_ucr_true server/amazon && echo "$SITE_EC2" || echo "$SITE_USS")" \
+		system/setup/boot/start='true' \
+		system/setup/boot/select/role='true' \
+		nssldap/timelimit='10'
 
-	# set apache2/startsite
-	if ! _has_system_setup_boot_startsite; then
-		# store old value
-		univention-config-registry set system/setup/prev/apache2/startsite="$apache2_startsite"
-
-		# set default start site for appliance mode
-		if is_ucr_true server/amazon; then
-			# welcome page on EC2 systems
-			univention-config-registry set apache2/startsite="$SITE_INITIALSETUP"
-		else
-			univention-config-registry set apache2/startsite="$SITE_SYSTEM_SETUP"
-		fi
-	fi
 	univention-config-registry commit /var/www/univention/meta.json >/dev/null 2>&1
-	[ -x /etc/init.d/apache2 ] && /etc/init.d/apache2 reload
-elif [ "$ACTION" = "stop" ]; then
-	univention-config-registry set \
-		'system/setup/boot/start=false' \
-		"nssldap/timelimit=${system_setup_boot_nssldaptimeout:-30}"
+	systemctl reload apache2.service
+}
 
-	# reset apache2/startsite
-	if _has_system_setup_boot_startsite; then
-		univention-config-registry set apache2/startsite="${system_setup_prev_apache2_startsite:-univention/}"
-		univention-config-registry unset system/setup/prev/apache2/startsite
-	fi
-	[ -x /etc/init.d/apache2 ] && /etc/init.d/apache2 reload
-else
+action_stop () {
+	univention-config-registry unset --schedule \
+		apache2/startsite \
+		system/setup/boot/start \
+		system/setup/boot/select/role \
+		nssldap/timelimit
+
+	systemctl reload apache2.service
+}
+
+case "${1:-}" in
+""|"--help"|"-h") action_help ;;
+start) action_start ;;
+stop) action_stop ;;
+*)
 	echo
-	echo "ERROR: Unknown action given"
+	echo "ERROR: Unknown action '$1' given"
 	echo
 	exit 1
-fi
+esac
