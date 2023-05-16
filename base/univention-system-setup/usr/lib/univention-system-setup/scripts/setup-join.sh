@@ -146,9 +146,7 @@ eval "$(univention-config-registry shell)"
 if [ "$server_role" = "domaincontroller_master" ]; then
 	p=$(get_profile_var "root_password")
 	if [ -n "$p" ]; then
-		if [ ! -e /var/lib/univention-ldap ]; then
-			mkdir -p /var/lib/univention-ldap
-		fi
+		install -m 0755 -d /var/lib/univention-ldap
 		echo -n "$p" >/var/lib/univention-ldap/root.secret
 		chmod 600 /var/lib/univention-ldap/root.secret
 	fi
@@ -275,7 +273,7 @@ if [ $? -ne 1 ]; then
 	fi
 	(
 		if [ "$server_role" = "domaincontroller_master" ]; then
-			mkdir -p /var/univention-join/ /usr/share/univention-join/
+			install -m 0755 -d /var/univention-join /usr/share/univention-join
 			rm -f /var/univention-join/joined /var/univention-join/status
 			touch /var/univention-join/joined /var/univention-join/status
 			ln -sf /var/univention-join/joined /usr/share/univention-join/.joined
@@ -292,7 +290,7 @@ if [ $? -ne 1 ]; then
 				# will copy the file to the same directory on the Primary Directory Node
 				# with the given user credentials. This will not work.
 				pwd_file="$(mktemp)"
-				cp "$password_file" "$pwd_file"
+				install -m 0600 "$password_file" "$pwd_file"
 				if [ -n "$dcname" ]; then
 					/usr/share/univention-join/univention-join -dcname "$dcname" -dcaccount "$dcaccount" -dcpwd "$pwd_file"
 				else

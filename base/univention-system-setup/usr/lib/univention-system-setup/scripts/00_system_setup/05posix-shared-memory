@@ -37,8 +37,6 @@
 # but /run is only writeable by root, therefore create /dev/shm as tmpfs with
 # world-writeable permissions if it is missing
 
-if [ ! -d /dev/shm ]
-then
-	mkdir --mode=755 /dev/shm
-fi
+[ -d /dev/shm ] ||
+	install -o root -g root -m 0755 -d /dev/shm
 mountpoint /dev/shm || mount -t tmpfs tmpfs /dev/shm
