@@ -38,6 +38,9 @@
 
 info_header "$0" "$(gettext "Setting keyboard layout")"
 
+[ "$check_ldap_access" = "1" ] &&
+	exit 0
+
 ucr_vars=()
 for ikey in xorg/keyboard/options/XkbModel xorg/keyboard/options/XkbLayout xorg/keyboard/options/XkbVariant
 do
@@ -49,10 +52,6 @@ do
 done
 
 if [ "${#ucr_vars[@]}" = "0" ]; then
-	exit 0
-fi
-
-if [ "$check_ldap_access" = "1" ]; then
 	exit 0
 fi
 

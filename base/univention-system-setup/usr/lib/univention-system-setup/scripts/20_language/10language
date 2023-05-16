@@ -38,12 +38,11 @@
 
 info_header "$0" "$(gettext "Generating locales")"
 
+[ "$check_ldap_access" = "1" ] &&
+	exit 0
+
 is_variable_set "locale"
 if [ $? = 0 ]; then
-	exit 0
-fi
-
-if [ "$check_ldap_access" = "1" ]; then
 	exit 0
 fi
 

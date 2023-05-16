@@ -38,9 +38,8 @@
 
 info_header "$0" "$(gettext "Configuring time zones")"
 
-if [ "$check_ldap_access" = "1" ]; then
+[ "$check_ldap_access" = "1" ] &&
 	exit 0
-fi
 
 timezone=`get_profile_var timezone`
 

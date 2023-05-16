@@ -38,9 +38,8 @@
 
 info_header "$0" "$(gettext "Setting proxy")"
 
-if [ "$check_ldap_access" = "1" ]; then
+[ "$check_ldap_access" = "1" ] &&
 	exit 0
-fi
 
 is_variable_set "proxy/http"
 if [ $? = 0 ]; then

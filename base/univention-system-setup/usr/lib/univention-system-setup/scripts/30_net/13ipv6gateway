@@ -38,12 +38,11 @@
 
 info_header "$0" "$(gettext "Setting IPv6 gateway")"
 
+[ "$check_ldap_access" = "1" ] &&
+	exit 0
+
 is_variable_set "ipv6/gateway"
 if [ $? = 0 ]; then
-	exit 0
-fi
-
-if [ "$check_ldap_access" = "1" ]; then
 	exit 0
 fi
 
