@@ -1,8 +1,9 @@
-univention-system-setup (13.0.10-1) UNRELEASED; urgency=medium
+univention-system-setup (13.0.10-1) unstable; urgency=medium
 
   * Bug #56832: UCS 5.0-6 version bump
+  * Bug #34106: Fix SSL certificate renewal
 
- -- Philipp Hahn <hahn@univention.de>  Thu, 07 Dec 2023 19:17:24 +0100
+ -- Philipp Hahn <hahn@univention.de>  Sat, 09 Dec 2023 15:05:00 +0100
 
 univention-system-setup (13.0.9-3) unstable; urgency=medium
 

@@ -35,12 +35,12 @@
 
 # shellcheck disable=SC2034
 
-force_recreate=0
+force_recreate=false
 
 while [ "$#" -gt 0 ]; do
 	case "$1" in
 		--force-recreate)
-			force_recreate=1
+			force_recreate=true
 			shift 1
 			;;
 		*)
@@ -61,33 +61,24 @@ eval "$(univention-config-registry shell)"
 
 info_header "$0" "$(gettext "Generating SSL certificate")"
 
-new_ssl_common=$(get_profile_var "ssl/common")
-new_ssl_locality=$(get_profile_var "ssl/locality")
-new_ssl_organization=$(get_profile_var "ssl/organization")
-new_ssl_country=$(get_profile_var "ssl/country")
-new_ssl_state=$(get_profile_var "ssl/state")
-new_ssl_organizationalunit=$(get_profile_var "ssl/organizationalunit")
-new_ssl_email=$(get_profile_var "ssl/email")
-
-for var in "common" "locality" "organization" "country" "state" "organizationalunit" "email"; do
-	old="ssl_$var"
-	new="new_ssl_$var"
-
-	if [ -n "${!new}" -a "${!old}" != "${!new}" ]; then
-		recreate="yes"
-		break
-	fi
+changes=()
+for var in ssl/country ssl/state ssl/locality ssl/organization ssl/organizationalunit ssl/common ssl/email
+do
+	new="$(get_profile_var "$var")" ||
+		continue
+	old="$(ucr get "$var")"
+	[ "$old" != "$new" ] ||
+		continue
+	changes+=("$var=$new")
 done
 
-if [ "$recreate" = "yes" -o "$force_recreate" = "1" ]; then
+if [ -n "${changes[*]}" ] || "$force_recreate"
+then
 	progress_steps 10
 	progress_next_step 2
 	progress_msg "$(gettext "Backing up old SSL certificate")"
 
-	# remove old backup
 	rm -rf /etc/univention/ssl.orig
-
-	# backup old SSL certificates
 	mv /etc/univention/ssl /etc/univention/ssl.orig
 
 	if ! is_profile_var_true "ad/member"; then
@@ -99,14 +90,8 @@ if [ "$recreate" = "yes" -o "$force_recreate" = "1" ]; then
 			true
 	fi
 
-	# set UCR variables
-	for var in "common" "locality" "organization" "country" "state" "organizationalunit" "email"; do
-		old="ssl_$var"
-		new="new_ssl_$var"
-		if [ -n "${!new}" ]; then
-			univention-config-registry set "${old/_//}=${!new}"
-		fi
-	done
+	[ -n "${changes[*]}" ] &&
+		univention-config-registry set "${changes[@]}"
 
 	_certificate_creation_failed() {
 		progress_next_step 10
@@ -126,36 +111,29 @@ if [ "$recreate" = "yes" -o "$force_recreate" = "1" ]; then
 
 	progress_next_step 7
 	[ -d /etc/univention/ssl.orig ] && (
-		cd /etc/univention/ssl.orig
-		for fqdn in *.*
+		cd /etc/univention/ssl.orig ||
+			exit 1
+		for cert in *.*/cert.pem
 		do
-			# just check directories for certificates
-			[ -d "$fqdn" ] ||
+			[ -f "$cert" ] ||
 				continue
-			# ignore ucsCA and directory not containing a dot
-			if [ "$fqdn" = "ucsCA" ] || ! echo "$fqdn" | grep '\.' &>/dev/null; then
-				continue
-			fi
-			# if there is no certificate, ignore it
-			[ -e "$fqdn/cert.pem" ] ||
-				continue
-			# Do not regenerate the certificate for default directory
-			if [ "$fqdn" = "unassigned-hostname.unassigned-domain" ]; then
-				continue
-			fi
-			# get the hostname
+			fqdn="${cert%/*}"
+			case "$fqdn" in
+			unassigned-hostname.*) continue ;;
+			*.unassigned-domain) continue ;;
+			esac
 			# shellcheck disable=SC2059
 			progress_msg "$(printf "$(gettext 'Recreate SSL certificate for %s')" "$fqdn")"
-			host=$(echo "$fqdn" | sed 's/\([^.]*\)\..*/\1/')
 			# shellcheck disable=SC2059
-			univention-certificate new -name "$fqdn" || progress_error "$(printf "$(gettext 'Could not recreate SSL certificate for %s.')" "$fqdn")"
-			ln -snf "$host.${domainname:?}" "/etc/univention/ssl/$host"
+			univention-certificate new -name "$fqdn" ||
+				progress_error "$(printf "$(gettext 'Could not recreate SSL certificate for %s.')" "$fqdn")"
+			[ "$fqdn" = "${fqdn%.$domainname}" ] ||
+				ln -snf "$fqdn" "/etc/univention/ssl/${fqdn%%.*}"
 		done
 	)
 	progress_next_step 9
 
-	# restart services
-	systemctl restart slapd apache2 postfix
+	systemctl restart slapd.service apache2.service postfix.service
 
 	progress_next_step 10
 fi
