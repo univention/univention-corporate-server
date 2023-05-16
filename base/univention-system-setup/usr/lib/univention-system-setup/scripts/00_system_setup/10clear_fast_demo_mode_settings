@@ -38,9 +38,8 @@
 # which are only conditionally set by join scripts, have to be unset here
 # The fast demo mode has the FQDN primary.ucs.example
 
-DEMO_MODE=$(echo "$@" | grep -q "\-\-demo-mode" && echo 1)
-
-if [ "$DEMO_MODE" != 1 ]; then
+if ! echo "$@" | grep -qe "--demo-mode"
+then
 	ucr unset kerberos/kpasswdserver \
 		saml/idp/certificate/certificate \
 		saml/idp/certificate/privatekey \
