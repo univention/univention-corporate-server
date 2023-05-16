@@ -1,4 +1,4 @@
-#!/usr/share/ucs-test/runner /usr/bin/python3
+#!/usr/share/ucs-test/runner /usr/share/ucs-test/playwright
 ## desc: Test adding portal categories and entries from within the portal
 ## roles:
 ##  - domaincontroller_master
@@ -7,133 +7,115 @@
 ## join: true
 ## exposure: dangerous
 
-import importlib
-import os
-import sys
 import time
 
+import pytest
+from playwright.sync_api import Page, expect
 
-test_lib = os.environ.get('UCS_TEST_LIB', 'univention.testing.apptest')
-try:
-    test_lib = importlib.import_module(test_lib)
-except ImportError:
-    print(f'Could not import {test_lib}. Maybe set $UCS_TEST_LIB')
-    sys.exit(1)
-
-
-def _add_german_text(chrome, text):
-    chrome.enter_tab()
-    chrome.enter_return()
-    time.sleep(.1)
-    chrome.enter_tab()
-    chrome.send_keys(text)
-    chrome.enter_tab()
-    chrome.enter_tab()
-    chrome.enter_return()
-    time.sleep(.1)
+from univention.testing.browser.lib import UMCBrowserTest
+from univention.testing.browser.portal import UCSPortalEditMode
+from univention.udm import UDM
 
 
-def test_inline_creation(chrome, admin_username, admin_password, udm):
-    # chrome.goto_portal()
-    chrome.get('/univention/portal')
-    chrome.portal_login(admin_username, admin_password)
-    chrome.wait_until_clickable('#portalCategories')
-    chrome.wait_until_clickable_and_click('#header-button-menu')
-    chrome.wait_until_clickable_and_click('button.portal-sidenavigation__edit-mode')
-
-    chrome.enter_return()
-    # create category
-    chrome.wait_until_clickable_and_click('.portal-categories__add-button')
-    buttons = chrome.find_all('.tile-add-modal-button')
-    assert len(buttons) == 2
-    buttons[0].click()
-    cat_name = 'internal-name-for-a-category'
-    cat_display = 'Category Name'
-    chrome.send_keys(cat_name)
-    chrome.enter_tab()
-    chrome.send_keys(cat_display + ' EN')
-    _add_german_text(chrome, cat_display + ' DE')
-    chrome.enter_tab()
-    chrome.enter_tab()
-    chrome.enter_return()
-    time.sleep(.2)
-    chrome.wait_until_gone('.modal-wrapper--isVisible')
-    categories = udm.get('portals/category')
-    category = list(categories.search('name=%s' % cat_name))[0].open()
-    expected = {'name': 'internal-name-for-a-category', 'displayName': {'en_US': 'Category Name EN', 'de_DE': 'Category Name DE'}, 'entries': [], 'objectFlag': []}
-    assert category.properties == expected
-
-    # create tile
-    buttons = chrome.find_all('.tile-add')
-    buttons[-1].click()
-    buttons = chrome.find_all('.tile-add-modal-button')
-    assert len(buttons) == 4
-    buttons[0].click()
-    tile_name = 'internal-name-for-a-tile'
-    tile_display = 'Tile Name'
-    tile_description = 'Tile Description'
-    tile_keyword = 'Keyword'
-    tile_link = 'https://example.com'
-    chrome.send_keys(tile_name)
-    chrome.enter_tab()
-    chrome.send_keys(tile_display + ' EN')
-    _add_german_text(chrome, tile_display + ' DE')
-    chrome.enter_tab()
-    chrome.send_keys(tile_description + ' EN')
-    _add_german_text(chrome, tile_description + ' DE')
-    chrome.enter_tab()
-    chrome.send_keys(tile_keyword + ' EN')
-    _add_german_text(chrome, tile_keyword + ' DE')
-    chrome.enter_tab()
-    chrome.enter_tab()  # activated
-    chrome.send_keys(tile_link)
-    chrome.click_element('form.admin-entry button.primary')
-    time.sleep(.2)
-    chrome.wait_until_gone('.modal-wrapper--isVisible')
-    entries = udm.get('portals/entry')
-    entry = list(entries.search('name=%s' % tile_name))[0].open()
-    expected = {
-        'name': 'internal-name-for-a-tile',
-        'displayName': {'de_DE': 'Tile Name DE', 'en_US': 'Tile Name EN'},
-        'description': {'en_US': 'Tile Description EN', 'de_DE': 'Tile Description DE'},
-        'link': [['en_US', 'https://example.com']],
-        'allowedGroups': [],
-        'activated': True,
-        'anonymous': False,
-        'icon': None,
-        'linkTarget': 'useportaldefault',
-        'backgroundColor': None,
-        'target': None,
-        'keywords': {'de_DE': 'Keyword DE', 'en_US': 'Keyword EN'},
-        'objectFlag': [],
-    }
-    assert entry.properties == expected
-
-    # create folder
-    buttons = chrome.find_all('.tile-add')
-    buttons[-1].click()
-    buttons = chrome.find_all('.tile-add-modal-button')
-    assert len(buttons) == 4
-    buttons[2].click()
-    folder_name = 'internal-name-for-a-folder'
-    folder_display = 'Folder Name'
-    chrome.send_keys(folder_name)
-    chrome.enter_tab()
-    chrome.send_keys(folder_display + ' EN')
-    _add_german_text(chrome, folder_display + ' DE')
-    chrome.enter_shift_tab()
-    chrome.enter_return()
-    time.sleep(.2)
-    chrome.wait_until_gone('.modal-wrapper--isVisible')
-    folders = udm.get('portals/folder')
-    folder = list(folders.search('name=%s' % folder_name))[0].open()
-    expected = {'name': 'internal-name-for-a-folder', 'displayName': {'en_US': 'Folder Name EN', 'de_DE': 'Folder Name DE'}, 'entries': [], 'objectFlag': []}
-    assert folder.properties == expected
-
-    category.delete()
-    entry.delete()
-    folder.delete()
+created_modules = []
 
 
-if __name__ == '__main__':
-    test_lib.run_test_file(__file__)
+@pytest.fixture(autouse=True)
+def delete_created_portal_entries():
+    yield
+
+    for module in created_modules:
+        module.delete()
+
+
+def add_category(edit_mode: UCSPortalEditMode, udm):
+    edit_mode.navigate()
+    category_name = "internal-name-for-category"
+    category_display_name = "Category Name"
+    edit_mode.add_category(category_name, category_display_name)
+
+    category = search_for_udm_object("portals/category", category_name, udm)
+    created_modules.append(category)
+
+    assert category is not None
+    assert category.props.name == category_name
+    assert category.props.entries == []
+    assert category.props.displayName == {"en_US": f"{category_display_name} US", "de_DE": f"{category_display_name} DE"}
+
+    return category
+
+
+def add_entry(edit_mode: UCSPortalEditMode, udm, category: str):
+    interal_name = "internal-name-for-entry"
+    entry_display_name = "Entry Name"
+    description = "Entry Description"
+    keyword = "Keyword"
+    link = "https://example.com"
+
+    edit_mode.navigate()
+    edit_mode.add_entry(interal_name, entry_display_name, description, keyword, link, category)
+    wait_for_dialog_to_disappear(edit_mode.page)
+
+    entry = search_for_udm_object("portals/entry", interal_name, udm)
+    created_modules.append(entry)
+
+    assert entry is not None
+    assert entry.props.name == interal_name
+    assert entry.props.description == {"de_DE": f"{description} DE", "en_US": f"{description} US"}
+    assert entry.props.displayName == {"en_US": f"{entry_display_name} US", "de_DE": f"{entry_display_name} DE"}
+    assert entry.props.keywords == {"de_DE": f"{keyword} DE", "en_US": f"{keyword} US"}
+    assert entry.props.link == [{"locale": str(edit_mode.tester.lang).replace("-", "_"), "value": link}]
+    assert entry.props.allowedGroups == []
+    assert entry.props.anonymous is False
+    assert entry.props.backgroundColor is None
+    assert entry.props.icon is None
+    assert entry.props.linkTarget == "useportaldefault"
+    assert entry.props.target is None
+    return entry
+
+
+def add_folder(edit_mode: UCSPortalEditMode, udm, category: str):
+    internal_Name = "internal-name-for-folder"
+    folder_display_name = "Folder Name"
+
+    edit_mode.navigate()
+    edit_mode.add_folder(internal_Name, folder_display_name, category)
+    wait_for_dialog_to_disappear(edit_mode.page)
+
+    folder = search_for_udm_object("portals/folder", internal_Name, udm)
+    created_modules.append(folder)
+
+    assert folder is not None
+    assert folder.props.name == internal_Name
+    assert folder.props.displayName == {"en_US": f"{folder_display_name} US", "de_DE": f"{folder_display_name} DE"}
+    assert folder.props.entries == []
+    return folder
+
+
+def wait_for_dialog_to_disappear(page: Page):
+    expect(page.get_by_role("dialog")).to_be_hidden()
+
+
+def test_inline_creation(umc_browser_test: UMCBrowserTest):
+    udm = UDM.admin().version(2)
+    edit_mode = UCSPortalEditMode(umc_browser_test)
+
+    category = add_category(edit_mode, udm)
+    category_name = category.props.displayName[str(umc_browser_test.lang).replace("-", "_")]
+
+    add_entry(edit_mode, udm, category_name)
+    add_folder(edit_mode, udm, category_name)
+
+
+def search_for_udm_object(module: str, name: str, udm, timeout: int = 10):
+    udm_module = udm.get(module)
+
+    end = time.time() + timeout
+    while time.time() < end:
+        entries = list(udm_module.search(f"name={name}"))
+        if len(entries) != 0:
+            return entries[0]
+
+        time.sleep(0.2)
+
+    pytest.fail(f"Failed to find {name} in {module} after {timeout} seconds")
