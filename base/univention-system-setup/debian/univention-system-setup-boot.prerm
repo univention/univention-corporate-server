@@ -33,7 +33,11 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
+case "$1" in
+remove|purge)
 /usr/sbin/univention-system-setup-boot stop
+;;
+esac
 
 #DEBHELPER#
 

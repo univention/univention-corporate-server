@@ -33,11 +33,15 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
+case "$1" in
+remove|purge)
 # remove init script univention-system-setup-boot-prepare manually from run-level
 update-rc.d -f univention-system-setup-boot-prepare remove
 
 pam-auth-update --force --package --remove univention-system-setup-boot
 ucr commit /etc/pam.d/*
+;;
+esac
 
 #DEBHELPER#
 
