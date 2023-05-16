@@ -7,7 +7,9 @@ Build-Depends-Indep:
  debhelper,
  dh-python,
  python-all,
+ python-setuptools,
  python3-all,
+ python3-setuptools,
 
 Package: univention-debhelper
 Architecture: all

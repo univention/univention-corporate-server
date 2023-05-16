@@ -10,9 +10,11 @@ Build-Depends:
  python-all-dev,
  python-debian,
  python-pytest,
+ python-setuptools,
  python3-all-dev,
  python3-debian,
  python3-pytest,
+ python3-setuptools,
 
 Package: python-univention-debug
 Architecture: any

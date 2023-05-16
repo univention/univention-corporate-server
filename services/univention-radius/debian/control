@@ -10,6 +10,7 @@ Build-Depends:
  python3-debian,
  python3-passlib,
  python3-pytest,
+ python3-setuptools,
  univention-config-dev (>= 15.0.3),
 
 Package: univention-radius
