@@ -44,8 +44,6 @@ info_header "$0" "$(gettext "Setting IPv4 gateway")"
 gateway="$(get_profile_var gateway)" ||
 	exit 0
 
-old_gateway=$(univention-config-registry get gateway)
-
 if [ -z "$gateway" ]; then
 	univention-config-registry unset gateway
 	route del default
@@ -56,6 +54,7 @@ else
 fi
 
 if [ -d "/var/lib/univention-system-setup/gateway.post" ]; then
+	old_gateway="$(univention-config-registry get gateway)"
 	run-parts /var/lib/univention-system-setup/gateway.post --arg="$old_gateway" --arg="$gateway"
 fi
 

@@ -44,8 +44,6 @@ info_header "$0" "$(gettext "Setting IPv6 gateway")"
 gateway6="$(get_profile_var ipv6/gateway)" ||
 	exit 0
 
-old_gateway6=$(univention-config-registry get ipv6/gateway)
-
 if [ -z "$gateway6" ]; then
 	univention-config-registry unset ipv6/gateway
 else
@@ -53,6 +51,7 @@ else
 fi
 
 if [ -d "/var/lib/univention-system-setup/gateway.post" ]; then
+	old_gateway6="$(univention-config-registry get ipv6/gateway)"
 	run-parts /var/lib/univention-system-setup/gateway6.post --arg="$old_gateway6" --arg="$gateway6"
 fi
 
