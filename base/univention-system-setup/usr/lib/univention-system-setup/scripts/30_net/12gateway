@@ -46,11 +46,10 @@ gateway="$(get_profile_var gateway)" ||
 
 if [ -z "$gateway" ]; then
 	univention-config-registry unset gateway
-	route del default
+	ip route del default
 else
 	univention-config-registry set gateway="$gateway"
-	route del default
-	route add default gw "$gateway"
+	ip route replace default "$gateway"
 fi
 
 if [ -d "/var/lib/univention-system-setup/gateway.post" ]; then
