@@ -278,9 +278,9 @@ if [ $? -ne 1 ]; then
 			ln -sf /var/univention-join/status /usr/lib/univention-install/.index.txt
 
 			for i in /usr/lib/univention-install/*.inst; do
-				echo "Configure $(basename "$i") $(LC_ALL=C date)" | tee -a "$JOIN_LOG"
-				$i 2>&1 | tee -a "$JOIN_LOG"
-			done
+				echo "Configure $(basename "$i") $(LC_ALL=C date)"
+				"$i" 2>&1
+			done | tee -a "$JOIN_LOG"
 		else
 			if [ -n "$dcaccount" ] && [ -n "$password_file" ]; then
 				# Copy to a temporary password file, because univention-join
