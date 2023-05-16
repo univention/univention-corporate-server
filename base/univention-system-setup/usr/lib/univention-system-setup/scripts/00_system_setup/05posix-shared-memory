@@ -39,4 +39,5 @@
 
 [ -d /dev/shm ] ||
 	install -o root -g root -m 0755 -d /dev/shm
-mountpoint /dev/shm || mount -t tmpfs tmpfs /dev/shm
+mountpoint /dev/shm ||
+	mount -t tmpfs tmpfs /dev/shm

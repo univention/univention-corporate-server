@@ -56,9 +56,8 @@ done
 eval "$(univention-config-registry shell)"
 
 # SSL certificate can only be created on a Primary Directory Node
-if [ "$server_role" != "domaincontroller_master" ]; then
+[ "$server_role" = "domaincontroller_master" ] ||
 	exit 0
-fi
 
 info_header "$0" "$(gettext "Generating SSL certificate")"
 
@@ -86,9 +85,7 @@ if [ "$recreate" = "yes" -o "$force_recreate" = "1" ]; then
 	progress_msg "$(gettext "Backing up old SSL certificate")"
 
 	# remove old backup
-	if [ -d /etc/univention/ssl.orig ]; then
-		rm -rf /etc/univention/ssl.orig
-	fi
+	rm -rf /etc/univention/ssl.orig
 
 	# backup old SSL certificates
 	mv /etc/univention/ssl /etc/univention/ssl.orig
@@ -113,9 +110,7 @@ if [ "$recreate" = "yes" -o "$force_recreate" = "1" ]; then
 
 	_certificate_creation_failed() {
 		progress_next_step 10
-		if [ -d /etc/univention/ssl ]; then
-			rm -rf /etc/univention/ssl
-		fi
+		rm -rf /etc/univention/ssl
 		mv /etc/univention/ssl.orig /etc/univention/ssl
 
 		progress_error "$(gettext "The SSL certificate creation failed. The old certificates have been restored.")"
@@ -132,19 +127,18 @@ if [ "$recreate" = "yes" -o "$force_recreate" = "1" ]; then
 	progress_next_step 7
 	[ -d /etc/univention/ssl.orig ] && (
 		cd /etc/univention/ssl.orig
-		for fqdn in *; do
+		for fqdn in *.*
+		do
 			# just check directories for certificates
-			if [ ! -d "$fqdn" ]; then
+			[ -d "$fqdn" ] ||
 				continue
-			fi
 			# ignore ucsCA and directory not containing a dot
 			if [ "$fqdn" = "ucsCA" ] || ! echo "$fqdn" | grep '\.' &>/dev/null; then
 				continue
 			fi
 			# if there is no certificate, ignore it
-			if [ ! -e "$fqdn/cert.pem" ]; then
+			[ -e "$fqdn/cert.pem" ] ||
 				continue
-			fi
 			# Do not regenerate the certificate for default directory
 			if [ "$fqdn" = "unassigned-hostname.unassigned-domain" ]; then
 				continue

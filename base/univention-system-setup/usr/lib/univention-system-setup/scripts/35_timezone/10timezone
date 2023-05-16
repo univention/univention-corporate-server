@@ -46,12 +46,9 @@ timezone="$(get_profile_var timezone)" ||
 [ -n "$timezone" ] ||
 	exit 0
 
-if [ -e /etc/timezone ]; then
-	old_timezone=`cat /etc/timezone`
-	if [ "$old_timezone" = "$timezone" ]; then
-		exit 0
-	fi
-fi
+[ -e /etc/timezone ] &&
+	[ "$(cat /etc/timezone)" = "$timezone" ] &&
+	exit 0
 
 rm -f /etc/localtime /etc/timezone
 echo "$timezone" >/etc/timezone
@@ -59,7 +56,7 @@ install -m644 "/usr/share/zoneinfo/$timezone" /etc/localtime
 
 service stop ntp
 # shellcheck disable=SC2015
-test -x /usr/sbin/ntpdate-debian && /usr/sbin/ntpdate-debian || true
+[ -x /usr/sbin/ntpdate-debian ] && /usr/sbin/ntpdate-debian || true
 service start ntp
 
 exit 0

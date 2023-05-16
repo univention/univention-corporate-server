@@ -45,11 +45,12 @@ default_locale="$(get_profile_var "locale/default")" ||
 	exit 0
 
 if [ -z "$default_locale" ]; then
-	univention-config-registry unset "locale/default"
+	univention-config-registry unset locale/default
 else
-	univention-config-registry set "locale/default"="$default_locale"
-	univention-config-registry set directory/manager/web/language="$(echo $default_locale | sed -e 's|:.*||')"
-	univention-config-registry set umc/web/language="$default_locale"
+	univention-config-registry set \
+		locale/default="$default_locale" \
+		directory/manager/web/language="${default_locale%%:*}" \
+		umc/web/language="$default_locale"
 fi
 
 exit 0

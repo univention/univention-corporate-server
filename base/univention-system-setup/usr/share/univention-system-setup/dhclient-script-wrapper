@@ -78,7 +78,7 @@ nameserver_3="${nameserver_3:-}"
 domainname="${new_domain_name:-}"
 %EOF%
 		fi
-        ;;
+		;;
 esac
 
 exit 0

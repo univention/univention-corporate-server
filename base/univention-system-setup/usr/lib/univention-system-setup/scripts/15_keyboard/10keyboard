@@ -48,9 +48,8 @@ do
 		ucr_vars+=("$ikey=$ival")
 done
 
-if [ "${#ucr_vars[@]}" = "0" ]; then
+[ "${#ucr_vars[@]}" -ge 1 ] ||
 	exit 0
-fi
 
 univention-config-registry set "${ucr_vars[@]}"
 

@@ -159,12 +159,12 @@ fi
 
 if [ "$server_role" = "domaincontroller_master" ]; then
 	realm="$(echo "$domainname" | tr "[:lower:]" "[:upper:]")"
-	univention-config-registry set ldap/server/name="$hostname.$domainname" \
-						ldap/master="$hostname.$domainname" \
-						kerberos/adminserver="$hostname.$domainname" \
-						kerberos/realm="$realm" \
-						mail/alias/root="systemmail@$hostname.$domainname"
-
+	univention-config-registry set \
+		ldap/server/name="$hostname.$domainname" \
+		ldap/master="$hostname.$domainname" \
+		kerberos/adminserver="$hostname.$domainname" \
+		kerberos/realm="$realm" \
+		mail/alias/root="systemmail@$hostname.$domainname"
 fi
 
 info_header "create-ssh-keys" "$(gettext "Recreating SSH keys")"
@@ -281,21 +281,16 @@ if [ $? -ne 1 ]; then
 
 			for i in /usr/lib/univention-install/*.inst; do
 				echo "Configure $(basename "$i") $(LC_ALL=C date)" | tee -a "$JOIN_LOG"
-				# test
 				$i 2>&1 | tee -a "$JOIN_LOG"
 			done
 		else
-			if [ -n "$dcaccount" -a -n "$password_file" ]; then
+			if [ -n "$dcaccount" ] && [ -n "$password_file" ]; then
 				# Copy to a temporary password file, because univention-join
 				# will copy the file to the same directory on the Primary Directory Node
 				# with the given user credentials. This will not work.
 				pwd_file="$(mktemp)"
 				install -m 0600 "$password_file" "$pwd_file"
-				if [ -n "$dcname" ]; then
-					/usr/share/univention-join/univention-join -dcname "$dcname" -dcaccount "$dcaccount" -dcpwd "$pwd_file"
-				else
-					/usr/share/univention-join/univention-join -dcaccount "$dcaccount" -dcpwd "$pwd_file"
-				fi
+				/usr/share/univention-join/univention-join ${dcname:+-dcname "$dcname"} -dcaccount "$dcaccount" -dcpwd "$pwd_file"
 				rm -f "$pwd_file"
 			fi
 		fi
