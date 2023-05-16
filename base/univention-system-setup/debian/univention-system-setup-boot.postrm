@@ -33,10 +33,6 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-eval "$(univention-config-registry shell)"
-
-. /usr/share/univention-lib/all.sh
-
 # remove init script univention-system-setup-boot-prepare manually from run-level
 update-rc.d -f univention-system-setup-boot-prepare remove
 

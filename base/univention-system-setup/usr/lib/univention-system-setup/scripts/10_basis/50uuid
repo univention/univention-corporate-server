@@ -51,9 +51,6 @@ done
 # shellcheck source=../setup_utils.sh
 . /usr/lib/univention-system-setup/scripts/setup_utils.sh
 
-eval "$(univention-config-registry shell)"
-
-
 if [ "$force_recreate" = "1" ]; then
 	info_header "$0" "$(gettext "Generating UUID")"
 	ucr set uuid/system="$(cat /proc/sys/kernel/random/uuid)"

@@ -33,10 +33,6 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-eval "$(univention-config-registry shell)"
-
-. /usr/share/univention-lib/all.sh
-
 /usr/sbin/univention-system-setup-boot stop
 
 #DEBHELPER#
