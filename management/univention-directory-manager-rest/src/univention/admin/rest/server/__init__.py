@@ -278,7 +278,7 @@ class Gateway(tornado.web.RequestHandler):
             for language in ucr.get('locale', 'de_DE.UTF-8:UTF-8 en_US.UTF-8:UTF-8').split()
         ]
         for language in languages:
-            cmd = [sys.executable, '-m', 'univention.admin.rest', '-l', language, '-c', str(num_processes), '-d', debug_level]
+            cmd = [sys.executable, '-m', 'univention.admin.rest', '-l', language, '-c', str(num_processes), '-d', str(debug_level)]
             language = language.split('.', 1)[0]
 
             sock = cls.get_socket_for_locale(language)
