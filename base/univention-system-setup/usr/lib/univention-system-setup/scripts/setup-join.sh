@@ -293,27 +293,22 @@ if [ $? -ne 1 ]; then
 			fi
 		fi
 	) 2>&1 | (
-		# parse the output for lines "^Configure .*" which indicate that a join
-		# script is being executed
 		while read -r line
 		do
-			if [ "${line#Configure }" != "$line" ]; then
-				# found line starting with "Configure " ... parse the join script name
+			case "$line" in
+			'Configure '*)  # parse the join script name
 				joinScript=${line#Configure }
 				joinScript=${joinScript%%.inst*}
 				progress_msg "$(gettext "Configure") $(basename "$joinScript")"
 				progress_next_step
-			fi
-			if [ "${line#__JOINERR__}" != "$line" ]; then
-				# found line indicating join failed. output
-				echo "$line"
-				continue
-			fi
-			if [ "${line#* Message:  }" != "$line" ]; then
-				# found line indicating join failed. output
+				;;
+			__JOINERR__*)  # join failed output
+				;;
+			*' Message:  '*)  # join failed output
 				progress_join_error "${line#* Message:  }"
 				continue
-			fi
+				;;
+			esac
 			echo "$line"
 		done
 	)
