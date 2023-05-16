@@ -41,11 +41,10 @@ info_header "$0" "$(gettext "Configuring time zones")"
 [ "$check_ldap_access" = "1" ] &&
 	exit 0
 
-timezone=`get_profile_var timezone`
-
-if [ -z "$timezone" ]; then
+timezone="$(get_profile_var timezone)" ||
 	exit 0
-fi
+[ -n "$timezone" ] ||
+	exit 0
 
 if [ -e /etc/timezone ]; then
 	old_timezone=`cat /etc/timezone`

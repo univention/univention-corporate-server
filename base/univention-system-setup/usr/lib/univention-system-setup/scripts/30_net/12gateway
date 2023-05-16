@@ -41,13 +41,10 @@ info_header "$0" "$(gettext "Setting IPv4 gateway")"
 [ "$check_ldap_access" = "1" ] &&
 	exit 0
 
-is_variable_set "gateway"
-if [ $? = 0 ]; then
+gateway="$(get_profile_var gateway)" ||
 	exit 0
-fi
 
 old_gateway=$(univention-config-registry get gateway)
-gateway=`get_profile_var gateway`
 
 if [ -z "$gateway" ]; then
 	univention-config-registry unset gateway

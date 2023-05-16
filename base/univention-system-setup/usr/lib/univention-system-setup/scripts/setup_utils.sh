@@ -109,7 +109,7 @@ progress_next_step () {
 	fi
 }
 
-is_variable_set () {
+is_variable_set () {  # DEPRECATED: has inverted logic
 	[ -e "$profile_file" ] ||
 		return 0
 	[ -n "$1" ] ||
@@ -118,24 +118,16 @@ is_variable_set () {
 	[ -z "$value" ]
 }
 get_profile_var () {
-	[ -e "$profile_file" ] ||
-		return
-	[ -n "$1" ] ||
-		return
-	sed -rne "/^ *#/d;s|^$1=||;T;s|([\"'])(.*)\1 *\$|\2|;p;q" "$profile_file"
+	[ -e "$profile_file" ] &&
+	[ -n "$1" ] &&
+	! sed -rne "/^ *#/d;s|^$1=||;T;s|([\"'])(.*)\1 *\$|\2|;p;q 1" "$profile_file"
 }
-
 is_profile_var_true () {
-	local value
-	value="$(get_profile_var "$1")"
-	[ -n "$value" ] ||
-		return 2
-	value="$(echo "$value" | tr '[:upper:]' '[:lower:]')"
-	for falsevalue in no false 0 disable disabled off; do
-		[ "$value" = "$falsevalue" ] &&
-			return 1
-	done
-	return 0
+	case "$(get_profile_var "$1" | tr '[:upper:]' '[:lower:]')" in
+	'') return 2 ;;
+	false|0|disable|disabled|off) return 1 ;;
+	*) return 0 ;;
+	esac
 }
 
 service () {

@@ -45,14 +45,10 @@ oldvalues=""
 newvalues=""
 
 for name in nameserver1 nameserver2 nameserver3; do
-	is_variable_set "$name"
-	if [ $? = 0 ]; then
+	var="$(get_profile_var "$name")" ||
 		continue
-	fi
 
 	oldvalues="$oldvalues#$(univention-config-registry get "$name")"
-
-	var=`get_profile_var $name`
 
 	if [ -z "$var" ]; then
 		univention-config-registry unset "$name"

@@ -41,12 +41,8 @@ info_header "$0" "$(gettext "Setting the default locale")"
 [ "$check_ldap_access" = "1" ] &&
 	exit 0
 
-is_variable_set "locale/default"
-if [ $? = 0 ]; then
+default_locale="$(get_profile_var "locale/default")" ||
 	exit 0
-fi
-
-default_locale=`get_profile_var "locale/default"`
 
 if [ -z "$default_locale" ]; then
 	univention-config-registry unset "locale/default"
