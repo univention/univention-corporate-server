@@ -92,7 +92,7 @@ run-parts -v /usr/lib/univention-system-setup/scripts/25_defaultlocale
 
 # Do not allow the UMC to be restarted, webserver is OK, but
 # make sure the webserver uses the same certificates during setup.
-# The variables are removed in during cleanup
+# The variables are removed during cleanup
 /usr/share/univention-updater/disable-apache2-umc
 # Do not change apache certificate when installing via debian installer
 eval "$(univention-config-registry shell)"
@@ -117,7 +117,7 @@ fi
 ucr commit /etc/apt/sources.list.d/*
 apt-get update
 
-# Bug #45896: Make the UCS 4.3 DVD trusted
+# Bug #45896: Make the UCS ISO trusted
 sed -i 's|deb cdrom:\[UCS |deb \[trusted=yes\] cdrom:\[UCS |' /etc/apt/sources.list
 
 # Install the server package

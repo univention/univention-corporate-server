@@ -38,7 +38,7 @@
 if [ $# -eq 0 -o "$1" = "-h" -o "$1" = "--help" ]; then
 	echo
 	echo "When started, all UCR variables and configurations will be set to prepare the"
-	echo "VM for an appliance mode. At next boot, a configuration wizard will be started."
+	echo "VM for appliance mode: At next boot the configuration wizard will be started."
 	echo
 	echo "usage: $(basename "$0") [start|stop]"
 	echo
