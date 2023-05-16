@@ -271,11 +271,11 @@ run () {
 
 dump () {
 	echo === LDAP:
-	slapcat -f /etc/ldap/slapd.conf -d0 | egrep '10.0.0.|192.168.122.|2001:4dd0:f8fc:'
+	slapcat -f /etc/ldap/slapd.conf -d0 | grep -E '10.0.0.|192.168.122.|2001:4dd0:f8fc:'
 	echo === UCR:
 	ucr search --brief --value '10.0.0.|192.168.122.|2001:4dd0:f8fc:'
 	echo === computer:
-	udm computers/domaincontroller_master list | egrep '^DN|mac|EntryZone'
+	udm computers/domaincontroller_master list | grep -E '^DN|mac|EntryZone'
 	echo === DNS:
 	udm dns/forward_zone list | DN
 	echo === DNS-rev:
@@ -285,7 +285,7 @@ dump () {
 	echo === DHCP:
 	udm dhcp/subnet list --superordinate "$(udm dhcp/service list | DN)" | DN
 	echo === PXE:
-	egrep '10.0.0.|192.168.122.|2001:4dd0:f8fc:' /var/lib/univention-client-boot/pxelinux.cfg/0AC811CD
+	grep -E '10.0.0.|192.168.122.|2001:4dd0:f8fc:' /var/lib/univention-client-boot/pxelinux.cfg/0AC811CD
 }
 
 default () {
