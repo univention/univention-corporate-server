@@ -105,7 +105,7 @@ reset_ucr () {
 	ucr --keys-only search --non-empty --brief '^interfaces/' |
 		grep --fixed-strings --invert-match --line-regexp --file "$tmp/unset" |
 		xargs -r -d '\n' ucr unset &
-	while IFS='=' read key value
+	while IFS='=' read -r key value
 	do
 		case "$key" in
 		"#"*) continue ;;

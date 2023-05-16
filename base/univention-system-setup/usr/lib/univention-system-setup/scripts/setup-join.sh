@@ -304,7 +304,8 @@ if [ $? -ne 1 ]; then
 	) 2>&1 | (
 		# parse the output for lines "^Configure .*" which indicate that a join
 		# script is being executed
-		while read line; do
+		while read -r line
+		do
 			if [ "${line#Configure }" != "$line" ]; then
 				# found line starting with "Configure " ... parse the join script name
 				joinScript=${line#Configure }
