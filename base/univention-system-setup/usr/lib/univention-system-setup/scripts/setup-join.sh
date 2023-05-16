@@ -96,7 +96,7 @@ run-parts -v /usr/lib/univention-system-setup/scripts/25_defaultlocale
 /usr/share/univention-updater/disable-apache2-umc
 # Do not change apache certificate when installing via debian installer
 eval "$(univention-config-registry shell)"
-if [ "$system_setup_boot_installer" != "true" ]; then
+if [ "${system_setup_boot_installer:-}" != "true" ]; then
 	certificate="$(mktemp -p /var/cache/univention-system-setup)"
 	key="$(mktemp -p /var/cache/univention-system-setup)"
 	ca="$(mktemp -p /var/cache/univention-system-setup)"
@@ -208,9 +208,9 @@ fi
 echo "Starting re-configuration of network"
 run-parts -v -a --network-only -a --appliance-mode -- /usr/lib/univention-system-setup/scripts/30_net
 eval "$(ucr shell proxy/http proxy/https proxy/no_proxy)"
-[ -n "$proxy_http" ] && export http_proxy="$proxy_http"
-[ -n "$proxy_https" ] && export https_proxy="$proxy_https"
-[ -n "$proxy_no_proxy" ] && export no_proxy="$proxy_no_proxy"
+[ -n "${proxy_http:-}" ] && export http_proxy="$proxy_http"
+[ -n "${proxy_https:-}" ] && export https_proxy="$proxy_https"
+[ -n "${proxy_no_proxy:-}" ] && export no_proxy="$proxy_no_proxy"
 
 run-parts -v /usr/lib/univention-system-setup/scripts/35_timezone
 
@@ -237,7 +237,7 @@ else
 	cd "$SSLBASE"
 	echo "Creating base ssl certificate"
 	fqdn="$hostname.$domainname"
-	gencert "$SSLBASE/$fqdn" "$fqdn" "$days"
+	gencert "$SSLBASE/$fqdn" "$fqdn" "${days:-365}"
 	if getent group "DC Backup Hosts" 2>&1 >/dev/null
 	then
 		chgrp -R "DC Backup Hosts" "$SSLBASE/$name"

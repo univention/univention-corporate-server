@@ -155,7 +155,7 @@ if [ "$recreate" = "yes" -o "$force_recreate" = "1" ]; then
 			host=$(echo "$fqdn" | sed 's/\([^.]*\)\..*/\1/')
 			# shellcheck disable=SC2059
 			univention-certificate new -name "$fqdn" || progress_error "$(printf "$(gettext 'Could not recreate SSL certificate for %s.')" "$fqdn")"
-			ln -snf "$host.$domainname" "/etc/univention/ssl/$host"
+			ln -snf "$host.${domainname:?}" "/etc/univention/ssl/$host"
 		done
 	)
 	progress_next_step 9

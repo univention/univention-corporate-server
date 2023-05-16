@@ -40,7 +40,7 @@ eval "$(univention-config-registry shell)"
 email=$(get_profile_var email_address)
 if [ "$server_role" = "domaincontroller_master" -a -n "$email" ]; then
 	echo "Activating the UCS license with the email address $email..."
-	/usr/sbin/umc-command -r -U "$hostname\$" -y /etc/machine.secret udm/request_new_license -f license-request -o email="$email"
+	/usr/sbin/umc-command -r -U "${hostname:?}\$" -y /etc/machine.secret udm/request_new_license -f license-request -o email="$email"
 	echo "... done"
 fi
 
