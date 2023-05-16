@@ -70,6 +70,7 @@ reset_network () {
 }
 reset_computer () {
 	zap_udm computers/domaincontroller_master
+	# shellcheck disable=SC2046
 	udm computers/domaincontroller_master create \
 		--position "cn=dc,cn=computers,dc=phahn,dc=dev" \
 		--set name="mas11" \

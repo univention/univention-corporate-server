@@ -48,6 +48,7 @@ while [ "$#" -gt 0 ]; do
 	esac
 done
 
+# shellcheck source=../setup_utils.sh
 . /usr/lib/univention-system-setup/scripts/setup_utils.sh
 
 eval "$(univention-config-registry shell)"

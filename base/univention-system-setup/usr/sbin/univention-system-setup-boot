@@ -32,6 +32,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
+# shellcheck source=/dev/null
 . /usr/share/univention-lib/ucr.sh
 
 if [ $# -eq 0 -o "$1" = "-h" -o "$1" = "--help" ]; then

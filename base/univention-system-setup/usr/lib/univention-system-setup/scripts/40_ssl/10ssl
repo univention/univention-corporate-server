@@ -33,6 +33,8 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
+# shellcheck disable=SC2034
+
 force_recreate=0
 
 while [ "$#" -gt 0 ]; do
@@ -48,6 +50,7 @@ while [ "$#" -gt 0 ]; do
 	esac
 done
 
+# shellcheck source=../setup_utils.sh
 . /usr/lib/univention-system-setup/scripts/setup_utils.sh
 
 eval "$(univention-config-registry shell)"
@@ -122,6 +125,7 @@ if [ "$recreate" = "yes" -o "$force_recreate" = "1" ]; then
 	# create new CA und certificates
 	progress_next_step 5
 	progress_msg "$(gettext "Generating SSL CA certificate.")"
+	# shellcheck source=/dev/null
 	. /usr/share/univention-ssl/make-certificates.sh
 	init || _certificate_creation_failed
 
@@ -146,8 +150,10 @@ if [ "$recreate" = "yes" -o "$force_recreate" = "1" ]; then
 				continue
 			fi
 			# get the hostname
+			# shellcheck disable=SC2059
 			progress_msg "$(printf "$(gettext 'Recreate SSL certificate for %s')" "$fqdn")"
 			host=$(echo "$fqdn" | sed 's/\([^.]*\)\..*/\1/')
+			# shellcheck disable=SC2059
 			univention-certificate new -name "$fqdn" || progress_error "$(printf "$(gettext 'Could not recreate SSL certificate for %s.')" "$fqdn")"
 			ln -snf "$host.$domainname" "/etc/univention/ssl/$host"
 		done

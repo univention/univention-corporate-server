@@ -75,6 +75,7 @@ done
 SETUP_LOG="/var/log/univention/setup.log"
 JOIN_LOG="/var/log/univention/join.log"
 
+# shellcheck source=setup_utils.sh
 . /usr/lib/univention-system-setup/scripts/setup_utils.sh
 
 echo "Reset UCR variables"
@@ -230,6 +231,8 @@ else
 	# Create them in any case, as apache2 will not start otherwise
 	# These should be treated as dummy certificates,
 	# as a new certificate will be created and downloaded when joining a UCS domain
+
+	# shellcheck source=/dev/null
 	. /usr/share/univention-ssl/make-certificates.sh
 	cd "$SSLBASE"
 	echo "Creating base ssl certificate"

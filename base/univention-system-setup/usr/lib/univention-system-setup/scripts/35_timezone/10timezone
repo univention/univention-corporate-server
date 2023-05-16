@@ -33,6 +33,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
+# shellcheck source=../setup_utils.sh
 . /usr/lib/univention-system-setup/scripts/setup_utils.sh
 
 info_header "$0" "$(gettext "Configuring time zones")"
@@ -59,6 +60,7 @@ echo "$timezone" >/etc/timezone
 install -m644 "/usr/share/zoneinfo/$timezone" /etc/localtime
 
 service stop ntp
+# shellcheck disable=SC2015
 test -x /usr/sbin/ntpdate-debian && /usr/sbin/ntpdate-debian || true
 service start ntp
 

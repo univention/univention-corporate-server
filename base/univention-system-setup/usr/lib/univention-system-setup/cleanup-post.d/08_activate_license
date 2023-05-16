@@ -32,6 +32,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
+# shellcheck source=../scripts/setup_utils.sh
 . /usr/lib/univention-system-setup/scripts/setup_utils.sh
 
 eval "$(univention-config-registry shell)"
@@ -42,6 +43,5 @@ if [ "$server_role" = "domaincontroller_master" -a -n "$email" ]; then
 	/usr/sbin/umc-command -r -U "$hostname\$" -y /etc/machine.secret udm/request_new_license -f license-request -o email="$email"
 	echo "... done"
 fi
-
 
 exit 0

@@ -33,10 +33,10 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
+# shellcheck source=../setup_utils.sh
 . /usr/lib/univention-system-setup/scripts/setup_utils.sh
 
 info_header "$0" "$(gettext "Setting IPv6 gateway")"
-
 
 is_variable_set "ipv6/gateway"
 if [ $? = 0 ]; then
@@ -61,4 +61,3 @@ if [ -d "/var/lib/univention-system-setup/gateway.post" ]; then
 fi
 
 exit 0
-

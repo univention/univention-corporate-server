@@ -36,9 +36,12 @@
 
 ## joinscript api: bindpwdfile
 
+# shellcheck disable=SC2034
 VERSION=6
 
+# shellcheck source=/dev/null
 . /usr/share/univention-join/joinscripthelper.lib
+# shellcheck source=/dev/null
 . /usr/share/univention-lib/umc.sh
 
 joinscript_init
@@ -58,5 +61,3 @@ umc_policy_append "default-backup-umc" "udm-request-license"
 joinscript_save_current_version
 
 exit 0
-
-

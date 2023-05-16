@@ -33,6 +33,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
+# shellcheck source=../setup_utils.sh
 . /usr/lib/univention-system-setup/scripts/setup_utils.sh
 
 info_header "$0" "$(gettext "Generating locales")"
@@ -56,6 +57,5 @@ else
 fi
 
 locale-gen
-
 
 exit 0
