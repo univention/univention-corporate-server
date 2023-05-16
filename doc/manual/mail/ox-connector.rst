@@ -7,7 +7,23 @@
 OX Connector
 ============
 
-:program:`OX Connector` is an app in Univention App Center. It synchronizes selected users
-and groups to a remote OX App Suite installation like for example a hosted OX
-App Suite. The app should not be used with the separate OX App Suite app from
-the App Center, because it has synchronization already included.
+:program:`OX Connector` is an app in Univention App Center. It synchronizes
+selected users and groups to :program:`OX App Suite` and remote installations
+like for example a hosted OX App Suite. Starting with :program:`OX Connector`
+version ``2.1.2`` and :program:`OX App Suite` version ``7.10.6-ucs4``, the
+:program:`OX Connector` integrates with :program:`OX App Suite` from Univention
+App Center to provision user and group accounts to :program:`OX App Suite`.
+
+.. warning::
+
+   :program:`OX App Suite` versions older than ``7.10.6-ucs4`` include their own
+   synchronization. :program:`OX Connector` doesn't synchronize with those
+   versions and you must therefore not use it with the separate :program:`OX App
+   Suite` app from the App Center.
+
+.. seealso::
+
+   OX Connector App documentation
+      For more information about the :program:`OX Connector`, refer to
+      :ref:`limit-ox-app-suite-app` in the dedicated documentation at
+      :cite:t:`ox-connector-doc`.

@@ -57,6 +57,7 @@ suppress_warnings = ['git.too_shallow']
 intersphinx_mapping = {
     "uv-dev-ref": ("https://docs.software-univention.de/developer-reference/5.0/en", None),
     "uv-keycloak-ref": ("https://docs.software-univention.de/keycloak-app/latest", None),
+    "uv-ox-connector-app": ("https://docs.software-univention.de/ox-connector-app/latest", None),
 }
 
 bibtex_bibfiles = ["../bibliography.bib"]
