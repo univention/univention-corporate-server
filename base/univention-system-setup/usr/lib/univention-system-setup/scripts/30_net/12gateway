@@ -49,7 +49,7 @@ if [ -z "$gateway" ]; then
 	ip route del default
 else
 	univention-config-registry set gateway="$gateway"
-	ip route replace default "$gateway"
+	ip route replace default via "$gateway"
 fi
 
 if [ -d "/var/lib/univention-system-setup/gateway.post" ]; then
