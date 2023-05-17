@@ -6,9 +6,9 @@ src: emacs
 fix: 1:26.1+1-3.2+deb10u4
 desc: |
  This update addresses the following issues:
- * command execution via shell metacharacters (CVE-2022-48337)
- * command injection vulnerability in htmlfontify.el (CVE-2022-48339)
- * command injection vulnerability in org-mode (CVE-2023-28617)
+ * Command execution via shell metacharacters (CVE-2022-48337)
+ * Command injection vulnerability in `htmlfontify.el` (CVE-2022-48339)
+ * Command injection vulnerability in org-mode (CVE-2023-28617)
 bug: [56063]
 cve:
 - CVE-2022-48337
