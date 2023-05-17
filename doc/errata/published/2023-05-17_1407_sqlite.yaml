@@ -12,3 +12,6 @@ bug: [56070]
 cve:
 - CVE-2016-6153
 - CVE-2018-8740
+erratum: 1407
+announced: 2023-05-17
+support: lts
