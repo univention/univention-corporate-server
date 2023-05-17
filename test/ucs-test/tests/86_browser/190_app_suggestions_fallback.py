@@ -1,4 +1,4 @@
-#!/usr/share/ucs-test/runner /usr/share/ucs-test/selenium
+#!/usr/share/ucs-test/runner /usr/share/ucs-test/playwright
 # -*- coding: utf-8 -*-
 ## desc: |
 ##  Test fallback for invalid suggestions
@@ -9,69 +9,44 @@
 ## join: true
 ## exposure: dangerous
 
-import shutil
 
-from univention.admin import localization
-from univention.appcenter.app_cache import AppCenterCache, default_server
-from univention.testing import selenium
-from univention.testing.selenium.appcenter import AppCenter
-
-
-translator = localization.translation('ucs-test-selenium')
-_ = translator.translate
+from univention.testing.browser import logger
+from univention.testing.browser.appcenter import AppCenter
+from univention.testing.browser.lib import UMCBrowserTest
+from univention.testing.browser.suggestion import AppCenterCacheTest
 
 
-class UMCTester(object):
-    def setup(self):
-        cache = AppCenterCache.build(server=default_server())
-        self.json_file = cache.get_cache_file('.suggestions.json')
-        self.json_file_bak = cache.get_cache_file('.suggestions.bak.json')
-        print('moving %s to %s' % (self.json_file, self.json_file_bak))
-        shutil.move(self.json_file, self.json_file_bak)
+expected_message = "Could not load appcenter/suggestions"
 
-    def cleanup(self):
-        try:
-            print('restoring %s' % self.json_file)
-            shutil.move(self.json_file_bak, self.json_file)
-        except (OSError, IOError):
-            pass
 
-    def test_umc(self):
-        self.selenium.do_login()
-        self.write_invalid_json()
-        print('checking fallback for invalid json')
-        self.check()
-        self.write_missing_key()
-        print('checking fallback for missing key')
-        self.check()
+def test_app_suggestions_invalid_json(umc_browser_test: UMCBrowserTest, app_center_cache: AppCenterCacheTest):
+    app_center = AppCenter(umc_browser_test)
+    write_invalid_json(app_center_cache)
+    check(app_center, expected_message)
 
-    def check(self):
-        self.appcenter.open()
-        self.selenium.wait_for_text('Available')
-        log = self.selenium.driver.get_log('browser')
-        assert any('Could not load appcenter/suggestions' in e['message'] for e in log)
 
-    def write_invalid_json(self):
-        with open(self.json_file, 'w') as fd:
-            fd.write('asd')
+def test_app_suggestions_missing_key(umc_browser_test: UMCBrowserTest, app_center_cache: AppCenterCacheTest):
+    app_center = AppCenter(umc_browser_test)
+    write_missing_key(app_center_cache)
+    check(app_center, expected_message)
 
-    def write_missing_key(self):
-        with open(self.json_file, 'w') as fd:
-            fd.write('''
+
+def check(app_center: AppCenter, expected_message: str):
+    logger.info("checking for message")
+    with app_center.page.expect_console_message(predicate=lambda msg: expected_message in msg.text):
+        app_center.navigate()
+
+
+def write_missing_key(file: AppCenterCacheTest):
+    file.write(
+        """
 {
     "xxx": {}
 }
-''')
+""",
+        truncate=True,
+    )
 
 
-if __name__ == '__main__':
-    with selenium.UMCSeleniumTest() as s:
-        umc_tester = UMCTester()
-        umc_tester.selenium = s
-        umc_tester.appcenter = AppCenter(umc_tester.selenium)
-
-        try:
-            umc_tester.setup()
-            umc_tester.test_umc()
-        finally:
-            umc_tester.cleanup()
+def write_invalid_json(file: AppCenterCacheTest):
+    file.write("asd", truncate=True)
