@@ -483,7 +483,6 @@ def ucr_overwrite_module_layout(module):
                     ud.debug(ud.ADMIN, ud.INFO, 'ucr_overwrite_module_layout: tried to hide property: %s (found=%s)' % (prop, removed))
             new_layout.append(tab)
 
-    del module.layout
     module.layout = new_layout
 
     # sort tabs: All apps occur alphabetical after the "Apps" / "Options" tab
