@@ -8,3 +8,6 @@ desc: |
  This update addresses the following issues:
  * Form input fields that load values now show a standby animation.
 bug: [56053]
+erratum: 668
+announced: 2023-05-17
+support: core
