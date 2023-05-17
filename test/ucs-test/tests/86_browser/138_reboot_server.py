@@ -1,4 +1,4 @@
-#!/usr/share/ucs-test/runner /usr/share/ucs-test/selenium
+#!/usr/share/ucs-test/runner /usr/share/ucs-test/playwright
 # -*- coding: utf-8 -*-
 ## desc: Reboot the server! Must be skipped!
 ## roles-not:
@@ -8,28 +8,11 @@
 ##  - skip_admember
 ## exposure: dangerous
 
-from univention.lib.i18n import Translation
-from univention.testing import selenium
+from univention.testing.browser.lib import UMCBrowserTest
+from univention.testing.browser.sidemenu import SideMenuServer
 
 
-_ = Translation('ucs-test-selenium').translate
-
-
-class UMCTester(object):
-
-    def test_umc(self):
-        self.selenium.do_login()
-        self.selenium.open_side_menu()
-        self.selenium.click_side_menu_entry(_('Server'))
-        self.selenium.wait_for_text(_('Reboot server'))
-        self.selenium.click_side_menu_entry(_('Reboot server'))
-        self.selenium.wait_for_text(_('Please confirm to reboot this server.'))
-        self.selenium.click_button(_('Reboot'))
-
-
-if __name__ == '__main__':
-    with selenium.UMCSeleniumTest() as s:
-        umc_tester = UMCTester()
-        umc_tester.selenium = s
-
-        umc_tester.test_umc()
+def test_reboot_server(umc_browser_test: UMCBrowserTest):
+    side_menu_server = SideMenuServer(umc_browser_test)
+    side_menu_server.navigate()
+    side_menu_server.reboot_server()
