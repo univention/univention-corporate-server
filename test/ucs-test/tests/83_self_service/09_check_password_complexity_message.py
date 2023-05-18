@@ -129,14 +129,14 @@ def test_password_reset_returns_password_complexity_message(ucr, selfservice_con
         token = mail.split('and enter the following token manually:')[-1].split('Greetings from your password self service system.')[0].strip()
         assert token, f'Could not parse token from mail. Is there a token in it? {mail!r}'
 
-        user.password = random_string()
+        user.password = random_string().lower()
         with pytest.raises(Exception) as exc:
             headers = {
                 "Accept-Language": lang,
             }
             data = {
                 'username': user.username,
-                'password': password,
+                'password': user.password,
                 'token': token,
             }
             umc_client.umc_command('passwordreset/set_password', options=data, headers=headers)
