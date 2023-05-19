@@ -1,0 +1,20 @@
+product: ucs
+release: "5.0"
+version: [3]
+scope: ucs_5.0-0-errata5.0-3
+src: python-ipaddress
+fix: 1.0.17-1+deb10u1
+desc: |
+ This update addresses the following issue:
+ 1.0.17-1+deb10u1 (Tue, 16 May 2023 00:05:46 +0200)
+ * Non-maintainer upload by the LTS Security Team.
+ * CVE-2020-14422: The __hash__() methods of classes IPv4Interface and
+   IPv6Interface had issue of generating constant hash values of 32 and 128
+   respectively causing hash collisions, which might allow a remote attacker
+   to cause a denial of service if an application is affected by the
+   performance of a dictionary containing IPv4Interface or IPv6Interface
+   objects. The attacker can moreover cause many dictionary entries to be
+   created.
+bug: [56079]
+cve:
+- CVE-2020-14422
