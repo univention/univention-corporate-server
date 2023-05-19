@@ -1,0 +1,24 @@
+product: ucs
+release: "4.4"
+version: [9]
+scope: ucs_4.4-0-errata4.4-9
+src: php7.0
+fix: 7.0.33-0+deb9u14
+desc: |
+ This update addresses the following issues:
+
+ Debian update 7.0.33-0+deb9u14
+ 7.0.33-0+deb9u14 (Fri, 12 May 2023 20:31:08 +0200)
+ * Non-maintainer upload by the ELTS team.
+ * CVE-2022-31631: Uncaught integer overflow.
+ * CVE-2023-0567: Malformatted BCrypt hashes that include a `$` within their
+   salt part trigger a buffer overread and may erroneously validate any
+   password as valid.
+ * CVE-2023-0568: 1-byte array overrun in common path resolve code.
+ * CVE-2023-0662: DoS vulnerability when parsing multipart request body.
+bug: [56080]
+cve:
+- CVE-2022-31631
+- CVE-2023-0567
+- CVE-2023-0568
+- CVE-2023-0662
