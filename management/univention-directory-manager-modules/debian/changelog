@@ -1,3 +1,9 @@
+univention-directory-manager-modules (15.0.24-2) unstable; urgency=medium
+
+  * Bug #55459: fix IP address assignment when network is selected
+
+ -- Florian Best <best@univention.de>  Tue, 20 Jun 2023 11:51:58 +0200
+
 univention-directory-manager-modules (15.0.24-1) unstable; urgency=medium
 
   * Bug #56146: fix settting empty policy
