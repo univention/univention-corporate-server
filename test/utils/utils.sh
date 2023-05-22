@@ -205,13 +205,10 @@ fix_repository_schema () {  # Bug #55044 - to be removed when upgrading from 5.0
 	ucr set "${key}=${FTP_SCHEME}://${repo}/"
 }
 
-# This HAS to be executed after basic_setup, in basic_setup the check is done for EC2 env
-check_repository_to_testing () {
-	local testing=${1:?missing testing switch}
-	if [ "$testing" = "testing" ]; then
-		set_repository_to_testing
-	fi
-	return 0
+set_repository_if_testing () {  # Must be called after `basic_setup` set `$FTP_DOM`
+	case "${1:?missing testing argument}" in
+	testing) set_repository_to_testing ;;
+	esac
 }
 
 upgrade_to_latest () {
