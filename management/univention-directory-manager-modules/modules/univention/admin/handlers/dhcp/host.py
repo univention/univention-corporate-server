@@ -97,6 +97,13 @@ layout = [
 
 
 def unmapHWAddress(old, encoding=()):
+    """
+
+    >>> unmapHWAddress([b'ethernet 11:11:11:11:11:11'])
+    ['ethernet', '11:11:11:11:11:11']
+    >>> unmapHWAddress([])
+    ['', '']
+    """
     log.debug('host.py: unmapHWAddress: old: %s', old)
     if not old:
         return ['', '']
@@ -104,15 +111,28 @@ def unmapHWAddress(old, encoding=()):
 
 
 def mapHWAddress(old, encoding=()):
+    """
+
+    >>> mapHWAddress(['ethernet', '11:11:11:11:11:11'])
+    b'ethernet 11:11:11:11:11:11'
+    >>> mapHWAddress(['', ''])
+    b''
+    >>> mapHWAddress(['11:11:11:11:11:11'])
+    b'11:11:11:11:11:11'
+    >>> mapHWAddress('11:11:11:11:11:11')
+    b'11:11:11:11:11:11'
+    """
     log.debug('host.py: mapHWAddress: old: %s', old)
+    if not isinstance(old, list):
+        old = [old]
     if not old[0]:
         return b''
-    else:
-        if len(old) > 1:
-            value = '%s %s' % (old[0], old[1])
-            return value.encode(*encoding)
-        else:
-            return old.encode(*encoding)
+
+    if len(old) > 1:
+        value = '%s %s' % (old[0], old[1])
+        return value.encode(*encoding)
+
+    return old[0].encode(*encoding)
 
 
 mapping = univention.admin.mapping.mapping()
@@ -125,6 +145,13 @@ add_dhcp_options(__name__)
 
 class object(DHCPBase):
     module = module
+
+    @classmethod
+    def rewrite_filter(cls, filter, mapping):
+        if filter.variable == 'hwaddress' and not isinstance(filter.value, list) and filter.value:
+            # unmap() the value to a list so that the following rewrite_filter() map()s it
+            filter.value = unmapHWAddress([filter.value.encode('UTF-8')])
+        super().rewrite_filter(filter, mapping)
 
 
 lookup_filter = object.lookup_filter
