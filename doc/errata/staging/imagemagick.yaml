@@ -6,27 +6,25 @@ src: imagemagick
 fix: 8:6.9.10.23+dfsg-2.1+deb10u5
 desc: |
  This update addresses the following issues:
- 8:6.9.10.23+dfsg-2.1+deb10u5 (Sun, 21 May 2023 18:57:13 +0000)
- * Fix CVE-2021-20176: divide by zero in gem.c file.
- * Fix CVE-2021-20241: divide by zero in jp2 coder.
- * Fix CVE-2021-20243: divide by zero in dcm coder.
- * Fix CVE-2021-20244: divide by zero in fx.c.
- * Fix CVE-2021-20245: divide by zero in webp coder.git
- * Fix CVE-2021-20246: divide by zero in resample.c
- * Fix CVE-2021-20309: divide by zero in WaveImage.c
- * Fix CVE-2021-20312: integer overflow in WriteTHUMBNAILImage() of
-   coders/thumbnail.c
- * Fix CVE-2021-20313: potential cipher leak when the calculate signatures in
-   TransformSignature().
- * Fix CVE-2021-39212: Policy bypass for postscript files
-
- * Fix CVE-2022-28463: Buffer overflow in cin coder.
- * Fix CVE-2022-32545: Fix undefined behavior due to an outside the range of
-   representable values of type 'unsigned char' conversion in psd file
+ * CVE-2021-20176: divide by zero in file `gem.c`.
+ * CVE-2021-20241: divide by zero in jp2 coder.
+ * CVE-2021-20243: divide by zero in dcm coder.
+ * CVE-2021-20244: divide by zero in `fx.c`.
+ * CVE-2021-20245: divide by zero in webp `coder.git`.
+ * CVE-2021-20246: divide by zero in `resample.c`.
+ * CVE-2021-20309: divide by zero in `WaveImage.c`.
+ * CVE-2021-20312: integer overflow in `WriteTHUMBNAILImage()` of
+   `coders/thumbnail.c`.
+ * CVE-2021-20313: potential cipher leak when the calculate signatures in
+   `TransformSignature()`.
+ * CVE-2021-39212: Policy bypass for postscript files
+ * CVE-2022-28463: Buffer overflow in cin coder.
+ * CVE-2022-32545: Fix undefined behavior due to an outside the range of
+   representable values of type `unsigned char` conversion in psd file
    handling.
- * Fix CVE-2022-32546: Fix undefined behavior due to an outside the range of
-   representable values of type 'long' conversion in pcl file handling.
- * Fix CVE-2022-32547: unaligned access in property.c
+ * CVE-2022-32546: Fix undefined behavior due to an outside the range of
+   representable values of type `long` conversion in pcl file handling.
+ * CVE-2022-32547: unaligned access in `property.c`.
 bug: [56081]
 cve:
 - CVE-2021-20176
