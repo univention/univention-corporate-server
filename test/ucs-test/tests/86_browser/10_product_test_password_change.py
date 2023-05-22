@@ -1,4 +1,4 @@
-#!/usr/share/ucs-test/runner /usr/share/ucs-test/selenium
+#!/usr/share/ucs-test/runner /usr/share/ucs-test/playwright
 ## desc: Change password via User Settings
 ## packages:
 ##  - univention-management-console-module-udm
@@ -12,296 +12,307 @@
 ## exposure: dangerous
 
 import time
+from enum import Enum
 
+import pytest
 from ldap.filter import filter_format
-from selenium import webdriver
-from selenium.common.exceptions import TimeoutException, WebDriverException
-from selenium.webdriver.common.by import By
-from selenium.webdriver.support import expected_conditions
+from playwright.sync_api import Locator, Page, expect
 
 import univention.admin.modules as udm_modules
-import univention.testing.selenium.udm as selenium_udm
 import univention.testing.strings as uts
 import univention.testing.ucr as ucr_test
-import univention.testing.udm as udm_test
 from univention.lib.i18n import Translation
-from univention.testing import selenium
-from univention.testing.ucs_samba import password_policy, wait_for_drs_replication
+from univention.testing.browser import logger
+from univention.testing.browser.generic_udm_module import UserModule
+from univention.testing.browser.lib import UMCBrowserTest
+from univention.testing.browser.sidemenu import SideMenu, SideMenuUser
+from univention.testing.browser.udm_users import User, Users
+from univention.testing.ucs_samba import wait_for_drs_replication
 from univention.testing.utils import get_ldap_connection
 
 
-_ = Translation('ucs-test-selenium').translate
-
-
-class PasswordChangeError(Exception):
-    pass
-
-
-class PasswordTooSimpleError(Exception):
-    pass
+_ = Translation("ucs-test-browser").translate
 
 
 class PasswordTooShortError(Exception):
     pass
 
 
-class PasswordReuseError(Exception):
+class UDMRetryException(BaseException):
     pass
 
 
-class User(object):
-    def __init__(self, username, lastname, password='univention'):
-        self.username = username
-        self.lastname = lastname
-        self.password = password
+class PasswordChangeExpectedOutcome(Enum):
+    SUCCESS = 1
+    TOO_SHORT = 2
+    REUSE = 3
+
+    def __str__(self) -> str:
+        if self == PasswordChangeExpectedOutcome.SUCCESS:
+            return _("The password has been changed successfully.")
+        elif self == PasswordChangeExpectedOutcome.TOO_SHORT:
+            return _("password is too short")
+        elif self == PasswordChangeExpectedOutcome.REUSE:
+            return _("password was already used")
+        return ""
 
 
-class UMCTester(object):
+@pytest.fixture()
+def random_password():
+    return uts.random_string()
 
-    def test_umc(self):
-        self.add_default_password_policy()
-        old_samba_settings = self.get_samba_settings()
-        self.set_samba_settings({
-            'passwordHistory': '3',
-            'domainPasswordComplex': '0',
-        })
 
-        try:
-            self.test_password_change(self.admin, uts.random_string())
-            self.test_password_change(self.regular_user, uts.random_string())
-            self.test_usability_of_a_module_after_password_change(self.admin, uts.random_string())
-            self.check_for_short_password_error(self.admin)
-            # FIXME: admins can somehow always reuse passwords in a samba domain; testing with regular user only on this point
-            self.check_for_password_reuse_error(self.regular_user)
-            self.check_change_password_on_login(self.admin, uts.random_string())
-        finally:
-            self.set_samba_settings(old_samba_settings)
+def create_testusers_container(udm, ldap_base):
+    container_dn = udm.create_object(
+        "container/cn",
+        name="testusers",
+        position=f"cn=users,{ldap_base}",
+        wait_for=True,
+    )
 
-    def add_default_password_policy(self):
-        self.udm.create_object(
-            'policies/pwhistory',
-            name='ucs-test_pw_policy',
-            length='3',
-            pwLength='8',
-            position='cn=pwhistory,cn=users,cn=policies,%s' % (self.selenium.ldap_base,),
-        )
+    # create the pwhistory policy
+    pwhistory_dn = udm.create_object(
+        "policies/pwhistory",
+        name="ucs_test_pw_policy",
+        length=3,
+        pw_length=8,
+        position=f"cn=pwhistory,cn=users,cn=policies,{ldap_base}",
+        wait_for=True,
+    )
 
-        self.udm.modify_object(
-            'container/cn',
-            dn='cn=testusers,cn=users,%s' % (self.selenium.ldap_base,),
-            policy_reference='cn=ucs-test_pw_policy,cn=pwhistory,cn=users,cn=policies,%s' % (self.selenium.ldap_base,),
-        )
+    # set the password policy as the password policy for the testusers cn container
+    udm.modify_object(
+        "container/cn",
+        dn=f"cn=testusers,cn=users,{ldap_base}",
+        policy_reference=pwhistory_dn,
+        wait_for=True,
+    )
 
-    def _get_samba_obj(self):
-        ucr = ucr_test.UCSTestConfigRegistry()
-        ucr.load()
-        lo = get_ldap_connection()
-        udm_modules.update()
-        samba_module = udm_modules.get('settings/sambadomain')
-        obj = samba_module.object(None, lo, None, 'sambaDomainName=%s,cn=samba,%s' % (ucr.get('windows/domain'), ucr.get('ldap/base')))
-        obj.open()
-        return obj
+    return container_dn
 
-    def get_samba_settings(self):
-        obj = self._get_samba_obj()
-        return {
-            'passwordHistory': obj['passwordHistory'],
-            'domainPasswordComplex': obj['domainPasswordComplex'],
-        }
 
-    def set_samba_settings(self, settings):
-        obj = self._get_samba_obj()
-        for key, value in settings.items():
-            obj[key] = value
-        obj.modify()
+def create_regular_user(udm, lo, container_dn):
+    regular_dn, regular_username = udm.create_user(password="univention", position=container_dn, wait_for=True)
 
-    def test_password_change(self, user, new_password):
-        self.selenium.do_login(user.username, user.password)
-        # give some time for the possible udm/license check
-        # which fails if we change the password to fast
-        time.sleep(5)
-        old_password = user.password
+    regular_user = lo.get(regular_dn, required=True)
+
+    return User(regular_username, regular_user["sn"][0].decode("UTF-8"), password="univention", has_popup_after_login=True)
+
+
+def create_admin_user(udm, lo, container_dn, ldap_base):
+    admin_dn, admin_username = udm.create_user(password="univention", position=container_dn, primaryGroup=f"cn=Domain Admins,cn=groups,{ldap_base}", wait_for=True)
+
+    admin_user = lo.get(admin_dn, required=True)
+    return User(admin_username, admin_user["sn"][0].decode("UTF-8"), password="univention")
+
+
+@pytest.fixture(scope="module")
+def admin_user(test_users: Users) -> User:
+    return test_users.admin_user
+
+
+@pytest.fixture(scope="module")
+def regular_user(test_users: Users) -> User:
+    return test_users.regular_user
+
+
+@pytest.fixture(scope="module")
+def test_users(udm_module_scope, ldap_base, lo) -> Users:
+    container_dn = create_testusers_container(udm_module_scope, ldap_base)
+    regular_user = create_regular_user(udm_module_scope, lo, container_dn)
+    admin_user = create_admin_user(udm_module_scope, lo, container_dn, ldap_base)
+    return Users(regular_user, admin_user)
+
+
+def logout(umc_browser_test: UMCBrowserTest):
+    side_menu = SideMenu(umc_browser_test)
+    side_menu.navigate(do_login=False)
+    side_menu.logout()
+
+
+@pytest.mark.parametrize("role", ["admin", "regular"])
+def test_change_user_password(role: str, random_password: str, test_users: Users, side_menu_user: SideMenuUser):
+    user = test_users.regular_user if role == "regular" else test_users.admin_user
+
+    change_own_password(user, random_password, side_menu_user, check_for_no_module_available_popup=user.has_popup_after_login)
+    logout(side_menu_user.tester)
+
+    side_menu_user.tester.login(user.username, user.password, check_for_no_module_available_popup=user.has_popup_after_login)
+    logout(side_menu_user.tester)
+
+
+def change_own_password(
+    user: User,
+    new_password: str,
+    side_menu: SideMenuUser,
+    outcome: PasswordChangeExpectedOutcome = PasswordChangeExpectedOutcome.SUCCESS,
+    cancel_password_change_dialog_after_failure: bool = False,
+    do_login: bool = True,
+    check_for_no_module_available_popup: bool = False,
+    **kwargs,
+):
+    # When chaning the password for the admin, sometimes the password change is faster than the request to command/udm/license
+    side_menu.navigate(user.username, user.password, do_login=do_login, check_for_no_module_available_popup=check_for_no_module_available_popup, **kwargs)
+    side_menu.change_password(user.password, new_password)
+
+    check_password_change_outcome(outcome, side_menu.page)
+
+    logger.info("Ok button click")
+    side_menu.page.get_by_role("button", name=_("Ok")).click()
+
+    # If the outcome is NOT success we will just go back again to the password change prompt.
+    if outcome == PasswordChangeExpectedOutcome.SUCCESS:
         user.password = new_password
-        self.change_own_password(old_password, user.password)
-        self.selenium.end_umc_session()
-        self.selenium.do_login(user.username, user.password)
-        self.selenium.end_umc_session()
-
-    def test_usability_of_a_module_after_password_change(self, user, new_password):
-        users = selenium_udm.Users(self.selenium)
-
-        self.selenium.do_login(user.username, user.password)
-        self.selenium.open_module(_('Users'))
-        users.wait_for_main_grid_load()
-
-        old_password = user.password
-        user.password = new_password
-        self.change_own_password(old_password, user.password)
-
-        users.open_details(vars(user))
-        self.selenium.end_umc_session()
-
-    def check_for_short_password_error(self, user):
-        self.selenium.do_login(user.username, user.password)
-        try:
-            self.change_own_password(user.password, 'a')
-            raise PasswordChangeError('It was possible to assign a too short password.')
-        except PasswordTooShortError:
-            self.selenium.end_umc_session()
-
-    def check_for_password_reuse_error(self, user):
-        self.selenium.do_login(user.username, user.password)
-        try:
-            self.change_own_password(user.password, user.password)
-            raise PasswordChangeError('It was possible to reuse a password.')
-        except PasswordReuseError:
-            self.selenium.end_umc_session()
-
-    def check_change_password_on_login(self, user, new_password):
-        self.selenium.do_login(user.username, user.password)
-        self.set_change_password_on_login_flag(user)
-        self.selenium.end_umc_session()
-
-        old_password = user.password
-        user.password = new_password
-        self.login_while_changing_password(user.username, old_password, user.password)
-
-    def set_change_password_on_login_flag(self, user):
-        users = selenium_udm.Users(self.selenium)
-
-        self.selenium.open_module(_('Users'))
-        users.wait_for_main_grid_load()
-        users.open_details(vars(user))
-        # FIXME: Sleeping here, because for some reason the Account tab doesn't
-        # react to clicks for a while when the detailsPage just loaded up.
-        time.sleep(5)
-        self.selenium.click_tab(_('Account'))
-        self.selenium.wait_for_text(_('User has to change password on next login'))
-        self.selenium.click_text(_('User has to change password on next login'))
-        users.save_details()
-        # sleep some more, must be synced to samba
-        time.sleep(3)
-        wait_for_drs_replication(filter_format('(&(cn=%s)(pwdLastSet=0))', (user.username,)))
-
-    def login_while_changing_password(self, username, old_password, new_password):
-        self.submit_login_credentials(username, old_password)
-        self.selenium.wait_for_text(_('password has expired and must be renewed'))
-        self.selenium.enter_input('new_password', new_password)
-        # FIXME: Thing get dirty here, because the input field for the password
-        # retype has no name.
-        elem = self.selenium.driver.find_element(By.XPATH, '//input[@id="umcLoginNewPasswordRetype"]')
-        elem.clear()
-        elem.send_keys(new_password)
-        elem.submit()
-        self.check_if_login_was_successful()
-        self.selenium.end_umc_session()
-
-        for i in range(3):
-            try:
-                self.selenium.do_login(username, new_password)
-            except Exception:
-                pass
-            else:
-                exc = None
-                break
-            finally:
-                self.selenium.end_umc_session()
-            time.sleep(10)
-        if exc:
-            raise exc
-
-    def submit_login_credentials(self, username, password):
-        self.selenium.driver.get(
-            self.selenium.base_url + 'univention/login/?lang=%s'
-            % (self.selenium.language,),
-        )
-        self.selenium.wait_until(
-            expected_conditions.presence_of_element_located(
-                (webdriver.common.by.By.ID, "umcLoginUsername"),
-            ),
-        )
-        self.selenium.enter_input('username', username)
-        self.selenium.enter_input('password', password)
-        self.selenium.submit_input('password')
-
-    def check_if_login_was_successful(self):
-        self.selenium.wait_for_any_text_in_list([
-            _('Favorites'),
-            _('no module available'),
-        ])
-        try:
-            self.selenium.wait_for_text(_('no module available'), timeout=1)
-            self.selenium.click_button(_('Ok'))
-            self.selenium.wait_until_all_dialogues_closed()
-        except TimeoutException:
-            pass
-
-    def change_own_password(self, old_password, new_password):
-        self.selenium.open_side_menu()
-        self.selenium.click_text(_('User settings'))
-        self.selenium.click_text(_('Change password'))
-        self.selenium.wait_for_text(_("Change the password of"))
-        try:
-            self.selenium.enter_input('password', old_password)
-        except WebDriverException:
-            time.sleep(5)
-            self.selenium.enter_input('password', old_password)
-        self.selenium.enter_input('new_password_1', new_password)
-        self.selenium.enter_input('new_password_2', new_password)
-        self.selenium.click_button(_('Change password'))
-        self.selenium.wait_for_any_text_in_list([
-            _('password has been changed'),
-            _('password was already used'),
-            _('password is too short'),
-            _('password is too simple'),
-        ])
-        try:
-            self.selenium.wait_for_text(_('password was already used'), timeout=1)
-            raise PasswordReuseError(new_password)
-        except TimeoutException:
-            pass
-        try:
-            self.selenium.wait_for_text(_('password is too simple'), timeout=1)
-            raise PasswordTooSimpleError(new_password)
-        except TimeoutException:
-            pass
-        try:
-            self.selenium.wait_for_text(_('password is too short'), timeout=1)
-            raise PasswordTooShortError(new_password)
-        except TimeoutException:
-            pass
-        self.selenium.click_button(_('Ok'))
-        self.selenium.wait_until_all_dialogues_closed()
+    elif cancel_password_change_dialog_after_failure:
+        change_password_dialog = side_menu.page.get_by_role("dialog", name=_("Change password"))
+        change_password_dialog.get_by_text("Cancel").click()
 
 
-if __name__ == '__main__':
-    with udm_test.UCSTestUDM() as udm, selenium.UMCSeleniumTest() as s, password_policy(maximum_password_age=3):
-        umc_tester = UMCTester()
-        umc_tester.udm = udm
-        umc_tester.selenium = s
+def check_password_change_outcome(outcome: PasswordChangeExpectedOutcome, page: Page):
+    logger.info("checking password change outcome")
+    result_text = page.get_by_text(str(outcome))
+    dialog_text = ""
+    success_dialog = page.get_by_role("dialog", name=_("Notification"))
+    error_dialog = page.get_by_role("dialog", name=_("Error changing password"))
+    logger.info("checking for success or failure dialog")
+    expect(success_dialog.or_(error_dialog)).to_be_visible()
+    if success_dialog.is_visible():
+        dialog_text = success_dialog.inner_text()
+    else:
+        dialog_text = error_dialog.inner_text()
 
-        test_user_cn = umc_tester.udm.create_object(
-            'container/cn',
-            name='testusers',
-            position='cn=users,%s' % (umc_tester.udm.LDAP_BASE,),
-        )
+    expect(result_text, f"expected the outcome to be '{outcome}' but found:\n'{dialog_text}'").to_be_visible(
+        timeout=30 * 1000,
+    )
+    logger.info("passed password outcome check")
+    return False
 
-        lo = get_ldap_connection()
 
-        regular_dn, regular_username = umc_tester.udm.create_user(
-            password='univention',
-            position=test_user_cn,
-        )
-        regular_user = lo.get(regular_dn)
+# FIXME: admins can somehow always reuse passwords in a samba domain; testing with regular user
+def test_for_password_reuse_error(regular_user: User, side_menu_user: SideMenuUser):
+    change_own_password(
+        regular_user,
+        regular_user.password,
+        side_menu_user,
+        PasswordChangeExpectedOutcome.REUSE,
+        cancel_password_change_dialog_after_failure=True,
+        check_for_no_module_available_popup=regular_user.has_popup_after_login,
+    )
+    logout(side_menu_user.tester)
 
-        admin_dn, admin_username = umc_tester.udm.create_user(
-            password='univention',
-            position=test_user_cn,
-            primaryGroup='cn=Domain Admins,cn=groups,%s' % (umc_tester.udm.LDAP_BASE,),
-        )
-        admin_user = lo.get(admin_dn)
 
-        umc_tester.admin = User(admin_username, admin_user['sn'][0], password='univention')
-        umc_tester.regular_user = User(regular_username, regular_user['sn'][0], password='univention')
+def test_for_short_password_error(admin_user: User, side_menu_user: SideMenuUser):
+    change_own_password(
+        admin_user,
+        "a",
+        side_menu_user,
+        outcome=PasswordChangeExpectedOutcome.TOO_SHORT,
+        cancel_password_change_dialog_after_failure=True,
+        check_for_no_module_available_popup=admin_user.has_popup_after_login,
+    )
+    logout(side_menu_user.tester)
 
-        umc_tester.test_umc()
+
+def test_usability_of_a_module_after_password_change(admin_user: User, random_password, umc_browser_test: UMCBrowserTest):
+    user_module = UserModule(umc_browser_test)
+    side_menu = SideMenuUser(umc_browser_test)
+    user_module.navigate(admin_user.username, admin_user.password)
+    expect(user_module.page.get_by_role("gridcell").first).to_be_visible(timeout=2 * 60 * 1000)
+
+    change_own_password(admin_user, random_password, side_menu, do_login=False)
+
+    user_module.open_details(admin_user.username)
+    heading = umc_browser_test.page.get_by_role("heading", name=_("Basic settings"))
+    expect(heading).to_be_visible()
+    logout(umc_browser_test)
+
+
+def test_login_while_changing_password(admin_user: User, random_password: str, umc_browser_test: UMCBrowserTest):
+    set_change_password_on_login_flag(admin_user, umc_browser_test)
+    umc_browser_test.end_umc_session()
+
+    umc_browser_test.login(admin_user.username, admin_user.password, "/univention/management", expect_password_change_prompt=True)
+    password_expired_text: Locator = umc_browser_test.page.get_by_text(_("The password has expired and must be renewed."))
+    expect(password_expired_text).to_be_visible()
+
+    umc_browser_test.page.get_by_label(_("New password"), exact=True).type(random_password)
+    time.sleep(0.5)
+
+    retype_input = umc_browser_test.page.get_by_label(_("New Password (retype)"))
+    retype_input.fill(random_password)
+    time.sleep(0.5)
+
+    retype_input.press("Enter")
+
+    expect(umc_browser_test.page.get_by_role("button", name=_("Favorites"))).to_be_visible()
+    admin_user.password = random_password
+
+    logout(umc_browser_test)
+
+    favorite_button: Locator = umc_browser_test.page.get_by_role("button", name=_("Favorites"))
+
+    # retrying logging in three times here because sometimes when logging immediately after chaning the password at login
+    # the password expiry prompt is still there
+    for i in range(3):
+        umc_browser_test.login(admin_user.username, admin_user.password, "/univention/management")
+        expect(favorite_button.or_(password_expired_text)).to_be_visible(timeout=15 * 1000)
+        if favorite_button.is_visible():
+            return
+
+        time.sleep(10)
+
+    pytest.fail("'Pasword expired' notice still displayed after three login attempts")
+
+
+def set_change_password_on_login_flag(user: User, tester: UMCBrowserTest):
+    user_module = UserModule(tester)
+    user_module.navigate(user.username, user.password)
+    details = user_module.open_details(user.username)
+    details.open_tab(_("Account"))
+    details.check_checkbox(_("User has to change password on next login"))
+    details.save()
+
+    # sleep, must be synced to samba
+    time.sleep(3)
+    wait_for_drs_replication(filter_format("(&(cn=%s)(pwdLastSet=0))", (user.username,)))
+
+
+def get_samba_settings():
+    obj = _get_samba_obj()
+    return {
+        "passwordHistory": obj["passwordHistory"],
+        "domainPasswordComplex": obj["domainPasswordComplex"],
+    }
+
+
+def set_samba_settings(settings):
+    obj = _get_samba_obj()
+    for key, value in settings.items():
+        obj[key] = value
+    obj.modify()
+
+
+def _get_samba_obj():
+    ucr = ucr_test.UCSTestConfigRegistry()
+    ucr.load()
+    lo = get_ldap_connection()
+    udm_modules.update()
+    samba_module = udm_modules.get("settings/sambadomain")
+    obj = samba_module.object(None, lo, None, "sambaDomainName=%s,cn=samba,%s" % (ucr.get("windows/domain"), ucr.get("ldap/base")))
+    obj.open()
+    return obj
+
+
+@pytest.fixture(autouse=True, scope="module")
+def backup_samba_settings():
+    old_samba_settings = get_samba_settings()
+    set_samba_settings(
+        {
+            "passwordHistory": "3",
+            "domainPasswordComplex": "0",
+        },
+    )
+
+    yield
+
+    set_samba_settings(old_samba_settings)
