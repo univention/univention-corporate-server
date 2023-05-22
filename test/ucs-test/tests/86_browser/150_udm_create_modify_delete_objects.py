@@ -1,4 +1,4 @@
-#!/usr/share/ucs-test/runner /usr/share/ucs-test/selenium
+#!/usr/share/ucs-test/runner /usr/share/ucs-test/playwright
 # -*- coding: utf-8 -*-
 ## desc: test adding, modifying, removal of UDM objects
 ## packages:
@@ -9,89 +9,26 @@
 ## join: true
 ## exposure: dangerous
 
-import univention.testing.selenium.udm as selenium_udm
+import pytest
+from playwright.sync_api import expect
+
 from univention.lib.i18n import Translation
-from univention.testing import selenium
+from univention.testing.browser.generic_udm_module import ComputerModule, GroupModule, PoliciesModule, UserModule
+from univention.testing.browser.lib import UMCBrowserTest
 
 
-_ = Translation('ucs-test-selenium').translate
+_ = Translation("ucs-test-browser").translate
 
 
-class UmcUdmError(Exception):
-    pass
+@pytest.mark.parametrize("module", [GroupModule, UserModule, PoliciesModule, ComputerModule])
+def test_udm_create_modify_delete_objects(umc_browser_test: UMCBrowserTest, module):
+    udm_module = module(umc_browser_test)
 
+    udm_module.navigate()
+    created_item = udm_module.create_object()
 
-class UMCTester(object):
+    created_object_locator = umc_browser_test.page.get_by_role("grid").get_by_role("gridcell").get_by_text(created_item.identifying_name, exact=True)
+    expect(created_object_locator, "Expect the name of the created item to be visible in the grid").to_be_visible()
 
-    def test_umc(self):
-        self.selenium.do_login()
-
-        # The product test requires to create and delete _some_ udm objects.
-        # I think those four should be enough.
-        # fbest: No, they aren't!
-        modules = [
-            Users(self.selenium),
-            Groups(self.selenium),
-            Computers(self.selenium),
-            Policies(self.selenium),
-        ]
-        for module in modules:
-            self.selenium.open_module(module.name)
-            module.wait_for_main_grid_load()
-            added_object = self.test_adding_object(module)
-            self.test_modifying_object(module, added_object)
-            self.test_deleting_object(module, added_object)
-
-    def test_adding_object(self, module):
-        print('*** test adding object')
-        added_object = module.add()
-        if not module.exists(added_object):
-            raise UmcUdmError(
-                'Adding the object %r in the module %r did not work.'
-                % (added_object, module.name),
-            )
-        return added_object
-
-    def test_modifying_object(self, module, added_object):
-        print('*** test modifying object')
-        module.open_details(added_object)
-        module.edit_some_property_of_the_open_object()
-        self.selenium.click_button(_('Save'))
-        module.wait_for_main_grid_load()
-
-    def test_deleting_object(self, module, added_object):
-        print('*** test removing object')
-        module.delete(added_object)
-        if module.exists(added_object):
-            raise UmcUdmError(
-                'Deleting the object %r in the module %r did not work.'
-                % (added_object, module.name),
-            )
-
-
-class Users(selenium_udm.Users):
-    def edit_some_property_of_the_open_object(self):
-        self.selenium.enter_input('description', 'Test description')
-
-
-class Groups(selenium_udm.Groups):
-    def edit_some_property_of_the_open_object(self):
-        self.selenium.enter_input('description', 'Test description')
-
-
-class Computers(selenium_udm.Computers):
-    def edit_some_property_of_the_open_object(self):
-        self.selenium.enter_input('description', 'Test description')
-
-
-class Policies(selenium_udm.Policies):
-    def edit_some_property_of_the_open_object(self):
-        self.selenium.enter_input('releaseVersion', '4.0')
-
-
-if __name__ == '__main__':
-    with selenium.UMCSeleniumTest() as s:
-        umc_tester = UMCTester()
-        umc_tester.selenium = s
-
-        umc_tester.test_umc()
+    udm_module.modify_text_field(created_item)
+    udm_module.delete(created_item)
