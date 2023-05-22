@@ -6,13 +6,9 @@ src: cups-filters
 fix: 1.21.6-5+deb10u1A~5.0.3.202305221024
 desc: |
  This update addresses the following issue:
- 1.21.6-5+deb10u1 (Fri, 19 May 2023 18:25:20 +0200)
- * CVE-2023-24805 prevent arbitrary command execution by escaping the quoting
-   of the arguments in a job with a forged job title more information are
-   available in the commit message at:
-   https://github.com/OpenPrinting/cups-filters/commit/93e60d3df35
-
- * debian/control: add myself to Uploaders:
+ * CVE-2023-24805: prevent arbitrary command execution by escaping the quoting
+   of the arguments in a job with a forged job title
+note: https://github.com/OpenPrinting/cups-filters/commit/93e60d3df35
 bug: [56082]
 cve:
 - CVE-2023-24805
