@@ -1,0 +1,12 @@
+product: ucs
+release: "5.0"
+version: [3]
+scope: ucs_5.0-0-errata5.0-3
+src: univention-keycloak
+fix: 1.0.9-10
+desc: |
+ This update addresses the following issues:
+ * The translation of the login page header has been moved from
+   the `univention-keycloak` script into the App itself for
+   better configurability.
+bug: [56066]
