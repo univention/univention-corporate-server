@@ -41,7 +41,7 @@ import time
 
 import netifaces
 
-import univention.config_registry
+from univention.config_registry import ucr
 from univention.lib.umc import Client, ConnectionError, HTTPError, ServiceUnavailable
 
 
@@ -49,17 +49,17 @@ ATTEMPTS = 5
 RETRY_DELAY = 5
 
 
-def register_iface(configRegistry, iface, verbose):
+def register_iface(iface, verbose):
     # is fallback different from current address?
     for retry in range(ATTEMPTS):
         try:
-            client = Client(configRegistry['ldap/master'])
+            client = Client(ucr['ldap/master'])
             client.authenticate_with_machine_account()
             client.umc_command('ip/change', {
-                'ip': configRegistry.get('interfaces/%s/address' % iface),
-                'oldip': configRegistry.get('interfaces/%s/fallback/address' % iface),
-                'netmask': configRegistry.get('interfaces/%s/netmask' % iface),
-                'role': configRegistry.get('server/role'),
+                'ip': ucr.get('interfaces/%s/address' % iface),
+                'oldip': ucr.get('interfaces/%s/fallback/address' % iface),
+                'netmask': ucr.get('interfaces/%s/netmask' % iface),
+                'role': ucr.get('server/role'),
             })
             return True
         except ServiceUnavailable as exc:
@@ -82,9 +82,6 @@ if __name__ == '__main__':
     parser.add_argument("--force", default=False, action="store_true", help="register interface even if it is configured static")
     options = parser.parse_args()
 
-    configRegistry = univention.config_registry.ConfigRegistry()
-    configRegistry.load()
-
     retcode = 0
 
     if options.interface == 'all':
@@ -100,8 +97,8 @@ if __name__ == '__main__':
         sys.exit(1)
 
     for iface in ifaces:
-        if configRegistry.get('interfaces/%s/type' % iface) == 'dhcp' or options.force:
-            if not register_iface(configRegistry, iface, options.verbose):
+        if ucr.get('interfaces/%s/type' % iface) == 'dhcp' or options.force:
+            if not register_iface(iface, options.verbose):
                 retcode += 1
         elif options.verbose:
             print('INFO: %s is not configured as dhcp device.' % iface)
