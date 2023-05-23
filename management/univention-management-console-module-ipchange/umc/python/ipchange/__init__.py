@@ -62,6 +62,9 @@ class Instance(Base):
             MODULE.error('Ignore link local address change.')
             return
 
+        ucr.load()
+        sso_fqdn = ucr.get('ucs/server/sso/fqdn')
+
         lo, position = univention.admin.uldap.getAdminConnection()
         host_mod = univention.admin.modules.get('dns/host_record')
         comp_mod = univention.admin.modules.get(f'computers/{role}')
@@ -70,7 +73,11 @@ class Instance(Base):
 
         # check if already used
         host_recs = univention.admin.modules.lookup(host_mod, None, lo, scope='sub', filter=filter_format('aRecord=%s', (ip,)))
-        used_by = [host_rec['name'] for host_rec in host_recs if 'name' in host_rec]
+        used_by = {
+            f"{host_rec['name']}.{host_rec.superordinate['zone']}"
+            for host_rec in host_recs
+            if 'name' in host_rec
+        } - {sso_fqdn, "%(hostname)s.%(domainname)s" % ucr}
         if used_by:
             raise BadRequest(f'The IP address is already in use by host record(s) for: {", ".join(used_by)}')
 
@@ -114,8 +121,6 @@ class Instance(Base):
 
         # Change ucs-sso entry
         # FIXME: this should be done for UCS-in-AD domains as well!
-        ucr.load()
-        sso_fqdn = ucr.get('ucs/server/sso/fqdn')
         if ucr.is_true('ucs/server/sso/autoregistraton', True):
             for fwd_zone in univention.admin.modules.lookup(fwd_mod, None, lo, scope='sub', superordinate=None, filter=None):
                 zone = fwd_zone.get('zone')
