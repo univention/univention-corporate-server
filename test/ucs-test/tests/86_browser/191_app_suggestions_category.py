@@ -1,4 +1,4 @@
-#!/usr/share/ucs-test/runner /usr/share/ucs-test/selenium
+#!/usr/share/ucs-test/runner /usr/share/ucs-test/playwright
 # -*- coding: utf-8 -*-
 ## desc: |
 ##  Test that suggestions category is shown
@@ -9,26 +9,16 @@
 ## join: true
 ## exposure: dangerous
 
-import shutil
+from playwright.sync_api import expect
 
-from univention.admin import localization
-from univention.appcenter.app_cache import AppCenterCache, default_server
-from univention.testing import selenium
-from univention.testing.selenium.appcenter import AppCenter
-
-
-translator = localization.translation('ucs-test-selenium')
-_ = translator.translate
+from univention.testing.browser.appcenter import AppCenter
+from univention.testing.browser.lib import UMCBrowserTest
+from univention.testing.browser.suggestion import AppCenterCacheTest
 
 
-class UMCTester(object):
-    def setup(self):
-        cache = AppCenterCache.build(server=default_server())
-        self.json_file = cache.get_cache_file('.suggestions.json')
-        self.json_file_bak = cache.get_cache_file('.suggestions.bak.json')
-        shutil.copyfile(self.json_file, self.json_file_bak)
-        with open(self.json_file, 'w') as fd:
-            fd.write('''
+def test_suggestion_category_is_shown(umc_browser_test: UMCBrowserTest, app_center_cache: AppCenterCacheTest):
+    app_center_cache.write(
+        """
 {
     "v1": [{
         "condition": [],
@@ -38,29 +28,12 @@ class UMCTester(object):
         }]
     }]
 }
-''')
+""",
+    )
 
-    def cleanup(self):
-        try:
-            shutil.move(self.json_file_bak, self.json_file)
-        except (OSError, IOError):
-            pass
+    app_center = AppCenter(umc_browser_test)
+    app_center.navigate()
 
-    def test_umc(self):
-        self.selenium.do_login()
-        self.appcenter.open(do_reload=False)
-        self.selenium.wait_for_text('Suggestions based on installed apps')
-        self.selenium.save_screenshot(name=__file__)
-
-
-if __name__ == '__main__':
-    with selenium.UMCSeleniumTest() as s:
-        umc_tester = UMCTester()
-        umc_tester.selenium = s
-        umc_tester.appcenter = AppCenter(umc_tester.selenium)
-
-        try:
-            umc_tester.setup()
-            umc_tester.test_umc()
-        finally:
-            umc_tester.cleanup()
+    expected_text = umc_browser_test.page.get_by_text("Suggestions based on installed apps")
+    expect(expected_text).to_be_visible(timeout=10 * 1000)
+    umc_browser_test.page.screenshot(path=__name__)
