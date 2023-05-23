@@ -99,7 +99,6 @@ class Instance(Base):
         # change IP
         server['ip'] = ip
         MODULE.info(f'Change IP to {ip}')
-        server.modify()
 
         # do we have a new reverse zone for this IP address?
         parts = network.network_address.exploded.split('.')
@@ -108,15 +107,14 @@ class Instance(Base):
 
         while parts:
             subnet = '.'.join(parts)
-            parts.pop()
             filterstr = filter_format('(subnet=%s)', (subnet,))
             rev_recs = univention.admin.modules.lookup(rev_mod, None, lo, scope='sub', superordinate=None, filter=filterstr)
             if rev_recs:
-                server = comp_mod.object(None, lo, position, self.user_dn)
-                server.open()
                 server['dnsEntryZoneReverse'].append([rev_recs[0].dn, ip])
-                server.modify()
                 break
+            parts.pop()
+
+        server.modify()
 
         # Change ucs-sso entry
         # FIXME: this should be done for UCS-in-AD domains as well!
