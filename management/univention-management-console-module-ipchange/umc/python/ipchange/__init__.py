@@ -39,9 +39,24 @@ class Instance(Base):
         fwd_mod = univention.admin.modules.get('dns/forward_zone')
         rev_mod = univention.admin.modules.get('dns/reverse_zone')
 
+        server = comp_mod.object(None, lo, position, self.user_dn)
+        server.open()
+
+        if ip in server['ip']:
+            return
+
+        ucr.load()
+        sso_uri = ucr.get('ucs/server/sso/uri', '').lower()
+        sso_fqdn = urlparse(sso_uri).hostname
+        fqdn = f"{server.get('name')}.{server.get('domain')}".lower()
+
         # check if already used
         host_recs = univention.admin.modules.lookup(host_mod, None, lo, scope='sub', filter=filter_format('aRecord=%s', (ip,)))
-        used_by = [host_rec['name'] for host_rec in host_recs if 'name' in host_rec]
+        used_by = {
+            f"{host_rec['name']}.{host_rec.superordinate['zone']}".lower()
+            for host_rec in host_recs
+            if 'name' in host_rec
+        } - {sso_fqdn, fqdn}
         if used_by:
             raise BadRequest(f'The IP address is already in use by host record(s) for: {", ".join(used_by)}')
 
@@ -53,9 +68,10 @@ class Instance(Base):
                 fwd_zone['a'].append(ip)
                 fwd_zone.modify()
 
+            server = comp_mod.object(None, lo, position, self.user_dn)
+            server.open()
+
         # remove old DNS reverse entries with old IP
-        server = comp_mod.object(None, lo, position, self.user_dn)
-        server.open()
         current_ips = server['ip']
         for zone_ip in server['dnsEntryZoneReverse']:
             if zone_ip[1] in current_ips:
@@ -83,9 +99,6 @@ class Instance(Base):
 
         # Change ucs-sso entry
         # FIXME: this should be done for UCS-in-AD domains as well!
-        ucr.load()
-        sso_uri = ucr.get('ucs/server/sso/uri').lower()
-        sso_fqdn = urlparse(sso_uri).netloc
         if ucr.is_true('keycloak/server/sso/autoregistraton', True) and sso_fqdn:
             for fwd_zone in univention.admin.modules.lookup(fwd_mod, None, lo, scope='sub', superordinate=None, filter=None):
                 zone = fwd_zone.get('zone')
