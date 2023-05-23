@@ -41,7 +41,6 @@ from ldap.filter import filter_format
 
 import univention.admin.modules
 import univention.admin.uldap
-import univention.config_registry
 from univention.management.console.base import Base
 from univention.management.console.config import ucr
 from univention.management.console.error import BadRequest
