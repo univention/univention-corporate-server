@@ -1,4 +1,4 @@
-#!/usr/share/ucs-test/runner /usr/share/ucs-test/selenium-pytest -s -l -v --tb=native
+#!/usr/share/ucs-test/runner /usr/share/ucs-test/playwright
 ## desc: check behaviour of ?overview=false query parameter
 ## tags: [umc]
 ## roles: [domaincontroller_master]
@@ -7,45 +7,53 @@
 ## packages:
 ## - univention-management-console-module-udm
 
-from selenium.webdriver.common.by import By
+from playwright.sync_api import expect
 
 import univention.testing.strings as uts
+from univention.lib.i18n import Translation
+from univention.testing.browser.generic_udm_module import UserModule
+from univention.testing.browser.lib import UMCBrowserTest
 
 
-def test_overview_false(udm, selenium):
+_ = Translation("ucs-test-browser").translate
+
+
+def test_correct_number_of_tabs_displayed(umc_browser_test: UMCBrowserTest, udm):
+    page = umc_browser_test.page
+
     name = uts.random_name()
-    _, username = udm.create_user(username=name, displayName=name)
-    selenium.driver.get(selenium.base_url + 'univention/management/?overview=false#module=udm:users/user')
-    selenium.do_login(without_navigation=True)
-    selenium.wait_for_text(username)
+    _dn, username = udm.create_user(username=name, displayName=name)
 
-    # The tabs should not be visible as long as only one tab is open
-    users_tab = selenium.driver.find_element(By.XPATH, '//*[@widgetid="umc_widgets_TabController_0_umc_modules_udm_0"]//span[text() = "Users"]')
-    assert not users_tab.is_displayed()
+    user_module = UserModule(umc_browser_test)
+    umc_browser_test.login("Administrator", "univention", "/univention/management/?overview=false#module=udm:users/user")
 
-    selenium.click_grid_entry(username)
-    selenium.wait_until_standby_animation_appears_and_disappears()
-    selenium.click_text('Policies')  # Policies tab
-    selenium.wait_until_standby_animation_appears_and_disappears()
-    selenium.click_text('Policy: Desktop')  # TitlePane
-    selenium.click_button('Create new policy')
-    selenium.wait_for_text('Desktop settings')  # content in the Policies module
+    details = user_module.open_details(username)
+    details.open_tab(_("Policies"))
+    users_tab = page.get_by_role("tab", name=_("Users"))
+    # tab should not be visible as long as only one tab is open
+    expect(users_tab).to_be_hidden()
 
-    # When a second tab is opened the tabs should become visible...
-    users_tab = selenium.driver.find_element(By.XPATH, '//*[@widgetid="umc_widgets_TabController_0_umc_modules_udm_0"]//span[text() = "Users"]')
-    assert users_tab.is_displayed()
-    # ...but the close button for the first tab should be hidden (the module is not closable)
-    close_button = selenium.driver.find_element(By.XPATH, '//*[@widgetid="umc_widgets_TabController_0_umc_modules_udm_0"]//span[@title="Close"]')
-    assert not close_button.is_displayed()
+    details.click_button(_("Policy: Desktop"))
+    details.click_button(_("Create new policy"))
 
-    policies_tab = selenium.driver.find_element(By.XPATH, '//*[@widgetid="umc_widgets_TabController_0_umc_modules_udm_1"]//span[text() = "Policies"]')
-    assert policies_tab.is_displayed()
-    # Further opened tabs should be closable
-    close_button = selenium.driver.find_element(By.XPATH, '//*[@widgetid="umc_widgets_TabController_0_umc_modules_udm_1"]//span[@title="Close"]')
-    assert close_button.is_displayed()
+    # When a second tab opened the first tab should be visible
+    expect(users_tab).to_be_visible()
+    # this is very ugly but as far as I can see the only way to get to the close buttons
+    # the first close button here is the one from the first tab and the second one from the second
+    close_buttons = umc_browser_test.page.locator("#umc_widgets_TabController_0").filter(has_text="Users").locator("div").get_by_title("Close")
 
-    selenium.click_button('Cancel')
+    # the first tabs close button should not be visible
+    expect(close_buttons.first).to_be_hidden()
 
-    # Tabs should be hidden again when only one tab remains
-    users_tab = selenium.driver.find_element(By.XPATH, '//*[@widgetid="umc_widgets_TabController_0_umc_modules_udm_0"]//span[text() = "Users"]')
-    assert not users_tab.is_displayed()
+    policies_tab = page.get_by_role("tab", name=_("Policies"))
+
+    # the second tab should be visible
+    expect(policies_tab).to_be_visible()
+
+    # the policies tab close button should be visible
+    expect(close_buttons.last).to_be_visible()
+
+    page.get_by_role("button", name=_("Cancel")).click()
+
+    # the user tab should be hidden again
+    expect(users_tab).to_be_hidden()
