@@ -26,11 +26,7 @@ univention.admin.modules.update()
 class Instance(Base):
 
     @simple_response
-    def change(self, role: str, ip: str, netmask: str, oldip: str | None = None) -> dict:
-        """
-        Return a dict with all necessary values for ipchange read from the current
-        status of the system.
-        """
+    def change(self, role: str, ip: str, netmask: str, oldip: str | None = None) -> None:
         # ignore link local addresses (no DHCP address received)
         network = ipaddress.IPv4Network(f'{ip}/{netmask}', False)
         if network.is_link_local:
