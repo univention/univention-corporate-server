@@ -118,15 +118,13 @@ class Instance(Base):
         sso_fqdn = ucr.get('ucs/server/sso/fqdn')
         if ucr.is_true('ucs/server/sso/autoregistraton', True):
             fmodule = univention.admin.modules.get('dns/forward_zone')
-            forwardobjects = univention.admin.modules.lookup(fmodule, None, lo, scope='sub', superordinate=None, filter=None)
-            for forwardobject in forwardobjects:
+            for forwardobject in univention.admin.modules.lookup(fmodule, None, lo, scope='sub', superordinate=None, filter=None):
                 zone = forwardobject.get('zone')
                 if not sso_fqdn.endswith(zone):
                     continue
                 sso_name = sso_fqdn[:-(len(zone) + 1)]
                 for current_ip in current_ips:
-                    records = univention.admin.modules.lookup(hmodule, None, lo, scope='sub', superordinate=forwardobject, filter=filter_format('(&(relativeDomainName=%s)(aRecord=%s))', (sso_name, current_ip)))
-                    for record in records:
+                    for record in univention.admin.modules.lookup(hmodule, None, lo, scope='sub', superordinate=forwardobject, filter=filter_format('(&(relativeDomainName=%s)(aRecord=%s))', (sso_name, current_ip))):
                         record.open()
                         if oldip in record['a']:
                             record['a'].remove(oldip)
