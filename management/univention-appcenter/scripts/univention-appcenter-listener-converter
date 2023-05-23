@@ -128,6 +128,8 @@ def convert(app, dumped, filename, lo, pos):
             options = objs[0].options
         else:
             logger.info('EntryUUID %s not found' % entry_uuid)
+            logger.info('Removing corresponding listener file: %s' % filename)
+            os.remove(filename)
             return False
     dst_dir = os.path.join(app.get_data_dir(), 'listener')
     mkdir(dst_dir)

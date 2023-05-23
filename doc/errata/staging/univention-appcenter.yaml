@@ -8,4 +8,8 @@ desc: |
  This update addresses the following issues:
  * Some installation code is now executed with Python 3 instead of Python 2.
    Future compatibility with Python 3.11 has been added.
-bug: [55632]
+ * The App Center listener now removes files from its queue that contain
+   entryUUIDs whose corresponding UDM objects cannot be found. These
+   files cannot be processed by the listener and would otherwise remain in
+   the queue forever and cause infinite error logging.
+bug: [55632, 56072]
