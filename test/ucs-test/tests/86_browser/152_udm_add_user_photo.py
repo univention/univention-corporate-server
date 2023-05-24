@@ -1,4 +1,4 @@
-#!/usr/share/ucs-test/runner /usr/share/ucs-test/selenium
+#!/usr/share/ucs-test/runner /usr/share/ucs-test/playwright
 # -*- coding: utf-8 -*-
 ## desc: Test adding, changing and removing a photo for a user
 ## packages:
@@ -11,92 +11,45 @@
 ## join: true
 ## exposure: dangerous
 
-from selenium.common.exceptions import NoSuchElementException
-from selenium.webdriver.common.by import By
+import time
 
-import univention.testing.selenium.udm as selenium_udm
-import univention.testing.udm as udm_test
+from playwright.sync_api import expect
+
 from univention.lib.i18n import Translation
-from univention.testing import selenium
+from univention.testing.browser.generic_udm_module import UserModule
+from univention.testing.browser.lib import UMCBrowserTest
+from univention.testing.browser.udm_users import create_test_user
 from univention.testing.utils import get_ldap_connection
 
 
-_ = Translation('ucs-test-selenium').translate
+_ = Translation("ucs-test-browser").translate
 
 
-class UmcUdmError(Exception):
-    pass
+def test_add_user_photo(umc_browser_test: UMCBrowserTest, udm):
+    page = umc_browser_test.page
+    lo = get_ldap_connection()
+    user = create_test_user(udm, lo)
 
+    user_module = UserModule(umc_browser_test)
+    user_module.navigate()
+    detail_view = user_module.open_details(user.username)
 
-class UMCTester(object):
+    inital = detail_view.upload_picture("/tmp/inital.png")
+    inital_src_attribute = inital.get_attribute("src")
 
-    def setup(self):
-        self.create_test_user()
-        self.login_and_open_module()
+    # if we don't sleep here the second image will be took before the first image is displayed on the user details page
+    # this will lead to the assertion failing since the image is the same
+    time.sleep(1)
 
-    def create_test_user(self):
-        self.users = selenium_udm.Users(self.selenium)
-        userdn = self.udm.create_user()[0]
-        lo = get_ldap_connection()
-        user_object = lo.get(userdn)
-        user = {}
-        user['username'] = user_object['uid'][0].decode('utf-8')
-        user['lastname'] = user_object['sn'][0].decode('utf-8')
-        self.user = user
+    changed = detail_view.upload_picture("/tmp/changed.png")
+    changed_src_attribute = changed.get_attribute("src")
 
-    def login_and_open_module(self):
-        self.selenium.do_login()
-        self.selenium.open_module(self.users.name)
-        self.users.wait_for_main_grid_load()
+    assert inital_src_attribute != changed_src_attribute, "The src attribute didn't change after uploading a new image"
 
-    def test_umc(self):
-        self.setup()
+    detail_view.remove_picture()
+    detail_view.save()
 
-        uploaded_src_initial = self.test_upload_image(self.user, '/tmp/initial.png')
-        uploaded_src_changed = self.test_upload_image(self.user, '/tmp/changed.png')
-        if uploaded_src_changed == uploaded_src_initial:
-            raise UmcUdmError('The src in the img tag did not change after a new image has been uploaded')
-        self.test_clear_image(self.user)
+    detail_view = user_module.open_details(user.username)
 
-    def test_upload_image(self, user, img_path):
-        self.users.open_details(user)
-        self.selenium.driver.save_screenshot(img_path)
-        self.selenium.upload_image(img_path, button_label='Upload profile image')
-
-        if not self.get_uploaded_src():
-            raise UmcUdmError('There is no img tag in the Image widget after an image has been uploaded')
-        self.users.save_details()
-        self.users.open_details(user)
-        uploaded_src = self.get_uploaded_src()
-        if not uploaded_src:
-            raise UmcUdmError('There is no img tag in the Image widget after uploading a image, saving and opening the detailspage again')
-        self.users.close_details()
-
-        return uploaded_src
-
-    def test_clear_image(self, user):
-        self.users.open_details(user)
-        self.selenium.click_button('Remove', xpath_prefix='//*[@containsClass="umcUDMUsersModule__jpegPhoto"]')
-        if self.get_uploaded_src():
-            raise UmcUdmError('There is still an img tag in the Image widget after "Remove" has been pressed')
-        self.users.save_details()
-        self.users.open_details(user)
-        if self.get_uploaded_src():
-            raise UmcUdmError('There is still an img tag in the Image widget after clearing the image, saving and opening the detailspage again')
-
-    def get_uploaded_src(self):
-        try:
-            img = self.selenium.driver.find_element(By.CSS_SELECTOR, '.umcUDMUsersModule__jpegPhoto .umcImage__img')
-        except NoSuchElementException:
-            return None
-        else:
-            return img.get_attribute('src')
-
-
-if __name__ == '__main__':
-    with udm_test.UCSTestUDM() as udm, selenium.UMCSeleniumTest() as s:
-        umc_tester = UMCTester()
-        umc_tester.udm = udm
-        umc_tester.selenium = s
-
-        umc_tester.test_umc()
+    image_locator = page.locator(".umcUDMUsersModule__jpegPhoto .umcImage__img")
+    expect(image_locator).to_be_hidden()
