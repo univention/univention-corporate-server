@@ -16,6 +16,7 @@ Build-Depends:
  python3-all,
  python3-all-dev,
  python3-debian,
+ python3-setuptools,
  python3-six,
  univention-config-dev (>= 15.0.3),
 

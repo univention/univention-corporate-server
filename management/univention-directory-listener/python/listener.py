@@ -44,7 +44,7 @@ from univention.config_registry import ConfigRegistry
 
 try:
     from types import TracebackType  # noqa: F401
-    from typing import Any, Callable, List, Optional, Text, Type, TypeVar, Union  # noqa: F401
+    from typing import Any, Callable, List, Optional, Type, TypeVar, Union  # noqa: F401
 
     _F = TypeVar("_F", bound=Callable[..., Any])
 except ImportError:
@@ -54,7 +54,7 @@ configRegistry = ConfigRegistry()
 configRegistry.load()
 
 
-def setuid(uid):  # type: (Union[int, Text]) -> None
+def setuid(uid):  # type: (Union[int, str]) -> None
     """
     Set the current process’s effective user id.
     Use :py:func:`unsetuid()` to return to the listeners UID.
@@ -92,7 +92,7 @@ def unsetuid():  # type: () -> None
     os.seteuid(__listener_uid)
 
 
-def run(exe, argv, uid=-1, wait=True):  # type: (str, List[Union[str, Text]], int, bool) -> int
+def run(exe, argv, uid=-1, wait=True):  # type: (str, List[Union[str, str]], int, bool) -> int
     """
     Execute a the program `exe` with arguments `argv` and effective user id
     `uid`.

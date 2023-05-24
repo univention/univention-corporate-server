@@ -1,10 +1,16 @@
 @%@UCRWARNING=# @%@
 @!@
-from distutils.spawn import find_executable
-from pipes import quote
+try:
+    from shlex import quote
+except ImportError:
+    from pipes import quote
+try:
+    from shutil import which
+except ImportError:
+    from distutils.spawn import find_executable as which
 
 server_role = configRegistry.get('server/role', '')
-write_translog = server_role != 'domaincontroller_master' and find_executable('univention-directory-notifier')
+write_translog = server_role != 'domaincontroller_master' and which('univention-directory-notifier')
 ignore_master = configRegistry.is_true('listener/ignoremaster')
 debug_level = configRegistry.get('listener/debug/level', None)
 if server_role in ('domaincontroller_master', 'domaincontroller_backup'):

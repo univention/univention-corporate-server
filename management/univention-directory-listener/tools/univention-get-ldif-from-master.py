@@ -43,7 +43,7 @@ import io
 import logging
 import os
 import sys
-from typing import IO, Text  # noqa: F401
+from typing import IO  # noqa: F401
 
 import ldap
 import ldif
@@ -64,7 +64,7 @@ OIDS = set(replication.BUILTIN_OIDS) | set('1.3.6.1.4.1.4203.666.11.1.4.2.12.1')
 
 # from replication.py
 def _update_schema(fp, attr):
-    # type: (IO[Text], str) -> None
+    # type: (IO[str], str) -> None
     subschema = ldap.schema.SubSchema(attr)
     for oid in replication.subschema_sort(subschema, ldap.schema.AttributeType):
         if oid in OIDS:
