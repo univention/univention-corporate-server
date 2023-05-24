@@ -8,3 +8,6 @@ desc: |
  This update addresses the following issues:
  * Problems during concurrently reloading of UDM modules have been resolved.
 bug: [54597]
+erratum: 672
+announced: 2023-05-24
+support: core
