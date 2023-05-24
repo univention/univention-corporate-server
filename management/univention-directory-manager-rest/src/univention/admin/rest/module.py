@@ -116,9 +116,6 @@ _ = Translation('univention-directory-manager-rest').translate
 RE_UUID = re.compile('[^A-Fa-f0-9-]')
 MAX_WORKERS = ucr.get('directory/manager/rest/max-worker-threads', 35)
 
-if 422 not in tornado.httputil.responses:
-    tornado.httputil.responses[422] = 'Unprocessable Entity'  # Python 2 is missing this status code
-
 
 def get_user_ldap_write_connection(binddn, bindpw):
     return get_ldap_connection('user-write', binddn, bindpw)
