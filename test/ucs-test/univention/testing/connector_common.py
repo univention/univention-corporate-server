@@ -1,5 +1,5 @@
 import subprocess
-from typing import Text, Union  # noqa: F401
+from typing import Union  # noqa: F401
 
 import ldap
 
@@ -21,12 +21,12 @@ SPECIAL_CHARSET_USERNAME = "".join(set(SPECIAL_CHARSET) - set(FORBIDDEN_SAMACCOU
 
 
 def random_string(length=10, alpha=False, numeric=False, charset="", encoding='utf-8'):
-    # type: (int, bool, bool, str, Text) -> str
+    # type: (int, bool, bool, str, str) -> str
     return tstrings.random_string(length, alpha, numeric, charset, encoding)
 
 
 def random_bytestring(length=10, alpha=False, numeric=False, charset=""):
-    # type: (int, bool, bool, Text) -> bytes
+    # type: (int, bool, bool, str) -> bytes
     string = random_string(length, alpha, numeric, charset)
     if not isinstance(string, bytes):
         return string.encode('utf-8')
@@ -46,7 +46,7 @@ def normalize_dn(dn):
 
 
 def to_unicode(string):
-    # type: (Union[bytes, Text]) -> Text
+    # type: (Union[bytes, str]) -> str
     if isinstance(string, bytes):
         return string.decode('utf-8')
     return string

@@ -16,7 +16,7 @@ import sys
 import time
 import unicodedata
 from optparse import SUPPRESS_HELP, OptionGroup, OptionParser, Values  # noqa: F401
-from typing import Any, Dict, Iterable, Iterator, List, NoReturn, Set, Text, Tuple  # noqa: F401
+from typing import Any, Dict, Iterable, Iterator, List, NoReturn, Set, Tuple  # noqa: F401
 
 from typing_extensions import Literal  # noqa: F401
 
@@ -94,7 +94,7 @@ class Ldif:
         yield ''.join(lines)
 
     def split(self, line):
-        # type: (str) -> Tuple[str, Text]
+        # type: (str) -> Tuple[str, str]
         r"""
         Split attribute and value.
         Options are stripped.
@@ -148,7 +148,7 @@ class Ldif:
 
     @staticmethod
     def printable(value):
-        # type: (Text) -> Text
+        # type: (str) -> str
         """Convert binary data to printable string."""
         # Py2 has no str.isprintable()
         return ''.join(
@@ -357,7 +357,7 @@ def compare_ldif(lldif, rldif, options):
 
 
 def compare_keys(ldata, rdata):
-    # type: (Entry, Entry) -> Iterator[Tuple[Literal[-1, 0, 1], str, Text]]
+    # type: (Entry, Entry) -> Iterator[Tuple[Literal[-1, 0, 1], str, str]]
     """
     Compare and return attributes of two LDAP objects.
 
@@ -400,7 +400,7 @@ def compare_keys(ldata, rdata):
 
 
 def compare_values(attr, lvalues, rvalues):
-    # type: (str, List[Text], List[Text]) -> Iterator[Tuple[Literal[-1, 0, 1], str, Text]]
+    # type: (str, List[str], List[str]) -> Iterator[Tuple[Literal[-1, 0, 1], str, str]]
     """
     Compare and return values of two multi-valued LDAP attributes.
 

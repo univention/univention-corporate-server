@@ -4,7 +4,7 @@
 ## exposure: dangerous
 
 
-import imp
+import importlib.util
 import random
 import subprocess
 import time
@@ -20,7 +20,9 @@ from univention.udm import UDM
 try:
     import univention_lastbind
 except ImportError:
-    univention_lastbind = imp.load_source('univention_lastbind', '/usr/share/univention-ldap/univention_lastbind.py')
+    spec = importlib.util.spec_from_file_location('univention_lastbind', '/usr/share/univention-ldap/univention_lastbind.py')
+    univention_lastbind = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(univention_lastbind)
 
 
 # def is_role(role):

@@ -374,7 +374,7 @@ class Client:
 
     def __init__(self, hostname: str | None = None, username: str | None = None, password: str | None = None, language: str | None = None, timeout: float | None = None, automatic_reauthentication: bool = False, useragent: str | None = None) -> None:
         self.hostname = hostname or _get_fqdn()
-        self._language = language or locale.getdefaultlocale()[0] or ''
+        self._language = language or locale.getlocale()[0] or ''
         self._headers = {
             'Content-Type': 'application/json; charset=UTF-8',
             'Accept': 'application/json; q=1, text/html; q=0.5; */*; q=0.1',

@@ -1,3 +1,9 @@
+ucs-test (10.0.10-64) unstable; urgency=medium
+
+  * Bug 55632: removed compatiblity code for Python 2.7
+
+ -- Mika Westphal <westphal@univention.de>  Thu, 18 May 2023 12:43:35 +0200
+
 ucs-test (10.0.10-63) unstable; urgency=medium
 
   * Bug #55529: Fix ucs-test to check the password complexity message

@@ -57,7 +57,7 @@ import subprocess
 import sys
 import time
 from inspect import getfullargspec as getargspec
-from typing import Any, Dict, Iterable, List, Mapping, Optional, Text, Tuple, Union  # noqa: F401
+from typing import Any, Dict, Iterable, List, Mapping, Optional, Tuple, Union  # noqa: F401
 
 import ldap
 import ldap.filter
@@ -1164,7 +1164,7 @@ class UDM(UCSTestUDM):
 
 
 def verify_udm_object(module, dn, expected_properties):
-    # type: (Any, str, Optional[Mapping[str, Union[bytes, Text, Tuple[str, ...], List[str]]]]) -> None
+    # type: (Any, str, Optional[Mapping[str, Union[bytes, str, Tuple[str, ...], List[str]]]]) -> None
     """
     Verify an object exists with the given `dn` in the given UDM `module` with
     some properties. Setting `expected_properties` to `None` requires the
@@ -1221,7 +1221,7 @@ def _prettify_cmd(cmd):
 
 
 def _to_unicode(string):
-    # type: (Union[bytes, Text]) -> Text
+    # type: (Union[bytes, str]) -> str
     if isinstance(string, bytes):
         return string.decode('utf-8')
     return string
