@@ -12,3 +12,6 @@ note: https://github.com/OpenPrinting/cups-filters/commit/93e60d3df35
 bug: [56082]
 cve:
 - CVE-2023-24805
+erratum: 669
+announced: 2023-05-24
+support: core
