@@ -1,3 +1,9 @@
+univention-s4-connector (14.0.13-6) unstable; urgency=medium
+
+  * Bug #55632: Updated the checks for checking if the S4 connector is running
+
+ -- Mika Westphal <westphal@univention.de>  Wed, 19 Apr 2023 13:08:33 +0100
+
 univention-s4-connector (14.0.13-5) unstable; urgency=medium
 
   * Bug #54586: replace bytestrings in S4-Connector reject table which

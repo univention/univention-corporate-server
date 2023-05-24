@@ -35,8 +35,7 @@
 # <https://www.gnu.org/licenses/>.
 
 import base64
-
-import six
+import importlib.util
 
 import univention.config_registry as ucr
 import univention.s4connector.s4
@@ -1988,15 +1987,10 @@ if not configRegistry.is_true('connector/s4/mapping/domainpolicy', False):
 
 def load_localmapping(filename='/etc/univention/connector/s4/localmapping.py'):
     try:
-        if six.PY2:
-            import imp
-            mapping_hook = imp.load_source('localmapping', filename).mapping_hook
-        else:
-            import importlib.util
-            spec = importlib.util.spec_from_file_location('localmapping', filename)
-            mapping = importlib.util.module_from_spec(spec)
-            spec.loader.exec_module(mapping)
-            mapping_hook = mapping.mapping_hook
+        spec = importlib.util.spec_from_file_location('localmapping', filename)
+        mapping = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(mapping)
+        mapping_hook = mapping.mapping_hook
     except (IOError, AttributeError):
         return s4_mapping
     else:

@@ -55,7 +55,7 @@ configfile = '/etc/univention/s4connector/s4internal.cfg'
 if not os.path.exists(configfile):
     print("ERROR: Config-File not found, maybe connector was never started")
 config = configparser.ConfigParser()
-config.readfp(open(configfile))
+config.read_file(open(configfile))
 
 for section in config.sections():
     print("SECTION: %s" % section)
