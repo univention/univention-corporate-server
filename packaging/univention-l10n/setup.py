@@ -1,4 +1,4 @@
-#!/usr/bin/python3
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 #
 # Like what you see? Join us!
@@ -33,7 +33,7 @@
 from setuptools import setup
 
 
-VER = open('debian/changelog').readline().split()[1][1:-1]
+VER = open('debian/changelog').readline().split()[1][1:-1].split('A~')[0]
 
 setup(
     package_dir={'': '.'},

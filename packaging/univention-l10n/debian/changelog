@@ -1,3 +1,9 @@
+univention-l10n (7.0.2-2) unstable; urgency=medium
+
+  * Bug #55632: Changed the hashbangs to /usr/bin/python3
+
+ -- Mika Westphal <westphal@univention.de>  Fri, 24 Mar 2023 12:59:49 +0100
+
 univention-l10n (7.0.2-1) unstable; urgency=medium
 
   * Bug #31771: migrate tabs to spaces

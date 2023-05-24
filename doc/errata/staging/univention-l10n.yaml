@@ -1,0 +1,10 @@
+product: ucs
+release: "5.0"
+version: [3]
+scope: ucs_5.0-0-errata5.0-3
+src: univention-l10n
+fix: 7.0.2-2
+desc: |
+ This update addresses the following issues:
+ * The scripts are now executed with Python 3 instead of Python 2.
+bug: [55632]
