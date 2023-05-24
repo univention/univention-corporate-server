@@ -33,12 +33,10 @@
 
 """Debian Helper sequence to install UCS join and un-join scripts."""
 
-from __future__ import print_function
-
 from argparse import ArgumentParser
 from os import listdir
 from os.path import join
-from pipes import quote
+from shlex import quote
 
 from univention.debhelper import binary_packages, doIt, parser_dh_sequence
 
