@@ -1,0 +1,10 @@
+product: ucs
+release: "5.0"
+version: [3]
+scope: ucs_5.0-0-errata5.0-3
+src: univention-config-registry
+fix: 15.0.10-2
+desc: |
+ This update addresses the following issues:
+ * Future compatibility with Python 3.11 has been added.
+bug: [55632]
