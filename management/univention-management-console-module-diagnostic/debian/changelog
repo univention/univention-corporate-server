@@ -1,3 +1,9 @@
+univention-management-console-module-diagnostic (6.0.5-3) unstable; urgency=medium
+
+  * Bug #55632: improved the Python 3.11 compatiblity
+
+ -- Mika Westphal <westphal@univention.de>  Wed, 12 Apr 2023 14:52:35 +0200
+
 univention-management-console-module-diagnostic (6.0.5-2) unstable; urgency=medium
 
   * Bug #55874: Fix German translation in Diagnostic check
