@@ -16,7 +16,7 @@ from univention.config_registry import ConfigRegistry
 
 
 try:
-    from typing import IO, Any, Dict, List, Sequence, Text, Union  # noqa: F401
+    from typing import IO, Any, Dict, List, Sequence, Union  # noqa: F401
 except ImportError:
     pass
 
@@ -211,7 +211,7 @@ class MockFileManager(object):
         return TextIOWrapper(buf, "utf-8") if isinstance(buf, BytesIO) and not binary else buf
 
     def _new(self, name, data=b""):
-        # type: (str, Union[bytes, Text]) -> Union[StringIO, BytesIO]
+        # type: (str, Union[bytes, str]) -> Union[StringIO, BytesIO]
         buf = BytesIO(data) if isinstance(data, bytes) else StringIO(data)  # type: Union[StringIO, BytesIO]
         buf.name = name
         buf.close = lambda: None

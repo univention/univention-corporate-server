@@ -36,7 +36,14 @@
 
 import importlib.util
 import os
-import pipes
+
+
+try:
+    from shlex import quote
+except ImportError:
+    from pipes import quote
+
+
 from datetime import datetime
 from hashlib import md5
 from os import getpid, stat
@@ -532,7 +539,7 @@ class Instance(Base):
 
         command = spec['command']
         if '%' in command:
-            command = command % (pipes.quote(detail).translate({0: None, 10: None, 13: None}),)
+            command = command % (quote(detail).translate({0: None, 10: None, 13: None}),)
         MODULE.info("Creating job: %r" % (command,))
         command = '''
 %s

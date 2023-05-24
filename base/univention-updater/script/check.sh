@@ -61,7 +61,7 @@ conffile_is_unmodified () {
 	# returns exitcode 0 if given conffile is unmodified
 	local chksum fnregex testchksum
 	chksum="$(md5sum "${1:?}" | awk '{print $1}')"
-	fnregex="$(python -c 'import re,sys;print re.escape(sys.argv[1])' "$1")"
+	fnregex="$(python3 -c 'import re, sys; print(re.escape(sys.argv[1]))' "$1")"
 	for testchksum in $(dpkg-query -W -f '${Conffiles}\n' | sed -nre "s,^ $fnregex ([0-9a-f]+)( .*)?$,\\1,p") ; do
 		[ "$testchksum" = "$chksum" ] &&
 			return 0
@@ -297,35 +297,34 @@ update_check_system_date_too_old() {
 update_check_minimum_ucs_version_of_all_systems_in_domain () {  # Bug #51621
 	[ "$server_role" != "domaincontroller_master" ] && return 0
 
-	# FIXME: python3-univention-lib is not installed on UCS-4.4-7 by default, so this must remain Python 2 (for now):
-	MIN_VERSION="$MIN_VERSION" /usr/bin/python2.7 -c '
+	MIN_VERSION="$MIN_VERSION" /usr/bin/python3 -c '
 # -*- coding: utf-8 -*-
 from __future__ import print_function
-from distutils.version import LooseVersion
+from packaging.version import Version
 from os import environ
 from univention.uldap import getMachineConnection
 
 lo = getMachineConnection()
 
 REQUIRED_VERSION = environ["MIN_VERSION"]
-V5 = LooseVersion("5.0-0")
+V5 = Version("5.0-0")
 
 ATTR = "univentionOperatingSystemVersion"
 blocking_computers = [
     "%s: %s" % (dn, attrs[ATTR][0].decode("UTF-8", "replace"))
     for dn, attrs in lo.search("(&(%s=*)(univentionOperatingSystem=Univention Corporate Server)(!(univentionObjectFlag=docker)))" % ATTR, attr=[ATTR])
-    if LooseVersion(attrs[ATTR][0].decode("UTF-8", "replace")) < LooseVersion(REQUIRED_VERSION)
+    if Version(attrs[ATTR][0].decode("UTF-8", "replace")) < Version(REQUIRED_VERSION)
 ]
 
 blocking_objects = []
 ATTRS = ["univentionUCSVersionStart", "univentionUCSVersionEnd"]
 for dn, attrs in lo.search("(&(objectClass=univentionObjectMetadata)(!(objectClass=univentionLDAPExtensionSchema)))", attr=ATTRS):
     start, end = (attrs.get(attr, [b""])[0].decode("UTF-8", "replace") for attr in ATTRS)
-    if start and LooseVersion(start) >= V5:
+    if start and Version(start) >= V5:
         continue
-    if end and LooseVersion(end) < V5:
+    if end and Version(end) < V5:
         continue
-    if start and LooseVersion(start) < V5 and end:
+    if start and Version(start) < V5 and end:
         continue
     blocking_objects.append("%s: [%s..%s)" % (dn, start or "unspecified", end or "unspecified"))
 
