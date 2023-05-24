@@ -1,4 +1,4 @@
-#!/usr/bin/python2.7
+#!/usr/bin/python3
 # -*- coding: utf-8 -*-
 #
 # UCS Installer Tests
@@ -33,14 +33,14 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
+import configparser
 from time import sleep
 
-import ConfigParser
 import pytest
 from vminstall.utils import copy_through_ssh, execute_through_ssh, remove_old_sshkey
 
 
-config = ConfigParser.SafeConfigParser()
+config = configparser.ConfigParser()
 config.read('tests.cfg')
 
 
