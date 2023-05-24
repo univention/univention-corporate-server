@@ -12,3 +12,6 @@ desc: |
    from univention-ad-connector to univention-role-server-common to
    cover different use cases.
 bug: [54587, 55940]
+erratum: 677
+announced: 2023-05-24
+support: core
