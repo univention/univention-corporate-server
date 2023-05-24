@@ -1,3 +1,9 @@
+univention-monitoring-client (1.0.2-2) unstable; urgency=medium
+
+  * Bug #55632: improved the Python 3.11 compatiblity
+
+ -- Mika Westphal <westphal@univention.de>  Wed, 12 Apr 2023 15:06:37 +0200
+
 univention-monitoring-client (1.0.2-1) unstable; urgency=medium
 
   * Bug #31771: migrate tabs to spaces

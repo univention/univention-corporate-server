@@ -33,8 +33,8 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-import pipes
 import re
+import shlex
 import subprocess
 
 from univention.config_registry import ucr
@@ -64,7 +64,7 @@ class NMBD(Alert):
 
             output = output.replace('\n', ';')
             if 'failed to find name' in output:
-                self.log.debug('nmblookup for %s at host %s failed (%s): %s' % (wins_host, query_host, ' '.join(pipes.quote(x) for x in cmd), output))
+                self.log.debug('nmblookup for %s at host %s failed (%s): %s' % (wins_host, query_host, ' '.join(shlex.quote(x) for x in cmd), output))
                 self.write_metric('univention_nmbd_running', 0, query_host=query_host, wins_host=wins_host)
                 continue
 
