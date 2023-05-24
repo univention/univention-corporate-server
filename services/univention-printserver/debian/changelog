@@ -1,3 +1,9 @@
+univention-printserver (13.0.8-3) unstable; urgency=medium
+
+  * Bug #55632: improved the Python 3.11 compatiblity
+
+ -- Mika Westphal <westphal@univention.de>  Wed, 12 Apr 2023 15:12:06 +0200
+
 univention-printserver (13.0.8-2) unstable; urgency=medium
 
   * Bug #55860: Existing print server UCR values were overwritten with defaults upon update of the package. This is now fixed.

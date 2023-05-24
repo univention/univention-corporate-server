@@ -36,7 +36,7 @@
 from __future__ import absolute_import, annotations
 
 import os
-import pipes
+import shlex
 import subprocess
 import time
 from typing import Dict, List
@@ -103,7 +103,7 @@ def _join_basedir_filename(basedir: str, filename: str) -> str:
 
 
 def lpadmin(args: List[str]) -> None:
-    quoted_args = [pipes.quote(x) for x in args]
+    quoted_args = [shlex.quote(x) for x in args]
 
     # Show this info message by default
     ud.debug(ud.LISTENER, ud.WARN, "cups-printers: info: univention-lpadmin %s" % ' '.join(quoted_args))
