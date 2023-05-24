@@ -1,3 +1,9 @@
+univention-management-console-module-udm (10.0.5-3) unstable; urgency=medium
+
+  * Bug #55632: Improved Python 3.11 compatibility
+
+ -- Mika Westphal <westphal@univention.de>  Fri, 24 Mar 2023 14:18:29 +0100
+
 univention-management-console-module-udm (10.0.5-2) unstable; urgency=medium
 
   * Bug #42330: Remove old maintainer script package update code
