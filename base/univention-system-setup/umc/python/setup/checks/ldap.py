@@ -36,7 +36,7 @@
 
 from __future__ import absolute_import
 
-from pipes import quote
+from shlex import quote
 from subprocess import PIPE, Popen
 
 from ldap.filter import filter_format

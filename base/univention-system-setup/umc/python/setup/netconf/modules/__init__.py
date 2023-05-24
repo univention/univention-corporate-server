@@ -29,7 +29,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-import imp
+import importlib.util
 import logging
 import os
 import sys
@@ -58,20 +58,19 @@ class RunPhases(object):
                         self.logger.debug("Skipping '%s'", filename)
                         continue
                     try:
-                        info = imp.find_module(name, [dirpath])
+                        info = importlib.util.find_spec(name, [dirpath])
                     except ImportError:
                         self.logger.warning("Failed to open '%s'", filename)
                     yield name, info
 
     def load(self):
-        for name, (pfile, filename, desc) in self.find():
+        for name, info in self.find():
             try:
-                module = imp.load_module(name, pfile, filename, desc)
+                module = importlib.util.module_from_spec(info)
+                sys.modules[name] = module
+                info.loader.exec_module(module)
             except SyntaxError as ex:
                 self.logger.warning("Failed to import '%s': %s", name, ex)
-            finally:
-                if pfile:
-                    pfile.close()
             for key, value in vars(module).items():
                 if not key.startswith('_'):
                     self.add(key, value)

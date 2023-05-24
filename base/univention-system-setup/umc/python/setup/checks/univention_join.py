@@ -1,7 +1,8 @@
-import pipes
+import shlex
 import subprocess
 import traceback
-from distutils.version import LooseVersion
+
+from packaging.version import Version
 
 import univention.config_registry
 from univention.lib.i18n import Translation
@@ -101,7 +102,7 @@ def check_domain_is_higher_or_equal_version(address, username, password):
             MODULE.error('Failed to retrieve UCS version: %s' % (traceback.format_exc(),))
             return
         nonmaster_ucs_version = '{}-{}'.format(UCR.get('version/version'), UCR.get('version/patchlevel'))
-        if LooseVersion(nonmaster_ucs_version) > LooseVersion(master_ucs_version):
+        if Version(nonmaster_ucs_version) > Version(master_ucs_version):
             raise UMC_Error(_('The UCS version of the domain you are trying to join ({}) is lower than the local one ({}). This constellation is not supported.').format(master_ucs_version, nonmaster_ucs_version))
 
 
@@ -153,7 +154,7 @@ def check_is_school_multiserver_domain(address, username, password):
                 'get',
                 'ldap/base',
             ]).strip().decode('UTF-8')
-            remote_cmd = ' '.join(pipes.quote(x) for x in [
+            remote_cmd = ' '.join(shlex.quote(x) for x in [
                 'univention-ldapsearch',
                 '-D',
                 f'cn=admin,{ldap_base}',
@@ -190,7 +191,7 @@ def get_server_school_roles(hostname, address, username, password):
                 'get',
                 'ldap/base',
             ]).strip().decode('UTF-8')
-            remote_cmd = ' '.join(pipes.quote(x) for x in [
+            remote_cmd = ' '.join(shlex.quote(x) for x in [
                 'univention-ldapsearch',
                 '-D',
                 f'cn=admin,{ldap_base}',

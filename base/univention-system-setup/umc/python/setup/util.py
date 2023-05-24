@@ -755,7 +755,7 @@ def dhclient(interface, timeout=None):
 
     stderr = []
     stderr_thread = threading.Thread(target=_readerthread, args=(p.stderr, stderr))
-    stderr_thread.setDaemon(True)
+    stderr_thread.daemon = True
     stderr_thread.start()
     stderr_thread.join(timeout)
 
