@@ -1,0 +1,12 @@
+product: ucs
+release: "5.0"
+version: [3]
+scope: ucs_5.0-0-errata5.0-3
+src: univention-management-console
+fix: 12.0.17-13
+desc: |
+ This update addresses the following issues:
+ * Disable the SOAP binding for single sign-out in the
+   identity provider metadata to make sure we don't use
+   SOAP for the UMC SAML logout.
+bug: [56069]
