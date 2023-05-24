@@ -32,8 +32,7 @@
 # <https://www.gnu.org/licenses/>.
 
 
-import crypt
-
+import passlib.hash as passlib
 import pytest
 from univentionunittests.umc import import_umc_module
 
@@ -68,7 +67,12 @@ def assert_user_password(user, password):
 
 
 def compare_password(plaintext, hashed):
-    return crypt.crypt(plaintext, hashed) == hashed
+    if hashed.startswith("$1"):
+        return passlib.md5_crypt.verify(plaintext, hashed)
+    if hashed.startwith("$5"):
+        return passlib.sha256_crypt.verify(plaintext, hashed)
+    if hashed.startwith("$6"):
+        return passlib.sha512_crypt.verify(plaintext, hashed)
 
 
 def test_meta_password():
