@@ -5,7 +5,10 @@
 export LANG=C
 
 @!@
-from pipes import quote
+try:
+    from shlex import quote
+except ImportError:
+    from pipes import quote
 default = configRegistry.get('grub/default', '0')
 print('GRUB_DEFAULT=%s' % (quote(default),))
 savedefault = configRegistry.is_true('grub/savedefault', False)
