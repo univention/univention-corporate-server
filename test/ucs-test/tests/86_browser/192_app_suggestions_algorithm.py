@@ -1,4 +1,4 @@
-#!/usr/share/ucs-test/runner /usr/share/ucs-test/selenium
+#!/usr/share/ucs-test/runner /usr/share/ucs-test/playwright
 # -*- coding: utf-8 -*-
 ## desc: |
 ##  Test suggestion algorithm
@@ -9,67 +9,71 @@
 ## join: true
 ## exposure: dangerous
 
-from univention.admin import localization
+from playwright.sync_api import expect
+
 from univention.appcenter.app_cache import AppCache
-from univention.testing import selenium
-from univention.testing.selenium.appcenter import AppCenter
+from univention.testing.browser.appcenter import AppCenter
+from univention.testing.browser.lib import UMCBrowserTest
 
 
-translator = localization.translation('ucs-test-selenium')
-_ = translator.translate
+def test_app_suggestons_algorithm(umc_browser_test: UMCBrowserTest):
+    app_center = AppCenter(umc_browser_test)
+    app_center.navigate()
+    expect(umc_browser_test.page.get_by_role("heading", name="Available")).to_be_visible(timeout=60 * 1000)
 
+    app_cache = AppCache.build()
+    apps = app_cache.get_all_apps()
+    installed_apps = [
+        {"id": apps[0].id},
+        {"id": apps[1].id},
+    ]
+    suggestions = [
+        {
+            "condition": [installed_apps[0]["id"], "xxx"],
+            "candidates": [
+                {
+                    "id": apps[2].id,
+                    "mayNotBeInstalled": [],
+                },
+            ],
+        },
+        {
+            "condition": [installed_apps[0]["id"]],
+            "candidates": [
+                {
+                    "id": apps[3].id,
+                    "mayNotBeInstalled": [installed_apps[1]["id"]],
+                },
+            ],
+        },
+        {
+            "condition": [installed_apps[0]["id"], installed_apps[1]["id"]],
+            "candidates": [
+                {
+                    "id": apps[4].id,
+                    "mayNotBeInstalled": ["xxx"],
+                },
+                {
+                    "id": apps[5].id,
+                    "mayNotBeInstalled": ["xxx"],
+                },
+                {
+                    "id": apps[6].id,
+                    "mayNotBeInstalled": [installed_apps[0]["id"]],
+                },
+            ],
+        },
+    ]
 
-class UMCTester(object):
-    def test_umc(self):
-        self.selenium.do_login()
-        self.appcenter.open(do_reload=False)
-        self.selenium.wait_for_text('Available')
+    eval_result = umc_browser_test.page.evaluate(
+        """([suggestions, installed_apps]) => {
+            //console.log(suggestions.length)
+            //console.log(installed_apps.length)
+            var w = dijit.byId('umc_modules_appcenter_AppCenterPage_0');
+            return w._getSuggestedAppIds(suggestions, installed_apps);
+        }""",
+        [suggestions, installed_apps],
+    )
 
-        app_cache = AppCache.build()
-        apps = app_cache.get_all_apps()
-        installed_apps = [
-            {'id': apps[0].id},
-            {'id': apps[1].id},
-        ]
-        suggestions = [{
-            'condition': [installed_apps[0]['id'], 'xxx'],
-            'candidates': [{
-                'id': apps[2].id,
-                'mayNotBeInstalled': [],
-            }],
-        }, {
-            'condition': [installed_apps[0]['id']],
-            'candidates': [{
-                'id': apps[3].id,
-                'mayNotBeInstalled': [installed_apps[1]['id']],
-            }],
-        }, {
-            'condition': [installed_apps[0]['id'], installed_apps[1]['id']],
-            'candidates': [{
-                'id': apps[4].id,
-                'mayNotBeInstalled': ['xxx'],
-            }, {
-                'id': apps[5].id,
-                'mayNotBeInstalled': ['xxx'],
-            }, {
-                'id': apps[6].id,
-                'mayNotBeInstalled': [installed_apps[0]['id']],
-            }],
-        }]
-
-        r = self.selenium.driver.execute_script('''
-            var w = dijit.byId('umc_modules_appcenter_AppCenterPage_0')
-            return w._getSuggestedAppIds(arguments[0], arguments[1]);
-        ''', suggestions, installed_apps)
-
-        assert apps[4].id in r, "Expected '%s' to be in suggested ids %s" % (apps[6].id, r)
-        assert apps[5].id in r, "Expected '%s' to be in suggested ids %s" % (apps[6].id, r)
-
-
-if __name__ == '__main__':
-    with selenium.UMCSeleniumTest() as s:
-        umc_tester = UMCTester()
-        umc_tester.selenium = s
-        umc_tester.appcenter = AppCenter(umc_tester.selenium)
-
-        umc_tester.test_umc()
+    assert apps[4].id in eval_result, f"Expected {apps[4]} to be in suggested ids {eval_result}"
+    assert apps[5].id in eval_result, f"Expected {apps[5]} to be in suggested ids {eval_result}"
