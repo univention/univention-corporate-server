@@ -35,7 +35,7 @@ import gettext
 import re
 import weakref
 from locale import LC_MESSAGES, Error, getlocale
-from typing import Optional, Text  # noqa: F401
+from typing import Optional  # noqa: F401
 
 import six
 
@@ -182,7 +182,7 @@ class NullTranslation(object):
     locale = property(fget=_get_locale, fset=_set_locale)
 
     def translate(self, message):
-        # type: (str) -> Text
+        # type: (str) -> str
         """
         Translate message.
 

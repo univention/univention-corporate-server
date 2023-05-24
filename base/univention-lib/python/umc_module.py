@@ -43,10 +43,8 @@ import magic
 from PIL import Image
 
 
-MIME_TYPE = magic.open(magic.MAGIC_MIME_TYPE)
-MIME_TYPE.load()
-MIME_DESCRIPTION = magic.open(magic.MAGIC_NONE)
-MIME_DESCRIPTION.load()
+MIME_TYPE = magic.Magic(magic.MAGIC_MIME_TYPE)
+MIME_DESCRIPTION = magic.Magic(magic.MAGIC_NONE)
 
 UMC_ICON_BASEDIR = "/usr/share/univention-management-console-frontend/js/dijit/themes/umc/icons"
 
@@ -67,7 +65,7 @@ def get_mime_type(data):
     :returns: The |MIME| type string.
     :rtype: str
     """
-    return MIME_TYPE.buffer(data)
+    return MIME_TYPE.from_buffer(data)
 
 
 def get_mime_description(data):
@@ -79,7 +77,7 @@ def get_mime_description(data):
     :returns: A descriptive string.
     :rtype: str
     """
-    return MIME_DESCRIPTION.buffer(data)
+    return MIME_DESCRIPTION.from_buffer(data)
 
 
 def compression_mime_type_of_buffer(data):

@@ -379,7 +379,7 @@ class Client(object):
     def __init__(self, hostname=None, username=None, password=None, language=None, timeout=None, automatic_reauthentication=False):
         # type: (Optional[str], Optional[str], Optional[str], Optional[str], Optional[float], bool) -> None
         self.hostname = hostname or '%(hostname)s.%(domainname)s' % ucr
-        self._language = language or locale.getdefaultlocale()[0] or ''
+        self._language = language or locale.getlocale()[0] or ''
         self._headers = {
             'Content-Type': 'application/json; charset=UTF-8',
             'Accept': 'application/json; q=1, text/html; q=0.5; */*; q=0.1',

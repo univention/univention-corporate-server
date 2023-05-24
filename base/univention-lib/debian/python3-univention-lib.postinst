@@ -39,33 +39,4 @@ univention-config-registry set \
 	'listener/shares/whitelist/univention-printserver-pdf?/var/spool/cups-pdf/*' \
 	'listener/shares/whitelist/ucs-school-import?/home/*' \
 	'listener/shares/whitelist/italc-windows?/usr/share/italc-windows/*'
-
-if [ "$1" = "configure" ] && dpkg --compare-versions "$2" lt-nl 8.0.0-15; then
-	systemctl try-restart univention-directory-listener 2>/dev/null || true
-
-	fqdn="$(hostname -f)"
-	python <<EOL
-import os
-import pipes
-import ldap.filter
-import univention.uldap
-import univention.lib.listenerSharePath
-from univention.config_registry import ConfigRegistry
-ucr = ConfigRegistry()
-ucr.load()
-try:
-	lo = univention.uldap.getMachineConnection()
-	attrs = lo.search(ldap.filter.filter_format('(&(objectClass=univentionShare)(univentionSharePath=*)(univentionShareHost=%s))', ['$fqdn']), attr=['univentionSharePath'])
-except:
-	pass
-else:
-	for dn, attr in attrs:
-		for path in attr.get('univentionSharePath', []):
-			directory = os.path.realpath(path)
-			if univention.lib.listenerSharePath.is_blacklisted(directory, ucr):
-				print('WARNING: the path %s for share %s matches a blacklisted path: You should execute: "ucr set listener/shares/whitelist/%s=%s" and then restart univention-directory-listener.' % (path, dn, pipes.quote(univention.uldap.explodeDn(dn, True)[0]), pipes.quote(directory)))
-EOL
-
-fi
-
 exit 0

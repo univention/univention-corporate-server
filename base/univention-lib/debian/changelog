@@ -1,3 +1,9 @@
+univention-lib (9.0.14-3) unstable; urgency=medium
+
+  * Bug #55632: Removed old code and added Python 3.11 support
+
+ -- Mika Westphal <westphal@univention.de>  Fri, 24 Mar 2023 12:11:02 +0100
+
 univention-lib (9.0.14-2) unstable; urgency=medium
 
   * Bug #42330: Remove old maintainer script package update code

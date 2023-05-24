@@ -34,6 +34,7 @@
 # <https://www.gnu.org/licenses/>.
 
 override_dh_auto_test:
+	dh_auto_test
 	univention-unittest
 
 %:
