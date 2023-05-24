@@ -36,7 +36,7 @@
 
 from __future__ import print_function
 
-import six
+import importlib.util
 
 import univention.connector.ad
 import univention.connector.ad.password
@@ -516,15 +516,10 @@ def create_mapping(configbasename='connector'):
 
 def load_localmapping(ad_mapping, filename='/etc/univention/connector/ad/localmapping.py'):
     try:
-        if six.PY2:
-            import imp
-            mapping_hook = imp.load_source('localmapping', filename).mapping_hook
-        else:
-            import importlib.util
-            spec = importlib.util.spec_from_file_location('localmapping', filename)
-            mapping = importlib.util.module_from_spec(spec)
-            spec.loader.exec_module(mapping)
-            mapping_hook = mapping.mapping_hook
+        spec = importlib.util.spec_from_file_location('localmapping', filename)
+        mapping = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(mapping)
+        mapping_hook = mapping.mapping_hook
     except (IOError, AttributeError):
         return ad_mapping
     else:

@@ -1,3 +1,9 @@
+univention-ad-connector (14.0.13-7) unstable; urgency=medium
+
+  * Bug #55632: Updated the checks for checking if the AD connector is running
+
+ -- Mika Westphal <westphal@univention.de>  Wed, 26 Apr 2023 18:23:13 +0100
+
 univention-ad-connector (14.0.13-6) unstable; urgency=medium
 
   * Bug #55940: move server_password_change script univention-admember
