@@ -35,13 +35,13 @@
 # <https://www.gnu.org/licenses/>.
 #
 
+import inspect
 import os
 import os.path
 import platform
 import re
 from copy import copy
 from distutils.version import LooseVersion
-from inspect import getargspec
 from weakref import ref
 
 import six
@@ -59,6 +59,8 @@ from univention.appcenter.utils import (
     _, app_ports, container_mode, get_current_ram_available, get_free_disk_space, get_locale, mkdir,
 )
 
+
+getargspec = getattr(inspect, 'getfullargspec', getattr(inspect, 'getargspec', None))
 
 CACHE_DIR = '/var/cache/univention-appcenter'
 LOCAL_ARCHIVE = '/usr/share/univention-appcenter/archives/all.tar.gz'

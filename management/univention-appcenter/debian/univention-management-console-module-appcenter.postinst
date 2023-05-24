@@ -40,7 +40,7 @@ if [ -z "$2" ]; then
 	# meta files already in the cache that did not undergo
 	# _update_local_files routine
 	# See Bug#46813
-	python -c "from univention.appcenter.actions import get_action; get_action('update')()._update_local_files()"
+	python3 -c "from univention.appcenter.actions import get_action; get_action('update')()._update_local_files()"
 fi
 
 exit 0

@@ -38,7 +38,13 @@
 import ipaddress
 import os
 import os.path
-import pipes
+
+
+try:
+    from shlex import quote
+except ImportError:
+    from pipes import quote
+
 import re
 import shutil
 import socket
@@ -50,7 +56,7 @@ from logging import Logger  # noqa: F401
 from subprocess import PIPE, STDOUT, Popen, list2cmdline
 from threading import Thread
 from typing import (  # noqa: F401
-    TYPE_CHECKING, Any, Container, Dict, Iterable, List, Mapping, Optional, Sequence, Text, Tuple, Type, TypeVar, Union,
+    TYPE_CHECKING, Any, Container, Dict, Iterable, List, Mapping, Optional, Sequence, Tuple, Type, TypeVar, Union,
 )
 from uuid import uuid4
 
@@ -86,7 +92,10 @@ def read_ini_file(filename, parser_class=RawConfigParser):
     parser = parser_class()
     try:
         with open(filename) as f:
-            parser.readfp(f)
+            if hasattr(parser, 'read_file'):
+                parser.read_file(f)
+            else:
+                parser.readfp(f)
     except TypeError:
         pass
     except EnvironmentError:
@@ -244,7 +253,7 @@ def call_process2(cmd, logger=None, env=None, cwd=None):
     out = ""
     ret = 0
     try:
-        p = Popen(cmd, stdout=PIPE, stderr=STDOUT, bufsize=1, close_fds=True, env=env, cwd=cwd)
+        p = Popen(cmd, stdout=PIPE, stderr=STDOUT, close_fds=True, env=env, cwd=cwd)
         while p.poll() is None:
             stdout = p.stdout.readline()
             if stdout:
@@ -263,11 +272,11 @@ def call_process2(cmd, logger=None, env=None, cwd=None):
 
 def call_process(args, logger=None, env=None, cwd=None):
     # type: (Sequence[str], Optional[Logger], Optional[Mapping[str, str]], Optional[str]) -> Any
-    process = Popen(args, stdout=PIPE, stderr=PIPE, bufsize=1, close_fds=True, env=env, cwd=cwd)
+    process = Popen(args, stdout=PIPE, stderr=PIPE, close_fds=True, env=env, cwd=cwd)
     if logger is not None:
         if cwd:
             logger.debug('Calling in %s:' % cwd)
-        logger.debug('Calling %s' % ' '.join(pipes.quote(arg) for arg in args))
+        logger.debug('Calling %s' % ' '.join(quote(arg) for arg in args))
         remove_ansi_escape_sequence_regex = re.compile(r'\x1B\[[0-9;]*[a-zA-Z]')
 
         def _handle_output(out, handler):
@@ -282,7 +291,7 @@ def call_process(args, logger=None, env=None, cwd=None):
         stdout_thread = Thread(target=_handle_output, args=(process.stdout, logger.info))
         stdout_thread.daemon = True
         stdout_thread.start()
-        stderr_thread = Thread(target=_handle_output, args=(process.stderr, logger.warn))
+        stderr_thread = Thread(target=_handle_output, args=(process.stderr, logger.warning))
         stderr_thread.daemon = True
         stderr_thread.start()
 
@@ -335,13 +344,15 @@ def verbose_http_error(exc):
 
 
 class HTTPSConnection(http_client.HTTPSConnection):
+    """Verified HTTP Connection, Bug #30620"""
 
-    def connect(self):
-        sock = socket.create_connection((self.host, self.port), self.timeout, self.source_address)
-        if self._tunnel_host:
-            self.sock = sock
-            self._tunnel()
-        self.sock = ssl.wrap_socket(sock, self.key_file, self.cert_file, cert_reqs=ssl.CERT_REQUIRED, ca_certs="/etc/ssl/certs/ca-certificates.crt")
+    def __init__(self, *args, **kwargs):
+        ssl_context = ssl.create_default_context(ssl.Purpose.SERVER_AUTH)
+        ssl_context.set_alpn_protocols(['http/1.1'])
+        ssl_context.check_hostname = True
+        ssl_context.verify_mode = ssl.CERT_REQUIRED
+        ssl_context.load_verify_locations("/etc/ssl/certs/ca-certificates.crt")
+        super(HTTPSConnection, self).__init__(*args, context=ssl_context, **kwargs)
 
 
 class HTTPSHandler(urllib_request.HTTPSHandler):

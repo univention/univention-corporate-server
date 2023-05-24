@@ -35,7 +35,6 @@
 # <https://www.gnu.org/licenses/>.
 
 import os.path
-import socket
 import ssl
 from contextlib import contextmanager
 from hashlib import md5
@@ -152,13 +151,15 @@ def create_url(server: str, prefix: str, username: str, password: str, port: str
 
 
 class HTTPSConnection(http_client.HTTPSConnection):
+    """Verified HTTP Connection, Bug #30620"""
 
-    def connect(self):
-        sock = socket.create_connection((self.host, self.port), self.timeout, self.source_address)
-        if self._tunnel_host:
-            self.sock = sock
-            self._tunnel()
-        self.sock = ssl.wrap_socket(sock, self.key_file, self.cert_file, cert_reqs=ssl.CERT_REQUIRED, ca_certs="/etc/ssl/certs/ca-certificates.crt")
+    def __init__(self, *args, **kwargs):
+        ssl_context = ssl.create_default_context(ssl.Purpose.SERVER_AUTH)
+        ssl_context.set_alpn_protocols(['http/1.1'])
+        ssl_context.check_hostname = True
+        ssl_context.verify_mode = ssl.CERT_REQUIRED
+        ssl_context.load_verify_locations("/etc/ssl/certs/ca-certificates.crt")
+        super(HTTPSConnection, self).__init__(*args, context=ssl_context, **kwargs)
 
 
 class HTTPSHandler(urllib_request.HTTPSHandler):

@@ -1,8 +1,8 @@
 import io
-from distutils.core import setup as orig_setup
 
 from debian.changelog import Changelog
 from debian.deb822 import Deb822
+from setuptools import setup as orig_setup
 
 
 def _get_version():
