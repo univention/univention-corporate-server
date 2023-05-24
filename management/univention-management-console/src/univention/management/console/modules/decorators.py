@@ -480,7 +480,7 @@ class RequestOptionsIterator(object):
 
 
 def arginspect(function):
-    getfullargspec = getattr(inspect, 'getfullargspec', inspect.getargspec)
+    getfullargspec = getattr(inspect, 'getfullargspec', getattr(inspect, 'getargspec', None))
     argspec = getfullargspec(function)
     if hasattr(function, '_original_argument_names'):
         arguments = function._original_argument_names

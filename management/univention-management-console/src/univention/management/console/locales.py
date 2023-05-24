@@ -50,7 +50,7 @@ translations. Components that provide their own translation files:
 
 import os
 import traceback
-from locale import getdefaultlocale
+from locale import getlocale
 from struct import error as StructError
 
 import polib
@@ -158,7 +158,7 @@ class I18N_Manager(dict):
     """
 
     def __init__(self):
-        lang, codeset = getdefaultlocale()
+        lang, codeset = getlocale()
         if lang is None:
             lang = 'C'
         self.locale = Locale(lang)

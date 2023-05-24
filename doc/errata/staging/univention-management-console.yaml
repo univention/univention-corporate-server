@@ -3,10 +3,12 @@ release: "5.0"
 version: [3]
 scope: ucs_5.0-0-errata5.0-3
 src: univention-management-console
-fix: 12.0.17-13
+fix: 12.0.17-14
 desc: |
  This update addresses the following issues:
  * Disable the SOAP binding for single sign-out in the
    identity provider metadata to make sure we don't use
    SOAP for the UMC SAML logout.
-bug: [56069]
+ * The joinscript now uses Python 3 instead of Python 2 to update
+   SAML metadata. Future compatibility with Python 3.11 has been added.
+bug: [56069, 55632]

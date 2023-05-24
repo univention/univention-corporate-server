@@ -61,7 +61,7 @@ class CLIClient(object):
 
     def execute(self):
         arguments = self.arguments
-        client = Client(arguments.server, language=(locale.getlocale()[0] or locale.getdefaultlocale()[0] or 'en-US').replace('_', '-'))
+        client = Client(arguments.server, language=(locale.getlocale()[0] or 'en-US').replace('_', '-'))
 
         funcs = {
             'COMMAND': client.umc_command,
