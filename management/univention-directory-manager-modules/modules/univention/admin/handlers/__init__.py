@@ -80,7 +80,7 @@ except ImportError:
     ud.debug(ud.ADMIN, ud.WARN, "Failed to import univention.lib.admember")
     _prevent_to_change_ad_properties = False
 
-getfullargspec = getattr(inspect, 'getfullargspec', inspect.getargspec)
+getfullargspec = getattr(inspect, 'getfullargspec', getattr(inspect, 'getargspec', None))
 
 _Attributes = Dict[Text, Union[bytes, List[bytes]]]
 _Properties = Dict[Text, Union[Text, List[Text]]]

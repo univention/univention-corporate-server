@@ -52,7 +52,7 @@ try:
 except ImportError:
     pass
 
-getfullargspec = getattr(inspect, 'getfullargspec', inspect.getargspec)
+getfullargspec = getattr(inspect, 'getfullargspec', getattr(inspect, 'getargspec', None))
 
 try:
     unicode

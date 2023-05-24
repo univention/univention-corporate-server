@@ -38,7 +38,6 @@ import base64
 import bz2
 import copy
 import datetime
-import imghdr
 import inspect
 import io
 import ipaddress
@@ -59,7 +58,6 @@ import dateutil
 import ldap
 import ldap.dn
 import PIL
-import pytz
 import six
 from ldap.filter import escape_filter_chars, filter_format
 from ldap.schema import AttributeType, ObjectClass
@@ -74,6 +72,12 @@ from univention.lib.ucs import UCS_Version
 from univention.lib.umc_module import get_mime_description, get_mime_type, image_mime_type_of_buffer
 from univention.uldap import getMachineConnection
 
+
+try:  # Python >= 3.9
+    import zoneinfo
+except ImportError:
+    zoneinfo = None
+    import pytz
 
 if TYPE_CHECKING:
     from univention.admin.uldap import access  # noqa: F401
@@ -1400,7 +1404,7 @@ class jpegPhoto(Upload):
     def parse(self, text):
         try:
             raw = base64.b64decode(text)
-            if imghdr.what(None, raw) == 'png':
+            if raw.startswith(b'\211PNG\r\n\032\n'):  # PNG
                 # convert from PNG to JPEG
                 try:
                     fp = BytesIO(raw)
@@ -1417,9 +1421,7 @@ class jpegPhoto(Upload):
                 except (KeyError, IOError, IndexError):
                     ud.debug(ud.ADMIN, ud.WARN, 'Failed to convert PNG file into JPEG: %s' % (traceback.format_exc(),))
                     raise univention.admin.uexceptions.valueError(_('Failed to convert PNG file into JPEG format.'))
-            # imghdr.what(None, base64.b64dcode(text)) == 'jpeg'  # See Bug #36304
-            # this is what imghdr.py probably does in  the future:
-            if raw[0:2] != b'\xff\xd8':
+            if raw[:2] != b'\xff\xd8' and raw[6:10] not in (b'JFIF', b'Exif'):
                 raise ValueError()
             return text
         except (base64.binascii.Error, ValueError, TypeError):
@@ -6861,6 +6863,8 @@ class TimeZone(select):
 
     @ClassProperty
     def choices(cls):
+        if zoneinfo:
+            return [(x, x) for x in zoneinfo.available_timezones()]
         return [(x, x) for x in pytz.all_timezones]
 
 

@@ -1,3 +1,9 @@
+univention-directory-manager-modules (15.0.20-7) unstable; urgency=medium
+
+  * Bug #55632: Improved timezone handling and improved also Python 3.11 compatiblity
+
+ -- Mika Westphal <westphal@univention.de>  Tue, 23 May 2023 08:20:46 +0200
+
 univention-directory-manager-modules (15.0.20-6) unstable; urgency=medium
 
   * Bug #54597: Listener must be restarted using deb-systemd-invoke instead of systemctl

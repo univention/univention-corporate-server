@@ -60,7 +60,7 @@ from ..exceptions import (
 from ..utils import UDebug as ud
 
 
-getfullargspec = getattr(inspect, 'getfullargspec', inspect.getargspec)
+getfullargspec = getattr(inspect, 'getfullargspec', getattr(inspect, 'getargspec', None))
 
 ucr = univention.config_registry.ConfigRegistry()
 ucr.load()

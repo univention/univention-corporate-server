@@ -33,8 +33,8 @@
 """Migrate the LDAP-users from the old (st) to the new (c) UDM mapping"""
 
 import argparse
-import pipes
 import re
+import shlex
 import sys
 from subprocess import check_call
 from typing import Any, List, Optional, Tuple, Union
@@ -99,7 +99,7 @@ class Migration:
             '--set', 'registry=directory/manager/web/modules/users/user/map-country-to-st false',
         ]
         if self.args.verbose:
-            print('Creating UCR policy (via', ' '.join(pipes.quote(i) for i in command), ')')
+            print('Creating UCR policy (via', ' '.join(shlex.quote(i) for i in command), ')')
         if not self.args.check:
             check_call(command)
 
@@ -109,7 +109,7 @@ class Migration:
             '--policy-reference', f'cn=map-country-to-st,cn=config-registry,cn=policies,{ldap_base}',
         ]
         if self.args.verbose:
-            print('Referencing UCR policy to all computers (via', ' '.join(pipes.quote(i) for i in command), ')')
+            print('Referencing UCR policy to all computers (via', ' '.join(shlex.quote(i) for i in command), ')')
         if not self.args.check:
             check_call(command)
 
@@ -124,7 +124,7 @@ class Migration:
             '--policy-reference', f'cn=map-country-to-st,cn=config-registry,cn=policies,{ldap_base}',
         ]
         if self.args.verbose:
-            print('Referencing UCR policy to all computers (via', ' '.join(pipes.quote(i) for i in command), ')')
+            print('Referencing UCR policy to all computers (via', ' '.join(shlex.quote(i) for i in command), ')')
         if not self.args.check:
             check_call(command)
 

@@ -318,7 +318,7 @@ def object_input(module, object, input, append=None, remove=None, stderr=None):
                         if "----BEGIN CERTIFICATE-----" in content:
                             content = content.replace('----BEGIN CERTIFICATE-----', '')
                             content = content.replace('----END CERTIFICATE-----', '')
-                            object[key] = base64.decodestring(content)
+                            object[key] = base64.b64decode(content.encode("utf-8")).decode("utf-8")
                         else:
                             object[key] = content
                 else:

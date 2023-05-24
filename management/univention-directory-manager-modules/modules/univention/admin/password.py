@@ -87,8 +87,12 @@ def crypt(password, method_id=None, salt=None):
             'SHA-512': '6',
         }.get(hashing_method, '6')
 
-    from crypt import crypt as _crypt
-    return _crypt(password, '$%s$%s$' % (method_id, salt))
+    if method_id == '1':
+        return passlib.hash.md5_crypt.using(salt=salt[:8]).hash(password)
+    if method_id == '5':
+        return passlib.hash.sha256_crypt.using(salt=salt, rounds=5000).hash(password)
+    if method_id == '6':
+        return passlib.hash.sha512_crypt.using(salt=salt, rounds=5000).hash(password)
 
 
 def bcrypt_hash(password):

@@ -46,7 +46,6 @@ from typing import List  # noqa: F401
 
 import ldap
 import passlib.hash
-import pytz
 import six
 import tzlocal
 from ldap.filter import filter_format
@@ -71,6 +70,14 @@ from univention.admin.certificate import PKIIntegration, pki_option, pki_propert
 from univention.admin.layout import Group, Tab
 from univention.lib.s4 import rids_for_well_known_security_identifiers
 
+
+try:  # Python > 3.9
+    import zoneinfo
+    utc = zoneinfo.ZoneInfo('UTC')
+except ImportError:
+    import pytz
+    zoneinfo = None
+    utc = pytz.utc
 
 if not six.PY2:
     long = int
@@ -234,7 +241,7 @@ property_descriptions = dict({
         long_description=_('This disables the account until the specified time.'),
         syntax=univention.admin.syntax.ActivationDateTimeTimezone,
         dontsearch=True,
-        default=([None, None, tzlocal.get_localzone().zone], []),
+        default=([None, None, str(tzlocal.get_localzone())], []),
     ),
     'locked': univention.admin.property(  # This property only serves two purposes: 1) filtering 2) artificial simulation of lockout
         short_description=_('Locked state of account'),
@@ -1031,13 +1038,15 @@ def datetime_from_local_datetimetimezone_tuple(local_datetimetimezone_tuple):  #
     d, t, tz = local_datetimetimezone_tuple
     # dttz_str = module.property_descriptions[key].syntax.tostring(local_datetimetimezone_tuple)
     naive_dt = datetime.strptime("%s %s" % (d, t), "%Y-%m-%d %H:%M")
+    if zoneinfo:
+        return naive_dt.astimezone(zoneinfo.ZoneInfo(tz))
     return pytz.timezone(tz).localize(naive_dt)
 
 
 def mapDateTimeTimezoneTupleToUTCDateTimeString(local_datetimetimezone_tuple, encoding=()):  # type: (List[str]) -> List[bytes]
     if local_datetimetimezone_tuple and all(local_datetimetimezone_tuple):
         dt = datetime_from_local_datetimetimezone_tuple(local_datetimetimezone_tuple)
-        return [dt.astimezone(pytz.utc).strftime("%Y%m%d%H%M%SZ").encode(*encoding)]
+        return [dt.astimezone(utc).strftime("%Y%m%d%H%M%SZ").encode(*encoding)]
     return []
 
 
@@ -1502,7 +1511,7 @@ class object(univention.admin.handlers.simpleLdap, PKIIntegration):
             self['locked'] = u'0'
         if self.hasChanged('disabled') and self['disabled'] == '0' and not self.hasChanged('accountActivationDate'):
             self['accountActivationDate'] = self.descriptions['accountActivationDate'].default(self)
-        if self['accountActivationDate'] and all(self['accountActivationDate']) and datetime.now(tz=pytz.utc) < datetime_from_local_datetimetimezone_tuple(self['accountActivationDate']):
+        if self['accountActivationDate'] and all(self['accountActivationDate']) and datetime.now(tz=utc) < datetime_from_local_datetimetimezone_tuple(self['accountActivationDate']):
             self['disabled'] = '1'
         if self['disabled'] == '1':
             self['locked'] = u'0'  # Samba/AD behavior
