@@ -3,7 +3,7 @@ release: "5.0"
 version: [3]
 scope: ucs_5.0-0-errata5.0-3
 src: univention-directory-manager-rest
-fix: 10.0.6-3A~5.0.0.202305102117
+fix: 10.0.6-3
 desc: |
  This update addresses the following issue:
  * The debug level is now correctly passed to child processes if it is set via
