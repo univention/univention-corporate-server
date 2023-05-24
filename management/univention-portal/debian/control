@@ -8,6 +8,7 @@ Build-Depends:
  npm,
  python3-all,
  python3-debian,
+ python3-setuptools,
  univention-config-dev (>= 15.0.3),
  univention-join-dev,
  univention-l10n-dev (>= 7.0.1),

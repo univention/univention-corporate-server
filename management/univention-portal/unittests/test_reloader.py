@@ -33,7 +33,7 @@
 # <https://www.gnu.org/licenses/>.
 #
 
-from imp import reload
+from importlib import reload
 from os import path
 
 import pytest

@@ -1,3 +1,9 @@
+univention-portal (4.0.9-5) unstable; urgency=medium
+
+  * Bug #55632: Improved Python 3.11 compatibility
+
+ -- Mika Westphal <westphal@univention.de>  Fri, 06 Apr 2023 14:24:32 +0100
+
 univention-portal (4.0.9-4) unstable; urgency=medium
 
   * Bug #55919: fix background color of tabs in "Choose a tab" dialog box
