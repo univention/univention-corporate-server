@@ -9,3 +9,6 @@ desc: |
  * The debug level is now correctly passed to child processes if it is set via
    UCR.
 bug: [56051]
+erratum: 673
+announced: 2023-05-24
+support: core
