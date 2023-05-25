@@ -1,3 +1,10 @@
+univention-system-setup (13.0.7-1) unstable; urgency=medium
+
+  * Bug #55922: replace systemctl with deb-systemd-invoke for UMC
+    restarts
+
+ -- Florian Best <best@univention.de>  Sun, 11 Jun 2023 08:32:23 +0200
+
 univention-system-setup (13.0.6-5) unstable; urgency=medium
 
   * Bug #55632: improved the Python 3.11 compatiblity

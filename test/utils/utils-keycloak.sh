@@ -103,12 +103,12 @@ install_self_service () {
     else
         apt-get -s -y install univention-self-service
     fi
-    systemctl restart univention-management-console-server univention-portal-server
+    deb-systemd-invoke restart univention-management-console-server univention-portal-server
 }
 
 performance_settings () {
 	ucr set umc/http/processes=8 umc/server/processes=8
-	systemctl restart univention-management-console-server univention-management-console-web-server
+	deb-systemd-invoke restart univention-management-console-server univention-management-console-web-server
 }
 
 run_performance_tests () {

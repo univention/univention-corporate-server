@@ -48,7 +48,7 @@ if /bin/netcat -q0 -w1 "$ldap_master" 6670 </dev/null; then
 	# PMH: why?
 	if [ "$server_role" = "domaincontroller_master" ]; then
 		[ -d /run/systemd/system ] ||
-		systemctl restart univention-management-console-server
+		deb-systemd-invoke restart univention-management-console-server
 	fi
 
 	if [ -x /usr/sbin/univention-register-network-address ]

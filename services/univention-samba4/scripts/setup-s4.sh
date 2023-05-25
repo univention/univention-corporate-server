@@ -289,7 +289,7 @@ fi
 ## restart processes with adjusted ports
 stop_udm_cli_server
 /etc/init.d/slapd restart 2>&1 | tee -a "$LOGFILE"
-systemctl restart univention-directory-listener 2>&1 | tee -a "$LOGFILE"
-systemctl restart univention-management-console-server 2>&1 | tee -a "$LOGFILE"
+deb-systemd-invoke restart univention-directory-listener univention-management-console-server 2>&1 | tee -a "$LOGFILE"
+# FIXME: is a UMC restart required? pkill -f univention-management-console-module.*ad-connector could be sufficient? or a reload, if only UCR variables needs to be re-loaded
 
 exit 0

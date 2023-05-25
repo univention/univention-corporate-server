@@ -41,7 +41,7 @@ def restart_s4connector_if_present() -> Callable[[], None]:
 def restart_umc_server() -> Callable[[], None]:
     """Function to restart UMC server."""
     def _restart_umc_server():
-        subprocess.call(['systemctl', 'restart', 'univention-management-console-server.service'])
+        subprocess.call(['deb-systemd-invoke', 'restart', 'univention-management-console-server.service'])
         time.sleep(2)
     return _restart_umc_server
 

@@ -261,7 +261,7 @@ run_setup_join () {
 	/usr/lib/univention-system-setup/scripts/setup-join.sh ${1:+"$@"} | tee -a /var/log/univention/setup.log || rv=$?
 	set +o pipefail
 	ucr set apache2/startsite='univention/' # Bug #31682
-	systemctl try-reload-or-restart univention-management-console-server univention-management-console-web-server apache2
+	deb-systemd-invoke try-reload-or-restart univention-management-console-server univention-management-console-web-server apache2
 	ucr unset --forced update/available
 
 	# No this breaks univention-check-templates -> 00_checks.81_diagnostic_checks.test _fix_ssh47233  # temp. remove me
@@ -679,7 +679,7 @@ run_keycloak_tests () {
 ad_member_fix_udm_rest_api () {  # workaround for Bug #50527
 	ucr unset directory/manager/rest/authorized-groups/domain-admins
 	univention-run-join-scripts --force --run-scripts 22univention-directory-manager-rest.inst
-	systemctl restart univention-directory-manager-rest
+	deb-systemd-invoke restart univention-directory-manager-rest
 }
 
 run_adconnector_tests () {
@@ -902,7 +902,7 @@ monkeypatch () {
 
 	# Bug #42658: temporary raise the connection timeout which the UMC Server waits the module process to start
 	[ -e /usr/lib/python3/dist-packages/univention/management/console/protocol/session.py ] && sed -i 's/if mod._connect_retries > 200:/if mod._connect_retries > 1200:/' /usr/lib/python3/dist-packages/univention/management/console/protocol/session.py
-	systemctl restart univention-management-console-server
+	deb-systemd-invoke restart univention-management-console-server
 
 	# Bug #40419: UCS@school Slave reject: LDAP sambaSID != S4 objectSID == SID(Master)
 	[ "$(hostname)" = "slave300-s1" ] && /usr/share/univention-s4-connector/remove_ucs_rejected.py "cn=master300,cn=dc,cn=computers,dc=autotest300,dc=test" || true
@@ -1207,7 +1207,7 @@ restart_services_bug_47762 () {
 # https://forge.univention.org/bugzilla/show_bug.cgi?id=48157
 restart_umc_bug_48157 () {
 	sleep 30
-	systemctl restart univention-management-console-server || true
+	deb-systemd-invoke restart univention-management-console-server || true
 }
 
 run_workarounds_before_starting_the_tests () {
@@ -1465,7 +1465,7 @@ basic_setup_ucs_joined () {
 			ucr set ldap/server/ip="$(ucr get "interfaces/$(ucr get interfaces/primary)/address")"
 		fi
 		ucr unset nameserver2
-		systemctl restart univention-directory-listener || rv=1
+		deb-systemd-invoke restart univention-directory-listener || rv=1
 		univention-register-network-address --verbose || rv=1
 		service nscd restart || rv=1
 	fi
@@ -1603,7 +1603,7 @@ EOF
 }
 
 cleanup_translog () {
-	systemctl stop univention-directory-listener univention-directory-notifier || return 1
+	deb-systemd-invoke stop univention-directory-listener univention-directory-notifier || return 1
 	/usr/share/univention-directory-notifier/univention-translog stat || return 1
 	/usr/share/univention-directory-notifier/univention-translog prune -1000 || return 1
 }

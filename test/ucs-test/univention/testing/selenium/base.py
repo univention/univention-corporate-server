@@ -145,7 +145,7 @@ class UMCSeleniumTest(ChecksAndWaits, Interactions):
 
     def restart_umc(self):
         # type: () -> None
-        subprocess.call(['systemctl', 'restart', 'univention-management-console-server'], close_fds=True)
+        subprocess.call(['deb-systemd-invoke', 'restart', 'univention-management-console-server'], close_fds=True)
 
     def set_viewport_size(self, width, height):
         # type: (int, int) -> None

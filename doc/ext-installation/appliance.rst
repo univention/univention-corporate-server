@@ -274,7 +274,7 @@ needs to be run once. Then Apache and the UMC server need to be restarted:
 
 .. code-block:: console
 
-   $ systemctl restart apache2 univention-management-console-server
+   $ deb-systemd-invoke restart apache2 univention-management-console-server
 
 
 .. _use-cloudinit:

@@ -30,7 +30,7 @@ function ctrl_c {
 	killall umc-set "$0"
 }
 trap ctrl_c INT
-trap "service univention-management-console-server restart" EXIT
+trap "systemctl restart univention-management-console-server" EXIT
 
 # returns the number of open connections by the umc-server
 function get_number_of_close_waits() {
@@ -86,12 +86,12 @@ function parallel_cycle_passwords {
 }
 
 set -e
-service univention-management-console-server restart
+systemctl restart univention-management-console-server
 
 create_sample_users $MAX_USERS
 parallel_cycle_passwords $MAX_USERS
 sleep 60
-service slapd restart
+systemctl restart slapd
 sleep 2
 
 close_wait=$(get_number_of_close_waits)

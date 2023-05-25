@@ -71,7 +71,7 @@ class UMCTester:
         check_call runs a command with arguments and waits for command to
         complete. No further wait is necessary.
         """
-        subprocess.check_call(["systemctl", "restart", service])
+        subprocess.check_call(["deb-systemd-invoke", "restart", service])
 
     def umc_logon(self, username, pw, try_wrong_pw):
         """method to log into the ucs portal with a given username and password"""

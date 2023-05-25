@@ -574,8 +574,7 @@ def run_scripts(progressParser: ProgressParser, restartServer: bool = False, all
         p = subprocess.Popen(['/usr/bin/at', 'now'], stdin=subprocess.PIPE, stderr=f, stdout=f)
         p.communicate(b'''#!/bin/sh
 sleep 5;  # leave enough time to display error messages or indicate success
-systemctl restart univention-management-console-server;
-systemctl restart univention-management-console-web-server''')
+deb-systemd-invoke restart univention-management-console-server univention-management-console-web-server;''')
 
     f.write('\n=== DONE (%s) ===\n\n' % timestamp())
     f.close()

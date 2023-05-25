@@ -44,7 +44,7 @@ VERSION=4
 joinscript_init
 
 umc_init
-systemctl restart univention-management-console-server
+deb-systemd-invoke restart univention-management-console-server
 
 joinscript_save_current_version
 

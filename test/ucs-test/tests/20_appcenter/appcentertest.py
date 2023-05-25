@@ -58,7 +58,7 @@ APPCENTER_FILE = "/var/cache/appcenter-installed.txt"  # installed apps
 
 def restart_umc():
     print('Restarting UMC')
-    subprocess.check_call(['systemctl', 'restart', 'univention-management-console-server'])
+    subprocess.check_call(['deb-systemd-invoke', 'restart', 'univention-management-console-server'])
     time.sleep(3)
 
 

@@ -154,7 +154,7 @@ class UDMLicenseManagement(UDMModule):
         waits and creates a new connection after
         """
         print("\nRestarting the UMC Server to release active connections")
-        check_call(("systemctl", "restart", "univention-management-console-server"))
+        check_call(("deb-systemd-invoke", "restart", "univention-management-console-server"))
         sleep(10)  # wait while server is restarting
         self.create_connection_authenticate()
 

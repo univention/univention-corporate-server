@@ -39,7 +39,7 @@ class UMCTester(object):
         time.sleep(5)
         self.selenium.end_umc_session()
         print("\nRestarting the UMC Server to release active connections")
-        check_call(("service", "univention-management-console-server", "restart"))
+        check_call(("systemctl", "restart", "univention-management-console-server"))
         time.sleep(10)  # wait while server is restarting
         self.selenium.do_login()
 

@@ -20,7 +20,7 @@ from univention.testing.strings import random_username
 def close_all_processes():
     """force all module processes to close"""
     yield
-    subprocess.call(['systemctl', 'restart', 'univention-management-console-server.service', 'univention-self-service-passwordreset-umc.service'])
+    subprocess.call(['deb-systemd-invoke', 'restart', 'univention-management-console-server.service', 'univention-self-service-passwordreset-umc.service'])
     time.sleep(3)
 
 
@@ -31,7 +31,7 @@ def self_service_prepare(ucr, udm, close_all_processes):
         'self-service/udm_attributes/read-only=title',
         'self-service/udm_attributes=title,jpegPhoto,e-mail,phone,roomnumber,departmentNumber,country,homeTelephoneNumber,mobileTelephoneNumber,homePostalAddress',
     ])
-    subprocess.call(['systemctl', 'restart', 'univention-management-console-server.service', 'univention-self-service-passwordreset-umc.service'])
+    subprocess.call(['deb-systemd-invoke', 'restart', 'univention-management-console-server.service', 'univention-self-service-passwordreset-umc.service'])
     time.sleep(3)
 
 

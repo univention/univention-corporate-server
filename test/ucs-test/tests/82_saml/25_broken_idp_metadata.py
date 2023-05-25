@@ -15,7 +15,7 @@ import samltest
 
 
 def restart_umc():
-    subprocess.check_call(["systemctl", "restart", "univention-management-console-server"])
+    subprocess.check_call(["deb-systemd-invoke", "restart", "univention-management-console-server"])
     time.sleep(3)  # Wait for the umc to be ready to answer requests.
 
 

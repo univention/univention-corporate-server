@@ -21,7 +21,7 @@ from univention.testing.strings import random_string, random_username
 def close_all_processes():
     """force all module processes to close"""
     yield
-    subprocess.call(['systemctl', 'restart', 'univention-management-console-server.service', 'univention-self-service-passwordreset-umc.service'])
+    subprocess.call(['deb-systemd-invoke', 'restart', 'univention-management-console-server.service', 'univention-self-service-passwordreset-umc.service'])
     time.sleep(3)
 
 
@@ -53,7 +53,7 @@ def selfservice_container_dn(ucr, udm, close_all_processes):
         "umc/self-service/account-registration/backend/enabled=true",
         "umc/self-service/account-registration/usercontainer=%s" % container_dn,
     ])
-    subprocess.call(['systemctl', 'restart', 'univention-management-console-server.service', 'univention-self-service-passwordreset-umc.service'])
+    subprocess.call(['deb-systemd-invoke', 'restart', 'univention-management-console-server.service', 'univention-self-service-passwordreset-umc.service'])
     time.sleep(3)
     return container_dn
 

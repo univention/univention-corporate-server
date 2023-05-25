@@ -17,18 +17,18 @@ class Test_ServerDown_Messages:
 
     def test_umc_webserver_down(self, Client):
         try:
-            subprocess.call(['service', 'univention-management-console-web-server', 'stop'])
+            subprocess.call(['systemctl', 'stop', 'univention-management-console-web-server'])
             with pytest.raises(ServiceUnavailable) as exc:
                 Client().umc_get('modules')
             assert json.loads(exc.value.response.body)['message'] == 'The Univention Management Console Web Server could not be reached. Please restart univention-management-console-web-server or try again later.'
             assert exc.value.response.reason == 'UMC-Web-Server Unavailable'
         finally:
-            subprocess.call(['service', 'univention-management-console-web-server', 'start'])
+            subprocess.call(['systemctl', 'start', 'univention-management-console-web-server'])
             time.sleep(1)
 
     def test_umc_server_down(self, Client):
         try:
-            subprocess.call(['service', 'univention-management-console-server', 'stop'])
+            subprocess.call(['systemctl', 'stop', 'univention-management-console-server'])
             with pytest.raises(ServiceUnavailable) as exc:
                 Client().umc_get('modules')
             assert exc.value.response.reason == 'UMC Service Unavailable'
@@ -41,13 +41,13 @@ class Test_ServerDown_Messages:
                 'Otherwise please contact an administrator or try again later.',
             ]
         finally:
-            subprocess.call(['service', 'univention-management-console-server', 'start'])
+            subprocess.call(['systemctl', 'start', 'univention-management-console-server'])
 
     def test_apache_down(self, Client):
         try:
-            subprocess.call(['service', 'apache2', 'stop'])
+            subprocess.call(['systemctl', 'stop', 'apache2'])
             with pytest.raises(ConnectionError) as exc:
                 Client().umc_get('modules')
             assert isinstance(exc.value.reason, socket.error)
         finally:
-            subprocess.call(['service', 'apache2', 'start'])
+            subprocess.call(['systemctl', 'start', 'apache2'])

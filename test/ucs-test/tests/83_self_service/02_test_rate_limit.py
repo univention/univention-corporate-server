@@ -103,8 +103,8 @@ def resetting_limits():
 
 
 def reset_server_limits():
-    assert call(['systemctl', 'restart', 'memcached'], close_fds=True) == 0
-    assert call(['systemctl', 'restart', 'univention-management-console-server'], close_fds=True) == 0
+    assert call(['deb-systemd-invoke', 'restart', 'memcached'], close_fds=True) == 0
+    assert call(['deb-systemd-invoke', 'restart', 'univention-management-console-server'], close_fds=True) == 0
     print('Waiting for umc restart')
     sleep(3)
 
