@@ -31,10 +31,4 @@
 # <https://www.gnu.org/licenses/>.
 #
 
-
-pytest   unittests/ -vl -rsx
-rc1=$?
-pytest-3 unittests/ -vl -rsx
-rc2=$?
-
-exit $(( rc1 + rc2 ))
+exec pytest-3 unittests/ -vl -rsx
