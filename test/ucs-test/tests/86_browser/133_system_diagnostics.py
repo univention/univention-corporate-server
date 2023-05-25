@@ -1,4 +1,4 @@
-#!/usr/share/ucs-test/runner /usr/share/ucs-test/selenium
+#!/usr/share/ucs-test/runner /usr/share/ucs-test/playwright
 # -*- coding: utf-8 -*-
 ## desc: Test the 'System diagnostic' module
 ## roles-not:
@@ -8,89 +8,84 @@
 ## join: true
 ## exposure: dangerous
 
-import os
-import random
-import string
 import tempfile
+from dataclasses import dataclass
+from pathlib import Path
+from typing import Generator
 
-from selenium.common.exceptions import TimeoutException
+import pytest
+from playwright.sync_api import expect
 
+import univention.testing.strings as uts
 from univention.lib.i18n import Translation
 from univention.management.console.modules.diagnostic import plugins
-from univention.testing import selenium
+from univention.testing.browser.lib import UMCBrowserTest
+from univention.testing.browser.systemdiagnostics import SystemDiagnostic
 
 
-_ = Translation('ucs-test-selenium').translate
+_ = Translation("ucs-test-browser").translate
+
+PLUGIN_DIR = Path(plugins.__file__).parent
 
 
-class UmcError(Exception):
-    pass
+@dataclass
+class PluginData:
+    title: str
+    description: str
+    test_action_label: str
+    temp_file_name: Path
+    plugin_path: Path
 
 
-class UMCTester(object):
+@pytest.fixture()
+def plugin_data() -> Generator[PluginData, None, None]:
+    p_data = create_diagnostics_plugin()
 
-    PLUGIN_DIR = os.path.dirname(plugins.__file__)
+    yield p_data
 
-    def init(self):
-        self.plugin_path = self.get_plugin_path()
-        self.temp_file = tempfile.NamedTemporaryFile(delete=False)
-        self.temp_file.close()
-        self.plugin_data = {
-            'title': '133_system_diagnostics title',
-            'description': '133_system_diagnostics description',
-            'test_action_label': 'test_action label',
-            'temp_file_name': self.temp_file.name,
-        }
-        self.create_diagnostic_plugin()
+    if p_data.plugin_path.exists():
+        p_data.plugin_path.unlink()
 
-    def cleanup(self):
-        if os.path.exists(self.plugin_path):
-            os.remove(self.plugin_path)
-        pyc_file = '%sc' % self.plugin_path
-        if os.path.exists(pyc_file):
-            os.remove(pyc_file)
-        if os.path.exists(self.temp_file.name):
-            os.remove(self.temp_file.name)
+    pyc_file = Path(f"{p_data}c")
+    if pyc_file.exists():
+        pyc_file.unlink()
 
-    def test_umc(self):
-        try:
-            self.init()
-            self.selenium.do_login()
-            self.selenium.open_module(_('System diagnostic'))
-            try:
-                self.selenium.wait_for_text(self.plugin_data['title'], timeout=5)
-                raise UmcError("Found title '%s' but there should be none" % (self.plugin_data['title']))
-            except TimeoutException:
-                pass
-            print("Writing 'FAIL' into '%s' to cause '%s' to fail" % (self.temp_file.name, self.plugin_path))
-            with open(self.temp_file.name, 'w') as f:
-                f.write('FAIL')
-            self.selenium.click_button('Run system diagnosis')
-            self.selenium.wait_until_progress_bar_finishes()
-            try:
-                self.selenium.wait_for_text(self.plugin_data['title'], timeout=5)
-            except TimeoutException:
-                raise UmcError("Did not found title '%s' but there should be" % (self.plugin_data['title']))
-        finally:
-            self.cleanup()
+    if p_data.temp_file_name.exists():
+        p_data.temp_file_name.unlink()
 
-    def create_diagnostic_plugin(self):
-        print("write test code into: %s" % (self.plugin_path))
-        plugin = '''
+
+def create_diagnostics_plugin() -> PluginData:
+    plugin_path = get_plugin_path()
+    temp_file = tempfile.NamedTemporaryFile(delete=False)
+    temp_file.close()
+    plugin_data = PluginData(
+        "133_system_diagnostics title",
+        "133_system_diagnostics description",
+        "test_action label",
+        Path(temp_file.name),
+        plugin_path,
+    )
+
+    create_plugin(plugin_path, plugin_data)
+    return plugin_data
+
+
+def create_plugin(plugin_path: Path, plugin_data: PluginData):
+    plugin = f"""
 #!/usr/bin/python3
 # -*- coding: utf-8 -*-
 
 from univention.management.console.modules.diagnostic import Critical
 
-title = '{title}'
-description = '{description}'
+title = '{plugin_data.title}'
+description = '{plugin_data.description}'
 
 
 def run(_umc_instance):
-    with open('{temp_file_name}', 'r') as f:
+    with open('{plugin_data.temp_file_name}', 'r') as f:
         temp_file_content = f.read().strip()
     if temp_file_content == 'FAIL':
-        raise Critical('{description}', buttons=[{{
+        raise Critical('{plugin_data.description}', buttons=[{{
             'action': 'test_action',
             'label': 'test_action label',
         }}])
@@ -102,29 +97,37 @@ def test_action(_umc_instance):
 actions = {{
     'test_action': test_action,
 }}
-'''.format(**self.plugin_data).strip()
-        with open(self.plugin_path, 'w') as f:
-            f.write(plugin)
+""".strip()
 
-    def get_plugin_path(self):
-        print('Getting a unique plugin pathname for a test plugin')
-        plugin_path = self.get_random_plugin_path()
-        while os.path.exists(plugin_path):
-            plugin_path = self.get_random_plugin_path()
-        print('Unique plugin pathname is: %s' % (plugin_path))
-        return plugin_path
-
-    def get_random_plugin_path(self):
-        plugin_name = '{}.py'.format(self.get_random_ascii_string(10))
-        return os.path.join(self.PLUGIN_DIR, plugin_name)
-
-    def get_random_ascii_string(self, length):
-        return ''.join([random.choice(string.ascii_letters) for x in range(length)])
+    with open(plugin_path, "w") as fd:
+        fd.write(plugin)
 
 
-if __name__ == '__main__':
-    with selenium.UMCSeleniumTest() as s:
-        umc_tester = UMCTester()
-        umc_tester.selenium = s
+def get_plugin_path() -> Path:
+    plugin_path = get_random_plugin_path()
+    while plugin_path.exists():
+        plugin_path = get_random_plugin_path()
 
-        umc_tester.test_umc()
+    print(f"Test plugin path is {plugin_path}")
+
+    return plugin_path
+
+
+def get_random_plugin_path() -> Path:
+    plugin_name = f"{uts.random_string(length=10, alpha=True, numeric=False)}.py"
+    return PLUGIN_DIR / plugin_name
+
+
+def test_system_diagnostics(umc_browser_test: UMCBrowserTest, plugin_data: PluginData):
+    page = umc_browser_test.page
+
+    system_diag = SystemDiagnostic(umc_browser_test)
+    system_diag.navigate()
+
+    expect(page.get_by_text(plugin_data.title)).to_be_hidden()
+
+    with open(plugin_data.temp_file_name, "w") as fd:
+        fd.write("FAIL")
+
+    system_diag.run_system_diagnostics()
+    expect(page.get_by_text(plugin_data.title)).to_be_visible()
