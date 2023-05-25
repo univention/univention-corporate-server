@@ -76,14 +76,14 @@ def test_exit(args, tmpucr):
         "--sort info hostname",
         "shell",
         "shell hostname",
-        # "commit",
-        "commit /etc/hostname",
+        pytest.param("commit", marks=pytest.mark.skip(reason="Commits files")),
+        "commit /boot/boot.msg",
         pytest.param("filter", marks=pytest.mark.skip(reason="Requires input")),
         pytest.param("filter --encode-utf8", marks=pytest.mark.skip(reason="Requires input")),
         pytest.param("filter disallow-execution", marks=pytest.mark.skip(reason="Requires input")),
         pytest.param("register ...", marks=pytest.mark.skip("Requires file")),
         pytest.param("unregister ...", marks=pytest.mark.skip("Requires file")),
-        "update",
+        pytest.param("update", marks=pytest.mark.skip(reason="Commits files")),
     ])
 def test_cmd(args, tmpucr):
     main(args.split())
