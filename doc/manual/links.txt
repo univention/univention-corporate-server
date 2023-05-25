@@ -19,6 +19,7 @@
 .. _ldap-generalized-time: https://ldapwiki.com/wiki/GeneralizedTime
 .. _microsoft-domain-verify: https://learn.microsoft.com/en-us/azure/active-directory/fundamentals/add-custom-domain
 .. _microsoft-rsat-tools: https://www.microsoft.com/en-us/download/details.aspx?id=45520
+.. _microsoft-install-the-certification-authority: https://learn.microsoft.com/en-us/windows-server/networking/core-network-guide/cncg/server-certs/install-the-certification-authority
 .. _mozilla-css-custom-properties: https://developer.mozilla.org/en-US/docs/Web/CSS/Using_CSS_custom_properties
 .. _mozilla-css-selectors: https://developer.mozilla.org/en-US/docs/Learn/CSS/Building_blocks/Selectors
 .. _postfix-reject-rbl-client: http://www.postfix.org/postconf.5.html#reject_rbl_client

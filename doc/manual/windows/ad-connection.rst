@@ -372,37 +372,68 @@ data.
 Exporting the certificate on Windows 2012 / 2016 / 2019
 """""""""""""""""""""""""""""""""""""""""""""""""""""""
 
-If the certificate service is not installed, it must be installed before
-proceeding.
+If the certificate service isn't installed yet, add it to your domain with the
+following steps before you proceed:
 
-The server manager must be opened. There, select the *Active Directory
-Certificate Services* role in the :menuselection:`Manage --> Add Roles and
-Features` menu. When selecting the role services, it is sufficient simply to
-select *Certification Authority*. A yellow warning triangle is then shown in the
-top bar in the server manager. Here, the :guilabel:`Configure Active Directory
-Certificate Services on the server` option must be selected. *Certification
-Authority* is selected as the role service to be configured. The type of
-installation is :menuselection:`Enterprise CA --> Root CA` Now, click on
-:guilabel:`Create a new private key` and confirm the suggested encryption
-settings and the suggested name of the certification authority. Any period of
-validity can be set. The standard paths can be used for the database location.
+#. Open the *Server Manager*.
 
-The AD server must then be restarted.
+#. Select the role *Active Directory Certificate Services* in
+   :menuselection:`Manage --> Add Roles and Features`.
 
-This certificate must now be exported and copied onto the UCS system:
-:menuselection:`Server Manager --> Active Directory Certificate Services`. Then
-right click on the server and select :guilabel:`Certification Authority`. There,
-right click on the name of the generated certificate and :menuselection:`Open
---> Copy to File --> DER encoded binary X.509 (.CER) --> Select an arbitrary
-filename --> Finish`.
+#. In the services list, select :guilabel:`Certification Authority`. The top bar
+   in the *Server Manager* shows a yellow warning triangle.
 
-A computer list is shown there and the elements *Revoked Certificates*, *Issued
-Certificates*, *Pending Requests*, *Failed Requests* and *Certificate Templates*
-displayed under every system. Here, one must right click on the computer name -
-not on one of the elements - and then select :guilabel:`Properties`. The root
-certificate is usually called ``Certificate #0``. Then select
-:menuselection:`Open --> Copy to File --> DER encoded binary X.509 (.CER) -->
-Select an arbitrary filename --> Finish`.
+#. Select the option :guilabel:`Configure Active Directory Certificate Services
+   on the server` and configure the *Certification Authority* as selected role
+   service.
+
+#. Choose :menuselection:`Enterprise CA --> Root CA` as type of installation.
+
+#. Click :guilabel:`Create a new private key`, confirm the suggested encryption
+   settings and the name of the certification authority.
+
+#. Choose any period for validity and use the standard paths for the database
+   location.
+
+#. Finally, restart your Windows Active Directory server to let the changes come
+   into effect.
+
+.. seealso::
+
+   `Install the Certification Authority <microsoft-install-the-certification-authority_>`_
+      for detailed procedure about installing the certificate authority in
+      :cite:t:`microsoft-install-the-certification-authority`.
+
+To export the certificate authority certificate, use the following steps:
+
+#. Open the *Server Manager*.
+
+#. Select the role *Active Directory Certificate Services* (AD CS).
+
+#. Right-click the name of the Windows server and select
+   :guilabel:`Certification Authority`. A window with the certification
+   authority opens. A tree of hosts below *Certification Authority* shows up on
+   the left side.
+
+   Every host has the elements *Revoked Certificates*, *Issued Certificates*,
+   *Pending Requests*, *Failed Requests*, and *Certificate Templates*
+   underneath.
+
+#. In the server list, right-click the Windows host that serves your certificate
+   authority and select :guilabel:`Properties`. Don't mix it up with one of the
+   other elements.
+
+#. In the *Properties* window, select :menuselection:`General --> CA
+   certificates --> Certificate #0` and click :guilabel:`View Certificate`.
+
+   .. important::
+
+      It's important to copy the certificate usually with the name ``Certificate
+      #0``, because :program:`AD Connection` needs exactly this certificate for
+      a secure connection.
+
+#. In the opening *Certificate* window, select the tab *Details* and click
+   :guilabel:`Copy to File …`.
 
 .. _windows-copying-the-active-directory-certificate-to-the-ucs-system:
 
