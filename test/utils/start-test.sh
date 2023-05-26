@@ -334,5 +334,4 @@ if [ -n "$JOB_URL" ]; then
 	printf "%${#header}s\n" | tr " " "+"
 fi
 
-"${cmd[@]}" &&
-	[ -e "./COMMAND_SUCCESS" ]
+exec "${cmd[@]}"
