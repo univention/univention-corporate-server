@@ -3,7 +3,7 @@ release: "5.0"
 version: [3]
 scope: ucs_5.0-0-errata5.0-3
 src: univention-system-setup
-fix: 13.0.6-3
+fix: 13.0.6-4
 desc: |
  This update addresses the following issues:
  * Future compatibility with Python 3.11 has been added.

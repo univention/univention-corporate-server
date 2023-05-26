@@ -34,7 +34,7 @@ import importlib.util
 import logging
 import os
 import sys
-from typing import Any, Iterator, List, Tuple
+from typing import Any, List
 
 from univention.management.console.modules.setup.netconf import ChangeSet, Phase, SkipPhase
 
@@ -50,7 +50,7 @@ class RunPhases(object):
         self.phases: List[Phase] = []
         self.logger = logging.getLogger("uss.network.plug")
 
-    def find(self) -> Iterator[Tuple[str, Any]]:
+    def load(self) -> None:
         for module_dir in sys.modules[__name__].__path__:
             for dirpath, _dirnames, filenames in os.walk(module_dir):
                 self.logger.debug("Processing '%s'...", dirpath)
@@ -60,22 +60,16 @@ class RunPhases(object):
                         self.logger.debug("Skipping '%s'", filename)
                         continue
                     try:
-                        info = importlib.util.find_spec(name, [dirpath])
+                        module = importlib.import_module('%s.%s' % (__name__, name))
                     except ImportError:
                         self.logger.warning("Failed to open '%s'", filename)
-                    yield name, info
-
-    def load(self) -> None:
-        for name, info in self.find():
-            try:
-                module = importlib.util.module_from_spec(info)
-                sys.modules[name] = module
-                info.loader.exec_module(module)
-            except SyntaxError as ex:
-                self.logger.warning("Failed to import '%s': %s", name, ex)
-            for key, value in vars(module).items():
-                if not key.startswith('_'):
-                    self.add(key, value)
+                        continue
+                    except SyntaxError as ex:
+                        self.logger.warning("Failed to import '%s': %s", name, ex)
+                        continue
+                    for key, value in vars(module).items():
+                        if not key.startswith('_'):
+                            self.add(key, value)
         self.logger.info("Finished loading %d modules", len(self.classes))
 
     def add(self, name: str, obj: Any) -> None:
