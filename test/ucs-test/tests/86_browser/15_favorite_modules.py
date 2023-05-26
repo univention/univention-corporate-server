@@ -1,4 +1,4 @@
-#!/usr/share/ucs-test/runner /usr/share/ucs-test/selenium
+#!/usr/share/ucs-test/runner /usr/share/ucs-test/playwright
 # -*- coding: utf-8 -*-
 ## desc: |
 ##  Test favorite modules
@@ -11,120 +11,125 @@
 
 import re
 import time
+from typing import List
 
-from selenium.common.exceptions import NoSuchElementException
-from selenium.webdriver.common.by import By
+from playwright.sync_api import Locator, Page, expect
 
-import univention.testing.ucr as ucr_test
 from univention.lib.i18n import Translation
-from univention.testing import selenium, utils
-from univention.testing.selenium.utils import expand_path
+from univention.testing import utils
+from univention.testing.browser.lib import UMCBrowserTest
+from univention.testing.utils import get_ldap_connection
 
 
-_ = Translation('ucs-test-selenium').translate
+_ = Translation("ucs-test-browser").translate
 
 
-class FavoriteModulesError(Exception):
-    pass
+def test_adding_removing_favorites(umc_browser_test: UMCBrowserTest, ucr):
+    page = umc_browser_test.page
+    umc_browser_test.login()
+
+    check_default_favorites(page, ucr)
+    check_removing_default_favorites(page)
+    check_add_to_favorites(page)
+    re_add_default_favorites(page, ucr)
 
 
-# takes an xpath and expands the
-# @containsClass="className"
-# attribute to
-# contains(concat(" ", normalize-space(@class), " "), " className ")
-def cc(xpath):
-    pattern = r'(?<=\[)@containsClass=([\"\'])(.*?)\1(?=\])'
-    replacement = r'contains(concat(\1 \1, normalize-space(@class), \1 \1), \1 \2 \1)'
-    return re.sub(pattern, replacement, xpath)
+def check_default_favorites(page: Page, ucr):
+    default_favorites = get_default_favorites(ucr)
+
+    for favorite in default_favorites:
+        locator = get_locator_for_module_by_moduleid(page, favorite)
+        expect(locator).to_be_visible()
 
 
-class UMCTester(object):
-
-    def test_umc(self):
-        self.setup()
-        self.test_default_favorites()
-        self.test_removing_default_favorites()
-        self.test_add_to_favorites()
-        self.cleanup()
-
-    def setup(self):
-        self.selenium.do_login()
-        # make sure the favorites category is selected
-        self.selenium.click_button(_('Favorites'))
-
-    def test_default_favorites(self):
-        # check if the default favorite modules are in the favorites category
-        for favorite in self._get_default_favorites():
-            try:
-                self.selenium.driver.find_element(By.CSS_SELECTOR, '.umcGalleryWrapperItem[moduleid^="%s"]' % (favorite,))
-            except NoSuchElementException:
-                raise FavoriteModulesError('A default favorite module is missing: %s' % (favorite,))
-
-    def test_removing_default_favorites(self):
-        # remove all modules from the favorites category via context menu button (left click)
-        module_names = self.selenium.get_gallery_items()
-        for module_name in module_names:
-            self.selenium.click_tile_menu_icon(module_name)
-
-            self.selenium.click_text(_('Remove from favorites'))
-            if not self.selenium.elements_invisible(cc('//div[@containsClass="umcGalleryName"][text() = "%s"]') % (module_name,)):
-                raise FavoriteModulesError('Removing module from favorites failed')
-
-        # check if favorites category disappeared after last module is removed from favorites
-        time.sleep(1)  # wait for css transition
-        if not self.selenium.elements_invisible('//span[@containsClass="umcCategory-_favorites_"]'):
-            raise FavoriteModulesError('Favorites category did not disappear after removing all favorite modules')
-
-    def test_add_to_favorites(self):
-        # add a module to favorites via right click from users category
-        self.selenium.click_button(_('Users'))
-        module_name = self.selenium.driver.find_element(By.CSS_SELECTOR, '.umcGalleryName').text
-        self.selenium.click_element(
-            expand_path('//*[@containsClass="umcGalleryName"][text() = "%s"]' % (module_name,)),
-            right_click=True,
-        )
-        self.selenium.click_text(_('Add to favorites'))
-
-        # check if the flag icon appeared
-        if not len(self.selenium.driver.find_elements(By.XPATH, cc('//div[@containsClass="umcGalleryName"][text() = "%s"]/../div[@containsClass="umcFavoriteIconDefault"]') % (module_name,))):
-            raise FavoriteModulesError('Adding module to favorites did not update immediately')
-
-        # check if the favorites category reappeared
-        time.sleep(1)  # wait for css transition
-        if self.selenium.elements_invisible(cc('//span[@containsClass="umcCategory-_favorites_"]')):
-            raise FavoriteModulesError('Favorites category did not appear after adding module to favorites')
-
-        # select favorites category and check if it contains the module added to favorites
-        self.selenium.click_button(_('Favorites'))
-        if self.selenium.elements_invisible(cc('//div[@containsClass="umcGalleryName"][text() = "%s"]') % (module_name,)):
-            raise FavoriteModulesError('The favorites catefory did not contain the added module')
-
-    def cleanup(self):
-        # remove added module from favorites
-        module_name = self.selenium.driver.find_element(By.CSS_SELECTOR, '.umcGalleryName').text
-        self.selenium.click_tile_menu_icon(module_name)
-        self.selenium.click_text(_('Remove from favorites'))
-
-        # restore the default favorites
-        self.selenium.search_module('*')
-        for favorite in self._get_default_favorites():
-            module_name = self.selenium.driver.find_element(By.CSS_SELECTOR, '.umcGalleryWrapperItem[moduleid^="%s"] .umcGalleryName' % (favorite,)).text
-            self.selenium.click_tile_menu_icon(module_name)
-            self.selenium.click_text('Add to favorites')
-
-    def _get_default_favorites(self):
-        default_favorites_string = ucr.get('umc/web/favorites/default')
-        if not utils.package_installed('univention-management-console-module-welcome'):
-            default_favorites_string = re.sub(r'welcome(,|$)', '', default_favorites_string).rstrip(',')
-        if not utils.package_installed('univention-management-console-module-udm'):
-            default_favorites_string = re.sub(r'udm.*?(,|$)', '', default_favorites_string).rstrip(',')
-        return default_favorites_string.split(',')
+def number_of_visible_locators(locators: Locator) -> int:
+    n = 0
+    for locator in locators.all():
+        if locator.is_visible():
+            n += 1
+    print(f"{n} visible locators found")
+    return n
 
 
-if __name__ == '__main__':
-    with ucr_test.UCSTestConfigRegistry() as ucr, selenium.UMCSeleniumTest() as s:
-        umc_tester = UMCTester()
-        umc_tester.ucr = ucr
-        umc_tester.selenium = s
+def check_removing_default_favorites(page: Page):
+    page.get_by_role("button", name="Favorites").click()
+    # simply looping over all the locators sadly doesn't work here
+    locators = page.locator(".umcGalleryWrapperItem")
+    while number_of_visible_locators(locators) != 0:
+        locator = locators.first
 
-        umc_tester.test_umc()
+        if locator.is_hidden():
+            continue
+
+        locator.locator(".umcGalleryContextIcon").click()
+        time.sleep(0.5)
+        page.get_by_role("cell", name=_("Remove from favorites")).click()
+        time.sleep(0.5)
+        locators = page.locator(".umcGalleryWrapperItem")
+
+    # after removing all favorites, the button should not be visible
+    expect(page.get_by_role("button", name="Favorites")).to_be_hidden()
+
+
+def check_add_to_favorites(page: Page):
+    page.get_by_role("button", name=_("Users")).click()
+    module = page.locator(".umcGalleryWrapperItem[moduleid]").first
+    moduleid = module.get_attribute("moduleid")
+    assert moduleid is not None, "moduleid attribute of .umcGalleryWrapperItem element doesn't exist"
+
+    moduleid = normalize_moduleid(moduleid)
+
+    module.click(button="right")
+    page.get_by_role("cell", name=_("Add to favorites")).click()
+
+    page.get_by_role("button", name=_("Favorites")).click()
+    check_module_is_visible(page, moduleid)
+
+
+def check_module_is_visible(page: Page, moduleid: str):
+    locator = page.locator(f".umcGalleryWrapperItem[moduleid^='{moduleid}']")
+    expect(locator).to_be_visible()
+
+
+def get_default_favorites(ucr) -> List[str]:
+    default_favorites_string = ucr.get("umc/web/favorites/default")
+
+    if not utils.package_installed("univention-management-console-module-welcome"):
+        default_favorites_string = re.sub(r"welcome(,|$)", "", default_favorites_string).rstrip(",")
+
+    if not utils.package_installed("univention-management-console-module-udm"):
+        default_favorites_string = re.sub(r"udm.*?(,|$)", "", default_favorites_string).rstrip(",")
+
+    return default_favorites_string.split(",")
+
+
+def normalize_moduleid(moduleid: str) -> str:
+    moduleid_split = moduleid.split("#")
+    assert len(moduleid_split) == 2
+    return moduleid_split[0]
+
+
+def get_locator_for_module_by_moduleid(page: Page, moduleid: str) -> Locator:
+    return page.locator(f".umcGalleryWrapperItem[moduleid^='{moduleid}']")
+
+
+def re_add_default_favorites(page: Page, ucr):
+    check_removing_default_favorites(page)
+
+    page.locator(".umcModuleSearchToggleButton").click()
+    page.locator(".umcModuleSearch input.dijitInputInner").type("*")
+    for favorite in get_default_favorites(ucr):
+        locator = get_locator_for_module_by_moduleid(page, favorite)
+        locator.click(button="right")
+        page.get_by_role("cell", name=_("Add to favorites")).click()
+
+    verify_default_favorites_are_restored(ucr)
+
+
+def verify_default_favorites_are_restored(ucr):
+    lo = get_ldap_connection()
+    umc_property = lo.getAttr(f"uid=Administrator,cn=users,{ucr.get('ldap/base')}", "univentionUMCProperty")
+    favorites = next((property.decode("utf-8")[len("favorites="):] for property in umc_property if property.startswith(b"favorites=")), None)
+    assert favorites is not None
+
+    assert set(get_default_favorites(ucr)) == set(favorites.split(","))
