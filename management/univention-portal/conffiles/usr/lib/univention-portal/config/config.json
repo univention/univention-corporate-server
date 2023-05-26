@@ -20,6 +20,7 @@ config = {
     "umc_session_url": "http://localhost/univention/get/session-info",
     "default_domain_dn": configRegistry.get("portal/default-dn"),
     "editable": configRegistry.get("server/role") == "domaincontroller_master",
+    "umc_base_url": "http://127.0.0.1/univention/",
 }
 print(json.dumps(config, sort_keys=True, indent=2))
 @!@

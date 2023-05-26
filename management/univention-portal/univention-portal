@@ -392,9 +392,8 @@ def ask_value(name: str, klass_default: Union[str, None] = None, value_default: 
                 if arg in defaults:
                     klass_default = "value"
                     value_default = repr(defaults[arg])
-                else:
-                    if camelcase(arg) in possible_classes:
-                        klass_default = camelcase(arg) + "()"
+                elif camelcase(arg) in possible_classes:
+                    klass_default = camelcase(arg) + "()"
                 kwargs[arg] = ask_value(
                     arg, klass_default=klass_default, value_default=value_default,
                 )

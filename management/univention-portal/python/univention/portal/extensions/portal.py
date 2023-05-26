@@ -35,6 +35,7 @@
 
 import os.path
 import time
+from urllib.parse import urljoin
 
 import requests
 import requests.exceptions
@@ -262,7 +263,8 @@ class UMCPortal(Portal):
         return False
 
     def _request_umc_get(self, get_path, headers):
-        uri = f"http://127.0.0.1/univention/get/{get_path}"
+        umc_base_url = config.fetch("umc_base_url")
+        uri = urljoin(urljoin(umc_base_url, 'get/'), get_path)
         body = {"options": {}}
         try:
             response = requests.post(uri, json=body, headers=headers)
@@ -293,40 +295,53 @@ class UMCPortal(Portal):
     def get_entries(self, content):
         entries = []
         colors = {cat["id"]: cat["color"] for cat in content["umc_categories"] if cat["id"] != "_favorites_"}
-        locale = 'en_US'
+
         for module in content["umc_modules"]:
             if "apps" in module["categories"]:
                 continue
-            logo_name = "/univention/management/js/dijit/themes/umc/icons/scalable/{}.svg".format(module["icon"])
-            if not os.path.exists(os.path.join("/usr/share/univention-management-console-frontend/", logo_name[23:])):
-                logo_name = None
-            color = None
-            for cat in module["categories"]:
-                if cat in colors:
-                    color = colors[cat]
-                    break
-            entries.append({
-                "dn": self._entry_id(module),
-                "name": {
-                    locale: module["name"],
-                },
-                "description": {
-                    locale: module["description"],
-                },
-                "keywords": {
-                    locale: ' '.join(module["keywords"]),
-                },
-                "linkTarget": "embedded",
-                "target": None,
-                "logo_name": logo_name,
-                "backgroundColor": color,
-                "links": [{
-                    "locale": locale,
-                    "value": "/univention/management/?header=try-hide&overview=false&menu=false#module={}:{}".format(module["id"], module.get("flavor", "")),
-                }],
-                # TODO: missing: in_portal, anonymous, activated, allowedGroups
-            })
+            entries.append(self._module_to_entry(module, colors))
         return entries
+
+    def _module_to_entry(self, module, colors, locale='en_US'):
+        icon_url = self._module_icon_url(module)
+        color = self._module_background_color(module, colors)
+
+        entry = {
+            "dn": self._entry_id(module),
+            "name": {
+                locale: module["name"],
+            },
+            "description": {
+                locale: module["description"],
+            },
+            "keywords": {
+                locale: ' '.join(module["keywords"]),
+            },
+            "linkTarget": "embedded",
+            "target": None,
+            "logo_name": icon_url,
+            "backgroundColor": color,
+            "links": [{
+                "locale": locale,
+                "value": "/univention/management/?header=try-hide&overview=false&menu=false#module={}:{}".format(module["id"], module.get("flavor", "")),
+            }],
+            # TODO: missing: in_portal, anonymous, activated, allowedGroups
+        }
+        return entry
+
+    def _module_icon_url(self, module):
+        sub_path = "js/dijit/themes/umc/icons/scalable/{}.svg".format(module["icon"])
+        filename = os.path.join('/usr/share/univention-management-console-frontend/', sub_path)
+        if os.path.exists(filename):
+            return urljoin("/univention/management/", sub_path)
+
+    def _module_background_color(self, module, colors):
+        color = None
+        for cat in module["categories"]:
+            if cat in colors:
+                color = colors[cat]
+                break
+        return color
 
     def _entry_id(self, module):
         return "umc:module:{}:{}".format(module["id"], module.get("flavor", ""))

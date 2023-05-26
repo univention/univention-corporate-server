@@ -38,6 +38,7 @@ import json
 import tempfile
 
 import pytest
+from unittest import mock
 
 from univention.portal.extensions.portal import Portal
 from univention.portal.extensions.reloader import MtimeBasedLazyFileReloader
@@ -288,3 +289,22 @@ class TestPortal:
         assert mocked_portal.score(request) == 5
         mocked_portal.scorer.score.assert_called_once()
         mocked_portal.scorer.score.assert_called_with(request)
+
+    @pytest.mark.parametrize("umc_base_url", [
+        "http://ucshost.test/univention",
+        "http://ucshost.test/univention/",
+    ])
+    def test_umc_portal_request_umc_get_uses_configured_url(
+        self, umc_base_url, mocker, mock_portal_config,
+    ):
+        from univention.portal.extensions.portal import UMCPortal
+
+        requests_post = mocker.patch('requests.post')
+        mock_portal_config({"umc_base_url": umc_base_url})
+        portal = UMCPortal(mock.Mock(), mock.Mock(), "stub-secret")
+        portal._request_umc_get('stub_path', mock.Mock())
+
+        requests_post.assert_called_with(
+            "http://ucshost.test/univention/get/stub_path",
+            json=mock.ANY, headers=mock.ANY,
+        )

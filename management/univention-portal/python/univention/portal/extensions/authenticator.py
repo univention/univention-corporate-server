@@ -36,6 +36,7 @@ import base64
 import binascii
 import hashlib
 import json
+from urllib.parse import urljoin
 
 from tornado.httpclient import AsyncHTTPClient, HTTPError, HTTPRequest
 
@@ -101,7 +102,8 @@ class UMCAuthenticator(Authenticator):
 
     def __init__(self, auth_mode, umc_session_url, group_cache):
         self.auth_mode = auth_mode
-        self.umc_session_url = umc_session_url
+        umc_base_url = config.fetch("umc_base_url")
+        self.umc_session_url = urljoin(umc_base_url, 'get/session-info')
         self.group_cache = group_cache
 
     def get_auth_mode(self, request):
