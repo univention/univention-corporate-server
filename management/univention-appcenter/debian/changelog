@@ -1,3 +1,9 @@
+univention-appcenter (9.0.7-10) unstable; urgency=medium
+
+  * Bug #55632: Improved the Python 2.7 compatibility
+
+ -- Mika Westphal <westphal@univention.de>  Fri, 26 May 2023 12:16:06 +0200
+
 univention-appcenter (9.0.7-9) unstable; urgency=medium
 
   * Bug #56072: remove listener file when corresponding udm object cannot be found
