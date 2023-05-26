@@ -78,10 +78,10 @@ review:
   tags:
     - omar
   script:
-    - rsync -av --delete out/ /var/univention/buildsystem2/test_mirror/ftp/download/docs.$CI_BUILD_REF_SLUG
+    - rsync -av --delete out/ /var/univention/buildsystem2/test_mirror/ftp/download/docs.$CI_COMMIT_REF_SLUG
   environment:
-    name: review/$CI_BUILD_REF_NAME
-    url: http://apt.knut.univention.de/download/docs.$CI_BUILD_REF_SLUG/
+    name: review/$CI_COMMIT_REF_NAME
+    url: http://apt.knut.univention.de/download/docs.$CI_COMMIT_REF_SLUG/
     on_stop: stop_review
     auto_stop_in: 1 week
 
@@ -97,9 +97,9 @@ stop_review:
   tags:
     - omar
   script:
-    - rm -rf /var/univention/buildsystem2/test_mirror/ftp/download/docs.$CI_BUILD_REF_SLUG
+    - rm -rf /var/univention/buildsystem2/test_mirror/ftp/download/docs.$CI_COMMIT_REF_SLUG
   environment:
-    name: review/$CI_BUILD_REF_NAME
+    name: review/$CI_COMMIT_REF_NAME
     action: stop
 
 staging:
