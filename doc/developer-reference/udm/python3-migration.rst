@@ -56,7 +56,7 @@ it may now specify the compatible UCS versions:
 
    ucs_registerLDAPExtension "$@" \
        --ucsversionstart "4.4-0" \
-       --ucsversionend "5.99-0" \
+       --ucsversionend "5.0-99" \
        --udm_module /usr/lib/python3/dist-packages/univention/admin/handlers/foo/bar.py
 
 
@@ -74,7 +74,7 @@ or register two separate versions compatible for each UCS version:
 
    ucs_registerLDAPExtension "$@" \
        --ucsversionstart "5.0-0" \
-       --ucsversionend "5.99-0" \
+       --ucsversionend "5.0-99" \
        --udm_module /usr/lib/python3/dist-packages/univention/admin/handlers/foo/bar.py
 
 
