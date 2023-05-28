@@ -198,11 +198,14 @@ class UCSInstallation(VNCInstallation):
         """
         # Zusätzliche Software installieren
         """
-        sleep(300, "disk.partition install")
+        sleep(50, "disk.partition install")
 
         """
         # GRUB-Bootloader auf einer Festplatte installieren
         """
+        self.wait_for_text('GRUB', timeout=1300)
+        self.click_on('GRUB')
+        self.client.keyPress('enter')
 
         """
         # Configure Univention System Setup
