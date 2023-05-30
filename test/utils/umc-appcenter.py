@@ -128,11 +128,11 @@ class Apps(object):
         self.run_action("install", self.options.app, self.options.version)
 
     def uninstall(self) -> None:
-        self.run_script(self.options.app, 'preremove')
-        self.run_action("remove", self.options.app)
+        self.run_script(self.options.app, 'preremove', self.options.version)
+        self.run_action("remove", self.options.app, self.options.version)
 
     def update(self) -> None:
-        self.run_script(self.options.app, 'preupgrade')
+        self.run_script(self.options.app, 'preupgrade', self.options.version)
         result = self.umc('appcenter/get', {"application": self.options.app})
         for host in result.get('installations', []):
             if host == ucr['hostname']:
@@ -142,7 +142,7 @@ class Apps(object):
         else:
             if self.options.ignore_no_update:
                 return
-        self.run_action("upgrade", self.options.app)
+        self.run_action("upgrade", self.options.app, self.options.version)
 
     def main(self) -> None:
         update = get_action('update')
