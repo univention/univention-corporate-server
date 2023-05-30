@@ -1,4 +1,4 @@
-#!/usr/share/ucs-test/runner /usr/share/ucs-test/selenium
+#!/usr/share/ucs-test/runner /usr/share/ucs-test/playwright
 ## desc: Check for unclosed file handles after log ins and password resets
 ## packages:
 ##  - univention-management-console-module-udm
@@ -11,154 +11,55 @@
 ## join: true
 ## exposure: dangerous
 
+import re
 import subprocess
 import time
+from typing import Tuple, Union
 
-from selenium.webdriver.common.by import By
-from selenium.webdriver.support import expected_conditions
-from selenium.webdriver.support.ui import WebDriverWait
+import pytest
 
-import univention.testing.ucr as ucr_test
-import univention.testing.udm as udm_test
 from univention.lib.i18n import Translation
-from univention.testing import selenium, utils
+from univention.testing.browser import logger
+from univention.testing.browser.lib import UMCBrowserTest
 
 
-translator = Translation("ucs-test-selenium")
-_ = translator.translate
+_ = Translation("ucs-test-browser").translate
 
 
-class UMCTester:
-    """This test checks problems caused by open file descriptors."""
+@pytest.mark.parametrize("try_wrong_pw", [False, True])
+def test_open_fd_after_login(umc_browser_test: UMCBrowserTest, udm, try_wrong_pw: bool):
+    umc_browser_test.restart_umc()
+    password = "wrong_password" if try_wrong_pw else "univention"
 
-    def __init__(self, sel, hostname, domainname):
+    for i in range(4):
+        username = udm.create_user()[1]
+        logger.info("Created user with username %s" % username)
+        umc_browser_test.page.goto(f"{umc_browser_test.base_url}/univention/portal")
+        umc_browser_test.page.get_by_role("link", name=_("Login")).click()
+        umc_browser_test.login(username, password, check_for_no_module_available_popup=False, login_should_fail=False, do_navigation=False, skip_xhr_check=True)
+        if not try_wrong_pw:
+            umc_browser_test.page.wait_for_url(re.compile(".*/univention/portal/#.*"))
+        umc_browser_test.end_umc_session()
 
-        self.hostname = hostname
-        self.domainname = domainname
-        self.fqdn = "%s.%s" % (hostname, domainname)
+    open_sockets, ret = count_fhs()
+    logger.info("%d open sockets before sleep:\n%s" % (ret, open_sockets))
+    time.sleep(60 * 1)
+    umc_browser_test.systemd_restart_service("slapd")
 
-        self.selenium = sel
-        self.browser = self.selenium.driver
-
-    def test_umc(self, udm):
-        """call all tests"""
-        if not self.test_umc_logon(udm):
-            msg = "The amount of connections in CLOSE_WAIT state are > 2 after testing UMC logon"
-            return False, msg
-
-        if not self.test_umc_logon(udm, True):
-            msg = "The amount of connections in CLOSE_WAIT state are > 2 after testing UMC logon with a wrong password"
-            return False, msg
-
-        return True, ""
-
-    def count_fhs(self):
-        umc_pid = int(subprocess.check_output(
-            "pidof -x univention-management-console-server".split(" ")))
-
-        return int(subprocess.check_output(
-            ["bash", "-c", "lsof -p " + str(umc_pid) + " | grep 7389 | wc -l"]))
-
-    def take_a_screenshot(self):
-        self.selenium.driver.get(
-            s.base_url + "/univention/self-service/#page=passwordchange",
-        )
-        self.selenium.save_screenshot()
-
-    @classmethod
-    def systemd_restart(cls, service):
-        """
-        check_call runs a command with arguments and waits for command to
-        complete. No further wait is necessary.
-        """
-        subprocess.check_call(["deb-systemd-invoke", "restart", service])
-
-    def umc_logon(self, username, pw, try_wrong_pw):
-        """method to log into the ucs portal with a given username and password"""
-        try:
-            self.browser.get("http://" + self.fqdn + "/univention/portal/")
-
-            WebDriverWait(self.browser, 30).until(
-                expected_conditions.element_to_be_clickable(
-                    (By.XPATH, '//*[@id="umcLoginButton_label"]'),
-                ),
-            ).click()
-            WebDriverWait(self.browser, 30).until(
-                expected_conditions.element_to_be_clickable(
-                    (By.XPATH, '//*[@id="umcLoginUsername"]'),
-                ),
-            ).send_keys(username)
-            WebDriverWait(self.browser, 30).until(
-                expected_conditions.element_to_be_clickable(
-                    (By.XPATH, '//*[@id="umcLoginPassword"]'),
-                ),
-            ).send_keys(pw)
-
-            elem = self.browser.find_elements(By.ID, "umcLoginSubmit")[0]
-            elem.click()
-
-            WebDriverWait(self.browser, 30).until(
-                expected_conditions.element_to_be_clickable(
-                    (By.XPATH, '//*[@id="umcLoginButton_label"]'),
-                ),
-            ).click()
-        except BaseException:
-            if not try_wrong_pw:
-                self.take_a_screenshot()
-        finally:
-            print("UMC Logon with {} done".format(username))
-
-    def test_umc_logon(self, udm, try_wrong_pw=False):
-        """
-        count the number of open file handles in the CLOSE_WAIT state after
-        several logins. Code taken from `repr2.py`, attached to Bug #51047
-        """
-        print("\n##################################################################")
-        if try_wrong_pw:
-            print("  Test UMC login with correct password")
-        else:
-            print("  Test UMC login with false password")
-        print("###################################################################\n")
-        self.systemd_restart("univention-management-console-server")
-
-        username = ""
-        # this is the default password, but it is made explicit here on purpose
-        login_password = password = "univention"
-        if try_wrong_pw:
-            login_password = "whatever"
-        for i in range(0, 4):
-
-            _, username = udm.create_user(set={"password": password})
-
-            print(
-                "Created user %d '%s' with password %s. Logging in..."
-                % (i, username, password),
-            )
-
-            self.umc_logon(username, login_password, try_wrong_pw)
-            print("done.\n")
-            self.selenium.end_umc_session()
-
-        # wait for timeouts
-        time.sleep(60)
-        self.systemd_restart("slapd")
-
-        close_wait = self.count_fhs()
-        print("> close wait: %d\n" % close_wait)
-        return close_wait < 3  # the hard coded value of 3 has to be adapted later
+    open_sockets, ret = count_fhs(state="close-wait")
+    logger.info("%d sockets in close-wait" % ret)
+    assert ret < 3, f"More than 2 sockets in CLOSE_WAIT after UMC login:\n{open_sockets}"
 
 
-if __name__ == "__main__":
-
-    with selenium.UMCSeleniumTest() as s,\
-            ucr_test.UCSTestConfigRegistry() as ucr,\
-            udm_test.UCSTestUDM() as udm:
-
-        umc_tester = UMCTester(s, ucr.get("hostname"), ucr.get("domainname"))
-
-        retval, msg = umc_tester.test_umc(udm)
-
-        if not retval:
-            utils.fail(msg)
-
-# vim: ft=python
+def count_fhs(state: Union[str, None] = None) -> Tuple[str, int]:
+    # umc_pid = int(subprocess.run(["/usr/bin/pidof", "-x", "univention-management-console-server"], check=True, stdout=subprocess.PIPE).stdout)
+    state_str = f"state {state}" if state is not None else ""
+    ret = subprocess.run(
+        f"ss -tp {state_str} dport 7389 | grep pid=$(pidof -x univention-management-console-server)",
+        shell=True,
+        check=True,
+        stdout=subprocess.PIPE,
+    ).stdout.decode("utf-8")
+    # ret = subprocess.run(f"lsof -p {umc_pid} | grep 7389 | wc -l", shell=True, check=True, stdout=subprocess.PIPE).stdout.decode("")
+    sockets_in_close_wait = ret.count("\n")
+    return ret, sockets_in_close_wait
