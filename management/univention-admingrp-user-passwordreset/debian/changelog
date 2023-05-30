@@ -1,3 +1,9 @@
+univention-admingrp-user-passwordreset (9.0.2-3) unstable; urgency=low
+
+  * Bug #55602: Move logic into join script
+
+ -- Philipp Hahn <hahn@univention.de>  Tue, 30 May 2023 08:11:52 +0200
+
 univention-admingrp-user-passwordreset (9.0.2-2) unstable; urgency=low
 
   * Bug #55602: Restart `slapd` only on changed group membership
