@@ -74,7 +74,7 @@ from univention.lib.s4 import rids_for_well_known_security_identifiers
 try:  # Python > 3.9
     import zoneinfo
     utc = zoneinfo.ZoneInfo('UTC')
-except ImportError:
+except (ImportError, AttributeError):
     import pytz
     zoneinfo = None
     utc = pytz.utc
