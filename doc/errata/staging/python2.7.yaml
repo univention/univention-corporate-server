@@ -6,16 +6,12 @@ src: python2.7
 fix: 2.7.16-2+deb10u2
 desc: |
  This update addresses the following issues:
- 2.7.16-2+deb10u2 (Tue, 23 May 2023 16:13:27 +0200)
- * Non-maintainer upload by the LTS Security Team.
- * Update self-signed.pythontest.net SSL certificate in testsuite (fixes
-   test_httplib test suite)
- * CVE-2015-20107: the mailcap module does not add escape characters into
+ * CVE-2015-20107: The mailcap module does not add escape characters into
    commands discovered in the system mailcap file. This may allow attackers to
    inject shell commands into applications that call mailcap.findmatch with
    untrusted input (if they lack validation of user-provided filenames or
    arguments).
- * CVE-2019-20907: in Lib/tarfile.py, an attacker is able to craft a TAR
+ * CVE-2019-20907: In Lib/tarfile.py, an attacker is able to craft a TAR
    archive leading to an infinite loop when opened by tarfile.open, because
    _proc_pax lacks header validation.
  * CVE-2020-8492: Python allows an HTTP server to conduct Regular Expression
@@ -37,7 +33,7 @@ desc: |
  * CVE-2021-3737: An improperly handled HTTP response in the HTTP client code
    of python may allow a remote attacker, who controls the HTTP server, to
    make the client script enter an infinite loop, consuming CPU time.
- * CVE-2021-4189: the FTP (File Transfer Protocol) client library in PASV
+ * CVE-2021-4189: The FTP (File Transfer Protocol) client library in PASV
    (passive) mode trusts the host from the PASV response by default. This flaw
    allows an attacker to set up a malicious FTP server that can trick FTP
    clients into connecting back to a given IP address and port. This
