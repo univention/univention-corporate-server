@@ -1,6 +1,12 @@
+ucs-test (10.0.10-65) unstable; urgency=medium
+
+  * Bug #55765: adjust test for custom app settings.
+
+ -- Christian Castens <castens@univention.de>  Mon, 30 May 2023 07:40:35 +0200
+
 ucs-test (10.0.10-64) unstable; urgency=medium
 
-  * Bug 55632: removed compatiblity code for Python 2.7
+  * Bug #55632: removed compatiblity code for Python 2.7
 
  -- Mika Westphal <westphal@univention.de>  Thu, 18 May 2023 12:43:35 +0200
 

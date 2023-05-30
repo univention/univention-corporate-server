@@ -259,7 +259,10 @@ Scope = inside, outside
             assert ucr_get(setting.name) == 'My new value'
             assert ucr_get(custom_setting.name) == 'My new value2'
     finally:
-        os.remove(custom_settings_file)
+        try:
+            os.remove(custom_settings_file)
+        except OSError:
+            pass
 
 
 def test_int_setting(installed_component_app):
