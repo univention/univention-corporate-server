@@ -35,12 +35,9 @@ appliance_default_password="zRMtAmGIb3"
 set -x
 set -e
 
-check_returnvalue () {  # <return-value> <error-message>
-	local rval="${1?}" errormessage="${2?}"
-	if [ "${rval}" != 0 ]; then
-		echo "${errormessage}"
-		exit "${rval}"
-	fi
+die () {
+	echo "$*" >&2
+	exit 1
 }
 
 install_vmware_packages () {
@@ -78,11 +75,11 @@ download_packages () {
 			# shellcheck disable=SC2046
 			LC_ALL=C $install_cmd --reinstall -s -o Debug::NoLocking=1 "${package}" |
 			apt-get download -o Dir::Cache::Archives=/var/cache/univention-system-setup/packages \
-				$(LC_ALL=C $install_cmd --reinstall -s -o Debug::NoLocking=1 "${package}" | sed -ne 's|^Inst \([^ ]*\) .*|\1|p')
+				$(LC_ALL=C $install_cmd --reinstall -s -o Debug::NoLocking=1 "${package}" | sed -ne 's|^Inst \([^ ]*\) .*|\1|p') ||
 
-			check_returnvalue $? "Failed to download required packages for ${package}"
-			apt-ftparchive packages . >Packages
-			check_returnvalue $? "Failed to create ftparchive directory"
+				die "Failed to download required packages for ${package}"
+			apt-ftparchive packages . >Packages ||
+				die "Failed to create ftparchive directory"
 			apt-get -q update
 		done
 	)
@@ -297,9 +294,7 @@ prepare_docker_app () {  # <app_id> <counter>
 	# compose
 	if [ -e "$dockercompose" ]; then
 		local_app_docker_image=""
-		while read -r image; do
-			docker pull "$image"
-		done < <(exec sed -n 's/.*image: //p' "$dockercompose" | sed 's/"//g')
+		sed -n 's/.*image: //;T;s/"//g;p' "$dockercompose" | xargs -rn1 docker pull
 	else
 		local_app_docker_image="$dockerimage"
 		docker pull "$dockerimage"
@@ -356,17 +351,18 @@ prepare_docker_app () {  # <app_id> <counter>
 
 	# clear old app
 	cat >"/usr/lib/univention-system-setup/scripts/00_system_setup/20remove_docker_app_${app}" <<__EOF__
-#!/bin/bash
-
+#!/bin/sh
 set -x
 
-APP=${app}
-DEMO_MODE=\$(echo "\$@" | grep -q "\\-\\-demo-mode" && echo 1)
-
-if [ "\$DEMO_MODE" != 1 ]; then
-	univention-app remove \${APP} --noninteractive --do-not-backup
+APP="${app}"
+case "$*" in
+--demo-mode)
+	;;
+*)
+	univention-app remove "\${APP}" --noninteractive --do-not-backup
 	rm -rf "/var/lib/univention-appcenter/apps/\${APP}/"
-fi
+	;;
+esac
 
 exit 0
 __EOF__
@@ -421,7 +417,7 @@ ucr unset --force appcenter/index/verify
 [ -n "${local_app_docker_image}" ] && ucr set appcenter/apps/${app}/image="${dockerimage}"
 
 # re activate repo
-univention-app shell ${app} ucr set repository/online=yes || true
+univention-app shell "${app}" ucr set repository/online=yes || true
 
 exit 0
 __EOF__
@@ -598,12 +594,12 @@ download_system_setup_packages () {  # [app_id]
 			LC_ALL=C $install_cmd --reinstall -s -o Debug::NoLocking=1 "${package}"
 			# shellcheck disable=SC2046
 			apt-get download -o Dir::Cache::Archives=/var/cache/univention-system-setup/packages \
-				$(LC_ALL=C $install_cmd --reinstall -s -o Debug::NoLocking=1 "${package}" | sed -ne 's|^Inst \([^ ]*\) .*|\1|p')
-			check_returnvalue $? "Failed to download required packages for ${package}"
+				$(LC_ALL=C $install_cmd --reinstall -s -o Debug::NoLocking=1 "${package}" | sed -ne 's|^Inst \([^ ]*\) .*|\1|p') ||
+			die "Failed to download required packages for ${package}"
 		done
 
-		apt-ftparchive packages . >Packages
-		check_returnvalue $? "Failed to create ftparchive directory"
+		apt-ftparchive packages . >Packages ||
+			die "Failed to create ftparchive directory"
 		xz -k Packages
 		gzip -k Packages
 		chmod a+r Packages Packages.xz Packages.gz
@@ -611,8 +607,7 @@ download_system_setup_packages () {  # [app_id]
 }
 
 appliance_preinstall_common_role () {
-	DEBIAN_FRONTEND=noninteractive univention-install -y univention-role-common
-	DEBIAN_FRONTEND=noninteractive univention-install -y univention-role-server-common
+	univention-install -y univention-role-common univention-role-server-common
 }
 
 appliance_preinstall_non_univention_packages () {
@@ -895,7 +890,7 @@ eval "\$(ucr shell)"
 
 set -x
 
-APP=$app
+APP="$app"
 CONTAINER=\$(ucr get "appcenter/apps/\$APP/container")
 
 # update ca certificates in container
@@ -942,14 +937,12 @@ __EOF__
 
 		if [ "$app" = "mattermost" ]; then
 			cat >/usr/lib/univention-system-setup/cleanup-post.d/98_reconfigure_mattermost <<__EOF__
-#!/bin/bash
+#!/bin/sh
 
 # During system-setup, apache2 uses temporary certificates, configured by UCR.
 # These are also configured by mattermost.
 # Reconfiguring the app will use the correct certs.
-
-univention-app configure mattermost
-
+exec univention-app configure mattermost
 __EOF__
 			chmod 755 /usr/lib/univention-system-setup/cleanup-post.d/98_reconfigure_mattermost
 		fi
@@ -1031,7 +1024,7 @@ __EOF__
 
 	# resize2fs
 	cat > /etc/init.d/resize2fs <<__EOF__
-#!/bin/bash
+#!/bin/sh
 ### BEGIN INIT INFO
 # Provides:          resize2fs
 # Required-Start:    \$local_fs
