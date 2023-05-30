@@ -1342,7 +1342,7 @@ def parse_options():
     group.add_argument('--product-url', help='product URL of appliance', default='https://www.univention.com/products/ucs/')
     group.add_argument('-v', '--version', help='version string of appliance')
     group.add_argument('--vendor', help='vendor string of appliance', default='Univention GmbH')
-    group.add_argument('--vendor-url', help='vendor URL of appliance', default='At least 2GB of RAM are required. https://www.univention.com/')
+    group.add_argument('--vendor-url', help='vendor URL of appliance', default='https://www.univention.com/')
     parser.add_argument('-t', '--tempdir', help='temporary directory to use')
     group = parser.add_argument_group("AWS settings")
     group.add_argument('--region', help='EC2 region to use', default='eu-west-1')

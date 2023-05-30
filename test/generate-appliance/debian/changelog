@@ -1,3 +1,9 @@
+generate-appliance (6.0.2-1) unstable; urgency=low
+
+  * Bug #55124: Fix OVA image creation
+
+ -- Philipp Hahn <hahn@univention.de>  Tue, 13 Jun 2023 20:18:39 +0200
+
 generate-appliance (6.0.1-1) unstable; urgency=medium
 
   * Bug #31771: migrate tabs to spaces
