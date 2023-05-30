@@ -1,4 +1,4 @@
-#!/usr/share/ucs-test/runner /usr/share/ucs-test/selenium
+#!/usr/share/ucs-test/runner /usr/share/ucs-test/playwright
 # -*- coding: utf-8 -*-
 ## desc: Test memory leaks in UMC javascript frontend
 ## roles-not:
@@ -13,69 +13,59 @@
 import json
 import pprint
 
-from selenium.webdriver.common.by import By
+from playwright.sync_api import Page
 
 from univention.lib.i18n import Translation
-from univention.testing import selenium, utils
-from univention.testing.selenium.appcenter import AppCenter
+from univention.testing.browser import logger
+from univention.testing.browser.lib import UMCBrowserTest
 
 
-_ = Translation('ucs-test-selenium').translate
+_ = Translation("ucs-test-browser").translate
 
 
-class UMCTester(object):
+def test_umc_memory_leaks(umc_browser_test: UMCBrowserTest):
+    page = umc_browser_test.page
+    pp = pprint.PrettyPrinter(indent=4)
 
-    def test_umc(self):
-        pp = pprint.PrettyPrinter(indent=4)
-        self.selenium.do_login()
+    umc_browser_test.login()
 
-        s = self.gather_dijit_registy_map()
-        print("Initial dijit registry map")
-        pp.pprint(json.loads(s))
+    dijit_map = gather_dijit_registry_map(page)
+    dijit_map_json = json.loads(dijit_map)
+    assert len(dijit_map_json) > 0
 
-        for module in self.get_available_modules():
-            if module == 'App Center':
-                self.appcenter.open(do_reload=False)
-            else:
-                self.selenium.open_module(module, do_reload=False)
-            self.selenium.click_button('Close')
+    logger.info("Inital dijit registry map: %s" % pp.pprint(dijit_map_json))
 
-        m = self.gather_dijit_registy_map()
-        print("Dijit registry map after opening and closing all modules")
-        pp.pprint(json.loads(m))
+    umc_browser_test.open_all_modules(4)
 
-        d = self.diff_dijit_registry_map(m, s)
-        print("Difference between last and initial dijit registry map")
-        pp.pprint(json.loads(d))
+    dijit_map_after = gather_dijit_registry_map(page)
+    logger.info("Dijit registry map after opening and closing all modules: %s" % pp.pprint(json.loads(dijit_map_after)))
 
-        for k, v in json.loads(d).items():
-            if v != 0:
-                utils.fail("There were extra widgets in the registry")
+    dijit_map_diff = diff_dijit_registry_map(page, dijit_map, dijit_map_after)
 
-    def get_available_modules(self):
-        self.selenium.search_module('*')
-        tile_headings = self.selenium.driver.find_elements(By.CLASS_NAME, 'umcGalleryName')
-        return [tile_heading.text for tile_heading in tile_headings]
-
-    def gather_dijit_registy_map(self):
-        return self.selenium.driver.execute_script('''
-            var m = umc.tools.dijitRegistryToMap();
-            return JSON.stringify(m);
-        ''')
-
-    def diff_dijit_registry_map(self, m, s):
-        return self.selenium.driver.execute_script('''
-            var m = JSON.parse(arguments[0])
-            var s = JSON.parse(arguments[1])
-            var d = umc.tools.dijitRegistryMapDifference(m, s)
-            return JSON.stringify(d)
-        ''', m, s)
+    for v in json.loads(dijit_map_diff).values():
+        assert v != 0, "There were extra widgets in the registry"
 
 
-if __name__ == '__main__':
-    with selenium.UMCSeleniumTest() as s:
-        umc_tester = UMCTester()
-        umc_tester.selenium = s
-        umc_tester.appcenter = AppCenter(umc_tester.selenium)
+def gather_dijit_registry_map(page: Page) -> str:
+    return page.evaluate(
+        """
+    () => {
+        var m = umc.tools.dijitRegistryToMap();
+        return JSON.stringify(m);
+    }
+    """,
+    )
 
-        umc_tester.test_umc()
+
+def diff_dijit_registry_map(page: Page, a: str, b: str) -> str:
+    return page.evaluate(
+        """([a, b]) => {
+        var a = JSON.parse(a);
+        var b = JSON.parse(b);
+
+        var ret = umc.tools.dijitRegistryMapDifference(a,b);
+        return JSON.stringify(ret)
+    }
+    """,
+        [a, b],
+    )
