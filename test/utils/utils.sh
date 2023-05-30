@@ -890,7 +890,11 @@ update_apps_via_umc () {
 	shift 3 || return $?
 
 	# update the main app
-	python -m shared-utils/apps -U "$username" -p "$password" -a "$main_app" -u || rv=$?
+	if [ -n "$MAIN_APP" ] && [ -n "$MAIN_APP_VERSION" ] && [ "$MAIN_APP" = "$main_app" ]; then
+		python -m shared-utils/apps -U "$username" -p "$password" -a "$main_app" -v $MAIN_APP_VERSION -u || rv=$?
+	else
+		python -m shared-utils/apps -U "$username" -p "$password" -a "$main_app" -u || rv=$?
+	fi
 
 	# In app tests we want to check the new version of the main app.
 	# And for the main app an update is required.
@@ -898,9 +902,13 @@ update_apps_via_umc () {
 	# available, we just ignore this (-i for shared-utils/apps)
 	for app in "$@"; do
 		test "$app" = "$main_app" && continue
-		if ! assert_app_is_installed_and_latest "${app}"; then
+		if ! assert_app_is_installed_and_latest_or_specific_version "${app}"; then
 			# try update, but do not except that an update is available
-			python -m shared-utils/apps -U "$username" -p "$password" -a "$app" -u -i || rv=$?
+			if [ -n "$MAIN_APP" ] && [ -n "$MAIN_APP_VERSION" ] && [ "$MAIN_APP" = "$app" ]; then
+				python -m shared-utils/apps -U "$username" -p "$password" -a "$app" -v $MAIN_APP_VERSION -u -i || rv=$?
+			else
+				python -m shared-utils/apps -U "$username" -p "$password" -a "$app" -u -i || rv=$?
+			fi
 		fi
 	done
 
@@ -919,6 +927,20 @@ remove_apps_via_umc () {
 	done
 	for app in $reverse; do
 		python -m shared-utils/apps -U "$username" -p "$password" -a "$app" -r || rv=$?
+	done
+	return $rv
+}
+
+assert_app_is_installed_and_latest_or_specific_version () {
+	univention-app info
+	local rv=0 app latest
+	for app in "$@"; do
+		if [ -n "$MAIN_APP" ] && [ -n "$MAIN_APP_VERSION" ] && [ "$MAIN_APP" = "$app" ]; then
+    	latest="$MAIN_APP"="$MAIN_APP_VERSION"
+    else
+  		latest="$(python -m shared-utils/app-info -a "$app" -v)"
+    fi
+		univention-app info | grep -q "Installed: .*\b$latest\b.*" || rv=$?
 	done
 	return $rv
 }
