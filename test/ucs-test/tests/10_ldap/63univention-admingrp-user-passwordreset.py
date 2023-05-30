@@ -75,9 +75,9 @@ try:
             if not has_write_access_for_descr(account, target):
                 fail('%s cannot set description of %s' % (account, target))
 
-        admin_dn = ucr.get('tests/domainadmin/account')
+        admin_dn = ucr['tests/domainadmin/account']
         admin_name = ldap.dn.str2dn(admin_dn)[0][0][1]
-        admin_pwd = ucr.get('tests/domainadmin/pwd')
+        admin_pwd = ucr['tests/domainadmin/pwd']
         admin = Account("Administrator", admin_dn, admin_name, admin_pwd)
 
         # create helpdesk groups
@@ -213,7 +213,7 @@ try:
         print('==> Test 9: test if unprotected user with pw expiry policy can be set')
         polname = 'pwdpol-ucs-test'
         try:
-            udm.create_object('policies/pwhistory', position='cn=policies,%s' % ucr.get('ldap/base'), set={
+            udm.create_object('policies/pwhistory', position='cn=policies,%(ldap/base)s' % ucr, set={
                 'name': polname,
                 'length': 5,
                 'expiryInterval': 7,
@@ -223,7 +223,7 @@ try:
             fail('Creating policies/pwhistory failed', ucstest_errorcode)
 
         try:
-            udm.modify_object('users/user', dn=unprot_user_b.dn, policy_reference='cn=%s,cn=policies,%s' % (polname, ucr.get('ldap/base')))
+            udm.modify_object('users/user', dn=unprot_user_b.dn, policy_reference='cn=%s,cn=policies,%s' % (polname, ucr['ldap/base']))
         except Exception:
             fail('Setting reference of policies/pwhistory object %s to %s failed' % (polname, unprot_user_b), ucstest_errorcode)
         verify_write_access_for_password(hduser_a, unprot_user_b)
@@ -234,7 +234,7 @@ try:
         verify_no_write_access_for_descr(hduser_a, unprot_user_a)
 
         # test if helpdesk user can set description AFTER enabling it
-        passwordreset_attributes = ucr.get('ldap/acl/user/passwordreset/attributes')
+        passwordreset_attributes = ucr['ldap/acl/user/passwordreset/attributes']
         passwordreset_attributes += ',description'
         univention.config_registry.handler_set([
             'ldap/acl/user/passwordreset/attributes=%s' % (passwordreset_attributes,),
