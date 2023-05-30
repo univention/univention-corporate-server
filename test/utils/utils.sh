@@ -936,10 +936,10 @@ assert_app_is_installed_and_latest_or_specific_version () {
 	local rv=0 app latest
 	for app in "$@"; do
 		if [ -n "$MAIN_APP" ] && [ -n "$MAIN_APP_VERSION" ] && [ "$MAIN_APP" = "$app" ]; then
-    	latest="$MAIN_APP"="$MAIN_APP_VERSION"
-    else
-  		latest="$(python -m shared-utils/app-info -a "$app" -v)"
-    fi
+		 	latest="$MAIN_APP"="$MAIN_APP_VERSION"
+		else
+			latest="$(python -m shared-utils/app-info -a "$app" -v)"
+		fi
 		univention-app info | grep -q "Installed: .*\b$latest\b.*" || rv=$?
 	done
 	return $rv
