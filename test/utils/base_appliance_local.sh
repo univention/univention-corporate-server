@@ -150,7 +150,6 @@ _set_global_vars () {
 	KVM_USER="${2:?}"
 	KVM_SERVER="${KVM_USER}@${3:?}"
 	UCS_VERSION="${4:?}"
-	UCS_VERSION_INFO="${5?}"
 
 	APPS_SERVER="${KVM_USER}@omar.knut.univention.de"
 	IMAGE_SERVER="${KVM_USER}@docker.knut.univention.de"
@@ -238,6 +237,7 @@ create_ucs_images () {
 # Used by scenarios/appliances/ec2-appliance.cfg
 create_ec2_image () {
 	_set_global_vars "$@"
+	UCS_VERSION_INFO="${5?}"
 
 	_convert_image
 
