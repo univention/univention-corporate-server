@@ -1,13 +1,11 @@
-#!/usr/bin/make -f
+#!/usr/bin/python3
 # SPDX-FileCopyrightText: 2014-2023 Univention GmbH
 # SPDX-License-Identifier: AGPL-3.0-only
 #
 # Like what you see? Join us!
 # https://www.univention.com/about-us/careers/vacancies/
 
-export LC_ALL=C.UTF-8
-export PYBUILD_NAME=generate_appliance
-export DH_VERBOSE=1
+from .main import main
 
-%:
-	dh $@ --with python3 --buildsystem=pybuild
+
+main()

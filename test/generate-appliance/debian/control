@@ -4,15 +4,20 @@ Priority: optional
 Maintainer: Univention GmbH <packages@univention.de>
 Standards-Version: 3.9.8
 Build-Depends:
- debhelper,
+ debhelper (>= 10),
+ dh-python,
+ python3,
+ python3-boto3,
+ python3-lxml,
+ python3-setuptools,
 
 Package: generate-appliance
 Architecture: all
 Depends:
- python-boto,
- python-lxml,
- python-typing,
+ python3-importlib-metadata | python3 (>= 3.8),
  qemu-utils,
+ ${misc:Depends},
+ ${python3:Depends},
 Recommends:
  libguestfs-tools,
 Description: Create virtual appliances for various virtualization systems
