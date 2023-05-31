@@ -8,3 +8,6 @@ desc: |
  This update addresses the following issues:
  * The scripts are now executed with Python 3 instead of Python 2.
 bug: [55632]
+erratum: 690
+announced: 2023-05-31
+support: core
