@@ -9,3 +9,6 @@ desc: |
  * The check for a running AD-Connector is now checking
    for Python 3 only processes.
 bug: [55632]
+erratum: 688
+announced: 2023-05-31
+support: core
