@@ -12,3 +12,6 @@ desc: |
  * The joinscript now uses Python 3 instead of Python 2 to update
    SAML metadata. Future compatibility with Python 3.11 has been added.
 bug: [56069, 55632]
+erratum: 696
+announced: 2023-05-31
+support: core
