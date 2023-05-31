@@ -8,3 +8,6 @@ desc: |
  This update addresses the following issues:
  * Future compatibility with Python 3.11 has been added.
 bug: [55632]
+erratum: 697
+announced: 2023-05-31
+support: core
