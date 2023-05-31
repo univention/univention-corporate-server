@@ -13,3 +13,6 @@ desc: |
    files cannot be processed by the listener and would otherwise remain in
    the queue forever and cause infinite error logging.
 bug: [55632, 56072]
+erratum: 693
+announced: 2023-05-31
+support: core
