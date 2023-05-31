@@ -9,3 +9,6 @@ desc: |
  * The check for a running S4-Connector is now checking for
    Python 3 only processes.
 bug: [55632]
+erratum: 686
+announced: 2023-05-31
+support: core
