@@ -112,6 +112,7 @@ test_master () {
 		ucstime_epoch="$(date +%s)"
 		diff=$((wintime_epoch - ucstime_epoch))
 		test ${diff#-} -lt 300
+		sleep 20
 		ucs-winrm domain-user-validate-password --client "$client" --domainuser "Administrator" --domainpassword "$ADMIN_PASSWORD"
 		ucs-winrm domain-user-validate-password --client "$client" --domainuser "newuser01" --domainpassword "Univention.99"
 	done
