@@ -1,4 +1,4 @@
-#!/usr/share/ucs-test/runner /usr/share/ucs-test/selenium
+#!/usr/share/ucs-test/runner /usr/share/ucs-test/playwright
 # -*- coding: utf-8 -*-
 ## desc: Test uploading new license
 ## roles:
@@ -8,195 +8,91 @@
 ## join: true
 ## exposure: dangerous
 
-import os
-import sys
-import time
-from os import path
-from shutil import rmtree
-from subprocess import PIPE, Popen, check_call
-from tempfile import mkdtemp
+import subprocess
+import tempfile
+from pathlib import Path
+from subprocess import CalledProcessError
+from typing import IO
 
-from selenium.common.exceptions import NoSuchElementException
-from selenium.webdriver.common.by import By
+import pytest
+from playwright.sync_api import expect
 
-import univention.testing.ucr as ucr_test
 from univention.lib.i18n import Translation
-from univention.testing import selenium, utils
-from univention.testing.codes import TestCodes
+from univention.testing.browser import logger
+from univention.testing.browser.sidemenu import SideMenuLicense
 
 
-_ = Translation('ucs-test-selenium').translate
+_ = Translation("ucs-test-browser").translate
+
+dir_name = Path(__file__).parent
+core_edition_license_path = Path(dir_name, "FreeForPersonalUseTest.license")
 
 
-class UMCTester(object):
+@pytest.fixture()
+def license_file_path(side_menu_license: SideMenuLicense, ucr, ldap_base):
+    ucr.save()
 
-    # copy pasted and adapted from 60_umc/80_udm_license
-    def restart_umc_server(self):
-        """
-        Restarts the UMC Server (to release active connections and memory),
-        waits and creates a new connection after
-        """
-        time.sleep(5)
-        self.selenium.end_umc_session()
-        print("\nRestarting the UMC Server to release active connections")
-        check_call(("systemctl", "restart", "univention-management-console-server"))
-        time.sleep(10)  # wait while server is restarting
-        self.selenium.do_login()
+    license_temp_file = tempfile.NamedTemporaryFile("w+")
+    license_dn = f"cn=admin,cn=license,cn=univention,{ldap_base}"
 
-    # copy pasted and adapted from 60_umc/80_udm_license
+    modify_free_license_template(license_dn)
+    dump_current_license_to_file(license_temp_file, license_dn)
 
-    def restore_initial_license_and_cleanup(self, license_file):
-        """
-        Restores the initially dumped license, removes created
-        computers and users if there were any
-        """
-        self.ucr.revert_to_original_registry()
+    yield core_edition_license_path
 
-        if self.license_dump_successful:
-            print("\nRestoring initially dumped license from file "
-                  "'%s' and removing temp folder with license files"
-                  % license_file)
-            self.upload_license(license_file, as_text=False)
-        try:
-            rmtree(self.temp_license_folder)
-        except OSError as exc:
-            print("An OSError while deleting the temporary"
-                  "folder with license files: '%s'" % exc)
-
-    def open_license_info_dialog(self):
-        self.selenium.open_side_menu()
-        self.selenium.wait_for_text(_('License'))
-        self.selenium.click_side_menu_entry(_('License'))
-        self.selenium.wait_for_text(_('License information'))
-        self.selenium.click_side_menu_entry(_('License information'))
-        self.selenium.wait_for_text(_('Information about the current UCS license'))
-        time.sleep(5)
-
-    def open_license_import_dialog(self):
-        self.selenium.open_side_menu()
-        self.selenium.wait_for_text(_('License'))
-        self.selenium.click_side_menu_entry(_('License'))
-        self.selenium.wait_for_text(_('Import new license'))
-        self.selenium.click_side_menu_entry(_('Import new license'))
-        self.selenium.wait_for_text(_('UCS license import'))
-        time.sleep(5)
-
-    def upload_license(self, path, as_text):
-        self.restart_umc_server()
-        self.open_license_import_dialog()
-        if as_text:
-            licenseText = self.selenium.driver.find_element(By.XPATH, '//textarea[@name="licenseText"]')
-            with open(path) as f:
-                s = f.read()
-                licenseText.send_keys(s)
-            self.selenium.click_button('Import from text field')
-            self.selenium.wait_for_text('The license has been imported successfully')
-            self.selenium.click_button('Ok')
-            self.selenium.wait_until_all_dialogues_closed()
-        else:
-            uploader = self.selenium.driver.find_element(By.XPATH, '//*[contains(@id, "_Uploader_")]//input[@type="file"]')
-            uploader.send_keys(os.path.abspath(path))
-            self.selenium.wait_for_text('The license has been imported successfully')
-            self.selenium.click_button('Ok')
-            self.selenium.wait_until_all_dialogues_closed()
-
-    def check_license_information(self):
-        self.open_license_info_dialog()
-        expected_license_type = None
-        with open('FreeForPersonalUseTest.license', 'r+') as free_license:
-            for line in free_license.readlines():
-                if line.startswith("univentionLicenseBaseDN: "):
-                    expected_license_type = line.split(':')[1].strip()
-        print('Checking if "%s" is set as "License type" in the license information dialog' % (expected_license_type,))
-        try:
-            self.selenium.driver.find_element(By.XPATH, '//*[text() = "License type:"]/parent::*[contains(text(), "%s")]' % (expected_license_type,))
-        except NoSuchElementException:
-            license_type = self.selenium.driver.find_element(By.XPATH, '//*[text() = "License type:"]/parent::*').text
-            license_type = license_type.split(':')[1].strip()
-            utils.fail('The "License type" in the license information dialog should have been "%s" but was "%s" instead' % (expected_license_type, license_type))
-        print('Correct license type found')
-
-    def run_test(self):
-        self.upload_license('FreeForPersonalUseTest.license', as_text=False)
-        self.check_license_information()
-        self.upload_license('FreeForPersonalUseTest.license', as_text=True)
-
-    # copy pasted from 60_umc/80_udm_license
-
-    def dump_current_license_to_file(self, license_file):
-        """
-        Opens a given 'license_file' for writing and puts in the output of
-        launched 'univention-ldapsearch' with self.license_dn argument
-        If done without errors, sets 'self.license_dump_successful'=True
-        """
-        print("\nSaving initial license to file: '%s'" % license_file)
-        try:
-            with open(license_file, 'w') as license:
-                proc = Popen(("univention-ldapsearch",
-                              "-LLLb",
-                              self.license_dn),
-                             stdout=license,
-                             stderr=PIPE)
-                stdout, stderr = proc.communicate()
-                if stderr:
-                    utils.fail("An error occurred during the license file "
-                               "dumping while the 'univention-ldapsearch' "
-                               "was running, '%s'" % stderr)
-            self.license_dump_successful = True
-        except (IOError, ValueError, OSError) as exc:
-            utils.fail("An error occurred during the license dump process, "
-                       "license file '%s', exception: %r"
-                       % (license_file, exc))
-
-    # copy pasted from 60_umc/80_udm_license
-
-    def modify_free_license_template(self):
-        """
-        Modifies the 'FreeForPersonalUseTest.license' to have a correct
-        BaseDN. Skipps the test if Free license template was not found.
-        """
-        print("\nModifing the Free license template for the test")
-        if not path.exists('FreeForPersonalUseTest.license'):
-            print("Cannot find the 'FreeForPersonalUseTest.license' file, "
-                  "skipping the test...")
-            sys.exit(TestCodes.REASON_INSTALL)
-        try:
-            with open('FreeForPersonalUseTest.license', 'r+') as free_license:
-                lines = free_license.readlines()
-                free_license.seek(0)
-                for line in lines:
-                    if line.startswith("dn: "):
-                        line = "dn: " + self.license_dn + "\n"
-                    free_license.write(line)
-        except (IOError, ValueError) as exc:
-            utils.fail("An exception while opening and writing to file "
-                       "with a free license 'FreeForPersonalUseTest.license':"
-                       " %r" % exc)
-
-    def init(self):
-        self.ucr.save()
-        self.license_dump_successful = False
-        self.temp_license_folder = mkdtemp()
-        self.ldap_base = self.ucr.get('ldap/base')
-        self.license_dn = "cn=admin,cn=license,cn=univention," + self.ldap_base
-        print("Temporary folder to be used to store obtained test licenses: "
-              "'%s'" % self.temp_license_folder)
-        self.initial_license_file = (self.temp_license_folder + '/InitiallyInstalled.license')
-
-    def test_umc(self):
-        try:
-            self.init()
-            self.modify_free_license_template()
-            self.dump_current_license_to_file(self.initial_license_file)
-            self.run_test()
-        finally:
-            self.restore_initial_license_and_cleanup(self.initial_license_file)
+    ucr.revert_to_original_registry()
+    side_menu_license.navigate(do_login=False)
+    side_menu_license.import_license(Path(license_temp_file.name), False)
+    license_temp_file.close()
 
 
-if __name__ == '__main__':
-    with ucr_test.UCSTestConfigRegistry() as ucr, selenium.UMCSeleniumTest() as s:
-        umc_tester = UMCTester()
-        umc_tester.ucr = ucr
-        umc_tester.selenium = s
+@pytest.mark.skipif(not core_edition_license_path.is_file(), reason="FreeForPersonalUseTest.license file not found")
+@pytest.mark.parametrize("as_text", [True, False])
+def test_upload_license(side_menu_license: SideMenuLicense, license_file_path: Path, as_text: bool):
+    logger.info("Using %s as test license" % core_edition_license_path)
+    side_menu_license.tester.restart_umc()
 
-        umc_tester.test_umc()
+    side_menu_license.navigate()
+    side_menu_license.import_license(license_file_path, as_text)
+    check_license_information(side_menu_license, license_file_path)
+
+
+def check_license_information(side_menu_license: SideMenuLicense, license_file_path: Path):
+    side_menu_license.navigate(do_login=False)
+    side_menu_license.open_license_information()
+
+    page = side_menu_license.page
+
+    with open(license_file_path) as license_file:
+        expected_license_type = next((line for line in license_file if line.startswith("univentionLicenseBaseDN: ")), None)
+        assert expected_license_type is not None
+        expected_license_type = expected_license_type.split(":")[1].strip()
+        expect(page.get_by_text(expected_license_type), f"expected license type to be {expected_license_type}").to_be_visible()
+        page.get_by_role("button", name=_("Close")).click()
+
+
+def modify_free_license_template(license_dn: str):
+    try:
+        with core_edition_license_path.open("r+") as fd:
+            lines = fd.readlines()
+            fd.seek(0)
+            for line in lines:
+                if line.startswith("dn: "):
+                    line = f"dn: {license_dn}\n"
+                fd.write(line)
+    except (IOError, ValueError):
+        logger.exception("Error while modifiyng FreeForPersonalUseTest")
+        raise
+
+
+def dump_current_license_to_file(license_file: IO[str], license_dn: str):
+    """
+    Opens a given 'license_file' for writing and puts in the output of
+    launched 'univention-ldapsearch' with self.license_dn argument
+    """
+    logger.info("Saving original license to file: '%s'" % license_file.name)
+    try:
+        subprocess.run(["/usr/bin/univention-ldapsearch", "-LLLb", license_dn], stdout=license_file, check=True)
+    except (IOError, ValueError, OSError, CalledProcessError):
+        logger.exception("An error occured backing up the old license")
+        raise
