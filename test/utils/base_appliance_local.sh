@@ -170,8 +170,8 @@ create_app_images () {
 
 	_convert_image
 
-	MEMORY=$(_ssh "${IMAGE_SERVER}" "virt-cat -a '${TMP_KVM_IMAGE}' /.memory 2>/dev/null || echo 2048")
-	IDENTIFIER=$(_ssh "${IMAGE_SERVER}" "virt-cat -a '${TMP_KVM_IMAGE}' /.identifier 2>/dev/null || echo '$APP_ID'")
+	MEMORY=$(_ssh "${KVM_SERVER}" "virt-cat -a '${TMP_KVM_IMAGE}' /.memory 2>/dev/null || echo 2048")
+	IDENTIFIER=$(_ssh "${KVM_SERVER}" "virt-cat -a '${TMP_KVM_IMAGE}' /.identifier 2>/dev/null || echo '$APP_ID'")
 
 	# copy to image convert server for later steps and remove tmp image from kvm server
 	_scp "${KVM_SERVER}:/${TMP_KVM_IMAGE}" "${IMAGE_SERVER}:${TMP_KVM_IMAGE}"
