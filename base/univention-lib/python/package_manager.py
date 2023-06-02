@@ -45,7 +45,6 @@ import sys
 import threading
 from contextlib import contextmanager
 from errno import ENOENT, ENOSPC
-from io import TextIOBase
 from logging import DEBUG, Handler, getLogger
 from time import sleep
 from types import TracebackType  # noqa: F401
@@ -203,7 +202,7 @@ class ProgressState(object):
         return result
 
 
-class MessageWriter(TextIOBase):
+class MessageWriter(object):
     """
     Mimics a :py:func:`file` object
     supports :py:meth:`flush` and :py:meth:`write`. Writes no '\\r',
