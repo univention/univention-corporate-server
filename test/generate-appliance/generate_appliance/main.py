@@ -12,20 +12,19 @@ from __future__ import absolute_import, unicode_literals
 import os
 import re
 from argparse import ArgumentDefaultsHelpFormatter, ArgumentParser, FileType, Namespace  # noqa: F401
+
+
+try:
+    from importlib.metadata import entry_points
+except ImportError:
+    from importlib_metadata import entry_points  # type: ignore[assignment]
+
 from logging import DEBUG, INFO, basicConfig
 from tempfile import TemporaryDirectory
 
 from .compat import BooleanOptionalAction
 from .files import Lazy
 from .files.raw import Raw
-from .target import (
-    Target,
-    docker,  # noqa: F401
-    ec2_ebs,  # noqa: F401
-    ova_esxi,  # noqa: F401
-    ova_virtualbox,  # noqa: F401
-    vmware,  # noqa: F401
-)  # noqa: F401
 
 
 RE_INVALID = re.compile(r"""[][\t !"#$%&'()*./:;<=>?\\`{|}~]+-""")
@@ -136,9 +135,12 @@ def parse_options():
         action="store_true",
         help="ignore default selections, only create selected targets",
     )
-    for target in Target.__subclasses__():
+
+    eps = entry_points()
+    targets = {ep.name: ep.load() for ep in eps.get("generate_appliance.targets", [])}
+    for name, target in targets.items():
         group.add_argument(
-            "--%s" % (target.__name__.lower().replace("_", "-"),),
+            "--%s" % (name.replace("_", "-"),),
             help='create "%s"%s"' % (
                 (target.__doc__ or "").strip(),
                 ' (selected by default)' if target.default else '',
@@ -150,8 +152,8 @@ def parse_options():
 
     options.choices = {
         target()
-        for target in Target.__subclasses__()
-        if getattr(options, target.__name__.lower()) or target.default and not options.only
+        for name, target in targets.items()
+        if getattr(options, name) or target.default and not options.only
     }
 
     if len(options.choices) == 1:
