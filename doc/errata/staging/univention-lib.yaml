@@ -1,0 +1,11 @@
+product: ucs
+release: "5.0"
+version: [3]
+scope: ucs_5.0-0-errata5.0-3
+src: univention-lib
+fix: 9.0.14-6
+desc: |
+ This update addresses the following issues:
+ * A regression during package installation in System Setup has been
+   corrected.
+bug: [56111]

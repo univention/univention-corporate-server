@@ -916,7 +916,7 @@ class PackageManager(object):
         # as it reopens the cache
         broken = []  # type: List[str]
         if install_pkgs or remove_pkgs:
-            _, _, broken = self.mark(install_pkgs, remove_pkgs, dry_run=True)
+            _to_be_installed, _to_be_removed, broken = self.mark(install_pkgs, remove_pkgs, dry_run=True)
 
         result = False
         try:
