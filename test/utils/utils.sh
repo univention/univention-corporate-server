@@ -259,6 +259,10 @@ run_setup_join () {
 	local rv=0
 	patch_setup_join # temp. remove me
 	set -o pipefail
+	# maybe this helps. I am out of idea. We now put into the selinux config that it is disabed. But this again will only have effect after rebooting
+	# only if /etc/selinux is missing, packages are behaving as they should since selinux is not installed
+	# only easy way to start the tests right now. Please revert me when you have a better idea..
+	rm -r /etc/selinux
 	/usr/lib/univention-system-setup/scripts/setup-join.sh ${1:+"$@"} | tee -a /var/log/univention/setup.log || rv=$?
 	set +o pipefail
 	ucr set apache2/startsite='univention/' # Bug #31682
@@ -288,6 +292,7 @@ wait_for_reboot () {
 		sleep 1
 		i=$((i + 1))
 	done
+	rm -r /etc/selinux
 	if [ $i = 900 ]; then
 		echo "WARNING: wait_for_reboot: Did not find running apache after 900 seconds"
 		rv=1
@@ -789,6 +794,7 @@ run_rejoin () {
 }
 
 do_reboot () {
+	echo 'SELINUX=disabled' > /etc/selinux/config
 	nohup shutdown -r now &
 	sleep 1
 	exit
