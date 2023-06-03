@@ -4,225 +4,200 @@
 # Like what you see? Join us!
 # https://www.univention.com/about-us/careers/vacancies/
 
-import math
+import datetime
 import sys
-import time
-import uuid
 from argparse import Namespace  # noqa: F401
-from typing import Iterator, cast  # noqa: F401
+from logging import getLogger
+from time import sleep
+from typing import TYPE_CHECKING
 
-import boto
-import boto.ec2
-import lxml.builder
-import lxml.etree
+import boto3
 
 from ..files.raw import Raw  # noqa: F401
 from ..files.vmdk import Vmdk
 from . import Target
 
 
-def log(text, newline=True):
-    # type: (str, bool) -> None
-    sys.stderr.write(text)
-    if newline:
-        sys.stderr.write('\n')
-    sys.stderr.flush()
+if TYPE_CHECKING:
+    from mypy_boto3_ec2 import EC2Client  # noqa: F401
+    from mypy_boto3_s3 import S3Client  # noqa: F401
+
+log = getLogger(__name__)
 
 
-def create_import_manifest(image, vmdk, bucket, folder_name, image_name, volume_size, part_size, url_lifetime):
-    # type: (Raw, Vmdk, boto.s3.bucket.Bucket, uuid.UUID, str, int, int, int) -> bytes
-    # <http://docs.aws.amazon.com/AWSEC2/latest/APIReference/manifest.html>
-    E = lxml.builder.ElementMaker()
-    part_count = int(math.ceil(float(vmdk.file_size()) / part_size))
-    parts = []
-    for index, offset in enumerate(x * part_size for x in range(part_count)):
-        key = boto.s3.key.Key(bucket, '%s/%s.part%d' % (folder_name, image_name, index))  # TODO: redundant code
-        parts.append(
-            E.part(
-                # Complex type defining the starting and ending byte count of a part.
-                E(
-                    'byte-range',
-                    # Offset of a part's first byte in the disk image.
-                    start='%d' % (offset,),
-                    # Offset of a part's last byte in the disk image.
-                    end='%d' % (min(offset + part_size, vmdk.file_size()) - 1,),
-                ),
-                # The S3 object name of the part.
-                E.key(key.name),
-                # Signed URLs for issuing a HEAD request on the S3 object containing this part.
-                E('head-url', key.generate_url(url_lifetime, 'HEAD')),
-                # Signed URLs for issuing a GET request on the S3 object containing this part.
-                E('get-url', key.generate_url(url_lifetime, 'GET')),
-                # Signed URLs for issuing a DELETE request on the S3 object containing this part.
-                E('delete-url', key.generate_url(url_lifetime, 'DELETE')),
-                # Index number of this part.
-                index='%d' % (index,),
-            ),
-        )
-    manifest_key = boto.s3.key.Key(bucket, '%s/%smanifest.xml' % (folder_name, image_name))  # TODO: redundant code
-    manifest = E.manifest(
-        # Version designator for the manifest file,
-        E.version('2010-11-15'),
-        # File format of volume to be imported, with value RAW, VHD, or VMDK.
-        E('file-format', 'VMDK'),
-        # Complex type describing the software that created the manifest.
-        E.importer(
-            # Name of the software that created the manifest.
-            E.name('generate_appliance'),
-            # Version of the software that created the manifest.
-            E.version('2.1'),
-            # Release number of the software that created the manifest.
-            E.release('1'),
-        ),
-        # Signed URL used to delete the stored manifest file.
-        E('self-destruct-url', manifest_key.generate_url(url_lifetime, 'DELETE')),
-        # Complex type describing the size and chunking of the volume file.
-        E(
-            'import',
-            # Exact size of the file to be imported (bytes on disk).
-            E.size('%d' % (vmdk.file_size(),)),
-            # Rounded size in gigabytes of volume to be imported.
-            # - assumed meaning: size of the volume in GiB, because EC2 EBS volumes are provisioned in GiB
-            E('volume-size', '%d' % (volume_size,)),
-            # Complex type describing and counting the parts into which the file is split.
-            E.parts(
-                # Definition of a particular part. Any number of parts may be defined.
-                *parts,
-                # Total count of the parts.
-                count='%d' % (part_count,),
-            ),
-        ),
-    )
-    return cast(bytes, lxml.etree.tostring(manifest, encoding='UTF-8', xml_declaration=False, pretty_print=True))
+class Progress:
+    def __init__(self, path, size):
+        # type: (str, int) -> None
+        self.path = path
+        self.size = size
+        self.seen = 0
 
-
-def chunks(imagefile, chunksize):
-    # type: (Vmdk, int) -> Iterator[bytes]
-    handle = open(imagefile.path(), 'rb')
-    while True:
-        chunk = handle.read(chunksize)
-        yield chunk
-        if len(chunk) < chunksize:
-            break
+    def __call__(self, amount):
+        # type: (int) -> None
+        self.seen += amount
+        percent = 100 * self.seen // self.size
+        sys.stdout.write("\r%s  %s / %s  (%d%%)" % (self.path, self.seen, self.size, percent))
+        sys.stdout.flush()
 
 
 class EC2_EBS(Target):
     """Amazon AWS EC2 AMI (EBS based) (HVM x64_64)"""
 
     default = False
+    tag = False
+    public = False
 
-    def create(self, image, options):
-        # type: (Raw, Namespace) -> None
-        machine_name = options.product
-        if options.version is not None:
-            machine_name += ' ' + options.version
-        image_name = '%s-disk1.vmdk' % (options.product,)
-        part_size = 10 * 1000 * 1000  # 10 MB
-        url_lifetime = 24 * 60 * 60  # 1 day
-
-        volume_size = int(math.ceil(float(image.file_size()) / 1024 / 1024 / 1024))  # GiB
-        folder_name = uuid.uuid4()
-        s3 = boto.s3.connect_to_region(boto.connect_s3().get_bucket(options.bucket).get_location())  # type: ignore[no-untyped-call]
-        ec2 = boto.ec2.connect_to_region(options.region)  # type: ignore[no-untyped-call]
-        bucket = s3.get_bucket(options.bucket)
+    def create(self, image: Raw) -> None:
         vmdk = Vmdk(image)
-        keys_to_delete = []
-        manifest = create_import_manifest(image, vmdk, bucket, folder_name, image_name, volume_size, part_size, url_lifetime)
 
-        log('Uploading manifest…')
-        manifest_key = boto.s3.key.Key(bucket, '%s/%smanifest.xml' % (folder_name, image_name))  # TODO: redundant code
-        manifest_key.storage_class = 'REDUCED_REDUNDANCY'
-        manifest_key.set_contents_from_string(manifest)
-        keys_to_delete.append(manifest_key)
-        log('  OK')
+        s3 = boto3.client("s3", region_name=self.options.region)
+        vmdk_get = self.upload_file(s3, vmdk, self.options.bucket)
 
-        part_count = int(math.ceil(float(vmdk.file_size()) / part_size))
-        for index, part in enumerate(chunks(vmdk, part_size)):
-            log('Uploading part %d/%d…' % (index, part_count))
-            key = boto.s3.key.Key(bucket, '%s/%s.part%d' % (folder_name, image_name, index))  # TODO: redundant code
-            key.storage_class = 'REDUCED_REDUNDANCY'
-            key.set_contents_from_string(part)
-            keys_to_delete.append(key)
-            log('  OK')
+        ec2 = boto3.client("ec2", region_name=self.options.region)
+        import_task_id = self.import_snapshot(ec2, vmdk_get)
+        snapshot_id = self.wait_for_snapshot(ec2, import_task_id)
+        ami = self.register_image(ec2, snapshot_id, size=max(10, vmdk.file_size() // 1_000_000_000))  # FIXME
+        print('Generated "%s" appliance as\n  %s' % (self, ami))
 
-        log('Generating volume ', False)
-        manifest_url = manifest_key.generate_url(url_lifetime, 'GET')
-        zone = ec2.get_all_zones()[0]
-        task = ec2.import_volume(
-            volume_size,
-            zone,
-            description=machine_name,
-            image_size=vmdk.file_size(),
-            manifest_url=manifest_url,
+        if self.tag:
+            self.add_tag(ec2, ami)
+
+        if self.public:
+            self.make_public(ec2, ami)
+
+    def upload_file(self, s3: "S3Client", vmdk: Vmdk, bucket: str) -> str:
+        image_name = self.machine_name + ".vmdk"
+        # <https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/s3/client/upload_file.html>
+        s3.upload_file(
+            vmdk.path(),
+            bucket,
+            image_name,
+            ExtraArgs={
+                "ACL": "aws-exec-read",
+                "Expires": datetime.datetime.now() + datetime.timedelta(days=1),
+                "StorageClass": "REDUCED_REDUNDANCY",
+            },
+            Callback=Progress(vmdk.path(), vmdk.file_size()),
         )
-        # wait for volume
-        while True:
-            for task in ec2.get_all_conversion_tasks(task_ids=[task.id]):
-                pass  # just fill <task> variable
-            if task.state != 'active':
-                log(' done')
-                break
-            time.sleep(32)  # TODO adaptive and jittery
-            # TODO: abort if no progress after some time?
-            log('.', False)
-        if task.state == 'completed':
-            log('  %s' % (task.volume_id,))
-        else:
-            log('  Failed (%r, %r, %r, %r)' % (task.id, task.bytes_converted, task.state, getattr(task, 'statusMessage', None)))
-
-        for index, key in enumerate(keys_to_delete):
-            log('Deleting part %d/%d… ' % (index, len(keys_to_delete)), False)
-            if key.delete():
-                log('OK')
-            else:
-                log('Failed')
-        if task.state != 'completed':
-            return  # abort
-
-        log('Generating snapshot ', False)
-        snapshot = ec2.create_snapshot(task.volume_id, description=machine_name)
-        # wait for snapshot
-        while True:
-            snapshot.update()
-            if snapshot.status != 'pending':
-                log(' done')
-                break
-            time.sleep(32)  # TODO adaptive and jittery
-            # TODO: abort if no progress after some time?
-            log('.', False)
-        if snapshot.status == 'completed':
-            log('  %s' % (snapshot.id,))
-        else:
-            log('  Failed (%r, %r, %r, %r)' % (snapshot.id, snapshot.volume_id, snapshot.status, snapshot.progress))
-            return  # abort
-        if ec2.delete_volume(task.volume_id):
-            log('Deleted volume %s' % (task.volume_id,))
-        else:
-            log('Could not delete volume %s' % (task.volume_id,))
-
-        log('Generating image', False)
-        ami_id = ec2.register_image(
-            name=machine_name,
-            description='%s' % (
-                options.vendor_url,
-            ),
-            architecture='x86_64',
-            root_device_name='/dev/xvda',
-            virtualization_type='hvm',
-            snapshot_id=snapshot.id,
+        vmdk_get = s3.generate_presigned_url(
+            ClientMethod='get_object',
+            Params={
+                'Bucket': bucket,
+                "Key": image_name,
+            },
+            ExpiresIn=3600,
+            HttpMethod="GET",
         )
-        # wait for image
-        while True:
-            amis = [ami for ami in ec2.get_all_images(image_ids=[ami_id]) if ami.state != 'pending']
-            if amis:
-                break
-            time.sleep(32)  # TODO adaptive and jittery
-            # TODO: abort if no progress after some time?
-            log('.', False)
-        log(' done')
+        return vmdk_get
 
-        for ami in amis:
-            if ami.state == 'available':
-                log('Generated "%s" appliance as\n  %s' % (self, ami.id))
+    def import_snapshot(self, ec2: "EC2Client", vmdk_get: str) -> str:
+        # <https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/ec2/client/import_snapshot.html>
+        response = ec2.import_snapshot(
+            Description=self.machine_name,
+            DiskContainer={
+                "Description": self.machine_name,
+                "Format": "VMDK",
+                # "UserBucket": {
+                #     "S3Bucket": options.region,
+                #     "S3Key": manifest_name,
+                # },
+                "Url": vmdk_get,
+            },
+            DryRun=False,
+            # Encrypted=False,
+        )
+        log.debug("import_snapshot: %r", response)
+        import_task_id = response["ImportTaskId"]
+        return import_task_id
+
+    @staticmethod
+    def wait_for_snapshot(ec2, import_task_id):
+        # type: (EC2Client, str) -> str
+        try:
+            # <https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/ec2/client/get_waiter.html>
+            # <https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/ec2/waiter/SnapshotImported.html>
+            waiter = ec2.get_waiter('snapshot_imported')  # 1.26.69+
+            waiter.wait(
+                ImportTaskIds=[import_task_id],
+                WaiterConfig={
+                    'Delay': 15,
+                    'MaxAttempts': 100,
+                },
+            )
+            count = 1
+        except ValueError:
+            count = 1000
+
+        for _ in range(count):
+            # <https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/ec2/client/describe_import_snapshot_tasks.html>
+            response = ec2.describe_import_snapshot_tasks(ImportTaskIds=[import_task_id])
+            log.debug("describe_import_snapshot_tasks: %r", response)
+            detail = response["ImportSnapshotTasks"][0]["SnapshotTaskDetail"]
+            status = detail["Status"]
+            if status == "completed":
+                return detail["SnapshotId"]
+            if status == "active":
+                progress = int(detail["Progress"])
+                Progress(import_task_id, 100)(progress)
             else:
-                log('Could not generate image (%r, %r, %r)' % (self, ami.id, ami.state))
+                print(detail)
+            sleep(15)
+
+        raise ValueError("Import failed")
+
+    def register_image(self, ec2: "EC2Client", snapshot_id: str, size: int) -> str:
+        # <https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/ec2/client/register_image.html>
+        response = ec2.register_image(
+            Architecture="x86_64",
+            BlockDeviceMappings=[
+                {
+                    "DeviceName": "/dev/xvda",
+                    "Ebs": {
+                        "DeleteOnTermination": True,
+                        "SnapshotId": snapshot_id,
+                        "VolumeSize": size,  # GiB
+                        "VolumeType": "gp2",
+                    },
+                },
+            ],
+            Description="https://www.univention.com/",
+            Name=self.machine_name,
+            DryRun=False,
+            EnaSupport=True,
+            RootDeviceName="/dev/xvda",
+            VirtualizationType="hvm",
+            # BootMode="legacy-bios",
+        )
+        log.debug("register_image: %r", response)
+        ami = response["ImageId"]
+        return ami
+
+    def add_tag(self, ec2: "EC2Client", ami: str) -> None:
+        # <https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/ec2/client/create_tags.html>
+        ec2.create_tags(
+            Resources=[
+                ami,
+            ],
+            Tags=[
+                {
+                    "Key": "Name",
+                    "Value": self.machine_name,
+                },
+            ],
+        )
+
+    @staticmethod
+    def make_public(ec2, ami):
+        # type: (EC2Client, str) -> None
+        # <https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/ec2/client/modify_image_attribute.html>
+        response = ec2.modify_image_attribute(
+            ImageId=ami,
+            LaunchPermission={
+                "Add": [
+                    {
+                        "Group": "all",
+                    },
+                ],
+            },
+        )
+        log.debug("modify_image_attribute: %r", response)

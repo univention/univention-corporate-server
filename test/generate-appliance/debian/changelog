@@ -1,6 +1,7 @@
 generate-appliance (6.0.2-1) unstable; urgency=low
 
   * Bug #55124: Fix OVA image creation
+  * Bug #45426: Convert to Python 3 and boto3
 
  -- Philipp Hahn <hahn@univention.de>  Tue, 13 Jun 2023 20:18:39 +0200
 
