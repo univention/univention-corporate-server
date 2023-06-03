@@ -23,34 +23,6 @@ from . import ANNOTATION, LICENSE, Target
 log = getLogger(__name__)
 
 
-IMAGE_DESCRIPTOR = """# Disk DescriptorFile
-version=1
-CID=4fd3c93e
-parentCID=ffffffff
-createType="streamOptimized"
-
-# Extent description
-RDONLY #SECTORS# SPARSE "call-me-stream.vmdk"
-
-# The disk Data Base\x20
-#DDB
-
-ddb.virtualHWVersion = "4"
-ddb.adapterType="ide"
-ddb.geometry.cylinders="#CYLINDERS#"
-ddb.geometry.heads="255"
-ddb.geometry.sectors="63"
-ddb.geometry.biosCylinders="1024"
-ddb.geometry.biosHeads="255"
-ddb.geometry.biosSectors="63"
-ddb.uuid.image="%s"
-ddb.uuid.parent="00000000-0000-0000-0000-000000000000"
-ddb.uuid.modification="00000000-0000-0000-0000-000000000000"
-ddb.uuid.parentmodification="00000000-0000-0000-0000-000000000000"
-ddb.comment=""
-"""
-
-
 def create_ovf_descriptor_virtualbox(machine_uuid, image_name, image_size, image_uuid, options):
     # type: (uuid.UUID, str, int, uuid.UUID, Namespace) -> bytes
     machine_name = options.product
@@ -224,7 +196,7 @@ class OVA_Virtualbox(Target):
             image_name, image.file_size(), image_uuid,
             options,
         )
-        vmdk = Vmdk(image, IMAGE_DESCRIPTOR % (image_uuid,), streamOptimized=True)
+        vmdk = Vmdk(image, adapter_type="ide", hwversion="4", subformat="streamOptimized")
         files = [
             (descriptor_name, descriptor),
             (image_name, vmdk),

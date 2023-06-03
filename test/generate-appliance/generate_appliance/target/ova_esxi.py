@@ -21,31 +21,6 @@ from . import ANNOTATION, LICENSE, Target
 log = getLogger(__name__)
 
 
-IMAGE_DESCRIPTOR = """# Disk DescriptorFile
-version=1\x20
-CID=b9478e33\x20
-parentCID=ffffffff\x20
-createType="streamOptimized"\x20
-
-# Extent description
-RDONLY #SECTORS# SPARSE "call-me-stream.vmdk"
-
-# The Disk Data Base\x20
-#DDB
-
-ddb.adapterType = "lsilogic"
-ddb.encoding = "windows-1252"
-ddb.geometry.biosCylinders="1024"
-ddb.geometry.biosHeads="255"
-ddb.geometry.biosSectors="63"
-ddb.geometry.cylinders="#CYLINDERS#"
-ddb.geometry.heads="255"
-ddb.geometry.sectors="63"
-ddb.longContentID = "6c27be515acd422fbdb62c0afffffffe"
-ddb.virtualHWVersion = "7"
-"""
-
-
 def create_ovf_descriptor_esxi(image_name, image_size, image_packed_size, image_used_size, options):
     # type: (str, int, int, int, Namespace) -> bytes
     machine_name = options.product
@@ -380,7 +355,7 @@ class OVA_ESXi(Target):
         if os.path.exists(archive_name):
             raise IOError('Output file %r exists' % (archive_name,))
 
-        vmdk = Vmdk(image, IMAGE_DESCRIPTOR, streamOptimized=True)
+        vmdk = Vmdk(image, adapter_type="lsilogic", hwversion="7", subformat="streamOptimized")
         descriptor = create_ovf_descriptor_esxi(
             image_name, image.file_size(), vmdk.file_size(),
             image.used_size(),
