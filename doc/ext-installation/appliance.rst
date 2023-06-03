@@ -112,9 +112,9 @@ in this format additionally. The boot loader configuration is also adapted:
 .. code-block:: console
 
    $ DEV='/dev/xvda' GRUB='(hd0)'
-   $ grub-mkdevicemap || \
+   $ grub-mkdevicemap ||
      echo "${GRUB} ${DEV}" >/boot/grub/device.map
-   $ append="$(ucr get grub/append | \
+   $ append="$(ucr get grub/append |
      sed -re "s|/dev/sda|${DEV}|g;s|(no)?splash||g")"
    $ xargs -d'\n' ucr set <<__EOT__
    grub/append=${append}
@@ -130,16 +130,14 @@ in this format additionally. The boot loader configuration is also adapted:
    $ update-initramfs -uk all
    $ update-grub
 
-The initial login to the EC2 instance is performed via a SSH host key. To
-prevent SSH logins from occurring with the default root password of the standard
-image during commissioning of the instance, the initial root password is
-removed. The following |UCSUCR| variable configures this start mode:
+The initial login to the EC2 instance is performed via SSH keys.
+The temporary password for the user root should be removed to prevent logins.
+The following |UCSUCR| variable configures this start mode:
 
 .. code-block:: console
 
    $ usermod -p \* root
    $ ucr set server/amazon=true
-
 
 The name server should be set; in this example to ``OpenDNS``. Additionally, the
 timeout when waiting for a DHCP request answer is lowered.
@@ -151,6 +149,7 @@ timeout when waiting for a DHCP request answer is lowered.
    $ ucr unset dns/forwarder2 dns/forwarder3
    $ ucr set interfaces/eth0/type=dhcp dhclient/options/timeout=12
    $ ucr set timeserver=169.254.169.123  # AWS internal
+   $ ucr set system/setup/boot/start=false
 
 
 .. _create-openstack:
@@ -168,19 +167,15 @@ installed to prepare an image for provisioning via Cloud-Init:
 
    $ univention-install cloud-init
 
-
-The local :program:`Firefox` session should not be started when running as an
-OpenStack instance.
+*Univention System Setup* should be disabled if interactive provisioning using
+a browser running inside the OpenStack instance is not required:
 
 .. code-block:: console
 
    $ ucr set system/setup/boot/start=false
 
-
-The initial login to the OpenStack instance is performed via a SSH host key. To
-prevent SSH logins from occurring with the default root password of the standard
-image during commissioning of the instance, the initial root password is
-removed.
+The initial login to the OpenStack instance is performed via SSH keys.
+The temporary password for the user root should be removed to prevent logins.
 
 .. code-block:: console
 
@@ -193,7 +188,7 @@ Providing an image for VMware/VirtualBox
 ----------------------------------------
 
 Virtualization images for :program:`VirtualBox`, :program:`VMware Player` and
-:program:`VMware ESX` can also be created on the basis of the ``qcow2`` images
+:program:`VMware ESXi` can also be created on the basis of the ``qcow2`` images
 above. The package :program:`generate-appliance` provides tools for this.
 
 The :command:`generate_appliance` tool must be started and the ``qcow2`` image
@@ -204,10 +199,10 @@ selected with the parameter ``-s``:
    $ generate_appliance -s appliance.qcow2
 
 
-The virtual machine is assigned one CPU and a gigabyte of RAM as standard. If
-the appliance has a higher storage or CPU power requirement, the parameter
-``-m`` can be used to specify a different quantity of RAM in
-megabytes and ``-c`` can be used to assign a different number of
+The virtual machine is assigned one CPU and one gigabyte of RAM as standard. If
+the appliance requires more storage or CPUs, the parameter
+``-m`` can be used to specify the RAM size in
+megabytes and ``-c`` can be used to assign the number of
 CPUs. The parameters ``--vendor`` and
 ``--product`` can be used to specify a vendor and product name.
 
@@ -221,7 +216,7 @@ respectively given option:
 * :program:`VirtualBox` OVA image, can be suppressed with
   ``--no-ova-virtualbox``
 
-* :program:`VMware ESX` OVA image, can be suppressed with
+* :program:`VMware ESXi` OVA image, can be suppressed with
   ``--no-ova-esxi``
 
 .. _use-auto:
@@ -251,22 +246,20 @@ file :file:`/var/cache/univention-system-setup/profile`. Example configuration:
    root_password="univention"
 
    locale/default="de_DE.UTF-8:UTF-8"
-   components="univention-s4-connector univention-samba4"
    packages_install="univention-s4-connector univention-samba4"
    packages_remove=""
 
    server/role="domaincontroller_master"
 
-   interfaces/eth0/type=""
+   interfaces/eth0/type="static"
    interfaces/eth0/address="192.0.2.2"
-   interfaces/eth0/netmask="255.0.0.0"
-   interfaces/eth0/network="10.0.0.0"
-   interfaces/eth0/broadcast="10.255.255.255"
-   dns/forwarder1="192.0.2.2"
+   interfaces/eth0/netmask="255.255.255.0"
+   interfaces/eth0/network="192.0.2.0"
+   interfaces/eth0/broadcast="192.0.2.255"
+   dns/forwarder1="192.0.2.1"
    gateway="192.0.2.1"
 
-
-If :envvar:`interfaces/eth0/type` is set to ``dynamic``, DHCP is used for the
+If :envvar:`interfaces/eth0/type` is set to ``dhcp``, DHCP is used for the
 network configuration.
 
 Then the :command:`/usr/lib/univention-system-setup/scripts/setup-join.sh` tool
@@ -291,9 +284,11 @@ configuration file is provided by the respective cloud service; the type of
 provision differs from cloud solution to cloud solution. It is currently only
 possible to provide a |UCSPRIMARYDN|.
 
-The configuration file may be adapted for different scenarios. To setup a
-domain, the ``ucs_setup`` section is required. Note that the supplied
-``ldap_base`` is used in other configuration sections, as well.
+The configuration file may be adapted for different scenarios.
+Similar to :ref:`use-auto-profile` a profile file must placed at
+file:`/var/cache/univention-system-setup/profile` and
+:command:`/usr/lib/univention-system-setup/scripts/setup-join.sh` must be
+invoked afterwards.
 
 The following includes an example file with which a |UCSPRIMARYDN| can be
 provided. In addition, several files are generated on the system: the UCS
@@ -310,18 +305,23 @@ external service that the provisioning of the instance is done.
 
    #cloud-config
    #
-   ucs_setup:
-     hostname: myucsprimary
-     domainname: ucs.example
-     windowsdomain: UCS
-     ldap_base: dc=ucs,dc=example
-     rootpassword: univention
-     defaultlocale: de_DE.UTF-8:UTF-8
-     components:
-     packages_install:
-     packages_remove:
    write_files:
-   -   content: |
+     - path: /var/cache/univention-system-setup/profile
+       content: |
+         hostname="myucsprimary"
+         domainname="ucs.example"
+         windows/domain="UCS"
+         ldap/base="dc=ucs,dc=example"
+         root_password="univention"
+         locale/default="de_DE.UTF-8:UTF-8"
+         packages_install=""
+         packages_remove=""
+         server/role="domaincontroller_master"
+         interfaces/eth0/type="dhcp"
+       owner: root:root
+       permissions: '0644'
+     - path: /var/cache/univention-system-setup/license
+       content: |
          dn: cn=admin,cn=license,cn=univention,dc=ucs,dc=example
          objectClass: top
          objectClass: univentionLicense
@@ -347,21 +347,21 @@ external service that the provisioning of the instance is done.
           QlI6zXnGU5q47RN/tdXLTpV7mHoiXRWh282TNOlnEiiQxwiQ4u2ghWE1x/EWY/CXvZm0PQcsFqGyB
           v72WdEUOex1Yuf3BgZ7QfLOQ2XIv6KPKCyYqZqlSNp8Xk+IpKjDqL+aq0oyeg==
        owner: root:root
-       path: /var/cache/univention-system-setup/license
        permissions: '0400'
-   -   content: |
+     - path: /var/cache/univention-system-setup/installapps
+       content: |
          simplesamlphp
          adconnector
        owner: root:root
-       path: /var/cache/univention-system-setup/installapps
        permissions: '0400'
-   -   content: |
+     - path: /usr/lib/univention-system-setup/appliance-hooks.d/90_wget_url
+       content: |
          #!/bin/sh
-         wget http://myURL/page?myparam=myValue
+         exec wget http://myURL/page?myparam=myValue
        owner: root:root
-       path: /usr/lib/univention-system-setup/appliance-hooks.d/90_wget_url
        permissions: '0755'
-
+   runcmd:
+     - /usr/lib/univention-system-setup/scripts/setup-join.sh
 
 The file with the apps to be installed contains a list of IDs of applications
 from the |UCSAPPC|, see :ref:`installbase`. The list in the example
@@ -426,7 +426,7 @@ A license can also be ordered with a POST request via
      --load-cookies cookie.db \
      --post-data='kundeEmail=customer@example&'\
    'kundeUnternehmen=New%20Customern&'\
-   'EndDate=27.11.2015&'\
+   'EndDate=31.12.2023&'\
    'BaseDN=dc%3Ddrei%2Cdc%3Dzwei%2Cdc%3Dtest&'\
    'Servers=0&'\
    'Support=0&'\
@@ -456,7 +456,7 @@ includes additional information, e.g.:
 ::
 
    ...
-   <span id="details">Not a valid date: u'27.11.201'</span>
+   <span id="details">Not a valid date: u'31.12.2023</span>
    ...
 
 
