@@ -257,6 +257,10 @@ run_setup_join () {
 	local rv=0
 	patch_setup_join # temp. remove me
 	set -o pipefail
+	# maybe this helps. I am out of idea. We now put into the selinux config that it is disabed. But this again will only have effect after rebooting
+	# only if /etc/selinux is missing, packages are behaving as they should since selinux is not installed
+	# only easy way to start the tests right now. Please revert me when you have a better idea..
+	rm -r /etc/selinux
 	/usr/lib/univention-system-setup/scripts/setup-join.sh ${1:+"$@"} | tee -a /var/log/univention/setup.log || rv=$?
 	set +o pipefail
 	ucr set apache2/startsite='univention/' # Bug #31682
