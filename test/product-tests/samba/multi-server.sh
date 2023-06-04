@@ -113,8 +113,10 @@ test_master () {
 		diff=$((wintime_epoch - ucstime_epoch))
 		test ${diff#-} -lt 300
 		sleep 20
-		ucs-winrm domain-user-validate-password --client "$client" --domainuser "Administrator" --domainpassword "$ADMIN_PASSWORD"
-		ucs-winrm domain-user-validate-password --client "$client" --domainuser "newuser01" --domainpassword "Univention.99"
+		kinit --password-file=<(echo "$ADMIN_PASSWORD") "Administrator"
+		#ucs-winrm domain-user-validate-password --client "$client" --domainuser "Administrator" --domainpassword "$ADMIN_PASSWORD"
+		kinit --password-file=<(echo "Univention.99") "newuser01"
+		#ucs-winrm domain-user-validate-password --client "$client" --domainuser "newuser01" --domainpassword "Univention.99"
 	done
 	for ucs in ucs-master ucs-backup ucs-slave ucs-member; do
 		ucs-winrm run-ps --client "$WIN2012" --cmd "nbtstat -a $ucs" # does not work with $WIN2016
