@@ -128,6 +128,8 @@ def test_ucs_realm_config(keycloak_config, ucr):
         "Univention ldap mapper",
         "email",
         "modify date",
+        "displayName",
+        "entryUUID",
     }
 
 

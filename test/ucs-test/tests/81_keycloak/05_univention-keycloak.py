@@ -10,6 +10,7 @@ import os
 import pytest
 from utils import run_command
 
+from univention.testing.strings import random_string
 from univention.testing.utils import wait_for_listener_replication
 from univention.udm.binary_props import Base64Bzip2BinaryProperty
 
@@ -55,3 +56,26 @@ def test_upgrade_config_pending_upgrades(upgrade_status_obj):
     pending_upgrades = run_command(["univention-keycloak", "upgrade-config", "--json", "--get-upgrade-steps"])
     pending_upgrades = json.loads(pending_upgrades)
     assert len(pending_upgrades) > 0
+
+
+@pytest.mark.skipif(not os.path.isfile("/etc/keycloak.secret"), reason="fails on hosts without keycloak.secret")
+def test_user_attribute_ldap_mapper(keycloak_administrator_connection):
+    # create
+    name = random_string()
+    parent_id = keycloak_administrator_connection.get_components(query={"name": "ldap-provider", "type": "org.keycloak.storage.UserStorageProvider"})[0]["id"]
+    run_command(["univention-keycloak", "user-attribute-ldap-mapper", "create", name])
+    query = {"parent": parent_id, "type": "org.keycloak.storage.ldap.mappers.LDAPStorageMapper", "name": name}
+    mapper = keycloak_administrator_connection.get_components(query=query)
+    assert len(mapper) == 1
+    mapper = mapper[0]
+    assert mapper["providerId"] == "user-attribute-ldap-mapper"
+    assert mapper["config"]["ldap.attribute"] == [name]
+    assert mapper["config"]["user.model.attribute"] == [name]
+    # get
+    out = run_command(["univention-keycloak", "user-attribute-ldap-mapper", "get", "--json"])
+    out = json.loads(out)
+    assert name in out
+    # delete
+    run_command(["univention-keycloak", "user-attribute-ldap-mapper", "delete", name])
+    mapper = keycloak_administrator_connection.get_components(query=query)
+    assert len(mapper) == 0

@@ -70,6 +70,18 @@ DEFAULT_REALM = "master"
 URL_ADMIN_REQUIRED_ACTIONS = URL_ADMIN_REALM + "/authentication/required-actions"
 URL_ADMIN_REQUIRED_ACTION_REGISTER = URL_ADMIN_REALM + "/authentication/register-required-action"
 DEFAULT_EXTENTIONS = ["password", "ldapmapper", "self-service"]
+DEFAULT_USER_STORAGE_PROVIDER_NAME = "ldap-provider"
+
+# default LDAP attribute mapper
+#  * sn -> lastName
+#  * givenName -> firstName
+#  * mailPrimaryAddress -> email
+#  * uid -> uid
+#  * uid -> username
+#  * modifyTimestamp -> modifyTimestamp
+#  * createTimestamp -> createTimestamp
+#  * displayName -> displayName
+#  * entryUUID -> entryUUID
 
 
 class KeycloakDomainConfig:
@@ -132,15 +144,66 @@ class KeycloakDomainConfig:
         self.save_obj(data, obj)
 
 
-def create_kc_admin(opt: Namespace) -> KeycloakAdmin:
-    return KeycloakAdmin(
-        server_url=opt.keycloak_url,
-        username=opt.binduser,
-        password=opt.bindpwd,
-        realm_name=opt.realm,
-        user_realm_name=DEFAULT_REALM,
-        verify=opt.no_ssl_verify,
-    )
+class UniventionKeycloakAdmin(KeycloakAdmin):
+
+    def __init__(self, opt: Namespace) -> None:
+        KeycloakAdmin.__init__(
+            self,
+            server_url=opt.keycloak_url,
+            username=opt.binduser,
+            password=opt.bindpwd,
+            realm_name=opt.realm,
+            user_realm_name=DEFAULT_REALM,
+            verify=opt.no_ssl_verify,
+        )
+
+    def get_user_storage_provider_id(self, name: str = None) -> str:
+        """Get the id for user storage provider"""
+        if name is None:
+            name = DEFAULT_USER_STORAGE_PROVIDER_NAME
+        result = self.get_components(query={"name": name, "type": "org.keycloak.storage.UserStorageProvider"})
+        if not result or len(result) != 1:
+            raise Exception(f"user storage provider {name} not found")
+        return result[0]["id"]
+
+    def get_user_storage_ldap_mappers(self, parent_id: str = None) -> list:
+        """Get all the org.keycloak.storage.ldap.mappers.LDAPStorageMapper objects from a given component"""
+        if parent_id is None:
+            parent_id = self.get_user_storage_provider_id()
+        mappers = self.get_components(query={"parent": parent_id, "type": "org.keycloak.storage.ldap.mappers.LDAPStorageMapper"})
+        return mappers
+
+    def get_mapper(self, client_id: str, mapper_type: str) -> list:
+        """Get saml-user-attribute-mapper mapper for given client"""
+        _id = self.get_client_id(client_id)
+        client = self.get_client(_id)
+        mappers = [
+            x for x in client.get("protocolMappers", [])
+            if x["protocolMapper"] == mapper_type
+        ]
+        return mappers
+
+    def create_mapper(self, client_id: str, payload: dict) -> None:
+        """Create mapper for given client"""
+        _id = self.get_client_id(client_id)
+        try:
+            self.add_mapper_to_client(_id, payload)
+        except KeycloakGetError as exc:
+            # ignore conflict "Protocol mapper exists with same name"
+            if exc.response_code != 409:
+                raise
+
+    def delete_mapper(self, client_id: str, name: str) -> None:
+        """Delete mapper for given client"""
+        _id = self.get_client_id(client_id)
+        client = self.get_client(_id)
+        for mapper in client.get("protocolMappers"):
+            if mapper["name"] == name:
+                url = f"admin/realms/{self.realm_name}/clients/{_id}/protocol-mappers/models/{mapper['id']}"
+                self.raw_delete(url)
+                break
+        else:
+            print(f"No mapper found with name {name}.")
 
 
 class ExtType(Enum):
@@ -276,6 +339,17 @@ def extract_endpoints_xml(metadata_url, metadata_file, no_ssl_verify):
 
     endpoints = {"logout": logout_endpoint, "acs": acs_endpoint}
     return endpoints
+
+
+def get_SAML_client(opt: Namespace) -> None:
+    session = UniventionKeycloakAdmin(opt)
+    clients = [client for client in session.get_clients() if client["protocol"] == "saml"]
+    if not opt.all:
+        clients = [x["clientId"] for x in clients]
+    if opt.json:
+        print(json.dumps(clients, indent=4))
+    else:
+        print(clients)
 
 
 def create_SAML_client(opt):
@@ -431,7 +505,7 @@ def create_oidc_client(opt):
         "consentRequired": False,
         "standardFlowEnabled": True,
         "implicitFlowEnabled": False,
-        "directAccessGrantsEnabled": True,
+        "directAccessGrantsEnabled": opt.direct_access_grants,
         "serviceAccountsEnabled": False,
         "publicClient": False,
         "frontchannelLogout": True,
@@ -631,7 +705,7 @@ def register_extensions(opt: Namespace):
         ExtType.LDAP_MAPPER: ExtService.register_ldap_mapper,
     }
 
-    kc_admin = create_kc_admin(opt)
+    kc_admin = UniventionKeycloakAdmin(opt)
     service = ExtService(kc_admin)
     for ext_name in ext_to_process:
         ext = available_extensions.get(ext_name)
@@ -653,7 +727,7 @@ def unregister_extensions(opt: Namespace):
         ExtType.LDAP_MAPPER: ExtService.unregister_ldap_mapper,
     }
 
-    kc_admin = create_kc_admin(opt)
+    kc_admin = UniventionKeycloakAdmin(opt)
     service = ExtService(kc_admin)
     for ext_name in ext_to_process:
         ext = available_extensions.get(ext_name)
@@ -695,6 +769,7 @@ def parse_args(args: list[str] = None) -> Namespace:
     parser.add_argument("--no-ssl-verify", action='store_false')
     subparsers = parser.add_subparsers(title="subcommands", description="valid subcommands", required=True, dest="command")
 
+    # saml client
     parser_saml = subparsers.add_parser("saml/sp", help="configure a SAML SP")
     operation_subparsers = parser_saml.add_subparsers(title="operation", description="valid subcommands", required=True, dest="operation")
     create_saml_parser = operation_subparsers.add_parser("create", help="create a new SAML SP in Keycloak")
@@ -704,7 +779,68 @@ def parse_args(args: list[str] = None) -> Namespace:
     create_saml_parser.add_argument("--umc-uid-mapper", action="store_true")
     create_saml_parser.add_argument("--role-mapping-single-value", action="store_true")
     create_saml_parser.set_defaults(func=create_SAML_client)
+    get_saml_parser = operation_subparsers.add_parser("get", help="get SAML SP from Keycloak")
+    get_saml_parser.add_argument("--json", help="Print json output", default=False, action="store_true")
+    get_saml_parser.add_argument("--all", help="Get all client attributes, not just the clientId", default=False, action="store_true")
+    get_saml_parser.set_defaults(func=get_SAML_client)
 
+    # saml user attribute mapper
+    parser_saml_user_attribute_mapper = subparsers.add_parser("saml-client-user-attribute-mapper", help="Create/get/delete saml-client-user-attribute-mapper for saml clients")
+    parser_saml_user_attribute_mapper_subparser = parser_saml_user_attribute_mapper.add_subparsers(title="operation", description="Valid subcommands", required=True, dest="operation")
+    parser_create_saml_user_attribute_mapper = parser_saml_user_attribute_mapper_subparser.add_parser("create", help="Create a new saml-client-user-attribute-mapper")
+    parser_create_saml_user_attribute_mapper.add_argument("clientid", help="Client ID of the saml client to create the mapper for")
+    parser_create_saml_user_attribute_mapper.add_argument("name", help="name of the mapper")
+    parser_create_saml_user_attribute_mapper.add_argument("--attribute-nameformat", help="SAML Attribute NameFormat", choices=["URI Reference", "Basic", "Unspecified"], default="Basic")
+    parser_create_saml_user_attribute_mapper.add_argument("--user-attribute", help="Name of keycloak user attribute")
+    parser_create_saml_user_attribute_mapper.add_argument("--aggregate-attrs", help="Indicates if attribute values should be aggregated with the group attributes", default=False, action="store_true")
+    parser_create_saml_user_attribute_mapper.add_argument("--friendly-name", help="An optional, more human-readable form of the attribute's name that can be provided if the actual attribute name is cryptic.")
+    parser_create_saml_user_attribute_mapper.add_argument("--attribute-name", help="SAML Attribute Name")
+    parser_create_saml_user_attribute_mapper.set_defaults(func=create_saml_user_attribute_mapper)
+    parser_delete_saml_user_attribute_mapper = parser_saml_user_attribute_mapper_subparser.add_parser("delete", help="Delete a saml-client-user-attribute-mapper")
+    parser_delete_saml_user_attribute_mapper.add_argument("clientid", help="Client ID of the saml client")
+    parser_delete_saml_user_attribute_mapper.add_argument("mappername", help="Name of the mapper to delete")
+    parser_delete_saml_user_attribute_mapper.set_defaults(func=delete_saml_user_attribute_mapper)
+    parser_get_saml_user_attribute_mapper = parser_saml_user_attribute_mapper_subparser.add_parser("get", help="Get the saml-client-user-attribute-mapper for a specific saml client")
+    parser_get_saml_user_attribute_mapper.add_argument("clientid", help="Client ID of the saml client")
+    parser_get_saml_user_attribute_mapper.add_argument("--json", help="Print json output", default=False, action="store_true")
+    parser_get_saml_user_attribute_mapper.add_argument("--all", help="Get all mapper attributes, not just the name", default=False, action="store_true")
+    parser_get_saml_user_attribute_mapper.set_defaults(func=get_saml_user_attribute_mapper)
+
+    # saml nameid mapper
+    parser_saml_nameid_mapper = subparsers.add_parser("saml-client-nameid-mapper", help="Create/get/delete namid mapper for saml clients")
+    parser_saml_nameid_mapper_subparser = parser_saml_nameid_mapper.add_subparsers(title="operation", description="Valid subcommands", required=True, dest="operation")
+    parser_create_saml_nameid_mapper = parser_saml_nameid_mapper_subparser.add_parser("create", help="Create a new saml nameid mapper")
+    parser_create_saml_nameid_mapper.add_argument("clientid", help="Client ID of the saml client to create the mapper for")
+    parser_create_saml_nameid_mapper.add_argument("name", help="name of the mapper")
+    parser_create_saml_nameid_mapper.add_argument("--user-attribute", help="Name of keycloak user attribute")
+    parser_create_saml_nameid_mapper.add_argument(
+        "--mapper-nameid-format",
+        help="Name ID Format",
+        default="urn:oasis:names:tc:SAML:1.1:nameid-format:unspecified",
+        choices=[
+            "urn:oasis:names:tc:SAML:1.1:nameid-format:unspecified",
+            "urn:oasis:names:tc:SAML:1.1:nameid-format:emailAddress",
+            "urn:oasis:names:tc:SAML:1.1:nameid-format:X509SubjectName",
+            "urn:oasis:names:tc:SAML:1.1:nameid-format:WindowsDomainQualifiedName",
+            "urn:oasis:names:tc:SAML:2.0:nameid-format:kerberos",
+            "urn:oasis:names:tc:SAML:2.0:nameid-format:entity",
+            "urn:oasis:names:tc:SAML:2.0:nameid-format:persistent",
+            "urn:oasis:names:tc:SAML:2.0:nameid-format:transient",
+        ],
+    )
+    parser_create_saml_nameid_mapper.add_argument("--base64", help="return the base64 encoded value of the attribut in the mapper", default=False, action="store_true")
+    parser_create_saml_nameid_mapper.set_defaults(func=create_saml_nameid_mapper)
+    parser_delete_saml_nameid_mapper = parser_saml_nameid_mapper_subparser.add_parser("delete", help="Delete a saml-client-user-attribute-mapper")
+    parser_delete_saml_nameid_mapper.add_argument("clientid", help="Client ID of the saml client")
+    parser_delete_saml_nameid_mapper.add_argument("mappername", help="Name of the mapper to delete")
+    parser_delete_saml_nameid_mapper.set_defaults(func=delete_saml_nameid_mapper)
+    parser_get_saml_nameid_mapper = parser_saml_nameid_mapper_subparser.add_parser("get", help="Get the saml-client-user-attribute-mapper for a specific saml client")
+    parser_get_saml_nameid_mapper.add_argument("clientid", help="Client ID of the saml client")
+    parser_get_saml_nameid_mapper.add_argument("--json", help="Print json output", default=False, action="store_true")
+    parser_get_saml_nameid_mapper.add_argument("--all", help="Get all mapper attributes, not just the name", default=False, action="store_true")
+    parser_get_saml_nameid_mapper.set_defaults(func=get_saml_nameid_mapper)
+
+    # oidc client
     parser_oidc = subparsers.add_parser("oidc/rp", help="configure a OIDC RP")
     operation_subparsers = parser_oidc.add_subparsers(title="operation", description="valid subcommands", required=True, dest="operation")
     create_oidc_parser = operation_subparsers.add_parser("create", help="create a new OIDC client in Keycloak")
@@ -712,6 +848,7 @@ def parse_args(args: list[str] = None) -> Namespace:
     create_oidc_parser.add_argument("--client-secret", default="")
     create_oidc_parser.add_argument("--app-url", required=True)
     create_oidc_parser.add_argument("--host-fqdn", required=no_ucr_available, default=host_fqdn)
+    create_oidc_parser.add_argument("--direct-access-grants", help='enable "Direct access grants" flow (default: False)', default=False, action="store_true")
     create_oidc_parser.set_defaults(func=create_oidc_client)
 
     create_saml_parser = operation_subparsers.add_parser("secret", help="get client secret from Keycloak")
@@ -797,6 +934,21 @@ def parse_args(args: list[str] = None) -> Namespace:
     parser_domain_config.add_argument("--set-domain-config-init", help=SUPPRESS)
     parser_domain_config.set_defaults(func=domain_config)
 
+    # user-attribute-ldap-mapper for ldap-provider
+    parser_user_attribute_ldap_mapper = subparsers.add_parser("user-attribute-ldap-mapper", help="Create/get/delete user-attribute-ldap-mapper for the ldap-provider")
+    parser_user_attribute_ldap_mapper_subparser = parser_user_attribute_ldap_mapper.add_subparsers(title="operation", description="Valid subcommands", required=True, dest="operation")
+    parser_create_user_attribute_ldap_mapper = parser_user_attribute_ldap_mapper_subparser.add_parser("create", help="Create a new user-attribute-ldap-mapper")
+    parser_create_user_attribute_ldap_mapper.add_argument("attributename", help="Name of the mapper, the LDAP attribute name and the user attribute name in keycloak")
+    parser_create_user_attribute_ldap_mapper.set_defaults(func=create_user_attribute_ldap_mapper)
+    parser_delete_user_attribute_ldap_mapper = parser_user_attribute_ldap_mapper_subparser.add_parser("delete", help="Delete a new user-attribute-ldap-mapper")
+    parser_delete_user_attribute_ldap_mapper.add_argument("attributename", help="Name of the mapper to delete ")
+    parser_delete_user_attribute_ldap_mapper.set_defaults(func=delete_user_attribute_ldap_mapper)
+    parser_get_user_attribute_ldap_mapper = parser_user_attribute_ldap_mapper_subparser.add_parser("get", help="Get all existing user-attribute-ldap-mapper")
+    parser_get_user_attribute_ldap_mapper.add_argument("--json", help="Print json output", default=False, action="store_true")
+    parser_get_user_attribute_ldap_mapper.add_argument("--all", help="Get all mapper attributes, not just the name", default=False, action="store_true")
+    parser_get_user_attribute_ldap_mapper.add_argument("--user-attributes", help="instead of the name of the mapper, print the internal user attribute name, this value can bes used in saml or oicd mappers", default=False, action="store_true")
+    parser_get_user_attribute_ldap_mapper.set_defaults(func=get_user_attribute_ldap_mapper)
+
     opt = parser.parse_args(args)
     if opt.binddn:
         opt.binduser = explode_rdn(opt.binddn, 1)[0]
@@ -814,6 +966,121 @@ def parse_args(args: list[str] = None) -> Namespace:
             with open(opt.ldap_system_user_pwdfile) as fd:
                 opt.ldap_system_user_pwd = fd.read().strip()
     return opt
+
+
+def delete_saml_nameid_mapper(opt: Namespace) -> None:
+    session = UniventionKeycloakAdmin(opt)
+    session.delete_mapper(opt.clientid, opt.mappername)
+
+
+def create_saml_nameid_mapper(opt: Namespace) -> None:
+    session = UniventionKeycloakAdmin(opt)
+    protocol_mapper = "univention-saml-user-attribute-nameid-mapper-base64" if opt.base64 else "saml-user-attribute-nameid-mapper"
+    payload = {
+        "name": opt.name,
+        "protocol": "saml",
+        "protocolMapper": protocol_mapper,
+        "config": {
+            "user.attribute": opt.user_attribute,
+            "mapper.nameid.format": opt.mapper_nameid_format,
+        },
+    }
+    session.create_mapper(opt.clientid, payload)
+
+
+def get_saml_nameid_mapper(opt: Namespace) -> None:
+    session = UniventionKeycloakAdmin(opt)
+    mappers = session.get_mapper(opt.clientid, "saml-user-attribute-nameid-mapper")
+    if not opt.all:
+        mappers = [x["name"] for x in mappers]
+    if opt.json:
+        print(json.dumps(mappers, indent=4))
+    else:
+        print(mappers)
+
+
+def delete_saml_user_attribute_mapper(opt: Namespace) -> None:
+    session = UniventionKeycloakAdmin(opt)
+    session.delete_mapper(opt.clientid, opt.mappername)
+
+
+def create_saml_user_attribute_mapper(opt: Namespace) -> None:
+    session = UniventionKeycloakAdmin(opt)
+    payload = {
+        "name": opt.name,
+        "protocol": "saml",
+        "protocolMapper": "saml-user-attribute-mapper",
+        "config": {
+            "attribute.nameformat": opt.attribute_nameformat,
+            "user.attribute": opt.user_attribute,
+            "aggregate.attrs": opt.aggregate_attrs,
+            "friendly.name": opt.friendly_name,
+            "attribute.name": opt.attribute_name,
+        },
+    }
+    session.create_mapper(opt.clientid, payload)
+
+
+def get_saml_user_attribute_mapper(opt: Namespace) -> None:
+    session = UniventionKeycloakAdmin(opt)
+    mappers = session.get_mapper(opt.clientid, "saml-user-attribute-mapper")
+    if not opt.all:
+        mappers = [x["name"] for x in mappers]
+    if opt.json:
+        print(json.dumps(mappers, indent=4))
+    else:
+        print(mappers)
+
+
+def get_user_attribute_ldap_mapper(opt: Namespace) -> None:
+    session = UniventionKeycloakAdmin(opt)
+    mappers = session.get_user_storage_ldap_mappers()
+    if opt.user_attributes:
+        mappers = [
+            x.get("config").get("ldap.attribute")[0]
+            for x in mappers
+            if x.get("config").get("ldap.attribute")
+        ]
+    elif not opt.all:
+        mappers = [x["name"] for x in mappers]
+    if opt.json:
+        print(json.dumps(mappers, indent=4))
+    else:
+        print(mappers)
+
+
+def delete_user_attribute_ldap_mapper(opt: Namespace) -> None:
+    session = UniventionKeycloakAdmin(opt)
+    for mapper in session.get_user_storage_ldap_mappers():
+        if mapper["name"] == opt.attributename:
+            session.delete_component(mapper["id"])
+            break
+    else:
+        print(f"LDAP provider mapper {opt.attributename} not found, nothing to delete.")
+
+
+def create_user_attribute_ldap_mapper(opt: Namespace) -> None:
+    session = UniventionKeycloakAdmin(opt)
+    provider_id = session.get_user_storage_provider_id()
+    existing_mappers = session.get_user_storage_ldap_mappers(provider_id)
+    if opt.attributename in [x["name"] for x in existing_mappers]:
+        print(f"LDAP provider mapper {opt.attributename} already exists.")
+    else:
+        payload = {
+            "name": opt.attributename,
+            "parentId": provider_id,
+            "providerType": "org.keycloak.storage.ldap.mappers.LDAPStorageMapper",
+            "providerId": "user-attribute-ldap-mapper",
+            "config": {
+                "ldap.attribute": [opt.attributename],
+                "is.mandatory.in.ldap": ["false"],
+                "attribute.force.default": ["false"],
+                "is.binary.attribute": ["false"],
+                "read.only": ["true"],
+                "user.model.attribute": [opt.attributename],
+            },
+        }
+        session.create_component(payload)
 
 
 def domain_config(opt: Namespace) -> None:
@@ -837,6 +1104,7 @@ def upgrade_config(opt: Namespace) -> None:
         # never change the order of this list, just append
         upgrades = [
             "19.0.2-ucs2",
+            "21.0.1-ucs4",  # TODO correct version
         ]
         upgrades.sort(key=LooseVersion)
         kdc = KeycloakDomainConfig(opt.binddn, opt.bindpwd)
@@ -865,6 +1133,14 @@ def upgrade_config(opt: Namespace) -> None:
                     register_extensions(opt)
                     kdc.set_domain_config_version(version)
                     kdc.set_domain_config_init(version)  # new in this version, normally only init init_keycloak
+            if version == "21.0.1-ucs4":  # TODO correct version
+                print(f"Running update steps for version: {version}")
+                if not opt.dry_run:
+                    opt.attributename = "displayName"
+                    create_user_attribute_ldap_mapper(opt)
+                    opt.attributename = "entryUUID"
+                    create_user_attribute_ldap_mapper(opt)
+                    kdc.set_domain_config_version(version)
     else:
         print("Only supported on UCS systems")
 
@@ -1608,7 +1884,7 @@ def init_keycloak_ucs(opt):
         "providerType": "org.keycloak.storage.ldap.mappers.LDAPStorageMapper",
         "config": {
             "ldap.attribute": [
-                "lastname",
+                "sn",
             ],
             "is.mandatory.in.ldap": [
                 "false",
@@ -1621,6 +1897,47 @@ def init_keycloak_ucs(opt):
             ],
         },
     }
+    displayname_ldap_mapper = {
+        "name": "displayName",
+        "parentId": ldap_component_id,
+        "providerId": "user-attribute-ldap-mapper",
+        "providerType": "org.keycloak.storage.ldap.mappers.LDAPStorageMapper",
+        "config": {
+            "ldap.attribute": [
+                "displayName",
+            ],
+            "is.mandatory.in.ldap": [
+                "false",
+            ],
+            "read.only": [
+                "true",
+            ],
+            "user.model.attribute": [
+                "displayName",
+            ],
+        },
+    }
+    entryuuid_ldap_mapper = {
+        "name": "entryUUID",
+        "parentId": ldap_component_id,
+        "providerId": "user-attribute-ldap-mapper",
+        "providerType": "org.keycloak.storage.ldap.mappers.LDAPStorageMapper",
+        "config": {
+            "ldap.attribute": [
+                "entryUUID",
+            ],
+            "is.mandatory.in.ldap": [
+                "false",
+            ],
+            "read.only": [
+                "true",
+            ],
+            "user.model.attribute": [
+                "entryUUID",
+            ],
+        },
+    }
+
     # find existing uid->uid mapper or create if none exits
     check_and_create_component(kc_admin, payload_ldap_mapper["name"], payload_ldap_mapper["providerId"], payload_ldap_mapper)
 
@@ -1628,6 +1945,8 @@ def init_keycloak_ucs(opt):
     modify_component(kc_admin, firstname_ldap_mapper)
     modify_component(kc_admin, mail_ldap_mapper)
     modify_component(kc_admin, lastname_ldap_mapper)
+    check_and_create_component(kc_admin, displayname_ldap_mapper["name"], displayname_ldap_mapper["providerId"], displayname_ldap_mapper)
+    check_and_create_component(kc_admin, entryuuid_ldap_mapper["name"], entryuuid_ldap_mapper["providerId"], entryuuid_ldap_mapper)
 
     # Setting admin level to all Domain Admins
     # Change realm to master
