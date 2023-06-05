@@ -45,7 +45,7 @@ from enum import Enum
 from os.path import exists
 from subprocess import PIPE, Popen
 from typing import Dict
-from urllib.parse import urljoin
+from urllib.parse import quote, urljoin
 
 import requests
 from defusedxml import ElementTree
@@ -200,7 +200,7 @@ class UniventionKeycloakAdmin(KeycloakAdmin):
         for mapper in client.get("protocolMappers"):
             if mapper["name"] == name:
                 url = f"admin/realms/{self.realm_name}/clients/{_id}/protocol-mappers/models/{mapper['id']}"
-                self.raw_delete(url)
+                self.raw_delete(quote(url))
                 break
         else:
             print(f"No mapper found with name {name}.")
