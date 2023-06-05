@@ -160,16 +160,19 @@ class UDM(object):
         return cls(connection)
 
     @classmethod
-    def machine(cls):
+    def machine(cls, prefer_local_connection=False):
         """
         Use a machine connection.
 
+        :param bool prefer_local_connection: Connect to a local LDAP server (on
+            a Replica, this would be the local slapd, on a Managed Node, this would
+            be locally configured in UCR). Else, connect directly to the Primary
         :return: a :py:class:`univention.udm.udm.UDM` instance
         :rtype: univention.udm.udm.UDM
         :raises univention.udm.exceptions.ConnectionError: File permissions, server down, etc.
         """
         from .connections import LDAP_connection
-        connection = LDAP_connection.get_machine_connection()
+        connection = LDAP_connection.get_machine_connection(ldap_master=not prefer_local_connection)
         return cls(connection)
 
     @classmethod

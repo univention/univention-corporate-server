@@ -81,9 +81,9 @@ class LDAP_connection(object):
         return cls._connection_admin
 
     @classmethod
-    def get_machine_connection(cls):
+    def get_machine_connection(cls, ldap_master=True):
         # do not cache the machine connection as this breaks on server-password-change
-        co, po = cls._wrap_connection(univention.admin.uldap.getMachineConnection)
+        co, po = cls._wrap_connection(univention.admin.uldap.getMachineConnection, ldap_master=ldap_master)
         return co
 
     @classmethod
