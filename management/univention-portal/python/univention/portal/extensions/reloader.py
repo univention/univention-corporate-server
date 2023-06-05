@@ -154,7 +154,7 @@ class PortalReloaderUDM(MtimeBasedLazyFileReloader):
     def _refresh(self):
         udm_lib = importlib.import_module("univention.udm")
         try:
-            udm = udm_lib.UDM.machine().version(2)
+            udm = udm_lib.UDM.machine(prefer_local_connection=True).version(2)
             portal = udm.get("portals/portal").get(self._portal_dn)
         except udm_lib.ConnectionError:
             get_logger("cache").warning("Could not establish UDM connection. Is the LDAP server accessible?")
