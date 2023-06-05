@@ -1,4 +1,4 @@
-univention-portal (4.0.9-6) unstable; urgency=medium
+univention-portal (4.0.9-7) unstable; urgency=medium
 
   * Bug #56113: Use the option to connect to the local slapd, thus removing a
     lot of slapd load in big environments
