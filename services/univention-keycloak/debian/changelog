@@ -1,3 +1,9 @@
+univention-keycloak (1.0.9-13) unstable; urgency=medium
+
+  * Bug #56096: fixed urlencoding
+
+ -- Felix Botner <botner@univention.de>  Mon, 05 Jun 2023 10:06:29 +0200
+
 univention-keycloak (1.0.9-12) unstable; urgency=medium
 
   * Bug #56096: fixed urlencoding

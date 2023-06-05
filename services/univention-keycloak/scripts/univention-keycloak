@@ -199,8 +199,8 @@ class UniventionKeycloakAdmin(KeycloakAdmin):
         client = self.get_client(_id)
         for mapper in client.get("protocolMappers"):
             if mapper["name"] == name:
-                url = f"admin/realms/{self.realm_name}/clients/{_id}/protocol-mappers/models/{mapper['id']}"
-                self.raw_delete(quote(url))
+                url = f"admin/realms/{quote(self.realm_name, safe='')}/clients/{quote(_id, safe='')}/protocol-mappers/models/{quote(mapper['id'], safe='')}"
+                self.raw_delete(url)
                 break
         else:
             print(f"No mapper found with name {name}.")
