@@ -6,8 +6,6 @@ src: cpio
 fix: 2.12+dfsg-9+deb10u1
 desc: |
  This update addresses the following issues:
- 2.12+dfsg-9+deb10u1 (Sun, 04 Jun 2023 18:01:54 +0300)
- * Non-maintainer upload by the LTS Security Team.
  * CVE-2019-14866: Improper validation of input files when generating tar
    archives.
  * CVE-2021-38185: Arbitrary code via crafted pattern file.
