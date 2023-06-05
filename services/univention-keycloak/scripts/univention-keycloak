@@ -1104,7 +1104,7 @@ def upgrade_config(opt: Namespace) -> None:
         # never change the order of this list, just append
         upgrades = [
             "19.0.2-ucs2",
-            "21.0.1-ucs4",  # TODO correct version
+            "21.1.1-ucs1",
         ]
         upgrades.sort(key=LooseVersion)
         kdc = KeycloakDomainConfig(opt.binddn, opt.bindpwd)
@@ -1133,7 +1133,7 @@ def upgrade_config(opt: Namespace) -> None:
                     register_extensions(opt)
                     kdc.set_domain_config_version(version)
                     kdc.set_domain_config_init(version)  # new in this version, normally only init init_keycloak
-            if version == "21.0.1-ucs4":  # TODO correct version
+            if version == "21.1.1-ucs1":
                 print(f"Running update steps for version: {version}")
                 if not opt.dry_run:
                     opt.attributename = "displayName"

@@ -1,3 +1,9 @@
+univention-keycloak (1.0.9-14) unstable; urgency=medium
+
+  * Bug #56096: added user-attribute-ldap-mapper command
+
+ -- Felix Botner <botner@univention.de>  Mon, 05 Jun 2023 12:02:44 +0200
+
 univention-keycloak (1.0.9-13) unstable; urgency=medium
 
   * Bug #56096: fixed urlencoding
