@@ -33,6 +33,7 @@
 # <https://www.gnu.org/licenses/>.
 #
 
+import importlib
 import json
 import os.path
 import shutil
@@ -42,7 +43,6 @@ from imghdr import what
 from pathlib import Path
 from urllib.parse import quote
 
-import univention.admin.rest.client as udm_client
 from univention.portal import Plugin, config
 from univention.portal.log import get_logger
 
@@ -153,36 +153,27 @@ class PortalReloaderUDM(MtimeBasedLazyFileReloader):
         return reason_args[1] in ["portal", "category", "entry", "folder", "announcement"]
 
     def _refresh(self):
-        udm = udm_client.UDM.http(
-            config.fetch('udm_api_url'),
-            config.fetch('udm_api_username'),
-            Path(config.fetch("udm_api_password_file")).read_text().strip(),
-        )
+        udm_lib = importlib.import_module("univention.udm")
         try:
-            portal_module = udm.get("portals/portal")
-            if not portal_module:
-                get_logger("cache").warning("UDM not up to date? Portal module not found.")
-                return None
-
-            portal_data = portal_module.get(self._portal_dn)
-
-        except udm_client.ConnectionError:
+            udm = udm_lib.UDM.machine(prefer_local_connection=True).version(2)
+            portal_data = udm.get("portals/portal").get(self._portal_dn)
+        except udm_lib.ConnectionError:
             get_logger("cache").warning("Could not establish UDM connection. Is the LDAP server accessible?")
             return None
-
-        except udm_client.NotFound:
+        except udm_lib.UnknownModuleType:
+            get_logger("cache").warning("UDM not up to date? Portal module not found.")
+            return None
+        except udm_lib.NoObject:
             get_logger("cache").warning("Portal %s not found", self._portal_dn)
             return None
 
         portal = self._extract_portal(portal_data)
-        categories = self._extract_categories(udm, portal_data.properties["categories"])
-        portal_categories = [category for dn, category in categories.items() if category["in_portal"]]
-        user_links = portal_data.properties["userLinks"]
-        menu_links = portal_data.properties["menuLinks"]
-        folders = self._extract_folders(udm, portal_categories, user_links, menu_links)
-        portal_folders = [folder for dn, folder in folders.items() if folder["in_portal"]]
-        entries = self._extract_entries(udm, portal_categories, portal_folders, user_links, menu_links)
-        announcements = self._extract_announcements(udm)
+        categories = self._extract_categories(udm, portal_data)
+        user_links = portal_data.props.userLinks
+        menu_links = portal_data.props.menuLinks
+        folders = self._extract_folders(udm, portal_data, list(categories.values()))
+        entries = self._extract_entries(udm, portal_data, list(categories.values()), list(folders.values()))
+        announcements = self._extract_announcements(udm, portal_data)
 
         with tempfile.NamedTemporaryFile(mode="w", delete=False) as fd:
             json.dump(
@@ -199,107 +190,97 @@ class PortalReloaderUDM(MtimeBasedLazyFileReloader):
                 sort_keys=True,
                 indent=4,
             )
-
             return fd
 
     @classmethod
     def _extract_portal(cls, portal_data):
         portal = {
             "dn": portal_data.dn,
-            "showUmc": portal_data.properties["showUmc"],
-            "logo": portal_data.properties["logo"],
-            "background": portal_data.properties["background"],
-            "name": portal_data.properties["displayName"],
-            "defaultLinkTarget": portal_data.properties["defaultLinkTarget"],
-            "ensureLogin": portal_data.properties["ensureLogin"],
-            "categories": portal_data.properties["categories"],
+            "showUmc": portal_data.props.showUmc,
+            "logo": portal_data.props.logo,
+            "background": portal_data.props.background,
+            "name": portal_data.props.displayName,
+            "defaultLinkTarget": portal_data.props.defaultLinkTarget,
+            "ensureLogin": portal_data.props.ensureLogin,
+            "categories": portal_data.props.categories,
         }
 
-        portal_name = portal_data.properties["name"]
+        portal_name = portal_data.props.name
 
         if portal["logo"]:
-            portal["logo"] = cls._write_image(portal["logo"], portal_name, dirname="logos")
-
+            portal["logo"] = cls._write_image(portal_data.props.logo.raw, portal_name, "logos")
         if portal["background"]:
-            portal["background"] = cls._write_image(portal["background"], portal_name, dirname="backgrounds")
-
+            portal["background"] = cls._write_image(portal_data.props.background.raw, portal_name, "backgrounds")
         return portal
 
     @classmethod
-    def _extract_categories(cls, udm, portal_categories):
+    def _extract_categories(cls, udm, portal):
         categories = {}
-
-        for category in udm.get("portals/category").search(opened=True):
+        for category in udm.get("portals/category").search():
             categories[category.dn] = {
                 "dn": category.dn,
-                "in_portal": category.dn in portal_categories,
-                "display_name": category.properties["displayName"],
-                "entries": category.properties["entries"],
+                "in_portal": category.dn in portal.props.categories,
+                "display_name": category.props.displayName,
+                "entries": category.props.entries,
             }
-
         return categories
 
     @classmethod
-    def _extract_folders(cls, udm, portal_categories, user_links, menu_links):
+    def _extract_folders(cls, udm, portal, categories):
         folders = {}
 
-        for folder in udm.get("portals/folder").search(opened=True):
+        for folder in udm.get("portals/folder").search():
             in_portal = (
-                folder.dn in user_links
-                or folder.dn in menu_links
-                or any(folder.dn in category["entries"] for category in portal_categories)
+                folder.dn in portal.props.menuLinks
+                or folder.dn in portal.props.userLinks
+                or any(folder.dn in category["entries"] for category in categories if category["in_portal"])
             )
-
             folders[folder.dn] = {
                 "dn": folder.dn,
                 "in_portal": in_portal,
-                "name": folder.properties["displayName"],
-                "entries": folder.properties["entries"],
+                "name": folder.props.displayName,
+                "entries": folder.props.entries,
             }
 
         return folders
 
     @classmethod
-    def _extract_entries(cls, udm, portal_categories, portal_folders, user_links, menu_links):
+    def _extract_entries(cls, udm, portal, categories, folders):
         entries = {}
 
-        for entry in udm.get("portals/entry").search(opened=True):
+        for entry in udm.get("portals/entry").search():
             if entry.dn in entries:
                 continue
-
             in_portal = (
-                entry.dn in user_links
-                or entry.dn in menu_links
-                or any(entry.dn in category["entries"] for category in portal_categories)
-                or any(entry.dn in folder["entries"] for folder in portal_folders)
+                entry.dn in portal.props.menuLinks
+                or entry.dn in portal.props.userLinks
+                or any(entry.dn in category["entries"] for category in categories if category["in_portal"])
+                or any(entry.dn in folder["entries"] for folder in folders if folder["in_portal"])
             )
-
             logo_name = None
-            if entry.properties["icon"]:
-                logo_name = cls._write_image(
-                    entry.properties["icon"], entry.properties["name"], dirname="entries",
-                )
+            if entry.props.icon:
+                logo_name = cls._write_image(entry.props.icon.raw, entry.props.name, "entries")
 
             entries[entry.dn] = {
                 "dn": entry.dn,
                 "in_portal": in_portal,
-                "name": entry.properties["displayName"],
-                "description": entry.properties["description"],
-                "keywords": entry.properties["keywords"],
+                "name": entry.props.displayName,
+                "description": entry.props.description,
+                'keywords': entry.props.keywords,
                 "logo_name": logo_name,
-                "activated": entry.properties["activated"],
-                "anonymous": entry.properties["anonymous"],
-                "allowedGroups": entry.properties["allowedGroups"],
-                "links": [{'locale': _[0], 'value': _[1]} for _ in entry.properties["link"]],
-                "linkTarget": entry.properties["linkTarget"],
-                "target": entry.properties["target"],
-                "backgroundColor": entry.properties["backgroundColor"],
+                "activated": entry.props.activated,
+                "anonymous": entry.props.anonymous,
+                "allowedGroups": entry.props.allowedGroups,
+                "links": entry.props.link,
+                "linkTarget": entry.props.linkTarget,
+                "target": entry.props.target,
+                "backgroundColor": entry.props.backgroundColor,
             }
 
         return entries
 
     @classmethod
-    def _extract_announcements(cls, udm):
+    def _extract_announcements(cls, udm, portal):
         announcements = {}
 
         announcement_module = udm.get("portals/announcement")
@@ -307,18 +288,18 @@ class PortalReloaderUDM(MtimeBasedLazyFileReloader):
             get_logger("cache").warning("UDM not up to date? Announcement module not found.")
             return announcements
 
-        for announcement in udm.get("portals/announcement").search(opened=True):
+        for announcement in announcement_module.search():
             announcements[announcement.dn] = {
                 "dn": announcement.dn,
-                "allowedGroups": announcement.properties["allowedGroups"],
-                "name": announcement.properties["name"],
-                "message": announcement.properties["message"],
-                "title": announcement.properties["title"],
-                "visibleFrom": announcement.properties['visibleFrom'],
-                "visibleUntil": announcement.properties['visibleUntil'],
-                "isSticky": announcement.properties["isSticky"],
-                "needsConfirmation": announcement.properties["needsConfirmation"],
-                "severity": announcement.properties["severity"],
+                "allowedGroups": announcement.props.allowedGroups,
+                "name": announcement.props.name,
+                "message": announcement.props.message,
+                "title": announcement.props.title,
+                "visibleFrom": announcement.props.visibleFrom,
+                "visibleUntil": announcement.props.visibleUntil,
+                "isSticky": announcement.props.isSticky,
+                "needsConfirmation": announcement.props.needsConfirmation,
+                "severity": announcement.props.severity,
             }
 
         return announcements
