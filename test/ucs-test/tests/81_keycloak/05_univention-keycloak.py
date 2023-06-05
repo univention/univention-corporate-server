@@ -79,3 +79,43 @@ def test_user_attribute_ldap_mapper(keycloak_administrator_connection):
     run_command(["univention-keycloak", "user-attribute-ldap-mapper", "delete", name])
     mapper = keycloak_administrator_connection.get_components(query=query)
     assert len(mapper) == 0
+
+
+@pytest.mark.skipif(not os.path.isfile("/etc/keycloak.secret"), reason="fails on hosts without keycloak.secret")
+def test_saml_client_user_attribute_mapper(keycloak_administrator_connection):
+    # create
+    name = random_string()
+    clients = json.loads(run_command(["univention-keycloak", "saml/sp", "get", "--json"]))
+    assert len(clients) > 0, "could find a saml cient, at least one for UMC should always be there"
+    client = clients[0]
+    # create
+    run_command([
+        "univention-keycloak",
+        "saml-client-user-attribute-mapper",
+        "create",
+        client,
+        name,
+        "--attribute-name",
+        "xyz",
+        "--user-attribute",
+        "xyz",
+    ])
+    # get
+    mappers = json.loads(run_command([
+        "univention-keycloak",
+        "saml-client-user-attribute-mapper",
+        "get",
+        client,
+        "--all",
+        "--json",
+    ]))
+    mapper = [x for x in mappers if x["name"] == name][0]
+    assert mapper["protocol"] == "saml"
+    assert mapper["protocolMapper"] == "saml-user-attribute-mapper"
+    assert mapper["config"]["user.attribute"] == "xyz"
+    assert mapper["config"]["attribute.name"] == "xyz"
+    # delete
+    run_command(["univention-keycloak", "saml-client-user-attribute-mapper", "delete", client, name])
+    client_id = keycloak_administrator_connection.get_client_id(client)
+    mappers = [x["name"] for x in keycloak_administrator_connection.get_client(client_id)["protocolMappers"]]
+    assert name not in mappers
