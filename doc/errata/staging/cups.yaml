@@ -1,0 +1,14 @@
+product: ucs
+release: "5.0"
+version: [3]
+scope: ucs_5.0-0-errata5.0-3
+src: cups
+fix: 2.2.10-6+deb10u7A~5.0.3.202306050937
+desc: |
+ This update addresses the following issue:
+ 2.2.10-6+deb10u7 (Wed, 31 May 2023 21:30:27 +0200)
+ * CVE-2023-32324 A heap buffer overflow vulnerability would allow a remote
+   attacker to lauch a dos attack.
+bug: [56116]
+cve:
+- CVE-2023-32324
