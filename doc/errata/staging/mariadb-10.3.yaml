@@ -1,0 +1,22 @@
+product: ucs
+release: "5.0"
+version: [2, 3]
+scope: ucs_5.0-0-errata5.0-3
+src: mariadb-10.3
+fix: 1:10.3.39-0+deb10u1
+desc: |
+ This update addresses the following issue:
+ 1:10.3.38-0+deb10u1 (Thu, 09 Feb 2023 21:59:32 -0800)
+ [ Otto Kekäläinen ]
+ * New upstream version 10.3.38. Includes fix for a major performance/memory
+   consumption issue (MDEV-29988).
+ * Upstream 10.3.35 included fix for MDEV-27937
+ 1:10.3.39-0+deb10u1 (Sat, 03 Jun 2023 18:57:44 -0700)
+ * New upstream version 10.3.39. Includes security fixes for: - CVE-2022-47015
+ * According to https://mariadb.org/about/#maintenance-policy this was the
+   last minor maintenance release for MariaDB 10.3 series
+ * Add patch to revert upstream libmariadb API change
+ * Make SysV init script explicit on its dependencies (Related: #1035949)
+bug: [56117]
+cve:
+- CVE-2022-47015
