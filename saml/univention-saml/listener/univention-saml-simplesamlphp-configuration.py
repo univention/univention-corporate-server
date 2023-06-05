@@ -41,9 +41,10 @@ import os.path
 import xml.etree.ElementTree
 from subprocess import PIPE, Popen
 from tempfile import NamedTemporaryFile
-from typing import Dict, List, Text, Tuple
+from typing import Dict, List, Tuple
 
 import univention.debug as ud
+from univention.saml.lib import php_array, php_bool, php_string
 
 import listener
 
@@ -71,24 +72,6 @@ sp_config_dir = '/etc/simplesamlphp/metadata.d'
 include_file = '/etc/simplesamlphp/metadata/metadata_include.php'
 
 
-def _decode(x: bytes | Text) -> str:
-    return x.decode('ASCII') if isinstance(x, bytes) else x
-
-
-def escape_php_string(string: str) -> str:
-    return string.replace('\x00', '').replace("\\", "\\\\").replace("'", r"\'")
-
-
-def php_string(string: str) -> str:
-    return "'%s'" % (escape_php_string(_decode(string)),)
-
-
-def php_array(list_: List[str]) -> str:
-    if not list_:
-        return 'array()'
-    return "array('%s')" % "', '".join(escape_php_string(_decode(x).strip()) for x in list_)
-
-
 def ldap_attribute_join(old: List[str | List[str]]) -> List[Tuple[str, str]]:
     result_keys: Dict[str, str] = {}
     for attr in old:
@@ -99,19 +82,6 @@ def ldap_attribute_join(old: List[str | List[str]]) -> List[Tuple[str, str]]:
         elif len(attr) == 1:
             result_keys[attr[0]] = ''
     return [(key, value) for key, value in result_keys.items()]
-
-
-def php_bool(bool_: str) -> str:
-    bool_ = _decode(bool_)
-    mapped = {
-        'true': True,
-        '1': True,
-        'false': False,
-        '0': False,
-    }.get(bool_.lower())
-    if mapped is None:
-        raise TypeError('Not a PHP bool: %s' % (bool_,))
-    return 'true' if mapped else 'false'
 
 
 def handler(dn: str, new: Dict[str, List[bytes]], old: Dict[str, List[bytes]]) -> None:

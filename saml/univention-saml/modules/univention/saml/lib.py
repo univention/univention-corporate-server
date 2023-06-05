@@ -2,11 +2,15 @@ from __future__ import print_function
 
 import os
 import sys
+import typing  # noqa: F401
 
 from six.moves.urllib_parse import urlparse
 
+from univention.config_registry import ConfigRegistry  # noqa: F401
+
 
 def get_idps(ucr, log_fd=sys.stderr):
+    # type: (ConfigRegistry, typing.Optional[typing.TextIO]) -> None
 
     def __get_supplement(key):
         return key.replace(idp_supplement_keybase, '')
@@ -61,3 +65,39 @@ def get_idps(ucr, log_fd=sys.stderr):
         else:
             print('"{}" is not a valid entity id supplement. Ignoring.'.format(idp_supplement), file=log_fd)
     return entityIDs
+
+
+def _decode(x):
+    # type: (typing.Union[bytes, typing.Text]) -> str
+    return x.decode('ASCII') if isinstance(x, bytes) else x
+
+
+def escape_php_string(string):
+    # type: (str) -> str
+    return string.replace('\x00', '').replace("\\", "\\\\").replace("'", r"\'")
+
+
+def php_string(string):
+    # type: (str) -> str
+    return "'%s'" % (escape_php_string(_decode(string)),)
+
+
+def php_array(list_):
+    # type: (typing.List[str]) -> str
+    if not list_:
+        return 'array()'
+    return "array('%s')" % "', '".join(escape_php_string(_decode(x).strip()) for x in list_)
+
+
+def php_bool(bool_):
+    # type: (str) -> str
+    bool_ = _decode(bool_)
+    mapped = {
+        'true': True,
+        '1': True,
+        'false': False,
+        '0': False,
+    }.get(bool_.lower())
+    if mapped is None:
+        raise TypeError('Not a PHP bool: %s' % (bool_,))
+    return 'true' if mapped else 'false'
