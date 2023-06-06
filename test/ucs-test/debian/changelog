@@ -1,3 +1,9 @@
+ucs-test (10.0.11-1) unstable; urgency=medium
+
+  * Bug #50048: fix 73_udm-rest/01_openapi_validation
+
+ -- Florian Best <best@univention.de>  Sat, 10 Jun 2023 13:58:22 +0200
+
 ucs-test (10.0.10-69) unstable; urgency=medium
 
   * Bug #31388: add "read list" to 53_samba-common/10samba-share-options
