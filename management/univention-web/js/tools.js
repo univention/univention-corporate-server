@@ -503,7 +503,7 @@ define([
 			/*Object?*/ args) {
 
 			// build the URL for the UMCP command
-			if (!(/^(get\/|set$|auth|logout(\/|$)|saml(\/|$))/i).test(command)) {
+			if (!(/^(get\/|set(\/|$)|auth|logout(\/|$)|saml(\/|$))/i).test(command)) {
 				command = 'command/' + command;
 			}
 
@@ -1567,7 +1567,7 @@ define([
 		},
 
 		setUserPreference: function(preferences) {
-			return tools.umcpCommand('set', {
+			return tools.umcpCommand('set/user/preferences', {
 				user: { preferences: preferences }
 			}, false);
 		},

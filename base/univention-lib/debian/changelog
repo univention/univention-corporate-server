@@ -1,3 +1,9 @@
+univention-lib (9.0.16-1) unstable; urgency=medium
+
+  * Bug #43633: adjust UMCP set/ HTTP requests
+
+ -- Florian Best <best@univention.de>  Mon, 12 Jun 2023 07:47:00 +0200
+
 univention-lib (9.0.15-1) unstable; urgency=medium
 
   * Bug #56137: fix Python 3 compatiblity regression

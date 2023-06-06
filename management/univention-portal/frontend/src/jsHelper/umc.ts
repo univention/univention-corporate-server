@@ -76,7 +76,7 @@ function umcCommandWithStandby(store, path: string, options?: any, flavor?: stri
 }
 
 function changePassword(oldPassword: string, newPassword: string): Promise<any> {
-  return umc('set', {
+  return umc('set/password', {
     password: {
       password: oldPassword,
       new_password: newPassword,

@@ -495,6 +495,20 @@ class Client(object):
         """
         data = self.__build_data(options)
         return self.request('POST', 'set', data, headers)
+        # TODO: return self.request('POST', 'set/%s' % options.keys()[0], data, headers)
+
+    def umc_set_password(self, options, headers=None):
+        # type: (Optional[dict], Optional[dict]) -> Response
+        """
+        Perform |UMC| `set/password` command. Target UMC version need to be >= UCS 5.0-4.
+
+        :param dict options: The argument for the |UMC| `set` command.
+        :param dict headers: Optional |HTTP| headers.
+        :returns: The |UMC| response.
+        :rtype: Response
+        """
+        data = self.__build_data(options)
+        return self.request('POST', 'set/password', data, headers)
 
     def umc_get(self, path, options=None, headers=None):
         # type: (str, Optional[dict], Optional[dict]) -> Response

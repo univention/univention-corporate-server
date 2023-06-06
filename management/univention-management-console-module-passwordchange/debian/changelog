@@ -1,3 +1,9 @@
+univention-management-console-module-passwordchange (5.0.2-1) unstable; urgency=medium
+
+  * Bug #43633: adjust UMCP set/ HTTP requests
+
+ -- Florian Best <best@univention.de>  Mon, 12 Jun 2023 07:57:55 +0200
+
 univention-management-console-module-passwordchange (5.0.1-1) unstable; urgency=medium
 
   * Bug #52665: fix XSS vulnerability
