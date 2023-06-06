@@ -156,8 +156,9 @@ class UCSInstallation(object):
             self.client.keyPress('enter')
             sleep(3)
             # Virtuelle Festplatte 1
-            self.click(self._['virtual_disk_1'])
-            sleep(3)
+            self.client.keyPress('down')
+            self.client.keyPress('down')
+            self.client.keyPress('down')
             self.client.keyPress('enter')
             sleep(3)
             self.client.keyPress('down')

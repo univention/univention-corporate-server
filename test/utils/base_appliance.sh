@@ -519,7 +519,7 @@ univention-run-join-scripts -dcaccount "$dn" -dcpwd /tmp/joinpwd
 
 rm -f /tmp/joinpwd
 
-invoke-rc.d ntp restart
+systemctl try-restart ntp.service
 
 exit 0
 __EOF__
@@ -601,21 +601,6 @@ download_system_setup_packages () {  # [app_id]
 
 appliance_preinstall_common_role () {
 	univention-install -y univention-role-common univention-role-server-common
-}
-
-appliance_preinstall_non_univention_packages () {
-	exit 1  # This list if out-dated - see Bug #52834
-	declare -a packages=(
-		libblas3 libcap2-bin libcupsfilters1 libcupsimage2 libdaemon0 libdbi1 libfftw3-double3
-		libfile-copy-recursive-perl libfribidi0 libfsplib0 libgconf-2-4 libgd3 libgnutls-dane0
-		libgomp1 libgpm2 libgs9 libgs9-common libijs-0.35 libio-socket-inet6-perl libjbig2dec0 libkdc2-heimdal
-		liblinear3 liblqr-1-0 libltdl7 liblua5.1-0 liblua5.3-0 libm17n-0
-		libmcrypt4 libnet-snmp-perl libnetpbm10 libnfsidmap2 libnl-3-200 libnl-genl-3-200 libnss-extrausers libnss-ldap
-		libodbc1 libopenjp2-7 libopts25 libotf0 libpam-cap libpam-cracklib libpam-heimdal libpam-ldap libpaper-utils
-		libpaper1 libpcap0.8 libpq5 libquadmath0 libradcli4 libsnmp-base libsnmp-session-perl libsnmp30 libsocket6-perl
-		libtre5 libyaml-0-2 bind9 emacs24 ifplugd sudo vim zip
-	)
-	DEBIAN_FRONTEND=noninteractive apt-get -y install --no-install-recommends "${packages[@]}"
 }
 
 install_haveged () {
@@ -770,16 +755,14 @@ appliance_cleanup () {
 	# after system setup is finished, boot in 1024x768 (not 800x600)
 	cat >/usr/lib/univention-system-setup/appliance-hooks.d/screenresolution <<__EOF__
 #!/bin/sh
-ucr set grub/gfxmode=1024x768@16 \
+exec ucr set grub/gfxmode=1024x768@16 \
 	xorg/resolution=1024x768
 __EOF__
 	chmod +x /usr/lib/univention-system-setup/appliance-hooks.d/screenresolution
 
 	cat >/usr/lib/univention-system-setup/appliance-hooks.d/postfix_restart <<__EOF__
 #!/bin/sh
-if [ -x /etc/init.d/postfix ]; then
-	service postfix restart
-fi
+systemctl -q list-unit-files postfix.service && systemctl try-restart postfix.service
 exit 0
 __EOF__
 	chmod +x /usr/lib/univention-system-setup/appliance-hooks.d/postfix_restart
@@ -833,8 +816,7 @@ __EOF__
 	rm -rf /var/univention-backup/*
 
 	# fill up HDD with ZEROs to maximize possible compression
-	dd if=/dev/zero of=/fill-it-up bs=1M || true
-	rm /fill-it-up
+	fstrim -av || dd if=/dev/zero of=/fill-it-up bs=1M || rm /fill-it-up
 
 	# Remove persistent net rule
 	rm -f /etc/udev/rules.d/70-persistent-net.rules

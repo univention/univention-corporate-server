@@ -27,7 +27,6 @@ strings = {
     'finish_partition': 'Terminer le partitionnement et',
     'continue_partition': 'Si vous continuez',
     'manual': '',
-    'virtual_disk_1': '',
     'free_space': '',
     'boot_flag': '',
     'finish_create_partition': 'Terminer le partitionnement',
