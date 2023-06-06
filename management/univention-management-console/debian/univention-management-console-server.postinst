@@ -75,7 +75,5 @@ if [ "$1" = "configure" ] && dpkg --compare-versions "$2" lt-nl 12.0.20-1; then
 	[ -x "/etc/init.d/univention-firewall" ] && invoke-rc.d univention-firewall restart
 fi
 
-deb-systemd-invoke restart univention-management-console-server.service
-
 # ucslint needs this
 exit 0
