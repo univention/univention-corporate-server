@@ -4,7 +4,7 @@
 # Like what you see? Join us!
 # https://www.univention.com/about-us/careers/vacancies/
 
-from typing import IO, Any, Tuple  # noqa: F401
+from typing import IO, Any, Tuple
 
 from . import File
 
@@ -12,17 +12,14 @@ from . import File
 class Raw(File):
     """represents a "RAW" disk image"""
 
-    def __init__(self, inputfile):
-        # type: (IO[bytes]) -> None
+    def __init__(self, inputfile: IO[bytes]) -> None:
         File.__init__(self)
         self._inputfile = inputfile
         self._path = inputfile.name
 
     @File.hashed
-    def hash(self):
-        # type: () -> Tuple[Any, ...]
+    def hash(self) -> Tuple[Any, ...]:
         return (Raw, self._inputfile)
 
-    def _create(self, path):
-        # type: (str) -> None
+    def _create(self, path: str) -> None:
         pass

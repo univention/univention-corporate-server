@@ -6,11 +6,11 @@
 
 import os
 import sys
-from argparse import Namespace  # noqa: F401
+from argparse import Namespace
 from logging import getLogger
 from subprocess import check_call
 
-from ..files.raw import Raw  # noqa: F401
+from ..files.raw import Raw
 from . import Target
 
 log = getLogger(__name__)
@@ -21,8 +21,7 @@ class Docker(Target):
 
     default = False
 
-    def create(self, image, options):
-        # type: (Raw, Namespace) -> None
+    def create(self, image: Raw, options: Namespace) -> None:
         archive_name = os.path.join(os.getcwd(), '%s-docker.tar' % (options.filename,))
         if os.path.exists(archive_name):
             raise IOError('Output file %r exists' % (archive_name,))

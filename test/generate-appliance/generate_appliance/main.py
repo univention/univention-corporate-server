@@ -11,7 +11,7 @@ from __future__ import absolute_import, unicode_literals
 
 import os
 import re
-from argparse import ArgumentDefaultsHelpFormatter, ArgumentParser, FileType, Namespace  # noqa: F401
+from argparse import ArgumentDefaultsHelpFormatter, ArgumentParser, FileType, Namespace
 
 
 try:
@@ -30,8 +30,7 @@ from .files.raw import Raw
 RE_INVALID = re.compile(r"""[][\t !"#$%&'()*./:;<=>?\\`{|}~]+-""")
 
 
-def parse_options():
-    # type: () -> Namespace
+def parse_options() -> Namespace:
     parser = ArgumentParser(description=__doc__, formatter_class=ArgumentDefaultsHelpFormatter)
     parser.add_argument(
         "-d",
@@ -175,8 +174,7 @@ def setup_logging(level: int) -> None:
     basicConfig(level=DEBUG if level else INFO)
 
 
-def main():
-    # type: () -> None
+def main() -> None:
     options = parse_options()
     setup_logging(options.verbose)
     with TemporaryDirectory(options.tempdir) as Lazy.BASEDIR:

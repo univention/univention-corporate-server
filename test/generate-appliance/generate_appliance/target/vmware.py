@@ -6,14 +6,14 @@
 
 import os
 import uuid
-from argparse import Namespace  # noqa: F401
+from argparse import Namespace
 from logging import getLogger
 from typing import Dict, List, Tuple, Union, cast  # noqa: F401
 
 import lxml.builder
 
 from ..files import File  # noqa: F401
-from ..files.raw import Raw  # noqa: F401
+from ..files.raw import Raw
 from ..files.pkzip import Pkzip
 from ..files.vmdk import Vmdk
 from . import Target
@@ -21,15 +21,13 @@ from . import Target
 log = getLogger(__name__)
 
 
-def encode_vmware_uuid(u):
-    # type: (uuid.UUID) -> str
+def encode_vmware_uuid(u: uuid.UUID) -> str:
     # <https://kb.vmware.com/s/article/1880>
     FMT = "-".join([" ".join(["{}{}"] * 8)] * 2)
     return FMT.format(*u.hex)
 
 
-def create_vmxf(machine_uuid, image_name):
-    # type: (uuid.UUID, str) -> bytes
+def create_vmxf(machine_uuid: uuid.UUID, image_name: str) -> bytes:
     E = lxml.builder.ElementMaker()
     foundry = E.Foundry(
         E.VM(
@@ -50,16 +48,14 @@ def create_vmxf(machine_uuid, image_name):
     return cast(bytes, lxml.etree.tostring(foundry, encoding='UTF-8', xml_declaration=True, pretty_print=True))
 
 
-def encode_vmx_file(vmx):
-    # type: (Dict[str, str]) -> bytes
+def encode_vmx_file(vmx: Dict[str, str]) -> bytes:
     output = '.encoding = "UTF-8"\n'
     for key, value, in sorted(vmx.items()):
         output += '%s = "%s"\n' % (key, value)
     return output.encode('UTF-8')
 
 
-def create_vmx(image_name, image_uuid, options):
-    # type: (str, uuid.UUID, Namespace) -> bytes
+def create_vmx(image_name: str, image_uuid: uuid.UUID, options: Namespace) -> bytes:
     machine_name = options.product
     if options.version is not None:
         machine_name += ' ' + options.version
@@ -144,8 +140,7 @@ def create_vmx(image_name, image_uuid, options):
 class VMware(Target):
     """Zipped VMware®-compatible (VMDK based)"""
 
-    def create(self, image, options):
-        # type: (Raw, Namespace) -> None
+    def create(self, image: Raw, options: Namespace) -> None:
         if options.no_target_specific_filename:
             archive_name = options.filename
         else:

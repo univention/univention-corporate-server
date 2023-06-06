@@ -7,7 +7,7 @@
 import sys
 from logging import getLogger
 from subprocess import check_call
-from typing import Any, Tuple  # noqa: F401
+from typing import Any, Tuple
 
 from . import File
 from .raw import Raw
@@ -19,19 +19,16 @@ log = getLogger(__name__)
 class Vhdx(File):
     SUFFIX = ".vhdx"
 
-    def __init__(self, raw):
-        # type: (Raw) -> None
+    def __init__(self, raw: Raw) -> None:
         assert isinstance(raw, Raw)
         self._raw = raw
         File.__init__(self)
 
     @File.hashed
-    def hash(self):
-        # type: () -> Tuple[Any, ...]
+    def hash(self) -> Tuple[Any, ...]:
         return (Vhdx, self._raw.hash)
 
-    def _create(self, path):
-        # type: (str) -> None
+    def _create(self, path: str) -> None:
         self._raw.path()
         log.info('Creating VHDX %s', path)
         cmd = ['qemu-img', 'convert', '-p', '-O', 'vhdx', '-o', 'subformat=dynamic']

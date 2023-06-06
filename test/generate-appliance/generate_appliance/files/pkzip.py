@@ -17,8 +17,7 @@ log = getLogger(__name__)
 class Pkzip(Archive):
     SUFFIX = ".zip"
 
-    def _create(self, path):
-        # type: (str) -> None
+    def _create(self, path: str) -> None:
         _ = [source_file.path() for _, source_file in self._file_list if isinstance(source_file, File)]
         log.info('Creating PKZIP %s', path)
         with ZipFile(path, mode="w", allowZip64=True) as archive:

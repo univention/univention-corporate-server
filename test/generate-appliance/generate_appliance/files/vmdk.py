@@ -7,7 +7,7 @@
 import sys
 from logging import getLogger
 from subprocess import check_call
-from typing import Any, Tuple  # noqa: F401
+from typing import Any, Tuple
 
 from . import File
 from .raw import Raw
@@ -19,8 +19,7 @@ log = getLogger(__name__)
 class Vmdk(File):
     SUFFIX = ".vmdk"
 
-    def __init__(self, raw, adapter_type="lsilogic", hwversion="11", subformat="streamOptimized"):
-        # type: (Raw, str, str, str) -> None
+    def __init__(self, raw: Raw, adapter_type: str = "lsilogic", hwversion: str = "11", subformat: str = "streamOptimized") -> None:
         assert isinstance(raw, Raw)
         self._raw = raw
         self.options = {
@@ -31,12 +30,10 @@ class Vmdk(File):
         File.__init__(self)
 
     @File.hashed
-    def hash(self):
-        # type: () -> Tuple[Any, ...]
+    def hash(self) -> Tuple[Any, ...]:
         return (Vmdk, self._raw.hash, self.options)
 
-    def _create(self, path):
-        # type: (str) -> None
+    def _create(self, path: str) -> None:
         self._raw.path()
         log.info('Creating VMDK %s', path)
         cmd = ['qemu-img', 'convert', '-p', '-O', 'vmdk']

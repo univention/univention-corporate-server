@@ -20,13 +20,11 @@ log = getLogger(__name__)
 class Tar(Archive):
     SUFFIX = ".tar"
 
-    def __init__(self, file_list, fileformat=tarfile.USTAR_FORMAT):
-        # type: (Sequence[Tuple[str, Union[File, bytes]]], int) -> None
+    def __init__(self, file_list: Sequence[Tuple[str, Union[File, bytes]]], fileformat: int = tarfile.USTAR_FORMAT) -> None:
         Archive.__init__(self, file_list)
         self._format = fileformat
 
-    def _create(self, path):
-        # type: (str) -> None
+    def _create(self, path: str) -> None:
         _ = [source_file.path() for _, source_file in self._file_list if isinstance(source_file, File)]
         log.info('Creating TAR %s', path)
         with tarfile.TarFile(name=path, mode='w', format=self._format) as archive:

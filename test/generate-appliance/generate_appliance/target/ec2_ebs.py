@@ -6,34 +6,32 @@
 
 import datetime
 import sys
-from argparse import Namespace  # noqa: F401
+from argparse import Namespace
 from logging import getLogger
 from time import sleep
 from typing import TYPE_CHECKING
 
 import boto3
 
-from ..files.raw import Raw  # noqa: F401
+from ..files.raw import Raw
 from ..files.vmdk import Vmdk
 from . import Target
 
 
 if TYPE_CHECKING:
-    from mypy_boto3_ec2 import EC2Client  # noqa: F401
-    from mypy_boto3_s3 import S3Client  # noqa: F401
+    from mypy_boto3_ec2 import EC2Client
+    from mypy_boto3_s3 import S3Client
 
 log = getLogger(__name__)
 
 
 class Progress:
-    def __init__(self, path, size):
-        # type: (str, int) -> None
+    def __init__(self, path: str, size: int) -> None:
         self.path = path
         self.size = size
         self.seen = 0
 
-    def __call__(self, amount):
-        # type: (int) -> None
+    def __call__(self, amount: int) -> None:
         self.seen += amount
         percent = 100 * self.seen // self.size
         sys.stdout.write("\r%s  %s / %s  (%d%%)" % (self.path, self.seen, self.size, percent))
@@ -111,8 +109,7 @@ class EC2_EBS(Target):
         return import_task_id
 
     @staticmethod
-    def wait_for_snapshot(ec2, import_task_id):
-        # type: (EC2Client, str) -> str
+    def wait_for_snapshot(ec2: "EC2Client", import_task_id: str) -> str:
         try:
             # <https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/ec2/client/get_waiter.html>
             # <https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/ec2/waiter/SnapshotImported.html>
@@ -187,8 +184,7 @@ class EC2_EBS(Target):
         )
 
     @staticmethod
-    def make_public(ec2, ami):
-        # type: (EC2Client, str) -> None
+    def make_public(ec2: "EC2Client", ami: str) -> None:
         # <https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/ec2/client/modify_image_attribute.html>
         response = ec2.modify_image_attribute(
             ImageId=ami,

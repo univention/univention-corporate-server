@@ -7,7 +7,7 @@
 from abc import ABCMeta
 from hashlib import sha256
 from logging import getLogger
-from typing import Any, Sequence, Tuple, Union  # noqa: F401
+from typing import Any, Sequence, Tuple, Union
 
 from . import File
 
@@ -16,8 +16,7 @@ log = getLogger(__name__)
 
 
 class Archive(File, metaclass=ABCMeta):
-    def __init__(self, file_list):
-        # type: (Sequence[Tuple[str, Union[File, bytes]]]) -> None
+    def __init__(self, file_list: Sequence[Tuple[str, Union[File, bytes]]]) -> None:
         for _, source_file in file_list:
             if source_file is not None:
                 assert isinstance(source_file, (File, bytes))
@@ -25,10 +24,8 @@ class Archive(File, metaclass=ABCMeta):
         File.__init__(self)
 
     @File.hashed
-    def hash(self):
-        # type: () -> Tuple[Any, ...]
-        def hashed(thing):
-            # type: (Union[File, bytes]) -> str
+    def hash(self) -> Tuple[Any, ...]:
+        def hashed(thing: Union[File, bytes]) -> str:
             if isinstance(thing, bytes):
                 return sha256(thing).hexdigest()
             return thing.hash()

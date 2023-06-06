@@ -7,14 +7,14 @@
 
 import os
 import uuid
-from argparse import Namespace  # noqa: F401
+from argparse import Namespace
 from logging import getLogger
 from typing import List, Tuple, Union, cast  # noqa: F401
 
 import lxml.builder
 
 from ..files import File  # noqa: F401
-from ..files.raw import Raw  # noqa: F401
+from ..files.raw import Raw
 from ..files.tar import Tar
 from ..files.vmdk import Vmdk
 from . import ANNOTATION, LICENSE, Target
@@ -23,8 +23,7 @@ from . import ANNOTATION, LICENSE, Target
 log = getLogger(__name__)
 
 
-def create_ovf_descriptor_virtualbox(machine_uuid, image_name, image_size, image_uuid, options):
-    # type: (uuid.UUID, str, int, uuid.UUID, Namespace) -> bytes
+def create_ovf_descriptor_virtualbox(machine_uuid: uuid.UUID, image_name: str, image_size: int, image_uuid: uuid.UUID, options: Namespace) -> bytes:
     machine_name = options.product
     if options.version is not None:
         machine_name += ' ' + options.version
@@ -178,8 +177,7 @@ def create_ovf_descriptor_virtualbox(machine_uuid, image_name, image_size, image
 class OVA_Virtualbox(Target):
     """VirtualBox OVA (VMDK based)"""
 
-    def create(self, image, options):
-        # type: (Raw, Namespace) -> None
+    def create(self, image: Raw, options: Namespace) -> None:
         image_name = '%s-virtualbox-disk1.vmdk' % (options.product,)
         descriptor_name = '%s-virtualbox.ovf' % (options.product,)
         if options.no_target_specific_filename:

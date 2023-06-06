@@ -5,11 +5,11 @@
 # https://www.univention.com/about-us/careers/vacancies/
 
 import os
-from argparse import Namespace  # noqa: F401
+from argparse import Namespace
 from logging import getLogger
 
 from ..files.pkzip import Pkzip
-from ..files.raw import Raw  # noqa: F401
+from ..files.raw import Raw
 from ..files.vhdx import Vhdx
 from . import Target
 
@@ -22,8 +22,7 @@ class HyperV(Target):
 
     default = False
 
-    def create(self, image, options):
-        # type: (Raw, Namespace) -> None
+    def create(self, image: Raw, options: Namespace) -> None:
         options = self.options
         image_name = "%s.vhdx" % (options.product,)
         if options.no_target_specific_filename:

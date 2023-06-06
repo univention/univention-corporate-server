@@ -5,9 +5,9 @@
 # https://www.univention.com/about-us/careers/vacancies/
 
 from abc import ABCMeta
-from argparse import Namespace  # noqa: F401
+from argparse import Namespace
 
-from ..files.raw import Raw  # noqa: F401
+from ..files.raw import Raw
 
 
 LICENSE = """The complete source code of Univention Corporate Server is provided
@@ -56,6 +56,5 @@ class Target(metaclass=ABCMeta):
     def __str__(self) -> str:
         return self.__doc__ or self.__class__.__name__
 
-    def create(self, image, options):
-        # type: (Raw, Namespace) -> None
+    def create(self, image: Raw, options: Namespace) -> None:
         raise NotImplementedError()

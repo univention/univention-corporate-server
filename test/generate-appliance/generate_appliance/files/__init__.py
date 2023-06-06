@@ -10,7 +10,7 @@ from functools import wraps
 from hashlib import sha256
 from logging import getLogger
 from tempfile import gettempdir
-from typing import Any, Callable, TypeVar, cast  # noqa: F401
+from typing import Any, Callable, TypeVar, cast
 
 
 F = TypeVar("F", bound=Callable[..., Any])
@@ -25,24 +25,20 @@ class Lazy(metaclass=ABCMeta):
     BASEDIR = gettempdir()
     SUFFIX = ""
 
-    def __init__(self):
-        # type: () -> None
+    def __init__(self) -> None:
         self._path = ""
 
     @staticmethod
-    def lazy(fun):
-        # type: (F) -> F
+    def lazy(fun: F) -> F:
 
         @wraps(fun)
-        def newfun(self, *args, **kwargs):
-            # type: (Lazy, *Any, **Any) -> Any
+        def newfun(self: Lazy, *args: Any, **kwargs: Any) -> Any:
             self._check()
             return fun(self, *args, **kwargs)
 
         return cast(F, newfun)
 
-    def _check(self):
-        # type: () -> None
+    def _check(self) -> None:
         if self._path:
             return
 
@@ -56,43 +52,35 @@ class Lazy(metaclass=ABCMeta):
             if os.path.exists(temp):
                 os.unlink(temp)
 
-    def _create(self, path):
-        # type: (str) -> None
+    def _create(self, path: str) -> None:
         raise NotImplementedError()
 
-    def hash(self):
-        # type: () -> str
+    def hash(self) -> str:
         raise NotImplementedError()
 
 
 class File(Lazy, metaclass=ABCMeta):
     """base class for delayed file/image actions"""
 
-    def __init__(self):
-        # type: () -> None
+    def __init__(self) -> None:
         Lazy.__init__(self)
 
     @staticmethod
-    def hashed(fun):
-        # type: (Callable[..., Any]) -> Callable[..., str]
-        def newfun(self, *args, **kwargs):
-            # type: (File, *Any, **Any) -> str
+    def hashed(fun: Callable[..., Any]) -> Callable[..., str]:
+        def newfun(self: File, *args: Any, **kwargs: Any) -> str:
             ret = fun(self, *args, **kwargs)
             return sha256(repr(ret).encode("UTF-8")).hexdigest()
 
         return newfun
 
     @Lazy.lazy
-    def path(self):
-        # type: () -> str
+    def path(self) -> str:
         return self._path
 
     @Lazy.lazy
-    def file_size(self):
-        # type: () -> int
+    def file_size(self) -> int:
         return os.stat(self._path).st_size
 
     @Lazy.lazy
-    def used_size(self):
-        # type: () -> int
+    def used_size(self) -> int:
         return os.stat(self._path).st_blocks * 512
