@@ -199,7 +199,6 @@ app_appliance_AllowPreconfiguredSetup () {  # <app_id>
 
 app_appliance_IsDockerApp () {  # <app_id>
 	local app="${1:?}" image dockercompose
-	[ -z "$app" ] && return 1
 	image="$(get_app_attr "$app" dockerimage)"
 	[ -n "$image" ] && return 0
 	dockercompose="$(app_get_compose_file "$app")"
@@ -219,10 +218,6 @@ prepare_package_app () {  # <app_id> <counter>
 	version="$(get_app_attr "$app" Version)"
 	ucsversion="$(app_get_ini "$app" | awk -F / '{print $(NF-1)}')"
 	install_cmd="$(univention-config-registry get update/commands/install)"
-	# Due to dovect: https://forge.univention.org/bugzilla/show_bug.cgi?id=39148
-	for i in oxseforucs horde tine20 fortnox kolab-enterprise kix2016; do
-		test "$i" = "$app" && close_fds=TRUE
-	done
 	cat >"/usr/lib/univention-system-setup/scripts/90_postjoin/12_${counter}_setup_${app}" <<__EOF__
 #!/bin/bash
 
@@ -238,16 +233,17 @@ info_header "$0" "$(gettext "Installing $app")"
 eval "\$(ucr shell update/commands/install)"
 export DEBIAN_FRONTEND=noninteractive
 apt-get -q update
-if [ "$close_fds" = "TRUE" ]; then
+case "\$app" in  # https://forge.univention.org/bugzilla/show_bug.cgi?id=39148
+oxseforucs|horde|tine20|fortnox|kolab-enterprise|kix2016)
 	echo "Close logfile output now. Please see /var/log/dpkg.log for more information"
 	exec 1> /dev/null
 	exec 2> /dev/null
-fi
+esac
 \$update_commands_install -y --assume-yes -o="APT::Get::AllowUnauthenticated=1;" $packages || die
-univention-app register --do-it ${ucsversion}/${app}=${version}
+univention-app register --do-it "${ucsversion}/${app}=${version}"
 
 uid="\$(custom_username Administrator)"
-dn="\$(univention-ldapsearch uid=\$uid dn | sed -ne 's|dn: ||p')"
+dn="\$(univention-ldapsearch uid="\$uid" dn | sed -ne 's|^dn: ||p')"
 
 univention-run-join-scripts -dcaccount "\$dn" -dcpwd /tmp/joinpwd
 
@@ -281,13 +277,10 @@ prepare_docker_app () {  # <app_id> <counter>
 	dockercompose="$(app_get_compose_file "$app")"
 	dockerimage="$(get_app_attr "$app" DockerImage)"
 	local_app_component_id="$(app_get_component "$app")"
-	if [ ! -e "$dockercompose" ] && [ -z "$dockerimage" ]; then
-		echo "Error: No docker image and compose file for docker app $app!"
-		exit 1
-	fi
-	if [ -z "$local_app_component_id" ]; then
-		echo "Error: No docker component id for $app!"
-	fi
+	[ ! -e "$dockercompose" ] && [ -z "$dockerimage" ] &&
+		die "Error: No docker image and compose file for docker app $app!"
+	[ -n "$local_app_component_id" ] ||
+		die "Error: No docker component id for $app!"
 	# generate .dockercfg as appcenter does it
 	docker login -u ucs -p readonly docker.software-univention.de
 	local local_app_docker_image=""
@@ -473,7 +466,8 @@ prepare_apps () {  # <app_id>
 
 	for app in $(get_app_attr "$main_app" RequiredAppsInDomain) $(get_app_attr "$main_app" RequiredApps) "$main_app" $(get_app_attr "$main_app" ApplianceAdditionalApps)
 	do
-		if [ -z "${applist[$app]}" ]; then
+		[ -z "${applist[$app]}" ] ||
+			continue
 			if app_appliance_IsDockerApp "$app"; then
 				prepare_docker_app "$app" "$counter"
 			else
@@ -488,7 +482,6 @@ prepare_apps () {  # <app_id>
 				DEBIAN_FRONTEND=noninteractive apt-get -y install $packages
 			fi
 			applist["$app"]="true"
-		fi
 	done
 
 	# save setup password
@@ -520,7 +513,7 @@ __EOF__
 set -x
 
 uid="$(custom_username Administrator)"
-dn="$(univention-ldapsearch uid=$uid dn | sed -ne 's|dn: ||p')"
+dn="$(univention-ldapsearch uid="$uid" dn | sed -ne 's|^dn: ||p')"
 
 univention-run-join-scripts -dcaccount "$dn" -dcpwd /tmp/joinpwd
 
@@ -1056,7 +1049,8 @@ __EOF__
 
 appliance_reset_servers () {  # <reset>
 	local reset="$1"
-	if [ "$reset" = true ]; then
+	[ "$reset" = true ] ||
+		return 0
 		ucr set repository/online/server="https://updates.software-univention.de/"
 		ucr unset appcenter/index/verify
 
@@ -1064,7 +1058,6 @@ appliance_reset_servers () {  # <reset>
 		do
 			ucr set "$key=appcenter.software-univention.de"
 		done
-	fi
 }
 
 disable_root_login_and_poweroff () {  # <rootlogin> <require_activation>
