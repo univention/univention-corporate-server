@@ -1,6 +1,6 @@
 [Unit]
 Description=Univention System Setup on boot
-After=univention-management-console-web-server.service
+After=univention-management-console-server.service
 After=apache2.service
 ConditionFileIsExecutable=/usr/share/univention-system-setup-boot/init
 

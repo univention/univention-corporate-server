@@ -61,6 +61,6 @@ do
 	esac
 done
 
-systemctl mask --runtime univention-management-console-web-server.service univention-management-console-server.service
+systemctl mask --runtime univention-management-console-server.service
 
 exit 0

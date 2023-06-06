@@ -107,8 +107,8 @@ install_self_service () {
 }
 
 performance_settings () {
-	ucr set umc/http/processes=8 umc/server/processes=8
-	deb-systemd-invoke restart univention-management-console-server univention-management-console-web-server
+	ucr set umc/http/processes=8
+	deb-systemd-invoke restart univention-management-console-server
 }
 
 run_performance_tests () {

@@ -63,7 +63,7 @@ do
 	esac
 done
 
-systemctl unmask --runtime univention-management-console-web-server.service univention-management-console-server.service
-systemctl "$action" univention-management-console-web-server.service univention-management-console-server.service apache2.service
+systemctl unmask --runtime univention-management-console-server.service
+systemctl "$action" univention-management-console-server.service apache2.service
 
 exit 0

@@ -229,7 +229,7 @@ define([
 		_changeState: function(data, command, confirmMessage) {
 			confirmMessage += '<ul>';
 			//test if stopping this service breaks UMC
-			var umcRequirements = ['apache2', 'univention-management-console-web-server', 'univention-management-console-server'];
+			var umcRequirements = ['apache2', 'univention-management-console-server'];
 			var umcDisablers = ['services/stop', 'services/restart', 'services/start_manual', 'services/start_never'];
 			var breaksUMC = false;
 			array.forEach(data, function(idata) {

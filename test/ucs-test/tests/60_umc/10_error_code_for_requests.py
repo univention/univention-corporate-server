@@ -42,7 +42,7 @@ def kill_ucstest():
 
 
 def restart_web_server():
-    subprocess.call(['systemctl', 'restart', 'univention-management-console-web-server', 'univention-management-console-server', 'apache2'])
+    subprocess.call(['systemctl', 'restart', 'univention-management-console-server', 'apache2'])
 
 
 class AsyncClient(Client):

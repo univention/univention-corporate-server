@@ -1,3 +1,10 @@
+univention-management-console-module-services (9.0.3-1) unstable; urgency=medium
+
+  * Bug #43633: remove obsolete references to univention-management-
+    console-web-server systemd service
+
+ -- Florian Best <best@univention.de>  Mon, 12 Jun 2023 08:03:33 +0200
+
 univention-management-console-module-services (9.0.2-1) unstable; urgency=medium
 
   * Bug #43633: replace direct use of notifier.threads with UMC
