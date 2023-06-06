@@ -50,9 +50,15 @@ _virtualbox_image () {
 		# command "apt-get clean" :
 		# command "ucr unset --force update/secure_apt repository/online repository/online/server" :
 		mkdir-p "${CONF%/*}" :
-		write "${CONF}" 'Section "Device"\n    Identifier "Card0"\n    Driver "fbdev"\nEndSection\n' :
+		write "${CONF}" 'Section "Device"
+    Identifier "Card0"
+    Driver "fbdev"
+EndSection
+' :
 		chmod 0644 "${CONF}" :
-		write "${HOOK}" "#!/bin/sh\nexec rm -f '$CONF'\n" :
+		write "${HOOK}" "#!/bin/sh
+exec rm -f '$CONF'
+" :
 		chmod 0755 "${HOOK}" :
 		command "/usr/sbin/ucr set updater/identify='$identify'"
 	)
