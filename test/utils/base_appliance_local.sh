@@ -133,6 +133,7 @@ create_ec2_image () {
 	SRC_IMAGE="${1:?}"
 	IMG_ID="${2:?}"
 	UCS_VERSION_INFO="${3?}"
+	_setup_dir "/var/univention/buildsystem2/temp/build/appliance"
 
 	_ec2_image
 }
