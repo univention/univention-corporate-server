@@ -1,3 +1,9 @@
+ucs-test (10.0.10-68) unstable; urgency=medium
+
+  * Bug #50048: fix 73_udm-rest/01_openapi_validation
+
+ -- Florian Best <best@univention.de>  Tue, 06 Jun 2023 20:53:05 +0200
+
 ucs-test (10.0.10-67) unstable; urgency=medium
 
   * Bug #56096: added tests for saml-client-user-attribute-mapper

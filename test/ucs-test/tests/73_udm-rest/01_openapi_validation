@@ -23,7 +23,6 @@ cleanup() {
 trap cleanup INT TERM EXIT
 
 python3 -m pip install -U pip
-python3 -m pip install openapi-spec-validator
-python3 -m pip install -U jsonschema
+python3 -m pip install openapi-spec-validator==0.4.0
 
 curl -u "$(ucs_convertDN2UID ${tests_domainadmin_account})":"${tests_domainadmin_pwd}" http://localhost/univention/udm/openapi.json | python3 -m openapi_spec_validator - || fail_fast 1
