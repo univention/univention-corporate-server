@@ -295,51 +295,51 @@ prepare_docker_app () {  # <app_id> <counter>
 	# appbox image
 	if ! appliance_app_has_external_docker_image "$app"
 	then
-			container_id=$(docker create "$dockerimage")
-			docker start "$container_id"
-			sleep 60 # some startup time...
-			# update to latest version
-			v=$(docker exec "$container_id" ucr get version/version)
-			# update is broken (empty domainname breaks postfix upgrade)
-			docker exec "$container_id" ucr set domainname='ucs.test'
-			docker exec "$container_id" univention-upgrade --ignoressh --ignoreterm --noninteractive --disable-app-updates --updateto="${v}-99"
-			docker exec "$container_id" ucr unset domainname
-			docker exec "$container_id" ucr set repository/online/server="$(ucr get repository/online/server)" \
-				repository/app_center/server="$(ucr get repository/app_center/server)" \
-				appcenter/index/verify="$(ucr get appcenter/index/verify)" \
-				update/secure_apt="$(ucr get update/secure_apt)"
-			# activate app repo
-			name=$(get_app_attr "$app" Name)
-			component=$(app_get_component "$app")
-			docker exec "$container_id" ucr set "${component_prefix}${component}/description=$name" \
-				"${component_prefix}${component}/localmirror=false" \
-				"${component_prefix}${component}/server=$(ucr get repository/app_center/server)" \
-				"${component_prefix}${component}/unmaintained=disabled" \
-				"${component_prefix}${component}/version=current" \
-				"${component_prefix}${component}=enabled"
-			# TODO
-			# this has to be done on the docker host, the license agreement will be shown in the appliance system setup
-			#if [ -e "/var/cache/univention-appcenter/${component}.LICENSE_AGREEMENT" ]; then
-			#	ucr set umc/web/appliance/data_path?"/var/cache/univention-appcenter/${component}."
-			#fi
-			# provide required packages inside container
-			docker exec "$container_id" univention-install --yes apt-utils
-			# shellcheck disable=SC2046,SC2086
-			docker exec "$container_id" /usr/share/univention-docker-container-mode/download-packages $(get_app_attr "${app}" DefaultPackages) $(get_app_attr "${app}" DefaultPackagesMaster) $extra_packages
-			docker exec "$container_id" apt-get -q update
-			# check if packages are downloaded
-			for i in $(get_app_attr "${app}" DefaultPackages) $(get_app_attr "${app}" DefaultPackagesMaster)
-			do
-				docker exec "$container_id" ls /var/cache/univention-system-setup/packages/ | grep "$i"
-			done
-			# update appcenter
-			docker exec "$container_id" univention-app update
-			docker exec "$container_id" ucr set repository/online=false
-			# shutdown container and use it as app base
-			docker stop "$container_id"
-			local_app_docker_image=$(docker commit "$container_id" "${app}-app-image")
-			local_app_docker_image="${app}-app-image"
-			docker rm "$container_id"
+		container_id=$(docker create "$dockerimage")
+		docker start "$container_id"
+		sleep 60 # some startup time...
+		# update to latest version
+		v=$(docker exec "$container_id" ucr get version/version)
+		# update is broken (empty domainname breaks postfix upgrade)
+		docker exec "$container_id" ucr set domainname='ucs.test'
+		docker exec "$container_id" univention-upgrade --ignoressh --ignoreterm --noninteractive --disable-app-updates --updateto="${v}-99"
+		docker exec "$container_id" ucr unset domainname
+		docker exec "$container_id" ucr set repository/online/server="$(ucr get repository/online/server)" \
+			repository/app_center/server="$(ucr get repository/app_center/server)" \
+			appcenter/index/verify="$(ucr get appcenter/index/verify)" \
+			update/secure_apt="$(ucr get update/secure_apt)"
+		# activate app repo
+		name=$(get_app_attr "$app" Name)
+		component=$(app_get_component "$app")
+		docker exec "$container_id" ucr set "${component_prefix}${component}/description=$name" \
+			"${component_prefix}${component}/localmirror=false" \
+			"${component_prefix}${component}/server=$(ucr get repository/app_center/server)" \
+			"${component_prefix}${component}/unmaintained=disabled" \
+			"${component_prefix}${component}/version=current" \
+			"${component_prefix}${component}=enabled"
+		# TODO
+		# this has to be done on the docker host, the license agreement will be shown in the appliance system setup
+		#if [ -e "/var/cache/univention-appcenter/${component}.LICENSE_AGREEMENT" ]; then
+		#	ucr set umc/web/appliance/data_path?"/var/cache/univention-appcenter/${component}."
+		#fi
+		# provide required packages inside container
+		docker exec "$container_id" univention-install --yes apt-utils
+		# shellcheck disable=SC2046,SC2086
+		docker exec "$container_id" /usr/share/univention-docker-container-mode/download-packages $(get_app_attr "${app}" DefaultPackages) $(get_app_attr "${app}" DefaultPackagesMaster) $extra_packages
+		docker exec "$container_id" apt-get -q update
+		# check if packages are downloaded
+		for i in $(get_app_attr "${app}" DefaultPackages) $(get_app_attr "${app}" DefaultPackagesMaster)
+		do
+			docker exec "$container_id" ls /var/cache/univention-system-setup/packages/ | grep "$i"
+		done
+		# update appcenter
+		docker exec "$container_id" univention-app update
+		docker exec "$container_id" ucr set repository/online=false
+		# shutdown container and use it as app base
+		docker stop "$container_id"
+		local_app_docker_image=$(docker commit "$container_id" "${app}-app-image")
+		local_app_docker_image="${app}-app-image"
+		docker rm "$container_id"
 	fi
 
 	# clear old app
@@ -468,20 +468,20 @@ prepare_apps () {  # <app_id>
 	do
 		[ -z "${applist[$app]}" ] ||
 			continue
-			if app_appliance_IsDockerApp "$app"; then
-				prepare_docker_app "$app" "$counter"
-			else
-				prepare_package_app "$app" "$counter"
-			fi
-			install_appliance_hook "$app" "$counter"
-			counter+=1
-			# pre installed packages
-			packages="$(get_app_attr "$app" AppliancePreInstalledPackages)"
-			if [ -n "$packages" ]; then
-				# shellcheck disable=SC2086
-				DEBIAN_FRONTEND=noninteractive apt-get -y install $packages
-			fi
-			applist["$app"]="true"
+		if app_appliance_IsDockerApp "$app"; then
+			prepare_docker_app "$app" "$counter"
+		else
+			prepare_package_app "$app" "$counter"
+		fi
+		install_appliance_hook "$app" "$counter"
+		counter+=1
+		# pre installed packages
+		packages="$(get_app_attr "$app" AppliancePreInstalledPackages)"
+		if [ -n "$packages" ]; then
+			# shellcheck disable=SC2086
+			DEBIAN_FRONTEND=noninteractive apt-get -y install $packages
+		fi
+		applist["$app"]="true"
 	done
 
 	# save setup password
@@ -649,8 +649,8 @@ setup_pre_joined_environment () {  # <app_id> <domainname> <fast-demo-mode>
 	app_appliance_AllowPreconfiguredSetup "$main_app" &&
 		fastdemomode="yes"
 	if [ "ignore" != "$mode" ]; then
-			fastdemomode="$mode"
-			ucr set --force umc/web/appliance/fast_setup_mode="$fastdemomode"
+		fastdemomode="$mode"
+		ucr set --force umc/web/appliance/fast_setup_mode="$fastdemomode"
 	fi
 	if [ "yes" != "$fastdemomode" ]; then
 		ucr set umc/web/appliance/fast_setup_mode=false
@@ -1051,13 +1051,13 @@ appliance_reset_servers () {  # <reset>
 	local reset="$1"
 	[ "$reset" = true ] ||
 		return 0
-		ucr set repository/online/server="https://updates.software-univention.de/"
-		ucr unset appcenter/index/verify
+	ucr set repository/online/server="https://updates.software-univention.de/"
+	ucr unset appcenter/index/verify
 
-		ucr --keys-only search --brief --value '^appcenter-test.software-univention.de$' | while read -r key
-		do
-			ucr set "$key=appcenter.software-univention.de"
-		done
+	ucr --keys-only search --brief --value '^appcenter-test.software-univention.de$' | while read -r key
+	do
+		ucr set "$key=appcenter.software-univention.de"
+	done
 }
 
 disable_root_login_and_poweroff () {  # <rootlogin> <require_activation>
