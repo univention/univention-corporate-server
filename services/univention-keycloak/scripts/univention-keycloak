@@ -1769,6 +1769,7 @@ def init_keycloak_ucs(opt):
     opt.metadata_url = f"https://{opt.umc_saml_sp_server}/univention/saml/metadata"
     opt.metadata_file = None
     opt.umc_uid_mapper = True
+    opt.redirect_urls = None
     create_SAML_client(opt)
 
     # user federation ldap provider payload
