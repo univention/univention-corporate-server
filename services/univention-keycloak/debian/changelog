@@ -1,4 +1,4 @@
-univention-keycloak (1.0.9-16) unstable; urgency=medium
+univention-keycloak (1.0.9-17) unstable; urgency=medium
 
   * Bug #56074: SimpleSAMLPHP as a service provider in Keycloak
 
