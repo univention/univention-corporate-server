@@ -991,6 +991,7 @@ def create_saml_nameid_mapper(opt: Namespace) -> None:
 def get_saml_nameid_mapper(opt: Namespace) -> None:
     session = UniventionKeycloakAdmin(opt)
     mappers = session.get_mapper(opt.clientid, "saml-user-attribute-nameid-mapper")
+    mappers += session.get_mapper(opt.clientid, "univention-saml-user-attribute-nameid-mapper-base64")
     if not opt.all:
         mappers = [x["name"] for x in mappers]
     if opt.json:
