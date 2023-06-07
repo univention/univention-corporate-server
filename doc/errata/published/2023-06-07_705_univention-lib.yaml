@@ -9,3 +9,6 @@ desc: |
  * A regression in erratum 683 during package installation in System Setup has
    been corrected.
 bug: [56111]
+erratum: 705
+announced: 2023-06-07
+support: core
