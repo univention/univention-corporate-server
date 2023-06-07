@@ -9,3 +9,6 @@ desc: |
  * The Simple UDM API now has a parameter to initialize a machine connection
    against the local slapd.
 bug: [56113]
+erratum: 708
+announced: 2023-06-07
+support: core
