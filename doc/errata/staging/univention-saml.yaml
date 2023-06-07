@@ -5,8 +5,8 @@ scope: ucs_5.0-0-errata5.0-3
 src: univention-saml
 fix: 7.0.8-3
 desc: |
- This update addresses the following issues:
- * `SimpleSAMLPHP` is configured as a service provider in `Keycloak`,
-   meaning it acts as a proxy and use `Keycloak` as a backend. This is
-   part of the migration from `SimpleSAMLPHP` to `Keycloak` in `UCS`.
+ This update addresses the following issue:
+ * `SimpleSAMLPHP` is configured as a service provider in `Keycloak`, meaning
+   it acts as a proxy and uses `Keycloak` as a backend. This is part of the
+   migration from `SimpleSAMLPHP` to `Keycloak` in `UCS`.
 bug: [56074]
