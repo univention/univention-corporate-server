@@ -25,12 +25,12 @@ from datetime import date
 # -- Project information -----------------------------------------------------
 
 # The full version, including alpha/beta/rc tags
-release = "5.0-3"
+release = "5.0-4"
 
 version = "5.0"
 
 project = f'UCS {release} Release Notes'
-copyright = f'2021-{date.today().year}, Univention GmbH'
+copyright = f'2023-{date.today().year}, Univention GmbH'
 author = ''
 
 html_show_copyright = True
@@ -59,7 +59,7 @@ suppress_warnings = ['git.too_shallow']
 intersphinx_mapping = {
     "uv-dev-ref": ("https://docs.software-univention.de/developer-reference/5.0/en", None),
     "uv-manual": ("https://docs.software-univention.de/manual/5.0/en", None),
-    "uv-changelog": ("https://docs.software-univention.de/changelog/5.0-3/en", None),
+    "uv-changelog": ("https://docs.software-univention.de/changelog/5.0-4/en", None),
     "uv-ext-windows": ("https://docs.software-univention.de/ext-windows/5.0/en", None),
 }
 
@@ -175,7 +175,7 @@ def adapt_settings_to_translation(app, config):
         config.intersphinx_mapping = {
             "uv-dev-ref": ("https://docs.software-univention.de/developer-reference/5.0/en", None),
             "uv-manual": ("https://docs.software-univention.de/manual/5.0/de", None),
-            "uv-changelog": ("https://docs.software-univention.de/changelog/5.0-3/en", None),
+            "uv-changelog": ("https://docs.software-univention.de/changelog/5.0-4/en", None),
             "uv-ext-windows": ("https://docs.software-univention.de/ext-windows/5.0/en", None),
         }
         config.bibtex_bibfiles = ["../bibliography-de.bib"]

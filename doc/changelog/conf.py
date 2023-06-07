@@ -25,12 +25,12 @@ from datetime import date
 # -- Project information -----------------------------------------------------
 
 # The full version, including alpha/beta/rc tags
-release = "5.0-3"
+release = "5.0-4"
 
 version = "5.0"
 
 project = f'UCS {release} Changelog'
-copyright = f'2021-{date.today().year}, Univention GmbH'
+copyright = f'2023-{date.today().year}, Univention GmbH'
 author = ''
 
 html_show_copyright = True
@@ -144,7 +144,7 @@ univention_use_doc_base = True
 
 # See README.md in this repository
 # https://git.knut.univention.de/univention/documentation/univention_sphinx_changelog#configuration-settings
-univention_changelog_previous_release = "5.0-2"
+univention_changelog_previous_release = "5.0-3"
 univention_changelog_builder = "ucs"
 
 # See Univention Sphinx Extension for its options.

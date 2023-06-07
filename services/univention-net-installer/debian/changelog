@@ -1,3 +1,9 @@
+univention-net-installer (13.0.4-2) unstable; urgency=medium
+
+  * Bug #: Adapt to UCS-5.0-4
+
+ -- Philipp Hahn <hahn@univention.de>  Wed, 07 Jun 2023 12:55:30 +0200
+
 univention-net-installer (13.0.4-1) unstable; urgency=medium
 
   * Bug #31771: migrate tabs to spaces

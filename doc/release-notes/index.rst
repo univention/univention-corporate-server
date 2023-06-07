@@ -6,7 +6,7 @@
 Release notes for the installation and update of Univention Corporate Server (UCS) |release|
 ############################################################################################
 
-Publication date of UCS |release|: 2023-02-08
+Publication date of UCS |release|: 2023-06-20
 
 .. _relnotes-highlights:
 
@@ -14,33 +14,15 @@ Publication date of UCS |release|: 2023-02-08
 Release Highlights
 ******************
 
-With |UCSUCS| 5.0-3, the third point release for |UCSUCS| (UCS) 5.0 is now
+With |UCSUCS| 5.0-4, the forth point release for |UCSUCS| (UCS) 5.0 is now
 available. It provides several feature improvements and extensions, new
 properties as well as various improvements and bug fixes. Here is an overview of
 the most important changes:
 
-* The program :program:`univention-support-info` is now included with the
-  distribution. It can be used to collect useful information from the system
-  when a support case is opened with Univention GmbH.
+* ...
 
-* Several new modules have been added to the UMC module :guilabel:`System
-  diagnostic` and some existing ones have been improved. For example several
-  |UCSUCRV|\ s now have type information, which can be used to validate their
-  values. Individual modules can also be disabled in case of false positives.
-
-* Group membership is now maintained using the OpenLDAP overlay module
-  ``memberof``, which improves performance in large environments.
-
-* Operational LDAP attributes can now be visualized in the :guilabel:`Directory Manager`.
-
-* The program :program:`univention-keycloak` was added to support the new App
-  :guilabel:`Keycloak`, which can be installed from the :guilabel:`App Center`
-  to provide :guilabel:`Single Sign On`.
-
-* This |UCSUCS| release is based on Debian 10.13 Buster.
-
-* Various security updates have been integrated into UCS 5.0-3, for example for
-  :program:`Samba4`, Squid, BIND9, PostgreSQL and Dovecot.
+* Various security updates have been integrated into UCS 5.0-4, for example for
+  ...
 
 .. _relnotes-update:
 
@@ -170,10 +152,10 @@ downloaded and executed on the UCS system.
 .. code-block:: console
 
    # download
-   $ curl -OOf https://updates.software-univention.de/download/univention-update-checks/pre-update-checks-5.0-3{.gpg,}
+   $ curl -OOf https://updates.software-univention.de/download/univention-update-checks/pre-update-checks-5.0-4{.gpg,}
 
    # verify and run script
-   $ apt-key verify pre-update-checks-5.0-3{.gpg,} && bash pre-update-checks-5.0-3
+   $ apt-key verify pre-update-checks-5.0-4{.gpg,} && bash pre-update-checks-5.0-4
 
    ...
 
@@ -252,7 +234,7 @@ Users running older browsers may experience display or performance issues.
 Changelog
 *********
 
-You find the changes since UCS 5.0-2 in
+You find the changes since UCS 5.0-3 in
 :external+uv-changelog:doc:`index`.
 
 

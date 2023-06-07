@@ -7,7 +7,7 @@ msgstr ""
 "Project-Id-Version: UCS 5.0 Release Notes 5.0\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-02-06 17:43+0100\n"
-"PO-Revision-Date: 2023-02-08 16:46+0100\n"
+"PO-Revision-Date: 2023-06-07 12:38+0200\n"
 "Last-Translator: Univention GmbH <packages@univention.de>\n"
 "Language-Team: Univention GmbH <packages@univention.de>\n"
 "MIME-Version: 1.0\n"
@@ -24,8 +24,8 @@ msgstr ""
 "Corporate Server (UCS) |release|"
 
 #: ../../index.rst:5
-msgid "Publication date of UCS |release|: 2023-02-08"
-msgstr "Veröffentlichungsdatum von UCS |release|: 2023-02-08"
+msgid "Publication date of UCS |release|: 2023-06-20"
+msgstr "Veröffentlichungsdatum von UCS |release|: 2023-06-20"
 
 #: ../../index.rst:11
 msgid "Release Highlights"
@@ -33,12 +33,12 @@ msgstr "Release-Highlights"
 
 #: ../../index.rst:13
 msgid ""
-"With |UCSUCS| 5.0-3, the third point release for |UCSUCS| (UCS) 5.0 is "
+"With |UCSUCS| 5.0-4, the forth point release for |UCSUCS| (UCS) 5.0 is "
 "now available. It provides several feature improvements and extensions, "
 "new properties as well as various improvements and bug fixes. Here is an "
 "overview of the most important changes:"
 msgstr ""
-"Mit |UCSUCS| 5.0-3 steht das dritte Point-Release für |UCSUCS| (UCS) 5.0 "
+"Mit |UCSUCS| 5.0-4 steht das vierte Point-Release für |UCSUCS| (UCS) 5.0 "
 "zur Verfügung. Es umfasst Funktionserweiterungen und Verbesserungen, neue"
 " Eigenschaften sowie diverse Detailverbesserungen und Fehlerkorrekturen. "
 "Die wichtigsten Änderungen im Überblick:"
@@ -90,11 +90,11 @@ msgstr ""
 
 #: ../../index.rst:35
 msgid ""
-"Various security updates have been integrated into UCS 5.0-3, for example"
-" for :program:`Samba4`, Squid, BIND9, PostgreSQL and Dovecot."
+"Various security updates have been integrated into UCS 5.0-4, for example"
+" for ..."
 msgstr ""
-"Diverse Security Updates wurden in UCS 5.0-3 integriert, bspw. für "
-":program:`Samba4`, Squid, BIND9, PostgreSQL und Dovecot."
+"Diverse Security Updates wurden in UCS 5.0-4 integriert, bspw. für "
+"..."
 
 #: ../../index.rst:42
 msgid "Notes about the update"
@@ -360,11 +360,11 @@ msgstr ""
 msgid ""
 "# download\n"
 "$ curl -OOf https://updates.software-univention.de/download/univention-"
-"update-checks/pre-update-checks-5.0-3{.gpg,}\n"
+"update-checks/pre-update-checks-5.0-4{.gpg,}\n"
 "\n"
 "# verify and run script\n"
-"$ apt-key verify pre-update-checks-5.0-3{.gpg,} && bash pre-update-"
-"checks-5.0-3\n"
+"$ apt-key verify pre-update-checks-5.0-4{.gpg,} && bash pre-update-"
+"checks-5.0-4\n"
 "\n"
 "...\n"
 "\n"
@@ -496,10 +496,10 @@ msgstr "Das Programm :program:`univention-keycloak` wurde hinzugefügt. Es unter
 
 #: ../../index.rst:248
 msgid ""
-"You find the changes since UCS 5.0-2 in :external+uv-"
+"You find the changes since UCS 5.0-3 in :external+uv-"
 "changelog:doc:`index`."
 msgstr ""
-"Die Änderungen seit UCS 5.0-2 finden Sie in :external+uv-"
+"Die Änderungen seit UCS 5.0-3 finden Sie in :external+uv-"
 "changelog:doc:`index`."
 
 #: ../../index.rst:256

@@ -24,13 +24,13 @@ uses the custom builder [Univention Sphinx
 Changelog](https://git.knut.univention.de/univention/documentation/univention_sphinx_changelog).
 
 The following example illustrates the procedure in detail on the example for
-the UCS 5.0-3 patch level release version.
+the UCS 5.0-4 patch level release version.
 
 1. Update configuration settings in `conf.py`:
 
-   * Set `univention_changelog_previous_release` to `"5.0-2"`.
+   * Set `univention_changelog_previous_release` to `"5.0-3"`.
 
-   * Set `release` to `5.0-3`.
+   * Set `release` to `5.0-4`.
 
    * Keep `version` at `5.0`.
 
