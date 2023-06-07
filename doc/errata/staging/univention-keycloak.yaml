@@ -6,13 +6,12 @@ src: univention-keycloak
 fix: 1.0.9-18
 desc: |
  This update addresses the following issues:
- * New commands have been added to `univention-keycloak` to create
-   attribute mappers from the LDAP object to the internal Keycloak
-   object (`user-attribute-ldap-mapper`) and to create
-   user attribute mappers and nameid mappers for SAML clients
-   (`saml-client-user-attribute-mapper`,
+ * New commands have been added to `univention-keycloak` to create attribute
+   mappers from the LDAP object to the internal Keycloak object
+   (`user-attribute-ldap-mapper`) and to create user attribute mappers and
+   nameid mappers for SAML clients (`saml-client-user-attribute-mapper`,
    `saml-client-nameid-mapper`).
- * `SimpleSAMLPHP` is configured as a service provider in `Keycloak`,
-   meaning it acts as a proxy and use `Keycloak` as a backend. This is
-   part of the migration from `SimpleSAMLPHP` to `Keycloak` in `UCS`.
-bug: [56096,56074]
+ * `SimpleSAMLPHP` is configured as a service provider in `Keycloak`, meaning
+   it acts as a proxy and uses `Keycloak` as a backend. This is part of the
+   migration from `SimpleSAMLPHP` to `Keycloak` in `UCS`.
+bug: [56096, 56074]
