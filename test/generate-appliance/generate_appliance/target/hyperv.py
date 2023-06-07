@@ -4,38 +4,32 @@
 # Like what you see? Join us!
 # https://www.univention.com/about-us/careers/vacancies/
 
-import os
-from argparse import Namespace
 from logging import getLogger
 
 from ..files.pkzip import Pkzip
 from ..files.raw import Raw
 from ..files.vhdx import Vhdx
-from . import Target
+from . import TargetFile
 
 
 log = getLogger(__name__)
 
 
-class HyperV(Target):
+class HyperV(TargetFile):
     """Hyper-V Image (zip)"""
 
+    SUFFIX = "hyperv.zip"
     default = False
 
-    def create(self, image: Raw, options: Namespace) -> None:
+    def create(self, image: Raw) -> None:
         options = self.options
         image_name = "%s.vhdx" % (options.product,)
-        if options.no_target_specific_filename:
-            archive_name = options.filename
-        else:
-            archive_name = '%s-hyperv.zip' % (options.filename,)
-        if os.path.exists(archive_name):
-            raise IOError('Output file %r exists' % (archive_name,))
+        archive_name = self.archive_name()
 
         vhdx = Vhdx(image)
         files = [
             (image_name, vhdx),
         ]
         pkzip = Pkzip(files)
-        os.rename(pkzip.path(), archive_name)
+        pkzip.path().rename(archive_name)
         log.info('Generated "%s" appliance as\n  %s', self, archive_name)

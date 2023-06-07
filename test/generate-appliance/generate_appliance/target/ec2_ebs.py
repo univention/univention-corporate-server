@@ -6,7 +6,6 @@
 
 import datetime
 import sys
-from argparse import Namespace
 from logging import getLogger
 from time import sleep
 from typing import TYPE_CHECKING
@@ -67,7 +66,7 @@ class EC2_EBS(Target):
         image_name = self.machine_name + ".vmdk"
         # <https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/s3/client/upload_file.html>
         s3.upload_file(
-            vmdk.path(),
+            vmdk.path().as_posix(),
             bucket,
             image_name,
             ExtraArgs={
@@ -75,7 +74,7 @@ class EC2_EBS(Target):
                 "Expires": datetime.datetime.now() + datetime.timedelta(days=1),
                 "StorageClass": "REDUCED_REDUNDANCY",
             },
-            Callback=Progress(vmdk.path(), vmdk.file_size()),
+            Callback=Progress(vmdk.path().as_posix(), vmdk.file_size()),
         )
         vmdk_get = s3.generate_presigned_url(
             ClientMethod='get_object',

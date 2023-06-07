@@ -8,6 +8,7 @@ import stat
 import tarfile
 from io import BytesIO
 from logging import getLogger
+from pathlib import Path
 from typing import IO, Sequence, Tuple, Union  # noqa: F401
 
 from . import File
@@ -24,10 +25,10 @@ class Tar(Archive):
         Archive.__init__(self, file_list)
         self._format = fileformat
 
-    def _create(self, path: str) -> None:
+    def _create(self, path: Path) -> None:
         _ = [source_file.path() for _, source_file in self._file_list if isinstance(source_file, File)]
         log.info('Creating TAR %s', path)
-        with tarfile.TarFile(name=path, mode='w', format=self._format) as archive:
+        with tarfile.TarFile(name=path.as_posix(), mode='w', format=self._format) as archive:
             for name, source_file in self._file_list:
                 log.info('  %s', name)
                 info = tarfile.TarInfo(name)
@@ -38,6 +39,6 @@ class Tar(Archive):
                     handle = BytesIO(source_file)  # type: IO[bytes]
                 else:
                     info.size = source_file.file_size()
-                    handle = open(source_file.path(), 'rb')
+                    handle = source_file.path().open("rb")
 
                 archive.addfile(info, handle)

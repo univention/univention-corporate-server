@@ -5,7 +5,6 @@
 # Like what you see? Join us!
 # https://www.univention.com/about-us/careers/vacancies/
 
-import os
 import uuid
 from argparse import Namespace
 from logging import getLogger
@@ -17,7 +16,7 @@ from ..files import File  # noqa: F401
 from ..files.raw import Raw
 from ..files.tar import Tar
 from ..files.vmdk import Vmdk
-from . import ANNOTATION, LICENSE, Target
+from . import ANNOTATION, LICENSE, TargetFile
 
 
 log = getLogger(__name__)
@@ -174,18 +173,16 @@ def create_ovf_descriptor_virtualbox(machine_uuid: uuid.UUID, image_name: str, i
     return cast(bytes, lxml.etree.tostring(envelope, encoding='UTF-8', xml_declaration=True, pretty_print=True))
 
 
-class OVA_Virtualbox(Target):
+class OVA_Virtualbox(TargetFile):
     """VirtualBox OVA (VMDK based)"""
 
-    def create(self, image: Raw, options: Namespace) -> None:
+    SUFFIX = "virtualbox.ova"
+
+    def create(self, image: Raw) -> None:
+        options = self.options
         image_name = '%s-virtualbox-disk1.vmdk' % (options.product,)
         descriptor_name = '%s-virtualbox.ovf' % (options.product,)
-        if options.no_target_specific_filename:
-            archive_name = options.filename
-        else:
-            archive_name = '%s-virtualbox.ova' % (options.filename,)
-        if os.path.exists(archive_name):
-            raise IOError('Output file %r exists' % (archive_name,))
+        archive_name = self.archive_name()
 
         machine_uuid = uuid.uuid4()
         image_uuid = uuid.uuid4()
@@ -200,5 +197,5 @@ class OVA_Virtualbox(Target):
             (image_name, vmdk),
         ]  # type: List[Tuple[str, Union[File, bytes]]]
         ova = Tar(files)
-        os.rename(ova.path(), archive_name)
+        ova.path().rename(archive_name)
         log.info('Generated "%s" appliance as\n  %s', self, archive_name)

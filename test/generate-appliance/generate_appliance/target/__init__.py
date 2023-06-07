@@ -6,6 +6,7 @@
 
 from abc import ABCMeta
 from argparse import Namespace
+from pathlib import Path
 
 from ..files.raw import Raw
 
@@ -53,8 +54,34 @@ class Target(metaclass=ABCMeta):
 
     default = True
 
+    def __init__(self, options: Namespace) -> None:
+        self.options = options
+
     def __str__(self) -> str:
         return self.__doc__ or self.__class__.__name__
 
-    def create(self, image: Raw, options: Namespace) -> None:
+    @property
+    def machine_name(self):
+        machine_name = self.options.product
+        if self.options.version is not None:
+            machine_name += ' ' + self.options.version
+        return machine_name
+
+    def create(self, image: Raw) -> None:
         raise NotImplementedError()
+
+
+class TargetFile(Target, metaclass=ABCMeta):
+    """Target generating an output file."""
+
+    SUFFIX = ""
+
+    def archive_name(self) -> Path:
+        path = self.options.filename  # type: Path
+        if not self.options.no_target_specific_filename:
+            path = path.with_name("%s-%s" % (path.name, self.SUFFIX))
+
+        if path.exists():
+            raise IOError('Output file %r exists' % (path,))
+
+        return path

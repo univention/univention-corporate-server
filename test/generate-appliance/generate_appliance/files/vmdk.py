@@ -6,6 +6,7 @@
 
 import sys
 from logging import getLogger
+from pathlib import Path
 from subprocess import check_call
 from typing import Any, Tuple
 
@@ -33,11 +34,11 @@ class Vmdk(File):
     def hash(self) -> Tuple[Any, ...]:
         return (Vmdk, self._raw.hash, self.options)
 
-    def _create(self, path: str) -> None:
+    def _create(self, path: Path) -> None:
         self._raw.path()
         log.info('Creating VMDK %s', path)
         cmd = ['qemu-img', 'convert', '-p', '-O', 'vmdk']
         for option in self.options.items():
             cmd += ["-o", "%s=%s" % option]
-        cmd += [self._raw.path(), path]
+        cmd += [self._raw.path().as_posix(), path.as_posix()]
         check_call(cmd, stdout=sys.stderr)

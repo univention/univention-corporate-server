@@ -4,7 +4,6 @@
 # Like what you see? Join us!
 # https://www.univention.com/about-us/careers/vacancies/
 
-import os
 from argparse import Namespace
 from logging import getLogger
 from typing import List, Tuple, Union, cast  # noqa: F401
@@ -15,7 +14,7 @@ from ..files import File  # noqa: F401
 from ..files.raw import Raw
 from ..files.tar import Tar
 from ..files.vmdk import Vmdk
-from . import ANNOTATION, LICENSE, Target
+from . import ANNOTATION, LICENSE, TargetFile
 
 
 log = getLogger(__name__)
@@ -340,18 +339,16 @@ def create_ovf_descriptor_esxi(image_name: str, image_size: int, image_packed_si
     return cast(bytes, lxml.etree.tostring(envelope, encoding='UTF-8', xml_declaration=True, pretty_print=True))
 
 
-class OVA_ESXi(Target):
+class OVA_ESXi(TargetFile):
     """VMware ESXi OVA (VMDK based)"""
 
-    def create(self, image: Raw, options: Namespace) -> None:
+    SUFFIX = "ESX.ova"
+
+    def create(self, image: Raw) -> None:
+        options = self.options
         image_name = '%s-ESX-disk1.vmdk' % (options.product,)
         descriptor_name = '%s-ESX.ovf' % (options.product,)
-        if options.no_target_specific_filename:
-            archive_name = options.filename
-        else:
-            archive_name = '%s-ESX.ova' % (options.filename,)
-        if os.path.exists(archive_name):
-            raise IOError('Output file %r exists' % (archive_name,))
+        archive_name = self.archive_name()
 
         vmdk = Vmdk(image, adapter_type="lsilogic", hwversion="7", subformat="streamOptimized")
         descriptor = create_ovf_descriptor_esxi(
@@ -364,5 +361,5 @@ class OVA_ESXi(Target):
             (image_name, vmdk),
         ]  # type: List[Tuple[str, Union[File, bytes]]]
         ova = Tar(files)
-        os.rename(ova.path(), archive_name)
+        ova.path().rename(archive_name)
         log.info('Generated "%s" appliance as\n  %s', self, archive_name)

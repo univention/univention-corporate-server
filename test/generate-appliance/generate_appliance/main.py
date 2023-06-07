@@ -9,9 +9,9 @@
 
 from __future__ import absolute_import, unicode_literals
 
-import os
 import re
 from argparse import ArgumentDefaultsHelpFormatter, ArgumentParser, FileType, Namespace
+from pathlib import Path
 
 
 try:
@@ -69,6 +69,7 @@ def parse_options() -> Namespace:
     group.add_argument(
         "-f",
         "--filename",
+        type=Path,
         help="filename of appliance (default: derived from product)",
         metavar="PATH",
     )
@@ -112,6 +113,7 @@ def parse_options() -> Namespace:
     parser.add_argument(
         "-t",
         "--tempdir",
+        type=Path,
         help="temporary directory to use",
     )
 
@@ -149,23 +151,25 @@ def parse_options() -> Namespace:
 
     options = parser.parse_args()
 
-    options.choices = {
-        target()
+    if options.tempdir is not None:
+        options.tempdir = tempdir = options.tempdir.resolve()
+        if not tempdir.is_dir():
+            parser.error('Tempdir %r is not a directory!' % (tempdir,))
+
+    if options.filename is None:
+        fn = "-".join(p for p in [options.product, options.version] if p)
+        options.filename = Path(RE_INVALID.sub('-', fn))
+
+    chosen = {
+        target
         for name, target in targets.items()
         if getattr(options, name) or target.default and not options.only
     }
 
-    if len(options.choices) == 1:
+    if len(chosen) == 1:
         options.no_target_specific_filename = True
 
-    if options.tempdir is not None:
-        options.tempdir = os.path.realpath(options.tempdir)
-        if not os.path.isdir(options.tempdir):
-            parser.error('Tempdir %r is not a directory!')
-
-    if options.filename is None:
-        fn = "-".join(p for p in [options.product, options.version] if p)
-        options.filename = RE_INVALID.sub('-', fn)
+    options.choices = [target(options) for target in chosen]
 
     return options
 
@@ -177,7 +181,9 @@ def setup_logging(level: int) -> None:
 def main() -> None:
     options = parse_options()
     setup_logging(options.verbose)
-    with TemporaryDirectory(options.tempdir) as Lazy.BASEDIR:
+    with TemporaryDirectory(options.tempdir) as tmpdir:
+        Lazy.BASEDIR = Path(tmpdir)
         source_image = Raw(options.source)
         for choice in options.choices:
-            choice.create(source_image, options)
+            print("Creating", choice.__doc__)
+            choice.create(source_image)

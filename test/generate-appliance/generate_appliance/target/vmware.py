@@ -4,7 +4,6 @@
 # Like what you see? Join us!
 # https://www.univention.com/about-us/careers/vacancies/
 
-import os
 import uuid
 from argparse import Namespace
 from logging import getLogger
@@ -13,10 +12,11 @@ from typing import Dict, List, Tuple, Union, cast  # noqa: F401
 import lxml.builder
 
 from ..files import File  # noqa: F401
-from ..files.raw import Raw
 from ..files.pkzip import Pkzip
+from ..files.raw import Raw
 from ..files.vmdk import Vmdk
-from . import Target
+from . import TargetFile
+
 
 log = getLogger(__name__)
 
@@ -137,16 +137,14 @@ def create_vmx(image_name: str, image_uuid: uuid.UUID, options: Namespace) -> by
     return encode_vmx_file(vmx)
 
 
-class VMware(Target):
+class VMware(TargetFile):
     """Zipped VMware®-compatible (VMDK based)"""
 
-    def create(self, image: Raw, options: Namespace) -> None:
-        if options.no_target_specific_filename:
-            archive_name = options.filename
-        else:
-            archive_name = '%s-vmware.zip' % (options.filename,)
-        if os.path.exists(archive_name):
-            raise IOError('Output file %r exists' % (archive_name,))
+    SUFFIX = "vmware-zip"
+
+    def create(self, image: Raw) -> None:
+        options = self.options
+        archive_name = self.archive_name()
 
         machine_uuid = uuid.uuid4()
         image_uuid = uuid.uuid4()
@@ -159,5 +157,5 @@ class VMware(Target):
             ('%s/%s.vmsd' % (options.product, options.product), b""),
         ]  # type: List[Tuple[str, Union[File, bytes]]]
         pkzip = Pkzip(files)
-        os.rename(pkzip.path(), archive_name)
+        pkzip.path().rename(archive_name)
         log.info('Generated "%s" appliance as\n  %s', self, archive_name)
