@@ -30,10 +30,10 @@ msgstr ""
 
 #: umc/js/lib/server.js:104
 msgid ""
-"Please confirm to restart UMC server components and the HTTP web server. "
+"Please confirm to restart the UMC server and the HTTP web server. "
 "This will take approximately 10 seconds."
 msgstr ""
-"Bitte bestätigen Sie den Neustart der UMC-Server-Komponenten und des HTTP-"
+"Bitte bestätigen Sie den Neustart des UMC-Servers und des HTTP-"
 "Web-Servers. Dies wird ungefähr 10 Sekunden dauern."
 
 #: umc/js/lib/server.js:226

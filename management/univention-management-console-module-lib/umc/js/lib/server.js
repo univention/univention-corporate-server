@@ -104,7 +104,7 @@ define([
 			if (_msg) {
 				msg += '<p>' + _msg + '</p>';
 			}
-			msg += '<p>' + _('Please confirm to restart UMC server components and the HTTP web server. This will take approximately 10 seconds.') + '</p>';
+			msg += '<p>' + _('Please confirm to restart the UMC server and the HTTP web server. This will take approximately 10 seconds.') + '</p>';
 			msg += '<p>' + _('<b>Note:</b> After the restart you will be redirected to the login page.') + '</p>';
 			return dialog.confirm(msg, [{
 				name: 'cancel',
