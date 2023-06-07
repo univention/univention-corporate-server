@@ -1,4 +1,4 @@
-univention-ldb-modules (8.0.1-2) unstable; urgency=medium
+univention-ldb-modules (8.0.2-1) unstable; urgency=medium
 
   * Bug #55921: update waf to 2.0.25 to use Python 3 as build dependency
 
