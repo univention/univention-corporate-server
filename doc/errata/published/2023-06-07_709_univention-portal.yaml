@@ -9,3 +9,6 @@ desc: |
  * Updating the portal information now uses a local UDM connection, thus
    removing potential load on the Primary Node in big environments.
 bug: [56113]
+erratum: 709
+announced: 2023-06-07
+support: core
