@@ -15,3 +15,6 @@ desc: |
    it acts as a proxy and uses `Keycloak` as a backend. This is part of the
    migration from `SimpleSAMLPHP` to `Keycloak` in `UCS`.
 bug: [56096, 56074]
+erratum: 707
+announced: 2023-06-07
+support: core
