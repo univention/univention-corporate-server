@@ -1,0 +1,11 @@
+product: ucs
+release: "5.0"
+version: [3]
+scope: ucs_5.0-0-errata5.0-3
+src: univention-directory-manager-modules
+fix: 15.0.20-9
+desc: |
+ This update addresses the following issues:
+ * The Simple UDM API now has a parameter to initialize a machine connection
+   against the local slapd.
+bug: [56113]
