@@ -300,6 +300,12 @@ def handler(dn: str, new: Dict[str, List[bytes]], old: Dict[str, List[bytes]]) -
                 else:
                     args += [options[a], new.get(a, EMPTY)[0].decode('UTF-8')]
 
+            if model in ('everywhere', 'driverless'):
+                for attr in ('univentionPrinterLocation', 'description'):
+                    value = new.get(attr, EMPTY)[0].decode('UTF-8')
+                    if value and (attr not in changes):
+                        args += [options[attr], value]
+
             args += [options['univentionPrinterURI'], modified_uri]
             args += ['-E']
 
