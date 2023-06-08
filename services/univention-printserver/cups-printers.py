@@ -227,7 +227,10 @@ def handler(dn: str, new: Dict[str, List[bytes]], old: Dict[str, List[bytes]]) -
         listener.configRegistry.load()
         printer_list = listener.configRegistry.get('cups/restrictedprinters', '').split()
         printer_is_restricted = printer_name in printer_list
-        restrict_printer = (new.get('univentionPrinterACLUsers', []) or new.get('univentionPrinterACLGroups', [])) and new['univentionPrinterACLtype'][0] != b'allow all'
+        if model in ('everywhere', 'driverless'):
+            restrict_printer = False
+        else:
+            restrict_printer = (new.get('univentionPrinterACLUsers', []) or new.get('univentionPrinterACLGroups', [])) and new['univentionPrinterACLtype'][0] != b'allow all'
 
         update_restricted_printers = False
         if printer_is_restricted and not restrict_printer:
