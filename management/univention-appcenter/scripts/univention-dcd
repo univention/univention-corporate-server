@@ -59,15 +59,21 @@ def parse_args(args: list[str] = None) -> Namespace:
 
     subparsers = parser.add_subparsers(title="subcommands", description="valid subcommands", required=True, dest="command")
 
-    parser_get = subparsers.add_parser("get", help="get a setting from the DCD")
+    parser_get = subparsers.add_parser("get", help="get value for key in DCD")
     parser_get.add_argument("key", help="the key to get")
     parser_get.set_defaults(func=get_dcd)
+
+    parser_schema = subparsers.add_parser("schema", help="get schema for key in DCD")
+    parser_schema.add_argument("key", help="the key to get")
+    parser_schema.set_defaults(func=get_schema)
 
     parser_search = subparsers.add_parser("search", help="search the DCD")
     parser_search.add_argument("--pattern", help="the search pattern", default="*")
     parser_search.set_defaults(func=search_dcd)
 
     parser_set = subparsers.add_parser("set", help="set key in DCD")
+    parser_set.add_argument("key", help="the key to set")
+    parser_set.add_argument("value", help="the value")
     parser_set.set_defaults(func=set_dcd)
 
     opt = parser.parse_args(args)
@@ -83,6 +89,12 @@ def myprint(opt: Namespace, msg: str) -> None:
         print(msg)
 
 
+def error(msg: str) -> None:
+    print(msg, file=sys.stderr)
+    return 1
+
+
+# TODO this should go to univention.appcenter.dcd
 def get_default_dcd_server(opt: Namespace) -> str | None:
     udm = UDM.machine().version(2)
     for role in ['domaincontroller_master', 'domaincontroller_backup', 'domaincontroller_slave', 'memberserver']:
@@ -97,15 +109,22 @@ def get_dcd(opt: Namespace, dcd: DCD) -> None:
     myprint(opt, res)
 
 
+def get_schema(opt: Namespace, dcd: DCD) -> None:
+    res = dcd.schema(opt.key)
+    myprint(opt, res)
+
+
 def search_dcd(opt: Namespace, dcd: DCD) -> None:
     for i in dcd.search(opt.pattern):
         myprint(opt, i)
 
 
 def set_dcd(opt: Namespace, dcd: DCD) -> None:
-    help(dcd)
-    #for i in dcd.search(opt.pattern):
-    #    myprint(opt, i)
+    try:
+        value = json.loads(opt.value)
+    except json.decoder.JSONDecodeError as exc:
+        return error(f"ERROR: not valid json ({exc})")
+    dcd.set(opt.key, value)
 
 
 def main() -> int:
