@@ -47,13 +47,13 @@ getent group lp | grep -q "$hostname" || adduser $hostname\$ lp || true
 
 # Copy the previously fetched SSL certificates to the Cups directory:
 if test -e "/etc/univention/ssl/$hostname.$domainname/cert.pem"; then
-	rm -f /etc/cups/ssl/server.crt
-	ln -s /etc/univention/ssl/$hostname.$domainname/cert.pem /etc/cups/ssl/server.crt
+    rm -f /etc/cups/ssl/server.crt /etc/cups/ssl/"$hostname.$domainname.crt"
+    ln -s /etc/univention/ssl/$hostname.$domainname/cert.pem /etc/cups/ssl/"$hostname.$domainname.crt"
 fi
 
 if test -e "/etc/univention/ssl/$hostname.$domainname/private.key"; then
-	rm -f /etc/cups/ssl/server.key
-      ln -s /etc/univention/ssl/$hostname.$domainname/private.key /etc/cups/ssl/server.key
+    rm -f /etc/cups/ssl/server.key /etc/cups/ssl/"$hostname.$domainname.key"
+    ln -s /etc/univention/ssl/$hostname.$domainname/private.key /etc/cups/ssl/"$hostname.$domainname.key"
 fi
 
 univention-directory-manager container/cn create "$@" --ignore_exists --position "cn=univention,$ldap_base" --set name=cups || die
