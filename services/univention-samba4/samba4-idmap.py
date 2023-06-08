@@ -61,9 +61,8 @@ modrdn = '1'
 
 # Globals
 lp = LoadParm()
-listener.setuid(0)
-lp.load('/etc/samba/smb.conf')
-listener.unsetuid()
+with listener.SetUID(0):
+    lp.load('/etc/samba/smb.conf')
 
 sidAttribute = 'sambaSID'
 if listener.configRegistry.is_false('connector/s4/mapping/sid', False):
@@ -109,16 +108,14 @@ def open_idmap() -> IDmapDB:
         return open_idmap.instance
 
     idmap_ldb = '/var/lib/samba/private/idmap.ldb'
-    listener.setuid(0)
-    try:
-        if not os.path.exists(idmap_ldb):
-            setup_idmapdb(idmap_ldb, session_info=system_session(), lp=lp)
-        open_idmap.instance = IDmapDB(idmap_ldb, session_info=system_session(), lp=lp)
-    except ldb.LdbError:
-        ud.debug(ud.LISTENER, ud.ERROR, "%s: /var/lib/samba/private/idmap.ldb could not be opened" % name)
-        raise
-    finally:
-        listener.unsetuid()
+    with listener.SetUID(0):
+        try:
+            if not os.path.exists(idmap_ldb):
+                setup_idmapdb(idmap_ldb, session_info=system_session(), lp=lp)
+            open_idmap.instance = IDmapDB(idmap_ldb, session_info=system_session(), lp=lp)
+        except ldb.LdbError:
+            ud.debug(ud.LISTENER, ud.ERROR, "%s: /var/lib/samba/private/idmap.ldb could not be opened" % name)
+            raise
 
     return open_idmap.instance
 

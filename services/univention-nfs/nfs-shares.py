@@ -68,15 +68,13 @@ tmpFile = '/var/cache/univention-directory-listener/nfs-shares.oldObject'
 def handler(dn: str, new: Dict[str, List[bytes]], old: Dict[str, List[bytes]], command: str) -> None:
     # create tmp dir
     tmpDir = os.path.dirname(tmpFile)
-    listener.setuid(0)
-    try:
-        if not os.path.exists(tmpDir):
-            os.makedirs(tmpDir)
-    except Exception as exc:
-        ud.debug(ud.LISTENER, ud.ERROR, "%s: could not create tmp dir %s (%s)" % (name, tmpDir, exc))
-        return
-    finally:
-        listener.unsetuid()
+    with listener.SetUID(0):
+        try:
+            if not os.path.exists(tmpDir):
+                os.makedirs(tmpDir)
+        except Exception as exc:
+            ud.debug(ud.LISTENER, ud.ERROR, "%s: could not create tmp dir %s (%s)" % (name, tmpDir, exc))
+            return
 
     # modrdn stuff
     # 'r'+'a' -> renamed
@@ -85,24 +83,22 @@ def handler(dn: str, new: Dict[str, List[bytes]], old: Dict[str, List[bytes]], c
 
     # write old object to pickle file
     oldObject = {}
-    listener.setuid(0)
-    try:
-        # object was renamed -> save old object
-        if command == "r" and old:
-            with open(tmpFile, "wb") as fp:
-                os.chmod(tmpFile, 0o600)
-                pickle.dump({"dn": dn, "old": old}, fp)
-        elif command == "a" and not old and os.path.isfile(tmpFile):
-            with open(tmpFile, "rb") as fp:
-                p = pickle.load(fp)
-            oldObject = p.get("old", {})
-            os.remove(tmpFile)
-    except Exception as exc:
-        if os.path.isfile(tmpFile):
-            os.remove(tmpFile)
-        ud.debug(ud.LISTENER, ud.ERROR, "%s: could not read/write tmp file %s (%s)" % (name, tmpFile, exc))
-    finally:
-        listener.unsetuid()
+    with listener.SetUID(0):
+        try:
+            # object was renamed -> save old object
+            if command == "r" and old:
+                with open(tmpFile, "wb") as fp:
+                    os.chmod(tmpFile, 0o600)
+                    pickle.dump({"dn": dn, "old": old}, fp)
+            elif command == "a" and not old and os.path.isfile(tmpFile):
+                with open(tmpFile, "rb") as fp:
+                    p = pickle.load(fp)
+                oldObject = p.get("old", {})
+                os.remove(tmpFile)
+        except Exception as exc:
+            if os.path.isfile(tmpFile):
+                os.remove(tmpFile)
+            ud.debug(ud.LISTENER, ud.ERROR, "%s: could not read/write tmp file %s (%s)" % (name, tmpFile, exc))
 
     # update exports file
     lines = _read(lambda match: not match or match.group(1) != _quote(dn))

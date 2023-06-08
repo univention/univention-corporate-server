@@ -159,37 +159,33 @@ def handler(dn: str, new: Dict[str, List[bytes]], old: Dict[str, List[bytes]], c
 
     if command == 'r':  # modrdn phase I: store old object
         ud.debug(ud.LISTENER, ud.INFO, '%s: modrdn phase I: %s' % (name, dn))
-        listener.setuid(0)
-        try:
-            with open(FN_CACHE, 'wb+') as fd:
-                os.chmod(FN_CACHE, 0o600)
-                pickle.dump(old, fd)
-        except Exception as exc:
-            ud.debug(ud.LISTENER, ud.ERROR, '%s: failed to open/write pickle file: %s' % (name, exc))
-        finally:
-            listener.unsetuid()
+        with listener.SetUID(0):
+            try:
+                with open(FN_CACHE, 'wb+') as fd:
+                    os.chmod(FN_CACHE, 0o600)
+                    pickle.dump(old, fd)
+            except Exception as exc:
+                ud.debug(ud.LISTENER, ud.ERROR, '%s: failed to open/write pickle file: %s' % (name, exc))
         return
 
     # check for modrdn phase II in case of an add
     if new and os.path.exists(FN_CACHE) and not old:
         ud.debug(ud.LISTENER, ud.INFO, '%s: modrdn phase II: %s' % (name, dn))
-        listener.setuid(0)
-        try:
-            with open(FN_CACHE, 'rb') as fd:
-                if six.PY2:
-                    pickled_object = pickle.load(fd)
-                else:
-                    pickled_object = pickle.load(fd, encoding='bytes')
-        except Exception as exc:
-            ud.debug(ud.LISTENER, ud.ERROR, '%s: failed to open/read pickle file: %s' % (name, exc))
-        try:
-            os.remove(FN_CACHE)
-        except Exception as exc:
-            ud.debug(ud.LISTENER, ud.ERROR, '%s: cannot remove pickle file: %s' % (name, exc))
-            ud.debug(ud.LISTENER, ud.ERROR, '%s: for safety reasons well-known-sid-name-mapping ignores change of LDAP object: %s' % (name, dn))
-            listener.unsetuid()
-            return
-        listener.unsetuid()
+        with listener.SetUID(0):
+            try:
+                with open(FN_CACHE, 'rb') as fd:
+                    if six.PY2:
+                        pickled_object = pickle.load(fd)
+                    else:
+                        pickled_object = pickle.load(fd, encoding='bytes')
+            except Exception as exc:
+                ud.debug(ud.LISTENER, ud.ERROR, '%s: failed to open/read pickle file: %s' % (name, exc))
+            try:
+                os.remove(FN_CACHE)
+            except Exception as exc:
+                ud.debug(ud.LISTENER, ud.ERROR, '%s: cannot remove pickle file: %s' % (name, exc))
+                ud.debug(ud.LISTENER, ud.ERROR, '%s: for safety reasons well-known-sid-name-mapping ignores change of LDAP object: %s' % (name, dn))
+                return
 
         # Normally we see two steps for the modrdn operation. But in case of the selective replication we
         # might only see the first step. This was discovered first in the s4-connector listener,

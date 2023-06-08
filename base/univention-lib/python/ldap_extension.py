@@ -127,11 +127,11 @@ def _get_handler_message_object(lo, position, handler_name, create=False):
 def set_handler_message(name, dn, msg):
     # type: (str, str, str) -> None
     # currently only on Primary Directory Node
-    if listener.configRegistry.get('server/role') in ('domaincontroller_master',):
-        ud.debug(ud.LISTENER, ud.INFO, 'set_handler_message for {}'.format(name))
-        setuid = os.geteuid() != 0
-        if setuid:
-            listener.setuid(0)
+    if listener.configRegistry.get('server/role') != 'domaincontroller_master':
+        return
+
+    ud.debug(ud.LISTENER, ud.INFO, 'set_handler_message for {}'.format(name))
+    with listener.SetUID(0 if os.geteuid() else -1):
         try:
             lo, position = udm_uldap.getAdminConnection()
             _verify_handler_message_container(lo, position)
@@ -150,9 +150,6 @@ def set_handler_message(name, dn, msg):
             data_obj.modify()
         except Exception as err:
             ud.debug(ud.LISTENER, ud.ERROR, 'Error set_handler_message for handler %s: %s' % (name, err))
-        finally:
-            if setuid:
-                listener.unsetuid()
 
 
 def get_handler_message(name, binddn, bindpw):
