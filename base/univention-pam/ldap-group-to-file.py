@@ -131,8 +131,8 @@ def doit(options, lo):
     for groupdn, group in groups:
         groupname = ldap.dn.str2dn(groupdn)[0][0][1]
         members = _get_members(lo, groupdn, group, [], options.check_member)
-        # The list(set(members)) call removes all duplicates from the group members
-        fd.write('%s:*:%s:%s\n' % (groupname, group.get('gidNumber', [b''])[0].decode('ASCII'), ','.join(set(members))))
+        # The list(dict.fromkeys(members)) call removes all duplicates from the group members and keeps a reproducable order
+        fd.write('%s:*:%s:%s\n' % (groupname, group.get('gidNumber', [b''])[0].decode('ASCII'), ','.join(list(dict.fromkeys(members)))))
     fd.close()
 
     os.chmod(fdname, 0o644)
