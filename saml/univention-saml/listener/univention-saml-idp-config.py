@@ -36,8 +36,9 @@ from __future__ import absolute_import, annotations
 from typing import Dict, List
 
 import univention.debug as ud
-from univention.config_registry import ConfigRegistry, handler_set, handler_unset
+from univention.config_registry import handler_set, handler_unset
 
+import listener
 from listener import SetUID
 
 
@@ -50,9 +51,8 @@ LDAP_UCR_MAPPING = {
 
 
 def handler(dn: str, new: Dict[str, List[bytes]], old: Dict[str, List[bytes]]) -> None:
-    ucr = ConfigRegistry()
-    ucr.load()
-    idp_config_objectdn = ucr.get('saml/idp/configobject', 'id=default-saml-idp,cn=univention,%s' % ucr.get('ldap/base'))
+    listener.configRegistry.load()
+    idp_config_objectdn = listener.ConfigRegistry.get('saml/idp/configobject', 'id=default-saml-idp,cn=univention,%s' % listener.ConfigRegistry.get('ldap/base'))
     with SetUID(0):
         if idp_config_objectdn == new['entryDN'][0].decode('UTF-8'):
             for key in LDAP_UCR_MAPPING.keys():

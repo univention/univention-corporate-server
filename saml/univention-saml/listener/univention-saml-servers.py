@@ -39,8 +39,9 @@ import os.path
 import subprocess
 from typing import Dict, List
 
-from univention.config_registry import ConfigRegistry, handler_set, handler_unset
+from univention.config_registry import handler_set, handler_unset
 
+import listener
 from listener import SetUID
 
 
@@ -50,8 +51,7 @@ attributes = ['univentionService']
 
 
 def handler(dn: str, new: Dict[str, List[bytes]], old: Dict[str, List[bytes]]) -> None:
-    ucr = ConfigRegistry()
-    ucr.load()
+    listener.configRegistry.load()
     with SetUID(0):
         try:
             fqdn = '%s.%s' % (new['cn'][0].decode('UTF-8'), new['associatedDomain'][0].decode('ASCII'))
@@ -67,7 +67,7 @@ def handler(dn: str, new: Dict[str, List[bytes]], old: Dict[str, List[bytes]]) -
             change = True
 
         if change:
-            path_to_cert = ucr.get('saml/idp/certificate/certificate')
-            path_to_key = ucr.get('saml/idp/certificate/privatekey')
+            path_to_cert = listener.configRegistry.get('saml/idp/certificate/certificate')
+            path_to_key = listener.configRegistry.get('saml/idp/certificate/privatekey')
             if path_to_cert and os.path.exists(path_to_cert) and path_to_key and os.path.exists(path_to_key):
                 subprocess.call(['systemctl', 'restart', 'univention-saml'])

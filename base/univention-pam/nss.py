@@ -38,8 +38,6 @@ from __future__ import absolute_import, annotations
 
 from typing import Dict, List
 
-import univention.config_registry
-
 import listener
 
 
@@ -53,11 +51,10 @@ def handler(dn: str, new: Dict[str, List[bytes]], old: Dict[str, List[bytes]]) -
 
 
 def postrun() -> None:
-    ucr = univention.config_registry.ConfigRegistry()  # TODO: why not listener.configRegistry?
-    ucr.load()
+    listener.configRegistry.load()
 
-    if ucr.is_true('nss/group/cachefile', False) and ucr.is_true('nss/group/cachefile/invalidate_on_changes', True):
+    if listener.configRegistry.is_true('nss/group/cachefile', False) and listener.configRegistry.is_true('nss/group/cachefile/invalidate_on_changes', True):
         param = ['ldap-group-to-file.py']
-        if ucr.is_true('nss/group/cachefile/check_member', False):
+        if listener.configRegistry.is_true('nss/group/cachefile/check_member', False):
             param.append('--check_member')
         listener.run('/usr/lib/univention-pam/ldap-group-to-file.py', param, uid=0)

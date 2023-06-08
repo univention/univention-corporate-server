@@ -39,7 +39,6 @@ from __future__ import absolute_import, annotations
 from typing import Dict, List
 
 import univention.debug as ud
-from univention.config_registry import ConfigRegistry
 
 import listener
 
@@ -55,10 +54,9 @@ def handler(dn: str, new: Dict[str, List[bytes]], old: Dict[str, List[bytes]]) -
 
 
 def postrun() -> None:
-    configRegistry = ConfigRegistry()  # TODO: why not listener.configRegistry?
-    configRegistry.load()
+    listener.configRegistry.load()
 
-    if configRegistry.is_true('nscd/group/invalidate_cache_on_changes', False) and configRegistry.is_false('nss/group/cachefile', True):
+    if listener.configRegistry.is_true('nscd/group/invalidate_cache_on_changes', False) and listener.configRegistry.is_false('nss/group/cachefile', True):
         try:
             ud.debug(ud.LISTENER, ud.INFO, "calling 'nscd -i group'")
             listener.run('/usr/sbin/nscd', ['nscd', '-i', 'group'], uid=0)

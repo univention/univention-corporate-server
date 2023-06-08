@@ -42,6 +42,7 @@ from typing import Dict, List
 import univention.config_registry
 import univention.debug as ud
 
+import listener
 from listener import SetUID
 
 
@@ -51,10 +52,9 @@ filter = '(&(objectClass=univentionDomainController)(|(univentionServerRole=mast
 
 def handler(dn: str, new: Dict[str, List[bytes]], old: Dict[str, List[bytes]]) -> None:
     """Handle change in LDAP."""
-    ucr = univention.config_registry.ConfigRegistry()
-    ucr.load()
+    listener.configRegistry.load()
 
-    if ucr['server/role'] == 'domaincontroller_master':
+    if listener.configRegistry['server/role'] == 'domaincontroller_master':
         return
 
     with SetUID(0):
@@ -62,14 +62,14 @@ def handler(dn: str, new: Dict[str, List[bytes]], old: Dict[str, List[bytes]]) -
             try:
                 domain = new['associatedDomain'][0].decode('UTF-8')
             except LookupError:
-                domain = ucr['domainname']
-            add_ldap_server(ucr, new['cn'][0].decode('UTF-8'), domain, new['univentionServerRole'][0].decode('UTF-8'))
+                domain = listener.configRegistry['domainname']
+            add_ldap_server(listener.configRegistry, new['cn'][0].decode('UTF-8'), domain, new['univentionServerRole'][0].decode('UTF-8'))
         elif 'univentionServerRole' in old and not new:
             try:
                 domain = old['associatedDomain'][0].decode('UTF-8')
             except LookupError:
-                domain = ucr['domainname']
-            remove_ldap_server(ucr, old['cn'][0].decode('UTF-8'), domain, old['univentionServerRole'][0].decode('UTF-8'))
+                domain = listener.configRegistry['domainname']
+            remove_ldap_server(listener.configRegistry, old['cn'][0].decode('UTF-8'), domain, old['univentionServerRole'][0].decode('UTF-8'))
 
 
 def add_ldap_server(ucr: Dict[str, str], name: str, domain: str, role: str) -> None:

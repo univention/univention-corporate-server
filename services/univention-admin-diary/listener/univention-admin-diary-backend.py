@@ -38,8 +38,9 @@ from __future__ import absolute_import, annotations
 import subprocess
 from typing import Dict, List
 
-from univention.config_registry import ConfigRegistry, handler_set
+from univention.config_registry import handler_set
 
+import listener
 from listener import SetUID
 
 
@@ -61,9 +62,8 @@ def handler(dn: str, new: Dict[str, List[bytes]], old: Dict[str, List[bytes]]) -
             except (KeyError, IndexError):
                 return
 
-            ucr = ConfigRegistry()
-            ucr.load()
-            old_ucr_value = ucr.get('admin/diary/backend', u'')
+            listener.configRegistry.load()
+            old_ucr_value = listener.configRegistry.get('admin/diary/backend', u'')
             fqdn_set = set(old_ucr_value.split())
             fqdn_set.add(fqdn.decode('utf-8'))
             new_ucr_value = u' '.join(fqdn_set)
@@ -75,9 +75,8 @@ def handler(dn: str, new: Dict[str, List[bytes]], old: Dict[str, List[bytes]]) -
             except (KeyError, IndexError):
                 return
 
-            ucr = ConfigRegistry()
-            ucr.load()
-            old_ucr_value = ucr.get('admin/diary/backend', u'')
+            listener.configRegistry.load()
+            old_ucr_value = listener.configRegistry.get('admin/diary/backend', u'')
             fqdn_set = set(old_ucr_value.split())
             fqdn_set.discard(fqdn.decode('UTF-8'))
             new_ucr_value = u' '.join(fqdn_set)

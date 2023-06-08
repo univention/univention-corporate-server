@@ -45,9 +45,6 @@ if TYPE_CHECKING:
     from .handler import ListenerModuleHandler  # noqa: F401
 
 
-listener.configRegistry.load()
-
-
 class ListenerModuleConfiguration(object):
     """
     Interface class for accessing the configuration and code of a listener

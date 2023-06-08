@@ -51,9 +51,6 @@ from .handler_configuration import ListenerModuleConfiguration
 from .handler_logging import get_logger
 
 
-listener.configRegistry.load()
-
-
 class HandlerMetaClass(type):
     """
     Read handler configuration, invoke adapter and set global variables in module to

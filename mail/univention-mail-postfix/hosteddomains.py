@@ -39,7 +39,6 @@ from __future__ import absolute_import, annotations
 import re
 from typing import Dict, List
 
-import univention.config_registry
 import univention.debug
 
 import listener
@@ -51,10 +50,9 @@ filter = '(objectClass=univentionMailDomainname)'
 
 
 def handler(dn: str, new: Dict[str, List[bytes]], old: Dict[str, List[bytes]]) -> None:
-    configRegistry = univention.config_registry.ConfigRegistry()
-    configRegistry.load()
+    listener.configRegistry.load()
 
-    old_hosteddomains = set(re.split('[ ]+', configRegistry.get('mail/hosteddomains', '')))
+    old_hosteddomains = set(re.split('[ ]+', listener.configRegistry.get('mail/hosteddomains', '')))
     hosteddomains = old_hosteddomains.copy()
 
     # remove old add new
