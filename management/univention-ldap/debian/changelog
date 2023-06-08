@@ -1,3 +1,9 @@
+univention-ldap (16.0.13-1) unstable; urgency=medium
+
+  * Bug #31388: add share configuration for "read list"
+
+ -- Florian Best <best@univention.de>  Thu, 08 Jun 2023 20:54:23 +0200
+
 univention-ldap (16.0.12-1) unstable; urgency=medium
 
   * Bug #50073: UDM: remap `country` from `st` to `c`: allow templates to

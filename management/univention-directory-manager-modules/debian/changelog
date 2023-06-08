@@ -1,3 +1,31 @@
+univention-directory-manager-modules (15.0.21-1) unstable; urgency=medium
+
+  * Bug #44997: move "VFS objects" into "Samba options"
+  * Bug #44997: move checkbox "Allow Samba Write access" into "Samba
+    permissions"
+  * Bug #45430: Add description field to shares/share functioning as Samba
+    "comment"
+  * Bug #40599: display all user/group selections as multivalue
+  * Bug #31388: add configuration for "read list"
+  * Bug #44997: Turn VFS objects into a combobox
+  * Bug #44997: add long descriptions to various share options
+  * Bug #7843: remove "Block size"
+  * Bug #44997: remove locking options
+  * Bug #7843: remove "Fake oplocks"
+  * Bug #7843: remove Level-2-Oplocks
+  * Bug #42805: remove unused security mask, directory security mask, force
+    security mode, force directory security mode
+  * Bug #53785: remove checkbox "Blocking locks"
+  * Bug #44997: remove checkbox "NT ACL Support"
+  * Bug #44997: move checkbox "Users with write access may modify permissions"
+    into "Samba permissions"
+  * Bug #44997: make checkboxes fit the whole size instead of breaking into
+    mulitple lines
+  * Bug #44997: transform advanced settings tabs into Groups on the
+    corresponding Samba/NFS tab
+
+ -- Florian Best <best@univention.de>  Thu, 08 Jun 2023 20:49:47 +0200
+
 univention-directory-manager-modules (15.0.20-9) unstable; urgency=medium
 
   * Bug #56113: Allow local machine connections in Simple UDM API
