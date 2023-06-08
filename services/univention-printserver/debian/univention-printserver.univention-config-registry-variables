@@ -4,6 +4,13 @@ Description[en]=Error and status messages of the CUPS service are sent to the em
 Type=str
 Categories=service-cups
 
+[cups/browsing]
+Description[de]=Diese Option legt fest, ob geteilte Drucker bei Druckersuchen angezeigt werden.
+Description[en]=This option specifies whether shared printers are advertised.
+Type=str
+Default=Off
+Categories=service-cups
+
 [cups/errorpolicy]
 Description[de]=Diese Variable konfiguriert das Verhalten, wenn ein Druckauftrag nicht an einen Drucker gesendet werden konnte: Die möglichen Werte sind: 'abort-job' (Abbruch des aktuellen Auftrags und Fortfahren mit dem nächsten), 'retry-current-job' (Erneuter sofortiger Versuch den Druckauftrag zu senden), 'retry-job' (Erneuter Versuch den Druckauftrag nach 30 Sekunden zu senden) und 'stop-printer' (Anhalten des Druckers und Zurückhalten des Druckauftrags für späteren Druck).
 Description[en]=This variable configures the behavior if a print job could not be sent to a printer. The possible values are: 'abort-job' (Aborting the current job and proceed with the next), 'retry-current-job' (Immediately retry to send the print job), 'retry-job' (Retry to send the print job after 30 seconds) and 'stop-printer' (Stop the printer and hold back the print job for later).

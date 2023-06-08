@@ -297,7 +297,7 @@ Port 631
 # information on the network.  Enabled by default.
 #
 
-Browsing Off
+Browsing @%@cups/browsing@%@
 
 #
 # BrowseProtocols: which protocols to use for browsing.  Can be

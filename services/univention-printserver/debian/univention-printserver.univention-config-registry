@@ -14,6 +14,7 @@ Subfile: etc/cups/cupsd.conf.d/01cupsd-base
 Variables: interfaces/eth.*/network
 Variables: interfaces/eth.*/netmask
 Variables: cups/admin
+Variables: cups/browsing
 Variables: cups/errorpolicy
 Variables: cups/location/base
 Variables: cups/location/admin
