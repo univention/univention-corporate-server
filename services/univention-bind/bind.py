@@ -203,23 +203,21 @@ def _new_zone(ucr: Dict[str, str], zonename: str, dn: str) -> None:
         dn,
         _ldap_auth_string(ucr),
     )
-    named_zone = open(zonefile, 'w+')
-    named_zone.write('zone "%s" {\n' % (_quote_config_parameter(zonename),))
-    named_zone.write('\ttype master;\n')
-    named_zone.write('\tnotify yes;\n')
-    named_zone.write('\tdatabase "ldap %s 172800";\n' % (_quote_config_parameter(ldap_uri),))
-    named_zone.write('};\n')
-    named_zone.close()
+    with open(zonefile, 'w+') as named_zone:
+        named_zone.write('zone "%s" {\n' % (_quote_config_parameter(zonename),))
+        named_zone.write('\ttype master;\n')
+        named_zone.write('\tnotify yes;\n')
+        named_zone.write('\tdatabase "ldap %s 172800";\n' % (_quote_config_parameter(ldap_uri),))
+        named_zone.write('};\n')
 
     # Create proxy configuration file
     proxy_file = safe_path_join(NAMED_CONF_DIR, zonename + '.proxy')
-    proxy_zone = open(proxy_file, 'w')
-    proxy_zone.write('zone "%s" {\n' % (_quote_config_parameter(zonename),))
-    proxy_zone.write('\ttype slave;\n')
-    proxy_zone.write('\tfile "%s.zone";\n' % (_quote_config_parameter(zonename),))
-    proxy_zone.write('\tmasters port 7777 { 127.0.0.1; };\n')
-    proxy_zone.write('};\n')
-    proxy_zone.close()
+    with open(proxy_file, 'w') as proxy_zone:
+        proxy_zone.write('zone "%s" {\n' % (_quote_config_parameter(zonename),))
+        proxy_zone.write('\ttype slave;\n')
+        proxy_zone.write('\tfile "%s.zone";\n' % (_quote_config_parameter(zonename),))
+        proxy_zone.write('\tmasters port 7777 { 127.0.0.1; };\n')
+        proxy_zone.write('};\n')
     os.chmod(proxy_file, 0o640)
     chgrp_bind(proxy_file)
 
@@ -352,16 +350,13 @@ def postrun() -> None:
 
     try:
         # Re-create named and proxy inclusion file
-        named_conf = open(NAMED_CONF_FILE, 'w')
-        proxy_conf = open(PROXY_CONF_FILE, 'w')
-        if os.path.isdir(NAMED_CONF_DIR):
-            for f in os.listdir(NAMED_CONF_DIR):
-                if not f.endswith('.proxy'):
-                    named_conf.write('include "%s";\n' % _quote_config_parameter(os.path.join(NAMED_CONF_DIR, f)))
-                else:
-                    proxy_conf.write('include "%s";\n' % _quote_config_parameter(os.path.join(NAMED_CONF_DIR, f)))
-        named_conf.close()
-        proxy_conf.close()
+        with open(NAMED_CONF_FILE, 'w') as named_conf, open(PROXY_CONF_FILE, 'w') as proxy_conf:
+            if os.path.isdir(NAMED_CONF_DIR):
+                for f in os.listdir(NAMED_CONF_DIR):
+                    if not f.endswith('.proxy'):
+                        named_conf.write('include "%s";\n' % _quote_config_parameter(os.path.join(NAMED_CONF_DIR, f)))
+                    else:
+                        proxy_conf.write('include "%s";\n' % _quote_config_parameter(os.path.join(NAMED_CONF_DIR, f)))
 
         os.chmod(NAMED_CONF_FILE, 0o644)
         os.chmod(PROXY_CONF_FILE, 0o644)
