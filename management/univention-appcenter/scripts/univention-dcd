@@ -40,21 +40,17 @@ import json
 import sys
 from argparse import ArgumentParser, FileType, Namespace
 
-from univention.appcenter.dcd import DCD
-from univention.config_registry import ConfigRegistry
-from univention.udm import UDM
-
-
-ucr = ConfigRegistry()
-ucr.load()
+from univention.lib.dcd import DCD, DCDDefaults
 
 
 def parse_args(args: list[str] = None) -> Namespace:
 
+    dcd_settings = DCDDefaults()
+
     parser = ArgumentParser(description=__doc__)
-    parser.add_argument("--username", default=f"{ucr.get('hostname')}$")
-    parser.add_argument("--password-file", default="/etc/machine.secret", metavar="FILE", type=FileType("r", encoding="UTF-8"))
-    parser.add_argument("--server")
+    parser.add_argument("--username", default=dcd_settings.username)
+    parser.add_argument("--password-file", default=dcd_settings.password_file, metavar="FILE", type=FileType("r", encoding="UTF-8"))
+    parser.add_argument("--server", default=dcd_settings.server)
     parser.add_argument("--json", help="JSON output", default=False, action="store_true")
 
     subparsers = parser.add_subparsers(title="subcommands", description="valid subcommands", required=True, dest="command")
@@ -101,16 +97,6 @@ def error(msg: str) -> None:
     return 1
 
 
-# TODO this should go to univention.appcenter.dcd
-def get_default_dcd_server(opt: Namespace) -> str | None:
-    udm = UDM.machine().version(2)
-    for role in ['domaincontroller_master', 'domaincontroller_backup', 'domaincontroller_slave', 'memberserver']:
-        for srv in udm.get(f"computers/{role}").search(filter_s="univentionService=Distributed Configuration Database"):
-            if srv.props.fqdn:
-                return srv.props.fqdn
-    return None
-
-
 def get_dcd(opt: Namespace, dcd: DCD) -> None:
     res = dcd.get(opt.key)
     myprint(opt, res)
@@ -148,11 +134,7 @@ def set_dcd(opt: Namespace, dcd: DCD) -> None:
 def main() -> int:
     """CLI tool to interact with the Distributed Configuration Database"""
     opt = parse_args()
-    if not opt.server:
-        opt.server = get_default_dcd_server(opt)
-        if not opt.server:
-            raise Exception("Couldn't find a Distributed Configuration Database server, is the dcd app installed?")
-    dcd = DCD(opt.username, opt.password, "https://%s/univention/dcd/" % opt.server, version=1)
+    dcd = DCD(opt.username, opt.password, opt.server, version=1)
     return opt.func(opt, dcd) or 0
 
 
