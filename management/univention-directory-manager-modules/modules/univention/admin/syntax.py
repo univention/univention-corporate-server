@@ -6907,6 +6907,68 @@ class UDM_Syntax(combobox):
 __register_choice_update_function(UDM_Syntax.update_choices)
 
 
+class VFSObjects(combobox):
+    """Syntax class to select a incomplete list of Samba VBF objects"""
+
+    choices = [
+        # ('acl_tdb', 'acl_tdb'),
+        # ('acl_xattr', 'acl_xattr'),
+        ('aio_fork', 'aio_fork'),
+        ('aio_pthread', 'aio_pthread'),
+        ('aixacl2', 'aixacl2'),
+        ('audit', 'audit'),
+        ('btrfs', 'btrfs'),
+        ('cacheprime', 'cacheprime'),
+        ('cap', 'cap'),
+        ('catia', 'catia'),
+        ('ceph', 'ceph'),
+        ('ceph_snapshots', 'ceph_snapshots'),
+        ('commit', 'commit'),
+        ('crossrename', 'crossrename'),
+        ('default_quota', 'default_quota'),
+        ('delay_inject', 'delay_inject'),
+        ('dfs_samba4', 'dfs_samba4'),
+        ('dirsort', 'dirsort'),
+        ('error_inject', 'error_inject'),
+        ('expand_msdfs', 'expand_msdfs'),
+        ('extd_audit', 'extd_audit'),
+        ('fake_acls', 'fake_acls'),
+        ('fake_dfq', 'fake_dfq'),
+        ('fake_perms', 'fake_perms'),
+        ('fileid', 'fileid'),
+        ('fruit', 'fruit'),
+        ('full_audit', 'full_audit'),
+        ('glusterfs', 'glusterfs'),
+        ('glusterfs_fuse', 'glusterfs_fuse'),
+        ('gpfs', 'gpfs'),
+        ('io_uring', 'io_uring'),
+        ('linux_xfs_sgid', 'linux_xfs_sgid'),
+        ('media_harmony', 'media_harmony'),
+        ('nfs4acl_xattr', 'nfs4acl_xattr'),
+        ('offline', 'offline'),
+        ('prealloc', 'prealloc'),
+        ('preopen', 'preopen'),
+        ('readahead', 'readahead'),
+        ('readonly', 'readonly'),
+        ('recycle', 'recycle'),
+        ('shadow_copy', 'shadow_copy'),
+        ('shadow_copy2', 'shadow_copy2'),
+        ('shell_snap', 'shell_snap'),
+        ('snapper', 'snapper'),
+        ('streams_depot', 'streams_depot'),
+        ('streams_xattr', 'streams_xattr'),
+        ('syncops', 'syncops'),
+        ('time_audit', 'time_audit'),
+        ('tsmsm', 'tsmsm'),
+        ('unityed_media', 'unityed_media'),
+        ('virusfilter', 'virusfilter'),
+        ('widelinks', 'widelinks'),
+        ('worm', 'worm'),
+        ('xattr_tdb', 'xattr_tdb'),
+        ('zfsacl', 'zfsacl'),
+    ]
+
+
 class _EscapedDict(dict):
 
     def __init__(self, _dict):

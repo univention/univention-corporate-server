@@ -89,6 +89,11 @@ property_descriptions = {
         required=True,
         identifies=True,
     ),
+    'description': univention.admin.property(
+        short_description=_('Comment'),
+        long_description=_('A comment e.g. shown in the file browser.'),
+        syntax=univention.admin.syntax.string,
+    ),
     'printablename': univention.admin.property(
         short_description=_('Printable name'),
         long_description=_('Printable name'),
@@ -122,7 +127,7 @@ property_descriptions = {
     ),
     'directorymode': univention.admin.property(
         short_description=_("Permissions for the share's root directory"),
-        long_description=_('Access rights to the exported root directory'),
+        long_description=_('UNIX Access rights to the exported root directory. If the setgid option is set for a directory, files saved there inherit the directories owner group. If further directories are created, they also inherit the option. If the sticky bit option is enabled for a directory, files in this directory can only be deleted by the owner of the file or the root user.'),
         syntax=univention.admin.syntax.UNIX_AccessRight_extended,
         dontsearch=True,
         default="00755",
@@ -168,8 +173,8 @@ property_descriptions = {
         options=['nfs'],
     ),
     'sambaWriteable': univention.admin.property(
-        short_description=_('Samba write access'),
-        long_description=_('Define if the share is writable when accessed via Samba.'),
+        short_description=_('Allow Samba write access'),
+        long_description=_('Define if the share is writable when accessed via Samba. If this is deactivated users still can have write access via the "Restrict write access to these users/groups" list.'),
         syntax=univention.admin.syntax.boolean,
         options=['samba'],
         default='1',
@@ -183,12 +188,12 @@ property_descriptions = {
         default='<name>',
     ),
     'sambaBrowseable': univention.admin.property(
-        short_description=_('Show in Windows network environment'),
+        short_description=_('Show share in Windows network environment'),
         long_description=_('Share is browseable, i.e. it is listed in the Windows network environment'),
         syntax=univention.admin.syntax.boolean,
         options=['samba'],
         default='1',
-        size='One',
+        size='Two',
     ),
     'sambaPublic': univention.admin.property(
         short_description=_('Allow anonymous read-only access with a guest user'),
@@ -196,7 +201,7 @@ property_descriptions = {
         syntax=univention.admin.syntax.boolean,
         options=['samba'],
         default='0',
-        size='One',
+        size='Two',
     ),
     'sambaDosFilemode': univention.admin.property(
         short_description=_('Users with write access may modify permissions'),
@@ -204,7 +209,7 @@ property_descriptions = {
         syntax=univention.admin.syntax.boolean,
         options=['samba'],
         default='0',
-        size='One',
+        size='Two',
     ),
     'sambaHideUnreadable': univention.admin.property(
         short_description=_('Hide unreadable files/directories'),
@@ -212,7 +217,7 @@ property_descriptions = {
         syntax=univention.admin.syntax.boolean,
         options=['samba'],
         default='0',
-        size='One',
+        size='Two',
     ),
     'sambaCreateMode': univention.admin.property(
         short_description=_('File mode'),
@@ -340,29 +345,37 @@ property_descriptions = {
     ),
     'sambaHostsAllow': univention.admin.property(
         short_description=_('Allowed host/network'),
-        long_description='',
+        long_description=_('Hosts, IP or network addresses which are permitted to access the share (e.g. 150.203.5.6, myhost.mynet.edu.au, 150.203.15.0/255.255.255.0, 150.203. EXCEPT 150.203.6.66).'),
         syntax=univention.admin.syntax.string,
         multivalue=True,
         options=['samba'],
     ),
     'sambaHostsDeny': univention.admin.property(
         short_description=_('Denied host/network'),
-        long_description='',
+        long_description=_('Hosts listed here are not permitted access to the share. If a host appears also in the allowed list, it is permitted to access the share. The syntax is identical to he one for allowed hosts.'),
         syntax=univention.admin.syntax.string,
         multivalue=True,
         options=['samba'],
     ),
     'sambaValidUsers': univention.admin.property(
         short_description=_('Valid users or groups'),
-        long_description='',
+        long_description=' '.join((
+            _('Names of users or groups which are authorized to access this Samba share. To all other users, access is denied. If the field is empty, all users may access the share - if necessary after entering a password. This option is useful for securing access to a share at file server level beyond the file permissions.'),
+            _('The entries are to be separated by spaces. The special characters @, + and & can be used in connection with the group name for assigning certain permissions to the users of the stated group for accessing the Samba share:'),
+            _('A name beginning with the character @ will first be interpreted as a NIS net-group. Should no NIS net-group of this name be found, the name will be considered as a UNIX group.'),
+            _('A name beginning with the character + will be exclusively considered as a UNIX group, a name beginning with the character & will be exclusively considered as a NIS net-group.'),
+            _('A name beginning with the characters +&, will first be interpreted as a UNIX group. Should no UNIX group of this name be found, the name will be considered as a NIS net-group. The characters &+ as the beginning of a name correspond to the character @.'),
+        )),
         syntax=univention.admin.syntax.string,
         options=['samba'],
+        multivalue=True,
     ),
     'sambaInvalidUsers': univention.admin.property(
         short_description=_('Invalid users or groups'),
-        long_description='',
+        long_description=_('The users or groups listed here cannot access the Samba share. The syntax is identical to the one for valid users. If a user or group is included in the list of valid users and unauthorized users, access is denied.'),
         syntax=univention.admin.syntax.string,
         options=['samba'],
+        multivalue=True,
     ),
     'sambaForceUser': univention.admin.property(
         short_description=_('Force user'),
@@ -377,8 +390,8 @@ property_descriptions = {
         options=['samba'],
     ),
     'sambaHideFiles': univention.admin.property(
-        short_description=_('Hide files'),
-        long_description='',
+        short_description=_('Hidden files'),
+        long_description=_('List of files or directories that are not visible but are accessible. Entries must be separated by "/" (e.g. /.*/DesktopFolderDB/TrashFor%m/resource.frk/).'),
         syntax=univention.admin.syntax.string,
         options=['samba'],
     ),
@@ -410,25 +423,34 @@ property_descriptions = {
         syntax=univention.admin.syntax.string,
         options=['samba'],
     ),
-    'sambaWriteList': univention.admin.property(
-        short_description=_('Restrict write access to these users/groups'),
-        long_description='',
+    'sambaReadList': univention.admin.property(
+        short_description=_('Restrict read access to these users/groups'),
+        long_description=_('List of users or groups that are given read-only access to the share.'),
         syntax=univention.admin.syntax.string,
         options=['samba'],
+        multivalue=True,
+    ),
+    'sambaWriteList': univention.admin.property(
+        short_description=_('Restrict write access to these users/groups'),
+        long_description=_('If (and only if) "Allow Samba write access" is deactivated only the users and groups listed here have write permission for this share. Groups can be assigned with the same syntax as "Valid users or groups". If the connecting user is in this list then they will be given write access, no matter what the read only option is set to.'),
+        syntax=univention.admin.syntax.string,
+        options=['samba'],
+        multivalue=True,
     ),
     'sambaVFSObjects': univention.admin.property(
         short_description=_('VFS objects'),
         long_description=_('Specifies which VFS Objects to use.'),
-        syntax=univention.admin.syntax.string,
+        syntax=getattr(univention.admin.syntax, 'VFSObjects', univention.admin.syntax.string),
+        multivalue=True,
         options=['samba'],
     ),
     'sambaMSDFSRoot': univention.admin.property(
-        short_description=_('MSDFS root'),
-        long_description=_('Export share as MSDFS root. Please consult the "Fileshare management" chapter in the manual for more information'),
+        short_description=_('Export share as MSDFS root'),
+        long_description=_('Please consult the "Fileshare management" chapter in the manual for more information'),
         syntax=univention.admin.syntax.boolean,
         options=['samba'],
         default='0',
-        size='One',
+        size='Two',
     ),
     'sambaInheritOwner': univention.admin.property(
         short_description=_('Create files/directories with the owner of the parent directory'),
@@ -472,7 +494,7 @@ property_descriptions = {
 layout = [
     Tab(_('General'), _('General settings'), layout=[
         Group(_('General directory share settings'), layout=[
-            'name',
+            ['name', 'description'],
             ['host', 'path'],
             ['owner', 'group'],
             'directorymode',
@@ -486,46 +508,40 @@ layout = [
             'sync',
             'nfs_hosts',
         ]),
+        Group(_('NFS custom settings'), layout=[
+            'nfsCustomSettings',
+        ]),
     ]),
     Tab(_('Samba'), _('General Samba settings'), layout=[
         Group(_('Samba'), layout=[
             'sambaName',
-            'sambaWriteable',
             'sambaBrowseable',
             'sambaPublic',
             'sambaMSDFSRoot',
-            'sambaDosFilemode',
             'sambaHideUnreadable',
-            'sambaVFSObjects',
         ]),
-    ]),
-    Tab(_('Samba permissions'), _('Samba permission settings'), advanced=True, layout=[
-        ['sambaForceUser', 'sambaForceGroup'],
-        ['sambaValidUsers', 'sambaInvalidUsers'],
-        ['sambaWriteList'],
-        ['sambaHostsAllow', 'sambaHostsDeny'],
-        ['sambaNtAclSupport', 'sambaInheritAcls'],
-        ['sambaInheritOwner', 'sambaInheritPermissions'],
-    ]),
-    Tab(_('Samba extended permissions'), _('Samba extended permission settings'), advanced=True, layout=[
-        ['sambaCreateMode', 'sambaDirectoryMode'],
-        ['sambaForceCreateMode', 'sambaForceDirectoryMode'],
-        ['sambaSecurityMode', 'sambaDirectorySecurityMode'],
-        ['sambaForceSecurityMode', 'sambaForceDirectorySecurityMode'],
-    ]),
-    Tab(_('Samba options'), _('Samba options'), advanced=True, layout=[
-        ['sambaLocking', 'sambaBlockingLocks'],
-        ['sambaStrictLocking'],
-        ['sambaOplocks', 'sambaLevel2Oplocks', 'sambaFakeOplocks'],
-        ['sambaBlockSize', 'sambaCscPolicy'],
-        ['sambaHideFiles'],
-        ['sambaPostexec', 'sambaPreexec'],
-    ]),
-    Tab(_('Samba custom settings'), _('Custom settings for Samba shares'), advanced=True, layout=[
-        'sambaCustomSettings',
-    ]),
-    Tab(_('NFS custom settings'), _('Custom settings for NFS shares'), advanced=True, layout=[
-        'nfsCustomSettings',
+        Group(_('Samba permissions'), layout=[
+            'sambaDosFilemode',
+            ['sambaForceUser', 'sambaForceGroup'],
+            ['sambaValidUsers', 'sambaInvalidUsers'],
+            ['sambaReadList', 'sambaWriteable', 'sambaWriteList'],
+            ['sambaHostsAllow', 'sambaHostsDeny'],
+            ['sambaInheritAcls'],
+            ['sambaInheritOwner', 'sambaInheritPermissions'],
+        ]),
+        Group(_('Samba extended permissions'), layout=[
+            ['sambaCreateMode', 'sambaDirectoryMode'],
+            ['sambaForceCreateMode', 'sambaForceDirectoryMode'],
+        ]),
+        Group(_('Samba options'), layout=[
+            'sambaVFSObjects',
+            ['sambaCscPolicy'],
+            ['sambaHideFiles'],
+            ['sambaPostexec', 'sambaPreexec'],
+        ]),
+        Group(_('Samba custom settings'), layout=[
+            'sambaCustomSettings',
+        ]),
     ]),
 ]
 
@@ -552,28 +568,58 @@ def unmapKeyAndValue(old):
     return [entry.decode('UTF-8').split(u' = ', 1) for entry in old]
 
 
-def insertQuotes(value):
-    'Turns @group name, user name into @"group name", "user name"'
-    new_entries = []
-    for entry in value.split(u','):
-        new_entry = entry.strip()
-        if not new_entry:
-            continue
-        if new_entry.startswith(u'@'):
-            is_group = True
-            new_entry = new_entry[1:].strip()
-        else:
-            is_group = False
-        if ' ' in new_entry:
-            new_entry = u'"%s"' % new_entry
-        if is_group:
-            new_entry = u'@%s' % new_entry
-        new_entries.append(new_entry)
-    return ', '.join(new_entries).encode('UTF-8')
+def unmap_samba_user_groups(value, encoding=()):
+    """
+    >>> unmap_samba_user_groups([b'root fred,admin, @wheel, "Domain User", @"Domain Users"'])
+    ['root', 'fred', 'admin', '@wheel', 'Domain User', '@Domain Users']
+
+    # FIXME: regex cannot handle this:
+    >>> unmap_samba_user_groups([b'root +"some \" quoted" &option'])  # doctest: +SKIP
+    ['root', '+some " quoted', '&option']
+    """
+    if not value:
+        return []
+
+    def unquote(x):
+        return x[1:-1].replace('\\"', '"').replace('\\\\', '\\') if x.startswith('"') and x.endswith('"') else x
+    value = value[0].decode(*encoding)
+    pattern = re.compile('[, ](?=(?:[^"]*"[^"]*")*[^"]*$)')
+    values = [x.strip() for x in pattern.split(value) if x.strip()]
+    return [
+        v[0] + unquote(v[1:]) if v[0] in '@+&' else unquote(v)
+        for v in values
+    ]
+
+
+def map_samba_user_groups(value, encoding=()):
+    """
+    Turns @group name, user name into @"group name", "user name"
+
+    >>> map_samba_user_groups(['root', 'fred', 'admin', '@wheel', 'Domain User', '&Domain Users', '+some " quoted', 'option"set'])
+    b'root, fred, admin, @wheel, "Domain User", &"Domain Users", +"some \\\\" quoted", "option\\\\"set"'
+    >>> map_samba_user_groups(['@"Domain Users"'])
+    b'@"Domain Users"'
+    """
+    def quote(x):
+        return '"%s"' % x.replace('\\', '\\\\').replace('"', r'\"') if not x.startswith('"') and not x.endswith('"') and (' ' in x or '"' in x or '\\' in x) else x
+    return ', '.join(
+        v[0] + quote(v[1:]) if v[0] in '@+&' else quote(v)
+        for v in value
+        if v
+    ).encode(*encoding)
+
+
+def unmap_vfs_objects(value, encoding=()):
+    return [v for entry in value for v in entry.decode(*encoding).split(u' ')]
+
+
+def map_vfs_objects(value, encoding=()):
+    return u' '.join(value).encode('UTF-8')
 
 
 mapping = univention.admin.mapping.mapping()
 mapping.register('name', 'cn', None, univention.admin.mapping.ListToString)
+mapping.register('description', 'description', None, univention.admin.mapping.ListToString)
 mapping.register('host', 'univentionShareHost', None, univention.admin.mapping.ListToString, encoding='ASCII')
 mapping.register('path', 'univentionSharePath', None, univention.admin.mapping.ListToString)
 mapping.register('owner', 'univentionShareUid', None, univention.admin.mapping.ListToString)
@@ -605,8 +651,8 @@ mapping.register('sambaLevel2Oplocks', 'univentionShareSambaLevel2Oplocks', None
 mapping.register('sambaFakeOplocks', 'univentionShareSambaFakeOplocks', None, univention.admin.mapping.ListToString, encoding='ASCII')
 mapping.register('sambaBlockSize', 'univentionShareSambaBlockSize', None, univention.admin.mapping.ListToString, encoding='ASCII')
 mapping.register('sambaCscPolicy', 'univentionShareSambaCscPolicy', None, univention.admin.mapping.ListToString)
-mapping.register('sambaValidUsers', 'univentionShareSambaValidUsers', None, univention.admin.mapping.ListToString)
-mapping.register('sambaInvalidUsers', 'univentionShareSambaInvalidUsers', None, univention.admin.mapping.ListToString)
+mapping.register('sambaValidUsers', 'univentionShareSambaValidUsers', map_samba_user_groups, unmap_samba_user_groups)
+mapping.register('sambaInvalidUsers', 'univentionShareSambaInvalidUsers', map_samba_user_groups, unmap_samba_user_groups)
 mapping.register('sambaHostsAllow', 'univentionShareSambaHostsAllow', encoding='ASCII')
 mapping.register('sambaHostsDeny', 'univentionShareSambaHostsDeny', encoding='ASCII')
 mapping.register('sambaForceUser', 'univentionShareSambaForceUser', None, univention.admin.mapping.ListToString)
@@ -617,8 +663,9 @@ mapping.register('sambaInheritAcls', 'univentionShareSambaInheritAcls', None, un
 mapping.register('sambaPostexec', 'univentionShareSambaPostexec', None, univention.admin.mapping.ListToString, encoding='ASCII')
 mapping.register('sambaPreexec', 'univentionShareSambaPreexec', None, univention.admin.mapping.ListToString, encoding='ASCII')
 mapping.register('sambaWriteable', 'univentionShareSambaWriteable', boolToString, stringToBool, encoding='ASCII')
-mapping.register('sambaWriteList', 'univentionShareSambaWriteList', insertQuotes, univention.admin.mapping.ListToString)
-mapping.register('sambaVFSObjects', 'univentionShareSambaVFSObjects', None, univention.admin.mapping.ListToString, encoding='ASCII')
+mapping.register('sambaReadList', 'univentionShareSambaReadList', map_samba_user_groups, unmap_samba_user_groups)
+mapping.register('sambaWriteList', 'univentionShareSambaWriteList', map_samba_user_groups, unmap_samba_user_groups)
+mapping.register('sambaVFSObjects', 'univentionShareSambaVFSObjects', map_vfs_objects, unmap_vfs_objects, encoding='ASCII')
 mapping.register('sambaMSDFSRoot', 'univentionShareSambaMSDFS', boolToString, stringToBool, encoding='ASCII')
 mapping.register('sambaInheritOwner', 'univentionShareSambaInheritOwner', boolToString, stringToBool, encoding='ASCII')
 mapping.register('sambaInheritPermissions', 'univentionShareSambaInheritPermissions', boolToString, stringToBool, encoding='ASCII')

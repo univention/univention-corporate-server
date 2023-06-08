@@ -196,6 +196,7 @@ def handler(dn: str, new: Dict[str, List[bytes]], old: Dict[str, List[bytes]], c
                 ('univentionShareSambaInheritAcls', 'inherit acls', 'ASCII'),
                 ('univentionShareSambaPostexec', 'postexec', 'ASCII'),
                 ('univentionShareSambaPreexec', 'preexec', 'ASCII'),
+                ('univentionShareSambaReadList', 'read list', 'UTF-8'),
                 ('univentionShareSambaWriteList', 'write list', 'UTF-8'),
                 ('univentionShareSambaVFSObjects', 'vfs objects', 'ASCII'),
                 ('univentionShareSambaInheritOwner', 'inherit owner', 'ASCII'),

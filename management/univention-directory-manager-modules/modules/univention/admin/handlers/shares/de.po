@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-directory-manager-modules\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2022-04-22 22:53+0200\n"
+"POT-Creation-Date: 2023-06-08 20:43+0200\n"
 "PO-Revision-Date: 2021-05-04 10:26+0200\n"
 "Last-Translator: Univention GmbH <packages@univention.de>\n"
 "Language-Team: German <packages@univention.de>\n"
@@ -12,96 +12,137 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: modules/univention/admin/handlers/shares/share.py:678
+#: modules/univention/admin/handlers/shares/share.py:727
 #, python-format
 msgid " and %s more"
 msgstr "und %s mehr"
 
-#: modules/univention/admin/handlers/shares/share.py:693
+#: modules/univention/admin/handlers/shares/share.py:742
 #, python-format
 msgid "%(name)s (%(path)s on %(host)s)"
 msgstr "%(name)s (%(path)s auf %(host)s)"
 
-#: modules/univention/admin/handlers/shares/printergroup.py:143
+#: modules/univention/admin/handlers/shares/printergroup.py:145
 #, python-format
 msgid "%(name)s is not a valid printer on Spoolhost %(host)s."
 msgstr "%(name)s ist kein gültiger Drucker auf dem Server %(host)s."
 
-#: modules/univention/admin/handlers/shares/printer.py:246
-#: modules/univention/admin/handlers/shares/printergroup.py:130
+#: modules/univention/admin/handlers/shares/printer.py:248
+#: modules/univention/admin/handlers/shares/printergroup.py:132
 #, python-format
 msgid "%(name)s is the last member of the printer group %(group)s. "
 msgstr "%(name)s ist das letzte Mitglied in der Druckergruppe %(group)s."
 
-#: modules/univention/admin/handlers/shares/printer.py:132
-#: modules/univention/admin/handlers/shares/printer.py:161
-#: modules/univention/admin/handlers/shares/printer.py:162
+#: modules/univention/admin/handlers/shares/share.py:94
+msgid "A comment e.g. shown in the file browser."
+msgstr "Ein Kommentar, der z.B. im Dateibrowser angezeigt wird."
+
+#: modules/univention/admin/handlers/shares/share.py:366
+msgid ""
+"A name beginning with the character + will be exclusively considered as a "
+"UNIX group, a name beginning with the character & will be exclusively "
+"considered as a NIS net-group."
+msgstr ""
+"Ein Name, der mit dem Zeichen + beginnt, wird ausschließlich als eine UNIX-"
+"Gruppe, ein Name, der mit dem Zeichen & beginnt, wird ausschließlich als "
+"NIS-Netzgruppe betrachtet."
+
+#: modules/univention/admin/handlers/shares/share.py:365
+msgid ""
+"A name beginning with the character @ will first be interpreted as a NIS "
+"net-group. Should no NIS net-group of this name be found, the name will be "
+"considered as a UNIX group."
+msgstr ""
+"Ein Name, der mit dem Zeichen @ beginnt, wird zunächst als NIS-Netzgruppe "
+"interpretiert. Sollte keine NIS-Netzgruppe dieses Namens gefunden werden, "
+"wird der Name als eine UNIX-Gruppe interpretiert."
+
+#: modules/univention/admin/handlers/shares/share.py:367
+msgid ""
+"A name beginning with the characters +&, will first be interpreted as a UNIX"
+" group. Should no UNIX group of this name be found, the name will be "
+"considered as a NIS net-group. The characters &+ as the beginning of a name "
+"correspond to the character @."
+msgstr ""
+"Ein Name, der mit den Zeichen +& beginnt, wird zunächst als UNIX-Gruppe "
+"interpretiert. Gruppe interpretiert. Sollte keine UNIX-Gruppe dieses Namens "
+"gefunden werden, wird der Name als NIS-Netzgruppe interpretiert. Die Zeichen"
+" &+ am Anfang eines Namensentsprechen dem Zeichen @."
+
+#: modules/univention/admin/handlers/shares/printer.py:134
+#: modules/univention/admin/handlers/shares/printer.py:163
+#: modules/univention/admin/handlers/shares/printer.py:164
 msgid "Access control"
 msgstr "Zugriffskontrolle"
 
-#: modules/univention/admin/handlers/shares/printer.py:161
+#: modules/univention/admin/handlers/shares/printer.py:163
 msgid "Access control for users and groups"
 msgstr "Zugriffskontrolle für Benutzer und Gruppen"
 
-#: modules/univention/admin/handlers/shares/printer.py:133
+#: modules/univention/admin/handlers/shares/printer.py:135
 msgid "Access list can allow or deny listed users and groups."
 msgstr ""
 "Zugriffslisten können Benutzer oder Gruppen freischalten oder zurückweisen."
 
-#: modules/univention/admin/handlers/shares/share.py:122
-msgid "Access rights to the exported root directory"
-msgstr ""
-"Zugriffsberechtigungen für das exportierte Wurzelverzeichnis der Freigabe"
-
-#: modules/univention/admin/handlers/shares/share.py:462
+#: modules/univention/admin/handlers/shares/share.py:487
 msgid "Additional NTACL elements for the base directory of Samba file shares."
 msgstr ""
+"Zusätzliche NTACL-Elemente für das Basisverzeichnis von Samba-"
+"Dateifreigaben."
 
-#: modules/univention/admin/handlers/shares/printer.py:54
+#: modules/univention/admin/handlers/shares/share.py:176
+msgid "Allow Samba write access"
+msgstr "Samba-Schreibzugriff erlauben"
+
+#: modules/univention/admin/handlers/shares/printer.py:56
 msgid "Allow all users."
 msgstr "Zugriff für alle Benutzer/Gruppen zulassen."
 
-#: modules/univention/admin/handlers/shares/share.py:191
+#: modules/univention/admin/handlers/shares/share.py:199
 msgid "Allow anonymous read-only access with a guest user"
 msgstr "Anonymen Nur-Lese-Zugriff mit Gastbenutzer erlauben"
 
-#: modules/univention/admin/handlers/shares/share.py:192
+#: modules/univention/admin/handlers/shares/share.py:200
 msgid "Allow guest access"
 msgstr "Gastzugriff erlauben"
 
-#: modules/univention/admin/handlers/shares/printer.py:55
+#: modules/univention/admin/handlers/shares/printer.py:57
 msgid "Allow only chosen users/groups."
 msgstr "Zugriff nur für ausgewählte Benutzer/Gruppen zulassen."
 
-#: modules/univention/admin/handlers/shares/share.py:339
+#: modules/univention/admin/handlers/shares/share.py:347
 msgid "Allowed host/network"
 msgstr "Zugelassene(r/s) Rechner/Netz"
 
-#: modules/univention/admin/handlers/shares/printer.py:144
+#: modules/univention/admin/handlers/shares/printer.py:146
 msgid "Allowed/denied groups"
 msgstr "Zugelassene/abgewiesene Gruppen"
 
-#: modules/univention/admin/handlers/shares/printer.py:138
+#: modules/univention/admin/handlers/shares/printer.py:140
 msgid "Allowed/denied users"
 msgstr "Zugelassene/abgewiesene Benutzer"
 
-#: modules/univention/admin/handlers/shares/share.py:461
+#: modules/univention/admin/handlers/shares/share.py:486
 msgid "Append NTACLs for Samba file shares"
-msgstr ""
+msgstr "NTACLs für Samba-Dateifreigaben anfügen"
 
-#: modules/univention/admin/handlers/shares/share.py:326
+#: modules/univention/admin/handlers/shares/share.py:334
 msgid "Block size"
 msgstr "Blockgröße"
 
-#: modules/univention/admin/handlers/shares/share.py:287
+#: modules/univention/admin/handlers/shares/share.py:295
 msgid "Blocking locks"
 msgstr "Blocking Locks"
 
-#: modules/univention/admin/handlers/shares/share.py:332
+#: modules/univention/admin/handlers/shares/share.py:340
 msgid "Client-side caching policy"
 msgstr "Richtlinie für das Caching beim Client"
 
-#: modules/univention/admin/handlers/shares/share.py:455
+#: modules/univention/admin/handlers/shares/share.py:93
+msgid "Comment"
+msgstr "Kommentar"
+
+#: modules/univention/admin/handlers/shares/share.py:480
 msgid ""
 "Configure additional settings for this share which are added to the "
 "/etc/exports file."
@@ -109,7 +150,7 @@ msgstr ""
 "Konfigurieren von zusätzlichen Einstellungen für diese Freigabe, die der "
 "Datei /etc/exports hinzugefügt werden."
 
-#: modules/univention/admin/handlers/shares/share.py:448
+#: modules/univention/admin/handlers/shares/share.py:473
 msgid ""
 "Configure additional smb.conf settings for this share, which are added in "
 "the form key = value"
@@ -118,99 +159,93 @@ msgstr ""
 "Diese werden in der Form Schlüssel = Wert der Freigabendefinition "
 "hinzugefügt."
 
-#: modules/univention/admin/handlers/shares/printer.py:107
+#: modules/univention/admin/handlers/shares/printer.py:109
 msgid "Connection"
 msgstr "Verbindung"
 
-#: modules/univention/admin/handlers/shares/share.py:439
+#: modules/univention/admin/handlers/shares/share.py:464
 msgid "Create files/directories with permissions of the parent directory"
 msgstr ""
 "Neue Dateien und Verzeichnisse erhalten die Zugriffsrechte des "
 "übergeordneten Verzeichnisses"
 
-#: modules/univention/admin/handlers/shares/share.py:431
+#: modules/univention/admin/handlers/shares/share.py:456
 msgid "Create files/directories with the owner of the parent directory"
 msgstr ""
 "Neue Dateien und Verzeichnisse erhalten den Besitzer des übergeordneten "
 "Verzeichnisses"
 
-#: modules/univention/admin/handlers/shares/share.py:524
-msgid "Custom settings for NFS shares"
-msgstr "Erweiterte Einstellungen für NFS-Freigaben"
-
-#: modules/univention/admin/handlers/shares/share.py:521
-msgid "Custom settings for Samba shares"
-msgstr "Erweiterte Einstellungen für Samba-Freigaben"
-
-#: modules/univention/admin/handlers/shares/share.py:130
+#: modules/univention/admin/handlers/shares/share.py:138
 msgid "Define if the share is writable when accessed via NFS."
 msgstr "Gibt an, ob die Freigabe beim Zugriff über NFS schreibbar ist."
 
-#: modules/univention/admin/handlers/shares/share.py:169
-msgid "Define if the share is writable when accessed via Samba."
-msgstr "Erlaubt den Schreibzugriff auf die Freigabe über Samba."
+#: modules/univention/admin/handlers/shares/share.py:177
+msgid ""
+"Define if the share is writable when accessed via Samba. If this is "
+"deactivated users still can have write access via the \"Restrict write "
+"access to these users/groups\" list."
+msgstr ""
+"Legt fest, ob die Freigabe beim Zugriff über Samba beschreibbar ist. Wenn "
+"dies deaktiviert ist, können Benutzer immer noch Schreibzugriff über die "
+"Liste \"Schreibberechtigung auf diese Benutzer/Gruppen beschränken\" haben."
 
-#: modules/univention/admin/handlers/shares/share.py:346
+#: modules/univention/admin/handlers/shares/share.py:354
 msgid "Denied host/network"
 msgstr "Nicht zugelassene(r/s) Rechner/Netz"
 
-#: modules/univention/admin/handlers/shares/printer.py:56
+#: modules/univention/admin/handlers/shares/printer.py:58
 msgid "Deny chosen users/groups."
 msgstr "Zugriff für ausgewählte Benutzer/Gruppen verweigern."
 
-#: modules/univention/admin/handlers/shares/printer.py:94
+#: modules/univention/admin/handlers/shares/printer.py:96
 msgid "Description"
 msgstr "Beschreibung"
 
-#: modules/univention/admin/handlers/shares/share.py:103
+#: modules/univention/admin/handlers/shares/share.py:111
 msgid "Directory"
 msgstr "Pfad"
 
-#: modules/univention/admin/handlers/shares/share.py:223
+#: modules/univention/admin/handlers/shares/share.py:231
 msgid "Directory mode"
 msgstr "Verzeichnis-Modus"
 
-#: modules/univention/admin/handlers/shares/share.py:115
+#: modules/univention/admin/handlers/shares/share.py:123
 msgid "Directory owner group of the share's root directory"
 msgstr "Besitzergruppe für das Wurzelverzeichnis der Freigabe"
 
-#: modules/univention/admin/handlers/shares/share.py:109
+#: modules/univention/admin/handlers/shares/share.py:117
 msgid "Directory owner of the share's root directory"
 msgstr "Besitzer des Wurzelverzeichnis der Freigabe"
 
-#: modules/univention/admin/handlers/shares/share.py:255
+#: modules/univention/admin/handlers/shares/share.py:263
 msgid "Directory security mode"
 msgstr "Verzeichnis-Sicherheitsmodus"
 
-#: modules/univention/admin/handlers/shares/share.py:104
+#: modules/univention/admin/handlers/shares/share.py:112
 msgid "Directory that is exported."
 msgstr "Verzeichnis, das freigegeben wird."
 
-#: modules/univention/admin/handlers/shares/share.py:74
+#: modules/univention/admin/handlers/shares/share.py:77
 msgid "Export for NFS clients (NFSv3 and NFSv4)"
 msgstr "Für NFS-Clients exportieren (NFSv3 und NFSv4)"
 
-#: modules/univention/admin/handlers/shares/share.py:68
+#: modules/univention/admin/handlers/shares/share.py:71
 msgid "Export for Samba clients"
 msgstr "Für Samba-Clients exportieren"
 
-#: modules/univention/admin/handlers/shares/share.py:424
-msgid ""
-"Export share as MSDFS root. Please consult the \"Fileshare management\" "
-"chapter in the manual for more information"
-msgstr ""
-"Freigabe als MSDFS-Wurzel freigeben. Bitte beachten Sie das Kapitel "
-"\"Freigaben-Verwaltung\" in der Dokumenation für mehr Informationen"
+#: modules/univention/admin/handlers/shares/share.py:448
+msgid "Export share as MSDFS root"
+msgstr "Freigabe als MSDFS-Wurzel freigeben"
 
-#: modules/univention/admin/handlers/shares/share.py:318
+#: modules/univention/admin/handlers/shares/share.py:326
 msgid "Fake oplocks"
 msgstr "Fake Oplocks"
 
-#: modules/univention/admin/handlers/shares/share.py:215
+#: modules/univention/admin/handlers/shares/share.py:223
 msgid "File mode"
 msgstr "Dateimodus"
 
-#: modules/univention/admin/handlers/shares/share.py:208
+#: modules/univention/admin/handlers/shares/share.py:216
 msgid ""
 "Files and directories with no read access are hidden. New files and "
 "directories receive permissions of the superordinate directory."
@@ -218,7 +253,7 @@ msgstr ""
 "Nicht lesbare Dateien und Verzeichnisse werden versteckt. Neue Dateien und "
 "Verzeichnisse erhalten die Zugriffsrechte des übergeordneten Verzeichnisses."
 
-#: modules/univention/admin/handlers/shares/printer.py:160
+#: modules/univention/admin/handlers/shares/printer.py:162
 msgid ""
 "For information about how to manage Windows printer drivers and "
 "troubleshooting, see <a href=\"https://help.univention.com/t/overview-"
@@ -231,117 +266,161 @@ msgstr ""
 "distribution-known-issues-and-workarounds/13387\" target=\"_blank\" "
 "rel=\"noreferrer noopener\">hier</a>."
 
-#: modules/univention/admin/handlers/shares/printer.py:145
+#: modules/univention/admin/handlers/shares/printer.py:147
 msgid "For the given groups printing is explicitly allowed or denied."
 msgstr "Für die angegebenen Gruppen wird der Zugriff erlaubt oder abgewiesen."
 
-#: modules/univention/admin/handlers/shares/printer.py:139
+#: modules/univention/admin/handlers/shares/printer.py:141
 msgid "For the given users printing is explicitly allowed or denied."
 msgstr ""
 "Für die angegebenen Benutzer wird der Zugriff erlaubt oder abgewiesen."
 
-#: modules/univention/admin/handlers/shares/share.py:239
+#: modules/univention/admin/handlers/shares/share.py:247
 msgid "Force directory mode"
 msgstr "Erzwinge Verzeichnismodus"
 
-#: modules/univention/admin/handlers/shares/share.py:271
+#: modules/univention/admin/handlers/shares/share.py:279
 msgid "Force directory security mode"
 msgstr "Erzwinge Verzeichnis-Sicherheitsmodus"
 
-#: modules/univention/admin/handlers/shares/share.py:231
+#: modules/univention/admin/handlers/shares/share.py:239
 msgid "Force file mode"
 msgstr "Erzwinge Dateimodus"
 
-#: modules/univention/admin/handlers/shares/share.py:371
+#: modules/univention/admin/handlers/shares/share.py:387
 msgid "Force group"
 msgstr "Erzwungene Gruppe"
 
-#: modules/univention/admin/handlers/shares/share.py:263
+#: modules/univention/admin/handlers/shares/share.py:271
 msgid "Force security mode"
 msgstr "Erzwinge Sicherheitsmodus"
 
-#: modules/univention/admin/handlers/shares/share.py:365
+#: modules/univention/admin/handlers/shares/share.py:381
 msgid "Force user"
 msgstr "Erzwungener Benutzer"
 
-#: modules/univention/admin/handlers/shares/printer.py:152
-#: modules/univention/admin/handlers/shares/printergroup.py:93
-#: modules/univention/admin/handlers/shares/share.py:470
+#: modules/univention/admin/handlers/shares/printer.py:154
+#: modules/univention/admin/handlers/shares/printergroup.py:95
+#: modules/univention/admin/handlers/shares/share.py:495
 msgid "General"
 msgstr "Allgemein"
 
-#: modules/univention/admin/handlers/shares/share.py:478
+#: modules/univention/admin/handlers/shares/share.py:503
 msgid "General NFS settings"
 msgstr "NFS-Grundeinstellungen"
 
-#: modules/univention/admin/handlers/shares/share.py:487
+#: modules/univention/admin/handlers/shares/share.py:515
 msgid "General Samba settings"
 msgstr "Samba-Grundeinstellungen"
 
-#: modules/univention/admin/handlers/shares/share.py:471
+#: modules/univention/admin/handlers/shares/share.py:496
 msgid "General directory share settings"
 msgstr "Grundeinstellungen - Verzeichnisfreigabe"
 
-#: modules/univention/admin/handlers/shares/printergroup.py:94
+#: modules/univention/admin/handlers/shares/printergroup.py:96
 msgid "General printer group share settings"
 msgstr "Grundeinstellungen - Druckergruppen-Freigabe"
 
-#: modules/univention/admin/handlers/shares/printer.py:153
+#: modules/univention/admin/handlers/shares/printer.py:155
 msgid "General printer share settings"
 msgstr "Grundeinstellungen - Druckerfreigabe"
 
-#: modules/univention/admin/handlers/shares/printer.py:152
-#: modules/univention/admin/handlers/shares/printergroup.py:93
-#: modules/univention/admin/handlers/shares/share.py:470
+#: modules/univention/admin/handlers/shares/printer.py:154
+#: modules/univention/admin/handlers/shares/printergroup.py:95
+#: modules/univention/admin/handlers/shares/share.py:495
 msgid "General settings"
 msgstr "Grundeinstellungen"
 
-#: modules/univention/admin/handlers/shares/printergroup.py:78
+#: modules/univention/admin/handlers/shares/printergroup.py:80
 msgid "Group members"
 msgstr "Gruppenmitglieder"
 
-#: modules/univention/admin/handlers/shares/share.py:377
-msgid "Hide files"
+#: modules/univention/admin/handlers/shares/share.py:393
+msgid "Hidden files"
 msgstr "Verstecke Dateien"
 
-#: modules/univention/admin/handlers/shares/share.py:207
+#: modules/univention/admin/handlers/shares/share.py:215
 msgid "Hide unreadable files/directories"
 msgstr "Verstecke nicht lesbare Dateien und Verzeichnisse"
 
-#: modules/univention/admin/handlers/shares/share.py:96
+#: modules/univention/admin/handlers/shares/share.py:104
 msgid "Host"
 msgstr "Server"
 
-#: modules/univention/admin/handlers/shares/share.py:391
+#: modules/univention/admin/handlers/shares/share.py:355
+msgid ""
+"Hosts listed here are not permitted access to the share. If a host appears "
+"also in the allowed list, it is permitted to access the share. The syntax is"
+" identical to he one for allowed hosts."
+msgstr ""
+"Den hier aufgeführten Hosts ist der Zugriff auf die Freigabe nicht "
+"gestattet. Wenn ein Host auch in der Liste der erlaubten Hosts erscheint, "
+"ist ihm der Zugriff auf die Freigabe erlaubt. Die Syntax ist identisch mit "
+"derjenigen für erlaubte Hosts."
+
+#: modules/univention/admin/handlers/shares/share.py:348
+msgid ""
+"Hosts, IP or network addresses which are permitted to access the share (e.g."
+" 150.203.5.6, myhost.mynet.edu.au, 150.203.15.0/255.255.255.0, 150.203. "
+"EXCEPT 150.203.6.66)."
+msgstr ""
+"Hosts, IP- oder Netzwerkadressen, die für den Zugriff auf die Freigabe "
+"zugelassen sind (z.B. 150.203.5.6, myhost.mynet.edu.au, "
+"150.203.15.0/255.255.255.0, 150.203. AUSSER 150.203.6.66)."
+
+#: modules/univention/admin/handlers/shares/share.py:435
+msgid ""
+"If (and only if) \"Allow Samba write access\" is deactivated only the users "
+"and groups listed here have write permission for this share. Groups can be "
+"assigned with the same syntax as \"Valid users or groups\". If the "
+"connecting user is in this list then they will be given write access, no "
+"matter what the read only option is set to."
+msgstr ""
+"Wenn (und nur wenn) \"Samba-Schreibzugriff zulassen\" deaktiviert ist, haben"
+" nur die hier aufgeführten Benutzer und Gruppen Schreibrechte für diese "
+"Freigabe. Gruppen können mit der gleichen Syntax wie bei \"Gültige Benutzer "
+"oder Gruppen\" zugewiesen werden. Wenn der Benutzer, der die Verbindung herstellt, in dieser Liste steht, erhält er Schreibzugriff, unabhängig davon, wie die Option \"Nur Lesen\" eingestellt ist."
+
+#: modules/univention/admin/handlers/shares/share.py:407
 msgid "Inherit ACLs"
 msgstr "Ererbte ACLs"
 
-#: modules/univention/admin/handlers/shares/share.py:359
+#: modules/univention/admin/handlers/shares/share.py:374
 msgid "Invalid users or groups"
 msgstr "Nicht erlaubte Benutzer oder Gruppen"
 
-#: modules/univention/admin/handlers/shares/share.py:652
+#: modules/univention/admin/handlers/shares/share.py:701
 #, python-format
 msgid "It is not valid to set %s as a share."
 msgstr "Es ist nicht erlaubt, %s als Freigabe einzutragen"
 
-#: modules/univention/admin/handlers/shares/share.py:310
+#: modules/univention/admin/handlers/shares/share.py:318
 msgid "Level 2 oplocks"
 msgstr "Level 2 Oplocks"
 
-#: modules/univention/admin/handlers/shares/printer.py:88
+#: modules/univention/admin/handlers/shares/share.py:394
+msgid ""
+"List of files or directories that are not visible but are accessible. "
+"Entries must be separated by \"/\" (e.g. "
+"/.*/DesktopFolderDB/TrashFor%m/resource.frk/)."
+msgstr ""
+"Liste von Dateien oder Verzeichnissen, die nicht sichtbar aber zugänglich "
+"sind. Einträe müssen mit \"/\" separiert werden (z.B. "
+"/.*/DesktopFolderDB/TrashFor%m/resource.frk/)."
+
+#: modules/univention/admin/handlers/shares/share.py:428
+msgid "List of users or groups that are given read-only access to the share."
+msgstr "Liste der Benutzer oder Gruppen, die nur Lesezugriff auf die Freigabe haben."
+
+#: modules/univention/admin/handlers/shares/printer.py:90
 msgid "Location"
 msgstr "Standort"
 
-#: modules/univention/admin/handlers/shares/share.py:279
+#: modules/univention/admin/handlers/shares/share.py:287
 msgid "Locking"
 msgstr "Locking"
 
-#: modules/univention/admin/handlers/shares/share.py:423
-msgid "MSDFS root"
-msgstr "MSDFS-Wurzel"
-
-#: modules/univention/admin/handlers/shares/share.py:162
+#: modules/univention/admin/handlers/shares/share.py:170
 msgid ""
 "May contain hostnames, IP addresses or networks (e.g. 10.1.1.1/24 or "
 "10.1.1.1/255.255.255.0"
@@ -349,63 +428,78 @@ msgstr ""
 "Kann Hostnamen, IP-Adressen oder Netze enthalten (z.B. 10.1.1.1/24 oder "
 "10.1.1.1/255.255.255.0"
 
-#: modules/univention/admin/handlers/shares/share.py:153
+#: modules/univention/admin/handlers/shares/share.py:161
 msgid "Modify user ID for root user (root squashing)"
 msgstr "User-ID für Root-Benutzer ändern (Root-Squashing)"
 
-#: modules/univention/admin/handlers/shares/share.py:478
-#: modules/univention/admin/handlers/shares/share.py:479
+#: modules/univention/admin/handlers/shares/share.py:503
+#: modules/univention/admin/handlers/shares/share.py:504
 msgid "NFS"
 msgstr "NFS"
 
-#: modules/univention/admin/handlers/shares/share.py:524
+#: modules/univention/admin/handlers/shares/share.py:511
 msgid "NFS custom settings"
 msgstr "Erweiterte NFS-Einstellungen"
 
-#: modules/univention/admin/handlers/shares/share.py:137
+#: modules/univention/admin/handlers/shares/share.py:145
 msgid "NFS synchronisation"
 msgstr "NFS-Synchronisation"
 
-#: modules/univention/admin/handlers/shares/share.py:129
+#: modules/univention/admin/handlers/shares/share.py:137
 msgid "NFS write access"
 msgstr "NFS-Schreibzugriff"
 
-#: modules/univention/admin/handlers/shares/share.py:383
+#: modules/univention/admin/handlers/shares/share.py:399
 msgid "NT ACL support"
 msgstr "NT ACL Support"
 
-#: modules/univention/admin/handlers/shares/printer.py:79
-#: modules/univention/admin/handlers/shares/printergroup.py:62
-#: modules/univention/admin/handlers/shares/print.py:56
-#: modules/univention/admin/handlers/shares/share.py:82
+#: modules/univention/admin/handlers/shares/printer.py:81
+#: modules/univention/admin/handlers/shares/printergroup.py:64
+#: modules/univention/admin/handlers/shares/print.py:57
+#: modules/univention/admin/handlers/shares/share.py:85
 msgid "Name"
 msgstr "Name"
 
-#: modules/univention/admin/handlers/shares/share.py:83
+#: modules/univention/admin/handlers/shares/share.py:86
 msgid "Name of the share"
 msgstr "Name der Freigabe"
 
-#: modules/univention/admin/handlers/shares/share.py:697
+#: modules/univention/admin/handlers/shares/share.py:363
+msgid ""
+"Names of users or groups which are authorized to access this Samba share. To"
+" all other users, access is denied. If the field is empty, all users may "
+"access the share - if necessary after entering a password. This option is "
+"useful for securing access to a share at file server level beyond the file "
+"permissions."
+msgstr ""
+"Namen von Benutzern oder Gruppen, die zum Zugriff auf diese Samba-Freigabe "
+"berechtigt sind. Allen anderen Benutzern wird der Zugriff verweigert. Ist "
+"das Feld leer, können alle Benutzer - ggf. nach Eingabe eines Passworts - "
+"auf die Freigabe zugreifen. Diese Option ist nützlich, um den Zugriff auf "
+"eine Freigabe auf Dateiserverebene über die Dateiberechtigungen hinaus zu "
+"sichern."
+
+#: modules/univention/admin/handlers/shares/share.py:746
 #, python-format
 msgid "Need %(samba)s or %(nfs)s in options to create a share."
 msgstr ""
 "Benötige %(samba)s oder %(nfs)s in Optionen um eine Freigabe anzulegen."
 
-#: modules/univention/admin/handlers/shares/share.py:440
+#: modules/univention/admin/handlers/shares/share.py:465
 msgid "New files and directories inherit the mode of the parent directory."
 msgstr ""
 "Neue Dateien und Verzeichnisse erhalten die Zugriffsrechte des "
 "übergeordneten Verzeichnisses."
 
-#: modules/univention/admin/handlers/shares/share.py:161
+#: modules/univention/admin/handlers/shares/share.py:169
 msgid "Only allow access for this host, IP address or network"
 msgstr "Zugriff begrenzen auf Rechner, IP-Adresse oder Netz"
 
-#: modules/univention/admin/handlers/shares/share.py:302
+#: modules/univention/admin/handlers/shares/share.py:310
 msgid "Oplocks"
 msgstr "Oplocks"
 
-#: modules/univention/admin/handlers/shares/share.py:319
+#: modules/univention/admin/handlers/shares/share.py:327
 msgid ""
 "Oplocks are the way that Samba clients get permission from a server to "
 "locally cache file operations.  If a server grants an oplock (opportunistic "
@@ -440,15 +534,15 @@ msgstr ""
 " selben Zeit haben, kann das zu Datenkorruption führen. Diese Option sollte "
 "vorsichtig verwendet werden!"
 
-#: modules/univention/admin/handlers/shares/share.py:454
+#: modules/univention/admin/handlers/shares/share.py:479
 msgid "Option name in exports file"
 msgstr "Optionsname aus exports Datei"
 
-#: modules/univention/admin/handlers/shares/share.py:447
+#: modules/univention/admin/handlers/shares/share.py:472
 msgid "Option name in smb.conf and its value"
 msgstr "Optionsname aus smb.conf und ihr Wert"
 
-#: modules/univention/admin/handlers/shares/share.py:432
+#: modules/univention/admin/handlers/shares/share.py:457
 msgid ""
 "Ownership for new files and directories is controlled by the ownership of "
 "the parent directory."
@@ -456,166 +550,177 @@ msgstr ""
 "Neue Dateien und Verzeichnisse erhalten den Besitzer des übergeordneten "
 "Verzeichnisses."
 
-#: modules/univention/admin/handlers/shares/share.py:121
+#: modules/univention/admin/handlers/shares/share.py:129
 msgid "Permissions for the share's root directory"
 msgstr "Dateiberechtigungen für das Wurzelverzeichnis der Freigabe"
 
-#: modules/univention/admin/handlers/shares/share.py:399
+#: modules/univention/admin/handlers/shares/share.py:449
+msgid ""
+"Please consult the \"Fileshare management\" chapter in the manual for more "
+"information"
+msgstr ""
+"Bitte beachten Sie das Kapitel \"Freigaben-Verwaltung\" in der Dokumenation "
+"für mehr Informationen"
+
+#: modules/univention/admin/handlers/shares/share.py:415
 msgid "Postexec script"
 msgstr "Postexec-Skript"
 
-#: modules/univention/admin/handlers/shares/share.py:405
+#: modules/univention/admin/handlers/shares/share.py:421
 msgid "Preexec script"
 msgstr "Preexec-Skript"
 
-#: modules/univention/admin/handlers/shares/printer.py:100
-#: modules/univention/admin/handlers/shares/printergroup.py:71
-#: modules/univention/admin/handlers/shares/print.py:65
+#: modules/univention/admin/handlers/shares/printer.py:102
+#: modules/univention/admin/handlers/shares/printergroup.py:73
+#: modules/univention/admin/handlers/shares/print.py:66
 msgid "Print server"
 msgstr "Druckserver"
 
-#: modules/univention/admin/handlers/shares/share.py:90
-#: modules/univention/admin/handlers/shares/share.py:91
+#: modules/univention/admin/handlers/shares/share.py:98
+#: modules/univention/admin/handlers/shares/share.py:99
 msgid "Printable name"
 msgstr "Anzeigename"
 
-#: modules/univention/admin/handlers/shares/printer.py:67
+#: modules/univention/admin/handlers/shares/printer.py:69
 msgid "Printer"
 msgstr "Drucker"
 
-#: modules/univention/admin/handlers/shares/printer.py:114
+#: modules/univention/admin/handlers/shares/printer.py:116
 msgid "Printer model"
 msgstr "Drucker-Modell"
 
-#: modules/univention/admin/handlers/shares/printer.py:121
+#: modules/univention/admin/handlers/shares/printer.py:123
 msgid "Printer producer"
 msgstr "Drucker-Hersteller"
 
-#: modules/univention/admin/handlers/shares/print.py:47
 #: modules/univention/admin/handlers/shares/print.py:48
+#: modules/univention/admin/handlers/shares/print.py:49
 msgid "Printer share"
 msgstr "Druckerfreigabe"
 
-#: modules/univention/admin/handlers/shares/printergroup.py:50
+#: modules/univention/admin/handlers/shares/printergroup.py:52
 msgid "Printer share group"
 msgstr "Druckerfreigabegruppe"
 
-#: modules/univention/admin/handlers/shares/printergroup.py:51
+#: modules/univention/admin/handlers/shares/printergroup.py:53
 msgid "Printer share groups"
 msgstr "Druckerfreigabegruppen"
 
-#: modules/univention/admin/handlers/shares/printer.py:66
+#: modules/univention/admin/handlers/shares/printer.py:68
 msgid "Printer share: Printer"
 msgstr "Druckerfreigabe: Drucker"
 
-#: modules/univention/admin/handlers/shares/printergroup.py:49
+#: modules/univention/admin/handlers/shares/printergroup.py:51
 msgid "Printer share: Printer group"
 msgstr "Druckerfreigabe: Druckergruppe"
 
-#: modules/univention/admin/handlers/shares/print.py:49
+#: modules/univention/admin/handlers/shares/print.py:50
 msgid "Printer shares"
 msgstr "Druckerfreigaben"
 
-#: modules/univention/admin/handlers/shares/printer.py:68
+#: modules/univention/admin/handlers/shares/printer.py:70
 msgid "Printers"
 msgstr "Drucker"
 
-#: modules/univention/admin/handlers/shares/share.py:154
+#: modules/univention/admin/handlers/shares/share.py:162
 msgid "Redirect root user access to a non-privileged uid."
 msgstr "Zugriff auf eine nicht privilegierte uid Kennung umlenken."
 
-#: modules/univention/admin/handlers/shares/share.py:411
+#: modules/univention/admin/handlers/shares/share.py:427
+msgid "Restrict read access to these users/groups"
+msgstr "Leseberechtigung auf diese Benutzer/Gruppen beschränken"
+
+#: modules/univention/admin/handlers/shares/share.py:434
 msgid "Restrict write access to these users/groups"
 msgstr "Schreibberechtigung auf diese Benutzer/Gruppen beschränken"
 
-#: modules/univention/admin/handlers/shares/share.py:487
-#: modules/univention/admin/handlers/shares/share.py:488
+#: modules/univention/admin/handlers/shares/share.py:515
+#: modules/univention/admin/handlers/shares/share.py:516
 msgid "Samba"
 msgstr "Samba"
 
-#: modules/univention/admin/handlers/shares/share.py:521
+#: modules/univention/admin/handlers/shares/share.py:542
 msgid "Samba custom settings"
 msgstr "Erweiterte Samba-Einstellungen"
 
-#: modules/univention/admin/handlers/shares/share.py:507
-msgid "Samba extended permission settings"
-msgstr "Samba erweiterte Zugriffsrechte"
-
-#: modules/univention/admin/handlers/shares/share.py:507
+#: modules/univention/admin/handlers/shares/share.py:532
 msgid "Samba extended permissions"
 msgstr "Erweiterte Samba-Rechte"
 
-#: modules/univention/admin/handlers/shares/share.py:513
+#: modules/univention/admin/handlers/shares/share.py:536
 msgid "Samba options"
 msgstr "Samba-Optionen"
 
-#: modules/univention/admin/handlers/shares/share.py:499
-msgid "Samba permission settings"
-msgstr "Samba-Zugriffsrechte"
-
-#: modules/univention/admin/handlers/shares/share.py:499
+#: modules/univention/admin/handlers/shares/share.py:523
 msgid "Samba permissions"
 msgstr "Samba-Rechte"
 
-#: modules/univention/admin/handlers/shares/share.py:168
-msgid "Samba write access"
-msgstr "Samba-Schreibzugriff"
-
-#: modules/univention/admin/handlers/shares/share.py:247
+#: modules/univention/admin/handlers/shares/share.py:255
 msgid "Security mode"
 msgstr "Sicherheitsmodus"
 
-#: modules/univention/admin/handlers/shares/share.py:59
+#: modules/univention/admin/handlers/shares/share.py:62
 msgid "Share directories"
 msgstr "Freigabe-Verzeichnisse"
 
-#: modules/univention/admin/handlers/shares/share.py:58
+#: modules/univention/admin/handlers/shares/share.py:61
 msgid "Share directory"
 msgstr "Freigabe-Verzeichnis"
 
-#: modules/univention/admin/handlers/shares/share.py:184
+#: modules/univention/admin/handlers/shares/share.py:192
 msgid ""
 "Share is browseable, i.e. it is listed in the Windows network environment"
 msgstr "Freigabe wird in der Windows-Netzwerkumgebung angezeigt"
 
-#: modules/univention/admin/handlers/shares/share.py:57
+#: modules/univention/admin/handlers/shares/share.py:60
 msgid "Share: Directory"
 msgstr "Freigabe: Verzeichnis"
 
-#: modules/univention/admin/handlers/shares/share.py:183
-msgid "Show in Windows network environment"
-msgstr "Freigabe wird in der Windows-Netzwerkumgebung angezeigt"
+#: modules/univention/admin/handlers/shares/share.py:191
+msgid "Show share in Windows network environment"
+msgstr "Freigabe in der Windows-Netzwerkumgebung anzeigen"
 
-#: modules/univention/admin/handlers/shares/share.py:418
+#: modules/univention/admin/handlers/shares/share.py:442
 msgid "Specifies which VFS Objects to use."
 msgstr "Spezifiziert welche VFS-Objekte benutzt werden sollen"
 
-#: modules/univention/admin/handlers/shares/share.py:295
+#: modules/univention/admin/handlers/shares/share.py:303
 msgid "Strict locking"
 msgstr "Strict Locking"
 
-#: modules/univention/admin/handlers/shares/share.py:145
+#: modules/univention/admin/handlers/shares/share.py:153
 msgid "Subtree checking"
 msgstr "Subtree-Überprüfung"
 
-#: modules/univention/admin/handlers/shares/share.py:689
+#: modules/univention/admin/handlers/shares/share.py:738
 #, python-format
 msgid "The %(plural)s %(user)s%(num)s %(use)s this share as home share!"
 msgstr ""
 "Die/Der %(plural)s %(user)s%(num)s %(use)s diese Freigabe als "
 "Heimatverzeichnisfreigabe"
 
-#: modules/univention/admin/handlers/shares/share.py:97
+#: modules/univention/admin/handlers/shares/share.py:105
 msgid "The computer that exports this share"
 msgstr "Der Rechner, auf dem die Freigabe eingerichtet wird."
 
-#: modules/univention/admin/handlers/shares/share.py:110
+#: modules/univention/admin/handlers/shares/share.py:364
+msgid ""
+"The entries are to be separated by spaces. The special characters @, + and &"
+" can be used in connection with the group name for assigning certain "
+"permissions to the users of the stated group for accessing the Samba share:"
+msgstr ""
+"Die Einträge sind durch Leerzeichen zu trennen. Die Sonderzeichen @, + und &"
+" können in Verbindung mit dem Gruppennamen verwendet werden, um den "
+"Benutzern der angegebenen Gruppe bestimmte Rechte für den Zugriff auf die "
+"Samba-Freigabe zuzuweisen:"
+
+#: modules/univention/admin/handlers/shares/share.py:118
 msgid ""
 "The owner of the exported root directory. If none is given root will be "
 "owner."
 msgstr "Besitzer des Wurzelverzeichnisses der Freigabe. Vorgabe ist root."
 
-#: modules/univention/admin/handlers/shares/share.py:116
+#: modules/univention/admin/handlers/shares/share.py:124
 msgid ""
 "The primary group of the exported root directory, if none is given group 0 "
 "will be used."
@@ -623,7 +728,19 @@ msgstr ""
 "Primäre Besitzergruppe für das Wurzelverzeichnis der Freigabe. Ohne Angabe "
 "wird 0 verwendet."
 
-#: modules/univention/admin/handlers/shares/share.py:333
+#: modules/univention/admin/handlers/shares/share.py:375
+msgid ""
+"The users or groups listed here cannot access the Samba share. The syntax is"
+" identical to the one for valid users. If a user or group is included in the"
+" list of valid users and unauthorized users, access is denied."
+msgstr ""
+"Die hier aufgeführten Benutzer oder Gruppen können nicht auf die Samba-"
+"Freigabe zugreifen. Die Syntax ist identisch mit derjenigen für gültige "
+"Benutzer. Wenn ein Benutzer oder eine Gruppe in der Liste der gültigen "
+"Benutzer und nicht autorisierten Benutzer enthalten ist, wird der Zugriff "
+"verweigert."
+
+#: modules/univention/admin/handlers/shares/share.py:341
 msgid ""
 "The way clients capable of offline caching will cache the files in the "
 "share."
@@ -631,7 +748,7 @@ msgstr ""
 "Bestimmt das Verfahren, mit dem Clients Dateiinhalte lokal "
 "zwischenspeichern."
 
-#: modules/univention/admin/handlers/shares/share.py:303
+#: modules/univention/admin/handlers/shares/share.py:311
 #, python-format
 msgid ""
 "This boolean option tells Samba whether to issue oplocks (opportunistic "
@@ -649,7 +766,7 @@ msgstr ""
 "Netzen zu deaktivieren. (Sie ist auf Windows Servern standardmäßig "
 "aktiviert)"
 
-#: modules/univention/admin/handlers/shares/share.py:384
+#: modules/univention/admin/handlers/shares/share.py:400
 msgid ""
 "This boolean parameter controls whether Samba will attempt to map UNIX "
 "permissions into Windows NT access control lists."
@@ -657,7 +774,7 @@ msgstr ""
 "Kontrolliert, ob Samba die UNIX-Dateirechte in Windows NT-Zugriffsrechte "
 "(access control lists) umsetzt."
 
-#: modules/univention/admin/handlers/shares/share.py:280
+#: modules/univention/admin/handlers/shares/share.py:288
 msgid ""
 "This controls whether or not locking will be performed by the server in "
 "response to lock requests from the client. Be careful about disabling "
@@ -667,7 +784,7 @@ msgstr ""
 "Locking-Requests senden. Deaktivieren von Datei-Locking wird nicht "
 "empfohlen, da es zu Datenverlusten führen kann. "
 
-#: modules/univention/admin/handlers/shares/share.py:177
+#: modules/univention/admin/handlers/shares/share.py:185
 msgid ""
 "This is the NetBIOS name. Among other places, it appears in the Windows "
 "Network Neighborhood."
@@ -675,7 +792,7 @@ msgstr ""
 "Der NetBIOS-Name. Er erscheint unter anderem in der Windows-"
 "Netzwerkumgebung."
 
-#: modules/univention/admin/handlers/shares/share.py:406
+#: modules/univention/admin/handlers/shares/share.py:422
 msgid ""
 "This option specifies a command to be run whenever the service is connected "
 "to. It takes the usual substitutions."
@@ -683,7 +800,7 @@ msgstr ""
 "Das angegebene Skript wird bei jedem Verbindungsaufbau zu dieser Freigabe "
 "ausgeführt. Die üblichen Platzhalter werden ersetzt."
 
-#: modules/univention/admin/handlers/shares/share.py:400
+#: modules/univention/admin/handlers/shares/share.py:416
 msgid ""
 "This option specifies a command to be run whenever the service is "
 "disconnected. It takes the usual substitutions."
@@ -691,7 +808,7 @@ msgstr ""
 "Das angegebene Skript wird nach jedem Verbindungsende zu dieser Freigabe "
 "ausgeführt. Die üblichen Platzhalter werden ersetzt."
 
-#: modules/univention/admin/handlers/shares/share.py:392
+#: modules/univention/admin/handlers/shares/share.py:408
 msgid ""
 "This parameter can be used to ensure that if default ACLs exist on parent "
 "directories, they are always honored when creating a subdirectory. The "
@@ -706,7 +823,7 @@ msgstr ""
 "wurden. Das Aktivieren dieser Option setzt die Rechte auf 0777, garantiert "
 "also, dass die Standard-ACLs des Verzeichnisses weitergegeben werden."
 
-#: modules/univention/admin/handlers/shares/share.py:288
+#: modules/univention/admin/handlers/shares/share.py:296
 msgid ""
 "This parameter controls the behavior of Samba when given a request by a "
 "client to obtain a byte range lock on a region of an open file, and the "
@@ -721,7 +838,7 @@ msgstr ""
 " Warteschlage, und es wird regelmäßig versucht, das Lock zu bekommen, bis "
 "ein Timeout auftritt."
 
-#: modules/univention/admin/handlers/shares/share.py:256
+#: modules/univention/admin/handlers/shares/share.py:264
 msgid ""
 "This parameter controls what UNIX permission bits can be modified when an "
 "SMB client is manipulating the UNIX permission on a directory using the "
@@ -736,7 +853,7 @@ msgstr ""
 "nicht geändert werden. Im Prinzip können Nullbits in dieser Maske betrachtet"
 " werden als Bits, die der Benutzer nicht ändern darf."
 
-#: modules/univention/admin/handlers/shares/share.py:272
+#: modules/univention/admin/handlers/shares/share.py:280
 msgid ""
 "This parameter controls what UNIX permission bits can be modified when an "
 "SMB client is manipulating the UNIX permission on a directory using the "
@@ -754,7 +871,7 @@ msgstr ""
 "bedeuten eingeschaltete Bits in dieser Maske, wenn die Sicherheit eines "
 "Verzeichnisses geändert wird, dass diese Bits immer 'an' bleiben."
 
-#: modules/univention/admin/handlers/shares/share.py:248
+#: modules/univention/admin/handlers/shares/share.py:256
 msgid ""
 "This parameter controls what UNIX permission bits can be modified when an "
 "SMB client is manipulating the UNIX permission on a file using the native "
@@ -769,7 +886,7 @@ msgstr ""
 "geändert werden. Im Prinzip können Nullbits in dieser Maske betrachtet "
 "werden als Bits, die der Benutzer nicht ändern darf."
 
-#: modules/univention/admin/handlers/shares/share.py:264
+#: modules/univention/admin/handlers/shares/share.py:272
 msgid ""
 "This parameter controls what UNIX permission bits can be modified when an "
 "SMB client is manipulating the UNIX permission on a file using the native "
@@ -787,7 +904,7 @@ msgstr ""
 "eingeschaltete Bits in dieser Maske, wenn die Sicherheit einer Datei "
 "geändert wird, dass diese Bits immer 'an' bleiben."
 
-#: modules/univention/admin/handlers/shares/share.py:311
+#: modules/univention/admin/handlers/shares/share.py:319
 msgid ""
 "This parameter controls whether Samba supports level2 (read-only) oplocks on"
 " a share. Level2, or read-only oplocks allow SMB clients that have an oplock"
@@ -819,7 +936,7 @@ msgstr ""
 "löschen. Es ist ratsam diese Option zu Aktivieren um den Zugriff auf "
 "gemeinsame Programme zu beschleunigen."
 
-#: modules/univention/admin/handlers/shares/share.py:240
+#: modules/univention/admin/handlers/shares/share.py:248
 msgid ""
 "This parameter specifies a set of UNIX mode bit permissions that will always"
 " be set on a directory created by Samba. This is done by bitwise 'OR'ing "
@@ -833,7 +950,7 @@ msgstr ""
 "mindestens diese Zugriffsrechte bekommen. Dies wird nach der "
 "'Verzeichnismodus' Maske ausgewertet."
 
-#: modules/univention/admin/handlers/shares/share.py:232
+#: modules/univention/admin/handlers/shares/share.py:240
 msgid ""
 "This parameter specifies a set of UNIX mode bit permissions that will always"
 " be set on a file created by Samba. This is done by bitwise 'OR'ing these "
@@ -845,7 +962,7 @@ msgstr ""
 "durch Bit-weises ODER abgeglichen, so dass Dateien immer mindestens diese "
 "Zugriffsrechte bekommen. Dies wird nach der 'Dateimodus' Maske ausgewertet."
 
-#: modules/univention/admin/handlers/shares/share.py:372
+#: modules/univention/admin/handlers/shares/share.py:388
 msgid ""
 "This specifies a UNIX group name that will be assigned as the default "
 "primary group for all users connecting to this service. This is useful for "
@@ -862,7 +979,7 @@ msgstr ""
 " Rechten an den Dateien und Verzeichnissen dieses Dienstes für diese Gruppe,"
 " deren gemeinsame Nutzung einschränken, oder erlauben."
 
-#: modules/univention/admin/handlers/shares/share.py:366
+#: modules/univention/admin/handlers/shares/share.py:382
 msgid ""
 "This specifies a UNIX user name that will be assigned as the default user "
 "for all users connecting to this service. This is useful for sharing files. "
@@ -875,7 +992,7 @@ msgstr ""
 "Diese Option sollte vorsichtig verwendet werden, da eine unsachgemäße "
 "Handhabung Sicherheitsprobleme verursachen kann."
 
-#: modules/univention/admin/handlers/shares/share.py:296
+#: modules/univention/admin/handlers/shares/share.py:304
 msgid ""
 "This value controls the handling of file locking in the server. If strict "
 "locking is set to Auto (the default), the server performs file lock checks "
@@ -897,11 +1014,26 @@ msgstr ""
 "langsam sein. Wenn Strict Locking deaktiviert ist, findet die Überprüfung "
 "nur auf Anfrage des Clients statt."
 
-#: modules/univention/admin/handlers/shares/share.py:138
+#: modules/univention/admin/handlers/shares/share.py:130
+msgid ""
+"UNIX Access rights to the exported root directory. If the setgid option is "
+"set for a directory, files saved there inherit the directories owner group. "
+"If further directories are created, they also inherit the option. If the "
+"sticky bit option is enabled for a directory, files in this directory can "
+"only be deleted by the owner of the file or the root user."
+msgstr ""
+"UNIX Zugriffsrechte auf das exportierte Stammverzeichnis. Wenn die Option "
+"setgid für ein Verzeichnis gesetzt ist, erben die dort gespeicherten Dateien"
+" die Eigentümergruppe des Verzeichnisses. Wenn weitere Verzeichnisse "
+"angelegt werden, erben diese ebenfalls die Option. Wenn die Option sticky "
+"bit für ein Verzeichnis aktiviert ist, können Dateien in diesem Verzeichnis "
+"nur vom Eigentümer der Datei oder dem Root-Benutzer gelöscht werden."
+
+#: modules/univention/admin/handlers/shares/share.py:146
 msgid "Use synchronous or asynchronous mode for the NFS share."
 msgstr "Verwende synchronen oder asynchronen Modus für die NFS-Freigabe."
 
-#: modules/univention/admin/handlers/shares/share.py:200
+#: modules/univention/admin/handlers/shares/share.py:208
 msgid ""
 "Users who have write access to a file or directory are able to change the "
 "permissions "
@@ -909,19 +1041,19 @@ msgstr ""
 "Benutzer, die Schreibrechte an Dateien und/oder Verzeichnissen haben, dürfen"
 " die Zugriffsrechte verändern"
 
-#: modules/univention/admin/handlers/shares/share.py:199
+#: modules/univention/admin/handlers/shares/share.py:207
 msgid "Users with write access may modify permissions"
 msgstr "Benutzer mit Schreibrechten dürfen die Berechtigungen verändern"
 
-#: modules/univention/admin/handlers/shares/share.py:417
+#: modules/univention/admin/handlers/shares/share.py:441
 msgid "VFS objects"
 msgstr "VFS-Objekte"
 
-#: modules/univention/admin/handlers/shares/share.py:353
+#: modules/univention/admin/handlers/shares/share.py:361
 msgid "Valid users or groups"
 msgstr "Gültige Benutzer oder Gruppen"
 
-#: modules/univention/admin/handlers/shares/share.py:224
+#: modules/univention/admin/handlers/shares/share.py:232
 msgid ""
 "When a directory is created, the necessary permissions are calculated  "
 "according to the mapping from DOS modes to UNIX permissions, and the "
@@ -937,7 +1069,7 @@ msgstr ""
 "gesetzt ist, wird aus den Rechten entfernt, wenn das Verzeichnis angelegt "
 "wird."
 
-#: modules/univention/admin/handlers/shares/share.py:216
+#: modules/univention/admin/handlers/shares/share.py:224
 msgid ""
 "When a file is created, the necessary permissions are calculated according "
 "to the mapping from DOS modes to UNIX permissions, and the resulting UNIX "
@@ -951,7 +1083,7 @@ msgstr ""
 " einer Datei betrachtet werden. Ein Bit, das hier nicht gesetzt ist, wird "
 "aus den Rechten entfernt, wenn die Datei angelegt wird."
 
-#: modules/univention/admin/handlers/shares/share.py:146
+#: modules/univention/admin/handlers/shares/share.py:154
 msgid ""
 "When only a subtree of a mounted filesystem is exported this option ensures "
 "that an accessed file really is in that subtree. (May cause complications "
@@ -962,45 +1094,45 @@ msgstr ""
 "wirklich innerhalb dieses Unterverzeichnisses liegt. (Kann Probleme mit "
 "umbenannten Dateien verursachen.)"
 
-#: modules/univention/admin/handlers/shares/printer.py:126
-#: modules/univention/admin/handlers/shares/printergroup.py:85
-#: modules/univention/admin/handlers/shares/print.py:72
-#: modules/univention/admin/handlers/shares/share.py:176
+#: modules/univention/admin/handlers/shares/printer.py:128
+#: modules/univention/admin/handlers/shares/printergroup.py:87
+#: modules/univention/admin/handlers/shares/print.py:73
+#: modules/univention/admin/handlers/shares/share.py:184
 msgid "Windows name"
 msgstr "Windows-Name"
 
-#: modules/univention/admin/handlers/shares/share.py:50
+#: modules/univention/admin/handlers/shares/share.py:53
 msgid "disable"
 msgstr "deaktivieren"
 
-#: modules/univention/admin/handlers/shares/share.py:50
+#: modules/univention/admin/handlers/shares/share.py:53
 msgid "documents"
 msgstr "Dokumente"
 
-#: modules/univention/admin/handlers/shares/printer.py:60
+#: modules/univention/admin/handlers/shares/printer.py:62
 msgid "https://docs.software-univention.de/manual-5.0.html#print::shares"
 msgstr "https://docs.software-univention.de/handbuch-5.0.html#print::shares"
 
-#: modules/univention/admin/handlers/shares/share.py:50
+#: modules/univention/admin/handlers/shares/share.py:53
 msgid "manual"
 msgstr "manuell"
 
-#: modules/univention/admin/handlers/shares/share.py:50
+#: modules/univention/admin/handlers/shares/share.py:53
 msgid "programs"
 msgstr "Programme"
 
-#: modules/univention/admin/handlers/shares/share.py:674
+#: modules/univention/admin/handlers/shares/share.py:723
 msgid "use"
 msgstr "nutzt"
 
-#: modules/univention/admin/handlers/shares/share.py:671
+#: modules/univention/admin/handlers/shares/share.py:720
 msgid "user"
 msgstr "Benutzer"
 
-#: modules/univention/admin/handlers/shares/share.py:673
+#: modules/univention/admin/handlers/shares/share.py:722
 msgid "users"
 msgstr "Benutzer"
 
-#: modules/univention/admin/handlers/shares/share.py:670
+#: modules/univention/admin/handlers/shares/share.py:719
 msgid "uses"
 msgstr "benutzt"
