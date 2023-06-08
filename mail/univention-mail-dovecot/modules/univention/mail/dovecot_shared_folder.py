@@ -55,7 +55,7 @@ from univention.config_registry import handler_set
 from univention.lib.misc import custom_username
 from univention.mail.dovecot import DovecotListener
 
-from listener import SetUID
+import listener
 
 
 # UDM name → (IMAP, doveadm)
@@ -106,8 +106,7 @@ class DovecotFolderAclEntry(object):
 class DovecotGlobalAclFile(object):
     dovemail_gid = grp.getgrnam('dovemail').gr_gid
 
-    def __init__(self, listener):  # type: (Any) -> None
-        self.listener = listener
+    def __init__(self):  # type: () -> None
         self._acls = []  # type: List[DovecotFolderAclEntry]
         self._fix_permissions()
 
@@ -128,7 +127,7 @@ class DovecotGlobalAclFile(object):
             os.fchown(fileno, 0, self.dovemail_gid)
             os.fchmod(fileno, stat.S_IRUSR | stat.S_IWUSR | stat.S_IRGRP)
 
-        with SetUID(0):
+        with listener.SetUID(0):
             if fileno:
                 set_perms(fileno)
             else:
@@ -138,7 +137,7 @@ class DovecotGlobalAclFile(object):
 
     def _read(self):  # type: () -> None
         self._acls = []
-        with SetUID(0):
+        with listener.SetUID(0):
             for line in open(global_acl_path):
                 self._acls.append(DovecotFolderAclEntry.from_str(line))
 
@@ -148,7 +147,7 @@ class DovecotGlobalAclFile(object):
             os.write(fileno, f'{acl}\n'.encode('UTF-8'))
         self._fix_permissions(fileno=fileno)
         os.close(fileno)
-        with SetUID(0):
+        with listener.SetUID(0):
             shutil.move(filename, global_acl_path)
 
 
@@ -158,7 +157,7 @@ class DovecotSharedFolderListener(DovecotListener):
         super(DovecotSharedFolderListener, self).__init__(*args, **kwargs)
         self.modules = ["mail/folder"]
         self.acl_key = "univentionMailACL"
-        self.global_acls = DovecotGlobalAclFile(self.listener)
+        self.global_acls = DovecotGlobalAclFile(listener)
 
     def add_shared_folder(self, new):  # type: (Dict[str, List[bytes]]) -> None
         if "mailPrimaryAddress" in new:
@@ -221,8 +220,8 @@ class DovecotSharedFolderListener(DovecotListener):
             self.update_public_mailbox_configuration(delete_only=old_mailbox)
 
         # remove mailbox from disk
-        if self.listener.configRegistry.is_true("mail/dovecot/mailbox/delete", False):
-            with SetUID(0):
+        if listener.configRegistry.is_true("mail/dovecot/mailbox/delete", False):
+            with listener.SetUID(0):
                 try:
                     shutil.rmtree(path, ignore_errors=True)
                 except Exception:
@@ -267,7 +266,7 @@ class DovecotSharedFolderListener(DovecotListener):
                     self.move_mail_home(pub_loc, new_user_home, new_mailbox, True)
                     old_maildir = os.path.join(new_user_home, ".INBOX")
                     new_maildir = os.path.join(new_user_home, "Maildir")
-                    with SetUID(0):
+                    with listener.SetUID(0):
                         try:
                             # rename mailbox
                             shutil.move(old_maildir, new_maildir)
@@ -317,7 +316,7 @@ class DovecotSharedFolderListener(DovecotListener):
                     self.move_mail_home(old_path, pub_loc, new_mailbox, True)
                     old_maildir = os.path.join(pub_loc, "Maildir")
                     new_maildir = os.path.join(pub_loc, ".INBOX")
-                    with SetUID(0):
+                    with listener.SetUID(0):
                         try:
                             # rename mailbox
                             shutil.move(old_maildir, new_maildir)
@@ -373,7 +372,7 @@ class DovecotSharedFolderListener(DovecotListener):
         :param regexp: string: regexp for re.findall()
         :return: string
         """
-        with SetUID(0):
+        with listener.SetUID(0):
             cmd_proc = subprocess.Popen(cmd, stdin=stdin, stdout=stdout, stderr=stderr)
             cmd_out, cmd_err = cmd_proc.communicate(input=stdin_input and stdin_input.encode('UTF-8'))
             cmd_exit = cmd_proc.wait()
@@ -434,7 +433,7 @@ class DovecotSharedFolderListener(DovecotListener):
         # consistency with the LDAP.
         if delete_only:
             try:
-                old_info = self.listener.configRegistry.get("mail/dovecot/internal/sharedfolders", "").split()
+                old_info = listener.configRegistry.get("mail/dovecot/internal/sharedfolders", "").split()
                 emails_quota = [info for info in old_info if not info.startswith(delete_only + ":")]
             except Exception:
                 self.log_e("update_public_mailbox_configuration(): Failed to update public mailbox configuration:\n%s" % traceback.format_exc())
@@ -455,7 +454,7 @@ class DovecotSharedFolderListener(DovecotListener):
                 )
                 for pf in public_folders
             ]
-        with SetUID(0):
+        with listener.SetUID(0):
             try:
                 handler_set(["mail/dovecot/internal/sharedfolders=%s" % " ".join(emails_quota)])
                 self.read_from_ext_proc_as_root(["/usr/bin/doveadm", "reload"])
@@ -471,7 +470,7 @@ class DovecotSharedFolderListener(DovecotListener):
             except Exception:
                 self.log_e("Failed to unsubscribe user '%s' from mailbox '%s'." % (user, mailbox))
 
-    @SetUID(0)
+    @listener.SetUID(0)
     def get_udm_infos(self, udm_module, udm_filter):  # type: (Any, str) -> List[Any]
         try:
             univention.admin.modules.update()

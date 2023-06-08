@@ -39,21 +39,10 @@ import copy
 import ldap.filter
 
 import univention.debug as ud
-from univention.config_registry import ConfigRegistry
 from univention.mail.dovecot_shared_folder import DovecotSharedFolderListener
 from univention.uldap import getMachineConnection
 
-
-class ListenerMockup(object):
-
-    def __init__(self, ucr):
-        self.configRegistry = ucr
-
-    def unsetuid(self):
-        pass
-
-    def setuid(self, uid):
-        pass
+import listener
 
 
 def main():
@@ -72,17 +61,13 @@ def main():
         if options.verbose:
             print(msg)
 
-    ucr = ConfigRegistry()
-    ucr.load()
-
     ldapfilter = ldap.filter.filter_format('(&(objectClass=univentionMailSharedFolder)(univentionMailHomeServer=%s.%s))', (
-        ucr['hostname'],
-        ucr['domainname'],
+        listener.configRegistry['hostname'],
+        listener.configRegistry['domainname'],
     ))
 
     log(ud.INFO, 'Initialising reapply_shared_folder_acls...')
-    lm = ListenerMockup(ucr)
-    dl = DovecotSharedFolderListener(lm, 'reapply_shared_folder_acls')
+    dl = DovecotSharedFolderListener('reapply_shared_folder_acls')
 
     # get ldap connection
     lo = getMachineConnection()

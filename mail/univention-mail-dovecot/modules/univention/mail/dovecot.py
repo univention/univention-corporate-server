@@ -51,7 +51,7 @@ except ImportError:
 
 import univention.debug as ud
 
-from listener import SetUID
+import listener
 
 
 default_sieve_script = "/var/lib/dovecot/sieve/default.sieve"
@@ -59,9 +59,8 @@ default_sieve_script = "/var/lib/dovecot/sieve/default.sieve"
 
 class DovecotListener(object):
 
-    def __init__(self, listener, name):
+    def __init__(self, name):
         # type: (str) -> None
-        self.listener = listener
         self.name = name
 
     def log_p(self, msg):
@@ -74,8 +73,8 @@ class DovecotListener(object):
 
     def new_email_account(self, email):
         # type: (str) -> None
-        spam_folder = self.listener.configRegistry.get("mail/dovecot/folder/spam")
-        if self.listener.configRegistry.is_true("mail/dovecot/sieve/spam", True)\
+        spam_folder = listener.configRegistry.get("mail/dovecot/folder/spam")
+        if listener.configRegistry.is_true("mail/dovecot/sieve/spam", True)\
                 and spam_folder and spam_folder.lower() != "none":
             try:
                 self.upload_activate_sieve_script(email, default_sieve_script)
@@ -85,7 +84,7 @@ class DovecotListener(object):
 
     def delete_email_account(self, dn, email):
         # type: (str, str) -> None
-        if self.listener.configRegistry.is_true('mail/dovecot/mailbox/delete', False):
+        if listener.configRegistry.is_true('mail/dovecot/mailbox/delete', False):
             try:
                 old_localpart, old_domainpart = email.split("@")
                 global_mail_home = self.get_maillocation()
@@ -94,14 +93,12 @@ class DovecotListener(object):
                 self.log_e("dovecot: Delete mailbox: Configuration error. Could not remove mailbox (dn:'%s' old mail: '%s')." % (dn, email))
                 raise
             self.read_from_ext_proc_as_root(["/usr/bin/doveadm", "kick", email])
-            try:
-                self.listener.setuid(0)
-                shutil.rmtree(old_home_calc, ignore_errors=True)
-            except Exception:
-                self.log_e("dovecot: Delete mailbox: Error removing directory '%s' from disk." % old_home_calc)
-                raise
-            finally:
-                self.listener.unsetuid()
+            with listener.SetUID(0):
+                try:
+                    shutil.rmtree(old_home_calc, ignore_errors=True)
+                except Exception:
+                    self.log_e("dovecot: Delete mailbox: Error removing directory '%s' from disk." % old_home_calc)
+                    raise
         else:
             self.log_p("dovecot: Deleting of mailboxes disabled, not removing '%s' (dn '%s')." % (email, dn))
 
@@ -115,7 +112,7 @@ class DovecotListener(object):
         :param regexp: string: regexp for re.findall()
         :return: string
         """
-        with SetUID(0):
+        with listener.SetUID(0):
             cmd_proc = subprocess.Popen(cmd, stdin=stdin, stdout=stdout, stderr=stderr)
             cmd_out, cmd_err = cmd_proc.communicate(input=stdin_input and stdin_input.encode('UTF-8'))
             cmd_exit = cmd_proc.wait()
@@ -128,7 +125,7 @@ class DovecotListener(object):
 
     def move_user_home(self, newMailPrimaryAddress, oldMailPrimaryAddress, force_rename=False):
         # type: (str, str, bool) -> None
-        if not force_rename and not self.listener.configRegistry.is_true("mail/dovecot/mailbox/rename", False):
+        if not force_rename and not listener.configRegistry.is_true("mail/dovecot/mailbox/rename", False):
             self.log_p("Renaming of mailboxes disabled, not moving ('%s' -> '%s')." % (oldMailPrimaryAddress, newMailPrimaryAddress))
             return
 
@@ -142,7 +139,7 @@ class DovecotListener(object):
             self.log_e("Move mailbox: Configuration error. Could not move mailbox ('%s' -> '%s')." % (oldMailPrimaryAddress, newMailPrimaryAddress))
             return
 
-        with SetUID(0):
+        with listener.SetUID(0):
             if not os.path.isdir(old_home_calc):
                 # Either the user never logged in or never got any email, and thus no maildir was ever created,
                 # or it was moved manually. In any case: ignore.
@@ -172,20 +169,18 @@ class DovecotListener(object):
         # type: (str, str, str, bool) -> None
         # create parent path in any case to make sure it has correct ownership
         self.mkdir_p(os.path.dirname(new_path))
-        if not force_rename and not self.listener.configRegistry.is_true("mail/dovecot/mailbox/rename", False):
+        if not force_rename and not listener.configRegistry.is_true("mail/dovecot/mailbox/rename", False):
             self.log_p("Renaming of mailboxes disabled, not moving mail home (of mail '%s') from '%s' to '%s." % (email, old_path, new_path))
             return
-        try:
-            self.listener.setuid(0)
-            st = os.stat(old_path)
-            shutil.move(old_path, new_path)
-            self.chown_r(new_path, st[stat.ST_UID], st[stat.ST_GID])
-        except Exception:
-            self.log_e("Failed to move mail home (of mail '%s') from '%s' to '%s'.\n%s" % (
-                email, old_path, new_path, traceback.format_exc()))
-            raise
-        finally:
-            self.listener.unsetuid()
+        with listener.SetUID(0):
+            try:
+                st = os.stat(old_path)
+                shutil.move(old_path, new_path)
+                self.chown_r(new_path, st[stat.ST_UID], st[stat.ST_GID])
+            except Exception:
+                self.log_e("Failed to move mail home (of mail '%s') from '%s' to '%s'.\n%s" % (
+                    email, old_path, new_path, traceback.format_exc()))
+                raise
 
     def get_maillocation(self):
         # type: () -> str
@@ -199,9 +194,9 @@ class DovecotListener(object):
         # type: (str, str) -> None
         try:
             master_name, master_pw = self.get_masteruser_credentials()
-            ca_file = self.listener.configRegistry.get("mail/dovecot/sieve/client/cafile", "/etc/univention/ssl/ucsCA/CAcert.pem")
-            fqdn = "%(hostname)s.%(domainname)s" % self.listener.configRegistry
-            fqdn = self.listener.configRegistry.get("mail/dovecot/sieve/client/server", fqdn)
+            ca_file = listener.configRegistry.get("mail/dovecot/sieve/client/cafile", "/etc/univention/ssl/ucsCA/CAcert.pem")
+            fqdn = "%(hostname)s.%(domainname)s" % listener.configRegistry
+            fqdn = listener.configRegistry.get("mail/dovecot/sieve/client/server", fqdn)
             _cmd = [
                 "sieve-connect", "--user", "%s*%s" % (email, master_name),
                 "--server", fqdn,
@@ -226,16 +221,14 @@ class DovecotListener(object):
             self.log_e("Failed to get mail home for user '%s'.\n%s" % (username, traceback.format_exc()))
             raise
 
+    @listener.SetUID(0)
     def get_masteruser_credentials(self):
         # type: () -> Tuple[str, str]
         try:
-            self.listener.setuid(0)
             return re.findall(r"(\S+):{PLAIN}(\S+)::::::", open("/etc/dovecot/master-users").read())[0]
         except Exception:
             self.log_e("Failed to get masteruser password.\n%s" % traceback.format_exc())
             raise
-        finally:
-            self.listener.unsetuid()
 
     def get_dovecot_user(self):
         # type: () -> Tuple[str, str]
@@ -256,24 +249,18 @@ class DovecotListener(object):
         dovecot_uid = pwd.getpwnam(user).pw_uid
         dovecot_gid = grp.getgrnam(group).gr_gid
         # spool directory has to be traversed as root
-        self.listener.setuid(0)
-        parent = os.path.dirname(dir)
-        if not os.path.exists(parent):
-            self.listener.unsetuid()
-            self.mkdir_p(parent)
-        else:
-            self.listener.unsetuid()
+        with listener.SetUID(0):
+            parent = os.path.dirname(dir)
+            if not os.path.exists(parent):
+                self.mkdir_p(parent)
 
-        try:
-            self.listener.setuid(0)
-            if not os.path.exists(dir):
-                os.mkdir(dir, 0o2700)
-                os.chown(dir, dovecot_uid, dovecot_gid)
-        except Exception:
-            self.log_e("Failed to create directory '%s'.\n%s" % (dir, traceback.format_exc()))
-            raise
-        finally:
-            self.listener.unsetuid()
+            try:
+                if not os.path.exists(dir):
+                    os.mkdir(dir, 0o2700)
+                    os.chown(dir, dovecot_uid, dovecot_gid)
+            except Exception:
+                self.log_e("Failed to create directory '%s'.\n%s" % (dir, traceback.format_exc()))
+                raise
 
     @classmethod
     def chown_r(cls, path, uid, gid):
