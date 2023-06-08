@@ -67,6 +67,13 @@ univention-directory-manager settings/printermodel create "$@" --ignore_exists \
 # adding all ppd in /usr/share/ppd
 rc=0
 
+# IPP-Everywhere
+eval "$(ucr shell ldap/base)"
+univention-directory-manager settings/printermodel create "$@" --ignore_exists --position "cn=cups,cn=univention,$ldap_base" --set name=IPP || rc=$?
+univention-directory-manager settings/printermodel modify "$@" --ignore_exists --dn "cn=IPP,cn=cups,cn=univention,$ldap_base" \
+	--append printmodel='everywhere "IPP Everywhere"' \
+	--append printmodel='driverless "IPP Driverless"'
+
 # Manufacturer: HP Printers: 467
 univention-directory-manager settings/printermodel create "$@" --ignore_exists --position "cn=cups,cn=univention,$ldap_base" --set name=HP || rc=$?
 univention-directory-manager settings/printermodel modify "$@" --ignore_exists --dn cn=HP,cn=cups,cn=univention,"$ldap_base" \
