@@ -220,6 +220,10 @@ def handler(dn: str, new: Dict[str, List[bytes]], old: Dict[str, List[bytes]]) -
     if filter_match(new):
         # Modifications done via UCR-Variables
         printer_name = new['cn'][0].decode('UTF-8')
+        model = new.get('univentionPrinterModel', EMPTY)[0].decode('ASCII')
+        if model in ['None', 'smb']:
+            model = 'raw'
+
         listener.configRegistry.load()
         printer_list = listener.configRegistry.get('cups/restrictedprinters', '').split()
         printer_is_restricted = printer_name in printer_list
@@ -280,23 +284,18 @@ def handler(dn: str, new: Dict[str, List[bytes]], old: Dict[str, List[bytes]]) -
         else:
             args.append('-p')
             args.append(new['cn'][0].decode('UTF-8'))
+
             for a in changes:
                 if a == 'univentionPrinterURI':
                     continue
 
                 if a == 'univentionPrinterSpoolHost' and 'univentionPrinterModel' not in changes:
-                    model = new.get('univentionPrinterModel', EMPTY)[0].decode('ASCII')
-                    if model in ['None', 'smb']:
-                        model = 'raw'
                     args += [options['univentionPrinterModel'], model]
 
                 if a not in options:
                     continue
 
                 if a == 'univentionPrinterModel':
-                    model = new.get(a, EMPTY)[0].decode('ASCII')
-                    if model in ['None', 'smb']:
-                        model = 'raw'
                     args += [options[a], model]
                 else:
                     args += [options[a], new.get(a, EMPTY)[0].decode('UTF-8')]
