@@ -288,20 +288,28 @@ def handler(dn: str, new: Dict[str, List[bytes]], old: Dict[str, List[bytes]]) -
             args.append('-p')
             args.append(new['cn'][0].decode('UTF-8'))
 
+            specify_model = False
             for a in changes:
                 if a == 'univentionPrinterURI':
                     continue
 
                 if a == 'univentionPrinterSpoolHost' and 'univentionPrinterModel' not in changes:
-                    args += [options['univentionPrinterModel'], model]
+                    specify_model = True
 
                 if a not in options:
                     continue
 
                 if a == 'univentionPrinterModel':
-                    args += [options[a], model]
+                    specify_model = True
                 else:
                     args += [options[a], new.get(a, EMPTY)[0].decode('UTF-8')]
+
+            if specify_model:
+                if model == 'driverless':
+                    specific_model = ':'.join((model, modified_uri))
+                else:
+                    specific_model = model
+                args += [options['univentionPrinterModel'], specific_model]
 
             if model in ('everywhere', 'driverless'):
                 for attr in ('univentionPrinterLocation', 'description'):
