@@ -23,6 +23,13 @@ Description[en]=If this option is activated CUPS supports raw printing using the
 Type=bool
 Categories=service-cups
 
+[cups/hostnamelookups]
+Description[de]=Diese Option legt fest, ob IP Adressen in FQDNs aufgelöst werden sollen. Aus Performancegründen ist die Voreinstellung "Off".
+Description[en]=This option defines whether or not to do lookups on IP addresses to get a fully-qualified hostname. This defaults to "Off" for performance reasons.
+Type=str
+Default=Off
+Categories=service-cups
+
 [cups/location/admin]
 Description[de]=Mit dieser Variable wird festgelegt, von wo auf das CUPS-interne Administrations-Webinterface auf Port 631 zugegriffen werden kann. Hier kann entweder eine Liste von Rechnernamen in FQDN-Form, eine Liste von Netzen (z.B. '192.168.1.*') oder der Sonderwert 'networks' angegeben werden. Mehrere Werte werden durch Leerzeichen getrennt. Bei 'networks' wird der Zugriff aus dem lokalen Netz des CUPS-Servers erlaubt.
 Description[en]=This variable configures from where the CUPS-internal administration web interface on port 631 can be accessed. It can be specified as a list of hostnames in FQDN format, a list of networks (e.g. '192.168.1.*') or as the special value 'networks'. Multiple values need to be separated by commas. If 'networks' is set, access is granted from the local network of the CUPS server.

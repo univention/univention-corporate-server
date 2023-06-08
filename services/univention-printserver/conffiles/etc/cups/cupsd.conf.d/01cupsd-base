@@ -251,7 +251,7 @@ Port 631
 # fully-qualified hostname.  This defaults to Off for performance reasons...
 #
 
-#HostNameLookups On
+HostNameLookups @%@cups/hostnamelookups@%@
 
 #
 # KeepAlive: whether or not to support the Keep-Alive connection

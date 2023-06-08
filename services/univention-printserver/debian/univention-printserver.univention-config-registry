@@ -16,6 +16,7 @@ Variables: interfaces/eth.*/netmask
 Variables: cups/admin
 Variables: cups/browsing
 Variables: cups/errorpolicy
+Variables: cups/hostnamelookups
 Variables: cups/location/base
 Variables: cups/location/admin
 Variables: cups/debug/level
