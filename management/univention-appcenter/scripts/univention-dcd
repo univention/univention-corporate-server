@@ -1,0 +1,123 @@
+#!/usr/bin/python3
+# -*- coding: utf-8 -*-
+#
+# Univention Keycloak
+#
+# Like what you see? Join us!
+# https://www.univention.com/about-us/careers/vacancies/
+#
+# Copyright 2022-2023 Univention GmbH
+#
+# https://www.univention.de/
+#
+# All rights reserved.
+#
+# The source code of this program is made available
+# under the terms of the GNU Affero General Public License version 3
+# (GNU AGPL V3) as published by the Free Software Foundation.
+#
+# Binary versions of this program provided by Univention to you as
+# well as other copyrighted, protected or trademarked materials like
+# Logos, graphics, fonts, specific documentations and configurations,
+# cryptographic keys etc. are subject to a license agreement between
+# you and Univention and not subject to the GNU AGPL V3.
+#
+# In the case you use this program under the terms of the GNU AGPL V3,
+# the program is provided in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+# GNU Affero General Public License for more details.
+#
+# You should have received a copy of the GNU Affero General Public
+# License with the Debian GNU/Linux or Univention distribution in file
+# /usr/share/common-licenses/AGPL-3; if not, see
+# <https://www.gnu.org/licenses/>.
+"""Get/set values in the Distributed Configuration Database"""
+
+from __future__ import annotations
+
+import json
+import sys
+from argparse import ArgumentParser, FileType, Namespace
+
+from univention.appcenter.dcd import DCD
+from univention.config_registry import ConfigRegistry
+from univention.udm import UDM
+
+
+ucr = ConfigRegistry()
+ucr.load()
+
+
+def parse_args(args: list[str] = None) -> Namespace:
+
+    parser = ArgumentParser(description=__doc__)
+    parser.add_argument("--username", default=f"{ucr.get('hostname')}$")
+    parser.add_argument("--password-file", default="/etc/machine.secret", metavar="FILE", type=FileType("r", encoding="UTF-8"))
+    parser.add_argument("--server")
+    parser.add_argument("--json", help="print json output", default=False, action="store_true")
+
+    subparsers = parser.add_subparsers(title="subcommands", description="valid subcommands", required=True, dest="command")
+
+    parser_get = subparsers.add_parser("get", help="get a setting from the DCD")
+    parser_get.add_argument("key", help="the key to get")
+    parser_get.set_defaults(func=get_dcd)
+
+    parser_search = subparsers.add_parser("search", help="search the DCD")
+    parser_search.add_argument("--pattern", help="the search pattern", default="*")
+    parser_search.set_defaults(func=search_dcd)
+
+    parser_set = subparsers.add_parser("set", help="set key in DCD")
+    parser_set.set_defaults(func=set_dcd)
+
+    opt = parser.parse_args(args)
+    opt.password = opt.password_file.read().strip()
+
+    return opt
+
+
+def myprint(opt: Namespace, msg: str) -> None:
+    if opt.json:
+        print(json.dumps(msg, indent=4))
+    else:
+        print(msg)
+
+
+def get_default_dcd_server(opt: Namespace) -> str | None:
+    udm = UDM.machine().version(2)
+    for role in ['domaincontroller_master', 'domaincontroller_backup', 'domaincontroller_slave', 'memberserver']:
+        for srv in udm.get(f"computers/{role}").search(filter_s="univentionService=Distributed Configuration Database"):
+            if srv.props.fqdn:
+                return srv.props.fqdn
+    return None
+
+
+def get_dcd(opt: Namespace, dcd: DCD) -> None:
+    res = dcd.get(opt.key)
+    myprint(opt, res)
+
+
+def search_dcd(opt: Namespace, dcd: DCD) -> None:
+    for i in dcd.search(opt.pattern):
+        myprint(opt, i)
+
+
+def set_dcd(opt: Namespace, dcd: DCD) -> None:
+    help(dcd)
+    #for i in dcd.search(opt.pattern):
+    #    myprint(opt, i)
+
+
+def main() -> int:
+    """CLI tool to interact with the Distributed Configuration Database"""
+    opt = parse_args()
+    if not opt.server:
+        opt.server = get_default_dcd_server(opt)
+        if not opt.server:
+            raise Exception("Couldn't find a Distributed Configuration Database server, is the dcd app installed?")
+    dcd = DCD(opt.username, opt.password, "https://%s/univention/dcd/" % opt.server, version=1)
+    return opt.func(opt, dcd) or 0
+
+
+if __name__ == "__main__":
+    sys.exit(main())

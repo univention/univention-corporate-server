@@ -5,5 +5,6 @@ scripts/joinscripthelper.sh	usr/share/univention-appcenter/
 scripts/univention-app	usr/bin/
 scripts/univention-appcenter-listener-converter	usr/share/
 scripts/univention-appcenter-listener-converter@.service	lib/systemd/system/
+scripts/univention-dcd	usr/bin/
 udm/handlers/appcenter/*.py	usr/share/univention-appcenter/
 udm/syntax/*.py	usr/share/univention-appcenter/
