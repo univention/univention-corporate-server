@@ -82,8 +82,6 @@ class DovecotListener(object):
             except Exception:
                 self.log_e("dovecot: Could not upload sieve script to account '%s'." % email)
                 raise
-            finally:
-                self.listener.unsetuid()
 
     def delete_email_account(self, dn, email):
         # type: (str, str) -> None

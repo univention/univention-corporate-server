@@ -359,12 +359,9 @@ class DovecotSharedFolderListener(DovecotListener):
             path = os.path.join(pub_loc, ".INBOX")
             self.mkdir_p(pub_loc)
             self.read_from_ext_proc_as_root(["/usr/bin/maildirmake.dovecot", path, "%s:%s" % (user, group)])
-            self.listener.setuid(0)
         except Exception:
             self.log_e("Failed to create maildir '%s'." % folder_name)
             raise
-        finally:
-            self.listener.unsetuid()
         return path
 
     def read_from_ext_proc_as_root(self, cmd, regexp=None, stdin=None, stdout=subprocess.PIPE, stderr=None, stdin_input=None):
@@ -437,14 +434,11 @@ class DovecotSharedFolderListener(DovecotListener):
         # consistency with the LDAP.
         if delete_only:
             try:
-                self.listener.setuid(0)
                 old_info = self.listener.configRegistry.get("mail/dovecot/internal/sharedfolders", "").split()
                 emails_quota = [info for info in old_info if not info.startswith(delete_only + ":")]
             except Exception:
                 self.log_e("update_public_mailbox_configuration(): Failed to update public mailbox configuration:\n%s" % traceback.format_exc())
                 raise
-            finally:
-                self.listener.unsetuid()
         else:
             public_folders = []  # type: List[Any]
             for module in self.modules:
@@ -453,8 +447,6 @@ class DovecotSharedFolderListener(DovecotListener):
                 except Exception:
                     self.log_e("update_public_mailbox_configuration(): Failed to update public mailbox configuration:\n%s" % traceback.format_exc())
                     raise
-                finally:
-                    self.listener.unsetuid()
             emails_quota = [
                 "%s@%s:%s" % (
                     pf["name"] or pf.dn.split("@")[0].split("=")[1],
