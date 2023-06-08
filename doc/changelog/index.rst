@@ -382,6 +382,14 @@ RADIUS
   was reset to the default one during installation. This breaks setups with
   custom configurations (:uv:bug:`55007`).
 
+.. _changelog-service-cups:
+
+Printing services
+=================
+
+* :program:`CUPS` now uses the UCS TLS certificate instead of a self-signed
+  certificate (:uv:bug:`52879`).
+
 .. _changelog-other:
 
 *************

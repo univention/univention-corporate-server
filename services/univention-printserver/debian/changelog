@@ -1,3 +1,9 @@
+univention-printserver (13.0.14-2) unstable; urgency=medium
+
+  * Bug #52879: make cups use system SSL certificate
+
+ -- Marius Meschter <marius.meschter@univention.de>  Thu, 12 Sep 2024 14:46:00 +0200
+
 univention-printserver (13.0.14-1) UNRELEASED; urgency=medium
 
   * Bug #57581 UCS 5.0-9 version bump

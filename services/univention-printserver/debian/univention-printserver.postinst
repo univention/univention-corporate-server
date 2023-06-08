@@ -90,6 +90,21 @@ fi
 
 if [ "$1" = "configure" ]; then
 	systemctl try-restart univention-directory-listener
+
+	# Bug 52879: use system certificates
+	hostname=$(ucr get hostname)
+	domainname=$(ucr get domainname)
+	if dpkg --compare-versions "$2" lt-nl "13.0.14-2"; then
+		if test -e "/etc/univention/ssl/$hostname.$domainname/cert.pem"; then
+			rm -f /etc/cups/ssl/server.crt /etc/cups/ssl/"$hostname.$domainname.crt"
+			ln -s /etc/univention/ssl/"$hostname.$domainname"/cert.pem /etc/cups/ssl/"$hostname.$domainname.crt"
+		fi
+		if test -e "/etc/univention/ssl/$hostname.$domainname/private.key"; then
+			rm -f /etc/cups/ssl/server.key /etc/cups/ssl/"$hostname.$domainname.key"
+			ln -s /etc/univention/ssl/"$hostname.$domainname"/private.key /etc/cups/ssl/"$hostname.$domainname.key"
+		fi
+	fi
+
 fi
 
 if [ ! -e "/etc/cups/printers.conf" ]; then
