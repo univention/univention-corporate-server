@@ -45,9 +45,7 @@ import univention.debug as ud
 import listener
 
 
-hostname = listener.configRegistry["hostname"]
-domainname = listener.configRegistry["domainname"]
-fqdn = "%s.%s" % (hostname, domainname)
+fqdn = "%(hostname)s.%(domainname)s" % listener.configRegistry
 
 name = "nfs-homes"
 description = "Create user home dirs on nfs share host"

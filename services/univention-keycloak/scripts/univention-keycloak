@@ -746,7 +746,7 @@ def parse_args(args: list[str] = None) -> Namespace:
     """
     ldap_base = ucr.get("ldap/base")
     domainname = ucr.get("domainname")
-    host_fqdn = "%s.%s" % (ucr.get("hostname"), ucr.get("domainname"))
+    host_fqdn = "%(hostname)s.%(domainname)s" % ucr
     umc_saml_sp_server = ucr.get("umc/saml/sp-server", host_fqdn)
     keycloak_fqdn = ucr.get("keycloak/server/sso/fqdn", f"ucs-sso-ng.{domainname}")
     keycloak_url = f"https://{keycloak_fqdn}"

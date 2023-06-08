@@ -50,6 +50,8 @@ attributes = ['cn', 'univentionSharePath']
 
 sharename = "pdfPrinterShare"
 
+fqhn = '%(hostname)s.%(domainname)s' % listener.configRegistry
+
 # set two ucr variables (template cups-pdf) if the share for
 # the pdf pseudo printer is changed
 
@@ -58,9 +60,8 @@ def handler(dn: str, new: Dict[str, List[bytes]], old: Dict[str, List[bytes]]) -
     if new.get('cn', [b''])[0].decode('UTF-8') == sharename and new.get('univentionSharePath') and new.get('univentionShareHost'):
         path = new['univentionSharePath'][0].decode('UTF-8')
         server = new['univentionShareHost'][0].decode('ASCII')
-        me = listener.configRegistry.get('hostname') + "." + listener.configRegistry.get('domainname')
 
-        if me == server:
+        if fqhn == server:
             ud.debug(ud.LISTENER, ud.INFO, "cups-pdf: setting cups-pdf path to %s according to sharepath in %s on %s" % (path, sharename, server))
             list_ = []
             list_.append('cups/cups-pdf/directory=%s' % (path,))

@@ -46,6 +46,8 @@ from univention.mail.dovecot import DovecotListener
 import listener
 
 
+fqdn = ('%(hostname)s.%(domainname)s' % listener.configRegistry).lower()
+
 name = 'dovecot'
 description = 'manage imap folders'
 filter = '(&(objectClass=univentionMail)(uid=*))'
@@ -130,8 +132,6 @@ def handler(dn: str, new: Dict[str, List[bytes]], old: Dict[str, List[bytes]], c
     newMailPrimaryAddress = new.get('mailPrimaryAddress', [b""])[0].decode('UTF-8').lower()
     oldHomeServer = old.get('univentionMailHomeServer', [b''])[0].decode('UTF-8').lower()
     newHomeServer = new.get('univentionMailHomeServer', [b''])[0].decode('UTF-8').lower()
-    fqdn = '%(hostname)s.%(domainname)s' % listener.configRegistry
-    fqdn = fqdn.lower()
     # If univentionMailHomeServer is not set, all servers are responsible.
     is_old_home_server = oldHomeServer == "" or oldHomeServer == fqdn
     is_new_home_server = newHomeServer == "" or newHomeServer == fqdn

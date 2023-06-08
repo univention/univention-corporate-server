@@ -57,8 +57,7 @@ ucr_handlers = configHandlers()
 ucr_handlers.load()
 interfaces = Interfaces(listener.configRegistry)
 
-hostname = listener.configRegistry['hostname']
-domainname = listener.configRegistry['domainname']
+fqdn = ('%(hostname)s.%(domainname)s' % listener.configRegistry).lower()
 ip = str(interfaces.get_default_ip_address().ip)
 ldap_base = listener.configRegistry['ldap/base']
 
@@ -120,7 +119,6 @@ def lpadmin(args: List[str]) -> None:
 
 
 def filter_match(object: Dict[str, List[bytes]]) -> bool:
-    fqdn = ('%s.%s' % (hostname, domainname)).lower()
     return any(host.decode('ASCII').lower() in (ip.lower(), fqdn) for host in object.get('univentionPrinterSpoolHost', ()))
 
 
