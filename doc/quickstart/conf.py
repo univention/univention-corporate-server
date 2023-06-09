@@ -110,9 +110,9 @@ figure_language_filename = "{root}-{language}{ext}"
 univention_use_doc_base = True
 
 intersphinx_mapping = {
-    "uv-manual": ("https://docs.software-univention.de/manual/5.0/en", None),
-    "uv-domain": ("https://docs.software-univention.de/ext-domain/5.0/en/", None),
-    "uv-inst": ("https://docs.software-univention.de/ext-installation/5.0/en/", None),
+    "uv-manual": ("https://docs.software-univention.de/manual/5.0/en", ("../manual/_build/html/objects.inv", None)),
+    "uv-domain": ("https://docs.software-univention.de/ext-domain/5.0/en/", ("../ext-domain/_build/html/objects.inv", None)),
+    "uv-inst": ("https://docs.software-univention.de/ext-installation/5.0/en/", ("../ext-installation/_build/html/objects.inv", None)),
 }
 
 # See Univention Sphinx Extension for its options.

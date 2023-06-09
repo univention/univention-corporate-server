@@ -63,10 +63,10 @@ bibtex_default_style = "unsrt"
 bibtex_reference_style = "label"
 
 intersphinx_mapping = {
-    "uv-manual": (f"https://docs.software-univention.de/manual/{version}/en", None),
-    "uv-app-center": (f"https://docs.software-univention.de/app-center/{version}/en/", None),
-    "python": ("https://docs.python.org/3.7/", None),
-    "python-general": ("https://docs.python.org/3/", None),
+    "uv-manual": (f"https://docs.software-univention.de/manual/{version}/en", ("../manual/_build/html/objects.inv", None)),
+    "uv-app-center": (f"https://docs.software-univention.de/app-center/{version}/en/", ("../app-center/_build/html/objects.inv", None)),
+    "python": ("https://docs.python.org/3.7/", ("/usr/share/doc/python3/html/objects.inv", None)),
+    "python-general": ("https://docs.python.org/3/", ("/usr/share/doc/python3/html/objects.inv", None)),
 }
 
 copybutton_prompt_text = r"\$ |.+# "
