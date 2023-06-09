@@ -1,3 +1,9 @@
+univention-docker (7.0.4) unstable; urgency=medium
+
+  * Bug #56130: Docker logging driver options compatible with all logging drivers
+
+ -- Julia Bremer <bremer@univention.de>  Tue, 06 Aug 2024 17:02:44 +0200
+
 univention-docker (7.0.3) unstable; urgency=medium
 
   * Bug #55807: Revert disabling ip(6)tables in docker config
