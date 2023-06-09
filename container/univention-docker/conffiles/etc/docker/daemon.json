@@ -1,14 +1,31 @@
 @!@
 import json
 conf = {
-    "log-opts": {
+    "bip": configRegistry["docker/daemon/default/opts/bip"],
+    "live-restore": configRegistry.is_true("docker/daemon/default/parameter/live-restore"),
+    "log-driver": configRegistry["docker/daemon/default/opts/log-driver"],
+    "log-opts": {},
+}
+log_driver = configRegistry["docker/daemon/default/opts/log-driver"]
+if log_driver in ("local", "json-file"):
+    conf["log-opts"].update({
         "max-file": configRegistry["docker/daemon/default/opts/max-file"],
         "max-size": configRegistry["docker/daemon/default/opts/max-size"],
-    },
-    "bip": configRegistry["docker/daemon/default/opts/bip"],
-    "log-driver": configRegistry["docker/daemon/default/opts/log-driver"],
-    "live-restore": configRegistry.is_true("docker/daemon/default/parameter/live-restore"),
-}
+    })
+if log_driver in ("fluentd", "gcplogs", "gelf", "journald", "json-file", "splunk", "syslog"):
+    conf["log-opts"]["env"] = "DOCKER_HOST_NAME"
+if log_driver in ("fluentd", "gcplogs", "gelf", "journald", "json-file", "splunk", "syslog"):
+    # Docker daemon in UCS 5.0 is to old to support "labels-regex". Change the below in 5.2 to
+    # conf["log-opts"]["labels-regex"] = "^APP,^UCS"
+    conf["log-opts"]["labels"] = "APP_NAME,APP_VERSION,UCS"
+if log_driver in ("gelf", "journald", "json-file", "splunk", "syslog"):
+    conf["log-opts"]["tag"] = "{{.ImageName}}/{{.Name}}/{{.ID}}"
+elif log_driver == "fluentd":
+    conf["log-opts"].update({
+        "fluentd-address": "unix:///var/run/fluentd.sock",
+        "fluentd-sub-second-precision": "true",
+        "tag": "docker-logs",
+    })
 registry_mirrors = configRegistry.get('docker/daemon/default/opts/registry-mirrors')
 if registry_mirrors:
     conf.update({"registry-mirrors": [mirror.strip() for mirror in registry_mirrors.split(',')]})
