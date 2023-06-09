@@ -56,6 +56,7 @@ class Configure(UniventionAppAction):
         parser.formatter_class = PatchedHelpFormatter
         parser.add_argument('app', action=StoreAppAction, help='The ID of the App that shall be configured')
         parser.add_argument('--list', action='store_true', help='List all configuration options as well as their current values')
+        parser.add_argument('--all-scopes', action='store_true', help='List the configuration in all available scopes (to help spot differences)')
         parser.add_argument('--set', nargs='+', action=StoreConfigAction, metavar='KEY=VALUE', dest='set_vars', help='Sets the configuration variable. Example: --set some/variable=value some/other/variable="value 2"')
         parser.add_argument('--unset', nargs='+', metavar='KEY', help='Unsets the configuration variable. Example: --unset some/variable')
         parser.add_argument('--run-script', choices=['settings', 'install', 'upgrade', 'remove', 'no'], default='settings', help='Run configuration script to support a specific action - or not at all. Default: %(default)s')
@@ -68,12 +69,25 @@ class Configure(UniventionAppAction):
                 phase = 'Settings'
                 if args.app.is_installed():
                     phase = 'Install'
-                value = setting.get_value(args.app, phase)
-                if isinstance(setting, FileSetting):
-                    value = 'File %s contains %s bytes' % (setting.filename, len(value or ''))
+                if args.all_scopes:
+                    self.log('%s: (%s)' % (setting.name, setting.description))
+                    for scope in ['outside', 'distributed', 'inside']:
+                        if scope not in setting.scope:
+                            continue
+                        try:
+                            value = setting.get_value(args.app, phase, scope=scope)
+                        except SettingGetError:
+                            continue
+                        if isinstance(setting, FileSetting):
+                            value = 'File %s contains %s bytes' % (setting.filename, len(value or ''))
+                        self.log('  %s: %r' % (scope, value))
                 else:
-                    value = repr(value)
-                self.log('%s: %s (%s)' % (setting.name, value, setting.description))
+                    value = setting.get_value(args.app, phase)
+                    if isinstance(setting, FileSetting):
+                        value = 'File %s contains %s bytes' % (setting.filename, len(value or ''))
+                    else:
+                        value = repr(value)
+                    self.log('%s: %s (%s)' % (setting.name, value, setting.description))
         else:
             self.log('Configuring %s' % args.app)
             set_vars = {}
