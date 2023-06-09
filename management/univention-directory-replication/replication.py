@@ -99,7 +99,7 @@ EXCLUDE_ATTRIBUTES = {attr.lower() for attr in {
 ud.debug(ud.LISTENER, ud.ALL, 'replication: EXCLUDE_ATTRIBUTES=%r' % (EXCLUDE_ATTRIBUTES,))
 
 # don't use built-in OIDs from slapd
-BUILTIN_OIDS = [
+BUILTIN_OIDS = {
     # attributeTypes
     '1.3.6.1.1.4',                  # vendorName
     '1.3.6.1.1.5',                  # vendorVersion
@@ -427,8 +427,6 @@ BUILTIN_OIDS = [
     '1.3.6.1.4.1.4203.1.12.2.4.0.8',  # olcModuleList
     '1.3.6.1.4.1.4203.1.12.2.4.2.1.1',  # olcBdbConfig
     '1.3.6.1.4.1.4203.1.12.2.4.2.2.1',  # olcLdifConfig
-    # UCS 3.0
-    '1.3.6.1.4.1.4203.666.11.1.3.0.93',  # olcListenerThreads
     # UCS 3.1
     '1.3.6.1.4.1.4203.666.11.1.3.2.0.20',  # olcExtraAttrs
     # UCS 2.0
@@ -448,7 +446,7 @@ BUILTIN_OIDS = [
     '1.3.6.1.4.1.42.2.27.8.1.21',  # pwdGraceUseTime
     '1.3.6.1.4.1.42.2.27.8.1.22',  # pwdReset
     '1.3.6.1.4.1.42.2.27.8.1.23',  # pwdPolicySubentry
-]
+}
 
 
 class LDIFObject(object):
