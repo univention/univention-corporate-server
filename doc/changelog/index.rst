@@ -353,6 +353,9 @@ Univention Management Console web interface
 Univention Portal
 =================
 
+* The Portal is now able to display announcements, which are realized via a
+  new UDM module **portals/announcement** (:uv:bug:`55175`).
+
 * The documentation wasn't specific enough about what command to run, after the
   |UCSUCRV| :envvar:`portal/default-dn` changed. Running :command:`univention-portal update`
   after changing the |UCSUCRV| is enough (:uv:bug:`55871`).
