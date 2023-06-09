@@ -1,3 +1,9 @@
+univention-ldb-modules (8.0.2-2) unstable; urgency=medium
+
+  * Bug #55907: Version bump for relinking
+
+ -- Arvid <requate@univention.de>  Fri, 09 Jun 2023 15:57:31 +0200
+
 univention-ldb-modules (8.0.2-1) unstable; urgency=medium
 
   * Bug #55921: update waf to 2.0.25 to use Python 3 as build dependency
