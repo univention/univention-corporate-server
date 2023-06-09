@@ -1,3 +1,9 @@
+ucs-test (10.0.10-69) unstable; urgency=medium
+
+  * Bug #31388: add "read list" to 53_samba-common/10samba-share-options
+
+ -- Florian Best <best@univention.de>  Fri, 09 Jun 2023 12:49:45 +0200
+
 ucs-test (10.0.10-68) unstable; urgency=medium
 
   * Bug #50048: fix 73_udm-rest/01_openapi_validation

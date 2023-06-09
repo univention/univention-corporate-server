@@ -44,6 +44,7 @@ sambaInvalidUsers/invalid users/www-data
 sambaHostsAllow/hosts allow/friend
 sambaHostsDeny/hosts deny/pirate
 sambaWriteList/write list/@root
+sambaReadList/read list/@root
 sambaHideFiles/hide files/sasl
 sambaNtAclSupport/nt acl support/1
 sambaInheritAcls/inherit acls/1
