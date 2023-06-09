@@ -175,7 +175,8 @@ Univention App Center
 |UCSUDM| and command line interface
 ===================================
 
-* TODO
+* The usability of the shares module has been overworked (:uv:bug:`44997`, :uv:bug:`40599`, :uv:bug:`7843`, :uv:bug:`31388`, :uv:bug:`42805`, :uv:bug:`44997`, :uv:bug:`50701`, :uv:bug:`53785`, :uv:bug:`19868`, :uv:bug:`21349`).
+
 
 .. _changelog-umc-setup:
 
