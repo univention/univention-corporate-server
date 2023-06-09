@@ -185,6 +185,15 @@ Listener/Notifier domain replication
   many transactions in batch and shows performance issues for large transaction
   files (:uv:bug:`54797`).
 
+* All new Object Identifiers (OIDs) for internally defined object classes (OCs)
+  and attribute types (ATs) from OpenLDAP 2.5 have been added to the exclude
+  list of |UCSUDL| module :file:`replication.py`.
+  Also all OIDs of OCs and ATs provided internally by OpenLDAP modules have
+  been added.
+  The list of excluded OIDs is no longer maintained in :file:`replication.py`
+  itself, but is now stored in the file
+  :file:`/usr/share/univention-ldap/oid_skip`.
+
 .. _changelog-umc-web:
 
 Univention Management Console web interface
