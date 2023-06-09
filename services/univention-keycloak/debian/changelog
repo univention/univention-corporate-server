@@ -1,3 +1,9 @@
+univention-keycloak (1.0.9-19) unstable; urgency=medium
+
+  * Bug #56132: added command get-keycloak-base-url
+
+ -- Felix Botner <botner@univention.de>  Fri, 09 Jun 2023 12:18:15 +0200
+
 univention-keycloak (1.0.9-18) unstable; urgency=medium
 
   * Bug #56096: added user-attribute-ldap-mapper command

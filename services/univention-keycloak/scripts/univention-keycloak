@@ -949,6 +949,11 @@ def parse_args(args: list[str] = None) -> Namespace:
     parser_get_user_attribute_ldap_mapper.add_argument("--user-attributes", help="instead of the name of the mapper, print the internal user attribute name, this value can bes used in saml or oicd mappers", default=False, action="store_true")
     parser_get_user_attribute_ldap_mapper.set_defaults(func=get_user_attribute_ldap_mapper)
 
+    # get keycloak base url
+    parser_get_base_url = subparsers.add_parser("get-keycloak-base-url", help="get the base url of keycloak according to the current configuration (keycloak/server/sso/fqdn, keycloak/server/sso/path)")
+    parser_get_base_url.add_argument("--json", help="json output", default=False, action="store_true")
+    parser_get_base_url.set_defaults(func=get_base_url)
+
     opt = parser.parse_args(args)
     if opt.binddn:
         opt.binduser = explode_rdn(opt.binddn, 1)[0]
@@ -966,6 +971,29 @@ def parse_args(args: list[str] = None) -> Namespace:
             with open(opt.ldap_system_user_pwdfile) as fd:
                 opt.ldap_system_user_pwd = fd.read().strip()
     return opt
+
+
+def get_base_url(opt: Namespace) -> None:
+    """check that the keycloak url works and print url"""
+    # check that the url works
+    try:
+        resp = requests.get(opt.keycloak_url)
+        assert resp.status_code == 200, f"invalid http status code {resp.status_code}"
+    except (requests.exceptions.ConnectionError, AssertionError) as exc:
+        print(exc)
+        msg = f"ERROR: Could not connect to keycloak server on {opt.keycloak_url}:\n\n\t{exc}\n\n"
+        msg += "Please check the UCR settings for keycloak/server/sso/fqdn and keycloak/server/sso/path,\n"
+        msg += "and make sure that keycloak and apache are running on the keycloak server!"
+        print(msg, file=sys.stderr)
+        return 1
+    # remove trailing slash, is this a good idea?
+    # the idea is to use this value for
+    # "$BASE_URL/realms/ucs/protocol/saml" -> https://ucs-sso-ng.my.domain/realms/ucs/protocol/saml
+    url = opt.keycloak_url.strip("/")
+    if opt.json:
+        print(json.dumps(url, indent=4))
+    else:
+        print(url)
 
 
 def delete_saml_nameid_mapper(opt: Namespace) -> None:
