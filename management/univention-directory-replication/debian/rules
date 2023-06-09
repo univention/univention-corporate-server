@@ -38,6 +38,7 @@ copyrightyear := $(shell date +%Y)
 override_dh_install:
 	dh_install
 	sed -i "s/@%@copyright_lastyear@%@/${copyrightyear}/" debian/univention-directory-replication/usr/sbin/univention-directory-replication-resync
+	grep --only '\<[012]\+\([.][0-9]\+\)\{3,\}\>' oid_skip.txt >debian/univention-directory-replication/usr/share/univention-ldap/oid_skip
 
 %:
 	dh $@ --with ucr

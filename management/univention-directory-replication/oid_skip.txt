@@ -1,0 +1,212 @@
+# new official OpenLDAP 2.4 OID        old Experimental OpenLDAP 2.3 OID
+0.9.2342.19200300.100.1.1            # attributeType.uid|userid
+1.2.840.113556.1.2.102               # dynlist,memberof: attributeType.memberOf
+1.3.6.1.1.1.1.0                      # attributeType.uidNumber
+1.3.6.1.1.1.1.1                      # attributeType.gidNumber
+1.3.6.1.1.4                          # attributeType.vendorName
+1.3.6.1.1.5                          # attributeType.vendorVersion
+1.3.6.1.1.16.4                       # attributeType.entryUUID
+1.3.6.1.1.20                         1.3.6.1.4.1.4203.666.1.33            # attributeType.entryDN
+1.3.6.1.4.1.42.2.27.8.1.16           # ppolicy: attributeType.pwdChangedTime
+1.3.6.1.4.1.42.2.27.8.1.17           # ppolicy: attributeType.pwdAccountLockedTime
+1.3.6.1.4.1.42.2.27.8.1.19           # ppolicy: attributeType.pwdFailureTime
+1.3.6.1.4.1.42.2.27.8.1.20           # ppolicy: attributeType.pwdHistory
+1.3.6.1.4.1.42.2.27.8.1.21           # ppolicy: attributeType.pwdGraceUseTime
+1.3.6.1.4.1.42.2.27.8.1.22           # ppolicy: attributeType.pwdReset
+1.3.6.1.4.1.42.2.27.8.1.23           # ppolicy: attributeType.pwdPolicySubentry
+1.3.6.1.4.1.250.1.57                 # attributeType.labeledURI
+1.3.6.1.4.1.250.1.32                 # attributeType.krbName
+1.3.6.1.4.1.453.16.2.188             # lastbind: attributeType.authTimestamp
+1.3.6.1.4.1.1466.101.119.2           # objectClass.dynamicObject
+1.3.6.1.4.1.1466.101.119.3           # attributeType.entryTtl
+1.3.6.1.4.1.1466.101.119.4           # attributeType.dynamicSubtrees
+1.3.6.1.4.1.1466.101.120.5           # attributeType.namingContexts
+1.3.6.1.4.1.1466.101.120.6           # attributeType.altServer
+1.3.6.1.4.1.1466.101.120.7           # attributeType.supportedExtension
+1.3.6.1.4.1.1466.101.120.13          # attributeType.supportedControl
+1.3.6.1.4.1.1466.101.120.14          # attributeType.supportedSASLMechanisms
+1.3.6.1.4.1.1466.101.120.15          # attributeType.supportedLDAPVersion
+1.3.6.1.4.1.1466.101.120.16          # attributeType.ldapSyntaxes
+1.3.6.1.4.1.1466.101.120.111         # objectClass.extensibleObject
+1.3.6.1.4.1.4203.1.3.1               # attributeType.entry
+1.3.6.1.4.1.4203.1.3.2               # attributeType.children
+1.3.6.1.4.1.4203.1.3.3               # attributeType.supportedAuthPasswordSchemes
+1.3.6.1.4.1.4203.1.3.4               # attributeType.authPassword
+1.3.6.1.4.1.4203.1.3.5               # attributeType.supportedFeatures
+1.3.6.1.4.1.4203.1.4.1               # objectClass.LDAProotDSE|OpenLDAProotDSE
+1.3.6.1.4.1.4203.1.12.2.3.0.1        1.3.6.1.4.1.4203.666.11.1.3.0.1      # attributeType.olcAccess
+1.3.6.1.4.1.4203.1.12.2.3.0.2        1.3.6.1.4.1.4203.666.11.1.3.0.2      # attributeType.olcAllows
+1.3.6.1.4.1.4203.1.12.2.3.0.3        1.3.6.1.4.1.4203.666.11.1.3.0.3      # attributeType.olcArgsFile
+1.3.6.1.4.1.4203.1.12.2.3.0.4        1.3.6.1.4.1.4203.666.11.1.3.0.4      # attributeType.olcAttributeTypes
+1.3.6.1.4.1.4203.1.12.2.3.0.5        1.3.6.1.4.1.4203.666.11.1.3.0.5      # attributeType.olcAttributeOptions
+1.3.6.1.4.1.4203.1.12.2.3.0.6        1.3.6.1.4.1.4203.666.11.1.3.0.6      # attributeType.olcAuthIDRewrite
+1.3.6.1.4.1.4203.1.12.2.3.0.7        1.3.6.1.4.1.4203.666.11.1.3.0.7      # attributeType.olcAuthzPolicy
+1.3.6.1.4.1.4203.1.12.2.3.0.8        1.3.6.1.4.1.4203.666.11.1.3.0.8      # attributeType.olcAuthzRegexp
+1.3.6.1.4.1.4203.1.12.2.3.0.9        1.3.6.1.4.1.4203.666.11.1.3.0.9      # attributeType.olcBackend
+1.3.6.1.4.1.4203.1.12.2.3.0.10       1.3.6.1.4.1.4203.666.11.1.3.0.10     # attributeType.olcConcurrency
+1.3.6.1.4.1.4203.1.12.2.3.0.11       1.3.6.1.4.1.4203.666.11.1.3.0.11     # attributeType.olcConnMaxPending
+1.3.6.1.4.1.4203.1.12.2.3.0.12       1.3.6.1.4.1.4203.666.11.1.3.0.12     # attributeType.olcConnMaxPendingAuth
+1.3.6.1.4.1.4203.1.12.2.3.0.13       1.3.6.1.4.1.4203.666.11.1.3.0.13     # attributeType.olcDatabase
+1.3.6.1.4.1.4203.1.12.2.3.0.14       1.3.6.1.4.1.4203.666.11.1.3.0.14     # attributeType.olcDefaultSearchBase
+1.3.6.1.4.1.4203.1.12.2.3.0.15       1.3.6.1.4.1.4203.666.11.1.3.0.15     # attributeType.olcDisallows
+1.3.6.1.4.1.4203.1.12.2.3.0.16       1.3.6.1.4.1.4203.666.11.1.3.0.16     # attributeType.olcDitContentRules
+1.3.6.1.4.1.4203.1.12.2.3.0.17       1.3.6.1.4.1.4203.666.11.1.3.0.17     # attributeType.olcGentleHUP
+1.3.6.1.4.1.4203.1.12.2.3.0.18       1.3.6.1.4.1.4203.666.11.1.3.0.18     # attributeType.olcIdleTimeout
+1.3.6.1.4.1.4203.1.12.2.3.0.19       1.3.6.1.4.1.4203.666.11.1.3.0.19     # attributeType.olcInclude
+1.3.6.1.4.1.4203.1.12.2.3.0.20       1.3.6.1.4.1.4203.666.11.1.3.0.20     # attributeType.olcIndexSubstrIfMinLen
+1.3.6.1.4.1.4203.1.12.2.3.0.21       1.3.6.1.4.1.4203.666.11.1.3.0.21     # attributeType.olcIndexSubstrIfMaxLen
+1.3.6.1.4.1.4203.1.12.2.3.0.22       1.3.6.1.4.1.4203.666.11.1.3.0.22     # attributeType.olcIndexSubstrAnyLen
+1.3.6.1.4.1.4203.1.12.2.3.0.23       1.3.6.1.4.1.4203.666.11.1.3.0.23     # attributeType.olcIndexSubstrAnyStep
+1.3.6.1.4.1.4203.1.12.2.3.0.26       1.3.6.1.4.1.4203.666.11.1.3.0.26     # attributeType.olcLocalSSF
+1.3.6.1.4.1.4203.1.12.2.3.0.27       1.3.6.1.4.1.4203.666.11.1.3.0.27     # attributeType.olcLogFile
+1.3.6.1.4.1.4203.1.12.2.3.0.28       1.3.6.1.4.1.4203.666.11.1.3.0.28     # attributeType.olcLogLevel
+1.3.6.1.4.1.4203.1.12.2.3.0.30       1.3.6.1.4.1.4203.666.11.1.3.0.30     # attributeType.olcModuleLoad
+1.3.6.1.4.1.4203.1.12.2.3.0.31       1.3.6.1.4.1.4203.666.11.1.3.0.31     # attributeType.olcModulePath
+1.3.6.1.4.1.4203.1.12.2.3.0.32       1.3.6.1.4.1.4203.666.11.1.3.0.32     # attributeType.olcObjectClasses
+1.3.6.1.4.1.4203.1.12.2.3.0.33       1.3.6.1.4.1.4203.666.11.1.3.0.33     # attributeType.olcObjectIdentifier
+1.3.6.1.4.1.4203.1.12.2.3.0.34       1.3.6.1.4.1.4203.666.11.1.3.0.34     # attributeType.olcOverlay
+1.3.6.1.4.1.4203.1.12.2.3.0.35       1.3.6.1.4.1.4203.666.11.1.3.0.35     # attributeType.olcPasswordCryptSaltFormat
+1.3.6.1.4.1.4203.1.12.2.3.0.36       1.3.6.1.4.1.4203.666.11.1.3.0.36     # attributeType.olcPasswordHash
+1.3.6.1.4.1.4203.1.12.2.3.0.37       1.3.6.1.4.1.4203.666.11.1.3.0.37     # attributeType.olcPidFile
+1.3.6.1.4.1.4203.1.12.2.3.0.38       1.3.6.1.4.1.4203.666.11.1.3.0.38     # attributeType.olcPlugin
+1.3.6.1.4.1.4203.1.12.2.3.0.39       1.3.6.1.4.1.4203.666.11.1.3.0.39     # attributeType.olcPluginLogFile
+1.3.6.1.4.1.4203.1.12.2.3.0.40       1.3.6.1.4.1.4203.666.11.1.3.0.40     # attributeType.olcReadOnly
+1.3.6.1.4.1.4203.1.12.2.3.0.41       1.3.6.1.4.1.4203.666.11.1.3.0.41     # attributeType.olcReferral
+1.3.6.1.4.1.4203.1.12.2.3.0.43       1.3.6.1.4.1.4203.666.11.1.3.0.43     # attributeType.olcReplicaArgsFile
+1.3.6.1.4.1.4203.1.12.2.3.0.44       1.3.6.1.4.1.4203.666.11.1.3.0.44     # attributeType.olcReplicaPidFile
+1.3.6.1.4.1.4203.1.12.2.3.0.45       1.3.6.1.4.1.4203.666.11.1.3.0.45     # attributeType.olcReplicationInterval
+1.3.6.1.4.1.4203.1.12.2.3.0.46       1.3.6.1.4.1.4203.666.11.1.3.0.46     # attributeType.olcReplogFile
+1.3.6.1.4.1.4203.1.12.2.3.0.47       1.3.6.1.4.1.4203.666.11.1.3.0.47     # attributeType.olcRequires
+1.3.6.1.4.1.4203.1.12.2.3.0.48       1.3.6.1.4.1.4203.666.11.1.3.0.48     # attributeType.olcRestrict
+1.3.6.1.4.1.4203.1.12.2.3.0.49       1.3.6.1.4.1.4203.666.11.1.3.0.49     # attributeType.olcReverseLookup
+1.3.6.1.4.1.4203.1.12.2.3.0.51       1.3.6.1.4.1.4203.666.11.1.3.0.51     # attributeType.olcRootDSE
+1.3.6.1.4.1.4203.1.12.2.3.0.53       1.3.6.1.4.1.4203.666.11.1.3.0.53     # attributeType.olcSaslHost
+1.3.6.1.4.1.4203.1.12.2.3.0.54       1.3.6.1.4.1.4203.666.11.1.3.0.54     # attributeType.olcSaslRealm
+1.3.6.1.4.1.4203.1.12.2.3.0.56       1.3.6.1.4.1.4203.666.11.1.3.0.56     # attributeType.olcSaslSecProps
+1.3.6.1.4.1.4203.1.12.2.3.0.58       1.3.6.1.4.1.4203.666.11.1.3.0.58     # attributeType.olcSchemaDN
+1.3.6.1.4.1.4203.1.12.2.3.0.59       1.3.6.1.4.1.4203.666.11.1.3.0.59     # attributeType.olcSecurity
+1.3.6.1.4.1.4203.1.12.2.3.0.60       1.3.6.1.4.1.4203.666.11.1.3.0.60     # attributeType.olcSizeLimit
+1.3.6.1.4.1.4203.1.12.2.3.0.61       1.3.6.1.4.1.4203.666.11.1.3.0.61     # attributeType.olcSockbufMaxIncoming
+1.3.6.1.4.1.4203.1.12.2.3.0.62       1.3.6.1.4.1.4203.666.11.1.3.0.62     # attributeType.olcSockbufMaxIncomingAuth
+1.3.6.1.4.1.4203.1.12.2.3.0.63       1.3.6.1.4.1.4203.666.11.1.3.0.63     # attributeType.olcSrvtab
+1.3.6.1.4.1.4203.1.12.2.3.0.66       1.3.6.1.4.1.4203.666.11.1.3.0.66     # attributeType.olcThreads
+1.3.6.1.4.1.4203.1.12.2.3.0.67       1.3.6.1.4.1.4203.666.11.1.3.0.67     # attributeType.olcTimeLimit
+1.3.6.1.4.1.4203.1.12.2.3.0.68       1.3.6.1.4.1.4203.666.11.1.3.0.68     # attributeType.olcTLSCACertificateFile
+1.3.6.1.4.1.4203.1.12.2.3.0.69       1.3.6.1.4.1.4203.666.11.1.3.0.69     # attributeType.olcTLSCACertificatePath
+1.3.6.1.4.1.4203.1.12.2.3.0.70       1.3.6.1.4.1.4203.666.11.1.3.0.70     # attributeType.olcTLSCertificateFile
+1.3.6.1.4.1.4203.1.12.2.3.0.71       1.3.6.1.4.1.4203.666.11.1.3.0.71     # attributeType.olcTLSCertificateKeyFile
+1.3.6.1.4.1.4203.1.12.2.3.0.72       1.3.6.1.4.1.4203.666.11.1.3.0.72     # attributeType.olcTLSCipherSuite
+1.3.6.1.4.1.4203.1.12.2.3.0.73       1.3.6.1.4.1.4203.666.11.1.3.0.73     # attributeType.olcTLSCRLCheck
+1.3.6.1.4.1.4203.1.12.2.3.0.74       1.3.6.1.4.1.4203.666.11.1.3.0.74     # attributeType.olcTLSRandFile
+1.3.6.1.4.1.4203.1.12.2.3.0.75       1.3.6.1.4.1.4203.666.11.1.3.0.75     # attributeType.olcTLSVerifyClient
+1.3.6.1.4.1.4203.1.12.2.3.0.77       1.3.6.1.4.1.4203.666.11.1.3.0.77     # attributeType.olcTLSDHParamFile
+1.3.6.1.4.1.4203.1.12.2.3.0.78       1.3.6.1.4.1.4203.666.11.1.3.0.78     # attributeType.olcConfigFile
+1.3.6.1.4.1.4203.1.12.2.3.0.79       1.3.6.1.4.1.4203.666.11.1.3.0.79     # attributeType.olcConfigDir
+1.3.6.1.4.1.4203.1.12.2.3.0.80       1.3.6.1.4.1.4203.666.11.1.3.0.80     # attributeType.olcToolThreads
+1.3.6.1.4.1.4203.1.12.2.3.0.81       1.3.6.1.4.1.4203.666.11.1.3.0.81     # attributeType.olcServerID
+1.3.6.1.4.1.4203.1.12.2.3.0.82       1.3.6.1.4.1.4203.666.11.1.3.0.82     # attributeType.olcTLSCRLFile
+1.3.6.1.4.1.4203.1.12.2.3.0.83       1.3.6.1.4.1.4203.666.11.1.3.0.83     # attributeType.olcSortVals
+1.3.6.1.4.1.4203.1.12.2.3.0.84       1.3.6.1.4.1.4203.666.11.1.3.0.84     # attributeType.olcIndexIntLen
+1.3.6.1.4.1.4203.1.12.2.3.0.85       1.3.6.1.4.1.4203.666.11.1.3.0.85     # attributeType.olcLdapSyntaxes
+1.3.6.1.4.1.4203.1.12.2.3.0.86       1.3.6.1.4.1.4203.666.11.1.3.0.86     # attributeType.olcAddContentAcl
+1.3.6.1.4.1.4203.1.12.2.3.0.87       1.3.6.1.4.1.4203.666.11.1.3.0.87     # attributeType.olcTLSProtocolMin
+                                     1.3.6.1.4.1.4203.666.11.1.3.0.88     # attributeType.olcWriteTimeout
+                                     1.3.6.1.4.1.4203.666.11.1.3.0.89     # attributeType.olcSaslAuxprops
+                                     1.3.6.1.4.1.4203.666.11.1.3.0.90     # attributeType.olcTCPBuffer
+                                     1.3.6.1.4.1.4203.666.11.1.3.0.93     # attributeType.olcListenerThreads
+1.3.6.1.4.1.4203.1.12.2.3.2.0.1      1.3.6.1.4.1.4203.666.11.1.3.2.0.1    # attributeType.olcDbDirectory
+1.3.6.1.4.1.4203.1.12.2.3.2.0.2      1.3.6.1.4.1.4203.666.11.1.3.2.0.2    # back_mdb: attributeType.olcDbIndex
+1.3.6.1.4.1.4203.1.12.2.3.2.0.3      1.3.6.1.4.1.4203.666.11.1.3.2.0.3    # back_mdb: attributeType.olcDbMode
+1.3.6.1.4.1.4203.1.12.2.3.2.0.4      1.3.6.1.4.1.4203.666.11.1.3.2.0.4    # attributeType.olcLastMod
+1.3.6.1.4.1.4203.1.12.2.3.2.0.5      1.3.6.1.4.1.4203.666.11.1.3.2.0.5    # attributeType.olcLimits
+1.3.6.1.4.1.4203.1.12.2.3.2.0.6      1.3.6.1.4.1.4203.666.11.1.3.2.0.6    # attributeType.olcMaxDerefDepth
+1.3.6.1.4.1.4203.1.12.2.3.2.0.7      1.3.6.1.4.1.4203.666.11.1.3.2.0.7    # attributeType.olcReplica
+1.3.6.1.4.1.4203.1.12.2.3.2.0.8      1.3.6.1.4.1.4203.666.11.1.3.2.0.8    # attributeType.olcRootDN
+1.3.6.1.4.1.4203.1.12.2.3.2.0.9      1.3.6.1.4.1.4203.666.11.1.3.2.0.9    # attributeType.olcRootPW
+1.3.6.1.4.1.4203.1.12.2.3.2.0.10     1.3.6.1.4.1.4203.666.11.1.3.2.0.10   # attributeType.olcSuffix
+1.3.6.1.4.1.4203.1.12.2.3.2.0.11     1.3.6.1.4.1.4203.666.11.1.3.2.0.11   # attributeType.olcSyncrepl
+1.3.6.1.4.1.4203.1.12.2.3.2.0.12     1.3.6.1.4.1.4203.666.11.1.3.2.0.12   # attributeType.olcUpdateDN
+1.3.6.1.4.1.4203.1.12.2.3.2.0.13     1.3.6.1.4.1.4203.666.11.1.3.2.0.13   # attributeType.olcUpdateRef
+1.3.6.1.4.1.4203.1.12.2.3.2.0.15     1.3.6.1.4.1.4203.666.11.1.3.2.0.15   # attributeType.olcSubordinate
+1.3.6.1.4.1.4203.1.12.2.3.2.0.16     1.3.6.1.4.1.4203.666.11.1.3.2.0.16   # attributeType.olcMirrorMode|olcMultiProvider
+1.3.6.1.4.1.4203.1.12.2.3.2.0.17     1.3.6.1.4.1.4203.666.11.1.3.2.0.17   # attributeType.olcHidden
+1.3.6.1.4.1.4203.1.12.2.3.2.0.18     1.3.6.1.4.1.4203.666.11.1.3.2.0.18   # attributeType.olcMonitoring
+                                     1.3.6.1.4.1.4203.666.11.1.3.2.0.19   # attributeType.olcSyncUseSubentry
+                                     1.3.6.1.4.1.4203.666.11.1.3.2.0.20   # attributeType.olcExtraAttrs
+1.3.6.1.4.1.4203.1.12.2.3.2.1.1      1.3.6.1.4.1.4203.666.11.1.3.2.1.1    # attributeType.olcDbCacheSize
+1.3.6.1.4.1.4203.1.12.2.3.2.1.2      1.3.6.1.4.1.4203.666.11.1.3.2.1.2    # back_mdb: attributeType.olcDbCheckpoint
+1.3.6.1.4.1.4203.1.12.2.3.2.1.3      1.3.6.1.4.1.4203.666.11.1.3.2.1.3    # attributeType.olcDbConfig
+1.3.6.1.4.1.4203.1.12.2.3.2.1.4      1.3.6.1.4.1.4203.666.11.1.3.2.1.4    # back_mdb: attributeType.olcDbNoSync
+1.3.6.1.4.1.4203.1.12.2.3.2.1.5      1.3.6.1.4.1.4203.666.11.1.3.2.1.5    # attributeType.olcDbDirtyRead
+1.3.6.1.4.1.4203.1.12.2.3.2.1.6      1.3.6.1.4.1.4203.666.11.1.3.2.1.6    # attributeType.olcDbIDLcacheSize
+1.3.6.1.4.1.4203.1.12.2.3.2.1.7      1.3.6.1.4.1.4203.666.11.1.3.2.1.7    # attributeType.olcDbLinearIndex
+1.3.6.1.4.1.4203.1.12.2.3.2.1.8      1.3.6.1.4.1.4203.666.11.1.3.2.1.8    # attributeType.olcDbLockDetect
+1.3.6.1.4.1.4203.1.12.2.3.2.1.9      1.3.6.1.4.1.4203.666.11.1.3.2.1.9    # back_mdb: attributeType.olcDbSearchStack
+1.3.6.1.4.1.4203.1.12.2.3.2.1.10     1.3.6.1.4.1.4203.666.11.1.3.2.1.10   # attributeType.olcDbShmKey
+1.3.6.1.4.1.4203.1.12.2.3.2.1.11     1.3.6.1.4.1.4203.666.11.1.3.2.1.11   # attributeType.olcDbCacheFree
+1.3.6.1.4.1.4203.1.12.2.3.2.1.12     1.3.6.1.4.1.4203.666.11.1.3.2.1.12   # attributeType.olcDbDNcacheSize
+1.3.6.1.4.1.4203.1.12.2.3.2.1.13     1.3.6.1.4.1.4203.666.11.1.3.2.1.13   # attributeType.olcDbCryptFile
+1.3.6.1.4.1.4203.1.12.2.3.2.1.14     1.3.6.1.4.1.4203.666.11.1.3.2.1.14   # attributeType.olcDbCryptKey
+1.3.6.1.4.1.4203.1.12.2.3.2.1.15     1.3.6.1.4.1.4203.666.11.1.3.2.1.15   # attributeType.olcDbPageSize
+1.3.6.1.4.1.4203.1.12.2.3.2.1.16     1.3.6.1.4.1.4203.666.11.1.3.2.1.16   # attributeType.olcDbChecksum
+1.3.6.1.4.1.4203.1.12.2.3.2.12.1     1.3.6.1.4.1.4203.666.11.1.3.2.12.1   # back_mdb: attributeType.olcDbMaxReaders
+1.3.6.1.4.1.4203.1.12.2.3.2.12.2     1.3.6.1.4.1.4203.666.11.1.3.2.12.2   # back_mdb: attributeType.olcDbMaxSize
+1.3.6.1.4.1.4203.1.12.2.3.2.12.3     1.3.6.1.4.1.4203.666.11.1.3.2.12.3   # back_mdb: attributeType.olcDbEnvFlags
+1.3.6.1.4.1.4203.1.12.2.4.0.0        1.3.6.1.4.1.4203.666.11.1.4.0.0      # objectClass.olcConfig
+1.3.6.1.4.1.4203.1.12.2.4.0.1        1.3.6.1.4.1.4203.666.11.1.4.0.1      # objectClass.olcGlobal
+1.3.6.1.4.1.4203.1.12.2.4.0.2        1.3.6.1.4.1.4203.666.11.1.4.0.2      # objectClass.olcSchemaConfig
+1.3.6.1.4.1.4203.1.12.2.4.0.3        1.3.6.1.4.1.4203.666.11.1.4.0.3      # objectClass.olcBackendConfig
+1.3.6.1.4.1.4203.1.12.2.4.0.4        1.3.6.1.4.1.4203.666.11.1.4.0.4      # objectClass.olcDatabaseConfig
+1.3.6.1.4.1.4203.1.12.2.4.0.5        1.3.6.1.4.1.4203.666.11.1.4.0.5      # objectClass.olcOverlayConfig
+1.3.6.1.4.1.4203.1.12.2.4.0.6        1.3.6.1.4.1.4203.666.11.1.4.0.6      # objectClass.olcIncludeFile
+1.3.6.1.4.1.4203.1.12.2.4.0.7        1.3.6.1.4.1.4203.666.11.1.4.0.7      # objectClass.olcFrontendConfig
+1.3.6.1.4.1.4203.1.12.2.4.0.8        1.3.6.1.4.1.4203.666.11.1.4.0.8      # objectClass.olcModuleList
+1.3.6.1.4.1.4203.1.12.2.4.2.1.1      1.3.6.1.4.1.4203.666.11.1.4.2.1.1    # objectClass.olcBdbConfig
+1.3.6.1.4.1.4203.1.12.2.4.2.2.1      1.3.6.1.4.1.4203.666.11.1.4.2.2.1    # objectClass.olcLdifConfig
+1.3.6.1.4.1.4203.1.12.2.4.2.12.1     1.3.6.1.4.1.4203.666.11.1.4.2.12.1   # back_mdb: objectClass.olcMdbConfig
+1.3.6.1.4.1.4203.666.1.5             # attributeType.OpenLDAPaci
+1.3.6.1.4.1.4203.666.1.6             # attributeType.entryUUID
+1.3.6.1.4.1.4203.666.1.7             # attributeType.entryCSN
+1.3.6.1.4.1.4203.666.1.8             # attributeType.saslAuthzTo
+1.3.6.1.4.1.4203.666.1.9             # attributeType.saslAuthzFrom
+1.3.6.1.4.1.4203.666.1.10            # attributeType.monitorContext
+1.3.6.1.4.1.4203.666.1.11            # attributeType.superiorUUID
+1.3.6.1.4.1.4203.666.1.13            # attributeType.namingCSN
+1.3.6.1.4.1.4203.666.1.23            # attributeType.syncreplCookie
+1.3.6.1.4.1.4203.666.1.25            # attributeType.contextCSN
+1.3.6.1.4.1.4203.666.3.4             # objectClass.glue
+1.3.6.1.4.1.4203.666.3.5             # objectClass.syncConsumerSubentry
+1.3.6.1.4.1.4203.666.3.6             # objectClass.syncProviderSubentry
+2.5.4.0                              # attributeType.objectClass
+2.5.4.1                              # attributeType.aliasedEntryName|aliasedObjectName
+2.5.4.3                              # attributeType.cn|commonName
+2.5.4.13                             # attributeType.description
+2.5.4.34                             # attributeType.seeAlso
+2.5.4.35                             # attributeType.userPassword
+2.5.4.41                             # attributeType.name
+2.5.4.49                             # attributeType.distinguishedName
+2.5.6.0                              # objectClass.top
+2.5.6.1                              # objectClass.alias
+2.5.17.0                             # objectClass.subentry
+2.5.17.2                             # subentry.collectiveAttributeSubentry
+2.5.18.1                             # attributeType.createTimestamp
+2.5.18.2                             # attributeType.modifyTimestamp
+2.5.18.3                             # attributeType.creatorsName
+2.5.18.4                             # attributeType.modifiersName
+2.5.18.5                             # attributeType.administrativeRole
+2.5.18.6                             # attributeType.subtreeSpecification
+2.5.18.7                             # attributeType.collectiveExclusions
+2.5.18.9                             # attributeType.hasSubordinates
+2.5.18.10                            # attributeType.subschemaSubentry
+2.5.18.12                            # attributeType.collectiveAttributeSubentries
+2.5.20.1                             # objectClass.subschema
+2.5.21.1                             # attributeType.ditStructureRules
+2.5.21.2                             # attributeType.ditContentRules
+2.5.21.4                             # attributeType.matchingRules
+2.5.21.5                             # attributeType.attributeTypes
+2.5.21.6                             # attributeType.objectClasses
+2.5.21.7                             # attributeType.nameForms
+2.5.21.8                             # attributeType.matchingRuleUse
+2.5.21.9                             # attributeType.structuralObjectClass
+2.16.840.1.113730.3.1.34             # attributeType.ref
+2.16.840.1.113730.3.2.6              # objectClass.referral
