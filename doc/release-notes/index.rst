@@ -19,7 +19,7 @@ available. It provides several feature improvements and extensions, new
 properties as well as various improvements and bug fixes. Here is an overview of
 the most important changes:
 
-* ...
+* Samba has been updated to version 4.18.3
 
 * Various security updates have been integrated into UCS 5.0-4, for example for
   ...

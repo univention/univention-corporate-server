@@ -669,6 +669,8 @@ Proxy services
 Samba
 =====
 
+* :program:`samba` has been updated to version 4.18.3 (:uv:bug:`55907`).
+
 * The AD password change has been moved to another package to avoid problems on
   system that doesn't have :program:`univention-samba` installed (:uv:bug:`54390`).
 
