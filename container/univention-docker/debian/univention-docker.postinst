@@ -40,11 +40,15 @@ univention-config-registry set \
 	docker/autostart?"yes" \
 	docker/daemon/default/opts/bip?"172.17.42.1/16" \
 	docker/daemon/default/parameter/live-restore?"yes" \
-	docker/daemon/default/opts/log-driver?'json-file' \
-	docker/daemon/default/opts/max-file?'4' \
-	docker/daemon/default/opts/max-size?'10m'
+	docker/daemon/default/opts/log-driver?'journald' \
 
 eval "$(univention-config-registry shell)"
+
+# upgrade to 5.2
+if [ "$1" = "configure" ] && [ -n "$2" ] && dpkg --compare-versions "$2" lt 7.0.4; then
+	ucr set docker/daemon/default/opts/log-driver='journald'
+fi
+
 
 . /usr/share/univention-lib/all.sh
 
@@ -56,5 +60,6 @@ if [ "$1" = "configure" ]; then
 		systemctl restart docker.service
 	fi
 fi
+
 
 exit 0
