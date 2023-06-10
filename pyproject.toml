@@ -14,7 +14,7 @@ skip = "doc/doc-common/,base/univention-system-setup/tests,services/univention-l
 skip_glob = "venv/*"
 
 [tool.ruff]
-# ruff 0.0.254
+# ruff 0.1.4
 external = ["W601", "F812", "E403", "E704"]
 line-length = 180
 ignore-init-module-imports = true
