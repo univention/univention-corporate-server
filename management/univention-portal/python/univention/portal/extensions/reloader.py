@@ -281,9 +281,13 @@ class PortalReloaderUDM(MtimeBasedLazyFileReloader):
 
     @classmethod
     def _extract_announcements(cls, udm, portal):
+        udm_lib = importlib.import_module("univention.udm")
         announcements = {}
 
-        announcement_module = udm.get("portals/announcement")
+        try:
+            announcement_module = udm.get("portals/announcement")
+        except udm_lib.UnknownModuleType:
+            announcement_module = None
         if not announcement_module:
             get_logger("cache").warning("UDM not up to date? Announcement module not found.")
             return announcements

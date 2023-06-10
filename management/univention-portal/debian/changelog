@@ -1,3 +1,10 @@
+univention-portal (4.0.11-1) unstable; urgency=medium
+
+  * Bug #55176: fix error during upgrade when portals/announcement UDM module
+    is not yet available (on Replicas)
+
+ -- Florian Best <best@univention.de>  Sat, 10 Jun 2023 20:21:45 +0200
+
 univention-portal (4.0.10-1) unstable; urgency=medium
 
   * Bug #55176: implemented announcement udm module
