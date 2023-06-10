@@ -58,7 +58,7 @@ nat_core_rules() {
 @!@
 import ipaddress
 try:
-    unicode
+    unicode  # noqa: B018
 except NameError:
     unicode = str
 # UCR returns str/bytes in py2 and unicode/str in py3 ==> always convert UCR value to unicode
