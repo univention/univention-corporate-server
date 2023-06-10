@@ -36,12 +36,13 @@
 
 from __future__ import absolute_import
 
+import functools
 import math
 import os
 import re
 import subprocess
 
-import notifier.popen
+import tornado.process
 
 import univention.management.console as umc
 from univention.config_registry import handler_set
@@ -93,9 +94,8 @@ def repquota(partition, callback):
     # -C == do not try to resolve all users at once
     # -v == verbose
     cmd = ['/usr/sbin/repquota', '-C', '-v', partition] + args
-    proc = notifier.popen.RunIt(cmd, stdout=True)
-    proc.signal_connect('finished', callback)
-    proc.start()
+    proc = tornado.process.Subprocess(cmd, stdout=subprocess.PIPE)
+    proc.set_exit_callback(functools.partial(callback, proc.stdout))
 
 
 def repquota_parse(partition, output):
