@@ -158,14 +158,8 @@ def quota_is_enabled(fstab_entry):
             return None  # tertium datur
 
 
-def activate_quota(partition, activate, callback):
+def activate_quota(partition, activate):
     partitions = [partition] if not isinstance(partition, list) else partition
-    func = notifier.Callback(_do_activate_quota, partitions, activate)
-    thread = notifier.threads.Simple('quota', func, callback)
-    thread.run()
-
-
-def _do_activate_quota(partitions, activate):
     result = []
     try:
         fs = fstab.File()

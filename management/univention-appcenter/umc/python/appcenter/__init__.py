@@ -45,7 +45,6 @@ from json import load
 from threading import Thread
 
 import apt  # for independent apt.Cache
-import notifier
 import notifier.threads
 
 import univention.management.console as umc
@@ -67,7 +66,7 @@ from univention.lib.package_manager import LockError, PackageManager
 from univention.lib.umc import Client, ConnectionError, Forbidden, HTTPError
 from univention.management.console.log import MODULE
 from univention.management.console.modules.decorators import (
-    multi_response, require_password, sanitize, sanitize_list, simple_response,
+    multi_response, require_password, sanitize, sanitize_list, simple_response, threaded,
 )
 from univention.management.console.modules.mixins import ProgressMixin
 from univention.management.console.modules.sanitizers import (
@@ -731,6 +730,7 @@ class Instance(umcm.Base, ProgressMixin):
             time.sleep(0.1)
         return all_errors
 
+    @threaded
     def keep_alive(self, request):
         """
         Fix for Bug #30611: UMC kills appcenter module
@@ -739,17 +739,8 @@ class Instance(umcm.Base, ProgressMixin):
         this function will be run by the frontend to always have one connection open
         to prevent killing the module.
         """
-        def _thread():
-            while self._working():
-                time.sleep(1)
-
-        def _finished(thread, result):
-            success = not isinstance(result, BaseException)
-            if not success:
-                MODULE.warn('Exception during keep_alive: %s' % result)
-            self.finished(request.id, success)
-        thread = notifier.threads.Simple('keep_alive', notifier.Callback(_thread), _finished)
-        thread.run()
+        while self._working():
+            time.sleep(1)
 
     @simple_response
     def ping(self):

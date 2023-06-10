@@ -58,7 +58,7 @@ from univention.lib.admember import connectionFailed, failedADConnect, lookup_ad
 from univention.lib.i18n import Locale, Translation
 from univention.management.console.log import MODULE
 from univention.management.console.modules import Base, UMC_Error
-from univention.management.console.modules.decorators import sanitize, simple_response
+from univention.management.console.modules.decorators import sanitize, simple_response, threaded
 from univention.management.console.modules.mixins import ProgressMixin
 from univention.management.console.modules.sanitizers import IntegerSanitizer, PatternSanitizer, StringSanitizer
 
@@ -323,6 +323,7 @@ class Instance(Base, ProgressMixin):
         thread = notifier.threads.Simple('join', notifier.Callback(_thread, self, username, password), _finished)
         thread.run()
 
+    @threaded
     def check_finished(self, request) -> None:
         """
         Check whether the join/setup scripts are finished. This method implements a long
@@ -330,39 +331,35 @@ class Instance(Base, ProgressMixin):
         have been executed or due to a timeout. If it returns because of the timeout, a new
         try can be started.
         """
-        def _thread(request, obj):
-            def progress_info(state, **kwargs):
-                info = {
-                    'component': state.fractionName,
-                    'info': state.message,
-                    'errors': state.errors,
-                    'critical': state.critical,
-                    'steps': state.percentage,
-                }
-                info.update(kwargs)
-                MODULE.info('Progress state: %(steps).1f%% - %(component)s - %(info)s' % info)
-                return info
-            # acquire the lock in order to wait for the join/setup scripts to finish
-            # do this for 30 sec and then return anyway
-            SLEEP_TIME = 0.200
-            WAIT_TIME = 30
-            ntries = WAIT_TIME / SLEEP_TIME
-            while not obj._finishedLock.acquire(False):
-                if ntries <= 0 or self._progressParser.changed and self._progressParser.current:
-                    state = self._progressParser.current
-                    return progress_info(state, finished=False)
-                time.sleep(SLEEP_TIME)
-                ntries -= 1
+        def progress_info(state, **kwargs):
+            info = {
+                'component': state.fractionName,
+                'info': state.message,
+                'errors': state.errors,
+                'critical': state.critical,
+                'steps': state.percentage,
+            }
+            info.update(kwargs)
+            MODULE.info('Progress state: %(steps).1f%% - %(component)s - %(info)s' % info)
+            return info
+        # acquire the lock in order to wait for the join/setup scripts to finish
+        # do this for 30 sec and then return anyway
+        SLEEP_TIME = 0.200
+        WAIT_TIME = 30
+        ntries = WAIT_TIME / SLEEP_TIME
+        while not self._finishedLock.acquire(False):
+            if ntries <= 0 or self._progressParser.changed and self._progressParser.current:
+                state = self._progressParser.current
+                return progress_info(state, finished=False)
+            time.sleep(SLEEP_TIME)
+            ntries -= 1
 
-            obj._finishedLock.release()
+        self._finishedLock.release()
 
-            # scripts are done, return final result
-            # return all errors that we gathered throughout the setup
-            state = self._progressParser.current
-            return progress_info(state, finished=obj._finishedResult)
-
-        thread = notifier.threads.Simple('check_finished', notifier.Callback(_thread, request, self), notifier.Callback(self.thread_finished_callback, request))
-        thread.run()
+        # scripts are done, return final result
+        # return all errors that we gathered throughout the setup
+        state = self._progressParser.current
+        return progress_info(state, finished=self._finishedResult)
 
     @simple_response(with_flavor=True)
     def validate(self, values: Dict | None = None, flavor: str | None = None):

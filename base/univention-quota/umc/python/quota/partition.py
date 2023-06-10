@@ -36,12 +36,11 @@
 
 from __future__ import absolute_import
 
-import notifier
-
 import univention.management.console as umc
 from univention.lib import fstab
 from univention.management.console.error import UMC_Error
 from univention.management.console.log import MODULE
+from univention.management.console.modules.decorators import simple_response
 from univention.management.console.modules.quota import df, tools
 
 
@@ -96,12 +95,18 @@ class Commands(object):
         result['options'] = mounted_partition.options
         self.finished(request.id, result)
 
-    def partitions_activate(self, request):
-        MODULE.info('quota/partitions/activate: %s' % (request.options['partitionDevice'],))
-        callback = notifier.Callback(self.thread_finished_callback, request)
-        tools.activate_quota(request.options['partitionDevice'], True, callback)
+    @simple_response
+    def partitions_activate(self, partitionDevice):
+        MODULE.info('quota/partitions/activate: %s' % (partitionDevice,))
 
-    def partitions_deactivate(self, request):
-        MODULE.info('quota/partitions/deactivate: %s' % (request.options['partitionDevice'],))
-        callback = notifier.Callback(self.thread_finished_callback, request)
-        tools.activate_quota(request.options['partitionDevice'], False, callback)
+        def _thread(self, request):
+            return tools.activate_quota(partitionDevice, True)
+        return _thread
+
+    @simple_response
+    def partitions_deactivate(self, partitionDevice):
+        MODULE.info('quota/partitions/deactivate: %s' % (partitionDevice,))
+
+        def _thread(self, request):
+            return tools.activate_quota(partitionDevice, False)
+        return _thread

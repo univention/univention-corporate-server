@@ -43,7 +43,7 @@ from univention.lib import fstab
 from univention.management.console import Translation
 from univention.management.console.error import UMC_Error
 from univention.management.console.log import MODULE
-from univention.management.console.modules.decorators import sanitize
+from univention.management.console.modules.decorators import sanitize, simple_response, threaded
 from univention.management.console.modules.quota import tools
 from univention.management.console.modules.sanitizers import IntegerSanitizer, PatternSanitizer, StringSanitizer
 
@@ -67,7 +67,7 @@ class Commands(object):
     )
     def users_query(self, request):
         partitionDevice = request.options['partitionDevice']
-        self._check_error(request, partitionDevice)
+        self._check_error(partitionDevice)
 
         callback = notifier.Callback(self._users_query, partitionDevice, request)
         tools.repquota(request.options['partitionDevice'], callback)
@@ -103,51 +103,38 @@ class Commands(object):
         fileLimitSoft=LimitSanitizer(default=0, required=True),
         fileLimitHard=LimitSanitizer(default=0, required=True),
     )
-    def users_set(self, request):
-        def _thread(request):
-            partition = request.options['partitionDevice']
-            user = request.options['user']
+    @simple_response
+    def users_set(self, partitionDevice, user, sizeLimitSoft, sizeLimitHard, fileLimitSoft, fileLimitHard):
+        def _thread(self, request):
+            self._check_error(partitionDevice)
+
+            if tools.setquota(partitionDevice, user, tools.byte2block(sizeLimitSoft), tools.byte2block(sizeLimitHard), fileLimitSoft, fileLimitHard):
+                raise UMC_Error(_('Failed to modify quota settings for user %(user)s on partition %(partition)s.') % {'user': user, 'partition': partitionDevice})
+        return _thread
+
+    @threaded
+    def users_remove(self, request):
+        partitions = []
+        failed = []
+
+        # Determine different partitions
+        for obj in request.options:
+            partitions.append(obj['object'].split('@', 1)[-1])
+        for partition in set(partitions):
+            self._check_error(partition)
+
+        # Remove user quota
+        for obj in request.options:
+            (user, _, partition) = obj['object'].partition('@')
             if not isinstance(user, str):  # Py2
                 user = user.encode('utf-8')
+            if tools.setquota(partition, user, 0, 0, 0, 0):
+                failed.append(user)
 
-            size_soft = request.options['sizeLimitSoft']
-            size_hard = request.options['sizeLimitHard']
-            file_soft = request.options['fileLimitSoft']
-            file_hard = request.options['fileLimitHard']
-            self._check_error(request, partition)
+        if failed:
+            raise UMC_Error(_('Could not remove the following user: %s') % ', '.join(failed))
 
-            if tools.setquota(partition, user, tools.byte2block(size_soft), tools.byte2block(size_hard), file_soft, file_hard):
-                raise UMC_Error(_('Failed to modify quota settings for user %(user)s on partition %(partition)s.') % {'user': user, 'partition': partition})
-
-        thread = notifier.threads.Simple('Set', notifier.Callback(_thread, request), notifier.Callback(self.thread_finished_callback, request))
-        thread.run()
-
-    def users_remove(self, request):
-        def _thread(request):
-            partitions = []
-            failed = []
-
-            # Determine different partitions
-            for obj in request.options:
-                partitions.append(obj['object'].split('@', 1)[-1])
-            for partition in set(partitions):
-                self._check_error(request, partition)
-
-            # Remove user quota
-            for obj in request.options:
-                (user, _, partition) = obj['object'].partition('@')
-                if not isinstance(user, str):  # Py2
-                    user = user.encode('utf-8')
-                if tools.setquota(partition, user, 0, 0, 0, 0):
-                    failed.append(user)
-
-            if failed:
-                raise UMC_Error(_('Could not remove the following user: %s') % ', '.join(failed))
-
-        thread = notifier.threads.Simple('Remove', notifier.Callback(_thread, request), notifier.Callback(self.thread_finished_callback, request))
-        thread.run()
-
-    def _check_error(self, request, partition_name):
+    def _check_error(self, partition_name):
         try:
             fs = fstab.File('/etc/fstab')
             mt = fstab.File('/etc/mtab')

@@ -1,3 +1,10 @@
+univention-quota (14.0.5-1) unstable; urgency=medium
+
+  * Bug #43633: replace direct use of notifier.threads with UMC
+    @threaded decorator
+
+ -- Florian Best <best@univention.de>  Sun, 11 Jun 2023 10:12:18 +0200
+
 univention-quota (14.0.4-2) unstable; urgency=medium
 
   * Bug #55664: add missing translations.

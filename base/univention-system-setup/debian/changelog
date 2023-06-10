@@ -1,3 +1,10 @@
+univention-system-setup (13.0.8-1) unstable; urgency=medium
+
+  * Bug #43633: replace direct use of notifier.threads with UMC
+    @threaded decorator
+
+ -- Florian Best <best@univention.de>  Sun, 11 Jun 2023 10:12:29 +0200
+
 univention-system-setup (13.0.7-1) unstable; urgency=medium
 
   * Bug #55922: replace systemctl with deb-systemd-invoke for UMC

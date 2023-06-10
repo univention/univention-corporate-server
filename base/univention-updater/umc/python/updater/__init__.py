@@ -52,7 +52,6 @@ from traceback import format_exc
 from types import ModuleType  # noqa: F401
 from typing import Any, Callable, Dict, Iterable, List, Tuple, Union  # noqa: F401
 
-import notifier.threads
 import psutil
 from apt import Cache
 
@@ -61,7 +60,7 @@ from univention.lib.i18n import Translation
 from univention.management.console.config import ucr
 from univention.management.console.log import MODULE
 from univention.management.console.modules import Base, UMC_Error
-from univention.management.console.modules.decorators import sanitize, simple_response
+from univention.management.console.modules.decorators import sanitize, simple_response, threaded
 from univention.management.console.modules.sanitizers import (
     ChoicesSanitizer, IntegerSanitizer, ListSanitizer, StringSanitizer,
 )
@@ -279,24 +278,19 @@ class Instance(Base):
     @sanitize(
         hooks=ListSanitizer(StringSanitizer(minimum=1), required=True),
     )
-    def call_hooks(self, request: Request) -> None:
+    @threaded
+    def call_hooks(self, request) -> None:
         """Calls the specified hooks and returns data given back by each hook"""
+        result = {}
+        hookmanager = HookManager(HOOK_DIRECTORY)  # , raise_exceptions=False
+        hooks = request.options['hooks']
+        MODULE.info('requested hooks: %s' % (hooks,))
+        for hookname in hooks:
+            MODULE.info('calling hook %s' % hookname)
+            result[hookname] = hookmanager.call_hook(hookname)
 
-        def _thread(request: Request) -> Dict[str, Any]:
-            result = {}
-            hookmanager = HookManager(HOOK_DIRECTORY)  # , raise_exceptions=False
-
-            hooknames = request.options.get('hooks')
-            MODULE.info('requested hooks: %s' % hooknames)
-            for hookname in hooknames:
-                MODULE.info('calling hook %s' % hookname)
-                result[hookname] = hookmanager.call_hook(hookname)
-
-            MODULE.info('result: %r' % (result,))
-            return result
-
-        thread = notifier.threads.Simple('call_hooks', notifier.Callback(_thread, request), notifier.Callback(self.thread_finished_callback, request))
-        thread.run()
+        MODULE.info('result: %r' % (result,))
+        return result
 
     @simple_response
     def updates_check(self) -> Dict[str, List[Tuple[str, str]]]:

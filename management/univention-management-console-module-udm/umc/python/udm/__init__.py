@@ -64,7 +64,7 @@ from univention.management.console.ldap import get_user_connection
 from univention.management.console.log import MODULE
 from univention.management.console.modules import Base, UMC_Error
 from univention.management.console.modules.decorators import (
-    allow_get_request, multi_response, prevent_xsrf_check, sanitize, simple_response,
+    allow_get_request, multi_response, prevent_xsrf_check, sanitize, simple_response, threaded,
 )
 from univention.management.console.modules.mixins import ProgressMixin
 from univention.management.console.modules.sanitizers import (
@@ -388,6 +388,7 @@ class Instance(Base, ProgressMixin):
             "objectType": StringSanitizer(required=True),
         }, required=True),
     }, required=True))
+    @threaded
     def add(self, request):
         """
         Creates LDAP objects.
@@ -396,32 +397,28 @@ class Instance(Base, ProgressMixin):
 
         return: [ { '$dn$' : <LDAP DN>, 'success' : (True|False), 'details' : <message> }, ... ]
         """
+        result = []
+        for obj in request.options:
+            options = obj.get('options', {})
+            properties = obj.get('object', {})
 
-        def _thread(request):
-            result = []
-            for obj in request.options:
-                options = obj.get('options', {})
-                properties = obj.get('object', {})
+            module = self._get_module_by_request(request, object_type=options.get('objectType'))
+            if '$labelObjectType$' in properties:
+                del properties['$labelObjectType$']
+            try:
+                dn = module.create(properties, container=options.get('container'), superordinate=options.get('superordinate'))
+                result.append({'$dn$': dn, 'success': True})
+            except UDM_Error as e:
+                result.append({'$dn$': e.dn, 'success': False, 'details': str(e)})
 
-                module = self._get_module_by_request(request, object_type=options.get('objectType'))
-                if '$labelObjectType$' in properties:
-                    del properties['$labelObjectType$']
-                try:
-                    dn = module.create(properties, container=options.get('container'), superordinate=options.get('superordinate'))
-                    result.append({'$dn$': dn, 'success': True})
-                except UDM_Error as e:
-                    result.append({'$dn$': e.dn, 'success': False, 'details': str(e)})
-
-            return result
-
-        thread = notifier.threads.Simple('Get', notifier.Callback(_thread, request), notifier.Callback(self.thread_finished_callback, request))
-        thread.run()
+        return result
 
     @sanitize(DictSanitizer({
         "object": DictSanitizer({
             '$dn$': StringSanitizer(required=True),
         }, required=True),
     }), required=True)
+    @threaded
     def put(self, request):
         """
         Modifies the given list of LDAP objects.
@@ -430,31 +427,27 @@ class Instance(Base, ProgressMixin):
 
         return: [ { '$dn$' : <LDAP DN>, 'success' : (True|False), 'details' : <message> }, ... ]
         """
+        result = []
+        for obj in request.options:
+            properties = obj.get('object') or {}
+            ldap_dn = properties['$dn$']
+            module = self.get_module(request.flavor, ldap_dn)
+            if module is None:
+                if len(request.options) == 1:
+                    raise ObjectDoesNotExist(ldap_dn)
+                result.append({'$dn$': ldap_dn, 'success': False, 'details': _('LDAP object does not exist.')})
+                continue
+            MODULE.info('Modifying LDAP object %s' % (ldap_dn,))
+            if '$labelObjectType$' in properties:
+                del properties['$labelObjectType$']
+            try:
+                module.modify(properties)
+                result.append({'$dn$': ldap_dn, 'success': True})
+            except UDM_Error as exc:
+                result.append({'$dn$': ldap_dn, 'success': False, 'details': str(exc)})
+        return result
 
-        def _thread(request):
-            result = []
-            for obj in request.options:
-                properties = obj.get('object') or {}
-                ldap_dn = properties['$dn$']
-                module = self.get_module(request.flavor, ldap_dn)
-                if module is None:
-                    if len(request.options) == 1:
-                        raise ObjectDoesNotExist(ldap_dn)
-                    result.append({'$dn$': ldap_dn, 'success': False, 'details': _('LDAP object does not exist.')})
-                    continue
-                MODULE.info('Modifying LDAP object %s' % (ldap_dn,))
-                if '$labelObjectType$' in properties:
-                    del properties['$labelObjectType$']
-                try:
-                    module.modify(properties)
-                    result.append({'$dn$': ldap_dn, 'success': True})
-                except UDM_Error as exc:
-                    result.append({'$dn$': ldap_dn, 'success': False, 'details': str(exc)})
-            return result
-
-        thread = notifier.threads.Simple('Get', notifier.Callback(_thread, request), notifier.Callback(self.thread_finished_callback, request))
-        thread.run()
-
+    @threaded
     def remove(self, request):
         """
         Removes the given list of LDAP objects.
@@ -463,26 +456,21 @@ class Instance(Base, ProgressMixin):
 
         return: [ { '$dn$' : <LDAP DN>, 'success' : (True|False), 'details' : <message> }, ... ]
         """
+        result = []
+        for item in request.options:
+            ldap_dn = item.get('object')
+            options = item.get('options', {})
+            module = self.get_module(request.flavor, ldap_dn)
+            if module is None:
+                result.append({'$dn$': ldap_dn, 'success': False, 'details': _('LDAP object could not be identified')})
+                continue
+            try:
+                module.remove(ldap_dn, options.get('cleanup', False), options.get('recursive', False))
+                result.append({'$dn$': ldap_dn, 'success': True})
+            except UDM_Error as e:
+                result.append({'$dn$': ldap_dn, 'success': False, 'details': str(e)})
 
-        def _thread(request):
-            result = []
-            for item in request.options:
-                ldap_dn = item.get('object')
-                options = item.get('options', {})
-                module = self.get_module(request.flavor, ldap_dn)
-                if module is None:
-                    result.append({'$dn$': ldap_dn, 'success': False, 'details': _('LDAP object could not be identified')})
-                    continue
-                try:
-                    module.remove(ldap_dn, options.get('cleanup', False), options.get('recursive', False))
-                    result.append({'$dn$': ldap_dn, 'success': True})
-                except UDM_Error as e:
-                    result.append({'$dn$': ldap_dn, 'success': False, 'details': str(e)})
-
-            return result
-
-        thread = notifier.threads.Simple('Get', notifier.Callback(_thread, request), notifier.Callback(self.thread_finished_callback, request))
-        thread.run()
+        return result
 
     @simple_response
     def meta_info(self, objectType):
@@ -495,6 +483,7 @@ class Instance(Base, ProgressMixin):
                 'has_tree': module.has_tree,
             }
 
+    @threaded
     def get(self, request):
         """
         Retrieves the given list of LDAP objects. Password property will be removed.
@@ -504,12 +493,12 @@ class Instance(Base, ProgressMixin):
         return: [ { '$dn$' : <LDAP DN>, <object properties> }, ... ]
         """
         MODULE.info('Starting thread for udm/get request')
-        thread = notifier.threads.Simple('Get', notifier.Callback(self._get, request), notifier.Callback(self.thread_finished_callback, request))
-        thread.run()
 
+        return self._get(request)
+
+    @threaded
     def copy(self, request):
-        thread = notifier.threads.Simple('Copy', notifier.Callback(self._get, request, True), notifier.Callback(self.thread_finished_callback, request))
-        thread.run()
+        return self._get(request, copy=True)
 
     def _get(self, request, copy=False):
         def _remove_uncopyable_properties(obj):
@@ -572,6 +561,7 @@ class Instance(Base, ProgressMixin):
         objectProperty=ObjectPropertySanitizer(required=True),
         fields=ListSanitizer(),
     )
+    @threaded
     def query(self, request):
         """
         Searches for LDAP objects and returns a few properties of the found objects
@@ -587,65 +577,60 @@ class Instance(Base, ProgressMixin):
 
         return: [ { '$dn$' : <LDAP DN>, 'objectType' : <UDM module name>, 'path' : <location of object> }, ... ]
         """
+        ucr.load()
+        module = self._get_module_by_request(request)
 
-        def _thread(request):
-            ucr.load()
-            module = self._get_module_by_request(request)
+        superordinate = request.options.get('superordinate')
+        if superordinate == 'None':
+            superordinate = None
+        elif superordinate is not None:
+            MODULE.info('Query defines a superordinate %s' % superordinate)
+            _superordinate, mod = self.get_obj_module(request.flavor, superordinate)
+            if mod is not None:
+                MODULE.info('Found UDM module %r for superordinate %s' % (mod.name, superordinate))
+                superordinate = _superordinate
+                if not request.options.get('container'):
+                    request.options['container'] = superordinate.dn
+            else:
+                raise SuperordinateDoesNotExist(superordinate)
 
-            superordinate = request.options.get('superordinate')
-            if superordinate == 'None':
-                superordinate = None
-            elif superordinate is not None:
-                MODULE.info('Query defines a superordinate %s' % superordinate)
-                _superordinate, mod = self.get_obj_module(request.flavor, superordinate)
-                if mod is not None:
-                    MODULE.info('Found UDM module %r for superordinate %s' % (mod.name, superordinate))
-                    superordinate = _superordinate
-                    if not request.options.get('container'):
-                        request.options['container'] = superordinate.dn
-                else:
-                    raise SuperordinateDoesNotExist(superordinate)
+        container = request.options.get('container')
+        objectProperty = request.options['objectProperty']
+        objectPropertyValue = request.options['objectPropertyValue']
+        scope = request.options.get('scope', 'sub')
+        hidden = request.options.get('hidden')
+        fields = (set(request.options.get('fields', []) or []) | {objectProperty}) - {'name', 'None'}
+        result = module.search(container, objectProperty, objectPropertyValue, superordinate, scope=scope, hidden=hidden, allow_asterisks=USE_ASTERISKS)
+        if result is None:
+            return []
 
-            container = request.options.get('container')
-            objectProperty = request.options['objectProperty']
-            objectPropertyValue = request.options['objectPropertyValue']
-            scope = request.options.get('scope', 'sub')
-            hidden = request.options.get('hidden')
-            fields = (set(request.options.get('fields', []) or []) | {objectProperty}) - {'name', 'None'}
-            result = module.search(container, objectProperty, objectPropertyValue, superordinate, scope=scope, hidden=hidden, allow_asterisks=USE_ASTERISKS)
-            if result is None:
-                return []
+        entries = []
+        object_type = request.options.get('objectType', request.flavor)
 
-            entries = []
-            object_type = request.options.get('objectType', request.flavor)
-
-            for obj in result:
-                if obj is None:
-                    continue
-                module = self.get_module(object_type, obj.dn)
-                if module is None:
-                    # This happens when concurrent a object is removed between the module.search() and self.get_module() call
-                    MODULE.warn('LDAP object does not exists %s (flavor: %s). The object is ignored.' % (obj.dn, request.flavor))
-                    continue
-                entry = {
-                    '$dn$': obj.dn,
-                    '$childs$': module.childs,
-                    '$flags$': [x.decode('UTF-8') for x in obj.oldattr.get('univentionObjectFlag', [])],
-                    '$operations$': module.operations,
-                    'objectType': module.name,
-                    'labelObjectType': module.subtitle,
-                    'name': module.obj_description(obj),
-                    'path': ldap_dn2path(obj.dn, include_rdn=False),
-                }
-                if '$value$' in fields:
-                    entry['$value$'] = [module.property_description(obj, column['name']) for column in module.columns]
-                for field in fields - set(module.password_properties) - set(entry.keys()):
-                    entry[field] = module.property_description(obj, field)
-                entries.append(entry)
-            return entries
-
-        thread = notifier.threads.Simple('Query', notifier.Callback(_thread, request), notifier.Callback(self.thread_finished_callback, request))
-        thread.run()
+        for obj in result:
+            if obj is None:
+                continue
+            module = self.get_module(object_type, obj.dn)
+            if module is None:
+                # This happens when concurrent a object is removed between the module.search() and self.get_module() call
+                MODULE.warn('LDAP object does not exists %s (flavor: %s). The object is ignored.' % (obj.dn, request.flavor))
+                continue
+            entry = {
+                '$dn$': obj.dn,
+                '$childs$': module.childs,
+                '$flags$': [x.decode('UTF-8') for x in obj.oldattr.get('univentionObjectFlag', [])],
+                '$operations$': module.operations,
+                'objectType': module.name,
+                'labelObjectType': module.subtitle,
+                'name': module.obj_description(obj),
+                'path': ldap_dn2path(obj.dn, include_rdn=False),
+            }
+            if '$value$' in fields:
+                entry['$value$'] = [module.property_description(obj, column['name']) for column in module.columns]
+            for field in fields - set(module.password_properties) - set(entry.keys()):
+                entry[field] = module.property_description(obj, field)
+            entries.append(entry)
+        return entries
 
     def reports_query(self, request):
         """Returns a list of reports for the given object type"""
@@ -661,27 +646,23 @@ class Instance(Base, ProgressMixin):
         }
 
     @sanitize_func(sanitize_reports_create)
-    def reports_create(self, request):
+    @threaded
+    @LDAP_Connection
+    def reports_create(self, request, ldap_connection=None, ldap_position=None):
         """Creates a report for the given LDAP DNs and returns the URL to access the file"""
+        report = udr.Report(ldap_connection)
+        try:
+            report_file = report.create(request.flavor, request.options['report'], request.options['objects'])
+        except udr.ReportError as exc:
+            raise UMC_Error(str(exc))
 
-        @LDAP_Connection
-        def _thread(request, ldap_connection=None, ldap_position=None):
-            report = udr.Report(ldap_connection)
-            try:
-                report_file = report.create(request.flavor, request.options['report'], request.options['objects'])
-            except udr.ReportError as exc:
-                raise UMC_Error(str(exc))
+        path = '/usr/share/univention-management-console-module-udm/'
+        filename = os.path.join(path, os.path.basename(report_file))
 
-            path = '/usr/share/univention-management-console-module-udm/'
-            filename = os.path.join(path, os.path.basename(report_file))
-
-            shutil.move(report_file, path)
-            os.chmod(filename, 0o600)
-            url = '/univention/command/udm/reports/get?report=%s' % (quote(os.path.basename(report_file)),)
-            return {'URL': url}
-
-        thread = notifier.threads.Simple('ReportsCreate', notifier.Callback(_thread, request), notifier.Callback(self.thread_finished_callback, request))
-        thread.run()
+        shutil.move(report_file, path)
+        os.chmod(filename, 0o600)
+        url = '/univention/command/udm/reports/get?report=%s' % (quote(os.path.basename(report_file)),)
+        return {'URL': url}
 
     @allow_get_request
     @sanitize(report=StringSanitizer(required=True))
@@ -900,6 +881,7 @@ class Instance(Base, ProgressMixin):
         module = self._get_module_by_request(request)
         return module.policies
 
+    @threaded
     def validate(self, request):
         """
         Validates the correctness of values for properties of the
@@ -910,45 +892,40 @@ class Instance(Base, ProgressMixin):
 
         return: [ { 'property' : <name>, 'valid' : (True|False), 'details' : <message> }, ... ]
         """
+        module = self._get_module_by_request(request)
 
-        def _thread(request):
-            module = self._get_module_by_request(request)
+        result = []
+        for property_name, value in request.options.get('properties').items():
+            # ignore special properties named like $.*$, e.g. $options$
+            if property_name.startswith('$') and property_name.endswith('$'):
+                continue
+            property_obj = module.get_property(property_name)
 
-            result = []
-            for property_name, value in request.options.get('properties').items():
-                # ignore special properties named like $.*$, e.g. $options$
-                if property_name.startswith('$') and property_name.endswith('$'):
-                    continue
-                property_obj = module.get_property(property_name)
+            if property_obj is None:
+                raise UMC_Error(_('Property %s not found') % property_name)
 
-                if property_obj is None:
-                    raise UMC_Error(_('Property %s not found') % property_name)
-
-                # check each element if 'value' is a list
-                if isinstance(value, (tuple, list)) and property_obj.multivalue:
-                    subResults = []
-                    subDetails = []
-                    for ival in value:
-                        try:
-                            property_obj.syntax.parse(ival)
-                            subResults.append(True)
-                            subDetails.append('')
-                        except (udm_errors.valueInvalidSyntax, udm_errors.valueError, TypeError) as e:
-                            subResults.append(False)
-                            subDetails.append(str(e))
-                    result.append({'property': property_name, 'valid': subResults, 'details': subDetails})
-                # otherwise we have a single value
-                else:
+            # check each element if 'value' is a list
+            if isinstance(value, (tuple, list)) and property_obj.multivalue:
+                subResults = []
+                subDetails = []
+                for ival in value:
                     try:
-                        property_obj.syntax.parse(value)
-                        result.append({'property': property_name, 'valid': True})
-                    except (udm_errors.valueInvalidSyntax, udm_errors.valueError) as e:
-                        result.append({'property': property_name, 'valid': False, 'details': str(e)})
+                        property_obj.syntax.parse(ival)
+                        subResults.append(True)
+                        subDetails.append('')
+                    except (udm_errors.valueInvalidSyntax, udm_errors.valueError, TypeError) as e:
+                        subResults.append(False)
+                        subDetails.append(str(e))
+                result.append({'property': property_name, 'valid': subResults, 'details': subDetails})
+            # otherwise we have a single value
+            else:
+                try:
+                    property_obj.syntax.parse(value)
+                    result.append({'property': property_name, 'valid': True})
+                except (udm_errors.valueInvalidSyntax, udm_errors.valueError) as e:
+                    result.append({'property': property_name, 'valid': False, 'details': str(e)})
 
-            return result
-
-        thread = notifier.threads.Simple('Validate', notifier.Callback(_thread, request), notifier.Callback(self.thread_finished_callback, request))
-        thread.run()
+        return result
 
     @sanitize(
         syntax=StringSanitizer(required=True),
@@ -993,7 +970,9 @@ class Instance(Base, ProgressMixin):
         objectProperty=ObjectPropertySanitizer(),
         syntax=StringSanitizer(required=True),
     )
-    def syntax_choices(self, request):
+    @threaded
+    @LDAP_Connection
+    def syntax_choices(self, request, ldap_connection=None, ldap_position=None):
         """
         Dynamically determine valid values for a given syntax class
 
@@ -1002,41 +981,35 @@ class Instance(Base, ProgressMixin):
 
         return: [ { 'id' : <name>, 'label' : <text> }, ... ]
         """
+        syntax = _get_syntax(request.options['syntax'])
+        if syntax is None:
+            return
 
-        @LDAP_Connection
-        def _thread(request, ldap_connection=None, ldap_position=None):
-            syntax = _get_syntax(request.options['syntax'])
-            if syntax is None:
-                return
+        options = request.options
+        options.pop('allow_asterisks', None)  # internal option
+        options['dependencies'] = {}
+        dependency_name = options.get('$depends$')
+        if options.get(dependency_name):
+            options['dependencies'] = {dependency_name: options.pop(dependency_name)}
 
-            options = request.options
-            options.pop('allow_asterisks', None)  # internal option
-            options['dependencies'] = {}
-            dependency_name = options.get('$depends$')
-            if options.get(dependency_name):
-                options['dependencies'] = {dependency_name: options.pop(dependency_name)}
-
-            return read_syntax_choices(syntax, options, ldap_connection=ldap_connection, ldap_position=ldap_position)
-
-        thread = notifier.threads.Simple('SyntaxChoice', notifier.Callback(_thread, request), notifier.Callback(self.thread_finished_callback, request))
-        thread.run()
+        return read_syntax_choices(syntax, options, ldap_connection=ldap_connection, ldap_position=ldap_position)
 
     @sanitize(
         container=StringSanitizer(default='', allow_none=True),
     )
+    @threaded
     def move_container_query(self, request):
         scope = 'one'
         modules = self.modules_with_childs
-        container = request.options.get('container')
+        container = request.options['container']
         if not container:
             scope = 'base'
-
-        thread = notifier.threads.Simple('MoveContainerQuery', notifier.Callback(self._container_query, request, container, modules, scope), notifier.Callback(self.thread_finished_callback, request))
-        thread.run()
+        return self._container_query(request, container, modules, scope)
 
     @sanitize(
         container=StringSanitizer(allow_none=True),
     )
+    @threaded
     def nav_container_query(self, request):
         """
         Returns a list of LDAP containers located under the given
@@ -1044,7 +1017,7 @@ class Instance(Base, ProgressMixin):
         specified the LDAP base object is returned.
         """
         ldap_base = ucr['ldap/base']
-        container = request.options.get('container')
+        container = request.options['container']
 
         modules = self.modules_with_childs
         scope = 'one'
@@ -1055,9 +1028,7 @@ class Instance(Base, ProgressMixin):
             # this is the tree root of DNS / DHCP, show all zones / services
             scope = 'sub'
             modules = [request.flavor]
-
-        thread = notifier.threads.Simple('NavContainerQuery', notifier.Callback(self._container_query, request, container, modules, scope), notifier.Callback(self.thread_finished_callback, request))
-        thread.run()
+        return self._container_query(request, container, modules, scope)
 
     @LDAP_Connection
     def _container_query(self, request, container, modules, scope, ldap_connection=None, ldap_position=None):
@@ -1172,108 +1143,105 @@ class Instance(Base, ProgressMixin):
         # objectDN=StringSanitizer(default=None, allow_none=True),
         # container=StringSanitizer(default=None, allow_none=True)
     }))
+    @threaded
     def object_policies(self, request):
         """
         Returns a virtual policy object containing the values that
         the given object or container inherits
         """
-        def _thread(request):
+        object_dn = None
+        container_dn = None
+        obj = None
 
-            object_dn = None
-            container_dn = None
-            obj = None
+        def _get_object(_dn, _module):
+            """Get existing UDM object and corresponding module. Verify user input."""
+            if _module is None or _module.module is None:
+                raise UMC_Error('The given object type is not valid')
+            _obj = _module.get(_dn)
+            if _obj is None or (_dn and not _obj.exists()):
+                raise ObjectDoesNotExist(_dn)
+            return _obj
 
-            def _get_object(_dn, _module):
-                """Get existing UDM object and corresponding module. Verify user input."""
-                if _module is None or _module.module is None:
-                    raise UMC_Error('The given object type is not valid')
-                _obj = _module.get(_dn)
-                if _obj is None or (_dn and not _obj.exists()):
-                    raise ObjectDoesNotExist(_dn)
-                return _obj
+        def _get_object_parts(_options):
+            """Get object related information and corresponding UDM object/module. Verify user input."""
+            _object_type = _options['objectType']
+            _object_dn = _options['objectDN']
+            _container_dn = _options['container']
 
-            def _get_object_parts(_options):
-                """Get object related information and corresponding UDM object/module. Verify user input."""
-                _object_type = _options['objectType']
-                _object_dn = _options['objectDN']
-                _container_dn = _options['container']
+            if (object_dn, container_dn) == (_object_dn, _container_dn):
+                # nothing has changed w.r.t. last entry -> return last values
+                return (object_dn, container_dn, obj)
 
-                if (object_dn, container_dn) == (_object_dn, _container_dn):
-                    # nothing has changed w.r.t. last entry -> return last values
-                    return (object_dn, container_dn, obj)
+            _obj = None
+            _module = None
+            if _object_dn:
+                # editing an exiting UDM object -> use the object itself
+                _module = UDM_Module(_object_type)
+                _obj = _get_object(_object_dn, _module)
+            elif _container_dn:
+                # editing a new (i.e. non existing) object -> use the parent container
+                _module = self.get_module(None, _container_dn)
+                _obj = _get_object(_container_dn, _module)
 
-                _obj = None
-                _module = None
-                if _object_dn:
-                    # editing an exiting UDM object -> use the object itself
-                    _module = UDM_Module(_object_type)
-                    _obj = _get_object(_object_dn, _module)
-                elif _container_dn:
-                    # editing a new (i.e. non existing) object -> use the parent container
-                    _module = self.get_module(None, _container_dn)
-                    _obj = _get_object(_container_dn, _module)
+            return (_object_dn, _container_dn, _obj)
 
-                return (_object_dn, _container_dn, _obj)
+        ret = []
+        for ioptions in request.options:
+            object_dn, container_dn, obj = _get_object_parts(ioptions)
+            policy_dns = ioptions.get('policies', [])
+            policy_module = UDM_Module(ioptions['policyType'])
+            policy_obj = _get_object(policy_dns[0] if policy_dns else None, policy_module)
 
-            ret = []
-            for ioptions in request.options:
-                object_dn, container_dn, obj = _get_object_parts(ioptions)
-                policy_dns = ioptions.get('policies', [])
-                policy_module = UDM_Module(ioptions['policyType'])
-                policy_obj = _get_object(policy_dns[0] if policy_dns else None, policy_module)
+            if obj is None:
+                ret.append({})
+                continue
 
-                if obj is None:
-                    ret.append({})
-                    continue
+            policy_obj.clone(obj)
 
-                policy_obj.clone(obj)
+            # There are 2x2x2 (=8) cases that may occur (c.f., Bug #31916):
+            # (1)
+            #   [edit] editing existing UDM object
+            #   -> the existing UDM object itself is loaded
+            #   [new]  virtually edit non-existing UDM object (when a new object is being created)
+            #   -> the parent container UDM object is loaded
+            # (2)
+            #   [w/pol]   UDM object has assigned policies in LDAP directory
+            #   [w/o_pol] UDM object has no policies assigned in LDAP directory
+            # (3)
+            #   [inherit] user request to (virtually) change the policy to 'inherited'
+            #   [set_pol] user request to (virtually) assign a particular policy
+            faked_policy_reference = None
+            if object_dn and not policy_dns:
+                # case: [edit; w/pol; inherit]
+                # -> current policy is (virtually) overwritten with 'None'
+                faked_policy_reference = [None]
+            elif not object_dn and policy_dns:
+                # cases:
+                # * [new; w/pol; inherit]
+                # * [new; w/pol; set_pol]
+                # -> old + temporary policy are both (virtually) set at the parent container
+                faked_policy_reference = obj.policies + policy_dns
+            else:
+                # cases:
+                # * [new; w/o_pol; inherit]
+                # * [new; w/o_pol; set_pol]
+                # * [edit; w/pol; set_pol]
+                # * [edit; w/o_pol; inherit]
+                # * [edit; w/o_pol; set_pol]
+                faked_policy_reference = policy_dns
 
-                # There are 2x2x2 (=8) cases that may occur (c.f., Bug #31916):
-                # (1)
-                #   [edit] editing existing UDM object
-                #   -> the existing UDM object itself is loaded
-                #   [new]  virtually edit non-existing UDM object (when a new object is being created)
-                #   -> the parent container UDM object is loaded
-                # (2)
-                #   [w/pol]   UDM object has assigned policies in LDAP directory
-                #   [w/o_pol] UDM object has no policies assigned in LDAP directory
-                # (3)
-                #   [inherit] user request to (virtually) change the policy to 'inherited'
-                #   [set_pol] user request to (virtually) assign a particular policy
-                faked_policy_reference = None
-                if object_dn and not policy_dns:
-                    # case: [edit; w/pol; inherit]
-                    # -> current policy is (virtually) overwritten with 'None'
-                    faked_policy_reference = [None]
-                elif not object_dn and policy_dns:
-                    # cases:
-                    # * [new; w/pol; inherit]
-                    # * [new; w/pol; set_pol]
-                    # -> old + temporary policy are both (virtually) set at the parent container
-                    faked_policy_reference = obj.policies + policy_dns
-                else:
-                    # cases:
-                    # * [new; w/o_pol; inherit]
-                    # * [new; w/o_pol; set_pol]
-                    # * [edit; w/pol; set_pol]
-                    # * [edit; w/o_pol; inherit]
-                    # * [edit; w/o_pol; set_pol]
-                    faked_policy_reference = policy_dns
+            policy_obj.policy_result(faked_policy_reference)
+            infos = copy.copy(policy_obj.polinfo_more)
+            for key, _value in infos.items():
+                if key in policy_obj.polinfo:
+                    if isinstance(infos[key], (tuple, list)):
+                        continue
+                    infos[key]['value'] = policy_obj.polinfo[key]
 
-                policy_obj.policy_result(faked_policy_reference)
-                infos = copy.copy(policy_obj.polinfo_more)
-                for key, _value in infos.items():
-                    if key in policy_obj.polinfo:
-                        if isinstance(infos[key], (tuple, list)):
-                            continue
-                        infos[key]['value'] = policy_obj.polinfo[key]
+            ret.append(infos)
+        return ret
 
-                ret.append(infos)
-            return ret
-
-        thread = notifier.threads.Simple('ObjectPolicies', notifier.Callback(_thread, request), notifier.Callback(self.thread_finished_callback, request))
-        thread.run()
-
+    @threaded
     def object_options(self, request):
         """
         Returns the options known by the given objectType. If an LDAP
@@ -1285,16 +1253,11 @@ class Instance(Base, ProgressMixin):
         if not object_type:
             raise UMC_Error('The object type is missing')
         object_dn = request.options.get('objectDN')
+        module = UDM_Module(object_type)
+        if module.module is None:
+            raise UMC_Error('The given object type is not valid')
 
-        def _thread(object_type, object_dn):
-            module = UDM_Module(object_type)
-            if module.module is None:
-                raise UMC_Error('The given object type is not valid')
-
-            return module.get_option(object_dn)
-
-        thread = notifier.threads.Simple('ObjectOptions', notifier.Callback(_thread, object_type, object_dn), notifier.Callback(self.thread_finished_callback, request))
-        thread.run()
+        return module.get_option(object_dn)
 
     @sanitize(email=EmailSanitizer(required=True))
     @simple_response
