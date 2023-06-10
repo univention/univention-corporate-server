@@ -43,10 +43,10 @@ from .plugins import Plugin
 LdapMapping = namedtuple('LdapMapping', ('ldap2udm', 'udm2ldap'))
 
 
-BaseObjectTV = TypeVar('BaseObjectTV', bound='BaseObject')
-BaseModuleTV = TypeVar('BaseModuleTV', bound='BaseModule')
-BaseModuleMetadataTV = TypeVar('BaseModuleMetadataTV', bound='BaseModuleMetadata')
-BaseObjectPropertiesTV = TypeVar('BaseObjectPropertiesTV', bound='BaseObjectProperties')
+BaseObjectTV = TypeVar('BaseObjectTV', bound=BaseObject)  # noqa: PYI001
+BaseModuleTV = TypeVar('BaseModuleTV', bound=BaseModule)  # noqa: PYI001
+BaseModuleMetadataTV = TypeVar('BaseModuleMetadataTV', bound=BaseModuleMetadata)  # noqa: PYI001
+BaseObjectPropertiesTV = TypeVar('BaseObjectPropertiesTV', bound=BaseObjectProperties)  # noqa: PYI001
 
 
 class BaseObjectProperties(object):

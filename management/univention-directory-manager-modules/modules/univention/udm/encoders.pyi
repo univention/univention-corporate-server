@@ -44,7 +44,7 @@ from .binary_props import Base64BinaryProperty, Base64Bzip2BinaryProperty  # noq
 from .udm import UDM  # noqa: F401
 
 
-BaseEncoderTV = TypeVar('BaseEncoderTV', bound='univention.udm.encoders.BaseEncoder')
+BaseEncoderTV = TypeVar('BaseEncoderTV', bound=univention.udm.encoders.BaseEncoder)  # noqa: PYI001
 
 
 __dn_list_property_encoder_class_cache = {}  # type: Dict[Text, Type[DnListPropertyEncoder]]
@@ -140,7 +140,7 @@ class MultiLanguageTextAppcenterPropertyEncoder(BaseEncoder):
 class SambaGroupTypePropertyEncoder(BaseEncoder):
     static = True
     choices = dict(sambaGroupType.choices)
-    choices_reverted = {v: k for k, v in sambaGroupType.choices}
+    choices_reverted = ...
 
     @classmethod
     def decode(cls, value=None):  # type: (Optional[List[Text]]) -> Optional[Text]

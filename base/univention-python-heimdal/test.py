@@ -301,7 +301,7 @@ class TestKeytab(unittest.TestCase):
             with self.assertRaises(heimdal.Krb5Error) as ex:
                 keytab.remove(USER, KVNO, ENCSTR)
 
-            assert -1765328203 == ex.exception.code  # #define KRB5_KT_NOTFOUND
+            assert ex.exception.code == -1765328203  # #define KRB5_KT_NOTFOUND
 
     def test_keytab_remove_existing(self):
         with NamedTemporaryFile() as tmpfile:

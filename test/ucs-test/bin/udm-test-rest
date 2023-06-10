@@ -17,7 +17,7 @@ replacements = {
 
 sys.argv = [replacements.get(x, x) for x in sys.argv]
 
-if True or ucr['server/role'] not in ('domaincontroller_master', 'domaincontroller_backup'):
+if True:  # or ucr['server/role'] not in ('domaincontroller_master', 'domaincontroller_backup'):
     import ldap.dn
     sys.argv.insert(1, '--binddn')
     sys.argv.insert(2, ldap.dn.explode_rdn(ucr['tests/domainadmin/account'], True)[0])

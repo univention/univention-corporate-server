@@ -322,7 +322,6 @@ class Instance(Base, ProgressMixin):
 
         thread = notifier.threads.Simple('join', notifier.Callback(_thread, self, username, password), _finished)
         thread.run()
-        return
 
     def check_finished(self, request) -> None:
         """

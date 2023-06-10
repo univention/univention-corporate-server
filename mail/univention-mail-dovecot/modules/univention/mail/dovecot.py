@@ -82,7 +82,6 @@ class DovecotListener(object):
                 raise
             finally:
                 self.listener.unsetuid()
-        return
 
     def delete_email_account(self, dn, email):
         # type: (str, str) -> None
@@ -105,7 +104,6 @@ class DovecotListener(object):
                 self.listener.unsetuid()
         else:
             self.log_p("dovecot: Deleting of mailboxes disabled, not removing '%s' (dn '%s')." % (email, dn))
-        return
 
     def read_from_ext_proc_as_root(self, cmd, regexp=None, stdin=None, stdout=subprocess.PIPE, stderr=None, stdin_input=None):
         # type; (Sequence[str], Optional[str], Optional[str], Any, Any, Any) -> str

@@ -641,7 +641,7 @@ class Instance(Base):
             try:
                 usertemplate = usertemplate_mod.object(None, lo, None, template_dn)
             except udm_errors.noObject:
-                msg = _(f'The user template "{template_dn}" set by the "umc/self-service/account-registration/usertemplate" UCR variable does not exist. A user account can not be created. Please contact your system administrator.')
+                msg = _('The user template "{template_dn}" set by the "umc/self-service/account-registration/usertemplate" UCR variable does not exist. A user account can not be created. Please contact your system administrator.').format(template_dn=template_dn)
                 MODULE.error(f'create_self_registered_account(): {msg}')
                 raise UMC_Error(msg)
 
@@ -657,7 +657,7 @@ class Instance(Base):
             try:
                 container = udm.obj_by_dn(container_dn)
             except NoObject:
-                msg = _(f'The container "{container_dn}" set by the "umc/self-service/account-registration/usercontainer" UCR variable does not exist. A user account can not be created. Please contact your system administrator.')
+                msg = _('The container "{container_dn}" set by the "umc/self-service/account-registration/usercontainer" UCR variable does not exist. A user account can not be created. Please contact your system administrator.').format(container_dn=container_dn)
                 MODULE.error(f'create_self_registered_account(): {msg}')
                 raise UMC_Error(msg)
             else:

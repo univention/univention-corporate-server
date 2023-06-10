@@ -115,7 +115,7 @@ class TestPortalReloaderUDM(TestMtimeBasedLazyFileReloader):
         return reloader
 
     def generate_mocked_portal(self, mocker):
-        # ToDo Generate sample portal object for reloader
+        # TODO Generate sample portal object for reloader
         return mocker.Mock()
 
     def test_default_init(self, mocked_portal_reloader):

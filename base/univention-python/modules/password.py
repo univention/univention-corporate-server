@@ -146,7 +146,7 @@ class Check(object):
         if not username:
             username = self.username
 
-        # Todo: check history
+        # TODO: check history
 
         if self.enableQualityCheck:
             if self.mspolicy in (True, 'sufficient'):

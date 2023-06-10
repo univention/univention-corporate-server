@@ -36,7 +36,7 @@ from typing import Any, Dict, Iterable, Text, TypeVar  # noqa: F401
 import univention
 
 
-PluginTV = TypeVar('PluginTV', bound='univention.udm.plugins.Plugin')
+PluginTV = TypeVar('PluginTV', bound=univention.udm.plugins.Plugin)  # noqa: PYI001
 
 
 class Plugin(type):

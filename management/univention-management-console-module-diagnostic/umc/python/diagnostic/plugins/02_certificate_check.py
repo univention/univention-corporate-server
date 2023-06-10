@@ -184,7 +184,7 @@ class CertificateVerifier(object):
                     yield CertificateWillExpire(cert_path, expires_in)
 
     def _openssl_verify(self, path: str) -> Iterator[CertificateWarning]:
-        # XXX It would be nice to do this in python. `python-openssl` has the
+        # FIXME: It would be nice to do this in python. `python-openssl` has the
         # capability to check against CRL since version 16.1.0, but
         # unfortunately only version 0.14 is available in debian.
         cmd = ('openssl', 'verify', '-CAfile', self.root_cert_path, '-CRLfile', self.crl_path, '-crl_check', path)

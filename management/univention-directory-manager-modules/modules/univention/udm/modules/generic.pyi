@@ -40,16 +40,16 @@ from ..base import BaseModuleMetadataTV, BaseModuleTV, BaseObjectProperties, Bas
 from ..encoders import BaseEncoder, DnPropertyEncoder  # noqa: F401
 
 
-GenericObjectPropertiesTV = TypeVar(
-    'GenericObjectPropertiesTV', bound='univention.udm.modules.generic.GenericObjectProperties',
+GenericObjectPropertiesTV = TypeVar(  # noqa: PYI001
+    'GenericObjectPropertiesTV', bound=univention.udm.modules.generic.GenericObjectProperties,
 )
-GenericObjectTV = TypeVar('GenericObjectTV', bound='univention.udm.modules.generic.GenericObject')
-GenericModuleMetadataTV = TypeVar(
-    'GenericModuleMetadataTV', bound='univention.udm.modules.generic.GenericModuleMetadata',
+GenericObjectTV = TypeVar('GenericObjectTV', bound=univention.udm.modules.generic.GenericObject)  # noqa: PYI001
+GenericModuleMetadataTV = TypeVar(  # noqa: PYI001
+    'GenericModuleMetadataTV', bound=univention.udm.modules.generic.GenericModuleMetadata,
 )
-GenericModuleTV = TypeVar('GenericModuleTV', bound='univention.udm.modules.generic.GenericModule')
+GenericModuleTV = TypeVar('GenericModuleTV', bound=univention.udm.modules.generic.GenericModule)  # noqa: PYI001
 
-OriUdmHandlerTV = TypeVar('OriUdmHandlerTV', bound='univention.admin.handlers.simpleLdap')
+OriUdmHandlerTV = TypeVar('OriUdmHandlerTV', bound=univention.admin.handlers.simpleLdap)  # noqa: PYI001
 
 
 ucr = None  # type: univention.config_registry.ConfigRegistry
