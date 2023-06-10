@@ -144,6 +144,10 @@ ignore = [
  "FIX004",
  "PLC0208",  # phahn is fan of it
  "SIM112",  #
+ "PERF203",  # try-except-in-loop
+ "PERF401",  # manual-list-comprehension
+
+ "PT027",  # pytest-unittest-raises-assertion  # some still use unittest
 
  "SIM118",  # unsure if everything is a dict, let's select each individually somewhen
 
