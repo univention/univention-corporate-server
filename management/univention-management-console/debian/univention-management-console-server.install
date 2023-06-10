@@ -1,8 +1,3 @@
 data/categories/icon/*.svg	usr/share/univention-management-console-frontend/js/dijit/themes/umc/icons/scalable/
 scripts/postrotate	usr/share/univention-management-console/
 umc-service-providers.py	usr/lib/univention-directory-listener/system/
-usr/sbin/univention-management-console-acls
-usr/sbin/univention-management-console-client
-usr/sbin/univention-management-console-module
-usr/sbin/univention-management-console-server
-usr/share/locale/*

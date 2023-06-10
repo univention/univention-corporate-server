@@ -33,13 +33,28 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
+#export DH_VERBOSE=1
+export PYBUILD_NAME=univention-management-console
+export PYBUILD_INSTALL_ARGS_python3=--install-scripts=/usr/sbin/
+export PYBUILD_DISABLE_PYTHON2_SCRIPTS=1
+
 override_dh_auto_build:
 	./dev/dh-umc-module-build --core
-	dh_auto_build -- --executable=/usr/bin/python3
+	dh_auto_build
 
 override_dh_auto_install:
 	./dev/dh-umc-module-install --core
-	dh_auto_install -- --install-scripts=$(destdir)/usr/sbin
+	dh_auto_install
+
+override_dh_python3:
+	dh_python3
+	install -m0755 -d debian/univention-management-console-server/usr/sbin/
+	$(RM) -r debian/python3-${PYBUILD_NAME}/usr/lib/python3/dist-packages/univention/__init__.py debian/python3-${PYBUILD_NAME}/usr/share/locale/ debian/python3-${PYBUILD_NAME}/usr/share/univention-management-console/
+	mv debian/python3-${PYBUILD_NAME}/usr/sbin/ debian/${PYBUILD_NAME}-server/usr/
+
+override_dh_python2:
+	dh_python2
+	$(RM) -r debian/python-${PYBUILD_NAME}/usr/lib/python2.7/dist-packages/univention/__init__.py debian/python-${PYBUILD_NAME}/usr/share/univention-management-console/ debian/python-${PYBUILD_NAME}/usr/bin/
 
 override_dh_install:
 	dh_install -Xde.po
@@ -48,4 +63,4 @@ override_dh_systemd_start:
 	dh_systemd_start --restart-after-upgrade
 
 %:
-	dh $@ --with python2,python3,univention-l10n,ucr,systemd
+	dh $@ --with python2,python3,univention-l10n,ucr --buildsystem=pybuild
