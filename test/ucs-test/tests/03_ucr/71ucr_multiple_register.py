@@ -20,7 +20,7 @@ handler_register(['univention-base-files'])
 
 with open(UCR_CACHE, "rb") as f:
     f.readline()
-    d = pickle.load(f, encoding='bytes')
+    d = pickle.load(f, encoding='bytes')  # noqa: S301
 
 modules = []
 

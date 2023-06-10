@@ -45,7 +45,7 @@ def preinst(ucr, changes):
 
     if 'local/repository' in changes:
         """Immediately resolve pending policy changes if local/repository is changed (Bug #16646)"""
-        os.system('/usr/lib/univention-directory-policy/univention-policy-set-repository-server >>/var/log/univention/repository.log')
+        os.system('/usr/lib/univention-directory-policy/univention-policy-set-repository-server >>/var/log/univention/repository.log')  # noqa: S605
 
 
 def postinst(ucr, changes):

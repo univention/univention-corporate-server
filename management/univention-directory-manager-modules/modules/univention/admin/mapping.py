@@ -55,7 +55,7 @@ except ImportError:
 getfullargspec = getattr(inspect, 'getfullargspec', getattr(inspect, 'getargspec', None))
 
 try:
-    unicode
+    unicode  # noqa: B018
 except NameError:
     unicode = str
 

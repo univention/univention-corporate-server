@@ -81,7 +81,7 @@ def test_etag_last_modified(udm):
     user.etag = None
     with pytest.raises(PreconditionFailed) as exc:
         user.save()
-    exc
+    exc  # noqa: B018
     # assert 'If-Unmodified-Since' in str(exc)
 
 

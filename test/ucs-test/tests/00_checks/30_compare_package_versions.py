@@ -93,12 +93,12 @@ def download_packages_file(url, version, arch, temp_directory):
                    "at '%s' for the Packages.gz file: %r" % (file_path, exc))
 
     try:
-        urlretrieve(url, file_path)
+        urlretrieve(url, file_path)  # noqa: S310
     except ContentTooShortError as exc:
         print("An %r Error occurred, probably the connection was lost. "
               "Performing a new attempt in 10 seconds." % exc)
         sleep(10)
-        urlretrieve(url, file_path)
+        urlretrieve(url, file_path)  # noqa: S310
     except OSError as exc:
         print("An %r Error occurred, probably the connection cannot be "
               "established or the url is incorrect. "
@@ -217,7 +217,7 @@ def compare(old, new):
 def read_url(url):
     """Returns the 'url' in an easy to parse format for finding links."""
     try:
-        connection = urlopen(url)
+        connection = urlopen(url)  # noqa: S310
         result = fromstring(connection.read())
     except OSError as exc:
         utils.fail("An %r Error occurred while trying to retrieve '%s' url"

@@ -276,10 +276,10 @@ def _reload(zones: List[str], restart: bool = False, dns_backend: str = 'ldap') 
                 for zone in zones:
                     ud.debug(ud.LISTENER, ud.INFO, 'DNS: Reloading zone %s' % (zone,))
                     cmd = ['rndc', '-p', '55555', 'reload', zone]
-                    pid = os.spawnv(os.P_NOWAIT, RNDC_BIN, cmd)
+                    pid = os.spawnv(os.P_NOWAIT, RNDC_BIN, cmd)  # noqa: S606
                     pids[pid] = cmd
                     cmd = ['rndc', '-p', '953', 'reload', zone]
-                    pid = os.spawnv(os.P_NOWAIT, RNDC_BIN, cmd)
+                    pid = os.spawnv(os.P_NOWAIT, RNDC_BIN, cmd)  # noqa: S606
                     pids[pid] = cmd
         elif dns_backend == 'samba4':
             cmd = [RNDC_BIN, '-p', '953', 'reload']
@@ -292,7 +292,7 @@ def _reload(zones: List[str], restart: bool = False, dns_backend: str = 'ldap') 
     if restart:
         ud.debug(ud.LISTENER, ud.INFO, 'DNS: Restarting BIND')
         cmd = ['service', 'bind9', 'restart']
-        pid = os.spawnv(os.P_NOWAIT, '/usr/sbin/service', cmd)
+        pid = os.spawnv(os.P_NOWAIT, '/usr/sbin/service', cmd)  # noqa: S606
         pids[pid] = cmd
     return pids
 

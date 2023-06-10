@@ -168,7 +168,7 @@ def make_random_ip():
     while True:
         ip_parts = [str(random.randrange(1, 254)) for i in range(4)]
         randomIP = '.'.join(ip_parts)
-        command = os.system(f'ping -c 1 {randomIP} >/dev/null')
+        command = os.system(f'ping -c 1 {randomIP} >/dev/null')  # noqa: S605
         if command == 0:
             pass
         else:

@@ -286,12 +286,12 @@ def test_send_verification_token(umc_client, mails, ucr, udm, get_registration_i
     res = umc_client.umc_command('passwordreset/send_verification_token', {'username': 'xxxxx'})
     # user should not exist
     assert res.result['failType'] == 'INVALID_INFORMATION'
-    _, username = udm.create_user(**{'PasswordRecoveryEmail': None})
+    _, username = udm.create_user(**{'PasswordRecoveryEmail': None})  # noqa: PIE804
     res = umc_client.umc_command('passwordreset/send_verification_token', {'username': username})
     # user has no email
     assert res.result['failType'] == 'INVALID_INFORMATION'
     mail = 'foo@bar.com'
-    _, username = udm.create_user(**{'PasswordRecoveryEmail': mail})
+    _, username = udm.create_user(**{'PasswordRecoveryEmail': mail})  # noqa: PIE804
     res = umc_client.umc_command('passwordreset/send_verification_token', {'username': username})
     assert res.result['data']['username'] == username
     mail = _get_mail(mails)
@@ -319,7 +319,7 @@ def test_deregistration_wrong_auth(umc_client, ucr):
 
 def test_deregistration(umc_client, mails, udm, readudm):
     password = 'univention'
-    dn, username = udm.create_user(**{
+    dn, username = udm.create_user(**{  # noqa: PIE804
         'PasswordRecoveryEmail': 'root@localhost',
         'password': password,
     })
@@ -348,7 +348,7 @@ def test_deregistration_text_file_ucr_var(umc_client, mails, ucr, udm, tmpdir):
     file_path.write(mail_body)
     ucr.handler_set(['umc/self-service/account-deregistration/email/text_file=%s' % (file_path,)])
     password = 'univention'
-    _, username = udm.create_user(**{
+    _, username = udm.create_user(**{  # noqa: PIE804
         'PasswordRecoveryEmail': 'root@localhost',
         'password': password,
     })
@@ -363,7 +363,7 @@ def test_deregistration_sender_address_ucr_var(umc_client, mails, ucr, udm):
     sender_address = 'foobar@mail.com'
     ucr.handler_set(['umc/self-service/account-deregistration/email/sender_address=%s' % (sender_address,)])
     password = 'univention'
-    _, username = udm.create_user(**{
+    _, username = udm.create_user(**{  # noqa: PIE804
         'PasswordRecoveryEmail': 'root@localhost',
         'password': password,
     })

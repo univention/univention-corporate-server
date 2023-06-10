@@ -46,7 +46,7 @@ def test_acls(udm, ucr):
             assert isinstance(data, list), data
         else:
             with pytest.raises(Forbidden):
-                Client(None, username, 'univention').umc_command('join/scripts/query').result
+                Client(None, username, 'univention').umc_command('join/scripts/query').result  # noqa: B018
 
     _test_new_acl(operation_sets[0], ['systemrole:domaincontroller_master', 'systemrole:domaincontroller_backup'])
     _test_new_acl(operation_sets[1], ['systemrole:domaincontroller_master'])

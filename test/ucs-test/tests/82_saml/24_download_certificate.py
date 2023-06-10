@@ -38,7 +38,7 @@ if __name__ == '__main__':
     # read at least five times because ucs-sso is an alias for different IPs
     for i in range(0, 5):
         print('%d: Query cert for %r' % (i, cert_url))
-        response = urlopen(cert_url)
+        response = urlopen(cert_url)  # noqa: S310
         cert = response.read().decode('ASCII')
         if not cert:
             fail('Empty response')
@@ -51,7 +51,7 @@ if __name__ == '__main__':
 
     print("Compare certificate with metadata")
     base64_cert = extract_base64_certificate_from_cert(cert)
-    response = urlopen(metadata_url)
+    response = urlopen(metadata_url)  # noqa: S310
     metadata = response.read().decode('ASCII')
     if extract_base64_certificate_from_metadata(metadata) != base64_cert:
         fail('Certificate is different from the certificate in the metadata')

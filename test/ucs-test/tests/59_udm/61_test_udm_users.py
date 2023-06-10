@@ -511,8 +511,8 @@ def test_user_creation_password_policy(udm):
     """Create users/user"""
     # bugs: [42148]
 
-    policy = udm.create_object('policies/pwhistory', **{'name': uts.random_string(), 'expiryInterval': '90'})
-    cn = udm.create_object('container/cn', **{'name': uts.random_string(), 'policy_reference': policy})
+    policy = udm.create_object('policies/pwhistory', **{'name': uts.random_string(), 'expiryInterval': '90'})  # noqa: PIE804
+    cn = udm.create_object('container/cn', **{'name': uts.random_string(), 'policy_reference': policy})  # noqa: PIE804
     user = udm.create_user(pwdChangeNextLogin=1, position=cn)[0]
     utils.verify_ldap_object(user, {'sambaPwdLastSet': ['0']})
 

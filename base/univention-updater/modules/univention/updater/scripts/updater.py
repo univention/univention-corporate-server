@@ -266,7 +266,7 @@ def call_local(opt):
             ["--ignore-releasenotes"][:opt.ignore_releasenotes],
         ) for arg in args
     ]
-    os.execv(sys.argv[0], cmd)
+    os.execv(sys.argv[0], cmd)  # noqa: S606
     dprint('Fatal: failed to exec: %r' % cmd)
     sys.exit(1)
 
@@ -470,7 +470,7 @@ def main():
                         os.unlink(failure)
 
                     if ret:
-                        os.execv(sys.argv[0], sys.argv)
+                        os.execv(sys.argv[0], sys.argv)  # noqa: S606
             except VerificationError as ex:
                 msg = '\n'.join([
                     "Update aborted due to verification error:",

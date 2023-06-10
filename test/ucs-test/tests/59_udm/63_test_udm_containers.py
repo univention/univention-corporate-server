@@ -696,12 +696,12 @@ class Test_StandardContainer:
             userPath = lo.getAttr(defalt_containers, 'univentionUsersObject')
 
             utils.verify_ldap_object(defalt_containers, {'univentionUsersObject': userPath, 'univentionComputersObject': computerPath})
-            old_dn = udm.create_object(object_type, **{'name': uts.random_string(), 'computerPath': '1'})
+            old_dn = udm.create_object(object_type, **{'name': uts.random_string(), 'computerPath': '1'})  # noqa: PIE804
             computerPath.append(old_dn)
 
             utils.verify_ldap_object(defalt_containers, {'univentionUsersObject': userPath, 'univentionComputersObject': computerPath})
 
-            new_dn = udm.modify_object(object_type, **{'name': uts.random_string(), 'dn': old_dn, 'computerPath': '0', 'userPath': '1'})
+            new_dn = udm.modify_object(object_type, **{'name': uts.random_string(), 'dn': old_dn, 'computerPath': '0', 'userPath': '1'})  # noqa: PIE804
             computerPath.remove(old_dn)
             userPath.append(new_dn)
             utils.verify_ldap_object(defalt_containers, {'univentionUsersObject': userPath, 'univentionComputersObject': computerPath})

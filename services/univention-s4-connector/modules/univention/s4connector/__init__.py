@@ -184,7 +184,7 @@ class configdb(object):
         for _i in [1, 2]:
             try:
                 cur = self._dbcon.cursor()
-                cur.execute("INSERT OR REPLACE INTO '%s' (key, value) VALUES (?, ?);" % section, [option, value])
+                cur.execute("INSERT OR REPLACE INTO '%s' (key, value) VALUES (?, ?);" % section, [option, value])  # noqa: S608
                 self._dbcon.commit()
                 cur.close()
                 return

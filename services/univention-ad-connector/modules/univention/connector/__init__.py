@@ -186,7 +186,7 @@ class configdb(object):
                 self._dbcon = lite.connect(self.filename)
 
     def set(self, section, option, value):
-        cmd = "INSERT OR REPLACE INTO '%s' (key, value) VALUES (?, ?);" % (section,)
+        cmd = "INSERT OR REPLACE INTO '%s' (key, value) VALUES (?, ?);" % (section,)  # noqa: S608
         val = [option, value]
         if section == "AD rejected":
             # update retry_count

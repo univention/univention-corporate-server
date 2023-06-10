@@ -129,7 +129,7 @@ def test_file(parse, tmplog):
 def test_function(function, expected, parse, tmplog):
     def f():
         _d = ud.function('f')  # noqa: F841
-        _d
+        _d  # noqa: B018
 
     ud.set_function(function)
     f()

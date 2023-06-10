@@ -40,7 +40,7 @@ def test_self_service_read_only_attribute(ucr, self_service_prepare):
     with self_service_user(mailPrimaryAddress=reset_mail_address, language="en-US") as user:
         user.auth()
         # check that title is returned by get_user_attributes_descriptions
-        response = user.command('passwordreset/get_user_attributes_descriptions', **{})
+        response = user.command('passwordreset/get_user_attributes_descriptions', **{})  # noqa: PIE804
         attributes = [attr['id'] for attr in response.result]
         assert response.status == 200
         assert 'title' in attributes

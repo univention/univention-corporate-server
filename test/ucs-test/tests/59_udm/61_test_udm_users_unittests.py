@@ -171,11 +171,11 @@ class TestUsers:
         username = random_username()
         udm.create_object('settings/prohibited_username', name='forbidden', usernames=[username])
 
-        with pytest.raises(Exception):
+        with pytest.raises(Exception):  # noqa: B017
             udm.create_user(username=username)
 
         user = udm.create_user()[0]
-        with pytest.raises(Exception):
+        with pytest.raises(Exception):  # noqa: B017
             udm.modify_object('user/user', dn=user, username=username)
 
     def test_modification_of_username(self, udm, random_username, ucr):
@@ -225,11 +225,11 @@ class TestUsers:
         ['foobar'],
     ])
     def test_modlist_samba_privileges_invalid(self, udm, privileges):
-        with pytest.raises(Exception):
+        with pytest.raises(Exception):  # noqa: B017
             udm.create_user(sambaPrivileges=privileges)
 
         user = udm.create_user()[0]
-        with pytest.raises(Exception):
+        with pytest.raises(Exception):  # noqa: B017
             udm.modify_object('users/user', dn=user, sambaPrivileges=privileges)
 
     _modlist_cn_username = random_username()
@@ -320,7 +320,7 @@ class TestUsers:
         '{foo}bar!',
     ])
     def test_invalid_password(self, password, udm):
-        with pytest.raises(Exception):
+        with pytest.raises(Exception):  # noqa: B017
             udm.create_user(password=password)
 
     @pytest.mark.parametrize('disabled,flag,x', [

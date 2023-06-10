@@ -690,7 +690,7 @@ class ResourceBase:
             main.append(response)
 
         if not ajax:
-            stream = XML(xml.dom.minidom.parseString(ET.tostring(root, encoding='utf-8', method='xml')).toprettyxml())
+            stream = XML(xml.dom.minidom.parseString(ET.tostring(root, encoding='utf-8', method='xml')).toprettyxml())  # noqa: S318
             self.write(''.join(HTMLSerializer('html5')(stream)))
         else:
             self.write('<!DOCTYPE html>\n')
@@ -2573,7 +2573,7 @@ class Report(ReportingBase, Resource):
         except udr.ReportError as exc:
             raise HTTPError(400, None, str(exc))
 
-        with open(report_file) as fd:
+        with open(report_file) as fd:  # noqa: ASYNC101
             self.set_header('Content-Type', 'text/csv' if report_file.endswith('.csv') else 'application/pdf')
             self.set_header('Content-Disposition', 'attachment; filename="%s"' % (os.path.basename(report_file).replace('\\', '\\\\').replace('"', '\\"')))
             self.finish(fd.read())

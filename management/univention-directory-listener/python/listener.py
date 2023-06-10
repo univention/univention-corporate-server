@@ -114,7 +114,7 @@ def run(exe, argv, uid=-1, wait=True):  # type: (str, List[Union[str, str]], int
 
     waitp = os.P_WAIT if wait else os.P_NOWAIT
     try:
-        rc = os.spawnv(waitp, exe, argv)
+        rc = os.spawnv(waitp, exe, argv)  # noqa: S606
     except BaseException:
         rc = 100
     finally:

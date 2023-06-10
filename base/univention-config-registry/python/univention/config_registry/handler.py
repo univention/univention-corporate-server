@@ -390,7 +390,7 @@ class ConfigHandlerMultifile(ConfigHandlerDiverting):
         """Load state upon unpickling."""
         self.__dict__.update(state)
         # may raise AttributeError, which forces UCR to rebuild the cache
-        self.def_count  # :pylint: disable-msg=W0104
+        self.def_count  # :pylint: disable-msg=W0104  # noqa: B018
 
     def add_subfiles(self, subfiles):
         # type: (List[Tuple[str, Set[str]]]) -> None
@@ -709,7 +709,7 @@ class ConfigHandlers:
                 chv = ConfigHandlers
                 if not chv.VERSION_MIN <= version <= chv.VERSION_MAX:
                     raise TypeError("Invalid cache file version.")
-                pickler = pickle.Unpickler(cache_file)
+                pickler = pickle.Unpickler(cache_file)  # noqa: S301
                 self._handlers = pickler.load()
                 if version <= 1:
                     # version <= 1: _handlers[multifile] -> [handlers]

@@ -84,10 +84,10 @@ class ReplicationCheck:
         if os.path.exists(self.CACHEFN) and os.stat(self.CACHEFN)[6] > 0:
             try:
                 with open(self.CACHEFN, "rb") as fd:
-                    cnt = pickle.load(fd)
+                    cnt = pickle.load(fd)  # noqa: S301
                     for _i in range(cnt):
-                        nid = pickle.load(fd)
-                        lid = pickle.load(fd)
+                        nid = pickle.load(fd)  # noqa: S301
+                        lid = pickle.load(fd)  # noqa: S301
                         self.history.append((nid, lid))
 
                 if self.verbose > 1:

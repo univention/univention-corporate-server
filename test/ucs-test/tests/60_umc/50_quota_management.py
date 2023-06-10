@@ -93,7 +93,7 @@ class TestUMCQuotasManagement(UMCBase):
             }
         elif command == 'remove':
             options = [{"object": username + "@" + self.partition_dev, "options": None}]
-        self.client.umc_command('quota/users/' + command, options).result
+        self.client.umc_command('quota/users/' + command, options).result  # noqa: B018
 
     def main(self):
         """A method to test the filesystem quota management through UMC"""

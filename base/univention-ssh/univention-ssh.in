@@ -213,7 +213,7 @@ try:
                 # create new session to force ssh to call SSH_ASKPASS
                 os.setsid()
 
-                os.execvp(command[0], command)
+                os.execvp(command[0], command)  # noqa: S606
 
                 print('Failed to exec %s' % (' '.join(command),), file=sys.stderr)
             else:  # parent

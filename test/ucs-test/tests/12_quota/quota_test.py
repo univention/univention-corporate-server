@@ -29,7 +29,7 @@ class QuotaCheck:
     def _activate_quota(self, loop_dev):
         print("Enable quota")
         options = {"partitionDevice": loop_dev}
-        self.umc_client.umc_command('quota/partitions/activate', options).result
+        self.umc_client.umc_command('quota/partitions/activate', options).result  # noqa: B018
 
     def _check_quota_settings(self, loop_dev, expected_values={}):
         print("Check quota settings")

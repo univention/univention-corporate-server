@@ -1176,7 +1176,7 @@ class object(univention.admin.handlers.simpleLdap, PKIIntegration):
 
     def open(self, loadGroups=_sentinel):
         if loadGroups is not _sentinel:
-            warnings.warn('UDM users/user:open() called with deprecated loadGroups!', DeprecationWarning)
+            warnings.warn('UDM users/user:open() called with deprecated loadGroups!', DeprecationWarning)  # noqa: B028
         univention.admin.handlers.simpleLdap.open(self)
         self.pki_open()
         if self.exists():

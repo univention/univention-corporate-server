@@ -67,7 +67,7 @@ keytab_filename = options.keytab
 krb5_context = heimdal.context()
 permitted_enctypes = krb5_context.get_permitted_enctypes()
 permitted_enctypes.reverse()
-temp_keytab_filename = tempfile.mktemp()
+temp_keytab_filename = tempfile.mktemp()  # noqa: S306
 for krb5_enctype in permitted_enctypes:
     enctype = str(krb5_enctype)
     if enctype in ('des-cbc-md4', 'des3-cbc-md5', 'des3-cbc-sha1'):

@@ -98,7 +98,7 @@ class TestADCustomMappings(unittest.TestCase):
             file=sys.stderr,
         )
 
-        udm.create_object(
+        udm.create_object(  # noqa: PIE804
             "settings/extended_attribute",
             position="cn=custom attributes,cn=univention,%s" % self.ldap_base,
             **{

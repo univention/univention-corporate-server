@@ -39,7 +39,7 @@ def get_cache_values(dn):
         return None
 
     with open(filename, 'rb') as fd:
-        dn, attrs, policy_result = pickle.load(fd)
+        dn, attrs, policy_result = pickle.load(fd)  # noqa: S301
 
     share = {
         'univentionSharePath': attrs['univentionSharePath'][0],

@@ -320,7 +320,7 @@ class ACLs(object):
                 if six.PY3:
                     raise
                 with open(filename) as fd:
-                    acls = pickle.load(fd)
+                    acls = pickle.load(fd)  # noqa: S301
             else:
                 acls = [Rule(x) for x in acls]
         except EnvironmentError as exc:

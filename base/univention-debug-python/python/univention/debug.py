@@ -93,7 +93,7 @@ class function(object):
     """
 
     def __init__(self, fname, utf8=True):
-        warn('univention.debug.function is deprecated and will be removed with UCS-5', PendingDeprecationWarning)
+        warn('univention.debug.function is deprecated and will be removed with UCS-5', PendingDeprecationWarning)  # noqa: B028
         self.fname = fname
         _debug.begin(self.fname)
 

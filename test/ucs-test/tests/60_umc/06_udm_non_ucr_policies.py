@@ -135,7 +135,7 @@ class TestUMCnonUCRpolicies(UMCBase):
         print("\nChecking handling of single and multiple (inherited) policies:")
 
         print("\nApplying a 'umc_test_policy_base' to the 'base_test_container', checking correct inheritance:\n")
-        self.UDM.modify_object('container/cn', **{'dn': self.base_container_dn, 'policy_reference': self.base_policy_dn})
+        self.UDM.modify_object('container/cn', **{'dn': self.base_container_dn, 'policy_reference': self.base_policy_dn})  # noqa: PIE804
 
         # Second user should have inherited policy from the base container:
         self.check_policies('5', '5', self.test_user_2_dn)
@@ -145,7 +145,7 @@ class TestUMCnonUCRpolicies(UMCBase):
         # self.check_policies('3', '3', self.test_user_dn, self.user_policy_dn)
 
         print("\nApplying a 'umc_test_policy_intermediate' to the 'intermediate_test_container', checking correct inheritance:\n")
-        self.UDM.modify_object('container/cn', **{'dn': self.intermediate_container_dn, 'policy_reference': self.intermediate_policy_dn})
+        self.UDM.modify_object('container/cn', **{'dn': self.intermediate_container_dn, 'policy_reference': self.intermediate_policy_dn})  # noqa: PIE804
 
         # Second user should have inherited policy from the intermediate
         # container winning as the closest policy:
@@ -161,7 +161,7 @@ class TestUMCnonUCRpolicies(UMCBase):
         correctly.
         """
         print("\nAdding a Fixed attribute 'univentionPWLength' to the 'umc_test_policy_base' and checking correct inheritance:\n")
-        self.UDM.modify_object('policies/pwhistory', **{'dn': self.base_policy_dn, 'fixedAttributes': ['univentionPWLength']})
+        self.UDM.modify_object('policies/pwhistory', **{'dn': self.base_policy_dn, 'fixedAttributes': ['univentionPWLength']})  # noqa: PIE804
 
         # Both users should have pwLength=5 (Fixed attribute from the
         # base container) and Length=4 (inherited from intermediate container)
@@ -169,7 +169,7 @@ class TestUMCnonUCRpolicies(UMCBase):
         # self.check_policies('4', '5', self.test_user_dn)
 
         print("\nAdding an Empty attribute 'univentionPWLength' to the 'umc_test_policy_intermediate' and checking correct inheritance:\n")
-        self.UDM.modify_object('policies/pwhistory', **{'dn': self.intermediate_policy_dn, 'emptyAttributes': ['univentionPWLength']})
+        self.UDM.modify_object('policies/pwhistory', **{'dn': self.intermediate_policy_dn, 'emptyAttributes': ['univentionPWLength']})  # noqa: PIE804
 
         # Both users should have pwLength=5 (Even with empty attribute in
         # intermediate container due to Fixed attribute on the base container)
@@ -177,7 +177,7 @@ class TestUMCnonUCRpolicies(UMCBase):
         # self.check_policies('4', '5', self.test_user_dn)
 
         print("\nRemoving Fixed attribute from the 'umc_test_policy_base':\n")
-        self.UDM.modify_object('policies/pwhistory', **{'dn': self.base_policy_dn, 'set': {'fixedAttributes': ""}})
+        self.UDM.modify_object('policies/pwhistory', **{'dn': self.base_policy_dn, 'set': {'fixedAttributes': ""}})  # noqa: PIE804
 
         # Both users should have an empty pwLength (due to empty attribute
         # on the intermediate container):
@@ -190,7 +190,7 @@ class TestUMCnonUCRpolicies(UMCBase):
         inherited correctly.
         """
         print("\nAdding a 'sambaSamAccount' as a required object class to the 'umc_test_policy_intermediate' and checking correct inheritance:\n")
-        self.UDM.modify_object('policies/pwhistory', **{'dn': self.intermediate_policy_dn, 'requiredObjectClasses': ["sambaSamAccount"]})
+        self.UDM.modify_object('policies/pwhistory', **{'dn': self.intermediate_policy_dn, 'requiredObjectClasses': ["sambaSamAccount"]})  # noqa: PIE804
 
         # Second user (with Samba) should have an intermediate container policy
         # (Length=4 and empty pwLength), first user (without Samba) should have
@@ -199,7 +199,7 @@ class TestUMCnonUCRpolicies(UMCBase):
         # self.check_policies('3', '3', self.test_user_dn, self.user_policy_dn)
 
         print("\nAdding 'sambaSamAccount' to the excluded object class of the 'umc_test_policy_base' and checking correct inheritance:\n")
-        self.UDM.modify_object('policies/pwhistory', **{'dn': self.base_policy_dn, 'prohibitedObjectClasses': ["sambaSamAccount"]})
+        self.UDM.modify_object('policies/pwhistory', **{'dn': self.base_policy_dn, 'prohibitedObjectClasses': ["sambaSamAccount"]})  # noqa: PIE804
 
         # Second user (with Samba) should have an intertmediate container
         # policy (Length=4 and an empty pwLength), first user (without Samba)

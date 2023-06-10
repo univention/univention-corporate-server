@@ -255,7 +255,7 @@ class TestUdmUsersBasic(TestCase):
         with self.assertRaises(UnknownProperty):
             obj.props.unknown = 'Unknown'
         with self.assertRaises(AttributeError):
-            obj.props.unknown
+            obj.props.unknown  # noqa: B018
 
     def test_remove_user(self):
         user_mod = self.udm.get('users/user')

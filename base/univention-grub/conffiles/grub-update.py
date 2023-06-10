@@ -48,4 +48,4 @@ def postinst(configRegistry, changes):
         except OSError:
             pass
         shutil.copy(backgroundimage_source, backgroundimage_target)
-    os.system('update-grub')
+    os.system('update-grub')  # noqa: S605

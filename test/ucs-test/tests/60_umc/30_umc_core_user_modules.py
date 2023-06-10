@@ -43,7 +43,7 @@ class TestUMCUserModules(UMCBase):
             test_policy_dn = udm.create_object('policies/umc', name=test_policyname, allow=test_operation_set)
             utils.verify_ldap_object(test_policy_dn)
 
-            udm.modify_object('groups/group', **{'dn': test_group_dn, 'policy_reference': test_policy_dn})
+            udm.modify_object('groups/group', **{'dn': test_group_dn, 'policy_reference': test_policy_dn})  # noqa: PIE804
 
             user_modules = self.list_umc_modules(test_username, test_password)
             assert len(user_modules) == 1, "Expected only the UCR module"

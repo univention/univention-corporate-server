@@ -75,7 +75,7 @@ if os.path.isfile(filename) and operation in ('show', 'allow', 'remove', 'upgrad
         if six.PY2:
             try:
                 with open(filename) as fd:
-                    acls = pickle.load(fd)
+                    acls = pickle.load(fd)  # noqa: S301
                 print('loaded pickle file', filename)
             except Exception:
                 acls = []

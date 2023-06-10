@@ -89,8 +89,8 @@ def mySamEncryptNTLMHash(hash, key):
     Key1 = transformKey(Key1)
     Key2 = key[7:14]
     Key2 = transformKey(Key2)
-    Crypt1 = DES.new(Key1, DES.MODE_ECB)
-    Crypt2 = DES.new(Key2, DES.MODE_ECB)
+    Crypt1 = DES.new(Key1, DES.MODE_ECB)  # noqa: S304
+    Crypt2 = DES.new(Key2, DES.MODE_ECB)  # noqa: S304
     plain1 = Crypt1.encrypt(Block1)
     plain2 = Crypt2.encrypt(Block2)
     return plain1 + plain2
@@ -111,8 +111,8 @@ def deriveKey(baseKey):
 
 def removeDESLayer(cryptedHash, rid):
     Key1, Key2 = deriveKey(rid)
-    Crypt1 = DES.new(Key1, DES.MODE_ECB)
-    Crypt2 = DES.new(Key2, DES.MODE_ECB)
+    Crypt1 = DES.new(Key1, DES.MODE_ECB)  # noqa: S304
+    Crypt2 = DES.new(Key2, DES.MODE_ECB)  # noqa: S304
     decryptedHash = Crypt1.decrypt(cryptedHash[:8]) + Crypt2.decrypt(cryptedHash[8:])
     return decryptedHash
 

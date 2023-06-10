@@ -205,7 +205,7 @@ def windows_check_gpo_report(gpo_name, identity_name, server=""):
     gporeport_unicode = stdout.decode('cp850')
     gporeport_utf16 = gporeport_unicode.encode('utf-16')
 
-    gpo_root = ET.fromstring(gporeport_utf16)
+    gpo_root = ET.fromstring(gporeport_utf16)  # noqa: S314
     gpo_types = "http://www.microsoft.com/GroupPolicy/Types"
 
     # find the 'TrusteePermissions' tags in xml:

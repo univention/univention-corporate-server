@@ -22,7 +22,7 @@ def test_create_existing_object_does_not_policy_reference(udm):
     """Test that --policy-reference is not evaluated when creating a existing object"""
     # bugs: [38856]
     dhcp_service = udm.create_object('dhcp/service', service=uts.random_name())
-    policy = udm.create_object('policies/pwhistory', **{'name': uts.random_string()})
+    policy = udm.create_object('policies/pwhistory', **{'name': uts.random_string()})  # noqa: PIE804
 
     subnet_mask = '24'
     subnet = '10.20.30.0'

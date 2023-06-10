@@ -95,7 +95,7 @@ class Proxy(BaseHTTPRequestHandler):
                 for k, v in self.headers.items():
                     self.log_message(f"> {k}: {v}")
 
-            fp = urlopen(req)
+            fp = urlopen(req)  # noqa: S310
         except HTTPError as exc:
             fp = exc
             if options.verbose:

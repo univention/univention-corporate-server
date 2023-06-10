@@ -227,7 +227,7 @@ def test_account_verifyaccount_page_errors(selenium, udm, get_registration_info)
         'username': 'not_existing',
     })
     selenium.wait_for_text('The verification token could not be sent. Please verify your input.')
-    _, username = udm.create_user(**{'PasswordRecoveryEmail': None})
+    _, username = udm.create_user(**{'PasswordRecoveryEmail': None})  # noqa: PIE804
     _navigate_self_service(selenium, 'verifyaccount')
     _enter_attributes(selenium, {
         'username': username,

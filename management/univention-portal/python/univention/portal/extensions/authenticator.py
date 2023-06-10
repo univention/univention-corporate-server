@@ -182,7 +182,7 @@ class UMCAndSecretAuthenticator(UMCAuthenticator):
         username = display_name.lower()
         get_logger("user").debug("received basic auth request with username=%r", username)
         try:
-            with open(config.fetch("portal-secret-file")) as fd:
+            with open(config.fetch("portal-secret-file")) as fd:  # noqa: ASYNC101
                 config_secret = fd.read().strip()
         except (KeyError, AttributeError):
             return user

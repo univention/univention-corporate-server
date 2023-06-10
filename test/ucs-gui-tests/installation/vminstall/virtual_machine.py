@@ -378,7 +378,7 @@ class VmCreator(object):
         host = urlparse(self.kvm_server).hostname or LOCAL
 
         xml = self.dom.XMLDesc()
-        root = etree.fromstring(xml)
+        root = etree.fromstring(xml)  # noqa: S320
         devices = root.find('devices')
         for graphics in devices.findall('graphics'):
             port = int(graphics.attrib['port'])

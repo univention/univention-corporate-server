@@ -131,7 +131,7 @@ class SourceFilesHTML(SourceFileSet):
         js_paths = []  # type: List[str]
         for html_path in self.files:
             with open(html_path, 'rb') as html_file:
-                tree = etree.parse(html_file, html_parser)
+                tree = etree.parse(html_file, html_parser)  # noqa: S320
 
             for element in tree.xpath('//*[@data-i18n]'):
                 msgid = element.get('data-i18n')

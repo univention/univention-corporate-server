@@ -465,7 +465,7 @@ def do_exec() -> NoReturn:
     # The updater/UCR/libs might have been replaced - re-execute!
     cmd = sys.argv + ['--setucr']
     print("execv(%r)" % (cmd,), file=logfd)
-    os.execv(sys.argv[0], cmd)
+    os.execv(sys.argv[0], cmd)  # noqa: S606
 
 
 if __name__ == '__main__':

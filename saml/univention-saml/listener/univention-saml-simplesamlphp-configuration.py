@@ -115,7 +115,7 @@ def write_configuration_file(dn: str, new: Dict[str, List[bytes]], filename: str
     if new.get('serviceProviderMetadata') and new['serviceProviderMetadata'][0]:
         metadata = new['serviceProviderMetadata'][0]
         try:
-            root = xml.etree.ElementTree.fromstring(metadata.decode('ASCII'))
+            root = xml.etree.ElementTree.fromstring(metadata.decode('ASCII'))  # noqa: S314
             entityid = root.get('entityID')
         except xml.etree.ElementTree.ParseError as exc:
             ud.debug(ud.LISTENER, ud.ERROR, 'Parsing metadata failed: %s' % (exc,))

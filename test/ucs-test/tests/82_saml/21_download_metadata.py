@@ -22,7 +22,7 @@ if __name__ == '__main__':
     # read at least five times because ucs-sso is an alias for different IPs
     for i in range(0, 5):
         print('%d: Query metadata for %r' % (i, metadata_url))
-        response = urlopen(metadata_url)
+        response = urlopen(metadata_url)  # noqa: S310
         metadata = response.read()
         if not metadata:
             fail('Empty response')

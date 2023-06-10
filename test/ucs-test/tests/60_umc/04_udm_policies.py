@@ -76,7 +76,7 @@ def main():
         # create user to authenticate with at UMC
         # appending the created UMC policy
         global USERNAME
-        userdn, USERNAME = udm.create_user(**{
+        userdn, USERNAME = udm.create_user(**{  # noqa: PIE804
             'policy_reference': umc_policy_dn,
         })
 
@@ -136,7 +136,7 @@ def main():
         #
 
         # assign policy to root container
-        udm.modify_object('container/cn', **{
+        udm.modify_object('container/cn', **{  # noqa: PIE804
             'dn': root_dn,
             'policy_reference': root_policy_dn,
         })
@@ -153,7 +153,7 @@ def main():
         )
 
         # assign policy to computer container
-        udm.modify_object('container/cn', **{
+        udm.modify_object('container/cn', **{  # noqa: PIE804
             'dn': container_dn,
             'policy_reference': container_policy_dn,
         })
@@ -184,7 +184,7 @@ def main():
         )
 
         # assign policy to computer
-        udm.modify_object('computers/domaincontroller_slave', **{
+        udm.modify_object('computers/domaincontroller_slave', **{  # noqa: PIE804
             'dn': computer_dn,
             'policy_reference': computer_policy_dn,
         })

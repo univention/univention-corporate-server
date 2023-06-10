@@ -42,7 +42,7 @@ THEME = 'light'
 
 
 def main():
-    tree = ET.parse(os.path.join(THEME, 'bootsplash-logo.svg'))
+    tree = ET.parse(os.path.join(THEME, 'bootsplash-logo.svg'))  # noqa: S314
     root = tree.getroot()
     background_rect = root.find(
         './'

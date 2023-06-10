@@ -84,7 +84,7 @@ def test_uncompress_file(umc_module):
 
 def test_image_mime_type_of_buffer(umc_module):
     assert umc_module.image_mime_type_of_buffer(PNG_HEADER) == 'image/png'
-    with pytest.raises(Exception):
+    with pytest.raises(Exception):  # noqa: B017
         umc_module.image_mime_type_of_buffer(b'foo')
 
 

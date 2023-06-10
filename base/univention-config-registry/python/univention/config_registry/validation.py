@@ -139,7 +139,7 @@ class URLHttp(BaseValidator):
     def validate(self, value):
         # type: (str) -> object
         o = urlsplit(value)
-        o.port  # may raise ValueError
+        o.port  # may raise ValueError  # noqa: B018
         return o.scheme in {"http", "https"}
 
 
@@ -151,7 +151,7 @@ class URLProxy(BaseValidator):
     def validate(self, value):
         # type: (str) -> object
         o = urlsplit(value)
-        o.port  # may raise ValueError
+        o.port  # may raise ValueError  # noqa: B018
         return o.scheme in {"http", "https"} and not o.path and not o.query and not o.fragment
 
 
