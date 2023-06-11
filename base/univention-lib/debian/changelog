@@ -1,3 +1,9 @@
+univention-lib (9.0.15-1) unstable; urgency=medium
+
+  * Bug #56137: fix Python 3 compatiblity regression
+
+ -- Florian Best <best@univention.de>  Sun, 11 Jun 2023 10:56:43 +0200
+
 univention-lib (9.0.14-6) unstable; urgency=medium
 
   * Bug #56111: fix overwriting of "_" translation variable

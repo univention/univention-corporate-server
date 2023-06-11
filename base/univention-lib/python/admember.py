@@ -874,9 +874,10 @@ def lookup_adds_dc(ad_server="", ucr=None, check_dns=True):
                 cmd = ['dig', '@' + ip, ad_server, '+short', '+nocookie']
                 ud.debug(ud.MODULE, ud.PROCESS, "running %s" % cmd)
                 p1 = subprocess.Popen(cmd, close_fds=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-                stdout, stderr = p1.communicate()
-                ud.debug(ud.MODULE, ud.PROCESS, "stdout: %s" % stdout.decode('UTF-8', 'replace'))
-                ud.debug(ud.MODULE, ud.PROCESS, "stderr: %s" % stderr.decode('UTF-8', 'replace'))
+                out, err = p1.communicate()
+                stdout, stderr = out.decode('UTF-8', 'replace'), err.decode('UTF-8', 'replace')
+                ud.debug(ud.MODULE, ud.PROCESS, "stdout: %s" % stdout)
+                ud.debug(ud.MODULE, ud.PROCESS, "stderr: %s" % stderr)
                 if p1.returncode == 0:
                     for i in stdout.split(u'\n'):
                         if i:
