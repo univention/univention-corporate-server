@@ -111,7 +111,7 @@ Depends:
  univention-directory-manager-tools (>> 7.0.147),
  univention-maintenance-mode,
  univention-management-console-module-lib,
- univention-management-console-server (>= 11.0.4-37),
+ univention-management-console-server (>= 12.0.20-1),
  univention-updater (= ${source:Version}),
  ${misc:Depends},
  ${python3:Depends},

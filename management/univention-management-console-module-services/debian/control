@@ -13,7 +13,7 @@ Package: univention-management-console-module-services
 Architecture: all
 Depends:
  python3-univention-config-registry (>= 14.0.0-11),
- univention-management-console-server (>= 11.0.4-37),
+ univention-management-console-server (>= 12.0.20-1),
  ${python3:Depends},
 Provides:
  ${python3:Provides},

@@ -29,7 +29,7 @@ Depends:
  shell-univention-lib,
  univention-config,
  univention-management-console-module-lib,
- univention-management-console-server (>= 11.0.4-37),
+ univention-management-console-server (>= 12.0.20-1),
  ${misc:Depends},
  ${python3:Depends},
 Provides:
