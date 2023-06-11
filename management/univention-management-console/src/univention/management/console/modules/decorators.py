@@ -202,6 +202,19 @@ def sanitize_args(sanitizer, name, args):
         raise UnprocessableEntity(str(exc), result=exc.result())
 
 
+def threaded(function=None):
+    """
+    Execute the given function as background task in a thread.
+    The return value is the response result.
+    The regular error handling is done if a exception happens inside the thread.
+    """
+    def _response(self, request, *args, **kwargs):
+        thread = notifier.threads.Simple('@threaded', notifier.Callback(function, self, request, *args, **kwargs), notifier.Callback(self.thread_finished_callback, request))
+        thread.run()
+    copy_function_meta_data(function, _response)
+    return _response
+
+
 def simple_response(function=None, with_flavor=None, with_progress=False):
     '''
     If your function is as simple as: "Just return some variables"
