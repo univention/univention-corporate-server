@@ -69,10 +69,11 @@ eval "$(ucr shell server/role)"
 
 systemctl restart univention-directory-listener
 
-# configure firewall
-ucr set security/packetfilter/package/univention-management-console-server/tcp/6670/all="ACCEPT" \
-		security/packetfilter/package/univention-management-console-server/tcp/6670/all/en="UMC"
-[ -x "/etc/init.d/univention-firewall" ] && invoke-rc.d univention-firewall restart
+if [ "$1" = "configure" ] && dpkg --compare-versions "$2" lt-nl 12.0.20-1; then
+	ucr unset security/packetfilter/package/univention-management-console-server/tcp/6670/all \
+		security/packetfilter/package/univention-management-console-server/tcp/6670/all/en
+	[ -x "/etc/init.d/univention-firewall" ] && invoke-rc.d univention-firewall restart
+fi
 
 deb-systemd-invoke restart univention-management-console-server.service
 
