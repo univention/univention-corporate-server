@@ -381,7 +381,12 @@ class Handler(RequestHandler):
                 response.body.pop('options', None)
                 response.body.pop('message', None)
             body = json.dumps(response.body).encode('ASCII')
-        self.finish(body)
+        try:
+            self.finish(body)
+        except RuntimeError as exc:  # not called from the main thread
+            MODULE.error('FATAL ERROR!!!: %s' % (exc,))
+        except Exception:
+            MODULE.error('FATAL ERROR!!!: %s' % (traceback.format_exc(),))
 
     def suffixed_cookie_name(self, cookie_name):
         # TODO: test if the Host header is correctly passed through the UNIX socket
