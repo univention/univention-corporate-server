@@ -28,6 +28,7 @@ Description: UCS transitional dummy package
 Package: python3-univention-connector
 Architecture: all
 Depends:
+ python3-crypto,
  python3-univention,
  python3-univention-directory-manager,
  ${misc:Depends},
