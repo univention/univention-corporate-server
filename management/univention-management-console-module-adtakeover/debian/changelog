@@ -1,3 +1,9 @@
+univention-management-console-module-adtakeover (7.0.6-1) unstable; urgency=medium
+
+  * Bug #43633: answer HTTP requests in main thread / loop
+
+ -- Florian Best <best@univention.de>  Tue, 13 Jun 2023 00:01:22 +0200
+
 univention-management-console-module-adtakeover (7.0.5-1) unstable; urgency=medium
 
   * Bug #43633: don't use UMCP internals

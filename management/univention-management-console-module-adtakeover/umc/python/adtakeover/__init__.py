@@ -35,55 +35,49 @@
 # <https://www.gnu.org/licenses/>.
 
 import traceback
-from threading import Thread
+from functools import wraps
 
 import univention.management.console as umc
 import univention.management.console.modules as umcm
+from univention.management.console.error import BadRequest
 # from univention.lib.package_manager import CMD_DISABLE_EXEC, CMD_ENABLE_EXEC
 from univention.management.console.log import MODULE
 from univention.management.console.modules.adtakeover import takeover
-from univention.management.console.modules.decorators import simple_response
+from univention.management.console.modules.decorators import simple_response, threaded
 
 
 _ = umc.Translation('univention-management-console-module-adtakeover').translate
 
 
-def background(func):
+def reset_progress(func):
+    @wraps(func)
     def _foreground(self, request):
-        def _background(self, request):
-            self.progress.reset()
-            MODULE.process('Running %s' % func.__name__)
-            result = None
-            message = None
-            status = 200
-            try:
-                result = func(self, request)
-            except takeover.TakeoverError as exc:
-                status = 400
-                MODULE.warn('Error during %s: %s' % (func.__name__, exc))
-                message = str(exc)
-                self.progress.error(message)
-            except Exception:
-                status = 500
-                tb_text = traceback.format_exc()
-                message = _("Execution of command '%(command)s' has failed:\n\n%(text)s") % {
-                    'command': func.__name__,
-                    'text': tb_text,
-                }
-                MODULE.process(message)
-                self.progress.error(message)
-            finally:
-                self.finished(request.id, result, status=status, message=message)
-                self.progress.finish()
-        thread = Thread(target=_background, args=[self, request])
-        thread.start()
+        self.progress.reset()
+        MODULE.process('Running %s' % func.__name__)
+        try:
+            return func(self, request)
+        except takeover.TakeoverError as exc:
+            MODULE.warn('Error during %s: %s' % (func.__name__, exc))
+            message = str(exc)
+            self.progress.error(message)
+            raise BadRequest(message)
+        except Exception:
+            tb_text = traceback.format_exc()
+            message = _("Execution of command '%(command)s' has failed:\n\n%(text)s") % {
+                'command': func.__name__,
+                'text': tb_text,
+            }
+            MODULE.process(message)
+            self.progress.error(message)
+            raise
+        finally:
+            self.progress.finish()
     return _foreground
 
 
 class Instance(umcm.Base):
 
-    def __init__(self):
-        super(Instance, self).__init__()
+    def init(self):
         self.progress = takeover.Progress()
 
     @simple_response
@@ -98,12 +92,14 @@ class Instance(umcm.Base):
     def set_status_done(self):
         takeover.set_status_done()
 
-    @background
+    @threaded
+    @reset_progress
     def connect(self, request):
         username, password, ip = (request.options[var] for var in ['username', 'password', 'ip'])
         return takeover.count_domain_objects_on_server(ip, username, password, self.progress)
 
-    @background
+    @threaded
+    @reset_progress
     def copy_domain_data(self, request):
         username, password, ip = (request.options[var] for var in ['username', 'password', 'ip'])
         takeover.join_to_domain_and_copy_domain_data(ip, username, password, self.progress)
@@ -112,10 +108,12 @@ class Instance(umcm.Base):
     def sysvol_info(self):
         return takeover.sysvol_info()
 
-    @background
+    @threaded
+    @reset_progress
     def check_sysvol(self, request):
         takeover.check_sysvol(self.progress)
 
-    @background
+    @threaded
+    @reset_progress
     def take_over_domain(self, request):
         takeover.take_over_domain(self.progress)
