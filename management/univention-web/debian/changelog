@@ -1,3 +1,9 @@
+univention-web (4.0.4-1) unstable; urgency=medium
+
+  * Bug #43633: adjust UMCP set/ HTTP requests
+
+ -- Florian Best <best@univention.de>  Mon, 12 Jun 2023 07:48:20 +0200
+
 univention-web (4.0.3-3) unstable; urgency=medium
 
   * Bug #55990:

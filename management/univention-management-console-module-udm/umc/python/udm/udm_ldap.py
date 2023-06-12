@@ -60,10 +60,9 @@ import univention.admin.syntax as udm_syntax
 import univention.admin.uexceptions as udm_errors
 from univention.management.console import Translation
 from univention.management.console.config import ucr
+from univention.management.console.error import UMC_Error
 from univention.management.console.ldap import get_user_connection, user_connection
 from univention.management.console.log import MODULE
-from univention.management.console.modules import UMC_Error
-from univention.management.console.protocol.definitions import BAD_REQUEST_UNAUTH
 
 
 _ = Translation('univention-management-console-module-udm').translate
@@ -283,7 +282,7 @@ class UserWithoutDN(UMCError):
 class LDAP_AuthenticationFailed(UMCError):
 
     def __init__(self):
-        super(LDAP_AuthenticationFailed, self).__init__(status=BAD_REQUEST_UNAUTH)
+        super(LDAP_AuthenticationFailed, self).__init__(status=401)
 
     def _error_msg(self):
         yield _('Authentication failed')

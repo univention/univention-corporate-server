@@ -34,11 +34,6 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-import locale
-
-
-# JSON
-
 
 class JSON_Object(object):
     """
@@ -80,13 +75,3 @@ class JSON_List(list, JSON_Object):
 
 class JSON_Dict(dict, JSON_Object):
     pass
-
-# locales
-
-
-def locale_get():
-    """
-    Get locale name for messages. If no specific locale is set for
-    process the default setting is returned.
-    """
-    return locale.getlocale(locale.LC_MESSAGES)[0]

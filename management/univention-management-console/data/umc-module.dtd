@@ -9,7 +9,7 @@
 	id:       unique module ID
 	icon:     base directory
 	version:  only "1.0"
-	notifier: use specific notifier loop 'qt'
+	notifier: use specific notifier loop 'generic', 'tornado', 'qt'
 	python: Python version the module runs with ('3' or '2')
 	-->
 <!ATTLIST module
@@ -17,9 +17,11 @@
 	icon CDATA #IMPLIED
 	priority CDATA #IMPLIED
 	version (1.0) #FIXED "1.0"
-	notifier (qt) #IMPLIED
+	notifier (tornado) #IMPLIED
 	deactivated  CDATA #IMPLIED
 	python CDATA #IMPLIED
+	singleton CDATA #IMPLIED
+	proxy CDATA #IMPLIED
 >
 <!ELEMENT link (name,url,description,keywords?,categories?)>
 <!-- priority: order of link
@@ -65,11 +67,14 @@
 <!ELEMENT command EMPTY>
 <!-- name: name of UMC function
 	function: name of Python function
-	allow_anonymous: if command can be executed without being authenticated -->
+	allow_anonymous: if command can be executed without being authenticated
+	pattern: if name is treated as python regex pattern
+	-->
 <!ATTLIST command
 	name CDATA #REQUIRED
 	function CDATA #REQUIRED
 	allow_anonymous CDATA #IMPLIED
+	pattern CDATA #IMPLIED
 >
 <!ELEMENT requiredCommand EMPTY>
 <!ATTLIST requiredCommand

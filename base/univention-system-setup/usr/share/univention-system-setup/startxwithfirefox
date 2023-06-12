@@ -76,7 +76,7 @@ from_init () {
 			system/setup/boot/fields/blacklist='password locale' \
 			system/setup/boot/pages/blacklist='locale welcome network'
 
-		deb-systemd-invoke restart univention-management-console-server univention-management-console-web-server apache2
+		deb-systemd-invoke restart univention-management-console-server apache2
 	fi
 
 	# move old profile

@@ -71,7 +71,7 @@ The following Python code example matches the definition in the previous section
 
 Each command methods has one parameter that contains the UMCP request of
 type
-:class:`~univention.management.console.protocol.message.Request`. Such
+:class:`~univention.management.console.message.Request`. Such
 an object has the following properties:
 
 *id*
@@ -85,6 +85,10 @@ an object has the following properties:
     is the name of the flavor that was used to invoke the command. This
     might be *None*
 
+* *username*: The username of the owner of this session
+* *password*: The password of the user
+* *auth_type*: The authentication method which was used to authenticate this user
+
 The *query* method in the example above shows how to retrieve the
 command parameters and what to do to send the result back to the
 client. Important is that returning a value in a command function does
@@ -94,17 +98,11 @@ that will be answered and the second parameter the data structure
 containing the result. As the result is converted to JSON it must just
 contain data types that can be converted.
 
-The base class for modules provides some properties and methods that
+The base class for modules provides some methods that
 could be useful when writing UMC modules:
-
-Properties
-* *username*: The username of the owner of this session
-* *password*: The password of the user
-* *auth_type*: The authentication method which was used to authenticate this user
 
 Methods
 * *init*: Is invoked after the module process has been initialised. At that moment, the settings, like locale and username and password are available.
-* *permitted*: Can be used to determine if a specific UMCP command can be invoked by the current user. This method has two parameters: The ''command'' name and the ''options''.
 
 """
 
@@ -116,41 +114,34 @@ import sys
 import traceback
 
 import ldap
-import ldap.sasl
 import six
-from notifier import signals
 from six.moves.urllib_parse import urlparse
 
 import univention.admin.uexceptions as udm_errors
 from univention.lib.i18n import I18N_Error, Locale, Translation
 from univention.management.console.config import ucr
 from univention.management.console.error import (
-    LDAP_ConnectionFailed, LDAP_ServerDown, NotAcceptable, PasswordRequired, UMC_Error, Unauthorized,
+    LDAP_ConnectionFailed, LDAP_ServerDown, NotAcceptable, UMC_Error, Unauthorized,
 )
-from univention.management.console.ldap import get_user_connection, reset_cache as reset_ldap_connection_cache
+from univention.management.console.ldap import reset_cache as reset_ldap_connection_cache
 from univention.management.console.log import CORE, MODULE
-from univention.management.console.protocol.definitions import MODULE_ERR, MODULE_ERR_COMMAND_FAILED, SUCCESS
-from univention.management.console.protocol.message import MIMETYPE_JSON, Response
+from univention.management.console.message import Response
 
 
-_ = Translation('univention.management.console').translate
+_MIMETYPE_JSON = 'application/json'
+_MODULE_ERR = 590  # FIXME: HTTP violation
+_MODULE_ERR_COMMAND_FAILED = 591  # FIXME: HTTP violation
 
 
-class Base(signals.Provider, Translation):
-    """The base class for UMC modules of version 2 or higher"""
+class Base(Translation):
+    """The base class for UMC modules"""
 
     def __init__(self, domain='univention-management-console'):
-        signals.Provider.__init__(self)
-        self.signal_new('success')
-        self._username = None
-        self._user_dn = None
-        self._password = None
-        self.__auth_type = None
-        self.__acls = None
+        super(Base, self).__init__(domain)
         self.__current_language = None
+        self._current_request = None
         self.__requests = {}
-        self._user_connections = set()
-        Translation.__init__(self, domain)
+        self._accepted_language = None
 
     def update_language(self, locales):
         for _locale in locales:
@@ -184,51 +175,62 @@ class Base(signals.Provider, Translation):
 
     @property
     def username(self):
-        return self._username
+        """
+        .. deprecated::
+                use request.username instead!
+        """
+        return self._current_request.username
 
-    @username.setter
-    def username(self, username):
-        self._username = username
+    @property
+    def _username(self):
+        """
+        .. deprecated::
+                use request.username instead!
+        """
+        return self._current_request.username
 
     @property
     def user_dn(self):
-        return self._user_dn
+        """
+        .. deprecated::
+                use request.user_dn instead!
+        """
+        return self._current_request.user_dn
 
-    @user_dn.setter
-    def user_dn(self, user_dn):
-        self._user_dn = user_dn
-        MODULE.process('Setting user LDAP DN %r' % (self._user_dn,))
+    @property
+    def _user_dn(self):
+        """
+        .. deprecated::
+                use request.user_dn instead!
+        """
+        return self._current_request.user_dn
 
     @property
     def password(self):
-        return self._password
-
-    @password.setter
-    def password(self, password):
-        self._password = password
+        """
+        .. deprecated::
+                use request.password instead!
+        """
+        return self._current_request.password
 
     @property
-    def acls(self):
-        return self.__acls
-
-    @acls.setter
-    def acls(self, acls):
-        self.__acls = acls
+    def _password(self):
+        return self._current_request.password
 
     @property
     def auth_type(self):
-        return self.__auth_type
+        """
+        .. deprecated::
+                use request.auth_type instead!
+        """
+        return self._current_request.auth_type
 
-    @auth_type.setter
-    def auth_type(self, auth_type):
-        MODULE.process('Setting auth type to %r' % (auth_type,))
-        self.__auth_type = auth_type
+    @property
+    def tornado_routes(self):
+        return []
 
     def init(self):
-        """
-        this function is invoked after the initial UMCP SET command
-        that passes the base configuration to the module process
-        """
+        """this function is invoked after the module process started."""
 
     def destroy(self):
         """
@@ -238,6 +240,7 @@ class Base(signals.Provider, Translation):
 
     def execute(self, method, request, *args, **kwargs):
         self.__requests[request.id] = (request, method)
+        self._current_request = request
 
         try:
             function = getattr(self, method)
@@ -247,7 +250,6 @@ class Base(signals.Provider, Translation):
             return
 
         try:
-            MODULE.info('Executing %r' % (request.arguments or request.command,))
             self._parse_accept_language(request)
             if ucr.is_false('umc/server/disable-security-restrictions', True):
                 self.security_checks(request, function)
@@ -264,8 +266,13 @@ class Base(signals.Provider, Translation):
             return  # don't change the language if Accept-Language header contains the value of the browser and not those we set in Javascript
 
         accepted_locales = re.split(r'\s*,\s*', request.headers.get('Accept-Language', ''))
-        if accepted_locales:
-            self.update_language(loc.replace('-', '_') for loc in accepted_locales)
+        try:
+            accepted_locales.remove('')
+        except ValueError:
+            pass
+        if accepted_locales and accepted_locales != self._accepted_language:
+            self._accepted_language = accepted_locales
+            self.update_language(re.sub(';.*', '', lang.replace('-', '_')) for lang in accepted_locales)
 
     def security_checks(self, request, function):
         if request.http_method not in (u'POST', u'PUT', u'DELETE') and not getattr(function, 'allow_get', False):
@@ -301,10 +308,10 @@ class Base(signals.Provider, Translation):
         :param etraceback: The exception traceback instance; may be None.
         """
         if (isinstance(exc, udm_errors.ldapError) and isinstance(getattr(exc, 'original_exception', None), ldap.LDAPError)) or isinstance(exc, ldap.LDAPError):
-            #  After an exception the ReconnectLDAPObject instance can be in a state without a bind. Which can result
-            #  in a "ldapError: Insufficient access" exception, because the connection is anonymous. Prevent the usage
-            #  of a ReconnectLDAPObject instance after an exception by clearing the connection cache.
-            #  Bug #46089
+            # After an exception the ReconnectLDAPObject instance can be in a state without a bind. Which can result
+            # in a "ldapError: Insufficient access" exception, because the connection is anonymous. Prevent the usage
+            # of a ReconnectLDAPObject instance after an exception by clearing the connection cache.
+            # Bug #46089
             reset_ldap_connection_cache()
         if isinstance(exc, udm_errors.ldapError) and isinstance(getattr(exc, 'original_exception', None), ldap.SERVER_DOWN):
             exc = exc.original_exception
@@ -315,8 +322,8 @@ class Base(signals.Provider, Translation):
         if isinstance(exc, ldap.CONNECT_ERROR):
             raise LDAP_ConnectionFailed(exc)
         if isinstance(exc, ldap.INVALID_CREDENTIALS):
-            #  Ensure the connection cache is empty to prevent the use of expired saml messages
-            #  Bug #44621
+            # Ensure the connection cache is empty to prevent the use of expired saml messages
+            # Bug #44621
             reset_ldap_connection_cache()
             raise Unauthorized
 
@@ -364,7 +371,7 @@ class Base(signals.Provider, Translation):
                 'traceback': exc.traceback,
             }
         except Exception:
-            status = MODULE_ERR_COMMAND_FAILED
+            status = _MODULE_ERR_COMMAND_FAILED
             reason = None
             if etraceback is None:  # Bug #47114: thread.exc_info doesn't contain a traceback object anymore
                 tb_str = ''.join(['Traceback (most recent call last):\n'] + trace + traceback.format_exception_only(*sys.exc_info()[:2]))
@@ -391,53 +398,25 @@ class Base(signals.Provider, Translation):
         return headers
 
     def get_user_ldap_connection(self, no_cache=False, **kwargs):
-        if not self._user_dn:
-            return  # local user (probably root)
-        try:
-            lo, po = get_user_connection(bind=self.bind_user_connection, write=kwargs.pop('write', False), follow_referral=True, no_cache=no_cache, **kwargs)
-            if not no_cache:
-                self._user_connections.add(lo)
-            return lo
-        except (ldap.LDAPError, udm_errors.base) as exc:
-            CORE.warn('Failed to open LDAP connection for user %s: %s' % (self._user_dn, exc))
+        """
+        .. deprecated::
+                use request.get_user_ldap_connection() instead!
+        """
+        return self._current_request.get_user_ldap_connection(no_cache=False, **kwargs)
 
     def bind_user_connection(self, lo):
-        CORE.process('LDAP bind for user %r.' % (self._user_dn,))
-        try:
-            if self.auth_type == 'SAML':
-                lo.lo.bind_saml(self._password)
-                if not lo.lo.compare_dn(lo.binddn, self._user_dn):
-                    CORE.warn('SAML binddn does not match: %r != %r' % (lo.binddn, self._user_dn))
-                    self._user_dn = lo.binddn
-            else:
-                try:
-                    lo.lo.bind(self._user_dn, self._password)
-                except ldap.INVALID_CREDENTIALS:  # workaround for Bug #44382: the password might be a SAML message, try to authenticate via SAML
-                    etype, exc, etraceback = sys.exc_info()
-                    CORE.error('LDAP authentication for %r failed: %s' % (self._user_dn, exc))
-                    if len(self._password) < 25:
-                        raise
-                    CORE.warn('Trying to authenticate via SAML.')
-                    try:
-                        lo.lo.bind_saml(self._password)
-                    except ldap.OTHER:
-                        CORE.error('SAML authentication failed.')
-                        six.reraise(etype, exc, etraceback)
-                    CORE.error('Wrong authentication type. Resetting.')
-                    self.auth_type = 'SAML'
-        except ldap.INVALID_CREDENTIALS:
-            etype, exc, etraceback = sys.exc_info()
-            exc = etype('An error during LDAP authentication happened. Auth type: %s; SAML message length: %s; DN length: %s; Original Error: %s' % (self.auth_type, len(self._password or '') if len(self._password or '') > 25 else False, len(self._user_dn or ''), exc))
-            six.reraise(etype, exc, etraceback)
+        """
+        .. deprecated::
+                use request.bind_user_connection() instead!
+        """
+        return self._current_request.bind_user_connection(lo)
 
     def require_password(self):
-        if self.auth_type is not None:
-            raise PasswordRequired()
-
-    def permitted(self, command, options, flavor=None):
-        if not self.__acls:
-            return False
-        return self.__acls.is_command_allowed(command, options=options, flavor=flavor)
+        """
+        .. deprecated::
+                use request.require_password() instead!
+        """
+        return self._current_request.require_password()
 
     def finished(self, id, response, message=None, success=True, status=None, mimetype=None, headers=None, error=None, reason=None):
         """Should be invoked by module to finish the processing of a request. 'id' is the request command identifier"""
@@ -448,7 +427,7 @@ class Base(signals.Provider, Translation):
         if not isinstance(response, Response):
             res = Response(request)
 
-            if mimetype and mimetype != MIMETYPE_JSON:
+            if mimetype and mimetype != _MIMETYPE_JSON:
                 res.mimetype = mimetype
                 res.body = response
             else:
@@ -463,14 +442,14 @@ class Base(signals.Provider, Translation):
         if not res.status:
             if status is not None:
                 res.status = status
-            elif success:
-                res.status = SUCCESS
             else:
-                res.status = MODULE_ERR
+                res.status = 200 if success else _MODULE_ERR
 
         self.result(res)
 
     def result(self, response):
-        if response.id in self.__requests:
-            self.signal_emit('success', response)
-            del self.__requests[response.id]
+        try:
+            request, method = self.__requests.pop(response.id)
+        except KeyError:
+            return
+        request._request_handler.reply(response)

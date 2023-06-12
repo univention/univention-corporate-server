@@ -15,7 +15,7 @@ max_open_files=$(ucr get umc/http/max-open-file-descriptors)
 
 cleanup() {
 	ucr set umc/http/max-open-file-descriptors="$max_open_files"
-	systemctl restart univention-management-console-web-server
+	systemctl restart univention-management-console-server
 	sleep 5
 }
 
@@ -25,9 +25,9 @@ fd_max=333
 echo "Setting umc/http/max-open-file-descriptors to $fd_max"
 ucr set umc/http/max-open-file-descriptors=$fd_max
 
-systemctl restart univention-management-console-web-server
+systemctl restart univention-management-console-server
 sleep 5
-umc_pid="$(pidof -x /usr/sbin/univention-management-console-web-server)"
+umc_pid="$(pidof -x univention-management-console-server)"
 control=$(cat /proc/$umc_pid/limits | grep "open files" | grep -o "[0-9]*" | head -1)
 echo "Checking how many fds are allowed according to /proc/$umc_pid/limits"
 

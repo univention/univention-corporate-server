@@ -69,26 +69,11 @@ eval "$(ucr shell server/role)"
 
 systemctl restart univention-directory-listener
 
-# configure firewall
-ucr set security/packetfilter/package/univention-management-console-server/tcp/6670/all="ACCEPT" \
-		security/packetfilter/package/univention-management-console-server/tcp/6670/all/en="UMC"
-[ -x "/etc/init.d/univention-firewall" ] && invoke-rc.d univention-firewall restart
-
-# Bug #46847: Due to an issue in u-updater, while system-setup is running,
-# the umc-server executable has no dpkg-statoverride which removes the executable bit
-# Emulate the functionality here.
-if dpkg --compare-versions "10.0.5" gt-nl "$2"; then
-	if pgrep -l -f /usr/lib/univention-system-setup/scripts/setup-join.sh; then
-		umc_executable="/usr/sbin/univention-management-console-server"
-		if [ -x "$umc_executable" ]; then
-			/usr/bin/dpkg-statoverride --add root root 0644 "$umc_executable" 2>&1
-			/bin/chmod a-x "$umc_executable"
-		fi
-	fi
+if [ "$1" = "configure" ] && dpkg --compare-versions "$2" lt-nl 12.0.20-1; then
+	ucr unset security/packetfilter/package/univention-management-console-server/tcp/6670/all \
+		security/packetfilter/package/univention-management-console-server/tcp/6670/all/en
+	[ -x "/etc/init.d/univention-firewall" ] && invoke-rc.d univention-firewall restart
 fi
-
-
-deb-systemd-invoke restart univention-management-console-server.service
 
 # ucslint needs this
 exit 0

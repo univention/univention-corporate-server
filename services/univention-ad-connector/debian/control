@@ -134,9 +134,9 @@ Architecture: all
 Depends:
  python3-ldap,
  python3-ldb,
- python3-notifier,
  python3-psutil,
  python3-samba,
+ python3-tornado,
  python3-univention-config-registry,
  python3-univention-lib,
  samba-dsdb-modules,

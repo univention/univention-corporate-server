@@ -64,7 +64,6 @@ from univention.management.console.modules.decorators import sanitize, simple_re
 from univention.management.console.modules.sanitizers import (
     ChoicesSanitizer, IntegerSanitizer, ListSanitizer, StringSanitizer,
 )
-from univention.management.console.protocol.message import Request
 from univention.updater.errors import RequiredComponentError
 from univention.updater.tools import UniventionUpdater
 
@@ -344,7 +343,7 @@ class Instance(Base):
             MODULE.error(msg)
         return False
 
-    def status(self, request: Request) -> None:  # TODO: remove unneeded things
+    def status(self, request) -> None:  # TODO: remove unneeded things
         """One call for all single-value variables."""
         result = {}  # type: Dict[str, Any]
         ucr.load()

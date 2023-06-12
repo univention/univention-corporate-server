@@ -1,3 +1,9 @@
+univention-management-console-module-diagnostic (6.0.6-1) unstable; urgency=medium
+
+  * Bug #43633: adjust file permissions for new UMC server UNIX sockets
+
+ -- Florian Best <best@univention.de>  Mon, 12 Jun 2023 07:47:30 +0200
+
 univention-management-console-module-diagnostic (6.0.5-3) unstable; urgency=medium
 
   * Bug #55632: improved the Python 3.11 compatiblity

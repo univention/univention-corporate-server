@@ -1,3 +1,9 @@
+univention-updater (15.0.9-1) unstable; urgency=medium
+
+  * Bug #43633: stop left over UMCP server in postup.sh when upgrading to UCS 5.0-4 via UMC
+
+ -- Florian Best <best@univention.de>  Mon, 12 Jun 2023 07:47:20 +0200
+
 univention-updater (15.0.8-1) unstable; urgency=medium
 
   * Bug #43633: replace direct use of notifier.threads with UMC

@@ -1,3 +1,10 @@
+univention-system-setup (13.0.9-1) unstable; urgency=medium
+
+  * Bug #43633: change systemd dependency to
+    univention-management-console-server.service
+
+ -- Florian Best <best@univention.de>  Mon, 12 Jun 2023 07:47:14 +0200
+
 univention-system-setup (13.0.8-1) unstable; urgency=medium
 
   * Bug #43633: replace direct use of notifier.threads with UMC

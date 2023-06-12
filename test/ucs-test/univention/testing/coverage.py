@@ -33,7 +33,6 @@ class Coverage:
         self.coverage_sources = options.coverage_sources or ['univention']
         self.services = options.coverage_restart_services or [
             'univention-management-console-server',
-            'univention-management-console-web-server',
             'univention-s4-connector',
             'univention-directory-listener',
             'univention-portal-server',

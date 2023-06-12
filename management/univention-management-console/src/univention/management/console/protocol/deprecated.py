@@ -2,12 +2,12 @@
 # -*- coding: utf-8 -*-
 #
 # Univention Management Console
-#  version information for the UMC protocol
+#  deprecated stuff from obsolete UMCP
 #
 # Like what you see? Join us!
 # https://www.univention.com/about-us/careers/vacancies/
 #
-# Copyright 2007-2023 Univention GmbH
+# Copyright 2023 Univention GmbH
 #
 # https://www.univention.de/
 #
@@ -34,10 +34,17 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-major_number = 2
-minor_number = 0
-revision_number = 0
-extension = ''
+SUCCESS = 200
+BAD_REQUEST = 400
+BAD_REQUEST_UNAUTH = 401
+MODULE_ERR = 590
+MODULE_ERR_COMMAND_FAILED = 591
+MODULE_ERR_INIT_FAILED = 592
 
-#: Defines the protocol version
-VERSION = "%d.%d.%d%s" % (major_number, minor_number, revision_number, extension)
+TEMPUPLOADDIR = '/var/tmp/univention-management-console-frontend'
+
+MIMETYPE_JSON = 'application/json'
+MIMETYPE_JPEG = 'image/jpeg'
+MIMETYPE_PNG = 'image/png'
+MIMETYPE_PLAIN = 'text/plain'
+MIMETYPE_HTML = 'text/html'

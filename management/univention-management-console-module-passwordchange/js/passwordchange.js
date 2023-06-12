@@ -47,7 +47,7 @@ define([
 ], function(declare, lang, topic, entities, login, menu, tools, dialog, Text, PasswordBox, PasswordInputBox, _) {
 
 	var setPassword = function(values) {
-		tools.umcpCommand('set', {
+		tools.umcpCommand('set/password', {
 			password: values
 		}, false).then(lang.hitch(this, function() {
 			dialog.alert(_('The password has been changed successfully.'));

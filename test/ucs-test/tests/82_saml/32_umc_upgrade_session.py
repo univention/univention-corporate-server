@@ -38,7 +38,7 @@ def saml_check():
         call_umc_action_that_does_not_require_password(SamlSession)
         call_umc_action_that_requires_password(SamlSession, 401)
         upgrade_umc_saml_session(SamlSession)
-        SamlSession.test_logged_in_status()
+        SamlSession.test_logged_in_status(None)
         print('Second try: require_password has to succeed')
         call_umc_action_that_does_not_require_password(SamlSession)
         call_umc_action_that_requires_password(SamlSession, 200)

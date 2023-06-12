@@ -54,7 +54,6 @@ def restart_umc_server():
 
 
 def main():
-
     renew_sso_cert()
     reload_idp_metadata()
     account = utils.UCSTestDomainAdminCredentials()

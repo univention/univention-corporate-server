@@ -42,7 +42,7 @@ def kill_ucstest():
 
 
 def restart_web_server():
-    subprocess.call(['systemctl', 'restart', 'univention-management-console-web-server', 'univention-management-console-server', 'apache2'])
+    subprocess.call(['systemctl', 'restart', 'univention-management-console-server', 'apache2'])
 
 
 class AsyncClient(Client):
@@ -74,9 +74,9 @@ def main():
     for i_connection in connections:
         try:
             response = i_connection.getresponse()
-            print(f'*** RESPONSE Status={response.status}; body=\n{response.read()!r}\n***')
-            if response.status not in RESPONSE_STATUS_CODES:
-                print(f'ERROR: Unexpected status of response {response.status} (expected was one of {RESPONSE_STATUS_CODES})')
+            print(f'*** RESPONSE Status={response.status} {response.reason}; body=\n{response.read()!r}\n***')
+            if response.status != 502 or response.reason != 'UMC-Server module process connection failed':
+                print(f'ERROR: Unexpected status of response {response.status} {response.reason} (expected 502)')
                 success = False
         except (socket.timeout, ssl.SSLError):
             print('ERROR: request timed out')

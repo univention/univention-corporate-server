@@ -269,7 +269,7 @@ define([
 					if (cancel) {
 						return true;
 					}
-					return tools.umcpCommand('set', {
+					return tools.umcpCommand('set/password', {
 						password: authDataPassword
 					}).then(function() {
 						// return 'true' to indicate success

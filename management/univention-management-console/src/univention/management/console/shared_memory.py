@@ -1,12 +1,10 @@
-#!/bin/sh
-#
-# Univention Updater
-#  add apache/UMC executable permissions
+#!/usr/bin/python3
+# -*- coding: utf-8 -*-
 #
 # Like what you see? Join us!
 # https://www.univention.com/about-us/careers/vacancies/
 #
-# Copyright 2010-2023 Univention GmbH
+# Copyright 2022-2023 Univention GmbH
 #
 # https://www.univention.de/
 #
@@ -33,37 +31,29 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-action='restart'
+from multiprocessing import managers
 
-die () {
-	echo "${0##/*}: $*" >&2
-	exit 1
-}
-opt="$(getopt -o 'h' --longoptions 'no-restart,help' -- "$@")" ||
-	die 'Terminating...'
-eval set -- "$opt"
-while [ $# -ge 1 ]
-do
-	case "$1" in
-	-h|--help)
-		echo "${0##*/} [--help] [--no-restart]"
-		exit 0
-		;;
-	--no-restart)
-		action='start'
-		shift
-		;;
-	--)
-		shift
-		break
-		;;
-	*)
-		die 'Internal error!'
-		;;
-	esac
-done
+from setproctitle import getproctitle, setproctitle
 
-systemctl unmask --runtime univention-management-console-server.service
-systemctl "$action" univention-management-console-server.service apache2.service
 
-exit 0
+proctitle = getproctitle()
+
+
+class _SharedMemory(managers.SyncManager):
+
+    saml_state_cache = {}
+    children = {}
+
+    def start(self, *args, **kwargs):
+        setproctitle(proctitle + '   # multiprocessing manager')
+        try:
+            super(_SharedMemory, self).start(*args, **kwargs)
+        finally:
+            setproctitle(proctitle)
+
+        # we must create the parent dictionary instance before forking but after python importing
+        self.saml_state_cache = self.dict()
+        self.children = self.dict()
+
+
+shared_memory = _SharedMemory()

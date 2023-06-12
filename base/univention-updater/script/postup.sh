@@ -179,6 +179,11 @@ if dpkg -l univention-samba4 | grep -q ^ii; then
 		echo 'ERROR '
 	fi
 fi
+
+# kill UMCP based univention-management-console-server
+pgrep -f /usr/sbin/univention-management-console-server | while read pid; do
+	lsof -iTCP:"6670" -sTCP:LISTEN -nP | awk '{ print $2}' | grep -q "^${pid}$" && kill "$pid"
+done
 EOF
 
 exit 0

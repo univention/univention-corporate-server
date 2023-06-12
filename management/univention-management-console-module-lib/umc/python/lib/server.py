@@ -124,7 +124,7 @@ class Server(object):
         except (OSError, Exception):
             pass
 
-        def halt():
+        def halt():  # TODO: replace with timer instead of thread
             time.sleep(1.5)
             subprocess.call(('/sbin/shutdown', action, 'now', message))
 

@@ -64,14 +64,13 @@ from univention.management.console.ldap import get_user_connection
 from univention.management.console.log import MODULE
 from univention.management.console.modules import Base, UMC_Error
 from univention.management.console.modules.decorators import (
-    allow_get_request, multi_response, prevent_xsrf_check, sanitize, simple_response, threaded,
+    allow_get_request, file_upload, multi_response, prevent_xsrf_check, sanitize, simple_response, threaded,
 )
 from univention.management.console.modules.mixins import ProgressMixin
 from univention.management.console.modules.sanitizers import (
     BooleanSanitizer, ChoicesSanitizer, DictSanitizer, DNSanitizer, EmailSanitizer, ListSanitizer, Sanitizer,
     SearchSanitizer, StringSanitizer,
 )
-from univention.management.console.protocol.session import TEMPUPLOADDIR
 
 from .tools import LicenseError, LicenseImport, check_license, dump_license, install_opener, urlopen
 from .udm_ldap import (
@@ -317,10 +316,8 @@ class Instance(Base, ProgressMixin):
         filename = None
         if isinstance(request.options, (list, tuple)) and request.options:
             # file upload
+            file_upload(lambda s, r: None)(self. request)  # protect against hacking attempts!
             filename = request.options[0]['tmpfile']
-            if not os.path.realpath(filename).startswith(TEMPUPLOADDIR):
-                self.finished(request.id, [{'success': False, 'message': 'invalid file path'}])
-                return
         else:
             sanitize(license=StringSanitizer(required=True))(lambda self, request: None)(self, request)
             lic = request.options['license']

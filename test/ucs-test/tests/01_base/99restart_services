@@ -44,7 +44,6 @@ do
 	univention-iptables) status= ;;
 	univention-maintenance) status= ;;
 	univention-management-console-server) restart=crestart status= ;;
-	univention-management-console-web-server) restart=crestart status= ;;
 	*) restart=restart status=status ;;
 	esac
 

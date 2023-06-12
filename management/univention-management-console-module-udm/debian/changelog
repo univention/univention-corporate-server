@@ -1,3 +1,9 @@
+univention-management-console-module-udm (10.0.7-1) unstable; urgency=medium
+
+  * Bug #43633: drop use of internal UMCP implementation details
+
+ -- Florian Best <best@univention.de>  Mon, 12 Jun 2023 08:04:47 +0200
+
 univention-management-console-module-udm (10.0.6-1) unstable; urgency=medium
 
   * Bug #43633: replace direct use of notifier.threads with UMC

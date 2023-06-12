@@ -53,7 +53,7 @@ def main():
     except AssertionError:
         utils.fail('ERROR: webserver is not responding')
     finally:
-        subprocess.Popen(['systemctl', 'restart', 'univention-management-console-server', 'univention-management-console-web-server'])
+        subprocess.Popen(['systemctl', 'restart', 'univention-management-console-server'])
 
 
 if __name__ == '__main__':

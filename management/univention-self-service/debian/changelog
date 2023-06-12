@@ -1,3 +1,9 @@
+univention-self-service (5.0.7-1) unstable; urgency=medium
+
+  * Bug #43633: adjust UMCP set/ HTTP requests
+
+ -- Florian Best <best@univention.de>  Mon, 12 Jun 2023 07:47:50 +0200
+
 univention-self-service (5.0.6-4) unstable; urgency=medium
 
   * Bug #55733: created new UCRV to configure read-only attributes

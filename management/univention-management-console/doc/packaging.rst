@@ -79,10 +79,6 @@ would look like this: ::
 
 If such a package has been created a few things need to be adjusted
 
-* debian/compat ::
-
-	9
-
 * debian/rules
 
 	.. code-block:: make

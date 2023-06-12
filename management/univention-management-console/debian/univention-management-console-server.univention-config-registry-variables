@@ -19,13 +19,6 @@ Type=uint
 Categories=management-umc
 Default=64
 
-[umc/server/dispatch-interval]
-Description[de]=Definiert das reguläre Interval für die Abarbeitung wiederkehrender Aufgaben im UMC-Server in Millisekunden.
-Description[en]=Defined the regular interval for the processing of recurring tasks in the UMC server in milliseconds.
-Type=uint
-Categories=management-umc
-Default=100
-
 [umc/server/processes]
 Description[de]=Definiert die Anzahl an UMC-Server Prozessen, die parallel gestartet werden.
 Description[en]=Defined the number of UMC-Server processes, which are started in parallel.

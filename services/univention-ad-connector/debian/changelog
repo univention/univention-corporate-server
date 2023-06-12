@@ -1,3 +1,9 @@
+univention-ad-connector (14.0.14-1) unstable; urgency=medium
+
+  * Bug #43633: replace notifier.popen with tornado
+
+ -- Florian Best <best@univention.de>  Mon, 12 Jun 2023 07:48:31 +0200
+
 univention-ad-connector (14.0.13-7) unstable; urgency=medium
 
   * Bug #55632: Updated the checks for checking if the AD connector is running

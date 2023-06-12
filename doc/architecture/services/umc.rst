@@ -74,7 +74,6 @@ The *UMC front end* has the following items:
 .. index:: ! umc modules
    pair: umc; reverse proxy
    pair: umc; static http server
-   pair: umc; web server
    single: umc; back end
    single: umc; modules
    single: umc; server
@@ -83,18 +82,12 @@ The *UMC back end* has the following items:
 
 * *Static HTTP server*
 * *Reverse proxy*
-* *UMC web server*
 * *UMC server*
 * *UMC modules*
 
 The user facing parts of the *UMC front end* are the *UMC web front end* and the
-*UMC client*. *Reverse proxy* and *UMC web server* handle and transform the
+*UMC client*. *Reverse proxy* handle and transform the
 requests and pass them to the *UMC server* at the back end.
-
-.. attention::
-
-   Beware that *UMC web server* and *UMC server* are two different parts in
-   |UMC|. A confusion of terms happens regularly.
 
 .. _services-umc-communication:
 
@@ -108,8 +101,8 @@ UMC communication
 
 This section focuses on the communication within |UMC|.
 :numref:`services-umc-architecture-communication-model` shows the architecture
-with the communication interfaces *HTTP/HTTPS*, *HTTP*, *Terminal/SSH*, and
-*UMCP*. The following sections describe the interfaces.
+with the communication interfaces *HTTP/HTTPS*, *HTTP*, *Terminal/SSH*.
+The following sections describe the interfaces.
 
 .. _services-umc-architecture-communication-model:
 
@@ -130,38 +123,7 @@ HTTP/HTTPS in UMC
 The user interacts with the *UMC web front end* in their web browser. The *UMC
 web front end* communicates through *HTTP/HTTPS* with the *UMC back end*. The
 *Reverse proxy* receives requests, handles SSL/TLS, and forwards the requests
-through *HTTP* to the *UMC web server*.
-
-.. _services-umc-umcp:
-
-Univention Management Console Protocol
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-.. index::
-   pair: umc; umcp
-   see: univention management console protocol; umcp
-   single: umc; client
-   single: umc; server
-   single: umc; web server
-
-*UMC web server* and *UMC server* communicate through the proprietary protocol
-*Univention Management Console Protocol (UMCP)*. The *UMC web server* translates
-the HTTP request into a UMCP message for the *UMC server* and uses |UMCP| for
-communication.
-
-The *UMC client* works likewise and uses |UMCP| for communication with the *UMC
-server*.
-
-.. seealso::
-
-   Software developers and system engineers, refer to
-   :cite:t:`developer-reference`:
-
-   :ref:`umc-umcp2`
-      for technical details about UMCP 2.0
-
-   :ref:`umc-http`
-      for examples about HTTP for UMC
+through *HTTP* to the *UMC server*.
 
 .. _services-umc-terminal:
 
@@ -173,7 +135,7 @@ Terminal and SSH in UMC
    single: umc; server
    single: umc; web front end
 
-The *UMC client* communicates with *UMC server* through |UMCP|. Administrators
+The *UMC client* communicates with *UMC back end* through ``HTTPS``. Administrators
 use UMC through the *UMC web front end* or through specific command-line tools.
 
 .. caution::
@@ -195,7 +157,6 @@ Authentication
    single: authentication; form-based login
    single: authentication; saml
    single: umc; server
-   single: umc; web server
    single: saml; service provider role
    single: saml; umc authentication
 
@@ -203,16 +164,14 @@ Authentication
 system. Users authenticate through a regular form-based login, basic HTTP
 authentication or |SAML|.
 
-In UMC, the *UMC web server* implements |SAML| in the *SAML service provider*
-role. The *UMC web server* considers SAML authenticated users as authenticated
-and forwards the SAML message also to the *UMC server*.
+In UMC, the *UMC server* implements |SAML| in the *SAML service provider*
+role. The *UMC server* considers SAML authenticated users as authenticated.
 
 .. TODO : Activate section, once SAML is ready:
    For details about |SAML| in UCS, refer to :ref:`services-authentication-saml`.
 
 The *UMC server* handles user authentication as shown in
-:numref:`services-umc-authentication-chain`. The *UMC web server* validates user
-credentials with the initiation of a connection to the *UMC server*:
+:numref:`services-umc-authentication-chain`.
 
 .. index:: umc; authentication successful
    single: authentication; successful
@@ -224,7 +183,7 @@ Successful authentication
    single: authentication; unsuccessful
 
 Unsuccessful authentication
-   *UMC server* denies the connection and the *UMC web server* answers with a
+   *UMC server* denies the connection and answers with a
    denied request towards the user. The reasons can be manifold, for example:
 
    * Wrong username and password combination
@@ -276,7 +235,6 @@ The *UMC back end* consists of the following items as shown in
 :numref:`services-umc-architecture-simplified-model`:
 
 * *Reverse proxy*
-* *UMC web server*
 * *UMC server*
 * several *UMC modules*
 
@@ -316,47 +274,31 @@ Reverse proxy
    The *Reverse proxy* redirects the following URI paths to the *UMC web
    server*:
 
-   * ``/univention/set``
+   * ``/univention/set/.*`` as regular expression
    * ``/univention/auth``
+   * ``/univention/logout``
+   * ``/univention/saml/.*`` as regular expression
    * ``/univention/command/.*`` as regular expression
    * ``/univention/upload/.*`` as regular expression
    * ``/univention/get/.*`` as regular expression
 
-.. index:: ! umc; web server
-   single: cherrypy
-   single: technology; cherrypy
-   single: umcp; umc web server
-
-UMC web server
-   Further down the chain is the *UMC web server* realized by
-   :program:`CherryPy`, that only allows connections from the *Reverse proxy*.
-   For example, it provides session management for signed-in users.
-
-   The *UMC web server* forwards most URI paths from the *Reverse proxy* to the
-   *UMC server*. It handles some URI paths directly, for example:
-
-   * ``/univention/saml/.*`` as regular expression
-   * ``/univention/logout``
-
-   The *UMC web server* transforms HTTP requests to |UMCP| requests and forwards
-   them through an |IPC| socket to the *UMC server*.
-
 .. index:: ! umc; server
-   single: python; notifier
-   single: technology; python notifier
-   single: umcp; umc server
+   single: technology; tornado
+   single: umc server
 
 UMC server
-   The *UMC server* accepts requests with |UMCP|. For example, the *UMC client*
-   and the *UMC web server* use it as connection endpoint. When a |UMCP| request
-   reaches the *UMC server*, the *UMC server* maps the request to a dedicated
-   UMC module depending on the |UMCP| command and answers the request
-   accordingly. The *UMC server* opens an |IPC| socket to the UMC module and
-   they talk |UMCP|. It handles some requests directly, for example ``GET`` and
-   ``SET``, and takes care of authentication and the language setting for the
-   web content.
+   Further down the chain is the *UMC server* realized by
+   :program:`Tornado`, that only allows connections from the *Reverse proxy*.
+   For example, it provides session management for signed-in users.
 
-   :program:`Python Notifier` is the software realizing *UMC server*.
+   The *UMC server* accepts requests with ``HTTP``. For example, the *UMC client*
+   uses it as connection endpoint. When a ``HTTP`` request
+   reaches the *UMC server*, the *UMC server* maps the request to a dedicated
+   UMC module depending on the URL and answers the request
+   accordingly. The *UMC server* opens an |IPC| socket to the UMC module and
+   they talk ``HTTP``. It handles some requests directly, for example ``get/`` and
+   ``set/``, and takes care of authentication and the language setting for the
+   web content.
 
 UMC module processes
    UMC modules extend UCS with capability. For the description, refer to
@@ -364,19 +306,11 @@ UMC module processes
 
 .. seealso::
 
-   :ref:`umc-umcp2`
-      for information about UMCP in :cite:t:`developer-reference`
-
-.. seealso::
-
    `Apache HTTP server project <apache-httpd_>`_
       for the website of the Apache HTTP server project
 
-   `CherryPy <cherry-py_>`_
-      for the project page of CherryPy, a minimalist Python web framework
-
-   `Python Notifier <python-notifier_>`_
-      for the source code repository of *Python Notifier*.
+   `Tornado <tornado_>`_
+      for the website of the *Tornado* project
 
 .. _services-umc-web-front-end:
 
@@ -484,7 +418,7 @@ UMC module process.
 
 .. tip::
 
-   Use :envvar:`umc/module/timeout` to configure the idle for the UMC module
+   Use :envvar:`umc/module/timeout` to configure the idle time for the UMC module
    processes. The default value is 10 minutes.
 
 .. seealso::

@@ -79,7 +79,6 @@ class UMCTester(object):
         ignore_these = [
             'apache2',
             'univention-management-console-server',
-            'univention-management-console-web-server',
             'univention-welcome-screen',  # TODO do the jenkins vms for the selenium test have a display manager installed?
             'heimdal-kdc',  # TODO services['heimdal-kdc']['programs'] has mismatching output with psutil.Process.cmdline()
             'bind9',  # started automatically on reboot even if start type is manually
@@ -133,7 +132,6 @@ class UMCTester(object):
         ignore_these = [
             'apache2',
             'univention-management-console-server',
-            'univention-management-console-web-server',
             'univention-welcome-screen',  # TODO do the jenkins vms for the selenium test have a display manager installed?
             'heimdal-kdc',  # TODO services['heimdal-kdc']['programs'] has mismatching output from psutil.Process.cmdline()
         ]

@@ -36,8 +36,7 @@
 
 from __future__ import absolute_import
 
-import notifier
-import notifier.threads
+import functools
 
 from univention.lib import fstab
 from univention.management.console import Translation
@@ -69,10 +68,10 @@ class Commands(object):
         partitionDevice = request.options['partitionDevice']
         self._check_error(partitionDevice)
 
-        callback = notifier.Callback(self._users_query, partitionDevice, request)
+        callback = functools.partial(self._users_query, partitionDevice, request)
         tools.repquota(request.options['partitionDevice'], callback)
 
-    def _users_query(self, pid, status, callbackResult, partition, request):
+    def _users_query(self, partition, request, stdout, status):
         """
         This function is invoked when a repquota process has died and
         there is output to parse that is restructured as UMC Dialog
@@ -82,6 +81,8 @@ class Commands(object):
         # general information
         devs = fstab.File()
         devs.find(spec=partition)
+
+        callbackResult = stdout.read().splitlines()
 
         # skip header
         header = 0

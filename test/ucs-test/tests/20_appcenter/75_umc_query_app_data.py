@@ -143,7 +143,6 @@ def test_ratings(umc_data, *keys):
 def get_app_from_umc(lang='en_US'):
     # UMC query
     client = Client.get_test_connection(language=lang)
-    client.umc_set({'locale': lang})
     apps = client.umc_command('appcenter/query', print_response=False, print_request_data=False).result
 
     # pick our test app from the list of all apps

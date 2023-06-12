@@ -1,3 +1,5 @@
 mv_conffile /etc/univention/templates/files/etc/apache2/sites-available/univention-management-console /etc/univention/templates/files/etc/apache2/sites-available/univention.conf 9.0.0~
 rm_conffile /etc/init.d/univention-management-console-web-server 12.0.12-17~
+rm_conffile /etc/univention/service.info/services/univention-management-console-web-server.cfg 12.0.20~
 rm_conffile /etc/univention/templates/files/etc/apache2/sites-available/univention-proxy.conf 12.0.0~
+rm_conffile /etc/univention/templates/modules/configure_umc_multiprocessing.py 12.0.20~

@@ -1,7 +1,7 @@
 #!/usr/share/ucs-test/runner python3
 ## desc: Check if UMC is able to return correct IP address
 ## exposure: dangerous
-## packages: [univention-management-console-web-server]
+## packages: [univention-management-console-server]
 
 from http.client import HTTPConnection
 

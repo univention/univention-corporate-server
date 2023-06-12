@@ -34,9 +34,9 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
+import functools
 import os.path
 import re
-import shlex
 import subprocess
 import time
 import traceback
@@ -45,8 +45,8 @@ from contextlib import contextmanager
 import ldap.dn
 import ldap.filter
 import ldb
-import notifier.popen
 import psutil
+import tornado.process
 from ldap import explode_rdn
 from samba.auth import system_session
 from samba.credentials import Credentials
@@ -275,28 +275,25 @@ class Instance(Base, ProgressMixin):
     def _create_certificate(self, request):
         ssldir = '/etc/univention/ssl/%s' % request.options.get('LDAP_Host')
 
-        def _return(pid, status, buffer, request):
+        def _return(request, status):
             if not os.path.exists(ssldir):
                 MODULE.error('Creation of certificate failed (%s)' % ssldir)
                 self.finished(request.id, {'success': False, 'message': _('Creation of certificate failed (%s)') % ssldir})
             self.finished(request.id, {'success': True, 'message': _('Active Directory connection settings have been saved and a new certificate for the Active Directory server has been created.')})
 
-        cmd = '/usr/sbin/univention-certificate new -name %s' % shlex.quote(request.options['LDAP_Host'])
+        cmd = ['/usr/sbin/univention-certificate', 'new', '-name', request.options['LDAP_Host']]
         MODULE.info('Creating new SSL certificate: %s' % cmd)
-        proc = notifier.popen.Shell(cmd, stdout=True)
-        cb = notifier.Callback(_return, request)
-        proc.signal_connect('finished', cb)
-        proc.start()
+        proc = tornado.process.Subprocess(cmd, stdout=subprocess.PIPE)
+        proc.set_exit_callback(functools.partial(_return, request))
 
     @file_upload
     def upload_certificate(self, request):
-        def _return(pid, status, bufstdout, bufstderr, request, fn):
-            bufstdout = [x.decode('UTF-8', 'replace') for x in bufstdout]
-            bufstderr = [x.decode('UTF-8', 'replace') for x in bufstderr]
+        def _return(stdout, request, fn, status):
+            bufstdout = stdout.read().decode('UTF-8', 'replace')
             success = True
             if status == 0:
                 message = _('Certificate has been uploaded successfully.')
-                MODULE.info('Certificate has been uploaded successfully. status=%s\nSTDOUT:\n%s\n\nSTDERR:\n%s' % (status, '\n'.join(bufstdout), '\n'.join(bufstderr)))
+                MODULE.info('Certificate has been uploaded successfully. status=%s\nSTDOUT:\n%s' % (status, bufstdout))
                 try:
                     self._enable_ssl_and_test_connection(fn)
                 except UMC_Error:
@@ -305,29 +302,25 @@ class Instance(Base, ProgressMixin):
             else:
                 success = False
                 message = _('Certificate upload or conversion failed.')
-                MODULE.process('Certificate upload or conversion failed. status=%s\nSTDOUT:\n%s\n\nSTDERR:\n%s' % (status, '\n'.join(bufstdout), '\n'.join(bufstderr)))
+                MODULE.process('Certificate upload or conversion failed. status=%s\nSTDOUT:\n%s' % (status, bufstdout))
 
             self.finished(request.id, [{'success': success, 'message': message}])
 
         upload = request.options[0]['tmpfile']
         now = time.strftime('%Y%m%d_%H%M%S', time.localtime())
         fn = '/etc/univention/connector/ad/ad_cert_%s.pem' % now
-        cmd = '/usr/bin/openssl x509 -inform der -outform pem -in %s -out %s 2>&1' % (shlex.quote(upload), fn)
+        cmd = ['/usr/bin/openssl', 'x509', '-inform', 'der', '-outform', 'pem', '-in', upload, '-out', fn]
 
         MODULE.info('Converting certificate into correct format: %s' % cmd)
-        proc = notifier.popen.Shell(cmd, stdout=True, stderr=True)
-        cb = notifier.Callback(_return, request, fn)
-        proc.signal_connect('finished', cb)
-        proc.start()
+        proc = tornado.process.Subprocess(cmd, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+        proc.set_exit_callback(functools.partial(_return, proc.stdout, request, fn))
 
     @sanitize(
         action=ChoicesSanitizer(['start', 'stop'], required=True),
     )
-    def service(self, request):
-        MODULE.info('State: options=%s' % request.options)
-
+    @simple_response
+    def service(self, action):
         self.__update_status()
-        action = request.options['action']
 
         MODULE.info('State: action=%s  status_running=%s' % (action, self.status_running))
 
@@ -338,29 +331,23 @@ class Instance(Base, ProgressMixin):
             message = _('Active Directory Connector is already stopped. Nothing to do.')
 
         if message is not None:
-            self.finished(request.id, {'success': True, 'message': message})
-            return
+            return {'success': True, 'message': message}
 
-        def _run_it(action):
-            return subprocess.call(('service', 'univention-ad-connector', action))
-
-        def _return(thread, result, request):
+        def _run_it(self, request):
+            result = subprocess.call(('service', 'univention-ad-connector', action))
             success = not result
             if result:
                 message = _('Switching running state of Active Directory Connector failed.')
-                MODULE.info('Switching running state of Active Directory Connector failed. exitcode=%s' % result)
+                MODULE.info('Switching running state of Active Directory Connector failed. exitcode=%s' % (result,))
             else:
                 if request.options.get('action') == 'start':
                     message = _('Active Directory connection service has been started.')
                 else:
                     message = _('Active Directory connection service has been stopped.')
 
-            self.finished(request.id, {'success': success, 'message': message})
+            return {'success': success, 'message': message}
 
-        cb = notifier.Callback(_return, request)
-        func = notifier.Callback(_run_it, action)
-        thread = notifier.threads.Simple('service', func, cb)  # TODO: use async notifier.Popen instead
-        thread.run()
+        return _run_it
 
     def __update_status(self):
         ucr.load()

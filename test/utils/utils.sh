@@ -261,7 +261,7 @@ run_setup_join () {
 	/usr/lib/univention-system-setup/scripts/setup-join.sh ${1:+"$@"} | tee -a /var/log/univention/setup.log || rv=$?
 	set +o pipefail
 	ucr set apache2/startsite='univention/' # Bug #31682
-	deb-systemd-invoke try-reload-or-restart univention-management-console-server univention-management-console-web-server apache2
+	deb-systemd-invoke try-reload-or-restart univention-management-console-server apache2
 	ucr unset --forced update/available
 
 	# No this breaks univention-check-templates -> 00_checks.81_diagnostic_checks.test _fix_ssh47233  # temp. remove me
@@ -1399,7 +1399,7 @@ change_template_hostname () {
 	test -e /etc/bind/named.conf.samba4 && ucr commit /etc/bind/named.conf.samba4
 	test -e /etc/postgresql/pam_ldap.conf && ucr commit /etc/postgresql/pam_ldap.conf
 
-	for service in slapd univention-directory-listener univention-management-console-server univention-management-console-web-server apache2 postgresql; do
+	for service in slapd univention-directory-listener univention-management-console-server apache2 postgresql; do
 		if service "$service" status 2>/dev/null 1>/dev/null; then
 			service "$service" restart || rv=1
 		fi
