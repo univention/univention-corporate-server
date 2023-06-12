@@ -254,6 +254,10 @@ class Base(Translation):
     def tornado_routes(self):
         return []
 
+    def prepare(self, request):
+        """this function is invoked after the module process started."""
+        self.init()
+
     def init(self):
         """this function is invoked after the module process started."""
 

@@ -281,7 +281,7 @@ class ModuleServer(object):
 
             MODULE.debug('Initializing module.')
             try:
-                self.__handler.init()
+                self.__handler.prepare(msg)
             except BaseException:
                 MODULE.error('module init() failed; respond then shutdown')
                 signal.alarm(3)

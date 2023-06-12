@@ -54,7 +54,7 @@ class Instance(Base):
         # this initialization method is called when the
         # module process is started and the configuration from the
         # UMC server is completed
-        pass
+        super(Instance, self).init()
 
     def configuration(self, request):
         """Returns a directionary of initial values for the form."""

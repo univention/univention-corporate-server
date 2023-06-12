@@ -171,12 +171,13 @@ class Instance(Base, ProgressMixin):
         self.__license_checks = set()
         install_opener(ucr)
 
-    def init(self):
-        if not self.user_dn:
-            raise UserWithoutDN(self._username)
+    def prepare(self, request):
+        super(Instance, self).prepare(request)
+        if not request.user_dn:
+            raise UserWithoutDN(request.username)
 
-        MODULE.info('Initializing module as user %r' % (self.user_dn,))
-        set_bind_function(self.bind_user_connection)
+        MODULE.info('Initializing module as user %r' % (request.user_dn,))
+        set_bind_function(request.bind_user_connection)
 
         # read user settings and initial UDR
         self.reports_cfg = udr.Config()
@@ -507,7 +508,7 @@ class Instance(Base, ProgressMixin):
         result = []
         for ldap_dn in request.options:
             if request.flavor == 'users/self':
-                ldap_dn = self._user_dn
+                ldap_dn = request.user_dn
             obj, module = self.get_obj_module(request.flavor, ldap_dn)
             if module is None:
                 raise ObjectDoesNotExist(ldap_dn)

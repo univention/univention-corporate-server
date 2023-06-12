@@ -239,20 +239,13 @@ class Instance(Base):
         self._usersmod = None
         self.groupmod = None
 
-        def ucr_try_int(variable, default):
-            try:
-                return int(ucr.get(variable, default))
-            except ValueError:
-                MODULE.error('UCR variables %s is not a number, using default: %s' % (variable, default))
-                return default
-
-        self.token_validity_period = ucr_try_int("umc/self-service/passwordreset/token_validity_period", 3600)
-        limit_total_minute = ucr_try_int("umc/self-service/passwordreset/limit/total/minute", 0)
-        limit_total_hour = ucr_try_int("umc/self-service/passwordreset/limit/total/hour", 0)
-        limit_total_day = ucr_try_int("umc/self-service/passwordreset/limit/total/day", 0)
-        self.limit_user_minute = ucr_try_int("umc/self-service/passwordreset/limit/per_user/minute", 0)
-        self.limit_user_hour = ucr_try_int("umc/self-service/passwordreset/limit/per_user/hour", 0)
-        self.limit_user_day = ucr_try_int("umc/self-service/passwordreset/limit/per_user/day", 0)
+        self.token_validity_period = ucr.get_int("umc/self-service/passwordreset/token_validity_period", 3600)
+        limit_total_minute = ucr.get_int("umc/self-service/passwordreset/limit/total/minute", 0)
+        limit_total_hour = ucr.get_int("umc/self-service/passwordreset/limit/total/hour", 0)
+        limit_total_day = ucr.get_int("umc/self-service/passwordreset/limit/total/day", 0)
+        self.limit_user_minute = ucr.get_int("umc/self-service/passwordreset/limit/per_user/minute", 0)
+        self.limit_user_hour = ucr.get_int("umc/self-service/passwordreset/limit/per_user/hour", 0)
+        self.limit_user_day = ucr.get_int("umc/self-service/passwordreset/limit/per_user/day", 0)
 
         self.total_limits = [
             ("t:c_minute", 60, limit_total_minute),
@@ -549,15 +542,15 @@ class Instance(Base):
     @sanitize(
         username=StringSanitizer(required=DISALLOW_AUTHENTICATION, minimum=1),
         password=StringSanitizer(required=DISALLOW_AUTHENTICATION, minimum=1))
-    @simple_response
-    def set_user_attributes(self, attributes, username=None, password=None):
+    @simple_response(with_request=True)
+    def set_user_attributes(self, request, attributes, username=None, password=None):
         dn, username = self.authenticate_user(username, password)
-        username = username or self.username
+        username = username or request.username
         if password:
             dn, username = self.auth(username, password)
             lo, po = get_user_connection(binddn=dn, bindpw=password)
         else:
-            lo = self.get_user_ldap_connection(write=True)
+            lo = request.get_user_ldap_connection(write=True)
             po = univention.admin.uldap.position(lo.base)
 
         if self.is_blacklisted(username, 'profiledata'):

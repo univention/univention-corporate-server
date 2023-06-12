@@ -71,7 +71,7 @@ class Instance(Base):
 
     def init(self):
         # this initialization method is called when the module process is created
-        pass
+        super(Instance, self).init()
 
     def colors(self, request):
         """Returns a list of all existing colors."""
