@@ -236,7 +236,7 @@ class Server(object):
         channel.setFormatter(tornado.log.LogFormatter(fmt='%(color)s%(asctime)s  %(levelname)10s      (%(process)9d) :%(end_color)s %(message)s', datefmt='%d.%m.%y %H:%M:%S'))
         for logname in ('tornado.access', 'tornado.application', 'tornado.general'):
             logger = logging.getLogger(logname)
-            logger.setLevel({ud.INFO: logging.INFO, ud.WARN: logging.WARNING, ud.ERROR: logging.ERROR, ud.ALL: logging.DEBUG, ud.PROCESS: logging.INFO}.get(self.options.debug, logging.DEBUG))
+            logger.setLevel({ud.INFO: logging.INFO, ud.WARN: logging.WARNING, ud.ERROR: logging.ERROR, ud.ALL: logging.DEBUG, ud.PROCESS: logging.INFO}.get(ucr.get_int('umc/server/tornado-debug/level', 0), logging.ERROR))
             logger.addHandler(channel)
 
         self.reload()

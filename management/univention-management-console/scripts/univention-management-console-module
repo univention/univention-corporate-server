@@ -47,7 +47,7 @@ import notifier.log as nflog
 # don't import univention.management.console.{modules,protocol} here as the locale is not yet set!
 import univention.debug as ud
 from univention.lib.i18n import Locale, Translation
-from univention.management.console.config import MODULE_DEBUG_LEVEL, MODULE_INACTIVITY_TIMER
+from univention.management.console.config import MODULE_DEBUG_LEVEL, MODULE_INACTIVITY_TIMER, ucr
 from univention.management.console.log import MODULE, log_init
 
 
@@ -109,7 +109,7 @@ if __name__ == '__main__':
     channel.setFormatter(tornado.log.LogFormatter(fmt='%(color)s%(asctime)s  %(levelname)10s      (%(process)9d) :%(end_color)s %(message)s', datefmt='%d.%m.%y %H:%M:%S'))
     for logname in ('tornado.access', 'tornado.application', 'tornado.general'):
         logger = logging.getLogger(logname)
-        logger.setLevel({ud.INFO: logging.INFO, ud.WARN: logging.WARNING, ud.ERROR: logging.ERROR, ud.ALL: logging.DEBUG, ud.PROCESS: logging.INFO}.get(options.debug, logging.DEBUG))
+        logger.setLevel({ud.INFO: logging.INFO, ud.WARN: logging.WARNING, ud.ERROR: logging.ERROR, ud.ALL: logging.DEBUG, ud.PROCESS: logging.INFO}.get(ucr.get_int('umc/module/tornado-debug/level', 0), logging.ERROR))
         logger.addHandler(channel)
 
     try:
