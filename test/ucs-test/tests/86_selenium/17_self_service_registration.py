@@ -1,4 +1,4 @@
-#!/usr/share/ucs-test/runner /usr/share/ucs-test/selenium-pytest
+#!/usr/share/ucs-test/runner /usr/share/ucs-test/selenium-pytest -s -l -v --tb=native
 ## desc: test self registration
 ## tags: [apptest]
 ## packages:
