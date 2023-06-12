@@ -141,7 +141,7 @@ class Instance(Base):
     def get_query_limit(self):
         return get_query_limit()
 
-    @simple_response
-    def add_comment(self, context_id, message):
-        add_comment(message, context_id, self.username)
+    @simple_response(with_request=True)
+    def add_comment(self, request, context_id, message):
+        add_comment(message, context_id, request.username)
         time.sleep(1)  # give backend time to insert comment...

@@ -173,7 +173,7 @@ class Instance(Base, ProgressMixin):
 
     def init(self):
         if not self.user_dn:
-            raise UserWithoutDN(self._username)
+            raise UserWithoutDN(self.username)
 
         MODULE.info('Initializing module as user %r' % (self.user_dn,))
         set_bind_function(self.bind_user_connection)
@@ -507,7 +507,7 @@ class Instance(Base, ProgressMixin):
         result = []
         for ldap_dn in request.options:
             if request.flavor == 'users/self':
-                ldap_dn = self._user_dn
+                ldap_dn = request.user_dn
             obj, module = self.get_obj_module(request.flavor, ldap_dn)
             if module is None:
                 raise ObjectDoesNotExist(ldap_dn)

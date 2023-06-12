@@ -219,7 +219,7 @@ class Instance(umcm.Base, ProgressMixin):
         info = get_action('info')
         return {'compatible': info.is_compatible(version, function=function), 'version': info.get_ucs_version()}
 
-    def _remote_appcenter(self, host, function=None):
+    def _remote_appcenter(self, request, host, function=None):
         if host is None:
             raise ValueError('Cannot connect to None')
         if not host.endswith('.%s' % self.ucr.get('domainname')):
@@ -229,7 +229,7 @@ class Instance(umcm.Base, ProgressMixin):
         if function is not None:
             opts['function'] = function
         try:
-            client = Client(host, self.username, self.password)
+            client = Client(host, request.username, request.password)
             response = client.umc_command('appcenter/version2', opts)
         except (HTTPError) as exc:
             raise umcm.UMC_Error(_('Problems connecting to {0} ({1}). Please update {0}!').format(host, exc.message))
@@ -276,8 +276,8 @@ class Instance(umcm.Base, ProgressMixin):
         settings=DictSanitizer({}, required=True),
         dry_run=BooleanSanitizer(),
     )
-    @simple_response(with_progress=True)
-    def run(self, progress, apps, auto_installed, action, hosts, settings, dry_run):
+    @simple_response(with_progress=True, with_request=True)
+    def run(self, request, progress, apps, auto_installed, action, hosts, settings, dry_run):
         localhost = get_local_fqdn()
         ret = {}
         if dry_run:
@@ -287,7 +287,7 @@ class Instance(umcm.Base, ProgressMixin):
                     ret[host] = self._run_local_dry_run(_apps, action, {}, progress)
                 else:
                     try:
-                        ret[host] = self._run_remote_dry_run(host, _apps, action, auto_installed, {}, progress)
+                        ret[host] = self._run_remote_dry_run(request, host, _apps, action, auto_installed, {}, progress)
                     except umcm.UMC_Error:
                         ret[host] = {'unreachable': [app.id for app in _apps]}
         else:
@@ -301,7 +301,7 @@ class Instance(umcm.Base, ProgressMixin):
                     if host == localhost:
                         host_result[app.id] = self._run_local(app, action, _settings, auto_installed, progress)
                     else:
-                        host_result[app.id] = self._run_remote(host, app, action, auto_installed, _settings, progress)[app.id]
+                        host_result[app.id] = self._run_remote(request, host, app, action, auto_installed, _settings, progress)[app.id]
                     if not host_result[app.id]['success']:
                         break
         return ret
@@ -355,18 +355,18 @@ class Instance(umcm.Base, ProgressMixin):
         finally:
             action.logger.removeHandler(handler)
 
-    def _run_remote_dry_run(self, host, apps, action, auto_installed, settings, progress):
-        return self._run_remote_logic(host, apps, action, auto_installed, settings, progress, dry_run=True)
+    def _run_remote_dry_run(self, request, host, apps, action, auto_installed, settings, progress):
+        return self._run_remote_logic(request, host, apps, action, auto_installed, settings, progress, dry_run=True)
 
-    def _run_remote(self, host, app, action, auto_installed, settings, progress):
-        return self._run_remote_logic(host, [app], action, auto_installed, settings, progress, dry_run=False)
+    def _run_remote(self, request, host, app, action, auto_installed, settings, progress):
+        return self._run_remote_logic(request, host, [app], action, auto_installed, settings, progress, dry_run=False)
 
-    def _run_remote_logic(self, host, apps, action, auto_installed, settings, progress, dry_run):
+    def _run_remote_logic(self, request, host, apps, action, auto_installed, settings, progress, dry_run):
         if len(apps) == 1:
             progress.title = _('%s: Connecting to %s') % (apps[0].name, host)
         else:
             progress.title = _('%d Apps: Connecting to %s') % (len(apps), host)
-        client = self._remote_appcenter(host, function='appcenter/run')
+        client = self._remote_appcenter(request, host, function='appcenter/run')
         opts = {'apps': [str(app) for app in apps], 'auto_installed': auto_installed, 'action': action, 'hosts': {host: [app.id for app in apps]}, 'settings': settings, 'dry_run': dry_run}
         progress_id = client.umc_command('appcenter/run', opts).result['id']
         while True:
@@ -450,10 +450,10 @@ class Instance(umcm.Base, ProgressMixin):
 
     @require_apps_update
     @require_password
-    @simple_response(with_progress=True)
-    def sync_ldap(self):
+    @simple_response(with_progress=True, with_request=True)
+    def sync_ldap(self, request):
         register = get_action('register')
-        register.call(username=self.username, password=self.password)
+        register.call(username=request.username, password=request.password)
 
     # used in updater-umc
     @simple_response
@@ -556,7 +556,7 @@ class Instance(umcm.Base, ProgressMixin):
         except LockError:
             raise umcm.UMC_Error(_('Another package operation is in progress'))
 
-    def _install_master_packages_on_hosts(self, app, function):
+    def _install_master_packages_on_hosts(self, request, app, function):
         if function.startswith('upgrade'):
             remote_function = 'update-schema'
         else:
@@ -575,7 +575,7 @@ class Instance(umcm.Base, ProgressMixin):
         for host, host_is_master in hosts:
             package_manager.progress_state.info(_('Installing LDAP packages on %s') % host)
             try:
-                if not self._install_master_packages_on_host(app, remote_function, host):
+                if not self._install_master_packages_on_host(request, app, remote_function, host):
                     error_message = 'Unable to install %r on %s. Check /var/log/univention/management-console-module-appcenter.log on the host and this server. All errata updates have been installed on %s?' % (master_packages, host, host)
                     raise Exception(error_message)
             except Exception as e:
@@ -591,8 +591,8 @@ class Instance(umcm.Base, ProgressMixin):
             finally:
                 package_manager.add_hundred_percent()
 
-    def _install_master_packages_on_host(self, app, function, host):
-        client = Client(host, self.username, self.password)
+    def _install_master_packages_on_host(self, request, app, function, host):
+        client = Client(host, request.username, request.password)
         result = client.umc_command('appcenter/invoke', {'function': function, 'application': app.id, 'force': True, 'dont_remote_install': True}).result
         if result['can_continue']:
             all_errors = self._query_remote_progress(client)

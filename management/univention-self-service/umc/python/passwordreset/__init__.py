@@ -549,15 +549,15 @@ class Instance(Base):
     @sanitize(
         username=StringSanitizer(required=DISALLOW_AUTHENTICATION, minimum=1),
         password=StringSanitizer(required=DISALLOW_AUTHENTICATION, minimum=1))
-    @simple_response
-    def set_user_attributes(self, attributes, username=None, password=None):
+    @simple_response(with_request=True)
+    def set_user_attributes(self, request, attributes, username=None, password=None):
         dn, username = self.authenticate_user(username, password)
-        username = username or self.username
+        username = username or request.username
         if password:
             dn, username = self.auth(username, password)
             lo, po = get_user_connection(binddn=dn, bindpw=password)
         else:
-            lo = self.get_user_ldap_connection(write=True)
+            lo = request.get_user_ldap_connection(write=True)
             po = univention.admin.uldap.position(lo.base)
 
         if self.is_blacklisted(username, 'profiledata'):
