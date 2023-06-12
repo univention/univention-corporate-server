@@ -182,7 +182,7 @@ class Request(Message):
                 self._user_connections.add(lo)
             return lo
         except (ldap.LDAPError, udm_errors.base) as exc:
-            CORE.warn('Failed to open LDAP connection for user %s: %s' % (self._user_dn, exc))
+            CORE.warn('Failed to open LDAP connection for user %s: %s' % (self.user_dn, exc))
 
     def bind_user_connection(self, lo):
         CORE.process('LDAP bind for user %r.' % (self.user_dn,))
