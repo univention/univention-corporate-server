@@ -316,7 +316,7 @@ class Instance(Base, ProgressMixin):
         filename = None
         if isinstance(request.options, (list, tuple)) and request.options:
             # file upload
-            file_upload(lambda s, r: None)(self. request)  # protect against hacking attempts!
+            file_upload(lambda s, r: None)(self, request)  # protect against hacking attempts!
             filename = request.options[0]['tmpfile']
         else:
             sanitize(license=StringSanitizer(required=True))(lambda self, request: None)(self, request)

@@ -1,3 +1,9 @@
+univention-management-console-module-udm (10.0.8-1) unstable; urgency=medium
+
+  * Bug #43633: fix typo
+
+ -- Florian Best <best@univention.de>  Mon, 12 Jun 2023 17:42:51 +0200
+
 univention-management-console-module-udm (10.0.7-1) unstable; urgency=medium
 
   * Bug #43633: drop use of internal UMCP implementation details
