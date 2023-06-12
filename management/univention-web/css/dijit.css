@@ -376,12 +376,6 @@ div.dijitArrowButton {
 .dijitTextBoxDisabled {
 	color: gray;
 }
-.dj_safari .dijitTextBoxDisabled input {
-	color: #B0B0B0; /* because Safari lightens disabled input/textarea no matter what color you specify */
-}
-.dj_safari textarea.dijitTextAreaDisabled {
-	color: #333; /* because Safari lightens disabled input/textarea no matter what color you specify */
-}
 .dj_gecko .dijitTextBoxReadOnly input.dijitInputField, /* disable arrow and validation presentation inputs but allow real input for text selection */
 .dj_gecko .dijitTextBoxDisabled input {
 	-moz-user-input: none; /* prevent focus of disabled textbox buttons */

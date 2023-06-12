@@ -204,6 +204,9 @@ Univention Management Console web interface
 * Form input fields that load values now show a standby animation
   (:uv:bug:`56053`).
 
+* Text within disabled text boxes in the light theme is now displayed with better contrast
+  when viewed in the Safari browser (:uv:bug:`55939`).
+
 .. _changelog-umc-portal:
 
 Univention Portal
