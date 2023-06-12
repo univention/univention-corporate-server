@@ -113,6 +113,9 @@ class CouldNotConnect(Exception):
 
 class ModuleConnection(object):
 
+    def __init__(self):
+        self._client = tornado.httpclient.AsyncHTTPClient()
+
     @tornado.gen.coroutine
     def connect(self, connect_retries=0):
         pass
@@ -164,6 +167,7 @@ class ModuleProcess(ModuleConnection):
     """
 
     def __init__(self, module, debug='0', locale=None, no_daemonize_module_processes=False):
+        super(ModuleProcess, self).__init__()
         self.name = module
         self.socket = '/run/univention-management-console/%u-%lu-%s.socket' % (os.getpid(), int(time.time() * 1000), uuid.uuid4())
         modxmllist = moduleManager[module]
@@ -182,7 +186,6 @@ class ModuleProcess(ModuleConnection):
         self.__process = tornado.process.Subprocess(args, stderr=subprocess.PIPE)
         # self.__process.initialize()  # TODO: do we need SIGCHILD handler?
         self.set_exit_callback(self._died)  # default
-        self._client = tornado.httpclient.AsyncHTTPClient()
 
         self._active_requests = set()
         self._inactivity_timer = None
