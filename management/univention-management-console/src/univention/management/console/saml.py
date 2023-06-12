@@ -428,6 +428,8 @@ class SamlIframeACS(SamlACS):
     def get(self):
         self.do_single_sign_on(is_passive='true', relay_state='iframe-passive')
 
+    post = get
+
 
 class SamlSingleLogout(SamlACS):
     """SAML Single Logout by IDP"""
@@ -464,6 +466,8 @@ class SamlSingleLogout(SamlACS):
             response = self.sp.parse_logout_request_response(message, binding)
             self.sp.handle_logout_response(response)
         self._logout_success()
+
+    post = get
 
 
 class SamlLogout(SamlACS):
@@ -502,3 +506,5 @@ class SamlLogout(SamlACS):
             self.http_response(binding, http_args)
             return
         self._logout_success()
+
+    post = get
