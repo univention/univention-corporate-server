@@ -35,7 +35,7 @@
 
 #DEBHELPER#
 
-if [ "$1" = "upgrade" ] && dpkg --compare-versions "$2" lt-nl 12.0.18-1; then
+if [ "$1" = "upgrade" ] && dpkg --compare-versions "$2" lt-nl 12.0.21-2; then
 	systemctl stop univention-management-console-web-server
 fi
 
