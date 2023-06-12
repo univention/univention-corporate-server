@@ -184,6 +184,7 @@ fi
 pgrep -f /usr/sbin/univention-management-console-server | while read pid; do
 	lsof -iTCP:"6670" -sTCP:LISTEN -nP | awk '{ print $2}' | grep -q "^${pid}$" && kill "$pid"
 done
+pkill -f '/usr/bin/python3.*/usr/sbin/univention-management-console-web-server'
 EOF
 
 exit 0
