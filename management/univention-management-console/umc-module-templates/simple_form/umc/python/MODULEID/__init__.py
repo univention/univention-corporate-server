@@ -59,7 +59,7 @@ class Instance(Base):
     def configuration(self, request):
         """Returns a directionary of initial values for the form."""
         self.finished(request.id, {
-            'sender': self.username + '@example.com',
+            'sender': request.username + '@example.com',
             'subject': 'Test mail from PACKAGENAME',
             'recipient': 'test@example.com',
         })
