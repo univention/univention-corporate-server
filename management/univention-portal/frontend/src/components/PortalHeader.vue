@@ -327,4 +327,8 @@ export default defineComponent({
 
 #announcement-container
   width: 100%
+
+#announcement-container:has(.announcement:not(.announcement--sticky)) .announcement--sticky .announcement__closeWrapper
+  visibility: hidden
+  display: block
 </style>

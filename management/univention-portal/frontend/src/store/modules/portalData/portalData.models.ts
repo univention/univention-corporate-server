@@ -120,15 +120,16 @@ export interface PortalCategory {
 export type PortalAnnouncementSeverity = null | 'info' | 'warn' | 'success' | 'danger'
 
 export type PortalAnnouncement = {
-  id: string;
+  name: string;
   dn: string;
-  needsConfirmation: boolean;
+  allowedGroups: string[];
   isSticky: boolean;
+  message: LocalizedString;
+  needsConfirmation: boolean;
   severity: PortalAnnouncementSeverity;
-  title: string;
-  message: string | null;
-  startTime: string | null;
-  endTime: string | null;
+  title: LocalizedString;
+  visibleFrom: string | null;
+  visibleUntil: string | null;
 }
 
 export interface Portal {

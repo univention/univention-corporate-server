@@ -1,38 +1,47 @@
 <template>
   <div
-    v-show="visible"
-    :class="['announcement', `announcement--${severity}`]"
+    v-if="visible"
+    :class="[
+      'announcement',
+      `announcement--${severity}`,
+      {
+        'announcement--sticky': sticky
+      }
+    ]"
     role="alert"
   >
-    <div class="content">
-      <h4 class="announcement-title">
+    <div class="announcement__content">
+      <h4 class="announcement__title">
         {{ $localized(title) }}
       </h4>
       <p
         v-if="message"
-        class="announcement-message"
+        class="announcement__message"
       >
         {{ $localized(message) }}
       </p>
-      <slot />
     </div>
-    <a
-      v-if="!sticky"
-      href="#"
-      class="close-link"
-      @click.prevent="onCloseClick"
-    >
-      X
-    </a>
+    <div class="announcement__closeWrapper">
+      <icon-button
+        icon="x"
+        :aria-label-prop="CLOSE"
+        @click="onCloseClick"
+      />
+    </div>
   </div>
 </template>
 
 <script lang="ts">
 import { LocalizedString, PortalAnnouncementSeverity } from '@/store/modules/portalData/portalData.models';
 import { defineComponent, PropType } from 'vue';
+import IconButton from '@/components/globals/IconButton.vue';
+import _ from '@/jsHelper/translate';
 
 export default defineComponent({
   name: 'Announcement',
+  components: {
+    IconButton,
+  },
   props: {
     name: {
       type: String,
@@ -60,11 +69,12 @@ export default defineComponent({
       visible: this.getAnnouncementVisibility(),
     };
   },
-  methods: {
-    setAnnouncementVisibility(visibility: boolean): void {
-      this.visible = false;
-      localStorage.setItem(`${this.name}_visible`, JSON.stringify(visibility));
+  computed: {
+    CLOSE(): string {
+      return _('Close');
     },
+  },
+  methods: {
     getAnnouncementVisibility(): boolean {
       const visibility = localStorage.getItem(`${this.name}_visible`);
       if (visibility) {
@@ -73,47 +83,17 @@ export default defineComponent({
       return true;
     },
     onCloseClick() {
-      this.setAnnouncementVisibility(false);
+      this.visible = false;
+      localStorage.setItem(`${this.name}_visible`, JSON.stringify(false));
     },
   },
 });
-
 </script>
 
-<style lang="stylus" scoped>
+<style lang="stylus">
 .announcement
-  display: grid
-  grid-template-columns: 1fr auto
-  gap: 2rem
-  justify-content: center
+  display: flex
   background-color: var(--bgc-content-container)
-  color: white
-  min-height: 2rem
-
-  .content
-    text-align: center
-
-  .announcement-title
-    margin-right: .5rem
-
-  .close-link
-    padding: .4rem
-    font-size: 1.2rem
-    color: #fff
-    text-decoration: none
-
-  .close-link
-    padding: .4rem
-    font-size: 1.2rem
-    color: #fff
-    text-decoration: none
-
-  .announcement-message
-    margin-right: .5rem
-
-  .announcement-close
-    margin-left: .5rem
-
   &--info
     background-color: var(--bgc-announcements-info)
 
@@ -126,4 +106,17 @@ export default defineComponent({
   &--warn
     background-color: var(--bgc-announcements-warn)
 
+.announcement__content
+  text-align: center
+  flex: 1 1 auto
+
+.announcement__title,
+.announcement__message
+  margin: calc(2 * var(--layout-spacing-unit)) var(--layout-spacing-unit)
+
+.announcement__closeWrapper
+  padding: var(--layout-spacing-unit)
+
+.announcement--sticky .announcement__closeWrapper
+  display: none
 </style>
