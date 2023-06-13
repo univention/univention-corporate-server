@@ -36,6 +36,7 @@
 
 """This module provides a class for an UMC module server"""
 
+import asyncio
 import base64
 import json
 import os
@@ -50,6 +51,7 @@ import six
 import tornado.httputil
 from tornado.httpserver import HTTPServer
 from tornado.netutil import bind_unix_socket
+from tornado.platform.asyncio import AnyThreadEventLoopPolicy
 from tornado.web import Application, HTTPError, RequestHandler
 
 from univention.lib.i18n import Translation
@@ -139,6 +141,7 @@ class ModuleServer(object):
         import notifier.nf_tornado
         notifier.nf_tornado.replace_threads()
 
+        # TODO: remove in UCS 5.1:
         # we don't need to start a second loop if we use the tornado main loop
         self.nf_thread = None
         self.running = True
@@ -148,6 +151,11 @@ class ModuleServer(object):
                     notifier.step()
             self.nf_thread = threading.Thread(target=loop, name='notifier')
             self.nf_thread.start()
+
+        # TODO: remove in UCS 5.1:
+        # allow other threads which are not created by asyncio to start the asyncio loop
+        # this is important for UMC modules which call finish() in the thread instead of the main thread!
+        asyncio.set_event_loop_policy(AnyThreadEventLoopPolicy())
 
         server = HTTPServer(application)
         server.add_socket(bind_unix_socket(self.__socket))
@@ -285,6 +293,7 @@ class Handler(RequestHandler):
     def initialize(self, server, handler):
         self.server = server
         self.handler = handler
+        self.ioloop = tornado.ioloop.IOLoop.current()
 
     @tornado.web.asynchronous
     def get(self, path):
@@ -384,7 +393,18 @@ class Handler(RequestHandler):
         try:
             self.finish(body)
         except RuntimeError as exc:  # not called from the main thread
-            MODULE.error('FATAL ERROR!!!: %s' % (exc,))
+            # TODO: remove in UCS 5.1:
+            MODULE.error('FATAL ERROR: called finish() from thread. should be done in main thread! %r' % (exc,))
+
+            def _reply():
+                try:
+                    self.finish(body)
+                except Exception:
+                    MODULE.error('FATAL ERROR in reply(): %s' % (traceback.format_exc(),))
+            try:
+                self.ioloop.run_in_executor(None, _reply)
+            except Exception:
+                MODULE.error('FATAL ERROR during replying: %s' % (traceback.format_exc(),))
         except Exception:
             MODULE.error('FATAL ERROR!!!: %s' % (traceback.format_exc(),))
 
