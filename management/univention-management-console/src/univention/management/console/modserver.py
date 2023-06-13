@@ -36,7 +36,6 @@
 
 """This module provides a class for an UMC module server"""
 
-import asyncio
 import base64
 import json
 import os
@@ -51,7 +50,6 @@ import six
 import tornado.httputil
 from tornado.httpserver import HTTPServer
 from tornado.netutil import bind_unix_socket
-from tornado.platform.asyncio import AnyThreadEventLoopPolicy
 from tornado.web import Application, HTTPError, RequestHandler
 
 from univention.lib.i18n import Translation
@@ -152,10 +150,14 @@ class ModuleServer(object):
             self.nf_thread = threading.Thread(target=loop, name='notifier')
             self.nf_thread.start()
 
-        # TODO: remove in UCS 5.1:
-        # allow other threads which are not created by asyncio to start the asyncio loop
-        # this is important for UMC modules which call finish() in the thread instead of the main thread!
-        asyncio.set_event_loop_policy(AnyThreadEventLoopPolicy())
+        if not six.PY2:
+            # TODO: remove in UCS 5.1:
+            # allow other threads which are not created by asyncio to start the asyncio loop
+            # this is important for UMC modules which call finish() in the thread instead of the main thread!
+            import asyncio
+
+            from tornado.platform.asyncio import AnyThreadEventLoopPolicy
+            asyncio.set_event_loop_policy(AnyThreadEventLoopPolicy())
 
         server = HTTPServer(application)
         server.add_socket(bind_unix_socket(self.__socket))

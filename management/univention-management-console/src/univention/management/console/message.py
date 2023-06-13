@@ -39,7 +39,7 @@ UMCP was a simple RPC protocol using two message types (request and
 response message). The API of the Python objects representing the
 messages are based on the class :class:`.Message`.
 """
-from __future__ import print_function
+from __future__ import absolute_import, print_function
 
 import mimetypes
 import sys
