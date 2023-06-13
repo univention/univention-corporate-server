@@ -1,3 +1,10 @@
+univention-self-service (5.0.7-2) unstable; urgency=medium
+
+  * Bug #50167: Use API version 2, as 3 changed the way policy references are
+    handled
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Tue, 13 Jun 2023 17:26:17 +0200
+
 univention-self-service (5.0.7-1) unstable; urgency=medium
 
   * Bug #43633: adjust UMCP set/ HTTP requests

@@ -72,7 +72,7 @@ if [ $JS_LAST_EXECUTED_VERSION -le 0 ]; then
 
 fi
 
-/usr/share/univention-self-service/univention-setup-self-service-portal-links --no-update
+/usr/share/univention-self-service/univention-setup-self-service-portal-links --no-update || die
 
 joinscript_save_current_version
 

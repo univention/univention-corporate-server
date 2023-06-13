@@ -42,7 +42,7 @@ from univention.udm import UDM, NoObject
 from univention.udm.binary_props import Base64BinaryProperty
 
 
-udm = UDM.machine().version(3)
+udm = UDM.machine().version(2)
 
 portals = udm.get('portals/portal')
 categories = udm.get('portals/category')
