@@ -31,6 +31,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
+import argparse
 from multiprocessing import managers
 
 from setproctitle import getproctitle, setproctitle
@@ -41,10 +42,22 @@ proctitle = getproctitle()
 
 class _SharedMemory(managers.SyncManager):
 
+    started = False
     saml_state_cache = {}
     children = {}
 
+    def dict(self):
+        if self.started:
+            return super(_SharedMemory, self).dict()
+        return {}
+
+    def namespace(self):
+        if self.started:
+            return self.Namespace()
+        return argparse.Namespace()
+
     def start(self, *args, **kwargs):
+        self.started = True
         setproctitle(proctitle + '   # multiprocessing manager')
         try:
             super(_SharedMemory, self).start(*args, **kwargs)

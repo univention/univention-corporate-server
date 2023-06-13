@@ -374,7 +374,7 @@ class SessionInfo(Resource):
     def get(self):
         info = {}
         session = self.current_user
-        if not session.authenticated:
+        if not session.user.authenticated:
             raise Unauthorized()
         info['username'] = session.user.username
         info['auth_type'] = session.get_umc_auth_type()
@@ -540,7 +540,7 @@ class Modules(Resource):
     def _get_user_favorites(self):
         if not self.current_user.user.user_dn:  # user not authenticated or no LDAP user
             return set(ucr.get('umc/web/favorites/default', '').split(','))
-        lo = self.current_user.user.get_user_ldap_connection(no_cache=True)
+        lo = self.current_user.get_user_ldap_connection(no_cache=True)
         favorites = self._get_user_preferences(lo).setdefault('favorites', ucr.get('umc/web/favorites/default', '')).strip()
         return set(favorites.split(','))
 
@@ -616,9 +616,9 @@ class Command(Resource):
 
     def forbidden_or_unauthenticated(self, message):
         # make sure that the UMC login dialog is shown if e.g. restarting the UMC-Server during active sessions
-        if self.current_user.authenticated:
+        if self.current_user.user.authenticated:
             return Forbidden(message)
-        return Unauthorized(self._("For using this request a login is required."))
+        return Unauthorized(self._("For using this module a login is required."))
 
     @tornado.gen.coroutine
     def get(self, umcp_command, command):
@@ -792,7 +792,7 @@ class Meta(Resource):
             CORE.error('meta.json is not available: %s' % (exc,))
             meta_data = {}
 
-        if not self.current_user.authenticated:
+        if not self.current_user.user.authenticated:
             self.content_negotiation(meta_data)
             return
 
@@ -935,6 +935,7 @@ class SetPassword(Resource):
     }))
     @tornado.gen.coroutine
     def post(self):
+        assert self.current_user.user.authenticated
         username = self.current_user.user.username
         password = self.request.body_arguments['password']['password']
         new_password = self.request.body_arguments['password']['new_password']
@@ -962,7 +963,7 @@ class UserPreferences(Resource):
 
     def get(self):
         # fallback is an empty dict
-        lo = self.current_user.user.get_user_ldap_connection()
+        lo = self.current_user.get_user_ldap_connection()
         result = {'preferences': self._get_user_preferences(lo)}
         self.content_negotiation(result, False)
 
@@ -992,7 +993,7 @@ class SetUserPreferences(UserPreferences):
         "preferences": DictSanitizer({}, required=True),
     }))
     def post(self):
-        lo = self.current_user.user.get_user_ldap_connection()
+        lo = self.current_user.get_user_ldap_connection()
         # eliminate double entries
         preferences = self._get_user_preferences(lo)
         preferences.update(dict(self.request.body_arguments['user']['preferences']))

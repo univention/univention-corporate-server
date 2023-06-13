@@ -274,15 +274,14 @@ class SamlACS(SAMLResource):
             'password': saml.message,
             'auth_type': 'SAML',
         })
-        if not self.current_user.authenticated:
+        if not self.current_user.user.authenticated:
             CORE.error('SECURITY WARNING: PAM SAML Authentication failed while pysaml2 succeeded!')
             raise UMC_Error(result.message, result.status, result.result)
 
         # as an alternative to PAM we could just set the user as authenticated because pysaml2 already ensured this.
         # but we keep the behavior for now because this is what happened prior to the UMC-Web-Server and UMC-Sever unification
         # PAM also makes acct_mgmt. This is of course also done by the IDP but nevertheless we don't know if this is still required.
-        # self.current_user.authenticated = True
-        # self.current_user.user.set_credentials(saml.username, saml.message, 'SAML')
+        # self.current_user.set_credentials(saml.username, saml.message, 'SAML')
         self.current_user.saml = saml
         self.set_session(sessionid)
 

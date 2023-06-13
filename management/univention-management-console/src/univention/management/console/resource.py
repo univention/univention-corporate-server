@@ -99,7 +99,7 @@ class Resource(RequestHandler):
             self.current_user.reset_timeout()  # FIXME: order correct?
         self.check_saml_session_validity()
         self.bind_session_to_ip()
-        if self.requires_authentication and not self.current_user.authenticated:
+        if self.requires_authentication and not self.current_user.user.authenticated:
             raise Forbidden(self._("For using this request a login is required."))
 
     def check_saml_session_validity(self):
@@ -112,13 +112,14 @@ class Resource(RequestHandler):
     def get_current_user(self):
         session = Session.get_or_create(self.get_session_id())  # FIXME: this creates a Session instance even if the session does not exists
         session._ = lambda *args: self._(*args)  # hack to prevent circular use, when "_" is not yet set but only in prepare()
-        if not session.ip:
-            session.ip = self.get_ip_address()
+        if not session.user.ip:
+            session.user.ip = self.get_ip_address()
         return session
 
     def get_user_locale(self):
-        if self.current_user.user._locale:
-            return tornado.locale.get(self.current_user.user._locale)
+        locale = self.current_user.user._locale
+        if locale:
+            return tornado.locale.get(locale)
 
     def get_session_id(self):
         """get the current session ID from cookie (or basic auth hash)."""
@@ -127,7 +128,7 @@ class Resource(RequestHandler):
         return self.get_cookie('UMCSessionId') or self.sessionidhash()
 
     def create_sessionid(self, random=True):
-        if self.current_user.authenticated:
+        if self.current_user.user.authenticated:
             # if the user is already authenticated at the UMC-Server
             # we must not change the session ID cookie as this might cause
             # race conditions in the frontend during login, especially when logged in via SAML
@@ -198,14 +199,15 @@ class Resource(RequestHandler):
 
         allowed_networks = [ipaddress.ip_network(network) for network in ('127.0.0.1,::1,' + ucr.get('umc/http/allowed-session-overtake/ranges', '')).split(',') if network]
 
+        current_ip = self.current_user.user.ip
         # make sure a lost connection to the UMC-Server does not bind the session to ::1
-        if ip != self.current_user.ip and any(ipaddress.ip_address(self.current_user.ip) in network for network in allowed_networks):
-            CORE.warn('Switching session IP from=%r to=%r' % (self.current_user.ip, ip))
-            self.current_user.ip = ip
+        if ip != current_ip and any(ipaddress.ip_address(current_ip) in network for network in allowed_networks):
+            CORE.warn('Switching session IP from=%r to=%r' % (current_ip, ip))
+            self.current_user.ip = current_ip = ip
 
         # bind session to IP (allow requests from localhost)
-        if ip != self.current_user.ip and not any(ipaddress.ip_address(ip) in network for network in allowed_networks):
-            CORE.warn('The sessionid (ip=%s) is not valid for this IP address (%s)' % (ip, self.current_user.ip))
+        if ip != current_ip and not any(ipaddress.ip_address(ip) in network for network in allowed_networks):
+            CORE.warn('The sessionid (ip=%s) is not valid for this IP address (%s)' % (ip, current_ip))
             # very important! We must expire the session cookie, with the same path, otherwise one ends up in a infinite redirection loop after changing the IP address (e.g. because switching from VPN to regular network)
             for name in self.request.cookies:
                 if name.startswith('UMCSessionId'):
@@ -246,7 +248,7 @@ class Resource(RequestHandler):
         sessionid = self.sessionidhash()
         session = self.current_user
         result = yield session.authenticate({'locale': self.locale.code, 'username': username, 'password': password})
-        if not session.authenticated:
+        if not session.user.authenticated:
             raise UMC_Error(result.message, result.status, result.result)
 
         ud.debug(ud.MAIN, 99, 'auth: creating session with sessionid=%r' % (sessionid,))

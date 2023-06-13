@@ -65,64 +65,27 @@ _session_timeout = ucr.get_int('umc/http/session/timeout', 300)
 class User(object):
     """Information about the authenticated user"""
 
-    __slots__ = ('session', 'username', 'password', 'user_dn', 'auth_type', '_locale')
+    __slots__ = ('ip', 'authenticated', 'username', 'password', 'user_dn', 'auth_type', 'session_end_time', '_locale')
 
-    def __init__(self, session):
-        self.session = session
+    def __init__(self):
+        self.ip = None
+        self.authenticated = False
+        self.username = None
         self.username = None
         self.password = None
         self.auth_type = None
         self.user_dn = None
+        self.session_end_time = None
         self._locale = None  # don't use!
 
     def __repr__(self):
-        return '<User(%s, %s, %s)>' % (self.username, self.session.session_id, self.session.saml is not None)
-
-    def set_credentials(self, username, password, auth_type):
-        self.username = username
-        self.auth_type = auth_type
-        if self.auth_type is None:
-            # important! there might be a password already. in case of SAML we must not set/overwrite the password.
-            self.password = password
-        self._search_user_dn()
-
-        CORE.info('Reloading resources: UCR, modules, categories')
-        ucr.load()
-        moduleManager.load()
-        categoryManager.load()
-
-        self.session.acls._reload_acls_and_permitted_commands()
-
-    def _search_user_dn(self):
-        lo = get_machine_connection(write=False)[0]
-        if lo and self.username:
-            # get the LDAP DN of the authorized user
-            try:
-                ldap_dn = lo.searchDn(filter_format('(&(uid=%s)(objectClass=person))', (self.username,)))
-            except (ldap.LDAPError, udm_errors.base):
-                reset_ldap_connection_cache(lo)
-                ldap_dn = None
-                CORE.error('Could not get uid for %r: %s' % (self.username, traceback.format_exc()))
-            if ldap_dn:
-                self.user_dn = ldap_dn[0]
-                CORE.info('The LDAP DN for user %s is %s' % (self.username, self.user_dn))
-
-        if not self.user_dn and self.username not in ('root', '__systemsetup__', None):
-            CORE.error('The LDAP DN for user %s could not be found (lo=%r)' % (self.username, lo))
-
-    def get_user_ldap_connection(self, **kwargs):
-        base = Request('')
-        base.auth_type = self.session.get_umc_auth_type()
-        base.username = self.username
-        base.user_dn = self.user_dn
-        base.password = self.session.get_umc_password()
-        return base.get_user_ldap_connection(**kwargs)
+        return '<User(authenticated=%r name=%r ip=%r dn=%r auth_type=%r session_end_time=%r password="keep dreaming :-P")>' % (self.authenticated, self.username, self.ip, self.user_dn, self.auth_type, self.session_end_time)
 
 
 class Session(object):
     """A interface to session data"""
 
-    __slots__ = ('session_id', 'ip', 'acls', 'user', 'saml', 'processes', 'authenticated', '_session_end_time', '_timeout_id', '_active_requests', '_')
+    __slots__ = ('session_id', 'acls', 'user', 'saml', 'processes', '_timeout_id', '_active_requests', '_')
     __auth = AuthHandler()
     sessions = {}
 
@@ -150,13 +113,10 @@ class Session(object):
 
     def __init__(self, session_id):
         self.session_id = session_id
-        self.ip = None
-        self.authenticated = False
-        self.user = User(self)
+        self.user = User()
         self.saml = None
         self.acls = IACLs(self)
         self.processes = Processes(self)
-        self._session_end_time = None
         self._timeout_id = None
         self._active_requests = set()
         self._ = None
@@ -164,6 +124,7 @@ class Session(object):
     def renew(self):
         CORE.info('Renewing session')
         self.acls = IACLs(self)
+        self.user.processes.clear()
         self.processes = Processes(self)
 
     @tornado.gen.coroutine
@@ -174,7 +135,7 @@ class Session(object):
         pam.end()
 
         if (
-            self.authenticated
+            self.user.authenticated
             and self.user.username
             and result.credentials.get('username')
             and self.user.username.casefold() != result.credentials['username'].casefold()
@@ -182,9 +143,9 @@ class Session(object):
             # re-authentication with a different username
             self.renew()
 
-        self.authenticated = bool(result)
-        if self.authenticated:
-            self.user.set_credentials(**result.credentials)
+        authenticated = bool(result)
+        if authenticated:
+            self.set_credentials(**result.credentials)
         raise tornado.gen.Return(result)
 
     @tornado.gen.coroutine
@@ -196,7 +157,49 @@ class Session(object):
         new_password = args['new_password']
         yield pool.submit(pam.change_password, username, password, new_password)
         pam.end()
-        self.user.set_credentials(username, new_password, None)
+        self.set_credentials(username, new_password, None)
+
+    def set_credentials(self, username, password, auth_type):
+        self.user.authenticated = True
+        self.user.username = username
+        self.user.auth_type = auth_type
+        if self.user.auth_type is None:
+            # important! there might be a password already. in case of SAML we must not set/overwrite the password.
+            self.user.password = password
+        self._search_user_dn()
+
+        # TODO: send reload signal to all other processes?
+        CORE.info('Reloading resources: UCR, modules, categories')
+        ucr.load()
+        moduleManager.load()
+        categoryManager.load()
+
+        self.acls._reload_acls_and_permitted_commands()
+
+    def _search_user_dn(self):
+        lo = get_machine_connection(write=False)[0]
+        if lo and self.user.username:
+            # get the LDAP DN of the authorized user
+            try:
+                ldap_dn = lo.searchDn(filter_format('(&(uid=%s)(objectClass=person))', (self.user.username,)))
+            except (ldap.LDAPError, udm_errors.base):
+                reset_ldap_connection_cache(lo)
+                ldap_dn = None
+                CORE.error('Could not get uid for %r: %s' % (self.user.username, traceback.format_exc()))
+            if ldap_dn:
+                self.user.user_dn = ldap_dn[0]
+                CORE.info('The LDAP DN for user %s is %s' % (self.user.username, self.user.user_dn))
+
+        if not self.user.user_dn and self.user.username not in ('root', '__systemsetup__', None):
+            CORE.error('The LDAP DN for user %s could not be found (lo=%r)' % (self.user.username, lo))
+
+    def get_user_ldap_connection(self, **kwargs):
+        base = Request('')
+        base.auth_type = self.get_umc_auth_type()
+        base.username = self.user.username
+        base.user_dn = self.user.user_dn
+        base.password = self.get_umc_password()
+        return base.get_user_ldap_connection(**kwargs)
 
     def is_saml_user(self):
         # self.saml indicates that it was originally a
@@ -225,7 +228,7 @@ class Session(object):
     def _session_timeout_timer(self):
         if self._active_requests:
             CORE.info('There are still open requests. Deferring session timeout.')
-            self._session_end_time = monotonic() + 1
+            self.user.session_end_time = monotonic() + 1
             ioloop = tornado.ioloop.IOLoop.current()
             self._timeout_id = ioloop.call_later(1, self._session_timeout_timer)
             return
@@ -237,7 +240,7 @@ class Session(object):
 
     def reset_timeout(self):
         self.disconnect_timer()
-        self._session_end_time = monotonic() + _session_timeout
+        self.user.session_end_time = monotonic() + _session_timeout
         ioloop = tornado.ioloop.IOLoop.current()
         when = int(self.session_end_time - monotonic())
         CORE.debug('reset_timeout(): new session expiration in %s seconds' % (when,))
@@ -255,12 +258,15 @@ class Session(object):
     def session_end_time(self):
         if self.is_saml_user() and self.saml.session_end_time:
             return self.saml.session_end_time
-        return self._session_end_time
+        return self.user.session_end_time
 
     def on_logout(self):
         self.disconnect_timer()
         if self.saml:
             self.saml.on_logout()
+
+    def __repr__(self):
+        return '<Session id=%r %s processes=%r>' % (self.session_id, self.user, self.processes)
 
 
 class IACLs(object):
@@ -292,7 +298,7 @@ class IACLs(object):
         self.get_permitted_commands(moduleManager)
 
     def _get_acls(self):
-        if not self.session.authenticated:
+        if not self.session.user.authenticated:
             # We need to set empty ACL's for unauthenticated requests
             return ACLs()
         else:
@@ -336,6 +342,9 @@ class IACLs(object):
         methods = (cmd.method for cmd in module.commands if cmd.name == command)
         for method in methods:
             return method
+
+    def __repr__(self):
+        return '<ACLs from-ldap=%r>' % (isinstance(self.__acls, LDAP_ACLs),)
 
 
 class Processes(object):
@@ -388,3 +397,6 @@ class Processes(object):
 
     def has_active_module_processes(self):
         return self.__processes
+
+    def __repr__(self):
+        return '<Processes for=%s>' % (', '.join(self.__processes),)

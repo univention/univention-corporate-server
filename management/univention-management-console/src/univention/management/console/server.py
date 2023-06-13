@@ -42,6 +42,7 @@ import sys
 import traceback
 from argparse import ArgumentParser
 
+import atexit
 import notifier.log as nflog
 import tornado
 from concurrent.futures import ThreadPoolExecutor
@@ -61,6 +62,11 @@ from univention.management.console.saml import SamlACS, SamlIframeACS, SamlLogou
 from univention.management.console.session import categoryManager, moduleManager
 from univention.management.console.shared_memory import shared_memory
 
+
+try:
+    from multiprocessing.util import _exit_function
+except ImportError:
+    _exit_function = None
 
 pool = ThreadPoolExecutor(max_workers=ucr.get_int('umc/http/maxthreads', 35))
 
@@ -197,9 +203,17 @@ class Server(object):
         except (ValueError, resource.error) as exc:
             CORE.error('Could not raise NOFILE resource limits: %s' % (exc,))
 
+        # bind sockets
         sockets = bind_sockets(self.options.port, ucr.get('umc/http/interface', '127.0.0.1'), backlog=ucr.get_int('umc/http/requestqueuesize', 100), reuse_port=True)
+
+        # start sub worker processes
         if self.options.processes != 1:
+            # start sharing memory (before fork, before first usage, after import)
             shared_memory.start()
+
+            # stop conflicting exit function of shared_memory in this main process
+            if _exit_function is not None:
+                atexit.unregister(_exit_function)
 
             CORE.process('Starting with %r processes' % (self.options.processes,))
             n.notify("READY=1")

@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-management-console\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2023-06-14 10:16+0200\n"
+"POT-Creation-Date: 2023-06-14 14:56+0200\n"
 "PO-Revision-Date: 2011-10-25 20:29+0200\n"
 "Last-Translator: Univention GmbH <packages@univention.de>\n"
 "Language-Team: Univention GmbH <packages@univention.de>\n"
@@ -22,7 +22,7 @@ msgstr "%d Fehler aufgetreten"
 msgid "%s can only be used as UPLOAD"
 msgstr "%s kann nur als UPLOAD genutzt werden"
 
-#: src/univention/management/console/session.py:400
+#: src/univention/management/console/session.py:401
 #, python-format
 msgid "An unknown operating system error occurred (%s)."
 msgstr "Ein unbekannter Betriebssystemfehler ist aufgetreten (%s)."
@@ -78,11 +78,11 @@ msgid "Choose a password which does not match any of your last %s passwords."
 msgstr ""
 "Wählen Sie ein Passwort, dass nicht den letzten %s Passwörtern entspricht."
 
-#: src/univention/management/console/resources.py:702
+#: src/univention/management/console/resources.py:708
 msgid "Connection to module process failed"
 msgstr "Verbindung zum Modulprozess ist fehlgeschlagen"
 
-#: src/univention/management/console/session.py:394
+#: src/univention/management/console/session.py:395
 #, python-format
 msgid "Could not open the module. %s Please try again later."
 msgstr "Konnte das Modul nicht öffnen. %s Bitte später erneut versuchen."
@@ -118,8 +118,11 @@ msgstr ""
 "Konnte das Modul %(module)s nicht laden: %(error)s\n"
 "%(traceback)s"
 
+#: src/univention/management/console/resources.py:649
+msgid "For using this module a login is required."
+msgstr "Für die Anfrage and dieses Modul ist eine Anmeldung erforderlich."
+
 #: src/univention/management/console/resource.py:103
-#: src/univention/management/console/resources.py:643
 msgid "For using this request a login is required."
 msgstr "Für diese Anfrage ist eine Anmeldung erforderlich."
 
@@ -218,7 +221,7 @@ msgstr "Muss mindestens %(min_elements)d Element(e) haben"
 msgid "No authentication provided to module process."
 msgstr "Keine Authentifizierung für den Modulprozess bereitgestellt."
 
-#: src/univention/management/console/resources.py:666
+#: src/univention/management/console/resources.py:672
 msgid "No module found for this request."
 msgstr "Es wurde kein Modul für diese Anfrage gefunden."
 
@@ -230,7 +233,7 @@ msgstr "Ist kein \"dict\""
 msgid "Not a \"list\""
 msgstr "Ist keine \"list\""
 
-#: src/univention/management/console/resources.py:673
+#: src/univention/management/console/resources.py:679
 msgid "Not allowed to perform this request."
 msgstr "Es ist nicht erlaubt, diese Anfrage durchzuführen."
 
@@ -238,7 +241,7 @@ msgstr "Es ist nicht erlaubt, diese Anfrage durchzuführen."
 msgid "Not found"
 msgstr "Nicht gefunden"
 
-#: src/univention/management/console/resources.py:978
+#: src/univention/management/console/resources.py:984
 msgid "Password successfully changed."
 msgstr "Passwort erfolgreich geändert."
 
@@ -285,7 +288,7 @@ msgstr ""
 msgid "Should stay %s"
 msgstr "Sollte %s bleiben"
 
-#: src/univention/management/console/resources.py:945
+#: src/univention/management/console/resources.py:951
 #: src/univention/management/console/base.py:168
 msgid "Specified locale is not available"
 msgstr "Angegebene Sprache ist nicht verfügbar"
@@ -341,7 +344,7 @@ msgstr ""
 msgid "The entered password does not match the current one."
 msgstr "Das eingegebene Passwort stimmt nicht mit dem aktuellen überein."
 
-#: src/univention/management/console/session.py:399
+#: src/univention/management/console/session.py:400
 msgid "The executable was not found."
 msgstr "Das ausführbare Datei wurde nicht gefunden."
 
@@ -479,8 +482,8 @@ msgstr "Das angeforderte SAML-Binding ist unbekannt: %s"
 msgid "The requested module %r does not exist."
 msgstr "Das angefragte Modul %r existiert nicht."
 
-#: src/univention/management/console/session.py:396
 #: src/univention/management/console/session.py:397
+#: src/univention/management/console/session.py:398
 msgid "There are too many opened files on the server."
 msgstr "Auf dem Server sind zu viele offene Dateien."
 
@@ -492,11 +495,11 @@ msgstr ""
 "Der Service Provider ist fehlkonfiguriert: Keine Identity Provider sind zur "
 "Benutzung eingerichtet."
 
-#: src/univention/management/console/session.py:398
+#: src/univention/management/console/session.py:399
 msgid "There is not enough free space on the server."
 msgstr "Auf dem Server ist nicht genügt freier Speicherplatz."
 
-#: src/univention/management/console/session.py:395
+#: src/univention/management/console/session.py:396
 msgid "There is not enough memory available on the server."
 msgstr "Auf dem Server ist nicht genügend freier Arbeitsspeicher verfügbar."
 
@@ -508,7 +511,7 @@ msgstr "Diese Aktion erfordert die Eingabe Ihres Passwortes."
 msgid "Unauthorized"
 msgstr "Nicht authorisiert"
 
-#: src/univention/management/console/resources.py:678
+#: src/univention/management/console/resources.py:684
 msgid "Unknown request."
 msgstr "Unbekannte Anfrage."
 
@@ -541,7 +544,7 @@ msgid "Value is too short, it has to be at least of length %(minimum)d"
 msgstr ""
 "Wert ist zu kurz, seine Länge muss mindestens %(minimum)d Zeichen betragen"
 
-#: src/univention/management/console/resources.py:626
+#: src/univention/management/console/resources.py:632
 #, python-format
 msgid "filesize is too large, maximum allowed filesize is %d bytes"
 msgstr "Dateigröße ist zu groß, maximal erlaubte Dateigröße ist %d bytes"
