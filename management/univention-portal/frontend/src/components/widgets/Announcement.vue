@@ -5,29 +5,29 @@
       'announcement',
       `announcement--${severity}`,
       {
+        'announcement--withMessage': hasMessage,
         'announcement--sticky': sticky
       }
     ]"
     role="alert"
   >
-    <div class="announcement__content">
-      <h4 class="announcement__title">
-        {{ $localized(title) }}
-      </h4>
-      <p
-        v-if="message"
-        class="announcement__message"
-      >
-        {{ $localized(message) }}
-      </p>
-    </div>
+    <h4 class="announcement__title">
+      {{ $localized(title) }}
+    </h4>
     <div class="announcement__closeWrapper">
       <icon-button
         icon="x"
+        class="announcement__closeButton"
         :aria-label-prop="CLOSE"
         @click="onCloseClick"
       />
     </div>
+    <p
+      v-if="hasMessage"
+      class="announcement__message"
+    >
+      {{ $localized(message) }}
+    </p>
   </div>
 </template>
 
@@ -53,7 +53,7 @@ export default defineComponent({
     },
     message: {
       type: Object as PropType<LocalizedString>,
-      default: '',
+      default: () => ({}),
     },
     severity: {
       type: String as PropType<PortalAnnouncementSeverity>,
@@ -72,6 +72,15 @@ export default defineComponent({
   computed: {
     CLOSE(): string {
       return _('Close');
+    },
+    hasMessage(): boolean {
+      // TODO FIXME
+      // univention.udm.encoders.ListOfListOflTextToDictPropertyEncoder.decode([])
+      // returns `[]` instead of `{}` so this is a workaround for that.
+      if (Array.isArray(this.message)) {
+        return false;
+      }
+      return Object.keys(this.message).length > 0;
     },
   },
   methods: {
@@ -92,8 +101,12 @@ export default defineComponent({
 
 <style lang="stylus">
 .announcement
-  display: flex
+  display: grid
+  grid-template-columns: 1fr auto
+  border-radius: var(--border-radius-container)
   background-color: var(--bgc-content-container)
+  min-height calc(8 * var(--layout-spacing-unit))
+
   &--info
     background-color: var(--bgc-announcements-info)
 
@@ -110,13 +123,28 @@ export default defineComponent({
   text-align: center
   flex: 1 1 auto
 
-.announcement__title,
+.announcement__title
+  margin: 0
+  padding: var(--layout-spacing-unit)
+  display: flex
+  justify-content: center
+  align-items: center
+
 .announcement__message
-  margin: calc(2 * var(--layout-spacing-unit)) var(--layout-spacing-unit)
+  margin: 0
+  padding: var(--layout-spacing-unit)
+  text-align: center
 
 .announcement__closeWrapper
   padding: var(--layout-spacing-unit)
+  display: flex
+  align-items: center
 
 .announcement--sticky .announcement__closeWrapper
   display: none
+
+.announcement.announcement--withMessage
+  .announcement__title,
+  .announcement__closeWrapper
+    border-bottom: 1px solid var(--bgc-content-body)
 </style>
