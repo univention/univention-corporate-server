@@ -1,3 +1,9 @@
+univention-management-console (12.0.24-1) unstable; urgency=medium
+
+  * Bug #43633: allow flavor to be given in file uploads
+
+ -- Florian Best <best@univention.de>  Tue, 13 Jun 2023 08:37:16 +0200
+
 univention-management-console (12.0.23-1) unstable; urgency=medium
 
   * Bug #43633: allow to run self.finished() inside of non main thread

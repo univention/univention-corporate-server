@@ -275,23 +275,23 @@ class Resource(RequestHandler):
                 body = self.request.body.decode('UTF-8', 'replace')
 
             args = self.load_json(body)
-            if isinstance(args.get('flavor'), type(u'')):
-                self.request.headers['X-UMC-Flavor'] = args['flavor']
+            flavor = args.pop('flavor', None)
             self.request.body_arguments = args.get('options', {})
             self.request.body = json.dumps(self.request.body_arguments).encode('ASCII')
         elif self.request.headers.get('Content-Type', '').startswith('multipart/form-data'):  # file upload request
-            pass
+            flavor = self.get_argument('flavor', None)
         elif self.request.path.startswith(('/auth', '/command', '/get')):  # request is not json
             args = {name: self.get_query_arguments(name) for name in self.request.query_arguments}
             if self.request.method == 'POST':
                 args.update({name: self.get_body_arguments(name) for name in self.request.body_arguments})
             args = {name: value[0] if len(value) == 1 else value for name, value in args.items()}
-            if 'flavor' in args:
-                self.request.headers['X-UMC-Flavor'] = args['flavor']
+            flavor = args.pop('flavor', None)
             self.request.body_arguments = args
             if self.request.method not in ('HEAD', 'GET'):
                 self.request.body = json.dumps(self.request.body_arguments).encode('ASCII')
                 self.request.headers['Content-Type'] = 'application/json'
+        if flavor and isinstance(flavor, str):
+            self.request.headers['X-UMC-Flavor'] = flavor
 
     def content_negotiation(self, response, wrap=True):
         lang = self.request.content_negotiation_lang

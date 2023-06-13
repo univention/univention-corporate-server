@@ -299,16 +299,10 @@ class IACLs(object):
             return LDAP_ACLs(self.session.user.username, ucr['ldap/base'])
             lo, po = get_machine_connection()
 
-    def is_command_allowed(self, request, command):
-        kwargs = {}
-        content_type = request.headers.get('Content-Type', '')
-        if content_type.startswith('application/json'):
-            kwargs.update({
-                "options": request.body_arguments,
-                "flavor": request.headers.get('X-UMC-Flavor'),
-            })
-
-        return moduleManager.is_command_allowed(self.acls, command, **kwargs)
+    def is_command_allowed(self, command, options, flavor):
+        if not isinstance(options, dict):
+            options = {}
+        return moduleManager.is_command_allowed(self.acls, command, None, options, flavor)
 
     def get_permitted_commands(self, moduleManager):
         if self.__permitted_commands is None:

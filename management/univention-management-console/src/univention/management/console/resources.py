@@ -641,7 +641,9 @@ class Command(Resource):
             raise self.forbidden_or_unauthenticated(self._("No module found for this request."))
 
         CORE.info('Checking ACLs for %s (%s)' % (command, module_name))
-        if not acls.is_command_allowed(self.request, command):
+        options = self.request.body_arguments
+        flavor = self.request.headers.get('X-UMC-Flavor')
+        if not acls.is_command_allowed(command, options, flavor):
             CORE.warn('Command %s is not allowed' % (command))
             raise self.forbidden_or_unauthenticated(self._("Not allowed to perform this request."))
 
