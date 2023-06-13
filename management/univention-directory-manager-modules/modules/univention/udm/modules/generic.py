@@ -38,6 +38,7 @@ Will work for all kinds of UDM modules.
 from __future__ import absolute_import, unicode_literals
 
 import copy
+import functools
 import inspect
 import sys
 
@@ -338,7 +339,10 @@ class GenericObject(BaseObject):
         :return: None
         """
         self._orig_udm_object.options = self.options
-        self._orig_udm_object.policies = self.policies
+        if self._udm_module.meta.used_api_version >= 3:
+            self._orig_udm_object.policies = functools.reduce(lambda x, y: x + y, self.policies.values())
+        else:
+            self._orig_udm_object.policies = self.policies
         self._orig_udm_object.position.setDn(self.position)
         keys = list(self._orig_udm_object.keys())
         if 'ip' in keys and 'network' in keys:

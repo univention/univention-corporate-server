@@ -1,3 +1,9 @@
+univention-directory-manager-modules (15.0.23-1) unstable; urgency=medium
+
+  * Bug #56146: fix saving policies in Simple UDM API version >= 3
+
+ -- Florian Best <best@univention.de>  Tue, 13 Jun 2023 18:13:25 +0200
+
 univention-directory-manager-modules (15.0.22-1) unstable; urgency=medium
 
   * Bug #55409: rename old portal modules, which are not in use anymore,
