@@ -88,7 +88,7 @@ class File(Lazy, metaclass=ABCMeta):
         return self._path
 
     @Lazy.lazy
-    def size(self):
+    def file_size(self):
         # type: () -> int
         return os.stat(self._path).st_size
 

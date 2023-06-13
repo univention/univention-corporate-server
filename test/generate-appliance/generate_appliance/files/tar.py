@@ -39,7 +39,7 @@ class Tar(Archive):
                     info.size = len(source_file)
                     handle = BytesIO(source_file)  # type: IO[bytes]
                 else:
-                    info.size = source_file.size()
+                    info.size = source_file.file_size()
                     handle = open(source_file.path(), 'rb')
 
                 archive.addfile(info, handle)

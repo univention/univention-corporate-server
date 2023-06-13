@@ -33,7 +33,7 @@ def create_import_manifest(image, vmdk, bucket, folder_name, image_name, volume_
     # type: (Raw, Vmdk, boto.s3.bucket.Bucket, uuid.UUID, str, int, int, int) -> bytes
     # <http://docs.aws.amazon.com/AWSEC2/latest/APIReference/manifest.html>
     E = lxml.builder.ElementMaker()
-    part_count = int(math.ceil(float(vmdk.size()) / part_size))
+    part_count = int(math.ceil(float(vmdk.file_size()) / part_size))
     parts = []
     for index, offset in enumerate(x * part_size for x in range(part_count)):
         key = boto.s3.key.Key(bucket, '%s/%s.part%d' % (folder_name, image_name, index))  # TODO: redundant code
@@ -45,7 +45,7 @@ def create_import_manifest(image, vmdk, bucket, folder_name, image_name, volume_
                     # Offset of a part's first byte in the disk image.
                     start='%d' % (offset,),
                     # Offset of a part's last byte in the disk image.
-                    end='%d' % (min(offset + part_size, vmdk.size()) - 1,),
+                    end='%d' % (min(offset + part_size, vmdk.file_size()) - 1,),
                 ),
                 # The S3 object name of the part.
                 E.key(key.name),
@@ -80,7 +80,7 @@ def create_import_manifest(image, vmdk, bucket, folder_name, image_name, volume_
         E(
             'import',
             # Exact size of the file to be imported (bytes on disk).
-            E.size('%d' % (vmdk.size(),)),
+            E.size('%d' % (vmdk.file_size(),)),
             # Rounded size in gigabytes of volume to be imported.
             # - assumed meaning: size of the volume in GiB, because EC2 EBS volumes are provisioned in GiB
             E('volume-size', '%d' % (volume_size,)),
@@ -120,7 +120,7 @@ class EC2_EBS(Target):
         part_size = 10 * 1000 * 1000  # 10 MB
         url_lifetime = 24 * 60 * 60  # 1 day
 
-        volume_size = int(math.ceil(float(image.size()) / 1024 / 1024 / 1024))  # GiB
+        volume_size = int(math.ceil(float(image.file_size()) / 1024 / 1024 / 1024))  # GiB
         folder_name = uuid.uuid4()
         s3 = boto.s3.connect_to_region(boto.connect_s3().get_bucket(options.bucket).get_location())  # type: ignore[no-untyped-call]
         ec2 = boto.ec2.connect_to_region(options.region)  # type: ignore[no-untyped-call]
@@ -136,7 +136,7 @@ class EC2_EBS(Target):
         keys_to_delete.append(manifest_key)
         log('  OK')
 
-        part_count = int(math.ceil(float(vmdk.size()) / part_size))
+        part_count = int(math.ceil(float(vmdk.file_size()) / part_size))
         for index, part in enumerate(chunks(vmdk, part_size)):
             log('Uploading part %d/%d…' % (index, part_count))
             key = boto.s3.key.Key(bucket, '%s/%s.part%d' % (folder_name, image_name, index))  # TODO: redundant code
@@ -152,7 +152,7 @@ class EC2_EBS(Target):
             volume_size,
             zone,
             description=machine_name,
-            image_size=vmdk.size(),
+            image_size=vmdk.file_size(),
             manifest_url=manifest_url,
         )
         # wait for volume

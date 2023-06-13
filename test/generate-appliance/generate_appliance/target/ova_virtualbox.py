@@ -221,7 +221,7 @@ class OVA_Virtualbox(Target):
         image_uuid = uuid.uuid4()
         descriptor = create_ovf_descriptor_virtualbox(
             machine_uuid,
-            image_name, image.size(), image_uuid,
+            image_name, image.file_size(), image_uuid,
             options,
         )
         vmdk = Vmdk(image, IMAGE_DESCRIPTOR % (image_uuid,), streamOptimized=True)

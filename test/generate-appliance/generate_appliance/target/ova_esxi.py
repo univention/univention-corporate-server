@@ -382,7 +382,7 @@ class OVA_ESXi(Target):
 
         vmdk = Vmdk(image, IMAGE_DESCRIPTOR, streamOptimized=True)
         descriptor = create_ovf_descriptor_esxi(
-            image_name, image.size(), vmdk.size(),
+            image_name, image.file_size(), vmdk.file_size(),
             image.used_size(),
             options,
         )
