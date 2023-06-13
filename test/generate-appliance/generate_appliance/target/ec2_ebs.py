@@ -7,6 +7,7 @@
 import datetime
 import sys
 from logging import getLogger
+from math import ceil
 from time import sleep
 from typing import TYPE_CHECKING
 
@@ -53,7 +54,7 @@ class EC2_EBS(Target):
         ec2 = boto3.client("ec2", region_name=self.options.region)
         import_task_id = self.import_snapshot(ec2, vmdk_get)
         snapshot_id = self.wait_for_snapshot(ec2, import_task_id)
-        ami = self.register_image(ec2, snapshot_id, size=max(10, vmdk.file_size() // 1_000_000_000))  # FIXME
+        ami = self.register_image(ec2, snapshot_id, size=ceil(vmdk.volume_size() / 1e9))
         print('Generated "%s" appliance as\n  %s' % (self, ami))
 
         if self.tag:

@@ -7,20 +7,23 @@
 from pathlib import Path
 from typing import IO, Any, Tuple
 
-from . import File
+from . import BaseImage
 
 
-class Raw(File):
+class Raw(BaseImage):
     """represents a "RAW" disk image"""
 
     def __init__(self, inputfile: IO[bytes]) -> None:
-        File.__init__(self)
+        BaseImage.__init__(self)
         self._inputfile = inputfile
         self._path = Path(inputfile.name)
 
-    @File.hashed
+    @BaseImage.hashed
     def hash(self) -> Tuple[Any, ...]:
         return (Raw, self._inputfile)
 
     def _create(self, path: Path) -> None:
         pass
+
+    def volume_size(self) -> int:
+        return self.file_size()

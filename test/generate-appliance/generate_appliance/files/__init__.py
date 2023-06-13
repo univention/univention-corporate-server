@@ -85,3 +85,9 @@ class File(Lazy, metaclass=ABCMeta):
     @Lazy.lazy
     def used_size(self) -> int:
         return self.path().stat().st_blocks * 512
+
+
+class BaseImage(File, metaclass=ABCMeta):
+
+    def volume_size(self) -> int:
+        raise NotImplementedError()
