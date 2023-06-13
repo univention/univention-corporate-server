@@ -43,6 +43,7 @@ from argparse import ArgumentParser
 
 import notifier
 import notifier.log as nflog
+import six
 
 # don't import univention.management.console.{modules,protocol} here as the locale is not yet set!
 import univention.debug as ud
@@ -75,12 +76,14 @@ if __name__ == '__main__':
     os.umask(0o077)
     os.chdir("/")
     if not options.foreground:
-        os.closerange(3, max(int(fd) for fd in os.listdir("/proc/self/fd")))  # FIXME: when closing 0-2 some subprocesses e.g. univention-app info cannot be called anymore (e.g. in UCS@school installer)
+        os.closerange(0, max(int(fd) for fd in os.listdir("/proc/self/fd")))
         for fd in range(3):
             null = os.open(os.path.devnull, os.O_WRONLY if fd else os.O_RDONLY)
             if fd != null:
                 os.dup2(null, fd)
                 os.close(null)
+            if not six.PY2:
+                os.set_inheritable(fd, True)
 
     # to activate notifier logging
     # nflog.set_level(nflog.DEBUG)
