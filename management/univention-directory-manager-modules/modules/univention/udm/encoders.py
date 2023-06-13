@@ -158,10 +158,9 @@ class ListOfListOflTextToDictPropertyEncoder(BaseEncoder):
 
     @staticmethod
     def decode(value=None):
-        if value:
-            return dict(value)
-        else:
+        if value is None:
             return value
+        return dict(value)
 
     @staticmethod
     def encode(value=None):
