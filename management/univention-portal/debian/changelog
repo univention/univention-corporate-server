@@ -1,3 +1,9 @@
+univention-portal (4.0.13-2) unstable; urgency=medium
+
+  * Bug #55175: No announcements for the virtual UMC portal
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Tue, 13 Jun 2023 14:10:38 +0200
+
 univention-portal (4.0.13-1) unstable; urgency=medium
 
   * Bug #55175: fix writing icons

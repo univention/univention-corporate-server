@@ -446,6 +446,9 @@ class UMCPortal(Portal):
             "content": content,
         }
 
+    def get_announcements(self, content):
+        return []
+
     def refresh(self, reason=None):
         pass
 
