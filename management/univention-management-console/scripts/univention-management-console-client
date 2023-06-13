@@ -45,7 +45,7 @@ from argparse import ArgumentParser, FileType, Namespace  # noqa: F401
 from datetime import datetime
 from getpass import getpass
 
-from univention.lib.umc import Client, ConnectionError, HTTPError
+from univention.lib.umc import Client, ConnectionError, HTTPError, Unauthorized
 
 
 try:
@@ -102,7 +102,14 @@ class CLIClient(object):
                 options[key] = value
 
         if arguments.authenticate:
-            client.authenticate(arguments.username, arguments.password)
+            try:
+                client.authenticate(arguments.username, arguments.password)
+            except Unauthorized as exc:
+                print('authentication error:', exc.message, file=sys.stderr)
+                sys.exit(1)
+            except ConnectionError as exc:
+                print("Error: %s" % (exc,), file=sys.stderr)
+                sys.exit(1)
 
         if arguments.timing:
             self.__started = datetime.now()
