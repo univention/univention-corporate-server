@@ -266,6 +266,7 @@ class Resource(RequestHandler):
         return json_
 
     def decode_request_arguments(self):
+        flavor = None
         if self.request.headers.get('Content-Type', '').startswith('application/json'):  # normal (json) request
             # get body and parse json
             body = '{}'
