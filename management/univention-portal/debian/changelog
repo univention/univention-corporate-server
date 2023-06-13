@@ -1,3 +1,9 @@
+univention-portal (4.0.13-1) unstable; urgency=medium
+
+  * Bug #55175: fix writing icons
+
+ -- Florian Best <best@univention.de>  Tue, 13 Jun 2023 12:42:25 +0200
+
 univention-portal (4.0.12-2) unstable; urgency=medium
 
   * Bug #55175: Adjust style for Announcement.vue
@@ -12,14 +18,14 @@ univention-portal (4.0.12-1) unstable; urgency=medium
 
 univention-portal (4.0.11-1) unstable; urgency=medium
 
-  * Bug #55176: fix error during upgrade when portals/announcement UDM module
+  * Bug #55175: fix error during upgrade when portals/announcement UDM module
     is not yet available (on Replicas)
 
  -- Florian Best <best@univention.de>  Sat, 10 Jun 2023 20:21:45 +0200
 
 univention-portal (4.0.10-1) unstable; urgency=medium
 
-  * Bug #55176: implemented announcement udm module
+  * Bug #55175: implemented announcement udm module
 
  -- Torben Köhn <torben.koehn.extern@univention.de>  Mon, 05 Jun 2023 21:51:41 +0200
 

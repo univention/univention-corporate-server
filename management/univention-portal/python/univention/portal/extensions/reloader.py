@@ -38,7 +38,6 @@ import json
 import os.path
 import shutil
 import tempfile
-from binascii import a2b_base64
 from imghdr import what
 from pathlib import Path
 from urllib.parse import quote
@@ -316,10 +315,9 @@ class PortalReloaderUDM(MtimeBasedLazyFileReloader):
             name = name.replace(
                 "/", "-",
             )  # name must not contain / and must be a path which can be accessed via the web!
-            binary_image = a2b_base64(image)
-            extension = what(None, binary_image) or "svg"
+            extension = what(None, image) or "svg"
             path = assets_root / "icons" / dirname / f"{name}.{extension}"
-            path.write_bytes(binary_image)
+            path.write_bytes(image)
         except (OSError, TypeError):
             get_logger("img").exception("Error saving image for %s" % name)
         else:
