@@ -127,7 +127,7 @@ class S4Resync(object):
             for msg in res:
                 guid_blob = msg.get("objectGuid", idx=0)
                 guid = ndr_unpack(misc.GUID, guid_blob)
-                usn = msg.get("uSNChanged", idx=0)
+                usn = msg.get("uSNChanged", idx=0).decode('ASCII')
                 search_result.append((str(msg.dn), guid, usn))
 
             if not guid:

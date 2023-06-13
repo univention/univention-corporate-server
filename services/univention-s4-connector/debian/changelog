@@ -1,3 +1,9 @@
+univention-s4-connector (14.0.14-1) unstable; urgency=medium
+
+  * Bug #56145: Fix bytes decoding for resync_object_from_s4.py --filter
+
+ -- Arvid <requate@univention.de>  Tue, 13 Jun 2023 17:22:44 +0200
+
 univention-s4-connector (14.0.13-6) unstable; urgency=medium
 
   * Bug #55632: Updated the checks for checking if the S4 connector is running
