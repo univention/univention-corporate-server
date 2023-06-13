@@ -173,7 +173,12 @@ class Session(object):
         result = yield pool.submit(self.__auth.authenticate, pam, args)
         pam.end()
 
-        if self.authenticated and self.user.username.casefold() != result.credentials['username'].casefold():
+        if (
+            self.authenticated
+            and self.user.username
+            and result.credentials.get('username')
+            and self.user.username.casefold() != result.credentials['username'].casefold()
+        ):
             # re-authentication with a different username
             self.renew()
 
