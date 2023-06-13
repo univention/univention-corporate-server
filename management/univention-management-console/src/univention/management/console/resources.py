@@ -206,7 +206,7 @@ class ModuleProcess(ModuleConnection):
                 CORE.error(stderr)
             raise CouldNotConnect('process died' + stderr)
         else:
-            if not connect_retries % 50:
+            if connect_retries and not connect_retries % 50:
                 CORE.info('No connection to module process yet')
             connect_retries += 1
             yield tornado.gen.sleep(0.05)
@@ -498,7 +498,7 @@ class Modules(Resource):
             for flavor in module.flavors
         ])
 
-        CORE.info('Modules: %s' % (modules,))
+        CORE.debug('Modules: %s' % (modules,))
         self.content_negotiation({'modules': modules}, wrap=False)
 
     def _flavor_definition(self, module, flavor, favorites):
@@ -584,7 +584,7 @@ class Categories(Resource):
                 'name': self.i18n._(category.name, category.domain).format(**_ucr_dict),
                 'priority': category.priority,
             })
-        CORE.info('Categories: %s' % (categories,))
+        CORE.debug('Categories: %s' % (categories,))
         self.content_negotiation({'categories': categories}, wrap=False)
 
     post = get
