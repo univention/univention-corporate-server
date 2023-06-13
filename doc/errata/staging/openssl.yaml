@@ -1,0 +1,26 @@
+product: ucs
+release: "5.0"
+version: [3]
+scope: ucs_5.0-0-errata5.0-3
+src: openssl
+fix: 1.1.1n-0+deb10u5
+desc: |
+ This update addresses the following issues:
+ 1.1.1n-0+deb10u5 (Sat, 03 Jun 2023 17:39:29 +0200)
+ [ Sylvain Beucler ]
+ * Non-maintainer upload by the LTS Security Team.
+ [ Sebastian Andrzej Siewior ]
+ * CVE-2023-0464 (Excessive Resource Usage Verifying X.509 Policy
+   Constraints).
+ * CVE-2023-0465 (Invalid certificate policies in leaf certificates are
+   silently ignored).
+ * CVE-2023-0466 (Certificate policy check not enabled).
+ * Alternative fix for CVE-2022-4304 (Timing Oracle in RSA Decryption).
+ * CVE-2023-2650 (Possible DoS translating ASN.1 object identifiers).
+bug: [56141]
+cve:
+- CVE-2023-0464
+- CVE-2023-0465
+- CVE-2023-0466
+- CVE-2022-4304
+- CVE-2023-2650
