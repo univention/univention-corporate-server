@@ -1,3 +1,9 @@
+univention-lib (9.0.16-2) unstable; urgency=medium
+
+  * Bug #56137: fix Python 3 compatiblity regression
+
+ -- Julia Bremer <bremer@univention.de>  Tue, 13 Jun 2023 13:59:35 +0200
+
 univention-lib (9.0.16-1) unstable; urgency=medium
 
   * Bug #43633: adjust UMCP set/ HTTP requests

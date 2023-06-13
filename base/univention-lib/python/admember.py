@@ -1005,7 +1005,7 @@ def time_sync(ad_ip, tolerance=180, critical_difference=360):
     env["LC_ALL"] = "C"
     try:
         p1 = subprocess.Popen(["rdate", "-p", "-n", ad_ip], close_fds=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE, env=env)
-        p1.communicate()
+        stdout, _ = p1.communicate()
     except OSError as ex:
         ud.debug(ud.MODULE, ud.ERROR, "rdate -p -n %s: %s" % (ad_ip, ex.args[1]))
         return False
