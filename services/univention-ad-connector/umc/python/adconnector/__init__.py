@@ -340,7 +340,7 @@ class Instance(Base, ProgressMixin):
                 message = _('Switching running state of Active Directory Connector failed.')
                 MODULE.info('Switching running state of Active Directory Connector failed. exitcode=%s' % (result,))
             else:
-                if request.options.get('action') == 'start':
+                if action == 'start':
                     message = _('Active Directory connection service has been started.')
                 else:
                     message = _('Active Directory connection service has been stopped.')
