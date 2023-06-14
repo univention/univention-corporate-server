@@ -60,10 +60,12 @@ Depends:
  python3-ldb,
  python3-magic,
  python3-pil,
+ python3-requests,
  python3-samba,
  python3-six,
  python3-univention,
  python3-univention-config-registry,
+ python3-websockets,
  ${misc:Depends},
  ${python3:Depends},
 Provides:

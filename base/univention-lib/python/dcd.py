@@ -65,34 +65,35 @@ class InvalidValue(DCDError):
     pass
 
 
-class DCDNotInstalled(DCDError):
-    pass
+class DcdMachineDefaults(SimpleNamespace):
 
-
-class DCDDefaults(SimpleNamespace):
-
-    def __init__(self, ucr: ConfigRegistry = None, udm: UDM = None, server: str = None):
+    def __init__(self, ucr: Optional[ConfigRegistry] = None, udm: Optional[UDM] = None, url: Optional[str] = None):
         if not ucr:
             ucr = ConfigRegistry()
             ucr.load()
         self.username = f"{ucr.get('hostname')}$"
         self.password_file = "/etc/machine.secret"
-        self.server = None
-        if server:
-            self.server = server
+        self.url = None
+        if url:
+            self.url = url
+            return
         else:
             if not udm:
                 udm = UDM.machine().version(2)
             for role in ['domaincontroller_master', 'domaincontroller_backup', 'domaincontroller_slave', 'memberserver']:
                 for server in udm.get(f"computers/{role}").search(filter_s="univentionService=Distributed Configuration Database"):
                     if server.props.fqdn:
-                        # TODO check if dcd is running
-                        self.server = server.props.fqdn
-                        break
-        if self.server is None:
-            raise DCDNotInstalled("DCD seems to be not installed in this domain!")
+                        try:
+                            self.url = f"https://{server.props.fqdn}/univention/dcd/"
+                            response = requests.get(self.url)
+                            assert response.status_code == 200
+                            return
+                        except (requests.exceptions.ConnectionError, AssertionError):
+                            pass
+        if self.url is None:
+            raise DCDError("DCD seems to be not installed in this domain!")
         else:
-            self.server = f"https://{self.server}/univention/dcd/"
+            raise DCDError("DCD is not running/reachable on any server!")
 
 
 class DCD:
@@ -245,7 +246,7 @@ class DCD:
                 yield key, self.get(key, request_id=request_id)
 
 
-def dcd_machine_connecion(server: str = "", version: int = 1) -> DCD:
-    opts = DCDDefaults(server=server)
+def dcd_machine_connecion(url: Optional[str] = None, version: Optional[int] = 1) -> DCD:
+    opts = DcdMachineDefaults(url=url)
     password = open(opts.password_file).read()
-    return DCD(opts.username, password, opts.server, version=version)
+    return DCD(opts.username, password, opts.url, version=version)

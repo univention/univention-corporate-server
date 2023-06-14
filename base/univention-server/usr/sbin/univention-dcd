@@ -40,17 +40,17 @@ import json
 import sys
 from argparse import ArgumentParser, FileType, Namespace
 
-from univention.lib.dcd import DCD, DCDDefaults
+from univention.lib.dcd import DCD, DcdMachineDefaults
 
 
 def parse_args(args: list[str] = None) -> Namespace:
 
-    dcd_settings = DCDDefaults()
+    defaults = DcdMachineDefaults()
 
     parser = ArgumentParser(description=__doc__)
-    parser.add_argument("--username", default=dcd_settings.username)
-    parser.add_argument("--password-file", default=dcd_settings.password_file, metavar="FILE", type=FileType("r", encoding="UTF-8"))
-    parser.add_argument("--server", default=dcd_settings.server)
+    parser.add_argument("--username", default=defaults.username)
+    parser.add_argument("--password-file", default=defaults.password_file, metavar="FILE", type=FileType("r", encoding="UTF-8"))
+    parser.add_argument("--url", default=defaults.url)
     parser.add_argument("--json", help="JSON output", default=False, action="store_true")
 
     subparsers = parser.add_subparsers(title="subcommands", description="valid subcommands", required=True, dest="command")
@@ -134,7 +134,7 @@ def set_dcd(opt: Namespace, dcd: DCD) -> None:
 def main() -> int:
     """CLI tool to interact with the Distributed Configuration Database"""
     opt = parse_args()
-    dcd = DCD(opt.username, opt.password, opt.server, version=1)
+    dcd = DCD(opt.username, opt.password, opt.url, version=1)
     return opt.func(opt, dcd) or 0
 
 
