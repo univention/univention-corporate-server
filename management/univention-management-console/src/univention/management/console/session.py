@@ -124,7 +124,6 @@ class Session(object):
     def renew(self):
         CORE.info('Renewing session')
         self.acls = IACLs(self)
-        self.user.processes.clear()
         self.processes = Processes(self)
 
     @tornado.gen.coroutine
@@ -137,6 +136,7 @@ class Session(object):
         if (
             self.user.authenticated
             and self.user.username
+            and result.credentials
             and result.credentials.get('username')
             and self.user.username.casefold() != result.credentials['username'].casefold()
         ):
@@ -146,6 +146,9 @@ class Session(object):
         authenticated = bool(result)
         if authenticated:
             self.set_credentials(**result.credentials)
+        else:
+            self.user = User()
+            self.renew()
         raise tornado.gen.Return(result)
 
     @tornado.gen.coroutine
