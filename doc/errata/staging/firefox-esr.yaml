@@ -6,11 +6,9 @@ src: firefox-esr
 fix: 102.12.0esr-1~deb10u1
 desc: |
  This update addresses the following issues:
- 102.12.0esr-1~deb10u1 (Wed, 07 Jun 2023 09:45:33 +0200)
- * Backport to buster.
- 102.12.0esr-1 (Wed, 07 Jun 2023 05:34:19 +0900)
- * New upstream release.
- * Fixes for mfsa2023-19, also known as: CVE-2023-34414, CVE-2023-34416.
+ * CVE-2023-34414: Click-jacking certificate exceptions through rendering lag.
+ * CVE-2023-34416: Memory safety bugs fixed.
+note: https://www.mozilla.org/en-US/security/advisories/mfsa2023-19/
 bug: [56142]
 cve:
 - CVE-2023-34414
