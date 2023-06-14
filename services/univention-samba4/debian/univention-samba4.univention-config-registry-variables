@@ -53,6 +53,13 @@ Description[en]=The maximum number of files the Samba service can open. If the v
 Type=pint
 Categories=service-samba
 
+[samba/kdc_default_domain_supported_enctypes]
+Description[de]=Die Verschlüsselungsarten, die im Regelfall von Kerberos verwendet werden. Dieser Wert wird für jeden Account genutzt, bei dem das Attribut msDS-SupportedEncryptionTypes nicht oder auf 0 gesetzt ist. Mehr Informationen können in `man smb.conf` gefunden werden.
+Description[en]=The default supported ticket encryption types used by Kerberos. This value will be used for each account where the attribute msDS-SupportedEncryptionTypes is not set or to 0. More information can be found in `man smb.conf`
+Type=str
+Default=aes256-cts-hmac-sha1-96-sk,aes256-cts-hmac-sha1-96,aes128-cts-hmac-sha1-96,arcfour-hmac-md5
+Categories=service-samba
+
 [samba/netbios/aliases]
 Description[de]=Mit dieser Variable können zusätzliche Alias-Namen für einen Samba-Server konfiguriert werden, unter denen dieser im NETBIOS-Namensdienst erscheint. Mehrere Werte müssen durch Leerzeichen getrennt werden.
 Description[en]=This variable allows the configuration of additional alias names for a Samba server in the NetBIOS name service. Multiple values need to be separated by blanks.
