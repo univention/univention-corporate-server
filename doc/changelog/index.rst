@@ -568,6 +568,16 @@ Samba
 * In domains with larger numbers of users the command :command:`wbinfo -u` did not
   return any results (:uv:bug:`55962`).
 
+* By default allow the KDC to issue services tickets using AES encryption.
+  Prior to UCS 5.0-4, by default Samba only issued service tickets that use the ``RC4`` cipher
+  (aka ``arcfour``) as ticket encryption type. This default applies unless a service principal
+  explicitly has ``msDS-SupportedEncryptionTypes`` set in the SAM database, which is the case
+  for domain controllers, which explicitly also support AES as ticket encryption type
+  for service tickets (e.g. for SMB or DCERPC).
+  With UCS 5.0-4, the Samba configuration now additionally supports AES ticket encryption types
+  for service tickets by default. This is controlled by a new |UCSUCRV|
+  :envvar:`samba/kdc_default_domain_supported_enctypes` (:uv:bug:`56077`).
+
 .. _changelog-win-s4c:
 
 Univention S4 Connector
