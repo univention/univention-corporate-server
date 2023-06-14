@@ -359,8 +359,9 @@ class Nothing(Resource):
 
     requires_authentication = False
 
+    @tornado.gen.coroutine
     def prepare(self, *args, **kwargs):
-        super(Nothing, self).prepare(*args, **kwargs)
+        yield super(Nothing, self).prepare(*args, **kwargs)
         raise NotFound()
 
 
@@ -469,9 +470,10 @@ class Modules(Resource):
 
     requires_authentication = False
 
+    @tornado.gen.coroutine
     def prepare(self):
-        super(Modules, self).prepare()
-        self.i18n = I18N_Manager()  # TODO: move into a session class
+        yield super(Modules, self).prepare()
+        self.i18n = I18N_Manager()
         self.i18n['umc-core'] = I18N()
         self.i18n.set_locale(self.locale.code)
 
@@ -562,9 +564,10 @@ class Categories(Resource):
 
     requires_authentication = False
 
+    @tornado.gen.coroutine
     def prepare(self):
-        super(Categories, self).prepare()
-        self.i18n = I18N_Manager()  # TODO: move into a session class
+        yield super(Categories, self).prepare()
+        self.i18n = I18N_Manager()
         self.i18n['umc-core'] = I18N()
         self.i18n.set_locale(self.locale.code)
 
