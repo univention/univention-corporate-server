@@ -392,23 +392,20 @@ class Handler(RequestHandler):
                 response.body.pop('options', None)
                 response.body.pop('message', None)
             body = json.dumps(response.body).encode('ASCII')
-        try:
-            self.finish(body)
-        except RuntimeError as exc:  # not called from the main thread
-            # TODO: remove in UCS 5.1:
-            MODULE.error('FATAL ERROR: called finish() from thread. should be done in main thread! %r' % (exc,))
 
-            def _reply():
-                try:
-                    self.finish(body)
-                except Exception:
-                    MODULE.error('FATAL ERROR in reply(): %s' % (traceback.format_exc(),))
+        def _reply(body):
             try:
-                self.ioloop.run_in_executor(None, _reply)
+                self.finish(body)
             except Exception:
-                MODULE.error('FATAL ERROR during replying: %s' % (traceback.format_exc(),))
-        except Exception:
-            MODULE.error('FATAL ERROR!!!: %s' % (traceback.format_exc(),))
+                MODULE.error('FATAL ERROR in reply(): %s' % (traceback.format_exc(),))
+
+        ioloop = tornado.ioloop.IOLoop.current()
+        if ioloop is self.ioloop:  # main thread
+            _reply(body)
+        else:
+            # TODO: remove in UCS 5.1:
+            MODULE.error('called finish() from thread. should be done in main thread! Traceback (most recent call last)\n%s' % (''.join(traceback.format_stack()),))
+            self.ioloop.add_callback(_reply, body)
 
     def suffixed_cookie_name(self, cookie_name):
         # TODO: test if the Host header is correctly passed through the UNIX socket
