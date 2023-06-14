@@ -1,3 +1,9 @@
+univention-directory-manager-modules (15.0.24-1) unstable; urgency=medium
+
+  * Bug #56146: fix settting empty policy
+
+ -- Florian Best <best@univention.de>  Wed, 14 Jun 2023 20:06:41 +0200
+
 univention-directory-manager-modules (15.0.23-1) unstable; urgency=medium
 
   * Bug #56146: fix saving policies in Simple UDM API version >= 3

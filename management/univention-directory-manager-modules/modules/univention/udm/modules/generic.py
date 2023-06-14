@@ -340,7 +340,7 @@ class GenericObject(BaseObject):
         """
         self._orig_udm_object.options = self.options
         if self._udm_module.meta.used_api_version >= 3:
-            self._orig_udm_object.policies = functools.reduce(lambda x, y: x + y, self.policies.values())
+            self._orig_udm_object.policies = functools.reduce(lambda x, y: x + y, self.policies.values(), [])
         else:
             self._orig_udm_object.policies = self.policies
         self._orig_udm_object.position.setDn(self.position)
