@@ -3373,7 +3373,6 @@ python3-mysqldb
 python3-nacl
 python3-netifaces
 python3-newt
-python3-notifier
 python3-nut
 python3-oauthlib
 python3-openssl
