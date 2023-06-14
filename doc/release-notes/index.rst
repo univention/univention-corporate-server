@@ -22,7 +22,7 @@ the most important changes:
 * Samba has been updated to version 4.18.3
 
 * The |UCSUMC| server and web-server haven been merged into a single executable.
-  The implementation now uses the framework :program:`Tornado` instead of the
+  The implementation now uses :program:`Tornado` instead of the
   UCS specific Python Notifier implementation.
 
 * All remaining code has been fully migrated to Python 3 and prepared for the
