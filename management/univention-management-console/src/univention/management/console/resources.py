@@ -692,7 +692,7 @@ class Command(Resource):
                 if response.code >= 400:
                     body = json.loads(response.body)
                     exc = UMC_Error(message, response.code, body.get('result'), reason=response.reason)
-                    self.write_error(response.code, (UMC_Error, exc, None), error=body.get('error'))
+                    self.write_error(response.code, exc_info=(UMC_Error, exc, None), error=body.get('error'))
                     return
                 elif message:
                     body = json.loads(response.body)
