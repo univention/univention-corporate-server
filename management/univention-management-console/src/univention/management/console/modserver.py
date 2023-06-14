@@ -48,13 +48,14 @@ import traceback
 
 import six
 import tornado.httputil
+import tornado.locale
 from tornado.httpserver import HTTPServer
 from tornado.netutil import bind_unix_socket
 from tornado.web import Application, HTTPError, RequestHandler
 
 from univention.lib.i18n import Translation
 from univention.management.console.config import get_int, ucr
-from univention.management.console.error import BadRequest
+from univention.management.console.error import BadRequest, Unauthorized
 from univention.management.console.log import MODULE, log_reopen
 from univention.management.console.message import Request, Response
 
@@ -125,6 +126,7 @@ class ModuleServer(object):
         self._load_module()
 
     def __enter__(self):
+        tornado.locale.load_gettext_translations('/usr/share/locale', 'univention-management-console')
         routes = self.__handler.tornado_routes if self.__handler else []
         application = Application(routes + [
             (r'/exit', Exit),
@@ -299,8 +301,13 @@ class Handler(RequestHandler):
 
     @tornado.web.asynchronous
     def get(self, path):
+        try:
+            username, password = self.parse_authorization()
+        except TypeError:  # can only happen when doing manual requests
+            self._ = self.locale.translate
+            raise Unauthorized(self._("No authentication provided to module process."))
+
         flavor = self.request.headers.get('X-UMC-Flavor')
-        username, password = self.parse_authorization()
         user_dn = json.loads(self.request.headers.get('X-User-Dn', 'null'))
         auth_type = self.request.headers.get('X-UMC-AuthType')
         mimetype = re.split('[ ;]', self.request.headers.get('Content-Type', ''))[0]
@@ -433,8 +440,13 @@ class Handler(RequestHandler):
             raise HTTPError(400)
         return username, password
 
-    def write_error(self, status_code, exc_info=None, **kwargs):
+    def write_error(self, status_code, exc_info=(None, None, None), **kwargs):
         MODULE.error('Fatal error: %s' % (''.join(traceback.format_exception(*exc_info)) if exc_info else status_code,))
+        if not hasattr(self.request, 'umcp_message'):
+            if status_code >= 500:
+                kwargs['exc_info'] = exc_info
+            return super(Handler, self).write_error(status_code, **kwargs)
+
         msg = self.request.umcp_message
         exc_info = exc_info or (None, None, None)
         self.server.error_handling(msg, 'GET', *exc_info)

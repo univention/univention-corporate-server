@@ -209,6 +209,8 @@ class Server(object):
                 CORE.warn('Child process died: %s' % (exc,))
                 os.kill(os.getpid(), signal.SIGTERM)
                 raise SystemExit(str(exc))
+            except KeyboardInterrupt:
+                raise SystemExit(0)
             if self._child_number is not None:
                 shared_memory.children[self._child_number] = os.getpid()
 

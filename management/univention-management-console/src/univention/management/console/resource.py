@@ -315,9 +315,9 @@ class Resource(RequestHandler):
         self.set_header('Content-Type', 'application/json')
         return json.dumps(response).encode('ASCII')
 
-    def write_error(self, status_code, exc_info=None, **kwargs):
+    def write_error(self, status_code, **kwargs):
         try:
-            return self._write_error(status_code, exc_info=exc_info, **kwargs)
+            return self._write_error(status_code, exc_info=kwargs.pop('exc_info', None), **kwargs)
         except Exception:
             CORE.error(traceback.format_exc())
             raise
