@@ -43,7 +43,6 @@ import re
 import signal
 import sys
 import tempfile
-import threading
 import traceback
 
 import six
@@ -140,20 +139,6 @@ class ModuleServer(object):
         signal.signal(signal.SIGHUP, self.signal_handler_reload)
         signal.signal(signal.SIGUSR1, self.signal_handler_reload)
 
-        import notifier.nf_tornado
-        notifier.nf_tornado.replace_threads()
-
-        # TODO: remove in UCS 5.1:
-        # we don't need to start a second loop if we use the tornado main loop
-        self.nf_thread = None
-        self.running = True
-        if notifier.loop is not getattr(getattr(notifier, 'nf_tornado', None), 'loop', None):
-            def loop():
-                while self.running:
-                    notifier.step()
-            self.nf_thread = threading.Thread(target=loop, name='notifier')
-            self.nf_thread.start()
-
         if not six.PY2:
             # TODO: remove in UCS 5.1:
             # allow other threads which are not created by asyncio to start the asyncio loop
@@ -176,8 +161,6 @@ class ModuleServer(object):
     def __exit__(self, etype, exc, etraceback):
         self.running = False
         self.ioloop.stop()
-        if self.nf_thread:
-            self.nf_thread.join()
 
     def loop(self):
         self.ioloop = tornado.ioloop.IOLoop.current()

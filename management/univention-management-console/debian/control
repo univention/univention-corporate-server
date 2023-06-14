@@ -88,7 +88,6 @@ Package: python3-univention-management-console
 Architecture: all
 Depends:
  python3-cryptography,
- python3-notifier (>= 0.9.9-1),
  python3-openssl,
  python3-pam,
  python3-polib,
