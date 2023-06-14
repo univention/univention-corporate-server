@@ -384,7 +384,7 @@ class Resource(RequestHandler):
         return content
 
     def default_error_page_json(self, status, message, stacktrace, result=None):
-        """The default error page for UMCP responses"""
+        """The default error page for responses"""
         if status == 401 and message == _http_response_codes.get(status):
             message = ''
         location = self.request.full_url().rsplit('/', 1)[0]
