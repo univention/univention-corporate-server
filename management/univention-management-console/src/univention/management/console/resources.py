@@ -169,7 +169,7 @@ class ModuleProcess(ModuleConnection):
     def __init__(self, module, debug='0', locale=None, no_daemonize_module_processes=False):
         super(ModuleProcess, self).__init__()
         self.name = module
-        self.socket = '/run/univention-management-console/%u-%lu-%s.socket' % (os.getpid(), int(time.time() * 1000), uuid.uuid4())
+        self.socket = '%s.socket' % (('/run/univention-management-console/%u-%s-%lu-%s' % (os.getpid(), module.replace('/', ''), int(time.time() * 1000), uuid.uuid4()))[:85],)
         modxmllist = moduleManager[module]
         python = '/usr/bin/python3' if any(modxml.python_version == 3 for modxml in modxmllist) else '/usr/bin/python2.7'
         args = [python, MODULE_COMMAND, '-m', module, '-s', self.socket, '-d', str(debug)]
