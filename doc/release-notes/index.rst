@@ -26,7 +26,7 @@ the most important changes:
   UCS specific Python Notifier implementation.
 
 * All remaining code has been fully migrated to Python 3 and prepared for the
-  update to UCS 5.2.
+  update to Python 3.11 with UCS 5.2.
 
 * The integration of :program:`Keycloak` has been improved, which is scheduled
   to replace :program:`SimpleSAMLPHP` in UCS 5.2.
