@@ -87,14 +87,13 @@ class Resource(RequestHandler):
     def set_default_headers(self):
         self.set_header('Server', 'UMC-Server/1.0')
 
-    @tornado.gen.coroutine
-    def prepare(self):
+    async def prepare(self):
         super(Resource, self).prepare()
         self._proxy_uri()
         self._ = self.locale.translate
         self.request.content_negotiation_lang = 'json'
         self.decode_request_arguments()
-        yield self.parse_authorization()
+        await self.parse_authorization()
         if not self.ignore_session_timeout_reset:
             self.current_user.reset_timeout()  # FIXME: order correct?
         self.check_saml_session_validity()
@@ -223,8 +222,7 @@ class Resource(RequestHandler):
             self.request.protocol = 'https'
         self.request.uri = '/univention%s' % (self.request.uri,)
 
-    @tornado.gen.coroutine
-    def parse_authorization(self):
+    async def parse_authorization(self):
         credentials = self.request.headers.get('Authorization')
         if not credentials:
             return
@@ -236,10 +234,9 @@ class Resource(RequestHandler):
         except ValueError:
             raise BadRequest('invalid Authorization')
         if scheme.lower() == u'basic':
-            yield self.basic_authorization(credentials)
+            await self.basic_authorization(credentials)
 
-    @tornado.gen.coroutine
-    def basic_authorization(self, credentials):
+    async def basic_authorization(self, credentials):
         try:
             username, password = base64.b64decode(credentials.encode('utf-8')).decode('latin-1').split(u':', 1)
         except ValueError:
@@ -247,7 +244,7 @@ class Resource(RequestHandler):
 
         sessionid = self.sessionidhash()
         session = self.current_user
-        result = yield session.authenticate({'locale': self.locale.code, 'username': username, 'password': password})
+        result = await session.authenticate({'locale': self.locale.code, 'username': username, 'password': password})
         if not session.user.authenticated:
             raise UMC_Error(result.message, result.status, result.result)
 

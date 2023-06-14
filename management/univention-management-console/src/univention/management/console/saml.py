@@ -40,7 +40,6 @@ import traceback
 import zlib
 
 import six
-import tornado
 from saml2 import BINDING_HTTP_ARTIFACT, BINDING_HTTP_POST, BINDING_HTTP_REDIRECT
 from saml2.client import Saml2Client
 from saml2.ident import code as encode_name_id, decode as decode_name_id
@@ -218,9 +217,7 @@ class SamlACS(SAMLResource):
             CORE.warn('Startup of SAML2.0 service provider failed:\n%s' % (traceback.format_exc(),))
         return False
 
-    @tornado.web.asynchronous
-    @tornado.gen.coroutine
-    def get(self):
+    async def get(self):
         binding, message, relay_state = self._get_saml_message()
 
         if message is None:
@@ -230,16 +227,15 @@ class SamlACS(SAMLResource):
         acs = self.attribute_consuming_service
         if relay_state == 'iframe-passive':
             acs = self.attribute_consuming_service_iframe
-        yield acs(binding, message, relay_state)
+        await acs(binding, message, relay_state)
 
     post = get
 
-    @tornado.gen.coroutine
-    def attribute_consuming_service(self, binding, message, relay_state):
+    async def attribute_consuming_service(self, binding, message, relay_state):
         response = self.parse_authn_response(message, binding)
         saml = SAMLUser(response, message)
 
-        yield self.pam_saml_authentication(saml)
+        await self.pam_saml_authentication(saml)
 
         # protect against javascript:alert('XSS'), mailto:foo and other non relative links!
         location = urlparse(relay_state)
@@ -249,26 +245,24 @@ class SamlACS(SAMLResource):
 
         self.redirect(location, status=303)
 
-    @tornado.gen.coroutine
-    def attribute_consuming_service_iframe(self, binding, message, relay_state):
+    async def attribute_consuming_service_iframe(self, binding, message, relay_state):
         self.request.headers['Accept'] = 'application/json'  # enforce JSON response in case of errors
         self.request.headers['X-Iframe-Response'] = 'true'  # enforce textarea wrapping
         response = self.parse_authn_response(message, binding)
         saml = SAMLUser(response, message)
 
-        yield self.pam_saml_authentication(saml)
+        await self.pam_saml_authentication(saml)
 
         self.set_header('Content-Type', 'text/html')
         data = {"status": 200, "result": {"username": saml.username}}
         self.finish(b'<html><body><textarea>%s</textarea></body></html>' % (json.dumps(data).encode('ASCII'),))
 
-    @tornado.gen.coroutine
-    def pam_saml_authentication(self, saml):
+    async def pam_saml_authentication(self, saml):
         # important: must be called before the auth, to preserve session id in case of re-auth and that a user cannot choose his own session ID by providing a cookie
         sessionid = self.create_sessionid()
 
         # TODO: drop in the future to gain performance
-        result = yield self.current_user.authenticate({
+        result = await self.current_user.authenticate({
             'locale': self.locale.code,
             'username': saml.username,
             'password': saml.message,
@@ -413,7 +407,7 @@ class SamlACS(SAMLResource):
             self.set_header(key, value)
 
         if binding in (BINDING_HTTP_ARTIFACT, BINDING_HTTP_REDIRECT):
-            self.set_status(303 if self.request.supports_http_1_1() and self.request.method == 'POST' else 302)
+            self.set_status(303 if self.request.version != "HTTP/1.0" and self.request.method == 'POST' else 302)
             if not body:
                 self.redirect(self._headers['Location'], status=self.get_status())
                 return

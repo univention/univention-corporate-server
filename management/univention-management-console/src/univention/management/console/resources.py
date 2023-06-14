@@ -125,11 +125,9 @@ class ModuleConnection(object):
         self._client.close()
         self._client = tornado.httpclient.AsyncHTTPClient()
 
-    @tornado.gen.coroutine
-    def connect(self, connect_retries=0):
+    async def connect(self, connect_retries=0):
         pass
 
-    @tornado.gen.coroutine
     def request(self, method, uri, headers=None, body=None):
         pass
 
@@ -195,7 +193,7 @@ class ModuleConnection(object):
         #    CORE.warn('Aborted module process request: %s' % (exc,))
         #    raise CouldNotConnect(exc)
 
-        raise tornado.gen.Return(response)
+        return response
 
     def get_uri(self, uri):
         return uri
@@ -237,10 +235,9 @@ class ModuleProcess(ModuleConnection):
     def set_exit_callback(self, callback):
         self.__process.set_exit_callback(callback)
 
-    @tornado.gen.coroutine
-    def connect(self, connect_retries=0):
+    async def connect(self, connect_retries=0):
         if os.path.exists(self.socket) and stat.S_ISSOCK(os.stat(self.socket).st_mode):
-            raise tornado.gen.Return(True)
+            return True
         elif connect_retries > 200:
             raise CouldNotConnect('timeout exceeded')
         elif self.__process and self.__process.proc.poll() is not None:
@@ -253,18 +250,17 @@ class ModuleProcess(ModuleConnection):
             if connect_retries and not connect_retries % 50:
                 CORE.info('No connection to module process yet')
             connect_retries += 1
-            yield tornado.gen.sleep(0.05)
-            yield self.connect(connect_retries)
+            await tornado.gen.sleep(0.05)
+            await self.connect(connect_retries)
 
-    @tornado.gen.coroutine
-    def request(self, method, uri, headers=None, body=None):
+    async def request(self, method, uri, headers=None, body=None):
         # watch the module's activity and kill it after X seconds inactivity
         self.reset_inactivity_timer()
         request_id = uuid.uuid4()
         self._active_requests.add(request_id)
 
         try:
-            response = yield self.do_request(method, uri, headers, body, self.socket)
+            response = await self.do_request(method, uri, headers, body, self.socket)
         finally:
             self._active_requests.remove(request_id)
             self.reset_inactivity_timer()
@@ -283,12 +279,11 @@ class ModuleProcess(ModuleConnection):
         if self.__process:
             tornado.ioloop.IOLoop.current().add_callback(self.stop_process)
 
-    @tornado.gen.coroutine
-    def stop_process(self):
+    async def stop_process(self):
         proc = self.__process.proc
         if proc.poll() is None:
             proc.terminate()
-        yield tornado.gen.sleep(3.0)
+        await tornado.gen.sleep(3.0)
         if proc.poll() is None:
             proc.kill()
         CORE.info('ModuleProcess: child stopped')
@@ -358,13 +353,12 @@ class ModuleProxy(ModuleConnection):
         self.proxy_address = proxy_address
         self.unix_socket = None
 
-    @tornado.gen.coroutine
-    def connect(self, connect_retries=0):
-        raise tornado.gen.Return(not self.unix_socket or os.path.exists(self.unix_socket))
+    async def connect(self, connect_retries=0):
+        return not self.unix_socket or os.path.exists(self.unix_socket)
 
-    @tornado.gen.coroutine
-    def request(self, method, uri, headers=None, body=None):
-        raise tornado.gen.Return(self.do_request(method, uri, headers, body, self.unix_socket))
+    async def request(self, method, uri, headers=None, body=None):
+        response = await self.do_request(method, uri, headers, body, self.unix_socket)
+        return response
 
     def get_uri(self, uri):
         request = urlsplit(uri)
@@ -402,9 +396,8 @@ class Nothing(Resource):
 
     requires_authentication = False
 
-    @tornado.gen.coroutine
-    def prepare(self, *args, **kwargs):
-        yield super(Nothing, self).prepare(*args, **kwargs)
+    async def prepare(self, *args, **kwargs):
+        await super(Nothing, self).prepare(*args, **kwargs)
         raise NotFound()
 
 
@@ -466,7 +459,7 @@ class Auth(Resource):
 
     requires_authentication = False
 
-    def parse_authorization(self):
+    async def parse_authorization(self):
         return  # do not call super method: prevent basic auth
 
     @sanitize(
@@ -475,8 +468,7 @@ class Auth(Resource):
         auth_type=StringSanitizer(allow_none=True),
         new_password=StringSanitizer(required=False, allow_none=True, minimum=1),
     )
-    @tornado.gen.coroutine
-    def post(self):
+    async def post(self):
         try:
             content_length = int(self.request.headers.get("Content-Length", 0))
         except ValueError:
@@ -497,7 +489,7 @@ class Auth(Resource):
         # important: must be called before the auth, to preserve session id in case of re-auth and that a user cannot choose his own session ID by providing a cookie
         sessionid = self.create_sessionid(True)
 
-        result = yield session.authenticate(self.request.body_arguments)
+        result = await session.authenticate(self.request.body_arguments)
 
         self.set_session(sessionid)
         self.set_status(result.status)
@@ -513,9 +505,8 @@ class Modules(Resource):
 
     requires_authentication = False
 
-    @tornado.gen.coroutine
-    def prepare(self):
-        yield super(Modules, self).prepare()
+    async def prepare(self):
+        await super(Modules, self).prepare()
         self.i18n = I18N_Manager()
         self.i18n['umc-core'] = I18N()
         self.i18n.set_locale(self.locale.code)
@@ -607,9 +598,8 @@ class Categories(Resource):
 
     requires_authentication = False
 
-    @tornado.gen.coroutine
-    def prepare(self):
-        yield super(Categories, self).prepare()
+    async def prepare(self):
+        await super(Categories, self).prepare()
         self.i18n = I18N_Manager()
         self.i18n['umc-core'] = I18N()
         self.i18n.set_locale(self.locale.code)
@@ -690,8 +680,7 @@ class Command(Resource):
             except KeyError:
                 pass
 
-    @tornado.gen.coroutine
-    def get(self, umcp_command, command):
+    async def get(self, umcp_command, command):
         """
         Handles a COMMAND request. The request must contain a valid
         and known command that can be accessed by the current user. If
@@ -736,10 +725,10 @@ class Command(Resource):
         CORE.info('Passing request to module %s' % (module_name,))
 
         try:
-            yield process.connect()
+            await process.connect()
             # send first command
             self.future = process.request(self.request.method, self.request.full_url(), body=self.request.body or None, headers=headers)
-            response = yield self.future
+            response = await self.future
         except concurrent.futures.CancelledError:
             raise BadGateway('%s: %s: canceled' % (self._('Connection to module process failed'), module_name))
         #except asyncio.exceptions.CancelledError:
@@ -952,8 +941,7 @@ class Set(Resource):
         use specific pathes ("set/{password,locale,user/preferences}") instead
     """
 
-    @tornado.gen.coroutine
-    def post(self):
+    async def post(self):
         is_univention_lib = self.request.headers.get('User-Agent', '').startswith('UCS/')
         for key in self.request.body_arguments:
             cls = {'password': SetPassword, 'user': SetUserPreferences, 'locale': SetLocale}.get(key)
@@ -963,7 +951,7 @@ class Set(Resource):
                 p = cls(self.application, self.request)
                 p._ = self._
                 p.finish = self.finish
-                yield p.post()
+                await p.post()
                 return
             if key == 'password':
                 self.redirect('/univention/set/password', status=307)
@@ -1005,8 +993,7 @@ class SetPassword(Resource):
         "password": StringSanitizer(required=True),
         "new_password": StringSanitizer(required=True),
     }))
-    @tornado.gen.coroutine
-    def post(self):
+    async def post(self):
         assert self.current_user.user.authenticated
         username = self.current_user.user.username
         password = self.request.body_arguments['password']['password']
@@ -1021,7 +1008,7 @@ class SetPassword(Resource):
 
         CORE.info('Changing password of user %r' % (username,))
         try:
-            yield self.current_user.change_password(args)
+            await self.current_user.change_password(args)
         except PasswordChangeFailed as exc:
             raise UMC_Error(str(exc), 400, {'new_password': '%s' % (exc,)})  # 422
         else:

@@ -382,6 +382,7 @@ class Handler(RequestHandler):
         except _Skip:
             return
 
+        self._auto_finish = False  # if methods start threads and don't await a future of it an empty response is generated because finish() will be called immediately and twice then
         self.handler.execute(method, msg)
         MODULE.debug('Executed handler')
 

@@ -31,6 +31,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
+import asyncio
 import errno
 import functools
 import traceback
@@ -126,11 +127,11 @@ class Session(object):
         self.acls = IACLs(self)
         self.processes = Processes(self)
 
-    @tornado.gen.coroutine
-    def authenticate(self, args):
+    async def authenticate(self, args):
         from .server import pool
         pam = self.__auth.get_handler(args['locale'])
-        result = yield pool.submit(self.__auth.authenticate, pam, args)
+        future = pool.submit(self.__auth.authenticate, pam, args)
+        result = await asyncio.wrap_future(future)
         pam.end()
 
         if (
@@ -149,16 +150,16 @@ class Session(object):
         else:
             self.user = User()
             self.renew()
-        raise tornado.gen.Return(result)
+        return result
 
-    @tornado.gen.coroutine
-    def change_password(self, args):
+    async def change_password(self, args):
         from .server import pool
         pam = self.__auth.get_handler(args['locale'])
         username = args['username']
         password = args['password']
         new_password = args['new_password']
-        yield pool.submit(pam.change_password, username, password, new_password)
+        future = pool.submit(pam.change_password, username, password, new_password)
+        await asyncio.wrap_future(future)
         pam.end()
         self.set_credentials(username, new_password, None)
 

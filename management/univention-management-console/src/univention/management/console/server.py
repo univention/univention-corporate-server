@@ -43,7 +43,6 @@ import traceback
 from argparse import ArgumentParser
 
 import atexit
-import notifier.log as nflog
 import tornado
 from concurrent.futures import ThreadPoolExecutor
 from sdnotify import SystemdNotifier
@@ -239,10 +238,6 @@ class Server(object):
         )
         self.server = server
         server.add_sockets(sockets)
-
-        # no notifier logging
-        for handler in nflog.instance.handlers[:]:
-            nflog.instance.removeHandler(handler)
 
         if self.options.log_file in {'stdout', 'stderr', '/dev/stdout', '/dev/stderr'}:
             channel = logging.StreamHandler(sys.stdout if self.options.log_file in {'stdout', '/dev/stdout'} else sys.stderr)
