@@ -125,7 +125,7 @@ from univention.management.console.error import (
 )
 from univention.management.console.ldap import reset_cache as reset_ldap_connection_cache
 from univention.management.console.log import CORE, MODULE
-from univention.management.console.message import Request, Response
+from univention.management.console.message import Response
 
 
 _MIMETYPE_JSON = 'application/json'
@@ -224,31 +224,6 @@ class Base(Translation):
                 use request.auth_type instead!
         """
         return self._current_request.auth_type
-
-    # workaround for UCS@school exam module:
-    @username.setter
-    def username(self, username):
-        self.__ensure_current_request()
-        self._current_request.username = username
-
-    @password.setter
-    def password(self, password):
-        self.__ensure_current_request()
-        self._current_request.password = password
-
-    @user_dn.setter
-    def user_dn(self, user_dn):
-        self.__ensure_current_request()
-        self._current_request.user_dn = user_dn
-
-    @auth_type.setter
-    def auth_type(self, auth_type):
-        self.__ensure_current_request()
-        self._current_request.auth_type = auth_type
-
-    def __ensure_current_request(self):
-        if self._current_request is None:
-            self._current_request = Request('')
 
     @property
     def tornado_routes(self):
@@ -360,10 +335,8 @@ class Base(Translation):
         """
         Handle UMC exception.
 
-        As requests are processes by python-notifier in a separate thread, any exception only contains the traceback relative to the notifier thread.
+        As requests are processes in a separate thread, any exception only contains the traceback relative to the thread.
         To make them more usable we want to combine them with the calling part to get a complete stack trace.
-        This is complicated by the fact that python-notifier no longer stores the original traceback, as this creates a memory leak.
-        Instead only the rendered traceback is stored.
 
         :param request: The original UMC request.
         :param method: The failed UMC command.

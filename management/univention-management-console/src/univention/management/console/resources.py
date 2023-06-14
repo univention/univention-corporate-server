@@ -202,12 +202,7 @@ class ModuleProcess(_ModuleConnection):
         super(ModuleProcess, self).__init__()
         self.name = module
         self.socket = '%s.socket' % (('/run/univention-management-console/%u-%s-%lu-%s' % (os.getpid(), module.replace('/', ''), int(time.time() * 1000), uuid.uuid4()))[:85],)
-        modxmllist = moduleManager[module]
         args = ['/usr/bin/python3', MODULE_COMMAND, '-m', module, '-s', self.socket, '-d', str(debug)]
-        for modxml in modxmllist:
-            if modxml.notifier:
-                args.extend(['-n', modxml.notifier])
-                break
         if locale:
             args.extend(('-l', '%s' % locale))
         if no_daemonize_module_processes:

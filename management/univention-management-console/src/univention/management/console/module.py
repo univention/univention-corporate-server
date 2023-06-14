@@ -324,10 +324,6 @@ class XML_Definition(ET.ElementTree):
         return self.root.get('translationId', '')
 
     @property
-    def notifier(self):
-        return self.root.get('notifier')
-
-    @property
     def singleton(self):
         return self.root.get('singleton', 'no').lower() in ('yes', 'true', '1')
 
