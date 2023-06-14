@@ -323,8 +323,7 @@ class Handler(RequestHandler):
         if self.handler:
             self.handler._Base__requests.pop(self.request_id, None)
 
-    @tornado.web.asynchronous
-    def get(self, path):
+    async def get(self, path):
         try:
             username, password = self.parse_authorization()
         except TypeError:  # can only happen when doing manual requests
