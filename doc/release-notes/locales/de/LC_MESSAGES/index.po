@@ -6,10 +6,11 @@ msgid ""
 msgstr ""
 "Project-Id-Version: UCS 5.0 Release Notes 5.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-02-06 17:43+0100\n"
-"PO-Revision-Date: 2023-06-07 12:38+0200\n"
+"POT-Creation-Date: 2023-06-14 07:22+0200\n"
+"PO-Revision-Date: 2023-06-14 07:56+0200\n"
 "Last-Translator: Univention GmbH <packages@univention.de>\n"
 "Language-Team: Univention GmbH <packages@univention.de>\n"
+"Language: German\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -43,58 +44,45 @@ msgstr ""
 " Eigenschaften sowie diverse Detailverbesserungen und Fehlerkorrekturen. "
 "Die wichtigsten Änderungen im Überblick:"
 
-#: ../../index.rst:18
-msgid ""
-"The program :program:`univention-support-info` is now included with the "
-"distribution. It can be used to collect useful information from the "
-"system when a support case is opened with Univention GmbH."
-msgstr ""
-"Das Programm :program:`univention-support-info` ist nun Teil der "
-"Distribution. Es kann dafür verwendet werden, um wichtige Informationen "
-"von dem System für einen Support-Fall bei der Univention GmbH zu sammeln."
-
 #: ../../index.rst:22
+msgid "Samba has been updated to version 4.18.3"
+msgstr "Samba ist auf Version 4.18.3 aktualisiert worden."
+
+#: ../../index.rst:24
 msgid ""
-"Several new modules have been added to the UMC module :guilabel:`System "
-"diagnostic` and some existing ones have been improved. For example "
-"several |UCSUCRV|\\ s now have type information, which can be used to "
-"validate their values. Individual modules can also be disabled in case of"
-" false positives."
+"The |UCSUMC| server and web-server haven been merged into a single "
+"executable. The implementation now uses the framework :program:`Tornado` "
+"instead of the UCS specific Python Notifier implementation."
 msgstr ""
-"Einige neue Module wurden zum UMC-Modul :guilabel:`System diagnostic` "
-"hinzugefügt und einige existierende Module wurden verbessert, zum "
-"Beispiel haben viele |UCSUCRV|\\ n Typ-Informationen, die für die "
-"Validierung ihrer Werte verwendet werden. Individuelle Module können im "
-"Falle von Fehlmeldungen auch deaktiviert werden."
+"Die |UCSUMC| Server und Web-Server wurden in ein einzelnes Programm "
+"zusammengeführt. Die Implementierung benutzt nun das Framework "
+":program:`Tornado` anstatt des UCS spezifischen Python Notifiers."
 
-#: ../../index.rst:27
+#: ../../index.rst:28
 msgid ""
-"Group membership is now maintained using the OpenLDAP overlay module "
-"``memberof``, which improves performance in large environments."
+"All remaining code has been fully migratd to Python 3 and prepared for "
+"the update to UCS 5.2."
 msgstr ""
-"Die Zugehörigkeit von Benutzern zu Gruppen wird nun über das OpenLDAP "
-"Overlay Modul ``memberof`` gepflegt, das in größeren Umgebungen eine "
-"bessere Leistung verspricht."
+"Der Programmcode ist vollumfänglich auf Python 3 migriert und auf das "
+"Update auf UCS 5.2 vorbereitet worden."
 
-#: ../../index.rst:30
-msgid "This |UCSUCS| release is based on Debian 10.13 Buster."
-msgstr "Dieses |UCSUCS| Release basiert auf Debian 10.13 *Buster*."
-
-#: ../../index.rst:32
+#: ../../index.rst:31
 msgid ""
-"The Linux kernel has been updated to version 5.10.162 from Debian 11.6 "
-"Bullseye to support newer hardware."
+"The integration of :program:`Keycloak` has been improved, which is "
+"scheduled to replace :program:`SimpleSAMLPHP` in UCS 5.2."
 msgstr ""
-"Der Linux-Kernel wurde auf Version 5.10.162 aus Debian 11.6 ``Bullseye`` "
-"aktualisiert, um neuere Hardware besser zu unterstützen."
+"Die Integration von :program:`Keycloak` wurde verbessert, was "
+":program:`SimpleSAMLPHP` in UCS 5.2 ersetzten soll."
 
-#: ../../index.rst:35
+#: ../../index.rst:34
 msgid ""
-"Various security updates have been integrated into UCS 5.0-4, for example"
-" for ..."
+"Various security updates have been integrated into UCS 5.0-4, for example "
+"for :program:`apache2`, :program:`OpenSSL`, :program:`Linux`, :program:"
+"`ClamAV`, :program:`PostgreSQL` and :program:`MariaDB`."
 msgstr ""
 "Diverse Security Updates wurden in UCS 5.0-4 integriert, bspw. für "
-"..."
+":program:`apache2`, :program:`OpenSSL`, :program:`Linux`, :program:"
+"`ClamAV`, :program:`PostgreSQL` und :program:`MariaDB`."
 
 #: ../../index.rst:42
 msgid "Notes about the update"
@@ -487,12 +475,6 @@ msgstr ""
 #: ../../index.rst:246
 msgid "Changelog"
 msgstr "Changelog"
-
-msgid "Operational LDAP attributes can now be visualized in the :guilabel:`Directory Manager`."
-msgstr "Operative LDAP-Attribute können jetzt im :guilabel:`Directory Manager` angezeigt werden."
-
-msgid "The program :program:`univention-keycloak` was added to support the new App :guilabel:`Keycloak`, which can be installed from the :guilabel:`App Center` to provide :guilabel:`Single Sign On`."
-msgstr "Das Programm :program:`univention-keycloak` wurde hinzugefügt. Es unterstützt die App :guilabel:`Keycloak`, die aus dem :guilabel:`App Center` installiert werden kann und :guilabel:`Single Sign On`-Szenarien ermöglicht."
 
 #: ../../index.rst:248
 msgid ""

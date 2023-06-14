@@ -21,8 +21,19 @@ the most important changes:
 
 * Samba has been updated to version 4.18.3
 
+* The |UCSUMC| server and web-server haven been merged into a single executable.
+  The implementation now uses the framework :program:`Tornado` instead of the
+  UCS specific Python Notifier implementation.
+
+* All remaining code has been fully migrated to Python 3 and prepared for the
+  update to UCS 5.2.
+
+* The integration of :program:`Keycloak` has been improved, which is scheduled
+  to replace :program:`SimpleSAMLPHP` in UCS 5.2.
+
 * Various security updates have been integrated into UCS 5.0-4, for example for
-  ...
+  :program:`apache2`, :program:`OpenSSL`, :program:`Linux`, :program:`ClamAV`,
+  :program:`PostgreSQL` and :program:`MariaDB`.
 
 .. _relnotes-update:
 
