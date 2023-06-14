@@ -6,10 +6,10 @@ src: vim
 fix: 2:8.1.0875-5+deb10u5
 desc: |
  This update addresses the following issues:
- * CVE-2022-4141: invalid memory access in substitute with function
- * CVE-2023-0054: out-of-bounds write in `do_string_sub()` in `eval.c`
+ * CVE-2022-4141: Invalid memory access in substitute with function
+ * CVE-2023-0054: Out-of-bounds write in `do_string_sub()` in `eval.c`
  * CVE-2023-1175: Incorrect calculation of buffer size
- * CVE-2023-2610: integer overflow vulnerability
+ * CVE-2023-2610: Integer overflow vulnerability
 bug: [56143]
 cve:
 - CVE-2022-4141
