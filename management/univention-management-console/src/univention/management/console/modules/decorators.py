@@ -59,11 +59,12 @@ import functools
 import inspect
 import sys
 import time
+import traceback
 import types
-from threading import Thread
+from threading import Lock, Thread
+from typing import Any, Callable, Generic, List, Optional, Tuple, Type, TypeVar, Union  # noqa: F401
 
-import notifier
-import notifier.threads
+import tornado
 
 from univention.lib.i18n import Translation
 from univention.management.console.error import UMC_Error, UnprocessableEntity
@@ -74,6 +75,8 @@ from univention.management.console.modules.sanitizers import (
 
 
 _ = Translation('univention.management.console').translate
+
+_T = TypeVar("_T")
 
 
 def sanitize(*args, **kwargs):
@@ -202,14 +205,160 @@ def sanitize_args(sanitizer, name, args):
         raise UnprocessableEntity(str(exc), result=exc.result())
 
 
+class Callback(object):
+
+    def __init__(self, function, *args, **kwargs):
+        # type: (Callable[..., _T], *object, **object) -> None
+        self._function = function
+        self._args = args
+        self._kwargs = kwargs
+
+    def __call__(self, *args):
+        # type: (*object) -> _T
+        tmp = list(args)
+        if self._args:
+            tmp.extend(self._args)
+        return self._function(*tmp, **self._kwargs)
+
+    def __hash__(self):
+        # type: () -> int
+        return hash(self._function)
+
+
+class SimpleThread:
+    """
+    A simple class to start a thread and getting notified when the
+    thread is finished. Meaning this class helps to handle threads that
+    are meant for doing some calculations and returning the
+    result. Threads that need to communicate with the main thread can
+    not be handled by this class.
+
+    If an exception is raised during the execution of the thread that is
+    based on BaseException it is caught and returned as the result of
+    the thread.
+
+    Arguments:
+    name: a name that might be used to identify the thread. It is not required to be unique.
+    function: the main function of the thread
+    callback: function that is invoked when the thread is dead. This function gets two arguments:
+    thread: this thread object
+    result: return value of the thread function.
+    """
+
+    def __init__(self, name, function, callback):
+        # type: (str, Callable[..., _T], Callable[[SimpleThread, Union[BaseException, None, _T]], None]) -> None
+        self._name = name
+        self._function = function
+        self._callback = callback
+        self._result = None  # type: Union[BaseException, _T, None]
+        self._trace = None  # type: Optional[List[str]]
+        self._exc_info = None  # type: Optional[Tuple[Optional[Type[BaseException]], Optional[BaseException], None]]
+        self._finished = False
+        self._thread = Thread(target=self._run, name=self._name)
+        self._lock = Lock()
+
+    def run(self):
+        # type: () -> None
+        """Starts the thread"""
+        io_loop = tornado.ioloop.IOLoop.current()
+        future = io_loop.run_in_executor(None, self._run)
+        io_loop.add_future(future, lambda f: self.announce())
+
+    def _run(self):
+        # type: () -> None
+        """
+        Encapsulates the given thread function to handle the return
+        value in a thread-safe way and to catch exceptions raised from
+        within it.
+        """
+        try:
+            result = self._function()  # type: Union[BaseException, _T]
+            trace = None  # type: Optional[List[str]]
+            exc_info = None  # type: Optional[Tuple[Optional[Type[BaseException]], Optional[BaseException], None]]
+        except BaseException as exc:
+            try:
+                etype, value, tb = sys.exc_info()
+                trace = traceback.format_tb(tb)
+                exc_info = (etype, value, None)
+            finally:
+                etype = value = tb = None
+            result = exc
+        self.lock()
+        try:
+            self._result = result
+            self._trace = trace
+            self._exc_info = exc_info
+            self._finished = True
+        finally:
+            self.unlock()
+
+    @property
+    def result(self):
+        # type: () -> Union[BaseException, _T, None]
+        """
+        Contains the result of the thread function or the exception
+        that occurred during thread processing
+        """
+        return self._result
+
+    @property
+    def trace(self):
+        # type: () -> Optional[List[str]]
+        """
+        Contains a formatted traceback of the occurred exception during
+        thread processing. If no exception has been raised the value is None
+        """
+        return self._trace
+
+    @property
+    def exc_info(self):
+        # type: () -> Optional[Tuple[Optional[Type[BaseException]], Optional[BaseException], None]]
+        """
+        Contains information about the exception that has occurred
+        during the execution of the thread. The value is the some as
+        returned by sys.exc_info(). If no exception has been raised the
+        value is None
+        """
+        return self._exc_info
+
+    @property
+    def name(self):
+        # type: () -> str
+        return self._name
+
+    @property
+    def finished(self):
+        # type: () -> bool
+        """
+        If the thread is finished the property contains the value
+        True else False.
+        """
+        return self._finished
+
+    def lock(self):
+        # type: () -> None
+        """Locks a thread local lock object"""
+        self._lock.acquire()
+
+    def unlock(self):
+        # type: () -> None
+        """Unlocks a thread local lock object"""
+        self._lock.release()
+
+    def announce(self):
+        # type: () -> None
+        self._callback(self, self._result)
+
+
 def threaded(function=None):
     """
     Execute the given function as background task in a thread.
     The return value is the response result.
     The regular error handling is done if a exception happens inside the thread.
     """
+
     def _response(self, request, *args, **kwargs):
-        thread = notifier.threads.Simple('@threaded', notifier.Callback(function, self, request, *args, **kwargs), notifier.Callback(self.thread_finished_callback, request))
+        thread = SimpleThread('@threaded', Callback(function, self, request, *args, **kwargs), Callback(self.thread_finished_callback, request))
         thread.run()
     copy_function_meta_data(function, _response)
     return _response
@@ -333,7 +482,7 @@ def simple_response(function=None, with_flavor=None, with_progress=False, with_r
                     progress_obj.exception(sys.exc_info())
                 else:
                     progress_obj.finish_with_result(result[0])
-            thread = notifier.threads.Simple('simple_response', notifier.Callback(_thread, self, progress_obj, _multi_response, request), lambda t, r: None)
+            thread = SimpleThread('simple_response', Callback(_thread, self, progress_obj, _multi_response, request), lambda t, r: None)
             thread.run()
             # thread = Thread(target=_thread, args=[self, progress_obj, _multi_response, request])
             # thread.start()
@@ -346,7 +495,7 @@ def simple_response(function=None, with_flavor=None, with_progress=False, with_r
                 # return value is a function which is meant to be executed as thread
                 # TODO: replace notfier by threading
 
-                thread = notifier.threads.Simple('simple_response', notifier.Callback(result[0], self, request), notifier.Callback(self.thread_finished_callback, request))
+                thread = SimpleThread('simple_response', Callback(result[0], self, request), Callback(self.thread_finished_callback, request))
                 thread.run()
     if with_progress:
         _response = sanitize_dict({})(_response)

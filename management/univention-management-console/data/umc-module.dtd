@@ -9,14 +9,12 @@
 	id:       unique module ID
 	icon:     base directory
 	version:  only "1.0"
-	notifier: use specific notifier loop 'generic', 'tornado', 'qt'
 	-->
 <!ATTLIST module
 	id CDATA #REQUIRED
 	icon CDATA #IMPLIED
 	priority CDATA #IMPLIED
 	version (1.0) #FIXED "1.0"
-	notifier (tornado) #IMPLIED
 	deactivated  CDATA #IMPLIED
 	singleton CDATA #IMPLIED
 	proxy CDATA #IMPLIED

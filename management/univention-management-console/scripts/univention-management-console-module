@@ -41,11 +41,9 @@ import os.path
 import sys
 from argparse import ArgumentParser
 
-import notifier
-import notifier.log as nflog
 import six
 
-# don't import univention.management.console.{modules,protocol} here as the locale is not yet set!
+# don't import univention.management.console.modules here as the locale is not yet set!
 import univention.debug as ud
 from univention.lib.i18n import Locale, Translation
 from univention.management.console.config import MODULE_DEBUG_LEVEL, MODULE_INACTIVITY_TIMER, ucr
@@ -61,17 +59,12 @@ if __name__ == '__main__':
     parser.add_argument('-s', '--socket', help='defines the socket to bind to')
     parser.add_argument('-l', '--language', default='C', help='defines the language to use')
     parser.add_argument('-m', '--module', help='set the UMC daemon module to load')
-    parser.add_argument('-n', '--notifier', default='tornado', choices={'tornado', 'generic', 'qt'}, help='defines the notifier implementation to use')
 
     parser.add_argument('-d', '--debug', type=int, default=MODULE_DEBUG_LEVEL, help='if given then debugging is activated and set to the specified level [default: %(default)s]')
     parser.add_argument('-L', '--log-file', dest='logfile', default='management-console-module-%(module)s', help='specifies an alternative log file [default: %(default)s.log]')
     parser.add_argument('-f', '--foreground', action='store_true', default=False, help='start in foreground, do not daemonize the process')
 
     options = parser.parse_args()
-
-    # no notifier logging
-    for handler in nflog.instance.handlers[:]:
-        nflog.instance.removeHandler(handler)
 
     os.umask(0o077)
     os.chdir("/")
@@ -84,20 +77,6 @@ if __name__ == '__main__':
                 os.close(null)
             if not six.PY2:
                 os.set_inheritable(fd, True)
-
-    # to activate notifier logging
-    # nflog.set_level(nflog.DEBUG)
-    # nflog.open()
-
-    # MUST be called after initializing the daemon
-    if options.notifier.lower() == 'tornado':
-        notifier.init(notifier.TORNADO)
-    elif options.notifier.lower() == 'generic':
-        notifier.init(notifier.GENERIC)
-    elif options.notifier.lower() == 'qt':
-        import PyQt4.Qt as qt
-        qApp = qt.QCoreApplication(sys.argv)
-        notifier.init(notifier.QT)
 
     # init logging
     import tornado.log
