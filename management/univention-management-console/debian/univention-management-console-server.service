@@ -16,4 +16,3 @@ Group=root
 
 [Install]
 WantedBy=multi-user.target
-#Alias=univention-management-console-web-server.service

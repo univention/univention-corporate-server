@@ -39,7 +39,7 @@ if [ "$1" = "remove" ]
 then
 	a2dissite univention.conf
 	cp /usr/lib/univention-uninstall/09univention-management-console-web-server.uinst /usr/lib/univention-install/
-	deb-systemd-invoke stop univention-management-console-web-server.service
+	deb-systemd-invoke stop univention-management-console-server.service
 fi
 
 exit 0
