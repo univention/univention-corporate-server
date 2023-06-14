@@ -36,5 +36,4 @@
 
 __path__ = __import__("pkgutil").extend_path(__path__, __name__)  # type: ignore
 
-import univention.management.console.protocol  # noqa: F401
 from univention.management.console.base import *  # noqa: F401,F403
