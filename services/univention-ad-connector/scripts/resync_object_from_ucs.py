@@ -50,11 +50,10 @@ from univention.config_registry import ConfigRegistry
 
 class UCSResync(object):
 
-    def __init__(self):
+    def __init__(self, ldap_master=False):
         self.configRegistry = ConfigRegistry()
         self.configRegistry.load()
-
-        self.lo = univention.uldap.getMachineConnection()
+        self.lo = univention.uldap.getMachineConnection(ldap_master=ldap_master)
 
     def _get_listener_dir(self):
         return self.configRegistry.get('%s/ad/listener/dir' % options.configbasename, '/var/lib/univention-connector/ad')
@@ -117,6 +116,7 @@ if __name__ == '__main__':
     parser.add_argument("--filter", dest="ldapfilter", help="LDAP search filter")
     parser.add_argument("-b", "--base", dest="ldapbase", help="LDAP search base")
     parser.add_argument("-c", "--configbasename", dest="configbasename", metavar="CONFIGBASENAME", default="connector")
+    parser.add_argument("-p", "--from-primary", action="store_true", help="use primary node for LDAP lookup (instead of the local LDAP)")
     parser.add_argument("dn", nargs='?', default=None)
     options = parser.parse_args()
 
@@ -132,7 +132,7 @@ if __name__ == '__main__':
 
     treated_dns = []
     try:
-        resync = UCSResync()
+        resync = UCSResync(ldap_master=options.from_primary)
         treated_dns = resync.resync(ucs_dns, options.ldapfilter, options.ldapbase)
     except ldap.NO_SUCH_OBJECT as ex:
         print('ERROR: The LDAP object not found : %s' % str(ex))

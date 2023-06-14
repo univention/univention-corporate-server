@@ -1,3 +1,9 @@
+univention-ad-connector (14.0.16-2) unstable; urgency=medium
+
+  * Bug #55936: use local ldap in resync_object_from_s4.py
+
+ -- Felix Botner <botner@univention.de>  Wed, 14 Jun 2023 09:23:03 +0200
+
 univention-ad-connector (14.0.16-1) unstable; urgency=medium
 
   * Bug #43633: fix request.options access with simple_response threaded

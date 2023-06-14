@@ -50,11 +50,10 @@ from univention.config_registry import ConfigRegistry
 
 class UCSResync(object):
 
-    def __init__(self):
+    def __init__(self, ldap_master=False):
         self.configRegistry = ConfigRegistry()
         self.configRegistry.load()
-
-        self.lo = univention.uldap.getMachineConnection()
+        self.lo = univention.uldap.getMachineConnection(ldap_master=ldap_master)
 
     def _get_listener_dir(self):
         return self.configRegistry.get('connector/s4/listener/dir', '/var/lib/univention-connector/s4')
@@ -113,6 +112,7 @@ if __name__ == '__main__':
     parser.add_argument("--filter", dest="ldapfilter", help="LDAP Filter")
     parser.add_argument("dn", nargs='?', default=None)
     parser.add_argument("--first", dest="first", action='store_true')
+    parser.add_argument("-p", "--from-primary", action="store_true", help="use primary node for LDAP lookup (instead of the local LDAP)")
     options = parser.parse_args()
 
     if not options.dn and not options.ldapfilter:
@@ -123,7 +123,7 @@ if __name__ == '__main__':
 
     treated_dns = []
     try:
-        resync = UCSResync()
+        resync = UCSResync(ldap_master=options.from_primary)
         treated_dns = resync.resync(options.first, ucs_dns, options.ldapfilter)
     except ldap.NO_SUCH_OBJECT as ex:
         print('ERROR: The LDAP object not found : %s' % ex.args[1])

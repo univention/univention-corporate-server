@@ -1,3 +1,9 @@
+univention-s4-connector (14.0.15-2) unstable; urgency=medium
+
+  * Bug #55936: use local ldap in resync_object_from_s4.py
+
+ -- Felix Botner <botner@univention.de>  Thu, 06 Jul 2023 14:38:44 +0200
+
 univention-s4-connector (14.0.15-1) unstable; urgency=medium
 
   * Bug #55938: prioritize ou objects during initial sync
