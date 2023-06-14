@@ -134,7 +134,7 @@ class Server(object):
             help='defines an alternative port number [default %(default)s]',
         )
         self.parser.add_argument(
-            '-c', '--processes', default=ucr.get_int('umc/http/processes', 1), type=int,
+            '-c', '--processes', type=int, default=1,  # ucr.get_int('umc/http/processes', 1),
             help='How many processes to fork. 0 means auto detection [default: %(default)s].',
         )
         self.parser.add_argument(

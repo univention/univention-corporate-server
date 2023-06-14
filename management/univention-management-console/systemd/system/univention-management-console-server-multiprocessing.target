@@ -1,0 +1,6 @@
+[Unit]
+Description=Start UMC-Server in multiprocessing mode
+PartOf=univention-management-console-server.service
+
+[Install]
+WantedBy=multi-user.target

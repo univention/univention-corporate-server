@@ -2,6 +2,7 @@
 Description=Univention Management Console Server
 After=network.target remote-fs.target
 Wants=slapd.service
+Before=apache2.service
 
 [Service]
 Type=notify

@@ -1,0 +1,18 @@
+[Unit]
+Description=Univention Management Console Server
+After=network.target remote-fs.target
+Wants=slapd.service
+Before=apache2.service
+PartOf=univention-management-console-server-multiprocessing.target
+BindsTo=univention-management-console-server-multiprocessing.target
+ReloadPropagatedFrom=univention-management-console-server-multiprocessing.target
+
+[Service]
+Type=exec
+ExecStart=/usr/sbin/univention-management-console-server --port=%i -c1
+ExecReload=/bin/kill -HUP $MAINPID
+User=root
+Group=root
+
+[Install]
+WantedBy=univention-management-console-server-multiprocessing.target
