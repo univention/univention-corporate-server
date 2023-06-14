@@ -39,7 +39,7 @@ Implements several helper classes to handle the state of a session
 and the communication with the module processes
 """
 
-# import asyncio.exceptions
+import asyncio.exceptions
 import base64
 import errno
 import gzip
@@ -53,7 +53,6 @@ import time
 import uuid
 from ipaddress import ip_address
 
-import concurrent.futures
 import ldap
 import pycurl
 import six
@@ -180,12 +179,9 @@ class _ModuleConnection(object):
         except ValueError as exc:  # HTTP GET request with body
             CORE.warn('Reaching module failed: %s' % (exc,))
             raise BadRequest(str(exc))
-        except concurrent.futures.CancelledError as exc:
+        except asyncio.exceptions.CancelledError as exc:
             CORE.warn('Aborted module process request: %s' % (exc,))
             raise CouldNotConnect(exc)
-        # except asyncio.exceptions.CancelledError as exc:
-        #    CORE.warn('Aborted module process request: %s' % (exc,))
-        #    raise CouldNotConnect(exc)
 
         return response
 
@@ -742,10 +738,8 @@ class Command(Resource):
             # send first command
             self.future = process.request(self.request.method, self.request.full_url(), body=self.request.body or None, headers=headers)
             response = await self.future
-        except concurrent.futures.CancelledError:
+        except asyncio.exceptions.CancelledError:
             raise BadGateway('%s: %s: canceled' % (self._('Connection to module process failed'), module_name))
-        # except asyncio.exceptions.CancelledError:
-        #    raise BadGateway('%s: %s: canceled' % (self._('Connection to module process failed'), module_name))
         except CouldNotConnect as exc:
             # (happens during starting the service and subprocesses when the UNIX sockets aren't available yet)
             # also happens when module process gets killed during request
