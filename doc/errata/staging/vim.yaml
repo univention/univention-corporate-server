@@ -6,12 +6,10 @@ src: vim
 fix: 2:8.1.0875-5+deb10u5
 desc: |
  This update addresses the following issues:
- 2:8.1.0875-5+deb10u5 (Mon, 12 Jun 2023 16:23:03 +0200)
- * Non-maintainer upload by the LTS team.
- * Fix CVE-2022-4141, CVE-2023-0054, CVE-2023-1175, CVE-2023-2610: Multiple
-   security vulnerabilities have been discovered in vim, an enhanced vi
-   editor. Buffer overflows and out-of-bounds reads may lead to a
-   denial-of-service (application crash) or other unspecified impact.
+ * CVE-2022-4141: invalid memory access in substitute with function
+ * CVE-2023-0054: out-of-bounds write in `do_string_sub()` in `eval.c`
+ * CVE-2023-1175: Incorrect calculation of buffer size
+ * CVE-2023-2610: integer overflow vulnerability
 bug: [56143]
 cve:
 - CVE-2022-4141
