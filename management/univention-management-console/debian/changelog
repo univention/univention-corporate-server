@@ -1,3 +1,9 @@
+univention-management-console (13.0.6) unstable; urgency=medium
+
+  * Bug #56538: adjust to Tornado changes
+
+ -- Florian Best <best@univention.de>  Thu, 07 Mar 2024 23:53:49 +0100
+
 univention-management-console (13.0.5) unstable; urgency=medium
 
   * Bug #56002: replace upstream removed libpam-cracklib with libpam-
