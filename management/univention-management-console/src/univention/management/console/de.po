@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-management-console\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2023-06-12 07:37+0200\n"
+"POT-Creation-Date: 2023-06-14 10:16+0200\n"
 "PO-Revision-Date: 2011-10-25 20:29+0200\n"
 "Last-Translator: Univention GmbH <packages@univention.de>\n"
 "Language-Team: Univention GmbH <packages@univention.de>\n"
@@ -22,7 +22,7 @@ msgstr "%d Fehler aufgetreten"
 msgid "%s can only be used as UPLOAD"
 msgstr "%s kann nur als UPLOAD genutzt werden"
 
-#: src/univention/management/console/session.py:373
+#: src/univention/management/console/session.py:400
 #, python-format
 msgid "An unknown operating system error occurred (%s)."
 msgstr "Ein unbekannter Betriebssystemfehler ist aufgetreten (%s)."
@@ -78,11 +78,11 @@ msgid "Choose a password which does not match any of your last %s passwords."
 msgstr ""
 "Wählen Sie ein Passwort, dass nicht den letzten %s Passwörtern entspricht."
 
-#: src/univention/management/console/resources.py:672
+#: src/univention/management/console/resources.py:702
 msgid "Connection to module process failed"
 msgstr "Verbindung zum Modulprozess ist fehlgeschlagen"
 
-#: src/univention/management/console/session.py:367
+#: src/univention/management/console/session.py:394
 #, python-format
 msgid "Could not open the module. %s Please try again later."
 msgstr "Konnte das Modul nicht öffnen. %s Bitte später erneut versuchen."
@@ -96,7 +96,7 @@ msgstr ""
 "Konnte keinen Identity Provider auswählen. Sie können über den Query-String-"
 "Parameter %(param)r einen der folgenden %(idps)r auswählen."
 
-#: src/univention/management/console/base.py:283
+#: src/univention/management/console/base.py:308
 msgid ""
 "Cross Site Request Forgery attack detected. Please provide the "
 "\"UMCSessionId\" cookie value as HTTP request header \"X-Xsrf-Protection\"."
@@ -109,7 +109,7 @@ msgstr ""
 msgid "Error message: %s"
 msgstr "Fehlermeldung: %s"
 
-#: src/univention/management/console/modserver.py:182
+#: src/univention/management/console/modserver.py:194
 #, python-format
 msgid ""
 "Failed to load module %(module)s: %(error)s\n"
@@ -119,7 +119,7 @@ msgstr ""
 "%(traceback)s"
 
 #: src/univention/management/console/resource.py:103
-#: src/univention/management/console/resources.py:615
+#: src/univention/management/console/resources.py:643
 msgid "For using this request a login is required."
 msgstr "Für diese Anfrage ist eine Anmeldung erforderlich."
 
@@ -127,7 +127,7 @@ msgstr "Für diese Anfrage ist eine Anmeldung erforderlich."
 msgid "Forbidden"
 msgstr "Verboten"
 
-#: src/univention/management/console/modserver.py:190
+#: src/univention/management/console/modserver.py:202
 #, python-format
 msgid "Further information can be found in the logfile %s."
 msgstr "Weitere Informationen können der Protokolldatei %s entnommen werden."
@@ -157,12 +157,12 @@ msgstr "Installieren Sie alle Softwareaktualisierungen"
 msgid "Internal error"
 msgstr "Interner Fehler"
 
-#: src/univention/management/console/base.py:388
+#: src/univention/management/console/base.py:413
 #, python-format
 msgid "Internal server error during \"%(command)s\"."
 msgstr "Interner Server-Fehler in \"%(command)s\"."
 
-#: src/univention/management/console/resource.py:265
+#: src/univention/management/console/resource.py:267
 msgid "Invalid JSON document"
 msgstr ""
 
@@ -170,7 +170,7 @@ msgstr ""
 msgid "Invalid progress ID"
 msgstr "Ungültige Fortschritt ID"
 
-#: src/univention/management/console/resource.py:263
+#: src/univention/management/console/resource.py:265
 msgid "JSON document have to be dict"
 msgstr ""
 
@@ -194,7 +194,7 @@ msgstr ""
 msgid "May have at most %(max_elements)d element(s)"
 msgstr "Darf höchstens %(max_elements)d Element(e) haben"
 
-#: src/univention/management/console/base.py:248
+#: src/univention/management/console/base.py:273
 #, python-format
 msgid ""
 "Method %(method)r (%(path)r) in %(module)r does not exist.\n"
@@ -214,7 +214,11 @@ msgstr "Methode nicht erlaubt"
 msgid "Must have at least %(min_elements)d element(s)"
 msgstr "Muss mindestens %(min_elements)d Element(e) haben"
 
-#: src/univention/management/console/resources.py:638
+#: src/univention/management/console/modserver.py:308
+msgid "No authentication provided to module process."
+msgstr "Keine Authentifizierung für den Modulprozess bereitgestellt."
+
+#: src/univention/management/console/resources.py:666
 msgid "No module found for this request."
 msgstr "Es wurde kein Modul für diese Anfrage gefunden."
 
@@ -226,7 +230,7 @@ msgstr "Ist kein \"dict\""
 msgid "Not a \"list\""
 msgstr "Ist keine \"list\""
 
-#: src/univention/management/console/resources.py:643
+#: src/univention/management/console/resources.py:673
 msgid "Not allowed to perform this request."
 msgstr "Es ist nicht erlaubt, diese Anfrage durchzuführen."
 
@@ -234,7 +238,7 @@ msgstr "Es ist nicht erlaubt, diese Anfrage durchzuführen."
 msgid "Not found"
 msgstr "Nicht gefunden"
 
-#: src/univention/management/console/resources.py:948
+#: src/univention/management/console/resources.py:978
 msgid "Password successfully changed."
 msgstr "Passwort erfolgreich geändert."
 
@@ -242,7 +246,7 @@ msgstr "Passwort erfolgreich geändert."
 msgid "Please insert your one time password (OTP)."
 msgstr "Bitte geben Sie ihr Einmalpasswort (OTP) ein."
 
-#: src/univention/management/console/modserver.py:189
+#: src/univention/management/console/modserver.py:201
 msgid ""
 "Please relogin to the Univention Management Console to see if the error "
 "persists."
@@ -281,12 +285,12 @@ msgstr ""
 msgid "Should stay %s"
 msgstr "Sollte %s bleiben"
 
-#: src/univention/management/console/resources.py:915
+#: src/univention/management/console/resources.py:945
 #: src/univention/management/console/base.py:168
 msgid "Specified locale is not available"
 msgstr "Angegebene Sprache ist nicht verfügbar"
 
-#: src/univention/management/console/base.py:287
+#: src/univention/management/console/base.py:312
 msgid "The \"Referer\" HTTP header must start with \"/univention/\"."
 msgstr "Der \"Referer\" HTTP-Header muss mit \"/univention/\" beginnen."
 
@@ -308,7 +312,7 @@ msgstr "Die SAML-Antwort konnte nicht verifiziert werden: %s"
 msgid "The SAML session expired."
 msgstr "Die SAML-Sitzung ist abgelaufen."
 
-#: src/univention/management/console/base.py:258
+#: src/univention/management/console/base.py:283
 msgid ""
 "The UMC service is currently shutting down or restarting. Please retry soon."
 msgstr ""
@@ -324,17 +328,20 @@ msgstr "Das Konto ist abgelaufen und kann nicht mehr verwendet werden."
 msgid "The authentication has failed, please login again."
 msgstr "Authentisierung ist fehlgeschlagen. Bitte melden Sie sich erneut an."
 
-#: src/univention/management/console/resource.py:213
+#: src/univention/management/console/resource.py:215
 msgid ""
 "The current session is not valid with your IP address for security reasons. "
 "This might happen after switching the network. Please login again."
-msgstr "Die aktuelle Sitzung ist aus Sicherheitsgründen nicht mit Ihrer IP-Adresse gültig. Dies kann nach einem Wechsel des Netzwerks passieren. Bitte melden Sie sich erneut an."
+msgstr ""
+"Die aktuelle Sitzung ist aus Sicherheitsgründen nicht mit Ihrer IP-Adresse "
+"gültig. Dies kann nach einem Wechsel des Netzwerks passieren. Bitte melden "
+"Sie sich erneut an."
 
 #: src/univention/management/console/pam.py:350
 msgid "The entered password does not match the current one."
 msgstr "Das eingegebene Passwort stimmt nicht mit dem aktuellen überein."
 
-#: src/univention/management/console/session.py:372
+#: src/univention/management/console/session.py:399
 msgid "The executable was not found."
 msgstr "Das ausführbare Datei wurde nicht gefunden."
 
@@ -348,7 +355,7 @@ msgstr "Die folgenden Schritte können helfen, das Problem zu beheben:"
 msgid "The identity provider reported a status error: %s"
 msgstr "Der Identity Provider hat einen Status-Fehler gemeldet: %s"
 
-#: src/univention/management/console/modserver.py:241
+#: src/univention/management/console/modserver.py:253
 #, python-format
 msgid "The initialization of the module failed: %s"
 msgstr "Die Initialisierung des Moduls ist fehlgeschlagen: %s"
@@ -360,7 +367,9 @@ msgid ""
 "misconfiguration and might be resolved by restarting the univention-"
 "management-console-server."
 msgstr ""
-"Der Ausgeber %r ist dem SAML-Dienstanbieter nicht bekannt. Dies ist wahrscheinlich eine Fehlkonfiguration und könnte durch einen Neustart des univention-management-console-server behoben werden."
+"Der Ausgeber %r ist dem SAML-Dienstanbieter nicht bekannt. Dies ist "
+"wahrscheinlich eine Fehlkonfiguration und könnte durch einen Neustart des "
+"univention-management-console-server behoben werden."
 
 #: src/univention/management/console/saml.py:136
 msgid "The logout binding is not known."
@@ -378,7 +387,7 @@ msgstr ""
 msgid "The minimum password age is not reached yet."
 msgstr "Das minimale Passwortalter wurde noch nicht erreicht."
 
-#: src/univention/management/console/modserver.py:188
+#: src/univention/management/console/modserver.py:200
 msgid "The module may have been removed recently."
 msgstr "Das Modul könnte kürzlich entfernt worden sein."
 
@@ -449,14 +458,14 @@ msgstr "Der SAML-Prinzipal ist unbekannt: %s"
 msgid "The reason could not be determined"
 msgstr "Der Grund konnte nicht festgestellt werden"
 
-#: src/univention/management/console/base.py:293
+#: src/univention/management/console/base.py:318
 #, python-format
 msgid "The requested Content-Type is not acceptable. Please use one of %s."
 msgstr ""
 "Der angeforderte Content-Type ist nicht akzeptabel. Bitte verwenden Sie "
 "einen von %s."
 
-#: src/univention/management/console/base.py:280
+#: src/univention/management/console/base.py:305
 msgid "The requested HTTP method is not allowed on this resource."
 msgstr "Die angeforderte HTTP-Methode ist auf dieser Ressource nicht erlaubt."
 
@@ -465,13 +474,13 @@ msgstr "Die angeforderte HTTP-Methode ist auf dieser Ressource nicht erlaubt."
 msgid "The requested SAML binding is not known: %s"
 msgstr "Das angeforderte SAML-Binding ist unbekannt: %s"
 
-#: src/univention/management/console/modserver.py:187
+#: src/univention/management/console/modserver.py:199
 #, python-format
 msgid "The requested module %r does not exist."
 msgstr "Das angefragte Modul %r existiert nicht."
 
-#: src/univention/management/console/session.py:369
-#: src/univention/management/console/session.py:370
+#: src/univention/management/console/session.py:396
+#: src/univention/management/console/session.py:397
 msgid "There are too many opened files on the server."
 msgstr "Auf dem Server sind zu viele offene Dateien."
 
@@ -483,11 +492,11 @@ msgstr ""
 "Der Service Provider ist fehlkonfiguriert: Keine Identity Provider sind zur "
 "Benutzung eingerichtet."
 
-#: src/univention/management/console/session.py:371
+#: src/univention/management/console/session.py:398
 msgid "There is not enough free space on the server."
 msgstr "Auf dem Server ist nicht genügt freier Speicherplatz."
 
-#: src/univention/management/console/session.py:368
+#: src/univention/management/console/session.py:395
 msgid "There is not enough memory available on the server."
 msgstr "Auf dem Server ist nicht genügend freier Arbeitsspeicher verfügbar."
 
@@ -499,7 +508,7 @@ msgstr "Diese Aktion erfordert die Eingabe Ihres Passwortes."
 msgid "Unauthorized"
 msgstr "Nicht authorisiert"
 
-#: src/univention/management/console/resources.py:648
+#: src/univention/management/console/resources.py:678
 msgid "Unknown request."
 msgstr "Unbekannte Anfrage."
 
@@ -532,7 +541,7 @@ msgid "Value is too short, it has to be at least of length %(minimum)d"
 msgstr ""
 "Wert ist zu kurz, seine Länge muss mindestens %(minimum)d Zeichen betragen"
 
-#: src/univention/management/console/resources.py:598
+#: src/univention/management/console/resources.py:626
 #, python-format
 msgid "filesize is too large, maximum allowed filesize is %d bytes"
 msgstr "Dateigröße ist zu groß, maximal erlaubte Dateigröße ist %d bytes"
