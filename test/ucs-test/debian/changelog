@@ -1,3 +1,9 @@
+ucs-test (10.0.14-1) unstable; urgency=medium
+
+  * Bug #55907: Try to stabilize 51_samba4/40password-policies
+
+ -- Arvid <requate@univention.de>  Wed, 14 Jun 2023 14:27:23 +0200
+
 ucs-test (10.0.13-2) unstable; urgency=medium
 
   * Bug #43633: adjust test cases for unified UMC
