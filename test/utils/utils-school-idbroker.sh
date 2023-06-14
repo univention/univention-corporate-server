@@ -502,4 +502,30 @@ add_dns_for_provisioning_server () {
 	done
 }
 
+wait_for_sddb_provisioning () {
+    while true; do
+        echo "Waiting for appcenter listener"
+        sleep 10
+        new_listener_objects=$(find /var/lib/univention-appcenter/apps/id-broker-sddb-builder/data/listener/ -name "*.json" | wc -l)
+
+        if [[ "$new_listener_objects" -gt 0 ]]; then
+            echo "$new_listener_objects new appcenter listener objects"
+            univention-app shell id-broker-sddb-builder /tmp/univention-id-broker-sddb-builder.listener_trigger 2>> sddb_listiener.log
+        else
+            break
+        fi
+    done
+    while true; do
+        echo "Waiting for converter daemon"
+        sleep 10
+        queue_length=$(univention-app shell id-broker-sddb-builder sddb-builder queues length regular)
+        if [[ "$queue_length" -gt 0 ]]; then
+            echo "$queue_length items on converter queue"
+        else
+            echo "converter daemon queue is empty"
+            break
+        fi
+    done
+}
+
 # vim:set filetype=sh ts=4:
