@@ -86,7 +86,7 @@ def create_ldif_from_master(lo: uldap.access, ldif_file: str, base: str, page_si
     output.close()
 
 
-def main() -> None:
+def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("-l", "--ldif", action="store_true", default=replication.LDIF_FILE, help="Create LDIF file")
     parser.add_argument("-s", "--schema", action="store_true", help="Update LDAP schema [%s]" % replication.SCHEMA_FILE)
@@ -94,7 +94,11 @@ def main() -> None:
     parser.add_argument("-p", "--pagesize", type=int, default=1000, help="page size to use for LDAP paged search")
     parser.add_argument("-v", "--verbose", action="count", help="Increase verbosity")
     opts = parser.parse_args()
+    return opts
 
+
+def main() -> None:
+    opts = parse_args()
     logging.basicConfig(stream=sys.stderr, level=logging.DEBUG if opts.verbose else logging.WARNING, format='%(levelname)s: %(message)s')
 
     base = ucr.get("ldap/base")
