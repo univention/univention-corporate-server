@@ -46,8 +46,7 @@ import univention.config_registry
 from univention import uldap
 
 
-def main():
-    # type: () -> None
+def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("-f", "--filter", help="resync objects from Primary found by this filter. Default: (uid=<hostname>$)")
     parser.add_argument("-r", "--remove", action="store_true", help="remove objects in local database before resync")
