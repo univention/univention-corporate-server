@@ -58,15 +58,9 @@ class UniFileHandler(WatchedFileHandler):
     def _set_listener_module_log_file_permissions(self):
         listener_uid = pwd.getpwnam('listener').pw_uid
         adm_gid = grp.getgrnam('adm').gr_gid
-        old_uid = os.geteuid()
-        try:
-            if old_uid != 0:
-                listener.setuid(0)
+        with listener.SetUID(0 if os.geteuid() else -1):
             os.chown(self.baseFilename, listener_uid, adm_gid)
             os.chmod(self.baseFilename, stat.S_IRUSR | stat.S_IWUSR | stat.S_IRGRP)
-        finally:
-            if old_uid != 0:
-                listener.unsetuid()
 
 
 class ModuleHandler(logging.Handler):
@@ -171,19 +165,13 @@ def get_logger(name: str, path: str | None = None) -> logging.Logger:
         listener_uid = pwd.getpwnam('listener').pw_uid
         adm_grp = grp.getgrnam('adm').gr_gid
         if not os.path.isdir(log_dir):
-            old_uid = os.geteuid()
-            try:
-                if old_uid != 0:
-                    listener.setuid(0)
+            with listener.SetUID(0 if os.geteuid() else -1):
                 os.mkdir(log_dir)
                 os.chown(log_dir, listener_uid, adm_grp)
                 os.chmod(
                     log_dir,
                     stat.S_ISGID | stat.S_IRUSR | stat.S_IWUSR | stat.S_IXUSR | stat.S_IRGRP | stat.S_IXGRP,
                 )
-            finally:
-                if old_uid != 0:
-                    listener.unsetuid()
         _logger_cache[name] = get_listener_logger(logger_name, file_path)
     return _logger_cache[name]
 

@@ -24,8 +24,7 @@ def handler(dn: str, new: dict[str, list[bytes]], old: dict[str, list[bytes]]) -
     if listener.configRegistry['server/role'] == 'domaincontroller_master':
         return
 
-    listener.setuid(0)
-    try:
+    with listener.SetUID(0):
         if 'univentionServerRole' in new:
             try:
                 domain = new['associatedDomain'][0].decode('UTF-8')
@@ -38,8 +37,6 @@ def handler(dn: str, new: dict[str, list[bytes]], old: dict[str, list[bytes]]) -
             except LookupError:
                 domain = ucr['domainname']
             remove_ldap_server(old['cn'][0].decode('UTF-8'), domain, old['univentionServerRole'][0].decode('UTF-8'))
-    finally:
-        listener.unsetuid()
 
 
 def add_ldap_server(name: str, domain: str, role: str) -> None:

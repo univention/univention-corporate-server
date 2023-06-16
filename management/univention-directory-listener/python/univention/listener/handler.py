@@ -5,7 +5,7 @@
 import inspect
 import os
 import types
-from collections.abc import Iterable, Iterator, Mapping, Sequence
+from collections.abc import Iterable, Mapping, Sequence
 from contextlib import contextmanager
 from typing import Any, cast
 
@@ -155,7 +155,7 @@ class ListenerModuleHandler(metaclass=HandlerMetaClass):
 
     @staticmethod
     @contextmanager
-    def as_root() -> Iterator[None]:
+    def as_root() -> listener.SetUID:
         """
         Contextmanager to temporarily change the effective UID of the current
         process to 0:
@@ -167,14 +167,7 @@ class ListenerModuleHandler(metaclass=HandlerMetaClass):
         aware that :py:func:`listener.unsetuid()` will not be possible
         afterwards, as that requires root privileges.
         """
-        old_uid = os.geteuid()
-        try:
-            if old_uid != 0:
-                listener.setuid(0)
-            yield
-        finally:
-            if old_uid != 0:
-                listener.unsetuid()
+        return listener.SetUID(0)
 
     @classmethod
     def diff(cls, old: Mapping[str, Sequence[bytes]], new: Mapping[str, Sequence[bytes]], keys: Iterable[str] | None = None, ignore_metadata: bool = True) -> dict[str, tuple[Sequence[bytes] | None, Sequence[bytes] | None]]:
