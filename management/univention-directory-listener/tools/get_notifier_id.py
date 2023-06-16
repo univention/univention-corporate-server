@@ -70,23 +70,27 @@ def parse_args() -> argparse.Namespace:
     return options
 
 
+def get_nid(master: str, cmd: str = "GET_ID") -> int:
+    """Retrieve current Univention Directory Notifier transaction or schema ID."""
+    sock = socket.create_connection((master, 6669), 60.0)
+
+    sock.send(b'Version: 3\nCapabilities: \n\n')
+    sock.recv(100)
+
+    sock.send(b'MSGID: 1\n%s\n\n' % (cmd.encode('UTF-8'),))
+    answer = sock.recv(100)
+    text = answer.decode()
+    lines = text.splitlines()
+    return int(lines[1])
+
+
 def main() -> None:
     """Retrieve current Univention Directory Notifier transaction ID."""
     options = parse_args()
     try:
-        sock = socket.create_connection((options.master, 6669), 60.0)
-
-        sock.send(b'Version: 3\nCapabilities: \n\n')
-        sock.recv(100)
-
-        sock.send(b'MSGID: 1\n%s\n\n' % (options.cmd.encode('UTF-8'),))
-        notifier_result = sock.recv(100)
-
-        if notifier_result:
-            print("%s" % notifier_result.decode('UTF-8', 'replace').splitlines()[1])
-    except socket.error as ex:
-        print('Error: %s' % (ex,), file=sys.stderr)
-        sys.exit(1)
+        print(get_nid(options.master, options.cmd))
+    except (socket.error, UnicodeDecodeError, IndexError, ValueError) as ex:
+        sys.exit('Error: %s' % (ex,))
 
 
 if __name__ == '__main__':
