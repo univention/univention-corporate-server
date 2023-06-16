@@ -1,3 +1,9 @@
+univention-directory-replication (13.0.7-1) unstable; urgency=low
+
+  * Bug #55927: Remove some ppolicy OIDs from exclusion list
+
+ -- Philipp Hahn <hahn@univention.de>  Fri, 16 Jun 2023 17:43:12 +0200
+
 univention-directory-replication (13.0.6-1) unstable; urgency=low
 
   * Bug #55927: Remove some ppolicy OIDs from exclusion list
