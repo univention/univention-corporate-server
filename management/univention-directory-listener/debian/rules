@@ -54,6 +54,9 @@ override_dh_install:
 	mv debian/univention-directory-listener/usr/sbin/dump debian/univention-directory-listener/usr/sbin/univention-directory-listener-dump
 	mv debian/univention-directory-listener/usr/sbin/verify debian/univention-directory-listener/usr/sbin/univention-directory-listener-verify
 	mv debian/univention-directory-listener/usr/sbin/listener-ctrl debian/univention-directory-listener/usr/sbin/univention-directory-listener-ctrl
+	mv debian/univention-directory-listener/usr/bin/get_notifier_id.py debian/univention-directory-listener/usr/share/univention-directory-listener/
+	mv debian/univention-directory-listener/usr/bin/resync-objects.py debian/univention-directory-listener/usr/share/univention-directory-listener/
+	mv debian/univention-directory-listener/usr/bin/univention-get-ldif-from-master debian/univention-directory-listener/usr/share/univention-directory-listener/
 
 override_dh_python3:
 	dh_python3 --skip-private

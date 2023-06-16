@@ -55,4 +55,12 @@ setup(
     version=dch.version.full_version.split('A~')[0],
     maintainer=realname,
     maintainer_email=email_address,
+
+    entry_points={
+        "console_scripts": [
+            "get_notifier_id.py = univention.listener.get_notifier_id:main",
+            "resync-objects.py = univention.listener.resync:main",
+            "univention-get-ldif-from-master = univention.listener.get_ldif:main",
+        ],
+    },
 )
