@@ -8,7 +8,7 @@ StartLimitIntervalSec=0
 
 [Service]
 EnvironmentFile=/etc/default/univention-directory-listener
-ExecStartPre=/usr/share/univention-directory-listener/fix_cache_permissions.sh
+ExecStartPre=/usr/bin/find /var/lib/univention-directory-listener /var/lib/univention-ldap/listener ! -user listener -exec chown listener {} +
 ExecStart=/usr/sbin/univention-directory-listener -F $UDL_OPTS
 Restart=always
 RestartSec=10s
