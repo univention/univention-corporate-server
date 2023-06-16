@@ -30,8 +30,6 @@ import replication  # noqa: E402
 logger = logging.getLogger(__name__)
 
 LDIF = '/var/lib/univention-directory-listener/master.ldif.gz'
-SCHEMA = '/var/lib/univention-ldap/schema.conf'
-OIDS = set(replication.BUILTIN_OIDS) | {'1.3.6.1.4.1.4203.666.11.1.4.2.12.1'}
 
 
 def update_schema(lo: uldap.access) -> None:
