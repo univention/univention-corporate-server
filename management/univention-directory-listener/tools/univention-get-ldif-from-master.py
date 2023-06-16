@@ -41,7 +41,7 @@ def update_schema(lo: uldap.access) -> None:
     replication.update_schema(res[0][1])
 
 
-def create_ldif_from_master(lo: uldap.access, ldif_file: str, base: str, page_size: int) -> None:
+def create_ldif_from_master(lo: uldap.access, ldif_file: str, page_size: int) -> None:
     """create ldif file from everything from lo"""
     logger.info('Fetching LDIF ...')
     output = sys.stdout if ldif_file == "-" else io.StringIO()
@@ -54,7 +54,7 @@ def create_ldif_from_master(lo: uldap.access, ldif_file: str, base: str, page_si
 
     writer = ldif.LDIFWriter(output, cols=10000)
     while True:
-        msgid = lo.lo.search_ext(base, ldap.SCOPE_SUBTREE, '(objectclass=*)', ['+', '*'], serverctrls=[lc])
+        msgid = lo.lo.search_ext(ucr["ldap/base"], ldap.SCOPE_SUBTREE, '(objectclass=*)', ['+', '*'], serverctrls=[lc])
         _rtype, rdata, _rmsgid, serverctrls = lo.lo.result3(msgid)
 
         for dn, data in rdata:
@@ -101,7 +101,6 @@ def main() -> None:
     opts = parse_args()
     logging.basicConfig(stream=sys.stderr, level=logging.DEBUG if opts.verbose else logging.WARNING, format='%(levelname)s: %(message)s')
 
-    base = ucr.get("ldap/base")
     if ucr.get("server/role", "") == "domaincontroller_backup":
         lo = uldap.getAdminConnection()
     else:
@@ -111,7 +110,7 @@ def main() -> None:
         update_schema(lo)
 
     if opts.ldif:
-        create_ldif_from_master(lo, opts.outfile, base, opts.pagesize)
+        create_ldif_from_master(lo, opts.outfile, opts.pagesize)
 
 
 if __name__ == "__main__":
