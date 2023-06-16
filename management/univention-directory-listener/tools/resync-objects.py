@@ -46,14 +46,34 @@ from univention import uldap
 from univention.config_registry import ucr
 
 
-def main() -> None:
+def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("-f", "--filter", help="resync objects from Primary found by this filter. Default: (uid=<hostname>$)")
-    parser.add_argument("-r", "--remove", action="store_true", help="remove objects in local database before resync")
-    parser.add_argument("-s", "--simulate", action="store_true", help="dry run, do not remove or add")
-    parser.add_argument("-u", "--update", action="store_true", help="update/modify existing objects")
+    parser.add_argument(
+        "-f", "--filter",
+        default='(uid=%(hostname)s$)' % ucr,
+        help="resync objects from Primary found by this filter. Default: (uid=<hostname>$)",
+    )
+    parser.add_argument(
+        "-r", "--remove",
+        action="store_true",
+        help="remove objects in local database before resync",
+    )
+    parser.add_argument(
+        "-s", "--simulate",
+        action="store_true",
+        help="dry run, do not remove or add",
+    )
+    parser.add_argument(
+        "-u", "--update",
+        action="store_true",
+        help="update/modify existing objects",
+    )
     opts = parser.parse_args()
+    return opts
 
+
+def main() -> None:
+    opts = parse_args()
     base = ucr.get("ldap/base")
     server_role = ucr.get("server/role", "")
     if server_role == 'domaincontroller_master':
@@ -62,9 +82,6 @@ def main() -> None:
     if server_role not in ['domaincontroller_backup', 'domaincontroller_slave']:
         print(f'server role ("{server_role}") has no LDAP, nothing to do')
         return
-
-    if not opts.filter:
-        opts.filter = '(uid=%s$)' % ucr['hostname']
 
     # get local and Primary connection
     local = uldap.getRootDnConnection()

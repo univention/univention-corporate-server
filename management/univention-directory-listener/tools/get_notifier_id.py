@@ -46,26 +46,27 @@ from univention.config_registry import ucr
 
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument('-m', '--master', help='LDAP Server address')
     parser.add_argument(
         '-s', '--schema',
-        dest='cmd',
         action='store_const',
         const='GET_SCHEMA_ID',
         default='GET_ID',
-        help='Fetch LDAP Schema ID')
-    parser.add_argument('arg', nargs='?', help=argparse.SUPPRESS)
+        help='Fetch LDAP Schema ID',
+        dest='cmd',
+    )
+    parser.add_argument(
+        '--master',
+        '-m',
+        default=ucr.get("ldap/master"),
+        help='LDAP Server address',
+    )
+    parser.add_argument(
+        'master',
+        nargs='?',
+        default=argparse.SUPPRESS,
+        help=argparse.SUPPRESS,
+    )
     options = parser.parse_args()
-
-    if not options.master:
-        if options.arg:
-            options.master = options.arg
-        else:
-            options.master = ucr.get('ldap/master')
-
-    if not options.master:
-        parser.error('ldap/master or --master not set')
-
     return options
 
 

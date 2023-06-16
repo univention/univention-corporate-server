@@ -138,15 +138,40 @@ def create_ldif_from_master(lo: uldap.access, ldif_file: str, base: str, page_si
     output.close()
 
 
-def main() -> None:
+def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("-l", "--ldif", action="store_true", help="Create LDIF file")
-    parser.add_argument("-s", "--schema", action="store_true", help="Update LDAP schema [%s]" % SCHEMA)
-    parser.add_argument("-o", "--outfile", default=LDIF, help="File to store gzip LDIF data [%(default)s]")
-    parser.add_argument("-p", "--pagesize", type=int, default=1000, help="page size to use for LDAP paged search")
-    parser.add_argument("-v", "--verbose", action="count", help="Increase verbosity")
+    parser.add_argument(
+        "-l", "--ldif",
+        action="store_true",
+        help="Create LDIF file",
+    )
+    parser.add_argument(
+        "-s", "--schema",
+        action="store_true",
+        help="Update LDAP schema [%s]" % SCHEMA,
+    )
+    parser.add_argument(
+        "-o", "--outfile",
+        default=LDIF,
+        help="File to store gzip LDIF data [%(default)s]",
+    )
+    parser.add_argument(
+        "-p", "--pagesize",
+        type=int,
+        default=1000,
+        help="page size to use for LDAP paged search",
+    )
+    parser.add_argument(
+        "-v", "--verbose",
+        action="count",
+        help="Increase verbosity",
+    )
     opts = parser.parse_args()
+    return opts
 
+
+def main() -> None:
+    opts = parse_args()
     logging.basicConfig(stream=sys.stderr, level=logging.DEBUG if opts.verbose else logging.WARNING)
 
     base = ucr.get("ldap/base")
