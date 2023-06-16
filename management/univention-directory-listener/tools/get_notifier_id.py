@@ -41,6 +41,8 @@ import argparse
 import socket
 import sys
 
+from univention.config_registry import ucr
+
 
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description=__doc__)
@@ -59,10 +61,7 @@ def parse_args() -> argparse.Namespace:
         if options.arg:
             options.master = options.arg
         else:
-            from univention.config_registry import ConfigRegistry
-            configRegistry = ConfigRegistry()
-            configRegistry.load()
-            options.master = configRegistry.get('ldap/master')
+            options.master = ucr.get('ldap/master')
 
     if not options.master:
         parser.error('ldap/master or --master not set')

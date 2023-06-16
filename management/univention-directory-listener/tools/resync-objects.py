@@ -42,8 +42,8 @@ import argparse
 import ldap
 import ldap.modlist
 
-import univention.config_registry
 from univention import uldap
+from univention.config_registry import ucr
 
 
 def main() -> None:
@@ -54,8 +54,6 @@ def main() -> None:
     parser.add_argument("-u", "--update", action="store_true", help="update/modify existing objects")
     opts = parser.parse_args()
 
-    ucr = univention.config_registry.ConfigRegistry()
-    ucr.load()
     base = ucr.get("ldap/base")
     server_role = ucr.get("server/role", "")
     if server_role == 'domaincontroller_master':
