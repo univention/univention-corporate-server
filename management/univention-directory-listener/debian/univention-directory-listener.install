@@ -6,4 +6,3 @@ src/dump	usr/sbin/
 src/listener	usr/sbin/
 src/listener-ctrl	usr/sbin/
 src/verify	usr/sbin/
-tools/*	usr/share/univention-directory-listener/
