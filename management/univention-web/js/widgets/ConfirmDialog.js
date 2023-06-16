@@ -119,7 +119,7 @@ define([
 		_setMessageAttr: function(message) {
 			this.message = message;
 			var childs = this._container.getChildren();
-			if (childs.length > 1) {
+			if (childs.length > 0) {
 				// a message/widget has been added previously... remove it
 				this._container.removeChild(childs[0]);
 				childs[0].destroyRecursive();
