@@ -140,8 +140,8 @@ export default defineComponent({
   display: flex
   align-items: center
 
-.announcement--sticky .announcement__closeWrapper
-  display: none
+.announcement--sticky .announcement__closeButton
+  visibility: hidden
 
 .announcement.announcement--withMessage
   .announcement__title,

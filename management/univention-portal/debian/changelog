@@ -1,3 +1,9 @@
+univention-portal (4.0.14-2) unstable; urgency=medium
+
+  * Bug #55175: Some more styling; fix start and end date
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Fri, 16 Jun 2023 12:09:20 +0200
+
 univention-portal (4.0.14-1) unstable; urgency=medium
 
   * Bug #55175: Adjust style for Announcement.vue (2)

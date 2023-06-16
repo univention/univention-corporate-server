@@ -330,6 +330,7 @@ export default defineComponent({
   padding: 0.5rem
   flex-direction: column
   gap: 0.5rem
+  position: relative
 
 #announcement-container:has(.announcement:not(.announcement--sticky)) .announcement--sticky
   .announcement__closeWrapper
