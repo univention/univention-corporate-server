@@ -74,7 +74,6 @@ def parse_args() -> argparse.Namespace:
 
 def main() -> None:
     opts = parse_args()
-    base = ucr.get("ldap/base")
     server_role = ucr.get("server/role", "")
     if server_role == 'domaincontroller_master':
         print('local LDAP is Primary server, nothing to do')
@@ -90,18 +89,24 @@ def main() -> None:
     else:
         master = uldap.getMachineConnection(ldap_master=True)
 
-    # delete local
     if opts.remove:
-        res = local.searchDn(base=base, filter=opts.filter)
-        if not res:
-            print('object does not exist local')
-        for dn in res:
-            print("remove from local: %s" % (dn,))
-            if not opts.simulate:
-                local.delete(dn)
+        delete_local(opts, local)
 
-    # resync from Primary
-    res = master.search(base=base, filter=opts.filter)
+    resync_from_primary(opts, local, master)
+
+
+def delete_local(opts: argparse.Namespace, local: uldap.access) -> None:
+    res = local.searchDn(base=ucr["ldap/base"], filter=opts.filter)
+    if not res:
+        print('object does not exist local')
+    for dn in res:
+        print("remove from local: %s" % (dn,))
+        if not opts.simulate:
+            local.delete(dn)
+
+
+def resync_from_primary(opts: argparse.Namespace, local: uldap.access, master: uldap.access) -> None:
+    res = master.search(base=ucr["ldap/base"], filter=opts.filter)
     if not res:
         print('object does not exist on Primary')
     for dn, data in res:
