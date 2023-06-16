@@ -19,8 +19,8 @@ import ldap
 import ldif
 from ldap.controls import SimplePagedResultsControl
 
-import univention.config_registry
 from univention import uldap
+from univention.config_registry import ucr
 
 
 sys.path.append("/usr/lib/univention-directory-listener/system/")
@@ -97,8 +97,6 @@ def main() -> None:
 
     logging.basicConfig(stream=sys.stderr, level=logging.DEBUG if opts.verbose else logging.WARNING, format='%(levelname)s: %(message)s')
 
-    ucr = univention.config_registry.ConfigRegistry()
-    ucr.load()
     base = ucr.get("ldap/base")
     if ucr.get("server/role", "") == "domaincontroller_backup":
         lo = uldap.getAdminConnection()
