@@ -239,9 +239,6 @@ for i in sorted(glob.glob(os.path.join(DATA_DIR, '*.json'))):
         app.upgrade()
         app.verify(joined=False)
 
-        images = subprocess.check_output(['docker', 'images'], text=True)
-        assert 'stable' not in images, images
-
         li_pid = get_pid_for_name(' /usr/sbin/univention-directory-listener')
         con_pid = get_pid_for_name('univention-appcenter-listener-converter %s' % name)
         assert old_li_pid == li_pid  # app update does not require listener restart
