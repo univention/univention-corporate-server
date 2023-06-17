@@ -1,4 +1,4 @@
-univention-quota (14.0.5-1) unstable; urgency=medium
+univention-quota (14.0.5-2) unstable; urgency=medium
 
   * Bug #43633: replace direct use of notifier.threads with UMC
     @threaded decorator
