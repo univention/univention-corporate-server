@@ -326,7 +326,7 @@ static int do_connection(univention_ldap_parameters_t *lp) {
 	int sizelimit0 = 0;
 
 	if (univention_ldap_open(lp) != LDAP_SUCCESS) {
-		univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_WARN, "can not connect to LDAP server %s:%d", lp->uri ? lp->uri : lp->host ? lp->host : "NULL", lp->port);
+		univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_WARN, "can not connect to LDAP server %s:%d", lp->uri ? lp->uri : lp->host, lp->port);
 		goto fail;
 	}
 	if (notifier_client_new(NULL, lp->host, 1) != 0)
@@ -339,10 +339,10 @@ static int do_connection(univention_ldap_parameters_t *lp) {
 	case LDAP_SUCCESS:
 		return 0;
 	case LDAP_NO_SUCH_OBJECT:
-		univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "Failed to find \"(objectClass=univentionBase)\" on LDAP server %s:%d", lp->uri ? lp->uri : lp->host ? lp->host : "NULL", lp->port);
+		univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "Failed to find \"(objectClass=univentionBase)\" on LDAP server %s:%d", lp->uri ? lp->uri : lp->host, lp->port);
 		break;
 	default:
-		univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "Failed to search for \"(objectClass=univentionBase)\" on LDAP server %s:%d with message %s", lp->uri ? lp->uri : lp->host ? lp->host : "NULL", lp->port, ldap_err2string(rc));
+		univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "Failed to search for \"(objectClass=univentionBase)\" on LDAP server %s:%d with message %s", lp->uri ? lp->uri : lp->host, lp->port, ldap_err2string(rc));
 		break;
 	}
 fail:
@@ -525,6 +525,10 @@ int main(int argc, char *argv[]) {
 	/* choose server to connect to */
 	if (lp->host == NULL && lp->uri == NULL) {
 		select_server(lp);
+	}
+	if (lp->host == NULL) {
+		univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "No UDN host name set, use -h <host>");
+		exit(1);
 	}
 
 	while (do_connection(lp) != 0) {
