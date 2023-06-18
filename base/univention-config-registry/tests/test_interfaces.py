@@ -1,6 +1,9 @@
 #!/usr/bin/python3
-"""Unit test for univention.config_registry.interfaces."""
 # pylint: disable-msg=C0103,E0611,R0904
+# SPDX-FileCopyrightText: 2014-2023 Univention GmbH
+# SPDX-License-Identifier: AGPL-3.0-only
+
+"""Unit test for univention.config_registry.interfaces."""
 
 from ipaddress import IPv4Address, IPv4Interface, IPv6Address, IPv6Interface
 from os.path import devnull

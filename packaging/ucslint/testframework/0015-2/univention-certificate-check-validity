@@ -1,6 +1,6 @@
 #!/usr/bin/python2.4
 # -*- coding: utf-8 -*-
-# SPDX-License-Identifier: AGPL-3.0
+# SPDX-License-Identifier: AGPL-3.0-only
 # Copyright (C) 2006-2023 Univention GmbH
 
 import time

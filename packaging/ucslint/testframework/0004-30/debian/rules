@@ -1,5 +1,5 @@
 #!/usr/bin/make -f
-# SPDX-License-Identifier: AGPL-3.0
+# SPDX-License-Identifier: AGPL-3.0-only
 # Copyright (C) 2007-2023 Univention GmbH
 
 configure: configure-stamp

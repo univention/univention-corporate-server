@@ -1,4 +1,4 @@
-#!/bin/sed -f
+#!/usr/bin/python3
 # SPDX-FileCopyrightText: 2014-2023 Univention GmbH
 # SPDX-License-Identifier: AGPL-3.0-only
-1{h;$n;d;};/^[ \t]/{H;g;s/\n[ \t]//;$n;h;d;};x;${p;x;}
+pass

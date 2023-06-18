@@ -1,5 +1,9 @@
 #!/usr/bin/python3
+# SPDX-FileCopyrightText: 2014-2023 Univention GmbH
+# SPDX-License-Identifier: AGPL-3.0-only
+
 """Run (uninstalled) univention.config_registry to make sure all commands work"""
+
 from copy import deepcopy
 
 import pytest

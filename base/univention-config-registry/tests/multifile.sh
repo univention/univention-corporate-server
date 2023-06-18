@@ -1,4 +1,6 @@
 #!/bin/sh
+# SPDX-FileCopyrightText: 2014-2023 Univention GmbH
+# SPDX-License-Identifier: AGPL-3.0-only
 #
 # Bug #17913: Test multifile handling
 #

@@ -1,3 +1,6 @@
+# SPDX-FileCopyrightText: 2014-2023 Univention GmbH
+# SPDX-License-Identifier: AGPL-3.0-only
+
 import sys
 from os.path import dirname, join, pardir
 

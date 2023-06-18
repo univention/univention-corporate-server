@@ -1,4 +1,6 @@
 #!/bin/sed -f
+# SPDX-FileCopyrightText: 2014-2023 Univention GmbH
+# SPDX-License-Identifier: AGPL-3.0-only
 1{
 	h # hold := pattern
 	$n # print and next/quit

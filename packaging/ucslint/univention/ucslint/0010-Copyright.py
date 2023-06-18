@@ -50,7 +50,8 @@ DEP5 = "Format: https://www.debian.org/doc/packaging-manuals/copyright-format/1.
 # Copyright (C) 2004-2023 Univention GmbH
 # Copyright 2008 by
 # Copyright: 2004-2023 Univention GmbH
-RE_COPYRIGHT_VERSION = re.compile(r'Copyright(?:\s+\(C\)|:)?\s+([0-9, -]+)\s+(?:by|Univention\s+GmbH)')
+# SPDX-FileCopyrightText: 2014-2023 Univention GmbH
+RE_COPYRIGHT_VERSION = re.compile(r'(?:Copyright(?:\s+\(C\)|:)?|SPDX-FileCopyrightText:)\s+([0-9, -]+)\s+(?:by|Univention\s+GmbH)')
 
 
 class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
@@ -103,28 +104,38 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
             if RE_SKIP.search(content):
                 continue
 
-            copyright_strings = (
-                'under the terms of the GNU Affero General Public License version 3',
-                'Binary versions of this',
-                'provided by Univention to you as',
-                'cryptographic keys etc. are subject to a license agreement between',
-                'the terms of the GNU AGPL V3',
-                'You should have received a copy of the GNU Affero General Public',
-            )
+            if not self.is_agpl3(content):
+                self.addmsg('0010-2', 'file contains no copyright text block', fn)
+                continue
 
-            for teststr in copyright_strings:
-                if teststr not in content:
-                    self.debug('Missing copyright string: %s' % teststr)
-                    self.addmsg('0010-2', 'file contains no copyright text block', fn)
-                    break
+            # copyright text block is present - lets check if it's outdated
+            match = RE_COPYRIGHT_VERSION.search(content)
+            if not match:
+                self.addmsg('0010-4', 'cannot find copyright line containing year', fn)
             else:
-                # copyright text block is present - lets check if it's outdated
-                match = RE_COPYRIGHT_VERSION.search(content)
-                if not match:
-                    self.addmsg('0010-4', 'cannot find copyright line containing year', fn)
-                else:
-                    years = match.group(1)
-                    current_year = str(time.localtime()[0])
-                    if current_year not in years:
-                        self.debug(f'Current year={current_year}  years="{years}"')
-                        self.addmsg('0010-3', 'copyright line seems to be outdated', fn)
+                years = match.group(1)
+                current_year = str(time.localtime()[0])
+                if current_year not in years:
+                    self.debug(f'Current year={current_year}  years="{years}"')
+                    self.addmsg('0010-3', 'copyright line seems to be outdated', fn)
+
+    SPDX = "SPDX-License-Identifier: AGPL-3.0-only"
+    AGPL = (
+        'under the terms of the GNU Affero General Public License version 3',
+        'Binary versions of this',
+        'provided by Univention to you as',
+        'cryptographic keys etc. are subject to a license agreement between',
+        'the terms of the GNU AGPL V3',
+        'You should have received a copy of the GNU Affero General Public',
+    )
+
+    def is_agpl3(self, content: str) -> bool:
+        if self.SPDX in content:
+            return True
+
+        for line in self.AGPL:
+            if line not in content:
+                self.debug('Missing copyright string: %s' % line)
+                return False
+
+        return True

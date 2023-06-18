@@ -1,6 +1,4 @@
 # Only to be called on join, not during install time
 0001-7: 15univention-directory-notifier-post.inst
-# No copyright for
-0010-2: tests/run
 # checkbashisms
 0013-2: etc/network/if-post-down.d/univention-directory-notifier
