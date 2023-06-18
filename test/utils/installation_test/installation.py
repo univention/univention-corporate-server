@@ -341,6 +341,12 @@ class UCSInstallation(object):
             self.client.keyDown('ctrl')
             self.client.keyPress('q')
             self.client.keyUp('ctrl')
+            # Close window and quit Firefox?
+            # [x] Confirm before quitting with Ctrl-Q
+            # [Cancel] [Quit Firefox]
+            sleep(3)
+            if self.text_is_visible("Close windows and quit Firefox?"):
+                self.client.keyPress('enter')
             sleep(60)
             sys.exit(0)
         else:
