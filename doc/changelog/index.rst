@@ -275,7 +275,7 @@ Univention Management Console server
   The implementation now uses :program:`Tornado` instead of the UCS specific
   Python Notifier implementation (:uv:bug:`43633`).
 
-* Restarts of the |UCSUMC| in Debian maintaner scripts and Joinscripts are
+* Restarts of the |UCSUMC| in Debian maintaner scripts and Join scripts are
   now done using ``deb-systemd-invoke`` to respect policy layer (:uv:bug:`54586`).
 
 * Disable the SOAP binding for single sign-out in the identity provider
