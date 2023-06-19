@@ -271,6 +271,10 @@ Univention Portal
 Univention Management Console server
 ====================================
 
+* The |UCSUMC| server and web server have been merged into a single executable.
+  The implementation now uses :program:`Tornado` instead of the UCS specific
+  Python Notifier implementation (:uv:bug:`43633`).
+
 * Restarts of the |UCSUMC| in Debian maintaner scripts and Joinscripts are
   now done using ``deb-systemd-invoke`` to respect policy layer (:uv:bug:`54586`).
 
