@@ -23,14 +23,14 @@ General
   * :program:`avahi` (:uv:cve:`2023-1981`) (:uv:bug:`56034`)
   * :program:`clamav` (:uv:cve:`2023-20032`, :uv:cve:`2023-20052`) (:uv:bug:`55734`)
   * :program:`cpio` (:uv:cve:`2019-14866`, :uv:cve:`2021-38185`) (:uv:bug:`56115`)
-  * :program:`cups-filters` () (:uv:bug:`55886`, :uv:bug:`56082`)
+  * :program:`cups-filters` (:uv:cve:`2023-24805`) (:uv:bug:`56082`)
   * :program:`cups` (:uv:cve:`2023-32324`) (:uv:bug:`56116`)
   * :program:`curl` (:uv:cve:`2023-23916`, :uv:cve:`2023-27533`, :uv:cve:`2023-27535`, :uv:cve:`2023-27536`, :uv:cve:`2023-27538`) (:uv:bug:`55760`, :uv:bug:`56011`)
   * :program:`emacs` (:uv:cve:`2022-48337`, :uv:cve:`2022-48339`, :uv:cve:`2023-28617`) (:uv:bug:`56063`)
   * :program:`firefox-esr` (:uv:cve:`2023-0767`, :uv:cve:`2023-1945`, :uv:cve:`2023-25728`, :uv:cve:`2023-25729`, :uv:cve:`2023-25730`, :uv:cve:`2023-25732`, :uv:cve:`2023-25735`, :uv:cve:`2023-25737`, :uv:cve:`2023-25739`, :uv:cve:`2023-25742`, :uv:cve:`2023-25744`, :uv:cve:`2023-25746`, :uv:cve:`2023-25751`, :uv:cve:`2023-25752`, :uv:cve:`2023-28162`, :uv:cve:`2023-28164`, :uv:cve:`2023-28176`, :uv:cve:`2023-29533`, :uv:cve:`2023-29535`, :uv:cve:`2023-29536`, :uv:cve:`2023-29539`, :uv:cve:`2023-29541`, :uv:cve:`2023-29548`, :uv:cve:`2023-29550`, :uv:cve:`2023-32205`, :uv:cve:`2023-32206`, :uv:cve:`2023-32207`, :uv:cve:`2023-32211`, :uv:cve:`2023-32212`, :uv:cve:`2023-32213`, :uv:cve:`2023-32215`, :uv:cve:`2023-34414`, :uv:cve:`2023-34416`, ) (:uv:bug:`55720`, :uv:bug:`55895`, :uv:bug:`55974`, :uv:bug:`56062`, :uv:bug:`56142`)
   * :program:`firmware-nonfree` (:uv:cve:`2020-12362`, :uv:cve:`2020-12363`, :uv:cve:`2020-12364`, :uv:cve:`2020-24586`, :uv:cve:`2020-24587`, :uv:cve:`2020-24588`, :uv:cve:`2021-23168`, :uv:cve:`2021-23223`, :uv:cve:`2021-37409`, :uv:cve:`2021-44545`, :uv:cve:`2022-21181`) (:uv:bug:`55935`)
   * :program:`freeradius` (:uv:cve:`2022-41859`, :uv:cve:`2022-41860`, :uv:cve:`2022-41861`) (:uv:bug:`55758`)
-  * :program:`ghostscript` () (:uv:bug:`55948`)
+  * :program:`ghostscript` (:uv:cve:`2023-28879`) (:uv:bug:`55948`)
   * :program:`gnutls28` (:uv:cve:`2023-0361`) (:uv:bug:`55723`)
   * :program:`heimdal` (:uv:cve:`2022-3437`, :uv:cve:`2022-45142`) (:uv:bug:`55674`)
   * :program:`imagemagick` (:uv:cve:`2020-19667`, :uv:cve:`2020-25665`, :uv:cve:`2020-25666`, :uv:cve:`2020-25674`, :uv:cve:`2020-25675`, :uv:cve:`2020-25676`, :uv:cve:`2020-27560`, :uv:cve:`2020-27750`, :uv:cve:`2020-27751`, :uv:cve:`2020-27754`, :uv:cve:`2020-27756`, :uv:cve:`2020-27757`, :uv:cve:`2020-27758`, :uv:cve:`2020-27759`, :uv:cve:`2020-27760`, :uv:cve:`2020-27761`, :uv:cve:`2020-27762`, :uv:cve:`2020-27763`, :uv:cve:`2020-27764`, :uv:cve:`2020-27765`, :uv:cve:`2020-27766`, :uv:cve:`2020-27767`, :uv:cve:`2020-27768`, :uv:cve:`2020-27769`, :uv:cve:`2020-27770`, :uv:cve:`2020-27771`, :uv:cve:`2020-27772`, :uv:cve:`2020-27773`, :uv:cve:`2020-27774`, :uv:cve:`2020-27775`, :uv:cve:`2020-27776`, :uv:cve:`2020-29599`, :uv:cve:`2021-20176`, :uv:cve:`2021-20224`, :uv:cve:`2021-20241`, :uv:cve:`2021-20243`, :uv:cve:`2021-20244`, :uv:cve:`2021-20245`, :uv:cve:`2021-20246`, :uv:cve:`2021-20309`, :uv:cve:`2021-20312`, :uv:cve:`2021-20313`, :uv:cve:`2021-3574`, :uv:cve:`2021-3596`, :uv:cve:`2021-39212`, :uv:cve:`2022-28463`, :uv:cve:`2022-32545`, :uv:cve:`2022-32546`, :uv:cve:`2022-32547`, :uv:cve:`2022-44267`, :uv:cve:`2022-44268`) (:uv:bug:`55869`, :uv:bug:`55896`, :uv:bug:`56081`)
@@ -51,7 +51,8 @@ General
   * :program:`python2.7` (:uv:cve:`2015-20107`, :uv:cve:`2019-20907`, :uv:cve:`2020-26116`, :uv:cve:`2020-8492`, :uv:cve:`2021-3177`, :uv:cve:`2021-3733`, :uv:cve:`2021-3737`, :uv:cve:`2021-4189`, :uv:cve:`2022-45061`) (:uv:bug:`56101`)
   * :program:`python-cryptography` (:uv:cve:`2023-23931`) (:uv:bug:`55739`)
   * :program:`python-ipaddress` (:uv:cve:`2020-14422`) (:uv:bug:`56079`)
-  * :program:`qemu` () (:uv:bug:`55881`)
+  * :program:`qemu` (:uv:cve:`2020-14394`, :uv:cve:`2020-17380`, :uv:cve:`2020-29130`, :uv:cve:`2021-3409`, :uv:cve:`2021-3592`, :uv:cve:`2021-3593`, :uv:cve:`2021-3594`, :uv:cve:`2021-3595`, :uv:cve:`2022-0216`, :uv:cve:`2022-1050`) (:uv:bug:`55881`)
+  * :program:`requests` (:uv:cev:`2023-32681`) (:uv:bug:`56155`),
   * :program:`samba` (:uv:cve:`2023-0614`, :uv:cve:`2023-0922`) (:uv:bug:`55892`)
   * :program:`systemd` (:uv:cve:`2023-26604`) (:uv:bug:`55928`)
   * :program:`tiff` (:uv:cve:`2023-0795`, :uv:cve:`2023-0796`, :uv:cve:`2023-0797`, :uv:cve:`2023-0798`, :uv:cve:`2023-0799`, :uv:cve:`2023-0800`, :uv:cve:`2023-0801`, :uv:cve:`2023-0802`, :uv:cve:`2023-0803`, :uv:cve:`2023-0804`) (:uv:bug:`55736`)
@@ -135,7 +136,6 @@ General
   :program:`rainloop`,
   :program:`rclone`,
   :program:`redis`,
-  :program:`requests`,
   :program:`restic`,
   :program:`ruby2.5`,
   :program:`ruby-rack`,
@@ -214,7 +214,7 @@ Listener/Notifier domain replication
   been added.
   The list of excluded OIDs is no longer maintained in :file:`replication.py`
   itself, but is now stored in the file
-  :file:`/usr/share/univention-ldap/oid_skip`.
+  :file:`/usr/share/univention-ldap/oid_skip` (:uv:bug:`55927`).
 
 .. _changelog-umc-web:
 
