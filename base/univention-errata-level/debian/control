@@ -4,12 +4,12 @@ Priority: optional
 Maintainer: Univention GmbH <packages@univention.de>
 Build-Depends:
  debhelper,
-Standards-Version: 3.5.2
+Standards-Version: 3.9.5
 
 Package: univention-errata-level
 Architecture: all
 Depends:
- ${misc:Depends},
+ univention-config,
 Description: UCS - errata level handling
  This package sets the errata level.
  .

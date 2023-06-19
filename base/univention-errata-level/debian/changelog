@@ -1,3 +1,9 @@
+univention-errata-level (5.0.3-709.1) unstable; urgency=low
+
+  * Bug #54263: maintain more packages
+
+ -- Philipp Hahn <hahn@univention.de>  Mon, 19 Jun 2023 08:43:29 +0200
+
 univention-errata-level (5.0.0-0) unstable; urgency=medium
 
   * Bug #51419: UCS-5.0-0 version bump
