@@ -596,6 +596,8 @@ install_ucsschool () {
 
 	# Bug #50690: ucs-school-webproxy would set this to yes. Which breaks our test environment
 	ucr set --force dhcpd/authoritative=no
+	# Bug #54228: run tests without stopping the notifier during imports, to detect problems
+	ucr set --force ucsschool/stop_notifier=no
 	activate_ucsschool_repositories || rv=$?
 
 	case "${UCSSCHOOL_RELEASE:-scope}" in
