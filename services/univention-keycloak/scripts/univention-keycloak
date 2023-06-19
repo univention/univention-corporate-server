@@ -71,7 +71,7 @@ URL_ADMIN_REQUIRED_ACTIONS = URL_ADMIN_REALM + "/authentication/required-actions
 URL_ADMIN_REQUIRED_ACTION_REGISTER = URL_ADMIN_REALM + "/authentication/register-required-action"
 DEFAULT_EXTENTIONS = ["password", "ldapmapper", "self-service"]
 DEFAULT_USER_STORAGE_PROVIDER_NAME = "ldap-provider"
-
+KERBEROS_KEYTAB_PATH = "/var/lib/univention-appcenter/apps/keycloak/conf/keycloak.keytab"
 # default LDAP attribute mapper
 #  * sn -> lastName
 #  * givenName -> firstName
@@ -126,6 +126,13 @@ class KeycloakDomainConfig:
     def get_domain_config_version(self) -> str:
         data = self.get()
         return data.get("domain_config_version", "0")
+
+    def set(self, val):
+        obj = self.get_obj()
+        data = self.get()
+        key, value = val.split("=", 1)
+        data[key] = value
+        self.save_obj(data, obj)
 
     def set_domain_config_version(self, version: str) -> None:
         if version not in self.keycloak_versions:
@@ -314,7 +321,9 @@ def modify_component(kc_client, payload_):
     ldap_component_list = kc_client.get_components(ldap_component_filter)
     if ldap_component_list:
         ldap_component = ldap_component_list.pop()
-        kc_client.update_component(ldap_component.get("id"), payload=payload_)
+        payload = ldap_component
+        payload["config"].update(payload_["config"])
+        kc_client.update_component(ldap_component.get("id"), payload=payload)
         ldap_component_list = kc_client.get_components(ldap_component_filter)
 
     ldap_component = ldap_component_list.pop()
@@ -762,6 +771,7 @@ def parse_args(args: list[str] | None = None) -> Namespace:
     keycloak_fqdn = ucr.get("keycloak/server/sso/fqdn", f"ucs-sso-ng.{domainname}")
     keycloak_url = f"https://{keycloak_fqdn}"
     keycloak_sso_path = ucr.get("keycloak/server/sso/path")
+    kerberos_realm = ucr.get("kerberos/realm")
 
     keycloak_url = urljoin(keycloak_url, keycloak_sso_path)
     if not keycloak_url.endswith("/"):
@@ -951,6 +961,8 @@ def parse_args(args: list[str] | None = None) -> Namespace:
     parser_domain_config = subparsers.add_parser("domain-config", help="get/manage keycloak domain config (UCS only)")
     parser_domain_config.add_argument("--json", help="json output", default=False, action="store_true")
     parser_domain_config.add_argument("--get", help="get domain config", default=False, action="store_true")
+    # dangerous, hidden, should only by the app itself
+    parser_domain_config.add_argument("--set", help=SUPPRESS)
     # dangerous, hidden, should only be used for tests
     parser_domain_config.add_argument("--set-domain-config-version", help=SUPPRESS)
     # dangerous, hidden, should only be used for tests
@@ -993,6 +1005,8 @@ def parse_args(args: list[str] | None = None) -> Namespace:
         else:
             with open(opt.ldap_system_user_pwdfile) as fd:
                 opt.ldap_system_user_pwd = fd.read().strip()
+    opt.kerberos_realm = kerberos_realm
+    opt.keycloak_fqdn = keycloak_fqdn
     return opt
 
 
@@ -1111,8 +1125,28 @@ def delete_user_attribute_ldap_mapper(opt: Namespace) -> None:
         print(f"LDAP provider mapper {opt.attributename} not found, nothing to delete.")
 
 
+def create_kerberos_config(opt: Namespace) -> None:
+    session = UniventionKeycloakAdmin(opt)
+    name = DEFAULT_USER_STORAGE_PROVIDER_NAME
+    provider_id = session.get_user_storage_provider_id()
+    payload = {
+        "name": name,
+        "providerType": "org.keycloak.storage.UserStorageProvider",
+        "parentId": get_realm_id(session, opt.realm),
+        "providerId": provider_id,
+        "config": {
+            "allowKerberosAuthentication": ["true"],
+            "kerberosRealm": [opt.kerberos_realm],
+            "serverPrincipal": [f"HTTP/{opt.keycloak_fqdn}@{opt.kerberos_realm}"],
+            "keyTab": [KERBEROS_KEYTAB_PATH],
+        },
+    }
+    modify_component(session, payload)
+
+
 def create_user_attribute_ldap_mapper(opt: Namespace) -> None:
     session = UniventionKeycloakAdmin(opt)
+
     provider_id = session.get_user_storage_provider_id()
     existing_mappers = session.get_user_storage_ldap_mappers(provider_id)
     if opt.attributename in [x["name"] for x in existing_mappers]:
@@ -1142,6 +1176,8 @@ def domain_config(opt: Namespace) -> None:
             versions = kdc.get()
             out = json.dumps(versions, indent=4) if opt.json else versions
             print(out)
+        if opt.set:
+            kdc.set(opt.set)
         if opt.set_domain_config_version:
             kdc.set_domain_config_version(opt.set_domain_config_version)
         if opt.set_domain_config_init:
@@ -1192,6 +1228,7 @@ def upgrade_config(opt: Namespace) -> None:
                     create_user_attribute_ldap_mapper(opt)
                     opt.attributename = "entryUUID"
                     create_user_attribute_ldap_mapper(opt)
+                    create_kerberos_config(opt)
                     kdc.set_domain_config_version(version)
     else:
         print("Only supported on UCS systems")
@@ -1847,7 +1884,10 @@ def init_keycloak_ucs(opt):
             "usernameLDAPAttribute": ["uid"],
             "vendor": ["other"],
             "uuidLDAPAttribute": ["entryUUID"],
-            "allowKerberosAuthentication": ["false"],
+            "allowKerberosAuthentication": ["true"],
+            "kerberosRealm": [opt.kerberos_realm],
+            "serverPrincipal": [f"HTTP/{opt.keycloak_fqdn}@{opt.kerberos_realm}"],
+            "keyTab": [KERBEROS_KEYTAB_PATH],
             "connectionUrl": [ucs_ldap_url],
             "syncRegistrations": ["false"],
             "authType": ["simple"],
