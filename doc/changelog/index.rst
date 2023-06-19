@@ -271,6 +271,9 @@ Univention Portal
 Univention Management Console server
 ====================================
 
+* Restarts of the |UCSUMC| in Debian maintaner scripts and Joinscripts are
+  now done using ``deb-systemd-invoke`` to respect policy layer (:uv:bug:`54586`).
+
 * Disable the SOAP binding for single sign-out in the identity provider
   metadata to make sure we don't use SOAP for the UMC SAML logout
   (:uv:bug:`56069`).
