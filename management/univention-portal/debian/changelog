@@ -1,3 +1,9 @@
+univention-portal (4.0.14-3) unstable; urgency=medium
+
+  * Bug #55175: Remove needsConfirmation from layout
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Mon, 19 Jun 2023 12:03:33 +0200
+
 univention-portal (4.0.14-2) unstable; urgency=medium
 
   * Bug #55175: Some more styling; fix start and end date

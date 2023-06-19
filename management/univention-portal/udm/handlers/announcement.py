@@ -72,7 +72,7 @@ property_descriptions = {
         required=False,
     ),
     'needsConfirmation': univention.admin.property(
-        short_description=_('Needs Confirmation'),
+        short_description=_('Needs Confirmation (not yet implemented!)'),
         long_description=_('If enabled, the user will see a "Confirm" button and the announcement will persist until it is clicked.'),
         syntax=univention.admin.syntax.TrueFalseUp,
         default='FALSE',
@@ -137,7 +137,7 @@ layout = [
             ["visibleFrom", "visibleUntil"],
         ]),
         Group(_('Options'), layout=[
-            ["needsConfirmation", "isSticky"],
+            ["isSticky"],
             ["severity"],
             ["allowedGroups"],
         ]),

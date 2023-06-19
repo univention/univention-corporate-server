@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-portal\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2023-03-10 18:51+0000\n"
+"POT-Creation-Date: 2023-06-19 12:10+0200\n"
 "PO-Revision-Date: 2020-05-01 00:20+0200\n"
 "Last-Translator: Univention GmbH <packages@univention.de>\n"
 "Language-Team: German <packages@univention.de>\n"
@@ -16,11 +16,11 @@ msgstr ""
 msgid "A color theme the announcement should appear in."
 msgstr "Ein Farbschema in dem die Ansagen erscheinen sollen."
 
-#: udm/handlers/entry.py:102
+#: udm/handlers/entry.py:103
 msgid "Activated"
 msgstr "Aktiviert"
 
-#: udm/handlers/entry.py:158
+#: udm/handlers/entry.py:159
 msgid "Advanced"
 msgstr "Erweitert"
 
@@ -28,23 +28,23 @@ msgstr "Erweitert"
 msgid "Announcement options"
 msgstr "Optionen für Announcements"
 
-#: udm/handlers/portal.py:117
+#: udm/handlers/portal.py:118
 msgid "Announcements"
 msgstr "Announcements"
 
-#: udm/handlers/portal.py:149
+#: udm/handlers/portal.py:150
 msgid "Appearance"
 msgstr "Erscheinung"
 
-#: udm/handlers/portal.py:82
+#: udm/handlers/portal.py:83
 msgid "Background"
 msgstr "Hintergrund"
 
-#: udm/handlers/entry.py:131
+#: udm/handlers/entry.py:132
 msgid "Background color"
 msgstr "Hintergrundfarbe"
 
-#: udm/handlers/portal.py:83
+#: udm/handlers/portal.py:84
 msgid "Background image of the Portal"
 msgstr "Hintergrundbild des Portals"
 
@@ -56,15 +56,15 @@ msgstr "Allgemeine Einstellungen"
 msgid "Black"
 msgstr "Schwarz"
 
-#: udm/handlers/entry.py:120
+#: udm/handlers/entry.py:121
 msgid "Browser tab when opening link"
 msgstr "Browser-Tab beim Öffnen des Links"
 
-#: udm/handlers/portal.py:112 udm/handlers/portal.py:136
+#: udm/handlers/portal.py:113 udm/handlers/portal.py:137
 msgid "Categories"
 msgstr "Kategorien"
 
-#: udm/handlers/category.py:86
+#: udm/handlers/category.py:87
 msgid "Category options"
 msgstr "Optionen für Kategorie"
 
@@ -76,15 +76,15 @@ msgstr "Inhalt"
 msgid "Danger"
 msgstr "Gefahr"
 
-#: udm/handlers/portal.py:123
+#: udm/handlers/portal.py:124
 msgid "Default browser tab for portal entries"
 msgstr "Standard Browser-Tab für Portaleinträge"
 
-#: udm/handlers/entry.py:76 udm/handlers/entry.py:147
+#: udm/handlers/entry.py:77 udm/handlers/entry.py:148
 msgid "Description"
 msgstr "Beschreibung"
 
-#: udm/handlers/entry.py:77
+#: udm/handlers/entry.py:78
 msgid ""
 "Description of the entry. At least one entry; strongly encouraged to have "
 "one for en_US"
@@ -92,13 +92,13 @@ msgstr ""
 "Beschreibung des Eintrags. Mindestens ein Wert; insbesondere en_US ist "
 "empfohlen"
 
-#: udm/handlers/all.py:75 udm/handlers/category.py:71 udm/handlers/entry.py:69
-#: udm/handlers/entry.py:144 udm/handlers/folder.py:71
-#: udm/handlers/folder.py:90 udm/handlers/portal.py:70
+#: udm/handlers/folder.py:72 udm/handlers/folder.py:91 udm/handlers/all.py:75
+#: udm/handlers/category.py:72 udm/handlers/portal.py:71
+#: udm/handlers/entry.py:70 udm/handlers/entry.py:145
 msgid "Display name"
 msgstr "Anzeigename"
 
-#: udm/handlers/category.py:72
+#: udm/handlers/category.py:73
 msgid ""
 "Display name of the category. At least one entry; strongly encouraged to "
 "have one for en_US"
@@ -114,35 +114,35 @@ msgstr "Eingebettet"
 msgid "End date"
 msgstr "Enddatum"
 
-#: udm/handlers/folder.py:93
+#: udm/handlers/folder.py:94
 msgid "Entries"
 msgstr "Einträge"
 
-#: udm/handlers/portal.py:106
+#: udm/handlers/portal.py:107
 msgid "Entries in the menu"
 msgstr "Einträge im Menü"
 
-#: udm/handlers/portal.py:100
+#: udm/handlers/portal.py:101
 msgid "Entries in the user menu"
 msgstr "Einträge im Benutzermenü"
 
-#: udm/handlers/category.py:78 udm/handlers/folder.py:78
+#: udm/handlers/folder.py:79 udm/handlers/category.py:79
 msgid "Entry"
 msgstr "Eintrag"
 
-#: udm/handlers/entry.py:138 udm/handlers/folder.py:86
+#: udm/handlers/folder.py:87 udm/handlers/entry.py:139
 msgid "Entry options"
 msgstr "Optionen für Eintrag"
 
-#: udm/handlers/all.py:82 udm/handlers/announcement.py:128
-#: udm/handlers/announcement.py:129 udm/handlers/category.py:86
-#: udm/handlers/category.py:90 udm/handlers/entry.py:138
-#: udm/handlers/entry.py:139 udm/handlers/folder.py:86
-#: udm/handlers/folder.py:87 udm/handlers/portal.py:131
+#: udm/handlers/folder.py:87 udm/handlers/folder.py:88
+#: udm/handlers/announcement.py:128 udm/handlers/announcement.py:129
+#: udm/handlers/all.py:82 udm/handlers/category.py:87
+#: udm/handlers/category.py:91 udm/handlers/portal.py:132
+#: udm/handlers/entry.py:139 udm/handlers/entry.py:140
 msgid "General"
 msgstr "Allgemein"
 
-#: udm/handlers/entry.py:70
+#: udm/handlers/entry.py:71
 msgid ""
 "Headline of the entry. At least one entry; strongly encouraged to have one "
 "for en_US"
@@ -150,7 +150,7 @@ msgstr ""
 "Überschrift des Eintrags. Mindestens ein Wert; insbesondere en_US ist "
 "empfohlen"
 
-#: udm/handlers/folder.py:72
+#: udm/handlers/folder.py:73
 msgid ""
 "Headline of the folder. At least one entry; strongly encouraged to have one "
 "for en_US"
@@ -158,7 +158,7 @@ msgstr ""
 "Überschrift des Ordners. Mindestens ein Wert; insbesondere en_US ist "
 "empfohlen"
 
-#: udm/handlers/portal.py:71
+#: udm/handlers/portal.py:72
 msgid ""
 "Headline of the portal. At least one entry; strongly encouraged to have one "
 "for en_US"
@@ -166,7 +166,7 @@ msgstr ""
 "Überschrift des Portals. Mindestens ein Wert; insbesondere en_US ist "
 "empfohlen"
 
-#: udm/handlers/entry.py:114
+#: udm/handlers/entry.py:115
 msgid "Icon"
 msgstr "Icon"
 
@@ -198,7 +198,7 @@ msgstr ""
 "Gruppen Mitglied sind. Wenn keine Gruppe ausgewählt wird, ist das "
 "Announcement für alle Benutzersichtbar."
 
-#: udm/handlers/entry.py:97
+#: udm/handlers/entry.py:98
 msgid ""
 "If one or more groups are selected then the portal entry will only be "
 "visible to logged in users that are in any of the selected groups. If no "
@@ -213,18 +213,18 @@ msgstr ""
 msgid "Info"
 msgstr "Info"
 
-#: udm/handlers/all.py:67 udm/handlers/announcement.py:59
-#: udm/handlers/category.py:62 udm/handlers/entry.py:60
-#: udm/handlers/folder.py:62 udm/handlers/portal.py:61
+#: udm/handlers/folder.py:63 udm/handlers/announcement.py:59
+#: udm/handlers/all.py:67 udm/handlers/category.py:63
+#: udm/handlers/portal.py:62 udm/handlers/entry.py:61
 msgid "Internal name"
 msgstr "Interner Name"
 
-#: udm/handlers/entry.py:83 udm/handlers/entry.py:150
+#: udm/handlers/entry.py:84 udm/handlers/entry.py:151
 #: udm/syntax/univention-portal.py:139
 msgid "Keywords"
 msgstr "Schlüsselwörter"
 
-#: udm/handlers/entry.py:84
+#: udm/handlers/entry.py:85
 msgid "Keywords of the entry used during search."
 msgstr "Schlüsselwörter des Eintrags, die für die Suche genutzt werden."
 
@@ -232,52 +232,52 @@ msgstr "Schlüsselwörter des Eintrags, die für die Suche genutzt werden."
 msgid "Language code (e.g. en_US)"
 msgstr "Sprachcode (z.B. de_DE)"
 
-#: udm/handlers/entry.py:153 udm/syntax/univention-portal.py:132
+#: udm/handlers/entry.py:154 udm/syntax/univention-portal.py:132
 msgid "Link"
 msgstr "Link"
 
-#: udm/handlers/portal.py:140
+#: udm/handlers/portal.py:141
 msgid "Link behaviour"
 msgstr "Link-Verhalten"
 
-#: udm/handlers/entry.py:126
+#: udm/handlers/entry.py:127
 msgid "Link target name"
 msgstr "Link-Ziel Name"
 
-#: udm/handlers/entry.py:89
+#: udm/handlers/entry.py:90
 msgid "Links (best pick based on locale / protocol / hostname)"
 msgstr "Links (wählt aus Sprache / Protokoll / Computername)"
 
-#: udm/handlers/portal.py:118
+#: udm/handlers/portal.py:119
 msgid "List of announcements that are shown in the portal"
 msgstr "Liste der Announcements, die im Menü des Portals angezeigt werden"
 
-#: udm/handlers/category.py:79
+#: udm/handlers/category.py:80
 msgid "List of portal entries and/or portal folders shown in this category"
 msgstr "Liste der Portaleinträge und/oder Portalordner in dieser Kategorie"
 
-#: udm/handlers/folder.py:79
+#: udm/handlers/folder.py:80
 msgid "List of portal entries and/or portal folders shown in this folder"
 msgstr ""
 "Liste der Portaleinträge und/oder Portalordner die in diesem Ordner "
 "angezeigt werden"
 
-#: udm/handlers/portal.py:101
+#: udm/handlers/portal.py:102
 msgid ""
 "List of portal entries that are shown in the menu for the logged in user"
 msgstr ""
 "Liste der Portaleinträge, die im Menü des angemeldeten Benutzers angezeigt "
 "werden"
 
-#: udm/handlers/portal.py:107
+#: udm/handlers/portal.py:108
 msgid "List of portal entries that are shown in the menu of the portal"
 msgstr "Liste der Portaleinträge, die im Menü des Portals angezeigt werden"
 
-#: udm/handlers/portal.py:153
+#: udm/handlers/portal.py:154
 msgid "Login"
 msgstr "Login"
 
-#: udm/handlers/portal.py:89
+#: udm/handlers/portal.py:90
 msgid "Logo image for the portal."
 msgstr "Logo Bild für das Portal."
 
@@ -285,7 +285,7 @@ msgstr "Logo Bild für das Portal."
 msgid "Management of portals and their entries"
 msgstr "Verwaltung der Portale und ihrer Einträge"
 
-#: udm/handlers/portal.py:146
+#: udm/handlers/portal.py:147
 msgid "Menu"
 msgstr "Menü"
 
@@ -293,23 +293,23 @@ msgstr "Menü"
 msgid "Message"
 msgstr "Nachricht"
 
-#: udm/handlers/category.py:87 udm/handlers/portal.py:132
+#: udm/handlers/category.py:88 udm/handlers/portal.py:133
 msgid "Name"
 msgstr "Name"
 
 #: udm/handlers/announcement.py:75
-msgid "Needs Confirmation"
-msgstr "Bestätigung erforderlich"
+msgid "Needs Confirmation (not yet implemented!)"
+msgstr "Bestätigung erforderlich (noch nicht implementiert!)"
 
 #: udm/syntax/univention-portal.py:106 udm/syntax/univention-portal.py:115
 msgid "New tab"
 msgstr "Neuer Tab"
 
-#: udm/handlers/portal.py:51
+#: udm/handlers/portal.py:52
 msgid "Object that feeds everything in https://fqdn/univention/portal"
 msgstr "Objekt für die Anzeige in https://fqdn/univention/portal"
 
-#: udm/handlers/category.py:52
+#: udm/handlers/category.py:53
 msgid ""
 "Object under which portals/entry objects can be displayed. Belongs to one or"
 " more portals/portal objects"
@@ -317,7 +317,7 @@ msgstr ""
 "Objekt, unter dem portals/entry Objekte angezeigt werden können. Gehört zu "
 "einem oder mehreren portals/portal Objekten"
 
-#: udm/handlers/folder.py:52
+#: udm/handlers/folder.py:53
 msgid ""
 "One folder in https://fqdn/univention/portal which holds one or more "
 "portals/entry objects. Belongs to one or more portals/category objects, "
@@ -336,7 +336,7 @@ msgstr ""
 "portals/announcement Objekte enthält. Gehört zu einem oder mehreren "
 "portal/portal Objekten."
 
-#: udm/handlers/entry.py:50
+#: udm/handlers/entry.py:51
 msgid ""
 "One link in https://fqdn/univention/portal. Belongs to one or more "
 "portals/category objects, which belong to one or more portals/portal objects"
@@ -345,7 +345,7 @@ msgstr ""
 "portal/category Objekten, die zu einem oder mehreren portals/portal Objekten"
 " gehören"
 
-#: udm/handlers/entry.py:108
+#: udm/handlers/entry.py:109
 msgid "Only visible if not logged in"
 msgstr "Nur sichtbar, wenn nicht angemeldet"
 
@@ -353,7 +353,7 @@ msgstr "Nur sichtbar, wenn nicht angemeldet"
 msgid "Options"
 msgstr "Optionen"
 
-#: udm/handlers/portal.py:49
+#: udm/handlers/portal.py:50
 msgid "Portal"
 msgstr "Portal"
 
@@ -365,35 +365,35 @@ msgstr "Portalannouncements"
 msgid "Portal announcements"
 msgstr "Portalannouncements"
 
-#: udm/handlers/category.py:51
+#: udm/handlers/category.py:52
 msgid "Portal categories"
 msgstr "Portal-Kategorien"
 
-#: udm/handlers/category.py:50
+#: udm/handlers/category.py:51
 msgid "Portal category"
 msgstr "Portal-Kategorie"
 
-#: udm/handlers/entry.py:49
+#: udm/handlers/entry.py:50
 msgid "Portal entries"
 msgstr "Portaleinträge"
 
-#: udm/handlers/entry.py:48
+#: udm/handlers/entry.py:49
 msgid "Portal entry"
 msgstr "Portal-Eintrag"
 
-#: udm/handlers/folder.py:50
+#: udm/handlers/folder.py:51
 msgid "Portal folder"
 msgstr "Portal-Ordner"
 
-#: udm/handlers/folder.py:51
+#: udm/handlers/folder.py:52
 msgid "Portal folders"
 msgstr "Portal-Ordner"
 
-#: udm/handlers/portal.py:88
+#: udm/handlers/portal.py:89
 msgid "Portal logo"
 msgstr "Portal-Logo"
 
-#: udm/handlers/portal.py:131
+#: udm/handlers/portal.py:132
 msgid "Portal options"
 msgstr "Optionen für Portal"
 
@@ -401,19 +401,19 @@ msgstr "Optionen für Portal"
 msgid "Portal: Announcement"
 msgstr "Portal: Announcement"
 
-#: udm/handlers/category.py:49
+#: udm/handlers/category.py:50
 msgid "Portal: Category"
 msgstr "Portal: Kategorie"
 
-#: udm/handlers/entry.py:47
+#: udm/handlers/entry.py:48
 msgid "Portal: Entry"
 msgstr "Portal: Eintrag"
 
-#: udm/handlers/folder.py:49
+#: udm/handlers/folder.py:50
 msgid "Portal: Folder"
 msgstr "Portal: Ordner"
 
-#: udm/handlers/portal.py:48
+#: udm/handlers/portal.py:49
 msgid "Portal: Portal"
 msgstr "Portal: Portal"
 
@@ -421,15 +421,15 @@ msgstr "Portal: Portal"
 msgid "Portal: Settings"
 msgstr "Portal: Einstellungen"
 
-#: udm/handlers/portal.py:50
+#: udm/handlers/portal.py:51
 msgid "Portals"
 msgstr "Portale"
 
-#: udm/handlers/portal.py:94
+#: udm/handlers/portal.py:95
 msgid "Redirect anonymous visitors to the login"
 msgstr "Anonyme Besucher zum Login umleiten"
 
-#: udm/handlers/announcement.py:68 udm/handlers/entry.py:96
+#: udm/handlers/announcement.py:68 udm/handlers/entry.py:97
 msgid "Restrict visibility to groups"
 msgstr "Sichtbarkeit auf Gruppen beschränken"
 
@@ -441,7 +441,7 @@ msgstr "Gleicher Tab"
 msgid "Severity"
 msgstr "Schweregrad"
 
-#: udm/handlers/portal.py:77
+#: udm/handlers/portal.py:78
 msgid "Show UMC categories and modules"
 msgstr "Zeige UMC-Kategorien und -Module"
 
@@ -492,7 +492,7 @@ msgstr "Titel"
 msgid "Use default of portal"
 msgstr "Portal-Vorgabe nutzen"
 
-#: udm/handlers/portal.py:143
+#: udm/handlers/portal.py:144
 msgid "User menu"
 msgstr "Benutzermenü"
 
