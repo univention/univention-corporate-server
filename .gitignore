@@ -28,3 +28,5 @@ generated-config-*.yml
 .mypy_cache/
 .ucs-started-vms
 COMMAND_SUCCESS
+test/*.log
+test/screenshots/
