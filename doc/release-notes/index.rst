@@ -21,6 +21,9 @@ the most important changes:
 
 * Samba has been updated to version 4.18.3
 
+* The portal can now display announcements which can be used to, e.g., inform
+  users about upcoming downtimes.
+
 * The |UCSUMC| server and web-server haven been merged into a single executable.
   The implementation now uses :program:`Tornado` instead of the
   UCS specific Python Notifier implementation.
