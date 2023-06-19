@@ -52,7 +52,7 @@ General
   * :program:`python-cryptography` (:uv:cve:`2023-23931`) (:uv:bug:`55739`)
   * :program:`python-ipaddress` (:uv:cve:`2020-14422`) (:uv:bug:`56079`)
   * :program:`qemu` (:uv:cve:`2020-14394`, :uv:cve:`2020-17380`, :uv:cve:`2020-29130`, :uv:cve:`2021-3409`, :uv:cve:`2021-3592`, :uv:cve:`2021-3593`, :uv:cve:`2021-3594`, :uv:cve:`2021-3595`, :uv:cve:`2022-0216`, :uv:cve:`2022-1050`) (:uv:bug:`55881`)
-  * :program:`requests` (:uv:cev:`2023-32681`) (:uv:bug:`56155`),
+  * :program:`requests` (:uv:cve:`2023-32681`) (:uv:bug:`56155`),
   * :program:`samba` (:uv:cve:`2023-0614`, :uv:cve:`2023-0922`) (:uv:bug:`55892`)
   * :program:`systemd` (:uv:cve:`2023-26604`) (:uv:bug:`55928`)
   * :program:`tiff` (:uv:cve:`2023-0795`, :uv:cve:`2023-0796`, :uv:cve:`2023-0797`, :uv:cve:`2023-0798`, :uv:cve:`2023-0799`, :uv:cve:`2023-0800`, :uv:cve:`2023-0801`, :uv:cve:`2023-0802`, :uv:cve:`2023-0803`, :uv:cve:`2023-0804`) (:uv:bug:`55736`)
