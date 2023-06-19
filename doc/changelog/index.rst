@@ -342,6 +342,9 @@ Univention App Center
 * Problems during concurrently reloading of UDM modules have been resolved
   (:uv:bug:`54597`).
 
+* Policies are now correctly written back in the Simple UDM API
+  (:uv:bug:`56146`).
+
 .. _changelog-umc-setup:
 
 Modules for system settings / setup wizard
