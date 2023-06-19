@@ -203,7 +203,7 @@ class Resource(RequestHandler):
         # make sure a lost connection to the UMC-Server does not bind the session to ::1
         if ip != current_ip and any(ipaddress.ip_address(current_ip) in network for network in allowed_networks):
             CORE.warn('Switching session IP from=%r to=%r' % (current_ip, ip))
-            self.current_user.ip = current_ip = ip
+            self.current_user.user.ip = current_ip = ip
 
         # bind session to IP (allow requests from localhost)
         if ip != current_ip and not any(ipaddress.ip_address(ip) in network for network in allowed_networks):
