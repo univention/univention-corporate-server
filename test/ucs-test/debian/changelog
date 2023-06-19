@@ -1,3 +1,9 @@
+ucs-test (10.0.15-1) unstable; urgency=medium
+
+  * test(grep-traceback): ignore Bug #54586
+
+ -- Florian Best <best@univention.de>  Mon, 19 Jun 2023 13:54:49 +0200
+
 ucs-test (10.0.14-2) unstable; urgency=medium
 
   * Bug #56154: Update 51_samba4/40password-policies
