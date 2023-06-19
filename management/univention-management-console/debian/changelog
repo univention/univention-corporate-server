@@ -1,3 +1,9 @@
+univention-management-console (12.0.31-1) unstable; urgency=medium
+
+  * Bug #43633: fix typo in session-to-client-IP binding
+
+ -- Florian Best <best@univention.de>  Mon, 19 Jun 2023 12:47:56 +0200
+
 univention-management-console (12.0.30-1) unstable; urgency=medium
 
   * Bug #43633: drop authenticated status when reauthenticating with wrong
