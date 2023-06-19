@@ -932,7 +932,7 @@ setup_ec2 () {
 	debconf-communicate <<<"set grub-pc/install_devices $DEV"
 
 	append="$(ucr get grub/append |
-		sed -re "s|/dev/sda|${DEV}|g;s|(no)?splash||g")"
+		sed -re "s|/dev/[hsv]da|${DEV}|g;s|(no)?splash||g")"
 
 	ucr set server/amazon=true \
 		updater/identify="UCS (EC2)" \
