@@ -631,11 +631,9 @@ class complex(ISyntax):
         ]
 
     def parse_command_line(self, value):
-        # FIXME: Bug #27241: not possible to contain escaped "-quote
         if '"' not in value:
             return value.split(' ')
-        else:
-            return [x.strip() for x in value.split('"') if x.strip()]
+        return shlex.split(value)
 
 
 class _UDMObjectOrAttribute(object):

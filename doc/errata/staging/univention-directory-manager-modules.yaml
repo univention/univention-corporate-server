@@ -3,10 +3,11 @@ release: "5.0"
 version: [4]
 scope: ucs_5.0-0-errata5.0-4
 src: univention-directory-manager-modules
-fix: 15.0.24-2
+fix: 15.0.24-3
 desc: |
  This update addresses the following issues:
  * When computer objects were assigned with a network the DHCP and DNS
    settings weren't saved if a custom IP was specified. This has been
    corrected.
-bug: [55459]
+ * Values for the "complex" syntax class can now contain double quotes.
+bug: [55459, 27241]
