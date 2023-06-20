@@ -21,10 +21,10 @@ the most important changes:
 
 * Update to Samba version 4.18.3
 
-* The portal can now display announcements that you can use to for example inform
-  users about upcoming maintenance windows.
+* The portal can now display announcements, which you can use to notify
+  users of upcoming maintenance windows, for example.
 
-* The |UCSUMC| server and web server haven been merged into a single executable.
+* The |UCSUMC| server and web server have been merged into a single executable.
   The implementation now uses :program:`Tornado` instead of the UCS specific
   Python Notifier implementation.
 
@@ -54,10 +54,10 @@ Depending on the system performance, network connection, and installed software,
 the update can take anywhere from 20 minutes to several hours. For large
 environments, consult :cite:t:`ucs-performance-guide`.
 
-.. _relnotes-order:
+.. _relnotes-sequence:
 
-Recommended update order for environments with more than one UCS server
-=======================================================================
+Recommended update sequence for environments with more than one UCS system
+==========================================================================
 
 In environments with more than one UCS system, take the update sequence of the UCS
 systems into account.
@@ -82,17 +82,14 @@ bit UCS systems can't update to UCS 5.
 Simultaneous operation of UCS and Debian on UEFI systems
 ********************************************************
 
-Please note that simultaneous operation of UCS and Debian on a UEFI system
-starting with UCS 5.0 isn't supported.
+Please note that simultaneous operation of UCS and Debian GNU/Linux on a UEFI
+system starting with UCS 5.0 isn't supported.
 
 The reason for this is the GRUB boot loader of |UCSUCS|, which partly uses the
 same configuration files as Debian. An already installed Debian leads to the
 fact that UCS can't boot (anymore) after the installation of or an update to UCS
 5.0. A subsequent installation of Debian results in UCS 5.0 not being able to
-boot.
-
-The following help article collects further hints to this topic:
-:uv:kb:`17768`.
+boot. For more information, refer to :uv:kb:`17768`.
 
 .. _relnotes-localrepo:
 
@@ -104,10 +101,11 @@ This section is relevant for environments with a :external+uv-manual:ref:`local
 repository <software-create-repo>`. The installed (major) version of UCS
 determines which packages a local repository provides. A repository running on a
 UCS server with version 4.x only provides packages up to UCS 4.x, a repository
-server running on UCS 5 only provides packages for UCS 5 and newer versions. To
-upgrade systems to UCS 5 in an environment with a local repository, the
-following are some of the options. First, you must setup a local UCS 5
-repository server.
+server running on UCS 5 only provides packages for UCS 5 and newer versions.
+
+To upgrade systems to UCS 5 in an environment with a local repository, consider
+the following options. First, you need to set up a local UCS 5 repository
+server.
 
 * Install a new UCS 5 system as a |UCSPRIMARYDN| from the DVD or from a
   virtualized base image. Then :external+uv-manual:ref:`setup a local repository
@@ -133,19 +131,41 @@ system to UCS 5 through the |UCSUMC| or through the command line.
 Preparation of update
 *********************
 
-Before you update, verify manually crafted Python code needs for compatibility
-with Python 3.7 and adjust it accordingly. This includes |UCSUCR| templates
+This section provides more information you need to consider before you update.
+
+.. _relnotes-python-37-compatibility:
+
+Python 3.7 compatibility
+========================
+
+Before you update, verify manually crafted Python code for compatibility with
+Python 3.7 and adjust it accordingly. This includes |UCSUCR| templates
 containing Python code. Customized AD-Connector mapping templates are an example
 for this. See also the :cite:t:`developer-reference` for advice.
+
+.. _relnotes-ad-connector-mapping:
+
+AD Connector mapping
+====================
 
 When you operate multiple instances of the :program:`AD Connector` as described
 in :ref:`ad-multiple`, you need to adjust the mapping configuration and ensure
 Python 3.7 compatibility before the update. :uv:kb:`17754` describes the steps.
 
+.. _relnotes-sufficient-disc-space:
+
+Sufficient disk space
+=====================
+
 Also verify that you have sufficient disk space available for the update. A
 standard installation requires a minimum of 6-10 GB of disk space. The update
 requires approximately 1-2 GB additional disk space to download and install the
 packages, depending on the size of the existing installation.
+
+.. _relnotes-console-for-update:
+
+Console for update
+==================
 
 For the update, sign in on the system's local console as user ``root``, and
 initiate the update there. Alternatively, you can conduct the update using
@@ -158,6 +178,11 @@ interrupted update procedure affects the system severely. To keep the update
 running even in case of an interrupted network connection, use tools such as
 :command:`tmux`, :command:`screen`, and :command:`at`. All UCS system roles have
 these tools installed by default.
+
+.. _relnotes-pre-update-checks:
+
+Script to check for know update issues
+======================================
 
 Univention provides a script that checks for problems which would prevent the
 successful update of the system. You can download the script before the update
@@ -203,6 +228,8 @@ Subsequently, you need to restart the UCS system.
 Notes on selected packages
 **************************
 
+The following sections inform about some selected packages regarding the update.
+
 .. _relnotes-usage:
 
 Collection of usage statistics
@@ -231,8 +258,8 @@ Recommended browsers for the access to |UCSUMC|
 ===============================================
 
 |UCSUMC| uses numerous JavaScript and CSS functions to display the web
-interface. Your web browser needs to permit cookies. Univention recommends the
-following browsers:
+interface. Your web browser needs to permit cookies. |UCSUMC| requires one of
+the following browsers:
 
 * Chrome as of version 85
 
