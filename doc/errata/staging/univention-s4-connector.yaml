@@ -1,0 +1,11 @@
+product: ucs
+release: "5.0"
+version: [4]
+scope: ucs_5.0-0-errata5.0-4
+src: univention-s4-connector
+fix: 14.0.15-1
+desc: |
+ This update addresses the following issues:
+ * To allow for a faster initial synchronization the connector
+   now prioritizes objects of type `container/ou`.
+bug: [55938]
