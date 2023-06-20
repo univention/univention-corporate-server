@@ -45,7 +45,7 @@ _virtualbox_image () {
 		add "${TMP_IMAGE}" :
 		run :
 		mount /dev/mapper/vg_ucs-root / :
-		# command "ucr set --force update/secure_apt=no repository/online=yes repository/online/server='${REPOSITORY_SERVER}'" :
+		# command "ucr set --force update/secure_apt=no repository/online=yes repository/online/server='https://updates.software-univention.de/'" :
 		# command "univention-install -y virtualbox-guest-utils" :
 		# command "apt-get clean" :
 		# command "ucr unset --force update/secure_apt repository/online repository/online/server" :
@@ -137,6 +137,6 @@ case "${HOSTNAME:=$(hostname)}" in
 	${1:+"$@"}
 	;;
 *)
-	exec ssh -o BatchMode=yes "$APPS_SERVER" "LAZY='${LAZY:-}' UCS_VERSION='${UCS_VERSION:?}' REPOSITORY_SERVER='${REPOSITORY_SERVER:?}' bash -s ${*@Q}" <"$0"
+	exec ssh -o BatchMode=yes "$APPS_SERVER" "LAZY='${LAZY:-}' UCS_VERSION='${UCS_VERSION:?}' bash -s ${*@Q}" <"$0"
 	;;
 esac
