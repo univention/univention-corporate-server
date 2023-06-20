@@ -362,7 +362,6 @@ class object(univention.admin.handlers.simpleLdap, PKIIntegration):
             univention.admin.filter.conjunction('!', [univention.admin.filter.expression('objectClass', 'posixAccount')]),
             univention.admin.filter.conjunction('!', [univention.admin.filter.expression('uidNumber', '0')]),
             univention.admin.filter.conjunction('!', [univention.admin.filter.expression('uid', '*$')]),
-            univention.admin.filter.conjunction('!', [univention.admin.filter.expression('univentionObjectFlag', 'functional')]),
         ])
 
     @classmethod
@@ -375,7 +374,7 @@ lookup_filter = object.lookup_filter
 
 
 def identify(dn, attr, canonical=False):
-    if b'0' in attr.get('uidNumber', []) or b'$' in attr.get('uid', [b''])[0] or b'univentionHost' in attr.get('objectClass', []) or b'functional' in attr.get('univentionObjectFlag', []):
+    if b'0' in attr.get('uidNumber', []) or b'$' in attr.get('uid', [b''])[0] or b'univentionHost' in attr.get('objectClass', []):
         return False
 
     required_ocs = {b'person', b'simpleSecurityObject', b'uidObject'}

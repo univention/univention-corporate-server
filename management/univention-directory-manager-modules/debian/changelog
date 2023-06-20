@@ -1,3 +1,10 @@
+univention-directory-manager-modules (15.0.24-6) unstable; urgency=medium
+
+  * Bug #55216: detect users/ldap objects with
+    univentionObjectType=functional
+
+ -- Florian Best <best@univention.de>  Tue, 27 Jun 2023 09:50:19 +0200
+
 univention-directory-manager-modules (15.0.24-5) unstable; urgency=medium
 
   * Bug #27241: add error handling
