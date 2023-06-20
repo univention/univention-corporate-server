@@ -164,8 +164,8 @@ packages, depending on the size of the existing installation.
 
 .. _relnotes-console-for-update:
 
-Console for update
-==================
+Console usage for update
+========================
 
 For the update, sign in on the system's local console as user ``root``, and
 initiate the update there. Alternatively, you can conduct the update using
@@ -181,8 +181,8 @@ these tools installed by default.
 
 .. _relnotes-pre-update-checks:
 
-Script to check for know update issues
-======================================
+Script to check for known update issues
+=======================================
 
 Univention provides a script that checks for problems which would prevent the
 successful update of the system. You can download the script before the update

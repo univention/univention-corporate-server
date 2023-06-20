@@ -5,8 +5,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: UCS 5.0 Release Notes 5.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-06-20 11:37+0200\n"
-"PO-Revision-Date: 2023-06-20 11:43+0200\n"
+"POT-Creation-Date: 2023-06-20 12:00+0200\n"
+"PO-Revision-Date: 2023-06-20 12:01+0200\n"
 "Last-Translator: Univention GmbH <packages@univention.de>\n"
 "Language: German\n"
 "Language-Team: Univention GmbH <packages@univention.de>\n"
@@ -215,10 +215,9 @@ msgid ""
 "consider the following options. First, you need to set up a local UCS 5 "
 "repository server."
 msgstr ""
-"Um in einer Umgebung mit lokalem Repository "
-" Systeme auf UCS 5 zu aktualisieren, bestehen unter anderem die folgenden"
-" Möglichkeiten. Zunächst muss ein lokaler UCS 5 Repository Server "
-"aufgesetzt werden."
+"Um in einer Umgebung mit lokalem Repository  Systeme auf UCS 5 zu "
+"aktualisieren, bestehen unter anderem die folgenden Möglichkeiten. "
+"Zunächst muss ein lokaler UCS 5 Repository Server aufgesetzt werden."
 
 #: ../../index.rst:110
 msgid ""
@@ -335,8 +334,8 @@ msgstr ""
 "Pakete."
 
 #: ../../index.rst:168
-msgid "Console for update"
-msgstr "Konsole für das Update"
+msgid "Console usage for update"
+msgstr "Nutzung der Konsole für das Update"
 
 #: ../../index.rst:170
 msgid ""
@@ -371,7 +370,7 @@ msgstr ""
 "Systemrollen installiert."
 
 #: ../../index.rst:185
-msgid "Script to check for know update issues"
+msgid "Script to check for known update issues"
 msgstr "Skript zur Prüfung auf bekannte Update-Probleme"
 
 #: ../../index.rst:187
@@ -545,3 +544,4 @@ msgstr ""
 #: ../../index.rst:288
 msgid "Bibliography"
 msgstr "Literaturverzeichnis"
+
