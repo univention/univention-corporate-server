@@ -1,3 +1,9 @@
+univention-management-console-module-join (12.0.5-5) unstable; urgency=medium
+
+  * Bug #53431: run join with more permissive umask
+
+ -- Florian Best <best@univention.de>  Fri, 01 Sep 2023 12:37:04 +0200
+
 univention-management-console-module-join (12.0.5-4) unstable; urgency=medium
 
   * Bug #56201: replace python-notifier and adjust to new UMC module API

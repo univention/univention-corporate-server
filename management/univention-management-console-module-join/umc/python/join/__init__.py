@@ -319,6 +319,7 @@ RE_ERROR = re.compile(r'^Error: (.*?)$')
 class Instance(Base):
 
     def init(self) -> None:
+        os.umask(0o022)  # umc umask is too restrictive for the join process and many listener modules
         self.progress_state = Progress()
 
     @simple_response
