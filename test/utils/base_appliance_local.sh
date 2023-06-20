@@ -57,13 +57,13 @@ _virtualbox_image () {
 		command "/usr/sbin/ucr set updater/identify='$identify'"
 	)
 	guestfish "${cmd[@]}"
-	generate_appliance ---tempdir "${APPS_PATH}" -memory "$MEMORY" --product UCS --version "$IMAGE_VERSION" --only --ova-virtualbox --source "${TMP_IMAGE}" --filename "${out}"
+	generate_appliance --tempdir "${APPS_PATH}" --memory "$MEMORY" --product UCS --version "$IMAGE_VERSION" --only --ova-virtualbox --source "${TMP_IMAGE}" --filename "${out}"
 }
 
 _esxi () {
 	identify="${1:?} (ESX)"
 	guestfish add "${TMP_IMAGE}" : run : mount /dev/mapper/vg_ucs-root / : command "/usr/sbin/ucr set updater/identify='$identify'"
-	generate_appliance ---tempdir "${APPS_PATH}" -memory "$MEMORY" --product UCS --version "$IMAGE_VERSION" --only --ova-esxi --source "${TMP_IMAGE}" --filename "${out}"
+	generate_appliance --tempdir "${APPS_PATH}" --memory "$MEMORY" --product UCS --version "$IMAGE_VERSION" --only --ova-esxi --source "${TMP_IMAGE}" --filename "${out}"
 }
 
 _hyperv_image () {
@@ -75,7 +75,7 @@ _hyperv_image () {
 
 _ec2_image () {
 	# Identifier already set
-	generate_appliance ---tempdir "${APPS_PATH}" -version "${UCS_VERSION_INFO}" --only --ec2-ebs --source "${SRC_IMAGE}"
+	generate_appliance --tempdir "${APPS_PATH}" --version "${UCS_VERSION_INFO}" --only --ec2-ebs --source "${SRC_IMAGE}"
 }
 
 # Used by scenarios/app-appliance.cfg
