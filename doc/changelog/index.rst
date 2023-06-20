@@ -180,8 +180,10 @@ Univention Configuration Registry
 Changes to templates and modules
 --------------------------------
 
-* A wrong Python format string in the :program:`rsyslog` configuration has been fixed,
-  which is used by |UCSUCRV| :envvar:`syslog/input/{udp,tcp,relp}` (:uv:bug:`56042`).
+* A wrong Python format string in the :program:`rsyslog` configuration has been
+  fixed, which is used by the following |UCSUCRV|\ s (:uv:bug:`56042`):
+  :envvar:`syslog/input/udp`, :envvar:`syslog/input/tcp`, and
+  :envvar:`syslog/input/relp`.
 
 * Allow NFS shares to be mounted on exporting host itself to prevent data-loss
   on shared access (:uv:bug:`50193`).
@@ -200,10 +202,10 @@ Listener/Notifier domain replication
   stop-daemon` that could result in an error message during :command:`systemctl restart
   univention-directory-notifier` (:uv:bug:`55957`).
 
-* Implement :command:`univention-translog reinex` to re-built the transaction index file
-  in case it gets corrupted. Univention Directory Notifier already has code to
-  do maintain the index, but after certain error cases the index may become
-  corrupt and has to be re-built. The code in UDN is not optimized to re-index
+* Implement :command:`univention-translog reindex` to re-built the transaction index file
+  in case it gets corrupted. Univention Directory Notifier (UDN) already has code to
+  maintain the index, but after certain error cases the index may become
+  corrupt and has to be re-built. The code in UDN isn't optimized to re-index
   many transactions in batch and shows performance issues for large transaction
   files (:uv:bug:`54797`).
 
@@ -223,13 +225,13 @@ Univention Management Console web interface
 
 * Future compatibility with Python 3.11 has been added (:uv:bug:`55632`).
 
-* It is now possible to access UDM modules with numbers in its name via the UDM
+* It is now possible to access UDM modules with numbers in their name through the UDM
   REST API (:uv:bug:`55551`).
 
-* The debug level is now correctly passed to child processes if it is set via
+* The debug level is now correctly passed to child processes if it's set through
   UCR (:uv:bug:`56051`).
 
-* Updated the copyright file. We do not ship icons from ``iconmonstr.com`` since
+* Updated the copyright file. We don't ship icons from ``iconmonstr.com`` since
   UCS 5.0 (:uv:bug:`55862`).
 
 * Form input fields that load values now show a standby animation
@@ -243,7 +245,7 @@ Univention Management Console web interface
 Univention Portal
 =================
 
-* The Portal is now able to display announcements, which are realized via a
+* The Portal is now able to display announcements, which are realized through a
   new UDM module **portals/announcement** (:uv:bug:`55175`).
 
 * The old UDM modules for the UCS 4.4 Portal have been renamed to better distinguish between
@@ -253,11 +255,11 @@ Univention Portal
   |UCSUCRV| :envvar:`portal/default-dn` changed. Running :command:`univention-portal update`
   after changing the |UCSUCRV| is enough (:uv:bug:`55871`).
 
-* The :guilabel:`Choose a tab` dialog box will now display tabs with their background
+* The :guilabel:`Choose a tab` dialog box now displays tabs with their background
   color (:uv:bug:`55919`).
 
 * Updating the portal information now uses a local UDM connection, thus
-  removing potential load on the Primary Node in big environments
+  removing potential load on the Primary Node in large environments
   (:uv:bug:`56113`).
 
 * Future compatibility with Python 3.11 has been added (:uv:bug:`55632`).
@@ -275,19 +277,19 @@ Univention Management Console server
   The implementation now uses :program:`Tornado` instead of the UCS specific
   Python Notifier implementation (:uv:bug:`43633`).
 
-* Restarts of the |UCSUMC| in Debian maintaner scripts and Join scripts are
+* Restarts of the |UCSUMC| in Debian maintainer scripts and join scripts are
   now done using ``deb-systemd-invoke`` to respect policy layer (:uv:bug:`54586`).
 
 * Disable the SOAP binding for single sign-out in the identity provider
-  metadata to make sure we don't use SOAP for the UMC SAML logout
+  metadata to make sure UCS doesn't use SOAP for the UMC SAML logout
   (:uv:bug:`56069`).
 
-* The joinscript now uses Python 3 instead of Python 2 to update SAML metadata.
+* The join script now uses Python 3 instead of Python 2 to update SAML metadata.
   Future compatibility with Python 3.11 has been added (:uv:bug:`55632`).
 
 * The error message shown during password reset or change now appends the text
   from the |UCSUCRV| :envvar:`umc/login/password-complexity-message/.*` when
-  password complexity criteria are not matched (:uv:bug:`55529`).
+  password complexity criteria don't match (:uv:bug:`55529`).
 
 * The usage of multiple languages in various messages, such as notifications,
   has been eliminated (:uv:bug:`55664`).
@@ -295,7 +297,7 @@ Univention Management Console server
 * For UCS 5.0-3 the UMC services where converted to :program:`systemd`. These services are
   essential to continue running even when updates are installed from UMC. Due
   to an oversight the first :uv:erratum:`5.0x583` triggered a latent bug, which causes
-  the service to stop during the upgrade, which kills any web session and abort
+  the service to stop during the upgrade, which kills any web session and cancels
   the update process running in the background. This update adds a mitigation
   to prevent the service from stopping during the update (:uv:bug:`55753`).
 
@@ -304,19 +306,19 @@ Univention Management Console server
 
 * Building the downstream package *Univention System Setup* failed because of
   some missing package dependencies in *Univention Management Console*. They
-  had been added with UCS 5.0-3 and changed by :uv:erratum:`5.0x595`, but were added to
+  have been added with UCS 5.0-3 and changed by :uv:erratum:`5.0x595`, but were added to
   the wrong binary packages (:uv:bug:`55776`).
 
-* A crash of the UMC-Server and UMC-Web-Server is now prevented
+* A crash of the UMC server and UMC web server is now prevented
   (:uv:bug:`55959`).
 
 * The |UCSUCR| template for the Apache configuration in UMC multiprocessing mode has
   been repaired (:uv:bug:`55726`).
 
-* The UMC joinscript won't overwrite the |UCSUCRV| :envvar:`umc/saml/idp-server`
+* The UMC join script won't overwrite the |UCSUCRV| :envvar:`umc/saml/idp-server`
   during execution (:uv:bug:`55951`).
 
-* The script :command:`univention-management-console-client` now accesses UMC via the
+* The script :command:`univention-management-console-client` now accesses UMC through the
   HTTP interface instead of the deprecated UMCP (:uv:bug:`55913`).
 
 * Some missing German translations have been added (:uv:bug:`56010`).
@@ -330,12 +332,12 @@ Univention App Center
   pinned App should be removed or upgraded was made more consistent
   (:uv:bug:`55679`).
 
-* Some installation code is now executed with Python 3 instead of Python 2.
+* Some installation code now runs with Python 3 instead of Python 2.
   Future compatibility with Python 3.11 has been added (:uv:bug:`55632`).
 
 * The App Center listener now removes files from its queue that contain
-  ``entryUUIDs`` whose corresponding UDM objects cannot be found. These files
-  cannot be processed by the listener and would otherwise remain in the queue
+  ``entryUUIDs`` whose corresponding UDM objects can't be found. These files
+  can't be processed by the listener and would otherwise remain in the queue
   forever and cause infinite error logging (:uv:bug:`56072`).
 
 * The command :command:`univention-app shell` now supports the option ``--service_name``
@@ -354,9 +356,9 @@ Univention App Center
 |UCSUDM| and command line interface
 ===================================
 
-* The usability of the shares module has been overworked (:uv:bug:`44997`, :uv:bug:`40599`, :uv:bug:`7843`, :uv:bug:`31388`, :uv:bug:`42805`, :uv:bug:`44997`, :uv:bug:`50701`, :uv:bug:`53785`, :uv:bug:`19868`, :uv:bug:`21349`).
+* The usability of the shares module has been overhauled (:uv:bug:`44997`, :uv:bug:`40599`, :uv:bug:`7843`, :uv:bug:`31388`, :uv:bug:`42805`, :uv:bug:`44997`, :uv:bug:`50701`, :uv:bug:`53785`, :uv:bug:`19868`, :uv:bug:`21349`).
 
-* The Simple UDM API now has a parameter to initialize a machine connection
+* The *Simple UDM API* now has a parameter to initialize a machine connection
   against the local :program:`slapd` (:uv:bug:`56113`).
 
 * Newly set passwords are now always added to the password history even if the
@@ -371,7 +373,7 @@ Univention App Center
 * Problems during concurrently reloading of UDM modules have been resolved
   (:uv:bug:`54597`).
 
-* Policies are now correctly written back in the Simple UDM API
+* Policies are now correctly written back in the *Simple UDM API*
   (:uv:bug:`56146`).
 
 .. _changelog-umc-setup:
@@ -411,7 +413,7 @@ System diagnostic module
 File system quota module
 ========================
 
-* Translations for the search bar in the UMC module :guilabel:`Filesystem quotas` have been
+* Translations for the search bar in the UMC module *Filesystem quotas* have been
   added (:uv:bug:`55664`).
 
 .. _changelog-umc-other:
@@ -468,11 +470,11 @@ SAML
 
 * New commands have been added to :program:`univention-keycloak` to create attribute
   mappers from the LDAP object to the internal Keycloak object (``user-
-  attribute-ldap-mapper``) and to create *user attribute* mappers and *name identifiers*
+  attribute-ldap-mapper``) and to create *user attribute* mappers and *name identifier*
   mappers for SAML clients (``saml-client-user-attribute-mapper``, ``saml-client-
   nameid-mapper``, :uv:bug:`56096`).
 
-* The package :program:`univention-keycloak` now supports the ``keycloak/server/sso/path``
+* The package :program:`univention-keycloak` now supports the :envvar:`keycloak/server/sso/path`
   app setting from the Keycloak app (:uv:bug:`56022`).
 
 * The command :command:`upgrade-config` has been added to :program:`univention-keycloak`. This is
@@ -488,16 +490,16 @@ Univention self service
 =======================
 
 * A regression introduced in UCS 5.0-3 has been fixed, which caused that
-  accessing available password reset methods was not possible anymore
+  accessing available password reset methods wasn't possible anymore
   (:uv:bug:`55684`).
 
 * The error message shown during password reset or when creating a new account
   now appends the text from the |UCSUCRV| :envvar:`umc/login/password-complexity-
-  message/.*` when password complexity criteria are not matched (:uv:bug:`55529`).
+  message/.*` when password complexity criteria didn't match (:uv:bug:`55529`).
 
 * Self-service
   user attributes specified in |UCSUCRV| :envvar:`self-service/udm_attributes` can be configured
-  as read-only via the |UCSUCRV| :envvar:`self-service/udm_attributes/read-only` (:uv:bug:`55733`).
+  as read-only through the |UCSUCRV| :envvar:`self-service/udm_attributes/read-only` (:uv:bug:`55733`).
 
 .. _changelog-service-mail:
 
@@ -505,10 +507,10 @@ Mail services
 =============
 
 * The migration of Fetchmail extended attributes has been moved to the
-  joinscript :file:`univenition-fetchmail` to fix errors in environments where
+  join script :file:`univenition-fetchmail` to fix errors in environments where
   :program:`univention-fetchmail` is installed on a non-primary node. The old extended
   attributes have also been restored to fix errors in environments where
-  :program:`univention-fetchmail` is running on a server that has not yet been upgraded
+  :program:`univention-fetchmail` is running on a server that hasn't yet been upgraded
   (:uv:bug:`55882`).
 
 * New checks have been added to the script :command:`migrate-fetchmail.py` to avoid errors
@@ -519,9 +521,9 @@ Mail services
   bug occurred when hooks of other extended attributes of the user module
   initialize a UDM module (e.g ``settings/extended_attribuets``, :uv:bug:`55910`).
 
-* Fix error in joinscript :file:`univention-fetchmail-schema` execution caused by a
+* Fix error in join script :file:`univention-fetchmail-schema` execution caused by a
   script. On member nodes now the correct credentials are used to connect to
-  LDAP. Also it is checked if file :file:`/etc/fetchmailrc` exists (:uv:bug:`55766`).
+  LDAP. The join script also verifies if the file :file:`/etc/fetchmailrc` exists (:uv:bug:`55766`).
 
 * The hooks, syntax files and scripts are now installed on the package
   :program:`univention-fetchmail-schema` to avoid errors in installations where
@@ -550,11 +552,11 @@ Printing services
 RADIUS
 ======
 
-* It is now possible to login with the mail primary address in addition to the
+* It's now possible to login with the mail primary address in addition to the
   username (:uv:bug:`55757`).
 
-* The maximum TLS version has been changed to 1.2 in order to prevent issues
-  with Windows 10 and 11 clients. The maximum TLS version can be specified via
+* The maximum TLS version has been changed to 1.2 to prevent issues
+  with Microsoft Windows 10 and 11 clients. The maximum TLS version can be specified in
   the |UCSUCRV| :envvar:`freeradius/conf/tls-max-version` (:uv:bug:`55247`).
 
 .. _changelog-service-proxy:
@@ -572,7 +574,7 @@ Samba
 * :program:`samba` has been updated to version 4.18.3 (:uv:bug:`55907`).
 
 * The AD password change has been moved to another package to avoid problems on
-  system that doesn't have :program:`univention-samba` installed (:uv:bug:`54390`).
+  systems that don't have :program:`univention-samba` installed (:uv:bug:`54390`).
 
 * The logrotate configuration for :program:`samba-dcerpcd` and :program:`:program:samba-bgqd` has been
   fixed (:uv:bug:`55597`).
@@ -580,7 +582,7 @@ Samba
 * The final restart of Samba at the end of a package update has been adjusted
   to the new daemon signature in the process list (:uv:bug:`55677`).
 
-* Under special conditions, the Listener module :file:`samba4-idmap.py` wrote invalid
+* Under special conditions, the listener module :file:`samba4-idmap.py` wrote invalid
   values in the attributes ``xidNumber`` of the file :file:`idmap.ldb`. During package
   update they will be fixed (:uv:bug:`55686`).
 
@@ -590,14 +592,14 @@ Samba
 * The Samba init scripts :file:`samba-ad-dc` and :file:`samba` now also stop the services
   :program:`samba-dcerpcd` and :program:`samba-bgqd` (:uv:bug:`55727`).
 
-* In scenarios where a UCS AD domain is run next to a native Microsoft AD
-  domain with an AD-Connector mirroring users and password hashes between both
+* In scenarios where a UCS AD domain runs next to a native Microsoft AD
+  domain with an AD-Connector that mirrors users and password hashes between both,
   the option ``auth methods`` is usually adjusted on the UCS AD DCs to make
   access to SMB shares hosted on UCS member servers possible for Microsoft AD
   users without needing to type in their password again. Since UCS 5.0 this
   broke Samba logon on the UCS AD DCs themselves. The Samba patch has been
   adjusted to only consider the method ``sam_ignoredomain`` from the list of
-  values specified via the |UCSUCRV| :envvar:`samba/global/options/"auth methods"`
+  values specified through the |UCSUCRV| :envvar:`samba/global/options/"auth methods"`
   or directly in the Samba :file:`local.conf` as configuration parameter ``auth
   methods``. If Samba finds this particular method in the Samba configuration,
   then it now only appends it to the standard list of authentication methods,
@@ -609,15 +611,15 @@ Samba
   robust by taking care that :program:`nmbd` is started again before the main :program:`samba`
   daemon (:uv:bug:`55727`, :uv:bug:`55678`).
 
-* In domains with larger numbers of users the command :command:`wbinfo -u` did not
+* In domains with larger numbers of users the command :command:`wbinfo -u` didn't
   return any results (:uv:bug:`55962`).
 
 * By default allow the KDC to issue services tickets using AES encryption.
   Prior to UCS 5.0-4, by default Samba only issued service tickets that use the ``RC4`` cipher
-  (aka ``arcfour``) as ticket encryption type. This default applies unless a service principal
+  (also known as ``arcfour``) as ticket encryption type. This default applies unless a service principal
   explicitly has ``msDS-SupportedEncryptionTypes`` set in the SAM database, which is the case
   for domain controllers, which explicitly also support AES as ticket encryption type
-  for service tickets (e.g. for SMB or DCERPC).
+  for service tickets, for example for SMB or DCERPC.
   With UCS 5.0-4, the Samba configuration now additionally supports AES ticket encryption types
   for service tickets by default. This is controlled by a new |UCSUCRV|
   :envvar:`samba/kdc_default_domain_supported_enctypes` (:uv:bug:`56077`).
@@ -677,7 +679,7 @@ Other changes
   is handled by Apache configuration (:uv:bug:`55866`).
 
 * This extension allows a group of people to reset the passwords of other
-  users. Privileged users can be exempted, e.g. *Domain Admins*. The set of
+  users. Privileged users can be exempted, for example *Domain Admins*. The set of
   these users is stored in |UCSUCRV|
   :envvar:`ldap/acl/user/passwordreset/internal/groupmemberlist/`, but the ordering was
   not stable and could change on each invocation of :command:`ldap-group-to-file.py`.
