@@ -68,26 +68,31 @@ following web browsers are supported:
 '''
 
 
-def query_ec2(key):
+def query_ec2(key):  # type: (str) -> Optional[str]
     url = 'http://169.254.169.254/latest/meta-data/' + key
-    socket.setdefaulttimeout(2)
     try:
-        result = urlopen(url)
+        result = urlopen(url, timeout=2)
         value = result.read().decode('UTF-8').strip()
         return value
-    except URLError:
-        pass
+    except (URLError, socket.error, socket.timeout):
+        return None
 
 
-def get_ip_address(ifname):
-    s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-    ifname = ifname.encode('utf-8')
+def get_ip_address(ifname):  # type: (str) -> Optional[str]
+    SIOCGIFADDR = 0x8915
+    sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
     try:
-        # SIOCGIFADDR == 0x8915
-        addr = socket.inet_ntoa(fcntl.ioctl(s.fileno(), 0x8915, struct.pack('256s', ifname[:15]))[20:24])
+        addr = socket.inet_ntoa(
+            fcntl.ioctl(
+                sock.fileno(),
+                SIOCGIFADDR,
+                struct.pack('256s', ifname.encode('ASCII')[:15]),
+            )[20:24],
+        )
     except IOError:
         addr = None
-    s.close()
+    finally:
+        sock.close()
     return addr
 
 

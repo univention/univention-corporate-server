@@ -21,7 +21,7 @@ logging.basicConfig(
 )
 
 
-def query_ec2(key):
+def query_ec2(key):  # type: (str) -> Optional[str]
     url = 'http://169.254.169.254/latest/meta-data/' + key
     try:
         result = urlopen(url, timeout=2)
@@ -32,23 +32,22 @@ def query_ec2(key):
         return None
 
 
-def get_ip_address(ifname):
+def get_ip_address(ifname):  # type: (str) -> Optional[str]
     SIOCGIFADDR = 0x8915
+    sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
     try:
-        sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-        try:
-            addr = socket.inet_ntoa(
-                fcntl.ioctl(
-                    sock.fileno(),
-                    SIOCGIFADDR,
-                    struct.pack('256s', ifname[:15].encode('ASCII')),
-                )[20:24],
-            )
-        finally:
-            sock.close()
+        addr = socket.inet_ntoa(
+            fcntl.ioctl(
+                sock.fileno(),
+                SIOCGIFADDR,
+                struct.pack('256s', ifname.encode('ASCII')[:15]),
+            )[20:24],
+        )
     except IOError as ex:
         logging.error('Could not get IP addresse for interface %s: %s [%s]', ifname, ex, ex.errno)
         addr = None
+    finally:
+        sock.close()
     return addr
 
 
