@@ -32,7 +32,7 @@ _kvm_image () {
 _vmplayer_image () {
 	identify="${1:?} (VMware)"
 	guestfish add "${TMP_IMAGE}" : run : mount /dev/mapper/vg_ucs-root / : command "/usr/sbin/ucr set updater/identify='$identify'"
-	generate_appliance --memory "$MEMORY" --product UCS --version "$IMAGE_VERSION" --only --vmware --source "${TMP_IMAGE}" --filename "${out}"
+	generate_appliance --tempdir "${APPS_PATH}" --memory "$MEMORY" --product UCS --version "$IMAGE_VERSION" --only --vmware --source "${TMP_IMAGE}" --filename "${out}"
 }
 
 _virtualbox_image () {
@@ -57,13 +57,13 @@ _virtualbox_image () {
 		command "/usr/sbin/ucr set updater/identify='$identify'"
 	)
 	guestfish "${cmd[@]}"
-	generate_appliance --memory "$MEMORY" --product UCS --version "$IMAGE_VERSION" --only --ova-virtualbox --source "${TMP_IMAGE}" --filename "${out}"
+	generate_appliance ---tempdir "${APPS_PATH}" -memory "$MEMORY" --product UCS --version "$IMAGE_VERSION" --only --ova-virtualbox --source "${TMP_IMAGE}" --filename "${out}"
 }
 
 _esxi () {
 	identify="${1:?} (ESX)"
 	guestfish add "${TMP_IMAGE}" : run : mount /dev/mapper/vg_ucs-root / : command "/usr/sbin/ucr set updater/identify='$identify'"
-	generate_appliance --memory "$MEMORY" --product UCS --version "$IMAGE_VERSION" --only --ova-esxi --source "${TMP_IMAGE}" --filename "${out}"
+	generate_appliance ---tempdir "${APPS_PATH}" -memory "$MEMORY" --product UCS --version "$IMAGE_VERSION" --only --ova-esxi --source "${TMP_IMAGE}" --filename "${out}"
 }
 
 _hyperv_image () {
@@ -75,7 +75,7 @@ _hyperv_image () {
 
 _ec2_image () {
 	# Identifier already set
-	generate_appliance --version "${UCS_VERSION_INFO}" --only --ec2-ebs --source "${SRC_IMAGE}"
+	generate_appliance ---tempdir "${APPS_PATH}" -version "${UCS_VERSION_INFO}" --only --ec2-ebs --source "${SRC_IMAGE}"
 }
 
 # Used by scenarios/app-appliance.cfg
@@ -95,7 +95,7 @@ create_app_images () {
 	_wrap _virtualbox_image "${identifier}" "Univention-App-${IMG_ID}-virtualbox.ova"
 
 	# update current link and sync test mirror
-	ln -snf "${UCS_VERSION}/${IMG_ID}" "${APPS_BASE}/${APPS_DIR}/current/${IMG_ID}"
+	ln -snf "../${UCS_VERSION}/${IMG_ID}" "${APPS_BASE}/${APPS_DIR}/current/${IMG_ID}"
 	sudo update_mirror.sh -v "${APPS_DIR}/${UCS_VERSION}/${IMG_ID}" "${APPS_DIR}/current/${IMG_ID}"
 }
 
@@ -117,9 +117,8 @@ create_ucs_images () {
 }
 
 _setup_dir() {
-	APPS_PATH="${1:?}" TMPDIR="${1:?}"
+	APPS_PATH="${1:?}"
 	install -g buildgroup -m 2775 -d "${APPS_PATH}"
-	export TMPDIR
 	cd "${APPS_PATH}"
 }
 
