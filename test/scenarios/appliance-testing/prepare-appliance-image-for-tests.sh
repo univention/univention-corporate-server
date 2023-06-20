@@ -5,7 +5,7 @@
 set -e -u -x
 
 [ -n "${KVM_BUILD_SERVER:-}" ] &&
-	exec ssh -o BatchMode=yes "${KVM_BUILD_SERVER:?}" "APP_ID='${APP_ID:?}' UCS_VERSION='${UCS_VERSION:?}' bash -s" <"$0"
+	exec ssh -o BatchMode=yes "build@${KVM_BUILD_SERVER:?}" "APP_ID='${APP_ID:?}' UCS_VERSION='${UCS_VERSION:?}' bash -s" <"$0"
 
 die () {
 	echo "ERROR: $*" >&2
