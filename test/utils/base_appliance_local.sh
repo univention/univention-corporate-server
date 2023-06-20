@@ -132,7 +132,7 @@ create_ec2_image () {
 	_ec2_image
 }
 
-case "${HOSTNAME:-$(hostname)}" in
+case "${HOSTNAME:=$(hostname)}" in
 "${APPS_SERVER}"|"${APPS_SERVER%%.*}")
 	${1:+"$@"}
 	;;
