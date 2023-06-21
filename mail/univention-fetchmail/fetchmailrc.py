@@ -33,6 +33,7 @@
 #
 from __future__ import absolute_import, annotations
 
+import json
 import os
 import re
 from functools import reduce
@@ -151,7 +152,13 @@ def objappend_single(flist: List[str], new: Dict[str, List[bytes]], password: st
     """add user's single fetchmail entries to flist"""
     # Bug 55882: Compatibility with old attributes.
     objappend(flist, new, password)
-    entries = [[w.strip('\"') for w in v.decode('UTF-8').split(';')] for v in new.get('univentionFetchmailSingle', [])]
+    value = new.get('univentionFetchmailSingle', [])
+    try:
+        entries = [json.loads(v) for v in value]
+    except ValueError:
+        # try the previous format. This should only happen once as
+        # the next time the values will be already json formatted (#56008).
+        entries = [[w.strip('\"') for w in v.split('";"')] for v in value]
     for entry in entries:
         server, protocol, username, passwd, ssl, keep = entry
         flag_ssl = 'ssl' if ssl == '1' else ''
@@ -163,7 +170,13 @@ def objappend_single(flist: List[str], new: Dict[str, List[bytes]], password: st
 
 def objappend_multi(flist: List[str], new: Dict[str, List[bytes]], password: str | None = None) -> None:
     """add user's multi fetchmail entries to flist"""
-    entries = [[w.strip('\"') for w in v.decode('UTF-8').split(';')] for v in new.get('univentionFetchmailMulti', [])]
+    value = new.get('univentionFetchmailMulti', [])
+    try:
+        entries = [json.loads(v) for v in value]
+    except ValueError:
+        # try the previous format. This should only happen once as
+        # the next time the values will be already json formatted (#56008).
+        entries = [[w.strip('\"') for w in v.split('";"')] for v in value]
     for entry in entries:
         server, protocol, username, passwd, localdomains, qmailprefix, envelope_header, ssl, keep = entry
         flag_ssl = 'ssl' if ssl == '1' else ''

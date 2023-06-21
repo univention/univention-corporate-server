@@ -30,15 +30,23 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
+import json
+
 from univention.admin.hook import AttributeHook
 
 
 def map_value(value):
-    return [';'.join('"{}"'.format(w.decode('UTF-8')) for w in v).encode('UTF-8') for v in value]
+    return [json.dumps([w.decode('UTF-8') for w in v]).encode('UTF-8') for v in value]
 
 
 def unmap_value(value):
-    return [[w.strip('\"') for w in v.split(';')] for v in value]
+    try:
+        entries = [json.loads(v) for v in value]
+    except ValueError:
+        # try the previous format. This should only happen once as
+        # the next time the values will be already json formatted (#56008).
+        entries = [[w.strip('\"') for w in v.split('";"')] for v in value]
+    return entries
 
 
 class FetchMailSingleHook(AttributeHook):

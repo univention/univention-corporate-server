@@ -1,0 +1,13 @@
+product: ucs
+release: "5.0"
+version: [4]
+scope: ucs_5.0-0-errata5.0-4
+src: univention-fetchmail
+fix:
+desc: |
+ This update addresses the following issues:
+ * The values of univentionFetchmailSingle and univentionFetchmailMulti
+  can't be correctly parsed when the values contain characters like ';'.
+  The property is now stored as json to simplify the parsing of the complex
+  attribute and avoid errors when non-alphanumeric characters appear.
+bug: [56008]
