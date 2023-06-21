@@ -117,7 +117,7 @@ run_performance_tests () {
 	if [ "false" = "$UCS_TEST_RUN" ]; then
 		echo "Test disabled by UCS_TEST_RUN"
 	else
-		prlimit -n100000:100000 locust -t 20m -u 500 --spawn-rate 5 --host https://primary.ucs.test --html keycloak.html --headless -f keycloaklocust.py || :
+		prlimit -n100000:100000 locust -t 20m -u 500 --spawn-rate 5 --host https://primary.ucs.test --csv simepl_login --html keycloak.html --headless -f keycloaklocust.py || :
 	fi
 }
 
