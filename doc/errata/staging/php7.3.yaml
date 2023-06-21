@@ -6,8 +6,6 @@ src: php7.3
 fix: 7.3.31-1~deb10u4
 desc: |
  This update addresses the following issue:
- 7.3.31-1~deb10u4 (Mon, 19 Jun 2023 21:10:11 +0200)
- * Non-maintainer upload by the LTS Security Team.
  * CVE-2023-3247: Missing error check and insufficient random bytes in HTTP
    Digest authentication for SOAP.
 bug: [56180]
