@@ -146,7 +146,7 @@ class JmeterListener:
             thread_name,
             data_type,
             success,
-            exception,
+            exception.replace(",", "").replace("\n", ""),
             str(response_length),
             bytes_sent,
             str(group_threads),
