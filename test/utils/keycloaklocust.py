@@ -7,7 +7,8 @@ from typing import List
 
 from bs4 import BeautifulSoup
 from diskcache import Index
-from locust import FastHttpUser, constant_throughput, run_single_user, task
+from locust import FastHttpUser, constant_throughput, events, run_single_user, task
+from locust_jmeter_listener import JmeterListener
 
 
 USER_CACHE_PATH = "/var/lib/test-data/users"
@@ -16,6 +17,11 @@ html = HTMLParser()
 WAIT_MIN = 1
 WAIT_MAX = 1
 hosts = ["https://primary.ucs.test", "https://backup1.ucs.test"]
+
+
+@events.init.add_listener
+def on_init(environment, **kwargs):
+    JmeterListener(environment)
 
 
 def logout_at_idp(client, host):
