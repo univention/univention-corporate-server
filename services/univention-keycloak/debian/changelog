@@ -1,4 +1,4 @@
-univention-keycloak (1.0.9-19) unstable; urgency=medium
+univention-keycloak (1.0.9-20) unstable; urgency=medium
 
   * Bug #56132: added command get-keycloak-base-url
 
