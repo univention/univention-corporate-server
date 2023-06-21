@@ -37,13 +37,12 @@ import locale
 import subprocess
 import time
 
-import notifier.threads
 import six
 
 from univention.lib.i18n import Translation
 from univention.management.console.error import ServerError
 from univention.management.console.log import MODULE
-from univention.management.console.modules.decorators import sanitize, simple_response
+from univention.management.console.modules.decorators import SimpleThread, sanitize, simple_response
 from univention.management.console.modules.sanitizers import StringSanitizer
 
 
@@ -128,6 +127,6 @@ class Server(object):
             time.sleep(1.5)
             subprocess.call(('/sbin/shutdown', action, 'now', message))
 
-        thread = notifier.threads.Simple('shutdown', halt, lambda: None)
+        thread = SimpleThread('shutdown', halt, lambda t, r: None)
         thread.run()
         return 0

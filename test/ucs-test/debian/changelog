@@ -1,3 +1,9 @@
+ucs-test (10.0.15-15) unstable; urgency=medium
+
+  * Bug #56201: remove obsolete dependency on python-notifier
+
+ -- Florian Best <best@univention.de>  Fri, 28 Jul 2023 19:34:40 +0200
+
 ucs-test (10.0.15-14) unstable; urgency=medium
 
   * Bug #56354: do not leak password in process list

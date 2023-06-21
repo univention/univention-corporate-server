@@ -43,8 +43,6 @@ import shutil
 import tempfile
 import traceback
 
-import notifier
-import notifier.threads
 import six
 from ldap import INVALID_CREDENTIALS, LDAPError
 from six.moves.urllib_error import HTTPError, URLError
@@ -64,7 +62,8 @@ from univention.management.console.ldap import get_user_connection
 from univention.management.console.log import MODULE
 from univention.management.console.modules import Base, UMC_Error
 from univention.management.console.modules.decorators import (
-    allow_get_request, file_upload, multi_response, prevent_xsrf_check, sanitize, simple_response, threaded,
+    SimpleThread, allow_get_request, file_upload, multi_response, prevent_xsrf_check, sanitize, simple_response,
+    threaded,
 )
 from univention.management.console.modules.mixins import ProgressMixin
 from univention.management.console.modules.sanitizers import (
@@ -1129,8 +1128,8 @@ class Instance(Base, ProgressMixin):
 
             return entries
 
-        thread = notifier.threads.Simple('NavObjectQuery', notifier.Callback(_thread, request.options['container']), notifier.Callback(self.thread_finished_callback, request))
-        thread.run()
+        thread = SimpleThread('NavObjectQuery', _thread, lambda r, t: self.thread_finished_callback(r, t, request))
+        thread.run(request.options['container'])
 
     @sanitize(DictSanitizer({
         "objectType": StringSanitizer(required=True),

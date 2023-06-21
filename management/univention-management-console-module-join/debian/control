@@ -15,11 +15,10 @@ Architecture: all
 Depends:
  python3-apt,
  python3-dnspython,
- python3-notifier,
  univention-directory-manager-tools (>> 7.0.147),
  univention-join,
  univention-management-console-module-lib (>= 3.0.0-1),
- univention-management-console-server (>= 11.0.4-37),
+ univention-management-console-server (>= 12.0.31-10),
  univention-updater,
  ${misc:Depends},
  ${python3:Depends},
