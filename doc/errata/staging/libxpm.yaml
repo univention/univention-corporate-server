@@ -1,0 +1,28 @@
+product: ucs
+release: "5.0"
+version: [3, 4]
+scope: ucs_5.0-0-errata5.0-4
+src: libxpm
+fix: 1:3.5.12-1+deb10u1
+desc: |
+ This update addresses the following issues:
+ 1:3.5.12-1+deb10u1 (Mon, 19 Jun 2023 20:27:53 +0000)
+ * Non-maintainer upload by the LTS Security Team.
+ * Switch to dpkg-source 3.0 (quilt) format
+ * Fix CVE-2022-4883: When processing files with .Z or .gz extensions, the
+   library calls external programs to compress and uncompress files, relying
+   on the PATH environment variable to find these programs, which could allow
+   a malicious user to execute other programs by manipulating the PATH
+   environment variable.
+ * Fix CVE-2022-44617: When processing a file with width of 0 and a very large
+   height, some parser functions will be called repeatedly and can lead to an
+   infinite loop, resulting in a Denial of Service in the application linked
+   to the library.
+ * Fix CVE-2022-46285: when parsing a file with a comment not closed an
+   end-of-file condition will not be detected, leading to an infinite loop and
+   resulting in a Denial of Service in the application linked to the library.
+bug: [56178]
+cve:
+- CVE-2022-4883
+- CVE-2022-44617
+- CVE-2022-46285
