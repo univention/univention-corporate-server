@@ -15,7 +15,6 @@ Architecture: all
 Depends:
  python3-apt,
  python3-dnspython,
- python3-notifier,
  univention-directory-manager-tools (>> 7.0.147),
  univention-join,
  univention-management-console-module-lib (>= 3.0.0-1),

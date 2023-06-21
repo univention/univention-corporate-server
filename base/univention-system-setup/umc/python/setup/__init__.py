@@ -49,8 +49,6 @@ import traceback
 from typing import Any, Dict, List
 
 import lxml.etree
-import notifier
-import notifier.threads
 import psutil
 
 import univention.config_registry
@@ -58,7 +56,7 @@ from univention.lib.admember import connectionFailed, failedADConnect, lookup_ad
 from univention.lib.i18n import Locale, Translation
 from univention.management.console.log import MODULE
 from univention.management.console.modules import Base, UMC_Error
-from univention.management.console.modules.decorators import sanitize, simple_response, threaded
+from univention.management.console.modules.decorators import Callback, SimpleThread, sanitize, simple_response, threaded
 from univention.management.console.modules.mixins import ProgressMixin
 from univention.management.console.modules.sanitizers import IntegerSanitizer, PatternSanitizer, StringSanitizer
 
@@ -255,7 +253,7 @@ class Instance(Base, ProgressMixin):
                 self._progressParser.current.critical = True
                 self._finishedResult = True
 
-        thread = notifier.threads.Simple('save', notifier.Callback(_thread, request, self), _finished)
+        thread = SimpleThread('save', Callback(_thread, request, self), _finished)
         thread.run()
         self.finished(request.id, None)
 
@@ -320,7 +318,7 @@ class Instance(Base, ProgressMixin):
                 self._progressParser.current.critical = True
                 self._finishedResult = True
 
-        thread = notifier.threads.Simple('join', notifier.Callback(_thread, self, username, password), _finished)
+        thread = SimpleThread('join', Callback(_thread, self, username, password), _finished)
         thread.run()
 
     @threaded
@@ -656,7 +654,7 @@ class Instance(Base, ProgressMixin):
             self._net_apply_running -= 1
             self.finished(request.id, True)
 
-        thread = notifier.threads.Simple('net_apply', notifier.Callback(_thread, self), _finished)
+        thread = SimpleThread('net_apply', Callback(_thread, self), _finished)
         thread.run()
 
     @simple_response

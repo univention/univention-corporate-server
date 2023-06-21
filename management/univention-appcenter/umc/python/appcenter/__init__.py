@@ -45,7 +45,6 @@ from json import load
 from threading import Thread
 
 import apt  # for independent apt.Cache
-import notifier.threads
 
 import univention.management.console as umc
 import univention.management.console.modules as umcm
@@ -66,7 +65,7 @@ from univention.lib.package_manager import LockError, PackageManager
 from univention.lib.umc import Client, ConnectionError, Forbidden, HTTPError
 from univention.management.console.log import MODULE
 from univention.management.console.modules.decorators import (
-    multi_response, require_password, sanitize, sanitize_list, simple_response, threaded,
+    Callback, SimpleThread, multi_response, require_password, sanitize, sanitize_list, simple_response, threaded,
 )
 from univention.management.console.modules.mixins import ProgressMixin
 from univention.management.console.modules.sanitizers import (
@@ -862,7 +861,7 @@ class Instance(umcm.Base, ProgressMixin):
                     def _finished(thread, result):
                         if isinstance(result, BaseException):
                             MODULE.warn('Exception during %s %s: %r' % (function, packages, str(result)))
-                    thread = notifier.threads.Simple('invoke', notifier.Callback(_thread, self.package_manager, function, packages), _finished)
+                    thread = SimpleThread('invoke', Callback(_thread, self.package_manager, function, packages), _finished)
                     thread.run()
                 else:
                     self.package_manager.set_finished()  # nothing to do, ready to take new commands

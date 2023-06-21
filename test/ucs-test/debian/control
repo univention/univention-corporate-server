@@ -305,7 +305,6 @@ Recommends:
  ucs-test-framework,
 Depends:
  curl,
- python3-notifier,
  python3-pytest,
  ucs-test-libs (= ${source:Version}),
  ucs-test-umc-module,

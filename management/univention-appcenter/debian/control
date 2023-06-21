@@ -17,7 +17,6 @@ Standards-Version: 3.8.2
 Package: univention-management-console-module-appcenter
 Architecture: all
 Depends:
- python3-notifier,
  python3-univention,
  python3-univention-appcenter (= ${source:Version}),
  python3-univention-directory-manager,

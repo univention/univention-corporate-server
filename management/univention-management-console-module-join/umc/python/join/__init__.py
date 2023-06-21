@@ -49,13 +49,12 @@ from typing import Any, Callable, Dict, List, Union  # noqa: F401
 import apt_pkg
 import dns.exception
 import dns.resolver
-import notifier.threads
 
 import univention.management.console as umc
 from univention.management.console.config import ucr
 from univention.management.console.log import MODULE
 from univention.management.console.modules import Base, UMC_Error
-from univention.management.console.modules.decorators import sanitize, simple_response
+from univention.management.console.modules.decorators import SimpleThread, sanitize, simple_response
 from univention.management.console.modules.sanitizers import BooleanSanitizer, ListSanitizer, StringSanitizer
 
 
@@ -479,7 +478,7 @@ class Instance(Base):
                 self.progress_state.error_handler(_('An unexpected error occurred: %s') % result)
 
         # launch thread
-        thread = notifier.threads.Simple('join', _thread, _finished)
+        thread = SimpleThread('join', _thread, _finished)
         thread.run()
 
         self.finished(request.id, True, status=202)
@@ -530,7 +529,7 @@ class Instance(Base):
                 self.progress_state.error_handler(_('An unexpected error occurred: %s') % result)
 
         # launch thread
-        thread = notifier.threads.Simple('join', _thread, _finished)
+        thread = SimpleThread('join', _thread, _finished)
         thread.run()
 
         self.finished(request.id, True, status=202)
