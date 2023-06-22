@@ -1,3 +1,9 @@
+univention-directory-manager-modules (15.0.24-4) unstable; urgency=low
+
+  * Bug #55553: Added Gender and place of birth to the user properties.
+
+ -- Ivan Barbecho Delgado <delgado.extern@univention.de>  Thu, 22 Jun 2023 8:28:22 +0200
+
 univention-directory-manager-modules (15.0.24-3) unstable; urgency=medium
 
   * Bug #27241: allow values to contain double quotes in complex syntax

@@ -1,0 +1,12 @@
+product: ucs
+release: "5.0"
+version: [3]
+scope: ucs_5.0-0-errata5.0-3
+src: univention-ldap
+fix: 16.0.13-2
+desc: |
+ This update addresses the following issues:
+ * The objectclass `univentionPerson` and `userTemplate` now offers two
+   additional optional attributes `univentionPlaceOfBirth` and
+   `univentionGender`.
+bug: [55553]
