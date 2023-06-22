@@ -7,7 +7,7 @@ from typing import List
 
 from bs4 import BeautifulSoup
 from diskcache import Index
-from locust import FastHttpUser, constant_throughput, events, run_single_user, task
+from locust import FastHttpUser, constant_throughput, events, task
 from locust_jmeter_listener import JmeterListener
 
 
@@ -16,7 +16,6 @@ GROUP_CACHE_PATH = "/var/lib/test-data/groups"
 html = HTMLParser()
 WAIT_MIN = 1
 WAIT_MAX = 1
-hosts = ["https://primary.ucs.test", "https://backup1.ucs.test"]
 
 
 @events.init.add_listener
@@ -129,17 +128,24 @@ class TestData(object):
         return SimpleNamespace(**group)
 
 
-class QuickstartUser(FastHttpUser):
+class PrimaryAndBackup(FastHttpUser):
     wait_time = constant_throughput(0.1)
-
     td = TestData()
+    hosts = ["https://primary.ucs.test", "https://backup1.ucs.test"]
 
     @task
     def get_samlSession(self):
         user = self.td.walk_users()
-        host = random.choice(hosts)
+        host = random.choice(self.hosts)
         entry(self.client, host, user)
 
 
-if __name__ == "__main__":
-    run_single_user(QuickstartUser)
+class PrimaryOnly(FastHttpUser):
+    wait_time = constant_throughput(0.1)
+    td = TestData()
+    host = "https://primary.ucs.test"
+
+    @task
+    def get_samlSession(self):
+        user = self.td.walk_users()
+        entry(self.client, self.host, user)

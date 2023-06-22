@@ -3,6 +3,7 @@ a listener to provide results from locust tests in a JMeter compatible format
 and thereby allow JMeter users with existing reporting solutions to transition more easily
 """
 
+import csv
 import os
 from datetime import datetime
 from pathlib import Path
@@ -16,7 +17,7 @@ class JmeterListener:
     create an intance of the listener at the start of a test
     to create a JMeter style results file
     different formats can be chosen in initialisation
-    (field_delimiter row_delimiter and timestamp_format)
+    (field_delimiter and timestamp_format)
     and the number of results to send to a log file at a time (flush_size)
     """
 
@@ -28,7 +29,6 @@ class JmeterListener:
         env,
         testplan="testplanname",
         field_delimiter=",",
-        row_delimiter="\n",
         timestamp_format="%Y/%m/%d %H:%M:%S",
         flush_size=100,
         results_filename=None,
@@ -40,7 +40,6 @@ class JmeterListener:
         self.testplan = testplan
         # default JMeter field and row delimiters
         self.field_delimiter = field_delimiter
-        self.row_delimiter = row_delimiter
         # a timestamp format, others could be added...
         self.timestamp_format = timestamp_format
         # how many records should be held before flushing to disk
@@ -88,40 +87,23 @@ class JmeterListener:
 
         events.request.add_listener(self._request)
 
-        if self.env.web_ui:
-
-            @self.env.web_ui.app.route("/csv_results.csv")
-            def csv_results_page():  # pylint: disable=unused-variable
-                """
-                a different way of obtaining results rather than writing to disk
-                to use it getting all results back, set the flush_size to
-                a high enough value that it will not flush during your test
-                """
-                response = self.env.web_ui.app.response_class(
-                    response=self.field_delimiter.join(self.csv_headers)
-                    + self.row_delimiter
-                    + self.row_delimiter.join(self.csv_results),
-                    status=200,
-                    mimetype="text/csv",
-                )
-                return response
-
     def _create_results_log(self):
         filename = Path(self.results_filename)
         filename.parent.mkdir(exist_ok=True, parents=True)
         filename.touch(exist_ok=True)
         results_file = open(filename, "w")
-        results_file.write(self.field_delimiter.join(self.csv_headers) + self.row_delimiter)
+        self.cvs_writer = csv.writer(results_file, delimiter=self.field_delimiter, quotechar='"')
+        self.cvs_writer.writerow(self.csv_headers)
         results_file.flush()
         return results_file
 
     def _flush_to_log(self):
-        self.results_file.write(self.row_delimiter.join(self.csv_results) + self.row_delimiter)
+        self.cvs_writer.writerows(self.csv_results)
         self.results_file.flush()
         self.csv_results = []
 
     def _write_final_log(self, **kwargs):
-        self.results_file.write(self.row_delimiter.join(self.csv_results) + self.row_delimiter)
+        self.cvs_writer.writerows(self.csv_results)
         self.results_file.close()
 
     def add_result(self, success, _request_type, name, response_time, response_length, exception, **kw):
@@ -129,6 +111,9 @@ class JmeterListener:
         response_message = "OK" if success == "true" else "KO"
         # check to see if the additional fields have been populated. If not, set to a default value
         status_code = kw["status_code"] if "status_code" in kw else "0"
+        response = kw["response"] if "response" in kw else None
+        if response and status_code == "0":
+            status_code = response.status_code
         thread_name = self.testplan
         data_type = kw["data_type"] if "data_type" in kw else "unknown"
         bytes_sent = kw["bytes_sent"] if "bytes_sent" in kw else "0"
@@ -155,7 +140,7 @@ class JmeterListener:
             idle_time,
             connect,
         ]
-        self.csv_results.append(self.field_delimiter.join(row))
+        self.csv_results.append(row)
         if len(self.csv_results) >= self.flush_size and not self.is_worker_runner:
             self._flush_to_log()
 
