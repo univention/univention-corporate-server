@@ -3,10 +3,11 @@ release: "5.0"
 version: [4]
 scope: ucs_5.0-0-errata5.0-4
 src: univention-keycloak
-fix: 1.0.9-20
+fix: 1.0.9-21
 desc: |
  This update addresses the following issues:
  * The command `get-keycloak-base-url` has been added
    to `univention-keycloak` to get the current base URL
    for the keycloak server.
+ * Added parameters for creating SAML SPs to `univention-keycloak`
 bug: [56132]

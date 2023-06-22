@@ -354,12 +354,19 @@ def get_SAML_client(opt: Namespace) -> None:
 
 def create_SAML_client(opt):
     print("CREATING KEYCLOAK SAML CLIENT.....")
-    client_id = opt.metadata_url
-    endpoints = extract_endpoints_xml(client_id, opt.metadata_file, opt.no_ssl_verify)
+    if opt.metadata_url:
+        client_id = opt.metadata_url
+        endpoints = extract_endpoints_xml(client_id, opt.metadata_file, opt.no_ssl_verify)
+    elif opt.client_id:
+        client_id = opt.client_id
+        endpoints = {}
+    else:
+        raise NotImplementedError()
+
     # build urls
-    single_logout_service_url_post = endpoints["logout"]
-    single_logout_service_url_redirect = endpoints["logout"]
-    assertion_consumer_url_post = endpoints["acs"]
+    single_logout_service_url_post = opt.single_logout_service_url_post or endpoints["logout"]
+    single_logout_service_url_redirect = opt.single_logout_service_url_post or endpoints["logout"]
+    assertion_consumer_url_post = opt.assertion_consumer_url_post or endpoints["acs"]
     valid_redirect_urls = [assertion_consumer_url_post]
 
     umc_uid_mapper = [{
@@ -391,10 +398,10 @@ def create_SAML_client(opt):
         "directAccessGrantsEnabled": True,
         "serviceAccountsEnabled": False,
         "publicClient": True,
-        "frontchannelLogout": True,
+        "frontchannelLogout": not opt.frontchannel_logout_off,
         "protocol": "saml",
         "attributes": {
-            "saml_name_id_format": "transient",
+            "saml_name_id_format": opt.name_id_format,
             "saml.multivalued.roles": "false",
             "saml.force.post.binding": "true",
             "oauth2.device.authorization.grant.enabled": "false",
@@ -470,6 +477,9 @@ def create_SAML_client(opt):
         client_payload_saml["protocolMappers"] = umc_uid_mapper
     else:
         client_payload_saml["protocolMappers"] = default_uid_mapper
+
+    if opt.idp_initiated_sso_url_name:
+        client_payload_saml["attributes"]["saml_idp_initiated_sso_url_name"] = opt.idp_initiated_sso_url_name
 
     if opt.command == "saml/sp" and opt.role_mapping_single_value:
         client_payload_saml["protocolMappers"].append(role_mapper_single)
@@ -774,10 +784,18 @@ def parse_args(args: list[str] | None = None) -> Namespace:
     operation_subparsers = parser_saml.add_subparsers(title="operation", description="valid subcommands", required=True, dest="operation")
     create_saml_parser = operation_subparsers.add_parser("create", help="create a new SAML SP in Keycloak")
     create_saml_parser.add_argument("--client-signature-required", action="store_true")
+    create_saml_parser_subparser = create_saml_parser.add_mutually_exclusive_group(required=True)
+    create_saml_parser_subparser.add_argument("--metadata-url", help="download metadata xml from this url (to extract endpoints) and use as clientId (issuer)")
+    create_saml_parser_subparser.add_argument("--client-id", help="clientId (issuer) for this SAML client)")
     create_saml_parser.add_argument("--metadata-file")
-    create_saml_parser.add_argument("--metadata-url", required=True)
     create_saml_parser.add_argument("--umc-uid-mapper", action="store_true")
     create_saml_parser.add_argument("--role-mapping-single-value", action="store_true")
+    create_saml_parser.add_argument("--assertion-consumer-url-post", default=None)
+    create_saml_parser.add_argument("--single-logout-service-url-post", default=None)
+    create_saml_parser.add_argument("--idp-initiated-sso-url-name", default=None)
+    create_saml_parser.add_argument("--name-id-format", default="transient")
+    create_saml_parser.add_argument("--frontchannel-logout-off", default=False, action="store_true", help="Switch off frontchannelLogout")
+
     create_saml_parser.set_defaults(func=create_SAML_client)
     get_saml_parser = operation_subparsers.add_parser("get", help="get SAML SP from Keycloak")
     get_saml_parser.add_argument("--json", help="Print json output", default=False, action="store_true")
@@ -1066,9 +1084,9 @@ def get_user_attribute_ldap_mapper(opt: Namespace) -> None:
     mappers = session.get_user_storage_ldap_mappers()
     if opt.user_attributes:
         mappers = [
-            x.get("config").get("ldap.attribute")[0]
+            x.get("config").get("user.model.attribute")[0]
             for x in mappers
-            if x.get("config").get("ldap.attribute")
+            if x.get("config").get("user.model.attribute")
         ]
     elif not opt.all:
         mappers = [x["name"] for x in mappers]
