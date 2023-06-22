@@ -313,8 +313,7 @@ class DnPropertyEncoder(BaseEncoder):
     static = False
     udm_module_name = ''
 
-    class DnStr(str):
-        __slots__ = ('obj',)
+    class DnStr(str):  # noqa: SLOT000
         # a string with an additional member variable
         obj = None  # type: DnPropertyEncoder.MyProxy
 
