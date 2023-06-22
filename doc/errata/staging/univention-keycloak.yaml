@@ -9,5 +9,6 @@ desc: |
  * The command `get-keycloak-base-url` has been added
    to `univention-keycloak` to get the current base URL
    for the keycloak server.
- * Added parameters for creating SAML SPs to `univention-keycloak`
+ * Added parameters for creating SAML service providers to
+   `univention-keycloak`.
 bug: [56132]
