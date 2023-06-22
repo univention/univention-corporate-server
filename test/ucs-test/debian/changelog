@@ -1,3 +1,9 @@
+ucs-test (10.0.10-66) unstable; urgency=medium
+
+  * Bug #55517: Added the support for a confirmation dialog before saving an empty string inside UMC-UCR
+
+ -- Mika Westphal <westphal@univention.de>  Thu, 22 Jun 2023 08:48:26 +0200
+
 ucs-test (10.0.10-65) unstable; urgency=medium
 
   * Bug #55765: adjust test for custom app settings.
