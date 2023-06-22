@@ -62,6 +62,7 @@ define([
 	var _DetailDialog = declare([Dialog, StandbyMixin], {
 		_form: null,
 		_description: null,
+		_edit: null,
 		moduleStore: null,
 
 		postMixInProperties: function() {
@@ -76,6 +77,12 @@ define([
 
 		buildRendering: function() {
 			this.inherited(arguments);
+
+			var unsetVariable = function(key, moduleStore) {
+				var transaction = moduleStore.transaction();
+				lang.hitch(moduleStore, 'remove')(key);
+				transaction.commit();
+			};
 
 			var widgets = [{
 				type: TextBox,
@@ -118,10 +125,41 @@ define([
 					this.hide();
 				})
 			}, {
-				name: 'submit',
-				label: _( 'Save' ),
+				name: 'unset',
+				label: _('Unset'),
+				description: _('Unsetting an UCR variable is equal to deleting it.<br>Look <a href="https://docs.software-univention.de/manual/5.0/en/computers/ucr.html?highlight=ucr#deleting-ucr-variables" target="_blank">here</a>.' ),
 				callback: lang.hitch(this, function() {
-					this._form.save();
+					unsetVariable(this.getValues().key, this.moduleStore);
+					this.hide();
+				})
+			}, {
+				name: 'submit',
+				label: _('Save'),
+				callback: lang.hitch(this, function() {
+					var valueFieldData = this.getValues();
+
+					if(!this._edit || valueFieldData.value !== '') {
+						this._form.save();
+						return;
+					}
+
+					dialog.confirm(_('Are you sure you want to save an empty string into this UCR variable or do you want to delete it?'), [{
+						label: _('Cancel'),
+						'default': true
+					}, {
+						label: _('Unset'),
+						description: _('Unsetting an UCR variable is equal to deleting it.<br>Look <a href="https://docs.software-univention.de/manual/5.0/en/computers/ucr.html?highlight=ucr#deleting-ucr-variables" target="_blank">here</a>.' ),
+						callback: lang.hitch(this, function() {
+							unsetVariable(valueFieldData.key, this.moduleStore);
+							this.hide();
+						})
+					}, {
+						label: _('Store empty string'),
+						callback: lang.hitch(this, function() {
+							this._form._widgets.value.set('value', '')
+							this._form.save();
+						})
+					}]);
 				})
 			}];
 
@@ -180,18 +218,24 @@ define([
 		},
 
 		newVariable: function() {
+			this._edit = false;
 			this.set('title', _('Add UCR variable'));
 			this._form._widgets.key.set('disabled', false);
 			this._form._widgets.default.set('visible', false);
+			this._form._buttons.unset.set('visible', false);
+
 			this.clearForm();
 			this.standby(false);
+
 			this.show();
 		},
 
 		loadVariable: function(ucrVariable) {
+			this._edit = true;
 			this.set('title', _('Edit UCR variable'));
 			this._form._widgets.key.set('disabled', true);
 			this._form._widgets.default.set('visible', true);
+			this._form._buttons.unset.set('visible', true);
 
 			this.standby(true);
 			this.show();

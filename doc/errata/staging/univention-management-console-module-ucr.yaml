@@ -1,0 +1,12 @@
+product: ucs
+release: "5.0"
+version: [3]
+scope: ucs_5.0-0-errata5.0-3
+src: univention-management-console-module-ucr
+fix: 9.0.1-2
+desc: |
+ This update addresses the following issues:
+ * If a UCR variable is changed and the value is empty,
+   a confirmation dialog is displayed to ensure that an empty string
+   is not accidentally stored when the variable should actually be deleted.
+bug: [55517]
