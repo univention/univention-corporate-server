@@ -1,3 +1,9 @@
+ucs-test (10.0.15-10) unstable; urgency=medium
+
+  * Bug #55517: Added the support for a confirmation dialog before saving an empty string inside UMC-UCR
+
+ -- Mika Westphal <westphal@univention.de>  Thu, 06 Jul 2023 16:48:26 +0200
+
 ucs-test (10.0.15-9) unstable; urgency=medium
 
   * Bug #56227: ucs-test-appcenter skip ini section Appliances-scenarios
@@ -17,7 +23,7 @@ ucs-test (10.0.15-7) unstable; urgency=medium
 
  -- Felix Botner <botner@univention.de>  Wed, 05 Jul 2023 14:09:59 +0200
 
-ucs-test (10.0.15-6) unstable; urgency=medium
+ucs-test (10.0.15-5) unstable; urgency=medium
 
   * Bug #27241: add a testcase for doublequotes in complex-syntax keys
     to 59_udm/69_test_udm_syntax.py

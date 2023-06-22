@@ -135,6 +135,10 @@ class UMCTester(object):
         # This is needed, because the grid needs time for the automatic refresh.
         time.sleep(5)
         self.selenium.wait_until_all_standby_animations_disappeared()
+        if value == "":
+            self.selenium.click_button(_('Store empty string'))
+        time.sleep(5)
+        self.selenium.wait_until_all_standby_animations_disappeared()
 
         ucr_result = self.get_ucr_cli_search_results(ucr_key)
         if ucr_result[ucr_key] != value:
