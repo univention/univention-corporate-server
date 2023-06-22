@@ -309,7 +309,7 @@ def either_or(nameservers: DictAddr2Str, forwarders: DictAddr2Str) -> bool:
     return need_fixing
 
 
-def add_self(nameservers: DictAddr2Str, ucr: Dict[str, str], own_ip: str = None) -> None:
+def add_self(nameservers: DictAddr2Str, ucr: Dict[str, str], own_ip: Optional[str] = None) -> None:
     """
     Add self as internal DNS server (on DCs).
 

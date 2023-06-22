@@ -94,7 +94,7 @@ class ConnectionError(Exception):
     :param reason: The optional underlying exception.
     """
 
-    def __init__(self, msg: str, reason: Exception = None) -> None:
+    def __init__(self, msg: str, reason: Exception | None = None) -> None:
         super().__init__(msg, reason)
         self.reason = reason
 
@@ -264,7 +264,7 @@ class Request:
     :param dict headers: a mapping of HTTP headers
     """
 
-    def __init__(self, method: str, path: str, data: str = None, headers: Dict[str, str] | None = None) -> None:
+    def __init__(self, method: str, path: str, data: str | None = None, headers: Dict[str, str] | None = None) -> None:
         self.method = method
         self.path = path
         self.data = data
@@ -321,7 +321,7 @@ class Response:
         self._response = _response
         self.data = self.decode_body()
 
-    def get_header(self, name: str, default: _T = None) -> _T:
+    def get_header(self, name: str, default: _T | None = None) -> _T:
         """
         Return original |HTTP| response header.
 

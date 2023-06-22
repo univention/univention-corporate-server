@@ -661,13 +661,13 @@ class TestComponents(object):
         a, b, bb = (U.Component(u, c) for c in "abb")
         assert a < b
         assert a <= b
-        assert b <= b
+        assert b <= b  # noqa: PLR0124
         assert b <= bb
-        assert b == b
+        assert b == b  # noqa: PLR0124
         assert b == bb
         assert a != b
         assert b >= bb
-        assert b >= b
+        assert b >= b  # noqa: PLR0124
         assert b >= a
         assert b > a
         assert a.__lt__(None) is NotImplemented

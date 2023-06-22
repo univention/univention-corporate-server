@@ -525,6 +525,7 @@ class DnPropertyEncoder(BaseEncoder):
     udm_module_name = ''
 
     class DnStr(str):
+        __slots__ = ('obj',)
         # a string with an additional member variable
         obj = None
 

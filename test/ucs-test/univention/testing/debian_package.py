@@ -50,7 +50,7 @@ class UninstallRuntimeError(RuntimeError):
     pass
 
 
-class DebianPackage():
+class DebianPackage:
     """Class to build simple debian packages"""
 
     def __init__(self, name='testdeb', version='1.0'):

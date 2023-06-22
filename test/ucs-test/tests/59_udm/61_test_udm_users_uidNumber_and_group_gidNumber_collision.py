@@ -25,7 +25,7 @@ UCR.load()
 LO = utils.get_ldap_connection(admin_uldap=True)
 
 
-class Failure():
+class Failure:
 
     def __init__(self, message):
         self.message = message

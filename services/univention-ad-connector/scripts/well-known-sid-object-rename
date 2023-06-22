@@ -72,7 +72,7 @@ def log(level, msg):
         print("%s: %s" % (prefix.get(level), msg))
 
 
-class Well_Known_SID_object_renamer():
+class Well_Known_SID_object_renamer:
     """
     Provides methods for renaming users/groups with Well Known SIDs in UDM
     NOTE: copied from univention-management-console-module-adtakeover

@@ -624,7 +624,7 @@ def handler(dn: str, new: Dict[str, List[bytes]], listener_old: Dict[str, List[b
             handler(dn, new, listener_old, operation)
 
 
-def log_ldap(severity: int, msg: str, ex: ldap.LDAPError, dn: str = None) -> None:
+def log_ldap(severity: int, msg: str, ex: ldap.LDAPError, dn: str | None = None) -> None:
     """
     Log LDAP exception with details.
 

@@ -57,7 +57,7 @@ LDAP_SERVER_SHOW_DELETED_OID = '1.2.840.113556.1.4.417'
 LDAP_SERVER_SD_FLAGS_OID = '1.2.840.113556.1.4.801'
 
 
-class AD_DSACL_modifier():
+class AD_DSACL_modifier:
     """
     Provides methods for modifying the nTSecurityDescriptor of CN=Deleted Objects
     NOTE: copied from univention-management-console-module-adtakeover

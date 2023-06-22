@@ -181,7 +181,7 @@ class UMCModuleTranslation(umc.UMC_Module):
         return cls(attrs, target_language)
 
 
-class SpecialCase():
+class SpecialCase:
     """
     Consumes special case definition and determines matching sets of source
     files.
@@ -271,7 +271,7 @@ class SpecialCase():
         return pot_path
 
 
-class MIMEChecker():
+class MIMEChecker:
 
     # FIXME: this is not need as mimetypes implements it already. The get()
     # method should be adjusted to first use mimetypes.guess_type() and then

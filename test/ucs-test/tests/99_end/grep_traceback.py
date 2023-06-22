@@ -144,6 +144,7 @@ def main(files, ignore_exceptions=[], out=sys.stdout):
 
 
 class E(collections.namedtuple('Exception', ['re_exception', 're_traceback', 'bugs_'], defaults=(None, ()))):
+    __slots__ = ()
 
     @property
     def bugs(self):

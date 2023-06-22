@@ -81,7 +81,7 @@ class DebianPackageCheck(object):
     :param debuglevel: Vebosity level.
     """
 
-    def __init__(self, path: str, plugindirs: Sequence[str], enabled_modules: Container[str] = None, disabled_modules: Container[str] = None, debuglevel: int = 0):
+    def __init__(self, path: str, plugindirs: Sequence[str], enabled_modules: Container[str] | None = None, disabled_modules: Container[str] | None = None, debuglevel: int = 0):
         self.path = path
         self.plugindirs = plugindirs
         self.pluginlist: Dict[str, ModuleType] = {}
@@ -177,7 +177,7 @@ class DebianPackageCheck(object):
             return True
         return False
 
-    def printResult(self, ignore_IDs: Container[str], display_only_IDs: Container[str], display_only_categories: str, exitcode_categories: str, junit: IO[str] = None) -> Tuple[int, int]:
+    def printResult(self, ignore_IDs: Container[str], display_only_IDs: Container[str], display_only_categories: str, exitcode_categories: str, junit: IO[str] | None = None) -> Tuple[int, int]:
         """
         Print result of checks.
 

@@ -157,7 +157,7 @@ class UniventionKeycloakAdmin(KeycloakAdmin):
             verify=opt.no_ssl_verify,
         )
 
-    def get_user_storage_provider_id(self, name: str = None) -> str:
+    def get_user_storage_provider_id(self, name: str | None = None) -> str:
         """Get the id for user storage provider"""
         if name is None:
             name = DEFAULT_USER_STORAGE_PROVIDER_NAME
@@ -166,7 +166,7 @@ class UniventionKeycloakAdmin(KeycloakAdmin):
             raise Exception(f"user storage provider {name} not found")
         return result[0]["id"]
 
-    def get_user_storage_ldap_mappers(self, parent_id: str = None) -> list:
+    def get_user_storage_ldap_mappers(self, parent_id: str | None = None) -> list:
         """Get all the org.keycloak.storage.ldap.mappers.LDAPStorageMapper objects from a given component"""
         if parent_id is None:
             parent_id = self.get_user_storage_provider_id()
@@ -737,7 +737,7 @@ def unregister_extensions(opt: Namespace):
         func(service, opt.realm, ext.alias)
 
 
-def parse_args(args: list[str] = None) -> Namespace:
+def parse_args(args: list[str] | None = None) -> Namespace:
     """
     Parse command line arguments.
 

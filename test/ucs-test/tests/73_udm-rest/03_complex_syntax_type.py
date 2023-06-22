@@ -141,7 +141,7 @@ def complex_syntax():
     restart_udmrest()
 
 
-class Test_ComplexSyntaxTypes():
+class Test_ComplexSyntaxTypes:
 
     def test_ComplexMultiValueKeyValueDictType(self):
         expected_type_definition = {

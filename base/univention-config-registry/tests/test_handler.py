@@ -119,7 +119,7 @@ class TestConfigHandlerDiverting(object):
         h2 = ucrh.ConfigHandlerDiverting("divert2")
         assert hash(hdivert) == hash(hdivert)
         assert hash(hdivert) != hash(h2)
-        assert hdivert == hdivert
+        assert hdivert == hdivert  # noqa: PLR0124
         assert hdivert != h2
 
     def test_perms_none(self, hdivert, mocker):
@@ -240,7 +240,7 @@ def test_ConfigHandlerScipt(mocker):
     h2 = ucrh.ConfigHandlerScript("script2")
     assert hash(h1) == hash(h1)
     assert hash(h1) != hash(h2)
-    assert h1 == h1
+    assert h1 == h1  # noqa: PLR0124
     assert h1 != h2
 
     mocker.patch("os.path.isfile").return_value = True
@@ -255,7 +255,7 @@ def test_ConfigHandlerModule(mocker):
     h2 = ucrh.ConfigHandlerModule("module2")
     assert hash(h1) == hash(h1)
     assert hash(h1) != hash(h2)
-    assert h1 == h1
+    assert h1 == h1  # noqa: PLR0124
     assert h1 != h2
 
     run_module = mocker.patch("univention.config_registry.handler.run_module")
@@ -288,7 +288,7 @@ def handlers(tmpcache):
     return handlers
 
 
-class TestConfigHandlers():
+class TestConfigHandlers:
     COMMON = {
         "Preinst": ["preinst"],
         "Postinst": ["postinst"],

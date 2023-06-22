@@ -63,7 +63,7 @@ def levenshtein(word: str, distance: int = 1, subst: str = '.') -> Iterator[str]
             yield result
 
 
-class Trie():
+class Trie:
     """
     Regex::Trie in Python.
 
