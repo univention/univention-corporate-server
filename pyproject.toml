@@ -77,6 +77,7 @@ ignore = [
  "S607",  # start-process-with-partial-path
 
  # not py2 compatible
+ "RUF012",  # mutable-class-default
  "FLY002",  #
  "UP004", "UP008", "UP009", "UP010", "UP025", "UP029",  # be Python 2 compatible
  "YTT202",  # six-py3-referenced
