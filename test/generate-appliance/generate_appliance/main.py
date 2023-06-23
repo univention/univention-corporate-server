@@ -181,7 +181,7 @@ def setup_logging(level: int) -> None:
 def main() -> None:
     options = parse_options()
     setup_logging(options.verbose)
-    with TemporaryDirectory(options.tempdir) as tmpdir:
+    with TemporaryDirectory(dir=options.tempdir.as_posix()) as tmpdir:
         Lazy.BASEDIR = Path(tmpdir)
         source_image = Raw(options.source)
         for choice in options.choices:
