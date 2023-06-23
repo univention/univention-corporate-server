@@ -20,7 +20,7 @@ from . import ANNOTATION, LICENSE, TargetFile
 log = getLogger(__name__)
 
 
-def create_ovf_descriptor_esxi(image_name: str, image_size: int, image_packed_size: int, image_used_size: int, options: Namespace) -> bytes:
+def create_ovf_descriptor_esxi(image_name: str, vmdk: Vmdk, options: Namespace) -> bytes:
     machine_name = options.product
     if options.version is not None:
         machine_name += ' ' + options.version
@@ -53,15 +53,15 @@ def create_ovf_descriptor_esxi(image_name: str, image_size: int, image_packed_si
             E.File(**{
                 OVF + 'href': image_name,
                 OVF + 'id': 'file1',
-                OVF + 'size': '%d' % (image_packed_size,),
+                OVF + 'size': '%d' % (vmdk.file_size(),),
             }),
         ),
         E.DiskSection(
             E.Info('Virtual disk information'),
             E.Disk(**{
                 OVF + 'capacityAllocationUnits': 'byte * 2^30',
-                OVF + 'capacity': '%d' % (image_size / 2**30,),
-                OVF + 'populatedSize': '%d' % (image_used_size,),
+                OVF + 'capacity': '%d' % (vmdk.volume_size() / 2**30,),
+                OVF + 'populatedSize': '0',
                 OVF + 'diskId': 'vmdisk1',
                 OVF + 'fileRef': 'file1',
                 OVF + 'format': 'http://www.vmware.com/interfaces/specifications/vmdk.html#streamOptimized',
@@ -351,11 +351,7 @@ class OVA_ESXi(TargetFile):
         archive_name = self.archive_name()
 
         vmdk = Vmdk(image, adapter_type="lsilogic", hwversion="7", subformat="streamOptimized")
-        descriptor = create_ovf_descriptor_esxi(
-            image_name, image.file_size(), vmdk.file_size(),
-            image.used_size(),
-            options,
-        )
+        descriptor = create_ovf_descriptor_esxi(image_name, vmdk. options)
         files = [
             (descriptor_name, descriptor),
             (image_name, vmdk),

@@ -22,7 +22,7 @@ from . import ANNOTATION, LICENSE, TargetFile
 log = getLogger(__name__)
 
 
-def create_ovf_descriptor_virtualbox(machine_uuid: uuid.UUID, image_name: str, image_size: int, image_uuid: uuid.UUID, options: Namespace) -> bytes:
+def create_ovf_descriptor_virtualbox(machine_uuid: uuid.UUID, image_name: str, vmdk: Vmdk, image_uuid: uuid.UUID, options: Namespace) -> bytes:
     machine_name = options.product
     if options.version is not None:
         machine_name += ' ' + options.version
@@ -60,7 +60,7 @@ def create_ovf_descriptor_virtualbox(machine_uuid: uuid.UUID, image_name: str, i
         E.DiskSection(
             E.Info('List of the virtual disks used in the package'),
             E.Disk(**{
-                OVF + 'capacity': '%d' % (image_size,),
+                OVF + 'capacity': '%d' % (vmdk.volume_size(),),
                 OVF + 'diskId': 'vmdisk1',
                 OVF + 'fileRef': 'file1',
                 OVF + 'format': 'http://www.vmware.com/interfaces/specifications/vmdk.html#streamOptimized',
@@ -186,12 +186,12 @@ class OVA_Virtualbox(TargetFile):
 
         machine_uuid = uuid.uuid4()
         image_uuid = uuid.uuid4()
+        vmdk = Vmdk(image, adapter_type="ide", hwversion="4", subformat="streamOptimized")
         descriptor = create_ovf_descriptor_virtualbox(
             machine_uuid,
-            image_name, image.file_size(), image_uuid,
+            image_name, vmdk, image_uuid,
             options,
         )
-        vmdk = Vmdk(image, adapter_type="ide", hwversion="4", subformat="streamOptimized")
         files = [
             (descriptor_name, descriptor),
             (image_name, vmdk),

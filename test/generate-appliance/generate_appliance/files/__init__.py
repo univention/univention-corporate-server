@@ -82,10 +82,6 @@ class File(Lazy, metaclass=ABCMeta):
     def file_size(self) -> int:
         return self.path().stat().st_size
 
-    @Lazy.lazy
-    def used_size(self) -> int:
-        return self.path().stat().st_blocks * 512
-
 
 class BaseImage(File, metaclass=ABCMeta):
 
