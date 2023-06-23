@@ -39,6 +39,7 @@ Implements several helper classes to handle the state of a session
 and the communication with the module processes
 """
 
+#import asyncio.exceptions
 import base64
 import errno
 import gzip
@@ -52,6 +53,7 @@ import time
 import uuid
 from ipaddress import ip_address
 
+import concurrent.futures
 import ldap
 import pycurl
 import six
@@ -116,6 +118,13 @@ class ModuleConnection(object):
     def __init__(self):
         self._client = tornado.httpclient.AsyncHTTPClient()
 
+    def abort(self):
+        # tornado cannot cancel a running request: https://github.com/tornadoweb/tornado/issues/157
+        # We have to do it manually and ignore the exceptions which happen there
+        # this will lead to a "AttributeError: 'NoneType' object has no attribute 'socket_action'" in the main loop, which we can safely ignore
+        self._client.close()
+        self._client = tornado.httpclient.AsyncHTTPClient()
+
     @tornado.gen.coroutine
     def connect(self, connect_retries=0):
         pass
@@ -124,7 +133,6 @@ class ModuleConnection(object):
     def request(self, method, uri, headers=None, body=None):
         pass
 
-    @tornado.gen.coroutine
     def do_request(self, method, uri, headers=None, body=None, unix_socket=None):
         request = tornado.httpclient.HTTPRequest(
             self.get_uri(uri),
@@ -138,8 +146,38 @@ class ModuleConnection(object):
             prepare_curl_callback=(lambda curl: curl.setopt(pycurl.UNIX_SOCKET_PATH, unix_socket)) if unix_socket else None,
         )
 
+        return self._wrap_future(self._client.fetch(request, raise_error=True))
+
+    def _wrap_future(self, request_future):
+        result_future = tornado.concurrent.Future()
+
+        def propagate_result(future):
+            if future.cancelled():
+                if not result_future.cancelled():
+                    result_future.cancel()
+            elif future.exception():
+                def reraise():
+                    raise future.exception()
+                try:
+                    response = self._handle_errors(reraise)
+                except Exception as exc:
+                    result_future.set_exception(exc)
+                else:
+                    result_future.set_result(response)
+            else:
+                result_future.set_result(future.result())
+
+        def cancel_downstream(future):
+            if future.cancelled() and not request_future.cancelled():
+                request_future.cancel()
+
+        request_future.add_done_callback(propagate_result)
+        result_future.add_done_callback(cancel_downstream)
+        return result_future
+
+    def _handle_errors(self, function):
         try:
-            response = yield self._client.fetch(request, raise_error=True)
+            response = function()
         except tornado.curl_httpclient.CurlError as exc:
             CORE.warn('Reaching module failed: %s' % (exc,))
             raise CouldNotConnect(exc)
@@ -150,6 +188,12 @@ class ModuleConnection(object):
         except ValueError as exc:  # HTTP GET request with body
             CORE.warn('Reaching module failed: %s' % (exc,))
             raise BadRequest(str(exc))
+        except concurrent.futures.CancelledError as exc:
+            CORE.warn('Aborted module process request: %s' % (exc,))
+            raise CouldNotConnect(exc)
+        #except asyncio.exceptions.CancelledError as exc:
+        #    CORE.warn('Aborted module process request: %s' % (exc,))
+        #    raise CouldNotConnect(exc)
 
         raise tornado.gen.Return(response)
 
@@ -225,7 +269,7 @@ class ModuleProcess(ModuleConnection):
             self._active_requests.remove(request_id)
             self.reset_inactivity_timer()
 
-        raise tornado.gen.Return(response)
+        return response
 
     def get_uri(self, uri):
         if uri.startswith('https://'):
@@ -320,8 +364,7 @@ class ModuleProxy(ModuleConnection):
 
     @tornado.gen.coroutine
     def request(self, method, uri, headers=None, body=None):
-        response = yield self.do_request(method, uri, headers, body, self.unix_socket)
-        raise tornado.gen.Return(response)
+        raise tornado.gen.Return(self.do_request(method, uri, headers, body, self.unix_socket))
 
     def get_uri(self, uri):
         request = urlsplit(uri)
@@ -614,11 +657,38 @@ class Command(Resource):
 
     requires_authentication = False
 
+    @tornado.gen.coroutine
+    def prepare(self, *args, **kwargs):
+        yield super(Command, self).prepare(*args, **kwargs)
+        self.future = None
+        self.process = None
+
     def forbidden_or_unauthenticated(self, message):
         # make sure that the UMC login dialog is shown if e.g. restarting the UMC-Server during active sessions
         if self.current_user.user.authenticated:
             return Forbidden(message)
         return Unauthorized(self._("For using this module a login is required."))
+
+    def on_connection_close(self):
+        super(Command, self).on_connection_close()
+        CORE.warn('Connection was aborted by the client!')
+        self._remove_active_request()
+        if self.future is not None:
+            self.future.cancel()
+        if self.process is not None:
+            self.process.abort()
+
+    def on_finish(self):
+        super(Command, self).on_finish()
+        self._remove_active_request()
+
+    def _remove_active_request(self):
+        session = self.current_user
+        if session and session._active_requests:
+            try:
+                session._active_requests.remove(hash(self))
+            except KeyError:
+                pass
 
     @tornado.gen.coroutine
     def get(self, umcp_command, command):
@@ -637,6 +707,7 @@ class Command(Resource):
         """
         session = self.current_user
         acls = session.acls
+        session._active_requests.add(hash(self))
 
         module_name = acls.get_module_providing(moduleManager, command)
         if not module_name:
@@ -661,15 +732,18 @@ class Command(Resource):
         locale = Locale(self.locale.code)
         if not locale.territory:  # TODO: replace by using the actual provided value
             locale.territory = {'de': 'DE', 'fr': 'FR', 'en': 'US'}.get(self.locale.code)
-        process = session.processes.get_process(module_name, str(locale), self.settings.get("no_daemonize_module_processes"))
-        request_id = uuid.uuid4()
-        session._active_requests.add(request_id)
+        process = self.process = session.processes.get_process(module_name, str(locale), self.settings.get("no_daemonize_module_processes"))
         CORE.info('Passing request to module %s' % (module_name,))
 
         try:
             yield process.connect()
             # send first command
-            response = yield process.request(self.request.method, self.request.full_url(), body=self.request.body or None, headers=headers)
+            self.future = process.request(self.request.method, self.request.full_url(), body=self.request.body or None, headers=headers)
+            response = yield self.future
+        except concurrent.futures.CancelledError:
+            raise BadGateway('%s: %s: canceled' % (self._('Connection to module process failed'), module_name))
+        #except asyncio.exceptions.CancelledError:
+        #    raise BadGateway('%s: %s: canceled' % (self._('Connection to module process failed'), module_name))
         except CouldNotConnect as exc:
             # (happens during starting the service and subprocesses when the UNIX sockets aren't available yet)
             # also happens when module process gets killed during request
@@ -703,8 +777,6 @@ class Command(Resource):
                 self.set_header('Content-Length', str(len(response.body)))
                 self.write(response.body)
             self.finish()
-        finally:
-            session._active_requests.remove(request_id)
 
     def get_request_header(self, session, methodname, umcp_command):
         headers = dict(self.request.headers)

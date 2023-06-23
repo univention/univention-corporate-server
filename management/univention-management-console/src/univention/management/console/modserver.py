@@ -297,7 +297,21 @@ class Handler(RequestHandler):
     def initialize(self, server, handler):
         self.server = server
         self.handler = handler
+        self.request_id = None
         self.ioloop = tornado.ioloop.IOLoop.current()
+
+    def on_connection_close(self):
+        super(Handler, self).on_connection_close()
+        MODULE.warn('Connection was aborted by the client!')
+        self._remove_active_request()
+
+    def on_finish(self):
+        super(Handler, self).on_finish()
+        self._remove_active_request()
+
+    def _remove_active_request(self):
+        if self.handler:
+            self.handler._Base__requests.pop(self.request_id, None)
 
     @tornado.web.asynchronous
     def get(self, path):
@@ -320,6 +334,7 @@ class Handler(RequestHandler):
 
         msg = Request(umcp_command, [path], mime_type=mimetype)
         msg._request_handler = self
+        self.request_id = msg.id
         msg.username = username
         msg.user_dn = user_dn
         msg.password = password

@@ -218,7 +218,7 @@ class Resource(RequestHandler):
         """get the IP address of client by last entry (from apache) in X-FORWARDED-FOR header"""
         return self.request.headers.get('X-Forwarded-For', self.request.remote_ip).rsplit(',', 1).pop().strip()
 
-    def _proxy_uri(self):
+    def _proxy_uri(self):  # TODO: replace with tornado builtin
         if self.request.headers.get('X-UMC-HTTPS') == 'on':
             self.request.protocol = 'https'
         self.request.uri = '/univention%s' % (self.request.uri,)
