@@ -351,7 +351,7 @@ class OVA_ESXi(TargetFile):
         archive_name = self.archive_name()
 
         vmdk = Vmdk(image, adapter_type="lsilogic", hwversion="7", subformat="streamOptimized")
-        descriptor = create_ovf_descriptor_esxi(image_name, vmdk. options)
+        descriptor = create_ovf_descriptor_esxi(image_name, vmdk, options)
         files = [
             (descriptor_name, descriptor),
             (image_name, vmdk),
