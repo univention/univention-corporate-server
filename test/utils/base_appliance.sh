@@ -287,7 +287,7 @@ prepare_docker_app () {  # <app_id> <counter>
 	# compose
 	if [ -e "$dockercompose" ]; then
 		local_app_docker_image=""
-		sed -n 's/.*image: //;T;s/"//g;p' "$dockercompose" | xargs -rn1 docker pull
+		sed -n '/#/!s/.*image: //;T;s/"//g;p' "$dockercompose" | xargs -rn1 docker pull
 	else
 		local_app_docker_image="$dockerimage"
 		docker pull "$dockerimage"
