@@ -132,8 +132,8 @@ class ProgressMixin(object):
 
     The *progress* function needs to be made public by the XML definition of the module. To use this mixin, just do::
 
-            class Instance(Base, ProgressMixin):
-                    pass
+        class Instance(Base, ProgressMixin):
+            pass
 
     """
 
@@ -161,3 +161,17 @@ class ProgressMixin(object):
             if ret['finished']:
                 del self._progress_objs[progress_id]
             return ret
+
+    def thread_progress_finished_callback(self, thread, result, request, progress):
+        if self._is_active(request):
+            self.thread_finished_callback(thread, result, request)
+
+        if isinstance(result, BaseException):
+            progress.exception(thread.exc_info)  # FIXME: broken since Bug #47114
+            return
+
+        progress.progress(None, _('finished...'))
+        if result:
+            progress.finish_with_result(result)
+        else:
+            progress.finish()

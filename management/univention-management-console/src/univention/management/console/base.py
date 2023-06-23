@@ -478,3 +478,6 @@ class Base(Translation):
         except KeyError:
             return
         request._request_handler.reply(response)
+
+    def _is_active(self, request):
+        return request.id in self.__requests
