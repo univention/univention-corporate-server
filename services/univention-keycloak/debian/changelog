@@ -1,3 +1,10 @@
+univention-keycloak (1.0.9-22) unstable; urgency=medium
+
+  * Bug #56132: Added parameters for creating SAML SPs to
+    univention-keycloak
+
+ -- Felix Botner <botner@univention.de>  Fri, 23 Jun 2023 13:11:27 +0200
+
 univention-keycloak (1.0.9-21) unstable; urgency=medium
 
   * Bug #56132: Added parameters for creating SAML SPs to

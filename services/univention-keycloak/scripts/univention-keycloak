@@ -364,9 +364,9 @@ def create_SAML_client(opt):
         raise NotImplementedError()
 
     # build urls
-    single_logout_service_url_post = opt.single_logout_service_url_post or endpoints["logout"]
-    single_logout_service_url_redirect = opt.single_logout_service_url_post or endpoints["logout"]
-    assertion_consumer_url_post = opt.assertion_consumer_url_post or endpoints["acs"]
+    single_logout_service_url_post = opt.single_logout_service_url_post or endpoints.get("logout")
+    single_logout_service_url_redirect = opt.single_logout_service_url_post or endpoints.get("logout")
+    assertion_consumer_url_post = opt.assertion_consumer_url_post or endpoints.get("acs")
     valid_redirect_urls = [assertion_consumer_url_post]
 
     umc_uid_mapper = [{
@@ -1775,13 +1775,6 @@ def init_keycloak_ucs(opt):
             sys.exit(1)
         else:
             print("yes, continuing init")
-            if IS_UCS:
-                # save current keycloak version as domain config version
-                # and domain init version
-                kdc = KeycloakDomainConfig(opt.binddn, opt.bindpwd)
-                print(f"Setting domain config version to {kdc.current_version}")
-                kdc.set_domain_config_version(kdc.current_version)
-                kdc.set_domain_config_init(kdc.current_version)
 
     # set locale languages
     realm_payload = {
@@ -1815,6 +1808,11 @@ def init_keycloak_ucs(opt):
     opt.metadata_url = f"https://{opt.umc_saml_sp_server}/univention/saml/metadata"
     opt.metadata_file = None
     opt.umc_uid_mapper = True
+    opt.single_logout_service_url_post = None
+    opt.assertion_consumer_url_post = None
+    opt.frontchannel_logout_off = None
+    opt.name_id_format = None
+    opt.idp_initiated_sso_url_name = None
     create_SAML_client(opt)
 
     # user federation ldap provider payload
@@ -2027,6 +2025,14 @@ def init_keycloak_ucs(opt):
     opt.names = DEFAULT_EXTENTIONS
     print(f"Register extenions: {' '.join(opt.names)}")
     register_extensions(opt)
+
+    if IS_UCS:
+        # save current keycloak version as domain config version
+        # and domain init version
+        kdc = KeycloakDomainConfig(opt.binddn, opt.bindpwd)
+        print(f"Setting domain config version to {kdc.current_version}")
+        kdc.set_domain_config_version(kdc.current_version)
+        kdc.set_domain_config_init(kdc.current_version)
 
 
 def main() -> int:
