@@ -1,3 +1,9 @@
+univention-management-console (12.0.31-3) unstable; urgency=medium
+
+  * Bug #56198: remove UMC-Server only modules from python 2 package
+
+ -- Florian Best <best@univention.de>  Mon, 26 Jun 2023 19:21:29 +0200
+
 univention-management-console (12.0.31-2) unstable; urgency=medium
 
   * Bug #56198: handle connection timeouts so that timed out requests

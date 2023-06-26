@@ -54,7 +54,20 @@ override_dh_python3:
 
 override_dh_python2:
 	dh_python2
-	$(RM) -r debian/python-${PYBUILD_NAME}/usr/lib/python2.7/dist-packages/univention/__init__.py debian/python-${PYBUILD_NAME}/usr/share/univention-management-console/ debian/python-${PYBUILD_NAME}/usr/bin/
+	$(RM) -r debian/python-${PYBUILD_NAME}/usr/lib/python2.7/dist-packages/univention/__init__.py \
+		debian/python-${PYBUILD_NAME}/usr/share/univention-management-console/ \
+		debian/python-${PYBUILD_NAME}/usr/bin/ \
+		debian/python-${PYBUILD_NAME}/usr/lib/python2.7/dist-packages/univention/management/console/acl.py \
+		debian/python-${PYBUILD_NAME}/usr/lib/python2.7/dist-packages/univention/management/console/auth.py \
+		debian/python-${PYBUILD_NAME}/usr/lib/python2.7/dist-packages/univention/management/console/category.py \
+		debian/python-${PYBUILD_NAME}/usr/lib/python2.7/dist-packages/univention/management/console/module.py \
+		debian/python-${PYBUILD_NAME}/usr/lib/python2.7/dist-packages/univention/management/console/pam.py \
+		debian/python-${PYBUILD_NAME}/usr/lib/python2.7/dist-packages/univention/management/console/resource.py \
+		debian/python-${PYBUILD_NAME}/usr/lib/python2.7/dist-packages/univention/management/console/resources.py \
+		debian/python-${PYBUILD_NAME}/usr/lib/python2.7/dist-packages/univention/management/console/saml.py \
+		debian/python-${PYBUILD_NAME}/usr/lib/python2.7/dist-packages/univention/management/console/server.py \
+		debian/python-${PYBUILD_NAME}/usr/lib/python2.7/dist-packages/univention/management/console/session.py \
+		debian/python-${PYBUILD_NAME}/usr/lib/python2.7/dist-packages/univention/management/console/shared_memory.py
 
 override_dh_install:
 	dh_install -Xde.po
