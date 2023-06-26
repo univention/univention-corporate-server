@@ -11,7 +11,7 @@ Build-Depends:
  nodejs-legacy,
  sed,
  univention-config-dev,
- univention-dojo,
+ univention-dojo (>= 12.0.0-4),
  univention-dojo-dev,
  univention-management-console-dev,
  unzip,

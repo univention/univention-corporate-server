@@ -1,3 +1,9 @@
+univention-web (3.0.6-13) unstable; urgency=medium
+
+  * Bug #52138: integrate dojo patches for CVE-2020-5258, CVE-2020-5259
+
+ -- Florian Best <best@univention.de>  Mon, 26 Jun 2023 11:11:51 +0200
+
 univention-web (3.0.6-12) unstable; urgency=medium
 
   * Bug #53874:
