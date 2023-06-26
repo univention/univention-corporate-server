@@ -253,14 +253,14 @@ class ModuleProcess(ModuleConnection):
             await tornado.gen.sleep(0.05)
             await self.connect(connect_retries)
 
-    async def request(self, method, uri, headers=None, body=None):
+    def request(self, method, uri, headers=None, body=None):
         # watch the module's activity and kill it after X seconds inactivity
         self.reset_inactivity_timer()
         request_id = uuid.uuid4()
         self._active_requests.add(request_id)
 
         try:
-            response = await self.do_request(method, uri, headers, body, self.socket)
+            response = self.do_request(method, uri, headers, body, self.socket)
         finally:
             self._active_requests.remove(request_id)
             self.reset_inactivity_timer()
@@ -356,9 +356,8 @@ class ModuleProxy(ModuleConnection):
     async def connect(self, connect_retries=0):
         return not self.unix_socket or os.path.exists(self.unix_socket)
 
-    async def request(self, method, uri, headers=None, body=None):
-        response = await self.do_request(method, uri, headers, body, self.unix_socket)
-        return response
+    def request(self, method, uri, headers=None, body=None):
+        return self.do_request(method, uri, headers, body, self.unix_socket)
 
     def get_uri(self, uri):
         request = urlsplit(uri)
@@ -647,9 +646,8 @@ class Command(Resource):
 
     requires_authentication = False
 
-    @tornado.gen.coroutine
-    def prepare(self, *args, **kwargs):
-        yield super(Command, self).prepare(*args, **kwargs)
+    async def prepare(self, *args, **kwargs):
+        await super(Command, self).prepare(*args, **kwargs)
         self.future = None
         self.process = None
 

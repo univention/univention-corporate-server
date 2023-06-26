@@ -1,4 +1,4 @@
-univention-management-console (12.0.31-3) unstable; urgency=medium
+univention-management-console (12.0.31-4) unstable; urgency=medium
 
   * Bug #56198: remove UMC-Server only modules from python 2 package
 
