@@ -1792,13 +1792,13 @@ msgid ""
 " have a severity level (like \"Information\" or \"Warning\"), a start and"
 " end date and can be made visible only to a specific group of users."
 msgstr ""
-"Darüber hinaus können Portal-Announcements (Ankündigungen; UDM-Objekttyp
-``portals/announcement``) erstellt werden, die dann allen Portal hinzugefügt
-werden. Announcements werden zuoberst im Portal angezeigt and können für das
-Ankündigen von Wartungsfenstern oder dem Ausfall von Diensten genutzt werden.
-Man kann den Schweregrad (etwa \"Information\" oder \"Warnung\") und ein Start-
-und Enddatum einstellen, sowie die Sichtbarkeit auf bestimmte Gruppen
-begrenzen."
+"Darüber hinaus können *Portal-Announcements* (Ankündigungen; UDM-Objekttyp "
+"``portals/announcement``) erstellt werden, die dann allen Portal hinzugefügt "
+"werden. *Announcements* werden zuoberst im Portal angezeigt and können für das "
+"Ankündigen von Wartungsfenstern oder dem Ausfall von Diensten genutzt werden. "
+"Man kann den Schweregrad (etwa \"Information\" oder \"Warnung\") und ein Start- "
+"und Enddatum einstellen, sowie die Sichtbarkeit auf bestimmte Gruppen "
+"begrenzen."
 
 #: ../../central-management-umc/portal.rst:29
 msgid ""
@@ -1850,10 +1850,10 @@ msgid ""
 "setting which group members can see which portal entries can be made "
 "using the UMC portal settings module."
 msgstr ""
-"Weiterführende Einstellungen, wie das Hinzufügen neuer Portale, neuer
-Announcements oder die " "Einstellung, welche Benutzer welche Portaleinträge
-sehen dürfen (über " "ihre Gruppenmitgliedschaft), können über das UMC-Modul
-:guilabel:`Portal`" " durchgeführt werden."
+"Weiterführende Einstellungen, wie das Hinzufügen neuer Portale, neuer "
+"*Announcements* oder die Einstellung, welche Benutzer welche Portaleinträge "
+"sehen dürfen (über ihre Gruppenmitgliedschaft), können über das UMC-Modul "
+":guilabel:`Portal` durchgeführt werden."
 
 #: ../../central-management-umc/portal.rst:48
 msgid ""
