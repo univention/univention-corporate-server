@@ -1771,7 +1771,7 @@ def init_keycloak_ucs(opt):
         sys.exit(0)
     else:
         if opt.check_init_done:
-            print("yes")
+            print("yes, but stopping as requested")
             sys.exit(1)
         else:
             print("yes, continuing init")
