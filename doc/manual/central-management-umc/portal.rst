@@ -19,12 +19,12 @@ assigned to none, one or multiple portal categories. A portal category
 multiple portals. A portal itself (UDM object type ``portals/portal``)
 renders all portal categories which are assigned to it.
 
-In addition to that, portal announcements (UDM object type
-``portals/announcement``) can be created and will be shown on all portals.
-Announcements are rendered at the top of each portal and can be used to
-announce, e.g., maintenance windows or services outages. They can have a
-severity level (like "Information" or "Warning"), a start and end date and can
-be made visible only to a specific group of users.
+In addition, you can create portal announcements (UDM object type
+``portals/announcement``) and use them to announce, for example, maintenance
+windows or services outages. They can have a severity level, such as
+*information* or *warning*, a start and end date and a visibility limitation to
+a specific group of users. A portal announcement shows up the top of each portal
+on all portals.
 
 The portal *domain*, shipped with every installation, is configured on each
 server by default. In addition to all installed applications of the domain,
