@@ -68,6 +68,8 @@ Breaks:
 Replaces:
  python3-univention-directory-manager-rest (<< 10.0.4-1),
 Depends:
+ python3-ldap,
+ python3-requests,
  python3-uritemplate,
  ${misc:Depends},
  ${python3:Depends},
