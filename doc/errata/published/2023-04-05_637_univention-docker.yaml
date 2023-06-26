@@ -6,12 +6,12 @@ src: univention-docker
 fix: 5.0.4-2A~5.0.0.202303291821
 desc: |
  This update addresses the following issues:
-  * Containers that use glibc version 2.34 or above
-    need to be allowed to use the syscalls `clone3`
-    and `faccessat2` to work.
-    These syscalls have been added to the default docker
-    seccomp rules that are used by single container apps
-    in the appcenter.
+ * Containers that use glibc version 2.34 or above
+   need to be allowed to use the syscalls `clone3`
+   and `faccessat2` to work.
+   These syscalls have been added to the default docker
+   seccomp rules that are used by single container apps
+   in the appcenter.
 bug: [55360]
 erratum: 637
 announced: 2023-04-05
