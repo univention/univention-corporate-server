@@ -1,0 +1,12 @@
+product: ucs
+release: "4.4"
+version: [9]
+scope: ucs_4.4-0-errata4.4-9
+src: univention-dojo
+fix: 12.0.0-4
+desc: |
+ This update addresses the following issues:
+ * dojo deepCopy method was vulnerable to Prototype Pollution (CVE-2020-5258).
+ * dojox jqMix method was vulnerable to Prototype Pollution (CVE-2020-5259).
+bug: [52138]
+cve: [CVE-2020-5258, CVE-2020-5259]
