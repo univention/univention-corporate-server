@@ -19,6 +19,13 @@ assigned to none, one or multiple portal categories. A portal category
 multiple portals. A portal itself (UDM object type ``portals/portal``)
 renders all portal categories which are assigned to it.
 
+In addition to that, portal announcements (UDM object type
+``portals/announcement``) can be created and will be shown on all portals.
+Announcements are rendered at the top of each portal and can be used to
+announce, e.g., maintenance windows or services outages. They can have a
+severity level (like "Information" or "Warning"), a start and end date and can
+be made visible only to a specific group of users.
+
 The portal *domain*, shipped with every installation, is configured on each
 server by default. In addition to all installed applications of the domain,
 links to |UCSUMC| as well as the server overview are shown on this portal page.
@@ -34,8 +41,9 @@ of the ``Domain Admins`` group can edit the portal after clicking on the
 corresponding entry in the user menu. They now can create new entries on the
 portal, modify existing entries, modify the order or the design.
 
-Advanced settings, such as adding new portals or setting which group members can
-see which portal entries can be made using the UMC portal settings module.
+Advanced settings, such as adding new portals, new announcements or setting
+which group members can see which portal entries can be made using the UMC
+portal settings module.
 
 By default, all portal entries are displayed for everyone. In the UMC module
 :guilabel:`Portal` in the category *Login*, it can be configured whether

@@ -1,13 +1,12 @@
 # SPDX-FileCopyrightText: 2021-2023 Univention GmbH
 #
 # SPDX-License-Identifier: AGPL-3.0-only
-
 msgid ""
 msgstr ""
 "Project-Id-Version: Univention Corporate Server - Manual for users and "
 "administrators\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-04-12 12:33+0000\n"
+"POT-Creation-Date: 2023-06-26 07:28+0000\n"
 "PO-Revision-Date: 2023-03-14 16:54+0100\n"
 "Last-Translator: Univention GmbH <packages@univention.de>\n"
 "Language: de\n"
@@ -18,11 +17,11 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 2.12.1\n"
 
-#: ../../central-management-umc/delegated-administration.rst:4
+#: ../../central-management-umc/delegated-administration.rst:8
 msgid "Delegated administration for UMC modules"
 msgstr "Delegierte Administration für UMC-Module"
 
-#: ../../central-management-umc/delegated-administration.rst:6
+#: ../../central-management-umc/delegated-administration.rst:10
 msgid ""
 "By default only the members of the ``Domain Admins`` group can access all"
 " UMC modules. Policies can be used to configure the access to UMC modules"
@@ -37,7 +36,7 @@ msgstr ""
 "Berechtigung zu erteilen Drucker zu verwalten ohne ihnen Vollzugriff auf "
 "die Administration der Domäne zu erteilen."
 
-#: ../../central-management-umc/delegated-administration.rst:12
+#: ../../central-management-umc/delegated-administration.rst:16
 msgid ""
 "UMC modules are assigned via a *UMC* policy which can be assigned to user"
 " and group objects. The evaluation is performed additively, i.e., general"
@@ -51,7 +50,7 @@ msgstr ""
 "kann allgemeine Zugriffsrechte durch ACLs auf Gruppenmitgliedschaften "
 "erteilen und durch ACLs auf Benutzer ergänzen."
 
-#: ../../central-management-umc/delegated-administration.rst:17
+#: ../../central-management-umc/delegated-administration.rst:21
 msgid ""
 "In addition to the assignment of UMC policies, LDAP access rights need to"
 " be taken into account, as well, for modules that manage data in the LDAP"
@@ -72,38 +71,38 @@ msgstr ""
 "zusätzlich der Zugriff in den LDAP-ACLs freigegeben werden. Weitere "
 "Hinweis zu LDAP-ACLs finden sich in :ref:`domain-ldap-acls`."
 
-#: ../../central-management-umc/delegated-administration.rst:25
+#: ../../central-management-umc/delegated-administration.rst:29
 msgid "Policy *UMC*"
 msgstr "Richtlinie *UMC*"
 
-#: ../../central-management-umc/delegated-administration.rst:29
-#: ../../central-management-umc/extended-attributes.rst:38
-#: ../../central-management-umc/extended-attributes.rst:83
-#: ../../central-management-umc/extended-attributes.rst:110
-#: ../../central-management-umc/extended-attributes.rst:148
-#: ../../central-management-umc/extended-attributes.rst:238
-#: ../../central-management-umc/user-defined-ldap-structures.rst:32
-#: ../../central-management-umc/user-defined-ldap-structures.rst:50
+#: ../../central-management-umc/delegated-administration.rst:33
+#: ../../central-management-umc/extended-attributes.rst:42
+#: ../../central-management-umc/extended-attributes.rst:87
+#: ../../central-management-umc/extended-attributes.rst:114
+#: ../../central-management-umc/extended-attributes.rst:152
+#: ../../central-management-umc/extended-attributes.rst:242
+#: ../../central-management-umc/user-defined-ldap-structures.rst:36
+#: ../../central-management-umc/user-defined-ldap-structures.rst:54
 msgid "Attribute"
 msgstr "Attribut"
 
-#: ../../central-management-umc/delegated-administration.rst:30
-#: ../../central-management-umc/extended-attributes.rst:39
-#: ../../central-management-umc/extended-attributes.rst:84
-#: ../../central-management-umc/extended-attributes.rst:111
-#: ../../central-management-umc/extended-attributes.rst:149
-#: ../../central-management-umc/extended-attributes.rst:239
-#: ../../central-management-umc/user-defined-ldap-structures.rst:33
-#: ../../central-management-umc/user-defined-ldap-structures.rst:38
-#: ../../central-management-umc/user-defined-ldap-structures.rst:51
+#: ../../central-management-umc/delegated-administration.rst:34
+#: ../../central-management-umc/extended-attributes.rst:43
+#: ../../central-management-umc/extended-attributes.rst:88
+#: ../../central-management-umc/extended-attributes.rst:115
+#: ../../central-management-umc/extended-attributes.rst:153
+#: ../../central-management-umc/extended-attributes.rst:243
+#: ../../central-management-umc/user-defined-ldap-structures.rst:37
+#: ../../central-management-umc/user-defined-ldap-structures.rst:42
+#: ../../central-management-umc/user-defined-ldap-structures.rst:55
 msgid "Description"
 msgstr "Beschreibung"
 
-#: ../../central-management-umc/delegated-administration.rst:32
+#: ../../central-management-umc/delegated-administration.rst:36
 msgid "List of allowed UCS operation sets"
 msgstr "Liste der erlaubten Operationen"
 
-#: ../../central-management-umc/delegated-administration.rst:33
+#: ../../central-management-umc/delegated-administration.rst:37
 msgid ""
 "All the UMC modules defined here are displayed to the user or group to "
 "which this ACL is applied. The names of the domain modules begin with "
@@ -113,7 +112,7 @@ msgstr ""
 "angezeigt, auf die diese ACL angewendet wird. Die Namen von Domänen-"
 "Modulen beginnen mit ``UDM``."
 
-#: ../../central-management-umc/delegated-administration.rst:39
+#: ../../central-management-umc/delegated-administration.rst:43
 msgid ""
 "For access to UMC modules, only policies are considered that are assigned"
 " to groups or directly to user and computer accounts. Nested group "
@@ -124,7 +123,7 @@ msgstr ""
 "Eine Auswertung von verschachtelten Gruppenmitgliedsschaften (also "
 "Gruppen in Gruppen) findet nicht statt."
 
-#: ../../central-management-umc/directory-reports.rst:4
+#: ../../central-management-umc/directory-reports.rst:8
 msgid ""
 "Evaluation of data from the LDAP directory with Univention Directory "
 "Reports"
@@ -132,7 +131,7 @@ msgstr ""
 "Auswertung von Daten aus dem LDAP-Verzeichnis mit Univention Directory "
 "Reports"
 
-#: ../../central-management-umc/directory-reports.rst:8
+#: ../../central-management-umc/directory-reports.rst:12
 msgid ""
 "Univention Directory Reports offers the possibility of creating "
 "predefined reports for any objects to be managed in the directory "
@@ -141,7 +140,7 @@ msgstr ""
 "Univention Directory Reports bietet die Möglichkeit vordefinierte Reports"
 " zu beliebigen im Verzeichnisdienst verwalteten Objekten zu erstellen."
 
-#: ../../central-management-umc/directory-reports.rst:11
+#: ../../central-management-umc/directory-reports.rst:15
 msgid ""
 "The structure of the reports is defined using templates. The "
 "specification language developed for this purpose allows the use of "
@@ -156,7 +155,7 @@ msgstr ""
 "  So können beispielsweise für Benutzer wahlweise sehr detaillierte "
 "Reports oder nur einfache Adresslisten erstellt werden."
 
-#: ../../central-management-umc/directory-reports.rst:17
+#: ../../central-management-umc/directory-reports.rst:21
 msgid ""
 "The creation of the reports is directly integrated in the UMC modules "
 ":guilabel:`Users`, :guilabel:`Groups` and :guilabel:`Computers`. "
@@ -168,7 +167,7 @@ msgstr ""
 "integriert. Alternativ kann das Kommandozeilenprogramm :command"
 ":`univention-directory-reports` verwendet werden."
 
-#: ../../central-management-umc/directory-reports.rst:21
+#: ../../central-management-umc/directory-reports.rst:25
 msgid ""
 "Six report templates are already provided with the delivered Univention "
 "Directory Reports, which can be used for users, groups and computers. "
@@ -183,11 +182,11 @@ msgstr ""
 "verwendet werden können. Weitere Vorlagen können erstellt und registriert"
 " werden."
 
-#: ../../central-management-umc/directory-reports.rst:30
+#: ../../central-management-umc/directory-reports.rst:34
 msgid "Creating reports via |UCSUMC| modules"
 msgstr "Erstellen von Reports in |UCSUMC|-Modulen"
 
-#: ../../central-management-umc/directory-reports.rst:32
+#: ../../central-management-umc/directory-reports.rst:36
 msgid ""
 "To create a report, you need to open the UMC module :guilabel:`Users`, "
 ":guilabel:`Groups` or :guilabel:`Computers`. Then all the objects which "
@@ -205,11 +204,11 @@ msgstr ""
 "erstellen` ermöglicht die Auswahl zwischen dem *Standard-Report* im PDF-"
 "Format und dem *CSV-Report* im CSV-Format."
 
-#: ../../central-management-umc/directory-reports.rst:44
+#: ../../central-management-umc/directory-reports.rst:48
 msgid "Creating a report"
 msgstr "Erstellen eines Reports"
 
-#: ../../central-management-umc/directory-reports.rst:46
+#: ../../central-management-umc/directory-reports.rst:50
 msgid ""
 "The reports created via a UMC module are stored for 12 hours and then "
 "deleted by a cron job. The settings for when the cron job should run and "
@@ -221,11 +220,11 @@ msgstr ""
 "wann dieser Cron-Job laufen soll und wie lange diese Reports aufbewahrt "
 "werden sollen, kann über zwei |UCSUCR|-Variablen definiert werden:"
 
-#: ../../central-management-umc/directory-reports.rst:52
+#: ../../central-management-umc/directory-reports.rst:56
 msgid "Defines when the cron job should be run."
 msgstr "Definiert den Zeitpunkt zu dem der Cron-Job ausgeführt werden soll."
 
-#: ../../central-management-umc/directory-reports.rst:56
+#: ../../central-management-umc/directory-reports.rst:60
 msgid ""
 "Defines the maximum age of a report document in seconds before it is "
 "deleted."
@@ -233,11 +232,11 @@ msgstr ""
 "Bestimmt das maximale Alter eines Report-Dokumentes in Sekunden bevor es "
 "gelöscht wird."
 
-#: ../../central-management-umc/directory-reports.rst:61
+#: ../../central-management-umc/directory-reports.rst:65
 msgid "Creating reports on the command line"
 msgstr "Erstellen von Reports auf der Kommandozeile"
 
-#: ../../central-management-umc/directory-reports.rst:63
+#: ../../central-management-umc/directory-reports.rst:67
 msgid ""
 "Reports can also be created via the command line with the :command"
 ":`univention-directory-reports` program. Information on the use of the "
@@ -248,7 +247,7 @@ msgstr ""
 "Verwendung des Programm können über die Option ``--help`` abgefragt "
 "werden."
 
-#: ../../central-management-umc/directory-reports.rst:67
+#: ../../central-management-umc/directory-reports.rst:71
 msgid ""
 "The following command can be used to list the report templates available "
 "to users, for example:"
@@ -256,15 +255,15 @@ msgstr ""
 "Mit dem folgenden Befehl können beispielsweise die verfügbaren "
 "Reportvorlagen für Benutzer aufgelistet werden:"
 
-#: ../../central-management-umc/directory-reports.rst:70
+#: ../../central-management-umc/directory-reports.rst:74
 msgid "$ univention-directory-reports -m users/user -l"
 msgstr "$ univention-directory-reports -m users/user -l"
 
-#: ../../central-management-umc/directory-reports.rst:78
+#: ../../central-management-umc/directory-reports.rst:82
 msgid "Adjustment/expansion of Univention Directory Reports"
 msgstr "Anpassung/Erweiterung von Univention Directory Reports"
 
-#: ../../central-management-umc/directory-reports.rst:80
+#: ../../central-management-umc/directory-reports.rst:84
 msgid ""
 "Existing reports can be created directly with the presettings. Some "
 "presettings can be adapted using |UCSUCR|. For example, it is possible to"
@@ -283,7 +282,7 @@ msgstr ""
 "verwendet werden. Das Bild wird automatisch auf eine feste Breite von 5.0"
 " cm angepasst."
 
-#: ../../central-management-umc/directory-reports.rst:87
+#: ../../central-management-umc/directory-reports.rst:91
 msgid ""
 "In addition to the logo, the contents of the report can also be adapted "
 "by defining new report templates."
@@ -291,11 +290,11 @@ msgstr ""
 "Neben dem Logo kann auch der Inhalt der Reports angepasst werden, indem "
 "neue Reportvorlagen definiert werden."
 
-#: ../../central-management-umc/extended-attributes.rst:4
+#: ../../central-management-umc/extended-attributes.rst:8
 msgid "Expansion of UMC modules with extended attributes"
 msgstr "Erweiterung von UMC-Modulen mit erweiterten Attributen"
 
-#: ../../central-management-umc/extended-attributes.rst:6
+#: ../../central-management-umc/extended-attributes.rst:10
 msgid ""
 "The domain management UMC modules allow the comprehensive management of "
 "the data in a domain. *Extended attributes* offer the possibility of "
@@ -310,7 +309,7 @@ msgstr ""
 "werden auch von Drittanbietern für die Integration von Lösungen in UCS "
 "eingesetzt."
 
-#: ../../central-management-umc/extended-attributes.rst:12
+#: ../../central-management-umc/extended-attributes.rst:16
 msgid ""
 "Extended attributes are managed in the UMC module :guilabel:`LDAP "
 "directory`. There one needs to switch to the ``univention`` container and"
@@ -327,7 +326,7 @@ msgstr ""
 msgid "Extended attribute for managing a car license"
 msgstr "Erweitertes Attribut zur Verwaltung von KFZ-Kennzeichen"
 
-#: ../../central-management-umc/extended-attributes.rst:23
+#: ../../central-management-umc/extended-attributes.rst:27
 msgid ""
 "Extended attributes can be internationalized. In this case, the name and "
 "description should be compiled in English as this is the standard "
@@ -337,20 +336,20 @@ msgstr ""
 "sollten Namen und Beschreibungen in Englisch verfasst werden, da dies der"
 " Standardsprache von UMC-Modulen entspricht."
 
-#: ../../central-management-umc/extended-attributes.rst:30
+#: ../../central-management-umc/extended-attributes.rst:34
 msgid "Extended attributes - General tab"
 msgstr "Erweiterte Attribute - Reiter Allgemein"
 
-#: ../../central-management-umc/extended-attributes.rst:34
-#: ../../central-management-umc/user-defined-ldap-structures.rst:28
+#: ../../central-management-umc/extended-attributes.rst:38
+#: ../../central-management-umc/user-defined-ldap-structures.rst:32
 msgid "*General* tab"
 msgstr "Reiter *Allgemein*"
 
-#: ../../central-management-umc/extended-attributes.rst:41
+#: ../../central-management-umc/extended-attributes.rst:45
 msgid "Unique name"
 msgstr "Eindeutiger Name"
 
-#: ../../central-management-umc/extended-attributes.rst:42
+#: ../../central-management-umc/extended-attributes.rst:46
 msgid ""
 "The name of the LDAP object which will be used to store the extended "
 "attribute. Within a container, the name has to be unique."
@@ -359,11 +358,11 @@ msgstr ""
 "gespeichert wird. Innerhalb eines Containers muss der Name eindeutig "
 "sein."
 
-#: ../../central-management-umc/extended-attributes.rst:45
+#: ../../central-management-umc/extended-attributes.rst:49
 msgid "UDM CLI name"
 msgstr "UDM CLI Name"
 
-#: ../../central-management-umc/extended-attributes.rst:46
+#: ../../central-management-umc/extended-attributes.rst:50
 msgid ""
 "The specified attribute name should be used when employing the command "
 "line interface |UCSUDM|. When the extended attribute is saved, the "
@@ -376,11 +375,11 @@ msgstr ""
 "Karteikarte *Allgemein* übernommen und kann nachträglich modifiziert "
 "werden."
 
-#: ../../central-management-umc/extended-attributes.rst:51
+#: ../../central-management-umc/extended-attributes.rst:55
 msgid "Short description"
 msgstr "Kurzbeschreibung"
 
-#: ../../central-management-umc/extended-attributes.rst:52
+#: ../../central-management-umc/extended-attributes.rst:56
 msgid ""
 "Used as title of the input field in UMC modules or as the attribute "
 "description in the command line interface."
@@ -388,11 +387,11 @@ msgstr ""
 "Wird als Überschrift des Eingabefelds in UMC-Modulen oder als Attribut-"
 "Beschreibung in der Kommandozeilenschnittstelle verwendet."
 
-#: ../../central-management-umc/extended-attributes.rst:55
+#: ../../central-management-umc/extended-attributes.rst:59
 msgid "Translations of short description"
 msgstr "Übersetzungen der Kurzbeschreibung"
 
-#: ../../central-management-umc/extended-attributes.rst:56
+#: ../../central-management-umc/extended-attributes.rst:60
 msgid ""
 "Translated short descriptions can be saved in several languages so that "
 "the title of extended attributes is also output with other language "
@@ -407,11 +406,11 @@ msgstr ""
 "``de_DE`` oder ``fr_FR``) die entsprechend übersetzte Kurzbeschreibung "
 "zugeordnet werden."
 
-#: ../../central-management-umc/extended-attributes.rst:62
+#: ../../central-management-umc/extended-attributes.rst:66
 msgid "Long description"
 msgstr "Ausführliche Beschreibung"
 
-#: ../../central-management-umc/extended-attributes.rst:63
+#: ../../central-management-umc/extended-attributes.rst:67
 msgid ""
 "This long description is shown as a tool tip in the input fields in UMC "
 "modules."
@@ -419,11 +418,11 @@ msgstr ""
 "Diese erweiterte Beschreibung wird für die Eingabefelder in UMC-Modulen "
 "als Tooltip angezeigt."
 
-#: ../../central-management-umc/extended-attributes.rst:66
+#: ../../central-management-umc/extended-attributes.rst:70
 msgid "Translations of long description"
 msgstr "Übersetzungen der ausführlichen Beschreibung"
 
-#: ../../central-management-umc/extended-attributes.rst:67
+#: ../../central-management-umc/extended-attributes.rst:71
 msgid ""
 "Additional information displayed in the tool tip for an extended "
 "attribute can also be saved for several languages. This can be done by "
@@ -436,19 +435,19 @@ msgstr ""
 "``de_DE`` oder ``fr_FR``) die entsprechend übersetzte Langbeschreibung "
 "zugeordnet werden."
 
-#: ../../central-management-umc/extended-attributes.rst:75
+#: ../../central-management-umc/extended-attributes.rst:79
 msgid "Extended attributes - Module tab"
 msgstr "Erweiterte Attribute - Reiter Modul"
 
-#: ../../central-management-umc/extended-attributes.rst:79
+#: ../../central-management-umc/extended-attributes.rst:83
 msgid "*Module* tab"
 msgstr "Reiter *Modul*"
 
-#: ../../central-management-umc/extended-attributes.rst:86
+#: ../../central-management-umc/extended-attributes.rst:90
 msgid "Modules to be extended"
 msgstr "Zu erweiternde Module"
 
-#: ../../central-management-umc/extended-attributes.rst:87
+#: ../../central-management-umc/extended-attributes.rst:91
 msgid ""
 "The |UCSUDM| module which is to be expanded with the extended attribute. "
 "An extended attribute can apply for multiple modules."
@@ -456,11 +455,11 @@ msgstr ""
 "Das |UCSUDM|-Modul, welches durch das erweiterte Attribut ergänzt werden "
 "soll. Ein erweitertes Attribut kann auch für mehrere Module gelten."
 
-#: ../../central-management-umc/extended-attributes.rst:89
+#: ../../central-management-umc/extended-attributes.rst:93
 msgid "Required options/object classes"
 msgstr "Benötigte Optionen/Objektklassen"
 
-#: ../../central-management-umc/extended-attributes.rst:90
+#: ../../central-management-umc/extended-attributes.rst:94
 msgid ""
 "Some extended attributes can only be used practically if certain object "
 "classes are activated on the :guilabel:`Options` tab. One or more options"
@@ -473,11 +472,11 @@ msgstr ""
 "hinterlegt werden, die am betreffenden Objekt aktiviert sein müssen, "
 "damit dieses erweiterte Attribut angezeigt wird oder editierbar ist."
 
-#: ../../central-management-umc/extended-attributes.rst:94
+#: ../../central-management-umc/extended-attributes.rst:98
 msgid "Hook class"
 msgstr "Hook-Klasse"
 
-#: ../../central-management-umc/extended-attributes.rst:95
+#: ../../central-management-umc/extended-attributes.rst:99
 msgid ""
 "The functions of the hook class specified here are used during saving, "
 "modifying and deleting the objects with extended attributes. Additional "
@@ -488,19 +487,19 @@ msgstr ""
 "Attribut aufgerufen. Weiterführende Dokumentation findet sich in der "
 "Entwickler-Dokumentation :cite:t:`developer-reference`."
 
-#: ../../central-management-umc/extended-attributes.rst:102
+#: ../../central-management-umc/extended-attributes.rst:106
 msgid "Extended attributes - LDAP mapping tab"
 msgstr "Erweiterte Attribute - Reiter LDAP-Abbildung"
 
-#: ../../central-management-umc/extended-attributes.rst:106
+#: ../../central-management-umc/extended-attributes.rst:110
 msgid "*LDAP mapping* tab"
 msgstr "Reiter *LDAP-Abbildung*"
 
-#: ../../central-management-umc/extended-attributes.rst:113
+#: ../../central-management-umc/extended-attributes.rst:117
 msgid "LDAP object class"
 msgstr "LDAP-Objektklasse"
 
-#: ../../central-management-umc/extended-attributes.rst:114
+#: ../../central-management-umc/extended-attributes.rst:118
 msgid ""
 "Object class to which the attribute entered under *LDAP attribute* "
 "belongs."
@@ -508,7 +507,7 @@ msgstr ""
 "Die Objektklasse, zu welcher das unter *LDAP-Abbildung* eingetragene "
 "Attribut gehört."
 
-#: ../../central-management-umc/extended-attributes.rst:117
+#: ../../central-management-umc/extended-attributes.rst:121
 msgid ""
 "Predefined LDAP schema extensions for extended attributes are provided "
 "with the object class ``univentionFreeAttributes``. Further information "
@@ -518,7 +517,7 @@ msgstr ""
 "``univentionFreeAttributes`` vordefinierte LDAP-Schema-Erweiterungen zur "
 "Verfügung. Weitere Hinweise finden sich in :ref:`domain-ldap-extensions`."
 
-#: ../../central-management-umc/extended-attributes.rst:121
+#: ../../central-management-umc/extended-attributes.rst:125
 msgid ""
 "Each LDAP object which should be extended with an attribute is "
 "automatically extended with the LDAP object class specified here if a "
@@ -528,11 +527,11 @@ msgstr ""
 "automatisch um die hier angegebene LDAP-Objektklasse erweitert, wenn vom "
 "Benutzer ein Wert für das erweiterte Attribut angegeben wurde."
 
-#: ../../central-management-umc/extended-attributes.rst:125
+#: ../../central-management-umc/extended-attributes.rst:129
 msgid "LDAP attribute"
 msgstr "LDAP-Attribut"
 
-#: ../../central-management-umc/extended-attributes.rst:126
+#: ../../central-management-umc/extended-attributes.rst:130
 msgid ""
 "The name of the LDAP attribute where the values of the LDAP object are to"
 " be stored. The LDAP attribute must be included in the specified object "
@@ -542,11 +541,11 @@ msgstr ""
 "werden sollen. Das LDAP-Attribut muss in der angegebenen Objektklasse "
 "enthalten sein."
 
-#: ../../central-management-umc/extended-attributes.rst:130
+#: ../../central-management-umc/extended-attributes.rst:134
 msgid "Remove object class if the attribute is removed"
 msgstr "Objektklasse löschen, wenn das Attribut entfernt wird"
 
-#: ../../central-management-umc/extended-attributes.rst:131
+#: ../../central-management-umc/extended-attributes.rst:135
 msgid ""
 "If the value of an extended attribute in a UMC module is deleted, the "
 "attribute is removed from the LDAP object. If no further attributes of "
@@ -560,19 +559,19 @@ msgstr ""
 "auch die Objektklasse vom LDAP-Objekt entfernt, sofern diese Option "
 "aktiviert ist."
 
-#: ../../central-management-umc/extended-attributes.rst:140
+#: ../../central-management-umc/extended-attributes.rst:144
 msgid "Extended attributes - UMC tab"
 msgstr "Erweiterte Attribute - Reiter UMC"
 
-#: ../../central-management-umc/extended-attributes.rst:144
+#: ../../central-management-umc/extended-attributes.rst:148
 msgid "*UMC* tab"
 msgstr "Reiter *UMC*"
 
-#: ../../central-management-umc/extended-attributes.rst:151
+#: ../../central-management-umc/extended-attributes.rst:155
 msgid "Do not show this extended attribute in UMC modules"
 msgstr "Dieses erweiterte Attribut nicht in UMC-Modulen anzeigen"
 
-#: ../../central-management-umc/extended-attributes.rst:152
+#: ../../central-management-umc/extended-attributes.rst:156
 msgid ""
 "This option can be activated if an attribute should only be administrated"
 " internally instead of by the administrator, e.g., indirectly by scripts."
@@ -584,11 +583,11 @@ msgstr ""
 "werden. Das Attribut kann dann nur über das Kommandozeilen-Interface "
 "|UCSUDM| gesetzt werden und wird in UMC-Modulen nicht angezeigt."
 
-#: ../../central-management-umc/extended-attributes.rst:157
+#: ../../central-management-umc/extended-attributes.rst:161
 msgid "Exclude from UMC module"
 msgstr "Von der UMC-Suche ausschließen"
 
-#: ../../central-management-umc/extended-attributes.rst:158
+#: ../../central-management-umc/extended-attributes.rst:162
 msgid ""
 "If it should not be possible to search for an extended attribute in the "
 "search window of a wizard, this option can be activated to remove the "
@@ -599,15 +598,15 @@ msgstr ""
 "das erweiterte Attribut aus der Liste der möglichen Sucheigenschaften zu "
 "entfernen."
 
-#: ../../central-management-umc/extended-attributes.rst:162
+#: ../../central-management-umc/extended-attributes.rst:166
 msgid "This is only needed in exceptional cases."
 msgstr "Dies ist nur in Sonderfällen nötig."
 
-#: ../../central-management-umc/extended-attributes.rst:164
+#: ../../central-management-umc/extended-attributes.rst:168
 msgid "Ordering number"
 msgstr "Ordnungsnummer"
 
-#: ../../central-management-umc/extended-attributes.rst:165
+#: ../../central-management-umc/extended-attributes.rst:169
 msgid ""
 "If several extended attributes are to be managed on one tab, the order of"
 " the individual attributes on the tab can be influenced here. They are "
@@ -620,7 +619,7 @@ msgstr ""
 "durch diese Positionsnummer jeweils am Ende der betreffenden Gruppe und "
 "Karteikarte angehängt."
 
-#: ../../central-management-umc/extended-attributes.rst:170
+#: ../../central-management-umc/extended-attributes.rst:174
 msgid ""
 "Assigning consecutive position numbers results in the attributes being "
 "ordered on the left and right alternately in two columns. Otherwise, the "
@@ -633,11 +632,11 @@ msgstr ""
 " Attribute die gleiche Positionsnummer auf, ist deren Reihenfolge "
 "zufällig."
 
-#: ../../central-management-umc/extended-attributes.rst:175
+#: ../../central-management-umc/extended-attributes.rst:179
 msgid "Overwrite existing widget"
 msgstr "Existierendes Eingabefeld überschreiben"
 
-#: ../../central-management-umc/extended-attributes.rst:176
+#: ../../central-management-umc/extended-attributes.rst:180
 msgid ""
 "In some cases it is useful to overwrite predefined input fields with "
 "extended attributes. If the internal UDM name of an attribute is "
@@ -654,11 +653,11 @@ msgstr ""
 ":ref:`central-udm`). Es ist zu beachten, dass diese Option bei "
 "Pflichtfeldern zu Problemen führen kann."
 
-#: ../../central-management-umc/extended-attributes.rst:183
+#: ../../central-management-umc/extended-attributes.rst:187
 msgid "Span both columns"
 msgstr "Beide Spalten umfassen"
 
-#: ../../central-management-umc/extended-attributes.rst:184
+#: ../../central-management-umc/extended-attributes.rst:188
 msgid ""
 "As standard all input fields are grouped into two columns. This option "
 "can be used for overlong input fields, which need the full width of the "
@@ -668,11 +667,11 @@ msgstr ""
 "Option kann für überlange Eingabefelder verwendet werden, die sich über "
 "die komplette Breite beider Spalten erstrecken sollen."
 
-#: ../../central-management-umc/extended-attributes.rst:188
+#: ../../central-management-umc/extended-attributes.rst:192
 msgid "Tab name"
 msgstr "Name der Karteikarte"
 
-#: ../../central-management-umc/extended-attributes.rst:189
+#: ../../central-management-umc/extended-attributes.rst:193
 msgid ""
 "The name of the tab in UMC modules on which the extended attribute should"
 " be displayed. New tabs can also be added here."
@@ -681,15 +680,15 @@ msgstr ""
 "angezeigt werden soll. Hier können auch neue Karteikarten hinzugefügt "
 "werden."
 
-#: ../../central-management-umc/extended-attributes.rst:192
+#: ../../central-management-umc/extended-attributes.rst:196
 msgid "If no tab name is entered, *user-defined* will be used."
 msgstr "Wird kein Karteikartenname angegeben, wird *Benutzerdefiniert* verwendet."
 
-#: ../../central-management-umc/extended-attributes.rst:194
+#: ../../central-management-umc/extended-attributes.rst:198
 msgid "Translations of tab name"
 msgstr "Übersetzung des Karteikartennamens"
 
-#: ../../central-management-umc/extended-attributes.rst:195
+#: ../../central-management-umc/extended-attributes.rst:199
 msgid ""
 "Translated tab names can be assigned to the corresponding language code "
 "(e.g. ``de_DE`` or ``fr_FR``) in this input field."
@@ -698,11 +697,11 @@ msgstr ""
 "übersetzte Karteikartennamen zum entsprechenden Sprachcode (z.B. "
 "``de_DE`` oder ``fr_FR``) hinterlegt werden."
 
-#: ../../central-management-umc/extended-attributes.rst:198
+#: ../../central-management-umc/extended-attributes.rst:202
 msgid "Overwrite existing tab"
 msgstr "Existierende Karteikarte überschreiben"
 
-#: ../../central-management-umc/extended-attributes.rst:199
+#: ../../central-management-umc/extended-attributes.rst:203
 msgid ""
 "If this option is activated, the tab in question is overwritten before "
 "the extended attributes are positioned on it. This option can be used to "
@@ -719,11 +718,11 @@ msgstr ""
 "zu überschreibende Karteikarte Übersetzungen muss die überschreibende "
 "Karteikarte ebenfalls identische Übersetzungen mitbringen."
 
-#: ../../central-management-umc/extended-attributes.rst:206
+#: ../../central-management-umc/extended-attributes.rst:210
 msgid "Tab with advanced settings"
 msgstr "Karteikarte mit erweiterten Einstellungen"
 
-#: ../../central-management-umc/extended-attributes.rst:207
+#: ../../central-management-umc/extended-attributes.rst:211
 msgid ""
 "Settings possibilities which are rarely used can be placed in the "
 "extended settings tab"
@@ -731,11 +730,11 @@ msgstr ""
 "Einstellungsmöglichkeiten, die selten verwendet werden, können auf "
 "Karteikarten in den erweiterten Einstellungen platziert werden"
 
-#: ../../central-management-umc/extended-attributes.rst:210
+#: ../../central-management-umc/extended-attributes.rst:214
 msgid "Group name"
 msgstr "Gruppenname"
 
-#: ../../central-management-umc/extended-attributes.rst:211
+#: ../../central-management-umc/extended-attributes.rst:215
 msgid ""
 "Groups allow the structuring of a tab. A group is separated by a gray "
 "horizontal bar and can be shown and hidden."
@@ -744,7 +743,7 @@ msgstr ""
 "wird durch einen grauen Querbalken abgetrennt und kann ein- und "
 "ausgeklappt werden."
 
-#: ../../central-management-umc/extended-attributes.rst:214
+#: ../../central-management-umc/extended-attributes.rst:218
 msgid ""
 "If no group name is specified for an extended attribute, the attribute is"
 " placed above the first group entry."
@@ -752,11 +751,11 @@ msgstr ""
 "Wird bei einem erweiterten Attribute kein Gruppenname angegeben, wird das"
 " erweiterte Attribut oberhalb der ersten Gruppe platziert."
 
-#: ../../central-management-umc/extended-attributes.rst:217
+#: ../../central-management-umc/extended-attributes.rst:221
 msgid "Translations of group name"
 msgstr "Übersetzung des Gruppennamens"
 
-#: ../../central-management-umc/extended-attributes.rst:218
+#: ../../central-management-umc/extended-attributes.rst:222
 msgid ""
 "To translate the name of the group, translated group names for the "
 "corresponding language code can be saved in this input field (e.g., "
@@ -766,11 +765,11 @@ msgstr ""
 "übersetzte Gruppennamen zum entsprechenden Sprachcode (z.B. ``de_DE`` "
 "oder ``fr_FR``) hinterlegt werden."
 
-#: ../../central-management-umc/extended-attributes.rst:222
+#: ../../central-management-umc/extended-attributes.rst:226
 msgid "Group ordering number"
 msgstr "Gruppen-Ordnungsnummer"
 
-#: ../../central-management-umc/extended-attributes.rst:223
+#: ../../central-management-umc/extended-attributes.rst:227
 msgid ""
 "If multiple groups are managed in one tab, this position number can be "
 "used to specify the order of the groups. They are shown in the ascending "
@@ -781,23 +780,23 @@ msgstr ""
 "werden. Sie werden in aufsteigender Reihenfolge ihrer Positionsnummern "
 "dargestellt."
 
-#: ../../central-management-umc/extended-attributes.rst:230
+#: ../../central-management-umc/extended-attributes.rst:234
 msgid "Extended attributes - Data type tab"
 msgstr "Erweiterte Attribute - Reiter Datentyp"
 
-#: ../../central-management-umc/extended-attributes.rst:234
+#: ../../central-management-umc/extended-attributes.rst:238
 msgid "*Data type* tab"
 msgstr "Reiter *Datentyp*"
 
-#: ../../central-management-umc/extended-attributes.rst:241
+#: ../../central-management-umc/extended-attributes.rst:245
 msgid "Syntax class"
 msgstr "Syntax-Klasse"
 
-#: ../../central-management-umc/extended-attributes.rst:242
+#: ../../central-management-umc/extended-attributes.rst:246
 msgid "When values are entered in UMC modules, a syntax check is performed."
 msgstr "Bei der Eingabe von Werten nimmt das UMC-Modul eine Syntaxprüfung vor."
 
-#: ../../central-management-umc/extended-attributes.rst:244
+#: ../../central-management-umc/extended-attributes.rst:248
 msgid ""
 "Apart from standard syntax definitions (``string``) and (``integer``), "
 "there are three possibilities for expressing a binary condition. The "
@@ -814,7 +813,7 @@ msgstr ""
 "Die Syntax ``boolean`` dagegen speichert keinen Wert oder die "
 "Zeichenkette *1*."
 
-#: ../../central-management-umc/extended-attributes.rst:251
+#: ../../central-management-umc/extended-attributes.rst:255
 msgid ""
 "The syntax ``string`` is the default. An overview of the additionally "
 "available syntax definitions and instructions on integrating your own "
@@ -825,11 +824,11 @@ msgstr ""
 "Integration eigener Syntaxen sind in :cite:t:`developer-reference` zu "
 "finden."
 
-#: ../../central-management-umc/extended-attributes.rst:255
+#: ../../central-management-umc/extended-attributes.rst:259
 msgid "Default value"
 msgstr "Vorgabewert"
 
-#: ../../central-management-umc/extended-attributes.rst:256
+#: ../../central-management-umc/extended-attributes.rst:260
 msgid ""
 "If a preset value is defined here, new objects to be created will be "
 "initialized with this value. The value can still be edited manually "
@@ -840,11 +839,11 @@ msgstr ""
 "manuell bearbeitet werden. Bereits bestehende Objekte werden nicht "
 "verändert."
 
-#: ../../central-management-umc/extended-attributes.rst:260
+#: ../../central-management-umc/extended-attributes.rst:264
 msgid "Multi value"
 msgstr "Mehrfachwert"
 
-#: ../../central-management-umc/extended-attributes.rst:261
+#: ../../central-management-umc/extended-attributes.rst:265
 msgid ""
 "This option establishes whether a single value or multiple values can be "
 "entered in the input mask. The scheme definition of the LDAP attribute "
@@ -857,11 +856,11 @@ msgstr ""
 "ist, ob nur eine oder mehrere Instanzen des Attributs an einem LDAP-"
 "Objekt verwendet werden dürfen."
 
-#: ../../central-management-umc/extended-attributes.rst:266
+#: ../../central-management-umc/extended-attributes.rst:270
 msgid "Value required"
 msgstr "Wert wird benötigt"
 
-#: ../../central-management-umc/extended-attributes.rst:267
+#: ../../central-management-umc/extended-attributes.rst:271
 msgid ""
 "If this option is active, a valid value must be entered for the extended "
 "attribute in order to create or save the object in question."
@@ -870,11 +869,11 @@ msgstr ""
 "Attribut eingetragen sein, um das betreffende Objekt anzulegen oder zu "
 "speichern."
 
-#: ../../central-management-umc/extended-attributes.rst:270
+#: ../../central-management-umc/extended-attributes.rst:274
 msgid "Editable after creation"
 msgstr "Nachträglich modifizierbar"
 
-#: ../../central-management-umc/extended-attributes.rst:271
+#: ../../central-management-umc/extended-attributes.rst:275
 msgid ""
 "This option establishes whether the object saved in the extended "
 "attribute can only be modified when saving the object, or whether it can "
@@ -884,11 +883,11 @@ msgstr ""
 "nur während des Anlegens eines Objektes oder auch nachträglich "
 "modifiziert werden kann."
 
-#: ../../central-management-umc/extended-attributes.rst:275
+#: ../../central-management-umc/extended-attributes.rst:279
 msgid "Value is only managed internally"
 msgstr "Wert wird nur intern verwaltet"
 
-#: ../../central-management-umc/extended-attributes.rst:276
+#: ../../central-management-umc/extended-attributes.rst:280
 msgid ""
 "If this option is activated, the attribute cannot be modified manually, "
 "neither at creation time, nor later. This is useful for internal state "
@@ -900,11 +899,11 @@ msgstr ""
 "sinnvoll für automatisch generierte interne Zustände, die über Hook-"
 "Funktionen oder intern in einem Modul gepflegt werden."
 
-#: ../../central-management-umc/extended-attributes.rst:281
+#: ../../central-management-umc/extended-attributes.rst:285
 msgid "Copyable"
 msgstr "Kopierbar"
 
-#: ../../central-management-umc/extended-attributes.rst:282
+#: ../../central-management-umc/extended-attributes.rst:286
 msgid ""
 "Values of this extended attribute are automatically filled into the form "
 "when copying a object."
@@ -912,11 +911,11 @@ msgstr ""
 "Werte dieses erweiterten Attributs werden beim Kopieren eines Objekts "
 "automatisch in das Formular eingesetzt."
 
-#: ../../central-management-umc/http-api-domain-management.rst:4
+#: ../../central-management-umc/http-api-domain-management.rst:8
 msgid "HTTP API of domain management"
 msgstr "HTTP Schnittstelle (API) der Domänenverwaltung"
 
-#: ../../central-management-umc/http-api-domain-management.rst:6
+#: ../../central-management-umc/http-api-domain-management.rst:10
 msgid ""
 "UCS provides an HTTP API for UDM which can be used to inspect, modify, "
 "create and delete UDM objects via HTTP requests."
@@ -924,7 +923,7 @@ msgstr ""
 "UCS stellt eine HTTP API für UDM zur Verfügung, mit der UDM Objekte über "
 "HTTP-Anfragen überprüft, geändert, erstellt und gelöscht werden können."
 
-#: ../../central-management-umc/http-api-domain-management.rst:9
+#: ../../central-management-umc/http-api-domain-management.rst:13
 msgid ""
 "For more information on the API please refer to :cite:t:`developer-"
 "reference`."
@@ -932,20 +931,20 @@ msgstr ""
 "Weitere Informationen zur API finden Sie unter :cite:t:`developer-"
 "reference`."
 
-#: ../../central-management-umc/index.rst:61
+#: ../../central-management-umc/index.rst:65
 msgid "Chapter contents:"
 msgstr "Kapitelinhalte:"
 
-#: ../../central-management-umc/index.rst:5
+#: ../../central-management-umc/index.rst:9
 msgid "|UCSWEB|"
 msgstr "|UCSWEB|"
 
-#: ../../central-management-umc/index.rst:14
-#: ../../central-management-umc/portal.rst:4
+#: ../../central-management-umc/index.rst:18
+#: ../../central-management-umc/portal.rst:8
 msgid "UCS portal page"
 msgstr "UCS Portalseite"
 
-#: ../../central-management-umc/index.rst:16
+#: ../../central-management-umc/index.rst:20
 msgid ""
 "The |UCSWEB| is the central tool for managing a UCS domain as well as for"
 " accessing installed applications of the domain."
@@ -953,7 +952,7 @@ msgstr ""
 "Die |UCSWEB| ist das zentrale Werkzeug zur Verwaltung der UCS-Domäne "
 "sowie für den Zugriff auf installierte Applikationen derselben."
 
-#: ../../central-management-umc/index.rst:19
+#: ../../central-management-umc/index.rst:23
 msgid ""
 "The |UCSWEB| is divided into several pages which all have a similarly "
 "designed header. Via the symbols in the top right, one may launch a "
@@ -972,7 +971,7 @@ msgstr ""
 "einen webbasierten *Single Sign-on* unterstützen (:ref:`central-"
 "management-umc-login`)."
 
-#: ../../central-management-umc/index.rst:27
+#: ../../central-management-umc/index.rst:31
 msgid ""
 "Central starting point for users and administrators for all following "
 "actions is the UCS portal page (cf. :numref:`fig-ucs-portal`). By "
@@ -989,7 +988,7 @@ msgstr ""
 "können umfangreich an die eigenen Bedürfnisse angepasst werden (:ref"
 ":`central-portal`)."
 
-#: ../../central-management-umc/index.rst:34
+#: ../../central-management-umc/index.rst:38
 msgid ""
 "For environments with more than one server, an additional entry to a "
 "server overview page is shown on the portal page. This sub page gives an "
@@ -1003,7 +1002,7 @@ msgstr ""
 "erlaubt die schnelle Navigation hin zu anderen Systemen, um dort z.B.  "
 "durch UMC-Module Anpassungen an lokalen Einstellungen vorzunehmen."
 
-#: ../../central-management-umc/index.rst:40
+#: ../../central-management-umc/index.rst:44
 msgid ""
 "UMC modules are the web based tool for the administration of the UCS "
 "domain. There are various modules available for the administration of the"
@@ -1018,7 +1017,7 @@ msgstr ""
 "verschiedene Module bereit gestellt. Zusätzlich installierte Software-"
 "Komponenten können ihre eigenen UMC-Module mitbringen."
 
-#: ../../central-management-umc/index.rst:47
+#: ../../central-management-umc/index.rst:51
 msgid ""
 "The subsequent sections detail the usage of various aspects of the domain"
 " management. :ref:`central-navigation` gives an overview of the LDAP "
@@ -1041,7 +1040,7 @@ msgstr ""
 "genutzt werden können. :ref:`delegated-administration` erläutert das "
 "Delegieren von Administrationsrechten an weitere Benutzergruppen."
 
-#: ../../central-management-umc/index.rst:56
+#: ../../central-management-umc/index.rst:60
 msgid ""
 "In conclusion, the command line interface of the domain administration is"
 " illustrated (:ref:`central-udm`), and the evaluation of domain data via "
@@ -1051,15 +1050,15 @@ msgstr ""
 "dargestellt (:ref:`central-udm`) und das Auswerten von Domänendaten über "
 "die UCS-Reporting-Funktionalität erläutert (:ref:`central-reports`)."
 
-#: ../../central-management-umc/introduction.rst:4
+#: ../../central-management-umc/introduction.rst:8
 msgid "Introduction"
 msgstr "Einführung"
 
-#: ../../central-management-umc/introduction.rst:9
+#: ../../central-management-umc/introduction.rst:13
 msgid "Access"
 msgstr "Zugriff"
 
-#: ../../central-management-umc/introduction.rst:11
+#: ../../central-management-umc/introduction.rst:15
 msgid ""
 "The |UCSWEB| can be opened on any UCS system via the URL "
 ":samp:`https://{servername}/`. Alternatively, access is also possible via"
@@ -1078,11 +1077,11 @@ msgstr ""
 "``https`` verwendet werden. Passwörter werden in diesem Fall im Klartext "
 "über das Netzwerk gesendet!"
 
-#: ../../central-management-umc/introduction.rst:22
+#: ../../central-management-umc/introduction.rst:26
 msgid "Browser compatibility"
 msgstr "Browserunterstützung"
 
-#: ../../central-management-umc/introduction.rst:24
+#: ../../central-management-umc/introduction.rst:28
 msgid ""
 "The |UCSWEB| uses numerous JavaScript and CSS functions. Cookies need to "
 "be permitted in the browser. The following browsers are supported:"
@@ -1091,23 +1090,23 @@ msgstr ""
 "CSS-Funktionen. Cookies müssen im Browser zugelassen sein. Die folgenden "
 "Browser werden unterstützt:"
 
-#: ../../central-management-umc/introduction.rst:27
+#: ../../central-management-umc/introduction.rst:31
 msgid ":program:`Chrome` as of version 85"
 msgstr ":program:`Chrome` ab Version 85"
 
-#: ../../central-management-umc/introduction.rst:29
+#: ../../central-management-umc/introduction.rst:33
 msgid ":program:`Firefox` as of version 78"
 msgstr ":program:`Firefox` ab Version 78"
 
-#: ../../central-management-umc/introduction.rst:31
+#: ../../central-management-umc/introduction.rst:35
 msgid ":program:`Microsoft Edge` as of version 88"
 msgstr ":program:`Microsoft Edge` ab Version 88"
 
-#: ../../central-management-umc/introduction.rst:33
+#: ../../central-management-umc/introduction.rst:37
 msgid ":program:`Safari` and :program:`Safari Mobile` as of version 13"
 msgstr ":program:`Safari` und :program:`Safari Mobile` ab Version 13"
 
-#: ../../central-management-umc/introduction.rst:35
+#: ../../central-management-umc/introduction.rst:39
 msgid ""
 "Users with older browsers may experience display problems or the site "
 "does not work at all."
@@ -1115,7 +1114,7 @@ msgstr ""
 "Auf älteren Browsern können Darstellungsprobleme auftreten oder die Seite"
 " funktioniert gar nicht."
 
-#: ../../central-management-umc/introduction.rst:38
+#: ../../central-management-umc/introduction.rst:42
 msgid ""
 "The |UCSWEB| is available in German and English (and French if it is "
 "chosen as language during the installation from DVD); the language to be "
@@ -1127,11 +1126,11 @@ msgstr ""
 "Darstellungssprache kann über den Punkt :guilabel:`Sprache ändern` im "
 "Benutzermenü der rechten, oberen Ecke geändert werden."
 
-#: ../../central-management-umc/introduction.rst:46
+#: ../../central-management-umc/introduction.rst:50
 msgid "Switching between dark and light theme for |UCSWEB|\\ s"
 msgstr "Zwischen dunklem und hellem Theme für |UCSWEB|\\ n umschalten"
 
-#: ../../central-management-umc/introduction.rst:48
+#: ../../central-management-umc/introduction.rst:52
 msgid ""
 "All |UCSWEB|\\ s have a dark and a light theme that can be switched "
 "between with the |UCSUCRV| :envvar:`ucs/web/theme`. The value of "
@@ -1149,11 +1148,11 @@ msgstr ""
 "gesetzt, wird :file:`/usr/share/univention-web/themes/light.css` als "
 "*Theme* für alle |UCSWEB|\\ n verwendet."
 
-#: ../../central-management-umc/introduction.rst:58
+#: ../../central-management-umc/introduction.rst:62
 msgid "Creating a custom theme/Adjusting the design of |UCSWEB|\\ s"
 msgstr "Erstellen eines eigenen Themes/Anpassen des Designs von |UCSWEB|\\ n"
 
-#: ../../central-management-umc/introduction.rst:60
+#: ../../central-management-umc/introduction.rst:64
 msgid ""
 "To create a custom theme it is advised not to edit :file:`/usr/share"
 "/univention-web/themes/dark.css` or :file:`/usr/share/univention-"
@@ -1170,7 +1169,7 @@ msgstr ""
 "web/themes/mytheme.css` und setzen Sie die |UCSUCRV| "
 ":envvar:`ucs/web/theme` auf ``mytheme``."
 
-#: ../../central-management-umc/introduction.rst:69
+#: ../../central-management-umc/introduction.rst:73
 msgid ""
 "The files :file:`/usr/share/univention-web/themes/dark.css` and "
 ":file:`/usr/share/univention-web/themes/light.css` contain the same list "
@@ -1187,7 +1186,7 @@ msgstr ""
 "aktuelle Anwendungsfall für diese Variablen wird sich zwischen UCS "
 "Upgrades nicht ändern, aber neue Variablen können dazu kommen."
 
-#: ../../central-management-umc/introduction.rst:76
+#: ../../central-management-umc/introduction.rst:80
 msgid ""
 "Some |UCSWEB|\\ s import their own local :file:`custom.css` file which "
 "can be used to further adjust the design of that page. These are "
@@ -1208,11 +1207,11 @@ msgstr ""
 " `CSS Selector <mozilla-css-custom-properties_>`_ bei der Installation "
 "eines beliebigen UCS-Updates kaputt gehen kann."
 
-#: ../../central-management-umc/introduction.rst:88
+#: ../../central-management-umc/introduction.rst:92
 msgid "Feedback on UCS"
 msgstr "Feedback zu UCS"
 
-#: ../../central-management-umc/introduction.rst:90
+#: ../../central-management-umc/introduction.rst:94
 msgid ""
 "By choosing the :menuselection:`Help --> Feedback` option in the upper "
 "right menu, you can provide feedback on UCS via a web form."
@@ -1221,11 +1220,11 @@ msgstr ""
 "in dem oberen, rechten Menü kann über ein Webformular Feedback zu UCS "
 "gegeben werden."
 
-#: ../../central-management-umc/introduction.rst:96
+#: ../../central-management-umc/introduction.rst:100
 msgid "Collection of usage statistics"
 msgstr "Erfassung von Nutzungsstatistiken"
 
-#: ../../central-management-umc/introduction.rst:98
+#: ../../central-management-umc/introduction.rst:102
 msgid ""
 "Anonymous usage statistics on the use of the |UCSWEB| are collected when "
 "using the *core edition* version of UCS (which is generally used for "
@@ -1237,11 +1236,11 @@ msgstr ""
 "|UCSWEB| erzeugt. Weitere Informationen finden sich in :uv:kb:`Data "
 "collection in Univention Corporate Server <6701>`."
 
-#: ../../central-management-umc/ldap-browser.rst:4
+#: ../../central-management-umc/ldap-browser.rst:8
 msgid "LDAP directory browser"
 msgstr "LDAP-Verzeichnis-Browser"
 
-#: ../../central-management-umc/ldap-browser.rst:6
+#: ../../central-management-umc/ldap-browser.rst:10
 msgid ""
 "The UMC module :guilabel:`LDAP directory` can be used to navigate through"
 " the LDAP directory. When doing so, new objects can be created, modified "
@@ -1251,11 +1250,11 @@ msgstr ""
 "Verzeichnis navigiert werden. Dabei können auch Objekte im LDAP-"
 "Verzeichnis erzeugt, modifiziert oder gelöscht werden."
 
-#: ../../central-management-umc/ldap-browser.rst:15
+#: ../../central-management-umc/ldap-browser.rst:19
 msgid "Navigating the LDAP directory"
 msgstr "Navigation im LDAP-Verzeichnis"
 
-#: ../../central-management-umc/ldap-browser.rst:17
+#: ../../central-management-umc/ldap-browser.rst:21
 msgid ""
 "The left half of the screen shows the LDAP directory as a tree structure "
 "whose elements can be shown and hidden using the arrow icons."
@@ -1264,7 +1263,7 @@ msgstr ""
 "Baumstruktur dargestellt, deren Unterelemente durch die Pfeilsymbole ein-"
 " und ausgeblendet werden können."
 
-#: ../../central-management-umc/ldap-browser.rst:20
+#: ../../central-management-umc/ldap-browser.rst:24
 msgid ""
 "Clicking on an element of the tree structure switches to this LDAP "
 "position and displays the objects at this LDAP position in the in the "
@@ -1277,7 +1276,7 @@ msgstr ""
 "Auswahlliste *Typ* kann die Anzeige auf ausgewählte Attribute "
 "eingeschränkt werden."
 
-#: ../../central-management-umc/ldap-browser.rst:25
+#: ../../central-management-umc/ldap-browser.rst:29
 msgid ""
 "The :guilabel:`Add` button can be used to add new objects here too. "
 "Similar to the control elements described in :ref:`central-user-"
@@ -1288,11 +1287,11 @@ msgstr ""
 "beschriebenen Bedienelementen können hier auch bestehende Objekte "
 "editiert, gelöscht oder verschoben werden."
 
-#: ../../central-management-umc/ldap-browser.rst:34
+#: ../../central-management-umc/ldap-browser.rst:38
 msgid "Editing LDAP container settings"
 msgstr "Bearbeiten von LDAP-Container-Einstellungen"
 
-#: ../../central-management-umc/ldap-browser.rst:36
+#: ../../central-management-umc/ldap-browser.rst:40
 msgid ""
 "Right-clicking on an element in the tree structure allows editing the "
 "properties of the container or the LDAP base with :guilabel:`Edit`."
@@ -1301,11 +1300,11 @@ msgstr ""
 ":guilabel:`Bearbeiten` die Eigenschaften des Containers oder der LDAP-"
 "Basis bearbeitet werden."
 
-#: ../../central-management-umc/lets-encrypt.rst:6
+#: ../../central-management-umc/lets-encrypt.rst:8
 msgid "Let's Encrypt"
 msgstr "Let's Encrypt"
 
-#: ../../central-management-umc/lets-encrypt.rst:8
+#: ../../central-management-umc/lets-encrypt.rst:10
 msgid ""
 "Let's Encrypt is a non-profit certificate authority that provides X.509 "
 "certificates for TLS encryption at no charge. It is the world's largest "
@@ -1317,7 +1316,7 @@ msgstr ""
 "weltgrößte Zertifizierungsstelle mit dem Ziel, dass alle Webseiten mit "
 "HTTPS abgesichert sind."
 
-#: ../../central-management-umc/lets-encrypt.rst:13
+#: ../../central-management-umc/lets-encrypt.rst:15
 msgid ""
 "The :program:`Let's Encrypt` app in Univention App Center offers a "
 "largely automated integration of the *acme-tiny Let's Encrypt client* in "
@@ -1329,15 +1328,15 @@ msgstr ""
 "Clients* in UCS. Unterstützte Dienste in UCS sind der Apache Webserver, "
 "der Postfix SMTP Mailserver und der Dovecot IMAP Mailserver."
 
-#: ../../central-management-umc/login.rst:4
+#: ../../central-management-umc/login.rst:8
 msgid "Login"
 msgstr "Anmeldung"
 
-#: ../../central-management-umc/login.rst:11
+#: ../../central-management-umc/login.rst:15
 msgid "UCS login page"
 msgstr "UCS Anmeldeseite"
 
-#: ../../central-management-umc/login.rst:13
+#: ../../central-management-umc/login.rst:17
 msgid ""
 "UCS comes with a central login page. Logging in to the |UCSWEB| is done "
 "with the credentials of the respective domain account. On the portal, the"
@@ -1356,7 +1355,7 @@ msgstr ""
 "zentrale Anmeldeseite weitergeleitet. Zum Abmelden kann analog der "
 "Eintrag :guilabel:`Abmelden` im Benutzermenü ausgewählt werden."
 
-#: ../../central-management-umc/login.rst:20
+#: ../../central-management-umc/login.rst:24
 msgid ""
 "By default a login does not use single sign-on. The login can be changed "
 "to use single sign-on (SSO) via SAML (:ref:`domain-saml`). To configure "
@@ -1379,7 +1378,7 @@ msgstr ""
 "werden. Eine SSO Login Kachel ist bereits vorkonfiguriert und kann über "
 "den Editiermodus des Portal aktiviert werden."
 
-#: ../../central-management-umc/login.rst:29
+#: ../../central-management-umc/login.rst:33
 msgid ""
 "After successful login, a session is valid for all UCS systems of the "
 "domain as well as for third party Apps if these support web based SSO. It"
@@ -1391,7 +1390,7 @@ msgstr ""
 "SSO unterstützen. Es ist möglich die Anmeldung am lokalen System über den"
 " Link :guilabel:`Ohne Single Sign-On anmelden` zu erzwingen."
 
-#: ../../central-management-umc/login.rst:34
+#: ../../central-management-umc/login.rst:38
 msgid ""
 "In the login mask, enter the *Username* and *Password* of the "
 "corresponding domain account:"
@@ -1399,7 +1398,7 @@ msgstr ""
 "In der Anmeldemaske werden *Benutzername* und *Passwort* des gewünschten "
 "Domänenkontos angegeben:"
 
-#: ../../central-management-umc/login.rst:37
+#: ../../central-management-umc/login.rst:41
 msgid ""
 "When logging in with the ``Administrator`` account on a |UCSPRIMARYDN| or"
 " |UCSBACKUPDN|, UMC modules for the administration and configuration of "
@@ -1419,7 +1418,7 @@ msgstr ""
 "``Administrator`` ist auch das Konto, mit dem die erste Anmeldung an "
 "einem neu installierten |UCSPRIMARYDN| durchgeführt werden sollte."
 
-#: ../../central-management-umc/login.rst:46
+#: ../../central-management-umc/login.rst:50
 msgid ""
 "In some cases, it might be necessary to sign in with the system's local "
 "``root`` account (see :ref:`computers-rootaccount`). This account enables"
@@ -1431,7 +1430,7 @@ msgstr ""
 "rootaccount`). Dieses Konto ermöglicht lediglich den Zugriff auf UMC-"
 "Module zur Verwaltung und Konfiguration des lokalen Systems."
 
-#: ../../central-management-umc/login.rst:51
+#: ../../central-management-umc/login.rst:55
 msgid ""
 "When logging on with another user account, the UMC modules approved for "
 "the user are shown. Additional information on allowing further modules "
@@ -1441,7 +1440,7 @@ msgstr ""
 "Benutzer freigeschalteten UMC-Module angezeigt. Weitere Informationen zur"
 " Freigabe von Modulen findet sich in :ref:`delegated-administration`."
 
-#: ../../central-management-umc/login.rst:55
+#: ../../central-management-umc/login.rst:59
 msgid ""
 "The duration of a browser session is 8 hours for the SSO login. After "
 "these, the login process must be carried out again. For the login at the "
@@ -1453,7 +1452,7 @@ msgstr ""
 " UCS-System wird die Browser-Sitzung nach 8 Stunden Inaktivität "
 "automatisch geschlossen."
 
-#: ../../central-management-umc/login.rst:59
+#: ../../central-management-umc/login.rst:63
 msgid ""
 "By installing a third-party application, such as :program:`privacyIDEA`, "
 "it is possible to extend the |UCSWEB| authentication with a two-factor "
@@ -1463,11 +1462,11 @@ msgstr ""
 "Software, z.B. :program:`privacyIDEA`, die |UCSWEB| Anmeldung um eine "
 "Zwei-Faktor-Authentifizierung (2FA) zu ergänzen."
 
-#: ../../central-management-umc/policies.rst:4
+#: ../../central-management-umc/policies.rst:8
 msgid "Policies"
 msgstr "Richtlinien"
 
-#: ../../central-management-umc/policies.rst:6
+#: ../../central-management-umc/policies.rst:10
 msgid ""
 "*Policies* describe administrative settings which can practically be used"
 " on more than one object. They facilitate the administration as they can "
@@ -1485,7 +1484,7 @@ msgstr ""
 "dem Prinzip der Vererbung angewendet. Auf ein Objekt wird immer der Wert "
 "angewandt, der dem Objekt am nächsten liegt."
 
-#: ../../central-management-umc/policies.rst:13
+#: ../../central-management-umc/policies.rst:17
 msgid ""
 "If, for example, the same password expiry interval is to be defined for "
 "all users of a location, then a special container can be created for "
@@ -1500,7 +1499,7 @@ msgstr ""
 "Container verknüpft werden. Diese Richtlinie gilt für alle enthaltenen "
 "Benutzer-Objekte."
 
-#: ../../central-management-umc/policies.rst:19
+#: ../../central-management-umc/policies.rst:23
 msgid ""
 "An exception to this rule is a value which was defined in a policy in the"
 " form of *fixed attributes*. Such values cannot be overwritten by "
@@ -1510,7 +1509,7 @@ msgstr ""
 "Attribute* gesetzt wurden. Diese können von nachgeordneten Richtlinien "
 "nicht überschrieben werden."
 
-#: ../../central-management-umc/policies.rst:23
+#: ../../central-management-umc/policies.rst:27
 msgid ""
 "The command line program :command:`univention-policy-result` can be used "
 "to show in detail which policy applies to which directory service object."
@@ -1519,7 +1518,7 @@ msgstr ""
 "detailliert angezeigt werden, welche Richtlinie auf ein "
 "Verzeichnisdienstobjekt greift."
 
-#: ../../central-management-umc/policies.rst:26
+#: ../../central-management-umc/policies.rst:30
 msgid ""
 "Every policy applies to a certain type of UMC domain object, e.g., for "
 "users or DHCP subnets."
@@ -1527,11 +1526,11 @@ msgstr ""
 "Jede Richtlinie gilt für einen bestimmten UMC-Domänenobjekttyp, also z.B."
 " für Benutzer oder DHCP-Subnetze."
 
-#: ../../central-management-umc/policies.rst:32
+#: ../../central-management-umc/policies.rst:36
 msgid "Creating a policy"
 msgstr "Anlegen einer Richtlinie"
 
-#: ../../central-management-umc/policies.rst:34
+#: ../../central-management-umc/policies.rst:38
 msgid ""
 "Policies can be managed via the UMC module :guilabel:`Policies`. The "
 "operation is the same as for the functions described in :ref:`central-"
@@ -1541,7 +1540,7 @@ msgstr ""
 "verwaltet werden. Die Bedienung erfolgt analog zu den in :ref:`central-"
 "user-interface` beschriebenen Funktionen."
 
-#: ../../central-management-umc/policies.rst:37
+#: ../../central-management-umc/policies.rst:41
 msgid ""
 "The attributes and properties of the policies are described in the "
 "corresponding chapters, e.g. the DHCP policies in the network chapter."
@@ -1550,11 +1549,11 @@ msgstr ""
 "entsprechenden Kapiteln beschrieben, also die DHCP-Richtlinien "
 "beispielsweise im Netzwerk-Kapitel."
 
-#: ../../central-management-umc/policies.rst:40
+#: ../../central-management-umc/policies.rst:44
 msgid "The names of policies must not contain any umlauts."
 msgstr "Die Namen von Richtlinien dürfen keine Umlaute enthalten."
 
-#: ../../central-management-umc/policies.rst:42
+#: ../../central-management-umc/policies.rst:46
 msgid ""
 "*Referencing objects* provides a list of all containers or LDAP objects "
 "for which this policy currently applies."
@@ -1563,7 +1562,7 @@ msgstr ""
 "Container oder LDAP-Objekte, mit denen diese Richtlinie aktuell verknüpft"
 " ist."
 
-#: ../../central-management-umc/policies.rst:45
+#: ../../central-management-umc/policies.rst:49
 msgid ""
 "The expanded settings host some general policy options which are "
 "generally only required in special cases."
@@ -1572,11 +1571,11 @@ msgstr ""
 "allgemeine Richtlinien-Optionen gesetzt werden, die in der Regel nur für "
 "Sonderfälle nötig sind."
 
-#: ../../central-management-umc/policies.rst:50
+#: ../../central-management-umc/policies.rst:54
 msgid "LDAP filter"
 msgstr "LDAP Filter"
 
-#: ../../central-management-umc/policies.rst:49
+#: ../../central-management-umc/policies.rst:53
 msgid ""
 "A LDAP filter expression can be specified here, which an object must "
 "match for this policy to get applied."
@@ -1585,11 +1584,11 @@ msgstr ""
 "der Richtlinie auf solche Objekte einschränkt, die dem angegebenen Filter"
 " genügen."
 
-#: ../../central-management-umc/policies.rst:56
+#: ../../central-management-umc/policies.rst:60
 msgid "Required object classes"
 msgstr "Benötigte Objektklassen"
 
-#: ../../central-management-umc/policies.rst:53
+#: ../../central-management-umc/policies.rst:57
 msgid ""
 "Here you can specify LDAP object classes that an object must possess for "
 "the policy to apply to this object. If, for example, a user policy is "
@@ -1601,11 +1600,11 @@ msgstr ""
 "Benutzerrichtlinie nur für Windows-Umgebungen relevant ist, könnte hier "
 "die Objektklasse ``sambaSamAccount`` erzwungen werden."
 
-#: ../../central-management-umc/policies.rst:60
+#: ../../central-management-umc/policies.rst:64
 msgid "Excluded object classes"
 msgstr "Ausgeschlossene Objektklassen"
 
-#: ../../central-management-umc/policies.rst:59
+#: ../../central-management-umc/policies.rst:63
 msgid ""
 "Similar to the configuration of the required object classes, you can also"
 " list object classes here which should be excluded."
@@ -1613,11 +1612,11 @@ msgstr ""
 "Analog zur Konfiguration der benötigten Objektklassen können hier "
 "Objektklassen aufgeführt werden, die ausgeschlossen werden sollen."
 
-#: ../../central-management-umc/policies.rst:64
+#: ../../central-management-umc/policies.rst:68
 msgid "Fixed attributes"
 msgstr "Festgelegte Attribute"
 
-#: ../../central-management-umc/policies.rst:63
+#: ../../central-management-umc/policies.rst:67
 msgid ""
 "Attributes can be selected here, the values of which may not be changed "
 "by subordinate policies."
@@ -1625,11 +1624,11 @@ msgstr ""
 "Hier können Attribute ausgewählt werden, deren Werte von nachgeordneten "
 "Richtlinien nicht verändert werden dürfen."
 
-#: ../../central-management-umc/policies.rst:71
+#: ../../central-management-umc/policies.rst:75
 msgid "Empty attributes"
 msgstr "Leere Attribute"
 
-#: ../../central-management-umc/policies.rst:67
+#: ../../central-management-umc/policies.rst:71
 msgid ""
 "Attributes can be selected here, which are to be set to empty in the "
 "policy, meaning they will be stored without containing a value. This can "
@@ -1643,15 +1642,15 @@ msgstr ""
 "entfernt werden. In nachgeordneten Richtlinien können den Attributen "
 "wieder Werte zugewiesen werden."
 
-#: ../../central-management-umc/policies.rst:76
+#: ../../central-management-umc/policies.rst:80
 msgid "Applying policies"
 msgstr "Zuweisung von Richtlinien"
 
-#: ../../central-management-umc/policies.rst:78
+#: ../../central-management-umc/policies.rst:82
 msgid "Policies can be assigned in two ways:"
 msgstr "Richtlinien werden Objekten auf zwei unterschiedlichen Arten zugewiesen:"
 
-#: ../../central-management-umc/policies.rst:80
+#: ../../central-management-umc/policies.rst:84
 msgid ""
 "A policy can be assigned to the LDAP base or a container/OU. To do so, "
 "the :guilabel:`Policies` tab in the properties of the LDAP object must be"
@@ -1662,7 +1661,7 @@ msgstr ""
 "navigation`) in den Eigenschaften des LDAP-Objekts der Reiter "
 ":guilabel:`Richtlinien` geöffnet werden."
 
-#: ../../central-management-umc/policies.rst:84
+#: ../../central-management-umc/policies.rst:88
 msgid ""
 "A *Policies* tab is shown in the UMC modules of LDAP directory objects "
 "for which there are policies available (e.g., for users). A particular "
@@ -1673,7 +1672,7 @@ msgstr ""
 ":guilabel:`Richtlinien` angezeigt. Eine abweichende Richtlinie für einen "
 "Benutzer kann an dieser Stelle festgelegt werden."
 
-#: ../../central-management-umc/policies.rst:88
+#: ../../central-management-umc/policies.rst:92
 msgid ""
 "The *Policies* configuration dialogue is functionally identical; however,"
 " all policy types are offered when assigning policies to a LDAP "
@@ -1686,7 +1685,7 @@ msgstr ""
 "einem LDAP-Objekt nur die für diesen Objekt-Type gültigen Richtlinien "
 "angeboten werden."
 
-#: ../../central-management-umc/policies.rst:93
+#: ../../central-management-umc/policies.rst:97
 msgid ""
 "A policy can be assigned to the LDAP object or container under "
 "*Policies*. The values resulting from this policy are displayed directly."
@@ -1699,7 +1698,7 @@ msgstr ""
 "bedeutet, dass die Einstellungen wieder aus einer übergeordneten "
 "Richtlinie - sofern vorhanden - übernommen werden."
 
-#: ../../central-management-umc/policies.rst:98
+#: ../../central-management-umc/policies.rst:102
 msgid ""
 "If an object is linked to a policy, or inherits policy settings which "
 "cannot be applied to the object, the settings remain without effect for "
@@ -1716,11 +1715,11 @@ msgstr ""
 "anwenden können, gültig ist. Objekte, die diese Richtlinie nicht anwenden"
 " können, werden nicht beeinflusst."
 
-#: ../../central-management-umc/policies.rst:107
+#: ../../central-management-umc/policies.rst:111
 msgid "Editing a policy"
 msgstr "Bearbeiten einer Richtlinie"
 
-#: ../../central-management-umc/policies.rst:109
+#: ../../central-management-umc/policies.rst:113
 msgid ""
 "Policies can be edited and deleted in the UMC module "
 ":guilabel:`Policies`. The interface is described in :ref:`central-user-"
@@ -1730,7 +1729,7 @@ msgstr ""
 "gelöscht werden. Die Bedienung ist in :ref:`central-user-interface` "
 "beschrieben."
 
-#: ../../central-management-umc/policies.rst:114
+#: ../../central-management-umc/policies.rst:118
 msgid ""
 "When editing a policy, the settings for all the objects linked to this "
 "policy are changed! The values from the changed policy apply to objects "
@@ -1743,7 +1742,7 @@ msgstr ""
 "der Zukunft hinzugefügt werden, sondern auch für diejenigen, die bereits "
 "im System eingetragen und mit der Richtlinie verbunden sind."
 
-#: ../../central-management-umc/policies.rst:119
+#: ../../central-management-umc/policies.rst:123
 msgid ""
 "The policy tab of the individual LDAP objects also includes the "
 ":guilabel:`edit` option, which can be used to edit the policy currently "
@@ -1753,7 +1752,7 @@ msgstr ""
 " Schaltfläche :guilabel:`Bearbeiten`, mit der die aktuell für dieses "
 "Objekt gültige Richtlinie bearbeitet werden kann."
 
-#: ../../central-management-umc/portal.rst:6
+#: ../../central-management-umc/portal.rst:10
 msgid ""
 "Portal pages offer a central view of all available services in a UCS "
 "domain. Requirements strongly differ from small to large environments in "
@@ -1767,7 +1766,7 @@ msgstr ""
 "Schulbetrieb stark voneinander unterscheiden, bringt UCS ein sehr "
 "flexibles und individuell anpassbares Konzept für Portalseiten mit."
 
-#: ../../central-management-umc/portal.rst:11
+#: ../../central-management-umc/portal.rst:15
 msgid ""
 "As illustrated in :numref:`portal-schema`, portal entries (i.e., links to"
 " applications/Apps/services; UDM object type ``portals/entry``) can be "
@@ -1784,7 +1783,17 @@ msgstr ""
 "Objekttyp ``portals/portal``) stellt alle Portal-Kategorien dar, die mit "
 "ihm verknüpft sind."
 
-#: ../../central-management-umc/portal.rst:18
+#: ../../central-management-umc/portal.rst:22
+msgid ""
+"In addition to that, portal announcements (UDM object type "
+"``portals/announcement``) can be created and will be shown on all "
+"portals. Announcements are rendered at the top of each portal and can be "
+"used to announce, e.g., maintenance windows or services outages. They can"
+" have a severity level (like \"Information\" or \"Warning\"), a start and"
+" end date and can be made visible only to a specific group of users."
+msgstr ""
+
+#: ../../central-management-umc/portal.rst:29
 msgid ""
 "The portal *domain*, shipped with every installation, is configured on "
 "each server by default. In addition to all installed applications of the "
@@ -1796,7 +1805,7 @@ msgstr ""
 "installierten Applikationen in der Domäne werden hier auch Verweise zu "
 "|UCSUMC| sowie zur Serverübersicht angezeigt."
 
-#: ../../central-management-umc/portal.rst:22
+#: ../../central-management-umc/portal.rst:33
 msgid ""
 "To change the displayed portal, adjust the |UCSUCRV| :envvar:`portal"
 "/default-dn` and run the command :command:`univention-portal update`."
@@ -1805,7 +1814,7 @@ msgstr ""
 ":envvar:`portal/default-dn` an und führen Sie den Befehl :command"
 ":`univention-portal update` aus."
 
-#: ../../central-management-umc/portal.rst:25
+#: ../../central-management-umc/portal.rst:36
 msgid ""
 "Custom portals and portal entries can be defined and managed either via "
 "the UMC module :guilabel:`Portal` or directly on the portal site."
@@ -1814,7 +1823,7 @@ msgstr ""
 ":guilabel:`Portal` oder direkt auf der Portalseite angelegt und verwaltet"
 " werden."
 
-#: ../../central-management-umc/portal.rst:28
+#: ../../central-management-umc/portal.rst:39
 msgid ""
 "After logging in to the portal on the |UCSPRIMARYDN| or |UCSBACKUPDN|, "
 "members of the ``Domain Admins`` group can edit the portal after clicking"
@@ -1828,18 +1837,19 @@ msgstr ""
 " neue Einträge auf dem Portal erstellen, vorhandene Einträge "
 "modifizieren, sowie die Reihenfolge oder das Design modifizieren."
 
-#: ../../central-management-umc/portal.rst:33
+#: ../../central-management-umc/portal.rst:44
+#, fuzzy
 msgid ""
-"Advanced settings, such as adding new portals or setting which group "
-"members can see which portal entries can be made using the UMC portal "
-"settings module."
+"Advanced settings, such as adding new portals, new announcements or "
+"setting which group members can see which portal entries can be made "
+"using the UMC portal settings module."
 msgstr ""
 "Weiterführende Einstellungen, wie das Hinzufügen neuer Portale oder die "
 "Einstellung, welche Benutzer welche Portaleinträge sehen dürfen (über "
 "ihre Gruppenmitgliedschaft), können über das UMC-Modul :guilabel:`Portal`"
 " durchgeführt werden."
 
-#: ../../central-management-umc/portal.rst:36
+#: ../../central-management-umc/portal.rst:48
 msgid ""
 "By default, all portal entries are displayed for everyone. In the UMC "
 "module :guilabel:`Portal` in the category *Login*, it can be configured "
@@ -1856,7 +1866,7 @@ msgstr ""
 "``memberOf``. Eine Auswertung von verschachtelten "
 "Gruppenmitgliedsschaften (also Gruppen in Gruppen) findet statt."
 
-#: ../../central-management-umc/portal.rst:43
+#: ../../central-management-umc/portal.rst:55
 msgid ""
 "Further design adjustments can be made in the file :file:`/usr/share"
 "/univention-portal/css/custom.css`. This file will not be overwritten "
@@ -1866,11 +1876,11 @@ msgstr ""
 "/univention-portal/css/custom.css` vorgenommen werden. Dieses Datei wird "
 "während eines Updates nicht überschrieben."
 
-#: ../../central-management-umc/portal.rst:52
+#: ../../central-management-umc/portal.rst:64
 msgid "Schema of the portal concept in UCS"
 msgstr "Schema des Portal-Konzepts in UCS"
 
-#: ../../central-management-umc/portal.rst:52
+#: ../../central-management-umc/portal.rst:64
 msgid ""
 "Schema of the portal concept in UCS: Portals can be independently defined"
 " and assigned to UCS systems as start site; a link entry can be displayed"
@@ -1880,11 +1890,11 @@ msgstr ""
 "Systemen als Startseite zugewiesen werden; ein Verweis kann auf mehreren "
 "Portalen angezeigt werden."
 
-#: ../../central-management-umc/portal.rst:59
+#: ../../central-management-umc/portal.rst:71
 msgid "Assign rights for portal settings"
 msgstr "Rechte für Portaleinstellungen vergeben"
 
-#: ../../central-management-umc/portal.rst:61
+#: ../../central-management-umc/portal.rst:73
 msgid ""
 "The following describes how to make the UMC module :guilabel:`Portal` "
 "accessible to selected groups or users. This example assumes that a group"
@@ -1897,7 +1907,7 @@ msgstr ""
 "ausgegangen, dass eine Gruppe ``Portal Admins`` erstellt wurde und "
 "Mitglieder dieser Gruppe Zugang zu den Portaleinstellungen haben sollen."
 
-#: ../../central-management-umc/portal.rst:66
+#: ../../central-management-umc/portal.rst:78
 msgid ""
 "On a |UCSPRIMARYDN| an ACL file has to be created first, for example "
 ":file:`/opt/62my-portal-acl.acl`. This file has to have the following "
@@ -1907,7 +1917,7 @@ msgstr ""
 ":file:`/opt/62my-portal-acl.acl`.  Diese Datei hat folgenden Inhalt "
 "aufzuweisen, um die nötigen ACL-Änderungen zu ermöglichen:"
 
-#: ../../central-management-umc/portal.rst:70
+#: ../../central-management-umc/portal.rst:82
 msgid ""
 "access to dn=\"cn=portals,cn=univention,@%@ldap/base@%@\" attrs=children\n"
 "  by group/univentionGroup/uniqueMember=\"cn=Portal "
@@ -1933,7 +1943,7 @@ msgstr ""
 "Admins,cn=groups,@%@ldap/base@%@\" write\n"
 "  by * +0 break"
 
-#: ../../central-management-umc/portal.rst:82
+#: ../../central-management-umc/portal.rst:94
 msgid ""
 "Then execute the following command to create an LDAP object for the LDAP "
 "ACLs:"
@@ -1941,7 +1951,7 @@ msgstr ""
 "Danach ist folgender Befehl auszuführen, um ein LDAP-Objekt für die LDAP-"
 "ACLs zu erzeugen:"
 
-#: ../../central-management-umc/portal.rst:84
+#: ../../central-management-umc/portal.rst:96
 msgid ""
 "$ udm settings/ldapacl create \\\n"
 "  --position \"cn=ldapacl,cn=univention,$(ucr get ldap/base)\" \\\n"
@@ -1963,13 +1973,13 @@ msgstr ""
 "  --set ucsversionend=5.99-0 \\\n"
 "  --set packageversion=1"
 
-#: ../../central-management-umc/portal.rst:97
+#: ../../central-management-umc/portal.rst:109
 msgid "If the ACL is to be deleted again, the following command can be used:"
 msgstr ""
 "Wenn die ACL wieder gelöscht werden soll, kann folgender Befehl verwendet"
 " werden:"
 
-#: ../../central-management-umc/portal.rst:99
+#: ../../central-management-umc/portal.rst:111
 msgid ""
 "udm settings/ldapacl remove \\\n"
 "  --dn \"cn=62my-portal-acl,cn=ldapacl,cn=univention,$(ucr get "
@@ -1979,7 +1989,7 @@ msgstr ""
 "  --dn \"cn=62my-portal-acl,cn=ldapacl,cn=univention,$(ucr get "
 "ldap/base)\""
 
-#: ../../central-management-umc/portal.rst:104
+#: ../../central-management-umc/portal.rst:116
 msgid ""
 "An appropriate UMC policy can now be created via UMC. The following *UMC "
 "operations* must be allowed within the policy:"
@@ -1988,23 +1998,23 @@ msgstr ""
 "folgenden *UMC-Operationen* müssen dafür innerhalb der Richtlinie erlaubt"
 " werden:"
 
-#: ../../central-management-umc/portal.rst:107
+#: ../../central-management-umc/portal.rst:119
 msgid "*udm-new-portal*"
 msgstr "*udm-portal*"
 
-#: ../../central-management-umc/portal.rst:108
+#: ../../central-management-umc/portal.rst:120
 msgid "*udm-syntax*"
 msgstr "*udm-syntax*"
 
-#: ../../central-management-umc/portal.rst:109
+#: ../../central-management-umc/portal.rst:121
 msgid "*udm-validate*"
 msgstr "*udm-validate*"
 
-#: ../../central-management-umc/portal.rst:110
+#: ../../central-management-umc/portal.rst:122
 msgid "*udm-license*"
 msgstr "*udm-license*"
 
-#: ../../central-management-umc/portal.rst:112
+#: ../../central-management-umc/portal.rst:124
 msgid ""
 "How to create a policy is described in :ref:`central-management-umc-"
 "create-policy`. Now the newly created policy only needs to be assigned to"
@@ -2026,11 +2036,11 @@ msgstr ""
 "Richtlinienzuweisung sind unter :ref:`central-policies-assign` "
 "beschrieben."
 
-#: ../../central-management-umc/udm-command.rst:4
+#: ../../central-management-umc/udm-command.rst:8
 msgid "Command line interface of domain management (|UCSUDM|)"
 msgstr "Kommandozeilenschnittstelle der Domänenverwaltung (|UCSUDM|)"
 
-#: ../../central-management-umc/udm-command.rst:8
+#: ../../central-management-umc/udm-command.rst:12
 msgid ""
 "The |UCSUDM| is the command line interface alternative to the web-based "
 "interface of the domain management UMC modules. It functions as a "
@@ -2042,7 +2052,7 @@ msgstr ""
 "dient als mächtiges Werkzeug für die Automatisierung von administrativen "
 "Vorgängen in Skripten und zur Integration in andere Programme."
 
-#: ../../central-management-umc/udm-command.rst:13
+#: ../../central-management-umc/udm-command.rst:17
 msgid ""
 "|UCSUDM| can be started with the :command:`univention-directory-manager` "
 "command (short form :command:`udm`) as the ``root`` user on the "
@@ -2052,7 +2062,7 @@ msgstr ""
 " :command:`univention-directory-manager` (Kurzform :command:`udm`) "
 "aufgerufen."
 
-#: ../../central-management-umc/udm-command.rst:16
+#: ../../central-management-umc/udm-command.rst:20
 msgid ""
 "UMC modules and |UCSUDM| use the same domain management modules, i.e., "
 "all functions of the web interface are also available in the command line"
@@ -2062,11 +2072,11 @@ msgstr ""
 "d.h. alle Funktionen der Webschnittstelle stehen auch im Kommandozeilen-"
 "Interface zur Verfügung."
 
-#: ../../central-management-umc/udm-command.rst:22
+#: ../../central-management-umc/udm-command.rst:26
 msgid "Parameters of the command line interface"
 msgstr "Aufrufparameter der Kommandozeilenschnittstelle"
 
-#: ../../central-management-umc/udm-command.rst:26
+#: ../../central-management-umc/udm-command.rst:30
 msgid ""
 "A complete list of available modules is displayed if the :command:`udm`` "
 "is run with the ``modules`` parameter:"
@@ -2074,7 +2084,7 @@ msgstr ""
 "Eine komplette Liste der verfügbaren Module wird angezeigt, wenn "
 ":command:`udm` mit dem Parameter ``modules`` aufgerufen wird:"
 
-#: ../../central-management-umc/udm-command.rst:29
+#: ../../central-management-umc/udm-command.rst:33
 msgid ""
 "$ univention-directory-manager modules\n"
 "Available Modules are:\n"
@@ -2092,51 +2102,51 @@ msgstr ""
 "  computers/domaincontroller_slave\n"
 "  [...]"
 
-#: ../../central-management-umc/udm-command.rst:39
+#: ../../central-management-umc/udm-command.rst:43
 msgid "There are up to five operations for every module:"
 msgstr "Für jedes Modul existieren bis zu fünf Operationen:"
 
-#: ../../central-management-umc/udm-command.rst:42
+#: ../../central-management-umc/udm-command.rst:46
 msgid "list"
 msgstr "list"
 
-#: ../../central-management-umc/udm-command.rst:42
+#: ../../central-management-umc/udm-command.rst:46
 msgid "lists all existing objects of this type."
 msgstr "führt alle existierenden Objekte dieses Typs auf."
 
-#: ../../central-management-umc/udm-command.rst:45
+#: ../../central-management-umc/udm-command.rst:49
 msgid "create"
 msgstr "create"
 
-#: ../../central-management-umc/udm-command.rst:45
+#: ../../central-management-umc/udm-command.rst:49
 msgid "creates a new object."
 msgstr "legt ein neues Objekt an."
 
-#: ../../central-management-umc/udm-command.rst:48
+#: ../../central-management-umc/udm-command.rst:52
 msgid "modify"
 msgstr "modify"
 
-#: ../../central-management-umc/udm-command.rst:48
+#: ../../central-management-umc/udm-command.rst:52
 msgid "or the *editing* of existing objects."
 msgstr "oder *bearbeitet* existierende Objekte."
 
-#: ../../central-management-umc/udm-command.rst:51
+#: ../../central-management-umc/udm-command.rst:55
 msgid "remove"
 msgstr "remove"
 
-#: ../../central-management-umc/udm-command.rst:51
+#: ../../central-management-umc/udm-command.rst:55
 msgid "deletes an object."
 msgstr "löscht ein Objekt."
 
-#: ../../central-management-umc/udm-command.rst:54
+#: ../../central-management-umc/udm-command.rst:58
 msgid "move"
 msgstr "move"
 
-#: ../../central-management-umc/udm-command.rst:54
+#: ../../central-management-umc/udm-command.rst:58
 msgid "is used to move an object to another position in the LDAP directory."
 msgstr "zum Verschieben an eine andere Position im LDAP-Verzeichnis."
 
-#: ../../central-management-umc/udm-command.rst:56
+#: ../../central-management-umc/udm-command.rst:60
 msgid ""
 "The possible options of a UDM module and the operations which can be used"
 " on it can be output by specifying the operation name, e.g.,"
@@ -2145,7 +2155,7 @@ msgstr ""
 "Operationen können durch Angabe des Operationsnamens ausgegeben werden, "
 "z.B.,"
 
-#: ../../central-management-umc/udm-command.rst:59
+#: ../../central-management-umc/udm-command.rst:63
 msgid ""
 "$ univention-directory-manager users/user move\n"
 "[...]\n"
@@ -2203,7 +2213,7 @@ msgstr ""
 "  --position                       Move to position in tree\n"
 "[...]"
 
-#: ../../central-management-umc/udm-command.rst:90
+#: ../../central-management-umc/udm-command.rst:94
 msgid ""
 "The following command outputs further information, the operations and the"
 " options for every module. This also displays all attributes of the "
@@ -2212,11 +2222,11 @@ msgstr ""
 "Nähere Informationen, Operationen und Optionen zu jedem Modul gibt der "
 "folgende Befehl aus:"
 
-#: ../../central-management-umc/udm-command.rst:93
+#: ../../central-management-umc/udm-command.rst:97
 msgid "$ univention-directory-manager [category/modulename]"
 msgstr "$ univention-directory-manager [category/modulename]"
 
-#: ../../central-management-umc/udm-command.rst:98
+#: ../../central-management-umc/udm-command.rst:102
 msgid ""
 "With the ``create`` operation, the attributes marked with ``*`` must be "
 "specified when creating a new object."
@@ -2225,7 +2235,7 @@ msgstr ""
 "``create`` werden mit ``*`` die Attribute markiert, die beim Anlegen "
 "eines neuen Objektes zwingend angegeben werden müssen."
 
-#: ../../central-management-umc/udm-command.rst:101
+#: ../../central-management-umc/udm-command.rst:105
 msgid ""
 "Some attributes can be assigned more than one value (e.g., mail addresses"
 " to user objects). These multi-value fields are marked with ``[]`` behind"
@@ -2240,7 +2250,7 @@ msgstr ""
 "Dies ist bei den einzelnen Attributen durch Angabe des Optionsnamens "
 "aufgeführt:"
 
-#: ../../central-management-umc/udm-command.rst:107
+#: ../../central-management-umc/udm-command.rst:111
 msgid ""
 "users/user variables:\n"
 "  General:\n"
@@ -2256,7 +2266,7 @@ msgstr ""
 "  Contact:\n"
 "    e-mail (person,[])                       E-Mail Address"
 
-#: ../../central-management-umc/udm-command.rst:117
+#: ../../central-management-umc/udm-command.rst:121
 msgid ""
 "Here, ``username (*)`` signifies that this attribute must always be set "
 "when creating user objects. If the *person* option is set for the user "
@@ -2269,11 +2279,11 @@ msgstr ""
 "eine oder mehrere E-Mail-Adressen zu den Kontaktinformationen hinzugefügt"
 " werden."
 
-#: ../../central-management-umc/udm-command.rst:122
+#: ../../central-management-umc/udm-command.rst:126
 msgid "A range of standard parameters are defined for every module:"
 msgstr "Eine Reihe von Standard-Parametern sind für jedes Modul definiert:"
 
-#: ../../central-management-umc/udm-command.rst:126
+#: ../../central-management-umc/udm-command.rst:130
 msgid ""
 "The parameter is used to specify the LDAP position of the object during "
 "modifications or deletion. The complete DN must be entered, e.g.,"
@@ -2282,7 +2292,7 @@ msgstr ""
 "die LDAP-Position des Objektes anzugeben. Dabei muss die komplette DN "
 "angegeben werden, z.B,"
 
-#: ../../central-management-umc/udm-command.rst:130
+#: ../../central-management-umc/udm-command.rst:134
 msgid ""
 "$ univention-directory-manager users/user remove \\\n"
 "  --dn \"uid=ldapadmin,cn=users,dc=company,dc=example\""
@@ -2290,7 +2300,7 @@ msgstr ""
 "$ univention-directory-manager users/user remove \\\n"
 "  --dn \"uid=ldapadmin,cn=users,dc=company,dc=example\""
 
-#: ../../central-management-umc/udm-command.rst:137
+#: ../../central-management-umc/udm-command.rst:141
 msgid ""
 "The parameter is used to specify at which LDAP position an object should "
 "be created. If no ``--position`` is entered, the object is created below "
@@ -2303,7 +2313,7 @@ msgstr ""
 " mit diesem Parameter angegeben, an welche Stelle ein Objekt verschoben "
 "werden soll, z.B:"
 
-#: ../../central-management-umc/udm-command.rst:142
+#: ../../central-management-umc/udm-command.rst:146
 msgid ""
 "$ univention-directory-manager computers/ipmanagedclient move \\\n"
 "  --dn \"cn=desk01,cn=management,cn=computers,dc=company,dc=com\" \\\n"
@@ -2313,7 +2323,7 @@ msgstr ""
 "  --dn \"cn=desk01,cn=management,cn=computers,dc=company,dc=com\" \\\n"
 "  --position \"cn=finance,cn=computers,dc=company,dc=example\""
 
-#: ../../central-management-umc/udm-command.rst:150
+#: ../../central-management-umc/udm-command.rst:154
 msgid ""
 "The parameter specifies that the given value should be assigned to the "
 "following attribute. The parameter must be used per attribute value pair,"
@@ -2323,7 +2333,7 @@ msgstr ""
 "Wert zugewiesen wird. Der Parameter muss je Attribut-Wert-Paar verwendet "
 "werden, z.B:"
 
-#: ../../central-management-umc/udm-command.rst:154
+#: ../../central-management-umc/udm-command.rst:158
 msgid ""
 "$ univention-directory-manager users/user create \\\n"
 "  --position \"cn=users,dc=compaby,dc=example\" \\\n"
@@ -2339,7 +2349,7 @@ msgstr ""
 "  --set lastname=\"Smith\" \\\n"
 "  --set password=\"12345678\""
 
-#: ../../central-management-umc/udm-command.rst:165
+#: ../../central-management-umc/udm-command.rst:169
 msgid ""
 "The parameter defines the LDAP object classes of an object. If, for "
 "example, only ``pki`` is provided as options for a user object, it is not"
@@ -2351,7 +2361,7 @@ msgstr ""
 "kann für diesen Benutzer keine ``mailPrimaryAddress`` angegeben werden, "
 "da dieses Attribut Teil der Option ``mail`` ist."
 
-#: ../../central-management-umc/udm-command.rst:172
+#: ../../central-management-umc/udm-command.rst:176
 msgid ""
 "``--superordinate`` is used to specify dependent, superordinate modules. "
 "A DHCP object, for example, requires a DHCP service object under which it"
@@ -2362,7 +2372,7 @@ msgstr ""
 "Service-Objekt, unter dem es angelegt werden kann.  Dieses wird mit der "
 "Option ``--superordinate`` übergeben."
 
-#: ../../central-management-umc/udm-command.rst:178
+#: ../../central-management-umc/udm-command.rst:182
 msgid ""
 "The ``--policy-reference`` parameter allows the assignment of policies to"
 " objects (and similarly their deletion with ``--policy-dereference``). If"
@@ -2374,7 +2384,7 @@ msgstr ""
 "Richtlinie an ein Objekt geknüpft, so werden die Einstellungen aus der "
 "Richtlinie für das Objekt angewendet, z.B:"
 
-#: ../../central-management-umc/udm-command.rst:183
+#: ../../central-management-umc/udm-command.rst:187
 msgid ""
 "$ univention-directory-manager [category | modulename] [Operation] \\\n"
 "  --policy-reference \"cn=sales,cn=pwhistory,\" \\\n"
@@ -2384,7 +2394,7 @@ msgstr ""
 "  --policy-reference \"cn=sales,cn=pwhistory,\" \\\n"
 "\"cn=users,cn=policies,dc=company,dc=example\""
 
-#: ../../central-management-umc/udm-command.rst:191
+#: ../../central-management-umc/udm-command.rst:195
 msgid ""
 "The ``--ignore_exists`` parameters skips existing objects. If it is not "
 "possible to create an object, as it already exists, the error code ``0`` "
@@ -2394,7 +2404,7 @@ msgstr ""
 " Sollte ein Objekt nicht angelegt werden können, da es bereits existiert,"
 " wird trotzdem der Fehlercode ``0`` (kein Fehler) zurückgegeben."
 
-#: ../../central-management-umc/udm-command.rst:197
+#: ../../central-management-umc/udm-command.rst:201
 msgid ""
 "``--append`` and ``--remove`` are used to add/remove a value from a "
 "multi-value field, e.g.:"
@@ -2402,7 +2412,7 @@ msgstr ""
 "Mit ``--append`` und ``--remove`` wird einem Mehrfachwert-Feld ein Wert "
 "hinzugefügt/entfernt, z.B:"
 
-#: ../../central-management-umc/udm-command.rst:200
+#: ../../central-management-umc/udm-command.rst:204
 msgid ""
 "$ univention-directory-manager groups/group modify \\\n"
 "  --dn \"cn=staff,cn=groups,dc=company,dc=example\" \\\n"
@@ -2414,15 +2424,15 @@ msgstr ""
 "  --append users=\"uid=smith,cn=users,dc=company,dc=example\" \\\n"
 "  --remove users=\"uid=miller,cn=users,dc=company,dc=example\""
 
-#: ../../central-management-umc/udm-command.rst:209
+#: ../../central-management-umc/udm-command.rst:213
 msgid "See :option:`--append`."
 msgstr "Siehe :option:`--append`."
 
-#: ../../central-management-umc/udm-command.rst:215
+#: ../../central-management-umc/udm-command.rst:219
 msgid "Example invocations of the command line interface"
 msgstr "Beispielaufrufe für die Kommandozeilenschnittstelle"
 
-#: ../../central-management-umc/udm-command.rst:217
+#: ../../central-management-umc/udm-command.rst:221
 msgid ""
 "The following examples for the command line front end of |UCSUDM| can be "
 "used as templates for your own scripts."
@@ -2430,15 +2440,15 @@ msgstr ""
 "Die folgenden Beispielaufrufe des Kommandozeilen-Frontend von |UCSUDM| "
 "können als Vorlagen für eigene Skripte verwendet werden."
 
-#: ../../central-management-umc/udm-command.rst:223
+#: ../../central-management-umc/udm-command.rst:227
 msgid "Users"
 msgstr "Benutzer"
 
-#: ../../central-management-umc/udm-command.rst:225
+#: ../../central-management-umc/udm-command.rst:229
 msgid "Creating a user in the standard user container:"
 msgstr "Anlegen eines Benutzers im Standard-Benutzer-Container:"
 
-#: ../../central-management-umc/udm-command.rst:227
+#: ../../central-management-umc/udm-command.rst:231
 msgid ""
 "$ univention-directory-manager users/user create \\\n"
 "  --position \"cn=users,dc=example,dc=com\" \\\n"
@@ -2458,13 +2468,13 @@ msgstr ""
 "  --set mailPrimaryAddress=\"mail@example.com\" \\\n"
 "  --set password=\"secretpassword\""
 
-#: ../../central-management-umc/udm-command.rst:238
+#: ../../central-management-umc/udm-command.rst:242
 msgid "Subsequent addition of the postal address for an existing user:"
 msgstr ""
 "Nachträgliches Hinzufügen der postalischen Adresse zum gerade angelegten "
 "Benutzer:"
 
-#: ../../central-management-umc/udm-command.rst:240
+#: ../../central-management-umc/udm-command.rst:244
 msgid ""
 "$ univention-directory-manager users/user modify \\\n"
 "  --dn \"uid=user01,cn=users,dc=example,dc=com\" \\\n"
@@ -2478,7 +2488,7 @@ msgstr ""
 "  --set postcode=\"28239\" \\\n"
 "  --set city=\"Bremen\""
 
-#: ../../central-management-umc/udm-command.rst:248
+#: ../../central-management-umc/udm-command.rst:252
 msgid ""
 "This command can be used to display all the users whose username begins "
 "with *user*:"
@@ -2486,7 +2496,7 @@ msgstr ""
 "Mit diesem Befehl werden alle Benutzer angezeigt, deren Benutzername mit "
 "*user* beginnt:"
 
-#: ../../central-management-umc/udm-command.rst:251
+#: ../../central-management-umc/udm-command.rst:255
 msgid ""
 "$ univention-directory-manager users/user list \\\n"
 "  --filter uid='user*'"
@@ -2494,7 +2504,7 @@ msgstr ""
 "$ univention-directory-manager users/user list \\\n"
 "  --filter uid='user*'"
 
-#: ../../central-management-umc/udm-command.rst:256
+#: ../../central-management-umc/udm-command.rst:260
 msgid ""
 "Searching for objects with the ``--filter`` can also be limited to a "
 "position in the LDAP directory; in this case, to all users in the "
@@ -2504,7 +2514,7 @@ msgstr ""
 "LDAP-Verzeichnis eingeschränkt werden, in diesem Fall auf alle Benutzer "
 "im Container ``cn=bremen,cn=users,dc=example,dc=com``:"
 
-#: ../../central-management-umc/udm-command.rst:260
+#: ../../central-management-umc/udm-command.rst:264
 msgid ""
 "$ univention-directory-manager users/user list \\\n"
 "  --filter uid=\"user*\" \\\n"
@@ -2514,11 +2524,11 @@ msgstr ""
 "  --filter uid=\"user*\" \\\n"
 "  --position \"cn=bremen,cn=users,dc=example,dc=com\""
 
-#: ../../central-management-umc/udm-command.rst:266
+#: ../../central-management-umc/udm-command.rst:270
 msgid "This call removes the user ``user04``:"
 msgstr "Dieser Aufruf entfernt einen Benutzer ``user04``:"
 
-#: ../../central-management-umc/udm-command.rst:268
+#: ../../central-management-umc/udm-command.rst:272
 msgid ""
 "$ univention-directory-manager users/user remove \\\n"
 "  --dn \"uid=user04,cn=users,dc=example,dc=com\""
@@ -2526,7 +2536,7 @@ msgstr ""
 "$ univention-directory-manager users/user remove \\\n"
 "  --dn \"uid=user04,cn=users,dc=example,dc=com\""
 
-#: ../../central-management-umc/udm-command.rst:273
+#: ../../central-management-umc/udm-command.rst:277
 msgid ""
 "A company has two sites with containers created for each. The following "
 "command can be used to transfer a user from the container for the site "
@@ -2537,7 +2547,7 @@ msgstr ""
 "Standort \"Hamburg\" in den Container für den Standort \"Bremen\" "
 "verschoben:"
 
-#: ../../central-management-umc/udm-command.rst:277
+#: ../../central-management-umc/udm-command.rst:281
 msgid ""
 "$ univention-directory-manager users/user move \\\n"
 "  --dn \"uid=user03,cn=hamburg,cn=users,dc=example,dc=com\" \\\n"
@@ -2547,11 +2557,11 @@ msgstr ""
 "  --dn \"uid=user03,cn=hamburg,cn=users,dc=example,dc=com\" \\\n"
 "  --position \"cn=bremen,cn=users,dc=example,dc=com\""
 
-#: ../../central-management-umc/udm-command.rst:286
+#: ../../central-management-umc/udm-command.rst:290
 msgid "Groups"
 msgstr "Gruppen"
 
-#: ../../central-management-umc/udm-command.rst:288
+#: ../../central-management-umc/udm-command.rst:292
 msgid ""
 "Creating a group ``Example Users`` and adding the user ``user01`` to this"
 " group:"
@@ -2559,7 +2569,7 @@ msgstr ""
 "Anlegen einer Gruppe ``Example Users`` und Hinzufügen des Benutzers "
 "``user01`` in diese Gruppe:"
 
-#: ../../central-management-umc/udm-command.rst:290
+#: ../../central-management-umc/udm-command.rst:294
 msgid ""
 "$ univention-directory-manager groups/group create \\\n"
 "  --position \"cn=groups,dc=example,dc=com\" \\\n"
@@ -2571,13 +2581,13 @@ msgstr ""
 "  --set name=\"Example Users\" \\\n"
 "  --set users=\"uid=user01,cn=users,dc=example,dc=com\""
 
-#: ../../central-management-umc/udm-command.rst:297
+#: ../../central-management-umc/udm-command.rst:301
 msgid "Subsequent addition of the user ``user02`` to the existing group:"
 msgstr ""
 "Nachträgliches Hinzufügen des Benutzers ``user02`` zur gerade angelegten "
 "Gruppe:"
 
-#: ../../central-management-umc/udm-command.rst:299
+#: ../../central-management-umc/udm-command.rst:303
 msgid ""
 "$ univention-directory-manager groups/group modify \\\n"
 "  --dn \"cn=Example Users,cn=groups,dc=example,dc=com\" \\\n"
@@ -2587,7 +2597,7 @@ msgstr ""
 "  --dn \"cn=Example Users,cn=groups,dc=example,dc=com\" \\\n"
 "  --append users=\"uid=user02,cn=users,dc=example,dc=com\""
 
-#: ../../central-management-umc/udm-command.rst:307
+#: ../../central-management-umc/udm-command.rst:311
 msgid ""
 "A ``--set`` on the attribute ``users`` overwrites the list of group "
 "members in contrast to ``--append``."
@@ -2595,11 +2605,11 @@ msgstr ""
 "Ein ``--set`` des Attributs ``users`` überschreibt im Gegensatz zu "
 "``--append`` die Liste der Gruppenmitglieder."
 
-#: ../../central-management-umc/udm-command.rst:310
+#: ../../central-management-umc/udm-command.rst:314
 msgid "Subsequent removal of the user ``user01`` from the group:"
 msgstr "Nachträgliches Entfernen des Benutzers ``user01`` aus der Gruppe:"
 
-#: ../../central-management-umc/udm-command.rst:312
+#: ../../central-management-umc/udm-command.rst:316
 msgid ""
 "$ univention-directory-manager groups/group modify \\\n"
 "  --dn \"cn=Example Users,cn=groups,dc=example,dc=com\" \\\n"
@@ -2609,11 +2619,11 @@ msgstr ""
 "  --dn \"cn=Example Users,cn=groups,dc=example,dc=com\" \\\n"
 "  --remove users=\"uid=user01,cn=users,dc=example,dc=com\""
 
-#: ../../central-management-umc/udm-command.rst:321
+#: ../../central-management-umc/udm-command.rst:325
 msgid "Container / Policies"
 msgstr "Container / Richtlinien"
 
-#: ../../central-management-umc/udm-command.rst:323
+#: ../../central-management-umc/udm-command.rst:327
 msgid ""
 "This call creates a container ``cn=Bremen`` beneath the standard "
 "container ``cn=computers`` for the computers at the \"Bremen\" site. The "
@@ -2627,7 +2637,7 @@ msgstr ""
 "Container auch direkt als Standardcontainer für Rechnerobjekte "
 "registriert (siehe :ref:`central-cn-and-ous`):"
 
-#: ../../central-management-umc/udm-command.rst:328
+#: ../../central-management-umc/udm-command.rst:332
 msgid ""
 "$ univention-directory-manager container/cn create \\\n"
 "  --position \"cn=computers,dc=example,dc=com\" \\\n"
@@ -2639,7 +2649,7 @@ msgstr ""
 "  --set name=\"bremen\" \\\n"
 "  --set computerPath=1"
 
-#: ../../central-management-umc/udm-command.rst:335
+#: ../../central-management-umc/udm-command.rst:339
 msgid ""
 "This command creates a disk quota policy with soft and hard limits and "
 "the name *Default quota*:"
@@ -2647,7 +2657,7 @@ msgstr ""
 "Dieser Befehl legt eine Speicherplatzbegrenzungsrichtlinie mit dem Namen "
 "*Default quota* mit Soft- und Hard-Limit an:"
 
-#: ../../central-management-umc/udm-command.rst:338
+#: ../../central-management-umc/udm-command.rst:342
 msgid ""
 "$ univention-directory-manager policies/share_userquota create \\\n"
 "  --position \"cn=policies,dc=example,dc=com\" \\\n"
@@ -2661,11 +2671,11 @@ msgstr ""
 "  --set softLimitSpace=5GB \\\n"
 "  --set hardLimitSpace=10GB"
 
-#: ../../central-management-umc/udm-command.rst:346
+#: ../../central-management-umc/udm-command.rst:350
 msgid "This policy is now linked to the user container ``cn=users``:"
 msgstr "Diese Richtlinie wird nun an den Benutzer-Container ``cn=users`` gebunden:"
 
-#: ../../central-management-umc/udm-command.rst:348
+#: ../../central-management-umc/udm-command.rst:352
 msgid ""
 "$ univention-directory-manager container/cn modify \\\n"
 "  --dn \"cn=users,dc=example,dc=com\" \\\n"
@@ -2675,7 +2685,7 @@ msgstr ""
 "  --dn \"cn=users,dc=example,dc=com\" \\\n"
 "  --policy-reference \"cn=Default quota,cn=policies,dc=example,dc=com\""
 
-#: ../../central-management-umc/udm-command.rst:354
+#: ../../central-management-umc/udm-command.rst:358
 msgid ""
 "Creating a |UCSUCR| policy with which the storage time for log files can "
 "be set to one year. One space is used to separate the name and value of "
@@ -2685,7 +2695,7 @@ msgstr ""
 "Logdateien auf ein Jahr eingestellt wird. Als Trennzeichen zwischen Name "
 "und Wert der Variable wird ein Leerzeichen verwendet:"
 
-#: ../../central-management-umc/udm-command.rst:357
+#: ../../central-management-umc/udm-command.rst:361
 msgid ""
 "$ univention-directory-manager policies/registry create \\\n"
 "  --position \"cn=config-registry,cn=policies,dc=example,dc=com\" \\\n"
@@ -2697,7 +2707,7 @@ msgstr ""
 "  --set name=\"default UCR settings\" \\\n"
 "  --set registry=\"logrotate/rotate/count 52\""
 
-#: ../../central-management-umc/udm-command.rst:364
+#: ../../central-management-umc/udm-command.rst:368
 msgid ""
 "This command can be used to attach an additional value to the created "
 "policy:"
@@ -2705,7 +2715,7 @@ msgstr ""
 "Mit diesem Befehl wird an die angelegte Richtlinie ein weiterer Wert "
 "angehängt:"
 
-#: ../../central-management-umc/udm-command.rst:366
+#: ../../central-management-umc/udm-command.rst:370
 msgid ""
 "$ univention-directory-manager policies/registry modify \\\n"
 "  --dn \"cn=default UCR settings,cn=config-"
@@ -2717,11 +2727,11 @@ msgstr ""
 "registry,cn=policies,dc=example,dc=com\" \\\n"
 "  --append registry='\"logrotate/compress\" \"no\"'"
 
-#: ../../central-management-umc/udm-command.rst:375
+#: ../../central-management-umc/udm-command.rst:379
 msgid "Computers"
 msgstr "Rechner"
 
-#: ../../central-management-umc/udm-command.rst:377
+#: ../../central-management-umc/udm-command.rst:381
 msgid ""
 "In the following example, a Windows client is created. If this client "
 "joins the Samba domain at a later point in time (see :ref:`windows-"
@@ -2731,7 +2741,7 @@ msgstr ""
 "Client später der Samba-Domäne bei (siehe :ref:`windows-domain-join`), "
 "wird dieses Rechnerkonto dann automatisch verwendet:"
 
-#: ../../central-management-umc/udm-command.rst:381
+#: ../../central-management-umc/udm-command.rst:385
 msgid ""
 "$ univention-directory-manager computers/windows create \\\n"
 "  --position \"cn=computers,dc=example,dc=com\" \\\n"
@@ -2745,11 +2755,11 @@ msgstr ""
 "  --set mac=aa:bb:cc:aa:bb:cc \\\n"
 "  --set ip=192.0.2.10"
 
-#: ../../central-management-umc/udm-command.rst:392
+#: ../../central-management-umc/udm-command.rst:396
 msgid "Shares"
 msgstr "Freigaben"
 
-#: ../../central-management-umc/udm-command.rst:394
+#: ../../central-management-umc/udm-command.rst:398
 msgid ""
 "The following command creates a share *Documentation* on the server "
 "*fileserver.example.com*. As long as :file:`/var/shares/documentation/` "
@@ -2760,7 +2770,7 @@ msgstr ""
 "auf dem Server noch nicht existiert, wird es durch diesen Aufruf auch "
 "gleich angelegt:"
 
-#: ../../central-management-umc/udm-command.rst:398
+#: ../../central-management-umc/udm-command.rst:402
 msgid ""
 "$ univention-directory-manager shares/share create \\\n"
 "  --position \"cn=shares,dc=example,dc=com\" \\\n"
@@ -2774,11 +2784,11 @@ msgstr ""
 "  --set host=\"fileserver.example.com\" \\\n"
 "  --set path=\"/var/shares/documentation\""
 
-#: ../../central-management-umc/udm-command.rst:409
+#: ../../central-management-umc/udm-command.rst:413
 msgid "Printers"
 msgstr "Drucker"
 
-#: ../../central-management-umc/udm-command.rst:411
+#: ../../central-management-umc/udm-command.rst:415
 msgid ""
 "Creating a printer share *LaserPrinter01* on the print server "
 "*printserver.example.com*. The properties of the printer are specified in"
@@ -2792,7 +2802,7 @@ msgstr ""
 ":file:`/usr/share/ppd/` angegeben wird. Der angebundene Drucker ist "
 "netzwerkfähig und wird über das IPP-Protokoll angebunden."
 
-#: ../../central-management-umc/udm-command.rst:417
+#: ../../central-management-umc/udm-command.rst:421
 msgid ""
 "$ univention-directory-manager shares/printer create \\\n"
 "  --position \"cn=printers,dc=example,dc=com\" \\\n"
@@ -2814,7 +2824,7 @@ msgstr ""
 "  --set producer=\"producer: "
 "cn=HP,cn=cups,cn=univention,dc=example,dc=com\""
 
-#: ../../central-management-umc/udm-command.rst:430
+#: ../../central-management-umc/udm-command.rst:434
 msgid ""
 "There must be a blank space between the print protocol and the URL target"
 " path in the parameter ``uri``. A list of the print protocols can be "
@@ -2824,7 +2834,7 @@ msgstr ""
 "muss ein Leerzeichen stehen. Eine Liste der Druckprotokolle befindet sich"
 " in :ref:`print-shares`."
 
-#: ../../central-management-umc/udm-command.rst:434
+#: ../../central-management-umc/udm-command.rst:438
 msgid ""
 "Printers can be grouped in a printer group for simpler administration. "
 "Further information on printer groups can be found in :ref:`printer-"
@@ -2834,7 +2844,7 @@ msgstr ""
 "zusammengefasst werden. Weitere Informationen zu Druckergruppen finden "
 "sich in :ref:`printer-groups`."
 
-#: ../../central-management-umc/udm-command.rst:437
+#: ../../central-management-umc/udm-command.rst:441
 msgid ""
 "$ univention-directory-manager shares/printergroup create \\\n"
 "  --set name=LaserPrinters \\\n"
@@ -2848,11 +2858,11 @@ msgstr ""
 "  --append groupMember=LaserPrinter01 \\\n"
 "  --append groupMember=LaserPrinter02"
 
-#: ../../central-management-umc/udm-command.rst:448
+#: ../../central-management-umc/udm-command.rst:452
 msgid "DNS/DHCP"
 msgstr "DNS/DHCP"
 
-#: ../../central-management-umc/udm-command.rst:450
+#: ../../central-management-umc/udm-command.rst:454
 msgid ""
 "To configure an IP assignment via DHCP, a DHCP computer entry must be "
 "registered for the MAC address. Further information on DHCP can be found "
@@ -2862,7 +2872,7 @@ msgstr ""
 "Eintrag für die MAC-Adresse registriert werden. Weitere Informationen zu "
 "DHCP finden sich in :ref:`module-dhcp-dhcp`."
 
-#: ../../central-management-umc/udm-command.rst:454
+#: ../../central-management-umc/udm-command.rst:458
 msgid ""
 "$ univention-directory-manager dhcp/host create \\\n"
 "  --superordinate \"cn=example.com,cn=dhcp,dc=example,dc=com\" \\\n"
@@ -2876,7 +2886,7 @@ msgstr ""
 "  --set fixedaddress=\"192.0.2.110\" \\\n"
 "  --set hwaddress=\"ethernet 00:11:22:33:44:55\""
 
-#: ../../central-management-umc/udm-command.rst:462
+#: ../../central-management-umc/udm-command.rst:466
 msgid ""
 "If it should be possible for a computer name to be resolved via DNS, the "
 "following commands can be used to configure a forward (host record) and "
@@ -2886,7 +2896,7 @@ msgstr ""
 "Befehlen eine Vorwärts- (host record) und Reverse-Auflösung (PTR record) "
 "konfiguriert werden."
 
-#: ../../central-management-umc/udm-command.rst:466
+#: ../../central-management-umc/udm-command.rst:470
 msgid ""
 "$ univention-directory-manager dns/host_record create \\\n"
 "  --superordinate \"zoneName=example.com,cn=dns,dc=example,dc=com\" \\\n"
@@ -2910,15 +2920,15 @@ msgstr ""
 "  --set address=\"110\" \\\n"
 "  --set ptr_record=\"Client222.example.com.\""
 
-#: ../../central-management-umc/udm-command.rst:478
+#: ../../central-management-umc/udm-command.rst:482
 msgid "Further information on DNS can be found in :ref:`networks-dns`."
 msgstr "Weitere Informationen zu DNS finden sich in :ref:`networks-dns`."
 
-#: ../../central-management-umc/udm-command.rst:483
+#: ../../central-management-umc/udm-command.rst:487
 msgid "Extended attributes"
 msgstr "Erweiterte Attribute"
 
-#: ../../central-management-umc/udm-command.rst:485
+#: ../../central-management-umc/udm-command.rst:489
 msgid ""
 "Extended attributes can be used to expand the functional scope of UMC "
 "modules, see :ref:`central-extended-attrs`. In the following example, a "
@@ -2933,7 +2943,7 @@ msgstr ""
 "extra für diesen Zweck vorgesehenen Objektklasse "
 "``univentionFreeAttributes`` verwaltet:"
 
-#: ../../central-management-umc/udm-command.rst:491
+#: ../../central-management-umc/udm-command.rst:495
 msgid ""
 "$ univention-directory-manager settings/extended_attribute create \\\n"
 "  --position \"cn=custom attributes,cn=univention,dc=example,dc=com\" \\\n"
@@ -2959,11 +2969,11 @@ msgstr ""
 "  --set syntax=\"string\" \\\n"
 "  --set shortDescription=\"Car license\""
 
-#: ../../central-management-umc/umc.rst:4
+#: ../../central-management-umc/umc.rst:8
 msgid "|UCSUMC| modules"
 msgstr "|UCSUMC|-Module"
 
-#: ../../central-management-umc/umc.rst:6
+#: ../../central-management-umc/umc.rst:10
 msgid ""
 "|UCSUMC| (UMC) modules are the web-based tool for administration of the "
 "UCS domain. They are shown on the portal page (:ref:`central-portal`) for"
@@ -2978,7 +2988,7 @@ msgstr ""
 "installierte Software-Komponenten können ihre eigenen neuen UMC-Module "
 "mitbringen."
 
-#: ../../central-management-umc/umc.rst:12
+#: ../../central-management-umc/umc.rst:16
 msgid ""
 "UMC modules for the administration of all the data included in the LDAP "
 "directory (such as users, groups and computer accounts) are only provided"
@@ -2990,7 +3000,7 @@ msgstr ""
 "einem |UCSPRIMARYDN| und |UCSBACKUPDN| bereitgestellt. Änderungen, die in"
 " diesen Modulen vorgenommen werden, gelten für die gesamte Domäne."
 
-#: ../../central-management-umc/umc.rst:17
+#: ../../central-management-umc/umc.rst:21
 msgid ""
 "UMC modules for the configuration and administration of the local system "
 "are provided on all system roles. These modules can for example be used "
@@ -3003,11 +3013,11 @@ msgstr ""
 " die lokale Konfiguration über |UCSUCR| angepasst oder Dienste "
 "gestartet/gestoppt werden."
 
-#: ../../central-management-umc/umc.rst:25
+#: ../../central-management-umc/umc.rst:29
 msgid "Activation of UCS license / license overview"
 msgstr "Aktivierung der UCS-Lizenz / Lizenz-Übersicht"
 
-#: ../../central-management-umc/umc.rst:27
+#: ../../central-management-umc/umc.rst:31
 msgid ""
 "The UCS license of a domain can be managed on the |UCSPRIMARYDN| via the "
 "UMC module :guilabel:`Welcome!`."
@@ -3015,7 +3025,7 @@ msgstr ""
 "Die UCS-Lizenz einer Domäne kann dem |UCSPRIMARYDN| über das UMC-Modul "
 ":guilabel:`Willkommen!` verwaltet werden."
 
-#: ../../central-management-umc/umc.rst:30
+#: ../../central-management-umc/umc.rst:34
 msgid ""
 "The current license status can be shown by clicking the "
 ":guilabel:`License info` button."
@@ -3023,11 +3033,11 @@ msgstr ""
 "Der aktuelle Lizenzstatus kann mit einem Klick auf :guilabel:`Lizenzinfo`"
 " angezeigt werden."
 
-#: ../../central-management-umc/umc.rst:38
+#: ../../central-management-umc/umc.rst:42
 msgid "Displaying the UCS license"
 msgstr "Anzeige der UCS-Lizenz"
 
-#: ../../central-management-umc/umc.rst:40
+#: ../../central-management-umc/umc.rst:44
 msgid ""
 "The button :guilabel:`Import a license` opens a dialogue in which a new "
 "license key can be activated (otherwise the core edition license is used "
@@ -3044,7 +3054,7 @@ msgstr ""
 "auch in das darunter liegende Eingabefeld kopiert und dann über die "
 "Schaltfläche :guilabel:`Importieren aus Textfeld` eingespielt werden."
 
-#: ../../central-management-umc/umc.rst:47
+#: ../../central-management-umc/umc.rst:51
 msgid ""
 "Installation of most of the applications in the Univention App Center "
 "requires a personalized license key. UCS core edition licenses can be "
@@ -3062,7 +3072,7 @@ msgstr ""
 "Adresse versendet. Der neue Schlüssel kann dann direkt eingespielt "
 "werden. Der Lizenzumfang bleibt durch die Konvertierung unverändert."
 
-#: ../../central-management-umc/umc.rst:54
+#: ../../central-management-umc/umc.rst:58
 msgid ""
 "If the number of licensed user or computer objects is exceeded, it is not"
 " possible to create any additional objects in UMC modules or edit any "
@@ -3077,11 +3087,11 @@ msgstr ""
 "entfernt werden. Beim Öffnen eines UMC-Moduls wird bei überschrittener "
 "Lizenz ein entsprechender Hinweis angezeigt."
 
-#: ../../central-management-umc/umc.rst:63
+#: ../../central-management-umc/umc.rst:67
 msgid "Operating instructions for modules to administrate LDAP directory data"
 msgstr "Bedienung der Module zur Verwaltung von LDAP-Verzeichnisdaten"
 
-#: ../../central-management-umc/umc.rst:65
+#: ../../central-management-umc/umc.rst:69
 msgid ""
 "All UMC modules for managing LDAP directory objects such as user, group "
 "and computer accounts or configurations for printers, shares, mail and "
@@ -3099,11 +3109,11 @@ msgstr ""
 "etwas ab, weitere Hinweise finden sich in :ref:`ip-config-dns-umc` und "
 ":ref:`networks-dhcp-general`."
 
-#: ../../central-management-umc/umc.rst:78
+#: ../../central-management-umc/umc.rst:82
 msgid "Module overview"
 msgstr "Modulübersicht"
 
-#: ../../central-management-umc/umc.rst:80
+#: ../../central-management-umc/umc.rst:84
 msgid ""
 "The configuration properties/possibilities of the modules are described "
 "in the following chapters:"
@@ -3111,47 +3121,47 @@ msgstr ""
 "Die inhaltlichen Eigenschaften/Konfigurationsmöglichkeiten der Module ist"
 " in folgenden Kapiteln beschrieben:"
 
-#: ../../central-management-umc/umc.rst:83
+#: ../../central-management-umc/umc.rst:87
 msgid "Users - :ref:`users-general`"
 msgstr "Benutzer - :ref:`users-general`"
 
-#: ../../central-management-umc/umc.rst:85
+#: ../../central-management-umc/umc.rst:89
 msgid "Groups - :ref:`groups`"
 msgstr "Gruppen - :ref:`groups`"
 
-#: ../../central-management-umc/umc.rst:87
+#: ../../central-management-umc/umc.rst:91
 msgid "Computers - :ref:`computers-general`"
 msgstr "Rechner - :ref:`computers-general`"
 
-#: ../../central-management-umc/umc.rst:89
+#: ../../central-management-umc/umc.rst:93
 msgid "Networks - :ref:`networks-general`"
 msgstr "Netzwerke - :ref:`networks-general`"
 
-#: ../../central-management-umc/umc.rst:91
+#: ../../central-management-umc/umc.rst:95
 msgid "DNS - :ref:`networks-dns`"
 msgstr "DNS - :ref:`networks-dns`"
 
-#: ../../central-management-umc/umc.rst:93
+#: ../../central-management-umc/umc.rst:97
 msgid "DHCP - :ref:`module-dhcp-dhcp`"
 msgstr "DHCP - :ref:`module-dhcp-dhcp`"
 
-#: ../../central-management-umc/umc.rst:95
+#: ../../central-management-umc/umc.rst:99
 msgid "Shares - :ref:`shares-general`"
 msgstr "Freigaben - :ref:`shares-general`"
 
-#: ../../central-management-umc/umc.rst:97
+#: ../../central-management-umc/umc.rst:101
 msgid "Printers - :ref:`print-general`"
 msgstr "Drucker - :ref:`print-general`"
 
-#: ../../central-management-umc/umc.rst:99
+#: ../../central-management-umc/umc.rst:103
 msgid "Email - :ref:`mail-general`"
 msgstr "E-Mail - :ref:`mail-general`"
 
-#: ../../central-management-umc/umc.rst:101
+#: ../../central-management-umc/umc.rst:105
 msgid "Nagios - :ref:`nagios-general`"
 msgstr "Nagios - :ref:`nagios-general`"
 
-#: ../../central-management-umc/umc.rst:103
+#: ../../central-management-umc/umc.rst:107
 msgid ""
 "The use of policies (:ref:`central-policies`) and the LDAP navigation "
 "(:ref:`central-navigation`) are described separately."
@@ -3160,11 +3170,11 @@ msgstr ""
 "Durchsuchen des LDAP-Verzeichnisbaums (:ref:`central-navigation`) werden "
 "separat beschrieben."
 
-#: ../../central-management-umc/umc.rst:109
+#: ../../central-management-umc/umc.rst:113
 msgid "Searching for objects"
 msgstr "Suche nach Objekten"
 
-#: ../../central-management-umc/umc.rst:111
+#: ../../central-management-umc/umc.rst:115
 msgid ""
 "The module overview lists all the objects managed by this module. "
 "*Search* performs a search for a selection of important attributes (e.g.,"
@@ -3178,7 +3188,7 @@ msgstr ""
 "primärer E-Mail-Adresse, Beschreibung, Mitarbeiternummer und "
 "Benutzername). Es kann auch mit Wildcards gesucht werden, z.B.  ``m*``."
 
-#: ../../central-management-umc/umc.rst:117
+#: ../../central-management-umc/umc.rst:121
 msgid ""
 "Clicking on the :guilabel:`Advanced options` button (the filter icon) "
 "next to the input field displays additional search options:"
@@ -3186,7 +3196,7 @@ msgstr ""
 "Durch einen Klick auf :guilabel:`Erweiterte Optionen` (das Filter-Icon) "
 "werden weitere Suchoptionen angezeigt:"
 
-#: ../../central-management-umc/umc.rst:120
+#: ../../central-management-umc/umc.rst:124
 msgid ""
 "The :guilabel:`Search in` field can be used to select whether the "
 "complete LDAP directory or only individual LDAP containers/OUs are "
@@ -3199,7 +3209,7 @@ msgstr ""
 "Strukturierung des LDAP-Verzeichnisdienstes finden sich in :ref:`central-"
 "cn-and-ous`."
 
-#: ../../central-management-umc/umc.rst:125
+#: ../../central-management-umc/umc.rst:129
 msgid ""
 "The :guilabel:`Property` field can be used to search for a certain "
 "attribute directly."
@@ -3207,7 +3217,7 @@ msgstr ""
 "Über das Auswahlfeld :guilabel:`Eigenschaft` kann gezielt nach einem "
 "bestimmten Attribut gesucht werden."
 
-#: ../../central-management-umc/umc.rst:128
+#: ../../central-management-umc/umc.rst:132
 msgid ""
 "The majority of the modules administrate a range of types of LDAP "
 "objects; the computer management for example administrates different "
@@ -3219,7 +3229,7 @@ msgstr ""
 "die einzelnen Systemrollen. Die Suche kann auf eine Art von LDAP-Objekt "
 "beschränkt werden."
 
-#: ../../central-management-umc/umc.rst:132
+#: ../../central-management-umc/umc.rst:136
 msgid ""
 "Some of the internally used user groups and groups (e.g., for domain "
 "joins) are not shown by default. If the :guilabel:`Include hidden "
@@ -3230,15 +3240,15 @@ msgstr ""
 ":guilabel:`Versteckte Objekte anzeigen` aktiviert, werden diese Objekte "
 "ebenfalls angezeigt."
 
-#: ../../central-management-umc/umc.rst:141
+#: ../../central-management-umc/umc.rst:145
 msgid "Searching for users"
 msgstr "Suche nach Benutzern"
 
-#: ../../central-management-umc/umc.rst:146
+#: ../../central-management-umc/umc.rst:150
 msgid "Creating objects"
 msgstr "Anlegen von Objekten"
 
-#: ../../central-management-umc/umc.rst:148
+#: ../../central-management-umc/umc.rst:152
 msgid ""
 "At the top of the table that shows the objects is a toolbar which can be "
 "used to create a new object using :guilabel:`Add`."
@@ -3247,7 +3257,7 @@ msgstr ""
 "Aktionsleiste, über die mit :guilabel:`Hinzufügen` ein neues Objekt "
 "angelegt werden kann."
 
-#: ../../central-management-umc/umc.rst:151
+#: ../../central-management-umc/umc.rst:155
 msgid ""
 "There are simplified wizards for some UMC modules (users, hosts), in "
 "which only the most important settings are requested. All attributes can "
@@ -3258,11 +3268,11 @@ msgstr ""
 "Durch einen Klick auf :guilabel:`Erweitert` werden alle Attribute "
 "angezeigt."
 
-#: ../../central-management-umc/umc.rst:158
+#: ../../central-management-umc/umc.rst:162
 msgid "Editing objects"
 msgstr "Bearbeiten von Objekten"
 
-#: ../../central-management-umc/umc.rst:160
+#: ../../central-management-umc/umc.rst:164
 msgid ""
 "Right-clicking on an LDAP object and selecting :guilabel:`Edit` allows to"
 " edit the object. The individual attributes are described in the "
@@ -3279,7 +3289,7 @@ msgstr ""
 "Schaltfläche :guilabel:`Zurück` bricht die Bearbeitung ab und kehrt zur "
 "vorherigen Suchansicht zurück."
 
-#: ../../central-management-umc/umc.rst:166
+#: ../../central-management-umc/umc.rst:170
 msgid ""
 "In front of every item in the result list is a checkbox with which "
 "individual objects can be selected. The selection status is also "
@@ -3302,11 +3312,11 @@ msgstr ""
 ":guilabel:`Überschreiben`-Checkbox aktiviert wird. Es können nur Objekte "
 "gleichen Typs bearbeitet werden."
 
-#: ../../central-management-umc/umc.rst:178
+#: ../../central-management-umc/umc.rst:182
 msgid "Deleting objects"
 msgstr "Löschen von Objekten"
 
-#: ../../central-management-umc/umc.rst:180
+#: ../../central-management-umc/umc.rst:184
 msgid ""
 "Right-clicking on an LDAP object and selecting :guilabel:`Delete` allows "
 "to delete the object. The prompt must be confirmed. Some objects use "
@@ -3320,7 +3330,7 @@ msgstr ""
 "DNS- oder DHCP-Objekt assoziiert werden). Diese können durch Auswahl der "
 "Option :guilabel:`Zugehörige Objekte löschen` ebenfalls entfernt werden."
 
-#: ../../central-management-umc/umc.rst:186
+#: ../../central-management-umc/umc.rst:190
 msgid ""
 "Similar to editing multiple objects at once, multiple objects can be "
 "deleted at once via the :guilabel:`Delete` button in the toolbar."
@@ -3329,11 +3339,11 @@ msgstr ""
 "Objekte auf einmal über die Schaltfläche :guilabel:`Löschen` in der "
 "Aktionsleiste gelöscht werden."
 
-#: ../../central-management-umc/umc.rst:192
+#: ../../central-management-umc/umc.rst:196
 msgid "Moving objects"
 msgstr "Verschieben von Objekten"
 
-#: ../../central-management-umc/umc.rst:194
+#: ../../central-management-umc/umc.rst:198
 msgid ""
 "Right-clicking on an LDAP object and selecting :guilabel:`Move to...` "
 "allows to to select an LDAP position to which the object should be moved."
@@ -3342,7 +3352,7 @@ msgstr ""
 ":guilabel:`Verschieben nach...` kann eine LDAP-Position ausgewählt "
 "werden, an die das Objekt verschoben werden soll."
 
-#: ../../central-management-umc/umc.rst:197
+#: ../../central-management-umc/umc.rst:201
 msgid ""
 "Similar to editing multiple objects at once, multiple objects can be "
 "moved at once by selecting :menuselection:`More --> Move to...` in the "
@@ -3354,11 +3364,11 @@ msgstr ""
 "einmal über die Schaltfläche :menuselection:`Mehr --> Verschieben "
 "nach...` in der Aktionsleiste verschoben werden."
 
-#: ../../central-management-umc/umc.rst:203
+#: ../../central-management-umc/umc.rst:207
 msgid "Display of system notifications"
 msgstr "Anzeige von Systembenachrichtigungen"
 
-#: ../../central-management-umc/umc.rst:205
+#: ../../central-management-umc/umc.rst:209
 msgid ""
 "UMC modules can deploy system notifications to alert the user to "
 "potential errors like join scripts which have not been run or necessary "
@@ -3374,11 +3384,11 @@ msgstr ""
 "können erneut mit einem Klick auf das Glockensymbol in der oberen rechten"
 " Ecke eingesehen werden."
 
-#: ../../central-management-umc/user-defined-ldap-structures.rst:4
+#: ../../central-management-umc/user-defined-ldap-structures.rst:8
 msgid "Structuring of the domain with user-defined LDAP structures"
 msgstr "Strukturierung der Domäne durch angepasste LDAP-Strukturen"
 
-#: ../../central-management-umc/user-defined-ldap-structures.rst:6
+#: ../../central-management-umc/user-defined-ldap-structures.rst:10
 msgid ""
 "Containers and organizational units (OU) are used to structure the data "
 "in the LDAP directory. There is no technical difference between the two "
@@ -3388,7 +3398,7 @@ msgstr ""
 "Daten im LDAP-Verzeichnis. Technisch unterscheiden sich beide Typen "
 "nicht, sondern eher in der Anwendung:"
 
-#: ../../central-management-umc/user-defined-ldap-structures.rst:10
+#: ../../central-management-umc/user-defined-ldap-structures.rst:14
 msgid ""
 "Organizational units usually represent real, existing units such as a "
 "department in a company or an institution"
@@ -3396,7 +3406,7 @@ msgstr ""
 "Organisationseinheiten repräsentieren in der Regel real existierende "
 "Einheiten wie z.B. eine Abteilung einer Firma oder einer Behörde"
 
-#: ../../central-management-umc/user-defined-ldap-structures.rst:13
+#: ../../central-management-umc/user-defined-ldap-structures.rst:17
 msgid ""
 "Containers are usually used for fictitious units such as all the "
 "computers within a company"
@@ -3404,7 +3414,7 @@ msgstr ""
 "Container werden meistens für fiktive Einheiten wie z.B. alle Computer "
 "eines Unternehmens verwendet"
 
-#: ../../central-management-umc/user-defined-ldap-structures.rst:16
+#: ../../central-management-umc/user-defined-ldap-structures.rst:20
 msgid ""
 "Containers and organizational units are managed in the UMC module "
 ":guilabel:`LDAP directory` and are created with :guilabel:`Add` and the "
@@ -3415,7 +3425,7 @@ msgstr ""
 " und den Objekt-Typen *Container: Container* und *Container: "
 "Organisationseinheit* angelegt."
 
-#: ../../central-management-umc/user-defined-ldap-structures.rst:20
+#: ../../central-management-umc/user-defined-ldap-structures.rst:24
 msgid ""
 "Containers and OUs can in principle be added at any position in the LDAP;"
 " however, OUs cannot be created below containers."
@@ -3424,35 +3434,35 @@ msgstr ""
 " eingefügt werden, OUs können aber nicht unterhalb von Containern "
 "angelegt werden."
 
-#: ../../central-management-umc/user-defined-ldap-structures.rst:26
+#: ../../central-management-umc/user-defined-ldap-structures.rst:30
 msgid "General tab"
 msgstr "Reiter Allgemein"
 
-#: ../../central-management-umc/user-defined-ldap-structures.rst:35
+#: ../../central-management-umc/user-defined-ldap-structures.rst:39
 msgid "Name"
 msgstr "Name"
 
-#: ../../central-management-umc/user-defined-ldap-structures.rst:36
+#: ../../central-management-umc/user-defined-ldap-structures.rst:40
 msgid "A random name for the container / organizational unit."
 msgstr "Ein beliebiger Name für den Container / die Organisationseinheit."
 
-#: ../../central-management-umc/user-defined-ldap-structures.rst:39
+#: ../../central-management-umc/user-defined-ldap-structures.rst:43
 msgid "A random description for the container / organizational unit."
 msgstr "Eine beliebige Beschreibung für den Container / die Organisationseinheit."
 
-#: ../../central-management-umc/user-defined-ldap-structures.rst:44
+#: ../../central-management-umc/user-defined-ldap-structures.rst:48
 msgid "Advanced settings tab"
 msgstr "Reiter Erweiterte Einstellungen"
 
-#: ../../central-management-umc/user-defined-ldap-structures.rst:46
+#: ../../central-management-umc/user-defined-ldap-structures.rst:50
 msgid "*Advanced settings* tab"
 msgstr "Reiter *Erweiterte Einstellungen*"
 
-#: ../../central-management-umc/user-defined-ldap-structures.rst:53
+#: ../../central-management-umc/user-defined-ldap-structures.rst:57
 msgid "Add to standard ``[object type]`` containers"
 msgstr "Zu Standard ``[Objekttyp]``-Container hinzufügen"
 
-#: ../../central-management-umc/user-defined-ldap-structures.rst:54
+#: ../../central-management-umc/user-defined-ldap-structures.rst:58
 msgid ""
 "If this option is activated, the container or organizational unit will be"
 " regarded as a standard container for a certain object type. If the "
@@ -3465,11 +3475,11 @@ msgstr ""
 "in den Masken zum Suchen und Anlegen von Benutzern dieser Container "
 "ebenfalls angezeigt."
 
-#: ../../central-management-umc/user-defined-ldap-structures.rst:62
+#: ../../central-management-umc/user-defined-ldap-structures.rst:66
 msgid "Policies tab"
 msgstr "Reiter Richtlinien"
 
-#: ../../central-management-umc/user-defined-ldap-structures.rst:64
+#: ../../central-management-umc/user-defined-ldap-structures.rst:68
 msgid "The *Policies* tab is described in :ref:`central-policies-assign`."
 msgstr "Diese Karteikarte wird in :ref:`central-policies-assign` beschrieben."
 
