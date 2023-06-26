@@ -381,15 +381,15 @@ def create_SAML_client(opt):
             "user.attribute": "uid",
         },
     }]
-
     client_payload_saml = {
         "clientId": client_id,
         "surrogateAuthRequired": False,
-        "enabled": True,
+        "enabled": not opt.not_enabled,
         "alwaysDisplayInConsole": False,
         "clientAuthenticatorType": "client-secret",
-        "redirectUris": valid_redirect_urls,
+        "redirectUris": opt.valid_redirect_uris or valid_redirect_urls,
         "webOrigins": [],
+        "description": opt.description,
         "notBefore": 0,
         "bearerOnly": False,
         "consentRequired": False,
@@ -432,6 +432,7 @@ def create_SAML_client(opt):
             "token.response.type.bearer.lower-case": "false",
             "saml.onetimeuse.condition": "false",
             "saml_signature_canonicalization_method": "http://www.w3.org/2001/10/xml-exc-c14n#",
+            "policyUri": opt.policy_url,
         },
         "authenticationFlowBindingOverrides": {},
         "fullScopeAllowed": True,
@@ -795,6 +796,10 @@ def parse_args(args: list[str] | None = None) -> Namespace:
     create_saml_parser.add_argument("--idp-initiated-sso-url-name", default=None)
     create_saml_parser.add_argument("--name-id-format", default="transient")
     create_saml_parser.add_argument("--frontchannel-logout-off", default=False, action="store_true", help="Switch off frontchannelLogout")
+    create_saml_parser.add_argument("--description", help="Description of the client")
+    create_saml_parser.add_argument("--policy-url", help="URL that the client provides to the end-user to read about the how the profile data will be used")
+    create_saml_parser.add_argument("--not-enabled", default=False, action="store_true", help="Disable client")
+    create_saml_parser.add_argument("--valid-redirect-uris", nargs='+', default=[], help="Provide list of valid redirect URIs")
 
     create_saml_parser.set_defaults(func=create_SAML_client)
     get_saml_parser = operation_subparsers.add_parser("get", help="get SAML SP from Keycloak")
@@ -1813,6 +1818,10 @@ def init_keycloak_ucs(opt):
     opt.frontchannel_logout_off = None
     opt.name_id_format = None
     opt.idp_initiated_sso_url_name = None
+    opt.description = "Univention Management Console"
+    opt.valid_redirect_uris = None
+    opt.not_enabled = False
+    opt.policy_url = None
     create_SAML_client(opt)
 
     # user federation ldap provider payload
