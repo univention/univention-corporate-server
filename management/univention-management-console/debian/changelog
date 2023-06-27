@@ -1,3 +1,9 @@
+univention-management-console (12.0.31-10) unstable; urgency=medium
+
+  * Bug #56201: provide functionality to replace python-notifier
+
+ -- Florian Best <best@univention.de>  Fri, 28 Jul 2023 14:19:56 +0200
+
 univention-management-console (12.0.31-9) unstable; urgency=medium
 
   * Bug #56336: defer delegation of socket closing to session end

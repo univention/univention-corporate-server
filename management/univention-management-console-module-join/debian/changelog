@@ -1,3 +1,9 @@
+univention-management-console-module-join (12.0.5-4) unstable; urgency=medium
+
+  * Bug #56201: replace python-notifier and adjust to new UMC module API
+
+ -- Florian Best <best@univention.de>  Tue, 27 Jun 2023 16:16:05 +0200
+
 univention-management-console-module-join (12.0.5-3) unstable; urgency=medium
 
   * Bug #55870: move umc-join into separate source package

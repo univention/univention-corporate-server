@@ -1,3 +1,9 @@
+univention-system-setup (13.0.9-2) unstable; urgency=medium
+
+  * Bug #56201: replace python-notifier and adjust to new UMC module API
+
+ -- Florian Best <best@univention.de>  Tue, 27 Jun 2023 16:15:49 +0200
+
 univention-system-setup (13.0.9-1) unstable; urgency=medium
 
   * Bug #43633: change systemd dependency to

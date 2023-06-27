@@ -1,3 +1,9 @@
+univention-management-console-module-udm (10.0.8-4) unstable; urgency=medium
+
+  * Bug #56201: replace python-notifier and adjust to new UMC module API
+
+ -- Florian Best <best@univention.de>  Tue, 27 Jun 2023 16:16:14 +0200
+
 univention-management-console-module-udm (10.0.8-3) unstable; urgency=medium
 
   * Bug #50632: showing IMAP folder names in LDAP directory with FQDN

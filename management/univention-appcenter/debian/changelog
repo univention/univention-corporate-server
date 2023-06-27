@@ -1,3 +1,9 @@
+univention-appcenter (9.0.8-3) unstable; urgency=medium
+
+  * Bug #56201: replace python-notifier and adjust to new UMC module API
+
+ -- Florian Best <best@univention.de>  Thu, 20 Jul 2023 08:39:21 +0200
+
 univention-appcenter (9.0.8-2) unstable; urgency=medium
 
   * Bug #56047: Fix typo in output of "univention-app stall --help"

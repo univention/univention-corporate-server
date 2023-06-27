@@ -1,3 +1,9 @@
+univention-admin-diary (2.0.7-2) unstable; urgency=medium
+
+  * Bug #56201: replace python-notifier and adjust to new UMC module API
+
+ -- Florian Best <best@univention.de>  Tue, 27 Jun 2023 16:16:36 +0200
+
 univention-admin-diary (2.0.7-1) unstable; urgency=medium
 
   * Bug #31771: migrate tabs to spaces

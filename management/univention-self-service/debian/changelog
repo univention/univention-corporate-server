@@ -1,3 +1,9 @@
+univention-self-service (5.0.7-3) unstable; urgency=medium
+
+  * Bug #56201: replace python-notifier and adjust to new UMC module API
+
+ -- Florian Best <best@univention.de>  Tue, 27 Jun 2023 16:16:22 +0200
+
 univention-self-service (5.0.7-2) unstable; urgency=medium
 
   * Bug #50167: Use API version 2, as 3 changed the way policy references are
