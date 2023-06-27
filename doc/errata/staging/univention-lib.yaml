@@ -3,7 +3,7 @@ release: "5.0"
 version: [4]
 scope: ucs_5.0-0-errata5.0-4
 src: univention-lib
-fix: 9.0.16-3
+fix: 9.0.16-4
 desc: |
  This update addresses the following issues:
  * In case an LDAP ACL or schema extension got installed by a joinscript
@@ -13,4 +13,6 @@ desc: |
    a rerun of `univention-run-join-scripts` did not change anything.
    Now `ucs_registerLDAPExtension` has been adjusted to do a trivial
    (i.e. no-op) LDAP modification to re-trigger activation.
-bug: [55337]
+ * A regression in UCS erratum 683 has been corrected, which caused the Debian
+   package manager APT to print many errors while reporting progress to UMC.
+bug: [55337, 56162]

@@ -1,3 +1,9 @@
+univention-lib (9.0.16-4) unstable; urgency=low
+
+  * Bug #56162: fix APT API incompatibility
+
+ -- Philipp Hahn <hahn@univention.de>  Sat, 19 Aug 2023 11:30:09 +0200
+
 univention-lib (9.0.16-3) unstable; urgency=medium
 
   * Bug #55337: Touch LDAP object even if nothing needs to be done for

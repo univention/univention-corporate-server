@@ -39,13 +39,11 @@ package management (info/install/progress...)
 import logging  # noqa: F401
 import os
 import re
-import signal
 import subprocess
 import sys
 import threading
 from contextlib import contextmanager
 from errno import ENOENT, ENOSPC
-from io import TextIOBase
 from logging import DEBUG, Handler, getLogger
 from time import sleep
 from types import TracebackType  # noqa: F401
@@ -62,6 +60,8 @@ from apt.cache import FetchFailedException, LockFailedException, ProblemResolver
 from univention.lib.i18n import Translation
 from univention.lib.locking import get_lock, release_lock
 
+
+__all__ = ["CMD_DISABLE_EXEC", "CMD_ENABLE_EXEC", "LockError", "PackageManager", "_PackageManagerLoggerHandler"]
 
 apt_pkg.init()
 
@@ -203,68 +203,66 @@ class ProgressState(object):
         return result
 
 
-class MessageWriter(TextIOBase):
-    """
-    Mimics a :py:func:`file` object
-    supports :py:meth:`flush` and :py:meth:`write`. Writes no '\\r',
-    writes no empty strings, writes not just spaces.
-    If it writes it is handled by `progress_state`.
-
-    :param ProgressState progress_state: Instance which is responsible for collecting the state.
-    """
-
-    def __init__(self, progress_state):
-        # type: (ProgressState) -> None
-        self.progress_state = progress_state
-
-    def flush(self):
-        # type: () -> None
-        """Dummy function to flush all pending writes."""
-
-    def write(self, msg):
-        # type: (str) -> int
-        """
-        Write sanitized message to the state collector.
-
-        :param str msg: The message to write.
-        """
-        msg = msg.replace('\r', '').strip()
-        if msg:
-            self.progress_state.info(msg, logger_name='fetch')
-        return len(msg)
-
-
-class FetchProgress(apt.progress.text.AcquireProgress):
+class FetchProgress(apt.progress.base.AcquireProgress):
     """
     Used to handle information about fetching packages.
-    Writes a lot of `__MSG__`es, as it uses :py:class:`MessageWriter`.
 
     :param ProgressState outfile: An instance to receive the progress information.
     """
 
-    def __init__(self, outfile):
+    def __init__(self, progress_state):
         # type: (ProgressState) -> None
         super(FetchProgress, self).__init__()
-        self._file = MessageWriter(outfile)
+        self.progress_state = progress_state
 
-    # don't use _winch
-    def start(self):
+    def _info(self, msg, *args):
+        # type: (str, *object) -> None
+        self.progress_state.info(msg % args, logger_name="fetch")
+
+    @staticmethod
+    def _b2h(item):
+        # type: (apt_pkg.AcquireItemDesc) -> str
+        if not item.owner.filesize:
+            return ""
+        return " [%sB]" % (apt_pkg.size_to_str(item.owner.filesize),)
+
+    def fail(self, item):
+        # type: (apt_pkg.AcquireItemDesc) -> None
+        """Invoked when an item could not be fetched."""
+        if item.owner.status == item.owner.STAT_DONE:
+            self._info("Ign %s", item.description)
+        else:
+            self._info("Err %s  %s", item.description, item.owner.error_text)
+
+    def fetch(self, item):
+        # type: (apt_pkg.AcquireItemDesc) -> None
+        """Invoked when some of the item's data is fetched."""
+        if item.owner.complete:
+            return
+        self._info("Get: %s %s%s", 0, item.description, self._b2h(item))
+
+    def ims_hit(self, item):
+        # type: (apt_pkg.AcquireItemDesc) -> None
+        """Invoked when an item is confirmed to be up-to-date."""
+        self._info("Hit %s%s", item.description, self._b2h(item))
+
+    def pulse(self, owner):
+        # type: (apt_pkg.Acquire) -> bool
+        """Periodically invoked while the Acquire process is underway."""
+        self.progress_state.percentage(
+            100 * (self.current_bytes + self.current_items) // (self.total_bytes + self.total_items),
+        )
+        return True
+
+    def stop(self):
         # type: () -> None
-        """Start collection progress information."""
-        super(apt.progress.text.AcquireProgress, self).start()
-        self._signal = signal.SIG_IGN
-
-    # force defaults
-    def _write(self, msg, newline=True, maximize=True):
-        # type: (Any, bool, bool) -> None
-        """
-        Write message.
-
-        :param str msg: The message to write.
-        :param bool newline: Append trailing newline.
-        :param bool maximize: resize to terminal width.
-        """
-        super(FetchProgress, self)._write(msg, newline=False, maximize=False)
+        """Invoked when the Acquire process stops running."""
+        self._info(
+            "Fetched %sB in %s (%sB/s)",
+            apt_pkg.size_to_str(self.fetched_bytes),
+            apt_pkg.time_to_str(self.elapsed_time),
+            apt_pkg.size_to_str(self.current_cps),
+        )
 
 
 class DpkgProgress(apt.progress.base.InstallProgress):
