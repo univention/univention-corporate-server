@@ -4,15 +4,12 @@ version: [3, 4]
 scope: ucs_5.0-0-errata5.0-4
 src: avahi
 fix: 0.7-4+deb10u3
-desc: |+
+desc: |
  This update addresses the following issue:
- 0.7-4+deb10u3 (Wed, 21 Jun 2023 19:29:18 +0000)
- * Non-maintainer upload by the Debian LTS security team.
- * CVE-2021-3468: the event used to signal the termination of the client
+ * CVE-2021-3468: The event used to signal the termination of the client
    connection on the avahi Unix socket is not correctly handled in the
-   client_work function, allowing a local attacker to trigger an infinite
+   function `client_work`, allowing a local attacker to trigger an infinite
    loop.
-
 bug: [56199]
 cve:
 - CVE-2021-3468
