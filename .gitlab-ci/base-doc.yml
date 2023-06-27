@@ -9,8 +9,8 @@ stages:
 
 .sphinx-doc:
   variables:
-    DOC_TARGET_VERSION: "5.1"
-    CHANGELOG_TARGET_VERSION: "5.1-0"
+    DOC_TARGET_VERSION: "5.2"
+    CHANGELOG_TARGET_VERSION: "5.2-0"
   artifacts:
     paths:
       - $DOCS_DIR/_build
