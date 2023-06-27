@@ -6,12 +6,9 @@ src: lua5.3
 fix: 5.3.3-1.1+deb10u1
 desc: |
  This update addresses the following issues:
- 5.3.3-1.1+deb10u1 (Thu, 22 Jun 2023 22:03:38 +0200)
- * Non-maintainer upload by the LTS Security Team.
- * Fix CVE-2019-6706: Use after free in lua_upvaluejoin in lapi.c. (Closes:
-   #920321)
- * Fix CVE-2020-24370: Segmentation fault in getlocal and setlocal functions
-   in ldebug.c.
+ * CVE-2019-6706: Use after free in `lua_upvaluejoin` in `lapi.c`.
+ * CVE-2020-24370: Segmentation fault in functions `getlocal` and `setlocal`
+   in file `ldebug.c`.
 bug: [56200]
 cve:
 - CVE-2019-6706
