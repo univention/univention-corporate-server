@@ -972,6 +972,11 @@ def parse_args(args: list[str] | None = None) -> Namespace:
     parser_get_base_url.add_argument("--json", help="json output", default=False, action="store_true")
     parser_get_base_url.set_defaults(func=get_base_url)
 
+    # keycloak migration helper
+    parser_migration_ldap_mapper = subparsers.add_parser("migration/ldap-mapper", help="create keycloak LDAP mapper for each LdapGetAttributes on UDM saml/idpconfig")
+    parser_migration_ldap_mapper.add_argument("-n", "--dry-run", help="just check a print what would be done", default=False, action="store_true")
+    parser_migration_ldap_mapper.set_defaults(func=migration_ldap_mapper)
+
     opt = parser.parse_args(args)
     if opt.binddn:
         opt.binduser = explode_rdn(opt.binddn, 1)[0]
@@ -989,6 +994,32 @@ def parse_args(args: list[str] | None = None) -> Namespace:
             with open(opt.ldap_system_user_pwdfile) as fd:
                 opt.ldap_system_user_pwd = fd.read().strip()
     return opt
+
+
+def migration_ldap_mapper(opt: Namespace) -> None:
+    if not IS_UCS:
+        raise NotImplementedError()
+    if opt.binddn and opt.bindpwd:
+        server = ucr["ldap/master"]
+        server_port = ucr["ldap/master/port"]
+        udm = UDM.credentials(opt.binddn, opt.bindpwd, server=server, port=server_port).version(3)
+    else:
+        udm = UDM.admin().version(3)
+    mod = udm.get("saml/idpconfig")
+    session = UniventionKeycloakAdmin(opt)
+    mappers = [
+        x.get("config").get("ldap.attribute")[0]
+        for x in session.get_user_storage_ldap_mappers()
+        if x.get("config").get("ldap.attribute")
+    ]
+    for idp_config in mod.search():
+        for attr in idp_config.props.LdapGetAttributes:
+            if attr not in mappers:
+                if opt.dry_run:
+                    print(f"need to create ldap mapper for attribute: {attr}")
+                else:
+                    opt.attributename = attr
+                    create_user_attribute_ldap_mapper(opt)
 
 
 def get_base_url(opt: Namespace) -> None:

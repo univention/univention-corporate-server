@@ -1,3 +1,9 @@
+univention-keycloak (1.0.9-23) unstable; urgency=medium
+
+  * Bug #56132: Added migration/ldap-mapper
+
+ -- Felix Botner <botner@univention.de>  Tue, 27 Jun 2023 10:35:18 +0200
+
 univention-keycloak (1.0.9-22) unstable; urgency=medium
 
   * Bug #56132: Added parameters for creating SAML SPs to
