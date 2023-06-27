@@ -399,7 +399,7 @@ if '$dockercompose' and os.path.isfile('$dockercompose'):
 	mkdir(app.get_compose_dir())
 	yml_file = app.get_compose_file('docker-compose.yml')
 	shutil.copy2(app.get_cache_file('compose'), yml_file)
-	os.chmod(yml_file, 0600)
+	os.chmod(yml_file, 0o0600)
 
 install = get_action('install')
 install.call(app=[app], noninteractive=True, skip_checks=['must_have_valid_license'], pwdfile='/tmp/joinpwd', pull_image=False, username='\$USER')
