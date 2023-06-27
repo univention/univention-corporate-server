@@ -42,7 +42,6 @@ import time
 from base64 import b64decode, b64encode
 from contextlib import contextmanager
 from json import load
-from threading import Thread
 
 import apt  # for independent apt.Cache
 
@@ -58,11 +57,11 @@ from univention.appcenter.settings import FileSetting, PasswordFileSetting
 from univention.appcenter.ucr import ucr_instance, ucr_save
 from univention.appcenter.udm import _update_modules
 from univention.appcenter.utils import (
-    app_is_running, call_process, docker_bridge_network_conflict, docker_is_running, find_hosts_for_master_packages,
-    get_local_fqdn, resolve_dependencies, send_information,
+    app_is_running, call_process, docker_bridge_network_conflict, docker_is_running, get_local_fqdn,
+    resolve_dependencies, send_information,
 )
 from univention.lib.package_manager import LockError, PackageManager
-from univention.lib.umc import Client, ConnectionError, Forbidden, HTTPError
+from univention.lib.umc import Client, ConnectionError, HTTPError
 from univention.management.console.log import MODULE
 from univention.management.console.modules.decorators import (
     SimpleThread, multi_response, require_password, sanitize, sanitize_list, simple_response, threaded,
@@ -554,180 +553,6 @@ class Instance(umcm.Base, ProgressMixin):
                 yield
         except LockError:
             raise umcm.UMC_Error(_('Another package operation is in progress'))
-
-    def _install_master_packages_on_hosts(self, request, app, function):
-        if function.startswith('upgrade'):
-            remote_function = 'update-schema'
-        else:
-            remote_function = 'install-schema'
-        master_packages = app.default_packages_master
-        if not master_packages:
-            return
-        hosts = find_hosts_for_master_packages()
-        all_hosts_count = len(hosts)
-        package_manager = get_package_manager()
-        package_manager.set_max_steps(all_hosts_count * 200)  # up to 50% if all hosts are installed
-        # maybe we already installed local packages (on master)
-        if self.ucr.get('server/role') == 'domaincontroller_master':
-            # TODO: set_max_steps should reset _start_steps. need function like set_start_steps()
-            package_manager.progress_state._start_steps = all_hosts_count * 100
-        for host, host_is_master in hosts:
-            package_manager.progress_state.info(_('Installing LDAP packages on %s') % host)
-            try:
-                if not self._install_master_packages_on_host(request, app, remote_function, host):
-                    error_message = 'Unable to install %r on %s. Check /var/log/univention/management-console-module-appcenter.log on the host and this server. All errata updates have been installed on %s?' % (master_packages, host, host)
-                    raise Exception(error_message)
-            except Exception as e:
-                MODULE.error('%s: %s' % (host, e))
-                if host_is_master:
-                    role = 'Primary Directory Node'
-                else:
-                    role = 'Backup Directory Node'
-                # ATTENTION: This message is not localised. It is parsed by the frontend to markup this message! If you change this message, be sure to do the same in AppCenterPage.js
-                package_manager.progress_state.error('Installing extension of LDAP schema for %s seems to have failed on %s %s' % (app.component_id, role, host))
-                if host_is_master:
-                    raise  # only if host_is_master!
-            finally:
-                package_manager.add_hundred_percent()
-
-    def _install_master_packages_on_host(self, request, app, function, host):
-        client = Client(host, request.username, request.password)
-        result = client.umc_command('appcenter/invoke', {'function': function, 'application': app.id, 'force': True, 'dont_remote_install': True}).result
-        if result['can_continue']:
-            all_errors = self._query_remote_progress(client)
-            return len(all_errors) == 0
-        else:
-            MODULE.warn('%r' % result)
-            return False
-
-    def _install_dry_run_remote(self, app, function, dont_remote_install, force):
-        MODULE.process('Invoke install_dry_run_remote')
-        self.ucr.load()
-        if function.startswith('upgrade'):
-            remote_function = 'update-schema'
-        else:
-            remote_function = 'install-schema'
-
-        master_packages = app.default_packages_master
-
-        # connect to Primary/Backup Nodes
-        unreachable = []
-        hosts_info = {}
-        remote_info = {
-            'master_unreachable': False,
-            'problems_with_hosts': False,
-            'serious_problems_with_hosts': False,
-        }
-        dry_run_threads = []
-        info = get_action('info')
-        if master_packages and not dont_remote_install:
-            hosts = find_hosts_for_master_packages()
-            # checking remote host is I/O heavy, so use threads
-            #   "global" variables: unreachable, hosts_info, remote_info
-
-            def _check_remote_host(app_id, host, host_is_master, username, password, force, remote_function):
-                MODULE.process('Starting dry_run for %s on %s' % (app_id, host))
-                MODULE.process('%s: Connecting...' % host)
-                try:
-                    client = Client(host, username, password)
-                except (ConnectionError, HTTPError) as exc:
-                    MODULE.warn('_check_remote_host: %s: %s' % (host, exc))
-                    unreachable.append(host)
-                    if host_is_master:
-                        remote_info['master_unreachable'] = True
-                else:
-                    MODULE.process('%s: ... done' % host)
-                    host_info = {}
-                    MODULE.process('%s: Getting version...' % host)
-                    try:
-                        host_version = client.umc_command('appcenter/version', {'version': info.get_compatibility()}).result
-                    except Forbidden:
-                        # command is not yet known (older app center)
-                        MODULE.process('%s: ... forbidden!' % host)
-                        host_version = None
-                    except (ConnectionError, HTTPError) as exc:
-                        MODULE.warn('%s: Could not get appcenter/version: %s' % (host, exc))
-                        raise
-                    except Exception as exc:
-                        MODULE.error('%s: Exception: %s' % (host, exc))
-                        raise
-                    MODULE.process('%s: ... done' % host)
-                    host_info['compatible_version'] = info.is_compatible(host_version)
-                    MODULE.process('%s: Invoking %s ...' % (host, remote_function))
-                    try:
-                        host_info['result'] = client.umc_command('appcenter/invoke_dry_run', {
-                            'function': remote_function,
-                            'application': app_id,
-                            'force': force,
-                            'dont_remote_install': True,
-                        }).result
-                    except Forbidden:
-                        # command is not yet known (older app center)
-                        MODULE.process('%s: ... forbidden!' % host)
-                        host_info['result'] = {'can_continue': False, 'serious_problems': False}
-                    except (ConnectionError, HTTPError) as exc:
-                        MODULE.warn('Could not get appcenter/version: %s' % (exc,))
-                        raise
-                    MODULE.process('%s: ... done' % host)
-                    if not host_info['compatible_version'] or not host_info['result']['can_continue']:
-                        remote_info['problems_with_hosts'] = True
-                        if host_info['result']['serious_problems'] or not host_info['compatible_version']:
-                            remote_info['serious_problems_with_hosts'] = True
-                    hosts_info[host] = host_info
-                MODULE.process('Finished dry_run for %s on %s' % (app_id, host))
-
-            for host, host_is_master in hosts:
-                thread = Thread(target=_check_remote_host, args=(app.id, host, host_is_master, self.username, self.password, force, remote_function))
-                thread.start()
-                dry_run_threads.append(thread)
-
-        result = {}
-
-        for thread in dry_run_threads:
-            thread.join()
-        MODULE.process('All %d threads finished' % (len(dry_run_threads)))
-
-        result['unreachable'] = unreachable
-        result['hosts_info'] = hosts_info
-        result.update(remote_info)
-        return result
-
-    def _query_remote_progress(self, client):
-        all_errors = set()
-        number_failures = 0
-        number_failures_max = 20
-        host = client.hostname
-        while True:
-            try:
-                result = client.umc_command('appcenter/progress').result
-            except (ConnectionError, HTTPError) as exc:
-                MODULE.warn('%s: appcenter/progress returned an error: %s' % (host, exc))
-                number_failures += 1
-                if number_failures >= number_failures_max:
-                    MODULE.error('%s: Remote App Center cannot be contacted for more than %d seconds. Maybe just a long Apache Restart? Presume failure! Check logs on remote machine, maybe installation was successful.' % number_failures_max)
-                    return False
-                time.sleep(1)
-                continue
-            else:
-                # everything okay. reset "timeout"
-                number_failures = 0
-            MODULE.info('Result from %s: %r' % (host, result))
-            info = result['info']
-            steps = result['steps']
-            errors = ['%s: %s' % (host, error) for error in result['errors']]
-            if info:
-                self.package_manager.progress_state.info(info)
-            if steps:
-                steps = float(steps)  # bug in package_manager in 3.1-0: int will result in 0 because of division and steps < max_steps
-                self.package_manager.progress_state.percentage(steps)
-            for error in errors:
-                if error not in all_errors:
-                    self.package_manager.progress_state.error(error)
-                    all_errors.add(error)
-            if result['finished'] is True:
-                break
-            time.sleep(0.1)
-        return all_errors
 
     @threaded
     def keep_alive(self, request):
