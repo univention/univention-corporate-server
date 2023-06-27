@@ -633,7 +633,10 @@ class complex(ISyntax):
     def parse_command_line(self, value):
         if '"' not in value:
             return value.split(' ')
-        return shlex.split(value)
+        try:
+            return shlex.split(value)
+        except ValueError as exc:
+            raise univention.admin.uexceptions.valueInvalidSyntax(_('Malformed syntax %r: %s') % (value, exc))
 
 
 class _UDMObjectOrAttribute(object):

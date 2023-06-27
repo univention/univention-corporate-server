@@ -1,3 +1,9 @@
+univention-directory-manager-modules (15.0.24-5) unstable; urgency=medium
+
+  * Bug #27241: add error handling
+
+ -- Florian Best <best@univention.de>  Tue, 27 Jun 2023 09:18:30 +0200
+
 univention-directory-manager-modules (15.0.24-4) unstable; urgency=low
 
   * Bug #55553: Added Gender and place of birth to the user properties.
