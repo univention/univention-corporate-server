@@ -13,7 +13,7 @@ workflow:
 include:
   - project: univention/dist/docker-services
     file: kaniko.yml
-  - local: '/.gitlab-ci/base.yml'
+  - local: '.gitlab-ci/base.yml'
   - project: univention/dist/docker-services
     file: pre-commit.yml
 
