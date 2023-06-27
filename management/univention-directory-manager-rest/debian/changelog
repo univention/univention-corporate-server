@@ -1,3 +1,9 @@
+univention-directory-manager-rest (10.0.6-6) unstable; urgency=medium
+
+  * Bug #56189: fix accessing objects with UTF-8 character in its DN
+
+ -- Florian Best <best@univention.de>  Tue, 27 Jun 2023 09:00:07 +0200
+
 univention-directory-manager-rest (10.0.6-5) unstable; urgency=medium
 
   * Bug #55459: fix IP address assignment when network is selected
