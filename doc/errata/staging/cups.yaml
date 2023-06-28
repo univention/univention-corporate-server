@@ -1,0 +1,14 @@
+product: ucs
+release: "4.4"
+version: [9]
+scope: ucs_4.4-0-errata4.4-9
+src: cups
+fix: 2.2.1-8+deb9u9A~4.4.9.202306281520
+desc: |
+ This update addresses the following issue:
+ 2.2.1-8+deb9u9 (Wed, 31 May 2023 21:30:27 +0200)
+ * CVE-2023-32324 A heap buffer overflow vulnerability would allow a remote
+   attacker to lauch a dos attack.
+bug: [56224]
+cve:
+- CVE-2023-32324
