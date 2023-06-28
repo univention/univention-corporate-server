@@ -1,0 +1,15 @@
+product: ucs
+release: "4.4"
+version: [9]
+scope: ucs_4.4-0-errata4.4-9
+src: exim4
+fix: 4.89-2+deb9u10A~4.4.9.202306281520
+desc: |
+ This update addresses the following issue:
+ 4.89-2+deb9u10 (Sat, 10 Jun 2023 00:45:45 +0200)
+ * Non-maintainer upload by the ELTS team.
+ * Fix CVE-2021-38371: The STARTTLS feature in Exim allows response injection
+   (buffering) during MTA SMTP sending.
+bug: [56214]
+cve:
+- CVE-2021-38371
