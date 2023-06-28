@@ -10,3 +10,6 @@ desc: |
    on Samba/AD DCs. The need to be, because in that scenario, they
    are run as children of the main samba service.
 bug: [56187]
+erratum: 719
+announced: 2023-06-28
+support: core
