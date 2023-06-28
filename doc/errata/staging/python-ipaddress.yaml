@@ -1,0 +1,18 @@
+product: ucs
+release: "4.4"
+version: [9]
+scope: ucs_4.4-0-errata4.4-9
+src: python-ipaddress
+fix: 1.0.17-1+deb9u1
+desc: |
+ This update addresses the following issue:
+ 1.0.17-1+deb9u1 (Tue, 30 May 2023 11:35:48 -0400)
+ * Non-maintainer upload by the Debian ELTS team.
+ * CVE-2020-14422: Correct a potential denial of service (DoS) attack caused
+   by improperly computed hash values in the IPv4Interface and IPv6Interface
+   classes. If an application was affected by the performance of a dictionary
+   containing IPv4Interface or IPv6Interface objects, an attacker could have
+   caused many dictionary entries to be created.
+bug: [56218]
+cve:
+- CVE-2020-14422
