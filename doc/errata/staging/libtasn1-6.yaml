@@ -1,0 +1,16 @@
+product: ucs
+release: "4.4"
+version: [9]
+scope: ucs_4.4-0-errata4.4-9
+src: libtasn1-6
+fix: 4.10-1.1+deb9u2
+desc: |
+ This update addresses the following issue:
+ 4.10-1.1+deb9u2 (Sat, 27 May 2023 18:03:02 +0200)
+ * Non-maintainer upload by the ELTS Team.
+ * CVE-2021-46848 Fix an off-by-one array size issue that affected the
+   asn1_encode_simple_der function.
+ * Move texinfo to Build-Depends to fix "any"-style build.
+bug: [56207]
+cve:
+- CVE-2021-46848
