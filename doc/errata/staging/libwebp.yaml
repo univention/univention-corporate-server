@@ -1,0 +1,14 @@
+product: ucs
+release: "4.4"
+version: [9]
+scope: ucs_4.4-0-errata4.4-9
+src: libwebp
+fix: 0.5.2-1+deb9u2
+desc: |
+ This update addresses the following issue:
+ 0.5.2-1+deb9u2 (Mon, 26 Jun 2023 00:49:04 +0300)
+ * Non-maintainer upload by the ELTS Security Team.
+ * CVE-2023-1999: Double free which may result in denial of service.
+bug: [56215]
+cve:
+- CVE-2023-1999
