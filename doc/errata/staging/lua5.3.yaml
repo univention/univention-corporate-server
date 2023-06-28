@@ -1,0 +1,15 @@
+product: ucs
+release: "4.4"
+version: [9]
+scope: ucs_4.4-0-errata4.4-9
+src: lua5.3
+fix: 5.3.3-1+deb9u2
+desc: |+
+ This update addresses the following issue:
+ 5.3.3-1+deb9u2 (Sun, 25 Jun 2023 21:26:48 +0000)
+ * Non-maintainer upload by the ELTS Team.
+ * Fix CVE-2019-6706: user after-free in lua_upvaluejoin in lapi.c
+
+bug: [56213]
+cve:
+- CVE-2019-6706
