@@ -239,7 +239,7 @@ class Session:
 
     def get_relations(self, entry, relation, name=None, template=None):
         # type: (Dict, str, Optional[str], Optional[Dict[str, Any]]) -> Iterator[Dict[str, str]]
-        links = entry.get('_links', {})
+        links = copy.deepcopy(entry.get('_links', {}))
         links = links.get(relation, [None])
         links = links if links and isinstance(links, list) else [links]
         links = [link for link in links if isinstance(link, dict) and (not name or link.get('name') == name)]
