@@ -1,0 +1,20 @@
+product: ucs
+release: "4.4"
+version: [9]
+scope: ucs_4.4-0-errata4.4-9
+src: vim
+fix: 2:8.0.0197-4+deb9u10
+desc: |
+ This update addresses the following issues:
+ 2:8.0.0197-4+deb9u10 (Fri, 09 Jun 2023 23:30:18 +0200)
+ * Non-maintainer upload by the ELTS team.
+ * Fix CVE-2022-4141, CVE-2023-0054, CVE-2023-1175, CVE-2023-2610: Multiple
+   security vulnerabilities have been discovered in vim, an enhanced vi
+   editor. Buffer overflows and out-of-bounds reads may lead to a
+   denial-of-service (application crash) or other unspecified impact.
+bug: [56206]
+cve:
+- CVE-2022-4141
+- CVE-2023-0054
+- CVE-2023-1175
+- CVE-2023-2610
