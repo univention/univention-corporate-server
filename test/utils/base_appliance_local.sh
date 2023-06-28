@@ -87,7 +87,7 @@ _ec2_image () {
 # Used by scenarios/app-appliance.cfg
 create_app_images () {
 	SRC_IMAGE="${1:?}"
-	IMG_ID="${2:?}"
+	IMG_ID="${2:?}${3:+-${3}}"
 	_setup_dir "${APPS_BASE}/${APPS_DIR}/${UCS_VERSION}/${IMG_ID}"
 	IMAGE_VERSION="${UCS_VERSION}-with-${IMG_ID}"
 	MEMORY="$(virt-cat -a "${SRC_IMAGE}" /.memory 2>/dev/null || echo 2048)"

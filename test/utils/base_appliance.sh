@@ -113,10 +113,59 @@ get_app_attr_raw () {  # <app_id> <attr>
 	echo "${line##*= }"
 }
 
+get_app_attr_python () {  # <app_id> <section> <attr>
+	local app="${1:?}" section="${2:?}" attr="${3:?}" ini
+	exec python3 -c "import sys
+from univention.appcenter.app_cache import Apps
+from configparser import ConfigParser
+app = Apps().find(sys.argv[1])
+config = ConfigParser()
+config.read(app.get_ini_file())
+print(config.get(sys.argv[2], sys.argv[3]))" "${app}" "${section}" "${attr}"
+}
+
+update_app_attr_python () { # <app_id> <section> <attr> <value>
+	local app="${1:?}" section="${2:?}" attr="${3:?}" value="${4:?}" ini
+	exec python3 -c "import sys
+from univention.appcenter.app_cache import Apps
+from configparser import ConfigParser
+app = Apps().find(sys.argv[1])
+config = ConfigParser()
+config.read(app.get_ini_file())
+config.set(sys.argv[2], sys.argv[3], sys.argv[4])
+with open(app.get_ini_file(), 'w') as f:
+	config.write(f)" "${app}" "${section}" "${attr}" "${value}"
+}
+
 get_app_attr () {  # <app_id> <attr>
 	local app="${1:?}" attr="${2:?}" value
 	value="$(get_app_attr_raw "$app" "$attr")"
 	echo "${value//, / }"
+}
+
+customize_additionalApps () { # <app_id> <scenario>
+	# e.g. ini file
+	# [Application]
+	# ...
+	# ApplianceAdditionalApps = <app_id1>, <app_id2>, <app_id3>
+	# ...
+	# [Appliances-scenarios]
+	# <scenario-1> = <app_id1>, <app_id2>
+	# <scenario-2> = <app_id3>
+	local app="${1:?}" scenario="${2?}" new_additionalApps old_additionalApps
+	if [ -n "$scenario" ]
+	then
+		new_additionalApps="$(get_app_attr_python "$app" "Appliances-scenarios" "$scenario")"
+		old_additionalApps="$(get_app_attr_python "$app" "Application" "ApplianceAdditionalApps")"
+		if [ -z "$old_additionalApps" ]
+		then
+			update_app_attr_python "$app" "Application" "ApplianceAdditionalApps" "$new_additionalApps"
+		else
+			echo "Overwriting old additionalApps: $old_additionalApps"
+			echo "  with new additionalApps: $new_additionalApps"
+			update_app_attr_python "$app" "Application" "ApplianceAdditionalApps" "$new_additionalApps"
+		fi
+	fi
 }
 
 app_get_database_packages_for_docker_host () {  # <app_id>
