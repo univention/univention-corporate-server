@@ -1,28 +1,27 @@
 # SPDX-FileCopyrightText: 2021-2023 Univention GmbH
 #
 # SPDX-License-Identifier: AGPL-3.0-only
-
 msgid ""
 msgstr ""
 "Project-Id-Version: Univention Corporate Server - Manual for users and "
 "administrators\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-05-04 15:32+0200\n"
+"POT-Creation-Date: 2023-06-28 11:14+0000\n"
 "PO-Revision-Date: 2022-06-14 16:17+0200\n"
 "Last-Translator: Univention GmbH <packages@univention.de>\n"
 "Language: de\n"
 "Language-Team: Univention GmbH <packages@univention.de>\n"
-"Plural-Forms: nplurals=2; plural=(n != 1)\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Generated-By: Babel 2.9.1\n"
+"Generated-By: Babel 2.12.1\n"
 
-#: ../../shares/access-rights.rst:4
+#: ../../shares/access-rights.rst:8
 msgid "Access rights to data in shares"
 msgstr "Zugriffsrechte auf Daten in Freigaben"
 
-#: ../../shares/access-rights.rst:6
+#: ../../shares/access-rights.rst:10
 msgid ""
 "Access permissions to files are managed in UCS using users and groups. "
 "All the file servers in the UCS domain access identical user and group "
@@ -32,33 +31,33 @@ msgstr ""
 "Benutzern und Gruppen. Alle Fileserver der UCS-Domäne greifen über das "
 "LDAP-Verzeichnis auf identische Benutzer- und Gruppendaten zu."
 
-#: ../../shares/access-rights.rst:10
+#: ../../shares/access-rights.rst:14
 msgid "Three access rights are differentiated per file:"
 msgstr "Pro Datei werden drei Zugriffsrechte unterschieden:"
 
-#: ../../shares/access-rights.rst:12
+#: ../../shares/access-rights.rst:16
 msgid "read"
 msgstr "Lesen"
 
-#: ../../shares/access-rights.rst:13
+#: ../../shares/access-rights.rst:17
 msgid "write"
 msgstr "Schreiben"
 
-#: ../../shares/access-rights.rst:14
+#: ../../shares/access-rights.rst:18
 msgid "execute"
 msgstr "Ausführen"
 
-#: ../../shares/access-rights.rst:16
+#: ../../shares/access-rights.rst:20
 msgid ""
 "Three access rights also apply per directory: read and write are the "
 "same; the execute permission here refers to the permission to enter a "
 "directory."
 msgstr ""
 "Pro Verzeichnis gelten ebenfalls drei Zugriffsrechte: Lesen, Schreiben "
-"und das Recht zu Ausführen von Programm, dass sich hier auf die Berechtigung bezieht, in ein"
-" Verzeichnis zu wechseln."
+"und das Recht zu Ausführen von Programm, dass sich hier auf die "
+"Berechtigung bezieht, in ein Verzeichnis zu wechseln."
 
-#: ../../shares/access-rights.rst:19
+#: ../../shares/access-rights.rst:23
 msgid ""
 "Each file/directory is owned by a user and a group. The three permission "
 "outlined above can be applied to the user owner, the owner group and all "
@@ -68,11 +67,11 @@ msgstr ""
 " Die drei oben genannten Rechte können jeweils auf den Besitzer, die "
 "Besitzer-Gruppe und alle anderen angewendet werden."
 
-#: ../../shares/access-rights.rst:24
+#: ../../shares/access-rights.rst:28
 msgid "setuid"
 msgstr "setuid"
 
-#: ../../shares/access-rights.rst:23
+#: ../../shares/access-rights.rst:27
 msgid ""
 "If the *setuid* option is set for an executable file, it can be run by "
 "users with the privileges of the owner of the file."
@@ -81,11 +80,11 @@ msgstr ""
 "von Benutzern mit den Rechten des Besitzers oder der Besitzergruppe "
 "ausgeführt werden."
 
-#: ../../shares/access-rights.rst:29
+#: ../../shares/access-rights.rst:33
 msgid "setgid"
 msgstr "setgid"
 
-#: ../../shares/access-rights.rst:27
+#: ../../shares/access-rights.rst:31
 msgid ""
 "If the *setgid* option is set for a directory, files saved there inherit "
 "the directory's owner group. If further directories are created, they "
@@ -95,11 +94,11 @@ msgstr ""
 "angelegte Dateien die Besitzergruppe des Verzeichnisses. Werden weitere "
 "Verzeichnisse angelegt, erben diese ebenfalls die Option."
 
-#: ../../shares/access-rights.rst:33
+#: ../../shares/access-rights.rst:37
 msgid "sticky bit"
 msgstr "sticky bit"
 
-#: ../../shares/access-rights.rst:32
+#: ../../shares/access-rights.rst:36
 msgid ""
 "If the *sticky bit* option is enabled for a directory, files in this "
 "directory can only be deleted by the owner of the file or the root user."
@@ -108,7 +107,7 @@ msgstr ""
 " in dem Verzeichnis nur von dem Besitzer der Datei oder durch den root-"
 "Benutzer gelöscht werden."
 
-#: ../../shares/access-rights.rst:35
+#: ../../shares/access-rights.rst:39
 msgid ""
 "Access control lists allow even more complex permission models. The "
 "configuration of ACLs is described in `SDB 1042 <univention-kb_>`_."
@@ -117,7 +116,7 @@ msgstr ""
 "möglich. Die Konfiguration von ACLs ist in `SDB 1042 <univention-kb_>`_ "
 "beschrieben."
 
-#: ../../shares/access-rights.rst:38
+#: ../../shares/access-rights.rst:42
 msgid ""
 "In the Unix permission model - and thus under UCS - write permission is "
 "not sufficient to change the permissions of a file. This is limited to "
@@ -134,7 +133,7 @@ msgstr ""
 " Dieses Verhalten kann für CIFS-Freigaben angepasst werden (siehe :ref"
 ":`shares-management`)."
 
-#: ../../shares/access-rights.rst:44
+#: ../../shares/access-rights.rst:48
 msgid ""
 "Only initial users and access permissions are assigned when a directory "
 "share is created. If the directory already exists, the permissions of the"
@@ -144,7 +143,7 @@ msgstr ""
 "Zugriffsrechte vergeben. Existiert das Verzeichnis bereits, werden die "
 "Berechtigungen des vorhandenen Verzeichnisses angepasst."
 
-#: ../../shares/access-rights.rst:48
+#: ../../shares/access-rights.rst:52
 msgid ""
 "Changes to the permissions of a shared directory performed directly in "
 "the file system are not forwarded to the LDAP directory. If the "
@@ -166,7 +165,7 @@ msgstr ""
 "zugreifenden Clients, z.B. über den Windows-Explorer, oder direkt über "
 "Kommandozeilenbefehle auf dem Fileserver."
 
-#: ../../shares/access-rights.rst:57
+#: ../../shares/access-rights.rst:61
 msgid ""
 "The *homes* share plays a special role within Samba. This share is used "
 "for sharing the home directories of the users. This share is "
@@ -180,15 +179,15 @@ msgstr ""
 "umgewandelt. Deswegen ignoriert Samba die zugewiesenen Rechte der "
 "Freigabe und verwendet die Rechte des jeweiligen Heimatverzeichnisses."
 
-#: ../../shares/index.rst:24
+#: ../../shares/index.rst:28
 msgid "Chapter contents:"
 msgstr "Kapitelinhalte:"
 
-#: ../../shares/index.rst:5
+#: ../../shares/index.rst:9
 msgid "File share management"
 msgstr "Verwaltung von Freigaben"
 
-#: ../../shares/index.rst:7
+#: ../../shares/index.rst:11
 msgid ""
 "UCS supports the central management of directory shares. A share "
 "registered via the UMC module :guilabel:`Shares` is created on an "
@@ -199,7 +198,7 @@ msgstr ""
 " UCS-Domänenreplikation auf beliebigen Serversystemen der UCS-Domäne "
 "angelegt."
 
-#: ../../shares/index.rst:11
+#: ../../shares/index.rst:15
 msgid ""
 "Provision for accessing clients can occur via CIFS (supported by "
 "Windows/Linux clients) and/or NFS (primarily supported by Linux/Unix). "
@@ -212,7 +211,7 @@ msgstr ""
 "Freigaben können von Clients sowohl über NFSv3, als auch über NFSv4 "
 "eingebunden werden."
 
-#: ../../shares/index.rst:15
+#: ../../shares/index.rst:19
 msgid ""
 "If a file share is deleted on a server, the shared files in the directory"
 " are preserved."
@@ -220,7 +219,7 @@ msgstr ""
 "Wird eine Verzeichnisfreigabe gelöscht, bleiben die in dem Verzeichnis "
 "freigegebenen Daten auf einem Server erhalten."
 
-#: ../../shares/index.rst:18
+#: ../../shares/index.rst:22
 msgid ""
 "To be able to use access control lists on a share, the underlying Linux "
 "file system must support POSIX ACLs. In UCS the file systems ``ext4`` and"
@@ -237,11 +236,11 @@ msgstr ""
 "zu nutzen, muss die Partition mit der Mount-Option ``user_xattr`` "
 "eingebunden werden."
 
-#: ../../shares/msdfs.rst:4
+#: ../../shares/msdfs.rst:8
 msgid "Support for MSDFS"
 msgstr "Unterstützung von MSDFS"
 
-#: ../../shares/msdfs.rst:6
+#: ../../shares/msdfs.rst:10
 msgid ""
 "The Microsoft Distributed File System (MSDFS) is a distributed file "
 "system which makes it possible to access shares spanning several servers "
@@ -253,30 +252,30 @@ msgstr ""
 "auf eine virtuelle Ordner-Hierarchie abzubilden. Dadurch kann die Last "
 "auf verschiedene Server verteilt werden."
 
-#: ../../shares/msdfs.rst:11
+#: ../../shares/msdfs.rst:15
 msgid ""
 "Setting the *MSDFS Root* option for a share (see :ref:`shares-"
 "management`) indicates that the shared directory is a share which can be "
 "used for the MSDFS. References to other shares are only displayed in such"
 " an MSDFS root, elsewhere they are hidden."
 msgstr ""
-"Das Setzen der *MSDFS-Wurzel* Option an einer Freigabe (siehe "
-":ref:`shares-management`) gibt an, dass es sich bei dem freigegebenen "
-"Ordner um eine Freigabe handelt, die für MSDFS genutzt werden kann. Nur "
+"Das Setzen der *MSDFS-Wurzel* Option an einer Freigabe (siehe :ref"
+":`shares-management`) gibt an, dass es sich bei dem freigegebenen Ordner "
+"um eine Freigabe handelt, die für MSDFS genutzt werden kann. Nur "
 "innerhalb einer solchen MSDFS-Wurzel werden Verweise auf andere Freigaben"
 " angezeigt, andernfalls werden diese ausgeblendet."
 
-#: ../../shares/msdfs.rst:16
+#: ../../shares/msdfs.rst:20
 msgid ""
 "To be able to utilize the functions of a distributed file system, the "
 "|UCSUCRV| :envvar:`samba/enable-msdfs` has to be set to ``yes`` on a file"
 " server. Afterwards Samba has to be restarted."
 msgstr ""
-"Um die Funktionen eines verteilten Dateisystems nutzen zu können, muss auf"
-" dem Fileserver die |UCSUCRV| :envvar:`samba/enable-msdfs` auf ``yes`` "
-"gesetzt werden. Anschließend muss der Samba-Dienst neu gestartet werden."
+"Um die Funktionen eines verteilten Dateisystems nutzen zu können, muss "
+"auf dem Fileserver die |UCSUCRV| :envvar:`samba/enable-msdfs` auf ``yes``"
+" gesetzt werden. Anschließend muss der Samba-Dienst neu gestartet werden."
 
-#: ../../shares/msdfs.rst:20
+#: ../../shares/msdfs.rst:24
 msgid ""
 "For creating a reference named :file:`tofb` from server ``sa`` within the"
 " share :file:`fa` to share :file:`fb` on the server ``sb``, the following"
@@ -286,11 +285,11 @@ msgstr ""
 "Freigabe :file:`fa` auf die Freigabe :file:`fb` des Servers ``sb`` "
 "anzulegen, muss im Ordner :file:`fa` folgender Befehl ausgeführt werden:"
 
-#: ../../shares/msdfs.rst:24
+#: ../../shares/msdfs.rst:28
 msgid "$ ln -s msdfs:sb\\\\fb tofb"
 msgstr "$ ln -s msdfs:sb\\\\fb zufb"
 
-#: ../../shares/msdfs.rst:28
+#: ../../shares/msdfs.rst:32
 msgid ""
 "This reference will be displayed on every client capable of MSDFS (e.g. "
 "*Windows 2000* and *Windows XP*) as a regular directory."
@@ -298,7 +297,7 @@ msgstr ""
 "Dieser Verweis wird in jedem MSDFS fähigem Client (z.B. *Windows 2000* "
 "und *Windows XP*) als regulärer Ordner angezeigt."
 
-#: ../../shares/msdfs.rst:33
+#: ../../shares/msdfs.rst:37
 msgid ""
 "Only restricted user groups should have write access to root directories."
 " Otherwise, it would be possible for users to redirect references to "
@@ -314,7 +313,7 @@ msgstr ""
 " werden. Sollten Änderungen an den Verweisen vorgenommen werden, müssen "
 "beteiligte Clients neu gestartet werden."
 
-#: ../../shares/msdfs.rst:40
+#: ../../shares/msdfs.rst:44
 msgid ""
 "Further information on this issue can be found in :cite:t:`samba3-howto-"
 "chapter-20`."
@@ -322,11 +321,11 @@ msgstr ""
 "Weitere Informationen dazu befinden sich in :cite:t:`samba3-howto-"
 "chapter-20`."
 
-#: ../../shares/quota.rst:4
+#: ../../shares/quota.rst:8
 msgid "Configuration of file system quota"
 msgstr "Konfiguration von Dateisystem-Quota"
 
-#: ../../shares/quota.rst:6
+#: ../../shares/quota.rst:10
 msgid ""
 "UCS allows the limiting of the storage space available to a user on a "
 "partition. These thresholds can be set as either a quantity of storage "
@@ -338,15 +337,15 @@ msgstr ""
 "eine Menge von Speicherplatz (z.B. 500 MB pro Benutzer) oder als maximale"
 " Anzahl von Dateien ohne feste Größenbeschränkung angegeben werden."
 
-#: ../../shares/quota.rst:11
+#: ../../shares/quota.rst:15
 msgid "Two types of thresholds are differentiated:"
 msgstr "Unterschieden werden dabei zwei Arten von Schwellwerten:"
 
-#: ../../shares/quota.rst:15
+#: ../../shares/quota.rst:19
 msgid "Hard limit"
 msgstr "Hard-Limit"
 
-#: ../../shares/quota.rst:14
+#: ../../shares/quota.rst:18
 msgid ""
 "The *hard limit* is the maximum storage space a user can employ. If it is"
 " attained, no further files can be saved."
@@ -355,11 +354,11 @@ msgstr ""
 "Anspruch kann. Wird sie erreicht, können keine weiteren Dateien angelegt "
 "werden."
 
-#: ../../shares/quota.rst:23
+#: ../../shares/quota.rst:27
 msgid "Soft limit"
 msgstr "Soft-Limit"
 
-#: ../../shares/quota.rst:18
+#: ../../shares/quota.rst:22
 msgid ""
 "If the *soft limit* is attained - which must be smaller than the hard "
 "limit - and the storage space used is still below the hard limit, the "
@@ -377,7 +376,7 @@ msgstr ""
 " CIFS auf ein Dateisystem mit erschöpfter Quota zugreifen, wird eine "
 "Warnung angezeigt (als Schwellwert wird dabei das Soft-Limit angesetzt)."
 
-#: ../../shares/quota.rst:25
+#: ../../shares/quota.rst:29
 msgid ""
 "If a quota value of ``0`` has been configured, it is evaluated as an "
 "unlimited quota."
@@ -385,7 +384,7 @@ msgstr ""
 "Ein konfigurierter Quota-Wert von ``0`` wird als unbegrenzte Quota "
 "ausgewertet."
 
-#: ../../shares/quota.rst:28
+#: ../../shares/quota.rst:32
 msgid ""
 "Quotas can either be defined via the UMC module :guilabel:`Filesystem "
 "quotas` or a policy for shares, see :ref:`shares-quota-policy`."
@@ -394,7 +393,7 @@ msgstr ""
 "oder über eine Richtlinie für Freigaben definiert werden, siehe :ref"
 ":`shares-quota-policy`."
 
-#: ../../shares/quota.rst:31
+#: ../../shares/quota.rst:35
 msgid ""
 "File system quotas can only be applied on partitions with the file "
 "systems ``ext4`` and ``XFS``. Before file system quotas can be "
@@ -406,11 +405,11 @@ msgstr ""
 "konfiguriert werden, muss der Quota-Support pro Partition aktiviert "
 "werden, siehe :ref:`shares-quota-umc`."
 
-#: ../../shares/quota.rst:39
+#: ../../shares/quota.rst:43
 msgid "Activating file system quota"
 msgstr "Aktivierung von Dateisystem-Quota"
 
-#: ../../shares/quota.rst:41
+#: ../../shares/quota.rst:45
 msgid ""
 "In the UMC module :guilabel:`Filesystem quotas`, all the partitions are "
 "listed on which quotas can be set up. Only partitions are shown which are"
@@ -421,20 +420,19 @@ msgstr ""
 "Partitionen angezeigt, die aktuell unter einem Mount-Punkt eingebunden "
 "sind."
 
-#: ../../shares/quota.rst:50
+#: ../../shares/quota.rst:54
 msgid "The UMC module *File system quotas*"
 msgstr "Das UMC Modul *Dateisystem Quota*"
 
-#: ../../shares/quota.rst:52
+#: ../../shares/quota.rst:56
 msgid ""
 "The current quota status (activated/deactivated) is shown and can be "
 "changed with *Activate* and *Deactivate*."
 msgstr ""
 "Der aktuelle Quota-Status (Aktiviert/Deaktiviert) wird angezeigt und kann"
-" mit *Aktivieren* und *Deaktivieren* verändert "
-"werden."
+" mit *Aktivieren* und *Deaktivieren* verändert werden."
 
-#: ../../shares/quota.rst:55
+#: ../../shares/quota.rst:59
 msgid ""
 "If quota has been activated on a ``XFS`` root-partition, the system has "
 "to be rebooted."
@@ -442,11 +440,11 @@ msgstr ""
 "Nachdem auf einer ``XFS`` Root-Partition Quota aktiviert wurde, muss das "
 "System neu gestartet werden."
 
-#: ../../shares/quota.rst:61
+#: ../../shares/quota.rst:65
 msgid "Configuring file system quota"
 msgstr "Konfiguration von Dateisystem-Quota"
 
-#: ../../shares/quota.rst:63
+#: ../../shares/quota.rst:67
 msgid ""
 "Quotas can either be defined via the UMC module :guilabel:`Filesystem "
 "quotas` or a policy for shares, see :ref:`central-policies`. The "
@@ -461,7 +459,7 @@ msgstr ""
 "eher für die flexible Konfiguration von Benutzer-Quota für einzelne "
 "Benutzer geeignet ist."
 
-#: ../../shares/quota.rst:68
+#: ../../shares/quota.rst:72
 msgid ""
 "The user-specific quota settings can be configured with the UMC module "
 ":guilabel:`Filesystem quotas`. The permitted storage quantities can be "
@@ -476,19 +474,18 @@ msgstr ""
 ":guilabel:`Hinzufügen` können die Schwellwerte für Soft- und Hard-Limits "
 "für einen Benutzer festgelegt werden."
 
-#: ../../shares/quota.rst:74
+#: ../../shares/quota.rst:78
 msgid ""
 "The quota settings can also be set with a *User quota* share policy. The "
 "settings apply for all users of a share; it is not possible to establish "
 "different quota limits for different users within one policy."
 msgstr ""
 "Die Quota-Einstellungen können auch über eine Freigaben-Richtlinie von "
-"Typ *Benutzer-Quota* festgelegt werden. Die Einstellungen "
-"gelten für alle Benutzer einer Freigabe; es ist nicht möglich an einer "
-"Richtlinie für verschiedene Benutzer unterschiedliche Quota-Limitierungen"
-" festzulegen."
+"Typ *Benutzer-Quota* festgelegt werden. Die Einstellungen gelten für alle"
+" Benutzer einer Freigabe; es ist nicht möglich an einer Richtlinie für "
+"verschiedene Benutzer unterschiedliche Quota-Limitierungen festzulegen."
 
-#: ../../shares/quota.rst:78
+#: ../../shares/quota.rst:82
 msgid ""
 "Quota settings that are applied via a quota policy are by default only "
 "applied once to the file system. If the setting is changed, it will not "
@@ -503,7 +500,7 @@ msgstr ""
 " übernehmen, kann an der Freigabe-Richtlinie der Punkt *Einstellungen bei"
 " jedem Login anwenden* aktiviert werden."
 
-#: ../../shares/quota.rst:83
+#: ../../shares/quota.rst:87
 msgid ""
 "Quota policies can only be used on partitions for which the quota support"
 " is enabled in the UMC module, see :ref:`shares-quota-umc`."
@@ -512,7 +509,7 @@ msgstr ""
 "die Quota-Unterstützung im UMC-Modul aktiviert wurde, siehe :ref:`shares-"
 "quota-umc`."
 
-#: ../../shares/quota.rst:88
+#: ../../shares/quota.rst:92
 msgid ""
 "File system quotas always apply to a full partition. Even if the policies"
 " are defined for shares, they are used on complete partitions. If, for "
@@ -532,11 +529,11 @@ msgstr ""
 "unterschiedliche Quota verwendet werden sollen, wird empfohlen die Daten "
 "auf individuelle Partitionen zu verteilen."
 
-#: ../../shares/quota.rst:99
+#: ../../shares/quota.rst:103
 msgid "Evaluation of quota during login"
 msgstr "Auswertung von Quota bei der Anmeldung"
 
-#: ../../shares/quota.rst:101
+#: ../../shares/quota.rst:105
 msgid ""
 "The settings defined in the UCS management system are evaluated and "
 "enabled during login to UCS systems by the tool :command:`univention-"
@@ -546,7 +543,7 @@ msgstr ""
 "Anmeldung an UCS-Systemen durch das im PAM-Stack aufgerufene Tool "
 ":command:`univention-user-quota` ausgewertet und aktiviert."
 
-#: ../../shares/quota.rst:105
+#: ../../shares/quota.rst:109
 msgid ""
 "If no quota are needed, the evaluation can be disabled by setting the "
 "|UCSUCRV| :envvar:`quota/userdefault` to ``no``."
@@ -554,7 +551,7 @@ msgstr ""
 "Wenn keine Quota eingesetzt werden soll, kann die Auswertung durch Setzen"
 " der |UCSUCRV| :envvar:`quota/userdefault` auf ``no`` deaktiviert werden."
 
-#: ../../shares/quota.rst:108
+#: ../../shares/quota.rst:112
 msgid ""
 "If the |UCSUCRV| :envvar:`quota/logfile` is set to any filename, the "
 "activation of the quotas is logged in the specified file."
@@ -563,11 +560,11 @@ msgstr ""
 "Dateinamen gesetzt, wird die Aktivierung der Quotas in die angegebene "
 "Datei protokolliert."
 
-#: ../../shares/quota.rst:114
+#: ../../shares/quota.rst:118
 msgid "Querying the quota status by administrators or users"
 msgstr "Abfrage des Quota-Status durch Administratoren oder Benutzer"
 
-#: ../../shares/quota.rst:116
+#: ../../shares/quota.rst:120
 msgid ""
 "A user can view the quota limits defined for a system using the command "
 ":command:`repquota -va`, e.g.:"
@@ -575,7 +572,7 @@ msgstr ""
 "Die für ein System definierten Quota-Begrenzungen können als Benutzer mit"
 " dem Befehl :command:`repquota -va` aufgelistet werden, z.B.:"
 
-#: ../../shares/quota.rst:119
+#: ../../shares/quota.rst:123
 msgid ""
 "*** Report for user quotas on device /dev/vdb1\n"
 "Block grace time: 7days; Inode grace time: 7days\n"
@@ -609,7 +606,7 @@ msgstr ""
 "Entries: 4\n"
 "Used average: 4.000000"
 
-#: ../../shares/quota.rst:137
+#: ../../shares/quota.rst:141
 msgid ""
 "Logged in users can use the :command:`quota -v` command to view the "
 "applicable quota limits and the current utilization."
@@ -617,7 +614,7 @@ msgstr ""
 "Angemeldete Benutzer können mit dem Befehl :command:`quota -v` die für "
 "sie geltenden Quota-Grenzen und die aktuelle Auslastung abfragen."
 
-#: ../../shares/quota.rst:140
+#: ../../shares/quota.rst:144
 msgid ""
 "Further information on the commands can be found in the man pages of the "
 "commands."
@@ -625,11 +622,11 @@ msgstr ""
 "Weitergehende Informationen zu den Befehlen finden sich in den Manpages "
 "der Befehle."
 
-#: ../../shares/umc.rst:4
+#: ../../shares/umc.rst:8
 msgid "Management of shares via UMC module"
 msgstr "Verwaltung von Freigaben über |UCSUMC| Modul"
 
-#: ../../shares/umc.rst:6
+#: ../../shares/umc.rst:10
 msgid ""
 "File shares are managed in the UMC module :guilabel:`Shares` (see :ref"
 ":`central-user-interface`)."
@@ -637,7 +634,7 @@ msgstr ""
 "Verzeichnisfreigaben werden im UMC-Modul :guilabel:`Freigaben` verwaltet "
 "(siehe auch :ref:`central-user-interface`)."
 
-#: ../../shares/umc.rst:9
+#: ../../shares/umc.rst:13
 msgid ""
 "When adding/editing/deleting a share, it is entered, modified or removed "
 "in the :file:`/etc/exports` file and/or the Samba configuration."
@@ -646,39 +643,39 @@ msgstr ""
 "Datei :file:`/etc/exports`, und/oder in die Samba-Konfigurationsdatei "
 "eingetragen/modifiziert oder entfernt."
 
-#: ../../shares/umc.rst:18
+#: ../../shares/umc.rst:22
 msgid "Creating a share via the UMC module *Shares*"
 msgstr "Anlegen einer Freigabe im UMC-Modul *Freigaben*"
 
-#: ../../shares/umc.rst:18
+#: ../../shares/umc.rst:22
 msgid "Creating a share via the UMC module :guilabel:`Shares`"
 msgstr "Anlegen einer Freigabe im UMC-Modul :guilabel:`Freigaben`"
 
-#: ../../shares/umc.rst:23
+#: ../../shares/umc.rst:27
 msgid "Shares UMC module - General tab"
 msgstr "Freigaben UMC Modul - Reiter Allgemein"
 
-#: ../../shares/umc.rst:27
+#: ../../shares/umc.rst:31
 msgid "*General* tab"
 msgstr "Reiter *Allgemein*"
 
-#: ../../shares/umc.rst:31 ../../shares/umc.rst:81 ../../shares/umc.rst:129
-#: ../../shares/umc.rst:179 ../../shares/umc.rst:321 ../../shares/umc.rst:369
-#: ../../shares/umc.rst:487 ../../shares/umc.rst:515 ../../shares/umc.rst:541
+#: ../../shares/umc.rst:35 ../../shares/umc.rst:91 ../../shares/umc.rst:139
+#: ../../shares/umc.rst:168 ../../shares/umc.rst:203 ../../shares/umc.rst:324
+#: ../../shares/umc.rst:354 ../../shares/umc.rst:404 ../../shares/umc.rst:432
 msgid "Attribute"
 msgstr "Attribut"
 
-#: ../../shares/umc.rst:32 ../../shares/umc.rst:82 ../../shares/umc.rst:130
-#: ../../shares/umc.rst:180 ../../shares/umc.rst:322 ../../shares/umc.rst:370
-#: ../../shares/umc.rst:488 ../../shares/umc.rst:516 ../../shares/umc.rst:542
+#: ../../shares/umc.rst:36 ../../shares/umc.rst:92 ../../shares/umc.rst:140
+#: ../../shares/umc.rst:169 ../../shares/umc.rst:204 ../../shares/umc.rst:325
+#: ../../shares/umc.rst:355 ../../shares/umc.rst:405 ../../shares/umc.rst:433
 msgid "Description"
 msgstr "Beschreibung"
 
-#: ../../shares/umc.rst:34
+#: ../../shares/umc.rst:38
 msgid "Name"
 msgstr "Name"
 
-#: ../../shares/umc.rst:35
+#: ../../shares/umc.rst:39
 msgid ""
 "The name of the share is to be entered here. The name must be composed of"
 " letters, numerals, full stops or blank spaces and must begin and end "
@@ -688,11 +685,21 @@ msgstr ""
 "Buchstaben, Ziffern, Punkten oder Leerzeichen bestehen und muss mit einem"
 " Buchstaben oder einer Ziffer beginnen und enden."
 
-#: ../../shares/umc.rst:39
+#: ../../shares/umc.rst:43
+msgid "Comment"
+msgstr "Kommentar"
+
+#: ../../shares/umc.rst:44
+msgid ""
+"A free selectable description for this share. This is also displayed in "
+"the file browser in Windows."
+msgstr "Eine frei wählbare Beschreibung für diese Freigabe. Diese wird auch im Dateibrowser von Windows angezeigt."
+
+#: ../../shares/umc.rst:47
 msgid "Host"
 msgstr "Server"
 
-#: ../../shares/umc.rst:40
+#: ../../shares/umc.rst:48
 msgid ""
 "The server where the share is located. All of the Primary/Backup/\\ "
 "|UCSREPLICADN| computers and |UCSMANAGEDNODE|\\ s entered in the LDAP "
@@ -704,11 +711,11 @@ msgstr ""
 "Primary/Backup/|UCSREPLICADN| und |UCSMANAGEDNODE|, die in einer DNS "
 "Forward Lookup Zone im LDAP-Verzeichnis eingetragen sind."
 
-#: ../../shares/umc.rst:45
+#: ../../shares/umc.rst:53
 msgid "Directory"
 msgstr "Pfad"
 
-#: ../../shares/umc.rst:46
+#: ../../shares/umc.rst:54
 msgid ""
 "The absolute path of the directory to be shared, without quotation marks "
 "(this also applies if the name includes special characters such as "
@@ -720,7 +727,7 @@ msgstr ""
 " Verzeichnis noch nicht existiert, wird es automatisch auf dem "
 "ausgewählten Server angelegt."
 
-#: ../../shares/umc.rst:51
+#: ../../shares/umc.rst:59
 msgid ""
 "If the |UCSUCRV| :envvar:`listener/shares/rename` is set to ``yes``, the "
 "contents of the existing directory are moved when the path is modified."
@@ -729,7 +736,7 @@ msgstr ""
 "wird bei der Änderung des Pfads der Inhalt eines bestehenden "
 "Verzeichnisses verschoben."
 
-#: ../../shares/umc.rst:54
+#: ../../shares/umc.rst:62
 msgid ""
 "No shares can be created in and below :file:`/proc`, :file:`/tmp`, "
 ":file:`/root`, :file:`/dev` and :file:`/sys` and no files can be moved "
@@ -739,11 +746,11 @@ msgstr ""
 ":file:`/dev` und :file:`/sys` können keine Freigaben angelegt oder "
 "dorthin verschoben werden."
 
-#: ../../shares/umc.rst:58
+#: ../../shares/umc.rst:66
 msgid "Directory owner of the share's root"
 msgstr "Besitzer des Wurzelverzeichnis der Freigabe"
 
-#: ../../shares/umc.rst:59
+#: ../../shares/umc.rst:67
 msgid ""
 "The user to whom the root directory of the share should belong, see :ref"
 ":`shares-permissions`."
@@ -751,11 +758,11 @@ msgstr ""
 "Der Benutzer, dem das Wurzelverzeichnis der Freigabe gehören soll, siehe "
 ":ref:`shares-permissions`."
 
-#: ../../shares/umc.rst:62
+#: ../../shares/umc.rst:70
 msgid "Directory owner group of the share's root"
 msgstr "Besitzergruppe für das Wurzelverzeichnis der Freigabe"
 
-#: ../../shares/umc.rst:63
+#: ../../shares/umc.rst:71
 msgid ""
 "The group to whom the root directory of the share should belong, see :ref"
 ":`shares-permissions`."
@@ -763,11 +770,11 @@ msgstr ""
 "Die Gruppe, der das Wurzelverzeichnis der Freigabe gehören soll, siehe "
 ":ref:`shares-permissions`."
 
-#: ../../shares/umc.rst:66
+#: ../../shares/umc.rst:74
 msgid "Permissions for the share's root"
 msgstr "Dateiberechtigungen für das Wurzelverzeichnis der Freigabe"
 
-#: ../../shares/umc.rst:67
+#: ../../shares/umc.rst:75
 msgid ""
 "The read, write and access permissions for the root directory of the "
 "share, see :ref:`shares-permissions`."
@@ -775,19 +782,23 @@ msgstr ""
 "Die Lese-, Schreib- und Zugriffsrechte für das Wurzelverzeichnis der "
 "Freigabe, siehe :ref:`shares-permissions`."
 
-#: ../../shares/umc.rst:73
+#: ../../shares/umc.rst:81
 msgid "Shares UMC module - NFS tab"
 msgstr "Freigaben UMC Modul - Reiter NFS"
 
-#: ../../shares/umc.rst:77
-msgid "*NFS* tab"
-msgstr "Reiter *NFS*"
-
 #: ../../shares/umc.rst:84
+msgid "Shares UMC module - NFS group"
+msgstr "Freigaben UMC Modul - NFS Gruppe"
+
+#: ../../shares/umc.rst:87
+msgid "*NFS* group"
+msgstr "*NFS* Gruppe"
+
+#: ../../shares/umc.rst:94
 msgid "NFS write access"
 msgstr "NFS-Schreibzugriff"
 
-#: ../../shares/umc.rst:85
+#: ../../shares/umc.rst:95
 msgid ""
 "Allows NFS write access to this share; otherwise the share can only be "
 "used in read-only mode."
@@ -795,11 +806,11 @@ msgstr ""
 "Erlaubt schreibenden NFS-Zugriff auf diese Freigabe, ansonsten kann die "
 "Freigabe nur lesend verwendet werden."
 
-#: ../../shares/umc.rst:88
+#: ../../shares/umc.rst:98
 msgid "Subtree checking"
 msgstr "Subtree-Überprüfung"
 
-#: ../../shares/umc.rst:89
+#: ../../shares/umc.rst:99
 msgid ""
 "If only one subdirectory of a file system is exported, the NFS server has"
 " to check whether an accessed file is located on the exported file system"
@@ -814,11 +825,11 @@ msgstr ""
 "Aktivierung dieser Funktion kann zu Problemen führen, wenn eine auf dem "
 "Client geöffnete Datei umbenannt wird."
 
-#: ../../shares/umc.rst:95
+#: ../../shares/umc.rst:105
 msgid "Modify user ID for root user (root squashing)"
 msgstr "User-ID für Root-Benutzer ändern (Root-Squashing)"
 
-#: ../../shares/umc.rst:96
+#: ../../shares/umc.rst:106
 msgid ""
 "In the NFS standard procedure, identification of users is achieved via "
 "user IDs. To prevent a local root user from working with root permissions"
@@ -831,7 +842,7 @@ msgstr ""
 "umgelenkt werden. Ist diese Option aktiviert, erfolgen Root-Zugriffe als "
 "Benutzer ``nobody``."
 
-#: ../../shares/umc.rst:101
+#: ../../shares/umc.rst:111
 msgid ""
 "The local group ``staff``, which is by default empty, owns privileges "
 "which come quite close to ``root`` permissions, yet this group is not "
@@ -839,14 +850,15 @@ msgid ""
 "mind when adding users to this group."
 msgstr ""
 "Die standardmäßig leere lokale Gruppe ``staff`` verfügt über Privilegien,"
-" die ``root``-Rechten recht nahe kommen, wird aber von der Weiterleitung nicht berücksichtigt. Dies sollte bei der Aufnahme von "
-"Nutzern in diese Gruppe berücksichtigt werden."
+" die ``root``-Rechten recht nahe kommen, wird aber von der Weiterleitung "
+"nicht berücksichtigt. Dies sollte bei der Aufnahme von Nutzern in diese "
+"Gruppe berücksichtigt werden."
 
-#: ../../shares/umc.rst:106
+#: ../../shares/umc.rst:116
 msgid "NFS synchronization"
 msgstr "NFS-Synchronisation"
 
-#: ../../shares/umc.rst:107
+#: ../../shares/umc.rst:117
 msgid ""
 "The synchronization mode for the share. The ``sync`` setting is used to "
 "write data directly on the underlying storage device. The opposite "
@@ -859,11 +871,11 @@ msgstr ""
 "birgt aber auch das Risiko von Datenverlusten wenn der Server ohne "
 "kontrolliertes Herunterfahren abgeschaltet wird."
 
-#: ../../shares/umc.rst:112
+#: ../../shares/umc.rst:122
 msgid "Only allow access for these hosts, IP addresses or networks"
 msgstr "Zugriff nur für diese Rechner, IP-Adressen oder Netze erlauben"
 
-#: ../../shares/umc.rst:113
+#: ../../shares/umc.rst:123
 msgid ""
 "By default, all hosts are permitted access to a share. In this selection "
 "list, host names and IP addresses can be included, to which the access to"
@@ -876,19 +888,58 @@ msgstr ""
 "ließe sich etwa der Zugriff auf eine Freigabe mit Maildaten auf den "
 "Mailserver der Domäne einschränken."
 
-#: ../../shares/umc.rst:121
+#: ../../shares/umc.rst:131
+msgid "Shares UMC module - NFS custom settings group"
+msgstr "Freigaben UMC Modul - Gruppe Erweiterte NFS-Einstellungen"
+
+#: ../../shares/umc.rst:135
+msgid "*NFS custom settings* group"
+msgstr "Gruppe *Erweiterte NFS-Einstellungen*"
+
+#: ../../shares/umc.rst:142
+msgid "Custom NFS share settings"
+msgstr "Erweiterte NFS-Einstellungen für Freigaben"
+
+#: ../../shares/umc.rst:143
+msgid ""
+"Apart from the properties in the *NFS* group, this setting makes it "
+"possible to define further arbitrary NFS settings for the share. A list "
+"of available options can be obtained by the command :command:`man 5 "
+"exports`. Double entries of configuration options are not checked."
+msgstr ""
+"Neben den in der Gruppe *NFS* konfigurierbaren Eigenschaften einer NFS-"
+"Freigabe ermöglicht diese Einstellung beliebige weitere NFS-Einstellungen"
+" an einer Freigabe zu setzen. Eine Liste der verfügbaren Optionen kann "
+"mit dem Befehl :command:`man 5 exports` abgerufen werden. Doppelt "
+"angegebene Konfigurationsoptionen werden nicht überprüft."
+
+#: ../../shares/umc.rst:150
+msgid ""
+"The definition of extended NFS settings is only necessary in special "
+"cases. The options should be thoroughly checked since they might have "
+"security-relevant effects."
+msgstr ""
+"Das Setzen erweiterter NFS-Einstellungen ist nur in Sonderfällen nötig. "
+"Die Optionen sollten vor dem Setzen gründlich geprüft werden, da sie "
+"unter Umständen sicherheitsrelevante Auswirkungen haben können."
+
+#: ../../shares/umc.rst:157
 msgid "Shares UMC module - Samba tab"
 msgstr "Freigaben UMC Modul - Reiter Samba"
 
-#: ../../shares/umc.rst:125
+#: ../../shares/umc.rst:160
+msgid "Shares UMC module - Samba group"
+msgstr "Freigaben UMC Modul - Gruppe Samba"
+
+#: ../../shares/umc.rst:164
 msgid "*Samba* tab"
 msgstr "Reiter *Samba*"
 
-#: ../../shares/umc.rst:132
-msgid "Samba name"
-msgstr "Samba-Name"
+#: ../../shares/umc.rst:171
+msgid "Windows name"
+msgstr "Windows-Name"
 
-#: ../../shares/umc.rst:133
+#: ../../shares/umc.rst:172
 msgid ""
 "The NetBIOS name of the share. This is the name under which the share is "
 "displayed on Windows computers in the network environment. When adding a "
@@ -901,19 +952,11 @@ msgstr ""
 "Namen, der auf der Karteikarte *Allgemein* im Feld *Name* eingetragen "
 "ist."
 
-#: ../../shares/umc.rst:138
-msgid "Samba write access"
-msgstr "Samba-Schreibzugriff"
+#: ../../shares/umc.rst:177
+msgid "Show share in Windows network environment"
+msgstr "Freigabe in der Windows-Netzwerkumgebung anzeigen"
 
-#: ../../shares/umc.rst:139
-msgid "Permits write access to this share."
-msgstr "Erlaubt den Schreibzugriff auf diese Freigabe."
-
-#: ../../shares/umc.rst:141
-msgid "Show in Windows network environment"
-msgstr "Freigabe wird in der Windows-Netzwerkumgebung angezeigt"
-
-#: ../../shares/umc.rst:142
+#: ../../shares/umc.rst:178
 msgid ""
 "Specifies whether the share in question is to show up on Windows clients "
 "within the network environment."
@@ -921,11 +964,11 @@ msgstr ""
 "Konfiguriert, ob diese Freigabe auf Windows-Rechnern in der "
 "Netzwerkumgebung angezeigt werden soll."
 
-#: ../../shares/umc.rst:145
+#: ../../shares/umc.rst:181
 msgid "Allow anonymous read-only access with a guest user"
 msgstr "Anonymen Nur-Lese-Zugriff mit Gastbenutzer erlauben"
 
-#: ../../shares/umc.rst:146
+#: ../../shares/umc.rst:182
 msgid ""
 "Permits access to this share without a password. Every access is carried "
 "out by means of the common guest user ``nobody``."
@@ -934,19 +977,40 @@ msgstr ""
 "Zugriffe werden dabei über einen gemeinsamen Gast-Nutzer ``nobody`` "
 "durchgeführt."
 
-#: ../../shares/umc.rst:149
-msgid "MSDFS root"
-msgstr "MSDFS-Wurzel"
+#: ../../shares/umc.rst:185
+msgid "Export share as MSDFS root"
+msgstr "Freigabe als MSDFS-Wurzel freigeben"
 
-#: ../../shares/umc.rst:150
+#: ../../shares/umc.rst:186
 msgid "This option is documented in :ref:`shares-msdfs`."
 msgstr "Diese Option ist in :ref:`shares-msdfs` dokumentiert."
 
-#: ../../shares/umc.rst:152
+#: ../../shares/umc.rst:188
+msgid "Hide unreadable files/directories"
+msgstr "Verstecke nicht lesbare Dateien und Verzeichnisse"
+
+#: ../../shares/umc.rst:189
+msgid ""
+"If this option is activated, all files which are not readable for the "
+"user due to their file permissions, will be hidden."
+msgstr ""
+"Wenn diese Option aktiviert ist, werden Dateien, die anhand der "
+"Dateirechte für einen Benutzer nicht lesbar sind, für diesen nicht "
+"angezeigt."
+
+#: ../../shares/umc.rst:195
+msgid "Shares UMC module - Samba permissions group"
+msgstr "Freigaben UMC Modul - Gruppe Samba-Rechte"
+
+#: ../../shares/umc.rst:199
+msgid "*Samba permissions* group"
+msgstr "Gruppe *Samba-Rechte*"
+
+#: ../../shares/umc.rst:206
 msgid "Users with write access may modify permissions"
 msgstr "Benutzer mit Schreibrechten dürfen die Berechtigungen verändern"
 
-#: ../../shares/umc.rst:153
+#: ../../shares/umc.rst:207
 msgid ""
 "If this option is activated, all users with write permission to a file "
 "are allowed to change permissions, ACL entries, and file ownership "
@@ -956,50 +1020,11 @@ msgstr ""
 "auf eine Datei auch die Möglichkeiten Berechtigungen, ACL-Einträge und "
 "Dateibesitzrechte zu ändern, siehe :ref:`shares-permissions`."
 
-#: ../../shares/umc.rst:157
-msgid "Hide unreadable files/directories"
-msgstr "Verstecke nicht lesbare Dateien und Verzeichnisse"
-
-#: ../../shares/umc.rst:158
-msgid ""
-"If this option is activated, all files which are not readable for the "
-"user due to their file permissions, will be hidden."
-msgstr ""
-"Wenn diese Option aktiviert ist, werden Dateien, die anhand der "
-"Dateirechte für einen Benutzer nicht lesbar sind, für diesen nicht "
-"angezeigt."
-
-#: ../../shares/umc.rst:161
-msgid "VFS Objects"
-msgstr "VFS-Objekte"
-
-#: ../../shares/umc.rst:162
-msgid ""
-"Virtual File System (VFS) modules are used in Samba for performing "
-"actions before an access to the file system of a share is made, e.g., a "
-"virus scanner which stores every infected file accessed in the share in "
-"quarantine or server-side implementation of recycle bin deletion of "
-"files."
-msgstr ""
-"Virtual File System (VFS)-Module werden in Samba verwendet, um Aktionen "
-"vor dem Zugriff auf das Dateisystem einer Freigabe auszuführen, z.B. ein "
-"Virenscanner, der jede infizierte Datei, auf die in der Freigabe "
-"zugegriffen wird, in einem Quarantänebereich ablegt oder eine "
-"serverseitige Implementierung einer Papierkorb-Löschung von Dateien."
-
-#: ../../shares/umc.rst:171
-msgid "Shares UMC module - Samba permissions tab"
-msgstr "Freigaben UMC Modul - Reiter Samba-Rechte"
-
-#: ../../shares/umc.rst:175
-msgid "*Samba permissions* tab (advanced settings)"
-msgstr "Reiter *Samba-Rechte* (erweiterte Einstellungen)"
-
-#: ../../shares/umc.rst:182
+#: ../../shares/umc.rst:211
 msgid "Force user"
 msgstr "Erzwungener Benutzer"
 
-#: ../../shares/umc.rst:183
+#: ../../shares/umc.rst:212
 msgid ""
 "This username and its permissions and primary group is used for "
 "performing all the file operations of accessing users. The username is "
@@ -1016,11 +1041,11 @@ msgstr ""
 " um Dateien gemeinsam zu benutzen, kann bei falscher Anwendung aber "
 "Sicherheitsprobleme verursachen."
 
-#: ../../shares/umc.rst:190
+#: ../../shares/umc.rst:219
 msgid "Force group"
 msgstr "Erzwungene Gruppe"
 
-#: ../../shares/umc.rst:191
+#: ../../shares/umc.rst:220
 msgid ""
 "A group which is to be used by all users connecting with this share, as "
 "their primary group. Thereby, the permissions of this group automatically"
@@ -1034,7 +1059,7 @@ msgstr ""
 "Gruppe hat Vorrang über eine Gruppe, die über das Eingabefeld "
 "*Erzwungener Benutzer* zur primären Gruppe eines Benutzers geworden ist."
 
-#: ../../shares/umc.rst:197
+#: ../../shares/umc.rst:226
 msgid ""
 "If a ``+`` sign is prefixed to the group name, then the group is assigned"
 " as a primary group solely to those users which are already members of "
@@ -1045,11 +1070,11 @@ msgstr ""
 "bereits Mitglied dieser Gruppe sind. Alle anderen Benutzer behalten ihre "
 "gewöhnliche primäre Gruppe."
 
-#: ../../shares/umc.rst:201
+#: ../../shares/umc.rst:230
 msgid "Valid users or groups"
 msgstr "Gültige Benutzer oder Gruppen"
 
-#: ../../shares/umc.rst:202
+#: ../../shares/umc.rst:231
 msgid ""
 "Names of users or groups which are authorized to access this Samba share."
 " To all other users, access is denied. If the field is empty, all users "
@@ -1059,12 +1084,12 @@ msgid ""
 msgstr ""
 "Namen von Benutzern oder Gruppen, die auf diese Samba-Freigabe zugreifen "
 "dürfen. Alle anderen Benutzern wird der Zugriff verweigert. Wenn das Feld"
-" leer ist, dürfen alle Benutzer - gegebenenfalls mit ihrem Passwort - auf die "
-"Freigabe zugreifen. Diese Option ist nützlich, um Zugriffe auf eine "
+" leer ist, dürfen alle Benutzer - gegebenenfalls mit ihrem Passwort - auf"
+" die Freigabe zugreifen. Diese Option ist nützlich, um Zugriffe auf eine "
 "Freigabe über die Dateiberechtigungen hinaus auf Ebene des Fileservers "
 "abzusichern."
 
-#: ../../shares/umc.rst:208
+#: ../../shares/umc.rst:237
 msgid ""
 "The entries are to be separated by spaces. The special characters ``@``, "
 "``+`` and ``&`` can be used in connection with the group name for "
@@ -1076,7 +1101,7 @@ msgstr ""
 " der angegebenen Gruppe die Berechtigung zum Zugriff auf die Samba-"
 "Freigabe erteilt werden:"
 
-#: ../../shares/umc.rst:213
+#: ../../shares/umc.rst:242
 msgid ""
 "A name beginning with the character ``@`` will first be interpreted as a "
 "NIS net-group. Should no NIS net-group of this name be found, the name "
@@ -1086,7 +1111,7 @@ msgstr ""
 "interpretiert. Wenn keine NIS-Netgroup mit diesem Namen gefunden wird, "
 "wird der Name als UNIX-Gruppe angesehen."
 
-#: ../../shares/umc.rst:217
+#: ../../shares/umc.rst:246
 msgid ""
 "A name beginning with the character ``+`` will be exclusively considered "
 "as a UNIX group, a name beginning with the character ``&`` will be "
@@ -1096,7 +1121,7 @@ msgstr ""
 "aufgefasst, ein Name, der mit ``&`` beginnt, ausschließlich als NIS-"
 "Netgroup."
 
-#: ../../shares/umc.rst:221
+#: ../../shares/umc.rst:250
 msgid ""
 "A name beginning with the characters ``+&``, will first be interpreted as"
 " a UNIX group. Should no UNIX group of this name be found, the name will "
@@ -1108,11 +1133,11 @@ msgstr ""
 "wird der Name als NIS-Netgroup betrachtet. Die Zeichen ``&+`` als "
 "Namensanfang entsprechen ``@``."
 
-#: ../../shares/umc.rst:226
+#: ../../shares/umc.rst:255
 msgid "Invalid users or groups"
 msgstr "Nicht erlaubte Benutzer oder Gruppen"
 
-#: ../../shares/umc.rst:227
+#: ../../shares/umc.rst:256
 msgid ""
 "The users or groups listed here cannot access the Samba share. The syntax"
 " is identical to the one for valid users. If a user or group is included "
@@ -1124,11 +1149,23 @@ msgstr ""
 "Benutzer und der nicht erlaubten Benutzer enthalten ist, so wird der "
 "Zugriff verweigert."
 
-#: ../../shares/umc.rst:231
+#: ../../shares/umc.rst:260
+msgid "Restrict read access to these users/groups"
+msgstr "Leseberechtigung auf diese Benutzer/Gruppen beschränken"
+
+#: ../../shares/umc.rst:261
+msgid ""
+"Only the users and groups listed here have read permission for the "
+"corresponding share."
+msgstr ""
+"Nur die aufgeführten Benutzer oder Gruppen erhalten Leserecht auf die "
+"Freigabe."
+
+#: ../../shares/umc.rst:264
 msgid "Restrict write access to these users/groups"
 msgstr "Schreibberechtigung auf diese Benutzer/Gruppen beschränken"
 
-#: ../../shares/umc.rst:232
+#: ../../shares/umc.rst:265
 msgid ""
 "Only the users and groups listed here have write permission for the "
 "corresponding share."
@@ -1136,11 +1173,11 @@ msgstr ""
 "Nur die aufgeführten Benutzer oder Gruppen erhalten Schreibrecht auf die "
 "Freigabe."
 
-#: ../../shares/umc.rst:235
+#: ../../shares/umc.rst:268
 msgid "Allowed hosts/networks"
 msgstr "Zugelassene Rechner/Netze"
 
-#: ../../shares/umc.rst:236
+#: ../../shares/umc.rst:269
 msgid ""
 "Names of computers which are authorized to access this Samba share. All "
 "other computers are denied access. In addition to computer names, it is "
@@ -1152,11 +1189,11 @@ msgstr ""
 "auch IP- oder Netzwerkadressen angegeben werden, z.B. "
 "``192.0.2.0/255.255.255.0``."
 
-#: ../../shares/umc.rst:241
+#: ../../shares/umc.rst:274
 msgid "Denied hosts/networks"
 msgstr "Nicht zugelassene Rechner/Netze"
 
-#: ../../shares/umc.rst:242
+#: ../../shares/umc.rst:275
 msgid ""
 "The opposite to the authorized computers. If a computer appears in both "
 "lists, the computer is permitted to access the Samba share."
@@ -1165,34 +1202,11 @@ msgstr ""
 " Listen auftauchen, so wird dem Rechner der Zugriff auf die Samba-"
 "Freigabe gestattet."
 
-#: ../../shares/umc.rst:245
-msgid "NT ACL support"
-msgstr "NT ACL-Support"
-
-#: ../../shares/umc.rst:246
-msgid ""
-"If this option is activated, Samba will try to show POSIX ACLs under "
-"Windows, and to adopt changes to the ACLs, which were performed under "
-"Windows, for the POSIX ACLs."
-msgstr ""
-"Ist diese Option aktiviert, versucht Samba, POSIX-ACLs unter Windows "
-"anzuzeigen und Änderungen an den ACLs, die unter Windows vorgenommen "
-"werden, in die POSIX-ACLs zu übernehmen."
-
-#: ../../shares/umc.rst:250
-msgid ""
-"If this option is not set, existing POSIX ACLs are effective but not "
-"shown under Windows, and consequently cannot be changed under Windows."
-msgstr ""
-"Wenn die Option nicht gesetzt ist, werden vorhandene POSIX-ACLs beachtet,"
-" aber nicht unter Windows angezeigt und können von dort nicht verändert "
-"werden."
-
-#: ../../shares/umc.rst:253
+#: ../../shares/umc.rst:278
 msgid "Inherit ACLs"
 msgstr "Ererbte ACLs"
 
-#: ../../shares/umc.rst:254
+#: ../../shares/umc.rst:279
 msgid ""
 "When activating this option, each file created in this share will inherit"
 " the ACL (Access Control List) of the directory where the file was "
@@ -1202,13 +1216,13 @@ msgstr ""
 "Datei die ACL (Access Control List) des Verzeichnisses, in dem sie "
 "angelegt wird."
 
-#: ../../shares/umc.rst:258
+#: ../../shares/umc.rst:283
 msgid "Create files/directories with the owner of the parent directory"
 msgstr ""
 "Neue Dateien und Verzeichnisse erhalten den Besitzer des übergeordneten "
 "Verzeichnisses"
 
-#: ../../shares/umc.rst:259
+#: ../../shares/umc.rst:284
 msgid ""
 "When activating this option, each newly created file will not be assigned"
 " of the user who created the file, but to the owner of the superior "
@@ -1218,13 +1232,13 @@ msgstr ""
 "des übergeordneten Verzeichnis zugeordnet und nicht dem Benutzer, der die"
 " Datei erstellt hat."
 
-#: ../../shares/umc.rst:263
+#: ../../shares/umc.rst:288
 msgid "Create files/directories with permissions of the parent directory"
 msgstr ""
 "Neue Dateien und Verzeichnisse erhalten die Zugriffsrechte des "
 "übergeordneten Verzeichnisses"
 
-#: ../../shares/umc.rst:264
+#: ../../shares/umc.rst:289
 msgid ""
 "When activating this option, for each file or directory created in this "
 "share, the UNIX permissions of the superior directory will automatically "
@@ -1234,7 +1248,7 @@ msgstr ""
 "Verzeichnis, die in einer Freigabe neu erzeugt werden, automatisch die "
 "UNIX-Rechte des übergeordneten Verzeichnisses übernommen."
 
-#: ../../shares/umc.rst:268
+#: ../../shares/umc.rst:293
 msgid ""
 "If a new file is created on a Samba server from a Windows client, the "
 "file permissions will be set in several steps:"
@@ -1243,11 +1257,11 @@ msgstr ""
 " angelegt wird, werden die Rechte der Datei in mehreren Schritten "
 "gesetzt:"
 
-#: ../../shares/umc.rst:271
+#: ../../shares/umc.rst:296
 msgid "First, only the DOS permissions are translated into UNIX permissions."
 msgstr "Zunächst werden die DOS-Rechte in Unix-Rechte übersetzt."
 
-#: ../../shares/umc.rst:273
+#: ../../shares/umc.rst:298
 msgid ""
 "Then the permissions are filtered via the *Filemode*. UNIX permissions "
 "which are marked in *File mode*, are the only ones preserved. Permissions"
@@ -1259,7 +1273,7 @@ msgstr ""
 " die hier nicht gesetzt sind, werden entfernt. Die Rechte müssen also als"
 " Unix-Rechte und im Datei-Modus gesetzt sein, um erhalten zu bleiben."
 
-#: ../../shares/umc.rst:278
+#: ../../shares/umc.rst:303
 msgid ""
 "In the next step, the permissions under *Force file mode* are added. As a"
 " result, the file will have all the permissions set after step 2 or under"
@@ -1272,7 +1286,7 @@ msgstr ""
 "die unter *Erzwinge Datei-Modus* markiert sind, werden also auf jeden "
 "Fall gesetzt."
 
-#: ../../shares/umc.rst:283
+#: ../../shares/umc.rst:308
 msgid ""
 "Accordingly, a newly created directory will initially be assigned the "
 "same permissions as that which are set as UNIX permissions and in "
@@ -1284,72 +1298,19 @@ msgstr ""
 "  Danach werden die Rechte ergänzt, die unter *Erzwinge Verzeichnis-"
 "Modus* markiert sind."
 
-#: ../../shares/umc.rst:288
-msgid ""
-"In a similar way, the security settings are adopted for existing files "
-"and directories the permissions of which are edited under Windows:"
-msgstr ""
-"In ähnlicher Weise werden die Sicherheitseinstellungen auf bestehende "
-"Dateien und Verzeichnisse angewandt, deren Rechte unter Windows "
-"bearbeitet werden:"
+#: ../../shares/umc.rst:316
+msgid "Shares UMC module - Samba extended permissions group"
+msgstr "Freigaben UMC Modul - Gruppe erweiterte Samba-Rechte"
 
-#: ../../shares/umc.rst:291
-msgid ""
-"Only those permissions can be changed under Windows, which are marked in "
-"*Security mode* or in *Directory security mode*. Once this is done, the "
-"permissions marked under *Force security mode* or under *Force directory "
-"security mode* are set in any case."
-msgstr ""
-"Ausschließlich Rechte, die im *Sicherheits-Modus* oder *Sicherheits-"
-"Verzeichnis-Modus* markiert sind, können von Windows aus verändert "
-"werden. Anschließend werden die Rechte, die unter *Erzwinge Sicherheits-"
-"Modus* oder *Erzwinge Sicherheits-Verzeichnis-Modus* markiert sind, auf "
-"jeden Fall gesetzt."
+#: ../../shares/umc.rst:320
+msgid "*Samba extended permissions* group"
+msgstr "Gruppe *Erweiterte Samba-Rechte*"
 
-#: ../../shares/umc.rst:296
-msgid ""
-"Thus, the parameters *File mode* and *Force file mode*, or *Directory "
-"mode* and *Force directory mode* are applied during the creation of a "
-"file or directory, while the parameters *Security mode* and *Force "
-"Security Mode* or *Security directory mode* and *Force security directory"
-" mode* are applied when changing permissions."
-msgstr ""
-"Die Parameter *Datei-Modus* und *Erzwinge Datei-Modus* oder *Verzeichnis-"
-"Modus* und *Erzwinge Verzeichnis-Modus* finden also beim Anlegen einer "
-"Datei oder eines Verzeichnisses Anwendung, die Parameter *Sicherheits-"
-"Modus* und *Erzwinge Sicherheits-Modus* oder *Sicherheits-Verzeichnis-"
-"Modus* und *Erzwinge Sicherheits-Verzeichnis-Modus* beim Ändern der "
-"Rechte."
-
-#: ../../shares/umc.rst:304
-msgid "The security settings only relate to the access via Samba."
-msgstr ""
-"Es ist zu beachten, dass sich die Sicherheitseinstellungen nur auf den "
-"Zugriff über Samba beziehen."
-
-#: ../../shares/umc.rst:306
-msgid ""
-"The user on the Windows side does not receive any notification of the "
-"fact that the file or directory authorizations might by changed according"
-" to the Samba settings on this tab."
-msgstr ""
-"Der Benutzer auf Windows-Seite erhält keinen Hinweis, dass die Datei- "
-"oder Verzeichnisrechte gegebenenfalls entsprechend den Samba-"
-"Einstellungen auf dieser Karteikarte verändert werden."
-
-#: ../../shares/umc.rst:313
-msgid "Shares UMC module - Samba extended permissions tab"
-msgstr "Freigaben UMC Modul - Reiter erweiterte Samba-Rechte"
-
-#: ../../shares/umc.rst:317
-msgid "*Samba extended permissions* tab (advanced settings)"
-msgstr "Reiter *Erweiterte Samba-Rechte* (erweiterte Einstellungen)"
-
-#: ../../shares/umc.rst:324
+#: ../../shares/umc.rst:327
 msgid "File mode"
 msgstr "Datei-Modus"
 
-#: ../../shares/umc.rst:325
+#: ../../shares/umc.rst:328
 msgid ""
 "The permissions Samba is to adopt when creating a file, provided they are"
 " set under Windows."
@@ -1357,11 +1318,11 @@ msgstr ""
 "Die Rechte, die Samba beim Anlegen einer Datei übernehmen soll, sofern "
 "sie unter Windows gesetzt sind."
 
-#: ../../shares/umc.rst:328
+#: ../../shares/umc.rst:331
 msgid "Directory mode"
 msgstr "Verzeichnis-Modus"
 
-#: ../../shares/umc.rst:329
+#: ../../shares/umc.rst:332
 msgid ""
 "The permissions Samba is to adopt when creating a directory, provided "
 "they are set under Windows."
@@ -1369,11 +1330,11 @@ msgstr ""
 "Die Rechte, die Samba beim Anlegen eines Verzeichnisses übernehmen soll, "
 "sofern sie unter Windows gesetzt sind."
 
-#: ../../shares/umc.rst:332
+#: ../../shares/umc.rst:335
 msgid "Force file mode"
 msgstr "Erzwinge Datei-Modus"
 
-#: ../../shares/umc.rst:333
+#: ../../shares/umc.rst:336
 msgid ""
 "The permissions Samba is to set in any case when creating a file, "
 "irrespective of whether they are set under Windows or not."
@@ -1382,11 +1343,11 @@ msgstr ""
 "soll, also unabhängig davon, ob sie unter Windows gesetzt wurden oder "
 "nicht."
 
-#: ../../shares/umc.rst:336
+#: ../../shares/umc.rst:339
 msgid "Force directory mode"
 msgstr "Erzwinge Verzeichnis-Modus"
 
-#: ../../shares/umc.rst:337
+#: ../../shares/umc.rst:340
 msgid ""
 "The permissions Samba is to set in any case when creating a directory, "
 "irrespective of whether they are set under Windows or not."
@@ -1395,265 +1356,37 @@ msgstr ""
 "setzen soll, also unabhängig davon, ob sie unter Windows gesetzt wurden "
 "oder nicht."
 
-#: ../../shares/umc.rst:340
-msgid "Security mode"
-msgstr "Sicherheitsmodus"
+#: ../../shares/umc.rst:346
+msgid "Shares UMC module - Samba options group"
+msgstr "Freigaben UMC Modul - Gruppe Samba-Optionen"
 
-#: ../../shares/umc.rst:341
+#: ../../shares/umc.rst:350
+msgid "*Samba options* group"
+msgstr "Gruppe *Samba-Optionen*"
+
+#: ../../shares/umc.rst:357
+msgid "VFS Objects"
+msgstr "VFS-Objekte"
+
+#: ../../shares/umc.rst:358
 msgid ""
-"The file permissions to which Samba is to permit changes made from "
-"Windows side."
+"Virtual File System (VFS) modules are used in Samba for performing "
+"actions before an access to the file system of a share is made, e.g., a "
+"virus scanner which stores every infected file accessed in the share in "
+"quarantine or server-side implementation of recycle bin deletion of "
+"files."
 msgstr ""
-"Die Dateirechte, an denen Samba Änderungen von Windows-Seite aus zulassen"
-" soll."
+"Virtual File System (VFS)-Module werden in Samba verwendet, um Aktionen "
+"vor dem Zugriff auf das Dateisystem einer Freigabe auszuführen, z.B. ein "
+"Virenscanner, der jede infizierte Datei, auf die in der Freigabe "
+"zugegriffen wird, in einem Quarantänebereich ablegt oder eine "
+"serverseitige Implementierung einer Papierkorb-Löschung von Dateien."
 
-#: ../../shares/umc.rst:344
-msgid "Directory security mode"
-msgstr "Verzeichnis Sicherheitsmodus"
-
-#: ../../shares/umc.rst:345
-msgid ""
-"The directory authorizations to which Samba is to permit changes made "
-"from Windows side."
-msgstr ""
-"Die Verzeichnisrechte, an denen Samba Änderungen von Windows-Seite aus "
-"zulassen soll."
-
-#: ../../shares/umc.rst:348
-msgid "Force security mode"
-msgstr "Erzwinge Sicherheitsmodus"
-
-#: ../../shares/umc.rst:349
-msgid ""
-"The permissions Samba is to set in any case (irrespective of whether they"
-" are set under Windows or not), if file permissions are changed from "
-"Windows side."
-msgstr ""
-"Die Rechte, die Samba auf jeden Fall setzen soll (unabhängig davon, ob "
-"die Rechte unter Windows gesetzt wurden oder nicht), wenn die Rechte "
-"einer Datei von Windows-Seite aus geändert werden."
-
-#: ../../shares/umc.rst:353
-msgid "Force directory security mode"
-msgstr "Erzwinge Verzeichnis Sicherheitsmodus"
-
-#: ../../shares/umc.rst:354
-msgid ""
-"The permissions Samba is to set in any case if directory permissions are "
-"changed from Windows side (irrespective of whether they are set under "
-"Windows or not)."
-msgstr ""
-"Die Rechte, die Samba auf jeden Fall setzen soll, wenn die Rechte eines "
-"Verzeichnisses von Windows-Seite aus geändert werden (unabhängig davon, "
-"ob die Rechte unter Windows gesetzt wurden oder nicht)."
-
-#: ../../shares/umc.rst:361
-msgid "Shares UMC module - Samba options tab"
-msgstr "Freigaben UMC Modul - Reiter Samba-Optionen"
-
-#: ../../shares/umc.rst:365
-msgid "*Samba options* tab (advanced settings)"
-msgstr "Reiter *Samba-Optionen* (erweiterte Einstellungen)"
-
-#: ../../shares/umc.rst:372
-msgid "Locking"
-msgstr "Locking"
-
-#: ../../shares/umc.rst:373
-msgid ""
-"Locking means preventing concurrent access to a file, making an exclusive"
-" access possible. When activating this checkbox, Samba will lock the "
-"access to files on the client's request."
-msgstr ""
-"Unter *Locking* versteht man das Sperren konkurrierender Zugriffe auf "
-"eine Datei. Bei Aktivierung dieses Auswahlkästchens sperrt Samba auf "
-"Client-Anfrage den Zugriff auf Dateien."
-
-#: ../../shares/umc.rst:377
-msgid ""
-"Deactivating this option can be useful for improving performance, yet it "
-"should generally not be set in shares with write access, since without "
-"locking, files might be corrupted due to concurrent access."
-msgstr ""
-"Das Deaktivieren von *Locking* kann nützlich sein, um die Performance zu "
-"erhöhen, sollte jedoch auf Freigaben mit Schreibzugriff grundsätzlich "
-"nicht gesetzt werden, weil Dateien bei konkurrierenden Schreibzugriffen "
-"ohne Locking korrumpiert werden können."
-
-#: ../../shares/umc.rst:381
-msgid "Blocking locks"
-msgstr "Blocking Locks"
-
-#: ../../shares/umc.rst:382
-msgid ""
-"Clients can send a lock request with a time limit for a certain area of "
-"an open file."
-msgstr ""
-"Clients können eine Lock-Anfrage mit einem Zeitlimit für einen Bereich "
-"einer geöffneten Datei senden."
-
-#: ../../shares/umc.rst:385
-msgid ""
-"In case Samba is unable to comply with a the lock request, and this "
-"option is activated, then Samba will - in periodical intervals until the "
-"expiry of the time limit - try to lock the requested file area. If the "
-"option is deactivated, no further attempt will be made."
-msgstr ""
-"Kann Samba einer Lock-Anfrage nicht entsprechen und ist diese Option "
-"aktiviert, so versucht Samba bis zum Ablauf des Zeitlimits periodisch den"
-" angefragten Dateibereich zu sperren. Ist die Option deaktiviert, wird "
-"kein weiterer Versuch unternommen."
-
-#: ../../shares/umc.rst:390
-msgid "Strict locking"
-msgstr "Strict Locking"
-
-#: ../../shares/umc.rst:391
-msgid ""
-"If this option is activated, Samba will with each read or write access "
-"check if the file is locked, and will deny access if required. On some "
-"systems, this procedure can take a long time."
-msgstr ""
-"Ist diese Option aktiviert, prüft Samba bei jedem Lese- und "
-"Schreibzugriff, ob die Datei gesperrt ist und verweigert gegebenenfalls den "
-"Zugriff. Auf einigen Systemen kann dies lange dauern."
-
-#: ../../shares/umc.rst:395
-msgid ""
-"If this option is deactivated, Samba will check if the file is locked on "
-"the client's request exclusively. Well configured clients ask for a check"
-" in all important cases, so that this option is usually unnecessary."
-msgstr ""
-"Ist die Option deaktiviert, prüft Samba nur auf Client-Anfrage, ob eine "
-"Datei gesperrt ist. Gut konfigurierte Clients bitten in allen wichtigen "
-"Fällen um eine Prüfung, so dass diese Option im Regelfall nicht notwendig"
-" ist."
-
-#: ../../shares/umc.rst:399
-msgid "Oplocks"
-msgstr "Oplocks"
-
-#: ../../shares/umc.rst:400
-msgid ""
-"If this option is activated, Samba will use so-called *opportunistic "
-"locks*. This can improve the speed of file access considerably. However, "
-"the option permits clients local caching of files on a large scale. In "
-"unreliable networks it might therefore be necessary to do without "
-"Oplocks."
-msgstr ""
-"Wird diese Option aktiviert, verwendet Samba so genannte *opportunistic "
-"locks*. Dies kann die Zugriffsgeschwindigkeit auf Dateien deutlich "
-"erhöhen. Allerdings erlaubt die Option Clients Dateien in großem Umfang "
-"lokal zwischenzuspeichern. Deswegen kann es in unzuverlässigen Netzwerken"
-" nötig sein, auf Oplocks zu verzichten."
-
-#: ../../shares/umc.rst:406
-msgid "Level 2 Oplocks"
-msgstr "Level 2 Oplocks"
-
-#: ../../shares/umc.rst:407
-msgid ""
-"When activating this option, Samba will support an extended form of "
-"Oplocks, the so-called *opportunistic read-only locks* or *Level 2 "
-"Oplocks*. Windows clients receiving a read/write Oplock for a file can "
-"then scale down this Oplock to a read-only Oplock instead of having to "
-"abandon the Oplock completely as soon as a second client opens the file. "
-"All clients supporting Level 2 Oplocks, will then cache read access "
-"processes to the file exclusively. Should one of the clients write to the"
-" file, all the other clients will be asked to abandon their Oplocks, and "
-"to empty their caches."
-msgstr ""
-"Bei Aktivierung dieser Option unterstützt Samba eine erweiterte Form der "
-"Oplocks, sogenannte *opportunistic read-only locks* oder auch "
-"Level-2-Oplocks. Windows-Clients, die ein Lesen-Schreiben-Oplock auf eine "
-"Datei halten, können dieses Oplock dann zu einem Nur-Lesen-Oplock "
-"herunterstufen anstatt das Oplock ganz aufgeben zu müssen, sobald ein "
-"zweiter Client die Datei öffnet. Alle Clients, die Level-2-Oplocks "
-"unterstützen, speichern dann nur Lesezugriffe auf die Datei zwischen. "
-"Wenn einer der Clients in die Datei schreibt, werden alle anderen Clients"
-" benachrichtigt, ihre Oplocks aufzugeben und ihre Zwischenspeicher zu "
-"löschen."
-
-#: ../../shares/umc.rst:417
-msgid ""
-"It is recommended to activate this option to speed up access to files "
-"which are normally not written to (e.g. programs / executable files)."
-msgstr ""
-"Es wird empfohlen, diese Option zu aktivieren, um den Zugriff auf "
-"Dateien, die normalerweise nicht geschrieben werden (z.B. "
-"Programme/ausführbare Dateien) zu beschleunigen."
-
-#: ../../shares/umc.rst:422
-msgid ""
-"If kernel Oplocks are supported, Level 2 Oplocks will not be allowed, "
-"even if the option is activated. Only if the checkbox *Oplocks* is also "
-"ticked, this option will become valid."
-msgstr ""
-"Wenn Kernel-Oplocks unterstützt werden, werden Level-2-Oplocks nicht "
-"bewilligt, selbst wenn die Option aktiviert ist. Die Option ist nur "
-"wirksam, wenn das Auswahlkästchen *Oplocks* ebenfalls markiert ist."
-
-#: ../../shares/umc.rst:426
-msgid "Fake Oplocks"
-msgstr "Fake Oplocks"
-
-#: ../../shares/umc.rst:427
-msgid ""
-"When activating this option, Samba will allow all Oplock requests "
-"irrespective of the number of clients having access to a file. This "
-"method considerably improves performance, and is useful for shares which "
-"can only be accessed for reading (e.g. CD-ROMs), or where it is ensured "
-"that there can never occur a situation when several clients make access "
-"at the same time."
-msgstr ""
-"Bei Aktivierung dieser Option bewilligt Samba alle Oplock-Anfragen "
-"unabhängig von der Anzahl auf eine Datei zugreifender Clients. Dies "
-"verbessert die Performance deutlich und ist sinnvoll bei Freigaben, auf "
-"die nur lesend zugegriffen werden kann (z.B. CD-ROMs) oder bei denen "
-"sichergestellt ist, dass niemals mehrere Clients gleichzeitig auf sie "
-"zugreifen können."
-
-#: ../../shares/umc.rst:434
-msgid ""
-"If it cannot be excluded that several clients make reading and writing "
-"access to a file at the same time, this option should not be activated, "
-"since it may cause data loss."
-msgstr ""
-"Wenn nicht ausgeschlossen werden kann, dass mehrere Clients lesend und "
-"schreibend auf eine Datei zugreifen, sollte die Option nicht aktiviert "
-"werden, weil es sonst zu Datenverlusten kommen kann."
-
-#: ../../shares/umc.rst:438
-msgid "Block size"
-msgstr "Blockgröße"
-
-#: ../../shares/umc.rst:439
-msgid ""
-"The block size in bytes in which unoccupied disk space is to be reported "
-"to the clients. By default, this size is defined as 1024 bytes."
-msgstr ""
-"Die Blockgröße in Byte, in der freier Festplattenplatz an Clients "
-"gemeldet werden soll. Standardmäßig beträgt sie 1024 Byte."
-
-#: ../../shares/umc.rst:442
-msgid "Client-side caching policy"
-msgstr "Richtlinie für das Caching beim Client"
-
-#: ../../shares/umc.rst:443
-msgid ""
-"This option specifies in which way the clients are to cache the files of "
-"this share offline. The available alternatives are ``manua``, "
-"``documents``, ``programs``, and ``disable``."
-msgstr ""
-"Konfiguriert, auf welche Weise Clients Dateien aus dieser Freigabe "
-"offline zwischenspeichern sollen. Zur Wahl stehen ``manuell``, "
-"``Dokumente``, ``Programme`` und ``deaktiviert``."
-
-#: ../../shares/umc.rst:447
-msgid "Hide files"
+#: ../../shares/umc.rst:364
+msgid "Hidden files"
 msgstr "Verstecke Dateien"
 
-#: ../../shares/umc.rst:448
+#: ../../shares/umc.rst:365
 msgid ""
 "Files and directories to be accessed under Windows, yet not to be "
 "visible. Such files or directories are assigned the DOS attribute "
@@ -1662,7 +1395,7 @@ msgstr ""
 "Dateien und Verzeichnisse, die unter Windows nicht sichtbar sein sollen. "
 "Die Dateien oder Verzeichnisse erhalten das Datei-Attribut *hidden*."
 
-#: ../../shares/umc.rst:452
+#: ../../shares/umc.rst:369
 msgid ""
 "When entering the names of files and directories, upper and lower case "
 "letters are to be differentiated. Each entry is to be separated from the "
@@ -1675,11 +1408,11 @@ msgstr ""
 "Kleinschreibung angegeben werden. Die einzelnen Einträge sind durch "
 "Schrägstriche zu trennen. Da der Schrägstrich nicht als "
 "Verzeichnistrenner eingegeben werden kann, dürfen nur Namen, aber keine "
-"Pfade eingetragen werden. Alle Dateien und Verzeichnisse mit diesen "
-"Namen innerhalb der Freigabe werden dann versteckt. Die Namen dürfen "
+"Pfade eingetragen werden. Alle Dateien und Verzeichnisse mit diesen Namen"
+" innerhalb der Freigabe werden dann versteckt. Die Namen dürfen "
 "Leerzeichen und die Platzhalter ``*`` und ``?`` enthalten."
 
-#: ../../shares/umc.rst:459
+#: ../../shares/umc.rst:376
 msgid ""
 "As an example, ``/.*/test/`` hides all files and directories the names of"
 " which begin with a *dot*, or which are called *test*."
@@ -1687,7 +1420,7 @@ msgstr ""
 "Zum Beispiel versteckt ``/.*/test/`` alle Dateien und Verzeichnisse, die "
 "mit einem *Punkt* beginnen oder *test* heißen."
 
-#: ../../shares/umc.rst:464
+#: ../../shares/umc.rst:381
 msgid ""
 "Entries in this field have an impact on the speed of Samba since every "
 "time particular contents of the share are to be displayed, all files and "
@@ -1697,11 +1430,11 @@ msgstr ""
 "vor Anzeige von Freigabeinhalten alle Dateien und Verzeichnisse auf "
 "Übereinstimmung mit den gesetzten Filtern geprüft werden müssen."
 
-#: ../../shares/umc.rst:468
+#: ../../shares/umc.rst:385
 msgid "Postexec script"
 msgstr "Postexec-Skript"
 
-#: ../../shares/umc.rst:469
+#: ../../shares/umc.rst:386
 msgid ""
 "A script or command which is to be executed on the server if the "
 "connection to this share is finished."
@@ -1709,11 +1442,11 @@ msgstr ""
 "Ein Skript oder ein Befehl, der auf dem Server ausgeführt werden soll, "
 "wenn die Verbindung zu dieser Freigabe beendet wird."
 
-#: ../../shares/umc.rst:472
+#: ../../shares/umc.rst:389
 msgid "Preexec script"
 msgstr "Preexec-Skript"
 
-#: ../../shares/umc.rst:473
+#: ../../shares/umc.rst:390
 msgid ""
 "A script or command which is to be executed on the server each time a "
 "connection to this share is established."
@@ -1721,19 +1454,19 @@ msgstr ""
 "Ein Skript oder ein Befehl, der auf dem Server bei jeder "
 "Verbindungsaufnahme zu dieser Freigabe ausgeführt werden soll."
 
-#: ../../shares/umc.rst:479
-msgid "Shares UMC module - Samba custom settings tab"
-msgstr "Freigaben UMC Modul - Reiter Samba-Erweiterte-Einstellungen"
+#: ../../shares/umc.rst:396
+msgid "Shares UMC module - Samba custom settings group"
+msgstr "Freigaben UMC Modul - Gruppe Samba-Erweiterte-Einstellungen"
 
-#: ../../shares/umc.rst:483
-msgid "*Samba custom settings* tab (advanced settings)"
-msgstr "Reiter *Samba-Erweiterte-Einstellungen* (erweiterte Einstellungen)"
+#: ../../shares/umc.rst:400
+msgid "*Samba custom settings* group"
+msgstr "Gruppe *Samba-Erweiterte-Einstellungen*"
 
-#: ../../shares/umc.rst:490
+#: ../../shares/umc.rst:407
 msgid "Custom share settings"
 msgstr "Erweiterte Einstellungen für Freigaben"
 
-#: ../../shares/umc.rst:491
+#: ../../shares/umc.rst:408
 msgid ""
 "Apart from the properties which can, as a standard feature, be configured"
 " in a Samba share, this setting makes it possible to define further "
@@ -1750,7 +1483,7 @@ msgstr ""
 " zu setzende Wert. Doppelt angegebene Konfigurationsoptionen werden nicht"
 " überprüft."
 
-#: ../../shares/umc.rst:500
+#: ../../shares/umc.rst:417
 msgid ""
 "The definition of extended Samba settings is only necessary in very "
 "special cases. The options should be thoroughly checked since they might "
@@ -1760,68 +1493,29 @@ msgstr ""
 " Die Optionen sollten vor dem Setzen gründlich geprüft werden, da sie "
 "unter Umständen sicherheitsrelevante Auswirkungen haben können."
 
-#: ../../shares/umc.rst:507
-msgid "Shares UMC module - NFS custom settings tab"
-msgstr "Freigaben UMC Modul - Reiter Erweiterte NFS-Einstellungen"
-
-#: ../../shares/umc.rst:511
-msgid "*NFS custom settings* tab (advanced settings)"
-msgstr "Reiter *Erweiterte NFS-Einstellungen* (erweiterte Einstellungen)"
-
-#: ../../shares/umc.rst:518
-msgid "Custom NFS share settings"
-msgstr "Erweiterte NFS-Einstellungen für Freigaben"
-
-#: ../../shares/umc.rst:519
-msgid ""
-"Apart from the properties in the *NFS* tab, this setting makes it "
-"possible to define further arbitrary NFS settings for the share. A list "
-"of available options can be obtained by the command :command:`man 5 "
-"exports`. Double entries of configuration options are not checked."
-msgstr ""
-"Neben den im Reiter *NFS* "
-"konfigurierbaren Eigenschaften einer NFS-"
-"Freigabe ermöglicht diese Einstellung "
-"beliebige weitere NFS-Einstellungen an "
-"einer Freigabe zu setzen. Eine Liste "
-"der verfügbaren Optionen kann mit dem"
-" Befehl :command:`man 5 exports` abgerufen"
-" werden. Doppelt angegebene "
-"Konfigurationsoptionen werden nicht überprüft."
-
-#: ../../shares/umc.rst:526
-msgid ""
-"The definition of extended NFS settings is only necessary in special "
-"cases. The options should be thoroughly checked since they might have "
-"security-relevant effects."
-msgstr ""
-"Das Setzen erweiterter NFS-Einstellungen ist nur in Sonderfällen nötig. "
-"Die Optionen sollten vor dem Setzen gründlich geprüft werden, da sie "
-"unter Umständen sicherheitsrelevante Auswirkungen haben können."
-
-#: ../../shares/umc.rst:533
+#: ../../shares/umc.rst:424
 msgid "Shares UMC module - Options tab"
 msgstr "Freigaben UMC Modul - Reiter Optionen"
 
-#: ../../shares/umc.rst:537
-msgid "*(Options)* tab"
-msgstr "Reiter *(Optionen)*"
+#: ../../shares/umc.rst:428
+msgid "*Options* tab"
+msgstr "Reiter *Optionen*"
 
-#: ../../shares/umc.rst:544
+#: ../../shares/umc.rst:435
 msgid "Export for Samba clients"
 msgstr "Für Samba-Clients exportieren"
 
-#: ../../shares/umc.rst:545
+#: ../../shares/umc.rst:436
 msgid "This option defines whether the share is to be exported for Samba clients."
 msgstr ""
 "Diese Option legt fest, ob die Freigabe für Samba-Clients exportiert "
 "werden soll."
 
-#: ../../shares/umc.rst:548
+#: ../../shares/umc.rst:439
 msgid "Export for NFS clients"
 msgstr "Für NFS-Clients exportieren"
 
-#: ../../shares/umc.rst:549
+#: ../../shares/umc.rst:440
 msgid "This option defines whether the share is to be exported for NFS clients."
 msgstr ""
 "Diese Option legt fest, ob die Freigabe für NFS-Clients exportiert werden"
