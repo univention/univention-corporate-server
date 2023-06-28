@@ -9,4 +9,6 @@ desc: |
  * dojo deepCopy method was vulnerable to Prototype Pollution (CVE-2020-5258).
  * dojox jqMix method was vulnerable to Prototype Pollution (CVE-2020-5259).
 bug: [52138]
-cve: [CVE-2020-5258, CVE-2020-5259]
+cve:
+- CVE-2020-5258
+- CVE-2020-5259
