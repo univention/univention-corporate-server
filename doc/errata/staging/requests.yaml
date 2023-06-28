@@ -1,0 +1,22 @@
+product: ucs
+release: "4.4"
+version: [9]
+scope: ucs_4.4-0-errata4.4-9
+src: requests
+fix: 2.12.4-1+deb9u1
+desc: |
+ This update addresses the following issue:
+ 2.12.4-1+deb9u1 (Sun, 18 Jun 2023 19:25:55 +0200)
+ * Non-maintainer upload by the ELTS team.
+ * Fix CVE-2023-32681: Requests has been leaking Proxy-Authorization headers
+   to destination servers when redirected to an HTTPS endpoint. For HTTP
+   connections sent through the tunnel, the proxy will identify the header in
+   the request itself and remove it prior to forwarding to the destination
+   server. However when sent over HTTPS, the `Proxy-Authorization` header must
+   be sent in the CONNECT request as the proxy has no visibility into the
+   tunneled request. This results in Requests forwarding proxy credentials to
+   the destination server unintentionally, allowing a malicious actor to
+   potentially exfiltrate sensitive information.
+bug: [56210]
+cve:
+- CVE-2023-32681
