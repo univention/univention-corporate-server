@@ -14,3 +14,6 @@ cve:
 - CVE-2020-5258
 - CVE-2020-5259
 maintained: false
+erratum: 1410
+announced: 2023-06-28
+support: lts
