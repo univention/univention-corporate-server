@@ -6,8 +6,9 @@ src: univention-web
 fix: 3.0.6-13
 desc: |
  This update addresses the following issues:
- * dojo deepCopy method was vulnerable to Prototype Pollution (CVE-2020-5258).
- * dojox jqMix method was vulnerable to Prototype Pollution (CVE-2020-5259).
+ * dojo method `deepCopy` was vulnerable to prototype pollution
+   (CVE-2020-5258).
+ * dojox method `jqMix` was vulnerable to prototype pollution (CVE-2020-5259).
 bug: [52138]
 cve:
 - CVE-2020-5258
