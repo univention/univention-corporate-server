@@ -12,3 +12,6 @@ desc: |
  * Added parameters for creating SAML service providers to
    `univention-keycloak`.
 bug: [56132]
+erratum: 720
+announced: 2023-06-28
+support: core
