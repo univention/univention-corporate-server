@@ -9,3 +9,6 @@ desc: |
  * Connection timeouts during requests to UMC modules are now handled in the
    UMC server so that timed out requests don't prevent a session timeout.
 bug: [56198]
+erratum: 721
+announced: 2023-06-28
+support: core
