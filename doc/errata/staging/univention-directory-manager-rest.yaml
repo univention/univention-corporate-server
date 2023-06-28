@@ -9,6 +9,6 @@ desc: |
  * When computer objects were assigned with a network the DHCP and DNS
    settings weren't saved if a custom IP was specified. This has been
    corrected.
- * Accessing objects which contains UTF-8 characters in its LDAP DN
+ * Accessing objects which contain UTF-8 characters in their LDAP DN
    was impossible and has been fixed.
 bug: [55459, 56189]
