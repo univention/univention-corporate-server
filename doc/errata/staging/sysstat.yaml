@@ -1,0 +1,15 @@
+product: ucs
+release: "4.4"
+version: [9]
+scope: ucs_4.4-0-errata4.4-9
+src: sysstat
+fix: 11.4.3-2+deb9u2
+desc: |
+ This update addresses the following issues:
+ 11.4.3-2+deb9u2 (Sat, 03 Jun 2023 14:30:28 +0200)
+ * Non-maintainer upload by the ELTS Security Team.
+ * CVE-2023-33204: incomplete fix for CVE-2022-39377.
+bug: [56212]
+cve:
+- CVE-2023-33204
+- CVE-2022-39377
