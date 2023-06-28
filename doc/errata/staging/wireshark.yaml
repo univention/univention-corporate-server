@@ -1,0 +1,20 @@
+product: ucs
+release: "4.4"
+version: [9]
+scope: ucs_4.4-0-errata4.4-9
+src: wireshark
+fix: 2.6.20-0+deb9u6
+desc: |
+ This update addresses the following issues:
+ 2.6.20-0+deb9u6 (Sat, 03 Jun 2023 23:08:50 +0300)
+ * Non-maintainer upload by the ELTS Security Team.
+ * CVE-2023-2856: VMS TCPIPtrace file parser crash.
+ * CVE-2023-2858: NetScaler file parser crash.
+ * CVE-2023-2879: GDSDB infinite loop.
+ * CVE-2023-2952: XRA dissector infinite loop.
+bug: [56226]
+cve:
+- CVE-2023-2856
+- CVE-2023-2858
+- CVE-2023-2879
+- CVE-2023-2952
