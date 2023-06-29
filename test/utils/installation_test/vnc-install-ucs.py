@@ -63,7 +63,12 @@ class UCSInstallation(VNCInstallation):
         self.click_at(250, 250)
         self.type(self._['us_keyboard_layout'] + "\n")
 
-        if not self.network_setup():
+        # Netzwerk-Hardware erkennen
+        sleep(60, "scan ISO and network")
+
+        # Netzwerk einrichten
+        if self.args.ip:
+            self.network_setup()
             self.click_at(100, 320)
             sleep(1)
 
@@ -155,12 +160,7 @@ class UCSInstallation(VNCInstallation):
         sleep(30, "reboot")
 
     @verbose("NETWORK")
-    def network_setup(self):  # type: () -> bool
-        sleep(60, "scan ISO and network")
-
-        # we may not see this because the only interface is configured via dhcp
-        if not self.text_is_visible(self._['configure_network']):
-            return False
+    def network_setup(self):  # type: () -> None
 
         self.client.waitForText(self._['configure_network'], timeout=self.timeout)
         if not self.text_is_visible(self._['ip_address']):
@@ -168,31 +168,30 @@ class UCSInstallation(VNCInstallation):
             self.click_on(self._['continue'])
             sleep(60, "net.detect")
 
-        if self.args.ip:
-            if self.text_is_visible(self._['not_using_dhcp']):
-                self.type('\n')
-                self.click_on(self._['manual_network_config'])
-                self.type('\n')
+        if not self.args.ip:
+            raise ValueError("No IP address")
 
-            self.client.waitForText(self._['ip_address'], timeout=self.timeout)
-            self.type(self.args.ip + "\n")
-            self.client.waitForText(self._['netmask'], timeout=self.timeout)
-            if self.args.netmask:
-                self.type(self.args.netmask)
-
+        if self.text_is_visible(self._['not_using_dhcp']):
             self.type('\n')
-            self.client.waitForText(self._['gateway'], timeout=self.timeout)
-            if self.args.gateway:
-                self.type(self.args.gateway)
-
-            self.type('\n')
-            self.client.waitForText(self._['name_server'], timeout=self.timeout)
-            if self.args.dns:
-                self.type(self.args.dns)
-
+            self.click_on(self._['manual_network_config'])
             self.type('\n')
 
-        return True
+        self.client.waitForText(self._['ip_address'], timeout=self.timeout)
+        self.type(self.args.ip + "\n")
+        if self.args.netmask:
+            self.type(self.args.netmask)
+
+        self.type('\n')
+        self.client.waitForText(self._['gateway'], timeout=self.timeout)
+        if self.args.gateway:
+            self.type(self.args.gateway)
+
+        self.type('\n')
+        self.client.waitForText(self._['name_server'], timeout=self.timeout)
+        if self.args.dns:
+            self.type(self.args.dns)
+
+        self.type('\n')
 
     def _network_repo(self):
         sleep(120, "net.dns")
