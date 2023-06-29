@@ -49,7 +49,7 @@ class UCSInstallation(VNCInstallation):
 
         Automatic boot in 60 seconds...
         """
-        if self.text_is_visible('Univention Corporate Server Installer', timeout=-self.timeout):
+        if self.text_is_visible('Univention Corporate Server Installer', wait=False):
             if self.args.ip:
                 self.client.keyPress('down')
             self.type('\n')
@@ -73,11 +73,12 @@ class UCSInstallation(VNCInstallation):
         [Screenshot]  [Go Back] [Continue]
         """
         for _ in range(3):
-            self.client.waitForText('Select a language', timeout=self.timeout + 120)
+            self.wait_for_text('Select a language', timeout=120)
             self.click_at(250, 250)
-            self.type(self._['english_language_name'] + "\n")
+            self.type('english_language_name')
+            self.type("\n")
             try:
-                self.client.waitForText(self._['select_location'], timeout=self.timeout)
+                self.wait_for_text('select_location')
                 break
             except VNCDoException:
                 self.click_on('Go Back')
@@ -102,7 +103,8 @@ class UCSInstallation(VNCInstallation):
         [Bildschirmfoto]  [Zurück] [Weiter]
         """
         self.click_at(250, 250)
-        self.type(self._['location'] + "\n")
+        self.type('location')
+        self.type("\n")
 
         # Access software for a blind person using a braile display
         # Die Sparchsynthesizer-Stimme konfigurieren
@@ -115,9 +117,10 @@ class UCSInstallation(VNCInstallation):
          ...
         [Bildschirmfoto]  [Zurück] [Weiter]
         """
-        self.client.waitForText(self._['select_keyboard'], timeout=self.timeout)
+        self.wait_for_text('select_keyboard')
         self.click_at(250, 250)
-        self.type(self._['us_keyboard_layout'] + "\n")
+        self.type('us_keyboard_layout')
+        self.type("\n")
 
         # CD-ROM erkennen und einbinden
         # Debconf-Vorkonfigurationsdatei laden
@@ -153,7 +156,7 @@ class UCSInstallation(VNCInstallation):
 
         [Bildschirmfoto]  [Zurück] [Weiter]
         """
-        self.client.waitForText(self._['user_and_password'], timeout=self.timeout)
+        self.wait_for_text('user_and_password')
         self.type("%s\t\t%s\n" % (self.args.password, self.args.password))
 
         if self.args.language == 'eng':
@@ -174,8 +177,8 @@ class UCSInstallation(VNCInstallation):
 
             [Bildschirmfoto]  [Zurück] [Weiter]
             """
-            self.client.waitForText(self._['configure_clock'], timeout=self.timeout)
-            # self.type(self._['clock'])
+            self.wait_for_text('configure_clock')
+            # self.type('clock')
             sleep(1)
             self.type('\n')
 
@@ -194,7 +197,7 @@ class UCSInstallation(VNCInstallation):
         """
         # Zusätzliche Software installieren
         """
-        sleep(600, "disk.partition install")
+        sleep(300, "disk.partition install")
 
         """
         # GRUB-Bootloader auf einer Festplatte installieren
@@ -213,7 +216,7 @@ class UCSInstallation(VNCInstallation):
 
         [Bildschirmfoto]  [Zurück] [Weiter]
         """
-        self.client.waitForText(self._['finish_installation'], timeout=1300)
+        self.wait_for_text('finish_installation', timeout=-1300)
         self.type('\n')
         sleep(30, "reboot")
 
@@ -234,12 +237,12 @@ class UCSInstallation(VNCInstallation):
 
         [Bildschirmfoto]  [Zurück] [Weiter]
         """
-        self.client.waitForText(self._['partition_disks'], timeout=self.timeout)
+        self.wait_for_text('partition_disks')
         sub = getattr(self, "_disk_%s" % (self.args.role,), self._disk_default)
         sub()
 
     def _disk_applianceLVM(self) -> None:
-        # self.click_on(self._['entire_disk_with_lvm'])
+        # self.click_on('entire_disk_with_lvm')
         # LVM is the default so just press enter
         self.type('\n')
         sleep(3)
@@ -268,7 +271,7 @@ class UCSInstallation(VNCInstallation):
 
         [Bildschirmfoto]  [Zurück] [Weiter]
         """
-        self.click_on(self._['all_files_on_partition'])
+        self.click_on('all_files_on_partition')
         self.type('\n')
         sleep(3)
 
@@ -311,13 +314,13 @@ class UCSInstallation(VNCInstallation):
 
         [Bildschirmfoto]  [Zurück] [Weiter]
         """
-        self.client.waitForText(self._['continue_partition'], timeout=self.timeout)
+        self.wait_for_text('continue_partition')
         self.client.keyPress('down')
         self.type('\n')
 
     def _disk_applianceEC2(self) -> None:
         # Manuel
-        self.click_on(self._['manual'])
+        self.click_on('manual')
         self.type('\n')
         sleep(3)
 
@@ -375,7 +378,7 @@ class UCSInstallation(VNCInstallation):
 
         [Bildschirmfoto] [Hilfe]  [Zurück] [Weiter]
         """
-        self.click_on(self._['free_space'])
+        self.click_on('free_space')
         self.type('\n')
         sleep(3)
 
@@ -432,11 +435,11 @@ class UCSInstallation(VNCInstallation):
 
         [Bildschirmfoto] [Hilfe]  [Zurück] [Weiter]
         """
-        self.click_on(self._['boot_flag'])
+        self.click_on('boot_flag')
         # enter: boot-flag aktivieren
         self.type('\n')
         sleep(3)
-        self.click_on(self._['finish_create_partition'])
+        self.click_on('finish_create_partition')
         self.type('\n')
         sleep(3)
 
@@ -458,7 +461,7 @@ class UCSInstallation(VNCInstallation):
 
         [Bildschirmfoto] [Hilfe]  [Zurück] [Weiter]
         """
-        self.click_on(self._['finish_partition'])
+        self.click_on('finish_partition')
         self.type('\n')
         sleep(3)
 
@@ -474,7 +477,7 @@ class UCSInstallation(VNCInstallation):
           (x) Ja
 
         """
-        self.click_on(self._['no'])
+        self.click_on('no')
         self.type('\n')
 
         """
@@ -494,12 +497,12 @@ class UCSInstallation(VNCInstallation):
 
         [Bildschirmfoto]  [Weiter]
         """
-        self.client.waitForText(self._['continue_partition'], timeout=self.timeout)
+        self.wait_for_text('continue_partition')
         self.client.keyPress('down')
         self.type('\n\n')
 
     def _disk_default(self) -> None:
-        self.click_on(self._['entire_disk'])
+        self.click_on('entire_disk')
         self.type('\n')
 
         """
@@ -548,7 +551,7 @@ class UCSInstallation(VNCInstallation):
 
         [Bildschirmfoto] [Hilfe]  [Zurück] [Weiter]
         """
-        self.click_on(self._['finish_partition'])
+        self.click_on('finish_partition')
         self.type('\n')
 
         """
@@ -565,7 +568,7 @@ class UCSInstallation(VNCInstallation):
          ( ) Ja
         [Bildschirmfoto] [Hilfe]  [Zurück] [Weiter]
         """
-        self.client.waitForText(self._['continue_partition'], timeout=self.timeout)
+        self.wait_for_text('continue_partition')
         self.client.keyPress('down')
         self.type('\n')
 
@@ -582,16 +585,16 @@ class UCSInstallation(VNCInstallation):
 
         [Bildschirmfoto]  [Zurück] [Weiter]
         """
-        self.client.waitForText(self._['configure_network'], timeout=self.timeout)
-        if not self.text_is_visible(self._['ip_address']):
+        self.wait_for_text('configure_network')
+        if not self.text_is_visible('ip_address'):
             # always use first interface
-            self.click_on(self._['continue'])
+            self.click_on('continue')
             sleep(60, "net.detect")
 
         if not self.args.ip:
             raise ValueError("No IP address")
 
-        if self.text_is_visible(self._['not_using_dhcp']):
+        if self.text_is_visible('not_using_dhcp'):
             """
             # Netzwerk einrichten
             /Die automatische Netzwerkkonfiguration ist fehlgeschlagen/
@@ -616,21 +619,21 @@ class UCSInstallation(VNCInstallation):
 
             [Bildschirmfoto]  [Zurück] [Weiter]
             """
-            self.click_on(self._['manual_network_config'])
+            self.click_on('manual_network_config')
             self.type('\n')
 
-        self.client.waitForText(self._['ip_address'], timeout=self.timeout)
+        self.wait_for_text('ip_address')
         self.type(self.args.ip + "\n")
         if self.args.netmask:
             self.type(self.args.netmask)
 
         self.type('\n')
-        self.client.waitForText(self._['gateway'], timeout=self.timeout)
+        self.wait_for_text('gateway')
         if self.args.gateway:
             self.type(self.args.gateway)
 
         self.type('\n')
-        self.client.waitForText(self._['name_server'], timeout=self.timeout)
+        self.wait_for_text('name_server')
         if self.args.dns:
             self.type(self.args.dns)
 
@@ -638,7 +641,7 @@ class UCSInstallation(VNCInstallation):
 
     def _network_repo(self):
         sleep(120, "net.dns")
-        if self.text_is_visible(self._['repositories_not_reachable']):
+        if self.text_is_visible('repositories_not_reachable'):
             self.type('\n')
             sleep(30, "net.dns2")
 
@@ -657,14 +660,14 @@ class UCSInstallation(VNCInstallation):
 
         [Weiter]
         """
-        self.client.waitForText(self._['domain_setup'], timeout=self.timeout + 900)
+        self.wait_for_text('domain_setup', timeout=-300)
         sub = getattr(self, "_setup_%s" % (self.args.role,))
         sub()
 
     def _setup_master(self) -> None:
-        self.click_on(self._['new_domain'])
+        self.click_on('new_domain')
         self.go_next()
-        self.client.waitForText(self._['account_information'], timeout=self.timeout)
+        self.wait_for_text('account_information')
         """
         # Kontoinformationen
         Geben Sie den Namen ihrer Organisation und eine E-Mail-Adresse für die Aktivierung von UCS ein.
@@ -678,17 +681,17 @@ class UCSInstallation(VNCInstallation):
         self.go_next()
 
     def _setup_joined(self, role_text: str) -> None:
-        self.click_on(self._['join_domain'])
+        self.click_on('join_domain')
         self.go_next()
-        if self.text_is_visible(self._['no_dc_dns']):
-            self.click_on(self._['change_settings'])
-            self.click_on(self._['preferred_dns'])
+        if self.text_is_visible('no_dc_dns'):
+            self.click_on('change_settings')
+            self.click_on('preferred_dns')
             self.type(self.args.dns + "\n")
             self._network_repo()
-            self.click_on(self._['join_domain'])
+            self.click_on('join_domain')
             self.go_next()
 
-        self.client.waitForText(self._['role'])
+        self.wait_for_text('role')
         self.click_on(role_text)
         self.go_next()
 
@@ -702,11 +705,11 @@ class UCSInstallation(VNCInstallation):
         self._setup_joined('Managed Node')
 
     def _setup_admember(self) -> None:
-        self.click_on(self._['ad_domain'])
+        self.click_on('ad_domain')
         self.go_next()
-        self.client.waitForText(self._['no_dc_dns'], timeout=self.timeout)
+        self.wait_for_text('no_dc_dns')
         self.type('\n')
-        self.click_on(self._['preferred_dns'])
+        self.click_on('preferred_dns')
         sleep(1)
         self.type(self.args.dns + "\n")
         self._network_repo()
@@ -735,15 +738,15 @@ class UCSInstallation(VNCInstallation):
         if self.args.role not in {'admember'}:
             return
         # join/ad password and user
-        self.client.waitForText(self._['ad_account_information'], timeout=self.timeout)
+        self.wait_for_text('ad_account_information')
         for _ in range(2):
-            self.click_on(self._['address_ad'])
+            self.click_on('address_ad')
             self.type("\t")
             self.type(self.args.join_user + "\t", clear=True)
             self.type(self.args.join_password, clear=True)
             self.go_next()
             try:
-                self.client.waitForText(self._['error'], timeout=self.timeout)
+                self.wait_for_text('error')
                 self.type('\n')
                 self.client.keyPress('caplk')
             except VNCDoException:
@@ -753,16 +756,16 @@ class UCSInstallation(VNCInstallation):
     def joinpass(self) -> None:
         if self.args.role not in {'slave', 'backup', 'member'}:
             return
-        self.client.waitForText(self._['start_join'], timeout=self.timeout)
+        self.wait_for_text('start_join')
         for _ in range(2):
-            self.click_on(self._['hostname_primary'])
+            self.click_on('hostname_primary')
             sleep(5)
             self.type('\t')
             self.type(self.args.join_user + "\t", clear=True)
             self.type(self.args.join_password, clear=True)
             self.go_next()
             try:
-                self.client.waitForText(self._['error'], timeout=self.timeout)
+                self.wait_for_text('error')
                 self.type('\n')
                 self.client.keyPress('caplk')
             except VNCDoException:
@@ -779,9 +782,9 @@ class UCSInstallation(VNCInstallation):
         [Zurück] [Weiter]
         """
         if self.args.role == 'master':
-            self.client.waitForText(self._['host_settings'], timeout=self.timeout)
+            self.wait_for_text('host_settings')
         else:
-            self.client.waitForText(self._['system_name'])
+            self.wait_for_text('system_name')
 
         self.type(self.args.fqdn, clear=True)
         if self.args.role == 'master':
@@ -794,8 +797,8 @@ class UCSInstallation(VNCInstallation):
         if not self.args.school_dep:
             return
 
-        self.client.waitForText(self._['school_role'], timeout=self.timeout)
-        self.click_on(self._['school_%s' % (self.args.school_dep,)])
+        self.wait_for_text('school_role')
+        self.click_on('school_%s' % (self.args.school_dep,))
         self.go_next()
 
     @verbose("FINISH")
@@ -815,7 +818,7 @@ class UCSInstallation(VNCInstallation):
 
         [Zurück] [System konfigurieren]
         """
-        self.client.waitForText(self._['confirm_config'], timeout=self.timeout)
+        self.wait_for_text('confirm_config')
         self.type('\n')
         sleep(self.setup_finish_sleep, "FINISH")
 
@@ -826,14 +829,14 @@ class UCSInstallation(VNCInstallation):
 
         [Fertigstellen]
         """
-        self.client.waitForText(self._['setup_successful'], timeout=2100)
+        self.wait_for_text('setup_successful', timeout=-2100)
         self.type('\t\n')
         sleep(10, "reboot")
-        self.client.waitForText('univention', timeout=self.timeout)
+        self.wait_for_text('univention')
 
     @verbose("KVM")
     def configure_kvm_network(self, iface: str) -> None:
-        self.client.waitForText('corporate server')
+        self.wait_for_text('corporate server')
         self.type('\n')
         sleep(3)
         self.type('root\n')

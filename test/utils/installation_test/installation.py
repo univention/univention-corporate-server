@@ -129,12 +129,15 @@ class VNCInstallation:
         )
         self.timeout = 120
         self.setup_finish_sleep = 900
-        self._ = self.load_translation(self.args.language)
+        self.translations = self.load_translation(self.args.language)
         self._client: Optional[ThreadedVNCClientProxy] = None
         self._stopping = False
 
     def load_translation(self, language: str) -> Dict[str, str]:
         return {}
+
+    def translate(self, text: str) -> str:
+        return self.translations.get(text) or text
 
     @property
     def client(self) -> ThreadedVNCClientProxy:
@@ -194,25 +197,34 @@ class VNCInstallation:
 
     @verbose("click_on", "{1!r}")
     def click_on(self, text: str) -> None:
-        self.client.mouseClickOnText(text, timeout=self.timeout)
+        translated = self.translate(text)
+        self.client.timeout = self.timeout + 5
+        self.client.mouseClickOnText(translated, timeout=self.timeout)
 
     @verbose("click_at", "{1},{2} {3}")
     def click_at(self, x: int, y: int, button: int = 1) -> None:
         self.client.mouseMove(x, y)
         self.client.mousePress(button)
 
-    def text_is_visible(self, text: str, timeout: int = 0) -> bool:
+    def text_is_visible(self, text: str, timeout: int = 0, wait: bool = True) -> bool:
         try:
-            self.client.waitForText(text, timeout=self.timeout * (timeout >= 0) + abs(timeout))
+            self.wait_for_text(text, timeout, wait)
             return True
         except (VNCDoException, VNCAutomateException):
             return False
 
+    def wait_for_text(self, text: str, timeout: int = 0, wait: bool = True) -> None:
+        translated = self.translate(text)
+        timeout = self.timeout * (timeout >= 0) + abs(timeout)
+        self.client.timeout = timeout + 5
+        self.client.waitForText(translated, timeout, wait)
+
     @verbose("type", "{1!r} clear={2}")
     def type(self, text: str, clear: bool = False) -> None:
+        translated = self.translate(text)
         if clear:
             self.clear_input()
-        self.client.enterKeys(text)
+        self.client.enterKeys(translated)
 
     def clear_input(self) -> None:
         self.client.keyPress('end')
@@ -223,7 +235,7 @@ class VNCInstallation:
     def check_apipa(self) -> None:
         """Check automatic private address if no DHCP answer."""
         try:
-            self.client.waitForText('APIPA', timeout=self.timeout)
+            self.wait_for_text('APIPA')
             self.type("\n")
             sleep(60, "net.apipa")
         except VNCDoException:

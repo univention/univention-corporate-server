@@ -40,7 +40,7 @@ class UCSSetup(VNCInstallation):
         [Next]
         """
         try:
-            self.client.waitForText('English', timeout=self.timeout)
+            self.wait_for_text('English')
         except VNCDoException:
             pass
 
@@ -59,7 +59,7 @@ class UCSSetup(VNCInstallation):
 
         [Back] [Next]
         """
-        self.client.waitForText('Localization', timeout=self.timeout)
+        self.wait_for_text('Localization')
         self.go_next(tabs=4)
 
     @verbose("NETWORK")
@@ -81,9 +81,9 @@ class UCSSetup(VNCInstallation):
         [Back] [Next]
         """
         try:
-            self.client.waitForText('IP address', timeout=self.timeout)
+            self.wait_for_text('IP address')
         except VNCDoException:
-            self.client.waitForText('Domain and network', timeout=self.timeout)
+            self.wait_for_text('Domain and network', timeout=-1)
 
         self.screenshot('network-setup.png')
         if self.args.role in {'admember', 'slave'}:
@@ -96,14 +96,14 @@ class UCSSetup(VNCInstallation):
         sleep(60, "net.apipa")
         self.check_apipa()
         try:
-            self.client.waitForText('No gateway has been', timeout=self.timeout)
+            self.wait_for_text('No gateway has been')
             self.type('\n')
             sleep(60, "net.gateway")
         except VNCDoException:
             pass
 
         try:
-            self.client.waitForText('continue without access', timeout=self.timeout)
+            self.wait_for_text('continue without access')
             self.type('\n')
             sleep(60, "net.unconnected")
         except VNCDoException:
@@ -184,7 +184,7 @@ class UCSSetup(VNCInstallation):
 
             [Back] [Next]
             """
-            self.client.waitForText('Active Directory join', timeout=self.timeout)
+            self.wait_for_text('Active Directory join')
             self.click_on('Username')
             self.type(self.args.join_user)
             self.click_on('Password')
@@ -207,7 +207,7 @@ class UCSSetup(VNCInstallation):
 
         [Back] [Next]
         """
-        self.client.waitForText('Account information', timeout=self.timeout)
+        self.wait_for_text('Account information')
         self.screenshot('organisation-setup.png')
         self.type('home\t\t\t%s\t%s' % (password, password))
         self.go_next(tabs=2)
@@ -222,7 +222,7 @@ class UCSSetup(VNCInstallation):
 
         [Back] [Next]
         """
-        self.client.waitForText('Host settings', timeout=self.timeout)
+        self.wait_for_text('Host settings')
         self.screenshot('hostname-setup.png')
         self.type(self.args.fqdn + "\t", clear=True)
         if self.args.role in {'admember', 'slave'}:
@@ -250,7 +250,7 @@ class UCSSetup(VNCInstallation):
 
         [Back] [Configure System]
         """
-        self.client.waitForText('confirm configuration', timeout=self.timeout)
+        self.wait_for_text('confirm configuration')
         self.screenshot('start-setup.png')
         for _ in range(3):
             self.client.keyPress('down')
@@ -262,14 +262,14 @@ class UCSSetup(VNCInstallation):
     @verbose("FINISH")
     def finish(self) -> None:
         sleep(600, "install")
-        self.client.waitForText('Setup successful', timeout=3000)
+        self.wait_for_text('Setup successful', -3000)
         self.screenshot('finished-setup.png')
         self.type('\t\n')
         # except welcome screen
         try:
-            self.client.waitForText('www', timeout=self.timeout)
+            self.wait_for_text('www')
         except VNCDoException:
-            self.client.waitForText('press any key', timeout=self.timeout)
+            self.wait_for_text('press any key', timeout=-1)
         self.screenshot('welcome-screen.png')
 
     def _go_next_search(self) -> None:
