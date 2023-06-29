@@ -568,8 +568,8 @@ class ListOfItems(ArrayType):
 
     def encode_value(self, value):
         return [
-            item_type(self.property, self.property_name).encode(val)
-            for item_type, val in zip(self.item_types, value)
+            item_type(univention.admin.property(syntax=subsyntax[1]), self.property_name).encode(val)
+            for item_type, val, subsyntax in zip(self.item_types, value, self.syntax.subsyntaxes)
         ]
 
     def decode_value(self, value):
