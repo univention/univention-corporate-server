@@ -83,81 +83,97 @@ class UCSInstallation(VNCInstallation):
 
         # hd
         sleep(60, "disk.detect")
-        self.client.waitForText(self._['partition_disks'], timeout=self.timeout)
-        if self.args.role == 'applianceLVM':
-            #self.click_on(self._['entire_disk_with_lvm'])
-            # LVM is the default so just press enter
-            self.type('\n')
-            sleep(3)
-            self.type('\n')
-            self.click_on(self._['all_files_on_partition'])
-            self.type('\n')
-            sleep(3)
-            self.client.keyPress('down')
-            self.type('\n')
-            self.client.waitForText(self._['continue_partition'], timeout=self.timeout)
-            self.client.keyPress('down')
-            self.type('\n')
-        elif self.args.role == 'applianceEC2':
-            # Manuel
-            self.click_on(self._['manual'])
-            self.type('\n')
-            sleep(3)
-            # Virtuelle Festplatte 1
-            self.client.keyPress('down')
-            self.client.keyPress('down')
-            self.client.keyPress('down')
-            self.client.keyPress('enter')
-            sleep(3)
-            self.client.keyPress('down')
-            sleep(3)
-            self.type('\n')
-            sleep(3)
-            self.click_on(self._['free_space'])
-            self.type('\n')
-            sleep(3)
-            # neue partition erstellen
-            self.type('\n')
-            sleep(3)
-            # enter: ganze festplattengröße ist eingetragen
-            self.type('\n')
-            sleep(3)
-            # enter: primär
-            self.type('\n')
-            sleep(3)
-            self.click_on(self._['boot_flag'])
-            # enter: boot-flag aktivieren
-            self.type('\n')
-            sleep(3)
-            self.click_on(self._['finish_create_partition'])
-            self.type('\n')
-            sleep(3)
-            self.click_on(self._['finish_partition'])
-            self.type('\n')
-            sleep(3)
-            # Nein (kein swap speicher)
-            self.click_on(self._['no'])
-            self.type('\n')
-            self.client.waitForText(self._['continue_partition'], timeout=self.timeout)
-            self.client.keyPress('down')
-            self.type('\n\n')
-        else:
-            self.click_on(self._['entire_disk'])
-            self.type('\n')
-            sleep(3)
-            self.type('\n')
-            sleep(3)
-            self.type('\n')
-            self.click_on(self._['finish_partition'])
-            self.type('\n')
-            self.client.waitForText(self._['continue_partition'], timeout=self.timeout)
-            self.client.keyPress('down')
-            self.type('\n')
+        self.disk_setup()
 
         sleep(600, "disk.partition install")
         self.client.waitForText(self._['finish_installation'], timeout=1300)
         self.type('\n')
         sleep(30, "reboot")
+
+    @verbose("DISK")
+    def disk_setup(self):  # type: () -> None
+        self.client.waitForText(self._['partition_disks'], timeout=self.timeout)
+        sub = getattr(self, "_disk_%s" % (self.args.role,), self._disk_default)
+        sub()
+
+    def _disk_applianceLVM(self):  # type: () -> None
+        # self.click_on(self._['entire_disk_with_lvm'])
+        # LVM is the default so just press enter
+        self.type('\n')
+        sleep(3)
+
+        self.type('\n')
+
+        self.click_on(self._['all_files_on_partition'])
+        self.type('\n')
+        sleep(3)
+
+        self.client.keyPress('down')
+        self.type('\n')
+
+        self.client.waitForText(self._['continue_partition'], timeout=self.timeout)
+        self.client.keyPress('down')
+        self.type('\n')
+
+    def _disk_applianceEC2(self):  # type: () -> None
+        # Manuel
+        self.click_on(self._['manual'])
+        self.type('\n')
+        sleep(3)
+        # Virtuelle Festplatte 1
+        self.client.keyPress('down')
+        self.client.keyPress('down')
+        self.client.keyPress('down')
+        self.type('\n')
+        sleep(3)
+        self.client.keyPress('down')
+        sleep(3)
+        self.type('\n')
+        sleep(3)
+        self.click_on(self._['free_space'])
+        self.type('\n')
+        sleep(3)
+        # neue partition erstellen
+        self.type('\n')
+        sleep(3)
+        # enter: ganze festplattengröße ist eingetragen
+        self.type('\n')
+        sleep(3)
+        # enter: primär
+        self.type('\n')
+        sleep(3)
+        self.click_on(self._['boot_flag'])
+        # enter: boot-flag aktivieren
+        self.type('\n')
+        sleep(3)
+        self.click_on(self._['finish_create_partition'])
+        self.type('\n')
+        sleep(3)
+        self.click_on(self._['finish_partition'])
+        self.type('\n')
+        sleep(3)
+        # Nein (kein swap speicher)
+        self.click_on(self._['no'])
+        self.type('\n')
+        self.client.waitForText(self._['continue_partition'], timeout=self.timeout)
+        self.client.keyPress('down')
+        self.type('\n\n')
+
+    def _disk_default(self):  # type: () -> None
+        self.click_on(self._['entire_disk'])
+        self.type('\n')
+        sleep(3)
+
+        self.type('\n')
+        sleep(3)
+
+        self.type('\n')
+
+        self.click_on(self._['finish_partition'])
+        self.type('\n')
+        self.client.waitForText(self._['continue_partition'], timeout=self.timeout)
+        self.client.keyPress('down')
+        self.type('\n')
 
     @verbose("NETWORK")
     def network_setup(self):  # type: () -> None
