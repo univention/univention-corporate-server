@@ -40,7 +40,7 @@ class UCSSetup(VNCInstallation):
         [Next]
         """
         try:
-            self.client.waitForText('English', timeout=self.timeout, prevent_screen_saver=True)
+            self.client.waitForText('English', timeout=self.timeout)
         except VNCDoException:
             pass
 
@@ -262,7 +262,7 @@ class UCSSetup(VNCInstallation):
     @verbose("FINISH")
     def finish(self) -> None:
         sleep(600, "install")
-        self.client.waitForText('Setup successful', timeout=3000, prevent_screen_saver=True)
+        self.client.waitForText('Setup successful', timeout=3000)
         self.screenshot('finished-setup.png')
         self.type('\t\n')
         # except welcome screen

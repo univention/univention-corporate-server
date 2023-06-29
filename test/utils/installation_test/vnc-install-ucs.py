@@ -49,7 +49,7 @@ class UCSInstallation(VNCInstallation):
 
         Automatic boot in 60 seconds...
         """
-        if self.text_is_visible('Univention Corporate Server Installer'):
+        if self.text_is_visible('Univention Corporate Server Installer', timeout=-self.timeout):
             if self.args.ip:
                 self.client.keyPress('down')
             self.type('\n')
@@ -73,7 +73,7 @@ class UCSInstallation(VNCInstallation):
         [Screenshot]  [Go Back] [Continue]
         """
         for _ in range(3):
-            self.client.waitForText('Select a language', timeout=self.timeout + 120, prevent_screen_saver=True)
+            self.client.waitForText('Select a language', timeout=self.timeout + 120)
             self.click_at(250, 250)
             self.type(self._['english_language_name'] + "\n")
             try:
