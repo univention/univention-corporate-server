@@ -1,11 +1,11 @@
-#!/usr/bin/python2.7
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
 """UCS installation via VNC"""
 
 from argparse import ArgumentDefaultsHelpFormatter, ArgumentParser
 from os.path import dirname, join
-from typing import Dict  # noqa: F401
+from typing import Dict
 
 from installation import VNCInstallation, build_parser, sleep, verbose
 from vncdotool.client import VNCDoException
@@ -14,7 +14,7 @@ from yaml import safe_load
 
 class UCSInstallation(VNCInstallation):
 
-    def load_translation(self, language):  # type: (str) -> Dict[str, str]
+    def load_translation(self, language: str) -> Dict[str, str]:
         name = join(dirname(__file__), "languages.yaml")
         with open(name) as fd:
             return {
@@ -23,7 +23,7 @@ class UCSInstallation(VNCInstallation):
             }
 
     @verbose("MAIN")
-    def main(self):  # type: () -> None
+    def main(self) -> None:
         self.bootmenu()
         self.installer()
         self.setup()
@@ -38,7 +38,7 @@ class UCSInstallation(VNCInstallation):
             self.configure_kvm_network(self.args.second_interface)
 
     @verbose("GRUB")
-    def bootmenu(self):  # type: () -> None
+    def bootmenu(self) -> None:
         """
         # Univention Corporate Server Installer
          Start with default settings
@@ -55,7 +55,7 @@ class UCSInstallation(VNCInstallation):
             self.type('\n')
 
     @verbose("INSTALLER")
-    def installer(self):  # type: () -> None
+    def installer(self) -> None:
         # Sprache wählen/Choose language
         """
         # Select a language
@@ -218,7 +218,7 @@ class UCSInstallation(VNCInstallation):
         sleep(30, "reboot")
 
     @verbose("DISK")
-    def disk_setup(self):  # type: () -> None
+    def disk_setup(self) -> None:
         """
         # Festplatte partitionieren
         Der Installer kann Sie durch die Partitionierung einer Festplatte (mit verschiedenen Standardschemata)
@@ -238,7 +238,7 @@ class UCSInstallation(VNCInstallation):
         sub = getattr(self, "_disk_%s" % (self.args.role,), self._disk_default)
         sub()
 
-    def _disk_applianceLVM(self):  # type: () -> None
+    def _disk_applianceLVM(self) -> None:
         # self.click_on(self._['entire_disk_with_lvm'])
         # LVM is the default so just press enter
         self.type('\n')
@@ -315,7 +315,7 @@ class UCSInstallation(VNCInstallation):
         self.client.keyPress('down')
         self.type('\n')
 
-    def _disk_applianceEC2(self):  # type: () -> None
+    def _disk_applianceEC2(self) -> None:
         # Manuel
         self.click_on(self._['manual'])
         self.type('\n')
@@ -498,7 +498,7 @@ class UCSInstallation(VNCInstallation):
         self.client.keyPress('down')
         self.type('\n\n')
 
-    def _disk_default(self):  # type: () -> None
+    def _disk_default(self) -> None:
         self.click_on(self._['entire_disk'])
         self.type('\n')
 
@@ -570,7 +570,7 @@ class UCSInstallation(VNCInstallation):
         self.type('\n')
 
     @verbose("NETWORK")
-    def network_setup(self):  # type: () -> None
+    def network_setup(self) -> None:
         """
         # Netzwerk einrichten
         Ihr System besitzt mehrere Netzwerk-Schnittstellen. Bitte wählen Sie die Schnittstelle (Netzwerkkarte),
@@ -643,7 +643,7 @@ class UCSInstallation(VNCInstallation):
             sleep(30, "net.dns2")
 
     @verbose("SETUP")
-    def setup(self):  # type: () -> None
+    def setup(self) -> None:
         """
         # Domäneneinstellungen
         Bitte wählen Sie die Domäneneinstellungen.
@@ -661,7 +661,7 @@ class UCSInstallation(VNCInstallation):
         sub = getattr(self, "_setup_%s" % (self.args.role,))
         sub()
 
-    def _setup_master(self):  # type: () -> None
+    def _setup_master(self) -> None:
         self.click_on(self._['new_domain'])
         self.go_next()
         self.client.waitForText(self._['account_information'], timeout=self.timeout)
@@ -677,7 +677,7 @@ class UCSInstallation(VNCInstallation):
         self.type('home')
         self.go_next()
 
-    def _setup_joined(self, role_text):  # type: (str) -> None
+    def _setup_joined(self, role_text: str) -> None:
         self.click_on(self._['join_domain'])
         self.go_next()
         if self.text_is_visible(self._['no_dc_dns']):
@@ -692,16 +692,16 @@ class UCSInstallation(VNCInstallation):
         self.click_on(role_text)
         self.go_next()
 
-    def _setup_backup(self):  # type: () -> None
+    def _setup_backup(self) -> None:
         self._setup_joined('Backup Directory Node')
 
-    def _setup_slave(self):  # type: () -> None
+    def _setup_slave(self) -> None:
         self._setup_joined('Replica Directory Node')
 
-    def _setup_member(self):  # type: () -> None
+    def _setup_member(self) -> None:
         self._setup_joined('Managed Node')
 
-    def _setup_admember(self):  # type: () -> None
+    def _setup_admember(self) -> None:
         self.click_on(self._['ad_domain'])
         self.go_next()
         self.client.waitForText(self._['no_dc_dns'], timeout=self.timeout)
@@ -714,7 +714,7 @@ class UCSInstallation(VNCInstallation):
         self.go_next()
         self.go_next()
 
-    def _setup_applianceEC2(self):  # type: () -> None
+    def _setup_applianceEC2(self) -> None:
         self.client.keyDown('ctrl')
         self.client.keyPress('w')  # Ctrl-Q
         self.client.keyUp('ctrl')
@@ -731,7 +731,7 @@ class UCSInstallation(VNCInstallation):
 
     _setup_applianceLVM = _setup_applianceEC2
 
-    def joinpass_ad(self):  # type: () -> None
+    def joinpass_ad(self) -> None:
         if self.args.role not in {'admember'}:
             return
         # join/ad password and user
@@ -750,7 +750,7 @@ class UCSInstallation(VNCInstallation):
                 break
 
     @verbose("JOIN")
-    def joinpass(self):  # type: () -> None
+    def joinpass(self) -> None:
         if self.args.role not in {'slave', 'backup', 'member'}:
             return
         self.client.waitForText(self._['start_join'], timeout=self.timeout)
@@ -768,7 +768,7 @@ class UCSInstallation(VNCInstallation):
             except VNCDoException:
                 break
 
-    def hostname(self):  # type: () -> None
+    def hostname(self) -> None:
         """
         # Rechnereinstellungen
         Eingabe des Namens dieses Systems.
@@ -789,7 +789,7 @@ class UCSInstallation(VNCInstallation):
 
         self.go_next()
 
-    def ucsschool(self):  # type: () -> None
+    def ucsschool(self) -> None:
         # ucs@school role
         if not self.args.school_dep:
             return
@@ -799,7 +799,7 @@ class UCSInstallation(VNCInstallation):
         self.go_next()
 
     @verbose("FINISH")
-    def finish(self):  # type: () -> None
+    def finish(self) -> None:
         """
         # Bestätigen der Einstellungen
         Bitte bestätigen Sie die gewählten Einstellungen, die nachstehend zusammengefasst sind.
@@ -832,7 +832,7 @@ class UCSInstallation(VNCInstallation):
         self.client.waitForText('univention', timeout=self.timeout)
 
     @verbose("KVM")
-    def configure_kvm_network(self, iface):  # type: (str) -> None
+    def configure_kvm_network(self, iface: str) -> None:
         self.client.waitForText('corporate server')
         self.type('\n')
         sleep(3)
@@ -853,11 +853,11 @@ class UCSInstallation(VNCInstallation):
         self.type(' crontab\n')
 
     @verbose("NEXT")
-    def go_next(self):  # type: () -> None
+    def go_next(self) -> None:
         self.click_at(910, 700)
 
 
-def main():  # type: () -> None
+def main() -> None:
     parser = ArgumentParser(
         description=__doc__,
         parents=[build_parser()],

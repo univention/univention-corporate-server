@@ -1,4 +1,3 @@
-#!/usr/bin/python2.7 -u
 # -*- coding: utf-8 -*-
 
 """UCS installation via VNC"""
@@ -7,9 +6,9 @@ import logging
 import os
 import sys
 import time
-from argparse import ArgumentParser, Namespace  # noqa: F401
+from argparse import ArgumentParser, Namespace
 from contextlib import suppress
-from typing import Dict, Optional  # noqa: F401
+from typing import Dict, Optional
 
 from helper import trace_calls, verbose
 from twisted.internet import reactor
@@ -21,11 +20,11 @@ from vncdotool.client import VNCDoException
 
 
 @verbose("sleep", "{0:.1f} {1}")
-def sleep(seconds, msg=""):  # type: (float, str) -> None
+def sleep(seconds: float, msg: str = "") -> None:
     time.sleep(seconds)
 
 
-def build_parser():  # type: () -> ArgumentParser
+def build_parser() -> ArgumentParser:
     parser = ArgumentParser(add_help=False)
     parser.add_argument(
         '--screenshot-dir',
@@ -113,9 +112,9 @@ def build_parser():  # type: () -> ArgumentParser
     return parser
 
 
-class VNCInstallation(object):
+class VNCInstallation:
 
-    def __init__(self, args):  # type: (Namespace) -> None
+    def __init__(self, args: Namespace) -> None:
         # see https://github.com/tesseract-ocr/tesseract/issues/2611
         os.environ['OMP_THREAD_LIMIT'] = '1'
         init_logger(args.logging)
@@ -131,7 +130,7 @@ class VNCInstallation(object):
         self.timeout = 120
         self.setup_finish_sleep = 900
         self._ = self.load_translation(self.args.language)
-        self._client = None  # type: Optional[ThreadedVNCClientProxy]
+        self._client: Optional[ThreadedVNCClientProxy] = None
         self._stopping = False
 
     def load_translation(self, language: str) -> Dict[str, str]:
@@ -148,7 +147,7 @@ class VNCInstallation(object):
             self._client.updateOCRConfig(self.config)
         return self._client
 
-    def run(self):  # type: () -> None
+    def run(self) -> None:
         # https://docs.twisted.org/en/stable/core/howto/threading.html#running-code-in-threads
         reactor.addSystemEventTrigger("before", "shutdown", self._onShutdown)
         reactor.callInThread(self.runner)
@@ -157,7 +156,7 @@ class VNCInstallation(object):
     def _onShutdown(self) -> None:
         self._stopping = True
 
-    def runner(self):  # type: () -> None
+    def runner(self) -> None:
         ret = 0
         try:
             tracing = not sys.gettrace()
@@ -184,25 +183,25 @@ class VNCInstallation(object):
                 reactor.callWhenRunning(reactor.stop)
         os._exit(ret)
 
-    def main(self):  # type: () -> None
+    def main(self) -> None:
         raise NotImplementedError()
 
-    def screenshot(self, filename):  # type: (str) -> None
+    def screenshot(self, filename: str) -> None:
         if not os.path.isdir(self.args.screenshot_dir):
             os.mkdir(self.args.screenshot_dir)
         screenshot_file = os.path.join(self.args.screenshot_dir, filename)
         self.client.captureScreen(screenshot_file)
 
     @verbose("click_on", "{1!r}")
-    def click_on(self, text):  # type: (str) -> None
+    def click_on(self, text: str) -> None:
         self.client.mouseClickOnText(text, timeout=self.timeout)
 
     @verbose("click_at", "{1},{2} {3}")
-    def click_at(self, x, y, button=1):  # type: (int, int, int) -> None
+    def click_at(self, x: int, y: int, button: int = 1) -> None:
         self.client.mouseMove(x, y)
         self.client.mousePress(button)
 
-    def text_is_visible(self, text, timeout=0):  # type: (str, int) -> bool
+    def text_is_visible(self, text: str, timeout: int = 0) -> bool:
         try:
             self.client.waitForText(text, timeout=self.timeout * (timeout >= 0) + abs(timeout))
             return True
@@ -210,18 +209,18 @@ class VNCInstallation(object):
             return False
 
     @verbose("type", "{1!r} clear={2}")
-    def type(self, text, clear=False):  # type: (str, bool) -> None
+    def type(self, text: str, clear: bool = False) -> None:
         if clear:
             self.clear_input()
         self.client.enterKeys(text)
 
-    def clear_input(self):  # type: () -> None
+    def clear_input(self) -> None:
         self.client.keyPress('end')
         for _ in range(100):
             self.client.keyPress('bsp')
         time.sleep(3)
 
-    def check_apipa(self):  # type: () -> None
+    def check_apipa(self) -> None:
         """Check automatic private address if no DHCP answer."""
         try:
             self.client.waitForText('APIPA', timeout=self.timeout)

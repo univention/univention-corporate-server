@@ -1,4 +1,4 @@
-#!/usr/bin/python2.7
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
 """Setup via UMC"""
@@ -13,7 +13,7 @@ from vncdotool.client import VNCDoException
 class UCSSetup(VNCInstallation):
 
     @verbose("MAIN")
-    def main(self):  # type: () -> None
+    def main(self) -> None:
         self.language('English')
         self.network()
         self.domain(self.args.role)
@@ -24,7 +24,7 @@ class UCSSetup(VNCInstallation):
         self.start()
         self.finish()
 
-    def language(self, language):  # type: (str) -> None
+    def language(self, language: str) -> None:
         if self.text_is_visible('Notification'):
             self.screenshot('notification.png')
             self.click_on('OK')
@@ -63,7 +63,7 @@ class UCSSetup(VNCInstallation):
         self.go_next(tabs=4)
 
     @verbose("NETWORK")
-    def network(self):  # type: () -> None
+    def network(self) -> None:
         """
         # Domain and network configuration
         Specify the network settings for this system.
@@ -111,7 +111,7 @@ class UCSSetup(VNCInstallation):
 
         sleep(120, "net.finish")
 
-    def domain(self, role):  # type: (str) -> None
+    def domain(self, role: str) -> None:
         """
         # Domain setup
         Please select your domain settings.
@@ -191,7 +191,7 @@ class UCSSetup(VNCInstallation):
             self.type(self.args.join_password)
             self.go_next(tabs=2)
 
-    def orga(self, orga, password):  # type: (str, str) -> None
+    def orga(self, orga: str, password: str) -> None:
         """
         # Account information
         Enter the name of your organization, an e-mail address to activate UCS and a password for your /Administrator/ account.
@@ -212,7 +212,7 @@ class UCSSetup(VNCInstallation):
         self.type('home\t\t\t%s\t%s' % (password, password))
         self.go_next(tabs=2)
 
-    def hostname(self):  # type: () -> None
+    def hostname(self) -> None:
         """
         # Host settings
         Specify the name of this system
@@ -230,7 +230,7 @@ class UCSSetup(VNCInstallation):
 
         self.go_next(tabs=2)
 
-    def start(self):  # type: () -> None
+    def start(self) -> None:
         """
         # Confirm configuration settings
         Please confirm the chosen configuration settings which are summarized in the following.
@@ -260,7 +260,7 @@ class UCSSetup(VNCInstallation):
             self.click_on('configure system')
 
     @verbose("FINISH")
-    def finish(self):  # type: () -> None
+    def finish(self) -> None:
         sleep(600, "install")
         self.client.waitForText('Setup successful', timeout=3000, prevent_screen_saver=True)
         self.screenshot('finished-setup.png')
@@ -272,17 +272,17 @@ class UCSSetup(VNCInstallation):
             self.client.waitForText('press any key', timeout=self.timeout)
         self.screenshot('welcome-screen.png')
 
-    def _go_next_search(self):  # type: () -> None
+    def _go_next_search(self) -> None:
         self.click_on('NEXT')
 
-    def _go_next_tab(self, tabs):  # type: (int) -> None
+    def _go_next_tab(self, tabs: int) -> None:
         self.type("\t" * tabs + "\n")
 
-    def go_next(self, tabs=0):  # type: (int) -> None
+    def go_next(self, tabs: int = 0) -> None:
         self._go_next_tab(tabs)
 
 
-def main():  # type: () -> None
+def main() -> None:
     parser = ArgumentParser(description=__doc__, parents=[build_parser()])
     parser = ArgumentParser(
         description=__doc__,

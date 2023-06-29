@@ -1,4 +1,3 @@
-#!/usr/bin/python2.7 -u
 # -*- coding: utf-8 -*-
 
 from __future__ import print_function
@@ -10,8 +9,8 @@ import time
 from functools import wraps
 from os.path import samefile
 from string import Formatter
-from types import FrameType  # noqa: F401
-from typing import Any, Callable, Mapping, Optional, Sequence, Union  # noqa: F401
+from types import FrameType
+from typing import Any, Callable, Mapping, Optional, Sequence, Union
 
 
 COLORS = {
@@ -27,13 +26,13 @@ COLORS = {
 
 
 class VerboseFormatter(Formatter):
-    def get_value(self, key, args, kwargs):  # type: (Union[int, str], Sequence[Any], Mapping[str, Any]) -> Any
+    def get_value(self, key: Union[int, str], args: Sequence[Any], kwargs: Mapping[str, Any]) -> Any:
         try:
-            return super(VerboseFormatter, self).get_value(key, args, kwargs)
+            return super().get_value(key, args, kwargs)
         except (IndexError, KeyError):
             return ""
 
-    def check_unused_args(self, used_args, args, kwargs):  # type: (Any, Sequence[Any], Mapping[str, Any]) -> None
+    def check_unused_args(self, used_args: Any, args: Sequence[Any], kwargs: Mapping[str, Any]) -> None:
         pass
 
 
@@ -71,7 +70,7 @@ def verbose(msg, fmt="", formatter=VerboseFormatter()):  # type (str, str, Forma
     return decorator
 
 
-def trace_calls(frame, event, arg):  # type: (FrameType, str, Any) -> Optional[Callable]
+def trace_calls(frame: FrameType, event: str, arg: Any) -> Optional[Callable]:
     log = logging.getLogger(__name__)
 
     co = frame.f_code
