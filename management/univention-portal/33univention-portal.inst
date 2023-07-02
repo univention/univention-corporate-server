@@ -95,7 +95,6 @@ umc_operation_create "udm-new-portal" "UDM - Portal" "portals/all" \
 	"udm/*:objectType=portals/*" "udm/types" "udm/get" "udm/put" "udm/properties" "udm/values"
 
 ldap_base="$(ucr get ldap/base)"
-hostname="$(ucr get hostname)"
 # create container for portal objects and portal entries
 univention-directory-manager container/cn create "$@" --ignore_exists \
 	--position "cn=univention,$ldap_base" \
@@ -129,7 +128,6 @@ if [ $JS_LAST_EXECUTED_VERSION -lt 8 ]; then
 	/usr/lib/univention-portal/migrate-to-new-portal "$@"
 fi
 
-ldap_hostdn="$(ucr get ldap/hostdn)"
 role="$(ucr get server/role)"
 
 # the following UDM objects need to be created only initially
