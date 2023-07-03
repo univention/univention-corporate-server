@@ -1,0 +1,24 @@
+[tool.poetry]
+name = "ucs-test-utils"
+version = "0.1.0"
+description = "Utilities used for testing ucs-related systems"
+authors = ["Johannes Lohmer <lohmer@univention.de>"]
+
+[tool.poetry.dependencies]
+python = "^3.7"
+
+[tool.poetry.dev-dependencies]
+pytest = "^5.2"
+
+[[tool.poetry.packages]]
+include = "univention/testing/**/*.py"
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
+
+# TODO: Find out what works outside ucs vm and only add those parts!
+# include = [
+#     "univention/testing/__init__.py",
+# ]
+#
