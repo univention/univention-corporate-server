@@ -1,0 +1,16 @@
+product: ucs
+release: "5.0"
+version: [3, 4]
+scope: ucs_5.0-0-errata5.0-4
+src: yajl
+fix: 2.1.0-3+deb10u1
+desc: |
+ This update addresses the following issue:
+
+ Debian update 2.1.0-3+deb10u1
+ 2.1.0-3+deb10u1 (Sun, 02 Jul 2023 13:47:46 +0200)
+ * Non-maintainer upload by the LTS Security Team.
+ * Import upstream patch for CVE-2023-33460.
+bug: [56242]
+cve:
+- CVE-2023-33460
