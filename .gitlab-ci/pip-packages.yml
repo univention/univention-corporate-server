@@ -1,0 +1,60 @@
+---
+
+# TODO: Any of this useful?
+# include:
+#   - project: univention/dist/docker-services
+#     file:
+#       - kaniko.yml
+#       - pre-commit.yml
+#
+# variables:
+#   PACKAGE: "ucs-test-utils"
+#   LANG: "C.UTF-8"
+#   DOCKER_REGISTRY: docker-registry.knut.univention.de
+  # DEB_IMAGE: $DOCKER_REGISTRY/phahn/ucs-debbase:$UCS_VERSION
+  # UCSLINT_IMAGE: gitregistry.knut.univention.de/univention/ucs
+  # PRE_COMMIT_IMAGE: $DOCKER_REGISTRY/knut/pre-commit
+
+build_package:
+  stage: build
+  artifacts:
+    paths:
+      - test/ucs-test/dist/
+    expire_in: 1 week
+  image: docker-registry.knut.univention.de/python:3.11-slim
+  script:
+    - cd test/ucs-test/
+    - ls
+    - ls /builds/univention/ucs/test/ucs-test
+    - pip install poetry
+    - |-
+      if [ "$CI_COMMIT_BRANCH" != "$CI_DEFAULT_BRANCH" ]; then
+        poetry version "0.0.0.dev0+${CI_COMMIT_REF_SLUG//-/.}.$CI_COMMIT_SHORT_SHA"
+      else
+        true
+      fi
+    - poetry config --local virtualenvs.create false
+    - poetry config --local repositories.project_local ${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/packages/pypi
+    - poetry build
+    - poetry publish -r project_local --username gitlab-ci-token --password ${CI_JOB_TOKEN}
+
+# TODO: Why did they use a separate publishing stage?
+# publish_local:
+#   stage: publish
+#   when: manual
+#   dependencies:
+#     - build_package
+#   image: docker-registry.knut.univention.de/python:3.11-slim
+#   script:
+#     - cd test/ucs-test/
+#     - pip install poetry
+#     - |-
+#       if [ "$CI_COMMIT_BRANCH" != "$CI_DEFAULT_BRANCH" ]; then
+#         poetry version "0.0.0.dev0+${CI_COMMIT_REF_SLUG//-/.}.$CI_COMMIT_SHORT_SHA"
+#       else
+#         true
+#       fi
+#     - poetry config --local virtualenvs.create false
+#     - poetry config --local repositories.project_local ${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/packages/pypi
+#     - poetry publish -r project_local --username gitlab-ci-token --password ${CI_JOB_TOKEN}
+#     - echo "Project-specific PyPI URL: ${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/packages/pypi"
