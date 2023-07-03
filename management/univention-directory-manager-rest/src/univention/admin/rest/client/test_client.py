@@ -107,7 +107,7 @@ class TestObject(Object):
         self.udm.assert_test_object(self.object_type, self.dn)
         return self._modify(reload)
 
-    def delete(self, remove_referring: bool = False) -> bytes:
+    def delete(self, remove_referring: bool = False) -> str:
         self.udm.assert_test_object(self.object_type, self.dn)
         # Why is result an empty string? not bytes btw!
         result = super().delete(remove_referring=remove_referring)

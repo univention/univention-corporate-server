@@ -633,7 +633,7 @@ class Object(Client):
             return self._create(reload)
 
     def delete(self, remove_referring=False):
-        # type: (bool) -> bytes
+        # type: (bool) -> str
         assert self.uri
         return self.client.request('DELETE', self.uri)
 
