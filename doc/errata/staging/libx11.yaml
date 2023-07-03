@@ -1,0 +1,15 @@
+product: ucs
+release: "4.4"
+version: [9]
+scope: ucs_4.4-0-errata4.4-9
+src: libx11
+fix: 2:1.6.4-3+deb9u5
+desc: |
+ This update addresses the following issue:
+ 2:1.6.4-3+deb9u5 (Thu, 29 Jun 2023 13:55:16 +0300)
+ * Non-maintainer upload by the ELTS Security Team.
+ * CVE-2023-3138: Missing input validation in various functions may result in
+   denial of service.
+bug: [56238]
+cve:
+- CVE-2023-3138
