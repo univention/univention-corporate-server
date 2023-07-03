@@ -6,10 +6,8 @@ src: ffmpeg
 fix: 7:3.2.19-0+deb9u2
 desc: |
  This update addresses the following issues:
- 7:3.2.19-0+deb9u2 (Fri, 30 Jun 2023 21:02:19 +0300)
- * Non-maintainer upload by the ELTS Security Team.
- * CVE-2022-3109: Null pointer dereference in vp3_decode_frame()
- * CVE-2022-3341: Null pointer dereference in nutdec.c
+ * CVE-2022-3109: Null pointer dereference in `vp3_decode_frame()`.
+ * CVE-2022-3341: Null pointer dereference in `nutdec.c`.
 bug: [56239]
 cve:
 - CVE-2022-3109
