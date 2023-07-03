@@ -6,11 +6,9 @@ src: yajl
 fix: 2.1.0-2+deb9u1
 desc: |
  This update addresses the following issue:
-
- Debian update 2.1.0-2+deb9u1
- 2.1.0-2+deb9u1 (Sat, 01 Jul 2023 11:36:03 +0200)
- * Non-maintainer upload by the ELTS Security Team.
- * Import upstream patch for CVE-2023-33460.
+ * There's a memory leak in `yajl` 2.1.0 with use of `yajl_tree_parse`
+   function, which will cause out-of-memory in server and cause crash.
+   (CVE-2023-33460)
 bug: [56241]
 cve:
 - CVE-2023-33460
