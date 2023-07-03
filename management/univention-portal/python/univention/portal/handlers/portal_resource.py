@@ -36,8 +36,14 @@ from univention.portal.log import get_logger
 
 
 class PortalResource(tornado.web.RequestHandler):
+
     def initialize(self, portals):
         self.portals = portals
+
+    def prepare(self, *args, **kwargs):
+        super().prepare(*args, **kwargs)
+        if self.request.headers.get('X-UMC-HTTPS') == 'on':
+            self.request.protocol = 'https'
 
     def write_error(self, status_code, **kwargs):
         if "exc_info" in kwargs:

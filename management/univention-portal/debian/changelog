@@ -1,3 +1,10 @@
+univention-portal (4.0.14-4) unstable; urgency=medium
+
+  * Bug #55785: fix HTTPS detection when acessing navigation.json endpoint
+    behind UCS apache reverse proxy
+
+ -- Florian Best <best@univention.de>  Mon, 03 Jul 2023 16:19:30 +0200
+
 univention-portal (4.0.14-3) unstable; urgency=medium
 
   * Bug #55175: Remove needsConfirmation from layout

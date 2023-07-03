@@ -1,0 +1,11 @@
+product: ucs
+release: "5.0"
+version: [4]
+scope: ucs_5.0-0-errata5.0-4
+src: univention-portal
+fix: 4.0.14-4
+desc: |
+ This update addresses the following issues:
+ * The navigation endpoint now correctly detects access via HTTPS and returns
+   URLs based on that if no base url is passed.
+bug: [55785]
