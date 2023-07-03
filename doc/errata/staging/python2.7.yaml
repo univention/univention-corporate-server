@@ -6,24 +6,6 @@ src: python2.7
 fix: 2.7.13-2+deb9u7
 desc: |
  This update addresses the following issues:
- 2.7.13-2+deb9u7 (Tue, 23 May 2023 20:07:17 +0200)
- * Non-maintainer upload by the ELTS Security Team.
- * Fix test_ssl:test_alpn_protocols test case for newer OpenSSL
- * Update self-signed.pythontest.net SSL certificate in testsuite (fixes
-   test_httplib test suite)
- * Update test certificates and keys (fixes test_ftplib and test_ssl test
-   suites)
- * Update external test servers (fixes test_urllib2net test suite)
- * Drop CVE 2019-9740/2019-9947 patch which attempted to fix an issue
-   introduced later in v2.7.14 and didn't pass its own test cases
- * Replace CVE 2019-10160 fix with buster's more complete one; re-enable
-   test_urlparse:test_urlsplit_normalization test case
- * Incorporate missing recursion.tar for CVE 2019-20907 test case; re-enable
-   test_tarfile:test_length_zero_header test case
- * Drop disable-some-tests.patch and debian/TODO
- * Fix and re-enable assertion in CVE 2021-3177 test case
-   ctypes/test_parameters:test_parameter_repr; also, use PyString rather than
-   PyUnicode for consistency with previous version (and other Debian dists)
  * CVE-2015-20107: the mailcap module does not add escape characters into
    commands discovered in the system mailcap file. This may allow attackers to
    inject shell commands into applications that call mailcap.findmatch with
