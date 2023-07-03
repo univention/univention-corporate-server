@@ -6,9 +6,7 @@ src: lua5.3
 fix: 5.3.3-1+deb9u2
 desc: |+
  This update addresses the following issue:
- 5.3.3-1+deb9u2 (Sun, 25 Jun 2023 21:26:48 +0000)
- * Non-maintainer upload by the ELTS Team.
- * Fix CVE-2019-6706: user after-free in lua_upvaluejoin in lapi.c
+ * CVE-2019-6706: User after-free in `lua_upvaluejoin` in `lapi.c`
 
 bug: [56213]
 cve:
