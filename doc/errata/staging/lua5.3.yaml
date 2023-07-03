@@ -6,8 +6,7 @@ src: lua5.3
 fix: 5.3.3-1+deb9u2
 desc: |+
  This update addresses the following issue:
- * CVE-2019-6706: User after-free in `lua_upvaluejoin` in `lapi.c`
-
+ * CVE-2019-6706: use-after-free in `lua_upvaluejoin` in `lapi.c`
 bug: [56213]
 cve:
 - CVE-2019-6706
