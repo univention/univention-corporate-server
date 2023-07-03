@@ -1,0 +1,23 @@
+product: ucs
+release: "4.4"
+version: [9]
+scope: ucs_4.4-0-errata4.4-9
+src: python3.5
+fix: 3.5.3-1+deb9u7
+desc: |
+ This update addresses the following issues:
+
+ Debian update 3.5.3-1+deb9u7
+ 3.5.3-1+deb9u7 (Fri, 30 Jun 2023 14:28:15 +0300)
+ * Non-maintainer upload by the ELTS Security Team.
+ * Disable test_xmlrpc test, it hangs on some buildds.
+ 3.5.3-1+deb9u6 (Fri, 30 Jun 2023 02:25:22 +0300)
+ * CVE-2015-20107: The mailcap module did not add escape characters into
+   commands discovered in the system mailcap file.
+ * CVE-2021-4189: Make ftplib not trust the PASV response.
+ * CVE-2022-45061: Quadratic time in the IDNA decoder.
+bug: [56246]
+cve:
+- CVE-2015-20107
+- CVE-2021-4189
+- CVE-2022-45061
