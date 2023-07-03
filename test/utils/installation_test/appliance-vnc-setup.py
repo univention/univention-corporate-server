@@ -181,7 +181,7 @@ class UCSSetup(UCSInstallation):
 
     def finish(self):  # type: () -> None
         time.sleep(600)
-        self.client.waitForText('UCS setup successful', timeout=3000, prevent_screen_saver=True)
+        self.client.waitForText('Setup successful', timeout=3000, prevent_screen_saver=True)
         self.screenshot('finished-setup.png')
         self.client.keyPress('tab')
         self.client.keyPress('enter')
