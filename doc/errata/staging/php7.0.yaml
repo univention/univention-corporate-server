@@ -6,11 +6,7 @@ src: php7.0
 fix: 7.0.33-0+deb9u15
 desc: |
  This update addresses the following issue:
-
- Debian update 7.0.33-0+deb9u15
- 7.0.33-0+deb9u15 (Mon, 19 Jun 2023 23:19:10 +0200)
- * Non-maintainer upload by the ELTS team.
- * Fix CVE-2023-3247: Niels Dossche and Tim Düsterhus discovered that PHP's
+ * CVE-2023-3247: Niels Dossche and Tim Düsterhus discovered that PHP's
    implementation of the SOAP HTTP Digest authentication used an insufficient
    number of random bytes. This would affect PHP applications that use SOAP
    with HTTP Digest authentication against a possibly malicious server over
