@@ -1,0 +1,13 @@
+product: ucs
+release: "5.0"
+version: [3, 4]
+scope: ucs_5.0-0-errata5.0-4
+src: cups
+fix: 2.2.10-6+deb10u8A~5.0.4.202307030913
+desc: |
+ This update addresses the following issue:
+ 2.2.10-6+deb10u8 (Thu, 29 Jun 2023 23:30:27 +0200)
+ * CVE-2023-34241 use-after-free in cupsdAcceptClient()
+bug: [56244]
+cve:
+- CVE-2023-34241
