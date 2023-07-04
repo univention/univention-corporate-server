@@ -4704,15 +4704,13 @@ class AllowDenyIgnore(select):
     ]
 
 
-class Gender(select):
+class Gender(combobox):
     """Syntax for selecting the gender setting."""
 
     empty_value = True
     choices = [
-        ('NotKnown', _('Not known')),
         ('Male', _('Male')),
         ('Female', _('Female')),
-        ('NotApplicable', _('Not applicable')),
     ]
 
 
