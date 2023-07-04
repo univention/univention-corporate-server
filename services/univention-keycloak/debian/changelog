@@ -1,4 +1,4 @@
-univention-keycloak (1.0.9-23) unstable; urgency=medium
+univention-keycloak (1.0.9-24) unstable; urgency=medium
 
   * Bug #56132: Added more parameters for creating SAML SPs to
     univention-keycloak
