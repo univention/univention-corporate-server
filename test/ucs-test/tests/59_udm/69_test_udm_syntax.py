@@ -6,7 +6,7 @@
 ## packages:
 ##   - univention-config
 ##   - univention-directory-manager-tools
-## bugs: [40731]
+## bugs: [40731, 27241]
 
 import pytest
 
@@ -49,3 +49,12 @@ def test_udm_syntax(udm, syntax, valid_values, invalid_values, verify_ldap_objec
     for value in invalid_values:
         with pytest.raises(udm_test.UCSTestUDM_CreateUDMObjectFailed):
             udm.create_user(**{cli_name: value})
+
+
+def test_complex_syntax_doublequote_parsing(udm, verify_ldap_object):
+    """Verify the option to use doublequotes in complex-syntax values (Bug #27241)"""
+    user_dn, username = udm.create_user()
+    udm.modify_object('users/user', dn=user_dn, umcProperty=r'"foo" "b\"ar"')
+    verify_ldap_object(user_dn, {
+        'univentionUMCProperty': [r'foo=b"ar'],
+    })
