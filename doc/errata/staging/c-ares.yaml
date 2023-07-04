@@ -6,13 +6,11 @@ src: c-ares
 fix: 1.12.0-1+deb9u4
 desc: |
  This update addresses the following issues:
- 1.12.0-1+deb9u4 (Thu, 29 Jun 2023 21:54:36 +0200)
- * Non-maintainer upload by the ELTS team.
- * Fix CVE-2023-32067: Improve UDP packet handling in ares_process.c to
+ * CVE-2023-32067: Improve UDP packet handling in ares_process.c to
    prevent a denial of service due to a malformed UDP packet.
- * Fix CVE-2023-31130: fix buffer underflow for certain IPv6 addresses in
-   inet_net_pton_ipv6(). Use our own IP conversion functions, do not delegate
-   to OS.
+ * CVE-2023-31130: Fix buffer underflow for certain IPv6 addresses in
+   `inet_net_pton_ipv6()`. Use our own IP conversion functions,
+   do not delegate to OS.
 bug: [56240]
 cve:
 - CVE-2023-32067
