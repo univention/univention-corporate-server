@@ -6,67 +6,29 @@ src: openjdk-8
 fix: 8u372-ga-1~deb9u1
 desc: |
  This update addresses the following issues:
- 8u372-ga-1~deb9u1 (Thu, 25 May 2023 10:14:32 +0200)
- * Rebuild for stretch.
- * Disable the test suite.
- 8u372-ga-1 (Wed, 10 May 2023 10:45:58 +0200)
- [ Thorsten Glaser ]
- * B-D and test-depend on libasmtools-java where applicable
- [ John Paul Adrian Glaubitz ]
- * Fix sh4 FTBFS
- [ Emilio Pozuelo Monfort ]
- * New upstream release.
- * Security fixes: - JDK-8287404: Improve ping times - JDK-8288436: Improve
-   Xalan supports - JDK-8294474, CVE-2023-21930: Better AES support -
-   JDK-8295304, CVE-2023-21938: Runtime support improvements - JDK-8296496,
-   JDK-8292652: large memory allocation in sizecalc.h - JDK-8296676,
-   JDK-8296622: Improve String platform support - JDK-8296684, JDK-8296692,
-   JDK-8296700, CVE-2023-21937: Improve String platform support - JDK-8296832,
-   CVE-2023-21939: Improve Swing platform support - JDK-8297371: Improve UTF8
-   representation redux - JDK-8298191, CVE-2023-21954: Enhance object
-   reclamation process - JDK-8298310, CVE-2023-21967: Enhance TLS session
-   negotiation - JDK-8298667, CVE-2023-21968: Improved path handling -
-   JDK-8299129: Enhance NameService lookups
- * For other changes see
-   https://mail.openjdk.org/pipermail/jdk8u-dev/2023-April/017039.html
- 8u362-ga-4 (Wed, 01 Feb 2023 18:14:37 +0100)
- * Revert blhc warning quieting, the buildsystem has bugs
- 8u362-ga-3 (Wed, 01 Feb 2023 17:46:44 +0100)
- * Use compat 10, not 11 as openjdk-11/17 do: 11 is deprecated in favour of
-   either 10 or 12
- 8u362-ga-2 (Wed, 01 Feb 2023 17:23:02 +0100)
- * Drop shark VM build glue: documented to just crash; depends on ancient LLVM
-   version; no way forward, dropped upstream
- * Drop kfreebsd-*, as the patches have needed updating and fixing for years,
-   and the architectures are, sadly, in a bad state
- * Disable -Werror where not yet done (SCTP): it breaks ia64 (and possibly
-   elsewhere) as this old code is not adapted to newer glibcs of bookworm/sid,
-   etc.
- * Fix a sparc64 build error patching around GCC deficiency
- * Switch to jtreg6 for the testsuite, on distros that package it
- * Transition libfreetype6-dev → libfreetype-dev (where applicable)
- * Bump Policy, (on recent releases only) debhelper compat
- * Try to appease changes in lintian override formats
- * Limit tzdata-java Breaks to exactly stretch and xenial
- * Plug a few build warnings
- * Build -Os not -O3 on mipsel, cf. #971018 for this workaround idea
- 8u362-ga-1 (Sun, 29 Jan 2023 11:53:00 +0100)
- * New upstream release
- * Security fixes: - CVE-2023-21830 - CVE-2023-21843 - JDK-8285021: Improve
-   CORBA communication - JDK-8286496: Improve Thread labels - JDK-8288516:
-   Enhance font creation - JDK-8289350: Better media supports - JDK-8293554:
-   Enhanced DH Key Exchanges - JDK-8293598: Enhance InetAddress address
-   handling - JDK-8293717: Objective view of ObjectView - JDK-8293734: Improve
-   BMP image handling - JDK-8293742: Better Banking of Sounds - JDK-8295687:
-   Better BMP bounds
- * Other changes see
-   https://mail.openjdk.org/pipermail/jdk8u-dev/2023-January/016479.html
- * Upload sponsored by ⮡ tarent
- * Make openjdk-8 the default Java version in jessie, following the change in
-   java-common 0.52+deb8u1. This bumps Java 8's priority in the alternatives
-   system. Make sure update-alternatives is called for installed versions with
-   priority lower than the new one.
- * Use dynamic priority for testing whether u-a needs to be run
+ * JDK-8285021, CVE-2023-21830: Improve CORBA communication
+ * JDK-8286496: Improve thread labels
+ * JDK-8287404: Improve ping times
+ * JDK-8288436: Improve Xalan supports
+ * JDK-8288516: Enhance font creation
+ * JDK-8289350: Better media supports
+ * JDK-8293554: Enhanced DH key exchanges
+ * JDK-8293598: Enhance InetAddress address handling
+ * JDK-8293717: Objective view of ObjectView
+ * JDK-8293734: Improve BMP image handling
+ * JDK-8293742, CVE-2023-21843: Better banking of sounds
+ * JDK-8294474, CVE-2023-21930: Better AES support
+ * JDK-8295304, CVE-2023-21938: Runtime support improvements
+ * JDK-8295687: Better BMP bounds
+ * JDK-8296496, JDK-8292652: Large memory allocation in `sizecalc.h`
+ * JDK-8296676, JDK-8296622: Improve string platform support
+ * JDK-8296684, JDK-8296692, JDK-8296700, CVE-2023-21937: Improve string platform support
+ * JDK-8296832, CVE-2023-21939: Improve Swing platform support
+ * JDK-8297371: Improve UTF8 representation redux
+ * JDK-8298191, CVE-2023-21954: Enhance object reclamation process
+ * JDK-8298310, CVE-2023-21967: Enhance TLS session negotiation
+ * JDK-8298667, CVE-2023-21968: Improved path handling
+ * JDK-8299129: Enhance NameService lookups
 bug: [56220]
 cve:
 - CVE-2023-21930
