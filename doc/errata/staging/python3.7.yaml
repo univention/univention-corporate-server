@@ -6,17 +6,15 @@ src: python3.7
 fix: 3.7.3-2+deb10u5
 desc: |
  This update addresses the following issues:
- 3.7.3-2+deb10u5 (Thu, 29 Jun 2023 21:03:57 +0300)
- * Non-maintainer upload by the LTS Security Team.
  * CVE-2015-20107: The mailcap module did not add escape characters into
    commands discovered in the system mailcap file.
  * CVE-2020-10735: Prevent DoS with very large int.
  * CVE-2021-3426: Remove the pydoc getfile feature which could be abused to
    read arbitrary files on the disk.
  * CVE-2021-3733: Regular Expression Denial of Service in urllib's
-   AbstractBasicAuthHandler class.
+   `AbstractBasicAuthHandler` class.
  * CVE-2021-3737: Infinite loop in the HTTP client code.
- * CVE-2021-4189: Make ftplib not trust the PASV response.
+ * CVE-2021-4189: Make `ftplib` not trust the PASV response.
  * CVE-2022-45061: Quadratic time in the IDNA decoder.
 bug: [56243]
 cve:
