@@ -7,7 +7,7 @@ fix: 8u372-ga-1~deb9u1
 desc: |
  This update addresses the following issues:
  * JDK-8285021, CVE-2023-21830: Improve CORBA communication
- * JDK-8286496: Improve thread labels
+ * JDK-8285021, CVE-2023-21830: Improve CORBA communication
  * JDK-8287404: Improve ping times
  * JDK-8288436: Improve Xalan supports
  * JDK-8288516: Enhance font creation
@@ -19,16 +19,17 @@ desc: |
  * JDK-8293742, CVE-2023-21843: Better banking of sounds
  * JDK-8294474, CVE-2023-21930: Better AES support
  * JDK-8295304, CVE-2023-21938: Runtime support improvements
- * JDK-8295687: Better BMP bounds
+ * JDK-8295304, CVE-2023-21938: Runtime support improvements
  * JDK-8296496, JDK-8292652: Large memory allocation in `sizecalc.h`
  * JDK-8296676, JDK-8296622: Improve string platform support
- * JDK-8296684, JDK-8296692, JDK-8296700, CVE-2023-21937: Improve string platform support
+ * JDK-8296684, JDK-8296692, JDK-8296700, CVE-2023-21937: Improve string
+   platform support
  * JDK-8296832, CVE-2023-21939: Improve Swing platform support
- * JDK-8297371: Improve UTF8 representation redux
+ * JDK-8296832, CVE-2023-21939: Improve Swing platform support
  * JDK-8298191, CVE-2023-21954: Enhance object reclamation process
  * JDK-8298310, CVE-2023-21967: Enhance TLS session negotiation
  * JDK-8298667, CVE-2023-21968: Improved path handling
- * JDK-8299129: Enhance NameService lookups
+ * JDK-8298667, CVE-2023-21968: Improved path handling
 bug: [56220]
 cve:
 - CVE-2023-21930
