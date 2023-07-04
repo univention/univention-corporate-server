@@ -224,6 +224,7 @@ static void usage(void) {
 	fprintf(stderr, "   -y   read LDAP bind password from file\n");
 	fprintf(stderr, "   -x   LDAP simple bind\n");
 	fprintf(stderr, "   -Z   LDAP start TLS request (-ZZ to require successful response)\n");
+	fprintf(stderr, "   -z   LDAP optional TLS (-zz to disable TLS entirely)");
 	fprintf(stderr, "   -Y   SASL mechanism\n");
 	fprintf(stderr, "   -U   SASL username\n");
 	fprintf(stderr, "   -R   SASL realm\n");
@@ -407,7 +408,7 @@ int main(int argc, char *argv[]) {
 	for (;;) {
 		int c;
 
-		c = getopt(argc, argv, "d:FH:h:p:b:D:w:y:xZY:U:R:Km:Bc:giol:P");
+		c = getopt(argc, argv, "d:FH:h:p:b:D:w:y:xZzY:U:R:Km:Bc:giol:P");
 		if (c < 0)
 			break;
 		switch (c) {
@@ -455,6 +456,9 @@ int main(int argc, char *argv[]) {
 			break;
 		case 'Z':
 			lp->start_tls++;
+			break;
+		case 'z':
+			lp->start_tls--;
 			break;
 		case 'x':
 			lp->authmethod = LDAP_AUTH_SIMPLE;
