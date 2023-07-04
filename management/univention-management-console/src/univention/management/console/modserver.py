@@ -53,7 +53,7 @@ from tornado.httpserver import HTTPServer
 from tornado.netutil import bind_unix_socket
 from tornado.web import Application, HTTPError, RequestHandler
 
-from univention.lib.i18n import Translation
+from univention.lib.i18n import I18N_Error, Locale, Translation
 from univention.management.console.config import get_int, ucr
 from univention.management.console.error import BadRequest, Unauthorized
 from univention.management.console.log import MODULE, log_reopen
@@ -330,7 +330,16 @@ class Handler(RequestHandler):
             # very important for security reasons in combination with the file_upload decorator
             # otherwise manipulated requests are able to specify the path of temporary uploaded files
             umcp_command = 'COMMAND'
+
+        # tornado drops the territory because we only have /usr/share/locale/de/LC_MESSAGES/
         locale = self.locale.code
+        try:
+            locale = Locale(locale)
+            if not locale.territory:  # TODO: replace by using the actual provided value
+                locale.territory = {'de': 'DE', 'fr': 'FR', 'en': 'US'}.get(self.locale.code)
+        except I18N_Error as exc:
+            MODULE.warn('Invalid locale: %s %s' % (exc, locale))
+        locale = str(locale)
 
         msg = Request(umcp_command, [path], mime_type=mimetype)
         msg._request_handler = self

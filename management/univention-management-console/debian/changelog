@@ -1,3 +1,9 @@
+univention-management-console (12.0.31-5) unstable; urgency=medium
+
+  * Bug #56256: fix translation of module processes
+
+ -- Florian Best <best@univention.de>  Tue, 04 Jul 2023 17:17:46 +0200
+
 univention-management-console (12.0.31-4) unstable; urgency=medium
 
   * Bug #56198: remove UMC-Server only modules from python 2 package
