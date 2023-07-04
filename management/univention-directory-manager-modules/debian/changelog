@@ -1,3 +1,10 @@
+univention-directory-manager-modules (16.0.5) unstable; urgency=medium
+
+  * Bug #56253: remove support for group membershpip resolution without
+    memberOf attribute
+
+ -- Florian Best <best@univention.de>  Thu, 07 Mar 2024 23:53:53 +0100
+
 univention-directory-manager-modules (16.0.4) unstable; urgency=medium
 
   * Bug #55994: drop Python 2 binary packages
