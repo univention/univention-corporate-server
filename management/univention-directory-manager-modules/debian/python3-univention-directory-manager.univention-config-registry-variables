@@ -136,13 +136,6 @@ Type=bool
 Categories=management-udm
 Default=no
 
-[directory/manager/user/group-memberships-via-memberof]
-Description[de]=DEPRECATED. Wird diese Variable auf "false" gesetzt, werden die Gruppen jedes Benutzers in zusätzlichen LDAP-Anfragen abgefragt. Dies ist viel langsamer, könnte aber bestimmte Fehler in Legacy-Software vermeiden, die fälschlicherweise annimmt, dass alle Gruppen eines Benutzers lesbar sind, wenn der Benutzer selbst lesbar ist. Diese Software gilt als fehlerhaft und sollte angepasst werden. Diese Variable wird in Zukunft entfernt werden.
-Description[en]=DEPRECATED. Setting this variable to "false" will fetch groups of each user in additional LDAP requests. This is much slower, but could avoid certain errors in legacy software that untruly assumes that all groups of a user are readable when the user itself is readable. That software is considered buggy and should be adjusted. This variable will be removed in the future.
-Type=bool
-Default=true
-Categories=management-udm
-
 [password/hashing/bcrypt]
 Description[de]=Ist diese Option aktiviert, verwendet UDM bcrypt als Hashing Methode für Benutzerpasswörter.
 Description[en]=If this option is activated bcrypt is used for user password hashes in UDM.
