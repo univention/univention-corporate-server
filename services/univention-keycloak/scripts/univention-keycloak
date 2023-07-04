@@ -918,6 +918,12 @@ def parse_args(args: list[str] | None = None) -> Namespace:
     init_parser.add_argument("--check-init-done", help="only check if init has been already executed", default=False, action="store_true")
     init_parser.set_defaults(func=init_keycloak_ucs)
 
+    kerberos_config = subparsers.add_parser("kerberos-config", help="LDAP federation Kerberos configuration")
+    operation_subparsers = kerberos_config.add_subparsers(title="operation", description="valid subcommands", required=True, dest="operation")
+    kerberos_config_subparser = operation_subparsers.add_parser("set", help="Set Kerberos configuration")
+    kerberos_config_subparser.add_argument("--server-principal", required=True)
+    kerberos_config_subparser.set_defaults(func=set_kerberos_spn)
+
     adhoc_parser = subparsers.add_parser("ad-hoc", help="configure the ad-hoc federation login flow")
     operation_subparsers = adhoc_parser.add_subparsers(title="operation", description="valid subcommands", required=True, dest="operation")
     adhoc_parser_opp = operation_subparsers.add_parser("enable", help="create a login flow that uses ad-hoc federation")
@@ -1123,6 +1129,22 @@ def delete_user_attribute_ldap_mapper(opt: Namespace) -> None:
             break
     else:
         print(f"LDAP provider mapper {opt.attributename} not found, nothing to delete.")
+
+
+def set_kerberos_spn(opt: Namespace) -> None:
+    session = UniventionKeycloakAdmin(opt)
+    name = DEFAULT_USER_STORAGE_PROVIDER_NAME
+    provider_id = session.get_user_storage_provider_id()
+    payload = {
+        "name": name,
+        "providerType": "org.keycloak.storage.UserStorageProvider",
+        "parentId": get_realm_id(session, opt.realm),
+        "providerId": provider_id,
+        "config": {
+            "serverPrincipal": [getattr(opt, "server_principal", f"HTTP/{opt.keycloak_fqdn}@{opt.kerberos_realm}")],
+        },
+    }
+    modify_component(session, payload)
 
 
 def create_kerberos_config(opt: Namespace) -> None:
