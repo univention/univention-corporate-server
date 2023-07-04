@@ -6,11 +6,9 @@ src: cups
 fix: 2.2.1-8+deb9u10A~4.4.9.202307030928
 desc: |
  This update addresses the following issues:
- 2.2.1-8+deb9u9 (Wed, 31 May 2023 21:30:27 +0200)
- * CVE-2023-32324 A heap buffer overflow vulnerability would allow a remote
+ * CVE-2023-32324: A heap buffer overflow vulnerability would allow a remote
    attacker to lauch a dos attack.
- 2.2.1-8+deb9u10 (Thu, 29 Jun 2023 22:30:27 +0200)
- * CVE-2023-34241 use-after-free in cupsdAcceptClient()
+ * CVE-2023-34241: `use-after-free` in `cupsdAcceptClient()`
 bug: [56224]
 cve:
 - CVE-2023-32324
