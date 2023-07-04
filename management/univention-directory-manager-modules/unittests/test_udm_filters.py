@@ -250,7 +250,7 @@ def test_presence_filters(module, property, udm_filter, expected_filter):
     ('users/user', 'umcProperty', 'umcProperty=foo=bar', 'univentionUMCProperty=foo=bar'),
     ('users/user', 'serviceSpecificPassword', 'serviceSpecificPassword=foo', 'serviceSpecificPassword=foo'),  # FIXME:
     ('users/user', 'placeOfBirth', 'placeOfBirth=foo', 'univentionPlaceOfBirth=foo'),
-    ('users/user', 'gender', 'gender=Male', 'univentionGender=1'),
+    ('users/user', 'gender', 'gender=Male', 'univentionGender=Male'),
 ])
 def test_udm_filter(module, property, udm_filter, expected_filter):
     check_expected_filter(module, property, udm_filter, expected_filter)
