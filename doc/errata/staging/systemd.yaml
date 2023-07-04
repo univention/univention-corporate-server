@@ -6,11 +6,7 @@ src: systemd
 fix: 241-7~deb10u10A~5.0.4.202307030913
 desc: |
  This update addresses the following issue:
- 241-7~deb10u10 (Thu, 29 Jun 2023 16:57:02 +0300)
- * Non-maintainer upload by the LTS Security Team.
- * CVE-2022-3821: Buffer overrun in format_timespan().
- * logind: Fix getting property OnExternalPower via D-Bus.
- * Fix memory leak on daemon-reload.
+ * CVE-2022-3821: Buffer overrun in `format_timespan()`.
 bug: [56237]
 cve:
 - CVE-2022-3821
