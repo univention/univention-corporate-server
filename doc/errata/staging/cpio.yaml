@@ -6,8 +6,6 @@ src: cpio
 fix: 2.11+dfsg-6+deb9u1
 desc: |
  This update addresses the following issues:
- 2.11+dfsg-6+deb9u1 (Sun, 04 Jun 2023 23:21:42 +0300)
- * Non-maintainer upload by the ELTS Security Team.
  * CVE-2019-14866: Improper validation of input files when generating tar
    archives.
  * CVE-2021-38185: Arbitrary code via crafted pattern file.
