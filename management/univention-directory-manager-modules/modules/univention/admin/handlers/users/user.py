@@ -1144,7 +1144,6 @@ class object(univention.admin.handlers.simpleLdap, PKIIntegration):
     use_performant_ldap_search_filter = True
 
     def __init__(self, co, lo, position, dn=u'', superordinate=None, attributes=None):
-        self.__groups_loaded = True
         self.password_length = 8
 
         univention.admin.handlers.simpleLdap.__init__(self, co, lo, position, dn, superordinate, attributes=attributes)
@@ -1169,9 +1168,7 @@ class object(univention.admin.handlers.simpleLdap, PKIIntegration):
 
     def _post_unmap(self, info, values):
         info = super(object, self)._post_unmap(info, values)
-        if configRegistry.is_true('directory/manager/user/group-memberships-via-memberof', True):
-            info['groups'] = [x.decode('UTF-8') for x in values.get('memberOf', [])]
-            self.__groups_loaded = True
+        info['groups'] = [x.decode('UTF-8') for x in values.get('memberOf', [])]
         self._unmap_mail_forward(info, values)
         self._unmap_pwd_change_next_login(info, values)
         return info
@@ -1184,7 +1181,6 @@ class object(univention.admin.handlers.simpleLdap, PKIIntegration):
         if self.exists():
             self._unmap_automount_information()
             self._unmapUnlockTime()
-            self._load_groups(loadGroups)
             self._unmap_gid_number()
         self.save()
         # self.save() must not be called after this point in self.open()
@@ -1192,15 +1188,6 @@ class object(univention.admin.handlers.simpleLdap, PKIIntegration):
         # univentionDefaultGroup because "not self.hasChanged('primaryGroup')"
         if not self.exists():
             self._set_default_group()
-
-    def _load_groups(self, loadGroups):
-        if configRegistry.is_true('directory/manager/user/group-memberships-via-memberof', True):
-            return
-        if loadGroups:  # this is optional because it can take much time on larger installations, default is true
-            self['groups'] = [x.decode('UTF-8') if six.PY2 else x for x in self.lo.searchDn(filter=filter_format(u'(&(|(objectClass=univentionGroup)(objectClass=sambaGroupMapping))(uniqueMember=%s))', [self.dn]))]
-        else:  # TODO: document where it is needed and used
-            log.debug('user: open with loadGroups=false for user %s', self['username'])
-        self.__groups_loaded = bool(loadGroups)
 
     def _unmap_gid_number(self):
         primaryGroupNumber = self.oldattr.get('gidNumber', [b''])[0].decode('ASCII')
@@ -1358,9 +1345,6 @@ class object(univention.admin.handlers.simpleLdap, PKIIntegration):
 #        return super(object, self).hasChanged(key)
 
     def __update_groups(self):
-        if not self.__groups_loaded:
-            return
-
         if self.exists():
             old_groups = self.oldinfo.get('groups', [])
             old_uid = self.oldinfo.get('username', '')
