@@ -6,11 +6,10 @@ src: php7.0
 fix: 7.0.33-0+deb9u15
 desc: |
  This update addresses the following issue:
- * CVE-2023-3247: Niels Dossche and Tim Düsterhus discovered that PHP's
-   implementation of the SOAP HTTP Digest authentication used an insufficient
-   number of random bytes. This would affect PHP applications that use SOAP
-   with HTTP Digest authentication against a possibly malicious server over
-   HTTP.
+ * CVE-2023-3247: PHP's implementation of the SOAP HTTP Digest authentication
+   used an insufficient number of random bytes. This would affect PHP
+   applications that use SOAP with HTTP Digest authentication against a
+   possibly malicious server over HTTP.
 bug: [56211]
 cve:
 - CVE-2023-3247
