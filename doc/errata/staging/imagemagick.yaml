@@ -7,13 +7,12 @@ fix: 8:6.9.7.4+dfsg-11+deb9u19
 desc: |
  This update addresses the following issues:
  * CVE-2017-12670: Assertion failure in mat coder
- * CVE-2018-10804: Memory leak in WriteTIFFImage in coders/tiff.c
-
+ * CVE-2018-10804: Memory leak in WriteTIFFImage in `coders/tiff.c`
  * CVE-2022-32545: Fix a value outside the range of representable values of
    type 'unsigned char'
  * CVE-2022-32546: Undefined behavior due to conversion to outside the range
-   of long
- * CVE-2022-32547: Unaligned access in magick/property.c
+   of `long`
+ * CVE-2022-32547: Unaligned access in `magick/property.c`
 bug: [56225]
 cve:
 - CVE-2017-12670
