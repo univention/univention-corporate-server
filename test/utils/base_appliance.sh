@@ -143,7 +143,7 @@ get_app_attr () {  # <app_id> <attr>
 	echo "${value//, / }"
 }
 
-customize_additionalApps () { # <app_id> <scenario>
+customize_additionalApps () { # <app_id> optional<scenario>
 	# e.g. ini file
 	# [Application]
 	# ...
@@ -152,7 +152,7 @@ customize_additionalApps () { # <app_id> <scenario>
 	# [Appliances-scenarios]
 	# <scenario-1> = <app_id1>, <app_id2>
 	# <scenario-2> = <app_id3>
-	local app="${1:?}" scenario="${2?}" new_additionalApps old_additionalApps
+	local app="${1:?}" scenario="${2:-}" new_additionalApps old_additionalApps
 	if [ -n "$scenario" ]
 	then
 		new_additionalApps="$(get_app_attr_python "$app" "Appliances-scenarios" "$scenario")"
