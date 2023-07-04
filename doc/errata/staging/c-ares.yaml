@@ -6,7 +6,7 @@ src: c-ares
 fix: 1.12.0-1+deb9u4
 desc: |
  This update addresses the following issues:
- * CVE-2023-32067: Improve UDP packet handling in ares_process.c to
+ * CVE-2023-32067: Improve UDP packet handling in `ares_process.c` to
    prevent a denial of service due to a malformed UDP packet.
  * CVE-2023-31130: Fix buffer underflow for certain IPv6 addresses in
    `inet_net_pton_ipv6()`. Use our own IP conversion functions,
