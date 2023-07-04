@@ -190,7 +190,8 @@ UDL () {
 		-m /usr/lib/univention-directory-listener/system2 \
 		-c /var/lib/univention-directory-listener \
 		-H "ldap://$FQDN:$PORT" -h "$FQDN" -p "$PORT" \
-		-x -D "cn=admin,$BASE" -y "$SECRET_FILE"
+		-x -D "cn=admin,$BASE" -y "$SECRET_FILE" \
+		-ZZ
 	secret="$(sed -rne 's/^\s*rootpw\s*"(([^\"]|\\")*)"\s*(#.*)?$/\1/;T;s/\\"/"/g;p;q' /etc/ldap/rootpw.conf)"
 
 	/usr/sbin/univention-directory-listener \
@@ -199,7 +200,8 @@ UDL () {
 		-m /usr/lib/univention-directory-listener/system2 \
 		-c /var/lib/univention-directory-listener \
 		-H "ldap://$FQDN:$PORT" -h "$FQDN" -p "$PORT" \
-		-x -D "cn=admin,$BASE" -y "$SECRET_FILE" &
+		-x -D "cn=admin,$BASE" -y "$SECRET_FILE" \
+		-ZZ &
 }
 UDL
 

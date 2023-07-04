@@ -1,3 +1,9 @@
+univention-directory-listener (14.0.8-4) unstable; urgency=low
+
+  * Bug #56368: add -z flag for configuring StartTLS behavior
+
+ -- Thomas Kintscher <thomas.kintscher.extern@univention.de>  Fri, 28 Jul 2023 17:09:02 +0200
+
 univention-directory-listener (14.0.8-3) unstable; urgency=medium
 
   * Bug #55632: improved the Python 3.11 compatiblity

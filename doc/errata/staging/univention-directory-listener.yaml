@@ -1,0 +1,18 @@
+product: ucs
+release: "5.0"
+version: [4]
+scope: ucs_5.0-0-errata5.0-4
+src: univention-directory-listener
+fix: 14.0.8-4
+desc: |
+ This update addresses the following issues:
+ * According to the documentation the -Z flag could be used to control the
+   behavior of the StartTLS command. However, the flag was found to be
+   non-functional.
+   For backwards compatibility, the flag is kept,
+   but the references in the documentation have been removed.
+ * In order to control the behavior the -z flag is introduced, which allows
+   to disable the certificate validate or the entire StartTLS command (-zz).
+   This may be useful for testing.
+   Existing systems are not affected and require no changes.
+bug: [56368]
