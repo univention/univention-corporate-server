@@ -6,7 +6,7 @@ src: libfastjson
 fix: 0.99.4-1+deb9u1
 desc: |
  This update addresses the following issue:
-   * CVE-2020-12762: Fix for out-of-bounds write with large JSON file
+ * CVE-2020-12762: Fix for out-of-bounds write with large JSON file.
 bug: [56216]
 cve:
 - CVE-2020-12762
