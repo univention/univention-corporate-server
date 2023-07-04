@@ -1,3 +1,9 @@
+univention-directory-manager-modules (15.0.24-7) unstable; urgency=low
+
+  * Bug #55553: Make gender free selectable.
+
+ -- Ivan Barbecho Delgado <delgado.extern@univention.de>  Thu, 4 Jul 2023 8:28:22 +0200
+
 univention-directory-manager-modules (15.0.24-6) unstable; urgency=medium
 
   * Bug #55216: detect users/ldap objects with
