@@ -6,9 +6,8 @@ src: yajl
 fix: 2.1.0-2+deb9u1
 desc: |
  This update addresses the following issue:
- * There's a memory leak in `yajl` 2.1.0 with use of `yajl_tree_parse`
-   function, which will cause out-of-memory in server and cause crash.
-   (CVE-2023-33460)
+ * A memory leak in function `yajl_tree_parse` caused out-of-memory errors in
+   servers and caused crashes. (CVE-2023-33460)
 bug: [56241]
 cve:
 - CVE-2023-33460
