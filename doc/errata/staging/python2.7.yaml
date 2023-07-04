@@ -6,7 +6,7 @@ src: python2.7
 fix: 2.7.13-2+deb9u7
 desc: |
  This update addresses the following issues:
- * CVE-2015-20107: the mailcap module does not add escape characters into
+ * CVE-2015-20107: The mailcap module does not add escape characters into
    commands discovered in the system mailcap file. This may allow attackers to
    inject shell commands into applications that call mailcap.findmatch with
    untrusted input (if they lack validation of user-provided filenames or
