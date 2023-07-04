@@ -6,7 +6,7 @@ src: requests
 fix: 2.12.4-1+deb9u1
 desc: |
  This update addresses the following issue:
- * CVE-2023-32681: Requests has been leaking Proxy-Authorization headers
+ * CVE-2023-32681: Requests has been leaking `Proxy-Authorization` headers
    to destination servers when redirected to an HTTPS endpoint. For HTTP
    connections sent through the tunnel, the proxy will identify the header in
    the request itself and remove it prior to forwarding to the destination
