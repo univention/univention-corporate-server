@@ -1,0 +1,11 @@
+product: ucs
+release: "5.0"
+version: [4]
+scope: ucs_5.0-0-errata5.0-4
+src: univention-spamassassin
+fix: 11.0.1-3
+desc: |
+ This update addresses the following issues:
+ * The UCR variable `mail/antispam/requiredhits` was using an integer
+   but the value can be a float or a real number. This is now possible.
+bug: [55685]
