@@ -1,3 +1,10 @@
+ucs-test (10.0.15-9) unstable; urgency=medium
+
+  * Bug #56227: ucs-test-appcenter skip ini section Appliances-scenarios
+    in 20_appcenter/12_check_apps_ini_all_fields.py
+
+ -- Ivan Barbecho Delgado <delgado.extern@univention.de>  Thu, 06 Jul 2023 10:00:44 +0200
+
 ucs-test (10.0.15-8) unstable; urgency=medium
 
   * Bug #56132: remove keycloak ucr fixture

@@ -47,6 +47,8 @@ class AppCheck:
         except (NoSectionError, NoOptionError):
             raise Error('No [Application] ID given...')
         for section in self.config.sections():
+            if section == 'Appliances-scenarios':
+                continue
             with Section(self, section, appid) as sec:
                 if section == 'Application':
                     sec.check_all(sec.APPLICATION)
