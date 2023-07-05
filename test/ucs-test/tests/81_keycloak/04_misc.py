@@ -106,6 +106,9 @@ def test_master_realm_config(keycloak_config, ucr):
 
 
 def test_ucs_realm_config(keycloak_config, ucr):
+    sso_fqdn = ucr.get('keycloak/server/sso/fqdn')
+    kerberos_realm = ucr.get('kerberos/realm')
+
     # required actions ucs realm
     required_actions = keycloak_get_request(keycloak_config, "realms/ucs/authentication/required-actions")
     required_actions = [ra["alias"] for ra in required_actions if ra["enabled"]]
@@ -119,7 +122,11 @@ def test_ucs_realm_config(keycloak_config, ucr):
     assert ldap_federation["config"]["editMode"] == ["READ_ONLY"]
     assert ldap_federation["config"]["allowKerberosAuthentication"] == ["true"]
     assert ldap_federation["config"]["kerberosRealm"] == [ucr.get("kerberos/realm")]
-    assert ldap_federation["config"]["serverPrincipal"] == [f"HTTP/{ucr.get('keycloak/server/sso/fqdn')}@{ucr.get('kerberos/realm')}"]
+    if sso_fqdn:
+        assert ldap_federation["config"]["serverPrincipal"] == [f"HTTP/{sso_fqdn}@{kerberos_realm}"]
+    else:
+        # not a keycloak server so sso_fqdn is not set. Check at least if it is set and the kerberos_realm is present
+        assert kerberos_realm in ldap_federation["config"]["serverPrincipal"][0]
     assert ldap_federation["config"]["keyTab"] == ["/var/lib/univention-appcenter/apps/keycloak/conf/keycloak.keytab"]
     components = keycloak_get_request(keycloak_config, f"realms/ucs/components?parent={ldap_federation['id']}")
     components = [c["name"] for c in components]

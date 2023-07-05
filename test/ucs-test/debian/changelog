@@ -1,4 +1,4 @@
-ucs-test (10.0.15-5) unstable; urgency=medium
+ucs-test (10.0.15-6) unstable; urgency=medium
 
   * Bug #27241: add a testcase for doublequotes in complex-syntax keys
     to 59_udm/69_test_udm_syntax.py
