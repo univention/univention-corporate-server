@@ -4711,7 +4711,7 @@ class Gender(combobox):
     choices = [
         ('Male', _('Male')),
         ('Female', _('Female')),
-    ]
+    ] + [(x, x) for x in configRegistry.get("users/genders/options", default="").split(",") if x]
 
 
 class IStates(select):
