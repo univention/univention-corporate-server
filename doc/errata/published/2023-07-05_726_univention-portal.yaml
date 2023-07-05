@@ -9,3 +9,6 @@ desc: |
  * The navigation endpoint now correctly detects access via HTTPS and returns
    URLs based on that if no base url is passed.
 bug: [55785]
+erratum: 726
+announced: 2023-07-05
+support: core
