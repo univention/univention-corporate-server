@@ -9,3 +9,6 @@ desc: |
  * The translation of messages from UMC module processes has been repaired in
    certain scenarios.
 bug: [56256]
+erratum: 725
+announced: 2023-07-05
+support: core
