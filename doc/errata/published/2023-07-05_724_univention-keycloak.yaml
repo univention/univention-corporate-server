@@ -10,3 +10,6 @@ desc: |
    to configure Kerberos ticket authentication
    in Keycloak.
 bug: [56153]
+erratum: 724
+announced: 2023-07-05
+support: core
