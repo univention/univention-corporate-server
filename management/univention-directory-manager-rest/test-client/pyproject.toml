@@ -1,0 +1,19 @@
+[tool.poetry]
+name = "univention-admin-rest-client-test"
+version = "0.1.0"
+description = "Testing wrapper around the UDM REST API Client"
+authors = ["Johannes Lohmer <lohmer@univention.de>"]
+
+[tool.poetry.dependencies]
+pytest = "^5.2"
+python = "^3.7"
+univention-admin-rest-client = "^0.1.0"
+
+[tool.poetry.dev-dependencies]
+
+[[tool.poetry.packages]]
+include = "univention/admin/rest/client/*.py"
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
