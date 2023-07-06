@@ -49,6 +49,16 @@ from univention.udm.binary_props import Base64Bzip2BinaryProperty
 from univention.udm.modules.settings_data import SettingsDataObject
 
 
+# don't use the ucs-test ucr fixture (UCSTestConfigRegistry)
+# in fixtures, this can lean to problems if system settings
+# are reverted after the test, e.g. appcenter/apps/$id/container
+# after univention-app reinitialize
+@pytest.fixture()
+def ucr_proper() -> ConfigRegistry:
+    ucr = ConfigRegistry()
+    return ucr.load()
+
+
 @pytest.fixture()
 def admin_account() -> UCSTestDomainAdminCredentials:
     return UCSTestDomainAdminCredentials()
@@ -115,10 +125,10 @@ def change_app_setting():
 
 
 @pytest.fixture()
-def upgrade_status_obj(ucr) -> SettingsDataObject:
+def upgrade_status_obj(ucr_proper) -> SettingsDataObject:
     udm = UDM.admin().version(2)
     mod = udm.get("settings/data")
-    obj = mod.get(f"cn=keycloak,cn=data,cn=univention,{ucr.get('ldap/base')}")
+    obj = mod.get(f"cn=keycloak,cn=data,cn=univention,{ucr_proper.get('ldap/base')}")
     orig_value = obj.props.data.raw
 
     yield obj
@@ -159,8 +169,8 @@ def unverified_user() -> dict:
 
 
 @pytest.fixture()
-def portal_config(ucr: ConfigRegistry) -> SimpleNamespace:
-    portal_fqdn = ucr["umc/saml/sp-server"] if ucr["umc/saml/sp-server"] else f"{ucr['hostname']}.{ucr['domainname']}"
+def portal_config(ucr_proper: ConfigRegistry) -> SimpleNamespace:
+    portal_fqdn = ucr_proper["umc/saml/sp-server"] if ucr_proper["umc/saml/sp-server"] else f"{ucr_proper['hostname']}.{ucr_proper['domainname']}"
     config = {
         "url": f"https://{portal_fqdn}/univention/portal",
         "title": "Univention Portal",
@@ -184,9 +194,9 @@ def portal_config(ucr: ConfigRegistry) -> SimpleNamespace:
 
 
 @pytest.fixture()
-def keycloak_config(ucr: ConfigRegistry) -> SimpleNamespace:
-    server = ucr.get("keycloak/server/sso/fqdn", f"ucs-sso-ng.{ucr['domainname']}")
-    path = ucr["keycloak/server/sso/path"] if ucr["keycloak/server/sso/path"] else ""
+def keycloak_config(ucr_proper: ConfigRegistry) -> SimpleNamespace:
+    server = ucr_proper.get("keycloak/server/sso/fqdn", f"ucs-sso-ng.{ucr_proper['domainname']}")
+    path = ucr_proper["keycloak/server/sso/path"] if ucr_proper["keycloak/server/sso/path"] else ""
     url = f"https://{server}{path}"
     config = {
         "url": url,
@@ -293,8 +303,8 @@ def keycloak_adm_login(selenium: webdriver.Chrome, keycloak_config: SimpleNamesp
 
 
 @pytest.fixture()
-def domain_admins_dn(ucr: ConfigRegistry) -> str:
-    return f"cn={custom_groupname('Domain Admins')},cn=groups,{ucr['ldap/base']}"
+def domain_admins_dn(ucr_proper: ConfigRegistry) -> str:
+    return f"cn={custom_groupname('Domain Admins')},cn=groups,{ucr_proper['ldap/base']}"
 
 
 @pytest.fixture()

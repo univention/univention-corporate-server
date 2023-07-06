@@ -1,3 +1,9 @@
+ucs-test (10.0.15-8) unstable; urgency=medium
+
+  * Bug #56132: remove keycloak ucr fixture
+
+ -- Felix Botner <botner@univention.de>  Thu, 06 Jul 2023 09:39:58 +0200
+
 ucs-test (10.0.15-7) unstable; urgency=medium
 
   * Bug #56132: remove keycloak ucr fixture
