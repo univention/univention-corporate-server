@@ -653,9 +653,9 @@ The process for setting up a UCS instance based on Amazon EC2 is documented in
 Installation in VMware
 ======================
 
-If UCS is installed as a guest in VMware, the :menuselection:`Linux --> Other
-Linux system` option must be selected as the *Guest operating system* (UCS is
-based on Debian but the templates for Debian cannot be used).
+If UCS is installed as a guest in VMware, select the option
+:menuselection:`Linux --> Debian` as the *Guest operating system*, because UCS
+is based on Debian.
 
 The Linux kernel used in UCS includes all the support drivers necessary for
 operation in VMware (:file:`vmw_balloon`, :file:`vmw_pvsci`, :file:`vmw_vmci`,
