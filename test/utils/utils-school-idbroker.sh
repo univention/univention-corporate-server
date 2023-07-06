@@ -510,7 +510,7 @@ wait_for_sddb_provisioning () {
 
         if [[ "$new_listener_objects" -gt 0 ]]; then
             echo "$new_listener_objects new appcenter listener objects"
-            univention-app shell id-broker-sddb-builder /tmp/univention-id-broker-sddb-builder.listener_trigger 2>> sddb_listiener.log
+            univention-app shell id-broker-sddb-builder /tmp/univention-id-broker-sddb-builder.listener_trigger 2>> sddb_listener.log
         else
             break
         fi
