@@ -58,6 +58,24 @@ install_kelvin_api () {
 	echo "Docker image built from commit: $commit"
 }
 
+
+install_ucsschool_id_connector () {
+  echo -n univention > /tmp/univention
+  # use brach image if given
+  if [ -n "$UCS_ENV_ID_CONNECTOR_IMAGE" ]; then
+    if [[ $UCS_ENV_ID_CONNECTOR_IMAGE =~ ^gitregistry.knut.univention.de.* ]]; then
+        docker login -u "$GITLAB_REGISTRY_TOKEN" -p "$GITLAB_REGISTRY_TOKEN_SECRET" gitregistry.knut.univention.de
+    fi
+    univention-install --yes univention-appcenter-dev
+    univention-app dev-set ucsschool-id-connector "DockerImage=$UCS_ENV_ID_CONNECTOR_IMAGE"
+  fi
+  univention-app install ucsschool-id-connector --noninteractive --username Administrator --pwdfile /tmp/univention --set ucsschool-id-connector/log_level=DEBUG
+  commit=$(docker inspect --format='{{.Config.Labels.commit}}' "$(ucr get appcenter/apps/ucsschool-id-connector/container)")
+	echo "Docker image built from commit: $commit"
+}
+
+
+
 install_mv_idm_gw_sender_ext_attrs () {
   local lb
   lb="$(ucr get ldap/base)"
