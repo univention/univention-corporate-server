@@ -1,0 +1,2 @@
+tests/86_browser	usr/share/ucs-test/
+univention/testing/browser/suppress_umc_notifications.js	var/www/univention/js/umc/hooks/

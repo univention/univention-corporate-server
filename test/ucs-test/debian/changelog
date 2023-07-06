@@ -1,3 +1,9 @@
+ucs-test (10.0.16-1) unstable; urgency=medium
+
+  * Bug #56054: migrate selenium to playwright
+
+ -- Marius Meschter <marius.meschter@univention.de>  Fri, 01 Sep 2023 09:41:26 +0200
+
 ucs-test (10.0.15-23) unstable; urgency=medium
 
   * Bug #50300: don't print traceback for failing grep-traceback test

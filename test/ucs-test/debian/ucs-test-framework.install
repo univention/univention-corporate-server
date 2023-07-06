@@ -1,4 +1,5 @@
 bin/ldiff	usr/bin/
+bin/playwright	usr/share/ucs-test/
 bin/runner	usr/share/ucs-test/
 bin/ucs-test	usr/sbin/
 bin/udm-test	usr/sbin/

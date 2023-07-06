@@ -359,6 +359,20 @@ Depends:
 Description: Test scripts for UMC
  This package includes some scripts for testing UMC
 
+Package: ucs-test-browser
+Architecture: all
+Recommends:
+ ucs-test-framework,
+Provides:
+ ucs-test-module,
+Depends:
+ playwright-browser-chromium,
+ python3-playwright-venv,
+ ucs-test-libs (= ${source:Version}),
+ ${misc:Depends},
+Description: Test scripts for UMC
+ This package includes some scripts for testing UMC
+
 Package: ucs-test-adconnector
 Architecture: all
 Recommends:
