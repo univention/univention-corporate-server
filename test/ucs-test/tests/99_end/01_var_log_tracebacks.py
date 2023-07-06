@@ -42,28 +42,28 @@ def test_ucs_test_logfile():
 
 @pytest.mark.exposure('safe')
 def test_var_log_tracebacks():
-    not_found = grep_traceback.main(glob.glob('/var/log/univention/*.log'), ignore_exceptions=grep_traceback.COMMON_EXCEPTIONS)
-    assert not_found, 'logfiles contain tracebacks'
+    if not grep_traceback.main(glob.glob('/var/log/univention/*.log'), ignore_exceptions=grep_traceback.COMMON_EXCEPTIONS):
+        pytest.fail('logfiles contain tracebacks', pytrace=False)
 
 
 @pytest.mark.exposure('safe')
 def test_var_log_subdirectory_tracebacks():
-    not_found = grep_traceback.main(glob.glob('/var/log/univention/*/*.log'), ignore_exceptions=grep_traceback.COMMON_EXCEPTIONS)
-    assert not_found, 'logfiles contain tracebacks'
+    if not grep_traceback.main(glob.glob('/var/log/univention/*/*.log'), ignore_exceptions=grep_traceback.COMMON_EXCEPTIONS):
+        pytest.fail('logfiles contain tracebacks', pytrace=False)
 
 
 @pytest.mark.exposure('safe')
 def test_var_log_tracebacks_gz():
-    not_found = grep_traceback.main(glob.glob('/var/log/univention/*.log.*.gz'), ignore_exceptions=grep_traceback.COMMON_EXCEPTIONS)
-    assert not_found, 'logfiles *.gz contain tracebacks'
+    if not grep_traceback.main(glob.glob('/var/log/univention/*.log.*.gz'), ignore_exceptions=grep_traceback.COMMON_EXCEPTIONS):
+        pytest.fail('logfiles *.gz contain tracebacks', pytrace=False)
 
 
 @pytest.mark.exposure('safe')
 def test_journallog_tracebacks():
     proc = subprocess.Popen(['journalctl', '-o', 'cat'], stdout=subprocess.PIPE)
-    not_found = grep_traceback.main([proc.stdout], ignore_exceptions=grep_traceback.COMMON_EXCEPTIONS)
+    if not grep_traceback.main([proc.stdout], ignore_exceptions=grep_traceback.COMMON_EXCEPTIONS):
+        pytest.fail('logfiles journalctl contain tracebacks', pytrace=False)
     assert proc.wait() == 0
-    assert not_found, 'logfiles journalctl contain tracebacks'
 
 
 @pytest.mark.roles_not('domaincontroller_master')
@@ -86,7 +86,7 @@ def test_fetch_logfiles_on_dc_master(ucr, testcase=None):
             print(cmd_install)
             if exc.output:
                 print(exc.output.decode('UTF-8', 'replace'))
-            raise AssertionError((cmd_install, exc.output.decode('UTF-8', 'replace')))
+            pytest.fail(repr(cmd_install, exc.output.decode('UTF-8', 'replace')), pytrace=False)
 
         try:
             cmd_test = """univention-ssh %s root@%s '%s -i -f'""" % (shlex.quote(fd.name), shlex.quote(ucr['ldap/master']), shlex.quote(shlex.quote(testpath)))
@@ -95,5 +95,6 @@ def test_fetch_logfiles_on_dc_master(ucr, testcase=None):
             print(cmd_test)
             if exc.output:
                 print(exc.output.decode('UTF-8', 'replace'))
-            assert not exc.returncode, (cmd_test, exc.returncode)
+            if exc.returncode:
+                pytest.fail(repr(cmd_test, exc.returncode), pytrace=False)
         # TODO: detect skipped exit code
