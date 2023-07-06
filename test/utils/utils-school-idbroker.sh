@@ -503,6 +503,10 @@ add_dns_for_provisioning_server () {
 }
 
 wait_for_sddb_provisioning () {
+    if ! univention-app status id-broker-sddb-builder; then
+        echo "No id-broker-sddb-builder running"
+        return 1
+    fi
     while true; do
         echo "Waiting for appcenter listener"
         sleep 10

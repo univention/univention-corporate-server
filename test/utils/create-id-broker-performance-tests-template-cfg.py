@@ -75,6 +75,7 @@ config.set(new_section, f"command{recover_command - 1}", """
 #
 . utils-school-idbroker.sh && prepare_jump_host
 /var/lib/id-broker-performance-tests/prepare_ldap/prepare_ldap.sh
+. utils-school-idbroker.sh && wait_for_sddb_provisioning
 """)
 config.set(new_section, f"command{recover_command}", "")
 config.set(new_section, f"command{new_recover_command}", "")
