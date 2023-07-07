@@ -26,6 +26,7 @@ for section in sections:
         section,
         f"command{recover_command}",
         """
+. utils-school-idbroker.sh && wait_for_sddb_provisioning
 rm -f /root/.ssh/environment
 ucr set internal/kvm/template/old/ip="$(ucr get interfaces/eth0/address)"
 apt-get -y remove firefox-esr
@@ -75,7 +76,6 @@ config.set(new_section, f"command{recover_command - 1}", """
 #
 . utils-school-idbroker.sh && prepare_jump_host
 /var/lib/id-broker-performance-tests/prepare_ldap/prepare_ldap.sh
-. utils-school-idbroker.sh && wait_for_sddb_provisioning
 """)
 config.set(new_section, f"command{recover_command}", "")
 config.set(new_section, f"command{new_recover_command}", "")
