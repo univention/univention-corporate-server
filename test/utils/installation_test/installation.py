@@ -226,6 +226,7 @@ class VNCInstallation:
         if self.config.dump_dir and "\n" in text:
             img_path = os.path.join(self.config.dump_dir, "vnc_automate_%s.png" % datetime.now().isoformat())
             self.client.captureScreen(img_path)
+        time.sleep(1)
         if clear:
             self.clear_input()
         self.client.enterKeys(translated)

@@ -127,13 +127,11 @@ class UCSInstallation(VNCInstallation):
         # Installer-Komponenten von CD laden
 
         # Netzwerk-Hardware erkennen
-        sleep(60, "scan ISO and network")
 
         # Netzwerk einrichten
         if self.args.ip:
             self.network_setup()
             self.click_at(100, 320)
-            sleep(1)
 
         """
         # Benutzer und Passwörter einrichten
@@ -179,11 +177,9 @@ class UCSInstallation(VNCInstallation):
             """
             self.wait_for_text('configure_clock')
             # self.type('clock')
-            sleep(1)
             self.type('\n')
 
         # Festplatte erkennen
-        sleep(60, "disk.detect")
         self.disk_setup()
 
         """
@@ -245,7 +241,6 @@ class UCSInstallation(VNCInstallation):
         # self.click_on('entire_disk_with_lvm')
         # LVM is the default so just press enter
         self.type('\n')
-        sleep(3)
 
         """
         # Festplatte partitionieren
@@ -256,6 +251,7 @@ class UCSInstallation(VNCInstallation):
 
         [Bildschirmfoto]  [Zurück] [Weiter]
         """
+        self.wait_for_text('choose_disk')
         self.type('\n')
 
         """
@@ -273,7 +269,6 @@ class UCSInstallation(VNCInstallation):
         """
         self.click_on('all_files_on_partition')
         self.type('\n')
-        sleep(3)
 
         """
         # Festplatten partitionieren
@@ -290,6 +285,7 @@ class UCSInstallation(VNCInstallation):
 
         [Bildschirmfoto]  [Weiter]
         """
+        self.wait_for_text("confirm_disk")
         self.client.keyPress('down')
         self.type('\n')
 
@@ -322,7 +318,6 @@ class UCSInstallation(VNCInstallation):
         # Manuel
         self.click_on('manual')
         self.type('\n')
-        sleep(3)
 
         """
         # Festplatte partitionieren
@@ -338,11 +333,11 @@ class UCSInstallation(VNCInstallation):
 
         [Bildschirmfoto] [Hilfe]  [Zurück] [Weiter]
         """
+        self.wait_for_text('finish_partition')
         self.client.keyPress('down')
         self.client.keyPress('down')
         self.client.keyPress('down')
         self.type('\n')
-        sleep(3)
 
         """
         # Festplatte partitionieren
@@ -355,10 +350,9 @@ class UCSInstallation(VNCInstallation):
 
         [Bildschirmfoto]  [Zurück] [Weiter]
         """
+        self.wait_for_text("parition_new")
         self.client.keyPress('down')
-        sleep(3)
         self.type('\n')
-        sleep(3)
 
         """
         # Festplatte partitionieren
@@ -380,7 +374,6 @@ class UCSInstallation(VNCInstallation):
         """
         self.click_on('free_space')
         self.type('\n')
-        sleep(3)
 
         """
         # Festplatte partitionieren
@@ -391,6 +384,7 @@ class UCSInstallation(VNCInstallation):
 
         [Bildschirmfoto] [Hilfe]  [Zurück] [Weiter]
         """
+        self.wait_for_text("disk_free")
         self.type('\n')
 
         """
@@ -403,6 +397,7 @@ class UCSInstallation(VNCInstallation):
 
         [Bildschirmfoto] [Hilfe]  [Zurück] [Weiter]
         """
+        self.wait_for_text("parition_size")
         # enter: ganze festplattengröße ist eingetragen
         self.type('\n')
 
@@ -414,6 +409,7 @@ class UCSInstallation(VNCInstallation):
 
         [Bildschirmfoto] [Hilfe]  [Zurück] [Weiter]
         """
+        self.wait_for_text("parition_type")
         # enter: primär
         self.type('\n')
 
@@ -438,10 +434,9 @@ class UCSInstallation(VNCInstallation):
         self.click_on('boot_flag')
         # enter: boot-flag aktivieren
         self.type('\n')
-        sleep(3)
+
         self.click_on('finish_create_partition')
         self.type('\n')
-        sleep(3)
 
         """
         # Festplatte partitionieren
@@ -463,7 +458,6 @@ class UCSInstallation(VNCInstallation):
         """
         self.click_on('finish_partition')
         self.type('\n')
-        sleep(3)
 
         """
         # Festplatten partitionieren
@@ -514,7 +508,7 @@ class UCSInstallation(VNCInstallation):
 
         [Bildschirmfoto]  [Zurück] [Weiter]
         """
-        sleep(3)
+        self.wait_for_text('choose_disk')
         self.type('\n')
 
         """
@@ -530,7 +524,7 @@ class UCSInstallation(VNCInstallation):
 
         [Bildschirmfoto]  [Zurück] [Weiter]
         """
-        sleep(3)
+        self.click_on('all_files_on_partition')
         self.type('\n')
 
         """
@@ -710,7 +704,6 @@ class UCSInstallation(VNCInstallation):
         self.wait_for_text('no_dc_dns')
         self.type('\n')
         self.click_on('preferred_dns')
-        sleep(1)
         self.type(self.args.dns + "\n")
         self._network_repo()
         self.check_apipa()
@@ -729,7 +722,7 @@ class UCSInstallation(VNCInstallation):
         if self.text_is_visible("Close windows and quit Firefox?", timeout=-3):
             self.type('\n')
 
-        sleep(60, "ec2.finish")
+        self.wait_for_text('univention')
         raise SystemExit(0)
 
     _setup_applianceLVM = _setup_applianceEC2
@@ -759,7 +752,6 @@ class UCSInstallation(VNCInstallation):
         self.wait_for_text('start_join')
         for _ in range(2):
             self.click_on('hostname_primary')
-            sleep(5)
             self.type('\t')
             self.type(self.args.join_user + "\t", clear=True)
             self.type(self.args.join_password, clear=True)
@@ -831,7 +823,6 @@ class UCSInstallation(VNCInstallation):
         """
         self.wait_for_text('setup_successful', timeout=-2100)
         self.type('\t\n')
-        sleep(10, "reboot")
         self.wait_for_text('univention')
 
     @verbose("KVM")

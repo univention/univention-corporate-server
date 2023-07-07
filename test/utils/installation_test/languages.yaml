@@ -75,6 +75,20 @@ partition_disks:
   eng: Partition disks
   fra: Patintionner les disques
   deu: Festplatten partitionieren
+choose_disk:
+  eng: Select disk to partition
+  fra: Disque à partitionner
+  deu: Sie die zu partitionierende Festplatte
+parition_size:
+  deu: Neue Größe der Partition
+parition_type:
+  deu: Typ der neuen Partition
+confirm_disk:
+  deu: Änderungen auf die Speichergeräte schreiben und LVM einrichten
+parition_new:
+  deu: leere Partitionstabelle auf diesem Gerät erstellen
+disk_free:
+  deu: Wie mit freiem Speicher verfahren
 entire_disk:
   eng: use entire disk
   fra: utiliser un disque entier
@@ -180,7 +194,7 @@ software_configuration_non_master:
   deu: Wählen Sie UCS-Software
 confirm_config:
   eng: Confirm configuration
-  fra: Composants logiciels
+  fra: Confirmer les réglages de configuration
   deu: UCS-Konfiguration
 confirm_config_non_maste:
   eng: Please confirm the
