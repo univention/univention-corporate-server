@@ -8,6 +8,7 @@ import sys
 import time
 from argparse import ArgumentParser, Namespace
 from contextlib import suppress
+from datetime import datetime
 from typing import Dict, Optional
 
 from helper import trace_calls, verbose
@@ -222,6 +223,9 @@ class VNCInstallation:
     @verbose("type", "{1!r} clear={2}")
     def type(self, text: str, clear: bool = False) -> None:
         translated = self.translate(text)
+        if self.config.dump_dir and "\n" in text:
+            img_path = os.path.join(self.config.dump_dir, "vnc_automate_%s.png" % datetime.now().isoformat())
+            self.client.captureScreen(img_path)
         if clear:
             self.clear_input()
         self.client.enterKeys(translated)
