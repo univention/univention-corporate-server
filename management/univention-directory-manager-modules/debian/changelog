@@ -1,3 +1,11 @@
+univention-directory-manager-modules (15.0.24-11) unstable; urgency=medium
+
+  * Bug #56271: Evaluate subsyntaxes while encoding values
+    To enable saving of properties with nested lists like the
+    udm portals/entry list property
+
+ -- Johannes Lohmer <lohmer@univention.de>  Wed, 12 Jul 2023 14:27:47 +0200
+
 univention-directory-manager-modules (15.0.24-10) unstable; urgency=medium
 
   * Bug #56036: fix idempotency and Python 3 compatibility of

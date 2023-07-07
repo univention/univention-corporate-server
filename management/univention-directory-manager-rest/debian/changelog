@@ -1,3 +1,9 @@
+univention-directory-manager-rest (10.0.6-9) unstable; urgency=medium
+
+  * Bug #56271 Fix shared link reference with deepcopy
+
+ -- Johannes Lohmer <lohmer@univention.de>  Fri, 07 Jul 2023 10:21:19 +0200
+
 univention-directory-manager-rest (10.0.6-8) unstable; urgency=medium
 
   * Bug #50632: showing IMAP folder names in LDAP with FQDN
