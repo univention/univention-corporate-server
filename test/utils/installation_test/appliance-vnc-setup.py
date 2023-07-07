@@ -39,10 +39,7 @@ class UCSSetup(VNCInstallation):
 
         [Next]
         """
-        try:
-            self.wait_for_text('English')
-        except VNCDoException:
-            pass
+        self.wait_for_text('English')
 
         self.screenshot('language-setup.png')
         self.go_next(tabs=2)
@@ -95,19 +92,13 @@ class UCSSetup(VNCInstallation):
 
         sleep(60, "net.apipa")
         self.check_apipa()
-        try:
-            self.wait_for_text('No gateway has been')
+        if self.text_is_visible('No gateway has been'):
             self.type('\n')
             sleep(60, "net.gateway")
-        except VNCDoException:
-            pass
 
-        try:
-            self.wait_for_text('continue without access')
+        if self.text_is_visible('continue without access'):
             self.type('\n')
             sleep(60, "net.unconnected")
-        except VNCDoException:
-            pass
 
         sleep(120, "net.finish")
 

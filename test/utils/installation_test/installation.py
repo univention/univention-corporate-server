@@ -9,12 +9,11 @@ import time
 from argparse import ArgumentParser, Namespace
 from contextlib import suppress
 from datetime import datetime
-from typing import Dict, Optional
+from typing import Dict, List, Optional, Tuple
 
 from helper import trace_calls, verbose
 from twisted.internet import reactor
 from vncautomate import VNCAutomateFactory, init_logger
-from vncautomate.client import VNCAutomateException
 from vncautomate.config import OCRConfig
 from vncdotool.api import ThreadedVNCClientProxy, connect
 from vncdotool.client import VNCDoException
@@ -211,14 +210,17 @@ class VNCInstallation:
         try:
             self.wait_for_text(text, timeout, wait)
             return True
-        except (VNCDoException, VNCAutomateException):
+        except VNCDoException:
             return False
 
     def wait_for_text(self, text: str, timeout: int = 0, wait: bool = True) -> None:
         translated = self.translate(text)
         timeout = self.timeout * (timeout >= 0) + abs(timeout)
         self.client.timeout = timeout + 5
-        self.client.waitForText(translated, timeout, wait)
+        result: List[Tuple[int, int]] = []
+        self.client.waitForText(translated, timeout, wait, result)
+        if not result:
+            raise VNCDoException()
 
     @verbose("type", "{1!r} clear={2}")
     def type(self, text: str, clear: bool = False) -> None:
@@ -239,9 +241,6 @@ class VNCInstallation:
 
     def check_apipa(self) -> None:
         """Check automatic private address if no DHCP answer."""
-        try:
-            self.wait_for_text('APIPA')
+        if self.text_is_visible('APIPA'):
             self.type("\n")
             sleep(60, "net.apipa")
-        except VNCDoException:
-            pass

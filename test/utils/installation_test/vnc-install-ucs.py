@@ -8,7 +8,6 @@ from os.path import dirname, join
 from typing import Dict
 
 from installation import VNCInstallation, build_parser, sleep, verbose
-from vncdotool.client import VNCDoException
 from yaml import safe_load
 
 
@@ -77,10 +76,9 @@ class UCSInstallation(VNCInstallation):
             self.click_at(250, 250)
             self.type('english_language_name')
             self.type("\n")
-            try:
-                self.wait_for_text('select_location')
+            if self.text_is_visible('select_location'):
                 break
-            except VNCDoException:
+            else:
                 self.click_on('Go Back')
 
         """
@@ -738,11 +736,10 @@ class UCSInstallation(VNCInstallation):
             self.type(self.args.join_user + "\t", clear=True)
             self.type(self.args.join_password, clear=True)
             self.go_next()
-            try:
-                self.wait_for_text('error')
+            if self.text_is_visible('error'):
                 self.type('\n')
                 self.client.keyPress('caplk')
-            except VNCDoException:
+            else:
                 break
 
     @verbose("JOIN")
@@ -756,11 +753,10 @@ class UCSInstallation(VNCInstallation):
             self.type(self.args.join_user + "\t", clear=True)
             self.type(self.args.join_password, clear=True)
             self.go_next()
-            try:
-                self.wait_for_text('error')
+            if self.text_is_visible('error'):
                 self.type('\n')
                 self.client.keyPress('caplk')
-            except VNCDoException:
+            else:
                 break
 
     def hostname(self) -> None:
