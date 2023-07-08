@@ -26,8 +26,7 @@ for section in sections:
         section,
         f"command{recover_command}",
         """
-univention-directory-listener-ctrl resync id-broker-sddb-builder || true
-. utils-school-idbroker.sh && wait_for_sddb_provisioning
+. utils-school-idbroker.sh && resync_sddb
 rm -f /root/.ssh/environment
 ucr set internal/kvm/template/old/ip="$(ucr get interfaces/eth0/address)"
 apt-get -y remove firefox-esr

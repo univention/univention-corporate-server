@@ -502,11 +502,14 @@ add_dns_for_provisioning_server () {
 	done
 }
 
-wait_for_sddb_provisioning () {
+resync_sddb () {
     if ! univention-app status id-broker-sddb-builder; then
         echo "No id-broker-sddb-builder running"
         return 0
     fi
+    univention-app shell id-broker-sddb-builder sddb-builder queues bulk-append regular sp_mapping ""
+    echo "Append all ucsschool items to queue"
+    univention-app shell id-broker-sddb-builder sddb-builder queues bulk-append regular ldap_filter "(ucsschoolRecordUID=*)"
     while true; do
         echo "Waiting for appcenter listener"
         sleep 10
