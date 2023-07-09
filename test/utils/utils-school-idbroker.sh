@@ -539,7 +539,10 @@ resync_sddb () {
     fi
     univention-app shell id-broker-sddb-builder sddb-builder queues bulk-append regular sp_mapping ""
     echo "Append all ucsschool items to queue"
-    univention-app shell id-broker-sddb-builder sddb-builder queues bulk-append regular ldap_filter "(ucsschoolRecordUID=*)"
+    schools=$(python3 -c 'from ucsschool.lib.models.school import School; from univention.uldap import getMachineConnection; lo = getMachineConnection(); print(" ".join(school.name for school in School.get_all(lo)))')
+    for school in $schools; do
+        univention-app shell id-broker-sddb-builder sddb-builder queues bulk-append regular school "$school"
+    done
     wait_for_sddb_provisioning
 }
 
