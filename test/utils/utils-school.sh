@@ -63,9 +63,6 @@ install_ucsschool_id_connector () {
   echo -n univention > /tmp/univention
   # use brach image if given
   if [ -n "$UCS_ENV_ID_CONNECTOR_IMAGE" ]; then
-    if [[ $UCS_ENV_ID_CONNECTOR_IMAGE =~ ^gitregistry.knut.univention.de.* ]]; then
-        docker login -u "$GITLAB_REGISTRY_TOKEN" -p "$GITLAB_REGISTRY_TOKEN_SECRET" gitregistry.knut.univention.de
-    fi
     univention-install --yes univention-appcenter-dev
     univention-app dev-set ucsschool-id-connector "DockerImage=$UCS_ENV_ID_CONNECTOR_IMAGE"
   fi
@@ -79,9 +76,6 @@ install_ucsschool_apis () {
   echo -n univention > /tmp/univention
   # use brach image if given
   if [ -n "$UCS_ENV_UCSSCHOOL_APIS_IMAGE" ]; then
-    if [[ $UCS_ENV_UCSSCHOOL_APIS_IMAGE =~ ^gitregistry.knut.univention.de.* ]]; then
-        docker login -u "$GITLAB_REGISTRY_TOKEN" -p "$GITLAB_REGISTRY_TOKEN_SECRET" gitregistry.knut.univention.de
-    fi
     univention-install --yes univention-appcenter-dev
     univention-app dev-set ucsschool-id-connector "DockerImage=$UCS_ENV_UCSSCHOOL_APIS_IMAGE"
   fi
