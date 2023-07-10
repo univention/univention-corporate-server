@@ -14,7 +14,7 @@ sections.remove("Global")
 recover_command = config.getint("Global", "recover")
 kvm_extra_label = config.get("Global", "kvm_extra_label")
 config.set("Global", "kvm_extra_label", f"{kvm_extra_label}-kvm-templates")
-new_recover_command = recover_command + 1
+new_recover_command = recover_command + 2
 config.set("Global", "recover", str(new_recover_command))
 config.set("Global", "kvm_memory", "8G")
 
@@ -27,6 +27,12 @@ for section in sections:
         f"command{recover_command}",
         """
 . utils-school-idbroker.sh && resync_sddb
+""",
+    )
+    config.set(
+        section,
+        f"command{recover_command + 1}",
+        """
 rm -f /root/.ssh/environment
 ucr set internal/kvm/template/old/ip="$(ucr get interfaces/eth0/address)"
 apt-get -y remove firefox-esr
@@ -78,6 +84,7 @@ config.set(new_section, f"command{recover_command - 1}", """
 /var/lib/id-broker-performance-tests/prepare_ldap/prepare_ldap.sh
 """)
 config.set(new_section, f"command{recover_command}", "")
+config.set(new_section, f"command{recover_command + 1}", "")
 config.set(new_section, f"command{new_recover_command}", "")
 # add files
 config.set(new_section, "files", """utils/utils-school-idbroker.sh /root/
