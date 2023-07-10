@@ -1,0 +1,24 @@
+product: ucs
+release: "5.0"
+version: [3, 4]
+scope: ucs_5.0-0-errata5.0-4
+src: firefox-esr
+fix: 102.13.0esr-1~deb10u1
+desc: |
+ This update addresses the following issues:
+ 102.13.0esr-1~deb10u1 (Thu, 06 Jul 2023 11:42:05 +0200)
+ * Backport to buster.
+ 102.13.0esr-1 (Wed, 05 Jul 2023 05:33:32 +0900)
+ * New upstream release.
+ * Fixes for mfsa2023-23, also known as: CVE-2023-37201, CVE-2023-37202,
+   CVE-2023-37207, CVE-2023-37208, CVE-2023-37211.
+ * debian/rules, media/ffvpx/config_unix64.h: Work around
+   https://sourceware.org/bugzilla/show_bug.cgi?id=30578.
+ * debian/upstream.mk: Unstable is trixie.
+bug: [56299]
+cve:
+- CVE-2023-37201
+- CVE-2023-37202
+- CVE-2023-37207
+- CVE-2023-37208
+- CVE-2023-37211
