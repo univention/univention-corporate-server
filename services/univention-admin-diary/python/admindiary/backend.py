@@ -182,7 +182,7 @@ class Entry(Base):
     event = relationship('Event')
     args = relationship('Arg', back_populates='entry')
     tags = relationship('Tag', secondary=entry_tags, back_populates='entries')
-    comments = relationship('Entry', primaryjoin=context_id == context_id, foreign_keys=context_id, remote_side=context_id)
+    comments = relationship('Entry', primaryjoin=context_id == context_id, foreign_keys=context_id, remote_side=context_id)  # noqa: PLR0124
 
 
 class Tag(Base):
@@ -328,18 +328,17 @@ class Client(object):
             query = query.outerjoin(EventMessage, EventMessage.event_id == Entry.event_id)
 
             # form filters array
-            filters = []
-            for pat in message.split():
-                filters.append(
-                    or_(
-                        Entry.message.ilike('%{}%'.format(pat)),
-                        and_(
-                            EventMessage.locale == locale,
-                            EventMessage.message.ilike('%{}%'.format(pat)),
-                        ),
-                        Entry.args.any(Arg.value == pat),
+            filters = [
+                or_(
+                    Entry.message.ilike('%{}%'.format(pat)),
+                    and_(
+                        EventMessage.locale == locale,
+                        EventMessage.message.ilike('%{}%'.format(pat)),
                     ),
+                    Entry.args.any(Arg.value == pat),
                 )
+                for pat in message.split()
+            ]
 
             # find all entries matching given message criterion
             query = query.filter(or_(*filters))
