@@ -581,24 +581,30 @@ class complex(ISyntax):
 
     @property
     def type_class(cls):
-        def _type_class(syn):
-            syn = syn() if inspect.isclass(syn) else syn
-            return syn.type_class
+        def _sub_type_class(subsyntax):
+            subsyntax = subsyntax() if inspect.isclass(subsyntax) else subsyntax
+            TC = subsyntax.type_class
+
+            class SubTC(TC):
+                def __init__(self, property_, property_name):
+                    TC.__init__(self, property_, property_name, syntax=subsyntax)
+            return SubTC
+
         if cls.subsyntax_key_value:
             class ComplexMultiValueKeyValueDictType(univention.admin.types.KeyValueDictionaryType):
-                key_type = _type_class(cls.subsyntaxes[0][1])
-                value_type = _type_class(cls.subsyntaxes[1][1])
+                key_type = _sub_type_class(cls.subsyntaxes[0][1])
+                value_type = _sub_type_class(cls.subsyntaxes[1][1])
             return ComplexMultiValueKeyValueDictType
         elif cls.subsyntax_names:
             class ComplexMultiValueDictType(univention.admin.types.DictionaryType):
                 properties = {
-                    key: _type_class(syn)
+                    key: _sub_type_class(syn)
                     for key, (desc, syn) in zip(cls.subsyntax_names, cls.subsyntaxes)
                 }
             return ComplexMultiValueDictType
         else:
             class ComplexListType(univention.admin.types.ListOfItems):
-                item_types = [_type_class(sub[1]) for sub in cls.subsyntaxes]
+                item_types = [_sub_type_class(sub[1]) for sub in cls.subsyntaxes]
             return ComplexListType
 
     @property

@@ -93,10 +93,10 @@ class TypeHint(object):
 
     _dependencies = None
 
-    def __init__(self, property, property_name):
+    def __init__(self, property, property_name, syntax=None):
         self.property = property
         self.property_name = property_name
-        self.syntax = self._syntax
+        self.syntax = syntax or self._syntax
 
     @property
     def _syntax(self):
