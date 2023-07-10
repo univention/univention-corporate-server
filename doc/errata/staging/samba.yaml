@@ -1,0 +1,12 @@
+product: ucs
+release: "5.0"
+version: [3]
+scope: ucs_5.0-0-errata5.0-3
+src: samba
+fix: 2:4.16.8-1A~5.0.0.202307101710
+desc: |
+ This update addresses the following issues:
+ * TODO
+bug: [56300]
+cve:
+ - TEMP-TODO
