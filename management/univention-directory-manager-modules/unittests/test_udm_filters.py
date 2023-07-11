@@ -125,8 +125,6 @@ BASE_FILTERS = {
     ('users/user', 'certificateSerial', 'certificateSerial=*', 'certificateSerial=*'),  # FIXME:
     ('users/user', 'umcProperty', 'umcProperty=*', 'univentionUMCProperty=*'),
     ('users/user', 'serviceSpecificPassword', 'serviceSpecificPassword=*', 'serviceSpecificPassword=*'),  # FIXME:
-    ('users/user', 'placeOfBirth', 'placeOfBirth=*', 'univentionPlaceOfBirth=*'),
-    ('users/user', 'gender', 'gender=*', 'univentionGender=*'),
 ])
 def test_presence_filters(module, property, udm_filter, expected_filter):
     check_expected_filter(module, property, udm_filter, expected_filter)
@@ -249,8 +247,6 @@ def test_presence_filters(module, property, udm_filter, expected_filter):
     pytest.param('users/user', 'umcProperty', 'umcProperty=foo bar', 'univentionUMCProperty=foo=bar', marks=pytest.mark.xfail(reason='Bug #53808')),
     ('users/user', 'umcProperty', 'umcProperty=foo=bar', 'univentionUMCProperty=foo=bar'),
     ('users/user', 'serviceSpecificPassword', 'serviceSpecificPassword=foo', 'serviceSpecificPassword=foo'),  # FIXME:
-    ('users/user', 'placeOfBirth', 'placeOfBirth=foo', 'univentionPlaceOfBirth=foo'),
-    ('users/user', 'gender', 'gender=Male', 'univentionGender=1'),
 ])
 def test_udm_filter(module, property, udm_filter, expected_filter):
     check_expected_filter(module, property, udm_filter, expected_filter)
