@@ -73,7 +73,7 @@ install_ucsschool_id_connector () {
 }
 
 install_ucsschool_apis () {
-  install_app_from_branch ucsschool-id-connector "$UCS_ENV_UCSSCHOOL_APIS_IMAGE" ucsschool/apis/log_level=DEBUG ucsschool/apis/processes=0
+  install_app_from_branch ucsschool-apis "$UCS_ENV_UCSSCHOOL_APIS_IMAGE" ucsschool/apis/log_level=DEBUG ucsschool/apis/processes=0
 }
 
 install_mv_idm_gw_sender_ext_attrs () {
