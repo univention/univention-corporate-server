@@ -71,7 +71,7 @@ def get_pw_from_rc(lines, uid):
 
 
 def map_fetchmail(value):
-    return [json.dumps([w.decode('UTF-8') for w in v]).encode('UTF-8') for v in value]
+    return [json.dumps(v).encode('UTF-8') for v in value]
 
 
 def unmap_fetchmail(value):
@@ -80,7 +80,7 @@ def unmap_fetchmail(value):
     except ValueError:
         # try the previous format. This should only happen once as
         # the next time the values will be already json formatted (#56008).
-        entries = [[w.strip('\"') for w in v.split('";"')] for v in value]
+        entries = [[w.strip('"') for w in v.decode('UTF-8').split('";"')] for v in value]
     return entries
 
 
