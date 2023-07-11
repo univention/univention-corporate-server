@@ -10,12 +10,10 @@ desc: |
    settings weren't saved if a custom IP was specified. This has been
    corrected.
  * Values for the "complex" syntax class can now contain double quotes.
- * User objects now provide two additional properties: `placeOfBirth` and
-   `gender`.
  * It is possible again to detect, search and modify users/ldap objects which
    have univentionObjectFlag=functional.
   * The displayed description of objects is now more accurate,
    for example for OX IMAP folder objects did not include
    the domain name which made it difficult to differentiate
    folder names for different domains.
-bug: [55459, 27241, 55553, 55216, 50632]
+bug: [55459, 27241, 55216, 50632]
