@@ -1304,22 +1304,6 @@ msgstr "Die Option kann wiederholt gesetzt und entfernt werden."
 msgid "Options"
 msgstr "Optionen"
 
-#: modules/univention/admin/handlers/users/usertemplate.py:274
-msgid "Place of birth"
-msgstr "Geburtsort"
-
-#: modules/univention/admin/handlers/users/usertemplate.py:275
-msgid "The place where the user was born."
-msgstr "Der Geburtsort des Benutzers."
-
-#: modules/univention/admin/handlers/users/usertemplate.py:280
-msgid "Gender"
-msgstr "Geschlecht"
-
-#: modules/univention/admin/handlers/users/usertemplate.py:281
-msgid "The gender of an individual."
-msgstr "Das Geschlecht einer Person."
-
 #: modules/univention/admin/handlers/settings/extended_options.py:53
 msgid "Options for extended attributes"
 msgstr "Optionen für erweiterte Attribute"

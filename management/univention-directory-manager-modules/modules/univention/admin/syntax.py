@@ -4704,18 +4704,6 @@ class AllowDenyIgnore(select):
     ]
 
 
-class Gender(select):
-    """Syntax for selecting the gender setting."""
-
-    empty_value = True
-    choices = [
-        ('NotKnown', _('Not known')),
-        ('Male', _('Male')),
-        ('Female', _('Female')),
-        ('NotApplicable', _('Not applicable')),
-    ]
-
-
 class IStates(select):
     """Base syntax to select item from list of choices with a mapping between Python and LDAP values."""
 
