@@ -43,44 +43,38 @@ install_bb_api () {
   ps aux | grep api-bb
 }
 
-install_kelvin_api () {
+install_app_from_branch () {
+  local app_name="$1"
+  local custom_docker_image="$2"
+  local app_settings="${*:3}"
   echo -n univention > /tmp/univention
-  # use brach image if given
-  if [ -n "$UCS_ENV_KELVIN_IMAGE" ]; then
+  if [ -n "$custom_docker_image" ]; then
     univention-install --yes univention-appcenter-dev
-    univention-app dev-set ucsschool-kelvin-rest-api "DockerImage=$UCS_ENV_KELVIN_IMAGE"
+    univention-app dev-set "$app_name" "DockerImage=$custom_docker_image"
   fi
-  univention-app install ucsschool-kelvin-rest-api --noninteractive --username Administrator --pwdfile /tmp/univention --set ucsschool/kelvin/processes=0 ucsschool/kelvin/log_level=DEBUG
-  commit=$(docker inspect --format='{{.Config.Labels.commit}}' "$(ucr get appcenter/apps/ucsschool-kelvin-rest-api/container)")
+  cmd="univention-app install $app_name --noninteractive --username Administrator --pwdfile /tmp/univention"
+  if [ -n "$app_settings" ]; then
+    exec $cmd --set $app_settings
+  else
+    exec $cmd
+  fi
+  container_name="appcenter/apps/$app_name/container"
+  container=$(ucr get "$container_name")
+  commit=$(docker inspect --format='{{.Config.Labels.commit}}' "$container")
 	echo "Docker image built from commit: $commit"
 }
 
+install_kelvin_api () {
+  install_app_from_branch ucsschool-kelvin-rest-api "$UCS_ENV_KELVIN_IMAGE" ucsschool/kelvin/processes=0 ucsschool/kelvin/log_level=DEBUG
+}
 
 install_ucsschool_id_connector () {
-  echo -n univention > /tmp/univention
-  # use brach image if given
-  if [ -n "$UCS_ENV_ID_CONNECTOR_IMAGE" ]; then
-    univention-install --yes univention-appcenter-dev
-    univention-app dev-set ucsschool-id-connector "DockerImage=$UCS_ENV_ID_CONNECTOR_IMAGE"
-  fi
-  univention-app install ucsschool-id-connector --noninteractive --username Administrator --pwdfile /tmp/univention --set ucsschool-id-connector/log_level=DEBUG
-  commit=$(docker inspect --format='{{.Config.Labels.commit}}' "$(ucr get appcenter/apps/ucsschool-id-connector/container)")
-	echo "Docker image built from commit: $commit"
+  install_app_from_branch ucsschool-id-connector "$UCS_ENV_ID_CONNECTOR_IMAGE" ucsschool-id-connector/log_level=DEBUG
 }
-
 
 install_ucsschool_apis () {
-  echo -n univention > /tmp/univention
-  # use brach image if given
-  if [ -n "$UCS_ENV_UCSSCHOOL_APIS_IMAGE" ]; then
-    univention-install --yes univention-appcenter-dev
-    univention-app dev-set ucsschool-id-connector "DockerImage=$UCS_ENV_UCSSCHOOL_APIS_IMAGE"
-  fi
-  univention-app install ucsschool-apis --noninteractive --username Administrator --pwdfile /tmp/univention --set ucsschool/apis/log_level=DEBUG ucsschool/apis/processes=0
-  commit=$(docker inspect --format='{{.Config.Labels.commit}}' "$(ucr get appcenter/apps/ucsschool-apis/container)")
-	echo "Docker image built from commit: $commit"
+  install_app_from_branch ucsschool-id-connector "$UCS_ENV_UCSSCHOOL_APIS_IMAGE" ucsschool/apis/log_level=DEBUG ucsschool/apis/processes=0
 }
-
 
 install_mv_idm_gw_sender_ext_attrs () {
   local lb
