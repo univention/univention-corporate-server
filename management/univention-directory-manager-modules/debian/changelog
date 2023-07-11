@@ -1,3 +1,9 @@
+univention-directory-manager-modules (15.0.24-9) unstable; urgency=medium
+
+  * Bug #55553: revert
+
+ -- Florian Best <best@univention.de>  Tue, 11 Jul 2023 11:42:15 +0200
+
 univention-directory-manager-modules (15.0.24-8) unstable; urgency=medium
 
   * Bug #50632: showing IMAP folder names in LDAP with FQDN
