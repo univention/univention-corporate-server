@@ -379,7 +379,7 @@ mapping.register('mailPrimaryAddress', 'mailPrimaryAddress', None, univention.ad
 mapping.register('mailAlternativeAddress', 'mailAlternativeAddress')
 mapping.register('_options', 'userOptionsPreset', encoding='ASCII')
 mapping.register('placeOfBirth', 'univentionPlaceOfBirth', None, univention.admin.mapping.ListToString)
-mapping.register('gender', 'univentionGender', None, univention.admin.mapping.ListToString)
+mapping.register('gender', 'univentionGender', univention.admin.mapping.mapGender, univention.admin.mapping.unmapGender)
 
 BLACKLISTED_OBJECT_CLASSES = {b'inetOrgPerson'}
 

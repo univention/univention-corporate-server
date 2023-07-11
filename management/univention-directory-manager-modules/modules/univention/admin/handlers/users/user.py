@@ -1137,7 +1137,7 @@ mapping.register('accountActivationDate', 'krb5ValidStart', mapDateTimeTimezoneT
 mapping.register('univentionObjectIdentifier', 'univentionObjectIdentifier', None, univention.admin.mapping.ListToString)
 mapping.register('univentionSourceIAM', 'univentionSourceIAM', None, univention.admin.mapping.ListToString)
 mapping.register('placeOfBirth', 'univentionPlaceOfBirth', None, univention.admin.mapping.ListToString)
-mapping.register('gender', 'univentionGender', None, univention.admin.mapping.ListToString)
+mapping.register('gender', 'univentionGender', univention.admin.mapping.mapGender, univention.admin.mapping.unmapGender)
 
 mapping.registerUnmapping('sambaRID', unmapSambaRid)
 mapping.registerUnmapping('passwordexpiry', unmapPasswordExpiry)

@@ -93,12 +93,10 @@ attributetype ( 1.3.6.1.4.1.10176.102 NAME 'univentionPlaceOfBirth'
     SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 )
 
 attributetype ( 1.3.6.1.4.1.10176.103 NAME 'univentionGender'
-    DESC 'Representation of human gender'
-    EQUALITY caseIgnoreMatch
-    ORDERING caseIgnoreOrderingMatch
-    SUBSTR caseIgnoreSubstringsMatch
+    DESC 'Representation of human sex (see ISO 5218)'
+    EQUALITY integerMatch
     SINGLE-VALUE
-    SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 )
+    SYNTAX 1.3.6.1.4.1.1466.115.121.1.27 )
 
 # Attribute to store the youngest authTimestamp (see slapo-lastbind) attribute from multiple LDAP servers.
 # Used by univention-lastbind.py

@@ -241,6 +241,27 @@ def IgnoreNone(value, encoding=()):
     return None  # FIXME
 
 
+def mapGender(old, encoding=()):
+    values = {
+        'NotKnown': [b'0'],
+        'Male': [b'1'],
+        'Female': [b'2'],
+        'NotApplicable': [b'9'],
+    }
+    return values.get(old, [])
+
+
+def unmapGender(old, encoding=()):
+    values = {
+        '0': 'NotKnown',
+        '1': 'Male',
+        '2': 'Female',
+        '9': 'NotApplicable',
+    }
+    if old:
+        return values[old[0].decode(*encoding)]
+
+
 def _stringToInt(value):
     # type: (str) -> int
     """
