@@ -158,7 +158,7 @@ def objappend_single(flist: List[str], new: Dict[str, List[bytes]], password: st
     except ValueError:
         # try the previous format. This should only happen once as
         # the next time the values will be already json formatted (#56008).
-        entries = [[w.strip('\"') for w in v.split('";"')] for v in value]
+        entries = [[w.strip('\"') for w in v.decode('UTF-8').split('";"')] for v in value]
     for entry in entries:
         server, protocol, username, passwd, ssl, keep = entry
         flag_ssl = 'ssl' if ssl == '1' else ''
@@ -176,7 +176,7 @@ def objappend_multi(flist: List[str], new: Dict[str, List[bytes]], password: str
     except ValueError:
         # try the previous format. This should only happen once as
         # the next time the values will be already json formatted (#56008).
-        entries = [[w.strip('\"') for w in v.split('";"')] for v in value]
+        entries = [[w.strip('\"') for w in v.decode('UTF-8').split('";"')] for v in value]
     for entry in entries:
         server, protocol, username, passwd, localdomains, qmailprefix, envelope_header, ssl, keep = entry
         flag_ssl = 'ssl' if ssl == '1' else ''

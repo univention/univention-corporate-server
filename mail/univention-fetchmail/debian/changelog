@@ -1,3 +1,9 @@
+univention-fetchmail (13.0.6-3) unstable; urgency=medium
+
+  * Bug #56008: Fix type error on fetchmailrc listener.
+
+ -- Juan Carlos García García <garcia-garcia.extern@univention.de>  Tue, 11 Jul 2023 14:15:00 +0100
+
 univention-fetchmail (13.0.6-2) unstable; urgency=medium
 
   * Bug #56008: Store the entries of the univentionFetchmailSingle
