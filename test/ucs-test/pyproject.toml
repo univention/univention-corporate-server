@@ -1,5 +1,5 @@
 [tool.poetry]
-name = "ucs-test-utils"
+name = "univention-testing-utils"
 version = "0.1.0"
 description = "Utilities used for testing ucs-related systems"
 authors = ["Johannes Lohmer <lohmer@univention.de>"]
