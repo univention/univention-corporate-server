@@ -1,0 +1,11 @@
+product: ucs
+release: "5.0"
+version: [4]
+scope: ucs_5.0-0-errata5.0-4
+src: univention-management-console
+fix: 12.0.31-6
+desc: |
+ This update addresses the following issues:
+ * In multiprocessing mode of the UMC-Server the SAML login could cause
+   corrupted BDB SAML Identity Cache databases. This has been repaired.
+bug: [56303]

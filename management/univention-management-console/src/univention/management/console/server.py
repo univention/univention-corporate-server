@@ -51,6 +51,7 @@ from tornado.netutil import bind_sockets
 from tornado.web import Application as TApplication
 
 import univention.debug as ud
+from univention.management.console import saml
 from univention.management.console.config import ucr
 from univention.management.console.log import CORE, log_init, log_reopen
 from univention.management.console.resources import (
@@ -140,6 +141,7 @@ class Server(object):
             '--no-daemonize-module-processes', action='store_true', help='starts modules in foreground so that logs go to stdout',
         )
         self.options = self.parser.parse_args()
+        saml.PORT = self.options.port
         self._child_number = None
 
         # TODO: not really?

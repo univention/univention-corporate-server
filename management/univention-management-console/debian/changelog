@@ -1,3 +1,9 @@
+univention-management-console (12.0.31-6) unstable; urgency=medium
+
+  * Bug #56303: fix SAML identity cache in multiprocessing mode
+
+ -- Florian Best <best@univention.de>  Tue, 11 Jul 2023 09:46:13 +0200
+
 univention-management-console (12.0.31-5) unstable; urgency=medium
 
   * Bug #56256: fix translation of module processes
