@@ -18,7 +18,7 @@ desc: |
    mailto URL. This could have led to user confusion and possible spoofing
    attacks.
  * CVE-2023-37208: When opening Diagcab files, Firefox did not warn the user
-   that these files may contain malicious code. 
+   that these files may contain malicious code.
  * CVE-2023-37211: Memory safety bugs present in Firefox 114, Firefox ESR
    102.12, and Thunderbird 102.12. Some of these bugs showed evidence of
    memory corruption and we presume that with enough effort some of these
