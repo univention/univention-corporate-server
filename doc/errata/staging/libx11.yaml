@@ -6,8 +6,6 @@ src: libx11
 fix: 2:1.6.7-1+deb10u3
 desc: |
  This update addresses the following issue:
- 2:1.6.7-1+deb10u3 (Mon, 26 Jun 2023 16:20:01 +0300)
- * Non-maintainer upload by the LTS Security Team.
  * CVE-2023-3138: Missing input validation in various functions may result in
    denial of service.
 bug: [56245]
