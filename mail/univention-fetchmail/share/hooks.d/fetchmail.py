@@ -46,7 +46,7 @@ def unmap_value(value):
     except ValueError:
         # try the previous format. This should only happen once as
         # the next time the values will be already json formatted (#56008).
-        entries = [[w.strip('"') for w in v.decode('UTF-8').split(';')] for v in value]
+        entries = [[w.strip('"') for w in v.decode('UTF-8').split('";"')] for v in value]
     return entries
 
 
