@@ -10,3 +10,6 @@ desc: |
    dialog is displayed to let the user decide on whether to store an empty
    string or to actually delete the variable.
 bug: [55517]
+erratum: 732
+announced: 2023-07-12
+support: core
