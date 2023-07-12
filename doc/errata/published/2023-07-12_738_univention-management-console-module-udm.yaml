@@ -14,3 +14,6 @@ desc: |
    the domain name which made it difficult to differentiate
    folder names for different domains.
 bug: [55459, 50632]
+erratum: 738
+announced: 2023-07-12
+support: core
