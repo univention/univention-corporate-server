@@ -12,3 +12,6 @@ desc: |
    server for LDAP lookups. Use the option `--from-primary`
    for the old behavior (LDAP lookup on primary directory node).
 bug: [55938, 55936]
+erratum: 735
+announced: 2023-07-12
+support: core
