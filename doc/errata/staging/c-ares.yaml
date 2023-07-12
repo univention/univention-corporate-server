@@ -6,8 +6,6 @@ src: c-ares
 fix: 1.14.0-1+deb10u3
 desc: |
  This update addresses the following issues:
- 1.14.0-1+deb10u3 (Mon, 26 Jun 2023 06:41:46 +0200)
- * Non-maintainer upload by the LTS Security Team.
  * Fix CVE-2023-32067: Improve UDP packet handling in ares_process.c to
    prevent a denial of service due to a malformed UDP packet.
  * Fix CVE-2023-31130: fix buffer underflow for certain IPv6 addresses in
