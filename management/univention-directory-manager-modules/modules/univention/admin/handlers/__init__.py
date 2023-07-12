@@ -1679,12 +1679,15 @@ class simpleLdap(object):
         """Cancels the object creation or modification. This method can be subclassed to revert changes for example releasing locks."""
         self._release_locks()
 
-    def _release_locks(self):  # type: () -> None
+    def _release_locks(self, name=None):  # type: (Optional[str]) -> None
         """Release all temporary done locks"""
-        while self.alloc:
-            name, value = self.alloc.pop()[0:2]
-            univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'release_lock(%s): %r' % (name, value))
-            univention.admin.allocators.release(self.lo, self.position, name, value)
+        for lock in self.alloc[:]:
+            key, value = lock[0:2]
+            if name and key != name:
+                continue
+            self.alloc.remove(lock)
+            ud.debug(ud.ADMIN, ud.INFO, 'release_lock(%s): %r' % (key, value))
+            univention.admin.allocators.release(self.lo, self.position, key, value)
 
     def _confirm_locks(self):  # type: () -> None
         """
@@ -1708,7 +1711,7 @@ class simpleLdap(object):
             else:
                 value = univention.admin.allocators.request(self.lo, self.position, name, value)
         except univention.admin.uexceptions.noLock:
-            self._release_locks()
+            self._release_locks(name)
             raise
         if not updateLastUsedValue:  # backwards compatibility: 2er-tuples required!
             self.alloc.append((name, value, updateLastUsedValue))
@@ -3421,7 +3424,7 @@ class simplePolicy(simpleLdap):
             try:
                 self.lo.modify(object_dn, [('univentionPolicyReference', self.dn.encode('UTF-8'), None)])
             except (univention.admin.uexceptions.base, ldap.LDAPError) as exc:
-                univention.debug.debug(univention.debug.ADMIN, univention.debug.ERROR, 'Could not remove policy reference %r from %r: %s' % (self.dn, object_dn, exc))
+                ud.debug(ud.ADMIN, ud.ERROR, 'Could not remove policy reference %r from %r: %s' % (self.dn, object_dn, exc))
 
     def copyIdentifier(self, from_object):
         """Activate the result mode and set the referring object"""

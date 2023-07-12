@@ -1,3 +1,9 @@
+univention-directory-manager-modules (15.0.24-13) unstable; urgency=medium
+
+  * Bug #56309: Fix sid+user allocation
+
+ -- Arvid <requate@univention.de>  Mon, 17 Jul 2023 18:20:49 +0200
+
 univention-directory-manager-modules (15.0.24-12) unstable; urgency=medium
 
   * Bug #56271: handle type_class == None
