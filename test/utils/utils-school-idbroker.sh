@@ -551,5 +551,16 @@ install_id_broker_sddb_builder () {
   . utils-school.sh && install_app_from_branch id-broker-sddb-builder "$UCS_ENV_ID_BROKER_SDDB_BUILDER_IMAGE" "$app_settings"
 }
 
-
+load_sddb_jenkins () {
+    if [[ "$UCS_CACHED_SDDB" == "true" ]]; then
+        wget "http://omar.knut.univention.de/build2/ucs_5.0-0-id-broker-5.0/data/dump.rdb"
+        docker stop redis-stack
+        mv dump.rdb /var/lib/redis/data/
+        docker start redis-stack
+        univention-app restart id-broker-sddb-builder
+    else
+        resync_sddb
+    fi
+    wait_for_sddb_provisioning
+}
 # vim:set filetype=sh ts=4:

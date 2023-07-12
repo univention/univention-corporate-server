@@ -26,7 +26,7 @@ for section in sections:
         section,
         f"command{recover_command}",
         """
-. utils-school-idbroker.sh && resync_sddb
+. utils-school-idbroker.sh && load_sddb_jenkins
 """,
     )
     config.set(
