@@ -6,7 +6,8 @@ src: univention-spamassassin
 fix: 11.0.1-3
 desc: |
  This update addresses the following issues:
- * The UCR variable `mail/antispam/requiredhits` was using an integer
-   but the value can be a floating point based or a real number.
-   This is now possible.
+ * The type of the UCR variable `mail/antispam/requiredhits` only allowed to
+   set integer values while the spamassassin configuration also allows real
+   numbers. The type definition has therefore been adjusted to allow all
+   possible values.
 bug: [55685]
