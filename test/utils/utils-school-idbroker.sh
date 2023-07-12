@@ -562,4 +562,23 @@ load_sddb_jenkins () {
     fi
     wait_for_sddb_provisioning
 }
+
+configure_self_disclosure () {
+    local sddb_host
+    local API_CONFIG
+    sddb_host="sddb.$(hostname -d)"
+    API_CONFIG="/etc/ucsschool/apis/id-broker/self-disclosure-api.json"
+    mkdir -p "$(dirname $API_CONFIG)"
+      python -c "
+import json
+try:
+  conf = json.load(open('$API_CONFIG'))
+except IOError:
+  conf = {}
+if 'redis_url' not in conf:
+  conf = {'redis_url': 'redis://$sddb_host:6379', 'sddb_rest_host': '$sddb_host'}
+json.dump(conf, open('$API_CONFIG', 'w'), indent=4, sort_keys=True)
+"
+}
+
 # vim:set filetype=sh ts=4:
