@@ -7,9 +7,13 @@ fix: 13.0.6-4
 desc: |
  This update addresses the following issues:
  * The values of univentionFetchmailSingle and univentionFetchmailMulti
-  can't be correctly parsed when the values contain characters like ';'.
-  The property is now stored as json to simplify the parsing of the complex
-  attribute and avoid errors when non-alphanumeric characters appear.
+   can't be correctly parsed when the values contain characters like ';'.
+   The property is now stored as json to simplify the parsing of the complex
+   attribute and avoid errors when non-alphanumeric characters appear.
+   The fix is applied after force reexecuting the joinscript
+   92univention-fetchmail-schema.inst. If fetchmail is installed on a
+   non-primary server, the primary and non-primary servers must be updated
+   to the same errata level before reexecuting the joinscript.
  * The Fetchmail UDM hooks did not work in combination with the UCS@school
    importer. They are now compatible after force reexecuting the joinscript
    92univention-fetchmail-schema.inst.
