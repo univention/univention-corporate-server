@@ -11,3 +11,6 @@ desc: |
    numbers. The type definition has therefore been adjusted to allow all
    possible values.
 bug: [55685]
+erratum: 733
+announced: 2023-07-12
+support: core
