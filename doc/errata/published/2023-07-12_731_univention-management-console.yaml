@@ -9,3 +9,6 @@ desc: |
  * In multiprocessing mode of the UMC-Server the SAML login could cause
    corrupted BDB SAML Identity Cache databases. This has been repaired.
 bug: [56303]
+erratum: 731
+announced: 2023-07-12
+support: core
