@@ -19,3 +19,6 @@ desc: |
    importer. They are now compatible after force reexecuting the joinscript
    92univention-fetchmail-schema.inst.
 bug: [56008, 56036]
+erratum: 737
+announced: 2023-07-12
+support: core
