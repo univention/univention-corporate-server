@@ -1,0 +1,24 @@
+[project]
+name = "univention-admin-rest-client"
+version = "0.1.0"
+authors = ["Johannes Lohmer <lohmer@univention.de>"]
+description = "Python and Bash clients for the UDM-REST-API"
+readme = "README.md"  # Add this if you have a readme file
+python = "^3.7"
+
+[tool.hatch]
+src = true
+
+[project.dependencies]
+uritemplate = "*"
+requests = "*"
+
+[project.dev-dependencies]
+univention-admin-rest-client-test = "^0.1.0"
+
+[project.optional-dependencies]
+test = ["univention-admin-rest-client-test"]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
