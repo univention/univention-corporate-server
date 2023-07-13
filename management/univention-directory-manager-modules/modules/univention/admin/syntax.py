@@ -584,6 +584,8 @@ class complex(ISyntax):
         def _sub_type_class(subsyntax):
             subsyntax = subsyntax() if inspect.isclass(subsyntax) else subsyntax
             TC = subsyntax.type_class
+            if TC is None:
+                return
 
             class SubTC(TC):
                 def __init__(self, property_, property_name):
