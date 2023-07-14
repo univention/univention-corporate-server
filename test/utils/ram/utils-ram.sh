@@ -355,7 +355,7 @@ create_bsb_test_users () {
 		"name": "fl-hawkins",
 		"firstname": "Taylor",
 		"lastname": "Hawkins",
-		"password": "!Univention2023",
+		"password": "!Univention20232023",
 		"source_uid": "Manuell",
 		"school": "https://'"$fqdn"'/ucsschool/kelvin/v1/schools/9990000",
 		"roles": ["https://'"$fqdn"'/ucsschool/kelvin/v1/roles/school_admin"],
@@ -366,7 +366,7 @@ create_bsb_test_users () {
 	create_user_from_json '{
 		"firstname": "Jeff",
 		"lastname": "Buckley",
-		"password": "!Univention2023",
+		"password": "!Univention20232023",
 		"source_uid": "Manuell",
 		"school": "https://'"$fqdn"'/ucsschool/kelvin/v1/schools/5048",
 		"roles": ["https://'"$fqdn"'/ucsschool/kelvin/v1/roles/school_admin"],
@@ -377,7 +377,7 @@ create_bsb_test_users () {
 	create_user_from_json '{
 		"firstname": "Layne",
 		"lastname": "Staley",
-		"password": "!Univention2023",
+		"password": "!Univention20232023",
 		"source_uid": "IDI",
 		"school": "https://'"$fqdn"'/ucsschool/kelvin/v1/schools/5048",
 		"roles": ["https://'"$fqdn"'/ucsschool/kelvin/v1/roles/teacher"],
@@ -388,7 +388,7 @@ create_bsb_test_users () {
 	create_user_from_json '{
 		"firstname": "Janis",
 		"lastname": "Joplin",
-		"password": "!Univention2023",
+		"password": "!Univention20232023",
 		"source_uid": "IDI",
 		"school": "https://'"$fqdn"'/ucsschool/kelvin/v1/schools/5048",
 		"roles": ["https://'"$fqdn"'/ucsschool/kelvin/v1/roles/student"],
@@ -399,7 +399,7 @@ create_bsb_test_users () {
 	create_user_from_json '{
 		"firstname": "Amy",
 		"lastname": "Winehouse",
-		"password": "!Univention2023",
+		"password": "!Univention20232023",
 		"source_uid": "IDI",
 		"school": "https://'"$fqdn"'/ucsschool/kelvin/v1/schools/5048",
 		"roles": ["https://'"$fqdn"'/ucsschool/kelvin/v1/roles/student"],
