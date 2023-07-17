@@ -3,10 +3,16 @@ release: "5.0"
 version: [3]
 scope: ucs_5.0-0-errata5.0-3
 src: samba
-fix: 2:4.16.8-1A~5.0.0.202307101710
+fix: 2:4.16.8-1A~5.0.0.202307171204
 desc: |
  This update addresses the following issues:
  * TODO
-bug: [56300]
+ * A followup patch for CVE-2022-38023, which Samba included in 4.16.9
+   has been applied: Samba should refuse RC4 (aka md5) based SChannel on
+   netlogon.
+ * After Microsoft released the July 2023 updates, Windows clients showed
+   login errors. Samba has been adjusted to handle the new behavior of
+   netlogon secure channel negotiation.
+bug: [56300, 56321]
 cve:
- - TEMP-TODO
+ - CVE-2022-38023
