@@ -3,10 +3,13 @@ release: "4.4"
 version: [9]
 scope: ucs_4.4-0-errata4.4-9
 src: samba
-fix: 2:4.10.18-1A~4.4.0.202307111229
+fix: 2:4.10.18-1A~4.4.0.202307171231
 desc: |
  This update addresses the following issues:
  * TODO
-bug: [56306]
+ * After Microsoft released the July 2023 updates, Windows clients showed
+   login errors. Samba has been adjusted to handle the new behavior of
+   netlogon secure channel negotiation.
+bug: [56306, 56322]
 cve:
  - TEMP-TODO
