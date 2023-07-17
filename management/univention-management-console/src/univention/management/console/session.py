@@ -290,7 +290,7 @@ class IACLs(object):
     def _reload_acls_and_permitted_commands(self):
         self.__acls = self._get_acls()
         if isinstance(self.acls, LDAP_ACLs):
-            lo, po = get_machine_connection()
+            lo, po = get_machine_connection(write=False)
             try:
                 self.acls.reload(lo)
             except (ldap.LDAPError, udm_errors.ldapError):
@@ -307,7 +307,7 @@ class IACLs(object):
             return ACLs()
         else:
             return LDAP_ACLs(self.session.user.username, ucr['ldap/base'])
-            lo, po = get_machine_connection()
+            lo, po = get_machine_connection(write=False)
 
     def is_command_allowed(self, command, options, flavor):
         if not isinstance(options, dict):

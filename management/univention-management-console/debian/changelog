@@ -1,3 +1,9 @@
+univention-management-console (12.0.31-7) unstable; urgency=medium
+
+  * Bug #56330: load UMC ACLs from local LDAP server
+
+ -- Florian Best <best@univention.de>  Mon, 17 Jul 2023 17:16:22 +0200
+
 univention-management-console (12.0.31-6) unstable; urgency=medium
 
   * Bug #56303: fix SAML identity cache in multiprocessing mode

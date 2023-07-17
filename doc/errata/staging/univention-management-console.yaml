@@ -1,0 +1,11 @@
+product: ucs
+release: "5.0"
+version: [4]
+scope: ucs_5.0-0-errata5.0-4
+src: univention-management-console
+fix: 12.0.31-7
+desc: |
+ This update addresses the following issues:
+ * The UMC ACL's are now loaded from the local LDAP server again.
+   This was broken since UCS 5.0-4.
+bug: [56330]
