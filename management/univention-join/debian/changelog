@@ -1,3 +1,10 @@
+univention-join (12.0.5-5) unstable; urgency=medium
+
+  * Bug #56331: prevent machine.secret content to appear in the process
+    list
+
+ -- Florian Best <best@univention.de>  Mon, 17 Jul 2023 18:08:36 +0200
+
 univention-join (12.0.5-4) unstable; urgency=medium
 
   * Bug #55632: improved the Python 3.11 compatiblity
