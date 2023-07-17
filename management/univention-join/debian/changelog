@@ -1,3 +1,10 @@
+univention-join (11.0.1-36) unstable; urgency=medium
+
+  * Bug #56352: prevent machine.secret content to appear in the process
+    list
+
+ -- Florian Best <best@univention.de>  Mon, 17 Jul 2023 18:08:36 +0200
+
 univention-join (11.0.1-35) unstable; urgency=medium
 
   * Bug #49033: Fixed file permissions for /etc/machine.secret.SAVE

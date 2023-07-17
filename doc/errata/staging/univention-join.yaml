@@ -1,0 +1,11 @@
+product: ucs
+release: "4.4"
+version: [9]
+scope: ucs_4.4-0-errata4.4-9
+src: univention-join
+fix: 11.0.1-36
+desc: |
+ This update addresses the following issues:
+ * The script `univention-check-join-status` called `ldapsearch` with the
+   machine credentials, which then were visible in the process list.
+bug: [56352]
