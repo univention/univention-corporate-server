@@ -1,3 +1,10 @@
+univention-monitoring-client (1.0.2-3) unstable; urgency=medium
+
+  * Bug #56324: prevent machine.secret content to appear in the process
+    list
+
+ -- Florian Best <best@univention.de>  Mon, 17 Jul 2023 13:44:35 +0200
+
 univention-monitoring-client (1.0.2-2) unstable; urgency=medium
 
   * Bug #55632: improved the Python 3.11 compatiblity

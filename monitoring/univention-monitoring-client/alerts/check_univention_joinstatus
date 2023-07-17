@@ -63,7 +63,6 @@ class JoinStatusError(Exception):
 class JoinStatusCheck(Alert):
 
     def write_metrics(self):
-        self.secret = None
         for func, status in (
             (self.check_machine_secret_exists, RC.SECRET_NOT_FOUND),
             (self.check_ldapsearch, RC.LDAP_AUTH),
@@ -87,7 +86,7 @@ class JoinStatusCheck(Alert):
     def check_machine_secret_exists(self):
         try:
             with open('/etc/machine.secret') as fd:
-                self.secret = fd.read()
+                fd.read()
         except OSError:
             raise JoinStatusError('/etc/machine.secret not found - system not joined yet?')
 
@@ -98,7 +97,7 @@ class JoinStatusCheck(Alert):
             '-h', ucr['ldap/server/name'],
             '-p', ucr['ldap/server/port'],
             '-D', ucr['ldap/hostdn'],
-            '-w', self.secret,
+            '-y', '/etc/machine.secret',
             '-b', ucr['ldap/base'],
             '-s', 'base',
         ]
@@ -115,7 +114,7 @@ class JoinStatusCheck(Alert):
             '-h', ucr['ldap/server/name'],
             '-p', ucr['ldap/server/port'],
             '-D', ucr['ldap/hostdn'],
-            '-w', self.secret,
+            '-y', '/etc/machine.secret',
             '-b', ucr['ldap/base'],
             '-s', 'base',
         ]
@@ -134,7 +133,7 @@ class JoinStatusCheck(Alert):
             '-x',
             '-ZZ',
             '-D', ucr['ldap/hostdn'],
-            '-w', self.secret,
+            '-y', '/etc/machine.secret',
             '-b', ucr['ldap/base'],
             '-s', 'base',
         ]
