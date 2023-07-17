@@ -1,0 +1,14 @@
+product: ucs
+release: "4.4"
+version: [9]
+scope: ucs_4.4-0-errata4.4-9
+src: nsis
+fix: 2.51-1+deb9u1
+desc: |
+ This update addresses the following issue:
+ 2.51-1+deb9u1 (Tue, 11 Jul 2023 08:15:36 +0100)
+ * Non-maintainer upload by the LTS Security Team.
+ * Cherry-pick upstream commits to fix CVE-2023-37378.
+bug: [56326]
+cve:
+- CVE-2023-37378
