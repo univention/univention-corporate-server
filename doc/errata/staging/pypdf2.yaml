@@ -1,0 +1,14 @@
+product: ucs
+release: "4.4"
+version: [9]
+scope: ucs_4.4-0-errata4.4-9
+src: pypdf2
+fix: 1.26.0-2+deb9u2
+desc: |
+ This update addresses the following issue:
+ 1.26.0-2+deb9u2 (Fri, 14 Jul 2023 21:55:56 +0300)
+ * Non-maintainer upload by the ELTS Security Team.
+ * CVE-2023-36810: Quadratic runtime with malformed PDF missing xref marker.
+bug: [56327]
+cve:
+- CVE-2023-36810
