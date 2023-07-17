@@ -1,0 +1,22 @@
+product: ucs
+release: "4.4"
+version: [9]
+scope: ucs_4.4-0-errata4.4-9
+src: yajl
+fix: 2.1.0-2+deb9u2
+desc: |
+ This update addresses the following issues:
+
+ Debian update 2.1.0-2+deb9u2
+ 2.1.0-2+deb9u2 (Tue, 11 Jul 2023 18:42:56 +0200)
+ [Tobias Frost]
+ * Non-maintainer upload by the ELTS Security Team.
+ * Cherry pick John's CVE fixes from 2.1.0-4
+ * Fix for CVE-2023-33460 was incomplete, also fix the second memory leak.
+ [John Stamp]
+ * Patch CVE-2017-16516 and CVE-2022-24795
+bug: [56328]
+cve:
+- CVE-2023-33460
+- CVE-2017-16516
+- CVE-2022-24795
