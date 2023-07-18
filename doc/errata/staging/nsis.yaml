@@ -6,9 +6,8 @@ src: nsis
 fix: 2.51-1+deb9u1
 desc: |
  This update addresses the following issue:
- 2.51-1+deb9u1 (Tue, 11 Jul 2023 08:15:36 +0100)
- * Non-maintainer upload by the LTS Security Team.
- * Cherry-pick upstream commits to fix CVE-2023-37378.
+ * CVE-2023-37378: Nullsoft Scriptable Install System (`NSIS`) before `3.09`
+   mishandles access control for an uninstaller directory.
 bug: [56326]
 cve:
 - CVE-2023-37378
