@@ -129,8 +129,8 @@ class ModuleServer(object):
         tornado.locale.load_gettext_translations('/usr/share/locale', 'univention-management-console')
         routes = self.__handler.tornado_routes if self.__handler else []
         application = Application(routes + [
-            (r'/exit', Exit),
-            (r'(.*)', Handler, {'server': self, 'handler': self.__handler}),
+            (r'^/exit', Exit),
+            (r'^/univention/(?:command|upload)/(.*)', Handler, {'server': self, 'handler': self.__handler}),
         ], serve_traceback=ucr.is_true('umc/http/show_tracebacks', True))
 
         signal.signal(signal.SIGALRM, self.signal_handler_alarm)

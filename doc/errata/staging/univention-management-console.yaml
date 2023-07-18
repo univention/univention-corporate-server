@@ -3,9 +3,13 @@ release: "5.0"
 version: [4]
 scope: ucs_5.0-0-errata5.0-4
 src: univention-management-console
-fix: 12.0.31-7
+fix: 12.0.31-8
 desc: |
  This update addresses the following issues:
  * The UMC ACL's are now loaded from the local LDAP server again.
    This was broken since UCS 5.0-4.
-bug: [56330]
+ * The Self-Service on DC Backups were broken since UCS 5.0-4 as it forwards
+   all incoming requests to the DC Primary. These requests contained a broken
+   request path leading to 403 Forbidden error messages saying "No module
+   found for this request.".
+bug: [56330, 56335]
