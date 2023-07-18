@@ -39,6 +39,7 @@ Variables: locale/default
 Variables: hostname
 Variables: domainname
 Variables: ucs/server/saml-idp-server/.*
+Variables: ucs/server/sso/password/change/server
 Variables: saml/idp/session-cookie/secure
 Variables: saml/idp/session-cookie/samesite
 Variables: saml/idp/language-cookie/secure

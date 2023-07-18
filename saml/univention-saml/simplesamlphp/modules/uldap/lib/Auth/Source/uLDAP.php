@@ -102,7 +102,7 @@ class sspmod_uldap_Auth_Source_uLDAP extends sspmod_core_Auth_UserPassBase {
 
 		$config = SimpleSAML_Configuration::getInstance();
 		$language = new \SimpleSAML\Locale\Language($config);
-		$url = 'https://' . $config->getValue('hostfqdn') . '/univention/auth';
+		$url = 'https://' . $config->getValue('password_change_server') . '/univention/auth';
 		$data =  json_encode(array("options" => array("username" => $username, "password" => $password, "new_password" => $new_password)));
 		$ch = curl_init();
 		curl_setopt($ch, CURLOPT_URL, $url);

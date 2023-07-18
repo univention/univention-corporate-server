@@ -27,6 +27,8 @@ if configRegistry.is_true('saml/idp/enableSAML20-IdP'):
     saml20_enabled = 'true'
 print("	'enable.saml20-idp'	=> %s," % saml20_enabled)
 
+hostfqdn = '%(hostname)s.%(domainname)s' % configRegistry
+
 print("	'timezone'		=> '%s'," % configRegistry.get('saml/idp/timezone', 'Europe/Berlin'))
 print("	'debug'		=> %s," % ('TRUE' if configRegistry.is_true('saml/idp/log/debug/enabled', False) else 'FALSE'))
 print("	'logging.level'		=> SimpleSAML\\Logger::%s," % configRegistry.get('saml/idp/log/level', 'ERR'))
@@ -34,8 +36,9 @@ print("	'language.default'	=> '%s'," % configRegistry.get('locale/default', 'en'
 print("	'theme.use'		=> '%s'," % configRegistry.get('saml/idp/lookandfeel/theme', 'default'))
 print("	'technicalcontact_name'		=> '%s'," % configRegistry.get('saml/idp/technicalcontactname', 'Administrator'))
 print("	'technicalcontact_email'	=> '%s'," % configRegistry.get('saml/idp/technicalcontactemail', 'root@%(hostname)s.%(domainname)s' % configRegistry))
-print("	'hostfqdn'	=> '%(hostname)s.%(domainname)s'," % configRegistry)
+print("	'hostfqdn'	=> '%s'," % hostfqdn)
 print("	'domainname'	=> '%s'," % configRegistry.get('domainname', ''))
+print("	'password_change_server'  => '%s'," % configRegistry.get('ucs/server/sso/password/change/server', hostfqdn))
 @!@
 	/**
 	 * Setup the following parameters to match the directory of your installation.
