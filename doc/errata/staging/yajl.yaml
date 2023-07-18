@@ -6,15 +6,15 @@ src: yajl
 fix: 2.1.0-2+deb9u2
 desc: |
  This update addresses the following issues:
-
- Debian update 2.1.0-2+deb9u2
- 2.1.0-2+deb9u2 (Tue, 11 Jul 2023 18:42:56 +0200)
- [Tobias Frost]
- * Non-maintainer upload by the ELTS Security Team.
- * Cherry pick John's CVE fixes from 2.1.0-4
- * Fix for CVE-2023-33460 was incomplete, also fix the second memory leak.
- [John Stamp]
- * Patch CVE-2017-16516 and CVE-2022-24795
+ * CVE-2023-33460: memory leak when using the `yajl_tree_parse` function
+   which causes out-of-memory and crashes of the server.
+ * CVE-2017-16516: In `yajl-ruby gem 1.3.0` for Ruby, when a crafted JSON
+   file is supplied to `Yajl::Parser.new.parse`, the whole ruby process
+   crashes with a `SIGABRT` in the `yajl_string_decode` function in
+   `yajl_encode.c`. This results in the whole ruby process terminating and
+   potentially a denial of service.
+ * CVE-2022-24795: integer overflow which leads to subsequent heap memory
+   corruption when dealing with large (~2GB) inputs.
 bug: [56328]
 cve:
 - CVE-2023-33460
