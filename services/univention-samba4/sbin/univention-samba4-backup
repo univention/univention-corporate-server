@@ -129,21 +129,26 @@ fi
 
 cd $FROMWHERE
 for d in $DIRS; do
-	relativedirname=`find . -type d -name "$d" -prune`
-	n=`echo $d | sed 's/\//_/g'`
+	relativedirname=$(find . -maxdepth 1 -type d -name "$d" -prune)  # IMPORTANT: added -maxdepth 1 to avoid getting other dirs called "private" further down the tree, e.g. deep in the sysvol dir
+	n=$(echo "$d" | sed 's/\//_/g')
 	if [ "$d" = "private" ]; then
 		for db in tdb ldb; do
 			find $relativedirname -name "*.$db.bak" -exec rm {} \;
-			for file in `find $relativedirname -name "*.$db"`; do
+			for file in $(find "$relativedirname" -name "*.$db"); do
 				ignore=false
 				for i in ${IGNORE_TDBS[@]}; do
 					test "$(basename $file)" = "$i" && ignore=true && break
 				done
 				if ! $ignore; then
-					tdbbackup $file
+					tdbbackup "$file"
 					Status=$?
 					if [ $Status -ne 0 ]; then
-						terminate_on_error "Error while backing up $file with tdbbackup - status $Status"
+						echo "Error while backing up $file with tdbbackup - status $Status - will try mdb_copy in case MDB format is used" >&2
+						mdb_copy -c -n "$file" > "$file.bak"
+						Status=$?
+						if [ $Status -ne 0 ]; then
+						    terminate_on_error "Error while backing up $file with mdb_copy - status $Status"
+						fi
 					fi
 				fi
 			done
