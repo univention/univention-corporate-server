@@ -212,6 +212,15 @@ class UniventionKeycloakAdmin(KeycloakAdmin):
         else:
             print(f"No mapper found with name {name}.")
 
+    def get_authentication_flow_id(self, flow_name):
+        flows = self.get_authentication_flows()
+
+        for flow in flows:
+            if flow_name == flow.get('alias'):
+                return flow["id"]
+
+        return None
+
 
 class ExtType(Enum):
     ACTION = 1
@@ -995,6 +1004,12 @@ def parse_args(args: list[str] | None = None) -> Namespace:
     parser_get_base_url.add_argument("--json", help="json output", default=False, action="store_true")
     parser_get_base_url.set_defaults(func=get_base_url)
 
+    # client authentication flow
+    parser_client_flow = subparsers.add_parser("client-auth-flow", help="manage client authentication flow")
+    parser_client_flow.add_argument("--clientid", help="client ID", required=True)
+    parser_client_flow.add_argument("--auth-flow", help="authentication flow", default=None)
+    parser_client_flow.set_defaults(func=client_auth_flow)
+
     opt = parser.parse_args(args)
     if opt.binddn:
         opt.binduser = explode_rdn(opt.binddn, 1)[0]
@@ -1037,6 +1052,30 @@ def get_base_url(opt: Namespace) -> None:
         print(json.dumps(url, indent=4))
     else:
         print(url)
+
+
+def client_auth_flow(opt: Namespace) -> None:
+    kc_admin = UniventionKeycloakAdmin(opt)
+    auth_flow = opt.auth_flow or "browser"
+
+    msg = f"Setting {opt.clientid} authentication flow to {auth_flow}"
+    print(f"{msg} ...")
+
+    auth_flow_id = kc_admin.get_authentication_flow_id(auth_flow)
+    if not auth_flow_id:
+        print(f"Authentication flow: {auth_flow} not found.", file=sys.stderr)
+        sys.exit(1)
+
+    client_id = kc_admin.get_client_id(opt.clientid)
+    if not client_id:
+        print(f"Client: {opt.clientid} not found.", file=sys.stderr)
+        sys.exit(1)
+
+    client_data = kc_admin.get_client(client_id)
+    client_data["authenticationFlowBindingOverrides"]["browser"] = auth_flow_id
+
+    kc_admin.update_client(client_id, client_data)
+    print(f"{msg} done.")
 
 
 def delete_saml_nameid_mapper(opt: Namespace) -> None:

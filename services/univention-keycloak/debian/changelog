@@ -1,3 +1,9 @@
+univention-keycloak (1.0.9-26) unstable; urgency=medium
+
+  * Bug #56317: Added parameters for managing client authentication flow
+
+ -- Nikola Radovanovic <radovanovic.extern@univention.de>  Mon, 17 Jul 2023 09:47:53 +0100
+
 univention-keycloak (1.0.9-25) unstable; urgency=medium
 
   * Bug #56132: Added more parameters for creating SAML SPs to

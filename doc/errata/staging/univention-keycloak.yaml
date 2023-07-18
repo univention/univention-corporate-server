@@ -1,0 +1,12 @@
+product: ucs
+release: "5.0"
+version: [4]
+scope: ucs_5.0-0-errata5.0-4
+src: univention-keycloak
+fix: 1.0.9-26
+desc: |
+ This update addresses the following issues:
+ * It is now possible to set client's authentication flow using
+   `client-auth-flow` option. Passing an empty string will reset to
+   default (browser)
+bug: [56317]
