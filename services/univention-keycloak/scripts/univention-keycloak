@@ -72,6 +72,8 @@ URL_ADMIN_REQUIRED_ACTION_REGISTER = URL_ADMIN_REALM + "/authentication/register
 DEFAULT_EXTENTIONS = ["password", "ldapmapper", "self-service"]
 DEFAULT_USER_STORAGE_PROVIDER_NAME = "ldap-provider"
 KERBEROS_KEYTAB_PATH = "/var/lib/univention-appcenter/apps/keycloak/conf/keycloak.keytab"
+LEGACY_APP_AUTHORIZATION_NAME = "browser flow with legacy app authorization"
+
 # default LDAP attribute mapper
 #  * sn -> lastName
 #  * givenName -> firstName
@@ -220,6 +222,34 @@ class UniventionKeycloakAdmin(KeycloakAdmin):
                 return flow["id"]
 
         return None
+
+    def create_and_update_authentication_flow_subflow(self, payload: dict, flow_alias: str) -> None:
+        _payload = {
+            "alias": payload["displayName"],
+            "type": payload["type"],
+        }
+        self.create_authentication_flow_subflow(payload=json.dumps(_payload), flow_alias=flow_alias)
+        executions = self.get_authentication_flow_executions(flow_alias=flow_alias)
+        flow = [x for x in executions if x.get("displayName") == payload["displayName"]][0]
+        payload["id"] = flow["id"]
+        del payload["type"]
+        try:
+            self.update_authentication_flow_executions(payload=json.dumps(payload), flow_alias=flow_alias)
+        except KeycloakGetError as exc:
+            if exc.response_code != 202:
+                raise
+
+    def create_and_update_authentication_flow_execution(self, payload: dict, flow_alias: str) -> None:
+        _payload = {"provider": payload.get("providerId")}
+        self.create_authentication_flow_execution(payload=json.dumps(_payload), flow_alias=flow_alias)
+        executions = self.get_authentication_flow_executions(flow_alias=flow_alias)
+        execution = [x for x in executions if x.get("providerId") == payload.get("providerId")][0]
+        payload["id"] = execution["id"]
+        try:
+            self.update_authentication_flow_executions(payload=json.dumps(payload), flow_alias=flow_alias)
+        except KeycloakGetError as exc:
+            if exc.response_code != 202:
+                raise
 
 
 class ExtType(Enum):
@@ -1010,6 +1040,15 @@ def parse_args(args: list[str] | None = None) -> Namespace:
     parser_client_flow.add_argument("--auth-flow", help="authentication flow", default=None)
     parser_client_flow.set_defaults(func=client_auth_flow)
 
+    # legay authentication flow
+    parser_legacy_authentication_flow = subparsers.add_parser("legacy-authentication-flow", add_help=False)
+    parser_legacy_authentication_flow_operations = parser_legacy_authentication_flow.add_subparsers(title="operation", description="valid subcommands", required=True, dest="operation")
+    parser_legacy_authentication_flow_create = parser_legacy_authentication_flow_operations.add_parser("create", help="create the legacy authentication flow")
+    parser_legacy_authentication_flow_create.add_argument("--flow", help="create the new flow based on this existing authentication flow (default browser).", default="browser")
+    parser_legacy_authentication_flow_create.set_defaults(func=create_legacy_authentication_flow)
+    parser_legacy_authentication_flow_delete = parser_legacy_authentication_flow_operations.add_parser("delete", help="delete the legacy authentication flow")
+    parser_legacy_authentication_flow_delete.set_defaults(func=delete_legacy_authentication_flow)
+
     opt = parser.parse_args(args)
     if opt.binddn:
         opt.binduser = explode_rdn(opt.binddn, 1)[0]
@@ -1029,6 +1068,96 @@ def parse_args(args: list[str] | None = None) -> Namespace:
     opt.kerberos_realm = kerberos_realm
     opt.keycloak_fqdn = keycloak_fqdn
     return opt
+
+
+def create_legacy_authentication_flow(opt: Namespace) -> None:
+    flow_name = LEGACY_APP_AUTHORIZATION_NAME
+    session = UniventionKeycloakAdmin(opt)
+
+    # check existing
+    flows = session.get_authentication_flows()
+    for flow in flows:
+        if flow["alias"] == flow_name:
+            print("ERROR: App authorization flow already exists, please remove before re-creating the flow.", file=sys.stderr)
+            return 1
+
+    # check source flow exists
+    if not any(opt.flow == x["alias"] for x in flows):
+        print(f"ERROR: flow \"{opt.flow}\" does not exist!")
+        return 1
+
+    # create flow
+    payload = {
+        "alias": flow_name,
+        "providerId": "basic-flow",
+        "builtIn": False,
+        "topLevel": True,
+        "description": "browser based authentication with Univention App Authenticator authorization",
+    }
+    session.create_authentication_flow(payload=json.dumps(payload))
+
+    # add subflow for "normal steps"
+    sub_flow_name = "Normal Login (legacy app authorization)"
+    payload = {
+        "displayName": sub_flow_name,
+        "configurable": False,
+        "requirement": "REQUIRED",
+        "type": "basic-flow",
+    }
+    session.create_and_update_authentication_flow_subflow(payload, flow_alias=flow_name)
+
+    # create all executions and sub-flows in the correct level
+    flow_level = {0: sub_flow_name}
+    for payload in session.get_authentication_flow_executions(opt.flow):
+        level = payload["level"]
+        if payload.get("authenticationFlow", False):
+            # save level name mapping for flow
+            name = f"{payload['displayName']} ({flow_name})"
+            flow_level[level + 1] = name
+            payload["type"] = "basic-flow"
+            payload["displayName"] = name
+            session.create_and_update_authentication_flow_subflow(payload, flow_alias=flow_level[level])
+        else:
+            session.create_and_update_authentication_flow_execution(payload, flow_alias=flow_level[level])
+
+    # create authenticator
+    payload = {
+        "requirement": "REQUIRED",
+        "displayName": "Univention App Authenticator",
+        "requirementChoices": ["REQUIRED", "DISABLED", "ALTERNATIVE"],
+        "configurable": True,
+        "providerId": "univention-app-authenticator",
+    }
+    try:
+        session.create_and_update_authentication_flow_execution(payload, flow_alias=flow_name)
+    except KeycloakGetError as exc:
+        if hasattr(exc, "error_message"):
+            if "authentication provider found for id: univention-app-authenticator" in exc.error_message.decode('utf-8'):
+                msg = "ERROR: This feature is not yet supported by the installed version of the keycloak app.\n"
+                msg += "Please update all instances of the keycloak in our domain to the latest version and try again."
+                print(msg, file=sys.stderr)
+                delete_legacy_authentication_flow(opt)
+                return 1
+        raise
+
+
+def delete_legacy_authentication_flow(opt: Namespace) -> None:
+    flow_name = LEGACY_APP_AUTHORIZATION_NAME
+    session = UniventionKeycloakAdmin(opt)
+    flows = session.get_authentication_flows()
+    flow = [x for x in flows if x["alias"] == flow_name]
+    if flow:
+        flow = flow[0]
+        # remove flow override from clients
+        clients = session.get_clients()
+        for client in clients:
+            if client.get("authenticationFlowBindingOverrides"):
+                if client["authenticationFlowBindingOverrides"].get("browser"):
+                    if client["authenticationFlowBindingOverrides"]["browser"] == flow["id"]:
+                        client["authenticationFlowBindingOverrides"]["browser"] = ""
+                        session.update_client(client["id"], client)
+        # remove flow
+        session.raw_delete(f"admin/realms/{session.realm_name}/authentication/flows/{flow['id']}")
 
 
 def get_base_url(opt: Namespace) -> None:
