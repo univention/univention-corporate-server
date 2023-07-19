@@ -1,3 +1,10 @@
+univention-monitoring-client (1.0.2-5) unstable; urgency=medium
+
+  * Bug #56341: Revert "feat(monitoring): add timestamp to metrics to be
+    more accurate"
+
+ -- Florian Best <best@univention.de>  Wed, 19 Jul 2023 17:55:48 +0200
+
 univention-monitoring-client (1.0.2-4) unstable; urgency=medium
 
   * Bug #55367: use prometheus library to write metrics to disk

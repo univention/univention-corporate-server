@@ -1,0 +1,12 @@
+product: ucs
+release: "5.0"
+version: [4]
+scope: ucs_5.0-0-errata5.0-4
+src: univention-monitoring-client
+fix: 1.0.2-5
+desc: |
+ This update addresses the following issues:
+ * The last erratum 743 introduced a incompatiblity with
+   `prometheus-node-exporter` which disallows timestamps to be present in the
+   textcollector files. The change has therefore been reverted.
+bug: [56341]
