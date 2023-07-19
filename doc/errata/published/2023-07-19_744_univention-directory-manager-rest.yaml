@@ -10,3 +10,6 @@ desc: |
    shared references to link-relations in the UDM REST API Python Client
    leading to wrong `object exists` error messages.
 bug: [56271]
+erratum: 744
+announced: 2023-07-19
+support: core
