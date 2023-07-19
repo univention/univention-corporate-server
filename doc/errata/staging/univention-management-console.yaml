@@ -8,8 +8,8 @@ desc: |
  This update addresses the following issues:
  * The UMC ACL's are now loaded from the local LDAP server again.
    This was broken since UCS 5.0-4.
- * The Self-Service on DC Backups were broken since UCS 5.0-4 as it forwards
-   all incoming requests to the DC Primary. These requests contained a broken
-   request path leading to 403 Forbidden error messages saying "No module
-   found for this request.".
+ * The Self-Service was broken on DC Backups since UCS 5.0-4 because incoming
+   requests that were forwarded to the DC Primary contained broken request
+   paths that led to 403 Forbidden error messages saying "No module found
+   for this request.".
 bug: [56330, 56335]
