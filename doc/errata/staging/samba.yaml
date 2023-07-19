@@ -6,10 +6,20 @@ src: samba
 fix: 2:4.10.18-1A~4.4.0.202307171231
 desc: |
  This update addresses the following issues:
- * TODO
+ * When winbind is used for NTLM authentication, a maliciously
+   crafted request can trigger an out-of-bounds read in winbind
+   and possibly crash it (CVE-2022-2127).
+ * An infinite loop bug in Samba's mdssvc RPC service for Spotlight
+   can be triggered by an unauthenticated attacker by issuing a
+   malformed RPC request (CVE-2023-34966).
+ * Missing type validation in Samba's mdssvc RPC service for Spotlight
+   can be used by an unauthenticated attacker to trigger a process crash
+   in a shared RPC mdssvc worker process (CVE-2023-34967).
  * After Microsoft released the July 2023 updates, Windows clients showed
    login errors. Samba has been adjusted to handle the new behavior of
    netlogon secure channel negotiation.
 bug: [56306, 56322]
 cve:
- - TEMP-TODO
+ - CVE-2022-2127
+ - CVE-2023-34966
+ - CVE-2023-34967
