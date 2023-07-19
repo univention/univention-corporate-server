@@ -10,3 +10,6 @@ desc: |
    `prometheus-node-exporter` which disallows timestamps to be present in the
    textcollector files. The change has therefore been reverted.
 bug: [56341]
+erratum: 750
+announced: 2023-07-19
+support: core
