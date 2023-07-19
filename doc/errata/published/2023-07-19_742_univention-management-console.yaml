@@ -13,3 +13,6 @@ desc: |
    paths that led to 403 Forbidden error messages saying "No module found
    for this request.".
 bug: [56330, 56335]
+erratum: 742
+announced: 2023-07-19
+support: core
