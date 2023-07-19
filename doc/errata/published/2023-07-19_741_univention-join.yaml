@@ -9,3 +9,6 @@ desc: |
  * The script `univention-check-join-status` called `ldapsearch` with the
    machine credentials, which then were visible in the process list.
 bug: [56331]
+erratum: 741
+announced: 2023-07-19
+support: core
