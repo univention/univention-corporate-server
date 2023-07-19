@@ -8,3 +8,6 @@ desc: |
  This update addresses the following issue(s):
  * A typo in the output of "univention-app stall --help" has been fixed.
 bug: [56047]
+erratum: 749
+announced: 2023-07-19
+support: core
