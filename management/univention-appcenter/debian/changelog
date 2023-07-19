@@ -1,3 +1,9 @@
+univention-appcenter (9.0.8-2) unstable; urgency=medium
+
+  * Bug #56047: Fix typo in output of "univention-app stall --help"
+
+ -- Marius Meschter <marius.meschter@univention.de>  Wed, 19 Jul 2023 15:15:01 +0200
+
 univention-appcenter (9.0.8-1) unstable; urgency=medium
 
   * Bug #43633: replace direct use of notifier.threads with UMC @threaded decorator

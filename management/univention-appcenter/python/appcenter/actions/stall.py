@@ -41,7 +41,7 @@ from univention.appcenter.ucr import ucr_save
 
 class Stall(UniventionAppAction):
     """
-    Disbales updates for this app. Useful for suppressing
+    Disables updates for this app. Useful for suppressing
     warnings when an app reached its end of life but shall still
     be used.
     """
