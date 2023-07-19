@@ -308,7 +308,6 @@ class IACLs(object):
             return ACLs()
         else:
             return LDAP_ACLs(self.session.user.username, ucr['ldap/base'])
-            lo, po = get_machine_connection(write=False)
 
     def is_command_allowed(self, command, options, flavor):
         if not isinstance(options, dict):
