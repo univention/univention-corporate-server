@@ -1,3 +1,10 @@
+univention-management-console-module-diagnostic (6.0.6-2) unstable; urgency=medium
+
+  * Bug #56109: ignore read-only loop devices and squashfs filesystems in disk
+    usage check
+
+ -- Marius Meschter <marius.meschter@univention.de>  Thu, 20 Jul 2023 15:58:26 +0200
+
 univention-management-console-module-diagnostic (6.0.6-1) unstable; urgency=medium
 
   * Bug #43633: adjust file permissions for new UMC server UNIX sockets
