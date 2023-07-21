@@ -32,7 +32,7 @@
 
 from typing import Iterator, Tuple
 
-import univention.uldap
+import univention.s4connector.s4.s4
 from univention.config_registry import ucr_live as configRegistry
 from univention.lib.i18n import Translation
 from univention.management.console.modules.diagnostic import MODULE, Critical, Instance, Warning, util

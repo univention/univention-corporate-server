@@ -52,8 +52,8 @@ def active_services(lo: Optional[univention.uldap.access] = None) -> Optional[Li
     res = lo.search(base=lo.binddn, scope='base', attr=['univentionService'])
     if res:
         _dn, attr = res[0]
-        return attr.get('univentionService', [])
-    return None
+        return [x.decode('UTF-8') for x in attr.get('univentionService', [])]
+    return []
 
 
 def run_with_output(cmd) -> Tuple[bool, str]:
