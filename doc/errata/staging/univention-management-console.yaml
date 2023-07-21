@@ -1,0 +1,11 @@
+product: ucs
+release: "5.0"
+version: [4]
+scope: ucs_5.0-0-errata5.0-4
+src: univention-management-console
+fix: 12.0.31-9
+desc: |
+ This update addresses the following issues:
+ * Aborted HTTP requests do not close the socket connection to still opened
+   UMC module processes anymore but wait until the session times out.
+bug: [56336]

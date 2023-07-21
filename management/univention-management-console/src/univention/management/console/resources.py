@@ -113,7 +113,7 @@ class CouldNotConnect(Exception):
     pass
 
 
-class ModuleConnection(object):
+class _ModuleConnection(object):
 
     def __init__(self):
         self._client = tornado.httpclient.AsyncHTTPClient()
@@ -199,7 +199,7 @@ class ModuleConnection(object):
         return uri
 
 
-class ModuleProcess(ModuleConnection):
+class ModuleProcess(_ModuleConnection):
     """
     handles the communication with a UMC module process
 
@@ -347,7 +347,7 @@ class ModuleProcess(ModuleConnection):
                 CORE.warn('Could not shutdown module: %s' % (exc,))
 
 
-class ModuleProxy(ModuleConnection):
+class ModuleProxy(_ModuleConnection):
 
     def __init__(self, proxy_address, unix_socket=None):
         self.proxy_address = proxy_address
@@ -663,8 +663,6 @@ class Command(Resource):
         self._remove_active_request()
         if self.future is not None:
             self.future.cancel()
-        if self.process is not None:
-            self.process.abort()
 
     def on_finish(self):
         super(Command, self).on_finish()
