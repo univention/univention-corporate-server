@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-directory-manager-modules 6.0.99\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2023-06-27 09:19+0200\n"
+"POT-Creation-Date: 2023-07-25 11:59+0200\n"
 "PO-Revision-Date: 2016-11-08 14:59+0100\n"
 "Last-Translator: Univention GmbH <packages@univention.de>\n"
 "Language-Team: German <packages@univention.de>\n"
@@ -367,6 +367,10 @@ msgstr "Globale Gruppe"
 #: modules/univention/admin/syntax.py:5463
 msgid "Domain local (Type: Security)"
 msgstr "Domänenlokal (Typ: Sicherheit)"
+
+#: modules/univention/admin/syntax.py:3092
+msgid "The domain name must not start or end with a whitespace character!"
+msgstr "Der Domänenname darf nicht mit einem Leerzeichen starten oder enden!"
 
 #: modules/univention/admin/syntax.py:6342
 msgid "Driver"

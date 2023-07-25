@@ -3087,6 +3087,10 @@ class dnsName(simple):
         if not text:
             raise univention.admin.uexceptions.valueError(_("Missing value!"))
         assert isinstance(text, six.string_types)
+
+        if text != text.strip():
+            raise univention.admin.uexceptions.valueError(_("The domain name must not start or end with a whitespace character!"))
+
         if not 1 <= len(text) <= 253:
             raise univention.admin.uexceptions.valueError(_("Full domain name must be between 1 and 253 characters long!"))
         labels = (text[:-1] if text.endswith('.') else text).split('.')
