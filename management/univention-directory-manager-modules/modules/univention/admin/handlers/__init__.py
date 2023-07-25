@@ -1510,14 +1510,17 @@ class simpleLdap(object):
     def _move_in_groups(self, olddn):
         for group in self.oldinfo.get('groups', []) + [self.oldinfo.get('machineAccountGroup', '')]:
             if group != '':
-                members = self.lo.getAttr(group, 'uniqueMember')
-                newmembers = [
-                    member
-                    for member in members
-                    if dn2str(str2dn(member)).lower() not in (dn2str(str2dn(olddn)).lower(), dn2str(str2dn(self.dn)).lower())
-                ]
-                newmembers.append(self.dn.encode('UTF-8'))
-                self.lo.modify(group, [('uniqueMember', members, newmembers)])
+                try:
+                    self.lo.modify(
+                        group, [('uniqueMember', [olddn.encode("UTF-8")], None)])
+                except univention.admin.uexceptions.ldapError as exc:
+                    if not isinstance(exc.original_exception, ldap.NO_SUCH_ATTRIBUTE):
+                        raise
+                try:
+                    self.lo.modify(group, [('uniqueMember', None, [self.dn.encode("UTF-8")])])
+                except univention.admin.uexceptions.ldapError as exc:
+                    if not isinstance(exc.original_exception, ldap.TYPE_OR_VALUE_EXISTS):
+                        raise
 
     def _move(self, newdn, modify_childs=True, ignore_license=False):  # type: (str, bool, bool) -> str
         """Moves this object to the new DN. Should only be called by :func:`univention.admin.handlers.simpleLdap.move`."""

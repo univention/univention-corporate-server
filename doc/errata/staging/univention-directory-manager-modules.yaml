@@ -1,0 +1,11 @@
+product: ucs
+release: "5.0"
+version: [4]
+scope: ucs_5.0-0-errata5.0-4
+src: univention-directory-manager-modules
+fix: 15.0.24-14
+desc: |
+ * The performance of move operations for users and computers has been
+   improved, which is especially significant when the moved object is
+   a member of a large group.
+bug: [56348]
