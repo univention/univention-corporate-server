@@ -170,9 +170,9 @@ do
 		rdn=`echo $dn |awk -F , '{print $1}' |awk -F = '{print $1}'`
 		random_string
 		echo "Changing $dn to $rdn=Object$string1"
-		ldapmodrdn -x -D "cn=admin,$ldap_base" -w "$(cat /etc/ldap.secret)" "$dn" "$rdn=Object$string1"
+		ldapmodrdn -x -D "cn=admin,$ldap_base" -y /etc/ldap.secret "$dn" "$rdn=Object$string1"
 		echo "Changing $rdn=Object$string1 to $rdn=Objectxxx$string2 (using argument -r )"
-		ldapmodrdn -x -D "cn=admin,$ldap_base" -w "$(cat /etc/ldap.secret)" -r "$rdn=Object$string1,cn=$cn,$ldap_base" "$rdn=Objectxxx$string2"
+		ldapmodrdn -x -D "cn=admin,$ldap_base" -y /etc/ldap.secret -r "$rdn=Object$string1,cn=$cn,$ldap_base" "$rdn=Objectxxx$string2"
 		count=`expr $count + 1`
 		if [ "$count" -eq "$LIMIT" ]
 		then
