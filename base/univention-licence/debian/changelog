@@ -1,3 +1,9 @@
+univention-licence (11.0.0-2) unstable; urgency=medium
+
+  * Bug #56354: do not leak password in process list during ldapsearch
+
+ -- Florian Best <best@univention.de>  Wed, 25 Oct 2023 11:12:38 +0200
+
 univention-licence (11.0.0-1) unstable; urgency=medium
 
   * Bug #51419: UCS-5.0-0 version bump

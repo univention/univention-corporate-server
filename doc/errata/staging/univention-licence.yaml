@@ -1,0 +1,11 @@
+product: ucs
+release: "5.0"
+version: [5]
+scope: ucs_5.0-0-errata5.0-5
+src: univention-licence
+fix: 11.0.0-2
+desc: |
+ This update addresses the following issues:
+ * During importing a license via command line the password is not given in
+   plaintext to :program:`ldapsearch` calls.
+bug: [56354]
