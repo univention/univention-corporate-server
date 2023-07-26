@@ -11,3 +11,6 @@ desc: |
    SSO login. The default (the local server) is not changed with this
    update.
 bug: [55203]
+erratum: 753
+announced: 2023-07-26
+support: core
