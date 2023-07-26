@@ -138,7 +138,7 @@ command line. For example, the following command would use the machine password:
    $ univention-directory-listener-verify \
      -b "$(ucr get ldap/base)" \
      -D "$(ucr get ldap/hostdn)" \
-     -w "$(cat /etc/machine.secret)"
+     -y /etc/machine.secret
 
 
 .. _listener-commands-getnid:

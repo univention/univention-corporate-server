@@ -1,0 +1,11 @@
+product: ucs
+release: "5.0"
+version: [5]
+scope: ucs_5.0-0-errata5.0-5
+src: univention-directory-listener
+fix: 14.0.8-7
+desc: |
+ This update addresses the following issues:
+ * :program:`univention-directory-listener-verify` now allows to give the
+   LDAP password as password file argument.
+bug: [56354]

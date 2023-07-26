@@ -121,6 +121,29 @@ static void compare_entries(char *dn, CacheEntry *entry, LDAP *ld, LDAPMessage *
 }
 
 
+static char *read_pwd_from_file(char *filename) {
+	FILE *fp;
+	char line[1024];
+	int len;
+
+	if ((fp = fopen(filename, "r")) == NULL)
+		return NULL;
+	if (fgets(line, 1024, fp) == NULL) {
+		fclose(fp);
+		return NULL;
+	}
+	fclose(fp);
+
+	len = strlen(line);
+	if (!len)
+		return NULL;
+	if (line[len - 1] == '\n')
+		line[len - 1] = '\0';
+
+	return strdup(line);
+}
+
+
 static void usage(void) {
 	fprintf(stderr, "Usage: univention-directory-listener-verify [options]\n");
 	fprintf(stderr, "Options:\n");
@@ -128,6 +151,7 @@ static void usage(void) {
 	fprintf(stderr, "   -c   Listener cache path\n");
 	fprintf(stderr, "   -D   LDAP bind dn (should be updatedn)\n");
 	fprintf(stderr, "   -w   LDAP bind password\n");
+	fprintf(stderr, "   -y   LDAP bind password file\n");
 	fprintf(stderr, "   -b   LDAP base dn\n");
 }
 
@@ -161,7 +185,7 @@ int main(int argc, char *argv[]) {
 	for (;;) {
 		int c;
 
-		c = getopt(argc, argv, "d:c:D:w:b:");
+		c = getopt(argc, argv, "d:c:D:w:y:b:");
 		if (c < 0)
 			break;
 		switch (c) {
@@ -176,6 +200,13 @@ int main(int argc, char *argv[]) {
 			break;
 		case 'w':
 			bindpw = strdup(optarg);
+			break;
+		case 'y':
+			bindpw = read_pwd_from_file(optarg);
+			if (bindpw == NULL) {
+				fprintf(stderr, "E: Could not read password file\n");
+				exit(1);
+			}
 			break;
 		case 'b':
 			basedn = strdup(optarg);
