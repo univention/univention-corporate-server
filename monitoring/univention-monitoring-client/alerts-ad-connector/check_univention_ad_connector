@@ -48,13 +48,15 @@ class ADConnector(Alert):
     def write_metrics(self):
         connectors = ('connector %s' % ucr.get('connector/listener/additionalbasenames', '')).split(' ')
         for connector in connectors:
+            if not connector:
+                continue
             self.write_connector_metrics(len(connectors), connector)
 
     def write_connector_metrics(self, connectors, connector):
         # check whether we can connect to the AD
         # CRITICAL: in case we cannot connect to the AD
         rc = self.exec_command(['univention-adsearch', '-c', connector, 'cn=users'], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)[0]
-        self.write_metric('univention_ad_connector_ad_reachable', 1 if rc == 0 else 0)
+        self.write_metric('univention_ad_connector_ad_reachable', 1 if rc == 0 else 0, connector=connector)
 
         # check whether the AD connector is running; for this, get the exact command
         # that was used to launch the process; remove multiple whitespaces and quotes
