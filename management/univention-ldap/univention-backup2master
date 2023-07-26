@@ -391,7 +391,7 @@ if [ -z "$found_univentionObject" ]; then
   echo "add: univentionObjectType"                               >> "$temp_file"
   echo "univentionObjectType: computers/domaincontroller_master" >> "$temp_file"
 
-  ldapmodify -x -D "cn=admin,$ldap_base" -w "$(cat /etc/ldap.secret)" -f "$temp_file"
+  ldapmodify -x -D "cn=admin,$ldap_base" -y /etc/ldap.secret -f "$temp_file"
   rm $temp_file
 fi
 
@@ -405,7 +405,7 @@ echo "-" >>"$temp_file"
 echo "replace: univentionObjectType" >>"$temp_file"
 echo "univentionObjectType: computers/domaincontroller_master" >>"$temp_file"
 
-ldapmodify -x -D "cn=admin,$ldap_base" -w "$(cat /etc/ldap.secret)" -f "$temp_file"
+ldapmodify -x -D "cn=admin,$ldap_base" -y /etc/ldap.secret -f "$temp_file"
 
 rm "$temp_file"
 
@@ -520,7 +520,7 @@ elif [ -n "$res_users" ]; then
 fi
 
 # Remove the reference to old Primary from krb5PrincipalName for LDAP access
-ldapdelete -x -D "cn=admin,$ldap_base" -w "$(cat /etc/ldap.secret)" "krb5PrincipalName=ldap/${old_ldap_master}@${kerberos_realm},cn=kerberos,${ldap_base}"
+ldapdelete -x -D "cn=admin,$ldap_base" -y /etc/ldap.secret "krb5PrincipalName=ldap/${old_ldap_master}@${kerberos_realm},cn=kerberos,${ldap_base}"
 
 # Install the package of the Primary at the same time when removing the package of the Backup Node.
 # This way no dependent packages get removed.

@@ -1,3 +1,10 @@
+univention-ldap (16.0.13-5) unstable; urgency=medium
+
+  * Bug #56333: do not leak password in process list during
+    backup2master
+
+ -- Florian Best <best@univention.de>  Wed, 25 Oct 2023 11:20:32 +0200
+
 univention-ldap (16.0.13-4) unstable; urgency=medium
 
   * Bug #55553: revert
