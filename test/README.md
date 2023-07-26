@@ -218,28 +218,6 @@ UCS with pre-installed App, to check if changes in UCS break the appliance setup
 
 -----
 
-## [UCS Branch Test](https://jenkins.knut.univention.de:8181/job/UCS%20Branch%20Test/)
-
-1. Used by developers to test specific areas of UCS
-
-* [branch-tests/appcenter/singlemaster.cfg](branch-tests/appcenter/singlemaster.cfg)
-* [branch-tests/base/bug48427-backup-rejoin.cfg](branch-tests/base/bug48427-backup-rejoin.cfg)
-* [branch-tests/base/bug48427-master-after-backup.cfg](branch-tests/base/bug48427-master-after-backup.cfg)
-* [branch-tests/base/bug48427-master-before-backup.cfg](branch-tests/base/bug48427-master-before-backup.cfg)
-* [branch-tests/base/bug48427-setup.cfg](branch-tests/base/bug48427-setup.cfg)
-* [branch-tests/base/bug48427-single-master.cfg](branch-tests/base/bug48427-single-master.cfg)
-* [branch-tests/base/master-slave.cfg](branch-tests/base/master-slave.cfg)
-* [branch-tests/base/singlemaster-all-components.cfg](branch-tests/base/singlemaster-all-components.cfg)
-* [branch-tests/base/singlemaster.cfg](branch-tests/base/singlemaster.cfg)
-* [branch-tests/base/singlemaster-joined.cfg](branch-tests/base/singlemaster-joined.cfg)
-* [branch-tests/mail/joined-master.cfg](branch-tests/mail/joined-master.cfg)
-* [branch-tests/samba/s4-connector.cfg](branch-tests/samba/s4-connector.cfg)
-* [branch-tests/school/multiserver.cfg](branch-tests/school/multiserver.cfg)
-* [branch-tests/singlemaster.cfg](branch-tests/singlemaster.cfg)
-* [branch-tests/umc/singlemaster.cfg](branch-tests/umc/singlemaster.cfg)
-
------
-
 ## [Product tests](https://jenkins2022.knut.univention.de/job/UCS-5.0/job/UCS-5,0-4/view/Product%20Tests/)
 
 1. Last minute tests before new release
