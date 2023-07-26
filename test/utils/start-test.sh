@@ -14,7 +14,7 @@ old_ami=ami-0dd235a67a0eb9bdc
 
 # defaults
 kvm_template='generic-unsafe'
-kvm_build_server='lattjo.knut.univention.de'
+kvm_build_server='kvm-2023-01.knut.univention.de'
 kvm_memory='2048M'
 kvm_cpus='1'
 kvm_label_suffix=''
@@ -41,8 +41,8 @@ usage () {
 	echo "  # start scenario with default options"
 	echo "  ./utils/start-test.sh scenarios/autotest-090-master-no-samba.cfg"
 	echo ""
-	echo "  # start scenario with docker mode on KVM server lattjo"
-	echo "  KVM_BUILD_SERVER=lattjo DOCKER=true ./utils/start-test.sh scenarios/autotest-090-master-no-samba.cfg"
+	echo "  # start scenario with docker mode on KVM server kvm-2023-01"
+	echo "  KVM_BUILD_SERVER=kvm-2023-01 DOCKER=true ./utils/start-test.sh scenarios/autotest-090-master-no-samba.cfg"
 	echo ""
 	echo "  These ENV_VARs can than be used in the cfg file ([ENV:KVM_BUILD_SERVER]) or if added to the section"
 	echo "  environment in the cfg file as env variables in the virtuale instance (ucs)."
