@@ -1,3 +1,9 @@
+univention-samba (14.0.9-2) unstable; urgency=medium
+
+  * Bug #56332: do not leak password in process list during domain join
+
+ -- Florian Best <best@univention.de>  Wed, 25 Oct 2023 11:43:41 +0200
+
 univention-samba (14.0.9-1) unstable; urgency=medium
 
   * Bug #31388: add share configuration for "read list"

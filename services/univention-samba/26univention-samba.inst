@@ -242,7 +242,7 @@ case "${server_role}" in
 domaincontroller_slave|memberserver)
 	univention-config-registry set	samba/user="$ldap_hostdn" \
 									samba/user/pwdfile?"/etc/machine.secret"
-	smbpasswd -w "$(< /etc/machine.secret)"
+	smbpasswd -W < /etc/machine.secret
 
 	echo "setting idmap secret for '*' from /etc/machine.secret"
 	net idmap set secret '*' "$(< /etc/machine.secret)" 2>/dev/null
@@ -252,7 +252,7 @@ domaincontroller_slave|memberserver)
 									samba/user/pwdfile?"/etc/ldap.secret"
 	/etc/init.d/samba restart >/dev/null 2>&1
 
-	smbpasswd -w "$(< /etc/ldap.secret)"
+	smbpasswd -W < /etc/ldap.secret
 
 	echo "setting idmap secret for '*' from /etc/ldap.secret"
 	net idmap set secret '*' "$(< /etc/ldap.secret)" 2>/dev/null
