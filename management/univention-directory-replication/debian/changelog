@@ -1,3 +1,10 @@
+univention-directory-replication (13.0.7-3) unstable; urgency=medium
+
+  * Bug #56354: do not leak password in process list in univention-
+    directory-replication-resync
+
+ -- Florian Best <best@univention.de>  Wed, 25 Oct 2023 11:34:21 +0200
+
 univention-directory-replication (13.0.7-2) unstable; urgency=medium
 
   * Bug #56729: Remove the new ppolicy attributes from OpenLDAP 2.5 from

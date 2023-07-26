@@ -109,9 +109,14 @@ fi
 
 
 echo "replay stored changes ..."
-faileddns="$(tempfile)"
-if ldapmodify -x -w "$(cut -d\" -f2 /etc/ldap/rootpw.conf)" -D "cn=update,${ldap_base}" -c -S "${faileddns}" -f "$1" >>"$LOG" 2>&1
+faileddns="$(mktemp)"
+secret_file="$(mktemp)"
+cleanup_secret_file() { rm -f "$secret_file" >>"$LOG" 2>&1; trap - EXIT; }
+trap cleanup_secret_file EXIT
+cut -d\" -f2 /etc/ldap/rootpw.conf > "$secret_file"
+if ldapmodify -x -y "$secret_file" -D "cn=update,${ldap_base}" -c -S "${faileddns}" -f "$1" >>"$LOG" 2>&1
 then
+	cleanup_secret_file
 	echo ""
 	dst="/var/lib/univention-directory-replication/replayed.ldif_$(date +%F-%X)"
 	echo "Restored modifications successfully, the LDIF file will be moved to $dst"
@@ -121,6 +126,7 @@ then
 	echo "systemctl stop univention-directory-listener; systemctl start univention-directory-listener" | at now
 	exit 0
 else
+	cleanup_secret_file
 	echo "some DNs have failed and have to be synced manually:"
 	getdns "${faileddns}"
 	echo ""
