@@ -9,3 +9,6 @@ desc: |
  * A metric in `check_univention_ad_connector` was missing the corresponding
   `connector` label and metrics were written for an invalid `connector`.
 bug: [56350]
+erratum: 752
+announced: 2023-07-26
+support: core
