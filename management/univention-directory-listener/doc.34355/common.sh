@@ -25,26 +25,31 @@ BINDPORT="$(ucr get ldap/master/port)"
 DEBUGPROCNAME="listener"
 LCACHE="${LBASE:-/var/lib/univention-directory-listener}"
 LMODUL="${LBASE:-/usr/lib/univention-directory-listener}/system"
+BINDPW_FILE=$(mktemp)
+cat > "$BINDPW_FILE" <<EOF
+$BINDPW
+EOF
+
 
 udm () {
 	local module="$1" action="$2"
 	shift 2
-	/usr/sbin/udm "$module" "$action" --binddn "$BINDDN" --bindpwd "$BINDPW" "$@"
+	/usr/sbin/udm "$module" "$action" --binddn "$BINDDN" --bindpwdfile "$BINDPW_FILE" "$@"
 }
 ldapsearch () {
-	/usr/bin/ldapsearch -h "$BINDHOST" -p "$BINDPORT" -x -D "$BINDDN" -w "$BINDPW" -LLL -o ldif-wrap=no "$@"
+	/usr/bin/ldapsearch -h "$BINDHOST" -p "$BINDPORT" -x -D "$BINDDN" -y "$BINDPW_FILE" -LLL -o ldif-wrap=no "$@"
 }
 ldapadd () {
-	/usr/bin/ldapadd -x -h "$BINDHOST" -p "$BINDPORT" -D "$BINDDN" -w "$BINDPW" "$@"
+	/usr/bin/ldapadd -x -h "$BINDHOST" -p "$BINDPORT" -D "$BINDDN" -y "$BINDPW_FILE" "$@"
 }
 ldapmodify () {
-	/usr/bin/ldapmodify -x -h "$BINDHOST" -p "$BINDPORT" -D "$BINDDN" -w "$BINDPW" "$@"
+	/usr/bin/ldapmodify -x -h "$BINDHOST" -p "$BINDPORT" -D "$BINDDN" -y "$BINDPW_FILE" "$@"
 }
 ldapmodrdn () {
-	/usr/bin/ldapmodrdn -x -h "$BINDHOST" -p "$BINDPORT" -D "$BINDDN" -w "$BINDPW" "$@"
+	/usr/bin/ldapmodrdn -x -h "$BINDHOST" -p "$BINDPORT" -D "$BINDDN" -y "$BINDPW_FILE" "$@"
 }
 ldapdelete () {
-	/usr/bin/ldapdelete -x -h "$BINDHOST" -p "$BINDPORT" -D "$BINDDN" -w "$BINDPW" "$@"
+	/usr/bin/ldapdelete -x -h "$BINDHOST" -p "$BINDPORT" -D "$BINDDN" -y "$BINDPW_FILE" "$@"
 }
 
 setup () {

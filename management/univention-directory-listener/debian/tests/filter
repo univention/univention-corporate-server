@@ -12,6 +12,11 @@ FQDN="$(hostname).test"
 SECRET='SECRET'
 IP='127.0.0.2'
 
+SECRET_FILE=$(mktemp)
+cat > "$SECRET_FILE" <<EOF
+$SECRET
+EOF
+
 die () {
 	echo "${0##/*}: $*"
 	exit 1
@@ -149,13 +154,13 @@ __CONF__
 	cp -f --reflink=auto /usr/sbin/slapd /usr/sbin/slapd2
 
 	slapd2 -h "ldap://:$PORT" -u openldap -g openldap -f /etc/ldap/slapd2.conf
-	ldapadd -H "ldap://$FQDN:$PORT" -ZZ -x -D "cn=admin,$BASE" -w "$SECRET" <<__LDIF__
+	ldapadd -H "ldap://$FQDN:$PORT" -ZZ -x -D "cn=admin,$BASE" -y "$SECRET_FILE" <<__LDIF__
 dn: cn=test${n:-},$BASE
 objectClass: person
 sn: test${n:-}
 cn: test${n:-}
 __LDIF__
-	ldapsearch -xLLLo ldif-wrap=no -H "ldap://$FQDN:$PORT" -b "cn=test${n:-},$BASE" -s base -ZZ -D "cn=admin,$BASE" -w "$SECRET" 1.1
+	ldapsearch -xLLLo ldif-wrap=no -H "ldap://$FQDN:$PORT" -b "cn=test${n:-},$BASE" -s base -ZZ -D "cn=admin,$BASE" -y "$SECRET_FILE" 1.1
 }
 PRIMARY
 
@@ -185,7 +190,7 @@ UDL () {
 		-m /usr/lib/univention-directory-listener/system2 \
 		-c /var/lib/univention-directory-listener \
 		-H "ldap://$FQDN:$PORT" -h "$FQDN" -p "$PORT" \
-		-x -D "cn=admin,$BASE" -w "$SECRET"
+		-x -D "cn=admin,$BASE" -y "$SECRET_FILE"
 	secret="$(sed -rne 's/^\s*rootpw\s*"(([^\"]|\\")*)"\s*(#.*)?$/\1/;T;s/\\"/"/g;p;q' /etc/ldap/rootpw.conf)"
 
 	/usr/sbin/univention-directory-listener \
@@ -194,7 +199,7 @@ UDL () {
 		-m /usr/lib/univention-directory-listener/system2 \
 		-c /var/lib/univention-directory-listener \
 		-H "ldap://$FQDN:$PORT" -h "$FQDN" -p "$PORT" \
-		-x -D "cn=admin,$BASE" -w "$SECRET" &
+		-x -D "cn=admin,$BASE" -y "$SECRET_FILE" &
 }
 UDL
 
