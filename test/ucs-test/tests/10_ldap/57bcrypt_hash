@@ -42,7 +42,7 @@ wait_for_replication_and_postrun
 
 # update password hash
 # {BCRYPT}$2b$08$s8k7t6cvdHLLMz75emGZMeP.d0c3Xl/.to3FntmYUxabPlpEa/bjW -> randompassword
-ldapmodify -x -h "$ldap_master" -p "$ldap_master_port" -D "$tests_domainadmin_account" -w "$tests_domainadmin_pwd" <<-%EOR
+ldapmodify -x -H "ldap://$ldap_master:$ldap_master_port" -D "$tests_domainadmin_account" -y "$tests_domainadmin_pwdfile" <<-%EOR
 dn: $dn
 changetype: modify
 replace: userPassword
