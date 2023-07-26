@@ -1,0 +1,11 @@
+product: ucs
+release: "5.0"
+version: [5]
+scope: ucs_5.0-0-errata5.0-5
+src: univention-directory-manager-modules
+fix: 15.0.24-22
+desc: |
+ This update addresses the following issues:
+ * The LDAP password is not leaked in the process list anymore when calling
+   :program:`fix_primary_group_membership`.
+bug: [56354]
