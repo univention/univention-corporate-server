@@ -45,7 +45,7 @@ univention-install --yes --no-install-recommends univention-server-slave univent
 
             try:
                 lo = get_ldap_connection()
-            except ldap.SERVER_DOWN():
+            except ldap.SERVER_DOWN:
                 print('LDAP connection failed. Wait for ten seconds and try again.')
                 time.sleep(60)
                 lo = get_ldap_connection()
