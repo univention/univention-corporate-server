@@ -6,7 +6,6 @@ src: univention-monitoring-client
 fix: 1.0.2-6
 desc: |
  This update addresses the following issues:
- * A metric in `check_univention_ad_connector` was incorrectly written without
-   the corresponding `connector` label as well as that metrics for an invalid
-   `connector` were written.
+ * A metric in `check_univention_ad_connector` was missing the corresponding
+  `connector` label and metrics were written for an invalid `connector`.
 bug: [56350]
