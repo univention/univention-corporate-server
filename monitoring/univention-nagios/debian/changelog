@@ -1,3 +1,10 @@
+univention-nagios (13.0.5-2) unstable; urgency=medium
+
+  * Bug #56354: do not leak password in process list during
+    check_univention_joinstatus
+
+ -- Florian Best <best@univention.de>  Wed, 25 Oct 2023 11:23:21 +0200
+
 univention-nagios (13.0.5-1) unstable; urgency=medium
 
   * Bug #31771: migrate tabs to spaces

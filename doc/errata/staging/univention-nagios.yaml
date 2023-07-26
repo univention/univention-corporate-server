@@ -1,0 +1,11 @@
+product: ucs
+release: "5.0"
+version: [5]
+scope: ucs_5.0-0-errata5.0-5
+src: univention-nagios
+fix: 13.0.5-2
+desc: |
+ This update addresses the following issues:
+ * The LDAP password is not leaked in the process list anymore when calling
+   the :program:`check_univention_joinstatus` Nagios plugin.
+bug: [56354]
