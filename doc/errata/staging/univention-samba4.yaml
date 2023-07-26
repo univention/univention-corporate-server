@@ -1,0 +1,11 @@
+product: ucs
+release: "5.0"
+version: [5]
+scope: ucs_5.0-0-errata5.0-5
+src: univention-samba4
+fix: 9.0.14-4
+desc: |
+ This update addresses the following issues:
+ * The LDAP password is not leaked in the process list anymore during package
+   upgrades.
+bug: [56354]

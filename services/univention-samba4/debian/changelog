@@ -1,3 +1,10 @@
+univention-samba4 (9.0.14-4) unstable; urgency=medium
+
+  * Bug #56354: do not leak password in process list during package
+    upgrades
+
+ -- Florian Best <best@univention.de>  Wed, 25 Oct 2023 11:40:21 +0200
+
 univention-samba4 (9.0.14-3) unstable; urgency=medium
 
   * Bug #53387: recommend python3-lmdb
