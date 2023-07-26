@@ -448,6 +448,8 @@ class ResourceBase:
                 raise HTTPError(400)
 
             userdn = self._auth_get_userdn(username)
+            if not userdn:
+                return self.force_authorization()
 
         try:
             self.ldap_connection, self.ldap_position = get_user_ldap_read_connection(userdn, password)
@@ -485,7 +487,8 @@ class ResourceBase:
         if username in ('cn=admin',):
             return 'cn=admin,%(ldap/base)s' % ucr
         lo, po = get_machine_ldap_read_connection()
-        return lo.searchDn(filter_format('(&(objectClass=person)(uid=%s))', [username]), unique=True)[0]
+        dns = lo.searchDn(filter_format('(&(objectClass=person)(uid=%s))', [username]), unique=True)
+        return dns[0] if dns else None
 
     def get_module(self, object_type, ldap_connection=None):
         module = UDM_Module(object_type, ldap_connection=ldap_connection or self.ldap_connection, ldap_position=self.ldap_position)

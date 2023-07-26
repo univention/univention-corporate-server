@@ -1,3 +1,9 @@
+univention-directory-manager-rest (10.0.6-10) unstable; urgency=medium
+
+  * Bug #56351 Fix username enumeration in plain login
+
+ -- Johannes Lohmer <lohmer@univention.de>  Wed, 26 Jul 2023 17:08:54 +0200
+
 univention-directory-manager-rest (10.0.6-9) unstable; urgency=medium
 
   * Bug #56271 Fix shared link reference with deepcopy
