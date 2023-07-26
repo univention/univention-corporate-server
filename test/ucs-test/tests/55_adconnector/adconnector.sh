@@ -217,7 +217,7 @@ function ad_delete () {
 		kinit --password-file="$(ucr get tests/domainadmin/pwdfile)" "$username"
 		ldapdelete -r -H "ldap://$(ucr get ${configbase}/ad/ldap/host)" -Y GSSAPI "$dn"
 	else
-		ldapdelete -r -H "ldap://$(ucr get ${configbase}/ad/ldap/host)" -x -D "$(ucr get ${configbase}/ad/ldap/binddn)" -w "$(cat "$pwfile")" "$dn"
+		ldapdelete -r -H "ldap://$(ucr get ${configbase}/ad/ldap/host)" -x -D "$(ucr get ${configbase}/ad/ldap/binddn)" -y "$pwfile" "$dn"
 	fi
 }
 

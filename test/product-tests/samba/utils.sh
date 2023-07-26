@@ -47,7 +47,7 @@ check_user_in_ucs () {  # <username> <password>
 	echo -n "$password" > /tmp/pwdfile
 	kinit --password-file=/tmp/pwdfile "$username"
 	# ucs ldap
-	univention-ldapsearch -D "$binddn" -w "$password" "uid=$username"
+	univention-ldapsearch -D "$binddn" -y "/tmp/pwdfile" "uid=$username"
 	# samba/ldap
 	ldbsearch -U "${username}%${password}" -H ldap://127.0.0.1 "cn=$username"
 	smbclient -U "${username}%${password}" "//$(hostname)/sysvol" -c exit

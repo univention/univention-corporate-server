@@ -52,7 +52,7 @@ ad_wait_for_synchronization; fail_bool 0 110
 echo "dn: cn=$windows_cn,cn=computers,$(ucr get ldap/base)
 changetype: modify
 replace: uid
-uid: ${windows_sam}\$" | ldapmodify -D "cn=admin,$(ucr get ldap/base)" -w $(< /etc/ldap.secret) || fail_test 110
+uid: ${windows_sam}\$" | ldapmodify -D "cn=admin,$(ucr get ldap/base)" -y /etc/ldap.secret || fail_test 110
 ad_wait_for_synchronization; fail_bool 0 110
 udm_verify_ldap_attribute "cn" "$windows_cn" "computers/windows" || fail_test 110
 udm_verify_ldap_attribute "uid" "${windows_sam}\$" "computers/windows" || fail_test 110

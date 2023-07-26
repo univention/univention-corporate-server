@@ -41,7 +41,7 @@ new_pwdFailureCountInterval=15
 new_pwdMaxFailure=5
 
 reset_pwdFailureCountInterval() {
-	ldapmodify -x -H "ldap://$ldap_master:$ldap_master_port" -D "$tests_domainadmin_account" -w "$tests_domainadmin_pwd" <<-%EOR
+	ldapmodify -x -H "ldap://$ldap_master:$ldap_master_port" -D "$tests_domainadmin_account" -y "$tests_domainadmin_pwdfile" <<-%EOR
 	dn: cn=default,cn=ppolicy,cn=univention,$ldap_base
 	changetype: modify
 	replace: pwdMaxFailure
@@ -52,7 +52,7 @@ reset_pwdFailureCountInterval() {
 	%EOR
 }
 
-ldapmodify -x -H "ldap://$ldap_master:$ldap_master_port" -D "$tests_domainadmin_account" -w "$tests_domainadmin_pwd" <<-%EOR && undo reset_pwdFailureCountInterval || fail_fast 140 "cannot modify ppolicy"
+ldapmodify -x -H "ldap://$ldap_master:$ldap_master_port" -D "$tests_domainadmin_account" -y "$tests_domainadmin_pwdfile" <<-%EOR && undo reset_pwdFailureCountInterval || fail_fast 140 "cannot modify ppolicy"
 dn: cn=default,cn=ppolicy,cn=univention,$ldap_base
 changetype: modify
 replace: pwdMaxFailure
