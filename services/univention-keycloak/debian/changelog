@@ -1,3 +1,9 @@
+univention-keycloak (1.0.9-28) unstable; urgency=medium
+
+  * Bug #56317: Added parameters for managing client authentication flow
+
+ -- Nikola Radovanovic <radovanovic.extern@univention.de>  Thu, 27 Jul 2023 10:47:16 +0100
+
 univention-keycloak (1.0.9-27) unstable; urgency=medium
 
   * Bug #56305: added command legacy-authentication-flow

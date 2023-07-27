@@ -12,7 +12,7 @@ from utils import run_command
 
 LEGACY_APP_AUTHORIZATION_NAME = "browser flow with legacy app authorization"
 EXPECTED_EXECUTIONS = [
-    {"requirement": "REQUIRED", "displayName": "Normal Login (legacy app authorization)", "configurable": False, "authenticationFlow": True, "level": 0, "index": 0},
+    {"requirement": "REQUIRED", "displayName": "Normal Login (browser legacy app authorization)", "configurable": False, "authenticationFlow": True, "level": 0, "index": 0},
     {"requirement": "ALTERNATIVE", "displayName": "Cookie", "configurable": False, "providerId": "auth-cookie", "level": 1, "index": 0},
     {"requirement": "ALTERNATIVE", "displayName": "Kerberos", "configurable": False, "providerId": "auth-spnego", "level": 1, "index": 1},
     {"requirement": "ALTERNATIVE", "displayName": "Identity Provider Redirector", "configurable": True, "providerId": "identity-provider-redirector", "level": 1, "index": 2},

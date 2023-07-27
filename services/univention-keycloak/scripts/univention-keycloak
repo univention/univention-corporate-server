@@ -72,7 +72,7 @@ URL_ADMIN_REQUIRED_ACTION_REGISTER = URL_ADMIN_REALM + "/authentication/register
 DEFAULT_EXTENTIONS = ["password", "ldapmapper", "self-service"]
 DEFAULT_USER_STORAGE_PROVIDER_NAME = "ldap-provider"
 KERBEROS_KEYTAB_PATH = "/var/lib/univention-appcenter/apps/keycloak/conf/keycloak.keytab"
-LEGACY_APP_AUTHORIZATION_NAME = "browser flow with legacy app authorization"
+LEGACY_APP_AUTHORIZATION_NAME = "flow with legacy app authorization"
 
 # default LDAP attribute mapper
 #  * sn -> lastName
@@ -544,12 +544,27 @@ def create_SAML_client(opt):
 def create_oidc_client(opt):
     print("CREATING KEYCLOAK OIDC CLIENT.....")
 
+    # log into default realm in case UCS realm doesn't exist yet
+    kc_admin = UniventionKeycloakAdmin(opt)
+
     # build urls
     server_url = f"https://{opt.host_fqdn}"
-    valid_redirect_urls = [opt.app_url, server_url]
+    valid_redirect_urls = [opt.app_url, server_url] + opt.redirect_uri if opt.redirect_uri else [opt.app_url, server_url]
+
+    # authentication flow
+    authentication_flow_binding_overrides = {}
+    auth_flow = opt.auth_browser_flow
+    if auth_flow:
+        auth_flow_id = kc_admin.get_authentication_flow_id(auth_flow)
+        if not auth_flow_id:
+            print(f"Authentication flow: {auth_flow} not found.", file=sys.stderr)
+            sys.exit(1)
+        authentication_flow_binding_overrides["browser"] = auth_flow_id
 
     client_payload_oidc = {
         "clientId": opt.client_id,
+        "name": opt.name if opt.name else opt.client_id,
+        "description": opt.description,
         "rootUrl": opt.app_url,
         "adminUrl": "",
         "baseUrl": opt.app_url,
@@ -563,13 +578,14 @@ def create_oidc_client(opt):
         "bearerOnly": False,
         "consentRequired": False,
         "standardFlowEnabled": True,
-        "implicitFlowEnabled": False,
+        "implicitFlowEnabled": opt.allow_implicit_flow,
         "directAccessGrantsEnabled": opt.direct_access_grants,
-        "serviceAccountsEnabled": False,
+        "serviceAccountsEnabled": opt.service_accounts_enabled,
         "publicClient": False,
-        "frontchannelLogout": True,
+        "frontchannelLogout": not opt.no_frontchannel_logout,
         "protocol": "openid-connect",
         "attributes": {
+            "access.token.lifespan": opt.access_token_lifespan,
             "saml.multivalued.roles": "false",
             "saml.force.post.binding": "false",
             "frontchannel.logout.session.required": "false",
@@ -598,7 +614,7 @@ def create_oidc_client(opt):
             "token.response.type.bearer.lower-case": "false",
             "saml.onetimeuse.condition": "false",
         },
-        "authenticationFlowBindingOverrides": {},
+        "authenticationFlowBindingOverrides": authentication_flow_binding_overrides,
         "fullScopeAllowed": True,
         "nodeReRegistrationTimeout": -1,
         "protocolMappers": [
@@ -666,11 +682,24 @@ def create_oidc_client(opt):
         "authorizationServicesEnabled": "",
     }
 
+    if opt.add_audience_mapper:
+        client_payload_oidc["protocolMappers"].append(
+            {
+                "name": "audiencemap",
+                "protocol": "openid-connect",
+                "protocolMapper": "oidc-audience-mapper",
+                "consentRequired": False,
+                "config": {
+                    "included.client.audience": opt.client_id,
+                    "id.token.claim": "true",
+                    "access.token.claim": "true",
+                },
+            },
+        )
+
     if opt.client_secret:
         client_payload_oidc["secret"] = opt.client_secret
 
-    # log into default realm in case UCS realm doesn't exist yet
-    kc_admin = KeycloakAdmin(server_url=opt.keycloak_url, username=opt.binduser, password=opt.bindpwd, realm_name=opt.realm, user_realm_name=DEFAULT_REALM, verify=opt.no_ssl_verify)
     kc_admin.create_client(payload=client_payload_oidc, skip_exists=True)
 
 
@@ -918,9 +947,18 @@ def parse_args(args: list[str] | None = None) -> Namespace:
     create_oidc_parser = operation_subparsers.add_parser("create", help="create a new OIDC client in Keycloak")
     create_oidc_parser.add_argument("client_id", metavar='CLIENT_ID')
     create_oidc_parser.add_argument("--client-secret", default="")
+    create_oidc_parser.add_argument("--description", default="")
+    create_oidc_parser.add_argument("--name", default=None)
     create_oidc_parser.add_argument("--app-url", required=True)
     create_oidc_parser.add_argument("--host-fqdn", required=no_ucr_available, default=host_fqdn)
+    create_oidc_parser.add_argument("--redirect-uri", action='append', help="Valid redirect URIs.")
     create_oidc_parser.add_argument("--direct-access-grants", help='enable "Direct access grants" flow (default: False)', default=False, action="store_true")
+    create_oidc_parser.add_argument("--allow-implicit-flow", action='store_true', help="enables support of 'Implicit Flow' for this client.")
+    create_oidc_parser.add_argument("--access-token-lifespan", help="Max time before an access token is expired.")
+    create_oidc_parser.add_argument("--service-accounts-enabled", action='store_true')
+    create_oidc_parser.add_argument("--no-frontchannel-logout", action='store_false', default=True)
+    create_oidc_parser.add_argument("--auth-browser-flow", help="Override realm authentication flow bindings for 'Browser Flow'.", default=None)
+    create_oidc_parser.add_argument("--add-audience-mapper", action='store_true', default=False, help="Add a audience mapper to add audience to access token.")
     create_oidc_parser.set_defaults(func=create_oidc_client)
 
     create_saml_parser = operation_subparsers.add_parser("secret", help="get client secret from Keycloak")
@@ -1048,6 +1086,7 @@ def parse_args(args: list[str] | None = None) -> Namespace:
     parser_legacy_authentication_flow_create.set_defaults(func=create_legacy_authentication_flow)
     parser_legacy_authentication_flow_delete = parser_legacy_authentication_flow_operations.add_parser("delete", help="delete the legacy authentication flow")
     parser_legacy_authentication_flow_delete.set_defaults(func=delete_legacy_authentication_flow)
+    parser_legacy_authentication_flow_delete.add_argument("--flow", help="delete the flow (default browser).", default="browser")
 
     opt = parser.parse_args(args)
     if opt.binddn:
@@ -1071,7 +1110,7 @@ def parse_args(args: list[str] | None = None) -> Namespace:
 
 
 def create_legacy_authentication_flow(opt: Namespace) -> None:
-    flow_name = LEGACY_APP_AUTHORIZATION_NAME
+    flow_name = f"{opt.flow} {LEGACY_APP_AUTHORIZATION_NAME}"
     session = UniventionKeycloakAdmin(opt)
 
     # check existing
@@ -1097,7 +1136,7 @@ def create_legacy_authentication_flow(opt: Namespace) -> None:
     session.create_authentication_flow(payload=json.dumps(payload))
 
     # add subflow for "normal steps"
-    sub_flow_name = "Normal Login (legacy app authorization)"
+    sub_flow_name = f"Normal Login ({opt.flow} legacy app authorization)"
     payload = {
         "displayName": sub_flow_name,
         "configurable": False,
@@ -1142,7 +1181,7 @@ def create_legacy_authentication_flow(opt: Namespace) -> None:
 
 
 def delete_legacy_authentication_flow(opt: Namespace) -> None:
-    flow_name = LEGACY_APP_AUTHORIZATION_NAME
+    flow_name = f"{opt.flow} {LEGACY_APP_AUTHORIZATION_NAME}"
     session = UniventionKeycloakAdmin(opt)
     flows = session.get_authentication_flows()
     flow = [x for x in flows if x["alias"] == flow_name]
