@@ -1,30 +1,29 @@
 # SPDX-FileCopyrightText: 2021-2023 Univention GmbH
 #
 # SPDX-License-Identifier: AGPL-3.0-only
-
 msgid ""
 msgstr ""
 "Project-Id-Version: Univention Corporate Server - Manual for users and "
 "administrators \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-04-21 12:53+0200\n"
-"PO-Revision-Date: 2022-10-13 09:22+0200\n"
+"POT-Creation-Date: 2023-07-27 17:28+0200\n"
+"PO-Revision-Date: 2023-07-27 17:29+0200\n"
 "Last-Translator: Univention GmbH <packages@univention.de>\n"
 "Language-Team: Univention GmbH <packages@univention.de>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Generated-By: Babel 2.9.1\n"
+"Generated-By: Babel 2.12.1\n"
 
-#: ../../index.rst:5
+#: ../../index.rst:9
 msgid "Introduction"
 msgstr "Einführung"
 
-#: ../../index.rst:10
+#: ../../index.rst:14
 msgid "What is Univention Corporate Server?"
 msgstr "Was ist Univention Corporate Server?"
 
-#: ../../index.rst:12
+#: ../../index.rst:16
 msgid ""
 "Univention Corporate Server (UCS) is a Linux-based server operating "
 "system for the operation and administration of IT infrastructures for "
@@ -47,7 +46,7 @@ msgstr ""
 "Managementwerkzeugen anderer Hersteller, so dass es sich leicht in "
 "vorhandene Umgebungen integrieren lässt."
 
-#: ../../index.rst:22
+#: ../../index.rst:26
 msgid ""
 "UCS consists of reliable open source software tried and tested in "
 "organizations of different sizes. These software components are "
@@ -61,11 +60,11 @@ msgstr ""
 "nur in einfachen, sondern auch in anspruchsvollen, verteilten oder "
 "virtualisierten Umgebungen einfach einsetz- und administrierbar."
 
-#: ../../index.rst:28
+#: ../../index.rst:32
 msgid "The central functions of UCS are:"
 msgstr "Dies sind die zentralen Funktionen von UCS:"
 
-#: ../../index.rst:30
+#: ../../index.rst:34
 msgid ""
 "Flexible and extensive identity/infrastructure management for the central"
 " administration of servers, workstations, users and their permissions, "
@@ -76,7 +75,7 @@ msgstr ""
 "Benutzern und deren Berechtigungen sowie verschiedener Serveranwendungen "
 "und Webdienste"
 
-#: ../../index.rst:34
+#: ../../index.rst:38
 msgid ""
 "Services for integrating the management of existing Microsoft Active "
 "Directory domains or even the provision of such services as an "
@@ -86,7 +85,7 @@ msgstr ""
 "Active Directory Domänen oder auch für die Bereitstellung dieser Dienste "
 "als Alternative zu Microsoft-basierten Serversystemen"
 
-#: ../../index.rst:38
+#: ../../index.rst:42
 msgid ""
 "App Center for simple installation and management of extensions and "
 "applications"
@@ -94,7 +93,7 @@ msgstr ""
 "App Center zur einfachen Installation und Verwaltung von Erweiterungen "
 "und Anwendungen"
 
-#: ../../index.rst:41
+#: ../../index.rst:45
 msgid ""
 "Comprehensive features for the operation of virtualized systems (e.g. "
 "running a Windows or Linux operating systems) in either the cloud of on "
@@ -104,23 +103,23 @@ msgstr ""
 "(beispielsweise mit Windows- oder Linux-Betriebssystem) in der Cloud oder"
 " direkt auf vorhandenen UCS-Systemen"
 
-#: ../../index.rst:45
+#: ../../index.rst:49
 msgid "Network and intranet services for administration of DHCP and DNS"
 msgstr "Netzwerk- und Intranetdienste zur Verwaltung von DHCP und DNS"
 
-#: ../../index.rst:47
+#: ../../index.rst:51
 msgid "File and print services"
 msgstr "Datei- und Druckdienste"
 
-#: ../../index.rst:49
+#: ../../index.rst:53
 msgid "Computer administration and monitoring"
 msgstr "Rechnerverwaltung und Monitoring"
 
-#: ../../index.rst:51
+#: ../../index.rst:55
 msgid "Mail services"
 msgstr "Maildienste"
 
-#: ../../index.rst:53
+#: ../../index.rst:57
 msgid ""
 "These functions are provided by different software packages in Univention"
 " Corporate Server and are handled in detail in the course of this "
@@ -133,15 +132,15 @@ msgstr ""
 "enthaltenen Softwarepakete den folgenden drei Hauptbestandteilen "
 "zuordnen:"
 
-#: ../../index.rst:58
+#: ../../index.rst:62
 msgid "Base system"
 msgstr "Basissystem"
 
-#: ../../index.rst:60
+#: ../../index.rst:64
 msgid "UCS management system with |UCSUMC| modules"
 msgstr "|UCSUMS| mit |UCSUMC| Modulen"
 
-#: ../../index.rst:62
+#: ../../index.rst:66
 msgid ""
 "Univention App Center, allowing the installation of further components "
 "and applications of other software vendors"
@@ -149,7 +148,7 @@ msgstr ""
 "Das App Center, über das sich zahlreiche weitere Komponenten und "
 "Anwendungen anderer Hersteller installieren lassen"
 
-#: ../../index.rst:65
+#: ../../index.rst:69
 msgid ""
 "The *base system* encompasses the operating system of the UCS Linux "
 "distribution maintained by Univention and based on Debian GNU/Linux. It "
@@ -163,7 +162,7 @@ msgstr ""
 "sowie zusätzliche Werkzeuge zur Installation, zur Aktualisierung und zur "
 "Konfiguration von Clients und Servern."
 
-#: ../../index.rst:70
+#: ../../index.rst:74
 msgid ""
 "The |UCSUMS| realizes a single point of administration where the accounts"
 " of all domain members (users, groups, and hosts) and services such as "
@@ -188,11 +187,11 @@ msgstr ""
 "Datenübertragung zwischen Systemen). Es lässt sich sowohl webbasiert "
 "(|UCSUMC| Module) als auch an der Kommandozeile und in eigenen Skripten "
 "verwenden. Das |UCSUMS| ist über APIs (Programmierschnittstellen) "
-"erweiterbar und besitzt eine flexible Client-Server-"
-"Architektur, durch die Änderungen auf die davon betroffenen Systeme "
-"übertragen und dort aktiviert werden. "
+"erweiterbar und besitzt eine flexible Client-Server-Architektur, durch "
+"die Änderungen auf die davon betroffenen Systeme übertragen und dort "
+"aktiviert werden. "
 
-#: ../../index.rst:84
+#: ../../index.rst:88
 msgid ""
 "Additional components from Univention and other manufacturers can be "
 "installed using the App Center. They expand the system with numerous "
@@ -206,11 +205,11 @@ msgstr ""
 "Services für Microsoft Windows, so dass sie ebenfalls von einem UCS-"
 "System ausgeführt und über das |UCSUMS| verwaltet werden können."
 
-#: ../../index.rst:93
+#: ../../index.rst:97
 msgid "Overview of UCS"
 msgstr "Überblick über UCS"
 
-#: ../../index.rst:95
+#: ../../index.rst:99
 msgid ""
 "Linux is an operating system which always had a focus on stability, "
 "security and compatibility with other operating systems. Therefore Linux "
@@ -222,7 +221,7 @@ msgstr ""
 " gelegt wurde. Dadurch ist es prädestiniert für den Einsatz als stabiles,"
 " sicheres und jederzeit verfügbares Serverbetriebssystem."
 
-#: ../../index.rst:100
+#: ../../index.rst:104
 msgid ""
 "Built on that base, UCS is a server operating system which is optimized "
 "for the simple and secure operation and management of applications and "
@@ -237,7 +236,7 @@ msgstr ""
 "Anwendungen die mit dem |UCSUMS| realisierte enge Integration mit der "
 "Benutzer- und Rechteverwaltung."
 
-#: ../../index.rst:106
+#: ../../index.rst:110
 msgid ""
 "UCS can be employed as the basis for the IT infrastructure in companies "
 "and authorities and provide the central control for it. This makes a "
@@ -255,11 +254,11 @@ msgstr ""
 "professionellen Einsatz vorkonfiguriert. Alternativ lässt es sich auch "
 "als Bestandteil vorhandener Microsoft-Domänen betreiben."
 
-#: ../../index.rst:117
+#: ../../index.rst:121
 msgid "Commissioning"
 msgstr "Inbetriebnahme"
 
-#: ../../index.rst:119
+#: ../../index.rst:123
 msgid ""
 "The use of UCS begins either with a classic operating system installation"
 " on a physical server or as a virtual machine. Further information can be"
@@ -270,11 +269,11 @@ msgstr ""
 "virtuelle Instanz. Weiterführende Informationen finden sich in :ref"
 ":`installation-chapter`."
 
-#: ../../index.rst:126
+#: ../../index.rst:130
 msgid "Domain concept"
 msgstr "Domänenkonzept"
 
-#: ../../index.rst:128
+#: ../../index.rst:132
 msgid ""
 "In an IT infrastructure managed with UCS, all servers, clients and users "
 "are contained in a common security and trust context, referred to as the "
@@ -288,11 +287,11 @@ msgstr ""
 "bei seiner Installation eine so genannte Systemrolle zugewiesen. Mögliche"
 " Systemrollen sind Directory Node, |UCSMANAGEDNODE| und Client."
 
-#: ../../index.rst:139
+#: ../../index.rst:143
 msgid "UCS domain concept"
 msgstr "UCS Domänenkonzept"
 
-#: ../../index.rst:141
+#: ../../index.rst:145
 msgid ""
 "Depending on the system role within the domain, such services as "
 "Kerberos, OpenLDAP, Samba, modules for domain replication or a Root CA "
@@ -312,7 +311,7 @@ msgstr ""
 " Aufbau und umfangreiche Konfigurationsschnittstellen lassen sich dennoch"
 " auf individuelle Bedürfnisse zugeschnittene Lösungen umsetzen."
 
-#: ../../index.rst:150
+#: ../../index.rst:154
 msgid ""
 "The integration of Samba, which provides the domain service for clients "
 "and servers operated with Microsoft Windows, makes Univention Corporate "
@@ -329,7 +328,7 @@ msgstr ""
 "Gruppenrichtlinien für Microsoft Windows-Systeme auf die gewohnte Art und"
 " Weise verwaltet werden."
 
-#: ../../index.rst:157
+#: ../../index.rst:161
 msgid ""
 "UCS can also be operated as part of an existing Microsoft Active "
 "Directory domain. This way, users and groups of the Active Directory "
@@ -340,7 +339,7 @@ msgstr ""
 "Directory Domäne können dadurch auf Applikationen des Univention App "
 "Centers zugreifen."
 
-#: ../../index.rst:161
+#: ../../index.rst:165
 msgid ""
 "Ubuntu or macOS clients can be integrated in a UCS environment, as well "
 "(see :ref:`computers-ubuntu`)."
@@ -348,11 +347,11 @@ msgstr ""
 "Ubuntu- oder macOS-Clients können ebenfalls in eine UCS-Umgebung "
 "integriert werden (siehe :ref:`computers-ubuntu`)."
 
-#: ../../index.rst:167
+#: ../../index.rst:171
 msgid "Expandability with the Univention App Center"
 msgstr "Erweiterbarkeit durch das Univention App Center"
 
-#: ../../index.rst:169
+#: ../../index.rst:173
 msgid ""
 "The Univention App Center offers additional UCS components and extensions"
 " and a broad selection of business IT software, e.g., groupware and "
@@ -374,11 +373,11 @@ msgstr ""
 "Verwaltung, z.B. von Nutzerdaten für unterschiedliche Dienste an "
 "unterschiedlichen Orten, entfällt."
 
-#: ../../index.rst:181
+#: ../../index.rst:185
 msgid "LDAP directory service"
 msgstr "LDAP-Verzeichnisdienst"
 
-#: ../../index.rst:183
+#: ../../index.rst:187
 msgid ""
 "With the |UCSUMS|, all the components of the UCS domain can be centrally "
 "administrated across computer, operating system and site boundaries. It "
@@ -402,7 +401,7 @@ msgstr ""
 "Eingabe derselben Daten, sondern verringert auch die Wahrscheinlichkeit "
 "von Fehlern und Inkonsistenzen."
 
-#: ../../index.rst:194
+#: ../../index.rst:198
 msgid ""
 "An LDAP directory has a tree-like structure, the root of which forms the "
 "so-called basis of the UCS domain. The UCS domain forms the common "
@@ -421,7 +420,7 @@ msgstr ""
 "aufgenommen werden, so dass sich Benutzer dort mit ihrem Domänenpasswort "
 "anmelden können."
 
-#: ../../index.rst:202
+#: ../../index.rst:206
 msgid ""
 "UCS utilizes OpenLDAP as a directory service server. The directory is "
 "provided by the |UCSPRIMARYDN| and replicated on all UCS Directory Nodes "
@@ -446,19 +445,19 @@ msgstr ""
 "sollen. Zur sicheren Kommunikation der Systeme innerhalb der Domäne ist "
 "in UCS eine Root-CA (Zertifizierungsstelle) integriert."
 
-#: ../../index.rst:213
+#: ../../index.rst:217
 msgid "Further information can be found in :ref:`domain-ldap`."
 msgstr "Weiterführende Informationen finden sich in :ref:`domain-ldap`."
 
-#: ../../index.rst:218
+#: ../../index.rst:222
 msgid "Domain administration"
 msgstr "Domänenadministration"
 
-#: ../../index.rst:225
+#: ../../index.rst:229
 msgid "|UCSUMC| modules"
 msgstr "|UCSUMC| Module"
 
-#: ../../index.rst:227
+#: ../../index.rst:231
 msgid ""
 "Access to the LDAP directory is performed via a web-based user interface "
 "through |UCSUMC| (UMC) modules. In addition to this, |UCSUDM| allows the "
@@ -472,7 +471,7 @@ msgstr ""
 "über eine Kommandozeilen-Schnittstelle. Dies eignet sich besonders für "
 "die Integration in Skripte oder automatisierte administrative Schritte."
 
-#: ../../index.rst:233
+#: ../../index.rst:237
 msgid ""
 "|UCSUMC| modules allows to display, edit, delete, and search the data in "
 "the LDAP directory via various filter criteria. The web interface offers "
@@ -491,15 +490,15 @@ msgstr ""
 "Verzeichnis-Browser können weitergehende Einstellungen vorgenommen sowie "
 "kundenspezifische Objektklassen und Attribute hinzugefügt werden."
 
-#: ../../index.rst:242
+#: ../../index.rst:246
 msgid "Further information can be found in :ref:`central-general`."
 msgstr "Weiterführende Informationen finden sich in :ref:`central-general`."
 
-#: ../../index.rst:247
+#: ../../index.rst:251
 msgid "Computer administration"
 msgstr "Rechneradministration"
 
-#: ../../index.rst:249
+#: ../../index.rst:253
 msgid ""
 "|UCSUMC| modules allows not only the access to the LDAP directory, but "
 "also the web-based configuration and administration of individual "
@@ -518,11 +517,11 @@ msgstr ""
 "beliebigen Ort aus über eine komfortable, graphische Web-Oberfläche "
 "möglich."
 
-#: ../../index.rst:260
+#: ../../index.rst:264
 msgid "Policy concept"
 msgstr "Richtlinienkonzept"
 
-#: ../../index.rst:262
+#: ../../index.rst:266
 msgid ""
 "The tree-like structure of LDAP directories is similar to that of a file "
 "system It ensures that objects (such as users, computers, etc.) are in "
@@ -530,12 +529,12 @@ msgid ""
 "container is also called the LDAP base object."
 msgstr ""
 "Die baumartige Struktur von LDAP-Verzeichnissen ist ähnlich der eines "
-"Dateisystems. Sie stellt sicher, dass Objekte (wie z.B. Benutzer, Rechner) "
-"sich in einem Container befinden, der wieder in anderen Containern"
-" enthalten sein kann. Der Wurzelcontainer wird auch als LDAP-Basis-Objekt"
-" bezeichnet."
+"Dateisystems. Sie stellt sicher, dass Objekte (wie z.B. Benutzer, "
+"Rechner) sich in einem Container befinden, der wieder in anderen "
+"Containern enthalten sein kann. Der Wurzelcontainer wird auch als LDAP-"
+"Basis-Objekt bezeichnet."
 
-#: ../../index.rst:267
+#: ../../index.rst:271
 msgid ""
 "Policies describe certain administrative settings which are applied to "
 "more than one object. Linked to containers, they facilitate the "
@@ -548,7 +547,7 @@ msgstr ""
 " alle in dem betreffenden Container befindlichen Objekte, sowie die in "
 "Unterordnern befindlichen Objekte gelten."
 
-#: ../../index.rst:272
+#: ../../index.rst:276
 msgid ""
 "For example, users can be organized in different containers or "
 "organizational units (which are a form of containers) depending on which "
@@ -565,15 +564,15 @@ msgstr ""
 "werden und gelten für alle unterhalb der betreffenden "
 "Organisationseinheit befindlichen Benutzer."
 
-#: ../../index.rst:279
+#: ../../index.rst:283
 msgid "Further information can be found in :ref:`central-policies`."
 msgstr "Weiterführende Informationen finden sich in :ref:`central-policies`."
 
-#: ../../index.rst:284
+#: ../../index.rst:288
 msgid "Listener/notifier replication"
 msgstr "Listener/Notifier-Replikation"
 
-#: ../../index.rst:286
+#: ../../index.rst:290
 msgid ""
 "The listener/notifier mechanism is an important technical component of "
 "the |UCSUMS|. With this, the creation, editing or deleting of entries in "
@@ -596,7 +595,7 @@ msgstr ""
 "werden und das Verzeichnis im Dateisystem des gewählten Servers erstellt "
 "wird, falls es noch nicht existiert."
 
-#: ../../index.rst:296
+#: ../../index.rst:300
 msgid ""
 "The listener/notifier mechanism can be expanded with modules for further "
 "- also customer-specific - procedures. Consequently, it is used by "
@@ -608,17 +607,17 @@ msgstr ""
 "von zahlreichen Technologiepartnern für die Integration ihrer Produkte in"
 " den LDAP-Verzeichnisdienst und das |UCSUMS| verwendet."
 
-#: ../../index.rst:301
+#: ../../index.rst:305
 msgid "Further information can be found in :ref:`domain-listener-notifier`."
 msgstr ""
 "Weiterführende Informationen finden sich in :ref:`domain-listener-"
 "notifier`."
 
-#: ../../index.rst:306
+#: ../../index.rst:310
 msgid "Further documentation"
 msgstr "Weitere Dokumentationen"
 
-#: ../../index.rst:308
+#: ../../index.rst:312
 msgid ""
 "This manual addresses just a small selection of the possibilities in UCS."
 " Among other things, UCS and solutions based on UCS provide:"
@@ -626,7 +625,7 @@ msgstr ""
 "Dieses Handbuch behandelt nur einen kleinen Ausschnitt der Möglichkeiten "
 "von UCS. UCS und auf UCS aufbauende Lösungen bieten unter anderem:"
 
-#: ../../index.rst:311
+#: ../../index.rst:315
 msgid ""
 "Comprehensive support for complex server environments and replication "
 "scenarios"
@@ -634,81 +633,80 @@ msgstr ""
 "Umfangreiche Unterstützung für komplexe Serverumgebungen und "
 "Replikationsszenarien"
 
-#: ../../index.rst:314
+#: ../../index.rst:318
 msgid "Advanced capabilities for Windows environments"
 msgstr "Weitergehende Einsatzmöglichkeiten für Microsoft Windows-Umgebungen"
 
-#: ../../index.rst:316
+#: ../../index.rst:320
 msgid "Central network management with DNS and DHCP"
 msgstr "Zentrales Netzmanagement mit DNS und DHCP"
 
-#: ../../index.rst:318
+#: ../../index.rst:322
 msgid "Monitoring systems and networks"
 msgstr "System- und Netzüberwachung"
 
-#: ../../index.rst:320
+#: ../../index.rst:324
 msgid "Print server functionalities"
 msgstr "Druckserver-Funktionalität"
 
-#: ../../index.rst:322
+#: ../../index.rst:326
 msgid "Proxy server"
 msgstr "Proxy-Server"
 
-#: ../../index.rst:324
+#: ../../index.rst:328
 msgid ""
 "Further documentation related to UCS and further issues is published "
-"under :cite:t:`ucs-docs` and in the `Univention Wiki <univention-"
-"wiki_>`_."
+"under :cite:t:`ucs-docs`."
 msgstr ""
-"Unter :cite:t:`ucs-docs` und im `Univention Wiki <univention-wiki_>`_ "
+"Unter :cite:t:`ucs-docs` "
 "sind weitere Dokumentationen zu UCS veröffentlicht, die weiterführende "
 "Themen behandeln."
 
-#: ../../index.rst:330
+#: ../../index.rst:334
 msgid "Symbols and conventions used in this manual"
 msgstr "Verwendete Symbole und Konventionen"
 
-#: ../../index.rst:332
+#: ../../index.rst:336
 msgid "The manual uses the following symbols:"
 msgstr "Im Handbuch werden folgende Symbole verwendet:"
 
-#: ../../index.rst:336
+#: ../../index.rst:340
 msgid "Warnings are highlighted."
 msgstr "Warnungen werden hervorgehoben."
 
-#: ../../index.rst:340
+#: ../../index.rst:344
 msgid "Notes are also highlighted."
 msgstr "Hinweise werden ebenfalls hervorgehoben."
 
-#: ../../index.rst:342
+#: ../../index.rst:346
 msgid "This table describes the functionality of a UMC module:"
 msgstr "Diese Felder beschreiben den Funktionsumfang eines UMC-Moduls:"
 
-#: ../../index.rst:344
+#: ../../index.rst:348
 msgid "Tab DHCP service"
 msgstr "Reiter DHCP-Dienst"
 
-#: ../../index.rst:347
+#: ../../index.rst:351
 msgid "Attribute"
 msgstr "Attribut"
 
-#: ../../index.rst:347 ../../index.rst:351
+#: ../../index.rst:351 ../../index.rst:355
 msgid "Description"
 msgstr "Beschreibung"
 
-#: ../../index.rst:349
+#: ../../index.rst:353
 msgid "Name"
 msgstr "Name"
 
-#: ../../index.rst:349
+#: ../../index.rst:353
 msgid "The unique name of a DHCP service."
 msgstr "Ein eindeutiger Name für den DHCP-Dienst."
 
-#: ../../index.rst:351
+#: ../../index.rst:355
 msgid "An arbitrary description of the service."
 msgstr "Eine beliebige Beschreibung des Dienstes."
 
-#: ../../index.rst:354
+#: ../../index.rst:358
 msgid ""
 "Menu entries, button labels, and similar details with actions are printed"
 " in :guilabel:`this font face`."
@@ -716,11 +714,11 @@ msgstr ""
 "Menüeinträge, Schaltflächenbeschriftungen und ähnliches sind "
 ":guilabel:`in dieser Schriftform` gesetzt."
 
-#: ../../index.rst:357
+#: ../../index.rst:361
 msgid "*Names* are highlighted."
 msgstr "Eigennamen sind *hervorgehoben*."
 
-#: ../../index.rst:359
+#: ../../index.rst:363
 msgid ""
 "``Computer names, LDAP DNs``, :command:`program names`, :file:`file "
 "names, file paths`, `internet addresses <https://example.com>`_ and "
@@ -730,11 +728,11 @@ msgstr ""
 ":file:`Dateinamen und -pfade`, ``Internetadressen`` und ``Optionen`` "
 "werden ebenfalls optisch hervorgehoben."
 
-#: ../../index.rst:364
+#: ../../index.rst:368
 msgid "``Commands and other keyboard input`` is accented optically."
 msgstr "``Befehle und Tastatureingaben`` werden optisch hervorgehoben."
 
-#: ../../index.rst:368
+#: ../../index.rst:370
 msgid ""
 "In addition, excerpts from configuration files, screen output, etc. are\n"
 "printed as code block."
@@ -742,7 +740,7 @@ msgstr ""
 "Abschnitte aus Konfigurationsdateien, Bildschirmausgaben usw. werden als\n"
 "Codeblock formatiert."
 
-#: ../../index.rst:371
+#: ../../index.rst:375
 msgid ""
 "A backslash (``\\``) at the end of a line signifies that the subsequent "
 "line feed is not to be understood as an *end of line*. This circumstance "
@@ -758,7 +756,7 @@ msgstr ""
 "Backslash in einem Stück oder mit dem Backslash und einem anschließenden "
 ":kbd:`Enter` eingegeben werden müssen."
 
-#: ../../index.rst:378
+#: ../../index.rst:382
 msgid ""
 "The path to a function is represented in a similar way to a file path. "
 ":menuselection:`Users --> Add` means for example, you have to click "

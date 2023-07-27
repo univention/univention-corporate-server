@@ -646,7 +646,7 @@ derive an individual instance which can be configured via |UCSUMC| modules
 (domain name, software selection, etc.).
 
 The process for setting up a UCS instance based on Amazon EC2 is documented in
-:cite:t:`ec2-quickstart`.
+:uv:help:`Amazon EC2 Quickstart <21833>`.
 
 .. _installation-vmware:
 
@@ -665,11 +665,3 @@ The open source version of the VMware Tools (Open VM Tools) is delivered with
 UCS. The tools can be installed using the ``open-vm-tools`` package (they are
 not required but do, for example, allow synchronization of the time on the
 virtualization server with the guest system).
-
-.. _installation-xenserver:
-
-Installation in Citrix XenServer
-================================
-
-The process for setting up a UCS instance in Citrix XenServer is documented in
-:cite:t:`xenserver-installation`.

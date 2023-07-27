@@ -29,7 +29,6 @@
 .. _ucs-documentation-overview: https://docs.software-univention.de/
 .. _univention-kb-admin-diary-separate-frontend-backend: https://help.univention.com/t/admin-diary-how-to-seperate-frontend-and-backend/11331
 .. _univention-kb: https://help.univention.com/c/knowledge-base/supported/48
-.. _univention-wiki: https://wiki.univention.de/index.php/Main_Page
 .. _w-classless-inter-domain-routing: https://en.wikipedia.org/wiki/Classless_Inter-Domain_Routing
 .. _w-radius: https://en.wikipedia.org/wiki/RADIUS
 .. _w-vesa-bios-extensions: https://en.wikipedia.org/wiki/VESA_BIOS_Extensions
