@@ -1,3 +1,9 @@
+univention-system-setup (13.0.9-3) unstable; urgency=medium
+
+  * Bug #56357: Remove link to deprecated Univention Wiki
+
+ -- Nico Gulden <gulden@univention.de>  Thu, 27 Jul 2023 18:24:12 +0200
+
 univention-system-setup (13.0.9-2) unstable; urgency=medium
 
   * Bug #56201: replace python-notifier and adjust to new UMC module API
