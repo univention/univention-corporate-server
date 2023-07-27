@@ -48,7 +48,7 @@ define([
 		}, {
 			type: Text,
 			name: 'links',
-			content: _('<ul><li><a href="https://docs.software-univention.de/" target="_blank">Online documentation</a></li><li><a href="https://wiki.univention.de/index.php?title=Hauptseite" target="_blank">Univention Wiki</a></li><li><a href="https://www.univention.com/products/support/community-support/" target="_blank">Community and support</a></li></ul>')
+			content: _('<ul><li><a href="https://docs.software-univention.de/" target="_blank">Online documentation</a></li><li><a href="https://www.univention.com/products/support/community-support/" target="_blank">Community and support</a></li></ul>')
 		}]
 	};
 });

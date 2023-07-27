@@ -1,3 +1,9 @@
+univention-management-console (12.0.31-11) unstable; urgency=medium
+
+  * Bug #56357: Remove link to deprecated Univention Wiki
+
+ -- Nico Gulden <gulden@univention.de>  Mon, 31 Jul 2023 10:37:38 +0200
+
 univention-management-console (12.0.31-10) unstable; urgency=medium
 
   * Bug #56201: provide functionality to replace python-notifier
