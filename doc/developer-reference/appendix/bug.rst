@@ -30,8 +30,6 @@ UCS is neither error free nor feature complete. Issues are tracked using
 
    * Search `Univention Help Knowledge Base <univention-kb_>`_
 
-   * Search `https://wiki.univention.de/ <univention-wiki_>`_
-
    * Search `Univention Help <univention-help_>`_ and ask for help. In addition to
      our support team many of our partners are also present there. Your
      questions might also help other users while you may profit from issues
