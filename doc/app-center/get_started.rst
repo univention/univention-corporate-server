@@ -123,15 +123,13 @@ App version
    the app is released, this attribute cannot be changed.
 
 UCS version
-   is the UCS version the app should start to be
-   available on. Simply start with the latest available UCS version.
-   It can also be started with the oldest maintained UCS version to
-   cover the broadest user base of UCS. See the `UCS maintenance
-   cycle <ucs-maintenance-cycle_>`_
-   for an overview of the maintained UCS version. In either case it
-   is recommended to specify the supported UCS versions explicitly
-   (see :ref:`Supported UCS
-   versions <create-app-with-docker-supported-ucs-version>`.
+   is the UCS version the app should start to be available on. Simply start with
+   the latest available UCS version. It can also be started with the oldest
+   maintained UCS version to cover the broadest user base of UCS. See the
+   :uv:help:`UCS maintenance cycle <21843>` for an overview of the maintained
+   UCS version. In either case it is recommended to specify the supported UCS
+   versions explicitly (see :ref:`Supported UCS versions
+   <create-app-with-docker-supported-ucs-version>`).
 
 Provider / Maintainer
    refers to the organization that the app
