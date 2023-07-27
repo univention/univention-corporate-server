@@ -274,9 +274,6 @@ Further information
   documentation. The various documents are linked at
   https://docs.software-univention.de/.
 
-* The `Univention Wiki <https://wiki.univention.de/index.php/Hauptseite>`_ contains several
-  HOWTOs and hands-on tips.
-
 * Answers to frequently asked questions can be found in the `support and
   knowledge database (SDB)
   <https://help.univention.com/c/knowledge-base/supported/48>`_.
