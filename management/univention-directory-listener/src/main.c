@@ -217,6 +217,7 @@ static void usage(void) {
 	fprintf(stderr, "   -F   run in foreground (intended for process supervision)\n");
 	fprintf(stderr, "   -H   LDAP server URI\n");
 	fprintf(stderr, "   -h   LDAP server address\n");
+	fprintf(stderr, "   -n   Notifier server address (optional; defaults to 'LDAP server address')\n");
 	fprintf(stderr, "   -p   LDAP server port\n");
 	fprintf(stderr, "   -b   LDAP base dn\n");
 	fprintf(stderr, "   -D   LDAP bind dn\n");
@@ -313,7 +314,7 @@ static void prepare_cache(const char *cache_dir) {
 /* Open LDAP and Notifier connection.
  * @return 0 on success, 1 on error.
  */
-static int do_connection(univention_ldap_parameters_t *lp) {
+static int do_connection(univention_ldap_parameters_t *lp, char *notifier_host) {
 	LDAPMessage *res;
 	int rc;
 	char **_attrs = NULL;
@@ -329,7 +330,10 @@ static int do_connection(univention_ldap_parameters_t *lp) {
 		univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_WARN, "can not connect to LDAP server %s:%d", lp->uri ? lp->uri : lp->host ? lp->host : "NULL", lp->port);
 		goto fail;
 	}
-	if (notifier_client_new(NULL, lp->host, 1) != 0)
+
+	notifier_host = notifier_host ? notifier_host : lp->host;
+
+	if (notifier_client_new(NULL, notifier_host, 1) != 0)
 		goto fail;
 
 	/* check if we are connected to an OpenLDAP */
@@ -357,6 +361,7 @@ fail:
 int main(int argc, char *argv[]) {
 	univention_ldap_parameters_t *lp;
 	univention_ldap_parameters_t *lp_local;
+	char *notifier_host = NULL;
 	char *server_role;
 	int debugging = 0;
 	bool from_scratch = false;
@@ -407,7 +412,7 @@ int main(int argc, char *argv[]) {
 	for (;;) {
 		int c;
 
-		c = getopt(argc, argv, "d:FH:h:p:b:D:w:y:xZY:U:R:Km:Bc:giol:P");
+		c = getopt(argc, argv, "d:FH:h:n:p:b:D:w:y:xZY:U:R:Km:Bc:giol:P");
 		if (c < 0)
 			break;
 		switch (c) {
@@ -422,6 +427,9 @@ int main(int argc, char *argv[]) {
 			break;
 		case 'h':
 			lp->host = strdup(optarg);
+			break;
+		case 'n':
+			notifier_host = strdup(optarg);
 			break;
 		case 'p':
 			lp->port = atoi(optarg);
@@ -527,7 +535,11 @@ int main(int argc, char *argv[]) {
 		select_server(lp);
 	}
 
-	while (do_connection(lp) != 0) {
+	if (NULL == notifier_host) {
+		notifier_host = strdup(lp->host);
+	}
+
+	while (do_connection(lp, notifier_host) != 0) {
 			if (initialize_only) {
 				univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "can not connect any server, exit");
 				exit(1);
@@ -624,6 +636,7 @@ int main(int argc, char *argv[]) {
 
 	univention_ldap_close(lp);
 	univention_ldap_close(lp_local);
+	free(notifier_host);
 
 	exit_handler(0);
 }
