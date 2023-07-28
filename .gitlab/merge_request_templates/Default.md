@@ -56,12 +56,11 @@
 ## :zap: QA steps
 
 * (Describe the steps to test the bug)
-* See [QA Guide in Wiki](https://hutten.knut.univention.de/mediawiki/index.php/QA_-_Quality_Assurance#QA_Guide)
+* See [QA Guide in Wiki](https://univention.gitpages.knut.univention.de/internal/dev-onboarding/dev-workflow/review.html)
 
 ## :question: Checklist
 
-* See [Checklist for fixing Bugs](https://hutten.knut.univention.de/mediawiki/index.php/Development_enivironment#Checklist_for_fixing_Bugs)
-* See [QA Guide in Wiki](https://hutten.knut.univention.de/mediawiki/index.php/QA_-_Quality_Assurance#QA_Guide)
+* See [Checklist for fixing Bugs](https://univention.gitpages.knut.univention.de/internal/dev-onboarding/dev-workflow/review.html)
 * Check YAML for correctness, spelling and readability.
 * [ ] The documentation is updated. Check if there is a README.md in the package source, check if one should be created or updated.
 * [ ] Check Jenkins job (`scenario`) for the bug.
