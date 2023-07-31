@@ -176,7 +176,12 @@ class Instance(Base, ProgressMixin):
             raise UserWithoutDN(request.username)
 
         MODULE.info('Initializing module as user %r' % (request.user_dn,))
-        set_bind_function(request.bind_user_connection)
+
+        def bind_user_connection(lo):
+            request.bind_user_connection(lo)
+            self.require_license(lo)
+
+        set_bind_function(bind_user_connection)
 
         # read user settings and initial UDR
         self.reports_cfg = udr.Config()
@@ -193,10 +198,6 @@ class Instance(Base, ProgressMixin):
             raise LDAP_AuthenticationFailed()
         if isinstance(exc, (udm_errors.base, LDAPError)):
             MODULE.error(''.join(traceback.format_exception(etype, exc, etraceback)))
-
-    def bind_user_connection(self, lo):
-        super(Instance, self).bind_user_connection(lo)
-        self.require_license(lo)
 
     def require_license(self, lo):
         if id(lo) in self.__license_checks:

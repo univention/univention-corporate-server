@@ -1,3 +1,9 @@
+univention-management-console-module-udm (10.0.8-5) unstable; urgency=medium
+
+  * Bug #56201: fix licence check after LDAP bind
+
+ -- Florian Best <best@univention.de>  Mon, 31 Jul 2023 18:43:08 +0200
+
 univention-management-console-module-udm (10.0.8-4) unstable; urgency=medium
 
   * Bug #56201: replace python-notifier and adjust to new UMC module API
