@@ -1,3 +1,9 @@
+univention-directory-manager-modules (15.0.24-15) unstable; urgency=medium
+
+  * Bug #24081: Parse printer URI correctly when not giving as two arguments
+
+ -- Marius Meschter <marius.meschter@univention.de>  Tue, 31 Jul 2023 14:19:23 +0200
+
 univention-directory-manager-modules (15.0.24-14) unstable; urgency=medium
 
   * Bug #56348: Improve simpleLdap move performance by adding/deleting

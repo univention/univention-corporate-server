@@ -3,9 +3,12 @@ release: "5.0"
 version: [4]
 scope: ucs_5.0-0-errata5.0-4
 src: univention-directory-manager-modules
-fix: 15.0.24-14
+fix: 15.0.24-15
 desc: |
+ This update addresses the following issues:
  * The performance of move operations for users and computers has been
    improved, which is especially significant when the moved object is
    a member of a large group.
-bug: [56348]
+ * The URI when creating a printer with the UDM CLI now doesn't require
+   a space between protocol and path anymore.
+bug: [56348, 24081]

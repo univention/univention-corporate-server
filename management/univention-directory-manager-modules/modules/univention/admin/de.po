@@ -1133,6 +1133,11 @@ msgstr "Protokoll"
 msgid "Protocol and destination have to be specified."
 msgstr "Protokoll und Ziel müssen angegeben werden."
 
+#: modules/univention/admin/syntax.py:6408
+#: modules/univention/admin/syntax.py:6412
+msgid "Protocol and destination parts can not be parsed."
+msgstr "Protokoll und Ziel müssen angegeben werden."
+
 #: modules/univention/admin/certificate.py:61
 msgid "Public key infrastructure - certificate"
 msgstr "Public key infrastruktur - Zertifikat"

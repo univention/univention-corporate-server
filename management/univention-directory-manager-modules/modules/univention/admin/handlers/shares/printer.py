@@ -232,8 +232,26 @@ class object(univention.admin.handlers.simpleLdap):
 
     def _ldap_pre_ready(self):
         super(object, self)._ldap_pre_ready()
+
+        if self['uri']:
+            self._sanitize_uri()
+
+    def _sanitize_uri(self):
+        protocol, host = self['uri']
+
+        for schema in _AVAILABLE_PRINTER_SCHEMAS:
+            if protocol.startswith(schema):
+                if schema.endswith(":/") and protocol.endswith("://"):
+                    protocol = protocol[:-1]
+                    host = '/' + host
+
+                if protocol.endswith(":/") and host == "/" and schema.endswith("://"):
+                    raise univention.admin.uexceptions.valueInvalidSyntax(_('Protocol and destination parts can not be parsed.'))
+
+        self['uri'] = [protocol, host]
+
         # cut off '/' at the beginning of the destination if it exists and protocol is file:/
-        if self['uri'] and self['uri'][0] == 'file:/' and self['uri'][1][0] == '/':
+        if protocol == 'file:/' and host.startswith('/'):
             self['uri'][1] = re.sub(r'^/+', '', self['uri'][1])
 
     def _ldap_pre_remove(self):  # check for last member in printerclass

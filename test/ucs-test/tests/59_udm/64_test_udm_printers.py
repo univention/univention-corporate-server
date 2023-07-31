@@ -21,6 +21,7 @@ import time
 
 import ldap.dn
 import pytest
+from ldap.filter import filter_format
 
 import univention.testing.strings as uts
 import univention.testing.ucr
@@ -28,6 +29,7 @@ from univention.testing import utils
 
 
 printserver_installed = utils.package_installed('univention-printserver')
+printserver_pdf_installed = utils.package_installed('univention-printserver-pdf')
 samba_common_bin_installed = utils.package_installed('samba-common-bin')
 
 PRINTER_PROTOCOLS = ['usb://', 'ipp://', 'socket://', 'parallel://', 'http://']
@@ -447,6 +449,41 @@ def test_create_printer_for_every_printer_URI(ucr, udm):
             print('Wait for 30 seconds and try again')
             time.sleep(30)
             assert printer_enabled(printer_name), 'Printer (%s) is created but not enabled' % printer_name
+
+
+@pytest.mark.tags('udm')
+@pytest.mark.exposure('dangerous')
+@pytest.mark.parametrize(
+    "uri,uri_expected,uri_expected_ldap",
+    [
+        ('http://localhost', 'http:// localhost', 'http://localhost'),
+        ('usb:/ ', 'usb:/', 'usb:/'),
+        ('usb://foo', 'usb:/ /foo', 'usb://foo'),
+        ('file://foo', 'file:/ foo', 'file:/foo'),
+        ('file:///foo', 'file:/ foo', 'file:/foo'),
+        ('usb://', 'usb:/ /', 'usb://'),
+        ('cups-pdf:/', 'cups-pdf:/' if printserver_pdf_installed else '', 'cups-pdf:/'),
+        pytest.param('http://', '', '', marks=pytest.mark.xfail),
+    ],
+)
+def test_create_printer_without_whitespace_in_uri(udm, ucr, uri, uri_expected, uri_expected_ldap):
+    name = uts.random_name()
+
+    created_printer = udm.create_object(
+        'shares/printer',
+        position='cn=printers,%s' % ucr['ldap/base'],
+        name=name,
+        model='foomatic-rip/Alps-MD-5000-md5k.ppd',
+        spoolHost='%(hostname)s.%(domainname)s' % ucr,
+        uri=uri,
+    )
+
+    printer = udm.list_objects('shares/printer', filter=filter_format('name=%s', [name]))
+    assert printer[0][1]['uri'][0] == uri_expected
+
+    utils.verify_ldap_object(created_printer, {
+        'univentionPrinterURI': [uri_expected_ldap],
+    })
 
 
 @pytest.mark.skipif(not printserver_installed, reason='Missing software: univention-printserver')

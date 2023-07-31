@@ -6396,11 +6396,13 @@ class PrinterURI(complex):
     @classmethod
     def parse(self, texts):
         parsed = []
-
         if self.min_elements is not None:
             count = self.min_elements
         else:
-            count = len(self.subsyntaxes) if 'pdf' not in texts[0] else len(self.subsyntaxes) - 1
+            count = len(self.subsyntaxes)
+
+        if len(texts) == 1 and 'pdf' in texts[0]:
+            texts = [texts[0], '']
 
         if len(texts) < count:
             raise univention.admin.uexceptions.valueInvalidSyntax(_('Protocol and destination have to be specified.'))
@@ -6417,6 +6419,21 @@ class PrinterURI(complex):
             if p is not None:
                 parsed.append(p)
         return parsed
+
+    def parse_command_line(self, value):
+        """
+        >>> PrinterURI().parse_command_line("http://localhost")
+        ['http://', 'localhost']
+        >>> PrinterURI().parse_command_line("file:/foo")
+        ['file:/', 'foo']
+        """
+        value = complex.parse_command_line(self, value)
+        if len(value) == 1:
+            matches = re.match("(.+?://?)(.+)", value[0])
+            if matches:
+                return list(matches.groups())
+
+        return value
 
 
 class policyName(string):
