@@ -1,0 +1,15 @@
+product: ucs
+release: "4.4"
+version: [9]
+scope: ucs_4.4-0-errata4.4-9
+src: gst-plugins-base1.0
+fix: 1.10.4-1+deb9u3
+desc: |
+ This update addresses the following issue:
+ 1.10.4-1+deb9u3 (Sat, 22 Jul 2023 18:03:02 +0200)
+ * Non-maintainer upload by the ELTS Team.
+ * CVE-2023-37328 SA-2023-0002: fix for heap overwrite
+ * similar to SA-2023-001 fix for integer overflow during parsing of tags
+bug: [56373]
+cve:
+- CVE-2023-37328
