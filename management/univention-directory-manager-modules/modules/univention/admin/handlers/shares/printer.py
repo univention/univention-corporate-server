@@ -232,8 +232,7 @@ class object(univention.admin.handlers.simpleLdap):
 
     def _ldap_pre_ready(self):
         super(object, self)._ldap_pre_ready()
-
-        if self['uri']:
+        if (not self.exists() or self.hasChanged('uri')) and self['uri']:
             self._sanitize_uri()
 
     def _sanitize_uri(self):

@@ -1,3 +1,9 @@
+univention-directory-manager-modules (15.0.24-16) unstable; urgency=medium
+
+  * Bug #24081: Only sanitize the printer URI if it has changed
+
+ -- Marius Meschter <marius.meschter@univention.de>  Tue, 01 Aug 2023 17:26:33 +0200
+
 univention-directory-manager-modules (15.0.24-15) unstable; urgency=medium
 
   * Bug #24081: Parse printer URI correctly when not giving as two arguments
