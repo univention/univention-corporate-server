@@ -12,13 +12,13 @@ desc: |
  * Values for the "complex" syntax class can now contain double quotes.
  * It is possible again to detect, search and modify users/ldap objects which
    have univentionObjectFlag=functional.
-  * The displayed description of objects is now more accurate,
+ * The displayed description of objects is now more accurate,
    for example for OX IMAP folder objects did not include
    the domain name which made it difficult to differentiate
    folder names for different domains.
-  * The AttributeHook class was not idempotent and caused errors when multiple
-    `open()` calls have been done. This is for example the case in the
-    UCS@school importer.
+ * The AttributeHook class was not idempotent and caused errors when multiple
+   `open()` calls have been done. This is for example the case in the
+   UCS@school importer.
 bug: [55459, 27241, 55216, 50632, 56036]
 erratum: 739
 announced: 2023-07-12
