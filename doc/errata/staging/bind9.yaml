@@ -6,14 +6,11 @@ src: bind9
 fix: 1:9.10.3.dfsg.P4-12.3+deb9u14A~4.4.9.202307311249
 desc: |
  This update addresses the following issue:
- 1:9.10.3.dfsg.P4-12.3+deb9u14 (Tue, 25 Jul 2023 10:34:37 +0100)
- * Non-maintainer upload by the Debian ELTS Team.
  * CVE-2023-2828: It was discovered that the effectiveness of the
-   cache-cleaning algorithm used in named(5) can be severely diminished by
-   querying the resolver for specific RRsets in a certain order, effectively
-   allowing the configured max-cache-size limit to be significantly exceeded.
- * Add debian/.gitlab-ci.yml and try and get CI pipeline passing again by
-   ignoring (unactionable) 'source-is-missing' tag.
+   cache-cleaning algorithm used in `named(5)` can be severely diminished by
+   querying the resolver for specific `RRsets` in a certain order,
+   effectively allowing the configured max-cache-size limit to be
+   significantly exceeded.
 bug: [56375]
 cve:
 - CVE-2023-2828
