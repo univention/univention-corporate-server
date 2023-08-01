@@ -99,10 +99,10 @@ mk_config () {
 	mapfile -t sortedSan < <(
 		for san in "${subjectAltNameArray[@]}"
 		do
-  		printf ".%s %d %s\n" "${san//[!.]}" "${#san}" "${san}"
+		printf ".%s %d %s\n" "${san//[!.]}" "${#san}" "${san}"
 		done |
-  		LC_ALL=C sort -k1r -k2nr |
-  		cut -d' ' -f3
+		LC_ALL=C sort -k1r -k2nr |
+		cut -d' ' -f3
 		)
 
 	for san in "${sortedSan[@]}"
@@ -180,8 +180,8 @@ emailAddress		= optional
 [ req ]
 
 default_bits		= \$ENV::DEFAULT_BITS
-default_keyfile 	= privkey.pem
-default_md          = \$ENV::DEFAULT_MD
+default_keyfile		= privkey.pem
+default_md		= \$ENV::DEFAULT_MD
 distinguished_name	= req_distinguished_name
 attributes		= req_attributes
 x509_extensions		= v3_ca
