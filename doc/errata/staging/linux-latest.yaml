@@ -72,10 +72,8 @@ desc: |
    `drivers/media/pci/saa7134/saa7134-core.c`.
  * CVE-2023-35824: A use-after-free was found in `dm1105_remove` in
    `drivers/media/pci/dm1105/dm1105.c`.
-
- Debian update 105+deb10u20
 note: This is the 3rd of 3 parts.
-bug: [56376, 56387]
+bug: [56376]
 cve:
 - CVE-2023-1380
 - CVE-2023-2002
