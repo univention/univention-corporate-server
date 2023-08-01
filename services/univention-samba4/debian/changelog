@@ -1,3 +1,10 @@
+univention-samba4 (9.0.13-5) unstable; urgency=medium
+
+  * Bug #55937: The default timeout for initial replication
+    of the DNS host record of a joining system can now be adjusted
+
+ -- Arvid <requate@univention.de>  Tue, 08 Aug 2023 12:12:44 +0200
+
 univention-samba4 (9.0.13-4) unstable; urgency=medium
 
   * Bug #49207: The spn account creation now ignores the password length

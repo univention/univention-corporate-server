@@ -1,3 +1,10 @@
+univention-s4-connector (14.0.15-3) unstable; urgency=medium
+
+  * Bug #55937: The default timeout for initial replication
+    of the DNS host record of a joining system can now be adjusted
+
+ -- Arvid <requate@univention.de>  Tue, 01 Aug 2023 12:15:04 +0200
+
 univention-s4-connector (14.0.15-2) unstable; urgency=medium
 
   * Bug #55936: use local ldap in resync_object_from_s4.py

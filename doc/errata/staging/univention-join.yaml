@@ -2,15 +2,14 @@ product: ucs
 release: "5.0"
 version: [4]
 scope: ucs_5.0-0-errata5.0-4
-src: univention-samba4
-fix: 9.0.13-4
+src: univention-join
+fix:
 desc: |
  This update addresses the following issues:
- * The spn account creation now ignores the password length and history.
  * The default timeout for initial replication of the DNS host record of a
    joining system can now be adjusted by making use of the new UCR variable
    `join/samba/dns/replication/timeout` which has the old default value of
    600 seconds. This is only necessary in large environments where the
    initial replication from UDM/OpenLDAP to Samba/AD may be delayed due to
    a large number of objects.
-bug: [49207, 55937]
+bug: [55937]

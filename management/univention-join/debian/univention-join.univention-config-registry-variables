@@ -1,0 +1,7 @@
+[join/samba/dns/replication/timeout]
+Description[de]=Anzahl an Sekunden die beim Joinen eines neuen Systems auf die initiale Replikation des DNS Host Records gewartet wird.
+Description[en]=Number of seconds to wait for the initial replication of the DNS host record when joining a new system.
+Type=int
+Min=0
+Default=600
+Categories=management-join

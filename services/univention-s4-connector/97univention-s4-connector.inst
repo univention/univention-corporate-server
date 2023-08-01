@@ -321,9 +321,9 @@ if [ -z "$s4connector_dc" ] \
 	# Wait until the local S4 contains the DNS record
 	echo -n "Wait for bind9: "
 	count=0
-	while [ $count -le 600 ]; do
-		timeout=$(LC_ALL=C host -W 1 "$ldap_master" 2>&1| grep 'has \(IPv6 \)\?address ')
-		if [ -n "$timeout" ]; then
+	while [ $count -le "$join_samba_dns_replication_timeout" ]; do
+		message=$(LC_ALL=C host -W 1 "$ldap_master" 2>&1| grep 'has \(IPv6 \)\?address ')
+		if [ -n "$message" ]; then
 			echo " done"
 			break
 		else
@@ -339,7 +339,7 @@ if [ -z "$s4connector_dc" ] \
 
 	univention-config-registry set connector/s4/poll/sleep="$old_sleep" connector/s4/retryrejected="$old_retry"
 
-	if [ $count -gt 600 ]; then
+	if [ $count -gt "$join_samba_dns_replication_timeout" ]; then
 		echo " failed"
 		univention-config-registry set dns/backend=ldap
 		if [ -x /etc/init.d/bind9 ]; then
