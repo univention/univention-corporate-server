@@ -2,8 +2,8 @@ product: ucs
 release: "5.0"
 version: [3, 4]
 scope: ucs_5.0-0-errata5.0-4
-src: linux-signed-amd64
-fix: 4.19.289+1
+src: linux-latest
+fix: 105+deb10u20
 desc: |
  This update addresses the following issues:
  * CVE-2023-1380: A slab-out-of-bound read problem was found in
@@ -78,7 +78,7 @@ desc: |
  * CVE-2023-20593: An issue in “Zen 2” CPUs, under specific
    microarchitectural circumstances, may allow an attacker to potentially
    access sensitive information.
-note: This is the 2nd of 3 parts.
+note: This is the 3rd of 3 parts.
 bug: [56376]
 cve:
 - CVE-2023-1380

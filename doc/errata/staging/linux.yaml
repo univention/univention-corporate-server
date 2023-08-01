@@ -78,6 +78,7 @@ desc: |
  * CVE-2023-20593: An issue in “Zen 2” CPUs, under specific
    microarchitectural circumstances, may allow an attacker to potentially
    access sensitive information.
+note: This is the 1st of 3 parts.
 bug: [56376]
 cve:
 - CVE-2023-1380
