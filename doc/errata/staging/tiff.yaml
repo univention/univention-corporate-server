@@ -1,0 +1,28 @@
+product: ucs
+release: "5.0"
+version: [3, 4]
+scope: ucs_5.0-0-errata5.0-4
+src: tiff
+fix: 4.1.0+git191117-2~deb10u8
+desc: |
+ This update addresses the following issues:
+ 4.1.0+git191117-2~deb10u8 (Mon, 31 Jul 2023 21:39:33 +0300)
+ * Non-maintainer upload by the LTS Security Team.
+ * CVE-2023-2908: NULL pointer dereference in tif_dir.c
+ * CVE-2023-3316: NULL pointer dereference in TIFFClose()
+ * CVE-2023-3618: Buffer overflow in tiffcrop
+ * CVE-2023-25433: Buffer overflow in tiffcrop
+ * CVE-2023-26965: Use after free in tiffcrop
+ * CVE-2023-26966: Buffer overflow in uv_encode()
+ * CVE-2023-38288: Integer overflow in tiffcp
+ * CVE-2023-38289: Integer overflow in raw2tiff
+bug: [56388]
+cve:
+- CVE-2023-2908
+- CVE-2023-3316
+- CVE-2023-3618
+- CVE-2023-25433
+- CVE-2023-26965
+- CVE-2023-26966
+- CVE-2023-38288
+- CVE-2023-38289
