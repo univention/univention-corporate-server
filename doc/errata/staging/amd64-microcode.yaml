@@ -6,50 +6,8 @@ src: amd64-microcode
 fix: 3.20230719.1~deb10u1
 desc: |
  This update addresses the following issues:
- 3.20230719.1~deb10u1 (Mon, 31 Jul 2023 12:02:41 +0200)
- * Non-maintainer upload by the LTS Security Team.
- * Rebuild for buster-security.
- * Revert move to non-free-firmware
- 3.20230719.1 (Mon, 24 Jul 2023 13:07:34 -0300)
- * Update package data from linux-firmware 20230625-39-g59fbffa9: * Fixes for
-   CVE-2023-20593 "Zenbleed" on AMD Zen2 processors * New Microcode patches: +
-   Family=0x17 Model=0xa0 Stepping=0x00:
- Patch=0x08a00008 * Updated Microcode patches: + Family=0x17 Model=0x31
- Stepping=0x00: Patch=0x0830107a + Family=0x19 Model=0x01 Stepping=0x00:
- Patch=0x0a001079 + Family=0x19 Model=0x01 Stepping=0x01: Patch=0x0a0011d1 +
- Family=0x19 Model=0x01 Stepping=0x02: Patch=0x0a001234
- * README: update for new release
- 3.20230414.1 (Fri, 28 Apr 2023 17:24:39 -0300)
- * Update package data from linux-firmware 20230404-38-gfab14965: * Updated
-   Microcode patches: + Family=0x17 Model=0x31 Stepping=0x00:
- Patch=0x08301072 + Family=0x19 Model=0x01 Stepping=0x00: Patch=0x0a001078 +
- Family=0x19 Model=0x01 Stepping=0x01: Patch=0x0a0011ce + Family=0x19 Model=0x01
- Stepping=0x02: Patch=0x0a001231
- 3.20220411.2 (Fri, 17 Feb 2023 01:19:05 +0100)
- * Move source and binary from non-free/admin to non-free-firmware/admin
-   following the 2022 General Resolution about non-free firmware.
- 3.20220411.1 (Fri, 15 Apr 2022 18:27:36 -0300)
- * Update package data from linux-firmware 20220411: * New microcode updates
-   from AMD upstream (20220408)
- , #1009333) + New Microcode patches: sig 0x00830f10, patch id 0x08301055,
- 2022-02-15 sig 0x00a00f10, patch id 0x0a001058, 2022-02-10 sig 0x00a00f11,
- patch id 0x0a001173, 2022-01-31 sig 0x00a00f12, patch id 0x0a001229, 2022-02-10
- + Updated Microcode patches: sig 0x00800f12, patch id 0x0800126e, 2021/11/11 *
- New AMD-SEV firmware from AMD upstream (20220308) Fixes: CVE-2019-9836 + New
- SEV firmware: Family 17h models 00h-0fh: version 0.17 build 48 Family 17h
- models 30h-3fh: version 0.24 build 15 Family 19h models 00h-0fh: version 1.51
- build 3
- * debian: ship AMD-SEV firmware. Upstream license is the same license used
-   for amd-ucode
- 3.20191218.1 (Fri, 20 Dec 2019 18:36:27 -0300)
- * New microcode update packages from AMD upstream: + Removed Microcode
-   updates (known to cause issues): sig 0x00830f10, patch id 0x08301025,
-   2019-07-11
- 3.20191021.1 (Tue, 22 Oct 2019 21:00:17 -0300)
- * New microcode update packages from AMD upstream: + New Microcodes: sig
-   0x00830f10, patch id 0x08301025, 2019-07-11 + Updated Microcodes: sig
-   0x00800f12, patch id 0x08001250, 2019-04-16 sig 0x00800f82, patch id
-   0x0800820d, 2019-04-16
+ * CVE-2019-9836: AMD-SEV firmware
+ * CVE-2023-20593: Fixes for "Zenbleed" on AMD Zen2 processors
 bug: [56386]
 cve:
 - CVE-2023-20593
