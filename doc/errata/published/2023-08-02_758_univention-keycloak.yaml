@@ -14,3 +14,6 @@ desc: |
    to create an authentication flow which will enable app specific
    authorization in a future version of the `Keycloak App`.
 bug: [56317, 56305]
+erratum: 758
+announced: 2023-08-02
+support: core
