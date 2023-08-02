@@ -12,3 +12,6 @@ desc: |
  * The URI when creating a printer with the UDM CLI now doesn't require
    a space between protocol and path anymore.
 bug: [56348, 24081]
+erratum: 756
+announced: 2023-08-02
+support: core
