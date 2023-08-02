@@ -3,8 +3,10 @@ release: "5.0"
 version: [5]
 scope: ucs_5.0-0-errata5.0-5
 src: univention-directory-manager-modules
-fix: 15.0.24-18
+fix: 15.0.24-19
 desc: |
  This update addresses the following issues:
  * The Python 3.11 compatibiliy for timezone handling has been repaired.
-bug: [56514]
+ * The case sensitivity of the attribute `memberUid` is now respected when
+   removing members from a group.
+bug: [56514, 54183]

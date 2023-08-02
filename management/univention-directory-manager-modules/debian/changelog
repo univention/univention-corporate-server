@@ -1,3 +1,10 @@
+univention-directory-manager-modules (15.0.24-19) unstable; urgency=medium
+
+  * Bug #54183: fix removal of non-lowercase group members in
+    fast_member_remove()
+
+ -- Florian Best <best@univention.de>  Fri, 06 Oct 2023 17:01:27 +0200
+
 univention-directory-manager-modules (15.0.24-18) unstable; urgency=medium
 
   * Bug #56514: fix Python 3.11 compatibility for timezone handling

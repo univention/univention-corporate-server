@@ -407,14 +407,14 @@ class object(univention.admin.handlers.simpleLdap):
 
     def fast_member_remove(self, memberdnlist, uidlist, ignore_license=False, _retry_on_attribute_error=True):
         ml = []
-        uids = set()
+        uids = {}
         members = set()
         searchResult = self.lo.get(self.dn, attr=['uniqueMember', 'memberUid'])
         if searchResult:
-            uids = {x.decode('UTF-8').lower() for x in searchResult.get('memberUid', [])}
+            uids = {x.decode('UTF-8').lower(): x.decode('UTF-8') for x in searchResult.get('memberUid', [])}
             members = {x.decode('UTF-8').lower() for x in searchResult.get('uniqueMember', [])}
 
-        remove_uidlist = [uid for uid in uidlist if uid.lower() in uids]
+        remove_uidlist = [uids[uid.lower()] for uid in uidlist if uid.lower() in uids]
         if remove_uidlist:
             ml.append(('memberUid', [x.encode('UTF-8') for x in remove_uidlist], b''))
 
