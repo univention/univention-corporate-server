@@ -25,6 +25,7 @@ set_udm_properties_for_kelvin () {
 				"PasswordRecoveryEmailVerified",
 				"pwdChangeNextLogin",
 				"serviceprovider",
+				"schoolSpecificValidity",
 				"ucsschoolPurgeTimestamp",
 				"uidNumber"
 		],
