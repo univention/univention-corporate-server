@@ -3,7 +3,7 @@ release: "5.0"
 version: [4]
 scope: ucs_5.0-0-errata5.0-4
 src: univention-management-console-module-udm
-fix: 10.0.8-4
+fix: 10.0.8-5
 desc: |
  This update addresses the following issues:
  * The UMC module has been adjusted to use new Python APIs for modules.
