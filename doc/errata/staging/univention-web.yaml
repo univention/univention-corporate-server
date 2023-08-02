@@ -1,0 +1,11 @@
+product: ucs
+release: "5.0"
+version: [4]
+scope: ucs_5.0-0-errata5.0-4
+src: univention-web
+fix: 4.0.4-2
+desc: |
+ This update addresses the following issue:
+ * The text color for disabled text boxes has been changed so it is easier to
+   read in the Safari browser.
+bug: [55939]
