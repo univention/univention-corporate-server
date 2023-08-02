@@ -851,8 +851,6 @@ class UDM_Module(object):
             description = self.property_description(obj, description_property_name)
         if not description:
             description = udm_objects.description(obj)
-        if description and description.isdigit():
-            description = int(description)
         return description
 
     def property_description(self, obj, key):
