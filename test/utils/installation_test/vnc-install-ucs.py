@@ -21,7 +21,7 @@ def main():
 	parser.add_argument('--ip', help='Give an IP address, if DHCP is unavailable.')
 	parser.add_argument('--password', default='univention')
 	parser.add_argument('--organisation', default='ucs')
-	parser.add_argument('--screenshot-dir', default='../screenshots')
+	parser.add_argument('--screenshot-dir', default='screenshots')
 	parser.add_argument('--dns')
 	parser.add_argument('--netmask')
 	parser.add_argument('--gateway')

@@ -216,7 +216,7 @@ def main():
 	parser.add_argument('--join-password')
 	parser.add_argument('--password', default='univention')
 	parser.add_argument('--organisation', default='ucs')
-	parser.add_argument('--screenshot-dir', default='../screenshots')
+	parser.add_argument('--screenshot-dir', default='screenshots')
 	parser.add_argument('--role', default='master', choices=['master', 'admember', 'fast', 'slave'])
 	parser.add_argument('--ucs', help='ucs appliance', action='store_true')
 	parser.add_argument('--components', default=[], choices=components.keys() + ['all'], action='append')
