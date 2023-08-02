@@ -9,3 +9,6 @@ desc: |
  * The text color for disabled text boxes has been changed so it is easier to
    read in the Safari browser.
 bug: [55939]
+erratum: 760
+announced: 2023-08-02
+support: core
