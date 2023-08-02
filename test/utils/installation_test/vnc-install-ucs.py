@@ -9,13 +9,10 @@ from argparse import ArgumentParser
 from installation import UCSInstallation
 from components.components import components_with_steps as components
 
-import sys
-
 
 def main():
 	''' python %prog% --vnc 'utby:1' '''
-	description = sys.modules[__name__].__doc__
-	parser = ArgumentParser(description=description)
+	parser = ArgumentParser(description=__doc__)
 	parser.add_argument('--vnc', required=True)
 	parser.add_argument('--fqdn', default='master.ucs.local')
 	parser.add_argument('--ip', help='Give an IP address, if DHCP is unavailable.')

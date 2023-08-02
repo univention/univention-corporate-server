@@ -302,7 +302,7 @@ class UCSInstallation(object):
 			time.sleep(60)
 			sys.exit(0)
 		else:
-			raise NotImplemented
+			raise NotImplementedError()
 
 	def hostname(self):
 		# name hostname
@@ -371,7 +371,7 @@ class UCSInstallation(object):
 			elif self.args.school_dep == 'central':
 				self.click(self._['school_central'])
 			else:
-				raise NotImplemented()
+				raise NotImplementedError()
 			self.click(self._['next'])
 
 	def bootmenu(self):

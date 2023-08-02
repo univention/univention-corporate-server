@@ -14,8 +14,6 @@ from installation import UCSInstallation
 from components.components import components_with_steps as components
 
 import time
-import sys
-import os
 
 
 class UCSSetup(UCSInstallation):
@@ -27,16 +25,6 @@ class UCSSetup(UCSInstallation):
 		self.config.update(lang='eng')
 		self.timeout = 40
 		self.connect()
-
-	def click(self, text):
-		self.client.waitForText(text, timeout=self.timeout)
-		self.client.mouseClickOnText(text)
-
-	def screenshot(self, filename):
-		if not os.path.isdir(self.args.screenshot_dir):
-			os.mkdir(self.args.screenshot_dir)
-		screenshot_file = os.path.join(self.args.screenshot_dir, filename)
-		self.client.captureScreen(screenshot_file)
 
 	def __next__(self):
 		self.client.waitForText('NEXT', timeout=self.timeout)
@@ -207,8 +195,7 @@ class UCSSetup(UCSInstallation):
 
 def main():
 	''' python %prog% --vnc 'utby:1' '''
-	description = sys.modules[__name__].__doc__
-	parser = ArgumentParser(description=description)
+	parser = ArgumentParser(description=__doc__)
 	parser.add_argument('--vnc')
 	parser.add_argument('--fqdn', default='master.ucs.local')
 	parser.add_argument('--dns')
