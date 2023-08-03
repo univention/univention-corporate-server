@@ -49,13 +49,16 @@ import tempfile
 import time
 from abc import ABCMeta, abstractmethod, abstractproperty
 from copy import copy
+from io import StringIO
 from optparse import Option, OptionGroup, OptionParser, OptionValueError, Values  # noqa: F401
 from typing import TYPE_CHECKING, Dict, List, Optional, Tuple  # noqa: F401
 
 import apt
+import ldap
 import six
 from ldap.dn import escape_dn_chars
 from ldap.filter import filter_format
+from ldif import LDIFWriter
 
 import univention.admin as udm
 
@@ -203,6 +206,7 @@ class UniventionLDAPExtension(six.with_metaclass(ABCMeta)):
 
     def __init__(self, ucr):
         # type: (ConfigRegistry) -> None
+        self.ucr = ucr
         self._todo_list = []  # type: List[str]
         self.target_container_dn = "cn=%s,cn=univention,%s" % (escape_dn_chars(self.target_container_name), ucr["ldap/base"])
 
@@ -276,6 +280,23 @@ class UniventionLDAPExtension(six.with_metaclass(ABCMeta)):
         if m:
             object_dn = m.group(1)
         return (rc, object_dn, stdout)
+
+    def ldap_touch_udm_object(self):
+        ldif = StringIO()
+        ldifwriter = LDIFWriter(ldif)
+        ldifwriter.unparse(self.object_dn, [(ldap.MOD_REPLACE, self.active_flag_attribute, [b'FALSE'])])
+
+        cmd = [
+            "ldapmodify", "-ZZ",
+            "-H", "ldap://%s:%s/" % (self.ucr["ldap/master"], self.ucr["ldap/master/port"]),
+            "-D", self.options.binddn,
+        ] + (
+            ["-y", self.options.bindpwdfile] if self.options.bindpwdfile else ["-w", self.options.bindpwd]
+        )
+        proc = subprocess.Popen(cmd, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+        out, _ = proc.communicate(ldif.getvalue().encode("UTF-8"))
+        stdout = out.decode('UTF-8', 'replace')
+        print(stdout)
 
     def register(self, filename, options, udm_passthrough_options, target_filename=None):
         # type: (str, Values, List[str], Optional[str]) -> None
@@ -469,6 +490,9 @@ class UniventionLDAPExtension(six.with_metaclass(ABCMeta)):
                 out, _ = p.communicate()
                 stdout = out.decode('UTF-8', 'replace')
                 print(stdout)
+
+            if not active_change_udm_options and not self.is_local_active()[1]:
+                self.ldap_touch_udm_object()
 
         if not self.object_dn:
             self.object_dn = new_object_dn

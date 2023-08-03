@@ -1,3 +1,11 @@
+univention-lib (9.0.16-3) unstable; urgency=medium
+
+  * Bug #55337: Touch LDAP object even if nothing needs to be done for
+    ucs_registerLDAPExtension register but the extension is not active
+    yet.
+
+ -- Arvid <requate@univention.de>  Mon, 07 Aug 2023 15:30:39 +0200
+
 univention-lib (9.0.16-2) unstable; urgency=medium
 
   * Bug #56137: fix Python 3 compatiblity regression
