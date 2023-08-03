@@ -1,4 +1,4 @@
-univention-saml (7.0.8-5) unstable; urgency=medium
+univention-saml (7.0.8-6) unstable; urgency=medium
 
   * Bug #49207: The SAML user creation now ignores the password length
     and history

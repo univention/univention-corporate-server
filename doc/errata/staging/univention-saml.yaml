@@ -3,9 +3,9 @@ release: "5.0"
 version: [4]
 scope: ucs_5.0-0-errata5.0-4
 src: univention-saml
-fix: 7.0.8-5
+fix: 7.0.8-6
 desc: |
  This update addresses the following issues:
- * The user creation during the installation now ignores the password
-   length and history.
+ * The creation of the SAML Identity Provider user accounts during the
+   installation ignores the password length and history.
 bug: [49207]

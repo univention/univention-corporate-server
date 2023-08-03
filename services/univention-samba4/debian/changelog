@@ -1,4 +1,4 @@
-univention-samba4 (9.0.13-3) unstable; urgency=medium
+univention-samba4 (9.0.13-4) unstable; urgency=medium
 
   * Bug #49207: The spn account creation now ignores the password length
     and history

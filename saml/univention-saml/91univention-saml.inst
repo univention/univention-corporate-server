@@ -220,7 +220,7 @@ po.setDn('cn=users,%s' % (sys.argv[2]))
 user = univention.admin.modules.get('users/ldap').object(None, lo, po)
 user.open()
 user['overridePWHistory'] = '1'
-user[overridePWLength] = '1'
+user['overridePWLength'] = '1'
 user['username'] = 'sys-idp-user'
 user['password'] = sys.argv[1]
 user['lastname'] = 'idp-user'
