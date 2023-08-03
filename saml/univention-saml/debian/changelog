@@ -1,3 +1,10 @@
+univention-saml (7.0.8-5) unstable; urgency=medium
+
+  * Bug #49207: The SAML user creation now ignores the password length
+    and history
+
+ -- Mika Westphal <westphal@univention.de>  Tue, 25 Jul 2023 10:05:58 +0200
+
 univention-saml (7.0.8-4) unstable; urgency=medium
 
   * Bug #55203: Added UCRV ucs/server/sso/password/change/server to allow

@@ -139,6 +139,8 @@ create_krb_apache2_user() {
 
 		udm users/user create "$@" --ignore_exists \
 			--position "cn=users,$ldap_base" \
+			--set overridePWLength=1 \
+			--set overridePWHistory=1 \
 			--set username="$spn_account_name" \
 			--set lastname="SSO" \
 			--set password="$spn_account_name_password" \
@@ -217,6 +219,8 @@ lo, po = univention.admin.uldap.getAdminConnection()
 po.setDn('cn=users,%s' % (sys.argv[2]))
 user = univention.admin.modules.get('users/ldap').object(None, lo, po)
 user.open()
+user['overridePWHistory'] = '1'
+user[overridePWLength] = '1'
 user['username'] = 'sys-idp-user'
 user['password'] = sys.argv[1]
 user['lastname'] = 'idp-user'
