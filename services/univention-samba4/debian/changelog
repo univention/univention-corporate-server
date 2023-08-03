@@ -1,3 +1,10 @@
+univention-samba4 (9.0.13-3) unstable; urgency=medium
+
+  * Bug #49207: The spn account creation now ignores the password length
+    and history
+
+ -- Mika Westphal <westphal@univention.de>  Thu, 03 Aug 2023 08:47:50 +0200
+
 univention-samba4 (9.0.13-2) unstable; urgency=medium
 
   * Bug #56077: Allow services to use aes encryption as well as arcfour

@@ -132,7 +132,9 @@ create_spn_account () {
 			--set username="$samAccountName" \
 			--set lastname="Service" \
 			--set objectFlag="hidden" \
-			--set password="$password" || error "could not create user account $samAccountName"
+			--set password="$password" || error "could not create user account $samAccountName" \
+			--set overridePWHistory=1 \
+			--set overridePWLength=1
 	fi
 
 	## wait for S4 Connector and possibly DRS until the service_accountname is available
