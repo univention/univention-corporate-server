@@ -2656,7 +2656,7 @@ msgid ""
 "first 72 characters of the password are used to generate the hashes."
 msgstr ""
 ":program:`bcrypt` ist auf maximal 72 Zeichen begrenzt.  Für die "
-"Generierung der Hashes werden also nur die ersten 72 Zeichen des Kennwort"
+"Generierung der Hashes werden also nur die ersten 72 Zeichen des Passwortes"
 " verwendet."
 
 #: ../../domain-ldap/saml.rst:4

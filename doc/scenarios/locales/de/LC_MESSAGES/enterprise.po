@@ -365,7 +365,7 @@ msgstr ""
 "Benutzer transparent auf Dienste beider Umgebungen zugreifen. So kann etwa ein "
 "Benutzer sich sowohl an seinem Notebook am UCS-Verzeichnisdienst als auch am "
 "Citrix-Server im Microsoft Active Directory mit dem selben Benutzernamen und "
-"Kennwort anmelden."
+"Passwort anmelden."
 
 #: ../../enterprise.rst:170
 msgid "Compliance requirements"
