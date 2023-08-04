@@ -1,3 +1,10 @@
+univention-radius (7.0.5-4) unstable; urgency=medium
+
+  * Bug #56371: Replaced the German word "Kennwort" with "Passwort" inside the
+    translations
+
+ -- Mika Westphal <westphal@univention.de>  Fri, 04 Aug 2023 09:56:14 +0200
+
 univention-radius (7.0.5-3) unstable; urgency=medium
 
   * Bug #55757: allow login with the primary email address
