@@ -1078,7 +1078,7 @@ def parse_args(args: list[str] | None = None) -> Namespace:
     parser_client_flow.add_argument("--auth-flow", help="authentication flow", default=None)
     parser_client_flow.set_defaults(func=client_auth_flow)
 
-    # legay authentication flow
+    # legacy authentication flow
     parser_legacy_authentication_flow = subparsers.add_parser("legacy-authentication-flow", add_help=False)
     parser_legacy_authentication_flow_operations = parser_legacy_authentication_flow.add_subparsers(title="operation", description="valid subcommands", required=True, dest="operation")
     parser_legacy_authentication_flow_create = parser_legacy_authentication_flow_operations.add_parser("create", help="create the legacy authentication flow")
