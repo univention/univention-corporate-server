@@ -240,6 +240,11 @@ class access(object):
     :param bool reconnect: Automatically re-establish connection to LDAP server if connection breaks.
     """
 
+    # These attributes don't have a matching rule:
+    #   https://forge.univention.org/bugzilla/show_bug.cgi?id=15171
+    #   https://forge.univention.org/bugzilla/show_bug.cgi?id=44019
+    ATTRIBUTES_WITHOUT_MATCHING_RULE = ['preferredDeliveryMethod', 'jpegPhoto', 'univentionPortalBackground', 'univentionPortalLogo', 'univentionPortalEntryIcon', 'univentionUMCIcon']
+
     def __init__(self, host='localhost', port=None, base='', binddn='', bindpw='', start_tls=2, ca_certfile=None, decode_ignorelist=[], use_ldaps=False, uri=None, follow_referral=False, reconnect=True):
         # type: (str, int, str, Optional[str], str, int, str, List, bool, str, bool, bool) -> None
         self.host = host
@@ -733,6 +738,31 @@ class access(object):
         ml = []
         for key, oldvalue, newvalue in changes:
             if oldvalue and newvalue:
+
+                # TODO determine the lowest length of oldvalue/newvalue `lim` where this branch is effective
+                # This needs to be accurately measured
+                lim = 20
+                if isinstance(oldvalue, list) and isinstance(newvalue, list) and len(oldvalue) > lim and len(newvalue) > lim:
+                    ov_set = set(oldvalue)
+                    nv_set = set(newvalue)
+
+                    if len(ov_set.intersection(nv_set)) == 0:
+                        # TODO maybe ldap.MOD_REPLACE is faster for some cases where
+                        # the intersection is very small so `len(ov_set.intersection(nv_set)) <= somelimit` could make sense
+                        # somelimit will at least depend on len(ov_set), len(nv_set)
+                        ml.append((ldap.MOD_REPLACE, key, newvalue))
+                        continue
+
+                    values_to_add = list(nv_set - ov_set)
+                    values_to_delete = list(ov_set - nv_set)
+
+                    if values_to_add:
+                        ml.append((ldap.MOD_ADD, key, values_to_add))
+                    if values_to_delete:
+                        if key in self.ATTRIBUTES_WITHOUT_MATCHING_RULE:
+                            values_to_delete = None
+                        ml.append((ldap.MOD_DELETE, key, values_to_delete))
+                    continue
                 if oldvalue == newvalue or (not isinstance(oldvalue, (bytes, six.text_type)) and not isinstance(newvalue, (bytes, six.text_type)) and set(oldvalue) == set(newvalue)):
                     continue  # equal values
                 op = ldap.MOD_REPLACE
@@ -743,10 +773,7 @@ class access(object):
             elif oldvalue and not newvalue:
                 op = ldap.MOD_DELETE
                 val = oldvalue
-                # These attributes don't have a matching rule:
-                #   https://forge.univention.org/bugzilla/show_bug.cgi?id=15171
-                #   https://forge.univention.org/bugzilla/show_bug.cgi?id=44019
-                if key in ['preferredDeliveryMethod', 'jpegPhoto', 'univentionPortalBackground', 'univentionPortalLogo', 'univentionPortalEntryIcon', 'univentionUMCIcon']:
+                if key in self.ATTRIBUTES_WITHOUT_MATCHING_RULE:
                     val = None
             else:
                 continue

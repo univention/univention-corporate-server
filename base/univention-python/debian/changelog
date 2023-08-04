@@ -1,3 +1,9 @@
+univention-python (13.0.4-2) unstable; urgency=medium
+
+  * Bug #56355: uldap: Use set logic to avoid ldap.MOD_REPLACE if possible
+
+ -- Johannes Königer <koeniger@univention.de>  Sat, 29 Jul 2023 08:55:54 +0200
+
 univention-python (13.0.4-1) unstable; urgency=medium
 
   * Bug #43633: uldap: decrease loglevel from INFO(3) to DEBUG/ALL(4)
