@@ -3,9 +3,11 @@ release: "5.0"
 version: [4]
 scope: ucs_5.0-0-errata5.0-4
 src: univention-saml
-fix: 7.0.8-6
+fix: 7.0.8-7
 desc: |
  This update addresses the following issues:
  * The creation of the SAML Identity Provider user accounts during the
    installation ignores the password length and history.
-bug: [49207]
+ * The German word "Kennwort" has been replaced with "Passwort" to make
+   the German translation of UCS more consistent.
+bug: [49207, 56371]

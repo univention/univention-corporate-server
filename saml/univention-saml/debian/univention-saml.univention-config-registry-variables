@@ -32,7 +32,7 @@ Default=true
 Categories=management
 
 [ucs/server/sso/password/change/server]
-Description[de]=Definiert den FQDN der UCS-Instanz, die zum Ändern des Benutzerkennworts verwendet wird.
+Description[de]=Definiert den FQDN der UCS-Instanz, die zum Ändern des Benutzerpassworts verwendet wird.
 Description[en]=Defines the FQDN of the UCS instance used to change user passwords.
 Type=str
 Categories=management

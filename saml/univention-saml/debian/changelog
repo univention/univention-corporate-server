@@ -1,3 +1,10 @@
+univention-saml (7.0.8-7) unstable; urgency=medium
+
+  * Bug #56371 Replaced the German word "Kennwort" with "Passwort" inside the
+    translations
+
+ -- Mika Westphal <westphal@univention.de>  Fri, 04 Aug 2023 09:51:38 +0200
+
 univention-saml (7.0.8-6) unstable; urgency=medium
 
   * Bug #49207: The SAML user creation now ignores the password length
