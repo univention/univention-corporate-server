@@ -1366,7 +1366,7 @@ msgstr "Passwort-Eigenschaften"
 
 #: modules/univention/admin/handlers/settings/sambadomain.py:168
 msgid "Passwords must meet complexity requirements"
-msgstr "Kennwort muss Komplexitätsvoraussetzungen entsprechen"
+msgstr "Passwort muss Komplexitätsvoraussetzungen entsprechen"
 
 #: modules/univention/admin/handlers/settings/usertemplate.py:133
 msgid "Path to the home directory on the home share"
@@ -1838,14 +1838,14 @@ msgstr "Speicherung"
 
 #: modules/univention/admin/handlers/settings/sambadomain.py:173
 msgid "Store plaintext passwords"
-msgstr "Kennwort mit umkehrbarer Verschlüsselung speichern"
+msgstr "Passwort mit umkehrbarer Verschlüsselung speichern"
 
 #: modules/univention/admin/handlers/settings/sambadomain.py:174
 msgid ""
 "Store plaintext passwords where account have \"store passwords with "
 "reversible encryption\" set."
 msgstr ""
-"Klartext Passwörter speichern, falls am Benutzerkonto \"Kennwort mit "
+"Klartext Passwörter speichern, falls am Benutzerkonto \"Passwort mit "
 "umkehrbarer Verschlüsselung speichern\" gesetzt ist."
 
 #: modules/univention/admin/handlers/settings/syntax.py:111

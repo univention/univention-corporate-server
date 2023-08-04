@@ -1,0 +1,11 @@
+product: ucs
+release: "5.0"
+version: [4]
+scope: ucs_5.0-0-errata5.0-4
+src: univention-directory-manager-modules
+fix: 15.0.24-17
+desc: |
+ This update addresses the following issues:
+ * The German word "Kennwort" has been replaced with "Passwort" to make
+   the German translation of UCS more consistent.
+bug: [56371]
