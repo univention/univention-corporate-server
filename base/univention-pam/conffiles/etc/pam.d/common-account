@@ -13,6 +13,7 @@ account [success=done new_authtok_reqd=done acct_expired=bad default=ignore]    
 @!@
 minimum_uid = int(configRegistry.get('pam/krb5/minimum_uid', 1000))
 pam_krb5 = '''
+account  [default=ignore success=1]       pam_succeed_if.so quiet service = samba
 account  <action>                         pam_krb5.so minimum_uid=%d''' % (minimum_uid,)
 pam_ldap = '''
 account  <action>                         pam_ldap.so'''
