@@ -1,3 +1,10 @@
+univention-samba4 (9.0.13-6) unstable; urgency=medium
+
+  * Bug #56383: The PAM stack for samba should only use
+    the parts for account and session.
+
+ -- Arvid <requate@univention.de>  Mon, 15 Aug 2023 16:00:51 +0200
+
 univention-samba4 (9.0.13-5) unstable; urgency=medium
 
   * Bug #55937: The default timeout for initial replication
