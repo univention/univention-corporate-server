@@ -252,6 +252,15 @@ large environments this script may hit the timeout and abort the join process.
 To increase the timeout the |UCSUCRV| :envvar:`create/spn/account/timeout` can
 be set prior to the join process.
 
+The join scripts ``97univention-s4-connector`` and ``98univention-samba4-dns``
+wait for the replication of the DNS record of the joining system to verify
+that the local Samba backed DNS server can answer requests for Active Directory
+related requests.
+By default the scripts wait for 600 seconds, but in case there are a lot of
+objects that need to be replicated (e.g. DNS zones) then this default may be
+too short.  In that case the timeout can be adjusted by setting the |UCSUCRV|
+:envvar:`join/samba/dns/replication/timeout` to a bigger value before joining.
+
 .. _group-cache:
 
 *****************
