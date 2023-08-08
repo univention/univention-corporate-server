@@ -328,7 +328,7 @@ if [ -z "$s4connector_dc" ] \
 			break
 		else
 			echo -n "."
-			# restart bind9 every 200 seconds
+			# restart bind9 every 100 seconds
 			expr $count % 100 >/dev/null || /etc/init.d/bind9 restart
 			# restart samba-ad-dc every 200 seconds
 			expr $count % 200 >/dev/null || /etc/init.d/samba-ad-dc restart
