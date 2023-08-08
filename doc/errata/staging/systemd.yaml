@@ -6,19 +6,18 @@ src: systemd
 fix: 232-25+deb9u16A~4.4.9.202308071430
 desc: |
  This update addresses the following issues:
- 232-25+deb9u16 (Wed, 02 Aug 2023 12:19:39 +0200)
- * Non-maintainer upload by the ELTS team.
- * Fix CVE-2023-26604: systemd does not adequately block local privilege
-   escalation for some Sudo configurations, e.g., plausible sudoers files in
-   which the "systemctl status" command may be executed. Specifically, systemd
-   does not set LESSSECURE to 1, and thus other programs may be launched from
-   the less program. This presents a substantial security risk when running
-   systemctl from Sudo, because less executes as root when the terminal size
-   is too small to show the complete systemctl output.
- * Fix CVE-2022-3821: An off-by-one Error issue was discovered in Systemd in
-   format_timespan() function of time-util.c. An attacker could supply
+ * CVE-2023-26604: `systemd` does not adequately block local privilege
+   escalation for some `Sudo` configurations, e.g., plausible `sudoers`
+   files in which the `"systemctl status"` command may be executed.
+   Specifically, `systemd` does not set `LESSSECURE` to 1, and thus other
+   programs may be launched from the less program. This presents a
+   substantial security risk when running `systemctl` from `Sudo`, because
+   less executes as root when the terminal size is too small to show the
+   complete `systemctl` output.
+ * CVE-2022-3821: An off-by-one Error issue was discovered in `Systemd` in
+   `format_timespan()` function of `time-util.c`. An attacker could supply
    specific values for time and accuracy that leads to buffer overrun in
-   format_timespan(), leading to a Denial of Service.
+   `format_timespan()`, leading to a Denial of Service.
 bug: [56408]
 cve:
 - CVE-2023-26604
