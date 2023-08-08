@@ -3,7 +3,7 @@ release: "5.0"
 version: [4]
 scope: ucs_5.0-0-errata5.0-4
 src: univention-samba4
-fix: 9.0.13-4
+fix: 9.0.13-5
 desc: |
  This update addresses the following issues:
  * The spn account creation now ignores the password length and history.
