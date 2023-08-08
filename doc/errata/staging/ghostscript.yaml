@@ -1,0 +1,14 @@
+product: ucs
+release: "5.0"
+version: [3, 4]
+scope: ucs_5.0-0-errata5.0-4
+src: ghostscript
+fix: 9.27~dfsg-2+deb10u8
+desc: |
+ This update addresses the following issue:
+ 9.27~dfsg-2+deb10u8 (Mon, 07 Aug 2023 14:39:40 +0300)
+ * Non-maintainer upload by the LTS Security Team.
+ * CVE-2023-38559: Buffer overflow in devn_pcx_write_rle()
+bug: [56414]
+cve:
+- CVE-2023-38559
