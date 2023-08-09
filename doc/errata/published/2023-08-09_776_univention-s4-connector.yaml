@@ -13,3 +13,6 @@ desc: |
    initial replication from UDM/OpenLDAP to Samba/AD may be delayed due to
    a large number of objects.
 bug: [55937]
+erratum: 776
+announced: 2023-08-09
+support: core
