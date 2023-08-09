@@ -58,6 +58,7 @@ from univention.management.console.config import get_int, ucr
 from univention.management.console.error import BadRequest, Unauthorized
 from univention.management.console.log import MODULE, log_reopen
 from univention.management.console.message import Request, Response
+from univention.management.console.modules.decorators import SimpleThread
 
 
 try:
@@ -131,6 +132,7 @@ class ModuleServer(object):
         application = Application(routes + [
             (r'^/exit', Exit),
             (r'^/univention/(?:command|upload)/(.*)', Handler, {'server': self, 'handler': self.__handler}),
+            (r'^/cancel', Cancel, {'handler': self.__handler}),
         ], serve_traceback=ucr.is_true('umc/http/show_tracebacks', True))
 
         signal.signal(signal.SIGALRM, self.signal_handler_alarm)
@@ -223,6 +225,12 @@ class ModuleServer(object):
             MODULE.warn('There are still open requests - do not shutdown')
             signal.alarm(1)
             return
+
+        if SimpleThread.running_threads > 0:
+            MODULE.warn('There are still running threads - do not shutdown')
+            signal.alarm(15)
+            return
+
         io_loop = tornado.ioloop.IOLoop.current()
 
         def shutdown():
@@ -263,7 +271,6 @@ class ModuleServer(object):
 
     def handle_init(self, msg):
         from .error import NotAcceptable
-
         signal.alarm(self.__timeout)
 
         if self.__init_etype:
@@ -343,7 +350,7 @@ class Handler(RequestHandler):
 
         msg = Request(umcp_command, [path], mime_type=mimetype)
         msg._request_handler = self
-        self.request_id = msg.id
+        self.request_id = msg.id = self.request.headers.get('X-UMC-Request-ID', msg.id)
         msg.username = username
         msg.user_dn = user_dn
         msg.password = password
@@ -522,6 +529,26 @@ class Handler(RequestHandler):
             'tmpfile': tmpfile,
             'content_type': store['content_type'],
         }
+
+
+class Cancel(RequestHandler):
+
+    def initialize(self, handler):
+        self.handler = handler
+
+    def get(self):
+        id_to_cancel = self.request.headers.get("X-UMC-Request-ID")
+        try:
+            request, method = self.handler._Base__requests.pop(id_to_cancel)
+        except KeyError:
+            body = json.dumps({'status': 400, 'result': None, 'message': _('failed to cancel request.')})
+            self.set_status(400)
+        else:
+            MODULE.debug('Cancelled request with id %r' % (id_to_cancel,))
+            request._request_handler.finish()
+            body = None
+            self.set_status(204)
+        self.finish(body)
 
 
 class Exit(RequestHandler):

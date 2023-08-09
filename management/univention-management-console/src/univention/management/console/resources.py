@@ -63,7 +63,7 @@ import tornado.gen
 import tornado.httpclient
 import tornado.web
 from six.moves.http_client import LENGTH_REQUIRED, REQUEST_ENTITY_TOO_LARGE
-from six.moves.urllib_parse import urlsplit, urlunsplit
+from six.moves.urllib_parse import urlparse, urlsplit, urlunsplit
 from tornado.web import HTTPError
 
 import univention.admin.uexceptions as udm_errors
@@ -74,6 +74,7 @@ from .error import BadGateway, BadRequest, Forbidden, NotFound, UMC_Error, Unaut
 from .ldap import reset_cache as reset_ldap_connection_cache
 from .locales import I18N, I18N_Manager
 from .log import CORE
+from .message import Message
 from .modules.decorators import copy_function_meta_data, sanitize_args
 from .modules.sanitizers import DictSanitizer, ListSanitizer, StringSanitizer
 from .pam import PasswordChangeFailed
@@ -116,13 +117,6 @@ class CouldNotConnect(Exception):
 class _ModuleConnection(object):
 
     def __init__(self):
-        self._client = tornado.httpclient.AsyncHTTPClient()
-
-    def abort(self):
-        # tornado cannot cancel a running request: https://github.com/tornadoweb/tornado/issues/157
-        # We have to do it manually and ignore the exceptions which happen there
-        # this will lead to a "AttributeError: 'NoneType' object has no attribute 'socket_action'" in the main loop, which we can safely ignore
-        self._client.close()
         self._client = tornado.httpclient.AsyncHTTPClient()
 
     async def connect(self, connect_retries=0):
@@ -256,7 +250,11 @@ class ModuleProcess(_ModuleConnection):
     def request(self, method, uri, headers=None, body=None):
         # watch the module's activity and kill it after X seconds inactivity
         self.reset_inactivity_timer()
-        request_id = uuid.uuid4()
+
+        if headers is None:
+            headers = {}
+
+        request_id = headers.get("X-UMC-Request-ID") or Message.generate_id()
         self._active_requests.add(request_id)
 
         try:
@@ -650,6 +648,8 @@ class Command(Resource):
         await super(Command, self).prepare(*args, **kwargs)
         self.future = None
         self.process = None
+        self._request_id = Message.generate_id()
+        self._request_url = None
 
     def forbidden_or_unauthenticated(self, message):
         # make sure that the UMC login dialog is shown if e.g. restarting the UMC-Server during active sessions
@@ -663,6 +663,16 @@ class Command(Resource):
         self._remove_active_request()
         if self.future is not None:
             self.future.cancel()
+        if self.process is not None and self._request_url is not None:
+            self.cancel_request()
+
+    def cancel_request(self):
+        fut = self.process.request("GET", "%s://%s/cancel" % (self._request_url.scheme, self._request_url.netloc), {'X-UMC-Request-ID': self._request_id})
+
+        def cb(response):
+            CORE.process('Cancel request for %s completed with %d' % (self._request_id, response.result().code))
+
+        tornado.ioloop.IOLoop.current().add_future(fut, cb)
 
     def on_finish(self):
         super(Command, self).on_finish()
@@ -694,6 +704,7 @@ class Command(Resource):
         acls = session.acls
         session._active_requests.add(hash(self))
 
+        self._request_url = urlparse(self.request.full_url())
         module_name = acls.get_module_providing(moduleManager, command)
         if not module_name:
             CORE.warn('No module provides %s' % (command))
@@ -774,6 +785,7 @@ class Command(Resource):
         headers['Authorization'] = 'basic ' + base64.b64encode(('%s:%s' % (session.user.username, session.get_umc_password())).encode('ISO8859-1')).decode('ASCII')
         headers['X-UMC-Method'] = methodname
         headers['X-UMC-Command'] = umcp_command.upper()
+        headers['X-UMC-Request-ID'] = self._request_id
         auth_type = session.get_umc_auth_type()
         if auth_type:
             headers['X-UMC-AuthType'] = auth_type

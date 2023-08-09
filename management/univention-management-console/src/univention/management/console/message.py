@@ -99,11 +99,17 @@ class Message(object):
         self.headers = {}
         self.http_method = None
 
+    @classmethod
+    def generate_id(cls):
+        # type: () -> str
+        # cut off 'L' for long
+        generated_id = u'%lu-%d' % (int(time.time() * 100000), Message.__counter)
+        Message.__counter += 1
+        return generated_id
+
     def _create_id(self):
         # type: () -> None
-        # cut off 'L' for long
-        self.id = u'%lu-%d' % (int(time.time() * 100000), Message.__counter)
-        Message.__counter += 1
+        self.id = self.generate_id()
 
     def recreate_id(self):
         # type: () -> None

@@ -225,6 +225,8 @@ class SimpleThread(object):
     result: return value or exception of the thread function.
     """
 
+    running_threads = 0
+
     def __init__(self, name, function, callback):
         # type: (str, Callable[..., _T], Callable[[SimpleThread, Union[BaseException, None, _T]], None]) -> None
         self._name = name
@@ -239,6 +241,9 @@ class SimpleThread(object):
     def run(self, *args, **kwargs):
         # type: (Optional[Tuple], Optional[Dict]) -> None
         """Starts the thread"""
+        with self._lock:
+            SimpleThread.running_threads += 1
+
         io_loop = tornado.ioloop.IOLoop.current()
         future = io_loop.run_in_executor(None, self._run, *args, **kwargs)
         io_loop.add_future(future, lambda f: self.announce())
@@ -326,6 +331,9 @@ class SimpleThread(object):
 
     def announce(self):
         # type: () -> None
+        with self._lock:
+            SimpleThread.running_threads -= 1
+
         self._callback(self, self._result)
 
 

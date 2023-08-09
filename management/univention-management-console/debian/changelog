@@ -1,3 +1,10 @@
+univention-management-console (12.0.31-12) unstable; urgency=medium
+
+  * Bug #56391: Properly shutdown cancelled HTTP requests between the UMC server
+    and its module processes
+
+ -- Marius Meschter <marius.meschter@univention.de>  Mon, 28 Aug 2023 11:15:24 +0200
+
 univention-management-console (12.0.31-11) unstable; urgency=medium
 
   * Bug #56357: Remove link to deprecated Univention Wiki

@@ -1,0 +1,11 @@
+product: ucs
+release: "5.0"
+version: [4]
+scope: ucs_5.0-0-errata5.0-4
+src: univention-management-console-server
+fix: 12.0.31-12
+desc: |
+ This update addresses the following issues:
+ * Aborted HTTP requests no longer prevent the module from properly
+   shutting down.
+bug: [56391]

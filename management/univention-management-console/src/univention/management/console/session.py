@@ -240,7 +240,6 @@ class Session(object):
         CORE.info('session %r timed out' % (self.session_id,))
         self.expire(self.session_id)
         self.on_logout()
-        self.processes.timed_out()
         return False
 
     def reset_timeout(self):
@@ -388,11 +387,6 @@ class Processes(object):
             mod_proc.set_exit_callback(functools.partial(self.process_exited, module_name))
 
         return processes[module_name]
-
-    def timed_out(self):
-        CORE.warn('Closing all sockets to currently opened module processes for this session.')
-        for proc in self.__processes.values():
-            proc.abort()
 
     def stop_process(self, module_name):
         proc = self.processes(module_name).pop(module_name, None)
