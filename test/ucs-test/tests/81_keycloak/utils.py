@@ -90,7 +90,7 @@ def keycloak_password_change(
 
 
 def keycloak_auth_header(config: SimpleNamespace) -> dict:
-    response = requests.post(config.token_url, data=config.login_data)
+    response = requests.post(config.master_token_url, data=config.login_data)
     assert response.status_code == 200, response.text
     return {
         "Content-Type": "application/json",

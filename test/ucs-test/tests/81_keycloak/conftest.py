@@ -206,6 +206,7 @@ def keycloak_config(ucr_proper: ConfigRegistry) -> SimpleNamespace:
         "url": url,
         "admin_url": f"{url}/admin",
         "token_url": f"{url}/realms/ucs/protocol/openid-connect/token",
+        "master_token_url": f"{url}/realms/master/protocol/openid-connect/token",
         "users_url": f"{url}/admin/realms/ucs/users",
         "client_session_stats_url": f"{url}/admin/realms/ucs/client-session-stats",
         "logout_all_url": f"{url}/admin/realms/ucs/logout-all",
