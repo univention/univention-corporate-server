@@ -36,7 +36,10 @@ import pytest
 from keycloak import KeycloakAdmin, KeycloakOpenID
 from selenium import webdriver
 from selenium.webdriver.common.by import By
-from utils import get_portal_tile, keycloak_login, keycloak_password_change, wait_for_class, wait_for_id
+from utils import (
+    get_portal_tile, keycloak_login, keycloak_password_change, legacy_auth_config_create, legacy_auth_config_remove,
+    run_command, wait_for_class, wait_for_id,
+)
 
 from univention.appcenter.actions import get_action
 from univention.appcenter.app_cache import Apps
@@ -173,6 +176,7 @@ def portal_config(ucr_proper: ConfigRegistry) -> SimpleNamespace:
     portal_fqdn = ucr_proper["umc/saml/sp-server"] if ucr_proper["umc/saml/sp-server"] else f"{ucr_proper['hostname']}.{ucr_proper['domainname']}"
     config = {
         "url": f"https://{portal_fqdn}/univention/portal",
+        "fqdn": portal_fqdn,
         "title": "Univention Portal",
         "sso_login_tile": "Login (Single sign-on)",
         "sso_login_tile_de": "Anmelden (Single Sign-on)",
@@ -201,7 +205,7 @@ def keycloak_config(ucr_proper: ConfigRegistry) -> SimpleNamespace:
     config = {
         "url": url,
         "admin_url": f"{url}/admin",
-        "token_url": f"{url}/realms/master/protocol/openid-connect/token",
+        "token_url": f"{url}/realms/ucs/protocol/openid-connect/token",
         "users_url": f"{url}/admin/realms/ucs/users",
         "client_session_stats_url": f"{url}/admin/realms/ucs/client-session-stats",
         "logout_all_url": f"{url}/admin/realms/ucs/logout-all",
@@ -344,3 +348,86 @@ def keycloak_openid_connection(keycloak_config: SimpleNamespace) -> KeycloakOpen
         realm_name="ucs",
         client_secret_key="secret",
     )
+
+
+@pytest.fixture()
+def legacy_authorization_setup_saml(
+    udm: UCSTestUDM,
+    ucr: ConfigRegistry,
+    keycloak_administrator_connection: KeycloakAdmin,
+    admin_account: UCSTestDomainAdminCredentials,
+    portal_config: SimpleNamespace,
+) -> SimpleNamespace:
+
+    group_dn, group_name = udm.create_group()
+    user_dn, user_name = udm.create_user(password="univention")
+    saml_client = f"https://{portal_config.fqdn}/univention/saml/metadata"
+    groups = {group_name: saml_client}
+
+    # create flow
+    run_command(["univention-keycloak", "legacy-authentication-flow", "create"])
+    # create config
+    legacy_auth_config_create(keycloak_administrator_connection, ucr["ldap/base"], groups)
+    # add flow to client
+    run_command(["univention-keycloak", "client-auth-flow", "--clientid", saml_client, "--auth-flow", "browser flow with legacy app authorization"])
+
+    yield SimpleNamespace(
+        client=saml_client,
+        group=group_name,
+        group_dn=group_dn,
+        user=user_name,
+        user_dn=user_dn,
+        password="univention",
+    )
+
+    # cleanup
+    run_command(["univention-keycloak", "legacy-authentication-flow", "delete"])
+    legacy_auth_config_remove(keycloak_administrator_connection, groups)
+
+
+@pytest.fixture()
+def legacy_authorization_setup_oidc(
+    udm: UCSTestUDM,
+    ucr: ConfigRegistry,
+    keycloak_administrator_connection: KeycloakAdmin,
+    admin_account: UCSTestDomainAdminCredentials,
+) -> SimpleNamespace:
+
+    group_dn, group_name = udm.create_group()
+    user_dn, user_name = udm.create_user(password="univention")
+    client = f"testclient-{user_name}"
+    client_secret = "abc"
+    groups = {group_name: client}
+
+    # create flow
+    run_command(["univention-keycloak", "legacy-authentication-flow", "create", "--flow", "direct grant"])
+
+    # create client and add custom direct grant flow
+    run_command(["univention-keycloak", "oidc/rp", "create", client, "--client-secret", client_secret, "--app-url", "https://*", "--direct-access-grants"])
+    client_id = keycloak_administrator_connection.get_client_id(client)
+    flow_id = [
+        flow["id"] for flow in keycloak_administrator_connection.get_authentication_flows()
+        if flow.get("alias") == "direct grant flow with legacy app authorization"
+    ][0]
+    client_data = keycloak_administrator_connection.get_client(client_id)
+    client_data["authenticationFlowBindingOverrides"]["direct grant"] = flow_id
+    client_data["authenticationFlowBindingOverrides"]["direct_grant"] = flow_id
+    keycloak_administrator_connection.update_client(client_id, client_data)
+
+    # create config
+    legacy_auth_config_create(keycloak_administrator_connection, ucr["ldap/base"], groups)
+
+    yield SimpleNamespace(
+        client=client,
+        client_secret=client_secret,
+        group=group_name,
+        group_dn=group_dn,
+        user=user_name,
+        user_dn=user_dn,
+        password="univention",
+    )
+
+    # cleanup
+    run_command(["univention-keycloak", "legacy-authentication-flow", "delete", "--flow", "direct grant"])
+    legacy_auth_config_remove(keycloak_administrator_connection, groups)
+    keycloak_administrator_connection.delete_client(client_id)

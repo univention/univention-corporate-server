@@ -34,6 +34,7 @@ from types import SimpleNamespace
 from typing import Optional
 
 import requests
+from keycloak import KeycloakAdmin
 from selenium.webdriver.chrome.webdriver import WebDriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.remote.webelement import WebElement
@@ -144,3 +145,114 @@ def keycloak_login(
 
 def run_command(cmd: list) -> str:
     return subprocess.run(cmd, stdout=subprocess.PIPE, check=True).stdout.decode('utf-8')
+
+
+def legacy_auth_config_remove(session: KeycloakAdmin, groups: dict) -> None:
+    """
+    groups = {
+        "umcaccess": "https://master.ucs.test/univention/saml/metadata",
+        "testclientaccess": "testclient",
+    }
+    """
+    auth_role_name = "univentionClientAccess"
+    ldap_provider_name = "ldap-provider"
+    group_mapper_name = "group-mapper"
+
+    # remove role from clients
+    for client in session.get_clients():
+        for role in session.get_client_roles(client["id"]):
+            if role["name"] == auth_role_name:
+                session.delete_client_role(client["id"], role["name"])
+
+    # remove groups
+    for group in session.get_groups():
+        if group["name"] in groups.keys():
+            session.delete_group(group["id"])
+
+    # remove group-mapper
+    ldap_provider_id = session.get_components(query={"name": ldap_provider_name, "type": "org.keycloak.storage.UserStorageProvider"})[0]["id"]
+    mapper = session.get_components(query={"parent": ldap_provider_id, "name": group_mapper_name, "type": "org.keycloak.storage.ldap.mappers.LDAPStorageMapper"})
+    if mapper:
+        session.delete_component(mapper[0]["id"])
+
+
+def legacy_auth_config_create(session: KeycloakAdmin, ldap_base: str, groups: dict) -> None:
+    """
+    groups = {
+        "umcaccess": "https://master.ucs.test/univention/saml/metadata",
+        "testclientaccess": "testclient",
+    }
+    """
+    auth_role_name = "univentionClientAccess"
+    ldap_provider_name = "ldap-provider"
+    group_mapper_name = "group-mapper"
+
+    # get/check clients
+    clients = {x["clientId"]: x["id"] for x in session.get_clients()}
+    for client in groups.values():
+        if client not in clients:
+            raise Exception(f"client {client} not found")
+
+    # create group mapper
+    ldap_provider_id = session.get_components(query={"name": ldap_provider_name, "type": "org.keycloak.storage.UserStorageProvider"})[0]["id"]
+    mapper = session.get_components(query={"parent": ldap_provider_id, "name": group_mapper_name, "type": "org.keycloak.storage.ldap.mappers.LDAPStorageMapper"})
+    if mapper:
+        raise Exception(f"group mapper {group_mapper_name} already exists")
+    else:
+        group_names = list(groups.keys())
+        ldap_filter = f"(cn={group_names[0]})" if len(group_names) == 1 else f"(|(cn={')(cn='.join(group_names)}))"
+        payload = {
+            "name": group_mapper_name,
+            "providerId": "group-ldap-mapper",
+            "providerType": "org.keycloak.storage.ldap.mappers.LDAPStorageMapper",
+            "parentId": ldap_provider_id,
+            "config": {
+                "membership.attribute.type": ["UID"],
+                "group.name.ldap.attribute": ["cn"],
+                "preserve.group.inheritance": ["false"],
+                "membership.user.ldap.attribute": ["uid"],
+                "groups.dn": [ldap_base],
+                "mode": ["READ_ONLY"],
+                "user.roles.retrieve.strategy": ["LOAD_GROUPS_BY_MEMBER_ATTRIBUTE"],
+                "groups.ldap.filter": [ldap_filter],
+                "membership.ldap.attribute": ["memberUid"],
+                "ignore.missing.groups": ["true"],
+                "memberof.ldap.attribute": ["memberOf"],
+                "group.object.classes": ["univentionGroup"],
+                "groups.path": ["/"],
+                "drop.non.existing.groups.during.sync": ["true"],
+            },
+        }
+        session.create_component(payload)
+
+    # update groups
+    mapper_id = session.get_components(
+        query={
+            "parent": ldap_provider_id,
+            "name": group_mapper_name,
+            "type": "org.keycloak.storage.ldap.mappers.LDAPStorageMapper",
+        },
+    )[0]["id"]
+    session.raw_post(f'/admin/realms/ucs/user-storage/{ldap_provider_id}/mappers/{mapper_id}/sync?direction=fedToKeycloak', data={})
+
+    # add client role to each client
+    roles = {}
+    for client in groups.values():
+        client_id = clients[client]
+        session.create_client_role(client_id, {"name": auth_role_name}, skip_exists=True)
+        role = [x for x in session.get_client_roles(client_id) if x["name"] == auth_role_name][0]
+        roles[client_id] = role["id"]
+
+    # add group role mapping
+    keycloak_groups = {x["name"]: x["id"] for x in session.get_groups()}
+    for group in groups.keys():
+        if group not in keycloak_groups:
+            raise Exception(f"group {group} not found")
+        group_id = keycloak_groups[group]
+        client_id = clients[groups[group]]
+        role_id = roles[client_id]
+        payload = {
+            "id": role_id,
+            "name": auth_role_name,
+        }
+        session.assign_group_client_roles(group_id, client_id, payload)

@@ -1,3 +1,9 @@
+ucs-test (10.0.15-17) unstable; urgency=medium
+
+  * Bug #56305: added test helper to create/remove legacy authz config
+
+ -- Felix Botner <botner@univention.de>  Wed, 09 Aug 2023 10:57:21 +0200
+
 ucs-test (10.0.15-16) unstable; urgency=medium
 
   * Bug #24081: add test case for UDM CLI printer URI parsing
