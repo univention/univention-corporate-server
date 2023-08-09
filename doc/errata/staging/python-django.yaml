@@ -4,7 +4,7 @@ version: [9]
 scope: ucs_4.4-0-errata4.4-9
 src: python-django
 fix: 1:1.10.7-2+deb9u20
-desc:
+desc: |
  This update addresses the following issues:
  * CVE-2021-45115: Denial-of-service possibility in the
    `UserAttributeSimilarityValidator` class.
