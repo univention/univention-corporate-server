@@ -233,7 +233,16 @@ def legacy_auth_config_create(session: KeycloakAdmin, ldap_base: str, groups: di
             "type": "org.keycloak.storage.ldap.mappers.LDAPStorageMapper",
         },
     )[0]["id"]
-    session.raw_post(f'/admin/realms/ucs/user-storage/{ldap_provider_id}/mappers/{mapper_id}/sync?direction=fedToKeycloak', data={})
+    # python-keycloak uses urljoin to join the base url and the path for raw requests
+    # but urljoin eats up the path portions of the first argument and we lose the keycloak path
+    #   urljoin("https://srv/auth1", "/auth2") -> 'https://srv/auth2'
+    # so we have to carry the keycloak path over and add it to raw requests ourself
+    url = f"/admin/realms/ucs/user-storage/{ldap_provider_id}/mappers/{mapper_id}/sync?direction=fedToKeycloak"
+    if session.path:
+        url = f"{session.path}/{url}"
+    res = session.raw_post(url, data={})
+    if res.status_code != 200:
+        raise Exception(f"raw POST to {url} failed: {res}")
 
     # add client role to each client
     roles = {}
@@ -247,7 +256,7 @@ def legacy_auth_config_create(session: KeycloakAdmin, ldap_base: str, groups: di
     keycloak_groups = {x["name"]: x["id"] for x in session.get_groups()}
     for group in groups.keys():
         if group not in keycloak_groups:
-            raise Exception(f"group {group} not found")
+            raise Exception(f"group {group} not found in keycloak")
         group_id = keycloak_groups[group]
         client_id = clients[groups[group]]
         role_id = roles[client_id]
