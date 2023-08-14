@@ -51,7 +51,7 @@ import pwd
 import stat
 import syslog
 from collections import Mapping
-from logging.handlers import TimedRotatingFileHandler
+from logging.handlers import WatchedFileHandler
 from typing import IO, Any, Dict, Optional, Type  # noqa: F401
 
 from six import PY2, string_types, text_type
@@ -65,7 +65,7 @@ import listener
 __syslog_opened = False
 
 
-class UniFileHandler(TimedRotatingFileHandler):
+class UniFileHandler(WatchedFileHandler):
     """
     Used by listener modules using the :py:mod:`univention.listener` API to
     write log files below :file:`/var/log/univention/listener_log/`.
@@ -75,20 +75,23 @@ class UniFileHandler(TimedRotatingFileHandler):
 
     def _open(self):
         # type: () -> IO[str]
-        stream = TimedRotatingFileHandler._open(self)
-        file_stat = os.fstat(stream.fileno())
-        listener_uid = pwd.getpwnam('listener').pw_uid
-        adm_gid = grp.getgrnam('adm').gr_gid
-        if file_stat.st_uid != listener_uid or file_stat.st_gid != adm_gid:
-            old_uid = os.geteuid()
-            try:
-                if old_uid != 0:
-                    listener.setuid(0)
-                os.fchown(stream.fileno(), listener_uid, adm_gid)
-                os.fchmod(stream.fileno(), stat.S_IRUSR | stat.S_IWUSR | stat.S_IRGRP)
-            finally:
-                if old_uid != 0:
-                    listener.unsetuid()
+        try:
+            stream = WatchedFileHandler._open(self)
+        except PermissionError:
+            file_stat = os.stat(self.baseFilename)
+            listener_uid = pwd.getpwnam('listener').pw_uid
+            adm_gid = grp.getgrnam('adm').gr_gid
+            if file_stat.st_uid != listener_uid or file_stat.st_gid != adm_gid:
+                old_uid = os.geteuid()
+                try:
+                    if old_uid != 0:
+                        listener.setuid(0)
+                    os.chown(self.baseFilename, listener_uid, adm_gid)
+                    os.chmod(self.baseFilename, stat.S_IRUSR | stat.S_IWUSR | stat.S_IRGRP)
+                finally:
+                    if old_uid != 0:
+                        listener.unsetuid()
+            stream = WatchedFileHandler._open(self)
         return stream
 
 
@@ -311,7 +314,7 @@ def get_listener_logger(name, filename, level=None, handler_kwargs=None, formatt
             handler.setFormatter(formatter)
     else:
         # Create handler and formatter from scratch.
-        handler = UniFileHandler(filename=filename, when='W6', backupCount=60, **handler_kwargs)
+        handler = UniFileHandler(filename=filename, **handler_kwargs)
         handler.set_name(logger_name)
         handler.setLevel(level)
         formatter_cls = fmt_kwargs.pop('cls')
