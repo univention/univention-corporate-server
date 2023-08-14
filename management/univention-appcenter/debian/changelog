@@ -1,3 +1,9 @@
+univention-appcenter (9.0.8-4) unstable; urgency=medium
+
+  * Bug #55610: add logrotate configuration for the listener module and a UCR variable to modify it
+
+ -- Mika Westphal <westphal@univention.de>  Mon, 14 Aug 2023 14:37:25 +0200
+
 univention-appcenter (9.0.8-3) unstable; urgency=medium
 
   * Bug #56201: replace python-notifier and adjust to new UMC module API
