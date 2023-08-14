@@ -1,0 +1,11 @@
+product: ucs
+release: "5.0"
+version: [4]
+scope: ucs_5.0-0-errata5.0-4
+src: univention-radius
+fix: 7.0.5-5
+desc: |
+ This update addresses the following issues:
+ * The logrotation for the listener module logs is now done by logrotate
+   and it can be configured via UCR.
+bug: [55610]
