@@ -1,15 +1,17 @@
-[tool.poetry]
+[project]
 name = "univention-admin-rest-client-test"
-version = "0.1.0"
 description = "Testing wrapper around the UDM REST API Client"
-authors = ["Johannes Lohmer <lohmer@univention.de>"]
-
-[tool.poetry.dependencies]
-pytest = "^5.2"
+version = "0.1.0"
+authors = [
+	{"name" = "Johannes Lohmer", "email" = "lohmer@univention.de"}
+]
+readme = "README.md"  # Add this if you have a readme file
+dynamic = ["version"]
 python = "^3.7"
-univention-admin-rest-client = "^0.1.0"
-
-[tool.poetry.dev-dependencies]
+dependencies = [
+	"pytest^5.2",
+	"univention-admin-rest-client^0.1.0",
+]
 
 [[tool.poetry.packages]]
 include = "univention/admin/rest/client/*.py"

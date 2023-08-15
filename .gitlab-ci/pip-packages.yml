@@ -10,7 +10,7 @@ build_udm_rest_client:
   script:
     - cd management/univention-directory-manager-rest/test-client
     - ls
-    - pip install poetry
+    - pip install hatch
     - |-
       if [ "$CI_COMMIT_BRANCH" != "$CI_DEFAULT_BRANCH" ]; then
         poetry version "0.0.0.dev0+${CI_COMMIT_REF_SLUG//-/.}.$CI_COMMIT_SHORT_SHA"
@@ -31,9 +31,9 @@ build_udm_rest_testing_client:
     expire_in: 1 week
   image: docker-registry.knut.univention.de/python:3.11-slim
   script:
-    - cd management/univention-directory-manager-rest/src
+    - cd management/univention-directory-manager-rest
     - ls
-    - pip install poetry
+    - pip install hatch
     - |-
       if [ "$CI_COMMIT_BRANCH" != "$CI_DEFAULT_BRANCH" ]; then
         poetry version "0.0.0.dev0+${CI_COMMIT_REF_SLUG//-/.}.$CI_COMMIT_SHORT_SHA"

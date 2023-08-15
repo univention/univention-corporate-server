@@ -70,7 +70,7 @@ class TestUDM(UDM):
 
     def remove_cleanup(self, object_type: str, dn: Optional[str]) -> None:
         assert dn, "Tried to unset cleanup for an object with empty dn, this might be a bug in this testing wrapper"
-        self._cleanup[object_type].remove(dn)
+         self._cleanup[object_type].remove(dn)
 
     def assert_test_object(self, object_type: str, dn: Optional[str]):
         """In a test context, only object that were created during the test can be modified or deleted."""
@@ -80,6 +80,7 @@ class TestUDM(UDM):
 
     def cleanup(self) -> None:
         for key, value in self._cleanup.items():
+            # TODO: Implement this propperly
             print(key, value)
 
 
