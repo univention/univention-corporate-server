@@ -1,0 +1,16 @@
+product: ucs
+release: "5.0"
+version: [4]
+scope: ucs_5.0-0-errata5.0-4
+src: univention-lib
+fix: 9.0.16-3
+desc: |
+ This update addresses the following issues:
+ * In case an LDAP ACL or schema extension got installed by a joinscript
+   by running `ucs_registerLDAPExtension` and it was not activated for some
+   reason (e.g. because the slapd was not running at the time when the
+   postrun of the `ldap_extension` listener module was running)
+   a rerun of `univention-run-join-scripts` did not change anything.
+   Now `ucs_registerLDAPExtension` has been adjusted to do a trivial
+   (i.e. no-op) LDAP modification to re-trigger activation.
+bug: [55337]
