@@ -267,7 +267,7 @@ lifecycle on their own in the app.
 
    :ref:`create-app-with-docker-web-interface`
       for more information about how to expose the app's web interface in
-      cite:t:`ucs-app-center`.
+      :cite:t:`ucs-app-center`.
 
 .. _services-app-center-integration-portal:
 
