@@ -10,7 +10,6 @@ Welcome to Univention Corporate Server architecture!
    :maxdepth: 2
    :caption: Contents:
    :numbered: 3
-   :hidden:
 
    index
    positioning
