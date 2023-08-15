@@ -7,6 +7,7 @@ fix: 4.19.289-2
 desc: |
  This update addresses the following issue:
  * [x86] Add mitigations for Gather Data Sampling (GDS) (CVE-2022-40982)
+note: This is the 1st of 2 parts.
 bug: [56430]
 cve:
 - CVE-2022-40982
