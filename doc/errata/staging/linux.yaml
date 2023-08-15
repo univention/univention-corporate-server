@@ -6,20 +6,7 @@ src: linux
 fix: 4.19.289-2
 desc: |
  This update addresses the following issue:
- 4.19.289-2 (Tue, 08 Aug 2023 04:35:25 +0200)
- * [x86] Add mitigations for Gather Data Sampling (GDS) (CVE-2022-40982) -
-   init: Provide arch_cpu_finalize_init() - x86/cpu: Switch to
-   arch_cpu_finalize_init() - ARM: cpu: Switch to arch_cpu_finalize_init() -
-   init: Remove check_bugs() leftovers - init: Invoke arch_cpu_finalize_init()
-   earlier - init, x86: Move mem_encrypt_init() into arch_cpu_finalize_init()
-   - x86/fpu: Remove cpuinfo argument from init functions - x86/fpu: Mark init
-   functions __init - x86/fpu: Move FPU initialization into
-   arch_cpu_finalize_init() - x86/speculation: Add Gather Data Sampling
-   mitigation - x86/speculation: Add force option to GDS mitigation -
-   x86/speculation: Add Kconfig option for GDS - KVM: Add GDS_NO support to
-   KVM - x86/xen: Fix secondary processors' FPU initialization -
-   Documentation/x86: Fix backwards on/off logic about YMM support
- * [x86] cpu: Avoid ABI change for GDS mitigations
+ * [x86] Add mitigations for Gather Data Sampling (GDS) (CVE-2022-40982)
 bug: [56430]
 cve:
 - CVE-2022-40982
