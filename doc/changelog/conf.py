@@ -24,10 +24,9 @@ from datetime import date
 
 # -- Project information -----------------------------------------------------
 
+version = "5.0"
 # The full version, including alpha/beta/rc tags
 release = "5.0-4"
-
-version = "5.0"
 
 project = f'UCS {release} Changelog'
 copyright = f'2023-{date.today().year}, Univention GmbH'
@@ -93,6 +92,10 @@ html_theme = 'univention_sphinx_book_theme'
 html_theme_options = {
     "pdf_download_filename": f"{pdf_doc_base}.pdf",
     "show_source_license": True,
+    "typesense_search": True,
+    "typesense_document": pdf_doc_base,
+    "typesense_document_version": release,
+    "univention_matomo_tracking": True,
 }
 
 # Add any paths that contain custom static files (such as style sheets) here,
