@@ -29,9 +29,10 @@ project = 'Univention Corporate Server - Manual for developers'
 copyright = '2023-{}, Univention GmbH'.format(date.today().year)
 author = ''
 
-# The full version, including alpha/beta/rc tags
-release = '5.0-4'
 version = '5.0'
+# The full version, including alpha/beta/rc tags
+# Used for source reference in :uv:src: role
+release = '5.0-4'
 
 html_show_copyright = True
 language = 'en'
@@ -94,6 +95,9 @@ html_theme = 'univention_sphinx_book_theme'
 html_theme_options = {
     "pdf_download_filename": f"{pdf_doc_base}.pdf",
     "show_source_license": True,
+    "typesense_search": True,
+    "typesense_document": pdf_doc_base,
+    "typesense_document_version": version,
 }
 
 html_style = 'custom.css'
