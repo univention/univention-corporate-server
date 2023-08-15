@@ -6,10 +6,8 @@ src: poppler
 fix: 0.71.0-5+deb10u2
 desc: |
  This update addresses the following issues:
- 0.71.0-5+deb10u2 (Mon, 14 Aug 2023 14:34:40 +0300)
- * Non-maintainer upload by the LTS Security Team.
- * CVE-2020-36023: Infinite loop in FoFiType1C::cvtGlyph()
- * CVE-2020-36024: NULL dereference in FoFiType1C::convertToType1()
+ * CVE-2020-36023: Infinite loop in `FoFiType1C::cvtGlyph()`
+ * CVE-2020-36024: NULL dereference in `FoFiType1C::convertToType1()`
 bug: [56431]
 cve:
 - CVE-2020-36023
