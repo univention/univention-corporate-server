@@ -28,8 +28,9 @@ project = 'Univention Corporate Server - Extended Windows integration documentat
 copyright = f'2021-{date.today().year}, Univention GmbH'
 author = ''
 
+version = "5.0"
 # The full version, including alpha/beta/rc tags
-release = '5.0'
+release = version
 
 html_show_copyright = True
 language = 'en'
@@ -84,6 +85,9 @@ html_theme_options = {
     "use_download_button": False,
     "pdf_download_filename": f"{pdf_doc_base}.pdf",
     "show_source_license": True,
+    "typesense_search": True,
+    "typesense_document": pdf_doc_base,
+    "typesense_document_version": version,
 }
 
 # Add any paths that contain custom static files (such as style sheets) here,
