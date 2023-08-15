@@ -21,8 +21,9 @@ from datetime import date
 
 # -- Project information -----------------------------------------------------
 
+version = "5.0"
 release = "5.0-4"
-project = f"Univention Corporate Server Architecture {release}"
+project = f"Univention Corporate Server Architecture {version}"
 copyright = f'{date.today().year}, Univention GmbH'
 author = 'Univention GmbH'
 language = 'en'
@@ -73,7 +74,7 @@ rst_epilog = """
 """
 
 rediraffe_redirects = "redirects.txt"
-rediraffe_branch = "5.0-1"
+rediraffe_branch = release
 
 
 # -- Options for HTML output -------------------------------------------------
@@ -88,6 +89,9 @@ html_theme = 'univention_sphinx_book_theme'
 html_theme_options = {
     "pdf_download_filename": f"{pdf_doc_base}.pdf",
     "show_source_license": True,
+    "typesense_search": True,
+    "typesense_document": pdf_doc_base,
+    "typesense_document_version": version,
 }
 
 # Add any paths that contain custom static files (such as style sheets) here,
