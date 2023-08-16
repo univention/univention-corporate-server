@@ -123,6 +123,10 @@ linkcheck_ignore = [
     r"https://errata\.software-univention\.de/#/\?erratum=",
 ]
 
+linkcheck_allowed_redirects = {
+    r"https://help\.univention\.com/t/\d+": r"https://help\.univention\.com/t/[\w-]+/\d+",
+}
+
 univention_use_doc_base = True
 
 # See Univention Sphinx Extension for its options.
