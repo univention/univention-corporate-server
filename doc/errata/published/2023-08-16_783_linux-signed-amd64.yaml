@@ -11,3 +11,6 @@ note: This is the 2nd of 2 parts.
 bug: [56430]
 cve:
 - CVE-2022-40982
+erratum: 783
+announced: 2023-08-16
+support: core
