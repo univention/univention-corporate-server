@@ -1,3 +1,9 @@
+univention-portal (4.0.14-5) unstable; urgency=medium
+
+  * Bug #55610: add logrotate configuration for the listener module and a UCR variable to modify it
+
+ -- Mika Westphal <westphal@univention.de>  Wed, 16 Aug 2023 12:24:11 +0200
+
 univention-portal (4.0.14-4) unstable; urgency=medium
 
   * Bug #55785: fix HTTPS detection when acessing navigation.json endpoint
