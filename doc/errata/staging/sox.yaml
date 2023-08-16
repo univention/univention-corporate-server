@@ -6,10 +6,8 @@ src: sox
 fix: 14.4.1-5+deb9u5
 desc: |
  This update addresses the following issue:
- 14.4.1-5+deb9u5 (Sun, 13 Aug 2023 14:20:44 +0000)
- * Non-maintainer upload by the ELTS Team.
- * Fix CVE-2023-32627: A floating point exception vulnerability was found in
-   sox, in the read_samples function at sox/src/voc.c. This flaw can lead to a
+ * CVE-2023-32627: A floating point exception vulnerability was found in sox,
+   in the function `read_samples` at `sox/src/voc.c`. This flaw can lead to a
    denial of service.
 bug: [56428]
 cve:
