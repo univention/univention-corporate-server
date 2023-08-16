@@ -319,7 +319,7 @@ UCR limitations
    UCR commands validate the variable name using the function
    :py:func:`validate_key`, that prohibits using many shell control characters.
    For more information, refer to
-   :uv:src:`base/univention-config-registry/python/univention/config_registry/misc.py#L125`.
+   :uv:src:`base/univention-config-registry/python/univention/config_registry/misc.py#L131`.
 
 #. It's recommended, that UCR variables shouldn't exceed the length of ``1024``
    characters counting the length of the key and the length of the value plus 3:
