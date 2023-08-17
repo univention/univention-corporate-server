@@ -23,7 +23,7 @@ ucsschool_release='scope'
 shutdown='false'
 
 # some internal stuff
-image="${DIMAGE:-docker-registry.knut.univention.de/ucs-ec2-tools}"
+image="${DIMAGE:-gitregistry.knut.univention.de/univention/dist/ucs-ec2-tools}"
 debug="${DEBUG:=false}"
 docker="${DOCKER:=true}"
 docker_env_file="$(mktemp)"
