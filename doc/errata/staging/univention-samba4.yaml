@@ -1,0 +1,12 @@
+product: ucs
+release: "5.0"
+version: [4]
+scope: ucs_5.0-0-errata5.0-4
+src: univention-samba4
+fix: 9.0.13-6
+desc: |
+ This update addresses the following issues:
+ * The `samba` PAM stack included `common-auth` which is uncessary in the
+   context Samba/AD, because Samba/AD only uses the `account` and `session`
+   phases of PAM.
+bug: [56383]
