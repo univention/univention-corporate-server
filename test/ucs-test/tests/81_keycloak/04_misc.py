@@ -144,6 +144,8 @@ def test_ucs_realm_config(keycloak_config, ucr):
 
 @pytest.mark.skipif(not os.path.isfile("/etc/keycloak.secret"), reason="fails on hosts without keycloak.secret")
 def test_csp(keycloak_config, ucr):
+    if not ucr.is_true('keycloak/server/sso/virtualhost'):
+        pytest.skip("no virtual host config, therefore no special cookie header settings")
     response = requests.post(keycloak_config.admin_url, headers={"Accept": "text/html"})
     assert response.headers["Content-Security-Policy"]
     assert f"*.{ucr['domainname']}" in response.headers["Content-Security-Policy"]
