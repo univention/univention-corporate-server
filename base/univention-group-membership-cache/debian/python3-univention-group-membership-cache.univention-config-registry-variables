@@ -1,0 +1,6 @@
+[logrotate/group-membership-cache/create]
+Description[de]=Definiert die Zugriffsrechte, Besitzer und Gruppe der ldap-cache Log-Datei mit der der Logrotate-Mechanismus eine neue Datei Version anlegt.
+Description[en]=Defines the permissions, file owner and group of the ldap-cache logfile of a new file version created by the logrotate mechanism.
+Type=str
+Default=640 listener adm
+Categories=service-ldap

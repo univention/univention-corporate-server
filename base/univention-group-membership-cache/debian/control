@@ -10,6 +10,7 @@ Build-Depends:
  python3-gdbm,
  python3-ldap,
  python3-univention,
+ univention-config-dev,
 
 Package: univention-group-membership-cache
 Architecture: all
