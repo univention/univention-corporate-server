@@ -234,6 +234,8 @@ skip_reprovision() {
 
 run_samba_domain_provision() {
 	samba-tool domain provision \
+	    --backend-store="$samba_database_backend_store" \
+	    --backend-store-size="$samba_database_backend_store_size" \
 	    --realm="$kerberos_realm" \
 	    --domain="$windows_domain" \
 	    --domain-sid="$DOMAIN_SID" \

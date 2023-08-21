@@ -1,3 +1,9 @@
+univention-samba4 (9.0.13-7) unstable; urgency=medium
+
+  * Bug #56434: support lmdb in univention-samba4-backup
+
+ -- Felix Botner <botner@univention.de>  Mon, 21 Aug 2023 20:32:44 +0200
+
 univention-samba4 (9.0.13-6) unstable; urgency=medium
 
   * Bug #56383: The PAM stack for samba should only use

@@ -140,8 +140,16 @@ for d in $DIRS; do
 					test "$(basename $file)" = "$i" && ignore=true && break
 				done
 				if ! $ignore; then
-					tdbbackup $file
-					Status=$?
+					file_type="$(file -b $file)"
+					if [[ $file == *.tdb ]] || [[ $file_type == TDB\ database* ]]; then
+						tdbbackup "$file"
+						Status=$?
+					elif [[ $file == *.ldb ]]; then
+						mdb_copy -n "$file" > "$file.bak"
+						Status=$?
+					else
+						terminate_on_error "Error unknown file suffix - $file"
+					fi
 					if [ $Status -ne 0 ]; then
 						terminate_on_error "Error while backing up $file with tdbbackup - status $Status"
 					fi
@@ -154,6 +162,7 @@ for d in $DIRS; do
 		tar cjf ${WHERE}/samba4_${n}.${WHEN}.tar.bz2 \
 			--exclude=smbd.tmp \
 			--exclude=\*.ldb \
+			--exclude=\*.ldb-lock \
 			--exclude=\*.tdb \
 			--warning=no-file-ignored \
 			--warning=no-file-changed \

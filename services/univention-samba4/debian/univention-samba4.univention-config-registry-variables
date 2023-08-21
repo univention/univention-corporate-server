@@ -573,3 +573,17 @@ Description[en]=This variable sets the duration (in seconds) the system waits fo
 Type=uint
 Default=10800
 Categories=service-samba
+
+[samba/database/backend/store]
+Description[de]=Definiert das zu verwendende Datenbank-Backend (default ist tdb).
+Description[en]=Specifies the database backend to be used (default is tdb).
+Type=str
+Default=tdb
+Categories=service-samba
+
+[samba/database/backend/store/size]
+Description[de]=Definiert die maximale Größe der Datenbank, gilt nur für lmdb als Datenbank-Backend (default 8Gb).
+Description[en]=Specifies the maximum size of the database, currently only supported by the lmdb backend (default 8Gb).
+Type=str
+Default=8Gb
+Categories=service-samba
