@@ -1,0 +1,20 @@
+product: ucs
+release: "4.4"
+version: [9]
+scope: ucs_4.4-0-errata4.4-9
+src: libssh
+fix: 0.7.3-2+deb9u4
+desc: |
+ This update addresses the following issues:
+ 0.7.3-2+deb9u4 (Wed, 16 Aug 2023 18:47:42 -0400)
+ * Non-maintainer upload by the ELTS Security Team.
+ [ Tobias Frost ]
+ * Apply upstream patch for CVE-2019-14889
+ [ Roberto C. Sánchez ]
+ * Backport patches for CVE-2023-1667.
+ * Include upstream patch to disable unit test torture_server_x11, which
+   frequently failed for no reason
+bug: [56464]
+cve:
+- CVE-2019-14889
+- CVE-2023-1667
