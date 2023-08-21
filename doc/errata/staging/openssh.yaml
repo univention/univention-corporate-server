@@ -1,0 +1,24 @@
+product: ucs
+release: "5.0"
+version: [3, 4]
+scope: ucs_5.0-0-errata5.0-4
+src: openssh
+fix: 1:7.9p1-10+deb10u3
+desc: |
+ This update addresses the following issue:
+ 1:7.9p1-10+deb10u3 (Wed, 29 Mar 2023 11:02:23 +0200)
+ * Non-maintainer upload.
+ [ Salvatore Bonaccorso ]
+ * ssh(1): Fix bad interaction between the ssh_config ConnectTimeout and
+   ConnectionAttempts directives - connection attempts after the first were
+   ignoring the requested timeout (LP: #1798049).
+ [ Utkarsh Gupta ]
+ * remote code execution relating to PKCS#11 providers -
+   debian/patches/CVE-2023-38408-1.patch: terminate process if requested to
+   load a PKCS#11 provider that isn't a PKCS#11 provider in ssh-pkcs11.c. -
+   debian/patches/CVE-2023-38408-3.patch: ensure FIDO/PKCS11 libraries contain
+   expected symbols in misc.c, misc.h, ssh-pkcs11.c, ssh-sk.c. -
+   CVE-2023-38408
+bug: [56463]
+cve:
+- CVE-2023-38408
