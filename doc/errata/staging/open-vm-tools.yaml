@@ -1,0 +1,15 @@
+product: ucs
+release: "4.4"
+version: [9]
+scope: ucs_4.4-0-errata4.4-9
+src: open-vm-tools
+fix: 2:10.1.5-5055683-4+deb9u4
+desc: |
+ This update addresses the following issue:
+ 2:10.1.5-5055683-4+deb9u4 (Wed, 16 Aug 2023 23:11:32 +0530)
+ * Non-maintainer upload by the ELTS team.
+ * Add patch to remove some authentication types which were deprecated long
+   ago. (Fixes: CVE-2023-20867)
+bug: [56469]
+cve:
+- CVE-2023-20867
