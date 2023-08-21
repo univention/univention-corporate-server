@@ -1,3 +1,10 @@
+univention-web (4.0.4-3) unstable; urgency=medium
+
+  * Bug #56458: New variables for the default themes: border-radius,
+    button-text-color, login page specific variables
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Sun, 20 Aug 2023 16:09:51 +0200
+
 univention-web (4.0.4-2) unstable; urgency=medium
 
   * Bug #55939: fix text color of disabled UMC text boxes for Safari browser
