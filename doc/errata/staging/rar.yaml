@@ -1,0 +1,39 @@
+product: ucs
+release: "4.4"
+version: [9]
+scope: ucs_4.4-0-errata4.4-9
+src: rar
+fix: 2:6.20-0.1~deb9u1
+desc: |
+ This update addresses the following issue:
+ 2:6.20-0.1~deb9u1 (Wed, 16 Aug 2023 15:06:04 +0200)
+ * Non-maintainer upload by the ELTS team.
+ * Fix CVE-2022-30333: The RAR archiver allows directory traversal to write to
+   files during an extract (aka unpack) operation, as demonstrated by creating
+   a ~/.ssh/authorized_keys file.
+ 2:6.20-0.1 (Fri, 27 Jan 2023 18:37:39 +0100)
+ * Non-maintainer upload
+ * New upstream version
+ 2:6.20~b1-0.1 (Wed, 26 Oct 2022 19:10:57 +0200)
+ * New upstream version, CVE-2022-30333)
+ * d/watch: Add versionmangle for beta versions
+ * Update debhelper-compat to level 12
+ * d/control: Add XS-Autobuild: yes
+ 2:6.11-0.1 (Wed, 16 Mar 2022 20:39:28 +0200)
+ * 3rd party BSD licenses do not apply to default.sfx anymore
+ * Do not strip rar for distribution permission compliance
+ * Include makefile for distribution permission compliance
+ * d/rules: Use DEB_HOST_ARCH over DEB_BUILD_ARCH to enable cross build
+ 2:5.5.0-1.1 (Wed, 13 Oct 2021 18:51:43 +0200)
+ * Non-maintainer upload.
+ * DEP-5 copyright file with licenses fixed
+ * Package unrar again for distribution permission compliance
+ * Exclude txt files from compression so they are untouched
+ * Update Debian's manpage
+ * Remove autobuild tag
+ * d/watch: Make the package a MUT (download both origtars)
+ 2:5.5.0-1 (Tue, 29 Aug 2017 11:10:31 +0100)
+ * New upstream release
+bug: [56465]
+cve:
+- CVE-2022-30333
