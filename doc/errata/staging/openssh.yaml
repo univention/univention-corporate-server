@@ -1,0 +1,17 @@
+product: ucs
+release: "4.4"
+version: [9]
+scope: ucs_4.4-0-errata4.4-9
+src: openssh
+fix: 1:7.4p1-10+deb9u8
+desc: |
+ This update addresses the following issue:
+ 1:7.4p1-10+deb9u8 (Thu, 17 Aug 2023 06:58:41 +0530)
+ * Non-maintainer upload by the ELTS team.
+ * remote code execution relating to PKCS#11 providers -
+   d/p/CVE-2023-38408-1.patch: terminate process if requested to load a
+   PKCS#11 provider that isn't a PKCS#11 provider in ssh-pkcs11.c. -
+   CVE-2023-38408
+bug: [56466]
+cve:
+- CVE-2023-38408
