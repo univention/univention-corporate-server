@@ -44,7 +44,8 @@ set_udm_properties_for_kelvin () {
 				"recordUID",
 				"idi_schoolyear",
 				"purgeDate",
-				"serviceprovidergroup"
+				"serviceprovidergroup",
+				"protectedMember"
 		],
 		"workgroup": [
 				"divis_startdate",
@@ -59,7 +60,8 @@ set_udm_properties_for_kelvin () {
 				"recordUID",
 				"idi_schoolyear",
 				"purgeDate",
-				"serviceprovidergroup"
+				"serviceprovidergroup",
+				"protectedMember"
 		],
 		"school": [
 				"description",
