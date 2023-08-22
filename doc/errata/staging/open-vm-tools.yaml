@@ -6,10 +6,8 @@ src: open-vm-tools
 fix: 2:10.1.5-5055683-4+deb9u4
 desc: |
  This update addresses the following issue:
- 2:10.1.5-5055683-4+deb9u4 (Wed, 16 Aug 2023 23:11:32 +0530)
- * Non-maintainer upload by the ELTS team.
- * Add patch to remove some authentication types which were deprecated long
-   ago. (Fixes: CVE-2023-20867)
+ * CVE-2023-20867: Remove some authentication types which were deprecated long
+   ago.
 bug: [56469]
 cve:
 - CVE-2023-20867
