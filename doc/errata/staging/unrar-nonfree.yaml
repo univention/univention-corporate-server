@@ -6,15 +6,12 @@ src: unrar-nonfree
 fix: 1:5.6.6-1+deb9u1
 desc: |
  This update addresses the following issues:
- 1:5.6.6-1+deb9u1 (Wed, 16 Aug 2023 10:23:06 +0200)
- * Non-maintainer upload by the ELTS team.
- * Fix CVE-2017-12938, CVE-2017-12940, CVE-2017-12941, CVE-2017-12942,
-   CVE-2017-20006, CVE-2018-25018, CVE-2022-30333 and CVE-2022-48579. It was
-   discovered that UnRAR, an unarchiver for rar files, allows extraction of
-   files outside of the destination folder via symlink chains. Programming
-   flaws like heap-based buffer overflows or out-of-bounds reads may also
-   cause a denial of service (application crash) if a malformed rar archive is
-   extracted.
+ * CVE-2017-12938, CVE-2017-12940, CVE-2017-12941, CVE-2017-12942,
+   CVE-2017-20006, CVE-2018-25018, CVE-2022-30333, CVE-2022-48579: UnRAR, an
+   unarchiver for rar files, allows extraction of files outside of the
+   destination folder via symlink chains. Programming flaws like heap-based
+   buffer overflows or out-of-bounds reads may also cause a denial of service
+   (application crash) if a malformed rar archive is extracted.
 bug: [56467]
 cve:
 - CVE-2017-12938
