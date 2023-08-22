@@ -3,10 +3,3 @@ Description[de]=Mit dieser Variable lässt sich die Signaturprüfung für den Ap
 Description[en]=This variable allows deactivation of the signature verification for the Appcenter index. Default value is "true".
 Type=str
 Categories=management-umc
-
-[logrotate/app-attributes/create]
-Description[de]=Definiert die Zugriffsrechte, Besitzer und Gruppe der app_attributes Log-Datei mit der der Logrotate-Mechanismus eine neue Datei Version anlegt.
-Description[en]=Defines the permissions, file owner and group of the app_attributes logfile of a new file version created by the logrotate mechanism.
-Type=str
-Default=640 listener adm
-Categories=management-umc
