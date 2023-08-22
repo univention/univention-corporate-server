@@ -5,7 +5,7 @@ scope: ucs_5.0-0-errata5.0-4
 src: univention-directory-listener
 fix: 14.0.8-4
 desc: |
- This update addresses the following issues:
- * The logrotation for the listener module logs is now done by logrotate
+ This update addresses the following issue:
+ * The rotation for the listener module log file is now done by `logrotate`
    and it can be configured via UCR.
 bug: [55610]
