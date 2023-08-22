@@ -42,9 +42,3 @@ Description[en]=If activated, a warning is displayed if the browser version used
 Type=str
 Categories=portal
 
-[logrotate/portal-server/create]
-Description[de]=Definiert die Zugriffsrechte, Besitzer und Gruppe der portal_server Log-Datei mit der der Logrotate-Mechanismus eine neue Datei Version anlegt.
-Description[en]=Defines the permissions, file owner and group of the portal_server logfile of a new file version created by the logrotate mechanism.
-Type=str
-Default=640 listener adm
-Categories=portal

@@ -1,8 +1,10 @@
 univention-portal (4.0.14-5) unstable; urgency=medium
 
-  * Bug #55610: add logrotate configuration for the listener module and a UCR variable to modify it
+  * Revert "Bug #55610: added univention-portal logrotate configuration and a UCR variable"
 
- -- Mika Westphal <westphal@univention.de>  Wed, 16 Aug 2023 12:24:11 +0200
+    This reverts commit 8c336a2fd6aa314e8a574ab73b7bdfc115c9374f.
+
+ -- Mika Westphal <westphal@univention.de>  Tue, 22 Aug 2023 12:38:27 +0200
 
 univention-portal (4.0.14-4) unstable; urgency=medium
 

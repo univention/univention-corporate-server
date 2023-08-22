@@ -9,10 +9,4 @@ print("/var/log/univention/%s.log {" % name)
 for setting in sorted(settings):
     print("\t%s" % settings[setting])
 print("}")
-
-settings = univention.lib.ucrLogrotate.getLogrotateConfig("portal-server", configRegistry)
-print("/var/log/univention/listener_modules/portal_server.log {")
-for setting in sorted(settings):
-    print("\t%s" % settings[setting])
-print("}")
 @!@
