@@ -212,10 +212,8 @@ set_repository_if_testing () {  # Must be called after `basic_setup` set `$FTP_D
 }
 
 upgrade_to_latest () {
-	local rv=0
 	ucr set repository/online=true
-	_upgrade_to_latest "$@" || rv=$?
-	return $rv
+	_upgrade_to_latest "$@"
 }
 _upgrade_to_latest () {
 	declare -i remain=300 rv delay=30

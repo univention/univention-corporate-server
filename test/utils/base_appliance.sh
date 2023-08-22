@@ -974,15 +974,18 @@ __EOF__
 }
 
 setup_ec2 () {
-	ucr set grub/append="$(ucr get grub/append) console=tty0 console=ttyS0"
+	local DEV GRUB='(hd0)' append
 
-	DEV='/dev/xvda' GRUB='(hd0)'
+	for DEV in /dev/xvda /dev/vda /dev/sda /dev/hda
+	do
+		[ -b "$DEV" ] && break
+	done
+	[ -b "$DEV" ] || exit 1
 	echo "${GRUB} ${DEV}" >/boot/grub/device.map
 	debconf-communicate <<<"set grub-pc/install_devices $DEV"
 
 	append="$(ucr get grub/append |
-		sed -re "s|/dev/[hsv]da|${DEV}|g;s|(no)?splash||g")"
-
+		sed -re "s|/dev/[hsv]da|${DEV}|g;s|(no)?splash||g") console=tty0 console=ttyS0"
 	ucr set server/amazon=true \
 		updater/identify="UCS (EC2)" \
 		locale="en_US.UTF-8:UTF-8 de_DE.UTF-8:UTF-8" \
@@ -1063,9 +1066,6 @@ disown
 __EOF__
 	chmod +x /etc/init.d/resize2fs
 	update-rc.d resize2fs defaults
-
-	univention-system-setup-boot start
-	ucr set apache2/startsite="univention/initialsetup/"
 }
 
 install_appreport () {
