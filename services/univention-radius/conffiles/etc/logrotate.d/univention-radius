@@ -8,11 +8,4 @@ settings = univention.lib.ucrLogrotate.getLogrotateConfig(name, configRegistry)
 
 print("/var/log/univention/{name}.log {{\n\t{config}\n}}".format(
     name=name, config='\n\t'.join(sorted(settings.values()))))
-
-name = "univention-radius"
-settings = univention.lib.ucrLogrotate.getLogrotateConfig(name, configRegistry)
-print("/var/log/univention/listener_modules/%s.log {" % name)
-for setting in sorted(settings):
-    print("\t%s" % settings[setting])
-print("}")
 @!@

@@ -219,10 +219,3 @@ Description[en]=If "radius/use-service-specific-password" is enabled, this varia
 Type=uint
 Default=24
 Categories=service-radius
-
-[logrotate/univention-radius/create]
-Description[de]=Definiert die Zugriffsrechte, Besitzer und Gruppe der univention-radius Log-Datei mit der der Logrotate-Mechanismus eine neue Datei Version anlegt.
-Description[en]=Defines the permissions, file owner and group of the univention-radius logfile of a new file version created by the logrotate mechanism.
-Type=str
-Default=640 listener adm
-Categories=service-radius
