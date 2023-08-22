@@ -1,3 +1,10 @@
+univention-directory-listener (14.0.8-5) unstable; urgency=medium
+
+  * Bug #55610: added fix for failing permission test and added default
+    logrotate configuration
+
+ -- Mika Westphal <westphal@univention.de>  Tue, 22 Aug 2023 12:18:42 +0200
+
 univention-directory-listener (14.0.8-4) unstable; urgency=medium
 
   * Bug #55610: add logrotate configuration for the listener module and a UCR variable to modify it

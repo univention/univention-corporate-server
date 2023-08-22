@@ -117,3 +117,10 @@ Description[en]=The time span in seconds, for which the Listener waits for the m
 Type=uint
 Default=86400
 Categories=service-ln
+
+[logrotate/listener-modules/create]
+Description[de]=Definiert die Fallback-Zugriffsrechte, -Besitzer und -Gruppe der Listener-Module mit der der Logrotate-Mechanismus eine neue Datei anlegt.
+Description[en]=Defines the fallback permissions, file owner and group of the listener module logfiles files created by the logrotate mechanism.
+Type=str
+Default=640 listener adm
+Categories=service-ln

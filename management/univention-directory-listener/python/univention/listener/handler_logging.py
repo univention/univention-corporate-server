@@ -75,24 +75,31 @@ class UniFileHandler(WatchedFileHandler):
 
     def _open(self):
         # type: () -> IO[str]
+        newly_created = not os.path.exists(self.baseFilename)
+
         try:
             stream = WatchedFileHandler._open(self)
         except PermissionError:
-            file_stat = os.stat(self.baseFilename)
-            listener_uid = pwd.getpwnam('listener').pw_uid
-            adm_gid = grp.getgrnam('adm').gr_gid
-            if file_stat.st_uid != listener_uid or file_stat.st_gid != adm_gid:
-                old_uid = os.geteuid()
-                try:
-                    if old_uid != 0:
-                        listener.setuid(0)
-                    os.chown(self.baseFilename, listener_uid, adm_gid)
-                    os.chmod(self.baseFilename, stat.S_IRUSR | stat.S_IWUSR | stat.S_IRGRP)
-                finally:
-                    if old_uid != 0:
-                        listener.unsetuid()
+            self._set_listener_module_log_file_permissions()
             stream = WatchedFileHandler._open(self)
+
+        if newly_created:
+            # Bug #55610: When Python creates a new file every user is able to read it
+            self._set_listener_module_log_file_permissions()
         return stream
+
+    def _set_listener_module_log_file_permissions(self):
+        listener_uid = pwd.getpwnam('listener').pw_uid
+        adm_gid = grp.getgrnam('adm').gr_gid
+        old_uid = os.geteuid()
+        try:
+            if old_uid != 0:
+                listener.setuid(0)
+            os.chown(self.baseFilename, listener_uid, adm_gid)
+            os.chmod(self.baseFilename, stat.S_IRUSR | stat.S_IWUSR | stat.S_IRGRP)
+        finally:
+            if old_uid != 0:
+                listener.unsetuid()
 
 
 class ModuleHandler(logging.Handler):

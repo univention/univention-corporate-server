@@ -1,4 +1,8 @@
 Type: file
+File: etc/logrotate.d/listener-modules
+Variables: logrotate/listener-modules/.*
+
+Type: file
 File: etc/logrotate.d/univention-directory-listener
 Variables: logrotate/.*
 
