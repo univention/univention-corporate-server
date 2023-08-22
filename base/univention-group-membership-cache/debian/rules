@@ -32,4 +32,4 @@
 
 
 %:
-	dh $@ --with python3,ucr
+	dh $@ --with python3

@@ -1,8 +1,10 @@
 univention-group-membership-cache (2.0.1-2) unstable; urgency=medium
 
-  * Bug #55610: add logrotate configuration for the listener module and a UCR variable to modify it
+  * Revert "Bug #55610: added univention-group-membership-cache logrotate configuration and a UCR variable"
 
- -- Mika Westphal <westphal@univention.de>  Fri, 18 Aug 2023 11:22:27 +0200
+    This reverts commit d06f3bfdd9a98b85d49b3e879c95a336465fda5c.
+
+ -- Mika Westphal <westphal@univention.de>  Tue, 22 Aug 2023 12:41:28 +0200
 
 univention-group-membership-cache (2.0.1-1) unstable; urgency=medium
 
