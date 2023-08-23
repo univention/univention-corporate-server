@@ -22,3 +22,6 @@ desc: |
    Kerberos handling has already been done, so there is no point using
    `pam_krb5` functions in this case anyway.
 bug: [56383]
+erratum: 788
+announced: 2023-08-23
+support: core
