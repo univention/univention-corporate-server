@@ -73,6 +73,7 @@ DEFAULT_EXTENTIONS = ["password", "ldapmapper", "self-service"]
 DEFAULT_USER_STORAGE_PROVIDER_NAME = "ldap-provider"
 KERBEROS_KEYTAB_PATH = "/var/lib/univention-appcenter/apps/keycloak/conf/keycloak.keytab"
 LEGACY_APP_AUTHORIZATION_NAME = "flow with legacy app authorization"
+LOGIN_LINKS = 12
 
 # default LDAP attribute mapper
 #  * sn -> lastName
@@ -250,6 +251,25 @@ class UniventionKeycloakAdmin(KeycloakAdmin):
         except KeycloakGetError as exc:
             if exc.response_code != 202:
                 raise
+
+    def get_message_bundles(self, language: str) -> dict:
+        res = self.raw_get(f"/admin/realms/{self.realm_name}/localization/{language}")
+        raise_error_from_response(res, KeycloakGetError, expected_codes=[200])
+        return res.json()
+
+    def create_message_bundle(self, language: str, key: str, value: str) -> None:
+        # overwrite default content-type
+        content_type = self._connection.headers["Content-Type"]
+        try:
+            self._connection.headers["Content-Type"] = "text/plain"
+            res = self.raw_put(f"admin/realms/{self.realm_name}/localization/{language}/{key}", data=value)
+            raise_error_from_response(res, KeycloakError, expected_codes=[204])
+        finally:
+            self._connection.headers["Content-Type"] = content_type
+
+    def delete_message_bundle(self, language: str, key: str) -> None:
+        res = self.raw_delete(f"admin/realms/{self.realm_name}/localization/{language}/{key}")
+        raise_error_from_response(res, KeycloakError, expected_codes=[204, 404])
 
 
 class ExtType(Enum):
@@ -1078,7 +1098,52 @@ def parse_args(args: list[str] | None = None) -> Namespace:
     parser_client_flow.add_argument("--auth-flow", help="authentication flow", default=None)
     parser_client_flow.set_defaults(func=client_auth_flow)
 
-    # legacy authentication flow
+    # message
+    parser_messages = subparsers.add_parser("messages", help="manage messages bundles")
+    parser_messages_subparser = parser_messages.add_subparsers(title="operation", description="Valid subcommands", required=True, dest="operation")
+    # default locales
+    parser_messages_get_locales = parser_messages_subparser.add_parser("get-locales", help="get supported locales")
+    parser_messages_get_locales.add_argument("--json", help="json output", default=False, action="store_true")
+    parser_messages_get_locales.set_defaults(func=messages_get_locales)
+    # get
+    parser_messages_get = parser_messages_subparser.add_parser("get", help="get messages bundles")
+    parser_messages_get.add_argument("language", help="language to manage")
+    parser_messages_get.add_argument("--json", help="json output", default=False, action="store_true")
+    parser_messages_get.set_defaults(func=messages_get)
+    # set
+    parser_messages_set = parser_messages_subparser.add_parser("set", help="set messages bundle")
+    parser_messages_set.add_argument("language", help="language to manage")
+    parser_messages_set.add_argument("key", help="key to set")
+    parser_messages_set.add_argument("value", help="value for key")
+    parser_messages_set.set_defaults(func=messages_set)
+    # delete
+    parser_messages_delete = parser_messages_subparser.add_parser("delete", help="delete messages bundle")
+    parser_messages_delete.add_argument("language", help="language to manage")
+    parser_messages_delete.add_argument("key", help="key to delete")
+    parser_messages_delete.set_defaults(func=messages_delete)
+
+    # login links
+    parser_login_links = subparsers.add_parser("login-links", help="manage login links")
+    parser_login_links_subparser = parser_login_links.add_subparsers(title="operation", description="Valid subcommands", required=True, dest="operation")
+    # get
+    parser_login_links_get = parser_login_links_subparser.add_parser("get", help="get login links")
+    parser_login_links_get.add_argument("language", help="language for login link")
+    parser_login_links_get.add_argument("--json", help="json output", default=False, action="store_true")
+    parser_login_links_get.set_defaults(func=login_links_get)
+    # set
+    parser_login_links_set = parser_login_links_subparser.add_parser("set", help="set login links")
+    parser_login_links_set.add_argument("language", help="language for login links")
+    parser_login_links_set.add_argument("link_number", help=f"login link number (1-{LOGIN_LINKS})", metavar="link_number", choices=[str(x) for x in range(1, LOGIN_LINKS + 1)])
+    parser_login_links_set.add_argument("description", help="description for the link")
+    parser_login_links_set.add_argument("href", help="link reference")
+    parser_login_links_set.set_defaults(func=login_links_set)
+    # delete
+    parser_login_links_delete = parser_login_links_subparser.add_parser("delete", help="delete login links")
+    parser_login_links_delete.add_argument("language", help="language for login link")
+    parser_login_links_delete.add_argument("link_number", help=f"login link number (1-{LOGIN_LINKS})", metavar="link_number", choices=[str(x) for x in range(1, LOGIN_LINKS + 1)])
+    parser_login_links_delete.set_defaults(func=login_links_delete)
+
+    # legay authentication flow
     parser_legacy_authentication_flow = subparsers.add_parser("legacy-authentication-flow", add_help=False)
     parser_legacy_authentication_flow_operations = parser_legacy_authentication_flow.add_subparsers(title="operation", description="valid subcommands", required=True, dest="operation")
     parser_legacy_authentication_flow_create = parser_legacy_authentication_flow_operations.add_parser("create", help="create the legacy authentication flow")
@@ -1107,6 +1172,67 @@ def parse_args(args: list[str] | None = None) -> Namespace:
     opt.kerberos_realm = kerberos_realm
     opt.keycloak_fqdn = keycloak_fqdn
     return opt
+
+
+def _print_json(json_switch: bool, message: str) -> None:
+    if json_switch:
+        print(json.dumps(message, indent=4))
+    else:
+        print(message)
+
+
+def login_links_get(opt: Namespace) -> None:
+    session = UniventionKeycloakAdmin(opt)
+    res = session.get_message_bundles(opt.language)
+    links = {}
+    for message in res:
+        if message.startswith("linkDescription"):
+            number = message.split("linkDescription")[-1]
+            if number not in links:
+                links[number] = {}
+            links[number]["description"] = res[message]
+        if message.startswith("linkHref"):
+            number = message.split("linkHref")[-1]
+            if number not in links:
+                links[number] = {}
+            links[number]["reference"] = res[message]
+    _print_json(opt.json, dict(sorted(links.items())))
+
+
+def login_links_set(opt: Namespace) -> None:
+    session = UniventionKeycloakAdmin(opt)
+    session.create_message_bundle(opt.language, f"linkDescription{opt.link_number}", opt.description)
+    session.create_message_bundle(opt.language, f"linkHref{opt.link_number}", opt.href)
+
+
+def login_links_delete(opt: Namespace) -> None:
+    session = UniventionKeycloakAdmin(opt)
+    session.delete_message_bundle(opt.language, f"linkDescription{opt.link_number}")
+    session.delete_message_bundle(opt.language, f"linkHref{opt.link_number}")
+
+
+def messages_get_locales(opt: Namespace) -> None:
+    session = UniventionKeycloakAdmin(opt)
+    for realm in session.get_realms():
+        if realm["realm"] == opt.realm:
+            _print_json(opt.json, realm["supportedLocales"])
+            return
+
+
+def messages_get(opt: Namespace) -> None:
+    session = UniventionKeycloakAdmin(opt)
+    res = session.get_message_bundles(opt.language)
+    _print_json(opt.json, res)
+
+
+def messages_set(opt: Namespace) -> None:
+    session = UniventionKeycloakAdmin(opt)
+    session.create_message_bundle(opt.language, opt.key, opt.value)
+
+
+def messages_delete(opt: Namespace) -> None:
+    session = UniventionKeycloakAdmin(opt)
+    session.delete_message_bundle(opt.language, opt.key)
 
 
 def create_legacy_authentication_flow(opt: Namespace) -> None:
