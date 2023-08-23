@@ -59,7 +59,7 @@ suppress_warnings = ['git.too_shallow']
 intersphinx_mapping = {
     "uv-dev-ref": ("https://docs.software-univention.de/developer-reference/5.0/en", ("../developer-reference/_build/html/objects.inv", None)),
     "uv-manual": ("https://docs.software-univention.de/manual/5.0/en", ("../manual/_build/html/objects.inv", None)),
-    "uv-changelog": ("https://docs.software-univention.de/changelog/5.0-4/en", ("../changelog/_build/html/objects.inv", None)),
+    "uv-changelog": (f"https://docs.software-univention.de/changelog/{release}/en", ("../changelog/_build/html/objects.inv", None)),
     "uv-ext-windows": ("https://docs.software-univention.de/ext-windows/5.0/en", ("../ext-windows/_build/html/objects.inv", None)),
 }
 
@@ -178,8 +178,8 @@ def adapt_settings_to_translation(app, config):
 
         config.intersphinx_mapping = {
             "uv-dev-ref": ("https://docs.software-univention.de/developer-reference/5.0/en", ("../developer-reference/build/html/objects.inv", None)),
-            "uv-manual": ("https://docs.software-univention.de/manual/5.0/en", ("../manual/build/html/objects.inv", None)),
-            "uv-changelog": ("https://docs.software-univention.de/changelog/5.0-4/en", ("../changelog/build/html/objects.inv", None)),
+            "uv-manual": ("https://docs.software-univention.de/manual/5.0/de", ("../manual/build/html/objects.inv", None)),
+            "uv-changelog": (f"https://docs.software-univention.de/changelog/{release}/en", ("../changelog/build/html/objects.inv", None)),
             "uv-ext-windows": ("https://docs.software-univention.de/ext-windows/5.0/en", ("../ext-windows/build/html/objects.inv", None)),
         }
         config.bibtex_bibfiles = ["../bibliography-de.bib"]
