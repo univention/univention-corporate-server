@@ -10,3 +10,6 @@ desc: |
    `light`. These will be needed for the Keycloak login page. Custom themes
    will have sane defaults.
 bug: [56458]
+erratum: 786
+announced: 2023-08-23
+support: core
