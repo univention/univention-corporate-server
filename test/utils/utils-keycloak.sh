@@ -35,7 +35,7 @@ set -e
 
 install_upgrade_keycloak () {
 	echo "univention" > /tmp/pwdfile
-	local app image location
+	local app location image_name
 	local project=600
 	local repo_id=68
 	local gitlab="git.knut.univention.de"
@@ -49,11 +49,12 @@ install_upgrade_keycloak () {
 		git checkout "$KEYCLOAK_BRANCH"
 		# update local cache files for app
 		./update-appcenter-test.sh -l
-		# gitlab doesn't like underscore
+		# gitlab doesn't like underscore and dots
 		image_name="${KEYCLOAK_BRANCH//_/}"
+		image_name="${image_name//./}"
 		# change image in local cache
-		image="branch-$(slugify "$image_name")"
-		location="$(curl "https://$gitlab/api/v4/projects/$project/registry/repositories/$repo_id/tags/$image" | jq -r '.location')"
+		image_name="branch-$(slugify "$image_name")"
+		location="$(curl "https://$gitlab/api/v4/projects/$project/registry/repositories/$repo_id/tags/$image_name" | jq -r '.location')"
 		if [ -n "$location" ] && [ ! "$location" = "null" ]; then
 			python3 /root/appcenter-change-compose-image.py -a keycloak -i "$location"
 		fi
