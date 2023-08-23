@@ -1,3 +1,9 @@
+univention-keycloak (1.0.9-30) unstable; urgency=medium
+
+  * Bug #56478: manage message bundles and login links
+
+ -- Felix Botner <botner@univention.de>  Fri, 08 Sep 2023 13:43:32 +0200
+
 univention-keycloak (1.0.9-29) unstable; urgency=medium
 
   * Bug #56484: Adapt LDAP federation to Keycloak 22

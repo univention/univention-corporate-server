@@ -10,7 +10,7 @@ import os
 import pytest
 from utils import run_command
 
-from univention.testing.strings import random_string
+from univention.testing.strings import random_int, random_string
 from univention.testing.utils import wait_for_listener_replication
 from univention.udm.binary_props import Base64Bzip2BinaryProperty
 
@@ -119,3 +119,57 @@ def test_saml_client_user_attribute_mapper(keycloak_administrator_connection):
     client_id = keycloak_administrator_connection.get_client_id(client)
     mappers = [x["name"] for x in keycloak_administrator_connection.get_client(client_id)["protocolMappers"]]
     assert name not in mappers
+
+
+@pytest.mark.skipif(not os.path.isfile("/etc/keycloak.secret"), reason="fails on hosts without keycloak.secret")
+def test_messages():
+    languages = json.loads(run_command(["univention-keycloak", "messages", "get-locales", "--json"]))
+    for lang in languages:
+        key = random_string()
+        value = random_string()
+        # create
+        run_command(["univention-keycloak", "messages", "set", lang, key, value])
+        # get and check
+        messages = json.loads(run_command(["univention-keycloak", "messages", "get", lang, "--json"]))
+        assert key in messages
+        assert messages[key] == value
+        # delete and check
+        run_command(["univention-keycloak", "messages", "delete", lang, key])
+        messages = json.loads(run_command(["univention-keycloak", "messages", "get", lang, "--json"]))
+        assert key not in messages
+
+
+@pytest.mark.skipif(not os.path.isfile("/etc/keycloak.secret"), reason="fails on hosts without keycloak.secret")
+def test_login_links():
+    languages = json.loads(run_command(["univention-keycloak", "messages", "get-locales", "--json"]))
+    for lang in languages:
+        existing_links = json.loads(run_command(["univention-keycloak", "login-links", "get", lang, "--json"]))
+        try:
+            # create
+            number = str(random_int(1, 12))
+            desc = random_string()
+            href = random_string()
+            run_command(["univention-keycloak", "login-links", "set", lang, number, desc, href])
+            # get and check
+            links = json.loads(run_command(["univention-keycloak", "login-links", "get", lang, "--json"]))
+            assert number in links
+            assert links[number]["description"] == desc
+            assert links[number]["reference"] == href
+            # delete and check
+            run_command(["univention-keycloak", "login-links", "delete", lang, number])
+            links = json.loads(run_command(["univention-keycloak", "login-links", "get", lang, "--json"]))
+            assert number not in links
+        finally:
+            # at least create everything that was there before
+            for number in existing_links:
+                run_command(
+                    [
+                        "univention-keycloak",
+                        "login-links",
+                        "set",
+                        lang,
+                        number,
+                        existing_links[number]["description"],
+                        existing_links[number]["reference"],
+                    ],
+                )
