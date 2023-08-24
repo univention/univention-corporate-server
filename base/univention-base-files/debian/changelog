@@ -1,3 +1,9 @@
+univention-base-files (9.0.5-6) unstable; urgency=medium
+
+  * Bug #56055: Fixed changed input module name for TCP and RELP in rsyslog.conf
+
+ -- Jan Meier <jan.meier@univention.de>  Thu, 24 Aug 2023 12:24:24 +0100
+
 univention-base-files (9.0.5-5) unstable; urgency=low
 
   * Bug #56042: Fix wrong python format string for syslog/input/{udp,tcp,relp}
