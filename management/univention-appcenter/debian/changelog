@@ -1,3 +1,9 @@
+univention-appcenter (9.0.8-5) unstable; urgency=medium
+
+  * Bug #56339: Improve form layout for App Settings
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Thu, 24 Aug 2023 11:09:37 +0200
+
 univention-appcenter (9.0.8-4) unstable; urgency=medium
 
   * Bug #55610: add logrotate configuration for the listener module and a UCR variable to modify it

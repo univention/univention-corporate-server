@@ -63,6 +63,8 @@ class Configure(UniventionAppAction):
     def main(self, args):
         if args.list:
             for setting in args.app.get_settings():
+                if setting.is_unused(args.app):
+                    continue
                 phase = 'Settings'
                 if args.app.is_installed():
                     phase = 'Install'

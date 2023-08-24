@@ -13,8 +13,9 @@ define([
 	"umc/widgets/ComboBox",
 	"./AppSettingsFileUploader",
 	"./AppSettingsForm",
+	"./AppSettingsFormAdvanced",
 	"umc/i18n!umc/modules/appcenter"
-], function(declare, lang, array, tools, Text, TextBox, NumberSpinner, PasswordInputBox, CheckBox, ComboBox, AppSettingsFileUploader, AppSettingsForm, _) {
+], function(declare, lang, array, tools, Text, TextBox, NumberSpinner, PasswordInputBox, CheckBox, ComboBox, AppSettingsFileUploader, AppSettingsForm, AppSettingsFormAdvanced, _) {
 	return {
 		getWidgets: function(app, values, phase) {
 			var ret = [];
@@ -32,10 +33,12 @@ define([
 				var value = values[variable.name] || null;
 				var params = {
 					name: variable.name,
+					size: 'Two',
 					_groupName: variable.group || _('Settings'),
 					required: required,
 					label: variable.description,
 					disabled: (variable.show_read_only || []).indexOf(phase) !== -1 || values[variable.name] === undefined,
+					description: variable.help_text,
 					value: value
 				};
 				if (variable.type == 'String') {
@@ -107,19 +110,46 @@ define([
 		getGroups: function(app, widgets) {
 			var groups = [];
 			array.forEach(app.settings, function(setting) {
-				var groupName = setting.group || _('Settings');
-				if (groups.indexOf(groupName) === -1) {
-					groups.push(groupName);
+				if (setting.type === 'Group') {
+					groups.push({
+						_groupName: setting.name,
+						label: setting.description,
+						description: setting.help_text,
+						widgets: []
+					});
 				}
 			});
-			groups = array.map(groups, function(group) {
-				var _widgets = array.filter(widgets, function(widget) {
-					return group === widget._groupName;
-				});
-				var groupDef = {label: group, widgets: _widgets};
-				return groupDef;
+			array.forEach(widgets, function(widget) {
+				var group = groups.find(function(group) { return group._groupName === widget._groupName });
+				if (group === undefined) {
+					group = {
+						_groupName: widget._groupName,
+						label: widget._groupName,
+						description: '',
+						widgets: []
+					}
+					groups.push(group);
+				}
+				group.widgets.push(widget);
 			});
+			console.log(groups);
 			return groups;
+		},
+
+		getAdvancedFormConf: function(app, values, phase, smallHeaders) {
+			var widgets = this.getWidgets(app, values, phase);
+			if (widgets.length === 0) {
+				return null;
+			}
+			var groups = this.getGroups(app, widgets);
+			var layout = [];
+			return array.filter(array.map(groups, function(group) {
+				return {
+					title: group.label,
+					description: group.description,
+					widgets: group.widgets
+				};
+			}), function(group) { return group.widgets.length > 0 });
 		},
 
 		getFormConf: function(app, values, phase, smallHeaders) {
@@ -157,9 +187,20 @@ define([
 			return formConf ? new AppSettingsForm(formConf) : null;
 		},
 
+		getAdvancedForm: function(app, values, phase, smallHeaders) {
+			var groups = this.getAdvancedFormConf(app, values, phase, smallHeaders);
+			return groups ? new AppSettingsFormAdvanced({groups: groups}) : null;
+		},
+
 		getFormConfDeferred: function(app, phase, smallHeaders) {
 			return tools.umcpCommand('appcenter/config', {app: app.id, phase: phase}).then(lang.hitch(this, function(data) {
 				return this.getFormConf(app, data.result.values, phase, smallHeaders);
+			}));
+		},
+
+		getAdvancedFormConfDeferred: function(app, phase, smallHeaders) {
+			return tools.umcpCommand('appcenter/config', {app: app.id, phase: phase}).then(lang.hitch(this, function(data) {
+				return this.getAdvancedFormConf(app, data.result.values, phase, smallHeaders);
 			}));
 		},
 
@@ -167,6 +208,12 @@ define([
 			return this.getFormConfDeferred(app, phase, smallHeaders).then(function(formConf) {
 				return formConf ? new AppSettingsForm(formConf) : null;
 			});
-		}
+		},
+
+		getAdvancedFormDeferred: function(app, phase, smallHeaders) {
+			return this.getAdvancedFormConfDeferred(app, phase, smallHeaders).then(function(groups) {
+				return groups ? new AppSettingsFormAdvanced({groups: groups}) : null;
+			});
+		},
 	};
 });

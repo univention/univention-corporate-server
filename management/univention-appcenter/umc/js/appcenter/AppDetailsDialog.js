@@ -138,7 +138,8 @@ define([
 			} else if (funcName === 'uninstall') {
 				funcName = 'Remove';
 			}
-			this.standbyDuring(AppSettings.getFormDeferred(this.app, funcName).then(lang.hitch(this, function(form) {
+			this.standbyDuring(AppSettings.getAdvancedFormDeferred(this.app, funcName).then(lang.hitch(this, function(form) {
+				console.log(form);
 				if (form) {
 					this._appSettingsForm = form;
 					this._container.addChild(this._appSettingsForm);

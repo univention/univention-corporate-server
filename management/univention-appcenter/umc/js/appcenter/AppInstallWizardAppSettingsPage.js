@@ -34,13 +34,13 @@
 define([
 	"dojo/_base/declare",
 	"./AppSettings",
-	"./AppSettingsForm",
+	"./AppSettingsFormAdvanced",
 	"./AppText",
 	"umc/i18n!umc/modules/appcenter"
-], function(declare, AppSettings, AppSettingsForm, AppText, _) {
+], function(declare, AppSettings, AppSettingsFormAdvanced, AppText, _) {
 	return {
-		getPageConf: function(app, appSettings) {
-			const formConf = AppSettings.getFormConf(app, appSettings.values, 'Install');
+		getPageConf: function(app, appSettings, phase) {
+			const formConf = AppSettings.getAdvancedFormConf(app, appSettings.values, phase);
 			if (!formConf) {
 				return null;
 			}
@@ -56,19 +56,13 @@ define([
 					app: AppText.appFromApp(app),
 					name: 'appText'
 				}, {
-					type: AppSettingsForm,
+					type: AppSettingsFormAdvanced,
 					name: appSettingsFormName,
 					size: 'Two',
-					widgets: formConf.widgets,
-					layout: formConf.layout
+					groups: formConf,
 				}]
 			};
 		}
 	};
 });
-
-
-
-
-
 

@@ -67,6 +67,16 @@ define([
 
 		postMixInProperties: function() {
 			this.inherited(arguments);
+			switch (this.action) {
+				case 'remove':
+					this.phase = 'Remove';
+					break;
+				case 'upgrade':
+					this.phase = 'Upgrade';
+					break;
+				default:
+					this.phase = 'Install';
+			}
 			this._hasErrors = Object.values(this.dryRunResults).some(details =>
 				!!Object.keys(details.invokation_forbidden_details).length ||
 					!!Object.keys(details.broken).length
@@ -212,7 +222,7 @@ define([
 
 		_addAppSettingsPages: function() {
 			for (const app of this.apps) {
-				const pageConf = AppSettingsPage.getPageConf(app, this.appSettings[app.id]);
+				const pageConf = AppSettingsPage.getPageConf(app, this.appSettings[app.id], this.phase);
 				if (pageConf) {
 					this.pages.push(pageConf);
 				}

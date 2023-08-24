@@ -61,15 +61,16 @@ class Setting(TypedIniSectionObject):
     that can be configured before installation, during run-time, etc.
     """
 
-    type = IniSectionAttribute(default='String', choices=['String', 'Int', 'Bool', 'List', 'Password', 'File', 'PasswordFile', 'Status'])
+    type = IniSectionAttribute(default='String', choices=['String', 'Int', 'Bool', 'List', 'Password', 'File', 'PasswordFile', 'Status', 'Group'])
     description = IniSectionAttribute(localisable=True, required=True)
+    help_text = IniSectionAttribute(localisable=True)
     group = IniSectionAttribute(localisable=True)
     show = IniSectionListAttribute(default=['Settings'], choices=['Install', 'Upgrade', 'Remove', 'Settings'])
     show_read_only = IniSectionListAttribute(choices=['Install', 'Upgrade', 'Remove', 'Settings'])
 
     initial_value = IniSectionAttribute()
     required = IniSectionBooleanAttribute()
-    scope = IniSectionListAttribute(choices=['inside', 'outside'])
+    scope = IniSectionListAttribute(choices=['inside', 'outside', 'none'])
 
     @classmethod
     def get_class(cls, name):
@@ -84,6 +85,10 @@ class Setting(TypedIniSectionObject):
     def is_inside(self, app):
         # only for Docker Apps (and called from the Docker Host). And not only 'outside' is specified
         return app.docker and not container_mode() and ('inside' in self.scope or self.scope == [])
+
+    def is_unused(self, app):
+        # basically scope is 'none'
+        return not self.is_inside(app) and not self.is_outside(app)
 
     def get_initial_value(self, app):
         if self.is_outside(app):
@@ -276,3 +281,18 @@ class StatusSetting(Setting):
     def set_value(self, app, value, together_config_settings, part):
         # do not set value via this function - has to be done directly
         pass
+
+
+class GroupSetting(Setting):
+    def get_value(self, app, phase):
+        pass
+
+    def set_value(self, app, value, together_config_settings, part):
+        pass
+
+    @classmethod
+    def build(cls, parser, section, locale):
+        obj = super(GroupSetting, cls).build(parser, section, locale)
+        obj.show = ['Install', 'Upgrade', 'Remove', 'Settings']
+        obj.scope = ['none']
+        return obj
