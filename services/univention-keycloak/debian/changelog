@@ -1,3 +1,9 @@
+univention-keycloak (1.0.9-29) unstable; urgency=medium
+
+  * Bug #56484: Adapt LDAP federation to Keycloak 22
+
+ -- Julia Bremer <bremer@univention.de>  Thu, 24 Aug 2023 14:18:58 +0200
+
 univention-keycloak (1.0.9-28) unstable; urgency=medium
 
   * Bug #56317: Added parameters for managing client authentication flow

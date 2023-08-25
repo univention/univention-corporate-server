@@ -1,0 +1,13 @@
+product: ucs
+release: "5.0"
+version: [4]
+scope: ucs_5.0-0-errata5.0-4
+src: univention-keycloak
+fix: 1.0.9-29
+desc: |
+ This update addresses the following issues:
+ * The setting `ldapsOnly` for the option `useTruststoreSpi`
+   in the LDAP federation configuration has been removed.
+   We now set `never` during the update and for new
+   installations.
+bug: [56484]
