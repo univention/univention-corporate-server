@@ -1,4 +1,4 @@
-univention-portal (4.0.14-5) unstable; urgency=medium
+univention-portal (4.0.14-6) unstable; urgency=medium
 
   * Revert "Bug #55610: added univention-portal logrotate configuration and a UCR variable"
 

@@ -1,4 +1,4 @@
-univention-appcenter (9.0.8-4) unstable; urgency=medium
+univention-appcenter (9.0.8-5) unstable; urgency=medium
 
   * Revert "Bug #55610: added appcenter logrotate configuration and a UCR variable"
 
