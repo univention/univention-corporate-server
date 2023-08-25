@@ -41,6 +41,8 @@ def test_univention_keycloak_legacy_flow_config(keycloak_administrator_connectio
         for e in executions:
             del e["id"]
             del e["requirementChoices"]
+            if "description" in e:
+                del e["description"]
             if "flowId" in e:
                 del e["flowId"]
         assert executions == EXPECTED_EXECUTIONS

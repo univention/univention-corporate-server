@@ -1,3 +1,9 @@
+ucs-test (10.0.15-21) unstable; urgency=medium
+
+  * Bug #56305: fixed 81_keycloak/10_legacy_authorization.py
+
+ -- Felix Botner <botner@univention.de>  Fri, 25 Aug 2023 15:06:44 +0200
+
 ucs-test (10.0.15-20) unstable; urgency=medium
 
   * Bug #56305: added test helper to create/remove legacy authz config
