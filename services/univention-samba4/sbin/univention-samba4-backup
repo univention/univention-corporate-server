@@ -71,7 +71,6 @@ display_help() {
 		Options:
 		    --help|-h			display this message
 		    --where|-w <DIR>		backup directory
-		    --from-where|-f <DIR>	samba provision directory
 		    --days|-d <INT>		retention period in days
 	EOL
 }
@@ -81,18 +80,15 @@ terminate_on_error() {
 	exit 1
 }
 
-FROMWHERE=/var/lib/samba
 WHERE=/var/univention-backup/samba
 DAYS=""
-DIRS="private sysvol"
 WHEN="$(date +%Y-%m-%d)"
-IGNORE_TDBS=()
-IGNORE_TDBS+=(netlogon_creds_cli.tdb)
 
 while [ $# -gt 0 ]; do
 	case "$1" in
+		# just for compatibility reasons
 		"--from-where"|"-f")
-			FROMWHERE="${2:?missing parameter for $1}"
+			echo "Warning: --from-where|-f removed and ignored"
                         shift 2 || exit 2
 			;;
 		"--where"|"-w")
@@ -123,73 +119,5 @@ if [ ! -d $WHERE ]; then
 	terminate_on_error "Missing backup directory $WHERE"
 fi
 
-if [ ! -d $FROMWHERE ]; then
-	terminate_on_error "Missing or wrong provision directory $FROMWHERE"
-fi
-
-cd $FROMWHERE
-for d in $DIRS; do
-	relativedirname=`find . -type d -name "$d" -prune`
-	n=`echo $d | sed 's/\//_/g'`
-	if [ "$d" = "private" ]; then
-		for db in tdb ldb; do
-			find $relativedirname -name "*.$db.bak" -exec rm {} \;
-			for file in `find $relativedirname -name "*.$db"`; do
-				ignore=false
-				for i in ${IGNORE_TDBS[@]}; do
-					test "$(basename $file)" = "$i" && ignore=true && break
-				done
-				if ! $ignore; then
-					file_type="$(file -b $file)"
-					if [[ $file == *.tdb ]] || [[ $file_type == TDB\ database* ]]; then
-						tdbbackup "$file"
-						Status=$?
-					elif [[ $file == *.ldb ]]; then
-						mdb_copy -n "$file" > "$file.bak"
-						Status=$?
-					else
-						terminate_on_error "Error unknown file suffix - $file"
-					fi
-					if [ $Status -ne 0 ]; then
-						terminate_on_error "Error while backing up $file with tdbbackup - status $Status"
-					fi
-				fi
-			done
-		done
-		# Run the backup.
-		#    --warning=no-file-ignored set to suppress "socket ignored" messages.
-		#    --warning=no-file-changed set to suppress "file changed as we read it" messages.
-		tar cjf ${WHERE}/samba4_${n}.${WHEN}.tar.bz2 \
-			--exclude=smbd.tmp \
-			--exclude=\*.ldb \
-			--exclude=\*.ldb-lock \
-			--exclude=\*.tdb \
-			--warning=no-file-ignored \
-			--warning=no-file-changed \
-			--transform 's/.ldb.bak$/.ldb/' \
-			--transform 's/.tdb.bak$/.tdb/' \
-			$relativedirname
-		Status=$?
-		if [ $Status -ne 0 -a $Status -ne 1 ]; then
-			# Ignore 1 - private dir is always changing.
-			terminate_on_error "Error while archiving ${WHERE}/samba4_${n}.${WHEN}.tar.bz2 - status = $Status"
-		fi
-		for db in tdb ldb; do
-			find $relativedirname -name "*.$db.bak" -exec rm {} \;
-		done
-	else
-		# Run the backup.
-		#    --warning=no-file-ignored set to suppress "socket ignored" messages.
-		#    --warning=no-file-changed set to suppress "file changed as we read it" messages.
-		tar cjf ${WHERE}/${n}.${WHEN}.tar.bz2  $relativedirname \
-			--warning=no-file-ignored \
-			--warning=no-file-changed
-		Status=$?
-		if [ $Status -ne 0 -a $Status -ne 1 ]; then
-			# Ignore 1 - sysvol may change
-			terminate_on_error "Error while archiving ${WHERE}/${n}.${WHEN}.tar.bz2 - status = $Status"
-		fi
-	fi
-done
-
-clean_old_backups 'samba/\(samba4_\|sysvol\).*.bz2' "$DAYS"
+samba-tool domain backup offline --targetdir="$WHERE"
+clean_old_backups 'samba/samba-backup-.*.bz2' "$DAYS"
