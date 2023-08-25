@@ -27,7 +27,9 @@ set_udm_properties_for_kelvin () {
 				"serviceprovider",
 				"schoolSpecificValidity",
 				"ucsschoolPurgeTimestamp",
-				"uidNumber"
+				"uidNumber",
+				"tempReactivate",
+				"tempReactivationUntil"
 		],
 		"school_class": [
 				"divis_startdate",
