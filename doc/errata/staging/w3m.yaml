@@ -1,0 +1,17 @@
+product: ucs
+release: "4.4"
+version: [9]
+scope: ucs_4.4-0-errata4.4-9
+src: w3m
+fix: 0.5.3-34+deb9u2
+desc: |
+ This update addresses the following issue:
+ 0.5.3-34+deb9u2 (Wed, 23 Aug 2023 20:04:02 +0200)
+ * Non-maintainer upload by the ELTS Security Team.
+ * CVE-2022-38223: There is an out-of-bounds write in checkType located in
+   etc.c in w3m 0.5.3. It can be triggered by sending a crafted HTML file to
+   the w3m binary. It allows an attacker to cause Denial of Service or
+   possibly have unspecified other impact.
+bug: [56488]
+cve:
+- CVE-2022-38223
