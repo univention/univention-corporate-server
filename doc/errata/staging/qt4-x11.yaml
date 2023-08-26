@@ -6,21 +6,16 @@ src: qt4-x11
 fix: 4:4.8.7+dfsg-11+deb9u4
 desc: |
  This update addresses the following issues:
- 4:4.8.7+dfsg-11+deb9u4 (Tue, 22 Aug 2023 12:49:35 -0400)
- * Non-maintainer upload by the ELTS Team.
- * Patch from Fedora to fix root certificates issue. If the global
-   configuration doesn't allow root certificates to be loaded on demand then
-   we have to disable it for qsslsocketprivate as well. (Fixes:
-   CVE-2023-34410)
- * Patch from Fedora to fix: Uninitialized variable usage in m_unitsPerEm.
-   (Fixes: CVE-2023-32573)
+ * Uninitialized variable usage in `m_unitsPerEm`. (CVE-2023-32573)
  * Add patch to prevent buffer overflow when a SVG file with an image inside
-   it is rendered. (Fixes: CVE-2023-32763)
- * Add patch to prevent an application crash in QXmlStreamReader via a crafted
-   XML string that triggers a situation in which a prefix is greater than a
-   length. (Fixes: CVE-2023-37369)
- * Add patch to prevent infinite loops in recursive entity expansion. (Fixes:
-   CVE-2023-38197)
+   it is rendered. (CVE-2023-32763)
+ * If the global configuration doesn't allow root certificates to be loaded on
+   demand then we have to disable it for `qsslsocketprivate` as well.
+   (CVE-2023-34410)
+ * Prevent an application crash in `QXmlStreamReader` via a crafted XML string
+   that triggers a situation in which a prefix is greater than a length.
+   (CVE-2023-37369)
+ * Prevent infinite loops in recursive entity expansion. (CVE-2023-38197)
 bug: [56489]
 cve:
 - CVE-2023-34410
