@@ -1,0 +1,39 @@
+product: ucs
+release: "4.4"
+version: [9]
+scope: ucs_4.4-0-errata4.4-9
+src: openssl1.0
+fix: 1.0.2u-1~deb9u8
+desc: |
+ This update addresses the following issues:
+
+ Debian update 1.0.2u-1~deb9u8
+ 1.0.2u-1~deb9u8 (Thu, 24 Aug 2023 23:03:02 +0200)
+ * Non-maintainer upload by the ELTS Team.
+ * patches heavily inspired by the work of Marc Deslauriers
+ * CVE-2022-1292 do not use shell to invoke openssl in tools/c_rehash.in.
+ * CVE-2022-2068 fix file operations in tools/c_rehash.in
+ * rework c_rehash-compat.patch to fit patches for both CVEs above this patch
+   needs to be applied after CVE-2022-2068.patch now
+ * CVE-2023-0215 fix a UAF resulting from a bug in BIO_new_NDEF in
+   crypto/asn1/bio_ndef.c.
+ * CVE-2023-0286 fix GENERAL_NAME_cmp for x400Address in
+   crypto/x509/v3_genn.c, crypto/x509v3/x509v3.h.
+ * CVE-2023-0464 limit the number of nodes created in a policy tree (the
+   default limit is set to 1000 nodes).
+ * CVE-2023-0465 ensure that EXFLAG_INVALID_POLICY is checked even in leaf
+   certs.
+ * CVE-2023-0466 certificate policy check in X509_VERIFY_PARAM_add0_policy not
+   enabled as documented fix documentation of X509_VERIFY_PARAM_add0_policy().
+ * CVE-2023-2650 restrict the size of OBJECT IDENTIFIERs that OBJ_obj2txt will
+   translate in crypto/objects/obj_dat.c.
+bug: [56490]
+cve:
+- CVE-2022-1292
+- CVE-2022-2068
+- CVE-2023-0215
+- CVE-2023-0286
+- CVE-2023-0464
+- CVE-2023-0465
+- CVE-2023-0466
+- CVE-2023-2650
