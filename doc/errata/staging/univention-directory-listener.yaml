@@ -3,7 +3,7 @@ release: "5.0"
 version: [4]
 scope: ucs_5.0-0-errata5.0-4
 src: univention-directory-listener
-fix: 14.0.8-5
+fix: 14.0.8-6
 desc: |
  This update addresses the following issue:
  * The rotation for the listener module log file is now done by `logrotate`
