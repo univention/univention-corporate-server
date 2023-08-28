@@ -18,7 +18,7 @@ for ucrv in configRegistry.keys():
     if split_ucrv[0] in reserverd_keys or split_ucrv[0] in finished_log_files:
         continue
 
-    settings = getLogrotateConfig(f"listener-modules/{split_ucrv[0]}", configRegistry)
+    settings = getLogrotateConfig("listener-modules/%s" % split_ucrv[0], configRegistry)
     print("/var/log/univention/listener_modules/%s.log {" % split_ucrv[0])
     for setting in sorted(settings):
         print("\t%s" % settings[setting])

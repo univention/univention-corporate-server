@@ -1,3 +1,9 @@
+univention-directory-listener (14.0.8-6) unstable; urgency=medium
+
+  * Bug #55610: make ucr template for /etc/logrotate.d/listener_module python2 compatible
+
+ -- Mika Westphal <westphal@univention.de>  Mon, 28 Aug 2023 08:31:27 +0200
+
 univention-directory-listener (14.0.8-5) unstable; urgency=medium
 
   * Bug #55610: added fix for failing permission test and added default
