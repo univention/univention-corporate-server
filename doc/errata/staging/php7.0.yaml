@@ -1,0 +1,30 @@
+product: ucs
+release: "4.4"
+version: [9]
+scope: ucs_4.4-0-errata4.4-9
+src: php7.0
+fix: 7.0.33-0+deb9u16
+desc: |
+ This update addresses the following issues:
+
+ Debian update 7.0.33-0+deb9u16
+ 7.0.33-0+deb9u16 (Thu, 24 Aug 2023 19:54:00 +0200)
+ * Non-maintainer upload by the ELTS team.
+ * Fix CVE-2023-3823: In PHP various XML functions rely on libxml global state
+   to track configuration variables, like whether external entities are
+   loaded. This state is assumed to be unchanged unless the user explicitly
+   changes it by calling appropriate function. However, since the state is
+   process-global, other modules - such as ImageMagick - may also use this
+   library within the same process, and change that global state for their
+   internal purposes, and leave it in a state where external entities loading
+   is enabled. This can lead to the situation where external XML is parsed
+   with external entities loaded, which can lead to disclosure of any local
+   files accessible to PHP. This vulnerable state may persist in the same
+   process across many requests, until the process is shut down.
+ * Fix CVE-2023-3824: In PHP when loading phar file, while reading PHAR
+   directory entries, insufficient length checking may lead to a stack buffer
+   overflow, leading potentially to memory corruption or RCE.
+bug: [56492]
+cve:
+- CVE-2023-3823
+- CVE-2023-3824
