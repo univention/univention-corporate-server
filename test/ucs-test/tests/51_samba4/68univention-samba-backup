@@ -1,0 +1,20 @@
+#!/usr/share/ucs-test/runner bash
+# shellcheck shell=bash
+## desc: "Test univention-samba4-backup"
+## exposure: dangerous
+## packages:
+##  - univention-samba4
+## roles:
+## - domaincontroller_master
+## - domaincontroller_backup
+## - domaincontroller_slave
+
+# shellcheck source=../../lib/base.sh
+. "$TESTLIBPATH/base.sh" || exit 137
+
+backup_dir="/var/univention-backup/samba"
+rm -f "$backup_dir"/samba-backup-*.tar.bz2
+univention-samba4-backup || fail_test "univention-samba4-backup failed"
+ls "$backup_dir"/samba-backup-*.tar.bz2 || fail_test "no backup archive found"
+
+exit $RETVAL

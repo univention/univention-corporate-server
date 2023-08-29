@@ -1,3 +1,9 @@
+ucs-test (10.0.19-2) unstable; urgency=medium
+
+  * Bug #56434: added 51_samba4/68univention-samba-backup
+
+ -- Felix Botner <botner@univention.de>  Wed, 13 Sep 2023 12:58:03 +0200
+
 ucs-test (10.0.19-1) unstable; urgency=low
 
   * Bug #56570: Fix broken output format
