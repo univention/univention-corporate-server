@@ -1,0 +1,23 @@
+product: ucs
+release: "4.4"
+version: [9]
+scope: ucs_4.4-0-errata4.4-9
+src: rar
+fix: 2:6.23-1~deb9u1
+desc: |
+ This update addresses the following issue:
+ 2:6.23-1~deb9u1 (Sun, 27 Aug 2023 07:38:21 +0200)
+ * Non-maintainer upload by the ELTS team.
+ * Fix CVE-2023-40477: A specific flaw within the processing of recovery
+   volumes exists in RAR, an archive program for rar files. It allows remote
+   attackers to execute arbitrary code on affected installations. User
+   interaction is required to exploit this vulnerability. The target must
+   visit a malicious page or open a malicious rar file.
+ 2:6.23-1 (Wed, 16 Aug 2023 17:28:59 +0200)
+ * New upstream version
+ * Add myself to Uploaders
+ 2:6.20-0.1 (Fri, 27 Jan 2023 18:37:39 +0100)
+ * Non-maintainer upload
+bug: [56498]
+cve:
+- CVE-2023-40477
