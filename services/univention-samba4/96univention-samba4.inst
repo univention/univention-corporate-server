@@ -311,6 +311,8 @@ samba_domain_join() {
 	samba_join_options+=( -U"$dcaccount"%"$bindpwd" )
 	samba_join_options+=( --realm="$kerberos_realm" )
 	samba_join_options+=( --machinepass="$(cat /etc/machine.secret)" )
+	samba_join_options+=( --backend-store="$samba_database_backend_store" )
+	samba_join_options+=( --backend-store-size="$samba_database_backend_store_size" )
 
 	local server_fail_message="Make sure the server is online or if this server is no longer in use,\nplease completely remove the server object from the domain."
 
