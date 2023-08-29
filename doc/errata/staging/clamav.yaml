@@ -1,0 +1,16 @@
+product: ucs
+release: "4.4"
+version: [9]
+scope: ucs_4.4-0-errata4.4-9
+src: clamav
+fix: 0.103.9+dfsg-0+deb9u1A~4.4.9.202308290843
+desc: |
+ This update addresses the following issue:
+ 0.103.9+dfsg-0+deb9u1 (Mon, 28 Aug 2023 06:08:00 +0530)
+ * Non-maintainer upload by the ELTS Team.
+ * New upstream version 0.103.9+dfsg. - CVE-2023-20197: possible denial of
+   service vulnerability in the HFS+ file parser.
+ * Update symbols file.
+bug: [56495]
+cve:
+- CVE-2023-20197
