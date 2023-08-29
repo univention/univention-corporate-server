@@ -266,6 +266,11 @@ secret: $machine_secret
 				systemctl start univention-directory-listener
 			fi
 		fi
+
+		# Bug #55499 restrict access to /var/univention-backup/samba
+		if dpkg --compare-versions "$2" lt-nl "9.0.13-7"; then
+			install -o root -g root -m 700 -d /var/univention-backup/samba
+		fi
 	fi
 
 	ntp_socket_dir='/var/lib/samba/ntp_signd'
