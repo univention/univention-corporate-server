@@ -172,6 +172,40 @@ of 50 MB, the |UCSUCRV| :envvar:`logrotate/rotates` can be set to ``size 50M``.
 The |UCSUCRV| :envvar:`logrotate/compress` is used to configure whether the
 older log files are additionally zipped with :command:`gzip`.
 
+Log files located in the directory :file:`/var/log/univention/listener_modules`
+each have their own Logrotate configuration. These log files have global and
+specific Logrotate settings. The |UCSUCRV| :samp:`logrotate/listener-modules/{<directive>}`
+configures the global settings. The :manpage:`logrotate(8)` documentation
+describes the functionality in detail. UCS supports the following directives:
+
+.. envvar:: logrotate/listener-modules/rotate
+
+   Default value: ``weekly``
+
+.. envvar:: logrotate/listener-modules/rotate/count
+
+   Default value: ``12``
+
+.. envvar:: logrotate/listener-modules/create
+
+   Default value: ``640 listener adm``
+
+.. envvar:: logrotate/listener-modules/missingok
+
+   Default value: ``missingok``
+
+.. envvar:: logrotate/listener-modules/compress
+
+   Default value: ``compress``
+
+.. envvar:: logrotate/listener-modules/notifempty
+
+   Default value: ``notifempty``
+
+If a configuration only applies to a specific log file, compose the |UCSUCRV| as
+follows: :samp:`logrotate/listener-modules/{<logfile-name>}/{<directive>}`. Use
+the log filename without the file suffix :file:`.log`.
+
 .. _computers-logging-the-system-status:
 
 Logging the system status
