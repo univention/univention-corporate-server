@@ -6,13 +6,11 @@ src: unrar-nonfree
 fix: 1:5.6.6-1+deb9u2
 desc: |
  This update addresses the following issue:
- 1:5.6.6-1+deb9u2 (Tue, 29 Aug 2023 00:12:20 +0200)
- * Non-maintainer upload by the ELTS team.
- * Fix CVE-2023-40477: A specific flaw within the processing of recovery
-   volumes exists in UnRAR, an unarchiver for rar files. It allows remote
-   attackers to execute arbitrary code on affected installations. User
-   interaction is required to exploit this vulnerability. The target must
-   visit a malicious page or open a malicious rar file.
+ * CVE-2023-40477: A specific flaw within the processing of recovery volumes
+   exists in UnRAR, an unarchiver for rar files. It allows remote attackers to
+   execute arbitrary code on affected installations. User interaction is
+   required to exploit this vulnerability. The target must visit a malicious
+   page or open a malicious rar file.
 bug: [56497]
 cve:
 - CVE-2023-40477
