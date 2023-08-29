@@ -1,3 +1,9 @@
+univention-samba4 (8.0.0-39) unstable; urgency=medium
+
+  * Bug #56501: Restrict access to /var/univention-backup/samba
+
+ -- Arvid <requate@univention.de>  Tue, 29 Aug 2023 11:46:39 +0200
+
 univention-samba4 (8.0.0-38) unstable; urgency=medium
 
   * Bug #55137: Sync DNS objects needed for join directly

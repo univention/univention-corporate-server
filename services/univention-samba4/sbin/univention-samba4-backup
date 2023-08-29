@@ -119,6 +119,7 @@ done
 if [ ! -d $WHERE ]; then
 	terminate_on_error "Missing backup directory $WHERE"
 fi
+install -o root -g root -m 700 -d "$WHERE"
 
 if [ ! -d $FROMWHERE ]; then
 	terminate_on_error "Missing or wrong provision directory $FROMWHERE"
@@ -148,6 +149,7 @@ for d in $DIRS; do
 		# Run the backup.
 		#    --warning=no-file-ignored set to suppress "socket ignored" messages.
 		#    --warning=no-file-changed set to suppress "file changed as we read it" messages.
+		install -o root -g root -m 600 /dev/null "${WHERE}/samba4_${n}.${WHEN}.tar.bz2"
 		tar cjf ${WHERE}/samba4_${n}.${WHEN}.tar.bz2  $relativedirname \
 			--exclude=smbd.tmp \
 			--exclude=\*.ldb \
@@ -168,6 +170,7 @@ for d in $DIRS; do
 		# Run the backup.
 		#    --warning=no-file-ignored set to suppress "socket ignored" messages.
 		#    --warning=no-file-changed set to suppress "file changed as we read it" messages.
+		install -o root -g root -m 600 /dev/null "${WHERE}/${n}.${WHEN}.tar.bz2"
 		tar cjf ${WHERE}/${n}.${WHEN}.tar.bz2  $relativedirname \
 			--warning=no-file-ignored \
 			--warning=no-file-changed

@@ -1,0 +1,14 @@
+product: ucs
+release: "4.4"
+version: [9]
+scope: ucs_4.4-0-errata4.4-9
+src: univention-samba4
+fix: 8.0.0-39
+desc: |
+ This update addresses the following issues:
+ * The permissions of `/var/univention-backup/samba` where not
+   restricted to root and Domain Admins. By default in UCS ssh
+   access to domain controllers is restricted to "Domain Admins",
+   but this erratum implements tightened access control to that
+   backup folder and the files created there.
+bug: [56501]

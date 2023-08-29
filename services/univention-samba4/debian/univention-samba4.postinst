@@ -428,6 +428,11 @@ secret: $machine_secret
 		if dpkg --compare-versions "$2" lt-nl "8.0.0-17"; then
 			chmod go-w /var/lib/samba/private/*_update_list
 		fi
+
+		# Bug #56501 restrict access to /var/univention-backup/samba
+		if dpkg --compare-versions "$2" lt-nl "8.0.0-39"; then
+			install -o root -g root -m 700 -d /var/univention-backup/samba
+		fi
 	fi
 
 	ntp_socket_dir='/var/lib/samba/ntp_signd'
