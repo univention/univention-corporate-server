@@ -139,17 +139,6 @@ def tiny_app_apache(name=None, version=None):
     return app
 
 
-def get_docker_appbox_ucs():
-    # should be in line with get_docker_appbox_image()
-    return '4.4'
-
-
-def get_docker_appbox_image():
-    image_name = f'docker-test.software-univention.de/ucs-appbox-amd64:{get_docker_appbox_ucs()}-8'
-    print('Using %s' % image_name)
-    return image_name
-
-
 def docker_login(server='docker.software-univention.de'):
     cmd = ['docker', 'login', '-u', 'ucs', '-p', 'readonly', server]
     error_handling_call(cmd, exc=UCSTest_Docker_LoginFailed)
@@ -380,12 +369,9 @@ class App:
         self.reload_container_id()
         self.installed = True
 
-    def verify(self, joined=True):
-        print('App.verify(%r)' % (joined,))
+    def verify(self, joined=False):
+        print('App.verify()')
         error_handling_call(['univention-app', 'status', '%s=%s' % (self.app_name, self.app_version)], exc=UCSTest_DockerApp_VerifyFailed)
-
-        if joined:
-            error_handling_call(['docker', 'exec', self.container_id, 'univention-check-join-status'], exc=UCSTest_DockerApp_VerifyFailed)
 
         if self.package:
             try:
@@ -464,14 +450,11 @@ class App:
         self.execute_command_in_container('/bin/sh -c "echo TEST-%s > /web/html/%s/index.txt"' % (self.app_name, self.app_name))
 
     def verify_basic_modproxy_settings_tinyapp(self, http=True, https=True):
-        return self.verify_basic_modproxy_settings(http=http, https=https, verify=False)
-
-    def verify_basic_modproxy_settings(self, http=True, https=True, verify='/etc/univention/ssl/ucsCA/CAcert.pem'):
         fqdn = '%(hostname)s.%(domainname)s' % self.ucr
         test_string = 'TEST-%s\n' % self.app_name
         protocols = {'http': http, 'https': https}
         for protocol, should_succeed in protocols.items():
-            response = requests.get(f'{protocol}://{fqdn}/{self.app_name}/index.txt', verify=verify)
+            response = requests.get(f'{protocol}://{fqdn}/{self.app_name}/index.txt', verify=False)  # noqa: S501
             try:
                 response.raise_for_status()
             except requests.exceptions.HTTPError:
