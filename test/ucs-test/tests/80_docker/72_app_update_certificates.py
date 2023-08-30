@@ -69,7 +69,7 @@ exit 0
             app.add_to_local_appcenter()
             appcenter.update()
             app.install()
-            app.verify(joined=False)
+            app.verify()
             verify_certs(app)
             cleanup(app)
             subprocess.check_output(['univention-app', 'update-certificates', name], text=True)
@@ -95,7 +95,7 @@ exit 0
             app.add_to_local_appcenter()
             appcenter.update()
             app.upgrade()
-            app.verify(joined=False)
+            app.verify()
             verify_certs(app)
         finally:
             app.uninstall()

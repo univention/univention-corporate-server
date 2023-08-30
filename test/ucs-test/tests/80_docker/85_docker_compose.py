@@ -69,7 +69,7 @@ if __name__ == '__main__':
             app.add_to_local_appcenter()
             appcenter.update()
             app.install()
-            app.verify(joined=False)
+            app.verify()
             images = subprocess.check_output(['docker', 'images'], text=True)
             assert alpine_checksum in images, images
             app.execute_command_in_container('touch /var/lib/univention-appcenter/apps/%s/data/test1.txt' % name)
@@ -84,7 +84,7 @@ if __name__ == '__main__':
             app.add_to_local_appcenter()
             appcenter.update()
             app.upgrade()
-            app.verify(joined=False)
+            app.verify()
             images = subprocess.check_output(['docker', 'images'], text=True)
             assert alpine_checksum not in images, images
             app.execute_command_in_container('ls /var/lib/univention-appcenter/apps/%s/data/test1.txt' % name)

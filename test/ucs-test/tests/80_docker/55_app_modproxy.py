@@ -32,7 +32,7 @@ if __name__ == '__main__':
 
             app.install()
             app.configure_tinyapp_modproxy()
-            app.verify(joined=False)
+            app.verify()
 
             app.verify_basic_modproxy_settings_tinyapp()
             ucr.load()
@@ -63,7 +63,7 @@ if __name__ == '__main__':
 
             app.install()
             app.configure_tinyapp_modproxy()
-            app.verify(joined=False)
+            app.verify()
 
             app.verify_basic_modproxy_settings_tinyapp(http=False, https=True)
             ucr.load()

@@ -47,13 +47,13 @@ if __name__ == '__main__':
             # check if installation fails
             # if exclusive port is already used
             redirect.install()
-            redirect.verify(joined=False)
+            redirect.verify()
             with pytest.raises(UCSTest_DockerApp_InstallationFailed):
                 exclusive.install()
 
             # another app should be fine
             dummy.install()
-            dummy.verify(joined=False)
+            dummy.verify()
         finally:
             exclusive.uninstall()
             exclusive.remove()
