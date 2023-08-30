@@ -46,7 +46,7 @@ exit 0
             app.add_to_local_appcenter()
             appcenter.update()
             app.install()
-            app.verify(joined=False)
+            app.verify()
             app.configure({'CONFIGURE_PARAM': 'test1'})
             assert_content(app, 'test1')
             app.configure({'CONFIGURE_PARAM': 'test2'})
