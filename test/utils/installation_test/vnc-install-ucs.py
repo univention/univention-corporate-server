@@ -216,7 +216,7 @@ class UCSInstallation(VNCInstallation):
         [Bildschirmfoto]  [Zurück] [Weiter]
         """
         self.wait_for_text('finish_installation', timeout=-1300)
-        self.type('\n')
+        self.click_on('continue')
         sleep(30, "reboot")
 
     @verbose("DISK")
