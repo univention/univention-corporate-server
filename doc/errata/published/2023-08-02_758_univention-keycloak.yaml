@@ -6,13 +6,12 @@ src: univention-keycloak
 fix: 1.0.9-28
 desc: |
  This update addresses the following issues:
- * It is now possible to set `Keycloak`clients
-   authentication flow using the `client-auth-flow`
-   option. Passing an empty string will reset the flow
-   to the default browser flow.
- * The command `legacy-authentication-flow` has been added
-   to create an authentication flow which will enable app specific
-   authorization in a future version of the `Keycloak App`.
+ * It is now possible to set Keycloak clients authentication flow using the
+   option `client-auth-flow`. Passing an empty string will reset the flow to
+   the default browser flow.
+ * The command `legacy-authentication-flow` has been added to create an
+   authentication flow which will enable app specific authorization in a
+   future version of the Keycloak App.
 bug: [56317, 56305]
 erratum: 758
 announced: 2023-08-02
