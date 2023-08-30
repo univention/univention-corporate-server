@@ -18,7 +18,10 @@ if __name__ == '__main__':
         app = App(name=app_name, version=app_version, container_version='4.4')
 
         try:
-            app.set_ini_parameter(DockerImage='docker-test.software-univention.de/ucs-appbox-amd64:4.4-8')
+            app.set_ini_parameter(
+                DockerImage='docker-test.software-univention.de/ucs-appbox-amd64:4.4-8',
+                DockerScriptSetup='/usr/sbin/app-setup')
+            app.add_script(setup='#!/bin/sh\nrm /usr/lib/univention-install/18python-univention-directory-manager.inst')
             app.add_to_local_appcenter()
 
             appcenter.update()
