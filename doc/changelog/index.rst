@@ -41,7 +41,7 @@ General
   * :program:`samba` (:uv:cve:`2022-2127`, :uv:cve:`2023-3347`, :uv:cve:`2023-34966`, :uv:cve:`2023-34967`, :uv:cve:`2023-34968`) (:uv:bug:`56297`, :uv:bug:`56320`)
   * :program:`systemd` (:uv:cve:`2022-3821`) (:uv:bug:`56237`)
   * :program:`tiff` (:uv:cve:`2023-25433`, :uv:cve:`2023-26965`, :uv:cve:`2023-26966`, :uv:cve:`2023-2908`, :uv:cve:`2023-3316`, :uv:cve:`2023-3618`, :uv:cve:`2023-38288`, :uv:cve:`2023-38289`) (:uv:bug:`56388`)
-  * :program:`qpdf` (:uv:cve:`2018-18020`, :uv:cve:`2021-25786`, :uv:cve:`2021-36978`) (:uv:bug:`#56507`)
+  * :program:`qpdf` (:uv:cve:`2018-18020`, :uv:cve:`2021-25786`, :uv:cve:`2021-36978`) (:uv:bug:`56507`)
   * :program:`yajl` (:uv:cve:`2017-16516`, :uv:cve:`2022-24795`, :uv:cve:`2023-33460`) (:uv:bug:`56242`, :uv:bug:`56325`)
 
 .. _debian:
