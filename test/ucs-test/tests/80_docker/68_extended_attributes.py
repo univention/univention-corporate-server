@@ -41,7 +41,7 @@ def test_app(appcenter, app, udm, activation_name, attribute_dn=None, attribute_
     app.add_to_local_appcenter()
     appcenter.update()
     app.install()
-    # app.verify(joined=False)
+    # app.verify()
     schema_file = '/usr/share/univention-appcenter/apps/%s/%s.schema' % (app.app_name, app.app_name)
     assert os.path.exists(schema_file)
     subprocess.call(['univention-ldapsearch', '-b', attribute_dn])
