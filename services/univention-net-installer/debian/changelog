@@ -1,3 +1,9 @@
+univention-net-installer (13.0.6-1) unstable; urgency=medium
+
+  * Bug #56437: Adapt to UCS-5.0-5
+
+ -- Philipp Hahn <hahn@univention.de>  Wed, 30 Aug 2023 17:24:37 +0200
+
 univention-net-installer (13.0.5-1) unstable; urgency=medium
 
   * Bug #: Adapt to UCS-5.0-4
