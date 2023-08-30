@@ -19,7 +19,7 @@ class SyncedAppcenter(Appcenter):
     def __init__(self):
         Appcenter.__init__(self)
         self.vv = self.ucr.get('version/version')
-        self.all_versions = ['4.1', '4.2', '4.3', '4.4', '5.0']
+        self.all_versions = ['4.4', '5.0', '5.1']
         self.upstream_appcenter = 'https://appcenter.software-univention.de'
         handler_set([
             'appcenter/index/verify=true',
