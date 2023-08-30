@@ -6,9 +6,9 @@ src: univention-monitoring-client
 fix: 1.0.2-5
 desc: |
  This update addresses the following issues:
- * The last erratum 743 introduced an incompatiblity with
-   `prometheus-node-exporter` which disallows timestamps to be present in the
-   textcollector files. The change has therefore been reverted.
+ * The previous erratum 743 introduced an incompatibility with
+   `prometheus-node-exporter` which disallows timestamps to be present in
+   text-collector files. The change has therefore been reverted.
 bug: [56341]
 erratum: 750
 announced: 2023-07-19
