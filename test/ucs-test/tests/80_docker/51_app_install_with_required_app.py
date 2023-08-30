@@ -29,8 +29,8 @@ if __name__ == '__main__':
 
             app.install()
 
-            app.verify(joined=False)
-            app2.verify(joined=False)
+            app.verify()
+            app2.verify()
 
             lo = get_ldap_connection()
             print(lo.searchDn(filter='(&(cn=%s-*)(objectClass=univentionMemberServer)(!(aRecord=*))(!(macAddress=*)))' % app_name[:5], unique=True, required=True))

@@ -53,7 +53,7 @@ if __name__ == '__main__':
             # check if installation fails
             # if exclusive port is already used
             app.install()
-            app.verify(joined=False)
+            app.verify()
             with pytest.raises(UCSTest_DockerApp_InstallationFailed):
                 exclusive.install()
             with pytest.raises(UCSTest_DockerApp_InstallationFailed):
@@ -61,7 +61,7 @@ if __name__ == '__main__':
 
             # another app should be fine
             dummy.install()
-            dummy.verify(joined=False)
+            dummy.verify()
         finally:
             app.uninstall()
             app.remove()

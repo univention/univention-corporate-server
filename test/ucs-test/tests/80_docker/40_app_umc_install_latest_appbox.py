@@ -10,7 +10,10 @@ import json
 
 import requests
 
-from dockertest import App, Appcenter, UCTTest_DockerApp_UMCInstallFailed, get_app_name
+from dockertest import (
+    App, Appcenter, UCSTest_DockerApp_VerifyFailed, UCTTest_DockerApp_UMCInstallFailed, error_handling_call,
+    get_app_name,
+)
 
 
 if __name__ == '__main__':
@@ -81,6 +84,7 @@ exit 0
             appcenter.update()
             app.install_via_umc()
             app.verify()
+            error_handling_call(['docker', 'exec', app.container_id, 'univention-check-join-status'], exc=UCSTest_DockerApp_VerifyFailed)
         finally:
             app.uninstall()
             app.remove()
