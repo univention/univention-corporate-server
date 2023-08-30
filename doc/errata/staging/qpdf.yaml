@@ -1,0 +1,21 @@
+product: ucs
+release: "5.0"
+version: [3, 4]
+scope: ucs_5.0-0-errata5.0-4
+src: qpdf
+fix: 8.4.0-2+deb10u1
+desc: |
+ This update addresses the following issues:
+ 8.4.0-2+deb10u1 (Mon, 28 Aug 2023 19:03:02 +0200)
+ * Non-maintainer upload by the LTS Team.
+ * CVE-2018-18020 crafted files could create recursive calls for a long time,
+   which allows remote attackers to cause a denial of service
+ * CVE-2021-25786 crafted files allow remote attackers to execute arbitrary
+   code
+ * CVE-2021-36978 a heap-based buffer overflow might occur when a certain
+   downstream write fails
+bug: [56507]
+cve:
+- CVE-2018-18020
+- CVE-2021-25786
+- CVE-2021-36978
