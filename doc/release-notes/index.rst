@@ -6,7 +6,7 @@
 Release notes for the installation and update of Univention Corporate Server (UCS) |release|
 ############################################################################################
 
-Publication date of UCS |release|: 2023-06-20
+Publication date of UCS |release|: 2023-09-12
 
 .. _relnotes-highlights:
 
@@ -14,30 +14,18 @@ Publication date of UCS |release|: 2023-06-20
 Release highlights
 ******************
 
-With |UCSUCS| 5.0-4, the forth point release for |UCSUCS| (UCS) 5.0 is
+With |UCSUCS| 5.0-5, the fives point release for |UCSUCS| (UCS) 5.0 is
 available. It provides several feature improvements and extensions, new
 properties as well as various improvements and bug fixes. Here is an overview of
 the most important changes:
 
-* Update to Samba version 4.18.3
+* |UCSUMC| has received several internal changes to improve its robustness and performance.
 
-* The portal can now display announcements, which you can use to notify
-  users of upcoming maintenance windows, for example.
+* Several issues related to Samba have been fixed.
 
-* The |UCSUMC| server and web server have been merged into a single executable.
-  The implementation now uses :program:`Tornado` instead of the UCS specific
-  Python Notifier implementation.
-
-* All remaining code has been fully migrated to Python 3 and prepared for the
-  update to Python 3.11 with UCS 5.2.
-
-* The integration of :program:`Keycloak` with UCS improved. Furthermore,
-  :program:`Keycloak` is scheduled to replace :program:`SimpleSAMLPHP` in the
-  upcoming UCS 5.2.
-
-* UCS 5.0-4 includes various security updates, for example for
-  :program:`apache2`, :program:`OpenSSL`, :program:`Linux`, :program:`ClamAV`,
-  :program:`PostgreSQL` and :program:`MariaDB`.
+* UCS 5.0-5 includes various security updates, for example for
+  :program:`BIND`, :program:`OpenSSH`, :program:`Linux`, :program:`ClamAV`
+  and :program:`Python3.7`.
 
 .. _relnotes-update:
 
@@ -191,10 +179,10 @@ and run it on the UCS system.
 .. code-block:: console
 
    # download
-   $ curl -OOf https://updates.software-univention.de/download/univention-update-checks/pre-update-checks-5.0-4{.gpg,}
+   $ curl -OOf https://updates.software-univention.de/download/univention-update-checks/pre-update-checks-5.0-5{.gpg,}
 
    # verify and run script
-   $ apt-key verify pre-update-checks-5.0-4{.gpg,} && bash pre-update-checks-5.0-4
+   $ apt-key verify pre-update-checks-5.0-5{.gpg,} && bash pre-update-checks-5.0-5
 
    ...
 
@@ -277,7 +265,7 @@ Users running older browsers may experience display or performance issues.
 Changelog
 *********
 
-You find the changes since UCS 5.0-3 in
+You find the changes since UCS 5.0-4 in
 :external+uv-changelog:doc:`index`.
 
 

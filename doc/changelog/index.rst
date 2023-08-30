@@ -174,7 +174,7 @@ Univention Management Console server
   module processes anymore but wait until the session times out
   (:uv:bug:`56336`).
 
-* New Python APIs for modules are provided which help in replacing ``python-notifier`` (:uv:bug:`56201`).
+* New Python APIs for modules are provided which help in replacing :program:`python-notifier` (:uv:bug:`56201`).
 
 * The link to the Univention Wiki has been removed because it's deprecated and
   planned for going offline (:uv:bug:`56357`).
