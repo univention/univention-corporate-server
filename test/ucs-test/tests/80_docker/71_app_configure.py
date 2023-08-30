@@ -25,7 +25,7 @@ exit 0
             app.add_to_local_appcenter()
             appcenter.update()
             app.install()
-            app.verify(joined=False)
+            app.verify()
             configured_file = app.file('/tmp/configure.output')
             app.configure({'test/configure/param': 'test1'})
             assert open(configured_file).read() == 'test1'
