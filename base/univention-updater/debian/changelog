@@ -1,3 +1,9 @@
+univention-updater (15.0.11-1) unstable; urgency=medium
+
+  * Bug #56438: Adapt links and components for 5.0-5
+
+ -- Philipp Hahn <hahn@univention.de>  Wed, 30 Aug 2023 18:12:53 +0200
+
 univention-updater (15.0.10-1) unstable; urgency=medium
 
   * Bug #43633: kill also UMC-Webserver in postup.sh
