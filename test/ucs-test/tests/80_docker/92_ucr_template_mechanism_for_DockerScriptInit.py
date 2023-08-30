@@ -35,7 +35,7 @@ if __name__ == '__main__':
             app.add_to_local_appcenter()
             appcenter.update()
             app.install()
-            app.verify(joined=False)
+            app.verify()
             check_docker_arg_against_ucrv(app.container_id, ucr.get('ldap/base'))
         finally:
             try:

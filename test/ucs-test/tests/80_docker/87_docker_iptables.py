@@ -50,7 +50,7 @@ if __name__ == '__main__':
             app.add_to_local_appcenter()
             appcenter.update()
             app.install()
-            app.verify(joined=False)
+            app.verify()
 
             iptables_save_after_installation = subprocess.check_output(['iptables-save'], text=True)
             print(" iptables rules before firewall restart:\n" + iptables_save_after_installation)

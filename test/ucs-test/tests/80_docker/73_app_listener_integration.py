@@ -187,7 +187,7 @@ for i in sorted(glob.glob(os.path.join(DATA_DIR, '*.json'))):
         appcenter.update()
         app.install()
         appcenter.apps.append(app)
-        app.verify(joined=False)
+        app.verify()
 
         subprocess.check_call(['docker', 'image', 'inspect', DOCKER_IMAGE_OLD])
 
@@ -219,7 +219,7 @@ for i in sorted(glob.glob(os.path.join(DATA_DIR, '*.json'))):
         app.add_to_local_appcenter()
         appcenter.update()
         app.upgrade()
-        app.verify(joined=False)
+        app.verify()
 
         li_pid = get_pid_for_name(' /usr/sbin/univention-directory-listener')
         con_pid = get_pid_for_name('univention-appcenter-listener-converter %s' % name)
