@@ -12,8 +12,8 @@ desc: |
    creation. The corresponding PAM stack `samba` simply includes the generic
    `common-account` and `common-session` files, which make use of `pam_krb5`
    by default. This led to a situation where `pam_krb5` is run as part of the
-   normal Samba login. Since that PAM module is linked to the Debian heimdal
-   base libraries which are using `pthreads` but Samba is using heimdal
+   normal Samba login. Since that PAM module is linked to the Debian Heimdal
+   base libraries which are using `pthreads` but Samba is using Heimdal
    libraries without `pthreads` over time this could lead to an resource
    depletion issue internal to `pthreads` and finally causing an `smbd` panic.
    To avoid this, we now adjusted the `common-account` and `common-session`
