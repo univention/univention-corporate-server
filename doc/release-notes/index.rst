@@ -21,10 +21,10 @@ the most important changes:
 
 * |UCSUMC| has received several internal changes to improve its robustness and performance.
 
-* Several issues related to Samba have been fixed.
+* Update to Samba version 4.18.6.
 
 * UCS 5.0-5 includes various security updates, for example for
-  :program:`BIND`, :program:`OpenSSH`, :program:`Linux`, :program:`ClamAV`
+  :program:`BIND9`, :program:`OpenSSH`, :program:`Linux`, :program:`ClamAV`
   and :program:`Python3.7`.
 
 .. _relnotes-update:
