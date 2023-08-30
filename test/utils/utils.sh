@@ -734,6 +734,9 @@ run_ucsschool_tests () {
 }
 
 run_tests () {
+	univention-install -y univention-appcenter-dev
+	univention-app dev-use-test-appcenter
+
 	if [ -e /DONT_START_UCS_TEST ] ; then
 		echo "-----------------------------------------------------------------------------------"
 		echo "File /DONT_START_UCS_TEST exists - skipping ucs-test!"
