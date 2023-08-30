@@ -32,157 +32,113 @@
 # License with the Debian GNU/Linux or Univention distribution in file
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
-#
-# Copyright (C) Matthieu Patou <mat@matws.net> 2010-2011
-#
-# This program is free software; you can redistribute it and/or modify
-# it under the terms of the GNU General Public License as published by
-# the Free Software Foundation; either version 3 of the License, or
-# (at your option) any later version.
-#
-# This program is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-# GNU General Public License for more details.
-#
-# You should have received a copy of the GNU General Public License
-# along with this program.  If not, see <https://www.gnu.org/licenses/>.
-#
-# Revised 2013-09-25, Brian Martin, as follows:
-#    - Allow retention period ("DAYS") to be specified as a parameter.
-#    - Allow individual positional parameters to be left at the default
-#      by specifying "-"
-#    - Use IS0 8601 standard dates (yyyy-mm-dd instead of mmddyyyy).
-#    - Display tar exit codes when reporting errors.
-#    - Don't send error messages to /dev/null, so we know what failed.
-#    - Suppress useless tar "socket ignored" message.
-#    - Fix retention period bug when deleting old backups ($DAYS variable
-#      could be set, but was ignored).
 
-. /usr/share/univention-lib/backup.sh
+set -e -u
+umask 0077
 
-display_help() {
+FROMWHERE='/var/lib/samba'
+WHERE='/var/univention-backup/samba'
+DAYS=''
+WHEN="$(date +%Y-%m-%d)"
+
+display_help () {
 	cat <<-EOL
-		univention-samba4-backup: backups the samba provision directory
+		${0##*/} backups the Samba provision directory
 
 		Syntax:
-		    univention-samba4-backup [options]
+		    ${0##*/} [options]
 
 		Options:
-		    --help|-h			display this message
-		    --where|-w <DIR>		backup directory
-		    --from-where|-f <DIR>	samba provision directory
-		    --days|-d <INT>		retention period in days
+		    --help|-h                   display this message
+		    --where|-w <DIR>            backup directory (default: $WHERE)
+		    --from-where|-f <DIR>       Samba provision directory (default: $FROMWHERE)
+		    --days|-d <INT>             retention period for old backups in days
 	EOL
+	exit "${1:-0}"
 }
 
-terminate_on_error() {
-	>&2 echo "$*"
+die () {
+	echo "$*" >&2
 	exit 1
 }
 
-FROMWHERE=/var/lib/samba
-WHERE=/var/univention-backup/samba
-DAYS=""
-DIRS="private sysvol"
-WHEN="$(date +%Y-%m-%d)"
-IGNORE_TDBS=()
-IGNORE_TDBS+=(netlogon_creds_cli.tdb)
-
-while [ $# -gt 0 ]; do
+opts="$(getopt -o 'f:w:d:h' -l 'from-where:,where:,days:,help' -- "$@")" ||
+	display_help 2
+eval set -- "$opts"
+while true
+do
 	case "$1" in
-		"--from-where"|"-f")
-			FROMWHERE="${2:?missing parameter for $1}"
-                        shift 2 || exit 2
+		--from-where|-f)
+			FROMWHERE="$2"
+			shift 2
 			;;
-		"--where"|"-w")
-			WHERE="${2:?missing parameter for $1}"
-			shift 2 || exit 2
+		--where|-w)
+			WHERE="$2"
+			shift 2
 			;;
-		"--days"|"-d")
-			DAYS="${2:?missing parameter for $1}"
-			[ $DAYS -eq $DAYS ] 2>/dev/null
-			if [ ! $? -eq 0 ]; then
-				display_help
-				exit 1
-			fi
-			shift 2 || exit 2
+		--days|-d)
+			DAYS="$2"
+			[ "$DAYS" -ge 0 ] 2>/dev/null ||
+				die "--days: number expected"
+			shift 2
 			;;
-		"--help"|"-h"|"-?")
-			display_help
-			exit 0
+		--help|-h)
+			display_help 0
+			;;
+		--)
+			shift
+			break
 			;;
 		*)
-			display_help
-			exit 1
+			display_help 1
 			;;
 	esac
 done
 
-if [ ! -d $WHERE ]; then
-	terminate_on_error "Missing backup directory $WHERE"
-fi
-install -o root -g root -m 700 -d "$WHERE"
+cd "$FROMWHERE" ||
+	die "Missing or wrong provision directory $FROMWHERE"
 
-if [ ! -d $FROMWHERE ]; then
-	terminate_on_error "Missing or wrong provision directory $FROMWHERE"
-fi
+install -o root -g root -m 700 -d "$WHERE" ||
+	die "Missing backup directory $WHERE"
 
-cd $FROMWHERE
-for d in $DIRS; do
-	relativedirname=`find . -type d -name "$d" -prune`
-	n=`echo $d | sed 's/\//_/g'`
-	if [ "$d" = "private" ]; then
-		for db in tdb ldb; do
-			find $relativedirname -name "*.$db.bak" -exec rm {} \;
-			for file in `find $relativedirname -name "*.$db"`; do
-				ignore=false
-				for i in ${IGNORE_TDBS[@]}; do
-					test "$(basename $file)" = "$i" && ignore=true && break
-				done
-				if ! $ignore; then
-					tdbbackup $file
-					Status=$?
-					if [ $Status -ne 0 ]; then
-						terminate_on_error "Error while backing up $file with tdbbackup - status $Status"
-					fi
-				fi
-			done
-		done
-		# Run the backup.
-		#    --warning=no-file-ignored set to suppress "socket ignored" messages.
-		#    --warning=no-file-changed set to suppress "file changed as we read it" messages.
-		install -o root -g root -m 600 /dev/null "${WHERE}/samba4_${n}.${WHEN}.tar.bz2"
-		tar cjf ${WHERE}/samba4_${n}.${WHEN}.tar.bz2 \
+# shellcheck source=/dev/null
+. /usr/share/univention-lib/backup.sh
+
+backup () {
+	local out="${WHERE}/samba4_${name//\//_}.${WHEN}.tar.bz2"
+	# Run the backup.
+	#    --warning=no-file-ignored set to suppress "socket ignored" messages.
+	#    --warning=no-file-changed set to suppress "file changed as we read it" messages.
+	tar -c -j -f "${out}" \
+		--warning=no-file-ignored \
+		--warning=no-file-changed \
+		"$@"
+	# Ignore 1 - sysvol may change
+	case "$?" in
+	0|1) return 0 ;;
+	*) die "Error while archiving ${out} - status = $?"
+	esac
+}
+
+for name in private sysvol
+do
+	dir="$(find . -type d -name "$name" -printf '%P' -quit)"
+	[ -d "$dir" ] ||
+		continue
+	if [ "$dir" = "private" ]; then
+		find "$dir" -name "*.[tl]db.bak" -delete
+		find "$PWD/$dir" -name "*.[tl]db" -not -name netlogon_creds_cli.tdb -exec tdbbackup {} + ||
+			die "Error while backing up $PWD/$dir with tdbbackup - status $?"
+		backup \
 			--exclude=smbd.tmp \
-			--exclude=\*.ldb \
-			--exclude=\*.tdb \
-			--warning=no-file-ignored \
-			--warning=no-file-changed \
+			--exclude='*.ldb' \
+			--exclude='*.tdb' \
 			--transform 's/.ldb.bak$/.ldb/' \
 			--transform 's/.tdb.bak$/.tdb/' \
-			$relativedirname
-		Status=$?
-		if [ $Status -ne 0 -a $Status -ne 1 ]; then
-			# Ignore 1 - private dir is always changing.
-			terminate_on_error "Error while archiving ${WHERE}/samba4_${n}.${WHEN}.tar.bz2 - status = $Status"
-		fi
-		for db in tdb ldb; do
-			find $relativedirname -name "*.$db.bak" -exec rm {} \;
-		done
+			"$dir"
+		find "$dir" -name "*.[tl]db.bak" -delete
 	else
-		# Run the backup.
-		#    --warning=no-file-ignored set to suppress "socket ignored" messages.
-		#    --warning=no-file-changed set to suppress "file changed as we read it" messages.
-		install -o root -g root -m 600 /dev/null "${WHERE}/${n}.${WHEN}.tar.bz2"
-		tar cjf ${WHERE}/${n}.${WHEN}.tar.bz2  $relativedirname \
-			--warning=no-file-ignored \
-			--warning=no-file-changed
-		Status=$?
-		if [ $Status -ne 0 -a $Status -ne 1 ]; then
-			# Ignore 1 - sysvol may change
-			terminate_on_error "Error while archiving ${WHERE}/${n}.${WHEN}.tar.bz2 - status = $Status"
-		fi
+		backup "$dir"
 	fi
 done
 

@@ -1,3 +1,9 @@
+univention-samba4 (9.0.13-8) unstable; urgency=low
+
+  * Bug #56505: Fix copyright violation in univention-samba4-backup
+
+ -- Philipp Hahn <hahn@univention.de>  Wed, 30 Aug 2023 11:04:07 +0200
+
 univention-samba4 (9.0.13-7) unstable; urgency=medium
 
   * Bug #56499: Restrict access to /var/univention-backup/samba
