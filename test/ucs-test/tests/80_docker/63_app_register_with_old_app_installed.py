@@ -16,7 +16,7 @@ if __name__ == '__main__':
             store_data = '#!/bin/sh'
 
             # install the old version
-            old_app = App(name=name, version='1', build_package=False, call_join_scripts=False, container_version="4.3")
+            old_app = App(name=name, version='1', build_package=False, call_join_scripts=False, container_version="5.1")
             old_app.set_ini_parameter(
                 DockerImage='docker-test.software-univention.de/alpine:3.6',
                 DockerScriptSetup='/setup',
