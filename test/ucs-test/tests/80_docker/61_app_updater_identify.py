@@ -18,7 +18,7 @@ def test_app_updater_identify(appcenter):
 
         app.install()
 
-        app.verify(joined=False)
+        app.verify()
 
         identify = app.execute_command_in_container("env | sed -rne 's/UPDATER_IDENTIFY=//p'")
         print('Identify: %s' % identify)

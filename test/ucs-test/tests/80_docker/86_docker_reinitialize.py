@@ -67,7 +67,7 @@ fi
             app.add_to_local_appcenter()
             appcenter.update()
             app.install()
-            app.verify(joined=False)
+            app.verify()
             env = subprocess.check_output('univention-app shell %s env' % name, shell=True, text=True)
             assert 'TEST_KEY=1' in env, env
             subprocess.call('univention-app configure %s --set TEST_KEY=2' % name, shell=True)

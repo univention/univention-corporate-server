@@ -35,7 +35,7 @@ if __name__ == '__main__':
                 apps[i].install()
 
             for i in range(DOCKER_APP_COUNT):
-                apps[i].verify(joined=False)
+                apps[i].verify()
                 apps[i].configure_tinyapp_modproxy()
                 apps[i].verify_basic_modproxy_settings_tinyapp()
 
