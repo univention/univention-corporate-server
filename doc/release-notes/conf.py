@@ -25,7 +25,7 @@ from datetime import date
 # -- Project information -----------------------------------------------------
 
 # The full version, including alpha/beta/rc tags
-release = "5.0-4"
+release = "5.0-5"
 
 version = "5.0"
 
