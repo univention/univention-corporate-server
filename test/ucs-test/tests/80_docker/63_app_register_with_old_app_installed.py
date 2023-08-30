@@ -28,7 +28,7 @@ if __name__ == '__main__':
             old_app.add_to_local_appcenter()
             appcenter.update()
             old_app.install()
-            old_app.verify(joined=False)
+            old_app.verify()
 
             # create a new version
             new_app = App(name=name, version='2', build_package=False, call_join_scripts=False)
@@ -45,7 +45,7 @@ if __name__ == '__main__':
 
             # run register
             old_app.register()
-            old_app.verify(joined=False)
+            old_app.verify()
         finally:
             old_app.uninstall()
             old_app.remove()
