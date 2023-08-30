@@ -44,7 +44,7 @@ if __name__ == '__main__':
 
             app.install()
 
-            app.verify(joined=False)
+            app.verify()
 
             app.configure_tinyapp_modproxy()
             app.verify_basic_modproxy_settings_tinyapp()
