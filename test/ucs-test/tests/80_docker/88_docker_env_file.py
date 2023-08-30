@@ -52,7 +52,7 @@ if __name__ == '__main__':
             app.add_to_local_appcenter()
             appcenter.update()
             app.install()
-            app.verify(joined=False)
+            app.verify()
             env_file = '/var/lib/univention-appcenter/apps/%s/compose/%s.env' % (name, name)
             subprocess.call(['ls', '-la', env_file])
             env_content = open(env_file).read()

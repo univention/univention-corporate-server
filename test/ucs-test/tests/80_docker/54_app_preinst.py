@@ -34,7 +34,7 @@ exit %(exit_code)d
 
         try:
             app.install()
-            app.verify(joined=False)
+            app.verify()
         except (UCSTest_DockerApp_VerifyFailed, UCSTest_DockerApp_InstallationFailed):
             if not fail_in_preinst:
                 raise

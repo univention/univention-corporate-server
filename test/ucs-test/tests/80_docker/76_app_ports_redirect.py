@@ -5,23 +5,19 @@
 ## packages:
 ##   - docker.io
 
-from textwrap import dedent
+# from textwrap import dedent
 
 from univention.testing.utils import is_port_open, is_udp_port_open, restart_firewall
 
-from dockertest import App, Appcenter, get_app_name, get_app_version, get_docker_appbox_image, get_docker_appbox_ucs
+from dockertest import Appcenter, tiny_app
 
 
 if __name__ == '__main__':
     with Appcenter() as appcenter:
-
-        app_name = get_app_name()
-        app_version = get_app_version()
-        app = App(name=app_name, version=app_version, container_version=get_docker_appbox_ucs(), build_package=False)
+        app = tiny_app()
         ports = ['4021:21', '4023:23']
         udp_ports = ['6100:6100', '7999:7999']
         packages = ['telnetd', 'proftpd']
-        image = get_docker_appbox_image()
 
         # check ports are unused
         for port in ports:
@@ -31,20 +27,23 @@ if __name__ == '__main__':
         try:
             # check ports exclusive
             app.set_ini_parameter(
-                DockerImage=image,
+                # DockerScriptInit='/usr/sbin/proftpd -n',
+                # DockerScriptInit='/bin/sh',
+                # DockerImage='debian:buster-slim',
+                DockerImage='instantlinux/proftpd',
+                DockerInjectEnvFile='main',
                 PortsRedirection=','.join(ports),
                 PortsRedirectionUDP=','.join(udp_ports),
                 DefaultPackages=','.join(packages),
-                DockerScriptSetup='/usr/sbin/%s-setup' % app_name)
-            app.add_script(setup=dedent('''\
-                #!/bin/bash
-                set -x -e
-                ucr set repository/online/unmaintained='yes'
-                univention-app update
-                univention-app register "%(app_name)s" --component
-                app_packages="$(univention-app get "%(app_name)s" default_packages --values-only --shell)"
-                univention-install -y $app_packages
-                ''') % {'app_name': app_name})
+                # DockerScriptSetup='/usr/sbin/%s-setup' % app.app_name
+            )
+            app.add_script(env='\nPASV_ADDRESS=0.0.0.0\n')
+#            app.add_script(setup=dedent('''\
+#                #!/bin/bash
+#                apt update
+#                apt install --assume-yes telnetd proftpd-basic
+#                proftpd
+#                '''))
             app.add_to_local_appcenter()
             appcenter.update()
             app.install()
