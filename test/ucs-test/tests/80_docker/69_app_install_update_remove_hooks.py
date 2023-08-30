@@ -118,7 +118,7 @@ def app_install(appcenter, app_name):
     appcenter.update()
 
     app.install()  # install the app
-    app.verify(joined=False)
+    app.verify()
     return app
 
 
@@ -132,7 +132,7 @@ def app_upgrade(appcenter, app_name):
     appcenter.update()
 
     app.upgrade()  # now upgrade the app
-    app.verify(joined=False)
+    app.verify()
     return app
 
 
