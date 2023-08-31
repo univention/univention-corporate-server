@@ -142,7 +142,7 @@ figure_language_filename = "{root}-{language}{ext}"
 
 linkcheck_ignore = [
     r"https://errata\.software-univention\.de/#/\?erratum=\d\.\dx\d{1,3}",
-    r"\.\./\.\./changelog/\d\.\d-\d/en/index\.html",
+    r"\.\./\.\./\.\./changelog/\d\.\d-\d/en/index\.html",
 ]
 
 linkcheck_allowed_redirects = {

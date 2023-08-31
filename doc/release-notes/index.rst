@@ -265,7 +265,7 @@ Users running older browsers may experience display or performance issues.
 Changelog
 *********
 
-You find the changes since UCS 5.0-4 in `Changelog for Univention Corporate Server (UCS) 5.0-5 <../../changelog/5.0-5/en/index.html>`_.
+You find the changes since UCS 5.0-4 in `Changelog for Univention Corporate Server (UCS) 5.0-5 <../../../changelog/5.0-5/en/index.html>`_.
 
 
 .. _biblio:
