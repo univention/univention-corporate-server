@@ -1,3 +1,9 @@
+ucs-test (10.0.15-24) unstable; urgency=medium
+
+  * Bug #56055: added test for rsyslog.conf
+
+ -- Jan Meier <jan.meier@univention.de>  Thu, 31 Aug 2023 18:19:05 +0200
+
 ucs-test (10.0.15-23) unstable; urgency=medium
 
   * Bug #50300: don't print traceback for failing grep-traceback test
