@@ -121,7 +121,7 @@ msgstr ""
 
 #: src/univention/management/console/resources.py:664
 msgid "For using this module a login is required."
-msgstr "Für die Anfrage and dieses Modul ist eine Anmeldung erforderlich."
+msgstr "Für die Anfrage an dieses Modul ist eine Anmeldung erforderlich."
 
 #: src/univention/management/console/resource.py:102
 msgid "For using this request a login is required."

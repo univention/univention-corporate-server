@@ -163,7 +163,10 @@ class ModuleServer(object):
             from tornado.platform.asyncio import AnyThreadEventLoopPolicy
             asyncio.set_event_loop_policy(AnyThreadEventLoopPolicy())
 
-        server = HTTPServer(application)
+        server = HTTPServer(
+            application,
+            max_body_size=ucr.get_int('umc/http/max_request_body_size', 104857600),
+        )
         server.add_socket(bind_unix_socket(self.__socket))
         self.server = server
         server.start()
