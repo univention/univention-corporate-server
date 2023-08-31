@@ -86,7 +86,7 @@ def test_fetch_logfiles_on_dc_master(ucr, testcase=None):
             print(cmd_install)
             if exc.output:
                 print(exc.output.decode('UTF-8', 'replace'))
-            pytest.fail(repr(cmd_install, exc.output.decode('UTF-8', 'replace')), pytrace=False)
+            pytest.fail(repr((cmd_install, exc.output.decode('UTF-8', 'replace'))), pytrace=False)
 
         try:
             cmd_test = """univention-ssh %s root@%s '%s -i -f'""" % (shlex.quote(fd.name), shlex.quote(ucr['ldap/master']), shlex.quote(shlex.quote(testpath)))
@@ -96,5 +96,5 @@ def test_fetch_logfiles_on_dc_master(ucr, testcase=None):
             if exc.output:
                 print(exc.output.decode('UTF-8', 'replace'))
             if exc.returncode:
-                pytest.fail(repr(cmd_test, exc.returncode), pytrace=False)
+                pytest.fail(repr((cmd_test, exc.returncode)), pytrace=False)
         # TODO: detect skipped exit code
