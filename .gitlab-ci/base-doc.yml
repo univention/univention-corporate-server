@@ -5,8 +5,6 @@ include:
 stages:
   - build
   - merge
-  - review
-  - staging
   - production
 
 .sphinx-doc:
@@ -71,7 +69,7 @@ webframe:
     GIT_STRATEGY: none
 
 review:
-  stage: review
+  stage: merge
   rules:
     - if: '$CI_COMMIT_BRANCH != $CI_DEFAULT_BRANCH'
   extends: .publish
@@ -86,7 +84,9 @@ review:
     auto_stop_in: 1 week
 
 stop_review:
-  stage: staging
+  stage: merge
+  variables:
+    GIT_STRATEGY: none
   rules:
     - if: '$CI_COMMIT_BRANCH != $CI_DEFAULT_BRANCH'
       when: manual
@@ -103,7 +103,7 @@ stop_review:
     action: stop
 
 staging:
-  stage: staging
+  stage: merge
   extends: .publish
   tags:
     - omar
