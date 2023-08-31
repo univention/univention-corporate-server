@@ -69,6 +69,8 @@ Examples. Run the commands from the UCS repository `/doc` directory.
   full Sphinx Docker image, which is about twice the size of the Sphinx base
   image.
 
+* Spell check documents: `make spelling`
+
 
 ### Translations
 
@@ -91,3 +93,41 @@ Other translation related targets are the following:
 
 * `stat-po-nodocker`: Same as `stat-po` without running the commands in a
   Docker container. This make target requires a Sphinx environment.
+
+Local alternative:
+```sh
+make gettext
+msgmerge -U locales/de/LC_MESSAGES/index.po _build/gettext/index.pot
+semsible-editor locales/de/LC_MESSAGES/index.po
+git add -- locales/de/LC_MESSAGES/index.po
+git commit -m '…'
+git push
+```
+
+
+## Circular Dependencies
+
+Extracted from `sed -ne '/^intersphinx_mapping/,/^}/{/^intersphinx_mapping/F;/:/p}' */conf.py`:
+```mermaid
+flowchart LR
+  app-center --> manual
+  app-center ==> developer-reference
+  architecture --> manual & developer-reference & app-center
+  architecture -.-> ucs-python-api
+  changelog
+  developer-reference ==> app-center & manual
+  developer-reference -.-> python & python-general
+  ext-domain --> manual
+  ext-installation
+  ext-network
+  ext-performance --> manual
+  ext-windows --> manual
+  manual ==> developer-reference
+  manual -.-> keycloak & ox-connector-app
+  quickstart --> manual & ext-domain & ext-installation
+  release-notes --> manual & changelog & ext-windows
+  scenarios --> manual
+```
+There is two cycles preventing a clean build:
+- `developer-reference` <-> `app-center`
+- `developer-reference` <-> `manual`

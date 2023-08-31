@@ -7,7 +7,7 @@ msgstr ""
 "administrators\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-05-26 11:42+0200\n"
-"PO-Revision-Date: 2023-05-26 11:45+0200\n"
+"PO-Revision-Date: 2023-08-31 17:02+0200\n"
 "Last-Translator: Univention GmbH <packages@univention.de>\n"
 "Language: de\n"
 "Language-Team: Univention GmbH <packages@univention.de>\n"
@@ -1416,10 +1416,10 @@ msgstr "Benutzerdefinierte Mappings"
 
 #: ../../windows/ad-connection.rst:663
 msgid ""
-"For custom mappings, see :ref:`ad-connection-custom-mappings` in :cite:t"
+"For custom mappings, see :ref:`uv-dev-ref:ad-connection-custom-mappings` in :cite:t"
 ":`developer-reference`."
 msgstr ""
-"Für benutzerdefinierte Mappings, siehe :ref:`ad-connection-custom-"
+"Für benutzerdefinierte Mappings, siehe :ref:`uv-dev-ref:ad-connection-custom-"
 "mappings` in :cite:t:`developer-reference`."
 
 #: ../../windows/ad-connection.rst:669

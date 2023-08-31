@@ -396,7 +396,7 @@ Active Directory Connection custom mappings
 ===========================================
 
 For general overview about the :program:`Active Directory Connection` app, see
-:ref:`ad-connector-general` in :cite:t:`ucs-manual`.
+:ref:`uv-manual:ad-connector-general` in :cite:t:`ucs-manual`.
 
 It is possible to modify and append custom mappings. Administrators need to
 create the file :file:`/etc/univention/connector/ad/localmapping.py`. Within

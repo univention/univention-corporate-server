@@ -445,10 +445,10 @@ environment variable. The following settings can then be queried via
 DNS:
 
 Kerberos Realm
-   It an be queried by the TXT record ``\_kerberos.DOMAINNAME``.
+   It can be queried by the TXT record ``\_kerberos.DOMAINNAME``.
 
 Kerberos KDC
-   It an be queried by the SRV records ``\_kerberos._tcp.DOMAINNAME and \_kerberos._udp.DOMAINNAME``.
+   It can be queried by the SRV records ``\_kerberos._tcp.DOMAINNAME`` and ``\_kerberos._udp.DOMAINNAME``.
 
 .. _user-rights-management:
 

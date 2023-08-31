@@ -72,9 +72,9 @@ for only getting and setting UCR variables.
    Software developers and system engineers, refer to
    :cite:t:`developer-reference`:
 
-   * :ref:`ucr-usage-shell`
+   * :ref:`uv-dev-ref:ucr-usage-shell`
 
-   * :ref:`ucr-usage-python`
+   * :ref:`uv-dev-ref:ucr-usage-python`
 
    From :cite:t:`ucs-python-api`:
 
@@ -192,18 +192,18 @@ an administrator sets a UCR variable.
    Software developers and system engineers, refer to
    :cite:t:`developer-reference`:
 
-   * :ref:`ucr-usage` for more information about how to extend or develop with UCR
+   * :ref:`uv-dev-ref:ucr-usage` for more information about how to extend or develop with UCR
 
-   * :ref:`ucr-conffiles` for more information about writing UCR template files
+   * :ref:`uv-dev-ref:ucr-conffiles` for more information about writing UCR template files
 
    For more information about how to run code or programs when specific UCR
    variables change, refer to the following documentation:
 
-   * :ref:`ucr-script` for more information about how to call external programs
+   * :ref:`uv-dev-ref:ucr-script` for more information about how to call external programs
 
-   * :ref:`ucr-module` for more information about how to run Python modules
+   * :ref:`uv-dev-ref:ucr-module` for more information about how to run Python modules
 
-   * :ref:`ucr-file`, refer to ``Preinst``, ``Postinst``, and
+   * :ref:`uv-dev-ref:ucr-file`, refer to ``Preinst``, ``Postinst``, and
      :file:`/etc/univention/templates/scripts/`.
 
 .. _services-ucr-priorities:
@@ -292,7 +292,7 @@ Custom
    Software developers and system engineers, refer to
    :cite:t:`developer-reference`:
 
-   * :ref:`ucr-info` for more information about the UCR info file.
+   * :ref:`uv-dev-ref:ucr-info` for more information about the UCR info file.
 
 .. _services-ucr-limitations:
 
@@ -340,7 +340,7 @@ UCR limitations
       .. seealso::
 
          See also the note about the path and access rights in
-         :ref:`ucr-usage-shell` in :cite:t:`developer-reference`.
+         :ref:`uv-dev-ref:ucr-usage-shell` in :cite:t:`developer-reference`.
 
    Read
       Any user or process on a UCS system can read UCR variables, because
@@ -358,5 +358,5 @@ UCR limitations
 
          * For developers, see :cite:t:`developer-reference`:
 
-           * :ref:`shell scripts <ucr-usage-shell>`
-           * :ref:`Python interface <ucr-usage-python>`
+           * :ref:`uv-dev-ref:shell scripts <ucr-usage-shell>`
+           * :ref:`uv-dev-ref:Python interface <ucr-usage-python>`

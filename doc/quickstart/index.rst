@@ -38,7 +38,7 @@ Installation
 
 The installation is performed via a menu-driven installer and can be
 used both interactively and completely profile-based, see the
-:external+uv-inst:doc:`Extended installation documentation <index>`.
+:external+uv-ext-inst:doc:`Extended installation documentation <index>`.
 
 The system language, keyboard layout and time zone can be selected in
 accordance with local requirements.
@@ -229,9 +229,9 @@ different clients. The following clients are supported:
   found in :ref:`UCS Manual - Mac OS X domain joins
   <uv-manual:macos-domain-join>`.
 
-- Ubuntu systems (see :ref:`ext-dom-ubuntu`) and
+- Ubuntu systems (see :ref:`uv-ext-domain:ext-dom-ubuntu`) and
   other Linux distributions like Debian, SUSE or Red Hat can also be integrated
-  into the domain, see :ref:`ext-dom-unix`.
+  into the domain, see :ref:`uv-ext-domain:ext-dom-unix`.
 
 .. _quickstart-extend:
 

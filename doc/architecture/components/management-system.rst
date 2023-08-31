@@ -146,8 +146,8 @@ Usability
 
    Software developers refer to :cite:t:`developer-reference`:
 
-   * :ref:`udm-ea`
-   * :ref:`udm-ea-option`
+   * :ref:`uv-dev-ref:udm-ea`
+   * :ref:`uv-dev-ref:udm-ea-option`
 
 .. _component-system-management:
 
@@ -213,7 +213,7 @@ involves a web front end and a back end as shown in
    Software developers and system engineers refer to
    :cite:t:`developer-reference`:
 
-   * :ref:`chap-umc` for technical details about |UMC| for software developers
+   * :ref:`uv-dev-ref:chap-umc` for technical details about |UMC| for software developers
 
 .. _component-configuration-registry:
 
@@ -260,5 +260,5 @@ provides many templates for service configuration files.
    :ref:`computers-administration-of-local-system-configuration-with-univention-configuration-registry`
       For information about how to use UCR in :cite:t:`ucs-manual`
 
-   :ref:`chap-umc`
+   :ref:`uv-dev-ref:chap-umc`
       For detailed information about UCR in :cite:t:`developer-reference`

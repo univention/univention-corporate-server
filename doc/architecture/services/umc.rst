@@ -423,6 +423,6 @@ UMC module process.
 
 .. seealso::
 
-   :ref:`Development and packaging of UMC modules <umc-module>`
+   :ref:`Development and packaging of UMC modules <uv-dev-ref:umc-module>`
       for information about development and packaging for UMC modules in
       :cite:t:`developer-reference`

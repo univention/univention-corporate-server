@@ -660,7 +660,7 @@ Take the following particularities into account:
 Custom mappings
 """""""""""""""
 
-For custom mappings, see :ref:`ad-connection-custom-mappings` in
+For custom mappings, see :ref:`uv-dev-ref:ad-connection-custom-mappings` in
 :cite:t:`developer-reference`.
 
 .. _ad-connector-users:

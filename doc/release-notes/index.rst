@@ -137,7 +137,7 @@ AD Connector mapping
 ====================
 
 When you operate multiple instances of the :program:`AD Connector` as described
-in :ref:`ad-multiple`, you need to adjust the mapping configuration and ensure
+in :ref:`uv-ext-windows:ad-multiple`, you need to adjust the mapping configuration and ensure
 Python 3.7 compatibility before the update. :uv:kb:`17754` describes the steps.
 
 .. _relnotes-sufficient-disc-space:
@@ -265,8 +265,7 @@ Users running older browsers may experience display or performance issues.
 Changelog
 *********
 
-You find the changes since UCS 5.0-4 in
-:external+uv-changelog:doc:`index`.
+You find the changes since UCS 5.0-4 in `Changelog for Univention Corporate Server (UCS) 5.0-5 <../../changelog/5.0-5/en/index.html>`_.
 
 
 .. _biblio:

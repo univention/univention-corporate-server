@@ -183,7 +183,7 @@ offer different possibilities for the customization of UDM.
    Software developers and system engineers, refer to
    :cite:t:`developer-reference`:
 
-   * :ref:`udm-syntax`
+   * :ref:`uv-dev-ref:udm-syntax`
 
    From :cite:t:`ucs-python-api`:
 
@@ -280,7 +280,7 @@ the user.
 
 .. seealso::
 
-   :ref:`udm-modules`
+   :ref:`uv-dev-ref:udm-modules`
       For information about UDM modules for software developers in
       :cite:t:`developer-reference`.
 
