@@ -11,7 +11,6 @@ import re
 import stat
 import subprocess
 from contextlib import contextmanager
-from shutil import rmtree
 
 import pytest
 
@@ -22,6 +21,11 @@ from univention.appcenter.docker import Docker
 from univention.appcenter.log import log_to_logfile, log_to_stream
 from univention.appcenter.settings import SettingValueError
 from univention.appcenter.ucr import ucr_get, ucr_save
+
+import appcentertest as app_test
+
+
+#from shutil import rmtree
 
 
 log_to_logfile()
@@ -78,13 +82,8 @@ def install_app(app, set_vars=None):
 
 @pytest.fixture(scope='module')
 def local_appcenter():
-    setup_appcenter = get_action('dev-setup-local-appcenter')
-    setup_appcenter.call()
-    yield
-    test_appcenter = get_action('dev-use-test-appcenter')
-    test_appcenter.call(revert=True)
-    rmtree('/var/www/meta-inf')
-    rmtree('/var/www/univention-repository')
+    with app_test.local_appcenter():
+        yield
 
 
 @pytest.fixture(scope='module')

@@ -69,8 +69,6 @@ with UCSTestConfigRegistry():
             _apt_get_update()
         return retcode == 0
 
-    test_appcenter = get_action('dev-use-test-appcenter')
-    test_appcenter.call(revert=True)
     register = get_action('register')
     print('Installed apps: %s' % [app.id for app in Apps().get_all_locally_installed_apps()])
     failed = []
@@ -87,7 +85,6 @@ with UCSTestConfigRegistry():
         print('Checking app: %s' % app.id)
         if not _apt_get_simulate(app):
             failed.append(app)
-    test_appcenter.call()
     _apt_get_update()
 
     if failed:

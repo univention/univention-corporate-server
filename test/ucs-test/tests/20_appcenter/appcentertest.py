@@ -40,6 +40,7 @@ import re
 import string
 import subprocess
 import time
+from shutil import rmtree
 
 import lxml.html
 import requests
@@ -651,7 +652,11 @@ def local_appcenter():
     finally:
         print("Reverting local app-center.")
         setup_local_appcenter.call(revert=True)
+        cleanup_failed = os.path.exists('/var/www/meta-inf')
+        rmtree('/var/www/meta-inf', True)
+        rmtree('/var/www/univention-repository', True)
         restart_umc()
+        assert not cleanup_failed
 
 
 def test_case(function):
