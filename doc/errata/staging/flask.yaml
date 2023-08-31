@@ -1,0 +1,19 @@
+product: ucs
+release: "4.4"
+version: [9]
+scope: ucs_4.4-0-errata4.4-9
+src: flask
+fix: 0.12.1-1+deb9u1
+desc: |
+ This update addresses the following issues:
+ 0.12.1-1+deb9u1 (Tue, 29 Aug 2023 18:24:33 +0200)
+ * Non-maintainer upload by the LTS Security Team.
+ * CVE-2018-1000656: Improper Input Validation vulnerability that can result
+   in Large amount of memory usage possibly leading to denial of service.
+   NOTE: this may overlap CVE-2019-1010083.
+ * d/rules: Disable test_main_module_paths test, it doesn't work (following
+   later packaging >= 1.1.1-1)
+bug: [56508]
+cve:
+- CVE-2018-1000656
+- CVE-2019-1010083
