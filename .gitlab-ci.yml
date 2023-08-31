@@ -1,5 +1,4 @@
 stages:
-  - test
   - prepare
   - build
 
@@ -24,7 +23,7 @@ variables:
   BUILD: docker-registry.knut.univention.de/knut/deb-builder
 
 pre-commit:
-  stage: test
+  stage: prepare
   extends: .pre-commit
 
 generate-config:
@@ -159,7 +158,7 @@ deb-pipeline:
       pipeline_variables: true
 
 errata validation:
-  stage: build
+  stage: prepare
   tags:
     - omar
   resource_group: omar
