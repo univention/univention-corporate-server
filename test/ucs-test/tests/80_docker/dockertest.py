@@ -496,9 +496,13 @@ class Appcenter:
 
         if os.path.exists('/var/www/meta-inf'):
             print('ERROR: /var/www/meta-inf already exists')
+            shutil.rmtree('/var/www/meta-inf', True)
+            shutil.rmtree('/var/www/univention-repository', True)
             raise AppcenterMetainfAlreadyExists()
         if os.path.exists('/var/www/univention-repository'):
             print('ERROR: /var/www/univention-repository already exists')
+            shutil.rmtree('/var/www/meta-inf', True)
+            shutil.rmtree('/var/www/univention-repository', True)
             raise AppcenterRepositoryAlreadyExists()
 
         if not version:
@@ -624,7 +628,8 @@ Virtualization=Virtualisierung''')
                 app.uninstall()
         except Exception as ex:
             print('removing app %s in __exit__ failed with: %s' % (app, str(ex)))
-        self.cleanup()
+        finally:
+            self.cleanup()
 
 
 def restore_data_script_4_1():
