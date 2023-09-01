@@ -363,7 +363,7 @@ Provides:
  ucs-test-module,
 Depends:
  chromium,
- python3-playwright-venv,
+ python3-pytest-playwright,
  ucs-test-libs (= ${source:Version}),
  ${misc:Depends},
 Description: Test scripts for UMC
