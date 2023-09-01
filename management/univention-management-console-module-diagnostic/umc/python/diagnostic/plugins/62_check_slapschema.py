@@ -31,7 +31,6 @@
 # <https://www.gnu.org/licenses/>.
 
 import os
-import re
 from subprocess import PIPE, Popen
 
 from univention.lib.i18n import Translation
@@ -43,8 +42,6 @@ _ = Translation('univention-management-console-module-diagnostic').translate
 title = _('Validating the LDAP configuration and schema files.')
 description = _('LDAP configuration files are valid.')
 
-RE_ERROR = re.compile("^[0-9a-f]{8} ")
-
 
 def run(_umc_instance: Instance) -> None:
     if not os.path.exists('/usr/sbin/slapschema'):
@@ -54,17 +51,8 @@ def run(_umc_instance: Instance) -> None:
     stdout, stderr_ = process.communicate()
     stderr = stderr_.decode('UTF-8', 'replace')
 
-    if not stderr:
-        return
-
-    errors = [
-        line.split(' ', 1)[1]
-        for line in stderr.splitlines()
-        if RE_ERROR.search(line)
-    ]
-
-    if errors:
-        raise Warning(_('The LDAP schema validation failed with the following errors or warnings:\n') + "\n".join(errors))
+    if stderr:
+        raise Warning(_('The LDAP schema validation failed with the following errors or warnings:\n') + stderr)
 
 
 if __name__ == '__main__':
