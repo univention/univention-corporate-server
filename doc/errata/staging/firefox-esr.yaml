@@ -6,10 +6,12 @@ src: firefox-esr
 fix: 102.15.0esr-1~deb10u1
 desc: |
  This update addresses the following issues:
- 102.15.0esr-1~deb10u1 (Thu, 31 Aug 2023 19:46:53 +0200)
- * New upstream release.
- * Fixes for mfsa2023-35, also known as: CVE-2023-4573, CVE-2023-4574,
-   CVE-2023-4575, CVE-2023-4581, CVE-2023-4584.
+ * CVE-2023-4573: Memory corruption in IPC `CanvasTranslator`
+ * CVE-2023-4574: Memory corruption in IPC `ColorPickerShownCallback`
+ * CVE-2023-4575: Memory corruption in IPC `FilePickerShownCallback`
+ * CVE-2023-4581: XLL file extensions were downloadable without warnings
+ * CVE-2023-4584: Memory safety bugs fixed
+note: https://www.mozilla.org/en-US/security/advisories/mfsa2023-35/
 bug: [56513]
 cve:
 - CVE-2023-4573
