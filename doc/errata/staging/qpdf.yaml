@@ -6,14 +6,29 @@ src: qpdf
 fix: 6.0.0-2+deb9u1
 desc: |
  This update addresses the following issues:
- 6.0.0-2+deb9u1 (Thu, 31 Aug 2023 21:50:33 +0300)
- * Non-maintainer upload by the ELTS Security Team.
- * CVE-2015-9252, CVE-2017-9208, CVE-2017-9209, CVE-2017-9210, CVE-2017-11624,
-   CVE-2017-11625, CVE-2017-11626, CVE-2017-11627, CVE-2017-18183,
-   CVE-2017-18186, CVE-2018-9918: Various cases od endless recursion and
-   infinite loops
- * CVE-2017-12595: Stack corruption in QPDFObjectHandle::parseInternal()
- * CVE-2021-25786, CVE-2021-36978: Heap use-after-free
+ * CVE-2015-9252: Infinite loop in `QPDFTokenizer::resolveLiteral` in
+   `QPDFTokenizer.cc`
+ * CVE-2017-9208: Infinite loop related to `releaseResolved` functions
+ * CVE-2017-9209: Infinite loop related to `QPDFObjectHandle::parseInternal`
+ * CVE-2017-9210: Infinite loop related to `unparse` functions
+ * CVE-2017-11624: Infinite loop in function `QPDFTokenizer::resolveLiteral`
+   in `QPDFTokenizer.cc`
+ * CVE-2017-11625: Infinite loop in function `QPDF::resolveObjectsInStream` in
+   `QPDF.cc`
+ * CVE-2017-11626: Infinite loop in function `QPDFTokenizer::resolveLiteral`
+   in `QPDFTokenizer.cc`
+ * CVE-2017-11627: Infinite loop in function `PointerHolder` in
+   `PointerHolder.hh`
+ * CVE-2017-12595: Stack corruption in `QPDFObjectHandle::parseInternal()`
+ * CVE-2017-18183: Infinite Loop in function `QPDFWriter::enqueueObject` in
+   `libqpdf/QPDFWriter.cc`
+ * CVE-2017-18186: Infinite loop due to looping xref tables in `QPDF.cc`
+ * CVE-2018-9918: Stack exhaustion in classes `QPDFObjectHandle` and
+   `QPDF_Dictionary` in `libqpdf.a`
+ * CVE-2021-25786: Crafted files allow remote attackers to execute arbitrary
+   code
+ * CVE-2021-36978: A heap-based buffer overflow might occur when a certain
+   downstream write fails
 bug: [56512]
 cve:
 - CVE-2015-9252
