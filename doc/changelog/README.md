@@ -35,7 +35,19 @@ the UCS 5.0-4 patch level release version.
    * Keep `version` at `5.0`.
 
 1. Extract the changes from the errata YAML files and create a reST document:
-   `docker run --rm -ti -v "/home/phahn/REPOS/ucs:/project" -w /project/doc/changelog --network=host -u "$UID" docker-registry.knut.univention.de/knut/sphinx-base make changelog`.
+   ```sh
+   root="$(git rev-parse --show-toplevel)"
+   git="$(git rev-parse --absolute-git-dir)"
+   docker run \
+      --network=host \
+      --rm -ti \
+      -u "$UID" \
+      -v "$root:$root" \
+      -v "$git:$git" \
+      -w "$root/doc/changelog" \
+      docker-registry.knut.univention.de/knut/sphinx-base \
+      make changelog
+   ```
 
 1. Replace the `index.rst` file with the content from the generated reST
    document at `_build/changelog/changelog.rst`.
@@ -46,4 +58,3 @@ the UCS 5.0-4 patch level release version.
 
 1. Commit the changes to the repository and let the CI/CD pipeline build the
    artifacts.
-
