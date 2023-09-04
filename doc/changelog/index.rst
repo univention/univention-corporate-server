@@ -47,6 +47,7 @@ General
 .. _debian:
 
 * The following updated packages from Debian 10.13 are included:
+  :program:`aom`
   :program:`bouncycastle`
   :program:`burp`
   :program:`cjose`
@@ -62,7 +63,7 @@ General
   :program:`gst-plugins-bad1.0`
   :program:`gst-plugins-base1.0`
   :program:`gst-plugins-good1.0`
-  :program:`gst-plugins-uggly1.0`
+  :program:`gst-plugins-ugly1.0`
   :program:`hdf5`
   :program:`hsqldb`
   :program:`hsqldb1.8.0`
