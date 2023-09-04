@@ -1,3 +1,9 @@
+ucs-test (10.0.16-2) unstable; urgency=medium
+
+  * Bug #53333: Ignore traceback 85_portal_administration_inline_creation in var_log_tracebacks
+
+ -- Ivan Barbecho Delgado <delgado.extern@univention.de>  Mon, 04 Sep 2023 13:01:36 +0200
+
 ucs-test (10.0.16-1) unstable; urgency=medium
 
   * Bug #56054: migrate selenium to playwright
