@@ -19,3 +19,6 @@ bug: [55937,56516]
 ignore:
  - bug.55937.scope+version
  - version.scope
+erratum: 795
+announced: 2023-09-04
+support: core
