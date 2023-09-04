@@ -12,4 +12,7 @@ desc: |
    600 seconds. This is only necessary in large environments where the
    initial replication from UDM/OpenLDAP to Samba/AD may be delayed due to
    a large number of objects.
-bug: [55937]
+ * The package has been backported to UCS 5.0-3 to resolve a dependency
+   problem, so that univention-samba4 is not removed during the update to
+   UCS 5.0-4.
+bug: [55937,56516]
