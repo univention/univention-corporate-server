@@ -16,3 +16,6 @@ desc: |
    problem, so that univention-samba4 is not removed during the update to
    UCS 5.0-4.
 bug: [55937,56516]
+ignore:
+ - bug.55937.scope+version
+ - version.scope
