@@ -1,0 +1,20 @@
+product: ucs
+release: "4.4"
+version: [9]
+scope: ucs_4.4-0-errata4.4-9
+src: openjdk-8
+fix: 8u382-ga-1~deb9u1
+desc: |
+ This update addresses the following issues:
+ * CVE-2023-22045: Array indexing integer overflow issue
+ * CVE-2023-22049: Improper handling of slash characters in URI-to-path
+   conversion
+ * JDK-8298676: Enhanced Look and Feel
+ * JDK-8300596: Enhance Jar Signature validation
+ * JDK-8304468: Better array usages
+ * JDK-8305312: Enhanced path handling
+note: https://mail.openjdk.org/pipermail/jdk8u-dev/2023-July/017285.html
+bug: [56522]
+cve:
+- CVE-2023-22045
+- CVE-2023-22049
