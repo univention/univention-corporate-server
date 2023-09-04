@@ -24,7 +24,7 @@ General
   * :program:`c-ares` (:uv:cve:`2023-31130`, :uv:cve:`2023-32067`) (:uv:bug:`56236`)
   * :program:`clamav` (:uv:cve:`2023-20197`) (:uv:bug:`56496`)
   * :program:`cups` (:uv:cve:`2023-34241`) (:uv:bug:`56244`)
-  * :program:`firefox-esr` (:uv:cve:`2023-37201`, :uv:cve:`2023-37202`, :uv:cve:`2023-37207`, :uv:cve:`2023-37208`, :uv:cve:`2023-37211`, :uv:cve:`2023-4045`, :uv:cve:`2023-4046`, :uv:cve:`2023-4047`, :uv:cve:`2023-4048`, :uv:cve:`2023-4049`, :uv:cve:`2023-4050`, :uv:cve:`2023-4055`, :uv:cve:`2023-4056`) (:uv:bug:`56299`, :uv:bug:`56432`)
+  * :program:`firefox-esr` (:uv:cve:`2023-37201`, :uv:cve:`2023-37202`, :uv:cve:`2023-37207`, :uv:cve:`2023-37208`, :uv:cve:`2023-37211`, :uv:cve:`2023-4045`, :uv:cve:`2023-4046`, :uv:cve:`2023-4047`, :uv:cve:`2023-4048`, :uv:cve:`2023-4049`, :uv:cve:`2023-4050`, :uv:cve:`2023-4055`, :uv:cve:`2023-4056`, :uv:cve:`2023-4573`, :uv:cve:`2023-4574`, :uv:cve:`2023-4575`, :uv:cve:`2023-4581`, :uv:cve:`2023-4584`) (:uv:bug:`56299`, :uv:bug:`56432`, :uv:bug:`56513`)
   * :program:`ghostscript` (:uv:cve:`2023-38559`) (:uv:bug:`56414`)
   * :program:`intel-microcode` (:uv:cve:`2022-40982`, :uv:cve:`2022-41804`, :uv:cve:`2023-23908`) (:uv:bug:`56462`)
   * :program:`libfastjson` (:uv:cve:`2020-12762`) (:uv:bug:`56179`)
@@ -62,6 +62,7 @@ General
   :program:`gst-plugins-bad1.0`
   :program:`gst-plugins-base1.0`
   :program:`gst-plugins-good1.0`
+  :program:`gst-plugins-uggly1.0`
   :program:`hdf5`
   :program:`hsqldb`
   :program:`hsqldb1.8.0`
@@ -86,6 +87,7 @@ General
   :program:`opensc`
   :program:`openssl`
   :program:`open-vm-tools`
+  :program:`otrs2`
   :program:`owslib`
   :program:`pandoc`
   :program:`pdfcrack`
