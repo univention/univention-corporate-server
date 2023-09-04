@@ -292,14 +292,15 @@ def keycloak_adm_login(selenium: webdriver.Chrome, keycloak_config: SimpleNamesp
         password: str,
         fails_with: Optional[str] = None,
         url: Optional[str] = keycloak_config.url,
+        no_login: bool = False,
     ) -> webdriver.Chrome:
         selenium.get(url)
         wait_for_class(selenium, keycloak_config.admin_console_class)
         assert selenium.title == keycloak_config.title
         admin_console = wait_for_class(selenium, keycloak_config.admin_console_class)[0]
         admin_console.find_element(By.TAG_NAME, "a").click()
-        keycloak_login(selenium, keycloak_config, username, password, fails_with=fails_with)
-        if fails_with:
+        keycloak_login(selenium, keycloak_config, username, password, fails_with=fails_with, no_login=no_login)
+        if fails_with or no_login:
             return selenium
         # check that we are logged in
         wait_for_id(selenium, keycloak_config.main_content_page_container_id)
