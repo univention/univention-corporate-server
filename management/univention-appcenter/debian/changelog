@@ -1,3 +1,9 @@
+univention-appcenter (9.0.8-6) unstable; urgency=medium
+
+  * Bug #56421: Add logging for broken JSON files of the listener converter
+
+ -- Mika Westphal <westphal@univention.de>  Tue, 05 Sep 2023 12:01:22 +0200
+
 univention-appcenter (9.0.8-5) unstable; urgency=medium
 
   * Revert "Bug #55610: added appcenter logrotate configuration and a UCR variable"
