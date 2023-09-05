@@ -195,6 +195,7 @@ upgrade_to_testing () {
 
 set_repository_to_testing () {
 	ucr set repository/online/server="${FTP_SCHEME}://updates-test.${FTP_DOM}/"
+	apt-get -qq update
 }
 fix_repository_schema () {  # Bug #55044 - to be removed when upgrading from 5.0-2+e528
 	local key='repository/online/server' repo
@@ -205,7 +206,7 @@ fix_repository_schema () {  # Bug #55044 - to be removed when upgrading from 5.0
 	ucr set "${key}=${FTP_SCHEME}://${repo}/"
 }
 
-set_repository_if_testing () {  # Must be called after `basic_setup` set `$FTP_DOM`
+set_repository_if_testing () {  # "[ENV:RELEASE_UPDATE]"
 	case "${1:?missing testing argument}" in
 	testing) set_repository_to_testing ;;
 	esac
