@@ -213,6 +213,10 @@ msgstr ""
 "werden, da die Komponente '{0}' noch nicht für neuere Releaseversionen "
 "bereitgestellt wurde."
 
+#: umc/js/updater/UpdatesPage.js:171
+msgid "Note: UCS 5.1-0 is missing in this list on purpose. UCS 5.1-0 is not meant to be installed directly and may not fully work; it is just an <a href=\"https://www.univention.com/blog-en/2023/06/announcement-ucs-release-5-2/\" target=\"_blank\" rel=\"noopener noreferrer\">intermediate release on the way to UCS 5.2-0</a>."
+msgstr "Anmerkung: UCS 5.1-0 fehlt absichtlich in dieser Liste. UCS 5.1-0 soll nicht direkt installiert werden und wird nicht wie gewohnt funktionieren; es ist <a href=\"https://www.univention.de/blog-de/2023/06/ankuendigung-ucs-release-5-2/\" target=\"_blank\" rel=\"noopener noreferrer\">ein Zwischenrelease auf dem Weg zu UCS 5.2-0<a>."
+
 #: umc/js/updater/UpdatesPage.js:189
 msgid "Further release updates are available but cannot be installed."
 msgstr ""
