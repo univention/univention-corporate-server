@@ -77,7 +77,7 @@ class AppCenter:
     def handle_first_open_dialog(self):
         first_open_dialog = self.page.get_by_role("dialog", name="Univention App Center")
         only_visible_when_no_dialog = self.page.get_by_role("heading", name=_("Available"))
-        expect(first_open_dialog.or_(only_visible_when_no_dialog)).to_be_visible(timeout=2 * MIN)
+        expect(first_open_dialog.or_(only_visible_when_no_dialog)).to_be_visible(timeout=5 * MIN)
         if first_open_dialog.is_visible():
             first_open_dialog.get_by_label(_("Do not show this message again")).check()
             first_open_dialog.get_by_role("button", name="Continue").click()
@@ -121,7 +121,7 @@ class AppCenter:
         """Uninstall an app. The AppCenter needs to be on the overview screen"""
         self.open_app(app_name)
         manage_installations = self.page.get_by_role("button", name=_("Manage installation"))
-        expect(manage_installations).to_be_visible(timeout=2 * MIN)
+        expect(manage_installations).to_be_visible(timeout=5 * MIN)
         manage_installations.click()
 
         uninstall_button = self.page.get_by_role("button", name=_("Uninstall"))

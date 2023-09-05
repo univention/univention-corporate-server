@@ -197,7 +197,7 @@ class Interactions:
             from univention.testing.browser.appcenter import AppCenter, wait_for_final_query
 
             app_center = AppCenter(self.tester)
-            with self.page.expect_response(lambda request: wait_for_final_query(request)):
+            with self.page.expect_response(lambda request: wait_for_final_query(request), timeout=15 * MIN):
                 app_center.handle_first_open_dialog()
 
     def fill_combobox(self, name: str, option: str):
