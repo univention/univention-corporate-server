@@ -81,7 +81,7 @@ def side_menu_user(umc_browser_test: UMCBrowserTest):
 def kill_module_processes():
     logger.info("killing module processes")
     try:
-        subprocess.run(["/usr/bin/pkill", "-f", "/usr/sbin/univention-management-console-module"], check=True)
+        subprocess.run(["pkill", "-f", "/usr/sbin/univention-management-console-module"], check=True)
     except subprocess.CalledProcessError as e:
         if e.returncode != 1:
             logger.exception("failed killing module processes")

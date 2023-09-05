@@ -64,4 +64,4 @@ def test_portal(umc_browser_test: UMCBrowserTest, ucr, portal_context):
 
 def set_portal(dn: str, ucr):
     ucr.handler_set([f"portal/default-dn={dn}"])
-    subprocess.run(["/usr/sbin/univention-portal", "update"], check=True)
+    subprocess.run(["univention-portal", "update"], check=True)

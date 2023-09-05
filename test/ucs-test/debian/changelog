@@ -1,3 +1,9 @@
+ucs-test (10.0.16-3) unstable; urgency=medium
+
+  * Bug #56054: remove absolute paths in subprocess calls in browser tests
+
+ -- Marius Meschter <marius.meschter@univention.de>  Tue, 05 Sep 2023 08:25:09 +0200
+
 ucs-test (10.0.16-2) unstable; urgency=medium
 
   * Bug #53333: Ignore traceback 85_portal_administration_inline_creation in var_log_tracebacks

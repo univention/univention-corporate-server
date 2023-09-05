@@ -42,7 +42,7 @@ def test_kill_process(force: bool, umc_browser_test: UMCBrowserTest):
     process_overview = ProcessOverview(umc_browser_test)
     process_overview.navigate()
 
-    p = subprocess.Popen(["/usr/bin/sleep", "5000"])
+    p = subprocess.Popen(["sleep", "5000"])
     process_overview.ensure_process(p, "PID")
     process_overview.ensure_process(p, "Command")
     process_overview.kill_process(p, force)

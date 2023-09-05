@@ -363,7 +363,7 @@ class UMCBrowserTest(Waits, Interactions):
 
     def systemd_restart_service(self, service: str):
         logger.info("restarting service %s" % service)
-        subprocess.run(["/usr/bin/deb-systemd-invoke", "restart", service], check=True)
+        subprocess.run(["deb-systemd-invoke", "restart", service], check=True)
 
     def restart_umc(self):
         self.systemd_restart_service("univention-management-console-server")

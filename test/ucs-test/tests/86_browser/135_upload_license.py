@@ -92,7 +92,7 @@ def dump_current_license_to_file(license_file: IO[str], license_dn: str):
     """
     logger.info("Saving original license to file: '%s'" % license_file.name)
     try:
-        subprocess.run(["/usr/bin/univention-ldapsearch", "-LLLb", license_dn], stdout=license_file, check=True)
+        subprocess.run(["univention-ldapsearch", "-LLLb", license_dn], stdout=license_file, check=True)
     except (IOError, ValueError, OSError, CalledProcessError):
         logger.exception("An error occured backing up the old license")
         raise

@@ -27,7 +27,7 @@ def test_open_all_modules(umc_browser_test: UMCBrowserTest):
         logger.info("opening all_modules[%d:%d]" % (i, i + limit))
         umc_browser_test.open_modules(all_modules, start_at=i, limit=i + limit)
         try:
-            subprocess.run(["/usr/bin/pkill", "-f", "/usr/sbin/univention-management-console-module"], check=True)
+            subprocess.run(["pkill", "-f", "/usr/sbin/univention-management-console-module"], check=True)
             time.sleep(2)
         except subprocess.CalledProcessError as e:
             if e.returncode != 1:

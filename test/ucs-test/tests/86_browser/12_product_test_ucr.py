@@ -136,5 +136,5 @@ def create_testing_ucr_variables(ucr_variable_file: IO[str]):
     )
     ucr_variable_file.flush()
 
-    args = ["/usr/sbin/ucr", "set"] + [f"umc_test/{k}" for k in ["foo_tmpKey=foo_tmpVal", "tmpKey_foo=tmpVal_foo", "foo_tmpKey_bar=foo_tmpVal_bar", "tmpKey=tmpVal"]]
+    args = ["ucr", "set"] + [f"umc_test/{k}" for k in ["foo_tmpKey=foo_tmpVal", "tmpKey_foo=tmpVal_foo", "foo_tmpKey_bar=foo_tmpVal_bar", "tmpKey=tmpVal"]]
     subprocess.run(args, check=True)
