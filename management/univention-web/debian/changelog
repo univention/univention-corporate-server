@@ -1,3 +1,10 @@
+univention-web (4.0.5-1) unstable; urgency=medium
+
+  * Bug #56548: keycloak specific settings have been removed from
+    the themes
+
+ -- Felix Botner <botner@univention.de>  Wed, 13 Sep 2023 11:36:25 +0200
+
 univention-web (4.0.4-4) unstable; urgency=medium
 
   * Bug #55164: Show cookie banner only if configured for current domain
