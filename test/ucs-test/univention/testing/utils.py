@@ -140,7 +140,7 @@ def get_ldap_connection(admin_uldap: bool = False, primary: bool = False) -> acc
 
     for ldap_server in ldap_servers:
         try:
-            lo = uldap.access(host=ldap_server, port=port, base=ucr['ldap/base'], binddn=creds.binddn, bindpw=creds.bindpw, start_tls=2, decode_ignorelist=[], follow_referral=True)
+            lo = uldap.access(host=ldap_server, port=port, base=ucr['ldap/base'], binddn=creds.binddn, bindpw=creds.bindpw, start_tls=2, follow_referral=True)
             if admin_uldap:
                 lo = access(lo=lo)
             return lo
