@@ -1,3 +1,13 @@
+univention-fetchmail (13.0.7-1) unstable; urgency=medium
+
+  * Bug #56482: check that the user has a mailPrimaryAddress on
+    fetchmail listener.
+  * Bug #56308: increase univention-fetchmail-schema joinscript version.
+    Fix migrate-fetchmail script and fetchmail hook to handle both
+    bytes and str types correctly.
+
+ -- Juan Carlos García García <garcia-garcia.extern@univention.de>  Wed, 6 Sep 2023 9:37:00 +0200
+
 univention-fetchmail (13.0.6-5) unstable; urgency=medium
 
   * Bug #56036: restore old split() behavior
