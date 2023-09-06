@@ -71,7 +71,13 @@ def get_pw_from_rc(lines, uid):
 
 
 def map_fetchmail(value):
-    return [json.dumps(v).encode('UTF-8') for v in value]
+    ret = []
+    for elem in value:
+        entry = []
+        for param in elem:
+            entry.append(param if isinstance(param, str) else param.decode())
+        ret.append(json.dumps(entry).encode('UTF-8'))
+    return ret
 
 
 def unmap_fetchmail(value):
