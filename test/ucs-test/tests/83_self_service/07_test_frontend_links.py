@@ -11,6 +11,8 @@ import os
 import sys
 import time
 
+from univention.testing import utils
+
 
 test_lib = os.environ.get('UCS_TEST_LIB', 'univention.testing.apptest')
 try:
@@ -20,44 +22,60 @@ except ImportError:
     sys.exit(1)
 
 
-LINK_HASHES = ['profiledata', 'createaccount', 'verifyaccount', 'passwordchange', 'passwordreset', 'setcontactinformation']
+LINK_HASHES = ['profile', 'createaccount', 'verifyaccount', 'passwordchange', 'passwordforgotten', 'protectaccount']
 
 
 def get_visible_selfservice_links(chrome):
-    elements = chrome.find_all('div.umcHeaderPage a')
-    return sorted({elem.get_attribute('href').rsplit('/', 1)[1] for elem in elements})
+    elements = chrome.find_all('.portal-tile__root-element > a')
+    return sorted({elem.get_attribute('href').rsplit('#', 1)[1] for elem in elements})
 
 
 def assert_link_hashes(links, without):
     wanted_hashes = [link_hash for link_hash in LINK_HASHES if link_hash not in without]
     assert len(links) == len(wanted_hashes)
     for link_hash in wanted_hashes:
-        assert f'#page={link_hash}' in links
+        assert f'/selfservice/{link_hash}' in links
 
 
-def goto_selfservice(chrome):
-    chrome.get('/univention/self-service/')
-    time.sleep(2)
+def goto_selfservice(chrome, login=False):
+    if login:
+        chrome.get("/univention/login/?location=/univention/selfservice/")
+        time.sleep(2)
+        chrome.enter_input('username', 'Administrator')
+        chrome.enter_input('password', 'univention')
+        chrome.enter_return()
+        time.sleep(10)
+    else:
+        chrome.get('/univention/selfservice/')
+        time.sleep(2)
 
 
 def test_all_links(chrome):
     goto_selfservice(chrome)
     links = get_visible_selfservice_links(chrome)
-    assert_link_hashes(links, without=['verifyaccount', 'createaccount'])
+    assert_link_hashes(links, without=['verifyaccount', 'createaccount', 'passwordchange'])
+
+
+def test_all_links_login(chrome):
+    goto_selfservice(chrome, login=True)
+    links = get_visible_selfservice_links(chrome)
+    assert_link_hashes(links, without=['verifyaccount', 'createaccount', "passwordforgotten"])
 
 
 def test_disabled_protectaccount(chrome, ucr):
-    ucr.set({'umc/self-service/protect-account/frontend/enabled': 'false'})
+    ucr.set({'umc/self-service/protect-account/backend/enabled': 'false'})
+    utils.wait_for_replication()
     goto_selfservice(chrome)
     links = get_visible_selfservice_links(chrome)
-    assert_link_hashes(links, without=['setcontactinformation', 'verifyaccount', 'createaccount'])
+    assert_link_hashes(links, without=['protectaccount', 'verifyaccount', 'createaccount', 'passwordchange'])
 
 
-def test_disabled_passwordreset(chrome, ucr):
-    ucr.set({'umc/self-service/passwordreset/frontend/enabled': 'false'})
+def test_disabled_passwordforgotten(chrome, ucr):
+    ucr.set({'umc/self-service/passwordreset/backend/enabled': 'false'})
+    utils.wait_for_replication()
     goto_selfservice(chrome)
     links = get_visible_selfservice_links(chrome)
-    assert_link_hashes(links, without=['passwordreset', 'verifyaccount', 'createaccount'])
+    assert_link_hashes(links, without=['passwordforgotten', 'verifyaccount', 'createaccount', 'passwordchange'])
 
 
 def test_disabled_passwordchange(chrome, ucr):
@@ -69,23 +87,33 @@ def test_disabled_passwordchange(chrome, ucr):
 
 def test_disabled_profiledata(chrome, ucr):
     ucr.set({'umc/self-service/profiledata/enabled': 'false'})
+    utils.wait_for_replication()
     goto_selfservice(chrome)
     links = get_visible_selfservice_links(chrome)
-    assert_link_hashes(links, without=['profiledata', 'verifyaccount', 'createaccount'])
+    assert_link_hashes(links, without=['profile', 'verifyaccount', 'createaccount', 'passwordchange'])
 
 
 def test_disabled_accountregistration(chrome, ucr):
-    ucr.set({'umc/self-service/account-registration/frontend/enabled': 'true'})
+    ucr.set({'umc/self-service/account-registration/backend/enabled': 'true'})
+    utils.wait_for_replication()
     goto_selfservice(chrome)
     links = get_visible_selfservice_links(chrome)
-    assert_link_hashes(links, without=['verifyaccount'])
+    assert_link_hashes(links, without=['verifyaccount', 'passwordchange'])
 
 
 def test_disabled_accountverification(chrome, ucr):
-    ucr.set({'umc/self-service/account-verification/frontend/enabled': 'true'})
+    ucr.set({'umc/self-service/account-verification/backend/enabled': 'true'})
+    utils.wait_for_replication()
     goto_selfservice(chrome)
     links = get_visible_selfservice_links(chrome)
-    assert_link_hashes(links, without=['createaccount'])
+    assert_link_hashes(links, without=['createaccount', 'passwordchange'])
+
+
+def test_login_disabled_passwordchange(chrome, ucr):
+    ucr.set({'umc/self-service/passwordchange/frontend/enabled': 'false'})
+    goto_selfservice(chrome, login=True)
+    links = get_visible_selfservice_links(chrome)
+    assert_link_hashes(links, without=['verifyaccount', 'createaccount', 'passwordforgotten'])
 
 
 if __name__ == '__main__':

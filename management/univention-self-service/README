@@ -60,7 +60,3 @@ c.umc_command(
 
 In UMC the verification status of the email address of a user can be seen under Password recovery in
 the Users module when customizing a user.
-
-== Reference ==
-[1] https://wiki.univention.com/index.php?title=UCS_3.0_UMC_API_for_Modules
-
