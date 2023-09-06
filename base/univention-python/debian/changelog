@@ -1,3 +1,9 @@
+univention-python (14.0.5) unstable; urgency=medium
+
+  * Bug #50343: remove decode_ignorelist
+
+ -- Florian Best <best@univention.de>  Thu, 07 Mar 2024 23:54:04 +0100
+
 univention-python (14.0.4) unstable; urgency=medium
 
   * Bug #55994: drop Python 2 binary packages

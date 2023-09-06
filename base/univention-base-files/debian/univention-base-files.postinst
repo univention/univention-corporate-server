@@ -38,7 +38,6 @@ rm -f "/etc/univention/templates/cache"
 univention-config-registry set ldap/base?dc=univention,dc=unconfigured \
 	ldap/server/name?ds1 \
 	ldap/server/ip?127.0.0.1 \
-	ldap/binaryattributes?"" \
 	ldap/client/retry/count?10 \
 	logrotate/rotate?weekly \
 	logrotate/rotate/count?12 \
@@ -98,9 +97,6 @@ univention-config-registry set sshd/port?22 \
 if [ -n "${locale:-}" ]; then
 	locale-gen || true
 fi
-
-# set UCR value for package python-univention (Bug: #15971)
-univention-config-registry set ldap/binaryattributes?"krb5Key,userCertificate;binary"
 
 # configure firewall
 univention-config-registry set \
