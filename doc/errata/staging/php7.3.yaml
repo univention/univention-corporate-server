@@ -1,0 +1,17 @@
+product: ucs
+release: "5.0"
+version: [3, 4]
+scope: ucs_5.0-0-errata5.0-4
+src: php7.3
+fix: 7.3.31-1~deb10u5
+desc: |
+ This update addresses the following issues:
+ 7.3.31-1~deb10u5 (Mon, 04 Sep 2023 23:49:25 +0200)
+ * Non-maintainer upload by the LTS Security Team.
+ * Fix CVE-2023-3823: Security issue with external entity loading in XML
+   without enabling it.
+ * Fix CVE-2023-3824: Buffer overflow and overread in phar_dir_read().
+bug: [56549]
+cve:
+- CVE-2023-3823
+- CVE-2023-3824
