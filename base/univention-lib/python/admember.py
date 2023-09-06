@@ -317,7 +317,7 @@ def check_ad_account(ad_domain_info, username, password, ucr=None):
     # Ok, ready and set for kerberized LDAP lookup
     try:
         subprocess.call(['systemctl', 'stop', 'nscd'])
-        lo_ad = univention.uldap.access(host=ad_server_name, port=389, base=ad_ldap_base, binddn=None, bindpw=None, start_tls=0, use_ldaps=False, decode_ignorelist=["objectSid"])
+        lo_ad = univention.uldap.access(host=ad_server_name, port=389, base=ad_ldap_base, binddn=None, bindpw=None, start_tls=0, use_ldaps=False)
         lo_ad.lo.set_option(ldap.OPT_PROTOCOL_VERSION, ldap.VERSION3)
         lo_ad.lo.set_option(ldap.OPT_REFERRALS, 0)
         lo_ad.lo.sasl_interactive_bind_s("", auth)
@@ -337,7 +337,7 @@ def check_ad_account(ad_domain_info, username, password, ucr=None):
         # Try again
         try:
             subprocess.call(['systemctl', 'stop', 'nscd'])
-            lo_ad = univention.uldap.access(host=ad_server_name, port=389, base=ad_ldap_base, binddn=None, bindpw=None, start_tls=0, use_ldaps=False, decode_ignorelist=["objectSid"])
+            lo_ad = univention.uldap.access(host=ad_server_name, port=389, base=ad_ldap_base, binddn=None, bindpw=None, start_tls=0, use_ldaps=False)
             lo_ad.lo.set_option(ldap.OPT_PROTOCOL_VERSION, ldap.VERSION3)
             lo_ad.lo.set_option(ldap.OPT_REFERRALS, 0)
             lo_ad.lo.sasl_interactive_bind_s("", auth)
@@ -619,7 +619,7 @@ def synchronize_account_position(ad_domain_info, username, password, ucr=None):
     _get_kerberos_ticket(principal, password, ucr)
 
     try:
-        lo_ad = univention.uldap.access(host=ad_server_name, port=389, base=ad_ldap_base, binddn=None, bindpw=None, start_tls=0, use_ldaps=False, decode_ignorelist=["objectSid"])
+        lo_ad = univention.uldap.access(host=ad_server_name, port=389, base=ad_ldap_base, binddn=None, bindpw=None, start_tls=0, use_ldaps=False)
         lo_ad.lo.set_option(ldap.OPT_PROTOCOL_VERSION, ldap.VERSION3)
         lo_ad.lo.set_option(ldap.OPT_REFERRALS, 0)
 
