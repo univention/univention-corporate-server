@@ -17,3 +17,6 @@ cve:
 - CVE-2018-18020
 - CVE-2021-25786
 - CVE-2021-36978
+erratum: 798
+announced: 2023-09-06
+support: core
