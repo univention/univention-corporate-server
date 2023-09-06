@@ -1,0 +1,11 @@
+product: ucs
+release: "5.0"
+version: [4]
+scope: ucs_5.0-0-errata5.0-4
+src: univention-web
+fix: 4.0.4-5
+desc: |
+ This update addresses the following issues:
+ * Duplicate settings for the keycloak app have been removed
+   from the theme styles.
+bug: [56559]
