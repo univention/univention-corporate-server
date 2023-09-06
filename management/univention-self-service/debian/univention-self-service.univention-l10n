@@ -1,14 +1,6 @@
 [
 	{
 		"input_files": [
-			"www/.*\\.js"
-		],
-		"po_subdir": "www/",
-		"target_type": "json",
-		"destination": "usr/share/univention-self-service/www/i18n/{lang}/main.json"
-	},
-	{
-		"input_files": [
 			"hook/.*\\.js"
 		],
 		"po_subdir": "hook/",
