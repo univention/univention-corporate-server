@@ -147,35 +147,31 @@ def getBaseDN(host='localhost', port=None, uri=None):
     return result[0][1]['namingContexts'][0].decode('utf-8')
 
 
-def getAdminConnection(start_tls=2, decode_ignorelist=[]):
+def getAdminConnection(start_tls=2, decode_ignorelist=None):
     # type: (int, List[str]) -> Tuple[univention.admin.uldap.access, univention.admin.uldap.position]
     """
     Open a LDAP connection using the admin credentials.
 
     :param int start_tls: Negotiate TLS with server. If `2` is given, the command will require the operation to be successful.
-    :param decode_ignorelist: List of LDAP attribute names which shall be handled as binary attributes.
-    :type decode_ignorelist: list[str]
     :return: A 2-tuple (LDAP-access, LDAP-position)
     :rtype: tuple[univention.admin.uldap.access, univention.admin.uldap.position]
     """
-    lo = univention.uldap.getAdminConnection(start_tls, decode_ignorelist=decode_ignorelist)
+    lo = univention.uldap.getAdminConnection(start_tls)
     pos = position(lo.base)
     return access(lo=lo), pos
 
 
-def getMachineConnection(start_tls=2, decode_ignorelist=[], ldap_master=True):
+def getMachineConnection(start_tls=2, decode_ignorelist=None, ldap_master=True):
     # type: (int, List[str], bool) -> Tuple[univention.admin.uldap.access, univention.admin.uldap.position]
     """
     Open a LDAP connection using the machine credentials.
 
     :param int start_tls: Negotiate TLS with server. If `2` is given, the command will require the operation to be successful.
-    :param decode_ignorelist: List of LDAP attribute names which shall be handled as binary attributes.
-    :type decode_ignorelist: list[str]
     :param bool ldap_master: Open a connection to the Primary if True, to the preferred LDAP server otherwise.
     :return: A 2-tuple (LDAP-access, LDAP-position)
     :rtype: tuple[univention.admin.uldap.access, univention.admin.uldap.position]
     """
-    lo = univention.uldap.getMachineConnection(start_tls, decode_ignorelist=decode_ignorelist, ldap_master=ldap_master)
+    lo = univention.uldap.getMachineConnection(start_tls, ldap_master=ldap_master)
     pos = position(lo.base)
     return access(lo=lo), pos
 
