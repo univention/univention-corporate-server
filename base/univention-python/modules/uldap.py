@@ -85,14 +85,12 @@ def explodeDn(dn, notypes=0):
     return ldap.dn.explode_dn(dn, notypes)
 
 
-def getRootDnConnection(start_tls=2, decode_ignorelist=[], reconnect=True):
-    # type: (int, List[str], bool) -> access
+def getRootDnConnection(start_tls=2, decode_ignorelist=None, reconnect=True):
+    # type: (int, None, bool) -> access
     """
     Open a LDAP connection to the local LDAP server with the LDAP root account.
 
     :param int start_tls: Negotiate TLS with server. If `2` is given, the command will require the operation to be successful.
-    :param decode_ignorelist: List of LDAP attribute names which shall be handled as binary attributes.
-    :type decode_ignorelist: list[str]
     :param bool reconnect: Automatically reconect if the connection fails.
     :return: A LDAP access object.
     :rtype: univention.uldap.access
@@ -107,17 +105,15 @@ def getRootDnConnection(start_tls=2, decode_ignorelist=[], reconnect=True):
     else:
         bindpw = open('/etc/ldap/rootpw.conf').read().rstrip('\n').replace('rootpw "', '', 1)[:-1]
         binddn = 'cn=update,{}'.format(ucr['ldap/base'])
-    return access(host=host, port=port, base=ucr['ldap/base'], binddn=binddn, bindpw=bindpw, start_tls=start_tls, decode_ignorelist=decode_ignorelist, reconnect=reconnect)
+    return access(host=host, port=port, base=ucr['ldap/base'], binddn=binddn, bindpw=bindpw, start_tls=start_tls, reconnect=reconnect)
 
 
-def getAdminConnection(start_tls=2, decode_ignorelist=[], reconnect=True):
-    # type: (int, List[str], bool) -> access
+def getAdminConnection(start_tls=2, decode_ignorelist=None, reconnect=True):
+    # type: (int, None, bool) -> access
     """
     Open a LDAP connection to the Primary Directory Node LDAP server using the admin credentials.
 
     :param int start_tls: Negotiate TLS with server. If `2` is given, the command will require the operation to be successful.
-    :param decode_ignorelist: List of LDAP attribute names which shall be handled as binary attributes.
-    :type decode_ignorelist: list[str]
     :param bool reconnect: Automatically reconect if the connection fails.
     :return: A LDAP access object.
     :rtype: univention.uldap.access
@@ -126,17 +122,15 @@ def getAdminConnection(start_tls=2, decode_ignorelist=[], reconnect=True):
     ucr.load()
     bindpw = open('/etc/ldap.secret').read().rstrip('\n')
     port = int(ucr.get('ldap/master/port', '7389'))
-    return access(host=ucr['ldap/master'], port=port, base=ucr['ldap/base'], binddn='cn=admin,' + ucr['ldap/base'], bindpw=bindpw, start_tls=start_tls, decode_ignorelist=decode_ignorelist, reconnect=reconnect)
+    return access(host=ucr['ldap/master'], port=port, base=ucr['ldap/base'], binddn='cn=admin,' + ucr['ldap/base'], bindpw=bindpw, start_tls=start_tls, reconnect=reconnect)
 
 
-def getBackupConnection(start_tls=2, decode_ignorelist=[], reconnect=True):
-    # type: (int, List[str], bool) -> access
+def getBackupConnection(start_tls=2, decode_ignorelist=None, reconnect=True):
+    # type: (int, None, bool) -> access
     """
     Open a LDAP connection to a Backup Directory Node LDAP server using the admin credentials.
 
     :param int start_tls: Negotiate TLS with server. If `2` is given, the command will require the operation to be successful.
-    :param decode_ignorelist: List of LDAP attribute names which shall be handled as binary attributes.
-    :type decode_ignorelist: list[str]
     :param bool reconnect: Automatically reconect if the connection fails.
     :return: A LDAP access object.
     :rtype: univention.uldap.access
@@ -146,22 +140,20 @@ def getBackupConnection(start_tls=2, decode_ignorelist=[], reconnect=True):
     bindpw = open('/etc/ldap-backup.secret').read().rstrip('\n')
     port = int(ucr.get('ldap/master/port', '7389'))
     try:
-        return access(host=ucr['ldap/master'], port=port, base=ucr['ldap/base'], binddn='cn=backup,' + ucr['ldap/base'], bindpw=bindpw, start_tls=start_tls, decode_ignorelist=decode_ignorelist, reconnect=reconnect)
+        return access(host=ucr['ldap/master'], port=port, base=ucr['ldap/base'], binddn='cn=backup,' + ucr['ldap/base'], bindpw=bindpw, start_tls=start_tls, reconnect=reconnect)
     except ldap.SERVER_DOWN:
         if not ucr['ldap/backup']:
             raise
         backup = ucr['ldap/backup'].split(' ')[0]
-        return access(host=backup, port=port, base=ucr['ldap/base'], binddn='cn=backup,' + ucr['ldap/base'], bindpw=bindpw, start_tls=start_tls, decode_ignorelist=decode_ignorelist, reconnect=reconnect)
+        return access(host=backup, port=port, base=ucr['ldap/base'], binddn='cn=backup,' + ucr['ldap/base'], bindpw=bindpw, start_tls=start_tls, reconnect=reconnect)
 
 
-def getMachineConnection(start_tls=2, decode_ignorelist=[], ldap_master=True, secret_file="/etc/machine.secret", reconnect=True, random_server=False):
-    # type: (int, List[str], bool, str, bool, bool) -> access
+def getMachineConnection(start_tls=2, decode_ignorelist=None, ldap_master=True, secret_file="/etc/machine.secret", reconnect=True, random_server=False):
+    # type: (int, None, bool, str, bool, bool) -> access
     """
     Open a LDAP connection using the machine credentials.
 
     :param int start_tls: Negotiate TLS with server. If `2` is given, the command will require the operation to be successful.
-    :param decode_ignorelist: List of LDAP attribute names which shall be handled as binary attributes.
-    :type decode_ignorelist: list[str]
     :param bool ldap_master: Open a connection to the Master if True, to the preferred LDAP server otherwise.
     :param str secret_file: The name of a file containing the password credentials.
     :param bool reconnect: Automatically reconnect if the connection fails.
@@ -177,7 +169,7 @@ def getMachineConnection(start_tls=2, decode_ignorelist=[], ldap_master=True, se
     if ldap_master:
         # Connect to Primary Directory Node
         port = int(ucr.get('ldap/master/port', '7389'))
-        return access(host=ucr['ldap/master'], port=port, base=ucr['ldap/base'], binddn=ucr['ldap/hostdn'], bindpw=bindpw, start_tls=start_tls, decode_ignorelist=decode_ignorelist, reconnect=reconnect)
+        return access(host=ucr['ldap/master'], port=port, base=ucr['ldap/base'], binddn=ucr['ldap/hostdn'], bindpw=bindpw, start_tls=start_tls, reconnect=reconnect)
     else:
         # Connect to ldap/server/name
         port = int(ucr.get('ldap/server/port', '7389'))
@@ -196,7 +188,7 @@ def getMachineConnection(start_tls=2, decode_ignorelist=[], ldap_master=True, se
             servers += additional_servers
         for server in servers:
             try:
-                return access(host=server, port=port, base=ucr['ldap/base'], binddn=ucr['ldap/hostdn'], bindpw=bindpw, start_tls=start_tls, decode_ignorelist=decode_ignorelist, reconnect=reconnect)
+                return access(host=server, port=port, base=ucr['ldap/base'], binddn=ucr['ldap/hostdn'], bindpw=bindpw, start_tls=start_tls, reconnect=reconnect)
             # LDAP server down, try next server
             except ldap.SERVER_DOWN as oexc:
                 exc = oexc
@@ -236,15 +228,15 @@ class access(object):
     :param str bindpw: Password for simple authentication.
     :param int start_tls: 0=no, 1=try StartTLS, 2=require StartTLS.
     :param str ca_certfile: File name to CA certificate.
-    :param decode_ignorelist: List of LDAP attribute names which shall be handled as binary attributes.
+    :param decode_ignorelist: obsolete
     :param bool use_ldaps: Connect to SSL port.
     :param str uri: LDAP connection string.
     :param bool follow_referral: Follow referrals and return result from other servers instead of returning the referral itself.
     :param bool reconnect: Automatically re-establish connection to LDAP server if connection breaks.
     """
 
-    def __init__(self, host='localhost', port=None, base='', binddn='', bindpw='', start_tls=2, ca_certfile=None, decode_ignorelist=[], use_ldaps=False, uri=None, follow_referral=False, reconnect=True):
-        # type: (str, int, str, Optional[str], str, int, str, List, bool, str, bool, bool) -> None
+    def __init__(self, host='localhost', port=None, base='', binddn='', bindpw='', start_tls=2, ca_certfile=None, decode_ignorelist=None, use_ldaps=False, uri=None, follow_referral=False, reconnect=True):
+        # type: (str, int, str, Optional[str], str, int, str, None, bool, str, bool, bool) -> None
         self.host = host
         self.base = base
         self.binddn = binddn
@@ -276,8 +268,6 @@ class access(object):
             self.uri = uri
         else:
             self.uri = "ldap://%s:%d" % (self.host, self.port)
-
-        self.decode_ignorelist = decode_ignorelist or ucr.get('ldap/binaryattributes', 'krb5Key,userCertificate;binary').split(',')
 
         # python-ldap does not cache the credentials, so we override the
         # referral handling if follow_referral is set to true
@@ -407,51 +397,6 @@ class access(object):
     def __starttls(self):
         self.lo.start_tls_s()
 
-    def __encode(self, value):
-        if six.PY3:
-            return value
-        if value is None:
-            return value
-        elif six.PY2 and isinstance(value, unicode):  # noqa: F821
-            return str(value)
-        elif isinstance(value, (list, tuple)):
-            return map(self.__encode, value)
-        else:
-            return value
-
-    def __recode_attribute(self, attr, val):
-        if six.PY3:
-            return val
-        if attr in self.decode_ignorelist:
-            return val
-        return self.__encode(val)
-
-    def __recode_entry(self, entry):
-        if six.PY3:
-            return entry
-        if isinstance(entry, tuple) and len(entry) == 3:
-            return (entry[0], entry[1], self.__recode_attribute(entry[1], entry[2]))
-        elif isinstance(entry, tuple) and len(entry) == 2:
-            return (entry[0], self.__recode_attribute(entry[0], entry[1]))
-        elif isinstance(entry, (list, tuple)):
-            return map(self.__recode_entry, entry)
-        elif isinstance(entry, dict):
-            return dict(map(lambda k_v: (k_v[0], self.__recode_attribute(k_v[0], k_v[1])), entry.items()))
-        else:
-            return entry
-
-    def __encode_entry(self, entry):
-        return self.__recode_entry(entry)
-
-    def __encode_attribute(self, attr, val):
-        return self.__recode_attribute(attr, val)
-
-    def __decode_entry(self, entry):
-        return self.__recode_entry(entry)
-
-    def __decode_attribute(self, attr, val):
-        return self.__recode_attribute(attr, val)
-
     @_fix_reconnect_handling
     def get(self, dn, attr=[], required=False):
         # type: (str, List[str], bool) -> Dict[str, List[bytes]]
@@ -469,7 +414,7 @@ class access(object):
         if dn:
             try:
                 result = self.lo.search_s(dn, ldap.SCOPE_BASE, '(objectClass=*)', attr)
-                return self.__decode_entry(result[0][1])
+                return result[0][1]
             except (ldap.NO_SUCH_OBJECT, LookupError):
                 pass
         if required:
@@ -535,7 +480,7 @@ class access(object):
             res = self.lo.search_ext_s(base, ldap.SCOPE_BASE, filter, attr, serverctrls=serverctrls, clientctrls=None, timeout=timeout, sizelimit=sizelimit) + \
                 self.__search(base, ldap.SCOPE_ONELEVEL, filter, attr, serverctrls=serverctrls, clientctrls=None, timeout=timeout, sizelimit=sizelimit, response=response)
         else:
-            if scope in ('sub', 'domain'):
+            if scope in {'sub', 'domain'}:
                 ldap_scope = ldap.SCOPE_SUBTREE
             elif scope == 'one':
                 ldap_scope = ldap.SCOPE_ONELEVEL
@@ -723,7 +668,7 @@ class access(object):
             vals = nal.setdefault(key, set())
             vals |= set(val)
 
-        nal = self.__encode_entry([(k, list(v)) for k, v in nal.items()])
+        nal = [(k, list(v)) for k, v in nal.items()]
 
         try:
             _rtype, _rdata, _rmsgid, resp_ctrls = self.lo.add_ext_s(dn, nal, serverctrls=serverctrls)
@@ -776,7 +721,6 @@ class access(object):
             else:
                 continue
             ml.append((op, key, val))
-        ml = self.__encode_entry(ml)
 
         # check if we need to rename the object
         new_dn, new_rdn = self.__get_new_dn(dn, ml)
