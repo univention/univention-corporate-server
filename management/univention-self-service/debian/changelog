@@ -1,3 +1,9 @@
+univention-self-service (6.0.4) unstable; urgency=medium
+
+  * Bug #56601: remove old frontend
+
+ -- Florian Best <best@univention.de>  Thu, 07 Mar 2024 23:54:04 +0100
+
 univention-self-service (6.0.3) unstable; urgency=medium
 
   * Bug #53127: upgrade to latest debhelper compat version
