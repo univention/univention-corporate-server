@@ -132,10 +132,6 @@ def ntsd_to_ucs(s4connector, key, s4_object):
         s4connector.lo.lo.modify(ucs_dn, ml, serverctrls=serverctrls, response=response)
         for c in response.get('ctrls', []):   # If the modify actually did something
             if c.controlType == PostReadControl.controlType:
-                entryUUID = c.entry['entryUUID'][0]
-                if isinstance(entryUUID, bytes):
-                    entryUUID = entryUUID.decode('ASCII')
-                entryCSN = c.entry['entryCSN'][0]
-                if isinstance(entryCSN, bytes):
-                    entryCSN = entryCSN.decode('ASCII')
+                entryUUID = c.entry['entryUUID'][0].decode('ASCII')
+                entryCSN = c.entry['entryCSN'][0].decode('ASCII')
                 s4connector._remember_entryCSN_commited_by_connector(entryUUID, entryCSN)
