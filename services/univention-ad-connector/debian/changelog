@@ -1,3 +1,9 @@
+univention-ad-connector (14.0.16-3) unstable; urgency=medium
+
+  * Bug #56603: Adjust to fixed post-read-control in python-ldap 4.0
+
+ -- Florian Best <best@univention.de>  Thu, 05 Oct 2023 13:34:47 +0200
+
 univention-ad-connector (14.0.16-2) unstable; urgency=medium
 
   * Bug #55936: use local ldap in resync_object_from_s4.py
