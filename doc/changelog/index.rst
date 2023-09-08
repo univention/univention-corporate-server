@@ -34,6 +34,7 @@ General
   * :program:`linux-latest` (:uv:cve:`2023-1380`, :uv:cve:`2023-2002`, :uv:cve:`2023-2007`, :uv:cve:`2023-20593`, :uv:cve:`2023-2269`, :uv:cve:`2023-3090`, :uv:cve:`2023-31084`, :uv:cve:`2023-3111`, :uv:cve:`2023-3141`, :uv:cve:`2023-32233`, :uv:cve:`2023-3268`, :uv:cve:`2023-3338`, :uv:cve:`2023-34256`, :uv:cve:`2023-35788`, :uv:cve:`2023-35823`, :uv:cve:`2023-35824`) (:uv:bug:`56376`)
   * :program:`linux-signed-amd64` (:uv:cve:`2022-40982`, :uv:cve:`2023-1380`, :uv:cve:`2023-2002`, :uv:cve:`2023-2007`, :uv:cve:`2023-20593`, :uv:cve:`2023-2269`, :uv:cve:`2023-3090`, :uv:cve:`2023-31084`, :uv:cve:`2023-3111`, :uv:cve:`2023-3141`, :uv:cve:`2023-32233`, :uv:cve:`2023-3268`, :uv:cve:`2023-3338`, :uv:cve:`2023-34256`, :uv:cve:`2023-35788`, :uv:cve:`2023-35823`, :uv:cve:`2023-35824`) (:uv:bug:`56376`, :uv:bug:`56430`)
   * :program:`lua5.3` (:uv:cve:`2019-6706`, :uv:cve:`2020-24370`) (:uv:bug:`56200`)
+  * :program:`memcached` (:uv:cve:`2022-48571`) (:uv:bug:`56560`)
   * :program:`openssh` (:uv:cve:`2023-38408`) (:uv:bug:`56463`)
   * :program:`php7.3` (:uv:cve:`2023-3247`, :uv:cve:`CVE-2023-3823`, :uv:cve:`CVE-2023-3824`) (:uv:bug:`56180`, :uv:bug:`56549`)
   * :program:`poppler` (:uv:cve:`2020-36023`, :uv:cve:`2020-36024`) (:uv:bug:`56431`)
