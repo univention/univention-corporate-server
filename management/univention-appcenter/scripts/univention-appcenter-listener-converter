@@ -163,7 +163,13 @@ def find_and_convert_files(app):
             sys.exit(3)
         for filename in filenames:
             logger.debug('Converting %s' % filename)
-            dumped = json.load(open(filename))
+
+            try:
+                dumped = json.load(open(filename))
+            except json.decoder.JSONDecodeError:
+                logger.exception("Fatal error: The following JSON file is broken: %s" % filename)
+                continue
+
             entry_uuid = dumped['entry_uuid']
             if entry_uuid in used_entry_uuids:
                 obsolete_filename = used_entry_uuids.pop(entry_uuid)
