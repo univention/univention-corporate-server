@@ -1,4 +1,4 @@
-univention-appcenter (9.0.8-6) unstable; urgency=medium
+univention-appcenter (9.0.9-1) unstable; urgency=medium
 
   * Bug #56421: Add logging for broken JSON files of the listener converter
 
