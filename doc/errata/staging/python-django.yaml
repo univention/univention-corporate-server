@@ -1,0 +1,16 @@
+product: ucs
+release: "4.4"
+version: [9]
+scope: ucs_4.4-0-errata4.4-9
+src: python-django
+fix: 1:1.10.7-2+deb9u21
+desc: |
+ This update addresses the following issue:
+ 1:1.10.7-2+deb9u21 (Thu, 07 Sep 2023 13:25:17 -0700)
+ * CVE-2023-41164: Potential denial of service vulnerability in
+   django.utils.encoding.uri_to_iri(). This method was subject to potential
+   denial of service attack via certain inputs with a very large number of
+   Unicode characters.
+bug: [56558]
+cve:
+- CVE-2023-41164
