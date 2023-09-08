@@ -213,12 +213,6 @@ Univention App Center
 * The UMC module has been adjusted to use new Python APIs for modules
   (:uv:bug:`56201`).
 
-* A broken internal JSON file will no longer crash the
-  :command:`univention-appcenter-listener-converter`. If a broken JSON file is found,
-  it will be skipped and logged in the log file
-  :file:`/var/log/univention/listener_modules/<app name>.log`
-  (:uv:bug:`56421`).
-
 .. _changelog-umc-udmcli:
 
 |UCSUDM| and command line interface
