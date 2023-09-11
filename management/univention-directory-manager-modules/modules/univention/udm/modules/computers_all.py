@@ -54,7 +54,6 @@ class ComputersAllObjectProperties(GenericObjectProperties):
         'nagiosParents': dn_list_property_encoder_for('auto'),  # can be different types of computer/* objects
         'nagiosServices': dn_list_property_encoder_for('nagios/service'),
         'network': dn_property_encoder_for('networks/network'),
-        'portal': dn_property_encoder_for('settings/portal'),
         'primaryGroup': dn_property_encoder_for('groups/group'),
         'reinstall': StringIntBooleanPropertyEncoder,
         'sambaRID': StringIntPropertyEncoder,

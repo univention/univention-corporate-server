@@ -44,7 +44,7 @@ class UMCTester(object):
         logger.info('Creating dummy portal')
         self.dummy_portal_title = uts.random_string()
         self.dummy_portal_dn = self.udm_test.create_object(
-            'settings/portal',
+            'settings/portal',  # TODO: migrate to new portal
             name=uts.random_string(),
             displayName=['en_US ' + self.dummy_portal_title],
         )

@@ -87,9 +87,6 @@ umc_operation_create "udm-navigation" "UDM - LDAP directory" "navigation" "udm/n
 
 umc_operation_create "udm-license" "UDM - License Import" "license-import" "udm/license/*"
 
-umc_operation_create "udm-portal" "UDM - Portal settings" "settings/portal_all" \
-	"udm/*:objectType=settings/portal*" "udm/types" "udm/get" "udm/put" "udm/properties" "udm/values" \
-
 umc_operation_create "udm-syntax" "UDM - Syntax" "" "udm/syntax/choices/info" "udm/syntax/choices"
 
 umc_operation_create "udm-validate" "UDM - Validate" "" "udm/validate"

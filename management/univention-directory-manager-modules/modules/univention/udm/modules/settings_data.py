@@ -47,7 +47,7 @@ class SettingsDataObjectProperties(GenericObjectProperties):
 
 
 class SettingsDataObject(GenericObject):
-    """Better representation of settings/portal properties."""
+    """Better representation of settings/data properties."""
 
     udm_prop_class = SettingsDataObjectProperties
 

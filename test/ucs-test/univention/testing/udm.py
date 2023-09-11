@@ -379,7 +379,7 @@ class UCSTestUDM:
         module = univention.admin.modules.get_module(modulename)
         # TODO: cache objects
 
-        if 'position' not in kwargs and not modulename.startswith('settings/portal'):
+        if 'position' not in kwargs:
             kwargs['position'] = (module.object.get_default_containers(self._lo) or [self.LDAP_BASE])[0]
 
         superordinate_props = {}
