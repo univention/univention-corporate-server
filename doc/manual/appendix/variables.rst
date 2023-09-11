@@ -1397,14 +1397,6 @@ This appendix lists the |UCSUCRV|\ s mentioned in the document.
    :ref:`basicservices-ntp`.
 
 
-.. envvar:: ucr/check/type
-
-   If this option is ``yes``, the correctness of type definitions and the type
-   compatibility of values are always checked in |UCSUCR|. The
-   setting of the value is aborted for unsuccessful checks. Default is ``no``.
-   For more information, see :ref:`computers-setting-ucr-variables`.
-
-
 .. envvar:: ucs/web/theme
 
    Select the theme for |UCSWEB|. The value corresponds to a CSS file under
