@@ -63,7 +63,16 @@ export default defineComponent({
     }),
     showCookieBanner(): boolean {
       const cookieName = this.metaData.cookieBanner.cookie || 'univentionCookieSettingsAccepted';
-      return this.metaData.cookieBanner.show && !getCookie(cookieName) && !this.cookieBannerDismissed;
+      let domainShouldShowBanner = true;
+      if (this.metaData.cookieBanner.domains.length > 0) {
+        domainShouldShowBanner = false;
+        this.metaData.cookieBanner.domains.forEach((dom) => {
+          if (document.domain.endsWith(dom)) {
+            domainShouldShowBanner = true;
+          }
+        });
+      }
+      return this.metaData.cookieBanner.show && domainShouldShowBanner && !getCookie(cookieName) && !this.cookieBannerDismissed;
     },
   },
   async mounted() {

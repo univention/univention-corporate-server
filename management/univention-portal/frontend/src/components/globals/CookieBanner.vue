@@ -79,6 +79,17 @@ export default defineComponent({
     cookieName(): string {
       return this.metaData.cookieBanner.cookie || 'univentionCookieSettingsAccepted';
     },
+    domain(): string {
+      let ret = document.domain;
+      this.metaData.cookieBanner.domains.some((dom) => {
+        if (document.domain.endsWith(dom)) {
+          ret = dom;
+          return true;
+        }
+        return false;
+      });
+      return ret;
+    },
     cookieTitle(): string {
       return this.$localized(this.metaData.cookieBanner.title) || _('Cookie Settings');
     },
@@ -97,7 +108,7 @@ export default defineComponent({
   methods: {
     setCookies(): void {
       const cookieValue = 'do-not-change-me';
-      setCookie(this.cookieName, cookieValue, '/');
+      setCookie(this.cookieName, cookieValue, '/', this.domain);
       this.dismissCookieBanner();
     },
     dismissCookieBanner(): void {
