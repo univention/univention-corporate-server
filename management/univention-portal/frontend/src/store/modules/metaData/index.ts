@@ -44,6 +44,7 @@ const metaData: PortalModule<MetaDataState> = {
         show: false,
         title: { en: '' },
         text: { en: '' },
+        domains: [],
       },
     },
   },

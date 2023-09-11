@@ -1,3 +1,9 @@
+univention-portal (4.0.14-7) unstable; urgency=medium
+
+  * Bug #55164: Show cookie banner only if configured for current domain
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Mon, 11 Sep 2023 16:28:41 +0200
+
 univention-portal (4.0.14-6) unstable; urgency=medium
 
   * Revert "Bug #55610: added univention-portal logrotate configuration and a UCR variable"
