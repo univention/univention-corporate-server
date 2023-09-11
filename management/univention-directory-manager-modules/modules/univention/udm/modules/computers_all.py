@@ -53,7 +53,6 @@ class ComputersAllObjectProperties(GenericObjectProperties):
         'groups': dn_list_property_encoder_for('groups/group'),
         'nagiosServices': dn_list_property_encoder_for('nagios/service'),
         'network': dn_property_encoder_for('networks/network'),
-        'portal': dn_property_encoder_for('settings/portal'),
         'primaryGroup': dn_property_encoder_for('groups/group'),
         'reinstall': StringIntBooleanPropertyEncoder,
         'sambaRID': StringIntPropertyEncoder,
