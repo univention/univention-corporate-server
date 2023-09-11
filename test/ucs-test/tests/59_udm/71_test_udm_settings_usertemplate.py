@@ -11,7 +11,6 @@ import unidecode
 
 import univention.admin.modules as udm_modules
 import univention.testing.strings as uts
-from univention.admin._ucr import configRegistry as ucr
 from univention.admin.uldap import getAdminConnection
 from univention.testing import utils
 from univention.testing.strings import random_domain_name, random_int, random_name
@@ -93,6 +92,7 @@ def test_use_usertemplate(udm):
         "postcode": random_int(),
         "city": random_name(),
         "country": 'DE',
+        "state": 'HB',
         # FIXME: CTX...
     }
     properties['e-mail'] = email()
@@ -114,14 +114,8 @@ def test_use_usertemplate(udm):
         'sambaLogonScript': [properties['scriptpath']],
         'sambaProfilePath': [properties['profilepath']],
         'sambaHomeDrive': [properties['homedrive']],
-        **(
-            {
-                'st': [properties['country']],
-            } if ucr.is_true('directory/manager/web/modules/users/user/map-country-to-st') else {
-                'c': [properties['country']],
-                'st': [properties['state']],
-            }
-        ),
+        'c': [properties['country']],
+        'st': [properties['state']],
         'telephoneNumber': [properties['phone']],
         'roomNumber': [properties['roomNumber']],
         'employeeNumber': [properties['employeeNumber']],
@@ -192,14 +186,8 @@ def test_use_usertemplate(udm):
         'sambaLogonScript': ['//%s/scripts/%s' % (host, user_properties['username'])],
         'sambaProfilePath': ['//%s/profile/%s' % (host, user_properties['username'])],
         'sambaHomeDrive': [properties['homedrive']],
-        **(
-            {
-                'st': [properties['country']],
-            } if ucr.is_true('directory/manager/web/modules/users/user/map-country-to-st') else {
-                'c': [properties['country']],
-                'st': [properties['state']],
-            }
-        ),
+        'c': [properties['country']],
+        'st': [properties['state']],
         'telephoneNumber': [properties['phone']],
         'roomNumber': [properties['roomNumber']],
         'employeeNumber': [properties['employeeNumber']],
