@@ -7,5 +7,5 @@ fix: 4.0.14-7
 desc: |
  This update addresses the following issues:
  * The portal will show the cookie banner only if it is configured via the new
-   UCR variable umc/cookie-banner/domains.
+   UCR variable `umc/cookie-banner/domains`.
 bug: [55164]

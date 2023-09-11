@@ -6,8 +6,8 @@ src: univention-management-console
 fix: 12.0.31-13
 desc: |
  This update addresses the following issues:
- * The new UCR variable umc/cookie-banner/domains can be used to configure on
-   which domains to show the cookie banner. Additionally, top level domains
+ * The new UCR variable `umc/cookie-banner/domains` can be used to configure
+   on which domains to show the cookie banner. Additionally, top level domains
    can be configured so that the cookie can be shared between portal and login
    page. By default, both portal and login page will always show the cookie
    banner and not share it.
