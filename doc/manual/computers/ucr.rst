@@ -168,10 +168,9 @@ is created.
 
 When setting a new value for a |UCSUCR| variable UCR runs checks to verify
 the compatibility of the value with the variable type. In case
-of incompatibility UCR displays a warning message. Moreover, the variable is not
-set to the new value if the |UCSUCR| variable :envvar:`ucr/check/type` is ``true``
-(default is ``false``). If the ``--ignore-check`` option is used, the value is always
-set independent of type compatibility and setting of :envvar:`ucr/check/type`.
+of incompatibility the variable is not set to the new value.
+If the ``--ignore-check`` option is used, the value is always
+set independent of type compatibility.
 
 When a variable changes, UCR rewrites all configuration files immediately for which the
 variable is registered. UCR outputs the paths of the updated files to the console.
