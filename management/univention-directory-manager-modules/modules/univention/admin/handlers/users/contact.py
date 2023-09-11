@@ -41,7 +41,6 @@ import univention.admin.handlers
 import univention.admin.localization
 import univention.admin.uexceptions
 import univention.debug as ud
-from univention.admin._ucr import configRegistry as ucr
 from univention.admin.handlers.users.user import mapHomePostalAddress, unmapHomePostalAddress
 from univention.admin.layout import Group, Tab
 
@@ -304,7 +303,7 @@ layout = [
             'phone',
             ['roomNumber', 'departmentNumber'],
             ['street', 'postcode', 'city'],
-            ['state', 'country'] if not ucr.is_true('directory/manager/web/modules/users/user/map-country-to-st') else ['country'],
+            ['state', 'country'],
         ]),
         Group(_('Private'), layout=[
             'homeTelephoneNumber',
@@ -339,11 +338,8 @@ mapping.register('street', 'street', None, univention.admin.mapping.ListToString
 mapping.register('postcode', 'postalCode', None, univention.admin.mapping.ListToString)
 mapping.register('postOfficeBox', 'postOfficeBox')
 mapping.register('city', 'l', None, univention.admin.mapping.ListToString)
-if ucr.is_true('directory/manager/web/modules/users/user/map-country-to-st'):  # old broken behavior
-    mapping.register('country', 'st', None, univention.admin.mapping.ListToString)
-else:
-    mapping.register('country', 'c', None, univention.admin.mapping.ListToString)
-    mapping.register('state', 'st', None, univention.admin.mapping.ListToString)
+mapping.register('country', 'c', None, univention.admin.mapping.ListToString)
+mapping.register('state', 'st', None, univention.admin.mapping.ListToString)
 mapping.register('homeTelephoneNumber', 'homePhone')
 mapping.register('mobileTelephoneNumber', 'mobile')
 mapping.register('pagerTelephoneNumber', 'pager')

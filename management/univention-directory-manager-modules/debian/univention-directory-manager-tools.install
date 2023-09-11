@@ -18,7 +18,6 @@ scripts/proof_sambaAccountFlags	usr/share/univention-directory-manager-tools/
 scripts/proof_uniqueMembers	usr/share/univention-directory-manager-tools/
 scripts/remove_sambalmpassword	usr/share/univention-directory-manager-tools/
 scripts/remove_sambapwdmustchange	usr/share/univention-directory-manager-tools/
-scripts/udm-remap-country-from-st-to-c	usr/share/univention-directory-manager-tools/
 scripts/univention-delayed-account-activation	usr/share/univention-directory-manager-tools/
 univention-cli-client	usr/share/univention-directory-manager-tools/
 univention-cli-server	usr/share/univention-directory-manager-tools/
