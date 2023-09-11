@@ -12,7 +12,7 @@ import subprocess
 import sys
 from datetime import datetime, timedelta
 from time import sleep
-from typing import Sequence, Tuple, Union
+from typing import Iterator, List, Sequence, Tuple, Union  # noqa: F401
 
 from univention.config_registry import ucr
 from univention.testing import utils
@@ -172,9 +172,12 @@ def dump_account() -> None:
             continue
 
 
-def dump_pwpolicy() -> None:
+def dump_pwpolicy() -> Iterator[str]:
     """Dump the current password policy settings."""
-    subprocess.run(["samba-tool", "domain", "passwordsettings", "show"], check=False)
+    out, _err = create_and_run_process(["samba-tool", "domain", "passwordsettings", "show"])
+    for line in out.splitlines():
+        if " lockout " in line:
+            yield line
 
 
 def main() -> None:
@@ -186,22 +189,27 @@ def main() -> None:
         create_delete_test_user(True)
 
         set_lockout_settings(LOCKOUT_DURATION, LOCKOUT_THRESHOLD)
+        hist = []  # type: List[str]
+        hist += dump_pwpolicy()
 
         print("# Twiddling thumbs for 30s")  # Why?
         sleep(30)
 
         print(f"# Authenticating user '{test_username}' with correct password '{TEST_USER_PASS}'")
+        hist += dump_pwpolicy()
         stdout, stderr = try_to_authenticate(TEST_USER_PASS)
         check_no_errors_present_in_output(stdout, stderr)
         print("# OKAY: login worked")
 
         print(f"# Locking out user '{test_username}' by authenticating with wrong password {LOCKOUT_THRESHOLD + 1} times:")
         for attempt in range(LOCKOUT_THRESHOLD + 1):
+            hist += dump_pwpolicy()
             stdout, stderr = try_to_authenticate(f"{attempt}{TEST_USER_PASS}")
         check_error_present_in_output(stdout, stderr)
         print("# OKAY: account should be locked now")
 
         print(f"# Authenticating user '{test_username}' with correct password '{TEST_USER_PASS}' on locked out account:")
+        hist += dump_pwpolicy()
         stdout, stderr = try_to_authenticate(TEST_USER_PASS)
         check_error_present_in_output(stdout, stderr)
         print("# OKAY: login failed for locked account")
@@ -211,11 +219,12 @@ def main() -> None:
             sleep(delay)
 
             print(f"# Authenticating user '{test_username}' with correct password '{TEST_USER_PASS}' after the lock time has expired")
+            hist += dump_pwpolicy()
             stdout, stderr = try_to_authenticate(TEST_USER_PASS)
             if "NT_STATUS_ACCOUNT_LOCKED_OUT" not in stdout:
                 break
         else:
-            dump_pwpolicy()
+            print("\n".join(hist))
             # breakpoint()
 
         check_no_errors_present_in_output(stdout, stderr)
