@@ -205,7 +205,9 @@ declare -a legacy_ocs_auxiliary=(
 )
 # These are auto-removed:
 declare -a obsolete_objectclasses=(
-	'(!(objectClass=*))'
+	'(structuralObjectClass=univentionPortalEntry)'
+	'(structuralObjectClass=univentionPortalCategory)'
+	'(structuralObjectClass=univentionPortal)'
 )
 
 update_check_legacy_objects () {

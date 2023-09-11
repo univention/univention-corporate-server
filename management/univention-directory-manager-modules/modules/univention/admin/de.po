@@ -390,10 +390,6 @@ msgstr ""
 msgid "Dynamic BOOTP leases are not compatible with failover."
 msgstr "Dynamic BOOTP ist nicht kompatibel mit Failover."
 
-#: modules/univention/admin/nagios.py:54
-msgid "Email address of Nagios contacts"
-msgstr "Email-Adresse für Nagios-Benachrichtigungen"
-
 #: modules/univention/admin/policy.py:103
 msgid "Empty attribute"
 msgstr "Leeres Attribut"
@@ -458,10 +454,6 @@ msgstr "Erste Adresse"
 #: modules/univention/admin/policy.py:92
 msgid "Fixed attribute"
 msgstr "Festgelegtes Attribut"
-
-#: modules/univention/admin/syntax.py:6503
-msgid "Footer"
-msgstr ""
 
 #: modules/univention/admin/syntax.py:5549
 msgid "Force shutdown from a remote system"
@@ -698,10 +690,6 @@ msgstr "Letzte Adresse"
 msgid "Left of primary display"
 msgstr "Links vom primären Monitor"
 
-#: modules/univention/admin/syntax.py:6511
-msgid "Link"
-msgstr ""
-
 #: modules/univention/admin/syntax.py:5481
 msgid "Local (Type: Distribution)"
 msgstr "Lokal (Typ: Verteilung)"
@@ -713,10 +701,6 @@ msgstr "Lokal (Typ: Sicherheit)"
 #: modules/univention/admin/syntax.py:5467
 msgid "Local Group"
 msgstr "Lokale Gruppe"
-
-#: modules/univention/admin/syntax.py:6511
-msgid "Locale"
-msgstr ""
 
 #: modules/univention/admin/syntax.py:1604
 msgid "Locale subdir name"
@@ -816,17 +800,9 @@ msgstr ""
 msgid "NFS share"
 msgstr "NFS-Freigabe"
 
-#: modules/univention/admin/nagios.py:81
-msgid "Nagios Notification Settings"
-msgstr "Einstellungen für Nagios-Benachrichtigungen"
-
 #: modules/univention/admin/nagios.py:77
 msgid "Nagios Service Settings"
 msgstr "Zuordnung von Nagios-Diensten"
-
-#: modules/univention/admin/nagios.py:81
-msgid "Nagios notification"
-msgstr "Nagios-Benachrichtigung"
 
 #: modules/univention/admin/nagios.py:77
 msgid "Nagios services"
@@ -1046,10 +1022,6 @@ msgstr "PKI Zertifikat (DER Format)"
 msgid "POP3"
 msgstr "POP3"
 
-#: modules/univention/admin/nagios.py:61
-msgid "Parent hosts"
-msgstr "Übergeordnete Rechner"
-
 #: modules/univention/admin/uexceptions.py:379
 msgid "Password has been used before. Please choose a different one."
 msgstr "Das Passwort wurde bereits verwendet. Bitte wählen Sie ein anderes."
@@ -1071,23 +1043,6 @@ msgstr "Zugriff verweigert."
 #: modules/univention/admin/syntax.py:3318
 msgid "Port"
 msgstr "Port"
-
-#: modules/univention/admin/syntax.py:6581
-msgid "Portal Category"
-msgstr "Portal-Kategorie"
-
-#: modules/univention/admin/syntax.py:6546
-#: modules/univention/admin/syntax.py:6581
-msgid "Portal Entry"
-msgstr "Portal-Eintrag"
-
-#: modules/univention/admin/syntax.py:6602
-msgid "Portal entries can not be added to an empty category"
-msgstr "Portal-Einträge können nicht einer leeren Kategorie zugeordnet werden"
-
-#: modules/univention/admin/syntax.py:6511
-msgid "Position"
-msgstr "Position"
 
 #: modules/univention/admin/syntax.py:3685
 msgid "Post"
@@ -1192,14 +1147,6 @@ msgstr "Server"
 #: modules/univention/admin/syntax.py:3263
 msgid "Service"
 msgstr "Dienst"
-
-#: modules/univention/admin/syntax.py:6525
-msgid "Shown in category \"Administration\""
-msgstr ""
-
-#: modules/univention/admin/syntax.py:6526
-msgid "Shown in category \"Installed services\""
-msgstr ""
 
 #: modules/univention/admin/syntax.py:6302
 #: modules/univention/admin/syntax.py:6315
@@ -1578,10 +1525,6 @@ msgstr "Uhrzeit"
 msgid "Time does not match format \"%H:%M:%S\"."
 msgstr ""
 
-#: modules/univention/admin/uexceptions.py:446
-msgid "Timeperiod Object still in use!"
-msgstr "Nagios-Zeitraum-Objekt wird noch genutzt!"
-
 #: modules/univention/admin/syntax.py:6922
 msgid "Timezone"
 msgstr "Zeitzone"
@@ -1730,10 +1673,6 @@ msgid ""
 msgstr ""
 "Der Wert muss zwei ganzzahlige Werte mit einem \"x\" dazwischen beinhalten "
 "(z.B. \"1024x768\")"
-
-#: modules/univention/admin/syntax.py:6591
-msgid "Value has to be in valid json format"
-msgstr ""
 
 #: modules/univention/admin/uexceptions.py:153
 msgid "Value is required."
@@ -2055,18 +1994,3 @@ msgstr "nicht definiert"
 #: modules/univention/admin/syntax.py:6898
 msgid "usrhiper"
 msgstr ""
-
-#~ msgid "Female"
-#~ msgstr "Weiblich"
-
-#~ msgid "Male"
-#~ msgstr "Männlich"
-
-#~ msgid "Not applicable"
-#~ msgstr "Nicht zutreffend"
-
-#~ msgid "Not known"
-#~ msgstr "Unbekannt"
-
-#~ msgid "Protocol and destination parts can not be parsed."
-#~ msgstr "Protokoll und Ziel müssen angegeben werden."

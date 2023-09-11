@@ -1,3 +1,9 @@
+univention-portal (5.0.4) unstable; urgency=medium
+
+  * Bug #52048: remove UDM settings/portal*
+
+ -- Florian Best <best@univention.de>  Thu, 07 Mar 2024 23:54:05 +0100
+
 univention-portal (5.0.3) unstable; urgency=medium
 
   * Bug #53127: upgrade to latest debhelper compat version

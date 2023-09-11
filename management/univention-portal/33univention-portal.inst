@@ -124,10 +124,6 @@ univention-directory-manager container/cn create "$@" --ignore_exists \
 	--position "cn=portals,cn=univention,$ldap_base" \
 	--set name=announcement || die
 
-if [ $JS_LAST_EXECUTED_VERSION -lt 8 ]; then
-	/usr/lib/univention-portal/migrate-to-new-portal "$@"
-fi
-
 role="$(ucr get server/role)"
 
 # the following UDM objects need to be created only initially
