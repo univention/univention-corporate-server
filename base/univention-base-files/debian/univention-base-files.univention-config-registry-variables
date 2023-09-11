@@ -867,7 +867,7 @@ Categories=system-base
 Description[de]=Ist diese Option aktiviert, wird in Univention Configuration Registry grundsätzlich auf Korrektheit von Typ-Definitionen und die Typ-Kompatibilität von zu setzenden Werten geprüft.
 Description[en]=If this option is activated, correctness of type definitions and type compatibility of values to be set are always checked in Univention Configuration Registry.
 Type=bool
-Default=no
+Default=true
 Categories=system-base
 
 [version/patchlevel]
