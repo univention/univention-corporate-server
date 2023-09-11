@@ -139,6 +139,7 @@ def get_cookie_banner():
         banner[name] = {k[len(prefix):]: v for k, v in configRegistry.items() if k.startswith(prefix)}
     banner['show'] = configRegistry.is_true('%sshow' % (base,))
     banner['cookie'] = configRegistry.get('%scookie' % (base,))
+    banner['domains'] = [domain.strip() for domain in re.split(', *', configRegistry.get('%sdomains' % (base,), '')) if domain.strip()]
     return banner
 
 
