@@ -1,0 +1,11 @@
+product: ucs
+release: "5.0"
+version: [4]
+scope: ucs_5.0-0-errata5.0-4
+src: univention-portal
+fix: 4.0.14-7
+desc: |
+ This update addresses the following issues:
+ * The portal will show the cookie banner only if it is configured via the new
+   UCR variable umc/cookie-banner/domains.
+bug: [55164]
