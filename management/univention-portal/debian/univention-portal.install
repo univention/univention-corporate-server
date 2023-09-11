@@ -9,7 +9,6 @@ udm/handlers/*.py	usr/lib/univention-portal/udm/
 udm/icons/16x16/*.png	usr/share/univention-management-console-frontend/js/dijit/themes/umc/icons/16x16/
 udm/icons/50x50/*.png	usr/share/univention-management-console-frontend/js/dijit/themes/umc/icons/50x50/
 udm/icons/scalable/*.svg	usr/share/univention-management-console-frontend/js/dijit/themes/umc/icons/scalable/
-udm/migrate-to-new-portal	usr/lib/univention-portal/
 udm/schema/univention-portal.schema	usr/lib/univention-portal/schema/
 udm/syntax/*.py	usr/lib/univention-portal/syntax/
 udm/univention-portal.xml	usr/lib/univention-portal/umc/

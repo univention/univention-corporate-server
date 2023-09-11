@@ -714,7 +714,7 @@ class access(object):
                 # These attributes don't have a matching rule:
                 #   https://forge.univention.org/bugzilla/show_bug.cgi?id=15171
                 #   https://forge.univention.org/bugzilla/show_bug.cgi?id=44019
-                if key in ['preferredDeliveryMethod', 'jpegPhoto', 'univentionPortalBackground', 'univentionPortalLogo', 'univentionPortalEntryIcon', 'univentionUMCIcon']:
+                if key in ['preferredDeliveryMethod', 'jpegPhoto', 'univentionUMCIcon']:
                     val = None
             else:
                 continue
