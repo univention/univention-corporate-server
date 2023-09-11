@@ -148,19 +148,10 @@ def details_complete(obj: Dict[str, List[bytes]] | None, password: str | None):
     return all(obj.get(attr, [b''])[0] for attr in attrlist)
 
 
-def check_attributes(obj: Dict[str, List[bytes]] | None):
-    if not obj:
-        return False
-    return bool(obj.get('mailPrimaryAddress', [b''])[0])
-
-
 def objappend_single(flist: List[str], new: Dict[str, List[bytes]], password: str | None = None) -> None:
     """add user's single fetchmail entries to flist"""
     # Bug 55882: Compatibility with old attributes.
     objappend(flist, new, password)
-    if not check_attributes(new):
-        ud.debug(ud.LISTENER, ud.INFO, 'Adding user to "fetchmailrc" failed. Missing mailPrimaryAddress attribute in user.')
-        return
     value = new.get('univentionFetchmailSingle', [])
     try:
         entries = [json.loads(v) for v in value]
@@ -180,9 +171,6 @@ def objappend_single(flist: List[str], new: Dict[str, List[bytes]], password: st
 def objappend_multi(flist: List[str], new: Dict[str, List[bytes]], password: str | None = None) -> None:
     """add user's multi fetchmail entries to flist"""
     value = new.get('univentionFetchmailMulti', [])
-    if not check_attributes(new):
-        ud.debug(ud.LISTENER, ud.INFO, 'Adding user to "fetchmailrc" failed. Missing mailPrimaryAddress attribute in user.')
-        return
     try:
         entries = [json.loads(v) for v in value]
     except ValueError:

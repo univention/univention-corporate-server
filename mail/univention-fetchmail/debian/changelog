@@ -1,3 +1,9 @@
+univention-fetchmail (13.0.7-2) unstable; urgency=medium
+
+  * Bug #56482: revert
+
+ -- Juan Carlos García García <garcia-garcia.extern@univention.de>  Wed, 11 Sep 2023 11:35:00 +0200
+
 univention-fetchmail (13.0.7-1) unstable; urgency=medium
 
   * Bug #56482: check that the user has a mailPrimaryAddress on
