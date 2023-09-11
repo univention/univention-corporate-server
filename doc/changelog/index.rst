@@ -28,6 +28,7 @@ General
   * :program:`ghostscript` (:uv:cve:`2023-38559`) (:uv:bug:`56414`)
   * :program:`intel-microcode` (:uv:cve:`2022-40982`, :uv:cve:`2022-41804`, :uv:cve:`2023-23908`) (:uv:bug:`56462`)
   * :program:`libfastjson` (:uv:cve:`2020-12762`) (:uv:bug:`56179`)
+  * :program:`libssh2` (:uv:cve:`2019-13115`, :uv:cve:`2019-17498`, :uv:cve:`2020-22218`) (:uv:bug:`56563`)
   * :program:`libx11` (:uv:cve:`2023-3138`) (:uv:bug:`56245`)
   * :program:`libxpm` (:uv:cve:`2022-44617`, :uv:cve:`2022-46285`, :uv:cve:`2022-4883`) (:uv:bug:`56178`)
   * :program:`linux` (:uv:cve:`2022-40982`, :uv:cve:`2023-1380`, :uv:cve:`2023-2002`, :uv:cve:`2023-2007`, :uv:cve:`2023-20593`, :uv:cve:`2023-2269`, :uv:cve:`2023-3090`, :uv:cve:`2023-31084`, :uv:cve:`2023-3111`, :uv:cve:`2023-3141`, :uv:cve:`2023-32233`, :uv:cve:`2023-3268`, :uv:cve:`2023-3338`, :uv:cve:`2023-34256`, :uv:cve:`2023-35788`, :uv:cve:`2023-35823`, :uv:cve:`2023-35824`) (:uv:bug:`56376`, :uv:bug:`56430`)
@@ -73,6 +74,7 @@ General
   :program:`libapache2-mod-auth-openidc`
   :program:`libhtmlcleaner-java`
   :program:`libmail-dkim-perl`
+  :program:`libraw`
   :program:`libreoffice`
   :program:`libusrsctp`
   :program:`linux-5.10`
