@@ -19,7 +19,6 @@ DIAGNOSTIC_RE = re.compile(r'(?:^ran ([\d\w]*) successfully.$)|(?:#+ Start ([\d\
 # One would need a strong argument to skip any tests here, as it masks reals problems (See bug #50021)
 PREFIX = "diagnostic/check/disable/"
 SKIPPED_TESTS = {
-    '66_udm_country_remap_from_st_to_c': 'Bug #50073: UCS 5.0-3 introduced a required manual LDAP data migration for changing mapping of UDM:country from LDAP:"st" to LDAP:"c".',
 }
 SKIPPED_TESTS.update({
     k[len(PREFIX):]: PREFIX
