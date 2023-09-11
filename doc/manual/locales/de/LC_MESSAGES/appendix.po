@@ -2108,20 +2108,7 @@ msgstr ""
 "Konfiguriert den dritten externen NTP-Zeitserver. Für weitere "
 "Informationen, siehe :ref:`basicservices-ntp`."
 
-#: ../../appendix/variables.rst:1417
-msgid ""
-"If this option is ``yes``, the correctness of type definitions and the "
-"type compatibility of values are always checked in |UCSUCR|. The setting "
-"of the value is aborted for unsuccessful checks. Default is ``no``. For "
-"more information, see :ref:`computers-setting-ucr-variables`."
-msgstr ""
-"Ist diese Option ``Ja``, wird die Korrektheit von Typ-Definitionen und "
-"die Typ-Kompatibilität von Werten immer in |UCSUCR| überprüft. Bei "
-"erfolgloser Prüfung wird das Setzen des Wertes abgebrochen. "
-"Voreinstellung ist ``Nein``. Für weitere Informationen, siehe :ref"
-":`computers-setting-ucr-variables`."
-
-#: ../../appendix/variables.rst:1425
+#: ../../appendix/variables.rst:1403
 msgid ""
 "Select the theme for |UCSWEB|. The value corresponds to a CSS file under "
 ":file:`/usr/share/univention-web/themes/` with the same name without "
