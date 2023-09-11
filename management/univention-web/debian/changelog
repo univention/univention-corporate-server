@@ -1,3 +1,9 @@
+univention-web (4.0.4-4) unstable; urgency=medium
+
+  * Bug #55164: Show cookie banner only if configured for current domain
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Mon, 11 Sep 2023 17:02:30 +0200
+
 univention-web (4.0.4-3) unstable; urgency=medium
 
   * Bug #56458: New variables for the default themes: border-radius,
