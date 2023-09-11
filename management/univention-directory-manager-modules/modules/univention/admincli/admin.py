@@ -867,10 +867,7 @@ class CLI(object):
                                     print('  %s: %s' % (key, None), file=self.stdout)
                         else:
                             if s.tostring(value):
-                                if module.module == 'settings/portal' and key == 'content':
-                                    print('  %s:\n  %s' % (key, s.tostring(value).replace('\n', '\n  ')), file=self.stdout)
-                                else:
-                                    print('  %s: %s' % (key, s.tostring(value)), file=self.stdout)
+                                print('  %s: %s' % (key, s.tostring(value)), file=self.stdout)
                             else:
                                 print('  %s: %s' % (key, None), file=self.stdout)
 
