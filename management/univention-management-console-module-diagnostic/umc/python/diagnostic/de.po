@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-management-console-module-diagnostic\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2023-03-13 16:06+0100\n"
+"POT-Creation-Date: 2023-09-12 09:05+0200\n"
 "PO-Revision-Date: 2023-03-13 15:12+0100\n"
 "Last-Translator: Univention GmbH <packages@univention.de>\n"
 "Language-Team: Univention GmbH <packages@univention.de>\n"
@@ -28,7 +28,7 @@ msgstr "%d Objekte sollten \"%s\" sein"
 msgid "%d of the configured nameservers are not responding to DNS queries."
 msgstr "%d der konfigurierten Nameserver anworten nicht auf DNS-Anfragen."
 
-#: umc/python/diagnostic/plugins/30_disk_usage.py:117
+#: umc/python/diagnostic/plugins/30_disk_usage.py:128
 #, python-format
 msgid "- Disk for mountpoint %(mp)s is %(pc)s%% full."
 msgstr "- Festplatte für Moint Point %(mp)s ist %(pc)s%% voll."
@@ -83,8 +83,8 @@ msgstr "Alle SIDs existieren und die Namen sind konsistent."
 msgid "All SSL certificates valid."
 msgstr "Alle SSL Zertifikate sind gültig."
 
-#: umc/python/diagnostic/plugins/31_file_permissions.py:50
 #: umc/python/diagnostic/plugins/54_sources_list_check.py:45
+#: umc/python/diagnostic/plugins/31_file_permissions.py:50
 msgid "All files ok."
 msgstr "Alle Dateien in Ordnung."
 
@@ -175,12 +175,6 @@ msgstr "Überprüfe freien Festplatten Platz"
 #: umc/python/diagnostic/plugins/51_hostname_check.py:43
 msgid "Check hostname RFC compliance"
 msgstr "Überprüfe Rechnernamen auf RFC Konformität"
-
-#: umc/python/diagnostic/plugins/66_udm_country_remap_from_st_to_c.py:47
-msgid "Check if UDM country can be remapped from st to c."
-msgstr ""
-"Kontrolliere, ob der UDM-Eigenschaft \"country\" \"c\" anstelle von \"st\" "
-"zugeordnet werden kann."
 
 #: umc/python/diagnostic/plugins/21_check_join_status.py:41
 msgid "Check join status"
@@ -439,7 +433,7 @@ msgstr ""
 msgid "KDC service check"
 msgstr "KDC Erreichbarkeit"
 
-#: umc/python/diagnostic/plugins/62_check_slapschema.py:44
+#: umc/python/diagnostic/plugins/62_check_slapschema.py:43
 msgid "LDAP configuration files are valid."
 msgstr "LDAP-Konfigurationsdateien sind ungültig."
 
@@ -478,8 +472,8 @@ msgstr ""
 msgid "Manual: Analysis of listener/notifier problems"
 msgstr "Handbuch: Analyse von Listener/Notifier-Problemen"
 
-#: umc/python/diagnostic/plugins/57_univention_server_role_windows.py:97
 #: umc/python/diagnostic/plugins/56_univention_types.py:92
+#: umc/python/diagnostic/plugins/57_univention_server_role_windows.py:97
 #, python-format
 msgid "Migrate %d LDAP objects"
 msgstr "Migriere %d LDAP-Objekte"
@@ -507,8 +501,8 @@ msgstr "Nameserver sind nicht ansprechbar"
 msgid "No S4 Connector rejects were found."
 msgstr "Keine nicht synchronisierten S4 Connector Objekte gefunden."
 
-#: umc/python/diagnostic/plugins/41_samba_tool_showrepl.py:56
 #: umc/python/diagnostic/plugins/40_samba_tool_dbcheck.py:40
+#: umc/python/diagnostic/plugins/41_samba_tool_showrepl.py:56
 msgid "No errors found."
 msgstr "Keine Fehler gefunden."
 
@@ -603,9 +597,8 @@ msgstr ""
 "In ausgehend {nc!r}: Fehler während der DRS Replikation nach {source} "
 "({estring})."
 
-#: umc/python/diagnostic/plugins/66_udm_country_remap_from_st_to_c.py:58
-#: umc/python/diagnostic/plugins/63_proof_uniqueMembers.py:54
 #: umc/python/diagnostic/plugins/40_samba_tool_dbcheck.py:53
+#: umc/python/diagnostic/plugins/63_proof_uniqueMembers.py:54
 #, python-brace-format
 msgid "Output of `{cmd}`:"
 msgstr "Ausgabe von `{cmd}`:"
@@ -805,7 +798,7 @@ msgstr "Einige UCR-Variablen haben momentan ungültige Werte."
 msgid "Some UCR variables for the repository configuration are deprecated."
 msgstr "Einige UCR Variablen für die Repository Konfiguration sind veraltet."
 
-#: umc/python/diagnostic/plugins/30_disk_usage.py:126
+#: umc/python/diagnostic/plugins/30_disk_usage.py:137
 msgid "Some disks are nearly full:"
 msgstr "Einige Festplatten sind beinahe voll:"
 
@@ -837,7 +830,7 @@ msgstr ""
 "UCS-Versionen vorausgesetzt. Sie können die memberOf-Funktion für den LDAP-"
 "Server folgendermaßen aktivieren:"
 
-#: umc/python/diagnostic/plugins/62_check_slapschema.py:67
+#: umc/python/diagnostic/plugins/62_check_slapschema.py:55
 msgid ""
 "The LDAP schema validation failed with the following errors or warnings:\n"
 msgstr ""
@@ -868,11 +861,6 @@ msgid ""
 msgstr ""
 "Die UCR-Variable {variable!r} ist nicht gesetzt, aber notwendig für den S4 "
 "Connector."
-
-#: umc/python/diagnostic/plugins/66_udm_country_remap_from_st_to_c.py:106
-msgid "The automation script dry-run failed:"
-msgstr ""
-"Der Testdurchlauf des Scripts zur automatischen Migration ist fehlgeschlagen:"
 
 #: umc/python/diagnostic/plugins/21_check_join_status.py:42
 msgid "The check for the join status was succsesful."
@@ -943,10 +931,6 @@ msgstr ""
 msgid "The limits have been adjusted to the suggested value."
 msgstr "Die Limits wurden auf die empfohlenen Werte erhöht."
 
-#: umc/python/diagnostic/plugins/66_udm_country_remap_from_st_to_c.py:62
-msgid "The migration failed:"
-msgstr "Die Migration ist fehlgeschlagen:"
-
 #: umc/python/diagnostic/plugins/55_user_migration.py:72
 #, python-format
 msgid "The migration failed: %s"
@@ -1010,10 +994,6 @@ msgstr ""
 msgid "The registration failed: %s"
 msgstr "Die Registrierung schlug fehl: %s"
 
-#: umc/python/diagnostic/plugins/66_udm_country_remap_from_st_to_c.py:101
-msgid "The script would apply the following changes:"
-msgstr "Das Script würde folgende Änderungen auf dem System anwenden:"
-
 #: umc/python/diagnostic/plugins/32_security_limits.py:47
 msgid ""
 "The security limits (e.g. for max_open_files) are currently not configured "
@@ -1045,27 +1025,6 @@ msgstr ""
 "Der SSH Host-Key des entfernten Rechners hat sich geändert (vielleicht wurde "
 "der Rechner neu installiert). "
 
-#: umc/python/diagnostic/plugins/66_udm_country_remap_from_st_to_c.py:48
-msgid ""
-"The user property \"country\" is currently erroneously mapped to the LDAP "
-"attribute \"st\". \"st\" represents a state (province) while the correct "
-"LDAP attribute \"c\" represents a country. The migration will check and move "
-"all LDAP data from \"st\" to \"c\" for all users and user templates and "
-"install a domain wide UCR policy to change the fields in UDM. If this "
-"behavior is not wanted this check can be disabled by setting the UCR "
-"variable \"diagnostic/check/disable/66_udm_country_remap_from_st_to_c\" to "
-"true."
-msgstr ""
-"Die Benutzereigenschaft \"country\" (Land)  ist derzeit fälschlicherweise "
-"dem LDAP-Attribut \"st\" in UDM zugewiesen, welches ein Bundesland "
-"repräsentiert. Das korrekte LDAP-Attribut \"c\" repräsentiert ein Land. Die "
-"Migration wird sämtliche LDAP Daten kontrollieren, die vorhandenen Werte von "
-"Benutzern und Benutzervorlagen verschieben und eine domänenweite UCR-"
-"Richtlinie zum Ändern der Eigenschaften in UDM installieren. Wenn dieses "
-"Verhalten nicht erwünscht ist kann dieser Test durch setzen der UCR-Variable "
-"\"diagnostic/check/disable/66_udm_country_remap_from_st_to_c\" auf \"true\" "
-"deaktiviert werden."
-
 #: umc/python/diagnostic/plugins/65_check_repository_config.py:136
 #, python-format
 msgid "The variable %(name)r is deprecated and should no longer be used."
@@ -1089,8 +1048,8 @@ msgstr ""
 "Es gab einen Fehler beim Benutzen des Proxy-Servers. Das {setup:network} "
 "kann zur Veränderung der Proxy-Konfiguration genutzt werden.\n"
 
-#: umc/python/diagnostic/plugins/57_univention_server_role_windows.py:80
 #: umc/python/diagnostic/plugins/56_univention_types.py:82
+#: umc/python/diagnostic/plugins/57_univention_server_role_windows.py:80
 msgid "These objects were found:"
 msgstr "Diese Objekte wurden gefunden:"
 
@@ -1266,7 +1225,7 @@ msgstr ""
 "Der Nutzer oder die Gruppe mit dem Namen {name!r} hat die SID {actual_sid}, "
 "sollte aber {sid} haben."
 
-#: umc/python/diagnostic/plugins/62_check_slapschema.py:43
+#: umc/python/diagnostic/plugins/62_check_slapschema.py:42
 msgid "Validating the LDAP configuration and schema files."
 msgstr "Validierung der LDAP-Konfigurations und Schema Dateien."
 
@@ -1296,20 +1255,12 @@ msgstr ""
 "Sie können `/usr/share/univention-directory-manager-tools/"
 "proof_uniqueMembers` ausführen um das Problem zu beheben."
 
-#: umc/python/diagnostic/plugins/66_udm_country_remap_from_st_to_c.py:98
-msgid ""
-"You can run `/usr/share/univention-directory-manager-tools/udm-remap-country-"
-"from-st-to-c` to migrate."
-msgstr ""
-"Sie können `/usr/share/univention-directory-manager-tools/udm-remap-country-"
-"from-st-to-c` ausführen um zum neuen Format zu migrieren."
-
 #: umc/python/diagnostic/plugins/40_samba_tool_dbcheck.py:84
 msgid "You can run `samba-tool dbcheck --fix` to fix the issue."
 msgstr ""
 "Sie können `samba-tool dbcheck --fix` ausführen um die Probleme zu beheben."
 
-#: umc/python/diagnostic/plugins/30_disk_usage.py:133
+#: umc/python/diagnostic/plugins/30_disk_usage.py:144
 msgid "You have configured some high log levels."
 msgstr "Sie haben erhöhten Detailgrad für Logmeldungen eingestellt."
 
@@ -1321,16 +1272,16 @@ msgstr ""
 "Um den Paketstatus zu korrigieren, loggen Sie sich am System per ssh als "
 "root ein und führen Sie das Kommando \"dpkg --configure -a\" aus."
 
-#: umc/python/diagnostic/plugins/30_disk_usage.py:110
+#: umc/python/diagnostic/plugins/30_disk_usage.py:121
 msgid "You may want to move /var/log to another disk or storage."
 msgstr ""
 "Sie können /var/log auf eine andere Festplatte oder Speicher verschieben."
 
-#: umc/python/diagnostic/plugins/30_disk_usage.py:112
+#: umc/python/diagnostic/plugins/30_disk_usage.py:123
 msgid "You may want to move the local repository to another server."
 msgstr "Sie können lokale Repositorys auf einen anderen Server auslagern."
 
-#: umc/python/diagnostic/plugins/30_disk_usage.py:133
+#: umc/python/diagnostic/plugins/30_disk_usage.py:144
 #, python-brace-format
 msgid "You may want to reset them via {ucr}."
 msgstr "Sie können sie per {ucr} zurück setzen."
@@ -1340,7 +1291,7 @@ msgstr "Sie können sie per {ucr} zurück setzen."
 msgid "You may want to stop Heimdal KDC and restart Samba via {services}"
 msgstr "Sie können Heimdal KDC per {services} stoppen und Samba neu starten."
 
-#: umc/python/diagnostic/plugins/30_disk_usage.py:108
+#: umc/python/diagnostic/plugins/30_disk_usage.py:119
 msgid "You may want to uninstall software via {appcenter:appcenter}."
 msgstr "Sie können per {appcenter:appcenter} Software entfernen."
 
@@ -1361,15 +1312,6 @@ msgstr ""
 "`/usr/share/univention-directory-manager-tools/proof_uniqueMembers -c` hat "
 "keine Probleme in der LDAP-Datenbank mit Gruppenmitgliedschafts-Attributen "
 "gefunden."
-
-#: umc/python/diagnostic/plugins/66_udm_country_remap_from_st_to_c.py:90
-msgid ""
-"`/usr/share/univention-directory-manager-tools/udm-remap-country-from-st-to-"
-"c` successfully migrated your UCS instance to the new UDM country mapping."
-msgstr ""
-"`/usr/share/univention-directory-manager-tools/udm-remap-country-from-st-to-"
-"c` hat erfolgreich die Benutzereigenschaft \"country\" zu seinem neuen "
-"Mapping migriert."
 
 #: umc/python/diagnostic/plugins/46_kerberos_ddns_update.py:63
 #, python-brace-format
@@ -1449,10 +1391,6 @@ msgstr "https://help.univention.com/t/samba4-max-open-files/1758"
 #: umc/python/diagnostic/plugins/51_hostname_check.py:47
 msgid "https://tools.ietf.org/html/rfc1123#section-2"
 msgstr "https://tools.ietf.org/html/rfc1123#section-2"
-
-#: umc/python/diagnostic/plugins/66_udm_country_remap_from_st_to_c.py:81
-msgid "migrate LDAP data"
-msgstr "Migriere LDAP daten"
 
 #: umc/python/diagnostic/plugins/43_connectors4_rejects.py:113
 #: umc/python/diagnostic/plugins/43_connectors4_rejects.py:120
