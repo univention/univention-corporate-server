@@ -145,7 +145,7 @@ def handler_set(args, opts={}, quiet=False):
     """
     ucr = ConfigRegistry()
     ucr.load()
-    ignore_check = opts.get('ignore-check') or ucr.is_false('ucr/check/type', True)
+    ignore_check = opts.get('ignore-check') or ucr.is_true('ucr/check/type', True)
 
     ucr = _ucr_from_opts(opts)
     info = _get_config_registry_info()
