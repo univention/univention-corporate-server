@@ -189,7 +189,6 @@ COMMON_EXCEPTIONS = (
 #    E("^FileExistsError:.*'/var/run/umc-server.pid'"),
 #    E(r'OSError\: \[Errno 3\].*', ['univention-management-console-server.*_terminate_daemon_process']),
 #    E('univention.lib.umc.ServiceUnavailable: .*', ['univention-self-service-invitation']),
-#    E(re.escape('NoSuperordinate: No superordinate was supplied, but one of type settings/cn is required to create/save a settings/portal object.'), ['univention-portal-server']),  # 4.4-8 before upgrade to 5.0-0
 #    E(r"ldap.NO_SUCH_OBJECT: .*matched\'\: \'dc\=.*", ['^  File "/usr/lib/python3/dist-packages/univention/admin/uldap.py", line .*, in add']),
 #    E(r"ldap.NO_SUCH_OBJECT: .*matched\'\: \'cn\=users,dc\=.*", ['^  File "/usr/lib/python3/dist-packages/univention/admin/uldap.py", line .*, in search']),  # s4c
     E(r'^univention.admin.uexceptions.noObject: No such object.*', ['^  File "/usr/lib/python3/dist-packages/univention/admin/objects.py", line .*, in get', 'sync_from_ucs']),  # s4c
@@ -320,7 +319,6 @@ COMMON_EXCEPTIONS = (
 #    E(r"FileNotFoundError: \[Errno 2\] No such file or directory: '/var/cache/univention-appcenter/.*\.logo'", ['File "<stdin>"']),  # 55_app_modproxy
 #    E('^IndexError: list index out of range', ['_read_from_ldap', 'get_user_groups'], (46932, 48943)),
 #    E(r"AttributeError\: \'NoneType\' object has no attribute \'searchDn\'", ['get_user_groups'], 48943),
-#    E("^subprocess.CalledProcessError: Command.*univention-directory-manager.*settings/portal_entry.*(create|remove).*univentionblog.*", [r'license_uuid\.py'], 45787),
 #    E("^KeyError: 'gidNumber'", ['_ldap_pre_remove'], 51669),
 #    E(r'^(BrokenPipeError|IOError): \[Errno 32\] Broken pipe', ['process_output'], 32532),
     E(r'^(ldap\.)?NOT_ALLOWED_ON_NONLEAF: .*subtree_delete:.*', ['s4_zone_delete'], (43722, 47343)),

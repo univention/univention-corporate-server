@@ -41,7 +41,6 @@ import datetime
 import inspect
 import io
 import ipaddress
-import json
 import os
 import re
 import shlex
@@ -130,10 +129,9 @@ def update_choices():
     """
     Update choices which are defined in LDAP
 
-    >>> import univention.admin.modules
-    >>> univention.admin.modules.update()
+    >>> univention.admin.syntax.Country.choices = []
     >>> update_choices()
-    >>> ('settings/portal', 'Deprecated Portal: Portal') in univentionAdminModules.choices
+    >>> 'DE' in dict(univention.admin.syntax.Country.choices)
     True
     """
     for func in choice_update_functions:
@@ -6473,141 +6471,6 @@ class policyName(string):
         raise univention.admin.uexceptions.valueError(_(
             'May only contain letters (except umlauts), digits, space as well as the characters # ! $ % & | ^ . ~ _ -. Has to begin with a letter or digit and must not end with space.',
         ))
-
-
-class Portals(UDM_Objects):
-    """Syntax to select a portal from |LDAP| using :py:class:`univention.admin.handlers.settings.portal`."""
-
-    udm_modules = ('settings/portal', )
-    label = '%(name)s'
-    empty_value = True
-
-
-class PortalEntries(UDM_Objects):
-    """Syntax to select a portal entries from |LDAP| using :py:class:`univention.admin.handlers.settings.portal_entry`."""
-
-    udm_modules = ('settings/portal_entry', )
-    label = '%(name)s'
-    empty_value = True
-
-
-class PortalLinksPosition(select):
-    """Syntax to select the position of links on the portal."""
-
-    choices = [
-        ('footer', _('Footer')),
-    ]
-
-
-class PortalLinks(complex):
-    """Syntax to configure links on the portal."""
-
-    delimiter = '$$'
-    subsyntaxes = [(_('Position'), PortalLinksPosition), (_('Link'), string), (_('Locale'), languageCode), (_('Name'), string)]
-    subsyntax_names = ('position', 'link', 'locale', 'name')
-    all_required = True
-
-
-class PortalCategory(select):
-    """
-    Syntax to select a portal category version 1 from a static list with just 2 categories.
-
-    .. seealso::
-            * :py:class:`PortalCategoryV2`
-    """
-
-    choices = [
-        ('admin', _('Shown in category "Administration"')),
-        ('service', _('Shown in category "Installed services"')),
-    ]
-
-
-class PortalCategoryV2(UDM_Objects):
-    """
-    Syntax to select a portal category version 2 from |LDAP| using :py:class:`univention.admin.handlers.settings.portal_category`.
-
-    .. seealso::
-            * :py:class:`PortalCategory`
-    """
-
-    udm_modules = ('settings/portal_category', )
-    label = '%(name)s'
-    empty_value = True
-
-
-class PortalEntrySelection(complex):
-    """Syntax to select a portal entry."""
-
-    subsyntaxes = [(_('Portal Entry'), PortalEntries)]
-    subsyntax_names = ('portal-entry',)
-
-    widget = widget_multivalue = 'umc/modules/udm/PortalContent'
-    widget_default_search_pattern = None
-
-
-class PortalCategorySelection(simple):
-    r"""
-    Syntax to select a portal category.
-
-    >>> PCS = PortalCategorySelection
-    >>> x = PCS.tostring([["cn=category1", []], ["cn=category2", ["cn=entry1", "cn=entry2"]]])
-    >>> x.replace(' ','').replace('\n','')
-    '[["cn=category1",[]],["cn=category2",["cn=entry1","cn=entry2"]]]'
-    >>> PCS.parse(PCS().parse_command_line('[["cn=category1",[]],["cn=category2",["cn=entry1","cn=entry2"]]]'))
-    [['cn=category1', []], ['cn=category2', ['cn=entry1', 'cn=entry2']]]
-    >>> PCS.parse(PCS().parse_command_line('[["cn=category1",[]],["",["cn=entry1","cn=entry2"]]]')) #doctest: +IGNORE_EXCEPTION_DETAIL
-    Traceback (most recent call last):
-    ...
-    valueInvalidSyntax:
-    >>> PCS.parse(PCS().parse_command_line('[["cn=category1"]]')) #doctest: +IGNORE_EXCEPTION_DETAIL
-    Traceback (most recent call last):
-    ...
-    valueInvalidSyntax:
-    >>> PCS.parse(PCS().parse_command_line('[["cn=category1",[], []]]')) #doctest: +IGNORE_EXCEPTION_DETAIL
-    Traceback (most recent call last):
-    ...
-    valueInvalidSyntax:
-    >>> PCS.parse(PCS().parse_command_line('hallo')) #doctest: +IGNORE_EXCEPTION_DETAIL
-    Traceback (most recent call last):
-    ...
-    valueInvalidSyntax:
-    """
-
-    subsyntaxes = [(_('Portal Category'), PortalCategoryV2), (_('Portal Entry'), PortalEntrySelection)]
-    subsyntax_names = ('portal-category', 'portal-entry')
-
-    widget = 'umc/modules/udm/PortalContent'
-    widget_default_search_pattern = None
-
-    def parse_command_line(self, value):
-        try:
-            return json.loads(value)
-        except ValueError:
-            raise univention.admin.uexceptions.valueInvalidSyntax(_("Value has to be in valid json format"))
-
-    @classmethod
-    def parse(self, texts, minn=None):
-        for text in texts:
-            if len(text) < len(self.subsyntaxes):
-                raise univention.admin.uexceptions.valueInvalidSyntax(_("not enough arguments"))
-            elif len(text) > len(self.subsyntaxes):
-                raise univention.admin.uexceptions.valueInvalidSyntax(_("too many arguments"))
-
-            if len(text[1]) > 0 and not text[0]:
-                raise univention.admin.uexceptions.valueInvalidSyntax(_("Portal entries can not be added to an empty category"))
-
-            s = Portals()
-            s.parse(text[0])
-
-            s = PortalEntries()
-            for portal_entry in text[1]:
-                s.parse(portal_entry)
-        return texts
-
-    @classmethod
-    def tostring(self, texts):
-        # type: (Any) -> str
-        return json.dumps(texts, indent=2)
 
 
 class AuthRestriction(select):
