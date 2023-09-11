@@ -366,7 +366,7 @@ Recommends:
 Provides:
  ucs-test-module,
 Depends:
- playwright-browser-chromium,
+ chromium,
  python3-playwright-venv,
  ucs-test-libs (= ${source:Version}),
  ${misc:Depends},

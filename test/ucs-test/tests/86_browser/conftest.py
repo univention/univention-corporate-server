@@ -43,6 +43,14 @@ def browser_context_args(browser_context_args):
     }
 
 
+@pytest.fixture(scope="session")
+def browser_type_launch_args(browser_type_launch_args):
+    return {
+        **browser_type_launch_args,
+        "executable_path": "/usr/bin/chromium",
+    }
+
+
 @pytest.fixture(scope="module")
 def udm_module_scope() -> Iterator[_udm.UCSTestUDM]:
     """Auto-reverting UDM wrapper."""
