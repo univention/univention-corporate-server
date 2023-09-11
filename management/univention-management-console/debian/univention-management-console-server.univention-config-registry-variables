@@ -148,6 +148,12 @@ Description[en]=Defines the cookie name which is set by the cookie banner when a
 Type=str
 Categories=management-umc
 
+[umc/cookie-banner/domains]
+Description[de]=Eine durch Komma getrennte Liste an Domänennamen, auf denen der Cookie-Banner angezeigt wird. Eine leere Liste zeigt den Banner immer im Portal und während des Logins an. Die Domäne wird durch "Endsuche" gefunden und dann auch so für den Cookie genutzt. Beispiel: "domain.de" funktioniert dann für "portal.domain.de" und "sso.domain.de" - und beide Seiten teilen sich dann sogar das Cookie, sodass es nur einmal akzeptiert werden muss.
+Description[en]=A comma separated list of domain names where the cookie banner should be shown. An empty list will show it always on portal and login. The domain name is sought via "end string search" and then used for the cookie. Example: "domain.com" matches "portal.domain.com" and "soo.domain.com" - and both sites will share that cookie so that a user only needs to confirm once.
+Type=list
+Categories=management-umc
+
 [umc/cookie-banner/.*/.*]
 Description[de]=Definiert den lokalisierten Text für die Cookie-Banner Texte. Platzhalter sind "text" und "title" (z.B.: umc/cookie-banner/text/de).
 Description[en]=Defines the localized text for the cookie banner texts. Placeholders are "text" and "title" (e.g.: umc/cookie-banner/text/en).
