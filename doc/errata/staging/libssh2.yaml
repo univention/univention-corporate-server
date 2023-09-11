@@ -6,14 +6,12 @@ src: libssh2
 fix: 1.8.0-2.1+deb10u1
 desc: |
  This update addresses the following issues:
- 1.8.0-2.1+deb10u1 (Thu, 07 Sep 2023 19:27:44 +0200)
- * Non-maintainer upload by the LTS Security Team.
- * Fix CVE-2019-13115: integer overflow that could lead to an out-of-bounds
-   read in the way packets are read from the server.
- * Fix CVE-2019-17498: the SSH_MSG_DISCONNECT logic in packet.c has an integer
+ * CVE-2019-13115: integer overflow that could lead to an out-of-bounds read
+   in the way packets are read from the server.
+ * CVE-2019-17498: the `SSH_MSG_DISCONNECT` logic in `packet.c` has an integer
    overflow in a bounds check, enabling an attacker to specify an arbitrary
-   (out-of-bounds) offset for a subsequent memory read (closes: #943562).
- * Fix CVE-2020-22218: missing check in _libssh2_packet_add() allows attackers
+   (out-of-bounds) offset for a subsequent memory read.
+ * CVE-2020-22218: missing check in `_libssh2_packet_add()` allows attackers
    to access out of bounds memory.
 bug: [56563]
 cve:
