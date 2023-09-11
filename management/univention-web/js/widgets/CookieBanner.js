@@ -33,13 +33,14 @@
 
 define([
 	"dojo/_base/declare",
+	"dojo/_base/array",
 	"dojo/cookie",
 	"umc/tools",
 	"umc/dialog",
 	"umc/widgets/ConfirmDialog",
 	"umc/i18n/tools",
 	"umc/i18n!"
-], function(declare, cookie, tools, dialog, ConfirmDialog, i18nTools, _) {
+], function(declare, array, cookie, tools, dialog, ConfirmDialog, i18nTools, _) {
 	return declare("umc.widgets.CookieBanner", [ ConfirmDialog ], {
 		// summary:
 		//		Display cookie banner
@@ -70,6 +71,12 @@ define([
 			if (cookie(this.cookieName)) {
 				return;
 			}
+			var banner = tools.status('cookieBanner');
+			if (banner['domains'].length > 0) {
+				if (! array.some(banner['domains'], function(dom) { return document.domain.endsWith(dom); })) {
+					return;
+				};
+			}
 			this.inherited(arguments);
 		},
 
@@ -77,9 +84,18 @@ define([
 			this.inherited(arguments);
 			this.on('confirm', function(response) {
 				this.close();
+				var banner = tools.status('cookieBanner');
+				var domain = document.domain;
+				array.some(banner['domains'], function(dom) {
+					if (document.domain.endsWith(dom)) {
+						domain = dom;
+						return true;
+					}
+					return false;
+				});
 				if (response === 'accept') {
 					var d = new Date();
-					cookie(this.cookieName, d.toUTCString(), { path: '/', 'max-age': 60 * 60 * 24 * 365 });
+					cookie(this.cookieName, d.toUTCString(), { domain: domain, path: '/', 'max-age': 60 * 60 * 24 * 365 });
 				};
 			});
 		}
