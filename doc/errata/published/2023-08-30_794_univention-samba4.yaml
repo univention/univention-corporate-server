@@ -12,6 +12,10 @@ desc: |
    but this erratum implements tightened access control to that
    backup folder and the files created there.
 bug: [56499]
+cve:
+  - TEMP-2023-1
+ignore:
+  - cve.TEMP-2023-1
 erratum: 794
 announced: 2023-08-30
 support: core
