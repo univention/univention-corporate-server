@@ -78,13 +78,6 @@ Description[en]=This variable configures the name of an object displayed in the 
 Type=str
 Categories=management-umc
 
-[directory/manager/web/modules/users/user/map-country-to-st]
-Description[de]=Diese Variable konfiguriert ob die Benutzer-Eigenschaft "country" auf das LDAP-Attribut "c" (korrekt) oder "st" (falsch) gemappt wird.
-Description[en]=This variable configures whether the user property "country" is mapped to the LDAP-Attribute "c" (correct) or "st" (wrong).
-Type=bool
-Default=true
-Categories=management-udm
-
 [directory/manager/web/modules/users/user/add/default]
 Description[de]=Diese Variable konfiguriert die DN der Benutzervorlage, die beim Anlegen eines Benutzers vorausgewählt wird.
 Description[en]=This variable configures the DN or the label of a user template which is preselected when creating a user.

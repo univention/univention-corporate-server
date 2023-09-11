@@ -1,3 +1,9 @@
+ucs-test (11.0.8) unstable; urgency=medium
+
+  * Bug #56528: remove configurability of country/state property
+
+ -- Florian Best <best@univention.de>  Thu, 07 Mar 2024 23:53:55 +0100
+
 ucs-test (11.0.7) unstable; urgency=medium
 
   * Bug #56547: replace pam_tally with pam_faillock

@@ -1,3 +1,9 @@
+univention-management-console-module-diagnostic (7.0.5) unstable; urgency=medium
+
+  * Bug #56528: remove configurability of country/state property
+
+ -- Florian Best <best@univention.de>  Thu, 07 Mar 2024 23:53:55 +0100
+
 univention-management-console-module-diagnostic (7.0.4) unstable; urgency=medium
 
   * Bug #55995: replace libnss-ldap with nss-pam-ldapd

@@ -672,7 +672,7 @@ layout = [
             'phone',
             ['roomNumber', 'departmentNumber'],
             ['street', 'postcode', 'city'],
-            ['state', 'country'] if not configRegistry.is_true('directory/manager/web/modules/users/user/map-country-to-st') else ['country'],
+            ['state', 'country'],
         ]),
         Group(_('Private'), layout=[
             'homeTelephoneNumber',
@@ -1055,11 +1055,8 @@ mapping.register('e-mail', 'mail', encoding='ASCII')
 mapping.register('postcode', 'postalCode', None, univention.admin.mapping.ListToString)
 mapping.register('postOfficeBox', 'postOfficeBox')
 mapping.register('city', 'l', None, univention.admin.mapping.ListToString)
-if configRegistry.is_true('directory/manager/web/modules/users/user/map-country-to-st'):  # old broken behavior
-    mapping.register('country', 'st', None, univention.admin.mapping.ListToString)
-else:
-    mapping.register('country', 'c', None, univention.admin.mapping.ListToString)
-    mapping.register('state', 'st', None, univention.admin.mapping.ListToString)
+mapping.register('country', 'c', None, univention.admin.mapping.ListToString)
+mapping.register('state', 'st', None, univention.admin.mapping.ListToString)
 mapping.register('phone', 'telephoneNumber')
 mapping.register('roomNumber', 'roomNumber')
 mapping.register('employeeNumber', 'employeeNumber', None, univention.admin.mapping.ListToString)
