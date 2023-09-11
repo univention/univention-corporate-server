@@ -405,6 +405,15 @@ Mail services
   importer. They are now compatible after force-re-executing the joinscript
   :file:`92univention-fetchmail-schema.inst` (:uv:bug:`56036`).
 
+* Increased :program:`univention-fetchmail-schema` joinscript version to automatically apply
+  fix for :uv:bug:`56008`. Added logic to correctly handle bytes in
+  :file:`migrate-fetchmail.py` script and :file:`fetchmail.py` hook (:uv:bug:`56308`).
+
+* The :file:`fetchmailrc.py` listener doesn't check that the user has a ``mailPrimaryAddress``
+  attribute when writing fetchmail configurations in the ``univentionFetchmailSingle``
+  and ``univentionFetchmailMulti`` attributes, raising exceptions in the log files.
+  This is now checked and logged accordingly (:uv:bug:`56482`).
+
 .. _changelog-service-virus:
 
 Spam/virus detection and countermeasures
