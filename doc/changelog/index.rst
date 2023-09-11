@@ -410,7 +410,7 @@ Mail services
   :file:`migrate-fetchmail.py` script and :file:`fetchmail.py` hook (:uv:bug:`56308`).
 
 * The :file:`fetchmailrc.py` listener doesn't check that the user has a ``mailPrimaryAddress``
-  attribute when writing fetchmail configurations in the ``univentionFetchmailSingle``
+  attribute when writing Fetchmail configurations in the ``univentionFetchmailSingle``
   and ``univentionFetchmailMulti`` attributes, raising exceptions in the log files.
   This is now checked and logged accordingly (:uv:bug:`56482`).
 
