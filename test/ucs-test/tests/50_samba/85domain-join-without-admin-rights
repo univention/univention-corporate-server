@@ -1,11 +1,14 @@
 #!/usr/share/ucs-test/runner bash
 # shellcheck shell=bash
 ## desc: "Join a domain without admin rights"
-## exposure: safe
+## exposure: dangerous
 ## packages:
 ##  - univention-samba
 ## roles: [memberserver]
 ## tags: [basic]
+## versions:
+##  1.0-0: skip
+##  2.3-0: fixed
 
 # shellcheck source=../../lib/base.sh
 . "$TESTLIBPATH/base.sh" || exit 137
@@ -14,67 +17,49 @@
 
 eval "$(/usr/sbin/univention-config-registry shell)"
 
-if ! current_ucs_version_greater_equal 2.3; then
-	exit 131
-fi
-
-s4_dcs="$(univention-ldapsearch '(&(univentionService=Samba 4)(objectClass=univentionDomainController))' -LLL dn | sed -ne 's|dn: ||p')"
-if [ -n "$s4_dcs" ]; then
-	echo "This is a S4 domain, skip test"
-	exit 137
-fi
+univention-ldapsearch '(&(univentionService=Samba 4)(objectClass=univentionDomainController))' -LLL dn | grep -q "^dn: " &&
+	fail_fast 137 "This is a S4 domain, skip test"
 
 username="$(user_randomname)"
 password="univention"
-trap 'udm-test users/user remove --dn "$USER_DN";
-rm /tmp/25testpwd.txt;' INT TERM EXIT
+trap 'udm-test users/user remove --dn "$USER_DN"' INT TERM EXIT
 
 ## create user
 echo "----create user"
-udm-test users/user create --position=cn=users,"$ldap_base" \
+udm-test users/user create --position "cn=users,$ldap_base" \
 	--set username="$username" \
 	--set firstname=Max \
 	--set lastname=Muster \
 	--set organisation=firma.de_GmbH \
 	--set mailPrimaryAddress="$username@$domainname" \
 	--set password=univention \
-	--option=kerberos --option=posix --option=samba
-if [ "$?" != 0 ];then
+	--option=kerberos --option=posix --option=samba ||
 	fail_fast 1 "User could not be created"
-fi
 
-USER_DN="$(udm-test users/user list --filter uid="$username" | sed -ne 's/^DN: //p')"
-
-echo "$password" > "/tmp/25testpwd.txt"
+USER_DN="$(udm-test users/user list --filter "uid=$username" | sed -ne 's/^DN: //p')"
 
 wait_for_replication_and_postrun
 
 ## join domain without the SeMachineAccountPrivilege
 echo "----join domain without the SeMachineAccountPrivilege"
-net rpc join -U "$username"%"$password"
-if [ "$?" = 0 ]; then
+net rpc join -U "$username"%"$password" &&
 	fail_test 1 "Did a Domain join without the SeMachineAccountPrivilege"
-fi
 
 ## grant SeMachineAccountPrivilege
 echo "----grant SeMachineAccountPrivilege"
 output="$(udm-test users/user modify \
---dn "$USER_DN" \
---set "sambaPrivileges=SeMachineAccountPrivilege")"
-if [ "$?" != 0 ]; then
-	echo "$output"
-	fail_test 1 "Failed to grant SeMachineAccountPrivilege"
-fi
+	--dn "$USER_DN" \
+	--set "sambaPrivileges=SeMachineAccountPrivilege")" ||
+	fail_test 1 "Failed to grant SeMachineAccountPrivilege: $output"
 
 ## join domain with the SeMachineAccountPrivilege
 echo "----join domain with the SeMachineAccountPrivilege"
 if net rpc join -U "$username"%"$password"; then
 	echo "Domain join was successful."
-elif net rpc join -U "$username"%"$password" -S$ldap_master; then
+elif net rpc join -U "$username"%"$password" -S"${ldap_master:?}"; then
 	echo "Domain join with -S$ldap_master was successful."
 else
 	fail_test 1 "Domain join failed"
 fi
 
-
-exit $RETVAL
+exit "$RETVAL"
