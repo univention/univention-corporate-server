@@ -1,7 +1,8 @@
 #!/usr/share/ucs-test/runner bash
 # shellcheck shell=bash
 ## desc: "Checking all udm samba options in samba conf file"
-## exposure: safe
+## bugs: [42805]
+## exposure: dangerous
 ## packages:
 ##  - univention-config
 ##  - univention-directory-manager-tools
@@ -20,158 +21,108 @@
 eval "$(/usr/sbin/univention-config-registry shell)"
 
 sharename_tmp="$(random_share)"
-sharename="$(echo ${sharename_tmp//[[:blank:]]/})"
+sharename="${sharename_tmp//[[:blank:]]/}"
 SHARE_POSITION="cn=shares,$ldap_base"
 fqdn="$hostname.$domainname"
-samba_etc="/etc/samba/shares.conf.d/"
+samba_etc="/etc/samba/shares.conf.d/$sharename"
 
-options="
-sambaCustomSettings/posix locking/yes
-sambaName/ /${sharename}
-sambaWriteable/writeable/1
-sambaBrowseable/browseable/1
-sambaPublic/public/1
-sambaPostexec/postexec/ls
-sambaPreexec/preexec/ls
-sambaVFSObjects/vfs objects/extd_audit recycle
-sambaMSDFSRoot/msdfs root/0
-sambaDosFilemode/dos filemode/0
-sambaHideUnreadable/hide unreadable/1
-sambaForceUser/force user/root
-sambaForceGroup/force group/root
-sambaValidUsers/valid users/root
-sambaInvalidUsers/invalid users/www-data
-sambaHostsAllow/hosts allow/friend
-sambaHostsDeny/hosts deny/pirate
-sambaWriteList/write list/@root
-sambaReadList/read list/@root
-sambaHideFiles/hide files/sasl
-sambaNtAclSupport/nt acl support/1
-sambaInheritAcls/inherit acls/1
-sambaInheritOwner/inherit owner/1
-sambaInheritPermissions/inherit permissions/1
-sambaCreateMode/create mode/744
-sambaDirectoryMode/directory mode/755
-sambaForceCreateMode/force create mode/0
-sambaForceDirectoryMode/force directory mode/0
-sambaSecurityMode/security mask/0777
-sambaDirectorySecurityMode/directory security mask/0777
-sambaForceSecurityMode/force security mode/0
-sambaForceDirectorySecurityMode/force directory security mode/0
-sambaLocking/locking/0
-sambaBlockingLocks/blocking locks/1
-sambaStrictLocking/strict locking/1
-sambaOplocks/oplocks/0
-sambaLevel2Oplocks/level2 oplocks/0
-sambaFakeOplocks/fake oplocks/1
-sambaBlockSize/block size/1024
-sambaCscPolicy/csc policy/manual
-"
+declare -a options=(  # UDM-option '/' Samba-option '/' Value [ '/' Samba-value ]
+	sambaCustomSettings/'posix locking'/yes
+	sambaName/' '/"${sharename}"
+	sambaWriteable/'writeable'/1/yes
+	sambaBrowseable/'browseable'/1/yes
+	sambaPublic/'public'/1/yes
+	sambaPostexec/'postexec'/ls
+	sambaPreexec/'preexec'/ls
+	sambaVFSObjects/'vfs objects'/'extd_audit recycle'
+	sambaMSDFSRoot/'msdfs root'/0/no
+	sambaDosFilemode/'dos filemode'/0/no
+	sambaHideUnreadable/'hide unreadable'/1/yes
+	sambaForceUser/'force user'/root
+	sambaForceGroup/'force group'/root
+	sambaValidUsers/'valid users'/root
+	sambaInvalidUsers/'invalid users'/www-data
+	sambaHostsAllow/'hosts allow'/friend
+	sambaHostsDeny/'hosts deny'/pirate
+	sambaWriteList/'write list'/@root
+	sambaReadList/'read list'/@root
+	sambaHideFiles/'hide files'/sasl
+	sambaNtAclSupport/'nt acl support'/1
+	sambaInheritAcls/'inherit acls'/1
+	sambaInheritOwner/'inherit owner'/1/yes
+	sambaInheritPermissions/'inherit permissions'/1/yes
+	sambaCreateMode/'create mode'/744
+	sambaDirectoryMode/'directory mode'/755
+	sambaForceCreateMode/'force create mode'/0
+	sambaForceDirectoryMode/'force directory mode'/0
+	# sambaSecurityMode/'security mask'/0777
+	# sambaDirectorySecurityMode/'directory security mask'/0777
+	# sambaForceSecurityMode/'force security mode'/0
+	# sambaForceDirectorySecurityMode/'force directory security mode'/0
+	sambaLocking/'locking'/0
+	# sambaBlockingLocks/'blocking locks'/1
+	sambaStrictLocking/'strict locking'/1
+	sambaOplocks/'oplocks'/0
+	sambaLevel2Oplocks/'level2 oplocks'/0
+	sambaFakeOplocks/'fake oplocks'/1
+	sambaBlockSize/'block size'/1024
+	sambaCscPolicy/'csc policy'/manual
+)
 
-available_options="$(udm-test shares/share create | grep  --regex "samba\w" | awk  {'print $1'})"
-
-## delete share even on abnormal exits
-trap 'share_remove "$sharename";rm -rf "/opt/${sharename:?}";' INT TERM EXIT
+mapfile -t available_options < <(udm-test shares/share create | awk '/samba[A-Za-z]/{print $1}')
+declare -a tested_options=()
 
 echo "----create share"
 ## create share
 udm-test shares/share create \
-	--position="$SHARE_POSITION" \
+	--position "$SHARE_POSITION" \
 	--option samba \
 	--set name="$sharename" \
 	--set path="/opt/$sharename" \
 	--set host="$fqdn" \
-	--set sambaWriteList="workaround for bug #11972"
-if [ "$?" != 0 ]; then
+	--set sambaWriteList="workaround for bug #11972" ||
 	fail_fast 1 "could not create share"
-fi
 
-SHARE_DN="udm-test shares/share list --filter sambaName="$sharename" | sed -ne 's/^DN: //p')"
-
-wait_for_replication_and_postrun
+## delete share even on abnormal exits
+trap 'share_remove "$sharename";rm -rf "/opt/${sharename:?}";' INT TERM EXIT
 
 echo "----get the samba options and set them to a value"
 ## set samba options via udm and check samba config file
-while read option_line; do
-
-	echo "$option_line" | grep --regex "^\s*#" > /dev/null
-	if [ 0 -eq "$?" ]; then continue; fi
-
-	echo "$option_line" | grep --regex "^\s*$" > /dev/null
-	if [ 0 -eq "$?" ]; then continue; fi
-
-	udm_option="$(echo "$option_line" | awk -F / {'print $1'})"
-	samba_option="$(echo "$option_line" | awk -F / {'print $2'})"
-	value="$(echo "$option_line" | awk -F / {'print $3'})"
+for option in "${options[@]}"
+do
+	IFS=/ read -r udm_option samba_option value samba_value <<<"$option"
 
 	## special sambaCustomSettings notation
-	if [ "sambaCustomSettings" = "$udm_option" ]; then
-		value="\"${samba_option}\" ${value}"
-		samba_option=""
-	fi
+	case "$udm_option" in
+	sambaCustomSettings) value="\"${samba_option}\" ${value}" samba_option="" ;;
+	esac
 
 	## modify share
 	udm-test shares/share modify \
 		--dn="cn=$sharename,cn=shares,$ldap_base" \
-		--set "$udm_option=$value"
-	if [ "$?" != 0 ]; then
+		--set "${udm_option}=${value}" ||
 		fail_test 121 "could not set $udm_option to $value."
-	fi
 
-	## quote search string
-	search="$samba_option $value"
-	search="${search// /.*}"
-	search="${search//\"/}"
-
-	## strange days, ...
-	## ucs needs 1 or 0 as value for some options
-	## samba wants yes or no, that is why we grep for "locking 0" or "locking no"
-	case "$value" in
-		0)
-			s="${search//0/no}"
-			search="$search\|$s"
-			;;
-		1)
-			s="${search//1/yes}"
-			search="$search\|$s"
-			;;
-	esac
-
-	## save search string and the rest in $samba_search, we can not perform the search here, because
-	## udm needs some time to create the samba conf file
-	if [ -z "$samba_search" ]; then
-		samba_search="${udm_option}:DELIMITER:${search}:DELIMITER:${value}"
-	else
-		samba_search="$samba_search ${udm_option}:DELIMITER:${search}:DELIMITER:${value}"
-	fi
-
-	## clear this options, later we want to check whether we have all options tested or not
-	available_options="$(echo "$available_options" | sed "s/$udm_option//")"
-
-done <<<"$options"
-
+	tested_options+=("$udm_option")
+done
 wait_for_replication_and_postrun
 
 echo "----check the samba configuration file"
 ## check the samba conf file
-while read search_line; do
-	udm="$(echo "$search_line" | awk -F :DELIMITER: {'print $1'})"
-	search="$(echo "$search_line" | awk -F :DELIMITER: {'print $2'})"
-	value="$(echo "$search_line" | awk -F :DELIMITER: {'print $3'})"
-
-	cat "$samba_etc/$sharename" | grep -q -E --regex "$search"
-	if [ "$?" != 0 ]; then
-		cat "$samba_etc/$sharename"
-		fail_test 1 "samba config file <-> udm settings mismatch udm option:$udm samba options and value: $search udm value:$value"
-	fi
-done <<<"$samba_search"
+for option in "${options[@]}"
+do
+	samba_value=''
+	IFS=/ read -r udm_option samba_option value samba_value <<<"$option"
+	search="${samba_option}.*${samba_value:=$value}"
+	grep -q -E "$search" "$samba_etc" ||
+		fail_test 1 "UDM option '$udm_option' value '$samba_value' not mapped to Samba option '$samba_option'"
+done
+[ "$RETVAL" -eq 1 ] && cat "$samba_etc"
 
 ##  test if we checked all udm samba options
-echo "----test whether all udm samba options have been tested"
-available_options="$(echo "$available_options" | sed 's/^ *//')"
-available_options="$(echo "$available_options" | sed 's/ *$//')"
-if [ -n "$available_options" ]; then
-	fail_test 122 "forget to test udm option \"$available_options\""
-fi
+echo "----test whether all UDM Samba options have been tested"
+mapfile -t untested_options < <(comm -23 <(printf '%s\n' "${available_options[@]}" | sort) <(printf '%s\n' "${tested_options[@]}" | sort))
+[ -z "${untested_options[*]}" ] ||
+	fail_fast 122 "UDM options '${untested_options[*]}' not covered by this test"
 
-exit $RETVAL
+exit "$RETVAL"
