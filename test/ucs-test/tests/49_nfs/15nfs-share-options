@@ -1,7 +1,7 @@
 #!/usr/share/ucs-test/runner bash
 # shellcheck shell=bash
-## desc: "Checking all udm nfs options in exports file"
-## exposure: safe
+## desc: "Checking all UDM NFS options in exports file"
+## exposure: dangerous
 ## packages:
 ##  - univention-config
 ##  - univention-directory-manager-tools
@@ -23,22 +23,17 @@ eval "$(/usr/sbin/univention-config-registry shell)"
 sharename="$(random_share)"
 SHARE_POSITION="cn=shares,$ldap_base"
 fqdn="$hostname.$domainname"
-echo "hostname: $hostname"
-echo "fqdn: $fqdn"
 etc="/etc/exports"
-available_options="$(udm-test shares/share create | grep  --regex "(nfs)" | awk  {'print $1'})"
+mapfile -t available_options < <(udm-test shares/share create | awk  '/\(nfs\)/{print $1}')
+declare -a tested_options=()
 
 ## here we have the udm_option/nfs_value/udm_value
-options="
-writeable/rw/1
-sync/async/async
-subtree_checking/subtree_check/1
-root_squash/root_squash/1
-"
-
-## delete share even on abnormal exits
-#trap 'share_remove "$sharename";rm -rf "/opt/${sharename:?}"' INT TERM EXIT
-trap 'share_remove "$sharename";rm -rf "/opt/${sharename:?}";' INT TERM EXIT
+declare -a options=(
+	writeable/rw/1
+	sync/async/async
+	subtree_checking/subtree_check/1
+	root_squash/root_squash/1
+)
 
 ## create share
 echo "----create share"
@@ -47,82 +42,46 @@ udm-test shares/share create \
 	--option nfs \
 	--set name="$sharename" \
 	--set path="/opt/$sharename" \
-	--set host="$fqdn"
-
-if [ "$?" != 0 ]; then
+	--set host="$fqdn" ||
 	fail_fast 1 "could not create share"
-fi
 
-SHARE_DN="$(udm-test shares/share list --filter name="$sharename" | sed -ne 's/^DN: //p')"
-echo "$SHARE_DN"
-
+## delete share even on abnormal exits
+trap 'share_remove "$sharename";rm -rf "/opt/${sharename:?}";' INT TERM EXIT
 wait_for_replication_and_postrun
 
-echo "----check whether the nfs configuration file exists"
-if [ ! -f "$etc" ]; then
-	fail_fast 1 "nfs config file $etc not found"
-fi
+echo "----check whether the NFS configuration file exists"
+[ -f "$etc" ] ||
+	fail_fast 1 "NFS config file $etc not found"
 
-## set nfs options via udm and check nfs config file
+## set NFS options via UDM and check NFS config file
 echo "----set options"
-while read option_line; do
-
-	echo "$option_line" | grep --regex "^\s*#" > /dev/null
-	if [ 0 -eq "$?" ]; then continue; fi
-
-	echo "$option_line" | grep --regex "^\s*$" > /dev/null
-	if [ 0 -eq "$?" ]; then continue; fi
-
-	udm_option="$(echo "$option_line" | awk -F / {'print $1'})"
-	nfs_value="$(echo "$option_line" | awk -F / {'print $2'})"
-	udm_value="$(echo "$option_line" | awk -F / {'print $3'})"
-
+for option in "${options[@]}"
+do
+	IFS=/ read -r udm_option nfs_value udm_value <<<"$option"
 	# modify share
-	echo "Debug: Options: $option_line"
-	echo "Debug: udm call: udm-test shares/share modify --dn=\"cn=$sharename,cn=shares,$ldap_base\" --set \"$udm_option=$udm_value\""
-	udm-test shares/share modify \
-		--dn="cn=$sharename,cn=shares,$ldap_base" \
-		--set "$udm_option=$udm_value"
-	if [ "$?" != 0 ]; then
+	echo "Debug: Options: $option"
+	log_and_execute udm-test shares/share modify \
+		--dn "cn=$sharename,cn=shares,$ldap_base" \
+		--set "$udm_option=$udm_value" ||
 		fail_fast 1 "could not set $udm_option to $udm_value"
-	fi
 
-	# save search string and the rest in $nfs_search, we can not perform the search here, because
-	# udm needs some time to create the nfs conf file
-	if [ -z "$search" ]; then
-		search="${udm_option}:DELIMITER:${nfs_value}:DELIMITER:${udm_value}"
-	else
-		search="$search
-${udm_option}:DELIMITER:${nfs_value}:DELIMITER:${udm_value}"
-	fi
-
-	# clear this options, later we want to check whether we have all options tested or not
-	available_options="$(echo "$available_options" | sed "s/$udm_option//")"
-
-done <<<"$options"
-
+	tested_options+=("$udm_option")
+done
 wait_for_replication_and_postrun
 
 ## check the nfs conf file
-echo "----test the nfs configuration file"
-conf_line="$(cat "$etc")"
-while read search_line; do
-	udm="$(echo "$search_line" | awk -F :DELIMITER: {'print $1'})"
-	nfs="$(echo "$search_line" | awk -F :DELIMITER: {'print $2'})"
-	value="$(echo "$search_line" | awk -F :DELIMITER: {'print $3'})"
-
-	echo "$conf_line" | grep --regex '^"/opt/'"$sharename" | grep -q --regex '[ (,"-]/*'"$nfs"'[ ),"]'
-	if [ $? != 0 ]; then
-		fail_fast 1 "nfs config file <-> udm settings mismatch udm option: $udm nfs options: $nfs udm value: $value"
-	fi
-done <<<"$search"
+echo "----test the NFS configuration file"
+for option in "${options[@]}"
+do
+	IFS=/ read -r udm_option nfs_value udm_value <<<"$option"
+	grep "^\"/opt/${sharename}" "$etc" | grep -q '[ (,"-]/*'"$nfs_value"'[ ),"]' ||
+		fail_fast 1 "nfs config file <-> udm settings mismatch udm option: $udm_option nfs options: $nfs_value udm value: $udm_value"
+done
 
 ## test if we checked all udm nfs options
 echo "----check whether all options have been tested"
-available_options="$(echo "$available_options" | sed 's/^ *//')"
-available_options="$(echo "$available_options" | sed 's/ *$//')"
-if [ -n "$available_options" ]; then
-	fail_fast 122 "udm option \"$available_options\" is not covered by this test"
-fi
+mapfile -t untested_options < <(comm -23 <(printf '%s\n' "${available_options[@]}" | sort) <(printf '%s\n' "${tested_options[@]}" | sort))
+[ -z "${untested_options[*]}" ] ||
+	fail_fast 122 "UDM options '${untested_options[*]}' not covered by this test"
 
 exit 0
