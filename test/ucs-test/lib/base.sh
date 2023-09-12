@@ -141,14 +141,12 @@ fail_test () { #This is intended to make life easier for readers of test-logs wh
 	then
 		ALREADY_FAILED=true
 		RETVAL="$errorcode"
-		if [ -n "$*" ]
-		then
-			error "$@"
-		fi
 		error "**************** Test failed above this line ($errorcode) ****************"
 	else
-		error "*** Check failed ($errorcode), but this might be caused by the error above ***"
+		error "*** Test already failed above, but failed again ($errorcode) ***"
 	fi
+	[ -z "$*" ] ||
+		error "$@"
 }
 fail_fast () { # Like fail_test "$reason" "$message" but with exit
 	fail_test "$@"
@@ -261,6 +259,17 @@ get_domain_admins_dn () { # prints the Domain Admins dn
 	eval "$(ucr shell groups/default/domainadmins ldap/base)"
 	group_admins="${groups_default_domainadmins:-Domain Admins}"
 	echo "cn=${group_admins:?},cn=groups,${ldap_base:?}"
+}
+
+retry () {  # <count> <args...> # retry_delay=1
+	local retry_count="${1:?}"
+	shift
+	for ((retry_i=1; retry_i<=retry_count; retry_i++))
+	do
+		"$@" && return 0
+		sleep "${retry_delay:-1}"
+	done
+	return 1
 }
 
 # vim:set filetype=sh ts=4:
