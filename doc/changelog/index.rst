@@ -156,6 +156,9 @@ Univention Management Console web interface
 * The text color for disabled text boxes has been changed so it is easier to
   read in the Safari browser (:uv:bug:`55939`).
 
+* The login will show the cookie banner only if it is configured via the new
+  |UCSUCRV| :envvar:`umc/cookie-banner/domains` (:uv:bug:`55164`).
+
 .. _changelog-umc-portal:
 
 Univention Portal
@@ -163,6 +166,9 @@ Univention Portal
 
 * The navigation endpoint now correctly detects access via HTTPS and returns
   URLs based on that if no base URL is passed (:uv:bug:`55785`).
+
+* The portal will show the cookie banner only if it is configured via the new
+  |UCSUCRV| :envvar:`umc/cookie-banner/domains` (:uv:bug:`55164`).
 
 .. _changelog-umc-server:
 
@@ -201,6 +207,12 @@ Univention Management Console server
 
 * The UMC module has been adjusted to use new Python APIs for modules
   (:uv:bug:`56201`).
+
+* The new |UCSUCRV| :envvar:`umc/cookie-banner/domains` can be used to
+  configure on which domains to show the cookie banner. Additionally, top level
+  domains can be configured so that the cookie can be shared between portal and
+  login page. By default, both portal and login page will always show the
+  cookie banner and not share it (:uv:bug:`55164`).
 
 .. _changelog-umc-appcenter:
 
