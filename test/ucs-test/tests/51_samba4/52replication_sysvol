@@ -1,7 +1,7 @@
 #!/usr/share/ucs-test/runner bash
 # shellcheck shell=bash
 ## desc: "Testing the sysvol replication"
-## exposure: safe
+## exposure: careful
 ## packages:
 ##  - univention-samba4
 ## roles:
@@ -13,6 +13,10 @@
 ##  - basic
 ##  - apptest
 
+# shellcheck source=../../lib/base.sh
+. "$TESTLIBPATH/base.sh" || exit 137
+# shellcheck source=../../lib/undo.sh
+. "$TESTLIBPATH/undo.sh" || exit 137
 # shellcheck source=../../lib/shares.sh
 . "$TESTLIBPATH/shares.sh" || exit 137
 # shellcheck source=../../lib/random.sh
@@ -24,55 +28,32 @@ set -x
 check_domainadmin_credentials || fail_fast 77 "UCR variables for admin credentials are not set"
 admin_account="$(ucs_convertDN2UID "$tests_domainadmin_account")"
 
-cleanup_functions=()
-cleanup() {
-	for cln in "${cleanup_functions[@]}"; do
-		"$cln"
-	done
-}
-
-trap cleanup INT TERM EXIT
-
 determine_neighbour_s4host() {
-	local s4host_fqdn
-
-	s4hosts=( $(univention-ldapsearch -LLL "(univentionService=Samba 4)" cn | sed -ne 's/^cn: //p') )
+	mapfile -t s4hosts < <(univention-ldapsearch -LLL "(univentionService=Samba 4)" cn | sed -ne 's/^cn: //p')
 	for candidate in "${s4hosts[@]}"
 	do
-		# ignore hosts without a dns service principal account, they are RODC's
-		# TODO Is there a better way to check for RODC's?
-		if ! id "dns-$candidate" 1>/dev/null; then
+		[ "$candidate" = "$hostname" ] &&
 			continue
-		fi
-
-		if [ "$candidate" != "$hostname" ] && ping -c 1 "$candidate.$domainname" > /dev/null; then
-			s4host_fqdn="$candidate.$domainname"
-			break
-		fi
+		# ignore hosts without a DNS service principal account, they are RODC's
+		# TODO Is there a better way to check for RODC's?
+		id "dns-$candidate" >/dev/null ||
+			continue
+		ping -c 1 "$candidate.$domainname" >/dev/null ||
+			continue
+		echo "$candidate.$domainname"
+		return 0
 	done
-
-	echo "$s4host_fqdn"
+	return 1
 }
 
-s4host_fqdn=$(determine_neighbour_s4host)
-if [ -z "$s4host_fqdn" ];then
-	echo "Skipping test: Could not find another Samba4 Service in Domain"
-	exit 134
-fi
+s4host_fqdn=$(determine_neighbour_s4host) ||
+	fail_fast 134 "Skipping test: Could not find another Samba4 Service in Domain"
 
 gponame=$(random_chars 8 "${_upperletters}${_lowerletters}${_ciphers}")	## samba RC6 seems to dislike UTF-8 in GPO names
 
 ## general sanity check: wait for the samba-share.py Listener to synchronize /etc/samba/shares.conf and /etc/samba/shares.conf.d (Bug #29399)
-i=0
-while ! samba-tool domain info 127.0.0.1 > /dev/null 2>&1
-do
-	let i="$i"+1
-	if [ "$i" = 15 ]; then
-		echo "samba-tool Failure (Bug #29399)" >&2
-		break
-	fi
-	sleep 2
-done
+retry 15 samba-tool domain info 127.0.0.1 >/dev/null 2>&1 ||
+	echo "samba-tool Failure (Bug #29399)" >&2
 
 sysvol_path="/var/lib/samba/sysvol"
 sysvol_domain_path="$sysvol_path/$domainname"
@@ -86,96 +67,52 @@ remote_temp_filename=$(univention-ssh "$tests_domainadmin_pwdfile" "$admin_accou
 univention-ssh "$tests_domainadmin_pwdfile" "$admin_account"@"$s4host_fqdn" "setfacl -b '$remote_temp_filename'; chmod 644 '$remote_temp_filename'"
 
 
-delete_remote_test_file() {
-	univention-ssh "$tests_domainadmin_pwdfile" "$admin_account"@"$s4host_fqdn" rm "$remote_temp_filename"
-}
-cleanup_functions+=(delete_remote_test_file)
+undo univention-ssh "$tests_domainadmin_pwdfile" "$admin_account"@"$s4host_fqdn" rm "$remote_temp_filename"
 
 ## create the GPO
 echo "## create the GPO '$gponame' on remote DC $s4host_fqdn"
 gpo_cn=$(samba-tool gpo create "$gponame" -H ldap://"$s4host_ipaddr" -U"$admin_account%$tests_domainadmin_pwd" | sed -n "s/GPO '$gponame' created as //p")
-if [ -n "$gpo_cn" ]; then
-	echo "## GPO was created on $s4host_fqdn with ID $gpo_cn"
-	delete_remote_test_gpo() {
-		samba-tool gpo del "$gpo_cn" -H ldap://"$s4host_ipaddr" -U"$admin_account%$tests_domainadmin_pwd"
-	}
-	cleanup_functions+=(delete_remote_test_gpo)
-
-	gpo_path="$policies_path/$gpo_cn"
-else
+[ -n "$gpo_cn" ] ||
 	fail_fast 1 "WARNING: samba-tool gpo create did not return a GPO cn"
-fi
+
+echo "## GPO was created on $s4host_fqdn with ID $gpo_cn"
+undo samba-tool gpo del "$gpo_cn" -H ldap://"$s4host_ipaddr" -U"$admin_account%$tests_domainadmin_pwd"
+
+gpo_path="$policies_path/$gpo_cn"
 
 ## Tests on remote DC
 echo "## check whether the directory has been created on remote DC $s4host_fqdn"
-i=0
-while ! univention-ssh "$tests_domainadmin_pwdfile" "$admin_account"@"$s4host_fqdn" test -d "$gpo_path" > /dev/null
-do
-	let i="$i"+1
-	if [ "$i" =  20 ]; then
-		fail_fast 1 "remote directory for GPO has not been created"
-	fi
-	sleep 1
-done
+retry 20 univention-ssh "$tests_domainadmin_pwdfile" "$admin_account"@"$s4host_fqdn" test -d "$gpo_path" >/dev/null ||
+	fail_fast 1 "remote directory for GPO has not been created"
 
 ##check whether samba-tool lists the GPO the remote DC
 echo "## check whether samba-tool lists the GPO on remote DC $s4host_fqdn"
-i=0
-while ! ( output=$(samba-tool gpo show "$gpo_cn" -H ldap://"$s4host_ipaddr" -U"$admin_account%$tests_domainadmin_pwd" 2>&1) && grep -Eq "^GPO\s+:\s$gpo_cn" <<<"$output" )
-do
-	let i="$i"+1
-	if [ "$i" = 10 ]; then
-		if [ -n "$output" ]; then
-			echo "$output"
-		fi
-		fail_fast 1 "remote GPO is not listed in samba-tool"
-	fi
-	sleep 1
-done
+check_gpo_remote () { output=$(samba-tool gpo show "$gpo_cn" -H ldap://"$s4host_ipaddr" -U"$admin_account%$tests_domainadmin_pwd" 2>&1) && grep -Eq "^GPO\s+:\s$gpo_cn" <<<"$output"; }
+retry 10 check_gpo_remote ||
+	fail_fast 1 "remote GPO is not listed in samba-tool: $output"
 
 max_i=201
 sleep_time=3
-echo "## check whether the directory for the GPO has been replicated to the local system (waiting about $(($max_i * $sleep_time)) seconds)"
+echo "## check whether the directory for the GPO has been replicated to the local system (waiting about $((max_i * sleep_time)) seconds)"
 echo "## Note: to speed things up for interactive tests, you may run /usr/share/univention-samba4/scripts/sysvol-sync.sh manually now."
 echo -n "Waiting for cron based sysvol-sync"
-i=0
-while ! [ -d "$gpo_path" ]
-do
-	let i="$i"+1
-	if [ "$i" = "$max_i" ]; then
-		echo
-		fail_fast 1 "Directory for GPO has not been created after $(($i * $sleep_time)) seconds"
-	fi
-	sleep "$sleep_time"
-	echo -n "."
-done
-echo "."
-echo "GPO sysvol replication took $(($i * $sleep_time)) seconds."
+retry_delay="$sleep_time" retry "$max_i" [ -d "$gpo_path" ] ||
+	fail_fast 1 "Directory for GPO has not been created after $((retry_i * sleep_time)) seconds"
+echo "GPO sysvol replication took $((retry_i * sleep_time)) seconds."
 
-if [ -f "$remote_temp_filename" ]; then
-	rm "$remote_temp_filename"
-else
+[ -f "$remote_temp_filename" ] ||
 	fail_fast 1 "fACL-free file $remote_temp_filename not replicated."
-fi
+
+rm "$remote_temp_filename"
 
 echo "## check GPO permissions"
 mode=$(stat -c "%a" "$gpo_path")
-if [ "$mode" != 770 ]; then
+[ "$mode" = 770 ] ||
 	fail_fast 1 "GPO has wrong permission mode: $mode, expected 770"
-fi
 
 echo "## check whether the GPO is listed in samba-tool"
-i=0
-while ! ( output=$(samba-tool gpo show "$gpo_cn" 2>&1) && grep -Eq "^GPO\s+:\s$gpo_cn" <<<"$output" )
-do
-	let i="$i"+1
-	if [ "$i" = 10 ]; then
-		if [ -n "$output" ]; then
-			echo "$output"
-		fi
-		fail_fast 1 "GPO is not listed in samba-tool"
-	fi
-	sleep 1
-done
+check_gpo () { output=$(samba-tool gpo show "$gpo_cn" 2>&1) && grep -Eq "^GPO\s+:\s$gpo_cn" <<<"$output"; }
+retry 10 check_gpo ||
+	fail_fast 1 "GPO is not listed in samba-tool"
 
-exit $RETVAL
+exit "$RETVAL"
