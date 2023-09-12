@@ -1,7 +1,7 @@
 #!/usr/share/ucs-test/runner bash
 # shellcheck shell=bash
 ## desc: Check UCR variable samba/register/exclude/interfaces
-## exposure: safe
+## exposure: dangerous
 ## bugs:
 ## - 34868
 ## - 28829
@@ -17,57 +17,62 @@
 
 # shellcheck source=../../lib/base.sh
 . "$TESTLIBPATH/base.sh" || exit 137
+# shellcheck source=../../lib/ucr.sh
+. "$TESTLIBPATH/ucr.sh" || exit 137
 # shellcheck source=../../lib/random.sh
 . "$TESTLIBPATH/random.sh" || exit 137
 
 RETVAL=100
 
-arecords=$(univention-ldapsearch -b relativeDomainName=$(hostname),zoneName=$(dnsdomainname),cn=dns,$(ucr get ldap/base) | grep "^aRecord: ")
-samba_register_exclude_interfaces="$(ucr get samba/register/exclude/interfaces)"
+FQHN="${hostname:?}.${domainname:?}"
+host_dns="relativeDomainName=${hostname:?},zoneName=${domainname:?},cn=dns,${ldap_base:?}"
+mapfile -t arecords < <(univention-ldapsearch -b "$host_dns" -s base aRecord | sed -ne 's/^aRecord: /--set a=/p')
+
 ucr unset samba/register/exclude/interfaces
 
-lsmod | grep dummy && dummy_loaded=1
+lsmod | grep -q dummy && dummy_loaded=1
 modprobe dummy numdummies=3
 
-ip link set name eth100 dev dummy0
-ip link set name eth101 dev dummy1
-ip link set name eth102 dev dummy2
+ip link set dev dummy0 name eth100 up || fail_fast 1 "Failed dummy0 setup"
+ip link set dev dummy1 name eth101 up || fail_fast 1 "Failed dummy1 setup"
+ip link set dev dummy2 name eth102 up || fail_fast 1 "Failed dummy2 setup"
 
 # Create a dummy interface
-ifconfig eth100 1.2.3.100
-ifconfig eth101 1.2.3.101
-ifconfig eth102 1.2.3.102
+ip addr add 1.2.3.100/24 dev eth100
+ip addr add 1.2.3.101/24 dev eth101
+ip addr add 1.2.3.102/24 dev eth102
 
+# FIXME: `samba.interface_ips(sambaopts.get_loadparm(), False)` does not list eth10[012]
 /usr/sbin/samba_dnsupdate
 
-host "$(hostname -f)" | grep -F 1.2.3.100 || fail_test "eth100 is not registered"
-host "$(hostname -f)" | grep -F 1.2.3.101 || fail_test "eth101 is not registered"
-host "$(hostname -f)" | grep -F 1.2.3.102 || fail_test "eth102 is not registered"
+host "$FQHN" | grep -F 1.2.3.100 || fail_test "eth100 is not registered"
+host "$FQHN" | grep -F 1.2.3.101 || fail_test "eth101 is not registered"
+host "$FQHN" | grep -F 1.2.3.102 || fail_test "eth102 is not registered"
 
 ucr set samba/register/exclude/interfaces="eth100 eth102"
 /usr/sbin/samba_dnsupdate
 
-host "$(hostname -f)" | grep -F 1.2.3.100 && fail_test "samba/register/exclude/interfaces has been set but eth100 was registered anyway"
-host "$(hostname -f)" | grep -F 1.2.3.101 || fail_test "eth101 is not excluded but the IP has not been registered"
-host "$(hostname -f)" | grep -F 1.2.3.102 && fail_test "samba/register/exclude/interfaces has been set but eth102 was registered anyway"
+host "$FQHN" | grep -F 1.2.3.100 && fail_test "samba/register/exclude/interfaces has been set but eth100 was registered anyway"
+host "$FQHN" | grep -F 1.2.3.101 || fail_test "eth101 is not excluded but the IP has not been registered"
+host "$FQHN" | grep -F 1.2.3.102 && fail_test "samba/register/exclude/interfaces has been set but eth102 was registered anyway"
 
-ifconfig eth100 down
-ifconfig eth101 down
-ifconfig eth102 down
+ip link set eth100 down
+ip link set eth101 down
+ip link set eth102 down
 
 ip link delete eth100 type dummy
 ip link delete eth101 type dummy
 ip link delete eth102 type dummy
-if [ "$dummy_loaded" != 1 ]; then
+[ "$dummy_loaded" = 1 ] ||
 	rmmod dummy
-fi
 
-test -n "$samba_register_exclude_interfaces" && ucr set samba/register/exclude/interfaces="$samba_register_exclude_interfaces" || ucr unset samba/register/exclude/interfaces
+ucr_restore
 
 /usr/sbin/samba_dnsupdate
 
-udm dns/host_record modify  --dn=relativeDomainName=$(hostname),zoneName=$(dnsdomainname),cn=dns,$(ucr get ldap/base) $(echo $arecords | sed -e 's|aRecord: |--set a=|g')
+# shellcheck disable=SC2068
+udm dns/host_record modify --dn "$host_dns" ${arecords[@]}
 
-host "$(hostname -f)"
+host "$FQHN"
 
-exit $RETVAL
+exit "$RETVAL"
