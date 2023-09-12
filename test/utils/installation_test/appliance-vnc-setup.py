@@ -90,17 +90,19 @@ class UCSSetup(VNCInstallation):
 
         self.type('\n')
 
-        sleep(60, "net.apipa")
-        self.check_apipa()
-        if self.text_is_visible('No gateway has been'):
-            self.type('\n')
-            sleep(60, "net.gateway")
+        # FIXME: all scenarios use `kvm_dhcp: true`, so the following currently does not happen
+        # they only delay 120s per `t_i_v()`, e.g. 60+120+120+120+120=9m
+        # sleep(60, "net.apipa")
+        # self.check_apipa()
+        # if self.text_is_visible('No gateway has been'):
+        #     self.type('\n')
+        #     sleep(60, "net.gateway")
 
-        if self.text_is_visible('continue without access'):
-            self.type('\n')
-            sleep(60, "net.unconnected")
+        # if self.text_is_visible('continue without access'):
+        #     self.type('\n')
+        #     sleep(60, "net.unconnected")
 
-        sleep(120, "net.finish")
+        # sleep(120, "net.finish")
 
     def domain(self, role: str) -> None:
         """
