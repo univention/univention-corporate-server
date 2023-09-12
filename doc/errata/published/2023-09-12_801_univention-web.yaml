@@ -9,3 +9,6 @@ desc: |
  * The login will show the cookie banner only if it is configured via the new
    UCR variable `umc/cookie-banner/domains`.
 bug: [55164]
+erratum: 801
+announced: 2023-09-12
+support: core
