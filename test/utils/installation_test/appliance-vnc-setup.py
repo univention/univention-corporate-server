@@ -77,10 +77,12 @@ class UCSSetup(VNCInstallation):
 
         [Back] [Next]
         """
-        try:
-            self.wait_for_text('IP address')
-        except VNCDoException:
-            self.wait_for_text('Domain and network', timeout=-1)
+        if self.text_is_visible('IP address'):
+            pass
+        elif self.text_is_visible('Domain and network', timeout=-1):
+            pass
+        else:
+            raise VNCDoException()
 
         self.screenshot('network-setup.png')
         self.click_on('Preferred')

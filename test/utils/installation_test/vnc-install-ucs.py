@@ -730,34 +730,22 @@ class UCSInstallation(VNCInstallation):
             return
         # join/ad password and user
         self.wait_for_text('ad_account_information')
-        for _ in range(2):
-            self.click_on('address_ad')
-            self.type("\t")
-            self.type(self.args.join_user + "\t", clear=True)
-            self.type(self.args.join_password, clear=True)
-            self.go_next()
-            if self.text_is_visible('error'):
-                self.type('\n')
-                self.client.keyPress('caplk')
-            else:
-                break
+        self.click_on('address_ad')
+        self.type("\t")
+        self.type(self.args.join_user + "\t", clear=True)
+        self.type(self.args.join_password, clear=True)
+        self.go_next()
 
     @verbose("JOIN")
     def joinpass(self) -> None:
         if self.args.role not in {'slave', 'backup', 'member'}:
             return
         self.wait_for_text('start_join')
-        for _ in range(2):
-            self.click_on('hostname_primary')
-            self.type('\t')
-            self.type(self.args.join_user + "\t", clear=True)
-            self.type(self.args.join_password, clear=True)
-            self.go_next()
-            if self.text_is_visible('error'):
-                self.type('\n')
-                self.client.keyPress('caplk')
-            else:
-                break
+        self.click_on('hostname_primary')
+        self.type('\t')
+        self.type(self.args.join_user + "\t", clear=True)
+        self.type(self.args.join_password, clear=True)
+        self.go_next()
 
     def hostname(self) -> None:
         """
