@@ -1,7 +1,8 @@
 #!/usr/share/ucs-test/runner bash
 # shellcheck shell=bash
-## desc: "Test whether samba respects unix permissions set with UDM"
-## exposure: safe
+## desc: "Test whether Samba respects UNIX permissions set with UDM"
+## bugs: [29056]
+## exposure: dangerous
 ## packages:
 ## - univention-samba | univention-samba4
 ## roles:
@@ -12,6 +13,8 @@
 ## tags:
 ## - skip_admember
 
+# shellcheck source=../../lib/base.sh
+. "$TESTLIBPATH/base.sh" || exit 137
 # shellcheck source=../../lib/user.sh
 . "$TESTLIBPATH/user.sh" || exit 137
 # shellcheck source=../../lib/shares.sh
@@ -39,41 +42,29 @@ sharename="$(random_share)"
 
 check_domainadmin_credentials || fail_fast 77 "UCR variables for admin credentials are not set"
 
-trap 'user_remove "$username";share_remove $sharename; wait_for_replication_and_postrun; rm -rf "/${sharename:?}"' INT TERM EXIT
-if ! user_create "$username"; then
+trap 'user_remove "$username";share_remove "$sharename"; wait_for_replication_and_postrun; rm -rf "/${sharename:?}"' INT TERM EXIT
+user_create "$username" ||
 	fail_fast 1 "Could not create user $username."
-fi
 
 SHARE_SAMBA_WRITEABLE=1
 SHARE_UNIX_DIRECTORYMODE=0755
 
 echo "## create share"
-share_create "$sharename" "/$sharename"
-if [ "$?" != 0 ]; then
+share_create "$sharename" "/$sharename" ||
 	fail_fast 1 "could not create share"
-fi
 
 wait_for_replication
 # force_drs_replication
 
-echo "## wait for samba share export"
-i=0
-while ! output="$(smbclient -U "$username%$password" "//$hostname.$domainname/$sharename" -c "exit" >/dev/null 2>&1)"
-do
-	let i="$i"+1
-	if [ "$i" = "$listener_replication_retry_max" ]; then
-		echo "$output"
-		fail_fast 1 "TIMEOUT: Samba did not export the share '$sharename' after $((i * $listener_replication_sleep_seconds)) seconds"
-	fi
-	sleep "$listener_replication_sleep_seconds"
-done
+echo "## wait for Samba share export"
+wait_for_share () { output="$(smbclient -U "$username%$password" "//$hostname.$domainname/$sharename" -c "exit" >/dev/null 2>&1)"; }
+retry_delay="$listener_replication_sleep_seconds" retry "$listener_replication_retry_max" wait_for_share ||
+	fail_fast 1 "TIMEOUT: Samba did not export the share '$sharename' after $((retry_i * listener_replication_sleep_seconds)) seconds: $output"
 
 echo "## create a folder without permission"
 output="$(smbclient -U "$username%$password" "//$hostname.$domainname/$sharename" -c "mkdir folder" 2>&1)"
-echo "$output" | grep -q "NT_STATUS_ACCESS_DENIED"
-if [ "$?" != 0 ];then
+grep -q "NT_STATUS_ACCESS_DENIED" <<<"$output" ||
 	fail_test 1 "Expected return value NT_STATUS_ACCESS_DENIED, but received: $output"
-fi
 
 echo "## change folder unix directorymode"
 SHARE_DN="$(udm-test shares/share list --filter sambaName="$sharename" | sed -ne 's/^DN: //p')"
@@ -83,21 +74,12 @@ udm-test shares/share modify \
 	--dn "$SHARE_DN" \
 	--set "directorymode=0777"
 
-i=0
-while ! [ "$(stat -c '%a' "/$sharename")" = "777" ]; do
-	let i="$i"+1
-	if [ "$i" = "$listener_replication_retry_max" ]; then
-		echo "$output"
-		fail_fast 1 "TIMEOUT: Directory mode of folder not updated after $((i * $listener_replication_sleep_seconds)) seconds"
-	fi
-	sleep "$listener_replication_sleep_seconds"
-done
+check_stat () { [ "$(stat -c '%a' "/$sharename")" = "777" ]; }
+retry_delay="$listener_replication_sleep_seconds" retry "$listener_replication_retry_max" check_stat ||
+		fail_fast 1 "TIMEOUT: Directory mode of folder not updated after $((retry_i * listener_replication_sleep_seconds)) seconds"
 
 echo "## create a folder with permission"
-output="$(smbclient -U "$username%$password" "//$hostname.$domainname/$sharename" -c "mkdir folder2" >/dev/null 2>&1)"
-if [ "$?" != 0 ]; then
-	echo "$output"
-	fail_test 1 "Failed to make a folder even though it should work."
-fi
+output="$(smbclient -U "$username%$password" "//$hostname.$domainname/$sharename" -c "mkdir folder2" >/dev/null 2>&1)" ||
+	fail_test 1 "Failed to make a folder even though it should work: $output"
 
-exit $RETVAL
+exit "$RETVAL"
