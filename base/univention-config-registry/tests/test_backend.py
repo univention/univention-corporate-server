@@ -10,13 +10,10 @@ import time
 from io import StringIO
 
 import pytest
-import six
 
 from univention.config_registry import backend
 from univention.config_registry.backend import ConfigRegistry
 
-
-py2_only = pytest.mark.skipif(six.PY3, reason="Python 2 only")
 
 TRUE_VALID = sorted({
     c
@@ -220,28 +217,13 @@ class TestConfigRegistry(object):
         """Test merged items."""
         assert sorted(ucrf.items(getscope=True)) == sorted([('foo', (ConfigRegistry.LDAP, 'LDAP')), ('bar', (ConfigRegistry.LDAP, 'LDAP')), ('baz', (ConfigRegistry.NORMAL, 'NORMAL'))])
 
-    @py2_only
-    def test_iteritems(self, ucrf):
-        """Test merged items."""
-        assert sorted(ucrf.iteritems()) == sorted([('foo', 'LDAP'), ('bar', 'LDAP'), ('baz', 'NORMAL')])
-
     def test_keys(self, ucrf):
         """Test merged keys."""
         assert sorted(ucrf.keys()) == sorted(['foo', 'bar', 'baz'])
 
-    @py2_only
-    def test_iterkeys(self, ucrf):
-        """Test merged keys."""
-        assert sorted(ucrf.iterkeys()) == sorted(['foo', 'bar', 'baz'])
-
     def test_values(self, ucrf):
         """Test merged values."""
         assert sorted(ucrf.values()) == sorted(['LDAP', 'LDAP', 'NORMAL'])
-
-    @py2_only
-    def test_itervalues(self, ucrf):
-        """Test merged items."""
-        assert sorted(ucrf.itervalues()) == sorted(['LDAP', 'LDAP', 'NORMAL'])
 
     def test_clear(self, ucrf):
         """Test set ucr.clear()."""
@@ -448,20 +430,6 @@ class TestInternal(object):
         ucr = backend._ConfigRegistry(str(tmp))
         ucr.load()
         assert ucr.items() == data.items()
-
-    @py2_only
-    def test_strict_key(self):
-        ucr = backend._ConfigRegistry(os.path.devnull)
-        ucr.strict_encoding = True
-        with pytest.raises(backend.StrictModeException):
-            ucr[b'\xff'] = "val"
-
-    @py2_only
-    def test_strict_value(self):
-        ucr = backend._ConfigRegistry(os.path.devnull)
-        ucr.strict_encoding = True
-        with pytest.raises(backend.StrictModeException):
-            ucr["key"] = b"\xff"
 
     def test_devnull(self):
         ucr = backend._ConfigRegistry(os.path.devnull)
