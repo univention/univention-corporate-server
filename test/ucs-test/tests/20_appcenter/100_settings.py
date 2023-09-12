@@ -80,6 +80,17 @@ def install_app(app, set_vars=None):
     remove.call(app=[app], username=username, password=ucr_get('tests/domainadmin/pwd'), noninteractive=True)
 
 
+@contextmanager
+def add_custom_settings(app, custom_settings_content):
+    custom_settings_file = "/var/lib/univention-appcenter/apps/{}/custom.settings".format(app.id)
+    with open(custom_settings_file, "w") as f:
+        f.write(custom_settings_content)
+    try:
+        yield
+    finally:
+        os.remove(custom_settings_file)
+
+
 @pytest.fixture(scope='module')
 def local_appcenter():
     with app_test.local_appcenter():
@@ -215,53 +226,60 @@ Scope = inside, outside
         assert ucr_get(setting.name) == 'My new value'
 
 
-def test_string_custom_setting_docker(installed_apache_docker_app):
+@pytest.mark.parametrize('content_custom', [
+    '''[test1/setting]
+Type = String
+Description = My Description
+InitialValue = Default: @%@hostname@%@
+Scope = {scope}
+'''.format(scope=scope) for scope in ('inside, outside', 'outside', 'inside')
+])
+def test_string_custom_setting_docker(installed_apache_docker_app, content_custom):
     content = '''[test/setting]
 Type = String
 Description = My Description
 InitialValue = Default: @%@ldap/base@%@
 Scope = inside, outside
 '''
-    content_custom = '''[test2/setting]
-Type = String
-Description = My Description
-InitialValue = Default: @%@ldap/base@%@
-Scope = inside, outside
-'''
-
-    try:
-        custom_settings_file = "/var/lib/univention-appcenter/apps/{}/custom.settings".format("apache")
-        with open(custom_settings_file, "w") as f:
-            f.write(content_custom)
+    with add_custom_settings(installed_apache_docker_app, content_custom):
         app, settings = fresh_settings(content, installed_apache_docker_app, 2)
-        setting = settings[0]
-        custom_setting = settings[1]
-        assert repr(setting) == "StringSetting(name='test/setting')"
-        assert setting.is_inside(app) is True
-        assert setting.is_outside(app) is True
-        assert setting.get_initial_value(app) == 'Default: %s' % ucr_get('ldap/base')
-        assert setting.get_value(app) is None
+        setting1, setting2 = settings
+        for c, setting in [(content, setting1), (content_custom, setting2)]:
+            assert repr(setting) == "StringSetting(name='{}')".format(setting.name)
+            assert setting.is_inside(app) is ("inside" in c)
+            assert setting.is_outside(app) is ("outside" in c)
+            ucr_var_name = re.search('@%@(.*?)@%@', c).group(1)
+            assert setting.get_initial_value(app) == 'Default: %s' % ucr_get(ucr_var_name)
+            assert setting.get_value(app) is None
+
         with Configuring(app, revert='ucr') as config:
-            config.set({setting.name: 'My value'})
-            config.set({custom_setting.name: 'My value2'})
-            assert setting.get_value(app) == 'My value'
-            assert custom_setting.get_value(app) == 'My value2'
-            assert ucr_get(setting.name) == 'My value'
-            assert ucr_get(custom_setting.name) == 'My value2'
-            assert docker_shell(app, 'grep "test/setting: " /etc/univention/base.conf') == 'test/setting: My value\n'
-            assert docker_shell(app, 'grep "test2/setting: " /etc/univention/base.conf') == 'test2/setting: My value2\n'
+            config.set({setting1.name: 'My value', setting2.name: 'My value2'})
+
+            assert setting1.get_value(app) == 'My value'
+            assert setting2.get_value(app) == 'My value2'
+
+            assert ucr_get(setting1.name) == 'My value'
+            if setting2.is_outside(app):
+                assert ucr_get(setting2.name) == 'My value2'
+            assert docker_shell(app, f'grep "{setting1.name}: " /etc/univention/base.conf') == f'{setting1.name}: My value\n'
+            if setting2.is_inside(app):
+                assert docker_shell(app, f'grep "{setting2.name}: " /etc/univention/base.conf') == f'{setting2.name}: My value2\n'
+
+            config.set({setting1.name: 'My new value', setting2.name: 'My new value2'})
+
             stop = get_action('stop')
             stop.call(app=app)
-            config.set({setting.name: 'My new value', custom_setting.name: 'My new value2'})
+
             start = get_action('start')
             start.call(app=app)
-            assert ucr_get(setting.name) == 'My new value'
-            assert ucr_get(custom_setting.name) == 'My new value2'
-    finally:
-        try:
-            os.remove(custom_settings_file)
-        except OSError:
-            pass
+
+            assert ucr_get(setting1.name) == 'My new value'
+            if setting2.is_outside(app):
+                assert ucr_get(setting2.name) == 'My new value2'
+
+            assert docker_shell(app, f'grep "{setting1.name}: " /etc/univention/base.conf') == f'{setting1.name}: My new value\n'
+            if setting2.is_inside(app):
+                assert docker_shell(app, f'grep "{setting2.name}: " /etc/univention/base.conf') == f'{setting2.name}: My new value2\n'
 
 
 def test_int_setting(installed_component_app):
