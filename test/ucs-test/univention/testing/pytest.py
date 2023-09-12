@@ -55,9 +55,7 @@ class PytestRunner:
             args.append('--exitfirst')
         if cls.options.format == 'junit':
             from univention.testing.format.junit import Junit
-            section = os.path.dirname(testcase.uid)
             args.append('--junit-xml=%s' % (os.path.join(os.getcwd(), Junit().outdir, '%s.xml' % (testcase.uid,)),))
-            args.append('--junit-prefix=%s' % (section,))
         if cls.options.verbose:
             args.append('-' + 'v' * cls.options.verbose)
         args.append('--continue-on-collection-errors')
