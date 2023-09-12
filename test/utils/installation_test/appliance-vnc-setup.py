@@ -83,8 +83,8 @@ class UCSSetup(VNCInstallation):
             self.wait_for_text('Domain and network', timeout=-1)
 
         self.screenshot('network-setup.png')
+        self.click_on('Preferred')
         if self.args.role in {'admember', 'slave'}:
-            self.click_on('Preferred')
             self.type(self.args.dns)
             time.sleep(0.5)
 
