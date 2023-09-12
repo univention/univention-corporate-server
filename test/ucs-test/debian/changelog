@@ -1,3 +1,9 @@
+ucs-test (10.0.18-1) unstable; urgency=low
+
+  * Bug #56570: Change several "safe" tests to "careful" and "dangerous"
+
+ -- Philipp Hahn <hahn@univention.de>  Tue, 12 Sep 2023 19:40:56 +0200
+
 ucs-test (10.0.17-1) unstable; urgency=low
 
   * Bug #56570: Add more debug output to 51_samba4/47domain_user_lockout.py
