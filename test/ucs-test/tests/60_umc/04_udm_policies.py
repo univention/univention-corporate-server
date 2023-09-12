@@ -1,12 +1,13 @@
 #!/usr/share/ucs-test/runner python3
 ## desc: Test UMC policy result
+## bugs: [32271]
 ## roles:
 ##  - domaincontroller_master
 ## tags:
 ##  - SKIP
 ## packages:
 ##  - univention-management-console-module-udm
-## exposure: safe
+## exposure: careful
 
 from univention.testing.strings import random_name
 from univention.testing.udm import UCSTestUDM
