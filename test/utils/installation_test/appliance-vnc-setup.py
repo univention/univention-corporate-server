@@ -259,10 +259,10 @@ class UCSSetup(VNCInstallation):
         self.screenshot('finished-setup.png')
         self.type('\t\n')
         # except welcome screen
-        try:
-            self.wait_for_text('www')
-        except VNCDoException:
-            self.wait_for_text('press any key', timeout=-1)
+        if self.text_is_visible("press any key"):
+            pass
+        elif self.text_is_visible("www", timeout=-1):
+            pass
         self.screenshot('welcome-screen.png')
 
     def _go_next_search(self) -> None:
