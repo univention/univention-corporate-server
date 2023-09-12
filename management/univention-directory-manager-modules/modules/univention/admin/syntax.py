@@ -2622,7 +2622,7 @@ class emailForwardSetting(select):
 
 
 class emailAddress(simple):
-    """
+    r"""
     Syntax class for an e-mail address.
 
     >>> emailAddress.parse('quite@an.email.address')
