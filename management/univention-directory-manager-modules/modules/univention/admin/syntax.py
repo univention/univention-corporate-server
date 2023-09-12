@@ -3092,6 +3092,8 @@ class dnsName(simple):
         labels = (text[:-1] if text.endswith('.') else text).split('.')
         if not all(1 <= len(label) <= 63 for label in labels):
             raise univention.admin.uexceptions.valueError(_("Labels must be between 1 and 63 characters long!"))
+        if text == '@':
+            raise univention.admin.uexceptions.valueError(_("@ are not allowed inside DNS names!"))
         return text
 
 
@@ -4625,7 +4627,7 @@ class dnsEntryAlias(complex):
     """Syntax to configure a |DNS| alias record."""
 
     description = _('DNS Entry Alias')
-    subsyntaxes = ((_('Zone of existing host record'), DNS_ForwardZoneList), (_('DNS forward zone'), DNS_ForwardZone), (_('Alias'), DNS_Name))
+    subsyntaxes = ((_('Zone of existing host record'), DNS_ForwardZoneList), (_('DNS forward zone'), DNS_ForwardZone), (_('Alias'), dnsName))
     subsyntax_names = ('zone', 'forward-zone', 'alias')
     size = ('TwoThirds', 'TwoThirds', 'TwoThirds')
 

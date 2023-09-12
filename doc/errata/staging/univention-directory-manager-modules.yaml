@@ -1,0 +1,11 @@
+product: ucs
+release: "5.0"
+version: [5]
+scope: ucs_5.0-0-errata5.0-5
+src: univention-directory-manager-modules
+fix: 15.0.24-18
+desc: |
+ This update addresses the following issues:
+ * It's now not possible anymore to use '@' inside DNS host records,
+   to prevent errors.
+bug: [50385]
