@@ -559,8 +559,8 @@ class TestCase:
         return conditions
 
     def pytest_check(self, environment):  # type: (TestEnvironment) -> List[str]
-        args = []
-        args += self.exe.pytest_args(environment)
+        args = []  # type: List[str]
+        args += self.exe.pytest_args(environment) if self.exe else "No exectable"
         args += self.versions.pytest_args(environment)
         args += self.tags.pytest_args(environment)
         args += self.roles.pytest_args(environment)
@@ -575,9 +575,9 @@ class TestCase:
         assert proc.stdout
         assert proc.stderr
         channels = {
-            proc.stdout.fileno(): (proc.stdout, [], 'stdout', stdout, b'[]', bytearray()),
-            proc.stderr.fileno(): (proc.stderr, [], 'stderr', stderr, b'()', bytearray()),
-        }  # type: Dict[int, Tuple[IO[str], List, str, IO[str], bytes, bytearray]]
+            proc.stdout.fileno(): (proc.stdout, [], 'stdout', stdout, '[]', bytearray()),
+            proc.stderr.fileno(): (proc.stderr, [], 'stderr', stderr, '()', bytearray()),
+        }  # type: Dict[int, Tuple[IO[str], List, str, IO[str], str, bytearray]]
         combined = []
         next_kill = next_read = 0.0
         shutdown = False
