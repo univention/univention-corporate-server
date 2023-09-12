@@ -1,3 +1,9 @@
+ucs-test (10.0.19-1) unstable; urgency=low
+
+  * Bug #56570: Fix broken output format
+
+ -- Philipp Hahn <hahn@univention.de>  Tue, 12 Sep 2023 23:19:08 +0200
+
 ucs-test (10.0.18-1) unstable; urgency=low
 
   * Bug #56570: Change several "safe" tests to "careful" and "dangerous"
