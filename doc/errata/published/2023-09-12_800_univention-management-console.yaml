@@ -12,3 +12,6 @@ desc: |
    page. By default, both portal and login page will always show the cookie
    banner and not share it.
 bug: [55164]
+erratum: 800
+announced: 2023-09-12
+support: core
