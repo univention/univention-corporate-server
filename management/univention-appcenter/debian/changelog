@@ -1,3 +1,9 @@
+univention-appcenter (11.0.3) unstable; urgency=medium
+
+  * Bug #57114: use test appcenter
+
+ -- Florian Best <best@univention.de>  Fri, 08 Mar 2024 00:18:52 +0100
+
 univention-appcenter (11.0.2) unstable; urgency=medium
 
   * Bug #56927: increase all modified joinscripts by 10
