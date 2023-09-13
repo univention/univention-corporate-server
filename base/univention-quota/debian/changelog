@@ -1,3 +1,9 @@
+univention-quota (14.0.5-3) unstable; urgency=medium
+
+  * Bug #56575: fix aborted user query requests
+
+ -- Florian Best <best@univention.de>  Wed, 13 Sep 2023 10:19:38 +0200
+
 univention-quota (14.0.5-2) unstable; urgency=medium
 
   * Bug #43633: replace direct use of notifier.threads with UMC

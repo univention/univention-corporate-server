@@ -36,13 +36,10 @@
 
 from __future__ import absolute_import
 
-import functools
 import math
 import os
 import re
 import subprocess
-
-import tornado.process
 
 import univention.management.console as umc
 from univention.config_registry import handler_set
@@ -83,7 +80,7 @@ class UserQuota(dict):
             self[time] = value
 
 
-def repquota(partition, callback):
+def repquota(partition):
     # find filesystem type
     fs = fstab.File()
     part = fs.find(spec=partition)
@@ -94,8 +91,9 @@ def repquota(partition, callback):
     # -C == do not try to resolve all users at once
     # -v == verbose
     cmd = ['/usr/sbin/repquota', '-C', '-v', partition] + args
-    proc = tornado.process.Subprocess(cmd, stdout=subprocess.PIPE)
-    proc.set_exit_callback(functools.partial(callback, proc.stdout))
+    proc = subprocess.Popen(cmd, stdout=subprocess.PIPE)
+    stdout, stderr = proc.communicate()
+    return (stdout, proc.returncode)
 
 
 def repquota_parse(partition, output):

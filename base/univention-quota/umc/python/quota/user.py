@@ -36,13 +36,11 @@
 
 from __future__ import absolute_import
 
-import functools
-
 from univention.lib import fstab
 from univention.management.console import Translation
 from univention.management.console.error import UMC_Error
 from univention.management.console.log import MODULE
-from univention.management.console.modules.decorators import sanitize, simple_response, threaded
+from univention.management.console.modules.decorators import SimpleThread, sanitize, simple_response, threaded
 from univention.management.console.modules.quota import tools
 from univention.management.console.modules.sanitizers import IntegerSanitizer, PatternSanitizer, StringSanitizer
 
@@ -68,8 +66,12 @@ class Commands(object):
         partitionDevice = request.options['partitionDevice']
         self._check_error(partitionDevice)
 
-        callback = functools.partial(self._users_query, partitionDevice, request)
-        tools.repquota(request.options['partitionDevice'], callback)
+        def _thread(request):
+            stdout, returncode = tools.repquota(request.options['partitionDevice'])
+            return self._users_query(partitionDevice, request, stdout, returncode)
+
+        thread = SimpleThread('repquota', _thread, lambda r, t: self.thread_finished_callback(r, t, request))
+        thread.run(request)
 
     def _users_query(self, partition, request, stdout, status):
         """
@@ -82,7 +84,7 @@ class Commands(object):
         devs = fstab.File()
         devs.find(spec=partition)
 
-        callbackResult = stdout.read().splitlines()
+        callbackResult = stdout.splitlines()
 
         # skip header
         header = 0
@@ -93,8 +95,7 @@ class Commands(object):
             pass
         output = [x.decode('UTF-8', 'replace') for x in callbackResult[header + 1:]]
         quotas = tools.repquota_parse(partition, output)
-        result = [q for q in quotas if request.options['filter'].match(q['user'])]
-        self.finished(request.id, result)
+        return [q for q in quotas if request.options['filter'].match(q['user'])]
 
     @sanitize(
         partitionDevice=StringSanitizer(required=True),
