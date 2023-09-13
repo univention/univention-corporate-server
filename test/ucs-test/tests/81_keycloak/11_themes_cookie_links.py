@@ -7,12 +7,17 @@
 import os
 import shutil
 import tempfile
+from itertools import product
+from subprocess import CalledProcessError
 
 import pytest
 import requests
-from selenium.common.exceptions import ElementClickInterceptedException
+from selenium.common.exceptions import ElementClickInterceptedException, WebDriverException
 from selenium.webdriver.common.by import By
-from utils import wait_for_class, wait_for_id
+from utils import run_command, wait_for_class, wait_for_id
+
+
+LINK_COUNT = 12
 
 
 def test_get_webresources(keycloak_config):
@@ -93,3 +98,24 @@ def test_cookie_banner(keycloak_adm_login, admin_account, ucr, keycloak_config):
         raise Exception(f"cookie TESTCOOKIE not found: {cookies}")
     # just to test if this is interactable")
     driver.find_element(By.ID, keycloak_config.login_id).click()
+
+
+@pytest.mark.skipif(not os.path.isfile("/etc/keycloak.secret"), reason="fails without keycloak locally installed")
+@pytest.mark.parametrize("lang, link_count", [(lang, count) for lang, count in product(["en"], [0, LINK_COUNT + 1])])
+def test_invalid_link_count(lang: str, link_count: int):
+    with pytest.raises(CalledProcessError):
+        run_command(["univention-keycloak", "login-links", "set", lang, str(link_count), "href", "desc"])
+
+
+@pytest.mark.skipif(not os.path.isfile("/etc/keycloak.secret"), reason="fails without keycloak locally installed")
+@pytest.mark.parametrize("lang, link_count", [(lang, count) for lang, count in product(["en"], [1, 5, 12])])
+def test_login_links(lang, link_count, login_links, portal_login_via_keycloak, admin_account):
+    driver = portal_login_via_keycloak(admin_account.username, admin_account.bindpw, no_login=True)
+    login_links_parent = wait_for_id(driver, "umcLoginLinks")
+    links_found = login_links_parent.find_elements_by_tag_name("a")
+    assert link_count == len(links_found)
+    for link in links_found:
+        try:
+            link.click()
+        except WebDriverException:
+            pytest.fail(f"{link.text} is not clickable")

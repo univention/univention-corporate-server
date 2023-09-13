@@ -190,6 +190,7 @@ def portal_config(ucr_proper: ConfigRegistry) -> SimpleNamespace:
         "password": "univention",
         "header_menu_id": "header-button-menu",
         "portal_sidenavigation_username_class": "portal-sidenavigation--username",
+        "logout_msg": "Logout",
         "logout_msg_de": "Abmelden",
         "logout_button_id": "loginButton",
     }
@@ -243,6 +244,8 @@ def selenium() -> webdriver.Chrome:
     """Browser based testing for using Selenium."""
     chrome_options = webdriver.ChromeOptions()
     chrome_options.add_argument("--no-sandbox")  # chrome complains about being executed as root
+    chrome_options.add_argument("--headless")
+    chrome_options.add_argument("--disable-dev-shm-usage")
     chrome_options.add_argument("ignore-certificate-errors")
     # seems not to work for keycloak
     chrome_options.add_experimental_option('prefs', {'intl.accept_languages': 'de_DE'})
@@ -263,18 +266,21 @@ def portal_login_via_keycloak(selenium: webdriver.Chrome, portal_config: SimpleN
         new_password_confirm: Optional[str] = None,
         verify_login: Optional[bool] = True,
         url: Optional[str] = portal_config.url,
+        no_login: bool = False,
     ) -> webdriver.Chrome:
         selenium.get(url)
         wait_for_id(selenium, portal_config.categories_id)
         assert selenium.title == portal_config.title
-        get_portal_tile(selenium, portal_config.sso_login_tile_de, portal_config).click()
+        lang = selenium.execute_script("return window.navigator.userLanguage || window.navigator.language")
+        sso_login_tile = portal_config.sso_login_tile if lang == "en-US" else portal_config.sso_login_tile_de
+        get_portal_tile(selenium, sso_login_tile, portal_config).click()
         # login
-        keycloak_login(selenium, keycloak_config, username, password, fails_with=fails_with if not new_password else None)
+        keycloak_login(selenium, keycloak_config, username, password, fails_with=fails_with if not new_password else None, no_login=no_login)
         # check password change
         if new_password:
             new_password_confirm = new_password_confirm if new_password_confirm else new_password
             keycloak_password_change(selenium, keycloak_config, password, new_password, new_password_confirm, fails_with=fails_with)
-        if fails_with:
+        if fails_with or no_login:
             return selenium
         # check that we are logged in
         if verify_login:

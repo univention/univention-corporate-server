@@ -119,7 +119,9 @@ def test_logout(portal_login_via_keycloak, portal_config, keycloak_config, udm):
     sessions = keycloak_sessions_by_user(keycloak_config, username)
     assert sessions
     logout = wait_for_id(driver, portal_config.logout_button_id)
-    assert logout.text == portal_config.logout_msg_de
+    lang = driver.execute_script("return window.navigator.userLanguage || window.navigator.language")
+    logout_msg = portal_config.logout_msg if lang == "en-US" else portal_config.logout_msg_de
+    assert logout.text == logout_msg
     logout.click()
     wait_for_id(driver, portal_config.categories_id)
     sessions = keycloak_sessions_by_user(keycloak_config, username)
