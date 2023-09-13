@@ -11,3 +11,6 @@ desc: |
    it will be skipped and logged in the log file
    `/var/log/univention/listener_modules/<app id>.log`.
 bug: [56421]
+erratum: 804
+announced: 2023-09-13
+support: core
