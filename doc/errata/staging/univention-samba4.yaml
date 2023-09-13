@@ -1,9 +1,9 @@
 product: ucs
 release: "5.0"
 version: [5]
-scope: ucs_5.0-0-errata5.0-4
+scope: ucs_5.0-0-errata5.0-5
 src: univention-samba4
-fix: 9.0.13-8
+fix: 9.0.14-1
 desc: |
  This update addresses the following issues:
  * `univention-samba4-backup` now uses the `samba-tool`
