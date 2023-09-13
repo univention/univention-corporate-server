@@ -204,6 +204,7 @@ def keycloak_config(ucr_proper: ConfigRegistry) -> SimpleNamespace:
     path = ucr_proper["keycloak/server/sso/path"] if ucr_proper["keycloak/server/sso/path"] else ""
     url = f"https://{server}{path}"
     config = {
+        "server": server,
         "path": path,
         "url": url,
         "admin_url": f"{url}/admin",

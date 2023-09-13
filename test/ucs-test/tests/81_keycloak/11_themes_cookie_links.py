@@ -91,13 +91,54 @@ def test_cookie_banner(keycloak_adm_login, admin_account, ucr, keycloak_config):
     cookies = driver.get_cookies()
     for cookie in cookies:
         if cookie["name"] == "TESTCOOKIE":
-            if cookie["value"] == "do-not-change-me":
-                # ...
-                break
+            assert cookie["value"] == "do-not-change-me"
+            assert cookie["domain"] == keycloak_config.server
+            break
     else:
         raise Exception(f"cookie TESTCOOKIE not found: {cookies}")
     # just to test if this is interactable")
     driver.find_element(By.ID, keycloak_config.login_id).click()
+
+
+@pytest.mark.skipif(not os.path.isfile("/etc/keycloak.secret"), reason="fails without keycloak locally installed")
+def test_cookie_banner_no_banner_with_cookie_domains(keycloak_adm_login, admin_account, ucr):
+    # no banner if umc/cookie-banner/domains does not match
+    # the current domain
+    ucr.handler_set([
+        "umc/cookie-banner/cookie=TESTCOOKIE",
+        "umc/cookie-banner/show=true",
+        "umc/cookie-banner/text/de=deutcher text",
+        "umc/cookie-banner/title/de=deutscher titel",
+        "umc/cookie-banner/text/en=english text",
+        "umc/cookie-banner/title/en=english title",
+        "umc/cookie-banner/domains=does.not.exists",
+    ])
+    keycloak_adm_login(admin_account.username, admin_account.bindpw)
+
+
+@pytest.mark.skipif(not os.path.isfile("/etc/keycloak.secret"), reason="fails without keycloak locally installed")
+def test_cookie_banner_domains(keycloak_adm_login, admin_account, ucr):
+    # check if cookie domain is set to umc/cookie-banner/domains
+    domain = ucr.get("domainname")
+    ucr.handler_set([
+        "umc/cookie-banner/cookie=TESTCOOKIE",
+        "umc/cookie-banner/show=true",
+        "umc/cookie-banner/text/de=deutcher text",
+        "umc/cookie-banner/title/de=deutscher titel",
+        "umc/cookie-banner/text/en=english text",
+        "umc/cookie-banner/title/en=english title",
+        f"umc/cookie-banner/domains=does.not.exist,{domain}",
+    ])
+    driver = keycloak_adm_login(admin_account.username, admin_account.bindpw, no_login=True)
+    button = wait_for_class(driver, "cookie-banner-button")
+    button[0].click()
+    cookies = driver.get_cookies()
+    for cookie in cookies:
+        if cookie["name"] == "TESTCOOKIE":
+            assert cookie["domain"] == f".{domain}"
+            break
+    else:
+        raise Exception(f"cookie TESTCOOKIE not found: {cookies}")
 
 
 @pytest.mark.skipif(not os.path.isfile("/etc/keycloak.secret"), reason="fails without keycloak locally installed")
