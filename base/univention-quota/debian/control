@@ -40,7 +40,6 @@ Description: UCS - set default-quotas for users
 Package: univention-management-console-module-quota
 Architecture: all
 Depends:
- python3-tornado,
  python3-univention-lib,
  univention-directory-manager-tools (>> 7.0.147),
  univention-management-console-server (>= 12.0.20-1),
