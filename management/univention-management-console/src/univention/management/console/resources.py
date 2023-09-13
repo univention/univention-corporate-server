@@ -257,11 +257,13 @@ class ModuleProcess(_ModuleConnection):
         request_id = headers.get("X-UMC-Request-ID") or Message.generate_id()
         self._active_requests.add(request_id)
 
-        try:
-            response = self.do_request(method, uri, headers, body, self.socket)
-        finally:
-            self._active_requests.remove(request_id)
+        def _reset(fut):
             self.reset_inactivity_timer()
+            if request_id in self._active_requests:
+                self._active_requests.remove(request_id)
+
+        response = self.do_request(method, uri, headers, body, self.socket)
+        response.add_done_callback(_reset)
 
         return response
 
@@ -331,13 +333,15 @@ class ModuleProcess(_ModuleConnection):
         self._inactivity_timer = ioloop.call_later(MODULE_INACTIVITY_TIMER // 1000, self._mod_inactive)
 
     def _mod_inactive(self):
-        CORE.info('The module %s is inactive for too long. Sending shutdown request to module' % (self.name,))
+        CORE.debug('The module %s is inactive for too long.' % (self.name,))
         if self._active_requests:
-            CORE.info('There are unfinished requests. Waiting for %s requests to finish.' % len(self._active_requests))
+            CORE.debug('There are unfinished requests. Waiting for %s requests to finish.' % len(self._active_requests))
             ioloop = tornado.ioloop.IOLoop.current()
             self._inactivity_timer = ioloop.call_later(1, self._mod_inactive)
+            return
 
         if self.__process:
+            CORE.info('Sending shutdown request to %s module' % (self.name,))
             try:
                 # or /exit HTTP request?
                 self.__process.proc.send_signal(signal.SIGALRM)
