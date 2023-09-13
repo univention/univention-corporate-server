@@ -1,27 +1,27 @@
 ---
 
 build_udm_rest_client:
-  stage: build
-  artifacts:
-    paths:
-      - test/ucs-test/dist/
-    expire_in: 1 week
-  image: docker-registry.knut.univention.de/python:3.11-slim
+  stage: prepare
+  image:
+    name: docker-registry.knut.univention.de/knut/pip-builder:branch-jlohmer-pip-builder
+    entrypoint: [""]
   script:
-    - cd management/univention-directory-manager-rest/test-client
+    - cd management/univention-directory-manager-rest/
     - ls
-    - pip install hatch
+    - cat pyproject.toml
     - |-
+      # TODO: Extract the common stuff like the version if statement into a yaml anchor to remove duplication.
       if [ "$CI_COMMIT_BRANCH" != "$CI_DEFAULT_BRANCH" ]; then
-        poetry version "0.0.0.dev0+${CI_COMMIT_REF_SLUG//-/.}.$CI_COMMIT_SHORT_SHA"
+        export SETUPTOOLS_SCM_PRETEND_VERSION="0.0.0.dev0+${CI_COMMIT_REF_SLUG//-/.}.$CI_COMMIT_SHORT_SHA"
       else
       # TODO: Extract version from debian/changelog and use it here.
-        true
+        export SETUPTOOLS_SCM_PRETEND_VERSION="0.1.0"
       fi
-    - poetry config --local virtualenvs.create false
-    - poetry config --local repositories.project_local ${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/packages/pypi
-    - poetry build
-    - poetry publish -r project_local --username gitlab-ci-token --password ${CI_JOB_TOKEN}
+    - echo $SETUPTOOLS_SCM_PRETEND_VERSION
+    - SETUPTOOLS_SCM_PRETEND_VERSION="0.1.0" hatch build
+    - hatch build
+    - hatch publish -r ${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/packages/pypi -u gitlab-ci-token -a ${CI_JOB_TOKEN}
+
 
 build_udm_rest_testing_client:
   stage: build
