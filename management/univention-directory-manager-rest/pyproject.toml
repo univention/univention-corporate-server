@@ -7,7 +7,7 @@ name = "univention-admin-rest-client"
 authors = [
 	{name = "Johannes Lohmer", email = "lohmer@univention.de"}
 ]
-description = "Python and Bash clients for the UDM-REST-API"
+description = "Python and Bash clients for the UDM-REST-API bladibla"
 readme = "README.md"  # Add this if you have a readme file
 dynamic = ["version"]
 # version = "0.1.1"
