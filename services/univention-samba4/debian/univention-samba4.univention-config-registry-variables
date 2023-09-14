@@ -575,15 +575,15 @@ Default=10800
 Categories=service-samba
 
 [samba/database/backend/store]
-Description[de]=Definiert das zu verwendende Datenbank-Backend (default ist tdb).
-Description[en]=Specifies the database backend to be used (default is tdb).
+Description[de]=Definiert das zu verwendende Datenbank-Backend (default ist tdb, alternative ist mdb). Eine Änderung erfordert einen re-join von univention-samba4.
+Description[en]=Specifies the database backend to be used (default is tdb, alternative option is mdb). Changing this requires a re-join of univention-samba4.
 Type=str
 Default=tdb
 Categories=service-samba
 
 [samba/database/backend/store/size]
-Description[de]=Definiert die maximale Größe der Datenbank, gilt nur für lmdb als Datenbank-Backend (default 8Gb).
-Description[en]=Specifies the maximum size of the database, currently only supported by the lmdb backend (default 8Gb).
+Description[de]=Definiert die maximale Größe der Datenbank, gilt nur für mdb als Datenbank-Backend (default 8Gb).
+Description[en]=Specifies the maximum size of the database, currently only supported by the mdb backend (default 8Gb).
 Type=str
 Default=8Gb
 Categories=service-samba
