@@ -1,3 +1,10 @@
+ucs-test (10.0.19-5) unstable; urgency=medium
+
+  * Bug #56588: /etc/simplesamlphp/00authsources.php is now idempotent
+    and py2/3 compatible
+
+ -- Florian Best <best@univention.de>  Tue, 19 Sep 2023 09:22:06 +0200
+
 ucs-test (10.0.19-4) unstable; urgency=medium
 
   * Bug #55747: added apps (apps-not) check
