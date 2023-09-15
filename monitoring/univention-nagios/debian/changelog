@@ -1,3 +1,9 @@
+univention-nagios (14.0.5) unstable; urgency=medium
+
+  * Bug #56367: remove UDM integration for Nagios server
+
+ -- Florian Best <best@univention.de>  Thu, 07 Mar 2024 23:54:02 +0100
+
 univention-nagios (14.0.4) unstable; urgency=medium
 
   * Bug #55997: replace obsolete ldap client utility options (-h/-p)

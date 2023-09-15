@@ -55,6 +55,7 @@ translation = univention.admin.localization.translation('univention.admin.handle
 _ = translation.translate
 
 module = 'nagios/service'
+help_link = _('https://docs.software-univention.de/manual/5.0/en/monitoring/nagios.html#nagios-general')
 default_containers = ['cn=nagios']
 
 childs = False
@@ -63,11 +64,6 @@ object_name = _('Nagios service')
 object_name_plural = _('Nagios services')
 long_description = ''
 operations = ['search', 'edit', 'add', 'remove']
-
-
-class NagiosTimePeriod(univention.admin.syntax.UDM_Attribute):
-    udm_module = 'nagios/timeperiod'
-    attribute = 'name'
 
 
 options = {
@@ -110,74 +106,6 @@ property_descriptions = {
         long_description=_('Use NRPE to check remote services'),
         syntax=univention.admin.syntax.boolean,
     ),
-    'checkPeriod': univention.admin.property(
-        short_description=_('Check period'),
-        long_description=_('Check services within check period'),
-        syntax=getattr(univention.admin.syntax, 'NagiosTimePeriod', NagiosTimePeriod),
-        required=False,
-    ),
-    'maxCheckAttempts': univention.admin.property(
-        short_description=_('Maximum number of check attempts'),
-        long_description=_('Maximum number of check attempts with non-OK-result until contact will be notified'),
-        syntax=univention.admin.syntax.integer,
-        required=False,
-        default='10',
-        size='One',
-    ),
-    'normalCheckInterval': univention.admin.property(
-        short_description=_('Check interval'),
-        long_description=_('Interval between checks'),
-        syntax=univention.admin.syntax.integer,
-        required=False,
-        default='10',
-        size='One',
-    ),
-    'retryCheckInterval': univention.admin.property(
-        short_description=_('Retry check interval'),
-        long_description=_('Interval between re-checks if service is in non-OK-state'),
-        syntax=univention.admin.syntax.integer,
-        required=False,
-        default='1',
-        size='One',
-    ),
-    'notificationInterval': univention.admin.property(
-        short_description=_('Notification interval'),
-        long_description=_('Interval between notifications'),
-        syntax=univention.admin.syntax.integer,
-        required=False,
-        default='180',
-        size='One',
-    ),
-    'notificationPeriod': univention.admin.property(
-        short_description=_('Notification period'),
-        long_description=_('Send notifications during this period'),
-        syntax=getattr(univention.admin.syntax, 'NagiosTimePeriod', NagiosTimePeriod),
-        required=False,
-    ),
-    'notificationOptionWarning': univention.admin.property(
-        short_description=_('Notify if service state changes to WARNING'),
-        long_description='',
-        syntax=univention.admin.syntax.boolean,
-        default='1',
-    ),
-    'notificationOptionCritical': univention.admin.property(
-        short_description=_('Notify if service state changes to CRITICAL'),
-        long_description='',
-        syntax=univention.admin.syntax.boolean,
-        default='1',
-    ),
-    'notificationOptionUnreachable': univention.admin.property(
-        short_description=_('Notify if service state changes to UNREACHABLE'),
-        long_description='',
-        syntax=univention.admin.syntax.boolean,
-        default='1',
-    ),
-    'notificationOptionRecovered': univention.admin.property(
-        short_description=_('Notify if service state changes to RECOVERED'),
-        long_description='',
-        syntax=univention.admin.syntax.boolean,
-        default='1',
-    ),
     'assignedHosts': univention.admin.property(
         short_description=_('Assigned hosts'),
         long_description=_('Check services on these hosts'),
@@ -195,17 +123,6 @@ layout = [
             "useNRPE",
         ]),
     ]),
-    Tab(_('Interval'), _('Check settings'), advanced=True, layout=[
-        ["normalCheckInterval", "retryCheckInterval"],
-        ["maxCheckAttempts", "checkPeriod"],
-    ]),
-    Tab(_('Notification'), _('Notification settings'), advanced=True, layout=[
-        ["notificationInterval", "notificationPeriod"],
-        "notificationOptionWarning",
-        "notificationOptionCritical",
-        "notificationOptionUnreachable",
-        "notificationOptionRecovered",
-    ]),
     Tab(_('Hosts'), _('Assigned hosts'), layout=[
         Group(_('Assigned hosts'), layout=[
             "assignedHosts",
@@ -222,34 +139,9 @@ mapping.register('checkCommand', 'univentionNagiosCheckCommand', None, univentio
 mapping.register('checkArgs', 'univentionNagiosCheckArgs', None, univention.admin.mapping.ListToString)
 mapping.register('useNRPE', 'univentionNagiosUseNRPE', None, univention.admin.mapping.ListToString)
 
-mapping.register('normalCheckInterval', 'univentionNagiosNormalCheckInterval', None, univention.admin.mapping.ListToString)
-mapping.register('retryCheckInterval', 'univentionNagiosRetryCheckInterval', None, univention.admin.mapping.ListToString)
-mapping.register('maxCheckAttempts', 'univentionNagiosMaxCheckAttempts', None, univention.admin.mapping.ListToString)
-mapping.register('checkPeriod', 'univentionNagiosCheckPeriod', None, univention.admin.mapping.ListToString)
-
-mapping.register('notificationInterval', 'univentionNagiosNotificationInterval', None, univention.admin.mapping.ListToString)
-mapping.register('notificationPeriod', 'univentionNagiosNotificationPeriod', None, univention.admin.mapping.ListToString)
-
 
 class object(univention.admin.handlers.simpleLdap):
     module = module
-
-    OPTION_BITS = {
-        'notificationOptionWarning': b'w',
-        'notificationOptionCritical': b'c',
-        'notificationOptionUnreachable': b'u',
-        'notificationOptionRecovered': b'r',
-    }
-
-    def _post_unmap(self, info, values):
-        # type: (univention.admin.handlers._Properties, univention.admin.handlers._Attributes) -> univention.admin.handlers._Properties
-        value = values.get('univentionNagiosNotificationOptions', [b''])[0]
-        if value:
-            options = value.split(b',')  # type: list[bytes]
-            for key, value in self.OPTION_BITS.items():
-                info[key] = '1' if value in options else '0'
-
-        return info
 
     def open(self):
         # type: () -> None
@@ -285,18 +177,6 @@ class object(univention.admin.handlers.simpleLdap):
     def _ldap_modlist(self):
         # type: () -> list[tuple[str, Any, Any]]
         ml = univention.admin.handlers.simpleLdap._ldap_modlist(self)
-
-        options = []  # type: list[bytes]
-        for key, value in self.OPTION_BITS.items():
-            if self[key] == '1':
-                options.append(value)
-
-        # univentionNagiosNotificationOptions is required in LDAP schema
-        if not options:
-            options.append(b'n')
-
-        newoptions = b','.join(options)
-        ml.append(('univentionNagiosNotificationOptions', self.oldattr.get('univentionNagiosNotificationOptions', []), newoptions))
 
         # save assigned hosts
         if self.hasChanged('assignedHosts'):

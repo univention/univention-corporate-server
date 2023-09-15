@@ -49,10 +49,10 @@ translation = univention.admin.localization.translation('univention.admin.handle
 _ = translation.translate
 
 module = 'nagios/nagios'
-help_link = _('https://docs.software-univention.de/manual-5.0.html#nagios:Configuration_of_the_Nagios_monitoring')
+help_link = _('https://docs.software-univention.de/manual/5.0/en/monitoring/nagios.html#nagios-general')
 default_containers = ['cn=nagios']
 
-childmodules = ['nagios/service', 'nagios/timeperiod']
+childmodules = ['nagios/service']
 
 childs = False
 short_description = _('Nagios object')

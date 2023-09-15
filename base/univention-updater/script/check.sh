@@ -198,7 +198,7 @@ update_check_role_package_removed () {
 # Bug #56134 Bug #56651 Bug #56367 Bug #52048
 # Admin must agree to remove these:
 declare -a legacy_ocs_structural=(
-	'(!(objectClass=*))'
+	'(structuralObjectClass=univentionNagiosTimeperiodClass)'
 )
 declare -a legacy_ocs_auxiliary=(
 	'(!(objectClass=*))'

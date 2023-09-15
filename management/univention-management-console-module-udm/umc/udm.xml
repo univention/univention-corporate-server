@@ -202,7 +202,7 @@
 				<requiredCommand name="udm/query"/>
 			</requiredCommands>
 		</flavor>
-		<flavor priority="50" icon="nagios" id="nagios/nagios">
+		<flavor priority="50" icon="nagios" id="nagios/service">
 			<name>Nagios</name>
 			<description>Configuration of Nagios settings in the domain</description>
 			<keywords>nagios</keywords>

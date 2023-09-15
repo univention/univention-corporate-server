@@ -1,3 +1,9 @@
+ucs-test (11.0.11) unstable; urgency=medium
+
+  * Bug #56367: remove UDM integration for Nagios server
+
+ -- Florian Best <best@univention.de>  Thu, 07 Mar 2024 23:54:02 +0100
+
 ucs-test (11.0.10) unstable; urgency=medium
 
   * Bug #56602: replace python3-crypto with python3-cryptography

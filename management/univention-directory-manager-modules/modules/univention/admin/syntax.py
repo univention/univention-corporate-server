@@ -5726,7 +5726,6 @@ class univentionAdminModules(select):
         ('mail/lists', 'Mail: Mailing Lists'),
         ('nagios/nagios', 'Nagios object'),
         ('nagios/service', 'Nagios service'),
-        ('nagios/timeperiod', 'Nagios time period'),
         ('networks/network', 'Networks: Network'),
         ('policies/admin_container', 'Policy: Univention Admin Container Settings'),
         ('policies/desktop', 'Policy: Desktop'),
@@ -5895,11 +5894,6 @@ class nagiosServiceDn(UDM_Objects):
     """Syntax to select a Nagios services from |LDAP| using :py:class:`univention.admin.handlers.nagios.service`."""
 
     udm_modules = ('nagios/service', )
-
-
-class NagiosTimePeriod(UDM_Attribute):
-    udm_module = 'nagios/timeperiod'
-    attribute = 'name'
 
 
 class UCR_Variable(complex):
