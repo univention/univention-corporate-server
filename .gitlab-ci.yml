@@ -157,6 +157,36 @@ deb-pipeline:
     forward:
       pipeline_variables: true
 
+generate-config-pip:
+  stage: prepare
+  image:
+    name: docker-registry.knut.univention.de/knut/pip-builder:branch-jlohmer-pip-builder
+    entrypoint: [""]
+  script:
+    - shopt -s globstar
+    - >
+      pip-builder
+      --yaml .gitlab-ci/base.yml
+      --yaml .gitlab-ci/base-pip.yml
+      --out generated-config-pip.yml
+      **/pyproject.toml
+    - cat generated-config-pip.yml
+  artifacts:
+    paths:
+      - generated-config-pip.yml
+
+pip-pipeline:
+  stage: build
+  needs:
+    - job: generate-config-pip
+  trigger:
+    include:
+      - artifact: generated-config-pip.yml
+        job: generate-config-pip
+    strategy: depend
+    forward:
+      pipeline_variables: true
+
 errata validation:
   stage: prepare
   tags:
