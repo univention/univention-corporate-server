@@ -1,0 +1,30 @@
+---
+
+.pip:
+  stage: build
+  image:
+    name: $PIP
+    entrypoint: [""]
+
+.pip_hatch:
+  extends: .pip
+  script:
+    - cd $base
+    - ls
+    - cat pyproject.toml
+    - |-
+      # TODO: Extract the common stuff like the version if statement into a yaml anchor to remove duplication.
+      if [ "$CI_COMMIT_BRANCH" != "$CI_DEFAULT_BRANCH" ]; then
+        VERSION_SUFFIX="dev0+${CI_COMMIT_REF_SLUG//-/.}.$CI_COMMIT_SHORT_SHA"
+        sed -i "0,/)/s//.$VERSION_SUFFIX&/; 1s/[-_\/]/./g" debian/changelog
+      fi
+    - echo $SETUPTOOLS_SCM_PRETEND_VERSION
+    - hatch build
+    - hatch publish -r ${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/packages/pypi -u gitlab-ci-token -a ${CI_JOB_TOKEN}
+
+
+.pip_poetry:
+  extends: .pip
+  script:
+    - echo "$base Implement poetry build config"
+    - exit 1
