@@ -438,10 +438,6 @@ class templateSyntaxError(base):
         self.templates = templates
 
 
-class nagiosTimeperiodUsed(base):
-    message = _('Timeperiod Object still in use!')
-
-
 class nagiosARecordRequired(base):
     message = _('IP address entry required to assign Nagios services!')
 
