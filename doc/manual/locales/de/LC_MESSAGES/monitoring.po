@@ -1318,13 +1318,10 @@ msgstr "Nagios"
 #: ../../monitoring/nagios.rst:10
 msgid ""
 "With UCS 5.0 support for the Nagios server component has been "
-"discontinued. Yet, the systems can still be monitored, e.g. by UCS 4.4 "
-"Nagios servers, as described in the UCS 4.4 manual."
+"discontinued. Yet, the systems can still be monitored via NRPE."
 msgstr ""
 "In UCS 5.0 ist die Serverkomponente von Nagios nicht mehr unterstützt. "
-"Die Systeme können aber als Nagios Client dienen, um sie z.B. von einem "
-"UCS 4.4 Nagios Server überwachen zu lassen, wie im UCS 4.4 Handbuch "
-"beschreiben."
+"Die Systeme können aber weiterhin mittels NRPE überwacht werden."
 
 #: ../../monitoring/nagios.rst:19
 msgid ""
@@ -1352,11 +1349,7 @@ msgstr ""
 msgid ":program:`univention-nagios-opsi`: Test of software distribution OPSI"
 msgstr ":program:`univention-nagios-opsi` Prüfung der Softwareverteilung OPSI"
 
-#: ../../monitoring/nagios.rst:30
-msgid ":program:`univention-nagios-ad-connector`: Test of the AD Connector"
-msgstr ":program:`univention-nagios-ad-connector` Prüfung des AD-Connectors"
-
-#: ../../monitoring/nagios.rst:32
+#: ../../monitoring/nagios.rst:29
 msgid ""
 "Some of the packages are automatically set up during installation of the "
 "respective services. For example, if the UCS AD connector is set up, the "
