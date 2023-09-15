@@ -1,0 +1,32 @@
+[build-system]
+requires = ["hatchling", "hatch-vcs"]
+build-backend = "hatchling.build"
+
+[project]
+name = "univention-admin-rest-client"
+authors = [
+	{name = "Johannes Lohmer", email = "lohmer@univention.de"}
+]
+description = "Python and Bash clients for the UDM-REST-API bladibla"
+readme = "README.md"  # Add this if you have a readme file
+dynamic = ["version"]
+# version = "0.1.1"
+# python = "^3.7"
+dependencies = [
+	"uritemplate",
+	"requests",
+]
+
+[tool.hatch.build]
+sources = ["src"]
+
+[tool.hatch.version]
+source = "vcs"
+# path = "src/univention/__about__.py"
+
+[project.dev-dependencies]
+univention-admin-rest-client-test = "^0.1.0"
+
+[project.optional-dependencies]
+test = ["univention-admin-rest-client-test"]
+
