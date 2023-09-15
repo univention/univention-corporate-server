@@ -33,13 +33,5 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-override_dh_auto_build:
-	make check_univention_ad_connector_suidwrapper
-	dh_auto_build
-
-override_dh_fixperms:
-	dh_fixperms
-	chmod 4775 debian/univention-nagios-ad-connector/usr/lib/nagios/plugins/check_univention_ad_connector_suidwrapper
-
 %:
-	dh $@ --with ucr
+	dh $@

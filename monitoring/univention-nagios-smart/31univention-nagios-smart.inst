@@ -53,17 +53,7 @@ for device in sda sdb sdc sdd; do
 		--position "cn=nagios,$ldap_base" \
 		--set name="UNIVENTION_SMART_${dev}" \
 		--set checkCommand="check_smart" \
-		--set normalCheckInterval=10 \
-		--set retryCheckInterval=1 \
-		--set maxCheckAttempts=5 \
-		--set checkPeriod=24x7 \
-		--set notificationInterval=180 \
-		--set notificationPeriod=24x7 \
-		--set notificationOptionRecovered=1 \
-		--set notificationOptionWarning=1 \
-		--set notificationOptionUnreachable=1 \
 		--set useNRPE=1 \
-		--set notificationOptionCritical=1 \
 		--set checkArgs="/dev/$device!ata" \
 		--set description="check smart values (option ca be ata or scsi)" || die
 done
