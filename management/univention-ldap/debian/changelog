@@ -1,3 +1,10 @@
+univention-ldap (16.0.13-7) unstable; urgency=medium
+
+  * Bug #56820; mark required attributes for unused nagios-server schema
+    as optional
+
+ -- Florian Best <best@univention.de>  Mon, 13 Nov 2023 13:16:53 +0100
+
 univention-ldap (16.0.13-6) unstable; urgency=medium
 
   * Bug #56767: disable access to password hashes of uid=krbtgt

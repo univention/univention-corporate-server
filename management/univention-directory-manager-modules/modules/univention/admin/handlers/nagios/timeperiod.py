@@ -35,8 +35,6 @@
 
 import re
 
-from ldap.filter import filter_format
-
 import univention.admin.filter
 import univention.admin.handlers
 import univention.admin.localization
@@ -178,13 +176,6 @@ class object(univention.admin.handlers.simpleLdap):
             info['periodSaturday'] = periods[5]
             info['periodSunday'] = periods[6]
         return info
-
-    def _ldap_pre_remove(self):
-        super(object, self)._ldap_pre_remove()
-        # refuse deletion if there is still a reference
-        period_filter = filter_format('(&(objectClass=univentionNagiosServiceClass)(|(univentionNagiosCheckPeriod=%s)(univentionNagiosNotificationPeriod=%s)))', [self['name'], self['name']])
-        if self.lo.searchDn(base=self.position.getDomain(), filter=period_filter, scope='sub'):
-            raise univention.admin.uexceptions.nagiosTimeperiodUsed()
 
     def _ldap_modlist(self):
         ml = univention.admin.handlers.simpleLdap._ldap_modlist(self)

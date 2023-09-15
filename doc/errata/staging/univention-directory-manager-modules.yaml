@@ -1,0 +1,11 @@
+product: ucs
+release: "5.0"
+version: [5]
+scope: ucs_5.0-0-errata5.0-5
+src: univention-directory-manager-modules
+fix: 15.0.24-23
+desc: |
+ This update addresses the following issues:
+ * The unused UDM properties from nagios server have been marked as optional
+   to ease the upgrade to UCS 5.2.
+bug: [56820]

@@ -1,3 +1,10 @@
+univention-directory-manager-modules (15.0.24-23) unstable; urgency=medium
+
+  * Bug #56820; mark required properties for unused nagios-server as
+    optional
+
+ -- Florian Best <best@univention.de>  Mon, 13 Nov 2023 13:16:33 +0100
+
 univention-directory-manager-modules (15.0.24-22) unstable; urgency=medium
 
   * Bug #56354: do not leak password in process list in
