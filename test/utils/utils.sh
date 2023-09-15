@@ -113,6 +113,9 @@ rotate_logfiles () {
 
 prepare_domain_for_ucs52_preup_checks() {
     /usr/share/univention-directory-manager-tools/udm-remap-country-from-st-to-c || return $?
+
+	univention-ldapsearch -LLL 'objectClass=univentionNagiosTimeperiodClass' 1.1 | sed -rne 's#^dn: ##p' | while read -r dn; do udm nagios/timeperiod remove --dn "$dn"; done
+	univention-ldapsearch -LLL '(&(objectClass=univentionNagiosServiceClass)(!(univentionNagiosUseNRPE=1)))' 1.1 | sed -rne 's#^dn: ##p' | while read -r dn; do udm nagios/service remove --dn "$dn"; done
 }
 
 jenkins_updates () {
