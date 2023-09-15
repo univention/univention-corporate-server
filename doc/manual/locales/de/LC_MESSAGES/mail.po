@@ -6,8 +6,8 @@ msgstr ""
 "Project-Id-Version: Univention Corporate Server - Manual for users and "
 "administrators\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-05-17 08:58+0200\n"
-"PO-Revision-Date: 2023-05-17 08:58+0200\n"
+"POT-Creation-Date: 2023-09-15 12:24+0200\n"
+"PO-Revision-Date: 2023-09-15 12:27+0200\n"
 "Last-Translator: Univention GmbH <packages@univention.de>\n"
 "Language: de\n"
 "Language-Team: Univention GmbH <packages@univention.de>\n"
@@ -701,21 +701,43 @@ msgstr ""
 "von Index-Dateien: :envvar:`mail/dovecot/process/mail_nfs_index`\\ "
 "``=yes``."
 
-#: ../../mail/configuration-server.rst:319
+#: ../../mail/configuration-server.rst:322
 msgid ""
-"The Dovecot documentation has more information on the topic: `Dovecot "
-"Wiki: Mail storage on shared disks <dovecot-mail-storage-shared-disk_>`_ "
-"and `Dovecot Wiki: NFS <dovecot-nfs_>`_."
+"`Mail Location Settings <dovecot-mail-location-settings_>`_ in the "
+"Dovecot documentation"
 msgstr ""
-"In der Documentation des Dovecot Servers sind weitere Hinweise zu finden:"
-" `Dovecot Wiki: Mail storage on shared disks <dovecot-mail-storage-"
-"shared-disk_>`_ und `Dovecot Wiki: NFS <dovecot-nfs_>`_."
+"`Mail Location Settings <dovecot-mail-location-settings_>`_ in der "
+"Dovecot Dokumentation"
 
-#: ../../mail/configuration-server.rst:326
+#: ../../mail/configuration-server.rst:322
+msgid "for more information about mailbox locations."
+msgstr "für weitere Informationen über Mailbox Orte."
+
+#: ../../mail/configuration-server.rst:325
+msgid ""
+"`Shared mailboxes <dovecot-shared-mailboxes_>`_ in the Dovecot "
+"documentation"
+msgstr ""
+"`Shared mailboxes <dovecot-shared-mailboxes_>`_ in der Dovecot "
+"Dokumentation"
+
+#: ../../mail/configuration-server.rst:325
+msgid "for more information about mailbox sharing."
+msgstr "für weitere Informationen über das Teilen von Mailboxen."
+
+#: ../../mail/configuration-server.rst:327
+msgid "`NFS <dovecot-nfs_>`_ in the Dovecot documentation"
+msgstr "`NFS <dovecot-nfs_>`_ in der Dovecot Dokumentation"
+
+#: ../../mail/configuration-server.rst:328
+msgid "for more information about using Dovecot with NFS."
+msgstr "für weitere Informationen über die Verwendung von Dovecot mit NFS."
+
+#: ../../mail/configuration-server.rst:333
 msgid "Connection limits"
 msgstr "Beschränkung der Verbindungsanzahl"
 
-#: ../../mail/configuration-server.rst:328
+#: ../../mail/configuration-server.rst:335
 msgid ""
 "In a default |UCSUCS| configuration Dovecot allows ``400`` concurrent "
 "IMAP and POP3 connections each. That is enough to serve at least 100 "
@@ -726,7 +748,7 @@ msgstr ""
 "sicher aus, um 100 gleichzeitig eingeloggte IMAP-Benutzer zu bedienen, "
 "unter Umständen deutlich mehr."
 
-#: ../../mail/configuration-server.rst:332
+#: ../../mail/configuration-server.rst:339
 msgid ""
 "How many IMAP connections are opened by a user depends on the clients "
 "they use:"
@@ -734,17 +756,17 @@ msgstr ""
 "Wie viele IMAP-Verbindungen Benutzer gleichzeitig geöffnet haben, hängt "
 "von den eingesetzten Clients ab:"
 
-#: ../../mail/configuration-server.rst:334
+#: ../../mail/configuration-server.rst:341
 msgid "Web mail opens just a few short lived connections."
 msgstr "Webmail öffnet nur einzelne, kurzlebige Verbindungen."
 
-#: ../../mail/configuration-server.rst:336
+#: ../../mail/configuration-server.rst:343
 msgid "Desktop clients keep multiple connections open over a long period of time."
 msgstr ""
 "Desktop E-Mail-Programme halten über lange Zeit mehrere Verbindungen "
 "offen."
 
-#: ../../mail/configuration-server.rst:338
+#: ../../mail/configuration-server.rst:345
 msgid ""
 "Mobile clients keep just a few connections open over a long period of "
 "time. But they tend to never close them, unnecessarily wasting resources."
@@ -753,7 +775,7 @@ msgstr ""
 "beenden diese oft nicht von sich aus, so dass sie unnötig lang Ressourcen"
 " belegen."
 
-#: ../../mail/configuration-server.rst:341
+#: ../../mail/configuration-server.rst:348
 msgid ""
 "The limits exist mainly to resist denial of service attacks that open a "
 "lot of connections and create lots of processes."
@@ -762,39 +784,39 @@ msgstr ""
 "durch sehr viele geöffnete Prozesse und Netzwerkverbindungen zu "
 "widerstehen."
 
-#: ../../mail/configuration-server.rst:344
+#: ../../mail/configuration-server.rst:351
 msgid "To list the open connections, run:"
 msgstr ""
 "Um die in diesem Augenblick offenen Verbindungen zu sehen, kann folgender"
 " Befehl ausgeführt werden:"
 
-#: ../../mail/configuration-server.rst:346
+#: ../../mail/configuration-server.rst:353
 msgid "$ doveadm who"
 msgstr "$ doveadm who"
 
-#: ../../mail/configuration-server.rst:350
+#: ../../mail/configuration-server.rst:357
 msgid "To display the total amount of open connections, run:"
 msgstr "Um die Gesamtanzahl auszugeben:"
 
-#: ../../mail/configuration-server.rst:352
+#: ../../mail/configuration-server.rst:359
 msgid "$ doveadm who -1 | wc -l"
 msgstr "$ doveadm who -1 | wc -l"
 
-#: ../../mail/configuration-server.rst:356
+#: ../../mail/configuration-server.rst:363
 msgid ""
 "The |UCSUCRV|\\ s :envvar:`mail/dovecot/limits`\\ ``/*`` can be set to "
 "modify the limits. The process of adapting those variables is only semi "
 "automatic, because of their complex interaction. For the meaning of each "
-"variable refer to `Dovecot Wiki: Service configuration <dovecot-"
+"variable refer to `Dovecot documentation: Service configuration <dovecot-"
 "services_>`_."
 msgstr ""
 "Um die Beschränkungen zu verändern, können die |UCSUCRV|\\ n "
 ":envvar:`mail/dovecot/limits`\\ ``/*`` angepasst werden. Der Vorgang ist "
 "auf Grund des komplexen Zusammenspiels dieser Variablen nur halb "
-"automatisch. Die Bedeutung aller Variablen kann in `Dovecot Wiki: Service"
+"automatisch. Die Bedeutung aller Variablen kann in `Dovecot Dokumentation: Service"
 " configuration <dovecot-services_>`_ nachgelesen werden."
 
-#: ../../mail/configuration-server.rst:361
+#: ../../mail/configuration-server.rst:368
 msgid ""
 "Dovecot uses separate processes for login and to access emails. The "
 "limits for these can be configured separately. The maximum number of "
@@ -819,7 +841,7 @@ msgstr ""
 "betreut. Da standardmäßig nur 400 Prozesse erlaubt sind, können auch "
 "nicht mehr Verbindungen geöffnet werden."
 
-#: ../../mail/configuration-server.rst:372
+#: ../../mail/configuration-server.rst:379
 msgid ""
 "To allow 3000 clients to connect to their emails, another |UCSUCRV| has "
 "to be set:"
@@ -827,7 +849,7 @@ msgstr ""
 "Um 3000 Verbindungen von Benutzern zu ihren E-Mails zu erlauben, muss "
 "daher eine weitere |UCSUCRV| gesetzt werden:"
 
-#: ../../mail/configuration-server.rst:375
+#: ../../mail/configuration-server.rst:382
 msgid ""
 "$ ucr set mail/dovecot/limits/default_client_limit=3000\n"
 "$ ucr set mail/dovecot/limits/default_process_limit=3000\n"
@@ -837,11 +859,11 @@ msgstr ""
 "$ ucr set mail/dovecot/limits/default_process_limit=3000\n"
 "$ doveadm reload"
 
-#: ../../mail/configuration-server.rst:382
+#: ../../mail/configuration-server.rst:389
 msgid "Reading :file:`/var/log/dovecot.info` reveals a warning:"
 msgstr "Ein Blick in :file:`/var/log/dovecot.info` offenbart nun eine Warnung:"
 
-#: ../../mail/configuration-server.rst:386
+#: ../../mail/configuration-server.rst:393
 msgid ""
 "config: Warning: service auth { client_limit=2000 } is lower than "
 "required under max. load (15000)\n"
@@ -853,7 +875,7 @@ msgstr ""
 "config: Warning: service anvil { client_limit=1603 } is lower than "
 "required under max. load (12003)"
 
-#: ../../mail/configuration-server.rst:389
+#: ../../mail/configuration-server.rst:396
 msgid ""
 "The services ``auth`` (responsible for login and SSL connections) and "
 "``anvil`` (responsible for statistics collection) are set to their "
@@ -867,7 +889,7 @@ msgstr ""
 "aber die Anzahl der Prozesse für Login und SSL ist nun zu niedrig um sie "
 "alle zu bedienen. Dies wird dazu führen, dass Logins fehlschlagen."
 
-#: ../../mail/configuration-server.rst:395
+#: ../../mail/configuration-server.rst:402
 msgid ""
 "The values are so high, because ``default_client_limit`` and "
 "``default_process_limit`` do not only lift limits for IMAP and POP3, but "
@@ -886,13 +908,13 @@ msgstr ""
 "gleichzeitiger Verbindungen zu den Diensten ``auth`` und ``anvil`` "
 "erhöht."
 
-#: ../../mail/configuration-server.rst:402
+#: ../../mail/configuration-server.rst:409
 msgid "The values have to be adapted, using the numbers from the log file:"
 msgstr ""
 "Die Werte für die Dienste müssen nun der Fehlermeldung entsprechend "
 "angepasst werden:"
 
-#: ../../mail/configuration-server.rst:404
+#: ../../mail/configuration-server.rst:411
 msgid ""
 "$ ucr set mail/dovecot/limits/auth/client_limit=15000\n"
 "$ ucr set mail/dovecot/limits/anvil/client_limit=12003\n"
@@ -902,13 +924,13 @@ msgstr ""
 "$ ucr set mail/dovecot/limits/anvil/client_limit=12003\n"
 "$ doveadm reload"
 
-#: ../../mail/configuration-server.rst:410
+#: ../../mail/configuration-server.rst:417
 msgid "Another warning appears in :file:`/var/log/dovecot.info`:"
 msgstr ""
 "Ein Blick in :file:`/var/log/dovecot.info` offenbart nun noch eine letzte"
 " Warnung:"
 
-#: ../../mail/configuration-server.rst:415
+#: ../../mail/configuration-server.rst:422
 msgid ""
 "master: Warning: fd limit (ulimit -n) is lower than required under max. "
 "load (2000 < 15000),…\n"
@@ -918,7 +940,7 @@ msgstr ""
 "load (2000 < 15000),…\n"
 " because of service auth { client_limit }"
 
-#: ../../mail/configuration-server.rst:418
+#: ../../mail/configuration-server.rst:425
 msgid ""
 "The Linux kernel controlled setting ``ulimit`` setting (limit on the "
 "number of files/connections a process is allowed to open) is changed only"
@@ -928,11 +950,11 @@ msgstr ""
 "gleichzeitig geöffneter Dateien/Verbindungen pro Prozess) wird nur bei "
 "einem Neustart des Dovecot-Dienstes verändert, daher:"
 
-#: ../../mail/configuration-server.rst:422
+#: ../../mail/configuration-server.rst:429
 msgid "$ systemctl restart dovecot"
 msgstr "$ systemctl restart dovecot"
 
-#: ../../mail/configuration-server.rst:426
+#: ../../mail/configuration-server.rst:433
 msgid ""
 "No more warnings are written to the log file and both IMAP and POP3 "
 "servers now accept 3000 client connections each."
@@ -940,7 +962,7 @@ msgstr ""
 "Nun erscheint keine Fehlermeldung mehr, und IMAP- und POP3-Server "
 "akzeptieren nun beide je 3000 Verbindungen."
 
-#: ../../mail/configuration-server.rst:429
+#: ../../mail/configuration-server.rst:436
 msgid ""
 "|UCSUCS| configures Dovecot to run in \"High-security mode\" by default. "
 "For installations with 10.000s of users, Dovecot offers the \"High-"
@@ -2304,4 +2326,18 @@ msgstr ""
 "Alternativ oder zusätzlich können andere Virenscanner in AMaViS "
 "eingebunden werden. Nach Änderungen an der AMaViS- oder ClamAV-"
 "Konfiguration müssen Postfix und AMaViS neu gestartet werden."
+
+#~ msgid ""
+#~ "The Dovecot documentation has more "
+#~ "information on the topic: `Dovecot Wiki:"
+#~ " Mail storage on shared disks "
+#~ "<dovecot-mail-storage-shared-disk_>`_ and"
+#~ " `Dovecot Wiki: NFS <dovecot-nfs_>`_."
+#~ msgstr ""
+#~ "In der Documentation des Dovecot Servers"
+#~ " sind weitere Hinweise zu finden: "
+#~ "`Dovecot Wiki: Mail storage on shared"
+#~ " disks <dovecot-mail-storage-shared-"
+#~ "disk_>`_ und `Dovecot Wiki: NFS "
+#~ "<dovecot-nfs_>`_."
 
