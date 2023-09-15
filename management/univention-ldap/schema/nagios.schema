@@ -171,13 +171,13 @@ objectclass	( 1.3.6.1.4.1.10176.1040.2.1 NAME 'univentionNagiosServiceClass'
 	DESC 'Nagios Service Definition'
 	SUP top  STRUCTURAL
 	MUST ( cn $
-			univentionNagiosCheckCommand $
+			univentionNagiosCheckCommand  )
+	MAY ( description $ univentionNagiosHostname $ univentionNagiosCheckArgs $ univentionNagiosUseNRPE $
 			univentionNagiosCheckPeriod $
 			univentionNagiosMaxCheckAttempts $ univentionNagiosNormalCheckInterval $
 			univentionNagiosRetryCheckInterval $
 			univentionNagiosNotificationInterval $ univentionNagiosNotificationPeriod $
 			univentionNagiosNotificationOptions  )
-	MAY ( description $ univentionNagiosHostname $ univentionNagiosCheckArgs $ univentionNagiosUseNRPE )
 	)
 
 

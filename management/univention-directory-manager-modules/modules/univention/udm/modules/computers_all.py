@@ -51,7 +51,6 @@ class ComputersAllObjectProperties(GenericObjectProperties):
         'dnsEntryZoneForward': DnsEntryZoneForwardListMultiplePropertyEncoder,
         'dnsEntryZoneReverse': DnsEntryZoneReverseListMultiplePropertyEncoder,
         'groups': dn_list_property_encoder_for('groups/group'),
-        'nagiosParents': dn_list_property_encoder_for('auto'),  # can be different types of computer/* objects
         'nagiosServices': dn_list_property_encoder_for('nagios/service'),
         'network': dn_property_encoder_for('networks/network'),
         'primaryGroup': dn_property_encoder_for('groups/group'),

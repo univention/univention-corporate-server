@@ -34,7 +34,7 @@
 
 from __future__ import absolute_import, unicode_literals
 
-from ..encoders import DisabledPropertyEncoder, StringIntPropertyEncoder, dn_list_property_encoder_for
+from ..encoders import DisabledPropertyEncoder, dn_list_property_encoder_for
 from .generic import GenericModule, GenericObject, GenericObjectProperties
 
 
@@ -43,14 +43,6 @@ class NagiosServiceObjectProperties(GenericObjectProperties):
 
     _encoders = {
         'assignedHosts': dn_list_property_encoder_for('auto'),  # can be different types of computer/* objects
-        'maxCheckAttempts': StringIntPropertyEncoder,
-        'normalCheckInterval': StringIntPropertyEncoder,
-        'notificationInterval': StringIntPropertyEncoder,
-        'notificationOptionCritical': DisabledPropertyEncoder,
-        'notificationOptionRecovered': DisabledPropertyEncoder,
-        'notificationOptionUnreachable': DisabledPropertyEncoder,
-        'notificationOptionWarning': DisabledPropertyEncoder,
-        'retryCheckInterval': StringIntPropertyEncoder,
         'useNRPE': DisabledPropertyEncoder,
     }
 

@@ -51,18 +51,8 @@ else
 		 	--position "cn=nagios,$ldap_base" \
 		 	--set name="UNIVENTION_CUPS" \
 		 	--set checkCommand="check_univention_cups" \
-		 	--set normalCheckInterval=10 \
-		 	--set retryCheckInterval=1 \
-		 	--set maxCheckAttempts=5 \
-		 	--set checkPeriod=24x7 \
-		 	--set notificationInterval=180 \
-		 	--set notificationPeriod=24x7 \
-		 	--set notificationOptionRecovered=1 \
-		 	--set notificationOptionWarning=1 \
-		 	--set notificationOptionUnreachable=1 \
 		 	--set checkArgs='' \
-		 	--set useNRPE=1 \
-		 	--set notificationOptionCritical=1 || die
+		 	--set useNRPE=1 || die
 fi
 
 joinscript_save_current_version

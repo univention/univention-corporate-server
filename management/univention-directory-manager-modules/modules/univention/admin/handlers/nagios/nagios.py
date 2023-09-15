@@ -36,7 +36,6 @@
 import univention.admin.filter
 import univention.admin.handlers
 import univention.admin.handlers.nagios.service
-import univention.admin.handlers.nagios.timeperiod
 import univention.admin.localization
 
 
@@ -44,10 +43,10 @@ translation = univention.admin.localization.translation('univention.admin.handle
 _ = translation.translate
 
 module = 'nagios/nagios'
-help_link = _('https://docs.software-univention.de/manual-5.0.html#nagios:Configuration_of_the_Nagios_monitoring')
+help_link = _('https://docs.software-univention.de/manual/5.0/en/monitoring/nagios.html#nagios-general')
 default_containers = ['cn=nagios']
 
-childmodules = ['nagios/service', 'nagios/timeperiod']
+childmodules = ['nagios/service']
 
 childs = False
 short_description = _('Nagios object')
@@ -79,7 +78,7 @@ class object(univention.admin.handlers.simpleLdap):
 
 
 def lookup(co, lo, filter_s, base='', superordinate=None, scope='sub', unique=False, required=False, timeout=-1, sizelimit=0):
-    return univention.admin.handlers.nagios.service.lookup(co, lo, filter_s, base, superordinate, scope, unique, required, timeout, sizelimit) + univention.admin.handlers.nagios.timeperiod.lookup(co, lo, filter_s, base, superordinate, scope, unique, required, timeout, sizelimit)
+    return univention.admin.handlers.nagios.service.lookup(co, lo, filter_s, base, superordinate, scope, unique, required, timeout, sizelimit)
 
 
 def identify(dn, attr, canonical=False):

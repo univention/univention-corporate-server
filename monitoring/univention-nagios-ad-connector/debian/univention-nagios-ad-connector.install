@@ -1,4 +1,0 @@
-31univention-nagios-ad-connector.inst	usr/lib/univention-install/
-69univention-nagios-ad-connector.uinst	usr/lib/univention-uninstall/
-check_univention_ad_connector	usr/lib/nagios/plugins/
-check_univention_ad_connector_suidwrapper	usr/lib/nagios/plugins/

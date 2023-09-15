@@ -8,8 +8,7 @@ Nagios
 ======
 
 With UCS 5.0 support for the Nagios server component has been
-discontinued. Yet, the systems can still be monitored, e.g. by UCS 4.4
-Nagios servers, as described in the UCS 4.4 manual.
+discontinued. Yet, the systems can still be monitored, vie NRPE.
 
 .. _nagios-installation:
 
@@ -26,8 +25,6 @@ plugins can be subsequently installed with the following packages:
   drives
 
 * :program:`univention-nagios-opsi`: Test of software distribution OPSI
-
-* :program:`univention-nagios-ad-connector`: Test of the AD Connector
 
 Some of the packages are automatically set up during installation of the
 respective services. For example, if the UCS AD connector is set up, the

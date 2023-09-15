@@ -33,7 +33,6 @@
 """|UDM| methods and defines for Nagios related attributes."""
 
 import copy
-import re
 
 from ldap.filter import filter_format
 
@@ -50,20 +49,6 @@ _ = translation.translate
 
 
 nagios_properties = {
-    'nagiosContactEmail': univention.admin.property(
-        short_description=_('Email address of Nagios contacts'),
-        long_description='',
-        syntax=univention.admin.syntax.emailAddress,
-        multivalue=True,
-        options=['nagios'],
-    ),
-    'nagiosParents': univention.admin.property(
-        short_description=_('Parent hosts'),
-        long_description='',
-        syntax=univention.admin.syntax.nagiosHostsEnabledDn,
-        multivalue=True,
-        options=['nagios'],
-    ),
     'nagiosServices': univention.admin.property(
         short_description=_('Assigned Nagios services'),
         long_description='',
@@ -77,16 +62,6 @@ nagios_properties = {
 nagios_tab_A = Tab(_('Nagios services'), _('Nagios Service Settings'), advanced=True, layout=[
     "nagiosServices",
 ])
-
-nagios_tab_B = Tab(_('Nagios notification'), _('Nagios Notification Settings'), advanced=True, layout=[
-    "nagiosContactEmail",
-    "nagiosParents",
-])
-
-
-nagios_mapping = [
-    ['nagiosContactEmail', 'univentionNagiosEmail', None, None],
-]
 
 
 nagios_options = {
@@ -107,11 +82,6 @@ def addPropertiesMappingOptionsAndLayout(new_property, new_mapping, new_options,
 
     # append tab with Nagios options
     new_layout.append(nagios_tab_A)
-    new_layout.append(nagios_tab_B)
-
-    # append nagios attribute mapping
-    for (ucskey, ldapkey, mapto, mapfrom) in nagios_mapping:
-        new_mapping.register(ucskey, ldapkey, mapto, mapfrom)
 
     for key, value in nagios_options.items():
         new_options[key] = value
@@ -139,47 +109,9 @@ class Support(object):
             return self.lo.searchDn(filter=filter_format('(&(objectClass=univentionNagiosServiceClass)(univentionNagiosHostname=%s))', [fqdn]), base=self.position.getDomain())
         return []
 
-    def nagiosGetParentHosts(self):
-        # univentionNagiosParent
-        _re = re.compile(r'^([^.]+)\.(.+?)$')
-
-        parentlist = []
-        parents = self.oldattr.get('univentionNagiosParent', [])
-        for parent in [x.decode('UTF-8') for x in parents]:
-            if parent and _re.match(parent) is not None:
-                (relDomainName, zoneName) = _re.match(parent).groups()
-
-                res = self.lo.search(filter_format('(&(objectClass=dNSZone)(zoneName=%s)(relativeDomainName=%s)(aRecord=*))', (zoneName, relDomainName)))
-                if not res:
-                    ud.debug(ud.ADMIN, ud.INFO, "nagios.py: NGPH: couldn't find dNSZone of %s" % parent)
-                else:
-                    # found dNSZone
-                    filter = '(&(objectClass=univentionHost)'
-                    for aRecord in res[0][1]['aRecord']:
-                        filter += filter_format('(aRecord=%s)', [aRecord.decode('ASCII')])
-                    filter += filter_format('(cn=%s))', [relDomainName])
-                    res = self.lo.searchDn(filter)
-                    if res:
-                        parentlist.append(res[0])
-
-        return parentlist
-
     def nagios_open(self):
         if 'nagios' in self.options:
             self['nagiosServices'] = self.nagiosGetAssignedServices()
-            self['nagiosParents'] = self.nagiosGetParentHosts()
-
-    def nagiosSaveParentHostList(self, ml):
-        if self.hasChanged('nagiosParents'):
-            parentlist = []
-            for parentdn in self.info.get('nagiosParents', []):
-                domain = self.lo.getAttr(parentdn, 'associatedDomain')
-                cn = self.lo.getAttr(parentdn, 'cn')
-                if not domain:
-                    domain = [configRegistry["domainname"].encode('UTF-8')]
-                if cn and domain:
-                    parentlist.append(b'.'.join((cn[0], domain[0])))
-            ml.insert(0, ('univentionNagiosParent', self.oldattr.get('univentionNagiosParent', []), parentlist))
 
     def nagios_ldap_modlist(self, ml):
         if 'nagios' in self.options:
@@ -204,9 +136,6 @@ class Support(object):
 
             # trigger deletion from services
             self.nagiosRemoveFromServices = True
-
-        if 'nagios' in self.options:
-            self.nagiosSaveParentHostList(ml)
 
     def nagios_ldap_pre_modify(self):
         pass

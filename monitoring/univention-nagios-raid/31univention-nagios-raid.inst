@@ -51,24 +51,14 @@ univention-directory-manager nagios/service create "$@" --ignore_exists \
 	--position "cn=nagios,$ldap_base" \
 	--set name="UNIVENTION_RAID" \
 	--set checkCommand="check_raid" \
-	--set normalCheckInterval=10 \
-	--set retryCheckInterval=1 \
-	--set maxCheckAttempts=5 \
-	--set checkPeriod=24x7 \
-	--set notificationInterval=180 \
-	--set notificationPeriod=24x7 \
-	--set notificationOptionRecovered=1 \
-	--set notificationOptionWarning=1 \
-	--set notificationOptionUnreachable=1 \
 	--set useNRPE=1 \
-	--set notificationOptionCritical=1 \
 	--set description="check raid status in /proc/mdstat" || die
 
 # add raid service for this host
 if [ ! "$nagios_client_autoregister" = "no" ] ; then
 
 	# test if nagios is enabled for this host
-	if univention-directory-manager "computers/$server_role" list "$@" --filter=name="$hostname" | grep -q nagiosContactEmail
+	if univention-directory-manager "computers/$server_role" list "$@" --filter= "(&(options=nagios)(name=$hostname))" | grep -q '^DN:'
 	then
 		# test if raid exists
 		if [ -f /proc/mdstat ]; then
