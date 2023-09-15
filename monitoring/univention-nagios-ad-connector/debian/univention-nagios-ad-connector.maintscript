@@ -1,0 +1,1 @@
+rm_conffile /etc/univention/templates/files/etc/nagios-plugins/config/univention-ad-connector.cfg 9.99.0~

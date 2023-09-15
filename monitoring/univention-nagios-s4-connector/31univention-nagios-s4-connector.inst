@@ -51,16 +51,6 @@ else
 			--position "cn=nagios,$ldap_base" \
 			--set name="UNIVENTION_S4CONNECTOR" \
 			--set checkCommand="check_univention_s4_connector" \
-			--set normalCheckInterval=10 \
-			--set retryCheckInterval=1 \
-			--set maxCheckAttempts=10 \
-			--set checkPeriod=24x7 \
-			--set notificationInterval=180 \
-			--set notificationPeriod=24x7 \
-			--set notificationOptionRecovered=1 \
-			--set notificationOptionWarning=1 \
-			--set notificationOptionUnreachable=1 \
-			--set notificationOptionCritical=1 \
 			--set checkArgs='' \
 			--set useNRPE=1 || die
 
