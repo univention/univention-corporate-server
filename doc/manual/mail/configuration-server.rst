@@ -316,9 +316,16 @@ case you encounter problems, here are some notes that might help:
   flushing NFS caches after writing index files with
   :envvar:`mail/dovecot/process/mail_nfs_index`\ ``= yes``.
 
-The Dovecot documentation has more information on the topic: `Dovecot Wiki: Mail
-storage on shared disks <dovecot-mail-storage-shared-disk_>`_ and `Dovecot Wiki:
-NFS <dovecot-nfs_>`_.
+.. seealso::
+
+   `Mail Location Settings <dovecot-mail-location-settings_>`_ in the Dovecot documentation
+      for more information about mailbox locations.
+
+   `Shared mailboxes <dovecot-shared-mailboxes_>`_ in the Dovecot documentation
+      for more information about mailbox sharing.
+
+   `NFS <dovecot-nfs_>`_ in the Dovecot documentation
+      for more information about using Dovecot with NFS.
 
 .. _mail-serverconfig-limits:
 
@@ -356,7 +363,7 @@ To display the total amount of open connections, run:
 The |UCSUCRV|\ s :envvar:`mail/dovecot/limits`\ ``/*`` can be set to modify the
 limits. The process of adapting those variables is only semi automatic, because
 of their complex interaction. For the meaning of each variable refer to `Dovecot
-Wiki: Service configuration <dovecot-services_>`_.
+documentation: Service configuration <dovecot-services_>`_.
 
 Dovecot uses separate processes for login and to access emails. The limits for
 these can be configured separately. The maximum number of concurrent connections

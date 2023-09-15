@@ -3,9 +3,10 @@
 .. SPDX-License-Identifier: AGPL-3.0-only
 
 .. _docker-hub-univention: https://hub.docker.com/u/univention/
-.. _dovecot-mail-storage-shared-disk: https://wiki2.dovecot.org/MailLocation/SharedDisk
+.. _dovecot-mail-location-settings: https://doc.dovecot.org/configuration_manual/mail_location/
+.. _dovecot-shared-mailboxes: https://doc.dovecot.org/configuration_manual/shared_mailboxes/
 .. _dovecot-nfs: https://doc.dovecot.org/configuration_manual/nfs/
-.. _dovecot-services: https://wiki2.dovecot.org/Services
+.. _dovecot-services: https://doc.dovecot.org/configuration_manual/service_configuration/
 .. _fetchmail-multidrop: https://www.fetchmail.info/fetchmail-man.html#the-use-and-abuse-of-multidrop-mailboxes
 .. _freeradius: https://freeradius.org/
 .. _github-univention-domain-join: https://github.com/univention/univention-domain-join
