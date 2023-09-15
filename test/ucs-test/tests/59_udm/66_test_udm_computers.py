@@ -99,21 +99,11 @@ class Test_ComputerAllRoles:
     def test_all_roles_check_nagios(self, udm, lo, verify_ldap_object, role):
         """Validate nagios for all computer roles"""
         forwardZone = udm.create_object('dns/forward_zone', zone='%s.%s' % (random_name(), random_name()), nameserver=random_string(numeric=False))
-        nagiosService = udm.create_object('nagios/service', name=random_name(), checkCommand=random_string(), checkPeriod=random_string(), notificationPeriod=random_string())
-
-        nagiosParentProperties = {
-            'options': ['nagios'],
-            'name': random_name(),
-            'ip': '10.20.30.2',
-        }
-        # FIXME: workaround for remaining locks
-        udm.addCleanupLock('aRecord', nagiosParentProperties['ip'])
+        nagiosService = udm.create_object('nagios/service', name=random_name(), checkCommand=random_string())
 
         computerProperties = {
             'dnsEntryZoneForward': forwardZone,
             'nagiosServices': nagiosService,
-            'nagiosContactEmail': '%s@%s.%s' % (random_name(), random_name(), random_name()),
-            'nagiosParents': udm.create_object('computers/domaincontroller_backup', dnsEntryZoneForward=forwardZone, **nagiosParentProperties),
             'name': random_name(),
             'ip': '10.20.30.3',
             'options': ['posix', 'nagios'],
@@ -125,9 +115,7 @@ class Test_ComputerAllRoles:
 
         # validate that nagios related properties of computer are set correctly
         verify_ldap_object(computer, {
-            'univentionNagiosEmail': [computerProperties['nagiosContactEmail']],
             'univentionNagiosEnabled': ['1'],
-            'univentionNagiosParent': [b'%s.%s' % (nagiosParentProperties['name'].encode('UTF-8'), lo.getAttr(computerProperties['nagiosParents'], 'associatedDomain')[0])],
         })
 
         # check if computer has been added to nagios service
@@ -327,10 +315,10 @@ class Test_ComputerAllRoles:
     def test_all_roles_modification_append_and_remove_nagios_services(self, udm, lo, verify_ldap_object, role):
         """Test modifying nagiosServices for all computer roles"""
         nagiosServices = (
-            udm.create_object('nagios/service', name=random_name(), checkCommand=random_string(), checkPeriod=random_string(), notificationPeriod=random_string()),
-            udm.create_object('nagios/service', name=random_name(), checkCommand=random_string(), checkPeriod=random_string(), notificationPeriod=random_string()),
-            udm.create_object('nagios/service', name=random_name(), checkCommand=random_string(), checkPeriod=random_string(), notificationPeriod=random_string()),
-            udm.create_object('nagios/service', name=random_name(), checkCommand=random_string(), checkPeriod=random_string(), notificationPeriod=random_string()),
+            udm.create_object('nagios/service', name=random_name(), checkCommand=random_string()),
+            udm.create_object('nagios/service', name=random_name(), checkCommand=random_string()),
+            udm.create_object('nagios/service', name=random_name(), checkCommand=random_string()),
+            udm.create_object('nagios/service', name=random_name(), checkCommand=random_string()),
         )
         computerIp = '10.20.30.2'
         computerName = random_name()

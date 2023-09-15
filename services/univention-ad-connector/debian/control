@@ -79,7 +79,6 @@ Depends:
 Recommends:
  sqlite3,
  univention-monitoring-ad-connector,
- univention-nagios-ad-connector,
 Description: UCS - Modules for sync UCS and Active Directory
  This package contains the modules that implement the
  features of UCS Active Directory (AD) Connector.
