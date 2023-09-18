@@ -1,3 +1,9 @@
+univention-directory-manager-modules (15.0.24-18) unstable; urgency=medium
+
+  * Bug #56514: fix Python 3.11 compatibility for timezone handling
+
+ -- Florian Best <best@univention.de>  Thu, 05 Oct 2023 12:15:41 +0200
+
 univention-directory-manager-modules (15.0.24-17) unstable; urgency=medium
 
   * Bug #56371: Replaced the German word "Kennwort" with "Passwort" inside the
