@@ -1,3 +1,10 @@
+univention-web (4.0.5-2) unstable; urgency=medium
+
+  * Bug #56562: retry aborted progress requests up to 5 times before showing
+    an error
+
+ -- Marius Meschter <marius.meschter@univention.de>  Mon, 18 Sep 2023 12:21:23 +0200
+
 univention-web (4.0.5-1) unstable; urgency=medium
 
   * Bug #56548: keycloak specific settings have been removed from

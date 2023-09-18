@@ -763,24 +763,35 @@ define([
 		},
 
 		umcpProgressSubCommand: function(props) {
+			var maxRetries = 6;
 			var deferred = props.deferred;
 			if (deferred === undefined) {
 				deferred = new Deferred();
 			}
-			this.umcpCommand(props.progressCmd, {'progress_id' : props.progressID}, props.errorHandler, props.flavor).then(
+
+			var retries = props.retries === undefined ? maxRetries : props.retries;
+
+			this.umcpCommand(props.progressCmd, {'progress_id' : props.progressID}, false, props.flavor).then(
 				lang.hitch(this, function(data) {
 					deferred.progress(data.result);
 					if (data.result.finished) {
 						deferred.resolve();
 					} else if (!props.abort.isCanceled()) {
 						props.progressCmd = data.result.location || props.progressCmd;
-						props.retryAfter = data.result.retry_after === undefined ? props.retryAfter : data.result.retry_after;
-						setTimeout(lang.hitch(this, 'umcpProgressSubCommand', lang.mixin({}, props, {deferred: deferred})), props.retryAfter);
+						props.retryAfter = data.result.retry_after === undefined ? 200 : data.result.retry_after;
+						setTimeout(lang.hitch(this, 'umcpProgressSubCommand', lang.mixin({}, props, {deferred: deferred, retries: maxRetries})), props.retryAfter);
 					}
 				}),
-				function(error) {
-					deferred.reject(tools.parseError(error));
-				}
+				lang.hitch(this, function(error) {
+					if (error.response.status === 0 && 0 < retries) {
+						props.retryAfter = props.retryAfter * (maxRetries - retries + 1);
+						retries--;
+						setTimeout(lang.hitch(this, 'umcpProgressSubCommand', lang.mixin({}, props, {deferred: deferred, retries: retries})), props.retryAfter);
+					} else {
+						this.getErrorHandler().error(error);
+						deferred.reject(tools.parseError(error));
+					}
+				})
 			);
 			return deferred;
 		},

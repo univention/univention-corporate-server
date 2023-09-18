@@ -3,9 +3,11 @@ release: "5.0"
 version: [5]
 scope: ucs_5.0-0-errata5.0-5
 src: univention-web
-fix: 4.0.5-1
+fix: 4.0.5-2
 desc: |
  This update addresses the following issues:
  * Duplicate settings for the keycloak app have been removed
    from the theme styles.
-bug: [56548]
+ * The error handling for progress bars has been improved so that Apache
+   restarts during app installations don't cause failures anymore.
+bug: [56548, 56562]
