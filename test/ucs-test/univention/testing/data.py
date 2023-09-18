@@ -88,7 +88,7 @@ class TestEnvironment:
         # shitty, but we have no app cache in pbuilder and apps_cache can't handle that
         try:
             self.local_apps = [app.id for app in apps_cache.get_all_locally_installed_apps()]
-        except TypeError:
+        except (TypeError, PermissionError):
             self.local_apps = []
 
     def _load_host(self):  # type: () -> None
