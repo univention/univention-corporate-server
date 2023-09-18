@@ -9,9 +9,6 @@ if configRegistry['ldap/server/type'] == "master":
     print('include         /etc/ldap/schema/inetorgperson.schema')
     if os.path.exists('/etc/ldap/schema/ppolicy.schema'):
         print('include         /etc/ldap/schema/ppolicy.schema')
-    elif os.path.exists('/etc/ldap/schema/ppolicy.schema.dpkg-remove'):
-        # happens while upgrading to 5.2
-        print('include         /etc/ldap/schema/ppolicy.schema.dpkg-remove')
     print('include         /usr/share/univention-ldap/schema/samba.schema')
     print('include         /usr/share/univention-ldap/schema/mail.schema')
     print('include         /usr/share/univention-ldap/schema/user.schema')
