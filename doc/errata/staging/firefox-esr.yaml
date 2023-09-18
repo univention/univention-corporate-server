@@ -1,0 +1,14 @@
+product: ucs
+release: "5.0"
+version: [4, 5]
+scope: ucs_5.0-0-errata5.0-5
+src: firefox-esr
+fix: 102.15.1esr-1~deb10u1
+desc: |
+ This update addresses the following issue:
+ 102.15.1esr-1~deb10u1 (Fri, 15 Sep 2023 19:34:45 +0200)
+ * New upstream release.
+ * Fix for mfsa2023-40, also known as CVE-2023-4863.
+bug: [56607]
+cve:
+- CVE-2023-4863
