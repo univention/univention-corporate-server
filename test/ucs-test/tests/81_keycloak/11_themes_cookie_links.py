@@ -13,7 +13,9 @@ from subprocess import CalledProcessError
 import pytest
 import requests
 from selenium.common.exceptions import ElementClickInterceptedException, WebDriverException
+from selenium.webdriver.common.action_chains import ActionChains
 from selenium.webdriver.common.by import By
+from selenium.webdriver.common.keys import Keys
 from utils import run_command, wait_for_class, wait_for_id
 
 
@@ -139,6 +141,56 @@ def test_cookie_banner_domains(keycloak_adm_login, admin_account, ucr):
             break
     else:
         raise Exception(f"cookie TESTCOOKIE not found: {cookies}")
+
+
+@pytest.mark.skipif(not os.path.isfile("/etc/keycloak.secret"), reason="fails without keycloak locally installed")
+def test_login_page_with_cookie_banner_no_element_is_tabbable(keycloak_adm_login, admin_account, ucr):
+    # only the accept button is tabbable
+    ucr.handler_set([
+        "umc/cookie-banner/cookie=TESTCOOKIE",
+        "umc/cookie-banner/show=true",
+        "umc/cookie-banner/text/de=deutcher text",
+        "umc/cookie-banner/title/de=deutscher titel",
+        "umc/cookie-banner/text/en=english text",
+        "umc/cookie-banner/title/en=english title",
+    ])
+    driver = keycloak_adm_login(admin_account.username, admin_account.bindpw, no_login=True)
+    assert driver.switch_to.active_element.text == "ACCEPT"
+    assert driver.switch_to.active_element.is_displayed
+    # some browser fields
+    ActionChains(driver).send_keys(Keys.TAB).perform()
+    ActionChains(driver).send_keys(Keys.TAB).perform()
+    ActionChains(driver).send_keys(Keys.TAB).perform()
+    ActionChains(driver).send_keys(Keys.TAB).perform()
+    # and back to the beginning
+    assert driver.switch_to.active_element.text == "ACCEPT"
+
+
+@pytest.mark.skipif(not os.path.isfile("/etc/keycloak.secret"), reason="fails without keycloak locally installed")
+def test_login_page_all_elements_are_tabbable(keycloak_adm_login, admin_account):
+    driver = keycloak_adm_login(admin_account.username, admin_account.bindpw, no_login=True)
+    assert driver.switch_to.active_element.get_attribute("name") == "username"
+    assert driver.switch_to.active_element.is_displayed
+    ActionChains(driver).send_keys(Keys.TAB).perform()
+    assert driver.switch_to.active_element.get_attribute("name") == "password"
+    assert driver.switch_to.active_element.is_displayed
+    ActionChains(driver).send_keys(Keys.TAB).perform()
+    assert driver.switch_to.active_element.get_attribute("name") == "login"
+    assert driver.switch_to.active_element.is_displayed
+    # some browser fields
+    ActionChains(driver).send_keys(Keys.TAB).perform()
+    ActionChains(driver).send_keys(Keys.TAB).perform()
+    ActionChains(driver).send_keys(Keys.TAB).perform()
+    ActionChains(driver).send_keys(Keys.TAB).perform()
+    assert driver.switch_to.active_element.text == "English"
+    assert driver.switch_to.active_element.is_displayed
+    ActionChains(driver).send_keys(Keys.TAB).perform()
+    assert driver.switch_to.active_element.text == "Deutsch"
+    assert driver.switch_to.active_element.is_displayed
+    # and back to the beginning
+    ActionChains(driver).send_keys(Keys.TAB).perform()
+    ActionChains(driver).send_keys(Keys.TAB).perform()
+    assert driver.switch_to.active_element.get_attribute("name") == "username"
 
 
 @pytest.mark.skipif(not os.path.isfile("/etc/keycloak.secret"), reason="fails without keycloak locally installed")
