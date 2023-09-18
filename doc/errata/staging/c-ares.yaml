@@ -1,0 +1,14 @@
+product: ucs
+release: "5.0"
+version: [4, 5]
+scope: ucs_5.0-0-errata5.0-5
+src: c-ares
+fix: 1.14.0-1+deb10u4
+desc: |
+ This update addresses the following issue:
+ 1.14.0-1+deb10u4 (Fri, 15 Sep 2023 07:06:38 +0200)
+ * Non-maintainer upload by the LTS Security Team.
+ * Fix CVE-2020-22217: fix invalid read in ares_parse_soa_reply.c
+bug: [56608]
+cve:
+- CVE-2020-22217
