@@ -32,32 +32,6 @@
 # License with the Debian GNU/Linux or Univention distribution in file
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
-#
-# Copyright (C) Matthieu Patou <mat@matws.net> 2010-2011
-#
-# This program is free software; you can redistribute it and/or modify
-# it under the terms of the GNU General Public License as published by
-# the Free Software Foundation; either version 3 of the License, or
-# (at your option) any later version.
-#
-# This program is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-# GNU General Public License for more details.
-#
-# You should have received a copy of the GNU General Public License
-# along with this program.  If not, see <https://www.gnu.org/licenses/>.
-#
-# Revised 2013-09-25, Brian Martin, as follows:
-#    - Allow retention period ("DAYS") to be specified as a parameter.
-#    - Allow individual positional parameters to be left at the default
-#      by specifying "-"
-#    - Use IS0 8601 standard dates (yyyy-mm-dd instead of mmddyyyy).
-#    - Display tar exit codes when reporting errors.
-#    - Don't send error messages to /dev/null, so we know what failed.
-#    - Suppress useless tar "socket ignored" message.
-#    - Fix retention period bug when deleting old backups ($DAYS variable
-#      could be set, but was ignored).
 
 . /usr/share/univention-lib/backup.sh
 
@@ -71,7 +45,6 @@ display_help() {
 		Options:
 		    --help|-h			display this message
 		    --where|-w <DIR>		backup directory
-		    --from-where|-f <DIR>	samba provision directory
 		    --days|-d <INT>		retention period in days
 	EOL
 }
@@ -81,18 +54,15 @@ terminate_on_error() {
 	exit 1
 }
 
-FROMWHERE=/var/lib/samba
 WHERE=/var/univention-backup/samba
 DAYS=""
-DIRS="private sysvol"
 WHEN="$(date +%Y-%m-%d)"
-IGNORE_TDBS=()
-IGNORE_TDBS+=(netlogon_creds_cli.tdb)
 
 while [ $# -gt 0 ]; do
 	case "$1" in
+		# just for compatibility reasons
 		"--from-where"|"-f")
-			FROMWHERE="${2:?missing parameter for $1}"
+			echo "Warning: --from-where|-f removed and ignored"
                         shift 2 || exit 2
 			;;
 		"--where"|"-w")
@@ -124,66 +94,7 @@ if [ ! -d $WHERE ]; then
 fi
 install -o root -g root -m 700 -d "$WHERE"
 
-if [ ! -d $FROMWHERE ]; then
-	terminate_on_error "Missing or wrong provision directory $FROMWHERE"
-fi
-
-cd $FROMWHERE
-for d in $DIRS; do
-	relativedirname=`find . -type d -name "$d" -prune`
-	n=`echo $d | sed 's/\//_/g'`
-	if [ "$d" = "private" ]; then
-		for db in tdb ldb; do
-			find $relativedirname -name "*.$db.bak" -exec rm {} \;
-			for file in `find $relativedirname -name "*.$db"`; do
-				ignore=false
-				for i in ${IGNORE_TDBS[@]}; do
-					test "$(basename $file)" = "$i" && ignore=true && break
-				done
-				if ! $ignore; then
-					tdbbackup $file
-					Status=$?
-					if [ $Status -ne 0 ]; then
-						terminate_on_error "Error while backing up $file with tdbbackup - status $Status"
-					fi
-				fi
-			done
-		done
-		# Run the backup.
-		#    --warning=no-file-ignored set to suppress "socket ignored" messages.
-		#    --warning=no-file-changed set to suppress "file changed as we read it" messages.
-		install -o root -g root -m 600 /dev/null "${WHERE}/samba4_${n}.${WHEN}.tar.bz2"
-		tar cjf ${WHERE}/samba4_${n}.${WHEN}.tar.bz2 \
-			--exclude=smbd.tmp \
-			--exclude=\*.ldb \
-			--exclude=\*.tdb \
-			--warning=no-file-ignored \
-			--warning=no-file-changed \
-			--transform 's/.ldb.bak$/.ldb/' \
-			--transform 's/.tdb.bak$/.tdb/' \
-			$relativedirname
-		Status=$?
-		if [ $Status -ne 0 -a $Status -ne 1 ]; then
-			# Ignore 1 - private dir is always changing.
-			terminate_on_error "Error while archiving ${WHERE}/samba4_${n}.${WHEN}.tar.bz2 - status = $Status"
-		fi
-		for db in tdb ldb; do
-			find $relativedirname -name "*.$db.bak" -exec rm {} \;
-		done
-	else
-		# Run the backup.
-		#    --warning=no-file-ignored set to suppress "socket ignored" messages.
-		#    --warning=no-file-changed set to suppress "file changed as we read it" messages.
-		install -o root -g root -m 600 /dev/null "${WHERE}/${n}.${WHEN}.tar.bz2"
-		tar cjf ${WHERE}/${n}.${WHEN}.tar.bz2  $relativedirname \
-			--warning=no-file-ignored \
-			--warning=no-file-changed
-		Status=$?
-		if [ $Status -ne 0 -a $Status -ne 1 ]; then
-			# Ignore 1 - sysvol may change
-			terminate_on_error "Error while archiving ${WHERE}/${n}.${WHEN}.tar.bz2 - status = $Status"
-		fi
-	fi
-done
-
-clean_old_backups 'samba/\(samba4_\|sysvol\).*.bz2' "$DAYS"
+umask 0026 # samba-tool updates private/sam.ldb.d/metadata.tdb
+samba-tool domain backup offline --targetdir="$WHERE"
+chmod 600 "$WHERE"/samba-backup-*.bz2
+clean_old_backups 'samba/samba-backup-.*.bz2' "$DAYS"

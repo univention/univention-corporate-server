@@ -1,3 +1,10 @@
+univention-samba4 (9.0.14-1) unstable; urgency=medium
+
+  * Bug #56401: support --backend-store=mdb in joinscript
+  * Bug #56434: use samba-tool backup in univention-samba4-backup
+
+ -- Felix Botner <botner@univention.de>  Tue, 29 Aug 2023 17:32:44 +0200
+
 univention-samba4 (9.0.13-7) unstable; urgency=medium
 
   * Bug #56499: Restrict access to /var/univention-backup/samba
