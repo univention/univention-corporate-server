@@ -1037,10 +1037,10 @@ def unmapWindowsFiletime(old, encoding=()):  # type: (List[bytes]) -> str
 def datetime_from_local_datetimetimezone_tuple(local_datetimetimezone_tuple):  # type: (List[str]) -> datetime.datetime
     d, t, tz = local_datetimetimezone_tuple
     # dttz_str = module.property_descriptions[key].syntax.tostring(local_datetimetimezone_tuple)
-    naive_dt = datetime.strptime("%s %s" % (d, t), "%Y-%m-%d %H:%M")
+    native_dt = datetime.strptime("%s %s" % (d, t), "%Y-%m-%d %H:%M")
     if zoneinfo:
-        return naive_dt.astimezone(zoneinfo.ZoneInfo(tz))
-    return pytz.timezone(tz).localize(naive_dt)
+        return native_dt.replace(tzinfo=zoneinfo.ZoneInfo(tz))
+    return pytz.timezone(tz).localize(native_dt)
 
 
 def mapDateTimeTimezoneTupleToUTCDateTimeString(local_datetimetimezone_tuple, encoding=()):  # type: (List[str]) -> List[bytes]
