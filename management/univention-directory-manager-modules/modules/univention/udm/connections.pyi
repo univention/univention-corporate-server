@@ -32,7 +32,7 @@
 
 from __future__ import absolute_import, unicode_literals
 
-from typing import Any, Callable, Dict, Optional, Text, Tuple  # noqa: F401
+from typing import Any, Callable, Dict, Optional, Tuple  # noqa: F401
 
 import univention.config_registry  # noqa: F401
 
@@ -42,7 +42,7 @@ from .modules.generic import OriUdmHandlerTV  # noqa: F401
 class LDAP_connection(object):
     _ucr = None  # type: univention.config_registry.ConfigRegistry  # noqa: PYI026
     _connection_admin = None  # type: OriUdmHandlerTV  # noqa: PYI026
-    _connection_account = {}  # type: Dict[Tuple[Text, Text, Text, int, Text], OriUdmHandlerTV]
+    _connection_account = {}  # type: Dict[Tuple[str, str, str, int, str], OriUdmHandlerTV]
 
     @classmethod
     def _wrap_connection(cls, func, **kwargs):  # type: (Callable[[Any], Any], **Any) -> Any
