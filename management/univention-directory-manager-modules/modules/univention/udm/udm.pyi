@@ -32,14 +32,14 @@
 
 from __future__ import absolute_import, unicode_literals
 
-from typing import Any, Dict, List, Optional, Text, Tuple, Type  # noqa: F401
+from typing import Any, Dict, List, Optional, Tuple, Type  # noqa: F401
 
 from .base import BaseModuleTV, BaseObjectTV  # noqa: F401
 from .utils import ConnectionConfig  # noqa: F401
 
 
 class UDM(object):
-    _module_object_cache = {}  # type: Dict[Tuple[Text, int, int], BaseModuleTV]
+    _module_object_cache = {}  # type: Dict[Tuple[str, int, int], BaseModuleTV]
     _imported = False
     _modules = []  # type: List[BaseModuleTV]
 
@@ -58,10 +58,10 @@ class UDM(object):
     @classmethod
     def credentials(
         cls,
-        identity,  # type: Text
-        password,  # type: Text
-        base=None,  # type: Optional[Text]
-        server=None,  # type: Optional[Text]
+        identity,  # type: str
+        password,  # type: str
+        base=None,  # type: Optional[str]
+        server=None,  # type: Optional[str]
         port=None,  # type: Optional[int]
     ):
         # type: (...) -> UDM
@@ -70,10 +70,10 @@ class UDM(object):
     def version(self, api_version):  # type: (int) -> UDM
         ...
 
-    def get(self, name):  # type: (Text) -> BaseModuleTV
+    def get(self, name):  # type: (str) -> BaseModuleTV
         ...
 
-    def obj_by_dn(self, dn):  # type: (Text) -> BaseObjectTV
+    def obj_by_dn(self, dn):  # type: (str) -> BaseObjectTV
         ...
 
     @property

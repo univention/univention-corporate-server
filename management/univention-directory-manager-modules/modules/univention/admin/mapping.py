@@ -49,8 +49,8 @@ translation = localization.translation('univention/admin')
 _ = translation.translate
 
 try:
-    from typing import List, Text, Tuple, TypeVar, Union  # noqa: F401
-    _E = TypeVar('_E')  # noqa: PYI018
+    from typing import List, Tuple, TypeVar, Union  # noqa: F401
+    _E = TypeVar('_E')
 except ImportError:
     pass
 
@@ -263,7 +263,7 @@ def _stringToInt(value):
 
 
 def unmapUNIX_TimeInterval(value):
-    # type: (Union[List[bytes], Tuple[bytes], bytes]) -> List[Text]
+    # type: (Union[List[bytes], Tuple[bytes], bytes]) -> List[str]
     """
     Map number of seconds to a human understandable time interval.
 
