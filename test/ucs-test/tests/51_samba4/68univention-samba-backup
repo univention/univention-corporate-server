@@ -13,8 +13,8 @@
 . "$TESTLIBPATH/base.sh" || exit 137
 
 backup_dir="/var/univention-backup/samba"
-rm -f "$backup_dir"/samba-backup-*.tar.bz2
+number_of_backup_files_before="$(find "$backup_dir"/samba-backup-*.tar.bz2 | wc -l)"
 univention-samba4-backup || fail_test "univention-samba4-backup failed"
-ls "$backup_dir"/samba-backup-*.tar.bz2 || fail_test "no backup archive found"
-
-exit $RETVAL
+number_of_backup_files_after="$(find "$backup_dir"/samba-backup-*.tar.bz2 | wc -l)"
+test "$number_of_backup_files_after" -gt "$number_of_backup_files_before" ||  fail_test "no backup archive found after running univention-samba4-backup"
+exit "$RETVAL"

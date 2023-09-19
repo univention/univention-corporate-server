@@ -1,3 +1,10 @@
+ucs-test (10.0.19-7) unstable; urgency=medium
+
+  * Bug #56434: fixed 51_samba4/68univention-samba-backup
+    (replaces 51_samba4/65samba4_backup.py)
+
+ -- Felix Botner <botner@univention.de>  Tue, 19 Sep 2023 12:27:25 +0200
+
 ucs-test (10.0.19-6) unstable; urgency=medium
 
   * Bug #56478: manage message bundles and login links
