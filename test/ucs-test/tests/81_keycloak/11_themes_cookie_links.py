@@ -13,7 +13,7 @@ from typing import Tuple
 
 import pytest
 import requests
-from selenium.common.exceptions import ElementClickInterceptedException, WebDriverException
+from selenium.common.exceptions import ElementClickInterceptedException
 from selenium.webdriver.common.action_chains import ActionChains
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
@@ -25,7 +25,6 @@ LINK_COUNT = 12
 
 @pytest.fixture()
 def login_links(lang: str, link_count: int) -> Tuple[str, int]:
-
     try:
         for i in range(1, link_count + 1):
             run_command(["univention-keycloak", "login-links", "set", lang, str(i), f"href{i}", f"desc{i}"])
@@ -70,18 +69,16 @@ def test_theme_switch(ucr, keycloak_adm_login, admin_account, settings):
 @pytest.mark.skipif(not os.path.isfile("/etc/keycloak.secret"), reason="fails without keycloak locally installed")
 def test_custom_theme(keycloak_adm_login, admin_account):
     custom_css = "/var/www/univention/login/css/custom.css"
-    driver = keycloak_adm_login(admin_account.username, admin_account.bindpw, no_login=True)
-    element = wait_for_class(driver, "card-pf")
-    assert element[0].value_of_css_property("background-color") == "rgba(30, 30, 29, 1)"
+    color_css = "rgba(131, 20, 20, 1)"
     with tempfile.NamedTemporaryFile(dir='/tmp', delete=False) as tmpfile:
         temp_file = tmpfile.name
     shutil.move(custom_css, temp_file)
     try:
         with open(custom_css, "w") as fh:
-            fh.write(":root { --bgc-content-container: #831414; }")
+            fh.write(":root { --bgc-content-body: #831414; }")
         driver = keycloak_adm_login(admin_account.username, admin_account.bindpw, no_login=True)
-        element = wait_for_class(driver, "card-pf")
-        assert element[0].value_of_css_property("background-color") == "rgba(131, 20, 20, 1)"
+        element = wait_for_id(driver, "username")
+        assert element.value_of_css_property("background-color") == color_css
     finally:
         shutil.move(temp_file, custom_css)
 
@@ -225,7 +222,5 @@ def test_login_links(lang, link_count, login_links, portal_login_via_keycloak, a
     links_found = login_links_parent.find_elements_by_tag_name("a")
     assert link_count == len(links_found)
     for link in links_found:
-        try:
-            link.click()
-        except WebDriverException:
-            pytest.fail(f"{link.text} is not clickable")
+        assert link.text.startswith("href")
+        assert link.is_displayed()

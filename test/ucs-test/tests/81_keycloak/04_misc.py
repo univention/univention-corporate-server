@@ -55,7 +55,7 @@ def test_session_sync(ucr, udm, portal_login_via_keycloak, portal_config, keyclo
     print(f"check session on {check_url} ({check_ip})")
     driver.get(check_url)
     wait_for_id(driver, portal_config.categories_id)
-    get_portal_tile(driver, portal_config.sso_login_tile_de, portal_config).click()
+    get_portal_tile(driver, portal_config.sso_login_tile, portal_config).click()
     wait_for_id(driver, portal_config.header_menu_id).click()
     a = wait_for_class(driver, portal_config.portal_sidenavigation_username_class)[0]
     assert a.text == username

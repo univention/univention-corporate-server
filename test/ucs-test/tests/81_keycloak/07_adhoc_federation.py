@@ -373,13 +373,13 @@ def _test_sso_login(selenium: WebDriver, portal_config: SimpleNamespace, keycloa
     selenium.get(portal_config.url)
     wait_for_id(selenium, portal_config.categories_id)
     assert selenium.title == portal_config.title
-    get_portal_tile(selenium, portal_config.sso_login_tile_de, portal_config).click()
+    get_portal_tile(selenium, portal_config.sso_login_tile, portal_config).click()
     wait_for_id(selenium, "social-saml").click()
     keycloak_login(selenium, keycloak_config, "test_user1", "univention")
     wait_for_id(selenium, portal_config.header_menu_id).click()
     wait_for_id(selenium, "loginButton").click()
     wait_for_id(selenium, portal_config.categories_id)
-    assert get_portal_tile(selenium, portal_config.sso_login_tile_de, portal_config)
+    assert get_portal_tile(selenium, portal_config.sso_login_tile, portal_config)
 
 
 def get_udm_user_obj(username: str) -> Optional[UsersUserObject]:
