@@ -32,7 +32,7 @@
 
 from __future__ import absolute_import, unicode_literals
 
-from typing import Any, Dict, Iterable, Iterator, List, Optional, Text, Tuple, Type, TypeVar, Union  # noqa: F401
+from typing import Any, Dict, Iterable, Iterator, List, Optional, Tuple, Type, TypeVar, Union  # noqa: F401
 
 import univention.config_registry
 
@@ -57,12 +57,12 @@ DEFAULT_CONTAINERS_DN = ''
 
 
 class GenericObjectProperties(BaseObjectProperties):
-    _encoders = {}  # type: Dict[Text, Type[BaseEncoder]]
+    _encoders = {}  # type: Dict[str, Type[BaseEncoder]]
 
     def __init__(self, udm_obj):  # type: (BaseObjectTV) -> None
         ...
 
-    def __setattr__(self, key, value):  # type: (Text, Any) -> None
+    def __setattr__(self, key, value):  # type: (str, Any) -> None
         ...
 
 
@@ -70,8 +70,8 @@ class GenericObject(BaseObjectTV):
     def __init__(self):  # type: () -> None
         self._udm_module = None  # type: GenericModuleTV
         self.props = None  # type: GenericObjectPropertiesTV
-        self.policies = []  # type: List[Union[GenericObjectTV, DnPropertyEncoder.DnStr, Text]]
-        self.superordinate = None  # type: Union[GenericObjectTV, DnPropertyEncoder.DnStr, Text]
+        self.policies = []  # type: List[Union[GenericObjectTV, DnPropertyEncoder.DnStr, str]]
+        self.superordinate = None  # type: Union[GenericObjectTV, DnPropertyEncoder.DnStr, str]
         self._lo = None  # type: OriUdmHandlerTV
         self._orig_udm_object = None  # type: OriUdmHandlerTV
         self._old_position = ''
@@ -113,47 +113,47 @@ class GenericModuleMeta(ModuleMeta):
 class GenericModule(BaseModuleTV):
     _udm_object_class = GenericObject  # type: Type[GenericObjectTV]
     _udm_module_meta_class = GenericModuleMetadata  # type: Type[GenericModuleMetadata]
-    _udm_module_cache = {}  # type: Dict[Tuple[Text, Text, Text, Text], OriUdmHandlerTV]
-    _default_containers = {}  # type: Dict[Text, Dict[Text, Any]]
+    _udm_module_cache = {}  # type: Dict[Tuple[str, str, str, str], OriUdmHandlerTV]
+    _default_containers = {}  # type: Dict[str, Dict[str, Any]]
     _orig_udm_module = None  # type: OriUdmHandlerTV  # noqa: PYI026
 
     class Meta:
         supported_api_versions = ()  # type: Iterable[int]
-        suitable_for = []  # type: Iterable[Text]
+        suitable_for = []  # type: Iterable[str]
 
-    def __init__(self, name, connection, api_version):  # type: (Text, Any, int) -> None
+    def __init__(self, name, connection, api_version):  # type: (str, Any, int) -> None
         ...
 
-    def new(self, superordinate=None):  # type: (Optional[Union[Text, GenericObjectTV]]) -> GenericObjectTV
+    def new(self, superordinate=None):  # type: (Optional[Union[str, GenericObjectTV]]) -> GenericObjectTV
         ...
 
-    def get(self, dn):  # type: (Text) -> GenericObject
+    def get(self, dn):  # type: (str) -> GenericObject
         ...
 
-    def search(self, filter_s='', base='', scope='sub', sizelimit=0):  # type: (Text, Text, Text, int) -> Iterator[GenericObjectTV]
+    def search(self, filter_s='', base='', scope='sub', sizelimit=0):  # type: (str, str, str, int) -> Iterator[GenericObjectTV]
         ...
 
-    def _dn_exists(self, dn):  # type: (Text) -> bool
+    def _dn_exists(self, dn):  # type: (str) -> bool
         ...
 
-    def _get_default_position_property(self):  # type: () -> Text
+    def _get_default_position_property(self):  # type: () -> str
         ...
 
-    def _get_default_containers(self):  # type: () -> Dict[Text, List[Text]]
+    def _get_default_containers(self):  # type: () -> Dict[str, List[str]]
         ...
 
-    def _get_default_object_positions(self):  # type: () -> List[Text]
+    def _get_default_object_positions(self):  # type: () -> List[str]
         ...
 
     def _get_orig_udm_module(self):  # type: () -> OriUdmHandlerTV
         ...
 
     def _get_orig_udm_object(self, dn, superordinate=None):
-        # type: (Text, Optional[Union[Text, GenericObjectTV]]) -> OriUdmHandlerTV
+        # type: (str, Optional[Union[str, GenericObjectTV]]) -> OriUdmHandlerTV
         ...
 
     def _load_obj(self, dn, superordinate=None, orig_udm_object=None):
-        # type: (Text, Optional[Union[Text, GenericObjectTV]], Optional[OriUdmHandlerTV]) -> GenericObject
+        # type: (str, Optional[Union[str, GenericObjectTV]], Optional[OriUdmHandlerTV]) -> GenericObject
         ...
 
     def _verify_univention_object_type(self, orig_udm_obj):  # type: (OriUdmHandlerTV) -> None
