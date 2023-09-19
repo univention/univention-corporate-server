@@ -7,7 +7,7 @@
 
 import subprocess
 from os import environ
-from pipes import quote
+from shlex import quote
 from typing import Iterable, Iterator, List, Tuple, cast
 
 from univention.config_registry import ucr_live as UCR
