@@ -6,9 +6,9 @@
 # defaults for release
 release='5.0-4'
 old_release='4.4-9'
-kvm_template_version='5.0-4+e713'
-# AMI: Univention Corporate Server (UCS) 5.0 (official image) rev. 5
-current_ami=ami-00b1c5fa4b2eb383c
+kvm_template_version='5.0-5+e798'
+# AMI: Univention Corporate Server (UCS) 5.0 (official image) rev. 6
+current_ami=ami-0e72981c452ee9b85
 # AMI: Univention Corporate Server (UCS) 4.4 (official image) rev. 11
 old_ami=ami-02ad9aab36aadf18a
 
@@ -250,15 +250,13 @@ build_git () {
 [ -n "${UCSSCHOOL_BRANCH}${UCS_BRANCH}" ] &&
 	build_git
 
-# create the command and run in EC2 or KVM depending on cfg
-KVM=false
-grep -q '^\w*kvm_template' "$CFG" && KVM=true # if kvm is configure in cfg, use kvm
-[ "$KVM_BUILD_SERVER" = "EC2" ] && KVM=false
-if "$KVM"
+# create the command and run in EC2, Openshift or KVM depending on cfg
+exe="ucs-kvm-create"
+[ "$KVM_BUILD_SERVER" = "EC2" ] && exe="ucs-ec2-create"
+[ "$KVM_BUILD_SERVER" = "Openstack" ] && exe="ucs-openstack-create"
+
+if [[ "$exe" == "ucs-ec2-create" ]]
 then
-	exe='ucs-kvm-create'
-else
-	exe='ucs-ec2-create'
 	[ -f ~/.boto ] ||
 		die "Missing ~/.boto file for EC2 access!"
 fi
@@ -272,8 +270,8 @@ then
 	# create env file
 	{
 		# get aws credentials
-		"$KVM" ||
-			sed -rne '/^\[Credentials\]/,${/^\[Credentials\]/d;s/^ *(aws_(secret_)?access_key(_id)?) *= *(.*)/\U\1\E=\4/p;/^\[/q}' ~/.boto
+		#[[$exe == "ucs-ec2-create"]] ||
+		#	sed -rne '/^\[Credentials\]/,${/^\[Credentials\]/d;s/^ *(aws_(secret_)?access_key(_id)?) *= *(.*)/\U\1\E=\4/p;/^\[/q}' ~/.boto
 		echo "AWS_DEFAULT_REGION=eu-west-1"
 		env |
 			grep -Eve '^(HOSTNAME|PATH|PWD|OLDPWD|SHELL|SHLVL|TEMP|TEMPDIR|TMPDIR)=|^(KDE|GTK[0-9]*|QT|XDG)_'
@@ -308,6 +306,7 @@ then
 			-v "$HOME/.ssh:$HOME/.ssh:ro"
 		)
 	fi
+
 	# interactive mode for debug
 	$debug && cmd+=("-it")
 	# the image to start
