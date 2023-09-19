@@ -80,8 +80,6 @@ except ImportError:
     ud.debug(ud.ADMIN, ud.WARN, "Failed to import univention.lib.admember")
     _prevent_to_change_ad_properties = False
 
-getfullargspec = getattr(inspect, 'getfullargspec', getattr(inspect, 'getargspec', None))
-
 _Attributes = Dict[str, Union[bytes, List[bytes]]]
 _Properties = Dict[str, Union[str, List[str]]]
 
@@ -1732,7 +1730,7 @@ class simpleLdap(object):
         """
         for pname, prop in self.descriptions.items():
             if hasattr(prop.syntax, 'checkLdap') and (not self.exists() or self.hasChanged(pname)):
-                if len(getfullargspec(prop.syntax.checkLdap).args) > 3:
+                if len(inspect.getfullargspec(prop.syntax.checkLdap).args) > 3:
                     prop.syntax.checkLdap(self.lo, self.info.get(pname), pname)
                 else:
                     prop.syntax.checkLdap(self.lo, self.info.get(pname))
