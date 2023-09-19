@@ -65,8 +65,6 @@ from ..exceptions import (
 )
 
 
-getfullargspec = getattr(inspect, 'getfullargspec', getattr(inspect, 'getargspec'))  # noqa: B009
-
 ucr = univention.config_registry.ConfigRegistry()
 ucr.load()
 DEFAULT_CONTAINERS_DN = 'cn=default containers,cn=univention,{}'.format(ucr['ldap/base'])
@@ -438,7 +436,7 @@ class GenericObject(BaseObject):
         else:
             assert self._udm_module is not None
             # initialize with required arguments
-            for arg in getfullargspec(encoder_class.__init__).args:
+            for arg in inspect.getfullargspec(encoder_class.__init__).args:
                 if arg == 'self':
                     continue
                 elif arg in kwargs:

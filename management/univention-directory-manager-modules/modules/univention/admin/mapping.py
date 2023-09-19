@@ -52,8 +52,6 @@ _ = translation.translate
 _E = TypeVar('_E')  # noqa: PYI018
 _Encoding = Tuple[str, ...]
 
-getfullargspec = getattr(inspect, 'getfullargspec', getattr(inspect, 'getargspec'))  # noqa: B009
-
 try:
     unicode  # type: ignore[used-before-def] # noqa: B018
 except NameError:
@@ -567,7 +565,7 @@ class mapping(object):
         if not map_value:
             map_value = MapToBytes
         kwargs = {}
-        if 'encoding' in getfullargspec(map_value).args:
+        if 'encoding' in inspect.getfullargspec(map_value).args:
             kwargs['encoding'] = (encoding, strictness)
 
         try:
@@ -615,7 +613,7 @@ class mapping(object):
 
         encoding, strictness = self._unmap_encoding.get(unmap_name, ('UTF-8', 'strict'))
         kwargs = {}
-        if 'encoding' in getfullargspec(unmap_value).args:
+        if 'encoding' in inspect.getfullargspec(unmap_value).args:
             kwargs['encoding'] = (encoding, strictness)
 
         try:
@@ -629,7 +627,7 @@ class mapping(object):
         info = mapDict(self, oldattr)
         for key, func in self._unmap_func.items():
             kwargs = {}
-            if 'encoding' in getfullargspec(func).args:
+            if 'encoding' in inspect.getfullargspec(func).args:
                 kwargs['encoding'] = self._unmap_encoding.get(key, ('UTF-8', 'strict'))
             info[key] = func(oldattr, **kwargs)
         return info

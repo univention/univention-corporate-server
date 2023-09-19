@@ -58,7 +58,7 @@ import shlex
 import subprocess
 import sys
 import time
-from inspect import getfullargspec as getargspec
+from inspect import getfullargspec
 from typing import Any, Dict, Iterable, List, Mapping, Sequence, Tuple
 
 import ldap
@@ -734,7 +734,7 @@ class UCSTestUDM:
         }
 
         def _func(func, prop):
-            if 'prop' in getargspec(func).args:
+            if 'prop' in getfullargspec(func).args:
                 func = functools.partial(func, prop)
             return func
 
