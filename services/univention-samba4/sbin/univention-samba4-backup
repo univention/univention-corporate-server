@@ -34,6 +34,7 @@
 # <https://www.gnu.org/licenses/>.
 
 . /usr/share/univention-lib/backup.sh
+. /usr/share/univention-lib/base.sh
 
 display_help() {
 	cat <<-EOL
@@ -95,6 +96,6 @@ fi
 install -o root -g root -m 700 -d "$WHERE"
 
 umask 0026 # samba-tool updates private/sam.ldb.d/metadata.tdb
-samba-tool domain backup offline --targetdir="$WHERE"
+samba-tool domain backup offline --targetdir="$WHERE" || die "ERROR: samba-tool domain backup failed"
 chmod 600 "$WHERE"/samba-backup-*.bz2
 clean_old_backups 'samba/samba-backup-.*.bz2' "$DAYS"
