@@ -337,6 +337,15 @@ if blocking_computers or blocking_objects:
     exit(1)'
 }
 
+update_check_user_country_mapping () {
+	# https://forge.univention.org/bugzilla/show_bug.cgi?id=56528
+	is_ucr_false directory/manager/web/modules/users/user/map-country-to-st && return 0
+	echo 'ERROR: Users in LDAP need to be migrated so their "country" property is stored in the correct LDAP attribute "c" instead of in the state ("st").'
+	echo "UCS 5.0 supported both configurations. With UCS 5.1 only the correct mapping is supported. A migration is necessary before upgrading."
+	echo 'The migration can be performed using the command "/usr/share/univention-directory-manager-tools/udm-remap-country-from-st-to-c" or using the UMC module "System diagnostic".'
+	return 1
+}
+
 checks () {
 	# stderr to log
 	exec 2>>"$UPDATER_LOG"
