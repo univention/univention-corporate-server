@@ -42,14 +42,9 @@ import os
 import re
 import sys
 import time
+from collections.abc import Mapping, MutableMapping
 from enum import IntEnum
 from stat import S_ISREG
-
-
-try:
-    from collections.abc import Mapping, MutableMapping  # Python 3.3+
-except ImportError:
-    from collections import Mapping, MutableMapping
 
 import six
 

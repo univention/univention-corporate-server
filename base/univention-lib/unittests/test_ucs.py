@@ -32,10 +32,7 @@
 # <https://www.gnu.org/licenses/>.
 
 
-try:
-    from collections.abc import Hashable
-except ImportError:
-    from collections import Hashable
+from collections.abc import Hashable
 
 import pytest
 
