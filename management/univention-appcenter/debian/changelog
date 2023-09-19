@@ -1,3 +1,9 @@
+univention-appcenter (10.0.8) unstable; urgency=medium
+
+  * Bug #56604: pipes.quote()
+
+ -- Florian Best <best@univention.de>  Thu, 07 Mar 2024 23:54:11 +0100
+
 univention-appcenter (10.0.7) unstable; urgency=medium
 
   * Bug #56598: adjust section error in the UMC software packages module

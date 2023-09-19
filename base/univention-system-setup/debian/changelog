@@ -1,3 +1,9 @@
+univention-system-setup (14.0.6) unstable; urgency=medium
+
+  * Bug #56604: pipes.quote()
+
+ -- Florian Best <best@univention.de>  Thu, 07 Mar 2024 23:54:11 +0100
+
 univention-system-setup (14.0.5) unstable; urgency=medium
 
   * Bug #56662: require memberof to be enabled

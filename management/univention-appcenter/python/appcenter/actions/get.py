@@ -38,12 +38,7 @@
 import re
 from argparse import Action
 from fnmatch import translate
-
-
-try:
-    from shlex import quote
-except ImportError:
-    from pipes import quote
+from shlex import quote
 
 from six.moves.configparser import NoOptionError, NoSectionError
 
