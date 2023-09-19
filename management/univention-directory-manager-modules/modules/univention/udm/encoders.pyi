@@ -33,7 +33,7 @@
 from __future__ import absolute_import, unicode_literals
 
 import datetime  # noqa: F401
-from typing import Any, Dict, List, Optional, Text, Type, TypeVar  # noqa: F401
+from typing import Any, Dict, List, Optional, Type, TypeVar  # noqa: F401
 
 import lazy_object_proxy
 
@@ -47,17 +47,17 @@ from .udm import UDM  # noqa: F401
 BaseEncoderTV = TypeVar('BaseEncoderTV', bound=univention.udm.encoders.BaseEncoder)  # noqa: PYI001
 
 
-__dn_list_property_encoder_class_cache = {}  # type: Dict[Text, Type[DnListPropertyEncoder]]
-__dn_property_encoder_class_cache = {}  # type: Dict[Text, Type[DnPropertyEncoder]]
+__dn_list_property_encoder_class_cache = {}  # type: Dict[str, Type[DnListPropertyEncoder]]
+__dn_property_encoder_class_cache = {}  # type: Dict[str, Type[DnPropertyEncoder]]
 
 
 class BaseEncoder(object):
     static = False    # type: bool
 
-    def __init__(self, property_name=None, *args, **kwargs):  # type: (Optional[Text], *Any, **Any) -> None
+    def __init__(self, property_name=None, *args, **kwargs):  # type: (Optional[str], *Any, **Any) -> None
         ...
 
-    def __repr__(self):  # type: () -> Text
+    def __repr__(self):  # type: () -> str
         ...
 
     def encode(self, value=None):  # type: (Optional[Any]) -> Optional[Any]
@@ -68,60 +68,60 @@ class BaseEncoder(object):
 
 
 class Base64BinaryPropertyEncoder(BaseEncoder):
-    def decode(self, value=None):  # type: (Optional[Text]) -> Optional[Base64BinaryProperty]
+    def decode(self, value=None):  # type: (Optional[str]) -> Optional[Base64BinaryProperty]
         ...
 
-    def encode(self, value=None):  # type: (Optional[Base64BinaryProperty]) -> Optional[Text]
+    def encode(self, value=None):  # type: (Optional[Base64BinaryProperty]) -> Optional[str]
         ...
 
 
 class Base64Bzip2BinaryPropertyEncoder(BaseEncoder):
     static = False
 
-    def decode(self, value=None):  # type: (Optional[Text]) -> Optional[Base64Bzip2BinaryProperty]
+    def decode(self, value=None):  # type: (Optional[str]) -> Optional[Base64Bzip2BinaryProperty]
         ...
 
-    def encode(self, value=None):  # type: (Optional[Base64Bzip2BinaryProperty]) -> Optional[Text]
+    def encode(self, value=None):  # type: (Optional[Base64Bzip2BinaryProperty]) -> Optional[str]
         ...
 
 
 class DatePropertyEncoder(BaseEncoder):
     @staticmethod
-    def decode(value=None):  # type: (Optional[Text]) -> Optional[datetime.date]
+    def decode(value=None):  # type: (Optional[str]) -> Optional[datetime.date]
         ...
 
     @staticmethod
-    def encode(value=None):  # type: (Optional[datetime.date]) -> Optional[Text]
+    def encode(value=None):  # type: (Optional[datetime.date]) -> Optional[str]
         ...
 
 
 class DisabledPropertyEncoder(BaseEncoder):
     @staticmethod
-    def decode(value=None):  # type: (Optional[Text]) -> bool
+    def decode(value=None):  # type: (Optional[str]) -> bool
         ...
 
     @staticmethod
-    def encode(value=None):  # type: (Optional[bool]) -> Text
+    def encode(value=None):  # type: (Optional[bool]) -> str
         ...
 
 
 class HomePostalAddressPropertyEncoder(BaseEncoder):
     @staticmethod
-    def decode(value=None):  # type: (Optional[List[List[Text]]]) -> Optional[List[Dict[Text, Text]]]
+    def decode(value=None):  # type: (Optional[List[List[str]]]) -> Optional[List[Dict[str, str]]]
         ...
 
     @staticmethod
-    def encode(value=None):  # type: (Optional[List[Dict[Text, Text]]]) -> Optional[List[List[Text]]]
+    def encode(value=None):  # type: (Optional[List[Dict[str, str]]]) -> Optional[List[List[str]]]
         ...
 
 
 class ListOfListOflTextToDictPropertyEncoder(BaseEncoder):
     @staticmethod
-    def decode(value=None):  # type: (Optional[List[List[Text]]]) -> Optional[Dict[Text, Text]]
+    def decode(value=None):  # type: (Optional[List[List[str]]]) -> Optional[Dict[str, str]]
         ...
 
     @staticmethod
-    def encode(value=None):  # type: (Optional[Dict[Text, Text]]) -> Optional[List[List[Text]]]
+    def encode(value=None):  # type: (Optional[Dict[str, str]]) -> Optional[List[List[str]]]
         ...
 
 
@@ -129,11 +129,11 @@ class MultiLanguageTextAppcenterPropertyEncoder(BaseEncoder):
     static = True
 
     @staticmethod
-    def decode(value=None):  # type: (Optional[List[Text]]) -> Optional[Dict[Text, Text]]
+    def decode(value=None):  # type: (Optional[List[str]]) -> Optional[Dict[str, str]]
         ...
 
     @staticmethod
-    def encode(value=None):  # type: (Optional[Dict[Text, Text]]) -> Optional[List[Text]]
+    def encode(value=None):  # type: (Optional[Dict[str, str]]) -> Optional[List[str]]
         ...
 
 
@@ -143,11 +143,11 @@ class SambaGroupTypePropertyEncoder(BaseEncoder):
     choices_reverted = ...
 
     @classmethod
-    def decode(cls, value=None):  # type: (Optional[List[Text]]) -> Optional[Text]
+    def decode(cls, value=None):  # type: (Optional[List[str]]) -> Optional[str]
         ...
 
     @classmethod
-    def encode(cls, value=None):  # type: (Optional[Text]) -> Optional[List[Text]]
+    def encode(cls, value=None):  # type: (Optional[str]) -> Optional[List[str]]
         ...
 
 
@@ -156,11 +156,11 @@ class SambaLogonHoursPropertyEncoder(BaseEncoder):
     _weekdays = ('Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat')
 
     @classmethod
-    def decode(cls, value=None):  # type: (Optional[List[int]]) -> Optional[List[Text]]
+    def decode(cls, value=None):  # type: (Optional[List[int]]) -> Optional[List[str]]
         ...
 
     @classmethod
-    def encode(cls, value=None):  # type: (Optional[List[Text]]) -> Optional[List[int]]
+    def encode(cls, value=None):  # type: (Optional[List[str]]) -> Optional[List[int]]
         ...
 
 
@@ -171,11 +171,11 @@ class StringCaseInsensitiveResultLowerBooleanPropertyEncoder(BaseEncoder):
     true_string = 'true'
 
     @classmethod
-    def decode(cls, value=None):  # type: (Optional[Text]) -> bool
+    def decode(cls, value=None):  # type: (Optional[str]) -> bool
         ...
 
     @classmethod
-    def encode(cls, value=None):  # type: (Optional[bool]) -> Text
+    def encode(cls, value=None):  # type: (Optional[bool]) -> str
         ...
 
 
@@ -187,22 +187,22 @@ class StringIntBooleanPropertyEncoder(BaseEncoder):
     static = True
 
     @staticmethod
-    def decode(value=None):  # type: (Optional[Text]) -> bool
+    def decode(value=None):  # type: (Optional[str]) -> bool
         ...
 
     @staticmethod
-    def encode(value=None):  # type: (Optional[bool]) -> Text
+    def encode(value=None):  # type: (Optional[bool]) -> str
         ...
 
 
 class StringIntPropertyEncoder(BaseEncoder):
     static = False
 
-    def decode(self, value=None):  # type: (Optional[Text]) -> Optional[int]
+    def decode(self, value=None):  # type: (Optional[str]) -> Optional[int]
         ...
 
     @staticmethod
-    def encode(value=None):  # type: (Optional[int]) -> Optional[Text]
+    def encode(value=None):  # type: (Optional[int]) -> Optional[str]
         ...
 
 
@@ -211,11 +211,11 @@ class StringListToList(BaseEncoder):
     separator = ' '
 
     @classmethod
-    def decode(cls, value=None):  # type: (Optional[Text]) -> Optional[List[Text]]
+    def decode(cls, value=None):  # type: (Optional[str]) -> Optional[List[str]]
         ...
 
     @classmethod
-    def encode(cls, value=None):  # type: (Optional[List[Text]]) -> Optional[Text]
+    def encode(cls, value=None):  # type: (Optional[List[str]]) -> Optional[str]
         ...
 
 
@@ -236,23 +236,23 @@ class DnListPropertyEncoder(BaseEncoder):
             ...
 
     def __init__(self, property_name=None, connection=None, api_version=None, *args, **kwargs):
-        # type: (Optional[Text], Optional[Any], Optional[int], *Any, **Any) -> None
+        # type: (Optional[str], Optional[Any], Optional[int], *Any, **Any) -> None
         assert connection is not None, 'Argument "connection" must not be None.'
         assert api_version is not None, 'Argument "api_version" must not be None.'
         super(DnListPropertyEncoder, self).__init__(property_name, *args, **kwargs)
         self._udm = None  # type: UDM
 
-    def __repr__(self):  # type: () -> Text
+    def __repr__(self):  # type: () -> str
         ...
 
     def _list_of_dns_to_list_of_udm_objects(self, value):
         ...
 
-    def decode(self, value=None):  # type: (Optional[List[Text]]) -> Optional[List[Text]]
+    def decode(self, value=None):  # type: (Optional[List[str]]) -> Optional[List[str]]
         ...
 
     @staticmethod
-    def encode(value=None):  # type: (Optional[List[Text]]) -> Optional[List[Text]]
+    def encode(value=None):  # type: (Optional[List[str]]) -> Optional[List[str]]
         ...
 
     @property
@@ -331,17 +331,17 @@ class DnPropertyEncoder(BaseEncoder):
         super(DnPropertyEncoder, self).__init__(property_name, *args, **kwargs)
         self._udm = None  # type: UDM
 
-    def __repr__(self):  # type: () -> Text
+    def __repr__(self):  # type: () -> str
         ...
 
     def _dn_to_udm_object(self, value):
         ...
 
-    def decode(self, value=None):  # type: (Optional[Text]) -> str
+    def decode(self, value=None):  # type: (Optional[str]) -> str
         ...
 
     @staticmethod
-    def encode(value=None):  # type: (Optional[Text]) -> Optional[Text]
+    def encode(value=None):  # type: (Optional[str]) -> Optional[str]
         ...
 
     @property
@@ -349,13 +349,13 @@ class DnPropertyEncoder(BaseEncoder):
         ...
 
 
-def _classify_name(name):  # type: (Text) -> Text
+def _classify_name(name):  # type: (str) -> str
     ...
 
 
-def dn_list_property_encoder_for(udm_module_name):  # type: (Text) -> Type[DnListPropertyEncoder]
+def dn_list_property_encoder_for(udm_module_name):  # type: (str) -> Type[DnListPropertyEncoder]
     ...
 
 
-def dn_property_encoder_for(udm_module_name):  # type: (Text) -> Type[DnPropertyEncoder]
+def dn_property_encoder_for(udm_module_name):  # type: (str) -> Type[DnPropertyEncoder]
     ...
