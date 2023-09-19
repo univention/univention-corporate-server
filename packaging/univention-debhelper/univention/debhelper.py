@@ -40,7 +40,7 @@ from argparse import ArgumentParser, Namespace  # noqa: F401
 
 
 try:
-    from typing import Dict, List, Optional, Sequence, Text  # noqa: F401
+    from typing import Dict, List, Optional, Sequence  # noqa: F401
 except ImportError:
     pass
 
@@ -122,7 +122,7 @@ def parseRfc822(f):
 
 
 def parser_dh_sequence(parser, argv=None):
-    # type: (ArgumentParser, Optional[Sequence[Text]]) -> Namespace
+    # type: (ArgumentParser, Optional[Sequence[str]]) -> Namespace
     """
     Add common argument for Debian helper sequence.
 
