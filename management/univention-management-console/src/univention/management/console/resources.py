@@ -52,6 +52,8 @@ import subprocess
 import time
 import uuid
 from ipaddress import ip_address
+from shlex import quote
+from time import monotonic
 
 import ldap
 import pycurl
@@ -79,17 +81,6 @@ from .modules.sanitizers import DictSanitizer, ListSanitizer, StringSanitizer
 from .pam import PasswordChangeFailed
 from .resource import Resource
 from .session import categoryManager, moduleManager
-
-
-try:
-    from time import monotonic
-except ImportError:
-    from monotonic import monotonic
-
-try:
-    from shlex import quote
-except ImportError:
-    from pipes import quote
 
 
 def sanitize(*sargs, **skwargs):

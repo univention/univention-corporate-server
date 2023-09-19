@@ -35,23 +35,10 @@
 
 import fnmatch
 import os
-
-
-try:
-    from shlex import quote
-except ImportError:
-    from pipes import quote
-
-
 import shutil
-import sys
+from shlex import quote
+from subprocess import getstatusoutput
 from typing import Dict, List, Optional  # noqa: F401
-
-
-if sys.version_info >= (3,):
-    from subprocess import getstatusoutput
-else:
-    from commands import getstatusoutput
 
 from univention.config_registry import ConfigRegistry  # noqa: E402,F401
 

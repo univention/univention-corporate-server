@@ -1,13 +1,7 @@
 @%@UCRWARNING=# @%@
 @!@
-try:
-    from shlex import quote
-except ImportError:
-    from pipes import quote
-try:
-    from shutil import which
-except ImportError:
-    from distutils.spawn import find_executable as which
+from shlex import quote
+from shutil import which
 
 server_role = configRegistry.get('server/role', '')
 write_translog = server_role != 'domaincontroller_master' and which('univention-directory-notifier')

@@ -40,15 +40,10 @@ import os
 import subprocess
 import sys
 from argparse import ArgumentParser
+from shlex import quote
 
 import univention.config_registry
 from univention.debhelper import binary_packages, doIt
-
-
-try:
-    from shlex import quote
-except ImportError:
-    from pipes import quote
 
 
 def tmpDir(package):

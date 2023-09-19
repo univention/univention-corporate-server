@@ -39,12 +39,8 @@ import os
 import re
 import string  # pylint: disable-msg=W0402
 import sys
+from shlex import quote as escape_value
 
-
-try:
-    from shlex import quote as escape_value
-except ImportError:
-    from pipes import quote as escape_value
 
 try:
     from typing import IO, Dict, List, Text  # noqa: F401

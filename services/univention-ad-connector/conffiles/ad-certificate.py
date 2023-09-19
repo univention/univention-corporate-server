@@ -34,12 +34,7 @@
 # <https://www.gnu.org/licenses/>.
 
 import os
-
-
-try:
-    from shlex import quote
-except ImportError:
-    from pipes import quote
+from shlex import quote
 
 
 ad_var = 'connector/ad/ldap/host'

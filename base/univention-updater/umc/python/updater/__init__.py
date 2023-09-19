@@ -36,17 +36,10 @@
 
 import importlib.util
 import os
-
-
-try:
-    from shlex import quote
-except ImportError:
-    from pipes import quote
-
-
 from datetime import datetime
 from hashlib import md5
 from os import getpid, stat
+from shlex import quote
 from time import time
 from traceback import format_exc
 from types import ModuleType  # noqa: F401
