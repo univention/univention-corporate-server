@@ -1,3 +1,9 @@
+univention-updater (16.0.8) unstable; urgency=medium
+
+  * Bug #56528: check for LDAP country migration in pre upgrade
+
+ -- Maximilian Janßen <janssen@univention.de>  Thu, 07 Mar 2024 23:53:55 +0100
+
 univention-updater (16.0.7) unstable; urgency=medium
 
   * Bug #55994: drop Python 2 binary packages
