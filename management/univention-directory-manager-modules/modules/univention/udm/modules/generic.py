@@ -61,8 +61,6 @@ from ..exceptions import (
 from ..utils import UDebug as ud
 
 
-getfullargspec = getattr(inspect, 'getfullargspec', getattr(inspect, 'getargspec', None))
-
 ucr = univention.config_registry.ConfigRegistry()
 ucr.load()
 DEFAULT_CONTAINERS_DN = 'cn=default containers,cn=univention,{}'.format(ucr['ldap/base'])
@@ -423,7 +421,7 @@ class GenericObject(BaseObject):
             return encoder_class
         else:
             # initialize with required arguments
-            for arg in getfullargspec(encoder_class.__init__).args:
+            for arg in inspect.getfullargspec(encoder_class.__init__).args:
                 if arg == 'self':
                     continue
                 elif arg in kwargs:

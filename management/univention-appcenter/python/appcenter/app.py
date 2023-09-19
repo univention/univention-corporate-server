@@ -60,8 +60,6 @@ from univention.appcenter.utils import (
 )
 
 
-getargspec = getattr(inspect, 'getfullargspec', getattr(inspect, 'getargspec', None))
-
 CACHE_DIR = '/var/cache/univention-appcenter'
 LOCAL_ARCHIVE = '/usr/share/univention-appcenter/archives/all.tar.gz'
 LOCAL_ARCHIVE_DIR = '/usr/share/univention-appcenter/archives/'
@@ -111,7 +109,7 @@ class Requirement(UniventionMetaInfo):
     def test(self, app, function, package_manager):
         method = getattr(app, self.name)
         kwargs = {}
-        arguments = getargspec(method).args[1:]  # remove self
+        arguments = inspect.getfullargspec(method).args[1:]  # remove self
         if 'function' in arguments:
             kwargs['function'] = function
         if 'package_manager' in arguments:

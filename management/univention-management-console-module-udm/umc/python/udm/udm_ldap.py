@@ -72,8 +72,6 @@ udm_modules.update()
 __bind_function = None
 _licenseCheck = 0
 
-getfullargspec = getattr(inspect, 'getfullargspec', getattr(inspect, 'getargspec', None))
-
 
 def set_bind_function(connection_getter):
     global __bind_function
@@ -675,7 +673,7 @@ class UDM_Module(object):
             else:
                 if self.module:
                     kwargs = {}
-                    if serverctrls and 'serverctrls' in getfullargspec(self.module.lookup).args:  # not every UDM handler supports serverctrls
+                    if serverctrls and 'serverctrls' in inspect.getfullargspec(self.module.lookup).args:  # not every UDM handler supports serverctrls
                         kwargs['serverctrls'] = serverctrls
                         kwargs['response'] = response
                     result = self.module.lookup(None, ldap_connection, filter_s, base=container, superordinate=superordinate, scope=scope, sizelimit=sizelimit, **kwargs)
