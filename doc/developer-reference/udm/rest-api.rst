@@ -444,3 +444,70 @@ To delete a user you just have to send a :command:`DELETE` request to
 .. caution::
 
    You must URL encode ``<dn>``.
+
+.. _udm-rest-api-error-codes:
+
+API Error Codes
+---------------
+
+The UDM REST API can respond to requests with the following error codes. The list is not exhaustive:
+
+.. list-table:: UDM REST API error codes
+   :header-rows: 1
+   :widths: 1 3 8
+
+   * - Code
+     - Name
+     - Example Case
+
+   * - 400
+     - Bad Request
+     - The API doesn't understand the format of the request.
+
+   * - 401
+     - Unauthorized
+     - The request provide no or wrong credentials for authorization.
+
+   * - 403
+     - Forbidden
+     - User isn't part of the allowed groups to access the requested resource.
+
+   * - 404
+     - Not Found
+     - The requested resource doesn't exist.
+
+   * - 406
+     - Not Acceptable
+     - The header field ``Accept`` does not specify a known MIME media type
+       or header field ``Accept-Language`` does not specify a known language.
+
+   * - 412
+     - Precondition Failed
+     - The header ``If-Match`` does not match the E-tag or
+       the header ``If-Unmodified-Since`` doesn't match the
+       header ``Last-Modified``.
+
+   * - 413
+     - Payload Too Large
+     - The request payload contains a field that exceeds its size limit.
+
+   * - 416
+     - Range Not Satisfiable
+     - In the request, the field ``If-Match`` doesn't match the entity tag and
+       the request has the field ``Range`` set.
+
+   * - 422
+     - Unprocessable Content
+     - The validation of input parameters failed.
+
+   * - 500
+     - Internal Server Error
+     - Generic error code for internal server errors.
+
+   * - 503
+     - Service Unavailable
+     - The server for the service isn't available, for example the LDAP server.
+
+.. spelling:word-list::
+
+   Unprocessable
