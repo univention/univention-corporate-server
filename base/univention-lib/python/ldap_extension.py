@@ -1124,16 +1124,12 @@ class UniventionUDMModule(UniventionUDMExtension):
         saved_value = sys.dont_write_bytecode
         sys.dont_write_bytecode = True
         try:
-            if six.PY2:
-                import imp
-                mod = imp.load_source('dummy', filename)
-            else:
-                import importlib.util
-                spec = importlib.util.spec_from_file_location(os.path.basename(filename).rsplit('.', 1)[0], filename)
-                assert spec is not None
-                mod = importlib.util.module_from_spec(spec)
-                assert spec.loader is not None
-                spec.loader.exec_module(mod)
+            import importlib.util
+            spec = importlib.util.spec_from_file_location(os.path.basename(filename).rsplit('.', 1)[0], filename)
+            assert spec is not None
+            mod = importlib.util.module_from_spec(spec)
+            assert spec.loader is not None
+            spec.loader.exec_module(mod)
 
             try:
                 self.target_udm_module = module_name = mod.module

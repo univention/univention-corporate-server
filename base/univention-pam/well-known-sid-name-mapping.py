@@ -243,14 +243,10 @@ def postrun() -> None:
             filename_parts = os.path.splitext(filename)
             if filename_parts[1] == '.py' and not filename.startswith('__'):
                 hook_filepath = os.path.join(hook_dir, filename)
-                if six.PY2:
-                    import imp
-                    hook_module = imp.load_source(filename_parts[0], hook_filepath)
-                else:
-                    import importlib.util
-                    spec = importlib.util.spec_from_file_location(filename_parts[0], hook_filepath)
-                    hook_module = importlib.util.module_from_spec(spec)
-                    spec.loader.exec_module(hook_module)
+                import importlib.util
+                spec = importlib.util.spec_from_file_location(filename_parts[0], hook_filepath)
+                hook_module = importlib.util.module_from_spec(spec)
+                spec.loader.exec_module(hook_module)
                 if hasattr(hook_module, 'postrun'):
                     hook_module.postrun(modified_default_names)
     finally:
