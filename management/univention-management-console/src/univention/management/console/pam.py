@@ -48,7 +48,7 @@ from univention.management.console.log import AUTH
 
 
 try:
-    from typing import Any, Dict, Iterator, List, Optional, Pattern, Sequence, Text, Tuple, Union  # noqa: F401
+    from typing import Any, Dict, Iterator, List, Optional, Pattern, Sequence, Tuple, Union  # noqa: F401
 except ImportError:
     pass
 
@@ -351,7 +351,7 @@ class PamAuth(object):
         }
         return errors.get(pam_err[1], self._(str(pam_err[0])))
 
-    def _parse_password_change_fail_reason(self, prompt):  # type: (Union[Text, bytes]) -> str
+    def _parse_password_change_fail_reason(self, prompt):  # type: (Union[str, bytes]) -> str
         if prompt in self.known_errors:
             return self._(self.known_errors[prompt])
         for pattern, error_message in self.known_errors.items():

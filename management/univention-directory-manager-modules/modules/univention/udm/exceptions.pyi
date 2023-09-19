@@ -32,12 +32,12 @@
 
 from __future__ import unicode_literals
 
-from typing import Iterable, Optional, Text  # noqa: F401
+from typing import Iterable, Optional  # noqa: F401
 
 
 class UdmError(Exception):
     def __init__(self, msg=None, dn=None, module_name=None):
-        # type: (Optional[Text], Optional[Text], Optional[Text]) -> None
+        # type: (Optional[str], Optional[str], Optional[str]) -> None
         ...
 
 
@@ -52,8 +52,8 @@ class ConnectionError(UdmError):
 class ApiVersionNotSupported(UdmError):
     def __init__(
             self,
-            msg=None,  # type: Text
-            module_name=None,  # type: Text
+            msg=None,  # type: str
+            module_name=None,  # type: str
             module_cls=None,  # type: type
             requested_version=None,  # type: int
             supported_versions=None,  # type: Iterable
@@ -68,19 +68,19 @@ class CreateError(UdmError):
 
 class DeletedError(UdmError):
     def __init__(self, msg=None, dn=None, module_name=None):
-        # type: (Optional[Text], Optional[Text], Optional[Text]) -> None
+        # type: (Optional[str], Optional[str], Optional[str]) -> None
         ...
 
 
 class DeleteError(UdmError):
     def __init__(self, msg=None, dn=None, module_name=None):
-        # type: (Optional[Text], Optional[Text], Optional[Text]) -> None
+        # type: (Optional[str], Optional[str], Optional[str]) -> None
         ...
 
 
 class NotYetSavedError(UdmError):
     def __init__(self, msg=None, dn=None, module_name=None):
-        # type: (Optional[Text], Optional[Text], Optional[Text]) -> None
+        # type: (Optional[str], Optional[str], Optional[str]) -> None
         ...
 
 
@@ -98,7 +98,7 @@ class NoApiVersionSet(UdmError):
 
 class NoObject(UdmError):
     def __init__(self, msg=None, dn=None, module_name=None):
-        # type: (Optional[Text], Optional[Text], Optional[Text]) -> None
+        # type: (Optional[str], Optional[str], Optional[str]) -> None
         ...
 
 
@@ -110,7 +110,7 @@ class NoSuperordinate(UdmError):
 class SearchLimitReached(UdmError):
 
     def __init__(self, msg=None, dn=None, module_name=None, search_filter=None, sizelimit=None):
-        # type: (Optional[Text], Optional[Text], Optional[Text], Optional[Text], Optional[int]) -> None
+        # type: (Optional[str], Optional[str], Optional[str], Optional[str], Optional[int]) -> None
         ...
 
 
@@ -120,7 +120,7 @@ class MultipleObjects(UdmError):
 
 class UnknownModuleType(UdmError):
     def __init__(self, msg=None, dn=None, module_name=None):
-        # type: (Optional[Text], Optional[Text], Optional[Text]) -> None
+        # type: (Optional[str], Optional[str], Optional[str]) -> None
         ...
 
 
@@ -130,5 +130,5 @@ class UnknownProperty(UdmError):
 
 class WrongObjectType(UdmError):
     def __init__(self, msg=None, dn=None, module_name=None, univention_object_type=None):
-        # type: (Optional[Text], Optional[Text], Optional[Text], Optional[Text]) -> None
+        # type: (Optional[str], Optional[str], Optional[str], Optional[str]) -> None
         ...
