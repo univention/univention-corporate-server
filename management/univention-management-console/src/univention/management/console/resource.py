@@ -36,7 +36,9 @@ import json
 import re
 import traceback
 import uuid
+from html import escape, unescape
 from http.server import BaseHTTPRequestHandler
+from time import monotonic
 
 import tornado.gen
 from six.moves.http_client import LENGTH_REQUIRED, UNAUTHORIZED
@@ -49,25 +51,6 @@ from univention.management.console.ldap import get_machine_connection
 from univention.management.console.log import CORE
 from univention.management.console.session import Session
 
-
-try:
-    from time import monotonic
-except ImportError:
-    from monotonic import monotonic
-
-try:
-    from html import escape, unescape
-except ImportError:  # Python 2
-    import HTMLParser
-    html_parser = HTMLParser.HTMLParser()
-    unescape = html_parser.unescape
-    from cgi import escape
-
-# the SameSite cookie attribute is only available from Python 3.8
-from six.moves.http_cookies import Morsel
-
-
-Morsel._reserved['samesite'] = 'SameSite'
 
 LENGTH_REQUIRED, UNAUTHORIZED = int(LENGTH_REQUIRED), int(UNAUTHORIZED)
 
