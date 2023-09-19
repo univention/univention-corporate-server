@@ -50,7 +50,7 @@ Sample Client for the UDM REST API.
 import copy
 import sys
 import time
-from typing import Any, Callable, Dict, Iterator, List, Mapping, Optional, Text, Type, Union  # noqa: F401
+from typing import Any, Callable, Dict, Iterator, List, Mapping, Optional, Type, Union  # noqa: F401
 
 import requests
 import uritemplate
@@ -429,19 +429,19 @@ class Module(Client):
         raise NotImplementedError()
 
     def search(self, filter=None, position=None, scope='sub', hidden=False, superordinate=None, opened=False):
-        # type: (Union[Dict[str, str], Text, bytes, None], Optional[str], Optional[str], bool, Optional[str], bool) -> Iterator[Any]
+        # type: (Union[Dict[str, str], str, bytes, None], Optional[str], Optional[str], bool, Optional[str], bool) -> Iterator[Any]
         if opened:
             return self._search_opened(filter, position, scope, hidden, superordinate)
         else:
             return self._search_closed(filter, position, scope, hidden, superordinate)
 
     def _search_opened(self, filter=None, position=None, scope='sub', hidden=False, superordinate=None):
-        # type: (Union[Dict[str, str], Text, bytes, None], Optional[str], Optional[str], bool, Optional[str]) -> Iterator[Object]
+        # type: (Union[Dict[str, str], str, bytes, None], Optional[str], Optional[str], bool, Optional[str]) -> Iterator[Object]
         for obj in self._search(filter, position, scope, hidden, superordinate, True):
             yield Object.from_data(self.udm, obj)  # NOTE: this is missing last-modified, therefore no conditional request is done on modification!
 
     def _search_closed(self, filter=None, position=None, scope='sub', hidden=False, superordinate=None):
-        # type: (Union[Dict[str, str], Text, bytes, None], Optional[str], Optional[str], bool, Optional[str]) -> Iterator[ShallowObject]
+        # type: (Union[Dict[str, str], str, bytes, None], Optional[str], Optional[str], bool, Optional[str]) -> Iterator[ShallowObject]
         for obj in self._search(filter, position, scope, hidden, superordinate, False):
             objself = self.client.get_relation(obj, 'self')
             uri = objself['href']
@@ -449,7 +449,7 @@ class Module(Client):
             yield ShallowObject(self.udm, dn, uri)
 
     def _search(self, filter=None, position=None, scope='sub', hidden=False, superordinate=None, opened=False):
-        # type: (Union[Dict[str, str], Text, bytes, None], Optional[str], Optional[str], bool, Optional[str], bool) -> Iterator[Any]
+        # type: (Union[Dict[str, str], str, bytes, None], Optional[str], Optional[str], bool, Optional[str], bool) -> Iterator[Any]
         data = {
             'position': position,
             'scope': scope,
