@@ -58,6 +58,8 @@ define([
 ], function(declare, lang, array, all, domConstruct, Deferred, styles, Destroyable, tools, render, Page, Module,
 	ContainerWidget, TitlePane, Memory, Observable, ProgressBar, Text, Selection, List, DijitRegistry, _) {
 
+	var successPluginId = 5623;
+
 	tools.forIn({
 		critical: _('Critical: '),
 		conflict: _('Conflict: '),
@@ -276,6 +278,7 @@ define([
 		},
 
 		_runFullDiagnose: function() {
+			this._store.remove(successPluginId);
 			var plugins = this._grid.store.query();
 			this._stepInc = 100 / plugins.length;
 
@@ -333,7 +336,7 @@ define([
 					type: 'success',
 					title: _('No problems could be detected.'),
 					description: ''
-				});
+				}, {id: successPluginId});
 				this.refreshGrid();
 			}
 		}
