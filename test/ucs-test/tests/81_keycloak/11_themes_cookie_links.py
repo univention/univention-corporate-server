@@ -9,6 +9,7 @@ import shutil
 import tempfile
 from itertools import product
 from subprocess import CalledProcessError
+from typing import Tuple
 
 import pytest
 import requests
@@ -20,6 +21,22 @@ from utils import run_command, wait_for_class, wait_for_id
 
 
 LINK_COUNT = 12
+
+
+@pytest.fixture()
+def login_links(lang: str, link_count: int) -> Tuple[str, int]:
+
+    try:
+        for i in range(1, link_count + 1):
+            run_command(["univention-keycloak", "login-links", "set", lang, str(i), f"href{i}", f"desc{i}"])
+        yield lang, link_count
+    finally:
+        pass
+        for i in range(1, link_count + 1):
+            try:
+                run_command(["univention-keycloak", "login-links", "delete", lang, str(i)])
+            except CalledProcessError:
+                pass
 
 
 def test_get_webresources(keycloak_config):
