@@ -42,7 +42,7 @@ import traceback
 from enum import IntEnum
 from itertools import chain
 from types import TracebackType
-from typing import IO, Any, Callable, Dict, Iterable, List, Mapping, NoReturn, Sequence, Text, Tuple, Type, TypeVar
+from typing import IO, Any, Callable, Dict, Iterable, List, Mapping, NoReturn, Sequence, Tuple, Type, TypeVar
 
 import ldap
 
@@ -116,7 +116,7 @@ class UCSTestDomainAdminCredentials:
         else:
             self.bindpw = ucr.get('tests/domainadmin/pwd', 'univention')
         if self.binddn:
-            self.username: Text | None = uldap.explodeDn(self.binddn, 1)[0]
+            self.username: str | None = uldap.explodeDn(self.binddn, 1)[0]
         else:
             self.username = None
 

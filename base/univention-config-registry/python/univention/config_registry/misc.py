@@ -43,7 +43,7 @@ from shlex import quote as escape_value
 
 
 try:
-    from typing import IO, Dict, List, Text  # noqa: F401
+    from typing import IO, Dict, List  # noqa: F401
 except ImportError:  # pragma: no cover
     pass
 
@@ -59,7 +59,7 @@ __all__ = [
 
 
 def replace_dict(line, dictionary):
-    # type: (Text, Dict[Text, str]) -> Text
+    # type: (str, Dict[str, str]) -> str
     """
     Map any character from line to its value from dictionary.
 
@@ -70,7 +70,7 @@ def replace_dict(line, dictionary):
 
 
 def replace_umlaut(line):
-    # type: (Text) -> Text
+    # type: (str) -> str
     u"""
     Replace german umlauts.
 
@@ -129,7 +129,7 @@ VALID_CHARS = (  # type: ignore # pylint: disable-msg=W0612
 
 
 def validate_key(key, out=sys.stderr):
-    # type: (Text, IO) -> bool
+    # type: (str, IO) -> bool
     """
     Check if key consists of only shell valid characters.
 

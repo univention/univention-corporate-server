@@ -32,7 +32,7 @@
 # <https://www.gnu.org/licenses/>.
 
 from random import choice, randint
-from typing import Iterator, Text, Tuple
+from typing import Iterator, Tuple
 
 
 STR_NUMERIC = '0123456789'
@@ -45,7 +45,7 @@ STR_UMLAUT = 'äöüßâêôûŵẑŝĝĵŷĉ'
 STR_UMLAUTNUM = STR_UMLAUT + STR_NUMERIC
 
 
-def random_string(length: int = 10, alpha: bool = True, numeric: bool = True, charset: Text = "", encoding: str = 'utf-8') -> str:
+def random_string(length: int = 10, alpha: bool = True, numeric: bool = True, charset: str = "", encoding: str = 'utf-8') -> str:
     """
     Get specified number of random characters (ALPHA, NUMERIC or ALPHANUMERIC).
     Default is an alphanumeric string of 10 characters length. A custom character set

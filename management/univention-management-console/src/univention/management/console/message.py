@@ -54,7 +54,7 @@ from univention.management.console.log import CORE, PARSER, PROTOCOL
 
 
 try:
-    from typing import Any, Dict, List, Optional, Text, Union  # noqa: F401
+    from typing import Any, Dict, List, Optional, Union  # noqa: F401
     RequestType = int
     UmcpBody = Union[dict, str, bytes]
 except ImportError:
@@ -81,8 +81,8 @@ class Message(object):
     __counter = 0
 
     def __init__(self, type=REQUEST, command=u'', mime_type=MIMETYPE_JSON, data=None, arguments=None, options=None):
-        # type: (RequestType, Text, str, bytes, List[str], Dict[str, Any]) -> None
-        self.id = None  # type: Optional[Text]
+        # type: (RequestType, str, str, bytes, List[str], Dict[str, Any]) -> None
+        self.id = None  # type: Optional[str]
         if mime_type == MIMETYPE_JSON:
             self.body = {}  # type: UmcpBody
         else:
