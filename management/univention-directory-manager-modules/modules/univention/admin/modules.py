@@ -39,7 +39,7 @@ import copy
 import importlib
 import locale
 import os
-from typing import Any, Dict, List, Optional, Set, Text, Union  # noqa: F401
+from typing import Any, Dict, List, Optional, Set, Union  # noqa: F401
 
 import ldap
 import six
@@ -83,7 +83,7 @@ try:
 
         class object:
             def __init__(self, co, lo, position, dn=u'', superordinate=None, attributes=None):
-                # type: (None, univention.admin.uldap.access, univention.admin.uldap.position, Text, univention.admin.handlers.simpleLdap, univention.admin.handlers._Attributes) -> None
+                # type: (None, univention.admin.uldap.access, univention.admin.uldap.position, str, univention.admin.handlers.simpleLdap, univention.admin.handlers._Attributes) -> None
                 pass
 
         @staticmethod
