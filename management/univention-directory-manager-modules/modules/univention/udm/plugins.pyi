@@ -31,7 +31,7 @@
 # <https://www.gnu.org/licenses/>.
 
 from collections import OrderedDict  # noqa: F401
-from typing import Any, Dict, Iterable, Text, TypeVar  # noqa: F401
+from typing import Any, Dict, Iterable, TypeVar  # noqa: F401
 
 import univention
 
@@ -50,9 +50,9 @@ class Plugin(type):
 class Plugins(object):
 
     _plugins = None  # type: OrderedDict  # noqa: PYI026
-    _imported = {}  # type: Dict[Text, bool]
+    _imported = {}  # type: Dict[str, bool]
 
-    def __init__(self, python_path):  # type: (Text) -> None
+    def __init__(self, python_path):  # type: (str) -> None
         ...
 
     @classmethod
