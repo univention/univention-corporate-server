@@ -120,6 +120,10 @@ rotate_logfiles () {
 		logrotate -f /etc/logrotate.conf
 }
 
+prepare_domain_for_ucs52_preup_checks() {
+	/usr/share/univention-directory-manager-tools/udm-remap-country-from-st-to-c || return $?
+}
+
 jenkins_updates () {
 	ucr set update43/checkfilesystems=no update44/checkfilesystems=no update50/checkfilesystems=no update50/ignore_legacy_objects=yes update50/ignore_old_packages=yes
 	local version_version version_patchlevel version_erratalevel target rc=0
