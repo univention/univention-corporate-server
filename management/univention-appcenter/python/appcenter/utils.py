@@ -99,10 +99,7 @@ def read_ini_file(filename, parser_class=RawConfigParser):
     parser = parser_class()
     try:
         with open(filename) as f:
-            if hasattr(parser, 'read_file'):
-                parser.read_file(f)
-            else:
-                parser.readfp(f)
+            parser.read_file(f)
     except TypeError:
         pass
     except EnvironmentError:
