@@ -33,7 +33,7 @@
 from __future__ import absolute_import, unicode_literals
 
 from collections import namedtuple
-from typing import BinaryIO, Optional, Text, Union  # noqa: F401
+from typing import BinaryIO, Optional, Union  # noqa: F401
 
 
 FileType = namedtuple('namedtuple', ['mime_type', 'encoding', 'text'])
@@ -45,26 +45,26 @@ def get_file_type(filename_or_file):  # type: (Union[str, BinaryIO]) -> FileType
 
 class BaseBinaryProperty(object):
     def __init__(self, name, encoded_value=None, raw_value=None):
-        # type: (Text, Optional[Text], Optional[Text]) -> None
+        # type: (str, Optional[str], Optional[str]) -> None
         ...
 
-    def __repr__(self):  # type: () -> Text
+    def __repr__(self):  # type: () -> str
         ...
 
     @property
-    def encoded(self):  # type: () -> Text
+    def encoded(self):  # type: () -> str
         ...
 
     @encoded.setter
-    def encoded(self, value):  # type: (Text) -> None
+    def encoded(self, value):  # type: (str) -> None
         ...
 
     @property
-    def raw(self):  # type: () -> Text
+    def raw(self):  # type: () -> str
         ...
 
     @raw.setter
-    def raw(self, value):  # type: (Text) -> None
+    def raw(self, value):  # type: (str) -> None
         ...
 
     @property
@@ -74,19 +74,19 @@ class BaseBinaryProperty(object):
 
 class Base64BinaryProperty(BaseBinaryProperty):
     @property
-    def raw(self):  # type: () -> Text
+    def raw(self):  # type: () -> str
         ...
 
     @raw.setter
-    def raw(self, value):  # type: (Text) -> None
+    def raw(self, value):  # type: (str) -> None
         ...
 
 
 class Base64Bzip2BinaryProperty(BaseBinaryProperty):
     @property
-    def raw(self):  # type: () -> Text
+    def raw(self):  # type: () -> str
         ...
 
     @raw.setter
-    def raw(self, value):  # type: (Text) -> None
+    def raw(self, value):  # type: (str) -> None
         ...
