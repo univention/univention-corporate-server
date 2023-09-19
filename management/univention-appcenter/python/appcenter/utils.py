@@ -38,13 +38,6 @@
 import ipaddress
 import os
 import os.path
-
-
-try:
-    from shlex import quote
-except ImportError:
-    from pipes import quote
-
 import re
 import shutil
 import socket
@@ -54,6 +47,7 @@ from collections import OrderedDict
 from hashlib import md5, sha256
 from locale import getlocale
 from logging import Logger  # noqa: F401
+from shlex import quote
 from subprocess import PIPE, STDOUT, Popen, list2cmdline
 from threading import Thread
 from typing import (  # noqa: F401
