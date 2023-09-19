@@ -143,10 +143,7 @@ class Get(UniventionAppAction):
     def raw_value(cls, app, section, option):
         config_parser = CaseSensitiveConfigParser()
         with open(app.get_ini_file()) as f:
-            if hasattr(config_parser, 'read_file'):
-                config_parser.read_file(f)
-            else:
-                config_parser.readfp(f)
+            config_parser.read_file(f)
         try:
             return config_parser.get(section, option)
         except (NoSectionError, NoOptionError):
@@ -155,10 +152,7 @@ class Get(UniventionAppAction):
     def get_values(self, app, keys, warn=True):
         config_parser = CaseSensitiveConfigParser()
         with open(app.get_ini_file()) as f:
-            if hasattr(config_parser, 'read_file'):
-                config_parser.read_file(f)
-            else:
-                config_parser.readfp(f)
+            config_parser.read_file(f)
         for section, key in keys:
             search_section = section or 'Application'
             found = False
