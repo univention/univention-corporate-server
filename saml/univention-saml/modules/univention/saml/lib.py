@@ -68,7 +68,7 @@ def get_idps(ucr, log_fd=sys.stderr):
 
 
 def _decode(x):
-    # type: (typing.Union[bytes, typing.Text]) -> str
+    # type: (typing.Union[bytes, str]) -> str
     return x.decode('ASCII') if isinstance(x, bytes) else x
 
 

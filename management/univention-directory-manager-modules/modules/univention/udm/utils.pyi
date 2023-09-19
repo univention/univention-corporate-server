@@ -33,7 +33,7 @@
 from __future__ import absolute_import, unicode_literals
 
 from collections import namedtuple
-from typing import Any, Text  # noqa: F401
+from typing import Any  # noqa: F401
 
 
 ConnectionConfig = namedtuple('ConnectionConfig', ['klass', 'method', 'args', 'kwargs'])
@@ -54,31 +54,31 @@ class UDebug(object):
     }
 
     @classmethod
-    def all(cls, msg):  # type: (Text) -> None
+    def all(cls, msg):  # type: (str) -> None
         ...
 
     debug = all
 
     @classmethod
-    def error(cls, msg):  # type: (Text) -> None
+    def error(cls, msg):  # type: (str) -> None
         ...
 
     @classmethod
-    def info(cls, msg):  # type: (Text) -> None
+    def info(cls, msg):  # type: (str) -> None
         ...
 
     @classmethod
-    def process(cls, msg):  # type: (Text) -> None
+    def process(cls, msg):  # type: (str) -> None
         ...
 
     @classmethod
-    def warn(cls, msg):  # type: (Text) -> None
+    def warn(cls, msg):  # type: (str) -> None
         ...
 
     warning = warn
 
     @classmethod
-    def _log(cls, level, msg):  # type: (int, Text) -> None
+    def _log(cls, level, msg):  # type: (int, str) -> None
         ...
 
 

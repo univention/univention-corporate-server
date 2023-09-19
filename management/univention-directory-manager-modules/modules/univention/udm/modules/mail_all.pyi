@@ -32,7 +32,7 @@
 
 from __future__ import absolute_import, unicode_literals
 
-from typing import Dict, Text  # noqa: F401
+from typing import Dict  # noqa: F401
 
 from ..encoders import BaseEncoderTV  # noqa: F401
 from .generic import GenericModule, GenericObject, GenericObjectProperties, OriUdmHandlerTV  # noqa: F401
@@ -40,7 +40,7 @@ from .generic import GenericModule, GenericObject, GenericObjectProperties, OriU
 
 class MailAllObjectProperties(GenericObjectProperties):
 
-    _encoders = {}  # type: Dict[Text, BaseEncoderTV]
+    _encoders = {}  # type: Dict[str, BaseEncoderTV]
 
 
 class MailAllObject(GenericObject):
