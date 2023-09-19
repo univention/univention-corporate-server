@@ -38,14 +38,6 @@ from __future__ import absolute_import, print_function
 import ipaddress
 import locale
 import os
-
-
-try:
-    from shlex import quote
-except ImportError:
-    from pipes import quote
-
-
 import socket
 import subprocess
 import sys
@@ -53,6 +45,7 @@ import tempfile
 import time
 from collections import namedtuple
 from datetime import datetime, timedelta
+from shlex import quote
 from typing import Any, Callable, Dict, Iterable, List, Optional, Tuple, Union  # noqa: F401
 
 import dns.resolver
