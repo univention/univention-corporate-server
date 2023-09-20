@@ -163,13 +163,8 @@ upgrade_to_latest_errata () {
 
 upgrade_to_latest_test_errata_if () {
 	local errata_update="${1:-$ERRATA_UPDATE}"
-	local rc=0
-	if [ "$errata_update" = "testing" ]
-	then
+	[ "$errata_update" != "testing" ] ||
 		upgrade_to_latest_test_errata
-		rc=$?
-	fi
-	return $rc
 }
 
 upgrade_to_latest_test_errata () {
