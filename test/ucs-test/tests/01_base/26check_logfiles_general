@@ -63,6 +63,7 @@ find /var/log \
 		-o -path "/var/log/gdm/*log*" \
 		-o -path "/var/log/horde" \
 		-o -path "/var/log/hylafax" \
+		-o -path "/var/log/installer/firmware-summary" \
 		-o -path "/var/log/installer/hardware-summary" \
 		-o -path "/var/log/installer/lsb-release" \
 		-o -path "/var/log/installer/status" \
