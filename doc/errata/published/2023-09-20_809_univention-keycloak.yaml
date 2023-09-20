@@ -10,3 +10,6 @@ desc: |
    manage keycloak message bundles and login links for the login
    page.
 bug: [56478]
+erratum: 809
+announced: 2023-09-20
+support: core
