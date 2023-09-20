@@ -255,7 +255,7 @@ exe="ucs-kvm-create"
 [ "$KVM_BUILD_SERVER" = "EC2" ] && exe="ucs-ec2-create"
 [ "$KVM_BUILD_SERVER" = "Openstack" ] && exe="ucs-openstack-create"
 
-if [[ "$exe" == "ucs-ec2-create" ]]
+if [ "$exe" = "ucs-ec2-create" ]
 then
 	[ -f ~/.boto ] ||
 		die "Missing ~/.boto file for EC2 access!"
