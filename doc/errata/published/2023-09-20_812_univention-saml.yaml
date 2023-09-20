@@ -9,3 +9,6 @@ desc: |
  * The Python 2.7 compatibility for the UCR template
    "/etc/simplesamlphp/00authsources.php" has been restored.
 bug: [56588]
+erratum: 812
+announced: 2023-09-20
+support: core
