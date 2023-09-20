@@ -253,7 +253,7 @@ class UniventionKeycloakAdmin(KeycloakAdmin):
                 raise
 
     def get_message_bundles(self, language: str) -> dict:
-        res = self.raw_get(f"/admin/realms/{self.realm_name}/localization/{language}")
+        res = self.raw_get(f"admin/realms/{self.realm_name}/localization/{language}")
         raise_error_from_response(res, KeycloakGetError, expected_codes=[200])
         return res.json()
 

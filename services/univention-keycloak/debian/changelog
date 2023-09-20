@@ -1,3 +1,9 @@
+univention-keycloak (1.0.9-31) unstable; urgency=medium
+
+  * Bug #56478: manage message bundles and login links
+
+ -- Felix Botner <botner@univention.de>  Wed, 20 Sep 2023 13:36:00 +0200
+
 univention-keycloak (1.0.9-30) unstable; urgency=medium
 
   * Bug #56478: manage message bundles and login links
