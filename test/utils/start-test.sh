@@ -250,12 +250,12 @@ build_git () {
 [ -n "${UCSSCHOOL_BRANCH}${UCS_BRANCH}" ] &&
 	build_git
 
-# create the command and run in EC2, Openshift or KVM depending on cfg
+# create the command and run in EC2, Openstack or KVM depending on cfg
 exe="ucs-kvm-create"
 [ "$KVM_BUILD_SERVER" = "EC2" ] && exe="ucs-ec2-create"
 [ "$KVM_BUILD_SERVER" = "Openstack" ] && exe="ucs-openstack-create"
 
-if [[ "$exe" == "ucs-ec2-create" ]]
+if [ "$exe" == "ucs-ec2-create" ]
 then
 	[ -f ~/.boto ] ||
 		die "Missing ~/.boto file for EC2 access!"
@@ -270,8 +270,8 @@ then
 	# create env file
 	{
 		# get aws credentials
-		#[[$exe == "ucs-ec2-create"]] ||
-		#	sed -rne '/^\[Credentials\]/,${/^\[Credentials\]/d;s/^ *(aws_(secret_)?access_key(_id)?) *= *(.*)/\U\1\E=\4/p;/^\[/q}' ~/.boto
+		[ "$exe" = "ucs-ec2-create" ] &&
+			sed -rne '/^\[Credentials\]/,${/^\[Credentials\]/d;s/^ *(aws_(secret_)?access_key(_id)?) *= *(.*)/\U\1\E=\4/p;/^\[/q}' ~/.boto
 		echo "AWS_DEFAULT_REGION=eu-west-1"
 		env |
 			grep -Eve '^(HOSTNAME|PATH|PWD|OLDPWD|SHELL|SHLVL|TEMP|TEMPDIR|TMPDIR)=|^(KDE|GTK[0-9]*|QT|XDG)_'
