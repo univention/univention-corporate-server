@@ -11,3 +11,6 @@ note: https://www.mozilla.org/en-US/security/advisories/mfsa2023-40/
 bug: [56607]
 cve:
 - CVE-2023-4863
+erratum: 806
+announced: 2023-09-20
+support: core
