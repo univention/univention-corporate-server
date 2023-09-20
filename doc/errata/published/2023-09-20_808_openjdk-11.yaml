@@ -38,3 +38,6 @@ cve:
 - CVE-2023-21954
 - CVE-2023-21967
 - CVE-2023-21968
+erratum: 808
+announced: 2023-09-20
+support: core
