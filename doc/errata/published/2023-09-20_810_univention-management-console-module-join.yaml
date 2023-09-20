@@ -9,3 +9,6 @@ desc: |
  * The joinscripts are now executed with umask 022 instead of the
    restrictive umask 077 from the UMC-Server.
 bug: [53431]
+erratum: 810
+announced: 2023-09-20
+support: core
