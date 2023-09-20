@@ -12,6 +12,7 @@
 ## bugs: [22567]
 ## versions:
 ##  2.4-2: found
+##  5.1-0: skip
 ## exposure: dangerous
 
 RETVAL=110 # Test fehlgeschlagen
