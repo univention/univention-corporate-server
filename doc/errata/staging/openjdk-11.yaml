@@ -8,7 +8,7 @@ desc: |
  This update addresses the following issues:
  * CVE-2023-21930: Improper connection handling during TLS handshake.
  * CVE-2023-21937: Missing string checks for NULL characters.
- * CVE-2023-21938: Incorrect handling of NULL characters in ProcessBuilder.
+ * CVE-2023-21938: Incorrect handling of NULL characters in `ProcessBuilder`.
  * CVE-2023-21939: Swing HTML parsing issue.
  * CVE-2023-21954: Incorrect enqueue of references in garbage collector.
  * CVE-2023-21967: Certificate validation issue in TLS session negotiation.
