@@ -3,10 +3,10 @@
 ## tags: [apptest]
 ## exposure: dangerous
 ## packages: [univention-mail-server]
-## bugs: []
 
 import socket
 import subprocess
+from time import sleep
 
 import netifaces
 
@@ -18,51 +18,52 @@ from univention.testing import utils
 SMTP_PORT = 25
 
 
-def get_ext_ip():
-    ifaces = netifaces.interfaces()
-    print(f'interfaces: {ifaces!r}')
-    ifaces = [i for i in ifaces if i not in ('docker', 'docker0', 'lo') and not i.startswith('veth')]
-    # ignore ipv6 only
-    ifaces = [netifaces.ifaddresses(iface)[netifaces.AF_INET] for iface in ifaces if netifaces.AF_INET in netifaces.ifaddresses(iface)]
-    print(f'ifaces: {ifaces!r}')
-    ifaces = ifaces[0]
-    addrs = [i['addr'] for i in ifaces]
-    print(f'addrs: {addrs!r}')
-    return addrs[0]
+def get_ext_ip() -> str:
+    for iface in netifaces.interfaces():
+        if iface in {"lo"}:
+            continue
+        if iface.startswith(("docker", "veth")):
+            continue
+        addrs = netifaces.ifaddresses(iface)
+        for rec in addrs.get(netifaces.AF_INET, []):
+            addr = rec["addr"]
+            print(f"iface={iface} addr={addr}")
+            return addr
+    raise ValueError("No usable IPv4 address found")
 
 
-def reverse_dns_name(ip):
+def reverse_dns_name(ip: str) -> str:
     reverse = ip.split('.')
     reverse.reverse()
     return '%s.in-addr.arpa' % '.'.join(reverse)
 
 
-def print_header(section_string):
+def print_header(section_string: str) -> None:
     print('info', 40 * '+', '\n%s\ninfo' % section_string, 40 * '+')
 
 
-def create_bad_mailheader(fqdn: str, sender_ip: str, mailfrom: str, rcptto: str):
-    def get_return_code(s):
+def create_bad_mailheader(fqdn: str, sender_ip: str, mailfrom: str, rcptto: str) -> None:
+    def get_return_code(s: str) -> int:
         try:
             return int(s[:4])
         except ValueError:
             return -1
 
-    def get_reply(s):
+    def get_reply(s: socket.socket) -> str:
         buff_size = 1024
-        reply = ''
+        reply = b''
         while True:
-            part = s.recv(buff_size).decode('UTf-8')
+            part = s.recv(buff_size)
             reply += part
             if len(part) < buff_size:
                 break
-        return reply
+        return reply.decode('UTF-8')
 
-    def send_message(s, message):
+    def send_message(s: socket.socket, message: str) -> None:
         print(f'OUT: {message!r}')
         s.send(b'%s\r\n' % (message.encode('UTF-8'),))
 
-    def send_and_receive(s, message):
+    def send_and_receive(s: socket.socket, message: str) -> int:
         send_message(s, message)
         reply = [reply.strip() for reply in get_reply(s).split('\n') if reply.strip()]
         r = get_return_code(reply[-1])
@@ -72,25 +73,35 @@ def create_bad_mailheader(fqdn: str, sender_ip: str, mailfrom: str, rcptto: str)
         return r
 
     print(f'Connecting to {sender_ip}:{SMTP_PORT} (TCP)...')
-    s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    s.connect((sender_ip, SMTP_PORT))
-    s.settimeout(0.2)
-    reply = get_reply(s)
-    r = get_return_code(reply)
-    print(f'IN : {reply!r} (return code: {r!r})')
-    send_and_receive(s, 'EHLO %s' % fqdn)
-    if mailfrom:
-        send_and_receive(s, 'MAIL FROM: %s' % mailfrom)
-    send_and_receive(s, 'RCPT TO: %s' % rcptto)
-    send_and_receive(s, 'DATA')
-    send_and_receive(s, 'SPAMBODY')
-    retval = send_and_receive(s, '.')
-    send_message(s, 'QUIT')
-    s.close()
+    with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
+        for _ in range(3):
+            try:
+                s.connect((sender_ip, SMTP_PORT))
+                break
+            except ConnectionRefusedError:
+                sleep(1)
+        else:
+            raise ConnectionRefusedError()
+
+        s.settimeout(0.2)
+        reply = get_reply(s)
+        r = get_return_code(reply)
+        print(f'IN : {reply!r} (return code: {r!r})')
+        send_and_receive(s, 'EHLO %s' % fqdn)
+        if mailfrom:
+            send_and_receive(s, 'MAIL FROM: %s' % mailfrom)
+        send_and_receive(s, 'RCPT TO: %s' % rcptto)
+        send_and_receive(s, 'DATA')
+        send_and_receive(s, 'SPAMBODY')
+        retval = send_and_receive(s, '.')
+        send_message(s, 'QUIT')
     assert retval != 250
 
 
-def main(ucr):
+def main(ucr) -> None:
+    fqdn = '%(hostname)s.%(domainname)s' % ucr
+    sender_ip = get_ext_ip()
+
     header0 = "The classic open-relay test:"
     header1 = "The classic open-relay test with the \"\" (Sendmail 8.8 and others MTAs, much used by the spammers):"
     header2 = "The non-RFC821 compliant test (MS Exchange and SLmail betas):"
@@ -103,9 +114,9 @@ def main(ucr):
     header9 = "NULL sender vulnerability:"
 
     test_cases = [
-        ('%s@%s' % ('spambag', get_ext_ip()), 'victim@mailinator.com', header0),
-        ('%s@[%s]' % ('spambag', get_ext_ip()), 'victim@mailinator.com', header0),
-        ('%s@%s' % ('spambag', reverse_dns_name(get_ext_ip())), 'victim@mailinator.com', header0),
+        ('%s@%s' % ('spambag', sender_ip), 'victim@mailinator.com', header0),
+        ('%s@[%s]' % ('spambag', sender_ip), 'victim@mailinator.com', header0),
+        ('%s@%s' % ('spambag', reverse_dns_name(sender_ip)), 'victim@mailinator.com', header0),
 
         ("spambag@mailinator.com", "victim@mailinator.com", header1),
 
@@ -135,21 +146,17 @@ def main(ucr):
         ("<>", "victim@mailinator.com", header9),
     ]
 
-    fqdn = '%(hostname)s.%(domainname)s' % ucr
-    sender_ip = get_ext_ip()
-
     for (mailfrom, rcpt, header) in test_cases:
         print_header(header)
         create_bad_mailheader(fqdn, sender_ip, mailfrom, rcpt)
 
 
 if __name__ == '__main__':
-    with utils.AutoCallCommand(exit_cmd=["/bin/systemctl", "restart", "postfix.service"]), utils.AutoCallCommand(exit_cmd=["/usr/sbin/ucr", "commit", "/etc/postfix/main.cf"]), ucr_test.UCSTestConfigRegistry() as ucr:
+    with utils.AutoCallCommand(exit_cmd=["systemctl", "restart", "postfix.service"]), utils.AutoCallCommand(exit_cmd=["/usr/sbin/ucr", "commit", "/etc/postfix/main.cf"]), ucr_test.UCSTestConfigRegistry() as ucr:
         # disable postscreen to check postfix rules directly otherwise
         # connection might get dropped directly on first misbehaviour by postscreen.
         print('Disabling postscreen during tests...')
         handler_set(['mail/postfix/postscreen/enabled=no'])
-        subprocess.call(["/usr/sbin/ucr", "commit", "/etc/postfix/main.cf"])
-        subprocess.call(["/bin/systemctl", "restart", "postfix.service"], stderr=open('/dev/null', 'w'))
+        subprocess.call(["systemctl", "restart", "postfix.service"])
         print('postscreen disabled. Starting tests...')
         main(ucr)
