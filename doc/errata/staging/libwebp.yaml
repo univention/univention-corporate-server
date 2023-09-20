@@ -6,11 +6,7 @@ src: libwebp
 fix: 0.6.1-2+deb10u3
 desc: |
  This update addresses the following issue:
- 0.6.1-2+deb10u3 (Mon, 18 Sep 2023 12:11:16 +0200)
- * Non-maintainer upload by the Debian LTS team.
- * CVE-2023-4863: heap buffer overflow.
- * libwebp6.symbols: add missing version for WebPPlaneDistortion.
- * libwebpmux3.symbols: fix library SONAME.
+ * CVE-2023-4863: Heap buffer overflow.
 bug: [56633]
 cve:
 - CVE-2023-4863
