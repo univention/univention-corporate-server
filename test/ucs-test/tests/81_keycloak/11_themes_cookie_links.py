@@ -47,8 +47,9 @@ def test_get_webresources(keycloak_config):
         "/univention/js/dijit/themes/umc/images/login_logo.svg",
     ]
     for resource in resources:
-        resp = requests.get(f"{keycloak_config.url}/{resource}")
-        assert resp.status_code == 200
+        url = f"https://{keycloak_config.server}/{resource}"
+        resp = requests.get(url)
+        assert resp.status_code == 200, f"{resp.status_code} {url}"
 
 
 @pytest.mark.skipif(not os.path.isfile("/etc/keycloak.secret"), reason="fails without keycloak locally installed")
@@ -57,7 +58,13 @@ def test_get_webresources(keycloak_config):
     ["light", "rgba(30, 30, 29, 1)"]],
     ids=["dark", "light"],
 )
-def test_theme_switch(ucr, keycloak_adm_login, admin_account, settings):
+def test_theme_switch(ucr, keycloak_adm_login, admin_account, settings, keycloak_config):
+    # makes no sense in this setup
+    # keycloak runs on a different machine and the current machine
+    # is not used as keycloak server
+    if not keycloak_config.server.startswith("ucs-sso-ng."):
+        if not keycloak_config.server.startswith(f"{ucr['hostname']}."):
+            pytest.skip("unsupported setup for this test")
     theme = settings[0]
     color = settings[1]
     ucr.handler_set([f"ucs/web/theme={theme}"])
@@ -67,7 +74,13 @@ def test_theme_switch(ucr, keycloak_adm_login, admin_account, settings):
 
 
 @pytest.mark.skipif(not os.path.isfile("/etc/keycloak.secret"), reason="fails without keycloak locally installed")
-def test_custom_theme(keycloak_adm_login, admin_account):
+def test_custom_theme(keycloak_adm_login, admin_account, ucr, keycloak_config):
+    # makes no sense in this setup
+    # keycloak runs on a different machine and the current machine
+    # is not used as keycloak server
+    if not keycloak_config.server.startswith("ucs-sso-ng."):
+        if not keycloak_config.server.startswith(f"{ucr['hostname']}."):
+            pytest.skip("unsupported setup for this test")
     custom_css = "/var/www/univention/login/css/custom.css"
     color_css = "rgba(131, 20, 20, 1)"
     with tempfile.NamedTemporaryFile(dir='/tmp', delete=False) as tmpfile:
