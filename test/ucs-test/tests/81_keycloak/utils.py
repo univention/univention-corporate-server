@@ -130,10 +130,13 @@ def keycloak_login(
     username: str,
     password: str,
     fails_with: Optional[str] = None,
+    no_login: bool = False,
 ) -> None:
     wait_for_id(driver, keycloak_config.username_id)
     wait_for_id(driver, keycloak_config.password_id)
     wait_for_id(driver, keycloak_config.login_id)
+    if no_login:
+        return
     driver.find_element(By.ID, keycloak_config.username_id).send_keys(username)
     driver.find_element(By.ID, keycloak_config.password_id).send_keys(password)
     driver.find_element(By.ID, keycloak_config.login_id).click()

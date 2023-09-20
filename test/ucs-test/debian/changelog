@@ -1,3 +1,9 @@
+ucs-test (10.0.19-8) unstable; urgency=medium
+
+  * Bug 56524: added 11_themes_cookie_links.py
+
+ -- Felix Botner <botner@univention.de>  Wed, 20 Sep 2023 09:02:24 +0200
+
 ucs-test (10.0.19-7) unstable; urgency=medium
 
   * Bug #56434: fixed 51_samba4/68univention-samba-backup
