@@ -10,3 +10,6 @@ desc: |
 bug: [56633]
 cve:
 - CVE-2023-4863
+erratum: 807
+announced: 2023-09-20
+support: core
