@@ -250,7 +250,7 @@ build_git () {
 [ -n "${UCSSCHOOL_BRANCH}${UCS_BRANCH}" ] &&
 	build_git
 
-# create the command and run in EC2, Openshift or KVM depending on cfg
+# create the command and run in EC2, OpenStack or KVM depending on cfg
 exe="ucs-kvm-create"
 [ "$KVM_BUILD_SERVER" = "EC2" ] && exe="ucs-ec2-create"
 [ "$KVM_BUILD_SERVER" = "Openstack" ] && exe="ucs-openstack-create"
