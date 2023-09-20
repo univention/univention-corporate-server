@@ -6,11 +6,7 @@ src: c-ares
 fix: 1.12.0-1+deb9u6
 desc: |
  This update addresses the following issue:
- 1.12.0-1+deb9u5 (Tue, 04 Jul 2023 20:46:35 +0200)
- * Non-maintainer upload by the ELTS team.
- * Regression update introduced in last upload.
- 1.12.0-1+deb9u6 (Fri, 15 Sep 2023 09:02:02 +0200)
- * Fix CVE-2020-22217: fix invalid read in ares_parse_soa_reply.c
+ * CVE-2020-22217: Fix invalid read in `ares_parse_soa_reply.c`.
 bug: [56606]
 cve:
 - CVE-2020-22217
