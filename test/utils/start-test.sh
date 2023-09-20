@@ -306,6 +306,9 @@ then
 			-v "$HOME/.ssh:$HOME/.ssh:ro"
 		)
 	fi
+	if [ "$exe" = "ucs-openstack-create" ]; then
+               cmd+=(-v "$HOME/.clouds.yaml:/etc/openstack/clouds.yml:ro")
+	fi
 	# interactive mode for debug
 	$debug && cmd+=("-it")
 	# the image to start
