@@ -306,7 +306,6 @@ then
 			-v "$HOME/.ssh:$HOME/.ssh:ro"
 		)
 	fi
-
 	# interactive mode for debug
 	$debug && cmd+=("-it")
 	# the image to start
