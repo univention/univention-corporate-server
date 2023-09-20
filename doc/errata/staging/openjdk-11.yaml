@@ -1,0 +1,83 @@
+product: ucs
+release: "5.0"
+version: [4, 5]
+scope: ucs_5.0-0-errata5.0-5
+src: openjdk-11
+fix: 11.0.20+8-1~deb10u1
+desc: |
+ This update addresses the following issues:
+ 11.0.20+8-1~deb10u1 (Mon, 18 Sep 2023 19:14:04 +0200)
+ * Non-maintainer upload by the LTS Team.
+ * Backport to buster.
+ 11.0.20+8-1 (Wed, 19 Jul 2023 08:40:22 +0200)
+ * OpenJDK 11.0.20 release, build 8. - CVE-2023-22041, CVE-2023-25193,
+   CVE-2023-22045, CVE-2023-22049, CVE-2023-22036, CVE-2023-22006. - Release
+   notes:
+   https://www.oracle.com/java/technologies/javase/11-0-20-relnotes.html#R11_0_20
+ * Link with --no-as-needed..
+ * Refresh patches.
+ 11.0.20~7-1 (Sat, 01 Jul 2023 09:11:49 +0200)
+ * OpenJDK 11.0.20+7 build (early access).
+ [ Vladimir Petko ]
+ * debian/copyright: convert to a machine-readable format.
+ * debian/copyright: align excludes statement with openjdk-17.
+ * Provide versioned java-runtime, java-runtime-headless, java-sdk and
+   java-sdk-headless virtual packages (Emmanuel Bourg).
+ * Configure --with-stdc++lib=static on ia64.
+ * Bump standards version.
+ 11.0.19+7-1 (Sun, 11 Jun 2023 12:55:28 +0200)
+ * OpenJDK 11.0.19 release, build 7. - CVE-2023-21930, CVE-2023-21937,
+   CVE-2023-21938, CVE-2023-21939, CVE-2023-21954, CVE-2023-21967,
+   CVE-2023-21968. - Release notes:
+   https://mail.openjdk.org/pipermail/jdk-updates-dev/2023-April/021900.html -
+   d/p/*: refresh patches.
+ * debian/JB-jre-headless.postinst.in: trigger ca-certificates-java after jre
+   is set up.
+ * d/p: drop obsolete patches (LP: #2011653). -
+   workaround_expand_exec_shield_cs_limit.diff: obsoleted by
+   hotspot-disable-exec-shield-workaround.diff. - generated-headers.patch:
+   include is already added by openjdk makefile. - parallel-build-fix.diff:
+   include is not necessary.
+ * d/copyright, d/watch: implement uscan repackaging (LP: #2011749).
+ * d/rules: use --with-debug-symbols=none (LP: #2003820).
+ * d/control: add jtreg6 dependencies, regenerate control.
+ * d/t/{jdk,hotspot,jaxp,langtools}: run tier1 and tier2 jtreg tests only, add
+   test options from OpenJDK makefile.
+ * d/t/*: fix test environment: add missing -nativepath (LP: #2001563).
+ * d/t/jdk: provide dbus session for the window manager (LP: #2001576).
+ * d/p/*: add patches for jtreg tests: - disable-thumb-assertion.patch: fix
+   JDK-8305481. - update-assertion-for-armhf.patch: fix JDK-8305480. -
+   log-generated-classes-test.patch: workaround JDK-8166162. -
+   update-permission-test.patch: add security permissions for testng 7. -
+   ldap-timeout-test-use-ip.patch, test-use-ip-address.patch: Ubuntu-specific
+   patches to workaround missing DNS resolver on the build machines. -
+   exclude_broken_tests.patch: quarantine failing tests.
+ * d/rules: package external debug symbols (LP: #2015835).
+ * drop d/p/{jaw-classpath.diff, jaw-optional.diff}: the atk wrapper is
+   disabled and these patches cause class data sharing tests to fail (LP:
+   #2016194).
+ * d/p/exclude-broken-tests.patch: add OpenJDK 11 failures.
+ * d/t/jtreg-autopkgtest.in: pass JTREG home to locate junit.jar, regenerate
+   d/t/jtreg-autopkgtest.sh (LP: #2016206).
+ * d/t/control.in: disable jtreg autopkgtests in line with openjdk 17,
+   regenerate control (LP: #2016438).
+ * d/rules: pack external debug symbols with build-id, do not pack duplicate
+   symbols, do not strip JVM shared libraries (LP: #2012326, LP: #2016739).
+ * d/rules: always use jtreg6.
+ [ Matthias Klose ]
+ * d/rules: Fix using CC/CXX for recent releases.
+bug: [56632]
+cve:
+- CVE-2023-22041
+- CVE-2023-25193
+- CVE-2023-22045
+- CVE-2023-22049
+- CVE-2023-22036
+- CVE-2023-22006
+- CVE-2023-21930
+- CVE-2023-21937
+- CVE-2023-21938
+- CVE-2023-21939
+- CVE-2023-21954
+- CVE-2023-21967
+- CVE-2023-21968
