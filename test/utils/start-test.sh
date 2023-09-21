@@ -21,6 +21,7 @@ kvm_label_suffix=''
 exact_match='false'
 ucsschool_release='scope'
 shutdown='false'
+openstack_image_name='UCS 5.0-5'
 
 # some internal stuff
 image="${DIMAGE:-gitregistry.knut.univention.de/univention/dist/ucs-ec2-tools}"
@@ -204,6 +205,7 @@ export RELEASE_UPDATE="${release_update:=public}"
 export ERRATA_UPDATE="${errata_update:=testing}"
 export COMPONENT_VERSION="${COMPONENT_VERSION:=testing}"
 export UCSSCHOOL_RELEASE=${UCSSCHOOL_RELEASE:=$ucsschool_release}
+export OPENSTACK_IMAGE_NAME="${OPENSTACK_IMAGE_NAME:=$openstack_image_name}"
 
 # get image from cfg if not explicitly as env var
 if [ -z "$DIMAGE" ]; then
@@ -250,15 +252,13 @@ build_git () {
 [ -n "${UCSSCHOOL_BRANCH}${UCS_BRANCH}" ] &&
 	build_git
 
-# create the command and run in EC2 or KVM depending on cfg
-KVM=false
-grep -q '^\w*kvm_template' "$CFG" && KVM=true # if kvm is configure in cfg, use kvm
-[ "$KVM_BUILD_SERVER" = "EC2" ] && KVM=false
-if "$KVM"
+# create the command and run in EC2, OpenStack or KVM depending on cfg
+exe="ucs-kvm-create"
+[ "$KVM_BUILD_SERVER" = "EC2" ] && exe="ucs-ec2-create"
+[ "$KVM_BUILD_SERVER" = "Openstack" ] && exe="ucs-openstack-create"
+
+if [ "$exe" = "ucs-ec2-create" ]
 then
-	exe='ucs-kvm-create'
-else
-	exe='ucs-ec2-create'
 	[ -f ~/.boto ] ||
 		die "Missing ~/.boto file for EC2 access!"
 fi
@@ -272,7 +272,7 @@ then
 	# create env file
 	{
 		# get aws credentials
-		"$KVM" ||
+		[ "$exe" = "ucs-ec2-create" ] &&
 			sed -rne '/^\[Credentials\]/,${/^\[Credentials\]/d;s/^ *(aws_(secret_)?access_key(_id)?) *= *(.*)/\U\1\E=\4/p;/^\[/q}' ~/.boto
 		echo "AWS_DEFAULT_REGION=eu-west-1"
 		env |
@@ -307,6 +307,14 @@ then
 		cmd+=(
 			-v "$HOME/.ssh:$HOME/.ssh:ro"
 		)
+	fi
+	if [ "$exe" = "ucs-openstack-create" ]; then
+        for p in ${OS_CLIENT_CONFIG_FILE:+"$OS_CLIENT_CONFIG_FILE"} "${PWD}/clouds.yaml" "${HOME}/.config/openstack/clouds.yaml" /etc/openstack/clouds.yaml
+        do
+            [ -r "$p" ] || continue
+            cmd+=(-v "$p:/etc/openstack/clouds.yml:ro")
+            break
+        done
 	fi
 	# interactive mode for debug
 	$debug && cmd+=("-it")
