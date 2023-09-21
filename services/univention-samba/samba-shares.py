@@ -36,12 +36,11 @@
 from __future__ import absolute_import, annotations, print_function
 
 import os
+import pickle
 import re
 import subprocess
 from typing import Dict, List
-
-from six.moves import cPickle as pickle
-from six.moves.urllib_parse import quote
+from urllib.parse import quote
 
 import univention.debug as ud
 import univention.lib.listenerSharePath
