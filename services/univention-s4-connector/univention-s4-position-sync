@@ -44,7 +44,6 @@ import ldb
 from samba.auth import system_session
 from samba.param import LoadParm
 from samba.samdb import SamDB
-from six.moves import input
 
 import univention.admin.filter
 import univention.s4connector.s4
