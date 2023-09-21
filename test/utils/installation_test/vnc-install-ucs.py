@@ -805,7 +805,11 @@ class UCSInstallation(VNCInstallation):
 
         [Fertigstellen]
         """
-        self.wait_for_text('setup_successful', timeout=-2100)
+        for i in range(3):
+            try:
+                self.wait_for_text('setup_successful', timeout=-2100)
+            except Exception:  # vncdotool.client.VNCDoException:
+                sleep(self.setup_finish_sleep, "FINISH")
         self.type('\t\n')
         self.wait_for_text('univention')
 
