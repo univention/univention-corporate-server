@@ -38,9 +38,8 @@
 from __future__ import print_function
 
 import base64
+import configparser
 import os
-
-from six.moves import configparser
 
 
 def fixup(s):

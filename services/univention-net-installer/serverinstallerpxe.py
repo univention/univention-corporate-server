@@ -38,8 +38,7 @@ from __future__ import absolute_import, annotations
 import os
 from textwrap import dedent
 from typing import Dict, List
-
-from six.moves.urllib_parse import urljoin
+from urllib.parse import urljoin
 
 import univention.debug as ud
 

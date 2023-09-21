@@ -70,6 +70,7 @@ ignore = [
  "TD001",
  "TD002",
  "TD003",
+ "S301",  # suspicious-pickle-usage
  "S311",  # suspicious-non-cryptographic-random-usage
  "S602",  # subprocess-popen-with-shell-equals-true
  "S603",  # subprocess-without-shell-equals-true

@@ -33,10 +33,10 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
+import configparser
 import re
 
 import six
-from six.moves import configparser
 
 
 try:

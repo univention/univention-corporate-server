@@ -35,13 +35,12 @@
 
 
 import os
+import pickle
 import pwd
 import re
 import subprocess
 import sys
 import time
-
-from six.moves import cPickle as pickle
 
 import univention.config_registry
 import univention.lib.fstab

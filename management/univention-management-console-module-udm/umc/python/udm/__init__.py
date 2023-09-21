@@ -42,11 +42,11 @@ import re
 import shutil
 import tempfile
 import traceback
+from urllib.error import HTTPError, URLError
+from urllib.parse import quote, urlencode
 
 import six
 from ldap import INVALID_CREDENTIALS, LDAPError
-from six.moves.urllib_error import HTTPError, URLError
-from six.moves.urllib_parse import quote, urlencode
 from six.moves.urllib_request import Request
 
 import univention.admin.modules as udm_modules

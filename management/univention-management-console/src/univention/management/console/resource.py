@@ -37,11 +37,11 @@ import re
 import traceback
 import uuid
 from html import escape, unescape
+from http.client import LENGTH_REQUIRED, UNAUTHORIZED
 from http.server import BaseHTTPRequestHandler
 from time import monotonic
 
 import tornado.gen
-from six.moves.http_client import LENGTH_REQUIRED, UNAUTHORIZED
 from tornado.web import HTTPError, RequestHandler
 
 import univention.debug as ud

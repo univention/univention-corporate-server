@@ -47,7 +47,6 @@ from samba.dcerpc import misc
 from samba.ndr import ndr_unpack
 from samba.param import LoadParm
 from samba.samdb import SamDB
-from six.moves import input
 
 import univention.admin.config
 import univention.admin.modules

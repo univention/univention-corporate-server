@@ -42,13 +42,12 @@ import shutil
 import subprocess
 import tarfile
 from argparse import Action
+from configparser import ConfigParser, DuplicateSectionError, NoOptionError, NoSectionError
 from datetime import date
 from glob import glob
 from json import dumps
 from tempfile import NamedTemporaryFile, mkdtemp
-
-from six.moves.configparser import ConfigParser, DuplicateSectionError, NoOptionError, NoSectionError
-from six.moves.urllib_parse import urljoin
+from urllib.parse import urljoin
 
 from univention.appcenter.actions import StoreAppAction, UniventionAppAction, get_action
 from univention.appcenter.app import App, AppFileAttribute, CaseSensitiveConfigParser, LooseVersion

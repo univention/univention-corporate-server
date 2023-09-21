@@ -38,10 +38,10 @@
 
 import codecs
 import re
+from configparser import DuplicateSectionError, NoOptionError, NoSectionError, ParsingError, RawConfigParser
 from copy import deepcopy
 
 from six import with_metaclass
-from six.moves.configparser import DuplicateSectionError, NoOptionError, NoSectionError, ParsingError, RawConfigParser
 
 from univention.appcenter.log import get_base_logger
 from univention.appcenter.meta import UniventionMetaClass, UniventionMetaInfo

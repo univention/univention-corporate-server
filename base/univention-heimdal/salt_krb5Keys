@@ -35,10 +35,10 @@
 # <https://www.gnu.org/licenses/>.
 
 import sys
+from urllib.parse import quote
 
 import heimdal
 import ldap
-from six.moves.urllib.parse import quote
 
 import univention.config_registry
 

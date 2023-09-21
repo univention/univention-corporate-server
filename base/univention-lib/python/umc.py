@@ -46,16 +46,16 @@ connections to remote |UMC| servers
 """
 
 import base64
+import http  # noqa: F401
 import json
 import locale
 import ssl
+from http.client import HTTPException, HTTPSConnection
+# the SameSite cookie attribute is only available from Python 3.8
+from http.cookies import Morsel, SimpleCookie
 from typing import Any, Dict, List, Optional, Tuple, Type, TypeVar, Union, overload  # noqa: F401
 
 import six
-from six.moves import http_client as httplib  # noqa: F401
-from six.moves.http_client import HTTPException, HTTPSConnection
-# the SameSite cookie attribute is only available from Python 3.8
-from six.moves.http_cookies import Morsel, SimpleCookie
 
 from univention.config_registry import ConfigRegistry
 
@@ -101,7 +101,7 @@ class HTTPError(six.with_metaclass(_HTTPType, Exception)):
     A specialized sub-class if automatically instantiated based on the |HTTP| return code.
 
     :param request: The |HTTP| request.
-    :param httplib.HTTPResponse response: The |HTTP| response.
+    :param http.client.HTTPResponse response: The |HTTP| response.
     :param str hostname: The host name of the failed server.
     """
 
@@ -165,91 +165,91 @@ class HTTPError(six.with_metaclass(_HTTPType, Exception)):
 
 
 class HTTPRedirect(HTTPError):
-    """:py:data:`httplib.MULTIPLE_CHOICES` |HTTP|/1.1, :rfc:`2616`, Section 10.3.1"""
+    """:py:data:`http.client.MULTIPLE_CHOICES` |HTTP|/1.1, :rfc:`2616`, Section 10.3.1"""
 
     code = 300
 
 
 class MovedPermanently(HTTPRedirect):
-    """:py:data:`httplib.MOVED_PERMANENTLY` |HTTP|/1.1, :rfc:`2616`, Section 10.3.2"""
+    """:py:data:`http.client.MOVED_PERMANENTLY` |HTTP|/1.1, :rfc:`2616`, Section 10.3.2"""
 
     code = 301
 
 
 class Found(HTTPRedirect):
-    """:py:data:`httplib.FOUND` |HTTP|/1.1, :rfc:`2616`, Section 10.3.3"""
+    """:py:data:`http.client.FOUND` |HTTP|/1.1, :rfc:`2616`, Section 10.3.3"""
 
     code = 302
 
 
 class SeeOther(HTTPRedirect):
-    """:py:data:`httplib.SEE_OTHER` |HTTP|/1.1, :rfc:`2616`, Section 10.3.4"""
+    """:py:data:`http.client.SEE_OTHER` |HTTP|/1.1, :rfc:`2616`, Section 10.3.4"""
 
     code = 303
 
 
 class NotModified(HTTPRedirect):
-    """:py:data:`httplib.NOT_MODIFIED` |HTTP|/1.1, :rfc:`2616`, Section 10.3.5"""
+    """:py:data:`http.client.NOT_MODIFIED` |HTTP|/1.1, :rfc:`2616`, Section 10.3.5"""
 
     code = 304
 
 
 class BadRequest(HTTPError):
-    """:py:data:`httplib.BAD_REQUEST` |HTTP|/1.1, :rfc:`2616`, Section 10.4.1"""
+    """:py:data:`http.client.BAD_REQUEST` |HTTP|/1.1, :rfc:`2616`, Section 10.4.1"""
 
     code = 400
 
 
 class Unauthorized(HTTPError):
-    """:py:data:`httplib.UNAUTHORIZED` |HTTP|/1.1, :rfc:`2616`, Section 10.4.2"""
+    """:py:data:`http.client.UNAUTHORIZED` |HTTP|/1.1, :rfc:`2616`, Section 10.4.2"""
 
     code = 401
 
 
 class Forbidden(HTTPError):
-    """:py:data:`httplib.UNAUTHORIZED` |HTTP|/1.1, :rfc:`2616`, Section 10.4.4"""
+    """:py:data:`http.client.UNAUTHORIZED` |HTTP|/1.1, :rfc:`2616`, Section 10.4.4"""
 
     code = 403
 
 
 class NotFound(HTTPError):
-    """:py:data:`httplib.NOT_FOUND` |HTTP|/1.1, :rfc:`2616`, Section 10.4.5"""
+    """:py:data:`http.client.NOT_FOUND` |HTTP|/1.1, :rfc:`2616`, Section 10.4.5"""
 
     code = 404
 
 
 class MethodNotAllowed(HTTPError):
-    """:py:data:`httplib.METHOD_NOT_ALLOWED` |HTTP|/1.1, :rfc:`2616`, Section 10.4.6"""
+    """:py:data:`http.client.METHOD_NOT_ALLOWED` |HTTP|/1.1, :rfc:`2616`, Section 10.4.6"""
 
     code = 405
 
 
 class NotAcceptable(HTTPError):
-    """:py:data:`httplib.NOT_ACCEPTABLE` |HTTP|/1.1, :rfc:`2616`, Section 10.4.7"""
+    """:py:data:`http.client.NOT_ACCEPTABLE` |HTTP|/1.1, :rfc:`2616`, Section 10.4.7"""
 
     code = 406
 
 
 class UnprocessableEntity(HTTPError):
-    """:py:data:`httplib.UNPROCESSABLE_ENTITY` WEBDAV, :rfc:`22518`, Section 10.3"""
+    """:py:data:`http.client.UNPROCESSABLE_ENTITY` WEBDAV, :rfc:`22518`, Section 10.3"""
 
     code = 422
 
 
 class InternalServerError(HTTPError):
-    """:py:data:`httplib.INTERNAL_SERVER_ERROR` |HTTP|/1.1, :rfc:`2616`, Section 10.5.1"""
+    """:py:data:`http.client.INTERNAL_SERVER_ERROR` |HTTP|/1.1, :rfc:`2616`, Section 10.5.1"""
 
     code = 500
 
 
 class BadGateway(HTTPError):
-    """:py:data:`httplib.BAD_GATEWAY` |HTTP|/1.1, :rfc:`2616`, Section 10.5.3"""
+    """:py:data:`http.client.BAD_GATEWAY` |HTTP|/1.1, :rfc:`2616`, Section 10.5.3"""
 
     code = 502
 
 
 class ServiceUnavailable(HTTPError):
-    """:py:data:`httplib.SERVICE_UNAVAILABLE` |HTTP|/1.1, :rfc:`2616`, Section 10.5.4"""
+    """:py:data:`http.client.SERVICE_UNAVAILABLE` |HTTP|/1.1, :rfc:`2616`, Section 10.5.4"""
 
     code = 503
 
@@ -292,7 +292,7 @@ class Response(object):
     :param str reason: string with the reason phrase e.g. 'OK'
     :param str body: the raw response body
     :param list headers: the response headers as list of tuples
-    :param httplib.HTTPResponse _response: The original |HTTP| response.
+    :param http.client.HTTPResponse _response: The original |HTTP| response.
     """
 
     @property
@@ -318,7 +318,7 @@ class Response(object):
             return self.data.get('message')
 
     def __init__(self, status, reason, body, headers, _response):
-        # type: (int, str, bytes, List[Tuple[str, str]], httplib.HTTPResponse) -> None
+        # type: (int, str, bytes, List[Tuple[str, str]], http.client.HTTPResponse) -> None
         self.status = status
         self.reason = reason
         self.body = body
@@ -366,11 +366,11 @@ class Response(object):
 
     @classmethod
     def _from_httplib_response(cls, response):
-        # type: (httplib.HTTPResponse) -> Response
+        # type: (http.client.HTTPResponse) -> Response
         """
         Create class instance from |HTTP| response.
 
-        :param httplib.HTTPResponse response: The |HTTP| response.
+        :param http.client.HTTPResponse response: The |HTTP| response.
         """
         data = response.read()
         return cls(response.status, response.reason, data, response.getheaders(), response)
@@ -608,11 +608,11 @@ class Client(object):
         return umc_response
 
     def _handle_cookies(self, response):
-        # type: (httplib.HTTPResponse) -> None
+        # type: (http.client.HTTPResponse) -> None
         """
         Parse cookies from |HTTP| response and store for next request.
 
-        :param httplib.HTTPResponse: The |HTTP| response.
+        :param http.client.HTTPResponse: The |HTTP| response.
         """
         # FIXME: this cookie handling doesn't respect path, domain and expiry
         cookies = SimpleCookie()  # type: SimpleCookie[Any]
@@ -620,13 +620,13 @@ class Client(object):
         self.cookies.update({cookie.key: cookie.value for cookie in cookies.values()})
 
     def __request(self, request):
-        # type: (Request) -> httplib.HTTPResponse
+        # type: (Request) -> http.client.HTTPResponse
         """
         Perform a request to the |UMC| server and return its response.
 
         :param Request request: The |UMC| request.
         :returns: The |HTTP| response.
-        :rtype: httplib.HTTPResponse
+        :rtype: http.client.HTTPResponse
         """
         uri = '%s%s' % (self._base_uri, request.path)
         con = self._get_connection()

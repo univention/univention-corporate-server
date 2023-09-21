@@ -44,7 +44,6 @@ import sys
 import time
 
 import six
-from six.moves import input
 
 from univention.config_registry import ConfigRegistry
 

@@ -39,6 +39,7 @@ from __future__ import print_function
 import collections
 import copy
 import os
+import pickle
 import pprint
 import random
 import re
@@ -51,7 +52,6 @@ import ldap
 from ldap.controls.readentry import PostReadControl
 from samba.dcerpc import misc
 from samba.ndr import ndr_unpack
-from six.moves import cPickle as pickle
 
 import univention.admin.modules
 import univention.admin.objects

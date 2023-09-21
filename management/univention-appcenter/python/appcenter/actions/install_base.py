@@ -45,7 +45,6 @@ from glob import glob
 from tempfile import NamedTemporaryFile
 
 from six import string_types
-from six.moves import input
 
 from univention.appcenter.actions import StoreAppAction, get_action
 from univention.appcenter.actions.register import Register

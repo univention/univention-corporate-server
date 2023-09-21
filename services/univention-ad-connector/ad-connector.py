@@ -37,12 +37,11 @@
 from __future__ import absolute_import, annotations
 
 import os
+import pickle
 import shutil
 import subprocess
 import time
 from typing import Dict, List, Tuple
-
-from six.moves import cPickle as pickle
 
 import univention.debug as ud
 
