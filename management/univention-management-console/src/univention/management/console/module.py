@@ -440,7 +440,7 @@ class Manager(dict):
             if not filename.endswith('.xml'):
                 continue
             try:
-                parsed_xml = ET.parse(os.path.join(Manager.DIRECTORY, filename))  # noqa: S313
+                parsed_xml = ET.parse(os.path.join(Manager.DIRECTORY, filename))  # noqa: S313, S314
                 RESOURCES.debug('Loaded module %s' % filename)
                 for mod_tree in parsed_xml.getroot():
                     mod = XML_Definition(root=mod_tree)

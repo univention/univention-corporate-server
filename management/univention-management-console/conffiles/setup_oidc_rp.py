@@ -35,9 +35,9 @@ from __future__ import print_function
 
 import json
 import sys
+from urllib.parse import quote
 
 import requests
-from six.moves.urllib_parse import quote
 
 from univention.config_registry import handler_set
 

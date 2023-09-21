@@ -38,10 +38,10 @@ import os
 import time
 import uuid
 from time import monotonic
+from urllib.parse import urlencode, urlparse, urlunsplit
 
 import jwt
 from jwt.algorithms import RSAAlgorithm
-from six.moves.urllib_parse import urlencode, urlparse, urlunsplit
 from tornado import escape
 from tornado.auth import OAuth2Mixin
 from tornado.httpclient import HTTPClientError, HTTPRequest
