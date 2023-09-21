@@ -9,8 +9,7 @@ from __future__ import print_function
 import os
 import sys
 import typing  # noqa: F401
-
-from six.moves.urllib_parse import urlparse
+from urllib.parse import urlparse
 
 from univention.config_registry import ConfigRegistry  # noqa: F401
 

@@ -37,12 +37,12 @@
 from __future__ import print_function
 
 import os
+import pickle  # noqa: S403
 import sys
 import time
 from argparse import ArgumentParser
 
 import ldap
-from six.moves import cPickle as pickle
 
 import univention.uldap
 from univention.config_registry import ConfigRegistry

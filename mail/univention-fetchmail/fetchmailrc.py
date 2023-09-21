@@ -35,11 +35,10 @@ from __future__ import absolute_import, annotations
 
 import json
 import os
+import pickle  # noqa: S403
 import re
 from functools import reduce
 from typing import Dict, Iterable, List
-
-from six.moves import cPickle as pickle
 
 import univention.debug as ud
 

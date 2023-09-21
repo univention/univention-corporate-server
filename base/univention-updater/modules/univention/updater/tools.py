@@ -52,9 +52,10 @@ import socket
 import subprocess
 import sys
 import tempfile
+from http import client as httplib
 
 import six
-from six.moves import http_client as httplib, urllib_error, urllib_request as urllib2
+from six.moves import urllib_error, urllib_request as urllib2
 
 from univention.config_registry import ConfigRegistry
 from univention.lib.ucs import UCS_Version
