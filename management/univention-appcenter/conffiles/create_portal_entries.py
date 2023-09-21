@@ -36,10 +36,10 @@
 import re
 from base64 import b64encode
 from copy import copy
+from urllib.parse import urlsplit
 
 from ldap import SERVER_DOWN
 from ldap.dn import escape_dn_chars
-from six.moves.urllib_parse import urlsplit
 
 import univention.admin.uexceptions as udm_errors
 from univention.appcenter.log import get_base_logger, log_to_logfile

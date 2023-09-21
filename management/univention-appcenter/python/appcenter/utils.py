@@ -44,6 +44,7 @@ import socket
 import ssl
 import time
 from collections import OrderedDict
+from configparser import ParsingError, RawConfigParser
 from hashlib import md5, sha256
 from locale import getlocale
 from logging import Logger  # noqa: F401
@@ -54,13 +55,12 @@ from typing import (  # noqa: F401
     TYPE_CHECKING, Any, Container, Dict, Iterable, List, Mapping, Optional, Sequence, Tuple, Type, TypeVar, Union,
     overload,
 )
+from urllib.parse import urlencode
 from uuid import uuid4
 
 from ldap.filter import filter_format
 from six import string_types
 from six.moves import http_client, urllib_request
-from six.moves.configparser import ParsingError, RawConfigParser
-from six.moves.urllib_parse import urlencode
 
 from univention.appcenter.log import get_base_logger
 from univention.appcenter.ucr import ucr_get, ucr_keys
