@@ -40,14 +40,14 @@ import os
 import os.path
 import platform
 import re
+from configparser import NoOptionError, NoSectionError, RawConfigParser
 from copy import copy
 from distutils.version import LooseVersion
+from urllib.parse import urlsplit
 from weakref import ref
 
 import six
 from six import PY3, string_types, with_metaclass
-from six.moves.configparser import NoOptionError, NoSectionError, RawConfigParser
-from six.moves.urllib_parse import urlsplit
 
 from univention.appcenter.ini_parser import read_ini_file
 from univention.appcenter.log import get_base_logger

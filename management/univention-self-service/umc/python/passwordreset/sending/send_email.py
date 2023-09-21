@@ -53,8 +53,7 @@ import os.path
 import smtplib
 from email.mime.nonmultipart import MIMENonMultipart
 from email.utils import formatdate
-
-from six.moves.urllib_parse import quote
+from urllib.parse import quote
 
 from univention.config_registry import ConfigRegistry
 from univention.lib.i18n import Translation
