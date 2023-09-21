@@ -37,9 +37,9 @@
 import os
 import re
 import subprocess
+from urllib.parse import urlencode, urlunparse
 
 import requests
-from six.moves.urllib_parse import urlencode, urlunparse
 
 import univention.config_registry
 import univention.management.console as umc

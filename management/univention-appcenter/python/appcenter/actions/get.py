@@ -37,10 +37,9 @@
 
 import re
 from argparse import Action
+from configparser import NoOptionError, NoSectionError
 from fnmatch import translate
 from shlex import quote
-
-from six.moves.configparser import NoOptionError, NoSectionError
 
 from univention.appcenter.actions import StoreAppAction, UniventionAppAction
 from univention.appcenter.app import CaseSensitiveConfigParser

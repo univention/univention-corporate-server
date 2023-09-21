@@ -39,9 +39,8 @@ from __future__ import print_function
 import os
 import re
 import shlex
-
-from six.moves.configparser import ConfigParser
-from six.moves.urllib_parse import quote
+from configparser import ConfigParser
+from urllib.parse import quote
 
 from univention.config_registry import ConfigRegistry
 

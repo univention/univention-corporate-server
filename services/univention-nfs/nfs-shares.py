@@ -37,10 +37,9 @@
 from __future__ import absolute_import, annotations
 
 import os
+import pickle
 import re
 from typing import Dict, List
-
-from six.moves import cPickle as pickle
 
 import univention.debug as ud
 import univention.lib.listenerSharePath
