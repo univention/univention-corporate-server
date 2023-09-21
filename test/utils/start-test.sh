@@ -21,6 +21,7 @@ kvm_label_suffix=''
 exact_match='false'
 ucsschool_release='scope'
 shutdown='false'
+openstack_image_name='UCS 5.0-5'
 
 # some internal stuff
 image="${DIMAGE:-gitregistry.knut.univention.de/univention/dist/ucs-ec2-tools}"
@@ -204,6 +205,7 @@ export RELEASE_UPDATE="${release_update:=public}"
 export ERRATA_UPDATE="${errata_update:=testing}"
 export COMPONENT_VERSION="${COMPONENT_VERSION:=testing}"
 export UCSSCHOOL_RELEASE=${UCSSCHOOL_RELEASE:=$ucsschool_release}
+export OPENSTACK_IMAGE_NAME="${OPENSTACK_IMAGE_NAME:=$openstack_image_name}"
 
 # get image from cfg if not explicitly as env var
 if [ -z "$DIMAGE" ]; then
