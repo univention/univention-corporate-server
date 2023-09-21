@@ -42,7 +42,7 @@ try:
 except ImportError:
     pass
 
-from six.moves.urllib_parse import quote, urlsplit
+from urllib.parse import quote, urlsplit
 
 
 class UcsRepoUrl(object):
