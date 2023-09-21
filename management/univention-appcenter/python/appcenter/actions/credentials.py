@@ -43,7 +43,6 @@ from getpass import getpass, getuser
 from tempfile import NamedTemporaryFile
 
 import ldap
-from six.moves import input
 
 from univention.appcenter.actions import UniventionAppAction
 from univention.appcenter.exceptions import (
