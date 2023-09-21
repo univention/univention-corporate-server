@@ -38,6 +38,7 @@ import sys
 import time
 import traceback
 import zlib
+from urllib.parse import urlparse, urlunsplit
 
 import six
 from saml2 import BINDING_HTTP_ARTIFACT, BINDING_HTTP_POST, BINDING_HTTP_REDIRECT
@@ -47,7 +48,6 @@ from saml2.metadata import create_metadata_string
 from saml2.response import StatusError, UnsolicitedResponse, VerificationError
 from saml2.s_utils import UnknownPrincipal, UnsupportedBinding
 from saml2.sigver import MissingKey, SignatureError
-from six.moves.urllib_parse import urlparse, urlunsplit
 from tornado.web import HTTPError
 
 from univention.lib.i18n import NullTranslation
