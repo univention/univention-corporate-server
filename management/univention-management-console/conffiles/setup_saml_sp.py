@@ -40,11 +40,11 @@ import os
 from glob import glob
 from subprocess import call
 from time import sleep
+from urllib.parse import urlparse
 
 from defusedxml import ElementTree, lxml
 from saml2 import BINDING_SOAP
 from saml2.md import NAMESPACE
-from six.moves.urllib_parse import urlparse
 
 
 workaround = set()

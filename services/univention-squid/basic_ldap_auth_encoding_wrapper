@@ -38,10 +38,9 @@
 # utf8 is used by Chrome and Firefox while IE uses latin-1
 
 import sys
+from urllib.parse import unquote
 
 import pexpect
-from six.moves import input
-from six.moves.urllib_parse import unquote
 
 
 def check_user(input__):
