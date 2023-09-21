@@ -112,10 +112,10 @@ import locale
 import re
 import sys
 import traceback
+from urllib.parse import urlparse
 
 import ldap
 import six
-from six.moves.urllib_parse import urlparse
 
 import univention.admin.uexceptions as udm_errors
 from univention.lib.i18n import I18N_Error, Locale, Translation

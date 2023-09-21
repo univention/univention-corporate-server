@@ -39,14 +39,13 @@
 import os
 import os.path
 import sys
+from configparser import NoSectionError
 from contextlib import contextmanager
 from glob import glob
 from json import dump, load
 from time import sleep
 from typing import Dict, Iterable, List, Optional, Tuple  # noqa: F401
-
-from six.moves.configparser import NoSectionError
-from six.moves.urllib_parse import urlsplit
+from urllib.parse import urlsplit
 
 from univention.appcenter.app import App, LooseVersion
 from univention.appcenter.ini_parser import (

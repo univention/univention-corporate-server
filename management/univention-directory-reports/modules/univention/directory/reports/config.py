@@ -36,8 +36,7 @@
 import locale
 import os.path
 import shlex
-
-from six.moves.configparser import ConfigParser
+from configparser import ConfigParser
 
 
 class Config(ConfigParser):

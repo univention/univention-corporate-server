@@ -45,7 +45,6 @@ import time
 from typing import Sequence
 
 import six
-from six.moves import input
 
 from univention.config_registry import ucr
 

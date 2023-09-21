@@ -38,10 +38,10 @@ from __future__ import absolute_import, annotations
 
 import os
 import os.path
+import pickle  # noqa: S403
 from typing import Dict, List
 
 import six
-from six.moves import cPickle as pickle
 
 import univention.config_registry
 import univention.debug as ud

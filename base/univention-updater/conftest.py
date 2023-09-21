@@ -10,7 +10,6 @@
 from __future__ import print_function
 
 import subprocess
-import sys
 from io import BytesIO, StringIO, TextIOWrapper
 from os.path import abspath, dirname, join
 
@@ -27,12 +26,7 @@ try:
 except ImportError:
     pass
 
-if sys.version_info >= (3,):
-    import builtins
-else:
-    import __builtin__ as builtins
-    FileNotFoundError = IOError
-    collect_ignore = ["modules/univention/updater/scripts", "umc/python/updater/__init__.py"]
+import builtins
 
 
 # from tests/mockups.py

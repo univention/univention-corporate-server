@@ -37,9 +37,8 @@
 from __future__ import absolute_import, annotations
 
 import os
+import pickle  # noqa: S403
 from typing import Dict, List
-
-from six.moves import cPickle as pickle
 
 from univention.mail.dovecot import DovecotListener
 

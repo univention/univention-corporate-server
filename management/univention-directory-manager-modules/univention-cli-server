@@ -41,6 +41,7 @@ import json
 import os
 import signal
 import socket
+import socketserver
 import sys
 import traceback
 from argparse import ArgumentParser, Namespace
@@ -48,8 +49,6 @@ from io import StringIO
 from logging import getLogger
 from select import select
 from typing import IO, List, Optional, Tuple
-
-from six.moves import socketserver
 
 import univention.admincli.adduser
 import univention.admincli.admin

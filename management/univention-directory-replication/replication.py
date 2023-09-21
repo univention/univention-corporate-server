@@ -50,6 +50,7 @@ import smtplib
 import subprocess
 import sys
 import time
+from email.mime.text import MIMEText
 from errno import ENOENT
 from typing import Any, Dict, List, Tuple
 
@@ -57,7 +58,6 @@ import ldap
 import ldap.schema
 # import ldif as ldifparser since the local module already uses ldif as variable
 import ldif as ldifparser
-from six.moves.email_mime_text import MIMEText
 
 import univention.debug as ud
 

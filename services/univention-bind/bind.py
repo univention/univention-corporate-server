@@ -48,8 +48,7 @@ import signal
 import subprocess
 import time
 from typing import Dict, List
-
-from six.moves.urllib_parse import quote
+from urllib.parse import quote
 
 import univention.debug as ud  # pylint: disable-msg=E0611
 

@@ -51,9 +51,11 @@ import stat
 import subprocess
 import time
 import uuid
+from http.client import LENGTH_REQUIRED, REQUEST_ENTITY_TOO_LARGE
 from ipaddress import ip_address
 from shlex import quote
 from time import monotonic
+from urllib.parse import urlparse, urlsplit, urlunsplit
 
 import ldap
 import pycurl
@@ -63,8 +65,6 @@ import tornado.curl_httpclient
 import tornado.gen
 import tornado.httpclient
 import tornado.web
-from six.moves.http_client import LENGTH_REQUIRED, REQUEST_ENTITY_TOO_LARGE
-from six.moves.urllib_parse import urlparse, urlsplit, urlunsplit
 from tornado.web import HTTPError
 
 import univention.admin.uexceptions as udm_errors
