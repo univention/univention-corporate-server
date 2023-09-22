@@ -20,7 +20,6 @@ from typing import IO, Any, Dict, Iterable, Iterator, List, Optional, Sequence, 
 import apt
 import yaml
 
-from univention.appcenter.app_cache import Apps
 from univention.config_registry import ConfigRegistry
 from univention.testing.codes import TestCodes
 from univention.testing.errors import TestError
@@ -84,11 +83,12 @@ class TestEnvironment:
     def _load_apps(self):  # type: () -> None
         """Load locally installed apps."""
         logging.getLogger('univention.appcenter').setLevel(TestEnvironment.logger.getEffectiveLevel())
-        apps_cache = Apps()
         # shitty, but we have no app cache in pbuilder and apps_cache can't handle that
         try:
+            from univention.appcenter.app_cache import Apps
+            apps_cache = Apps()
             self.local_apps = [app.id for app in apps_cache.get_all_locally_installed_apps()]
-        except (TypeError, PermissionError):
+        except (ImportError, TypeError, PermissionError):
             self.local_apps = []
 
     def _load_host(self):  # type: () -> None
@@ -137,7 +137,7 @@ class TestEnvironment:
         print('architecture: %s' % (self.architecture,), file=stream)
         print('version: %s' % (self.ucs_version,), file=stream)
         print('role: %s' % (self.role,), file=stream)
-        print('apps: %s' % (self.apps,), file=stream)
+        print('apps: %s' % (self.local_apps,), file=stream)
         print('joined: %s' % (self.joined,), file=stream)
         print('tags_required: %s' % (' '.join(self.tags_required or set()) or '-',), file=stream)
         print('tags_prohibited: %s' % (' '.join(self.tags_prohibited or set()) or '-',), file=stream)
