@@ -1,3 +1,9 @@
+ucs-test (10.0.19-12) unstable; urgency=medium
+
+  * Bug #56524: added 11_themes_cookie_links.py
+
+ -- Felix Botner <botner@univention.de>  Fri, 22 Sep 2023 14:47:41 +0200
+
 ucs-test (10.0.19-11) unstable; urgency=medium
 
   * Bug #56624: switch the detection of the correct check failing in

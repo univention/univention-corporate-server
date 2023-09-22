@@ -6,6 +6,7 @@
 
 import os
 import shutil
+import socket
 import tempfile
 from itertools import product
 from subprocess import CalledProcessError
@@ -21,6 +22,15 @@ from utils import run_command, wait_for_class, wait_for_id
 
 
 LINK_COUNT = 12
+
+
+@pytest.fixture(autouse=True)
+def check_i_am_keycloak(request, keycloak_config, ucr):
+    if request.node.get_closest_marker("check_i_am_keycloak"):
+        keycloak_ip = socket.gethostbyname(keycloak_config.server)
+        my_ip = socket.gethostbyname(ucr["hostname"])
+        if keycloak_ip != my_ip:
+            pytest.skip("this system is not the keycloak server, test makes no sense here")
 
 
 @pytest.fixture()
@@ -53,18 +63,13 @@ def test_get_webresources(keycloak_config):
 
 
 @pytest.mark.skipif(not os.path.isfile("/etc/keycloak.secret"), reason="fails without keycloak locally installed")
+@pytest.mark.check_i_am_keycloak()
 @pytest.mark.parametrize("settings", [
     ["dark", "rgba(255, 255, 255, 1)"],
     ["light", "rgba(30, 30, 29, 1)"]],
     ids=["dark", "light"],
 )
-def test_theme_switch(ucr, keycloak_adm_login, admin_account, settings, keycloak_config):
-    # makes no sense in this setup
-    # keycloak runs on a different machine and the current machine
-    # is not used as keycloak server
-    if not keycloak_config.server.startswith("ucs-sso-ng."):
-        if not keycloak_config.server.startswith(f"{ucr['hostname']}."):
-            pytest.skip("unsupported setup for this test")
+def test_theme_switch(ucr, keycloak_adm_login, admin_account, settings):
     theme = settings[0]
     color = settings[1]
     ucr.handler_set([f"ucs/web/theme={theme}"])
@@ -74,13 +79,8 @@ def test_theme_switch(ucr, keycloak_adm_login, admin_account, settings, keycloak
 
 
 @pytest.mark.skipif(not os.path.isfile("/etc/keycloak.secret"), reason="fails without keycloak locally installed")
-def test_custom_theme(keycloak_adm_login, admin_account, ucr, keycloak_config):
-    # makes no sense in this setup
-    # keycloak runs on a different machine and the current machine
-    # is not used as keycloak server
-    if not keycloak_config.server.startswith("ucs-sso-ng."):
-        if not keycloak_config.server.startswith(f"{ucr['hostname']}."):
-            pytest.skip("unsupported setup for this test")
+@pytest.mark.check_i_am_keycloak()
+def test_custom_theme(keycloak_adm_login, admin_account):
     custom_css = "/var/www/univention/login/css/custom.css"
     color_css = "rgba(131, 20, 20, 1)"
     with tempfile.NamedTemporaryFile(dir='/tmp', delete=False) as tmpfile:
@@ -97,6 +97,7 @@ def test_custom_theme(keycloak_adm_login, admin_account, ucr, keycloak_config):
 
 
 @pytest.mark.skipif(not os.path.isfile("/etc/keycloak.secret"), reason="fails without keycloak locally installed")
+@pytest.mark.check_i_am_keycloak()
 def test_cookie_banner(keycloak_adm_login, admin_account, ucr, keycloak_config):
     ucr.handler_set([
         "umc/cookie-banner/cookie=TESTCOOKIE",
@@ -130,6 +131,7 @@ def test_cookie_banner(keycloak_adm_login, admin_account, ucr, keycloak_config):
 
 
 @pytest.mark.skipif(not os.path.isfile("/etc/keycloak.secret"), reason="fails without keycloak locally installed")
+@pytest.mark.check_i_am_keycloak()
 def test_cookie_banner_no_banner_with_cookie_domains(keycloak_adm_login, admin_account, ucr):
     # no banner if umc/cookie-banner/domains does not match
     # the current domain
@@ -146,9 +148,10 @@ def test_cookie_banner_no_banner_with_cookie_domains(keycloak_adm_login, admin_a
 
 
 @pytest.mark.skipif(not os.path.isfile("/etc/keycloak.secret"), reason="fails without keycloak locally installed")
-def test_cookie_banner_domains(keycloak_adm_login, admin_account, ucr):
+@pytest.mark.check_i_am_keycloak()
+def test_cookie_banner_domains(keycloak_adm_login, admin_account, ucr, keycloak_config):
     # check if cookie domain is set to umc/cookie-banner/domains
-    domain = ucr.get("domainname")
+    domain = keycloak_config.server.split(".", 1)[1]
     ucr.handler_set([
         "umc/cookie-banner/cookie=TESTCOOKIE",
         "umc/cookie-banner/show=true",
@@ -171,6 +174,7 @@ def test_cookie_banner_domains(keycloak_adm_login, admin_account, ucr):
 
 
 @pytest.mark.skipif(not os.path.isfile("/etc/keycloak.secret"), reason="fails without keycloak locally installed")
+@pytest.mark.check_i_am_keycloak()
 def test_login_page_with_cookie_banner_no_element_is_tabbable(keycloak_adm_login, admin_account, ucr):
     # only the accept button is tabbable
     ucr.handler_set([
@@ -194,8 +198,8 @@ def test_login_page_with_cookie_banner_no_element_is_tabbable(keycloak_adm_login
 
 
 @pytest.mark.skipif(not os.path.isfile("/etc/keycloak.secret"), reason="fails without keycloak locally installed")
-def test_login_page_all_elements_are_tabbable(keycloak_adm_login, admin_account):
-    driver = keycloak_adm_login(admin_account.username, admin_account.bindpw, no_login=True)
+def test_login_page_all_elements_are_tabbable(portal_login_via_keycloak, keycloak_adm_login, admin_account):
+    driver = portal_login_via_keycloak(admin_account.username, admin_account.bindpw, no_login=True)
     assert driver.switch_to.active_element.get_attribute("name") == "username"
     assert driver.switch_to.active_element.is_displayed
     ActionChains(driver).send_keys(Keys.TAB).perform()
@@ -205,8 +209,6 @@ def test_login_page_all_elements_are_tabbable(keycloak_adm_login, admin_account)
     assert driver.switch_to.active_element.get_attribute("name") == "login"
     assert driver.switch_to.active_element.is_displayed
     # some browser fields
-    ActionChains(driver).send_keys(Keys.TAB).perform()
-    ActionChains(driver).send_keys(Keys.TAB).perform()
     ActionChains(driver).send_keys(Keys.TAB).perform()
     ActionChains(driver).send_keys(Keys.TAB).perform()
     assert driver.switch_to.active_element.text == "English"
