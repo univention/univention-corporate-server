@@ -207,7 +207,6 @@ class UCSInstallation(VNCInstallation):
         self.click_on('GRUB')
         self.client.keyPress('enter')
 
-
         """
         # Configure Univention System Setup
         """
