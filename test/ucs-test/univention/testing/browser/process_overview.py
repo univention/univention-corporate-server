@@ -73,7 +73,7 @@ class ProcessOverview:
 
         category_textbox = self.page.get_by_label("Category")
         search_textbox = text_boxes.nth(2)
-        category_textbox.click(force=True)
+        category_textbox.click()
         expect(category_textbox).to_be_enabled()
         category_textbox.clear()
         category_textbox.fill(category)

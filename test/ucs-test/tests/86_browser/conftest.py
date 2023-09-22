@@ -112,14 +112,14 @@ def umc_browser_test(
     yield tester
 
     report = request.node.stash[phase_report_key]
-
-    if "call" in report and report["call"].failed:
-        save_trace(page, context, request, ucr)
-        check_for_backtrace(page)
-    else:
-        context.tracing.stop()
-
-    page.close()
+    try:
+        if "call" in report and report["call"].failed:
+            save_trace(page, context, request, ucr)
+            check_for_backtrace(page)
+        else:
+            context.tracing.stop()
+    finally:
+        page.close()
 
 
 def save_trace(page: Page, context: BrowserContext, request: pytest.FixtureRequest, ucr):
@@ -145,15 +145,19 @@ def save_trace(page: Page, context: BrowserContext, request: pytest.FixtureReque
 
 def check_for_backtrace(page: Page):
     show_backtrace_button = page.get_by_role("button", name="Show server error message")
+    notification_502_error = page.get_by_text("An unknown error with status code 502 occurred")
     try:
-        expect(show_backtrace_button).to_be_visible(timeout=5 * SEC)
-        show_backtrace_button.click()
-        backtrace_container = page.get_by_role(
-            "region",
-            name="Hide server error message",
-        )
-        logger.info("Recorded backtrace")
-        print(backtrace_container.inner_text())
+        expect(show_backtrace_button.or_(notification_502_error)).to_be_visible(timeout=5 * SEC)
+        if show_backtrace_button.is_visible():
+            show_backtrace_button.click()
+            backtrace_container = page.get_by_role(
+                "region",
+                name="Hide server error message",
+            )
+            logger.info("Recorded backtrace")
+            print(backtrace_container.inner_text())
+        else:
+            raise Exception("An unknown error with status code 502 occurred while connecting to the server.")
     except AssertionError:
         pass
 
