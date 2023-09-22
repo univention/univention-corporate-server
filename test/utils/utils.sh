@@ -584,12 +584,12 @@ switch_components_to_test_app_center () {
 
 install_apps () {
 	local app rv=0 username
-	for app in "$@"; do echo "$app" >>/var/cache/appcenter-installed.txt; done
+	for app in "$@"; do echo "${app%%=*}" >>/var/cache/appcenter-installed.txt; done
 	for app in "$@"
 	do
 		username="$(ucr get tests/domainadmin/account | sed -e 's/uid=//' -e 's/,.*//')"
-		if [ -n "$(univention-app get "$app" DockerImage)" ] || [ -n "$(univention-app get "$app" DockerMainService)" ]; then
-			if [ -z "$(ucr get "appcenter/apps/$app/status")" ]; then
+		if [ -n "$(univention-app get "${app%%=*}" DockerImage)" ] || [ -n "$(univention-app get "${app%%=*}" DockerMainService)" ]; then
+			if [ -z "$(ucr get "appcenter/apps/${app%%=*}/status")" ]; then
 				univention-app install "$app" --noninteractive --username="$username" --pwdfile="$(ucr get tests/domainadmin/pwdfile)" || rv=$?
 			elif univention-app info | grep --quiet --perl-regexp 'Upgradable: ?\S* '"$app"'(?: |$)\S*'; then
 				univention-app upgrade "$app" --noninteractive --username="$username" --pwdfile="$(ucr get tests/domainadmin/pwdfile)" || rv=$?
@@ -805,6 +805,9 @@ ucsschool_scope_enabled () {
 
 activate_ucsschool_repositories () {
 	local rv=0
+	echo 'deb [trusted=yes] http://omar.knut.univention.de/build2/ ucs_5.3-0-ucs-school-5.3/all/' >>/etc/apt/sources.list
+	echo 'deb [trusted=yes] http://omar.knut.univention.de/build2/ ucs_5.3-0-ucs-school-5.3/$(ARCH)/' >>/etc/apt/sources.list
+	return $rv
 
 	case "${UCSSCHOOL_RELEASE:-scope}" in
 		appcenter.test)
@@ -836,12 +839,23 @@ install_ucsschool () {
 	ucr set --force dhcpd/authoritative=no
 	# Bug #54228: run tests without stopping the notifier during imports, to detect problems
 	ucr set --force ucsschool/stop_notifier=no
-	activate_ucsschool_repositories || rv=$?
-	local admin_password="${1:-univention}"
 
+	activate_ucsschool_repositories || rv=$?
+
+	# TODO: drop me after UCS 5.3 stabelization
+	UCSSCHOOL_RELEASE=preview
+
+	local admin_password="${1:-univention}"
 	printf '%s' "$admin_password" >/tmp/univention
+	set_administrator_dn_for_ucs_test
+	set_administrator_password_for_ucs_test "$admin_password"
 
 	case "${UCSSCHOOL_RELEASE:-scope}" in
+		preview)
+			echo "ucsschool" >>/var/cache/appcenter-installed.txt
+			univention-install -y ucs-school-umc-installer || rv=$?
+			install_apps ucsschool='5.3 v1' || rv=$?
+			;;
 		appcenter.test)
 			install_apps ucsschool || rv=$?
 			;;
