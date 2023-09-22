@@ -1,3 +1,10 @@
+ucs-test (10.0.19-11) unstable; urgency=medium
+
+  * Bug #56624: switch the detection of the correct check failing in
+    133_system_diagnostics.py from get_by_text to get_by_role
+
+ -- Marius Meschter <marius.meschter@univention.de>  Fri, 22 Sep 2023 08:50:11 +0200
+
 ucs-test (10.0.19-10) unstable; urgency=medium
 
   * Bug #56524: added 11_themes_cookie_links.py

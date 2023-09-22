@@ -124,10 +124,10 @@ def test_system_diagnostics(umc_browser_test: UMCBrowserTest, plugin_data: Plugi
     system_diag = SystemDiagnostic(umc_browser_test)
     system_diag.navigate()
 
-    expect(page.get_by_text(plugin_data.title)).to_be_hidden()
+    expect(page.get_by_role("button", name=plugin_data.title)).to_be_hidden()
 
     with open(plugin_data.temp_file_name, "w") as fd:
         fd.write("FAIL")
 
     system_diag.run_system_diagnostics()
-    expect(page.get_by_text(plugin_data.title)).to_be_visible()
+    expect(page.get_by_role("button", name=plugin_data.title)).to_be_visible()
