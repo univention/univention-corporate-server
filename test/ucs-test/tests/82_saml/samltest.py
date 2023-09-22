@@ -24,27 +24,32 @@ class SamlError(Exception):
     """Custom error for everything SAML related"""
 
 
+def errors():
+    return {
+        'The password has expired and must be renewed.': SamlPasswordExpired,
+        'Account expired.': SamlAccountExpired,
+        'Incorrect username or password.': SamlAuthenticationFailed,
+        'Account not verified.': SamlAccountNotVerified,
+        'Changing password failed.': SamlPasswordChangeFailed,
+        'The password has been changed successfully.': SamlPasswordChangeSuccess,
+    }
+
+
 class SamlLoginError(SamlError):
 
     def __init__(self, page, message=''):
         self.page = page.page
         if not message and type(self) is SamlLoginError:
             message = "Unknown error in SAML response.\nSAML response:\n%s" % (self.page.content.decode('UTF-8', 'replace'),)
+        if not message:
+            message = {y: x for x, y in errors().items()}.get(type(self))
         super().__init__(message)
 
     def __new__(cls, saml):
         message = saml.xpath('div[@id="umcLoginNotices"]')
         if message is not None:
             message = message.text.strip()
-        errors = {
-            'The password has expired and must be renewed.': SamlPasswordExpired,
-            'Account expired.': SamlAccountExpired,
-            'Incorrect username or password.': SamlAuthenticationFailed,
-            'Account not verified.': SamlAccountNotVerified,
-            'Changing password failed.': SamlPasswordChangeFailed,
-            'The password has been changed successfully.': SamlPasswordChangeSuccess,
-        }
-        return Exception.__new__(errors.get(message, cls), saml)
+        return Exception.__new__(errors().get(message, cls), saml, message)
 
 
 class SamlPasswordExpired(SamlLoginError):
