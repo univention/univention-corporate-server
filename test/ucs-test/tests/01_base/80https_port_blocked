@@ -19,7 +19,7 @@ is_apache2_running () {
 
 echo "-------------------------------------------"
 echo "Check if apache2 is running"
-prog=$(netstat -tlpn | sed -ne "s/\s\+$//;s|^tcp.*:$HTTPS_PORT .*/||p")
+prog=$(ss -tlnp | awk '$1 == "LISTEN" && $4 ~ /:443$/ { print $6 }' | sed -e 's/[^"]*"\([^"]*\)".*/\1/')
 if [ -z "$prog" ] ; then
 	echo "No Process is running on Port $HTTPS_PORT"
 	echo "Starting apache2 (will be stopped at the end of this test)"
