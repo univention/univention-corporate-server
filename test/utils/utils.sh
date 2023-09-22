@@ -692,6 +692,13 @@ install_ucsschool () {
 	ucr set --force dhcpd/authoritative=no
 	# Bug #54228: run tests without stopping the notifier during imports, to detect problems
 	ucr set --force ucsschool/stop_notifier=no
+
+	echo 'deb [trusted=yes] http://omar.knut.univention.de/build2/ ucs_5.3-0-ucs-school-5.3/all/' >>/etc/apt/sources.list
+	echo 'deb [trusted=yes] http://omar.knut.univention.de/build2/ ucs_5.3-0-ucs-school-5.3/$(ARCH)/' >>/etc/apt/sources.list
+
+	univention-install -y ucs-school-umc-installer
+	return $?
+
 	activate_ucsschool_repositories || rv=$?
 	local admin_password="${1:-univention}"
 
