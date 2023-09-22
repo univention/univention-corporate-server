@@ -267,21 +267,23 @@ instead, which doesn't have this strict limitation.
 For more information, see :cite:t:`lmdb-doc`. :uv:kb:`18014` describes
 how to migrate a productive UCS domain.
 
-To use MDB instead of TDB, set the corresponding |UCSUCRV|
+To use LMDB instead of TDB, set the corresponding |UCSUCRV|
 :envvar:`samba/database/backend/store` to ``mdb`` before you install the app
 :program:`Active Directory-compatible Domain Controller` in your UCS domain.
 
-The current maximal size of the individual backend store files is defined by
-the |UCSUCRV| :envvar:`samba/database/backend/store/size`, which is set to
-``8GB`` by default. Since there is one backend store file per Active Directory
-naming context, this amounts to a total of ``40GiB``. Care should be taken
-that the storage can accommodate this amount of space.
-If required the value can be increased monotonically. After that
-samba needs to be restarted to let the new value take effect.
-The number of used storage pages (``4KiB`` each) can be checked
-by running the command ``mdb_stat -nef`` on the individual files and
-calculating ``Number of pages used`` minus ``Free pages``. The current
-effective limit is given by ``Max pages``.
+The |UCSUCRV| :envvar:`samba/database/backend/store/size` defines the current
+maximal size of the individual backend database store files and has the default
+value of ``8GB``. Since there is one back end storage file per Active Directory
+naming context, this amounts to a total of ``40GiB``. Take care that the storage
+can accommodate this amount of space.
+
+If required, you can increase the value monotonically. After changing the
+|UCSUCRV|, you need to restart Samba, so that the value can take effect. You can
+check the number of used storage pages, ``4KiB`` each, by running the command
+:command:`mdb_stat -nef` on the individual files and calculating ``Number of
+pages used`` minus ``Free pages``. The value at ``Max pages`` shows the current
+effective limit. The back end storage files locate in :file:`/var/lib/samba/private/sam.ldb.d/`
+and have the file extension :file:`.ldb`.
 
 .. _group-cache:
 
