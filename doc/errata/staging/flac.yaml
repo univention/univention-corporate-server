@@ -1,0 +1,14 @@
+product: ucs
+release: "4.4"
+version: [9]
+scope: ucs_4.4-0-errata4.4-9
+src: flac
+fix: 1.3.2-2+deb9u3
+desc: |
+ This update addresses the following issue:
+ 1.3.2-2+deb9u3 (Fri, 22 Sep 2023 12:20:48 +0200)
+ * Non-maintainer upload by the ELTS Team.
+ * CVE-2020-22219: double free issues.
+bug: [56641]
+cve:
+- CVE-2020-22219
