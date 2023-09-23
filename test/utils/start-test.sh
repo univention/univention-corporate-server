@@ -22,6 +22,7 @@ exact_match='false'
 ucsschool_release='scope'
 shutdown='false'
 openstack_image_name='UCS 5.0-5'
+source_iso="/var/univention/buildsystem2/isotests/ucs_${release}-latest-amd64.iso"
 
 # some internal stuff
 image="${DIMAGE:-gitregistry.knut.univention.de/univention/dist/ucs-ec2-tools}"
@@ -89,7 +90,7 @@ usage () {
 	echo "    <>${BOLD}KVM_CPUS${NORM}             - CPU's for the KVM instance (default: $kvm_cpus)"
 	echo "    <>${BOLD}KVM_LABEL_SUFFIX${NORM}     - additional label for instance name (default: $kvm_label_suffix)"
 	echo "    | ${BOLD}KVM_KEYPAIR_PASSPHRASE${NORM} - ssh key password, also used as a fallback password for the ssh connection"
-	echo "    | ${BOLD}SOURCE_ISO${NORM}           - an ISO to mount (default: None)"
+	echo "    <>${BOLD}SOURCE_ISO${NORM}           - an ISO to mount (default: $source_iso)"
 	echo ""
 	echo "  ucs-*-create"
 	echo "    <>${BOLD}EXACT_MATCH${NORM}          - if true, add -e (only look for exact matches in template names) (default: $exact_match)"
@@ -206,6 +207,7 @@ export ERRATA_UPDATE="${errata_update:=testing}"
 export COMPONENT_VERSION="${COMPONENT_VERSION:=testing}"
 export UCSSCHOOL_RELEASE=${UCSSCHOOL_RELEASE:=$ucsschool_release}
 export OPENSTACK_IMAGE_NAME="${OPENSTACK_IMAGE_NAME:=$openstack_image_name}"
+export SOURCE_ISO="${SOURCE_ISO:=$source_iso}"
 
 # get image from cfg if not explicitly as env var
 if [ -z "$DIMAGE" ]; then
