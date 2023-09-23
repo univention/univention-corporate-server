@@ -1,0 +1,17 @@
+product: ucs
+release: "4.4"
+version: [9]
+scope: ucs_4.4-0-errata4.4-9
+src: open-vm-tools
+fix: 2:10.1.5-5055683-4+deb9u5
+desc: |
+ This update addresses the following issue:
+ 2:10.1.5-5055683-4+deb9u5 (Fri, 22 Sep 2023 18:49:38 +0200)
+ * Non-maintainer upload by the ELTS team.
+ * Fix CVE-2023-20900: A security vulnerability was found in the Open VMware
+   Tools. A malicious actor that has been granted Guest Operation Privileges
+   in a target virtual machine may be able to elevate their privileges if that
+   target virtual machine has been assigned a more privileged Guest Alias.
+bug: [56642]
+cve:
+- CVE-2023-20900
