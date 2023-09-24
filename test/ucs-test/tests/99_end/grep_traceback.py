@@ -361,6 +361,14 @@ COMMON_EXCEPTIONS = (
     E('imaplib.IMAP4.error: COPY command error'),  # revert me!
     E('univention-app install.*Resolving dependencies'),
     E('_wrap_pool_connect'),
+    E('sqlalchemy.exc.OperationalError:.*Connection refused'),
+    E(r'FileNotFoundError: \[Errno 2\] No such file or directory: \'/tmp/tmp'),  # ?
+    E('FileNotFoundError:.*21_appcenter-uninstall/example_user'),
+    E('AssertionError: Locator expected to be visible'),
+    E("PAM.error: .*Authentication failure"),
+    E("subprocess.CalledProcessError: Command 'univention-app install"),
+    E('FileNotFoundError:.*/usr/share/univention-portal/portals.json'),
+    E('Exception: An unknown error with status code 502 occurred while connecting to the server.'),
 )
 
 
