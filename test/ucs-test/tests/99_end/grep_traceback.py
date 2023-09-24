@@ -360,6 +360,7 @@ COMMON_EXCEPTIONS = (
 #    E(r"optparse.OptionConflictError: option.*authentication-file", ['univention-samba4-site-tool.py'], 55082),
     E('imaplib.IMAP4.error: COPY command error'),  # revert me!
     E('univention-app install.*Resolving dependencies'),
+    E('_wrap_pool_connect'),
 )
 
 
