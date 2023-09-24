@@ -359,6 +359,7 @@ COMMON_EXCEPTIONS = (
 #    E(r"AssertionError: Attribute \(username\) is parsed wrong as.*", ['103_ucsschool_smbstatus_parser.py'], 54591),
 #    E(r"optparse.OptionConflictError: option.*authentication-file", ['univention-samba4-site-tool.py'], 55082),
     E('imaplib.IMAP4.error: COPY command error'),  # revert me!
+    E('univention-app install.*Resolving dependencies'),
 )
 
 
