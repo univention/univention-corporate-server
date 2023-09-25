@@ -6,17 +6,14 @@ src: openssl
 fix: 1.1.0l-1~deb9u9
 desc: |
  This update addresses the following issues:
- 1.1.0l-1~deb9u9 (Thu, 21 Sep 2023 12:02:10 +0200)
- * Non-maintainer upload by the ELTS Team.
- * CVE-2023-0464 (Excessive Resource Usage Verifying X.509 Policy
-   Constraints).
- * CVE-2023-0465 (invalid certificate policies in leaf certificates are
-   silently ignored).
- * CVE-2023-0466 (Certificate policy check not enabled).
- * CVE-2023-2650 (Possible DoS translating ASN.1 object identifiers).
- * CVE-2022-4304 (Timing Oracle in RSA Decryption).
- * CVE-2023-3446 (Denial of service when checking DH keys or parameters).
- * CVE-2023-3817 (Denial of service when checking DH keys or parameters).
+ * CVE-2022-4304: Timing Oracle in RSA Decryption.
+ * CVE-2023-0464: Excessive Resource Usage Verifying X.509 Policy Constraints.
+ * CVE-2023-0465: invalid certificate policies in leaf certificates are
+   silently ignored.
+ * CVE-2023-0466: Certificate policy check not enabled.
+ * CVE-2023-2650: Possible DoS translating ASN.1 object identifiers.
+ * CVE-2023-3446: Denial of service when checking DH keys or parameters.
+ * CVE-2023-3817: Denial of service when checking DH keys or parameters.
 bug: [56640]
 cve:
 - CVE-2023-0464
