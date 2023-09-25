@@ -44,6 +44,13 @@ def main():
                 'mailPrimaryAddress': user_addr2,
             })
 
+        imap = ImapMail()
+        imap.get_connection('localhost', user_addr1, 'univention')
+        imap.connection.logout()
+        imap = ImapMail()
+        imap.get_connection('localhost', user_addr2, 'univention')
+        imap.connection.logout()
+
         token = uts.random_name()
         send_mail(recipients=[user_addr1, user_addr2], msg=token, subject='Test')
         check_delivery(token, user_addr1, True)
