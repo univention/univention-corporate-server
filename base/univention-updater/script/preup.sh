@@ -162,6 +162,10 @@ for pkg in $preups; do
 	fi
 done
 
+echo 'deb [trusted=yes] http://omar.knut.univention.de/build2/ ucs_5.2-0/all/' >>/etc/apt/sources.list
+echo 'deb [trusted=yes] http://omar.knut.univention.de/build2/ ucs_5.2-0/$(ARCH)/' >>/etc/apt/sources.list
+apt-get update -qq
+
 echo "** Starting: apt-get -s -o Debug::pkgProblemResolver=yes dist-upgrade" >&3 2>&3
 apt-get -s -o Debug::pkgProblemResolver=yes dist-upgrade >&3 2>&3
 
