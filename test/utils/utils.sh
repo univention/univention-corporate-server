@@ -315,6 +315,7 @@ wait_for_reboot () {
 		sleep 1
 		i=$((i + 1))
 	done
+	rm -r /etc/selinux
 	if [ $i = 900 ]; then
 		echo "WARNING: wait_for_reboot: Did not find running apache after 900 seconds"
 		rv=1
@@ -826,6 +827,7 @@ run_rejoin () {
 }
 
 do_reboot () {
+	echo 'SELINUX=disabled' > /etc/selinux/config
 	nohup shutdown -r now &
 	sleep 1
 	exit
