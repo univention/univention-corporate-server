@@ -79,7 +79,7 @@ print(
         php_string("uid=sys-idp-user,cn=users,%s" % base),
         php_string(password),
         php_string(base),
-    ),
+    )  # noqa: COM812
 )
 @!@
     // LDAP authentication source.
@@ -115,9 +115,9 @@ attributes = list(set(config_attributes + expiry_attributes))
 print("	'hostname'		=> %s," % php_string(hostname))
 print("	'enable_tls'		=> %s," % ('TRUE' if configRegistry.is_true('saml/idp/ldap/enable_tls', True) else 'FALSE'))
 print("	'debug' 		=> %s," % ('TRUE' if configRegistry.is_true('saml/idp/ldap/debug', False) else 'FALSE'))
-print("	'attributes'		=> %s," % php_array(attributes))
+print("	'attributes'		=> %s," % php_array(sorted(attributes)))
 print("	'search.base'		=> %s," % php_string(configRegistry.get('ldap/base', 'null')))
-print("	'search.attributes' 	=> %s," % (php_array(search_attributes)))
+print("	'search.attributes' 	=> %s," % (php_array(sorted(search_attributes))))
 print("	'search.filter' 	=> '(objectClass=person)',")
 print("	'selfservice.check_email_verification' 	=> %s," % ('TRUE' if configRegistry.is_true('saml/idp/selfservice/check_email_verification', False) else 'FALSE'))
 
