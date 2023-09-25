@@ -6,20 +6,13 @@ src: python2.7
 fix: 2.7.16-2+deb10u3
 desc: |
  This update addresses the following issues:
- 2.7.16-2+deb10u3 (Wed, 20 Sep 2023 09:59:17 +0200)
- * Non-maintainer upload by the LTS Team.
- * Add testsuite-fix-with-expat.diff: Fix autopkgtests with updated expat.
- * Fix issue9189.diff: Update test suite to match behaviour change.
- * autopkgtest: mark distutils as non-failing
- * Add CVE-2021-23336.diff: Only use '&' as query string separator
- * Add CVE-2022-0391.diff: Make urlsplit robust against newlines
- * Add CVE-2022-48560.diff: Fix use-after-free in heapq module.
- * Add CVE-2022-48565.diff: Reject entities declarations while parsing XML
-   plists.
- * Add CVE-2022-48566.diff: Make constant time comparison more constant-time.
- * Add CVE-2023-24329.diff: More WHATWG-compatible URL parsing
- * Add CVE-2023-40217.diff: Prevent reading unauthenticated data on a
-   SSLSocket
+ * CVE-2021-23336: Only use '&' as query string separator.
+ * CVE-2022-0391: Make `urlsplit` robust against newlines.
+ * CVE-2022-48560: Fix use-after-free in module `heapq`.
+ * CVE-2022-48565: Reject entities declarations while parsing XML `plists`.
+ * CVE-2022-48566: Make constant time comparison more constant-time.
+ * CVE-2023-24329: More WHATWG-compatible URL parsing
+ * CVE-2023-40217: Prevent reading unauthenticated data on a `SSLSocket`.
 bug: [56644]
 cve:
 - CVE-2021-23336
