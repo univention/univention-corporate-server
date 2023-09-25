@@ -15,7 +15,7 @@ Build-Depends:
 Package: python3-univention-connector
 Architecture: all
 Depends:
- python3-crypto,
+ python3-cryptography,
  python3-univention,
  python3-univention-directory-manager,
  ${misc:Depends},

@@ -15,9 +15,10 @@ import struct
 import subprocess
 from tempfile import NamedTemporaryFile
 
-import Crypto
 import ldap
 import pytest
+from cryptography.hazmat.primitives.ciphers import Cipher
+from cryptography.hazmat.primitives.ciphers.algorithms import ARC4
 from samba import drs_utils
 from samba.credentials import DONT_USE_KERBEROS, Credentials
 from samba.dcerpc import drsblobs, drsuapi, misc, nbt, security
@@ -188,8 +189,8 @@ def get_ad_password(computer_guid, dn, drs, drsuapi_handle):
         m5.update(confounder)
         enc_key = m5.digest()
 
-        rc4 = Crypto.Cipher.ARC4.new(enc_key)
-        plain_buffer = rc4.decrypt(enc_buffer)
+        rc4 = Cipher(ARC4(enc_key), mode=None).decryptor()  # noqa: S304
+        plain_buffer = rc4.update(enc_buffer) + rc4.finalize()
 
         (crc32_v) = struct.unpack("<L", plain_buffer[0:4])
         attr_val = plain_buffer[4:]
