@@ -4,3 +4,4 @@ usr/share/ucs-test/23_apache/83apache_configtest usr/share/ucs-test/21_appcenter
 usr/share/ucs-test/23_apache/84apache_reload usr/share/ucs-test/21_appcenter-uninstall/35_apache_reload
 usr/share/ucs-test/59_udm/61_test_udm_users.py usr/share/ucs-test/21_appcenter-uninstall/61_test_udm_users.py
 usr/share/ucs-test/59_udm/62_test_udm_groups.py usr/share/ucs-test/21_appcenter-uninstall/62_test_udm_groups.py
+usr/share/ucs-test/59_udm/example_user_jpeg_photo.jpg usr/share/ucs-test/21_appcenter-uninstall/example_user_jpeg_photo.jpg
