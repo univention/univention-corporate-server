@@ -1,13 +1,10 @@
 #!/usr/share/ucs-test/runner python3
-## desc: Check the App installation if the next free port is already used
+## desc: Check App installation through proxy
 ## tags: [docker]
 ## exposure: dangerous
 ## packages:
 ##   - univention-docker
-
-import subprocess
-
-import apt
+##   - univention-squid
 
 from univention.config_registry import handler_set
 from univention.testing.ucr import UCSTestConfigRegistry
@@ -18,27 +15,6 @@ from dockertest import (
 )
 
 
-def deb_package_is_installed(pkgname):
-    cache = apt.Cache()
-    return bool(cache[pkgname].is_installed)
-
-
-def deb_install_package(pkgname):
-    cmd = ['univention-install', '-y', pkgname]
-    p = subprocess.Popen(cmd, close_fds=True)
-    p.wait()
-
-
-def deb_uninstall_package(pkgname):
-    cmd = ['apt-get', 'purge', '-y', pkgname]
-    p = subprocess.Popen(cmd, close_fds=True)
-    p.wait()
-
-    cmd = ['apt-get', 'autoremove', '-y']
-    p = subprocess.Popen(cmd, close_fds=True)
-    p.wait()
-
-
 class TestCase:
 
     def __init__(self):
@@ -47,15 +23,8 @@ class TestCase:
 
         self.imgname = tiny_app().ini['DockerImage']
 
-        required_pkgname = 'univention-squid'
-        if not deb_package_is_installed(required_pkgname):
-            deb_install_package(required_pkgname)
-            self.remove_pkgname = required_pkgname
-        else:
-            self.remove_pkgname = None
-
         if not self.ucr.get('proxy/http'):
-            handler_set(['proxy/http=http://127.0.0.1:3128/'])
+            handler_set(['proxy/http=http://127.0.0.1:3128'])
             restart_docker()
             self.ucr_changed = True
         else:
@@ -75,8 +44,6 @@ class TestCase:
         if self.ucr_changed:
             self.ucr.revert_to_original_registry()
             restart_docker()
-        if self.remove_pkgname:
-            deb_uninstall_package(self.remove_pkgname)
 
     def __enter__(self):
         return self
@@ -88,6 +55,5 @@ class TestCase:
 
 
 if __name__ == '__main__':
-
     with TestCase() as tc:
         tc.run()
