@@ -296,7 +296,7 @@ COMMON_EXCEPTIONS = (
     E(r'.*OperationalError.*FATAL:.*admindiary.*', [r'admindiary_backend_wrapper\.py', '_wrap_pool_connect'], 51671),
     E(r"(OSError|FileNotFoundError): \[Errno 2\] .*: '/var/lib/samba/sysvol/.*/Policies/'", [r'sysvol-cleanup\.py'], 51670),
 #    E("AttributeError: 'NoneType' object has no attribute 'lower'", ['_remove_subtree_in_s4'], 50282),
-#    E("AttributeError: 'NoneType' object has no attribute 'get'", ['primary_group_sync_from_ucs', 'group_members_sync_to_ucs'], 49879),
+    E("AttributeError: 'NoneType' object has no attribute 'get'", ['primary_group_sync_from_ucs', 'group_members_sync_to_ucs'], 49879),
 #    E('^ImportError: No module named __base', [r'app_attributes\.py', '_update_modules', 'univention-management-console-server.*in run'], 50338),
 #    E('^ImportError: No module named s4', ['_update_modules'], 50338),
 #    E(r"^TypeError\:\ \_\_init\_\_\(\)\ got\ an\ unexpected\ keyword\ argument\ \'help\_text\'", ['_update_modules'], 50338),
@@ -308,7 +308,7 @@ COMMON_EXCEPTIONS = (
 #    E('^ImportError: No module named service', ['univention-app'], 50381),
 #    E('^ImportError: No module named ldap_extension', ['get_action'], 50381),
 #    E('^AttributeError: __exit__', ['with Server'], 50583),
-#    E(r'^(univention\.admin\.uexceptions\.)?primaryGroupWithoutSamba: .*', ['primary_group_sync_to_ucs', 'sync_to_ucs'], 49881),
+    E(r'^(univention\.admin\.uexceptions\.)?primaryGroupWithoutSamba: .*', ['primary_group_sync_to_ucs', 'sync_to_ucs'], 49881),
 #    E(r"^(OS|IO)Error: \[Errno 2\] .*: '/usr/lib/pymodules/python2.7/univention/admin/syntax.d/.*", ['import_syntax_files']),  # package upgrade before dh-python  # Bug #52958
 #    E(r"^(OS|IO)Error: \[Errno 2\] .*: '/usr/lib/pymodules/python2.7/univention/admin/hooks.d/.*", ['import_hook_files']),  # package upgrade before dh-python  # Bug #52958
     E(r'^(univention\.admin\.uexceptions\.)?(insufficientInformation|noSuperordinate):.*No superordinate object given.?', ['sync_to_ucs'], 49880),
