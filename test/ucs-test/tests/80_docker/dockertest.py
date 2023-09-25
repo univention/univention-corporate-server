@@ -162,31 +162,22 @@ def docker_pull(image, server='docker.software-univention.de'):
 
 def docker_image_is_present(imgname):
     cmd = ['docker', 'inspect', imgname]
-    with open('/dev/null', 'w') as devnull:
-        p = subprocess.Popen(cmd, close_fds=True, stdout=devnull)
-        p.wait()
-        return p.returncode == 0
+    return subprocess.call(cmd, stdout=subprocess.DEVNULL) == 0
 
 
 def remove_docker_image(imgname):
     cmd = ['docker', 'rmi', imgname]
-    p = subprocess.Popen(cmd, close_fds=True)
-    p.wait()
-    return p.returncode == 0
+    return subprocess.call(cmd) == 0
 
 
 def pull_docker_image(imgname):
     cmd = ['docker', 'pull', imgname]
-    p = subprocess.Popen(cmd, close_fds=True)
-    p.wait()
-    return p.returncode == 0
+    return subprocess.call(cmd) == 0
 
 
 def restart_docker():
-    cmd = ['invoke-rc.d', 'docker', 'restart']
-    p = subprocess.Popen(cmd, close_fds=True)
-    p.wait()
-    return p.returncode == 0
+    cmd = ['systemctl', 'restart', 'docker']
+    return subprocess.call(cmd) == 0
 
 
 def get_app_name():
@@ -228,19 +219,9 @@ class App:
         self.app_name = name
         self.app_version = version
         self.call_join_scripts = call_join_scripts
-
-        if not app_directory_suffix:
-            self.app_directory_suffix = random_version()
-        else:
-            self.app_directory_suffix = app_directory_suffix
-
+        self.app_directory_suffix = app_directory_suffix or random_version()
         self.app_directory = '%s_%s' % (self.app_name, self.app_directory_suffix)
-
-        if package_name:
-            self.package_name = package_name
-        else:
-            self.package_name = get_app_name()
-
+        self.package_name = package_name or get_app_name()
         self.package_version = '%s.%s' % (version, get_app_version())
 
         self.ucr = ConfigRegistry()
@@ -252,18 +233,18 @@ class App:
         else:
             self.package = None
 
-        self.ini = {}
-
-        self.ini['ID'] = self.app_name
-        self.ini['Code'] = self.app_name[0:2]
-        self.ini['Name'] = self.app_name
-        self.ini['Version'] = self.app_version
-        self.ini['NotifyVendor'] = False
-        self.ini['Categories'] = 'System services'
-        self.ini['Logo'] = '%s.svg' % self.app_name
+        self.ini = {
+            'ID': self.app_name,
+            'Code': self.app_name[0:2],
+            'Name': self.app_name,
+            'Version': self.app_version,
+            'NotifyVendor': False,
+            'Categories': 'System services',
+            'Logo': '%s.svg' % self.app_name,
+            'ServerRole': 'domaincontroller_master,domaincontroller_backup,domaincontroller_slave,memberserver',
+        }
         if self.package:
             self.ini['DefaultPackages'] = self.package_name
-        self.ini['ServerRole'] = 'domaincontroller_master,domaincontroller_backup,domaincontroller_slave,memberserver'
 
         self.scripts = {}
 
@@ -282,7 +263,7 @@ class App:
         print(repr(self))
 
     def __repr__(self):
-        return '%s(app_name=%r, app_version=%r)' % (super().__repr__(), self.app_name, self.app_version)
+        return '%s(app_name=%r, app_version=%r)' % (self.__class__.__name__, self.app_name, self.app_version)
 
     def set_ini_parameter(self, **kwargs):
         for key, value in kwargs.items():
@@ -302,15 +283,12 @@ class App:
     def install(self):
         print('App.install()')
         self._update()
-        cmd = ['univention-app', 'install']
-        if self.call_join_scripts is False:
+        cmd = ['univention-app', 'install', '--noninteractive', '--username', self.admin_user, '--pwdfile', self.admin_pwdfile]
+        if not self.call_join_scripts:
             cmd.append('--do-not-call-join-scripts')
-        cmd.append('--noninteractive')
-        cmd.append('--username=%s' % self.admin_user)
-        cmd.append('--pwdfile=%s' % self.admin_pwdfile)
         cmd.append('%s=%s' % (self.app_name, self.app_version))
         print(cmd)
-        error_handling_call(' '.join(cmd), shell=True, exc=UCSTest_DockerApp_InstallationFailed)
+        error_handling_call(cmd, exc=UCSTest_DockerApp_InstallationFailed)
 
         self.reload_container_id()
 
@@ -355,7 +333,8 @@ class App:
             "function": 'install',
             "application": self.app_name,
             "app": self.app_name,
-            "force": True}
+            "force": True,
+        }
         resp = client.umc_command('appcenter/docker/invoke', options).result
         progress_id = resp.get('id')
         if not resp:
@@ -387,33 +366,30 @@ class App:
         print('App.register()')
         cmd = ['univention-app', 'register', '--app']
         print(cmd)
-        error_handling_call(' '.join(cmd), shell=True, exc=UCSTest_DockerApp_RegisterFailed)
+        error_handling_call(cmd, exc=UCSTest_DockerApp_RegisterFailed)
 
     def upgrade(self):
         print('App.upgrade()')
         self._update()
-        cmd = ['univention-app', 'upgrade']
-        if self.call_join_scripts is False:
+        cmd = ['univention-app', 'upgrade', '--noninteractive', '--username', self.admin_user, '--pwdfile', self.admin_pwdfile]
+        if not self.call_join_scripts:
             cmd.append('--do-not-call-join-scripts')
-        cmd.append('--noninteractive')
-        cmd.append('--username=%s' % self.admin_user)
-        cmd.append('--pwdfile=%s' % self.admin_pwdfile)
         cmd.append('%s=%s' % (self.app_name, self.app_version))
         print(cmd)
-        error_handling_call(' '.join(cmd), shell=True, exc=UCSTest_DockerApp_UpgradeFailed)
+        error_handling_call(cmd, exc=UCSTest_DockerApp_UpgradeFailed)
         self.reload_container_id()
         self.installed = True
 
     def verify(self, joined=True):
         print('App.verify(%r)' % (joined,))
-        error_handling_call('univention-app status %s=%s' % (self.app_name, self.app_version), shell=True, exc=UCSTest_DockerApp_VerifyFailed)
+        error_handling_call(['univention-app', 'status', '%s=%s' % (self.app_name, self.app_version)], exc=UCSTest_DockerApp_VerifyFailed)
 
         if joined:
-            error_handling_call('docker exec %s univention-check-join-status' % self.container_id, shell=True, exc=UCSTest_DockerApp_VerifyFailed)
+            error_handling_call(['docker', 'exec', self.container_id, 'univention-check-join-status'], exc=UCSTest_DockerApp_VerifyFailed)
 
         if self.package:
             try:
-                output = subprocess.check_output('univention-app shell %s=%s dpkg-query -W %s' % (self.app_name, self.app_version, self.package_name), shell=True, text=True)
+                output = subprocess.check_output(['univention-app', 'shell', '%s=%s' % (self.app_name, self.app_version), 'dpkg-query', '-W', self.package_name], text=True)
                 expected_output1 = '%s\t%s\r\n' % (self.package_name, self.package_version)
                 expected_output2 = '%s\t%s\n' % (self.package_name, self.package_version)
                 if output not in [expected_output1, expected_output2]:
@@ -424,15 +400,12 @@ class App:
     def uninstall(self):
         print('App.uninstall()')
         if self.installed:
-            cmd = ['univention-app', 'remove']
-            if self.call_join_scripts is False:
+            cmd = ['univention-app', 'remove', '--noninteractive', '--username', self.admin_user, '--pwdfile', self.admin_pwdfile]
+            if not self.call_join_scripts:
                 cmd.append('--do-not-call-join-scripts')
-            cmd.append('--noninteractive')
-            cmd.append('--username=%s' % self.admin_user)
-            cmd.append('--pwdfile=%s' % self.admin_pwdfile)
             cmd.append('%s=%s' % (self.app_name, self.app_version))
             print(cmd)
-            error_handling_call(' '.join(cmd), shell=True, exc=UCSTest_DockerApp_RemoveFailed)
+            error_handling_call(cmd, exc=UCSTest_DockerApp_RemoveFailed)
 
     def execute_command_in_container(self, cmd):
         print('Execute: %s' % cmd)
@@ -451,32 +424,30 @@ class App:
             os.makedirs('/var/www/meta-inf/4.1')
 
         target = os.path.join('/var/www/meta-inf/%s' % self.ucs_version, '%s.ini' % self.app_directory)
-        f = open(target, 'w')
-        print('Write ini file: %s' % target)
-        f.write('[Application]\n')
-        print('[Application]')
-        for key in self.ini.keys():
-            f.write('%s: %s\n' % (key, self.ini[key]))
-            print('%s: %s' % (key, self.ini[key]))
-        print()
-        f.close()
+        with open(target, 'w') as f:
+            print('Write ini file: %s' % target)
+            f.write('[Application]\n')
+            print('[Application]')
+            for key in self.ini.keys():
+                f.write('%s: %s\n' % (key, self.ini[key]))
+                print('%s: %s' % (key, self.ini[key]))
+            print()
         svg = os.path.join('/var/www/meta-inf/%s' % self.ucs_version, self.ini.get('Logo'))
-        f = open(svg, 'w')
-        f.write(get_dummy_svg())
-        f.close()
+        with open(svg, 'w') as f:
+            f.write(get_dummy_svg())
 
     def _dump_scripts(self):
-        for script in self.scripts.keys():
+        for script, content in self.scripts.items():
             comp_path = os.path.join('/var/www/univention-repository/%s/maintained/component' % self.ucs_version, '%s' % self.app_directory)
             if not os.path.exists(comp_path):
                 os.makedirs(comp_path)
             target = os.path.join(comp_path, script)
 
             print('Create %s' % target)
-            print(self.scripts[script])
+            print(content)
 
             with open(target, 'w') as f:
-                f.write(self.scripts[script])
+                f.write(content)
 
     def configure_tinyapp_modproxy(self):
         fqdn = '%(hostname)s.%(domainname)s' % self.ucr
@@ -617,17 +588,23 @@ Virtualization=Virtualisierung''')
             if not os.path.isdir(directory):
                 continue
             print('create_appcenter_json.py for %s' % vv)
-            subprocess.check_call(
-                './create_appcenter_json.py -u %(version)s -d /var/www -o /var/www/meta-inf/%(version)s/index.json.gz -s http://%(fqdn)s -t /var/www/meta-inf/%(version)s/all.tar' % {
-                    'version': vv,
-                    'fqdn': '%(hostname)s.%(domainname)s' % self.ucr,
-                }, shell=True)
-            subprocess.check_call(
-                'zsyncmake -u http://%(fqdn)s/meta-inf/%(version)s/all.tar.gz -z -o /var/www/meta-inf/%(version)s/all.tar.zsync /var/www/meta-inf/%(version)s/all.tar' % {
-                    'version': vv,
-                    'fqdn': '%(hostname)s.%(domainname)s' % self.ucr,
-                }, shell=True)
-        subprocess.check_call('univention-app update', shell=True)
+            fqdn = '%(hostname)s.%(domainname)s' % self.ucr
+            subprocess.check_call([
+                './create_appcenter_json.py',
+                '-u', vv,
+                '-d', '/var/www',
+                '-o', f'/var/www/meta-inf/{vv}/index.json.gz',
+                '-s', f'http://{fqdn}',
+                '-t', f'/var/www/meta-inf/{vv}/all.tar',
+            ])
+            subprocess.check_call([
+                'zsyncmake',
+                '-u', f'http://{fqdn}/meta-inf/{vv}/all.tar.gz',
+                '-z',
+                '-o', f'/var/www/meta-inf/{vv}/all.tar.zsync',
+                f'/var/www/meta-inf/{vv}/all.tar',
+            ])
+        subprocess.check_call(['univention-app', 'update'])
 
     def cleanup(self):
         if self.meta_inf_created:
@@ -739,9 +716,8 @@ if __name__ == '__main__':
     except:
         traceback.print_exc()
         if opts.error_file:
-            error_file = open(opts.error_file, 'a+')
-            traceback.print_exc(file=error_file)
-            error_file.close()
+            with open(opts.error_file, 'a+') as error_file:
+                traceback.print_exc(file=error_file)
         raise
 '''
 
@@ -804,6 +780,7 @@ def copy_recursive(src, dest):
             fullpath = os.path.join(root, f)
             copy_to_persistent_storage(fullpath, dest)
 
+
 if __name__ == '__main__':
     parser = OptionParser('%prog [options]')
     parser.add_option('--app', dest='app', help='App ID')
@@ -830,9 +807,8 @@ if __name__ == '__main__':
     except:
         traceback.print_exc()
         if opts.error_file:
-            error_file = open(opts.error_file, 'a+')
-            traceback.print_exc(file=error_file)
-            error_file.close()
+            with open(opts.error_file, 'a+') as error_file:
+                traceback.print_exc(file=error_file)
         raise
 '''
 

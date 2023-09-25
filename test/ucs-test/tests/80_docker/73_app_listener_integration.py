@@ -10,6 +10,7 @@ import json
 import os
 import subprocess
 import time
+from typing import Any, Optional
 
 import univention.testing.udm as udm_test
 
@@ -20,39 +21,37 @@ APP_NAME = 'my-listener-test-app'
 DB_FILE = f'/var/lib/univention-appcenter/apps/{APP_NAME}/data/db.json'
 LISTENER_DIR = f'/var/lib/univention-appcenter/apps/{APP_NAME}/data/listener/'
 LISTENER_TIMEOUT = 10
+DOCKER_IMAGE_OLD = 'docker-test.software-univention.de/python:3.7-slim-buster'
+DOCKER_IMAGE_NEW = 'docker-test.software-univention.de/python:3.7-slim-bullseye'
 
 
-def dump_db():
-    with open(DB_FILE) as f:
-        db = json.load(f)
-    return db
+def dump_db() -> Any:
+    with open(DB_FILE) as fd:
+        return json.load(fd)
 
 
-def obj_exists(obj_type, dn):
-    found = False
+def obj_exists(obj_type: str, dn: str) -> bool:
     db = dump_db()
-    for _obj_id, obj in db[obj_type].items():
-        if dn.lower() == obj.get('dn').lower():
-            found = True
-    return found
+    return any(dn.lower() == obj.get('dn').lower() for obj_id, obj in db[obj_type].items())
 
 
-def user_exists(dn):
+def user_exists(dn: str) -> bool:
     return obj_exists('users/user', dn)
 
 
-def group_exists(dn):
+def group_exists(dn: str) -> bool:
     return obj_exists('groups/group', dn)
 
 
-def get_attr(obj_type, dn, attr):
+def get_attr(obj_type: str, dn: str, attr: str) -> Optional[Any]:
     db = dump_db()
     for _obj_id, obj in db[obj_type].items():
         if dn.lower() == obj.get('dn').lower():
             return obj['obj'].get(attr)
+    return None
 
 
-def test_listener():
+def test_listener() -> None:
     with udm_test.UCSTestUDM() as udm:
         # create
         u1 = udm.create_user(username='litest1')
@@ -105,7 +104,7 @@ def test_listener():
         assert not glob.glob(os.path.join(LISTENER_DIR, '*.json'))
 
 
-def get_pid_for_name(name):
+def get_pid_for_name(name: str) -> Optional[str]:
     o = subprocess.check_output(['ps', 'aux'], text=True)
     for line in o.split('\n'):
         if name in line:
@@ -113,77 +112,55 @@ def get_pid_for_name(name):
     return None
 
 
-def systemd_service_active(service):
-    active = False
-    cmd = ['systemctl', 'status', service]
-    try:
-        out = subprocess.check_output(cmd, text=True)
-    except subprocess.CalledProcessError:
-        out = ''
-    if 'Active: active (running' in out:
-        active = True
-    return active
+def systemd_service_active(service: str) -> bool:
+    return subprocess.call(['systemctl', '--quiet', 'is-active', service]) == 0
 
 
-def systemd_service_enabled(service):
-    cmd = ['systemctl', 'is-enabled', service]
-    try:
-        out = subprocess.check_output(cmd, text=True)
-    except subprocess.CalledProcessError:
-        out = ''
-    return 'enabled' in out
+def systemd_service_enabled(service: str) -> bool:
+    return subprocess.call(['systemctl', '--quiet', 'is-enabled', service]) == 0
 
 
 if __name__ == '__main__':
-
     name = APP_NAME
     systemd_service = f'univention-appcenter-listener-converter@{name}.service'
 
-    setup = '''#!/bin/bash
-export DEBIAN_FRONTEND=noninteractive
-apt-get -y update
-apt-get -y install python3
-exit 0
-'''
+    setup = '#!/bin/sh'
     store_data = '#!/bin/sh'
-    preinst = f'''#!/bin/bash
+    preinst = f'''#!/bin/sh
 ucr set appcenter/apps/{name}/docker/params=' -t'
 exit 0
 '''
 
-    listener_trigger = f'''#!/usr/bin/python3
-
+    listener_trigger = f'''#!/usr/bin/env python3
 import glob
-import os
 import json
+import os
 
 DATA_DIR = '/var/lib/univention-appcenter/apps/{name}/data/listener'
 DB = '/var/lib/univention-appcenter/apps/{name}/data/db.json'
 
-if not os.path.isfile(DB):
-    with open(DB, 'w') as fd:
-        json.dump({{'users/user': {{}}, 'groups/group': {{}}}}, fd, sort_keys=True, indent=4)
-
-for i in sorted(glob.glob(os.path.join(DATA_DIR, '*.json'))):
-
+try:
     with open(DB) as fd:
         db = json.load(fd)
+except (FileNotFoundError, json.decoder.JSONDecodeError):
+    db = {{}}
 
+for i in sorted(glob.glob(os.path.join(DATA_DIR, '*.json'))):
     with open(i) as fd:
         dumped = json.load(fd)
-        action = 'add/modify'
-        if dumped.get('object') is None:
-            action = 'delete'
 
-        if action == 'delete':
-            if dumped.get('id') in db[dumped.get('udm_object_type')]:
-                del db[dumped.get('udm_object_type')][dumped.get('id')]
-        else:
-            db[dumped.get('udm_object_type')][dumped.get('id')] = dict(
-                id=dumped.get('id'),
-                dn=dumped.get('dn'),
-                obj=dumped.get('object'),
-            )
+    obj = dumped.get('object')
+    obj_type = dumped.get('udm_object_type')
+    entries = db.setdefault(obj_type, {{}})
+    id_ = dumped.get('id')
+    if obj is None:
+        entries.pop(id_, None)
+    else:
+        entries[id_] = dict(
+            id=id_,
+            dn=dumped.get('dn'),
+            obj=obj,
+        )
 
     with open(DB, 'w') as fd:
         json.dump(db, fd, sort_keys=True, indent=4)
@@ -194,23 +171,26 @@ for i in sorted(glob.glob(os.path.join(DATA_DIR, '*.json'))):
     with Appcenter() as appcenter:
         app = App(name=name, version='1', build_package=False, call_join_scripts=False)
         app.set_ini_parameter(
-            DockerImage='docker-test.software-univention.de/debian:stable',
+            DockerImage=DOCKER_IMAGE_OLD,
             DockerScriptSetup='/setup',
             DockerScriptStoreData='/store_data',
-            DockerScriptInit='/bin/bash',
+            DockerScriptInit='/bin/sh',
             ListenerUdmModules='users/user, groups/group',
         )
-        app.add_script(setup=setup)
-        app.add_script(store_data=store_data)
-        app.add_script(preinst=preinst)
-        app.add_script(listener_trigger=listener_trigger)
+        app.add_script(
+            setup=setup,
+            store_data=store_data,
+            preinst=preinst,
+            listener_trigger=listener_trigger,
+        )
         app.add_to_local_appcenter()
         appcenter.update()
         app.install()
         appcenter.apps.append(app)
         app.verify(joined=False)
-        images = subprocess.check_output(['docker', 'images'], text=True)
-        assert 'stable' in images, images
+
+        subprocess.check_call(['docker', 'image', 'inspect', DOCKER_IMAGE_OLD])
+
         very_old_con_pid = get_pid_for_name('univention-appcenter-listener-converter %s' % name)
         time.sleep(10)
         with open('/var/lib/univention-directory-listener/handlers/%s' % name) as f:
@@ -224,16 +204,18 @@ for i in sorted(glob.glob(os.path.join(DATA_DIR, '*.json'))):
         assert very_old_con_pid == old_con_pid  # should be the same until now
         app = App(name=name, version='2', build_package=False, call_join_scripts=False)
         app.set_ini_parameter(
-            DockerImage='docker-test.software-univention.de/debian:testing',
+            DockerImage=DOCKER_IMAGE_NEW,
             DockerScriptSetup='/setup',
             DockerScriptStoreData='/store_data',
-            DockerScriptInit='/bin/bash',
+            DockerScriptInit='/bin/sh',
             ListenerUdmModules='users/user, groups/group',
         )
-        app.add_script(setup=setup)
-        app.add_script(store_data=store_data)
-        app.add_script(preinst=preinst)
-        app.add_script(listener_trigger=listener_trigger)
+        app.add_script(
+            setup=setup,
+            store_data=store_data,
+            preinst=preinst,
+            listener_trigger=listener_trigger,
+        )
         app.add_to_local_appcenter()
         appcenter.update()
         app.upgrade()
