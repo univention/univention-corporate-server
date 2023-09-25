@@ -368,6 +368,7 @@ COMMON_EXCEPTIONS = (
     E("PAM.error: .*Authentication failure"),
     E("subprocess.CalledProcessError: Command 'univention-app install"),
     E('FileNotFoundError:.*/usr/share/univention-portal/portals.json'),
+    E('Exception: An unknown error with status code 502 occurred while connecting to the server.'),
 )
 
 
