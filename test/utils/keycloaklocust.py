@@ -7,7 +7,7 @@ from typing import List
 
 from bs4 import BeautifulSoup
 from diskcache import Index
-from locust import FastHttpUser, constant_throughput, events, task
+from locust import HttpUser, constant_throughput, events, task
 from locust_jmeter_listener import JmeterListener
 
 
@@ -49,6 +49,14 @@ def entry(client, host, user):
     uri = host + entry
     try:
         with client.get(uri, name=uri, allow_redirects=True, timeout=30, catch_response=True) as res:
+            if res.status_code == 401:
+                soup = BeautifulSoup(res.content.decode("utf8"), "html.parser")
+                title = soup.find("title")
+                if title and "Kerberos" in title.text:
+                    res.success()
+                    action = soup.find("body").findChild("form").attrs.get("action")
+                    res = client.post(action, name=action, allow_redirects=True, timeout=30, catch_response=True)
+
             if res.status_code != 200:
                 return
             if res.content is None or len(res.content) == 0:
@@ -60,8 +68,9 @@ def entry(client, host, user):
             login_link = html.unescape(login_link.get("action"))
         login_at_idp_with_credentials(client, login_link, user)
     finally:
+        pass
         #logout_at_idp(client, host)
-        client.cookiejar.clear()
+        # client.cookiejar.clear()
 
 
 class TestData(object):
@@ -128,7 +137,7 @@ class TestData(object):
         return SimpleNamespace(**group)
 
 
-class PrimaryAndBackup(FastHttpUser):
+class PrimaryAndBackup(HttpUser):
     wait_time = constant_throughput(0.1)
     td = TestData()
     hosts = ["https://primary.ucs.test", "https://backup1.ucs.test"]
@@ -140,7 +149,7 @@ class PrimaryAndBackup(FastHttpUser):
         entry(self.client, host, user)
 
 
-class PrimaryOnly(FastHttpUser):
+class PrimaryOnly(HttpUser):
     wait_time = constant_throughput(0.1)
     td = TestData()
     host = "https://primary.ucs.test"
