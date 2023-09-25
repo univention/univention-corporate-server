@@ -1,3 +1,9 @@
+ucs-test (9.0.7-99) unstable; urgency=low
+
+  * Bug #56649: 80_docker/73_app_listener_integration
+
+ -- Philipp Hahn <hahn@univention.de>  Mon, 25 Sep 2023 14:28:02 +0200
+
 ucs-test (9.0.7-98) unstable; urgency=low
 
   * Bug #55602: revert 01_base/96rename_domain_admins: prevent spaces in old name
