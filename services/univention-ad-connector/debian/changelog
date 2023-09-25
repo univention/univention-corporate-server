@@ -1,3 +1,9 @@
+univention-ad-connector (15.0.5) unstable; urgency=medium
+
+  * Bug #56602: replace python3-crypto with python3-cryptography
+
+ -- Juan Carlos García García <garcia-garcia.extern@univention.de>  Thu, 07 Mar 2024 23:54:00 +0100
+
 univention-ad-connector (15.0.4) unstable; urgency=medium
 
   * Bug #55994: drop Python 2 binary packages

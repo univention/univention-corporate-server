@@ -41,11 +41,12 @@ import time
 import traceback
 from struct import pack
 
-import Crypto
 import heimdal
 import ldap
 import samba.dcerpc.samr
-from Crypto.Cipher import ARC4, DES  # noqa: S413
+from cryptography.hazmat.primitives.ciphers import Cipher
+from cryptography.hazmat.primitives.ciphers.algorithms import ARC4, TripleDES
+from cryptography.hazmat.primitives.ciphers.modes import ECB
 from samba import NTSTATUSError
 from samba.dcerpc import drsblobs, drsuapi, lsa, misc, security
 from samba.ndr import ndr_unpack
@@ -89,10 +90,10 @@ def mySamEncryptNTLMHash(hash, key):
     Key1 = transformKey(Key1)
     Key2 = key[7:14]
     Key2 = transformKey(Key2)
-    Crypt1 = DES.new(Key1, DES.MODE_ECB)  # noqa: S304
-    Crypt2 = DES.new(Key2, DES.MODE_ECB)  # noqa: S304
-    plain1 = Crypt1.encrypt(Block1)
-    plain2 = Crypt2.encrypt(Block2)
+    Crypt1 = Cipher(TripleDES(Key1), mode=ECB()).encryptor()  # noqa: S304, S305
+    Crypt2 = Cipher(TripleDES(Key2), mode=ECB()).encryptor()  # noqa: S304, S305
+    plain1 = Crypt1.update(Block1) + Crypt1.finalize()
+    plain2 = Crypt2.update(Block2) + Crypt2.finalize()
     return plain1 + plain2
 
 
@@ -111,9 +112,9 @@ def deriveKey(baseKey):
 
 def removeDESLayer(cryptedHash, rid):
     Key1, Key2 = deriveKey(rid)
-    Crypt1 = DES.new(Key1, DES.MODE_ECB)  # noqa: S304
-    Crypt2 = DES.new(Key2, DES.MODE_ECB)  # noqa: S304
-    decryptedHash = Crypt1.decrypt(cryptedHash[:8]) + Crypt2.decrypt(cryptedHash[8:])
+    Crypt1 = Cipher(TripleDES(Key1), mode=ECB()).decryptor()  # noqa: S305
+    Crypt2 = Cipher(TripleDES(Key2), mode=ECB()).decryptor()  # noqa: S305
+    decryptedHash = Crypt1.update(cryptedHash[:8]) + Crypt1.finalize() + Crypt2.update(cryptedHash[8:]) + Crypt2.finalize()
     return decryptedHash
 
 
@@ -124,8 +125,8 @@ def decrypt(key, data, rid):
     md5.update(key)
     md5.update(salt)
     finalMD5 = md5.digest()
-    cipher = ARC4.new(finalMD5)
-    plainText = cipher.decrypt(data[16:])
+    cipher = Cipher(ARC4(finalMD5), mode=None).decryptor()  # noqa: S304
+    plainText = cipher.update(data[16:]) + cipher.finalize()
     hash = removeDESLayer(plainText[4:], rid)
     return binascii.hexlify(hash)
 
@@ -136,8 +137,8 @@ def decrypt_history(key, data, rid):
     md5.update(key)
     md5.update(salt)
     finalMD5 = md5.digest()
-    cipher = ARC4.new(finalMD5)
-    plaintext = cipher.decrypt(data[16:])[4:]
+    cipher = Cipher(ARC4(finalMD5), mode=None).decryptor()  # noqa: S304
+    plaintext = cipher.update(data[16:])[4:] + cipher.finalize()
     return [
         binascii.hexlify(removeDESLayer(plaintext[i:i + 16], rid)).upper()
         for i in range(0, len(plaintext), 16)
@@ -265,8 +266,8 @@ def decrypt_supplementalCredentials(connector, spl_crypt):
     m5.update(confounder)
     enc_key = m5.digest()
 
-    rc4 = Crypto.Cipher.ARC4.new(enc_key)
-    plain_buffer = rc4.decrypt(enc_buffer)
+    rc4 = Cipher(ARC4(enc_key), mode=None).decryptor()  # noqa: S304
+    plain_buffer = rc4.update(enc_buffer) + rc4.finalize()
 
     (crc32_v) = struct.unpack("<L", plain_buffer[0:4])
     attr_val = plain_buffer[4:]
