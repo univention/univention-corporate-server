@@ -36,7 +36,7 @@ import univention.admin.filter
 import univention.admin.handlers
 import univention.admin.handlers.dns.forward_zone
 import univention.admin.localization
-from univention.admin.handlers.dns import ARPA_IP4, ARPA_IP6, Attr  # noqa: F401
+from univention.admin.handlers.dns import Attr  # noqa: F401
 from univention.admin.layout import Group, Tab
 
 
@@ -163,9 +163,6 @@ class object(univention.admin.handlers.simpleLdap):
     def unmapped_lookup_filter(cls):
         return univention.admin.filter.conjunction('&', [
             univention.admin.filter.expression('objectClass', 'dNSZone'),
-            univention.admin.filter.conjunction('!', [univention.admin.filter.expression('sOARecord', '*', escape=False)]),
-            univention.admin.filter.conjunction('!', [univention.admin.filter.expression('zoneName', '*.in-addr.arpa', escape=False)]),
-            univention.admin.filter.conjunction('!', [univention.admin.filter.expression('zoneName', '*.ip6.arpa', escape=False)]),
             univention.admin.filter.expression('sRVRecord', '*', escape=False),
         ])
 
@@ -182,7 +179,5 @@ lookup_filter = object.lookup_filter
 def identify(dn, attr, canonical=False):  # type: (str, Attr, bool) -> bool
     return bool(
         b'dNSZone' in attr.get('objectClass', [])
-        and not attr.get('sOARecord')
-        and not attr['zoneName'][0].decode('ASCII').endswith((ARPA_IP4, ARPA_IP6))
         and attr.get('sRVRecord'),
     )
