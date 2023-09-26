@@ -1,0 +1,18 @@
+product: ucs
+release: "5.0"
+version: [4, 5]
+scope: ucs_5.0-0-errata5.0-5
+src: ghostscript
+fix: 9.27~dfsg-2+deb10u9
+desc: |
+ This update addresses the following issues:
+ 9.27~dfsg-2+deb10u9 (Sun, 24 Sep 2023 14:01:16 +0530)
+ * Non-maintainer upload by the Debian LTS Team.
+ * CVE-2020-21710: A divide by zero issue discovered in eps_print_page in
+   gdevepsn.c.
+ * CVE-2020-21890: Buffer Overflow vulnerability in clj_media_size function in
+   devices/gdevclj.c
+bug: [56655]
+cve:
+- CVE-2020-21710
+- CVE-2020-21890
