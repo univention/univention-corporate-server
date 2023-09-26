@@ -6,12 +6,10 @@ src: ghostscript
 fix: 9.27~dfsg-2+deb10u9
 desc: |
  This update addresses the following issues:
- 9.27~dfsg-2+deb10u9 (Sun, 24 Sep 2023 14:01:16 +0530)
- * Non-maintainer upload by the Debian LTS Team.
- * CVE-2020-21710: A divide by zero issue discovered in eps_print_page in
-   gdevepsn.c.
- * CVE-2020-21890: Buffer Overflow vulnerability in clj_media_size function in
-   devices/gdevclj.c
+ * CVE-2020-21710: A divide by zero issue discovered in function
+   `eps_print_page` in file `gdevepsn.c`.
+ * CVE-2020-21890: Buffer Overflow vulnerability in function `clj_media_size`
+   in file `devices/gdevclj.a`c
 bug: [56655]
 cve:
 - CVE-2020-21710
