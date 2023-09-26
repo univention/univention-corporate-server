@@ -1,0 +1,25 @@
+product: ucs
+release: "5.0"
+version: [4, 5]
+scope: ucs_5.0-0-errata5.0-5
+src: glib2.0
+fix: 2.58.3-2+deb10u5
+desc: |
+ This update addresses the following issues:
+ 2.58.3-2+deb10u5 (Mon, 25 Sep 2023 11:21:56 -0300)
+ * Non-maintainer upload by the LTS Team
+ * Add debian/salsa-ci.yml using lts-team/pipeline for buster
+ * Fix several GVariant-related issues:
+ * CVE-2023-29499: GVariant deserialization fails to validate that the input
+   conforms to the expected format, leading to denial of service.
+ * CVE-2023-32611: GVariant deserialization is vulnerable to a slowdown issue
+   where a crafted GVariant can cause excessive processing, leading to denial
+   of service.
+ * CVE-2023-32665: GVariant deserialization is vulnerable to an exponential
+   blowup issue where a crafted GVariant can cause excessive processing,
+   leading to denial of service.
+bug: [56654]
+cve:
+- CVE-2023-29499
+- CVE-2023-32611
+- CVE-2023-32665
