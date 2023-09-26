@@ -275,6 +275,8 @@ lookup_filter = object.lookup_filter
 
 
 def identify(dn, attr):  # type: (str, Attr) -> bool
-    return b'dNSZone' in attr.get('objectClass', []) and \
-        [b'@'] == attr.get('relativeDomainName', []) and \
-        (attr['zoneName'][0].decode('ASCII').endswith(ARPA_IP4) or attr['zoneName'][0].decode('ASCII').endswith(ARPA_IP6))
+    return bool(
+        b'dNSZone' in attr.get('objectClass', [])
+        and [b'@'] == attr.get('relativeDomainName', [])
+        and (attr['zoneName'][0].decode('ASCII').endswith(ARPA_IP4) or attr['zoneName'][0].decode('ASCII').endswith(ARPA_IP6)),
+    )

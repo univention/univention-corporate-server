@@ -245,12 +245,12 @@ lookup_filter = object.lookup_filter
 
 def identify(dn, attr, canonical=False):  # type: (str, Attr, bool) -> bool
     mod = module.encode('ASCII')
-    return all([
-        b'dNSZone' in attr.get('objectClass', []),
-        b'@' not in attr.get('relativeDomainName', []),
-        not attr.get('zoneName', [b'.arpa'])[0].decode('UTF-8').endswith('.arpa'),
-        not attr.get('cNAMERecord', []),
-        not attr.get('sRVRecord', []),
-        any(attr.get(a) for a in ('aRecord', 'aAAARecord', 'mXRecord')) or mod in attr.get('univentionObjectType', []),
-        mod in attr.get('univentionObjectType', [mod]),
-    ])
+    return bool(
+        b'dNSZone' in attr.get('objectClass', [])
+        and b'@' not in attr.get('relativeDomainName', [])
+        and not attr.get('zoneName', [b'.arpa'])[0].decode('UTF-8').endswith('.arpa')
+        and not attr.get('cNAMERecord')
+        and not attr.get('sRVRecord')
+        and any(attr.get(a) for a in ('aRecord', 'aAAARecord', 'mXRecord')) or mod in attr.get('univentionObjectType', [])
+        and mod in attr.get('univentionObjectType', [mod]),
+    )

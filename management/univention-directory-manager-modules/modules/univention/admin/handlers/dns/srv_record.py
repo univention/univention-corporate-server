@@ -180,10 +180,10 @@ lookup_filter = object.lookup_filter
 
 
 def identify(dn, attr, canonical=False):  # type: (str, Attr, bool) -> bool
-    return all([
-        b'dNSZone' in attr.get('objectClass', []),
-        b'@' not in attr.get('relativeDomainName', []),
-        not attr.get('zoneName', [b'.in-addr.arpa'])[0].decode('ASCII').endswith(ARPA_IP4),
-        not attr.get('zoneName', [b'.ip6.arpa'])[0].decode('ASCII').endswith(ARPA_IP6),
-        attr.get('sRVRecord', []),
-    ])
+    return bool(
+        b'dNSZone' in attr.get('objectClass', [])
+        and b'@' not in attr.get('relativeDomainName', [])
+        and not attr.get('zoneName', [b'.in-addr.arpa'])[0].decode('ASCII').endswith(ARPA_IP4)
+        and not attr.get('zoneName', [b'.ip6.arpa'])[0].decode('ASCII').endswith(ARPA_IP6)
+        and attr.get('sRVRecord'),
+    )

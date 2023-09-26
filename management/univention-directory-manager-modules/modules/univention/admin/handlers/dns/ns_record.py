@@ -166,10 +166,10 @@ def lookup(co, lo, filter_s, base='', superordinate=None, scope="sub", unique=Fa
 
 def identify(dn, attr, canonical=False):  # type: (str, Attr, bool) -> bool
     mod = module.encode('ASCII')
-    return all([
-        b'dNSZone' in attr.get('objectClass', []),
-        b'@' not in attr.get('relativeDomainName', []),
-        not attr.get('zoneName', [b'.in-addr.arpa'])[0].decode('ASCII').endswith(ARPA_IP4),
-        attr.get('nSRecord', []),
-        mod in attr.get('univentionObjectType', [mod]),
-    ])
+    return bool(
+        b'dNSZone' in attr.get('objectClass', [])
+        and b'@' not in attr.get('relativeDomainName', [])
+        and not attr.get('zoneName', [b'.in-addr.arpa'])[0].decode('ASCII').endswith(ARPA_IP4)
+        and attr.get('nSRecord')
+        and mod in attr.get('univentionObjectType', [mod]),
+    )
