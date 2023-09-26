@@ -110,17 +110,17 @@ def mapName(old, encoding=()):
 
 
 def unmapLocation(old, encoding=()):
-    new = []
-    for i in old:
-        new.append(i.decode(*encoding).split(u' ', 3))
-    return new
+    return [
+        i.decode(*encoding).split(u' ', 3)
+        for i in old
+    ]
 
 
 def mapLocation(old, encoding=()):
-    new = []
-    for i in old:
-        new.append(u' '.join(i).encode(*encoding))
-    return new
+    return [
+        u' '.join(i).encode(*encoding)
+        for i in old
+    ]
 
 
 mapping = univention.admin.mapping.mapping()

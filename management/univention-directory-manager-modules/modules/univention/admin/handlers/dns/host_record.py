@@ -115,17 +115,17 @@ layout = [
 
 
 def unmapMX(old, encoding=()):
-    new = []
-    for i in old:
-        new.append(i.decode(*encoding).split(u' ', 1))
-    return new
+    return [
+        i.decode(*encoding).split(u' ', 1)
+        for i in old
+    ]
 
 
 def mapMX(old, encoding=()):
-    new = []
-    for i in old:
-        new.append(u' '.join(i).encode(*encoding))
-    return new
+    return [
+        u' '.join(i).encode(*encoding)
+        for i in old
+    ]
 
 
 def unmapIPAddresses(values, encoding=()):
