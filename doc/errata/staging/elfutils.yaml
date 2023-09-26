@@ -6,9 +6,7 @@ src: elfutils
 fix: 0.176-1.1+deb10u1
 desc: |
  This update addresses the following issue:
- 0.176-1.1+deb10u1 (Sat, 23 Sep 2023 14:03:02 +0200)
- * Non-maintainer upload by the LTS Team.
- * CVE-2020-21047 The libcpu component suffers from denial-of-service
+ * CVE-2020-21047: The libcpu component suffers from denial-of-service
    vulnerability caused by out-of-bounds write (CWE-787), off-by-one error
    (CWE-193) and reachable assertion (CWE-617).
 bug: [56652]
