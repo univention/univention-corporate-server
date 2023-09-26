@@ -32,6 +32,8 @@
 
 """|UDM| module for |DNS| records"""
 
+from typing import Dict, List
+
 import six
 
 
@@ -39,6 +41,7 @@ __path__ = __import__('pkgutil').extend_path(__path__, __name__)  # type: ignore
 
 ARPA_IP4 = '.in-addr.arpa'
 ARPA_IP6 = '.ip6.arpa'
+Attr = Dict[str, List[bytes]]
 
 
 def makeContactPerson(obj, arg):

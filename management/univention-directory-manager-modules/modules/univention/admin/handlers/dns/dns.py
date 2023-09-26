@@ -45,6 +45,7 @@ import univention.admin.handlers.dns.reverse_zone
 import univention.admin.handlers.dns.srv_record
 import univention.admin.handlers.dns.txt_record
 import univention.admin.localization
+from univention.admin.handlers.dns import Attr  # noqa: F401
 from univention.admin.layout import Tab
 
 
@@ -113,5 +114,5 @@ def lookup(co, lo, filter_s, base='', superordinate=None, scope='sub', unique=Fa
     return ret
 
 
-def identify(dn, attr, canonical=False):
+def identify(dn, attr, canonical=False):  # type: (str, Attr, bool) -> None
     pass

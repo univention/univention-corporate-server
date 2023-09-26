@@ -41,7 +41,7 @@ import univention.admin.filter
 import univention.admin.handlers
 import univention.admin.handlers.dns.forward_zone
 import univention.admin.localization
-from univention.admin.handlers.dns import ARPA_IP4, ARPA_IP6, stripDot
+from univention.admin.handlers.dns import ARPA_IP4, ARPA_IP6, Attr, stripDot  # noqa: F401
 from univention.admin.layout import Group, Tab
 
 
@@ -159,7 +159,7 @@ lookup = object.lookup
 lookup_filter = object.lookup_filter
 
 
-def identify(dn, attr, canonical=False):
+def identify(dn, attr, canonical=False):  # type: (str, Attr, bool) -> bool
     return b'dNSZone' in attr.get('objectClass', []) and b'@' not in attr.get('relativeDomainName', []) and \
         not attr['zoneName'][0].decode('ASCII').endswith(ARPA_IP4) and not attr['zoneName'][0].decode('ASCII').endswith(ARPA_IP6) and attr.get('cNAMERecord', []) and not attr.get('aRecord', []) and not attr.get('aAAARecord', [])
 
