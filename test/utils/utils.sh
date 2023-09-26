@@ -1401,7 +1401,6 @@ change_template_hostname () {
 
 	# fix some templates
 	test -e /etc/bind/named.conf.samba4 && ucr commit /etc/bind/named.conf.samba4
-	test -e /etc/postgresql/pam_ldap.conf && ucr commit /etc/postgresql/pam_ldap.conf
 
 	for service in slapd univention-directory-listener univention-management-console-server apache2 postgresql; do
 		if service "$service" status 2>/dev/null 1>/dev/null; then
