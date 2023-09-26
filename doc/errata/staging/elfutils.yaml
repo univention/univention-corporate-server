@@ -6,13 +6,11 @@ src: elfutils
 fix: 0.168-1+deb9u2
 desc: |
  This update addresses the following issues:
- 0.168-1+deb9u2 (Sat, 23 Sep 2023 14:03:02 +0200)
- * Non-maintainer upload by the ELTS Team.
- * CVE-2020-21047 The libcpu component suffers from denial-of-service
+ * CVE-2019-7149: Due to a heap-buffer-overflow problem in function
+   `read_srclines()` a crafted ELF input can cause segmentation faults.
+ * CVE-2020-21047: The libcpu component suffers from denial-of-service
    vulnerability caused by out-of-bounds write (CWE-787), off-by-one error
    (CWE-193) and reachable assertion (CWE-617).
- * CVE-2019-7149 Due to a heap-buffer-overflow problem in function
-   read_srclines() a crafted ELF input can cause segmentation faults.
 bug: [56658]
 cve:
 - CVE-2020-21047
