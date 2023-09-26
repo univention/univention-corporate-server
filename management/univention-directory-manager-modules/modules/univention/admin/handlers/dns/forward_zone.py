@@ -39,7 +39,7 @@ import univention.admin.handlers
 import univention.admin.localization
 from univention.admin import configRegistry
 from univention.admin.handlers.dns import (  # noqa: F401
-    ARPA_IP4, ARPA_IP6, Attr, escapeSOAemail, stripDot, unescapeSOAemail,
+    ARPA_IP4, ARPA_IP6, Attr, escapeSOAemail, is_dns, is_forward_zone, is_zone, stripDot, unescapeSOAemail,
 )
 from univention.admin.layout import Group, Tab
 
@@ -298,7 +298,7 @@ lookup_filter = object.lookup_filter
 
 def identify(dn, attr, canonical=False):  # type: (str, Attr, bool) -> bool
     return bool(
-        b'dNSZone' in attr.get('objectClass', [])
-        and attr.get('sOARecord')
-        and not attr['zoneName'][0].decode('ASCII').endswith((ARPA_IP4, ARPA_IP6)),
+        is_zone(attr)
+        and is_dns(attr)
+        and is_forward_zone(attr),
     )

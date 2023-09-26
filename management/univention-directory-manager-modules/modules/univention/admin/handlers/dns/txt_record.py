@@ -36,7 +36,9 @@ import univention.admin.filter
 import univention.admin.handlers
 import univention.admin.handlers.dns.forward_zone
 import univention.admin.localization
-from univention.admin.handlers.dns import ARPA_IP4, ARPA_IP6, Attr  # noqa: F401
+from univention.admin.handlers.dns import (  # noqa: F401
+    ARPA_IP4, ARPA_IP6, Attr, has_any, is_dns, is_forward_zone, is_not_handled_by_other_module_than, is_zone,
+)
 from univention.admin.layout import Group, Tab
 
 
@@ -157,12 +159,11 @@ lookup_filter = object.lookup_filter
 
 
 def identify(dn, attr, canonical=False):  # type: (str, Attr, bool) -> bool
-    mod = module.encode('ASCII')
     return bool(
-        b'dNSZone' in attr.get('objectClass', [])
-        and not attr.get('sOARecord')
-        and not attr['zoneName'][0].decode('ASCII').endswith((ARPA_IP4, ARPA_IP6))
-        and attr.get('tXTRecord')
-        and not any(attr.get(a) for a in ('aRecord', 'aAAARecord', 'mXRecord'))
-        and mod in attr.get('univentionObjectType', [mod]),
+        attr.get('tXTRecord')
+        and is_dns(attr)
+        and not is_zone(attr)
+        and is_forward_zone(attr)
+        and not has_any(attr, 'aRecord', 'aAAARecord', 'mXRecord')
+        and is_not_handled_by_other_module_than(attr, module),
     )

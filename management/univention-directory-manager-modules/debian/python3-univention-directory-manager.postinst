@@ -68,9 +68,10 @@ if [ "$1" = "configure" ] && dpkg --compare-versions "$2" lt-nl "15.0.11-29"; th
 		--append translationLongDescription='"fr_FR" "Définir des drapeaux pour un objet"'
 fi
 
-if [ "$1" = "configure" ] && dpkg --compare-versions "$2" lt-nl "15.0.25-7"; then
+if [ "$1" = "configure" ] && dpkg --compare-versions "$2" lt-nl "15.0.25-14"; then
 	deb-systemd-invoke restart univention-directory-listener.service || true
 	# restart ucs@school importer service if available
+	# shellcheck disable=SC2015
 	systemctl is-active ucs-school-import-celery-worker.service && deb-systemd-invoke restart ucs-school-import-celery-worker.service || true
 fi
 

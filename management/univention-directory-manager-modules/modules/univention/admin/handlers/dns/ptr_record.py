@@ -39,7 +39,7 @@ import univention.admin
 import univention.admin.handlers
 import univention.admin.localization
 from univention.admin.filter import conjunction, expression
-from univention.admin.handlers.dns import ARPA_IP4, ARPA_IP6, Attr  # noqa: F401
+from univention.admin.handlers.dns import ARPA_IP4, ARPA_IP6, Attr, is_dns  # noqa: F401
 from univention.admin.layout import Group, Tab
 
 
@@ -287,6 +287,6 @@ lookup_filter = object.lookup_filter
 
 def identify(dn, attr):  # type: (str, Attr) -> bool
     return bool(
-        b'dNSZone' in attr.get('objectClass', [])
-        and attr.get('pTRRecord'),
+        attr.get('pTRRecord')
+        and is_dns(attr),
     )

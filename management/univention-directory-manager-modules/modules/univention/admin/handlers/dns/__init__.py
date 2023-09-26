@@ -44,6 +44,37 @@ ARPA_IP6 = '.ip6.arpa'
 Attr = Dict[str, List[bytes]]
 
 
+def is_dns(attr):  # type: (Attr) -> bool
+    """Are the given LDAP attributes a DNS entry?"""
+    return b'dNSZone' in attr.get('objectClass', [])
+
+
+def is_zone(attr):  # type: (Attr) -> bool
+    """Are the given LDAP attributes a DNS zone entry?"""
+    return bool(attr.get("sOARecord"))
+
+
+def is_reverse_zone(attr):  # type: (Attr) -> bool
+    """Are the given LDAP attributes a DNS entry in a forward zone?"""
+    return attr["zoneName"][0].decode("ASCII").endswith((ARPA_IP4, ARPA_IP6))
+
+
+def is_forward_zone(attr):  # type: (Attr) -> bool
+    """Are the given LDAP attributes a DNS entry in a reverse zone?"""
+    return not is_reverse_zone(attr)
+
+
+def has_any(attr, *attrs):  # type: (Attr, *str) -> bool
+    """Are any of the named LDAP attributes present?"""
+    return any(attr.get(a) for a in attrs)
+
+
+def is_not_handled_by_other_module_than(attr, module):  # type: (Attr, str) -> bool
+    """Are the given LDAP attributes handled by the specified UDM module?"""
+    mod = module.encode('ASCII')
+    return mod in attr.get('univentionObjectType', [mod])
+
+
 def makeContactPerson(obj, arg):
     """Create contact Email-address for domain."""
     domain = obj.position.getDomain()

@@ -36,7 +36,7 @@ import univention.admin.filter
 import univention.admin.handlers
 import univention.admin.handlers.dns.forward_zone
 import univention.admin.localization
-from univention.admin.handlers.dns import Attr  # noqa: F401
+from univention.admin.handlers.dns import Attr, is_dns  # noqa: F401
 from univention.admin.layout import Group, Tab
 
 
@@ -178,6 +178,6 @@ lookup_filter = object.lookup_filter
 
 def identify(dn, attr, canonical=False):  # type: (str, Attr, bool) -> bool
     return bool(
-        b'dNSZone' in attr.get('objectClass', [])
-        and attr.get('sRVRecord'),
+        attr.get('sRVRecord')
+        and is_dns(attr),
     )

@@ -38,7 +38,7 @@ import univention.admin.filter
 import univention.admin.handlers
 import univention.admin.handlers.dns.forward_zone
 import univention.admin.localization
-from univention.admin.handlers.dns import Attr  # noqa: F401
+from univention.admin.handlers.dns import Attr, is_dns, is_not_handled_by_other_module_than, is_zone  # noqa: F401
 from univention.admin.layout import Group, Tab
 
 
@@ -159,10 +159,9 @@ def lookup(co, lo, filter_s, base='', superordinate=None, scope="sub", unique=Fa
 
 
 def identify(dn, attr, canonical=False):  # type: (str, Attr, bool) -> bool
-    mod = module.encode('ASCII')
     return bool(
-        b'dNSZone' in attr.get('objectClass', [])
-        and not attr.get('sOARecord')
-        and attr.get('nSRecord')
-        and mod in attr.get('univentionObjectType', [mod]),
+        attr.get('nSRecord')
+        and is_dns(attr)
+        and not is_zone(attr)
+        and is_not_handled_by_other_module_than(attr, module),
     )
