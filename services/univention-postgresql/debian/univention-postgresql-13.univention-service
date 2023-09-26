@@ -1,7 +1,0 @@
-[postgresql13]
-Description[de]=PostgreSQL 13 Server
-Description[en]=PostgreSQL 13 Server
-icon=service/postgres
-programs=/usr/lib/postgresql/13/bin/postgres
-start_type=postgres13/autostart
-systemd=postgresql@13-main
