@@ -6,17 +6,12 @@ src: glib2.0
 fix: 2.50.3-2+deb9u5
 desc: |
  This update addresses the following issues:
- 2.50.3-2+deb9u5 (Mon, 25 Sep 2023 15:05:51 -0300)
- * Non-maintainer updated by the ELTS Team.
- * Add debian/salsa-ci.yml using lts-team/pipeline for stretch
- * Backport d/patches/0001-tests-Drop-a-slightly-suspect-GResolver-test.patch
-   from buster to test failures in CI environments without IPv6
- * CVE-2023-29499: GVariant deserialization fails to validate that the input
+ * CVE-2023-29499: GVariant de-serialization fails to validate that the input
    conforms to the expected format, leading to denial of service.
- * CVE-2023-32611: GVariant deserialization is vulnerable to a slowdown issue
+ * CVE-2023-32611: GVariant de-serialization is vulnerable to a slowdown issue
    where a crafted GVariant can cause excessive processing, leading to denial
    of service.
- * CVE-2023-32665: GVariant deserialization is vulnerable to an exponential
+ * CVE-2023-32665: GVariant de-serialization is vulnerable to an exponential
    blowup issue where a crafted GVariant can cause excessive processing,
    leading to denial of service.
 bug: [56656]
