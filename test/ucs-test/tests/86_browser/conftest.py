@@ -3,6 +3,7 @@ import subprocess
 import time
 from pathlib import Path
 from typing import Dict, Generator, Iterator
+from urllib.parse import quote
 
 import pytest
 from playwright.sync_api import BrowserContext, Page, expect
@@ -137,8 +138,9 @@ def save_trace(page: Page, context: BrowserContext, request: pytest.FixtureReque
             subfolder = f"{ucr.get('hostname')}/"
         else:
             subfolder = ""
-        browser_trace_url = f"{os.environ['JENKINS_WS']}ws/test/{subfolder}browser/{trace_filename.name}"
-        browser_screenshot_url = f"{os.environ['JENKINS_WS']}ws/test/{subfolder}browser/{screenshot_filename.name}"
+
+        browser_trace_url = f"{os.environ['JENKINS_WS']}ws/test/{quote(subfolder)}browser/{quote(trace_filename.name)}"
+        browser_screenshot_url = f"{os.environ['JENKINS_WS']}ws/test/{quote(subfolder)}browser/{quote(screenshot_filename.name)}"
         logger.info("Browser trace URL: %s" % browser_trace_url)
         logger.info("Browser screenshot URL: %s" % browser_screenshot_url)
 
