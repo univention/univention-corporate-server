@@ -145,7 +145,7 @@ def save_trace(page: Page, context: BrowserContext, request: pytest.FixtureReque
 
 def check_for_backtrace(page: Page):
     show_backtrace_button = page.get_by_role("button", name="Show server error message")
-    notification_502_error = page.get_by_text("An unknown error with status code 502 occurred")
+    notification_502_error = page.get_by_text("An unknown error with status code 502 occurred").first
     try:
         expect(show_backtrace_button.or_(notification_502_error)).to_be_visible(timeout=5 * SEC)
         if show_backtrace_button.is_visible():
