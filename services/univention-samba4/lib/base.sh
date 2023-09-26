@@ -139,7 +139,7 @@ remove_non_samba4_dc_srv_records() {
 		sRVRecord_DN=$(sed -n 's/^dn: //p' <<<"$ldap_record")
 		sRVRecord_attrs=$(sed -n 's/^sRVRecord: //p' <<<"$ldap_record")
 
-		zoneDN=$(univention-ldapsearch -LLL "(&(objectClass=dNSZone)(zoneName=$domainname)(relativeDomainName=@))" dn \
+		zoneDN=$(univention-ldapsearch -LLL "(&(objectClass=dNSZone)(zoneName=$domainname)(sOARecord=*))" dn \
 			| ldapsearch-wrapper | sed -n 's/^dn: //p')
 
 		while read line; do

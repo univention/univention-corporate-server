@@ -141,7 +141,7 @@ class object(univention.admin.handlers.simpleLdap):
     def unmapped_lookup_filter(cls):
         return univention.admin.filter.conjunction('&', [
             univention.admin.filter.expression('objectClass', 'dNSZone'),
-            univention.admin.filter.conjunction('!', [univention.admin.filter.expression('relativeDomainName', '@')]),
+            univention.admin.filter.conjunction('!', [univention.admin.filter.expression('sOARecord', '*', escape=False)]),
             univention.admin.filter.conjunction('!', [univention.admin.filter.expression('zoneName', '*.in-addr.arpa', escape=False)]),
             univention.admin.filter.conjunction('!', [univention.admin.filter.expression('aRecord', '*', escape=False)]),
             univention.admin.filter.conjunction('!', [univention.admin.filter.expression('zoneName', '*.ip6.arpa', escape=False)]),
@@ -162,7 +162,7 @@ lookup_filter = object.lookup_filter
 def identify(dn, attr, canonical=False):  # type: (str, Attr, bool) -> bool
     return bool(
         b'dNSZone' in attr.get('objectClass', [])
-        and b'@' not in attr.get('relativeDomainName', [])
+        and not attr.get('sOARecord')
         and not attr['zoneName'][0].decode('ASCII').endswith((ARPA_IP4, ARPA_IP6))
         and attr.get('cNAMERecord')
         and not attr.get('aRecord')

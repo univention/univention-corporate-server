@@ -2113,7 +2113,7 @@ class simpleComputer(simpleLdap):
 
                 log.debug('zoneNames: %s', zones)
                 for zoneName, ips in zones:
-                    searchFilter = filter_format('(&(objectClass=dNSZone)(zoneName=%s)(relativeDomainName=@))', [zoneName])
+                    searchFilter = filter_format('(&(objectClass=dNSZone)(zoneName=%s)(sOARecord=*))', [zoneName])
                     results = self.lo.searchDn(base=tmppos.getBase(), scope='domain', filter=searchFilter, unique=False)
                     for dn in results:
                         for ip in ips:
@@ -2699,7 +2699,7 @@ class simpleComputer(simpleLdap):
                         # remove the object
                         self.lo.delete(dn)
                         # and update the SOA version number for the zone
-                        results = self.lo.searchDn(base=tmppos.getBase(), scope='domain', filter=filter_format('(&(objectClass=dNSZone)(zoneName=%s)(relativeDomainName=@))', (attr['zoneName'][0].decode('UTF-8'),)), unique=False)
+                        results = self.lo.searchDn(base=tmppos.getBase(), scope='domain', filter=filter_format('(&(objectClass=dNSZone)(zoneName=%s)(sOARecord=*))', (attr['zoneName'][0].decode('UTF-8'),)), unique=False)
                         for zoneDn in results:
                             zone = univention.admin.handlers.dns.forward_zone.object(self.co, self.lo, self.position, zoneDn)
                             zone.open()
@@ -2714,7 +2714,7 @@ class simpleComputer(simpleLdap):
                         # remove the object
                         self.lo.delete(dn)
                         # and update the SOA version number for the zone
-                        results = self.lo.searchDn(base=tmppos.getBase(), scope='domain', filter=filter_format('(&(objectClass=dNSZone)(zoneName=%s)(relativeDomainName=@))', (attr['zoneName'][0].decode('UTF-8'),)), unique=False)
+                        results = self.lo.searchDn(base=tmppos.getBase(), scope='domain', filter=filter_format('(&(objectClass=dNSZone)(zoneName=%s)(sOARecord=*))', (attr['zoneName'][0].decode('UTF-8'),)), unique=False)
                         for zoneDn in results:
                             zone = univention.admin.handlers.dns.forward_zone.object(self.co, self.lo, self.position, zoneDn)
                             zone.open()

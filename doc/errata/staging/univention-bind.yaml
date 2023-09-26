@@ -1,0 +1,13 @@
+product: ucs
+release: "5.0"
+version: [6]
+scope: ucs_5.0-0-errata5.0-6
+src: univention-bind
+fix: 14.0.6-1
+desc: |
+ This update addresses the following issue:
+ * DNS zones are now detected by having a `SOA` record instead of having a
+   relative name `@`. This is allowed as DNS labels might consist of any 8-bit
+   octets including an escaped `\@`. Deleting such entries resulted into the
+   complete zone being dropped from BIND9.
+bug: [50385]

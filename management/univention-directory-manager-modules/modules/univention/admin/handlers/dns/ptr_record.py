@@ -229,7 +229,7 @@ class object(univention.admin.handlers.simpleLdap):
         return univention.admin.filter.conjunction('&', [
             univention.admin.filter.expression('objectClass', 'dNSZone'),
             univention.admin.filter.expression('pTRRecord', '*', escape=False),
-            univention.admin.filter.conjunction('!', [univention.admin.filter.expression('relativeDomainName', '@')]),
+            univention.admin.filter.conjunction('!', [univention.admin.filter.expression('sOARecord', '*', escape=False)]),
             univention.admin.filter.conjunction('|', [
                 univention.admin.filter.expression('zoneName', '*%s' % ARPA_IP4, escape=False),
                 univention.admin.filter.expression('zoneName', '*%s' % ARPA_IP6, escape=False),
@@ -293,7 +293,7 @@ lookup_filter = object.lookup_filter
 def identify(dn, attr):  # type: (str, Attr) -> bool
     return bool(
         b'dNSZone' in attr.get('objectClass', [])
-        and b'@' not in attr.get('relativeDomainName', [])
+        and not attr.get('sOARecord')
         and attr.get('pTRRecord')
         and attr['zoneName'][0].decode('ASCII').endswith((ARPA_IP4, ARPA_IP6)),
     )

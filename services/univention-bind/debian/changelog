@@ -1,8 +1,9 @@
-univention-bind (14.0.6-1) UNRELEASED; urgency=medium
+univention-bind (14.0.6-1) unstable; urgency=medium
 
   * Bug #56832: UCS 5.0-6 version bump
+  * Bug #50385: Fix detecting DNS zones
 
- -- Philipp Hahn <hahn@univention.de>  Thu, 07 Dec 2023 19:17:35 +0100
+ -- Philipp Hahn <hahn@univention.de>  Mon, 04 Mar 2024 11:03:38 +0100
 
 univention-bind (14.0.5-2) unstable; urgency=medium
 

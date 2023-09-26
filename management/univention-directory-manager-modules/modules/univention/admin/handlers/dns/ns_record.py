@@ -137,7 +137,7 @@ def lookup_filter(filter_s=None, superordinate=None):
     lookup_filter_obj = univention.admin.filter.conjunction('&', [
         univention.admin.filter.expression('objectClass', 'dNSZone'),
         univention.admin.filter.expression('nSRecord', '*', escape=False),
-        univention.admin.filter.conjunction('!', [univention.admin.filter.expression('relativeDomainName', '@')]),
+        univention.admin.filter.conjunction('!', [univention.admin.filter.expression('sOARecord', '*', escape=False)]),
     ])
 
     if superordinate:
@@ -162,7 +162,7 @@ def identify(dn, attr, canonical=False):  # type: (str, Attr, bool) -> bool
     mod = module.encode('ASCII')
     return bool(
         b'dNSZone' in attr.get('objectClass', [])
-        and b'@' not in attr.get('relativeDomainName', [])
+        and not attr.get('sOARecord')
         and attr.get('nSRecord')
         and mod in attr.get('univentionObjectType', [mod]),
     )

@@ -57,7 +57,7 @@ import listener
 
 
 description = 'Update BIND zones'
-filter = '(&(objectClass=dNSZone)(relativeDomainName=@)(zoneName=*))'
+filter = '(&(objectClass=dNSZone)(sOARecord=*)(zoneName=*))'
 
 NAMED_CONF_FILE = "/etc/bind/univention.conf"
 NAMED_CONF_DIR = "/etc/bind/univention.conf.d"

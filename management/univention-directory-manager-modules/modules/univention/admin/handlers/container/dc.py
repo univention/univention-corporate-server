@@ -178,8 +178,8 @@ class object(univention.admin.handlers.simpleLdap):
         univention.admin.handlers.simpleLdap.open(self)
 
         if self.exists():
-            self['dnsForwardZone'] = self.lo.searchDn(base=self.dn, scope='domain', filter='(&(objectClass=dNSZone)(relativeDomainName=@)(!(zoneName=*.in-addr.arpa)))')
-            self['dnsReverseZone'] = self.lo.searchDn(base=self.dn, scope='domain', filter='(&(objectClass=dNSZone)(relativeDomainName=@)(zoneName=*.in-addr.arpa))')
+            self['dnsForwardZone'] = self.lo.searchDn(base=self.dn, scope='domain', filter='(&(objectClass=dNSZone)(sOARecord=*)(!(zoneName=*.in-addr.arpa))(!(zoneName=*.ip6.arpa)))')
+            self['dnsReverseZone'] = self.lo.searchDn(base=self.dn, scope='domain', filter='(&(objectClass=dNSZone)(sOARecord=*)(|(zoneName=*.in-addr.arpa)(zoneName=*.ip6.arpa)))')
             self.save()
 
     @classmethod
