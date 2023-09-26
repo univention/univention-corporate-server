@@ -134,17 +134,12 @@ class object(univention.admin.handlers.simpleLdap):
 
 
 def lookup_filter(filter_s=None, superordinate=None):
-    lookup_filter_obj = \
-        univention.admin.filter.conjunction('&', [
-            univention.admin.filter.expression('objectClass', 'dNSZone'),
-            univention.admin.filter.expression('nSRecord', '*', escape=False),
-            univention.admin.filter.conjunction('!', [
-                univention.admin.filter.conjunction('|', [
-                    univention.admin.filter.expression('relativeDomainName', '@'),
-                    univention.admin.filter.expression('zoneName', '*.in-addr.arpa', escape=False),
-                ]),
-            ]),
-        ])
+    lookup_filter_obj = univention.admin.filter.conjunction('&', [
+        univention.admin.filter.expression('objectClass', 'dNSZone'),
+        univention.admin.filter.expression('nSRecord', '*', escape=False),
+        univention.admin.filter.conjunction('!', [univention.admin.filter.expression('relativeDomainName', '@')]),
+        univention.admin.filter.conjunction('!', [univention.admin.filter.expression('zoneName', '*.in-addr.arpa', escape=False)]),
+    ])
 
     if superordinate:
         parent = superordinate.mapping.mapValueDecoded('zone', superordinate['zone'])
