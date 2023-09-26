@@ -241,7 +241,7 @@ COMMON_EXCEPTIONS = (
     E('^(univention.management.console.modules.ucstest.)?NonThreadedError$'),
     E(r'^(ldap\.)?INVALID_SYNTAX: .*ABCDEFGHIJKLMNOPQRSTUVWXYZ.*', ['sync_from_ucs']),
     E(r'^(ldap\.)?INVALID_SYNTAX: .*telephoneNumber.*', ['sync_from_ucs'], 35391),  # 52_s4connector/134sync_incomplete_attribute_ucs
-#    E('^ldap.OTHER: .*[cC]annot rename.*parent does not exist', ['sync_from_ucs'], 53748),
+    E('^ldap.OTHER: .*[cC]annot rename.*parent does not exist', ['sync_from_ucs'], 53748),
     E('univention.lib.umc.ConnectionError:.*machine.secret.*'),
     E('univention.lib.umc.ConnectionError:.*CERTIFICATE_VERIFY_FAILED.*'),
 #    E(r'^OSError: \[Errno 24\] Too many open files'),
