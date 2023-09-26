@@ -230,8 +230,8 @@ class object(univention.admin.handlers.simpleLdap):
             univention.admin.filter.expression('objectClass', 'dNSZone'),
             univention.admin.filter.conjunction('!', [univention.admin.filter.expression('relativeDomainName', '@')]),
             univention.admin.filter.conjunction('|', [
-                univention.admin.filter.expression('zoneName', '*.in-addr.arpa', escape=False),
-                univention.admin.filter.expression('zoneName', '*.ip6.arpa', escape=False),
+                univention.admin.filter.expression('zoneName', '*%s' % ARPA_IP4, escape=False),
+                univention.admin.filter.expression('zoneName', '*%s' % ARPA_IP6, escape=False),
             ]),
         ])
 
@@ -270,13 +270,13 @@ def rewrite_rev(filter, subnet):
                 part if '*' in part else part.rjust(4, '0')[-4:]
                 for part in filter.value.split(':')
             )
-            suffix = '.ip6.arpa'
+            suffix = ARPA_IP6
         else:
             octets = subnet.split('.')
             prefix = len(octets)
             assert 1 <= prefix < 4
             addr = filter.value.split('.')
-            suffix = '.in-addr.arpa'
+            suffix = ARPA_IP4
         addr_net, addr_host = ('.'.join(reversed(_)) for _ in (addr[:prefix], addr[prefix:]))
         filter = conjunction('&', [
             expression('zoneName', addr_net + suffix),
@@ -293,5 +293,5 @@ def identify(dn, attr):  # type: (str, Attr) -> bool
     return bool(
         b'dNSZone' in attr.get('objectClass', [])
         and b'@' not in attr.get('relativeDomainName', [])
-        and (attr.get('zoneName', [b''])[0].decode('ASCII').endswith(ARPA_IP4) or attr.get('zoneName', [b''])[0].decode('ASCII').endswith(ARPA_IP6)),
+        and attr['zoneName'][0].decode('ASCII').endswith((ARPA_IP4, ARPA_IP6)),
     )

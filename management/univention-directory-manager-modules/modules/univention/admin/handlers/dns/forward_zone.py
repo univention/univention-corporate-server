@@ -300,6 +300,5 @@ def identify(dn, attr, canonical=False):  # type: (str, Attr, bool) -> bool
     return bool(
         b'dNSZone' in attr.get('objectClass', [])
         and [b'@'] == attr.get('relativeDomainName', [])
-        and not attr['zoneName'][0].decode('ASCII').endswith(ARPA_IP4)
-        and not attr['zoneName'][0].decode('ASCII').endswith(ARPA_IP6),
+        and not attr['zoneName'][0].decode('ASCII').endswith((ARPA_IP4, ARPA_IP6)),
     )

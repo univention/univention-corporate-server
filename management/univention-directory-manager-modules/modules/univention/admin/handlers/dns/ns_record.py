@@ -38,7 +38,7 @@ import univention.admin.filter
 import univention.admin.handlers
 import univention.admin.handlers.dns.forward_zone
 import univention.admin.localization
-from univention.admin.handlers.dns import ARPA_IP4, Attr  # noqa: F401
+from univention.admin.handlers.dns import Attr  # noqa: F401
 from univention.admin.layout import Group, Tab
 
 
@@ -48,7 +48,7 @@ _ = translation.translate
 module = 'dns/ns_record'
 operations = ['add', 'edit', 'remove', 'search']
 columns = ['nameserver']
-superordinate = 'dns/forward_zone'
+superordinate = ['dns/forward_zone', 'dns/reverse_zone']
 childs = False
 short_description = 'DNS: NS Record'
 object_name = 'Nameserver record'
@@ -138,7 +138,6 @@ def lookup_filter(filter_s=None, superordinate=None):
         univention.admin.filter.expression('objectClass', 'dNSZone'),
         univention.admin.filter.expression('nSRecord', '*', escape=False),
         univention.admin.filter.conjunction('!', [univention.admin.filter.expression('relativeDomainName', '@')]),
-        univention.admin.filter.conjunction('!', [univention.admin.filter.expression('zoneName', '*.in-addr.arpa', escape=False)]),
     ])
 
     if superordinate:
@@ -164,7 +163,6 @@ def identify(dn, attr, canonical=False):  # type: (str, Attr, bool) -> bool
     return bool(
         b'dNSZone' in attr.get('objectClass', [])
         and b'@' not in attr.get('relativeDomainName', [])
-        and not attr.get('zoneName', [b'.in-addr.arpa'])[0].decode('ASCII').endswith(ARPA_IP4)
         and attr.get('nSRecord')
         and mod in attr.get('univentionObjectType', [mod]),
     )

@@ -1,3 +1,10 @@
+univention-directory-manager-modules (15.0.25-16) unstable; urgency=low
+
+  * Bug #50385: Fix escaping of DNS names and lables
+  * Bug #55612: Allow using domain `home.arpa` from RFC-8375
+
+ -- Philipp Hahn <hahn@univention.de>  Mon, 04 Mar 2024 14:30:47 +0100
+
 univention-directory-manager-modules (15.0.25-15) unstable; urgency=low
 
   * Bug #50385: Fix escaping of DNS names and lables
