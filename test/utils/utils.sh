@@ -1460,7 +1460,6 @@ change_template_hostname () {
 
 	# fix some templates
 	[ -e /etc/bind/named.conf.samba4 ] && ucr commit /etc/bind/named.conf.samba4
-	[ -e /etc/postgresql/pam_ldap.conf ] && ucr commit /etc/postgresql/pam_ldap.conf
 
 	# systemctl try-restart univention-directory-listener.service univention-management-console-server.service apache2.service postgresql.service || [ $? -eq 5]
 	for service in slapd univention-directory-listener univention-management-console-server apache2 postgresql; do
