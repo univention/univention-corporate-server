@@ -3,7 +3,7 @@ import subprocess
 import time
 from pathlib import Path
 from typing import Dict, Generator, Iterator
-from urllib.parse import quote, urlparse
+from urllib.parse import quote
 
 import pytest
 from playwright.sync_api import BrowserContext, Page, expect
@@ -139,23 +139,10 @@ def save_trace(page: Page, context: BrowserContext, request: pytest.FixtureReque
         else:
             subfolder = ""
 
-        jenkins_ws_url = os.environ['JENKINS_WS']
-        logger.info("Browser trace URL: %s" % create_jenkins_ws_url(jenkins_ws_url, subfolder, trace_filename.name))
-        logger.info("Browser screenshot URL: %s" % create_jenkins_ws_url(jenkins_ws_url, subfolder, screenshot_filename.name))
-
-
-def create_jenkins_ws_url(jenkins_ws_url: str, subfolder: str, filename: str):
-    full_url = urlparse(append_path(jenkins_ws_url, 'ws/test', subfolder, 'browser', filename))
-    return full_url._replace(path=quote(full_url.path)).geturl()
-
-
-def append_path(base_url: str, *path: str):
-    if not path:
-        return base_url
-    base_url = base_url.rstrip("/")
-    clean_path = [p.strip("/") for p in path if len(p) != 0]
-    joined_paths = "/".join(clean_path)
-    return f"{base_url}/{joined_paths}"
+        browser_trace_url = f"{os.environ['JENKINS_WS']}ws/test/{quote(subfolder)}browser/{quote(trace_filename.name)}"
+        browser_screenshot_url = f"{os.environ['JENKINS_WS']}ws/test/{quote(subfolder)}browser/{quote(screenshot_filename.name)}"
+        logger.info("Browser trace URL: %s" % browser_trace_url)
+        logger.info("Browser screenshot URL: %s" % browser_screenshot_url)
 
 
 def check_for_backtrace(page: Page):
