@@ -176,7 +176,8 @@ class PrimaryAndBackup(HttpUser):
     def get_samlSession(self):
         user = self.td.walk_users()
         host = random.choice(self.hosts)
-        loginOneRequest(self.client, host, user)
+        #loginOneRequest(self.client, host, user)
+        loginEveryRequest(self.client, host, user)
 
 
 class PrimaryOnly(HttpUser):
@@ -187,5 +188,5 @@ class PrimaryOnly(HttpUser):
     def get_samlSession(self):
         user = self.td.walk_users()
         host = "https://primary.ucs.test"
-        loginOneRequest(self.client, host, user)
-        #loginEveryRequest(self.client, host, user)
+        #loginOneRequest(self.client, host, user)
+        loginEveryRequest(self.client, host, user)
