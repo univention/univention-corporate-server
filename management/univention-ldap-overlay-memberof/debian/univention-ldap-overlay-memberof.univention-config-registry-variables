@@ -1,31 +1,3 @@
-[ldap/overlay/memberof]
-Description[de]=Im UCS-Verzeichnisdienst werden Gruppenmitgliedschaften in der Voreinstellung nur an den Gruppenobjekten gespeichert. Wird diese Option aktiviert, werden die Gruppenmitgliedschaften über das 'memberOf'-Attribut zusätzlich an den Benutzerobjekten gespeichert. Dies erfolgt durch ein Overlay-Modul des LDAP-Servers. Ist die Variable nicht gesetzt, wird das Overlay-Modul nicht verwendet.
-Description[en]=In the UCS directory service group memberships are only stored in the group objects by default. If this option is enabled, the group memberships are also stored in the 'memberOf' attribute of user objects. This is done by using an overlay module of the LDAP server. If the variable is unset, the overlay module is not enabled.
-Type=bool
-Default=false
-Categories=service-ldap
-
-[ldap/overlay/memberof/objectclass]
-Description[de]=Ist das memberOf-Overlay aktiviert (siehe 'ldap/overlay/memberof'), konfiguriert diese Variable die Objektklasse von Gruppen, bei deren Modifikation eine Aktualisierung der Benutzerattribute durchgeführt wird. Ist die Variable nicht gesetzt, gilt 'posixGroup'.
-Description[en]=If the memberOf overlay is activated (see 'ldap/overlay/memberof'), this variable configures the object class of groups, which trigger an update of the user attributes if modified. If the variable is unset, 'posixGroup' applies.
-Type=str
-Default=posixGroup
-Categories=service-ldap
-
-[ldap/overlay/memberof/member]
-Description[de]=Ist das memberOf-Overlay aktiviert (siehe 'ldap/overlay/memberof'), konfiguriert diese Variable den Namen des Gruppen-Attributs, das die Gruppenmitgliedschaften speichert. Ist die Variable nicht gesetzt, gilt 'uniqueMember'.
-Description[en]=If the memberOf overlay is activated (see 'ldap/overlay/memberof'), this variable configures the name of the group attribute storing the group memberships. If the variable is unset, 'uniqueMember' applies.
-Type=str
-Default=uniqueMember
-Categories=service-ldap
-
-[ldap/overlay/memberof/memberof]
-Description[de]=Ist das memberOf-Overlay aktiviert (siehe 'ldap/overlay/memberof'), konfiguriert diese Variable den Namen des Attributs, das am Benutzerobjekt verwendet wird. Ist die Variable nicht gesetzt, gilt 'memberOf'.
-Description[en]=If the memberOf overlay is activated (see 'ldap/overlay/memberof'), this variable configures the name of the attribute used in the user object. If the variable is unset, 'memberOf' applies.
-Type=str
-Default=memberOf
-Categories=service-ldap
-
 [ldap/overlay/memberof/dangling]
 Description[de]=Ist das memberOf-Overlay aktiviert (siehe 'ldap/overlay/memberof'), konfiguriert diese Variable das Verhalten bei inkonsistenten Gruppendaten (z.B. wenn eine Gruppen Mitglieder enthält, für die keine Benutzerobjekte mehr bestehen): 'ignore' schreibt die Daten trotzdem, 'drop' verwirft Daten, die zu einem inkonsistentem Status führen würden und 'error' bricht Modifikationen, die zu inkonsistentem Zustand führen würden ab. Ist die Variable nicht gesetzt, gilt 'ignore'.
 Description[en]=If the memberOf overlay is activated (see 'ldap/overlay/memberof'), this variable configures the behavior for inconsistent group data (e.g. if a group contains members, for which the user objects are no longer present): 'ignore' writes the data anyway, 'drop' discards data which would lead to an inconsistent state and 'error' aborts modifications which would lead to an inconsistent state. If the variable is unset, 'ignore' applies.

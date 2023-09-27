@@ -37,7 +37,6 @@ from __future__ import print_function
 from sys import exit, stderr
 
 from ldap import MOD_REPLACE
-from ldap.filter import filter_format
 
 import univention.config_registry
 import univention.uldap
@@ -58,17 +57,15 @@ def main():  # type: () -> int
         return 1
 
     # search groups and del/add uniqueMember
-    group_oc = ucr.get("ldap/overlay/memberof/objectclass", "posixGroup")
-    member_ad = ucr.get("ldap/overlay/memberof/member", "uniqueMember")
-    filterstr = filter_format("(&(objectClass=%s)(%s=*))", (group_oc, member_ad))
-    results = lo.search(attr=[member_ad], filter=filterstr)
+    filterstr = "(&(objectClass=posixGroup)(uniqueMember=*))"
+    results = lo.search(attr=['uniqueMember'], filter=filterstr)
     for dn, attrs in results:
-        uniqueMember = attrs.get(member_ad, [])
+        uniqueMember = attrs.get('uniqueMember', [])
         if uniqueMember:
             try:
                 # update groups
                 ml = [
-                    (MOD_REPLACE, member_ad, uniqueMember),
+                    (MOD_REPLACE, 'uniqueMember', uniqueMember),
                 ]
                 print(f'modify {dn}')
                 lo.modify_s(dn, ml)

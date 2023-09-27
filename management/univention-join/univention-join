@@ -519,22 +519,6 @@ fi
 
 echo -e "\033[60Gdone"
 
-if [ "$CHECK_RUN" = "false" ] && [ "$server_role" = "domaincontroller_backup" -o "$server_role" = "domaincontroller_slave" ]; then
-	# check for memberof overlay
-	master_member_of="$(univention-ssh "$DCPWD" "${DCACCOUNT}@${DCNAME}" /usr/sbin/ucr get ldap/overlay/memberof)"
-	ucr set tmp/join/test/master/memberof="$master_member_of" >/dev/null 2>&1
-	if is_ucr_true tmp/join/test/master/memberof; then
-		ucr unset tmp/join/test/master/memberof >/dev/null 2>&1
-		msg="The OpenLDAP extension memberOf is activated on the UCS Primary (UCR variable ldap/overlay/memberof is true). In order to join this system successfully"
-		if ! dpkg-query -W -f '${status}' "univention-ldap-overlay-memberof" | grep -q 'install ok installed'; then
-			failed_message "$msg the package \"univention-ldap-overlay-memberof\" has to be installed."
-		fi
-		if ! is_ucr_true ldap/overlay/memberof; then
-			failed_message "$msg the UCR variable ldap/overlay/memberof has to be set to true."
-		fi
-	fi
-fi
-
 #Check if failed.ldif exists
 if [ "$server_role" = "domaincontroller_slave" -o "$server_role" = "domaincontroller_backup" ]; then
 	echo "Check if /var/lib/univention-directory-replication/failed.ldif exists" >>/var/log/univention/join.log
