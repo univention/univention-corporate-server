@@ -9,3 +9,6 @@ desc: |
  * Duplicate settings for the keycloak app have been removed
    from the theme styles.
 bug: [56559]
+erratum: 814
+announced: 2023-09-27
+support: core
