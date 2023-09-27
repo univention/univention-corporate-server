@@ -49,7 +49,7 @@ class conjunction(object):
     OPS = frozenset({'&', '|', '!'})
 
     def __init__(self, type, expressions):
-        # type: (str, List[Union[conjunction, expression]]) -> None
+        # type: (str, Sequence[Union[conjunction, expression]]) -> None
         """
         Create LDAP filter conjunction or disjunction.
 
@@ -118,7 +118,7 @@ class conjunction(object):
         return '%s(%r, %r)' % (self.__class__.__name__, self.type, self.expressions)
 
     def append_unmapped_filter_string(self, filter_s, rewrite_function, mapping):
-        # type: (str, Callable[[expression, Optional[T]], None], T) -> None
+        # type: (Optional[str], Callable[[expression, Optional[T]], None], T) -> None
         if filter_s:
             filter_p = parse(filter_s)
             walk(filter_p, rewrite_function, arg=mapping)

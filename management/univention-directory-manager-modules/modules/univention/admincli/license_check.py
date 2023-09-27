@@ -36,6 +36,7 @@
 import datetime
 import getopt
 import traceback
+from typing import Callable, Dict, List, Optional, Tuple  # noqa: F401
 
 from ldap.filter import filter_format
 
@@ -54,7 +55,7 @@ class UsageError(Exception):
     pass
 
 
-def usage(msg=None):
+def usage(msg=None):  # type: (Optional[str]) -> List[str]
     out = []
     script_name = 'univention-license-check'
     if msg:
@@ -68,7 +69,7 @@ def usage(msg=None):
     return out
 
 
-def parse_options(argv):
+def parse_options(argv):  # type: (List[str]) -> Dict[str, str]
     options = {}
     long_opts = ['binddn=', 'bindpw=', 'list-dns']
     try:
@@ -82,12 +83,12 @@ def parse_options(argv):
     return options
 
 
-def default_pw():
+def default_pw():  # type: () -> str
     with open('/etc/ldap.secret') as secret:
         return secret.readline().strip()
 
 
-def format(label, num, max, expired, cmp, ignored=False):
+def format(label, num, max, expired, cmp, ignored=False):  # type: (str, int, str, bool, Callable, bool) -> str
     args = [(label + ':').ljust(20), str(num).rjust(9), str(max).rjust(9), 'OK']
     if expired:
         args[-1] = 'EXPIRED'
@@ -98,8 +99,8 @@ def format(label, num, max, expired, cmp, ignored=False):
     return '%s %s of %s... %s' % tuple(args)
 
 
-def find_licenses(lo, baseDN, module='*'):
-    def find_wrap(dir):
+def find_licenses(lo, baseDN, module='*'):  # type: (univention.admin.uldap.access, str, str) -> List[str]
+    def find_wrap(dir):  # type: (str) -> List[str]
         try:
             return lo.searchDn(base=dir, filter='(univentionLicenseObject=*)')
         except uexceptions.noObject:
@@ -112,7 +113,7 @@ def find_licenses(lo, baseDN, module='*'):
     return licenses
 
 
-def choose_license(lo, dns):
+def choose_license(lo, dns):  # type: (univention.admin.uldap.access, List[str]) -> Tuple[Optional[str], int]
     for dn in dns:
         retval = univention.license.check(dn)
         if retval == -1:
@@ -121,12 +122,12 @@ def choose_license(lo, dns):
     return None, -1
 
 
-def check_license(lo, dn, list_dns, expired):
+def check_license(lo, dn, list_dns, expired):  # type: (univention.admin.uldap.access, str, List[str], int) -> List[str]
     if expired == -1:
         return ['No valid license object found', 'OPERATION FAILED']
-    out = []
+    out = []  # type: List[str]
 
-    def check_code(code):
+    def check_code(code):  # type: (int) -> None
         for label, value in [('searchpath', 8), ('basedn', 4), ('enddate', 2), ('signature', 1)]:
             if code >= value:
                 code -= value
@@ -135,7 +136,8 @@ def check_license(lo, dn, list_dns, expired):
                 ok = 'OK'
             out.append('Checking %s... %s' % ((label.ljust(10)), ok))
 
-    def check_type():
+    def check_type():  # type: () -> None
+        assert _license is not None
         v = _license.version
         types = _license.licenses[v]
         if dn is None:
@@ -159,21 +161,21 @@ def check_license(lo, dn, list_dns, expired):
                 if v == '2' and i == License.SERVERS:
                     # Ignore the server count
                     ignored = True
-                out.append(format(ln, n, m, 0, _license.compare, ignored))
+                out.append(format(ln, n, m, False, _license.compare, ignored))
                 if list_dns and maximum != 'unlimited':
                     for dnout in odn:
                         out.extend(["  %s" % dnout])
                 if list_dns and (i in (License.USERS, License.ACCOUNT)):
                     out.append("  %s Systemaccounts are ignored." % _license.sysAccountsFound)
 
-    def check_time():
+    def check_time():  # type: () -> None
         now = datetime.date.today()
         then = lo.get(dn)['univentionLicenseEndDate'][0].decode('UTF-8')
         if then != 'unlimited':
             (day, month, year) = then.split(u'.')
-            then = datetime.date(int(year), int(month), int(day))
-            if now > then:
-                out.append('Has expired on: %s                  -- EXPIRED' % then)
+            then_ = datetime.date(int(year), int(month), int(day))
+            if now > then_:
+                out.append('Has expired on: %s                  -- EXPIRED' % then_)
             else:
                 out.append('Will expire on: %s' % then)
 
@@ -186,7 +188,7 @@ def check_license(lo, dn, list_dns, expired):
     return out
 
 
-def main(argv):
+def main(argv):  # type: (List[str]) -> List[str]
     options = parse_options(argv)
     configRegistry = univention.config_registry.ConfigRegistry()
     configRegistry.load()
@@ -221,7 +223,7 @@ def main(argv):
         return out  # noqa: B012
 
 
-def doit(argv):
+def doit(argv):  # type: (List[str]) -> List[str]
     try:
         out = main(argv[1:])
         return out

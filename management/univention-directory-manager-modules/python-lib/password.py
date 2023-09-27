@@ -47,7 +47,7 @@ import univention.admin.uldap
 univention.admin.modules.update()
 
 
-def change(username, password):
+def change(username, password):  # type: (str, str) -> None
     """
     Change the password of the given user
 

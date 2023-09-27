@@ -37,16 +37,17 @@ from __future__ import absolute_import, unicode_literals
 import base64
 import bz2
 import codecs
-from collections import namedtuple
+from typing import BinaryIO, NamedTuple, Optional, Union, cast  # noqa: F401
 
 import magic
 from six import BytesIO, string_types
 
 
-FileType = namedtuple('namedtuple', ['mime_type', 'encoding', 'text'])
+FileType = NamedTuple('FileType', [('mime_type', str), ('encoding', str), ('text', str)])
 
 
 def get_file_type(filename_or_file):
+    # type: (Union[str, BinaryIO]) -> FileType
     """
     Get mime_type and encoding of file `filename_or_file`.
 
@@ -58,29 +59,33 @@ def get_file_type(filename_or_file):
     :rtype: FileType
     """
     if hasattr(filename_or_file, 'seek'):
-        old_pos = filename_or_file.tell()
-        txt = filename_or_file.read()
-        filename_or_file.seek(old_pos)
+        f = cast(BinaryIO, filename_or_file)
+        old_pos = f.tell()
+        txt = f.read()
+        f.seek(old_pos)
     elif isinstance(filename_or_file, string_types):
         with open(filename_or_file, 'rb') as fp:
             txt = fp.read()
     else:
         raise ValueError('Argument "filename_or_file" has unknown type {!r}.'.format(type(filename_or_file)))
+
     if hasattr(magic, 'from_file'):
         mime = magic.Magic(mime=True, mime_encoding=True).from_buffer(txt)
         mime_type, charset = mime.split(';')
         encoding = charset.split('=')[-1]
         text = magic.Magic().from_buffer(txt)
-    elif hasattr(magic, 'detect_from_filename'):
+    elif hasattr(magic, 'detect_from_content'):
         fm = magic.detect_from_content(txt)
         mime_type = fm.mime_type
         encoding = fm.encoding
         text = fm.name
     else:
         raise RuntimeError('Unknown version or type of "magic" library.')
+
     # auto detect utf-8 with BOM
     if encoding == 'utf-8' and txt.startswith(codecs.BOM_UTF8):
         encoding = 'utf-8-sig'
+
     return FileType(mime_type, encoding, text)
 
 
@@ -95,36 +100,43 @@ class BaseBinaryProperty(object):
     """
 
     def __init__(self, name, encoded_value=None, raw_value=None):
+        # type: (str, Optional[bytes], Optional[bytes]) -> None
         assert not (encoded_value and raw_value), 'Only one of "encoded_value" and "raw_value" must be set.'
         assert (encoded_value or raw_value), 'One of "encoded_value" or "raw_value" must be set.'
         self._name = name
-        self._value = None
+        self._value = b""
         if encoded_value:
             self.encoded = encoded_value
         elif raw_value:
             self.raw = raw_value
 
     def __repr__(self):
+        # type: () -> str
         return '{}({})'.format(self.__class__.__name__, self._name)
 
     @property
     def encoded(self):
+        # type: () -> bytes
         return self._value
 
     @encoded.setter
     def encoded(self, value):
+        # type: (bytes) -> None
         self._value = value
 
     @property
     def raw(self):
+        # type: () -> bytes
         raise NotImplementedError()
 
     @raw.setter
     def raw(self, value):
+        # type: (bytes) -> None
         raise NotImplementedError()
 
     @property
     def content_type(self):
+        # type: () -> FileType
         return get_file_type(BytesIO(self.raw))
 
 
@@ -144,10 +156,12 @@ class Base64BinaryProperty(BaseBinaryProperty):
 
     @property
     def raw(self):
+        # type: () -> bytes
         return base64.b64decode(self._value)
 
     @raw.setter
     def raw(self, value):
+        # type: (bytes) -> None
         self._value = base64.b64encode(value)
 
 
@@ -167,8 +181,10 @@ class Base64Bzip2BinaryProperty(BaseBinaryProperty):
 
     @property
     def raw(self):
+        # type: () -> bytes
         return bz2.decompress(base64.b64decode(self._value))
 
     @raw.setter
     def raw(self, value):
+        # type: (bytes) -> None
         self._value = base64.b64encode(bz2.compress(value))

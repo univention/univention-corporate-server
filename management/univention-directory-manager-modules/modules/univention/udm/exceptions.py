@@ -32,6 +32,8 @@
 
 from __future__ import unicode_literals
 
+from typing import Collection, Optional  # noqa: F401
+
 
 class UdmError(Exception):
     """Base class of Exceptions raised by (simplified) UDM modules."""
@@ -39,6 +41,7 @@ class UdmError(Exception):
     msg = ''
 
     def __init__(self, msg=None, dn=None, module_name=None):
+        # type: (Optional[str], Optional[str], Optional[str]) -> None
         msg = msg or self.msg
         super(UdmError, self).__init__(msg)
         self.dn = dn
@@ -57,11 +60,11 @@ class ConnectionError(UdmError):
 
 class ApiVersionNotSupported(UdmError):
     def __init__(
-            self,
-            msg=None,
-            module_name=None,
-            requested_version=None,
-    ):
+        self,
+        msg=None,  # type: Optional[str]
+        module_name=None,  # type: Optional[str]
+        requested_version=None,  # type: Optional[int]
+    ):  # type: (...) -> None
         self.requested_version = requested_version
         msg = msg or 'Module {!r} is not supported in API version {!r}.'.format(
             module_name, requested_version)
@@ -74,6 +77,7 @@ class CreateError(UdmError):
 
 class DeletedError(UdmError):
     def __init__(self, msg=None, dn=None, module_name=None):
+        # type: (Optional[str], Optional[str], Optional[str]) -> None
         msg = msg or 'Object{} has already been deleted.'.format(' {!r}'.format(dn) if dn else '')
         super(DeletedError, self).__init__(msg, dn, module_name)
 
@@ -82,6 +86,7 @@ class DeleteError(UdmError):
     """Raised when a client tries to delete a UDM object but fails."""
 
     def __init__(self, msg=None, dn=None, module_name=None):
+        # type: (Optional[str], Optional[str], Optional[str]) -> None
         msg = msg or 'Object{} could not be deleted.'.format(' {!r}'.format(dn) if dn else '')
         super(DeleteError, self).__init__(msg, dn, module_name)
 
@@ -116,6 +121,7 @@ class NoObject(UdmError):
     """Raised when a UDM object could not be found at a DN."""
 
     def __init__(self, msg=None, dn=None, module_name=None):
+        # type: (Optional[str], Optional[str], Optional[str]) -> None
         msg = msg or 'No object found at DN {!r}.'.format(dn)
         super(NoObject, self).__init__(msg, dn, module_name)
 
@@ -124,8 +130,9 @@ class NoSuperordinate(UdmError):
     """Raised when no superordinate was supplied but one is needed."""
 
     def __init__(self, msg=None, dn=None, module_name=None, superordinate_types=None):
+        # type: (Optional[str], Optional[str], Optional[str], Optional[Collection[str]]) -> None
         msg = msg or 'No superordinate was supplied, but one of type{} {} is required to create/save a {} object.'.format(
-            's' if len(superordinate_types) > 1 else '', ', '.join(superordinate_types), module_name)
+            's' if len(superordinate_types or ()) > 1 else '', ', '.join(superordinate_types or ()), module_name)
         super(NoSuperordinate, self).__init__(msg, dn, module_name)
 
 
@@ -133,6 +140,7 @@ class SearchLimitReached(UdmError):
     """Raised when the search results in more objects than specified by the sizelimit."""
 
     def __init__(self, msg=None, dn=None, module_name=None, search_filter=None, sizelimit=None):
+        # type: (Optional[str], Optional[str], Optional[str], Optional[str], Optional[int]) -> None
         msg = msg or 'The search_filter {} resulted in more objects than the specified sizelimit of {} allowed.'.format(
             search_filter if search_filter else "''", sizelimit if sizelimit else "/",
         )
@@ -152,6 +160,7 @@ class UnknownModuleType(UdmError):
     """Raised when an LDAP object has no or empty attribute univentionObjectType."""
 
     def __init__(self, msg=None, dn=None, module_name=None):
+        # type: (Optional[str], Optional[str], Optional[str]) -> None
         msg = msg or 'No or empty attribute "univentionObjectType" found at DN {!r}.'.format(dn)
         super(UnknownModuleType, self).__init__(msg, dn, module_name)
 
@@ -170,5 +179,6 @@ class WrongObjectType(UdmError):
     """
 
     def __init__(self, msg=None, dn=None, module_name=None, univention_object_type=None):
+        # type: (Optional[str], Optional[str], Optional[str], Optional[str]) -> None
         msg = msg or 'Wrong UDM module: {!r} is not a {!r}, but a {!r}.'.format(dn, module_name, univention_object_type)
         super(WrongObjectType, self).__init__(msg, dn, module_name)

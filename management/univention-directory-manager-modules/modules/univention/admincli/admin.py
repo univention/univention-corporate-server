@@ -42,6 +42,13 @@ import subprocess
 import sys
 from ipaddress import IPv4Address, IPv4Network
 from logging import getLogger
+from typing import IO, Any, Dict, List, Optional, Sequence, Tuple, TypeVar, Union, overload  # noqa: F401
+
+
+try:
+    from typing import Literal  # noqa: F401
+except ImportError:
+    pass
 
 import ldap
 import six
@@ -63,14 +70,14 @@ univention.admin.modules.update()
 
 class OperationFailed(Exception):
 
-    def __init__(self, msg=None):
+    def __init__(self, msg=None):  # type: (Optional[str]) -> None
         self.msg = msg
 
-    def __str__(self):
+    def __str__(self):  # type: () -> str
         return self.msg or ''
 
 
-def usage(stream):
+def usage(stream):  # type: (IO[str]) -> None
     print('univention-directory-manager: command line interface for managing UCS', file=stream)
     print('copyright (c) 2001-@%@copyright_lastyear@%@ Univention GmbH, Germany', file=stream)
     print('', file=stream)
@@ -141,11 +148,16 @@ def usage(stream):
     print('', file=stream)
 
 
-def version(stream):
+def version(stream):  # type: (IO[str]) -> None
     print('univention-directory-manager @%@package_version@%@', file=stream)
 
 
-def _print_property(module, action, name, stream):
+def _print_property(
+    module,  # type: univention.admin.modules.UdmModule
+    action,  # type: str
+    name,  # type: str
+    stream,  # type: IO[str]
+):  # type: (...) -> None
     property = module.property_descriptions.get(name)
     if property is None:
         print('E: unknown property %s of module %s' % (name, univention.admin.modules.name(module)), file=stream)
@@ -168,29 +180,34 @@ def _print_property(module, action, name, stream):
         required['remove'] = False
         required['editable'] = False
 
-    flags = ''
+    op = ''
     if required.get(action):
-        flags = '*'
+        op = '*'
     elif action not in required:
         if required['create']:
-            flags += 'c'
+            op += 'c'
         if required['modify']:
-            flags += 'm'
+            op += 'm'
         if required['remove']:
-            flags += 'r'
+            op += 'r'
         if not required['editable']:
-            flags += 'e'
-    flags = [flags] if flags else []
+            op += 'e'
+    flags = [op] if op else []
     if property.options:
         flags.extend(property.options)
     if property.multivalue:
         flags.append('[]')
-    flags = ' (%s)' % (','.join(flags),) if flags else ''
+    flag = ' (%s)' % (','.join(flags),) if flags else ''
 
-    print('\t\t%-40s %s' % (name + flags, property.short_description), file=stream)
+    print('\t\t%-40s %s' % (name + flag, property.short_description), file=stream)
 
 
-def module_usage(information, action='', stream=sys.stdout):
+def module_usage(
+    information,  # type: Dict[univention.admin.modules.UdmModule, Tuple[Dict[str, univention.admin.property], Dict[str, univention.admin.option]]]
+    action='',  # type: str
+    stream=sys.stdout,  # type: IO[str]
+):  # type: (...) -> None
+    """Print properties and options of module and its superordinates."""
     for module, (_properties, options) in information.items():
         if options:
             print('', file=stream)
@@ -223,8 +240,12 @@ def module_usage(information, action='', stream=sys.stdout):
                         _print_property(module, action, item, stream)
 
 
-def module_information(module, identifies_only=False):
-    information = {module: [{}, {}]}
+def module_information(
+    module,  # type: univention.admin.modules.UdmModule
+    identifies_only=False,  # type: bool
+):  # type: (...) -> Dict[univention.admin.modules.UdmModule, Tuple[Dict[str, univention.admin.property], Dict[str, univention.admin.option]]]
+    """Collect properties and options of module itself and its superordinates."""
+    information = {module: ({}, {})}  # type: Dict[univention.admin.modules.UdmModule, Tuple[Dict[str, univention.admin.property], Dict[str, univention.admin.option]]]
     for superordinate in univention.admin.modules.superordinates(module):
         information.update(module_information(superordinate, identifies_only=True))
 
@@ -238,12 +259,15 @@ def module_information(module, identifies_only=False):
     return information
 
 
+_V = TypeVar("_V")  # noqa: PYI018
+
+
 # FIXME: for the automatic IP address assignment, we need to make sure that
 # the network is set before the IP address (see Bug #24077, comment 6)
 # The following code is a workaround to make sure that this is the
 # case, however, this should be fixed correctly.
 # This workaround has been documented as Bug #25163.
-def _tmp_cmp(i):
+def _tmp_cmp(i):  # type: (Tuple[str, _V]) -> Tuple[str, _V]
     if i[0] == 'mac':  # must be set before network, dhcpEntryZone
         return ("\x00", i[1])
     if i[0] == 'network':  # must be set before ip, dhcpEntryZone, dnsEntryZoneForward, dnsEntryZoneReverse
@@ -253,7 +277,14 @@ def _tmp_cmp(i):
     return i
 
 
-def object_input(module, object, input, append=None, remove=None, stderr=None):
+def object_input(
+    module,  # type: univention.admin.modules.UdmModule
+    object,
+    input,  # type: Dict[str, Union[str, List[str]]]
+    append=None,  # type: Optional[Dict[str, List[str]]]
+    remove=None,  # type: Optional[Dict[str, List[str]]]
+    stderr=None,  # type: Optional[IO[str]]
+):  # type: (...) -> None
     if append:
         for key, values in sorted(append.items(), key=_tmp_cmp):
             if key in object and not object.has_property(key):
@@ -358,13 +389,17 @@ def object_input(module, object, input, append=None, remove=None, stderr=None):
                     raise univention.admin.uexceptions.valueMayNotChange(key)  # upstream exception is formatted bad
 
 
-def list_available_modules(stream):
+def list_available_modules(stream):  # type: (IO[str]) -> None
     print("Available Modules are:", file=stream)
     for mod in sorted(univention.admin.modules.modules):
         print("  %s" % mod, file=stream)
 
 
-def main(arglist, stdout=sys.stdout, stderr=sys.stderr):
+def main(
+    arglist,  # type: List[str]
+    stdout=sys.stdout,  # type: IO[str]
+    stderr=sys.stderr,  # type: IO[str]
+):  # type: (...) -> None
     try:
         _doit(arglist, stdout=stdout, stderr=stderr)
     except ldap.SERVER_DOWN:
@@ -375,7 +410,11 @@ def main(arglist, stdout=sys.stdout, stderr=sys.stderr):
         raise OperationFailed(msg)
 
 
-def _doit(arglist, stdout=sys.stdout, stderr=sys.stderr):
+def _doit(
+    arglist,  # type: List[str]
+    stdout=sys.stdout,  # type: IO[str]
+    stderr=sys.stderr,  # type: IO[str]
+):  # type: (...) -> None
     # parse module and action
     if len(arglist) < 2:
         usage(stderr)
@@ -411,25 +450,25 @@ def _doit(arglist, stdout=sys.stdout, stderr=sys.stderr):
 
     position_dn = ''
     dn = ''
-    binddn = None
-    bindpwd = None
+    binddn = None  # type: Optional[str]
+    bindpwd = None  # type: Optional[str]
     list_policies = False
     policies_with_DN = False
-    policyOptions = []
+    policyOptions = []  # type: List[str]
     logfile = '/var/log/univention/directory-manager-cmd.log'
     tls = 2
     ignore_exists = False
     ignore_not_exists = False
     superordinate_dn = ''
-    parsed_append_options = []
-    parsed_remove_options = []
-    parsed_options = []
+    parsed_append_options = []  # type: List[str]
+    parsed_remove_options = []  # type: List[str]
+    parsed_options = []  # type: List[str]
     filter = ''
-    input = {}
-    append = {}
-    remove = {}
-    policy_reference = []
-    policy_dereference = []
+    input = {}  # type: Dict[str, Union[str, List[str]]]
+    append = {}  # type: Dict[str, List[str]]
+    remove = {}  # type: Dict[str, List[str]]
+    policy_reference = []  # type: List[str]
+    policy_dereference = []  # type: List[str]
     for opt, val in opts:
         if opt == '--position':
             position_dn = val
@@ -628,7 +667,17 @@ def _doit(arglist, stdout=sys.stdout, stderr=sys.stderr):
 
 class CLI(object):
 
-    def __init__(self, module_name, module, dn, lo, position, superordinate, stdout=sys.stdout, stderr=sys.stderr):
+    def __init__(
+        self,
+        module_name,  # type: str
+        module,  # type: univention.admin.modules.UdmModule
+        dn,  # type: str
+        lo,  # type: univention.admin.uldap.access
+        position,  # type: univention.admin.uldap.position
+        superordinate,  # type: Optional[univention.admin.handlers.simpleLdap]
+        stdout=sys.stdout,  # type: IO[str]
+        stderr=sys.stderr,  # type: IO[str]
+    ):  # type: (...) -> None
         self.module_name = module_name
         self.module = module
         self.dn = dn
@@ -638,22 +687,37 @@ class CLI(object):
         self.stdout = stdout
         self.stderr = stderr
 
-    def create(self, *args, **kwargs):
+    def create(self, *args, **kwargs):  # type: (*Any, **Any) -> Any
         return self._create(self.module_name, self.module, self.dn, self.lo, self.position, self.superordinate, *args, **kwargs)
 
-    def modify(self, *args, **kwargs):
+    def modify(self, *args, **kwargs):  # type: (*Any, **Any) -> Any
         return self._modify(self.module_name, self.module, self.dn, self.lo, self.position, self.superordinate, *args, **kwargs)
 
-    def move(self, *args, **kwargs):
+    def move(self, *args, **kwargs):  # type: (*Any, **Any) -> Any
         return self._move(self.module_name, self.module, self.dn, self.lo, self.position, self.superordinate, *args, **kwargs)
 
-    def remove(self, *args, **kwargs):
+    def remove(self, *args, **kwargs):  # type: (*Any, **Any) -> Any
         return self._remove(self.module_name, self.module, self.dn, self.lo, self.position, self.superordinate, *args, **kwargs)
 
-    def list(self, *args, **kwargs):
+    def list(self, *args, **kwargs):  # type: (*Any, **Any) -> Any
         return self._list(self.module_name, self.module, self.dn, self.lo, self.position, self.superordinate, *args, **kwargs)
 
-    def _create(self, module_name, module, dn, lo, position, superordinate, input, append, ignore_exists, parsed_options, parsed_append_options, parsed_remove_options, policy_reference):
+    def _create(
+        self,
+        module_name,  # type: str
+        module,  # type: univention.admin.modules.UdmModule
+        dn,  # type: str
+        lo,  # type: univention.admin.uldap.access
+        position,  # type: univention.admin.uldap.position
+        superordinate,  # type: Optional[univention.admin.handlers.simpleLdap]
+        input,  # type: Dict[str, Union[str, List[str]]]
+        append,  # type: Dict[str, List[str]]
+        ignore_exists,  # type: bool
+        parsed_options,  # type: List[str]
+        parsed_append_options,  # type: List[str]
+        parsed_remove_options,  # type: List[str]
+        policy_reference,  # type: List[str]
+    ):  # type: (...) -> None
         if not univention.admin.modules.supports(module_name, 'add'):
             raise OperationFailed('Create %s not allowed' % module_name)
 
@@ -718,7 +782,16 @@ class CLI(object):
         elif created:
             print('Object created: %s' % dn, file=self.stdout)
 
-    def _move(self, module_name, module, dn, lo, position, superordinate, position_dn):
+    def _move(
+        self,
+        module_name,  # type: str
+        module,  # type: univention.admin.modules.UdmModule
+        dn,  # type: str
+        lo,  # type: univention.admin.uldap.access
+        position,  # type: univention.admin.uldap.position
+        superordinate,  # type: Optional[univention.admin.handlers.simpleLdap]
+        position_dn,  # type: str
+    ):  # type: (...) -> None
         if not dn:
             raise OperationFailed('E: DN is missing')
 
@@ -757,7 +830,24 @@ class CLI(object):
         else:
             print('No modification: %s' % dn, file=self.stdout)
 
-    def _modify(self, module_name, module, dn, lo, position, superordinate, input, append, remove, parsed_append_options, parsed_remove_options, parsed_options, policy_reference, policy_dereference, ignore_not_exists):
+    def _modify(
+        self,
+        module_name,  # type: str
+        module,  # type: univention.admin.modules.UdmModule
+        dn,  # type: str
+        lo,  # type: univention.admin.uldap.access
+        position,  # type: univention.admin.uldap.position
+        superordinate,  # type: Optional[univention.admin.handlers.simpleLdap]
+        input,  # type: Dict[str, Union[str, List[str]]]
+        append,  # type: Dict[str, List[str]]
+        remove,  # type: Dict[str, List[str]]
+        parsed_append_options,  # type: List[str]
+        parsed_remove_options,  # type: List[str]
+        parsed_options,  # type: List[str]
+        policy_reference,  # type: List[str]
+        policy_dereference,  # type: List[str]
+        ignore_not_exists,  # type: bool
+    ):  # type: (...) -> None
         if not dn:
             raise OperationFailed('E: DN is missing')
 
@@ -808,7 +898,19 @@ class CLI(object):
         else:
             print('No modification: %s' % dn, file=self.stdout)
 
-    def _remove(self, module_name, module, dn, lo, position, superordinate, recursive, remove_referring, ignore_not_exists, filter):
+    def _remove(
+        self,
+        module_name,  # type: str
+        module,  # type: univention.admin.modules.UdmModule
+        dn,  # type: str
+        lo,  # type: univention.admin.uldap.access
+        position,  # type: univention.admin.uldap.position
+        superordinate,  # type: Optional[univention.admin.handlers.simpleLdap]
+        recursive,  # type: bool
+        remove_referring,  # type: bool
+        ignore_not_exists,  # type: bool
+        filter,  # type: str
+    ):  # type: (...) -> None
         if not univention.admin.modules.supports(module_name, 'remove'):
             raise OperationFailed('Remove %s not allowed' % module_name)
 
@@ -844,7 +946,20 @@ class CLI(object):
                 raise OperationFailed('E: object in use: %s' % (msg,))
         print('Object removed: %s' % (dn or object.dn,), file=self.stdout)
 
-    def _list(self, module_name, module, dn, lo, position, superordinate, list_policies, filter, superordinate_dn, policyOptions, policies_with_DN):
+    def _list(
+        self,
+        module_name,  # type: str
+        module,  # type: univention.admin.modules.UdmModule
+        dn,  # type: str
+        lo,  # type: univention.admin.uldap.access
+        position,  # type: univention.admin.uldap.position
+        superordinate,  # type: Optional[univention.admin.handlers.simpleLdap]
+        list_policies,  # type: bool
+        filter,  # type: str
+        superordinate_dn,  # type: str
+        policyOptions,  # type: List[str]
+        policies_with_DN,  # type: bool
+    ):  # type: (...) -> None
         if not univention.admin.modules.supports(module_name, 'search'):
             raise OperationFailed('Search %s not allowed' % module_name)
 
@@ -916,7 +1031,32 @@ class CLI(object):
             raise OperationFailed('%s' % (errmsg,))
 
 
-def get_policy(dn, stream=sys.stdout, policyOptions=None, policies_with_DN=False):
+@overload
+def get_policy(  # noqa: E704
+    dn,  # type: str
+    stream,  # type: IO[str]
+    policyOptions=None,  # type: Optional[Sequence[str]]
+    policies_with_DN=False,  # type: Literal[False]
+):  # type: (...) -> Dict[str, List[str]]
+    pass
+
+
+@overload
+def get_policy(  # noqa: E704
+    dn,  # type: str
+    stream,  # type: IO[str]
+    policyOptions,  # type: Optional[Sequence[str]]
+    policies_with_DN,  # type: Literal[True]
+):  # type: (...) -> Dict[str, Tuple[str, List[str]]]
+    pass
+
+
+def get_policy(
+    dn,  # type: str
+    stream=sys.stdout,  # type: IO[str]
+    policyOptions=None,  # type: Optional[Sequence[str]]
+    policies_with_DN=True,  # type: bool
+):  # type: (...) -> Dict[str, Any]
     cmd = ['univention_policy_result']
     if policyOptions:
         cmd.extend(policyOptions)
@@ -924,13 +1064,14 @@ def get_policy(dn, stream=sys.stdout, policyOptions=None, policies_with_DN=False
 
     policy = ''
     attribute = ''
-    value = []
-    client = {}
+    value = []  # type: List[str]
+    client = {}  # type: Dict[str, Any]
 
     proc = subprocess.Popen(cmd, stdout=subprocess.PIPE)
-    for line in proc.stdout:
-        line = line.decode('utf-8').strip()
-        if not line or line.startswith("DN: ") or line.startswith("POLICY "):
+    assert proc.stdout is not None
+    for line_ in proc.stdout:
+        line = line_.decode('utf-8').strip()
+        if not line or line.startswith(("DN: ", "POLICY ")):
             continue
         print("    %s" % line, file=stream)
 
@@ -942,7 +1083,7 @@ def get_policy(dn, stream=sys.stdout, policyOptions=None, policies_with_DN=False
         ckey, cval = line.split(': ', 1)
         if ckey == 'Policy':
             if policy:
-                client[attribute] = [policy, value]
+                client[attribute] = (policy, value)
                 value = []
             policy = cval
         elif ckey == 'Attribute':

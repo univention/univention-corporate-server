@@ -42,7 +42,7 @@ import socket
 import stat
 import sys
 import time
-from typing import List
+from typing import Sequence
 
 import six
 from six.moves import input
@@ -129,7 +129,7 @@ def receive_answer(sock: socket.socket) -> bytes:
     return data
 
 
-def process_output(output, cmdfile: str) -> int:
+def process_output(output: Sequence[str], cmdfile: str) -> int:
     """Print output and check for errors."""
     result = 0
     if cmdfile == 'univention-passwd':
@@ -168,7 +168,7 @@ def _re_create_socket() -> socket.socket:
         sys.exit('E: Can`t connect to daemon. Giving up.')
 
 
-def send_fds(sock: socket.socket, msg: bytes, fds: List[int]) -> int:
+def send_fds(sock: socket.socket, msg: bytes, fds: Sequence[int]) -> int:
     return sock.sendmsg([msg], [(socket.SOL_SOCKET, socket.SCM_RIGHTS, array.array("i", fds))])
 
 

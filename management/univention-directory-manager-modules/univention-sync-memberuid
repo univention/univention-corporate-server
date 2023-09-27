@@ -55,7 +55,7 @@ class ConsistencyError(Exception):
     """Inconsistence detected."""
 
 
-def main():
+def main() -> None:
     """synchronise attributes uniqueMember to memberUID of group objects."""
     configRegistry = univention.config_registry.ConfigRegistry()
     configRegistry.load()
@@ -89,7 +89,12 @@ def main():
         sys.exit(1)
 
 
-def process_groups(lo, base_dn, test=False, cont=False):
+def process_groups(
+    lo,  # type: ldap.ldapobject.LDAPObject
+    base_dn,  # type: str
+    test=False,  # type: bool
+    cont=False,  # type: bool
+):  # type: (...) -> None
     groups = lo.search_s(base_dn, ldap.SCOPE_SUBTREE, '(&(objectClass=posixGroup)(objectClass=univentionGroup))', ('uniqueMember', 'memberUid'))
 
     if test:

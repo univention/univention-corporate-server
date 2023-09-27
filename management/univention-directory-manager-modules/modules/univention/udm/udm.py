@@ -108,9 +108,16 @@ from __future__ import absolute_import, unicode_literals
 
 from fnmatch import fnmatch
 from operator import itemgetter
+from typing import TYPE_CHECKING, Any, Dict, List, Optional, Tuple, Type  # noqa: F401
 
 from .exceptions import ApiVersionMustNotChange, ApiVersionNotSupported, NoApiVersionSet, NoObject
 from .plugins import Plugins
+
+
+if TYPE_CHECKING:
+    import univention.admin.uldap  # noqa: F401
+
+    from ..base import BaseModule, BaseObject  # noqa: F401
 
 
 _MODULES_PATH = 'univention.udm.modules'
@@ -129,9 +136,10 @@ class UDM(object):
             UDM.admin().version(2).obj_by_dn(dn)
     """
 
-    _module_object_cache = {}
+    _module_object_cache = {}  # type: Dict[Tuple[str, int, int], BaseModule]
 
     def __init__(self, connection, api_version=None):
+        # type: (univention.admin.uldap.access, Optional[int]) -> None
         """
         Use the provided connection.
 
@@ -142,12 +150,13 @@ class UDM(object):
         :rtype: None
         """
         self.connection = connection
-        self._api_version = None
+        self._api_version = None  # type: Optional[int]
         if api_version is not None:
             self.version(api_version)
 
     @classmethod
     def admin(cls):
+        # type: () -> UDM
         """
         Use a cn=admin connection.
 
@@ -161,6 +170,7 @@ class UDM(object):
 
     @classmethod
     def machine(cls, prefer_local_connection=False):
+        # type: (bool) -> UDM
         """
         Use a machine connection.
 
@@ -177,13 +187,13 @@ class UDM(object):
 
     @classmethod
     def credentials(
-            cls,
-            identity,
-            password,
-            base=None,
-            server=None,
-            port=None,
-    ):
+        cls,
+        identity,  # type: str
+        password,  # type: str
+        base=None,  # type: Optional[str]
+        server=None,  # type: Optional[str]
+        port=None,  # type: Optional[int]
+    ):  # type: (...) -> UDM
         """
         Use the provided credentials to open an LDAP connection.
 
@@ -204,6 +214,7 @@ class UDM(object):
         return cls(connection)
 
     def version(self, api_version):
+        # type: (int) -> UDM
         """
         Set the version of the API that the UDM modules must support.
 
@@ -226,6 +237,7 @@ class UDM(object):
         return self
 
     def get(self, name):
+        # type: (str) -> BaseModule
         """
         Get an object of :py:class:`BaseModule` (or of a subclass) for UDM
         module `name`.
@@ -257,6 +269,7 @@ class UDM(object):
         return self._module_object_cache[key]
 
     def obj_by_dn(self, dn):
+        # type: (str) -> BaseObject
         """
         Try to load an UDM object from LDAP. Guess the required UDM module
         from the ``univentionObjectType`` LDAP attribute of the LDAP object.
@@ -282,6 +295,7 @@ class UDM(object):
 
     @property
     def api_version(self):
+        # type: () -> int
         if self._api_version is None:
             raise NoApiVersionSet()
         return self._api_version

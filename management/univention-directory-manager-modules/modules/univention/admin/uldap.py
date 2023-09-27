@@ -452,18 +452,28 @@ class access(object):
         # type: () -> int
         return self.lo.start_tls
 
-    def __init__(self, host='localhost', port=None, base=u'', binddn=u'', bindpw=u'', start_tls=2, lo=None, follow_referral=False, uri=None):
-        # type: (str, int, str, str, str, int, univention.uldap.access, bool) -> None
+    def __init__(
+        self,
+        host='localhost',  # type: str
+        port=None,  # type: Optional[int]
+        base=u'',  # type: str
+        binddn=u'',  # type: str
+        bindpw=u'',  # type: str
+        start_tls=2,  # type: int
+        lo=None,  # type: Optional[univention.uldap.access]
+        follow_referral=False,  # type: bool
+        uri=None,  # type: Optional[str]
+    ):  # type: (...) -> None
         """
-        :param str host: The hostname of the |LDAP| server.
-        :param int port: The |TCP| port number of the |LDAP| server.
-        :param str base: The base distinguished name.
-        :param str binddn: The distinguished name of the account.
-        :param str bindpw: The user password for simple authentication.
-        :param int start_tls: Negotiate |TLS| with server. If `2` is given, the command will require the operation to be successful.
-        :param univention.uldap.access lo: |LDAP| connection.
-        :param:bool follow_referral: Follow |LDAP| referrals.
-        :param str uri: LDAP connection string.
+        :param host: The hostname of the |LDAP| server.
+        :param port: The |TCP| port number of the |LDAP| server.
+        :param base: The base distinguished name.
+        :param binddn: The distinguished name of the account.
+        :param bindpw: The user password for simple authentication.
+        :param start_tls: Negotiate |TLS| with server. If `2` is given, the command will require the operation to be successful.
+        :param lo: |LDAP| connection.
+        :param follow_referral: Follow |LDAP| referrals.
+        :param uri: LDAP connection string.
         """
         if lo:
             self.lo = lo

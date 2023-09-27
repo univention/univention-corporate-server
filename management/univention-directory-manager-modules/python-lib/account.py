@@ -49,7 +49,7 @@ univention.admin.modules.update()
 
 
 # Ensure univention debug is initialized
-def initialize_debug():
+def initialize_debug():  # type: () -> None
     # Use a little hack to determine if univention.debug has been initialized
     # get_level(..) returns always ERROR if univention.debug is not initialized
     oldLevel = ud.get_level(ud.ADMIN)
@@ -67,7 +67,7 @@ def initialize_debug():
         ud.set_level(ud.ADMIN, oldLevel)
 
 
-def lock(userdn, lock_timestamp):
+def lock(userdn, lock_timestamp):  # type: (str, str) -> None
     """
     Lock a user account
 

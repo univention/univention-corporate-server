@@ -37,6 +37,7 @@ import getopt
 import os
 import subprocess
 from logging import getLogger
+from typing import Iterable, Iterator, List, Union  # noqa: F401
 
 import six
 from ldap.filter import filter_format
@@ -55,7 +56,7 @@ import univention.logging
 log = getLogger('ADMIN')
 
 
-def status(msg):
+def status(msg):  # type: (str) -> str
     # univention-adduser is called by Samba when doing "vampire." Since
     # vampire produces a lot of output, and we'd like to print a moderate
     # log, we prepend UNIVENTION to our output. That way we can identify
@@ -64,7 +65,7 @@ def status(msg):
     return out
 
 
-def nscd_invalidate(table):
+def nscd_invalidate(table):  # type: (str) -> None
     if table:
         log.debug('NSCD: --invalidate %s', table)
         try:
@@ -75,7 +76,7 @@ def nscd_invalidate(table):
             log.debug('NSCD: ok')
 
 
-def get_user_object(user, position, lo):
+def get_user_object(user, position, lo):  # type: (str, univention.admin.uldap.position, univention.admin.uldap.access) -> Union[univention.admin.modules.UdmModule, str]
     try:
         # user Account
         return univention.admin.modules.lookup(univention.admin.handlers.users.user, None, lo, scope='domain', base=position.getDn(), filter=filter_format(u'(username=%s)', [user]), required=True, unique=True)[0]
@@ -89,7 +90,7 @@ def get_user_object(user, position, lo):
     return 'ERROR: account not found, nothing modified'
 
 
-def _decode(args):
+def _decode(args):  # type: (Iterable[bytes]) -> Iterator[str]
     for arg in args:
         try:
             yield arg.decode('utf-8')
@@ -99,7 +100,7 @@ def _decode(args):
 
 def doit(arglist):
     univention.logging.basicConfig(filename='/var/log/univention/directory-manager-cmd.log', univention_debug_level=1)
-    out = []
+    out = []  # type: List[str]
     configRegistry = univention.config_registry.ConfigRegistry()
     configRegistry.load()
     op = 'add'

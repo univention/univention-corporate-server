@@ -36,11 +36,12 @@ from __future__ import print_function
 
 import argparse
 import sys
+from typing import Callable, Dict, List
 
 import univention.uldap
 
 
-def buildModuleIdentifyMapping():
+def buildModuleIdentifyMapping() -> Dict[str, Callable]:
     import univention.admin.modules
     univention.admin.modules.update()
     return {
@@ -50,7 +51,7 @@ def buildModuleIdentifyMapping():
     }
 
 
-def parseOptions():
+def parseOptions() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description='Set the attribute univentionObjectType for each directory object')
     parser.add_argument('--verbose', action='store_true', default=False, help='do not hide warnings for unmatched component objects')
     parser.add_argument('-v', '--verify', action='store_true', default=False, help='check objects with already set univentionObjectType')
@@ -63,7 +64,7 @@ def parseOptions():
     return options
 
 
-def warningSupressed(dn, attributes):
+def warningSupressed(dn: str, attributes: Dict[str, List[bytes]]) -> bool:
     # cn=admin,$ldap_base cn=backup,$ldap_base
     ocs = set(attributes['objectClass'])
     if set(attributes.keys()) == {'objectClass', 'userPassword', 'cn', 'sn'} and ocs == {b'top', b'person'}:
@@ -97,7 +98,7 @@ def warningSupressed(dn, attributes):
     return warningHidden(dn, attributes)
 
 
-def warningHidden(dn, attributes):
+def warningHidden(dn: str, attributes: Dict[str, List[bytes]]) -> bool:
     ocs = set(attributes['objectClass'])
     if warningHidden.verbose:
         return False
@@ -115,7 +116,7 @@ def warningHidden(dn, attributes):
 warningHidden.verbose = False  # type: ignore
 
 
-def main(options):
+def main(options: argparse.Namespace) -> bool:
     errorsOccurred = False
     searchFilter = '(objectClass=*)' if options.verify else '(!(objectClass=univentionObject))'
     moduleIdentify = buildModuleIdentifyMapping()

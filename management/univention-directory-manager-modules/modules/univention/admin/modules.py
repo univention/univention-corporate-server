@@ -40,7 +40,7 @@ import importlib
 import locale
 import os
 from logging import getLogger
-from typing import Any, Dict, List, Optional, Set, Text, Union  # noqa: F401
+from typing import Any, Dict, List, Optional, Set, Text, Union, overload  # noqa: F401
 
 import ldap
 import six
@@ -83,7 +83,7 @@ try:
 
         class object:
             def __init__(self, co, lo, position, dn=u'', superordinate=None, attributes=None):
-                # type: (None, univention.admin.uldap.access, univention.admin.uldap.position, Text, univention.admin.handlers.simpleLdap, univention.admin.handlers._Attributes) -> None
+                # type: (None, univention.admin.uldap.access, univention.admin.uldap.position, Text, Optional[univention.admin.handlers.simpleLdap], Optional[univention.admin.handlers._Attributes]) -> None
                 pass
 
         @staticmethod
@@ -161,8 +161,20 @@ def update():
     univention.admin.syntax.update_choices()
 
 
+@overload
 def get(module):
-    # type: (UdmName) -> UdmModule
+    # type: (UdmModule) -> UdmModule
+    pass
+
+
+@overload
+def get(module):
+    # type: (str) -> Optional[UdmModule]
+    pass
+
+
+def get(module):
+    # type: (UdmName) -> Optional[UdmModule]
     """
     Get |UDM| module.
 
@@ -174,7 +186,19 @@ def get(module):
         return None  # type: ignore
     if isinstance(module, six.string_types):
         return modules.get(module)  # type: ignore
-    return module
+    return module  # type: ignore[return-value]
+
+
+@overload
+def get_module(module):
+    # type: (UdmModule) -> UdmModule
+    pass
+
+
+@overload
+def get_module(module):
+    # type: (str) -> Optional[UdmModule]
+    pass
 
 
 def get_module(module):
@@ -194,7 +218,7 @@ def get_module(module):
 
 
 def init(lo, position, module, template_object=None, force_reload=False):
-    # type: (univention.admin.uldap.access, univention.admin.uldap.position, UdmModule, univention.admin.handlers.simpleLdap, bool) -> None
+    # type: (univention.admin.uldap.access, univention.admin.uldap.position, UdmModule, Optional[univention.admin.handlers.simpleLdap], bool) -> None
     """
     Initialize |UDM| handler module.
 
@@ -410,10 +434,10 @@ def update_extended_attributes(lo, module, position):
 
         # value may change
         try:
-            mayChange = int(attrs.get('univentionUDMPropertyValueMayChange', [b'0'])[0])
+            mayChange = bool(int(attrs.get('univentionUDMPropertyValueMayChange', [b'0'])[0]))
         except ValueError:
             log.error('modules update_extended_attributes: ERROR: processing univentionUDMPropertyValueMayChange threw exception - assuming mayChange=0')
-            mayChange = 0
+            mayChange = False
 
         # value is editable (only via hooks or direkt module.info[] access)
         editable = attrs.get('univentionUDMPropertyValueNotEditable', [b'0'])[0] not in [b'1', b'TRUE']
@@ -425,10 +449,10 @@ def update_extended_attributes(lo, module, position):
 
         # value not available for searching
         try:
-            doNotSearch = int(attrs.get('univentionUDMPropertyDoNotSearch', [b'0'])[0])
+            doNotSearch = bool(int(attrs.get('univentionUDMPropertyDoNotSearch', [b'0'])[0]))
         except ValueError:
             log.error('modules update_extended_attributes: ERROR: processing univentionUDMPropertyDoNotSearch threw exception - assuming doNotSearch=0')
-            doNotSearch = 0
+            doNotSearch = False
 
         # check if CA is multivalue property
         if attrs.get('univentionUDMPropertyMultivalue', [b''])[0] == b'1':
@@ -488,7 +512,7 @@ def update_extended_attributes(lo, module, position):
             # in the first generation of extended attributes of version 2
             # this field was a position defining the attribute to
             # overwrite. now it is the name of the attribute to overwrite
-            overwriteProp = attrs.get('univentionUDMPropertyLayoutOverwritePosition', [b''])[0].decode('UTF-8', 'replace')
+            overwriteProp = attrs.get('univentionUDMPropertyLayoutOverwritePosition', [b''])[0].decode('UTF-8', 'replace')  # type: Optional[str]
             if overwriteProp == '0':
                 overwriteProp = None
             deleteObjectClass = (attrs.get('univentionUDMPropertyDeleteObjectClass', [b'0'])[0].upper() in [b'1', b'TRUE'])
@@ -518,9 +542,9 @@ def update_extended_attributes(lo, module, position):
             if not layoutDisabled:
                 # get position on tab
                 # -1 == append on top
-                priority = attrs.get('univentionUDMPropertyLayoutPosition', [b'-1'])[0].decode('UTF-8', 'replace')
+                plp = attrs.get('univentionUDMPropertyLayoutPosition', [b'-1'])[0].decode('UTF-8', 'replace')
                 try:
-                    priority = int(priority)
+                    priority = int(plp)
                     if priority < 1:
                         priority = -1
                 except ValueError:
@@ -725,6 +749,7 @@ def superordinate_names(module_name):
 
 
 def superordinate_name(module_name):
+    # type: (UdmName) -> Optional[str]
     """
     Return name of first superordinate module.
 
@@ -736,6 +761,7 @@ def superordinate_name(module_name):
 
 
 def superordinate(module):
+    # type: (UdmModule) -> UdmModule
     """
     Return instance of superordinate module.
 
@@ -1036,7 +1062,7 @@ def objectShadowType(co, lo, dn, attr=None, modules=[]):
 
 
 def findObject(co, lo, dn, type, attr=None, module_base=None):
-    # type: (None, univention.admin.uldap.access, str, str, Optional[Dict[str, List[bytes]]], Optional[str]) -> Optional[Any]
+    # type: (None, univention.admin.uldap.access, str, UdmModule, Optional[Dict[str, List[bytes]]], Optional[str]) -> Optional[Any]
     if attr is None:
         attr = lo.get(dn)
         if not attr:
@@ -1156,7 +1182,7 @@ def childModules(module_name):
 
 
 def _get_translation(locale, attrs, name, defaultname, default=u''):
-    # type: (str, Any, str, str, str) -> str
+    # type: (Optional[str], Any, str, str, str) -> str
     if locale:
         locale = locale.replace(u'_', u'-').lower()
         if name % (locale,) in attrs:

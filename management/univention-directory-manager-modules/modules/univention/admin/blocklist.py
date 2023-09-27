@@ -35,6 +35,7 @@
 import hashlib
 import re
 from datetime import datetime
+from typing import TYPE_CHECKING, Any, Dict, Iterable, List, Optional  # noqa: F401
 
 import ldap
 from dateutil.relativedelta import relativedelta
@@ -42,6 +43,12 @@ from dateutil.relativedelta import relativedelta
 import univention.admin.uexceptions
 import univention.admin.uldap
 from univention.admin import configRegistry
+
+
+if TYPE_CHECKING:
+    import univention.admin.handlers
+    import univention.admin.handlers.blocklists.list
+    import univention.admin.modules
 
 
 translation = univention.admin.localization.translation('univention.admin.handlers')
@@ -61,6 +68,7 @@ def hash_blocklist_value(value):  # type: (bytes) -> str
 
 
 def parse_timedelta(timedelta_string):
+    # type: (str) -> Optional[relativedelta]
     """
     Parse time delta.
 
@@ -75,6 +83,7 @@ def parse_timedelta(timedelta_string):
 
 @univention.admin._ldap_cache(ttl=120)
 def get_blocklist_config(lo):
+    # type: (univention.admin.uldap.access) -> Dict
     config = {}
     try:
         for blist in univention.admin.handlers.blocklists.list.lookup(None, lo, 'entryUUID=*', base=BLOCKLIST_BASE, scope='one'):
@@ -89,11 +98,13 @@ def get_blocklist_config(lo):
 
 
 def get_blocking_udm_properties(udm_obj):
+    # type: (univention.admin.handlers.simpleLdap) -> Dict
     config = get_blocklist_config(udm_obj.lo_machine_primary)
     return config.get(udm_obj.module, {})
 
 
 def get_blockeduntil(dn, lo):
+    # type: (str, univention.admin.uldap.access) -> str
     config = get_blocklist_config(lo)
     retention = config.get(dn, '30d')
     blocking_duration = parse_timedelta(retention)
@@ -102,10 +113,12 @@ def get_blockeduntil(dn, lo):
 
 
 def blocklist_enabled(udm_obj):
+    # type: (univention.admin.handlers.simpleLdap) -> bool
     return not udm_obj.module.startswith('blocklists/') and configRegistry.is_true('directory/manager/blocklist/enabled', False)
 
 
 def get_blocklist_values_from_udm_property(udm_property_value, udm_property_name):
+    # type: (Any, str) -> List[Any]
     if isinstance(udm_property_value, (str, unicode)):
         return [udm_property_value]
     if not isinstance(udm_property_value, list) or not all(isinstance(mem, (str, unicode)) for mem in udm_property_value):
@@ -114,6 +127,7 @@ def get_blocklist_values_from_udm_property(udm_property_value, udm_property_name
 
 
 def create_blocklistentry(udm_obj):
+    # type: (univention.admin.handlers.simpleLdap) -> List
     if not blocklist_enabled(udm_obj):
         return []
     blocklist_entries = []
@@ -136,6 +150,7 @@ def create_blocklistentry(udm_obj):
 
 
 def check_blocklistentry(udm_obj):
+    # type: (univention.admin.handlers.simpleLdap) -> None
     if not blocklist_enabled(udm_obj):
         return
     for prop, bl_dn in get_blocking_udm_properties(udm_obj).items():
@@ -149,6 +164,7 @@ def check_blocklistentry(udm_obj):
 
 
 def cleanup_blocklistentry(blocklist_entries, udm_obj):
+    # type: (Iterable, univention.admin.handlers.simpleLdap) -> None
     for entry in blocklist_entries:
         try:
             udm_obj.lo_machine_primary.delete(entry)

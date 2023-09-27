@@ -38,8 +38,9 @@ from __future__ import print_function
 
 import sys
 import time
-from argparse import REMAINDER, ArgumentParser, RawTextHelpFormatter
+from argparse import REMAINDER, ArgumentParser, Namespace, RawTextHelpFormatter
 from logging import getLogger
+from typing import List, Tuple, Union
 
 import univention.logging
 
@@ -65,7 +66,7 @@ from univention.admin.handlers.dns import txt_record  # noqa: E402
 from univention.config_registry import ucr  # noqa: E402
 
 
-def parse():
+def parse() -> Tuple[Namespace, str, str, str, List[str]]:
     """Parse command line."""
     description = '''
 %(prog)s my.dns.zone add	srv   ldap tcp 0 100 7389 master.fqdn
@@ -149,7 +150,7 @@ def parse():
     return options, options.zone, options.command, options.typ, options.args
 
 
-def bind():
+def bind() -> Tuple[uldap.access, uldap.position]:
     """Bind to LDAP service."""
     start_tls = 0 if options.stoptls else 2
     timeout = time.time() + options.timeout
@@ -181,7 +182,7 @@ def bind():
                 sys.exit(msg)
 
 
-def lookup_zone(zone_name):
+def lookup_zone(zone_name: str) -> Union[forward_zone, reverse_zone]:
     """Lookup zone and return UDM object."""
     if not options.reverse:
         zones = forward_zone.lookup(co, lo, '(zone=%s)' % (zone_name,), scope='domain', base=position.getDomain(), unique=True)
@@ -196,7 +197,7 @@ def lookup_zone(zone_name):
     return zones[0]
 
 
-def add_srv_record(service, protocol, priority, weight, port, host):
+def add_srv_record(service: str, protocol: str, priority: str, weight: str, port: str, host: str) -> None:
     """Add DNS service record."""
     name = [service, protocol]
     location = [priority, weight, port, host]
@@ -221,7 +222,7 @@ def add_srv_record(service, protocol, priority, weight, port, host):
         record.create()
 
 
-def remove_srv_record(service, protocol, priority, weight, port, host):
+def remove_srv_record(service: str, protocol: str, priority: str, weight: str, port: str, host: str) -> None:
     """Remove DNS service record."""
     name = [service, protocol]
     location = [priority, weight, port, host]
@@ -244,7 +245,7 @@ def remove_srv_record(service, protocol, priority, weight, port, host):
         print("Does not exist", file=sys.stderr)
 
 
-def add_txt_record(name, text):
+def add_txt_record(name: str, text: str) -> None:
     """Add DNS text record."""
     filt = univention.admin.filter.expression('name', name)
     records = txt_record.lookup(co, lo, filt, scope='domain', base=position.getDomain(), superordinate=zone, unique=True)
@@ -267,7 +268,7 @@ def add_txt_record(name, text):
         record.create()
 
 
-def add_a_record(name, *adresses):
+def add_a_record(name: str, *adresses: str) -> None:
     """Add DNS IPv4 address records."""
     filt = univention.admin.filter.expression('name', name)
     records = host_record.lookup(co, lo, filt, scope='domain', base=position.getDomain(), superordinate=zone, unique=True)
@@ -290,7 +291,7 @@ def add_a_record(name, *adresses):
         record.create()
 
 
-def add_cname_record(name, cname):
+def add_cname_record(name: str, cname: str) -> None:
     """Add DNS canonical name record."""
     filt = univention.admin.filter.expression('name', name)
     records = alias.lookup(co, lo, filt, scope='domain', base=position.getDomain(), superordinate=zone, unique=True)
@@ -314,7 +315,7 @@ def add_cname_record(name, cname):
         record.create()
 
 
-def add_ns_record(name, value):
+def add_ns_record(name: str, value: str) -> None:
     """Add DNS NS record."""
     udm_property = 'nameserver'
     filt = univention.admin.filter.expression('zone', name)
@@ -338,7 +339,7 @@ def add_ns_record(name, value):
         record.create()
 
 
-def remove_ns_record(name, value):
+def remove_ns_record(name: str, value: str) -> None:
     """Remove DNS NS record."""
     udm_property = 'nameserver'
     filt = univention.admin.filter.expression('zone', name)
@@ -359,7 +360,7 @@ def remove_ns_record(name, value):
         print("Does not exist", file=sys.stderr)
 
 
-def add_ptr_record(address, ptr):
+def add_ptr_record(address: str, ptr: str) -> None:
     """Add DNS pointer record."""
     filt = univention.admin.filter.expression('address', address)
     records = ptr_record.lookup(co, lo, filt, scope='domain', base=position.getDomain(), superordinate=zone, unique=True)
@@ -382,7 +383,7 @@ def add_ptr_record(address, ptr):
         record.create()
 
 
-def add_zone(contact, serial, refresh, retry, expire, ttl, *nameserver):
+def add_zone(contact: str, serial: str, refresh: str, retry: str, expire: str, ttl: str, *nameserver: str) -> None:
     """Add DNS zone."""
     if not options.reverse:
         zone = forward_zone.object(co, lo, position)
@@ -403,7 +404,7 @@ def add_zone(contact, serial, refresh, retry, expire, ttl, *nameserver):
 lo = options = zone = zone_name = position = co = parser = None
 
 
-def main():
+def main() -> None:
     """Run DNS edit."""
     global options
     global zone_name

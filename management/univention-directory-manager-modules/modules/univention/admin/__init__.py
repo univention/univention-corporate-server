@@ -56,6 +56,7 @@ log = getLogger('ADMIN')
 
 if TYPE_CHECKING:
     from univention.admin.layout import Tab  # noqa: F401
+    from univention.admin.types import TypeHint  # noqa: F401
 
 
 __all__ = ('configRegistry', 'extended_attribute', 'hook', 'mapping', 'modules', 'objects', 'option', 'pattern_replace', 'policiesGroup', 'property', 'syntax', 'ucr_overwrite_layout', 'ucr_overwrite_module_layout', 'ucr_overwrite_properties')
@@ -220,7 +221,7 @@ class property:
             module_search=None,  # type: None
             multivalue=False,  # type: bool
             one_only=False,  # type: bool
-            parent=None,  # type: str
+            parent=None,  # type: None
             options=[],  # type: List[str]
             license=[],  # type: List[str]
             required=False,  # type: bool
@@ -238,9 +239,9 @@ class property:
             include_in_default_search=False,  # type: bool
             nonempty_is_default=False,  # type: bool
             readonly_when_synced=False,  # type: bool
-            size=None,  # type: str
+            size=None,  # type: Optional[str]
             copyable=False,  # type: bool
-            type_class=None,  # type: type  # univention.admin.types.TypeHint
+            type_class=None,  # type: Optional[Type[TypeHint]]
     ):  # type: (...) -> None
         """
         |UDM| property.
@@ -394,7 +395,7 @@ class option(object):
     """|UDM| option to make properties conditional."""
 
     def __init__(self, short_description='', long_description='', default=0, editable=False, disabled=False, objectClasses=None, is_app_option=False):
-        # type: (str, str, int, bool, bool, Iterable[str], bool) -> None
+        # type: (str, str, int, bool, bool, Optional[Iterable[str]], bool) -> None
         self.short_description = short_description
         self.long_description = long_description
         self.default = default

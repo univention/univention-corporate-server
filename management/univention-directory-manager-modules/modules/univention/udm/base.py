@@ -36,7 +36,10 @@ from __future__ import absolute_import, unicode_literals
 
 import copy
 import pprint
-from collections import namedtuple
+from typing import (  # noqa: F401
+    TYPE_CHECKING, Any, Dict, Iterable, Iterator, List, Mapping, NamedTuple, Optional, Tuple, Type, TypeVar, Union,
+    cast,
+)
 
 from ldap.filter import filter_format
 from six import with_metaclass
@@ -45,22 +48,25 @@ from .exceptions import MultipleObjects, NoObject
 from .plugins import Plugin
 
 
-LdapMapping = namedtuple('LdapMapping', ('ldap2udm', 'udm2ldap'))
+LdapMapping = NamedTuple('LdapMapping', [('ldap2udm', Mapping[str, str]), ('udm2ldap', Mapping[str, str])])
 
 
 class BaseObjectProperties(object):
     """Container for |UDM| properties."""
 
     def __init__(self, udm_obj):
+        # type: (BaseObject) -> None
         self._udm_obj = udm_obj
 
     def __repr__(self):
+        # type: () -> str
         return '{}({})'.format(
             self.__class__.__name__,
             pprint.pformat({k: v for k, v in self.__dict__.items() if not str(k).startswith('_')}, indent=2),
         )
 
     def __deepcopy__(self, memo):
+        # type: (Dict) -> Any
         id_self = id(self)
         if not memo.get(id_self):
             memo[id_self] = {}
@@ -106,20 +112,22 @@ class BaseObject(object):
     udm_prop_class = BaseObjectProperties
 
     def __init__(self):
+        # type: () -> None
         """
         Don't instantiate a :py:class:`BaseObject` directly. Use
         :py:meth:`BaseModule.get()`, :py:meth:`BaseModule.new()` or
         :py:meth:`BaseModule.search()`.
         """
         self.dn = ''
-        self.props = None
-        self.options = []
-        self.policies = []
+        self.props = None  # type: Optional[BaseObjectProperties]
+        self.options = []  # type: List[str]
+        self.policies = []  # type: List[str]
         self.position = ''
-        self.superordinate = None
-        self._udm_module = None
+        self.superordinate = None  # type: Optional[str]
+        self._udm_module = None  # type: Optional[BaseModule]
 
     def __repr__(self):
+        # type: () -> str
         return '{}({!r}, {!r})'.format(
             self.__class__.__name__,
             self._udm_module.name if self._udm_module else '<not initialized>',
@@ -127,6 +135,7 @@ class BaseObject(object):
         )
 
     def reload(self):
+        # type: () -> BaseObject
         """
         Refresh object from LDAP.
 
@@ -136,6 +145,7 @@ class BaseObject(object):
         raise NotImplementedError()
 
     def save(self):
+        # type: () -> BaseObject
         """
         Save object to LDAP.
 
@@ -146,6 +156,7 @@ class BaseObject(object):
         raise NotImplementedError()
 
     def delete(self, remove_childs=False):
+        # type: (bool) -> None
         """
         Remove the object (and optionally its child nodes) from the LDAP database.
 
@@ -165,22 +176,21 @@ class BaseModuleMetadata(object):
     r"""Whether |UDM| objects should be ``reload()``\ ed after saving."""
 
     def __init__(self, meta):
-        self.supported_api_versions = []
-        self.suitable_for = []
-        self.used_api_version = None
-        self._udm_module = None
-        if hasattr(meta, 'supported_api_versions'):
-            self.supported_api_versions = meta.supported_api_versions
-        if hasattr(meta, 'suitable_for'):
-            self.suitable_for = meta.suitable_for
+        # type: (BaseModule.Meta) -> None
+        self.supported_api_versions = getattr(meta, "supported_api_versions", [])  # type: Iterable[int]
+        self.suitable_for = getattr(meta, "suitable_for", [])  # type: Iterable[str]
+        self.used_api_version = None  # type: Optional[int]
+        self._udm_module = None  # type: Optional[BaseModule]
 
     def __repr__(self):
+        # type: () -> str
         return '{}({})'.format(
             self.__class__.__name__,
             ', '.join('{}={!r}'.format(k, v) for k, v in self.__dict__.items() if not str(k).startswith('_')),
         )
 
     def instance(self, udm_module, api_version):
+        # type: (BaseModule, int) -> BaseModuleMetadata
         cpy = copy.deepcopy(self)
         cpy._udm_module = udm_module
         cpy.used_api_version = api_version
@@ -188,6 +198,7 @@ class BaseModuleMetadata(object):
 
     @property
     def identifying_property(self):
+        # type: () -> str
         """
         UDM property of which the mapped LDAP attribute is used as first
         component in a DN, e.g. `username` (LDAP attribute `uid`) or `name`
@@ -196,6 +207,7 @@ class BaseModuleMetadata(object):
         raise NotImplementedError()
 
     def lookup_filter(self, filter_s=None):
+        # type: (Optional[str]) -> str
         """
         Filter the UDM module uses to find its corresponding LDAP objects.
 
@@ -218,6 +230,7 @@ class BaseModuleMetadata(object):
 
     @property
     def mapping(self):
+        # type: () -> LdapMapping
         """
         UDM properties to LDAP attributes mapping and vice versa.
 
@@ -231,10 +244,14 @@ class BaseModuleMetadata(object):
 class ModuleMeta(Plugin):
     udm_meta_class = BaseModuleMetadata
 
+    if TYPE_CHECKING:
+        meta = None  # type: BaseModuleMetadata
+
     def __new__(mcs, name, bases, attrs):
+        # type: (Type[ModuleMeta], str, Tuple[type, ...], Dict[str, Any]) -> ModuleMeta
         meta = attrs.pop('Meta', None)
         new_cls_meta = mcs.udm_meta_class(meta)
-        new_cls = super(ModuleMeta, mcs).__new__(mcs, name, bases, attrs)
+        new_cls = cast(ModuleMeta, super(ModuleMeta, mcs).__new__(mcs, name, bases, attrs))
         new_cls.meta = new_cls_meta
         return new_cls
 
@@ -275,18 +292,21 @@ class BaseModule(with_metaclass(ModuleMeta)):
     _udm_module_meta_class = BaseModuleMetadata
 
     class Meta:
-        supported_api_versions = ()
-        suitable_for = []
+        supported_api_versions = []  # type: Iterable[int]
+        suitable_for = []  # type: Iterable[str]
 
     def __init__(self, name, connection, api_version):
+        # type: (str, Any, int) -> None
         self.connection = connection
         self.name = name
-        self.meta = self.meta.instance(self, api_version)
+        self.meta = self.meta.instance(self, api_version)  # type: ignore[has-type]
 
     def __repr__(self):
+        # type: () -> str
         return '{}({!r})'.format(self.__class__.__name__, self.name)
 
     def new(self, superordinate=None):
+        # type: (Optional[Union[str, BaseObject]]) -> BaseObject
         """
         Create a new, unsaved :py:class:`BaseObject` object.
 
@@ -299,6 +319,7 @@ class BaseModule(with_metaclass(ModuleMeta)):
         raise NotImplementedError()
 
     def get(self, dn):
+        # type: (str) -> BaseObject
         """
         Load |UDM| object from |LDAP|.
 
@@ -311,6 +332,7 @@ class BaseModule(with_metaclass(ModuleMeta)):
         raise NotImplementedError()
 
     def get_by_id(self, id):
+        # type: (str) -> BaseObject
         """
         Load |UDM| object from |LDAP| by searching for its ID.
 
@@ -334,6 +356,7 @@ class BaseModule(with_metaclass(ModuleMeta)):
         return res[0]
 
     def search(self, filter_s='', base='', scope='sub', sizelimit=0):
+        # type: (str, str, str, int) -> Iterator[BaseObject]
         """
         Get all |UDM| objects from |LDAP| that match the given filter.
 

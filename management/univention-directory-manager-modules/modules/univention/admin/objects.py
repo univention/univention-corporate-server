@@ -71,9 +71,9 @@ def get_superordinate(module, co, lo, dn):
     if super_modules:
         while dn:
             attr = lo.get(dn)
-            super_module = {univention.admin.modules.name(x) for x in univention.admin.modules.identify(dn, attr)} & super_modules
-            if super_module:
-                super_module = univention.admin.modules.get(list(super_module)[0])  # noqa: RUF015
+            modules = {univention.admin.modules.name(x) for x in univention.admin.modules.identify(dn, attr)} & super_modules
+            if modules:
+                super_module = univention.admin.modules.get(list(modules)[0])  # noqa: RUF015
                 return get(super_module, co, lo, None, dn)
             dn = lo.parentDn(dn)
 
@@ -81,7 +81,7 @@ def get_superordinate(module, co, lo, dn):
 
 
 def get(module, co, lo, position, dn='', attr=None, superordinate=None, attributes=None):
-    # type: (univention.admin.modules.UdmModule, None, univention.admin.uldap.access, univention.admin.uldap.position, str, Dict[str, List[Any]], Any, Any) -> univention.admin.handlers.simpleLdap
+    # type: (univention.admin.modules.UdmModule, None, univention.admin.uldap.access, univention.admin.uldap.position, str, Optional[Dict[str, List[Any]]], Optional[Any], Optional[Any]) -> Optional[univention.admin.handlers.simpleLdap]
     """
     Return object of module while trying to create objects of
     superordinate modules as well.

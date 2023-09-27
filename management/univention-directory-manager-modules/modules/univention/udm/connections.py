@@ -33,6 +33,7 @@
 from __future__ import absolute_import, unicode_literals
 
 import sys
+from typing import Any, Callable, Dict, Optional, Tuple, TypeVar  # noqa: F401
 
 import ldap
 import six
@@ -45,15 +46,19 @@ import univention.config_registry
 from .exceptions import ConnectionError
 
 
+_T = TypeVar("_T")  # noqa: PYI018
+
+
 class LDAP_connection(object):
     """Caching LDAP connection factory."""
 
-    _ucr = None
-    _connection_admin = None
-    _connection_account = {}
+    _ucr = None  # type: univention.config_registry.ConfigRegistry  # noqa: PYI026
+    _connection_admin = None  # type: Optional[univention.admin.uldap.access]  # noqa: PYI026
+    _connection_account = {}  # type: Dict[Tuple[str, str, Optional[str], Optional[int], Optional[str]], univention.admin.uldap.access]
 
     @classmethod
     def _clear(cls):
+        # type: () -> None
         # used in tests
         cls._ucr = None
         cls._connection_admin = None
@@ -61,6 +66,7 @@ class LDAP_connection(object):
 
     @classmethod
     def _wrap_connection(cls, func, **kwargs):
+        # type: (Callable[..., _T], **Any) -> _T
         try:
             return func(**kwargs)
         except IOError:
@@ -76,12 +82,14 @@ class LDAP_connection(object):
 
     @classmethod
     def get_admin_connection(cls):
+        # type: () -> univention.admin.uldap.access
         if not cls._connection_admin:
             cls._connection_admin, _po = cls._wrap_connection(univention.admin.uldap.getAdminConnection)
         return cls._connection_admin
 
     @classmethod
     def get_machine_connection(cls, ldap_master=True):
+        # type: (bool) -> univention.admin.uldap.access
         # do not cache the machine connection as this breaks on server-password-change
         co, _po = cls._wrap_connection(univention.admin.uldap.getMachineConnection, ldap_master=ldap_master)
         return co
@@ -89,12 +97,12 @@ class LDAP_connection(object):
     @classmethod
     def get_credentials_connection(
             cls,
-            identity,
-            password,
-            base=None,
-            server=None,
-            port=None,
-    ):
+            identity,  # type: str
+            password,  # type: str
+            base=None,  # type: Optional[str]
+            server=None,  # type: Optional[str]
+            port=None,  # type: Optional[int]
+    ):  # type: (...) -> univention.admin.uldap.access
         if not cls._ucr:
             cls._ucr = univention.config_registry.ConfigRegistry()
             cls._ucr.load()
@@ -106,6 +114,7 @@ class LDAP_connection(object):
                 identity = dns[0]
             except IndexError:
                 six.reraise(ConnectionError, ConnectionError('Cannot get DN for username'), sys.exc_info()[2])
+
         access_kwargs = {'binddn': identity, 'bindpw': password, 'base': base or cls._ucr['ldap/base']}
         if server:
             access_kwargs['host'] = server

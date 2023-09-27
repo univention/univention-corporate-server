@@ -246,13 +246,13 @@ class ISyntax(object):
     def sort_choices(cls, choices):
         return sorted(choices, key=lambda choice: choice[1])
 
-    widget = None
+    widget = None  # type: Optional[str]
     """The corresponding widget which is used in UMC"""
 
     search_widget = 'TextBox'
     """The corresponding widget which is used in UMC when searching for values of this property"""
 
-    widget_default_search_pattern = '*'
+    widget_default_search_pattern = '*'  # type: Union[bool, str, None]
     """The default search pattern for this syntax. String render as TextBox, lists render as ComboBox with the possible choices, booleans render as CheckBox"""
 
     @classmethod
@@ -361,7 +361,7 @@ class simple(ISyntax):
     type_class = univention.admin.types.StringType  # type: Optional[Type[univention.admin.types.TypeHint]]
 
     widget = 'TextBox'
-    widget_default_search_pattern = '*'
+    widget_default_search_pattern = '*'  # type: Union[bool, str, None]
 
     @classmethod
     def parse(self, text):
@@ -417,6 +417,9 @@ class select(ISyntax):
 
     javascript_dependency = False  # type: bool
     """Whether dependencies should be resolved via Javascript (instead via a further request)"""
+
+    if TYPE_CHECKING:
+        choices = []  # type: Sequence[Any]
 
     @classmethod
     def parse(self, text):
@@ -542,7 +545,7 @@ class complex(ISyntax):
 
     @classmethod
     def parse(self, texts, minn=None):
-        # type: (Sequence[Any], int) -> List[str]
+        # type: (Sequence[Any], Optional[int]) -> List[str]
         if minn is None:
             minn = self.min_elements
         if minn is None:
@@ -752,7 +755,7 @@ class UDM_Objects(ISyntax, _UDMObjectOrAttribute):
     use_objects = True
     """By default with `True` create Python UDM instance for each LDAP entry. With `False` only work with the LDAP attribute data."""
 
-    widget_default_search_pattern = ''
+    widget_default_search_pattern = ''  # type: Union[bool, str, None]
     widget = 'umc/modules/udm/ComboBox'
     widget_advanced_multivalue = 'umc/modules/udm/MultiObjectSelect'
 

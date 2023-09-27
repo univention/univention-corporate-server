@@ -36,6 +36,7 @@
 import importlib
 import os.path
 from glob import glob
+from typing import Dict, Iterator, List  # noqa: F401
 
 
 class Plugin(type):
@@ -50,10 +51,11 @@ class Plugin(type):
 class Plugins(object):
     """Register `Plugin` subclasses and iterate over them."""
 
-    _plugins = []
-    _imported = {}
+    _plugins = []  # type: List[Plugin]
+    _imported = {}  # type: Dict[str, bool]
 
     def __init__(self, python_path):
+        # type: (str) -> None
         """
         :param str python_path: fully dotted Python path that the plugins will
                 be found below
@@ -63,6 +65,7 @@ class Plugins(object):
 
     @classmethod
     def add_plugin(cls, plugin):
+        # type: (Plugin) -> None
         """
         Called by `Plugin` meta class to register a new `Plugin` subclass.
 
@@ -71,6 +74,7 @@ class Plugins(object):
         cls._plugins.append(plugin)
 
     def __iter__(self):
+        # type: () -> Iterator[Plugin]
         """
         Iterator for registered `Plugin` subclasses.
 
@@ -83,10 +87,12 @@ class Plugins(object):
                 yield plugin
 
     def load(self):
+        # type: () -> None
         """Load plugins."""
         if self._imported.get(self.python_path):
             return
         base_module = importlib.import_module(self.python_path)
+        assert base_module.__file__
         base_module_dir = os.path.dirname(base_module.__file__)
         path = os.path.join(base_module_dir, "*.py")
         for pymodule in sorted(glob(path)):
@@ -96,11 +102,13 @@ class Plugins(object):
 
 
 def get_all_dynamic_classes():
+    # type: () -> Iterator[Plugin]
     for extension in Plugins("univention.portal.extensions"):
         yield extension
 
 
 def get_dynamic_classes(klass_name):
+    # type: (str) -> Plugin
     for extension in get_all_dynamic_classes():
         if klass_name == extension.__name__:
             return extension

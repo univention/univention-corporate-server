@@ -49,6 +49,8 @@ from __future__ import absolute_import, unicode_literals
 
 import copy
 
+import univention.admin.handlers  # noqa: F401
+
 from ..encoders import ListOfListOflTextToDictPropertyEncoder, StringIntPropertyEncoder
 from ..exceptions import WrongObjectType
 from .generic import GenericModule, GenericObject, GenericObjectProperties
@@ -77,6 +79,7 @@ class MailAllModule(GenericModule):
     _udm_object_class = MailAllObject
 
     def _verify_univention_object_type(self, orig_udm_obj):
+        # type: (univention.admin.handlers.simpleLdap) -> None
         r"""Allow both `mail/\*` and `oxmail/\*` in `univentionObjectType`."""
         uni_obj_type = copy.copy(getattr(orig_udm_obj, 'oldinfo', {}).get('univentionObjectType'))
         if uni_obj_type and uni_obj_type[0].startswith('mail/'):
