@@ -36,5 +36,5 @@ import os
 
 
 def handler(configRegistry, changes):
-    os.system('/sbin/udevadm trigger --subsystem-match=input --action=change')  # noqa: S605
+    os.system('/bin/udevadm trigger --subsystem-match=input --action=change')  # noqa: S605
     os.system('[ -x /bin/setupcon ] && /bin/setupcon --force --save')  # noqa: S605
