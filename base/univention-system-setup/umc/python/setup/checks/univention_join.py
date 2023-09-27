@@ -49,7 +49,6 @@ def receive_domaincontroller_master_information(dns: str, nameserver: str, addre
     result['domain'] = check_credentials_nonmaster(dns, nameserver, address, username, password)
     check_domain_has_activated_license(address, username, password)
     check_domain_is_higher_or_equal_version(address, username, password)
-    result['install_memberof_overlay'] = check_memberof_overlay_is_installed(address, username, password)
     return result
 
 
@@ -105,22 +104,6 @@ def check_domain_is_higher_or_equal_version(address: str, username: str, passwor
         nonmaster_ucs_version = '{}-{}'.format(UCR.get('version/version'), UCR.get('version/patchlevel'))
         if Version(nonmaster_ucs_version) > Version(master_ucs_version):
             raise UMC_Error(_('The UCS version of the domain you are trying to join ({}) is lower than the local one ({}). This constellation is not supported.').format(master_ucs_version, nonmaster_ucs_version))
-
-
-def check_memberof_overlay_is_installed(address: str, username: str, password: str) -> bool:
-    with _temporary_password_file(password) as password_file:
-        try:
-            return UCR.is_true(value=subprocess.check_output([
-                'univention-ssh',
-                password_file,
-                '%s@%s' % (username, address),
-                '/usr/sbin/univention-config-registry',
-                'get',
-                'ldap/overlay/memberof',
-            ]).strip().decode('UTF-8'))
-        except subprocess.CalledProcessError as exc:
-            MODULE.error('Could not query Primary Directory Node for memberof overlay: %s' % (exc,))
-    return False
 
 
 def check_for_school_domain(hostname: str, address: str, username: str, password: str) -> Dict[str, Any]:

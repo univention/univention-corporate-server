@@ -222,7 +222,7 @@ def auto_complete_values_for_join(newValues: Dict[str, str], current_locale: Loc
         selectedComponents.add('univention-ad-connector')
 
     # make sure to install the memberof overlay if it is installed on the Primary Directory Node
-    if newValues['server/role'] not in ('domaincontroller_master', 'memberserver') and newValues.pop('install_memberof_overlay', ""):
+    if newValues['server/role'] not in ('domaincontroller_master', 'memberserver'):
         selectedComponents.add('univention-ldap-overlay-memberof')
 
     # add lists with all packages that should be removed/installed on the system
