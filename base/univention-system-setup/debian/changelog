@@ -1,3 +1,9 @@
+univention-system-setup (14.0.5) unstable; urgency=medium
+
+  * Bug #56662: require memberof to be enabled
+
+ -- Florian Best <best@univention.de>  Thu, 07 Mar 2024 23:53:58 +0100
+
 univention-system-setup (14.0.4) unstable; urgency=medium
 
   * Bug #55997: replace obsolete ldap client utility options (-h/-p)

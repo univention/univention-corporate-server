@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-management-console-module-diagnostic\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2024-02-29 13:29+0100\n"
+"POT-Creation-Date: 2024-02-29 13:37+0100\n"
 "PO-Revision-Date: 2023-03-13 15:12+0100\n"
 "Last-Translator: Univention GmbH <packages@univention.de>\n"
 "Language-Team: Univention GmbH <packages@univention.de>\n"
@@ -50,10 +50,6 @@ msgid "ACL right for user {id!r} is {udm!r} in UDM, but {imap!r} in IMAP."
 msgstr ""
 "ACL Berechtigung für den Nutzer {id!r} ist {udm!r} in UDM, aber {imap!r} in "
 "IMAP."
-
-#: umc/python/diagnostic/plugins/58_check_memberOf.py:46
-msgid "Activate the memberOf LDAP overlay"
-msgstr "Aktivierung des LDAP-Moduls memberOf"
 
 #: umc/python/diagnostic/plugins/22_kdc_service.py:359
 msgid "Add lo to samba/interfaces"
@@ -146,10 +142,6 @@ msgstr "Überprüfe Heimdal KDC auf Samba 4 DC"
 msgid "Check IMAP shared folder ACLs"
 msgstr "Überprüfe ACL Einträge der globalen IMAP Ordner"
 
-#: umc/python/diagnostic/plugins/58_check_memberOf.py:40
-msgid "Check LDAP attribute memberOf"
-msgstr "Prüfe LDAP-Attribut memberOf"
-
 #: umc/python/diagnostic/plugins/63_proof_uniqueMembers.py:43
 msgid "Check LDAP database for inconsistencies in group memberships."
 msgstr ""
@@ -240,11 +232,6 @@ msgstr "Überprüfe Gültigkeit der SSL Zertifikate"
 #: umc/python/diagnostic/plugins/44_well_known_sid_check.py:47
 msgid "Check well known SIDs"
 msgstr "Überprüfe 'Well Known' SIDs"
-
-#: umc/python/diagnostic/plugins/58_check_memberOf.py:41
-msgid "Check whether the LDAP overlay memberOf is locally activated."
-msgstr ""
-"Prüfe ob das LDAP-Attribut memberOf auf diesem LDAP-Server aktiviert ist."
 
 #: umc/python/diagnostic/plugins/65_check_repository_config.py:81
 msgid "Cleanup of deprecated variables is executed !"
@@ -462,7 +449,7 @@ msgstr ""
 msgid "KDC service check"
 msgstr "KDC Erreichbarkeit"
 
-#: umc/python/diagnostic/plugins/62_check_slapschema.py:44
+#: umc/python/diagnostic/plugins/62_check_slapschema.py:43
 msgid "LDAP configuration files are valid."
 msgstr "LDAP-Konfigurationsdateien sind ungültig."
 
@@ -693,7 +680,7 @@ msgstr "Siehe {sdb} für weitere Informationen."
 msgid "Please see {sdb} for troubleshooting DNS problems."
 msgstr "Siehe {sdb} für Problemhilfe bei DNS Problemen."
 
-#: umc/python/diagnostic/plugins/02_certificate_check.py:292
+#: umc/python/diagnostic/plugins/02_certificate_check.py:291
 #, python-brace-format
 msgid "Please see {sdb} on how to renew certificates."
 msgstr "Siehe {sdb} für Informationen zum Erneuern von Zertifikaten."
@@ -859,22 +846,7 @@ msgstr ""
 msgid "Test again"
 msgstr "Erneut testen"
 
-#: umc/python/diagnostic/plugins/58_check_memberOf.py:42
-msgid ""
-"The \"memberOf\" group membership attribute is not available in the LDAP "
-"server on this host. This feature is activated by default in new "
-"installations since UCS version 4.3-0, and serveral services depend on it. "
-"This feature will be a prerequisite in future UCS releases. You may want to "
-"consider activating the memberOf feature for the LDAP server according to:"
-msgstr ""
-"Das Attribut für Gruppenmitgliedschaften \"memberOf\" ist auf dem LDAP-"
-"Server auf diesem Host nicht verfügbar. Diese Funktion wird bei "
-"Neuinstallationen seit UCS Version 4.3-0 standardmäßig aktiviert, und "
-"verschiedene Dienste hängen davon ab. Dieses Attribut wird in zukünftigen "
-"UCS-Versionen vorausgesetzt. Sie können die memberOf-Funktion für den LDAP-"
-"Server folgendermaßen aktivieren:"
-
-#: umc/python/diagnostic/plugins/62_check_slapschema.py:67
+#: umc/python/diagnostic/plugins/62_check_slapschema.py:55
 msgid ""
 "The LDAP schema validation failed with the following errors or warnings:\n"
 msgstr ""
@@ -1290,7 +1262,7 @@ msgstr ""
 "Der Nutzer oder die Gruppe mit dem Namen {name!r} hat die SID {actual_sid}, "
 "sollte aber {sid} haben."
 
-#: umc/python/diagnostic/plugins/62_check_slapschema.py:43
+#: umc/python/diagnostic/plugins/62_check_slapschema.py:42
 msgid "Validating the LDAP configuration and schema files."
 msgstr "Validierung der LDAP-Konfigurations und Schema Dateien."
 
@@ -1440,14 +1412,6 @@ msgid ""
 msgstr ""
 "https://docs.software-univention.de/handbuch-5.1.html#domain:"
 "listenernotifier:erroranalysis"
-
-#: umc/python/diagnostic/plugins/58_check_memberOf.py:45
-msgid ""
-"https://help.univention.com/t/memberof-attribute-group-memberships-of-user-"
-"and-computer-objects/6439"
-msgstr ""
-"https://help.univention.com/t/memberof-attribute-group-memberships-of-user-"
-"and-computer-objects/6439"
 
 #: umc/python/diagnostic/plugins/32_security_limits.py:55
 msgid "https://help.univention.com/t/samba4-max-open-files/1758"
