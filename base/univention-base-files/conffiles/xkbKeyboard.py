@@ -32,9 +32,11 @@
 
 """UCR module to trigger udev on changes in /etc/default/keyboard."""
 
-import os
+import shutil
+import subprocess
 
 
 def handler(configRegistry, changes):
-    os.system('/sbin/udevadm trigger --subsystem-match=input --action=change')  # noqa: S605
-    os.system('[ -x /bin/setupcon ] && /bin/setupcon --force --save')  # noqa: S605
+    subprocess.call(['udevadm', 'trigger', '--subsystem-match=input', '--action=change'])
+    if shutil.which('setupcon'):
+        subprocess.call(['setupcon', '--force', '--save'])
