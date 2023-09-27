@@ -11,3 +11,6 @@ desc: |
    This was broken since Bug #56198 erratum 721.
  * The configured maximum request body size is now respected.
 bug: [56575, 56510]
+erratum: 821
+announced: 2023-09-27
+support: core
