@@ -45,9 +45,7 @@ if [ "$1" = "configure" ] && [ -z "$2" ]; then
 	if pidof slapd >/dev/null; then
 		# shellcheck source=/dev/null
 		. /usr/share/univention-lib/ucr.sh
-		if is_ucr_true ldap/overlay/memberof; then
-			test -e /var/univention-join/joined && /usr/share/univention-ldap-overlay-memberof/univention-update-memberof
-		fi
+		test -e /var/univention-join/joined && /usr/share/univention-ldap-overlay-memberof/univention-update-memberof
 	fi
 fi
 
