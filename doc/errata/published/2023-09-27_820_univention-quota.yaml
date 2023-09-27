@@ -9,3 +9,6 @@ desc: |
  * Querying users for a partition runs into a timeout after 10 minutes when
    there are many users.
 bug: [56575]
+erratum: 820
+announced: 2023-09-27
+support: core
