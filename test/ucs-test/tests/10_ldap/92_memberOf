@@ -25,17 +25,7 @@ member_of_available () {
 	return 0
 }
 
-member_of_not_available () {
-	univention-ldapsearch -ALLLL '(&(objectClass=posixAccount)(uid=*))' + | grep -i '^memberOf:'
-	test $? -eq 0 && return 1
-	return 0
-}
-
 # activated by default, memberOf should be available
-if is_ucr_true ldap/overlay/memberof; then
-	member_of_available || fail_fast 1 "ldap/overlay/memberof=true, but memberOf not found"
-else
-	member_of_not_available || fail_fast 1 "ldap/overlay/memberof=false, but memberOf found"
-fi
+member_of_available || fail_fast 1 "memberOf not found"
 
 exit "$RETVAL"
