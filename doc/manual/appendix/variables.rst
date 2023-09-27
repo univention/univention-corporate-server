@@ -516,13 +516,6 @@ This appendix lists the |UCSUCRV|\ s mentioned in the document.
    :ref:`users-lastbind-overlay-module`.
 
 
-.. envvar:: ldap/overlay/memberof/memberof
-
-   Configures the attribute at user objects that shows the group membership.
-   Default value is ``memberOf``. For more information, see
-   :ref:`groups-memberof`.
-
-
 .. envvar:: ldap/policy/cron
 
    Time interval to write profile based UCR variables to a UCS system. The
