@@ -551,10 +551,9 @@ class complex(ISyntax):
         if minn is None:
             minn = len(self.subsyntaxes)
 
-        if len(texts) < minn:
-            raise univention.admin.uexceptions.valueInvalidSyntax(_("not enough arguments"))
-        elif len(texts) > len(self.subsyntaxes):
-            raise univention.admin.uexceptions.valueInvalidSyntax(_("too many arguments"))
+        low, val, high = minn, len(texts), len(self.subsyntaxes)
+        if not low <= val <= high:
+            raise univention.admin.uexceptions.valueInvalidSyntax(_('Wrong argument count %d; expected %d..%d') % (val, low, high))
 
         parsed = []
         for i, (text, (desc, syn)) in enumerate(zip(texts, self.subsyntaxes)):
@@ -2274,7 +2273,7 @@ class userPasswd(simple):
 
     @classmethod
     def parse(self, text):
-        if text and len(text) > 0:
+        if text:
             return text
         else:
             raise univention.admin.uexceptions.valueError(_('Empty password not allowed!'))
@@ -6475,21 +6474,15 @@ class PrinterURI(complex):
 
     @classmethod
     def parse(self, texts):
-        parsed = []
-        if self.min_elements is not None:
-            count = self.min_elements
-        else:
-            count = len(self.subsyntaxes)
-
         if len(texts) == 1 and 'pdf' in texts[0]:
             texts = [texts[0], '']
 
-        if len(texts) < count:
-            raise univention.admin.uexceptions.valueInvalidSyntax(_('Protocol and destination have to be specified.'))
+        count = self.min_elements if self.min_elements is not None else len(self.subsyntaxes)
+        low, val, high = count, len(texts), len(self.subsyntaxes)
+        if not low <= val <= high:
+            raise univention.admin.uexceptions.valueInvalidSyntax(_('Wrong argument count %d; expected %d..%d') % (val, low, high))
 
-        if len(texts) > len(self.subsyntaxes):
-            raise univention.admin.uexceptions.valueInvalidSyntax(_("too many arguments"))
-
+        parsed = []
         for i, (text, (desc, syn)) in enumerate(zip(texts, self.subsyntaxes)):
             log.debug('syntax.py: subsyntax[%s]=%s, text=%s', i, syn, text)
             if text is None and (self.min_elements is None or (i + 1) < count):
@@ -6652,19 +6645,19 @@ class PortalCategorySelection(simple):
     @classmethod
     def parse(self, texts, minn=None):
         for text in texts:
-            if len(text) < len(self.subsyntaxes):
-                raise univention.admin.uexceptions.valueInvalidSyntax(_("not enough arguments"))
-            elif len(text) > len(self.subsyntaxes):
-                raise univention.admin.uexceptions.valueInvalidSyntax(_("too many arguments"))
+            try:
+                category, entries = text
+            except ValueError:
+                raise univention.admin.uexceptions.valueInvalidSyntax(_('Wrong argument count %d; expected %d..%d') % (len(text), 2, 2))
 
-            if len(text[1]) > 0 and not text[0]:
+            if entries and not category:
                 raise univention.admin.uexceptions.valueInvalidSyntax(_("Portal entries can not be added to an empty category"))
 
             s = Portals()
             s.parse(text[0])
 
             s = PortalEntries()
-            for portal_entry in text[1]:
+            for portal_entry in entries:
                 s.parse(portal_entry)
         return texts
 

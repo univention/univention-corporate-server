@@ -1996,8 +1996,9 @@ msgstr "kein"
 
 #: modules/univention/admin/syntax.py:551
 #: modules/univention/admin/syntax.py:6597
-msgid "not enough arguments"
-msgstr "Nicht genügend Parameter"
+#, python-format
+msgid "Wrong argument count %d; expected %d..%d"
+msgstr "Falsche Anzahl von Argumenten %d; erwartet %d..%d"
 
 #: modules/univention/admin/syntax.py:1862
 msgid "notes"
@@ -2046,12 +2047,6 @@ msgstr "Aufgaben"
 #: modules/univention/admin/syntax.py:6897
 msgid "tc"
 msgstr ""
-
-#: modules/univention/admin/syntax.py:553
-#: modules/univention/admin/syntax.py:6432
-#: modules/univention/admin/syntax.py:6599
-msgid "too many arguments"
-msgstr "Zu viele Parameter"
 
 #: modules/univention/admin/syntax.py:1857
 msgid "undefined"

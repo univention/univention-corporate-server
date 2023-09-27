@@ -821,10 +821,12 @@ def unmapShadowExpireToUserexpiry(oldattr):  # type: (Dict[str, List[bytes]]) ->
     # shadowMax is the number of days a password is valid. So the password expires on 1/1/1970 + shadowLastChange + shadowMax.
     # shadowExpire contains the absolute date to expire the account.
 
-    if 'shadowExpire' in oldattr and len(oldattr['shadowExpire']) > 0:
-        log.debug('userexpiry: %s', posixDaysToDate(oldattr['shadowExpire'][0]))
-        if oldattr['shadowExpire'][0] != b'1':
-            return posixDaysToDate(oldattr['shadowExpire'][0])
+    expire = oldattr.get('shadowExpire')
+    if expire:
+        date = posixDaysToDate(expire[0])
+        log.debug('userexpiry: %s', date)
+        if expire[0] != b'1':
+            return date
 
 
 def unmapKrb5ValidEndToUserexpiry(oldattr):  # type: (Dict[str, List[bytes]]) -> Optional[str]

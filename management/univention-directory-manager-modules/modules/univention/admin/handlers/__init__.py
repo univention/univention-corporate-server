@@ -2581,7 +2581,7 @@ class simpleComputer(simpleLdap):
 
     def check_common_name_length(self):  # type: () -> None
         log.debug('check_common_name_length with self["ip"] = %r and self["dnsEntryZoneForward"] = %r', self['ip'], self['dnsEntryZoneForward'])
-        if len(self['ip']) > 0 and len(self['dnsEntryZoneForward']) > 0:
+        if self['ip'] and self['dnsEntryZoneForward']:
             for zone in self['dnsEntryZoneForward']:
                 if zone == '':
                     continue
@@ -2886,7 +2886,7 @@ class simpleComputer(simpleLdap):
         for entry in self.__changes['ip']['remove']:
             # self.__remove_from_dhcp_object(ip=entry)
             if not self.__multiip:
-                if len(self.__changes['ip']['add']) > 0:
+                if self.__changes['ip']['add']:
                     # we change
                     single_ip = self.__changes['ip']['add'][0]
                     self.__modify_dns_forward_object(self['name'], None, single_ip, entry)
@@ -3118,9 +3118,7 @@ class simpleComputer(simpleLdap):
             log.debug('simpleComputer: dhcp check: removed: %s', entry)
             dn, ip, mac = self.__split_dhcp_line(entry)
             if not ip and not mac and not self.__multiip:
-                mac = ''
-                if self['mac']:
-                    mac = self['mac'][0]
+                mac = self['mac'][0] if self['mac'] else ''
                 self.__remove_from_dhcp_object(mac=mac)
             else:
                 self.__remove_from_dhcp_object(ip=ip, mac=mac)
@@ -3129,7 +3127,7 @@ class simpleComputer(simpleLdap):
             log.debug('simpleComputer: dhcp check: added: %s', entry)
             dn, ip, mac = self.__split_dhcp_line(entry)
             if not ip and not mac and not self.__multiip:
-                if len(self['ip']) > 0 and len(self['mac']) > 0:
+                if self['ip'] and self['mac']:
                     self.__modify_dhcp_object(dn, self['mac'][0], ip=self['ip'][0])
             else:
                 self.__modify_dhcp_object(dn, mac, ip=ip)
@@ -3137,9 +3135,7 @@ class simpleComputer(simpleLdap):
         for entry in self.__changes['dnsEntryZoneForward']['remove']:
             dn, ip = self.__split_dns_line(entry)
             if not ip and not self.__multiip:
-                ip = ''
-                if self['ip']:
-                    ip = self['ip'][0]
+                ip = self['ip'][0] if self['ip'] else ''
                 self.__remove_dns_forward_object(self['name'], dn, ip)
             else:
                 self.__remove_dns_forward_object(self['name'], dn, ip)
@@ -3150,9 +3146,7 @@ class simpleComputer(simpleLdap):
             log.debug('changed the object to dn="%s" and ip="%s"', dn, ip)
             if not ip and not self.__multiip:
                 log.debug('no multiip environment')
-                ip = ''
-                if self['ip']:
-                    ip = self['ip'][0]
+                ip = self['ip'][0] if self['ip'] else ''
                 self.__add_dns_forward_object(self['name'], dn, ip)
             else:
                 self.__add_dns_forward_object(self['name'], dn, ip)
@@ -3160,9 +3154,7 @@ class simpleComputer(simpleLdap):
         for entry in self.__changes['dnsEntryZoneReverse']['remove']:
             dn, ip = self.__split_dns_line(entry)
             if not ip and not self.__multiip:
-                ip = ''
-                if self['ip']:
-                    ip = self['ip'][0]
+                ip = self['ip'][0] if self['ip'] else ''
                 self.__remove_dns_reverse_object(self['name'], dn, ip)
             else:
                 self.__remove_dns_reverse_object(self['name'], dn, ip)
@@ -3170,39 +3162,32 @@ class simpleComputer(simpleLdap):
         for entry in self.__changes['dnsEntryZoneReverse']['add']:
             dn, ip = self.__split_dns_line(entry)
             if not ip and not self.__multiip:
-                ip = ''
-                if self['ip']:
-                    ip = self['ip'][0]
+                ip = self['ip'][0] if self['ip'] else ''
                 self.__add_dns_reverse_object(self['name'], dn, ip)
             else:
                 self.__add_dns_reverse_object(self['name'], dn, ip)
 
-        if not self.__multiip and len(self.get('dhcpEntryZone', [])) > 0:
+        if not self.__multiip and self.get('dhcpEntryZone', []):
             dn, ip, mac = self['dhcpEntryZone'][0]
             for entry in self.__changes['mac']['add']:
-                if len(self['ip']) > 0:
+                if self['ip']:
                     self.__modify_dhcp_object(dn, entry, ip=self['ip'][0])
                 else:
                     self.__modify_dhcp_object(dn, entry)
-            for entry in self.__changes['ip']['add']:
-                if len(self['mac']) > 0:
+            if self['mac']:
+                for entry in self.__changes['ip']['add']:
                     self.__modify_dhcp_object(dn, self['mac'][0], ip=entry)
 
         for entry in self.__changes['dnsEntryZoneAlias']['remove']:
             dnsForwardZone, dnsAliasZoneContainer, alias = entry
-            if not alias:
-                # nonfunctional code since self[ 'alias' ] should be self[ 'dnsAlias' ], but this case does not seem to occur
-                self.__remove_dns_alias_object(self['name'], dnsForwardZone, dnsAliasZoneContainer, self['alias'][0])
-            else:
-                self.__remove_dns_alias_object(self['name'], dnsForwardZone, dnsAliasZoneContainer, alias)
+            # nonfunctional code since self['alias'] should be self['dnsAlias'], but this case does not seem to occur
+            self.__remove_dns_alias_object(self['name'], dnsForwardZone, dnsAliasZoneContainer, alias or self['alias'][0])
+
         for entry in self.__changes['dnsEntryZoneAlias']['add']:
             log.debug('we should add a dns alias object "%s"', entry)
             dnsForwardZone, dnsAliasZoneContainer, alias = entry
             log.debug('changed the object to dnsForwardZone [%s], dnsAliasZoneContainer [%s] and alias [%s]', dnsForwardZone, dnsAliasZoneContainer, alias)
-            if not alias:
-                self.__add_dns_alias_object(self['name'], dnsForwardZone, dnsAliasZoneContainer, self['alias'][0])
-            else:
-                self.__add_dns_alias_object(self['name'], dnsForwardZone, dnsAliasZoneContainer, alias)
+            self.__add_dns_alias_object(self['name'], dnsForwardZone, dnsAliasZoneContainer, alias or self['alias'][0])
 
         self.update_groups()
 

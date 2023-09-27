@@ -242,7 +242,7 @@ class object(univention.admin.handlers.simpleLdap):
             if self['contact'] and not self['contact'].endswith('.'):
                 self['contact'] += '.'
             for i in range(len(self['nameserver'])):
-                if len(self['nameserver'][i]) > 0 \
+                if self['nameserver'][i] \
                         and ':' not in self['nameserver'][i] \
                         and '.' in self['nameserver'][i] \
                         and not self['nameserver'][i].endswith('.'):

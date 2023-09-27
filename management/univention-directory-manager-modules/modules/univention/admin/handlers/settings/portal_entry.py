@@ -241,7 +241,7 @@ class object(univention.admin.handlers.simpleLdap):
         new_content = []
         for category, entries in old_content:
             entries_with_self_removed = [entry for entry in entries if not self.lo.compare_dn(entry, self.dn)]
-            if len(entries_with_self_removed) > 0:
+            if entries_with_self_removed:
                 new_content.append([category, entries_with_self_removed])
         if new_content != old_content:
             portal_obj['content'] = new_content
