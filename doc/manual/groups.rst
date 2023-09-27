@@ -353,23 +353,8 @@ Overlay module for displaying the group information on user objects
 
 In the UCS directory service, group membership properties are only saved in the
 group objects and not in the respective user objects. However, some applications
-expect group membership properties at the user objects (e.g., in the attribute
-``memberOf``). An optional overlay module in the LDAP server makes it possible
+expect group membership properties at the user objects (in the attribute
+``memberOf``). An overlay module in the LDAP server makes it possible
 to present these attributes automatically based on the group information. The
 additional attributes are not written to the LDAP, but displayed on the fly by
 the overlay module if a user object is queried.
-
-.. caution::
-
-   Before using this feature, please read :uv:kb:`memberOf attribute: Group
-   memberships of user and computer objects <6439>` about activating the
-   OpenLDAP ``memberOf`` overlay module.
-
-To this end, the :program:`univention-ldap-overlay-memberof` package must be
-installed on all LDAP servers. Afterwards
-:command:`/usr/share/univention-ldap-overlay-memberof/univention-update-memberof`
-must be invoked on all servers.
-
-By default the user attribute ``memberOf`` is shown. The |UCSUCRV|
-:envvar:`ldap/overlay/memberof/memberof` can be used to configure a different
-attribute.
