@@ -95,7 +95,7 @@ EXCLUDE_ATTRIBUTES = {attr.lower() for attr in {
     'pwdGraceUseTime',
     'pwdReset',
     'pwdPolicySubentry',
-} | (set() if listener.configRegistry.is_true('ldap/overlay/memberof') else {'memberOf'})}
+}}
 ud.debug(ud.LISTENER, ud.ALL, 'replication: EXCLUDE_ATTRIBUTES=%r' % (EXCLUDE_ATTRIBUTES,))
 
 # exclude built-in OIDs from slapd
@@ -241,7 +241,7 @@ def modlist(old: Dict[str, List[bytes]], new: Dict[str, List[bytes]]) -> List[Tu
         if set_old == set_new:
             continue
 
-        if key == listener.configRegistry.get('ldap/overlay/memberof/member', 'uniqueMember'):
+        if key == 'uniqueMember':
             # triggers slapd-memberof, where REPLACE is inefficient (Bug #48545)
             added_items = set_new - set_old
             removed_items = set_old - set_new
