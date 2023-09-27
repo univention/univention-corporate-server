@@ -2917,7 +2917,6 @@ define([
 			if (pageName == 'credentials-ad' || pageName == 'credentials-nonmaster') {
 				var acceptCredentials = function(result) {
 					this._domainName = result.domain;
-					this._install_memberof_overlay = result.install_memberof_overlay;
 				};
 
 				var setNextPageToSamePage = function() {
@@ -3276,9 +3275,6 @@ define([
 				vals['dns/forwarder1'] = _vals.nameserver1;
 				vals['dns/forwarder2'] = _vals.nameserver2;
 			}
-
-			// memberof overlay
-			vals.install_memberof_overlay = this._install_memberof_overlay;
 
 			return vals;
 		},
