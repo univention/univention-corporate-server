@@ -779,7 +779,7 @@ class simpleLdap(object):
         goaldn = self.lo.parentDn(newdn)
         goalmodule = univention.admin.modules.identifyOne(goaldn, self.lo.get(goaldn))
         goalmodule = univention.admin.modules.get(goalmodule)
-        if not goalmodule or not hasattr(goalmodule, 'childs') or not goalmodule.childs == 1:
+        if not goalmodule or not hasattr(goalmodule, 'childs') or goalmodule.childs != 1:
             raise univention.admin.uexceptions.invalidOperation(_("Destination object can't have sub objects."))
 
         if self.lo.compare_dn(self.dn.lower(), newdn.lower()):
@@ -2374,7 +2374,7 @@ class simpleComputer(simpleLdap):
                 if ip in host['fixedaddress']:
                     log.debug('fixedaddress: "%s"', host['fixedaddress'])
                     host['fixedaddress'].remove(ip)
-                    if len(host['fixedaddress']) == 0:
+                    if not host['fixedaddress']:
                         host.remove()
                     else:
                         host.modify()
@@ -3363,7 +3363,7 @@ class simpleComputer(simpleLdap):
         for zone in self['dnsEntryZoneReverse'] or []:
             # load zone object
             log.debug('clean up entries for zone: %s', zone)
-            if len(zone) < 1:
+            if not zone:
                 continue
             zoneObj = univention.admin.objects.get(
                 univention.admin.modules.get('dns/reverse_zone'), self.co, self.lo, self.position, dn=zone[0])
@@ -3382,7 +3382,7 @@ class simpleComputer(simpleLdap):
         for zone in self['dnsEntryZoneForward'] or []:
             # load zone object
             log.debug('clean up entries for zone: %s', zone)
-            if len(zone) < 1:
+            if not zone:
                 continue
             zoneObj = univention.admin.objects.get(
                 univention.admin.modules.get('dns/forward_zone'), self.co, self.lo, self.position, dn=zone[0])

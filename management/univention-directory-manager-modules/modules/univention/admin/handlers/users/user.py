@@ -1245,13 +1245,13 @@ class object(univention.admin.handlers.simpleLdap, PKIIntegration):
             if len(res) == 1:
                 self['homeShare'] = res[0].dn
                 relpath = path.replace(sharepath, u'')
-                if len(relpath) > 0 and relpath[0] == u'/':
+                if relpath and relpath[0] == u'/':
                     relpath = relpath[1:]
                 self['homeSharePath'] = relpath
                 break
             elif len(res) > 1:
                 break
-            elif len(res) < 1:
+            elif not res:
                 sharepath = os.path.split(sharepath)[0]
 
     def _unmapUnlockTime(self):  # type: () -> None

@@ -143,7 +143,7 @@ def cron_create(cronlist):
     string = ''
     for key in keys:
         if key in cronlist:
-            if len(cronlist[key]) == 0:
+            if not cronlist[key]:
                 string += '* '
                 continue
             for i in range(len(cronlist[key])):

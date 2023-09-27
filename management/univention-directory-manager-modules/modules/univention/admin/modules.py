@@ -615,7 +615,7 @@ def update_extended_attributes(lo, module, position):
             currentTab.is_app_tab = any(x.is_app_tab for x in priofields)
 
             # check if tab is empty ==> overwritePosition is impossible
-            freshTab = len(currentTab.layout) == 0
+            freshTab = not currentTab.layout
 
             for ea_layout in priofields:
                 if currentTab.advanced and not ea_layout.advanced:

@@ -849,7 +849,7 @@ class access(object):
         :type serverctrls: list[ldap.controls.LDAPControl]
         :param dict response: An optional dictionary to receive the server controls of the result.
         """
-        if not move_childs == 0:
+        if move_childs != 0:
             raise univention.admin.uexceptions.noObject(_("Moving children is not supported."))
         self._validateLicense()
         if not self.allow_modify and not ignore_license:
