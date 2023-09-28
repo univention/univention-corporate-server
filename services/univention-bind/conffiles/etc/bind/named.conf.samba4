@@ -71,7 +71,7 @@ include "/etc/bind/local-predlz.conf.samba4";
 @!@
 # flake8: noqa
 print('''dlz "samba4.zone" {
-	database "dlopen /usr/lib/x86_64-linux-gnu/samba/bind9/dlz_bind9_11.so -d %(dns/dlz/debug/level)s {
+	database "dlopen /usr/lib/x86_64-linux-gnu/samba/bind9/dlz_bind9_16.so -d %(dns/dlz/debug/level)s {
 			/*
 			 * update-policy {
 			 * 		grant %(kerberos/realm)s ms-self * A AAAA;
