@@ -1,3 +1,9 @@
+univention-bind (15.0.3) unstable; urgency=medium
+
+  * Bug #56667: update Samba bind shared libararies to bind9_16
+
+ -- Julia Bremer <bremer@univention.de>  Thu, 07 Mar 2024 23:54:01 +0100
+
 univention-bind (15.0.2) unstable; urgency=medium
 
   * Bug #53127: upgrade to latest debhelper compat version
