@@ -1,3 +1,9 @@
+ucs-test (10.0.19-15) unstable; urgency=low
+
+  * 01/26: Ignore /var/log/cloud-init.log
+
+ -- Philipp Hahn <hahn@univention.de>  Thu, 28 Sep 2023 08:48:24 +0200
+
 ucs-test (10.0.19-14) unstable; urgency=low
 
   * Bug #56649: 80_docker/73_app_listener_integration

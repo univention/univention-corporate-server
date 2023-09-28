@@ -53,6 +53,7 @@ find /var/log \
 		-o -path "/var/log/boot.log" \
 		-o -path "/var/log/btmp" \
 		-o -path "/var/log/clamav" \
+		-o -path "/var/log/cloud-init.log" \
 		-o -path "/var/log/cups/access_log*" \
 		-o -path "/var/log/cups/error_log*" \
 		-o -path "/var/log/dbconfig-common" \
