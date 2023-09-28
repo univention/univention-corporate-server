@@ -34,7 +34,7 @@ ucr_restore () { # restore original values
 	local name sname
 	for name in "${_reset[@]}"
 	do
-		local sname="_${name//\//_}"
+		local sname="_${name//[!0-9A-Z_a-z]/_}"
 		if [ -n "${!sname+X}" ]
 		then
 			reset+=("${name}=${!sname}")
