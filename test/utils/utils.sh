@@ -845,6 +845,10 @@ assert_version () {
 		create_DONT_START_UCS_TEST "FAILED: assert_version $requested_version == $version"
 		exit 1
 	fi
+	if [ "$requested_version" == "5.2-0" ]; then
+	    a2dismod php7.4 || true
+	    systemctl restart apache2.service
+	fi
 	return 0
 }
 
