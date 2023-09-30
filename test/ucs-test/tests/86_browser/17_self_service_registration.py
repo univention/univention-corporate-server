@@ -48,8 +48,8 @@ class UserCreationAttribute:
 
 
 @pytest.fixture(autouse=True)
-def activate_self_registration(ucr):
-    ucr.handler_set(
+def activate_self_registration(ucr_module_scope):
+    ucr_module_scope.handler_set(
         [
             "umc/self-service/account-registration/backend/enabled=true",
             "umc/self-service/account-registration/frontend/enabled=true",

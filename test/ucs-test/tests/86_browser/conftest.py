@@ -6,7 +6,7 @@ from typing import Dict, Generator, Iterator
 from urllib.parse import quote
 
 import pytest
-from playwright.sync_api import BrowserContext, BrowserType, Page, expect
+from playwright.sync_api import BrowserContext, Page, expect
 
 from univention.config_registry import handler_set, handler_unset
 from univention.testing import ucr as _ucr, udm as _udm
@@ -59,9 +59,9 @@ def udm_module_scope() -> Iterator[_udm.UCSTestUDM]:
         yield udm
 
 
-@pytest.fixture(scope="module")
+@pytest.fixture()
 def ucr_module_scope() -> Iterator[_ucr.UCSTestConfigRegistry]:
-    """Per `module` auto-reverting UCR instance."""
+    """Per `function` auto-reverting UCR instance."""
     with _ucr.UCSTestConfigRegistry() as ucr:
         yield ucr
 
@@ -90,44 +90,11 @@ def side_menu_user(umc_browser_test: UMCBrowserTest):
 def kill_module_processes():
     logger.info("killing module processes")
     try:
-        subprocess.run(
-            ["pkill", "-f", "/usr/sbin/univention-management-console-module"],
-            check=True,
-        )
+        subprocess.run(["pkill", "-f", "/usr/sbin/univention-management-console-module"], check=True)
     except subprocess.CalledProcessError as e:
         if e.returncode != 1:
             logger.exception("failed killing module processes")
             raise
-
-
-def setup_browser_context(context, start_tracing=True):
-    context.set_default_timeout(60 * 1000 * 2)
-    if start_tracing:
-        context.tracing.start(screenshots=True, snapshots=True, sources=True)
-    page = context.new_page()
-    expect.set_options(timeout=15_000)
-    return page
-
-
-@pytest.fixture(scope="module")
-def context_module_scope(
-    browser_type: BrowserType,
-    browser_type_launch_args: Dict,
-    browser_context_args: Dict,
-):
-    browser = browser_type.launch(**browser_type_launch_args)
-    return browser.new_context(**browser_context_args)
-
-
-@pytest.fixture(scope="module")
-def umc_browser_test_module(
-    context_module_scope: BrowserContext,
-    kill_module_processes,
-) -> UMCBrowserTest:
-    page = setup_browser_context(context_module_scope)
-    tester = UMCBrowserTest(page)
-
-    return tester
 
 
 @pytest.fixture()
@@ -137,29 +104,18 @@ def umc_browser_test(
     kill_module_processes,
     ucr,
 ) -> Generator[UMCBrowserTest, None, None]:
-    page = setup_browser_context(context)
+    context.set_default_timeout(60 * 1000 * 2)
+    context.tracing.start(screenshots=True, snapshots=True, sources=True)
+    page = context.new_page()
+    expect.set_options(timeout=15_000)
     tester = UMCBrowserTest(page)
-    # time.sleep(1)
-
+    time.sleep(1)
     yield tester
 
-    teardown_umc_browser_test(request, ucr, page, context)
-
-
-def teardown_umc_browser_test(
-    request: pytest.FixtureRequest, ucr, page: Page, context: BrowserContext,
-):
-    try:
-        report = request.node.stash[phase_report_key]
-    except KeyError:
-        logger.warning(
-            "phase_report_key has not been found in node stash. Skipping trace saving and backtrace checking.",
-        )
-        return
-
+    report = request.node.stash[phase_report_key]
     try:
         if "call" in report and report["call"].failed:
-            save_trace(page, context, request.node.name, ucr)
+            save_trace(page, context, request, ucr)
             check_for_backtrace(page)
         else:
             context.tracing.stop()
@@ -167,25 +123,15 @@ def teardown_umc_browser_test(
         page.close()
 
 
-def save_trace(
-    page: Page,
-    context: BrowserContext,
-    node_name: str,
-    ucr,
-    tracing_stop_chunk: bool = False,
-):
+def save_trace(page: Page, context: BrowserContext, request: pytest.FixtureRequest, ucr):
     ts = time.time_ns()
 
     base_path = Path("browser").resolve()
-    screenshot_filename = base_path / f"{ts}-{node_name}.jpeg"
-    trace_filename = base_path / f"{ts}-{node_name}_trace.zip"
+    screenshot_filename = base_path / f"{ts}-{request.node.name}.jpeg"
+    trace_filename = base_path / f"{ts}-{request.node.name}_trace.zip"
 
     page.screenshot(path=screenshot_filename)
-
-    if tracing_stop_chunk:
-        context.tracing.stop_chunk(path=trace_filename)
-    else:
-        context.tracing.stop(path=trace_filename)
+    context.tracing.stop(path=trace_filename)
 
     if os.environ.get("JENKINS_WS"):
         if "master" not in ucr.get("server/role"):
