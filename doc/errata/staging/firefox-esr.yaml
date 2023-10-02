@@ -1,0 +1,398 @@
+product: ucs
+release: "5.0"
+version: [4, 5]
+scope: ucs_5.0-0-errata5.0-5
+src: firefox-esr
+fix: 115.3.1esr-1~deb10u1
+desc: |
+ This update addresses the following issues:
+ 115.3.1esr-1~deb10u1 (Fri, 29 Sep 2023 20:20:36 +0200)
+ * New upstream release.
+ * Fix for mfsa2023-44, also known as CVE-2023-5217.
+ 115.3.0esr-1~deb10u1 (Thu, 28 Sep 2023 20:47:50 +0200)
+ * Backport to buster.
+ * Lower nodejs requirement.
+ * Build swgl with -fno-inline on arm* and i386, due to ICEs with GCC 8.
+ * Fix build failure on at least i386 on TestCombinedStacks.cpp.
+ 115.3.0esr-1 (Wed, 27 Sep 2023 05:43:46 +0900)
+ * Fixes for mfsa2023-42, also known as: CVE-2023-5169, CVE-2023-5171,
+   CVE-2023-5176.
+ * debian/control*, debian/rules: Work around bug 1052002 by force-using
+   clang-14.
+ 115.2.1esr-1 (Wed, 13 Sep 2023 06:30:23 +0900)
+ * Fix for mfsa2023-40, also known as CVE-2023-4863.
+ * debian/upstream.mk, debian/repack.py: Get l10n sources from zip archives.
+   Thanks David Turner for the initial implementation.
+ 115.2.0esr-1 (Wed, 30 Aug 2023 06:03:46 +0900)
+ * Fixes for mfsa2023-36, also known as: CVE-2023-4573, CVE-2023-4574,
+   CVE-2023-4575, CVE-2023-4577, CVE-2023-4051, CVE-2023-4578, CVE-2023-4053,
+   CVE-2023-4580, CVE-2023-4581, CVE-2023-4583, CVE-2023-4584, CVE-2023-4585.
+ * debian/watch: Refresh.
+ 115.1.0esr-1 (Wed, 02 Aug 2023 06:15:06 +0900)
+ * Fixes for mfsa2023-31, also known as: CVE-2023-4045, CVE-2023-4046,
+   CVE-2023-4047, CVE-2023-4048, CVE-2023-4049, CVE-2023-4050, CVE-2023-4055,
+   CVE-2023-4056, CVE-2023-4057.
+ 115.0.2esr-1 (Fri, 14 Jul 2023 13:40:53 +0900)
+ * security/nss/lib/freebl/unix_rand.c,
+   security/nss/cmd/shlibsign/shlibsign.c: Unapply changes for Hurd, as there
+   is no rustc there.
+ 115.0.2-1 (Wed, 12 Jul 2023 09:16:06 +0900)
+ * Fixes for mfsa2023-26, also known as CVE-2023-3600.
+ * debian/control*, debian/compat: Bump debhelper compat level to 12.
+ * debian/rules: - Stop compressing debug info at link time. - Use dh_missing.
+   - Disable dwz for libxul. - Disable debug symbols on riscv64, because
+   linking takes so long that buildds kill the build after 420 minutes of
+   "inactivity". - Remove libgtk2 exclusion in dh_shlibdeps call. The
+   dependency is long gone. - Stop cleaning up configure. It is unnecessary
+   nowadays. - Rely on dh_update_autotools_config instead of manual grunt
+   work. - Stop overriding dh_clean.
+ * debian/browser.mozconfig.in, debian/control.in, debian/rules,
+   debian/upstream.mk: Remove support for stretch.
+ * debian/symbols.apt.conf, debian/symbols.mk, debian/symbols.sources.list:
+   Remove symbol dumping scripts. They haven't been used to upload symbols for
+   a long time, and Mozilla now pulls the symbols rather than us uploading
+   them.
+ * build/unix/elfhack/elf.cpp, build/unix/elfhack/elfhack.cpp,
+   build/unix/elfhack/elfxx.h: More properly handle files > 4GB in elfhack.
+   bz#1840931.
+ * media/libaom/moz.build: After all, we did need that patch. bz#1842933.
+ 115.0.1-1 (Tue, 11 Jul 2023 06:39:31 +0900)
+ * debian/patches: Consolidate patches in two categories instead of four. Also
+   remove some unuseful patches: + xpcom/reflect/xptcall/md/unix/moz.build,
+   xpcom/reflect/xptcall/src/md/unix/xptcinvoke_linux_sh.cpp,
+   xpcom/reflect/xptcall/src/md/unix/xptcstubs_linux_sh.cpp: Remove xptcall
+   support for SH4. We don't have rustc on SH4 anyways. +
+   media/libaom/moz.build: libaom neon flags are better set as of bz#1791482
+   and shouldn't require a patch.
+ * gfx/skia/moz.build: Work around GCC ICE on ppc64el.
+ 115.0-1 (Wed, 05 Jul 2023 06:46:25 +0900)
+ * Fixes for mfsa2023-22, also known as: CVE-2023-3482, CVE-2023-37201,
+   CVE-2023-37202, CVE-2023-37203, CVE-2023-37204, CVE-2023-37205,
+   CVE-2023-37206, CVE-2023-37207, CVE-2023-37208, CVE-2023-37209,
+   CVE-2023-37210, CVE-2023-37211, CVE-2023-37212.
+ * debian/rules, media/ffvpx/config_unix64.h: Work around
+   https://sourceware.org/bugzilla/show_bug.cgi?id=30578..
+ * gfx/skia/moz.build: Undefine the mips builtin macro on mips in skia.
+   bz#1841197.
+ 114.0.2-1 (Thu, 22 Jun 2023 13:54:23 +0900)
+ * debian/upstream.mk: Unstable is trixie.
+ * debian/rules: Use in-tree NSS on bookworm.
+ 114.0-1 (Wed, 07 Jun 2023 05:52:21 +0900)
+ * Fixes for mfsa2023-20, also known as: CVE-2023-34414, CVE-2023-34415,
+   CVE-2023-34416, CVE-2023-34417.
+ * debian/browser.install.in: Install gfxtest and vaapitest.
+ 113.0.2-1 (Sat, 27 May 2023 05:00:29 +0900)
+ * dom/base/nsTextFragment.cpp, dom/base/nsTextFragmentGeneric.h,
+   dom/base/nsTextFragmentGenericFwd.h: Isolate SSE2 requirements to
+   SSE-compiled file. bz#1827566.
+ 113.0-1 (Wed, 10 May 2023 06:47:20 +0900)
+ * Fixes for mfsa2023-16, also known as: CVE-2023-32205, CVE-2023-32206,
+   CVE-2023-32207, CVE-2023-32208, CVE-2023-32209, CVE-2023-32210,
+   CVE-2023-32211, CVE-2023-32212, CVE-2023-32213, CVE-2023-32215,
+   CVE-2023-32216.
+ * debian/control, debian/l10n/browser-l10n.control: Refresh locales.
+ 112.0.1-1 (Thu, 20 Apr 2023 06:12:33 +0900)
+ * gfx/thebes/gfxFont.cpp, gfx/thebes/gfxFontEntry.cpp: Don't attempt to use
+   font extents if we didn't get a valid 'head' table, or if it's not an sfnt
+   resource. bz#1827950..
+ 112.0-1 (Wed, 12 Apr 2023 09:53:55 +0900)
+ * Fixes for mfsa2023-13, also known as: CVE-2023-29533, CVE-2023-29535,
+   CVE-2023-29536, CVE-2023-29537, CVE-2023-29538, CVE-2023-29539,
+   CVE-2023-29540, CVE-2023-29541, CVE-2023-29543, CVE-2023-29544,
+   CVE-2023-29547, CVE-2023-29548, CVE-2023-29549, CVE-2023-29550,
+   CVE-2023-29551.
+ * debian/control*: Bump nss build dependency.
+ * debian/control: Add libavcodec60 recommendation.
+ * security/manager/ssl/builtins/build.rs,
+   security/manager/ssl/builtins/src/certdata.rs: Revert upstream change to
+   preserve compatibility with rustc 1.63.
+ 111.0.1-1 (Sat, 25 Mar 2023 05:21:58 +0900)
+ 111.0-3 (Tue, 21 Mar 2023 09:28:00 +0900)
+ * dom/media/webaudio/AudioNodeEngine*: Forward declare arch-specific xsimd
+   specialization. bz#1822901.
+ 111.0-2 (Tue, 21 Mar 2023 06:18:07 +0900)
+ * gfx/skia/generate_mozbuild.py, gfx/skia/moz.build: Remove explicit NEON
+   flags from skia build. Thanks Emanuele Rocca.
+ * dom/media/webaudio/AudioNodeEngineGeneric.h: Use fully specified
+   xsimd::batch type. bz#1821363.
+ * third_party/libwebrtc/moz.build: Add now removed desktop_capture_generic_gn
+   directory.
+ 111.0-1 (Wed, 15 Mar 2023 07:56:18 +0900)
+ * Fixes for mfsa2023-09, also known as: CVE-2023-25750, CVE-2023-25751,
+   CVE-2023-28160, CVE-2023-28164, CVE-2023-28161, CVE-2023-28162,
+   CVE-2023-25752, CVE-2023-28176, CVE-2023-28177.
+ * debian/browser.mozconfig.in: Disable wasm sandboxing on s390x for now. It
+   doesn't work at the moment.
+ 110.0.1-1 (Wed, 01 Mar 2023 08:35:30 +0900)
+ * debian/control*: Build depend on the rustc version we have in unstable.
+ .
+ * Cargo.lock, python/mozboot/mozboot/util.py,
+   servo/components/selectors/context.rs,
+   servo/components/selectors/parser.rs,
+   servo/components/style/gecko/selector_parser.rs,
+   servo/components/style/properties/gecko.mako.rs,
+   servo/components/style/style_resolver.rs,
+   servo/components/style/stylesheets/container_rule.rs,
+   servo/components/style/stylist.rs,
+   third_party/rust/cstr/.cargo-checksum.json,
+   third_party/rust/cstr/Cargo.toml, third_party/rust/cstr/README.md,
+   third_party/rust/cstr/src/lib.rs: Relax minimum supported rust version to
+   1.63.
+ * js/src/irregexp/moz.build: Suppress false positive error for GCC.
+   bz#1810584.
+ 110.0-1 (Wed, 15 Feb 2023 09:14:45 +0900)
+ * Fixes for mfsa2023-05, also known as: CVE-2023-25728, CVE-2023-25730,
+   CVE-2023-0767, CVE-2023-25735, CVE-2023-25737, CVE-2023-25739,
+   CVE-2023-25729, CVE-2023-25732, CVE-2023-25731, CVE-2023-25733,
+   CVE-2023-25736, CVE-2023-25741, CVE-2023-25742, CVE-2023-25744,
+   CVE-2023-25745.
+ * debian/control*: Bump nss, rustc and cargo build dependencies.
+ * third_party/wasm2c/src/common.h,
+   third_party/wasm2c/src/prebuilt/wasm2c.include.c,
+   third_party/wasm2c/src/wasm2c.c.tmpl: Use compiler macros to detect big
+   endian.
+ 109.0-1 (Wed, 18 Jan 2023 06:27:19 +0900)
+ * Fixes for mfsa2023-01, also known as: CVE-2022-23597, CVE-2023-23598,
+   CVE-2023-23601, CVE-2023-23602, CVE-2023-23603, CVE-2023-23604,
+   CVE-2023-23605, CVE-2023-23606.
+ * debian/control*: - Bump nss build dependency. - Bump cargo dependency back
+   to what it's supposed to be.
+ * debian/browser.mozconfig.in, debian/control*: Enable wasm sandboxing on
+   bookworm.
+ * build/moz.configure/compilers-util.configure, toolkit/moz.configure: Add
+   more configure checks for the wasm toolchain setup. bz#1747145.
+   toolkit/moz.configure: Allow to build without a wasi sysroot. bz#1810627
+ * build/moz.configure/rust.configure: Revert the relaxing of the cargo
+   dependency now that we have the right version in unstable.
+ 108.0.2-1 (Tue, 10 Jan 2023 08:00:05 +0900)
+ 108.0-2 (Thu, 15 Dec 2022 17:42:19 +0900)
+ * security/manager/ssl/tests/unit/tlsserver/cmd/moz.build,
+   security/manager/ssl/tests/unit/tlsserver/lib/moz.build,
+   security/moz.build: Pseudo-revert bz#1754746 and bz#1799121.
+ * .cargo/config.in, Cargo.lock, Cargo.toml, third_party/rust/uniffi*,
+   third_party/rust/weedle2*: Make uniffi-bindgen more deterministic across
+   platforms.
+ 108.0-1 (Wed, 14 Dec 2022 07:56:15 +0900)
+ * Fixes for mfsa2022-51, also known as: CVE-2022-46871, CVE-2022-46872,
+   CVE-2022-46873, CVE-2022-46874, CVE-2022-46877, CVE-2022-46878,
+   CVE-2022-46879.
+ * debian/control*: Bump rustc and nss build dependencies.
+ 107.0.1-1 (Sat, 03 Dec 2022 05:49:43 +0900)
+ 107.0-1 (Wed, 16 Nov 2022 08:10:27 +0900)
+ * Fixes for mfsa2022-47, also known as: CVE-2022-45403, CVE-2022-45404,
+   CVE-2022-45405, CVE-2022-45406, CVE-2022-45407, CVE-2022-45408,
+   CVE-2022-45409, CVE-2022-45410, CVE-2022-45411, CVE-2022-45412,
+   CVE-2022-40674, CVE-2022-45415, CVE-2022-45416, CVE-2022-45417,
+   CVE-2022-45418, CVE-2022-45419, CVE-2022-45420, CVE-2022-45421.
+ * debian/rules: - Use internal libevent on buster. - Invoke python with
+   PYTHONDONTWRITEBYTECODE instead of -B.
+ 106.0.5-1 (Mon, 07 Nov 2022 06:06:42 +0900)
+ * media/ffvpx/config_unix_aarch64.h: Don't build libav with sysctl on Unix
+   AArch64. bz#1791275.
+ 106.0-1 (Wed, 19 Oct 2022 05:59:30 +0900)
+ * Fixes for mfsa2022-44, also known as: CVE-2022-42927, CVE-2022-42928,
+   CVE-2022-42929, CVE-2022-42930, CVE-2022-42931, CVE-2022-42932.
+ * debian/control*: Bump nss and libvpx build dependencies.
+ * debian/rules: Build with vendored libvpx on bullseye.
+ * mozglue/misc/SIMD.cpp, mozglue/misc/SIMD_avx2.cpp: Restrict SIMD_avx2 to
+   AMD64. bz#1792158.
+ * modules/fdlibm/src/math_private.h: Do not define unused float_t type in
+   fdlibm. bz#1789560.
+ * js/src/jit/GenerateAtomicOperations.py: Add missing includes to
+   AtomicOperationsGenerated.h. bz#1792159.
+ * third_party/libwebrtc/build/config/compiler/BUILD.gn,
+   third_party/libwebrtc/**/moz.build: Fix webrtc FTBFS from missing sse2
+   flags. bz#1795993.
+ 105.0.1-1 (Wed, 28 Sep 2022 07:40:44 +0900)
+ 105.0-1 (Wed, 21 Sep 2022 07:22:10 +0900)
+ * Fixes for mfsa2022-40, also known as: CVE-2022-40959, CVE-2022-40960,
+   CVE-2022-40958, CVE-2022-40956, CVE-2022-40957, CVE-2022-40962.
+ * python/mozbuild/mozbuild/nodeutil.py: Relax nodejs minimum version.
+ 104.0.2-1 (Tue, 13 Sep 2022 09:08:49 +0900)
+ 104.0-1 (Wed, 24 Aug 2022 07:17:28 +0900)
+ * Fixes for mfsa2022-33, also known as: CVE-2022-38472, CVE-2022-38473,
+   CVE-2022-38475, CVE-2022-38477, CVE-2022-38478.
+ * debian/rules, debian/control: Fix libavcodec recommends..
+ * debian/control*: Bump nss and nodejs build dependencies.
+ 103.0.2-2 (Mon, 15 Aug 2022 15:46:49 +0900)
+ * debian/rules: Remove old and now unnecessary workarounds.
+ * intl/icu/source/common/unicode/std_string.h,
+   intl/icu/source/common/utypeinfo.h, intl/icu/source/io/unicode/ustream.h:
+   Remove workaround for old libstdc++ problem, which now causes problems with
+   GCC 12 on arm.
+ * third_party/libwebrtc/moz.build: Add missing webrtc directory for ppc64el
+   (bz#1775202).
+ 103.0.2-1 (Sun, 14 Aug 2022 15:28:01 +0900)
+ * debian/rules: - Use thinLTO for rust on armhf, to stay in the memory budget
+   with an armhf toolchain. - Use MACH_BUILD_PYTHON_NATIVE_PACKAGE_SOURCE=none
+   instead of MACH_USE_SYSTEM_PYTHON=1.
+ * debian/rules, debian/watch, debian/watch.in: Generate debian/watch and fix
+   it.
+ * js/src/jit/mips-shared/CodeGenerator-mips-shared.cpp,
+   js/src/jit/mips-shared/SharedICHelpers-mips-shared-inl.h,
+   js/src/jit/mips-shared/SharedICHelpers-mips-shared.h,
+   js/src/jit/mips64/Assembler-mips64.h,
+   js/src/jit/mips64/MacroAssembler-mips64.cpp,
+   js/src/jit/mips64/Simulator-mips64.cpp,
+   js/src/jit/mips64/Trampoline-mips64.cpp,
+   js/src/jit/shared/Lowering-shared-inl.h, js/src/wasm/WasmFrameIter.cpp: Fix
+   FTBFS on mips64. bz#1776825.
+ * third_party/libwebrtc/moz.build: Work around bz#1775202 to fix FTBFS on
+   ppc64el.
+ * config/makefiles/rust.mk: Allow to override rust LTO flag.
+ 103.0-1 (Wed, 27 Jul 2022 10:07:35 +0900)
+ * Fixes for mfsa2022-28, also known as: CVE-2022-36319, CVE-2022-36318,
+   CVE-2022-36315, CVE-2022-36316, CVE-2022-36320, CVE-2022-2505.
+ * debian/control*: Bump cbindgen and nss build dependencies.
+bug: [56676]
+cve:
+- CVE-2023-5217
+- CVE-2023-5169
+- CVE-2023-5171
+- CVE-2023-5176
+- CVE-2023-4863
+- CVE-2023-4573
+- CVE-2023-4574
+- CVE-2023-4575
+- CVE-2023-4577
+- CVE-2023-4051
+- CVE-2023-4578
+- CVE-2023-4053
+- CVE-2023-4580
+- CVE-2023-4581
+- CVE-2023-4583
+- CVE-2023-4584
+- CVE-2023-4585
+- CVE-2023-4045
+- CVE-2023-4046
+- CVE-2023-4047
+- CVE-2023-4048
+- CVE-2023-4049
+- CVE-2023-4050
+- CVE-2023-4055
+- CVE-2023-4056
+- CVE-2023-4057
+- CVE-2023-3600
+- CVE-2023-3482
+- CVE-2023-37201
+- CVE-2023-37202
+- CVE-2023-37203
+- CVE-2023-37204
+- CVE-2023-37205
+- CVE-2023-37206
+- CVE-2023-37207
+- CVE-2023-37208
+- CVE-2023-37209
+- CVE-2023-37210
+- CVE-2023-37211
+- CVE-2023-37212
+- CVE-2023-34414
+- CVE-2023-34415
+- CVE-2023-34416
+- CVE-2023-34417
+- CVE-2023-32205
+- CVE-2023-32206
+- CVE-2023-32207
+- CVE-2023-32208
+- CVE-2023-32209
+- CVE-2023-32210
+- CVE-2023-32211
+- CVE-2023-32212
+- CVE-2023-32213
+- CVE-2023-32215
+- CVE-2023-32216
+- CVE-2023-29533
+- CVE-2023-29535
+- CVE-2023-29536
+- CVE-2023-29537
+- CVE-2023-29538
+- CVE-2023-29539
+- CVE-2023-29540
+- CVE-2023-29541
+- CVE-2023-29543
+- CVE-2023-29544
+- CVE-2023-29547
+- CVE-2023-29548
+- CVE-2023-29549
+- CVE-2023-29550
+- CVE-2023-29551
+- CVE-2023-25750
+- CVE-2023-25751
+- CVE-2023-28160
+- CVE-2023-28164
+- CVE-2023-28161
+- CVE-2023-28162
+- CVE-2023-25752
+- CVE-2023-28176
+- CVE-2023-28177
+- CVE-2023-25728
+- CVE-2023-25730
+- CVE-2023-0767
+- CVE-2023-25735
+- CVE-2023-25737
+- CVE-2023-25739
+- CVE-2023-25729
+- CVE-2023-25732
+- CVE-2023-25731
+- CVE-2023-25733
+- CVE-2023-25736
+- CVE-2023-25741
+- CVE-2023-25742
+- CVE-2023-25744
+- CVE-2023-25745
+- CVE-2022-23597
+- CVE-2023-23598
+- CVE-2023-23601
+- CVE-2023-23602
+- CVE-2023-23603
+- CVE-2023-23604
+- CVE-2023-23605
+- CVE-2023-23606
+- CVE-2022-46871
+- CVE-2022-46872
+- CVE-2022-46873
+- CVE-2022-46874
+- CVE-2022-46877
+- CVE-2022-46878
+- CVE-2022-46879
+- CVE-2022-45403
+- CVE-2022-45404
+- CVE-2022-45405
+- CVE-2022-45406
+- CVE-2022-45407
+- CVE-2022-45408
+- CVE-2022-45409
+- CVE-2022-45410
+- CVE-2022-45411
+- CVE-2022-45412
+- CVE-2022-40674
+- CVE-2022-45415
+- CVE-2022-45416
+- CVE-2022-45417
+- CVE-2022-45418
+- CVE-2022-45419
+- CVE-2022-45420
+- CVE-2022-45421
+- CVE-2022-42927
+- CVE-2022-42928
+- CVE-2022-42929
+- CVE-2022-42930
+- CVE-2022-42931
+- CVE-2022-42932
+- CVE-2022-40959
+- CVE-2022-40960
+- CVE-2022-40958
+- CVE-2022-40956
+- CVE-2022-40957
+- CVE-2022-40962
+- CVE-2022-38472
+- CVE-2022-38473
+- CVE-2022-38475
+- CVE-2022-38477
+- CVE-2022-38478
+- CVE-2022-36319
+- CVE-2022-36318
+- CVE-2022-36315
+- CVE-2022-36316
+- CVE-2022-36320
+- CVE-2022-2505
