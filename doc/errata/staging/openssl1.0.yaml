@@ -1,0 +1,18 @@
+product: ucs
+release: "4.4"
+version: [9]
+scope: ucs_4.4-0-errata4.4-9
+src: openssl1.0
+fix: 1.0.2u-1~deb9u9
+desc: |
+ This update addresses the following issues:
+
+ Debian update 1.0.2u-1~deb9u9
+ 1.0.2u-1~deb9u9 (Tue, 26 Sep 2023 19:03:02 +0200)
+ * Non-maintainer upload by the ELTS Team.
+ * CVE-2023-3446 Excessive time spent checking DH keys and parameters.
+ * CVE-2023-3817 Excessive time spent checking DH q parameter value.
+bug: [56685]
+cve:
+- CVE-2023-3446
+- CVE-2023-3817
