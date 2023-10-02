@@ -1,0 +1,17 @@
+product: ucs
+release: "4.4"
+version: [9]
+scope: ucs_4.4-0-errata4.4-9
+src: ncurses
+fix: 6.0+20161126-1+deb9u4
+desc: |
+ This update addresses the following issues:
+ 6.0+20161126-1+deb9u4 (Thu, 28 Sep 2023 13:44:56 +0100)
+ * Non-maintainer upload by the Extended LTS Security Team.
+ * Cherry-pick upstream fix for CVE-2020-19189.
+ * Add additional CVEs fixed to CVE-2019-17594.diff & CVE-2020-17595.diff.
+bug: [56686]
+cve:
+- CVE-2020-19189
+- CVE-2019-17594
+- CVE-2020-17595
