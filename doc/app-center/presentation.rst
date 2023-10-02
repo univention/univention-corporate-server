@@ -59,7 +59,7 @@ format. Videos have to be published on YouTube and the full YouTube link
 has to be provided in the App Provider Portal. Please keep in mind to
 provide the material for English and German speaking audience.
 
-If the same screenshots exist in German, it is recommended that they are
+If the same screenshots exist in German, it's recommended that they are
 added, as well.
 
 Comprehensive visualizations can be added optionally which make it
@@ -87,7 +87,7 @@ customer-oriented, and search-engine-optimized manner.
 *  The app is running on UCS. What is the added value that the
    combination of UCS and the app offers to the customer?
 
-*  It is important for the user to understand which "edition" of the
+*  It's important for the user to understand which "edition" of the
    solution is installed and what features or limitations are included.
    Please also provide information on how to "upgrade" to the next
    "edition".
@@ -117,7 +117,7 @@ how much explanation the app requires. Ideally the description should be
 at least 300 words long. The text should be structured and paragraphs
 should be used to make it easier to read. The target group are potential
 customers. Subheadings (HTML: *h2*, *h3*) should be used to divide the
-text into logical sections. It is very helpful for the reader to be able
+text into logical sections. It's very helpful for the reader to be able
 to see the advantages of the app and its combination with UCS at a
 glance. For this reason, presentation of the advantages in lists (HTML:
 *ol*, *ul*, *li*) is particularly practical.
@@ -144,7 +144,7 @@ overview for the various apps available.
 Contact
 -------
 
-For the users it is important to know who is the producer of the app.
+For the users it's important to know who is the producer of the app.
 For this purpose there is the *Responsibility: Contact information*
 section on the :guilabel:`Presentation` tab in the App Provider Portal. Please
 provide product contact information like an email address and a website
@@ -196,12 +196,12 @@ README for the administrator
 ----------------------------
 
 In the tab :guilabel:`Additional texts` further information for an app can be
-provided that show up at certain stages of the app life cycle. Those
+provided that show up at certain stages of the app lifecycle. Those
 README files are also in HTML like the description and content can be
-provided the same way (see :ref:`description`). The App
+provided the same way, see :ref:`description`. The App
 Provider Portal describes when each README file shows up.
 
-It is highly recommended to use the README files to show information
+It's highly recommended to use the README files to show information
 that should not go in the app description, like for example
 configuration details, hints before and after an update, etc. Please
 also keep in mind to provide a proper German translation.

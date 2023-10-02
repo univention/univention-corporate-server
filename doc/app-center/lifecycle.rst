@@ -4,14 +4,14 @@
 
 .. _app-lifecycle:
 
-**************
-App life cycle
-**************
+*************
+App lifecycle
+*************
 
 .. highlight:: console
 
-This chapter relates the life cycle of an app from the first app
-development, its life in the public to termination. The life cycle
+This section relates the lifecycle of an app from the first app
+development, its life in the public to termination. The lifecycle
 applies to the app overall and to every single version.
 
 .. _development:
@@ -21,10 +21,10 @@ Development
 
 Every app starts with its development. It involves the definition of the
 app in the App Provider Portal, providing the software solution as a
-Docker image (see :ref:`Get Started <get-started>`) and the integration of
-the solution with UCS, for example in the identity management area (see
-:ref:`Connection with Identity Management <connection-idm>`). This part of
-the life cycle can be divided into two steps: setup and integration.
+Docker image, see :ref:`Get Started <get-started>`, and the integration of
+the solution with UCS, for example in the identity management area, see
+:ref:`Connection with Identity Management <connection-idm>`. This part of
+the lifecycle can be divided into two steps: setup and integration.
 
 .. _development-best-practice:
 
@@ -39,12 +39,12 @@ example, are caused by the download of Docker images.
 The development of apps mainly involves the App Provider portal and a
 local instance of |UCSUCR| (UCR). To setup your UCS environment the best
 practice is to download one of the UCS virtual machine images and use
-VirtualBox or VMware (see :ref:`Download UCS <testing-download>`). After
+VirtualBox or VMware, see :ref:`Download UCS <testing-download>`. After
 the installation, :ref:`activate the
 system <uv-manual:central-license>`
 and copy your SSH key to the UCS system to save typing the password on
-each remote console login. Finally, activate the Test App Center (see
-:ref:`Test App Center <testing-test-app-center>`). With that status it is
+each remote console login. Finally, activate the Test App Center, see
+:ref:`Test App Center <testing-test-app-center>`. With that status it's
 a good time to make a snapshot of the system, which allows to got back
 to that status. Afterwards, app specific time consuming tasks can be
 prepared to reduce recurring waiting times. Among them are for example
@@ -52,8 +52,8 @@ an optional :command:`docker login` to gain access to a private Docker image or
 even the own Docker registry, and the manual download of the app's
 Docker image(s) with :command:`docker pull` (for single container apps) or
 :command:`docker-compose -p $appid pull` (for multi container apps) from the
-within the :file:`docker-compose.yml` directory of the app (see
-:ref:`Debugging <testing-debugging>`). And then also make a new snapshot.
+within the :file:`docker-compose.yml` directory of the app, see
+:ref:`Debugging <testing-debugging>`. And then also make a new snapshot.
 Especially, having the Docker image(s) locally saves download time
 during recurring installation test cycles.
 
@@ -61,7 +61,7 @@ With the last snapshot there is a prepared system that can serve as
 starting point for app installation and associated testing. The
 development iteration cycles are a dance of changes in the App Provider
 portal and testing the installation and app integration. After returning
-to a snapshot, it is recommended to update the local App Center cache.
+to a snapshot, it's recommended to update the local App Center cache.
 This is either automatically done during login and opening of the App
 Center module in the UCS management system or triggered manually with
 :command:`univention-app update` on the console.
@@ -129,28 +129,28 @@ app from there.
 
 The following points are mandatory for the App to be published:
 
-*  The App has to install without user interaction. Exceptions are
-   configuration parameters obtained via App Settings (see :ref:`App
-   settings <app-settings>`).
+* The App has to install without user interaction. Exceptions are
+  configuration parameters obtained through App Settings, see :ref:`App
+  settings <app-settings>`.
 
 * The App may not negatively impact UCS' core services.
 
-*  The App has to uninstall without leaving any remainders that
-   interfere with UCS' core services.
+* The App has to uninstall without leaving any remainders that
+  interfere with UCS' core services.
 
-*  The app is working with the UCS versions that are configured as
-   Supported UCS version (see :ref:`Supported UCS
-   versions <create-app-with-docker-supported-ucs-version>`).
+* The app is working with the UCS versions that are configured as
+  Supported UCS version, see :ref:`Supported UCS
+  versions <create-app-with-docker-supported-ucs-version>`.
 
 When installing the App, also mind :file:`README` information that may have
 been defined on the :guilabel:`Additional texts` tab in the app in the App Provider
 Portal after activating it with the option :guilabel:`Additional texts with
 information for UCS system administrators` on the Overview tab in the
 *Modules* section. An Administrator expects an app to be fully configured
-after the installation. If something is needed in order to use the app
-(e.g., activating users for the service), it should be described in the
-appropriate README section (see :ref:`README for the
-administrator <readme>`).
+after the installation. If something is needed in order to use the app,
+such as activating users for the service, it should be described in the
+appropriate README section, see :ref:`README for the
+administrator <readme>`.
 
 .. _testing-upgrade:
 
@@ -208,13 +208,13 @@ To switch back to the productive App Center, please run:
 Automated testing for App Providers
 -----------------------------------
 
-Univention always runs automated tests on an app before it is released.
+Univention always runs automated tests on an app before it's released.
 This testing infrastructure can be used by the app provider to increase
 the test coverage for the app. This can save manual testing efforts.
 
 A test script for the app can be provided in the :guilabel:`Testing` tab. The script
 needs to be entered in the text area :guilabel:`Test script run after installation`.
-It is run together with the automatic app tests in the Univention test
+It's run together with the automatic app tests in the Univention test
 infrastructure and will be executed after the app has been installed
 during those tests.
 
@@ -338,7 +338,7 @@ for plausibility, understandability and for the App Center context.
 Release
 =======
 
-As soon as the app is ready for release, it is copied to the productive
+As soon as the app is ready for release, it's copied to the productive
 App Center by the |UCSAPPC| team. This involves the app's presentation
 material as well as the Docker image. Univention maintains an own Docker
 registry. The Docker image is copied to that registry and the reference

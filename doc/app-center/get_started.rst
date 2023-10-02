@@ -25,7 +25,7 @@ Software in a Docker image
 
 The software needs to be provided as a `Docker
 image <docker-docs_>`_. This is the easiest way to deploy
-software in |UCSAPPC|. It is also recommended to publish the Docker
+software in |UCSAPPC|. It's also recommended to publish the Docker
 container to `Docker hub <docker-hub_>`_. This makes
 referencing the image later much easier and simplifies the development
 and test cycle during development.
@@ -114,7 +114,7 @@ App ID
    include version strings in here.
 
 App name
-   is the name of the app. It is used to display the app
+   is the name of the app. It's used to display the app
    on the overview pages. This attribute can be changed any time.
 
 App version
@@ -127,9 +127,9 @@ UCS version
    the latest available UCS version. It can also be started with the oldest
    maintained UCS version to cover the broadest user base of UCS. See the
    :uv:help:`UCS maintenance cycle <21843>` for an overview of the maintained
-   UCS version. In either case it is recommended to specify the supported UCS
-   versions explicitly (see :ref:`Supported UCS versions
-   <create-app-with-docker-supported-ucs-version>`).
+   UCS version. In either case it' recommended to specify the supported UCS
+   versions explicitly, see :ref:`Supported UCS versions
+   <create-app-with-docker-supported-ucs-version>`.
 
 Provider / Maintainer
    refers to the organization that the app

@@ -11,7 +11,7 @@ App Appliances are pre-defined images which consist of the App, the UCS
 management system and the UCS runtime environment. They are run as a
 virtual machine within a hypervisor and are currently provided as
 VMware, VMware ESXi, VirtualBox and KVM images. By default the UCS
-branding is used, but it is possible and recommended to use a custom
+branding is used, but it's possible and recommended to use a custom
 branding.
 
 .. _app-appliances-create:
@@ -39,7 +39,7 @@ Customize setup wizard in appliance
 
 The appliance allows customization of the UCS setup wizard and controls
 which setup pages and setup fields should be hidden. For simplicity
-towards the user, it is recommended to hide the ``software`` page.
+towards the user, it's recommended to hide the ``software`` page.
 
 .. _appliance-customize-app-center:
 
@@ -72,7 +72,7 @@ Customize UMC favorite category
 The appliance also allows to customize the UMC modules which should be
 pre-configured for the favorites section in the UCS management system.
 The favorites section comes up first, after a UCS system administrator
-logs onto the UCS management system. It is recommended to have the
+logs onto the UCS management system. It's recommended to have the
 modules ``Users``, ``Groups`` and ``App Center`` listed here.
 
 .. _appliance-build:
@@ -167,7 +167,7 @@ the *Logo for header in setup wizard* setting. The *Primary color* controls
 the background color of the UMC header.
 
 The *Secondary color* is used as color for smaller graphical elements
-throughout the setup wizard (see :ref:`appliance-branding-umc-branding-figure`).
+throughout the setup wizard, see :ref:`appliance-branding-umc-branding-figure`.
 
 .. _appliance-branding-setup-wizard-figure:
 

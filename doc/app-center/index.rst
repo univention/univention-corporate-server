@@ -35,12 +35,12 @@ The App
 
 The App Center Repository
    is a central server infrastructure
-   managed by Univention that stores the files and data for the app. It
-   is the installation source for the app.
+   managed by Univention that stores the files and data for the app. It's
+   the installation source for the app.
 
 The App Center Module on UCS
    is part of the web-based management
-   system on UCS. It is the place where UCS administrators install,
+   system on UCS. It's the place where UCS administrators install,
    update and uninstall apps in their UCS environment.
 
 The App Catalog

@@ -10,7 +10,7 @@ Connection with Identity Management
 One of the key features of UCS is the integrated identity management
 (IDM). With this central identity management, users benefit, among other
 things, from a single login independent of which services or systems
-they use. It is highly recommended to integrate the app into the
+they use. It's highly recommended to integrate the app into the
 identity management system.
 
 If the app should benefit from the identity management, the flag :guilabel:`The
@@ -19,7 +19,7 @@ the App Provider Portal on the :guilabel:`Identity management` tab under the *Us
 rights management* section. This extends the IDM by a checkbox and an
 administrator of the UCS system can activate or deactivate each user
 individually for the app. The setting can then be found in the Users UMC
-module and is called :guilabel:`Apps`. It is also possible to make significantly
+module and is called :guilabel:`Apps`. It's also possible to make significantly
 more complex settings. See :ref:`User rights
 management <user-rights-management>` for more details.
 
@@ -218,7 +218,7 @@ What should the script cover?
 JSON example
 ^^^^^^^^^^^^
 
-This is an example of a JSON file for a user change. It is not complete,
+This is an example of a JSON file for a user change. It's not complete,
 but should clarify the idea.
 
 .. _provision-push-json-listener-udm-version-2-example:
@@ -467,7 +467,7 @@ uploaded into the App Provider Portal on the :guilabel:`Identity management` tab
 the *User rights management* section in the field *Schema extension for
 LDAP*.
 
-In this case, it is also possible to create individual extended
+In this case, it's also possible to create individual extended
 attributes during the setup process. This should be done in the join
 script. Further information on extended attributes can be found in the
 :external+uv-dev-ref:doc:`Univention Developer Reference <index>`.

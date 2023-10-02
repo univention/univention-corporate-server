@@ -69,7 +69,7 @@ against.
 Docker script restore_data_before_setup
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-The life cycle script :file:`restore_data_before_setup` is executed inside
+The lifecycle script :file:`restore_data_before_setup` is executed inside
 the Docker container before the :file:`setup` script is run. Its purpose is
 to restore the data which has been stored by the :file:`store_data` script.
 The parameters are the *appid*, the app version and a filename for error
@@ -80,8 +80,8 @@ logging.
 Docker script setup
 ~~~~~~~~~~~~~~~~~~~
 
-The life cycle script :file:`setup` is executed inside the Docker container.
-It is the heart of the initial app configuration and typically used to
+The lifecycle script :file:`setup` is executed inside the Docker container.
+It's the heart of the initial app configuration and typically used to
 make environment specific settings to the container or apply certain
 changes that require the container environment. If the script fails
 (``exit code != 0``) the installation is aborted.
@@ -95,7 +95,7 @@ Administrator user.
 Docker script restore_data_after_setup
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-The life cycle script :file:`restore_data_after_setup` is executed inside
+The lifecycle script :file:`restore_data_after_setup` is executed inside
 the Docker container after the :file:`setup` script is run. Its purpose is
 to restore the data which has been stored by the :file:`store_data` script.
 The parameters are the *appid*, the app version and a filename for error
@@ -222,7 +222,7 @@ Join script functions
    schema file.
 
    If an official object identifier (OID) namespace is needed, Univention can
-   provide one. It is important to note that shipping the schema file alone is
+   provide one. It's important to note that shipping the schema file alone is
    not enough. It has to be registered with the mentioned function in the join
    script.
 
@@ -309,7 +309,7 @@ Settings script run in Docker container
 
 The settings script :file:`configure` is executed inside the Docker
 container after the :file:`configure_host` script. Its purpose is to make
-environment specific settings in the app container before it is removed.
+environment specific settings in the app container before it's removed.
 The parameters are the app action ``remove``, the *appid*, the app
 version and a filename for error logging.
 
@@ -318,11 +318,11 @@ version and a filename for error logging.
 Docker script store_data
 ~~~~~~~~~~~~~~~~~~~~~~~~
 
-The life cycle script :file:`store_data` is required if data exists in the
+The lifecycle script :file:`store_data` is required if data exists in the
 container which should not be removed when the container is replaced
 with a new container or if the app is uninstalled. The script is not
 required if all the data is stored outside of the container for example
-in a database or a mapped volume. It is executed inside the Docker
+in a database or a mapped volume. It's executed inside the Docker
 container and it should copy the relevant data to
 :file:`/var/lib/univention-appcenter/apps/$APPID/data/`. Afterwards, the
 data can be restored by one of the ``restore_data*`` scripts. The
@@ -387,9 +387,9 @@ messages can thus be passed to the administrator.
 Docker script store_data
 ~~~~~~~~~~~~~~~~~~~~~~~~
 
-The life cycle script :file:`store_data` is required if data exists in the
-container which should not be removed when it is replaced with a new
-container or if the app is uninstalled. It is not required if all the
+The lifecycle script :file:`store_data` is required if data exists in the
+container which should not be removed when it's replaced with a new
+container or if the app is uninstalled. It isn't required if all the
 data is stored outside the container for example in a database or a
 mapped volume. The script is executed inside the Docker container and it
 should copy the relevant data to
@@ -402,7 +402,7 @@ are executed in the new container.
 Docker script restore_data_before_setup
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-The life cycle script :file:`restore_data_before_setup` is executed inside
+The lifecycle script :file:`restore_data_before_setup` is executed inside
 the Docker container before the :file:`setup` script is run. Its purpose is
 to restore the data which has been stored by the :file:`store_data` script.
 
@@ -411,8 +411,8 @@ to restore the data which has been stored by the :file:`store_data` script.
 Docker script setup
 ~~~~~~~~~~~~~~~~~~~
 
-The life cycle script :file:`setup` is executed inside the Docker container.
-It is used to make environment specific settings to the new container or
+The lifecycle script :file:`setup` is executed inside the Docker container.
+'t is used to make environment specific settings to the new container or
 apply certain changes that require the container environment. If the
 script fails (``exit code != 0``) the upgrade is aborted.
 
@@ -425,7 +425,7 @@ Administrator user.
 Docker script restore_data_after_setup
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-The life cycle script :file:`restore_data_after_setup` is executed inside
+The lifecycle script :file:`restore_data_after_setup` is executed inside
 the Docker container after the :file:`setup` script is run. Its purpose is
 to restore the data which has been stored by the :file:`store_data` script
 in the old container.
@@ -507,7 +507,7 @@ The settings are saved inside the Docker container in the file
 :file:`/etc/univention/base.conf` in the format *key: value*. After the
 settings are changed, two scripts are executed. First, the script
 :file:`configure_host`. This script is run on the Docker host. Second, the
-script :file:`configure` is executed. It is executed inside the Docker
+script :file:`configure` is executed. It's executed inside the Docker
 container. In the App Provider Portal, the path of the script can be
 given (*Configure scripts*) or the script code can be uploaded (*Path to
 script inside the container (absolute)*).
@@ -528,7 +528,7 @@ example
 
    [myapp/mysetting]
 
-It is recommended to use the app ID as a prefix to prevent collisions.
+It's recommended to use the app ID as a prefix to prevent collisions.
 
 The type of the attribute is defined with the keyword *Type*. The
 following types are supported:
@@ -562,23 +562,23 @@ following types are supported:
 ``Status``
    A read-only settings that is actually meant as a feedback channel for
    the user. This does not render a widget, but instead just writes a
-   text with whatever was written into this variable. Writing to it is
+   text with whatever was written into this variable. Writing to it's
    up to the App Provider (e.g., by using the configure script).
 
 The attribute ``Description`` is used to define the description of the
-setting. It is shown next to the widget so that the user knows what to
+setting. It's shown next to the widget so that the user knows what to
 do with this form. It can be localized by also defining ``Description[de]``
 and so on.
 
 The attribute ``Group`` can be used to group settings. All settings sharing
 one group will be put under that label. The default group is
-``Settings``. It is also possible to localize it for example ``Group[de]``.
+``Settings``. It's also possible to localize it for example ``Group[de]``.
 
 The attribute ``Show`` can be used to define when the setting should be
 shown. By default the setting attribute is shown when the app is up and
-running. It is also possible to show the setting attribute during the
+running. It's also possible to show the setting attribute during the
 installation. The following values are possible ``Install``,
-``Upgrade``, ``Remove`` and ``Settings``. It is possible to specify more
+``Upgrade``, ``Remove`` and ``Settings``. It's possible to specify more
 than one value which must be separated by comma.
 
 The attribute ``ShowReadOnly`` can be used in the same way as ``Show``. The
@@ -594,10 +594,9 @@ set or not.
 The attribute ``Scope`` is used to specify if the value is set inside the
 Docker container (``inside``), on the Docker host (``outside``) or on
 both (``inside, outside``). The default is ``inside``. Values in the
-scope ``inside`` can be referenced in the :file:`docker-compose.yml` for
-multi container apps just like |UCSUCRVs| (see :ref:`Post processing of Docker
-Compose file <create-app-with-docker-compose-postprocessing>` for an
-example).
+scope ``inside`` can be referenced in the :file:`docker-compose.yml` for multi
+container apps just like |UCSUCRVs|. For an example see :ref:`Post processing of
+Docker Compose file <create-app-with-docker-compose-postprocessing>`.
 
 The attributes ``Labels`` and ``Values`` are used if a type List is defined. The
 attribute ``Labels`` defines the values shown to the user and the attribute
@@ -725,7 +724,7 @@ Mail integration
 
 |UCSUCS| (UCS) provides a complete mail stack with the *Mailstack* app in the
 App Center. It includes Postfix as *MTA* for SMTP and Dovecot for IMAP.
-If the app relies on an existing mail infrastructure, it is one option
+If the app relies on an existing mail infrastructure, it's one option
 to use the mail stack app and require its installation in the UCS domain.
 This can be configured for the app in the App Provider portal on the
 :guilabel:`Version` tab in the section *Required apps* by adding the *Mailserver* app
@@ -735,8 +734,8 @@ Center on the system administrator's UCS system will check, if the
 administrator to install it accordingly.
 
 Next the app needs to be configured to use the UCS SMTP and IMAP
-servers. This is done in the Join Script (see :ref:`Join
-script <installation-joinscript>`). The following snippet gives an
+servers. This is done in the Join Script, see :ref:`Join
+script <installation-joinscript>`. The following snippet gives an
 example what should be included in the Join Script:
 
 .. code:: sh
@@ -852,8 +851,8 @@ Subdomains / dedicated FQDN for an App
 
 There may be reasons why an App needs to have its own FQDN within the
 UCS domain. Some Apps may not be able to configure a web interface that
-integrates well into the default Apache sites of UCS (see :ref:`Web
-interface <create-app-with-docker-web-interface>`).
+integrates well into the default Apache sites of UCS, see :ref:`Web
+interface <create-app-with-docker-web-interface>`.
 
 To avoid naming collisions, the App's FQDN should reference the Docker
 Host's FQDN, e.g, ``myapp.ucs-primary.domain.tld``. UCS can do the
@@ -929,8 +928,8 @@ Firewall
 This section describes how the local Univention Firewall based on
 :program:`iptables` is changed by apps and how it can be customized. Docker
 containers have access to the Docker host. And the Docker containers can
-be made available for external clients with *Ports redirection* settings
-(see :ref:`Ports <create-app-with-docker-ports>`).
+be made available for external clients with *Ports redirection* settings,
+see :ref:`Ports <create-app-with-docker-ports>`.
 
 If MariaDB or PostgreSQL are used as database, those ports will be
 opened automatically for the Docker container (section
