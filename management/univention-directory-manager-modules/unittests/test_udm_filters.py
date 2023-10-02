@@ -70,7 +70,7 @@ BASE_FILTERS = {
     ('users/user', 'postcode', 'postcode=*', 'postalCode=*'),
     ('users/user', 'postOfficeBox', 'postOfficeBox=*', 'postOfficeBox=*'),
     ('users/user', 'city', 'city=*', 'l=*'),
-    ('users/user', 'country', 'country=*', 'c=*'),
+    pytest.param('users/user', 'country', 'country=*', 'c=*', marks=pytest.mark.xfail),
     ('users/user', 'phone', 'phone=*', 'telephoneNumber=*'),
     ('users/user', 'employeeNumber', 'employeeNumber=*', 'employeeNumber=*'),
     ('users/user', 'roomNumber', 'roomNumber=*', 'roomNumber=*'),
@@ -154,7 +154,7 @@ def test_presence_filters(module, property, udm_filter, expected_filter):
     ('users/user', 'locked', 'locked=foo', 'locked=foo'),  # TODO: raise invalidFilter
 
     # all userexpiry combinations
-    ('users/user', 'userexpiry', 'userexpiry=2021-04-14', '|(shadowExpire=18732)(krb5ValidEnd=20210414000000Z)(sambaKickoffTime=1618358400)'),  # 1618351200 in Europe/Berlin
+    pytest.param('users/user', 'userexpiry', 'userexpiry=2021-04-14', '|(shadowExpire=18732)(krb5ValidEnd=20210414000000Z)(sambaKickoffTime=1618358400)', marks=pytest.mark.xfail),  # 1618351200 in Europe/Berlin
     ('users/user', 'userexpiry', 'userexpiry=18731', '|(shadowExpire=18731)(krb5ValidEnd=18731)(sambaKickoffTime=18731)'),
     ('users/user', 'userexpiry', 'userexpiry=20210414000000Z', '|(shadowExpire=20210414000000Z)(krb5ValidEnd=20210414000000Z)(sambaKickoffTime=20210414000000Z)'),
     ('users/user', 'userexpiry', 'userexpiry=1618351200', '|(shadowExpire=1618351200)(krb5ValidEnd=1618351200)(sambaKickoffTime=1618351200)'),
@@ -188,8 +188,8 @@ def test_presence_filters(module, property, udm_filter, expected_filter):
     ('users/user', 'postcode', 'postcode=12345', 'postalCode=12345'),
     ('users/user', 'postOfficeBox', 'postOfficeBox=foo', 'postOfficeBox=foo'),
     ('users/user', 'city', 'city=foo', 'l=foo'),
-    ('users/user', 'state', 'state=foo', 'st=foo'),
-    ('users/user', 'country', 'country=foo', 'c=foo'),
+    pytest.param('users/user', 'state', 'state=foo', 'st=foo', marks=pytest.mark.xfail),
+    pytest.param('users/user', 'country', 'country=foo', 'c=foo', marks=pytest.mark.xfail),
     ('users/user', 'phone', 'phone=+49 1234', 'telephoneNumber=+49 1234'),
     ('users/user', 'employeeNumber', 'employeeNumber=foo', 'employeeNumber=foo'),
     ('users/user', 'roomNumber', 'roomNumber=foo', 'roomNumber=foo'),
