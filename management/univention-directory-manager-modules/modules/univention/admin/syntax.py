@@ -5489,6 +5489,8 @@ class SambaLogonHours(MultiSelect):
     """
     Syntax to select hour slots per day for Samba login.
 
+    >>> SambaLogonHours.parse("000000000000000000000000000000000000000000")
+    []
     >>> SambaLogonHours.parse("162 163")
     [162, 163]
     >>> SambaLogonHours.parse("5000") #doctest: +IGNORE_EXCEPTION_DETAIL
@@ -5498,8 +5500,8 @@ class SambaLogonHours(MultiSelect):
     """
 
     choices = [
-        (idx * 24 + hour, '%s %d-%d' % (day, hour, hour + 1))
-        for idx, day in (
+        (dow * 24 + hour, '%s %d-%d' % (day, hour, hour + 1))
+        for dow, day in (
             (0, _('Sun')),
             (1, _('Mon')),
             (2, _('Tue')),
@@ -5520,21 +5522,20 @@ class SambaLogonHours(MultiSelect):
                 from univention.admin.handlers.users.user import logonHoursUnmap
                 value = logonHoursUnmap([value.encode('ASCII')])
             else:
-                value = list(map(lambda x: int(x), shlex.split(value)))  # noqa: PLW0108
+                value = [int(x) for x in shlex.split(value)]
 
         return super(SambaLogonHours, self).parse(value)
 
     @classmethod
     def tostring(self, value):
-        # type: (list) -> str
-        if value is None:
-            return value
+        # type: (List[int]) -> str
+        if not value:
+            return ""
         # better show the bit string. See Bug #33703
         from univention.admin.handlers.users.user import logonHoursMap
         mapped = logonHoursMap(value)
-        if mapped is not None:
-            mapped = mapped.decode('ASCII')
-        return mapped
+        assert mapped is not None
+        return mapped.decode('ASCII')
 
 
 class SambaPrivileges(select):

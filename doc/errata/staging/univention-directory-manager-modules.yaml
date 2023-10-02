@@ -11,4 +11,5 @@ desc: |
    multiple times.
  * A file descriptor leak in the UDM CLI server has been fixed.
  * Fix reaping terminated child processes.
-bug: [57046, 57089, 7735]
+ * Fix a potential infinite loop in handling Samba logon hour syntax.
+bug: [57046, 57089, 7735, 28496]

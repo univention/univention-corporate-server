@@ -43,7 +43,7 @@ import time
 import warnings
 from datetime import datetime
 from logging import getLogger
-from typing import List  # noqa: F401
+from typing import List, Optional, Sequence  # noqa: F401
 
 import ldap
 import passlib.hash
@@ -730,85 +730,51 @@ def sambaWorkstationsUnmap(workstations, encoding=()):
     return workstations[0].decode(*encoding).split(u',')
 
 
-def logonHoursMap(logontimes):
-    "converts the bitfield 001110010110...100 to the respective hex string"
-    # convert list of bit numbers to bit-string
-    # bitstring = '0' * 168
-
+def logonHoursMap(logontimes):  # type: (Sequence[int]) -> Optional[bytes]
+    """
+    Convert list-of-bit to the respective hex string.
+    >>> logonHoursMap([])
+    b'000000000000000000000000000000000000000000'
+    >>> logonHoursMap([0])  # Sun 00
+    b'010000000000000000000000000000000000000000'
+    >>> logonHoursMap([23])  # Sun 23
+    b'000080000000000000000000000000000000000000'
+    >>> logonHoursMap([24 * 7 - 1])  # Sat 23
+    b'000000000000000000000000000000000000000080'
+    """
     if logontimes == '':
         # if unsetting it, see Bug #33703
         return None
-
-    bitstring = ''.join(map(lambda x: x in logontimes and '1' or '0', range(168)))
-
-    # for idx in logontimes:
-    #     bitstring[idx] = '1'
-
-    logontimes = bitstring
 
     # the order of the bits of each byte has to be reversed. The reason for this is that
     # consecutive bytes mean consecutive 8-hrs-intervals, but the MSB stands for
     # the last hour in that interval, the 2nd but leftmost bit for the second-to-last
     # hour and so on. We want to hide this from anybody using this feature.
     # See <http://ma.ph-freiburg.de/tng/tng-technical/2003-04/msg00015.html> for details.
-
-    newtimes = ""
-    for i in range(21):
-        bitlist = list(logontimes[(i * 8):(i * 8) + 8])
-        bitlist.reverse()
-        newtimes += "".join(bitlist)
-    logontimes = newtimes
-
-    # create a hexnumber from each 8-bit-segment
-    ret = ""
-    for i in range(21):
-        val = 0
-        exp = 7
-        for j in range((i * 8), (i * 8) + 8):
-            if logontimes[j] != "0":
-                val += 2 ** exp
-            exp -= 1
-        # we now have: 0<=val<=255
-        hx = hex(val)[2:4]
-        if len(hx) == 1:
-            hx = "0" + hx
-        ret += hx
-
+    ret = '%042x' % sum(1 << (24 * 7 - 8 + 2 * (i % 8) - i) for i in logontimes)
     return ret.encode('ASCII')
 
 
-def logonHoursUnmap(logontimes):
-    """Converts hex-string to an array of bits set."""
-    times = logontimes[0][:42]
-    while len(times) < 42:
-        times = times  # noqa: PLW0127
-    ret = ""
-    for i in range(0, 42, 2):
-        val = int(times[i:i + 2], 16)
-        ret += intToBinary(val)
-
-    # reverse order of the bits in each byte. See above for details
-    newtime = ""
-    for i in range(21):
-        bitlist = list(ret[(i * 8):(i * 8) + 8])
-        bitlist.reverse()
-        newtime += "".join(bitlist)
-
-    # convert bit-string to list
-    return [i for i in range(168) if newtime[i] == '1']
-
-
-def intToBinary(val):
-    ret = ""
-    while val > 0:
-        ret = str(val & 1) + ret
-        val = val >> 1
-    # pad with leading 0s until length is n*8
-    if ret == "":
-        ret = "0"
-    while len(ret) % 8 != 0:
-        ret = "0" + ret
-    return ret
+def logonHoursUnmap(logontimes):  # type: (List[bytes]) -> List[int]
+    """
+    Convert hex-string to an array of bits set.
+    >>> logonHoursUnmap([b"000000000000000000000000000000000000000000"])
+    []
+    >>> logonHoursUnmap([b"010000000000000000000000000000000000000000"])
+    [0]
+    >>> logonHoursUnmap([b"000080000000000000000000000000000000000000"])
+    [23]
+    >>> logonHoursUnmap([b"000000000000000000000000000000000000000080"])
+    [167]
+    """
+    times = logontimes[0].ljust(42, b"0")[:42]
+    octets = [int(times[i:i + 2], 16) for i in range(0, 42, 2)]
+    return [
+        idx * 8 + bit
+        for idx, value in enumerate(octets)
+        for bit in range(8)
+        if value & (1 << bit)
+    ]
 
 
 def GMTOffset():
