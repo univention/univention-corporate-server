@@ -72,7 +72,7 @@ variables:
    environments store users below ``cn=users <cn=users>`` but this is
    not the case in all environments.
 
-By default, the OpenLDAP server in UCS does not allow anonymous
+By default, the OpenLDAP server in UCS doesn't allow anonymous
 connections. For every app a user account is created. The account has
 read access to the LDAP directory. The username is passed as the
 environment variable ``LDAP_HOSTDN``. The password is written in the file

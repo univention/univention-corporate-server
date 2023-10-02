@@ -127,7 +127,7 @@ UCS version
    the latest available UCS version. It can also be started with the oldest
    maintained UCS version to cover the broadest user base of UCS. See the
    :uv:help:`UCS maintenance cycle <21843>` for an overview of the maintained
-   UCS version. In either case it' recommended to specify the supported UCS
+   UCS version. In either case it's recommended to specify the supported UCS
    versions explicitly, see :ref:`Supported UCS versions
    <create-app-with-docker-supported-ucs-version>`.
 
