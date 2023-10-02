@@ -1,0 +1,19 @@
+product: ucs
+release: "4.4"
+version: [9]
+scope: ucs_4.4-0-errata4.4-9
+src: qpdf
+fix: 6.0.0-2+deb9u2
+desc: |
+ This update addresses the following issues:
+ 6.0.0-2+deb9u2 (Fri, 29 Sep 2023 14:57:06 +0300)
+ * Non-maintainer upload by the ELTS Security Team.
+ * Drop two patches that caused compatibility issues after backport, reopening
+   the following CVEs: CVE-2015-9252, CVE-2017-9209, CVE-2017-11625,
+   CVE-2017-11627
+bug: [56680]
+cve:
+- CVE-2015-9252
+- CVE-2017-9209
+- CVE-2017-11625
+- CVE-2017-11627
