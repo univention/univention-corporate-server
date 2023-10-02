@@ -37,7 +37,7 @@ recommendations aim at reducing repeatable time efforts that, for
 example, are caused by the download of Docker images.
 
 The development of apps mainly involves the App Provider portal and a
-local instance of |UCSUCR| (UCS). To setup your UCS environment the best
+local instance of |UCSUCR| (UCR). To setup your UCS environment the best
 practice is to download one of the UCS virtual machine images and use
 VirtualBox or VMware (see :ref:`Download UCS <testing-download>`). After
 the installation, :ref:`activate the
