@@ -15,7 +15,7 @@ old_ami=ami-0e72981c452ee9b85
 # defaults
 kvm_template='generic-unsafe'
 kvm_build_server='tross.knut.univention.de'
-kvm_memory='2048M'
+kvm_memory='4096M'
 kvm_cpus='1'
 kvm_label_suffix=''
 exact_match='false'
