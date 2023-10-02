@@ -1,0 +1,16 @@
+product: ucs
+release: "4.4"
+version: [9]
+scope: ucs_4.4-0-errata4.4-9
+src: libwebp
+fix: 0.5.2-1+deb9u3
+desc: |
+ This update addresses the following issue:
+ 0.5.2-1+deb9u3 (Fri, 29 Sep 2023 11:08:11 -0300)
+ * Non-maintainer upload by the ELTS Security Team.
+ * Fix CVE-2023-4863: Heap buffer overflow
+ * Add debian/tests/webp-encoding-decoding
+ * Use stretch recipe in debian/.gitlab-ci.yml
+bug: [56687]
+cve:
+- CVE-2023-4863
