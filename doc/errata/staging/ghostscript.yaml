@@ -6,11 +6,9 @@ src: ghostscript
 fix: 9.26a~dfsg-0+deb9u12
 desc: |
  This update addresses the following issues:
- 9.26a~dfsg-0+deb9u12 (Sat, 30 Sep 2023 22:05:20 +0300)
- * Non-maintainer upload by the ELTS Security Team.
- * CVE-2020-21710: Divide by zero issue in eps_print_page()
- * CVE-2020-21890: Buffer overflow in clj_media_size()
- * CVE-2023-38559: Buffer overflow in devn_pcx_write_rle()
+ * CVE-2020-21710: Divide by zero issue in `eps_print_page()`
+ * CVE-2020-21890: Buffer overflow in `clj_media_size()`
+ * CVE-2023-38559: Buffer overflow in `devn_pcx_write_rle()`
 bug: [56690]
 cve:
 - CVE-2020-21710
