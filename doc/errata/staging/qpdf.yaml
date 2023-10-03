@@ -6,11 +6,13 @@ src: qpdf
 fix: 6.0.0-2+deb9u2
 desc: |
  This update addresses the following issues:
- 6.0.0-2+deb9u2 (Fri, 29 Sep 2023 14:57:06 +0300)
- * Non-maintainer upload by the ELTS Security Team.
- * Drop two patches that caused compatibility issues after backport, reopening
-   the following CVEs: CVE-2015-9252, CVE-2017-9209, CVE-2017-11625,
-   CVE-2017-11627
+ * CVE-2015-9252: Infinite loop in QPDFTokenizer::resolveLiteral in
+   QPDFTokenizer.cc.
+ * CVE-2017-9209: Infinite loop related to QPDFObjectHandle::parseInternal.
+ * CVE-2017-11625: Infinite loop in QPDF::resolveObjectsInStream function
+   in QPDF.cc.
+ * CVE-2017-11627: Infinite loop in PointerHolder function in
+   PointerHolder.hh.
 bug: [56680]
 cve:
 - CVE-2015-9252
