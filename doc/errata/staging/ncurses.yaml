@@ -6,13 +6,13 @@ src: ncurses
 fix: 6.1+20181013-2+deb10u4
 desc: |
  This update addresses the following issues:
- 6.1+20181013-2+deb10u4 (Thu, 28 Sep 2023 12:35:46 +0100)
- [ Sean Whitton ]
- * Non-maintainer upload by the LTS Security Team.
- * Cherry-pick upstream fix for CVE-2020-19189.
+ * CVE-2020-19189: A flaw was found in the ncurses library. This issue
+   occurs when processing a crafted terminfo database, causing a heap-based
+   buffer overflow, resulting in an application crash.
+ * CVE-2019-17594: There is a heap-based buffer over-read in the
+   _nc_find_entry function in tinfo/comp_hash.c in the terminfo library in
+   ncurses before 6.1-20191012.
  * Add additional CVEs fixed to CVE-2019-17594.diff & CVE-2020-17595.diff.
- [ Anton Gladky ]
- * Add debian/.gitlab-ci.yml.
 bug: [56684]
 cve:
 - CVE-2020-19189
