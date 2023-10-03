@@ -65,17 +65,17 @@ desc: |
    constructed to call internal macros with arbitrary arguments. Which when
    clicked on, or activated by document events, could result in arbitrary
    script execution without warning.
- * CVE-2018-1055: libreoffice: Remote arbitrary file disclosure
+ * CVE-2018-1055: Remote arbitrary file disclosure
    vulnerability via WEBSERVICE formula
  * CVE-2019-9854: Unsafe URL assembly flaw in allowed script location
    check.
  * CVE-2019-9855: Windows 8.3 path equivalence handling flaw allows
    LibreLogo script execution.
- * CVE-2018-6871: CVE-2018-6871 libreoffice: Remote arbitrary file
+ * CVE-2018-6871: Remote arbitrary file
    disclosure vulnerability via WEBSERVICE formula.
  * CVE-2019-9848: LibreLogo script can be manipulated into executing
    arbitrary python commands.
- * CVE-2018-16858: CVE-2018-16858 libreoffice: Arbitrary python functions
+ * CVE-2018-16858: Arbitrary python functions
    in arbitrary modules on the filesystem can be executed without warning.
  * CVE-2019-9850: Insufficient url validation allowing LibreLogo script
    execution.
