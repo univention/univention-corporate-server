@@ -6,10 +6,9 @@ src: vim
 fix: 2:8.1.0875-5+deb10u6
 desc: |
  This update addresses the following issues:
- 2:8.1.0875-5+deb10u6 (Wed, 27 Sep 2023 19:47:00 +0000)
- * Non-maintainer upload by the LTS Security Team.
- * CVE-2023-4752: heap use after free in ins_compl_get_exp()
- * CVE-2023-4781: heap-buffer-overflow in vim_regsub_both()
+ * CVE-2023-4752: use-after-free in function `ins_compl_get_exp` in vim/vim.
+ * CVE-2023-4781: heap-buffer-overflow in function `vim_regsub_both` in
+   vim/vim.
 bug: [56675]
 cve:
 - CVE-2023-4752
