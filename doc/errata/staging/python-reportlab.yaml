@@ -6,10 +6,8 @@ src: python-reportlab
 fix: 3.5.13-1+deb10u2
 desc: |
  This update addresses the following issues:
- 3.5.13-1+deb10u2 (Fri, 29 Sep 2023 18:13:41 +0200)
- * Non-maintainer upload by the LTS Security Team.
- * Fix CVE-2019-19450: code injection in paraparser.py allows code execution.
- * Fix CVE-2020-28463: Server-side Request Forgery (SSRF) via <img> tags. New
+ * CVE-2019-19450: code injection in paraparser.py allows code execution.
+ * CVE-2020-28463: Server-side Request Forgery (SSRF) via <img> tags. New
    settings ‘trustedHosts’ and ‘trustedSchemes’ are added to explicitely
    define an allowlist.
 bug: [56678]
