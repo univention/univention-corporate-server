@@ -163,13 +163,15 @@ generate-config-pip:
     name: docker-registry.knut.univention.de/knut/pip-builder:branch-jlohmer-pip-builder
     entrypoint: [""]
   script:
-    - shopt -s globstar
     - >
       pip-builder
       --yaml .gitlab-ci/base.yml
       --yaml .gitlab-ci/base-pip.yml
       --out generated-config-pip.yml
-      **/pyproject.toml
+      */*/setup*.py
+      --skip base/univention-python-heimdal/setup.py
+      --skip base/univention-licence-python/setup.py
+      --skip base/univention-debug-python/setup.py
     - cat generated-config-pip.yml
   artifacts:
     paths:
