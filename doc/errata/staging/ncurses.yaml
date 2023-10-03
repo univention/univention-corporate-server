@@ -6,10 +6,12 @@ src: ncurses
 fix: 6.0+20161126-1+deb9u4
 desc: |
  This update addresses the following issues:
- 6.0+20161126-1+deb9u4 (Thu, 28 Sep 2023 13:44:56 +0100)
- * Non-maintainer upload by the Extended LTS Security Team.
- * Cherry-pick upstream fix for CVE-2020-19189.
- * Add additional CVEs fixed to CVE-2019-17594.diff & CVE-2020-17595.diff.
+ * CVE-2020-19189: A flaw was found in the ncurses library. This issue
+   occurs when processing a crafted terminfo database, causing a heap-based
+   buffer overflow, resulting in an application crash.
+ * CVE-2019-17594: heap-based buffer overflow in the _nc_find_entry
+   function in tinfo/comp_hash.c.
+ * CVE-2020-17595: No description found.
 bug: [56686]
 cve:
 - CVE-2020-19189
