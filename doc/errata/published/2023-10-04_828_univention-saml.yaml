@@ -10,3 +10,6 @@ desc: |
    `/etc/simplesamlphp/00authsources.php` has been restored in erratum 812,
    but needs to be backported to UCS 5.0-4.
 bug: [56647]
+erratum: 828
+announced: 2023-10-04
+support: core
