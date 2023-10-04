@@ -1,0 +1,10 @@
+product: ucs
+release: "5.0"
+version: [5]
+scope: ucs_5.0-0-errata5.0-5
+src: py-lmdb
+fix: 1.0.0-1
+desc: |
+ This update addresses the following issues:
+ * This update provides the package `python3-lmdb` for UCS 5.0.
+bug: [53387]
