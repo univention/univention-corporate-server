@@ -9,11 +9,6 @@ desc: |
  * CVE-2020-19189: A flaw was found in the ncurses library. This issue
    occurs when processing a crafted terminfo database, causing a heap-based
    buffer overflow, resulting in an application crash.
- * CVE-2019-17594: heap-based buffer overflow in the _nc_find_entry
-   function in tinfo/comp_hash.c.
- * CVE-2020-17595: No description found.
 bug: [56686]
 cve:
 - CVE-2020-19189
-- CVE-2019-17594
-- CVE-2020-17595
