@@ -25,6 +25,7 @@ from ldap.filter import filter_format
 
 import univention.testing.strings as uts
 import univention.testing.ucr
+from univention.config_registry import ucr as _ucr
 from univention.testing import utils
 
 
@@ -260,6 +261,7 @@ def test_create_printergroup(ucr, udm):
 
 
 @pytest.mark.skipif(not printserver_installed, reason='Missing software: univention-printserver')
+@pytest.mark.skipif(_ucr['version/version'] == '5.1', reason='List not accurate in UCS 5.1 interim release')
 @pytest.mark.tags('udm')
 @pytest.mark.roles('domaincontroller_master', 'domaincontroller_backup', 'domaincontroller_slave', 'memberserver')
 @pytest.mark.exposure('safe')
