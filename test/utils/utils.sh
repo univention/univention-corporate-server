@@ -1438,7 +1438,7 @@ change_template_hostname () {
 basic_setup_ucs_joined () {
 	local masterip="${1:?missing master ip}"
 	local admin_password="${2:-univention}"
-	local rv=0 server_role ldap_base domain old_ip
+	local rv=0 server_role ldap_base domain old_ip urna_rv=0
 
 	server_role="$(ucr get server/role)"
 	ldap_base="$(ucr get ldap/base)"
@@ -1466,7 +1466,14 @@ basic_setup_ucs_joined () {
 		fi
 		ucr unset nameserver2
 		deb-systemd-invoke restart univention-directory-listener || rv=1
-		univention-register-network-address --verbose || rv=1
+		for i in $(seq 1 5); do
+			univention-register-network-address --verbose && urna_rv=0 && break
+			urna_rv=1
+			sleep 20
+		done
+		[ $urna_rv -eq 1 ] && rv=1
+		echo $urna_rv
+
 		service nscd restart || rv=1
 	fi
 
