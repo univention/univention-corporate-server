@@ -1,3 +1,9 @@
+ucs-test (10.0.19-16) unstable; urgency=medium
+
+  * Bug #56698: added 10_ldap/79ucs_registerLDAPExtension_credentials.py
+
+ -- Felix Botner <botner@univention.de>  Fri, 06 Oct 2023 10:47:57 +0200
+
 ucs-test (10.0.19-15) unstable; urgency=low
 
   * 01/26: Ignore /var/log/cloud-init.log

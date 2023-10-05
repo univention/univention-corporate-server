@@ -1,0 +1,14 @@
+product: ucs
+release: "5.0"
+version: [5, 4]
+scope: ucs_5.0-0-errata5.0-5
+src: univention-lib
+fix: 9.0.16-5
+desc: |
+ This update addresses the following issues:
+ * Erratum 785 introduced a new mechanism in `ucs_registerLDAPExtension`
+   to re-trigger the activation of an LDAP ACL or schema extension by
+   doing a trivial (i.e. no-op) LDAP modification. This failed on the
+   Primary node due to missing credentials. `ucs_registerLDAPExtension`
+   has been fixed to use the LDAP admin connection in this case.
+bug: [56698]

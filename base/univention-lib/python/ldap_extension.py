@@ -49,16 +49,13 @@ import tempfile
 import time
 from abc import ABCMeta, abstractmethod, abstractproperty
 from copy import copy
-from io import StringIO
 from optparse import Option, OptionGroup, OptionParser, OptionValueError, Values  # noqa: F401
 from typing import TYPE_CHECKING, Dict, List, Optional, Tuple  # noqa: F401
 
 import apt
-import ldap
 import six
 from ldap.dn import escape_dn_chars
 from ldap.filter import filter_format
-from ldif import LDIFWriter
 
 import univention.admin as udm
 
@@ -282,21 +279,23 @@ class UniventionLDAPExtension(six.with_metaclass(ABCMeta)):
         return (rc, object_dn, stdout)
 
     def ldap_touch_udm_object(self):
-        ldif = StringIO()
-        ldifwriter = LDIFWriter(ldif)
-        ldifwriter.unparse(self.object_dn, [(ldap.MOD_REPLACE, self.active_flag_attribute, [b'FALSE'])])
-
-        cmd = [
-            "ldapmodify", "-ZZ",
-            "-H", "ldap://%s:%s/" % (self.ucr["ldap/master"], self.ucr["ldap/master/port"]),
-            "-D", self.options.binddn,
-        ] + (
-            ["-y", self.options.bindpwdfile] if self.options.bindpwdfile else ["-w", self.options.bindpwd]
-        )
-        proc = subprocess.Popen(cmd, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
-        out, _ = proc.communicate(ldif.getvalue().encode("UTF-8"))
-        stdout = out.decode('UTF-8', 'replace')
-        print(stdout)
+        change = [(self.active_flag_attribute, [b'foo'], [b'FALSE'])]
+        if self.options.binddn and (self.options.bindpwdfile or self.options.bindpwd):
+            password = open(self.options.bindpwdfile).read().strip() if self.options.bindpwdfile else self.options.bindpwd
+            lo = udm_uldap.access(
+                host=self.ucr["ldap/master"],
+                port=self.ucr["ldap/master/port"],
+                binddn=self.options.binddn,
+                bindpw=password,
+            )
+            lo.modify(self.object_dn, change)
+        else:
+            try:
+                lo, _ = udm_uldap.getAdminConnection()
+                lo.modify(self.object_dn, change)
+            except FileNotFoundError:
+                # hmm, not sure here
+                pass
 
     def register(self, filename, options, udm_passthrough_options, target_filename=None):
         # type: (str, Values, List[str], Optional[str]) -> None
