@@ -6,10 +6,9 @@ src: exempi
 fix: 2.4.1-1+deb9u2
 desc: |
  This update addresses the following issues:
- * CVE-2020-18651: Buffer overflow in 
- `ID3_Support::ID3v2Frame::getFrameValue()`
- * CVE-2020-18652: Buffer overflow in 
- `WEBP_Support::VP8XChunk::VP8XChunk()`
+ * CVE-2020-18651: Buffer overflow in
+   `ID3_Support::ID3v2Frame::getFrameValue()`
+ * CVE-2020-18652: Buffer overflow in `WEBP_Support::VP8XChunk::VP8XChunk()`
 bug: [56681]
 cve:
 - CVE-2020-18651
