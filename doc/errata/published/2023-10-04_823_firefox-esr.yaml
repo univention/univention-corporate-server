@@ -6,28 +6,101 @@ src: firefox-esr
 fix: 115.3.1esr-1~deb10u1
 desc: |
  This update addresses the following issues:
- * CVE-2023-5217: Heap buffer overflow in vp8 encoding in libvpx.
- * CVE-2023-5169: Out-of-bounds write in PathOps.
- * CVE-2023-5171: Use-after-free in Ion Compiler.
- * CVE-2023-5176: Memory safety bugs fixed in Firefox 118, Firefox ESR
-   115.3, and Thunderbird 115.3.
- * CVE-2023-4863: Heap buffer overflow in WebP Codec.
- * CVE-2023-4573: Memory corruption in IPC CanvasTranslator.
- * CVE-2023-4574: Memory corruption in IPC ColorPickerShownCallback.
- * CVE-2023-4575: Memory corruption in IPC FilePickerShownCallback.
- * CVE-2023-4577: Memory corruption in JIT UpdateRegExpStatics.
- * CVE-2023-4051: Full screen notification obscured by file open dialog.
- * CVE-2023-4578: Error reporting methods in SpiderMonkey could have
-   triggered an Out of Memory Exception.
- * CVE-2023-4053: Full screen notification obscured by external program.
- * CVE-2023-4580: Push notifications saved to disk unencrypted.
- * CVE-2023-4581: XLL file extensions were downloadable without warnings.
- * CVE-2023-4583: Browsing Context potentially not cleared when closing
-   Private Window.
- * CVE-2023-4584: Memory safety bugs fixed in Firefox 117, Firefox ESR
-   102.15, Firefox ESR 115.2, Thunderbird 102.15, and Thunderbird 115.2.
- * CVE-2023-4585: Memory safety bugs fixed in Firefox 117, Firefox ESR
-   115.2, and Thunderbird 115.2.
+ * CVE-2022-2505: Memory safety bugs fixed.
+ * CVE-2022-23597: Remote program execution with user interaction.
+ * CVE-2022-36315: When loading a script with Subresource Integrity, attackers
+   with an injection capability could trigger the reuse of previously cached
+   entries with incorrect, different integrity metadata.
+ * CVE-2022-36316: When using the Performance API, an attacker was able to
+   notice subtle differences between PerformanceEntries and thus learn whether
+   the target URL had been subject to a redirect.
+ * CVE-2022-36318: Directory indexes for bundled resources reflected URL
+   parameters.
+ * CVE-2022-36319: Mouse Position spoofing with CSS transforms.
+ * CVE-2022-36320: Memory safety bugs fixed. Some of these bugs showed
+   evidence of memory corruption and we presume that with enough effort some
+   of these could have been exploited to run arbitrary code.
+ * CVE-2022-38472: Address bar spoofing via XSLT error handling.
+ * CVE-2022-38473: Cross-origin XSLT Documents would have inherited the
+   parent's permissions.
+ * CVE-2022-38475: An attacker could have written a value to the first element
+   in a zero-length JavaScript array. Although the array was zero-length, the
+   value was not written to an invalid memory address.
+ * CVE-2022-38477: Memory safety bugs fixed.
+ * CVE-2022-38478: Memory safety bugs fixed.
+ * CVE-2022-40674: A use-after-free in the function `doContent` in
+   `xmlparse.c`.
+ * CVE-2022-40956: Content-Security-Policy base-uri bypass.
+ * CVE-2022-40957: Incoherent instruction cache when building WASM on ARM64.
+ * CVE-2022-40958: Bypassing Secure Context restriction for cookies with
+   __Host and __Secure prefix.
+ * CVE-2022-40959: Bypassing FeaturePolicy restrictions on transient pages.
+ * CVE-2022-40960: Data-race when parsing non-UTF-8 URLs in threads.
+ * CVE-2022-40962: Memory safety bugs fixed.
+ * CVE-2022-42927: Same-origin policy violation could have leaked cross-origin
+   URLs.
+ * CVE-2022-42928: Memory Corruption in JS Engine.
+ * CVE-2022-42929: Denial of Service via `window.print`.
+ * CVE-2022-42930: If two Workers were simultaneously initializing their
+   `CacheStorage`, a data race could have occurred in the `ThirdPartyUtil`
+   component.
+ * CVE-2022-42931: Logins saved by Firefox should be managed by the Password
+   Manager component which uses encryption to save files on-disk. Instead, the
+   username (not password) was saved by the Form Manager to an unencrypted
+   file on disk.
+ * CVE-2022-42932: Memory safety bugs fixed.
+ * CVE-2022-45403: Service Workers might have learned size of cross-origin
+   media files.
+ * CVE-2022-45404: Fullscreen notification bypass.
+ * CVE-2022-45405: Use-after-free in `InputStream` implementation.
+ * CVE-2022-45406: Use-after-free of a JavaScript Realm.
+ * CVE-2022-45407: If an attacker loaded a font using `FontFace()` on a
+   background worker, a use-after-free could have occurred, leading to a
+   potentially exploitable crash.
+ * CVE-2022-45408: Fullscreen notification bypass via `windowName`.
+ * CVE-2022-45409: Use-after-free in Garbage Collection.
+ * CVE-2022-45410: ServiceWorker-intercepted requests bypassed SameSite cookie
+   policy.
+ * CVE-2022-45411: Cross-Site Tracing was possible via non-standard override
+   headers.
+ * CVE-2022-45412: Symlinks may resolve to partially uninitialized buffers.
+ * CVE-2022-45415: When downloading an HTML file, if the title of the page was
+   formatted as a filename with a malicious extension, Firefox may have saved
+   the file with that extension, leading to possible system compromise if the
+   downloaded file was later ran.
+ * CVE-2022-45416: Keystroke Side-Channel Leakage.
+ * CVE-2022-45417: Service Workers did not detect Private Browsing Mode
+   correctly in all cases, which could have led to Service Workers being
+   written to disk for websites visited in Private Browsing Mode. This would
+   not have persisted them in a state where they would run again, but it would
+   have leaked Private Browsing Mode details to disk.
+ * CVE-2022-45418: Custom mouse cursor could have been drawn over browser UI.
+ * CVE-2022-45419: If the user added a security exception for an invalid TLS
+   certificate, opened an ongoing TLS connection with a server that used that
+   certificate, and then deleted the exception, Firefox would have kept the
+   connection alive, making it seem like the certificate was still trusted.
+ * CVE-2022-45420: iframe contents could be rendered outside the iframe.
+ * CVE-2022-45421: Memory safety bugs fixed.
+ * CVE-2022-46871: `libusrsctp` library out of date.
+ * CVE-2022-46872: Arbitrary file read from a compromised content process.
+ * CVE-2022-46873: Because Firefox did not implement the `unsafe-hashes` CSP
+   directive, an attacker who was able to inject markup into a page otherwise
+   protected by a Content Security Policy may have been able to inject
+   executable script. This would be severely constrained by the specified
+   Content Security Policy of the document.
+ * CVE-2022-46874: Drag and Dropped Filenames could have been truncated to
+   malicious extensions.
+ * CVE-2022-46877: Fullscreen notification bypass.
+ * CVE-2022-46878: Memory safety bugs fixed.
+ * CVE-2022-46879: Memory safety bugs fixed. Some of these bugs showed
+   evidence of memory corruption and we presume that with enough effort some
+   of these could have been exploited to run arbitrary code.
+ * CVE-2023-0767: Arbitrary memory write via PKCS 12.
+ * CVE-2023-3482: When Firefox is configured to block storage of all cookies,
+   it was still possible to store data in localstorage by using an iframe with
+   a source of 'about:blank'. This could have led to malicious websites
+   storing tracking data without permission.
+ * CVE-2023-3600: use-after-free in workers.
  * CVE-2023-4045: Offscreen Canvas could have bypassed cross-origin
    restrictions.
  * CVE-2023-4046: Incorrect value used during WASM compilation.
@@ -36,335 +109,172 @@ desc: |
  * CVE-2023-4049: Fix potential race conditions when releasing platform
    objects.
  * CVE-2023-4050: Stack buffer overflow in StorageManager.
+ * CVE-2023-4051: Full screen notification obscured by file open dialog.
+ * CVE-2023-4053: Full screen notification obscured by external program.
  * CVE-2023-4055: Cookie jar overflow caused unexpected cookie jar state.
- * CVE-2023-4056: Memory safety bugs fixed in Firefox 116, Firefox ESR
-   115.1, Firefox ESR 102.14, Thunderbird 115.1, and Thunderbird 102.14.
- * CVE-2023-4057: Memory safety bugs fixed in Firefox ESR 115.1, and
-   Thunderbird 115.1.
- * CVE-2023-3600: use-after-free in workers.
- * CVE-2023-3482: When Firefox is configured to block storage of all
-   cookies, it was still possible to store data in localstorage by using an
-   iframe with a source of 'about:blank'. This could have led to malicious
-   websites storing tracking data without permission. This vulnerability
-   affects Firefox < 115.
+ * CVE-2023-4056: Memory safety bugs fixed.
+ * CVE-2023-4057: Memory safety bugs fixed.
+ * CVE-2023-4573: Memory corruption in IPC CanvasTranslator.
+ * CVE-2023-4574: Memory corruption in IPC ColorPickerShownCallback.
+ * CVE-2023-4575: Memory corruption in IPC FilePickerShownCallback.
+ * CVE-2023-4577: Memory corruption in JIT UpdateRegExpStatics.
+ * CVE-2023-4578: Error reporting methods in SpiderMonkey could have triggered
+   an Out of Memory Exception.
+ * CVE-2023-4580: Push notifications saved to disk unencrypted.
+ * CVE-2023-4581: XLL file extensions were downloadable without warnings.
+ * CVE-2023-4583: Browsing Context potentially not cleared when closing
+   Private Window.
+ * CVE-2023-4584: Memory safety bugs fixed.
+ * CVE-2023-4585: Memory safety bugs fixed.
+ * CVE-2023-4863: Heap buffer overflow in WebP Codec.
+ * CVE-2023-5169: Out-of-bounds write in PathOps.
+ * CVE-2023-5171: Use-after-free in Ion Compiler.
+ * CVE-2023-5176: Memory safety bugs fixed.
+ * CVE-2023-5217: Heap buffer overflow in vp8 encoding in libvpx.
+ * CVE-2023-23598: Arbitrary file read from GTK drag and drop on Linux.
+ * CVE-2023-23601: URL being dragged from cross-origin iframe into same tab
+   triggers navigation.
+ * CVE-2023-23602: Content Security Policy wasn't being correctly applied to
+   WebSockets in WebWorkers.
+ * CVE-2023-23603: Calls to `console.log` allowed bypasing Content Security
+   Policy via format directive.
+ * CVE-2023-23604: A duplicate `SystemPrincipal` object could be created when
+   parsing a non-system html document via `DOMParser::ParseFromSafeString`.
+   This could have lead to bypassing web security checks.
+ * CVE-2023-23605: Memory safety bugs fixed.
+ * CVE-2023-23606: Memory safety bugs fixed. Some of these bugs showed
+   evidence of memory corruption and we presume that with enough effort some
+   of these could have been exploited to run arbitrary code.
+ * CVE-2023-25728: Content security policy leak in violation reports using
+   iframes.
+ * CVE-2023-25729: Extensions could have opened external schemes without user
+   knowledge.
+ * CVE-2023-25730: Screen hijack via browser fullscreen mode.
+ * CVE-2023-25731: Prototype pollution when rendering `URLPreview`.
+ * CVE-2023-25732: Out of bounds memory write from `EncodeInputStream`.
+ * CVE-2023-25733: Possible NULL pointer dereference in
+   `TaskbarPreviewCallback`.
+ * CVE-2023-25735: Potential use-after-free from compartment mismatch in
+   SpiderMonkey.
+ * CVE-2023-25736: Invalid downcast in `GetTableSelectionMode`.
+ * CVE-2023-25737: `SetupStrokeGeometry`.
+ * CVE-2023-25739: `~ScriptLoadContext`.
+ * CVE-2023-25741: Same-origin policy leak via image drag and drop.
+ * CVE-2023-25742: Web Crypto ImportKey crashes tab.
+ * CVE-2023-25744: Memory safety bugs fixed.
+ * CVE-2023-25745: Memory safety bugs fixed.
+ * CVE-2023-25750: Under certain circumstances, a ServiceWorker's offline
+   cache may have leaked to the file system when using private browsing mode.
+ * CVE-2023-25751: Incorrect code generation during JIT compilation.
+ * CVE-2023-25752: Potential out-of-bounds when accessing throttled streams.
+ * CVE-2023-28160: When following a redirect to a publicly accessible web
+   extension file, the URL may have been translated to the actual local path,
+   leaking potentially sensitive information.
+ * CVE-2023-28161: If temporary "one-time" permissions, such as the ability to
+   use the Camera, were granted to a document loaded using a file: URL, that
+   permission persisted in that tab for all other documents loaded from a
+   file: URL. This is potentially dangerous if the local files came from
+   different sources, such as in a download directory.
+ * CVE-2023-28162: Invalid downcast in Worklets.
+ * CVE-2023-28164: URL being dragged from a removed cross-origin iframe into
+   the same tab triggered navigation.
+ * CVE-2023-28176: Memory safety bugs fixed.
+ * CVE-2023-28177: Memory safety bugs fixed. Some of these bugs showed
+   evidence of memory corruption and we presume that with enough effort some
+   of these could have been exploited to run arbitrary code.
+ * CVE-2023-29533: Fullscreen notification obscured.
+ * CVE-2023-29535: Potential Memory Corruption following Garbage Collector
+   compaction.
+ * CVE-2023-29536: Invalid free from JavaScript code.
+ * CVE-2023-29537: Multiple race conditions in the font initialization could
+   have led to memory corruption and execution of attacker-controlled code.
+ * CVE-2023-29538: Under specific circumstances a WebExtension may have
+   received a `jar:file:///` URI instead of a `moz-extension:///` URI during a
+   load request. This leaked directory paths on the user's machine.
+ * CVE-2023-29539: Content-Disposition filename truncation leads to Reflected
+   File Download.
+ * CVE-2023-29540: Using a redirect embedded into `sourceMappingUrls` could
+   allow for navigation to external protocol links in sandboxed iframes
+   without `allow-top-navigation-to-custom-protocols`.
+ * CVE-2023-29541: Files with malicious extensions could have been downloaded
+   unsafely on Linux.
+ * CVE-2023-29543: An attacker could have caused memory corruption and a
+   potentially exploitable use-after-free of a pointer in a global object's
+   debugger vector.
+ * CVE-2023-29544: If multiple instances of resource exhaustion occurred at
+   the incorrect time, the garbage collector could have caused memory
+   corruption and a potentially exploitable crash.
+ * CVE-2023-29547: When a secure cookie existed in the Firefox cookie jar an
+   insecure cookie for the same domain could have been created, when it should
+   have silently failed. This could have led to a desynchronization in
+   expected results when reading from the secure cookie.
+ * CVE-2023-29548: Incorrect optimization result on ARM64.
+ * CVE-2023-29549: Under certain circumstances, a call to the `bind` function
+   may have resulted in the incorrect realm. This may have created a
+   vulnerability relating to JavaScript-implemented sandboxes such as SES.
+ * CVE-2023-29550: Memory safety bugs fixed.
+ * CVE-2023-29551: Memory safety bugs fixed. Some of these bugs showed
+   evidence of memory corruption and we presume that with enough effort some
+   of these could have been exploited to run arbitrary code.
+ * CVE-2023-32205: Browser prompts could have been obscured by popups.
+ * CVE-2023-32206: Crash in RLBox Expat driver.
+ * CVE-2023-32207: Potential permissions request bypass via clickjacking.
+ * CVE-2023-32208: Service workers could reveal script base URL due to dynamic
+   `import()`.
+ * CVE-2023-32209: A maliciously crafted favicon could have led to an out of
+   memory crash.
+ * CVE-2023-32210: Documents were incorrectly assuming an ordering of
+   principal objects when ensuring we were loading an appropriately privileged
+   principal. In certain circumstances it might have been possible to cause a
+   document to be loaded with a higher privileged principal than intended.
+ * CVE-2023-32211: Content process crash due to invalid wasm code.
+ * CVE-2023-32212: Potential spoof due to obscured address bar.
+ * CVE-2023-32213: `DoReadData()`.
+ * CVE-2023-32215: Memory safety bugs fixed.
+ * CVE-2023-32216: Memory safety bugs present. Some of these bugs showed
+   evidence of memory corruption and we presume that with enough effort some
+   of these could have been exploited to run arbitrary code.
+ * CVE-2023-34414: Click-jacking certificate exceptions through rendering lag.
+ * CVE-2023-34415: When choosing a site-isolated process for a document loaded
+   from a data: URL that was the result of a redirect, Firefox would load that
+   document in the same process as the site that issued the redirect. This
+   bypassed the site-isolation protections against Spectre-like attacks on
+   sites that host an "open redirect". Firefox no longer follows HTTP
+   redirects to data: URLs.
+ * CVE-2023-34416: Memory safety bugs fixed.
+ * CVE-2023-34417: Memory safety bugs present. Some of these bugs showed
+   evidence of memory corruption and we presume that with enough effort some
+   of these could have been exploited to run arbitrary code.
  * CVE-2023-37201: Use-after-free in WebRTC certificate generation.
  * CVE-2023-37202: Potential use-after-free from compartment mismatch in
    SpiderMonkey.
  * CVE-2023-37203: Insufficient validation in the Drag and Drop API in
    conjunction with social engineering, may have allowed an attacker to trick
    end-users into creating a shortcut to local system files. This could have
-   been leveraged to execute arbitrary code. This vulnerability affects
-   Firefox < 115.
- * CVE-2023-37204: A website could have obscured the fullscreen
-   notification by using an option element by introducing lag via an
-   expensive computational function. This could have led to user confusion
-   and possible spoofing attacks. This vulnerability affects Firefox < 115.
+   been leveraged to execute arbitrary code.
+ * CVE-2023-37204: A website could have obscured the fullscreen notification
+   by using an option element by introducing lag via an expensive
+   computational function. This could have led to user confusion and possible
+   spoofing attacks.
  * CVE-2023-37205: The use of RTL Arabic characters in the address bar may
-   have allowed for URL spoofing. This vulnerability affects Firefox < 115.
- * CVE-2023-37206: Uploading files which contain symlinks may have allowed
-   an attacker to trick a user into submitting sensitive data to a malicious
-   website. This vulnerability affects Firefox < 115.
+   have allowed for URL spoofing.
+ * CVE-2023-37206: Uploading files which contain symlinks may have allowed an
+   attacker to trick a user into submitting sensitive data to a malicious
+   website.
  * CVE-2023-37207: Fullscreen notification obscured.
  * CVE-2023-37208: Lack of warning when opening Diagcab files.
  * CVE-2023-37209: A use-after-free condition existed in
    `NotifyOnHistoryReload` where a `LoadingSessionHistoryEntry` object was
    freed and a reference to that object remained. This resulted in a
    potentially exploitable condition when the reference to that object was
-   later reused. This vulnerability affects Firefox < 115.
+   later reused.
  * CVE-2023-37210: A website could prevent a user from exiting full-screen
    mode via alert and prompt calls. This could lead to user confusion and
-   possible spoofing attacks. This vulnerability affects Firefox < 115.
- * CVE-2023-37211: Memory safety bugs fixed in Firefox 115, Firefox ESR
-   102.13, and Thunderbird 102.13.
- * CVE-2023-37212: Memory safety bugs present in Firefox 114. Some of these
-   bugs showed evidence of memory corruption and we presume that with enough
-   effort some of these could have been exploited to run arbitrary code. This
-   vulnerability affects Firefox < 115.
- * CVE-2023-34414: Click-jacking certificate exceptions through rendering
-   lag.
- * CVE-2023-34415: When choosing a site-isolated process for a document
-   loaded from a data: URL that was the result of a redirect, Firefox would
-   load that document in the same process as the site that issued the
-   redirect. This bypassed the site-isolation protections against
-   Spectre-like attacks on sites that host an "open redirect". Firefox no
-   longer follows HTTP redirects to data: URLs. This vulnerability affects
-   Firefox < 114.
- * CVE-2023-34416: Memory safety bugs fixed in Firefox 114 and Firefox ESR
-   102.12.
- * CVE-2023-34417: Memory safety bugs present in Firefox 113. Some of these
-   bugs showed evidence of memory corruption and we presume that with enough
-   effort some of these could have been exploited to run arbitrary code. This
-   vulnerability affects Firefox < 114.
- * CVE-2023-32205: Browser prompts could have been obscured by popups.
- * CVE-2023-32206: Crash in RLBox Expat driver.
- * CVE-2023-32207: Potential permissions request bypass via clickjacking.
- * CVE-2023-32208: Service workers could reveal script base URL due to
-   dynamic `import()`. This vulnerability affects Firefox < 113.
- * CVE-2023-32209: A maliciously crafted favicon could have led to an out
-   of memory crash. This vulnerability affects Firefox < 113.
- * CVE-2023-32210: Documents were incorrectly assuming an ordering of
-   principal objects when ensuring we were loading an appropriately
-   privileged principal. In certain circumstances it might have been possible
-   to cause a document to be loaded with a higher privileged principal than
-   intended. This vulnerability affects Firefox < 113.
- * CVE-2023-32211: Content process crash due to invalid wasm code.
- * CVE-2023-32212: Potential spoof due to obscured address bar.
- * CVE-2023-32213: DoReadData().
- * CVE-2023-32215: Memory safety bugs fixed in Firefox 113 and Firefox ESR
-   102.11.
- * CVE-2023-32216: Memory safety bugs present in Firefox 112. Some of these
-   bugs showed evidence of memory corruption and we presume that with enough
-   effort some of these could have been exploited to run arbitrary code. This
-   vulnerability affects Firefox < 113.
- * CVE-2023-29533: Fullscreen notification obscured.
- * CVE-2023-29535: Potential Memory Corruption following Garbage Collector
-   compaction.
- * CVE-2023-29536: Invalid free from JavaScript code.
- * CVE-2023-29537: Multiple race conditions in the font initialization
-   could have led to memory corruption and execution of attacker-controlled
-   code. This vulnerability affects Firefox for Android < 112, Firefox < 112,
-   and Focus for Android < 112.
- * CVE-2023-29538: Under specific circumstances a WebExtension may have
-   received a <code>jar:file:///</code> URI instead of a
-   <code>moz-extension:///</code> URI during a load request. This leaked
-   directory paths on the user's machine. This vulnerability affects Firefox
-   for Android < 112, Firefox < 112, and Focus for Android < 112.
- * CVE-2023-29539: Content-Disposition filename truncation leads to
-   Reflected File Download.
- * CVE-2023-29540: Using a redirect embedded into
-   <code>sourceMappingUrls</code> could allow for navigation to external
-   protocol links in sandboxed iframes without
-   <code>allow-top-navigation-to-custom-protocols</code>. This vulnerability
-   affects Firefox for Android < 112, Firefox < 112, and Focus for Android <
-   112.
- * CVE-2023-29541: Files with malicious extensions could have been
-   downloaded unsafely on Linux.
- * CVE-2023-29543: An attacker could have caused memory corruption and a
-   potentially exploitable use-after-free of a pointer in a global object's
-   debugger vector. This vulnerability affects Firefox for Android < 112,
-   Firefox < 112, and Focus for Android < 112.
- * CVE-2023-29544: If multiple instances of resource exhaustion occurred at
-   the incorrect time, the garbage collector could have caused memory
-   corruption and a potentially exploitable crash. This vulnerability affects
-   Firefox for Android < 112, Firefox < 112, and Focus for Android < 112.
- * CVE-2023-29547: When a secure cookie existed in the Firefox cookie jar
-   an insecure cookie for the same domain could have been created, when it
-   should have silently failed. This could have led to a desynchronization in
-   expected results when reading from the secure cookie. This vulnerability
-   affects Firefox for Android < 112, Firefox < 112, and Focus for Android <
-   112.
- * CVE-2023-29548: Incorrect optimization result on ARM64.
- * CVE-2023-29549: Under certain circumstances, a call to the
-   <code>bind</code> function may have resulted in the incorrect realm. This
-   may have created a vulnerability relating to JavaScript-implemented
-   sandboxes such as SES. This vulnerability affects Firefox for Android <
-   112, Firefox < 112, and Focus for Android < 112.
- * CVE-2023-29550: Memory safety bugs fixed in Firefox 112 and Firefox ESR
-   102.10.
- * CVE-2023-29551: Mozilla developers Randell Jesup, Andrew McCreight,
-   Gabriele Svelto, and the Mozilla Fuzzing Team reported memory safety bugs
-   present in Firefox 111. Some of these bugs showed evidence of memory
-   corruption and we presume that with enough effort some of these could have
-   been exploited to run arbitrary code. This vulnerability affects Firefox
-   for Android < 112, Firefox < 112, and Focus for Android < 112.
- * CVE-2023-25750: Under certain circumstances, a ServiceWorker's offline
-   cache may have leaked to the file system when using private browsing mode.
-   This vulnerability affects Firefox < 111.
- * CVE-2023-25751: CVE-2023-25751 Mozilla: Incorrect code generation during
-   JIT compilation.
- * CVE-2023-28160: When following a redirect to a publicly accessible web
-   extension file, the URL may have been translated to the actual local path,
-   leaking potentially sensitive information. This vulnerability affects
-   Firefox < 111.
- * CVE-2023-28164: CVE-2023-28164 Mozilla: URL being dragged from a removed
-   cross-origin iframe into the same tab triggered navigation.
- * CVE-2023-28161: If temporary "one-time" permissions, such as the ability
-   to use the Camera, were granted to a document loaded using a file: URL,
-   that permission persisted in that tab for all other documents loaded from
-   a file: URL. This is potentially dangerous if the local files came from
-   different sources, such as in a download directory. This vulnerability
-   affects Firefox < 111.
- * CVE-2023-28162: Invalid downcast in Worklets.
- * CVE-2023-25752: CVE-2023-25752 Mozilla: Potential out-of-bounds when
-   accessing throttled streams.
- * CVE-2023-28176: Memory safety bugs fixed in Firefox 111 and Firefox ESR
-   102.9.
- * CVE-2023-28177: Mozilla developers and community members Calixte
-   Denizet, Gabriele Svelto, Andrew McCreight, and the Mozilla Fuzzing Team
-   reported memory safety bugs present in Firefox 110. Some of these bugs
-   showed evidence of memory corruption and we presume that with enough
-   effort some of these could have been exploited to run arbitrary code. This
-   vulnerability affects Firefox < 111.
- * CVE-2023-25728: CVE-2023-25728 Mozilla: Content security policy leak in
-   violation reports using iframes.
- * CVE-2023-25730: CVE-2023-25730 Mozilla: Screen hijack via browser
-   fullscreen mode.
- * CVE-2023-0767: Arbitrary memory write via PKCS 12.
- * CVE-2023-25735: Potential use-after-free from compartment mismatch in
-   SpiderMonkey.
- * CVE-2023-25737: SetupStrokeGeometry.
- * CVE-2023-25739: ~ScriptLoadContext.
- * CVE-2023-25729: Extensions could have opened external schemes without
-   user knowledge.
- * CVE-2023-25732: Out of bounds memory write from EncodeInputStream.
- * CVE-2023-25731: CVE-2023-25731 Mozilla: Prototype pollution when
-   rendering URLPreview.
- * CVE-2023-25733: CVE-2023-25733 Mozilla: Possible null pointer
-   dereference in TaskbarPreviewCallback.
- * CVE-2023-25736: CVE-2023-25736 Mozilla: Invalid downcast in
-   GetTableSelectionMode.
- * CVE-2023-25741: CVE-2023-25741 Mozilla: Same-origin policy leak via
-   image drag and drop.
- * CVE-2023-25742: CVE-2023-25742 Mozilla: Web Crypto ImportKey crashes
-   tab.
- * CVE-2023-25744: Memory safety bugs fixed in Firefox 110 and Firefox ESR
-   102.8.
- * CVE-2023-25745: CVE-2023-25745 Mozilla: Memory safety bugs fixed in
-   Firefox 110.
- * CVE-2022-23597: Remote program execution with user interaction.
- * CVE-2023-23598: CVE-2023-23598 Mozilla: Arbitrary file read from GTK
-   drag and drop on Linux.
- * CVE-2023-23601: CVE-2023-23601 Mozilla: URL being dragged from
-   cross-origin iframe into same tab triggers navigation.
- * CVE-2023-23602: CVE-2023-23602 Mozilla: Content Security Policy wasn't
-   being correctly applied to WebSockets in WebWorkers.
- * CVE-2023-23603: CVE-2023-23603 Mozilla: Calls to
-   <code>console.log</code> allowed bypasing Content Security Policy via
-   format directive.
- * CVE-2023-23604: A duplicate <code>SystemPrincipal</code> object could be
-   created when parsing a non-system html document via
-   <code>DOMParser::ParseFromSafeString</code>. This could have lead to
-   bypassing web security checks. This vulnerability affects Firefox < 109.
- * CVE-2023-23605: Memory safety bugs fixed in Firefox 109 and Firefox ESR
-   102.7.
- * CVE-2023-23606: Mozilla developers and the Mozilla Fuzzing Team reported
-   memory safety bugs present in Firefox 108. Some of these bugs showed
-   evidence of memory corruption and we presume that with enough effort some
-   of these could have been exploited to run arbitrary code. This
-   vulnerability affects Firefox < 109.
- * CVE-2022-46871: CVE-2022-46871 Mozilla: libusrsctp library out of date.
- * CVE-2022-46872: CVE-2022-46872 Mozilla: Arbitrary file read from a
-   compromised content process.
- * CVE-2022-46873: Because Firefox did not implement the
-   <code>unsafe-hashes</code> CSP directive, an attacker who was able to
-   inject markup into a page otherwise protected by a Content Security Policy
-   may have been able to inject executable script. This would be severely
-   constrained by the specified Content Security Policy of the document. This
-   vulnerability affects Firefox < 108.
- * CVE-2022-46874: CVE-2022-46874 Mozilla: Drag and Dropped Filenames could
-   have been truncated to malicious extensions.
- * CVE-2022-46877: CVE-2022-46877 Mozilla: Fullscreen notification bypass.
- * CVE-2022-46878: CVE-2022-46878 Mozilla: Memory safety bugs fixed in
-   Firefox ESR 102.6 and Thunderbird 102.6.
- * CVE-2022-46879: Mozilla developers and community members Lukas Bernhard,
-   Gabriele Svelto, Randell Jesup, and the Mozilla Fuzzing Team reported
-   memory safety bugs present in Firefox 107. Some of these bugs showed
-   evidence of memory corruption and we presume that with enough effort some
-   of these could have been exploited to run arbitrary code. This
-   vulnerability affects Firefox < 108.
- * CVE-2022-45403: CVE-2022-45403 Mozilla: Service Workers might have
-   learned size of cross-origin media files.
- * CVE-2022-45404: CVE-2022-45404 Mozilla: Fullscreen notification bypass.
- * CVE-2022-45405: CVE-2022-45405 Mozilla: Use-after-free in InputStream
-   implementation.
- * CVE-2022-45406: CVE-2022-45406 Mozilla: Use-after-free of a JavaScript
-   Realm.
- * CVE-2022-45407: If an attacker loaded a font using
-   <code>FontFace()</code> on a background worker, a use-after-free could
-   have occurred, leading to a potentially exploitable crash. This
-   vulnerability affects Firefox < 107.
- * CVE-2022-45408: CVE-2022-45408 Mozilla: Fullscreen notification bypass
-   via windowName.
- * CVE-2022-45409: CVE-2022-45409 Mozilla: Use-after-free in Garbage
-   Collection.
- * CVE-2022-45410: CVE-2022-45410 Mozilla: ServiceWorker-intercepted
-   requests bypassed SameSite cookie policy.
- * CVE-2022-45411: CVE-2022-45411 Mozilla: Cross-Site Tracing was possible
-   via non-standard override headers.
- * CVE-2022-45412: CVE-2022-45412 Mozilla: Symlinks may resolve to
-   partially uninitialized buffers.
- * CVE-2022-40674: a use-after-free in the doContent function in
-   xmlparse.c.
- * CVE-2022-45415: When downloading an HTML file, if the title of the page
-   was formatted as a filename with a malicious extension, Firefox may have
-   saved the file with that extension, leading to possible system compromise
-   if the downloaded file was later ran. This vulnerability affects Firefox <
-   107.
- * CVE-2022-45416: CVE-2022-45416 Mozilla: Keystroke Side-Channel Leakage.
- * CVE-2022-45417: Service Workers did not detect Private Browsing Mode
-   correctly in all cases, which could have led to Service Workers being
-   written to disk for websites visited in Private Browsing Mode. This would
-   not have persisted them in a state where they would run again, but it
-   would have leaked Private Browsing Mode details to disk. This
-   vulnerability affects Firefox < 107.
- * CVE-2022-45418: CVE-2022-45418 Mozilla: Custom mouse cursor could have
-   been drawn over browser UI.
- * CVE-2022-45419: If the user added a security exception for an invalid
-   TLS certificate, opened an ongoing TLS connection with a server that used
-   that certificate, and then deleted the exception, Firefox would have kept
-   the connection alive, making it seem like the certificate was still
-   trusted. This vulnerability affects Firefox < 107.
- * CVE-2022-45420: CVE-2022-45420 Mozilla: Iframe contents could be
-   rendered outside the iframe.
- * CVE-2022-45421: CVE-2022-45421 Mozilla: Memory safety bugs fixed in
-   Firefox 107 and Firefox ESR 102.5.
- * CVE-2022-42927: CVE-2022-42927 Mozilla: Same-origin policy violation
-   could have leaked cross-origin URLs.
- * CVE-2022-42928: CVE-2022-42928 Mozilla: Memory Corruption in JS Engine.
- * CVE-2022-42929: CVE-2022-42929 Mozilla: Denial of Service via
-   window.print.
- * CVE-2022-42930: If two Workers were simultaneously initializing their
-   CacheStorage, a data race could have occurred in the `ThirdPartyUtil`
-   component. This vulnerability affects Firefox < 106.
- * CVE-2022-42931: Logins saved by Firefox should be managed by the
-   Password Manager component which uses encryption to save files on-disk.
-   Instead, the username (not password) was saved by the Form Manager to an
-   unencrypted file on disk. This vulnerability affects Firefox < 106.
- * CVE-2022-42932: CVE-2022-42932 Mozilla: Memory safety bugs fixed in
-   Firefox ESR 102.4 and Thunderbird 102.4.
- * CVE-2022-40959: CVE-2022-40959 Mozilla: Bypassing FeaturePolicy
-   restrictions on transient pages.
- * CVE-2022-40960: CVE-2022-40960 Mozilla: Data-race when parsing non-UTF-8
-   URLs in threads.
- * CVE-2022-40958: CVE-2022-40958 Mozilla: Bypassing Secure Context
-   restriction for cookies with __Host and __Secure prefix.
- * CVE-2022-40956: CVE-2022-40956 Mozilla: Content-Security-Policy base-uri
-   bypass.
- * CVE-2022-40957: CVE-2022-40957 Mozilla: Incoherent instruction cache
-   when building WASM on ARM64.
- * CVE-2022-40962: CVE-2022-40962 Mozilla: Memory safety bugs fixed in
-   Firefox 105 and Firefox ESR 102.3.
- * CVE-2022-38472: CVE-2022-38472 Mozilla: Address bar spoofing via XSLT
-   error handling.
- * CVE-2022-38473: CVE-2022-38473 Mozilla: Cross-origin XSLT Documents
-   would have inherited the parent's permissions.
- * CVE-2022-38475: An attacker could have written a value to the first
-   element in a zero-length JavaScript array. Although the array was
-   zero-length, the value was not written to an invalid memory address. This
-   vulnerability affects Firefox < 104.
- * CVE-2022-38477: CVE-2022-38477 Mozilla: Memory safety bugs fixed in
-   Firefox 104 and Firefox ESR 102.2.
- * CVE-2022-38478: CVE-2022-38478 Mozilla: Memory safety bugs fixed in
-   Firefox 104, Firefox ESR 102.2, and Firefox ESR 91.13.
- * CVE-2022-36319: CVE-2022-36319 Mozilla: Mouse Position spoofing with CSS
-   transforms.
- * CVE-2022-36318: CVE-2022-36318 Mozilla: Directory indexes for bundled
-   resources reflected URL parameters.
- * CVE-2022-36315: When loading a script with Subresource Integrity,
-   attackers with an injection capability could trigger the reuse of
-   previously cached entries with incorrect, different integrity metadata.
-   This vulnerability affects Firefox < 103.
- * CVE-2022-36316: When using the Performance API, an attacker was able to
-   notice subtle differences between PerformanceEntries and thus learn
-   whether the target URL had been subject to a redirect. This vulnerability
-   affects Firefox < 103.
- * CVE-2022-36320: Mozilla developers and the Mozilla Fuzzing Team reported
-   memory safety bugs present in Firefox 102. Some of these bugs showed
-   evidence of memory corruption and we presume that with enough effort some
-   of these could have been exploited to run arbitrary code. This
-   vulnerability affects Firefox < 103.
- * CVE-2022-2505: CVE-2022-2505 Mozilla: Memory safety bugs fixed in
-   Firefox 103 and 102.1.
+   possible spoofing attacks.
+ * CVE-2023-37211: Memory safety bugs fixed.
+ * CVE-2023-37212: Memory safety bugs. Some of these bugs showed evidence of
+   memory corruption and we presume that with enough effort some of these
+   could have been exploited to run arbitrary code.
 bug: [56676]
 cve:
 - CVE-2023-5217
