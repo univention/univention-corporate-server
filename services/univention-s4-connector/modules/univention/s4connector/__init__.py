@@ -617,8 +617,6 @@ class ucs(object):
     def _remember_entryCSN_commited_by_connector(self, entryUUID, entryCSN):
         """Remember the entryCSN of a change committed by the AD-Connector itself"""
         value = self._get_config_option('UCS entryCSN', entryUUID)
-        if isinstance(value, bytes):
-            value = value.decode('ASCII')
         if value:
             entryCSN_set = set(value.split(','))
             entryCSN_set.add(entryCSN)
