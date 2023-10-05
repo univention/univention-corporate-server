@@ -5,7 +5,7 @@ scope: ucs_3.2-0-errata3.2-8
 src: samba
 fix: 2:4.3.7-1.827.201605191446
 desc: |
- This update fixes regressions from Errata update 411 (Bug #40990):
+ This update fixes regressions from Errata update 421:
  * https://bugzilla.samba.org/show_bug.cgi?id=11849
  * https://bugzilla.samba.org/show_bug.cgi?id=11852
  * https://bugzilla.samba.org/show_bug.cgi?id=11912
