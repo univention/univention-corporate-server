@@ -319,9 +319,11 @@ then
 		for p in ${OS_CLIENT_CONFIG_FILE:+"$OS_CLIENT_CONFIG_FILE"} "${PWD}/clouds.yaml" "${HOME}/.config/openstack/clouds.yaml" /etc/openstack/clouds.yaml
 		do
 			[ -r "$p" ] || continue
-			cmd+=(--debug -v "$p:/etc/openstack/clouds.yml:ro")
 			break
 		done
+		# TODO, remove debug after openstack testing phase
+		cmd+=(--debug)
+
 	fi
 	# interactive mode for debug
 	$debug && cmd+=("-it")
