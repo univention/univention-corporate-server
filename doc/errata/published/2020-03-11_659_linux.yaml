@@ -12,7 +12,7 @@ desc: |
  * Use-after-free in fs/xfs/xfs_super.c (CVE-2018-20976)
  * Use-after-free can be caused by the function rsi_mac80211_detach in the
    file drivers/net/wireless/rsi/rsi_91x_mac80211.c (CVE-2018-21008)
- * Insufficient access control in the Intel(R) PROSet/Wireless WiFi Software
+ * Insufficient access control in the Intel® PROSet/Wireless WiFi Software
    driver before version 21.10 may allow an unauthenticated user to
    potentially enable denial of service via adjacent access. (CVE-2019-0136)
  * A use-after-free in binder.c allows an elevation of privilege from an
