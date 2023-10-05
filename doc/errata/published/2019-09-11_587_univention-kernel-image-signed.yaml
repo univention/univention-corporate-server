@@ -13,7 +13,7 @@ desc: |
  * The print_binder_transaction_ilocked function in drivers/android/binder.c
    allows local users to obtain sensitive address information by reading
    "*from *code *flags" lines in a debugfs file. (CVE-2018-20510)
- * Insufficient access control in the Intel(R) PROSet/Wireless WiFi Software
+ * Insufficient access control in the Intel® PROSet/Wireless WiFi Software
    driver may allow an unauthenticated user to potentially enable denial of
    service via adjacent access. (CVE-2019-0136)
  * The Bluetooth BR/EDR specification up to and including version 5.1 permits
