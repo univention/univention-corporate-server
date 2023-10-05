@@ -1,0 +1,18 @@
+product: ucs
+release: "4.4"
+version: [9]
+scope: ucs_4.4-0-errata4.4-9
+src: exim4
+fix: 4.89-2+deb9u11A~4.4.9.202310051728
+desc: |
+ This update addresses the following issues:
+ 4.89-2+deb9u11 (Mon, 02 Oct 2023 15:58:12 +0200)
+ * Non-maintainer upload by the ELTS team.
+ * Address SPA authenticator vulnerabilities (CVE-2023-42114, CVE-2023-42116)
+   - Auths: use uschar more in spa authenticator - Auths: fix possible OOB
+   write in SPA authenticator (CVE-2023-42116) - Auths: fix possible OOB read
+   in SPA authenticator (CVE-2023-42114)
+bug: [56705]
+cve:
+- CVE-2023-42114
+- CVE-2023-42116
