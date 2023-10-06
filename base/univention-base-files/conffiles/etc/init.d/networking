@@ -11,13 +11,13 @@
 # Description:       Prepare /run/network directory, ifstate file and raise network interfaces, or take them down.
 ### END INIT INFO
 
-PATH="/sbin:/bin"
+PATH="/sbin:/bin:/usr/sbin:/usr/bin"
 RUN_DIR="/run/network"
 IFSTATE="$RUN_DIR/ifstate"
 STATEDIR="$RUN_DIR/state"
 
-[ -x /sbin/ifup ] || exit 0
-[ -x /sbin/ifdown ] || exit 0
+[ -x "$(command -v ifup)" ] || exit 0
+[ -x "$(command -v ifdown)" ] || exit 0
 
 . /lib/lsb/init-functions
 
@@ -105,9 +105,9 @@ ifup_hotplug () {
     then
 	    ifaces=$(for iface in $(ifquery --list --allow=hotplug)
 			    do
-				    link=${iface##:*}
-				    link=${link##.*}
-				    if [ -e "/sys/class/net/$link" ]
+				    link=${iface%%:*}
+				    link=${link%%.*}
+				    if [ -e "/sys/class/net/$link" ] && ! ifquery --state "$iface" >/dev/null
 				    then
 					echo "$iface"
 				    fi
@@ -143,9 +143,9 @@ start)
 	set -f
 	exclusions=$(process_exclusions)
 	log_action_begin_msg "Configuring network interfaces"
-	if [ -x /bin/udevadm ]; then
+	if [ -x "$(command -v udevadm)" ]; then
 		if [ -n "$(ifquery --list --exclude=lo)" ] || [ -n "$(ifquery --list --allow=hotplug)" ]; then
-			/bin/udevadm settle || true
+			udevadm settle || true
 		fi
 	fi
 	if ifup -a $exclusions $verbose && ifup_hotplug $exclusions $verbose
