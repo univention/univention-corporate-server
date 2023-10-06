@@ -1,3 +1,9 @@
+univention-initrd (14.0.2) unstable; urgency=medium
+
+  * Bug #46120: rebase UCR templates of univention-initrd to Debian 12
+
+ -- Mika Westphal <westphal@univention.de>  Fri, 08 Mar 2024 00:18:30 +0100
+
 univention-initrd (14.0.1) unstable; urgency=medium
 
   * Bug #55706: UCS 5.2-0 version bump
