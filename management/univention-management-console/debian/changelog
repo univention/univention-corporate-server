@@ -1,3 +1,9 @@
+univention-management-console (12.0.31-17) unstable; urgency=medium
+
+  * Bug #56703: defaults for cookie settings in `meta.json`
+
+ -- Nikola Radovanovic <radovanovic.extern@univention.de>  Mon, 23 Oct 2023 15:11:37 +0100
+
 univention-management-console (12.0.31-16) unstable; urgency=medium
 
   * Bug #56753: fix setting user preferences e.g. favorites

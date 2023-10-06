@@ -133,10 +133,37 @@ def get_login_texts():
 
 def get_cookie_banner():
     base = 'umc/cookie-banner/'
-    banner = {}
+    banner = {
+        'text': {
+            'en': 'We use cookies and other technologies on this website '
+                  'to ensure that the site works reliably, securely, and '
+                  'optimally for visitors. For this to work, we measure '
+                  'how often our website is visited and how it is used. By '
+                  'clicking the "Accept" button, you consent to their use. '
+                  'Further information can be found in our '
+                  '<a href="https://www.univention.com/privacy-statement/" '
+                  'target="_blank">Data Privacy Policy</a>.',
+            'de': 'Wir verwenden auf dieser Webseite Cookies und andere '
+                  'Technologien, um sicherzustellen, dass die Seite '
+                  'zuverlässig, sicher und für Besucher optimal läuft. Damit '
+                  'das funktioniert, messen wir, wie häufig unsere Seite '
+                  'besucht und wie sie genutzt wird. Mit dem Button '
+                  '"Akzeptieren" stimmen Sie der Verwendung zu. Weitere '
+                  'Informationen erhalten Sie in unserer '
+                  '<a href="https://www.univention.de/datenschutzerklaerung/" '
+                  'target="_blank">Datenschutzerklärung</a>.',
+        },
+        'title': {
+            'en': 'Cookie Settings',
+            'de': 'Cookie-Einstellungen',
+        },
+    }
     for name in ('text', 'title'):
         prefix = '%s%s/' % (base, name)
-        banner[name] = {k[len(prefix):]: v for k, v in configRegistry.items() if k.startswith(prefix)}
+        items = {k[len(prefix):]: v for k, v in configRegistry.items() if k.startswith(prefix) and v}
+        for lang in list(items.keys()):
+            banner[name][lang] = items[lang]
+
     banner['show'] = configRegistry.is_true('%sshow' % (base,))
     banner['cookie'] = configRegistry.get('%scookie' % (base,))
     banner['domains'] = [domain.strip() for domain in re.split(', *', configRegistry.get('%sdomains' % (base,), '')) if domain.strip()]
