@@ -86,7 +86,7 @@ class PytestRunner:
     @classmethod
     def is_pytest(self, test_case):
         """indicates that the test case is a pytest test"""
-        return test_case.exe.filename in ('/usr/bin/py.test-3', '/usr/bin/py.test', '/usr/bin/pytest-3', '/usr/bin/pytest', 'pytest', 'pytest-3', 'py.test', 'py.test-3')
+        return test_case.exe.filename in ('/usr/bin/py.test-3', '/usr/bin/py.test', '/usr/bin/pytest-3', '/usr/bin/pytest', 'pytest', 'pytest-3', 'py.test', 'py.test-3', '/usr/share/ucs-test/playwright')
 
     @classmethod
     def get_argument_group(cls, parser):
