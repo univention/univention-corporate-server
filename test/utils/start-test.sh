@@ -322,6 +322,9 @@ then
 			cmd+=(-v "$p:/etc/openstack/clouds.yml:ro")
 			break
 		done
+		# TODO, remove debug after openstack testing phase and add it as switch by env variable
+		cmd+=(--debug)
+
 	fi
 	# interactive mode for debug
 	$debug && cmd+=("-it")
