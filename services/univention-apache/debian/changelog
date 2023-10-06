@@ -1,3 +1,9 @@
+univention-apache (14.0.3) unstable; urgency=medium
+
+  * Bug #46120: Removed module check from apache2 ssl and proxy config
+
+ -- Mika Westphal <westphal@univention.de>  Fri, 08 Mar 2024 00:18:30 +0100
+
 univention-apache (14.0.2) unstable; urgency=medium
 
   * Bug #56003: bind9 service was renamed to named
