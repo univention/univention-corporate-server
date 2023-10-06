@@ -1,0 +1,10 @@
+product: ucs
+release: "4.4"
+version: [9]
+scope: ucs_4.4-0-errata4.4-9
+src: xmlsec1
+fix: 1.2.27-2~deb9u1
+desc: |
+ * libreoffice requires a new upstream version to fix several security
+   vulnerabilities.
+bug: [56689]
