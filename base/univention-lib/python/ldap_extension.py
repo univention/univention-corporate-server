@@ -279,7 +279,6 @@ class UniventionLDAPExtension(six.with_metaclass(ABCMeta)):
         return (rc, object_dn, stdout)
 
     def ldap_touch_udm_object(self):
-        change = [(self.active_flag_attribute, [b'foo'], [b'FALSE'])]
         if self.options.binddn and (self.options.bindpwdfile or self.options.bindpwd):
             password = open(self.options.bindpwdfile).read().strip() if self.options.bindpwdfile else self.options.bindpwd
             lo = udm_uldap.access(
@@ -294,9 +293,9 @@ class UniventionLDAPExtension(six.with_metaclass(ABCMeta)):
             except EnvironmentError:
                 lo, _ = udm_uldap.getMachineConnection()
         try:
-            lo.modify(self.object_dn, change)
-        except udm_uldap.base as exc:
-             ud.debug(ud.LISTENER, ud.ERROR, 'Could not touch LDAP object %r: %s' % (self.object_dn, exc,))
+            lo.modify(self.object_dn, [(self.active_flag_attribute, [b'foo'], [b'FALSE'])])
+        except udm_errors.base as exc:
+            ud.debug(ud.LISTENER, ud.ERROR, 'Could not touch LDAP object %r: %s' % (self.object_dn, exc))
 
     def register(self, filename, options, udm_passthrough_options, target_filename=None):
         # type: (str, Values, List[str], Optional[str]) -> None
