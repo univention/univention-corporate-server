@@ -288,14 +288,15 @@ class UniventionLDAPExtension(six.with_metaclass(ABCMeta)):
                 binddn=self.options.binddn,
                 bindpw=password,
             )
-            lo.modify(self.object_dn, change)
         else:
             try:
                 lo, _ = udm_uldap.getAdminConnection()
-                lo.modify(self.object_dn, change)
-            except FileNotFoundError:
-                # hmm, not sure here
-                pass
+            except EnvironmentError:
+                lo, _ = udm_uldap.getMachineConnection()
+        try:
+            lo.modify(self.object_dn, change)
+        except udm_uldap.base as exc:
+             ud.debug(ud.LISTENER, ud.ERROR, 'Could not touch LDAP object %r: %s' % (self.object_dn, exc,))
 
     def register(self, filename, options, udm_passthrough_options, target_filename=None):
         # type: (str, Values, List[str], Optional[str]) -> None
