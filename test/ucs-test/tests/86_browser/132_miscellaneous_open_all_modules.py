@@ -22,8 +22,12 @@ _ = Translation("ucs-test-browser").translate
 
 def get_all_modules():
     client = Client(username="Administrator", password="univention")
+    client.print_response = False
+    client.print_request_data = False
     available_modules = client.request("GET", "get/modules").data["modules"]
-    return [module["name"] for module in available_modules if module["icon"] is not None]
+    return [
+        module["name"] for module in available_modules if module["icon"] is not None
+    ]
 
 
 @pytest.fixture(scope="module")
@@ -37,15 +41,19 @@ def logged_in_umc_browser_test(umc_browser_test_module: UMCBrowserTest):
 def test_open_all_modules(logged_in_umc_browser_test: UMCBrowserTest, module_name, ucr):
     page: Page = logged_in_umc_browser_test.page
     try:
-        expect(page.get_by_role("button", name=_("Favorites"))).to_be_visible(timeout=2000)
+        expect(page.get_by_role("button", name=_("Favorites"))).to_be_visible(
+            timeout=2000,
+        )
     except AssertionError:
         logged_in_umc_browser_test.login()
 
     try:
         logged_in_umc_browser_test.open_and_close_module(module_name)
     except (AssertionError, PlaywrightTimeoutError):
-        save_trace(page, page.context, module_name, ucr, tracing_stop_chunk=True)
-        check_for_backtrace(page)
-        logged_in_umc_browser_test.restart_umc()
-        page.context.tracing.start_chunk()
+        try:
+            save_trace(page, page.context, module_name, ucr, tracing_stop_chunk=True)
+            check_for_backtrace(page)
+        finally:
+            logged_in_umc_browser_test.restart_umc()
+            page.context.tracing.start_chunk()
         raise
