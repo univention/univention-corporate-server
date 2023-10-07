@@ -1,19 +1,83 @@
+@import url("/univention/js/dijit/themes/umc/bootstrap.css");
+@import url("/univention/theme.css");
+:root {
+	/* cursors */
+	--cursor-disabled: not-allowed;
+
+
+	/* border-radius
+	// interactible and container are now in theme. we mention them here for backwards compatibility */
+	--border-radius-interactable: 0.25rem;
+	--border-radius-container:    0.5rem;
+	--border-radius-notification: var(--border-radius-container);
+	--border-radius-tooltip:      0.25rem;
+	--border-radius-circles:      50%;
+
+
+	/* layout */
+	--layout-spacing-unit: 0.5rem;
+	--layout-spacing-unit-small: calc(var(--layout-spacing-unit) / 2);
+	--layout-height-header: 3rem;
+	--layout-height-header-separator: var(--layout-spacing-unit-small);
+
+
+	/* buttons */
+	--button-size: 36px;
+	--button-icon-size: 16px;
+	--button-font-size: var(--font-size-4);
+	--button-border-radius: var(--border-radius-interactable);
+	--button-icon-border-radius: var(--border-radius-circles);
+
+	--button-bgc-transition: background 250ms;
+
+
+	/* input fields */
+	--inputfield-size: 2.75rem;
+}
+
+html {
+	font-size: var(--font-size-html);
+}
 html, body {
 	padding: 0;
 	margin: 0;
-	background-color: #f2f2f2;
+	background-color: var(--bgc-content-body);
+	color: var(--font-color-contrast-high);
+	font-family: 'Open Sans', sans-serif;
+	font-weight: normal;
+	line-height: var(--font-lineheight-normal);
+	font-size: var(--font-size-body);
+}
+a {
+	color: var(--font-color-contrast-high);
+	font-family: 'Open Sans', sans-serif;
+	font-weight: normal;
+	font-size: var(--font-size-body);
+	text-decoration: none;
 }
 header {
-	background-color: #6e6e6e;
+	background-color: var(--bgc-content-header);
+	height: var(--layout-height-header);
 	min-height: 48px;
 	position: fixed;
 	z-index: 1000;
 	width: 100%;
+
+	padding: 0;
+	overflow: hidden;
+	display: flex;
+	align-items: center;
+}
+header nav {
+	display: flex;
+	align-items: center;
+	margin-left: calc(2 * var(--layout-spacing-unit));
 }
 header a {
-	color: #ffffff;
+	color: inherit;
+	text-decoration: none;
 }
-header h1 {
+header h2 {
 	display: inline-block;
 }
 main {
@@ -31,15 +95,12 @@ body > nav, body > main {
 h1 {
 	margin: 0;
 }
-
-#logo {
-	background-image: url('/univention/js/dijit/themes/umc/images/univention_u-white.svg');
-	background-repeat: no-repeat;
-	background-position: center center;
-	width: 56px;
-	height: 48px;
-	position: relative;
-	right: 0;
+header > nav > svg {
+    height: var(--font-size-2);
+    width: var(--font-size-2);
+    margin-right: var(--layout-spacing-unit);
+    fill: currentColor;
+    color: inherit;
 }
 
 input[type=image][name=jpegPhoto-preview] {
@@ -60,4 +121,133 @@ details {
 	border-color: threedface;
 	border-image: initial;
 	margin-bottom: 0.5em;
+}
+
+button, html input[type="button"], input[type="reset"], input[type="submit"] {
+	box-shadow: var(--box-shadow);
+	--bgc: var(--button-bgc);
+	background: var(--bgc);
+	font-size: var(--button-font-size);
+	border-radius: var(--button-border-radius);
+	transition: opacity 250ms, var(--button-bgc-transition);
+	color: var(--font-color-contrast-high);
+	height: var(--button-size);
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+input, select {
+/*	display: flex;￼
+	flex-direction: row-reverse;
+	align-items: center; */
+	--color: var(--font-color-contrast-high);
+	--border-color: transparent;
+	--local-icon-color: var(--color);
+	--bgc: var(--bgc-inputfield-on-container);
+	/*position: relative;*/
+	height: var(--inputfield-size);
+	color: var(--color);
+	font-size: var(--font-size-3);
+	background-color: var(--bgc);
+	border: 1px solid var(--border-color);
+	border-radius: var(--border-radius-interactable);
+	transition: background-color, color, border;
+	transition-duration: 250ms;
+	outline: none;
+
+	margin: 0 0.5em;
+}
+
+fieldset {
+	padding: 1em;
+	border: 2px solid var(--bgc-content-body);
+	background-color: var(--bgc-content-container);
+	border-radius: var(--border-radius-container);
+}
+
+label {
+	--local-color-normal: var(--font-color-contrast-middle);
+	--local-color: var(--local-color-normal);
+	display: inline-flex;
+	align-items: center;
+	font-size: var(--font-size-4);
+	color: var(--local-color);
+	transition: color 250ms;
+}
+
+table.grid {
+	background-color: var(--bgc-content-container);
+	border-radius: var(--border-radius-container);
+	overflow: hidden;
+	width: 100%;
+}
+table.grid tr {
+	font-size: var(--font-size-4);
+	line-height: 1;
+	transition: background-color 250ms;
+	border-top: 1px solid var(--bgc-content-body);
+}
+
+details {
+	border-radius: 0;
+	border-top: 2px solid var(--bgc-content-body);
+	margin-bottom: 0;
+}
+summary {
+	font-size: var(--font-size-2);
+	line-height: var(--font-lineheight-normal);
+	font-weight: 600%;
+	user-select: none;
+}
+legend {
+	border-radius: 0;
+	border-bottom: 2px solid var(--bgc-content-body);
+	color: var(--font-color-contrast-high);
+	font-size: var(--font-size-1);
+	line-height: var(--font-lineheight-normal);
+	font-weight: 600%;
+	user-select: none;
+}
+pre {
+	background-color: var(--bgc-content-container);
+	border-radius: var(--border-radius-container);
+	color: var(--font-color-contrast-high);
+}
+
+.error {
+	background-color: var(--bgc-error);
+}
+.warning {
+	background-color: var(--bgc-warning);
+}
+.success {
+	background-color: var(--bgc-success);
+}
+.error, .warning, .success {
+	border-radius: var(--border-radius-tooltip);
+	padding: 0.4em;
+}
+
+/* display grid buttons in one row */
+div[style*="display: flex"] > form {
+	display: flex;
+}
+
+form#add section,
+form#edit section {
+	display: none;
+}
+form#add section:target,
+form#edit section:target {
+	display: block;
+}
+a[rel="udm:tab-switch"] {
+	cursor: pointer;
+	padding: 10px;
+	background-color: var(--bgc-content-container);
+	border: 1px solid var(--border-color);
+	border-radius: 5px;
+	margin: 2px;
+	display: flex;
 }

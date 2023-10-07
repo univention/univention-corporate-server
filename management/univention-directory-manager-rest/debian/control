@@ -41,6 +41,7 @@ Description: UCS transitional dummy package
 Package: python3-univention-directory-manager-rest
 Architecture: all
 Depends:
+ python3-defusedxml,
  python3-genshi,
  python3-mimeparse,
  python3-pycurl,

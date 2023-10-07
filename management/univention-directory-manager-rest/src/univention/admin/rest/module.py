@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 #
-# Univention Management Console
-#  Univention Directory Manager Module
+# Univention Directory Manager
+#  UDM REST API
 #
 # Like what you see? Join us!
 # https://www.univention.com/about-us/careers/vacancies/
@@ -48,7 +48,6 @@ import re
 import time
 import traceback
 import uuid
-import xml.dom.minidom
 import xml.etree.ElementTree as ET
 import zlib
 from email.utils import parsedate
@@ -56,6 +55,7 @@ from http.client import responses
 from typing import Dict, List, Optional
 from urllib.parse import parse_qs, quote, unquote, urlencode, urljoin, urlparse, urlunparse
 
+import defusedxml.minidom
 import ldap
 import tornado.gen
 import tornado.httpclient
@@ -65,7 +65,7 @@ import tornado.log
 import tornado.web
 from concurrent.futures import ThreadPoolExecutor
 from genshi import XML
-from genshi.output import HTMLSerializer
+#from genshi.output import HTMLSerializer
 from ldap.controls import SimplePagedResultsControl
 from ldap.controls.readentry import PostReadControl
 from ldap.controls.sss import SSSRequestControl
@@ -404,7 +404,7 @@ class ResourceBase:
     requires_authentication = True
 
     def force_authorization(self):
-        self.set_header('WWW-Authenticate', 'Basic realm="Univention Management Console"')
+        self.set_header('WWW-Authenticate', 'Basic realm="Univention Directory Manager"')
         self.set_status(401)
         self.finish()
 
@@ -544,7 +544,7 @@ class ResourceBase:
                 lang = 'json'
                 break
         if not lang:
-            raise HTTPError(406)
+            raise HTTPError(406, 'The requested Content-Type does not exists. Specify a valid Accept header.')
         return lang
 
     def decode_request_arguments(self):
@@ -665,7 +665,9 @@ class ResourceBase:
         body = ET.SubElement(root, "body", dir='ltr')
         header = ET.SubElement(body, 'header')
         topnav = ET.SubElement(header, 'nav')
-        h1 = ET.SubElement(topnav, 'h1', id='logo')
+        logo = ET.SubElement(topnav, 'svg')
+        ET.SubElement(logo, 'use', **{'xlink:href': "/univention/js/dijit/themes/umc/images/univention_u.svg#id", 'xmlns:xlink': "http://www.w3.org/1999/xlink"})
+        h1 = ET.SubElement(topnav, 'h2', id='logo')
         home = ET.SubElement(h1, 'a', rel='home', href=self.abspath('/'))
         home.text = ' '
         nav = ET.SubElement(body, 'nav')
@@ -711,8 +713,13 @@ class ResourceBase:
             main.append(response)
 
         if not ajax:
-            stream = XML(xml.dom.minidom.parseString(ET.tostring(root, encoding='utf-8', method='xml')).toprettyxml())  # noqa: S318
-            self.write(''.join(HTMLSerializer('html5')(stream)))
+            stream = ET.tostring(root, encoding='utf-8', method='xml')
+            stream = defusedxml.minidom.parseString(stream)
+            stream = stream.toprettyxml()
+            stream = XML(stream)
+            self.write(stream.render('xhtml'))
+            # FIXME: transforms the <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="/univention/js/dijit/themes/umc/images/univention_u.svg#id"></use> to <use></use>
+            # self.write(''.join(HTMLSerializer('html5')(stream)))
         else:
             self.write('<!DOCTYPE html>\n')
             tree = ET.ElementTree(main if ajax else root)
@@ -730,62 +737,88 @@ class ResourceBase:
         response.get('_embedded', {}).pop('udm:properties', None)  # save traffic, just to render html
         return response
 
-    def get_html(self, response):
+    def get_html(self, response: dict):
         root = []
-        if isinstance(response, dict):
-            self.add_link(response, 'stylesheet', self.abspath('css/style.css'))
+        self.add_link(response, 'stylesheet', self.abspath('css/style.css'))
 
-            for _form in self.get_resources(response, 'udm:form'):
+        # TODO: nav-layout?!
+
+        # main layout
+        forms = self.get_resources(response, 'udm:form')
+        main_layout = self.get_resource(response, 'udm:layout', name='main-layout')
+        if main_layout:
+            main = ET.Element('div')  # TODO: get rid of the div
+            root.append(main)
+            self.get_html_layout(main, response, main_layout['layout'], [])
+        else:
+            # leftover forms
+            for _form in forms:
                 root.insert(0, self.get_html_form(_form, response))
+                root[0].append(ET.Element('hr'))
 
-            if isinstance(response.get('error'), dict) and response['error'].get('code', 0) >= 400:
-                error_response = response['error']
-                error = ET.Element('div')
-                root.append(error)
-                ET.SubElement(error, 'h1').text = _('HTTP-Error %d: %s') % (error_response['code'], error_response['title'])
-                ET.SubElement(error, 'p', style='white-space: pre').text = error_response['message']
-                for error_detail in self.get_resources(response, 'udm:error'):
-                    ET.SubElement(error, 'p', style='white-space: pre').text = '%s(%s): %s' % ('.'.join(error_detail['location']), error_detail['type'], error_detail['message'])
-                if error_response.get('traceback'):
-                    ET.SubElement(error, 'pre').text = error_response['traceback']
-                response = None
+        # errors
+        if isinstance(response.get('error'), dict) and response['error'].get('code', 0) >= 400:
+            error_response = response['error']
+            error = ET.Element('div', **{'class': 'error'})
+            root.append(error)
+            ET.SubElement(error, 'h1').text = _('HTTP-Error %d: %s') % (error_response['code'], error_response['title'])
+            ET.SubElement(error, 'p', style='white-space: pre').text = error_response['message']
+            for error_detail in self.get_resources(response, 'udm:error'):
+                ET.SubElement(error, 'p', style='white-space: pre').text = '%s(%s): %s' % ('.'.join(error_detail['location']), error_detail['type'], error_detail['message'])
+            if error_response.get('traceback'):
+                ET.SubElement(error, 'pre').text = error_response['traceback']
+            response = {}
 
-        if isinstance(response, (list, tuple)):
-            print('WARNING: uses deprecated LIST response')
-            for thing in response:
-                pre = ET.Element("pre")
-                pre.text = json.dumps(thing, indent=4)
-                root.append(pre)
-                root.append(ET.Element("br"))
-        elif isinstance(response, dict):
-            r = response.copy()
-            r.pop('_links', None)
-            r.pop('_embedded', None)
-            if r:
-                pre = ET.Element("pre")
-                pre.text = json.dumps(r, indent=4)
-                root.append(pre)
+        # redirections
+        if 400 > self._status_code >= 300 and self._status_code != 304:
+            warning = ET.Element('div', **{'class': 'warning'})
+            root.append(warning)
+            href = self._headers.get("Location")
+            ET.SubElement(warning, 'h1').text = _('HTTP redirection')
+            ET.SubElement(warning, 'p', style='white-space: pre').text = 'You are being redirected to:'
+            ET.SubElement(warning, 'a', href=href).text = href
+
+        # print any leftover elements
+        r = response.copy()
+        r.pop('_links', None)
+        r.pop('_embedded', None)
+        if r:
+            pre = ET.Element("pre")
+            pre.text = json.dumps(r, indent=4)
+            root.append(pre)
+
         return root
 
-    def get_html_layout(self, root, layout, properties):
+    def get_html_layout(self, root, response, layout, properties):
         for sec in layout:
-            section = ET.SubElement(root, 'section')
+            section = ET.SubElement(root, 'section', id=Layout.get_section_id(sec['label']))
             ET.SubElement(section, 'h1').text = sec['label']
             if sec.get('help'):
                 ET.SubElement(section, 'span').text = sec['help']
             fieldset = ET.SubElement(section, 'fieldset')
             ET.SubElement(fieldset, 'legend').text = sec['description']
-            self.render_layout(sec['layout'], fieldset, properties)
+            if sec['layout']:
+                self.render_layout(sec['layout'], fieldset, properties, response)
         return root
 
-    def render_layout(self, layout, fieldset, properties):
+    def render_layout(self, layout, fieldset, properties, response):
         for elem in layout:
-            if isinstance(elem, dict):
-                sub_fieldset = ET.SubElement(fieldset, 'details', open='open')
-                ET.SubElement(sub_fieldset, 'summary').text = elem['label']
-                if elem['description']:
-                    ET.SubElement(sub_fieldset, 'h2').text = elem['description']
-                self.render_layout(elem['layout'], sub_fieldset, properties)
+            if isinstance(elem, dict) and isinstance(elem.get('$form-ref'), list):
+                for _form in elem['$form-ref']:
+                    form = self.get_resource(response, 'udm:form', name=_form)
+                    if form:
+                        fieldset.append(self.get_html_form(form, response))
+                continue
+            elif isinstance(elem, dict):
+                if not elem.get('label') and not elem.get('description'):
+                    ET.SubElement(fieldset, 'br')
+                    sub_fieldset = ET.SubElement(fieldset, 'div', style='display: flex')
+                else:
+                    sub_fieldset = ET.SubElement(fieldset, 'details', open='open')
+                    ET.SubElement(sub_fieldset, 'summary').text = elem['label']
+                    if elem['description']:
+                        ET.SubElement(sub_fieldset, 'h2').text = elem['description']
+                self.render_layout(elem['layout'], sub_fieldset, properties, response)
                 continue
             elements = [elem] if isinstance(elem, str) else elem
             for elem in elements:
@@ -799,13 +832,13 @@ class ResourceBase:
         form = ET.Element('form', **{p: _form[p] for p in ('id', 'class', 'name', 'method', 'action', 'rel', 'enctype', 'accept-charset', 'novalidate') if _form.get(p)})
         if _form.get('layout'):
             layout = self.get_resource(response, 'udm:layout', name=_form['layout'])
-            self.get_html_layout(form, layout['layout'], _form.get('fields'))
+            self.get_html_layout(form, response, layout['layout'], _form.get('fields'))
             return form
 
         for field in _form.get('fields', []):
             self.render_form_field(form, field)
             form.append(ET.Element('br'))
-        form.append(ET.Element('hr'))
+
         return form
 
     def render_form_field(self, form, field):
@@ -815,8 +848,10 @@ class ResourceBase:
         if field.get('type') == 'submit' and field.get('add_noscript_warning'):
             ET.SubElement(ET.SubElement(form, 'noscript'), 'p').text = _('This form requires JavaScript enabled!')
 
-        label = ET.Element('label', **{'for': name})
-        label.text = field.get('label', name)
+        label = None
+        if name:
+            label = ET.Element('label', **{'for': name})
+            label.text = field.get('label', name)
 
         multivalue = field.get('data-multivalue') == '1'
         values = field['value'] or [''] if multivalue else [field['value']]
@@ -918,6 +953,8 @@ class ResourceBase:
         }
         form.setdefault('enctype', 'application/x-www-form-urlencoded')
         form.update(kwargs)
+        if form.get('name'):
+            self.add_link(form, 'self', href='', name=form['name'], dont_set_http_header=True)
         self.add_resource(obj, 'udm:form', form)
         return form
 
@@ -935,7 +972,10 @@ class ResourceBase:
         return field
 
     def add_layout(self, obj, layout, name=None, href=None):
-        self.add_resource(obj, 'udm:layout', {'_links': {'self': [{'name': name}]}, 'layout': layout})
+        layout = {'layout': layout}
+        if name:
+            self.add_link(layout, 'self', href='', name=name, dont_set_http_header=True)
+        self.add_resource(obj, 'udm:layout', layout)
         if href:
             self.add_link(obj, 'udm:layout', href=href, name=name)
 
@@ -2461,17 +2501,17 @@ class ContainerQueryBase(Resource):
                     'icon': 'udm-%s' % (object_type.replace('/', '-'),),
                 })
             self.add_link({}, 'next', self.urljoin('?container=%s' % (quote(container))))
-            return dict({
+            return [dict({
                 'id': container,
                 'label': ldap_dn2path(container),
                 'icon': 'udm-container-dc',
                 'path': ldap_dn2path(container),
                 'objectType': 'container/dc',
-                '$operations$': UDM_Module('container/dc', ldap_connection=self.ldap_connection, ldap_position=self.ldap_position).operations,
+                #'$operations$': UDM_Module('container/dc', ldap_connection=self.ldap_connection, ldap_position=self.ldap_position).operations,
                 '$flags$': [],
                 '$childs$': True,
                 '$isSuperordinate$': False,
-            }, **defaults)
+            }, **defaults)]
 
         result = []
         for xmodule in modules:
@@ -2488,8 +2528,8 @@ class ContainerQueryBase(Resource):
                         'icon': 'udm-%s' % (module.name.replace('/', '-')),
                         'path': ldap_dn2path(item.dn),
                         'objectType': module.name,
-                        '$operations$': module.operations,
-                        '$flags$': item.oldattr.get('univentionObjectFlag', []),
+                        #'$operations$': module.operations,
+                        '$flags$': [x.decode('UTF-8') for x in item.oldattr.get('univentionObjectFlag', [])],
                         '$childs$': module.childs,
                         '$isSuperordinate$': udm_modules.isSuperordinate(module.module),
                     })
@@ -2508,6 +2548,7 @@ class Tree(ContainerQueryBase):
         object_type,
         container: str = Query(DNSanitizer(default=None)),
     ):
+        # TODO: add appropriate 404 errors
         ldap_base = ucr['ldap/base']
 
         modules = container_modules()
@@ -2520,9 +2561,31 @@ class Tree(ContainerQueryBase):
             scope = 'sub'
             modules = [object_type]
 
+        result = {}
         containers = await self._container_query(object_type, container, modules, scope)
+        for _container in containers:
+            self.add_link(_container, 'item', href=self.urljoin('./tree?container=%s' % (quote(_container['id']),)), title=_container['label'])  # should be "self" and with no header added
+            #self.add_link(result, 'item', href=self.urljoin('./tree?container=%s' % (quote(_container['id']),)), title=_container['label'], path=_container['path'])
+            self.add_resource(result, 'udm:tree', _container)
+
+        self.add_link(result, 'self', self.urljoin(''), title='Tree')
+        if container:
+            parent_dn = self.ldap_connection.parentDn(container)
+            if parent_dn:
+                self.add_link(result, 'up', self.urljoin('tree?container=%s' % (quote(parent_dn),)), title='Parent container')
+
+        if object_type != 'navigation':
+            module = self.get_module(object_type)
+            self.add_link(result, 'icon', self.urljoin('../../favicon.ico'), type='image/x-icon')
+            self.add_link(result, 'udm:object-modules', self.urljoin('../../'), title=_('All modules'))
+            self.add_link(result, 'udm:object-module', self.urljoin('../'), title=self.get_parent_object_type(module).object_name_plural)
+            self.add_link(result, 'type', self.urljoin('.'), title=module.object_name)
+        else:
+            self.add_link(result, 'icon', self.urljoin('../favicon.ico'), type='image/x-icon')
+            self.add_link(result, 'udm:object-modules', self.urljoin('../'), title=_('All modules'))
+
         self.add_caching(public=False, must_revalidate=True)
-        self.content_negotiation(containers)
+        self.content_negotiation(result)
 
 
 class MoveDestinations(ContainerQueryBase):
@@ -2533,14 +2596,32 @@ class MoveDestinations(ContainerQueryBase):
         object_type,
         container: str = Query(DNSanitizer(default=None)),
     ):
+        # TODO: add appropriate 404 errors
         scope = 'one'
         modules = container_modules()
         if not container:
             scope = 'base'
 
+        result = {}
         containers = await self._container_query(object_type or 'navigation', container, modules, scope)
         self.add_caching(public=False, must_revalidate=True)
-        self.content_negotiation(containers)
+        for _container in containers:
+            self.add_link(_container, 'item', href=self.urljoin('./?container=%s' % (quote(_container['id']),)), title=_container['label'])
+            self.add_resource(result, 'udm:tree', _container)
+
+        self.add_link(result, 'self', self.urljoin(''), title='Move destinations')
+        if container:
+            parent_dn = self.ldap_connection.parentDn(container)
+            if parent_dn:
+                self.add_link(result, 'up', self.urljoin('./?container=%s' % (quote(parent_dn),)), title='Parent container')
+
+        if object_type and object_type != 'navigation':
+            module = self.get_module(object_type)
+            self.add_link(result, 'icon', self.urljoin('../favicon.ico'), type='image/x-icon')
+            self.add_link(result, 'udm:object-modules', self.urljoin('../../../'), title=_('All modules'))
+            self.add_link(result, 'udm:object-module', self.urljoin('../../'), title=self.get_parent_object_type(module).object_name_plural)
+            self.add_link(result, 'type', self.urljoin('../'), title=module.object_name)
+        self.content_negotiation(result)
 
 
 class Properties(Resource):
@@ -2559,7 +2640,19 @@ class Properties(Resource):
         module = self.get_module(object_type)
         module.load(force_reload=True)  # reload for instant extended attributes
 
-        self.add_link(result, 'up', self.urljoin('.'))
+        self.add_link(result, 'self', self.urljoin(''), title=_('Properties for %s') % (module.object_name,))
+        if dn:
+            self.add_link(result, 'icon', self.urljoin('../favicon.ico'), type='image/x-icon')
+            self.add_link(result, 'udm:object-modules', self.urljoin('../../../'), title=_('All modules'))
+            self.add_link(result, 'udm:object-module', self.urljoin('../../'), title=self.get_parent_object_type(module).object_name_plural)
+            self.add_link(result, 'type', self.urljoin('../'), title=module.object_name)
+            self.add_link(result, 'up', self.urljoin('..', quote_dn(dn)), title=dn)
+        else:
+            self.add_link(result, 'icon', self.urljoin('./favicon.ico'), type='image/x-icon')
+            self.add_link(result, 'udm:object-modules', self.urljoin('../../'), title=_('All modules'))
+            self.add_link(result, 'udm:object-module', self.urljoin('../'), title=self.get_parent_object_type(module).object_name_plural)
+            # self.add_link(result, 'type', self.urljoin('.'), title=module.object_name)
+            self.add_link(result, 'up', self.urljoin('.'), title=module.object_name)
         properties = self.get_properties(module, dn)
         if searchable:
             properties = {name: prop for name, prop in properties.items() if prop.get('searchable', False)}
@@ -2610,6 +2703,20 @@ class Layout(Resource):
         module = self.get_module(object_type)
         module.load(force_reload=True)  # reload for instant extended attributes
 
+        self.add_link(result, 'self', self.urljoin(''), title=_('Layout for %s') % (module.object_name,))
+        if dn:
+            self.add_link(result, 'icon', self.urljoin('../favicon.ico'), type='image/x-icon')
+            self.add_link(result, 'udm:object-modules', self.urljoin('../../../'), title=_('All modules'))
+            self.add_link(result, 'udm:object-module', self.urljoin('../../'), title=self.get_parent_object_type(module).object_name_plural)
+            self.add_link(result, 'type', self.urljoin('../'), title=module.object_name)
+            self.add_link(result, 'up', self.urljoin('..', quote_dn(dn)), title=dn)
+        else:
+            self.add_link(result, 'icon', self.urljoin('./favicon.ico'), type='image/x-icon')
+            self.add_link(result, 'udm:object-modules', self.urljoin('../../'), title=_('All modules'))
+            self.add_link(result, 'udm:object-module', self.urljoin('../'), title=self.get_parent_object_type(module).object_name_plural)
+            # self.add_link(result, 'type', self.urljoin('.'), title=module.object_name)
+            self.add_link(result, 'up', self.urljoin('.'), title=module.object_name)
+
         result['layout'] = self.get_layout(module)
 
         self.add_caching(public=True, must_revalidate=True)
@@ -2656,6 +2763,11 @@ class Layout(Resource):
             if x.get('label', '').lower().startswith('referen'):
                 return x
 
+    @classmethod
+    def get_section_id(cls, label):
+        label = re.sub(r'[^a-z0-9_:-]', '_', label.lower())
+        return re.sub(r'^[^a-z]+', 'id_', label)
+
 
 class ReportingBase:
 
@@ -2691,11 +2803,11 @@ class Report(ReportingBase, Resource):
 
         report = udr.Report(self.ldap_connection)
         try:
-            report_file = await self.pool_submit(report.create, object_type, report_type, dns)
+            report_file = await self.pool_submit(report.create, object_type, report_type, dns or [])
         except udr.ReportError as exc:
             raise HTTPError(400, None, str(exc))
 
-        with open(report_file) as fd:  # noqa: ASYNC101
+        with open(report_file, 'rb') as fd:  # noqa: ASYNC101
             self.set_header('Content-Type', 'text/csv' if report_file.endswith('.csv') else 'application/pdf')
             self.set_header('Content-Disposition', 'attachment; filename="%s"' % (os.path.basename(report_file).replace('\\', '\\\\').replace('"', '\\"')))
             self.finish(fd.read())
@@ -2818,7 +2930,7 @@ class Objects(ConditionalResource, FormBase, ReportingBase, _OpenAPIBase, Resour
     @sanitize
     async def get(
         self,
-        object_type,
+        object_type: str,
         position: str = Query(DNSanitizer(required=False, default=None, allow_none=True), description="Position which is used as search base."),
         ldap_filter: str = Query(
             LDAPFilterSanitizer(required=False, default="", allow_none=True),
@@ -2846,7 +2958,10 @@ class Objects(ConditionalResource, FormBase, ReportingBase, _OpenAPIBase, Resour
                 },
             },
         ),
-        property: str = Query(ObjectPropertySanitizer(required=False, default=None)),
+        property: str = Query(
+            ObjectPropertySanitizer(required=False, default=None),
+            description="The property to search for if not specified via `query`",
+        ),
         scope: str = Query(ChoicesSanitizer(choices=['sub', 'one', 'base', 'base+one'], default='sub'), description="The LDAP search scope (sub, base, one)."),
         hidden: bool = Query(BoolSanitizer(default=True), description="Include hidden/system objects in the response.", example=True),
         properties: List[str] = Query(
@@ -2859,7 +2974,11 @@ class Objects(ConditionalResource, FormBase, ReportingBase, _OpenAPIBase, Resour
                         'only small subset': {'value': ['username', 'firstname', 'lastname']},
             },
         ),
-        superordinate: Optional[str] = Query(DNSanitizer(required=False, default=None, allow_none=True), description="The superordinate DN of the objects to find. `position` is sufficient."),  # example=f"cn=superordinate,{ldap_base}"
+        superordinate: Optional[str] = Query(
+            DNSanitizer(required=False, default=None, allow_none=True),
+            description="The superordinate DN of the objects to find. `position` is sufficient.",
+            # example=f"cn=superordinate,{ldap_base}"
+        ),
         dir: str = Query(
             ChoicesSanitizer(choices=['ASC', 'DESC'], default='ASC'),
             deprecated=True,
@@ -2883,7 +3002,7 @@ class Objects(ConditionalResource, FormBase, ReportingBase, _OpenAPIBase, Resour
             description="**Broken/Experimental**: How many results should be shown per page.",
             examples={
                 "no limit": {"value": "", "summary": "get all entries"},
-                        "limit to 50": {"value": 50, "summary": "limit to 50 entries"},
+                "limit to 50": {"value": 50, "summary": "limit to 50 entries"},
             },
         ),
     ):
@@ -2942,7 +3061,13 @@ class Objects(ConditionalResource, FormBase, ReportingBase, _OpenAPIBase, Resour
                 self.add_link(result, 'last', self.urljoin('', page=str(last_page)), title=_('Last page'))
 
         if search:
+            grid_layout = [
+                # 'add', 'modify', 'delete', 'move', 'copy'
+                'create-form', 'multi-edit', 'move',
+            ]
+
             for i, report_type in enumerate(sorted(self.reports_cfg.get_report_names(object_type)), 1):
+                grid_layout.append(report_type)
                 form = self.add_form(result, self.urljoin('report', quote(report_type)), 'POST', rel='udm:report', name=report_type, id='report%d' % (i,))
                 self.add_form_element(form, '', _('Create %s report') % _(report_type), type='submit')
                 self.add_link(result, 'udm:report', self.urljoin('report', quote(report_type)) + '{?dn}', name=report_type, title=_('Create %s report') % _(report_type), method='POST', templated=True)
@@ -2953,6 +3078,14 @@ class Objects(ConditionalResource, FormBase, ReportingBase, _OpenAPIBase, Resour
             form = self.add_form(result, self.urljoin('move'), 'POST', name='move', id='move', rel='udm:object/move')
             self.add_form_element(form, 'position', '')
             self.add_form_element(form, '', _('Move %s') % (module.object_name_plural,), type='submit')
+
+            main_layout = [
+                {'description': f'{module.object_name_plural} ({module.description})', 'label': module.object_name_plural, 'layout': [
+                    {'$form-ref': ['search']},
+                    {'layout': [{'$form-ref': grid_layout}]},
+                ]},
+            ]
+            self.add_layout(result, main_layout, 'main-layout')
         else:
             for i, report_type in enumerate(sorted(self.reports_cfg.get_report_names(object_type)), 1):
                 self.add_link(result, 'udm:report', self.urljoin('report', quote(report_type)) + '{?dn}', name=report_type, title=_('Create %s report') % _(report_type), method='POST', templated=True)
@@ -2960,7 +3093,7 @@ class Objects(ConditionalResource, FormBase, ReportingBase, _OpenAPIBase, Resour
         search_layout_base = [{'description': _('Search for %s') % (module.object_name_plural,), 'label': _('Search'), 'layout': []}]
         search_layout = search_layout_base[0]['layout']
         self.add_layout(result, search_layout_base, 'search')
-        form = self.add_form(result, self.urljoin(''), 'GET', rel='search', id='search', layout='search')
+        form = self.add_form(result, self.urljoin(''), 'GET', rel='search', id='search', name='search', layout='search')
         self.add_form_element(form, 'position', position or '', label=_('Search in'))
         search_layout.append(['position', 'hidden'])
         if superordinate_names(module):
@@ -3031,28 +3164,54 @@ class Objects(ConditionalResource, FormBase, ReportingBase, _OpenAPIBase, Resour
         if self.request.method in ('GET', 'HEAD'):
             r = response.copy()
             r.pop('entries', None)
+            num_of_entries = r.pop('results', 0)
             root = super().get_html(r)
         else:
             root = super().get_html(response)
+
         if self.request.method in ('GET', 'HEAD'):
-            for thing in response.get('entries', self.get_resources(response, 'udm:object')):
-                if isinstance(thing, dict) and thing.get('uri'):
-                    x = thing.copy()
-                    a = ET.Element("a", href=x.pop('uri'), rel="udm:object item")
-                    a.text = x.get('dn')
-                    pre = ET.Element("pre")
-                    pre.text = json.dumps(x, indent=4)
-                    root.append(ET.Element("br"))
-                    # There is a bug in chrome, so we cannot have form='report1 report2'. so, only 1 report is possible :-/
-                    root.append(ET.Element('input', type='checkbox', name='dn', value=x['dn'], form=' '.join([report['id'] for report in self.get_resources(response, 'udm:form') if report['rel'] == 'udm:report'][-1:])))
-                    root.append(a)
-                    root.append(pre)
-                    root.append(ET.Element("br"))
-                else:
-                    pre = ET.Element("pre")
-                    pre.text = json.dumps(thing, indent=4)
-                    root.append(pre)
-                    root.append(ET.Element("br"))
+            has_four_rows = self.request.decoded_query_arguments.get('property')
+            table = ET.Element('table', **{'class': 'grid'})
+            table_header = ET.SubElement(table, 'tr')
+            th1 = ET.SubElement(table_header, 'th')  # TODO: all-checkbox
+            ET.SubElement(table_header, 'th').text = 'Name'  # TODO: sort-direction switch
+            if has_four_rows:
+                ET.SubElement(table_header, 'th').text = has_four_rows  # TODO: display name
+            ET.SubElement(table_header, 'th').text = 'Path'
+            root.append(table)
+
+            try:
+                num_of_objects = ET.SubElement(root[0].findall('.//div/form/..')[-1], 'span')
+                num_of_objects.text = f'$x users of {num_of_entries} selected.'
+            except IndexError:
+                pass
+
+            # There is a bug in chrome, so we cannot have form='report1 report2'. so, only 1 report is possible :-/
+            ET.SubElement(th1, 'input', type='checkbox', name='dn', form=' '.join([report['id'] for report in self.get_resources(response, 'udm:form') if report['rel'] == 'udm:report'][-1:]))
+
+            for thing in self.get_resources(response, 'udm:object'):
+                row = ET.SubElement(table, 'tr')
+                x = thing.copy()
+
+                td1 = ET.SubElement(row, 'td')
+                td2 = ET.SubElement(row, 'td')
+                if has_four_rows:
+                    td4 = ET.SubElement(row, 'td')
+                td3 = ET.SubElement(row, 'td')
+
+                # There is a bug in chrome, so we cannot have form='report1 report2'. so, only 1 report is possible :-/
+                ET.SubElement(td1, 'input', type='checkbox', name='dn', value=x['dn'], form=' '.join([report['id'] for report in self.get_resources(response, 'udm:form') if report['rel'] == 'udm:report'][-1:]))
+
+                a = ET.SubElement(td2, "a", href=x.pop('uri'), rel="udm:object item")
+                a.text = x['id']
+
+                td3.text = ldap_dn2path(thing['position'])
+
+                if has_four_rows:
+                    td4.text = thing['properties'].get(has_four_rows)  # TODO: syntax.to_string()
+
+                pre = ET.SubElement(row, "pre", dn=x['dn'], style='display: none')
+                pre.text = json.dumps(x, indent=4)
         return root
 
     @sanitize
@@ -3768,7 +3927,7 @@ class ObjectAdd(FormBase, _OpenAPIBase, Resource):
 
         properties = Properties.get_properties(module)
         self.add_resource(result, 'udm:properties', {'properties': properties})
-        self.add_link(result, 'udm:properties', href=self.urljoin('properties'))
+        self.add_link(result, 'udm:properties', href=self.urljoin('properties'), title=_('Properties for %s') % (module.object_name,))
 
         meta_layout = layout[0]
         meta_layout['layout'].extend(['position'])
@@ -3823,6 +3982,15 @@ class ObjectAdd(FormBase, _OpenAPIBase, Resource):
         position_layout = [{'label': _('Container'), 'description': "The container in which the LDAP object shall be created.", 'layout': ['position', '']}]
         self.add_layout(result, position_layout, 'position')
         return result
+
+    def get_html(self, response):
+        root = super().get_html(response)
+        if self.request.method in ('GET', 'HEAD'):
+            for form in root:
+                if form.get('id') == 'add':
+                    for elem in form.findall('.//section'):
+                        self.add_link(response, 'udm:tab-switch', href=f'#{elem.get("id")}', title=elem.find('./h1').text)
+        return root
 
 
 class ObjectCopy(ObjectAdd):
@@ -3903,7 +4071,7 @@ class ObjectEdit(FormBase, Resource):
             layout[0]['layout'].extend(['dn', 'jpegPhoto-preview', ''])
             properties = Properties.get_properties(module, dn)
             self.add_resource(result, 'udm:properties', {'properties': properties})
-            self.add_link(result, 'udm:properties', href=self.urljoin('properties'))
+            self.add_link(result, 'udm:properties', href=self.urljoin('properties'), title=_('Properties for %s') % (module.object_name,))
             is_ad_synced_object = ucr.is_true('ad/member') and 'synced' in obj.oldattr.get('univentionObjectFlag', [])
             is_ad_synced_object = 'synced' in obj.oldattr.get('univentionObjectFlag', [])
             if is_ad_synced_object:
@@ -3960,6 +4128,15 @@ class ObjectEdit(FormBase, Resource):
         self.add_caching(public=False, must_revalidate=True)
         self.content_negotiation(result)
 
+    def get_html(self, response):
+        root = super().get_html(response)
+        if self.request.method in ('GET', 'HEAD'):
+            for form in root:
+                if form.get('id') == 'edit':
+                    for elem in form.findall('.//section'):
+                        self.add_link(response, 'udm:tab-switch', href=f'#{elem.get("id")}', title=elem.find('./h1').text)
+        return root
+
 
 class ObjectMultiEdit(ObjectEdit):
     pass
@@ -3995,8 +4172,23 @@ class PropertyChoices(Resource):
             'dependencies': dependencies,
         }.items() if val is not None}
         choices = await self.pool_submit(type_.get_choices, self.ldap_connection, options)
+        result = {'choices': choices}
+
+        self.add_link(result, 'self', self.urljoin(''), title=_('Property choices for %s property %s') % (module.object_name, prop.short_description))
+        if dn:
+            self.add_link(result, 'icon', self.urljoin('../../../favicon.ico'), type='image/x-icon')
+            self.add_link(result, 'udm:object-modules', self.urljoin('../../../../../'), title=_('All modules'))
+            self.add_link(result, 'udm:object-module', self.urljoin('../../../../'), title=self.get_parent_object_type(module).object_name_plural)
+            self.add_link(result, 'type', self.urljoin('../../../'), title=module.object_name)
+            self.add_link(result, 'up', self.urljoin('../../..', quote_dn(dn)), title=dn)
+        else:
+            self.add_link(result, 'icon', self.urljoin('./../../favicon.ico'), type='image/x-icon')
+            self.add_link(result, 'udm:object-modules', self.urljoin('../../../../'), title=_('All modules'))
+            self.add_link(result, 'udm:object-module', self.urljoin('../../../'), title=self.get_parent_object_type(module).object_name_plural)
+            # self.add_link(result, 'type', self.urljoin('.'), title=module.object_name)
+            self.add_link(result, 'up', self.urljoin('../../'), title=module.object_name)
         self.add_caching(public=False, must_revalidate=True)
-        self.content_negotiation({'choices': choices})
+        self.content_negotiation(result)
 
 
 class PolicyResultBase(Resource):
