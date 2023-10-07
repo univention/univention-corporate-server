@@ -3945,7 +3945,7 @@ class PropertyChoices(Resource):
             'value': value,
             'hidden': hidden,
             'dependencies': dependencies,
-        } if val is not None}
+        }.items() if val is not None}
         choices = await self.pool_submit(type_.get_choices, self.ldap_connection, options)
         self.add_caching(public=False, must_revalidate=True)
         self.content_negotiation({'choices': choices})
