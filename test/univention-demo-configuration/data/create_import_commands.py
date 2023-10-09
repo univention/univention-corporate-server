@@ -95,7 +95,7 @@ def importRow(row: Dict[str, str]) -> None:
     # create user
     cmd = [
         'udm', 'users/user', 'create',
-        '--position', '"ou=%(office)s,ou=People,%(LDAPBASE)s":',
+        '--position', '"ou=%(office)s,ou=People,%(LDAPBASE)s"',
         '--set', 'username="%(uid)s"',
         '--set', 'description="%(displayName)s - %(employeeType)s %(department)s %(office)s"',
         '--set', 'password="univention"',
