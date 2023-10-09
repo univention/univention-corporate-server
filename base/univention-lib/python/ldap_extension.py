@@ -1060,8 +1060,12 @@ class UniventionDataExtension(UniventionLDAPExtension):
     filesuffix = ''
 
     def is_local_active(self):
+        """
+        There is nothing to activate for a data extension,
+        just pretend that everything is fine.
+        """
         # type: () -> Tuple[int, Optional[str]]
-        return (0, None)
+        return (0, "foo")
 
     def wait_for_activation(self, timeout=180):
         # type: (int) -> bool
