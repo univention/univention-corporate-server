@@ -1,3 +1,4 @@
+rm_conffile /etc/univention/templates/files/etc/default/ntpdate 9.100.0~
 rm_conffile /etc/univention/templates/files/etc/init.d/cron 6.0.0-10~
 rm_conffile /etc/univention/templates/files/etc/init.d/klogd 6.0.0-4~
 rm_conffile /etc/univention/templates/files/etc/init.d/nscd 9.0.0-3~
@@ -6,6 +7,7 @@ rm_conffile /etc/univention/templates/files/etc/init.d/portmap 6.0.0-3~
 rm_conffile /etc/univention/templates/files/etc/init.d/rdate 9.0.0-3~
 rm_conffile /etc/univention/templates/files/etc/init.d/rpcbind 9.0.0-3~
 rm_conffile /etc/univention/templates/files/etc/kernel-img.conf 9.0.3~
+rm_conffile /etc/univention/templates/files/etc/ntp.conf 9.100.0~
 rm_conffile /etc/univention/templates/files/etc/python2.6/sitecustomize.py.d/00header.py 9.0.0-3~
 rm_conffile /etc/univention/templates/files/etc/python2.6/sitecustomize.py.d/10apport.py 9.0.0-3~
 rm_conffile /etc/univention/templates/files/etc/python2.6/sitecustomize.py.d/20utf8.py 9.0.0-3~
