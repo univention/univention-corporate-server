@@ -154,4 +154,6 @@ if test -x /etc/init.d/ssh; then
 	invoke-rc.d ssh reload
 fi
 
+install -o ntpsec -g ntpsec -m 750 -d /var/log/ntpstats
+
 exit 0

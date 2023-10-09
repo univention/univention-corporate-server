@@ -84,6 +84,7 @@ find /var/log \
 		-o -path "/var/log/wtmp.*" \
 		-o -path "/var/log/Xorg*log*" \
 		-o -path "/var/log/ntpstats/*" \
+		-o -path "/var/log/ntpsec/*" \
 		-o -path "/var/log/dpkg.log" \
 		-o -path "/var/log/apache2/other_vhosts_access.log.*" \
 		-o -path "/var/log/apt/history.log.*" \
@@ -103,6 +104,7 @@ exit $RETVAL
 
 # Docs
 # "/var/log/ntpstats/*"          : NTP server synchronisation data
+# "/var/log/ntpsec/*"            : NTP server log files
 # "/var/log/kern.log"            : Linux Kernel status messages
 # "/var/log/ksymoops/*"          : OOPS failure messages from the Linux kernel
 # "/var/log/faillog"             : Records only the number of failed authentication attempts of each user, no further sensitive information

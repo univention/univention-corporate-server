@@ -568,7 +568,7 @@ univention-run-join-scripts -dcaccount "$dn" -dcpwd /tmp/joinpwd
 
 rm -f /tmp/joinpwd
 
-systemctl try-restart ntp.service
+systemctl try-restart ntpsec.service
 
 exit 0
 __EOF__
