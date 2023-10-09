@@ -688,9 +688,6 @@ class DevSetupLocalAppcenter(LocalAppcenterAction):
             for supra_file in ['app-categories.ini', 'categories.ini', 'rating.ini', 'license_types.ini', 'ucs.ini', 'suggestions.json']:
                 with open(os.path.join(meta_inf_dir, '..', supra_file), 'wb') as f:
                     categories = urlopen('%s/meta-inf/%s' % (default_server(), supra_file)).read()
-                    if supra_file == 'ucs.ini':
-                        # b'[4.2]\nSupportedUCSVersions=4.2, 4.3, 4.1\n\n[4.3]\nSupportedUCSVersions=4.3, 4.2, 4.1\n\n[4.4]\nSupportedUCSVersions=4.4, 4.3, 4.2, 4.1\n\n[5.0]\nSupportedUCSVersions=5.0, 4.4, 4.3\n\n[5.1]\nSupportedUCSVersions=5.0'
-                        categories = b'[5.1]\nSupportedUCSVersions=5.1, 5.0, 4.4\n[5.0]\nSupportedUCSVersions=5.0, 4.4, 4.3\n[4.4]\nSupportedUCSVersions=4.4, 4.3, 4.2, 4.1\n[4.3]\nSupportedUCSVersions=4.3, 4.2, 4.1\n'
                     f.write(categories)
             server = 'http://%s' % args.appcenter_host
             use_test_appcenter = get_action('dev-use-test-appcenter')
