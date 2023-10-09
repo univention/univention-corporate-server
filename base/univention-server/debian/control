@@ -131,8 +131,8 @@ Package: univention-role-server-common
 Architecture: any
 Depends:
  linux-image-amd64 [amd64],
- ntp | ntp-server,
- ntpdate,
+ ntpsec,
+ ntpsec-ntpdate,
  rdate,
  univention-directory-listener,
  univention-directory-manager-tools,
