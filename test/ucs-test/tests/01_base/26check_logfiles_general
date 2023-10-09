@@ -84,6 +84,7 @@ find /var/log \
 		-o -path "/var/log/wtmp.*" \
 		-o -path "/var/log/Xorg*log*" \
 		-o -path "/var/log/ntpstats/*" \
+		-o -path "/var/log/ntpsec/*" \
 		-o -path "/var/log/dpkg.log" \
 		-o -path "/var/log/apache2/other_vhosts_access.log.*" \
 		-o -path "/var/log/apt/history.log.*" \
