@@ -1,3 +1,9 @@
+univention-radius (7.100.0-2) unstable; urgency=medium
+
+  * Bug #46120: Updating the UCR templates of univention-radius to Debian 12
+
+ -- Mika Westphal <westphal@univention.de>  Mon, 09 Oct 2023 14:44:58 +0200
+
 univention-radius (7.100.0-1) unstable; urgency=medium
 
   * UCS 5.2-0
