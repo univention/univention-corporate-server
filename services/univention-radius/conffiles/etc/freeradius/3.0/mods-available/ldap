@@ -166,6 +166,7 @@ else:
 	#            control:Auth-Type := ldap
 	#        }
 	#    }
+	user_dn = "LDAP-UserDn"
 
 	#
 	#  User object identification.
