@@ -57,7 +57,7 @@ do
 	sleep 3
 done
 
-univention-pkgdb-scan --db-server "$hostname.$domainname" --add "$hostname$" # || exit 1
+univention-pkgdb-scan --db-server "$hostname.$domainname" --add "$hostname$" || exit 1
 univention-pkgdb-scan --db-server "$hostname.$domainname"
 
 # add service entry
