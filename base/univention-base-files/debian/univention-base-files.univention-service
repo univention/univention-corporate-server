@@ -36,7 +36,7 @@ Description[en]=NTP Server
 programs=/usr/sbin/ntpd
 start_type=ntp/autostart
 icon=service/ntp
-systemd=ntp.service
+systemd=ntpsec.service
 
 [rpcbind]
 Description[de]=RPC Port-Mapper Dienst
