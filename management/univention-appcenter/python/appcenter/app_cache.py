@@ -448,7 +448,7 @@ class AppCenterCache(_AppCache):
 
     def get_ucs_versions(self):
         # type: () -> List[str]
-        return ['5.2', '5.1', '5.0', '4.4']
+        return ['5.1', '5.0', '4.4']
         if self._ucs_versions is None:
             cache_file = self.get_cache_file('.ucs.ini')
             ucs_version = self._get_current_ucs_version()
