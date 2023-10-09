@@ -445,7 +445,7 @@ class ResourceBase:
                 except (ValueError, IndexError, binascii.Error):
                     pass
             if not username or not password:
-                raise HTTPError(400)
+                raise HTTPError(400, 'The basic auth credentials are malformed.')
 
             userdn = self._auth_get_userdn(username)
             if not userdn:
