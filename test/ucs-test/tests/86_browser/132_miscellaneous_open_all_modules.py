@@ -21,7 +21,7 @@ _ = Translation("ucs-test-browser").translate
 
 
 def get_all_modules():
-    client = Client(username="Administrator", password="univention")
+    client = Client(username="Administrator", password="univention", language="en")
     client.print_response = False
     client.print_request_data = False
     available_modules = client.request("GET", "get/modules").data["modules"]
