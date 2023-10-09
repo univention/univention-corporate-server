@@ -98,9 +98,7 @@ then
 	if [ -d /run/systemd/system ]
 	then
 		systemctl --system daemon-reload >/dev/null || true
-		deb-systemd-invoke restart univention-directory-listener.service univention-firewall.service
-		# dhcpd should be restarted - but don't do this in 5.1 it will crash. Update to 5.2 and the service can start again
-		# deb-systemd-invoke restart isc-dhcp-server.service
+		deb-systemd-invoke restart isc-dhcp-server.service univention-directory-listener.service univention-firewall.service
 	fi
 
 	# shellcheck disable=SC2015
