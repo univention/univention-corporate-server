@@ -37,6 +37,7 @@ Depends:
  winbind,
  ${misc:Depends},
 Recommends:
+ python3-lmdb,
  univention-monitoring-samba,
  univention-nagios-samba,
 Description: UCS - Samba4 integration package
