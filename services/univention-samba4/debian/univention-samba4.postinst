@@ -276,12 +276,12 @@ secret: $machine_secret
 	ntp_socket_dir='/var/lib/samba/ntp_signd'
 	ntp_needs_restart=false
 	if [ ! -d "$ntp_socket_dir" ]; then
-		install -m 750 -g ntp -d  "$ntp_socket_dir"
+		install -m 750 -g ntpsec -d  "$ntp_socket_dir"
 		ntp_needs_restart=true
 	else
-		if [ "$(stat --printf '%G' "$ntp_socket_dir")" != 'ntp' ]; then
+		if [ "$(stat --printf '%G' "$ntp_socket_dir")" != 'ntpsec' ]; then
 			echo "fixing group ownership of $ntp_socket_dir"
-			chgrp ntp "$ntp_socket_dir"
+			chgrp ntpsec "$ntp_socket_dir"
 			ntp_needs_restart=true
 		fi
 

@@ -111,7 +111,7 @@ Type: file
 File: etc/inputrc
 
 Type: file
-File: etc/ntp.conf
+File: etc/ntpsec/ntp.conf
 Variables: ldap/master
 Variables: ldap/backup
 Variables: server/role
@@ -123,7 +123,10 @@ Variables: ntp/tinker/panic
 Variables: ntp/noquery
 
 Type: file
-File: etc/default/ntpdate
+File: etc/default/ntpsec
+
+Type: file
+File: etc/default/ntpsec-ntpdate
 Variables: ldap/master
 Variables: ldap/backup
 Variables: timeserver

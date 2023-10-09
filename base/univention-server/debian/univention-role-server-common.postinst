@@ -39,6 +39,8 @@ then
 	invoke-rc.d openbsd-inetd restart
 fi
 
+install -o ntpsec -g ntpsec -m 750 -d /var/log/ntpsec
+
 #DEBHELPER#
 
 exit 0

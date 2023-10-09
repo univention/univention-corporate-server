@@ -1,3 +1,9 @@
+univention-samba4 (11.0.3) unstable; urgency=medium
+
+  * Bug #56661: migrate from NTP to NTPSEC
+
+ -- Marius Meschter <marius.meschter@univention.de>  Fri, 08 Mar 2024 00:18:27 +0100
+
 univention-samba4 (11.0.2) unstable; urgency=medium
 
   * Bug #56003: bind9 service was renamed to named
