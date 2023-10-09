@@ -18,7 +18,6 @@ from dockertest import get_app_name, get_app_version, tiny_app
 
 @pytest.fixture(autouse=True)
 def cleanup_restart_firewall():
-    check_output(['univention-install', '-y', 'univention-mariadb'])
     yield
     # make sure that all ports used by mysql and postgres are properly closed
     print('restart_firewall')
