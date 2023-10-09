@@ -75,7 +75,7 @@ class AppCenter:
         self.handle_first_open_dialog()
 
     def handle_first_open_dialog(self):
-        first_open_dialog = self.page.get_by_role("dialog")
+        first_open_dialog = self.page.get_by_role("dialog", name="Univention App Center")
         only_visible_when_no_dialog = self.page.get_by_role("heading", name=_("Available"))
         expect(first_open_dialog.or_(only_visible_when_no_dialog)).to_be_visible(timeout=5 * MIN)
         if first_open_dialog.is_visible():
