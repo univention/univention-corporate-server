@@ -72,6 +72,7 @@ Variables: sshd/ChrootDirectory
 Variables: sshd/VersionAddendum
 Variables: sshd/AcceptEnv
 Variables: sshd/Subsystem
+Variables: sshd/KbdInteractiveAuthentication
 Variables: sshd/config/.*
 
 Type: file

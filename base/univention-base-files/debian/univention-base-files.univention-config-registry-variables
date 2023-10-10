@@ -83,6 +83,7 @@ Description[de]=Ist diese Variable auf 'yes' gesetzt, erlaubt der SSH-Server ein
 Description[en]=If variable is set to 'yes', the SSH server allows an authentication using challenge response authentication, 'no' disables this.
 Type=str
 Categories=service-ssh
+Default=@%@sshd/ChallengeResponseAuthentication@%@
 
 [sshd/banner]
 Description[de]=Die hier angegebene Datei wird bei Anmeldungen per SSH als Hinweis-Banner angezeigt. Wird die Variable auf einen leeren String gesetzt, wird keine Datei angezeigt.
@@ -429,6 +430,13 @@ Description[de]=Legt die OpenSSH Deamon Konfigurationsvariable 'Subsystem' fest.
 Description[en]=Specifies the OpenSSH deamon configuration value 'Subsystem': if the variable is unset, the OpenSSH default value is used, see `man sshd_config for details.
 Type=str
 Categories=service-ssh
+
+[sshd/KbdInteractiveAuthentication]
+Description[de]=Legt die OpenSSH Deamon Konfigurationsvariable 'KbdInteractiveAuthentication' fest. Wenn die Variable nicht gesetzt ist, so wird der OpenSSH Standard benutzt, siehe auch `man sshd_config.
+Description[en]=Specifies the OpenSSH deamon configuration value 'KbdInteractiveAuthentication': if the variable is unset, the OpenSSH default value is used, see `man sshd_config for details.
+Type=str
+Categories=service-ssh
+Default=@%@sshd/challengeresponse@%@
 
 [sshd/config/.*]
 Description[de]=Spezifiziert zusätzliche Konfigurationsoptionen für /etc/ssh/sshd_config. Siehe `man sshd_config` für Details.
