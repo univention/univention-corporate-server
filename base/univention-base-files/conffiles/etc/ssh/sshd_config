@@ -14,7 +14,6 @@
 Include /etc/ssh/sshd_config.d/*.conf
 
 @!@
-import sys
 from os.path import exists
 
 print('Port %s' % configRegistry.get('sshd/port', '22'))
@@ -122,12 +121,8 @@ else:
 print('')
 print('# Change to yes to enable challenge-response passwords (beware issues with')
 print('# some PAM modules and threads)')
-if configRegistry.get('sshd/challengeresponse'):
-    print("ChallengeResponseAuthentication %s" % configRegistry.get('sshd/challengeresponse'))
-    if configRegistry.get('sshd/ChallengeResponseAuthentication'):
-        sys.stderr.write('WARNING: The value for ChallengeResponseAuthentication is set twice: via sshd/ChallengeResponseAuthentication and sshd/challengeresponse\n')
-else:
-    print("ChallengeResponseAuthentication %s" % configRegistry.get('sshd/ChallengeResponseAuthentication', 'yes'))
+if configRegistry.get('sshd/KbdInteractiveAuthentication'):
+    print('KbdInteractiveAuthentication %s' % configRegistry.get('sshd/KbdInteractiveAuthentication'))
 print('')
 print('# Kerberos options')
 if configRegistry.get('sshd/KerberosAuthentication'):
@@ -161,13 +156,13 @@ print('GSSAPIKeyExchange %s' % configRegistry.get('sshd/GSSAPIKeyExchange', 'yes
 @!@
 # Set this to 'yes' to enable PAM authentication, account processing,
 # and session processing. If this is enabled, PAM authentication will
-# be allowed through the ChallengeResponseAuthentication and
+# be allowed through the KbdInteractiveAuthentication and
 # PasswordAuthentication.  Depending on your PAM configuration,
-# PAM authentication via ChallengeResponseAuthentication may bypass
+# PAM authentication via KbdInteractiveAuthentication may bypass
 # the setting of "PermitRootLogin without-password".
 # If you just want the PAM account and session checks to run without
 # PAM authentication, then enable this but set PasswordAuthentication
-# and ChallengeResponseAuthentication to 'no'.
+# and KbdInteractiveAuthentication to 'no'.
 @!@
 import sys
 
