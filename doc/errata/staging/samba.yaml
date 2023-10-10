@@ -8,20 +8,22 @@ desc: |
  This update addresses the following issues:
  * Calls to the rpcecho server on the AD DC can request
    that the server blocks for a user-defined amount of
-   time, denying service.
+   time, denying service. (CVE-2023-42669)
  * Unsanitized pipe names allow SMB clients to connect
    as root to existing unix domain sockets on the
-   file system.
+   file system. (CVE-2023-3961)
  * An RODC and a user with the GET_CHANGES
    right can view all attributes, including
-   secrets and passwords.
+   secrets and passwords. (CVE-2023-4154)
  * SMB client can truncate files to 0 bytes
    by opening files with OVERWRITE disposition
    when using the acl_xattr Samba VFS module
    with the smb.conf setting
-   `acl_xattr:ignore system acls = yes`
+   `acl_xattr:ignore system acls = yes`.
+   (CVE-2023-4091)
  * Samba can be made to start multiple incompatible RPC
    listeners, disrupting service on the AD DC.
+   (CVE-2023-42670)
 bug: [56696]
 cve:
  - CVE-2023-42669
