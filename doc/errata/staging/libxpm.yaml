@@ -10,7 +10,5 @@ desc: |
  * CVE-2023-43789: Out of bounds read on XPM with corrupted colormap
 bug: [56710]
 cve:
-- CVE-2023-43786
-- CVE-2023-43787
 - CVE-2023-43788
 - CVE-2023-43789
