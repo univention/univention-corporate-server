@@ -1,0 +1,1 @@
+The deprecated ssh config option ``ChallengeResponseAuthentication`` has been replaced with ``KbdInteractiveAuthentication``. The new |UCSUCRV| :envvar:`KbdInteractiveAuthentication` allows to configure this option.
