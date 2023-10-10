@@ -57,28 +57,6 @@ from .constants import COMP_PARAMS, COMPONENT_BASE, DEFAULT_ICON, PUT_PROCESSING
 _ = umc.Translation('univention-management-console-module-appcenter').translate
 
 
-def rename_app(old_id, new_id, component_manager, package_manager):
-    from univention.management.console.modules.appcenter.app_center import Application
-    app = Application.find(old_id)
-    if not app:
-        app = Application.find(new_id)
-    if not app:
-        MODULE.error('Found neither OLD_ID nor NEW_ID.\n')
-        raise ValueError([old_id, new_id])
-
-    if not app.is_installed(package_manager, strict=False):
-        MODULE.process('%s is not installed. Fine, nothing to do.\n' % app.name)
-        return
-
-    app.set_id(old_id)
-    app.unregister_all_and_register(None, component_manager, package_manager)
-    app.tell_ldap(component_manager.ucr, package_manager, inform_about_error=False)
-
-    app.set_id(new_id)
-    app.register(component_manager, package_manager)
-    app.tell_ldap(component_manager.ucr, package_manager, inform_about_error=False)
-
-
 def get_hosts(module, lo, ucr=None):
     _hosts = module.lookup(None, lo, None)
     hosts = []
@@ -364,8 +342,6 @@ class ComponentManager(object):
         }
         if not self.is_registered(app_data['name']):
             # do not overwrite version when registering apps
-            # (like in univention-register-apps which is called
-            # in a join script)
             # it may have been changed intentionally, see EndOfLife
             app_data['version'] = 'current'
         self.put(app_data, super_ucr)
