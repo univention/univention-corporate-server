@@ -3,8 +3,29 @@ release: "5.0"
 version: [5]
 scope: ucs_5.0-0-errata5.0-5
 src: samba
-fix: 4.18.3-1A~5.0.0.202310041246
+fix: 2:4.18.3-1A~5.0.0.202310041246
 desc: |
  This update addresses the following issues:
- * WIP
+ * Calls to the rpcecho server on the AD DC can request
+   that the server blocks for a user-defined amount of
+   time, denying service.
+ * Unsanitized pipe names allow SMB clients to connect
+   as root to existing unix domain sockets on the
+   file system.
+ * An RODC and a user with the GET_CHANGES
+   right can view all attributes, including
+   secrets and passwords.
+ * SMB client can truncate files to 0 bytes
+   by opening files with OVERWRITE disposition
+   when using the acl_xattr Samba VFS module
+   with the smb.conf setting
+   `acl_xattr:ignore system acls = yes`
+ * Samba can be made to start multiple incompatible RPC
+   listeners, disrupting service on the AD DC.
 bug: [56696]
+cve:
+ - CVE-2023-42669
+ - CVE-2023-3961
+ - CVE-2023-4154
+ - CVE-2023-4091
+ - CVE-2023-42670
