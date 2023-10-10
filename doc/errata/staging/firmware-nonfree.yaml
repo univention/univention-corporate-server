@@ -6,36 +6,21 @@ src: firmware-nonfree
 fix: 20190114+really20220913-0+deb9u2
 desc: |
  This update addresses the following issues:
- 20190114+really20220913-0+deb9u2 (Sun, 08 Oct 2023 12:34:35 +0200)
- * Non-maintainer upload by the LTS Security Team.
- * Backported for stretch from buster, package version
-   20190114+really20220913-0+deb10u2:
- [ Ben Hutchings ]
- * Clean up backport to buster: - Revert "Update to linux-support 5.19.0-1" -
-   Use linux-support 5.10.0-0.deb10.23 - d/rules, d/watch: Make orig target
-   and uscan work with +really versions - qcom-media: Use lintian-overrides
-   from qcom-soc
- * d/copyright: Add information about files re-added under debian/config
- * Make CI work for buster: - d/salsa-ci.yml: Set RELEASE to buster -
-   d/salsa-ci.yml: Set changelog suite to UNRELEASED to avoid lintian error -
-   d/salsa-ci.yml: Run extract-source job in target release, not unstable
- [ Tobias Frost ]
- * Use linux-support 5.10.0-0.deb10.24
- * Import changed firmware files from Intel for CVE-2022-27635 - Potential
-   privilege escalation vector CVE-2022-36351 - Potential denial of service
-   via adjacent access CVE-2022-38076 - Potential privilege escalation vector
-   CVE-2022-40964 - Potential privilege escalation vector CVE-2022-46329 -
-   Potential privilege escalation vector Details see Intel Advisory
-   INTEL-SA-00766 - Intel Bluetooth AX2xx series: intel/ibt-0041-0041.sfi
-   intel/ibt-19-0-0.sfi intel/ibt-19-0-1.sfi intel/ibt-19-0-4.sfi
-   intel/ibt-19-16-4.sfi intel/ibt-19-240-1.sfi intel/ibt-19-240-4.sfi
-   intel/ibt-19-32-0.sfi intel/ibt-19-32-1.sfi intel/ibt-19-32-4.sfi
-   intel/ibt-20-0-3.sfi intel/ibt-20-1-3.sfi intel/ibt-20-1-4.sfi - Intel
-   Wireless 22000 series iwlwifi-Qu-b0-hr-b0-77.ucode
-   iwlwifi-Qu-b0-jf-b0-77.ucode iwlwifi-Qu-c0-hr-b0-77.ucode
-   iwlwifi-Qu-c0-jf-b0-77.ucode iwlwifi-QuZ-a0-hr-b0-77.ucode
-   iwlwifi-cc-a0-77.ucode The updated firmware files might need an updated
-   kernel.
+ * CVE-2022-27635: Improper access control for some Intel®
+   PROSet/Wireless WiFi and Killer™ WiFi software may allow a privileged
+   user to enable escalation of privilege via local access.
+ * CVE-2022-36351: An improper input validation flaw was found in some
+   Intel® PROSet/Wireless WiFi and Killer™ WiFi software that may allow
+   an unauthenticated user to enable a denial of service via adjacent access.
+ * CVE-2022-38076: An improper input validation flaw was found in some
+   Intel® PROSet/Wireless WiFi and Killer™ WiFi software that may allow
+   an authenticated user to enable escalation of privilege via local access.
+ * CVE-2022-40964: An improper access control flaw was found in some
+   Intel® PROSet/Wireless WiFi and Killer™ WiFi software that may allow
+   a privileged user to enable escalation of privilege via local access.
+ * CVE-2022-46329: Protection mechanism failure for some Intel®
+   PROSet/Wireless WiFi software may allow a privileged user to enable
+   escalation of privilege via local access.
 bug: [56720]
 cve:
 - CVE-2022-27635
