@@ -14,7 +14,6 @@
 Include /etc/ssh/sshd_config.d/*.conf
 
 @!@
-import sys
 from os.path import exists
 
 print('Port %s' % configRegistry.get('sshd/port', '22'))
@@ -122,12 +121,8 @@ else:
 print('')
 print('# Change to yes to enable challenge-response passwords (beware issues with')
 print('# some PAM modules and threads)')
-if configRegistry.get('sshd/challengeresponse'):
-    print("ChallengeResponseAuthentication %s" % configRegistry.get('sshd/challengeresponse'))
-    if configRegistry.get('sshd/ChallengeResponseAuthentication'):
-        sys.stderr.write('WARNING: The value for ChallengeResponseAuthentication is set twice: via sshd/ChallengeResponseAuthentication and sshd/challengeresponse\n')
-else:
-    print("ChallengeResponseAuthentication %s" % configRegistry.get('sshd/ChallengeResponseAuthentication', 'yes'))
+if configRegistry.get('sshd/KbdInteractiveAuthentication'):
+    print('KbdInteractiveAuthentication %s' % configRegistry.get('sshd/KbdInteractiveAuthentication'))
 print('')
 print('# Kerberos options')
 if configRegistry.get('sshd/KerberosAuthentication'):
