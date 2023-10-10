@@ -6,11 +6,9 @@ src: libx11
 fix: 2:1.6.4-3+deb9u6
 desc: |
  This update addresses the following issues:
- 2:1.6.4-3+deb9u6 (Thu, 05 Oct 2023 11:22:11 +0200)
- * CVE-2023-43785: out-of-bounds memory access in _XkbReadKeySyms
- * CVE-2023-43786: stack exhaustion from infinite recursion in PutSubImage
- * CVE-2023-43787: integer overflow in XCreateImage
- * Add some more patches for extra hardening.
+ * CVE-2023-43785: Out-of-bounds memory access in `_XkbReadKeySyms`
+ * CVE-2023-43786: Stack exhaustion from infinite recursion in `PutSubImage`
+ * CVE-2023-43787: Integer overflow in `XCreateImage`
 bug: [56709]
 cve:
 - CVE-2023-43785
