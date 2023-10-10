@@ -337,7 +337,7 @@ of the *UMC web frontend*.
 
 .. _services-umc-web-front-end-model:
 
-.. figure:: /images/UMC-web-front-end.*
+.. figure:: /images/UMC-web-frontend.*
    :width: 550 px
 
    Model for UMC web frontend
