@@ -15,7 +15,7 @@ import pytest
 
 from univention.lib.ldap_extension import UniventionLDAPExtension, ucs_registerLDAPExtension
 from univention.testing.ucr import UCSTestConfigRegistry
-from univention.testing.utils import UCSTestDomainAdminCredentials
+from univention.testing.utils import UCSTestDomainAdminCredentials, get_ldap_connection
 
 
 # mocks
@@ -31,7 +31,8 @@ UniventionLDAPExtension.is_local_active = mock_is_local_active
 UniventionLDAPExtension.wait_for_activation = mock_is_local_active
 
 
-def get_acl_extension(lo, ucr):
+def get_acl_extension(ucr):
+    lo = get_ldap_connection(primary=True)
     res = lo.get(f"cn=66univention-appcenter_app,cn=ldapacl,cn=univention,{ucr['ldap/base']}")
     return SimpleNamespace(
         packagename=res["univentionOwnedByPackage"][0].decode("utf-8"),
@@ -50,22 +51,22 @@ def primary_or_backup():
 
 @pytest.fixture()
 def acl_extension(lo, ucr):
-    return get_acl_extension(lo, ucr)
+    return get_acl_extension(ucr)
 
 
 @pytest.fixture()
-def verify_acl_extension(lo, ucr):
+def verify_acl_extension(ucr):
     """
     check that the objects univentionLDAPACLActive is FALSE after
     ucs_registerLDAPExtension and that the listener set TRUE
     after a couple of seconds
     """
     def _func():
-        extension = get_acl_extension(lo, ucr)
+        extension = get_acl_extension(ucr)
         assert extension.active == "FALSE", "extension should be disabled after triggering ldap_touch_udm_object"
         for i in range(1, 30):
             time.sleep(3)
-            extension = get_acl_extension(lo, ucr)
+            extension = get_acl_extension(ucr)
             if extension.active == "TRUE":
                 return
         assert extension.active == "TRUE", "extension not activated by listener after waiting"
