@@ -113,8 +113,8 @@ right-clicking and selecting :guilabel:`Delete`.
 
 .. _computers-using-the-command-line-front-end:
 
-Using the command line front end
---------------------------------
+Using the command line frontend
+-------------------------------
 
 .. program:: ucr
 

@@ -218,7 +218,7 @@ A range of standard parameters are defined for every module:
 Example invocations of the command line interface
 -------------------------------------------------
 
-The following examples for the command line front end of |UCSUDM| can be used as
+The following examples for the command line frontend of |UCSUDM| can be used as
 templates for your own scripts.
 
 .. _central-udm-example-users:

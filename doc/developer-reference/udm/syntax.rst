@@ -197,7 +197,7 @@ three methods to retrieve the values.
 
    .. py:attribute:: regex
 
-      This defines an optional regular expression, which is used in the front end
+      This defines an optional regular expression, which is used in the frontend
       to check the value for validity. By default only valid distinguished names
       are accepted.
 
@@ -293,7 +293,7 @@ three methods to retrieve the values.
    .. py:attribute:: appendEmptyValue
 
       Same as ``addEmptyValue`` but added at the end. Used to automatically
-      choose an existing entry in the front end.
+      choose an existing entry in the frontend.
 
    .. code-block:: python
 

@@ -46,7 +46,7 @@ You find the source code at the following locations:
   * :uv:src:`services/univention-printserver/umc/`
 
 Every UCS system installs |UMC| and its dependencies per default. |UMC| consists
-of the *UMC front end* and the *UMC backend*.
+of the *UMC frontend* and the *UMC backend*.
 :numref:`services-umc-architecture-simplified-model` shows the simplified
 architecture of Univention Management Console and the description thereafter.
 
@@ -63,12 +63,12 @@ architecture of Univention Management Console and the description thereafter.
 
 .. index::
    single: umc; client
-   single: umc; front end
-   single: umc; web front end
+   single: umc; frontend
+   single: umc; web frontend
 
-The *UMC front end* has the following items:
+The *UMC frontend* has the following items:
 
-* *UMC web front end*
+* *UMC web frontend*
 * *UMC client*
 
 .. index:: ! umc modules
@@ -85,7 +85,7 @@ The *UMC backend* has the following items:
 * *UMC server*
 * *UMC modules*
 
-The user facing parts of the *UMC front end* are the *UMC web front end* and the
+The user facing parts of the *UMC frontend* are the *UMC web frontend* and the
 *UMC client*. *Reverse proxy* handle and transform the
 requests and pass them to the *UMC server* at the backend.
 
@@ -120,8 +120,8 @@ HTTP/HTTPS in UMC
    pair: umc; http
    pair: umc; https
 
-The user interacts with the *UMC web front end* in their web browser. The *UMC
-web front end* communicates through *HTTP/HTTPS* with the *UMC backend*. The
+The user interacts with the *UMC web frontend* in their web browser. The *UMC
+web frontend* communicates through *HTTP/HTTPS* with the *UMC backend*. The
 *Reverse proxy* receives requests, handles SSL/TLS, and forwards the requests
 through *HTTP* to the *UMC server*.
 
@@ -133,10 +133,10 @@ Terminal and SSH in UMC
 .. index:: ! umc; client
    single: umc; command line
    single: umc; server
-   single: umc; web front end
+   single: umc; web frontend
 
 The *UMC client* communicates with *UMC backend* through ``HTTPS``. Administrators
-use UMC through the *UMC web front end* or through specific command-line tools.
+use UMC through the *UMC web frontend* or through specific command-line tools.
 
 .. caution::
 
@@ -258,7 +258,7 @@ server offering the *Reverse proxy* consists of more parts.
 Static HTTP server
    First is the web server realized by :program:`Apache HTTP server`. The web
    server provides the *Static HTTP server* that delivers the static files for
-   the *UMC web front end*. And the *Static HTTP server* responds with important
+   the *UMC web frontend*. And the *Static HTTP server* responds with important
    HTTP headers for caching rules of the static files and security related
    headers like for example `content security policy <mdn-csp_>`_.
 
@@ -314,35 +314,35 @@ UMC module processes
 
 .. _services-umc-web-front-end:
 
-UMC web front end
------------------
+UMC web frontend
+----------------
 
-.. index:: ! umc; web front end
+.. index:: ! umc; web frontend
    single: technology; dojo toolkit
    single: dojo toolkit
    single: technology; bootstrap
    single: bootstrap
 
-The *UMC web front end* is responsible for the presentation layer of |UMC| and
+The *UMC web frontend* is responsible for the presentation layer of |UMC| and
 runs in the user's web browser. It uses the modular JavaScript framework
 :program:`Dojo Toolkit` to create dynamic widgets. And it uses the
 :program:`Bootstrap` CSS framework for responsive designed web pages.
 
 :numref:`services-umc-web-front-end-model` provides a detailed view on the model
-of the *UMC web front end*.
+of the *UMC web frontend*.
 
 .. index::
-   single: umc; web front end model
-   single: model; umc web front end
+   single: umc; web frontend model
+   single: model; umc web frontend
 
 .. _services-umc-web-front-end-model:
 
 .. figure:: /images/UMC-web-front-end.*
    :width: 550 px
 
-   Model for UMC web front end
+   Model for UMC web frontend
 
-The *UMC web front end* consists of static files for JavaScript, HTML and CSS.
+The *UMC web frontend* consists of static files for JavaScript, HTML and CSS.
 The *UMC backend* sends the static files to the user's web browser, where the
 web browser presents UMC as a web application. The following packages from
 :uv:src:`management/univention-web/` contain the artifacts for the web front
@@ -362,7 +362,7 @@ user interface:
    graphical theme built with :program:`Bootstrap`.
 
 :file:`univention-management-console-frontend`
-   Contains the HTML files for the *UMC web front end*. More packages like
+   Contains the HTML files for the *UMC web frontend*. More packages like
    :file:`univention-server-overview`,
    :file:`univention-management-console-login`, :file:`univention-system-setup`,
    :file:`univention-portal` and others also contain HTML files for the *UCS
@@ -390,7 +390,7 @@ This section covers *UMC modules*. For the context of *UMC modules*, refer to
 :ref:`services-umc-back-end`.
 
 UMC modules extend UCS with capability. Each UMC module defines its command
-behavior with a Python implementation and its web front end presentation with
+behavior with a Python implementation and its web frontend presentation with
 JavaScript as shown in :numref:`services-umc-module-architecture-model`.
 
 .. _services-umc-module-architecture-model:

@@ -13,7 +13,7 @@ Local system module
 
 The UMC server provides management services that are provided by so called UMC
 modules. These modules are implemented in Python (backend) and in JavaScript
-(web front end). The following page provides information about developing and
+(web frontend). The following page provides information about developing and
 packaging of UMC modules. It is important to know the details of
 :ref:`umc-architecture`.
 
@@ -40,7 +40,7 @@ A UMC module consists of three components
 
 * The Python module defining the command functions.
 
-* The JavaScript front end providing the web front end.
+* The JavaScript frontend providing the web frontend.
 
 .. _umc-module-api-xml:
 
@@ -98,7 +98,7 @@ tools will create translation files. Details can be found in the
 
 This example defines a so called *flavor*. A flavor defines a new name,
 description and icon for the same UMC module. This can be used to show several
-virtual modules in the overview of the web front end. Additionally, the flavor is
+virtual modules in the overview of the web frontend. Additionally, the flavor is
 passed to the UMC server with each request i.e. the UMC module has the
 possibility to act differently for a specific flavor.
 
@@ -332,7 +332,7 @@ The keys in this file of the following meaning:
    A directory containing the JavaScript source code
 
 ``Icons``
-   A directory containing the icons required by the modules web front end
+   A directory containing the icons required by the modules web frontend
 
 ``Syntax`` (optional)
    The filename of the XML file with the syntax definitions

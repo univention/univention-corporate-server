@@ -38,7 +38,7 @@ repository, which is used to resolve dependencies between packages. While
 invoking :command:`dpkg` on this set. :command:`apt-get` is a command line tool,
 which is fully described in its manual page :manpage:`apt-get(8)`. A more modern version with
 a text based user interface is :command:`aptitude`, while :command:`synaptic`
-provides a graphical front end.
+provides a graphical frontend.
 
 On UCS systems the administrator is not supposed to use these tools
 directly. Instead all software maintenance can be done through the UMC,
