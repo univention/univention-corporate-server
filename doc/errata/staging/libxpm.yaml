@@ -6,11 +6,8 @@ src: libxpm
 fix: 1:3.5.12-1+deb9u2
 desc: |
  This update addresses the following issues:
- 1:3.5.12-1+deb9u2 (Thu, 05 Oct 2023 11:23:22 +0200)
- * Add check to avoid triggering CVE-2023-43786 in libX11.
- * Add check to avoid triggering CVE-2023-43787 in libX11.
- * CVE-2023-43788: out of bounds read in XpmCreateXpmImageFromBuffer
- * CVE-2023-43789: out of bounds read on XPM with corrupted colormap
+ * CVE-2023-43788: Out of bounds read in `XpmCreateXpmImageFromBuffer`
+ * CVE-2023-43789: Out of bounds read on XPM with corrupted colormap
 bug: [56710]
 cve:
 - CVE-2023-43786
