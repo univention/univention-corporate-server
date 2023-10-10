@@ -8,3 +8,4 @@ desc: |
  This update addresses the following issues:
  * This update provides the package `python3-lmdb` for UCS 5.0.
 bug: [53387]
+maintained: True
