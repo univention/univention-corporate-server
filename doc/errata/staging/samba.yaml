@@ -1,6 +1,6 @@
 product: ucs
 release: "5.0"
-version: [5]
+version: [5,4]
 scope: ucs_5.0-0-errata5.0-5
 src: samba
 fix: 2:4.18.3-1A~5.0.0.202310041246
