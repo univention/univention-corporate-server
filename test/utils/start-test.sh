@@ -333,8 +333,8 @@ fi
 "$debug" && "$docker" && cmd+=("bash" '-s' '--')
 
 cmd+=("$exe" -c "$CFG")
-# TODO, remove debug after openstack testing phase and add it as switch by env variable
-[ "$exe" = "ucs-openstack-create" ] && cmd+=(--debug)
+# TODO, add debug mode as switch by env variable or possibly there will be verbose modes instead
+# [ "$exe" = "ucs-openstack-create" ] && cmd+=(--debug)
 "$HALT" && cmd+=("-t")
 "$REPLACE" && cmd+=("--replace")
 "$TERMINATE_ON_SUCCESS" && cmd+=("--terminate-on-success")
