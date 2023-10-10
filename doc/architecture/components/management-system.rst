@@ -187,7 +187,7 @@ deploy their own custom UMC modules and extend the UCS management system.
 * UMC allows extension of the UCS management system with custom UMC modules.
 
 As component serving the web interface for the UCS management system, |UMC|
-involves a web front end and a back end as shown in
+involves a web front end and a backend as shown in
 :numref:`component-system-management-umc-model`.
 
 .. _component-system-management-umc-model:
@@ -195,7 +195,7 @@ involves a web front end and a back end as shown in
 .. figure:: /images/UMC-architecture-product-component.*
    :width: 250 px
 
-   *UMC web front end* and *UMC back end* realize Univention Management Console
+   *UMC web front end* and *UMC backend* realize Univention Management Console
 
 .. admonition:: Continue reading
 

@@ -118,12 +118,12 @@ file :file:`/var/log/syslog`. For example:
 
 .. _slapd-bdb:
 
-Configuration of the database back end
-======================================
+Configuration of the database backend
+=====================================
 
 The memory mapped database (MDB) has been used for new installations
 since UCS 4.0. If BDB is still in use, a migration to MDB should be
-performed for *amd64* systems. The database back end can be controlled via
+performed for *amd64* systems. The database backend can be controlled via
 the UCR variable :envvar:`ldap/database/type`. A migration can
 be performed as follows:
 
@@ -138,7 +138,7 @@ be performed as follows:
    $ systemctl start slapd
 
 By default the memory mapped database needs more I/O operations than the
-BDB back end. With the |UCSUCRV|
+BDB backend. With the |UCSUCRV|
 :envvar:`ldap/database/mdb/envflags` this behavior can be
 configured. The following flags can be set (multiple values are
 separated by spaces):
@@ -261,7 +261,7 @@ objects that need to be replicated (e.g. DNS zones) then this default may be
 too short.  In that case the timeout can be adjusted by setting the |UCSUCRV|
 :envvar:`join/samba/dns/replication/timeout` to a bigger value before joining.
 
-Samba traditionally uses TDB as back end database storage, that has an internal
+Samba traditionally uses TDB as backend database storage, that has an internal
 32 bit address space limitation. UCS supports provisioning Samba using LMDB
 instead, which doesn't have this strict limitation.
 For more information, see :cite:t:`lmdb-doc`. :uv:kb:`18014` describes
@@ -272,8 +272,8 @@ To use LMDB instead of TDB, set the corresponding |UCSUCRV|
 :program:`Active Directory-compatible Domain Controller` in your UCS domain.
 
 The |UCSUCRV| :envvar:`samba/database/backend/store/size` defines the current
-maximal size of the individual back end database store files and has the default
-value of ``8GB``. Since there is one back end storage file per Active Directory
+maximal size of the individual backend database store files and has the default
+value of ``8GB``. Since there is one backend storage file per Active Directory
 naming context, this amounts to a total of ``40GiB``. Take care that the storage
 can accommodate this amount of space.
 
@@ -282,7 +282,7 @@ If required, you can increase the value monotonically. After changing the
 check the number of used storage pages, ``4KiB`` each, by running the command
 :command:`mdb_stat -nef` on the individual files and calculating ``Number of
 pages used`` minus ``Free pages``. The value at ``Max pages`` shows the current
-effective limit. The back end storage files locate in :file:`/var/lib/samba/private/sam.ldb.d/`
+effective limit. The backend storage files locate in :file:`/var/lib/samba/private/sam.ldb.d/`
 and have the file extension :file:`.ldb`.
 
 .. _group-cache:
@@ -431,14 +431,14 @@ The number of parallel NTLM authentication processes can be configured with the
 BIND
 ====
 
-BIND can use two different back ends for its configuration: OpenLDAP or the
-internal LDB database of Samba/AD. The back end is configured via the |UCSUCRV|
-:envvar:`dns/backend`. On UCS Directory Nodes running Samba/AD, the back end **must
+BIND can use two different backend for its configuration: OpenLDAP or the
+internal LDB database of Samba/AD. The backend is configured via the |UCSUCRV|
+:envvar:`dns/backend`. On UCS Directory Nodes running Samba/AD, the backend **must
 not** be changed to OpenLDAP.
 
-When using the Samba back end, a search is performed in the LDAP for every DNS
-request. With the OpenLDAP back end, a search is only performed in the directory
-service if the DNS data has changed. For this reason, using the OpenLDAP back end
+When using the Samba backend, a search is performed in the LDAP for every DNS
+request. With the OpenLDAP backend, a search is only performed in the directory
+service if the DNS data has changed. For this reason, using the OpenLDAP backend
 can reduce the load on a Samba/AD domain controller.
 
 Kernel

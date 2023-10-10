@@ -114,7 +114,7 @@ passive *UCR variables*, *UCR templates* and *System configuration files*.
 
 UCR variables
    |UCR| is independent from any LDAP directory service. Instead, UCR uses plain
-   text files as its storage back end for UCR variables and saves them in
+   text files as its storage backend for UCR variables and saves them in
    :file:`/etc/univention/base*.conf`. Most UCR commands read UCR variables. The
    *UCR set / unset* command changes UCR variables.
 

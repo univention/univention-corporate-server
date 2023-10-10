@@ -14,7 +14,7 @@ UCS portal service
    single: model; ucs portal tiles cache
    single: model; ucs portal
    single: model; ucs portal front end
-   single: model; ucs portal back end
+   single: model; ucs portal backend
 
 This section describes the technical architecture of the UCS portal service.
 For a general overview, see :ref:`component-portal`.
@@ -23,7 +23,7 @@ Every UCS system role installs the UCS portal and its dependencies per default.
 The UCS portal generates structured data in the JSON format. The data
 persistence layer consists of cache files with structured data in the JSON
 format. The UCS portal needs information about the tiles on the portal and about
-user memberships in user groups. Portal front end and back end use HTTP for
+user memberships in user groups. Portal front end and backend use HTTP for
 communication.
 
 You find the source code at :uv:src:`management/univention-portal/`.
@@ -34,13 +34,13 @@ UCS Portal and the description below.
 .. _services-ucs-portal-architecture-model:
 
 .. figure:: /images/UCS-portal-architecture.*
-   :alt: Architecture of the UCS portal consisting of front end and back end
+   :alt: Architecture of the UCS portal consisting of front end and backend
    :width: 650 px
 
    Architecture of the UCS Portal
 
 The *User* uses the *UCS Portal* through a web browser with HTTP/HTTPS. The
-:ref:`services-ucs-portal-front-end` and the *back end* together realize the
+:ref:`services-ucs-portal-front-end` and the *backend* together realize the
 *UCS portal*. The :ref:`services-ucs-portal-back-end` validates the user login
 with the *UMC server* and uses structured data from the *UCS Portal tile
 cache* and the *UCS group cache*.
@@ -53,7 +53,7 @@ The UCS Portal uses the following technology:
    pair: tornado; ucs portal
 
 HTTP request handler
-   The UCS Portal back end uses `Tornado <tornado_>`_ to handle the HTTP
+   The UCS Portal backend uses `Tornado <tornado_>`_ to handle the HTTP
    requests from the front end and to serve the data to the front end. *Tornado*
    is a Python web framework and asynchronous networking library.
 
@@ -101,17 +101,17 @@ render from the :ref:`services-ucs-portal-back-end`.
 
 .. _services-ucs-portal-back-end:
 
-Portal back end
----------------
+Portal backend
+--------------
 
 .. index::
-   single: ucs portal; back end
-   single: ucs portal; architecture model back end
+   single: ucs portal; backend
+   single: ucs portal; architecture model backend
 
-The portal back end generates the data about what portal the front end renders
+The portal backend generates the data about what portal the front end renders
 for the user.
 
-The portal back end delegates the user authentication to the UMC server. It
+The portal backend delegates the user authentication to the UMC server. It
 maintains internal caches for the portal content and the user group memberships.
 It doesn't request LDAP or :ref:`services-udm` directly.
 
@@ -119,14 +119,14 @@ It doesn't request LDAP or :ref:`services-udm` directly.
    It doesn't request :ref:`services-ldap` or :ref:`services-udm` directly.
 
 :numref:`services-ucs-portal-back-end-architecture-model` shows the architecture
-of the portal back end. A description about the elements and their responsibility
+of the portal backend. A description about the elements and their responsibility
 follows.
 
 .. _services-ucs-portal-back-end-architecture-model:
 
 .. figure:: /images/UCS-portal-back-end-architecture.*
 
-   Architecture of the UCS Portal back end
+   Architecture of the UCS Portal backend
 
 .. index:: ucs portal; tiles cache
 
@@ -181,13 +181,13 @@ model of the user identification. The description follows below.
 #. The user is either an anonymous user or has user information from a login.
 
 #. The portal front end sends an HTTP request with user information to the portal
-   back end.
+   backend.
 
-#. The portal back end delegates the user validation to the UMC server.
+#. The portal backend delegates the user validation to the UMC server.
 
 #. The UMC server returns the login status.
 
-#. Based on the login status the portal back end generates the structured data
+#. Based on the login status the portal backend generates the structured data
    for the portal front end.
 
 .. _services-ucs-portal-back-end-structured-data:
@@ -215,7 +215,7 @@ Signed-in users
    Signed-in users see public content and content depending on their group
    memberships. One user may also see different tiles than another user.
 
-The portal back end uses two caches to generate the structured data.
+The portal backend uses two caches to generate the structured data.
 
 .. _services-ucs-portal-back-end-portal-tile-cache:
 

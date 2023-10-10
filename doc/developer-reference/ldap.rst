@@ -20,7 +20,7 @@ At least it should be noted that OpenLDAP offers two fundamentally different
 tool sets for direct access or modification of LDAP data:
 
 #. The :samp:`slap{*}` commands (:command:`slapcat`, etc.) are very low level,
-   operating directly on the LDAP back end data and should only be used in rare
+   operating directly on the LDAP backend data and should only be used in rare
    cases, usually with the LDAP server not running.
 
 #. The :samp:`ldap{*}` commands (:command:`ldapsearch`, etc.) on the other hand
@@ -36,7 +36,7 @@ essential concepts of LDAP as used in UCS.
 
 One essential trait of LDAP as used in UCS, is the strict enforcement of LDAP
 schemata. An LDAP server refuses to start if an unknown LDAP attribute is
-referenced either in the configuration or in the back end data. This makes it
+referenced either in the configuration or in the backend data. This makes it
 critically important to install schemata on all systems. To simplify this task
 UCS features a built-in mechanism for automatic schema replication to all UCS
 hosted LDAP servers in the UCS domain (see :ref:`chap-listener`). The schema

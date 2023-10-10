@@ -12,7 +12,7 @@ Local system module
    single: management console; system
 
 The UMC server provides management services that are provided by so called UMC
-modules. These modules are implemented in Python (back end) and in JavaScript
+modules. These modules are implemented in Python (backend) and in JavaScript
 (web front end). The following page provides information about developing and
 packaging of UMC modules. It is important to know the details of
 :ref:`umc-architecture`.

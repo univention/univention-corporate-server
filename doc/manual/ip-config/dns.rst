@@ -76,31 +76,31 @@ Configuration of BIND debug output
 
 The level of detail of the BIND debug output can be configured via the
 :envvar:`dns/debug/level` and :envvar:`dns/dlz/debug/level` (for the Samba
-back end, see :ref:`ip-config-dns-backend`) |UCSUCR| variables. The possible
+backend, see :ref:`ip-config-dns-backend`) |UCSUCR| variables. The possible
 values are between ``0`` (no debug tasks) to ``11``. A complete list of levels
 can be found at :cite:t:`bind-loglevel`.
 
 .. _ip-config-dns-backend:
 
-Configuration of the data back end
+Configuration of the data backend
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 In a typical BIND installation on a non-UCS system, the configuration is
 performed by editing zone files. In UCS, BIND is completely configured via UMC
 modules, which saves its data in the LDAP directory.
 
-BIND can use two different back ends for its configuration:
+BIND can use two different backend for its configuration:
 
-LDAP back end
-   The *LDAP back end* accesses the data in the LDAP directory. This is the
-   standard back end. The DNS service is split into two in this case: The *BIND
+LDAP backend
+   The *LDAP backend* accesses the data in the LDAP directory. This is the
+   standard backend. The DNS service is split into two in this case: The *BIND
    proxy* is the primary name server and uses the DNS standard port ``53``. A
    second server in the background works on port ``7777``. If data from the
    internal DNS zones are edited in the LDAP, the zone file on the second server
    is updated based on the LDAP information and transmitted to the BIND proxy by
    means of a zone transfer.
 
-Samba back end
+Samba backend
    Samba/AD provides an Active Directory domain. Active Directory is closely
    connected with DNS, for DNS updates of Windows clients or the localization of
    NETLOGON shares among other things. If Samba/AD is used, the UCS Directory
@@ -108,13 +108,13 @@ Samba back end
    database is maintained in Samba's internal LDB database, which Samba updates
    directly. BIND then accesses the Samba DNS data via the DLZ interface.
 
-When using the Samba back end, a search is performed in the LDAP for every DNS
-request. With the OpenLDAP back end, a search is only performed in the directory
-service if the DNS data has changed. The use of the LDAP back end can thus result
+When using the Samba backend, a search is performed in the LDAP for every DNS
+request. With the OpenLDAP backend, a search is only performed in the directory
+service if the DNS data has changed. The use of the LDAP backend can thus result
 in a reduction of the system load on Samba/AD systems.
 
-The back end is configured via the |UCSUCRV| :envvar:`dns/backend`. The DNS
-administration is not changed by the back end used and is performed via UMC
+The backend is configured via the |UCSUCRV| :envvar:`dns/backend`. The DNS
+administration is not changed by the backend used and is performed via UMC
 modules in both cases.
 
 .. _ip-config-configuration-of-zone-transfers:
@@ -125,7 +125,7 @@ Configuration of zone transfers
 By default the UCS name server allows zone transfers of the DNS data. If the UCS
 server can be reached from the internet, a list of all computer names and IP
 addresses can be requested. The zone transfer can be deactivated when using the
-OpenLDAP back end by setting the |UCSUCRV| :envvar:`dns/allow/transfer` to
+OpenLDAP backend by setting the |UCSUCRV| :envvar:`dns/allow/transfer` to
 ``none``.
 
 .. _ip-config-dns-umc:

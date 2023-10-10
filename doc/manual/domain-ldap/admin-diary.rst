@@ -44,8 +44,8 @@ Moreover there is the possibility to comment each event.
 
 The app consists of two components:
 
-Admin Diary back end
-   The back end must be installed on one system in the domain before the front end
+Admin Diary backend
+   The backend must be installed on one system in the domain before the front end
    can be installed. It includes a customization for :program:`rsyslog` and
    writes into a central database, which defaults to PostgreSQL. If MariaDB or
    MySQL is already installed on the target system, it will be used instead of
@@ -55,7 +55,7 @@ Admin Diary front end
    Likewise the front end must be installed at least once, but more installations
    are also possible. The front end includes the UMC module :guilabel:`Admin
    Diary`, which is used to show and comment the entries. When installing it on
-   a different host than where the back end is installed, access to the central
+   a different host than where the backend is installed, access to the central
    database needs to be configured manually. The required steps for this are
-   described in `Admin Diary - How to separate front end and back end
+   described in `Admin Diary - How to separate front end and backend
    <univention-kb-admin-diary-separate-frontend-backend_>`_.

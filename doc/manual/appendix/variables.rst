@@ -198,7 +198,7 @@ This appendix lists the |UCSUCRV|\ s mentioned in the document.
 
 .. envvar:: dns/allow/transfer
 
-   To deactivate the DNS zone transfer when using the OpenLDAP back end, set the
+   To deactivate the DNS zone transfer when using the OpenLDAP backend, set the
    value to ``none``. For more information, see
    :ref:`ip-config-configuration-of-zone-transfers`.
 

@@ -530,7 +530,7 @@ directory of the user located on the currently chosen logon server.
 Alternatively the profile path can be defined for individual user accounts. This
 is possible in the UMC module :guilabel:`Users` under the *Account* tab by
 filling the field *Windows profile directory*. The corresponding UDM property is
-called ``profilepath``. In the OpenLDAP back end this is stored in the LDAP
+called ``profilepath``. In the OpenLDAP backend this is stored in the LDAP
 attribute ``sambaProfilePath``.
 
 If the profile path is changed, then a new profile directory will be

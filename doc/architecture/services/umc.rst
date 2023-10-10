@@ -46,7 +46,7 @@ You find the source code at the following locations:
   * :uv:src:`services/univention-printserver/umc/`
 
 Every UCS system installs |UMC| and its dependencies per default. |UMC| consists
-of the *UMC front end* and the *UMC back end*.
+of the *UMC front end* and the *UMC backend*.
 :numref:`services-umc-architecture-simplified-model` shows the simplified
 architecture of Univention Management Console and the description thereafter.
 
@@ -74,11 +74,11 @@ The *UMC front end* has the following items:
 .. index:: ! umc modules
    pair: umc; reverse proxy
    pair: umc; static http server
-   single: umc; back end
+   single: umc; backend
    single: umc; modules
    single: umc; server
 
-The *UMC back end* has the following items:
+The *UMC backend* has the following items:
 
 * *Static HTTP server*
 * *Reverse proxy*
@@ -87,7 +87,7 @@ The *UMC back end* has the following items:
 
 The user facing parts of the *UMC front end* are the *UMC web front end* and the
 *UMC client*. *Reverse proxy* handle and transform the
-requests and pass them to the *UMC server* at the back end.
+requests and pass them to the *UMC server* at the backend.
 
 .. _services-umc-communication:
 
@@ -121,7 +121,7 @@ HTTP/HTTPS in UMC
    pair: umc; https
 
 The user interacts with the *UMC web front end* in their web browser. The *UMC
-web front end* communicates through *HTTP/HTTPS* with the *UMC back end*. The
+web front end* communicates through *HTTP/HTTPS* with the *UMC backend*. The
 *Reverse proxy* receives requests, handles SSL/TLS, and forwards the requests
 through *HTTP* to the *UMC server*.
 
@@ -135,7 +135,7 @@ Terminal and SSH in UMC
    single: umc; server
    single: umc; web front end
 
-The *UMC client* communicates with *UMC back end* through ``HTTPS``. Administrators
+The *UMC client* communicates with *UMC backend* through ``HTTPS``. Administrators
 use UMC through the *UMC web front end* or through specific command-line tools.
 
 .. caution::
@@ -222,16 +222,16 @@ expired password during sign-in.
 
 .. _services-umc-back-end:
 
-UMC back end
-------------
+UMC backend
+-----------
 
-.. index:: ! umc; back end
-   single: umc; back end architecture
+.. index:: ! umc; backend
+   single: umc; backend architecture
    single: umc; module processes
    single: IPC socket
-   single: umcp; umc back end
+   single: umcp; umc backend
 
-The *UMC back end* consists of the following items as shown in
+The *UMC backend* consists of the following items as shown in
 :numref:`services-umc-architecture-simplified-model`:
 
 * *Reverse proxy*
@@ -242,15 +242,15 @@ In :numref:`services-umc-backend-model` you see the *Reverse proxy* you already
 know from :numref:`services-umc-architecture-simplified-model`. In fact, the web
 server offering the *Reverse proxy* consists of more parts.
 
-.. index:: umc; back end model
-   single: model; umc back end
+.. index:: umc; backend model
+   single: model; umc backend
 
 .. _services-umc-backend-model:
 
 .. figure:: /images/UMC-back-end.*
    :width: 650 px
 
-   Parts of the *UMC back end*
+   Parts of the *UMC backend*
 
 .. index:: ! umc; static http server
    single: technology; apache http server
@@ -343,7 +343,7 @@ of the *UMC web front end*.
    Model for UMC web front end
 
 The *UMC web front end* consists of static files for JavaScript, HTML and CSS.
-The *UMC back end* sends the static files to the user's web browser, where the
+The *UMC backend* sends the static files to the user's web browser, where the
 web browser presents UMC as a web application. The following packages from
 :uv:src:`management/univention-web/` contain the artifacts for the web front
 user interface:

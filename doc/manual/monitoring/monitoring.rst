@@ -188,10 +188,10 @@ All alerts have label *severity* with value ``critical`` or ``warning``.
        an alert is fired.
 
    * - ``UNIVENTION_SLAPD_MDB_MAXSIZE`` and ``UNIVENTION_SLAPD_MDB_MAXSIZE_WARNING``
-     - Monitors the share of free memory pages of the *mdb* back end of SLAPD for multiple directories.
+     - Monitors the share of free memory pages of the *mdb* backend of SLAPD for multiple directories.
 
    * - ``UNIVENTION_LISTENER_MDB_MAXSIZE`` and ``UNIVENTION_LISTENER_MDB_MAXSIZE_WARNING``
-     - Monitors the share of free memory pages of the *mdb* back end of SLAPD for multiple directories regarding the Univention listener.
+     - Monitors the share of free memory pages of the *mdb* backend of SLAPD for multiple directories regarding the Univention listener.
 
 The following monitoring alerts are only available
 once additional packages have been installed (see :ref:`Monitoring installation <monitoring-installation>`).
