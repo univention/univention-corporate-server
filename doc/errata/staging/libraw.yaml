@@ -6,10 +6,10 @@ src: libraw
 fix: 0.17.2-6+deb9u5
 desc: |
  This update addresses the following issues:
- 0.17.2-6+deb9u5 (Mon, 02 Oct 2023 15:00:14 +0200)
- * Non-maintainer upload by the ELTS team.
- * CVE-2020-22628
- * CVE-2021-32142
+ * CVE-2020-22628: Buffer Overflow vulnerability in the function
+   `LibRaw::stretch()`
+ * CVE-2021-32142: Buffer Overflow vulnerability allows attacker to escalate
+   privileges via the function `LibRaw_buffer_datastream::gets()`
 bug: [56707]
 cve:
 - CVE-2020-22628
