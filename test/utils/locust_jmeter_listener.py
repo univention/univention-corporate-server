@@ -111,9 +111,6 @@ class JmeterListener:
         response_message = "OK" if success == "true" else "KO"
         # check to see if the additional fields have been populated. If not, set to a default value
         status_code = kw["status_code"] if "status_code" in kw else "0"
-        response = kw["response"] if "response" in kw else None
-        if response and status_code == "0":
-            status_code = response.status_code
         thread_name = self.testplan
         data_type = kw["data_type"] if "data_type" in kw else "unknown"
         bytes_sent = kw["bytes_sent"] if "bytes_sent" in kw else "0"
