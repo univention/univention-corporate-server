@@ -38,9 +38,9 @@ from __future__ import print_function
 
 import sys
 import time
-from argparse import REMAINDER, ArgumentParser, Namespace, RawTextHelpFormatter
+from argparse import REMAINDER, ArgumentParser, FileType, Namespace, RawTextHelpFormatter
 from logging import getLogger
-from typing import List, Tuple, Union
+from typing import Optional, Tuple, Union  # noqa: F401
 
 import univention.logging
 
@@ -66,55 +66,58 @@ from univention.admin.handlers.dns import txt_record  # noqa: E402
 from univention.config_registry import ucr  # noqa: E402
 
 
-def parse() -> Tuple[Namespace, str, str, str, List[str]]:
+def parse() -> Namespace:
     """Parse command line."""
     description = '''
-%(prog)s my.dns.zone add	srv   ldap tcp 0 100 7389 master.fqdn
-%(prog)s my.dns.zone remove srv   ldap tcp 0 100 7389 master.fqdn
+%(prog)s my.dns.zone add	srv   ldap tcp 0 100 7389 master.fqdn.
+%(prog)s my.dns.zone remove	srv   ldap tcp 0 100 7389 master.fqdn.
 %(prog)s my.dns.zone add	txt   entry-name  "Some text"
-%(prog)s 192.168.122 add	ptr   42  host.fqdn  --reverse
+%(prog)s 192.168.122 add	ptr   42  host.fqdn.  --reverse
 %(prog)s my.dns.zone add	cname univention-repository apt.knut.univention.de.
-%(prog)s my.dns.zone add	a	 host  1.2.3.4  5.6.7.8
-%(prog)s my.dns.zone add	zone  root@fqdn 1 28800 7200 25200 10800 ns.fqdn
+%(prog)s my.dns.zone add	a     host  1.2.3.4  5.6.7.8
+%(prog)s my.dns.zone add	zone  root@fqdn 1 28800 7200 25200 10800 ns.fqdn.
 '''
     global parser
     parser = ArgumentParser(formatter_class=RawTextHelpFormatter, description=description)
     parser.add_argument(
         '--ignore-missing-zone',
-        action='store_true', dest='ignore_missing_zone',
+        action='store_true',
         help='Skip if zone does not exist')
     parser.add_argument(
         '--ignore-exists',
-        action='store_true', dest='ignore_exists',
+        action='store_true',
         help='Skip if entry already exists')
     parser.add_argument(
         '--quiet',
-        action='store_true', dest='quiet',
+        action='store_true',
         help='Turn off verbose messages')  # not implemented
     parser.add_argument(
         '--reverse',
-        action='store_true', dest='reverse',
+        action='store_true',
         help='Modify revers zone instead of forward zone')
     parser.add_argument(
         '--overwrite',
-        action='store_true', dest='overwrite',
+        action='store_true',
         help='Overwrite existing record')
     parser.add_argument(
         '--stoptls',
-        action='store_true', dest='stoptls',
+        action='store_true',
         help='Disable TLS')
-    parser.add_argument(
+
+    group_ldap = parser.add_argument_group("LDAP BIND")
+    group_ldap.add_argument(
         '--binddn',
-        action='store', dest='binddn',
-        help='bind DN')
-    parser.add_argument(
+        required=True,
+        help='LDAP bind DN')
+    group_pwd = group_ldap.add_mutually_exclusive_group(required=True)
+    group_pwd.add_argument(
         '--bindpwd',
-        action='store', dest='bindpwd',
-        help='bind password')
-    parser.add_argument(
+        help='LDAP bind password')
+    group_pwd.add_argument(
         '--bindpwdfile',
-        action='store', dest='bindpwdfile',
-        help='bind password file')
+        type=FileType("r"),
+        help='LDAP bind password file')
+
     parser.add_argument(
         '--timeout', type=int, default=120,
         help='LDAP connection timeout')
@@ -131,23 +134,16 @@ def parse() -> Tuple[Namespace, str, str, str, List[str]]:
     parser.add_argument(
         'typ',
         choices=['srv', 'txt', 'ns', 'ptr', 'cname', 'a', 'zone'],
-        help='dns record type',
+        help='DNS record type',
     )
     parser.add_argument("args", nargs=REMAINDER)
 
     options = parser.parse_args()
-    msg = None
     if options.bindpwdfile:
-        options.bindpwd = open(options.bindpwdfile).read().strip()
-    if options.binddn and not options.bindpwd:
-        msg = 'authentication error: missing any of --bindpwdfile or --bindpwd'
-    elif not options.binddn and options.bindpwd:
-        msg = 'authentication error: missing --binddn'
-    if msg:
-        log.error('%s', msg)
-        parser.error(msg)
+        with options.bindpwdfile as fd:
+            options.bindpwd = fd.read().strip()
 
-    return options, options.zone, options.command, options.typ, options.args
+    return options
 
 
 def bind() -> Tuple[uldap.access, uldap.position]:
@@ -159,7 +155,7 @@ def bind() -> Tuple[uldap.access, uldap.position]:
             if options.binddn and options.bindpwd:
                 lo = uldap.access(
                     host=ucr['ldap/master'],
-                    port=int(ucr.get('ldap/master/port', 7389)),
+                    port=ucr.get_int('ldap/master/port', 7389),
                     base=ucr['ldap/base'],
                     binddn=options.binddn,
                     bindpw=options.bindpwd,
@@ -182,7 +178,7 @@ def bind() -> Tuple[uldap.access, uldap.position]:
                 sys.exit(msg)
 
 
-def lookup_zone(zone_name: str) -> Union[forward_zone, reverse_zone]:
+def lookup_zone(zone_name: str) -> Union[forward_zone.object, reverse_zone.object]:
     """Lookup zone and return UDM object."""
     if not options.reverse:
         zones = forward_zone.lookup(co, lo, '(zone=%s)' % (zone_name,), scope='domain', base=position.getDomain(), unique=True)
@@ -401,22 +397,30 @@ def add_zone(contact: str, serial: str, refresh: str, retry: str, expire: str, t
     zone.create()
 
 
-lo = options = zone = zone_name = position = co = parser = None
+options = Namespace()
+co = None
+lo = None  # type: Optional[uldap.access]
+position = None  # type: Optional[uldap.position]
+lo = position = co = parser = None
+zone_name = ""
+zone = None  # type: Union[None, forward_zone.object, reverse_zone.object]
 
 
 def main() -> None:
     """Run DNS edit."""
     global options
+    options = parse()
     global zone_name
-    options, zone_name, command, typ, args = parse()
-    global co
-    co = None
+    zone_name = options.zone
+    typ = options.typ
+    args = options.args
+
     global lo
     global position
     lo, position = bind()
 
     univention.admin.modules.update()
-    if typ != 'zone' or command == 'remove':
+    if typ != 'zone' or options.command == 'remove':
         global zone
         zone = lookup_zone(zone_name)
         position.setDn(zone.dn)
@@ -424,7 +428,7 @@ def main() -> None:
         position.setDn(univention.admin.config.getDefaultContainer(lo, 'dns/'))
 
     try:
-        if command == 'add':
+        if options.command == 'add':
             print('Adding %s record "%s" to zone %s...' % (typ.upper(), ' '.join(args), zone_name))
             if typ == 'srv':
                 add_srv_record(*args)
@@ -440,14 +444,16 @@ def main() -> None:
                 add_a_record(*args)
             elif typ == 'zone':
                 add_zone(*args)
+            else:
+                sys.exit('Unknown type "%s"' % (typ,))
             print('done')
-        elif command == 'remove':
+        elif options.command == 'remove':
             if typ == 'srv':
                 remove_srv_record(*args)
             elif typ == 'ns':
                 remove_ns_record(*args)
             else:
-                parser.error('Unknown type "%s"' % (typ,))
+                sys.exit('Unknown type "%s"' % (typ,))
     except univention.admin.uexceptions.objectExists as ex:
         if not options.ignore_exists:
             print('E: Object "%s" exists' % (ex.dn,), file=sys.stderr)
