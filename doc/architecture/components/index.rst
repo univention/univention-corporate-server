@@ -8,14 +8,14 @@
 Product components
 ******************
 
-In this part of the document, you learn about the second, medium, detail level of
-the architecture of |UCS|. You learn about UCS product components that you face
-directly when you use UCS. The product components typically act as entry points
-for your tasks.
+In this part of the document, you learn about the second, medium, and detail
+level of the architecture of |UCS|. You learn about UCS product components that
+you face directly when you use UCS. The product components typically act as
+entry points for your tasks.
 
-The description of the product components is for administrators and solution
-architects. For software developers and system engineers it provides the context
-for the architectural details to UCS. Make sure you are familiar with the
+The product components descriptions are intended for administrators and solution
+architects. For software developers and system engineers, it provides the context
+for the architectural details of UCS. Make sure you are familiar with the
 :ref:`concepts` behind UCS.
 
 .. include:: /archimate.txt

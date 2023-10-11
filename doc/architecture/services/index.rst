@@ -13,11 +13,7 @@ Services
 This section covers numerous services that |UCS| offers to IT infrastructures.
 It's for administrators and solution architects.
 
-For architecture notation, this part of the document uses ArchiMate® 3.1, a
-visual language with a set of default iconography for describing, analyzing, and
-communicating many concerns of enterprise architectures. For more information
-about how the document uses the notation, refer to
-:ref:`architecture-notation-archimate`.
+.. include:: /archimate.txt
 
 .. toctree::
    :maxdepth: 2

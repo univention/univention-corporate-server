@@ -32,8 +32,9 @@ either through the web based management system or a terminal as shown in
 
    Architecture overview of the App Center
 
-Abstractly speaking, the application service *App Center* offers a web interface
-through *HTTP/HTTPS* and a command line interface through *Terminal / SSH*.
+Abstractly speaking, the application service *App Center Service* offers a web
+interface through *HTTP/HTTPS* and a command line interface through *Terminal /
+SSH*.
 
 The following list demarcates the App Center from its capabilities. The App
 Center isn't:
@@ -41,7 +42,7 @@ Center isn't:
 * a tool to distribute software specific to customers or projects.
 
 * a solution for every use case. It has limitations for example in large
-  environments that require cluster or load balancing setups.
+  environments that require setups for a cluster or load balancing.
 
 Think of the App Center as a global entity in the UCS domain. The App Center
 addresses all UCS systems. Administrators can view and install any available

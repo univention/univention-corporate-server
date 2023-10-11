@@ -40,7 +40,7 @@ It consists of the following parts as shown in
 * :ref:`component-domain-management` to centrally manage the domain
   settings and objects in the domain database.
 
-* :ref:`component-system-management` for managing UCS systems, services and
+* :ref:`component-system-management` to manage UCS systems, services and
   apps.
 
 * :ref:`component-configuration-registry` to store configuration settings for
@@ -70,17 +70,18 @@ Identities
    member of different groups.
 
 Devices
-   *Devices* include computers like for example other UCS systems, user clients
-   like notebooks or printers. Furthermore, it also includes device monitoring.
+   *Devices* include computers such as other UCS systems, user clients such as
+   notebooks or printers. Furthermore, it also includes device monitoring.
 
 Services
-   *Services* include basic infrastructure services like networks with DHCP and
-   DNS, infrastructure for applications and users like email and file shares and
-   other domain services like domain join, directory manager, and policies.
+   *Services* include basic infrastructure services such as networking with DHCP
+   and DNS, infrastructure for applications and users such as email and file
+   shares, and other domain services such as domain join, directory manager, and
+   policies.
 
-In |UCS| the |UDM| is responsible for domain management. You can imagine |UDM|
-as abstraction layer to the domain database. |UDM| provides modules for each
-area. Services and apps can extend the domain management.
+In |UCS|, |UDM| is responsible for domain management. You can imagine |UDM| as
+abstraction layer to the domain database. |UDM| provides modules for each area.
+Services and apps can extend the domain management.
 
 As abstraction layer the purposes of |UDM| are the following:
 
@@ -166,15 +167,15 @@ System management
 
 System management includes all administrative tasks related to the underlying
 UCS system. These tasks include, for example, UCS system updates, management of
-apps such as lifecycle and configuration and certificate handling. The purpose
-of system management is to simplify the daily tasks of administrators when
-managing multiple UCS systems.
+apps such as lifecycle, configuration, and certificate handling. The purpose of
+system management is to simplify the daily tasks of administrators when managing
+multiple UCS systems.
 
 The component *Univention Management Console (UMC)* provides the capabilities
 for system management on UCS and is part of the UCS management system. It offers
 the technology stack for the web interface of the UCS management system. |UMC|
 consists of modules for various management tasks. Apps and software packages can
-deploy their own custom UMC modules and extend the UCS management system.
+provide custom UMC modules and extend the UCS management system.
 
 |UMC| is a central component in UCS for the following reasons:
 

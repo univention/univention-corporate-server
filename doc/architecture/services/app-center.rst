@@ -37,10 +37,10 @@ For the abstract context description about the first two rows in
 :ref:`component-app-center`.
 
 In the notation in :numref:`services-app-center-architecture-overview` the
-application service *App Center* summarizes all behavior that relates to the App
-Center and apps on a |UCS| system. The center piece for all behavior in the *App
-Center* are the *App Center actions* that use the *Python App Center library* to
-do "stuff" with *App*\ s.
+application service *App Center Service* summarizes all behavior that relates to
+the App Center and apps on a |UCS| system. The center piece for all behavior in
+the *App Center* are the *App Center actions* that use the *Python App Center
+library* to do "stuff" with *App*\ s.
 
 The App Center is a complex component in UCS. As you continue reading, the
 concepts unfold and reveal their internal parts.
@@ -148,9 +148,9 @@ repository and run the following command:
 
    $ find | grep actions
 
-The core actions that administrators encounter while working with |UCS| are
-actions to manage the app lifecycle and control their operation status. Those
-are actions like for example:
+The core actions that administrators encounter when working with |UCS| are
+actions to manage the app lifecycle and control their operational status. These
+are actions such as:
 
 * *App install*
 * *App remove*
@@ -420,8 +420,6 @@ background color.
 .. figure:: /images/App-Center-integration-identity-management.*
 
    *Register App directory listener* for user provisioning with *push* method
-
-The following list describes the key items:
 
 Register App directory listener
    Upon app installation, the App Center generates a listener module for the app

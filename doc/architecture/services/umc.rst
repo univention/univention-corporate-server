@@ -170,8 +170,8 @@ role. The *UMC server* considers SAML authenticated users as authenticated.
 .. TODO : Activate section, once SAML is ready:
    For details about |SAML| in UCS, refer to :ref:`services-authentication-saml`.
 
-The *UMC server* handles user authentication as shown in
-:numref:`services-umc-authentication-chain`.
+:numref:`services-umc-authentication-chain` shows how the *UMC server* handles
+user authentication.
 
 .. index:: umc; authentication successful
    single: authentication; successful
@@ -187,7 +187,7 @@ Unsuccessful authentication
    denied request towards the user. The reasons can be manifold, for example:
 
    * Wrong username and password combination
-   * Disabled user account
+   * Deactivated user account
    * Expired password
    * Locked account because of too many failed login attempts
 
@@ -238,16 +238,15 @@ The *UMC backend* consists of the following items as shown in
 * *UMC server*
 * several *UMC modules*
 
-In :numref:`services-umc-backend-model` you see the *Reverse proxy* you already
-know from :numref:`services-umc-architecture-simplified-model`. In fact, the web
-server offering the *Reverse proxy* consists of more parts.
+In :numref:`services-umc-backend-model` you also see the *Reverse proxy*. In
+fact, the web server offering the *Reverse proxy* consists of more parts.
 
 .. index:: umc; backend model
    single: model; umc backend
 
 .. _services-umc-backend-model:
 
-.. figure:: /images/UMC-back-end.*
+.. figure:: /images/UMC-backend.*
    :width: 650 px
 
    Parts of the *UMC backend*
@@ -268,8 +267,8 @@ Static HTTP server
 
 Reverse proxy
    Second is the reverse proxy capability from the :program:`Apache HTTP server`
-   with the reverse proxy module (*mod_proxy*). The *Reverse proxy* also responds
-   with important HTTP headers similar to the *Static HTTP server*.
+   with the reverse proxy module :program:`mod_proxy`. The *Reverse proxy* also
+   responds with important HTTP headers similar to the *Static HTTP server*.
 
    The *Reverse proxy* redirects the following URI paths to the *UMC web
    server*:
@@ -289,7 +288,7 @@ Reverse proxy
 UMC server
    Further down the chain is the *UMC server* realized by
    :program:`Tornado`, that only allows connections from the *Reverse proxy*.
-   For example, it provides session management for signed-in users.
+   For example, it provides session management for signed in users.
 
    The *UMC server* accepts requests with ``HTTP``. For example, the *UMC client*
    uses it as connection endpoint. When a ``HTTP`` request
@@ -353,20 +352,20 @@ user interface:
    pair: univention-web-styles; umc
    pair: univention-management-console-frontend; umc
 
-:file:`univention-web-js`
+:program:`univention-web-js`
    Contains the ready-to-use JavaScript files built with :program:`Dojo
    Toolkit`.
 
-:file:`univention-web-styles`
+:program:`univention-web-styles`
    Contains the ready-to-use CSS files for the web design including the
    graphical theme built with :program:`Bootstrap`.
 
-:file:`univention-management-console-frontend`
+:program:`univention-management-console-frontend`
    Contains the HTML files for the *UMC web frontend*. More packages like
-   :file:`univention-server-overview`,
-   :file:`univention-management-console-login`, :file:`univention-system-setup`,
-   :file:`univention-portal` and others also contain HTML files for the *UCS
-   management system*.
+   :program:`univention-server-overview`,
+   :program:`univention-management-console-login`,
+   :program:`univention-system-setup`, :program:`univention-portal` and others
+   also contain HTML files for the *UCS management system*.
 
 .. seealso::
 

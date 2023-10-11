@@ -312,7 +312,7 @@ and the description of each element follows.
 .. _app-center-infrastructure-model:
 
 .. figure:: /images/App-Center-infrastructure.*
-   :width: 650 px
+   :width: 90%
 
    App Center infrastructure model
 
@@ -322,9 +322,9 @@ App developer
    :ref:`app-center-ecosystem-app-provider`.
 
 Univention App provider portal service
-   The *Univention App provider portal service* is the entry point for app
+   The *Univention App provider portal Service* is the entry point for app
    developers who create and maintain an app in the App Center. App developers
-   use the *App provider portal* and it handles authentication and access rights
+   use the *App provider portal* that handles authentication and access rights
    to the app definitions for app developers. And, it uploads the app software
    to the *App repository*.
 
@@ -333,7 +333,7 @@ Univention App provider portal service
    repository*.
 
 App repository
-   The *App repository* is the repository for the app artifacts. UCS systems
+   The *App repository* is the storage location for the app artifacts. UCS systems
    connect to the *App repository* to load the app metadata for presentation and
    to download the app for installation on a UCS system.
 
@@ -357,16 +357,17 @@ App Catalog
 
 App Center
    In the context of :numref:`app-center-infrastructure-model`, the term *App
-   Center* refers to everything on a local UCS system that makes up the App
-   Center. The *App Center* loads the app information from the *App repository*.
+   Center* of the ArchiMate application component refers to everything on a
+   local UCS system that makes up the App Center. The *App Center Service* loads
+   the app information from the *App repository*.
 
    For the architecture of the *App Center*, refer to
    :ref:`services-app-center`.
 
 Administrator
    The *Administrator* is the primary *User* role that interacts with the *App
-   Center* on a UCS system. The *Administrator* has the user rights to install,
-   update, and remove apps on a UCS system.
+   Center Service* on a UCS system. The *Administrator* has the user permissions
+   to install, update, and remove apps on a UCS system.
 
 .. seealso::
 

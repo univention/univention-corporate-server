@@ -53,9 +53,9 @@ The UCS Portal uses the following technology:
    pair: tornado; ucs portal
 
 HTTP request handler
-   The UCS Portal backend uses `Tornado <tornado_>`_ to handle the HTTP
-   requests from the frontend and to serve the data to the frontend. *Tornado*
-   is a Python web framework and asynchronous networking library.
+   The UCS Portal backend uses *Tornado* to handle the HTTP requests from the
+   frontend and to serve the data to the frontend. `Tornado <tornado_>`_ is a
+   Python web framework and asynchronous networking library.
 
 .. index::
    single: technology; vue.js
@@ -63,9 +63,9 @@ HTTP request handler
    pair: vue.js; ucs portal
 
 Single-page application
-   `Vue.js <vuejs_>`_ with *TypeScript* is the technology behind the web front
-   end of the portal. It serves the single-page application of the portal to the
-   user. *Vue.js* is a versatile JavaScript framework for building web user
+   *Vue.js* with *TypeScript* is the technology behind the web frontend of the
+   portal. It serves the single-page application of the portal to the user.
+   `Vue.js <vuejs_>`_ is a versatile JavaScript framework for building web user
    interfaces. The decision came to *Vue.js*, because it's flexible, painless,
    and not owned by a company. The implementation began with *Vue.js* 3, because
    it has full *TypeScript* support and many improvements compared to *Vue.js*
@@ -211,11 +211,12 @@ The content depends on the user login status:
 Anonymous users
    Anonymous users see portal content that's publicly available.
 
-Signed-in users
-   Signed-in users see public content and content depending on their group
+Signed in users
+   Signed in users see public content and content depending on their group
    memberships. One user may also see different tiles than another user.
 
-The portal backend uses two caches to generate the structured data.
+The portal backend uses the caches in the following sections to generate the
+structured data.
 
 .. _services-ucs-portal-back-end-portal-tile-cache:
 
@@ -255,8 +256,8 @@ UCS group cache
 
 The :ref:`services-ucs-portal-back-end-user-identification` returns information
 about the user without data about the users' group memberships and nested
-groups. The group cache steps into this whole and provides a mapping for users
-to their groups.
+groups. The group cache steps in and provides a mapping for users to their
+groups.
 
 Running the user's group resolution on the fly is an expensive operation
 especially for large environments.

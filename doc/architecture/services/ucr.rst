@@ -52,12 +52,13 @@ UCR.
 
    Architecture overview of UCR
 
-UCR provides configuration values to *Scripts*, *Apps* and *Services* with its
-various configuration values from the UCR variables. Users use UCR through the
-web interface of :ref:`services-umc` with *HTTP/HTTPS* and through the command
-line with *Terminal / SSH*. And *UCR Python API* offers a programming interface
-for UCS components and other Python programs. *UCR C API* is a small API in C
-for only getting and setting UCR variables.
+UCR provides configuration values to *Scripts*, *Apps*, *UCS Packages* and
+*Services* with its various configuration values from the UCR variables. *Users*
+such as administrators use UCR through the web interface of :ref:`services-umc`
+with *HTTP/HTTPS* and through the command line with *Terminal / SSH*. And *UCR
+Python API* offers a programming interface for UCS components and other Python
+programs. *UCR C API* is a small API in C for only getting and setting UCR
+variables.
 
 .. seealso::
 
@@ -118,7 +119,7 @@ UCR variables
    :file:`/etc/univention/base*.conf`. Most UCR commands read UCR variables. The
    *UCR set / unset* command changes UCR variables.
 
-   The variables don't follow a hierarchy. The separator slash (``/``) exists
+   The variables don't follow a hierarchy. The slash (``/``) separator exists
    for readability.
 
 .. index::
@@ -126,7 +127,7 @@ UCR variables
    single: directory; /etc/univention/templates/info
 
 UCR templates
-   *UCR templates* are file templates for configuration files of various
+   *UCR templates* are text file templates for configuration files of various
    services in UCS. They include placeholders for the UCR variables.
    Additionally, they can include Python code for algorithms and more complex
    use cases.
@@ -146,13 +147,13 @@ System configuration files
    commit* on all affected *System configuration files* referencing the changed
    *UCR variables*.
 
-   UCR usually doesn't reload the affected services, because only the
-   administrator knows when configuration tasks are complete and safe for
-   restart.
+   UCR usually doesn't reload services affected by configuration file changes,
+   because only the administrator knows when configuration tasks are complete
+   and safe for restart.
 
-   Exceptions to this behavior exist. For example changes to UCR variables
+   Exceptions to this behavior exist. For example, changes to UCR variables
    starting with ``interfaces/`` trigger a restart of the networking service,
-   unless you set UCR variable :envvar:`interfaces/restart/auto`\ ``=no``. Also,
+   unless you set UCR variable :envvar:`interfaces/restart/auto` to ``no``. Also,
    the Docker service restarts when UCR variables starting with
    ``proxy/*`` change.
 
@@ -164,7 +165,8 @@ System configuration files
       trigger a rewriting of configuration files.
 
 :numref:`services-ucr-workflow-set-variable` shows this general workflow after
-an administrator sets a UCR variable.
+an administrator sets a UCR variable. Other actors can be *UCS Packages*,
+*Scripts*, or *Services*.
 
 .. index::
    single: role; administrator
@@ -175,12 +177,11 @@ an administrator sets a UCR variable.
 
    Workflow after setting a UCR variable
 
-   The *Administrator* triggers the event *UCR set variable* by using the UCR
-   command. *UCR set / unset* writes one of the *UCR variables* and triggers a
-   *UCR commit*. The *UCR commit* uses the *UCR variable priority*, the *UCR
-   variables*, and the *UCR templates* to write and update the *System
-   configuration*. After *UCR commit* finished, it triggers the *Configuration
-   written* event.
+The *Administrator* triggers the event *UCR set variable* by using the UCR
+command. *UCR set / unset* writes one of the *UCR variables* and triggers a *UCR
+commit*. The *UCR commit* uses the *UCR variable priority*, the *UCR variables*,
+and the *UCR templates* to write and update the *System configuration*. After
+*UCR commit* finished, it triggers the *Configuration written* event.
 
 .. seealso::
 
