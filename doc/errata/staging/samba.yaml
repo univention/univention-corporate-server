@@ -18,7 +18,7 @@ desc: |
    with the smb.conf setting
    `acl_xattr:ignore system acls = yes`.
    (CVE-2023-4091)
-bug: [56696]
+bug: [56722]
 cve:
  - CVE-2023-42669
  - CVE-2023-4154
