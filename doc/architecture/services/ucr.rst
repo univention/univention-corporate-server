@@ -21,8 +21,16 @@ Every UCS system installs UCR per default, regardless of the system role. UCR
 stores all configuration settings of a UCS system, and also some other
 information for quick lookup, for example the validity of certificates.
 Administrators set values for configuration settings. Also, packages set
-configuration values with default values during their installation. UCR is an
-important component used everywhere, for example by UCS packages and also apps.
+configuration values with default values during their installation. As shown in
+:numref:`services-ucr-consumers` UCR is an important component used everywhere,
+for example by *UCS Packages*, *Services*, *Scripts* and also *Apps*.
+
+.. _services-ucr-consumers:
+
+.. figure:: /images/UCR-consumers.*
+   :width: 90%
+
+   Consumers of UCR
 
 .. _services-ucr-architecture:
 
