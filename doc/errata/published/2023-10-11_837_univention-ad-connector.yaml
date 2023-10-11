@@ -8,3 +8,6 @@ desc: |
  This update addresses the following issues:
  * Future compatibility for python3-ldap >= 4 has been added.
 bug: [56603]
+erratum: 837
+announced: 2023-10-11
+support: core
