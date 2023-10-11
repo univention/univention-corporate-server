@@ -99,6 +99,7 @@ html_theme_options = {
     "typesense_document": pdf_doc_base,
     "typesense_document_version": version,
     "univention_matomo_tracking": True,
+    "univention_docs_deployment": True,
 }
 
 html_style = 'custom.css'
