@@ -10,3 +10,6 @@ desc: |
  * The case sensitivity of the attribute `memberUid` is now respected when
    removing members from a group.
 bug: [56514, 54183]
+erratum: 832
+announced: 2023-10-11
+support: core
