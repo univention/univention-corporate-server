@@ -9,3 +9,6 @@ desc: |
  * The "Success" text is no longer displayed when a check failed after
    all checks have previously passed.
 bug: [56624]
+erratum: 834
+announced: 2023-10-11
+support: core
