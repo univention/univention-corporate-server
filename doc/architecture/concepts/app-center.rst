@@ -26,6 +26,7 @@ Center:
 
 * :ref:`app-center-infrastructure` for the App Center.
 
+.. include:: /archimate.txt
 
 .. admonition:: Continue reading
 

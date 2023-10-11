@@ -18,11 +18,7 @@ architects. For software developers and system engineers it provides the context
 for the architectural details to UCS. Make sure you are familiar with the
 :ref:`concepts` behind UCS.
 
-For architecture notation, this part of the document uses ArchiMate® 3.1, a
-visual language with a set of default iconography for describing, analyzing, and
-communicating many concerns of enterprise architectures. For more information
-about how the document uses the notation, refer to
-:ref:`architecture-notation-archimate`.
+.. include:: /archimate.txt
 
 The following product components from :numref:`product-components-model`
 introduce themselves in the order you most likely encounter them when you work
