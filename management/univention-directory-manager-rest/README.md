@@ -300,3 +300,16 @@ A real supported client will follow in the Future™.
 
 * After creating, modifying or moving extended attributes or extended options the affected modules are not reloaded until the server restarts or special endpoints are requested, which do a expensive reload e.g. `/univention/udm/users/user/add`. Patch available at [Bug #50253](https://forge.univention.org/bugzilla/show_bug.cgi?id=50253).
 * The pagination is unsupported because the SSSLVL overlay modules is not enabled in the LDAP server. [Bug #50240](https://forge.univention.org/bugzilla/show_bug.cgi?id=50240) and [Bug #54786](https://forge.univention.org/bugzilla/show_bug.cgi?id=54786).
+
+## TODOs:
+
+Describe the following:
+
+* UI, HTML view and vuejs plans
+* Suppported and unsupported endpoints
+* Application Specific Password
+* URI template (routing)
+* HAL
+* Link relations
+* UMC dependency and split / reversal
+* typing interface
