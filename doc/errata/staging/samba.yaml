@@ -1,0 +1,25 @@
+product: ucs
+release: "4.4"
+version: [9]
+scope: ucs_4.4-0-errata4.4-9
+src: samba
+fix: 2:4.10.18-1A~4.4.0.202310110901
+desc: |
+ This update addresses the following issues:
+ * Calls to the rpcecho server on the AD DC can request
+   that the server blocks for a user-defined amount of
+   time, denying service. (CVE-2023-42669)
+ * An RODC and a user with the GET_CHANGES
+   right can view all attributes, including
+   secrets and passwords. (CVE-2023-4154)
+ * SMB client can truncate files to 0 bytes
+   by opening files with OVERWRITE disposition
+   when using the acl_xattr Samba VFS module
+   with the smb.conf setting
+   `acl_xattr:ignore system acls = yes`.
+   (CVE-2023-4091)
+bug: [56696]
+cve:
+ - CVE-2023-42669
+ - CVE-2023-4154
+ - CVE-2023-4091
