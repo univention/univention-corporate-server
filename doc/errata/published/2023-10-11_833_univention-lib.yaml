@@ -12,3 +12,6 @@ desc: |
    Primary node due to missing credentials. `ucs_registerLDAPExtension`
    has been fixed to use the LDAP admin connection in this case.
 bug: [56698]
+erratum: 833
+announced: 2023-10-11
+support: core
