@@ -9,3 +9,6 @@ desc: |
  * This update provides the package `python3-lmdb` for UCS 5.0.
 bug: [53387]
 maintained: True
+erratum: 836
+announced: 2023-10-11
+support: core
