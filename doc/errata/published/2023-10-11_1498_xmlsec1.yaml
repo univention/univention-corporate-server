@@ -8,3 +8,6 @@ desc: |
  * libreoffice requires a new upstream version to fix several security
    vulnerabilities.
 bug: [56689]
+erratum: 1498
+announced: 2023-10-11
+support: lts
