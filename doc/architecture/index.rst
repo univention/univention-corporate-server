@@ -74,3 +74,28 @@ After reading this document you have a broad understanding of the UCS
 architecture. It equips consultants, administrators, and solution architects to
 better plan their IT environment with UCS. It enables software developers and
 system engineers to get familiar with software development for UCS.
+
+How to use the document
+=======================
+
+This document contains numerous figures. As far as possible, they use SVG
+format. If you need a larger view of the image, open it in a dedicated tab in
+your web browser:
+
+.. tab:: Chromium based browsers
+
+   To open the figure in the same tab:
+
+   #. Click the figure.
+
+   Alternatively, to open the figure in a new tab:
+
+   #. Right click the figure.
+   #. Click :guilabel:`Open Image in New Tab` from the context menu.
+
+.. tab:: Mozilla Firefox
+
+   To open the figure in a new tab:
+
+   #. Right click the figure.
+   #. Click :guilabel:`Open Image in New Tab` from the context menu.

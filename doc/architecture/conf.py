@@ -43,6 +43,7 @@ extensions = [
     "sphinxext.rediraffe",
     "sphinxcontrib.bibtex",
     "sphinx.ext.intersphinx",
+    "sphinx_inline_tabs",
 ]
 
 intersphinx_mapping = {
