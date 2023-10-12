@@ -72,3 +72,18 @@ Description: Python 3 Client library for the REST service for UCS Directory Mana
  integrated, directory driven solution for managing
  corporate environments. For more information about UCS,
  refer to: https://www.univention.de/
+
+Package: python3-univention-directory-manager-rest-async-client
+Architecture: all
+Depends:
+ python3-aiohttp,
+ python3-uritemplate,
+ ${misc:Depends},
+ ${python3:Depends},
+Description: Python 3 asyncronous client library for the REST service for UCS Directory Manager
+ This package contains the Python 3 Client library for REST service for UCS Directory Manager.
+ .
+ It is part of Univention Corporate Server (UCS), an
+ integrated, directory driven solution for managing
+ corporate environments. For more information about UCS,
+ refer to: https://www.univention.de/
