@@ -682,6 +682,7 @@ Depends:
  git,
  python3-pip,
  python3-pytest,
+ python3-pytest-asyncio,
  python3-venv,
  ucs-test-libs (= ${source:Version}),
  ucs-test-udm,

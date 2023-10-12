@@ -1,0 +1,10 @@
+product: ucs
+release: "5.0"
+version: [7]
+scope: ucs_5.0-0-errata5.0-7
+src: univention-directory-manager-rest
+fix: 10.0.8-1
+desc: |
+ This update addresses the following issues:
+ * An asynchronous UDM REST API client has been added.
+bug: [56735]
