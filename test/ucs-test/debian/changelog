@@ -1,3 +1,9 @@
+ucs-test (11.0.16) unstable; urgency=medium
+
+  * Bug #56735: add async client
+
+ -- Florian Best <best@univention.de>  Thu, 14 Mar 2024 20:50:28 +0100
+
 ucs-test (11.0.15) unstable; urgency=medium
 
   * Bug #56604: remove workarounds for Python 2 compatibility
