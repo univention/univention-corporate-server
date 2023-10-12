@@ -1,3 +1,10 @@
+univention-directory-replication (13.0.7-2) unstable; urgency=medium
+
+  * Bug #56729: Remove the new ppolicy attributes from OpenLDAP 2.5 from
+    the exclusion list, to allow joining 5.0 to 5.2 machines
+
+ -- Julia Bremer <bremer@univention.de>  Thu, 12 Oct 2023 15:36:54 +0200
+
 univention-directory-replication (13.0.7-1) unstable; urgency=low
 
   * Bug #55927: Remove some ppolicy OIDs from exclusion list
