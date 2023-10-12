@@ -50,7 +50,7 @@ import os
 import pwd
 import stat
 import syslog
-from collections import Mapping
+from collections.abc import Mapping
 from logging.handlers import WatchedFileHandler
 from typing import IO, Any, Dict, Optional, Type  # noqa: F401
 
