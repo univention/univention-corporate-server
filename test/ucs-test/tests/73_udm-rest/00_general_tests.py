@@ -2,7 +2,7 @@
 ## desc: Test various functions in the UDM REST API
 ## tags: [udm,apptest]
 ## roles: [domaincontroller_master]
-## exposure: careful
+## exposure: dangerous
 ## packages:
 ##   - univention-directory-manager-rest
 
@@ -15,14 +15,10 @@ import pytest
 from univention.admin.rest.client import (
     UDM as UDMClient, Forbidden, PreconditionFailed, Unauthorized, UnprocessableEntity,
 )
-from univention.config_registry import ConfigRegistry, handler_set
+from univention.config_registry import ucr
 from univention.lib.misc import custom_groupname
 from univention.testing.udm import UDM, UCSTestUDM_CreateUDMObjectFailed
 from univention.testing.utils import UCSTestDomainAdminCredentials
-
-
-ucr = ConfigRegistry()
-ucr.load()
 
 
 if ucr.is_true('ad/member'):
@@ -40,6 +36,17 @@ class UDMClient(UDMClient):
     def test_connection(cls):
         account = UCSTestDomainAdminCredentials(ucr)
         return cls.master_connection(account.username, account.bindpw)
+
+
+@pytest.fixture()
+def udm_client():
+    return UDMClient.test_connection()
+
+
+@pytest.fixture()
+def udm_rest():
+    with UDM() as udm:
+        yield udm
 
 
 def test_authentication(udm):
@@ -61,10 +68,9 @@ def test_authentication(udm):
     udm_client.get('users/user')
 
 
-def test_etag_last_modified(udm):
+def test_etag_last_modified(udm, udm_client):
     userdn, user = udm.create_user()
     time.sleep(1)
-    udm_client = UDMClient.test_connection()
     user = udm_client.get('users/user').get(userdn)
     assert user.etag
     assert user.last_modified
@@ -86,36 +92,35 @@ def test_etag_last_modified(udm):
 
 
 @pytest.mark.parametrize('suffix', ['', 'ä'])
-def test_create_modify_move_remove(random_string, suffix, ucr):
+def test_create_modify_move_remove(random_string, suffix, ucr, udm_rest):
     if suffix:
-        handler_set(['directory/manager/web/modules/users/user/properties/username/syntax=string'])
+        ucr.handler_set(['directory/manager/web/modules/users/user/properties/username/syntax=string'])
         subprocess.call(['systemctl', 'restart', 'univention-directory-manager-rest'])
         time.sleep(1)
 
-    with UDM() as udm:
-        username = random_string() + suffix
-        userdn, user = udm.create_user(username=username)
-        udm.verify_ldap_object(userdn)
-        org_dn = userdn
+    username = random_string() + suffix
+    userdn, user = udm_rest.create_user(username=username)
+    udm_rest.verify_ldap_object(userdn)
+    org_dn = userdn
 
-        username = random_string() + suffix
+    username = random_string() + suffix
 
-        description = random_string()
-        userdn = udm.modify_object('users/user', dn=userdn, description=description)
-        udm.verify_ldap_object(userdn)
-        assert userdn == org_dn
+    description = random_string()
+    userdn = udm_rest.modify_object('users/user', dn=userdn, description=description)
+    udm_rest.verify_ldap_object(userdn)
+    assert userdn == org_dn
 
-        userdn = udm.modify_object('users/user', dn=userdn, username=username)
-        udm.verify_ldap_object(userdn)
-        assert userdn != org_dn
-        org_dn = userdn
+    userdn = udm_rest.modify_object('users/user', dn=userdn, username=username)
+    udm_rest.verify_ldap_object(userdn)
+    assert userdn != org_dn
+    org_dn = userdn
 
-        userdn = udm.move_object('users/user', dn=userdn, position=ucr['ldap/base'])
-        udm.verify_ldap_object(userdn)
-        assert userdn != org_dn
+    userdn = udm_rest.move_object('users/user', dn=userdn, position=ucr['ldap/base'])
+    udm_rest.verify_ldap_object(userdn)
+    assert userdn != org_dn
 
-        udm.remove_object('users/user', dn=userdn)
-        udm.verify_ldap_object(userdn, should_exist=False)
+    udm_rest.remove_object('users/user', dn=userdn)
+    udm_rest.verify_ldap_object(userdn, should_exist=False)
 
 
 @pytest.mark.parametrize('name', [
@@ -123,14 +128,11 @@ def test_create_modify_move_remove(random_string, suffix, ucr):
     'foo//bar',
     'foobär',
 ])
-def test_special_characters_in_dn(name):
-    with UDM() as udm:
-        container = udm.create_object('container/cn', name=name)
-
-        udm_client = UDMClient.test_connection()
-        obj = udm_client.get('container/cn').get(container)
-        print(obj)
-        assert obj
+def test_special_characters_in_dn(name, udm_client, udm_rest):
+    container = udm_rest.create_object('container/cn', name=name)
+    obj = udm_client.get('container/cn').get(container)
+    print(obj)
+    assert obj
 
 
 @pytest.mark.parametrize('language,error_message', [
@@ -145,8 +147,7 @@ def test_translation(language, error_message):
         assert error_message in str(exc.value)
 
 
-def test_error_handling(udm, ldap_base):
-    udm_client = UDMClient.test_connection()
+def test_error_handling(udm, ldap_base, udm_client):
     users_user = udm_client.get('users/user')
 
     # invalid query parameter
