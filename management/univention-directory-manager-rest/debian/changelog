@@ -1,3 +1,9 @@
+univention-directory-manager-rest (10.0.6-12) unstable; urgency=medium
+
+  * Bug #56734: add error handling for missing properties
+
+ -- Florian Best <best@univention.de>  Mon, 16 Oct 2023 20:22:32 +0200
+
 univention-directory-manager-rest (10.0.6-11) unstable; urgency=medium
 
   * Bug #56731: allow If-Match for DELETE requests

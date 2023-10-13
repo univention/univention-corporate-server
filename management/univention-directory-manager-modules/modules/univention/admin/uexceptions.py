@@ -121,6 +121,10 @@ class ldapSizelimitExceeded(base):
 class insufficientInformation(base):
     message = _('Information provided is not sufficient.')
 
+    def __init__(self, *args, **kwargs):
+        self.missing_properties = kwargs.pop('missing_properties', None)
+        super(insufficientInformation, self).__init__(*args, **kwargs)
+
 
 class noSuperordinate(insufficientInformation):
     pass

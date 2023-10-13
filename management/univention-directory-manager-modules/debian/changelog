@@ -1,3 +1,9 @@
+univention-directory-manager-modules (15.0.24-21) unstable; urgency=medium
+
+  * Bug #56734: add missing properties to insufficientInformation exception
+
+ -- Florian Best <best@univention.de>  Mon, 16 Oct 2023 20:25:24 +0200
+
 univention-directory-manager-modules (15.0.24-20) unstable; urgency=medium
 
   * Bug #56731: pass serverctrls during modify() operations

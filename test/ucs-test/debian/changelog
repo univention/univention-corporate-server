@@ -1,3 +1,9 @@
+ucs-test (10.0.19-20) unstable; urgency=medium
+
+  * Bug #56731: Bug #56734: enhance UDM REST API tests
+
+ -- Florian Best <best@univention.de>  Mon, 16 Oct 2023 20:29:28 +0200
+
 ucs-test (10.0.19-19) unstable; urgency=medium
 
   * Bug #56698: added 10_ldap/79ucs_registerLDAPExtension_credentials.py

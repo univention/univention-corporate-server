@@ -245,6 +245,16 @@ def test_translation(language, error_message):
 def test_error_handling(udm, ldap_base, udm_client):
     users_user = udm_client.get('users/user')
 
+    # missing required properties
+    user = users_user.new()
+    with pytest.raises(UnprocessableEntity) as exc:
+        user.save()
+    assert sorted(exc.value.error_details['error'], key=itemgetter('location')) == sorted([
+        {'location': ['body', 'properties', 'username'], 'message': 'The property "username" is required.', 'type': 'value_error'},  # should be value_error.required
+        {'location': ['body', 'properties', 'lastname'], 'message': 'The property "lastname" is required.', 'type': 'value_error'},  # should be value_error.required
+        {'location': ['body', 'properties', 'password'], 'message': 'The property "password" is required.', 'type': 'value_error'},  # should be value_error.required
+    ], key=itemgetter('location'))
+
     # invalid query parameter
     with pytest.raises(UnprocessableEntity) as exc:
         list(users_user.search(position='cn=does,dc=not,dc=exists', scope='blah', filter='invalidone'))

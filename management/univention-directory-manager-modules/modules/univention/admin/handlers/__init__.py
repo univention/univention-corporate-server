@@ -325,7 +325,7 @@ class simpleLdap(object):
                 ud.debug(ud.ADMIN, ud.INFO, "property %s is required but not set." % name)
                 missing.append(name)
         if missing:
-            raise univention.admin.uexceptions.insufficientInformation(_('The following properties are missing:\n%s') % ('\n'.join(missing),))
+            raise univention.admin.uexceptions.insufficientInformation(_('The following properties are missing:\n%s') % ('\n'.join(missing),), missing_properties=missing)
 
         # when creating a object make sure that its position is underneath of its superordinate
         if not self.exists() and self.position and self.superordinate and not self._ensure_dn_in_subtree(self.superordinate.dn, self.position.getDn()):

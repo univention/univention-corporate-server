@@ -3,9 +3,11 @@ release: "5.0"
 version: [5]
 scope: ucs_5.0-0-errata5.0-5
 src: univention-directory-manager-rest
-fix: 10.0.6-11
+fix: 10.0.6-12
 desc: |
  This update addresses the following issues:
  * The `If-Match` request header can now be given in `DELETE` requests to
    make them conditional.
-bug: [56731]
+ * Missing properties when creating or modifying objects are now correctly
+   marked in the error response.
+bug: [56731, 56734]

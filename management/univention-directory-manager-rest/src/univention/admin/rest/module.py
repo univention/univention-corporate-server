@@ -590,6 +590,24 @@ class ResourceBase:
         except MultiValidationError as e:
             raise UnprocessableEntity(str(e), result=result(e.result()))
 
+    def raise_sanitization_errors(self, errors):
+        multi_error = MultiValidationError()
+        for field, message in errors:
+            property_name = field[-1]
+            try:
+                self.raise_sanitization_error(field, message)
+            except UnprocessableEntity as exc:
+                print(exc.result)
+                multi_error.add_error(ValidationError(message, property_name, None), property_name)
+        self.raise_sanitization_multi_error(multi_error)
+
+    def raise_sanitization_multi_error(self, multi_error, field='properties', type='body'):
+        if multi_error.has_errors():
+            class FalseSanitizer(Sanitizer):
+                def sanitize(self):
+                    raise multi_error
+            self.sanitize_arguments(FalseSanitizer(), _result_func=lambda x: {type: {field: x}}, _fieldname=field)
+
     def raise_sanitization_error(self, field, message, type='body'):
         fields = field if isinstance(field, (list, tuple)) else (field,)
         field = fields[-1]
@@ -3493,7 +3511,11 @@ class Object(ConditionalResource, FormBase, _OpenAPIBase, Resource):
             self.raise_sanitization_error(('properties', 'password'), str(UDM_Error(exc)))
         except udm_errors.invalidOptions as exc:
             self.raise_sanitization_error('options', str(UDM_Error(exc)))
-        except (udm_errors.invalidOperation, udm_errors.invalidChild, udm_errors.insufficientInformation) as exc:
+        except udm_errors.insufficientInformation as exc:
+            if exc.missing_properties:
+                self.raise_sanitization_errors([('properties', property_name), _('The property "%(name)s" is required.') % {'name': property_name}] for property_name in exc.missing_properties)
+            self.raise_sanitization_error('dn', str(UDM_Error(exc)))
+        except (udm_errors.invalidOperation, udm_errors.invalidChild) as exc:
             self.raise_sanitization_error('dn', str(UDM_Error(exc)))  # TODO: invalidOperation and invalidChild should be 403 Forbidden
         except udm_errors.invalidDhcpEntry as exc:
             self.raise_sanitization_error(('properties', 'dhcpEntryZone'), str(UDM_Error(exc)))
@@ -3549,11 +3571,7 @@ class Object(ConditionalResource, FormBase, _OpenAPIBase, Resource):
         for property_name, value in sorted(properties.items(), key=_tmp_cmp):
             self.set_property(obj, property_name, value, result, multi_error, password_properties)
 
-        if multi_error.has_errors():
-            class FalseSanitizer(Sanitizer):
-                def sanitize(self):
-                    raise multi_error
-            self.sanitize_arguments(FalseSanitizer(), _result_func=lambda x: {'body': {'properties': x}}, _fieldname='properties')
+        self.raise_sanitization_multi_error(multi_error)
 
     def set_property(self, obj, property_name, value, result, multi_error, password_properties):
         if property_name in password_properties:
