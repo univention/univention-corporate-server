@@ -46,7 +46,7 @@ Depends:
  python3-pycurl,
  python3-setproctitle,
  python3-tornado,
- python3-univention-directory-manager (>= 15.0.13-27),
+ python3-univention-directory-manager (>= 15.0.24-20),
  python3-univention-directory-reports,
  python3-univention-lib (>= 9.0.12-2),
  python3-univention-management-console (>= 12.0.13-4),

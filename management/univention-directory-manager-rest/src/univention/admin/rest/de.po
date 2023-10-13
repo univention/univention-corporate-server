@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-directory-manager-rest\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2022-12-01 01:09+0100\n"
+"POT-Creation-Date: 2023-10-16 20:13+0200\n"
 "PO-Revision-Date: 2021-12-17 23:13+0100\n"
 "Last-Translator: Univention GmbH <packages@univention.de>\n"
 "Language-Team: Univention GmbH <packages@univention.de>\n"
@@ -12,160 +12,160 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: src/univention/admin/rest/module.py:3030
-#: src/univention/admin/rest/module.py:3169
+#: src/univention/admin/rest/module.py:3103
+#: src/univention/admin/rest/module.py:3243
 #, python-format
 msgid "%s module"
 msgstr "%s Modul"
 
-#: src/univention/admin/rest/module.py:4099
+#: src/univention/admin/rest/module.py:4174
 msgid "A new license has been requested and sent to your email address."
 msgstr ""
 "Eine neue Lizenz wurde angefordert und an Ihre E-Mail Adresse gesendet."
 
-#: src/univention/admin/rest/module.py:3667
+#: src/univention/admin/rest/module.py:3740
 #, python-format
 msgid "Add %s"
 msgstr "%s hinzufügen"
 
-#: src/univention/admin/rest/module.py:2565
+#: src/univention/admin/rest/module.py:2629
 msgid "Advanced settings"
 msgstr "Erweiterte Einstellungen"
 
-#: src/univention/admin/rest/module.py:2200
+#: src/univention/admin/rest/module.py:2264
 #, python-format
 msgid "All %s types"
 msgstr "Alle %s Typen"
 
-#: src/univention/admin/rest/module.py:2214
+#: src/univention/admin/rest/module.py:2278
 msgid "All link relations"
 msgstr "Alle Link-Beziehungen"
 
-#: src/univention/admin/rest/module.py:1274
-#: src/univention/admin/rest/module.py:2198
-#: src/univention/admin/rest/module.py:2246
-#: src/univention/admin/rest/module.py:3027
-#: src/univention/admin/rest/module.py:3163
-#: src/univention/admin/rest/module.py:3688
-#: src/univention/admin/rest/module.py:3798
+#: src/univention/admin/rest/module.py:1328
+#: src/univention/admin/rest/module.py:2262
+#: src/univention/admin/rest/module.py:2310
+#: src/univention/admin/rest/module.py:3100
+#: src/univention/admin/rest/module.py:3237
+#: src/univention/admin/rest/module.py:3761
+#: src/univention/admin/rest/module.py:3871
 msgid "All modules"
 msgstr "Alle Module"
 
-#: src/univention/admin/rest/module.py:2235
+#: src/univention/admin/rest/module.py:2299
 msgid "All object types"
 msgstr "Alle Objekttypen"
 
-#: src/univention/admin/rest/module.py:2564
+#: src/univention/admin/rest/module.py:2628
 msgid "Apps & Options"
 msgstr "Apps & Optionen"
 
-#: src/univention/admin/rest/module.py:2915
+#: src/univention/admin/rest/module.py:2980
 msgid "Ascending"
 msgstr "Aufsteigend"
 
-#: src/univention/admin/rest/module.py:1040
+#: src/univention/admin/rest/module.py:1004
 #, python-format
 msgid "Body data \"%s\": %s\n"
 msgstr "Body data \"%s\": %s\n"
 
-#: src/univention/admin/rest/module.py:2607
+#: src/univention/admin/rest/module.py:2671
 msgid "CSV Report"
 msgstr "CSV-Report"
 
-#: src/univention/admin/rest/module.py:4076
+#: src/univention/admin/rest/module.py:4151
 msgid "Cannot parse License from LDAP"
 msgstr "Konnte die Lizenz nicht vom LDAP einlesen"
 
-#: src/univention/admin/rest/module.py:4118
+#: src/univention/admin/rest/module.py:4193
 msgid "Check license status"
 msgstr "Lizenz-Status prüfen"
 
-#: src/univention/admin/rest/module.py:3992
+#: src/univention/admin/rest/module.py:4066
 msgid "Click to edit the inherited properties of the policy"
 msgstr "Klick, um die vererbten Eigenschaften der Richtlinie zu bearbeiten"
 
-#: src/univention/admin/rest/module.py:3750
+#: src/univention/admin/rest/module.py:3823
 msgid "Container"
 msgstr "Container"
 
-#: src/univention/admin/rest/module.py:3768
+#: src/univention/admin/rest/module.py:3841
 #, python-format
 msgid "Copy %s"
 msgstr "%s kopieren"
 
-#: src/univention/admin/rest/module.py:4094
+#: src/univention/admin/rest/module.py:4169
 #, python-format
 msgid "Could not request a license from Univention: %s"
 msgstr "Konnte keine Lizenz von Univention anfordern: %s"
 
-#: src/univention/admin/rest/module.py:3745
+#: src/univention/admin/rest/module.py:3818
 #, python-format
 msgid "Create %s"
 msgstr "%s erstellen"
 
-#: src/univention/admin/rest/module.py:2882
-#: src/univention/admin/rest/module.py:2883
-#: src/univention/admin/rest/module.py:2893
+#: src/univention/admin/rest/module.py:2947
+#: src/univention/admin/rest/module.py:2948
+#: src/univention/admin/rest/module.py:2958
 #, python-format
 msgid "Create %s report"
 msgstr "%s-Report erstellen"
 
-#: src/univention/admin/rest/module.py:3040
-#: src/univention/admin/rest/module.py:3041
+#: src/univention/admin/rest/module.py:3113
+#: src/univention/admin/rest/module.py:3114
 #, python-format
 msgid "Create a %s"
 msgstr "Ein %s erstellen"
 
-#: src/univention/admin/rest/module.py:2904
+#: src/univention/admin/rest/module.py:2969
 msgid "Defaults"
 msgstr "Standardwerte"
 
-#: src/univention/admin/rest/module.py:2915
+#: src/univention/admin/rest/module.py:2980
 msgid "Descending"
 msgstr "Absteigend"
 
-#: src/univention/admin/rest/module.py:2915
+#: src/univention/admin/rest/module.py:2980
 msgid "Direction"
 msgstr "Richtung"
 
-#: src/univention/admin/rest/module.py:4123
+#: src/univention/admin/rest/module.py:4198
 msgid "E-Mail address"
 msgstr "E-Mail Adresse"
 
-#: src/univention/admin/rest/module.py:2928
-#: src/univention/admin/rest/module.py:3153
+#: src/univention/admin/rest/module.py:2993
+#: src/univention/admin/rest/module.py:3227
 #, python-format
 msgid "Evaluate referenced %s policies"
 msgstr "Referenzierte %s Richtlinien auswerten"
 
-#: src/univention/admin/rest/module.py:3680
+#: src/univention/admin/rest/module.py:3753
 msgid "Fill template values"
 msgstr "Template Werte ausfüllen"
 
-#: src/univention/admin/rest/module.py:2871
+#: src/univention/admin/rest/module.py:2936
 msgid "First page"
 msgstr "Erste Seite"
 
-#: src/univention/admin/rest/module.py:3149
+#: src/univention/admin/rest/module.py:3223
 msgid "Generate a new service specific password"
 msgstr "Gerneriert ein neues Service spezifisches Passwort"
 
-#: src/univention/admin/rest/module.py:2506
+#: src/univention/admin/rest/module.py:2570
 #, python-format
 msgid "Get choices for property %s"
 msgstr "Auswahlmöglichkeiten für Property %s erhalten"
 
-#: src/univention/admin/rest/module.py:781
-#: src/univention/admin/rest/module.py:1060
+#: src/univention/admin/rest/module.py:745
+#: src/univention/admin/rest/module.py:1023
 #, python-format
 msgid "HTTP-Error %d: %s"
 msgstr ""
 
-#: src/univention/admin/rest/module.py:262
+#: src/univention/admin/rest/module.py:253
 msgid "Has more than the allowed keys"
 msgstr "Hat mehr Schlüssel als erlaubt"
 
-#: src/univention/admin/rest/module.py:2564
+#: src/univention/admin/rest/module.py:2628
 msgid ""
 "Here you can activate the user for one of the installed apps. The user can "
 "then log on to the app and use it."
@@ -173,64 +173,54 @@ msgstr ""
 "Hier können Sie den Benutzer für eine der installierten Apps aktivieren. Der"
 " Benutzer kann sich anschließend an der App anmelden und sie nutzen."
 
-#: src/univention/admin/rest/module.py:3590
-#, python-format
-msgid "If-Match %s does not match entity tag(s) %s."
-msgstr "If-Match %s passt nicht zu entity tag(s) %s."
-
-#: src/univention/admin/rest/module.py:3582
-#, python-format
-msgid "If-None-Match %s does not match entity tag(s) %s."
-msgstr "If-None-Match %s passt nicht zu entity tag(s) %s."
-
-#: src/univention/admin/rest/module.py:3563
+#: src/univention/admin/rest/module.py:1114
 msgid "If-Unmodified-Since does not match Last-Modified."
 msgstr "If-Unmodified-Since passt nicht zu Last-Modified."
 
-#: src/univention/admin/rest/module.py:4128
+#: src/univention/admin/rest/module.py:4203
 msgid "Import license"
 msgstr "Lizenz importieren"
 
-#: src/univention/admin/rest/module.py:4216
+#: src/univention/admin/rest/module.py:4291
 #, python-format
 msgid "Importing the license failed: %s."
 msgstr "Importieren der Lizenz fehlgeschlagen: %s."
 
-#: src/univention/admin/rest/module.py:4212
+#: src/univention/admin/rest/module.py:4287
 #, python-format
 msgid "Importing the license failed: LDAP error: %s."
 msgstr "Importing der Lizenz fehlgeschlagen: LDAP-Fehler: %s."
 
-#: src/univention/admin/rest/module.py:2908
+#: src/univention/admin/rest/module.py:2973
 msgid "Include hidden objects"
 msgstr "Versteckte Objekte anzeigen"
 
-#: src/univention/admin/rest/module.py:615
+#: src/univention/admin/rest/module.py:561
 #, python-format
 msgid "Invalid JSON document: %r"
 msgstr "Ungültiges JSON-Dokument: %r"
 
-#: src/univention/admin/rest/module.py:2213
+#: src/univention/admin/rest/module.py:2277
 msgid "LDAP base"
 msgstr "LDAP-Basis"
 
-#: src/univention/admin/rest/module.py:2877
+#: src/univention/admin/rest/module.py:2942
 msgid "Last page"
 msgstr "Letzte Seite"
 
-#: src/univention/admin/rest/module.py:4127
+#: src/univention/admin/rest/module.py:4202
 msgid "License file (ldif format)"
 msgstr "Lizenz-Datei (LDIF Format)"
 
-#: src/univention/admin/rest/module.py:2912
+#: src/univention/admin/rest/module.py:2977
 msgid "Limit"
 msgstr "Limit"
 
-#: src/univention/admin/rest/module.py:1273
+#: src/univention/admin/rest/module.py:1327
 msgid "Link relations"
 msgstr "Link-Beziehungen"
 
-#: src/univention/admin/rest/module.py:2578
+#: src/univention/admin/rest/module.py:2642
 msgid ""
 "List of all object properties that are inherited by policies. The values "
 "cannot be edited directly. By clicking on \"Create new policy\", a new tab "
@@ -246,257 +236,276 @@ msgstr ""
 "\"bearbeiten\" die gesetzte Richtlinie in einem neuen Reiter geöffnet und "
 "bearbeitet werden."
 
-#: src/univention/admin/rest/module.py:2559
+#: src/univention/admin/rest/module.py:2623
 msgid "Meta information"
 msgstr "Metainformationen"
 
-#: src/univention/admin/rest/module.py:3802
+#: src/univention/admin/rest/module.py:3875
 msgid "Modify"
 msgstr "Bearbeiten"
 
-#: src/univention/admin/rest/module.py:3885
+#: src/univention/admin/rest/module.py:3958
 #, python-format
 msgid "Modify %s"
 msgstr "%s bearbeiten"
 
-#: src/univention/admin/rest/module.py:2886
+#: src/univention/admin/rest/module.py:2951
 #, python-format
 msgid "Modify %s (multi edit)"
 msgstr "%s bearbeiten (Mehrfachbearbeitung)"
 
-#: src/univention/admin/rest/module.py:3190
+#: src/univention/admin/rest/module.py:3264
 #, python-format
 msgid "Modify, move or remove this %s"
 msgstr "Erstellen, verschieben oder löschen dieses %s"
 
-#: src/univention/admin/rest/module.py:2924
-#: src/univention/admin/rest/module.py:3150
+#: src/univention/admin/rest/module.py:2989
+#: src/univention/admin/rest/module.py:3224
 msgid "Module layout"
 msgstr "Modul-Layout"
 
-#: src/univention/admin/rest/module.py:2925
-#: src/univention/admin/rest/module.py:3151
+#: src/univention/admin/rest/module.py:2990
+#: src/univention/admin/rest/module.py:3225
 msgid "Module properties"
 msgstr "Modul-Properties"
 
-#: src/univention/admin/rest/module.py:3816
+#: src/univention/admin/rest/module.py:3889
 msgid "Move"
 msgstr "Verschieben"
 
-#: src/univention/admin/rest/module.py:2890
+#: src/univention/admin/rest/module.py:2955
 #, python-format
 msgid "Move %s"
 msgstr "%s verschieben"
 
-#: src/univention/admin/rest/module.py:3093
+#: src/univention/admin/rest/module.py:3166
 #, python-format
 msgid "Moved %d of %d objects. Last object was: %s."
 msgstr "%d von %d Objekte verschoben. Letztes Objekt war: %s."
 
-#: src/univention/admin/rest/module.py:3143
+#: src/univention/admin/rest/module.py:3217
 msgid "Next free IP address"
 msgstr "Nächste freie IP-Adresse"
 
-#: src/univention/admin/rest/module.py:2875
+#: src/univention/admin/rest/module.py:2940
 msgid "Next page"
 msgstr "Nächste Seite"
 
-#: src/univention/admin/rest/module.py:3870
+#: src/univention/admin/rest/module.py:3943
 msgid "No photo set"
 msgstr "Kein Foto gesetzt"
 
-#: src/univention/admin/rest/module.py:259
+#: src/univention/admin/rest/module.py:250
 msgid "Not a \"dict\""
 msgstr "Ist kein \"dict\""
 
-#: src/univention/admin/rest/module.py:3444
+#: src/univention/admin/rest/module.py:3509
 #, python-format
 msgid "Object exists: %s: %s"
 msgstr "Objekt existiert: %s: %s"
 
-#: src/univention/admin/rest/module.py:3046
+#: src/univention/admin/rest/module.py:3119
 msgid "Object type tree"
 msgstr "Objekt-Typ Baum"
 
 #. i18n: translation for univention-directory-reports
-#: src/univention/admin/rest/module.py:2606
+#: src/univention/admin/rest/module.py:2670
 msgid "PDF Document"
 msgstr "PDF-Dokument"
 
-#: src/univention/admin/rest/module.py:3809
+#: src/univention/admin/rest/module.py:3882
 msgid "Perform a cleanup"
 msgstr "Cleanup ausführen"
 
-#: src/univention/admin/rest/module.py:2576
+#: src/univention/admin/rest/module.py:2640
 msgid "Policies"
 msgstr "Richtlinien"
 
-#: src/univention/admin/rest/module.py:3825
-#: src/univention/admin/rest/module.py:3875
+#: src/univention/admin/rest/module.py:3898
+#: src/univention/admin/rest/module.py:3948
 msgid "Policy DN"
 msgstr "Richtlinien DN"
 
-#: src/univention/admin/rest/module.py:3708
-#: src/univention/admin/rest/module.py:3826
+#: src/univention/admin/rest/module.py:3781
+#: src/univention/admin/rest/module.py:3899
 msgid "Policy result"
 msgstr "Richtlinien-Auswertung"
 
-#: src/univention/admin/rest/module.py:2873
+#: src/univention/admin/rest/module.py:2938
 msgid "Previous page"
 msgstr "Voherige Seite"
 
-#: src/univention/admin/rest/module.py:2575
+#: src/univention/admin/rest/module.py:2639
 msgid "Properties inherited from policies"
 msgstr "von Richtlinien geerbte Eigenschaften"
 
-#: src/univention/admin/rest/module.py:2905
+#: src/univention/admin/rest/module.py:2970
 msgid "Property"
 msgstr "Eigenschaft"
 
-#: src/univention/admin/rest/module.py:1037
+#: src/univention/admin/rest/module.py:1001
 #, python-format
 msgid "Query string \"%s\": %s\n"
 msgstr "Query string \"%s\": %s\n"
 
-#: src/univention/admin/rest/module.py:3807
-#: src/univention/admin/rest/module.py:3811
+#: src/univention/admin/rest/module.py:3880
+#: src/univention/admin/rest/module.py:3884
 msgid "Remove"
 msgstr "Entfernen"
 
-#: src/univention/admin/rest/module.py:3810
+#: src/univention/admin/rest/module.py:3883
 msgid "Remove referring objects"
 msgstr "Referenzierte Objekte entfernen"
 
-#: src/univention/admin/rest/module.py:3807
+#: src/univention/admin/rest/module.py:3880
 msgid "Remove the object"
 msgstr "Das Objekt entfernen"
 
-#: src/univention/admin/rest/module.py:1034
+#: src/univention/admin/rest/module.py:998
 #, python-format
 msgid "Request argument \"%s\" %s\n"
 msgstr "Request-Argument \"%s\" %s\n"
 
-#: src/univention/admin/rest/module.py:4124
+#: src/univention/admin/rest/module.py:4199
 msgid "Request new license"
 msgstr "Neue Lizenz anfordern"
 
-#: src/univention/admin/rest/module.py:2895
-#: src/univention/admin/rest/module.py:2919
+#: src/univention/admin/rest/module.py:2960
+#: src/univention/admin/rest/module.py:2984
 msgid "Search"
 msgstr "Suchen"
 
-#: src/univention/admin/rest/module.py:2906
+#: src/univention/admin/rest/module.py:2971
 msgid "Search for"
 msgstr "Suche nach"
 
-#: src/univention/admin/rest/module.py:2895
-#: src/univention/admin/rest/module.py:3037
+#: src/univention/admin/rest/module.py:2960
+#: src/univention/admin/rest/module.py:3110
 #, python-format
 msgid "Search for %s"
 msgstr "Suche nach %s"
 
-#: src/univention/admin/rest/module.py:2899
+#: src/univention/admin/rest/module.py:2964
 msgid "Search in"
 msgstr "Suche in"
 
-#: src/univention/admin/rest/module.py:2907
+#: src/univention/admin/rest/module.py:2972
 msgid "Search scope"
 msgstr "Such-Scope"
 
-#: src/univention/admin/rest/module.py:2906
+#: src/univention/admin/rest/module.py:2971
 msgid "Search value (e.g. *)"
 msgstr "Suchwert (z.B. *)"
 
-#: src/univention/admin/rest/module.py:3749
+#: src/univention/admin/rest/module.py:3822
 msgid "Select position"
 msgstr "Position auswählen"
 
-#: src/univention/admin/rest/module.py:2913
+#: src/univention/admin/rest/module.py:2978
 msgid "Selected page"
 msgstr "Ausgewählte Seite"
 
-#: src/univention/admin/rest/module.py:2914
+#: src/univention/admin/rest/module.py:2979
 msgid "Sort by"
 msgstr "Sortieren nach"
 
-#: src/univention/admin/rest/module.py:3181
+#: src/univention/admin/rest/module.py:3255
 #, python-format
 msgid "Sub object types of %s"
 msgstr "Unter Objekt-Typen von %s"
 
-#: src/univention/admin/rest/module.py:2902
+#: src/univention/admin/rest/module.py:2967
 msgid "Superordinate"
 msgstr "Superordinate"
 
-#: src/univention/admin/rest/module.py:3677
+#: src/univention/admin/rest/module.py:3750
 msgid "Template"
 msgstr "Vorlage"
 
-#: src/univention/admin/rest/module.py:395
+#: src/univention/admin/rest/module.py:337
 #, python-format
 msgid "The %(module)s module has no property %(name)s."
 msgstr "Das Modul %(module)s besitzt keine Eigenschaft %(name)s."
 
-#: src/univention/admin/rest/module.py:3838
-#: src/univention/admin/rest/module.py:3839
+#: src/univention/admin/rest/module.py:3911
+#: src/univention/admin/rest/module.py:3912
 #, python-format
 msgid "The %s \"%s\" is part of the Active Directory domain."
 msgstr "Die %s \"%s\" ist Teil einer Active Directory Domäne."
 
-#: src/univention/admin/rest/module.py:3706
+#: src/univention/admin/rest/module.py:3779
 msgid "The container where the object is going to be created in"
 msgstr "Der Container in dem die Objekte erstellt werden sollen"
 
-#: src/univention/admin/rest/module.py:434
+#: src/univention/admin/rest/module.py:378
 #, python-format
 msgid "The ldap base is invalid. Use %(details)s."
 msgstr "Die LDAP-Basis ist ungültig. Benutze %(details)s."
 
-#: src/univention/admin/rest/module.py:4105
+#: src/univention/admin/rest/module.py:4180
 msgid "The license is valid."
 msgstr "Die Lizenz ist gültig."
 
-#: src/univention/admin/rest/module.py:4219
+#: src/univention/admin/rest/module.py:4294
 msgid "The license was imported successfully."
 msgstr "Die Lizenz wurder erfolgreich importiert."
 
-#: src/univention/admin/rest/module.py:374
-#: src/univention/admin/rest/module.py:404
+#: src/univention/admin/rest/module.py:3516
+#, python-format
+msgid "The property \"%(name)s\" is required."
+msgstr "Die Eigenschaft \"%(name)s\" ist erforderlich."
+
+#: src/univention/admin/rest/module.py:347
+#: src/univention/admin/rest/module.py:3606
 #, python-format
 msgid "The property %(name)s has an invalid value: %(details)s"
 msgstr "Die Eigenschaft %(name)s hat einen ungültigen Wert: %(details)s"
 
-#: src/univention/admin/rest/module.py:852
+#: src/univention/admin/rest/module.py:1145
+#, python-format
+msgid ""
+"The resource has meanwhile been changed. If-Match %s does not match entity "
+"tag %s."
+msgstr "Die Resource wurde zwischenzeitlich verändert. If-Match %s passt nicht zu entity tag(s) %s."
+
+#: src/univention/admin/rest/module.py:1135
+#, python-format
+msgid ""
+"The resource has meanwhile been changed. If-None-Match %s does not match "
+"entity tag %s."
+msgstr "Die Resource wurde zwischenzeitlich verändert. If-None-Match %s passt nicht zu entity tag(s) %s."
+
+#: src/univention/admin/rest/module.py:816
 msgid "This form requires JavaScript enabled!"
 msgstr "Dieses Formular benötigt aktivieres JavaScript."
 
-#: src/univention/admin/rest/module.py:4089
+#: src/univention/admin/rest/module.py:4164
 msgid ""
 "This seems to be a problem with the license server. Please try again later."
 msgstr ""
 "Die deutet auf ein Problem mit dem Lizenzserver hin. Bitte versuchen Sie es "
 "später erneut."
 
-#: src/univention/admin/rest/module.py:3408
+#: src/univention/admin/rest/module.py:3473
 msgid "Trying to create an object with wrong RDN."
 msgstr "Versuch eom Objekt mit falscher RDN zu erstellen."
 
-#: src/univention/admin/rest/module.py:2212
+#: src/univention/admin/rest/module.py:2276
 msgid "UCS license"
 msgstr "UCS Lizenz"
 
-#: src/univention/admin/rest/module.py:3849
+#: src/univention/admin/rest/module.py:3922
 msgid "Upload user photo"
 msgstr "Benutzerfoto hochladen"
 
-#: src/univention/admin/rest/module.py:3146
+#: src/univention/admin/rest/module.py:3220
 msgid "User photo"
 msgstr "Benutzerfoto"
 
-#: src/univention/admin/rest/module.py:3810
+#: src/univention/admin/rest/module.py:3883
 msgid "e.g. DNS or DHCP references of a computer"
 msgstr "z.B. DNS oder DHCP Referenzen eines Computers"
 
-#: src/univention/admin/rest/module.py:3809
+#: src/univention/admin/rest/module.py:3882
 msgid "e.g. temporary objects, locks, etc."
 msgstr "z.B. temporäre Objekte, Locks, etc."

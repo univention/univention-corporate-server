@@ -561,7 +561,7 @@ class simpleLdap(object):
 
         for c in response.get('ctrls', []):
             if c.controlType == PostReadControl.controlType:
-                self.oldattr.update(c.entry)
+                self.oldattr.update({k: [v if isinstance(v, bytes) else v.encode('ISO8859-1') for v in val] for k, val in c.entry.items()})
         self._write_admin_diary_create()
         return dn
 
@@ -647,14 +647,14 @@ class simpleLdap(object):
             self._ldap_pre_ready()
             self.ready()
 
-            dn = self._modify(modify_childs, ignore_license=ignore_license, response=response)
+            dn = self._modify(modify_childs, ignore_license=ignore_license, response=response, serverctrls=serverctrls)
         except Exception:
             self._safe_cancel()
             raise
 
         for c in response.get('ctrls', []):
             if c.controlType == PostReadControl.controlType:
-                self.oldattr.update(c.entry)
+                self.oldattr.update({k: [v if isinstance(v, bytes) else v.encode('ISO8859-1') for v in val] for k, val in c.entry.items()})
         return dn
 
     def _write_admin_diary_modify(self):

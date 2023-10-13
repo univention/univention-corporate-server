@@ -1,3 +1,9 @@
+univention-directory-manager-modules (15.0.24-20) unstable; urgency=medium
+
+  * Bug #56731: pass serverctrls during modify() operations
+
+ -- Florian Best <best@univention.de>  Mon, 16 Oct 2023 20:20:08 +0200
+
 univention-directory-manager-modules (15.0.24-19) unstable; urgency=medium
 
   * Bug #54183: fix removal of non-lowercase group members in

@@ -1,3 +1,10 @@
+univention-directory-manager-rest (10.0.6-11) unstable; urgency=medium
+
+  * Bug #56731: allow If-Match for DELETE requests
+  * Bug #56731: add E-Tag in PUT/POST/PATCH responses with no-cache flag
+
+ -- Florian Best <best@univention.de>  Mon, 16 Oct 2023 18:56:38 +0200
+
 univention-directory-manager-rest (10.0.6-10) unstable; urgency=medium
 
   * Bug #56351 Fix username enumeration in plain login

@@ -434,11 +434,15 @@ Delete a user with a DELETE request
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 To delete a user you just have to send a :command:`DELETE` request to
-:samp:`/univention/udm/users/user/{<dn>}`
+:samp:`/univention/udm/users/user/{<dn>}`. Optionally, you can provide
+an ``If-Match`` header, similar to the :command:`PUT` method described
+above, to ensure the deletion is conditional.
 
 .. code-block:: console
 
-   $ curl -X DELETE http://${USER}:${PASSWORD}@${FQHN}/univention/udm/users/user/<dn>
+   $ curl -X DELETE -H "Accept: application/json" \
+     -H 'If-Match: "<Etag>" \
+     'https://${USER}:${PASSWORD}@${FQHN}/univention/udm/users/user/<dn>
 
 
 .. caution::

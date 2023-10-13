@@ -1,0 +1,11 @@
+product: ucs
+release: "5.0"
+version: [5]
+scope: ucs_5.0-0-errata5.0-5
+src: univention-directory-manager-modules
+fix: 15.0.24-20
+desc: |
+ This update addresses the following issues:
+ * The `If-Match` request header can now be given in `DELETE` requests to
+   the UDM REST API to make them conditional.
+bug: [56731]

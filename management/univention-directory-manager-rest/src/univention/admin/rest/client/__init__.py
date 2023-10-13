@@ -635,7 +635,11 @@ class Object(Client):
     def delete(self, remove_referring=False):
         # type: (bool) -> bytes
         assert self.uri
-        return self.client.request('DELETE', self.uri)
+        headers = {key: value for key, value in {
+            'If-Unmodified-Since': self.last_modified,
+            'If-Match': self.etag,
+        }.items() if value}
+        return self.client.request('DELETE', self.uri, **headers)  # type: ignore # <https://github.com/python/mypy/issues/10008>
 
     def move(self, position):
         # type: (str) -> None

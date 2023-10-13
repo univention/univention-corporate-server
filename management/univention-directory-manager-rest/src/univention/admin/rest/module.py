@@ -1027,12 +1027,6 @@ class ResourceBase:
     def vary(self):
         return ['Accept', 'Accept-Language', 'Accept-Encoding', 'Authorization']
 
-    def modified_from_timestamp(self, timestamp):
-        modified = time.strptime(timestamp, '%Y%m%d%H%M%SZ')
-        # make sure Last-Modified is only send if it is not now
-        if modified < time.gmtime(time.time() - 1):
-            return modified
-
     def get_parent_object_type(self, module):
         flavor = module.flavor
         if '/' not in flavor:
@@ -1041,6 +1035,103 @@ class ResourceBase:
 
     def navigation(self):
         return ('udm:object-modules', 'udm:object-module', 'type', 'up', 'self')
+
+
+class ConditionalResource:
+
+    def set_entity_tags(self, obj, check_conditionals=True, remove_after_check=False):
+        self.set_header('Etag', self.get_etag(obj))
+        modified = self.modified_from_timestamp(obj.oldattr['modifyTimestamp'][0].decode('utf-8', 'replace'))
+        if modified:
+            self.set_header('Last-Modified', last_modified(modified))
+        if check_conditionals:
+            self.check_conditional_requests()
+        if remove_after_check:
+            self._headers.pop("Etag", None)
+            self._headers.pop("Last-Modified", None)
+
+    def get_etag(self, obj):
+        # generate as early as possible, to not cause side effects e.g. default values in obj.info. It must be the same value for GET and PUT
+        if not obj._open:
+            raise RuntimeError('Object was not opened!')
+        etag = hashlib.sha1()
+        etag.update(obj.dn.encode('utf-8', 'replace'))
+        etag.update(obj.module.encode('utf-8', 'replace'))
+        etag.update(b''.join(obj.oldattr.get('entryCSN', [])))
+        etag.update((obj.entry_uuid or '').encode('utf-8'))
+        #etag.update(json.dumps({k: [v.decode('ISO8859-1', 'replace') for v in val] for k, val in obj.oldattr.items()}, sort_keys=True).encode('utf-8'))
+        #etag.update(json.dumps(obj.info, sort_keys=True).encode('utf-8'))
+        return '"%s"' % etag.hexdigest()
+
+    def modified_from_timestamp(self, timestamp):
+        modified = time.strptime(timestamp, '%Y%m%d%H%M%SZ')
+        # make sure Last-Modified is only send if it is not now
+        if modified < time.gmtime(time.time() - 1):
+            return modified
+
+    def check_conditional_requests(self):
+        etag = self._headers.get("Etag", "")
+        if etag:
+            self.check_conditional_request_etag(etag)
+
+        last_modified = parsedate(self._headers.get('Last-Modified', ''))
+        if last_modified is not None:
+            last_modified = datetime.datetime(*last_modified[:6])
+            self.check_conditional_request_modified_since(last_modified)
+            self.check_conditional_request_unmodified_since(last_modified)
+
+    def check_conditional_request_modified_since(self, last_modified):
+        date = parsedate(self.request.headers.get('If-Modified-Since', ''))
+        if date is not None:
+            if_since = datetime.datetime(*date[:6])
+            if if_since >= last_modified:
+                self.set_status(304)
+                raise Finish()
+
+    def check_conditional_request_unmodified_since(self, last_modified):
+        date = parsedate(self.request.headers.get('If-Unmodified-Since', ''))
+        if date is not None:
+            if_not_since = datetime.datetime(*date[:6])
+            if last_modified > if_not_since:
+                raise HTTPError(412, _('If-Unmodified-Since does not match Last-Modified.'))
+
+    def check_conditional_request_etag(self, etag):
+        safe_request = self.request.method in ('GET', 'HEAD', 'OPTIONS')
+
+        def wheak(x):
+            return x[2:] if x.startswith('W/') else x
+        etag_matches = re.compile(r'\*|(?:W/)?"[^"]*"')
+
+        def check_conditional_request_if_none_match():
+            etags = etag_matches.findall(self.request.headers.get("If-None-Match", ""))
+            if not etags:
+                if self.request.headers.get("If-None-Match"):
+                    raise HTTPError(400, 'Invalid "If-None-Match" syntax.')
+                return
+
+            if '*' in etags or wheak(etag) in map(wheak, etags):
+                if safe_request:
+                    self.set_status(304)  # Not modified
+                    raise Finish()
+                else:
+                    message = _('The resource has meanwhile been changed. If-None-Match %s does not match entity tag %s.') % (', '.join(etags), etag)
+                    raise HTTPError(412, message)  # Precondition Failed
+
+        def check_conditional_request_if_match():
+            etags = etag_matches.findall(self.request.headers.get("If-Match", ""))
+            if not etags:
+                if self.request.headers.get("If-Match"):
+                    raise HTTPError(400, 'Invalid "If-Match" syntax.')
+                return
+            if '*' not in etags and wheak(etag) not in map(wheak, etags):
+                message = _('The resource has meanwhile been changed. If-Match %s does not match entity tag %s.') % (', '.join(etags), etag)
+                if not safe_request:
+                    raise HTTPError(412, message)  # Precondition Failed
+                elif self.request.headers.get('Range'):
+                    raise HTTPError(416, message)  # Range Not Satisfiable
+
+        check_conditional_request_if_none_match()
+        check_conditional_request_if_match()
 
 
 def _param_to_openapi(param):
@@ -1466,7 +1557,7 @@ class _OpenAPIBase:
                 "in": "header",
                 "name": "If-None-Match",
                         "schema": {"type": "string", "format": "etag"},
-                        "description": "Use request from cache by using the E-Tag entity tag if it matches.",
+                        "description": "Use request from cache by using the Etag entity tag if it matches.",
                         "example": "",
             },
             "if-unmodified-since": {
@@ -1534,7 +1625,10 @@ class _OpenAPIBase:
                                     "uuid": {'$ref': '#/components/schemas/uuid'},
                                 },
                 }),
-                "headers": global_response_headers(),
+                "headers": global_response_headers({
+                    'Etag': {'$ref': '#/components/headers/Etag'},
+                    'Last-Modified': {'$ref': '#/components/headers/Last-Modified'},
+                }),
             },
             "PUTObjectCreated": {  # 201
                 "description": "Created: The object did not exist and has been created. Deprecated: a move operation started, expect 202 in the future!",
@@ -1545,7 +1639,10 @@ class _OpenAPIBase:
                                 "uuid": {'$ref': '#/components/schemas/uuid'},
                             },
                 }),
-                "headers": global_response_headers(),
+                "headers": global_response_headers({
+                    'Etag': {'$ref': '#/components/headers/Etag'},
+                    'Last-Modified': {'$ref': '#/components/headers/Last-Modified'},
+                }),
             },
             'MoveStarted': {  # 202 (actually still 201)
                 "description": "Accepted: asynchronous move or rename operation started.",
@@ -1561,6 +1658,8 @@ class _OpenAPIBase:
                 "description": "Success. No response data. A link to the modified resource in the `Location` header.",
                 'headers': global_response_headers({
                     'Location': {'$ref': '#/components/headers/Location'},
+                    'Etag': {'$ref': '#/components/headers/Etag'},
+                    'Last-Modified': {'$ref': '#/components/headers/Last-Modified'},
                 }),
             },
             'ObjectDeleted': {  # 204
@@ -1651,7 +1750,7 @@ class _OpenAPIBase:
             'Cache-Control': {"schema": {"type": "string"}, "description": "Controling directives for caching."},
             'Expires': {"schema": {"type": "string"}, "description": "An expiration time, when the response is stale and should not be used from cache anymore."},
             'Vary': {"schema": {"type": "string"}, "description": "The response headers which need to be considered when caching the response."},
-            'E-Tag': {"schema": {"type": "string"}, "description": "An entity tag of the resource, which should be used for conditional PUT requests."},
+            'Etag': {"schema": {"type": "string"}, "description": "An entity tag of the resource, which should be used for conditional PUT requests."},
             'Last-Modified': {"schema": {"type": "string"}, "description": "The time the resource was modified the last time, which should be used for conditional PUT requests."},
             'Allow': {"schema": {"type": "string"}, "description": "The allowed HTTP request methods for this resource."},
             'Content-Language': {"schema": {"type": "string"}, "description": "The language of the response"},
@@ -1828,7 +1927,7 @@ class _OpenAPIBase:
                 "description": "Success",
                 "content": content_schema_ref(f"#/components/schemas/{_openapi_quote(model_name)}"),
                 "headers": global_response_headers({
-                    'E-Tag': {'$ref': '#/components/headers/E-Tag'},
+                    'Etag': {'$ref': '#/components/headers/Etag'},
                     'Last-Modified': {'$ref': '#/components/headers/Last-Modified'},
                     # Caching
                 }),
@@ -1840,6 +1939,8 @@ class _OpenAPIBase:
                     "parameters": [
                         {'$ref': '#/components/parameters/object.delete.query.cleanup'},
                         {'$ref': '#/components/parameters/object.delete.query.recursive'},
+                        {'$ref': '#/components/parameters/if-match'},
+                        {'$ref': '#/components/parameters/if-unmodified-since'},
                     ] + global_parameters,
                     "responses": global_responses({
                         "204": {
@@ -2694,7 +2795,7 @@ class FormBase:
         return superordinate
 
 
-class Objects(FormBase, ReportingBase, _OpenAPIBase, Resource):
+class Objects(ConditionalResource, FormBase, ReportingBase, _OpenAPIBase, Resource):
 
     @sanitize
     async def get(
@@ -2949,7 +3050,7 @@ class Objects(FormBase, ReportingBase, _OpenAPIBase, Resource):
         """Create a new {module.object_name} object"""
         obj = Object(self.application, self.request)
         obj.ldap_connection, obj.ldap_position = self.ldap_connection, self.ldap_position
-        serverctrls = [PostReadControl(True, ['entryUUID'])]
+        serverctrls = [PostReadControl(True, ['entryUUID', 'modifyTimestamp', 'entryCSN'])]
         response = {}
         result = {}
         representation = {
@@ -2959,15 +3060,16 @@ class Objects(FormBase, ReportingBase, _OpenAPIBase, Resource):
             'policies': policies,
             'properties': properties,
         }
-        obj = await obj.create(object_type, None, representation, result, serverctrls=serverctrls, response=response)
-        self.set_header('Location', self.urljoin(quote_dn(obj.dn)))
+        new_obj = await obj.create(object_type, None, representation, result, serverctrls=serverctrls, response=response)
+        self.set_header('Location', self.urljoin(quote_dn(new_obj.dn)))
+        self.set_entity_tags(new_obj, check_conditionals=False)
         self.set_status(201)
-        self.add_caching(public=False, must_revalidate=True)
+        self.add_caching(public=False, no_cache=True, must_revalidate=True)
 
         uuid = _get_post_read_entry_uuid(response)
 
         result.update({
-            'dn': obj.dn,
+            'dn': new_obj.dn,
             'uuid': uuid,
         })
         self.content_negotiation(result)
@@ -3056,7 +3158,7 @@ class ObjectsMove(Resource):
             status['finished'] = True
 
 
-class Object(FormBase, _OpenAPIBase, Resource):
+class Object(ConditionalResource, FormBase, _OpenAPIBase, Resource):
 
     async def get(self, object_type, dn):
         """
@@ -3148,25 +3250,6 @@ class Object(FormBase, _OpenAPIBase, Resource):
             self.set_header('Accept-Patch', 'application/json-patch+json, application/json')
         return props
 
-    def set_entity_tags(self, obj):
-        self.set_header('Etag', self.get_etag(obj))
-        modified = self.modified_from_timestamp(obj.oldattr['modifyTimestamp'][0].decode('utf-8', 'replace'))
-        if modified:
-            self.set_header('Last-Modified', last_modified(modified))
-        self.check_conditional_requests()
-
-    def get_etag(self, obj):
-        # generate as early as possible, to not cause side effects e.g. default values in obj.info. It must be the same value for GET and PUT
-        if not obj._open:
-            raise RuntimeError('Object was not opened!')
-        etag = hashlib.sha1()
-        etag.update(obj.dn.encode('utf-8', 'replace'))
-        etag.update(obj.module.encode('utf-8', 'replace'))
-        etag.update(b''.join(obj.oldattr.get('entryCSN', [])))
-        etag.update((obj.entry_uuid or '').encode('utf-8'))
-        etag.update(json.dumps(obj.info, sort_keys=True).encode('utf-8'))
-        return '"%s"' % etag.hexdigest()
-
     @classmethod
     def get_representation(cls, module, obj, properties, ldap_connection, copy=False, add=False):
         def _remove_uncopyable_properties(obj):
@@ -3251,7 +3334,7 @@ class Object(FormBase, _OpenAPIBase, Resource):
         try:
             module, obj = await self.pool_submit(self.get_module_object, object_type, dn, ldap_connection=self.ldap_write_connection)
         except NotFound:
-            module, obj = None
+            module, obj = None, None
 
         representation = {
             'position': position,
@@ -3260,10 +3343,10 @@ class Object(FormBase, _OpenAPIBase, Resource):
             'policies': policies,
             'properties': properties,
         }
+        serverctrls = [PostReadControl(True, ['entryUUID', 'modifyTimestamp', 'entryCSN'])]
+        response = {}
         if not obj:
             module = self.get_module(object_type)
-            serverctrls = [PostReadControl(True, ['entryUUID'])]
-            response = {}
             result = {}
 
             obj = await self.create(object_type, dn, representation, result, serverctrls=serverctrls, response=response)
@@ -3287,8 +3370,9 @@ class Object(FormBase, _OpenAPIBase, Resource):
             return
         else:
             result = {}
-            obj = await self.modify(module, obj, representation, result)
+            obj = await self.modify(module, obj, representation, result, serverctrls=serverctrls, response=response)
             self.set_header('Location', self.urljoin(quote_dn(obj.dn)))
+            self.set_entity_tags(obj, check_conditionals=False)
             self.add_caching(public=False, must_revalidate=True, no_cache=True, no_store=True)
             if result:
                 self.content_negotiation(result)
@@ -3331,8 +3415,12 @@ class Object(FormBase, _OpenAPIBase, Resource):
             representation['position'] = entry['position']
         if representation['superordinate'] is None:
             representation['superordinate'] = entry.get('superordinate')
+        serverctrls = [PostReadControl(True, ['entryUUID', 'modifyTimestamp', 'entryCSN'])]
+        response = {}
         result = {}
-        obj = await self.modify(module, obj, representation, result)
+        obj = await self.modify(module, obj, representation, result, serverctrls=serverctrls, response=response)
+
+        self.set_entity_tags(obj, check_conditionals=False)
         self.add_caching(public=False, must_revalidate=True, no_cache=True, no_store=True)
         self.set_header('Location', self.urljoin(quote_dn(obj.dn)))
         if result:
@@ -3369,10 +3457,10 @@ class Object(FormBase, _OpenAPIBase, Resource):
         dn = await self.pool_submit(self.handle_udm_errors, obj.create, **kwargs)
         return obj
 
-    async def modify(self, module, obj, representation, result):
+    async def modify(self, module, obj, representation, result, **kwargs):
         assert obj._open
         self.set_properties(module, obj, representation, result)
-        await self.pool_submit(self.handle_udm_errors, obj.modify)
+        await self.pool_submit(self.handle_udm_errors, obj.modify, **kwargs)
         return obj
 
     def handle_udm_errors(self, action, *args, **kwargs):
@@ -3545,6 +3633,8 @@ class Object(FormBase, _OpenAPIBase, Resource):
         module, obj = await self.pool_submit(self.get_module_object, object_type, dn, self.ldap_write_connection)
         assert obj._open
 
+        self.set_entity_tags(obj, remove_after_check=True)
+
         try:
             def remove():
                 try:
@@ -3561,68 +3651,8 @@ class Object(FormBase, _OpenAPIBase, Resource):
         self.set_status(204)
         raise Finish()
 
-    def check_conditional_requests(self):
-        etag = self._headers.get("Etag", "")
-        if etag:
-            self.check_conditional_request_etag(etag)
 
-        last_modified = parsedate(self._headers.get('Last-Modified', ''))
-        if last_modified is not None:
-            last_modified = datetime.datetime(*last_modified[:6])
-            self.check_conditional_request_modified_since(last_modified)
-            self.check_conditional_request_unmodified_since(last_modified)
-
-    def check_conditional_request_modified_since(self, last_modified):
-        date = parsedate(self.request.headers.get('If-Modified-Since', ''))
-        if date is not None:
-            if_since = datetime.datetime(*date[:6])
-            if if_since >= last_modified:
-                self.set_status(304)
-                raise Finish()
-
-    def check_conditional_request_unmodified_since(self, last_modified):
-        date = parsedate(self.request.headers.get('If-Unmodified-Since', ''))
-        if date is not None:
-            if_not_since = datetime.datetime(*date[:6])
-            if last_modified > if_not_since:
-                raise HTTPError(412, _('If-Unmodified-Since does not match Last-Modified.'))
-
-    def check_conditional_request_etag(self, etag):
-        safe_request = self.request.method in ('GET', 'HEAD', 'OPTIONS')
-
-        def wheak(x):
-            return x[2:] if x.startswith('W/') else x
-        etag_matches = re.compile(r'\*|(?:W/)?"[^"]*"')
-
-        def check_conditional_request_if_none_match():
-            etags = etag_matches.findall(self.request.headers.get("If-None-Match", ""))
-            if not etags:
-                return
-
-            if '*' in etags or wheak(etag) in map(wheak, etags):
-                if safe_request:
-                    self.set_status(304)  # Not modified
-                    raise Finish()
-                else:
-                    message = _('If-None-Match %s does not match entity tag(s) %s.') % (etag, ', '.join(etags))
-                    raise HTTPError(412, message)  # Precondition Failed
-
-        def check_conditional_request_if_match():
-            etags = etag_matches.findall(self.request.headers.get("If-Match", ""))
-            if not etags:
-                return
-            if wheak(etag) not in map(wheak, etags):
-                message = _('If-Match %s does not match entity tag(s) %s.') % (etag, ', '.join(etags))
-                if not safe_request:
-                    raise HTTPError(412, message)  # Precondition Failed
-                elif self.request.headers.get('Range'):
-                    raise HTTPError(416, message)  # Range Not Satisfiable
-
-        check_conditional_request_if_none_match()
-        check_conditional_request_if_match()
-
-
-class UserPhoto(Resource):
+class UserPhoto(ConditionalResource, Resource):
 
     async def get(self, object_type, dn):
         dn = unquote_dn(dn)
