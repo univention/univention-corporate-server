@@ -2169,9 +2169,9 @@ class ObjectTypes(Resource):
 
     @sanitize
     async def get(
-            self,
-            module_type,
-            superordinate: Optional[str] = Query(DNSanitizer(required=False, allow_none=True)),
+        self,
+        module_type,
+        superordinate: Optional[str] = Query(DNSanitizer(required=False, allow_none=True)),
     ):
         object_type = Modules.mapping.get(module_type)
         if not object_type:
@@ -2385,9 +2385,9 @@ class Tree(ContainerQueryBase):
 
     @sanitize
     async def get(
-            self,
-            object_type,
-            container: str = Query(DNSanitizer(default=None)),
+        self,
+        object_type,
+        container: str = Query(DNSanitizer(default=None)),
     ):
         ldap_base = ucr['ldap/base']
 
@@ -2410,9 +2410,9 @@ class MoveDestinations(ContainerQueryBase):
 
     @sanitize
     async def get(
-            self,
-            object_type,
-            container: str = Query(DNSanitizer(default=None)),
+        self,
+        object_type,
+        container: str = Query(DNSanitizer(default=None)),
     ):
         scope = 'one'
         modules = container_modules()
@@ -2429,10 +2429,10 @@ class Properties(Resource):
 
     @sanitize
     async def get(
-            self,
-            object_type,
-            dn=None,
-            searchable: bool = Query(BoolSanitizer(required=False)),
+        self,
+        object_type,
+        dn=None,
+        searchable: bool = Query(BoolSanitizer(required=False)),
     ):
         result = {}
         if dn:
@@ -2557,10 +2557,10 @@ class Report(ReportingBase, Resource):
 
     @sanitize
     async def post(
-            self,
-            object_type,
-            report_type,
-            dn: List[str] = Query(ListSanitizer(DNSanitizer())),
+        self,
+        object_type,
+        report_type,
+        dn: List[str] = Query(ListSanitizer(DNSanitizer())),
     ):
         await self.create_report(object_type, report_type, dn)
 
@@ -2698,75 +2698,75 @@ class Objects(FormBase, ReportingBase, _OpenAPIBase, Resource):
 
     @sanitize
     async def get(
-            self,
-            object_type,
-            position: str = Query(DNSanitizer(required=False, default=None, allow_none=True), description="Position which is used as search base."),
-            ldap_filter: str = Query(
-                LDAPFilterSanitizer(required=False, default="", allow_none=True),
-                alias='filter',
-                description="A LDAP filter which may contain `UDM` property names instead of `LDAP` attribute names.",
-                examples={
-                    "any-object": {
-                            "value": "(objectClass=*)",
-                    },
-                    "admin-user": {
-                        "value": "(|(username=Administrator)(username=Admin*))",
-                    },
+        self,
+        object_type,
+        position: str = Query(DNSanitizer(required=False, default=None, allow_none=True), description="Position which is used as search base."),
+        ldap_filter: str = Query(
+            LDAPFilterSanitizer(required=False, default="", allow_none=True),
+            alias='filter',
+            description="A LDAP filter which may contain `UDM` property names instead of `LDAP` attribute names.",
+            examples={
+                "any-object": {
+                        "value": "(objectClass=*)",
                 },
-            ),
-            query: Dict = Query(
-                DictSanitizer({}, default_sanitizer=LDAPSearchSanitizer(required=False, default='*', add_asterisks=False, use_asterisks=True), key_sanitizer=ObjectPropertySanitizer()),
-                description="The values to search for (propertyname and search filter value). Alternatively with `filter` a raw LDAP filter can be given.",
-                style="deepObject",
-                examples={
-                    'nothing': {
-                            'value': None,
-                    },
-                    'property': {
-                        'value': {'': '*'},
-                    },
+                "admin-user": {
+                    "value": "(|(username=Administrator)(username=Admin*))",
                 },
-            ),
-            property: str = Query(ObjectPropertySanitizer(required=False, default=None)),
-            scope: str = Query(ChoicesSanitizer(choices=['sub', 'one', 'base', 'base+one'], default='sub'), description="The LDAP search scope (sub, base, one)."),
-            hidden: bool = Query(BoolSanitizer(default=True), description="Include hidden/system objects in the response.", example=True),
-            properties: List[str] = Query(
-                ListSanitizer(StringSanitizer(), required=False, default=['*'], allow_none=True, min_elements=0),
-                style="form",
-                explode=True,
-                description="The properties which should be returned, if not given all properties are returned.",
-                examples={
-                    'no restrictions': {'value': None},
-                            'only small subset': {'value': ['username', 'firstname', 'lastname']},
+            },
+        ),
+        query: Dict = Query(
+            DictSanitizer({}, default_sanitizer=LDAPSearchSanitizer(required=False, default='*', add_asterisks=False, use_asterisks=True), key_sanitizer=ObjectPropertySanitizer()),
+            description="The values to search for (propertyname and search filter value). Alternatively with `filter` a raw LDAP filter can be given.",
+            style="deepObject",
+            examples={
+                'nothing': {
+                        'value': None,
                 },
-            ),
-            superordinate: Optional[str] = Query(DNSanitizer(required=False, default=None, allow_none=True), description="The superordinate DN of the objects to find. `position` is sufficient."),  # example=f"cn=superordinate,{ldap_base}"
-            dir: str = Query(
-                ChoicesSanitizer(choices=['ASC', 'DESC'], default='ASC'),
-                deprecated=True,
-                description="**Broken/Experimental**: The Sort direction (ASC or DESC).",
-            ),
-            by: str = Query(
-                StringSanitizer(required=False),
-                deprecated=True,
-                description="**Broken/Experimental**: Sort the search result by the specified property.",
-                # example="username",
-            ),
-            page: int = Query(
-                IntegerSanitizer(required=False, default=1, minimum=1),
-                deprecated=True,
-                description="**Broken/Experimental**: The search page, starting at one.",
-                example=1,
-            ),
-            limit: int = Query(
-                IntegerSanitizer(required=False, default=None, allow_none=True, minimum=0),
-                deprecated=True,
-                description="**Broken/Experimental**: How many results should be shown per page.",
-                examples={
-                    "no limit": {"value": "", "summary": "get all entries"},
-                            "limit to 50": {"value": 50, "summary": "limit to 50 entries"},
+                'property': {
+                    'value': {'': '*'},
                 },
-            ),
+            },
+        ),
+        property: str = Query(ObjectPropertySanitizer(required=False, default=None)),
+        scope: str = Query(ChoicesSanitizer(choices=['sub', 'one', 'base', 'base+one'], default='sub'), description="The LDAP search scope (sub, base, one)."),
+        hidden: bool = Query(BoolSanitizer(default=True), description="Include hidden/system objects in the response.", example=True),
+        properties: List[str] = Query(
+            ListSanitizer(StringSanitizer(), required=False, default=['*'], allow_none=True, min_elements=0),
+            style="form",
+            explode=True,
+            description="The properties which should be returned, if not given all properties are returned.",
+            examples={
+                'no restrictions': {'value': None},
+                        'only small subset': {'value': ['username', 'firstname', 'lastname']},
+            },
+        ),
+        superordinate: Optional[str] = Query(DNSanitizer(required=False, default=None, allow_none=True), description="The superordinate DN of the objects to find. `position` is sufficient."),  # example=f"cn=superordinate,{ldap_base}"
+        dir: str = Query(
+            ChoicesSanitizer(choices=['ASC', 'DESC'], default='ASC'),
+            deprecated=True,
+            description="**Broken/Experimental**: The Sort direction (ASC or DESC).",
+        ),
+        by: str = Query(
+            StringSanitizer(required=False),
+            deprecated=True,
+            description="**Broken/Experimental**: Sort the search result by the specified property.",
+            # example="username",
+        ),
+        page: int = Query(
+            IntegerSanitizer(required=False, default=1, minimum=1),
+            deprecated=True,
+            description="**Broken/Experimental**: The search page, starting at one.",
+            example=1,
+        ),
+        limit: int = Query(
+            IntegerSanitizer(required=False, default=None, allow_none=True, minimum=0),
+            deprecated=True,
+            description="**Broken/Experimental**: How many results should be shown per page.",
+            examples={
+                "no limit": {"value": "", "summary": "get all entries"},
+                        "limit to 50": {"value": 50, "summary": "limit to 50 entries"},
+            },
+        ),
     ):
         """Search for {module.object_name_plural} objects"""
         module = self.get_module(object_type)
@@ -2938,13 +2938,13 @@ class Objects(FormBase, ReportingBase, _OpenAPIBase, Resource):
 
     @sanitize
     async def post(
-            self,
-            object_type,
-            position: str = Body(DNSanitizer(required=False, allow_none=True)),
-            superordinate: str = Body(DNSanitizer(required=False, allow_none=True)),
-            options: Dict = Body(DictSanitizer({}, default_sanitizer=BooleanSanitizer(), required=False)),
-            policies: Dict = Body(DictSanitizer({}, default_sanitizer=ListSanitizer(DNSanitizer()), required=False)),
-            properties: Dict = Body(DictSanitizer({}, required=True)),
+        self,
+        object_type,
+        position: str = Body(DNSanitizer(required=False, allow_none=True)),
+        superordinate: str = Body(DNSanitizer(required=False, allow_none=True)),
+        options: Dict = Body(DictSanitizer({}, default_sanitizer=BooleanSanitizer(), required=False)),
+        policies: Dict = Body(DictSanitizer({}, default_sanitizer=ListSanitizer(DNSanitizer()), required=False)),
+        properties: Dict = Body(DictSanitizer({}, required=True)),
     ):
         """Create a new {module.object_name} object"""
         obj = Object(self.application, self.request)
@@ -3012,10 +3012,10 @@ class ObjectsMove(Resource):
 
     @sanitize
     async def post(
-            self,
-            object_type,
-            position: str = Body(DNSanitizer(required=True)),
-            dn: List[str] = Body(ListSanitizer(DNSanitizer(required=True), min_elements=1)),
+        self,
+        object_type,
+        position: str = Body(DNSanitizer(required=True)),
+        dn: List[str] = Body(ListSanitizer(DNSanitizer(required=True), min_elements=1)),
     ):
         # FIXME: this can only move objects of the same object_type but should move everything
         dns = dn  # TODO: validate: moveable, etc.
@@ -3237,14 +3237,14 @@ class Object(FormBase, _OpenAPIBase, Resource):
 
     @sanitize
     async def put(
-            self,
-            object_type,
-            dn,
-            position: str = Body(DNSanitizer(required=True)),
-            superordinate: str = Body(DNSanitizer(required=False, allow_none=True)),
-            options: Dict = Body(DictSanitizer({}, default_sanitizer=BooleanSanitizer())),
-            policies: Dict = Body(DictSanitizer({}, default_sanitizer=ListSanitizer(DNSanitizer()))),
-            properties: Dict = Body(DictSanitizer({}, required=True)),
+        self,
+        object_type,
+        dn,
+        position: str = Body(DNSanitizer(required=True)),
+        superordinate: str = Body(DNSanitizer(required=False, allow_none=True)),
+        options: Dict = Body(DictSanitizer({}, default_sanitizer=BooleanSanitizer())),
+        policies: Dict = Body(DictSanitizer({}, default_sanitizer=ListSanitizer(DNSanitizer()))),
+        properties: Dict = Body(DictSanitizer({}, required=True)),
     ):
         """Modify or move an {module.object_name} object"""
         dn = unquote_dn(dn)
@@ -3298,14 +3298,14 @@ class Object(FormBase, _OpenAPIBase, Resource):
 
     @sanitize
     async def patch(
-            self,
-            object_type,
-            dn,
-            position: Optional[str] = Body(DNSanitizer(required=False, default='')),
-            superordinate: Optional[str] = Body(DNSanitizer(required=False, allow_none=True)),
-            options: Optional[Dict] = Body(DictSanitizer({}, default_sanitizer=BooleanSanitizer(), required=False)),
-            policies: Optional[Dict] = Body(DictSanitizer({}, default_sanitizer=ListSanitizer(DNSanitizer()), required=False)),
-            properties: Optional[Dict] = Body(DictSanitizer({})),
+        self,
+        object_type,
+        dn,
+        position: Optional[str] = Body(DNSanitizer(required=False, default='')),
+        superordinate: Optional[str] = Body(DNSanitizer(required=False, allow_none=True)),
+        options: Optional[Dict] = Body(DictSanitizer({}, default_sanitizer=BooleanSanitizer(), required=False)),
+        policies: Optional[Dict] = Body(DictSanitizer({}, default_sanitizer=ListSanitizer(DNSanitizer()), required=False)),
+        properties: Optional[Dict] = Body(DictSanitizer({})),
     ):
         """Modify an {module.object_name} object (moving is currently not possible)"""
         dn = unquote_dn(dn)
@@ -3534,11 +3534,11 @@ class Object(FormBase, _OpenAPIBase, Resource):
 
     @sanitize
     async def delete(
-            self,
-            object_type,
-            dn,
-            cleanup: bool = Query(BoolSanitizer(default=True), description="Whether to perform a cleanup (e.g. of temporary objects, locks, etc).", example=True),
-            recursive: bool = Query(BoolSanitizer(default=True), description="Whether to remove referring objects (e.g. DNS or DHCP references).", example=True),
+        self,
+        object_type,
+        dn,
+        cleanup: bool = Query(BoolSanitizer(default=True), description="Whether to perform a cleanup (e.g. of temporary objects, locks, etc).", example=True),
+        recursive: bool = Query(BoolSanitizer(default=True), description="Whether to remove referring objects (e.g. DNS or DHCP references).", example=True),
     ):
         """Remove a {module.object_name_plural} object"""
         dn = unquote_dn(dn)
@@ -3674,11 +3674,11 @@ class ObjectAdd(FormBase, _OpenAPIBase, Resource):
 
     @sanitize
     async def get(
-            self,
-            object_type,
-            position: str = Query(DNSanitizer(required=False, allow_none=True), description="Position which is used as search base."),
-            superordinate: str = Query(DNSanitizer(required=False, allow_none=True), description="The superordinate DN of the object to create. `position` is sufficient."),  # example=f"cn=superordinate,{ldap_base}"
-            template: str = Query(DNSanitizer(required=False, allow_none=True), description="**Experimental**: A |UDM| template object.", deprecated=True),
+        self,
+        object_type,
+        position: str = Query(DNSanitizer(required=False, allow_none=True), description="Position which is used as search base."),
+        superordinate: str = Query(DNSanitizer(required=False, allow_none=True), description="The superordinate DN of the object to create. `position` is sufficient."),  # example=f"cn=superordinate,{ldap_base}"
+        template: str = Query(DNSanitizer(required=False, allow_none=True), description="**Experimental**: A |UDM| template object.", deprecated=True),
     ):
         """Get a template for creating an {module.object_name} object (contains all properties and their default values)"""
         module = self.get_module(object_type)  # ldap_connection=self.ldap_write_connection ?
@@ -3781,9 +3781,9 @@ class ObjectCopy(ObjectAdd):
 
     @sanitize
     async def get(
-            self,
-            object_type,
-            dn: str = Query(DNSanitizer(required=True)),
+        self,
+        object_type,
+        dn: str = Query(DNSanitizer(required=True)),
     ):
         module = self.get_module(object_type)  # ldap_connection=self.ldap_write_connection ?
         if 'copy' not in module.operations:
@@ -3922,15 +3922,15 @@ class PropertyChoices(Resource):
 
     @sanitize
     async def get(
-            self,
-            object_type,
-            dn,
-            property_,
-            dn_: str = Query(DNSanitizer(required=False), alias='dn'),
-            property: str = Query(ObjectPropertySanitizer(required=False)),
-            value: str = Query(SearchSanitizer(required=False)),
-            hidden: bool = Query(BooleanSanitizer(required=False, default=True)),
-            dependencies: str = Query(DictSanitizer({}, required=False)),
+        self,
+        object_type,
+        dn,
+        property_,
+        dn_: str = Query(DNSanitizer(required=False), alias='dn'),
+        property: str = Query(ObjectPropertySanitizer(required=False)),
+        value: str = Query(SearchSanitizer(required=False)),
+        hidden: bool = Query(BooleanSanitizer(required=False, default=True)),
+        dependencies: str = Query(DictSanitizer({}, required=False)),
     ):
         dn = unquote_dn(dn)
         module = self.get_module(object_type)
@@ -4027,11 +4027,11 @@ class PolicyResult(PolicyResultBase):
 
     @sanitize
     async def get(
-            self,
-            object_type,
-            dn,
-            policy_type,
-            policy: str = Query(DNSanitizer(required=False, default=None)),
+        self,
+        object_type,
+        dn,
+        policy_type,
+        policy: str = Query(DNSanitizer(required=False, default=None)),
     ):
         dn = unquote_dn(dn)
         infos = await self._get(object_type, policy_type, dn, is_container=False)
@@ -4047,11 +4047,11 @@ class PolicyResultContainer(PolicyResultBase):
 
     @sanitize
     async def get(
-            self,
-            object_type,
-            policy_type,
-            policy: str = Query(DNSanitizer(required=False, default=None)),
-            position: str = Query(DNSanitizer(required=True)),
+        self,
+        object_type,
+        policy_type,
+        policy: str = Query(DNSanitizer(required=False, default=None)),
+        position: str = Query(DNSanitizer(required=True)),
     ):
         infos = await self._get(object_type, policy_type, position, is_container=True)
         self.add_caching(public=False, no_cache=True, must_revalidate=True, no_store=True)
@@ -4092,8 +4092,8 @@ class LicenseRequest(Resource):
 
     @sanitize
     async def get(
-            self,
-            email: str = Query(EmailSanitizer(required=True)),
+        self,
+        email: str = Query(EmailSanitizer(required=True)),
     ):
         data = {
             'email': email,
@@ -4210,8 +4210,8 @@ class LicenseImport(Resource):
 
     @sanitize
     async def get(
-            self,
-            license: str = Query(StringSanitizer(required=True)),
+        self,
+        license: str = Query(StringSanitizer(required=True)),
     ):
         text = '''dn: cn=admin,cn=license,cn=univention,%(ldap/base)s
 cn: admin
@@ -4250,10 +4250,10 @@ class ServiceSpecificPassword(Resource):
 
     @sanitize
     async def post(
-            self,
-            object_type,
-            dn,
-            service: str = Body(StringSanitizer(required=True)),
+        self,
+        object_type,
+        dn,
+        service: str = Body(StringSanitizer(required=True)),
     ):
         module = get_module(object_type, dn, self.ldap_write_connection)
         if module is None:
