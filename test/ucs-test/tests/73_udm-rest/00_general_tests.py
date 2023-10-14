@@ -11,6 +11,7 @@ import time
 from operator import itemgetter
 
 import pytest
+import requests
 
 from univention.admin.rest.client import (
     UDM as UDMClient, Forbidden, PreconditionFailed, Unauthorized, UnprocessableEntity,
@@ -68,7 +69,71 @@ def test_authentication(udm):
     udm_client.get('users/user')
 
 
-def test_etag_last_modified(udm, udm_client):
+def test_etag_after_create_via_post(udm, udm_client, random_string):
+    """make sure POST a new user creates a etag"""
+    User = udm_client.get('users/user')
+    auth = (udm_client.username, udm_client.password)
+    headers = {'Accept-Encoding': 'identity', 'Accept': 'application/json'}
+
+    user = User.new()
+    user.properties['username'] = random_string()
+    user.properties['lastname'] = random_string()
+    user.properties['password'] = 'univention'
+
+    response = requests.post(User.uri, auth=auth, headers=dict(headers, **{'Content-Type': 'application/json'}), json=user.representation)
+    assert response.status_code == 201
+    uri = response.headers['Location']
+    etag = response.headers.get('Etag')
+    assert etag
+    time.sleep(1)
+
+    # ensure Etag is equal after creation
+    assert requests.get(uri, auth=auth, headers=dict(headers, **{'If-None-Match': '"foobar"'})).status_code == 200
+    response = requests.get(uri, auth=auth, headers=dict(headers, **{'If-None-Match': etag}))
+    assert response.status_code == 304
+    # ensure a 304 Not Modified also ships the same Etag
+    assert response.headers['Etag'] == etag
+
+
+def test_etag_after_modify_via_put(udm, udm_client):
+    """make sure that changes to an object via PUT change the Etag and respect If-Match"""
+    userdn, username = udm.create_user()
+    User = udm_client.get('users/user')
+    user = User.get(userdn)
+    uri = user.uri
+    auth = (udm_client.username, udm_client.password)
+    headers = {'Accept-Encoding': 'identity', 'Accept': 'application/json'}
+    etag = user.etag
+
+    data = requests.get(uri, auth=auth, headers=headers).json()
+    data['properties']['description'] = 'asdf'
+    assert requests.put(uri, auth=auth, headers=dict(headers, **{'Content-Type': 'application/json', 'If-Match': '"foobar"'}), json=data).status_code == 412
+    response = requests.put(uri, auth=auth, headers=dict(headers, **{'Content-Type': 'application/json', 'If-Match': etag}), json=data)
+    assert response.status_code == 204
+    assert response.headers['Etag'] != etag
+    assert requests.get(uri, auth=auth, headers=dict(headers, **{'If-None-Match': response.headers['Etag']})).status_code == 304
+
+
+def test_etag_after_modify_via_patch(udm, udm_client):
+    """make sure that changes to an object via PATCH change the Etag and respect If-Match"""
+    userdn, username = udm.create_user()
+    User = udm_client.get('users/user')
+    user = User.get(userdn)
+    uri = user.uri
+    auth = (udm_client.username, udm_client.password)
+    headers = {'Accept-Encoding': 'identity', 'Accept': 'application/json'}
+    etag = user.etag
+
+    # make sure PATCH respects If-Match
+    data = {'properties': {'description': 'foo'}}
+    assert requests.patch(uri, auth=auth, headers=dict(headers, **{'Content-Type': 'application/json', 'If-Match': '"foobar"'}), json=data).status_code == 412
+    response = requests.patch(uri, auth=auth, headers=dict(headers, **{'Content-Type': 'application/json', 'If-Match': etag}), json=data)
+    assert response.status_code == 204
+    assert response.headers['Etag'] != etag
+    assert requests.get(uri, auth=auth, headers=dict(headers, **{'If-None-Match': response.headers['Etag']})).status_code == 304
+
+
+def test_etag_last_modified_via_client(udm, udm_client):
     userdn, user = udm.create_user()
     time.sleep(1)
     user = udm_client.get('users/user').get(userdn)
@@ -81,14 +146,44 @@ def test_etag_last_modified(udm, udm_client):
     user.properties['lastname'] = 'foobar'
     with pytest.raises(PreconditionFailed) as exc:
         user.save()
-    # assert 'If-Match' in str(exc)
+    assert 'If-Match' in str(exc.value)
 
     user.last_modified = last_modified
     user.etag = None
     with pytest.raises(PreconditionFailed) as exc:
         user.save()
-    exc  # noqa: B018
-    # assert 'If-Unmodified-Since' in str(exc)
+    assert 'If-Unmodified-Since' in str(exc.value)
+
+
+def test_etag_via_delete(udm, udm_client):
+    userdn, username = udm.create_user()
+    User = udm_client.get('users/user')
+    user = User.get(userdn)
+    uri = user.uri
+    auth = (udm_client.username, udm_client.password)
+    headers = {'Accept-Encoding': 'identity', 'Accept': 'application/json'}
+    etag = user.etag
+
+    assert requests.delete(uri, auth=auth, headers=dict(headers, **{'If-Match': '"something"'})).status_code == 412
+    assert requests.delete(uri, auth=auth, headers=dict(headers, **{'If-Match': etag})).status_code == 204
+
+
+@pytest.mark.xfail(reason='Not working')
+def test_etag_after_modification_of_external_referenced_object(udm, udm_client):
+    group_dn, group = udm.create_group()
+    userdn, username = udm.create_user(groups=[group_dn])
+    User = udm_client.get('users/user')
+    user = User.get(userdn)
+    uri = user.uri
+    auth = (udm_client.username, udm_client.password)
+    headers = {'Accept-Encoding': 'identity', 'Accept': 'application/json'}
+    etag = user.etag
+
+    # make sure that changes to external references of an object (e.g. group memberships of users) also change the Etag
+    udm.modify_object('groups/group', dn=group_dn, remove={'users': [user.dn]})
+    response = requests.get(uri, auth=auth, headers=dict(headers, **{'If-None-Match': etag}))
+    assert response.status_code == 200
+    etag = response.headers['Etag']
 
 
 @pytest.mark.parametrize('suffix', ['', 'ä'])
