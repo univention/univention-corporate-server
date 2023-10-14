@@ -160,12 +160,10 @@ def test_error_handling(udm, ldap_base):
     ], key=itemgetter('location'))
 
     # not existing search base underneath of the real LDAP base
-    users_user = udm_client.get('users/user')  # FIXME: weird stuff is going on, the new search uses the old params
     with pytest.raises(UnprocessableEntity) as exc:
         list(users_user.search(position=f'cn=does,cn=not,cn=exists,{ldap_base}'))
     assert exc.value.error_details['error'] == [{'location': ['query', 'position'], 'message': f'LDAP object cn=does,cn=not,cn=exists,{ldap_base} could not be found.\nIt possibly has been deleted or moved. Please update your search results and open the object again.', 'type': 'value_error'}]
 
-    users_user = udm_client.get('users/user')  # FIXME: weird stuff is going on, the new search uses the old params
     userdn, username = udm.create_user(wait_for=False)
     user = users_user.get(userdn)
 
