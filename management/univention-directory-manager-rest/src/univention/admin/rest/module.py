@@ -78,6 +78,9 @@ import univention.admin.types as udm_types
 import univention.admin.uexceptions as udm_errors
 import univention.directory.reports as udr
 import univention.udm
+from univention.admin.rest.ldap_connection import (
+    get_machine_ldap_read_connection, get_user_ldap_read_connection, get_user_ldap_write_connection, reset_cache,
+)
 from univention.admin.rest.sanitizer import (
     Body, BooleanSanitizer, BoolSanitizer, ChoicesSanitizer, DictSanitizer, DNSanitizer, EmailSanitizer,
     IntegerSanitizer, LDAPFilterSanitizer, LDAPSearchSanitizer, ListSanitizer, MultiValidationError,
@@ -89,7 +92,6 @@ from univention.config_registry import handler_set
 from univention.lib.i18n import Translation
 from univention.management.console.config import ucr
 from univention.management.console.error import LDAP_ConnectionFailed, LDAP_ServerDown, UMC_Error, UnprocessableEntity
-from univention.management.console.ldap import get_connection, reset_cache
 from univention.management.console.log import MODULE
 from univention.management.console.modules.udm.tools import (
     LicenseError, LicenseImport as LicenseImporter, check_license, dump_license,
@@ -113,36 +115,6 @@ _ = Translation('univention-directory-manager-rest').translate
 
 RE_UUID = re.compile('[^A-Fa-f0-9-]')
 MAX_WORKERS = ucr.get('directory/manager/rest/max-worker-threads', 35)
-
-
-def get_user_ldap_write_connection(binddn, bindpw):
-    return get_ldap_connection('user-write', binddn, bindpw)
-
-
-def get_user_ldap_read_connection(binddn, bindpw):
-    return get_ldap_connection('user-read', binddn, bindpw)
-
-
-def get_machine_ldap_connection(type_):
-    binddn = ucr.get(f'directory/manager/rest/ldap-connection/{type_}/binddn', ucr['ldap/hostdn'])
-    with open(ucr.get(f'directory/manager/rest/ldap-connection/{type_}/password-file', '/etc/machine.secret')) as fd:
-        password = fd.read().strip()
-    return get_ldap_connection(type_, binddn, password)
-
-
-def get_machine_ldap_write_connection():
-    return get_machine_ldap_connection('machine-write')
-
-
-def get_machine_ldap_read_connection():
-    return get_machine_ldap_connection('machine-read')
-
-
-def get_ldap_connection(type_, binddn, bindpw):
-    default_uri = "ldap://%s:%d" % (ucr.get('ldap/master'), ucr.get_int('ldap/master/port', '7389'))
-    uri = ucr.get(f'directory/manager/rest/ldap-connection/{type_}/uri', default_uri)
-    start_tls = ucr.get_int('directory/manager/rest/ldap-connection/user-read/start-tls', 2)
-    return get_connection(bind=None, binddn=binddn, bindpw=bindpw, host=None, port=None, base=ucr['ldap/base'], start_tls=start_tls, uri=uri)
 
 
 def parse_content_type(content_type):
