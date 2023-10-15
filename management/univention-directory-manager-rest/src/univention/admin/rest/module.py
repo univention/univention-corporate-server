@@ -3973,7 +3973,7 @@ class PolicyResultBase(Resource):
             if key in policy_obj.polinfo:
                 if isinstance(infos[key], (tuple, list)):
                     continue
-                infos[key]['value'] = policy_obj.polinfo[key]
+                _value['value'] = policy_obj.polinfo[key]
         if policy_dn:
             self.add_link(infos, 'udm:policy-edit', self.abspath(policy_obj.module, policy_dn), title=_('Click to edit the inherited properties of the policy'))
         return infos
