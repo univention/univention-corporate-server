@@ -72,12 +72,12 @@ from ldap.filter import filter_format
 from tornado.concurrent import run_on_executor
 from tornado.web import Finish, HTTPError, RequestHandler
 
+import univention
 import univention.admin.modules as udm_modules
 import univention.admin.objects as udm_objects
 import univention.admin.types as udm_types
 import univention.admin.uexceptions as udm_errors
 import univention.directory.reports as udr
-import univention.udm
 from univention.admin.rest.ldap_connection import (
     get_machine_ldap_read_connection, get_user_ldap_read_connection, get_user_ldap_write_connection, reset_cache,
 )
