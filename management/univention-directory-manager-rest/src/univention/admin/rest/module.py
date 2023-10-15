@@ -644,10 +644,11 @@ class ResourceBase(SanitizerBase):
                 s = s.replace(char, '')
             return s.encode('ISO8859-1', 'replace').decode('ISO8859-1').replace('\\', '\\\\').replace('"', '\\"')
         kwargs['rel'] = relation
-        params = []
-        for param in ('rel', 'name', 'title', 'media'):
-            if param in kwargs:
-                params.append('%s="%s"' % (param, quote_param(kwargs.get(param, ''))))
+        params = [
+            '%s="%s"' % (param, quote_param(kwargs.get(param, '')))
+            for param in ('rel', 'name', 'title', 'media')
+            if param in kwargs
+        ]
         del kwargs['rel']
         header_name = 'Link-Template' if kwargs.get('templated') else 'Link'
         self.add_header(header_name, '<%s>; %s' % (href, '; '.join(params)))
