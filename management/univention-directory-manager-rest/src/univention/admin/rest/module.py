@@ -86,6 +86,10 @@ from univention.admin.rest.sanitizer import (
     ValidationError, sanitize,
 )
 from univention.admin.rest.shared_memory import JsonEncoder, shared_memory
+from univention.admin.rest.utils import (
+    RE_UUID, NotFound, _get_post_read_entry_uuid, _map_normalized_dn, decode_properties, parse_content_type, quote_dn,
+    superordinate_names, unquote_dn,
+)
 from univention.config_registry import handler_set
 from univention.lib.i18n import Translation
 from univention.management.console.config import ucr
@@ -111,25 +115,7 @@ from univention.password import generate_password, password_config
 
 _ = Translation('univention-directory-manager-rest').translate
 
-RE_UUID = re.compile('[^A-Fa-f0-9-]')
 MAX_WORKERS = ucr.get('directory/manager/rest/max-worker-threads', 35)
-
-
-def parse_content_type(content_type):
-    return content_type.partition(';')[0].strip().lower()
-
-
-class NotFound(HTTPError):
-
-    def __init__(self, object_type=None, dn=None):
-        super().__init__(404, None, '%r %r' % (object_type, dn or ''))  # FIXME: create error message
-
-
-def superordinate_names(module):
-    superordinates = module.superordinate_names
-    if set(superordinates) == {'settings/cn'}:
-        return []
-    return superordinates
 
 
 class ResourceBase(SanitizerBase):
@@ -3075,58 +3061,6 @@ class ServiceSpecificPassword(Resource):
             raise HTTPError(400, str(exc))
         result = {'service': service, 'password': new_password}
         self.content_negotiation(result)
-
-
-def decode_properties(module, obj, properties):
-    for key, value in properties.items():
-        prop = module.get_property(key)
-        codec = udm_types.TypeHint.detect(prop, key)
-        yield key, codec.decode_json(value)
-
-
-def encode_properties(module, obj, properties):
-    for key, value in properties.items():
-        prop = module.get_property(key)
-        codec = udm_types.TypeHint.detect(prop, key)
-        yield key, codec.encode_json(value)
-
-
-def quote_dn(dn):
-    if isinstance(dn, str):
-        dn = dn.encode('utf-8')
-    # duplicated slashes in URI path's can be normalized to one slash. Therefore we need to escape the slashes.
-    return quote(dn.replace(b'//', b',/=/,'))  # .replace('/', quote('/', safe=''))
-
-
-def unquote_dn(dn):
-    # tornado already decoded it (UTF-8)
-    return dn.replace(',/=/,', '//')
-
-
-def _try(func, exceptions):
-    def deco(*args, **kwargs):
-        try:
-            return func(*args, **kwargs)
-        except exceptions:
-            pass
-    return deco
-
-
-def _map_try(values, func, exceptions):
-    return filter(None, map(_try(func, exceptions), values))
-
-
-def _map_normalized_dn(dns):
-    return _map_try(dns, lambda dn: ldap.dn.dn2str(ldap.dn.str2dn(dn)), Exception)
-
-
-def _get_post_read_entry_uuid(response):
-    for c in response.get('ctrls', []):
-        if c.controlType == PostReadControl.controlType:
-            uuid = c.entry['entryUUID'][0]
-            if isinstance(uuid, bytes):  # starting with python-ldap 4.0
-                uuid = uuid.decode('ASCII')
-            return uuid
 
 
 class Application(tornado.web.Application):
