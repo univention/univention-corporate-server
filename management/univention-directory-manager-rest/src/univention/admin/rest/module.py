@@ -109,9 +109,7 @@ from univention.password import generate_password, password_config
 # FIXME: it seems request.path contains the un-urlencoded path, could be security issue!
 # TODO: 0f77c317e03844e8a16c484dde69abbcd2d2c7e3 is not integrated
 # TODO: replace etree with genshi, etc.
-# TODO: modify layout and properties for app-tabs
 # TODO: loading the policies probably unnecessarily slows down things
-# TODO: create a own translation domain for this file
 
 _ = Translation('univention-directory-manager-rest').translate
 
