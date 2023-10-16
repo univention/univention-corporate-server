@@ -6,11 +6,11 @@ Standards-Version: 3.9.8
 Build-Depends:
  debhelper-compat (=13),
  dh-python,
- libssl-dev,
  python3-all,
  python3-debian,
  python3-passlib,
  python3-pytest,
+ python3-samba,
  python3-setuptools,
  univention-config-dev (>= 15.0.3),
 
@@ -40,9 +40,9 @@ Description: FreeRADIUS 802.1X integration package for Univention Corporate Serv
 Package: python3-univention-radius
 Architecture: all
 Depends:
- libssl-dev,
  python3-ldap,
  python3-passlib,
+ python3-samba,
  python3-univention,
  ${misc:Depends},
  ${python3:Depends},
