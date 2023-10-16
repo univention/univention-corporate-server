@@ -74,6 +74,7 @@ import univention.admin.objects as udm_objects
 import univention.admin.types as udm_types
 import univention.admin.uexceptions as udm_errors
 import univention.directory.reports as udr
+from univention.admin.rest.hal import HAL
 from univention.admin.rest.http_conditional import ConditionalResource, last_modified
 from univention.admin.rest.ldap_connection import (
     get_machine_ldap_read_connection, get_user_ldap_read_connection, get_user_ldap_write_connection, reset_cache,
@@ -116,7 +117,7 @@ _ = Translation('univention-directory-manager-rest').translate
 MAX_WORKERS = ucr.get('directory/manager/rest/max-worker-threads', 35)
 
 
-class ResourceBase(SanitizerBase):
+class ResourceBase(SanitizerBase, HAL):
 
     pool = ThreadPoolExecutor(max_workers=MAX_WORKERS)
 
@@ -398,11 +399,6 @@ class ResourceBase(SanitizerBase):
             tree = ET.ElementTree(main if ajax else root)
             tree.write(self)
 
-    def get_hal_json(self, response):
-        response.setdefault('_links', {})
-        response.setdefault('_embedded', {})
-        return self.get_json(response)
-
     def get_json(self, response):
         self.add_link(response, 'curies', self.abspath('relation/') + '{rel}', name='udm', templated=True)
         response.get('_embedded', {}).pop('udm:form', None)  # no public API, just to render html
@@ -585,40 +581,6 @@ class ResourceBase(SanitizerBase):
 
     def abspath(self, *args):
         return urljoin(self.urljoin('/univention/udm/' if self.request.headers.get('X-Forwarded-Host') else '/udm/'), '/'.join(args))
-
-    def add_link(self, obj, relation, href, **kwargs):
-        dont_set_http_header = kwargs.pop('dont_set_http_header', False)
-        links = obj.setdefault('_links', {})
-        links.setdefault(relation, []).append(dict(kwargs, href=href))
-        if dont_set_http_header:
-            return
-
-        def quote_param(s):
-            for char in '\x00\x01\x02\x03\x04\x05\x06\x07\x08\t\n\x0b\x0c\r\x0e\x0f\x10\x11\x12\x13\x14\x15\x16\x17\x18\x19\x1a\x1b\x1c\x1d\x1e\x1f':  # remove non printable characters
-                s = s.replace(char, '')
-            return s.encode('ISO8859-1', 'replace').decode('ISO8859-1').replace('\\', '\\\\').replace('"', '\\"')
-        kwargs['rel'] = relation
-        params = [
-            '%s="%s"' % (param, quote_param(kwargs.get(param, '')))
-            for param in ('rel', 'name', 'title', 'media')
-            if param in kwargs
-        ]
-        del kwargs['rel']
-        header_name = 'Link-Template' if kwargs.get('templated') else 'Link'
-        self.add_header(header_name, '<%s>; %s' % (href, '; '.join(params)))
-
-    def add_resource(self, obj, relation, ressource):
-        obj.setdefault('_embedded', {}).setdefault(relation, []).append(ressource)
-
-    def get_resource(self, obj, relation, name=None):
-        for resource in obj.get('_embedded', {}).get(relation, []):
-            if not name:
-                return resource
-            if resource.get('_links', {}).get('self', [{}])[0].get('name') == name:
-                return resource
-
-    def get_resources(self, obj, relation):
-        return obj.get('_embedded', {}).get(relation, [])
 
     def add_form(self, obj, action, method, **kwargs):
         form = {
