@@ -195,8 +195,8 @@ def save_trace(
 
         browser_trace_url = f"{os.environ['JENKINS_WS']}ws/test/{quote(subfolder)}browser/{quote(trace_filename.name)}"
         browser_screenshot_url = f"{os.environ['JENKINS_WS']}ws/test/{quote(subfolder)}browser/{quote(screenshot_filename.name)}"
-        logger.info("Browser trace URL: %s" % browser_trace_url)
-        logger.info("Browser screenshot URL: %s" % browser_screenshot_url)
+        print("Browser trace URL: %s" % browser_trace_url)
+        print("Browser screenshot URL: %s" % browser_screenshot_url)
 
 
 def check_for_backtrace(page: Page):
