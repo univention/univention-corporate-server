@@ -545,6 +545,8 @@ class ResourceBase:
                 break
         if not lang:
             raise HTTPError(406, 'The requested Content-Type does not exists. Specify a valid Accept header.')
+        if lang == 'html' and not ucr.is_true('directory/manager/rest/html-view-enabled'):
+            raise HTTPError(406, 'The unsupported HTML view of the UDM REST API is disabled. Please use the JSON interface via the "Accept: application/json" HTTP header or enable it via the UCR variable "directory/manager/rest/html-view-enabled". To get a developer overview the OpenAPI schema interface can be reached at /univention/udm/schema/.')
         return lang
 
     def decode_request_arguments(self):

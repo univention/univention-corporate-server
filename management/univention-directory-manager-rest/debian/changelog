@@ -1,3 +1,9 @@
+univention-directory-manager-rest (10.0.6-13) unstable; urgency=medium
+
+  * Bug #56714: deactivate HTML view of UDM REST API via UCR variable
+
+ -- Florian Best <best@univention.de>  Mon, 16 Oct 2023 21:41:20 +0200
+
 univention-directory-manager-rest (10.0.6-12) unstable; urgency=medium
 
   * Bug #56734: add error handling for missing properties
