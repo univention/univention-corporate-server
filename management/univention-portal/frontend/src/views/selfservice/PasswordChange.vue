@@ -34,7 +34,7 @@ License with the Debian GNU/Linux or Univention distribution in file
     <my-form
       ref="form"
       v-model="formValues"
-      :widgets="formWidgets"
+      :widgets="formWidgetsTranslated"
     >
       <footer>
         <button
@@ -131,6 +131,24 @@ export default defineComponent({
     },
     form(): typeof MyForm {
       return this.$refs.form as typeof MyForm;
+    },
+    formWidgetsTranslated(): WidgetDefinition[] {
+      return this.formWidgets.map((widget) => {
+        switch (widget.name) {
+          case 'oldPassword':
+            widget.label = _('Old password');
+            break;
+          case 'newPassword':
+            widget.label = _('New password');
+            break;
+          case 'newPasswordRetype':
+            widget.label = _('New password (retype)');
+            break;
+          default:
+            break;
+        }
+        return widget;
+      });
     },
   },
   mounted(): void {

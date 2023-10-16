@@ -171,8 +171,23 @@ export default defineComponent({
         return true;
       });
     },
-    formWidgetsWithTabindex(): WidgetDefinition[] {
+    formWidgetsTranslated(): WidgetDefinition[] {
       return this.visibleWidgets.map((widget) => {
+        switch (widget.name) {
+          case 'username':
+            widget.label = _('Username');
+            break;
+          case 'token':
+            widget.label = _('Token');
+            break;
+          default:
+            break;
+        }
+        return widget;
+      });
+    },
+    formWidgetsWithTabindex(): WidgetDefinition[] {
+      return this.formWidgetsTranslated.map((widget) => {
         widget.tabindex = this.tabindex;
         return widget;
       });

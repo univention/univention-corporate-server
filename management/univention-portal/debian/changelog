@@ -1,3 +1,9 @@
+univention-portal (4.0.14-8) unstable; urgency=medium
+
+  * Bug #56660: Fix label translation for self-service fields.
+
+ -- Ivan Barbecho Delgado <ivan.delgado@univention.de>  Mon, 16 Oct 2023 15:54:41 +0200
+
 univention-portal (4.0.14-7) unstable; urgency=medium
 
   * Bug #55164: Show cookie banner only if configured for current domain

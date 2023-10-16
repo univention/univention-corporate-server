@@ -160,8 +160,23 @@ export default defineComponent({
     tabindex(): number {
       return activity(['selfservice'], this.activityLevel);
     },
-    formWidgetsWithTabindex(): WidgetDefinition[] {
+    formWidgetsTranslated(): WidgetDefinition[] {
       return this.formWidgets.map((widget) => {
+        switch (widget.name) {
+          case 'username':
+            widget.label = _('Username');
+            break;
+          case 'password':
+            widget.label = _('Password');
+            break;
+          default:
+            break;
+        }
+        return widget;
+      });
+    },
+    formWidgetsWithTabindex(): WidgetDefinition[] {
+      return this.formWidgetsTranslated.map((widget) => {
         widget.tabindex = this.tabindex;
         return widget;
       });
