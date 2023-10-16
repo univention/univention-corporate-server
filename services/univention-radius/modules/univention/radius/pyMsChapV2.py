@@ -35,23 +35,13 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-# #55996 md4 is now part of the legacy provider. To
-# use it we need to load it before importing hashlib.
-import ctypes
-
-
-ctypes.CDLL("libssl.so").OSSL_PROVIDER_load(None, b"legacy")
-ctypes.CDLL("libssl.so").OSSL_PROVIDER_load(None, b"default")
-import hashlib  # noqa: E402
-
-import passlib.crypto.des  # noqa: E402
+import passlib.crypto.des
+from samba.crypto import md4_hash_blob
 
 
 def md4(data):
     # type: (bytes) -> bytes
-    md = hashlib.new('md4')
-    md.update(data)
-    return md.digest()
+    return md4_hash_blob(data)
 
 
 def DesEncrypt(data, key):
