@@ -1,1 +1,1 @@
-Load OpenSSL legacy provider to enable MD4 support.
+The MD4 functionality is now provided by the ``python3-samba`` package.
