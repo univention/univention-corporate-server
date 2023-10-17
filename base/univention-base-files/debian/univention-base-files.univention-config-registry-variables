@@ -1129,12 +1129,6 @@ Description[en]=Maximum length of a syslog message. Default: 4k
 Type=str
 Categories=system-base
 
-[syslog/template/default]
-Description[de]=Standard Logdateiformat. Standard: RSYSLOG_TraditionalFileFormat. Siehe <http://www.rsyslog.com/doc/v5-stable/configuration/templates.html#string-based-templates> für Alternativen.
-Description[en]=Default file format. Default: RSYSLOG_TraditionalFileFormat. See <http://www.rsyslog.com/doc/v5-stable/configuration/templates.html#string-based-templates> for alternatives.
-Type=str
-Categories=system-base
-
 [syslog/input/udp]
 Description[de]=Diese Option aktiviert den Empfang von Syslog-Meldungen von entfernten Rechnern auf dem angegebenen UDP Port. UDP ist das standardisierte Verfahren, aber Meldungen können verloren gehen. Standardisiert ist Port ist 514.
 Description[en]=This option enabled receiving syslog messages from remote computers through the given UDP port. UDP is the standardized method, but messages can get lost. Standardized is port 514.
