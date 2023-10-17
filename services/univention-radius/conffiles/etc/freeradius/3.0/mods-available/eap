@@ -256,7 +256,10 @@ else:
 		#
 		#  	openssl dhparam -out certs/dh 2048
 		#
-		dh_file = ${certdir}/dh
+		#  For OpenSSL >= 1.1.0, just leave this commented
+		#  out, and OpenSSL will do the right thing.
+		#
+	#	dh_file = ${certdir}/dh
 
 		#
 		#  If your system doesn't have /dev/urandom,
@@ -354,18 +357,85 @@ else:
 		#
 #		disable_tlsv1_2 = no
 
-		# Disable tls v3 since it is not yet supported
-		# https://github.com/FreeRADIUS/freeradius-server/issues/2385
+		#  Set min / max TLS version.
+		#
+		#  Generally speaking you should NOT use TLS 1.0 or
+		#  TLS 1.1.  They are old, possibly insecure, and
+		#  deprecated.  However, it is sometimes necessary to
+		#  enable it for compatibility with legact systems.
+		#  We recommend replacing those legacy systems, and
+		#  using at least TLS 1.2.
+		#
+		#  Some Debian versions disable older versions of TLS,
+		#  and requires the application to manually enable
+		#  them.
+		#
+		#  If you are running such a distribution, you should
+		#  set these options, otherwise older clients will not
+		#  be able to connect.
+		#
+		#  Allowed values are "1.0", "1.1", "1.2", and "1.3".
+		#
+		#  As of 2021, it is STRONGLY RECOMMENDED to set
+		#
+		#       tls_min_version = "1.2"
+		#
+		#  Older TLS versions are insecure and deprecated.
+		#
+		#  In order to enable TLS 1.0 and TLS 1.1, you may
+		#  also need to update cipher_list below to:
+		#
+		#   * OpenSSL >= 3.x
+		#
+		#       cipher_list = "DEFAULT@SECLEVEL=0"
+		#
+		#   * OpenSSL < 3.x
+		#
+		#       cipher_list = "DEFAULT@SECLEVEL=1"
+		#
+		#  The values must be in quotes.
+		#
+		#  We also STRONGLY RECOMMEND to set
+		#
+		#       tls_max_version = "1.2"
+		#
+		#  While the server will accept "1.3" as a value,
+		#  most EAP supplicants WILL NOT DO TLS 1.3 PROPERLY.
+		#
+		#  i.e. they WILL NOT WORK, SO DO NOT ASK QUESTIONS ON
+		#  THE LIST ABOUT WHY IT DOES NOT WORK.
+		#
+		#  The TLS 1.3 support is here for future
+		#  compatibility, as clients get upgraded, and people
+		#  don't upgrade their copies of FreeRADIUS.
+		#
+		#  Also note that we only support TLS 1.3 for EAP-TLS.
+		#  Other versions of EAP (PEAP, TTLS, FAST) DO NOT
+		#  SUPPORT TLS 1.3.
+		#
+		tls_min_version = "1.2"
+		# https://forge.univention.org/bugzilla/show_bug.cgi?id=55182
+		# https://forge.univention.org/bugzilla/show_bug.cgi?id=55763
 @!@
 print('\t\ttls_max_version = %s' % configRegistry.get('freeradius/conf/tls-max-version', '1.2'))
 @!@
 
-		#
 		#  Elliptical cryptography configuration
 		#
-		#  Only for OpenSSL >= 0.9.8.f
+		#  This configuration should be one of the following:
 		#
-		ecdh_curve = "prime256v1"
+		#  * a name of the curve to use, e.g. "prime256v1".
+		#
+		#  * a colon separated list of curve NIDs or names.
+		#
+		#  * an empty string, in which case OpenSSL will choose
+		#    the "best" curve for the situation.
+		#
+		#  For supported curve names, please run
+		#
+		#       openssl ecparam -list_curves
+		#
+		ecdh_curve = ""
 
 		#
 		#  Session resumption / fast reauthentication
@@ -449,6 +519,20 @@ print('\t\ttls_max_version = %s' % configRegistry.get('freeradius/conf/tls-max-v
 			#  This feature REQUIRES "name" option be set above.
 			#
 			#persist_dir = "${logdir}/tlscache"
+
+			#  It is possible to partially
+			#  control which attributes exist in the
+			#  session cache.  This subsection lists
+			#  attributes which are taken from the reply,
+			#  and saved to the on-disk cache.  When the
+			#  session is resumed, these attributes are
+			#  added to the "session-state" list.  The
+			#  default configuration will then take care
+			#  of copying them to the reply.
+			#
+			store {
+				Tunnel-Private-Group-Id
+			}
 		}
 
 		#
