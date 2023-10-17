@@ -12,7 +12,7 @@
 #	the "inner-tunnel" virtual server.  You will likely have to edit
 #	that, too, for authentication to work.
 #
-#	$Id: 083407596aa5074d665adac9606e7de655b634aa $
+#	$Id: dbad8e4fedee7e22a4da8f28f23fc9ea5cb726c7 $
 #
 ######################################################################
 #
@@ -62,6 +62,7 @@ listen {
 	#  Allowed values are:
 	#	auth	listen for authentication packets
 	#	acct	listen for accounting packets
+	#       auth+acct listen for both authentication and accounting packets
 	#	proxy   IP to use for sending proxied packets
 	#	detail  Read from the detail file.  For examples, see
 	#               raddb/sites-available/copy-acct-to-home-server
@@ -86,16 +87,35 @@ listen {
 	#  proxy listeners are automatically created.
 
 	#  ipaddr/ipv4addr/ipv6addr - IP address on which to listen.
-	#  Out of several options the first one will be used.
+	#  If multiple ones are listed, only the first one will
+	#  be used, and the others will be ignored.
 	#
-	#  Allowed values are:
-	#	IPv4 address (e.g. 1.2.3.4, for ipv4addr/ipaddr)
-	#	IPv6 address (e.g. 2001:db8::1, for ipv6addr/ipaddr)
-	#	hostname     (radius.example.com,
-	#			A record for ipv4addr,
-	#       		AAAA record for ipv6addr,
-	#			A or AAAA record for ipaddr)
-	#       wildcard     (*)
+	#  The configuration options accept the following syntax:
+	#
+	#  ipv4addr - IPv4 address (e.g.192.0.2.3)
+	#  	    - wildcard (i.e. *)
+	#  	    - hostname (radius.example.com)
+	#  	      Only the A record for the host name is used.
+	#	      If there is no A record, an error is returned,
+	#	      and the server fails to start.
+	#
+	#  ipv6addr - IPv6 address (e.g. 2001:db8::1)
+	#  	    - wildcard (i.e. *)
+	#  	    - hostname (radius.example.com)
+	#  	      Only the AAAA record for the host name is used.
+	#	      If there is no AAAA record, an error is returned,
+	#	      and the server fails to start.
+	#
+	#  ipaddr   - IPv4 address as above
+	#  	    - IPv6 address as above
+	#  	    - wildcard (i.e. *), which means IPv4 wildcard.
+	#	    - hostname
+	#	      If there is only one A or AAAA record returned
+	#	      for the host name, it is used.
+	#	      If multiple A or AAAA records are returned
+	#	      for the host name, only the first one is used.
+	#	      If both A and AAAA records are returned
+	#	      for the host name, only the A record is used.
 	#
 	# ipv4addr = *
 	# ipv6addr = *
@@ -134,6 +154,17 @@ print('\tport = %s' % (configRegistry.get('freeradius/conf/port', '0'), ))
 	#  See clients.conf for the configuration of "per_socket_clients".
 	#
 #	clients = per_socket_clients
+
+	#
+	#  Set the default UDP receive buffer size.  In most cases,
+	#  the default values set by the kernel are fine.  However, in
+	#  some cases the NASes will send large packets, and many of
+	#  them at a time.  It is then possible to overflow the
+	#  buffer, causing the kernel to drop packets before they
+	#  reach FreeRADIUS.  Increasing the size of the buffer will
+	#  avoid these packet drops.
+	#
+#	recv_buff = 65536
 
 	#
 	#  Connection limiting for sockets with "proto = tcp".
@@ -342,10 +373,25 @@ else:
 	#
 	#  The WiMAX specification says that the Calling-Station-Id
 	#  is 6 octets of the MAC.  This definition conflicts with
-	#  RFC 3580, and all common RADIUS practices.  Un-commenting
-	#  the "wimax" module here means that it will fix the
-	#  Calling-Station-Id attribute to the normal format as
-	#  specified in RFC 3580 Section 3.21
+	#  RFC 3580, and all common RADIUS practices.  If you are using
+	#  old style WiMAX (non LTE) the un-commenting the "wimax" module
+	#  here means that it will fix the Calling-Station-Id attribute to
+	#  the normal format as specified in RFC 3580 Section 3.21.
+	#
+	#  If you are using WiMAX 2.1 (LTE) then un-commenting will allow
+	#  the module to handle SQN resyncronisation. Prior to calling the
+	#  module it is necessary to populate the following attributes
+	#  with the relevant keys:
+	#    control:WiMAX-SIM-Ki
+	#    control:WiMAX-SIM-OPc
+	#
+	#  If WiMAX-Re-synchronization-Info is found in the request then
+	#  the module will attempt to extract SQN and store it in
+	#  control:WiMAX-SIM-SQN. Also a copy of RAND is extracted to
+	#  control:WiMAX-SIM-RAND.
+	#
+	#  If the SIM cannot be authenticated using Ki and OPc then reject
+	#  will be returned.
 #	wimax
 
 	#
@@ -355,11 +401,7 @@ else:
 #	IPASS
 
 	#
-	#  If you are using multiple kinds of realms, you probably
-	#  want to set "ignore_null = yes" for all of them.
-	#  Otherwise, when the first style of realm doesn't match,
-	#  the other styles won't be checked.
-	#
+	#Look for realms in user@domain format
 #	suffix
 #	ntdomain
 @!@
@@ -373,17 +415,22 @@ print('%s' % configRegistry.get('freeradius/conf/realm', 'suffix'))
 	#  It also sets the EAP-Type attribute in the request
 	#  attribute list to the EAP type from the packet.
 	#
-	#  The EAP module returns "ok" if it is not yet ready to
-	#  authenticate the user.  The configuration below checks for
-	#  that code, and stops processing the "authorize" section if
-	#  so.
+	#  The EAP module returns "ok" or "updated" if it is not yet ready
+	#  to authenticate the user.  The configuration below checks for
+	#  "ok", and stops processing the "authorize" section if so.
 	#
 	#  Any LDAP and/or SQL servers will not be queried for the
 	#  initial set of packets that go back and forth to set up
 	#  TTLS or PEAP.
 	#
+	#  The "updated" check is commented out for compatibility with
+	#  previous versions of this configuration, but you may wish to
+	#  uncomment it as well; this will further reduce the number of
+	#  LDAP and/or SQL queries for TTLS or PEAP.
+	#
 	eap {
 		ok = return
+#		updated = return
 	}
 
 	#
@@ -413,6 +460,18 @@ print('%s' % configRegistry.get('freeradius/conf/users', 'files'))
 	#  mschap authentication, the un-comment this line, and
 	#  configure the 'smbpasswd' module.
 #	smbpasswd
+
+	#
+	#  If you're using Active Directory and PAP, then uncomment
+	#  the following lines, and the "Auth-Type LDAP" section below.
+	#
+	#  This will let you do PAP authentication to AD.
+	#
+#	if ((ok || updated) && User-Password && !control:Auth-Type) {
+#		update control {
+#			&Auth-Type := ldap
+#		}
+#	}
 
 	#
 	#  The ldap module reads passwords from the LDAP database.
@@ -448,6 +507,23 @@ print('%s' % configRegistry.get('freeradius/conf/users', 'files'))
 #	Autz-Type Status-Server {
 #
 #	}
+
+	#
+	#  RADIUS/TLS (or RadSec) connections are processed through
+	#  this section.  See sites-available/tls, and the configuration
+	#  item "check_client_connections" for more information.
+	#
+	#  The request contains TLS client certificate attributes,
+	#  and nothing else.  The debug output will print which
+	#  attributes are available on your system.
+	#
+	#  If the section returns "ok" or "updated", then the
+	#  connection is accepted.  Otherwise the connection is
+	#  terminated.
+	#
+	Autz-Type New-TLS-Connection {
+		  ok
+	}
 }
 
 
@@ -545,6 +621,9 @@ else:
 	#  authentication server, and knows what to do with authentication.
 	#  LDAP servers do not.
 	#
+	#  However, it is necessary for Active Directory, because
+	#  Active Directory won't give the passwords to FreeRADIUS.
+	#
 	Auth-Type LDAP {
 		ldap
 	}
@@ -599,7 +678,7 @@ preacct {
 	#
 
 #	update request {
-#	  	FreeRADIUS-Acct-Session-Start-Time = "%{expr: %l - %{%{Acct-Session-Time}:-0} - %{%{Acct-Delay-Time}:-0}}"
+#	  	&FreeRADIUS-Acct-Session-Start-Time = "%{expr: %l - %{%{Acct-Session-Time}:-0} - %{%{Acct-Delay-Time}:-0}}"
 #	}
 
 
@@ -658,8 +737,12 @@ accounting {
 #	radutmp
 #	sradutmp
 
+	#
 	#  Return an address to the IP Pool when we see a stop record.
-#	main_pool
+	#
+	#  Ensure that &control:Pool-Name is set to determine which
+	#  pool of IPs are used.
+#	sqlippool
 
 	#
 	#  Log traffic to an SQL database.
@@ -680,12 +763,6 @@ accounting {
 #	if (noop) {
 #		ok
 #	}
-
-	#
-	#  Instead of sending the query to the SQL server,
-	#  write it into a log file.
-	#
-#	sql_log
 
 	#  Cisco VoIP specific bulk accounting
 #	pgsql-voip
@@ -733,6 +810,48 @@ post-auth {
 #	}
 
 	#
+	#  Reject packets where User-Name != TLS-Client-Cert-Common-Name
+	#  There is no reason for users to lie about their names.
+	#
+	#  In general, User-Name == EAP Identity == TLS-Client-Cert-Common-Name
+	#
+#	verify_tls_client_common_name
+
+	#
+	#  If there is no Stripped-User-Name in the request, AND we have a client cert,
+	#  then create a Stripped-User-Name from the TLS client certificate information.
+	#
+	#  Note that this policy MUST be edited for your local system!
+	#  We do not know which fields exist in which certificate, as
+	#  there is no standard here.  There is no way for us to have
+	#  a default configuration which "just works" everywhere.  We
+	#  can only make recommendations.
+	#
+	#  The Stripped-User-Name is updated so that it is logged in
+	#  the various "username" fields.  This logging means that you
+	#  can associate a particular session with a particular client
+	#  certificate.
+	#
+#	if (&EAP-Message && !&Stripped-User-Name && &TLS-Client-Cert-Serial) {
+#		update request {
+#			&Stripped-User-Name := "%{%{TLS-Client-Cert-Subject-Alt-Name-Email}:-%{%{TLS-Client-Cert-Common-Name}:-%{TLS-Client-Cert-Serial}}}"
+#		}
+#
+		#
+		#  Create a Class attribute which is a hash of a bunch
+		#  of information which we hope exists.  This
+		#  attribute should be echoed back in
+		#  Accounting-Request packets, which will let the
+		#  administrator correlate authentication and
+		#  accounting.
+		#
+#		update reply {
+#			Class += "%{md5:%{Calling-Station-Id}%{Called-Station-Id}%{TLS-Client-Cert-Subject-Alt-Name-Email}%{TLS-Client-Cert-Common-Name}%{TLS-Client-Cert-Serial}%{NAS-IPv6-Address}%{NAS-IP-Address}%{NAS-Identifier}%{NAS-Port}"
+#		}
+#
+#	}
+
+	#
 	#  For EAP-TTLS and PEAP, add the cached attributes to the reply.
 	#  The "session-state" attributes are automatically cached when
 	#  an Access-Challenge is sent, and automatically retrieved
@@ -741,17 +860,39 @@ post-auth {
 	#  The session-state attributes are automatically deleted after
 	#  an Access-Reject or Access-Accept is sent.
 	#
+	#  If both session-state and reply contain a User-Name attribute, remove
+	#  the one in the reply if it is just a copy of the one in the request, so
+	#  we don't end up with two User-Name attributes.
+
+	if (session-state:User-Name && reply:User-Name && request:User-Name && (reply:User-Name == request:User-Name)) {
+		update reply {
+			&User-Name !* ANY
+		}
+	}
 	update {
 		&reply: += &session-state:
 	}
 
-	#  Get an address from the IP Pool.
-#	main_pool
+	#
+	#  Refresh leases when we see a start or alive. Return an address to
+	#  the IP Pool when we see a stop record.
+	#
+	#  Ensure that &control:Pool-Name is set to determine which
+	#  pool of IPs are used.
+#	sqlippool
 
 
 	#  Create the CUI value and add the attribute to Access-Accept.
 	#  Uncomment the line below if *returning* the CUI.
 #	cui
+
+	#  Create empty accounting session to make simultaneous check
+	#  more robust. See the accounting queries configuration in
+	#  raddb/mods-config/sql/main/*/queries.conf for details.
+	#
+	#  The "sql_session_start" policy is defined in
+	#  raddb/policy.d/accounting.  See that file for more details.
+#	sql_session_start
 
 	#
 	#  If you want to have a log of authentication replies,
@@ -764,12 +905,6 @@ post-auth {
 	#
 	#  See "Authentication Logging Queries" in mods-available/sql
 	-sql
-
-	#
-	#  Instead of sending the query to the SQL server,
-	#  write it into a log file.
-	#
-#	sql_log
 
 	#
 	#  Un-comment the following if you want to modify the user's object
@@ -817,11 +952,11 @@ print('\tif ("%%{tolower:%%{request:User-Name}}" =~ /^host\\/(.*)\\.%s/) {' % co
     }
 
 	#
-	#  Calculate the various WiMAX keys.  In order for this to work,
-	#  you will need to define the WiMAX NAI, usually via
+	#  In order to calcualate the various keys for old style WiMAX
+	#  (non LTE) you will need to define the WiMAX NAI, usually via
 	#
 	#	update request {
-	#	       WiMAX-MN-NAI = "%{User-Name}"
+	#	       &WiMAX-MN-NAI = "%{User-Name}"
 	#	}
 	#
 	#  If you want various keys to be calculated, you will need to
@@ -830,8 +965,8 @@ print('\tif ("%%{tolower:%%{request:User-Name}}" =~ /^host\\/(.*)\\.%s/) {' % co
 	#  taken from the cryptographic calculations.  e.g.
 	#
 	# 	update reply {
-	#		WiMAX-FA-RK-Key = 0x00
-	#		WiMAX-MSK = "%{EAP-MSK}"
+	#		&WiMAX-FA-RK-Key = 0x00
+	#		&WiMAX-MSK = "%{reply:EAP-MSK}"
 	#	}
 	#
 	#  You may want to delete the MS-MPPE-*-Keys from the reply,
@@ -839,8 +974,14 @@ print('\tif ("%%{tolower:%%{request:User-Name}}" =~ /^host\\/(.*)\\.%s/) {' % co
 	#  are included.  See "raddb/modules/wimax", configuration
 	#  entry "delete_mppe_keys" for more information.
 	#
+	#  For LTE style WiMAX you need to populate the following with the
+	#  relevant values:
+	#    control:WiMAX-SIM-Ki
+	#    control:WiMAX-SIM-OPc
+	#    control:WiMAX-SIM-AMF
+	#    control:WiMAX-SIM-SQN
+	#
 #	wimax
-
 
 	#  If there is a client certificate (EAP-TLS, sometimes PEAP
 	#  and TTLS), then some attributes are filled out after the
@@ -898,7 +1039,7 @@ print('\tif ("%%{tolower:%%{request:User-Name}}" =~ /^host\\/(.*)\\.%s/) {' % co
 	#  post-auth section.
 	#
 	#  Add the ldap module name (or instance) if you have set
-	#  'edir_account_policy_check = yes' in the ldap module configuration
+	#  'edir = yes' in the ldap module configuration
 	#
 	#  The "session-state" attributes are not available here.
 	#
@@ -914,6 +1055,94 @@ print('\tif ("%%{tolower:%%{request:User-Name}}" =~ /^host\\/(.*)\\.%s/) {' % co
 
 		#  Remove reply message if the response contains an EAP-Message
 		remove_reply_message_if_eap
+	}
+
+	#
+	#  Filter access challenges.
+	#
+	Post-Auth-Type Challenge {
+#		remove_reply_message_if_eap
+#		attr_filter.access_challenge.post-auth
+	}
+
+	#
+	#  The Client-Lost section will be run for a request when
+	#  FreeRADIUS has given up waiting for an end-users client to
+	#  respond. This is most useful for logging EAP sessions where
+	#  the client stopped responding (likely because the
+	#  certificate was not acceptable.)  i.e. this is not for
+	#  RADIUS clients, but for end-user systems.
+	#
+	#  This will only be triggered by new packets arriving,
+	#  and will be run at some point in the future *after* the
+	#  original request has been discarded.
+	#
+	#  Therefore the *ONLY* attributes that are available here
+	#  are those in the session-state list. If you want data
+	#  to log, make sure it is copied to &session-state:
+	#  before the client stops responding. NONE of the other
+	#  original attributes (request, reply, etc) will be
+	#  available.
+	#
+	#  This section will only be run if `postauth_client_lost`
+	#  is enabled in the main configuration in `radiusd.conf`.
+	#
+	#  Note that there are MANY reasons why an end users system
+	#  might not respond:
+	#
+	#    * it could not get the packet due to firewall issues
+	#    * it could not get the packet due to a lossy network
+	#    * the users system might not like the servers cert
+	#    * the users system might not like something else...
+	#
+	#  In some cases, the client is helpful enough to send us a
+	#  TLS Alert message, saying what it doesn't like about the
+	#  certificate.  In other cases, no such message is available.
+	#
+	#  All that we can know on the FreeRADIUS side is that we sent
+	#  an Access-Challenge, and the client never sent anything
+	#  else.  The reasons WHY this happens are buried inside of
+	#  the logs on the client system.  No amount of looking at the
+	#  FreeRADIUS logs, or poking the FreeRADIUS configuration
+	#  will tell you why the client gave up.  The answers are in
+	#  the logs on the client side.  And no, the FreeRADIUS team
+	#  didn't write the client, so we don't know where those logs
+	#  are, or how to get at them.
+	#
+	#  Information about the TLS state changes is in the
+	#  &session-state:TLS-Session-Information attribute.
+	#
+	Post-Auth-Type Client-Lost {
+		#
+		#  Debug ALL of the TLS state changes done during the
+		#  EAP negotiation.
+		#
+#		%{debug_attr:&session-state:TLS-Session-Information[*]}
+
+		#
+		#  Debug the LAST TLS state change done during the EAP
+		#  negotiation.  For errors, this is usually a TLS
+		#  alert from the client saying something like
+		#  "unknown CA".
+		#
+#		%{debug_attr:&session-state:TLS-Session-Information[n]}
+
+		#
+		#  Debug the last module failure message.  This may be
+		#  useful, or it may refer to a server-side failure
+		#  which did not cause the client to stop talking to the server.
+		#
+#		%{debug_attr:&session-state:Module-Failure-Message}
+	}
+
+	#
+	#  If the client sends EAP-Key-Name in the request,
+	#  then echo the real value back in the reply.
+	#
+	if (EAP-Key-Name && &reply:EAP-Session-Id) {
+		update reply {
+			&EAP-Key-Name := &reply:EAP-Session-Id
+		}
 	}
 }
 
@@ -994,12 +1223,19 @@ post-proxy {
 	#  will read the detail file, and send the packets to the
 	#  home server.
 	#
+	#  See the "mods-available/detail.example.com" file for more
+	#  details on writing a detail file specifically for one
+	#  destination.
+	#
+	#  See the "sites-available/robust-proxy-accounting" virtual
+	#  server for more details on reading this "detail" file.
+	#
 	#  With this configuration, the server always responds to
 	#  Accounting-Requests from the NAS, but only writes
 	#  accounting packets to disk if the home server is down.
 	#
 #	Post-Proxy-Type Fail-Accounting {
-#			detail
+#			detail.example.com
 #	}
 }
 }
