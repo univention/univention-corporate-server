@@ -46,6 +46,7 @@ if [ "$NICENESS" ]; then NICENESS="-n $NICENESS"; fi
 if [ ! -d "$PIDDIR" ]; then
 	mkdir "$PIDDIR"
 	chown nagios "$PIDDIR"
+    [ -x /sbin/restorecon ] && /sbin/restorecon "$PIDDIR"
 fi
 
 set -e
@@ -58,10 +59,10 @@ case "$1" in
 	    check_autostart nagios-client nagios/client/autostart
 	fi
 	if [ "$INETD" = 1 ]; then
-		exit 1
+		exit 0
 	fi
 	log_daemon_msg "Starting $DESC" "$NAME"
-	start_daemon -p $PIDDIR/nrpe.pid $NICENESS $DAEMON  -c $CONFIG -d $DAEMON_OPTS
+	start_daemon -p $PIDDIR/nrpe.pid $NICENESS $DAEMON  -c $CONFIG -d $NRPE_OPTS
 	log_end_msg $?
 	;;
   stop)
