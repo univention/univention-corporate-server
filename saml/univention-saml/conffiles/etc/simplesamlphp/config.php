@@ -15,12 +15,12 @@ require_once('/usr/share/simplesamlphp/lib/univention/lib.php');
 
 @!@
 from univention.saml.lib import get_idps
-print('$baseurls = array (')
+print('$baseurls = [')
 print('\n'.join("\t'{}/',".format(idp['basepath']) for idp in get_idps(configRegistry)))
-print(');')
+print('];')
 @!@
 
-$config = array (
+$config = [
 @!@
 saml20_enabled = 'false'
 if configRegistry.is_true('saml/idp/enableSAML20-IdP'):
@@ -30,7 +30,7 @@ print("	'enable.saml20-idp'	=> %s," % saml20_enabled)
 hostfqdn = '%(hostname)s.%(domainname)s' % configRegistry
 
 print("	'timezone'		=> '%s'," % configRegistry.get('saml/idp/timezone', 'Europe/Berlin'))
-print("	'debug'		=> %s," % ('TRUE' if configRegistry.is_true('saml/idp/log/debug/enabled', False) else 'FALSE'))
+print("	'debug'		=> %s," % ('true' if configRegistry.is_true('saml/idp/log/debug/enabled', False) else 'false'))
 print("	'logging.level'		=> \\SimpleSAML\\Logger::%s," % configRegistry.get('saml/idp/log/level', 'ERR'))
 print("	'language.default'	=> '%s'," % configRegistry.get('locale/default', 'en')[:2])
 print("	'theme.use'		=> '%s'," % configRegistry.get('saml/idp/lookandfeel/theme', 'default'))
@@ -79,25 +79,25 @@ print("	'password_change_server'  => '%s'," % configRegistry.get('ucs/server/sso
 	 * Note: The messages are logged with the DEBUG log level, so you also need to set
 	 * the 'logging.level' option to LOG_DEBUG.
 	 */
-	//'debug' => FALSE,
+	//'debug' => false,
 
 @!@
-print("	'showerrors'            =>	%s," % ('TRUE' if configRegistry.is_true('saml/idp/show-errors') else 'FALSE'))
-print("	'errorreporting'            =>	%s," % ('TRUE' if configRegistry.is_true('saml/idp/show-error-reporting') else 'FALSE'))
+print("	'showerrors'            =>	%s," % ('true' if configRegistry.is_true('saml/idp/show-errors') else 'false'))
+print("	'errorreporting'            =>	%s," % ('true' if configRegistry.is_true('saml/idp/show-error-reporting') else 'false'))
 @!@
 	/**
 	 * Custom error show function called from SimpleSAML\Error\Error::show.
 	 * See docs/simplesamlphp-errorhandling.txt for function code example.
 	 *
 	 * Example:
-	 *   'errors.show_function' => array('sspmod_example_Error_Show', 'show'),
+	 *   'errors.show_function' => ['sspmod_example_Error_Show', 'show'],
 	 */
 
 	/**
 	 * This option allows you to enable validation of XML data against its
 	 * schemas. A warning will be written to the log if validation fails.
 	 */
-	'debug.validatexml' => FALSE,
+	'debug.validatexml' => false,
 
 	/**
 	 * This password must be kept secret, and modified from the default value 123.
@@ -149,7 +149,7 @@ print("	'errorreporting'            =>	%s," % ('TRUE' if configRegistry.is_true(
 	 *
 	 * Choose logging handler.
 	 *
-	 * Options: [syslog,file,errorlog]
+	 * Options: [syslog,file,errorlog,stderr]
 	 *
 	 */
 #	'logging.level'         => \SimpleSAML\Logger::NOTICE,
@@ -183,22 +183,22 @@ print("	'errorreporting'            =>	%s," % ('TRUE' if configRegistry.is_true(
 	 * This is an array of outputs. Each output has at least a 'class' option, which
 	 * selects the output.
 	 */
-	'statistics.out' => array(
+	'statistics.out' => [
 		// Log statistics to the normal log.
 		/*
-		array(
+		[
 			'class' => 'core:Log',
 			'level' => 'notice',
-		),
+		],
 		*/
 		// Log statistics to files in a directory. One file per day.
 		/*
-		array(
+		[
 			'class' => 'core:File',
 			'directory' => '/var/log/stats',
-		),
+		],
 		*/
-	),
+	],
 
 
 	/*
@@ -211,8 +211,6 @@ print("	'errorreporting'            =>	%s," % ('TRUE' if configRegistry.is_true(
 	#'enable.saml20-idp'		=> true,
 	'enable.shib13-idp'		=> false,
 	'enable.adfs-idp'		=> false,
-	'enable.wsfed-sp'		=> false,
-	'enable.authmemcookie' => false,
 
 
 	/*
@@ -222,16 +220,21 @@ print("	'errorreporting'            =>	%s," % ('TRUE' if configRegistry.is_true(
 	 *
 	 * Example:
 	 *
-	 * 'module.enable' => array(
-	 * 	// Setting to TRUE enables.
-	 * 	'exampleauth' => TRUE,
-	 * 	// Setting to FALSE disables.
-	 * 	'saml' => FALSE,
-	 * 	// Unset or NULL uses default.
-	 * 	'core' => NULL,
-	 * ),
+	 * 'module.enable' => [
+	 * 	// Setting to true enables.
+	 * 	'exampleauth' => true,
+	 * 	// Setting to false disables.
+	 * 	'saml' => false,
+	 * 	// Unset or null uses default.
+	 * 	'core' => null,
+	 * ],
 	 *
 	 */
+	'module.enable' => [
+		'exampleauth' => false,
+		'core' => true,
+		'saml' => true
+	],
 
 
 	/*
@@ -288,17 +291,17 @@ print("	'session.duration'            =>	%s," % configRegistry.get('saml/idp/ses
 	 * Example:
 	 *  'session.cookie.domain' => '.example.org',
 	 */
-	'session.cookie.domain' => NULL,
+	'session.cookie.domain' => null,
 
 	/*
 	 * Set the secure flag in the cookie.
 	 *
-	 * Set this to TRUE if the user only accesses your service
+	 * Set this to true if the user only accesses your service
 	 * through https. If the user can access the service through
-	 * both http and https, this must be set to FALSE.
+	 * both http and https, this must be set to false.
 	 */
 @!@
-print("\t'session.cookie.secure' => %s," % ('TRUE' if configRegistry.is_true('saml/idp/session-cookie/secure') else 'FALSE',))
+print("\t'session.cookie.secure' => %s," % ('true' if configRegistry.is_true('saml/idp/session-cookie/secure') else 'false',))
 @!@
 
     /*
@@ -324,10 +327,10 @@ if configRegistry.get('saml/idp/session-cookie/samesite') in ('Lax', 'Strict', '
 @!@
 
 	/*
-	 * When set to FALSE fallback to transient session on session initialization
+	 * When set to false fallback to transient session on session initialization
 	 * failure, throw exception otherwise.
 	 */
-	'session.disable_fallback' => FALSE,
+	'session.disable_fallback' => false,
 
 	/*
 	 * Enable secure POST from HTTPS to HTTP.
@@ -340,14 +343,25 @@ if configRegistry.get('saml/idp/session-cookie/samesite') in ('Lax', 'Strict', '
 	 * https://idp.example.org/ssp/, then
 	 * http://idp.example.org/ssp/module.php/core/postredirect.php must be accessible.
 	 */
-	'enable.http_post' => FALSE,
+	'enable.http_post' => false,
+
+	/*
+	 * Set the allowed clock skew between encrypting/decrypting assertions
+	 *
+	 * If you have an server that is constantly out of sync, this option
+	 * allows you to adjust the allowed clock-skew.
+	 *
+	 * Allowed range: 180 - 300
+	 * Defaults to 180.
+	 */
+	'assertion.allowed_clock_skew' => 180,
 
 	/*
 	 * Options to override the default settings for php sessions.
 	 */
 	'session.phpsession.cookiename'  => null,
 	'session.phpsession.savepath'    => null,
-	'session.phpsession.httponly'    => FALSE,
+	'session.phpsession.httponly'    => false,
 
 	/*
 	 * Option to override the default settings for the auth token cookie
@@ -357,39 +371,39 @@ if configRegistry.get('saml/idp/session-cookie/samesite') in ('Lax', 'Strict', '
 	/*
 	 * Languages available, RTL languages, and what language is default
 	 */
-	'language.available'	=> array('en', 'no', 'nn', 'se', 'da', 'de', 'sv', 'fi', 'es', 'fr', 'it', 'nl', 'lb', 'cs', 'sl', 'lt', 'hr', 'hu', 'pl', 'pt', 'pt-br', 'tr', 'ja', 'zh', 'zh-tw', 'ru', 'et', 'he', 'id', 'sr', 'lv'),
-	'language.rtl'		=> array('ar','dv','fa','ur','he'),
+	'language.available'	=> ['en', 'no', 'nn', 'se', 'da', 'de', 'sv', 'fi', 'es', 'fr', 'it', 'nl', 'lb', 'cs', 'sl', 'lt', 'hr', 'hu', 'pl', 'pt', 'pt-br', 'tr', 'ja', 'zh', 'zh-tw', 'ru', 'et', 'he', 'id', 'sr', 'lv'],
+	'language.rtl'		=> ['ar','dv','fa','ur','he'],
 #	'language.default'		=> 'en',
 
 	/*
 	 * Options to override the default settings for the language parameter
 	 */
 	'language.parameter.name'   => 'lang',
-	'language.parameter.setcookie'  => TRUE,
+	'language.parameter.setcookie'  => true,
 
 	/*
 	 * Options to override the default settings for the language cookie
 	 */
 	'language.cookie.name'		=> 'language',
-	'language.cookie.domain'		=> NULL,
+	'language.cookie.domain'		=> null,
 	'language.cookie.path'		=> '/',
 	'language.cookie.lifetime'		=> (60*60*24*900),
 @!@
-print("\t'language.cookie.secure' => %s," % ('TRUE' if configRegistry.is_true('saml/idp/language-cookie/secure') else 'FALSE',))
+print("\t'language.cookie.secure' => %s," % ('true' if configRegistry.is_true('saml/idp/language-cookie/secure') else 'false',))
 if configRegistry.get('saml/idp/language-cookie/samesite') in ('Lax', 'Strict', 'None'):
     print("\t'language.cookie.samesite' => %s," % ("'%s'" % (configRegistry['saml/idp/language-cookie/samesite'],) if configRegistry['saml/idp/language-cookie/samesite'] in ('Strict', 'Lax') else '$_samesite_none',))
 @!@
 
 	/**
 	 * Custom getLanguage function called from SimpleSAML_XHTML_Template::getLanguage().
-	 * Function should return language code of one of the available languages or NULL.
+	 * Function should return language code of one of the available languages or null.
 	 * See SimpleSAML_XHTML_Template::getLanguage() source code for more info.
 	 *
 	 * This option can be used to implement a custom function for determining
 	 * the default language for the user.
 	 *
 	 * Example:
-	 *   'language.get_language_function' => array('sspmod_example_Template', 'getLanguage'),
+	 *   'language.get_language_function' => ['sspmod_example_Template', 'getLanguage'],
 	 */
 
 	/*
@@ -416,7 +430,7 @@ if configRegistry.get('saml/idp/language-cookie/samesite') in ('Lax', 'Strict', 
 	 *
 	 * Example: 'attributes.extradictionary' => 'ourmodule:ourattributes',
 	 */
-	'attributes.extradictionary' => NULL,
+	'attributes.extradictionary' => null,
 
 	/*
 	 * Which theme directory should be used?
@@ -425,20 +439,15 @@ if configRegistry.get('saml/idp/language-cookie/samesite') in ('Lax', 'Strict', 
 
 
 	/*
-	 * Default IdP for WS-Fed.
-	 */
-	'default-wsfed-idp'	=> 'urn:federation:pingfederate:localhost',
-
-	/*
 	 * Whether the discovery service should allow the user to save his choice of IdP.
 	 */
-	'idpdisco.enableremember' => TRUE,
-	'idpdisco.rememberchecked' => TRUE,
+	'idpdisco.enableremember' => true,
+	'idpdisco.rememberchecked' => true,
 
 	// Disco service only accepts entities it knows.
-	'idpdisco.validate' => TRUE,
+	'idpdisco.validate' => true,
 
-	'idpdisco.extDiscoveryStorage' => NULL,
+	'idpdisco.extDiscoveryStorage' => null,
 
 	/*
 	 * IdP Discovery service look configuration.
@@ -458,10 +467,10 @@ if configRegistry.get('saml/idp/language-cookie/samesite') in ('Lax', 'Strict', 
 	 * responses.
 	 *
 	 * The default is to sign the assertion element, but that can be overridden by setting this
-	 * option to TRUE. It can also be overridden on a pr. SP basis by adding an option with the
+	 * option to true. It can also be overridden on a pr. SP basis by adding an option with the
 	 * same name to the metadata of the SP.
 	 */
-	'shib13.signresponse' => TRUE,
+	'shib13.signresponse' => true,
 
 
 
@@ -469,11 +478,11 @@ if configRegistry.get('saml/idp/language-cookie/samesite') in ('Lax', 'Strict', 
 	 * Authentication processing filters that will be executed for all IdPs
 	 * Both Shibboleth and SAML 2.0
 	 */
-	'authproc.idp' => array(
+	'authproc.idp' => [
 		/* Enable the authproc filter below to add URN Prefixces to all attributes
- 		10 => array(
+ 		10 => [
  			'class' => 'core:AttributeMap', 'addurnprefix'
- 		), */
+ 		], */
  		/* Enable the authproc filter below to automatically generated eduPersonTargetedID.
  		20 => 'core:TargetedID',
  		*/
@@ -484,11 +493,11 @@ if configRegistry.get('saml/idp/language-cookie/samesite') in ('Lax', 'Strict', 
 		/* Add a realm attribute from edupersonprincipalname
 		40 => 'core:AttributeRealm',
 		 */
-		45 => array(
+		45 => [
 			'class' => 'core:StatisticsWithAttribute',
 			'attributename' => 'realm',
 			'type' => 'saml20-idp-SSO',
-		),
+		],
 
 		/* When called without parameters, it will fallback to filter attributes ‹the old way›
 		 * by checking the 'attributes' parameter in metadata on IdP hosted and SP remote.
@@ -498,50 +507,50 @@ if configRegistry.get('saml/idp/language-cookie/samesite') in ('Lax', 'Strict', 
 		/*
 		 * Search attribute "distinguishedName" for pattern and replaces if found
 
-		60 => array(
+		60 => [
 			'class'		=> 'core:AttributeAlter',
 			'pattern'	=> '/OU=studerende/',
 			'replacement'	=> 'Student',
 			'subject'	=> 'distinguishedName',
 			'%replace',
-		),
+		],
 		 */
 
 		/*
 		 * Consent module is enabled (with no permanent storage, using cookies).
 
-		90 => array(
+		90 => [
 			'class' 	=> 'consent:Consent',
 			'store' 	=> 'consent:Cookie',
 			'focus' 	=> 'yes',
-			'checked' 	=> TRUE
-		),
+			'checked' 	=> true
+		],
 		 */
 		// If language is set in Consent module it will be added as an attribute.
  		99 => 'core:LanguageAdaptor',
-	),
+	],
 	/*
 	 * Authentication processing filters that will be executed for all SPs
 	 * Both Shibboleth and SAML 2.0
 	 */
-	'authproc.sp' => array(
+	'authproc.sp' => [
 		/*
-		10 => array(
+		10 => [
 			'class' => 'core:AttributeMap', 'removeurnprefix'
-		),
+		],
 		*/
 
 		/*
 		 * Generate the 'group' attribute populated from other variables, including eduPersonAffiliation.
 		 */
- 		60 => array('class' => 'core:GenerateGroups', 'eduPersonAffiliation'),
+ 		60 => ['class' => 'core:GenerateGroups', 'eduPersonAffiliation'],
  		// All users will be members of 'users' and 'members'
- 		61 => array('class' => 'core:AttributeAdd', 'groups' => array('users', 'members')),
+ 		61 => ['class' => 'core:AttributeAdd', 'groups' => ['users', 'members']],
 
 		// Adopts language from attribute to use in UI
  		90 => 'core:LanguageAdaptor',
 
-	),
+	],
 
 
 	/*
@@ -574,27 +583,27 @@ if configRegistry.get('saml/idp/language-cookie/samesite') in ('Lax', 'Strict', 
 	 * This example defines two flatfile sources. One is the default metadata directory, the other
 	 * is a metadata directory with autogenerated metadata files.
 	 *
-	 * 'metadata.sources' => array(
-	 *     array('type' => 'flatfile'),
-	 *     array('type' => 'flatfile', 'directory' => 'metadata-generated'),
-	 *     ),
+	 * 'metadata.sources' => [
+	 *     ['type' => 'flatfile'],
+	 *     ['type' => 'flatfile', 'directory' => 'metadata-generated'],
+	 *     ],
 	 *
 	 * This example defines a flatfile source and an XML source.
-	 * 'metadata.sources' => array(
-	 *     array('type' => 'flatfile'),
-	 *     array('type' => 'xml', 'file' => 'idp.example.org-idpMeta.xml'),
-	 *     ),
+	 * 'metadata.sources' => [
+	 *     ['type' => 'flatfile'],
+	 *     ['type' => 'xml', 'file' => 'idp.example.org-idpMeta.xml'],
+	 *     ],
 	 *
 	 *
 	 * Default:
-	 * 'metadata.sources' => array(
-	 *     array('type' => 'flatfile')
-	 *     ),
+	 * 'metadata.sources' => [
+	 *     ['type' => 'flatfile']
+	 *     ],
 	 */
-	'metadata.sources' => array(
-		array('type' => 'flatfile'),
-		array('type' => 'flatfile', 'directory' => 'metadata.d'),
-	),
+	'metadata.sources' => [
+		['type' => 'flatfile'],
+		['type' => 'flatfile', 'directory' => 'metadata.d'],
+	],
 
 
 	/*
@@ -623,8 +632,8 @@ print("\t'store.type' => '%s'," % (configRegistry.get('saml/idp/session-type', '
 	/*
 	 * The username and password to use when connecting to the database.
 	 */
-	'store.sql.username' => NULL,
-	'store.sql.password' => NULL,
+	'store.sql.username' => null,
+	'store.sql.password' => null,
 
 	/*
 	 * The prefix we should use on our tables.
@@ -661,32 +670,32 @@ print("\t'store.type' => '%s'," % (configRegistry.get('saml/idp/session-type', '
 	 * Note that sessions will be lost if one server is lost from both the
 	 * a-group and the b-group.
 	 *
-	 * 'memcache_store.servers' => array(
-	 *     array(
-	 *         array('hostname' => 'mc_a1'),
-	 *         array('hostname' => 'mc_a2'),
-	 *     ),
-	 *     array(
-	 *         array('hostname' => 'mc_b1'),
-	 *         array('hostname' => 'mc_b2'),
-	 *     ),
-	 * ),
+	 * 'memcache_store.servers' => [
+	 *     [
+	 *         ['hostname' => 'mc_a1'],
+	 *         ['hostname' => 'mc_a2'],
+	 *     ],
+	 *     [
+	 *         ['hostname' => 'mc_b1'],
+	 *         ['hostname' => 'mc_b2'],
+	 *     ],
+	 * ],
 	 *
 	 * Example of simple configuration with only one memcache server,
 	 * running on the same computer as the web server:
 	 * Note that all sessions will be lost if the memcache server crashes.
 	 *
-	 * 'memcache_store.servers' => array(
-	 *     array(
-	 *         array('hostname' => 'localhost'),
-	 *     ),
-	 * ),
+	 * 'memcache_store.servers' => [
+	 *     [
+	 *         ['hostname' => 'localhost'],
+	 *     ],
+	 * ],
 	 *
 	 */
-	'memcache_store.servers' => array(
-		array(
-			array('hostname' => '/var/run/univention-saml/memcached.socket'),
-		),
+	'memcache_store.servers' => [
+		[
+			['hostname' => '/var/run/univention-saml/memcached.socket'],
+		],
 @!@
 # flake8: noqa
 fqdn = '%(hostname)s.%(domainname)s' % configRegistry
@@ -694,9 +703,9 @@ for key, server in configRegistry.items():
     if not key.startswith('ucs/server/saml-idp-server/') or server == fqdn:
         continue
     print('''
-		array(
-			array('hostname' => 'unix:///var/run/univention-saml/%s.socket'),
-		),
+		[
+			['hostname' => 'unix:///var/run/univention-saml/%s.socket'],
+		],
 ''' % (server,))  # noqa: E101
 @!@
 	),
@@ -726,7 +735,7 @@ for key, server in configRegistry.items():
 	 * Metadata signing can also be enabled for a individual SP or IdP by setting the
 	 * same option in the metadata for the SP or IdP.
 	 */
-	'metadata.sign.enable' => FALSE,
+	'metadata.sign.enable' => false,
 
 	/*
 	 * The default key & certificate which should be used to sign generated metadata. These
@@ -738,9 +747,9 @@ for key, server in configRegistry.items():
 	 * the 'certificate' and 'privatekey' option in the metadata will be used.
 	 * if those aren't set, signing of metadata will fail.
 	 */
-	'metadata.sign.privatekey' => NULL,
-	'metadata.sign.privatekey_pass' => NULL,
-	'metadata.sign.certificate' => NULL,
+	'metadata.sign.privatekey' => null,
+	'metadata.sign.privatekey_pass' => null,
+	'metadata.sign.certificate' => null,
 
 
 	/*
@@ -749,17 +758,17 @@ for key, server in configRegistry.items():
 	 * Example:
 	 *   'proxy' => 'tcp://proxy.example.com:5100'
 	 */
-	'proxy' => NULL,
+	'proxy' => null,
 
 	/*
 	 * Array of URL's to allow a trusted redirect to.
 	 *
-	 * Set to NULL to disable.
+	 * Set to null to disable.
 	 *
 	 * Example:
-	 *   'redirect.trustedsites' => array('sp.example.com', 'othersite.org'),
+	 *   'redirect.trustedsites' => ['sp.example.com', 'othersite.org'],
 	 */
-	'redirect.trustedsites' => NULL,
-);
+	'redirect.trustedsites' => null,
+];
 
 require_once('/var/lib/simplesamlphp/secrets.inc.php');
