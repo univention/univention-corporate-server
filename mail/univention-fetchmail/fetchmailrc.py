@@ -47,7 +47,8 @@ import listener
 
 
 description = 'write user-configuration to fetchmailrc'
-filter = '(objectClass=univentionFetchmail)'
+filter = '(univentionObjectType=users/user)'
+attributes = ['univentionFetchmailSingle', 'univentionFetchmailMulti', 'uid', 'mailPrimaryAddress']
 
 modrdn = "1"
 
@@ -148,10 +149,19 @@ def details_complete(obj: Dict[str, List[bytes]] | None, password: str | None):
     return all(obj.get(attr, [b''])[0] for attr in attrlist)
 
 
+def is_fetchmail_user(obj: Dict[str, List[bytes]] | None):
+    if not obj:
+        return False
+    return bool(obj.get('mailPrimaryAddress', [b''])[0])
+
+
 def objappend_single(flist: List[str], new: Dict[str, List[bytes]], password: str | None = None) -> None:
     """add user's single fetchmail entries to flist"""
     # Bug 55882: Compatibility with old attributes.
     objappend(flist, new, password)
+    if not is_fetchmail_user(new):
+        ud.debug(ud.LISTENER, ud.WARN, 'Adding user to "fetchmailrc" failed. Missing mailPrimaryAddress attribute in user.')
+        return
     value = new.get('univentionFetchmailSingle', [])
     try:
         entries = [json.loads(v) for v in value]
@@ -171,6 +181,9 @@ def objappend_single(flist: List[str], new: Dict[str, List[bytes]], password: st
 def objappend_multi(flist: List[str], new: Dict[str, List[bytes]], password: str | None = None) -> None:
     """add user's multi fetchmail entries to flist"""
     value = new.get('univentionFetchmailMulti', [])
+    if not is_fetchmail_user(new):
+        ud.debug(ud.LISTENER, ud.WARN, 'Adding user to "fetchmailrc" failed. Missing mailPrimaryAddress attribute in user.')
+        return
     try:
         entries = [json.loads(v) for v in value]
     except ValueError:
@@ -194,6 +207,10 @@ def objappend_multi(flist: List[str], new: Dict[str, List[bytes]], password: str
     user '{username}' there with password '{passwd}' is * here {flag_keep} {flag_ssl} #UID='{uid}'\n""")
 
 
+def change_required(new: Dict[str, List[bytes]], old: Dict[str, List[bytes]]) -> bool:
+    return any(old.get(attr, []) != new.get(attr, []) for attr in ('univentionFetchmailSingle', 'univentionFetchmailMulti', 'uid', 'mailPrimaryAddress'))
+
+
 def handler(dn: str, new: Dict[str, List[bytes]], old: Dict[str, List[bytes]], command: str) -> None:
     if os.path.exists(FETCHMAIL_OLD_PICKLE):
         with open(FETCHMAIL_OLD_PICKLE, 'rb') as fd:
@@ -212,16 +229,10 @@ def handler(dn: str, new: Dict[str, List[bytes]], old: Dict[str, List[bytes]], c
 
     flist = load_rc(fn_fetchmailrc)
     if new:
-        old_single = old.get('univentionFetchmailSingle', [])
-        new_single = new.get('univentionFetchmailSingle', [])
-        old_multi = old.get('univentionFetchmailMulti', [])
-        new_multi = new.get('univentionFetchmailMulti', [])
-        old_uid = old.get('uid', [b''])[0]
-        new_uid = new.get('uid', [b''])[0]
         # Bug 55882: Compatibility with old attributes.
+        old_uid = old.get('uid', [b''])[0]
         oldatt_passwd = new.get('univentionFetchmailPasswd', [get_pw_from_rc(flist, old_uid)])[0]
-
-        if old_single != new_single or old_multi != new_multi or old_uid != new_uid:
+        if change_required(new, old):
             flist = objdelete(flist, old)
             objappend_single(flist, new, oldatt_passwd)
             objappend_multi(flist, new)
