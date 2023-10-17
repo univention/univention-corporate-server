@@ -1,0 +1,18 @@
+product: ucs
+release: "5.0"
+version: [4, 5]
+scope: ucs_5.0-0-errata5.0-5
+src: poppler
+fix: 0.71.0-5+deb10u3
+desc: |
+ This update addresses the following issues:
+ 0.71.0-5+deb10u3 (Mon, 16 Oct 2023 02:02:58 +0300)
+ * Non-maintainer upload by the LTS Security Team.
+ * CVE-2020-23804: Stack overflow in XRef::readXRefTable()
+ * CVE-2022-37050: Crash in PDFDoc::savePageAs()
+ * CVE-2022-37051: Crash in the pdfunite tool
+bug: [56746]
+cve:
+- CVE-2020-23804
+- CVE-2022-37050
+- CVE-2022-37051
