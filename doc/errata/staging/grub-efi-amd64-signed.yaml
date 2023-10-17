@@ -2,15 +2,15 @@ product: ucs
 release: "5.0"
 version: [4, 5]
 scope: ucs_5.0-0-errata5.0-5
-src: grub2
-fix: 2.06-3~deb10u4
+src: grub-efi-amd64-signed
+fix: 1+2.06+3~deb10u4
 desc: |
  This update addresses the following issues:
  * Crafted file system images can cause heap-based buffer overflow and may
    allow arbitrary code execution and secure boot bypass (CVE-2023-4692)
  * Crafted file system images can cause out-of-bounds write and may leak
    sensitive information into the GRUB pager (CVE-2023-4693)
-note: This is the 1st of two parts.
+note: This is the 2nd of two parts.
 bug: [56742]
 cve:
 - CVE-2023-4693
