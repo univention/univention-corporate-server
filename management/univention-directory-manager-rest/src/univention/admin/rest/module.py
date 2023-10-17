@@ -2533,6 +2533,12 @@ class PolicyResultContainer(PolicyResultBase):
 class Operations(Resource):
     """GET /udm/progress/$progress-id (get the progress of a started operation like move, report, maybe add/put?, ...)"""
 
+    def check_acceptable(self):
+        if self.request.headers.get('Accept') == '*/*':
+            # python-udm-rest-api-client <= 1.2.2 doesn't provide "Accept: application/json" header
+            return 'json'
+        return super().check_acceptable()
+
     def get(self, progress):
         progressbars = shared_memory.queue.get(self.request.user_dn, {})
         if progress not in progressbars:
