@@ -36,26 +36,20 @@ enabled_instances() {
 running() {
     INSTANCE="$1"
     if [ "X$INSTANCE" = X ]; then
-	    POSTCONF="postconf"
+	    POSTMULTI=""
     else
-	    POSTCONF="postmulti -i $INSTANCE -x postconf"
+	    POSTMULTI="postmulti -i $INSTANCE -x "
     fi
+    POSTCONF="${POSTMULTI} postconf"
 
-    queue=$($POSTCONF -hx queue_directory 2>/dev/null || echo /var/spool/postfix)
-    daemondir=$($POSTCONF -hx daemon_directory 2>/dev/null || echo /usr/lib/postfix/sbin)
-    if [ -f ${queue}/pid/master.pid ]; then
-	pid=$(sed 's/ //g' ${queue}/pid/master.pid)
-	# what directory does the executable live in.  stupid prelink systems.
-	dir=$(ls -l /proc/$pid/exe 2>/dev/null | sed 's/.* -> //; s/\/[^\/]*$//')
-	if [ "X$dir" = "X${daemondir}" ]; then
-	    echo y
-	fi
+    daemon_directory=$($POSTCONF -hx daemon_directory 2>/dev/null || echo /usr/lib/postfix/sbin)
+    if ! ${POSTMULTI} $daemon_directory/master -t 2>/dev/null ; then
+            echo y
     fi
 }
 
 case "$1" in
     start)
-	log_daemon_msg "Starting Postfix Mail Transport Agent" postfix
 	# check ucr autostart setting
 	if [ -f "/usr/share/univention-config-registry/init-autostart.lib" ]; then
 	    . "/usr/share/univention-config-registry/init-autostart.lib"
@@ -68,7 +62,7 @@ case "$1" in
 	    if [ "X$RUNNING" = X ]; then
 		/usr/lib/postfix/configure-instance.sh $INSTANCE
 		CMD="/usr/sbin/postmulti -- -i $INSTANCE -x ${DAEMON}"
-		if ! start-stop-daemon --start --exec $CMD quiet-quick-start; then
+		if ! start-stop-daemon --start --exec $CMD start; then
 		    RET=1
 		fi
 	    fi
@@ -77,14 +71,13 @@ case "$1" in
     ;;
 
     stop)
-	log_daemon_msg "Stopping Postfix Mail Transport Agent" postfix
 	RET=0
 	# for all instances that are not already running, handle chroot setup if needed, and start
 	for INSTANCE in $(enabled_instances); do
 	    RUNNING=$(running $INSTANCE)
 	    if [ "X$RUNNING" != X ]; then
 		CMD="/usr/sbin/postmulti -i $INSTANCE -x ${DAEMON}"
-		if ! ${CMD} quiet-stop; then
+		if ! ${CMD} stop; then
 		    RET=1
 		fi
 	    fi
@@ -98,12 +91,7 @@ case "$1" in
     ;;
 
     force-reload|reload)
-	log_action_begin_msg "Reloading Postfix configuration"
-	if ${DAEMON} quiet-reload; then
-	    log_action_end_msg 0
-	else
-	    log_action_end_msg 1
-	fi
+	${DAEMON} reload
     ;;
 
     status)
