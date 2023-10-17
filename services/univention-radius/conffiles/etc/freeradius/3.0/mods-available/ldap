@@ -1,7 +1,7 @@
 @%@UCRWARNING=# @%@
 # -*- text -*-
 #
-#  $Id: 4b7e4585c029b8617aa7b9169a42bf50a5ec4938 $
+#  $Id: bc879ccc20354d5d32afa1f8b4d10422d5184eab $
 
 #
 #  Lightweight Directory Access Protocol (LDAP)
@@ -41,6 +41,22 @@ with open('/etc/machine.secret') as credfile:
 	#  searches will start from.
 #	base_dn = 'dc=example,dc=org'
 	base_dn = "@%@ldap/base@%@"
+
+	#
+	#  You can run the 'ldapsearch' command line tool using the
+	#  parameters from this module's configuration.
+	#
+	#    ldapsearch -D ${identity} -w ${password} -h ${server}  -b 'CN=user,${base_dn}'
+	#
+	#  That will give you the LDAP information for 'user'.
+	#
+	#  Group membership can be queried by using the above "ldapsearch" string,
+	#  and adding "memberof" qualifiers.  For ActiveDirectory, use:
+	#
+	#    ldapsearch ... '(&(objectClass=user)(sAMAccountName=user)(memberof=CN=group,${base_dn}))'
+	#
+	#  Where 'user' is the user as above, and 'group' is the group you are querying for.
+	#
 
 	#
 	#  SASL parameters to use for admin binds
@@ -155,17 +171,45 @@ else:
 	#  Cleartext-Password. This will consume the login grace, and
 	#  verify user authorization.
 #	edir_autz = no
-
-	#  Note: set_auth_type was removed in v3.x.x
-	#  Equivalent functionality can be achieved by adding the following
-	#  stanza to the authorize {} section of your virtual server.
+	#  LDAP "bind as user" configuration to check PAP passwords.
 	#
+	#  Active Directory needs "bind as user", which can be done by
+	#  adding the following "if" statement to the authorize {} section
+	#  of the virtual server, after the "ldap" module.  For
+	#  example:
+	#
+	#
+	#    ...
 	#    ldap
-	#    if ((ok || updated) && User-Password) {
+	#    if ((ok || updated) && User-Password && !control:Auth-Type) {
 	#        update {
 	#            control:Auth-Type := ldap
 	#        }
 	#    }
+	#    ...
+	#
+	#  You will also need to uncomment the "Auth-Type LDAP" block in the
+	#  "authenticate" section.
+	#
+	#  This configuration is required because AD will not return the users
+	#  "known good" password to FreeRADIUS.  Instead, FreeRADIUS has to run
+	#  "Auth-Type LDAP" in order to do an LDAP "bind as user", which will hand
+	#  the user name / password to AD for verification.
+	#
+
+	#
+	#  Name of the attribute that contains the user DN.
+	#  The default name is LDAP-UserDn.
+	#
+	#  If you have multiple LDAP instances, you should
+	#  change this configuration item to:
+	#
+	#	${.:instance}-LDAP-UserDn
+	#
+	#  That change allows the modules to set their own
+	#  User DN, and to not conflict with each other.
+	#
+	#
 	user_dn = "LDAP-UserDn"
 
 	#
@@ -191,6 +235,19 @@ if configRegistry.is_true('freeradius/conf/allow-mac-address-authentication'):
 else:
     print('\t\tfilter = "(uid=%%{%s:-%%{User-Name}})"' % filter)
 @!@
+
+		#  For Active Directory nested group, you should comment out the previous 'filter = ...'
+		#  and use the below. Where 'group' is the group you are querying for.
+		#
+		#  NOTE: The string '1.2.840.113556.1.4.1941' specifies LDAP_MATCHING_RULE_IN_CHAIN.
+		#  This applies only to DN attributes. This is an extended match operator that walks
+		#  the chain of ancestry in objects all the way to the root until it finds a match.
+		#  This reveals group nesting. It is available only on domain controllers with
+		#  Windows Server 2003 SP2 or Windows Server 2008 (or above).
+		#
+		#  See: https://social.technet.microsoft.com/wiki/contents/articles/5392.active-directory-ldap-syntax-filters.aspx
+		#
+#		filter = "(&(objectClass=user)(sAMAccountName=%{%{Stripped-User-Name}:-%{User-Name}})(memberOf:1.2.840.113556.1.4.1941:=cn=group,${..base_dn}))"
 
 		#  SASL parameters to use for user binds
 		#
@@ -266,6 +323,9 @@ else:
 
 		#  Filter for group objects, should match all available
 		#  group objects a user might be a member of.
+		#
+		#  If using Active Directory you are likely to need "group"
+		#  instead of "posixGroup".
 		filter = '(objectClass=posixGroup)'
 
 		# Search scope, may be 'base', 'one', sub' or 'children'
@@ -276,9 +336,14 @@ else:
 		#  names.
 #		name_attribute = cn
 
-		#  Filter to find group objects a user is a member of.
+		#  Filter to find all group objects a user is a member of.
 		#  That is, group objects with attributes that
 		#  identify members (the inverse of membership_attribute).
+		#
+		#  Note that this configuration references the "user_dn"
+		#  configuration defined above.
+		#
+#		membership_filter = "(|(member=%{control:${..user_dn}})(memberUid=%{%{Stripped-User-Name}:-%{User-Name}}))"
 @!@
 if configRegistry.is_true('freeradius/conf/allow-mac-address-authentication'):
     print('\t\tmembership_filter = "(|(member=%{control:Ldap-UserDn})(memberUid=%{%{Stripped-User-Name}:-%{User-Name}}))"')
@@ -286,12 +351,19 @@ else:
     print('#\t\tmembership_filter = "(|(member=%{control:Ldap-UserDn})(memberUid=%{%{Stripped-User-Name}:-%{User-Name}}))"')
 @!@
 
-		#  The attribute in user objects which contain the names
+		#  The attribute, in user objects, which contain the names
 		#  or DNs of groups a user is a member of.
 		#
 		#  Unless a conversion between group name and group DN is
 		#  needed, there's no requirement for the group objects
 		#  referenced to actually exist.
+		#
+		#  If the LDAP server does not support the "memberOf"
+		#  attribute (or equivalent), then you will need to use the
+		#  membership_filter option above instead. If you can't see
+		#  the memberOf attribute then it is also possible that the
+		#  LDAP bind user does not have the correct permissions to
+		#  view it.
 		membership_attribute = 'memberOf'
 
 		#  If cacheable_name or cacheable_dn are enabled,
@@ -316,6 +388,14 @@ else:
 		#  custom attribute.  This can help if multiple module instances
 		#  are used in fail-over.
 #		cache_attribute = 'LDAP-Cached-Membership'
+
+		#  If the group being checked is specified as a name, but
+		#  the user's groups are referenced by DN, and one of those
+		#  group DNs is invalid, the whole group check is treated as
+		#  invalid, and a negative result will be returned.
+		#  When set to 'yes', this option ignores invalid DN
+		#  references.
+#		allow_dangling_group_ref = 'no'
 	}
 
 	#
@@ -472,8 +552,19 @@ else:
 		#  If you set these to 'no', then searches will likely return
 		#  'operations error', instead of a useful result.
 		#
+		#  'rebind' causes any connections being established to follow
+		#  referrals to be bound using the admin credentials defined
+		#  for this module.  If it is set to 'no' libldap will bind
+		#  to those connections anonymously.
+		#
 		chase_referrals = yes
 		rebind = yes
+
+		# SASL Security Properties (see SASL_SECPROPS in ldap.conf man page).
+		# Note - uncomment when using GSS-API sasl mechanism along with TLS
+		# encryption against Active-Directory LDAP servers (this disables
+		# sealing and signing at the GSS level as required by AD).
+		#sasl_secprops = 'noanonymous,noplain,maxssf=0'
 
 		#  Seconds to wait for LDAP query to finish. default: 20
 		res_timeout = 10
@@ -517,6 +608,23 @@ else:
 	#  configuration entries can still be used, but we recommend
 	#  using these.
 	#
+	#  Note that some distributions use NSS for libldap instead
+	#  of OpenSSL.
+	#
+	#  If you see something like this in the debug output:
+	#
+	#	TLSMC: MozNSS compatibility interception begins.
+	#
+	#  Then there is a problem.
+	#
+	#	THIS LDAP INSTALLATION WILL NOT WORK WITH FREERADIUS.
+	#
+	#  You MUST install fixed LDAP libraries which use OpenSSL.
+	#
+	#  For more details, see:
+	#
+	#	http://packages.networkradius.com
+	#
 	tls {
 		# Set this to 'yes' to use TLS encrypted connections
 		# to the LDAP database by using the StartTLS extended
@@ -549,15 +657,21 @@ print('\t\tstart_tls = %s' % configRegistry.get('freeradius/conf/starttls', 'no'
 		#  on the contents of ldap.conf.
 
 #		require_cert	= 'demand'
+
+		#
+		#  Minimum TLS version to accept. We STRONGLY recommend
+		#  setting this to "1.2"
+		#
+#		tls_min_version = "1.2"
 	}
 
-	#  As of version 3.0, the 'pool' section has replaced the
-	#  following configuration items:
+	#  As of v3, the 'pool' section has replaced the
+	#  following v2 configuration items:
 	#
 	#  ldap_connections_number
 
-	#  The connection pool is new for 3.0, and will be used in many
-	#  modules, for all kinds of connection-related activity.
+	#
+	#  The connection pool is used to pool outgoing connections.
 	#
 	#  When the server is not threaded, the connection pool
 	#  limits are ignored, and only one connection is used.
