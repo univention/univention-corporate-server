@@ -1,0 +1,36 @@
+product: ucs
+release: "5.0"
+version: [4, 5]
+scope: ucs_5.0-0-errata5.0-5
+src: grub2
+fix: 2.06-3~deb10u4
+desc: |
+ This update addresses the following issues:
+ 2.06-3~deb10u4 (Mon, 02 Oct 2023 16:11:34 +0200)
+ [ Mate Kukri ]
+ * SECURITY UPDATE: Crafted file system images can cause out-of-bounds write
+   and may leak sensitive information into the GRUB pager. -
+   d/patches/ntfs-cve-fixes/fs-ntfs-Fix-an-OOB-read-when-parsing-a-volume-
+   label.patch: fs/ntfs: Fix an OOB read when parsing a volume label -
+   d/patches/ntfs-cve-fixes/fs-ntfs-Fix-an-OOB-read-when-parsing-bs-for-
+   index-at.patch: fs/ntfs: Fix an OOB read when parsing bitmaps for index
+   attributes -
+   d/patches/ntfs-cve-fixes/fs-ntfs-Fix-an-OOB-read-when-parsing-dory-
+   entries-fr.patch: fs/ntfs: Fix an OOB read when parsing directory entries
+   from resident and non-resident index attributes -
+   d/patches/ntfs-cve-fixes/fs-ntfs-Fix-an-OOB-read-when-reading-data-fhe-
+   reside.patch: fs/ntfs: Fix an OOB read when reading data from the resident
+   $DATA + attribute - CVE-2023-4693
+ * SECURITY UPDATE: Crafted file system images can cause heap-based buffer
+   overflow and may allow arbitrary code execution and secure boot bypass. -
+   d/patches/ntfs-cve-fixes/fs-ntfs-Fix-an-OOB-write-when-parsing-the-
+   ATTRIBUTE_LIST-.patch: fs/ntfs: Fix an OOB write when parsing the
+   $ATTRIBUTE_LIST attribute for the $MFT file -
+   d/patches/ntfs-cve-fixes/fs-ntfs-Make-code-more-readable.patch fs/ntfs:
+   Make code more readable - CVE-2023-4692
+ [ Julian Andres Klode ]
+ * Bump SBAT to grub,4
+bug: [56742]
+cve:
+- CVE-2023-4693
+- CVE-2023-4692
