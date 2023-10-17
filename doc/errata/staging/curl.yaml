@@ -1,0 +1,16 @@
+product: ucs
+release: "5.0"
+version: [4, 5]
+scope: ucs_5.0-0-errata5.0-5
+src: curl
+fix: 7.64.0-4+deb10u7
+desc: |
+ This update addresses the following issues:
+ 7.64.0-4+deb10u7 (Wed, 11 Oct 2023 12:40:37 +0200)
+ * Non-maintainer upload by the LTS team.
+ * CVE-2023-38546: cookie injection
+ * CVE-2023-28321: IDN wildcard match
+bug: [56745]
+cve:
+- CVE-2023-38546
+- CVE-2023-28321
