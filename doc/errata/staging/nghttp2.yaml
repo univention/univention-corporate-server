@@ -1,0 +1,17 @@
+product: ucs
+release: "5.0"
+version: [4, 5]
+scope: ucs_5.0-0-errata5.0-5
+src: nghttp2
+fix: 1.36.0-2+deb10u2
+desc: |
+ This update addresses the following issues:
+ 1.36.0-2+deb10u2 (Mon, 16 Oct 2023 13:34:24 +0100)
+ * Non-maintainer upload by the LTS Security Team.
+ * Backport upstream fixes for CVE-2020-11080.
+ * Backport upstream fix for CVE-2023-44487.
+ * Add three new symbols from backported fixes to libnghttp2-14.symbols.
+bug: [56740]
+cve:
+- CVE-2020-11080
+- CVE-2023-44487
