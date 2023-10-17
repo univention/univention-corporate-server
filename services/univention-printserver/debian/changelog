@@ -1,3 +1,9 @@
+univention-printserver (15.0.3) unstable; urgency=medium
+
+  * Bug #46120: rebase univention-printserver UCR templates
+
+ -- Marius Meschter <marius.meschter@univention.de>  Fri, 08 Mar 2024 00:18:33 +0100
+
 univention-printserver (15.0.2) unstable; urgency=medium
 
   * Bug #56542: update printer driver (PPD) list
