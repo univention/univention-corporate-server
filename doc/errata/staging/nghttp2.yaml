@@ -6,11 +6,9 @@ src: nghttp2
 fix: 1.36.0-2+deb10u2
 desc: |
  This update addresses the following issues:
- 1.36.0-2+deb10u2 (Mon, 16 Oct 2023 13:34:24 +0100)
- * Non-maintainer upload by the LTS Security Team.
- * Backport upstream fixes for CVE-2020-11080.
- * Backport upstream fix for CVE-2023-44487.
- * Add three new symbols from backported fixes to libnghttp2-14.symbols.
+ * CVE-2020-11080: Overly large SETTINGS frames can lead to Denial-of-Service.
+ * CVE-2023-44487: Multiple HTTP/2 enabled web servers are vulnerable to a
+   Distributed Denial-of-Service attack (Rapid Reset Attack).
 bug: [56740]
 cve:
 - CVE-2020-11080
