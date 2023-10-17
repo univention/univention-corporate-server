@@ -6,17 +6,14 @@ src: python3.7
 fix: 3.7.3-2+deb10u6
 desc: |
  This update addresses the following issues:
- 3.7.3-2+deb10u6 (Wed, 11 Oct 2023 10:51:27 +0100)
- * Non-maintainer upload by the LTS Security Team.
- * CVE-2022-48560: Use-after-free via heappushpop in heapq.
- * CVE-2022-48564: Potential DoS in read_ints in plistlib.py.
+ * CVE-2022-48560: Use-after-free via `heappushpop` in `heapq`.
+ * CVE-2022-48564: Potential DoS in `read_ints` in `plistlib.py`.
  * CVE-2022-48565: Avoid XML External Entity (XXE) issues by rejecting entity
-   declarations in XML plist files in plistlib.
+   declarations in XML plist files in `plistlib`.
  * CVE-2022-48566: Avoid some possible constant-time-defeating compiler
-   optimisations in the accumulator variable in hmac.compare_digest.
+   optimisations in the accumulator variable in `hmac.compare_digest`.
  * CVE-2023-40217: Fix possible bypass of some of the protections implemented
-   by the TLS handshake in ssl.SSLSocket class. - Also apply two upstream
-   commits to stabilise the test suite.
+   by the TLS handshake in class `ssl.SSLSocket`.
 bug: [56739]
 cve:
 - CVE-2022-48560
