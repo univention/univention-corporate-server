@@ -259,7 +259,7 @@ class Instance(Base):
         appliance_mode = ucr.is_true('server/appliance')
 
         available_versions, blocking_components = self.uu.get_all_available_release_updates()
-        result = [{'id': str(rel), 'label': 'UCS %s' % (rel,)} for rel in available_versions if rel.mm != (5, 1)]
+        result = [{'id': str(rel), 'label': 'UCS %s' % (rel,)} for rel in available_versions]
         #
         # appliance_mode=no ; blocking_comp=no  → add "latest version"
         # appliance_mode=no ; blocking_comp=yes →  no "latest version"
