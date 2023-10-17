@@ -1075,9 +1075,11 @@ class OpenAPIBase(_OpenAPIBase):
 
     requires_authentication = ucr.is_true('directory/manager/rest/require-auth', True)
 
+    def check_acceptable(self):
+        return 'json'
+
     def prepare(self):
         super().prepare()
-        self.request.content_negotiation_lang = 'json'
         self.ldap_connection, self.ldap_position = get_machine_ldap_read_connection()
 
     def get(self, object_type=None):
