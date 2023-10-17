@@ -18,6 +18,10 @@ if configRegistry.is_true(accessfileFlag, False):
         line.append('maxent=%s' % (maxent,))
     print(' '.join(line))
 @!@
+
+# Set up user limits from /etc/security/limits.conf.
+session    required   pam_limits.so
+
 @include common-account
 @include common-session
 @include common-password
