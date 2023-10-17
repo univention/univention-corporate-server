@@ -6,23 +6,20 @@ src: python-urllib3
 fix: 1.24.1-1+deb10u1
 desc: |
  This update addresses the following issues:
- 1.24.1-1+deb10u1 (Sat, 07 Oct 2023 18:59:08 +0200)
- * Non-maintainer upload by the LTS Security Team.
- * Follow-up for CVE-2018-20060: Remove Authorization headers regardless of
-   case on cross-origin redirects.
- * Fix CVE-2019-11236: An attacker controlling the request parameter can
-   inject headers by injecting CR/LF characters.
- * Fix CVE-2019-11324: When verifying HTTPS connections when an SSLContext is
-   passed to urllib3, system CA certificates will be loaded into the
-   SSLContext by default in addition to any manually-specified CA
+ * CVE-2018-20060: Remove Authorization headers regardless of case on
+   cross-origin redirects.
+ * CVE-2019-11236: An attacker controlling the request parameter can inject
+   headers by injecting CR/LF characters.
+ * CVE-2019-11324: When verifying HTTPS connections when an `SSLContext` is
+   passed to `urllib3`, system CA certificates will be loaded into the
+   `SSLContext` by default in addition to any manually-specified CA
    certificates. This causes TLS handshakes that should fail given only the
    manually specified certs to succeed based on system CA certs.
-
- * Fix CVE-2020-26137: CRLF injection vulnerability when the attacker controls
-   the HTTP request method, as demonstrated by inserting CR and LF control
-   characters in the first argument of putrequest().
- * Fix CVE-2023-43804: Cookie request header isn't stripped during
-   cross-origin redirects.
+ * CVE-2020-26137: CRLF injection vulnerability when the attacker controls the
+   HTTP request method, as demonstrated by inserting CR and LF control
+   characters in the first argument of `putrequest()`.
+ * CVE-2023-43804: Cookie request header isn't stripped during cross-origin
+   redirects.
 bug: [56743]
 cve:
 - CVE-2018-20060
