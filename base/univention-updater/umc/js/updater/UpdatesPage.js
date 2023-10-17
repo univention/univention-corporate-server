@@ -99,7 +99,7 @@ define([
 		buildRendering: function() {
 			this.inherited(arguments);
 			domClass.add(this.domNode, 'umcUpdatesPage');
-			var ucs_version = "";
+
 			var widgets = [{ // --------------------- Reboot pane -----------------------------
 					type: HiddenInput,
 					name: 'reboot_required'
@@ -158,6 +158,7 @@ define([
 								to_show = true;
 								element_releases.set('value', val);
 							}
+
 							var componentQueryDeferred = new Deferred();
 							var appliance_mode = (this._form.getWidget('appliance_mode').get('value') === 'true');
 							var blockingComponents = this._form.getWidget('release_update_blocking_components').get('value');
@@ -167,16 +168,10 @@ define([
 								blockingComponents = blockingComponents.split(' ');
 							}
 							var updatestext = '';
-
-							var updatestextdrop5_1 = '';
-							if (values.some(value => value.id.indexOf('5.2-') === 0) && ucs_version.indexOf('5.0-') === 0) {
-								updatestextdrop5_1 = _('Note: UCS 5.1-0 is missing in this list on purpose. UCS 5.1-0 is not meant to be installed directly and may not fully work; it is just an <a href="https://www.univention.com/blog-en/2023/06/announcement-ucs-release-5-2/" target="_blank" rel="noopener noreferrer">intermediate release on the way to UCS 5.2-0</a>.\n')
-							}
-
 							var updatesTextComponentsUnknown = '';
 							var componentsUnknown = blockingComponents;
 							if (blockingComponents.length && !appliance_mode) {
-								updatestext = updatestext + _('Further release updates are available but cannot be installed.');
+								updatestext = _('Further release updates are available but cannot be installed.');
 								var updatesTextComponentsApps = '';
 								var askAppCenter = tools.umcpCommand('appcenter/get_by_component_id', {component_id: blockingComponents}, false).then(lang.hitch(this, function(data) {
 									var apps = data.result;
@@ -233,15 +228,11 @@ define([
 										}
 									}
 									updatestext = updatestext + ' ' + updatesTextComponentsApps + ' ' + updatesTextComponentsUnknown;
+									element_updatestext.set('content', updatestext);
+									this._form.showWidget('ucs_updates_text', true);
 								}));
 							} else {
 								componentQueryDeferred.resolve();
-							}
-
-							if (updatestext || updatestextdrop5_1) {
-								updatestext = updatestext + ' ' + updatestextdrop5_1;
-								element_updatestext.set('content', updatestext);
-								this._form.showWidget('ucs_updates_text', true);
 							}
 
 							// hide or show combobox, spacers and corresponding button
@@ -419,7 +410,6 @@ define([
 				try {
 					this.onQuerySuccess('updater/updates/get');
 					var values = this._form.get('value');
-					ucs_version = values.ucs_version;
 
 					// send event that value have been loaded
 					this.onStatusLoaded(values);
@@ -434,7 +424,6 @@ define([
 					} else {
 						vtxt = lang.replace(_("The currently installed release version is {ucs_version}."), values);
 					}
-
 					this._form.getWidget('ucs_version_text').set('content', vtxt);
 
 					this._show_reboot_pane(tools.isTrue(values.reboot_required));
