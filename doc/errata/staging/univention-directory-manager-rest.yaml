@@ -13,4 +13,4 @@ desc: |
  * The unsupported HTML developer view of the UDM REST API has been disabled
    and can be enabled via the UCR variable
    `directory/manager/rest/html-view-enabled`.
-bug: [56731, 56734]
+bug: [56731, 56734, 56714]
