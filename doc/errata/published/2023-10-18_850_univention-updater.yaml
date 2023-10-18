@@ -10,3 +10,6 @@ desc: |
    version for upgrade because it is an intermediate version between
    UCS 5.0 and UCS 5.2 to which an upgrade will not be possible.
 bug: [56517]
+erratum: 850
+announced: 2023-10-18
+support: core
