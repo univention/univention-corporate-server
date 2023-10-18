@@ -9,3 +9,6 @@ desc: |
  * Future compatibility with `sudo` 1.9.4 has been added, where additional
    environment variables need to be passed explicitly to subprocesses.
 bug: [56579]
+erratum: 844
+announced: 2023-10-18
+support: core
