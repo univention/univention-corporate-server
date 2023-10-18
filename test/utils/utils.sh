@@ -1177,8 +1177,17 @@ start_portal_in_local_firefox () {
 postgres94_update () {
 	postgres_update '9.4' '9.6'
 }
+
+postgres11_update () {
+  postgres_update '11' '15'
+}
+
 postgres_update () {
 	local old="${1:?}" new="${2:?}"
+  if ! dpkg -l | grep -q '^ii.*postgresql-'"$old"' '; then
+    echo "postgresql-$old not installed"
+    return 0
+  fi
 	[ -f /usr/sbin/univention-pkgdb-scan ] && chmod -x /usr/sbin/univention-pkgdb-scan
 	service postgresql stop
 	rm -rf "/etc/postgresql/$new"
