@@ -1,0 +1,12 @@
+product: ucs
+release: "5.0"
+version: [5]
+scope: ucs_5.0-0-errata5.0-5
+src: univention-keycloak
+fix: 1.0.9-32
+desc: |
+ This update addresses the following issues:
+ * A script which checks the migration status
+   from SimpleSAMLPHP / OpenID Connector Provider
+   to Keycloak has been added to the `univention-keycloak` package.
+bug: [56747]
