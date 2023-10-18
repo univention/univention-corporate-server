@@ -59,13 +59,15 @@ basic_setup_allow_uss () {
 		;;
 	amazon|xen)
 		echo "Assuming Amazon Cloud"
-		if grep -F /dev/vda /boot/grub/device.map && [ -b /dev/xvda ] # Bug 36256
-		then
-			grub-mkdevicemap
-			echo set grub-pc/install_devices /dev/xvda | debconf-communicate
-		fi
 		;;
 	esac
+
+	# Bug #38911,56574: Fix GRUB root device
+	local bdev
+	bdev="$(/usr/sbin/grub-probe -t disk /boot/grub)" &&
+		[ -n "$bdev" ] &&
+		echo set grub-pc/install_devices "$bdev" | debconf-communicate
+
 	# Bug #46993: Use AmazonProvidedDNS/dnsmasq4kvm and remove OpenDNS resolver
 	[ -f /var/univention-join/joined ] ||
 		sed -rne 's/^nameserver\s*([.0-9]+|[.0-9:A-Fa-f]+)\s*$/\1/;T;/^208\.67\.22[02]\.22[02]|^2620:0+:0?cc[cd]::0*2$/d;p' /etc/resolv.conf |
