@@ -67,10 +67,6 @@ Multifile: etc/apache2/sites-available/default-ssl.conf
 Subfile: etc/apache2/sites-available/ssl.d/99end
 
 Type: file
-File: etc/default/apache2
-Variables: apache2/autostart
-
-Type: file
 File: etc/apache2/mods-available/proxy.conf
 Variables: apache2/proxy/access/order
 Variables: apache2/proxy/access/allow
