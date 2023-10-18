@@ -1,5 +1,6 @@
 @%@UCRWARNING=# @%@
 
+#principal       [priv1,priv2,...]       [glob-pattern]
 @!@
 adminusers = configRegistry.get('kerberos/adminusers')
 if adminusers:
