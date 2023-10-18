@@ -23,6 +23,10 @@ set convert-meta off
 # set bell-style none
 # set bell-style visible
 
+# make autocompletion case insensitive and display suggestions
+# set completion-ignore-case On
+# set show-all-if-ambiguous On
+
 # some defaults / modifications for the emacs mode
 $if mode=emacs
 
