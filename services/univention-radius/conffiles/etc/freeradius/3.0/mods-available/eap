@@ -62,7 +62,7 @@ print('\t\tdefault_eap_type = %s' % eap_type)
 	#
 	# We can work around it by configurably adding an extra
 	# zero byte.
-    #
+	#
 	cisco_accounting_username_bug = no
 
 	#  Help prevent DoS attacks by limiting the number of
