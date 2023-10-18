@@ -130,6 +130,7 @@ def parse_args() -> Namespace:
         help='Force adding self as name-server')
     parser.add_argument(
         '--own-ip',
+        type=ip_address,
         help='Specify own IP address')
     parser.add_argument(
         '--add-master', '-m',
@@ -158,9 +159,11 @@ def parse_args() -> Namespace:
     parser.add_argument(
         '--dnsserver',
         action="append",
-        dest="dnsservers",
+        type=ip_address,
         default=[],
-        help='Specify nameserver delivered e.g. via DHCP. May be specified multiple times.')
+        help='Specify nameserver delivered e.g. via DHCP. May be specified multiple times.',
+        dest="dnsservers",
+    )
 
     options = parser.parse_args()
 
@@ -169,7 +172,7 @@ def parse_args() -> Namespace:
 
 def setup_logging() -> None:
     """Setup logging output."""
-    FORMAT = '%(asctime)-15s %(levelname)-7s %(name)-17s %(message)s'
+    FORMAT = '%(levelname)-8s %(funcName)-20s %(message)s'
     LEVELS = [ERROR, WARNING, INFO, DEBUG]
     try:
         level = LEVELS[options.verbose]
@@ -188,8 +191,7 @@ def get_nameservers_cli(nameservers: DictAddr2Str) -> bool:
     log.debug('Reading UCS domain servers from CLI...')
 
     need_fixing = False
-    for ns in options.dnsservers:
-        dns = ip_address(u'%s' % (ns,))
+    for dns in options.dnsservers:
         log.info('Added server %s via CLI argument', dns)
         nameservers[dns] = None
         need_fixing = True
@@ -309,7 +311,7 @@ def either_or(nameservers: DictAddr2Str, forwarders: DictAddr2Str) -> bool:
     return need_fixing
 
 
-def add_self(nameservers: DictAddr2Str, ucr: Dict[str, str], own_ip: Optional[str] = None) -> None:
+def add_self(nameservers: DictAddr2Str, ucr: Dict[str, str], own_ip: Optional[IPAddress] = None) -> None:
     """
     Add self as internal DNS server (on DCs).
 
@@ -335,11 +337,15 @@ def add_self(nameservers: DictAddr2Str, ucr: Dict[str, str], own_ip: Optional[st
         log.info('Default IP address configured in UCR: %s', myself)
 
     domain = ucr['domainname']
-    if not options.force_self and not query_master_src_record(domain, myself):
-        log.warning('Failed to query local server %s for %s', myself, domain)
-        if nameservers:
-            return
-        log.warning('Adding anyway as no other nameserer remains.')
+    try:
+        if not options.force_self and not query_master_src_record(domain, myself):
+            log.warning('Failed to query local server %s for %s', myself, domain)
+            if nameservers:
+                return
+            log.warning('Adding anyway as no other nameserer remains.')
+    except (SocketError, TimeoutError) as exc:
+        log.warning('Connection check to %s (%s) failed, maybe down?!', myself, exc.args[0])
+        return
 
     old = list(nameservers.items())
     nameservers.clear()

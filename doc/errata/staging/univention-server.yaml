@@ -1,0 +1,11 @@
+product: ucs
+release: "5.0"
+version: [5]
+scope: ucs_5.0-0-errata5.0-5
+src: univention-server
+fix: 15.0.7-4
+desc: |
+ This update addresses the following issues:
+ * `univention-fix-ucr-dns` tried to connect to a local DNS server even on an
+   unjoined member server, which lead to a connection failure.
+bug: [56750]
