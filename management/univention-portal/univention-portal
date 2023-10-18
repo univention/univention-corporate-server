@@ -37,6 +37,7 @@ import datetime
 import json
 import os
 from inspect import getfullargspec
+from tempfile import NamedTemporaryFile
 from textwrap import dedent
 from typing import Dict, Union
 
@@ -59,9 +60,15 @@ def read_portals_json() -> Dict:
 
 
 def write_portals_json(content: Dict):
-    with open(portals_json, "w") as fd:
-        os.chmod(fd.name, 0o660)
-        json.dump(content, fd, sort_keys=True, indent=4)
+    with NamedTemporaryFile(mode="w", prefix=os.path.basename(portals_json), dir=os.path.dirname(portals_json), delete=False) as tmp:
+        try:
+            os.chmod(tmp.name, 0o660)
+            json.dump(content, tmp, sort_keys=True, indent=4)
+            tmp.flush()
+            os.rename(tmp.name, portals_json)
+        except OSError:
+            os.unlink(tmp.name)
+            raise
 
 
 @click.group()

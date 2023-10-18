@@ -3,10 +3,11 @@ release: "5.0"
 version: [5]
 scope: ucs_5.0-0-errata5.0-5
 src: univention-portal
-fix: 4.0.14-8
+fix: 4.0.14-9
 desc: |
  This update addresses the following issue:
  * The labels of the self-service forms were always displayed in English
    when they were accessed directly via URL without navigating through
    the portal. They are now translated correctly.
-bug: [56660]
+ * Update file `portals.json` atomically to prevent inconsistent reading.
+bug: [56660, 53860]
