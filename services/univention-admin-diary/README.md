@@ -28,13 +28,13 @@ simplest one is:
 $ su - postgres -c "psql -t -c 'SHOW config_file;' | xargs"
 ```
 
-Output is something similar to `/etc/postgresql/11/main/postgresql.conf`. For
+Output is something similar to `/etc/postgresql/15/main/postgresql.conf`. For
 versions of at least 8.0 you have to apply some configuration changes and
 restart the service (you have to be superuser for these):
 
 ```shell
 # config file (output from the previous block)
-$ CFG_FILE="/etc/postgresql/11/main/postgresql.conf"
+$ CFG_FILE="/etc/postgresql/15/main/postgresql.conf"
 # backup current configuration file
 $ cp "${CFG_FILE}" "${CFG_FILE}.bkp"
 # apply changes
