@@ -1,8 +1,5 @@
 @%@UCRWARNING=# @%@
 
-# Set to '0' to explicitly disable starting Dovecot
-#ENABLED=0
-
 # Set to '1' to allow Dovecot daemons to produce core dumps
 #ALLOW_COREDUMPS=1
 
