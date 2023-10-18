@@ -120,7 +120,7 @@ rotate_logfiles () {
 		logrotate -f /etc/logrotate.conf
 }
 
-prepare_domain_for_ucs52_preup_checks() {
+prepare_domain_for_ucs52_preup_checks () {
 	assert_version "5.0-5" || return $?
 	/usr/share/univention-directory-manager-tools/udm-remap-country-from-st-to-c || return $?
 
