@@ -1,4 +1,5 @@
 mv_conffile /etc/univention/templates/files/etc/apache2/conf.d/ucs.conf /etc/univention/templates/files/etc/apache2/conf-available/ucs.conf 9.0.1~
 mv_conffile /etc/univention/templates/files/etc/apache2/sites-available/default.d/00start /etc/univention/templates/files/etc/apache2/sites-available/000-default.d/00start 9.0.1~
 mv_conffile /etc/univention/templates/files/etc/apache2/sites-available/default.d/99end /etc/univention/templates/files/etc/apache2/sites-available/000-default.d/99end 9.0.1~
+rm_conffile /etc/univention/templates/files/etc/default/apache2 12.100.0-1~
 rm_conffile /etc/univention/templates/modules/extension.py 10.0.1~
