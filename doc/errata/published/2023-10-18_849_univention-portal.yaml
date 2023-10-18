@@ -11,3 +11,6 @@ desc: |
    the portal. They are now translated correctly.
  * Update file `portals.json` atomically to prevent inconsistent reading.
 bug: [56660, 53860]
+erratum: 849
+announced: 2023-10-18
+support: core
