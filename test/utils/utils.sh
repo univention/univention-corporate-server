@@ -40,7 +40,7 @@ die () {
 }
 
 have () {
-	command -v "$1" >/dev/null 2>&1
+	command -v "${1:?command}" >/dev/null 2>&1
 }
 
 FTP_DOM='software-univention.de' FTP_SCHEME='https'
@@ -62,23 +62,30 @@ basic_setup_allow_uss () {
 		;;
 	esac
 
-	# Bug #38911,56574: Fix GRUB root device
+	_fix_grub56574
+	_fix_dns46993
+
+	ucr set --force updater/identify="UCS (EC2 Test)"
+	ucr set update/check/cron/enabled=false update/check/boot/enabled=false mail/antispam/rules/autoupdate?yes server/password/cron='#0 1 * * *'
+	systemctl reload cron.service || true
+	sa_bug53751
+}
+
+_fix_grub56574 () {  # Bug #38911,56574: Fix GRUB root device
 	local bdev
 	bdev="$(/usr/sbin/grub-probe -t disk /boot/grub)" &&
 		[ -n "$bdev" ] &&
 		echo set grub-pc/install_devices "$bdev" | debconf-communicate
+}
 
-	# Bug #46993: Use AmazonProvidedDNS/dnsmasq4kvm and remove OpenDNS resolver
-	[ -f /var/univention-join/joined ] ||
-		sed -rne 's/^nameserver\s*([.0-9]+|[.0-9:A-Fa-f]+)\s*$/\1/;T;/^208\.67\.22[02]\.22[02]|^2620:0+:0?cc[cd]::0*2$/d;p' /etc/resolv.conf |
+_fix_dns46993 () {  # Bug #46993: Use AmazonProvidedDNS/dnsmasq4kvm and remove OpenDNS resolver
+	[ -f /var/univention-join/joined ] &&
+		return 0
+	sed -rne 's/^nameserver\s*([.0-9]+|[.0-9:A-Fa-f]+)\s*$/\1/;T;/^208\.67\.22[02]\.22[02]|^2620:0+:0?cc[cd]::0*2$/d;p' /etc/resolv.conf |
 		head -n 3 |
 		cat -n |
 		sed -re 's,^\s*([0-9]+)\s+(.+),nameserver\1=\2 dns/forwarder\1=\2,' |
 		xargs ucr set nameserver/external=false nameserver1= nameserver2= nameserver3= dns/forwarder1= dns/forwarder2= dns/forwarder3=
-	ucr set --force updater/identify="UCS (EC2 Test)"
-	ucr set update/check/cron/enabled=false update/check/boot/enabled=false mail/antispam/rules/autoupdate?yes server/password/cron='#0 1 * * *'
-	service cron reload || true
-	sa_bug53751
 }
 
 basic_setup () {
@@ -132,7 +139,7 @@ jenkins_updates () {
 	public) upgrade_to_latest --updateto "$target" || rc=$? ;;
 	testing) upgrade_to_testing --updateto "$target" || rc=$? ;;
 	none|"") ;;
-	*) echo "Unknown release_update='$release_update'" >&1 ; exit 1 ;;
+	*) die "Unknown release_update='$release_update'" ;;
 	esac
 
 	eval "$(ucr shell '^version/(version|patchlevel|erratalevel)$')"
@@ -143,7 +150,7 @@ jenkins_updates () {
 	testing) upgrade_to_latest_test_errata || rc=$? ;;
 	public) upgrade_to_latest_errata || rc=$? ;;
 	none|"") ;;
-	*) echo "Unknown errata_update='$errata_update'" >&1 ; exit 1 ;;
+	*) die "Unknown errata_update='$errata_update'" ;;
 	esac
 
 	eval "$(ucr shell '^version/(version|patchlevel|erratalevel)$')"
@@ -218,7 +225,7 @@ _upgrade_to_latest () {
 	declare -a upgrade_opts=("--noninteractive" "--ignoreterm" "--ignoressh")
 	while true
 	do
-		test "true" = "$DISABLE_APP_UPDATES" && upgrade_opts+=("--disable-app-updates")
+		[ "true" = "$DISABLE_APP_UPDATES" ] && upgrade_opts+=("--disable-app-updates")
 		univention-upgrade "${upgrade_opts[@]}" "$@"
 		rv="$?"
 		case "$rv" in
@@ -242,12 +249,11 @@ patch_setup_join () {
 	sed -i "s~^apt-get update\$~& || $script~" /usr/lib/univention-system-setup/scripts/setup-join.sh
 }
 _fix_ssh47233 () { # Bug #47233: ssh connection stuck on reboot
-	local g t
-	g='/etc/pam.d/common-session' t='/etc/univention/templates/files/etc/pam.d/common-session.d/10univention-pam_common'
-	grep -Fqs 'pam_systemd.so' "$g" && return 0
-	grep -Fqs 'pam_systemd.so' "$t" ||
-		echo "session optional        pam_systemd.so" >>"$t"
-	ucr commit "$g"
+	local G='/etc/pam.d/common-session' T='/etc/univention/templates/files/etc/pam.d/common-session.d/10univention-pam_common'
+	grep -Fqs 'pam_systemd.so' "$G" && return 0
+	grep -Fqs 'pam_systemd.so' "$T" ||
+		echo "session optional        pam_systemd.so" >>"$T"
+	ucr commit "$G"
 }
 
 run_setup_join () {
@@ -265,14 +271,13 @@ run_setup_join () {
 }
 
 run_setup_join_on_non_master () {
-	local admin_password="${1:-univention}" rv=0 nameserver1
+	local admin_password="${1:-univention}" nameserver1
 	nameserver1="$(sed -ne 's|^nameserver=||p' /var/cache/univention-system-setup/profile)"
 	if [ -n  "$nameserver1" ]; then
 		ucr set nameserver1="$nameserver1"
 	fi
 	printf '%s' "$admin_password" >/tmp/univention
-	run_setup_join --dcaccount Administrator --password_file /tmp/univention || rv=$?
-	return $rv
+	run_setup_join --dcaccount Administrator --password_file /tmp/univention
 }
 
 wait_for_reboot () {
@@ -331,10 +336,10 @@ wait_for_slapd () {
 
 wait_for_setup_process () {
 	local i
-	local setup_file="/var/www/ucs_setup_process_status.json"
+	local SETUP_FILE="/var/www/ucs_setup_process_status.json"
 	sleep 10
 	for i in $(seq 1 1200); do
-		[ -e "$setup_file" ] ||
+		[ -e "$SETUP_FILE" ] ||
 			return 0
 		sleep 3
 	done
@@ -381,7 +386,7 @@ switch_components_to_test_app_center () {
 }
 
 install_apps () {
-	local app rv=0
+	local app rv=0 username
 	for app in "$@"; do echo "$app" >>/var/cache/appcenter-installed.txt; done
 	for app in "$@"
 	do
@@ -401,7 +406,7 @@ install_apps () {
 }
 
 uninstall_apps () {
-	local app rv=0
+	local app rv=0 username
 	for app in "$@"; do echo "$app" >>/var/cache/appcenter-uninstalled.txt; done
 	for app in "$@"
 	do
@@ -416,7 +421,7 @@ uninstall_apps () {
 }
 
 install_apps_master_packages () {
-	local app rv=0
+	local app rv=0 username
 	for app in "$@"
 	do
 		[ -n "$(univention-app get "$app" DockerImage)" ] && continue
@@ -525,19 +530,19 @@ prevent_ucstest_on_fail () {
 }
 
 activate_ucsschool_devel_scope () {
-	local component="repository/online/component/ucsschool_DEVEL"
-	ucr set "$component/description=Development version of UCS@school packages" \
-		"$component/version=$(ucr get version/version)" \
-		"$component/server=${FTP_SCHEME}://updates-test.${FTP_DOM}/" \
-		"$component=enabled"
+	local COMPONENT="repository/online/component/ucsschool_DEVEL"
+	ucr set "$COMPONENT/description=Development version of UCS@school packages" \
+		"$COMPONENT/version=$(ucr get version/version)" \
+		"$COMPONENT/server=${FTP_SCHEME}://updates-test.${FTP_DOM}/" \
+		"$COMPONENT=enabled"
 }
 
 activate_idbroker_devel_scope () {
-	local component="repository/online/component/idbroker_DEVEL"
-	ucr set "$component/description=Development version of UCS idbroker" \
-		"$component/version=current" \
-		"$component/server=${FTP_SCHEME}://updates-test.${FTP_DOM}/" \
-		"$component=enabled"
+	local COMPONENT="repository/online/component/idbroker_DEVEL"
+	ucr set "$COMPONENT/description=Development version of UCS idbroker" \
+		"$COMPONENT/version=current" \
+		"$COMPONENT/server=${FTP_SCHEME}://updates-test.${FTP_DOM}/" \
+		"$COMPONENT=enabled"
 }
 
 activate_idbroker_repositories () {
@@ -716,7 +721,7 @@ run_samba_dc_tests () {
 }
 
 run_ucsschool_tests () {
-	local test_group="$1"
+	local test_group="${1:?}" i
 	declare -a test_args=()
 	# following list have to be in sync with EC2Tools.groovy ==> addUASSinglEnvAxes/addUASMultiEnvAxes
 	for i in base1 import1 import2 import3 import4 ; do
@@ -766,7 +771,7 @@ run_join_scripts () {
 	if [ "$(ucr get server/role)" = "domaincontroller_master" ]; then
 		univention-run-join-scripts
 	else
-		echo -n "$admin_password" >/tmp/univention
+		printf '%s' "$admin_password" >/tmp/univention
 		univention-run-join-scripts -dcaccount Administrator -dcpwd /tmp/univention
 	fi
 }
@@ -774,7 +779,7 @@ run_join_scripts () {
 run_rejoin () {
 	local admin_password="${1:-univention}"
 
-	echo -n "$admin_password" >/tmp/univention
+	printf '%s' "$admin_password" >/tmp/univention
 	if ! univention-join -dcaccount Administrator -dcpwd /tmp/univention; then
 		# Later join scripts can fail in large environments if the replication can not keep up
 		wait_for_replication "$(( 6 * 3600 ))" 60
@@ -790,39 +795,38 @@ do_reboot () {
 }
 
 assert_version () {
-	local requested_version="$1"
+	local requested_version="${1:?UCS release}"
 	local version version_version version_patchlevel
 
 	eval "$(ucr shell '^version/(version|patchlevel)$')"
 	version="$version_version-$version_patchlevel"
 	echo "Requested version $requested_version"
 	echo "Current version $version"
-	if [ "$requested_version" != "$version" ]; then
-		create_DONT_START_UCS_TEST "FAILED: assert_version $requested_version == $version"
-		exit 1
-	fi
-	return 0
+	[ "$requested_version" = "$version" ] &&
+		return 0
+	create_DONT_START_UCS_TEST "FAILED: assert_version $requested_version == $version"
+	return 1
 }
 
 assert_minor_version () {
-	local requested_version="$1" version_version
+	local requested_version="${1:?UCS major.minor release}" version_version
 	eval "$(ucr shell '^version/version$')"
 	echo "Requested minor version $requested_version"
 	echo "Current minor version $version_version"
-	if [ "$requested_version" != "$version_version" ]; then
-		create_DONT_START_UCS_TEST "FAILED: assert_minor_version $requested_version == $version_version"
-		exit 1
-	fi
-	return 0
+	[ "$requested_version" = "$version_version" ] &&
+		return 0
+	create_DONT_START_UCS_TEST "FAILED: assert_minor_version $requested_version == $version_version"
+	return 1
 }
 
 assert_join () {
 	# sometimes univention-check-join-status fails because the ldap server is restarted
 	# and not available at this moment, so try it three times
 	local i
-	for i in $(seq 1 3); do
-		univention-check-join-status
-		test $? -eq 0 && return 0
+	for i in 1 2 3
+	do
+		univention-check-join-status &&
+			return 0
 		sleep 10
 	done
 	create_DONT_START_UCS_TEST "FAILED: univention-check-join-status"
@@ -830,11 +834,10 @@ assert_join () {
 }
 
 assert_adconnector_configuration () {
-	if [ -z "$(ucr get connector/ad/ldap/host)" ]; then
-		create_DONT_START_UCS_TEST "FAILED: assert_adconnector_configuration"
-		exit 1
-	fi
-	return 0
+	[ -n "$(ucr get connector/ad/ldap/host)" ] &&
+		return 0
+	create_DONT_START_UCS_TEST "FAILED: assert_adconnector_configuration"
+	return 1
 }
 
 assert_packages () {
@@ -842,10 +845,10 @@ assert_packages () {
 	for package in "$@"
 	do
 		installed=$(dpkg-query -W -f '${status}' "$package")
-		if [ "$installed" != "install ok installed" ]; then
-			create_DONT_START_UCS_TEST "Failed: package status of $package is $installed"
-			exit 1
-		fi
+		[ "$installed" = "install ok installed" ] &&
+			continue
+		create_DONT_START_UCS_TEST "Failed: package status of $package is $installed"
+		return 1
 	done
 	return 0
 }
@@ -857,30 +860,27 @@ set_administrator_dn_for_ucs_test () {
 }
 
 set_administrator_password_for_ucs_test () {
-	local password="$1"
+	local password="${1?password}"
 	ucr set tests/domainadmin/pwd="$password" tests/domainadmin/pwdfile?"/var/lib/ucs-test/pwdfile"
 	mkdir -p /var/lib/ucs-test/
-	echo -n "$password" >/var/lib/ucs-test/pwdfile
+	printf '%s' "$password" >/var/lib/ucs-test/pwdfile
 }
 
 set_root_password_for_ucs_test () {
-	local password="$1"
+	local password="${1?password}"
 	ucr set tests/root/pwd="$password" tests/root/pwdfile?"/var/lib/ucs-test/root-pwdfile"
 	mkdir -p /var/lib/ucs-test/
-	echo -n "$password" >/var/lib/ucs-test/root-pwdfile
+	printf '%s' "$password" >/var/lib/ucs-test/root-pwdfile
 }
 
 set_windows_localadmin_password_for_ucs_test () {
-	local username="$1"
-	local password="$2"
-
 	ucr set \
-		tests/windows/localadmin/name="$username" \
-		tests/windows/localadmin/pwd="$password"
+		tests/windows/localadmin/name="${1?username}" \
+		tests/windows/localadmin/pwd="${2?password}"
 }
 
 set_userpassword_for_administrator () {
-	local password="$1"
+	local password="${1?password}"
 	local user="${2:-Administrator}"
 	local lb
 	lb="$(ucr get ldap/base)"
@@ -988,7 +988,7 @@ update_apps_via_umc () {
 	# Additional apps can have updates, but if no update is
 	# available, we just ignore this (-i)
 	for app in "$@"; do
-		test "$app" = "$main_app" && continue
+		[ "$app" = "$main_app" ] && continue
 		if ! assert_app_is_installed_and_latest_or_specific_version "${app}"; then
 			# try update, but do not except that an update is available
 			if [ -n "$MAIN_APP" ] && [ -n "$MAIN_APP_VERSION" ] && [ "$MAIN_APP" = "$app" ]; then
@@ -1059,7 +1059,7 @@ assert_app_master_packages () {
 }
 
 run_app_appliance_tests () {
-	local app rv=0
+	local app rv=0 add
 	for app in "$@"; do
 		assert_app_is_installed "$app" || return 1
 		echo "$app" >>/var/cache/appcenter-installed.txt
@@ -1103,7 +1103,7 @@ assert_admember_mode () {
 
 # start a local firefox and open umc portal page
 start_portal_in_local_firefox () {
-	service  univention-welcome-screen stop
+	systemctl stop  univention-welcome-screen.service
 	install_with_unmaintained --no-install-recommends univention-x-core univention-mozilla-firefox openbox
 	X &
 	DISPLAY=:0 openbox --config-file /etc/xdg/openbox/rc_no_shortcuts.xml &
@@ -1120,21 +1120,21 @@ postgres94_update () {
 postgres_update () {
 	local old="${1:?}" new="${2:?}"
 	[ -f /usr/sbin/univention-pkgdb-scan ] && chmod -x /usr/sbin/univention-pkgdb-scan
-	service postgresql stop
+	systemctl stop postgresql.service
 	rm -rf "/etc/postgresql/$new"
 	apt-get install -y --reinstall "postgresql-$new"
 	pg_dropcluster "$new" main --stop
-	service postgresql start
+	systemctl start postgresql.service
 	[ -e "/var/lib/postgresql/$new/main" ] && mv "/var/lib/postgresql/$new/main" "/var/lib/postgresql/$new/main.old"
 	pg_upgradecluster "$old" main
 	ucr commit "/etc/postgresql/$new/main/"*
 	chown -R postgres:postgres "/var/lib/postgresql/$new"
-	service postgresql restart
+	systemctl restart postgresql.service
 	[ -f /usr/sbin/univention-pkgdb-scan ] && chmod +x "/usr/sbin/univention-pkgdb-scan"
 	DEBIAN_FRONTEND='noninteractive' univention-install --yes "univention-postgresql-$new"
 	pg_dropcluster "$old" main --stop
 	DEBIAN_FRONTEND='noninteractive' apt-get purge --yes "postgresql-$old"
-	service postgresql restart
+	systemctl restart postgresql.service
 }
 
 dump_systemd_journal () {
@@ -1170,26 +1170,23 @@ add_branch_repository () {
 	apt-get -qq update
 }
 
-slugify() {
-  iconv -t ascii//TRANSLIT \
-  | tr -d "'" \
-  | sed -E 's/[^a-zA-Z0-9]+/-/g' \
-  | sed -E 's/^-+|-+$//g' \
-  | tr "[:upper:]" "[:lower:]"
+slugify () {
+	iconv -t ascii//TRANSLIT |
+		sed "s/'//g;s/[^a-zA-Z0-9]\\+/-/g;s/^-//;s/-\$//;s/.*/\\L&/"
 }
 
 # configure branch repository and apt prefs
 add_extra_branch_repository () {
-	local repo_server="http://omar.knut.univention.de/build2/git" repo_name
+	local REPO_SERVER="http://omar.knut.univention.de/build2/git" repo_name
 	if [ -n "$UCS_ENV_UCS_BRANCH" ]; then
 		repo_name="$(echo "$UCS_ENV_UCS_BRANCH" | slugify)"
-		echo "deb [trusted=yes] $repo_server/$repo_name git main" >"/etc/apt/sources.list.d/$repo_name.list"
+		echo "deb [trusted=yes] $REPO_SERVER/$repo_name git main" >"/etc/apt/sources.list.d/$repo_name.list"
 		cat >"/etc/apt/preferences.d/99$repo_name.pref" <<__PREF__
 Package: *
 Pin: release o=Univention,a=git,n=git
 Pin-Priority: 1001
 __PREF__
-		apt-get update -y
+		apt-get -qq update
 	fi
 }
 
@@ -1197,8 +1194,9 @@ restart_services_bug_47762 () {
 	# https://forge.univention.org/bugzilla/show_bug.cgi?id=47762
 	# The services needs to be restart otherwise they wouldn't bind
 	# to the new IP address
-	[ -x /etc/init.d/samba ] &&  # FYI: Bug#44237
-		/etc/init.d/samba restart
+	[ -x /etc/init.d/samba ] ||
+		return 0
+	/etc/init.d/samba restart
 	sleep 15
 }
 
@@ -1218,22 +1216,22 @@ sa_bug53751 () {
 	# https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=922499
 	# https://forge.univention.org/bugzilla/show_bug.cgi?id=49575
 	# https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=920348
-	local cfg='/etc/ca-certificates.conf'
-	[ -f "$cfg" ] &&
-		sed -i -e 's=^mozilla/DST_Root_CA_X3.crt=!&=' "$cfg" &&
+	local CFG='/etc/ca-certificates.conf'
+	[ -f "$CFG" ] &&
+		sed -i -e 's=^mozilla/DST_Root_CA_X3.crt=!&=' "$CFG" &&
 		update-ca-certificates --certbundle ca-certificates.tmp &&
 		mv /etc/ssl/certs/ca-certificates.tmp /etc/ssl/certs/ca-certificates.crt ||
 		true
 
-	local base='/var/lib/spamassassin/compiled' user='debian-spamd'
+	local BASE='/var/lib/spamassassin/compiled' user='debian-spamd'
 	have sa-update &&
 		curl https://spamassassin.apache.org/updates/GPG.KEY | sa-update --import -
 	have sa-update &&
 		sa-update -vv &&
 		su -c 'sa-compile' - "$user" &&
-		systemctl try-restart spamassassin amavis
+		systemctl try-restart spamassassin.service amavis.service
 	[ -d "$base" ] &&
-		find "$base" -not -user "$user" -exec chown -v "$user:" {} +
+		find "$BASE" -not -user "$user" -exec chown -v "$user:" {} +
 	:
 }
 
@@ -1296,6 +1294,7 @@ online_fsresize () {
 	# cloud-initramfs-growroot doesn't always work (bug #49337)
 	# Try on-line resizing
 	echo "Grow root partition"
+	local root_device disk part_number
 	root_device="$(readlink -f "$(df --output=source / | tail -n 1)")"
 	disk="${root_device%[0-9]}"
 	part_number="${root_device#"${disk}"}"
@@ -1312,34 +1311,34 @@ winrm_config () {
 basic_setup_ucs_role () {
 	local masterip="${1:?missing master ip}"
 	local admin_password="${2:-univention}"
-	local rv=0
 	# TODO
 	#   ... recreate ssh keys ...
 	# join non-master systems
-	if [ "$(ucr get server/role)" != "domaincontroller_master" ]; then
-		echo -n "$admin_password" > /tmp/univention.txt
-		ucr set nameserver1="$masterip"
-		univention-join -dcaccount Administrator -dcpwd /tmp/univention.txt || rv=$?
-	fi
-	return $rv
+	[ "$(ucr get server/role)" = "domaincontroller_master" ] &&
+		return 0
+
+	printf '%s' "$admin_password" > /tmp/univention.txt
+	ucr set nameserver1="$masterip"
+	univention-join -dcaccount Administrator -dcpwd /tmp/univention.txt
 }
 
 ucs-winrm () {
-	local image="docker.software-univention.de/ucs-winrm"
-	docker run --rm -v /etc/localtime:/etc/localtime:ro -v "$HOME/.ucs-winrm.ini:/root/.ucs-winrm.ini:ro" "$image" "$@"
+	local IMAGE="docker.software-univention.de/ucs-winrm"
+	docker run --rm -v /etc/localtime:/etc/localtime:ro -v "$HOME/.ucs-winrm.ini:/root/.ucs-winrm.ini:ro" "$IMAGE" "$@"
 }
 
 add_extra_apt_scope () {
-	if [ -n "$SCOPE" ]; then
-		if [ "$(echo "$SCOPE" | cut -c1-5)" = "http:" ] || [ "$(echo "$SCOPE" | cut -c1-6)" = "https:" ]; then
-			# support: deb [trusted=yes] http://192.168.0.10/build2/git/fbest-12345-foo/ git main
-			echo "deb [trusted=yes] $SCOPE" > /etc/apt/sources.list.d/99_extra_scope.list
-		else
-			echo "deb [trusted=yes] http://192.168.0.10/build2/ ucs_$(ucr get version/version)-0-$SCOPE/all/" > /etc/apt/sources.list.d/99_extra_scope.list
-			echo "deb [trusted=yes] http://192.168.0.10/build2/ ucs_$(ucr get version/version)-0-$SCOPE/\$(ARCH)/" >> /etc/apt/sources.list.d/99_extra_scope.list
-		fi
-		apt-get update -q || true  # ignore failure, univention-upgrade will do this as well
+	[ -n "$SCOPE" ] ||
+		return 0
+
+	if [ "$(echo "$SCOPE" | cut -c1-5)" = "http:" ] || [ "$(echo "$SCOPE" | cut -c1-6)" = "https:" ]; then
+		# support: deb [trusted=yes] http://192.168.0.10/build2/git/fbest-12345-foo/ git main
+		echo "deb [trusted=yes] $SCOPE" > /etc/apt/sources.list.d/99_extra_scope.list
+	else
+		echo "deb [trusted=yes] http://192.168.0.10/build2/ ucs_$(ucr get version/version)-0-$SCOPE/all/" > /etc/apt/sources.list.d/99_extra_scope.list
+		echo "deb [trusted=yes] http://192.168.0.10/build2/ ucs_$(ucr get version/version)-0-$SCOPE/\$(ARCH)/" >> /etc/apt/sources.list.d/99_extra_scope.list
 	fi
+	apt-get update -qq || true  # ignore failure, univention-upgrade will do this as well
 }
 
 create_version_file_tmp_ucsver () {
@@ -1389,21 +1388,22 @@ change_template_hostname () {
 		--set domain="$(ucr get domainname)" || rv=1
 	while read -r service; do
 		udm "computers/$server_role" modify --binddn "$admin_userdn" --bindpwd "$admin_password" --dn "$hostdn" --append service="$service"
-	done < <(udm computers/domaincontroller_backup list --filter name="$old_hostname" |  sed -n 's/^  service: //p')
+	done < <(udm computers/domaincontroller_backup list --filter name="$old_hostname" | sed -n 's/^  service: //p')
 	while read -r school_role; do
 		udm "computers/$server_role" modify --binddn "$admin_userdn" --bindpwd "$admin_password" --dn "$hostdn" --append ucsschoolRole="$school_role"
-	done < <(udm computers/domaincontroller_backup list --filter name="$old_hostname" |  sed -n 's/^  ucsschoolRole: //p')
+	done < <(udm computers/domaincontroller_backup list --filter name="$old_hostname" | sed -n 's/^  ucsschoolRole: //p')
 
 	# get new cert
 	univention-fetch-certificate "$hostname" "$primary_ip" || rv=1
 
 	# fix some templates
-	test -e /etc/bind/named.conf.samba4 && ucr commit /etc/bind/named.conf.samba4
-	test -e /etc/postgresql/pam_ldap.conf && ucr commit /etc/postgresql/pam_ldap.conf
+	[ -e /etc/bind/named.conf.samba4 ] && ucr commit /etc/bind/named.conf.samba4
+	[ -e /etc/postgresql/pam_ldap.conf ] && ucr commit /etc/postgresql/pam_ldap.conf
 
+	# systemctl try-restart univention-directory-listener.service univention-management-console-server.service apache2.service postgresql.service || [ $? -eq 5]
 	for service in slapd univention-directory-listener univention-management-console-server apache2 postgresql; do
-		if service "$service" status 2>/dev/null 1>/dev/null; then
-			service "$service" restart || rv=1
+		if service "$service.service" status 2>/dev/null 1>/dev/null; then
+			service "$service.service" restart || rv=1
 		fi
 	done
 
@@ -1411,28 +1411,24 @@ change_template_hostname () {
 	basic_setup_ucs_joined "$primary_ip" "$admin_password" || rv=1
 	wait_for_replication 100 5
 
-	echo -n "$admin_password" > /tmp/join_pwd
+	printf '%s' "$admin_password" > /tmp/join_pwd
 	univention-run-join-scripts -dcaccount "$admin_user" -dcpwd /tmp/join_pwd --force --run-scripts 05univention-bind || rv=1
 
 	# update ucs-sso
 	if [ "$server_role" = "domaincontroller_backup" ]; then
-		service nscd stop
+		systemctl stop nscd.service
 		univention-run-join-scripts -dcaccount "$admin_user" -dcpwd /tmp/join_pwd --force --run-scripts 91univention-saml || rv=1
 		univention-run-join-scripts -dcaccount "$admin_user" -dcpwd /tmp/join_pwd --force --run-scripts 92univention-management-console-web-server || rv=1
-		service nscd start
+		systemctl start nscd.service
 	fi
 
 	if [ -e "/usr/lib/univention-install/40ucs-school-import-http-api.inst" ]; then
 		univention-run-join-scripts -dcaccount "$admin_user" -dcpwd /tmp/join_pwd --force --run-scripts  40ucs-school-import-http-api
 	fi
 
-	for handler in bind univention-saml-servers univention-saml-simplesamlphp-configuration umc-service-providers; do
-		if grep -r "^[[:space:]]*name[[:space:]]*=[[:space:]'\"]*${handler}[[:space:]'\"]*" /usr/lib/univention-directory-listener/system/*.py; then
-			univention-directory-listener-ctrl resync "$handler" || rv=1
-		fi
-	done
-
 	rm -f /tmp/join_pwd
+
+	univention-directory-listener-ctrl resync univention-saml-servers univention-saml-simplesamlphp-configuration umc-service-providers || rv=1
 
 	return $rv
 }
@@ -1440,7 +1436,7 @@ change_template_hostname () {
 basic_setup_ucs_joined () {
 	local masterip="${1:?missing master ip}"
 	local admin_password="${2:-univention}"
-	local rv=0 server_role ldap_base domain old_ip urna_rv=0
+	local rv=0 server_role ldap_base domain old_ip urna_rv=0 current_ip i
 
 	server_role="$(ucr get server/role)"
 	ldap_base="$(ucr get ldap/base)"
@@ -1476,7 +1472,7 @@ basic_setup_ucs_joined () {
 		[ $urna_rv -eq 1 ] && rv=1
 		echo $urna_rv
 
-		service nscd restart || rv=1
+		systemctl restart nscd.service || rv=1
 	fi
 
 	# get old ip TODO how to do it correctly?
@@ -1487,9 +1483,10 @@ basic_setup_ucs_joined () {
 
 	# fix ucs-sso
 	if [ "$server_role" = "domaincontroller_master" ] || [ "$server_role" = "domaincontroller_backup" ]; then
+		local sso_fqdn sso_hostname
 		sso_fqdn="$(ucr get ucs/server/sso/fqdn)"
 		sso_hostname="${sso_fqdn%%.*}"
-		test -n "$old_ip" && udm dns/host_record modify \
+		[ -n "$old_ip" ] && udm dns/host_record modify \
 			--dn "relativeDomainName=$sso_hostname,zoneName=$domain,cn=dns,$ldap_base" \
 			--remove a="$old_ip"
 	fi
@@ -1499,7 +1496,7 @@ basic_setup_ucs_joined () {
 	# and fix dns settings until https://forge.univention.org/bugzilla/show_bug.cgi?id=54189
 	# is fixed
 	if [ -e /var/lib/samba/private/sam.ldb ]; then
-		local old_ip ip binddn master old_ip_master
+		local old_ip ip binddn
 		ldap_base="$(ucr get ldap/base)"
 		old_ip="$(ucr get internal/kvm/template/old/ip)"
 		ip="$(ucr get interfaces/eth0/address)"
@@ -1525,6 +1522,7 @@ basic_setup_ucs_joined () {
 
 		# update primary ip
 		if [ "$(ucr get server/role)" != "domaincontroller_master" ]; then
+			local master old_ip_master
 			master="$(ucr get ldap/master)"
 			old_ip_master="$(dig +short "$master")"
 			if [ -n "$old_ip_master" ]; then
@@ -1535,7 +1533,7 @@ basic_setup_ucs_joined () {
 	fi
 	if [ "$server_role" = "domaincontroller_master" ] || [ "$server_role" = "domaincontroller_backup" ]; then
 		# Flush old ip's from bind
-		/usr/sbin/rndc retransfer "$(hostname -d)".
+		/usr/sbin/rndc retransfer "$(hostname -d)."
 	fi
 
 	return $rv
@@ -1560,7 +1558,7 @@ set_env_variables_from_env_file () {
 
 copy_test_data_cache() {
 	univention-install -y sshpass
-	local root_password="${1:?missing root password}"
+	local root_password="${1:?missing root password}" ip
 	shift
 	for ip in "$@"; do
 		sshpass -p "$root_password" scp -r  -o StrictHostKeyChecking=no -o UpdateHostKeys=no /var/lib/test-data root@"$ip":/var/lib/ || return 1

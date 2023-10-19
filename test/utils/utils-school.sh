@@ -47,7 +47,7 @@ install_app_from_branch () {
   local app_name="$1"
   local custom_docker_image="$2"
   local app_settings="${*:3}"
-  echo -n univention > /tmp/univention
+  printf '%s' univention > /tmp/univention
   if [ -n "$custom_docker_image" ]; then
     univention-install --yes univention-appcenter-dev
     univention-app dev-set "$app_name" "DockerImage=$custom_docker_image"
