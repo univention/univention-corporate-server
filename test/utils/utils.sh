@@ -74,7 +74,7 @@ basic_setup_allow_uss () {
 		head -n 3 |
 		cat -n |
 		sed -re 's,^\s*([0-9]+)\s+(.+),nameserver\1=\2 dns/forwarder\1=\2,' |
-		xargs ucr set nameserver/external=true nameserver1= nameserver2= nameserver3= dns/forwarder1= dns/forwarder2= dns/forwarder3=
+		xargs ucr set nameserver/external=false nameserver1= nameserver2= nameserver3= dns/forwarder1= dns/forwarder2= dns/forwarder3=
 	ucr set --force updater/identify="UCS (EC2 Test)"
 	ucr set update/check/cron/enabled=false update/check/boot/enabled=false mail/antispam/rules/autoupdate?yes server/password/cron='#0 1 * * *'
 	service cron reload || true
