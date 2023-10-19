@@ -16,7 +16,7 @@ product. For instructions about how to install and use UCS, see
 
 .. TODO Remove this sentence once the whole document is done.
 
-The document is released iteratively after each part is finished. The beginning
+The document is released step by step after each part is finished. The beginning
 is at the first, high level.
 
 Your feedback is welcome and highly appreciated. If you have comments, suggestions,

@@ -33,7 +33,7 @@ between the actors systems, services, and users.
 
    Relationship of the *systems*, *services* and *users* in a domain
 
-A trust context uses roles, permissions, and cryptographic certificates to ensure
+A trust context uses roles, permissions, and cryptography certificates to ensure
 secure communication between the domain participants. Domain services and domain
 participants can rely on the shared trust context when secure and mutually
 authenticated communication is required.
