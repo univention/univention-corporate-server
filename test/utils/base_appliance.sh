@@ -785,6 +785,9 @@ setup_appliance () {  # [app_id]
 
 	# set initial system uuid (set to new value in setup-join.sh)
 	ucr set uuid/system="00000000-0000-0000-0000-000000000000"
+
+	# Disable fancy output for serial console
+	echo 'FANCYTTY=0' >>/etc/lsb-base-logging.sh
 }
 
 clear_dhcp_hostname () {
