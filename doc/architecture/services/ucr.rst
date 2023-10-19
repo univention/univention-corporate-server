@@ -367,5 +367,5 @@ UCR limitations
 
          * For developers, see :cite:t:`developer-reference`:
 
-           * :ref:`uv-dev-ref:shell scripts <ucr-usage-shell>`
-           * :ref:`uv-dev-ref:Python interface <ucr-usage-python>`
+           * :ref:`shell scripts <uv-dev-ref:ucr-usage-shell>`
+           * :ref:`Python interface <uv-dev-ref:ucr-usage-python>`
