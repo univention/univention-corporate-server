@@ -6,11 +6,13 @@ src: univention-monitoring-client
 fix: 1.0.2-4
 desc: |
  This update addresses the following issues:
- * The "check_univention_joinstatus" called "ldapsearch" with the machine
-   credentials, which then were visible in the process list.
+ * The `check_univention_joinstatus` called `ldapsearch` with the machine
+   credentials, which then were visible in the process list. (CVE-2023-38994)
  * The metrics are now written using the official `python3-prometheus-client`
    library and contain timestamps so they can be evaluated more accurately.
 bug: [56324, 55367]
+cve:
+- CVE-2023-38994
 erratum: 743
 announced: 2023-07-19
 support: core
