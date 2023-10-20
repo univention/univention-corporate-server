@@ -329,4 +329,4 @@ def test_create_fileshare_and_connect_via_samba(udm, ucr):
         print('### testpam for that smb.conf section:')
         p = subprocess.Popen(['testparm', '-s', '--section-name', properties['sambaName']], close_fds=True)
         p.wait()
-        utils.fail('Samba fileshare {} not accessible'.format(properties['sambaName']))
+        utils.fail(f'Samba fileshare {properties["sambaName"]} not accessible')

@@ -550,7 +550,7 @@ class DovecotSharedFolderListener(DovecotListener):
         return identifier, right
 
     def add_global_acls(self, new):  # type: (Dict[str, List[bytes]]) -> None
-        new_mailbox = 'shared/{}'.format(new["mailPrimaryAddress"][0].decode('ASCII'))
+        new_mailbox = f'shared/{new["mailPrimaryAddress"][0].decode("ASCII")}'
         acls = new.get(self.acl_key, [])
         folder_acls = []
         for acl in acls:
@@ -560,5 +560,5 @@ class DovecotSharedFolderListener(DovecotListener):
         self.global_acls.add_acls(folder_acls)
 
     def remove_global_acls(self, old):  # type: (Dict[str, List[bytes]]) -> None
-        old_mailbox = 'shared/{}'.format(old["mailPrimaryAddress"][0].decode('ASCII'))
+        old_mailbox = f'shared/{old["mailPrimaryAddress"][0].decode("ASCII")}'
         self.global_acls.remove_acls(old_mailbox)

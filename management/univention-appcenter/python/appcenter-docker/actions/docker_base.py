@@ -226,23 +226,18 @@ class DockerActionMixin(object):
             dlogs = docker.dockerd_logs()
             clogs = docker.logs()
             inspect = docker.inspect_container()
-            msg = """
+            msg = f"""
 The container for {app} could not be started!
 
-docker logs {container}:
+docker logs {docker.container}:
 {clogs}
 
 dockerd logs:
 {dlogs}
 
 docker inspect:
-{state}
-{graphdriver}""".format(
-                app=app, container=docker.container,
-                clogs=clogs, dlogs=dlogs,
-                state=inspect.get('State'),
-                graphdriver=inspect.get('GraphDriver'),
-            )
+{inspect.get('State')}
+{inspect.get('GraphDriver')}"""
             raise AppCenterErrorContainerStart(msg)
         # copy password files
         if os.path.isfile(app.secret_on_host):

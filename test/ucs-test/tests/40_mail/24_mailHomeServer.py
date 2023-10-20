@@ -116,9 +116,9 @@ def main():
                     check_delivery(token, mail, False)
                     print('*** OK: mail was not delivered to systemmail/Dovecot.')
                     check_delivery_mailsink(token, sink_files[0].name, (i == 0))
-                    print('*** OK: mail was{} sent to mailsink 1.'.format(' not' if i != 0 else ''))
+                    print(f'*** OK: mail was{" not" if i != 0 else ""} sent to mailsink 1.')
                     check_delivery_mailsink(token, sink_files[1].name, (i == 1))
-                    print('*** OK: mail was{} sent to mailsink 2.'.format(' not' if i != 1 else ''))
+                    print(f'*** OK: mail was{" not" if i != 1 else ""} sent to mailsink 2.')
             finally:
                 for ms in mail_sinks:
                     ms.stop()

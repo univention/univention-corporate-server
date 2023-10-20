@@ -222,7 +222,7 @@ class Interactions:
             if elem.get_property('value') == inputvalue:
                 break
         else:
-            raise ValueError('value of input {!r} does not contain previously entered value ({!r} != {!r})'.format(inputname, inputvalue, elem.get_property('value')))
+            raise ValueError(f'value of input {inputname!r} does not contain previously entered value ({inputvalue!r} != {elem.get_property("value")!r})')
 
     def enter_input_combobox(self, inputname, inputvalue, with_click=True):
         # type: (str, str, bool) -> None

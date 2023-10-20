@@ -102,7 +102,7 @@ def check_domain_is_higher_or_equal_version(address: str, username: str, passwor
         except subprocess.CalledProcessError:
             MODULE.error('Failed to retrieve UCS version: %s' % (traceback.format_exc(),))
             return
-        nonmaster_ucs_version = '{}-{}'.format(UCR.get('version/version'), UCR.get('version/patchlevel'))
+        nonmaster_ucs_version = f'{UCR.get("version/version")}-{UCR.get("version/patchlevel")}'
         if Version(nonmaster_ucs_version) > Version(master_ucs_version):
             raise UMC_Error(_('The UCS version of the domain you are trying to join ({}) is lower than the local one ({}). This constellation is not supported.').format(master_ucs_version, nonmaster_ucs_version))
 

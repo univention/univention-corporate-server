@@ -58,5 +58,5 @@ class Logs(UniventionAppAction, DockerActionMixin):
 
     def show_docker_logs(self, args):
         docker = self._get_docker(args.app)
-        self.log("#### 'docker logs {}' output:".format(docker.container))
+        self.log(f"#### 'docker logs {docker.container}' output:")
         return subprocess.call(['docker', 'logs', docker.container])

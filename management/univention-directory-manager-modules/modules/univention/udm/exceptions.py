@@ -63,8 +63,7 @@ class ApiVersionNotSupported(UdmError):
             requested_version=None,
     ):
         self.requested_version = requested_version
-        msg = msg or 'Module {!r} is not supported in API version {!r}.'.format(
-            module_name, requested_version)
+        msg = msg or f'Module {module_name!r} is not supported in API version {requested_version!r}.'
         super(ApiVersionNotSupported, self).__init__(msg, module_name=module_name)
 
 
@@ -74,7 +73,7 @@ class CreateError(UdmError):
 
 class DeletedError(UdmError):
     def __init__(self, msg=None, dn=None, module_name=None):
-        msg = msg or 'Object{} has already been deleted.'.format(' {!r}'.format(dn) if dn else '')
+        msg = msg or 'Object{} has already been deleted.'.format(f' {dn!r}' if dn else '')
         super(DeletedError, self).__init__(msg, dn, module_name)
 
 
@@ -82,7 +81,7 @@ class DeleteError(UdmError):
     """Raised when a client tries to delete a UDM object but fails."""
 
     def __init__(self, msg=None, dn=None, module_name=None):
-        msg = msg or 'Object{} could not be deleted.'.format(' {!r}'.format(dn) if dn else '')
+        msg = msg or 'Object{} could not be deleted.'.format(f' {dn!r}' if dn else '')
         super(DeleteError, self).__init__(msg, dn, module_name)
 
 
@@ -116,7 +115,7 @@ class NoObject(UdmError):
     """Raised when a UDM object could not be found at a DN."""
 
     def __init__(self, msg=None, dn=None, module_name=None):
-        msg = msg or 'No object found at DN {!r}.'.format(dn)
+        msg = msg or f'No object found at DN {dn!r}.'
         super(NoObject, self).__init__(msg, dn, module_name)
 
 
@@ -124,8 +123,7 @@ class NoSuperordinate(UdmError):
     """Raised when no superordinate was supplied but one is needed."""
 
     def __init__(self, msg=None, dn=None, module_name=None, superordinate_types=None):
-        msg = msg or 'No superordinate was supplied, but one of type{} {} is required to create/save a {} object.'.format(
-            's' if len(superordinate_types) > 1 else '', ', '.join(superordinate_types), module_name)
+        msg = msg or f'No superordinate was supplied, but one of type{"s" if len(superordinate_types) > 1 else ""} {", ".join(superordinate_types)} is required to create/save a {module_name} object.'
         super(NoSuperordinate, self).__init__(msg, dn, module_name)
 
 
@@ -133,9 +131,7 @@ class SearchLimitReached(UdmError):
     """Raised when the search results in more objects than specified by the sizelimit."""
 
     def __init__(self, msg=None, dn=None, module_name=None, search_filter=None, sizelimit=None):
-        msg = msg or 'The search_filter {} resulted in more objects than the specified sizelimit of {} allowed.'.format(
-            search_filter if search_filter else "''", sizelimit if sizelimit else "/",
-        )
+        msg = msg or f'The search_filter {search_filter if search_filter else "''"} resulted in more objects than the specified sizelimit of {sizelimit if sizelimit else "/"} allowed.'
         self.search_filter = search_filter
         self.sizelimit = sizelimit
         super(SearchLimitReached, self).__init__(msg, dn, module_name)
@@ -152,7 +148,7 @@ class UnknownModuleType(UdmError):
     """Raised when an LDAP object has no or empty attribute univentionObjectType."""
 
     def __init__(self, msg=None, dn=None, module_name=None):
-        msg = msg or 'No or empty attribute "univentionObjectType" found at DN {!r}.'.format(dn)
+        msg = msg or f'No or empty attribute "univentionObjectType" found at DN {dn!r}.'
         super(UnknownModuleType, self).__init__(msg, dn, module_name)
 
 
@@ -170,5 +166,5 @@ class WrongObjectType(UdmError):
     """
 
     def __init__(self, msg=None, dn=None, module_name=None, univention_object_type=None):
-        msg = msg or 'Wrong UDM module: {!r} is not a {!r}, but a {!r}.'.format(dn, module_name, univention_object_type)
+        msg = msg or f'Wrong UDM module: {dn!r} is not a {module_name!r}, but a {univention_object_type!r}.'
         super(WrongObjectType, self).__init__(msg, dn, module_name)

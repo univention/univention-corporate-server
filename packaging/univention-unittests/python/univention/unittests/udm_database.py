@@ -42,7 +42,7 @@ class LDAPObject(object):
         self.changed = {}
 
     def __repr__(self):
-        return 'Object({!r}, {!r})'.format(self.dn, self.attrs)
+        return f'Object({self.dn!r}, {self.attrs!r})'
 
 
 def make_obj(obj):
@@ -82,7 +82,7 @@ class Database(object):
             yield obj
 
     def __repr__(self):
-        return 'Database({!r})'.format(self.objs)
+        return f'Database({self.objs!r})'
 
     def __getitem__(self, dn):
         return self.objs[dn].attrs

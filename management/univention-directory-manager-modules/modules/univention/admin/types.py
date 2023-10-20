@@ -646,7 +646,7 @@ class SambaLogonHours(ListType):
     _weekdays = ('Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat')
 
     def decode_value(self, value):
-        return ['{} {}-{}'.format(self._weekdays[v // 24], v % 24, v % 24 + 1) for v in value]
+        return [f'{self._weekdays[v // 24]} {v % 24}-{v % 24 + 1}' for v in value]
 
     def encode_value(self, value):
         try:
@@ -666,7 +666,7 @@ class AppcenterTranslation(KeyValueDictionaryType):
         return {k.lstrip('[').rstrip(']'): v for k, v in value}
 
     def encode_value(self, value):
-        value = ['[{}] {}'.format(k, v) for k, v in value.items()]
+        value = [f'[{k}] {v}' for k, v in value.items()]
         return super(AppcenterTranslation, self).encode_value(value)
 
 

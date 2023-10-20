@@ -49,5 +49,5 @@ def configure(ctx):
 	program_name = 'objcopy'
 	prefix = getattr(Options.options, 'cross_prefix', None)
 	if prefix:
-		program_name = '{}-{}'.format(prefix, program_name)
+		program_name = f'{prefix}-{program_name}'
 	ctx.find_program(program_name, var='OBJCOPY', mandatory=True)

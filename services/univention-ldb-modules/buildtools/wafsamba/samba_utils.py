@@ -469,7 +469,7 @@ def RECURSE(ctx, directory):
         return ctx.recurse(relpath)
     if 'waflib.extras.compat15' in sys.modules:
         return ctx.recurse(relpath)
-    Logs.error('Unknown RECURSE context class: {}'.format(ctxclass))
+    Logs.error(f'Unknown RECURSE context class: {ctxclass}')
     raise
 Options.OptionsContext.RECURSE = RECURSE
 Build.BuildContext.RECURSE = RECURSE

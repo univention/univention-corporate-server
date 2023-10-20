@@ -63,7 +63,7 @@ class Apps(object):
                 continue
 
             for message in result.get('intermediate', []):
-                print('   {msg}'.format(msg=message.get('message')))
+                print(f'   {message.get("message")}')
 
             if result.get('finished', False):
                 break
@@ -136,7 +136,7 @@ class Apps(object):
         result = self.umc('appcenter/get', {"application": self.options.app})
         for host in result.get('installations', []):
             if host == ucr['hostname']:
-                print('-> installations: {inst}'.format(inst=result['installations']))
+                print(f'-> installations: {result["installations"]}')
                 if result['installations'][host]['update_available']:
                     break
         else:

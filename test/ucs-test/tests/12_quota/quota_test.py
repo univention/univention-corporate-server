@@ -36,8 +36,8 @@ class QuotaCheck:
         options = {"filter": "*", "partitionDevice": loop_dev}
         user_quotas = self.umc_client.umc_command('quota/users/query', options).result
         expected_user_quota = {
-            'fileLimitHard': '{}'.format(expected_values.get('fhard', 15)),
-            'fileLimitSoft': '{}'.format(expected_values.get('fsoft', 10)),
+            'fileLimitHard': f'{expected_values.get("fhard", 15)}',
+            'fileLimitSoft': f'{expected_values.get("fsoft", 10)}',
             'fileLimitTime': '-',
             'fileLimitUsed': '1',
             'id': f'{self.username}@{loop_dev}',

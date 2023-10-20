@@ -91,7 +91,7 @@ def create_empty_po(binary_pkg_name, new_po_path):
         '--add-comments=i18n',
         '--from-code=UTF-8',
         '--sort-output',
-        '--package-name={}'.format(binary_pkg_name),
+        f'--package-name={binary_pkg_name}',
         '--msgid-bugs-address=packages@univention.de',
         '--copyright-holder=Univention GmbH',
         # Suppress warning about /dev/null being an unknown source type
@@ -129,7 +129,7 @@ def join_existing(language, output_file, input_files, cwd=os.getcwd()):
     :param cwd: Base directory used as new woring directory.
     """
     if not os.path.isfile(output_file):
-        raise Error("Can't join input files into {}. File does not exist.".format(output_file))
+        raise Error(f"Can't join input files into {output_file}. File does not exist.")
     if not isinstance(input_files, list):
         input_files = [input_files]
     # make input_files relative so the location lines in the resulting po

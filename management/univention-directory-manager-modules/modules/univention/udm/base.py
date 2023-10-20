@@ -55,10 +55,7 @@ class BaseObjectProperties(object):
         self._udm_obj = udm_obj
 
     def __repr__(self):
-        return '{}({})'.format(
-            self.__class__.__name__,
-            pprint.pformat({k: v for k, v in self.__dict__.items() if not str(k).startswith('_')}, indent=2),
-        )
+        return f'{self.__class__.__name__}({pprint.pformat({k: v for k, v in self.__dict__.items() if not str(k).startswith("_")}, indent=2)})'
 
     def __deepcopy__(self, memo):
         id_self = id(self)
@@ -120,11 +117,7 @@ class BaseObject(object):
         self._udm_module = None
 
     def __repr__(self):
-        return '{}({!r}, {!r})'.format(
-            self.__class__.__name__,
-            self._udm_module.name if self._udm_module else '<not initialized>',
-            self.dn,
-        )
+        return f'{self.__class__.__name__}({self._udm_module.name if self._udm_module else "<not initialized>"!r}, {self.dn!r})'
 
     def reload(self):
         """
@@ -177,7 +170,7 @@ class BaseModuleMetadata(object):
     def __repr__(self):
         return '{}({})'.format(
             self.__class__.__name__,
-            ', '.join('{}={!r}'.format(k, v) for k, v in self.__dict__.items() if not str(k).startswith('_')),
+            ', '.join(f'{k}={v!r}' for k, v in self.__dict__.items() if not str(k).startswith('_')),
         )
 
     def instance(self, udm_module, api_version):
@@ -284,7 +277,7 @@ class BaseModule(with_metaclass(ModuleMeta)):
         self.meta = self.meta.instance(self, api_version)
 
     def __repr__(self):
-        return '{}({!r})'.format(self.__class__.__name__, self.name)
+        return f'{self.__class__.__name__}({self.name!r})'
 
     def new(self, superordinate=None):
         """
@@ -323,14 +316,13 @@ class BaseModule(with_metaclass(ModuleMeta)):
         :raises univention.udm.exceptions.NoObject: if no object is found with ID `id`
         :raises univention.udm.exceptions.MultipleObjects: if more than one object is found with ID `id`
         """
-        filter_s = filter_format('{}=%s'.format(self.meta.identifying_property), (id,))
+        filter_s = filter_format(f'{self.meta.identifying_property}=%s', (id,))
         res = list(self.search(filter_s))
         if not res:
-            raise NoObject('No object found for {!r}.'.format(filter_s), module_name=self.name)
+            raise NoObject(f'No object found for {filter_s!r}.', module_name=self.name)
         elif len(res) > 1:
             raise MultipleObjects(
-                'Searching in module {!r} with identifying_property {!r} (filter: {!r}) returned {} objects.'.format(
-                    self.name, self.meta.identifying_property, filter_s, len(res)), module_name=self.name)
+                f'Searching in module {self.name!r} with identifying_property {self.meta.identifying_property!r} (filter: {filter_s!r}) returned {len(res)} objects.', module_name=self.name)
         return res[0]
 
     def search(self, filter_s='', base='', scope='sub', sizelimit=0):

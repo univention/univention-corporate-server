@@ -127,7 +127,7 @@ def application(environ, start_response):
         try:
             out, _err = proc.communicate()
             if proc.returncode:
-                raise LdapLicenseFetchError('{} exited with {}:\n{}'.format(' '.join(cmd), proc.returncode, out))
+                raise LdapLicenseFetchError(f'{" ".join(cmd)} exited with {proc.returncode}:\n{out}')
             out = clean_license_output(out.decode('UTF-8'))
             return _finish(data=out)
         except subprocess.CalledProcessError as exc:

@@ -67,7 +67,7 @@ class TestUdmUsersBasic(TestCase):
             try:
                 cls.udm_test.create_object(
                     'mail/domain',
-                    position='cn=domain,cn=mail,{}'.format(cls.ucr_test['ldap/base']),
+                    position=f'cn=domain,cn=mail,{cls.ucr_test["ldap/base"]}',
                     name=cls.mail_domain,
                     wait_for_replication=True,
                 )
@@ -115,7 +115,7 @@ class TestUdmUsersBasic(TestCase):
                 'uid': [attrs['username']],
                 'sn': [attrs['lastname']],
                 'givenName': [attrs['firstname']],
-                'displayName': ['{} {}'.format(attrs['firstname'], attrs['lastname'])],
+                'displayName': [f'{attrs["firstname"]} {attrs["lastname"]}'],
             },
             strict=False,
             should_exist=True,
@@ -177,7 +177,7 @@ class TestUdmUsersBasic(TestCase):
                 'description': [attrs['description']],
                 'mailPrimaryAddress': [attrs['mailPrimaryAddress']],
                 'departmentNumber': [attrs['departmentNumber']],
-                'displayName': ['{} {}'.format(attrs['firstname'], attrs['lastname'])],
+                'displayName': [f'{attrs["firstname"]} {attrs["lastname"]}'],
             },
             strict=False,
             should_exist=True,
@@ -240,12 +240,12 @@ class TestUdmUsersBasic(TestCase):
         del expected_properties['password']
         expected_properties.update({
             'e-mail': [],
-            'displayName': '{} {}'.format(self._user0_attrs['firstname'], self._user0_attrs['lastname']),
+            'displayName': f'{self._user0_attrs["firstname"]} {self._user0_attrs["lastname"]}',
         })
         if hasattr(obj.props, 'oxDisplayName'):
             expected_properties['oxDisplayName'] = expected_properties['displayName']
             expected_properties['oxTimeZone'] = self.udm.obj_by_dn(
-                'cn=oxTimeZone,cn=open-xchange,cn=custom attributes,cn=univention,{}'.format(self.ucr_test['ldap/base']),
+                f'cn=oxTimeZone,cn=open-xchange,cn=custom attributes,cn=univention,{self.ucr_test["ldap/base"]}',
             ).props.default
         if hasattr(obj.props, 'mailUserQuota'):
             expected_properties['mailUserQuota'] = 0
@@ -309,8 +309,7 @@ class TestUdmGenericVariousModules(TestCase):
             sup_modules = [sup_modules]
         for sup_module in sup_modules:
             for obj in self.udm.get(sup_module).search():
-                print('Using {!r} object at {!r} as superordinate for model of {!r} object.'.format(
-                    sup_module, obj.dn, mod.name))
+                print(f'Using {sup_module!r} object at {obj.dn!r} as superordinate for model of {mod.name!r} object.')
                 return mod.new(obj)
         raise exc_thrown.with_traceback(None)
 
@@ -321,8 +320,7 @@ class TestUdmGenericVariousModules(TestCase):
             print(f'Loading {mod_name!r}...')
             mod = self.udm.get(mod_name)
             if mod_name in mail_and_ox_modules:
-                assert mod.__class__.__name__ == 'GenericModule', 'Wrong UDM module, expected {!r}, got {!r}.'.format(
-                    'GenericModule', mod.__class__.__name__)
+                assert mod.__class__.__name__ == 'GenericModule', f'Wrong UDM module, expected {"GenericModule"!r}, got {mod.__class__.__name__!r}.'
         print('OK: all modules could be loaded.')
         len_module_object_cache = len(UDM._module_object_cache)
         assert len_module_object_cache == len(self.avail_modules), f'UDM._module_object_cache has {len_module_object_cache} entries (should be {len(self.avail_modules)}).'
@@ -381,7 +379,7 @@ class TestUdmAutoOpen(TestCase):
         user_mod = self.udm.get('users/user')
         assert user_mod.meta.auto_open is True
         obj = user_mod.get(dn)
-        assert 'cn=Domain Users,cn=groups,{}'.format(self.ucr_test['ldap/base']) == obj.props.primaryGroup
+        assert f'cn=Domain Users,cn=groups,{self.ucr_test["ldap/base"]}' == obj.props.primaryGroup
 
     def test_auto_open_false(self):
         print('Opening user with module.meta.auto_open == False...')
@@ -425,7 +423,7 @@ class TestUdmLDAPConnection(TestCase):
 
     def test_admin(self):
         mod = UDM.admin().version(0).get('users/user')
-        assert mod.connection.binddn == 'cn=admin,{}'.format(self.ucr_test['ldap/base'])
+        assert mod.connection.binddn == f'cn=admin,{self.ucr_test["ldap/base"]}'
 
     def test_admin_io_error(self):
         try:

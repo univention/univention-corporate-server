@@ -665,7 +665,7 @@ class TestCase:
                         del buf[0:match.end()]
 
                     now = datetime.now().isoformat(' ')
-                    entry = b'%s %s\n' % ('{1[0]}{0}{1[1]}'.format(now, paren).encode('ascii'), line.rstrip(b'\r\n'))
+                    entry = b'%s %s\n' % (f'{paren[0]}{now}{paren[1]}'.encode('ascii'), line.rstrip(b'\r\n'))
                     log.append(entry)
                     combined.append(entry)
 

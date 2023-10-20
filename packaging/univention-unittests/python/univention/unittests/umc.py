@@ -48,7 +48,7 @@ class UMCTestRequest(object):
 
     def save_result(self, result):
         if hasattr(self, 'result'):
-            raise RuntimeError('Already saved result {!r}. Cannot be called twice ({!r})'.format(self.result, result))
+            raise RuntimeError(f'Already saved result {self.result!r}. Cannot be called twice ({result!r})')
         self.result = result
 
     def expected_response(self, result):
@@ -69,7 +69,7 @@ class UMCTestRequest(object):
             time.sleep(1)
 
     def __repr__(self):
-        return '<UMCTestRequest id={!r} options={!r}>'.format(self.id, self.options)
+        return f'<UMCTestRequest id={self.id!r} options={self.options!r}>'
 
 
 def save_result_on_request(request_id, result, *args, **kwargs):
@@ -107,7 +107,7 @@ def umc_requests(params):
 
 
 def import_umc_module(module_id, umc_src_path=None, set_umc_module_fixture=True):
-    python_module_name = 'univention.management.console.modules.{}'.format(module_id)
+    python_module_name = f'univention.management.console.modules.{module_id}'
     if umc_src_path is None:
         umc_src_path = 'umc/python/'
     use_installed = pytest.config.getoption('--installed-umc')

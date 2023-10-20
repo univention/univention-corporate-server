@@ -47,7 +47,7 @@ def main():
                     'members': mails[1],
                 },
                 wait_for_drs_replication=True,
-                position="cn=mailinglists,cn=mail,{}".format(ucr.get("ldap/base")),
+                position=f"cn=mailinglists,cn=mail,{ucr.get('ldap/base')}",
             )
             token = str(time.time())
             send_mail(recipients=list_mail, msg=token, tls=True, username=usermail, password=password)

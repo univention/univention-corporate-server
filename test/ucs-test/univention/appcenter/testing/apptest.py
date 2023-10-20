@@ -54,7 +54,7 @@ def pip_modules(modules):
     logger.info(modules)
     if modules:
         logger.info('Installing modules via pip3')
-        logger.info('  {}'.format(' '.join(modules)))
+        logger.info(f'  {" ".join(modules)}')
         subprocess.check_output(['pip3', 'install'] + modules)
     try:
         yield
@@ -476,7 +476,7 @@ else:
                     "action": app_function,
                     "auto_installed": [],
                     "hosts": {fqdn: app_id},
-                    "apps": ["{}={}".format(app_id, app['version'])],
+                    "apps": [f"{app_id}={app['version']}"],
                     "dry_run": False,
                     "settings": {app_id: {}},
                 }
@@ -525,7 +525,7 @@ else:
         uri = os.environ.get('UCS_TEST_UDM_URI')
         if not uri:
             if config:
-                hostname = 'https://{}'.format(config.get('ldap/master'))
+                hostname = f'https://{config.get("ldap/master")}'
             else:
                 logger.warning('$UCS_TEST_UDM_URI not set')
             uri = f'{hostname}/univention/udm/'

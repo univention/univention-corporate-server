@@ -52,7 +52,7 @@ def main():
                 addr=uts.random_ip())
             computer.dn = udm.create_object(
                 'computers/memberserver',
-                position='cn=computers,{}'.format(ucr.get('ldap/base')),
+                position=f'cn=computers,{ucr.get("ldap/base")}',
                 name=computer.name,
                 password=computer.password,
                 ip=[computer.addr],
@@ -66,29 +66,20 @@ def main():
             user = Bunch(dn=dn, name=username)
 
             def check_virtual_server(userdn, use_master, attrs):
-                assert attrs.get('univentionRadiusClientVirtualServer', [b''])[0].decode('UTF-8') == computer.name, '{} is unable to read univentionRadiusClientVirtualServer of {} from {}'.format(
-                    userdn,
-                    computer.dn,
-                    'domaincontroller_master' if use_master else 'localhost')
+                assert attrs.get('univentionRadiusClientVirtualServer', [b''])[0].decode('UTF-8') == computer.name, f'{userdn} is unable to read univentionRadiusClientVirtualServer of {computer.dn} from {"domaincontroller_master" if use_master else "localhost"}'
 
             def check_secret_is_readable(userdn, use_master, attrs):
-                assert 'univentionRadiusClientSharedSecret' in attrs, '{} is unable to read univentionRadiusClientSharedSecret of {} from {}'.format(
-                    userdn,
-                    computer.dn,
-                    'domaincontroller_master' if use_master else 'localhost')
+                assert 'univentionRadiusClientSharedSecret' in attrs, f'{userdn} is unable to read univentionRadiusClientSharedSecret of {computer.dn} from {"domaincontroller_master" if use_master else "localhost"}'
 
             def check_secret_is_unreadable(userdn, use_master, attrs):
-                assert 'univentionRadiusClientSharedSecret' not in attrs, '{} is unexpectedly able to read univentionRadiusClientSharedSecret of {} from {}'.format(
-                    userdn,
-                    computer.dn,
-                    'domaincontroller_master' if use_master else 'localhost')
+                assert 'univentionRadiusClientSharedSecret' not in attrs, f'{userdn} is unexpectedly able to read univentionRadiusClientSharedSecret of {computer.dn} from {"domaincontroller_master" if use_master else "localhost"}'
 
             targets = [(True, ucr.get('ldap/master'))]
             if ucr.get('server/role') != 'memberserver':
                 targets.append((False, ucr.get('hostname')))
 
             for use_master, target_server in targets:
-                print('*** testing {} account against {}'.format(ucr.get('ldap/hostdn'), target_server))
+                print(f'*** testing {ucr.get("ldap/hostdn")} account against {target_server}')
                 lo = univention.uldap.getMachineConnection(ldap_master=use_master)
                 attrs = lo.get(computer.dn)
                 check_secret_is_readable(ucr.get('ldap/hostdn'), use_master, attrs)

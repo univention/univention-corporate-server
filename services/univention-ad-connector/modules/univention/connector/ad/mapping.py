@@ -65,7 +65,7 @@ def ignore_filter_from_tmpl(template, ucr_key, default=''):
     variables = [v for v in configRegistry.get(ucr_key, default).split(',') if v]
     filter_parts = [format_escaped(template, v) for v in variables]
     if filter_parts:
-        return '(|{})'.format(''.join(filter_parts))
+        return f'(|{"".join(filter_parts)})'
     return ''
 
 
@@ -123,7 +123,7 @@ def create_mapping(configbasename='connector'):
     user_ignore_filter = configRegistry.get(connector('%s/ad/mapping/user/ignorefilter'), '')
     if user_ignore_filter and not user_ignore_filter.startswith('('):
         user_ignore_filter = f'({user_ignore_filter})'
-    user_ignore_filter = '(|{}{}{})'.format('(userAccountControl=2080)', user_ignore_filter, user_ignore_list)
+    user_ignore_filter = f'(|{"(userAccountControl=2080)"}{user_ignore_filter}{user_ignore_list})'
 
     ignore_filter_parts = '(groupType=-2147483643)(groupType=4)(univentionGroupType=-2147483643)(univentionGroupType=4)'
     if configRegistry.is_false(connector('%s/ad/mapping/group/grouptype'), False):

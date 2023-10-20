@@ -69,7 +69,7 @@ def ignore_filter_from_tmpl(template, ucr_key, default=''):
     variables = [v for v in configRegistry.get(ucr_key, default).split(',') if v]
     filter_parts = [format_escaped(template, v) for v in variables]
     if filter_parts:
-        return '(|{})'.format(''.join(filter_parts))
+        return f'(|{"".join(filter_parts)})'
     return ''
 
 
@@ -141,7 +141,7 @@ if configRegistry.is_false('connector/s4/mapping/group/grouptype', False):
 user_ignore_list = {x.strip(' ') for x in configRegistry.get('connector/s4/mapping/user/attributes/ignorelist', '').split(',')}
 group_ignore_filter = ignore_filter_from_attr('cn', 'connector/s4/mapping/group/ignorelist')
 if configRegistry.is_false('connector/s4/mapping/group/grouptype', False):
-    group_ignore_filter = '(|{}{})'.format('(sambaGroupType=5)(groupType=5)', group_ignore_filter)
+    group_ignore_filter = f'(|{"(sambaGroupType=5)(groupType=5)"}{group_ignore_filter})'
 
 key_prefix = "connector/s4/mapping/group/table/"
 group_mapping_table = {

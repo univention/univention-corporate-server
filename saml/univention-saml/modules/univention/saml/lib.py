@@ -21,14 +21,14 @@ def get_idps(ucr, log_fd=sys.stderr):
         return supplement not in supplement_blacklist and '/' not in supplement
 
     def __get_supplement_entityID(supplement):
-        if urlparse(main_entityID).path.startswith('/{}/'.format(main_basepath)):
+        if urlparse(main_entityID).path.startswith(f'/{main_basepath}/'):
             return main_entityID.replace(
-                '/{}/'.format(main_basepath),
-                '/{}/{}/'.format(main_basepath, supplement),
+                f'/{main_basepath}/',
+                f'/{main_basepath}/{supplement}/',
             )
         else:
             print('Unknown default entity ID format, using fallback for supplement entity IDs', file=log_fd)
-            return main_entityID + '/{}'.format(supplement)
+            return main_entityID + f'/{supplement}'
 
     def __get_supplement_basepath(supplement):
         return os.path.join(main_basepath, supplement)
@@ -38,14 +38,8 @@ def get_idps(ucr, log_fd=sys.stderr):
 
     supplement_blacklist = (os.listdir('/usr/share/simplesamlphp/www/'))
     main_basepath = 'simplesamlphp'
-    sso_fqdn = ucr.get('ucs/server/sso/fqdn', '{}.{}'.format(
-        'ucs-sso',
-        ucr.get('domainname'),
-    ))
-    main_entityID = ucr.get('saml/idp/entityID', 'https://{}/{}/saml2/idp/metadata.php'.format(
-        sso_fqdn,
-        main_basepath,
-    ))
+    sso_fqdn = ucr.get('ucs/server/sso/fqdn', f'{"ucs-sso"}.{ucr.get("domainname")}')
+    main_entityID = ucr.get('saml/idp/entityID', f'https://{sso_fqdn}/{main_basepath}/saml2/idp/metadata.php')
     idp_supplement_keybase = 'saml/idp/entityID/supplement/'
     idp_supplements = (__get_supplement(key) for key, value in ucr.items() if __is_enabled_supplement(key, value))
     entityIDs = [{
@@ -62,7 +56,7 @@ def get_idps(ucr, log_fd=sys.stderr):
                 'baseurl': __get_supplement_baseurl(idp_supplement),
             })
         else:
-            print('"{}" is not a valid entity id supplement. Ignoring.'.format(idp_supplement), file=log_fd)
+            print(f'"{idp_supplement}" is not a valid entity id supplement. Ignoring.', file=log_fd)
     return entityIDs
 
 

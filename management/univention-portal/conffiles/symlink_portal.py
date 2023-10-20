@@ -50,9 +50,9 @@ def handler(config_registry, changes):
             continue
         path = os.path.normpath("/var/www" + path)
         if not os.path.islink(path) or os.path.realpath(path) != portal_path:
-            print("{} does not link to the portal contents. Skipping...".format(path))
+            print(f"{path} does not link to the portal contents. Skipping...")
         else:
-            print("Removing portal link to {}...".format(path))
+            print(f"Removing portal link to {path}...")
             os.unlink(path)
     for path in new:
         if path in old:
@@ -60,9 +60,9 @@ def handler(config_registry, changes):
         path = os.path.normpath("/var/www" + path)
         if os.path.islink(path):
             link_target = os.path.realpath(path)
-            print("{} already links (to {}). Skipping...".format(path, link_target))
+            print(f"{path} already links (to {link_target}). Skipping...")
         else:
-            print("Linking {} to portal content...".format(path))
+            print(f"Linking {path} to portal content...")
             try:
                 dirname = os.path.dirname(path)
                 try:
@@ -71,9 +71,9 @@ def handler(config_registry, changes):
                     if exc.errno != EEXIST:
                         raise
             except OSError as exc:
-                print("Error creating {}: {}!".format(dirname, exc))
+                print(f"Error creating {dirname}: {exc}!")
             else:
                 try:
                     os.symlink(portal_path, path)
                 except OSError as exc:
-                    print("Error creating a link from {} to {}: {}!".format(path, portal_path, exc))
+                    print(f"Error creating a link from {path} to {portal_path}: {exc}!")

@@ -330,10 +330,10 @@ class Client(object):
             # form filters array
             filters = [
                 or_(
-                    Entry.message.ilike('%{}%'.format(pat)),
+                    Entry.message.ilike(f'%{pat}%'),
                     and_(
                         EventMessage.locale == locale,
-                        EventMessage.message.ilike('%{}%'.format(pat)),
+                        EventMessage.message.ilike(f'%{pat}%'),
                     ),
                     Entry.args.any(Arg.value == pat),
                 )

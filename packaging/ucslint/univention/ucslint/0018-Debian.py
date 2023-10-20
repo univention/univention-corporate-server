@@ -122,7 +122,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
                     if actions:
                         self.addmsg(
                             '0018-3',
-                            'Invalid actions "{}" in Debian maintainer script'.format(','.join(actions)),
+                            f'Invalid actions "{",".join(actions)}" in Debian maintainer script',
                             script_path, row, line=line)
 
                 for match in self.RE_COMPARE_VERSIONS.finditer(line):
@@ -150,7 +150,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
                     if actions:
                         self.addmsg(
                             '0018-3',
-                            'Invalid actions "{}" in Debian maintainer script'.format(','.join(actions)),
+                            f'Invalid actions "{",".join(actions)}" in Debian maintainer script',
                             script_path, row, col, line=line)
 
     @classmethod

@@ -230,7 +230,7 @@ Scope = inside, outside
 '''
 
     try:
-        custom_settings_file = "/var/lib/univention-appcenter/apps/{}/custom.settings".format("apache")
+        custom_settings_file = f"/var/lib/univention-appcenter/apps/{'apache'}/custom.settings"
         with open(custom_settings_file, "w") as f:
             f.write(content_custom)
         app, settings = fresh_settings(content, installed_apache_docker_app, 2)

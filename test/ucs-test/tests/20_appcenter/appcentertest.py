@@ -407,7 +407,7 @@ class CheckOperations:
         return dn.format(id=self.application, version=app_version, base=ldap_base)
 
     def _check_url(self, protocol, port, interface):
-        fqdn = '{}.{}'.format(self.ucr.get("hostname"), self.ucr.get("domainname"))
+        fqdn = f'{self.ucr.get("hostname")}.{self.ucr.get("domainname")}'
         url = f"{protocol}://{fqdn}:{port}{interface}"
         response = requests.get(url, timeout=30, verify=False)  # noqa: S501
 
@@ -482,7 +482,7 @@ class CheckOperations:
         return True
 
     def _check_ucr_variables_dont_exist(self):
-        repository = "repository/online/component/{}".format(self.info.get("component_id"))
+        repository = f"repository/online/component/{self.info.get('component_id')}"
         web_entries = f"ucs/web/overview/entries/(admin|service)/{self.application}"
         pattern = re.compile(f"{repository}|{web_entries}")
         active = [key for key in self.ucr.keys() if pattern.match(key)]

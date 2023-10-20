@@ -73,7 +73,7 @@ TYPES = {
 }
 REALM = 'EXAMPLE.COM'
 USERNAME = 'Administrator'
-USER = '{}@{}'.format(USERNAME, REALM)
+USER = f'{USERNAME}@{REALM}'
 ENCSTR = "des-cbc-md5"
 ENCINT = 3
 KVNO = 0
@@ -256,7 +256,7 @@ class TestCreds(unittest.TestCase):
         (enctype, kvno, name) = self.creds.parse()
         assert enctype in TYPES
         self.assertInstance(kvno, int)
-        assert name == 'krbtgt/{0}@{0}'.format(REALM)
+        assert name == f'krbtgt/{REALM}@{REALM}'
 
     @unittest.skip('WIP')
     def test_change_password(self):
@@ -318,7 +318,7 @@ class TestKeytab(unittest.TestCase):
 
 
 class TestSalt(unittest.TestCase):
-    VALUE = '{}{}'.format(REALM, USERNAME)
+    VALUE = f'{REALM}{USERNAME}'
 
     def setUp(self):
         self.context = heimdal.context()
@@ -419,7 +419,7 @@ class TestCcache(unittest.TestCase):
 
 class TestASN1(unittest.TestCase):
     VALUE = b64decode('DvtFDa7V3K0=')
-    SALT = '{}{}'.format('PHAHN.DEV', USERNAME)
+    SALT = f'{"PHAHN.DEV"}{USERNAME}'
     ASN1 = b64decode('MDihEzARoAMCAQOhCgQIDvtFDa7V3K2iITAfoAMCAQOhGAQWUEhBSE4uREVWQWRtaW5pc3RyYXRvcg==')
 
     def test_asn1_decode_key(self):

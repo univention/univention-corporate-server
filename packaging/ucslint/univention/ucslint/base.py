@@ -75,7 +75,7 @@ RESULT_INT2STR: Dict[int, str] = {
 MsgIds = Dict[str, Tuple[int, str]]
 
 RE_MSGID = re.compile(r'\d{4}-[BEFNW]?\d+')
-RE_IGNORE = re.compile(r'\s+ ucslint :? \s* (?: ({msgid} (?: [, ]+ {msgid})*) \s* )? $'.format(msgid=RE_MSGID.pattern), re.VERBOSE)
+RE_IGNORE = re.compile(fr'\s+ ucslint :? \s* (?: ({RE_MSGID.pattern} (?: [, ]+ {RE_MSGID.pattern})*) \s* )? $', re.VERBOSE)
 
 
 def noqa(line: str) -> Callable[[str], bool]:
@@ -501,12 +501,7 @@ class UPCFileTester:
                 # a maximum counter has been defined and maximum has been exceeded
                 start, end = match.span()
                 startline, startpos = self._getpos(row, start)
-                msg = '{}\n\t{}\n\t{}{}'.format(
-                    t.msg,
-                    line.expandtabs(),
-                    ' ' * len(line[:start].expandtabs()),
-                    '^' * len(line[start:end].expandtabs()),
-                )
+                msg = f'{t.msg}\n\t{line.expandtabs()}\n\t{" " * len(line[:start].expandtabs())}{"^" * len(line[start:end].expandtabs())}'
                 msglist.append(UPCMessage(t.msgid, msg, self.filename, startline, startpos))
 
         # check if mincnt has been reached by counter - if not then add UPCMessage

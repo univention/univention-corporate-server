@@ -40,7 +40,7 @@ class AndFilter(object):
         self.children = children
 
     def __repr__(self):
-        return 'AND({!r})'.format(self.children)
+        return f'AND({self.children!r})'
 
     def matches(self, obj):
         return all(child.matches(obj) for child in self.children)
@@ -51,7 +51,7 @@ class OrFilter(object):
         self.children = children
 
     def __repr__(self):
-        return 'OR({!r})'.format(self.children)
+        return f'OR({self.children!r})'
 
     def matches(self, obj):
         return any(child.matches(obj) for child in self.children)
@@ -63,7 +63,7 @@ class NotFilter(object):
         self.child = children[0]
 
     def __repr__(self):
-        return 'NOT({!r})'.format(self.child)
+        return f'NOT({self.child!r})'
 
     def matches(self, obj):
         return not self.child.matches(obj)
@@ -75,7 +75,7 @@ class AttrFilter(object):
         self.value = value
 
     def __repr__(self):
-        return 'ATTR({}={})'.format(self.key, self.value)
+        return f'ATTR({self.key}={self.value})'
 
     def matches(self, obj):
         obj_values = obj.attrs.get(self.key, [])

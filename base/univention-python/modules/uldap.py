@@ -98,10 +98,10 @@ def getRootDnConnection(start_tls=2, decode_ignorelist=None, reconnect=True):
     host = ucr['hostname'] + '.' + ucr['domainname']
     if ucr.get('ldap/server/type', 'dummy') == 'master':
         bindpw = open('/etc/ldap.secret').read().rstrip('\n')
-        binddn = 'cn=admin,{}'.format(ucr['ldap/base'])
+        binddn = f'cn=admin,{ucr["ldap/base"]}'
     else:
         bindpw = open('/etc/ldap/rootpw.conf').read().rstrip('\n').replace('rootpw "', '', 1)[:-1]
-        binddn = 'cn=update,{}'.format(ucr['ldap/base'])
+        binddn = f'cn=update,{ucr["ldap/base"]}'
     return access(host=host, port=port, base=ucr['ldap/base'], binddn=binddn, bindpw=bindpw, start_tls=start_tls, reconnect=reconnect)
 
 

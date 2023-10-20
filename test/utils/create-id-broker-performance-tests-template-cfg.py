@@ -32,7 +32,7 @@ for section in sections:
     config.set(
         section,
         f"command{recover_command + 1}",
-        """
+        f"""
 rm -f /root/.ssh/environment
 ucr set internal/kvm/template/old/ip="$(ucr get interfaces/eth0/address)"
 apt-get -y remove firefox-esr
@@ -45,7 +45,7 @@ SERVER id=$(virsh domid SELF_KVM_NAME) && [ -n "${{id#-}}" ] && virsh event --do
 SOURCE ucs_[SELF].ver
 SERVER ucs-kt-put -C single -O Others -c "[SELF_KVM_NAME]" "[version]_{template_name}_amd64" --remove-old-templates='[version_version]-*_{template_name}_amd64.tar.gz' --keep-last-templates=1
 LOCAL rm -f ucs_[SELF].ver
-""".format(template_name=template_name),
+""",
     )
     config.set(section, f"command{new_recover_command}", "")
 

@@ -73,7 +73,7 @@ class TestUser:
 
     def __repr__(self):
         args = (self.user, self.rename, self.container)
-        return "{}({})".format(self.__class__.__name__, ", ".join(repr(a) for a in args))
+        return f"{self.__class__.__name__}({', '.join(repr(a) for a in args)})"
 
 
 class NormalUser(TestUser):
@@ -164,7 +164,7 @@ class TestGroup:
 
     def __repr__(self):
         args = (self.group, self.rename, self.container)
-        return "{}({})".format(self.__class__.__name__, ", ".join(repr(a) for a in args))
+        return f"{self.__class__.__name__}({', '.join(repr(a) for a in args)})"
 
 
 class NormalGroup(TestGroup):

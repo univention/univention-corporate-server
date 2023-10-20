@@ -19,7 +19,7 @@ DEFAULT_CACERT = "/etc/default/cacert"
 
 def get_wpa_config(username, password, ca_cert):
     comment = "#" if ca_cert == "" else ""
-    wpa_config = '''
+    wpa_config = f'''
 network={{
     ssid="DoesNotMatterForThisTest"
     key_mgmt=WPA-EAP
@@ -29,7 +29,7 @@ network={{
     {comment}ca_cert="{ca_cert}"
     eapol_flags=3
 }}
-    '''.format(username=username, password=password, comment=comment, ca_cert=ca_cert)
+    '''
     return wpa_config
 
 

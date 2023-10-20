@@ -21,7 +21,7 @@ def main():
             userdn, username = udm.create_user(
                 password=password,
                 mailPrimaryAddress=usermail,
-                mailHomeServer='{}.{}'.format(ucr.get('hostname'), ucr.get('domainname')),
+                mailHomeServer=f'{ucr.get("hostname")}.{ucr.get("domainname")}',
             )
 
             pop = PopMail()

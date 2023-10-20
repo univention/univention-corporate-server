@@ -211,12 +211,12 @@ class UMCSeleniumTest(ChecksAndWaits, Interactions):
         # type: (str, bool) -> None
         timestamp = ''
         if append_timestamp:
-            timestamp = '_{}'.format(datetime.datetime.now().strftime("%Y%m%d%H%M%S"))
+            timestamp = f'_{datetime.datetime.now().strftime("%Y%m%d%H%M%S")}'
 
         filename = f'{self.screenshot_path}/{name}_{self.language}_browserlog{timestamp}.txt'
         logger.info('Saving browser log %r', filename)
         if os.environ.get('JENKINS_WS'):
-            logger.info('Browser Log URL: {}ws/test/selenium/selenium/{}'.format(os.environ['JENKINS_WS'], os.path.basename(filename)))
+            logger.info(f'Browser Log URL: {os.environ["JENKINS_WS"]}ws/test/selenium/selenium/{os.path.basename(filename)}')
         with open(filename, 'w') as f:
             for entry in self.driver.get_log('browser'):
                 f.write(f'{json.dumps(entry)}\n')

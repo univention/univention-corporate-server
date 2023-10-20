@@ -59,14 +59,14 @@ def main():
         print('*** OK: mails were received by users')
 
         for with_email in (True, False):
-            print('***** Testing shared folder {} email address *****'.format('with' if with_email else 'without'))
+            print(f'***** Testing shared folder {"with" if with_email else "without"} email address *****')
             folder_dn, folder_name, folder_address = create_shared_mailfolder(
                 udm,
                 fqdn,
                 mailAddress=random_email() if with_email else None,
                 user_permission=[
-                    '"{}" "{}"'.format(user_addr1, 'all'),
-                    '"{}" "{}"'.format(user_addr2, 'read'),
+                    f'"{user_addr1}" "{"all"}"',
+                    f'"{user_addr2}" "{"read"}"',
                 ],
             )
             utils.wait_for_replication()

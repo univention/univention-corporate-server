@@ -26,7 +26,7 @@ from os import path
 # -- Project information -----------------------------------------------------
 
 project = 'Univention Corporate Server - Manual for developers'
-copyright = '2023-{}, Univention GmbH'.format(date.today().year)
+copyright = f'2023-{date.today().year}, Univention GmbH'
 author = ''
 
 version = '5.2'

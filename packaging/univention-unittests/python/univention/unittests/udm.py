@@ -43,7 +43,7 @@ def pytest_addoption(parser):
 
 
 def import_udm_module(udm_path):
-    python_module_name = 'univention.admin.{}'.format(udm_path)
+    python_module_name = f'univention.admin.{udm_path}'
     umc_src_path = 'modules/univention/admin'
     use_installed = pytest.config.getoption('--installed-udm')
     return import_module(udm_path, umc_src_path, python_module_name, use_installed)

@@ -16,15 +16,15 @@ from univention.testing import strings, utils
 
 
 def eapol_test(username, client_mac):
-    testdata = '''network={{
+    testdata = f'''network={{
         key_mgmt=WPA-EAP
         eap=PEAP
-        identity="{}"
+        identity="{username}"
         anonymous_identity="anonymous"
         password="univention"
         phase2="autheap=MSCHAPV2"
 }}
-'''.format(username)
+'''
     with tempfile.NamedTemporaryFile() as fd:
         fd.write(testdata.encode('UTF-8'))
         fd.flush()

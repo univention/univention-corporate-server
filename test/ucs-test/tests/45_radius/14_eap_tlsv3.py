@@ -19,7 +19,7 @@ def get_wpa_config(username, password, ca_cert):
         comment = "#"
     else:
         comment = ""
-    wpa_config = '''
+    wpa_config = f'''
 network={{
     ssid="DoesNotMatterForThisTest"
     key_mgmt=WPA-EAP
@@ -30,7 +30,7 @@ network={{
     eapol_flags=3
     phase1="tls_disable_tlsv1_3=0"
 }}
-    '''.format(username=username, password=password, comment=comment, ca_cert=ca_cert)
+    '''
     return wpa_config
 
 

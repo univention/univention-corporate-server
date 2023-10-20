@@ -145,7 +145,7 @@ class UcsRepoUrl(object):
         >>> UcsRepoUrl({'_/server': 'https://user:pass@hostname'}, '_').public()
         'https://hostname/'
         """
-        return '{0.scheme}://{0.hostname}{0._port}{0._path}'.format(self)
+        return f'{self.scheme}://{self.hostname}{self._port}{self._path}'
 
     def private(self):
         # type: () -> str
@@ -161,7 +161,7 @@ class UcsRepoUrl(object):
         >>> UcsRepoUrl({'_/server': 'https://user:pass@hostname'}, '_').private()
         'https://user:pass@hostname/'
         """
-        return '{0.scheme}://{0.cred}{0.hostname}{0._port}{0._path}'.format(self)
+        return f'{self.scheme}://{self.cred}{self.hostname}{self._port}{self._path}'
 
     def __repr__(self):
         # type: () -> str

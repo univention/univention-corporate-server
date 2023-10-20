@@ -160,7 +160,7 @@ class HTTPError(Exception):
         data = self.response.data
         if self.status >= 500 and isinstance(self.response.data, dict) and isinstance(self.response.data.get('traceback'), str) and 'Traceback (most recent call last)' in self.response.data['traceback']:
             data = data.copy()
-            traceback = '\n{}'.format(data.pop('traceback'))
+            traceback = f'\n{data.pop("traceback")}'
         return f'{self.status} on {self.hostname} ({self.request.path}): {data}{traceback}'
 
 

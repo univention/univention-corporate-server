@@ -110,7 +110,7 @@ def test_group_sync_from_ad_to_udm_with_rename(group_class, sync_mode):
         udm_group = group_class()
         (ad_group, ad_group_dn, udm_group_dn) = create_con_group(AD, udm_group, adconnector.wait_for_sync)
 
-        print("\nRename AD group {!r} to {!r}\n".format(ad_group_dn, udm_group.rename.get("name")))
+        print(f"\nRename AD group {ad_group_dn!r} to {udm_group.rename.get('name')!r}\n")
         ad_group_dn = AD.rename_or_move_user_or_group(ad_group_dn, name=udm_group.to_unicode(udm_group.rename).get("name"))
         AD.set_attributes(ad_group_dn, **tcommon.map_udm_group_to_con(udm_group.rename))
         adconnector.wait_for_sync()

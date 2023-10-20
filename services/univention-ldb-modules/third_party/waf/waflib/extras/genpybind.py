@@ -112,7 +112,7 @@ class genpybind(Task.Task): # pylint: disable=invalid-name
         if hasattr(bld, "log_command"):
             bld.log_command(args, kwargs)
         else:
-            Logs.debug("runner: {!r}".format(args))
+            Logs.debug(f"runner: {args!r}")
         proc = subprocess.Popen(
             args, stdout=subprocess.PIPE, stderr=subprocess.PIPE, **kwargs)
         stdout, stderr = proc.communicate()
@@ -133,7 +133,7 @@ class genpybind(Task.Task): # pylint: disable=invalid-name
                 ))
 
         if stderr.strip():
-            Logs.debug("non-fatal warnings during genpybind run:\n{}".format(stderr))
+            Logs.debug(f"non-fatal warnings during genpybind run:\n{stderr}")
 
         return stdout
 
@@ -149,7 +149,7 @@ class genpybind(Task.Task): # pylint: disable=invalid-name
                     relative_includes.append(node.path_from(inc))
                     break
             else:
-                self.generator.bld.fatal("could not resolve {}".format(node))
+                self.generator.bld.fatal(f"could not resolve {node}")
         return relative_includes
 
     def _arguments(self, genpybind_parse=None, resource_dir=None):
@@ -184,11 +184,11 @@ class genpybind(Task.Task): # pylint: disable=invalid-name
             args.append(flag)
         if not has_std_argument:
             args.append("-std=c++14")
-        args.extend("-I{}".format(n.abspath()) for n in self._include_paths())
-        args.extend("-D{}".format(p) for p in self.env.DEFINES)
+        args.extend(f"-I{n.abspath()}" for n in self._include_paths())
+        args.extend(f"-D{p}" for p in self.env.DEFINES)
 
         # point to clang resource dir, if specified
         if resource_dir:
-            args.append("-resource-dir={}".format(resource_dir))
+            args.append(f"-resource-dir={resource_dir}")
 
         return args

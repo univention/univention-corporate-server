@@ -58,4 +58,4 @@ def handler(ucr, changes):
 
     if processes > 1:
         for i in range(processes):
-            subprocess.call(['systemctl', 'enable', 'univention-management-console-server@{}'.format(i + start_port)])
+            subprocess.call(['systemctl', 'enable', f'univention-management-console-server@{i + start_port}'])

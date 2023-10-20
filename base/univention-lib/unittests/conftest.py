@@ -41,7 +41,7 @@ def pytest_addoption(parser):
 
 def import_lib_module(request, name):
     use_installed = request.config.getoption('--installed-lib')
-    return import_module(name, 'python/', 'univention.lib.{}'.format(name), use_installed=use_installed)
+    return import_module(name, 'python/', f'univention.lib.{name}', use_installed=use_installed)
 
 
 @pytest.fixture(scope='session')

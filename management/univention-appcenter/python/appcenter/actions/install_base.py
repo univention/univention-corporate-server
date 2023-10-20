@@ -118,7 +118,7 @@ class InstallRemoveUpgrade(Register):
             # different, please remember to to inform the user about the output
             # of the scripts!
         else:
-            self.log('Potential script hook folder is unused: {folder}'.format(folder=directory))
+            self.log(f'Potential script hook folder is unused: {directory}')
 
     def do_it(self, args):
         i = -1

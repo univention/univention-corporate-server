@@ -88,5 +88,5 @@ class Plugins(object):
         path = os.path.join(base_module_dir, '*.py')
         for pymodule in glob(path):
             pymodule_name = os.path.basename(pymodule)[:-3]  # without .py
-            importlib.import_module('{}.{}'.format(self.python_path, pymodule_name))
+            importlib.import_module(f'{self.python_path}.{pymodule_name}')
         self._imported[self.python_path] = True

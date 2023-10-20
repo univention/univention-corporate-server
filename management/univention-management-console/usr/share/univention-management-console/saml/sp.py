@@ -42,7 +42,7 @@ def get_cert():
     if public_key_compare(public_cert_key, public_key):
         return cert.public_bytes(Encoding.PEM)
     raise CertDoesNotMatchPrivateKeyError(
-        'Cert: "{}" does not match private key: "{}"'.format(CONFIG['cert_file'], CONFIG['key_file']),
+        f'Cert: "{CONFIG["cert_file"]}" does not match private key: "{CONFIG["key_file"]}"',
     )
 
 

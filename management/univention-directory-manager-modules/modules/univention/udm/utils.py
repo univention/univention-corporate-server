@@ -85,4 +85,4 @@ class UDebug(object):
     def _log(cls, level, msg):
         ud.debug(cls.target, level, msg)
         if is_interactive and level <= ud.INFO:
-            print('{}: {}'.format(cls.level2str[level], msg))
+            print(f'{cls.level2str[level]}: {msg}')

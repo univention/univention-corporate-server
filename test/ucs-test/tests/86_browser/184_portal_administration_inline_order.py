@@ -38,7 +38,7 @@ class UMCTester(object):
 
     def init(self):
         logger.info('Creating dummy portal entries and categories')
-        self.entry_a_1_dname = "entry_a_1__{}".format(uts.random_string())
+        self.entry_a_1_dname = f"entry_a_1__{uts.random_string()}"
         entry_a_1_dn = self.udm_test.create_object(
             'portals/entry',
             name=self.entry_a_1_dname,
@@ -46,7 +46,7 @@ class UMCTester(object):
             description=['en_US foo'],
             link=['en_US foo'],
         )
-        self.entry_a_2_dname = "entry_a_2__{}".format(uts.random_string())
+        self.entry_a_2_dname = f"entry_a_2__{uts.random_string()}"
         entry_a_2_dn = self.udm_test.create_object(
             'portals/entry',
             name=self.entry_a_2_dname,
@@ -54,14 +54,14 @@ class UMCTester(object):
             description=['en_US foo'],
             link=['en_US foo'],
         )
-        self.cat_a_dname = "category_a__{}".format(uts.random_string())
+        self.cat_a_dname = f"category_a__{uts.random_string()}"
         cat_a_dn = self.udm_test.create_object(
             'portals/category',
             name=self.cat_a_dname,
             displayName=['en_US ' + self.cat_a_dname],
             entries=[entry_a_1_dn, entry_a_2_dn],
         )
-        self.entry_b_dname = "entry_b__{}".format(uts.random_string())
+        self.entry_b_dname = f"entry_b__{uts.random_string()}"
         entry_b_dn = self.udm_test.create_object(
             'portals/entry',
             name=self.entry_b_dname,
@@ -69,7 +69,7 @@ class UMCTester(object):
             description=['en_US foo'],
             link=['en_US foo'],
         )
-        self.cat_b_dname = "category_b__{}".format(uts.random_string())
+        self.cat_b_dname = f"category_b__{uts.random_string()}"
         cat_b_dn = self.udm_test.create_object(
             'portals/category',
             name=self.cat_b_dname,
@@ -89,7 +89,7 @@ class UMCTester(object):
 
         logger.info('Saving previously set portalComputers of main portal')
         udm = UDM.admin().version(1)
-        portal = udm.obj_by_dn('cn=domain,cn=portal,cn=portals,cn=univention,{}'.format(ucr.get('ldap/base')))
+        portal = udm.obj_by_dn(f'cn=domain,cn=portal,cn=portals,cn=univention,{ucr.get("ldap/base")}')
         self.prev_comps = portal.props.portalComputers
         portal.props.portalComputers = []
         portal.save()
@@ -172,7 +172,7 @@ class UMCTester(object):
         if hasattr(self, 'prev_comps'):
             logger.info('Restore previously set portalComputers on main portal')
             udm = UDM.admin().version(1)
-            portal = udm.obj_by_dn('cn=domain,cn=portal,cn=portals,cn=univention,{}'.format(ucr.get('ldap/base')))
+            portal = udm.obj_by_dn(f'cn=domain,cn=portal,cn=portals,cn=univention,{ucr.get("ldap/base")}')
             portal.props.portalComputers = self.prev_comps
             portal.save()
 

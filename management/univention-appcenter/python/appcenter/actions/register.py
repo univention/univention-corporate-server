@@ -243,11 +243,11 @@ class Register(CredentialsAction):
                             self.warn('A newer version of %s has already been registered. Skipping...' % schema_file)
                         else:
                             msg = get_handler_message('ldap_extension', userdn, self._get_password(args, ask=False))
-                            raise RegisterSchemaFailed('activation failed: {} {}'.format(msg, exc.code))
+                            raise RegisterSchemaFailed(f'activation failed: {msg} {exc.code}')
                     else:
                         if not schema_obj.wait_for_activation():
                             msg = get_handler_message('ldap_extension', userdn, self._get_password(args, ask=False))
-                            raise RegisterSchemaFileFailed('activation failed: {} {}'.format(msg, schema_file))
+                            raise RegisterSchemaFileFailed(f'activation failed: {msg} {schema_file}')
                     finally:
                         if 'UNIVENTION_APP_IDENTIFIER' in os.environ:
                             del os.environ['UNIVENTION_APP_IDENTIFIER']

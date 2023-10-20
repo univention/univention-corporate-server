@@ -94,12 +94,7 @@ class VerifyEmail(UniventionSelfServiceTokenEmitter):
         fqdn = ".".join([self.ucr["hostname"], self.ucr["domainname"]])
         frontend_server = self.ucr.get("umc/self-service/account-verification/email/webserver_address", fqdn)
         link = f"https://{frontend_server}/univention/selfservice/#/selfservice/verifyaccount/"
-        tokenlink = "https://{fqdn}/univention/selfservice/#/selfservice/verifyaccount/?token={token}&username={username}&method={method}".format(
-            fqdn=frontend_server,
-            username=quote(self.data["username"]),
-            token=quote(self.data["token"]),
-            method=self.send_method(),
-        )
+        tokenlink = f"https://{frontend_server}/univention/selfservice/#/selfservice/verifyaccount/?token={quote(self.data['token'])}&username={quote(self.data['username'])}&method={self.send_method()}"
 
         txt = txt.format(username=self.data["username"], token=self.data["token"], link=link, tokenlink=tokenlink)
 
@@ -115,6 +110,6 @@ class VerifyEmail(UniventionSelfServiceTokenEmitter):
         smtp = smtplib.SMTP(self.server)
         smtp.sendmail(msg["From"], self.data["address"], msg.as_string())
         smtp.quit()
-        self.log("Sent mail with token to address {}.".format(self.data["address"]))
+        self.log(f"Sent mail with token to address {self.data['address']}.")
 
         return True

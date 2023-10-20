@@ -113,7 +113,7 @@ def test_user_sync_from_ad_to_udm_with_rename(user_class, sync_mode):
         udm_user = user_class()
         (basic_ad_user, ad_user_dn, udm_user_dn) = create_con_user(AD, udm_user, adconnector.wait_for_sync)
 
-        print("\nRename AD user {!r} to {!r}\n".format(ad_user_dn, udm_user.rename.get("username")))
+        print(f"\nRename AD user {ad_user_dn!r} to {udm_user.rename.get('username')!r}\n")
         ad_user_dn = AD.rename_or_move_user_or_group(ad_user_dn, name=udm_user.to_unicode(udm_user.rename).get("username"))
         AD.set_attributes(ad_user_dn, **tcommon.map_udm_user_to_con(udm_user.rename))
         adconnector.wait_for_sync()

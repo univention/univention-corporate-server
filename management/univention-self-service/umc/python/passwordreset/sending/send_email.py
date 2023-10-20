@@ -109,7 +109,7 @@ class SendEmail(UniventionSelfServiceTokenEmitter):
         frontend_server = self.ucr.get("umc/self-service/passwordreset/email/webserver_address", fqdn)
         links = {
             'link': f"https://{frontend_server}/univention/selfservice/#/selfservice/newpassword/",
-            'tokenlink': "https://{fqdn}/univention/selfservice/#/selfservice/newpassword/?token={token}&username={username}".format(fqdn=frontend_server, username=quote(self.data["username"]), token=quote(self.data["token"])),
+            'tokenlink': f"https://{frontend_server}/univention/selfservice/#/selfservice/newpassword/?token={quote(self.data['token'])}&username={quote(self.data['username'])}",
         }
 
         formatter_dict = self.data['user_properties']
@@ -130,6 +130,6 @@ class SendEmail(UniventionSelfServiceTokenEmitter):
         smtp = smtplib.SMTP(self.server)
         smtp.sendmail(msg["From"], self.data["address"], msg.as_string())
         smtp.quit()
-        self.log("Sent mail with token to address {}.".format(self.data["address"]))
+        self.log(f"Sent mail with token to address {self.data['address']}.")
 
         return True

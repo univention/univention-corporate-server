@@ -126,7 +126,7 @@ import listener
 
 
 listener.configRegistry.load()
-fqdn = '{}.{}'.format(listener.configRegistry['hostname'].lower(), listener.configRegistry['domainname'].lower())
+fqdn = f'{listener.configRegistry["hostname"].lower()}.{listener.configRegistry["domainname"].lower()}'
 
 name = 'dovecot-shared-folder'
 description = 'Create shared folders for Dovecot'

@@ -84,7 +84,7 @@ class AuthTests:
             'sieve-connect', '--nosslverify', '--notlsverify',
             '--user', user,
             '--authzid', user,
-            '--server', '{}.{}'.format(self.ucr.get('hostname'), self.ucr.get('domainname')),
+            '--server', f'{self.ucr.get("hostname")}.{self.ucr.get("domainname")}',
             '--port', '4190', '-4',
             '--passwordfd', '0',
             '--list'], stdin=subprocess.PIPE)
@@ -140,7 +140,7 @@ class AuthTests:
         print('=' * 55)
         results = sorted(result.items(), key=lambda x: x[0], reverse=True)
         for key, val in results:
-            print('{:<45}: {}'.format(key, {True: 'OK', False: 'FAILED', None: 'SKIPPED'}[val]))
+            print(f'{key:<45}: {({True: "OK", False: "FAILED", None: "SKIPPED"}[val])}')
 
         if any(x is False for x in result.values()):
             utils.fail('Not all authentication were okay!')

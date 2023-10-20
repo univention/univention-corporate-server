@@ -14,15 +14,15 @@ import univention.testing.udm as udm_test
 
 
 def eapol_test(username):
-    testdata = '''network={{
+    testdata = f'''network={{
         key_mgmt=WPA-EAP
         eap=PEAP
-        identity="{}"
+        identity="{username}"
         anonymous_identity="anonymous"
         password="univention"
         phase2="autheap=MSCHAPV2"
 }}
-'''.format(username)
+'''
     with tempfile.NamedTemporaryFile() as fd:
         fd.write(testdata.encode('UTF-8'))
         fd.flush()
@@ -33,7 +33,7 @@ def main():
     with ucr_test.UCSTestConfigRegistry() as ucr, udm_test.UCSTestUDM() as udm:
         username_allowed = udm.create_user(networkAccess=1)[1]
         eapol_test(username_allowed)
-        eapol_test('{}\\{}'.format(ucr.get('windows/domain'), username_allowed))
+        eapol_test(f'{ucr.get("windows/domain")}\\{username_allowed}')
 
 
 if __name__ == '__main__':

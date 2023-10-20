@@ -74,11 +74,11 @@ def modify_and_check(udm, ldap_base, dn, disabled_state, locked_state):
     lo, pos = univention.admin.uldap.getMachineConnection(ldap_master=False)
     user = lo.get(dn)
     print_transitions()
-    assert user['krb5KDCFlags'] == [krb_state], 'krb5KDCFlags: expected {!r} found {!r}'.format(krb_state, user['krb5KDCFlags'])
-    assert not (smb_disabled and b'D' not in user['sambaAcctFlags'][0]), 'sambaAcctFlags: expected D in flags, found {!r}'.format(user['sambaAcctFlags'])
-    assert not ((smb_locked and not smb_disabled) and b'L' not in user['sambaAcctFlags'][0]), 'sambaAcctFlags: expected L in flags, found {!r}'.format(user['sambaAcctFlags'])
-    assert not ((smb_locked and smb_disabled) and b'L' in user['sambaAcctFlags'][0]), 'sambaAcctFlags: unexpected L in flags: {!r}'.format(user['sambaAcctFlags'])
-    assert not ((disabled_state == '1' or 'posix' in disabled_state) and user['shadowExpire'][0] != b'1'), 'shadowExpire: expected {!r} found {!r}'.format(['1'], user['shadowExpire'])
+    assert user['krb5KDCFlags'] == [krb_state], f'krb5KDCFlags: expected {krb_state!r} found {user["krb5KDCFlags"]!r}'
+    assert not (smb_disabled and b'D' not in user['sambaAcctFlags'][0]), f'sambaAcctFlags: expected D in flags, found {user["sambaAcctFlags"]!r}'
+    assert not ((smb_locked and not smb_disabled) and b'L' not in user['sambaAcctFlags'][0]), f'sambaAcctFlags: expected L in flags, found {user["sambaAcctFlags"]!r}'
+    assert not ((smb_locked and smb_disabled) and b'L' in user['sambaAcctFlags'][0]), f'sambaAcctFlags: unexpected L in flags: {user["sambaAcctFlags"]!r}'
+    assert not ((disabled_state == '1' or 'posix' in disabled_state) and user['shadowExpire'][0] != b'1'), f'shadowExpire: expected {["1"]!r} found {user["shadowExpire"]!r}'
     print('*** OK.')
     if transitions_log:
         transitions_log[-1] = f'OK: {transitions_log[-1]}'

@@ -355,14 +355,14 @@ class UMCPortal(Portal):
             "backgroundColor": color,
             "links": [{
                 "locale": locale,
-                "value": "/univention/management/?header=try-hide&overview=false&menu=false#module={}:{}".format(module["id"], module.get("flavor", "")),
+                "value": f"/univention/management/?header=try-hide&overview=false&menu=false#module={module['id']}:{module.get('flavor', '')}",
             }],
             # TODO: missing: in_portal, anonymous, activated, allowedGroups
         }
         return entry
 
     def _module_icon_url(self, module):
-        sub_path = "js/dijit/themes/umc/icons/scalable/{}.svg".format(module["icon"])
+        sub_path = f"js/dijit/themes/umc/icons/scalable/{module['icon']}.svg"
         filename = os.path.join('/usr/share/univention-management-console-frontend/', sub_path)
         if os.path.exists(filename):
             return urljoin("/univention/management/", sub_path)
@@ -376,7 +376,7 @@ class UMCPortal(Portal):
         return color
 
     def _entry_id(self, module):
-        return "umc:module:{}:{}".format(module["id"], module.get("flavor", ""))
+        return f"umc:module:{module['id']}:{module.get('flavor', '')}"
 
     def get_folders(self, content):
         folders = []

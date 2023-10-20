@@ -64,23 +64,17 @@ def setup(app_name):
     # the same script will be placed in all script hook folders, always named
     # after the action it is for.  It prints its filename into $result_file-
     # appends one line & that is the test condition.
-    test_script = '''#!/bin/sh
+    test_script = f'''#!/bin/sh
 # This script prints the current date and its own name
 date -Is
-echo "$0" >> {file_result}'''.format(file_result=file_result)
+echo "$0" >> {file_result}'''
     #   ^ NOTE: ticks are intentional!
 
     for action in actions:
 
-        script_hook_path = '{hook_path}/post-{action}.d'.format(
-            hook_path=path_hooks.format(appid=app_name),
-            action=action,
-        )
+        script_hook_path = f'{path_hooks.format(appid=app_name)}/post-{action}.d'
 
-        script_hook_file = "{pathname}/{filename}".format(
-            pathname=script_hook_path,
-            filename=action,
-        )
+        script_hook_file = f"{script_hook_path}/{action}"
 
         # create the hook directory only if it does not exist yet
         try:
@@ -102,9 +96,7 @@ echo "$0" >> {file_result}'''.format(file_result=file_result)
                 os.stat(script_hook_file).st_mode | stat.S_IEXEC)
 
         except Exception as e:
-            print("Error with file '{filename}': {error}".format(
-                error=e,
-                filename=script_hook_file),
+            print(f"Error with file '{script_hook_file}': {e}",
             )
 
 

@@ -74,7 +74,7 @@ class TokenDB(object):
 
     def delete_tokens(self, **kwargs):
         sql = "DELETE FROM tokens WHERE "
-        sql += " AND ".join(["{0}=%({0})s".format(key) for key in kwargs.keys()])
+        sql += " AND ".join([f"{key}=%({key})s" for key in kwargs.keys()])
         cur = self.conn.cursor()
         cur.execute(sql, kwargs)
         self.conn.commit()
@@ -82,7 +82,7 @@ class TokenDB(object):
 
     def get_all(self, **kwargs):
         sql = "SELECT * FROM tokens WHERE "
-        sql += " AND ".join(["{0}=%({0})s".format(key) for key in kwargs.keys()])
+        sql += " AND ".join([f"{key}=%({key})s" for key in kwargs.keys()])
         cur = self.conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
         cur.execute(sql, kwargs)
         rows = cur.fetchall()
@@ -120,10 +120,8 @@ token VARCHAR(255) NOT NULL);""")
             self.logger.error(f"db_open(): Could not read {DB_SECRETS_FILE}: {e}")
             raise
         try:
-            conn = psycopg2.connect("dbname={db_name} user={db_user} host='localhost' password='{db_pw}'".format(
-                db_name=DB_NAME, db_user=DB_USER, db_pw=password))
-            self.logger.info("db_open(): Connected to database '{}' on server with version {} using protocol version {}.".format(
-                DB_NAME, conn.server_version, conn.protocol_version))
+            conn = psycopg2.connect(f"dbname={DB_NAME} user={DB_USER} host='localhost' password='{password}'")
+            self.logger.info(f"db_open(): Connected to database '{DB_NAME}' on server with version {conn.server_version} using protocol version {conn.protocol_version}.")
             return conn
         except Exception:
             self.logger.error(f"db_open(): Error connecting to database '{DB_NAME}': {traceback.format_exc()}")

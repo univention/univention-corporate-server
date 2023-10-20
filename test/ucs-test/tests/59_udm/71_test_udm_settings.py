@@ -313,7 +313,7 @@ def test_create_data(udm, ucr):
     """Create a settings/data object"""
     data = uts.random_name(500)
     kwargs = {
-        "position": 'cn=data,cn=univention,{}'.format(ucr['ldap/base']),
+        "position": f'cn=data,cn=univention,{ucr["ldap/base"]}',
         "name": uts.random_name(),
         "filename": uts.random_name(),
         "description": uts.random_name(),
@@ -390,7 +390,7 @@ def test_register_data(udm, ucr, remove_tmp_file):
     udm._cleanup.setdefault('settings/data', []).append(dn)
     register_cmd = [
         'ucs_registerLDAPExtension',
-        '--binddn', 'cn=admin,{}'.format(ucr['ldap/base']),
+        '--binddn', f'cn=admin,{ucr["ldap/base"]}',
         '--bindpwdfile', '/etc/ldap.secret',
         '--packagename', kwargs['package'],
         '--packageversion', kwargs['packageversion'],
@@ -401,7 +401,7 @@ def test_register_data(udm, ucr, remove_tmp_file):
         '--data_meta', kwargs['meta'][0],
         '--data_meta', kwargs['meta'][1],
     ]
-    cmd = ['/bin/bash', '-c', 'source /usr/share/univention-lib/ldap.sh && {}'.format(' '.join([shlex.quote(x) for x in register_cmd]))]
+    cmd = ['/bin/bash', '-c', f'source /usr/share/univention-lib/ldap.sh && {" ".join([shlex.quote(x) for x in register_cmd])}']
     run_cmd(cmd)
 
     cmd = ['udm', 'settings/data', 'list', '--filter', f'cn={file_name}']
@@ -431,10 +431,10 @@ def test_register_data(udm, ucr, remove_tmp_file):
     num0 = int(nums[0])
     num0 -= 1
     older_packageversion = '.'.join([str(num0)] + nums[1:])
-    print('Registering with lower package version ({!r}) and changed "data_type"...'.format(kwargs['packageversion']))
+    print(f'Registering with lower package version ({kwargs["packageversion"]!r}) and changed "data_type"...')
     register_cmd = [
         'ucs_registerLDAPExtension',
-        '--binddn', 'cn=admin,{}'.format(ucr['ldap/base']),
+        '--binddn', f'cn=admin,{ucr["ldap/base"]}',
         '--bindpwdfile', '/etc/ldap.secret',
         '--packagename', kwargs['package'],
         '--packageversion', older_packageversion,
@@ -445,7 +445,7 @@ def test_register_data(udm, ucr, remove_tmp_file):
         '--data_meta', 'Some different meta data',
         '--data_meta', 'Some very different meta data',
     ]
-    cmd = ['/bin/bash', '-c', 'source /usr/share/univention-lib/ldap.sh && {}'.format(' '.join([shlex.quote(x) for x in register_cmd]))]
+    cmd = ['/bin/bash', '-c', f'source /usr/share/univention-lib/ldap.sh && {" ".join([shlex.quote(x) for x in register_cmd])}']
     run_cmd(cmd)
 
     utils.verify_ldap_object(

@@ -589,7 +589,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
                 self.debug('Files: %s' % files)
                 for multifile, subfileentries in subfiles.items():
                     if multifile not in multifiles:
-                        self.addmsg('0004-10', 'file contains subfile entry without corresponding multifile entry.\n      - subfile = {}\n      - multifile = {}'.format(subfileentries[0]['Subfile'][0], multifile), fn)
+                        self.addmsg('0004-10', f'file contains subfile entry without corresponding multifile entry.\n      - subfile = {subfileentries[0]["Subfile"][0]}\n      - multifile = {multifile}', fn)
 
                 # merge into global list
                 for mfn, item in multifiles.items():

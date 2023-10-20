@@ -129,7 +129,7 @@ class ModuleHandler(logging.Handler):
         msg = self.format(record)
         if PY2 and isinstance(msg, text_type):
             msg = msg.encode('utf-8')
-        msg = '{}: {}'.format(record.name.rsplit('.')[-1], msg)
+        msg = f'{record.name.rsplit(".")[-1]}: {msg}'
         udebug_level = self.LOGGING_TO_UDEBUG[record.levelname]
         ud.debug(self._udebug_facility, udebug_level, msg)
 

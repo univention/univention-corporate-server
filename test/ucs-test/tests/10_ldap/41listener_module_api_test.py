@@ -138,7 +138,7 @@ def main():
         new_dn = udm.move_object(
             'users/user',
             dn=new_dn,
-            position='cn=users,{}'.format(ucr['ldap/base']),
+            position=f'cn=users,{ucr["ldap/base"]}',
         )
 
         lm_logger.info('*** Modifying user (roomNumber) and triggering error...')

@@ -81,10 +81,10 @@ class MailAllModule(GenericModule):
         uni_obj_type = copy.copy(getattr(orig_udm_obj, 'oldinfo', {}).get('univentionObjectType'))
         if uni_obj_type and uni_obj_type[0].startswith('mail/'):
             # oxmail/oxfolder -> .append(mail/folder)
-            uni_obj_type.append('oxmail/ox{}'.format(uni_obj_type[0].split('/', 1)[1]))
+            uni_obj_type.append(f'oxmail/ox{uni_obj_type[0].split("/", 1)[1]}')
         elif uni_obj_type and uni_obj_type[0].startswith('oxmail/'):
             # mail/folder -> .append(oxmail/oxfolder)
-            uni_obj_type.append('mail/{}'.format(uni_obj_type[0].split('/', 1)[1][2:]))
+            uni_obj_type.append(f'mail/{uni_obj_type[0].split("/", 1)[1][2:]}')
 
         # and now the original test
         if uni_obj_type and self.name.split('/', 1)[0] not in [uot.split('/', 1)[0] for uot in uni_obj_type]:

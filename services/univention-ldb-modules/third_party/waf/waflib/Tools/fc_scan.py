@@ -63,7 +63,7 @@ class fortran_parser(object):
 			m = re_smd.search(line)
 			if m:
 				uses.append(m.group(1))
-				mods.append('{0}:{1}'.format(m.group(1),m.group(2)))
+				mods.append(f'{m.group(1)}:{m.group(2)}')
 		return (incs, uses, mods)
 
 	def start(self, node):

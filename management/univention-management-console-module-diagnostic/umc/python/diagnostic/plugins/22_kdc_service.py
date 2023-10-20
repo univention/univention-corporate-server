@@ -85,7 +85,7 @@ def add_lo_to_samba_interfaces(umc_instance: Instance) -> None:
     interfaces = configRegistry.get('samba/interfaces', '').split()
     interfaces.append('lo')
     MODULE.process('Setting samba/interfaces')
-    ucr_set(['samba/interfaces={}'.format(' '.join(interfaces))])
+    ucr_set([f'samba/interfaces={" ".join(interfaces)}'])
     return run(umc_instance, retest=True)
 
 

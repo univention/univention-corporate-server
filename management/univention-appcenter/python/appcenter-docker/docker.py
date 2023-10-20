@@ -95,10 +95,10 @@ def inspect_with_retry(container, retries=3):
         try:
             return inspect(container)
         except Exception as e:
-            _logger.warning('Inspect for container {} failed: {}'.format(container, e))
+            _logger.warning(f'Inspect for container {container} failed: {e}')
             exc = e
             time.sleep(5)
-    raise DockerInspectCallFailed('Inspect for container {} failed after {} retries: {}'.format(container, retries, exc))
+    raise DockerInspectCallFailed(f'Inspect for container {container} failed after {retries} retries: {exc}')
 
 
 def login(hub, with_license):
@@ -560,7 +560,7 @@ class MultiDocker(Docker):
             container_def['environment'] = {}
         if isinstance(container_def['environment'], list):
             for key, val in env.items():
-                container_def['environment'].append('{}={}'.format(key, val))
+                container_def['environment'].append(f'{key}={val}')
         else:
             container_def['environment'].update(env)
         for app_id, container_port, host_port in app_ports():
@@ -581,8 +581,8 @@ class MultiDocker(Docker):
             content['services'][service_name]['ports'] = []
             for container_port, host_port in ports.items():
                 if prots.get(container_port):
-                    container_port = '{}/{}'.format(container_port, prots[container_port])
-                content['services'][service_name]['ports'].append('{}:{}'.format(host_port, container_port))
+                    container_port = f'{container_port}/{prots[container_port]}'
+                content['services'][service_name]['ports'].append(f'{host_port}:{container_port}')
 
         if self.env_file_created and self.app.docker_inject_env_file is not None:
             for service_name, service in content['services'].items():
@@ -600,7 +600,7 @@ class MultiDocker(Docker):
     def _setup_env(self, env=None):
         if os.path.exists(self.app.get_cache_file('env')) and self.app.docker_inject_env_file:
             mkdir(self.app.get_compose_dir())
-            env_file_name = '{}.env'.format(self.app.id)
+            env_file_name = f'{self.app.id}.env'
             env_file = os.path.join(self.app.get_compose_dir(), env_file_name)
             # remove old env file
             try:
@@ -634,27 +634,27 @@ class MultiDocker(Docker):
                     ps = check_output(['docker-compose', '-p', self.app.id, 'ps', '-q'], cwd=self.app.get_compose_dir())
                     break
                 except Exception as e:
-                    _logger.warning('docker-compose ps for app {} failed: {}'.format(self.app.id, e))
+                    _logger.warning(f'docker-compose ps for app {self.app.id} failed: {e}')
                     time.sleep(5)
             for container_id in ps.splitlines():
                 container_id = container_id.decode('utf-8')
                 try:
                     container_inspect = inspect_with_retry(container_id)
                 except DockerInspectCallFailed as e:
-                    _logger.warning('Fail: {}'.format(e))
+                    _logger.warning(f'Fail: {e}')
                     break
                 container_name = container_inspect['Name']
-                if '_{}_'.format(service_name) in container_name:
+                if f'_{service_name}_' in container_name:
                     return container_inspect['Id']
         # default
         if name is None:
-            name = '{}_{}_1'.format(self.app.id, service_name)
+            name = f'{self.app.id}_{service_name}_1'
         # get containert id
         try:
             insp = inspect_with_retry(name)
             return insp['Id']
         except DockerInspectCallFailed as e:
-            _logger.warning('Fail: {}'.format(e))
+            _logger.warning(f'Fail: {e}')
         return None
 
     def _get_main_service_container_id(self):

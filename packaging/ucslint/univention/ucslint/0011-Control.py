@@ -294,11 +294,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
         files = os.listdir(debianpath)
 
         regexp = re.compile(
-            r'^(?:{})[.](?:{}|.+[.](?:{}))$'.format(
-                '|'.join(re.escape(pkg) for pkg in pkgs),
-                '|'.join(re.escape(suffix) for suffix in self.KNOWN_DH_FILES | self.NAMED_DH_FILES),
-                '|'.join(re.escape(suffix) for suffix in self.NAMED_DH_FILES),
-            ))
+            fr'^(?:{"|".join(re.escape(pkg) for pkg in pkgs)})[.](?:{"|".join(re.escape(suffix) for suffix in self.KNOWN_DH_FILES | self.NAMED_DH_FILES)}|.+[.](?:{"|".join(re.escape(suffix) for suffix in self.NAMED_DH_FILES)}))$')
 
         for rel_name in files:
             fn = os.path.join(debianpath, rel_name)

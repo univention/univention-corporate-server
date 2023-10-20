@@ -117,10 +117,7 @@ class Trie:
         if cc:
             alt.append(cc[0] if len(cc) == 1 else '[%s]' % ''.join(cc))
 
-        return '{}{}'.format(
-            '(?:%s)' % '|'.join(alt) if len(alt) > 1 or q and not cconly else alt[0],
-            '?' if q else '',
-        )
+        return f'{"(?:%s)" % "|".join(alt) if len(alt) > 1 or q and not cconly else alt[0]}{"?" if q else ""}'
 
     def pattern(self) -> str:
         """

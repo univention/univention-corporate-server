@@ -46,8 +46,8 @@ class UpdateCertificates(UpdateCertificates, DockerActionMixin):
     def _copy_host_cert(self, docker, host_ssl_dir, dest):
         docker.execute('mkdir', '-p', dest, _logger=self.logfile_logger)
         docker.execute('chmod', '750', dest, _logger=self.logfile_logger)
-        docker.cp_to_container('{}/cert.pem'.format(host_ssl_dir), '{}/cert.perm'.format(dest), _logger=self.logfile_logger)
-        docker.cp_to_container('{}/private.key'.format(host_ssl_dir), '{}/private.key'.format(dest), _logger=self.logfile_logger)
+        docker.cp_to_container(f'{host_ssl_dir}/cert.pem', f'{dest}/cert.perm', _logger=self.logfile_logger)
+        docker.cp_to_container(f'{host_ssl_dir}/private.key', f'{dest}/private.key', _logger=self.logfile_logger)
 
     def update_certificates(self, app):
         hostname = ucr_get('hostname')
@@ -67,11 +67,11 @@ class UpdateCertificates(UpdateCertificates, DockerActionMixin):
                     docker.execute('mkdir', '-p', '/etc/univention/ssl/ucsCA/', _logger=self.logfile_logger)
                     docker.cp_to_container(ca_path, ca_path, _logger=self.logfile_logger)
                 # docker host cert canonical name and ucs path
-                if os.path.isfile('{}/cert.pem'.format(docker_host_cert)) and os.path.isfile('{}/private.key'.format(docker_host_cert)):
+                if os.path.isfile(f'{docker_host_cert}/cert.pem') and os.path.isfile(f'{docker_host_cert}/private.key'):
                     # canonical name
                     self._copy_host_cert(docker, docker_host_cert, '/etc/univention/ssl/docker-host-certificate')
                     # ucs name
                     self._copy_host_cert(docker, docker_host_cert, docker_host_cert)
             else:
-                self.warn('Could not update certificates for {}, app is not running'.format(app))
+                self.warn(f'Could not update certificates for {app}, app is not running')
         super(UpdateCertificates, self).update_certificates(app)

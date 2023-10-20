@@ -152,7 +152,7 @@ class NameServer(object):
     def build_filter(self) -> str:
         template = '(&(relativeDomainName=%s)(zoneName=%s))'
         expressions = (ldap.filter.filter_format(template, (rdn, zn)) for (rdn, zn) in self._generate_splits(self.fqdn()))
-        return '(|{})'.format(''.join(expressions))
+        return f'(|{"".join(expressions)})'
 
 
 class UDM(object):

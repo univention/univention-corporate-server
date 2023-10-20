@@ -308,7 +308,7 @@ class AppFromFileAttribute(AppAttribute):
                 if name == "settings":
                     custom_settings_file = os.path.join(DATA_DIR, _self.id, 'custom.settings')
                     if os.path.isfile(custom_settings_file):
-                        app_logger.debug("custom settings {} file found".format(custom_settings_file))
+                        app_logger.debug(f"custom settings {custom_settings_file} file found")
                         app_attributes += self.klass.all_from_file(custom_settings_file, _self.get_locale())
                 setattr(_self, cache_name, app_attributes)
             return getattr(_self, cache_name)

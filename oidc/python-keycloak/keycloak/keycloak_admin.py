@@ -191,9 +191,9 @@ class KeycloakAdmin:
     def auto_refresh_token(self, value):
         allowed_methods = {'get', 'post', 'put', 'delete'}
         if not isinstance(value, Iterable):
-            raise TypeError('Expected a list of strings among {allowed}'.format(allowed=allowed_methods))
+            raise TypeError(f'Expected a list of strings among {allowed_methods}')
         if not all(method in allowed_methods for method in value):
-            raise TypeError('Unexpected method in auto_refresh_token, accepted methods are {allowed}'.format(allowed=allowed_methods))
+            raise TypeError(f'Unexpected method in auto_refresh_token, accepted methods are {allowed_methods}')
 
         self._auto_refresh_token = value
 

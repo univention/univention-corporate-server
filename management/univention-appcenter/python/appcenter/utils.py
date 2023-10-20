@@ -251,7 +251,7 @@ def call_process2(cmd, logger=None, env=None, cwd=None):
     str_cmd = [str(x) for x in cmd]
     if cwd:
         logger.debug('Running in %s:' % cwd)
-    logger.info('Running command: {}'.format(' '.join(str_cmd)))
+    logger.info(f'Running command: {" ".join(str_cmd)}')
     out = ""
     ret = 0
     try:
@@ -268,7 +268,7 @@ def call_process2(cmd, logger=None, env=None, cwd=None):
         out = str(err)
         ret = 1
     if ret:
-        logger.error('Command {} failed with: {} ({})'.format(' '.join(str_cmd), out.strip(), ret))
+        logger.error(f'Command {" ".join(str_cmd)} failed with: {out.strip()} ({ret})')
     return ret, out
 
 

@@ -23,10 +23,7 @@ def test_san():
                 'name': membername,
                 'password': 'univention',
                 'network': 'cn=default,cn=networks,%s' % ucr.get('ldap/base'),
-                'dnsEntryZoneAlias': '{0} zoneName={0},cn=dns,{1} www'.format(
-                            domainname,
-                            ucr.get('ldap/base'),
-                ),
+                'dnsEntryZoneAlias': f'{domainname} zoneName={domainname},cn=dns,{ucr.get("ldap/base")} www',
             },
         )
 

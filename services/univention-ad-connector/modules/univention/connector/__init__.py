@@ -575,7 +575,7 @@ class ucs(object):
         if not resync:
             # Note that unescaped <> are invalid in DNs. See also:
             # `_list_rejected_ucs()`.
-            dn = '<NORESYNC{}:{}>;{}'.format('=' + reason if reason else '', os.path.basename(filename), dn)
+            dn = f'<NORESYNC{"=" + reason if reason else ""}:{os.path.basename(filename)}>;{dn}'
         self._set_config_option('UCS rejected', filename, dn)
 
     def _remove_rejected_ucs(self, filename):

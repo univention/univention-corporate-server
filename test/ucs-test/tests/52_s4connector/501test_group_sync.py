@@ -105,7 +105,7 @@ def test_group_sync_from_s4_to_udm_with_rename(group_class, sync_mode):
         udm_group = group_class()
         (s4_group, s4_group_dn, udm_group_dn) = create_con_group(s4, udm_group, s4connector.wait_for_sync)
 
-        print("\nRename S4 group {!r} to {!r}\n".format(s4_group_dn, udm_group.rename.get("name")))
+        print(f"\nRename S4 group {s4_group_dn!r} to {udm_group.rename.get('name')!r}\n")
         s4_group_dn = s4.rename_or_move_user_or_group(s4_group_dn, name=tcommon.to_unicode(udm_group.rename.get("name")))
         s4.set_attributes(s4_group_dn, **tcommon.map_udm_group_to_con(udm_group.rename))
         s4connector.wait_for_sync()

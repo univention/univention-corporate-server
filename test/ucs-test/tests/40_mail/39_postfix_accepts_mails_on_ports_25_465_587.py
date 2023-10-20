@@ -46,11 +46,11 @@ def main():
         }
 
         for _port, kwargs in smtp_args.items():
-            syslog.syslog(syslog.LOG_INFO, 'Sending to port {}.'.format(kwargs['port']))
+            syslog.syslog(syslog.LOG_INFO, f'Sending to port {kwargs["port"]}.')
             send_mail(**kwargs)
             check_delivery(kwargs['msg'], mail2, True)
-            print('*** OK: mail delivered through port {}.'.format(kwargs['port']))
-            syslog.syslog(syslog.LOG_INFO, 'OK: mail delivered through port {}.'.format(kwargs['port']))
+            print(f'*** OK: mail delivered through port {kwargs["port"]}.')
+            syslog.syslog(syslog.LOG_INFO, f'OK: mail delivered through port {kwargs["port"]}.')
 
 
 if __name__ == '__main__':

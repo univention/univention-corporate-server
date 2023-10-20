@@ -9,9 +9,9 @@ from univention.udm import UDM
 
 
 def create_room(lo, name, school, hosts):
-    obj = ComputerRoom(name="{}-{}".format(school, name), school=school, hosts=hosts)
+    obj = ComputerRoom(name=f"{school}-{name}", school=school, hosts=hosts)
     result = obj.create(lo)
-    assert result, "create returned {} for {}".format(result, obj)
+    assert result, f"create returned {result} for {obj}"
 
 
 def main():
@@ -36,7 +36,7 @@ def main():
         for i in range(0, len(all_hosts), computers_in_room)
     ]
     for room, hosts in enumerate(chunked_host_list):
-        create_room(lo, "room{}".format(room), args.school, hosts)
+        create_room(lo, f"room{room}", args.school, hosts)
 
 
 if __name__ == "__main__":

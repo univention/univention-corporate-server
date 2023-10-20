@@ -65,7 +65,7 @@ def get_file_type(filename_or_file):
         with open(filename_or_file, 'rb') as fp:
             txt = fp.read()
     else:
-        raise ValueError('Argument "filename_or_file" has unknown type {!r}.'.format(type(filename_or_file)))
+        raise ValueError(f'Argument "filename_or_file" has unknown type {type(filename_or_file)!r}.')
     if hasattr(magic, 'from_file'):
         mime = magic.Magic(mime=True, mime_encoding=True).from_buffer(txt)
         mime_type, charset = mime.split(';')
@@ -105,7 +105,7 @@ class BaseBinaryProperty(object):
             self.raw = raw_value
 
     def __repr__(self):
-        return '{}({})'.format(self.__class__.__name__, self._name)
+        return f'{self.__class__.__name__}({self._name})'
 
     @property
     def encoded(self):

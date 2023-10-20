@@ -16,7 +16,7 @@ from univention.config_registry import handler_set as ucr_set, handler_unset as 
 
 @pytest.fixture()
 def credentials(ucr, lo):
-    krb5PrincipalName = lo.search(filter='(&(objectClass=univentionHost)(cn={}))'.format(ucr.get('hostname')))[0][1]['krb5PrincipalName'][0].decode('UTF-8')
+    krb5PrincipalName = lo.search(filter=f'(&(objectClass=univentionHost)(cn={ucr.get("hostname")}))')[0][1]['krb5PrincipalName'][0].decode('UTF-8')
     return (krb5PrincipalName, open('/etc/machine.secret').read())
 
 

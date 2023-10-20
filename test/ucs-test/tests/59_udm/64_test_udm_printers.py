@@ -158,11 +158,11 @@ def test_create_printer_and_check_printing_works(ucr, udm):
     time.sleep(delay)
     p = subprocess.Popen(['lpq', '-P', properties['name']], close_fds=True)
     p.wait()
-    assert not p.returncode, "CUPS printer {} not created after {} seconds".format(properties['name'], delay)
+    assert not p.returncode, f"CUPS printer {properties['name']} not created after {delay} seconds"
 
     p = subprocess.Popen(['su', admin_name, '-c', 'lpr -P %s /etc/hosts' % properties['name']], close_fds=True)
     p.wait()
-    assert not p.returncode, "Printing to CUPS printer {} as {} failed".format(properties['name'], admin_name)
+    assert not p.returncode, f"Printing to CUPS printer {properties['name']} as {admin_name} failed"
 
     s4_dc_installed = utils.package_installed("univention-samba4")
     s3_file_and_print_server_installed = utils.package_installed("univention-samba")
@@ -182,7 +182,7 @@ def test_create_printer_and_check_printing_works(ucr, udm):
             print('### testpam for that smb.conf section:')
             p = subprocess.Popen(['testparm', '-s', '--section-name', properties['sambaName']], close_fds=True)
             p.wait()
-            raise AssertionError('Samba printer share {} not accessible'.format(properties['sambaName']))
+            raise AssertionError(f'Samba printer share {properties["sambaName"]} not accessible')
 
     p = subprocess.Popen(['lprm', '-P', properties['name'], '-'], close_fds=True)
     p.wait()

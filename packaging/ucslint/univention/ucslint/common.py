@@ -54,9 +54,9 @@ import re
 WORD_CHARS = '[0-9a-z]'
 NAME_CHARS = '[+.0-9a-z-]'
 RE_DEBIAN_PACKAGE_NAME = re.compile(
-    r'''^
-    ({wc}{nc}*)  # Package name
-    $'''.format(wc=WORD_CHARS, nc=NAME_CHARS), re.VERBOSE)
+    fr'''^
+    ({WORD_CHARS}{NAME_CHARS}*)  # Package name
+    $''', re.VERBOSE)
 RE_DEBIAN_PACKAGE_VERSION = re.compile(
     r'''^
     (?: (?P<epoch>[0-9]+) : )?
@@ -64,14 +64,14 @@ RE_DEBIAN_PACKAGE_VERSION = re.compile(
     (?: - (?P<revision>[+.0-9a-z~]+) )?
     $''', re.VERBOSE)
 RE_DEBIAN_CHANGELOG = re.compile(
-    r'''^
-    ({wc}{nc}*)  # Package name
+    fr'''^
+    ({WORD_CHARS}{NAME_CHARS}*)  # Package name
     [ ]
     \( ([^ ()]+) \)  # Package version
-    ( (?: \s+ {nc}+ )+ )  # Target distribution
+    ( (?: \s+ {NAME_CHARS}+ )+ )  # Target distribution
     ;
     (.*?)  # key=value options
-    \s*$'''.format(wc=WORD_CHARS, nc=NAME_CHARS), re.MULTILINE | re.VERBOSE)
+    \s*$''', re.MULTILINE | re.VERBOSE)
 RE_HASHBANG_SHELL = re.compile(r'^#!\s*/bin/(?:a|ba|c|da|z)?sh\b')
 
 

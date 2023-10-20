@@ -33,7 +33,7 @@ def main():
             set={
                 'name': maildomain,
             },
-            position="cn=domain,cn=mail,{}".format(ucr.get("ldap/base")),
+            position=f"cn=domain,cn=mail,{ucr.get('ldap/base')}",
         )
 
         password = 'univention'

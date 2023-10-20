@@ -44,7 +44,7 @@ def main():
         with utils.AutoCallCommand(enter_cmd=cmd, exit_cmd=cmd):
             with udm_test.UCSTestUDM() as udm:
                 userbase = []
-                admin_account = ucr.get("tests/domainadmin/account", "uid=Administrator,cn=users,{}".format(ucr["ldap/base"]))
+                admin_account = ucr.get("tests/domainadmin/account", f"uid=Administrator,cn=users,{ucr['ldap/base']}")
                 pwd_file = ucr.get("tests/domainadmin/pwdfile")
                 if pwd_file:
                     with open(pwd_file) as fp:

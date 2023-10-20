@@ -362,8 +362,7 @@ class ListenerModuleHandler(with_metaclass(HandlerMetaClass)):
                     get_method = getattr(conf_obj, f'get_{attr}')
                     if not callable(get_method):
                         raise ListenerModuleConfigurationError(
-                            'Attribute {!r} of configuration class {!r} is not callable.'.format(
-                                get_method, conf_obj.__class__),
+                            f'Attribute {get_method!r} of configuration class {conf_obj.__class__!r} is not callable.',
                         )
                     kwargs[attr] = get_method()
                     continue

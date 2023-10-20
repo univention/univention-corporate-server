@@ -71,7 +71,7 @@ def main():
                 secret = uts.random_string()
                 virtual_server = uts.random_string() if random.randint(0, 1) else ''
                 nas_type = nas_types[i]
-                dn = udm.create_object(role, position='cn=computers,{}'.format(ucr.get('ldap/base')), name=name, ip=[addr], wait_for_replication=False)
+                dn = udm.create_object(role, position=f'cn=computers,{ucr.get("ldap/base")}', name=name, ip=[addr], wait_for_replication=False)
                 computers.append(Bunch(role=role, dn=dn, name=name, addr=addr, secret=secret, nas_type=nas_type, virtual_server=virtual_server, removed=False))
             utils.wait_for_replication()
 

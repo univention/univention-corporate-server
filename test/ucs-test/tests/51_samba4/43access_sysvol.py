@@ -39,12 +39,12 @@ def test_put_a_file_on_sysvol_as_administrator(s4_domainname):
 
 
 def test_access_the_folder_policies_on_sysvol_as_a_user(user, s4_domainname):
-    rc = call('smbclient //localhost/sysvol -U"{}%{}" -c "ls {}/Policies"'.format(user, 'univention', s4_domainname), shell=True)
+    rc = call(f'smbclient //localhost/sysvol -U"{user}%{"univention"}" -c "ls {s4_domainname}/Policies"', shell=True)
     assert rc == 0, "Could not access Policies on sysvol as a user"
 
 
 def test_put_a_file_in_the_folder_policies_on_sysvol_as_a_user(user, s4_domainname):
-    rc = call('smbclient //localhost/sysvol -U"{}%{}" -c "put /etc/hosts {}/t1"'.format(user, 'univention', s4_domainname), shell=True)
+    rc = call(f'smbclient //localhost/sysvol -U"{user}%{"univention"}" -c "put /etc/hosts {s4_domainname}/t1"', shell=True)
     assert rc == 1, "Successfully put a file on sysvol as a user"
 
 

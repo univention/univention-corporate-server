@@ -20,7 +20,7 @@ def _check_record_type(record_type):
             dns_entries.add(addr.address)
     except dns.resolver.NoAnswer:
         pass
-    print('DNS entries: {}'.format('; '.join(dns_entries)))
+    print(f'DNS entries: {"; ".join(dns_entries)}')
 
     master_backup_ips = set()
     lo = get_ldap_connection()
@@ -32,7 +32,7 @@ def _check_record_type(record_type):
                 if record_type == 'AAAA':
                     ip = dns.ipv6.inet_ntoa(dns.ipv6.inet_aton(ip))
                 master_backup_ips.add(ip.decode('ASCII'))
-    print('LDAP entries: {}'.format('; '.join(master_backup_ips)))
+    print(f'LDAP entries: {"; ".join(master_backup_ips)}')
 
     if master_backup_ips.difference(dns_entries):
         fail('Not all master and backup IPs are registered: DNS: [%s], LDAP: [%s]' % (dns_entries, master_backup_ips))

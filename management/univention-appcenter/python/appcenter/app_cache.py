@@ -63,8 +63,8 @@ cache_logger = get_base_logger().getChild('cache')
 
 def _cmp_mtimes(mtime1, mtime2):
     # type: (Optional[float], Optional[float]) -> int
-    mtime1 = float('{:.3f}'.format(mtime1)) if mtime1 is not None else 0.0
-    mtime2 = float('{:.3f}'.format(mtime2)) if mtime2 is not None else 0.0
+    mtime1 = float(f'{mtime1:.3f}') if mtime1 is not None else 0.0
+    mtime2 = float(f'{mtime2:.3f}') if mtime2 is not None else 0.0
     return 0 if mtime1 == mtime2 else (-1 if mtime1 < mtime2 else 1)
 
 
